@@ -110,10 +110,18 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {J : K → Type} {J' : K' → Type} {J'' : K'' → Type} {x : (Σ k, J k) → Ω} {x' : (Σ k, J' k) → Ω'}
   {x'' : (Σ k, J'' k) → Ω''}
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_eq_nat_card, Datum.dim]`. Conclude with `congrArg (· * D.p * D.q) (GlobalTheory.PeriodCoord.card_cmType H)`.
+-/
 theorem card_mul_eq_dim (D : Datum H) : Fintype.card (CMType H) * D.p * D.q = D.dim := by
   rw [Fintype.card_eq_nat_card, Datum.dim]
   exact congrArg (· * D.p * D.q) (GlobalTheory.PeriodCoord.card_cmType H)
 
+/- English proof (translation)
+Establish `e : dualMap (RingHom.id Ω) = RingHom.id _` using `RingHom.ext fun a => TrivSqZeroExt.inl_fst_add_inr_snd_eq a`. Use `⟨?_, (Category.id_comp _).symm, rfl, ⟨fun _ _ => rfl, fun _ _ h => h⟩, fun w => ?_⟩` and prove the remaining obligations. Use `show A.ξ ≫ 𝟙 _ = Spec.map (𝟙 _) ≫ A.ξ`. Rewrite using `[Spec.map_id, Category.id_comp, Category.comp_id]`. Rewrite using `[e] show _ = Spec.map (𝟙 _) ≫ _`.
+
+Rewrite using `[Spec.map_id, Category.id_comp]`. Both sides reduce to the same expression.
+-/
 theorem HodgeOver.refl (A : HodgeCpt Y S x) : HodgeOver A A (𝟙 _) (RingHom.id Ω) (AddMonoidHom.id _) := by
   have e : dualMap (RingHom.id Ω) = RingHom.id _ := RingHom.ext fun a => TrivSqZeroExt.inl_fst_add_inr_snd_eq a
   refine ⟨?_, (Category.id_comp _).symm, rfl, ⟨fun _ _ => rfl, fun _ _ h => h⟩, fun w => ?_⟩
@@ -124,6 +132,13 @@ theorem HodgeOver.refl (A : HodgeCpt Y S x) : HodgeOver A A (𝟙 _) (RingHom.id
     rw [Spec.map_id, Category.id_comp]
     rfl
 
+/- English proof (translation)
+Establish `e : dualMap (i'.comp i) = (dualMap i').comp (dualMap i)` using `RingHom.ext fun a => by`. Apply the tactic sequence `ext <;> simp [dualMap]`. Use `⟨?_, by rw [a.2.1, b.2.1, Category.assoc], by rw [a.2.2.1, b.2.2.1, RingHom.comp_assoc], ⟨fun t w => ?_, fun n v hv => a.2.2.2.1.2 n _ (b.2.2.2.1.2 n v hv)⟩, fun w => ?_⟩` and prove the remaining obligations. Use `show _ = Spec.map (CommRingCat.ofHom i ≫ CommRingCat.ofHom i') ≫ _`. Rewrite using `[← Category.assoc, a.1, Category.assoc, b.1, Spec.map_comp, Category.assoc]`.
+
+Use `show j' (j (t • w)) = i' (i t) • j' (j w)`. Rewrite using `[b.2.2.2.1.1, a.2.2.2.1.1]`. Use `show (A''.M.pt (j' (j w))).left ≫ _ = _`. Rewrite using `[a.2.2.2.2, b.2.2.2.2, e]`. Use `show _ = Spec.map (CommRingCat.ofHom (dualMap i) ≫ CommRingCat.ofHom (dualMap i')) ≫ _`.
+
+Rewrite using `[Spec.map_comp, Category.assoc]`.
+-/
 theorem HodgeOver.trans {A'' : HodgeCpt Y S'' x''} {A' : HodgeCpt Y S' x'} {A : HodgeCpt Y S x} {h' : A''.X ⟶ A'.X}
     {h : A'.X ⟶ A.X} {i' : Ω' →+* Ω''} {i : Ω →+* Ω'} {j' : A'.Li →+ A''.Li} {j : A.Li →+ A'.Li}
     (a : HodgeOver A'' A' h' i' j') (b : HodgeOver A' A h i j) :
@@ -143,6 +158,11 @@ theorem HodgeOver.trans {A'' : HodgeCpt Y S'' x''} {A' : HodgeCpt Y S' x'} {A : 
 
 variable {A' : HodgeCpt Y S' x'} {A : HodgeCpt Y S x} {h : A'.X ⟶ A.X} {i : Ω →+* Ω'} {j : A.Li →+ A'.Li}
 
+/- English proof (translation)
+Use `A'.M.inj (Over.OverMorphism.ext (A'.m.cart.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm)))` and prove the remaining obligations. Establish `h1` using `a.2.2.2.2 (A.ρ t w)`. Rewrite `h1` using `[A.act t w, Over.comp_left, Category.assoc, A.m.act]`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[A'.act t (j w), Over.comp_left, Category.assoc, A'.m.act, ← Category.assoc (A'.M.pt (j w)).left]`.
+
+Establish `h2` using `a.2.2.2.2 w`. Simplify using `only [SABMap.φ] at h2`. Rewrite using `[h2, Category.assoc, Category.assoc]`.
+-/
 theorem HodgeOver.map_act (a : HodgeOver A' A h i j) (t : 𝓞 E) (w : A.Li) : j (A.ρ t w) = A'.ρ t (j w) := by
   refine A'.M.inj (Over.OverMorphism.ext (A'.m.cart.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm)))
   have h1 := a.2.2.2.2 (A.ρ t w)
@@ -153,6 +173,11 @@ theorem HodgeOver.map_act (a : HodgeOver A' A h i j) (t : 𝓞 E) (w : A.Li) : j
   simp only [SABMap.φ] at h2
   rw [h2, Category.assoc, Category.assoc]
 
+/- English proof (translation)
+Use `(Submodule.mem_iInf _).2 fun t => ?_` and prove the remaining obligations. Establish `h1 : A.ρ t w - A.emb s t • w = 0` using `(Submodule.mem_iInf _).1 hw t`. Use `show A'.ρ t (j w) - A'.emb s t • j w = 0`. Establish `e : A'.emb s t = i (A.emb s t)` using `by show A'.cst _ = i (A.cst _)`. Rewrite using `[a.2.2.1]`.
+
+Both sides reduce to the same expression. Rewrite using `[← a.map_act, e, ← a.2.2.2.1.1, ← map_sub, h1, map_zero]`.
+-/
 theorem HodgeOver.map_Vgen (a : HodgeOver A' A h i j) (s : CMType H ⊕ CMType H) {w : A.Li} (hw : w ∈ A.Vgen s) :
     j w ∈ A'.Vgen s := by
   refine (Submodule.mem_iInf _).2 fun t => ?_
@@ -163,14 +188,25 @@ theorem HodgeOver.map_Vgen (a : HodgeOver A' A h i j) (s : CMType H ⊕ CMType H
     rw [a.2.2.1]; rfl
   rw [← a.map_act, e, ← a.2.2.2.1.1, ← map_sub, h1, map_zero]
 
+/- English proof (translation)
+Take `⟨U, hU, b, hb, hf⟩` from `(Lat.restrict_isVBOn _ _ _ _ _ _ _ _ (A.vb s)).1 (CptModel.self A.ξ) trivial`. Conclude with `⟨Module.Basis.mk (hf _ trivial hU).1 hb.ge⟩`.
+-/
 theorem nonempty_basis_Vgen (A : HodgeCpt Y S x) (s : CMType H ⊕ CMType H) :
     Nonempty (Module.Basis (Fin (labelRk D s)) Ω (A.Vgen s)) := by
   obtain ⟨U, hU, b, hb, hf⟩ := (Lat.restrict_isVBOn _ _ _ _ _ _ _ _ (A.vb s)).1 (CptModel.self A.ξ) trivial
   exact ⟨Module.Basis.mk (hf _ trivial hU).1 hb.ge⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun τ => (nonempty_basis_Vgen A (.inl τ)).some⟩, ⟨fun τ => (nonempty_basis_Vgen A (.inr τ)).some.dualBasis⟩⟩`.
+-/
 theorem nonempty_bases (A : HodgeCpt Y S x) : Nonempty (WBases A) ∧ Nonempty (OmBases A) :=
   ⟨⟨fun τ => (nonempty_basis_Vgen A (.inl τ)).some⟩, ⟨fun τ => (nonempty_basis_Vgen A (.inr τ)).some.dualBasis⟩⟩
 
+/- English proof (translation)
+Take `⟨B⟩` from `nonempty_basis_Vgen A' s`. Use `Module.Finite.of_basis B` as an intermediate fact. Establish `h1` using `a.2.2.2.1.2 _ _ (b.linearIndependent.map' (A.Vgen s).subtype (Submodule.ker_subtype _))`. Set `w : Fin (labelRk D s) → A'.Vgen s` to `fun k => ⟨j (b k), a.map_Vgen s (b k).2⟩`. Establish `h2 : LinearIndependent Ω' w` using `LinearIndependent.of_comp (A'.Vgen s).subtype h1`.
+
+Conclude with `⟨basisOfLinearIndependentOfCardEqFinrank' w h2 (Module.finrank_eq_card_basis B).symm, fun k => by simp [w]⟩`.
+-/
 theorem HodgeOver.exists_basis (a : HodgeOver A' A h i j) (s : CMType H ⊕ CMType H)
     (b : Module.Basis (Fin (labelRk D s)) Ω (A.Vgen s)) :
     ∃ b' : Module.Basis (Fin (labelRk D s)) Ω' (A'.Vgen s), ∀ k, (b' k : A'.Li) = j (b k) := by
@@ -181,6 +217,15 @@ theorem HodgeOver.exists_basis (a : HodgeOver A' A h i j) (s : CMType H ⊕ CMTy
   have h2 : LinearIndependent Ω' w := LinearIndependent.of_comp (A'.Vgen s).subtype h1
   exact ⟨basisOfLinearIndependentOfCardEqFinrank' w h2 (Module.finrank_eq_card_basis B).symm, fun k => by simp [w]⟩
 
+/- English proof (translation)
+Use `choose bW' hW using fun τ => a.exists_basis (.inl τ) (bW τ)`. Establish `key : ∀ τ, ∃ b' : Module.Basis (Fin D.q) Ω' (Module.Dual Ω' (A'.Vgen (.inr τ))), ∀ k (v : A.Vgen (.inr τ)) (v' : A'.Vgen (.inr τ)), (v' : A'.Li) = j v → b' k v' = i (bO τ k v)` using `fun τ => by`. Take `⟨B⟩` from `nonempty_basis_Vgen A (.inr τ)`. Use `Module.Finite.of_basis B` as an intermediate fact. Set `C : Module.Basis (Fin D.q) Ω (A.Vgen (.inr τ))` to `(bO τ).dualBasis.map (Module.evalEquiv Ω _).symm`.
+
+Establish `hC : ∀ v k, C.repr v k = bO τ k v` using `fun v k => by`. Simplify using `[C]`. Take `⟨C', hC'⟩ : ∃ C' : Module.Basis (Fin D.q) Ω' (A'.Vgen (.inr τ)), ∀ k, (C' k : A'.Li) = j (C k)` from `a.exists_basis (.inr τ) C`. Use `⟨C'.dualBasis, fun k v v' hv => ?_⟩` and prove the remaining obligations. Establish `e : v' = ∑ m, i (bO τ m v) • C' m` using `Subtype.ext (by`.
+
+Rewrite using `[hv]`. Use `conv_lhs => rw [← C.sum_repr v]`. Simplify using `only [AddSubmonoidClass.coe_finsetSum, SetLike.val_smul, map_sum, a.2.2.2.1.1, hC', hC])`. Rewrite using `[e, Module.Basis.dualBasis_apply, C'.repr_sum_self]`. Use `choose bO' hO using key`.
+
+Conclude with `⟨bW', bO', hW, hO⟩`.
+-/
 theorem HodgeOver.exists_basesOver (a : HodgeOver A' A h i j) (bW : WBases A) (bO : OmBases A) :
     ∃ (bW' : WBases A') (bO' : OmBases A'), BasesOver i j bW' bO' bW bO := by
   choose bW' hW using fun τ => a.exists_basis (.inl τ) (bW τ)
@@ -202,10 +247,16 @@ theorem HodgeOver.exists_basesOver (a : HodgeOver A' A h i j) (bW : WBases A) (b
   choose bO' hO using key
   exact ⟨bW', bO', hW, hO⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun τ a v v' e => by rw [show v' = v from Subtype.ext e]; rfl⟩`.
+-/
 theorem BasesOver.refl (bW : WBases A) (bO : OmBases A) :
     BasesOver (RingHom.id Ω) (AddMonoidHom.id _) bW bO bW bO :=
   ⟨fun _ _ => rfl, fun τ a v v' e => by rw [show v' = v from Subtype.ext e]; rfl⟩
 
+/- English proof (translation)
+Use `congrFun (congrFun (Matrix.mul_nonsing_inv gᵀ (by rwa [det_transpose])) k) m` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← this]`. Simplify using `[colFrame, hv, mul_comm]`.
+-/
 theorem colFrame_dual {V : Type} [AddCommGroup V] [Module Ω V] {r : ℕ} (φ : Fin r → Module.Dual Ω V) (v : Fin r → V)
     (hv : ∀ a b, φ a (v b) = if a = b then 1 else 0) (g : Matrix (Fin r) (Fin r) Ω) (hg : IsUnit g.det) (k m : Fin r) :
     colFrame φ g k (colFrame v gᵀ⁻¹ m) = if k = m then 1 else 0 := by
@@ -214,6 +265,9 @@ theorem colFrame_dual {V : Type} [AddCommGroup V] [Module Ω V] {r : ℕ} (φ : 
   rw [← this]
   simp [colFrame, hv, mul_comm]
 
+/- English proof (translation)
+Establish `: ¬ D.p + (a : ℕ) < D.p` using `by omega`. Simplify using `only [HodgeCpt.rootIdx, this, dif_neg, not_false_eq_true]`. Use `congr 1`. Conclude with `Fin.ext (by simp [Fin.rev]; omega)`.
+-/
 example (τ : CMType H) (a : Fin D.q) :
     HodgeCpt.rootIdx D (τ, ⟨D.p + a, by omega⟩) = ⟨.inr τ, a.rev⟩ := by
   have : ¬ D.p + (a : ℕ) < D.p := by omega
@@ -223,6 +277,9 @@ example (τ : CMType H) (a : Fin D.q) :
 
 variable {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ}
 
+/- English proof (translation)
+Establish `h1` using `ht.2.2.2 τ k`. Rewrite `h1` using `[hk, Option.elim_none]`. Rewrite using `[← hF.2.2.2 (τ, k) hk, map_mul]`. Take the linear combination `(-algebraMap M.Ω Φ (detFac D.p k (F.T τ))) * h1`.
+-/
 theorem FlagTie.IsTotal.central {M : FlagModel y (CMType H) (D.p + D.q) D.p} {𝔐 : HodgeCpt Y S M.x}
     {tie : FlagTie M 𝔐} {𝔐' : HodgeCpt Y S y} {Fl : 𝔐'.Flag} {xdeg : CMType H × Fin (D.p + D.q) → K → ℤ}
     {e : CMType H × Fin (D.p + D.q) → Φ} (ht : tie.IsTotal 𝔐' Fl xdeg e)
@@ -235,6 +292,13 @@ theorem FlagTie.IsTotal.central {M : FlagModel y (CMType H) (D.p + D.q) D.p} {�
   rw [← hF.2.2.2 (τ, k) hk, map_mul]
   linear_combination (-algebraMap M.Ω Φ (detFac D.p k (F.T τ))) * h1
 
+/- English proof (translation)
+Establish `hb : ∀ p, FlagEx.blkH p ≠ some false` using `fun p h => by simpa using (FlagEx.blkH_some h).2`. Establish `ht : ¬ ∀ p, FlagEx.blkH p ≠ some true` using `fun h => h ((), 0) rfl`. Set `M` to `FlagEx.MH (![1, 1, 0] : Fin 3 → ℚ) rfl (Or.inl one_ne_zero)`. Establish `a₀` using `(show M.dy ((), 0) false = -1 from dif_pos hb).symm.trans (congrFun (h 0) false)`. Establish `a₁` using `(show M.dy ((), 0) true = 1 from (dif_neg ht).trans (if_pos rfl)).symm.trans (congrFun (h 0) true)`.
+
+Establish `b₀` using `(show M.dy ((), 1) false = -1 from dif_pos hb).symm.trans (congrFun (h 1) false)`. Establish `b₁` using `(show M.dy ((), 1) true = 0 from (dif_neg ht).trans (if_neg (by decide))).symm.trans (congrFun (h 1) true)`. Establish `e₀ : Finset.Iic (0 : Fin 2) = {0}` using `by decide`. Establish `e₁ : Finset.Iic (1 : Fin 2) = {0, 1}` using `by decide`. Simplify using `only [e₀, e₁, Finset.sum_singleton, Pi.neg_apply, Finset.sum_pair (show (0 : Fin 2) ≠ 1 by decide), Pi.add_apply] at a₀ a₁ b₀ b₁`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 example (xdeg : Unit × Fin 2 → Bool → ℤ)
     (h : ∀ i, (FlagEx.MH (![1, 1, 0] : Fin 3 → ℚ) rfl (Or.inl one_ne_zero)).dy ((), i) =
       -∑ k ∈ Finset.Iic i, xdeg ((), k)) :
@@ -253,6 +317,9 @@ example (xdeg : Unit × Fin 2 → Bool → ℤ)
     Pi.add_apply] at a₀ a₁ b₀ b₁
   omega
 
+/- English proof (translation)
+Use `⟨fun k => (hz.1 k).imp fun i hi => (map_ne_zero _).2 hi, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (starRingEnd ℂ) (hz.2 f hf)`. Rewrite `h` using `[MvPolynomial.eval_map, MvPolynomial.eval₂_comp_left, map_zero]`. Rewrite using `[MvPolynomial.eval_map, ← h]`. Conclude with `congrArg (fun g => MvPolynomial.eval₂ g _ f) (RingHom.ext_int _ _)`.
+-/
 theorem conj_mem_mcPts {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) :
     (fun q => starRingEnd ℂ (z q)) ∈ mcPts P := by
   refine ⟨fun k => (hz.1 k).imp fun i hi => (map_ne_zero _).2 hi, fun f hf => ?_⟩
@@ -263,10 +330,16 @@ theorem conj_mem_mcPts {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z
 
 variable {Ψ : Type} {N j n : ℕ} {M : FlagModel y Ψ N j}
 
+/- English proof (translation)
+The claim follows from `BM.Rb.surj _ (conj_mem_mcPts (BM.Rb.mem x x (BM.Rb.mem_U x))) fun h => by simpa using h.2 1 trivial`.
+-/
 theorem BaseMetric.exists_conj (BM : BaseMetric M n) (x : BM.Rb.X) :
     ∃ x', SameOrbit (BM.Rb.lift x' x') fun q => starRingEnd ℂ (BM.Rb.lift x x q) :=
   BM.Rb.surj _ (conj_mem_mcPts (BM.Rb.mem x x (BM.Rb.mem_U x))) fun h => by simpa using h.2 1 trivial
 
+/- English proof (translation)
+Use `⟨fun x x' _ => ?_, fun p z _ _ _ _ => h p z⟩` and prove the remaining obligations. Take `rfl : x' = x` from `BM.Rb.inj _ _ (fun h => by simpa using h.2 1 trivial) ⟨fun _ => 1, fun _ => one_ne_zero, funext fun q => isEmptyElim q.1⟩`. Conclude with `⟨Iff.rfl, rfl⟩`.
+-/
 theorem BaseMetric.isConj_of_isEmpty (BM : BaseMetric M n) [IsEmpty (NonPluckerBlocks M.blk)]
     (h : ∀ p, IsConjInvariantH (BM.hom p)) : BM.IsConj := by
   refine ⟨fun x x' _ => ?_, fun p z _ _ _ _ => h p z⟩
@@ -283,6 +356,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Ω : Type} [Field Ω] [CharZero Ω] {K₀ : Type} [Fintype K₀] {J₀ : K₀ → Type} [∀ k, Fintype (J₀ k)]
   {x₀ : (Σ k, J₀ k) → Ω}
 
+/- English proof (translation)
+Take `⟨⟨bW⟩, ⟨bO⟩⟩` from `nonempty_bases 𝔐`. Take `⟨K, _, ι, _, Φ, _, y, M, 𝔐₁, tie, -, -, -, -, -, -, -, -, -, -, ⟨h1, -, h2⟩, h3, -⟩` from `ha E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 _ d bW bO hv hd`. Take `⟨BM, hBM, hcj⟩` from `hc E H D l Xo c Y S K ι Φ y M 𝔐₁ tie d hp hq h1 (h2 _ hs)`. Conclude with `⟨K, _, ι, _, Φ, _, y, M, 𝔐₁, tie, BM, hBM, hcj, h3⟩`.
+-/
 theorem exists_flagModel_baseMetric (ha : FlagModelExists) (hc : BaseMetricExists) (𝔐 : HodgeCpt Y S x₀) {d : ℕ}
     (hp : 1 ≤ D.p) (hq : 1 ≤ D.q) (hv : IsArithVar (mCoordIdeal x₀) (Fintype.card (CMType H) * D.p * D.q + 1))
     (hd : 𝔐.IsCover d) (hs : HasSncBoundary 𝔐 (Fintype.card (CMType H) * D.p * D.q)) :
@@ -297,6 +373,13 @@ theorem exists_flagModel_baseMetric (ha : FlagModelExists) (hc : BaseMetricExist
   obtain ⟨BM, hBM, hcj⟩ := hc E H D l Xo c Y S K ι Φ y M 𝔐₁ tie d hp hq h1 (h2 _ hs)
   exact ⟨K, _, ι, _, Φ, _, y, M, 𝔐₁, tie, BM, hBM, hcj, h3⟩
 
+/- English proof (translation)
+Take `⟨bW, bO, hB⟩` from `ho.exists_basesOver tie.eW tie.eO`. Take `⟨K', _, ι', _, Φ', _, y', M', 𝔐₁, tie', κ', v', φ, π, j', 𝔐', Fl, -, -, ⟨g1, g2, -, -, g3, -, g4⟩, ⟨h1, -, -⟩, -, -, h4⟩` from `ha E H D l Xo c Y S' Ω K₀ J₀ x₀ A n d' bW bO hv hd'`. Establish `hκ' : IsBlockMap (κ' ∘ κ) (v' ∘ v)`. Use `⟨g1.1.comp hκ.1, g1.2.1.comp hκ.2.1, fun p => (g1.2.2.1 _).trans (congrArg κ' (hκ.2.2.1 p)), ?_⟩` and prove the remaining obligations. Introduce and unpack `q ⟨k, hk⟩`.
+
+Take `⟨r, rfl⟩` from `g1.2.2.2 q ⟨κ k, hk⟩`. Take `⟨t, rfl⟩` from `hκ.2.2.2 r ⟨k, g1.1 (hk.trans (g1.2.2.1 r))⟩`. Conclude with `⟨t, rfl⟩`. Establish `hB' : BasesOver (φ.comp i) (j'.comp j) tie'.eW tie'.eO tie.eW tie.eO` using `⟨fun τ a => (g4.1 τ a).trans (congrArg j' (hB.1 τ a)), fun τ a w w' e => (g4.2 τ a ⟨j w, ho.map_Vgen _ w.2⟩ w' e).trans (congrArg φ (hB.2 τ a w _ rfl))⟩`. Take `⟨Cv, -, -, -, hC⟩` from `hb E H D l Xo c Y S S' K ι Φ y K' ι' Φ' y' M M' 𝔐 𝔐₁ tie tie' _ _ (φ.comp i) (π ≫ h) (j'.comp j) d d' hκ' (fun q => (g2 _).trans (congrArg φ (hx q))) (g3.trans ho) hB' hd h1`.
+
+Conclude with `⟨K', _, ι', _, Φ', _, y', M', Cv, 𝔐', Fl, hC.trans h4.symm⟩`.
+-/
 theorem exists_flagCover (ha : FlagModelExists) (hb : CoverExists) {K : Type} [Fintype K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ} {M : FlagModel y (CMType H) (D.p + D.q) D.p}
     {𝔐 : HodgeCpt Y S M.x} (tie : FlagTie M 𝔐) (A : HodgeCpt Y S' x₀) {κ : NonPluckerBlocks M.blk → K₀}
@@ -322,6 +405,9 @@ theorem exists_flagCover (ha : FlagModelExists) (hb : CoverExists) {K : Type} [F
     (j'.comp j) d d' hκ' (fun q => (g2 _).trans (congrArg φ (hx q))) (g3.trans ho) hB' hd h1
   exact ⟨K', _, ι', _, Φ', _, y', M', Cv, 𝔐', Fl, hC.trans h4.symm⟩
 
+/- English proof (translation)
+Take `⟨Cv, -, h1, -, h2⟩` from `hb E H D l Xo c Y S S K ι Φ y K ι Φ y M M 𝔐 𝔐 tie tie id id (RingHom.id _) (𝟙 _) (AddMonoidHom.id _) d d ⟨Function.injective_id, Function.injective_id, fun _ => rfl, fun q _ => ⟨q, rfl⟩⟩ (fun _ => rfl) (HodgeOver.refl 𝔐) (BasesOver.refl _ _) hd hd`. Use `⟨Cv, h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[FlagCover.deg, h1]`. Conclude with `IntermediateField.relfinrank_self _`.
+-/
 theorem CoverExists.diag (hb : CoverExists) {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type}
     [Field Φ] {y : (Σ k, ι k) → Φ} {M : FlagModel y (CMType H) (D.p + D.q) D.p} {𝔐 : HodgeCpt Y S M.x}
     (tie : FlagTie M 𝔐) {d : ℕ} (hd : 𝔐.IsCover d) :

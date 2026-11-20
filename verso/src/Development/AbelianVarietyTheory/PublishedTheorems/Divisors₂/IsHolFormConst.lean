@@ -187,6 +187,9 @@ def qPower (ξ : F) (z : (F →+* ℝ) → ℂ) : ℂ :=
 def HasFourier (𝔞 𝔟 : FracId F) (g : ((F →+* ℝ) → ℂ) → ℂ) (a : (𝔞 * 𝔟).elt → ℂ) : Prop :=
   ∀ z ∈ halfSpace F, HasSum (fun ξ : (𝔞 * 𝔟).elt ↦ a ξ * qPower (ξ : F) z) (g z)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨differentiableOn_const x, fun _ _ _ _ _ _ _ ↦ by simp⟩`.
+-/
 theorem isHolForm_const (𝔞 𝔟 : FracId F) (x : ℂ) : IsHolForm 𝔞 𝔟 0 (fun _ ↦ x) :=
   ⟨differentiableOn_const x, fun _ _ _ _ _ _ _ ↦ by simp⟩
 

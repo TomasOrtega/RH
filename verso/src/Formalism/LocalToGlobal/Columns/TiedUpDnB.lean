@@ -13,6 +13,13 @@ open Formalism.L2.DIV (Pl)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : Finset (Pl E)) (H : Subgroup (GLG E n SG))
 
+/- English proof (translation)
+Substitute `hg₀` using the available equality. Establish `hm : ∀ L : Submodule (𝓞 E) (Sp E n), Formalism.L2.Forms.mulLat ((γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) L = gmap ((g₀.1 : UF E n) : Sp E n ≃ₗ[E] Sp E n) L`. Introduce `L`. Unfold `Formalism.L2.Forms.mulLat gmap`. Use `congr 1`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Use `show _ = ((g₀.1 : UF E n) : Sp E n ≃ₗ[E] Sp E n) y`. Rewrite using `[← hγ]`. Conclude with `(rlc_ratHom_apply hc n γ y).symm`.
+
+Use `⟨by rw [hm, rlc_smul_val, Deco.L_act], by rw [hm, rlc_smul_val, Deco.Lsh_act _ g₀.1.2], fun y => ?_⟩` and prove the remaining obligations. Use `show d'.1.f P y = d'.1.f P (((g₀.1 : UF E n) : Sp E n ≃ₗ[E] Sp E n).symm (((γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ y))`. Rewrite using `[← hγ, ← rlc_ratHom_apply, LinearEquiv.symm_apply_apply]`.
+-/
 theorem tud_lat_move (γ : URat hc n) (g₀ : UF E n × H) (hγ : ratHom hc n γ = g₀.1) (d' d₁ : DecoSet E n ST SG)
     (hg₀ : g₀ • d' = d₁) (P : ST) :
     Formalism.L2.Forms.mulLat ((γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) d'.1.L = d₁.1.L ∧
@@ -34,9 +41,21 @@ theorem tud_lat_move (γ : URat hc n) (g₀ : UF E n × H) (hγ : ratHom hc n γ
   rw [← hγ, ← rlc_ratHom_apply, LinearEquiv.symm_apply_apply]
 
 omit [Algebra F E] in
+/- English proof (translation)
+Rewrite using `[← d.fv_mk P ⟨modP.rep x, modP.rep_mem x⟩, modP.mk_rep, hx]`.
+-/
 theorem tud_f_rep (d : DecoSet E n ST SG) (P : ST) {x : d.lv P} (hx : d.fv P x = 1) : d.1.f P (modP.rep x) = 1 := by
   rw [← d.fv_mk P ⟨modP.rep x, modP.rep_mem x⟩, modP.mk_rep, hx]
 
+/- English proof (translation)
+Establish `hfr` using `tud_f_rep n ST SG d P hx`. Establish `hd₁ : (d.upL P q x).1 = d.1.up P q (modP.rep x)` using `d.up_val P hP hq hq2 (modP.rep_mem x) hfr`. Establish `hSO` using `tud_sameOff_up hc d P hP hq hq2 hov (modP.rep_mem x) hfr`. Take `⟨γ, η, κ, hγ, hκ, hη, e⟩` from `updn_move hc n ST SG H hS c₀ v d (d.upL P q x) d' hSO g₀ hg₀`. Take `⟨hL, hLs, hf⟩` from `tud_lat_move hc n ST SG H γ g₀ hγ d' _ hg₀ P`.
+
+Use `⟨γ, η, κ, hγ, hκ, hη, e, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hL, tud_locP_L ha, DecoSet.locP_LshKer_up hP hq hq2 ha (d.upL_mem P hP hq hq2 hx) P]`. Introduce `w t ht hw hrw`. Rewrite using `[hLs, (d.upL P q x).2.locP_Lsh ha P, show (d.upL P q x).1.N = upN P.1.asIdeal d.1.N (modP.rep x) from congrArg Deco.N hd₁, localizationAt_upN d.2.lat d.2.uni P.1 hP.ne (modP.rep_mem x)]`. Conclude with `localizationAt_upA hq hq2 d.2.N_le_Lsh (by rw [← d.2.locP_Lsh ha P]; exact le_locP _ _) hw ht hrw`.
+
+Introduce `y hy`. Establish `hy1 : ((γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ y ∈ (d.upL P q x).1.Lsh`. Rewrite using `[← hLs]`. Conclude with `Submodule.mem_map_of_mem hy`. Establish `hy2` using `(d.upL P q x).2.Lsh_le_at ha P hy1`.
+
+Rewrite using `[hf y, hd₁, Deco.up_f, if_pos]`. Rewrite `hy2` using `[hd₁]`. Conclude with `hy2`.
+-/
 theorem tud_up_core (hS : DecoPtSurj hc n ST SG) (c₀ : DiaG E ST) {v : HeightOneSpectrum (𝓞 F)} (d d' : DecoSet E n ST SG)
     (P : ST) (hov : IsOver v P.1) (hP : MoveHyp ST SG P) {q : 𝓞 E} (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2)
     {a : 𝓞 E} (ha : SepElt ST a) (x : d.lv P) (hx : d.fv P x = 1) (g₀ : UF E n × H) (hg₀ : g₀ • d' = d.upL P q x) :
@@ -68,6 +87,11 @@ theorem tud_up_core (hS : DecoPtSurj hc n ST SG) (c₀ : DiaG E ST) {v : HeightO
     rw [hd₁] at hy2
     exact hy2
 
+/- English proof (translation)
+Establish `hd₁` using `d.dnL_val P hP hg`. Establish `hSO` using `tud_sameOff_dn hc d P hP hg hov`. Take `⟨γ, η, κ, hγ, hκ, hη, e⟩` from `updn_move hc n ST SG H hS c₀ v d (d.dnL P g) d' hSO g₀ hg₀`. Take `⟨-, hLs, hf⟩` from `tud_lat_move hc n ST SG H γ g₀ hγ d' _ hg₀ P`. Use `⟨γ, η, κ, hγ, hκ, hη, e, ?_, fun y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hLs, (d.dnL P g).2.locP_Lsh ha P, show (d.dnL P g).1.N = d.1.dnN P from congrArg Deco.N hd₁, (d.2.dnN_spec P hP.ne).2.2.2, ← d.2.locP_LshKer_self ha P, tud_locP_L ha]`. Rewrite using `[hf y, hd₁] show Function.update d.1.f P _ P _ = _`. Rewrite using `[Function.update_self]`.
+-/
 theorem tud_dn_core (hS : DecoPtSurj hc n ST SG) (c₀ : DiaG E ST) {v : HeightOneSpectrum (𝓞 F)} (d d' : DecoSet E n ST SG)
     (P : ST) (hov : IsOver v P.1) (hP : MoveHyp ST SG P) {a : 𝓞 E} (ha : SepElt ST a)
     (g : Module.Dual (𝓞 E ⧸ P.1.asIdeal) (d.lk P)) (hg : g ≠ 0) (g₀ : UF E n × H) (hg₀ : g₀ • d' = d.dnL P g) :

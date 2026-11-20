@@ -17,10 +17,16 @@ def hv (ξ : Fin r → E) (τ : X.Ψ) (M : Matrix (Fin r) (Fin r) ℂ) : Fin r �
 def rk1 (ξ : Fin r → E) (τ : X.Ψ) (M : Matrix (Fin r) (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ :=
   vecMulVec (hv X ξ τ M) (fun b => conj (hv X ξ τ M b))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+-/
 lemma col_mul (A M : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) : col (A * M) a = A *ᵥ col M a := by
   funext k
   simp [col, Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Simplify using `only [hermC, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma hermC_add_smul_add_smul (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u e v : Fin r → ℂ)
     (β γ : ℂ) :
     hermC τ G (u + β • e) (v + γ • e) = hermC τ G u v + conj γ * hermC τ G u e +
@@ -30,6 +36,9 @@ private lemma hermC_add_smul_add_smul (τ : E →+* ℂ) (G : Matrix (Fin r) (Fi
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [hermC, map_sum, map_mul, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← emb_cc', hG]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma hermC_swap_of_conj_symm (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (hG : ∀ a b, cc (G a b) = G b a) (u v : Fin r → ℂ) :
     hermC τ G v u = conj (hermC τ G u v) := by
@@ -39,6 +48,9 @@ private lemma hermC_swap_of_conj_symm (τ : E →+* ℂ) (G : Matrix (Fin r) (Fi
   rw [← emb_cc', hG]
   ring
 
+/- English proof (translation)
+Rewrite using `[hermC_add_smul_add_smul, hermC_swap_of_conj_symm τ G hG v e, he]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma hermC_pair (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (hG : ∀ a b, cc (G a b) = G b a)
     (e u v : Fin r → ℂ) (he : hermC τ G e e = 0) (α : ℂ) :
     hermC τ G (u + (α * hermC τ G u e) • e) (v + (α * hermC τ G v e) • e) =
@@ -47,14 +59,25 @@ lemma hermC_pair (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (hG : ∀ a b
   simp only [map_mul]
   ring
 
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring`.
+-/
 lemma alpha_conj (c : ℝ) (s : ℂ) :
     (-(I * (c : ℂ) * s)) + conj (-(I * (c : ℂ) * s)) = ((2 * c * s.im : ℝ) : ℂ) := by
   apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring
 
+/- English proof (translation)
+Simplify using `[hermC, herm, Data.emb, map_sum, map_mul, emb_cc']`.
+-/
 private lemma hermC_emb_emb_eq_herm (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     hermC τ G (Data.emb τ x) (Data.emb τ y) = τ (herm G x y) := by
   simp [hermC, herm, Data.emb, map_sum, map_mul, emb_cc']
 
+/- English proof (translation)
+Establish `he : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0`. Rewrite using `[hermC_emb_emb_eq_herm, hξ, map_zero]`. Use extensionality with `a b`. Simplify using `only [gram, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, rk1, hv, vecMulVec_apply]`. Rewrite using `[col_mul, col_mul, flowMat_mulVec (X := X), flowMat_mulVec (X := X), hermC_pair τ.1 X.Gm X.Gm_herm _ _ _ he, alpha_conj]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma gram_flowMat {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) (s : ℂ)
     (M : Matrix (Fin r) (Fin r) ℂ) :
     gram τ.1 X.Gm (X.flowMat ξ τ s * M) =
@@ -68,6 +91,9 @@ lemma gram_flowMat {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) (s
     hermC_pair τ.1 X.Gm X.Gm_herm _ _ _ he, alpha_conj]
   ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma mat_flow (ξ : Fin r → E) (s : X.Ψ → ℂ) (x : Frame X.Ψ r) (τ : X.Ψ) :
     mat (X.flow ξ s x) τ = X.flowMat ξ τ (s τ) * mat x τ := rfl
 
@@ -75,6 +101,11 @@ def admissibleImaginary (ξ : Fin r → E) (x : Frame X.Ψ r) : Set (X.Ψ → �
   {y | ∀ τ : X.Ψ, ∀ i : Fin (r + 1), 0 < psgn X.p0 i *
     (lminor (gram τ.1 X.Gm (mat x τ) + ((2 * X.c τ * y τ : ℝ) : ℂ) • rk1 X ξ τ (mat x τ)) i).re}
 
+/- English proof (translation)
+Simplify using `only [Data.dom, GG, Set.mem_setOf_eq, admissibleImaginary, dmin, mat_flow, gram_flowMat X hξ, det_mul, det_flowMat (X := X) hξ, one_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h τ i`. Conclude with `(h τ).2 i`. Introduce `h τ`.
+
+Conclude with `⟨(hx τ).1, h τ⟩`.
+-/
 lemma flow_mem_dom_iff {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (x : Frame X.Ψ r)
     (hx : x ∈ X.dom) (s : X.Ψ → ℂ) :
     X.flow ξ s x ∈ X.dom ↔ (fun τ => (s τ).im) ∈ admissibleImaginary X ξ x := by
@@ -90,6 +121,15 @@ end gram
 
 section affine
 
+/- English proof (translation)
+Unfold `lminor at hA ⊢`. Use `set e := Fin.castLE (Nat.le_of_lt_succ i.isLt) with he`. Use `set B := A.submatrix e e with hB`. Establish `hB' : IsUnit B.det` using `isUnit_iff_ne_zero.mpr hA`. Use `⟨(v ∘ e) ⬝ᵥ (B⁻¹ *ᵥ (u ∘ e)), fun t => ?_⟩` and prove the remaining obligations.
+
+Establish `hz : B *ᵥ (B⁻¹ *ᵥ (u ∘ e)) = u ∘ e`. Rewrite using `[mulVec_mulVec, mul_nonsing_inv _ hB', one_mulVec]`. Establish `key : B * (1 + vecMulVec (B⁻¹ *ᵥ (u ∘ e)) (t • (v ∘ e))) = (A + t • vecMulVec u v).submatrix e e`. Rewrite using `[mul_add, mul_one]`. Use extensionality with `a b`.
+
+Establish `hza : ∑ k, B a k * (B⁻¹ *ᵥ (u ∘ e)) k = u (e a)` using `congrFun hz a`. Simplify using `only [Matrix.add_apply, Matrix.mul_apply, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply, Matrix.submatrix_apply, Matrix.smul_apply]`. Rewrite using `[show ∑ k, B a k * ((B⁻¹ *ᵥ (u ∘ e)) k * (t * v (e b))) = (∑ k, B a k * (B⁻¹ *ᵥ (u ∘ e)) k) * (t * v (e b)) by`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring, hza]`.
+
+Simplify using `only [hB, Matrix.submatrix_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← key, det_mul, vecMulVec_eq Unit, det_one_add_replicateCol_mul_replicateRow, smul_dotProduct, smul_eq_mul]`.
+-/
 lemma leadingMinor_add_rankOne (A : Matrix (Fin r) (Fin r) ℂ) (u v : Fin r → ℂ) (i : Fin (r + 1))
     (hA : lminor A i ≠ 0) : ∃ κ : ℂ, ∀ t : ℂ, lminor (A + t • vecMulVec u v) i = lminor A i * (1 + t * κ) := by
   unfold lminor at hA ⊢
@@ -115,6 +155,15 @@ lemma leadingMinor_add_rankOne (A : Matrix (Fin r) (Fin r) ℂ) (u v : Fin r →
   rw [← key, det_mul, vecMulVec_eq Unit, det_one_add_replicateCol_mul_replicateRow, smul_dotProduct,
     smul_eq_mul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `hs : {y : ι → ℝ | ∀ τ i, 0 < a τ i + y τ * b τ i} = ⋂ τ, ⋂ i, {y : ι → ℝ | 0 < a τ i + y τ * b τ i}`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[hs]`.
+
+Conclude with `isOpen_iInter_of_finite fun τ => isOpen_iInter_of_finite fun i => isOpen_lt continuous_const (continuous_const.add ((continuous_apply τ).mul continuous_const))`. Introduce `y hy z hz s t hs ht hst`. Simplify using `only [Set.mem_setOf_eq, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at hy hz ⊢`. Introduce `τ i`. Establish `h1` using `hy τ i`.
+
+Establish `h2` using `hz τ i`. Establish `key : a τ i + (s * y τ + t * z τ) * b τ i = s * (a τ i + y τ * b τ i) + t * (a τ i + z τ * b τ i)`. Take the linear combination `(-(a τ i)) * hst`. Rewrite using `[key]`. Break down `hs.lt_or_eq with hs' | hs'` into its components or cases.
+
+Conclude with `add_pos_of_pos_of_nonneg (mul_pos hs' h1) (mul_nonneg ht h2.le)`. Substitute `hs'` using the available equality. Establish `ht1 : t = 1` using `by linarith`. Substitute `ht1` using the available equality. Simplify using `using h2`.
+-/
 lemma open_convex_aff {ι κ : Type*} [Fintype ι] [Finite κ] (a b : ι → κ → ℝ) :
     IsOpen {y : ι → ℝ | ∀ τ i, 0 < a τ i + y τ * b τ i} ∧
       Convex ℝ {y : ι → ℝ | ∀ τ i, 0 < a τ i + y τ * b τ i} := by
@@ -148,6 +197,15 @@ section adm
 
 variable (X : Data E r)
 
+/- English proof (translation)
+Establish `hL : ∀ τ : X.Ψ, ∀ i : Fin (r + 1), lminor (gram τ.1 X.Gm (mat x τ)) i ≠ 0`. Introduce `τ i h`. Establish `h1` using `(hx τ).2 i`. Simplify using `only [dmin, h, Complex.zero_re, mul_zero, lt_irrefl] at h1`. Establish `hk : ∀ τ : X.Ψ, ∀ i : Fin (r + 1), ∃ κ : ℂ, ∀ t : ℂ, lminor (gram τ.1 X.Gm (mat x τ) + t • rk1 X ξ τ (mat x τ)) i = lminor (gram τ.1 X.Gm (mat x τ)) i * (1 + t * κ)` using `fun τ i => leadingMinor_add_rankOne _ _ _ i (hL τ i)`.
+
+Use `choose κ hκ using hk`. Establish `hre : ∀ (L k : ℂ) (t : ℝ), (L * (1 + (t : ℂ) * k)).re = L.re + t * (L * k).re`. Introduce `L k t`. Rewrite using `[show L * (1 + (t : ℂ) * k) = L + (t : ℂ) * (L * k) by ring, Complex.add_re, Complex.re_ofReal_mul]`. Use `⟨fun τ i => psgn X.p0 i * (lminor (gram τ.1 X.Gm (mat x τ)) i).re, fun τ i => psgn X.p0 i * (2 * X.c τ) * (lminor (gram τ.1 X.Gm (mat x τ)) i * κ τ i).re, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `y`. Simplify using `only [admissibleImaginary, Set.mem_setOf_eq, hκ, hre]`. Use `forall_congr' fun τ => forall_congr' fun i => ?_` and prove the remaining obligations. Apply `iff_of_eq` to reduce the goal to its premises. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma admissibleImaginary_eq_halfspaces {ξ : Fin r → E} (x : Frame X.Ψ r) (hx : x ∈ X.dom) :
     ∃ a b : X.Ψ → Fin (r + 1) → ℝ, admissibleImaginary X ξ x = {y | ∀ τ i, 0 < a τ i + y τ * b τ i} := by
   have hL : ∀ τ : X.Ψ, ∀ i : Fin (r + 1), lminor (gram τ.1 X.Gm (mat x τ)) i ≠ 0 := by
@@ -172,6 +230,9 @@ lemma admissibleImaginary_eq_halfspaces {ξ : Fin r → E} (x : Frame X.Ψ r) (h
   congr 1
   ring
 
+/- English proof (translation)
+Take `⟨a, b, h⟩` from `admissibleImaginary_eq_halfspaces X (ξ := ξ) x hx`. Rewrite using `[h]`. Conclude with `open_convex_aff a b`.
+-/
 lemma admissibleImaginary_open_convex {ξ : Fin r → E} (x : Frame X.Ψ r) (hx : x ∈ X.dom) :
     IsOpen (admissibleImaginary X ξ x) ∧ Convex ℝ (admissibleImaginary X ξ x) := by
   obtain ⟨a, b, h⟩ := admissibleImaginary_eq_halfspaces X (ξ := ξ) x hx

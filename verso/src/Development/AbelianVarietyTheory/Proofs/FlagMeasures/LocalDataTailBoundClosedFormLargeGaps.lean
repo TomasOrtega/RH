@@ -19,6 +19,23 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.TypeAsm.TailTopGap
 
+/- English proof (translation)
+Introduce `hH Cg cb Cw cT CT C0 _ _`. Take `⟨CH, hCH, hmom⟩` from `GlobalTheory.T.majorantLength_twoSidedMoments_largeGap hH Cg cb Cw cT CT C0`. Use `⟨CH, hCH, fun C₁ => ⟨0, max 1000 (C₁ : ℝ), fun C' Cl _ hCl D large₂ _ hK hTr => ?_⟩⟩` and prove the remaining obligations. Establish `hZ : HypZ D large₂ C' Cl Cg cb Cw cT CT C0` using `hK.1`. Establish `h1000 : (1000 : ℝ) ≤ Cl` using `le_trans (le_max_left _ _) hCl`.
+
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hv, -, -, -, -, hClm, -⟩` from `hK.1.1`. Establish `hC₁m : C₁ ≤ D.R.m`. Establish `h : (C₁ : ℝ) ≤ (D.R.m : ℝ)` using `le_trans (le_max_right _ _) (le_trans hCl hClm)`. Conclude with `h` after adjusting the coercions. Establish `hrS : D.R.rS ≤ D.R.m`.
+
+Unfold `Formalism.BasicNotions.Ranks.rS`. Use linear arithmetic over natural numbers and integers. Establish `hm1 : 1 ≤ D.R.m` using `le_trans (by norm_num) D.R.two_le_m`. Establish `hq : C₁ * D.R.k * D.R.rS ≤ D.R.k * D.R.m ^ 3`. Establish `h2 : C₁ * D.R.rS ≤ D.R.m ^ 3`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hb : 0 < large₂.sc.b` using `Real.exp_pos _`. Establish `hH1 : 0 < large₂.sc.b ^ (CH * (D.R.m : ℝ))` using `Real.rpow_pos_of_pos hb _`. Establish `hTrpos : ∀ w, 0 < Tr D w`.
+
+Introduce `w`. Establish `hk : 0 ≤ Formalism.MainNotions.S.Bridge.kaS D ^ (2 * D.R.rS)` using `(even_two_mul _).pow_nonneg _`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `h0 : Tr D w * Formalism.MainNotions.S.Bridge.kaS D ^ (2 * D.R.rS) ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hneg hk`.
+
+Combine the linear relations using `[hTr w]`. Establish `hv0 : 0 < D.host.v` using `by linarith`. Introduce `τ u W hW A hA`. Establish `side : ∀ W' : LocW D.R.k D.R.rS, GoodW D τ u u 1 W' → ∀ A' : LocS W', GoodS D (lamD D τ) A' → TailBd W'.z W'.νS A'.Φ (C₁ * D.R.k * D.R.rS) (large₂.sc.b ^ (CH * (D.R.m : ℝ)))`. Introduce `W' hW' A' hA'`.
+
+Take `⟨hM, hI⟩` from `hmom D large₂ C' Cl h1000 hZ τ u W' hW' A' hA' _ hq`. Take `⟨hzW, -, -, -, -, hG, hWH, -, hN, hQ, -, -, hcont, -, -⟩` from `(GlobalTheory.T.amplitude_one_side_of_good_local_data D τ u u 1 W' (lamD D τ) A' hv0 one_pos (hTrpos u) (hTrpos u) hW' hA').1`. Establish `hnull : W'.νS {x | Matrix.of x ∉ GG D.R.k D.R.rS} = 0`. Establish `hf` using `Formalism.FourierDecayAlt.P.DDSmoothness.muSof_facts hWH hN`. Conclude with `ae_iff.mp (Formalism.FourierDecayAlt.P.DDSmoothness.ae_UH_of_quot hG.2.2.1 hf.1 hf.2 hQ)`.
+
+Conclude with `GlobalTheory.T.majorantLengthTailBound_of_moments D.R.k D.R.rS W'.z W'.νS A'.Φ _ _ hzW hH1 hnull hcont hM hI`. Conclude with `⟨side W hW A hA, GlobalTheory.T.majorantLengthTailBound_primed_of_unprimed D τ u 1 (lamD D τ) _ _ side W hW A hA⟩`.
+-/
 theorem tailP_of_gap : GlobalTheory.GapIn.Hyp → TailP := by
   intro hH Cg cb Cw cT CT C0 _ _
   obtain ⟨CH, hCH, hmom⟩ := GlobalTheory.T.majorantLength_twoSidedMoments_largeGap hH Cg cb Cw cT CT C0

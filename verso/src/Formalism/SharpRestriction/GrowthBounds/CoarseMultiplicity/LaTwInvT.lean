@@ -21,6 +21,9 @@ variable {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteVa
 
 abbrev vecH (TT : Finset (Fin n')) : TT × Bool → Bool := fun x => x.2
 
+/- English proof (translation)
+Establish `e` using `tensor_lattice_twist_eq hS m (vecH TT) (hhDegs TT aT bT) (fun x => x.1.val) ℓ hℓ`. Unfold `LatM`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+-/
 theorem HHL_iff (hS : HidaSetting p n' W Qq O Kf ι σ j w) (ℓ : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) (hℓ : IsUnit ℓ.det)
     (u : ↥(VHH (m := m) Kf TT aT bT)) :
     u ∈ HHL (O := O) ι σ TT aT bT (colSpan W ℓ) ↔
@@ -31,6 +34,11 @@ theorem HHL_iff (hS : HidaSetting p n' W Qq O Kf ι σ j w) (ℓ : Matrix (Fin (
   rw [← e]
   rfl
 
+/- English proof (translation)
+Use `hS.frac_O` as an intermediate fact. Establish `e1 : (fun x : TT × Bool => H0 O m (letterWt m (hhDegs TT aT bT x) (vecH TT x)) (LeAt p ι σ w x.1.val.val e)) = fun x => nablaLTw O Kf m (letterWt m (hhDegs TT aT bT x) (vecH TT x)) (la_tw ι σ x.1.val.val b * lb_D (m + 1) r (algebraMap O Kf w))`. Use function extensionality and compare the values at `x`. Rewrite using `[(edgeLat_of hS m r e b hb).2.1, H0_eq_twisted_nabla (la_indep (IsFractionRing.injective O Kf)) _ _ (letterWt_anti _ _ _) _ (by rw [Matrix.det_mul]; exact (la_tw_det _ _ _ _ hb.1).mul (lb_D_det _ _ _ (w_ne hS)))]`. Unfold `LatM`.
+
+Rewrite using `[← e1]`. Both sides reduce to the same expression.
+-/
 theorem HHLe_iff (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ) (e : Edge W Qq (m + 1))
     (b : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) (hb : IsEdgeBasis p r e b) (u : ↥(VHH (m := m) Kf TT aT bT)) :
     u ∈ HHLe p ι σ w TT aT bT e ↔
@@ -47,15 +55,30 @@ theorem HHLe_iff (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ) (e : Edge
   rw [← e1]
   rfl
 
+/- English proof (translation)
+Rewrite using `[la_tw_transpose, la_tw_inv _ _ hb]`.
+-/
 theorem la_tw_invT (s : ℕ) (b : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) (hb : IsUnit b.det) :
     la_tw ι σ s ((b⁻¹).transpose) = ((la_tw ι σ s b)⁻¹).transpose := by
   rw [la_tw_transpose, la_tw_inv _ _ hb]
 
+/- English proof (translation)
+Use extensionality with `a c`. Simplify using `only [la_tw, dE, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem la_tw_dE (s r : ℕ) : la_tw ι σ s (dE (m + 1) r ((p : ℕ) : Qq)) = dE (m + 1) r ((p : ℕ) : Kf) := by
   ext a c
   simp only [la_tw, dE, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.diagonal_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hω` using `w_ne hS`. Establish `hp : ((p : ℕ) : Kf) = (algebraMap O Kf w) ^ 2` using `by rw [← map_pow, hS.w_sq, map_natCast]`. Rewrite using `[la_tw_mul, la_tw_invT s b hb, la_tw_dE, Matrix.mul_inv_rev, Matrix.transpose_mul, mul_assoc]`. Use `congr 1`. Simplify using `only [dE, lb_D, Matrix.diagonal_mul_diagonal, Matrix.inv_diagonal, Matrix.diagonal_transpose]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Establish `hu : IsUnit (fun a : Fin (m + 1) => if a.val < r then (algebraMap O Kf w)⁻¹ else (1 : Kf))`. Rewrite using `[Pi.isUnit_iff]`. Introduce `a`.
+
+Use `split_ifs`. Conclude with `isUnit_iff_ne_zero.mpr (inv_ne_zero hω)`. Conclude with `isUnit_one`. Establish `hinv` using `congrFun (Ring.inverse_mul_cancel _ hu) a`. Rewrite `hinv` using `[Pi.mul_apply, Pi.one_apply]`.
+
+Rewrite using `[eq_inv_of_mul_eq_one_left hinv]`. Use `split_ifs with h`. Rewrite using `[inv_inv, hp]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+-/
 theorem dualM (hS : HidaSetting p n' W Qq O Kf ι σ j w) (s r : ℕ) (b : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq)
     (hb : IsUnit b.det) :
     la_tw ι σ s ((b⁻¹).transpose * dE (m + 1) r ((p : ℕ) : Qq)) * lb_D (m + 1) r (algebraMap O Kf w) =
@@ -85,6 +108,9 @@ variable (thK : ↥(Pol Kf (ι := TT × Bool) (m + 1) (hhDegs TT aT bT)) ≃ₗ[
 def XiH (c : Kf) : ↥(VHH (m := m) Kf TT aT bT) →ₗ[Kf] Module.Dual Kf ↥(VHH (m := m) Kf TT aT bT) :=
   TY (vec := vecH TT) (d := hhDegs TT aT bT) thK c
 
+/- English proof (translation)
+The claim follows from `TY_apply (vec := vecH TT) (d := hhDegs TT aT bT) thK c P Q`.
+-/
 theorem XiH_apply (c : Kf) (P Q : ↥(Pol Kf (ι := TT × Bool) (m + 1) (hhDegs TT aT bT))) :
     XiH thK c (thK Q) (thK P) = c * fockR (P : MvPolynomial ((TT × Bool) × Fin (m + 1)) Kf)
       (Q : MvPolynomial ((TT × Bool) × Fin (m + 1)) Kf) :=
@@ -93,6 +119,13 @@ theorem XiH_apply (c : Kf) (P Q : ↥(Pol Kf (ι := TT × Bool) (m + 1) (hhDegs 
 abbrev zK (Kf : Type) [Field Kf] (p κ : ℕ) (TT : Finset (Fin n')) (aT bT : Fin n' → ℕ) : Kf :=
   (p : Kf) ^ κ / (((∏ x : TT × Bool, (hhDegs TT aT bT x).factorial : ℕ) : ℕ) : Kf)
 
+/- English proof (translation)
+Take `⟨y1, hy1, rfl⟩` from `mem_scale.1 hy`. Take `⟨y0, hy0, rfl⟩` from `mem_scale.1 hy1`. Use `mem_scale.2 ⟨_, mem_scale.2 ⟨XiH thK (zK Kf p κ TT aT bT) y0, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Use `sandwich (vec := vecH TT) (d := hhDegs TT aT bT) thK hm hthK p κ hMD (fun x => la_tw ι σ x.1.val.val b * lb_D (m + 1) r (algebraMap O Kf w)) (fun x => by rw [Matrix.det_mul]; exact (la_tw_det _ _ _ _ hb.1).mul (lb_D_det _ _ _ (w_ne hS))) u y0 ((HHLe_iff hS r e b hb u).1 hu) ?_` and prove the remaining obligations.
+
+Establish `h1` using `(HHLe_iff hS r e.dual _ (dual_edgeBasis p r (pQ_ne hS) e b hb) y0).1 hy0`. Establish `e1 : (fun x : TT × Bool => la_tw ι σ x.1.val.val ((b⁻¹).transpose * dE (m + 1) r ((p : ℕ) : Qq)) * lb_D (m + 1) r (algebraMap O Kf w)) = fun x => ((la_tw ι σ x.1.val.val b * lb_D (m + 1) r (algebraMap O Kf w))⁻¹).transpose`. Use function extensionality and compare the values at `fun x => dualM hS x.1.val.val r b hb.1`. Rewrite `h1` using `[e1]`. Conclude with `h1`.
+
+Rewrite using `[map_smul, map_smul]`.
+-/
 theorem FD_edge (hS : HidaSetting p n' W Qq O Kf ι σ j w) (hm : 1 ≤ m)
     (hthK : ∀ P, ((thK P : ↥(VHH (m := m) Kf TT aT bT)) : MvPolynomial ((TT × Bool) × (Fin (m + 1) × Fin (m + 1))) Kf) =
       Th0 Kf m (vecH TT) (P : MvPolynomial ((TT × Bool) × Fin (m + 1)) Kf))
@@ -118,6 +151,11 @@ theorem FD_edge (hS : HidaSetting p n' W Qq O Kf ι σ j w) (hm : 1 ≤ m)
     exact h1
   · rw [map_smul, map_smul]
 
+/- English proof (translation)
+Take `⟨y0, hy0, rfl⟩` from `mem_scale.1 hy`. Use `mem_scale.2 ⟨XiH thK (zK Kf p κ TT aT bT) y0, ?_, by rw [map_smul]⟩` and prove the remaining obligations. Introduce `u hu`. Use `sandwich (vec := vecH TT) (d := hhDegs TT aT bT) thK hm hthK p κ hMD (fun x => la_tw ι σ x.1.val.val ℓ) (fun x => la_tw_det _ _ _ _ hℓ) u y0 ((HHL_iff hS ℓ hℓ u).1 hu) ?_` and prove the remaining obligations. Establish `hℓt : IsUnit ((ℓ⁻¹).transpose).det` using `Formalism.L2.G.Model.det_invT ℓ hℓ`.
+
+Establish `h1` using `(HHL_iff hS _ hℓt y0).1 hy0`. Establish `e1 : (fun x : TT × Bool => la_tw ι σ x.1.val.val ((ℓ⁻¹).transpose)) = fun x => ((la_tw ι σ x.1.val.val ℓ)⁻¹).transpose`. Use function extensionality and compare the values at `fun x => la_tw_invT x.1.val.val ℓ hℓ`. Rewrite `h1` using `[e1]`. Conclude with `h1`.
+-/
 theorem FD_HL (hS : HidaSetting p n' W Qq O Kf ι σ j w) (hm : 1 ≤ m)
     (hthK : ∀ P, ((thK P : ↥(VHH (m := m) Kf TT aT bT)) : MvPolynomial ((TT × Bool) × (Fin (m + 1) × Fin (m + 1))) Kf) =
       Th0 Kf m (vecH TT) (P : MvPolynomial ((TT × Bool) × Fin (m + 1)) Kf))

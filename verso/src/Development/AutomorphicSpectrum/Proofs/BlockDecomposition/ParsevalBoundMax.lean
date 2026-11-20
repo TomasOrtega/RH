@@ -14,6 +14,25 @@ open MeasureTheory Complex Ad3 Ad3.LR Ad3.LR.C
 
 namespace GlobalTheory.CompanionTheory.Parseval.Max
 
+/- English proof (translation)
+Establish `key : ∀ j : Fin 2, ∃ C : ℝ, ∀ (A : M22) (ξ : Fin 2 → ℝ), (1 + ‖A‖) ^ N * (|ξ j| ^ 2 * ‖fz Φ A ξ‖) ≤ C`. Introduce `j`. Take `⟨Ψ₁, h₁⟩` from `GlobalTheory.CompanionTheory.Parseval.Ibp.main Φ j`. Take `⟨Ψ₂, h₂⟩` from `GlobalTheory.CompanionTheory.Parseval.Ibp.main Ψ₁ j`. Take `⟨C, hC⟩` from `GlobalTheory.CompanionTheory.Parseval.fz_decay_in_A Ψ₂ N`.
+
+Use `⟨C, fun A ξ => ?_⟩` and prove the remaining obligations. Establish `e : ‖fz Ψ₂ A ξ‖ = (2 * Real.pi * |ξ j|) ^ 2 * ‖fz Φ A ξ‖`. Rewrite using `[h₂, h₁, norm_mul, norm_mul]`. Establish `: ‖-(2 * (Real.pi : ℂ) * Complex.I * (ξ j : ℂ))‖ = 2 * Real.pi * |ξ j|`. Simplify using `[abs_of_pos Real.pi_pos]`.
+
+Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hp : (1 : ℝ) ≤ (2 * Real.pi) ^ 2`. Use `Real.pi_gt_three` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hA : 0 ≤ (1 + ‖A‖) ^ N` using `by positivity`. Use `le_trans ?_ (hC A ξ)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ hA` and prove the remaining obligations. Rewrite using `[e, mul_pow]`. Establish `: 0 ≤ |ξ j| ^ 2 * ‖fz Φ A ξ‖` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Take `⟨C₀, h₀⟩` from `GlobalTheory.CompanionTheory.Parseval.fz_decay_in_A Φ N`. Take `⟨C₁, h₁⟩` from `key 0`. Take `⟨C₂, h₂⟩` from `key 1`. Use `⟨2 * (C₀ + C₁ + C₂) + 0, fun A ξ => ?_⟩` and prove the remaining obligations.
+
+Establish `hx : ‖ξ‖ ^ 2 ≤ |ξ 0| ^ 2 + |ξ 1| ^ 2`. Establish `hn : ‖ξ‖ ≤ max |ξ 0| |ξ 1|`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify using `using le_max_left _ _`.
+
+Simplify using `using le_max_right _ _`. Establish `h2 : ‖ξ‖ ^ 2 ≤ (max |ξ 0| |ξ 1|) ^ 2`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hn 2`. Use `h2.trans ?_` and prove the remaining obligations. Apply the tactic sequence `rcases max_cases |ξ 0| |ξ 1| with ⟨h, _⟩ | ⟨h, _⟩ <;> rw [h] <;> nlinarith [sq_nonneg |ξ 0|, sq_nonneg |ξ 1|]`.
+
+Establish `hsq : (1 + ‖ξ‖) ^ 2 ≤ 2 * (1 + |ξ 0| ^ 2 + |ξ 1| ^ 2)`. Use polynomial arithmetic with `[sq_nonneg (‖ξ‖ - 1)]`. Establish `hf : 0 ≤ ‖fz Φ A ξ‖` using `norm_nonneg _`. Establish `hA : 0 ≤ (1 + ‖A‖) ^ N` using `by positivity`. Establish `s` using `h₀ A ξ`.
+
+Establish `s1` using `h₁ A ξ`. Establish `s2` using `h₂ A ξ`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fz_decay2 (Φ : Sw) (N : ℕ) : ∃ C : ℝ, ∀ (A : M22) (ξ : Fin 2 → ℝ),
     (1 + ‖A‖) ^ N * ((1 + ‖ξ‖) ^ 2 * ‖fz Φ A ξ‖) ≤ C := by
   classical
@@ -65,6 +84,51 @@ theorem fz_decay2 (Φ : Sw) (N : ℕ) : ∃ C : ℝ, ∀ (A : M22) (ξ : Fin 2 �
           + (1 + ‖A‖) ^ N * (|ξ 1| ^ 2 * ‖fz Φ A ξ‖)) := by ring
     _ ≤ 2 * (C₀ + C₁ + C₂) + 0 := by linarith
 
+/- English proof (translation)
+Take `⟨C₁, hC₁⟩` from `fz_decay2 Φ N`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.CompanionTheory.Parseval.OneDim.wt_gau_bound`. Establish `hC₁0 : 0 ≤ C₁` using `le_trans (by positivity) (hC₁ 0 0)`. Use `set K : ℝ := max C₂ 0 with hK`. Establish `hK0 : 0 ≤ K` using `le_max_right _ _`.
+
+Use `⟨C₁ * (1 + 4 * K), fun ε hε _ h v hdet => ?_⟩` and prove the remaining obligations. Use `set D : ℝ := |(Matrix.of h).det| with hD`. Establish `hD0 : 0 < D` using `abs_pos.2 hdet`. Use `set S : ℝ := h 0 0 * h 0 1 + h 1 0 * h 1 1 with hSdef`. Use `set m : ℝ := h 0 1 ^ 2 + h 1 1 ^ 2 with hm`.
+
+Establish `hm0 : 0 < m`. Establish `: m ≠ 0`. Introduce `h0`. Establish `a1 : h 0 1 = 0` using `by nlinarith [sq_nonneg (h 0 1), sq_nonneg (h 1 1)]`. Establish `a2 : h 1 1 = 0` using `by nlinarith [sq_nonneg (h 0 1), sq_nonneg (h 1 1)]`.
+
+Apply `hdet` to reduce the goal to its premises. Simplify using `[Matrix.det_fin_two, a1, a2]`. Conclude with `lt_of_le_of_ne (by positivity) this.symm`. Use `set n : ℝ := Real.sqrt m with hn`. Establish `hn0 : 0 < n` using `Real.sqrt_pos.2 hm0`.
+
+Establish `hnn : n * n = m` using `Real.mul_self_sqrt hm0.le`. Use `set P : ℝ := (1 + ‖h‖) ^ N with hP`. Establish `hP0 : 0 < P` using `by positivity`. Use `set a : ℝ := D / n with ha`. Establish `ha0 : 0 < a` using `div_pos hD0 hn0`.
+
+Use `set l : ℝ := S / m with hl`. Establish `hg : ∀ ζ, ‖gz Φ h ζ‖ ≤ D⁻¹ * C₁ / P * ((1 + ‖dualF h ζ‖) ^ 2)⁻¹`. Introduce `ζ`. Rewrite using `[GlobalTheory.CompanionTheory.Parseval.gz_eq_fz Φ h ζ hdet, norm_mul, Complex.norm_real, Real.norm_of_nonneg (inv_nonneg.2 hD0.le)]`. Use `hC₁ h (dualF h ζ)` as an intermediate fact.
+
+Establish `hq : 0 < (1 + ‖dualF h ζ‖) ^ 2` using `by positivity`. Establish `h3 : ‖fz Φ h (dualF h ζ)‖ ≤ C₁ / P * ((1 + ‖dualF h ζ‖) ^ 2)⁻¹`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hP0, ← div_eq_mul_inv, le_div_iff₀ hq]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Use `set B : ℝ := D⁻¹ * C₁ / P with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`. Establish `hnormI : ∀ ζ, ‖(gau ε ζ : ℂ) * Ad3.psiR (ζ * v) * gz Φ h ζ‖ = gau ε ζ * ‖gz Φ h ζ‖`. Introduce `ζ`. Establish `: ‖Ad3.psiR (ζ * v)‖ = 1`.
+
+Unfold `Ad3.psiR`. Establish `: (-2 * (Real.pi : ℂ) * Complex.I * ((ζ * v : ℝ) : ℂ)) = ((-2 * Real.pi * (ζ * v) : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_exp_ofReal_mul_I]`. Rewrite using `[norm_mul, norm_mul, this, Complex.norm_real, Real.norm_of_nonneg (gau_nonneg ε ζ hε)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `b1 : ‖Ae Φ ε h v‖ ≤ B`. Rewrite using `[GlobalTheory.CompanionTheory.Parseval.GaussRep.Ae_eq_integral_gau Φ ε h v hε hdet]`. Establish `: ∀ ζ, ‖(gau ε ζ : ℂ) * Ad3.psiR (ζ * v) * gz Φ h ζ‖ ≤ gau ε ζ * B`. Introduce `ζ`. Rewrite using `[hnormI]`.
+
+Use `mul_le_mul_of_nonneg_left ((hg ζ).trans ?_) (gau_nonneg ε ζ hε)` and prove the remaining obligations. Establish `hi : ((1 + ‖dualF h ζ‖) ^ 2)⁻¹ ≤ 1`. Apply `inv_le_one_of_one_le₀` to reduce the goal to its premises. Establish `: 0 ≤ ‖dualF h ζ‖` using `norm_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `(norm_integral_le_of_norm_le ((gau_integrable ε hε).mul_const B) (Filter.Eventually.of_forall this)).trans ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const, gau_integral ε hε, one_mul]`. Establish `b2 : S ≠ 0 → ‖Ae Φ ε h v‖ ≤ 4 * K * B * (a / |l|)`. Introduce `hS`.
+
+Establish `hl0 : l ≠ 0` using `div_ne_zero hS hm0.ne'`. Establish `hwm : Measurable (wt a l)`. Unfold `wt`. Use `fun_prop`. Establish `hwi : Integrable (fun ζ => wt a l ζ * gau ε ζ)`.
+
+Use `(gau_integrable ε hε).bdd_mul (c := 1) hwm.aestronglyMeasurable (Filter.Eventually.of_forall fun ζ => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (wt_nonneg _ _ _)]`. Apply `inv_le_one_of_one_le₀` to reduce the goal to its premises. Establish `: 0 ≤ |ζ - l| / a` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite using `[GlobalTheory.CompanionTheory.Parseval.GaussRep.Ae_eq_integral_gau Φ ε h v hε hdet]`. Establish `: ∀ ζ, ‖(gau ε ζ : ℂ) * Ad3.psiR (ζ * v) * gz Φ h ζ‖ ≤ (4 * B) * (wt a l ζ * gau ε ζ)`. Introduce `ζ`. Rewrite using `[hnormI]`. Establish `g1` using `GlobalTheory.CompanionTheory.Parseval.dualF_weight_le h ζ hdet`.
+
+Establish `g2 : ‖gz Φ h ζ‖ ≤ B * (4 * wt a l ζ)` using `(hg ζ).trans (mul_le_mul_of_nonneg_left g1 hB0)`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_integral_le_of_norm_le (hwi.const_mul (4 * B)) (Filter.Eventually.of_forall this)).trans ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Establish `o` using `hC₂ ε a l hε ha0 hl0`.
+
+Establish `o2 : ∫ ζ, wt a l ζ * gau ε ζ ≤ K * (a / |l|)` using `o.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : B = C₁ / P * D⁻¹` using `by rw [hB]; ring`. Establish `goal2 : C₁ * (1 + 4 * K) * ((max D (|S| / n))⁻¹ / P) = (C₁ / P) * (1 + 4 * K) * (max D (|S| / n))⁻¹`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[goal2]`. Establish `hQ : 0 ≤ C₁ / P` using `by positivity`. Break down `le_total (|S| / n) D with hle | hle` into its components or cases. Rewrite using `[max_eq_left hle]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `: 0 ≤ C₁ / P * D⁻¹ * (4 * K)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[max_eq_right hle]`. Establish `hSpos : 0 < |S| / n` using `lt_of_lt_of_le hD0 hle`. Establish `hS : S ≠ 0`.
+
+Introduce `h0`. Rewrite `hSpos` using `[h0, abs_zero, zero_div]`. Conclude with `lt_irrefl _ hSpos`. Establish `hS' : |S| ≠ 0` using `abs_ne_zero.2 hS`. Establish `hal : a / |l| = D * (n / |S|)`.
+
+Rewrite using `[ha, hl, abs_div, abs_of_pos hm0, ← hnn]`. Clear the denominators using the available nonvanishing facts. Establish `e2 : 4 * K * B * (a / |l|) = 4 * K * (C₁ / P) * (n / |S|)`. Rewrite using `[hal, hB]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[inv_div]`. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ C₁ / P * (n / |S|)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem parseval_bound_max (Φ : Sw) (N : ℕ) : ∃ C : ℝ, ∀ ε : ℝ, 0 < ε → ε ≤ 1 → ∀ (h : M22) (v : ℝ),
     (Matrix.of h).det ≠ 0 →
     ‖Ae Φ ε h v‖ ≤ C * ((max |(Matrix.of h).det|

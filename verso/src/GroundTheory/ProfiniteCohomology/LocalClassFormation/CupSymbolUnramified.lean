@@ -16,6 +16,9 @@ section Characters
 
 variable {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.GroupCoh.h2IntAddEquiv G).apply_symm_apply χ`.
+-/
 theorem h2IntAddEquiv_charClass (χ : Additive G →+ AddCircle (1 : ℚ)) :
     GroundTheory.GroupCoh.h2IntAddEquiv G (charClass χ) = χ :=
   (GroundTheory.GroupCoh.h2IntAddEquiv G).apply_symm_apply χ
@@ -28,6 +31,11 @@ variable (K L : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarch
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L] [IsUnramified K L]
 
+/- English proof (translation)
+Rewrite using `[unramifiedInv_apply, cupCharClass_apply_charCocycle]`. Establish `hv : (h2Valuation K L).hom ((H2π (galUnitsZ K L)).hom ⟨fun p => charCocycle χ p • (a : galUnitsZ K L), smul_mem_cocycles₂ ⟨charCocycle χ, charCocycle_mem χ⟩ a⟩) = ord ((Additive.toMul (a : Additive Lˣ) : Lˣ) : L) • charClass χ`. Rewrite using `[charClass_eq_H2π, ← map_zsmul, h2Valuation]`. Use `erw [groupCohomology.H2π_comp_map_apply]`. Use `congr 1`.
+
+Use `Subtype.ext (funext fun p => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(unitsValuation K L).hom (charCocycle χ p • (a : galUnitsZ K L)) = ord ((Additive.toMul (a : Additive Lˣ) : Lˣ) : L) • charCocycle χ p`. Rewrite using `[map_zsmul, unitsValuation_hom_apply, smul_eq_mul, smul_eq_mul, mul_comm]`. Rewrite using `[hv, map_zsmul, h2IntAddEquiv_charClass]`. Both sides reduce to the same expression.
+-/
 theorem unramifiedInv_cupCharClass (χ : Additive Gal(L/K) →+ AddCircle (1 : ℚ))
     (a : (galUnitsZ K L).ρ.invariants) :
     unramifiedInv K L ((cupCharClass (galUnitsZ K L) χ).hom a) =
@@ -78,6 +86,11 @@ noncomputable def charRestrict (E : IntermediateField F Ω) [Normal F E]
     rw [← map_add]
     exact congrArg QZ.toAddCircle (neg_add_eq_zero.1 e).symm
 
+/- English proof (translation)
+Establish `h : g⁻¹ * (AlgEquiv.restrictNormalHom E g).liftNormal Ω ∈ E.fixingSubgroup`. Rewrite using `[← IntermediateField.restrictNormalHom_ker, MonoidHom.mem_ker, map_mul, map_inv]`. Express the relevant statement in the definitionally equal form `(AlgEquiv.restrictNormalHom E g)⁻¹ * ((AlgEquiv.restrictNormalHom E g).liftNormal Ω).restrictNormal E = 1`. Rewrite using `[AlgEquiv.restrict_liftNormal, inv_mul_cancel]`. Establish `e` using `hE _ h`.
+
+Rewrite `e` using `[ofMul_mul, map_add, ofMul_inv, map_neg, neg_add_eq_zero]`. Express the relevant statement in the definitionally equal form `QZ.toAddCircle (ψ (Additive.ofMul ((AlgEquiv.restrictNormalHom E g).liftNormal Ω))) = _`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+-/
 theorem charRestrict_apply (E : IntermediateField F Ω) [Normal F E]
     (ψ : Additive Gal(Ω/F) →ₜ+ QZ) (hE : ∀ g ∈ E.fixingSubgroup, ψ (Additive.ofMul g) = 0)
     (g : Gal(Ω/F)) :
@@ -101,6 +114,15 @@ variable {F Ω : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarc
   [Field Ω] [Algebra F Ω] [IsSepClosure F Ω]
   [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension F Ω]
 
+/- English proof (translation)
+Establish `hζ` using `isPrimitiveRoot_unramifiedRoot F Ω n`. Establish `hpow : unramifiedRoot F Ω n ^ (Nat.card 𝓀[F] ^ (n : ℕ) - 1) = 1` using `hζ.pow_eq_one`. Establish `hmem : unramifiedRoot F Ω n ∈ unramifiedRoots F Ω` using `⟨n, n.ne_zero, hpow⟩`. Establish `h1 : σ (unramifiedRoot F Ω n) = unramifiedRoot F Ω n ^ Nat.card 𝓀[F]`. Use `(unramifiedDegree_eq_ofAdd_natCast_iff σ 1).1 (by rw [Nat.cast_one]; exact hσ) _ hmem` as an intermediate fact.
+
+Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Apply `AlgEquiv.coe_toAlgHom_injective` to reduce the goal to its premises. Use `IntermediateField.algHom_ext_of_eq_adjoin F (show unramifiedLevel F Ω n = IntermediateField.adjoin F {unramifiedRoot F Ω n} from unramifiedLevel_eq F Ω n) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`.
+
+Substitute `hx` using the available equality. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hζE : (⟨unramifiedRoot F Ω n, mem_adjoin_simple_self F _⟩ : unramifiedLevel F Ω n) ^ (Nat.card 𝓀[F] ^ (n : ℕ) - 1) = 1` using `Subtype.ext hpow`. Establish `h2` using `frobenius_apply_of_pow_eq_one (K := F) (L := unramifiedLevel F Ω n) (IsUnramified.ramificationIndex_eq_one (K := F) (L := unramifiedLevel F Ω n)) (natCast_card_pow_sub_one_ne_zero (K := F) n.ne_zero) hζE`. Express the relevant statement in the definitionally equal form `((AlgEquiv.restrictNormal σ (unramifiedLevel F Ω n)) ⟨_, _⟩ : Ω) = ((frob F (unramifiedLevel F Ω n)) ⟨_, _⟩ : Ω)`.
+
+Rewrite using `[show ((frob F (unramifiedLevel F Ω n)) ⟨unramifiedRoot F Ω n, mem_adjoin_simple_self F _⟩ : Ω) = unramifiedRoot F Ω n ^ Nat.card 𝓀[F] from congrArg Subtype.val h2]`. Rewrite using `[← h1]`. Conclude with `AlgEquiv.restrictNormal_commutes σ (unramifiedLevel F Ω n) _`.
+-/
 theorem restrictNormalHom_unramifiedLevel_eq_frob {σ : Gal(Ω/F)}
     (hσ : unramifiedDegree F Ω σ = Multiplicative.ofAdd 1) (n : ℕ+) :
     AlgEquiv.restrictNormalHom (unramifiedLevel F Ω n) σ = frob F (unramifiedLevel F Ω n) := by
@@ -138,6 +160,15 @@ noncomputable def charIndex : ℕ+ :=
 
 omit [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension F Ω] in
 
+/- English proof (translation)
+Introduce `g hg`. Use `set n := charIndex ψ`. Establish `hζ` using `isPrimitiveRoot_unramifiedRoot F Ω n`. Establish `hfix : g (unramifiedRoot F Ω n) = unramifiedRoot F Ω n` using `hg ⟨_, mem_adjoin_simple_self F (unramifiedRoot F Ω n)⟩`. Establish `hc : ((0 : ℕ) : ZMod n) = unramifiedCoord F g n` using `(natCast_eq_unramifiedCoord_iff hζ g 0).2 (by rw [pow_zero, pow_one]; exact hfix)`.
+
+Establish `hp : proj n (Multiplicative.toAdd (unramifiedDegree F Ω g)) = 0`. Rewrite using `[proj_toAdd_unramifiedDegree, ← hc, Nat.cast_zero]`. Take `⟨z, hz⟩` from `mem_multiples.1 (proj_eq_zero_iff.1 hp)`. Take `⟨h, hh⟩` from `unramifiedDegree_surjective (K := F) (Ω := Ω) (Multiplicative.ofAdd z)`. Establish `hk : (h ^ (n : ℕ))⁻¹ * g ∈ (unramifiedDegree F Ω).ker`.
+
+Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, map_pow, hh]`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_mul, toAdd_inv, toAdd_pow, toAdd_ofAdd, hz, toAdd_one, neg_add_cancel]`. Establish `hn : h ^ (n : ℕ) ∈ charKer (charAdd ψ)` using `Subgroup.pow_index_mem _ h`. Establish `e1` using `hψ _ hk`.
+
+Establish `e2 : ψ (Additive.ofMul (h ^ (n : ℕ))) = 0`. Use `mem_charKer.1 hn` as an intermediate fact. Conclude with `QZ.toAddCircle.injective (this.trans (map_zero _).symm)`. Establish `: g = h ^ (n : ℕ) * ((h ^ (n : ℕ))⁻¹ * g)` using `by group`. Rewrite using `[this, ofMul_mul, map_add, e1, e2, add_zero]`.
+-/
 theorem charAdd_eq_zero_of_mem_fixingSubgroup
     (hψ : ∀ g ∈ (unramifiedDegree F Ω).ker, ψ (Additive.ofMul g) = 0) :
     ∀ g ∈ (unramifiedLevel F Ω (charIndex ψ)).fixingSubgroup, ψ (Additive.ofMul g) = 0 := by
@@ -175,6 +206,11 @@ variable {F Ω : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarc
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [ValuativeRel Ω]
   [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension F Ω] in
 
+/- English proof (translation)
+Use `⟨HomologicalComplex.cyclesMap (unitsInflationCochains E) 2 ((isoCocycles₂ _).inv c), ConcreteCategory.congr_hom (HomologicalComplex.homologyπ_naturality (unitsInflationCochains E) 2) _, fun v => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun φ => φ.hom ((isoCocycles₂ _).inv c)) (HomologicalComplex.cyclesMap_i (unitsInflationCochains E) 2)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at e`. Express the relevant statement in the definitionally equal form `((cochainsComplexι (galUnits.{0} F Ω)).f 2).hom (((cochainsComplex (galUnits.{0} F Ω)).iCycles 2).hom _) v = _`. Rewrite using `[e, unitsInflationCochains_f_hom_apply, isoCocycles₂_inv_comp_iCocycles_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_cocycle_brauerInflation (E : IntermediateField F Ω) [FiniteDimensional F E] [Normal F E]
     (c : cocycles₂ (galUnits.{0} F E)) :
     ∃ z : cocycles (galUnits.{0} F Ω) 2,
@@ -193,6 +229,19 @@ theorem exists_cocycle_brauerInflation (E : IntermediateField F Ω) [FiniteDimen
   rw [e, unitsInflationCochains_f_hom_apply, isoCocycles₂_inv_comp_iCocycles_apply]
   rfl
 
+/- English proof (translation)
+Establish `hE` using `charAdd_eq_zero_of_mem_fixingSubgroup ψ hψ`. Set `E` to `unramifiedLevel F Ω (charIndex ψ)`. Set `ψE` to `charRestrict E ψ hE`. Set `a` to `unitsInvariant F E x`. Set `w : cocycles₂ (galUnitsZ F E)` to `⟨fun p => charCocycle ψE p • (a : galUnitsZ F E), smul_mem_cocycles₂ ⟨charCocycle ψE, charCocycle_mem ψE⟩ a⟩`.
+
+Set `c` to `(cocycles₂IntRepAddEquiv (galUnitsHom F E)).symm w`. Take `⟨z, hz, hzc⟩` from `exists_cocycle_brauerInflation E c`. Take `⟨w', hw', hwc'⟩` from `exists_cocycle_cupCharClassProf (galUnitsZ F Ω) ψ (unitsInvariant F Ω x)`. Establish `hk : ∀ v : Fin 2 → Gal(Ω/F), charCocycle ψE (AlgEquiv.restrictNormalHom E (v 0), AlgEquiv.restrictNormalHom E (v 1)) = charCocycle (charAdd ψ) (v 0, v 1)` using `fun v => by`. Simplify using `only [charCocycle, ψE, charRestrict_apply]`.
+
+Establish `ha : (unitsRestrictHom E).hom (a : galUnitsZ F E) = (unitsInvariant F Ω x : galUnitsZ F Ω)`. Both sides reduce to the same expression. Establish `hbr : cohomologyULiftIntAddEquiv (galUnits.{0} F Ω) 2 (cohomologyπ _ 2 z) = galCupClass F Ω ψ x`. Rewrite using `[galCupClass, ← hw']`. Use `cohomologyULiftIntAddEquiv_cohomologyπ (galUnits.{0} F Ω) z w' (funext fun v => ?_)` and prove the remaining obligations.
+
+Use `(hwc' v).trans ?_` and prove the remaining obligations. Rewrite using `[hzc]`. Express the relevant statement in the definitionally equal form `_ = (unitsRestrictHom E).hom (charCocycle ψE (AlgEquiv.restrictNormalHom E (v 0), AlgEquiv.restrictNormalHom E (v 1)) • (a : galUnitsZ F E))`. Rewrite using `[hk, map_zsmul, ha]`. Establish `h1 : h2GalUnitsAddEquiv F E ((H2π _).hom c) = (cupCharClass (galUnitsZ F E) ψE).hom a`.
+
+Rewrite using `[h2GalUnitsAddEquiv_H2_class, cupCharClass_apply_charCocycle]`. Both sides reduce to the same expression. Establish `hord : ord ((Additive.toMul (a : Additive Eˣ) : Eˣ) : E) = ord (x : F)`. Express the relevant statement in the definitionally equal form `ord (algebraMap F E x) = _`. Rewrite using `[ord_algebraMap, IsUnramified.ramificationIndex_eq_one (K := F) (L := E), Nat.cast_one, one_mul]`.
+
+Rewrite using `[← hbr, brauerInvZ_cohomologyULiftIntAddEquiv, ← hz, brauerInv_brauerInflation, unramifiedLevelInv_apply, h1, unramifiedInv_cupCharClass, hord, ← restrictNormalHom_unramifiedLevel_eq_frob hσ, charRestrict_apply]`. Express the relevant statement in the definitionally equal form `QZ.toAddCircle.symm (ord (x : F) • QZ.toAddCircle (ψ (Additive.ofMul σ))) = _`. Rewrite using `[← map_zsmul, AddEquiv.symm_apply_apply]`.
+-/
 theorem brauerInvZ_galCupClass_of_unramified (ψ : Additive Gal(Ω/F) →ₜ+ QZ)
     (hψ : ∀ g ∈ (unramifiedDegree F Ω).ker, ψ (Additive.ofMul g) = 0) {σ : Gal(Ω/F)}
     (hσ : unramifiedDegree F Ω σ = Multiplicative.ofAdd 1) (x : Fˣ) :

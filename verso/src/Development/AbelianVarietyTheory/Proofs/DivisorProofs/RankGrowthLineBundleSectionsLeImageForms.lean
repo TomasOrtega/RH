@@ -51,16 +51,27 @@ def ratioSub (ev : V →ₗ[K] Ω) : Subfield Ω where
       rw [ha, inv_zero, zero_mul]; exact zero_mem _
     · exact ⟨e, a * h, p, mul_ne_zero ha n, by rw [← mul_assoc, inv_mul_cancel₀ ha, one_mul]; exact m⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 1, by rw [pow_zero]; exact Submodule.mem_one.2 ⟨1, map_one _⟩, one_ne_zero, by rw [mul_one, pow_zero]; exact Submodule.mem_one.2 ⟨c, rfl⟩⟩`.
+-/
 theorem algebraMap_mem_ratioSub (ev : V →ₗ[K] Ω) (c : K) : algebraMap K Ω c ∈ ratioSub ev :=
   ⟨0, 1, by rw [pow_zero]; exact Submodule.mem_one.2 ⟨1, map_one _⟩, one_ne_zero,
     by rw [mul_one, pow_zero]; exact Submodule.mem_one.2 ⟨c, rfl⟩⟩
 
+/- English proof (translation)
+Distinguish the cases in `hw : ev w = 0`. Rewrite using `[hw, div_zero]`. Conclude with `zero_mem _`. Use `⟨1, ev w, by rw [pow_one]; exact LinearMap.mem_range_self ev w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_cancel₀ _ hw, pow_one]`.
+
+Conclude with `LinearMap.mem_range_self ev v`.
+-/
 theorem div_mem_ratioSub (ev : V →ₗ[K] Ω) (v w : V) : ev v / ev w ∈ ratioSub ev := by
   by_cases hw : ev w = 0
   · rw [hw, div_zero]; exact zero_mem _
   · refine ⟨1, ev w, by rw [pow_one]; exact LinearMap.mem_range_self ev w, hw, ?_⟩
     rw [div_mul_cancel₀ _ hw, pow_one]; exact LinearMap.mem_range_self ev v
 
+/- English proof (translation)
+Take `⟨e, h, m, n, p⟩` from `ht`. Use `⟨e, h, m, n, ?_⟩` and prove the remaining obligations. Establish `: t * h = w ^ τ * (t / w ^ τ * h)` using `by field_simp`. Rewrite using `[this, pow_add]`. Conclude with `Submodule.mul_mem_mul (Submodule.pow_mem_pow _ hw τ) p`.
+-/
 theorem isRatio_of_mem {ev : V →ₗ[K] Ω} {τ : ℕ} {t w : Ω} (hw : w ∈ LinearMap.range ev) (hw0 : w ≠ 0)
     (ht : t / w ^ τ ∈ ratioSub ev) : DegCmp.IsRatio ev τ t := by
   obtain ⟨e, h, m, n, p⟩ := ht
@@ -75,6 +86,13 @@ section Integral
 
 variable {K V Ω : Type} [Field K] [AddCommGroup V] [Module K V] [Field Ω] [Algebra K Ω]
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[eval₂_C, RingHom.comp_apply, ← Polynomial.algebraMap_apply]`. Conclude with `Subalgebra.algebraMap_mem _ a`. Consider the case `add p q hp hq => rw [eval₂_add]`.
+
+Conclude with `add_mem hp hq`. Consider the case `mul_X p i hp`. Rewrite using `[eval₂_mul, eval₂_X]`. Use `mul_mem hp ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Conclude with `Algebra.subset_adjoin ⟨v i, rfl⟩`.
+-/
 theorem eval₂_mem_coneAlg (ev : V →ₗ[K] Ω) {r : ℕ} (v : Fin r → V) (g : MvPolynomial (Fin r) K) :
     eval₂ (Polynomial.C.comp (algebraMap K Ω)) (fun i => Polynomial.C (ev (v i)) * Polynomial.X) g ∈
       DegCmp.coneAlg ev := by
@@ -89,6 +107,9 @@ theorem eval₂_mem_coneAlg (ev : V →ₗ[K] Ω) {r : ℕ} (v : Fin r → V) (g
     rw [mul_comm]
     exact Algebra.subset_adjoin ⟨v i, rfl⟩
 
+/- English proof (translation)
+Set `c' : Fin n → DegCmp.coneAlg ev` to `fun k => ⟨_, eval₂_mem_coneAlg ev v (c k)⟩`. Use `⟨Polynomial.X ^ n + ∑ k : Fin n, Polynomial.C (c' k) * Polynomial.X ^ (k : ℕ), Polynomial.monic_X_pow_add (Polynomial.degree_sum_fin_lt c'), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm (Polynomial.X ^ τ)]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_finset_sum, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow]`. Conclude with `h`.
+-/
 theorem isIntDeg_of_eq {ev : V →ₗ[K] Ω} {r : ℕ} (v : Fin r → V) {τ : ℕ} {t : Ω} {n : ℕ}
     (c : Fin n → MvPolynomial (Fin r) K)
     (h : (Polynomial.C t * Polynomial.X ^ τ) ^ n + ∑ k, eval₂ (Polynomial.C.comp (algebraMap K Ω))
@@ -106,10 +127,16 @@ end Integral
 
 variable {k : Type} [Field k] (S : LinSys k)
 
+/- English proof (translation)
+Rewrite using `[LinSys.comb, Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, map_zero, zero_smul]) (fun h => (h (Finset.mem_univ i)).elim), Pi.single_eq_same, map_one, one_smul]`.
+-/
 theorem comb_single (i : Fin S.N) : S.comb (Pi.single i 1) = S.b i := by
   rw [LinSys.comb, Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, map_zero, zero_smul])
     (fun h => (h (Finset.mem_univ i)).elim), Pi.single_eq_same, map_one, one_smul]
 
+/- English proof (translation)
+Use `zglobal_ext fun i => ?_` and prove the remaining obligations. Rewrite using `[zfun_zero, ← basicOpen_eq_bot_iff, basicOpen_zfun, eq_bot_iff]`. Introduce `y hy`. Conclude with `(h ((hη.mem_open_set_iff (nonzeroLocus s).isOpen).2 ⟨y, trivial, hy.2⟩)).elim`.
+-/
 theorem sec_eq_zero_of_generic [IsReduced S.Y] {η : S.Y} (hη : IsGenericPoint η Set.univ) {m : ℤ}
     (s : (lbZPow S.L m).Sec) (h : η ∉ nonzeroLocus s) : s = 0 := by
   refine zglobal_ext fun i => ?_
@@ -117,12 +144,18 @@ theorem sec_eq_zero_of_generic [IsReduced S.Y] {η : S.Y} (hη : IsGenericPoint 
   intro y hy
   exact (h ((hη.mem_open_set_iff (nonzeroLocus s).isOpen).2 ⟨y, trivial, hy.2⟩)).elim
 
+/- English proof (translation)
+The claim follows from `limsup_le_limsup (Eventually.of_forall fun τ => by simp only gcongr exact h τ)`.
+-/
 theorem growth_mono (D : ℕ) {r r' : ℕ → ℕ∞} (h : ∀ τ, r τ ≤ r' τ) : growth D r ≤ growth D r' :=
   limsup_le_limsup (Eventually.of_forall fun τ => by
     simp only
     gcongr
     exact h τ)
 
+/- English proof (translation)
+Distinguish the cases in `h : Module.Finite R M`. Rewrite using `[← Module.finrank_eq_rank]`. Simplify using the standard rewrite rules. Rewrite using `[Module.finrank_of_not_finite h]`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_le_toENat (R M : Type) [Field R] [AddCommGroup M] [Module R M] :
     (Module.finrank R M : ℕ∞) ≤ Cardinal.toENat (Module.rank R M) := by
   by_cases h : Module.Finite R M
@@ -148,6 +181,25 @@ def powValLin {Ω : Type} [Field Ω] [Algebra k Ω] (x : S.Pt Ω) (m : ℕ) :
         ((valR_res x.1 le_top (S.le_chartAt x.1) _).trans ((S.valR_algebraMap x.1 c).trans
           (congrFun (congrArg DFunLike.coe (LinSys.baseHom_ptOver x)) c)))) }
 
+/- English proof (translation)
+Introduce `k _ _ S hS hb hbir`. Take `⟨η, hη, hrat⟩` from `hbir`. Establish `: IsIntegral S.Y` using `HeightExists.isIntegral hS`. Use `letI : Algebra k (S.Y.residueField η) := (S.baseHom (resPt η)).toAlgebra`. Set `x : S.Pt (S.Y.residueField η)` to `⟨resPt η, S.comp_str _⟩`.
+
+Establish `hx : IsGenericPoint (ptOf x.1) Set.univ` using `by rw [ptOf_resPt]; exact hη`. Set `b` to `Pi.basisFun k (Fin S.N)`. Set `ev` to `b.constr k (S.coords (resPt η))`. Establish `hev : ∀ j, ev (b j) = S.coords (resPt η) j` using `fun j => b.constr_basis k _ j`. Establish `hI : S.imageIdeal = imageIdeal ev b`.
+
+Rewrite using `[imageIdeal_eq_coneIdeal_of_generic k _ S x hx 1 (S.coords (resPt η)) one_ne_zero (one_smul _ _).symm, CompHt.imageIdeal]`. Conclude with `congrArg _ (funext fun j => (hev j).symm)`. Establish `hR : (fun m : ℕ => (Module.finrank k (quotPiece S.imageIdeal (m : ℤ)) : ℕ∞)) = fun m => DegCmp.hilb ev (1 * m)`. Use function extensionality and compare the values at `m`. Rewrite using `[one_mul, hI, DegCmp.hilb_eq_finrank_quotPiece k _ _ ev S.N b m]`.
+
+Rewrite using `[hR]`. Use `letI (m : ℕ) : Module k (lbPow S.L m).Sec := Module.compHom _ (algebraMap k Γ(S.Y, ⊤))`. Use `haveI (m : ℕ) : IsScalarTower k Γ(S.Y, ⊤) (lbPow S.L m).Sec := IsScalarTower.of_compHom _ _ _`. Establish `hinj : ∀ m, Function.Injective (powValLin S x m)` using `fun m => by`. Use `(injective_iff_map_eq_zero _).2 fun s hs => sec_eq_zero_of_generic S hη (m := (m : ℤ)) s fun hm => ?_` and prove the remaining obligations.
+
+Rewrite `hm` using `[← ptOf_resPt η]`. Conclude with `(S.powVal_ne_zero_iff (resPt η) s).2 hm hs`. Use `le_trans (growth_mono S.D fun m => ?_) (ConeDeg.growth_rank_le ev S.D 1 le_rfl (fun m => LinearMap.range (powValLin S x m)) ?_)` and prove the remaining obligations. Rewrite using `[rank_range_of_injective _ (hinj m), lineBundleGlobalSectionsDim_eq_finrank]`. Conclude with `finrank_le_toENat _ _`.
+
+Introduce `m t ht`. Take `⟨s, rfl⟩` from `ht`. Rewrite using `[one_mul]`. Take `⟨j, hj⟩` from `Function.ne_iff.1 (hb.coords_ne_zero (resPt η))`. Establish `hyj : S.coords (resPt η) j ≠ 0` using `hj`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨n, c, hc⟩` from `isIntegral_coneRing_of_forall_valuationSubring k (S.Y.residueField η) (algebraMap k _) S.N m (S.coords (resPt η)) (powValLin S x m s) fun V hV => by`. Take `⟨i, hi, hV'⟩` from `LinSys.exists_ratio_mem_of_point S hS S.N m (fun i => Pi.single i 1) s (fun y => by`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hb.ge (Set.mem_univ y))`. Conclude with `⟨i, by rw [comb_single]; exact hi⟩) (resPt η) V hV`.
+
+Establish `e : S.val (resPt η) (S.comb (Pi.single i 1)) = S.coords (resPt η) i` using `by rw [comb_single]; rfl`. Rewrite `hi`, `hV'` using `[e]`. Conclude with `⟨i, hi, hV'⟩`. Conclude with `isIntDeg_of_eq b c (by simpa only [hev] using hc)`. Use `isRatio_of_mem ⟨b j, hev j⟩ hyj ?_` and prove the remaining obligations.
+
+Establish `hle : S.ratioField (resPt η) ≤ ratioSub ev` using `Subfield.closure_le.2 (Set.union_subset (by rintro _ ⟨c, rfl⟩; exact algebraMap_mem_ratioSub ev c) (by rintro _ ⟨i, i', rfl⟩; rw [← hev i, ← hev i']; exact div_mem_ratioSub ev _ _))`. Conclude with `hle (hrat ▸ Subfield.mem_top _)`.
+-/
 theorem rankGrowth_lineBundleSections_le_image_forms : ∀ (k : Type) [Field k] [CharZero k] (S : LinSys k), S.IsVariety → S.BasePointFree →
     S.Birational → growth S.D (fun m => (lbH0 k (lbPow S.L m) : ℕ∞)) ≤
       growth S.D (fun m => (Module.finrank k (quotPiece S.imageIdeal (m : ℤ)) : ℕ∞)) := by

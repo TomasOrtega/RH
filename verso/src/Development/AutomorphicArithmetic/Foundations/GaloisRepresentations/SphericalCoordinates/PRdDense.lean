@@ -8,6 +8,11 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Take `⟨t, ht0, htc, ht⟩` from `DenEnd.exists_coprime_nsmul_mem D z`. Take `⟨x, e, he, hx⟩` from `exists_inAf_add_nsmul_of_mem_laHat p D (t * N) (Nat.mul_pos ht0 hN) (Nat.Coprime.mul_left htc hNp) (t • z) ht`. Establish `ht' : (t : ℚ) ≠ 0` using `by exact_mod_cast ht0.ne'`. Use `⟨(t : ℚ)⁻¹ • ((1 : ℚ) ⊗ₜ[ℤ] x), e, he, ?_⟩` and prove the remaining obligations. Establish `h1 : t • ((1 : AfP p) ⊗ₜ[ℚ] ((t : ℚ)⁻¹ • ((1 : ℚ) ⊗ₜ[ℤ] x))) = inAf D x`.
+
+Rewrite using `[inAf, ← Nat.cast_smul_eq_nsmul ℚ, ← TensorProduct.tmul_smul, smul_smul, mul_inv_cancel₀ ht', one_smul]`. Establish `h2 : t • z = t • ((1 : AfP p) ⊗ₜ[ℚ] ((t : ℚ)⁻¹ • ((1 : ℚ) ⊗ₜ[ℤ] x)) + N • e)`. Rewrite using `[hx, smul_add, h1, smul_smul]`. Rewrite `h2` using `[← Nat.cast_smul_eq_nsmul ℚ t, ← Nat.cast_smul_eq_nsmul ℚ t]`. Conclude with `smul_right_injective _ ht' h2`.
+-/
 private theorem powerSeries_expansion_image_dense_with_denominator {p : ℕ} [Fact p.Prime] (D : Datum p) (N : ℕ) (hN : 0 < N) (hNp : N.Coprime p)
     (z : AfP p ⊗[ℚ] VQ D) : ∃ (w : VQ D) (e : AfP p ⊗[ℚ] VQ D), e ∈ LaHat D ∧
       z = (1 : AfP p) ⊗ₜ[ℚ] w + N • e := by
@@ -23,6 +28,21 @@ private theorem powerSeries_expansion_image_dense_with_denominator {p : ℕ} [Fa
   rw [← Nat.cast_smul_eq_nsmul ℚ t, ← Nat.cast_smul_eq_nsmul ℚ t] at h2
   exact smul_right_injective _ ht' h2
 
+/- English proof (translation)
+Introduce `p _ D G L x h₁ n hn z`. Set `T : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)` to `L.actG h₁⁻¹ * actOn L.rep (AfP p) (x : AfP p ⊗[ℚ] G.C)`. Set `S : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)` to `actOn L.rep (AfP p) ((x⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C) * L.actG h₁`. Establish `hTS : T * S = 1`. Establish `e1 : actOn L.rep (AfP p) (x : AfP p ⊗[ℚ] G.C) * actOn L.rep (AfP p) ((x⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C) = 1`.
+
+Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `e2 : L.actG h₁⁻¹ * L.actG h₁ = 1`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Express the relevant statement in the definitionally equal form `(L.actG h₁⁻¹ * actOn L.rep (AfP p) (x : AfP p ⊗[ℚ] G.C)) * (actOn L.rep (AfP p) ((x⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C) * L.actG h₁) = 1`. Rewrite using `[_root_.mul_assoc, ← _root_.mul_assoc (actOn L.rep (AfP p) (x : AfP p ⊗[ℚ] G.C)), e1, _root_.one_mul, e2]`.
+
+Take `⟨m, hm0, hmc, hm⟩` from `DenEnd.exists_coprime_nsmul_map_mem p D T`. Take `⟨k, n', hn', hnn⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn.ne' p (Fact.out : p.Prime).ne_one`. Establish `hn0 : 0 < n'` using `Nat.pos_of_ne_zero fun h => hn' (h ▸ dvd_zero p)`. Establish `hnc : n'.Coprime p` using `((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hn').symm`. Take `⟨w, e, he, hz⟩` from `powerSeries_expansion_image_dense_with_denominator D (n' * m) (Nat.mul_pos hn0 hm0) (Nat.Coprime.mul_left hnc hmc) (S z)`.
+
+Establish `hint : IsIntAf (algebraMap ℚ (AfP p) ((p : ℚ)⁻¹ ^ k))` using `fun u => by`. Rewrite using `[map_pow, map_pow]`. Conclude with `pow_mem (DenEnd.isIntAf_inv u) k`. Establish `hz2 : z = T (S z)`. Rewrite using `[← Module.End.mul_apply, hTS]`.
+
+Both sides reduce to the same expression. Establish `hr : rd L x h₁ w = T ((1 : AfP p) ⊗ₜ[ℚ] w)` using `rfl`. Establish `hp : (p : ℚ) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Use `⟨w, algebraMap ℚ (AfP p) ((p : ℚ)⁻¹ ^ k) • (m • T e), DenEnd.smul_mem D hint (hm e he), ?_⟩` and prove the remaining obligations. Rewrite using `[hr, hz2, hz, map_add, map_nsmul]`.
+
+Use `congr 1`. Rewrite using `[algebraMap_smul, hnn]`. Simplify using `only [← Nat.cast_smul_eq_nsmul ℚ, smul_smul]`. Use `congr 1`. Establish `hpk : (p : ℚ) ^ k * ((p : ℚ)⁻¹) ^ k = 1`.
+
+Rewrite using `[← mul_pow, mul_inv_cancel₀ hp, one_pow]`. Use `push_cast`. Take the linear combination `(-((n' : ℚ) * m)) * hpk`.
+-/
 theorem UpperTheory.Gal.W2.rdDense_of :
     UpperTheory.Gal.W2.RdDense := by
   intro p _ D G L x h₁ n hn z

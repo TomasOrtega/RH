@@ -100,10 +100,24 @@ def sum (D D' : TrData q e) : TrData q e where
   bd s := by cases s; exacts [D.bd _, D'.bd _]
   int s := by cases s; exacts [D.int _, D'.int _]
 
+/- English proof (translation)
+Use `D.fin` as an intermediate fact. Use `D'.fin` as an intermediate fact. Conclude with `Nat.card_sum`.
+-/
 theorem card_sum (D D' : TrData q e) : Nat.card (D.sum D').S = Nat.card D.S + Nat.card D'.S := by
   have := D.fin; have := D'.fin
   exact Nat.card_sum
 
+/- English proof (translation)
+Take `⟨cl, h1, h2⟩` from `h`. Take `⟨cl', h1', h2'⟩` from `h'`. Set `F : {r // P r ∨ P' r} → D.S ⊕ D'.S` to `fun r => if hr : P r.1 then Sum.inl (cl ⟨r.1, hr⟩) else Sum.inr (cl' ⟨r.1, r.2.resolve_left hr⟩)`. Establish `e1 : ∀ r (hr : P r.1), F r = Sum.inl (cl ⟨r.1, hr⟩)` using `fun r hr => dif_pos hr`. Establish `e2 : ∀ r (hr : ¬ P r.1), F r = Sum.inr (cl' ⟨r.1, r.2.resolve_left hr⟩)` using `fun r hr => dif_neg hr`.
+
+Use `⟨F, fun r r' (H : F r = F r') => ?_, fun r => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases hr : P r.1 <;> by_cases hr' : P r'.1`. Rewrite `H` using `[e1 r hr, e1 r' hr']`. Conclude with `h1 _ _ (Sum.inl.inj H)`. Rewrite `H` using `[e1 r hr, e2 r' hr']`.
+
+Consider the cases of `H`. Rewrite `H` using `[e2 r hr, e1 r' hr']`. Consider the cases of `H`. Rewrite `H` using `[e2 r hr, e2 r' hr']`. Conclude with `h1' _ _ (Sum.inr.inj H)`.
+
+Express the relevant statement in the definitionally equal form `_ = ι.symm (Sum.elim D.t D'.t (F r))`. Distinguish the cases in `hr : P r.1`. Rewrite using `[e1 r hr]`. Conclude with `h2 ⟨r.1, hr⟩`. Rewrite using `[e2 r hr]`.
+
+Conclude with `h2' ⟨r.1, _⟩`.
+-/
 theorem Classifies.sum {Γ : Type} [Group Γ] {l : ℕ} [Fact l.Prime] {D D' : TrData q e} {ι : Qbar l ≃+* ℂ} {g : Γ}
     {P P' : (Γ →* GL (Fin 3) (Qbar l)) → Prop} (h : D.Classifies ι g P) (h' : D'.Classifies ι g P') :
     (D.sum D').Classifies ι g fun r => P r ∨ P' r := by
@@ -127,6 +141,19 @@ theorem Classifies.sum {Γ : Type} [Group Γ] {l : ℕ} [Fact l.Prime] {D D' : T
 
 end TrData
 
+/- English proof (translation)
+Take `⟨hfin, hN⟩` from `finite_image_of_card_le Sig Iso sys hiso N hcard`. Use `⟨⟨↥(sys '' Sig), hfin, fun s => (s.1 w).map (·⁻¹), ?_, ?_, ?_, ?_, ?_⟩, hN, fun a => ⟨sys a, a, a.2, rfl⟩, fun a b h => congrArg Subtype.val h, fun a => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, a, ha, rfl⟩`. Simplify using `using hn a ha`. Introduce `σ`.
+
+Establish `hmem : ∀ s : ↥(sys '' Sig), (fun v => (s.1 v).map σ) ∈ sys '' Sig`. Introduce and unpack `⟨_, a, ha, rfl⟩`. Take `⟨b, hb, h⟩` from `hconj σ a ha`. Conclude with `⟨b, hb, funext h⟩`. Set `F : ↥(sys '' Sig) → ↥(sys '' Sig)` to `fun s => ⟨_, hmem s⟩`.
+
+Establish `hF : Function.Injective F`. Introduce `s s' h`. Use `Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Conclude with `Multiset.map_injective σ.injective (congrFun (congrArg Subtype.val h) v)`. Use `⟨Equiv.ofBijective F (Finite.injective_iff_bijective.1 hF), fun s => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[F, Multiset.map_map]`. Introduce and unpack `⟨_, a, ha, rfl⟩`. Conclude with `(hpure a ha).inv hq`. Introduce and unpack `k hk ⟨_, a, ha, rfl⟩ b hb`. Take `⟨c, hc, rfl⟩` from `Multiset.mem_map.1 hb`.
+
+Conclude with `(hint a ha c hc).1 k hk`. Introduce and unpack `k hk ⟨_, a, ha, rfl⟩ b hb`. Take `⟨c, hc, rfl⟩` from `Multiset.mem_map.1 hb`. Rewrite using `[inv_inv]`. Conclude with `(hint a ha c hc).2 k hk`.
+
+Simplify using `[Multiset.map_map]`.
+-/
 theorem exists_eigData {P W : Type} (Sig : Set P) (Iso : P → P → Prop) (sys : P → W → Multiset ℂ)
     (hiso : ∀ a ∈ Sig, ∀ b ∈ Sig, Iso a b → sys a = sys b) (N : ℕ)
     (hcard : ∀ S : Finset P, (∀ a ∈ S, a ∈ Sig) → (∀ a ∈ S, ∀ b ∈ S, Iso a b → a = b) → S.card ≤ N)

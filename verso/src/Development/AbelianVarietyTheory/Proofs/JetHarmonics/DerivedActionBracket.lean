@@ -14,6 +14,9 @@ namespace GlobalTheory.DerivedBracket
 
 open PI.UpqRep PI.UnitaryGroupMassFormula.CapelliEig GlobalTheory.DerivedAction
 
+/- English proof (translation)
+Substitute `ha hb hc` using the available equality. Establish `hD : DifferentiableAt ℝ (fderiv ℝ F) x` using `(hF.fderiv_right (m := 1) (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))).differentiableAt (by simp)`. Establish `hs : IsSymmSndFDerivAt ℝ F x` using `hF.isSymmSndFDerivAt (by rw [minSmoothness_of_isRCLikeNormedField]; exact WithTop.coe_le_coe.2 le_top)`. Rewrite using `[(hD.hasFDerivAt.clm_apply L.hasFDerivAt).fderiv, (hD.hasFDerivAt.clm_apply M.hasFDerivAt).fderiv]`. Simplify using `[hs (M x) (L x)]`.
+-/
 theorem fderiv_comm {E G : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     {F : E → G} {x : E} (hF : ContDiffAt ℝ ∞ F x) (L M : E →L[ℝ] E) {a b c : E}
     (ha : M x = a) (hb : L x = b) (hc : L a - M b = c) :
@@ -32,6 +35,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Establish `hLX : Xᴴ * Hpk k r = -(Hpk k r * X)` using `eq_neg_of_add_eq_zero_left hX`. Establish `hLY : Yᴴ * Hpk k r = -(Hpk k r * Y)` using `eq_neg_of_add_eq_zero_left hY`. Use `show (X * Y - Y * X)ᴴ * Hpk k r + Hpk k r * (X * Y - Y * X) = 0`. Establish `e1 : Yᴴ * Xᴴ * Hpk k r = Hpk k r * (Y * X)`. Rewrite using `[Matrix.mul_assoc, hLX, Matrix.mul_neg, ← Matrix.mul_assoc, hLY, Matrix.neg_mul, neg_neg, Matrix.mul_assoc]`.
+
+Establish `e2 : Xᴴ * Yᴴ * Hpk k r = Hpk k r * (X * Y)`. Rewrite using `[Matrix.mul_assoc, hLY, Matrix.mul_neg, ← Matrix.mul_assoc, hLX, Matrix.neg_mul, neg_neg, Matrix.mul_assoc]`. Rewrite using `[conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, Matrix.sub_mul, e1, e2, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lie_bracket {X Y : Mx k r} (hX : InLieHpk k r X) (hY : InLieHpk k r Y) :
     InLieHpk k r (X * Y - Y * X) := by
   have hLX : Xᴴ * Hpk k r = -(Hpk k r * X) := eq_neg_of_add_eq_zero_left hX
@@ -44,6 +52,13 @@ theorem lie_bracket {X Y : Mx k r} (hX : InLieHpk k r X) (hY : InLieHpk k r Y) :
   rw [conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, Matrix.sub_mul, e1, e2, Matrix.mul_sub]
   abel
 
+/- English proof (translation)
+Establish `hG : ContDiffOn ℝ ∞ (fun g => fderiv ℝ F g (L g)) U` using `(hF.fderiv_of_isOpen hU (by simp)).clm_apply L.contDiff.contDiffOn`. Establish `hGe : ∀ g ∈ U, inUH (Hpk k r) g → σ g (dsig (k` using `k) (r := r) σ Y v) = fderiv ℝ F g (L g) := by`. Introduce `g hg hgH`. Establish `h1` using `hasDerivAt_local hY hU hg hF hfF hgH`. Establish `h2` using `hasDerivAt_apply hY hv (σ g)`.
+
+Establish `e : (fun u : ℝ => σ (g * NormedSpace.exp ((u : ℂ) • Y)) v) = fun t : ℝ => σ g (σ (NormedSpace.exp ((t : ℂ) • Y)) v)`. Use function extensionality and compare the values at `t`. Rewrite using `[Hecke_multiplication k r ε mu H σ hσ g hgH _ (exp_mem hY t)]`. Both sides reduce to the same expression. Rewrite `h1` using `[e]`.
+
+Simplify using `only [hL]`. Conclude with `h2.unique h1`. Establish `h` using `hasDerivAt_local (f := fun g => σ g (dsig (k := k) (r := r) σ Y v)) hX hU h1 hG hGe one_mem`. Simplify using `only [Matrix.one_mul] at h`. Conclude with `h.deriv`.
+-/
 theorem dsig_dsig (hσ : IsDSHpk k r ε mu σ) {X Y : Mx k r} (hX : InLieHpk k r X) (hY : InLieHpk k r Y) {v : H}
     (hv : v ∈ smoothVecs (k := k) (r := r) σ) {F : Mx k r → H} {U : Set (Mx k r)}
     (hU : IsOpen U) (h1 : (1 : Mx k r) ∈ U) (hF : ContDiffOn ℝ ∞ F U)
@@ -68,6 +83,11 @@ theorem dsig_dsig (hσ : IsDSHpk k r ε mu σ) {X Y : Mx k r} (hX : InLieHpk k r
   simp only [Matrix.one_mul] at h
   exact h.deriv
 
+/- English proof (translation)
+Take `⟨U, F, hU, h1, hF, hfF⟩` from `hv 1 one_mem`. Establish `h` using `hasDerivAt_local (lie_bracket hX hY) hU h1 hF hfF one_mem`. Simplify using `only [Matrix.one_mul] at h`. Establish `e : dsig (k` using `k) (r := r) σ (X * Y - Y * X) v = fderiv ℝ F 1 (X * Y - Y * X) := h.deriv`. Set `L : Mx k r →L[ℝ] Mx k r` to `(LinearMap.mulRight ℝ Y).toContinuousLinearMap`.
+
+Establish `hL : ∀ x, L x = x * Y` using `by intro x; simp [L]`. Set `M : Mx k r →L[ℝ] Mx k r` to `(LinearMap.mulRight ℝ X).toContinuousLinearMap`. Establish `hM : ∀ x, M x = x * X` using `by intro x; simp [M]`. Rewrite using `[dsig_dsig hσ hX hY hv hU h1 hF hfF L hL, dsig_dsig hσ hY hX hv hU h1 hF hfF M hM, e]`. Conclude with `fderiv_comm (hF.contDiffAt (hU.mem_nhds h1)) L M ((hM 1).trans (Matrix.one_mul X)) ((hL 1).trans (Matrix.one_mul Y)) (congrArg₂ (· - ·) (hL X) (hM Y))`.
+-/
 theorem dsig_bracket (hσ : IsDSHpk k r ε mu σ) {X Y : Mx k r} (hX : InLieHpk k r X) (hY : InLieHpk k r Y) {v : H}
     (hv : v ∈ smoothVecs (k := k) (r := r) σ) :
     dsig (k := k) (r := r) σ X (dsig (k := k) (r := r) σ Y v) -
@@ -84,6 +104,9 @@ theorem dsig_bracket (hσ : IsDSHpk k r ε mu σ) {X Y : Mx k r} (hX : InLieHpk 
   exact fderiv_comm (hF.contDiffAt (hU.mem_nhds h1)) L M ((hM 1).trans (Matrix.one_mul X))
     ((hL 1).trans (Matrix.one_mul Y)) (congrArg₂ (· - ·) (hL X) (hM Y))
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ hR _ _ hX hY _ hv` and use `dsig_bracket hR.2 hX hY hv`.
+-/
 theorem derived_action_bracket : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDS ε mu → ∀ X Y, PI.UpqRep.InLieHpk k r X → PI.UpqRep.InLieHpk k r Y → ∀ v ∈ R.sm, PI.UpqRep.dsig (k := k) (r := r) R.σ X (PI.UpqRep.dsig (k := k) (r := r) R.σ Y v) - PI.UpqRep.dsig (k := k) (r := r) R.σ Y (PI.UpqRep.dsig (k := k) (r := r) R.σ X v) = PI.UpqRep.dsig (k := k) (r := r) R.σ (X * Y - Y * X) v :=
   fun _ _ _ _ _ _ hR _ _ hX hY _ hv => dsig_bracket hR.2 hX hY hv
 

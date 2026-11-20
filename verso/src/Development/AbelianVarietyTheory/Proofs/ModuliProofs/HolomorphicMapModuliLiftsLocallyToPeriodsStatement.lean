@@ -8,6 +8,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LocLift.holomorphic_map_lifts_to_periods | exact GlobalTheory.LocLift.holomorphic_map_lifts_to_periods | (intros; apply GlobalTheory.LocLift.holomorphic_map_lifts_to_periods <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.holomorphic_map_moduli_lifts_locally_to_periods : ThetaUnifAV → Out.Laws → (∀ (k
     : Type) [Field k] (X : Scheme.{0}) (s
     : X ⟶ Sp k), Smooth s → IsReduced X ∧ IsNormalScheme X ∧ IsLocallyNoetherian X) → (∀ (E

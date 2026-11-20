@@ -14,6 +14,11 @@ section Ball
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Unfold `Formalism.DworkPowerSeriesWeights.Integral`. Introduce `n`. Establish `e : n = Finsupp.single () (n ())`. Use `ext`. Simplify using the standard rewrite rules.
+
+Establish `hn` using `h (n ())`. Rewrite using `[e]`. Conclude with `hn`.
+-/
 theorem integral_of_coeff {f : K⟦X⟧} (h : ∀ n, coeff n f ∈ Formalism.G.unitBall K) :
     Formalism.DworkPowerSeriesWeights.Integral (ι := Unit) f := by
   unfold Formalism.DworkPowerSeriesWeights.Integral
@@ -25,12 +30,18 @@ theorem integral_of_coeff {f : K⟦X⟧} (h : ∀ n, coeff n f ∈ Formalism.G.u
   rw [e]
   exact hn
 
+/- English proof (translation)
+Unfold `Formalism.DworkPowerSeriesWeights.Integral`. Introduce `n`. Conclude with `h n`.
+-/
 theorem integral_of_mvCoeff {ι : Type} {f : MvPowerSeries ι K}
     (h : ∀ n, MvPowerSeries.coeff n f ∈ Formalism.G.unitBall K) : Formalism.DworkPowerSeriesWeights.Integral f := by
   unfold Formalism.DworkPowerSeriesWeights.Integral
   intro n
   exact h n
 
+/- English proof (translation)
+Unfold `Formalism.DworkPowerSeriesWeights.Integral`. Introduce `n`. Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `(MvPowerSeries.coeff n c).2`.
+-/
 theorem integral_map {ι : Type} (c : MvPowerSeries ι (Formalism.G.unitBall K)) :
     Formalism.DworkPowerSeriesWeights.Integral (MvPowerSeries.map (Formalism.G.unitBall K).subtype c) := by
   unfold Formalism.DworkPowerSeriesWeights.Integral
@@ -41,6 +52,9 @@ theorem integral_map {ι : Type} (c : MvPowerSeries ι (Formalism.G.unitBall K))
 def model (W : WeierstrassCurve K) (h : IntModel W) : WeierstrassCurve (Formalism.G.unitBall K) :=
   ⟨⟨W.a₁, h.1⟩, ⟨W.a₂, h.2.1⟩, ⟨W.a₃, h.2.2.1⟩, ⟨W.a₄, h.2.2.2.1⟩, ⟨W.a₆, h.2.2.2.2⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem model_map (W : WeierstrassCurve K) (h : IntModel W) :
     (model W h).map (Formalism.G.unitBall K).subtype = W := by
   rfl
@@ -51,11 +65,21 @@ end Bridge
 
 open Bridge
 
+/- English proof (translation)
+Unfold `BridgeWp`. Introduce `K _ _ W`. Conclude with `h K W`.
+-/
 theorem bridgeWp_of (h : WpCleared.{0}) : BridgeWp := by
   unfold BridgeWp
   intro K _ _ W
   exact h K W
 
+/- English proof (translation)
+Introduce `K _ _ _ W hW`. Take `⟨-, -, -, -, -, hi, hF, -, hh, -, -⟩` from `hM K W (Formalism.G.unitBall K) hW.1 hW.2.1 hW.2.2.1 hW.2.2.2.1 hW.2.2.2.2`. Take `⟨hl0, hl1, -, -⟩` from `logSpec K W`. Use `⟨⟨(fglChord K W).2.2.2.2.1, integral_of_mvCoeff hF, hl0, hl1, ?_⟩, ⟨(iSerSpec K W).1, integral_of_coeff hi, (logNeg K W).1⟩, fun h2 => ?_⟩` and prove the remaining obligations. Unfold `Formalism.InvariantFactorPaths.G7.cob Formalism.InvariantFactorPaths.G7.at1`.
+
+Rewrite using `[(hFL K W).1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hu : IsUnit (2 : K)` using `isUnit_iff_ne_zero.mpr two_ne_zero`. Use `⟨(hHS K W hu).1, integral_of_coeff (hh ⟨2⁻¹, ?_, mul_inv_cancel₀ two_ne_zero⟩), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(2 : K)⁻¹‖ ≤ 1`.
+
+Rewrite using `[norm_inv, h2, inv_one]`. Establish `key` using `hHL.1 K W`. Establish `h21 : (C (2 : K)⁻¹ : K⟦X⟧) * 2 = 1`. Rewrite using `[← map_ofNat (C : K →+* K⟦X⟧) 2, ← map_mul, inv_mul_cancel₀ two_ne_zero, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bridgeLaw_of (hM : CoeffMem.{0}) (hFL : FglLog.{0}) (hHS : HalfSpec.{0})
     (hHL : HalfLog.{0, 0}) : BridgeLaw := by
   intro K _ _ _ W hW
@@ -79,6 +103,17 @@ theorem bridgeLaw_of (hM : CoeffMem.{0}) (hFL : FglLog.{0}) (hHS : HalfSpec.{0})
         _ = C (2 : K)⁻¹ * (2 * (logSer W).subst (halfSer W)) := by ring
         _ = C (2 : K)⁻¹ * logSer W := by rw [key]
 
+/- English proof (translation)
+Introduce `K _ _ _ W hW`. Take `⟨-, hx, -⟩` from `hM K W (Formalism.G.unitBall K) hW.1 hW.2.1 hW.2.2.1 hW.2.2.2.1 hW.2.2.2.2`. Use `⟨integral_of_coeff hx, CurveSer.xS_cc W, hU K W, ?_⟩` and prove the remaining obligations. Take `⟨c, hc0, hc⟩` from `hC (Formalism.G.unitBall K) (model W hW)`. Use `⟨MvPowerSeries.map (Formalism.G.unitBall K).subtype c, integral_map c, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MvPowerSeries.constantCoeff_map, hc0]`. Simplify using the standard rewrite rules. Establish `hi0 : constantCoeff (iSer (model W hW)) = 0` using `(iSerSpec _ (model W hW)).1`. Establish `hs : MvPowerSeries.HasSubst (![U₁, (iSer (model W hW)).subst (U₂ : MvPowerSeries (Fin 2) (Formalism.G.unitBall K))] : Fin 2 → MvPowerSeries (Fin 2) (Formalism.G.unitBall K))`. Apply `MvPowerSeries.hasSubst_of_constantCoeff_zero` to reduce the goal to its premises.
+
+Introduce `i`. Use `fin_cases i`. Simplify using the standard rewrite rules. Simplify using `only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one]`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X 1) _ hi0`.
+
+Establish `key` using `congrArg (MvPowerSeries.map (Formalism.G.unitBall K).subtype) hc`. Rewrite `key` using `[map_sub, map_mul, map_mul, map_mul, map_mul, map_pow, map_pow, MvPowerSeries.map_X, MvPowerSeries.map_X, PowerSeries.map_subst (HasSubst.X 0), PowerSeries.map_subst (HasSubst.X 1), MvPowerSeries.map_X, MvPowerSeries.map_X, CurveSer.map_xS, MvPowerSeries.map_subst hs, fglMap, mod …`. Unfold `Formalism.L2.Th1.B.FI Formalism.InvariantFactorPaths.G7.at1`. Rewrite using `[key]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using the standard rewrite rules. Simplify using `only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one]`. Rewrite using `[PowerSeries.map_subst (HasSubst.X 1), MvPowerSeries.map_X, CurveSer.map_iSer, model_map]`.
+-/
 theorem bridgeCurve_of (hM : CoeffMem.{0}) (hU : WpInU.{0}) (hC : CubeTwoR.{0}) :
     BridgeCurve := by
   intro K _ _ _ W hW
@@ -114,6 +149,19 @@ theorem bridgeCurve_of (hM : CoeffMem.{0}) (hU : WpInU.{0}) (hC : CubeTwoR.{0}) 
     · simp only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one]
       rw [PowerSeries.map_subst (HasSubst.X 1), MvPowerSeries.map_X, CurveSer.map_iSer, model_map]
 
+/- English proof (translation)
+Unfold `BridgeTwo`. Introduce `K _ _ _ W xT yT heq h2y`. Take `⟨_, _, _, _, hdvd, h2c, _, hder, _, _, _⟩` from `hZ K W xT yT heq h2y`. Establish `hT'` using `hT K W xT`. Establish `hD : constantCoeff (1 + X ^ 2 * wpReg W - C (xT + W.b₂ / 12) * X ^ 2 : K⟦X⟧) ≠ 0`.
+
+Simplify using the standard rewrite rules. Establish `h3 : (C (3 : K) : K⟦X⟧) = 3`. Rewrite using `[show (3 : K) = ((3 : ℕ) : K) by norm_num, map_natCast]`. Evaluate the numerical expressions. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `Formalism.L2.Th1.B.wOf`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[PowerSeries.mul_inv_cancel _ hD, mul_one]`. Use `_ = ((tS W xT).subst (expSer W) * (1 + X ^ 2 * wpReg W - C (xT + W.b₂ / 12) * X ^ 2)) * (1 + X ^ 2 * wpReg W - C (xT + W.b₂ / 12) * X ^ 2)⁻¹ := by ring`. Use `_ = X ^ 2 * (1 + X ^ 2 * wpReg W - C (xT + W.b₂ / 12) * X ^ 2)⁻¹ := by rw [hT']`.
+
+Unfold `Formalism.L2.Th1.B.IsW`. Take `⟨q, hq⟩` from `hdvd`. Use `⟨?_, h2c, ?_⟩` and prove the remaining obligations. Rewrite using `[hq]`. Simplify using the standard rewrite rules.
+
+Use `show (PowerSeries.derivative K ((tS W xT).subst (expSer W))) ^ 2 = _`. Rewrite using `[hder, map_mul, h3]`. Expand and normalize the polynomial expressions, which then agree. Introduce `hI hx`. Apply `Bridge.integral_of_coeff` to reduce the goal to its premises.
+
+Conclude with `(hM K W (Formalism.G.unitBall K) hI.1 hI.2.1 hI.2.2.1 hI.2.2.2.1 hI.2.2.2.2).2.2.2.2.2.2.2.2.2.1 xT hx`.
+-/
 theorem bridgeTwo_of (hM : CoeffMem.{0}) (hT : TInZ.{0}) (hZ : TwoTorsionZ.{0}) : BridgeTwo := by
   unfold BridgeTwo
   intro K _ _ _ W xT yT heq h2y

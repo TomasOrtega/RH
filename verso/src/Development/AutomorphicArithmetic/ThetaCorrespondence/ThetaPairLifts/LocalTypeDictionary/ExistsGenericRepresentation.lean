@@ -10,6 +10,29 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 namespace GlobalTheory.GenRep
 open scoped Classical in
+/- English proof (translation)
+Introduce `hP hD hV F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d a b A C Φ hCM hψ hFr hΦ`. Take `⟨ρ, c₀, hR, hcont, hder⟩` from `_root_.GlobalTheory.T.archimedean_component_discreteSeries hP hD hV F E σ α β κ P Q R S ψ τ JA JB d a b A C Φ hCM hψ hFr hΦ`. Take `⟨ω₀, hω⟩` from `GlobalTheory.T.exists_adelicRep_extending_archimedeanSchwartzRep F κ (UG (cA σ) JB) ρ`. Establish `hgen : ∀ g, ∀ φ ∈ schA F κ, ω₀ g φ ∈ schA F κ`. Introduce `g φ hφ`.
+
+Unfold `schA at hφ ⊢`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, h, hh, rfl⟩` from `hx`. Rewrite using `[hω]`.
+
+Conclude with `Submodule.subset_span ⟨ρ g f, h, hh, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Establish `h1m : At (evI F) (((1 : UG (cA σ) JB).1 : Matrix β β (AE F E)) - 1)` using `fun u _ => by simp`. Establish `hact1 : ∀ x : Matrix α β (AE F E), actB (cA σ) (1 : UG (cA σ) JB) x = x` using `fun x => by simp [actB]`. Use `⟨ω₀, c₀, fun g hg => ⟨hgen g, fun w φ hφ => ?_, fun μ hμ φ hφ => GlobalTheory.T.weil_operator_unitary_adelic_L2 F κ (ρ g).toLinearMap (ω₀ g) (hω g) (hR g hg).2 μ hμ φ hφ⟩, fun l hl φ hφ => ?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `schA at hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, h, hh, rfl⟩` from `hx`. Take `⟨u, H, hu, hsplit⟩` from `GlobalTheory.T.heisenbergRho_split_archimedean_finite F E σ α β κ ψ JA JB d w`.
+
+Take `⟨f₁, hf₁⟩` from `GlobalTheory.T.heisenbergRho_archimedean_adelicPureTensor F E σ α β κ ψ JA JB d hψ u hu f`. Establish `e1 : d.rho ψ w (pureA F f h) = pureA F f₁ (H h)`. Use `hsplit 1 h1m f f₁ h (by simpa only [hact1] using hf₁)` as an intermediate fact. Simplify `this` using `only [hact1]`. Rewrite using `[e1, hω, hω]`.
+
+Conclude with `(hsplit g hg (ρ g f) (ρ g f₁) h ((hR g hg).1 u hu f f₁ hf₁)).symm`. Consider the case `zero => rw [rho_zero', map_zero, rho_zero']`. Consider the case `add x y _ _ hx hy => rw [rho_add', map_add, map_add, hx, hy, rho_add']`. Consider the case `smul c x _ hx => rw [rho_smul', map_smul, map_smul, hx, rho_smul']`. Unfold `schA at hφ`.
+
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, h, hh, rfl⟩` from `hx`. Take `⟨T, hT⟩` from `hl h hh`. Establish `e : (fun g => l (ω₀ g (pureA F f h))) = fun g => T (ρ g f)` using `funext fun g => by rw [hω, hT]`.
+
+Rewrite using `[e]`. Conclude with `hcont T f`. Consider the case `zero => simp only [map_zero]`. Conclude with `continuousOn_const`. Consider the case `add x y _ _ hx hy => simp only [map_add]`.
+
+Conclude with `hx.add hy`. Consider the case `smul c x _ hx => simp only [map_smul, smul_eq_mul]`. Conclude with `continuousOn_const.mul hx`. Introduce `γ hγ Y hY T h hh l hl`. Take `⟨L, hL⟩` from `hl h hh`.
+
+Use `show HasDerivAt (fun t : ℝ => l (ω₀ (γ (Multiplicative.ofAdd t)) (pureA F (Φ T) h))) _ 0`. Simplify using `only [hω, hL]`. Conclude with `hder γ hγ Y hY T L`.
+-/
 theorem exists_generic_representation : _root_.GlobalTheory.FunPr.ThetaLocalInputs → DerEx → VacLine →
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (α β κ : Type) [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (P Q R S : ℕ) (ψ : AddChar (AF F) ℂ)
@@ -82,6 +105,9 @@ section
 open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.GenRep.exists_generic_representation | exact _root_.GlobalTheory.GenRep.exists_generic_representation | (intros; apply _root_.GlobalTheory.GenRep.exists_generic_representation <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isGeneric_localComponent : _root_.GlobalTheory.FunPr.ThetaLocalInputs → DerEx → VacLine →
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (α β κ : Type) [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (P Q R S : ℕ) (ψ : AddChar (AF F) ℂ)

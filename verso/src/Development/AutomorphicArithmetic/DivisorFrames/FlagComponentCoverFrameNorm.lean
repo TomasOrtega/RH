@@ -12,6 +12,13 @@ section SlopeTestRemainingChoices
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.LineNorm.Chart GlobalTheory.LineNorm.WedgeMax GlobalTheory.LieMet
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty ι with hn | hn` into its components or cases. Simplify using `[hb] at hP`. Take `⟨i, hi⟩` from `Finite.exists_max fun i => ‖io (b i)‖`. Establish `e1 : P = ‖io (b i)‖` using `hb.trans (le_antisymm (ciSup_le hi) (le_ciSup (f := fun j => ‖io (b j)‖) (Finite.bddAbove_range _) i))`. Establish `h0 : b i ≠ 0` using `fun h => by simp [e1, h] at hP`.
+
+Establish `e2 : w (u * b i) = 1`. Use `Real.eq_one_of_pos_of_log_eq_zero (w.pos (mul_ne_zero hu h0)) ?_` and prove the remaining obligations. Rewrite using `[map_mul, Real.log_mul (w.pos hu).ne' (w.pos h0).ne', h3, h2, e1, neg_add_cancel]`. Use `⟨fun j => ?_, i, e2⟩` and prove the remaining obligations. Use `h1 (b j / b i) (by` as an intermediate fact.
+
+Rewrite using `[map_div₀, norm_div]`. Conclude with `div_le_one_of_le₀ (hi j) (norm_nonneg _))`. Rewrite `this` using `[map_div₀, div_le_one (w.pos h0)]`. Rewrite using `[← e2, map_mul, map_mul]`. Conclude with `mul_le_mul_of_nonneg_left this (w.nonneg _)`.
+-/
 private theorem UpperTheory.scaled_norm_maximum_one {K C ι : Type} [Field K] [NormedField C] [Finite ι] (w : AbsoluteValue K ℝ)
     (io : K →+* C) (c : ℝ) (h1 : ∀ a, ‖io a‖ ≤ 1 → w a ≤ 1) (h2 : ∀ a, Real.log (w a) = c * Real.log ‖io a‖)
     (b : ι → K) {P : ℝ} (hP : 0 < P) (hb : P = ⨆ s, ‖io (b s)‖) {u : K} (hu : u ≠ 0)
@@ -33,6 +40,15 @@ private theorem UpperTheory.scaled_norm_maximum_one {K C ι : Type} [Field K] [N
   rw [← e2, map_mul, map_mul]
   exact mul_le_mul_of_nonneg_left this (w.nonneg _)
 
+/- English proof (translation)
+Set `y : A →+* ↥(intO C)` to `x.codRestrict _ hx`. Establish `e1 : x = (intO C).subtype.comp y` using `rfl`. Establish `h` using `GlobalTheory.T.successive_minima_positive_norms C g (Fin g) (fun j => Pi.single j 1) (fun b hb => funext fun i => by`. Use `hb i` as an intermediate fact. Rewrite `this` using `[Finset.sum_eq_single i (fun i' _ hi => by simp [Pi.single_eq_of_ne hi]) (by simp)]`.
+
+Simplify using `using this) m a ha (GlobalTheory.ShFam.Pad.grNorm t (spMap x ≫ x₀) (latDR t (spMap x ≫ x₀)) u) fun l => by`. Use `grNorm_eq t (isTanBasis_map t _ he).1 (P := fun b => ∀ j, ‖∑ i, (Pi.single j 1 : Fin g → C) i * b i‖ ≤ 1) ?_ hu l` and prove the remaining obligations. Introduce `b w`. Use `mem_latDR t hX (isTanBasis_map t y he) b w` as an intermediate fact. Establish `e2 : ∀ j, ∑ i, (Pi.single j 1 : Fin g → C) i * b i = b j` using `fun j => by`.
+
+Rewrite using `[Finset.sum_eq_single j (fun i' _ hi => by simp [Pi.single_eq_of_ne hi]) (by simp)]`. Simplify using the standard rewrite rules. Rewrite using `[e1]`. Simplify `this` using `only [e2, WedgeMax.spMap_comp, WedgeMax.spMap_dual_comp, Category.assoc]`. Use `⟨h.1, fun k hk => (h.2 k hk).trans (iSup_congr fun s => ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single s (fun s' _ hs => ?_) (by simp)]`. Simplify using the standard rewrite rules. Take `⟨i, hi⟩` from `Function.ne_iff.1 hs`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by simp [Pi.single_eq_of_ne hi]), zero_mul]`.
+-/
 private theorem UpperTheory.tangent_coordinates_norm_le {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}} (t : SAB H X) (hX : X.IsSeparated) {A : Type} [CommRing A]
     {x₀ : Sp A ⟶ X} {g m : ℕ} {e : Fin g → (Sp (DualNumber A) ⟶ t.G.left)} (he : IsTanBasis t x₀ e)
@@ -64,6 +80,11 @@ private theorem UpperTheory.tangent_coordinates_norm_le {E : Type} [Field E] [Nu
   · obtain ⟨i, hi⟩ := Function.ne_iff.1 hs
     rw [Finset.prod_eq_zero (Finset.mem_univ i) (by simp [Pi.single_eq_of_ne hi]), zero_mul]
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Establish `h1 : spMap (π.stalkMap z).hom ≫ Y.fromSpecStalk (π z) = X.fromSpecStalk z ≫ π` using `Scheme.SpecMap_stalkMap_fromSpecStalk π`. Establish `h2 : spMap (algebraMap (X.presheaf.stalk z) X.functionField) ≫ X.fromSpecStalk z = X.fromSpecStalk (genericPoint X)` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes z)`. Establish `h3 : spMap (algebraMap (Y.presheaf.stalk (π z)) Y.functionField) ≫ Y.fromSpecStalk (π z) = Y.fromSpecStalk (genericPoint Y)` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes _)`. Use `⟨(π.stalkMap z).hom, h1, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono (Y.fromSpecStalk (π z))).1 (?_ : spMap _ ≫ _ = spMap _ ≫ _)))` and prove the remaining obligations. Rewrite using `[← spMap_comp', ← spMap_comp', Category.assoc, Category.assoc, h1, h3, ← Category.assoc, h2, hφ]`.
+-/
 private theorem UpperTheory.exists_stalk_map_over {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (π : X ⟶ Y)
     (φ : Y.functionField →+* X.functionField)
     (hφ : X.fromSpecStalk (genericPoint X) ≫ π = spMap φ ≫ Y.fromSpecStalk (genericPoint Y)) (z : X) (y : Y)
@@ -85,6 +106,9 @@ private theorem UpperTheory.exists_stalk_map_over {X Y : Scheme.{0}} [IsIntegral
     spMap _ ≫ _ = spMap _ ≫ _)))
   rw [← spMap_comp', ← spMap_comp', Category.assoc, Category.assoc, h1, h3, ← Category.assoc, h2, hφ]
 
+/- English proof (translation)
+Establish `h1 : spMap (fnOf U h) ≫ hU.fromSpec = X.fromSpecStalk (genericPoint X)` using `hU.fromSpecStalk_eq_fromSpecStalk h`. Establish `h2 : spMap (SmallSec.fnMap j hη) ≫ X.fromSpecStalk (genericPoint X) = Y.fromSpecStalk (genericPoint Y) ≫ j`. Express the relevant statement in the definitionally equal form `Spec.map (X.presheaf.stalkSpecializes hη ≫ j.stalkMap (genericPoint Y)) ≫ _ = _`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`. Rewrite using `[← spMap_comp', Category.assoc, h1, h2]`.
+-/
 private theorem UpperTheory.generic_stalk_spec_commutes {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (j : Y ⟶ X)
     (hη : j (genericPoint Y) ⤳ genericPoint X) {U : X.Opens} (hU : IsAffineOpen U) (h : genericPoint X ∈ U) :
     spMap ((SmallSec.fnMap j hη).comp (fnOf U h)) ≫ hU.fromSpec = Y.fromSpecStalk (genericPoint Y) ≫ j := by
@@ -96,6 +120,13 @@ private theorem UpperTheory.generic_stalk_spec_commutes {X Y : Scheme.{0}} [IsIn
       Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]
   rw [← spMap_comp', Category.assoc, h1, h2]
 
+/- English proof (translation)
+Establish `ha : ∀ l, ∃ a, IsCombAtG t (spMap α ≫ x₀) (fun i => spMap (dualMap α) ≫ e i) a (spMap (dualMap θ) ≫ f l)` using `fun l => (he.2 _ α _ (isTan_map θ hx.symm (hf l))).exists`. Use `choose a ha using ha`. Use `choose T hT1 hT2 hT3 using hT`. Use `⟨a, ha, fun r k hk s => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i, A₁ i = ∑ l, φ (T i l) • fun j => ι' (a l j)` using `fun i => by`.
+
+Use `(he.2 _ _ _ (comb_tan (fun j => isTan_map _ rfl (he.1 j)) (hA i))).unique (hA i) ?_` and prove the remaining obligations. Use `comb_comb (fun j => isTan_map _ rfl (he.1 j)) (fun l => coord_map α ι' (ha l)) ?_` and prove the remaining obligations. Use `GlobalTheory.LatDRFree.comb_map t φ (hT3 i)` as an intermediate fact. Simplify using `only [dual_comp] at this ⊢`. Rewrite `this` using `[← Category.assoc, spMap_comp', ← hc]`.
+
+Rewrite using `[← spMap_comp', Category.assoc, hx, ← Category.assoc, spMap_comp']` and apply the resulting hypothesis. Rewrite using `[minor_tri (fun l j => ι' (a l j)) _ (fun i l => r i * φ (T i l)) (fun i l h => by rw [hT2 i l h]; simp) (fun i => by rw [h1 i, Finset.smul_sum]; simp only [smul_smul]), map_minor]`. Simplify using `only [hT1]`.
+-/
 private theorem UpperTheory.tangent_coordinates_naturality {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}} (t : SAB H X) {A : Type} [CommRing A]
     {x₀ : Sp A ⟶ X} {g m : ℕ} {e : Fin g → (Sp (DualNumber A) ⟶ t.G.left)} (he : IsTanBasis t x₀ e)
@@ -127,6 +158,9 @@ private theorem UpperTheory.tangent_coordinates_naturality {E : Type} [Field E] 
     (fun i => by rw [h1 i, Finset.smul_sum]; simp only [smul_smul]), map_minor]
   simp only [hT1]
 
+/- English proof (translation)
+Establish `h : letterOf Dw (a, R, (Sum.inl (τ, i) : ((E →+* ℂ) × ℕ) ⊕ ℕ)).2.2 = some ⟨τ, i⟩` using `dif_pos i.2`. Rewrite using `[Finset.prod_eq_single (⟨τ, i⟩ : Letter Dw) (fun b _ hb => by`. Rewrite using `[GlobalTheory.Mean4O.expo_single, if_neg (fun e => hb (Option.some.inj (e.symm.trans h))), zpow_zero]) (by simp),`. Use the proof step `GlobalTheory.Mean4O.expo_single, if_pos h, zpow_one]`.
+-/
 private theorem UpperTheory.prod_pow_expo_single {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {G : Type} [CommGroup G] (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → G)
     (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
@@ -152,6 +186,9 @@ private noncomputable def UpperTheory.eigenFrameNorm (Y : FlagCpt Z e) (w : Sym 
       w.sum fun a n => (n : ℝ) * lnStep Z.t (spMap ψ ≫ stalkPt Y.Y (below y.1) ≫ Y.π ≫ genι Z)
         (fun τ i => spMap (dualMap ψ) ≫ f.v τ i) (resP v) (a.1 (resP v)) a.2.2
 
+/- English proof (translation)
+Unfold `lgOf UpperTheory.eigenFrameNorm`. Use `rewrite [dif_pos hp]`. Use `congrArg₂ HAdd.hAdd rfl (congrArg₂ HMul.hMul rfl (congrArg (Finsupp.sum w) (funext fun a => funext fun n => congrArg₂ HMul.hMul rfl ?_)))` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.lgOf_eq_frame_norm (Y : FlagCpt Z e) (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F))
     (ε : GlobalTheory.TrueGeo.Ext v) (y : AlgPt Y.Y) (hp : (resP v).Prime) :
     lgOf Y w v ε y = @UpperTheory.eigenFrameNorm _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Y w v ε y (GlobalTheory.ShFam.Pad.lgOf._proof_5 v hp) _
@@ -162,6 +199,9 @@ private theorem UpperTheory.lgOf_eq_frame_norm (Y : FlagCpt Z e) (w : Sym E →�
     (funext fun a => funext fun n => congrArg₂ HMul.hMul rfl ?_)))
   rfl
 
+/- English proof (translation)
+Rewrite using `[UpperTheory.eigenFrameNorm, ← hψ, Finsupp.sum_single_index (by simp), UpperTheory.prod_pow_expo_single]`. Simplify using `only`. Rewrite using `[ha, lnStep, dif_pos i.2]`. Simplify using `only [Bool.false_eq_true, false_and, if_false, sub_zero, Int.cast_one, _root_.one_mul, Units.val_mul]`. Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.frame_norm_single (Y : FlagCpt Z e) (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ)
     (v : HeightOneSpectrum (𝓞 F)) (ha : a (resP v) = false) (ε : GlobalTheory.TrueGeo.Ext v) (y : AlgPt Y.Y)
     [hp : Fact (resP v).Prime] {χ : c.F →+* Y.Y.X.presheaf.stalk (below y.1)}
@@ -181,6 +221,9 @@ private theorem UpperTheory.frame_norm_single (Y : FlagCpt Z e) (a : ℕ → Boo
   simp only [Bool.false_eq_true, false_and, if_false, sub_zero, Int.cast_one, _root_.one_mul, Units.val_mul]
   rfl
 
+/- English proof (translation)
+Take `rfl : hp = GlobalTheory.ShFam.Pad.lgOf._proof_5 v (residueCharacteristic_prime v)` from `Subsingleton.elim _ _`. Conclude with `⟨_, _, _, (GlobalTheory.ShFam.Pad.lgOf._proof_4 Y y).choose_spec, fun w => UpperTheory.lgOf_eq_frame_norm Y w v ε y (residueCharacteristic_prime v)⟩`.
+-/
 private theorem UpperTheory.frame_log_norm_triangular (Y : FlagCpt Z e) (v : HeightOneSpectrum (𝓞 F)) (ε : GlobalTheory.TrueGeo.Ext v) (y : AlgPt Y.Y)
     [hp : Fact (resP v).Prime] : ∃ (χ : c.F →+* Y.Y.X.presheaf.stalk (below y.1))
     (f : EigFrame Z χ (stalkPt Y.Y (below y.1) ≫ Y.π ≫ genι Z)) (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Y.Fnˣ),
@@ -189,6 +232,11 @@ private theorem UpperTheory.frame_log_norm_triangular (Y : FlagCpt Z e) (v : Hei
   obtain rfl : hp = GlobalTheory.ShFam.Pad.lgOf._proof_5 v (residueCharacteristic_prime v) := Subsingleton.elim _ _
   exact ⟨_, _, _, (GlobalTheory.ShFam.Pad.lgOf._proof_4 Y y).choose_spec, fun w => UpperTheory.lgOf_eq_frame_norm Y w v ε y (residueCharacteristic_prime v)⟩
 
+/- English proof (translation)
+Establish `hE : ∀ (n : Letter Dw → ℤ) (s : Finset (Letter Dw)), (∑ z ∈ s, n z • Y.gr z.1 z.2).IsEqn y (∏ z ∈ s, t z.1 z.2 ^ n z)` using `fun n s => by classical`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero y`. Consider the case `insert z s hz ih => rw [Finset.sum_insert hz, Finset.prod_insert hz]`. Conclude with `((ht _ _).zsmul _).add ih`.
+
+Establish `h1` using `hE (expo Dw (Finsupp.single (a, R, .inl (τ, i)) 1)) Finset.univ`. Rewrite `h1` using `[UpperTheory.prod_pow_expo_single]`. Establish `h2` using `(CartierDiv.IsEqn.iff_unitAt ((divOf Y (expo Dw (Finsupp.single (a, R, .inl (τ, i)) 1))).exists_isEqn y).choose_spec).1 h1`. Rewrite `h2` using `[div_eq_mul_inv, ← Units.val_inv_eq_inv_val]`. Then use the resulting hypothesis.
+-/
 private theorem UpperTheory.unitAt_frame_times_divisor (Y : FlagCpt Z e) (y : Y.Y.X) {t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Y.Fnˣ}
     (ht : ∀ τ i, (Y.gr τ i).IsEqn y (t τ i)) (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
     UnitAt y ((t τ i : Y.Y.Fn) * genAt (divOf Y (expo Dw (Finsupp.single (a, R, .inl (τ, i)) 1))) y) := by
@@ -205,6 +253,9 @@ private theorem UpperTheory.unitAt_frame_times_divisor (Y : FlagCpt Z e) (y : Y.
   rwa [div_eq_mul_inv, ← Units.val_inv_eq_inv_val] at h2
 
 open MonObj in
+/- English proof (translation)
+Introduce `cf cf' w h h'`. Establish `h1` using `(comb_iff (f.tan τ) _ _).1 h`. Establish `h2` using `(comb_iff (f.tan τ) _ _).1 h'`. Conclude with `funext ((Fintype.linearIndependent_iffₛ.1 (f.linearIndependent_vec τ)) _ _ (tan_ext (h1.symm.trans h2)))`.
+-/
 private theorem UpperTheory.eigen_frame_independent {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (f : EigFrame Z φ x)
     (τ : E →+* ℂ) : IsIndep Z.t x fun l => f.v τ l := by
   intro cf cf' w h h'
@@ -217,6 +268,43 @@ end large₂
 end SlopeTestRemainingChoices
 
 open GlobalTheory.LineNorm.Chart GlobalTheory.LieMet ReciprocityTheory.ChartRestriction.G.PullbackSections in
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z hZ F _ _ e C V b hb hη q _ kind R hkind τ U hU h ρ h1 h2 g eb he A₀ hA k hk`. Establish `: IsPreimmersion V.j`. Use `IsPreimmersion.of_isLocalization (R := 𝓞 F) (S := F) (nonZeroDivisors (𝓞 F))` as an intermediate fact. Use the proof step `MorphismProperty.of_isPullback V.pb.flip this`. Establish `key : ∀ (z : V.G) (_ : V.j z ∈ U) (y : C.Y.X) (_ : V.π z = y) (χ : c.F →+* C.Y.X.presheaf.stalk y) (f : EigFrame Z χ (stalkPt C.Y y ≫ C.π ≫ genι Z)) (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → C.Y.Fnˣ), f.Tri (algebraMap (C.Y.X.presheaf.stalk y) C.Y.X.functionField) C.f0 t → (∀ τ i, (C …`.
+
+Introduce `z hz y hy χ f t hT ht`. Take `⟨θ, hθ1, hθ2⟩` from `UpperTheory.exists_stalk_map_over V.π V.φ V.φ_spec z y hy`. Take `⟨α, hα⟩` from `exists_stalkHom hU V.j z hz`. Establish `hx : spMap α ≫ hU.fromSpec ≫ b = spMap θ ≫ stalkPt C.Y y ≫ C.π ≫ genι Z`. Rewrite using `[← Category.assoc, hα, Category.assoc, hb, ← Category.assoc, ← hθ1, Category.assoc]`.
+
+Both sides reduce to the same expression. Establish `hι : (SmallSec.fnMap V.j hη).comp (fnOf U h) = (algebraMap (V.G.presheaf.stalk z) V.G.functionField).comp α` using `ringHom_ext hU (by`. Rewrite using `[UpperTheory.generic_stalk_spec_commutes, ← spMap_comp', Category.assoc, hα, ← Category.assoc]`. Conclude with `congrArg (· ≫ V.j) (Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes z)).symm)`. Rewrite `hA` using `[hι]`.
+
+Take `⟨a, ha1, ha2⟩` from `UpperTheory.tangent_coordinates_naturality Z.t he _ _ θ V.φ hθ2 α hx (f.tan τ) (d := fun m => (t τ m : C.Y.Fn)) (fun i => hT.1 ▸ hT.2.2 τ i) hA`. Establish `hr` using `fun m => UpperTheory.unitAt_frame_times_divisor C y ht kind R τ m`. Establish `hw` using `fun m => h1 m z hz`. Rewrite `hw` using `[hy]`. Use `choose r hr1 hr2 using hr`.
+
+Use `choose w hw1 hw2 using hw`. Use `⟨θ, α, a, fun m => (hr1 m).unit, fun m => (hw1 m).unit, hθ1, hα, hx, ha1, hr2, hw2, fun s => ?_⟩` and prove the remaining obligations. Establish `e1` using `ha2 (fun m => SmallSec.fnMap V.j hη ((ρ m)⁻¹ : V.X.functionFieldˣ)) k hk s`. Rewrite using `[map_minor, map_mul, map_prod]`. Use `Eq.trans ?_ (e1.trans ?_)` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `m i`. Conclude with `map_mul _ _ _`. Use `congr 1`. Use `Finset.prod_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Establish `e2 : algebraMap _ V.G.functionField (θ (r (Fin.castLE hk m))) = V.φ (algebraMap _ C.Y.X.functionField (r (Fin.castLE hk m)))` using `RingHom.congr_fun hθ2 _`. Rewrite using `[map_mul, map_units_inv, map_units_inv, IsUnit.unit_spec, IsUnit.unit_spec, e2, hr2, hw2, map_mul, mul_inv, ← _root_.mul_assoc, mul_inv_cancel_right₀ ((map_ne_zero _).2 (Units.ne_zero _)), mul_comm]`. Establish `reg : ∀ z : V.G, V.j z ∈ U → ∀ s, RegAt (V.j z) (minor (fun m => (((ρ m)⁻¹ : V.X.functionFieldˣ) : V.X.functionField) • A₀ m) hk s)`. Introduce `z hz s`. Take `⟨χ, f, t, hT, ht⟩` from `C.gr_spec (V.π z)`.
+
+Take `⟨θ, α, a, r, w, -, -, -, -, -, -, h6⟩` from `key z hz _ rfl χ f t hT ht`. Conclude with `(SmallSec.regAt_fnMap_iff V.j hη).1 ⟨_, (h6 s).symm⟩`. Use `⟨reg, fun v hv ε y z yt hz hyt hin => ?_⟩` and prove the remaining obligations. Substitute `hv` using the available equality. Take `⟨hp, i1, i2⟩` from `ioOf_spec F v ε`.
+
+Use `Fact.mk hp` as an intermediate fact. Take `⟨γ, hγ⟩` from `exists_ringHom hU yt hin`. Establish `hy : V.j (below z) ∈ U`. Establish `: (spMap ε.O.subtype ≫ yt) (IsLocalRing.closedPoint _) ∈ U` using `hin (Set.mem_univ _)`. Rewrite `this` using `[hyt]`. Then use the resulting hypothesis.
+
+Establish `hzy : V.π (below z) = below y.1` using `by rw [← hz]; rfl`. Take `⟨χ, f, t, ⟨hT, ht⟩, hlg⟩` from `UpperTheory.frame_log_norm_triangular C v ε y`. Take `⟨θ, α, a, r, w, k1, k2, k3, k4, k5, k6, k7⟩` from `key (below z) hy _ hzy χ f t hT ht`. Take `⟨σ, hσ₀⟩ : ∃ σ : V.G.presheaf.stalk (below z) →+* AlgebraicClosure F, σ = (Scheme.stalkClosedPointTo z).hom` from `⟨_, rfl⟩`. Establish `hσz : spMap σ ≫ V.G.fromSpecStalk (below z) = z`.
+
+Rewrite using `[hσ₀]`. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk z`. Establish `hσ : σ.comp α = ε.O.subtype.comp γ` using `ringHom_ext hU (by`. Rewrite using `[← spMap_comp', ← spMap_comp', Category.assoc, Category.assoc, k2, hγ, hyt, ← Category.assoc, hσz])`. Establish `hσθ : σ.comp θ = (Scheme.stalkClosedPointTo y.1).hom`.
+
+Use `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono (C.Y.X.fromSpecStalk (below y.1))).1 (?_ : spMap (σ.comp θ) ≫ _ = _)))` and prove the remaining obligations. Rewrite using `[← spMap_comp', Category.assoc, k1, ← Category.assoc, hσz, hz]`. Conclude with `(Scheme.Spec_stalkClosedPointTo_fromSpecStalk y.1).symm`. Take `⟨ψ, hψ⟩ : ∃ ψ, ψ = (ioOf (resP v) ε).comp σ` from `⟨_, rfl⟩`. Establish `hli : LinearIndependent ℂ_[resP v] fun l i => ψ (a l i)`.
+
+Use `coord_linInd he α ψ k4 ?_` and prove the remaining obligations. Take `⟨f', hf'⟩` from `f.exists_isMap (ψ.comp θ) rfl rfl`. Rewrite using `[k3, ← Category.assoc, spMap_comp']`. Simplify using `only [dual_comp, ← hf' τ]`. Conclude with `UpperTheory.eigen_frame_independent f' τ`.
+
+Establish `h3` using `UpperTheory.tangent_coordinates_norm_le Z.t hZ he (ψ.comp α) (fun b => by`. Establish `: σ (α b) = γ b` using `congrArg (fun q => q b) hσ`. Rewrite using `[hψ, RingHom.comp_apply, RingHom.comp_apply, i1, this]`. Conclude with `(γ b).2) hli fun l => coord_map α ψ (k4 l)`. Rewrite `h3` using `[← spMap_comp', Category.assoc, k3, ← Category.assoc, spMap_comp']`.
+
+Simplify using `only [dual_comp] at h3`. Establish `hv : ∀ b, valAt z (algebraMap (V.G.presheaf.stalk (below z)) V.G.functionField b) = σ b` using `fun b => by`. Rewrite using `[hσ₀]`. Conclude with `SmallSec.valAt_algebraMap _`. Establish `hv' : ∀ b, valAt y.1 (algebraMap (C.Y.X.presheaf.stalk (below y.1)) C.Y.X.functionField b) = σ (θ b)` using `fun b => by`.
+
+Rewrite using `[← RingHom.comp_apply, hσθ]`. Conclude with `SmallSec.valAt_algebraMap _`. Establish `h4` using `fun m => ((h2 m v ε y z yt hz hyt hin).symm.trans (hlg _)).trans (UpperTheory.frame_norm_single C kind R τ v hkind ε y f t (ψ.comp θ) (by rw [hψ, RingHom.comp_assoc, hσθ]) m)`. Simplify using `only [← k5, ← k6, hv, hv'] at h4`. Establish `n1 : ∀ m, σ (θ (r m)) ≠ 0` using `fun m => (((r m).isUnit.map θ).map σ).ne_zero`.
+
+Establish `n2 : ∀ m, σ (w m) ≠ 0` using `fun m => ((w m).isUnit.map σ).ne_zero`. Simplify using `only [← SmallSec.valAt_fnMap V.j hη z (reg _ hy _), k7, hv, map_mul σ]`. Use `UpperTheory.scaled_norm_maximum_one ε.w (ioOf (resP v) ε) _ (fun b hb => (ε.mem_O b).1 ((i1 b).1 hb)) i2 _ (Finset.prod_pos fun m _ => h3.1 _) ((h3.2 k hk).trans (iSup_congr fun s => ?_)) ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_minor, hψ]`. Both sides reduce to the same expression.
+
+Conclude with `(((IsUnit.prod_univ_iff).2 fun m => ((r _).isUnit.map θ).mul (Units.isUnit _)).map σ).ne_zero`. Rewrite using `[map_prod, map_prod, Real.log_prod fun m _ => (ε.w.pos ((((r _).isUnit.map θ).mul (Units.isUnit _)).map σ).ne_zero).ne', Real.log_prod fun m _ => (h3.1 _).ne', Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_units_inv, map_mul, map_inv₀, Real.log_mul (ε.w.pos (n1 _)).ne' (inv_ne_zero (ε.w.pos (n2 _)).ne'), Real.log_inv, h4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.flag_component_cover_frame_norm :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β), Z.X.IsSeparated → ∀ (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (C : FlagCpt Z e) (V : Cover C.Y) (b : V.X ⟶ Z.X), V.j ≫ b = V.π ≫ C.π ≫ genι Z → ∀ (hη : V.j (genericPoint V.G) ⤳ genericPoint V.X) (q : ℕ), q.Prime → ∀ (kind : ℕ → Bool) (R : Option ℝ), kind q = false → ∀ (τ : E →+* ℂ) (U : V.X.Opens) (hU : IsAffineOpen U) (h : genericPoint V.X ∈ U) (ρ : Fin (Dw.mult τ) → V.X.functionFieldˣ), (∀ (m : Fin (Dw.mult τ)) (z : V.G), V.j z ∈ U → UnitAt z (V.φ (genAt (divOf C (expo Dw (Finsupp.single (kind, R, .inl (τ, m)) 1))) (V.π z)) * SmallSec.fnMap V.j hη (ρ m))) → (∀ (m : Fin (Dw.mult τ)) (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v) (y : AlgPt C.Y) (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp ε.O ⟶ V.X), z ≫ V.π = y.1 → spMap ε.O.subtype ≫ yt = z ≫ V.j → ⊤ ≤ yt ⁻¹ᵁ U → lgOf C (Finsupp.single (kind, R, .inl (τ, m)) 1) v ε y = Real.log (ε.w (valAt z (V.φ (genAt (divOf C (expo Dw (Finsupp.single (kind, R, .inl (τ, m)) 1))) (below y.1)) * SmallSec.fnMap V.j hη (ρ m))))) → ∀ (g : ℕ) (eb : Fin g → (Sp (DualNumber Γ(V.X, U)) ⟶ Z.t.G.left)), IsTanBasis Z.t (R := Γ(V.X, U)) (hU.fromSpec ≫ b) eb → ∀ (A₀ : Fin (Dw.mult τ) → Fin g → V.X.functionField), (∀ m, IsCombAtG Z.t (spMap ((SmallSec.fnMap V.j hη).comp (fnOf U h)) ≫ hU.fromSpec ≫ b) (fun i => spMap (dualMap ((SmallSec.fnMap V.j hη).comp (fnOf U h))) ≫ eb i) (fun i => SmallSec.fnMap V.j hη (A₀ m i)) (spMap (dualMap V.φ) ≫ C.f0.v τ m)) → ∀ (k : ℕ) (hk : k ≤ Dw.mult τ), (∀ z : V.G, V.j z ∈ U → ∀ s, RegAt (V.j z) (minor (fun m => (((ρ m)⁻¹ : V.X.functionFieldˣ) : V.X.functionField) • A₀ m) hk s)) ∧ ∀ (v : HeightOneSpectrum (𝓞 F)), resP v = q → ∀ (ε : Ext v) (y : AlgPt C.Y) (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp ε.O ⟶ V.X), z ≫ V.π = y.1 → spMap ε.O.subtype ≫ yt = z ≫ V.j → ⊤ ≤ yt ⁻¹ᵁ U → (∀ s, ε.w (valAt (z ≫ V.j) (minor (fun m => (((ρ m)⁻¹ : V.X.functionFieldˣ) : V.X.functionField) • A₀ m) hk s)) ≤ 1) ∧ ∃ s, ε.w (valAt (z ≫ V.j) (minor (fun m => (((ρ m)⁻¹ : V.X.functionFieldˣ) : V.X.functionField) • A₀ m) hk s)) = 1 := by
   intro E _ _ _ H Dw l Xo c O _ β Z hZ F _ _ e C V b hb hη q _ kind R hkind τ U hU h ρ h1 h2 g eb he A₀ hA k hk

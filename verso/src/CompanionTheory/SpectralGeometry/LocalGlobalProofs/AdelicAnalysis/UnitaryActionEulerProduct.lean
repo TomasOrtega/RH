@@ -26,6 +26,13 @@ def coTup {n M d : ℕ} (b : Module.Basis (Fin d) F E) (X : Fin n → Fin M → 
     Fin n × Fin M × Fin d → R :=
   fun p => (Algebra.TensorProduct.basis R b).repr (X p.1 p.2.1) p.2.2
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Simplify using `only [mul_add, map_add, Finsupp.add_apply, hx, hy, Finset.sum_add_distrib]`. Consider the case `tmul r e'`.
+
+Establish `h1 : inclR R e * (r ⊗ₜ[F] e') = r ⊗ₜ[F] (e * e')`. Simplify using `[inclR]`. Establish `h2` using `congrFun (Algebra.leftMulMatrix_mulVec_repr b e e') k`. Rewrite using `[h1]`. Simplify using `only [Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, smul_eq_mul, Finsupp.mapRange_apply]`.
+
+Rewrite using `[← h2]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem repr_incl_mul {d : ℕ} (b : Module.Basis (Fin d) F E) (e : E) (y : R ⊗[F] E) (k : Fin d) :
     (Algebra.TensorProduct.basis R b).repr (inclR R e * y) k =
       ∑ l, algebraMap F R (Algebra.leftMulMatrix b e k l) *
@@ -46,6 +53,11 @@ theorem repr_incl_mul {d : ℕ} (b : Module.Basis (Fin d) F E) (e : E) (y : R �
     refine Finset.sum_congr rfl fun l _ => ?_
     ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨a, i, k⟩`. Establish `h0 : (G.map (inclR R) *ᵥ X a) i = ∑ j, inclR R (G i j) * X a j`. Simplify using `[Matrix.mulVec, dotProduct]`. Simplify using `only [coTup, h0, map_sum, Finsupp.coe_finset_sum, Finset.sum_apply, repr_incl_mul]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, actMat, Fintype.sum_prod_type]`.
+
+Rewrite using `[Finset.sum_eq_single a]`. Simplify using `[coTup]`. Introduce `a' _ h`. Simplify using `[Ne.symm h]`. Simplify using the standard rewrite rules.
+-/
 theorem coTup_mulVec {n M d : ℕ} (b : Module.Basis (Fin d) F E) (G : Matrix (Fin M) (Fin M) E)
     (X : Fin n → Fin M → R ⊗[F] E) :
     coTup R b (fun a => G.map (inclR R) *ᵥ X a) =
@@ -61,6 +73,9 @@ theorem coTup_mulVec {n M d : ℕ} (b : Module.Basis (Fin d) F E) (G : Matrix (F
     simp [Ne.symm h]
   · simp
 
+/- English proof (translation)
+The claim follows from `coTup_mulVec R b (g : Matrix (Fin M) (Fin M) E) X`.
+-/
 theorem coTup_act {n M d : ℕ} (b : Module.Basis (Fin d) F E) (g : GL (Fin M) E)
     (X : Fin n → Fin M → R ⊗[F] E) :
     coTup R b (actTup R (bc (inclR R) g) X) =
@@ -79,6 +94,15 @@ def coEquiv {n M d : ℕ} (b : Module.Basis (Fin d) F E) :
     exact congrFun ((Algebra.TensorProduct.basis R b).equivFun.apply_symm_apply
       fun k => y (a, i, k)) k
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (actMat n b (g : Matrix (Fin M) (Fin M) E)).mulVec`. Introduce `y`. Use `⟨coTup F b (actTup F (bc (inclR F) g⁻¹) ((coEquiv F b).symm y)), ?_⟩` and prove the remaining obligations. Establish `h` using `coTup_act F b g (actTup F (bc (inclR F) g⁻¹) ((coEquiv F b).symm y))`. Establish `h1 : (actMat n b (g : Matrix (Fin M) (Fin M) E)).map (algebraMap F F) = actMat n b (g : Matrix (Fin M) (Fin M) E)`.
+
+Use extensionality with `p q`. Simplify using the standard rewrite rules. Rewrite `h` using `[h1]`. Rewrite using `[← h]`. Establish `h2 : actTup F (bc (inclR F) g) (actTup F (bc (inclR F) g⁻¹) ((coEquiv F b).symm y)) = (coEquiv F b).symm y`.
+
+Use function extensionality and compare the values at `a`. Establish `: (bc (inclR (F` using `F) (E := E) F) g).1 * (bc (inclR (F := F) (E := E) F) g⁻¹).1 = 1 := by`. Rewrite using `[← Units.val_mul, ← map_mul]`. Simplify using the standard rewrite rules. Simplify using `only [actTup, Matrix.mulVec_mulVec, this, Matrix.one_mulVec]`.
+
+Rewrite using `[h2]`. Conclude with `(coEquiv F b).apply_symm_apply y`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp (Matrix.mulVec_surjective_iff_isUnit.mp hs)).ne_zero`.
+-/
 theorem det_actMat_ne_zero (n : ℕ) {M d : ℕ} (b : Module.Basis (Fin d) F E) (g : GL (Fin M) E) :
     (actMat n b (g : Matrix (Fin M) (Fin M) E)).det ≠ 0 := by
   have hs : Function.Surjective (actMat n b (g : Matrix (Fin M) (Fin M) E)).mulVec := by
@@ -129,6 +153,19 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [Module.Finite F E]
   (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
   [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R]
 
+/- English proof (translation)
+Use `haveI : IsTopologicalRing (R ⊗[F] E) := TopK.isTopRing R`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Establish `e0` using `TopK.coordHomeo R (Module.finBasis F E)`. Use `haveI : SecondCountableTopology (R ⊗[F] E) := e0.secondCountableTopology`. Set `e : (Fin n → Fin M → R ⊗[F] E) ≃ₜ (Fin n × Fin M × Fin d → R)` to `coHomeo R b`.
+
+Set `f : (Fin n → Fin M → R ⊗[F] E) →+ (Fin n × Fin M × Fin d → R)` to `{ toFun := e map_zero' := by`. Use function extensionality and compare the values at `p`. Simplify using `[e, coHomeo, coEquiv, coTup]`. Use the proof step `map_add' := by`. Introduce `X Y`.
+
+Use function extensionality and compare the values at `p`. Simplify using `[e, coHomeo, coEquiv, coTup] }`. Establish `hν : (μ.map e).IsAddHaarMeasure` using `Measure.isAddHaarMeasure_map μ f e.continuous e.surjective e.isClosedEmbedding.tendsto_cocompact`. Use `set A := (actMat n b (g : Matrix (Fin M) (Fin M) E)).map (algebraMap F R) with hA`. Establish `hAc : Continuous fun x : Fin n × Fin M × Fin d → R => A *ᵥ x` using `continuous_const.matrix_mulVec continuous_id`.
+
+Establish `hact : actTup R (bc (inclR R) g) = e.symm ∘ (fun x => A *ᵥ x) ∘ e`. Use function extensionality and compare the values at `X`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[Function.comp_apply, Function.comp_apply, e.apply_symm_apply]`. Conclude with `coTup_act R b g X`.
+
+Establish `he : Measurable e` using `e.continuous.measurable`. Establish `hes : Measurable e.symm` using `e.symm.continuous.measurable`. Establish `h1` using `h _ hν`. Rewrite using `[hact]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Measure.map_map hAc.measurable he, Measure.map_map hes (hAc.measurable.comp he)]`. Use `_ = (c • μ.map e).map e.symm := by rw [h1]`. Use `_ = c • μ := by`. Rewrite using `[Measure.map_smul, Measure.map_map hes he]`. Simplify using the standard rewrite rules.
+-/
 theorem map_actTup {n M d : ℕ} (b : Module.Basis (Fin d) F E) (g : GL (Fin M) E) (c : ℝ≥0)
     (h : ∀ ν : Measure (Fin n × Fin M × Fin d → R), ν.IsAddHaarMeasure →
       ν.map (fun x => (actMat n b (g : Matrix (Fin M) (Fin M) E)).map (algebraMap F R) *ᵥ x) = c • ν)
@@ -172,6 +209,11 @@ theorem map_actTup {n M d : ℕ} (b : Module.Basis (Fin d) F E) (g : GL (Fin M) 
 
 end Meas
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n M g`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Take `⟨cinf, c, hU, hinf, hv⟩` from `GlobalTheory.T.addHaar_map_mulVec_eq_smul_at_all_places F _ (actMat n b (g : Matrix (Fin M) (Fin M) E)) (det_actMat_ne_zero n b g)`. Use `⟨cinf, c, hU, ?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hσ.1 haveI := h1 haveI := h2 haveI := h3 haveI := h4 haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Conclude with `map_actTup (Ainf F) b g cinf hinf`. Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v haveI := h1 haveI := h2 haveI := h3 haveI := h4 haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Conclude with `map_actTup (Fv F v) b g (c v) (hv v)`.
+-/
 theorem product_formula_actTup : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n M : ℕ) (g : GL (Fin M) E), ∃ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c ∧ (∀ μ : Measure (Fin n → Fin M → Ainf F ⊗[F] E), μ.IsAddHaarMeasure → μ.map (actTup (Ainf F) (bc (inclR (Ainf F)) g)) = cinf • μ) ∧ ∀ v : HeightOneSpectrum (𝓞 F), (∀ μ : Measure (Fin n → Fin M → Fv F v ⊗[F] E), μ.IsAddHaarMeasure → μ.map (actTup (Fv F v) (bc (inclR (Fv F v)) g)) = c v • μ) := by
   intro F E _ _ _ _ _ σ hσ n M g
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E

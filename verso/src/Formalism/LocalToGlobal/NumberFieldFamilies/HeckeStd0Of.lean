@@ -24,6 +24,11 @@ def HeckeInt : Prop := ∀ j w, 1 ≤ j → j ≤ R.m → ∀ v k, GenAt0 H (wha
 
 variable {B}
 
+/- English proof (translation)
+Establish `hb` using `what₂.jMt_basis (what₂.muTw w) j (Module.Free.chooseBasis what₂.LL _)`. Use `span_top_of_image what₂.embLL (what₂.jMt (what₂.muTw w) j) _ hb.1 hb.2 _ ?_` and prove the remaining obligations. Establish `h` using `(what₂.MtLat (what₂.muTw w) j).span_top`. Use `le_antisymm le_top (h ▸ Submodule.span_mono fun v hv => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `what₂.MtLat_sub _ _ v hv`.
+
+Conclude with `⟨x, hv, rfl⟩`.
+-/
 theorem span_latJ (j : ℕ) (w : what₂.places.Pl) : Submodule.span what₂.LL (latJ j w) = ⊤ := by
   have hb := what₂.jMt_basis (what₂.muTw w) j (Module.Free.chooseBasis what₂.LL _)
   refine span_top_of_image what₂.embLL (what₂.jMt (what₂.muTw w) j) _ hb.1 hb.2 _ ?_
@@ -32,6 +37,9 @@ theorem span_latJ (j : ℕ) (w : what₂.places.Pl) : Submodule.span what₂.LL 
   obtain ⟨x, rfl⟩ := what₂.MtLat_sub _ _ v hv
   exact ⟨x, hv, rfl⟩
 
+/- English proof (translation)
+The claim follows from `span_image_top (B.ec j w) (B.iV j w) (Module.Free.chooseBasis what₂.LL _) (B.iV_basis j w _).2 _ (span_latJ j w)`.
+-/
 theorem span_iV (j : ℕ) (w : what₂.places.Pl) :
     Submodule.span (FractionRing (B.Oc j w)) (B.iV j w '' latJ j w) = ⊤ :=
   span_image_top (B.ec j w) (B.iV j w) (Module.Free.chooseBasis what₂.LL _) (B.iV_basis j w _).2 _ (span_latJ j w)

@@ -20,6 +20,11 @@ open Classical
 
 namespace GlobalTheory.TranslateAdj
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Establish `hβ : βW.val * (βW⁻¹).val = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h1 : A * ((K' * x * (1 : Matrix (Fin m) (Fin m) R)).map σ)ᵀ * G = A * (x.map σ)ᵀ * G * K`. Rewrite using `[Matrix.mul_one, Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc A, Matrix.mul_assoc, hkey]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[h1, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc βW.val, hβ, Matrix.one_mul]`.
+-/
 theorem frameAdjoint_translate_mul_frameConj_algebra {R S : Type} [CommRing R] [CommRing S] (σ : R →+* R) (f : R →+* S) {m n : ℕ}
     (A : Matrix (Fin m) (Fin m) R) (G K K' : Matrix (Fin n) (Fin n) R) (P : Matrix (Fin m) (Fin m) R)
     (x : Matrix (Fin n) (Fin m) R) (βV : GL (Fin m) S) (βW : GL (Fin n) S)
@@ -35,6 +40,11 @@ theorem frameAdjoint_translate_mul_frameConj_algebra {R S : Type} [CommRing R] [
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc βW.val, hβ, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `D V W βV βW k x`. Establish `hU : Formalism.UG.cT (cA D) (Formalism.L2.Theta.mt W k⁻¹) * W.gram.map (incA D) * Formalism.L2.Theta.mt W k⁻¹ = W.gram.map (incA D)` using `(show HR (AF D.host.F) D.sp.cm.sig W.gram from k⁻¹).2`. Establish `hi : Formalism.L2.Theta.mt W k⁻¹ * Formalism.L2.Theta.mt W k = 1` using `by show Formalism.L2.Theta.mt W (k⁻¹ * k) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression.
+
+Establish `hkey : ((Formalism.L2.Theta.mt W k⁻¹).map (cA D)).transpose * W.gram.map (incA D) = W.gram.map (incA D) * Formalism.L2.Theta.mt W k`. Combine the equalities or inequalities in the displayed calculation. Establish `hmt1 : Formalism.L2.Theta.mt V (1 : GA D V)⁻¹ = 1` using `by rw [inv_one]; rfl`. Conclude with `frameAdjoint_translate_mul_frameConj_algebra (cA D) (toEAf D) ((V.gram⁻¹).map (incA D)) (W.gram.map (incA D)) (Formalism.L2.Theta.mt W k) (Formalism.L2.Theta.mt W k⁻¹) (Formalism.L2.Theta.mt V (1 : GA D V)⁻¹) x βV βW hkey hmt1`.
+-/
 theorem frMapAdj_actO_inv : ∀ (D : D7) (V W : HSp D) (βV : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (βW : GL (Fin W.rank) (Formalism.IndefR.Lev.EAf D)) (k : GA D W) (x : WO V W), frMapAdj V W βV βW (actO V W 1 k⁻¹ x) = (HMul.hMul (frMapAdj V W βV βW x) (HMul.hMul (HMul.hMul ((βW)⁻¹).val ((Formalism.L2.Theta.mt W k).map (toEAf D))) (βW).val : Matrix (Fin (W).rank) (Fin (W).rank) (Formalism.IndefR.Datum.EAf D)) : Matrix (Fin V.rank) (Fin W.rank) (Formalism.IndefR.Datum.EAf D)) := by
   intro D V W βV βW k x
   have hU : Formalism.UG.cT (cA D) (Formalism.L2.Theta.mt W k⁻¹) * W.gram.map (incA D) * Formalism.L2.Theta.mt W k⁻¹ =

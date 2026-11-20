@@ -6,6 +6,15 @@ namespace PI.Dv.TIW
 
 open Matrix
 
+/- English proof (translation)
+Establish `hroot : M.charpoly.IsRoot μ` using `(Polynomial.mem_roots (Matrix.charpoly_monic M).ne_zero).mp hμ`. Rewrite `hroot` using `[Polynomial.IsRoot, Matrix.eval_charpoly]`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hroot`. Establish `hMv : M *ᵥ v = μ • v`. Rewrite `hv` using `[Matrix.sub_mulVec, sub_eq_zero]`.
+
+Rewrite using `[← hv]`. Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal, funext_iff, Pi.smul_apply, smul_eq_mul]`. Establish `hpow : ∀ k : ℕ, (M ^ k) *ᵥ v = μ ^ k • v`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, hMv, Matrix.mulVec_smul, ih, smul_smul, pow_succ, mul_comm]`. Use `hpow m` as an intermediate fact. Rewrite `this` using `[hM, Matrix.one_mulVec]`.
+
+Establish `h2 : (μ ^ m - 1) • v = 0` using `by rw [sub_smul, one_smul, ← this, sub_self]`. Break down `smul_eq_zero.mp h2 with h | h` into its components or cases. Conclude with `sub_eq_zero.mp h`. Conclude with `absurd h hv0`.
+-/
 theorem root_pow_eq_one {d : Type} [Fintype d] [DecidableEq d] (M : Matrix d d ℂ) (m : ℕ) (hM : M ^ m = 1)
     (μ : ℂ) (hμ : μ ∈ M.charpoly.roots) : μ ^ m = 1 := by
   have hroot : M.charpoly.IsRoot μ := (Polynomial.mem_roots (Matrix.charpoly_monic M).ne_zero).mp hμ
@@ -28,6 +37,13 @@ theorem root_pow_eq_one {d : Type} [Fintype d] [DecidableEq d] (M : Matrix d d �
   · exact sub_eq_zero.mp h
   · exact absurd h hv0
 
+/- English proof (translation)
+Rewrite using `[Matrix.trace_eq_sum_roots_charpoly]`. Establish `hroots : ∀ μ ∈ M.charpoly.roots, μ ^ m = 1` using `root_pow_eq_one M m hM`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Conclude with `Multiset.map_congr rfl fun μ hμ => Complex.norm_eq_one_of_pow_eq_one (hroots μ hμ) hm.ne'`. Use `_ = Multiset.card M.charpoly.roots := by simp`. Use `_ ≤ M.charpoly.natDegree := by exact_mod_cast Polynomial.card_roots' _`. Use `_ = Fintype.card d := by rw [Matrix.charpoly_natDegree_eq_dim]`. Establish `: ∀ μ ∈ M.charpoly.roots, μ ∈ integralClosure ℤ ℂ` using `fun μ hμ => IsIntegral.of_pow hm (by rw [hroots μ hμ]; exact isIntegral_one)`.
+
+Conclude with `Subalgebra.multiset_sum_mem _ this`.
+-/
 theorem trace_finite_order {d : Type} [Fintype d] [DecidableEq d] (M : Matrix d d ℂ) (m : ℕ) (hm : 0 < m)
     (hM : M ^ m = 1) : ‖M.trace‖ ≤ Fintype.card d ∧ IsIntegral ℤ M.trace := by
   rw [Matrix.trace_eq_sum_roots_charpoly]
@@ -44,6 +60,13 @@ theorem trace_finite_order {d : Type} [Fintype d] [DecidableEq d] (M : Matrix d 
       IsIntegral.of_pow hm (by rw [hroots μ hμ]; exact isIntegral_one)
     exact Subalgebra.multiset_sum_mem _ this
 
+/- English proof (translation)
+Use `set b := Module.finBasis K W`. Use `set A := LinearMap.toMatrixAlgEquiv b f with hA`. Establish `htr : LinearMap.trace K W f = A.trace`. Rewrite using `[LinearMap.trace_eq_matrix_trace K b f, hA]`. Both sides reduce to the same expression.
+
+Establish `hAm : A ^ m = 1` using `by rw [hA, ← map_pow, hf, map_one]`. Use `set B := σ.mapMatrix A with hB`. Establish `hBm : B ^ m = 1` using `by rw [hB, ← map_pow, hAm, map_one]`. Establish `hσtr : σ (A.trace) = B.trace`. Simplify using `[Matrix.trace, hB, map_sum]`.
+
+Take `⟨h1, h2⟩` from `trace_finite_order B m hm hBm`. Rewrite using `[htr, hσtr]`. Use `⟨by simpa using h1, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[← hσtr]`. Conclude with `(isIntegral_algHom_iff σ.toIntAlgHom σ.injective).mp h2`.
+-/
 theorem trace_end_finite_order {K : Type} [Field K] {W : Type} [AddCommGroup W] [Module K W]
     [FiniteDimensional K W] (f : Module.End K W) (m : ℕ) (hm : 0 < m) (hf : f ^ m = 1) (σ : K →+* ℂ) :
     ‖σ (LinearMap.trace K W f)‖ ≤ Module.finrank K W ∧ IsIntegral ℤ (LinearMap.trace K W f) := by

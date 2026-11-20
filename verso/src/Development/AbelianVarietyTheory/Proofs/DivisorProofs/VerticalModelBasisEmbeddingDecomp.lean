@@ -25,6 +25,11 @@ section General
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Vert.Model O} {Λ : Type} [CommRing Λ]
 
+/- English proof (translation)
+Set `ev : (M.V ⟶ M.V) →+ Γ(M.V, U)` to `AddMonoidHom.mk' (fun φ => φ.app U s) fun _ _ => rfl`. Use `(map_sum ev _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(M.ρ (b k) : M.V ⟶ M.V).app U ((smulHom M.V (c k)).app U s) = _`.
+
+Rewrite using `[smulHom_app_apply, Scheme.Modules.Hom.app_smul, hg, smul_smul]`.
+-/
 theorem eA_app (M : AM B Λ) {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (b : Fin n → Λ) {U : B.X.Opens} (s : Γ(M.V, U))
     (g : Fin n → Γ(B.X, U)) (hg : ∀ k, (M.ρ (b k) : M.V ⟶ M.V).app U s = g k • s) :
     (eA M c b).app U s = (∑ k, resG B.X le_top (c k) * g k) • s := by
@@ -35,6 +40,11 @@ theorem eA_app (M : AM B Λ) {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (b : Fin n �
   change (M.ρ (b k) : M.V ⟶ M.V).app U ((smulHom M.V (c k)).app U s) = _
   rw [smulHom_app_apply, Scheme.Modules.Hom.app_smul, hg, smul_smul]
 
+/- English proof (translation)
+Rewrite using `[Preadditive.comp_sub, Category.comp_id, sub_eq_zero]`. Use `LatUniq.hom_ext hM hU hs fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (eA M c b).app U ((eA M c b).app U (s i))`. Break down `h i with h | h` into its components or cases. Rewrite using `[h, h]`.
+
+Rewrite using `[h, map_zero]`.
+-/
 theorem eA_idem (M : AM B Λ) {r m : ℕ} (hM : GlobalTheory.VB.IsVB M.V r) {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (b : Fin n → Λ)
     {U : B.X.Opens} (hU : (U : Set B.X).Nonempty) {s : Fin m → Γ(M.V, U)} (hs : GlobalTheory.VB.IsFrame s)
     (h : ∀ i, (eA M c b).app U (s i) = s i ∨ (eA M c b).app U (s i) = 0) :
@@ -46,6 +56,9 @@ theorem eA_idem (M : AM B Λ) {r m : ℕ} (hM : GlobalTheory.VB.IsVB M.V r) {n :
   · rw [h, h]
   · rw [h, map_zero]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `hU`. Rewrite using `[← hF.finrank_stalk x, Module.finrank_eq_card_basis (hs.stalkBasis x hx), Fintype.card_fin]`.
+-/
 theorem rank_eq {X : Scheme.{0}} {F : X.Modules} {r m : ℕ} (hF : GlobalTheory.VB.IsVB F r) {U : X.Opens}
     (hU : (U : Set X).Nonempty) {s : Fin m → Γ(F, U)} (hs : GlobalTheory.VB.IsFrame s) : r = m := by
   obtain ⟨x, hx⟩ := hU
@@ -58,6 +71,11 @@ section Model
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
+/- English proof (translation)
+Establish `e` using `(isAffineOpen_top (Sp (Z.i.c.V W))).SpecMap_appLE_fromSpec Z.s (Z.U a).2 le_top`. Establish `e'` using `Z.alg_s a`. Rewrite `e` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Establish `e₂` using `Spec.map_injective (e.trans e')`. Establish `e₃ : (Z.s.appLE ⊤ (Z.U a).1 le_top).hom ((Scheme.ΓSpecIso (.of (Z.i.c.V W))).inv.hom v) = Z.alg a v` using `congrArg (fun φ => φ.hom v) e₂`.
+
+Rewrite using `[← e₃, Vert.Model.const, Vert.Model.const_eq, ← hh]`. Establish `e₄ : Z.s.appLE ⊤ (Z.U a).1 le_top ≫ h.app (Z.U a).1 = (h ≫ Z.s).appTop ≫ B.X.presheaf.map (homOfLE (le_top : h ⁻¹ᵁ (Z.U a).1 ≤ ⊤)).op`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `Scheme.Hom.appLE_comp_appLE h Z.s ⊤ _ _ _ _`. Conclude with `(congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (.of (Z.i.c.V W))).inv.hom v)) e₄).symm`.
+-/
 theorem res_const (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.c.V W)] {B : Vert.Model (Z.i.c.V W)}
     {h : B.X ⟶ Z.X} (hh : h ≫ Z.s = B.str) (a : Fin Z.m) (v : Z.i.c.V W) :
     resG B.X (le_top : h ⁻¹ᵁ (Z.U a).1 ≤ ⊤) (B.const v) = (h.app (Z.U a).1).hom (Z.alg a v) := by
@@ -74,6 +92,9 @@ theorem res_const (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.c.V W)] {B
     exact Scheme.Hom.appLE_comp_appLE h Z.s ⊤ _ _ _ _
   exact (congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (.of (Z.i.c.V W))).inv.hom v)) e₄).symm
 
+/- English proof (translation)
+Rewrite using `[eA_app M _ b s _ hs]`. Simplify using `only [← res_const Z hh a, ← map_mul, ← map_sum, hv]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem eA_app_const (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.c.V W)] {B : Vert.Model (Z.i.c.V W)}
     {h : B.X ⟶ Z.X} (hh : h ≫ Z.s = B.str) {Λ : Type} [CommRing Λ] (M : AM B Λ) (a : Fin Z.m)
     (s : Γ(M.V, h ⁻¹ᵁ (Z.U a).1)) {n : ℕ} (cf : Fin n → Z.i.c.V W) (b : Fin n → Λ) (v : Fin n → Z.i.c.V W)
@@ -84,6 +105,19 @@ theorem eA_app_const (Z : LocM.Mdl Y i₀) [IsDiscreteValuationRing (Z.i.c.V W)]
   simp only [← res_const Z hh a, ← map_mul, ← map_sum, hv]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `key (M : AM B Λ) (hM : GlobalTheory.VB.IsVB M.V m) (t : ∀ a : Fin Z.m, Fin m → Γ(M.V, h ⁻¹ᵁ (Z.U a).1)) (d' : Bool) (ht : IsLat Z h x d d' M.V t) (k₁ : ∀ a k, (eA M c b).app _ (t a (σ k)) = t a (σ k)) (k₂ : ∀ a i, i ∉ Set.range σ → (eA M c b).app _ (t a i) = 0) : ∃ q : M.V ⟶ (par …`. Establish `hid` using `eA_idem M hM c b ha (ht.frame a₀) fun i => by`. Distinguish the cases in `hi : i ∈ Set.range σ`. Take `⟨k, rfl⟩` from `hi`. Conclude with `Or.inl (k₁ _ _)`.
+
+Conclude with `Or.inr (k₂ _ _ hi)`. Establish `hm : Mono (partι c b M)` using `inferInstanceAs (Mono (kernel.ι (𝟙 M.V - eA M c b)))`. Set `q : M.V ⟶ (partF c b).obj M` to `kernel.lift _ _ hid`. Establish `hq : q ≫ partι c b M = eA M c b` using `kernel.lift_ι _ _ _`. Establish `hi : partι c b M ≫ eA M c b = partι c b M`.
+
+Use `kernel.condition (𝟙 M.V - eA M c b)` as an intermediate fact. Rewrite `this` using `[Preadditive.comp_sub, Category.comp_id, sub_eq_zero]`. Conclude with `this.symm`. Establish `hiq : partι c b M ≫ q = 𝟙 _`. Rewrite using `[← cancel_mono (partι c b M), Category.assoc, hq, hi, Category.id_comp]`.
+
+Establish `happ {U : B.X.Opens} (u : Γ(M.V, U)) : (partι c b M).app U (q.app U u) = (eA M c b).app U u` using `congrArg (fun φ => Scheme.Modules.Hom.app φ U u) hq`. Use `⟨q, hq, SummandLat.isLat_summand Z h (partι c b M) q hiq σ hσ hM x d d' t ht (fun a k => (happ _).trans (k₁ a k)) fun a i hi' => ?_⟩` and prove the remaining obligations. Establish `e : q.app _ (t a i) = q.app _ ((partι c b M).app _ (q.app _ (t a i)))` using `(congrArg (fun φ => Scheme.Modules.Hom.app φ _ (q.app _ (t a i))) hiq).symm`. Rewrite using `[e, happ, k₂ a i hi', map_zero]`. Establish `comm {U : B.X.Opens} (u : Γ(P.E'.V, U)) : (eA P.E c b).app U (P.ψ.hom.app U u) = P.ψ.hom.app U ((eA P.E' c b).app U u)` using `(congrArg (fun φ => Scheme.Modules.Hom.app φ U u) (eA_comm P.ψ c b)).symm`.
+
+Take `⟨q', hq', k'⟩` from `key P.E' (hr ▸ P.vb') s d h₁ hin hout`. Take `⟨q, hq, k⟩` from `key P.E (hr ▸ P.vb) _ (!d) h₂ (fun a k => by rw [comm, hin]) fun a i hi => by rw [comm, hout a i hi, map_zero]`. Establish `hm : Mono (partι c b P.E)` using `inferInstanceAs (Mono (kernel.ι (𝟙 P.E.V - eA P.E c b)))`. Establish `nat : (partF c b).map P.ψ ≫ partι c b P.E = partι c b P.E' ≫ P.ψ.hom` using `kernel.lift_ι _ _ _`. Establish `e : q' ≫ (partF c b).map P.ψ = P.ψ.hom ≫ q`.
+
+Rewrite using `[← cancel_mono (partι c b P.E), Category.assoc, nat, ← Category.assoc, hq', Category.assoc, hq, eA_comm]`. Use `⟨rank_eq vb' ha (k'.frame a₀), fun a k => q'.app _ (s a (σ k)), k', ?_⟩` and prove the remaining obligations. Establish `e' : (fun (a : Fin Z.m) (k : Fin m') => ((partF c b).map P.ψ).app _ (q'.app _ (s a (σ k)))) = fun a k => q.app _ (P.ψ.hom.app _ (s a (σ k)))`. Use function extensionality and compare the values at `fun a => funext fun k => congrArg (fun φ => Scheme.Modules.Hom.app φ _ (s a (σ k))) e`. Conclude with `e' ▸ k`.
+-/
 theorem isLatPres_part (Z : LocM.Mdl Y i₀) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {B : Vert.Model O} {h : B.X ⟶ Z.X} {a₀ : Fin Z.m} (ha : ((h ⁻¹ᵁ (Z.U a₀).1 : B.X.Opens) : Set B.X).Nonempty)
     {Λ : Type} [CommRing Λ] (P : EPres B Λ) {m m' : ℕ} (hr : P.r = m) {x : Fin m → Letter Dw} {d : Bool}
@@ -136,12 +170,18 @@ theorem isLatPres_part (Z : LocM.Mdl Y i₀) {O : Type} [CommRing O] [IsDomain O
 
 end Model
 
+/- English proof (translation)
+Take `⟨t, k⟩` from `y`. Substitute `h` using the available equality. Conclude with `⟨k.cast (mult_comp S jc τ), rfl⟩`.
+-/
 theorem exists_xLie {D : D7} {A : Amb D} {N j : ℕ} (S : Sig A N j) {p : ℕ} [Fact p.Prime] (jc : KW p →+* ℂ) (τ : Emb D p)
     (y : Letter S.Dw) (h : y.1 = jc.comp τ) : ∃ k, xLie S jc τ k = y := by
   obtain ⟨t, k⟩ := y
   subst h
   exact ⟨k.cast (mult_comp S jc τ), rfl⟩
 
+/- English proof (translation)
+The claim follows from `isDiscreteValuationRing_V z.Z.i.c hp hW haveI := charP_residueField_of_mem_nonunits z.Z.i.c hp hW ∀ (c : (nmodel z.Z).Comp) (B : Vert.Model (z.Z.i.c.V W)) (f : Vert.Model.Hom B ((nmodel z.Z).comp c)) (n : ℕ) (b : Fin n → 𝓞 D.host.E) (ev : Emb D p → (𝓞 D.host.E →+* z.Z.i.c.V W)) ( …`.
+-/
 theorem isLatPres_xLie : ∀ {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ} [Fact p.Prime] {hp : p.Prime} {W : ValuationSubring ℂ} {hW : (p : ℂ) ∈ W.nonunits} (z : AdmAt S κ hp hW) (jc : KW p →+* ℂ), haveI := isDiscreteValuationRing_V z.Z.i.c hp hW
     haveI := charP_residueField_of_mem_nonunits z.Z.i.c hp hW
     ∀ (c : (nmodel z.Z).Comp) (B : Vert.Model (z.Z.i.c.V W)) (f : Vert.Model.Hom B ((nmodel z.Z).comp c)) (n : ℕ)

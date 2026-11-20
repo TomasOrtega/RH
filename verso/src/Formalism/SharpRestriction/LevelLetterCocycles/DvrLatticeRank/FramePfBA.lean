@@ -17,6 +17,21 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     {W : LocWach PD LL O v n} {T : LocLat G Qp LL O}
 
+/- English proof (translation)
+Use `choose a haΔ ha using (framepf_mem_toLA π' c eb _).1 hx`. Establish `hee : (letE c : LetA O n) * letE c = letE c` using `Formalism.MainNotions.LiftingTheory.wmap_letE_idem c`. Establish `hx' : algebraMap (LetA O n) W.EE (Eπ ^ h') • x = ∑ k, algebraMap (LetA O n) W.EE ((letE c : LetA O n) * a k) ⊗ₜ[O] eb k`. Rewrite using `[← framepf_smulLA_alg, ← (Algebra.TensorProduct.basis W.EE eb).sum_repr (smulLA W T π' c _ x)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ha, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `hm : ∀ j, ∑ k, a k * S j k ∈ W.AΔ` using `fun j => Subalgebra.sum_mem _ fun k _ => W.AΔ.mul_mem (haΔ k) (hS j k)`. Use `⟨∑ j, algebraMap (LetA O n) W.EE ((letE c : LetA O n) * ∑ k, a k * S j k) ⊗ₜ[O] eb j, ⟨∑ j, (⟨_, hm j⟩ : ↥W.AΔ) ⊗ₜ ⟨eb j, trivial⟩, by rw [map_sum]; rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨Λ, hΛ⟩ : IsUnit (algebraMap (LetA O n) W.EE (Eπ ^ h'))` from `by rw [map_pow]; exact huE.pow _`. Establish `hcan : ∀ z z' : LA W T π' c, algebraMap (LetA O n) W.EE (Eπ ^ h') • z = algebraMap (LetA O n) W.EE (Eπ ^ h') • z' → z = z'`.
+
+Introduce `z z' h`. Use `congrArg (fun w => ((Λ⁻¹ : W.EEˣ) : W.EE) • w) h` as an intermediate fact. Simplify `this` using `only [← hΛ, smul_smul, Units.inv_mul, one_smul]`. Apply `hcan` to reduce the goal to its premises. Establish `h1 : Ψ (algebraMap (LetA O n) W.EE (Eπ ^ h') • x) = ∑ m, (∑ k, (letE c : LetA O n) * a k * R m k) • W.φD T (Bs.b m)`.
+
+Rewrite using `[hx', map_sum]`. Simplify using `only [hΨ, algebraMap_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun m _ => Finset.sum_smul.symm`. Establish `h3 : ∀ j, ∑ m, (∑ k, (letE c : LetA O n) * a k * R m k) * P j m = algebraMap O (LetA O n) lam * ((letE c : LetA O n) * a j) + Eπ ^ h' * (π' ^ M * Eπ ^ (3 * h') * ((letE c : LetA O n) * ∑ k, a k * S j k))`.
+
+Introduce `j`. Establish `: ∑ m, (∑ k, (letE c : LetA O n) * a k * R m k) * P j m = ∑ k, (letE c : LetA O n) * a k * ∑ m, P j m * R m k`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => by ring`.
+
+Rewrite using `[this]`. Simplify using `only [hPR, mul_add, Finset.sum_add_distrib, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.mul_sum]`. Use `congr 1`. Take the linear combination `(algebraMap O (LetA O n) lam * a j) * hee`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+
+Rewrite using `[smul_sub, ← map_smul Φ, ← map_smul Ψ, h1, hΦ, smul_comm _ lam x, hx', framepf_smulLA_alg, Finset.smul_sum, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[h3, ← algebraMap_smul W.EE lam, IsScalarTower.algebraMap_apply O (LetA O n) W.EE]`. Simplify using `only [TensorProduct.smul_tmul', smul_eq_mul]`. Rewrite using `[← TensorProduct.sub_tmul, ← map_mul, ← map_mul, ← map_mul, ← map_sub, add_sub_cancel_left]`.
+-/
 theorem framepf_βα_core (Bs : FramepfBas W T) (π' Eπ : LetA O n) (h' M : ℕ)
     (c : ZMod n) (huE : IsUnit (algebraMap (LetA O n) W.EE Eπ))
     (eb : Module.Basis (Fin Bs.r) O (LcQ W T π' c)) (P R S : Fin Bs.r → Fin Bs.r → LetA O n)

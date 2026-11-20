@@ -15,6 +15,9 @@ namespace GlobalTheory.CompanionTheory.WaveMult
 
 def gconv (g g' : ℝ → ℝ) (r : ℝ) : ℝ := ∫ t, g t * g' (r - t)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Unfold `gconv`. Rewrite using `[← integral_sub_left_eq_self (fun t => g t * g' (r - t)) volume r]`. Simplify using `[mul_comm]`.
+-/
 theorem gconv_comm (g g' : ℝ → ℝ) : gconv g g' = gconv g' g := by
   funext r
   unfold gconv
@@ -26,6 +29,9 @@ variable {n : ℕ}
 def KReg {V : Type} [NormedAddCommGroup V] (k : Mat n → V) : Prop :=
   ContinuousOn k (GLs n) ∧ ∃ R, ∀ y ∈ GLs n, R < lg y → k y = 0
 
+/- English proof (translation)
+Establish `: y.det ≠ 0` using `hy`. Express the relevant statement in the definitionally equal form `(y⁻¹).det ≠ 0`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `inv_ne_zero this`.
+-/
 theorem inv_mem_GLs {y : Mat n} (hy : y ∈ GLs n) : y⁻¹ ∈ GLs n := by
   have : y.det ≠ 0 := hy
   change (y⁻¹).det ≠ 0
@@ -35,6 +41,11 @@ theorem inv_mem_GLs {y : Mat n} (hy : y ∈ GLs n) : y⁻¹ ∈ GLs n := by
 section
 variable [MeasurableSpace (G n)] (μ : Measure (G n)) (E : KMod n)
 
+/- English proof (translation)
+Set `e` to `Fintype.equivFin ι`. Use `⟨Fintype.card ι, c ∘ e.symm, w ∘ e.symm, g ∘ e.symm, ks ∘ e.symm, fun i => h1 _, fun y hy => ?_, fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 y hy]`. Conclude with `(Equiv.sum_comp e.symm (fun i => c i • ks i y)).symm`. Rewrite using `[h3 χ]`.
+
+Conclude with `(Equiv.sum_comp e.symm (fun i => c i * zVal (w i) χ * coshT (g i) (cas χ))).symm`.
+-/
 theorem isMult_of_fintype {ι : Type} [Fintype ι] {k : Mat n → (E.V →L[ℂ] E.V)} {val : Inf n → ℂ} {T : ℝ}
     (c : ι → ℂ) (w : ι → List (Bool × ℕ)) (g : ι → ℝ → ℝ) (ks : ι → Mat n → (E.V →L[ℂ] E.V))
     (h1 : ∀ i, IsBump (g i) T ∧ IsKer μ E (w i) (g i) (ks i)) (h2 : ∀ y ∈ GLs n, k y = ∑ i, c i • ks i y)
@@ -47,6 +58,9 @@ theorem isMult_of_fintype {ι : Type} [Fintype ι] {k : Mat n → (E.V →L[ℂ]
     exact (Equiv.sum_comp e.symm (fun i => c i * zVal (w i) χ * coshT (g i) (cas χ))).symm
 end
 
+/- English proof (translation)
+Simplify using `[zVal]`.
+-/
 theorem zVal_append (w w' : List (Bool × ℕ)) (χ : Inf n) : zVal (w ++ w') χ = zVal w χ * zVal w' χ := by
   simp [zVal]
 

@@ -8,12 +8,18 @@ open ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.G.Key Reciproci
 namespace GlobalTheory.PeriodChange
 
 open Complex Matrix NumberField in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify `h (Pi.single i 1) (Pi.single j 1)` using `[mulVec_single_one, single_one_dotProduct]`.
+-/
 private theorem matrix_eq_of_dotProduct_mulVec_eq {n : Type*} [Fintype n] [DecidableEq n] (M K : Matrix n n ℤ)
     (h : ∀ a b : n → ℤ, a ⬝ᵥ (M *ᵥ b) = a ⬝ᵥ (K *ᵥ b)) : M = K := by
   ext i j
   simpa [mulVec_single_one, single_one_dotProduct] using h (Pi.single i 1) (Pi.single j 1)
 
 open Complex Matrix NumberField in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.omegaStd`. Simplify using `[Matrix.J, dotProduct, Fintype.sum_sum_type, Matrix.fromBlocks_mulVec, Finset.sum_sub_distrib, neg_mulVec, one_mulVec, Finset.sum_neg_distrib, mul_comm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem omegaStd_eq_neg_dotProduct_J {g : ℕ} (a b : Fin g ⊕ Fin g → ℤ) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.omegaStd a b = -(a ⬝ᵥ (J (Fin g) ℤ *ᵥ b)) := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.omegaStd
@@ -22,6 +28,9 @@ private theorem omegaStd_eq_neg_dotProduct_J {g : ℕ} (a b : Fin g ⊕ Fin g �
   ring
 
 open Complex Matrix NumberField in
+/- English proof (translation)
+Simplify using `[Matrix.J, fromBlocks_multiply, fromBlocks_neg]`.
+-/
 private theorem fromBlocks_swap_mul_J_mul_swap {g : ℕ} :
     fromBlocks (0 : Matrix (Fin g) (Fin g) ℤ) 1 1 0 * J (Fin g) ℤ * fromBlocks 0 1 1 0 =
       -J (Fin g) ℤ := by
@@ -29,6 +38,15 @@ private theorem fromBlocks_swap_mul_J_mul_swap {g : ℕ} :
 
 open Complex Matrix NumberField in
 
+/- English proof (translation)
+Use `set S : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ := fromBlocks 0 1 1 0 with hS`. Establish `hNJN : Nᵀ * J (Fin g) ℤ * N = J (Fin g) ℤ`. Apply `matrix_eq_of_dotProduct_mulVec_eq` to reduce the goal to its premises. Introduce `a b`. Use `hN a b` as an intermediate fact.
+
+Rewrite `this` using `[omegaStd_eq_neg_dotProduct_J, omegaStd_eq_neg_dotProduct_J, neg_inj]`. Rewrite using `[← this, Matrix.mul_assoc, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose]`. Establish `hSt : Sᵀ = S` using `by simp [hS, fromBlocks_transpose]`. Establish `hM : Matrix.fromBlocks N.toBlocks₂₂ᵀ N.toBlocks₁₂ᵀ N.toBlocks₂₁ᵀ N.toBlocks₁₁ᵀ = S * Nᵀ * S` using `by conv_rhs => rw [← fromBlocks_toBlocks N]`. Simplify using `[hS, fromBlocks_transpose, fromBlocks_multiply]`.
+
+Rewrite using `[hM, SymplecticGroup.mem_iff]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [transpose_mul, transpose_transpose, hSt, Matrix.mul_assoc]`. Use `_ = -(S * (Nᵀ * J (Fin g) ℤ * N) * S) := by`. Rewrite using `[fromBlocks_swap_mul_J_mul_swap]`.
+
+Simplify using `only [Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc]`. Use `_ = J (Fin g) ℤ := by rw [hNJN, fromBlocks_swap_mul_J_mul_swap, neg_neg]`.
+-/
 theorem _root_.GlobalTheory.PeriodChange.swap_mem_symplectic {g : ℕ} (N : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)
     (hN : ∀ a b, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.omegaStd (N *ᵥ a) (N *ᵥ b) = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.omegaStd a b) :
     Matrix.fromBlocks N.toBlocks₂₂ᵀ N.toBlocks₁₂ᵀ N.toBlocks₂₁ᵀ N.toBlocks₁₁ᵀ ∈
@@ -56,6 +74,15 @@ theorem _root_.GlobalTheory.PeriodChange.swap_mem_symplectic {g : ℕ} (N : Matr
 
 open Complex Matrix NumberField in
 
+/- English proof (translation)
+Establish `hL' : L = h⁻¹ * A`. Rewrite using `[← hA, ← Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.one_mul]`. Establish `hAh : h' * h⁻¹ * A = 1` using `by rw [Matrix.mul_assoc, ← hL', hL]`. Establish `hA1 : A * (h' * h⁻¹) = 1` using `mul_eq_one_comm.mp hAh`. Establish `hAu : IsUnit A.det` using `isUnit_det_of_right_inverse hA1`.
+
+Establish `hAinv : A⁻¹ = h' * h⁻¹` using `inv_eq_right_inv hA1`. Establish `hh' : h' = A⁻¹ * h`. Rewrite using `[hAinv, Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.mul_one]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← hR, hh', Matrix.mul_assoc, hB, transpose_mul, transpose_nonsing_inv]`. Rewrite using `[← transpose_nonsing_inv, transpose_transpose]`. Conclude with `hh'`. Establish `: h = A * h'`. Rewrite using `[hh', ← Matrix.mul_assoc, mul_nonsing_inv _ hAu, Matrix.one_mul]`.
+
+Use `conv_lhs => rw [this]`. Rewrite using `[det_mul, det_transpose]`.
+-/
 theorem _root_.GlobalTheory.PeriodChange.change_of_normalisation {g : ℕ} (h h' τ' A B L R : Matrix (Fin g) (Fin g) ℂ)
     (hA : h * L = A) (hB : h * R = B) (hL : h' * L = 1) (hR : h' * R = τ') (hs : τ'.IsSymm)
     (hu : IsUnit h.det) :
@@ -79,6 +106,11 @@ theorem _root_.GlobalTheory.PeriodChange.change_of_normalisation {g : ℕ} (h h'
     rw [det_mul, det_transpose]
 
 open Complex Matrix NumberField in
+/- English proof (translation)
+Use `conv_lhs => rw [← Finset.univ_sum_single x]`. Rewrite using `[map_sum]`. Use function extensionality and compare the values at `i`. Simplify using `only [Finset.sum_apply, mulVec, dotProduct, of_apply]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+
+Establish `hs : Pi.single u (x u) = x u • (Pi.single u 1 : ι → ℤ)`. Apply the tactic sequence `ext v; by_cases hv : v = u <;> simp [hv]`. Rewrite using `[hs, map_zsmul, Pi.smul_apply, zsmul_eq_mul, mul_comm]`.
+-/
 private theorem addMonoidHom_eq_matrix_mulVec {ι : Type*} [Fintype ι] [DecidableEq ι] {g : ℕ}
     (Q : (ι → ℤ) →+ (Fin g → ℂ)) (x : ι → ℤ) :
     Q x = (Matrix.of fun i u => Q (Pi.single u 1) i) *ᵥ fun u => (x u : ℂ) := by
@@ -93,6 +125,35 @@ private theorem addMonoidHom_eq_matrix_mulVec {ι : Type*} [Fintype ι] [Decidab
 
 open Complex Matrix NumberField in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D g bas gam N P P' h h' τ τ' hEF hgam hNdef hP' hnorm hnorm' hτ hτ' hu`. Establish `hτs : τ.IsSymm` using `by unfold _root_.ReciprocityTheory.PTheta.SiegelH at hτ; exact hτ.1`. Establish `hτs' : τ'.IsSymm` using `by unfold _root_.ReciprocityTheory.PTheta.SiegelH at hτ'; exact hτ'.1`. Establish `hNv : ∀ a, bas (N *ᵥ a) = gam (bas a)`. Introduce `a`.
+
+Set `f₁ : (Fin g ⊕ Fin g → ℤ) →+ (Fin g ⊕ Fin g → ℤ)` to `(Matrix.mulVecLin N).toAddMonoidHom`. Set `f₂ : (Fin g ⊕ Fin g → ℤ) →+ (Fin g ⊕ Fin g → ℤ)` to `bas.symm.toLinearMap.toAddMonoidHom.comp (gam.toAddEquiv.toAddMonoidHom.comp bas.toLinearMap.toAddMonoidHom)`. Establish `hf : f₁ = f₂`. Use `AddMonoidHom.functions_ext _ _ _ fun v x => ?_` and prove the remaining obligations. Establish `hs : Pi.single v x = x • (Pi.single v 1 : Fin g ⊕ Fin g → ℤ)`.
+
+Apply the tactic sequence `ext u; by_cases hu : u = v <;> simp [hu]`. Rewrite using `[hs, map_zsmul, map_zsmul]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Simplify using `[f₁, f₂, hNdef, mulVec_single_one]`.
+
+Use `DFunLike.congr_fun hf a` as an intermediate fact. Express the relevant statement in the definitionally equal form `N *ᵥ a = bas.symm (gam (bas a)) at this`. Rewrite using `[this, LinearEquiv.apply_symm_apply]`. Establish `hγ` using `_root_.GlobalTheory.PeriodChange.swap_mem_symplectic N fun a b => by`. Use `hEF (N *ᵥ a) (N *ᵥ b)` as an intermediate fact.
+
+Rewrite `this` using `[hNv, hNv, hgam, hEF]`. Conclude with `(neg_inj.mp this).symm`. Establish `hcol : ∀ v, h *ᵥ P' (bas (Pi.single v 1)) = fun i => (N (Sum.inl i) v : ℂ) + ∑ j, τ i j * N (Sum.inr j) v`. Introduce `v`. Establish `hPb : ∀ x, P (bas x) = (Matrix.of fun i u => P (bas (Pi.single u 1)) i) *ᵥ fun u => (x u : ℂ)` using `fun x => addMonoidHom_eq_matrix_mulVec (P.comp bas.toLinearMap.toAddMonoidHom) x`.
+
+Rewrite using `[hP', ← hNv, hPb, mulVec_mulVec]`. Use function extensionality and compare the values at `i`. Establish `hc : ∀ u, (h * Matrix.of fun i u => P (bas (Pi.single u 1)) i) i u = (h *ᵥ P (bas (Pi.single u 1))) i`. Introduce `u`. Simplify using `[mul_apply, mulVec, dotProduct]`.
+
+Rewrite using `[mulVec, dotProduct, Fintype.sum_sum_type]`. Simplify using `only [hc, (hnorm _).1, (hnorm _).2]`. Simplify using `[mulVec_single_one, Pi.single_apply]`. Set `A₀ : Matrix (Fin g) (Fin g) ℂ` to `N.toBlocks₁₁.map (fun x : ℤ => (x : ℂ)) + τ * N.toBlocks₂₁.map (fun x : ℤ => (x : ℂ))`. Set `B₀ : Matrix (Fin g) (Fin g) ℂ` to `N.toBlocks₁₂.map (fun x : ℤ => (x : ℂ)) + τ * N.toBlocks₂₂.map (fun x : ℤ => (x : ℂ))`.
+
+Establish `hAL : h * (Matrix.of fun i k => P' (bas (Pi.single (Sum.inl k) 1)) i) = A₀`. Use extensionality with `i k`. Use `congrFun (hcol (Sum.inl k)) i` as an intermediate fact. Simplify using `only [mulVec, dotProduct] at this`. Simplify using `[A₀, mul_apply, this, toBlocks₁₁, toBlocks₂₁]`.
+
+Establish `hBR : h * (Matrix.of fun i k => P' (bas (Pi.single (Sum.inr k) 1)) i) = B₀`. Use extensionality with `i k`. Use `congrFun (hcol (Sum.inr k)) i` as an intermediate fact. Simplify using `only [mulVec, dotProduct] at this`. Simplify using `[B₀, mul_apply, this, toBlocks₁₂, toBlocks₂₂]`.
+
+Establish `hL1 : h' * (Matrix.of fun i k => P' (bas (Pi.single (Sum.inl k) 1)) i) = 1`. Use extensionality with `i k`. Use `congrFun (hnorm' k).1 i` as an intermediate fact. Simplify using `only [mulVec, dotProduct] at this`. Simplify using `[mul_apply, this, one_apply, Pi.single_apply]`.
+
+Establish `hRτ : h' * (Matrix.of fun i k => P' (bas (Pi.single (Sum.inr k) 1)) i) = τ'`. Use extensionality with `i k`. Use `congrFun (hnorm' k).2 i` as an intermediate fact. Simplify using `only [mulVec, dotProduct] at this`. Simplify using `[mul_apply, this, Pi.single_apply]`.
+
+Take `⟨e₁, e₂, e₃⟩` from `_root_.GlobalTheory.PeriodChange.change_of_normalisation h h' τ' A₀ B₀ _ _ hAL hBR hL1 hRτ hτs' hu`. Establish `hj : _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.jAut (Matrix.fromBlocks N.toBlocks₂₂ᵀ N.toBlocks₁₂ᵀ N.toBlocks₂₁ᵀ N.toBlocks₁₁ᵀ) τ = A₀ᵀ`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.jAut _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.cMat`. Simplify using `[A₀, fromBlocks_map, transpose_add, transpose_mul, hτs.eq, transpose_map, add_comm]`. Use `⟨_, hγ, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.spAct`. Rewrite using `[hj, e₁]`. Use `congr 1`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.cMat`. Simplify using `[B₀, fromBlocks_map, transpose_add, transpose_mul, hτs.eq, transpose_map, add_comm]`.
+
+Rewrite using `[hj]`. Conclude with `e₂`. Rewrite using `[hj]`. Conclude with `e₃`.
+-/
 theorem _root_.GlobalTheory.PeriodChange.period_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D.La) (gam : D.La ≃ₗ[𝓞 E] D.La) (N : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (P P' : D.La →+ (Fin g → ℂ)) (h h' τ τ' : Matrix (Fin g) (Fin g) ℂ), (∀ a b, D.EF (bas a) (bas b) = -_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.omegaStd a b) → (∀ a b, D.EF (gam a) (gam b) = D.EF a b) → (∀ u v, N u v = bas.symm (gam (bas (Pi.single v 1))) u) → (∀ a, P' a = P (gam a)) → (∀ k, h *ᵥ P (bas (Pi.single (Sum.inl k) 1)) = Pi.single k 1 ∧ h *ᵥ P (bas (Pi.single (Sum.inr k) 1)) = τ *ᵥ Pi.single k 1) → (∀ k, h' *ᵥ P' (bas (Pi.single (Sum.inl k) 1)) = Pi.single k 1 ∧ h' *ᵥ P' (bas (Pi.single (Sum.inr k) 1)) = τ' *ᵥ Pi.single k 1) → τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g) → τ' ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g) → IsUnit h.det → ∃ γ ∈ Matrix.symplecticGroup (Fin g) ℤ, γ = Matrix.fromBlocks N.toBlocks₂₂ᵀ N.toBlocks₁₂ᵀ N.toBlocks₂₁ᵀ N.toBlocks₁₁ᵀ ∧ τ' = _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.spAct γ τ ∧ h' = ((_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.jAut γ τ)⁻¹)ᵀ * h ∧ h.det = (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.jAut γ τ).det * h'.det := by
   intro E _ _ _ H D g bas gam N P P' h h' τ τ' hEF hgam hNdef hP' hnorm hnorm' hτ hτ' hu
   have hτs : τ.IsSymm := by unfold _root_.ReciprocityTheory.PTheta.SiegelH at hτ; exact hτ.1

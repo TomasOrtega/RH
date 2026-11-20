@@ -22,6 +22,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 noncomputable section
 namespace GlobalTheory.AvgColJet
 
+/- English proof (translation)
+Establish `hn : DefNode D.R.m (.top j) ∧ DefNode D.R.m (.top (j + 1))` using `⟨show j ≤ D.R.m by omega, show j + 1 ≤ D.R.m by omega⟩`. Establish `c1 : W.cart (.top j) = fun _ => 1` using `funext (GlobalTheory.FockReal.cart_def hL W hn.1)`. Establish `c2 : W.cart (.top (j + 1)) = fun _ => 1` using `funext (GlobalTheory.FockReal.cart_def hL W hn.2)`. Establish `e : ∀ X, DefNode D.R.m X → N.frC X = fun τ => W.onb X τ * AvgCol.frRel W N X τ`. Introduce `X hX`.
+
+Use function extensionality and compare the values at `τ`. Establish `hu : IsUnit (W.onb X τ).det` using `Matrix.isUnit_det_of_left_inverse (GlobalTheory.FockReal.onb_def hL W hX τ)`. Rewrite using `[AvgCol.frRel, Matrix.mul_nonsing_inv_cancel_left _ _ hu]`. Simplify using `only [fockIn, GridData.Weil.fock, GridData.cartS, GridData.onT, GridData.onS, c1, c2, e _ hn.1, e _ hn.2]`. Rewrite using `[GlobalTheory.FockBaseChange.pureTensorO_subst D W.ψ W.θ _ _ W.ψ_std W.θ_is _ _ _ _ f hf]`.
+
+Both sides reduce to the same expression.
+-/
 theorem fockIn_frC {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ0 : T} (hL : L.Is μ0)
     (W : G.Weil) {U : Set T} (N : Std G U) (t : T) (j : ℕ) (hj : j < D.R.m)
     (f : WO (G.pS (.top t j)) (G.pT (.top t j)) → ℂ) (hf : IsThetaFunO W.ψ (G.pS (.top t j)) (G.pT (.top t j)) f)
@@ -40,6 +47,11 @@ theorem fockIn_frC {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridDa
   rw [GlobalTheory.FockBaseChange.pureTensorO_subst D W.ψ W.θ _ _ W.ψ_std W.θ_is _ _ _ _ f hf]
   rfl
 
+/- English proof (translation)
+Introduce `D T L sc G W U S μ0 hL j hj t d hd x y`. Establish `hp : DefPair D.R.m (Pair.top t j : Pair T)` using `show j + 1 ≤ D.R.m by omega`. Establish `hf` using `(GlobalTheory.FockRealVec.vec_theta_fock W S.Z hp d hd).1`. Unfold `fockComp`. Use `congrArg (fun F => Formalism.L2.Ker.jetOp (wt G (.top j)) (wt G (.top (j + 1))) F (nuEnd G (.top t j))) (funext fun m => ?_)` and prove the remaining obligations.
+
+Unfold `jetTab kerFin`. Establish `hid : m.mapDomain (fvar G (.top t j)) = m` using `Finsupp.mapDomain_id`. Rewrite using `[hid, Subgroup.coe_mul, Subgroup.coe_mul, GlobalTheory.FockReal.ker_mul, fockIn_frC hL W S.N t j hj _ hf]`. Use `congr 1`. Conclude with `GlobalTheory.OrientedHeis.om_fin_pureTensorO W.ψ _ _ _ _ (W.om (.top t j)) (W.om_is (.top t j) (show j + 1 ≤ D.R.m by omega)) W.θ W.θ_is _ (S.N.u _).2 _ (S.N.u _).2 _ _ _ _ _ _ hf`.
+-/
 theorem fockComp_frC_eq_jetOp : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) {μ0 : T}, L.Is μ0 → ∀ (j : ℕ), j < D.R.m → ∀ (t : T) (d : FinDatum G t (.top t j)), S.Z.HasVec d →
     ∀ (x : FinPt G (.top j)) (y : FinPt G (.top (j + 1))),

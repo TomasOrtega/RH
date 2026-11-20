@@ -16,6 +16,9 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `e : GlobalTheory.ThetaPull.thetaA E n g = PhiU n (Ad E) * invT n (Ad E) (GeneralLinearGroup.map (conjAd E) g) * (PhiU n (Ad E))⁻¹` using `rfl`. Rewrite using `[e]`. Use `congr 2`.
+-/
 private theorem theta_eq (g : GA E n) :
     GlobalTheory.ThetaPull.thetaA E n g = PhiU n (Ad E) * PositivityTheory.Rg.BcB.thetaA E n g * (PhiU n (Ad E))⁻¹ := by
   have e : GlobalTheory.ThetaPull.thetaA E n g = PhiU n (Ad E) * invT n (Ad E) (GeneralLinearGroup.map (conjAd E) g) *
@@ -23,19 +26,33 @@ private theorem theta_eq (g : GA E n) :
   rw [e]
   congr 2
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CompanionTheory.AdelEqProof.map_PhiU (algebraMap E (Ad E)) n).symm`.
+-/
 private theorem phi_rat : PhiU n (Ad E) = ratGL E n (PhiU n E) :=
   (GlobalTheory.CompanionTheory.AdelEqProof.map_PhiU (algebraMap E (Ad E)) n).symm
 
+/- English proof (translation)
+Use `ga_ext ?_ ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.CsdFromConj.phiG, map_mul, GlobalTheory.CsdFromConj.toUnits_PhiK, GlobalTheory.CompanionTheory.AdelEqProof.map_PhiU]`. Simplify using `[GlobalTheory.CsdFromConj.phiG, map_mul, GlobalTheory.CompanionTheory.AdelEqProof.map_PhiU]`.
+-/
 private theorem phi_split : PhiU n (Ad E) = GlobalTheory.CsdFromConj.phiG E n := by
   refine ga_ext ?_ ?_
   · simp [GlobalTheory.CsdFromConj.phiG, map_mul, GlobalTheory.CsdFromConj.toUnits_PhiK, GlobalTheory.CompanionTheory.AdelEqProof.map_PhiU]
   · simp [GlobalTheory.CsdFromConj.phiG, map_mul, GlobalTheory.CompanionTheory.AdelEqProof.map_PhiU]
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.CsdFromConj.phiEquiv π ⟨φ, hφ⟩).2`. Rewrite using `[phi_split, GlobalTheory.CsdFromConj.rt_phiG]`. Conclude with `h`.
+-/
 private theorem rt_phi_mem (π : CuspSub E n) {φ : Sm E n} (hφ : φ ∈ π.V) : rt E n (PhiU n (Ad E)) φ ∈ π.V := by
   have h := (GlobalTheory.CsdFromConj.phiEquiv π ⟨φ, hφ⟩).2
   rw [phi_split, GlobalTheory.CsdFromConj.rt_phiG]
   exact h
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `h`. Set `L` to `(GlobalTheory.ThetaPull.pull E n).submoduleMap P.V`. Use `⟨L.symm.trans T, fun o φ => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `L.surjective φ`. Establish `e : (GlobalTheory.ThetaPull.thetaSub P).op o (L φ) = L (P.op (thetaOp o) φ)` using `Subtype.ext (GlobalTheory.ThetaPull.act_pull o φ.1)`.
+
+Rewrite using `[e]`. Conclude with `(congrArg T (L.symm_apply_apply _)).trans ((hT o φ).trans (congrArg (P.op o) (congrArg T (L.symm_apply_apply φ)).symm))`.
+-/
 private theorem iso_theta {P : CuspSub E n} (h : P.IsCsd) : (GlobalTheory.ThetaPull.thetaSub P).Iso P := by
   obtain ⟨T, hT⟩ := h
   let L := (GlobalTheory.ThetaPull.pull E n).submoduleMap P.V
@@ -47,6 +64,9 @@ private theorem iso_theta {P : CuspSub E n} (h : P.IsCsd) : (GlobalTheory.ThetaP
   exact (congrArg T (L.symm_apply_apply _)).trans
     ((hT o φ).trans (congrArg (P.op o) (congrArg T (L.symm_apply_apply φ)).symm))
 
+/- English proof (translation)
+Establish `e : (GlobalTheory.ThetaPull.thetaSub P).V = P.V` using `UpperTheory.V.Af.cuspMultOneGL E n _ _ (Quotient.sound (iso_theta h))`. Rewrite using `[← e]`. Conclude with `⟨φ, hφ, rfl⟩`.
+-/
 private theorem pull_mem {P : CuspSub E n} (h : P.IsCsd) {φ : Sm E n} (hφ : φ ∈ P.V) :
     GlobalTheory.ThetaPull.pull E n φ ∈ P.V := by
   have e : (GlobalTheory.ThetaPull.thetaSub P).V = P.V :=
@@ -54,6 +74,11 @@ private theorem pull_mem {P : CuspSub E n} (h : P.IsCsd) {φ : Sm E n} (hφ : φ
   rw [← e]
   exact ⟨φ, hφ, rfl⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ n _ π hd`. Establish `hc : π.IsCsd` using `GlobalTheory.CsdBack.isCsd_of_paired CuspFormAutomorphicBounds.automorphicFormsFiniteGL E n π (PositivityTheory.JMult1.gelfandKazhdanDual_of_rigidity PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity GlobalTheory.CompanionTheory.CuspFinGL.cuspFormsBoundedGL E n π) hd`. Use `⟨fun ψ hψ t g => GlobalTheory.BcSpehCompare.isNormalised_of_isCsd hc ψ hψ t g, fun ψ hψ => ?_⟩` and prove the remaining obligations. Use `⟨GlobalTheory.ThetaPull.pull E n (rt E n (PhiU n (Ad E)) ψ), pull_mem hc (rt_phi_mem π hψ), fun g => ?_⟩` and prove the remaining obligations. Establish `e : PositivityTheory.Rg.BcB.thetaA E n g = ratGL E n (PhiU n E)⁻¹ * (GlobalTheory.ThetaPull.thetaA E n g * PhiU n (Ad E))`.
+
+Rewrite using `[theta_eq, map_inv, ← phi_rat]`. Use `group`. Rewrite using `[e, (π.cusp ψ hψ).1.left, GlobalTheory.ThetaPull.pull_apply, rt_apply]`.
+-/
 theorem UpperTheory.V.Z.Tf.GOne.thetaFixOf :
     PositivityTheory.Rg.BcB.Desc.ThetaFixOf := by
   intro E _ _ _ n _ π hd

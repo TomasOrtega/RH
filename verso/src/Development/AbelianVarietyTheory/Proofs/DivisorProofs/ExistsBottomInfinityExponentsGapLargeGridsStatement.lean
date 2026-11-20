@@ -15,5 +15,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BotDict.bottom_infExp_gap | exact GlobalTheory.BotDict.bottom_infExp_gap | (intros; apply GlobalTheory.BotDict.bottom_infExp_gap <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_bottomInfinityExponents_gap_largeGrids : GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m), ∃ a b : D.what₂.Tau → ℚ, ∀ (t : T) (τ : D.what₂.Tau), HasInfExp D (Lc.mu t (j + 1) * Lc.eta ^ (rankV D i j % 2)) τ (a τ) ∧ HasInfExp D (G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2)) τ (b τ) ∧ 2 * (a τ - b τ) < -((SqNum.botBig D i j + SqNum.botSmall D i j : ℕ) : ℚ) := by
   first | exact @GlobalTheory.BotDict.bottom_infExp_gap | exact GlobalTheory.BotDict.bottom_infExp_gap | (intros; apply GlobalTheory.BotDict.bottom_infExp_gap <;> assumption)

@@ -18,6 +18,9 @@ section Grp
 
 variable {G H : Type} [Group G] [Group H]
 
+/- English proof (translation)
+Use `Set.Finite.subset (Set.finite_singleton ((1 : G) : G ⧸ U)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Use `Set.mem_singleton_iff.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((u : G) * 1 : G) : G ⧸ U) = ((1 : G) : G ⧸ U)`. Conclude with `QuotientGroup.eq.2 (by simpa using U.inv_mem u.2)`.
+-/
 private theorem finOrb_one (U : Subgroup G) : AlgebraTools.FinOrb U U (1 : G) := by
   refine Set.Finite.subset (Set.finite_singleton ((1 : G) : G ⧸ U)) ?_
   rintro _ ⟨u, rfl⟩
@@ -25,6 +28,11 @@ private theorem finOrb_one (U : Subgroup G) : AlgebraTools.FinOrb U U (1 : G) :=
   change (((u : G) * 1 : G) : G ⧸ U) = ((1 : G) : G ⧸ U)
   exact QuotientGroup.eq.2 (by simpa using U.inv_mem u.2)
 
+/- English proof (translation)
+Use `Set.Finite.subset ((Set.Finite.prod ha hb).image (fun q : (G ⧸ U) × (G ⧸ U) => ((q.1.out * q.2.out : G) : G ⧸ U))) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Take `⟨t, ht⟩` from `QuotientGroup.mk_out_eq_mul U ((u : G) * a)`. Take `⟨s, hs⟩` from `QuotientGroup.mk_out_eq_mul U (((t : G))⁻¹ * b)`. Use `⟨((((u : G) * a : G) : G ⧸ U), ((((t : G))⁻¹ * b : G) : G ⧸ U)), ⟨⟨u, rfl⟩, ⟨t⁻¹, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(((((((u : G) * a : G) : G ⧸ U)).out * ((((t : G))⁻¹ * b : G) : G ⧸ U).out : G)) : G ⧸ U) = (((u : G) * (a * b) : G) : G ⧸ U)`. Rewrite using `[ht, hs]`. Establish `e : (u : G) * a * t * ((t : G)⁻¹ * b * s) = (u : G) * (a * b) * s` using `by group`. Rewrite using `[e]`. Conclude with `QuotientGroup.mk_mul_of_mem _ s.2`.
+-/
 private theorem finOrb_mul (U : Subgroup G) {a b : G} (ha : AlgebraTools.FinOrb U U a) (hb : AlgebraTools.FinOrb U U b) :
     AlgebraTools.FinOrb U U (a * b) := by
   classical
@@ -41,6 +49,29 @@ private theorem finOrb_mul (U : Subgroup G) {a b : G} (ha : AlgebraTools.FinOrb 
   rw [e]
   exact QuotientGroup.mk_mul_of_mem _ s.2
 
+/- English proof (translation)
+Establish `hv : ∀ u ∈ U, (j (p u))⁻¹ * u ∈ U` using `fun u hu => U.mul_mem (U.inv_mem (hU u hu)) hu`. Establish `hA : ∀ y ∈ DC U (j d), (j (p y))⁻¹ * y ∈ U`. Introduce and unpack `y ⟨u, hu, u', hu', rfl⟩`. Establish `e : (j (p (u * j d * u')))⁻¹ * (u * j d * u') = (j (p u'))⁻¹ * ((j d)⁻¹ * (((j (p u))⁻¹ * u) * j d)) * u'`. Simplify using `only [map_mul, hpj]`.
+
+Use `group`. Rewrite using `[e, hC u hu d, inv_mul_cancel_left]`. Conclude with `U.mul_mem (U.mul_mem (U.inv_mem (hU u' hu')) (hv u hu)) hu'`. Establish `hB : ∀ y ∈ DC U b, ∃ m ∈ U, p y = p m`. Introduce and unpack `y ⟨u, hu, u', hu', rfl⟩`.
+
+Conclude with `⟨u * u', U.mul_mem hu hu', by simp [hpb]⟩`. Establish `key : ∀ g y₁ y₂, y₁ ∈ DC U (j d) → y₂ ∈ DC U (j d) → y₁⁻¹ * g ∈ DC U b → y₂⁻¹ * g ∈ DC U b → y₂⁻¹ * y₁ ∈ U`. Introduce `g y₁ y₂ h₁ h₂ k₁ k₂`. Take `⟨m₁, hm₁, e₁⟩` from `hB _ k₁`. Take `⟨m₂, hm₂, e₂⟩` from `hB _ k₂`.
+
+Establish `e : p (y₂⁻¹ * y₁) = p (m₂ * m₁⁻¹)`. Establish `: y₂⁻¹ * y₁ = (y₂⁻¹ * g) * (y₁⁻¹ * g)⁻¹` using `by group`. Rewrite using `[this, map_mul, map_inv, e₁, e₂, map_mul, map_inv]`. Establish `e' : y₂⁻¹ * y₁ = ((j (p y₂))⁻¹ * y₂)⁻¹ * j (p (m₂ * m₁⁻¹)) * ((j (p y₁))⁻¹ * y₁)`. Rewrite using `[← e]`.
+
+Simplify using `only [map_mul, map_inv]`. Use `group`. Rewrite using `[e']`. Conclude with `U.mul_mem (U.mul_mem (U.inv_mem (hA _ h₂)) (hU _ (U.mul_mem hm₂ (U.inv_mem hm₁)))) (hA _ h₁)`. Introduce `g`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨u, hu, u', hu', rfl⟩`. Take `⟨t, ht⟩` from `QuotientGroup.mk_out_eq_mul U (u * j d)`. Establish `h₁ : (((u * j d : G) : G ⧸ U)).out ∈ DC U (j d)`. Rewrite using `[ht]`.
+
+Conclude with `⟨u, hu, t, t.2, rfl⟩`. Establish `h₂ : (((u * j d : G) : G ⧸ U)).out⁻¹ * (u * (j d * b) * u') ∈ DC U b`. Rewrite using `[ht]`. Conclude with `⟨(t : G)⁻¹, U.inv_mem t.2, u', hu', by group⟩`. Use `⟨((u * j d : G) : G ⧸ U), ⟨h₁, h₂⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨k₁, k₂⟩`. Use `key _ _ _ k₁ h₁ k₂ h₂` as an intermediate fact. Rewrite using `[← QuotientGroup.out_eq' y, ← QuotientGroup.out_eq' (((u * j d : G) : G ⧸ U))]`. Conclude with `(QuotientGroup.eq.2 this).symm`. Introduce and unpack `y ⟨u, hu, u', hu', rfl⟩ ⟨s, hs, s', hs', e⟩`.
+
+Establish `hg : g = u * j d * (u' * s) * b * s'`. Establish `: g = (u * j d * u') * ((u * j d * u')⁻¹ * g)` using `by group`. Rewrite using `[this, e]`. Use `group`. Establish `hm : u' * s ∈ U` using `U.mul_mem hu' hs`.
+
+Use `set m := u' * s`. Use `set v := (j (p m))⁻¹ * m with hvd`. Establish `hmv : m = j (p m) * v` using `by simp [hvd]`. Establish `hcomm : v * j (d * p m) = j (d * p m) * v` using `hC m hm _`. Use `⟨u * v, U.mul_mem hu (hv m hm), j (p m) * s', U.mul_mem (hU m hm) hs', ?_⟩` and prove the remaining obligations.
+
+Establish `hbm : b * j (p m) = j (p m) * b` using `hb _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem uf_split (j : H →* G) (p : G →* H) (U : Subgroup G) (hpj : ∀ h, p (j h) = h)
     (hU : ∀ u ∈ U, j (p u) ∈ U) (hC : ∀ u ∈ U, ∀ h, (j (p u))⁻¹ * u * j h = j h * ((j (p u))⁻¹ * u))
     (d : H) (b : G) (hb : ∀ h, b * j h = j h * b) (hpb : p b = 1) : UF U (j d) b := by
@@ -106,6 +137,43 @@ end Grp
 
 end UpperTheory.V.Z.Sym.So
 
+/- English proof (translation)
+Introduce `L _ _ _ n U₀ S VL hS hF d`. Take `⟨hsec, hcomm, -, -, hext, hfi, hfac, hK⟩` from `UpperTheory.V.Z.Sym.Dict.Br.uaFacts L n`. Establish `hloc0 : ∀ (w : Plc L), ∀ y ∈ locU n w, ∀ u : Plc L, un u ≠ un w → cLoc u y = 1` using `fun w y hy u hu => MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hy).2 u) hu)`. Establish `hlocF : ∀ (w : Plc L), ∀ y ∈ locU n w, y ∈ finU L n` using `fun w y hy => (Subgroup.mem_inf.1 hy).1`. Establish `hne : ∀ w ∈ S, ∀ w' ∈ S, w' ≠ w → un w' ≠ un w` using `fun w hw w' hw' hww e => hww (hS.inj (by exact_mod_cast hw') (by exact_mod_cast hw) e)`.
+
+Establish `hlev : ∀ w ∈ S, ∀ u ∈ lev U₀ S VL, secW n w (cLoc w u) ∈ lev U₀ S VL`. Introduce `w hw u hu`. Establish `hsp : IsSplitAt w` using `hS.split w (by exact_mod_cast hw)`. Establish `hu₀ : u ∈ U₀` using `(Subgroup.mem_inf.1 hu).1`. Establish `huJ : ∀ w' ∈ S, cLoc w' u ∈ (VL w').J n` using `fun w' hw' => Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hu).2 w') hw')`.
+
+Establish `huK : cLoc w u ∈ GlobalTheory.LFun.KGL w n` using `Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 (hF.1 hu₀)).2 w)`. Establish `htl` using `(hsec w hsp).1 (cLoc w u)`. Establish `htc` using `(hsec w hsp).2.1 (cLoc w u)`. Establish `htK : secW n w (cLoc w u) ∈ Kall L n`. Use `Subgroup.mem_inf.2 ⟨hlocF w _ htl, Subgroup.mem_iInf.2 fun w' => Subgroup.mem_comap.2 ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h : un w' = un w`. Conclude with `hK w hsp _ (by rw [htc]; exact huK) w' h`. Rewrite using `[hloc0 w _ htl w' h]`. Conclude with `one_mem _`. Use `Subgroup.mem_inf.2 ⟨hF.2 w hw (Subgroup.mem_inf.2 ⟨htl, htK⟩), Subgroup.mem_iInf.2 fun w' => Subgroup.mem_iInf.2 fun hw' => Subgroup.mem_comap.2 ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Rewrite using `[htc]`. Conclude with `huJ _ hw'`. Rewrite using `[hloc0 w _ htl w' (hne w hw w' hw' h)]`.
+
+Conclude with `one_mem _`. Establish `hcm : ∀ w ∈ S, ∀ u ∈ lev U₀ S VL, ∀ h, (secW n w (cLoc w u))⁻¹ * u * secW n w h = secW n w h * ((secW n w (cLoc w u))⁻¹ * u)`. Introduce `w hw u hu h`. Establish `hsp : IsSplitAt w` using `hS.split w (by exact_mod_cast hw)`. Establish `hfu : u ∈ finU L n` using `(Subgroup.mem_inf.1 (hF.1 (Subgroup.mem_inf.1 hu).1)).1`.
+
+Take `⟨a, hal, hau⟩` from `hfac w u hfu`. Establish `haeq : a = secW n w (cLoc w u)`. Rewrite using `[(hsec w hsp).2.2.2 a hal, hau w rfl]`. Use `(hcomm w _ ((hsec w hsp).1 h) _ fun u' hu' => ?_).symm.eq` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, ← haeq, hau u' hu', inv_mul_cancel]`.
+
+It suffices to establish `P : ∀ S' : Finset (Plc L), S' ⊆ S → ∀ x : UA L n, OnS S' x → (∀ w ∈ S', cLoc w x = Sig.dg (d w)) → AlgebraTools.FinOrb (lev U₀ S VL) (lev U₀ S VL) x ∧ ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (φ : UA L n → V), (∀ u ∈ lev U₀ S VL, ∀ g, φ (g * u) = φ g) → ∀ c : Plc L → ℂ, (∀ w ∈ …`. Introduce `S'`. Proceed by induction on `S' using Finset.induction_on with`. Consider the case `empty`. Introduce `_ x hx _`.
+
+Establish `hx1 : x = 1` using `hext x 1 (fun w => by rw [hx.2 w (by simp), map_one]) (fun τ => by rw [(hfi x).1.1 hx.1 τ, map_one])`. Substitute `hx1` using the available equality. Use `⟨finOrb_one _, fun V _ _ φ hφ c _ => ?_⟩` and prove the remaining obligations. Use `(dcBasic _ V _ _ (finOrb_one (lev U₀ S VL)) φ hφ).2.2.2.1 (one_mem _)` as an intermediate fact. Simplify using `using this`.
+
+Consider the case `insert w S'' hw ih`. Introduce `hsub x hx hd`. Establish `hwS : w ∈ S` using `hsub (Finset.mem_insert_self _ _)`. Establish `hsub' : S'' ⊆ S` using `fun y hy => hsub (Finset.mem_insert_of_mem hy)`. Establish `hsp : IsSplitAt w` using `hS.split w (by exact_mod_cast hwS)`.
+
+Establish `hdw` using `hd w (Finset.mem_insert_self _ _)`. Take `⟨a, hal, hax⟩` from `hfac w x hx.1`. Establish `haeq : a = secW n w (Sig.dg (d w))`. Rewrite using `[(hsec w hsp).2.2.2 a hal, hax w rfl, hdw]`. Substitute `haeq` using the available equality.
+
+Use `set a := secW n w (Sig.dg (d w)) with ha`. Use `set b := a⁻¹ * x with hb`. Establish `hxab : x = a * b` using `by simp [hb]`. Establish `habove : ∀ u : Plc L, un u = un w → cLoc u b = 1` using `fun u hu => by`. Rewrite using `[hb, map_mul, map_inv, hax u hu, inv_mul_cancel]`.
+
+Establish `hbOn : OnS S'' b`. Use `⟨mul_mem (inv_mem (hlocF w _ hal)) hx.1, fun u hu => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : un u = un w`. Conclude with `habove u h`. Establish `h1 : cLoc u x = 1` using `hx.2 u fun w' hw' => by`.
+
+Break down `Finset.mem_insert.1 hw' with rfl | hw'` into its components or cases. Conclude with `h`. Conclude with `hu w' hw'`. Rewrite using `[hb, map_mul, map_inv, h1, hloc0 w _ hal u h]`. Simplify using the standard rewrite rules.
+
+Establish `hbd : ∀ w' ∈ S'', cLoc w' b = Sig.dg (d w')` using `fun w' hw' => by`. Establish `hww : w' ≠ w` using `fun e => hw (e ▸ hw')`. Rewrite using `[hb, map_mul, map_inv, hloc0 w _ hal w' (hne w hwS w' (hsub' hw') hww), hd w' (Finset.mem_insert_of_mem hw')]`. Simplify using the standard rewrite rules. Take `⟨ihF, ihE⟩` from `ih hsub' b hbOn hbd`.
+
+Establish `hFw : Full U₀ {w}` using `⟨hF.1, fun w' hw' => by`. Rewrite using `[Finset.mem_singleton.1 hw']`. Conclude with `hF.2 w hwS⟩`. Establish `hat` using `dcAt L n U₀ S VL hS w hwS hFw (d w)`. Establish `hUF : UF (lev U₀ S VL) a b` using `uf_split (secW n w) (cLoc w) (lev U₀ S VL) (hsec w hsp).2.1 (hlev w hwS) (hcm w hwS) (Sig.dg (d w)) b (fun h => (hcomm w _ ((hsec w hsp).1 h) b habove).symm.eq) (by`.
+
+Conclude with `habove w rfl)`. Establish `hFab` using `finOrb_mul (lev U₀ S VL) hat.1 ihF`. Rewrite using `[hxab]`. Use `⟨hFab, fun V _ _ φ hφ c hc => ?_⟩` and prove the remaining obligations. Establish `hsm : dcF (lev U₀ S VL) a ((∏ w ∈ S'', c w) • φ) = (∏ w ∈ S'', c w) • dcF (lev U₀ S VL) a φ` using `map_smul (dc (rightReg ℂ (UA L n) V) (lev U₀ S VL) (lev U₀ S VL) a) _ φ`.
+
+Rewrite using `[← uFMul _ V _ a b hat.1 ihF hFab hUF φ hφ, ihE V φ hφ c fun w' hw' => hc w' (Finset.mem_insert_of_mem hw'), hsm, (hat.2 V φ hφ (c w)).1 (hc w (Finset.mem_insert_self _ _)), smul_smul, Finset.prod_insert hw, mul_comm]`.
+-/
 theorem UpperTheory.V.Z.Sym.So.prodEig :
     UpperTheory.V.Z.Sym.So.ProdEig := by
   classical

@@ -9,5 +9,8 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct ContDiff
 open GlobalTheory.ZM
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.smoothOfRelativeDimension_genericFibre_of_affine | exact GlobalTheory.smoothOfRelativeDimension_genericFibre_of_affine | (intros; apply GlobalTheory.smoothOfRelativeDimension_genericFibre_of_affine <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.smooth_genericFibre_of_affine_opens : ∀ (o : Type) [CommRing o] [IsDomain o] (X : Scheme.{0}) (s : X ⟶ Sp o) (d : ℕ), (∀ (R : Type) [CommRing R] [Algebra o R] (x : Sp R ⟶ X), IsOpenImmersion x → x ≫ s = spMap (algebraMap o R) → SmoothOfRelativeDimension d (spMap (algebraMap (FractionRing o) (FractionRing o ⊗[o] R)))) → SmoothOfRelativeDimension d (pullback.snd s (spMap (algebraMap o (FractionRing o)))) := by
   first | exact @GlobalTheory.smoothOfRelativeDimension_genericFibre_of_affine | exact GlobalTheory.smoothOfRelativeDimension_genericFibre_of_affine | (intros; apply GlobalTheory.smoothOfRelativeDimension_genericFibre_of_affine <;> assumption)

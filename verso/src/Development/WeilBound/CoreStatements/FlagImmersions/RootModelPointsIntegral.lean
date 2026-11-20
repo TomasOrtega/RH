@@ -12,6 +12,11 @@ noncomputable section
 
 namespace RootFieldNumerics.GeoComb
 
+/- English proof (translation)
+Establish `hc : ∀ j, Fintype.card {a // f a = j} = Fintype.card {a // g a = j}`. Introduce `j`. Use `congrArg (Multiset.count j) h` as an intermediate fact. Simplify using `only [Multiset.count_map] at this`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`.
+
+Apply the tactic sequence `convert this using 1 <;> simp [Finset.card_def, Finset.filter_val, eq_comm]`. Set `e : ∀ j, {a // f a = j} ≃ {a // g a = j}` to `fun j => Fintype.equivOfCardEq (hc j)`. Set `σ : Equiv.Perm (Fin d)` to `((Equiv.sigmaFiberEquiv f).symm.trans (Equiv.sigmaCongrRight e)).trans (Equiv.sigmaFiberEquiv g)`. Use `⟨σ, fun a => ?_⟩` and prove the remaining obligations. Conclude with `((e (f a) ⟨a, rfl⟩).2).symm`.
+-/
 theorem exists_perm_of_map_eq {J : Type} {d : ℕ} (f g : Fin d → J)
     (h : Finset.univ.val.map f = Finset.univ.val.map g) : ∃ σ : Equiv.Perm (Fin d), ∀ k, f k = g (σ k) := by
   classical
@@ -27,6 +32,9 @@ theorem exists_perm_of_map_eq {J : Type} {d : ℕ} (f g : Fin d → J)
   refine ⟨σ, fun a => ?_⟩
   exact ((e (f a) ⟨a, rfl⟩).2).symm
 
+/- English proof (translation)
+Rewrite using `[Finsupp.toMultiset_sum]`. Simplify using `only [Finsupp.toMultiset_single, one_smul]`. Rewrite using `[← Multiset.sum_map_singleton (Finset.univ.val.map w), Multiset.map_map]`. Both sides reduce to the same expression.
+-/
 theorem toMultiset_word {J : Type} {d : ℕ} (w : Fin d → J) :
     Finsupp.toMultiset (∑ k, Finsupp.single (w k) 1 : J →₀ ℕ) = Finset.univ.val.map w := by
   rw [Finsupp.toMultiset_sum]
@@ -34,11 +42,23 @@ theorem toMultiset_word {J : Type} {d : ℕ} (w : Fin d → J) :
   rw [← Multiset.sum_map_singleton (Finset.univ.val.map w), Multiset.map_map]
   rfl
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Simplify using the standard rewrite rules.
+-/
 theorem degree_word {J : Type} {d : ℕ} (w : Fin d → J) :
     (∑ k, Finsupp.single (w k) 1 : J →₀ ℕ).degree = d := by
   rw [map_sum]
   simp
 
+/- English proof (translation)
+Use `set m : J →₀ ℕ := ∑ k, Finsupp.single (w k) 1 with hm`. Use `set L : List J := (Finsupp.toMultiset m).toList with hL`. Establish `hML : (L : Multiset J) = Finset.univ.val.map w`. Rewrite using `[hL, Multiset.coe_toList, hm, toMultiset_word]`. Establish `hlen : L.length = d`.
+
+Use `congrArg Multiset.card hML` as an intermediate fact. Simplify using `using this`. Set `f : Fin d → J` to `fun k => L.get (Fin.cast hlen.symm k)`. Establish `hf : List.ofFn f = L` using `List.ext_get (by simp [hlen]) (fun i h1 h2 => by simp [f])`. Establish `hmap : Finset.univ.val.map f = Finset.univ.val.map w`.
+
+Rewrite using `[Fin.univ_val_map, hf, hML]`. Take `⟨σ, hσ⟩` from `exists_perm_of_map_eq f w hmap`. Use `⟨σ, fun k => ?_⟩` and prove the remaining obligations. Establish `hk : (k : ℕ) < L.length`. Rewrite using `[hlen]`.
+
+Conclude with `k.2`. Rewrite using `[← hσ k]`. Simplify using `only [monoLines]`. Rewrite using `[dif_pos hk]`. Both sides reduce to the same expression.
+-/
 theorem monoLines_word {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {J : Type} (ℓ : J → HermLine ι)
     {d : ℕ} (w : Fin d → J) :
     ∃ σ : Equiv.Perm (Fin d), ∀ k, monoLines ℓ (∑ k, Finsupp.single (w k) 1) d k = ℓ (w (σ k)) := by
@@ -64,6 +84,9 @@ theorem monoLines_word {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype 
   rw [dif_pos hk]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_univ_sum, map_sum]`. Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, ← map_prod, MvPolynomial.C_mul', map_smul, smul_eq_mul, MvPolynomial.monomial_sum_one]`. Both sides reduce to the same expression.
+-/
 theorem map_prod_lin {J : Type} [Fintype J] [DecidableEq J] {d : ℕ} (Φ : MvPolynomial J ℝ →ₗ[ℝ] ℝ)
     (c : Fin d → J → ℝ) :
     Φ (∏ k, ∑ j, C (c k j) * X j) =
@@ -80,12 +103,20 @@ def cf (lam : Wt Ψ N) (s : ℝ) : Option (Ψ × Fin N) → ℝ
   | some r => -lam r.1 r.2
   | none => s
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_option]`. Simplify using `only [linA, toA, linRoot, cf, map_neg, map_sum, map_mul, rename_C, rename_X, neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem linA_eq (lam : Wt Ψ N) (s : ℝ) : linA lam s = ∑ j, C (cf lam s j) * X j := by
   rw [Fintype.sum_option]
   simp only [linA, toA, linRoot, cf, map_neg, map_sum, map_mul, rename_C, rename_X, neg_mul,
     Finset.sum_neg_distrib]
   ring
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `none`. Establish `hk : (M.kA : ℝ) ≠ 0` using `by exact_mod_cast M.kA_pos.ne'`. Simplify using `[RootModel.coef, cf]`. Clear the denominators using the available nonvanishing facts.
+
+Consider the case `some r`. Simplify using `[RootModel.coef, cf]`.
+-/
 theorem coef_mul (M : RootModel Ψ N) (lam : Wt Ψ N) (s : ℝ) (j : Option (Ψ × Fin N)) :
     M.coef lam s j * (M.kA : ℝ) ^ ((Finsupp.single j 1 : Option (Ψ × Fin N) →₀ ℕ) none) = cf lam s j := by
   cases j with
@@ -96,16 +127,25 @@ theorem coef_mul (M : RootModel Ψ N) (lam : Wt Ψ N) (s : ℝ) (j : Option (Ψ 
   | some r =>
     simp [RootModel.coef, cf]
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `none => exact M.A_smooth`. Consider the case `some r => exact M.x_smooth t r`.
+-/
 theorem line_smooth (M : RootModel Ψ N) (t : ℝ) (j : Option (Ψ × Fin N)) : IsSmoothHerm (M.line t j) := by
   cases j with
   | none => exact M.A_smooth
   | some r => exact M.x_smooth t r
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `none => rfl`. Consider the case `some r => simp [RootModel.line, M.x_deg]`.
+-/
 theorem line_deg (M : RootModel Ψ N) (t t' : ℝ) (j : Option (Ψ × Fin N)) : (M.line t j).a = (M.line t' j).a := by
   cases j with
   | none => rfl
   | some r => simp [RootModel.line, M.x_deg]
 
+/- English proof (translation)
+Establish `hb : (monomial m 1 : RPA Ψ N) = basisMonomials (Option (Ψ × Fin N)) ℝ m`. Simplify using `[MvPolynomial.coe_basisMonomials]`. Rewrite using `[hb]`. Conclude with `Module.Basis.constr_basis _ _ _ _`.
+-/
 theorem geoFun_monomial (M : RootModel Ψ N) (m : Option (Ψ × Fin N) →₀ ℕ) :
     M.geoFun (monomial m 1) = M.geoMono m := by
   have hb : (monomial m 1 : RPA Ψ N) = basisMonomials (Option (Ψ × Fin N)) ℝ m := by
@@ -119,6 +159,19 @@ namespace RootFieldNumerics
 
 open GeoComb
 
+/- English proof (translation)
+Introduce `II hII Ψ _ N M t lam s q n hn`. Establish `hP : IsArithVar M.P (dimFl Ψ N + 1)` using `M.arith`. Establish `hsm : ∀ j, IsSmoothHerm (M.line t j)` using `line_smooth M t`. Take `⟨hexp, hperm⟩` from `GlobalTheory.T.log_integral_multilinear II hII M.K M.ι M.P (dimFl Ψ N) (Option (Ψ × Fin N)) (M.line t) n hP hsm`. Establish `hterm : ∀ w : Fin (dimFl Ψ N) → Option (Ψ × Fin N), ptsIntegral M.P (fun k z => Real.log ((M.line t (w k)).h z)) (fun _ => 1) = M.δ * (M.kA : ℝ) ^ ((∑ k, Finsupp.single (w k) 1 : Option (Ψ × Fin N) →₀ ℕ) none) * M.geoMono (∑ k, Finsupp.single (w k) 1)`.
+
+Introduce `w`. Take `⟨σ, hσ⟩` from `monoLines_word (M.line 1) w`. Establish `hmono_sm : ∀ k, IsSmoothHerm (monoLines (M.line 1) (∑ k, Finsupp.single (w k) 1) (dimFl Ψ N) k)`. Introduce `k`. Rewrite using `[hσ k]`.
+
+Conclude with `line_smooth M 1 _`. Rewrite using `[hperm (monoLines (M.line 1) (∑ k, Finsupp.single (w k) 1) (dimFl Ψ N)) (fun k => M.line t (w k)) σ⁻¹ hmono_sm (fun k => hsm _) (fun k => by`. Rewrite using `[hσ, show σ (σ⁻¹ k) = k by simp]`. Conclude with `line_deg M t 1 _)]`. Establish `hδ : (M.δ : ℝ) ≠ 0` using `by exact_mod_cast M.δ_pos.ne'`.
+
+Establish `hk : (M.kA : ℝ) ≠ 0` using `by exact_mod_cast M.kA_pos.ne'`. Rewrite using `[RootModel.geoMono, if_pos (degree_word w)]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hexp]`. Repeatedly rewrite using `[linA_eq]`.
+
+Rewrite using `[map_prod_lin, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Rewrite using `[hterm w, geoFun_monomial]`. Establish `hc : (∏ k, (n k (w k) : ℝ)) * (M.kA : ℝ) ^ ((∑ k, Finsupp.single (w k) 1 : Option (Ψ × Fin N) →₀ ℕ) none) = (q : ℝ) ^ dimFl Ψ N * ∏ k, cf (lam k) (s k) (w k)`. Rewrite using `[Finsupp.finset_sum_apply, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`.
+
+Repeatedly rewrite using `[hn, mul_assoc, coef_mul]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Take the linear combination `((M.δ : ℝ) * M.geoMono (∑ k, Finsupp.single (w k) 1)) * hc`.
+-/
 theorem root_model_points_integral : ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (Ψ : Type) [Fintype Ψ] (N : ℕ) (M : RootModel Ψ N) (t : ℝ) (lam : Fin (dimFl Ψ N) → Wt Ψ N) (s : Fin (dimFl Ψ N) → ℝ) (q : ℕ) (n : Fin (dimFl Ψ N) → Option (Ψ × Fin N) → ℤ), (∀ k j, (n k j : ℝ) = q * M.coef (lam k) (s k) j) → ptsIntegral M.P (fun k z => Real.log ((combLine (M.line t) (n k)).h z)) (fun _ => 1) = M.δ * (q : ℝ) ^ dimFl Ψ N * M.geoFun (∏ k, linA (lam k) (s k)) := by
   intro II hII Ψ _ N M t lam s q n hn
   classical

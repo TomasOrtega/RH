@@ -8,6 +8,11 @@ open scoped BigOperators ComplexConjugate Real Classical
 
 namespace GlobalTheory.UnitaryTheta.KerSum
 
+/- English proof (translation)
+Set `B : V →ₗ[ℝ] V →ₗ[ℝ] ℂ` to `LinearMap.mk₂ ℝ (fun u v => H u v) (fun a b c => by simp) (fun c a b => by`. Rewrite using `[← Complex.coe_smul, map_smul, LinearMap.smul_apply, Complex.coe_smul])`. Use the proof step `(fun a b c => by simp)`. Use the proof step `(fun c a b => by`. Rewrite using `[← Complex.coe_smul, LinearMap.map_smulₛₗ, Complex.conj_ofReal, Complex.coe_smul])`.
+
+Set `B' : V →L[ℝ] V →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : (V →ₗ[ℝ] ℂ) ≃ₗ[ℝ] (V →L[ℝ] ℂ)).toLinearMap ∘ₗ B)`. Conclude with `⟨‖B'‖, norm_nonneg _, fun u v => B'.le_opNorm₂ u v⟩`.
+-/
 theorem exists_bound {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
     (H : Sesq V) : ∃ M : ℝ, 0 ≤ M ∧ ∀ u v, ‖H u v‖ ≤ M * ‖u‖ * ‖v‖ := by
   let B : V →ₗ[ℝ] V →ₗ[ℝ] ℂ := LinearMap.mk₂ ℝ (fun u v => H u v)
@@ -22,6 +27,11 @@ theorem exists_bound {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [Fini
       ((LinearMap.toContinuousLinearMap : (V →ₗ[ℝ] ℂ) ≃ₗ[ℝ] (V →L[ℝ] ℂ)).toLinearMap ∘ₗ B)
   exact ⟨‖B'‖, norm_nonneg _, fun u v => B'.le_opNorm₂ u v⟩
 
+/- English proof (translation)
+Rewrite using `[kerTerm, Complex.norm_exp, ← Real.exp_add, Real.exp_le_exp]`. Establish `h1 : (H w z).re ≤ M * R * ‖z‖` using `((Complex.re_le_norm _).trans (hB w z)).trans (by gcongr)`. Establish `h2 : (H x z).re ≤ M * ‖x‖ * ‖z‖` using `(Complex.re_le_norm _).trans (hB x z)`. Establish `h3 : -(H w x).re ≤ M * R * ‖x‖` using `(((neg_le_abs _).trans (Complex.abs_re_le_norm _)).trans (hB w x)).trans (by gcongr)`. Establish `e : ((π : ℂ) * H (w + x) z - (π : ℂ) * H w x - (π : ℂ) * H x x / 2).re = π * ((H w z).re + (H x z).re + -(H w x).re) - π / 2 * (H x x).re` using `by simp; ring`.
+
+Rewrite using `[e]`. Use `mul_le_mul_of_nonneg_left (add_le_add (add_le_add h1 h2) h3) Real.pi_pos.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_kerTerm_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (H : Sesq V) {M R : ℝ} (hM : 0 ≤ M) (hB : ∀ u v, ‖H u v‖ ≤ M * ‖u‖ * ‖v‖) (x w z : V)
     (hw : ‖w‖ ≤ R) :
@@ -40,6 +50,11 @@ theorem norm_kerTerm_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
   have := mul_le_mul_of_nonneg_left (add_le_add (add_le_add h1 h2) h3) Real.pi_pos.le
   linarith
 
+/- English proof (translation)
+Establish `h : ∀ v, Differentiable ℂ (fun w => H w v)` using `fun v => (LinearMap.toContinuousLinearMap (H.flip v)).differentiable`. Establish `e : (fun w => kerTerm H x w z) = fun w => cexp ((π : ℂ) * (H w z + H x z) - (π : ℂ) * H w x - (π : ℂ) * H x x / 2)`. Use function extensionality and compare the values at `w`. Simplify using `[kerTerm]`. Rewrite using `[e]`.
+
+Conclude with `(((((h z).add_const _).const_mul _).sub ((h x).const_mul _)).sub_const _).cexp`.
+-/
 theorem differentiable_kerTerm {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     [FiniteDimensional ℂ V] (H : Sesq V) (x z : V) :
     Differentiable ℂ (fun w => kerTerm H x w z) := by
@@ -51,6 +66,11 @@ theorem differentiable_kerTerm {V : Type} [NormedAddCommGroup V] [NormedSpace �
   rw [e]
   exact (((((h z).add_const _).const_mul _).sub ((h x).const_mul _)).sub_const _).cexp
 
+/- English proof (translation)
+Establish `h : I * ((H y x).im : ℂ) = (H y x - H x y) / 2`. Rewrite using `[hH x y, Complex.sub_conj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[kerTerm, kerTerm, ← Complex.exp_add, ← Complex.exp_add]`.
+
+Use `congr 1`. Simplify using `only [map_add, LinearMap.add_apply]`. Take the linear combination `(π : ℂ) * h`.
+-/
 theorem kerTerm_shift {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V)
     (hH : ∀ z w, H z w = conj (H w z)) (x y w z : V) :
     kerTerm H x (w + y) z * cexp (-(π : ℂ) * H w y - (π : ℂ) * H y y / 2)
@@ -62,6 +82,17 @@ theorem kerTerm_shift {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V)
   simp only [map_add, LinearMap.add_apply]
   linear_combination (π : ℂ) * h
 
+/- English proof (translation)
+Introduce `V _ _ _ H hH Λ _ α hα`. Take `⟨M, hM, hB⟩` from `exists_bound H`. Establish `hn : ∀ x : Λ, ‖α x‖ = 1` using `fun x => by`. Apply the tactic sequence `rcases hα.1 x x.2 with h | h <;> simp [h]`. Establish `key : ∀ (z : V) (R : ℝ), ∃ u : Λ → ℝ, Summable u ∧ ∀ (x : Λ) (w : V), ‖w‖ ≤ R → ‖α x * kerTerm H x w z‖ ≤ u x` using `fun z R => ⟨_, (GlobalTheory.T.summable_exp_neg_herm_add_norm V H hH Λ (π * (M * ‖z‖ + M * R))).mul_left (Real.exp (π * (M * R * ‖z‖))), fun x w hw => by`.
+
+Rewrite using `[norm_mul, hn, one_mul]`. Conclude with `norm_kerTerm_le H hM hB x w z hw⟩`. Use `⟨fun w z => ?_, fun z => ?_, fun z y hy w => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, h⟩` from `key z ‖w‖`. Conclude with `Summable.of_norm_bounded hu fun x => h x w le_rfl`.
+
+Use `differentiableOn_univ.1 (GlobalTheory.SCV.differentiableOn_tsum_of_locally_normal isOpen_univ (F := fun (x : Λ) w => α x * kerTerm H x w z) (fun x => ((differentiable_kerTerm H x z).const_mul _).differentiableOn) fun w _ => ?_)` and prove the remaining obligations. Take `⟨u, hu, h⟩` from `key z (‖w‖ + 1)`. Use `⟨Metric.ball w 1, Metric.ball_mem_nhds w one_pos, u, hu, fun x v hv => h x v ?_⟩` and prove the remaining obligations. Use `norm_le_norm_add_norm_sub' v w` as an intermediate fact. Rewrite `hv` using `[mem_ball_iff_norm]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Heisenberg₂, kerSum]`. Rewrite using `[← tsum_mul_right, ← tsum_mul_left, ← (Equiv.addLeft (⟨y, hy⟩ : Λ)).tsum_eq (fun x : Λ => α x * kerTerm H x w z)]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_addLeft, AddSubgroup.coe_add]`.
+
+Rewrite using `[hα.2.2 y hy x x.2, mul_assoc (α x), kerTerm_shift H hH.1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kerSum_spec : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] (H : Sesq V), IsPosHerm H → ∀ (Λ : AddSubgroup V) [DiscreteTopology Λ] (α : V → ℂ), IsSemichar H Λ α → (∀ w z, Summable (fun x : Λ => α x * kerTerm H x w z)) ∧ (∀ z, Differentiable ℂ (kerSum H Λ α z)) ∧ ∀ z, ∀ y ∈ Λ, ∀ w, α y * Heisenberg₂ H y (kerSum H Λ α z) w = kerSum H Λ α z w := by
   intro V _ _ _ H hH Λ _ α hα
   obtain ⟨M, hM, hB⟩ := exists_bound H

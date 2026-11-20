@@ -8,6 +8,11 @@ open scoped TensorProduct NNReal ENNReal
 
 namespace GlobalTheory.CompanionTheory.CFin
 
+/- English proof (translation)
+Establish `hb : ∀ (w : InfinitePlace F) (τ : EmbOver E w) (i j : Fin n), ∃ b : ℝ, ∀ g ∈ C, ‖archMat σ J τ (projArch σ J w g) i j‖ ≤ b`. Introduce `w τ i j`. Establish `hc : Continuous fun g : GAd σ J => ‖archMat σ J τ (projArch σ J w g) i j‖` using `(((GlobalTheory.Orb.continuous_archMat σ J τ).comp (continuous_projArch σ J w)).matrix_elem i j).norm`. Take `⟨b, hb⟩` from `hC.bddAbove_image hc.continuousOn`. Conclude with `⟨b, fun g hg => hb ⟨g, hg, rfl⟩⟩`.
+
+Use `choose b hb using hb`. Use `haveI : Fintype (InfinitePlace F) := inferInstance`. Use `⟨∑ w : InfinitePlace F, ∑ τ : EmbOver E w, ∑ i : Fin n, ∑ j : Fin n, |b w τ i j|, Finset.sum_nonneg fun w _ => Finset.sum_nonneg fun τ _ => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => abs_nonneg _, fun g hg w τ i j => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem archMat_entries_bounded_of_isCompact (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (C : Set (GAd σ J))
     (hC : IsCompact C) :

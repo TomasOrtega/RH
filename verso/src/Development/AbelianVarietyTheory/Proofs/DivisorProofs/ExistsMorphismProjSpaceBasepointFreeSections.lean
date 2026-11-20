@@ -19,9 +19,15 @@ namespace GlobalTheory.HSAmp.GenMap
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
+/- English proof (translation)
+The claim follows from `Opens.mem_iSup.1 (hB.cover.ge (Opens.mem_top _))`.
+-/
 theorem mem_chart {B : LB X} (hB : B.IsLB) (x : X) : ∃ c, x ∈ B.U c :=
   Opens.mem_iSup.1 (hB.cover.ge (Opens.mem_top _))
 
+/- English proof (translation)
+Use `(P.r i).ne_zero` as an intermediate fact. Use `(P.r' j).ne_zero` as an intermediate fact. Simplify using `only [Pair.loc]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem loc_mul_div (P : Pair p) (e : ℕ) (f ρ : X.functionField) (i : P.L.B.ι) (j : P.A.B.ι) :
     P.loc e 0 f i j * (ρ / P.loc e 0 1 i j) = f * ρ := by
   have := (P.r i).ne_zero
@@ -29,6 +35,9 @@ theorem loc_mul_div (P : Pair p) (e : ℕ) (f ρ : X.functionField) (i : P.L.B.�
   simp only [Pair.loc]
   field_simp
 
+/- English proof (translation)
+Use `(P.r i).ne_zero` as an intermediate fact. Use `(P.r' j).ne_zero` as an intermediate fact. Simplify using `only [Pair.loc]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem loc_eq_mul_inv (P : Pair p) (e : ℕ) (f ρ : X.functionField) (hρ : ρ ≠ 0) (i : P.L.B.ι)
     (j : P.A.B.ι) : P.loc e 0 f i j = f * ρ * (ρ / P.loc e 0 1 i j)⁻¹ := by
   have := (P.r i).ne_zero
@@ -36,6 +45,15 @@ theorem loc_eq_mul_inv (P : Pair p) (e : ℕ) (f ρ : X.functionField) (hρ : ρ
   simp only [Pair.loc]
   field_simp
 
+/- English proof (translation)
+Take `⟨ρ, hρ, hu, hn⟩` from `Pair.rep_pow k X p P 1 0 P.L e (Pair.rep_base k X p P).1`. Simplify using `only [mul_one, mul_zero] at hu hn`. Establish `hs : ∀ l, ∃ u : (P.L.pow e).B.Sec, ∀ c (hc : genericPoint X ∈ (P.L.pow e).B.U c), fnOf _ hc (u.f c) = x l * ρ c` using `fun l => RepDict.exists_sec hρ fun c z hz => by`. Take `⟨i, hi⟩` from `mem_chart P.L.isLB z`. Take `⟨j, hj⟩` from `mem_chart P.A.isLB z`.
+
+Rewrite using `[← loc_mul_div P e (x l) _ i j]`. Conclude with `(hx.mem l z i j hi hj).mul (hu z c i j hz hi hj).regAt`. Use `choose s hs using hs`. Use `⟨ρ, s, hu, fun σ y c j hc hj => ?_, hs⟩` and prove the remaining obligations. Establish `hc'` using `mem_pow_iff.1 hc`.
+
+Establish `hU` using `hu _ c _ j (mem_ptsIn.1 hc) (mem_ptsIn.1 hc') (mem_ptsIn.1 hj)`. Establish `h1` using `hn σ y c _ j hc hc' hj`. Establish `h2 : ((P.L.pow e).φ σ).φ c y = ((e : ℤ) : ℝ) * (P.L.φ σ).φ (c PUnit.unit) y` using `Weight.zpow_φ _ _ _ _`. Rewrite `h1` using `[h2]`. Move the coercions through the operations in `at h1`.
+
+Use `Real.eq_one_of_pos_of_log_eq_zero (norm_pos_iff.2 (ratVal_ne_zero hU)) ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_secs (P : Pair p) {D e : ℕ} {x : Fin (D + 1) → X.functionField} (hx : Gens P D e x) :
     ∃ (ρ : (P.L.pow e).B.ι → X.functionFieldˣ) (s : Fin (D + 1) → (P.L.pow e).B.Sec),
       (∀ z c i j, z ∈ (P.L.pow e).B.U c → z ∈ P.L.B.U i → z ∈ P.A.B.U j →
@@ -67,6 +85,35 @@ end GlobalTheory.HSAmp.GenMap
 
 namespace GlobalTheory.HSAmp.GenMap
 
+/- English proof (translation)
+Introduce `k _ X _ p D _ P e x hx hx0`. Take `⟨ρ, s, hu, hn1, hs⟩` from `exists_secs P hx`. Establish `hnz : ∀ l z i j, z ∈ P.L.B.U i → z ∈ P.A.B.U j → (z ∈ Out.nonzeroLocus (s l) ↔ UnitAt z (P.loc e 0 (x l) i j))`. Introduce `l z i j hi hj`. Take `⟨c, hc⟩` from `mem_chart (P.L.pow e).isLB z`.
+
+Establish `hU` using `hu z c i j hc hi hj`. Rewrite using `[mem_nonzeroLocus_iff (s l) c hc, ← unitAt_fnOf_iff hc (gen_mem hc), hs l c (gen_mem hc)]`. Conclude with `⟨fun h => loc_eq_mul_inv P e (x l) _ (ρ c).ne_zero i j ▸ h.mul hU.inv, fun h => loc_mul_div P e (x l) _ i j ▸ h.mul hU⟩`. Establish `hcov : ⨆ l, Out.nonzeroLocus (s l) = ⊤`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations.
+
+Take `⟨i, hi⟩` from `mem_chart P.L.isLB z`. Take `⟨j, hj⟩` from `mem_chart P.A.isLB z`. Take `⟨l, hl⟩` from `hx.cover z`. Conclude with `Opens.mem_iSup.2 ⟨l, (hnz l z i j hi hj).2 (hl i j hi hj)⟩`. Take `⟨c, hc⟩` from `mem_chart (P.L.pow e).isLB (genericPoint X)`.
+
+Establish `hη : genericPoint X ∈ Out.nonzeroLocus (s 0)`. Rewrite using `[mem_nonzeroLocus_iff (s 0) c hc, X.mem_basicOpen _ _ hc]`. Use `show IsUnit (fnOf _ hc ((s 0).f c))`. Rewrite using `[hs 0 c hc]`. Conclude with `isUnit_iff_ne_zero.2 (mul_ne_zero hx0 (ρ c).ne_zero)`.
+
+Establish `hpre` using `ProjSpace.toProj_preimage_chart p s hcov 0`. Establish `hmem : genericPoint X ∈ ProjSpace.toProj p s hcov ⁻¹ᵁ ProjSpace.chart k D 0`. Rewrite using `[hpre]`. Conclude with `hη`. Use `⟨ProjSpace.toProj p s hcov, ProjSpace.toProj_str p s hcov, ⟨hmem, fun j => ?_⟩, fun u hu' => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `fnOf _ hmem _ = _`. Rewrite using `[ProjSpace.pullRatio_toProj_on p s hcov 0 j le_rfl, fnOf_resG]`. Establish `hc' : genericPoint X ∈ Out.nonzeroLocus (s 0) ⊓ (P.L.pow e).B.U c` using `⟨hη, hc⟩`. Establish `e1` using `congrArg (fnOf _ hc') (ProjSpace.secRatio_spec (s 0) (s j) c)`. Rewrite `e1` using `[map_mul, fnOf_resG, fnOf_resG, fnOf_resG, hs j c hc, hs 0 c hc]`.
+
+Rewrite using `[eq_div_iff hx0]`. Use `mul_right_cancel₀ (ρ c).ne_zero ?_` and prove the remaining obligations. Take the linear combination `-e1`. Establish `he : (e : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hx.pos.ne'`. Use `(HermLB.isometric_pull_fs_toProj k X p ((up P.L u).pow e) D s hcov (fun _ => 1) (fun _ => by simp) (fun _ => ⟨1, one_mem _, by rw [mul_one, Matrix.map_one _ (map_zero _) (map_one _)]⟩) ?_).symm` and prove the remaining obligations.
+
+Introduce `σ i y hy`. Express the relevant statement in the definitionally equal form `y ∈ ptsIn p σ ((P.L.pow e).B.U i) at hy`. Establish `hy' : y ∈ ptsIn p σ (P.L.B.U (i PUnit.unit))` using `mem_pow_iff.1 hy`. Establish `hj : y ∈ ptsIn p σ (P.A.B.U (pick (P.A.φ σ).isLB y))` using `mem_pick _ y`. Establish `hg` using `hn1 σ y i _ hy hj`.
+
+Establish `hA : ∀ l, ‖valR y.1 ((P.L.pow e).B.U i) ((s l).f i)‖ = ‖ratVal (P.loc e 0 (x l) (i PUnit.unit) (pick (P.A.φ σ).isLB y)) y‖` using `fun l => by`. Establish `hη` using `gen_mem (mem_ptsIn.1 hy)`. Express the relevant statement in the definitionally equal form `‖ev p σ _ ((s l).f i) y‖ = _`. Rewrite using `[← ratVal_fnOf hy hη, hs l i hη, ← loc_mul_div P e (x l) _ (i PUnit.unit) _, ratVal_mul (hx.mem l _ _ _ (mem_ptsIn.1 hy') (mem_ptsIn.1 hj)) (hu _ i _ _ (mem_ptsIn.1 hy) (mem_ptsIn.1 hy') (mem_ptsIn.1 hj)).regAt, norm_mul, hg, mul_one]`. Establish `hnu : ∀ l, P.nu e 0 σ y (x l) ^ 2 = ‖ratVal (P.loc e 0 (x l) (i PUnit.unit) (pick (P.A.φ σ).isLB y)) y‖ ^ 2 * Real.exp (-((e : ℝ) * (P.L.φ σ).φ (i PUnit.unit) y))` using `fun l => by`.
+
+Rewrite using `[nu_eq k X p P e 0 (x l) (hx.mem l) σ y _ _ hy' hj, mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set S := ∑ l, ‖ratVal (P.loc e 0 (x l) (i PUnit.unit) (pick (P.A.φ σ).isLB y)) y‖ ^ 2 with hS`.
+
+Establish `hSpos : 0 < S`. Take `⟨l, hl⟩` from `hx.cover (under y)`. Establish `h0` using `norm_pos_iff.2 (ratVal_ne_zero (hl _ _ (mem_ptsIn.1 hy') (mem_ptsIn.1 hj)))`. Conclude with `(pow_pos h0 2).trans_le (Finset.single_le_sum (f := fun l => ‖ratVal (P.loc e 0 (x l) (i PUnit.unit) (pick (P.A.φ σ).isLB y)) y‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ l))`. Establish `hsum : ∑ l, P.nu e 0 σ y (x l) ^ (2 * 1) = Real.exp (-((e : ℝ) * (P.L.φ σ).φ (i PUnit.unit) y)) * S`.
+
+Rewrite using `[hS, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_one, hnu l, mul_comm]`. Establish `hu1` using `hu' σ y`. Rewrite `hu1` using `[hsum, Real.log_mul (Real.exp_pos _).ne' hSpos.ne', Real.log_exp]`.
+
+Express the relevant statement in the definitionally equal form `(((P.L.φ σ).addFn (u.u σ)).zpow (e : ℤ)).φ i y = _`. Use `(Weight.zpow_φ _ _ _ _).trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Express the relevant statement in the definitionally equal form `((e : ℤ) : ℝ) * ((P.L.φ σ).φ (i PUnit.unit) y + u.u σ y) = Real.log (∑ l, ‖valR y.1 ((P.L.pow e).B.U i) ((s l).f i)‖ ^ 2)`. Simplify using `only [hA, ← hS]`.
+
+Rewrite using `[hu1]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem toProj_gens : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p) (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → x 0 ≠ 0 → ∃ (π : X ⟶ PSpace k D) (hπ : π ≫ PSpace.str k D = p), (∃ h : genericPoint X ∈ π ⁻¹ᵁ ProjSpace.chart k D 0, ∀ j, X.presheaf.germ (π ⁻¹ᵁ ProjSpace.chart k D 0) (genericPoint X) h (ProjSpace.pullRatio π (π ⁻¹ᵁ ProjSpace.chart k D 0) 0 le_rfl j) = x j / x 0) ∧ ∀ u : SmFn p, IsCan P e 1 x u → ((up P.L u).pow e).Isometric ((ProjSpace.hermitianTwistingSheaf k D).pull π hπ) := by
   intro k _ X _ p D _ P e x hx hx0
   obtain ⟨ρ, s, hu, hn1, hs⟩ := exists_secs P hx

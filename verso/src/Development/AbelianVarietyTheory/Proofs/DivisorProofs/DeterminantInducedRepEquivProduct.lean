@@ -13,6 +13,13 @@ namespace GlobalTheory.DetIndProd
 
 open GlobalTheory.ThK.MidJac GlobalTheory.RankFibre GlobalTheory.DetIndScal
 
+/- English proof (translation)
+Introduce `k _ _ _ _ a a' χ₁ χ₂`. Take `⟨ν, rfl⟩ : ∃ ν : kˣ →* ℂˣ, χ₁ = ν * χ₂` from `⟨χ₁ * χ₂⁻¹, by ext x; simp⟩`. Establish `hP : parab k (e2 a a') = parab k (blocks a a')` using `Subgroup.ext (mem_parabolic_two_blocks_iff a a')`. Use `GlobalTheory.PairIndProd.nonempty_smInd_equiv (P := parab k (e2 a a')) (Q := parab k (blocks a a')) (σ := (twist (ofChar (GlobalTheory.ThK.DetProd.twoDet a a' (ν * χ₂) χ₂)) (deltaHalf k (fun c : Fin 2 => Fin (![a, a'] c)))).comp (leviProj k (e2 a a'))) (τ := (twist (detPair k a a …` and prove the remaining obligations. Introduce and unpack `⟨p, h1⟩ ⟨q, h2⟩ hpq w`.
+
+Take `rfl : p = q` from `hpq`. Establish `hc` using `char_eq ν χ₂ a a' p h1 h2`. Establish `hp : parChar ν χ₂ a a' ⟨p, h2⟩ = deltaHalf k (Two (Fin a) (Fin a')) (leviProj k (blocks a a') ⟨p, h2⟩) * (ν * χ₂) (Matrix.GeneralLinearGroup.det (leviProj k (blocks a a') ⟨p, h2⟩ false)) * χ₂ (Matrix.GeneralLinearGroup.det (leviProj k (blocks a a') ⟨p, h2⟩ true))` using `rfl`. Establish `hdp : ∀ (x : Levi k (Two (Fin a) (Fin a'))) (v : ℂ ⊗[ℂ] ℂ), detPair k a a' (ν * χ₂) χ₂ x v = (((ν * χ₂) (Matrix.GeneralLinearGroup.det (x false)) * χ₂ (Matrix.GeneralLinearGroup.det (x true)) : ℂˣ) : ℂ) • v` using `fun x v => CellTorus.extTensor_detRep_apply (ν * χ₂) χ₂ _ v`. Simplify using `only [MonoidHom.comp_apply, twist_apply, ofChar_apply]`.
+
+Rewrite using `[hdp, smul_smul, ← map_smul, ← Units.val_mul, ← mul_assoc, ← hp, ← hc]`. Use `congr 1`. Simplify using `only [smul_eq_mul, mul_assoc]`.
+-/
 theorem detInd_equiv_prod₂ : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a a' : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ),
     Nonempty ((GlobalTheory.ThK.MidJac.detInd a a' χ₁ χ₂).Equiv (prod₂ (detRep (Fin a) χ₁) (detRep (Fin a') χ₂))) := by

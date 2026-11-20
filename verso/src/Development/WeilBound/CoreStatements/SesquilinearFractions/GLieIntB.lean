@@ -14,8 +14,16 @@ variable {R : Type} [CommRing R]
 def toR {A : Over (Sp R)} (t : epsAt (𝟙 (Sp R)) ⟶ A) : epsR R ⟶ A :=
   Over.homMk t.left (by simp [Over.w t])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toR_left {A : Over (Sp R)} (t : epsAt (𝟙 (Sp R)) ⟶ A) : (toR t).left = t.left := rfl
 
+/- English proof (translation)
+Unfold `IsTangent`. Rewrite using `[toR_left]`. Unfold `IsTanAt at ht`. Rewrite using `[ht]`. Rewrite using `[Hom.one_def]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem toR_tan {A : Over (Sp R)} [GrpObj A] (t : epsAt (𝟙 (Sp R)) ⟶ A) (ht : IsTanAt A (𝟙 (Sp R)) t) :
     IsTangent (toR t) := by
   unfold IsTangent
@@ -24,8 +32,24 @@ theorem toR_tan {A : Over (Sp R)} [GrpObj A] (t : epsAt (𝟙 (Sp R)) ⟶ A) (ht
   rw [ht]
   rw [Hom.one_def]; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem epsScaleR_eq (c : R) : epsScaleR c = GlobalTheory.CompanionTheory.Ar.epsMul c := rfl
 
+/- English proof (translation)
+Take `⟨e₀, he₀⟩` from `M.onto (toAt v) (toAt_tan v (hv.1 0))`. Establish `key : ∀ e, ∃! c : Fin 1 → R, IsLieComb c ![v] (toR (M.pt e))` using `fun e => hv.2 _ (toR_tan _ (M.tan e))`. Establish `hsm : ∀ (c : R) e, (M.pt (c • e)).left = spMap (epsScaleR c) ≫ (M.pt e).left` using `fun c e => M.smul c e`. Establish `comb : ∀ c : R, IsLieComb ![c] ![v] (toR (M.pt (c • e₀)))`. Introduce `c`.
+
+Use `⟨![toR (M.pt (c • e₀))], fun i => ?_, ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]`. Rewrite using `[toR_left, hsm, he₀, toAt_left]`. Simplify using the standard rewrite rules.
+
+Establish `hinj : Function.Injective fun c : R => c • e₀`. Introduce `c c' h`. Establish `h1` using `(key (c • e₀)).unique (comb c) (by simpa [h] using comb c')`. Simplify using `using congrFun h1 0`. Establish `hsurj : Function.Surjective fun c : R => c • e₀`.
+
+Introduce `e`. Take `⟨c, ⟨u, hu, hw⟩, -⟩` from `key e`. Use `⟨c 0, M.inj (Over.OverMorphism.ext ?_)⟩` and prove the remaining obligations. Establish `h0` using `hu 0`. Simplify using `only [Matrix.cons_val_zero] at h0`.
+
+Establish `hw' : (toR (M.pt e)).left = (u 0).left`. Rewrite using `[hw]`. Simplify using `[List.ofFn_succ]`. Simplify using `only`. Rewrite using `[hsm, he₀, toAt_left, ← h0, ← hw', toR_left]`.
+
+Set `eqv : R ≃ₗ[R] E` to `LinearEquiv.ofBijective (LinearMap.toSpanSingleton R E e₀) ⟨hinj, hsurj⟩`. Use `⟨(Module.Basis.singleton (Fin 1) R).map eqv, ?_⟩` and prove the remaining obligations. Simplify using `only [eqv, Module.Basis.map_apply, Module.Basis.singleton_apply]`. Use `show (M.pt (LinearMap.toSpanSingleton R E e₀ 1)).left = v.left`. Rewrite using `[LinearMap.toSpanSingleton_apply, one_smul, he₀, toAt_left]`.
+-/
 theorem basis_of_lieBasis {A : Over (Sp R)} [GrpObj A] (v : epsR R ⟶ A) (hv : IsLieBasis ![v]) {E : Type}
     [AddCommGroup E] [Module R E] (M : LieModel A (𝟙 (Sp R)) E) :
     ∃ b : Module.Basis (Fin 1) R E, (M.pt (b 0)).left = v.left := by

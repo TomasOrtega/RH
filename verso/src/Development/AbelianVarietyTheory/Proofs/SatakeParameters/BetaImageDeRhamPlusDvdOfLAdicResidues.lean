@@ -7,6 +7,21 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.Pst.StLat
 
+/- English proof (translation)
+Introduce `l _ ϖ hk hF y hy`. Take `⟨-, hker, hA, hD, -⟩` from `GlobalTheory.MemLoc.thetaP_facts l`. Establish `hb0 : Per.θP l (beta ϖ) = 0`. Rewrite using `[← RingHom.mem_ker, hker, hk]`. Conclude with `Ideal.mem_span_singleton_self _`.
+
+Establish `hb : Per.θD l (betaD ϖ) = 0` using `by rw [betaD, hD, hb0]`. Establish `hS : ∀ a ∈ Sa ϖ, Per.θP l a ∈ 𝓞_ℂ_[l]`. Introduce `a ha`. Express the relevant statement in the definitionally equal form `a ∈ Algebra.adjoin _ _ at ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx => rw [Set.mem_singleton_iff.1 hx, hb0]`. Conclude with `zero_mem _`. Consider the case `algebraMap r => rw [hA]`. Conclude with `(Per.θ l r).2`. Consider the case `add x z _ _ hx hz => rw [map_add]`.
+
+Conclude with `add_mem hx hz`. Consider the case `mul x z _ _ hx hz => rw [map_mul]`. Conclude with `mul_mem hx hz`. Establish `hs : ∀ s ∈ Sg ϖ, ‖Per.θD l s‖ ≤ 1`. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+
+Rewrite using `[hD]`. Conclude with `(GlobalTheory.RingBasics.mem_OC _).1 (hS a ha)`. Establish `h0 : Per.θD l y = 0`. Establish `hle : ∀ k : ℕ, ‖Per.θD l y‖ ≤ ‖((l : ℕ) : ℂ_[l])‖ ^ k`. Introduce `k`.
+
+Take `⟨s, hsS, c, hc⟩` from `hy k`. Establish `h1` using `congrArg (Per.θD l) hc`. Rewrite `h1` using `[map_sub, map_mul, map_mul, hb, zero_mul, sub_eq_zero, map_pow, map_natCast]`. Rewrite using `[h1, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (pow_nonneg (norm_nonneg _) _) (hs s hsS)`.
+
+Conclude with `norm_le_zero_iff.1 (ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) (GlobalTheory.RingBasics.norm_p_lt (p := l))) hle)`. Establish `hmem : y ∈ Per.FilP l 1` using `((GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.1 y).1 h0`. Rewrite `hmem` using `[hF 1, pow_one]`. Conclude with `Ideal.mem_span_singleton.1 hmem`.
+-/
 theorem betaD_dvd_of_res : ∀ (l : ℕ) [Fact l.Prime] (ϖ : Per.Fl l), Per.kerP l = Ideal.span {beta ϖ} →
   (∀ n : ℕ, Per.FilP l n = Ideal.span {betaD ϖ ^ n}) →
   ∀ y : Per.BdRp l, (∀ k : ℕ, ∃ s ∈ Sg ϖ, betaD ϖ ∣ y - ((l : ℕ) : Per.BdRp l) ^ k * s) → betaD ϖ ∣ y := by

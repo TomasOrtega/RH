@@ -13,5 +13,8 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 open GlobalTheory.VB (IsVB IsSubbundle)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Vert.Model.FlagPair.nonempty_pull_comp | exact GlobalTheory.Vert.Model.FlagPair.nonempty_pull_comp | (intros; apply GlobalTheory.Vert.Model.FlagPair.nonempty_pull_comp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_pair_pullback_composition : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Z Z₁ Z₂ : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom Z₁ Z) (g : GlobalTheory.Vert.Model.Hom Z₂ Z₁) (E E' : Z.X.Modules) (φ : Z.GenIso E E') (N : ℕ), GlobalTheory.Vert.Model.FlagPair ((φ.pull f.comp_str).pull g.comp_str) N → Nonempty (GlobalTheory.Vert.Model.FlagPair (φ.pull (g.comp f).comp_str) N) := by
   first | exact @GlobalTheory.Vert.Model.FlagPair.nonempty_pull_comp | exact GlobalTheory.Vert.Model.FlagPair.nonempty_pull_comp | (intros; apply GlobalTheory.Vert.Model.FlagPair.nonempty_pull_comp <;> assumption)

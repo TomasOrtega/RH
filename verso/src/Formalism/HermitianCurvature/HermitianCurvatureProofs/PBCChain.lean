@@ -10,6 +10,17 @@ noncomputable section
 
 open Classical
 
+/- English proof (translation)
+Use `set M := ∑' i, m i with hMdef`. Establish `hq1 : ∀ i u, q i u ≤ 1`. Introduce `i u`. Distinguish the cases in `hu : u ∈ Wd`. Rewrite using `[← (hq i).2.2]`.
+
+Conclude with `Finset.single_le_sum (fun a _ => (hq i).1 a) hu`. Rewrite using `[(hq i).2.1 u hu]`. Conclude with `zero_le_one`. Establish `hsu : ∀ u, Summable (fun i => m i * q i u)` using `fun u => Summable.of_nonneg_of_le (fun i => mul_nonneg (hm0 i) ((hq i).1 u)) (fun i => mul_le_of_le_one_right (hm0 i) (hq1 i u)) hms`. Use `⟨fun u => (∑' i, m i * q i u) / M, ⟨fun u => div_nonneg (tsum_nonneg fun i => mul_nonneg (hm0 i) ((hq i).1 u)) hM.le, fun u hu => ?_, ?_⟩, fun N => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `[(hq _).2.1 u hu]`. Rewrite using `[← Finset.sum_div, div_eq_one_iff_eq hM.ne', ← Summable.tsum_finsetSum (fun u _ => hsu u)]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, (hq i).2.2, mul_one]`. Repeatedly rewrite using `[Finset.mul_sum, ← mul_assoc]`.
+
+Conclude with `summable_sum fun u _ => (hsu u).mul_right (N u)`. Repeatedly rewrite using `[Finset.mul_sum, ← mul_assoc]`. Rewrite using `[Summable.tsum_finsetSum (fun u _ => (hsu u).mul_right (N u))]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[tsum_mul_right]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem tsum_mix {ι W : Type} (Wd : Finset W) (m : ι → ℝ) (hm0 : ∀ i, 0 ≤ m i) (hms : Summable m)
     (hM : 0 < ∑' i, m i) (q : ι → W → ℝ) (hq : ∀ i, TB.IsProb Wd (q i)) :
     ∃ θ : W → ℝ, TB.IsProb Wd θ ∧ ∀ N : W → ℝ,
@@ -40,6 +51,15 @@ theorem tsum_mix {ι W : Type} (Wd : Finset W) (m : ι → ℝ) (hm0 : ∀ i, 0 
     rw [tsum_mul_right]
     field_simp
 
+/- English proof (translation)
+Establish `h1 : ∀ v ∈ crystallineComparison.pat L σ, crystallineComparison.mfac K (L v) ‖σ v‖ * ‖σ v‖ ^ K = L v ^ K`. Introduce `v hv`. Simplify using `only [crystallineComparison.pat, Finset.mem_filter, Finset.mem_univ, true_and] at hv`. Establish `ha : 0 < ‖σ v‖` using `lt_of_le_of_lt (hL v) hv`. Establish `hle : (L v / ‖σ v‖) ^ K ≤ 1` using `pow_le_one₀ (div_nonneg (hL v) ha.le) ((div_le_one ha).mpr hv.le)`.
+
+Unfold `crystallineComparison.mfac`. Rewrite using `[if_neg ha.ne', min_eq_right hle, div_pow, div_mul_cancel₀]`. Conclude with `pow_ne_zero _ ha.ne'`. Establish `h2 : ∀ v ∈ (Finset.univ : Finset (Fin f)), v ∉ crystallineComparison.pat L σ → crystallineComparison.mfac K (L v) ‖σ v‖ = 1`. Introduce `v _ hv`.
+
+Simplify using `only [crystallineComparison.pat, Finset.mem_filter, Finset.mem_univ, true_and, not_lt] at hv`. Unfold `crystallineComparison.mfac`. Use `split_ifs with h0`. Both sides reduce to the same expression. Establish `ha : 0 < ‖σ v‖` using `lt_of_le_of_ne (norm_nonneg _) (Ne.symm h0)`.
+
+Conclude with `min_eq_left (one_le_pow₀ ((one_le_div ha).mpr hv))`. Unfold `crystallineComparison.mL`. Rewrite using `[← Finset.prod_subset (Finset.subset_univ _) h2, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl h1`.
+-/
 theorem mL_pat {f : ℕ} (K : ℕ) (L : Fin f → ℝ) (hL : ∀ v, 0 ≤ L v) (σ : crystallineComparison.V f) :
     crystallineComparison.mL K L σ * ∏ v ∈ crystallineComparison.pat L σ, ‖σ v‖ ^ K = ∏ v ∈ crystallineComparison.pat L σ, L v ^ K := by
   have h1 : ∀ v ∈ crystallineComparison.pat L σ, crystallineComparison.mfac K (L v) ‖σ v‖ * ‖σ v‖ ^ K = L v ^ K := by
@@ -63,6 +83,11 @@ theorem mL_pat {f : ℕ} (K : ℕ) (L : Fin f → ℝ) (hL : ∀ v, 0 ≤ L v) (
   rw [← Finset.prod_subset (Finset.subset_univ _) h2, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl h1
 
+/- English proof (translation)
+Establish `hP : 0 < ∏ v ∈ crystallineComparison.pat L σ, ‖σ v‖ ^ K`. Use `Finset.prod_pos fun v hv => pow_pos ?_ _` and prove the remaining obligations. Simplify using `only [crystallineComparison.pat, Finset.mem_filter, Finset.mem_univ, true_and] at hv`. Conclude with `lt_of_le_of_lt (hL v) hv`. Rewrite `h` using `[← mL_pat K L hL σ]`.
+
+Use `le_of_mul_le_mul_left ?_ hP` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bound_mL {f : ℕ} (K : ℕ) (L : Fin f → ℝ) (hL : ∀ v, 0 ≤ L v) (σ : crystallineComparison.V f) (X Y : ℝ)
     (h : (∏ v ∈ crystallineComparison.pat L σ, ‖σ v‖ ^ K) * X ≤ (∏ v ∈ crystallineComparison.pat L σ, L v ^ K) * Y) : X ≤ crystallineComparison.mL K L σ * Y := by
   have hP : 0 < ∏ v ∈ crystallineComparison.pat L σ, ‖σ v‖ ^ K := by
@@ -75,12 +100,18 @@ theorem bound_mL {f : ℕ} (K : ℕ) (L : Fin f → ℝ) (hL : ∀ v, 0 ≤ L v)
       ≤ crystallineComparison.mL K L σ * (∏ v ∈ crystallineComparison.pat L σ, ‖σ v‖ ^ K) * Y := h
     _ = (∏ v ∈ crystallineComparison.pat L σ, ‖σ v‖ ^ K) * (crystallineComparison.mL K L σ * Y) := by ring
 
+/- English proof (translation)
+The claim follows from `Finset.prod_nonneg fun v _ => by unfold crystallineComparison.mfac split_ifs · exact zero_le_one · exact le_min zero_le_one (pow_nonneg (div_nonneg (hL v) (norm_nonneg _)) _)`.
+-/
 theorem mL_nonneg {f : ℕ} (K : ℕ) (L : Fin f → ℝ) (hL : ∀ v, 0 ≤ L v) (σ : crystallineComparison.V f) : 0 ≤ crystallineComparison.mL K L σ := Finset.prod_nonneg fun v _ => by
     unfold crystallineComparison.mfac
     split_ifs
     · exact zero_le_one
     · exact le_min zero_le_one (pow_nonneg (div_nonneg (hL v) (norm_nonneg _)) _)
 
+/- English proof (translation)
+Unfold `crystallineComparison.mL crystallineComparison.mfac`. Simplify using the standard rewrite rules.
+-/
 theorem mL_zero {f : ℕ} (K : ℕ) (L : Fin f → ℝ) : crystallineComparison.mL K L 0 = 1 := by
   unfold crystallineComparison.mL crystallineComparison.mfac
   simp
@@ -91,6 +122,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
   [∀ x, InnerProductSpace ℂ (Wq x)]
 
+/- English proof (translation)
+Unfold `KB.gN C.Word.size`. Rewrite using `[Finset.prod_div_distrib]`. Use `congr 1`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem prod_gN (S : C.HidaSetting E Wp Wq) (ε : ℝ) (i : ℕ) (w : S.W) (p q : Fin S.f → C.LPt) :
     ∏ v, KB.gN S v ε i (w.1 v) (p v) (q v) =
       (∏ v, S.gramLoc v ε i (w.1 v) (p v) (q v)) / (C.Word.size S.P w.1 : ℂ) := by
@@ -100,6 +134,11 @@ theorem prod_gN (S : C.HidaSetting E Wp Wq) (ε : ℝ) (i : ℕ) (w : S.W) (p q 
   push_cast
   rfl
 
+/- English proof (translation)
+Unfold `KB.NstV`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations.
+
+Establish `e` using `prod_gN S ε i w (fun v => C.loc (S.σ v) h ++ [(s, t v)]) (fun v => C.loc (S.σ v) h' ++ [(s, t' v)])`. Rewrite using `[e, mul_div_assoc]`.
+-/
 theorem nstV_eq (S : C.HidaSetting E Wp Wq) (ε : ℝ) (i s : ℕ) (w : S.W) (Y : Finset (TB.Pt E))
     (κ : TB.Pt E → TB.Pt E → ℂ) (t t' : Fin S.f → ℂ) :
     KB.NstV S ε i s w Y κ t t' = ∑ h ∈ Y, ∑ h' ∈ Y, κ h h' *

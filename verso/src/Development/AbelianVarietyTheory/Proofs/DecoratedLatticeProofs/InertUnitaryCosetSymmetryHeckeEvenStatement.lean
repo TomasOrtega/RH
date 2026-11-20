@@ -13,5 +13,8 @@ open Formalism.UG (IsUnifV qV IsUnramInv GU KU IsInertAt Hecke IsCommensurated T
 open Formalism.MainNotions.SchurIrreducible (IsSplit)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.inert_cosetSym_heckeEven | exact GlobalTheory.ChainOnto.inert_cosetSym_heckeEven | (intros; apply GlobalTheory.ChainOnto.inert_cosetSym_heckeEven <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.inert_unitary_coset_symmetry_hecke_even : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q → ∀ n : ℕ, IsCommensurated (KU σ n) ∧ CosetSym (KU σ n) ∧ ∀ φ ∈ Hecke ℂ (KU σ n), ∀ g, φ g⁻¹ = φ g := by
   first | exact @GlobalTheory.ChainOnto.inert_cosetSym_heckeEven | exact GlobalTheory.ChainOnto.inert_cosetSym_heckeEven | (intros; apply GlobalTheory.ChainOnto.inert_cosetSym_heckeEven <;> assumption)

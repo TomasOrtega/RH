@@ -13,12 +13,20 @@ open KStar.TotallyRealRoots
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `ENat.forall_natCast_le_iff_le.mp fun n hn => ?_` and prove the remaining obligations. Rewrite `hn` using `[le_nu_iff]`. Conclude with `le_emultiplicity_of_pow_dvd (hn u hu)`.
+-/
 private theorem nlb_nu_le {U : Subgroup ℤ_[l]ˣ} {u : ℤ_[l]ˣ} (hu : u ∈ U) (tr : ℕ) :
     nu l U tr ≤ emultiplicity (l : ℤ_[l]) ((u : ℤ_[l]) ^ tr - 1) := by
   refine ENat.forall_natCast_le_iff_le.mp fun n hn => ?_
   rw [le_nu_iff] at hn
   exact le_emultiplicity_of_pow_dvd (hn u hu)
 
+/- English proof (translation)
+Establish `h : IsUnit (1 + (l : ℤ_[l]) ^ a)`. Assume the negation of the conclusion as `hn`. Establish `h1 : ‖1 + (l : ℤ_[l]) ^ a‖ < 1` using `PadicInt.not_isUnit_iff.mp hn`. Rewrite `h1` using `[PadicInt.norm_lt_one_iff_dvd]`. Establish `h2 : (l : ℤ_[l]) ∣ (l : ℤ_[l]) ^ a` using `dvd_pow_self _ (by omega)`.
+
+Conclude with `PadicInt.prime_p.not_dvd_one ((dvd_add_left h2).mp h1)`. Conclude with `⟨h.unit, by simp⟩`.
+-/
 private theorem nlb_exists_unit {a : ℕ} (ha : 1 ≤ a) :
     ∃ u : ℤ_[l]ˣ, (u : ℤ_[l]) - 1 = (l : ℤ_[l]) ^ a := by
   have h : IsUnit (1 + (l : ℤ_[l]) ^ a) := by
@@ -29,6 +37,17 @@ private theorem nlb_exists_unit {a : ℕ} (ha : 1 ≤ a) :
     exact PadicInt.prime_p.not_dvd_one ((dvd_add_left h2).mp h1)
   exact ⟨h.unit, by simp⟩
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Use `set a := max s (if l = 2 then 2 else 1) with ha`. Apply the tactic sequence `have ha1 : 1 ≤ a := le_trans (by split_ifs <;> omega) (le_max_right _ _)`. Take `⟨u, hu⟩` from `nlb_exists_unit (l := l) ha1`. Establish `hm : u ∈ U` using `h (by`.
+
+Rewrite using `[mem_princ, hu]`. Conclude with `pow_dvd_pow _ (le_max_left _ _))`. Establish `hem : emultiplicity (l : ℤ_[l]) ((u : ℤ_[l]) - 1) = a`. Rewrite using `[hu, emultiplicity_pow_self_of_prime PadicInt.prime_p]`. Establish `key : emultiplicity (l : ℤ_[l]) ((u : ℤ_[l]) ^ e - 1) = emultiplicity (l : ℤ_[l]) ((u : ℤ_[l]) - 1) + emultiplicity l e`.
+
+Distinguish the cases in `hl : l = 2`. Use `emultiplicity_pow_sub_one_sq ?_ e` and prove the remaining obligations. Rewrite using `[hu]`. Use `pow_dvd_pow _ ?_` and prove the remaining obligations. Rewrite using `[ha, if_pos hl]`.
+
+Conclude with `le_max_right _ _`. Use `emultiplicity_pow_sub_one_odd hl ?_ e` and prove the remaining obligations. Rewrite using `[hu]`. Conclude with `dvd_pow_self _ (by omega)`. Use `nlb_nu_le hm e` as an intermediate fact.
+
+Rewrite `this` using `[key, hem, ← padicValNat_eq_emultiplicity he]`. Rewrite using `[Nat.cast_add, Nat.factorization_def _ hp]`. Conclude with `this`.
+-/
 private theorem nlb_main {U : Subgroup ℤ_[l]ˣ} {s e : ℕ} (h : princ l s ≤ U) (he : e ≠ 0) :
     nu l U e ≤ ((max s (if l = 2 then 2 else 1) + e.factorization l : ℕ) : ℕ∞) := by
   have hp : l.Prime := Fact.out
@@ -58,6 +77,15 @@ private theorem nlb_main {U : Subgroup ℤ_[l]ˣ} {s e : ℕ} (h : princ l s ≤
 
 end
 
+/- English proof (translation)
+Introduce `l _ N e U h he`. Unfold `nuBound`. Distinguish the cases in `hc : l ∣ N ∨ l - 1 ∣ e`. Rewrite using `[if_pos hc]`. Conclude with `nlb_main h he`.
+
+Rewrite using `[if_neg hc]`. Rewrite `hc` using `[not_or]`. Take `⟨h1, h2⟩` from `KStar.TotallyRealRoots.levelGroup_eq_top (l := l) hc.1 ⊤`. Rewrite `h2` using `[h1]`. Establish `hU : U = ⊤`.
+
+Rewrite using `[eq_top_iff]`. Introduce `u _`. Apply `h` to reduce the goal to its premises. Rewrite using `[KStar.TotallyRealRoots.mem_princ, Nat.factorization_eq_zero_of_not_dvd hc.1, pow_zero]`. Conclude with `one_dvd _`.
+
+Substitute `hU` using the available equality. Establish `h3` using `hc.2`. Rewrite `h3` using `[← h2, ← KStar.TotallyRealRoots.nu_pos_iff]`. Simplify using `using not_lt.mp h3`.
+-/
 theorem UpperTheory.V.LDataCardLeFinrank.nuLeBound :
     ∀ (l : ℕ) [Fact l.Prime] (N e : ℕ) (U : Subgroup ℤ_[l]ˣ), KStar.TotallyRealRoots.princ l (N.factorization l) ≤ U → e ≠ 0 → KStar.TotallyRealRoots.nu l U e ≤ (nuBound l N e : ℕ∞) := by
   intro l _ N e U h he

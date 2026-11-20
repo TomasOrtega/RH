@@ -30,6 +30,15 @@ open GlobalTheory.Orb (archMat)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Introduce `t`. Establish `h1 : archMat σ J τ (projArch σ J w a)⁻¹ * archMat σ J τ (projArch σ J w a) = 1`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Establish `h2 : archMat σ J τ (projArch σ J w a) * archMat σ J τ (projArch σ J w a)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`.
+
+Take `⟨y, e1, e2⟩` from `hγ t`. Use `⟨(projArch σ J w a)⁻¹ * y * projArch σ J w a, ?_, ?_⟩` and prove the remaining obligations. Use `show a⁻¹ * γ t * a = _`. Rewrite using `[e1]`. Use `GAd_ext σ J (fun u => ?_) fun v => by simp` and prove the remaining obligations.
+
+Distinguish the cases in `e : u = w`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[projArch_embArch_ne σ J e]`. Rewrite using `[map_mul, map_mul, e2]`.
+
+Generalize the expression as in `archMat σ J τ (projArch σ J w a)⁻¹ = M' at *`. Generalize the expression as in `archMat σ J τ (projArch σ J w a) = M at *`. Establish `hM : IsUnit M` using `⟨⟨M, M', h2, h1⟩, rfl⟩`. Rewrite using `[← Matrix.inv_eq_left_inv h1, ← Matrix.exp_conj' _ _ hM, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem isLineOf_conj (h : IsCMExt F E σ) {w : InfinitePlace F} {τ : EmbOver E w} {Z : Matrix (Fin n) (Fin n) ℂ}
     {γ : ℝ → GAd σ J} (hγ : IsLineOf σ J τ Z γ) (a : GAd σ J) :
     IsLineOf σ J τ ((archMat σ J τ (projArch σ J w a))⁻¹ * Z * archMat σ J τ (projArch σ J w a))
@@ -53,6 +62,17 @@ theorem isLineOf_conj (h : IsCMExt F E σ) {w : InfinitePlace F} {τ : EmbOver E
     have hM : IsUnit M := ⟨⟨M, M', h2, h1⟩, rfl⟩
     rw [← Matrix.inv_eq_left_inv h1, ← Matrix.exp_conj' _ _ hM, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J hJ x hx K hK S hS γ hγ`. Take `⟨w, τ, X, hX, hγ⟩` from `hγ`. Establish `hγ' : IsLineOf σ J τ X γ` using `hγ`. Take `⟨R, ε, hR, hRK⟩` from `GlobalTheory.T.exists_signature_basis_max_compact F E σ h n J hJ K hK w τ`. Establish `hA : (J.map τ.1)ᴴ = J.map τ.1` using `conjTranspose_map h hJ τ.1`.
+
+Establish `hv : star (fun i => τ.1 (x i)) ⬝ᵥ J.map τ.1 *ᵥ (fun i => τ.1 (x i)) = 0`. Establish `e` using `congrArg τ.1 hx`. Simplify using `only [hE, Formalism.UG.hform, map_sum, map_mul, map_zero] at e`. Rewrite using `[← e]`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, Matrix.map_apply]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show τ.1 ((σ : E →+* E) (x i)) = star (τ.1 (x i)) from h.2.2.2 τ.1 (x i)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm : Continuous fun k : GAd σ J => archMat σ J τ (projArch σ J w k)` using `(GlobalTheory.Orb.continuous_archMat σ J τ).comp (continuous_projArch σ J w)`. Establish `hu : ∀ y : GArch σ J w, (archMat σ J τ y)ᴴ * J.map τ.1 * archMat σ J τ y = J.map τ.1` using `fun y => (archEquiv J h τ y).2`.
+
+Establish `hmu : ∀ k : GAd σ J, (archMat σ J τ (projArch σ J w k))ᴴ * J.map τ.1 * archMat σ J τ (projArch σ J w k) = J.map τ.1` using `fun k => hu _`. Take `⟨e, e', Yb, l, Zb, C, hY, hZ, hc⟩` from `GlobalTheory.T.compact_isometry_lie_algebra_bound n (J.map τ.1) R ε hA hR _ hv (GAd σ J) S hS _ hm.continuousOn (fun k _ => hmu k) X hX`. Use `choose β hβ using fun j => exists_isLineOf h hJ (hY j).1`. Use `choose ζ hζ using fun j => exists_isLineOf h hJ (hZ j).1`. Use `⟨e, e', β, ζ, C, fun j => ⟨(hβ j).isRealLine h, GlobalTheory.T.levi_line_eigenvector_adelic_point F E σ h n J x w τ (Yb j) (l j) (hY j).2 (β j) (hβ j)⟩, fun j => ⟨(hζ j).isRealLine h, hRK (Zb j) (ζ j) (hζ j) (hZ j).2⟩, fun k hk => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, c', hc1, hc2, hX'⟩` from `hc k hk`. Use `⟨fun j => (c j : ℂ), fun j => (c' j : ℂ), fun j => by simpa using hc1 j, fun j => by simpa using hc2 j, fun f hf => ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.T.levi_lines_smooth_function_span F E σ h n J hJ w τ f hf (Fin e ⊕ Fin e') (Sum.elim (fun j => (archMat σ J τ (projArch σ J w k))⁻¹ * Yb j * archMat σ J τ (projArch σ J w k)) Zb) (Sum.elim (fun j s => k⁻¹ * β j s * k) ζ) (Sum.elim c c') γ (by rintro (j | j); exacts [ …`. Rewrite using `[key, Fintype.sum_sum_type]`. Both sides reduce to the same expression.
+-/
 theorem dec : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ x : Fin n → E, hE σ J x x = 0 → ∀ K : Subgroup (GAd σ J), GlobalTheory.UAut.IsMaxCpt σ J K → ∀ S : Set (GAd σ J), IsCompact S →

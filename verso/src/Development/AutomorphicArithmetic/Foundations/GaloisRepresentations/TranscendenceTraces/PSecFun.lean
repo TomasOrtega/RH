@@ -12,14 +12,25 @@ namespace UpperTheory.Gal.TranscendenceTraces
 section
 variable {R : Type} [CommRing R] {F : Shv R}
 
+/- English proof (translation)
+The claim follows from `map_nsmul (ModuleCat.Hom.hom (F.obj.map g.op)) n x`.
+-/
 private theorem res_nsmul' {V U : Scheme.{0}} (g : V ⟶ U) (n : ℕ) (x : Sec F U) :
     Sec.res g (n • x) = n • Sec.res g x := map_nsmul (ModuleCat.Hom.hom (F.obj.map g.op)) n x
 
+/- English proof (translation)
+The claim follows from `map_sub (ModuleCat.Hom.hom (F.obj.map g.op)) x x'`.
+-/
 private theorem res_sub' {V U : Scheme.{0}} (g : V ⟶ U) (x x' : Sec F U) :
     Sec.res g (x - x') = Sec.res g x - Sec.res g x' := map_sub (ModuleCat.Hom.hom (F.obj.map g.op)) x x'
 
 end
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `hx`. Take `⟨t, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := x) (g := g) (IsLocalRing.closedPoint Ω) v hv.symm`. Establish `hE : Etale (pullback.fst x g)` using `inferInstance`. Establish `hz` using `(GlobalTheory.T.etaleSheafSections_sep_glue_of_surjective_family _ (tw q i) (gp Ω) Unit (fun _ => pullback x g) (fun _ => pullback.fst x g) (fun _ => hE) (fun u => ⟨(), t, Subsingleton.elim _ _⟩)).1 (Sec.res x y - c • Sec.res x G) (fun _ => by`. Rewrite using `[res_sub', res_nsmul', res_res, res_res, pullback.condition, ← res_res, ← res_res, h, res_nsmul', sub_self])`.
+
+Conclude with `sub_eq_zero.mp hz`.
+-/
 private theorem res_eq_of_range {q : ℕ} {i : ℤ} {U V : Scheme.{0}} (g : V ⟶ U) [Etale g]
     (y G : Sec (tw q i) U) (c : ℕ) (h : Sec.res g y = c • Sec.res g G) {Ω : Type} [Field Ω]
     (x : gp Ω ⟶ U) (hx : pt x ∈ Set.range g) : Sec.res x y = c • Sec.res x G := by
@@ -32,6 +43,27 @@ private theorem res_eq_of_range {q : ℕ} {i : ℤ} {U V : Scheme.{0}} (g : V �
       rw [res_sub', res_nsmul', res_res, res_res, pullback.condition, ← res_res, ← res_res, h, res_nsmul', sub_self])
   exact sub_eq_zero.mp hz
 
+/- English proof (translation)
+Introduce `hpt q _ i U ζ y`. Establish `hq : 0 < q` using `Nat.pos_of_ne_zero (NeZero.ne q)`. Take `⟨-, h2, h3, h4, -, -⟩` from `GlobalTheory.T.tateTwist_sections_locally_generated q i`. Set `P : (V : Scheme.{0}) → (V ⟶ U) → Prop` to `fun V g => ∃ c : ℕ, Sec.res g y = c • Sec.res g (twGen i ζ)`. Establish `hP : ∀ (V W : Scheme) (g : V ⟶ U) (k : W ⟶ V), P V g → P W (k ≫ g)`.
+
+Introduce and unpack `V W g k ⟨c, hc⟩`. Conclude with `⟨c, by rw [← res_res, hc, res_nsmul', res_res]⟩`. Establish `hloc : Loc U P`. Take `⟨S, hS, hSa⟩` from `h2 U ζ y`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `hSa V g hg`. Conclude with `⟨c, by rw [hc, h4]⟩`. Establish `hpts` using `(GlobalTheory.T.etaleLocally_iff_affine_etale_point_cover U P hP).mp hloc`. Use `choose V g hVa hge hgr hc using hpts`. Use `choose c hc using hc`.
+
+Establish `key : ∀ (u : U) {Ω : Type} [Field Ω] (x : gp Ω ⟶ U), pt x ∈ Set.range (g u) → Sec.res x y = c u • Sec.res x (twGen i ζ)`. Introduce `u Ω _ x hx`. Use `haveI := hge u`. Conclude with `res_eq_of_range (g u) y (twGen i ζ) (c u) (hc u) x hx`. Establish `uniq : ∀ (u u' : U) {Ω : Type} [Field Ω] (x : gp Ω ⟶ U), pt x ∈ Set.range (g u) → pt x ∈ Set.range (g u') → c u % q = c u' % q`.
+
+Introduce `u u' Ω _ x hx hx'`. Establish `hR : ∀ n : ℕ, n • Sec.res x (twGen i ζ) = 0 → q ∣ n`. Introduce `n hn`. Rewrite `hn` using `[h4]`. Conclude with `h3 (gp Ω) _ n hn`.
+
+Establish `heq : (c u % q) • Sec.res x (twGen i ζ) = (c u' % q) • Sec.res x (twGen i ζ)`. Rewrite using `[← RedExists.nsmul_mod_of, ← RedExists.nsmul_mod_of, ← key u x hx, ← key u' x hx']`. Establish `hlt : ∀ a b : ℕ, a < q → b < q → a ≤ b → a • Sec.res x (twGen i ζ) = b • Sec.res x (twGen i ζ) → a = b`. Introduce `a b ha hb hab he`. Establish `hs : a • Sec.res x (twGen i ζ) + (b - a) • Sec.res x (twGen i ζ) = a • Sec.res x (twGen i ζ) + 0`.
+
+Rewrite using `[← add_nsmul, Nat.add_sub_cancel' hab, add_zero, he]`. Establish `h0` using `hR (b - a) (add_left_cancel hs)`. Use `Nat.eq_zero_of_dvd_of_lt h0 (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Break down `le_total (c u % q) (c u' % q) with hab | hab` into its components or cases.
+
+Conclude with `hlt _ _ (Nat.mod_lt _ hq) (Nat.mod_lt _ hq) hab heq`. Conclude with `(hlt _ _ (Nat.mod_lt _ hq) (Nat.mod_lt _ hq) hab heq.symm).symm`. Use `⟨fun u => ((c u % q : ℕ) : ℤ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `u`.
+
+Use `⟨Set.range (g u), (g u).isOpenMap.isOpen_range, hgr u, fun u' hu' => ?_⟩` and prove the remaining obligations. Take `⟨Ω, _, _, x, hx⟩` from `hpt U u'`. Establish `hx1 : pt x ∈ Set.range (g u)` using `hx ▸ hu'`. Establish `hx2 : pt x ∈ Set.range (g u')` using `hx ▸ hgr u'`. Simplify using `only [uniq u' u x hx2 hx1]`.
+
+Introduce `Ω _ _ x`. Rewrite using `[key (pt x) x (hgr (pt x)), natCast_zsmul, ← RedExists.nsmul_mod_of]`.
+-/
 theorem secFun_of : PtEx → SecFun := by
   intro hpt q _ i U ζ y
   have hq : 0 < q := Nat.pos_of_ne_zero (NeZero.ne q)

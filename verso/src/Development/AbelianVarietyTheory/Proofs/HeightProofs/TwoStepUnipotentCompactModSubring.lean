@@ -10,11 +10,19 @@ def elt (b w : S) : S := 1 - st b + b + (w - h * (st b * b))
 
 variable {st e₁ e₃ h}
 
+/- English proof (translation)
+Establish `h1` using `hm 1 (st 1)`. Rewrite `h1` using `[one_mul, hi, one_mul]`. Conclude with `h1.symm`.
+-/
 theorem st_one (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x) : st 1 = 1 := by
   have h1 := hm 1 (st 1)
   rw [one_mul, hi, one_mul] at h1
   exact h1.symm
 
+/- English proof (translation)
+Establish `h2 : st h + st h = 1` using `by rw [← map_add, hh, st_one hm hi]`. Establish `hd : (h - st h) + (h - st h) = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : h - st h = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `(sub_eq_zero.mp h3).symm`.
+-/
 theorem st_half (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x)
     (hh : h + h = 1) (hc : ∀ x, h * x = x * h) : st h = h := by
   have h2 : st h + st h = 1 := by rw [← map_add, hh, st_one hm hi]
@@ -27,6 +35,15 @@ theorem st_half (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) 
       _ = 0 := by rw [hd, zero_mul]
   exact (sub_eq_zero.mp h3).symm
 
+/- English proof (translation)
+Establish `k1 : c * c' = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `k2 : c * z' = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `k3 : b * c' = 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `k4 : b * b' = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `k5 : b * z' = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `k6 : z * c' = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `k7 : z * b' = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `k8 : z * z' = 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, one_mul, mul_one, k1, k2, k3, k4, k5, k6, k7, k8]`. Normalize the expressions using the abelian group laws.
+-/
 theorem mul_aux {b c z b' c' z' : S} (h31 : e₃ * e₁ = 0)
     (h1 : b * e₃ = b) (h2 : z * e₃ = z) (h3 : e₃ * b' = 0) (h4 : e₁ * c' = c')
     (h5 : e₁ * z' = z') (h6 : c * e₁ = 0) :
@@ -62,6 +79,15 @@ theorem mul_aux {b c z b' c' z' : S} (h31 : e₃ * e₁ = 0)
   simp only [mul_add, add_mul, mul_sub, sub_mul, one_mul, mul_one, k1, k2, k3, k4, k5, k6, k7, k8]
   abel
 
+/- English proof (translation)
+Establish `he3 : st e₃ = e₁` using `by rw [← hs, hi]`. Establish `sb' : e₁ * st b' = st b'`. Combine the equalities or inequalities in the displayed calculation. Establish `sb : st b * e₁ = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hz : (w - h * (st b * b)) * e₃ = w - h * (st b * b)`. Rewrite using `[sub_mul, hw, mul_assoc, mul_assoc, hb.2]`. Establish `hz' : e₁ * (w' - h * (st b' * b')) = w' - h * (st b' * b')`. Rewrite using `[mul_sub, hw', ← mul_assoc, ← hc e₁, mul_assoc, ← mul_assoc e₁, sb']`. Establish `hprod` using `mul_aux (c := st b) (c' := st b') h31 hb.2 hz hb'.1 sb' hz' sb`.
+
+Establish `e : ∀ x : S, x = h * x + h * x` using `fun x => by rw [← add_mul, hh, one_mul]`. Simplify using `only [elt]`. Rewrite using `[hprod]`. Use `conv_lhs => rw [e (st b * b')]`. Simplify using `only [map_add, add_mul, mul_add, mul_sub]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem elt_mul (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x)
     (hs : st e₁ = e₃) (h31 : e₃ * e₁ = 0) (hh : h + h = 1) (hc : ∀ x, h * x = x * h)
     {b w b' w' : S} (hb : e₃ * b = 0 ∧ b * e₃ = b) (hb' : e₃ * b' = 0 ∧ b' * e₃ = b')
@@ -87,6 +113,9 @@ theorem elt_mul (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) 
   simp only [map_add, add_mul, mul_add, mul_sub]
   abel
 
+/- English proof (translation)
+Simplify using `only [elt, map_add, map_sub, map_neg, st_one hm hi, hi, hm, hw, st_half hm hi hh hc, neg_mul, mul_neg, neg_neg]`. Rewrite using `[hc (st b * b)]`. Normalize the expressions using the abelian group laws.
+-/
 theorem st_elt (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x)
     (hh : h + h = 1) (hc : ∀ x, h * x = x * h) (b : S) {w : S} (hw : st w = -w) :
     st (elt st h b w) = elt st h (-b) (-w) := by
@@ -95,6 +124,9 @@ theorem st_elt (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) =
   rw [hc (st b * b)]
   abel
 
+/- English proof (translation)
+Rewrite using `[elt_mul hm hi hs h31 hh hc ⟨by rw [mul_neg, hb.1, neg_zero], by rw [neg_mul, hb.2]⟩ hb (by rw [neg_mul, hw.2]) hw.1]`. Simplify using `[elt]`.
+-/
 theorem elt_neg_mul (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x)
     (hs : st e₁ = e₃) (h31 : e₃ * e₁ = 0) (hh : h + h = 1) (hc : ∀ x, h * x = x * h)
     {b w : S} (hb : e₃ * b = 0 ∧ b * e₃ = b) (hw : e₁ * w = w ∧ w * e₃ = w) :
@@ -103,6 +135,9 @@ theorem elt_neg_mul (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st
     (by rw [neg_mul, hw.2]) hw.1]
   simp [elt]
 
+/- English proof (translation)
+Rewrite using `[elt_mul hm hi hs h31 hh hc hb ⟨by rw [mul_neg, hb.1, neg_zero], by rw [neg_mul, hb.2]⟩ hw.2 (by rw [mul_neg, hw.1])]`. Simplify using `[elt]`.
+-/
 theorem elt_mul_neg (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x)
     (hs : st e₁ = e₃) (h31 : e₃ * e₁ = 0) (hh : h + h = 1) (hc : ∀ x, h * x = x * h)
     {b w : S} (hb : e₃ * b = 0 ∧ b * e₃ = b) (hw : e₁ * w = w ∧ w * e₃ = w) :
@@ -111,6 +146,17 @@ theorem elt_mul_neg (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st
     (by rw [mul_neg, hw.1])]
   simp [elt]
 
+/- English proof (translation)
+Take `⟨hb1, hb3, hb3'⟩` from `hb`. Take `⟨hw1, hw3, hws⟩` from `hw`. Establish `he3 : st e₃ = e₁` using `by rw [← hs, hi]`. Establish `f1 : st b * e₃ = 0` using `by rw [← hs, ← hm, hb1, map_zero]`. Establish `f2 : e₁ * st b = st b` using `by rw [← he3, ← hm, hb3']`.
+
+Establish `f3 : b * e₁ = 0` using `by rw [← hb3', mul_assoc, h31, mul_zero]`. Establish `f4 : w * e₁ = 0` using `by rw [← hw3, mul_assoc, h31, mul_zero]`. Establish `f5 : st b * e₁ = 0` using `by rw [← he3, ← hm, hb3, map_zero]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[st_elt hm hi hh hc b hws]`.
+
+Conclude with `elt_neg_mul hm hi hs h31 hh hc ⟨hb3, hb3'⟩ ⟨hw1, hw3⟩`. Establish `e : (elt st h b w - 1) * e₁ = -(st b * e₁) + b * e₁ + (w * e₁ - h * (st b * (b * e₁)))`. Simplify using `only [elt, sub_mul, add_mul, one_mul, mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, f5, f3, f4]`.
+
+Simplify using the standard rewrite rules. Establish `hX : (elt st h b w - 1) * (1 - e₃) = -st b`. Establish `e : (elt st h b w - 1) * (1 - e₃) = -st b + b + (w - h * (st b * b)) - (-(st b * e₃) + b * e₃ + (w * e₃ - h * (st b * (b * e₃))))`. Simplify using `only [elt, sub_mul, mul_sub, add_mul, one_mul, mul_one, mul_assoc]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e, f1, hb3', hw3]`. Normalize the expressions using the abelian group laws. Rewrite using `[mul_assoc, hX, mul_neg, sub_mul, one_mul, f2, sub_self, neg_zero]`.
+-/
 theorem elt_cond (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x)
     (hs : st e₁ = e₃) (h31 : e₃ * e₁ = 0) (hh : h + h = 1) (hc : ∀ x, h * x = x * h)
     {b w : S} (hb : e₁ * b = 0 ∧ e₃ * b = 0 ∧ b * e₃ = b)
@@ -142,6 +188,33 @@ theorem elt_cond (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x)
       abel
     rw [mul_assoc, hX, mul_neg, sub_mul, one_mul, f2, sub_self, neg_zero]
 
+/- English proof (translation)
+Establish `he3 : st e₃ = e₁` using `by rw [← hs, hi]`. Establish `he33 : e₃ * e₃ = e₃` using `by rw [← hs, ← hm, h11]`. Take `⟨X, rfl⟩ : ∃ X, g = 1 + X` from `⟨g - 1, by abel⟩`. Establish `hX1 : X * e₁ = 0` using `by rwa [add_sub_cancel_left] at h2`. Establish `h3' : (1 - e₁) * X * (1 - e₃) = 0` using `by rwa [add_sub_cancel_left] at h3`.
+
+Establish `hU : st X + X + st X * X = 0`. Rewrite `h1` using `[map_add, st_one hm hi]`. Establish `e : (1 + st X) * (1 + X) = 1 + (st X + X + st X * X)` using `by noncomm_ring`. Rewrite `h1` using `[e]`. Conclude with `add_left_cancel (h1.trans (add_zero 1).symm)`.
+
+Establish `hsX1 : st X * e₁ = 0`. Establish `e` using `congrArg (· * e₁) hU`. Simplify using `only [add_mul, mul_assoc, hX1, mul_zero, add_zero, zero_mul] at e`. Conclude with `e`. Establish `he3X : e₃ * X = 0`.
+
+Establish `e : st (e₃ * X) = 0` using `by rw [hm, he3, hsX1]`. Rewrite using `[← hi (e₃ * X), e, map_zero]`. Take `⟨b, hbdef⟩ : ∃ b, b = (1 - e₁) * X * e₃` from `⟨_, rfl⟩`. Establish `hXb : X = b + e₁ * X`. Establish `e : (1 - e₁) * X = b`.
+
+Rewrite using `[hbdef]`. Establish `e'` using `h3'`. Rewrite `e'` using `[mul_sub, mul_one, sub_eq_zero]`. Conclude with `e'`. Rewrite using `[← e, sub_mul, one_mul]`.
+
+Normalize the expressions using the abelian group laws. Establish `hb1 : e₁ * b = 0`. Rewrite using `[hbdef]`. Simplify using `only [← mul_assoc, mul_sub, mul_one, h11, sub_self, zero_mul]`. Establish `hb3 : e₃ * b = 0`.
+
+Rewrite using `[hbdef]`. Simplify using `only [← mul_assoc, mul_sub, mul_one, h31, sub_zero, he3X, zero_mul]`. Establish `hb3' : b * e₃ = b` using `by rw [hbdef, mul_assoc, he33]`. Establish `sb1 : e₁ * st b = st b` using `by rw [← he3, ← hm, hb3']`. Establish `sb3 : st b * e₃ = 0` using `by rw [← hs, ← hm, hb1, map_zero]`.
+
+Establish `hsX : st X = st b + st X * e₃` using `by conv_lhs => rw [hXb]`. Rewrite using `[map_add, hm, hs]`. Establish `hXX : st X * X = st b * b`. Combine the equalities or inequalities in the displayed calculation. Establish `hstar : st b + st X * e₃ + b + e₁ * X + st b * b = 0`.
+
+Establish `e` using `hU`. Rewrite `e` using `[hXX]`. Combine the equalities or inequalities in the displayed calculation. Establish `hYe : e₁ * X * e₃ = e₁ * X + st b`. Establish `e` using `congrArg (· * e₃) hstar`.
+
+Simplify using `only [add_mul, zero_mul] at e`. Rewrite `e` using `[sb3, mul_assoc (st X), he33, hb3', mul_assoc (st b), hb3']`. Establish `key : e₁ * X * e₃ - (e₁ * X + st b) = (0 + st X * e₃ + b + e₁ * X * e₃ + st b * b) - (st b + st X * e₃ + b + e₁ * X + st b * b)` using `by abel`. Rewrite `key` using `[e, hstar, sub_zero]`. Conclude with `sub_eq_zero.mp key`.
+
+Establish `hq : h * (st b * b) + h * (st b * b) = st b * b` using `by rw [← add_mul, hh, one_mul]`. Use `⟨b, e₁ * X + st b + h * (st b * b), ⟨hb1, hb3, hb3'⟩, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, mul_add, ← mul_assoc, h11, sb1, ← mul_assoc, ← hc e₁, mul_assoc, ← mul_assoc e₁, sb1]`. Rewrite using `[add_mul, add_mul, hYe, sb3, add_zero, mul_assoc h, mul_assoc (st b), hb3']`. Establish `e : st (e₁ * X + st b + h * (st b * b)) + (e₁ * X + st b + h * (st b * b)) = 0`.
+
+Simplify using `only [map_add, hm, hs, hi, st_half hm hi hh hc]`. Rewrite using `[← hc (st b * b)]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `eq_neg_of_add_eq_zero_left e`. Simplify using `only [elt] conv_lhs => rw [hXb]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem exists_elt (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x)
     (h11 : e₁ * e₁ = e₁)
     (hs : st e₁ = e₃) (h31 : e₃ * e₁ = 0) (hh : h + h = 1) (hc : ∀ x, h * x = x * h)
@@ -223,6 +296,43 @@ theorem exists_elt (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st 
 
 end
 
+/- English proof (translation)
+Establish `he3 : st e₃ = e₁` using `by rw [← hs, hi]`. Establish `he33 : e₃ * e₃ = e₃` using `by rw [← hs, ← hm, h11]`. Establish `he3S : e₃ ∈ S₀` using `hs ▸ h0 e₁ he`. Take `⟨pb, hpb⟩ : ∃ f : S → S, ∀ x, f x = (1 - e₁ - e₃) * x * e₃` from `⟨_, fun _ => rfl⟩`. Take `⟨pw, hpw⟩ : ∃ f : S → S, ∀ x, f x = e₁ * (h * (x - st x)) * e₃` from `⟨_, fun _ => rfl⟩`.
+
+Establish `pb_sub : ∀ x y, pb (x - y) = pb x - pb y` using `fun x y => by`. Simplify using `only [hpb, mul_sub, sub_mul]`. Establish `pw_sub : ∀ x y, pw (x - y) = pw x - pw y` using `fun x y => by`. Simplify using `only [hpw, map_sub, mul_sub, sub_mul]`. Normalize the expressions using the abelian group laws.
+
+Establish `hbx : ∀ x, e₁ * pb x = 0 ∧ e₃ * pb x = 0 ∧ pb x * e₃ = pb x` using `fun x => by`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hpb, ← mul_assoc, mul_sub, mul_one, h11, h13, sub_self, zero_mul]`. Simplify using `only [hpb, ← mul_assoc, mul_sub, mul_one, h31, he33, sub_self, sub_zero, zero_mul]`. Simplify using `only [hpb, mul_assoc, he33]`.
+
+Establish `hwx : ∀ y, e₁ * pw y = pw y ∧ pw y * e₃ = pw y ∧ st (pw y) = -pw y` using `fun y => by`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hpw, ← mul_assoc, h11]`. Simplify using `only [hpw, mul_assoc, he33]`. Simplify using `only [hpw, hm, he3, hs, map_sub, hi, st_half hm hi hh hc]`.
+
+Rewrite using `[← hc (st y - y)]`. Use `noncomm_ring`. Establish `pb_id : ∀ b, e₁ * b = 0 → e₃ * b = 0 → b * e₃ = b → pb b = b` using `fun b h1 h3 h3' => by`. Simplify using `only [hpb, sub_mul, one_mul, h1, h3, sub_zero, h3']`. Establish `pw_id : ∀ w, e₁ * w = w → w * e₃ = w → st w = -w → pw w = w` using `fun w h1 h3 hs' => by`.
+
+Rewrite using `[hpw, hs', sub_neg_eq_add, mul_add, ← add_mul, hh, one_mul, h1, h3]`. Establish `pbS : ∀ x ∈ S₀, pb x ∈ S₀` using `fun x hx => by`. Rewrite using `[hpb]`. Conclude with `S₀.mul_mem (S₀.mul_mem (S₀.sub_mem (S₀.sub_mem S₀.one_mem he) he3S) hx) he3S`. Establish `pwS : ∀ x ∈ S₀, pw x ∈ S₀` using `fun x hx => by`.
+
+Rewrite using `[hpw]`. Conclude with `S₀.mul_mem (S₀.mul_mem he (S₀.mul_mem hh0 (S₀.sub_mem hx (h0 x hx)))) he3S`. Establish `pb_cont : Continuous pb`. Rewrite using `[show pb = fun x => (1 - e₁ - e₃) * x * e₃ from funext hpb]`. Conclude with `(continuous_const.mul continuous_id).mul continuous_const`.
+
+Establish `pw_cont : Continuous pw`. Rewrite using `[show pw = fun x => e₁ * (h * (x - st x)) * e₃ from funext hpw]`. Conclude with `(continuous_const.mul (continuous_const.mul (continuous_id.sub hcont))).mul continuous_const`. Establish `hE : ∀ {f g : S × S → S}, Continuous f → Continuous g → Continuous (fun p => elt st h (f p) (g p))`. Introduce `f g hf hg`.
+
+Use `show Continuous (fun p => 1 - st (f p) + f p + (g p - h * (st (f p) * f p)))`. Conclude with `((continuous_const.sub (hcont.comp hf)).add hf).add (hg.sub (continuous_const.mul ((hcont.comp hf).mul hf)))`. Establish `eltS : ∀ x y, x ∈ S₀ → y ∈ S₀ → elt st h x y ∈ S₀` using `fun x y hx hy => S₀.add_mem (S₀.add_mem (S₀.sub_mem S₀.one_mem (h0 x hx)) hx) (S₀.sub_mem hy (S₀.mul_mem hh0 (S₀.mul_mem (h0 x hx) hx)))`. Establish `hbneg : ∀ b, (e₁ * b = 0 ∧ e₃ * b = 0 ∧ b * e₃ = b) → (e₁ * -b = 0 ∧ e₃ * -b = 0 ∧ -b * e₃ = -b)` using `fun b ⟨a1, a2, a3⟩ => ⟨by rw [mul_neg, a1, neg_zero], by rw [mul_neg, a2, neg_zero], by rw [neg_mul, a3]⟩`. Establish `hwneg : ∀ w, (e₁ * w = w ∧ w * e₃ = w ∧ st w = -w) → (e₁ * -w = -w ∧ -w * e₃ = -w ∧ st (-w) = -(-w))` using `fun w ⟨a1, a2, a3⟩ => ⟨by rw [mul_neg, a1], by rw [neg_mul, a2], by rw [map_neg, a3]⟩`.
+
+Establish `hQ : ∀ x y, (e₁ * x = 0 ∧ e₃ * x = 0 ∧ x * e₃ = x) → (e₁ * y = 0 ∧ e₃ * y = 0 ∧ y * e₃ = y) → e₁ * (st x * y - st y * x) = st x * y - st y * x ∧ (st x * y - st y * x) * e₃ = st x * y - st y * x ∧ st (st x * y - st y * x) = -(st x * y - st y * x)`. Introduce `x y hx hy`. Establish `sx1 : e₁ * st x = st x` using `by rw [← he3, ← hm, hx.2.2]`. Establish `sy1 : e₁ * st y = st y` using `by rw [← he3, ← hm, hy.2.2]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_sub, ← mul_assoc, ← mul_assoc, sx1, sy1]`. Rewrite using `[sub_mul, mul_assoc, mul_assoc, hy.2.2, hx.2.2]`. Rewrite using `[map_sub, hm, hm, hi, hi, neg_sub]`. Take `⟨F, hF⟩ : ∃ F : S × S → Sˣ, ∀ p, (F p : S) = elt st h (pb p.1) (pw p.2) ∧ (((F p)⁻¹ : Sˣ) : S) = elt st h (-pb p.1) (-pw p.2)` from `⟨fun p => ⟨elt st h (pb p.1) (pw p.2), elt st h (-pb p.1) (-pw p.2), elt_mul_neg hm hi hs h31 hh hc ⟨(hbx p.1).2.1, (hbx p.1).2.2⟩ ⟨(hwx p.2).1, (hwx p.2).2.1⟩, elt_neg_mul hm hi hs h31 hh hc ⟨(hbx p.1).2.1, (hbx p.1).2.2⟩ ⟨(hwx p.2).1, (hwx p.2).2.1⟩⟩, fun p => ⟨rfl, rfl⟩⟩`. Establish `hFc : Continuous F`.
+
+Rewrite using `[Units.continuous_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show (Units.val ∘ F) = fun p => elt st h (pb p.1) (pw p.2) from funext fun p => (hF p).1]`. Conclude with `hE (pb_cont.comp continuous_fst) (pw_cont.comp continuous_snd)`. Rewrite using `[show (fun p => (((F p)⁻¹ : Sˣ) : S)) = fun p => elt st h (-pb p.1) (-pw p.2) from funext fun p => (hF p).2]`.
+
+Conclude with `hE (pb_cont.comp continuous_fst).neg (pw_cont.comp continuous_snd).neg`. Use `⟨F '' (K ×ˢ K), (hK.prod hK).image hFc, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, _, rfl⟩`. Rewrite using `[(hF p).1]`. Conclude with `elt_cond hm hi hs h31 hh hc (hbx p.1) (hwx p.2)`.
+
+Introduce `g hg`. Take `⟨b, w, hb, hw, hgeq⟩` from `exists_elt hm hi h11 hs h31 hh hc hg.1 hg.2.1 hg.2.2`. Take `⟨y₁, hy₁, hk₁⟩` from `hcov b`. Take `⟨q1, q3, qs⟩` from `hQ b (-pb y₁) hb (hbneg _ (hbx y₁))`. Establish `hw1 : e₁ * (w + h * (st b * -pb y₁ - st (-pb y₁) * b)) = w + h * (st b * -pb y₁ - st (-pb y₁) * b)`.
+
+Rewrite using `[mul_add, hw.1, ← mul_assoc, ← hc e₁, mul_assoc, q1]`. Establish `hw3 : (w + h * (st b * -pb y₁ - st (-pb y₁) * b)) * e₃ = w + h * (st b * -pb y₁ - st (-pb y₁) * b)`. Rewrite using `[add_mul, hw.2.1, mul_assoc, q3]`. Establish `hws : st (w + h * (st b * -pb y₁ - st (-pb y₁) * b)) = -(w + h * (st b * -pb y₁ - st (-pb y₁) * b))`. Rewrite using `[map_add, hm, st_half hm hi hh hc, hw.2.2, qs, ← hc, mul_neg, neg_add]`.
+
+Take `⟨y₂, hy₂, hk₂⟩` from `hcov (w + h * (st b * -pb y₁ - st (-pb y₁) * b))`. Establish `hb0` using `hbx y₁`. Establish `hw0` using `hwx y₂`. Set `γ : Sˣ` to `⟨elt st h (-pb y₁) (-pw y₂), elt st h (pb y₁) (pw y₂), elt_neg_mul hm hi hs h31 hh hc ⟨hb0.2.1, hb0.2.2⟩ ⟨hw0.1, hw0.2.1⟩, elt_mul_neg hm hi hs h31 hh hc ⟨hb0.2.1, hb0.2.2⟩ ⟨hw0.1, hw0.2.1⟩⟩`. Use `⟨γ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `elt_cond hm hi hs h31 hh hc (hbneg _ hb0) (hwneg _ hw0)`. Conclude with `eltS _ _ (S₀.neg_mem (pbS y₁ hy₁)) (S₀.neg_mem (pwS y₂ hy₂))`. Conclude with `eltS _ _ (pbS y₁ hy₁) (pwS y₂ hy₂)`. Use `⟨(b - y₁, w + h * (st b * -pb y₁ - st (-pb y₁) * b) - y₂), ⟨hk₁, hk₂⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_mul, (hF _).1]`. Use `show elt st h (pb (b - y₁)) (pw (w + h * (st b * -pb y₁ - st (-pb y₁) * b) - y₂)) = elt st h (-pb y₁) (-pw y₂) * (g : S)`. Rewrite using `[hgeq, elt_mul hm hi hs h31 hh hc ⟨(hbneg _ hb0).2.1, (hbneg _ hb0).2.2⟩ ⟨hb.2.1, hb.2.2⟩ (hwneg _ hw0).2.1 hw.1]`. Rewrite using `[pb_sub, pb_id b hb.1 hb.2.1 hb.2.2, pw_sub, pw_id _ hw1 hw3 hws]`. Apply the tactic sequence `congr 1 <;> abel`.
+-/
 theorem compact_mod_subring (S : Type) [Ring S] [TopologicalSpace S] [IsTopologicalRing S]
     (st : S →+ S) (S₀ : Subring S) (e₁ e₃ h : S) (K : Set S) (hcont : Continuous st)
     (hm : ∀ x y, st (x * y) = st y * st x) (hi : ∀ x, st (st x) = x)

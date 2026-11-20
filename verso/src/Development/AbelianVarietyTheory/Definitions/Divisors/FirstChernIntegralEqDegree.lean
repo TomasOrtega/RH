@@ -29,20 +29,35 @@ def VInfAt (f : CxPts p σ → F) (y : CxPts p σ) : Prop :=
     y ∈ ptsIn p σ W ∧ IsOpen O ∧ (fun a => ev p σ W (g a) y) ∈ O ∧ ContDiffOn ℝ ∞ Φ O ∧
       f =ᶠ[𝓝 y] fun z => Φ fun a => ev p σ W (g a) z
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem vInfAt_iff_cInfAt {u : CxPts p σ → ℝ} : VInfAt u y ↔ CInfAt u y := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `have ⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h ⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, e.trans h₅⟩`.
+-/
 theorem VInfAt.congr (h : VInfAt f y) (e : f' =ᶠ[𝓝 y] f) : VInfAt f' y :=
   have ⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h
   ⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, e.trans h₅⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊤, Empty, inferInstance, Empty.elim, fun _ => c, univ, mem_ptsIn_top, isOpen_univ, trivial, contDiffOn_const, EventuallyEq.rfl⟩`.
+-/
 theorem vInfAt_const (c : F) (y : CxPts p σ) : VInfAt (fun _ => c) y :=
   ⟨⊤, Empty, inferInstance, Empty.elim, fun _ => c, univ, mem_ptsIn_top, isOpen_univ, trivial,
     contDiffOn_const, EventuallyEq.rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨W, Unit, inferInstance, fun _ => g, fun v => v (), univ, hy, isOpen_univ, trivial, (contDiff_apply _ _ _).contDiffOn, EventuallyEq.rfl⟩`.
+-/
 theorem vInfAt_ev {W : X.Opens} (g : Γ(X, W)) (hy : y ∈ ptsIn p σ W) : VInfAt (ev p σ W g) y :=
   ⟨W, Unit, inferInstance, fun _ => g, fun v => v (), univ, hy, isOpen_univ, trivial,
     (contDiff_apply _ _ _).contDiffOn, EventuallyEq.rfl⟩
 
+/- English proof (translation)
+Take `⟨W, ι, _, g, Φ, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Use `⟨W, ι, inferInstance, g, Ψ ∘ Φ, O ∩ Φ ⁻¹' T, h₁, h₄.continuousOn.isOpen_inter_preimage h₂ hT, ⟨h₃, ?_⟩, hΨ.comp (h₄.mono inter_subset_left) fun _ hv => hv.2, h₅.fun_comp Ψ⟩` and prove the remaining obligations. Rewrite using `[mem_preimage, ← h₅.eq_of_nhds]`. Conclude with `hy`.
+-/
 theorem VInfAt.comp (h : VInfAt f y) {Ψ : F → G} {T : Set F} (hT : IsOpen T) (hy : f y ∈ T)
     (hΨ : ContDiffOn ℝ ∞ Ψ T) : VInfAt (fun z => Ψ (f z)) y := by
   obtain ⟨W, ι, _, g, Φ, O, h₁, h₂, h₃, h₄, h₅⟩ := h
@@ -52,9 +67,17 @@ theorem VInfAt.comp (h : VInfAt f y) {Ψ : F → G} {T : Set F} (hT : IsOpen T) 
   rw [mem_preimage, ← h₅.eq_of_nhds]
   exact hy
 
+/- English proof (translation)
+The claim follows from `h.comp isOpen_univ trivial hΨ.contDiffOn`.
+-/
 theorem VInfAt.comp_contDiff (h : VInfAt f y) {Ψ : F → G} (hΨ : ContDiff ℝ ∞ Ψ) :
     VInfAt (fun z => Ψ (f z)) y := h.comp isOpen_univ trivial hΨ.contDiffOn
 
+/- English proof (translation)
+Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Take `⟨W', ι', _, g', F', O', h₁', h₂', h₃', h₄', h₅'⟩` from `h'`. Establish `hW` using `mem_ptsIn_inf.2 ⟨h₁, h₁'⟩`. Establish `cl : ContDiff ℝ ∞ fun (v : ι ⊕ ι' → ℂ) a => v (.inl a)` using `contDiff_pi.2 fun a => contDiff_apply _ _ _`. Establish `cr : ContDiff ℝ ∞ fun (v : ι ⊕ ι' → ℂ) a => v (.inr a)` using `contDiff_pi.2 fun a => contDiff_apply _ _ _`.
+
+Use `⟨W ⊓ W', ι ⊕ ι', inferInstance, Sum.elim (fun a => resG X inf_le_left (g a)) fun a => resG X inf_le_right (g' a), fun v => (F fun a => v (.inl a), F' fun a => v (.inr a)), (fun v a => v (.inl a)) ⁻¹' O ∩ (fun v a => v (.inr a)) ⁻¹' O', hW, (h₂.preimage cl.continuous).inter (h₂'.p …` and prove the remaining obligations. Simplify `h₃` using `only [mem_preimage, Sum.elim_inl, ev_res _ hW]`. Simplify `h₃'` using `only [mem_preimage, Sum.elim_inr, ev_res _ hW]`. Use `filter_upwards [h₅, h₅', (isOpen_ptsIn _).mem_nhds hW] with z e e' hz`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, ev_res _ hz, e, e']`.
+-/
 theorem VInfAt.prodMk {f' : CxPts p σ → G} (h : VInfAt f y) (h' : VInfAt f' y) :
     VInfAt (fun z => (f z, f' z)) y := by
   obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h
@@ -76,6 +99,11 @@ theorem VInfAt.prodMk {f' : CxPts p σ → G} (h : VInfAt f y) (h' : VInfAt f' y
   · filter_upwards [h₅, h₅', (isOpen_ptsIn _).mem_nhds hW] with z e e' hz
     simp only [Sum.elim_inl, Sum.elim_inr, ev_res _ hz, e, e']
 
+/- English proof (translation)
+Establish `H (s : Finset ι) : VInfAt (fun z => ∑ i ∈ s, (Pi.single i (f z i) : ι → F)) y`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using vInfAt_const (0 : ι → F) y`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`.
+
+Conclude with `((h a).prodMk ih).comp_contDiff (Ψ := fun x => Pi.single a x.1 + x.2) (((ContinuousLinearMap.single ℝ (fun _ : ι => F) a).contDiff.comp contDiff_fst).add contDiff_snd)`. Simplify `H Finset.univ` using `only [Finset.univ_sum_single]`.
+-/
 theorem vInfAt_pi {ι : Type} [Fintype ι] {f : CxPts p σ → ι → F}
     (h : ∀ i, VInfAt (fun z => f z i) y) : VInfAt f y := by
   classical
@@ -89,6 +117,9 @@ theorem vInfAt_pi {ι : Type} [Fintype ι] {f : CxPts p σ → ι → F}
           contDiff_snd)
   simpa only [Finset.univ_sum_single] using H Finset.univ
 
+/- English proof (translation)
+Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Use `ContinuousAt.congr ?_ h₅.symm` and prove the remaining obligations. Conclude with `ContinuousAt.comp (f := fun z a => ev p σ W (g a) z) (h₄.continuousOn.continuousAt (h₂.mem_nhds h₃)) (continuousAt_pi.2 fun a => (continuousOn_ev (g a)).continuousAt ((isOpen_ptsIn W).mem_nhds h₁))`.
+-/
 theorem VInfAt.continuousAt (h : VInfAt f y) : ContinuousAt f y := by
   obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h
   refine ContinuousAt.congr ?_ h₅.symm
@@ -96,6 +127,9 @@ theorem VInfAt.continuousAt (h : VInfAt f y) : ContinuousAt f y := by
     (h₄.continuousOn.continuousAt (h₂.mem_nhds h₃)) (continuousAt_pi.2 fun a =>
       (continuousOn_ev (g a)).continuousAt ((isOpen_ptsIn W).mem_nhds h₁))
 
+/- English proof (translation)
+Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Use `⟨π ⁻¹ᵁ W, ι, inferInstance, fun a => π.app W (g a), F, O, h₁, h₂, ?_, h₄, ?_⟩` and prove the remaining obligations. Simplify `h₃` using `only [ev_app π hπ]`. Simplify using `only [ev_app π hπ]`. Conclude with `(PtsOver.continuous_map π hπ _).continuousAt.eventually h₅`.
+-/
 theorem VInfAt.pull {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) {z : CxPts q σ}
     (h : VInfAt f (PtsOver.map π hπ _ z)) : VInfAt (fun w => f (PtsOver.map π hπ _ w)) z := by
   obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h
@@ -104,6 +138,13 @@ theorem VInfAt.pull {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) {z : Cx
   · simp only [ev_app π hπ]
     exact (PtsOver.continuous_map π hπ _).continuousAt.eventually h₅
 
+/- English proof (translation)
+Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Establish `ho` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) W)`. Establish `e` using `c.e.left_inv hy`. Establish `hg : ContDiffAt ℝ ∞ (fun w a => ev p σ W (g a) (c.e.symm w)) (c.e y)` using `contDiffAt_pi.2 fun a => (ChartGlue.contDiffOn_real ho (c.holo W (g a))).contDiffAt (ho.mem_nhds (ChartGlue.mem_over c.e hy h₁))`. Establish `h₆ : ContDiffAt ℝ ∞ F (fun a => ev p σ W (g a) (c.e.symm (c.e y)))`.
+
+Rewrite using `[e]`. Conclude with `h₄.contDiffAt (h₂.mem_nhds h₃)`. Use `(h₆.comp (c.e y) hg).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `c.e.continuousAt_symm (c.e.map_source hy)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, e]`.
+
+Conclude with `this.eventually h₅`.
+-/
 theorem VInfAt.contDiffAt_chart (h : VInfAt f y) {D : ℕ} (c : AlgChart p σ D)
     (hy : y ∈ c.e.source) : ContDiffAt ℝ ∞ (fun v => f (c.e.symm v)) (c.e y) := by
   obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h
@@ -119,6 +160,9 @@ theorem VInfAt.contDiffAt_chart (h : VInfAt f y) {D : ℕ} (c : AlgChart p σ D)
   rw [ContinuousAt, e] at this
   exact this.eventually h₅
 
+/- English proof (translation)
+Establish `e : y'.1 (IsLocalRing.closedPoint ℂ) = y.1 (IsLocalRing.closedPoint ℂ)`. Rewrite using `[h]`. Conclude with `congrArg y.1 (Subsingleton.elim (α := PrimeSpectrum ℂ) _ _)`. Rewrite using `[mem_ptsIn, mem_ptsIn, e]`.
+-/
 theorem mem_ptsIn_iff_of_conj {y : CxPts p σ} {y' : CxPts p σ'} (h : y'.1 = spMap (starRingEnd ℂ) ≫ y.1)
     {W : X.Opens} : y' ∈ ptsIn p σ' W ↔ y ∈ ptsIn p σ W := by
   have e : y'.1 (IsLocalRing.closedPoint ℂ) = y.1 (IsLocalRing.closedPoint ℂ) := by
@@ -126,6 +170,9 @@ theorem mem_ptsIn_iff_of_conj {y : CxPts p σ} {y' : CxPts p σ'} (h : y'.1 = sp
     exact congrArg y.1 (Subsingleton.elim (α := PrimeSpectrum ℂ) _ _)
   rw [mem_ptsIn, mem_ptsIn, e]
 
+/- English proof (translation)
+Distinguish the cases in `hy : y ∈ ptsIn p σ W`. Conclude with `ev_conj h hy g`. Rewrite using `[ev_of_notMem hy, ev_of_notMem (mt (mem_ptsIn_iff_of_conj h).1 hy), star_zero]`.
+-/
 theorem ev_conj' {y : CxPts p σ} {y' : CxPts p σ'} (h : y'.1 = spMap (starRingEnd ℂ) ≫ y.1)
     (W : X.Opens) (g : Γ(X, W)) : ev p σ' W g y' = star (ev p σ W g y) := by
   by_cases hy : y ∈ ptsIn p σ W
@@ -147,10 +194,16 @@ variable (p σ) in
 
 def tr (y : CxPts p σ) : Matrix (Fin r) (Fin r) ℂ := Matrix.of fun a b => c.crd p σ (c'.e b) y a
 
+/- English proof (translation)
+Rewrite using `[crd, ← ev_res (le_inf h h') hy, ← c.isFrame.repr_resM, resM_resM]`.
+-/
 theorem crd_eq (s : Γ(E, V)) (h : W ≤ V) (h' : W ≤ c.U) (hy : y ∈ ptsIn p σ W) (a : Fin r) :
     c.crd p σ s y a = ev p σ W ((c.isFrame.basis h').repr (resM E h s) a) y := by
   rw [crd, ← ev_res (le_inf h h') hy, ← c.isFrame.repr_resM, resM_resM]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Distinguish the cases in `hc : y ∈ ptsIn p σ c.U`. Rewrite using `[c.crd_eq s (inf_le_left.trans h) inf_le_right (mem_ptsIn_inf.2 ⟨hy, hc⟩), crd, resM_resM]`. Rewrite using `[crd, crd, ev_of_notMem (fun h => hc (mem_ptsIn_inf.1 h).2), ev_of_notMem fun h => hc (mem_ptsIn_inf.1 h).2]`.
+-/
 theorem crd_resM (s : Γ(E, V)) (h : W ≤ V) (hy : y ∈ ptsIn p σ W) :
     c.crd p σ (resM E h s) y = c.crd p σ s y := by
   funext a
@@ -159,10 +212,16 @@ theorem crd_resM (s : Γ(E, V)) (h : W ≤ V) (hy : y ∈ ptsIn p σ W) :
   · rw [crd, crd, ev_of_notMem (fun h => hc (mem_ptsIn_inf.1 h).2),
       ev_of_notMem fun h => hc (mem_ptsIn_inf.1 h).2]
 
+/- English proof (translation)
+The claim follows from `funext fun a => by simp only [crd, map_add, Finsupp.add_apply, ev_add, Pi.add_apply]`.
+-/
 theorem crd_add (s t : Γ(E, V)) (y : CxPts p σ) :
     c.crd p σ (s + t) y = c.crd p σ s y + c.crd p σ t y := funext fun a => by
   simp only [crd, map_add, Finsupp.add_apply, ev_add, Pi.add_apply]
 
+/- English proof (translation)
+The claim follows from `funext fun a => by by_cases hy : y ∈ ptsIn p σ (V ⊓ c.U) · simp only [crd, resM_smul, map_smul, Finsupp.smul_apply, smul_eq_mul, ev_mul, Pi.smul_apply, ev_res _ hy] · simp only [crd, ev_of_notMem hy, Pi.smul_apply, smul_zero]`.
+-/
 theorem crd_smul (g : Γ(X, V)) (s : Γ(E, V)) (y : CxPts p σ) :
     c.crd p σ (g • s) y = ev p σ V g y • c.crd p σ s y := funext fun a => by
   by_cases hy : y ∈ ptsIn p σ (V ⊓ c.U)
@@ -170,15 +229,24 @@ theorem crd_smul (g : Γ(X, V)) (s : Γ(E, V)) (y : CxPts p σ) :
       ev_res _ hy]
   · simp only [crd, ev_of_notMem hy, Pi.smul_apply, smul_zero]
 
+/- English proof (translation)
+Use `c.crd_add (p := p) (σ := σ) (0 : Γ(E, V)) 0 y` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+-/
 theorem crd_zero (y : CxPts p σ) : c.crd p σ (0 : Γ(E, V)) y = 0 := by
   have := c.crd_add (p := p) (σ := σ) (0 : Γ(E, V)) 0 y
   rw [add_zero] at this
   exact left_eq_add.1 this
 
+/- English proof (translation)
+The claim follows from `map_sum (AddMonoidHom.mk' (fun s : Γ(E, V) => c.crd p σ s y) fun s t => c.crd_add s t y) s T`.
+-/
 theorem crd_sum {ι : Type*} (T : Finset ι) (s : ι → Γ(E, V)) (y : CxPts p σ) :
     c.crd p σ (∑ i ∈ T, s i) y = ∑ i ∈ T, c.crd p σ (s i) y :=
   map_sum (AddMonoidHom.mk' (fun s : Γ(E, V) => c.crd p σ s y) fun s t => c.crd_add s t y) s T
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Rewrite using `[c.crd_eq _ le_rfl le_rfl hy, ← c.isFrame.basis_apply, Module.Basis.repr_self, ev_eq hy, Finsupp.single_apply, Pi.single_apply]`. Simplify using `only [eq_comm (a := a)]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem crd_frame (hy : y ∈ ptsIn p σ c.U) (b : Fin r) : c.crd p σ (c.e b) y = Pi.single b 1 := by
   funext a
   rw [c.crd_eq _ le_rfl le_rfl hy, ← c.isFrame.basis_apply, Module.Basis.repr_self, ev_eq hy,
@@ -186,6 +254,9 @@ theorem crd_frame (hy : y ∈ ptsIn p σ c.U) (b : Fin r) : c.crd p σ (c.e b) y
   simp only [eq_comm (a := a)]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hW` using `mem_ptsIn_inf.2 ⟨hy, h'⟩`. Rewrite using `[← c.crd_resM s inf_le_left hW, ← (c'.isFrame.basis inf_le_right).sum_repr (resM E _ s), crd_sum]`. Use function extensionality and compare the values at `a`. Simplify using `only [crd_smul, IsFrame.basis_apply, c.crd_resM _ _ hW, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mulVec, dotProduct, tr, of_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem tr_mulVec (s : Γ(E, V)) (hy : y ∈ ptsIn p σ V) (h' : y ∈ ptsIn p σ c'.U) :
     c.tr p σ c' y *ᵥ c'.crd p σ s y = c.crd p σ s y := by
   have hW := mem_ptsIn_inf.2 ⟨hy, h'⟩
@@ -195,18 +266,32 @@ theorem tr_mulVec (s : Γ(E, V)) (hy : y ∈ ptsIn p σ V) (h' : y ∈ ptsIn p �
     smul_eq_mul, mulVec, dotProduct, tr, of_apply]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `congrFun (c.tr_mulVec c' (c''.e b) h'' h') a`.
+-/
 theorem tr_mul (h' : y ∈ ptsIn p σ c'.U) (h'' : y ∈ ptsIn p σ c''.U) :
     c.tr p σ c' y * c'.tr p σ c'' y = c.tr p σ c'' y := by
   ext a b
   exact congrFun (c.tr_mulVec c' (c''.e b) h'' h') a
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[tr, of_apply, c.crd_frame h, Pi.single_apply, one_apply]`.
+-/
 theorem tr_self (h : y ∈ ptsIn p σ c.U) : c.tr p σ c y = 1 := by
   ext a b
   rw [tr, of_apply, c.crd_frame h, Pi.single_apply, one_apply]
 
+/- English proof (translation)
+The claim follows from `IsUnit.of_mul_eq_one _ ((c.tr_mul c' c h' h).trans (c.tr_self h))`.
+-/
 theorem isUnit_tr (h : y ∈ ptsIn p σ c.U) (h' : y ∈ ptsIn p σ c'.U) : IsUnit (c.tr p σ c' y) :=
   IsUnit.of_mul_eq_one _ ((c.tr_mul c' c h' h).trans (c.tr_self h))
 
+/- English proof (translation)
+Establish `hW` using `mem_ptsIn_inf.2 ⟨h, h'⟩`. Express the relevant statement in the definitionally equal form `_ = ev p σ (c.U ⊓ c'.U) (c.isFrame.detUnit c'.isFrame inf_le_left inf_le_right).val y`. Rewrite using `[IsFrame.val_detUnit, Module.Basis.det_apply, ev_eq hW, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`.
+
+Rewrite using `[tr, of_apply, c.crd_eq _ inf_le_right inf_le_left hW, ev_eq hW]`. Both sides reduce to the same expression.
+-/
 theorem det_tr (h : y ∈ ptsIn p σ c.U) (h' : y ∈ ptsIn p σ c'.U) :
     (c.tr p σ c' y).det = gv p σ (det E r) c c' y := by
   have hW := mem_ptsIn_inf.2 ⟨h, h'⟩
@@ -217,14 +302,23 @@ theorem det_tr (h : y ∈ ptsIn p σ c.U) (h' : y ∈ ptsIn p σ c'.U) :
   rw [tr, of_apply, c.crd_eq _ inf_le_right inf_le_left hW, ev_eq hW]
   rfl
 
+/- English proof (translation)
+The claim follows from `funext fun _ => ev_conj' h _ _`.
+-/
 theorem crd_conj {y' : CxPts p σ'} (h : y'.1 = spMap (starRingEnd ℂ) ≫ y.1) (s : Γ(E, V)) :
     c.crd p σ' s y' = star (c.crd p σ s y) := funext fun _ => ev_conj' h _ _
 
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `congrFun (c.crd_conj h _) a`.
+-/
 theorem tr_conj {y' : CxPts p σ'} (h : y'.1 = spMap (starRingEnd ℂ) ≫ y.1) :
     c.tr p σ' c' y' = (c.tr p σ c' y).map star := by
   ext a b
   exact congrFun (c.crd_conj h _) a
 
+/- English proof (translation)
+The claim follows from `vInfAt_ev _ (mem_ptsIn_inf.2 ⟨hy, h⟩)`.
+-/
 theorem vInfAt_crd (s : Γ(E, V)) (hy : y ∈ ptsIn p σ V) (h : y ∈ ptsIn p σ c.U) (a : Fin r) :
     VInfAt (fun z => c.crd p σ s z a) y := vInfAt_ev _ (mem_ptsIn_inf.2 ⟨hy, h⟩)
 
@@ -232,6 +326,11 @@ def pull (hE : IsVB E r) (π : Y ⟶ X) : Chart ((Scheme.Modules.pullback π).ob
   have := hE.isQuasicoherent
   ⟨π ⁻¹ᵁ c.U, _, c.isFrame.pullback π⟩
 
+/- English proof (translation)
+Use `hE.isQuasicoherent` as an intermediate fact. Use function extensionality and compare the values at `a`. Establish `hW` using `mem_ptsIn_inf.2 ⟨hz, hc⟩`. Establish `hle : T ⊓ π ⁻¹ᵁ c.U ≤ π ⁻¹ᵁ (V ⊓ c.U)` using `inf_le_inf_right _ hT`. Establish `e` using `c.isFrame.pullback_basis_repr π inf_le_right hle (resM E inf_le_left s) a`.
+
+Rewrite using `[crd, crd, ← ev_app π hπ, ← ev_res hle hW]`. Use `congrArg (ev q σ _ · z) (Eq.trans ?_ e)` and prove the remaining obligations. Conclude with `congrArg (fun t => ((c.isFrame.pullback π).basis inf_le_right).repr t a) ((QCoh.res_pullbackSections π E hT inf_le_left s).trans (QCoh.pullbackSections_res π E hle inf_le_left s).symm)`.
+-/
 theorem crd_pull (hE : IsVB E r) {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) (s : Γ(E, V))
     {T : Y.Opens} (hT : T ≤ π ⁻¹ᵁ V) {z : CxPts q σ} (hz : z ∈ ptsIn q σ T)
     (hc : z ∈ ptsIn q σ (π ⁻¹ᵁ c.U)) :
@@ -249,6 +348,9 @@ theorem crd_pull (hE : IsVB E r) {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p
 
 def dual : Chart (VB.dual E) r := ⟨c.U, _, c.isFrame.dual⟩
 
+/- English proof (translation)
+Establish `hW` using `mem_ptsIn_inf.2 ⟨h, h'⟩`. Use extensionality with `a b`. Rewrite using `[tr, tr, transpose_apply, of_apply, of_apply, c'.crd_eq _ inf_le_left inf_le_right hW]`. Conclude with `(c.dual.crd_eq (c'.dual.e b) inf_le_right inf_le_left hW a).trans (congrArg (ev p σ _ · y) (c.isFrame.dual_basis_repr _ _ a))`.
+-/
 theorem tr_dual (h : y ∈ ptsIn p σ c.U) (h' : y ∈ ptsIn p σ c'.U) :
     c.dual.tr p σ c'.dual y = (c'.tr p σ c y)ᵀ := by
   have hW := mem_ptsIn_inf.2 ⟨h, h'⟩
@@ -259,6 +361,11 @@ theorem tr_dual (h : y ∈ ptsIn p σ c.U) (h' : y ∈ ptsIn p σ c'.U) :
 
 def map {E' : X.Modules} (φ : E ≅ E') : Chart E' r := ⟨c.U, _, c.isFrame.map_iso φ.hom⟩
 
+/- English proof (translation)
+Distinguish the cases in `hy : y ∈ ptsIn p σ (V ⊓ c.U)`. Establish `h₁` using `(mem_ptsIn_inf.1 hy).2`. Rewrite using `[← c.crd_resM s inf_le_left hy, ← (c.map φ).crd_resM _ inf_le_left hy, ← app_resM, ← (c.isFrame.basis inf_le_right).sum_repr (resM E _ s)]`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, crd_sum, crd_smul, IsFrame.basis_apply, app_resM, crd_resM _ _ _ hy, c.crd_frame h₁]`. Conclude with `Finset.sum_congr rfl fun b _ => congrArg _ ((c.map φ).crd_frame h₁ b)`.
+
+Use function extensionality and compare the values at `a`. Conclude with `(ev_of_notMem hy _).trans (ev_of_notMem hy _).symm`.
+-/
 theorem crd_map {E' : X.Modules} (φ : E ≅ E') (s : Γ(E, V)) (y : CxPts p σ) :
     (c.map φ).crd p σ (φ.hom.app V s) y = c.crd p σ s y := by
   by_cases hy : y ∈ ptsIn p σ (V ⊓ c.U)
@@ -271,21 +378,33 @@ theorem crd_map {E' : X.Modules} (φ : E ≅ E') (s : Γ(E, V)) (y : CxPts p σ)
   · funext a
     exact (ev_of_notMem hy _).trans (ev_of_notMem hy _).symm
 
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `ev_of_notMem (fun h => h' (mem_ptsIn_inf.1 h).1) _`.
+-/
 theorem tr_of_notMem (h' : y ∉ ptsIn p σ c'.U) : c.tr p σ c' y = 0 := by
   ext a b
   exact ev_of_notMem (fun h => h' (mem_ptsIn_inf.1 h).1) _
 
+/- English proof (translation)
+Distinguish the cases in `h : y ∈ ptsIn p σ c''.U`. Conclude with `c.tr_mul c' c'' h' h`. Rewrite using `[tr_of_notMem _ _ h, tr_of_notMem _ _ h, Matrix.mul_zero]`.
+-/
 theorem tr_mul' (h' : y ∈ ptsIn p σ c'.U) : c.tr p σ c' y * c'.tr p σ c'' y = c.tr p σ c'' y := by
   by_cases h : y ∈ ptsIn p σ c''.U
   · exact c.tr_mul c' c'' h' h
   · rw [tr_of_notMem _ _ h, tr_of_notMem _ _ h, Matrix.mul_zero]
 
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `congrFun (c.crd_pull hE π hπ (c'.e b) le_rfl h' h) a`.
+-/
 theorem tr_pull (hE : IsVB E r) {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) {z : CxPts q σ}
     (h : PtsOver.map π hπ _ z ∈ ptsIn p σ c.U) (h' : PtsOver.map π hπ _ z ∈ ptsIn p σ c'.U) :
     (c.pull hE π).tr q σ (c'.pull hE π) z = c.tr p σ c' (PtsOver.map π hπ _ z) := by
   ext a b
   exact congrFun (c.crd_pull hE π hπ (c'.e b) le_rfl h' h) a
 
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `congrFun (c.crd_map φ (c'.e b) y) a`.
+-/
 theorem tr_map {E' : X.Modules} (φ : E ≅ E') (y : CxPts p σ) :
     (c.map φ).tr p σ (c'.map φ) y = c.tr p σ c' y := by
   ext a b
@@ -294,6 +413,11 @@ theorem tr_map {E' : X.Modules} (φ : E ≅ E') (y : CxPts p σ) :
 def ofLB {L : LB X} (hL : L.IsLB) (i : L.ι) : Chart (toMod L) 1 :=
   ⟨L.U i, _, isFrame_chartSec hL i⟩
 
+/- English proof (translation)
+Establish `hW` using `mem_ptsIn_inf.2 ⟨hi, hj⟩`. Establish `e` using `(ofLB hL i).crd_resM (LB.chartSec hL j) inf_le_right hW`. Establish `e'` using `(ofLB hL i).crd_resM (LB.chartSec hL i) inf_le_left hW`. Rewrite `e` using `[show resM (toMod L) inf_le_right (LB.chartSec hL j) = _ from LB.map_chartSec_change hL i j inf_le_left inf_le_right, crd_smul, e', resG_self]`. Use `(congrFun e a).symm.trans ?_` and prove the remaining obligations.
+
+Use `congrFun ((ofLB hL i).crd_frame hi a) a` as an intermediate fact. Rewrite `this` using `[Pi.single_eq_same]`. Conclude with `(congrArg (_ * ·) this).trans (mul_one _)`.
+-/
 theorem tr_ofLB {L : LB X} (hL : L.IsLB) {i j : L.ι} (hi : y ∈ ptsIn p σ (L.U i))
     (hj : y ∈ ptsIn p σ (L.U j)) (a b : Fin 1) :
     (ofLB hL i).tr p σ (ofLB hL j) y a b = gv p σ L i j y := by
@@ -315,31 +439,55 @@ variable {m n l : Type} [Fintype m] [Fintype n] [Fintype l]
 
 def chg (A : Matrix n m ℂ) (H : Matrix n n ℂ) : Matrix m m ℂ := Aᵀ * H * Aᴴᵀ
 
+/- English proof (translation)
+The claim follows from `(form_mulVec H A A u w).symm`.
+-/
 theorem form_chg (A : Matrix n m ℂ) (H : Matrix n n ℂ) (u w : m → ℂ) :
     form (chg A H) u w = form H (A *ᵥ u) (A *ᵥ w) := (form_mulVec H A A u w).symm
 
+/- English proof (translation)
+Rewrite using `[← form_single (chg A H), form_chg, mulVec_single_one, mulVec_single_one]`. Both sides reduce to the same expression.
+-/
 theorem chg_apply (A : Matrix n m ℂ) (H : Matrix n n ℂ) (a b : m) :
     chg A H a b = form H (fun i => A i a) fun i => A i b := by
   classical
   rw [← form_single (chg A H), form_chg, mulVec_single_one, mulVec_single_one]
   rfl
 
+/- English proof (translation)
+Simplify using `only [chg, transpose_mul, conjTranspose_mul, Matrix.mul_assoc]`.
+-/
 theorem chg_chg (A : Matrix n m ℂ) (B : Matrix m l ℂ) (H : Matrix n n ℂ) :
     chg B (chg A H) = chg (A * B) H := by
   simp only [chg, transpose_mul, conjTranspose_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `[chg]`.
+-/
 @[simp] theorem chg_one [DecidableEq n] (H : Matrix n n ℂ) : chg 1 H = H := by simp [chg]
 
+/- English proof (translation)
+Simplify using `[chg]`.
+-/
 @[simp] theorem chg_zero (H : Matrix n n ℂ) : chg (0 : Matrix n m ℂ) H = 0 := by simp [chg]
 
+/- English proof (translation)
+Simplify using `[chg]`.
+-/
 theorem chg_smul (A : Matrix n m ℂ) (t : ℂ) (H : Matrix n n ℂ) : chg A (t • H) = t • chg A H := by
   simp [chg]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[chg_apply, form_eq_sum]`.
+-/
 theorem chg_map_star (A : Matrix n m ℂ) (H : Matrix n n ℂ) :
     chg (A.map star) (H.map star) = (chg A H).map star := by
   ext a b
   simp [chg_apply, form_eq_sum]
 
+/- English proof (translation)
+Use `posDef_iff.2 ⟨?_, fun v hv => ?_⟩` and prove the remaining obligations. Use `isHermitian_mul_mul_conjTranspose Aᵀ h.isHermitian` as an intermediate fact. Rewrite `this` using `[show Aᵀᴴ = Aᴴᵀ from rfl]`. Then use the resulting hypothesis. Rewrite using `[form_chg]`. Conclude with `(posDef_iff.1 h).2 _ fun e => hv (mulVec_injective_iff_isUnit.2 hA (e.trans (mulVec_zero A).symm))`.
+-/
 theorem posDef_chg [DecidableEq n] {A H : Matrix n n ℂ} (hA : IsUnit A) (h : H.PosDef) :
     (chg A H).PosDef := by
   refine posDef_iff.2 ⟨?_, fun v hv => ?_⟩
@@ -348,11 +496,17 @@ theorem posDef_chg [DecidableEq n] {A H : Matrix n n ℂ} (hA : IsUnit A) (h : H
   · rw [form_chg]
     exact (posDef_iff.1 h).2 _ fun e => hv (mulVec_injective_iff_isUnit.2 hA (e.trans (mulVec_zero A).symm))
 
+/- English proof (translation)
+Rewrite using `[chg, det_mul, det_mul, det_transpose, det_transpose, det_conjTranspose, mul_right_comm, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+-/
 theorem det_chg [DecidableEq n] (A H : Matrix n n ℂ) :
     (chg A H).det = (‖A.det‖ ^ 2 : ℝ) * H.det := by
   rw [chg, det_mul, det_mul, det_transpose, det_transpose, det_conjTranspose, mul_right_comm,
     Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Establish `e₁ : Aᵀ⁻¹ = Bᵀ` using `inv_eq_left_inv (by rw [← transpose_mul, h, transpose_one])`. Establish `e₂ : Aᴴᵀ⁻¹ = Bᴴᵀ` using `inv_eq_right_inv (by`. Rewrite using `[← transpose_mul, ← conjTranspose_mul, h, conjTranspose_one, transpose_one])`. Simplify using `only [dualGram, chg, Matrix.mul_inv_rev, e₁, e₂, transpose_mul, transpose_transpose, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem dualGram_chg [DecidableEq n] {A B : Matrix n n ℂ} (h : A * B = 1) (H : Matrix n n ℂ) :
     dualGram (chg A H) = chg Bᵀ (dualGram H) := by
   have e₁ : Aᵀ⁻¹ = Bᵀ := inv_eq_left_inv (by rw [← transpose_mul, h, transpose_one])
@@ -362,13 +516,22 @@ theorem dualGram_chg [DecidableEq n] {A B : Matrix n n ℂ} (h : A * B = 1) (H :
     Matrix.mul_assoc]
   rfl
 
+/- English proof (translation)
+The claim follows from `h.inv.transpose`.
+-/
 theorem posDef_dualGram [DecidableEq n] {H : Matrix n n ℂ} (h : H.PosDef) : (dualGram H).PosDef :=
   h.inv.transpose
 
+/- English proof (translation)
+The claim follows from `congrArg transpose (show Hᵀᴴ⁻¹ = H⁻¹ᵀᴴ by rw [← conjTranspose_nonsing_inv, transpose_nonsing_inv])`.
+-/
 theorem dualGram_map_star [DecidableEq n] (H : Matrix n n ℂ) :
     dualGram (H.map star) = (dualGram H).map star :=
   congrArg transpose (show Hᵀᴴ⁻¹ = H⁻¹ᵀᴴ by rw [← conjTranspose_nonsing_inv, transpose_nonsing_inv])
 
+/- English proof (translation)
+The claim follows from `(Complex.pos_iff.1 h.det_pos).1`.
+-/
 theorem det_re_pos [DecidableEq n] {H : Matrix n n ℂ} (h : H.PosDef) : 0 < H.det.re :=
   (Complex.pos_iff.1 h.det_pos).1
 
@@ -383,23 +546,38 @@ def MInfAt (A : CxPts p σ → Matrix m n ℂ) (y : CxPts p σ) : Prop :=
 
 variable {A A' : CxPts p σ → Matrix m n ℂ}
 
+/- English proof (translation)
+Introduce `a b` and use `(h a b).congr (e.fun_comp fun M => M a b)`.
+-/
 theorem MInfAt.congr (h : MInfAt A y) (e : A' =ᶠ[𝓝 y] A) : MInfAt A' y := fun a b =>
   (h a b).congr (e.fun_comp fun M => M a b)
 
+/- English proof (translation)
+Introduce `a b` and use `(h a b).contDiffAt_chart c hy`.
+-/
 theorem MInfAt.mContDiffAt (h : MInfAt A y) {D : ℕ} (c : AlgChart p σ D) (hy : y ∈ c.e.source) :
     MContDiffAt ∞ (fun v => A (c.e.symm v)) (c.e y) := fun a b => (h a b).contDiffAt_chart c hy
 
 variable [Fintype m] [Fintype n]
 
+/- English proof (translation)
+The claim follows from `VInfAt.comp (F := m → n → ℂ) (vInfAt_pi fun a => vInfAt_pi fun b => h a b) hT hy fun M hM => (hΨ M hM).contDiffWithinAt`.
+-/
 theorem MInfAt.comp (h : MInfAt A y) {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F]
     {Ψ : (m → n → ℂ) → F} {T : Set (m → n → ℂ)} (hT : IsOpen T) (hy : A y ∈ T)
     (hΨ : ∀ M ∈ T, ContDiffAt ℝ ∞ Ψ M) : VInfAt (fun z => Ψ (A z)) y :=
   VInfAt.comp (F := m → n → ℂ) (vInfAt_pi fun a => vInfAt_pi fun b => h a b) hT hy
     fun M hM => (hΨ M hM).contDiffWithinAt
 
+/- English proof (translation)
+Introduce `a b` and use `(contDiffAt_apply _ _ b _).comp M (contDiffAt_apply _ _ a _)`.
+-/
 theorem mContDiffAt_id (M : m → n → ℂ) : MContDiffAt ∞ (fun N : m → n → ℂ => Matrix.of N) M :=
   fun a b => (contDiffAt_apply _ _ b _).comp M (contDiffAt_apply _ _ a _)
 
+/- English proof (translation)
+Introduce `a b` and use `by have h₁ : VInfAt (F := m → n → ℂ) A y := vInfAt_pi fun a => vInfAt_pi fun b => h a b have h₂ : VInfAt (F := m → m → ℂ) H y := vInfAt_pi fun a => vInfAt_pi fun b => hH a b refine (h₁.prodMk h₂).comp_contDiff (Ψ := fun x => HermFrame.chg (of x.1) (of x.2) a b) (contDiff_iff_cont …`.
+-/
 theorem MInfAt.chg {H : CxPts p σ → Matrix m m ℂ} (h : MInfAt A y) (hH : MInfAt H y) :
     MInfAt (fun z => chg (A z) (H z)) y := fun a b => by
   have h₁ : VInfAt (F := m → n → ℂ) A y := vInfAt_pi fun a => vInfAt_pi fun b => h a b
@@ -412,14 +590,23 @@ theorem MInfAt.chg {H : CxPts p σ → Matrix m m ℂ} (h : MInfAt A y) (hH : MI
     (mContDiffAt_id x.2 a b).comp x contDiffAt_snd
   exact (e₁.transpose.mul e₂).mul e₁.conjTranspose.transpose a b
 
+/- English proof (translation)
+The claim follows from `isOpen_iff_mem_nhds.2 fun M hM => (mContDiffAt_id M).eventually_isUnit hM`.
+-/
 theorem isOpen_isUnit_det [DecidableEq m] : IsOpen {M : m → m → ℂ | IsUnit (of M).det} :=
   isOpen_iff_mem_nhds.2 fun M hM => (mContDiffAt_id M).eventually_isUnit hM
 
+/- English proof (translation)
+Introduce `a b` and use `h.comp (Ψ := fun M => HermFrame.dualGram (of M) a b) isOpen_isUnit_det hu fun M hM => ((mContDiffAt_id M).inv hM).transpose a b`.
+-/
 theorem MInfAt.dualGram [DecidableEq m] {H : CxPts p σ → Matrix m m ℂ} (h : MInfAt H y)
     (hu : IsUnit (H y).det) : MInfAt (fun z => dualGram (H z)) y := fun a b =>
   h.comp (Ψ := fun M => HermFrame.dualGram (of M) a b) isOpen_isUnit_det hu
     fun M hM => ((mContDiffAt_id M).inv hM).transpose a b
 
+/- English proof (translation)
+Establish `hd (M : m → m → ℂ) : ContDiffAt ℝ ∞ (fun N : m → m → ℂ => (of N).det.re) M` using `Complex.reCLM.contDiff.contDiffAt.comp M (mContDiffAt_id M).det`. Conclude with `h.comp (Ψ := fun M => Real.log (of M).det.re) (T := {M | (of M).det.re ≠ 0}) (isOpen_ne_fun (contDiff_iff_contDiffAt.2 hd).continuous continuous_const) hu fun M hM => (hd M).log hM`.
+-/
 theorem MInfAt.log_det [DecidableEq m] {H : CxPts p σ → Matrix m m ℂ} (h : MInfAt H y)
     (hu : (H y).det.re ≠ 0) : CInfAt (fun z => Real.log (H z).det.re) y := by
   have hd (M : m → m → ℂ) : ContDiffAt ℝ ∞ (fun N : m → m → ℂ => (of N).det.re) M :=
@@ -443,6 +630,9 @@ end CxPts
 def VB.IsVB.pick {E : X.Modules} {r : ℕ} (h : IsVB E r) (y : CxPts p σ) : Chart E r :=
   CxPts.pick h.isLB_det y
 
+/- English proof (translation)
+The claim follows from `CxPts.mem_pick h.isLB_det y`.
+-/
 theorem VB.IsVB.mem_pick {E : X.Modules} {r : ℕ} (h : IsVB E r) (y : CxPts p σ) :
     y ∈ ptsIn p σ (h.pick y).U := CxPts.mem_pick h.isLB_det y
 
@@ -453,40 +643,67 @@ variable {E E' : X.Modules} {r : ℕ} (h : Met p σ E r) {V W : X.Opens} {y : Cx
 def form (s t : Γ(E, V)) (y : CxPts p σ) : ℂ :=
   HermFrame.form (h.G (h.isVB.pick y) y) ((h.isVB.pick y).crd p σ s y) ((h.isVB.pick y).crd p σ t y)
 
+/- English proof (translation)
+Use `h.isVB.mem_pick y` as an intermediate fact. Rewrite using `[form, h.trans c _ y hc, form_chg, c.tr_mulVec _ s hy this, c.tr_mulVec _ t hy this]`.
+-/
 theorem form_eq (c : Chart E r) (hc : y ∈ ptsIn p σ c.U) (s t : Γ(E, V)) (hy : y ∈ ptsIn p σ V) :
     h.form s t y = HermFrame.form (h.G c y) (c.crd p σ s y) (c.crd p σ t y) := by
   have := h.isVB.mem_pick y
   rw [form, h.trans c _ y hc, form_chg, c.tr_mulVec _ s hy this, c.tr_mulVec _ t hy this]
 
+/- English proof (translation)
+Rewrite using `[h.form_eq c hc _ _ hc, c.crd_frame hc, c.crd_frame hc, form_single]`.
+-/
 theorem form_frame (c : Chart E r) (hc : y ∈ ptsIn p σ c.U) (a b : Fin r) :
     h.form (c.e a) (c.e b) y = h.G c y a b := by
   rw [h.form_eq c hc _ _ hc, c.crd_frame hc, c.crd_frame hc, form_single]
 
+/- English proof (translation)
+Rewrite using `[form, form, Chart.crd_resM _ _ _ hy, Chart.crd_resM _ _ _ hy]`.
+-/
 theorem form_resM (s t : Γ(E, V)) (hW : W ≤ V) (hy : y ∈ ptsIn p σ W) :
     h.form (resM E hW s) (resM E hW t) y = h.form s t y := by
   rw [form, form, Chart.crd_resM _ _ _ hy, Chart.crd_resM _ _ _ hy]
 
+/- English proof (translation)
+Rewrite using `[form, Chart.crd_add, HermFrame.form_add_left]`. Both sides reduce to the same expression.
+-/
 theorem form_add_left (s s' t : Γ(E, V)) (y : CxPts p σ) :
     h.form (s + s') t y = h.form s t y + h.form s' t y := by
   rw [form, Chart.crd_add, HermFrame.form_add_left]; rfl
 
+/- English proof (translation)
+Rewrite using `[form, Chart.crd_smul, HermFrame.form_smul_left]`. Both sides reduce to the same expression.
+-/
 theorem form_smul_left (g : Γ(X, V)) (s t : Γ(E, V)) (y : CxPts p σ) :
     h.form (g • s) t y = ev p σ V g y * h.form s t y := by
   rw [form, Chart.crd_smul, HermFrame.form_smul_left]; rfl
 
+/- English proof (translation)
+The claim follows from `HermFrame.conj_form (h.posDef _ y (h.isVB.mem_pick y)).isHermitian _ _`.
+-/
 theorem conj_form (s t : Γ(E, V)) (y : CxPts p σ) :
     starRingEnd ℂ (h.form s t y) = h.form t s y :=
   HermFrame.conj_form (h.posDef _ y (h.isVB.mem_pick y)).isHermitian _ _
 
+/- English proof (translation)
+Rewrite using `[h.trans _ c y (h.isVB.mem_pick y), Chart.tr_of_notMem _ _ hc, chg_zero]`.
+-/
 theorem G_of_notMem (c : Chart E r) (hc : y ∉ ptsIn p σ c.U) : h.G c y = 0 := by
   rw [h.trans _ c y (h.isVB.mem_pick y), Chart.tr_of_notMem _ _ hc, chg_zero]
 
+/- English proof (translation)
+The claim follows from `Met.ext (funext₂ fun c y => by obtain ⟨c₀, hy, e⟩ := H y rw [h.trans c₀ c y hy, h'.trans c₀ c y hy, e])`.
+-/
 theorem ext_of_exists {h h' : Met p σ E r}
     (H : ∀ y, ∃ c : Chart E r, y ∈ ptsIn p σ c.U ∧ h.G c y = h'.G c y) : h = h' :=
   Met.ext (funext₂ fun c y => by
     obtain ⟨c₀, hy, e⟩ := H y
     rw [h.trans c₀ c y hy, h'.trans c₀ c y hy, e])
 
+/- English proof (translation)
+The claim follows from `ext_of_exists fun y => ⟨_, h.isVB.mem_pick y, Matrix.ext fun a b => by rw [← h.form_frame _ (h.isVB.mem_pick y), ← h'.form_frame _ (h.isVB.mem_pick y), H _ _ _ _ (h.isVB.mem_pick y)]⟩`.
+-/
 theorem ext_form {h h' : Met p σ E r}
     (H : ∀ (V : X.Opens) (s t : Γ(E, V)) y, y ∈ ptsIn p σ V → h.form s t y = h'.form s t y) :
     h = h' := ext_of_exists fun y => ⟨_, h.isVB.mem_pick y, Matrix.ext fun a b => by
@@ -507,6 +724,9 @@ def ofCover (hE : IsVB E r) {ι : Sort*} (c : ι → Chart E r)
   ofPt hE (fun y => c (hc y).choose) (fun y => (hc y).choose_spec) (fun y => H (hc y).choose y)
     fun y => hH _ y (hc y).choose_spec
 
+/- English proof (translation)
+The claim follows from `(ht _ i y (hc y).choose_spec hy).symm`.
+-/
 theorem ofCover_G {hE : IsVB E r} {ι : Sort*} {c : ι → Chart E r} {hc}
     {H : ι → CxPts p σ → Matrix (Fin r) (Fin r) ℂ} {hH}
     (ht : ∀ i j y, y ∈ ptsIn p σ (c i).U → y ∈ ptsIn p σ (c j).U →
@@ -517,6 +737,9 @@ def IsCInf : Prop := ∀ (c : Chart E r), ∀ y ∈ ptsIn p σ c.U, MInfAt (h.G 
 
 variable {h} in
 
+/- English proof (translation)
+Introduce `c y hy` and use `by obtain ⟨c₀, h₀, e⟩ := H y refine (MInfAt.chg (A := c₀.tr p σ c) (fun a b => c₀.vInfAt_crd _ hy h₀ a) e).congr ?_ filter_upwards [(isOpen_ptsIn _).mem_nhds h₀] with z hz using h.trans c₀ c z hz`.
+-/
 theorem isCInf_of_exists (H : ∀ y, ∃ c : Chart E r, y ∈ ptsIn p σ c.U ∧ MInfAt (h.G c) y) :
     h.IsCInf := fun c y hy => by
   obtain ⟨c₀, h₀, e⟩ := H y
@@ -529,6 +752,9 @@ def IsConj (h' : Met p σ' E r) : Prop :=
 
 variable {h} in
 
+/- English proof (translation)
+Introduce `c y y' e` and use `by obtain ⟨c₀, h₀, e₀⟩ := H y y' e rw [h.trans c₀ c y h₀, h'.trans c₀ c y' ((mem_ptsIn_iff_of_conj e).2 h₀), e₀, c₀.tr_conj c e, chg_map_star]`.
+-/
 theorem isConj_of_exists {h' : Met p σ' E r}
     (H : ∀ (y : CxPts p σ) (y' : CxPts p σ'), y'.1 = spMap (starRingEnd ℂ) ≫ y.1 →
       ∃ c : Chart E r, y ∈ ptsIn p σ c.U ∧ h'.G c y' = (h.G c y).map star) : h.IsConj h' :=
@@ -543,12 +769,18 @@ def pull {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) :
     (fun z => ⟨_, h.isVB.mem_pick (PtsOver.map π hπ _ z)⟩)
     (fun c z => h.G c (PtsOver.map π hπ _ z)) fun c _ hz => h.posDef c _ hz
 
+/- English proof (translation)
+The claim follows from `ofCover_G (c := fun c : Chart E r => c.pull h.isVB π) (fun c c' z hz hz' => by rw [c.tr_pull c' _ π hπ hz hz', ← h.trans c c' _ hz]) hz`.
+-/
 theorem pull_G {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) (c : Chart E r) {z : CxPts q σ}
     (hz : PtsOver.map π hπ _ z ∈ ptsIn p σ c.U) :
     (h.pull π hπ).G (c.pull h.isVB π) z = h.G c (PtsOver.map π hπ _ z) :=
   ofCover_G (c := fun c : Chart E r => c.pull h.isVB π) (fun c c' z hz hz' => by
     rw [c.tr_pull c' _ π hπ hz hz', ← h.trans c c' _ hz]) hz
 
+/- English proof (translation)
+Establish `hc` using `h.isVB.mem_pick (PtsOver.map π hπ _ z)`. Rewrite using `[(h.pull π hπ).form_eq (Chart.pull _ h.isVB π) hc _ _ hz, h.pull_G π hπ _ hc, Chart.crd_pull _ _ π hπ _ _ hz hc, Chart.crd_pull _ _ π hπ _ _ hz hc, form]`.
+-/
 theorem form_pull {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) (s t : Γ(E, V)) {T : Y.Opens}
     (hT : T ≤ π ⁻¹ᵁ V) {z : CxPts q σ} (hz : z ∈ ptsIn q σ T) :
     (h.pull π hπ).form (pullbackSections π E hT s) (pullbackSections π E hT t) z =
@@ -561,6 +793,9 @@ def dual : Met p σ (VB.dual E) r :=
   ofCover h.isVB.dual Chart.dual (fun y => ⟨_, h.isVB.mem_pick y⟩)
     (fun c y => dualGram (h.G c y)) fun c y hy => posDef_dualGram (h.posDef c y hy)
 
+/- English proof (translation)
+The claim follows from `ofCover_G (fun c c' y hy hy' => by rw [c.tr_dual c' hy hy', h.trans c c' y hy, dualGram_chg ((c.tr_mul c' c hy' hy).trans (c.tr_self hy))]) hy`.
+-/
 theorem dual_G (c : Chart E r) (hy : y ∈ ptsIn p σ c.U) :
     h.dual.G c.dual y = dualGram (h.G c y) :=
   ofCover_G (fun c c' y hy hy' => by
@@ -570,10 +805,16 @@ theorem dual_G (c : Chart E r) (hy : y ∈ ptsIn p σ c.U) :
 def map (φ : E ≅ E') : Met p σ E' r :=
   ofCover (h.isVB.of_iso φ) (·.map φ) (fun y => ⟨_, h.isVB.mem_pick y⟩) h.G h.posDef
 
+/- English proof (translation)
+The claim follows from `ofCover_G (fun c c' y hy _ => by rw [c.tr_map c' φ, ← h.trans c c' y hy]) hy`.
+-/
 theorem map_G (φ : E ≅ E') (c : Chart E r) (hy : y ∈ ptsIn p σ c.U) :
     (h.map φ).G (c.map φ) y = h.G c y :=
   ofCover_G (fun c c' y hy _ => by rw [c.tr_map c' φ, ← h.trans c c' y hy]) hy
 
+/- English proof (translation)
+Establish `hc` using `h.isVB.mem_pick y`. Rewrite using `[(h.map φ).form_eq (Chart.map _ φ) hc _ _ hy, h.map_G φ _ hc, Chart.crd_map, Chart.crd_map, form]`.
+-/
 theorem form_map (φ : E ≅ E') (s t : Γ(E, V)) (hy : y ∈ ptsIn p σ V) :
     (h.map φ).form (φ.hom.app V s) (φ.hom.app V t) y = h.form s t y := by
   have hc := h.isVB.mem_pick y
@@ -585,6 +826,9 @@ def expMul (u : CxPts p σ → ℝ) : Met p σ E r where
   posDef c y hy := (h.posDef c y hy).smul (by exact_mod_cast Real.exp_pos _)
   trans c c' y hy := by rw [chg_smul, ← h.trans c c' y hy]
 
+/- English proof (translation)
+The claim follows from `form_smul _ _ _ _`.
+-/
 theorem form_expMul (u : CxPts p σ → ℝ) (s t : Γ(E, V)) (y : CxPts p σ) :
     (h.expMul u).form s t y = Real.exp (u y) * h.form s t y := form_smul _ _ _ _
 
@@ -602,6 +846,9 @@ def ofWeight {L : LB X} (φ : Weight p σ L) : Met p σ (toMod L) 1 :=
     (fun i y => (Real.exp (-φ.φ i y) : ℂ) • 1)
     fun _ _ _ => PosDef.one.smul (by exact_mod_cast Real.exp_pos _)
 
+/- English proof (translation)
+The claim follows from `ofCover_G (fun i j y hi hj => by have := gv_ne_zero (B := L) hi hj have e := det_chg ((Chart.ofLB φ.isLB i).tr p σ (Chart.ofLB φ.isLB j) y) ((Real.exp (-φ.φ i y) : ℂ) • 1) simp only [det_unique, Chart.tr_ofLB φ.isLB hi hj, Matrix.smul_apply, one_apply_eq, smul_eq_mul, mul_one] at …`.
+-/
 theorem ofWeight_G {L : LB X} (φ : Weight p σ L) {i : L.ι} (hy : y ∈ ptsIn p σ (L.U i)) :
     (ofWeight φ).G (Chart.ofLB φ.isLB i) y = (Real.exp (-φ.φ i y) : ℂ) • 1 :=
   ofCover_G (fun i j y hi hj => by
@@ -619,6 +866,9 @@ def ofFrame {e : Fin r → Γ(E, ⊤)} (he : IsFrame e) (H : CxPts p σ → Matr
     (hH : ∀ y, (H y).PosDef) : Met p σ E r :=
   ofPt (fun _ => ⟨⊤, e, trivial, he⟩) (fun _ => ⟨⊤, e, he⟩) (fun _ => mem_ptsIn_top) H hH
 
+/- English proof (translation)
+The claim follows from `(congrArg (chg · (H y)) (Chart.tr_self ⟨⊤, e, he⟩ mem_ptsIn_top)).trans (chg_one _)`.
+-/
 theorem ofFrame_G {e : Fin r → Γ(E, ⊤)} (he : IsFrame e)
     (H : CxPts p σ → Matrix (Fin r) (Fin r) ℂ) (hH : ∀ y, (H y).PosDef) (y : CxPts p σ) :
     (ofFrame he H hH).G ⟨⊤, e, he⟩ y = H y :=
@@ -626,31 +876,49 @@ theorem ofFrame_G {e : Fin r → Γ(E, ⊤)} (he : IsFrame e)
 
 variable {h}
 
+/- English proof (translation)
+The claim follows from `isCInf_of_exists fun z => by have hc := h.isVB.mem_pick (PtsOver.map π hπ _ z) refine ⟨Chart.pull _ h.isVB π, hc, MInfAt.congr (fun a b => (H _ _ hc a b).pull π hπ) ?_⟩ filter_upwards [(isOpen_ptsIn (π ⁻¹ᵁ _)).mem_nhds hc] with w hw using h.pull_G π hπ _ hw`.
+-/
 theorem IsCInf.pull (H : h.IsCInf) {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) :
     (h.pull π hπ).IsCInf := isCInf_of_exists fun z => by
   have hc := h.isVB.mem_pick (PtsOver.map π hπ _ z)
   refine ⟨Chart.pull _ h.isVB π, hc, MInfAt.congr (fun a b => (H _ _ hc a b).pull π hπ) ?_⟩
   filter_upwards [(isOpen_ptsIn (π ⁻¹ᵁ _)).mem_nhds hc] with w hw using h.pull_G π hπ _ hw
 
+/- English proof (translation)
+The claim follows from `isCInf_of_exists fun y => by have hc := h.isVB.mem_pick y refine ⟨Chart.dual _, hc, ((H _ _ hc).dualGram (h.posDef _ _ hc).det_pos.ne'.isUnit).congr ?_⟩ filter_upwards [(isOpen_ptsIn _).mem_nhds hc] with w hw using h.dual_G _ hw`.
+-/
 theorem IsCInf.dual (H : h.IsCInf) : h.dual.IsCInf := isCInf_of_exists fun y => by
   have hc := h.isVB.mem_pick y
   refine ⟨Chart.dual _, hc, ((H _ _ hc).dualGram (h.posDef _ _ hc).det_pos.ne'.isUnit).congr ?_⟩
   filter_upwards [(isOpen_ptsIn _).mem_nhds hc] with w hw using h.dual_G _ hw
 
+/- English proof (translation)
+The claim follows from `isCInf_of_exists fun y => by have hc := h.isVB.mem_pick y refine ⟨Chart.map _ φ, hc, (H _ _ hc).congr ?_⟩ filter_upwards [(isOpen_ptsIn _).mem_nhds hc] with w hw using h.map_G φ _ hw`.
+-/
 theorem IsCInf.map (H : h.IsCInf) (φ : E ≅ E') : (h.map φ).IsCInf := isCInf_of_exists fun y => by
   have hc := h.isVB.mem_pick y
   refine ⟨Chart.map _ φ, hc, (H _ _ hc).congr ?_⟩
   filter_upwards [(isOpen_ptsIn _).mem_nhds hc] with w hw using h.map_G φ _ hw
 
+/- English proof (translation)
+Introduce `c y hy a b` and use `((vInfAt_iff_cInfAt.2 (hu y)).prodMk (H c y hy a b)).comp_contDiff (Ψ := fun x => (Real.exp x.1 : ℂ) * x.2) ((Complex.ofRealCLM.contDiff.comp (Real.contDiff_exp.comp contDiff_fst)).mul contDiff_snd)`.
+-/
 theorem IsCInf.expMul (H : h.IsCInf) {u : CxPts p σ → ℝ} (hu : ∀ y, CInfAt u y) :
     (h.expMul u).IsCInf := fun c y hy a b =>
   ((vInfAt_iff_cInfAt.2 (hu y)).prodMk (H c y hy a b)).comp_contDiff
     (Ψ := fun x => (Real.exp x.1 : ℂ) * x.2)
     ((Complex.ofRealCLM.contDiff.comp (Real.contDiff_exp.comp contDiff_fst)).mul contDiff_snd)
 
+/- English proof (translation)
+Introduce `c y hy` and use `((H c y hy).log_det (det_re_pos (h.posDef c y hy)).ne').neg`.
+-/
 theorem IsCInf.detWeight (H : h.IsCInf) : h.detWeight.IsCInf := fun c y hy =>
   ((H c y hy).log_det (det_re_pos (h.posDef c y hy)).ne').neg
 
+/- English proof (translation)
+The claim follows from `isCInf_of_exists fun y => by have hc := mem_pick φ.isLB y refine ⟨Chart.ofLB φ.isLB _, hc, MInfAt.congr (A := fun w => (Real.exp (-φ.φ (pick φ.isLB y) w) : ℂ) • 1) (fun a b => ?_) ?_⟩ · exact (vInfAt_iff_cInfAt.2 (H _ y hc)).comp_contDiff (Ψ := fun x => (Real.exp (-x) : ℂ) * (1 : …`.
+-/
 theorem isCInf_ofWeight {L : LB X} {φ : Weight p σ L} (H : φ.IsCInf) : (ofWeight φ).IsCInf :=
   isCInf_of_exists fun y => by
     have hc := mem_pick φ.isLB y
@@ -661,6 +929,9 @@ theorem isCInf_ofWeight {L : LB X} {φ : Weight p σ L} (H : φ.IsCInf) : (ofWei
         ((Complex.ofRealCLM.contDiff.comp (Real.contDiff_exp.comp contDiff_neg)).mul contDiff_const)
     · filter_upwards [(isOpen_ptsIn _).mem_nhds hc] with w hw using ofWeight_G φ hw
 
+/- English proof (translation)
+The claim follows from `isCInf_of_exists fun y => ⟨⟨⊤, e, he⟩, mem_ptsIn_top, (hs y).congr (.of_forall (ofFrame_G he H hH))⟩`.
+-/
 theorem isCInf_ofFrame {e : Fin r → Γ(E, ⊤)} (he : IsFrame e)
     {H : CxPts p σ → Matrix (Fin r) (Fin r) ℂ} (hH : ∀ y, (H y).PosDef) (hs : ∀ y, MInfAt H y) :
     (ofFrame he H hH).IsCInf := isCInf_of_exists fun y =>
@@ -672,6 +943,9 @@ namespace Met
 
 variable {E E' : X.Modules} {r : ℕ} {h : Met p σ E r} {h' : Met p σ' E r}
 
+/- English proof (translation)
+Establish `hc` using `h.isVB.mem_pick y`. Rewrite using `[h'.form_eq _ ((mem_ptsIn_iff_of_conj e).2 hc) _ _ ((mem_ptsIn_iff_of_conj e).2 hy), H _ y y' e, Chart.crd_conj _ e, Chart.crd_conj _ e, form]`. Simplify using `[form_eq_sum]`.
+-/
 theorem IsConj.form_eq (H : h.IsConj h') {V : X.Opens} (s t : Γ(E, V)) {y : CxPts p σ}
     {y' : CxPts p σ'} (e : y'.1 = spMap (starRingEnd ℂ) ≫ y.1) (hy : y ∈ ptsIn p σ V) :
     h'.form s t y' = starRingEnd ℂ (h.form s t y) := by
@@ -680,6 +954,9 @@ theorem IsConj.form_eq (H : h.IsConj h') {V : X.Opens} (s t : Γ(E, V)) {y : CxP
     Chart.crd_conj _ e, Chart.crd_conj _ e, form]
   simp [form_eq_sum]
 
+/- English proof (translation)
+The claim follows from `isConj_of_exists fun z z' e => by have hc := h.isVB.mem_pick (PtsOver.map π hπ _ z) have e' : (PtsOver.map π hπ _ z').1 = spMap (starRingEnd ℂ) ≫ (PtsOver.map π hπ _ z).1 := (congrArg (· ≫ π) e).trans (Category.assoc _ _ _) exact ⟨Chart.pull _ h.isVB π, hc, by rw [h.pull_G π hπ _ …`.
+-/
 theorem IsConj.pull (H : h.IsConj h') {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) :
     (h.pull π hπ).IsConj (h'.pull π hπ) := isConj_of_exists fun z z' e => by
   have hc := h.isVB.mem_pick (PtsOver.map π hπ _ z)
@@ -688,17 +965,26 @@ theorem IsConj.pull (H : h.IsConj h') {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π 
   exact ⟨Chart.pull _ h.isVB π, hc, by
     rw [h.pull_G π hπ _ hc, h'.pull_G π hπ _ ((mem_ptsIn_iff_of_conj e').2 hc), H _ _ _ e']⟩
 
+/- English proof (translation)
+The claim follows from `isConj_of_exists fun y y' e => by have hc := h.isVB.mem_pick y exact ⟨Chart.dual _, hc, by rw [h.dual_G _ hc, h'.dual_G _ ((mem_ptsIn_iff_of_conj e).2 hc), H _ _ _ e, dualGram_map_star]⟩`.
+-/
 theorem IsConj.dual (H : h.IsConj h') : h.dual.IsConj h'.dual := isConj_of_exists fun y y' e => by
   have hc := h.isVB.mem_pick y
   exact ⟨Chart.dual _, hc, by
     rw [h.dual_G _ hc, h'.dual_G _ ((mem_ptsIn_iff_of_conj e).2 hc), H _ _ _ e, dualGram_map_star]⟩
 
+/- English proof (translation)
+The claim follows from `isConj_of_exists fun y y' e => by have hc := h.isVB.mem_pick y exact ⟨Chart.map _ φ, hc, by rw [h.map_G _ _ hc, h'.map_G _ _ ((mem_ptsIn_iff_of_conj e).2 hc), H _ _ _ e]⟩`.
+-/
 theorem IsConj.map (H : h.IsConj h') (φ : E ≅ E') : (h.map φ).IsConj (h'.map φ) :=
   isConj_of_exists fun y y' e => by
     have hc := h.isVB.mem_pick y
     exact ⟨Chart.map _ φ, hc, by
       rw [h.map_G _ _ hc, h'.map_G _ _ ((mem_ptsIn_iff_of_conj e).2 hc), H _ _ _ e]⟩
 
+/- English proof (translation)
+Introduce `c y y' e` and use `by ext a b simp only [Met.expMul, H c y y' e, hu y y' e, Matrix.smul_apply, map_apply, smul_eq_mul, Complex.star_def, map_mul, Complex.conj_ofReal]`.
+-/
 theorem IsConj.expMul (H : h.IsConj h') {u : CxPts p σ → ℝ} {u' : CxPts p σ' → ℝ}
     (hu : ∀ (y : CxPts p σ) (y' : CxPts p σ'), y'.1 = spMap (starRingEnd ℂ) ≫ y.1 → u' y' = u y) :
     (h.expMul u).IsConj (h'.expMul u') := fun c y y' e => by
@@ -706,15 +992,24 @@ theorem IsConj.expMul (H : h.IsConj h') {u : CxPts p σ → ℝ} {u' : CxPts p �
   simp only [Met.expMul, H c y y' e, hu y y' e, Matrix.smul_apply, map_apply, smul_eq_mul,
     Complex.star_def, map_mul, Complex.conj_ofReal]
 
+/- English proof (translation)
+Rewrite using `[show M.map star = Mᵀᴴ from rfl, det_conjTranspose, det_transpose, Complex.star_def, Complex.conj_re]`.
+-/
 theorem det_map_star_re {n : Type} [Fintype n] [DecidableEq n] (M : Matrix n n ℂ) :
     (M.map star).det.re = M.det.re := by
   rw [show M.map star = Mᵀᴴ from rfl, det_conjTranspose, det_transpose, Complex.star_def,
     Complex.conj_re]
 
+/- English proof (translation)
+Introduce `c y y' e _` and use `congrArg (fun x => -Real.log x) ((congrArg (·.det.re) (H c y y' e)).trans (det_map_star_re _))`.
+-/
 theorem IsConj.detWeight (H : h.IsConj h') : h.detWeight.IsConj h'.detWeight :=
   fun c y y' e _ => congrArg (fun x => -Real.log x) ((congrArg (·.det.re) (H c y y' e)).trans
     (det_map_star_re _))
 
+/- English proof (translation)
+The claim follows from `isConj_of_exists fun y y' e => by have hc := mem_pick φ.isLB y refine ⟨Chart.ofLB φ.isLB _, hc, ?_⟩ rw [ofWeight_G φ hc, ofWeight_G φ' ((mem_ptsIn_iff_of_conj e).2 hc), H _ y y' e hc] ext a b simp only [Matrix.smul_apply, map_apply, smul_eq_mul, Complex.star_def, map_mul, Complex …`.
+-/
 theorem isConj_ofWeight {L : LB X} {φ : Weight p σ L} {φ' : Weight p σ' L} (H : φ.IsConj φ') :
     (ofWeight φ).IsConj (ofWeight φ') := isConj_of_exists fun y y' e => by
   have hc := mem_pick φ.isLB y
@@ -724,6 +1019,9 @@ theorem isConj_ofWeight {L : LB X} {φ : Weight p σ L} {φ' : Weight p σ' L} (
   simp only [Matrix.smul_apply, map_apply, smul_eq_mul, Complex.star_def, map_mul,
     Complex.conj_ofReal, Subsingleton.elim a b, one_apply_eq, map_one]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `-Real.log _ = _`. Rewrite using `[ofWeight_G φ hy]`. Simplify using `only [det_unique, Matrix.smul_apply, one_apply_eq, smul_eq_mul, mul_one, Complex.ofReal_re, Real.log_exp, neg_neg]`.
+-/
 theorem detWeight_ofWeight {L : LB X} (φ : Weight p σ L) {i : L.ι} {y : CxPts p σ}
     (hy : y ∈ ptsIn p σ (L.U i)) : (ofWeight φ).detWeight.φ (Chart.ofLB φ.isLB i) y = φ.φ i y := by
   change -Real.log _ = _
@@ -784,6 +1082,11 @@ def IsOrthSum (h : VMetric p (E₁ ⊞ E₂) r) (h₁ : VMetric p E₁ r₁) (h�
       (h₂.met σ).form ((Limits.biprod.snd : E₁ ⊞ E₂ ⟶ E₂).app V s)
         ((Limits.biprod.snd : E₁ ⊞ E₂ ⟶ E₂).app V t) y
 
+/- English proof (translation)
+Use `⟨fun H => VMetric.ext (funext fun σ => Met.ext_form fun V s t y hy => ?_), ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩ : ∃ s', φ.hom.app V s' = s` from `⟨φ.inv.app V s, congr(($(φ.inv_hom_id)).app V s)⟩`. Take `⟨t, rfl⟩ : ∃ t', φ.hom.app V t' = t` from `⟨φ.inv.app V t, congr(($(φ.inv_hom_id)).app V t)⟩`. Conclude with `(H σ V s t y hy).trans ((h.met σ).form_map φ s t hy).symm`. Introduce and unpack `rfl σ V s t y hy`.
+
+Conclude with `(h.met σ).form_map φ s t hy`.
+-/
 theorem isIsometry_iff {h' : VMetric p E' r} {φ : E ≅ E'} : h.IsIsometry h' φ ↔ h' = h.map φ := by
   refine ⟨fun H => VMetric.ext (funext fun σ => Met.ext_form fun V s t y hy => ?_), ?_⟩
   · obtain ⟨s, rfl⟩ : ∃ s', φ.hom.app V s' = s := ⟨φ.inv.app V s, congr(($(φ.inv_hom_id)).app V s)⟩
@@ -794,20 +1097,41 @@ theorem isIsometry_iff {h' : VMetric p E' r} {φ : E ≅ E'} : h.IsIsometry h' �
 
 variable {h}
 
+/- English proof (translation)
+Introduce `σ` and use `(H σ).pull π hπ`.
+-/
 theorem IsCInf.pull (H : h.IsCInf) {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) :
     (h.pull π hπ).IsCInf := fun σ => (H σ).pull π hπ
 
+/- English proof (translation)
+Introduce `_ π _` and use `H.pull π rfl`.
+-/
 theorem IsCInf.isCInfNorm (H : h.IsCInf) : h.IsCInfNorm := fun _ π _ => H.pull π rfl
 
+/- English proof (translation)
+Introduce `σ` and use `(H σ).dual`.
+-/
 theorem IsCInf.dual (H : h.IsCInf) : h.dual.IsCInf := fun σ => (H σ).dual
 
+/- English proof (translation)
+Introduce `σ` and use `(H σ).map φ`.
+-/
 theorem IsCInf.map (H : h.IsCInf) (φ : E ≅ E') : (h.map φ).IsCInf := fun σ => (H σ).map φ
 
+/- English proof (translation)
+Introduce `σ` and use `(H σ).expMul (cInfAt_const t)`.
+-/
 theorem IsCInf.scale (H : h.IsCInf) (t : ℝ) : (h.scale t).IsCInf := fun σ =>
   (H σ).expMul (cInfAt_const t)
 
+/- English proof (translation)
+Introduce `σ` and use `Met.isCInf_ofWeight (L.cInf σ)`.
+-/
 theorem isCInf_ofLB (L : HermLB p) : (ofLB L).IsCInf := fun σ => Met.isCInf_ofWeight (L.cInf σ)
 
+/- English proof (translation)
+Introduce `_` and use `Met.isCInf_ofFrame he (fun _ => PosDef.one) fun y _ _ => vInfAt_const _ y`.
+-/
 theorem isCInf_orthonormal {e : Fin r → Γ(E, ⊤)} (he : IsFrame e) : (orthonormal p he).IsCInf :=
   fun _ => Met.isCInf_ofFrame he (fun _ => PosDef.one) fun y _ _ => vInfAt_const _ y
 
@@ -827,6 +1151,9 @@ variable (h) in
 
 def first_chern_integral : ℝ := ∑ᶠ σ, (h.met σ).detWeight.chernInt 1 univ fun _ => 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem firstChernIntegral_eq_degree (H : h.IsCInf) : h.first_chern_integral = ArInt.gdeg (det H) 1 := rfl
 
 end VMetric
@@ -861,6 +1188,9 @@ def std : HermVB p r :=
 
 end HermVB
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `-Real.log ((Real.exp t : ℂ) • (h.met σ).G c y).det.re = -Real.log _ - _`. Rewrite using `[det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul, Real.log_mul (by positivity) (det_re_pos ((h.met σ).posDef c y hy)).ne', Real.log_pow, Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example {E : X.Modules} {r : ℕ} (h : VMetric p E r) (t : ℝ) (c : Chart E r) {y : CxPts p σ}
     (hy : y ∈ ptsIn p σ c.U) :
     ((h.scale t).met σ).detWeight.φ c y = (h.met σ).detWeight.φ c y - r * t := by
@@ -870,6 +1200,9 @@ example {E : X.Modules} {r : ℕ} (h : VMetric p E r) (t : ℝ) (c : Chart E r) 
     Real.log_exp]
   ring
 
+/- English proof (translation)
+Rewrite using `[h.dual_G c hy, e]`. Simplify using `[dualGram, Matrix.inv_def, Ring.inverse_eq_inv]`.
+-/
 example {E : X.Modules} (h : Met p σ E 1) (c : Chart E 1) {y : CxPts p σ} (hy : y ∈ ptsIn p σ c.U)
     (e : h.G c y = (Real.pi : ℂ) • 1) : h.dual.G c.dual y 0 0 = 1 / Real.pi := by
   rw [h.dual_G c hy, e]

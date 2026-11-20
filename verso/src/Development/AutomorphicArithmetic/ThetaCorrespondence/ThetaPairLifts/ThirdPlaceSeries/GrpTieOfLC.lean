@@ -13,6 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 4000000
 set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.HeightCounting.Fin3
+/- English proof (translation)
+Introduce `hL K B f T w P x l`. Establish `hc` using `GlobalTheory.Mem.R3.pins_card_index_ranks _ _ _ _ _ _ _ _ _ _ x.m.z.pins`. Establish `hU : (Dof x).nexp.U = Formalism.IndefR.NX.U (Dof x).nd` using `l.b.Bs.exp.U_eq`. Take `⟨_, _, _, he0, _, _⟩` from `x.m.z.pins.keep.grp`. Use `⟨hc.1, he0, ?_, ?_, hc.2.1, x.m.z.pins.keep.psi.lvl⟩` and prove the remaining obligations.
+
+Introduce `g`. Rewrite using `[hU]`. Conclude with `l.rat.rat.lvl g`. Introduce `u hu i b`. Establish `hu' : (x.m.z.R.eG.trans x.m.z.cG) u ∈ Formalism.IndefR.NX.U (Dof x).nd` using `hU ▸ hu`.
+
+Use `⟨psiUOf (Dof x).nd (NX.xiRed (Dof x)) l.rat.In.θ ⟨_, hu'⟩, l.rat.rat.psi u hu', ?_⟩` and prove the remaining obligations. Conclude with `l.b.Bs.psiU i b _ hu hu'`.
+-/
 theorem grpTie_of_LC_alt : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
     {P : Pre2 K w} {x : St P} (_ : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x), Formalism.L2.DIV.GrpTie (Dof x)
       (famR (w.st x.o.Z) w.I P.hX (usedOf w.I T P.Wt) x.m.z.Xg x.m.z.tr).A x.m.z.F.P0 x.m.z.F.ψ0 x.m.z.F.P1 x.m.z.F.ψ1

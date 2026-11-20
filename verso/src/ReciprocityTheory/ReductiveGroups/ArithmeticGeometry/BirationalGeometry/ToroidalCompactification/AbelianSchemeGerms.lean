@@ -15,10 +15,20 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hG.comm, hG.smooth, inferInstance, hG.geomConnected⟩`.
+-/
 theorem isAbelianScheme_of_proper (G : Over S) [GrpObj G] (hG : IsSemiAbelian G) [IsProper G.hom] :
     IsAbelianScheme G :=
   ⟨hG.comm, hG.smooth, inferInstance, hG.geomConnected⟩
 
+/- English proof (translation)
+Use `hG.comm` as an intermediate fact. Use `hH.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hH.smooth` as an intermediate fact. Use `hG.proper` as an intermediate fact.
+
+Use `hH.proper` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Use `hH.geomConnected` as an intermediate fact. Use `⟨inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Over.tensorObj_hom, pullback.condition] infer_instance`.
+
+Rewrite using `[Over.tensorObj_hom, pullback.condition] infer_instance`. Rewrite using `[Over.tensorObj_hom, pullback.condition]`. Conclude with `GeometricallyConnected.comp _ _`.
+-/
 theorem isAbelianScheme_tensor (G H : Over S) [GrpObj G] [GrpObj H] (hG : IsAbelianScheme G)
     (hH : IsAbelianScheme H) : IsAbelianScheme (G ⊗ H) := by
   have := hG.comm
@@ -37,6 +47,13 @@ theorem isAbelianScheme_tensor (G H : Over S) [GrpObj G] [GrpObj H] (hG : IsAbel
   · rw [Over.tensorObj_hom, pullback.condition]
     exact GeometricallyConnected.comp _ _
 
+/- English proof (translation)
+Use `hG.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.proper` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `hc : (G ⊗ 𝟙_ (Over S)).hom = pullback.snd G.hom (𝟙_ (Over S)).hom`.
+
+Rewrite using `[Over.tensorObj_hom, pullback.condition]`. Conclude with `Category.comp_id _`. Use `⟨inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Use `infer_instance`.
+
+Rewrite using `[hc]`. Use `infer_instance`. Rewrite using `[hc]`. Use `infer_instance`.
+-/
 theorem isAbelianScheme_tensor_unit (G : Over S) [GrpObj G] (hG : IsAbelianScheme G) :
     IsAbelianScheme (G ⊗ 𝟙_ (Over S)) := by
   have := hG.comm
@@ -51,11 +68,17 @@ theorem isAbelianScheme_tensor_unit (G : Over S) [GrpObj G] (hG : IsAbelianSchem
   · rw [hc]; infer_instance
   · rw [hc]; infer_instance
 
+/- English proof (translation)
+The claim follows from `| 0 => isAbelianScheme_tensor_unit G hG | n + 1 => isAbelianScheme_tensor G (powObj G (n + 1)) hG (isAbelianScheme_powObj G hG n)`.
+-/
 theorem isAbelianScheme_powObj (G : Over S) [GrpObj G] (hG : IsAbelianScheme G) :
     ∀ n : ℕ, IsAbelianScheme (powObj G (n + 1))
   | 0 => isAbelianScheme_tensor_unit G hG
   | n + 1 => isAbelianScheme_tensor G (powObj G (n + 1)) hG (isAbelianScheme_powObj G hG n)
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => show Function.Bijective (𝟙 S : S ⟶ S).appTop.hom`. Simplify using `only [Scheme.Hom.id_appTop, CommRingCat.hom_id]`. Conclude with `Function.bijective_id`. Consider the case `succ n => exact hGF _ _ (isAbelianScheme_powObj G (isAbelianScheme_of_proper G hG) n)`.
+-/
 theorem globalFns_powObj (hGF : GlobalFnsSt) (G : Over S) [GrpObj G] (hG : IsSemiAbelian G)
     [IsProper G.hom] (n : ℕ) : Function.Bijective (powObj G n).hom.appTop.hom := by
   cases n with

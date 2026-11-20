@@ -4,6 +4,41 @@ namespace GlobalTheory
 
 open Matrix
 
+/- English proof (translation)
+Introduce `E _ r Y _ C hspan s I hI hmem`. Establish `hc : ∀ j, ∃ c : Fin r → E, ∑ k, c k • ((fun a => C.1 a k), (fun a => C.2 a k)) = ((fun a => I a j), (0 : Fin r → E))`. Introduce `j`. Use `hmem j` as an intermediate fact. Rewrite `this` using `[← hspan]`.
+
+Conclude with `(Submodule.mem_span_range_iff_exists_fun E).mp this`. Use `choose c hc using hc`. Set `J : Matrix (Fin r) (Fin s) E` to `Matrix.of fun k j => c j k`. Establish `h1 : C.1 * J = I`. Use extensionality with `a j`.
+
+Use `congrFun (congrArg Prod.fst (hc j)) a` as an intermediate fact. Simplify using `only [Prod.fst_sum, Prod.smul_fst, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `only [Matrix.mul_apply, J, Matrix.of_apply]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+
+Establish `h2 : C.2 * J = 0`. Use extensionality with `a j`. Use `congrFun (congrArg Prod.snd (hc j)) a` as an intermediate fact. Simplify using `only [Prod.snd_sum, Prod.smul_snd, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Simplify using `only [Matrix.mul_apply, J, Matrix.of_apply, Matrix.zero_apply]`.
+
+Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Establish `hIinj : Function.Injective I.mulVec` using `Matrix.mulVec_injective_iff.mpr hI`. Establish `hJinj : Function.Injective J.mulVec`. Introduce `x y hxy`.
+
+Apply `hIinj` to reduce the goal to its premises. Rewrite using `[← h1, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hxy]`. Set `jL : (Fin s → E) →ₗ[E] (Fin r → E)` to `Matrix.toLin' J`. Establish `hker : LinearMap.ker jL = ⊥` using `LinearMap.ker_eq_bot.mpr (by`. Introduce `x y hxy; exact hJinj (by simpa [jL, Matrix.toLin'_apply] using hxy))`.
+
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective jL hker`. Set `Wk` to `LinearMap.ker g`. Set `b` to `Module.finBasis E Wk`. Set `kL : (Fin (Module.finrank E Wk) → E) →ₗ[E] (Fin r → E)` to `Wk.subtype ∘ₗ b.equivFun.symm.toLinearMap`. Establish `hgP : ∀ x, g (x - jL (g x)) = 0`.
+
+Introduce `x`. Rewrite using `[map_sub]`. Use `LinearMap.congr_fun hg (g x)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Rewrite using `[this, sub_self]`.
+
+Set `ψ : (Fin r → E) →ₗ[E] Wk` to `LinearMap.codRestrict Wk (LinearMap.id - jL ∘ₗ g) (fun x => by`. Simplify `hgP x)` using `[Wk, LinearMap.mem_ker]`. Set `mL : (Fin r → E) →ₗ[E] (Fin (Module.finrank E Wk) → E)` to `b.equivFun.toLinearMap ∘ₗ ψ`. Establish `hJ : J = LinearMap.toMatrix' jL` using `by simp [jL]`. Use `⟨Module.finrank E Wk, J, LinearMap.toMatrix' kL, LinearMap.toMatrix' g, LinearMap.toMatrix' mL, h1, h2, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hJ, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]`. Rewrite using `[← LinearMap.toMatrix'_comp]`. Establish `: g ∘ₗ kL = 0`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply, kL]`.
+
+Conclude with `(b.equivFun.symm y).2`. Rewrite using `[this, map_zero]`. Rewrite using `[hJ, ← LinearMap.toMatrix'_comp]`. Establish `: mL ∘ₗ jL = 0`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply, mL]`. Establish `: ψ (jL x) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [ψ, LinearMap.codRestrict_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, ZeroMemClass.coe_zero]`. Use `LinearMap.congr_fun hg x` as an intermediate fact.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Rewrite using `[this, sub_self]`. Rewrite using `[this, map_zero]`. Rewrite using `[this, map_zero]`. Rewrite using `[← LinearMap.toMatrix'_comp]`.
+
+Establish `: mL ∘ₗ kL = LinearMap.id`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, mL]`. Establish `: ψ (kL y) = b.equivFun.symm y`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `hk : g (kL y) = 0` using `(b.equivFun.symm y).2`. Simplify using `only [ψ, LinearMap.codRestrict_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, hk, map_zero, sub_zero]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `b.equivFun.apply_symm_apply y`.
+
+Rewrite using `[this, LinearMap.toMatrix'_id]`. Rewrite using `[hJ, ← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_comp, ← map_add, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.id_apply, mL, kL]`.
+
+Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, Submodule.coe_subtype, ψ, LinearMap.codRestrict_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_adapted_frame_of_isotropic_columns :
     ∀ (E : Type) [Field E] (r : ℕ) (Y : Submodule E ((Fin r → E) × (Fin r → E))),
       Module.finrank E Y = r →

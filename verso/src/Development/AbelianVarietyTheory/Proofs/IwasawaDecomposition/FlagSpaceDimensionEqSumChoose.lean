@@ -7,6 +7,11 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 
 namespace GlobalTheory.FlagDimSum
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih`. Establish `h1 : (q + 1).choose 2 = q + q.choose 2`. Rewrite using `[Nat.choose_succ_succ' q 1, Nat.choose_one_right]`.
+
+Establish `h2 : (p + q + 1).choose 2 = (p + q) + (p + q).choose 2`. Rewrite using `[Nat.choose_succ_succ' (p + q) 1, Nat.choose_one_right]`. Rewrite using `[← add_assoc, h1, h2, ← ih]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_add_choose_two (p q : ℕ) :
     p * q + p.choose 2 + q.choose 2 = (p + q).choose 2 := by
   induction q with
@@ -19,6 +24,13 @@ theorem mul_add_choose_two (p q : ℕ) :
     rw [← add_assoc, h1, h2, ← ih]
     ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw`. Establish `h1` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (E →+* ℂ))) (fun τ => τ (H.rt : E) = H.rt0)`. Rewrite `h1` using `[Finset.card_univ, Embeddings.card]`. Establish `h2` using `GlobalTheory.PeriodCoord.card_cmType H`. Rewrite `h2` using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+
+Establish `h3 : Module.finrank ℚ E = 2 * Module.finrank ℚ (maximalRealSubfield E)`. Rewrite using `[← Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E, Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E, mul_comm]`. Establish `h4 : (Finset.univ.filter (fun τ : E →+* ℂ => ¬ τ (H.rt : E) = H.rt0)).card = Module.finrank ℚ E / 2`. Use linear arithmetic over natural numbers and integers. Establish `hs : ∑ τ : E →+* ℂ, (Dw.mult τ).choose 2 = Module.finrank ℚ E / 2 * (Dw.p.choose 2 + Dw.q.choose 2)`.
+
+Repeatedly rewrite using `[Datum.mult, apply_ite (fun n : ℕ => n.choose 2)]`. Rewrite using `[Finset.sum_ite, Finset.sum_const, Finset.sum_const, h4, h2, smul_eq_mul, smul_eq_mul, mul_add]`. Rewrite using `[hs, Datum.dim, ← Nat.choose_two_right, ← mul_add_choose_two, mul_assoc, ← mul_add, ← add_assoc]`.
+-/
 theorem dim_add_sum_choose : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H), Dw.dim + ∑ τ : E →+* ℂ, (Dw.mult τ).choose 2 =
       Module.finrank ℚ E / 2 * ((Dw.p + Dw.q) * (Dw.p + Dw.q - 1) / 2) := by

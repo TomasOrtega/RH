@@ -3,10 +3,16 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.X
 
+/- English proof (translation)
+Use `revert a b`. Evaluate the decidable proposition.
+-/
 private theorem UpperTheory.V.X.So.vanE_wt_rev (a b : Fin 3) : U3.wt b.rev a.rev = U3.wt a b := by
   revert a b
   decide
 
+/- English proof (translation)
+Break down `Int.units_eq_one_or (F.η g) with h | h` into its components or cases. Simplify using `[lineChar, etaO, h]`. Simplify using `[lineChar, etaO, h]`.
+-/
 private theorem UpperTheory.V.X.So.vanE_char {O : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type} [Group G] [Group Γ]
     (F : UnitaryThreeInertia.Frame O G Γ ι) (j : ℤ) (s : ℕ) (g : Γ) :
     (lineChar F j s g : O) = ((F.Ψ g ^ j : Oˣ) : O) * (if F.η g = 1 then 1 else (-1) ^ s) := by
@@ -14,6 +20,9 @@ private theorem UpperTheory.V.X.So.vanE_char {O : Type} [CommRing O] [IsLocalRin
   · simp [lineChar, etaO, h]
   · simp [lineChar, etaO, h]
 
+/- English proof (translation)
+Rewrite using `[U3.adRep_baseLift_apply, U3.adRep_baseLift_apply, So.vanE_char, So.vanE_wt_rev, Fin.rev_rev, Fin.rev_rev]`. Establish `h : ((-1 : O) ^ s) * (-1) ^ s = 1` using `by rw [← mul_pow]; simp`. Use `split_ifs`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(((F.Ψ g ^ U3.wt a b : Oˣ) : O) * X b.rev a.rev) * h`.
+-/
 private theorem UpperTheory.V.X.So.vanE_ad {O : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type} [Group G] [Group Γ]
     (F : UnitaryThreeInertia.Frame O G Γ ι) (s : ℕ) (g : Γ) (X : Matrix (Fin 3) (Fin 3) O) (a b : Fin 3) :
     U3.adRep (U3.r0 F.η F.Ψ) g X a b - (-1) ^ s * U3.adRep (U3.r0 F.η F.Ψ) g X b.rev a.rev =
@@ -24,6 +33,37 @@ private theorem UpperTheory.V.X.So.vanE_ad {O : Type} [CommRing O] [IsLocalRing 
   · ring
   · linear_combination (((F.Ψ g ^ U3.wt a b : Oˣ) : O) * X b.rev a.rev) * h
 
+/- English proof (translation)
+Introduce `O _ _ _ _ G Γ ι _ _ _ _ F hL j hj γ hγw hcoc hcont hN hI hD`. Establish `hz : ∀ g a b, U3.wt a b ≠ j → γ g a b = 0` using `fun g a b h => hγw g a b h`. Set `z : Fin 3 → Fin 3 → ℕ → Γ → O` to `fun a b s g => γ g a b - (-1) ^ s * γ g b.rev a.rev`. Establish `key : ∀ (a b : Fin 3) (s : ℕ), CobOn (lineChar F (U3.wt a b) s) (z a b s) ⊤`. Introduce `a b s`.
+
+Distinguish the cases in `hw : U3.wt a b = j`. Establish `hcz : Coc (lineChar F j s) (z a b s)`. Introduce `g h`. Establish `e` using `UpperTheory.V.X.So.vanE_ad F s g (γ h) a b`. Rewrite `e` using `[hw]`.
+
+Simplify using `only [z, hcoc g h, Matrix.add_apply]`. Take the linear combination `e`. Establish `hcc : Alg.AdicCont (IsLocalRing.maximalIdeal O) (z a b s)`. Introduce `N`. Establish `h1` using `hcont a b N`.
+
+Establish `h2` using `hcont b.rev a.rev N`. Establish `h3` using `h1.comp₂ h2 (fun x y => x - Ideal.Quotient.mk _ ((-1 : O) ^ s) * y)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[z, map_sub, map_mul]`.
+
+Establish `hnz : ∀ v ∉ F.Tb, ∀ t ∈ F.Nv v, z a b s ((F.loc v) t) = 0`. Introduce `v hv t ht`. Simplify using `[z, hN v hv t ht]`. Establish `hiz : j = 0 → ∀ v ∈ F.Tb, ∀ t ∈ F.Iv v, z a b s ((F.loc v) t) = 0`. Introduce `h0 v hv t ht`.
+
+Simplify using `[z, hI h0 v hv t ht]`. Establish `hdz : j < 0 → ∃ y, ∀ (g : ↥(F.D F.vl)), (F.ηv F.vl) g = 1 → z a b s ((F.loc F.vl) g) = ↑((lineChar F j s) ((F.loc F.vl) g)) * y - y`. Introduce `hneg`. Take `⟨Y, -, hY⟩` from `hD hneg`. Use `⟨-(Y a b - (-1) ^ s * Y b.rev a.rev), fun g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `UpperTheory.V.X.So.vanE_ad F s ((F.loc F.vl) g) Y a b`. Rewrite `e` using `[hw]`. Simplify using `only [z, hY g hg, U3.cob, Matrix.sub_apply]`. Take the linear combination `-e`. Rewrite using `[hw]`.
+
+Conclude with `hL j hj s (z a b s) hcz hcc hnz hiz hdz`. Apply `cobOn_of_eq_zero` to reduce the goal to its premises. Introduce `g _`. Establish `h1` using `hz g a b hw`. Establish `h2` using `hz g b.rev a.rev (by rw [UpperTheory.V.X.So.vanE_wt_rev]; exact hw)`.
+
+Simplify using `[z, h1, h2]`. Establish `key0 : ∀ a b, ∃ c : O, c ≠ 0 ∧ ∃ m : O, ∀ g ∈ (⊤ : Subgroup Γ), c * z a b 0 g = ↑((lineChar F (U3.wt a b) 0) g) * m - m` using `fun a b => key a b 0`. Establish `key1 : ∀ a b, ∃ c : O, c ≠ 0 ∧ ∃ m : O, ∀ g ∈ (⊤ : Subgroup Γ), c * z a b 1 g = ↑((lineChar F (U3.wt a b) 1) g) * m - m` using `fun a b => key a b 1`. Use `choose c0 hc0 m0 hm0 using key0`. Use `choose c1 hc1 m1 hm1 using key1`.
+
+Use `set A : O := ∏ a, ∏ b, c0 a b * c1 a b with hA`. Establish `hd0 : ∀ a b, ∃ k, A = c0 a b * k` using `fun a b => (dvd_mul_right _ _).trans ((Finset.dvd_prod_of_mem (fun b => c0 a b * c1 a b) (Finset.mem_univ b)).trans (Finset.dvd_prod_of_mem (fun a => ∏ b, c0 a b * c1 a b) (Finset.mem_univ a)))`. Establish `hd1 : ∀ a b, ∃ k, A = c1 a b * k` using `fun a b => (dvd_mul_left _ _).trans ((Finset.dvd_prod_of_mem (fun b => c0 a b * c1 a b) (Finset.mem_univ b)).trans (Finset.dvd_prod_of_mem (fun a => ∏ b, c0 a b * c1 a b) (Finset.mem_univ a)))`. Use `choose k0 hk0 using hd0`. Use `choose k1 hk1 using hd1`.
+
+Establish `hP0 : ∀ a b g, A * z a b 0 g = ↑((lineChar F (U3.wt a b) 0) g) * (k0 a b * m0 a b) - k0 a b * m0 a b`. Introduce `a b g`. Take the linear combination `k0 a b * hm0 a b g (Subgroup.mem_top g) + z a b 0 g * hk0 a b`. Establish `hP1 : ∀ a b g, A * z a b 1 g = ↑((lineChar F (U3.wt a b) 1) g) * (k1 a b * m1 a b) - k1 a b * m1 a b`. Introduce `a b g`.
+
+Take the linear combination `k1 a b * hm1 a b g (Subgroup.mem_top g) + z a b 1 g * hk1 a b`. Establish `hAne : A ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun a _ => Finset.prod_ne_zero_iff.mpr fun b _ => mul_ne_zero (hc0 a b) (hc1 a b)`. Establish `h4 : (4 : O) ≠ 0` using `by norm_num`. Set `X : Matrix (Fin 3) (Fin 3) O` to `Matrix.of fun a b => -((k0 a b * m0 a b - k0 b.rev a.rev * m0 b.rev a.rev) + (k1 a b * m1 a b + k1 b.rev a.rev * m1 b.rev a.rev))`. Use `⟨4 * A, mul_ne_zero h4 hAne, X, fun g => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `a b`. Establish `e0` using `hP0 a b g`. Establish `e0'` using `hP0 b.rev a.rev g`. Establish `e1` using `hP1 a b g`. Establish `e1'` using `hP1 b.rev a.rev g`.
+
+Rewrite `e0'`, `e1'` using `[UpperTheory.V.X.So.vanE_wt_rev]`. Rewrite `e0`, `e0'`, `e1`, `e1'` using `[UpperTheory.V.X.So.vanE_char]`. Simplify using `only [z, Fin.rev_rev] at e0 e0' e1 e1'`. Simplify using `only [U3.cob, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, U3.adRep_baseLift_apply, X, Matrix.of_apply, Fin.rev_rev]`. Distinguish the cases in `hη : F.η g = 1`.
+
+Simplify using `only [hη, if_true] at e0 e0' e1 e1' ⊢`. Take the linear combination `e0 - e0' + e1 + e1'`. Simplify using `only [hη, if_false] at e0 e0' e1 e1' ⊢`. Take the linear combination `e0 - e0' + e1 + e1'`.
+-/
 theorem UpperTheory.V.X.So.vanEOf :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (G Γ ι : Type) [Group G] [Group Γ] [TopologicalSpace G] [TopologicalSpace Γ] (F : UnitaryThreeInertia.Frame O G Γ ι), (∀ j : ℤ, j ≤ 0 → ∀ s : ℕ, LineVan F j (lineChar F j s)) → F.VanE := by
   intro O _ _ _ _ G Γ ι _ _ _ _ F hL j hj γ hγw hcoc hcont hN hI hD

@@ -17,6 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace MainStatements.Hodge.Pf.WedgeProjections
 
+/- English proof (translation)
+Use `letI := hK.toField`. Conclude with `key_alg p q r₁ r₂ h11 h12 h21 h22 t ht`.
+-/
 theorem eq_zero_of_exteriorPower_map_add {K : Type} [CommRing K] (hK : IsField K) {V W : Type} [AddCommGroup V] [Module K V]
     [AddCommGroup W] [Module K W] (p q : V →ₗ[K] W) (r₁ r₂ : W →ₗ[K] V) (h11 : r₁ ∘ₗ p = LinearMap.id)
     (h12 : r₁ ∘ₗ q = 0) (h21 : r₂ ∘ₗ p = 0) (h22 : r₂ ∘ₗ q = LinearMap.id) (t : ⋀[K]^2 V)
@@ -26,6 +29,13 @@ theorem eq_zero_of_exteriorPower_map_add {K : Type} [CommRing K] (hK : IsField K
 
 end MainStatements.Hodge.Pf.WedgeProjections
 
+/- English proof (translation)
+Introduce `hD hL _ hAx hW R _ A _ g hA hg hR z a b c ha hb hc habc`. Take `⟨eZ, hZ⟩` from `hW R A g hA hg hR`. Take `⟨eY, hY⟩` from `hW R (A ⊗ A) (g + g) (MainStatements.Hodge.Sh.isAbelianScheme_tensor' A A hA hA) (MainStatements.Hodge.Sh.smooth_tensor hg hg) hR`. Establish `hsep : IsSeparated A.hom` using `by have := hA.proper; infer_instance`. Establish `hsep2 : IsSeparated (A ⊗ A).hom` using `MainStatements.Hodge.Pf.AXO.sep_tensor A`.
+
+Establish `inj : ∀ f : A ⊗ A ⟶ A, Function.Injective (pairRes f.left (A ⊗ A).hom).pull2` using `fun f ↦ MainStatements.Hodge.Pf.WedgeProjections.pairRes_pull2_injective hD hL A.hom (A ⊗ A).hom f.left hsep hsep2`. Take `⟨t, rfl⟩` from `eZ.surjective z`. Establish `e : ∀ (f : A ⊗ A ⟶ A) (a' : GlobalTheory.CatCoh.H2 (OAff (A ⊗ A).hom)), IsPullbackH2Structure (wOver f) (eZ t) a' → a' = eY (exteriorPower.map 2 (MainStatements.Hodge.Pf.AXO.pO f) t)` using `fun f a' h' ↦ inj f (h'.symm.trans (MainStatements.Hodge.Pf.WedgeProjections.pullback_wedge_cup_square f eZ hZ eY hY t))`. Rewrite `habc` using `[e _ _ ha, e _ _ hb, e _ _ hc, ← map_add]`. Establish `ht` using `eY.injective habc`.
+
+Rewrite `ht` using `[MainStatements.Hodge.Pf.WedgeProjections.pO_mul A hAx g hA hg]`. Rewrite using `[MainStatements.Hodge.Pf.WedgeProjections.eq_zero_of_exteriorPower_map_add hR _ _ _ _ (MainStatements.Hodge.Pf.WedgeProjections.r11 A) (MainStatements.Hodge.Pf.WedgeProjections.r12 A) (MainStatements.Hodge.Pf.WedgeProjections.r21 A) (MainStatements.Hodge.Pf.WedgeProjections.r22 A …`.
+-/
 theorem MainStatements.Hodge.Pf.noprim : DescentSt → LowSt → SteinSt → AxOSt → WedgeFieldSt → NoPrimSt := by
   intro hD hL _ hAx hW R _ A _ g hA hg hR z a b c ha hb hc habc
   obtain ⟨eZ, hZ⟩ := hW R A g hA hg hR

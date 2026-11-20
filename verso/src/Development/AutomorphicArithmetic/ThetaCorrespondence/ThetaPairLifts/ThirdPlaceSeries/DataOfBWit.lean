@@ -47,6 +47,15 @@ section Args
 open GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Tr
 end Args
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Establish `hu` using `_root_.GlobalTheory.MiS.Check.used_all_alt (_root_.GlobalTheory.Fam.packB_alt b)`. Take `⟨x, a, ax, y, -, -, -, -, -, -, -, -, -⟩` from `hw`. Establish `hx : a.x = x` using `eq_of_heq ax`. Substitute `hx` using the available equality. Take `⟨-, -, hl, -⟩` from `GlobalTheory.Mem.R3.twArgs_lev K q.B q.f q.T q.w q.Z _ _ _ _ _ _ _ _ q.O.ex q.x.what₂ a`.
+
+Establish `key : ∀ k : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S, k = _root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput y.y → (∀ t, Formalism.IndefR.RecTie.Used0 (q.w.D q.Z) (k.P.I.tup t)) → (letI` using `k.B.alg k.B.Q.Rl.toRealDat.βX = 1 ∧ (∀ t, k.B.Q.Rl.toRealDat.Q t = q.w.I.Q (k.P.I.tup t)) ∧ ∀ g, g ∈ (k.B.Q.Rl.toRealDat.levR k.B.Q.F.lv2 true).H ↔ ∀ PP (h : PP ∈ (q.B.primes q.w.px).vGs) (h' : PP ∈ k.B.Q.Rl.toRealDat.Pg), g ⟨PP, h'⟩ ∈ (GlobalTheory.Mem.Col2.TC.Ps q.w.I ⟨PP, h⟩). …`. Introduce `k hk`. Substitute `hk` using the available equality. Introduce `hu`. Use `letI := a.x.grp`.
+
+Use `letI := a.x.fin`. Use `letI := a.x.alg`. Use `⟨a.x.pins.keep.beta.2, fun t => ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `eq_of_heq (hl _ (hu t)).1`. Conclude with `(congrArg a.x.R.Q (a.x.Y.tupT_tup t)).symm.trans h1`.
+
+Conclude with `(by with_unfolding_all exact (lev_twArgs a g :))`. Conclude with `key (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfBundle b) y.eq hu`.
+-/
 theorem data_of_bWit_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
     (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c) (hw : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) :
     (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)).βX = 1 ∧ (∀ t, (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)).Q t = q.w.I.Q ((_root_.GlobalTheory.Fam.packB_alt b).P.I.tup t)) ∧
@@ -75,6 +84,11 @@ theorem data_of_bWit_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _roo
     · exact (by with_unfolding_all exact (lev_twArgs a g :))
   exact key (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfBundle b) y.eq hu
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `hL p K q c b hw u t h g`. Take `⟨hOk, ⟨hPins⟩, -, -, l0, tw, he, ht, -, -, s⟩` from `_root_.GlobalTheory.Fam.colsStd_of_bWit_alt q b hw`. Take `⟨hβ, hQ, hH⟩` from `_root_.GlobalTheory.TopVal.TwSet.data_of_bWit_alt q b hw`. Establish `hPg : (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)).Pg = (q.B.primes q.w.px).vGs` using `Finset.ext (_root_.GlobalTheory.Fam.BundleLev.levTrue_packB_of_bWit q b hw).2.1`. Establish `key : ∀ (Tw : TwForms (q.w.D q.Z)) (t' : Formalism.L2.Forms.SymmetricTwistedColumnsAtPrimes (_root_.GlobalTheory.Fam.packB_alt b).R.T.n.tp (_root_.GlobalTheory.Fam.packB_alt b).R.T.cols Tw), Tw = GlobalTheory.Mem.Col2.TC.tw q.w.I q.w.l l0 q.Z → HEq t' tw → (g ∈ (levS _ (_root_.Gl …`.
+
+Introduce and unpack `_ t' rfl rfl`. Conclude with `mem_levS_of_reads q.w.I hOk hPins q.w.l q.Z _ _ (s.what₂ u _ h) _ hβ _ _ hPg (hQ t) _ hH _ _ _ g`. Conclude with `key _ _ he ht`.
+-/
 theorem levS_iff_cls_alt : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → ∀ (u : (q.w.D q.Z).what₂.Word) (t : (_root_.GlobalTheory.Fam.packB_alt b).P.T) (h : (_root_.GlobalTheory.Fam.packB_alt b).P.I.tup t ≠ (q.w.D q.Z).what₂.mu0) (g : GA (q.w.D q.Z) (q.w.D q.Z).sp.X'), g ∈ (levS _ (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)).βX (datXP (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)) (_root_.GlobalTheory.Fam.complexLevelStructure (_root_.GlobalTheory.Fam.packB_alt b)) t)) ↔ ∃ κ : ((_root_.GlobalTheory.Fam.packB_alt b).R.T.tw.pt.cls u ((_root_.GlobalTheory.Fam.packB_alt b).P.I.tup t) h).lev.U, GlobalTheory.Core.Rk.Top.HasMat g κ.1 := by
   intro hL p K q c b hw u t h g
   obtain ⟨hOk, ⟨hPins⟩, -, -, l0, tw, he, ht, -, -, s⟩ := _root_.GlobalTheory.Fam.colsStd_of_bWit_alt q b hw

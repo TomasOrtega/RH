@@ -23,6 +23,9 @@ noncomputable section
 
 namespace GlobalTheory.SupVal
 
+/- English proof (translation)
+Use `choose l hl using fun j => Module.Projective.exists_dual_eq_one ℂ (hv j)`. Introduce `h`. Use `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ κ ℂ).compLinearMap l)) h` as an intermediate fact. Simplify using `[hl] at this`.
+-/
 theorem tprod_ne_zero' {κ : Type} [Fintype κ] {E : κ → Type} [∀ j, AddCommGroup (E j)] [∀ j, Module ℂ (E j)]
     {v : ∀ j, E j} (hv : ∀ j, v j ≠ 0) : PiTensorProduct.tprod ℂ v ≠ 0 := by
   choose l hl using fun j => Module.Projective.exists_dual_eq_one ℂ (hv j)
@@ -30,6 +33,15 @@ theorem tprod_ne_zero' {κ : Type} [Fintype κ] {E : κ → Type} [∀ j, AddCom
   have := congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ κ ℂ).compLinearMap l)) h
   simp [hl] at this
 
+/- English proof (translation)
+Introduce `hP D θ hθ V S M J vol t ht ht0 w hw`. Establish `hw' : PiTensorProduct.tprod ℂ w ≠ 0` using `tprod_ne_zero' fun τ h => hw τ (by simp [h])`. Establish `hS` using `GlobalTheory.T.schurMult_multiplicitySpaces_of_rapidDecay hP D θ hθ V S M J 1 vol.μ vol.𝓕 vol.haar vol.fund`. Use `set φ := t (PiTensorProduct.tprod ℂ w) with hφ`. Establish `hφ0 : φ ≠ 0` using `fun h => ht0 (GlobalTheory.T.multiplicitySpace_eq_zero_of_apply_nonzero_tensor_zero θ M J 1 vol.μ vol.𝓕 hθ vol.haar vol.fund hS t ht _ hw' h)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x₀, φ x₀ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hφ0 (funext h)`. Establish `hR` using `(GlobalTheory.ChainOnto.MultRapid.multT_apply_rapidDec hP D V S M θ hθ J 1 t ht (PiTensorProduct.tprod ℂ w)).2.2`.
+
+Take `⟨C, hC⟩` from `hR.2.2 0`. Establish `hbdd : BddAbove (Set.range fun g => ‖φ g‖)` using `⟨C, by`. Introduce and unpack `_ ⟨g, rfl⟩`. Simplify using `using hC g⟩`. Establish `hle : ∀ h, ‖φ h‖ ≤ sSup (Set.range fun g => ‖φ g‖)` using `fun h => le_csSup hbdd ⟨h, rfl⟩`.
+
+Establish `hpos : 0 < sSup (Set.range fun g => ‖φ g‖)` using `lt_of_lt_of_le (norm_pos_iff.2 hx₀) (hle x₀)`. Take `⟨_, ⟨x, rfl⟩, hx⟩` from `exists_lt_of_lt_csSup (Set.range_nonempty _) (half_lt_self hpos)`. Conclude with `⟨_, x, hle, hx⟩`.
+-/
 theorem exists_bound_half_lt : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : DSModel V S) (J : Set (GA D V)), GlobalTheory.Unf.Vol V → ∀ t ∈ MultT θ M J 1, t ≠ 0 →
     ∀ w : M.Vec, (∀ τ, (w τ : M.H τ) ≠ 0) → ∃ b : ℝ, ∃ x : GA D V,

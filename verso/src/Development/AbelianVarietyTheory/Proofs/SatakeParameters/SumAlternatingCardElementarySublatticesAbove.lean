@@ -5,6 +5,47 @@ open GlobalTheory.LatHecke
 
 namespace GlobalTheory.LatHecke
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ _ r n L M hn hM`. Use `set m := IsLocalRing.maximalIdeal O with hm`. Use `set A : Submodule O (Fin r → K) := M.1 ⊔ m • L.1 with hA`. Establish `hML : M.1 ≤ L.1` using `hM.1`. Establish `hAL : A ≤ L.1` using `sup_le hML Submodule.smul_le_right`.
+
+Use `set P : Submodule O L.1 := A.comap L.1.subtype with hP`. Establish `hPA : P.map L.1.subtype = A` using `by rw [Submodule.map_comap_subtype, inf_eq_right.2 hAL]`. Establish `htor : Module.IsTorsionBySet O (L.1 ⧸ P) (m : Set O)`. Introduce `x a`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective P x`.
+
+Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Conclude with `Submodule.mem_sup_right (Submodule.smul_mem_smul a.2 y.2)`. Use `letI : Module (IsLocalRing.ResidueField O) (L.1 ⧸ P) := htor.module`. Use `haveI : IsScalarTower O (IsLocalRing.ResidueField O) (L.1 ⧸ P) := htor.isScalarTower`. Establish `hq2 : 2 ≤ qRes O` using `two_le_qRes`.
+
+Establish `hqn : 0 < qRes O ^ n` using `pow_pos (by omega) _`. Establish `hcardV : Nat.card (L.1 ⧸ P) = A.toAddSubgroup.relIndex L.1.toAddSubgroup` using `rfl`. Establish `hmul` using `AddSubgroup.relIndex_mul_relIndex M.1.toAddSubgroup A.toAddSubgroup L.1.toAddSubgroup ((Submodule.toAddSubgroup_le _ _).2 le_sup_left) ((Submodule.toAddSubgroup_le _ _).2 hAL)`. Establish `hdvd : Nat.card (L.1 ⧸ P) ∣ qRes O ^ n` using `⟨M.1.toAddSubgroup.relIndex A.toAddSubgroup, by`. Rewrite using `[hcardV, mul_comm, hmul, hM.2]⟩`.
+
+Use `haveI : Finite (L.1 ⧸ P) := Nat.finite_of_card_ne_zero (Nat.pos_of_dvd_of_pos hdvd hqn).ne'`. Use `haveI : FiniteDimensional (IsLocalRing.ResidueField O) (L.1 ⧸ P) := Module.Finite.of_finite`. Use `set d := Module.finrank (IsLocalRing.ResidueField O) (L.1 ⧸ P) with hd`. Establish `hcardq : Nat.card (L.1 ⧸ P) = qRes O ^ d` using `Module.natCard_eq_pow_finrank (K := IsLocalRing.ResidueField O)`. Establish `hdn : d ≤ n` using `(Nat.pow_dvd_pow_iff_le_right (by omega)).1 (hcardq ▸ hdvd)`.
+
+Establish `hd1 : 1 ≤ d`. Assume the negation of the conclusion as `h0`. Establish `h0' : d = 0` using `by omega`. Establish `h1 : A.toAddSubgroup.relIndex L.1.toAddSubgroup = 1`. Rewrite using `[← hcardV, hcardq, h0', pow_zero]`.
+
+Establish `h2 : L.1 ≤ M.1 ⊔ m • L.1` using `(Submodule.toAddSubgroup_le _ _).1 (AddSubgroup.relIndex_eq_one.1 h1)`. Establish `h3 : L.1 ≤ M.1` using `Submodule.le_of_le_smul_of_le_jacobson_bot L.2.fg (by rw [hm, IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]) h2`. Establish `h4 : M.1.toAddSubgroup.relIndex L.1.toAddSubgroup = 1` using `AddSubgroup.relIndex_eq_one.2 ((Submodule.toAddSubgroup_le _ _).2 h3)`. Rewrite `h4` using `[hM.2]`. Use `Nat.one_lt_pow (by omega : n ≠ 0) (by omega : 1 < qRes O)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `set k := IsLocalRing.ResidueField O`. Use `set V := L.1 ⧸ P`. Establish `hdV : Module.finrank k V = d` using `rfl`. Set `Φ : Submodule k V → Submodule O (Fin r → K)` to `fun W => ((W.restrictScalars O).comap P.mkQ).map L.1.subtype`.
+
+Establish `hPC : ∀ W : Submodule k V, P ≤ (W.restrictScalars O).comap P.mkQ` using `fun W x hx => by`. Rewrite using `[Submodule.mem_comap, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero P).2 hx]`. Conclude with `zero_mem _`. Establish `hΦA : ∀ W, A ≤ Φ W` using `fun W => hPA ▸ Submodule.map_mono (hPC W)`. Establish `hΦL : ∀ W, Φ W ≤ L.1` using `fun W => Submodule.map_subtype_le _ _`.
+
+Establish `hlat : ∀ W, (Φ W).IsLattice K` using `fun W => by haveI := (maxMul L).2`. Conclude with `Submodule.IsLattice.of_le_of_isLattice_of_fg K (show (maxMul L).1 ≤ Φ W from le_trans le_sup_right (hΦA W)) (L.2.fg.of_le (hΦL W))`. Set `f : Submodule k V → Lat O K r` to `fun W => ⟨Φ W, hlat W⟩`. Establish `hinj : Function.Injective f`. Introduce `W W' h`.
+
+Establish `h1 : Φ W = Φ W'` using `congrArg Subtype.val h`. Establish `h2` using `Submodule.map_injective_of_injective L.1.injective_subtype h1`. Establish `h3` using `Submodule.comap_injective_of_surjective (Submodule.mkQ_surjective P) h2`. Conclude with `Submodule.restrictScalars_injective O k V h3`. Establish `hidx : ∀ W : Submodule k V, (Φ W).toAddSubgroup.relIndex L.1.toAddSubgroup = qRes O ^ Module.finrank k (V ⧸ W)`.
+
+Introduce `W`. Express the relevant statement in the definitionally equal form `Nat.card (L.1 ⧸ (Φ W).comap L.1.subtype) = _`. Rewrite using `[Submodule.comap_map_eq_of_injective L.1.injective_subtype, ← Nat.card_congr (Submodule.quotientQuotientEquivQuotient P _ (hPC W)).toEquiv, Submodule.map_comap_eq_of_surjective (Submodule.mkQ_surjective P), Nat.card_congr (Submodule.Quotient.restrictScalarsEquiv O W).toEquiv, Mod …`. Both sides reduce to the same expression. Establish `hset : ∀ j, ({M' | M' ∈ subElem j L ∧ M.1 ≤ M'.1} : Set (Lat O K r)) = f '' {W | Module.finrank k (V ⧸ W) = j}`.
+
+Introduce `j`. Use extensionality with `M'`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨hle, hi⟩, hmL⟩, hMM⟩ set C := M'.1.comap L.1.subtype`.
+
+Establish `hPC' : P ≤ C` using `Submodule.comap_mono (sup_le hMM hmL)`. Set `Wk : Submodule k V` to `{ (C.map P.mkQ).toAddSubmonoid with smul_mem' := fun c x hx => by`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective c`. Establish `e : (IsLocalRing.residue O a) • x = a • x` using `htor.mk_smul a x`. Rewrite using `[e]`.
+
+Conclude with `(C.map P.mkQ).smul_mem a hx }`. Establish `hWr : Wk.restrictScalars O = C.map P.mkQ` using `rfl`. Establish `heq : Φ Wk = M'.1`. Express the relevant statement in the definitionally equal form `((Wk.restrictScalars O).comap P.mkQ).map L.1.subtype = M'.1`. Rewrite using `[hWr, Submodule.comap_map_mkQ, sup_eq_right.2 hPC', Submodule.map_comap_subtype, inf_eq_right.2 hle]`.
+
+Use `⟨Wk, ?_, Lat.ext heq⟩` and prove the remaining obligations. Establish `h` using `hidx Wk`. Rewrite `h` using `[heq, hi]`. Conclude with `(Nat.pow_right_injective hq2 h).symm`. Introduce and unpack `⟨W, hW, rfl⟩`.
+
+Conclude with `⟨⟨⟨hΦL W, (hidx W).trans (by rw [hW])⟩, le_trans le_sup_right (hΦA W)⟩, le_trans le_sup_left (hΦA W)⟩`. Establish `hcount : ∀ j, (({M' | M' ∈ subElem j L ∧ M.1 ≤ M'.1} : Set (Lat O K r)).ncard : ℂ) = (Nat.card {W : Submodule k V // Module.finrank k (V ⧸ W) = j} : ℂ)`. Introduce `j`. Rewrite using `[hset j, Set.ncard_image_of_injective _ hinj, ← Nat.card_coe_set_eq]`. Both sides reduce to the same expression.
+
+Establish `hI` using `GlobalTheory.T.qBinomial_sum_card_quotient_subspaces k V 1`. Rewrite `hI` using `[Finset.prod_eq_zero (Finset.mem_range.2 (by rw [hdV]; omega : 0 < Module.finrank k V)) (by simp)]`. Establish `hqk : (Nat.card k : ℂ) = (qRes O : ℂ)` using `rfl`. Simplify using `only [one_pow, mul_one, hqk, hdV] at hI`. Establish `hzero : ∀ x ∈ Finset.range (n + 1), x ∉ Finset.range (d + 1) → (-1 : ℂ) ^ x * (qRes O : ℂ) ^ (x * (x - 1) / 2) * (({M' | M' ∈ subElem x L ∧ M.1 ≤ M'.1} : Set (Lat O K r)).ncard : ℂ) = 0`.
+
+Introduce `x _ hx`. Rewrite `hx` using `[Finset.mem_range]`. Use `haveI : IsEmpty {W : Submodule k V // Module.finrank k (V ⧸ W) = x} := ⟨fun ⟨W, hW⟩ => by have := Submodule.finrank_quotient_le W; rw [hdV] at this; omega⟩`. Rewrite using `[hcount, Nat.card_of_isEmpty]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← Finset.sum_subset (fun x hx => Finset.mem_range.2 (by have := Finset.mem_range.1 hx; omega)) hzero]`. Simplify using `only [hcount]`. Conclude with `hI`.
+-/
 theorem sum_alt_card_subElem_ge : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)] [Field K] [Algebra O K] [IsFractionRing O K] (r : ℕ) (n : ℕ)
     (L M : Lat O K r), 1 ≤ n → M ∈ subIdx n L →

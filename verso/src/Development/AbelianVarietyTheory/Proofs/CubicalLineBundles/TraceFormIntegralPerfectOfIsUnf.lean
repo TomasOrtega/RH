@@ -6,6 +6,13 @@ open scoped Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U hU k`. Take `⟨-, -, -, -, -, g, e, F, ik, φ, hφ, -⟩` from `hU`. Use `⟨fun x hx y hy => ?_, fun ψ => ?_⟩` and prove the remaining obligations. Use `⟨(F.Di (ik k)).EF ((φ k).symm ⟨x, hx⟩) ((φ k).symm ⟨y, hy⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[hφ k]`.
+
+Simplify using `only [LinearEquiv.apply_symm_apply, EFf]`. Take `⟨a, ha⟩` from `(F.Di (ik k)).unimod.2 (ψ.comp (φ k).toLinearMap.toAddMonoidHom).toIntLinearMap`. Use `⟨φ k a, (φ k a).2, fun y => ?_⟩` and prove the remaining obligations. Establish `h` using `hφ k a ((φ k).symm y)`. Rewrite `h` using `[ha]`.
+
+Simplify `h` using `[EFf]`.
+-/
 theorem traceForm_integral_perfect_of_isUnf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.IsUnf U → ∀ k, (∀ x ∈ (U.X k).Λ, ∀ y ∈ (U.X k).Λ, ∃ n : ℤ, EFf (U.X k).ξ0 (U.X k).Gm x y = n) ∧ ∀ φ : (U.X k).Λ →+ ℤ, ∃ x ∈ (U.X k).Λ, ∀ y : (U.X k).Λ, (φ y : ℚ) = EFf (U.X k).ξ0 (U.X k).Gm x y := by
   intro E _ _ _ H Dw l Xo c σ r U hU k
   obtain ⟨-, -, -, -, -, g, e, F, ik, φ, hφ, -⟩ := hU

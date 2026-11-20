@@ -12,6 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h` using `hT V hs`. Use `clear hT`. Take `⟨⟨μ, hμ⟩, hb⟩` from `h`. Take `⟨⟨𝓕, h𝓕⟩, -⟩` from `hb μ hμ`. Use `⟨(μ, 𝓕), ?_⟩` and prove the remaining obligations.
+
+Conclude with `⟨hμ, h𝓕⟩`.
+-/
 theorem volPair_of_tie (hT : VolTieG D) (V : HSp D) (hs : V.SigOK) : ∃ p : Measure (GA D V) × Set (GA D V), IsVolPair D V p.1 p.2 := by
   have h := hT V hs
   clear hT
@@ -20,6 +25,35 @@ theorem volPair_of_tie (hT : VolTieG D) (V : HSp D) (hs : V.SigOK) : ∃ p : Mea
   refine ⟨(μ, 𝓕), ?_⟩
   exact ⟨hμ, h𝓕⟩
 
+/- English proof (translation)
+Introduce `φ hφc hφinv hae g0`. Assume the negation of the conclusion as `hg0`. Use `haveI : Countable (GQ V) := by`. Unfold `GQ`. Conclude with `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma _ _`.
+
+Establish `hvp : IsVolPair D V (volPair V).1 (volPair V).2`. Establish `e : volPair V = hP.choose`. Unfold `volPair`. Rewrite using `[dif_pos hP]`. Rewrite using `[e]`.
+
+Conclude with `hP.choose_spec`. Use `haveI : (volPair V).1.IsHaarMeasure := hvp.1.1`. Use `haveI : BorelSpace (GA D V) := by first`. Consider the case `exact Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA`. Consider the case `exact Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA _ _`.
+
+Use `haveI : MeasurableMul (GA D V) := by first`. Consider the case `exact Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA`. Consider the case `exact Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA _ _`. Use `haveI : MeasurableConstSMul (GQ V) (GA D V) := ⟨fun c => measurable_const_mul (c : GA D V)⟩`. Use `haveI : SMulInvariantMeasure (GQ V) (GA D V) (volPair V).1 := ⟨fun c s _ => measure_preimage_mul (volPair V).1 (c : GA D V) s⟩`.
+
+Set `O : Set (GA D V)` to `{g | φ g ≠ 0}`. Establish `hO : IsOpen O` using `isOpen_ne_fun hφc continuous_const`. Establish `hOinv : ∀ γ : GQ V, γ • O = O`. Introduce `γ`. Use extensionality with `g`.
+
+Rewrite using `[Set.mem_smul_set]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ show φ ((γ : GA D V) * x) ≠ 0`. Rewrite using `[hφinv _ γ.2]`. Conclude with `hx`.
+
+Introduce `hg`. Use `⟨((γ⁻¹ : GQ V) : GA D V) * g, ?_, ?_⟩` and prove the remaining obligations. Use `show φ (((γ⁻¹ : GQ V) : GA D V) * g) ≠ 0`. Rewrite using `[hφinv _ (γ⁻¹).2]`. Conclude with `hg`.
+
+Use `show (γ : GA D V) * (((γ⁻¹ : GQ V) : GA D V) * g) = g`. Rewrite using `[← mul_assoc, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, one_mul]`. Establish `hpos : 0 < (volPair V).1 O` using `hO.measure_pos _ ⟨g0, hg0⟩`. Establish `hOF : (volPair V).1 (O ∩ (volPair V).2) ≠ 0` using `fun h => hpos.ne' (hvp.2.measure_zero_of_invariant O hOinv h)`. Set `S : Set (AutQ V)` to `{q | ¬ onQ V φ q = (0 : AutQ V → ℂ) q}`.
+
+Establish `h0 : muQ1 V S = 0` using `ae_iff.mp hae`. Establish `hS : muQ V S = 0`. Unfold `muQ1 at h0`. Rewrite `h0` using `[if_pos (show muQ V Set.univ ≠ 0 ∧ muQ V Set.univ ≠ ⊤ from hV), Measure.smul_apply, smul_eq_mul]`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases.
+
+Conclude with `absurd (ENNReal.inv_eq_zero.mp h) hV.2`. Conclude with `h`. Establish `hmeas : AEMeasurable (autMk V) ((volPair V).1.restrict (volPair V).2)`. Assume the negation of the conclusion as `hnm`. Apply `hV.1` to reduce the goal to its premises.
+
+Unfold `muQ`. Simplify using `[Measure.map_of_not_aemeasurable hnm]`. Establish `hpre : autMk V ⁻¹' S = O`. Use extensionality with `g`. Establish `hrel` using `Quotient.mk_out (s := QuotientGroup.rightRel (GQ V)) g`.
+
+Rewrite `hrel` using `[QuotientGroup.rightRel_apply]`. Establish `hv : φ (autMk V g).out = φ g`. Establish `e : g = (g * (autMk V g).out⁻¹) * (autMk V g).out` using `by group`. Use `conv_rhs => rw [e]`. Rewrite using `[hφinv _ hrel]`.
+
+Use `show ¬ φ (autMk V g).out = 0 ↔ φ g ≠ 0`. Rewrite using `[hv]`. Establish `hle` using `Measure.le_map_apply hmeas S`. Rewrite `hle` using `[hpre, Measure.restrict_apply hO.measurableSet]`. Establish `e2 : muQ V S = Measure.map (autMk V) ((volPair V).1.restrict (volPair V).2) S` using `rfl`.
+
+Rewrite `hle` using `[← e2, hS]`. Conclude with `hOF (le_antisymm hle (zero_le))`.
+-/
 theorem quotSupp_of (V : HSp D) (hV : FinVol V) (hP : ∃ p : Measure (GA D V) × Set (GA D V), IsVolPair D V p.1 p.2) :
     QuotSupp V := by
   intro φ hφc hφinv hae g0
@@ -103,6 +137,27 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
+/- English proof (translation)
+Introduce `la P hPm hae k x hx`. Establish `key : ∀ Q ∈ holSub (U σ).X la, ((∀ γ ∈ GQ V, ∀ g, adel V dict mu Q (γ * g) = adel V dict mu Q g) ∧ Continuous (adel V dict mu Q)) ∧ ∀ k, (∀ x ∈ ((U σ).X k).dom, ∀ b ∈ Bor ((U σ).X k).Ψ r, Q k (rmul x b) = bchar (la k) b * Q k x) ∧ ∀ γ ∈ ((U σ).X k).Γ, ∀ x ∈ ((U σ).X k).dom, Q k ( …`. Introduce `Q hQ`. Unfold `holSub at hQ`. Proceed by induction on `hQ using Submodule.span_induction with`.
+
+Consider the case `mem Q hQ`. Use `⟨hA la Q hQ, fun k => ?_⟩` and prove the remaining obligations. Establish `hs` using `(hQ k).1.1`. Conclude with `⟨hs.2.1, hs.2.2⟩`. Consider the case `zero`.
+
+Use `⟨⟨fun γ _ g => by simp, by rw [map_zero]; exact continuous_zero⟩, fun k => ⟨fun x _ b _ => by simp, fun γ _ x _ => by simp⟩⟩` and prove the remaining obligations. Consider the case `add Q₁ Q₂ _ _ h1 h2`. Use `⟨⟨fun γ hγ g => ?_, ?_⟩, fun k => ⟨fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_add, Pi.add_apply, Pi.add_apply, h1.1.1 γ hγ g, h2.1.1 γ hγ g]`. Rewrite using `[map_add]`.
+
+Conclude with `h1.1.2.add h2.1.2`. Simplify using `only [Pi.add_apply]`. Rewrite using `[(h1.2 k).1 x hx b hb, (h2.2 k).1 x hx b hb, mul_add]`. Simplify using `only [Pi.add_apply]`. Rewrite using `[(h1.2 k).2 γ hγ x hx, (h2.2 k).2 γ hγ x hx, mul_add]`.
+
+Consider the case `smul a Q _ h`. Use `⟨⟨fun γ hγ g => ?_, ?_⟩, fun k => ⟨fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, Pi.smul_apply, h.1.1 γ hγ g]`. Rewrite using `[map_smul]`. Conclude with `h.1.2.const_smul a`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[(h.2 k).1 x hx b hb]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[(h.2 k).2 γ hγ x hx]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨⟨hinv, hcont⟩, hlaw⟩` from `key P hPm`. Establish `hz` using `quotSupp_of V hV hP (adel V dict mu P) hcont hinv hae`. Take `⟨-, -, -, hd4, hd5, -⟩` from `hd`. Take `⟨g, γ, hγ, b, hb, hg⟩` from `hd5 k x hx`.
+
+Establish `h0 : P (dict g).1 (dict g).2 = 0`. Establish `e : mu g * P (dict g).1 (dict g).2 = 0` using `hz g`. Establish `hmu0 : mu g ≠ 0`. Introduce `h`. Establish `h1` using `hmu.2.1 g`.
+
+Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`. Conclude with `(mul_eq_zero.mp e).resolve_left hmu0`. Establish `hdom` using `hd4 g`. Rewrite `h0`, `hdom` using `[hg]`.
+
+Conclude with `eq_zero_of_orbit _ (la k) (P k) (hlaw k).1 (hlaw k).2 hx hγ hb hdom h0`.
+-/
 theorem aeDom_of {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {σ : c.F →+* ℂ} {V : HSp D}
     {dict : GA D V → Σ k, Frame ((U σ).X k).Ψ r} {mu : GA D V → ℂ} {Kf : Subgroup (GA D V)}
     {th : ∀ k, ((U σ).X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {hr : V.rank = r}

@@ -24,8 +24,14 @@ variable {l : ℕ} [Fact l.Prime]
 noncomputable def incl (d : ℕ) : (Fin d → ℤ_[l]) →ₗ[ℤ_[l]] (Fin d → ℚ_[l]) :=
   (Algebra.linearMap ℤ_[l] ℚ_[l]).compLeft (Fin d)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_apply (d : ℕ) (v : Fin d → ℤ_[l]) : incl d v = fun i => algebraMap ℤ_[l] ℚ_[l] (v i) := rfl
 
+/- English proof (translation)
+Introduce `v w h`. Use function extensionality and compare the values at `i`. Use `congrFun h i` as an intermediate fact. Simplify using `only [incl_apply] at this`. Conclude with `(FaithfulSMul.algebraMap_injective ℤ_[l] ℚ_[l]) this`.
+-/
 theorem incl_injective (d : ℕ) : Function.Injective (incl (l := l) d) := by
   intro v w h
   funext i
@@ -33,6 +39,9 @@ theorem incl_injective (d : ℕ) : Function.Injective (incl (l := l) d) := by
   simp only [incl_apply] at this
   exact (FaithfulSMul.algebraMap_injective ℤ_[l] ℚ_[l]) this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(((ρ g).val.map (algebraMap ℤ_[l] ℚ_[l])) *ᵥ (fun j => algebraMap ℤ_[l] ℚ_[l] (v j))) i = algebraMap ℤ_[l] ℚ_[l] (((ρ g).val *ᵥ v) i)`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem qRep_incl {Γ : Type} [Group Γ] {d : ℕ} (ρ : Γ →* GL (Fin d) ℤ_[l]) (g : Γ) (v : Fin d → ℤ_[l]) :
     qRep ρ g (incl d v) = incl d ((ρ g).val *ᵥ v) := by
   funext i
@@ -67,6 +76,9 @@ noncomputable def equiv {Γ : Type} [Group Γ] {d : ℕ} (ρ : Γ →* GL (Fin d
     (Fin d → ℤ_[l]) ≃ₗ[ℤ_[l]] ↥(lat ρ).T :=
   LinearEquiv.ofInjective (incl d) (incl_injective d)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem equiv_apply {Γ : Type} [Group Γ] {d : ℕ} (ρ : Γ →* GL (Fin d) ℤ_[l]) (v : Fin d → ℤ_[l]) :
     ((equiv ρ v : ↥(lat ρ).T) : Fin d → ℚ_[l]) = incl d v := rfl
 
@@ -74,6 +86,13 @@ noncomputable def basis {Γ : Type} [Group Γ] {d : ℕ} (ρ : Γ →* GL (Fin d
     Module.Basis (Fin d) ℤ_[l] ↥(lat ρ).T :=
   (Pi.basisFun ℤ_[l] (Fin d)).map (equiv ρ)
 
+/- English proof (translation)
+Establish `key : ∀ v, (equiv ρ).symm (actT (lat ρ) g (equiv ρ v)) = (ρ g).val *ᵥ v`. Introduce `v`. Apply `(equiv ρ).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[equiv_apply]`. Express the relevant statement in the definitionally equal form `qRep ρ g (incl d v) = incl d ((ρ g).val *ᵥ v)`. Conclude with `qRep_incl ρ g v`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply]`.
+
+Simplify using `only [basis, Module.Basis.map_apply, Module.Basis.map_repr, LinearEquiv.trans_apply, key, Pi.basisFun_apply, Pi.basisFun_repr]`. Simplify using `[Matrix.mulVec_single]`.
+-/
 theorem toMatrix_act {Γ : Type} [Group Γ] {d : ℕ} (ρ : Γ →* GL (Fin d) ℤ_[l]) (g : Γ) :
     LinearMap.toMatrix (basis ρ) (basis ρ) (actT (lat ρ) g) = (ρ g).val := by
   have key : ∀ v, (equiv ρ).symm (actT (lat ρ) g (equiv ρ v)) = (ρ g).val *ᵥ v := by
@@ -90,6 +109,9 @@ theorem toMatrix_act {Γ : Type} [Group Γ] {d : ℕ} (ρ : Γ →* GL (Fin d) �
     Pi.basisFun_apply, Pi.basisFun_repr]
   simp [Matrix.mulVec_single]
 
+/- English proof (translation)
+Establish `h1 : Continuous fun g => ((ρ g).val : Matrix (Fin d) (Fin d) ℤ_[l])` using `Units.continuous_val.comp hρ`. Establish `h2 : Continuous fun g => ((ρ g).val.map (algebraMap ℤ_[l] ℚ_[l]))` using `h1.matrix_map (continuous_subtype_val)`. Conclude with `h2.matrix_mulVec continuous_const`.
+-/
 theorem cont_act {d : ℕ} {Γ : Type} [Group Γ] [TopologicalSpace Γ] (ρ : Γ →* GL (Fin d) ℤ_[l]) (hρ : Continuous ρ)
     (x : Fin d → ℚ_[l]) : Continuous fun g => qRep ρ g x := by
   have h1 : Continuous fun g => ((ρ g).val : Matrix (Fin d) (Fin d) ℤ_[l]) := Units.continuous_val.comp hρ
@@ -99,6 +121,9 @@ theorem cont_act {d : ℕ} {Γ : Type} [Group Γ] [TopologicalSpace Γ] (ρ : Γ
 
 end GlobalTheory.BKLim.StdLat
 
+/- English proof (translation)
+Introduce `l _ K bk τ hτ P AI T d ρ hρc hc`. Establish `h` using `GlobalTheory.SeedExists.exists_seed l K bk τ hτ P AI ⟨T⟩ (Fin d → ℚ_[l]) (qRep ρ) (GlobalTheory.BKLim.StdLat.lat ρ) (GlobalTheory.BKLim.StdLat.cont_act ρ hρc) hc d (GlobalTheory.BKLim.StdLat.basis ρ)`. Simplify using `only [GlobalTheory.BKLim.StdLat.toMatrix_act] at h`. Conclude with `h`.
+-/
 theorem GlobalTheory.BKLim.crys_seed : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (d : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]), Continuous ρ → IsCrys (P.PD K) (qRep ρ) → Nonempty (Seed bk d (fun g => (ρ g).val) τ) := by
   intro l _ K bk τ hτ P AI T d ρ hρc hc
   have h := GlobalTheory.SeedExists.exists_seed l K bk τ hτ P AI ⟨T⟩ (Fin d → ℚ_[l]) (qRep ρ) (GlobalTheory.BKLim.StdLat.lat ρ)
@@ -106,6 +131,17 @@ theorem GlobalTheory.BKLim.crys_seed : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt 
   simp only [GlobalTheory.BKLim.StdLat.toMatrix_act] at h
   exact h
 
+/- English proof (translation)
+Introduce `l _ K bk τ hτ P AI T N d ρ hρc hsst hjump`. Take `⟨C, hC⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T`. Establish `hinv` using `GlobalTheory.MemLoc.fits_inv l P AI T C hC`. Establish `hdr : IsDR (P.PD K) (qRep ρ)` using `GlobalTheory.sst_isDR l P AI T K _ (qRep ρ) hsst`. Take `⟨H, hH⟩` from `GlobalTheory.T.exists_hodge_basis_deRham_lattice l K P AI T C hC (bk.ev bk.E) bk.span_ev d ρ hdr`.
+
+Establish `hHN` using `hH N hjump`. Establish `hunit : ∀ g, IsUnit ((ρ g).val)` using `fun g => (ρ g).isUnit`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s : WSeed bk d (fun g => (ρ g).val) τ, IsCrys (P.PD K) (qRep ρ) → ∀ g, s.κ g = 1 := by`. Distinguish the cases in `hc : IsCrys (P.PD K) (qRep ρ)`. Take `⟨sd⟩` from `GlobalTheory.BKLim.crys_seed l K bk τ hτ P AI T d ρ hρc hc`.
+
+Take `⟨s', hs'⟩` from `GlobalTheory.T.exists_trivial_cocycle_crystalline_period_data l K bk τ hτ d _ sd`. Conclude with `⟨s', fun _ => hs'⟩`. Take `⟨N', c₁, c₂, c₃, k₀, F, F', X, X', Z, Z', κ, h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `GlobalTheory.T.exists_semistable_lattice_periods_acris l K bk P AI T C hC d ρ hsst`. Take `⟨s⟩` from `GlobalTheory.T.semistableSeed_of_acris_periods l K bk C τ hτ d (fun g => (ρ g).val) N' c₁ c₂ c₃ k₀ F F' X X' Z Z' κ ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩`. Conclude with `⟨s, fun h => absurd h hc⟩`.
+
+Take `⟨N', F, hFdr, hFcr⟩` from `GlobalTheory.T.exists_breuilKisinFrame_semistablePeriods l K bk τ hτ d _ hunit s`. Take `⟨F₀, -, hε⟩` from `GlobalTheory.T.exists_breuilKisin_frame_height_of_jumps_le l K bk τ hτ C hinv.2 N' N d _ F hFdr H hHN`. Use `⟨F₀, ?_, fun hc => ?_⟩` and prove the remaining obligations. Unfold `Frame.IsDR Frame.IsBeta at hFdr ⊢`. Rewrite using `[hε]`.
+
+Conclude with `hFdr`. Use `hFcr (hs hc)` as an intermediate fact. Unfold `Frame.IsCr at this ⊢`. Rewrite using `[hε]`. Conclude with `this`.
+-/
 theorem GlobalTheory.BKLim.exists_frame_sst : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (N : ℕ) (d : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]), Continuous ρ → IsSst P (qRep ρ) → (DdR (P.PD K) (qRep ρ) ≤ FilV (P.PD K) (LL := ℚ_[l]) (V := Fin d → ℚ_[l]) (-(N : ℤ)) ∧ DdR (P.PD K) (qRep ρ) ⊓ FilV (P.PD K) (LL := ℚ_[l]) (V := Fin d → ℚ_[l]) ((N : ℤ) + 1) = ⊥) → ∃ F : Frame bk N d fun g => (ρ g).val, F.IsDR ∧ (IsCrys (P.PD K) (qRep ρ) → F.IsCr) := by
   intro l _ K bk τ hτ P AI T N d ρ hρc hsst hjump
   obtain ⟨C, hC⟩ := GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T

@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.Core.SBesEx
 
+/- English proof (translation)
+Substitute `hI` using the available equality. Rewrite using `[eq_of_heq (hId _)]`. Both sides reduce to the same expression.
+-/
 theorem gram_eq_of_inst {D : D7} (I : AutInst) (hI : I = Formalism.L2.SG.InstExistsPf.instOf D)
     (ιE : I.E ≃+* D.host.E) (hId : ∀ x : I.E, HEq (ιE x) x) (hn : (D.sp.Y 0).rank = I.n)
     (k l : Fin (D.sp.Y 0).rank) :
@@ -22,6 +25,15 @@ theorem gram_eq_of_inst {D : D7} (I : AutInst) (hI : I = Formalism.L2.SG.InstExi
   rw [eq_of_heq (hId _)]
   rfl
 
+/- English proof (translation)
+Introduce `D X h hId y y'`. Use `set b := X.bas.reindex (finCongr (rank_eq X h)).symm with hb`. Establish `hc : ∀ z, cY X h z = b.repr z`. Introduce `z`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[cY, HidaSetting.crd, crdOf, hb, Module.Basis.repr_reindex]`. Establish `hG : (D.sp.Y 0).gram = fun k l => (VS D).hT (b k) (b l)`. Use function extensionality and compare the values at `k l`. Rewrite using `[← gram_eq_of_inst X.B.I h X.ιE hId (rank_eq X h) k l, X.J_eq]`. Simplify using `[hb]`.
+
+Rewrite using `[hc, hc, hG]`. Use `conv_rhs => rw [← b.sum_repr y', ← b.sum_repr y]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, dotProduct, mulVec, Finset.mul_sum, Pi.star_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `[starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cY_isom : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), IdE X → ∀ y y' : (VS D).V, star (GlobalTheory.Core.SBesEx.cY X h y') ⬝ᵥ ((D.sp.Y 0).gram *ᵥ GlobalTheory.Core.SBesEx.cY X h y) = (VS D).hT y' y := by
   intro D X h hId y y'
   set b := X.bas.reindex (finCongr (rank_eq X h)).symm with hb

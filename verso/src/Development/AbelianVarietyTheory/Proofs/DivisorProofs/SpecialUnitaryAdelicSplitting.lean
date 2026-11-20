@@ -25,6 +25,17 @@ def restrictProd {G A B : Type} [Group G] [TopologicalSpace G] [Group A] [Topolo
   continuous_invFun := Continuous.subtype_mk (e.symm.continuous.comp
     ((continuous_subtype_val.comp continuous_fst).prodMk (continuous_subtype_val.comp continuous_snd))) _
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ M J`. Take `⟨e0, he0⟩` from `GlobalTheory.Mem.VolSplit.exists_adelic_split F E σ M J`. Take `⟨e, he, -, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Set `pInf : AF F ⊗[F] E →+* Ainf F ⊗[F] E` to `(Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom`. Set `pFin : AF F ⊗[F] E →+* Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E` to `(Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom`.
+
+Establish `hinf : ∀ k : HA (Ainf F) σ J, k ∈ ((Matrix.GeneralLinearGroup.det.comp (HR (Ainf F) σ J).subtype).ker : Subgroup (HA (Ainf F) σ J)) ↔ ((HA.mat (Ainf F) σ J k : GL (Fin M) (Ainf F ⊗[F] E)) : Matrix (Fin M) (Fin M) (Ainf F ⊗[F] E)).det = 1` using `fun k => by show Matrix.GeneralLinearGroup.det ((HR (Ainf F) σ J).subtype k) = 1 ↔ _`. Rewrite using `[Units.ext_iff]`. Both sides reduce to the same expression. Establish `key : ∀ g, g ∈ SUAdelic σ J ↔ (e0 g).1 ∈ ((Matrix.GeneralLinearGroup.det.comp (HR (Ainf F) σ J).subtype).ker : Subgroup (HA (Ainf F) σ J)) ∧ (e0 g).2 ∈ finSU σ J` using `fun g => by`. Rewrite using `[hinf, mem_finSU, (he0 g).1, (he0 g).2, GlobalTheory.Published.StrongApprox.mem_SUAdelic]`.
+
+Establish `h1` using `pInf.map_det (HA.mat (AF F) σ J g).1`. Establish `h2` using `pFin.map_det (HA.mat (AF F) σ J g).1`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hg' : (HA.mat (AF F) σ J g).1.det = 1` using `hg`.
+
+Rewrite `h1`, `h2` using `[hg', map_one]`. Conclude with `⟨h1.symm, h2.symm⟩`. Introduce and unpack `⟨a, b⟩ show (HA.mat (AF F) σ J g).1.det = 1`. Use `e.injective (Prod.ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[(he _).1, (he _).1]`.
+
+Conclude with `(h1.trans a).trans (map_one pInf).symm`. Rewrite using `[(he _).2, (he _).2]`. Conclude with `(h2.trans b).trans (map_one pFin).symm`. Conclude with `⟨restrictProd e0 _ _ _ key, fun h => ⟨(he0 h.1).2, (he0 h.1).1⟩⟩`.
+-/
 theorem exists_adelic_split_detOne : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ)
     (J : Matrix (Fin M) (Fin M) E),
     ∃ e : SUAdelic σ J ≃ₜ*

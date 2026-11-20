@@ -24,6 +24,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {V : HSp D}
 
+/- English proof (translation)
+Introduce `k K _ _ e i`. Take `⟨h1, h2⟩` from `GlobalTheory.T.selfAdjointFactorIdempotent_orthogonal_splitting_rank GlobalTheory.T.regularSemisimple_unitaryGroup_concrete D V γ hγ.1 k K e i hγ`. Use `⟨h1, h2, fun v hv dt hdt => ?_⟩` and prove the remaining obligations. Take `⟨hee, -, -, hcomm, hpos, hlt⟩` from `h1`. Establish `hγε : γ.1.1 * factorIdem e i = factorIdem e i * γ.1.1` using `hcomm _ (Algebra.self_mem_adjoin_singleton _ _)`.
+
+Establish `h` using `GlobalTheory.T.weightedOrbitalIntegral_typeTest_vanish GlobalTheory.T.typeIdempotent_constantTerm_vanish D V T U μf ff hf v (hμf v) γ (factorIdem e i) hγ.1 hee hγε hpos hlt hv 1 continuous_const (fun _ _ _ => rfl) (fun _ _ _ => rfl) dt`. Establish `e1 : (fun x => (1 : GLoc D.sp.cm.sig V.gram v → ℂ) x * ff v (x⁻¹ * proj D.sp.cm.sig V.gram v (ratEmb D.sp.cm.sig V.gram γ) * x)) = conjFn (proj D.sp.cm.sig V.gram v (ratEmb D.sp.cm.sig V.gram γ)) (ff v)`. Use function extensionality and compare the values at `x`. Conclude with `one_mul _`. Rewrite `h` using `[e1]`.
+
+Conclude with `h`.
+-/
 theorem localClause {T : TypeDataG V} {U : AuxiliaryPlaceHermitianSpace V} {μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)}
     {ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ} (hμf : ∀ v, (μf v).IsHaarMeasure) (hf : IsTestFin T U μf ff)
     {γ : GRat D.sp.cm.sig V.gram} (hγ : IsNonFieldAniso D.sp.cm.sig V.gram γ.1.1) : LocalClause T μf ff γ := by
@@ -41,6 +48,11 @@ theorem localClause {T : TypeDataG V} {U : AuxiliaryPlaceHermitianSpace V} {μf 
   rw [e1] at h
   exact h
 
+/- English proof (translation)
+Use `⟨⟨fun x y => Subtype.ext (GAd_ext _ _ (fun w => ?_) fun v => ?_)⟩⟩` and prove the remaining obligations. Establish `h` using `(isMulCommutative_cent_HA (isRegSS_projArch_ratEmb hγ w)).is_comm.comm (centMap (projArch D.sp.cm.sig V.gram w) _ x) (centMap (projArch D.sp.cm.sig V.gram w) _ y)`. Establish `h'` using `congrArg Subtype.val h`. Simplify `h'` using `[centMap]`. Establish `h` using `(isMulCommutative_cent_HA (isRegSS_proj_ratEmb hγ v)).is_comm.comm (centMap (proj D.sp.cm.sig V.gram v) _ x) (centMap (proj D.sp.cm.sig V.gram v) _ y)`.
+
+Establish `h'` using `congrArg Subtype.val h`. Simplify `h'` using `[centMap]`.
+-/
 theorem isMulCommutative_cent_ratEmb {γ : GRat D.sp.cm.sig V.gram} (hγ : IsRegSS γ.1.1) :
     IsMulCommutative (cent (ratEmb D.sp.cm.sig V.gram γ)) := by
   refine ⟨⟨fun x y => Subtype.ext (GAd_ext _ _ (fun w => ?_) fun v => ?_)⟩⟩
@@ -53,9 +65,15 @@ theorem isMulCommutative_cent_ratEmb {γ : GRat D.sp.cm.sig V.gram} (hγ : IsReg
     have h' := congrArg Subtype.val h
     simpa [centMap] using h'
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.AdelicU.GQ_eq, ← GlobalTheory.AdelicU.range_ratEmb]`. Conclude with `⟨γ, rfl⟩`.
+-/
 theorem ratEmb_mem_GQ (γ : GRat D.sp.cm.sig V.gram) : ratEmb D.sp.cm.sig V.gram γ ∈ GQ V := by
   rw [GlobalTheory.AdelicU.GQ_eq, ← GlobalTheory.AdelicU.range_ratEmb]; exact ⟨γ, rfl⟩
 
+/- English proof (translation)
+Take `⟨hreg, k, K, iF, iA, he, -, hK⟩` from `hγ`. Conclude with `GlobalTheory.T.anisotropic_torus_fundamentalDomain_finite_measure GlobalTheory.T.regularSemisimple_unitaryGroup_concrete D V γ hreg k K he hK dt 𝓣 h𝓣`.
+-/
 theorem covol_lt_top {γ : GRat D.sp.cm.sig V.gram} (hγ : IsNonFieldAniso D.sp.cm.sig V.gram γ.1.1)
     (dt : Measure (cent (ratEmb D.sp.cm.sig V.gram γ))) [dt.IsHaarMeasure] (𝓣 : Set (cent (ratEmb D.sp.cm.sig V.gram γ)))
     (h𝓣 : IsFundamentalDomain ((GQ V).subgroupOf (cent (ratEmb D.sp.cm.sig V.gram γ))) 𝓣 dt) : dt 𝓣 < ⊤ := by
@@ -63,6 +81,15 @@ theorem covol_lt_top {γ : GRat D.sp.cm.sig V.gram} (hγ : IsNonFieldAniso D.sp.
   exact GlobalTheory.T.anisotropic_torus_fundamentalDomain_finite_measure GlobalTheory.T.regularSemisimple_unitaryGroup_concrete D V γ hreg k K he hK dt 𝓣 h𝓣
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `dta dtf dt hdt 𝓣 h𝓣`. Establish `hreg` using `hγ.1`. Establish `hcm` using `isCMExt_host D`. Establish `hJ` using `isHermND_gram V`. Take `⟨hta, htf, htt, -⟩` from `id hdt`.
+
+Establish `i1 : ∀ w, (dta w).IsMulRightInvariant` using `fun w => haveI := hta w`. Use `isMulRightInvariant_cent (isMulCommutative_cent_HA (isRegSS_projArch_ratEmb hreg w)) _`. Establish `i2 : ∀ v, (dtf v).IsMulRightInvariant` using `fun v => haveI := htf v`. Use `isMulRightInvariant_cent (isMulCommutative_cent_HA (isRegSS_proj_ratEmb hreg v)) _`. Establish `hvol : dt 𝓣 < ⊤` using `@covol_lt_top D V γ hγ dt htt 𝓣 h𝓣`.
+
+Establish `hfa : ∀ w, Continuous (fa w) ∧ HasCompactSupport (fa w)` using `fun w => ⟨continuous_of_mem_ccSmooth (continuous_archCoord _ _ w) (ha.mem w), (ha.mem w).1⟩`. Establish `hff : IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff` using `hf.isFinFamily`. Establish `hKv` using `(regular_semisimple_adelic hcm hJ (frameLat V) γ hreg).1`. Establish `hpa : ∀ w, IsProperOrbit (cent (projArch D.sp.cm.sig V.gram w (ratEmb D.sp.cm.sig V.gram γ))) (projArch D.sp.cm.sig V.gram w (ratEmb D.sp.cm.sig V.gram γ))` using `fun w => isProperOrbit_GArch hcm hJ (isRegSS_projArch_ratEmb hreg w)`. Establish `hpf : ∀ v, IsProperOrbit (cent (proj D.sp.cm.sig V.gram v (ratEmb D.sp.cm.sig V.gram γ))) (proj D.sp.cm.sig V.gram v (ratEmb D.sp.cm.sig V.gram γ))` using `fun v => isProperOrbit_GLoc hcm hJ (isRegSS_proj_ratEmb hreg v)`.
+
+Take `⟨-, hoa, hob, h1, hO⟩` from `@hasOrbInt_tensor _ _ _ _ _ _ _ _ _ _ (frameLat V) _ μa μf μ _ dta dtf dt fa ff hμ hdt i1 i2 hfa hff hKv (fun w => Or.inl (hpa w)) (fun v => Or.inl (hpf v))`. Use `⟨hvol, _, _, hoa, hob, h1, hO, fun 𝓕 h𝓕 => ?_⟩` and prove the remaining obligations. Establish `hc` using `continuous_of_mem_ccAd (tensor_mem_ccAd ha.mem hf.isFinFamily)`. Conclude with `@GlobalTheory.T.classTerm_eq_volume_mul_orbitalIntegral (GA D V) _ _ _ _ _ _ _ _ (GQ V) _ (ratEmb D.sp.cm.sig V.gram γ) (ratEmb_mem_GQ γ) (isMulCommutative_cent_ratEmb hreg) μ hμ.2.2.1 dt htt 𝓣 h𝓣 hvol _ _ hc.1 hc.2 hO 𝓕 h𝓕`.
+-/
 theorem productClause {S : D.what₂.Tau → SPar} {M : DSModel V S} {T : TypeDataG V} {U : AuxiliaryPlaceHermitianSpace V}
     {μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)} {μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)}
     {μ : Measure (GA D V)} (hμ : IsRestrictedProd D.sp.cm.sig V.gram (frameLat V) μa μf μ)
@@ -103,6 +130,17 @@ instance discreteTopology_subgroupOf_cent (γ : GA D V) : DiscreteTopology ((GQ 
     (fun s t h => Subtype.ext (Subtype.ext (by have h' := congrArg Subtype.val h; exact h')))
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `𝓕 h𝓕`. Use `haveI hla : ∀ w, LocallyCompactSpace (cent (projArch D.sp.cm.sig V.gram w (ratEmb D.sp.cm.sig V.gram γ))) := fun _ => (isClosed_cent _).locallyCompactSpace`. Use `haveI hlf : ∀ v, LocallyCompactSpace (cent (proj D.sp.cm.sig V.gram v (ratEmb D.sp.cm.sig V.gram γ))) := fun _ => (isClosed_cent _).locallyCompactSpace`. Establish `hR` using `restrGroup_cent (frameLat V) (ratEmb D.sp.cm.sig V.gram γ)`. Set `K0 : ∀ v, TopologicalSpace.PositiveCompacts (cent (proj D.sp.cm.sig V.gram v (ratEmb D.sp.cm.sig V.gram γ)))` to `fun v => ⟨⟨_, hR.isCompact_K v⟩, by`.
+
+Simplify using `only [(hR.isOpen_K v).interior_eq]`. Conclude with `⟨1, one_mem _⟩⟩`. Set `dta : ∀ w, Measure (cent (projArch D.sp.cm.sig V.gram w (ratEmb D.sp.cm.sig V.gram γ)))` to `fun _ => Measure.haar`. Set `dtf : ∀ v, Measure (cent (proj D.sp.cm.sig V.gram v (ratEmb D.sp.cm.sig V.gram γ)))` to `fun v => Measure.haarMeasure (K0 v)`. Use `haveI : ∀ w, (dta w).IsHaarMeasure := fun _ => inferInstance`.
+
+Use `haveI : ∀ v, (dtf v).IsHaarMeasure := fun _ => inferInstance`. Establish `h1 : ∀ᶠ v in cofinite, dtf v ((stabLoc D.sp.cm.sig V.gram (frameLat V) v).subgroupOf (cent (proj D.sp.cm.sig V.gram v (ratEmb D.sp.cm.sig V.gram γ)))) = 1` using `.of_forall fun v => Measure.haarMeasure_self (K₀ := K0 v)`. Take `⟨dt, hdt, -⟩` from `existsUnique_isCentProd (L := frameLat V) (ratEmb D.sp.cm.sig V.gram γ) dta dtf h1`. Establish `h𝓣` using `isFundamentalDomain_stdDom ((GQ V).subgroupOf (cent (ratEmb D.sp.cm.sig V.gram γ))) dt`. Take `⟨-, oa, ob, -, hob, hone, -, hcls⟩` from `hP dta dtf dt hdt _ h𝓣`.
+
+Take `⟨-, k, K, iF, iA, ⟨e⟩, hk, -⟩` from `hγ`. Take `⟨hsplit, -, hloc⟩` from `hL k K e ⟨0, by omega⟩`. Take `⟨v, hv⟩` from `hH _ hsplit.2.2.2.2.1 hsplit.2.2.2.2.2`. Establish `h0` using `hloc v hv (dtf v.1) inferInstance`. Establish `hob0 : ob v.1 = 0` using `(hob v.1).2.symm.trans h0.2`.
+
+Establish `hfp : ∏ᶠ v, ob v = 0` using `finprod_eq_zero ob v.1 hob0 (Filter.eventually_cofinite.1 hone)`. Establish `h` using `hcls 𝓕 h𝓕`. Rewrite `h` using `[hfp, mul_zero, mul_zero]`. Then use the resulting hypothesis.
+-/
 theorem zeroClause {T : TypeDataG V} (hH : HypH (k := fun v : T.S => ResF v.1) T.τ)
     {μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)} {μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)}
     {μ : Measure (GA D V)} {fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ} {ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ}
@@ -140,6 +178,9 @@ theorem zeroClause {T : TypeDataG V} (hH : HypH (k := fun v : T.S => ResF v.1) T
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D V _ S M T U hH μa μf μ hμ fa ff ha hf γ hγ`. Establish `hL` using `localClause (fun v => hμ.2.1 v) hf hγ`. Establish `hP` using `productClause hμ ha hf hγ`. Conclude with `⟨hL, hP, zeroClause hH hγ hL hP⟩`.
+-/
 theorem nonFieldTypeVanishing : NonFieldTypeVanishing := by
   intro D V _ S M T U hH μa μf μ hμ fa ff ha hf γ hγ
   have hL := localClause (fun v => hμ.2.1 v) hf hγ

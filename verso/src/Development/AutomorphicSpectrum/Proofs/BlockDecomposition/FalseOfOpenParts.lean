@@ -13,6 +13,13 @@ open Matrix MeasureTheory GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir
 
 namespace GlobalTheory.CompanionTheory.BZShell
 
+/- English proof (translation)
+Set `c : SchF k d V →ₗ[ℂ] SchF k d V' →ₗ[ℂ] ℂ` to `B.compl₁₂ ι ι'`. Establish `hcv : ∀ f f', c f f' = B (ι f) (ι' f')` using `fun _ _ => rfl`. Establish `hT : ∀ x f f', c (shiftF x f) (shiftF x f') = c f f'`. Introduce `x f f'`. Rewrite using `[hcv, hcv, hιs, hιs']`.
+
+Conclude with `hB _ _ _`. Establish `hG : ∀ g f f', c (actF X g f) (actF Y g f') = c f f'`. Introduce `g f f'`. Rewrite using `[hcv, hcv, hιg, hιg']`. Conclude with `hB _ _ _`.
+
+Establish `hC` using `GlobalTheory.T.invariant_pairing_twisted_modulus d hd X Y hX hY P hP e he hU z ϖ hz hϖ hϖ0 ω ω' hω hω' hωω c hT hG`. Conclude with `GlobalTheory.T.nondegenerate_unipotent_pairing_schwartz d hd R R' hR' B (fun x v v' => hB _ v v') hn ι hι hιs ι' hιs' hr hC`.
+-/
 theorem false_of_open_parts {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (d : ℕ) (hd : 0 < d) (R R' : MRep k d) (hR' : IsSmooth R'.ρ) {V V' : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V'] [Module ℂ V'] [Nontrivial V]
@@ -46,6 +53,33 @@ theorem false_of_open_parts {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   have hC := GlobalTheory.T.invariant_pairing_twisted_modulus d hd X Y hX hY P hP e he hU z ϖ hz hϖ hϖ0 ω ω' hω hω' hωω c hT hG
   exact GlobalTheory.T.nondegenerate_unipotent_pairing_schwartz d hd R R' hR' B (fun x v v' => hB _ v v') hn ι hι hιs ι' hιs' hr hC
 
+/- English proof (translation)
+Take `⟨hci, hcc, z, ϖ, ω, hz, hϖ, hϖ0, hω0, hzσ, hzc⟩` from `GlobalTheory.T.cuspidal_contragredient_central_character m σ hc`. Establish `hsm : ∀ s : ℝ, IsSmoothChar (absPow k (s : ℂ))` using `fun s => GlobalTheory.LocGL.isSmoothChar_absPow _`. Establish `hsB' : IsSmooth ((gDual σ).tw (-1)).ρ` using `isSmooth_twist (isSmooth_contra _) (hsm (-1)).detChar`. Set `X : Representation ℂ (GL (Fin (m + 1)) k) σ.V` to `twist σ.ρ (dpow (m + 1) (-1 / 2))`. Set `Y : Representation ℂ (GL (Fin (m + 1)) k) (smoothPart σ.ρ.dual)` to `twist (twist (contra σ.ρ) (dpow (m + 1) (-1))) (dpow (m + 1) (-1 / 2))`.
+
+Set `P : σ.V →ₗ[ℂ] smoothPart σ.ρ.dual →ₗ[ℂ] ℂ` to `LinearMap.flip (smoothPart σ.ρ.dual).subtype`. Establish `hadd : ∀ (s t : ℝ) (g : GL (Fin (m + 1)) k), ((dpow (m + 1) (s + t) g : ℂˣ) : ℂ) = ((dpow (m + 1) s g : ℂˣ) : ℂ) * ((dpow (m + 1) t g : ℂˣ) : ℂ)`. Introduce `s t g`. Simplify using `only [dpow, detChar_apply, Complex.ofReal_add, absPow_add, MonoidHom.mul_apply, Units.val_mul]`. Establish `hne : ∀ (s : ℝ) (g : GL (Fin (m + 1)) k), ((dpow (m + 1) s g : ℂˣ) : ℂ) ≠ 0` using `fun s g => Units.ne_zero _`.
+
+Establish `hXa : ∀ g a, X g a = ((dpow (m + 1) (-1 / 2) g : ℂˣ) : ℂ) • σ.ρ g a` using `fun g a => rfl`. Establish `hYa : ∀ g l, Y g l = ((dpow (m + 1) (-1 / 2) g : ℂˣ) : ℂ) • ((dpow (m + 1) (-1) g : ℂˣ) : ℂ) • contra σ.ρ g l` using `fun g l => rfl`. Establish `hsc : ∀ g : GL (Fin (m + 1)) k, ((dpow (m + 1) (-1 / 2) g : ℂˣ) : ℂ) * (((dpow (m + 1) (-1 / 2) g : ℂˣ) : ℂ) * ((dpow (m + 1) (-1) g : ℂˣ) : ℂ)) = ((dpow (m + 1) (-2) g : ℂˣ) : ℂ)`. Introduce `g`. Rewrite using `[← hadd, ← hadd]`.
+
+Use `congr 3`. Evaluate the numerical expressions. Establish `hPinv : ∀ g a l, P (σ.ρ g a) (contra σ.ρ g l) = P a l`. Introduce `g a l`. Use `show (contra σ.ρ g l : Module.Dual ℂ σ.V) (σ.ρ g a) = (l : Module.Dual ℂ σ.V) a`.
+
+Rewrite using `[contra_apply, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `hP : ∀ g a l, P (X g a) (Y g l) = ((dpow (m + 1) (-2) g : ℂˣ) : ℂ) * P a l`. Introduce `g a l`. Rewrite using `[hXa, hYa]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul, hPinv]`.
+
+Rewrite using `[← hsc g]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsX : IsSmooth X` using `isSmooth_twist σ.smooth (hsm _).detChar`. Establish `hsY : IsSmooth Y` using `isSmooth_twist hsB' (hsm _).detChar`. Establish `he : (Pi.single (Fin.last m) 1 : Fin (m + 1) → k) ≠ 0`.
+
+Introduce `h`. Simplify using `using congrFun h (Fin.last m)`. Establish `hU : ∀ β : σ.V →ₗ[ℂ] smoothPart σ.ρ.dual →ₗ[ℂ] ℂ, (∀ g : GL (Fin (m + 1)) k, (g : Matrix (Fin (m + 1)) (Fin (m + 1)) k).mulVec (Pi.single (Fin.last m) 1) = Pi.single (Fin.last m) 1 → ∀ a a', β (X g a) (Y g a') = ((dpow (m + 1) (-2) g : ℂˣ) : ℂ) * β a a') → ∃ c : ℂ, ∀ a a', β a a' …`. Introduce `β hβ`. Use `GlobalTheory.T.cuspidal_mirabolic_invariant_pairing_scalar m σ hc β fun g hg a l => ?_` and prove the remaining obligations.
+
+Establish `h` using `hβ g hg a l`. Rewrite `h` using `[hXa, hYa]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul] at h`. Rewrite `h` using `[← hsc g]`. Establish `h2 : ((dpow (m + 1) (-1 / 2) g : ℂˣ) : ℂ) * (((dpow (m + 1) (-1 / 2) g : ℂˣ) : ℂ) * ((dpow (m + 1) (-1) g : ℂˣ) : ℂ)) ≠ 0` using `mul_ne_zero (hne _ _) (mul_ne_zero (hne _ _) (hne _ _))`.
+
+Use `mul_left_cancel₀ h2 ?_` and prove the remaining obligations. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzX : ∀ a, X z a = (((dpow (m + 1) (-1 / 2) z : ℂˣ) : ℂ) * ω) • a`. Introduce `a`.
+
+Rewrite using `[hXa, hzσ, smul_smul]`. Establish `hzY : ∀ l, Y z l = (((dpow (m + 1) (-1 / 2) z : ℂˣ) : ℂ) * (((dpow (m + 1) (-1) z : ℂˣ) : ℂ) * ω⁻¹)) • l`. Introduce `l`. Rewrite using `[hYa, hzc, smul_smul, smul_smul, mul_assoc]`. Establish `hωω : (((dpow (m + 1) (-1 / 2) z : ℂˣ) : ℂ) * ω) * (((dpow (m + 1) (-1 / 2) z : ℂˣ) : ℂ) * (((dpow (m + 1) (-1) z : ℂˣ) : ℂ) * ω⁻¹)) = ((dpow (m + 1) (-2) z : ℂˣ) : ℂ)`.
+
+Rewrite using `[← hsc z]`. Clear the denominators using the available nonvanishing facts. Use `haveI : Nontrivial σ.V := by`. Establish `hi` using `σ.irr`. Assume the negation of the conclusion as `hs`.
+
+Rewrite `hs` using `[not_nontrivial_iff_subsingleton]`. Apply `(bot_ne_top : (⊥ : Subrepresentation σ.ρ) ≠ ⊤)` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[Subsingleton.elim x 0]`.
+
+Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`. Conclude with `false_of_open_parts (m + 1) (Nat.succ_pos m) R R' hR' X Y hsX hsY P hP _ he hU z ϖ hz hϖ hϖ0 _ _ hzX hzY hωω B hB hn ι hι hιs hιg ι' hιs' hιg' hr`.
+-/
 theorem false_of_open_dual {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m : ℕ) (σ : IrrRep (GL (Fin (m + 1)) k)) (hc : IsCuspidal σ.ρ) (R R' : MRep k (m + 1)) (hR' : IsSmooth R'.ρ)
     (B : R.V →ₗ[ℂ] R'.V →ₗ[ℂ] ℂ) (hB : ∀ p v v', B (R.ρ p v) (R'.ρ p v') = B v v')
@@ -125,6 +159,15 @@ theorem false_of_open_dual {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
     exact ⟨fun _ => zero_mem _, fun _ => zero_mem _⟩
   exact false_of_open_parts (m + 1) (Nat.succ_pos m) R R' hR' X Y hsX hsY P hP _ he hU z ϖ hz hϖ hϖ0 _ _ hzX hzY hωω B hB hn ι hι hιs hιg ι' hιs' hιg' hr
 
+/- English proof (translation)
+Introduce `k _ _ _ _ d hd σ hc hirr`. Take `⟨m, rfl⟩ : ∃ m, d = m + 1` from `⟨d - 1, by omega⟩`. Take `⟨ψ, hψc, hψ1⟩` from `GlobalTheory.LocGL.exists_continuous_addChar_ne_one k`. Establish `hψc' : Continuous (ψ⁻¹ : AddChar k Circle)`. Establish `: (⇑(ψ⁻¹ : AddChar k Circle)) = fun a => ψ (-a)` using `funext fun a => AddChar.inv_apply ψ a`.
+
+Rewrite using `[this]`. Conclude with `hψc.comp continuous_neg`. Establish `hψ1' : ψ⁻¹ ≠ 1` using `inv_ne_one.2 hψ1`. Take `⟨hci, hcc, -⟩` from `GlobalTheory.T.cuspidal_contragredient_central_character m σ hc`. Establish `hsm : ∀ s : ℝ, IsSmoothChar (absPow k (s : ℂ))` using `fun s => GlobalTheory.LocGL.isSmoothChar_absPow _`.
+
+Establish `hsA : IsSmooth ((gOf σ).tw 1).ρ` using `isSmooth_twist σ.smooth (hsm 1).detChar`. Establish `hsB : IsSmooth (gOf σ).ρ` using `σ.smooth`. Establish `hsA' : IsSmooth (gDual σ).ρ` using `isSmooth_contra _`. Establish `hsB' : IsSmooth ((gDual σ).tw (-1)).ρ` using `isSmooth_twist (isSmooth_contra _) (hsm (-1)).detChar`. Take `⟨B₀, hB₀, hn₀⟩` from `GlobalTheory.T.invariant_pairing_segment_product m σ hc hirr`.
+
+Take `⟨B, hB, hn⟩` from `GlobalTheory.T.invariant_pairing_iterated_derivative ψ hψc hψ1 m _ _ (GlobalTheory.CompanionTheory.LeibOrd.Main.isSmooth_gcast _ (GlobalTheory.CompanionTheory.LeibOrd.Main.isSmooth_prod _ _)) (GlobalTheory.CompanionTheory.LeibOrd.Main.isSmooth_gcast _ (GlobalTheory.CompanionTheor …`. Take `⟨ι, hι, hιs, hιg, -⟩` from `GlobalTheory.T.schwartz_functions_embed_cuspidal_derivative ψ hψc hψ1 m ((gOf σ).tw 1) (gOf σ) hsA hsB (GlobalTheory.LocGL.isIrreducible_twist σ.irr _) (GlobalTheory.LocGL.isCuspidal_twist hc (hsm 1))`. Take `⟨ι', -, hιs', hιg', hr⟩` from `GlobalTheory.T.schwartz_functions_embed_cuspidal_derivative ψ⁻¹ hψc' hψ1' m (gDual σ) ((gDual σ).tw (-1)) hsA' hsB' hci hcc`. Conclude with `false_of_open_dual m σ hc _ _ (GlobalTheory.CompanionTheory.LeibOrd.Main.isSmooth_iterN ψ⁻¹ m (isSmooth_gres (GlobalTheory.CompanionTheory.LeibOrd.Main.isSmooth_gcast _ (GlobalTheory.CompanionTheory.LeibOrd.Main.isSmooth_prod _ _)))) B hB hn ι hι hιs hιg ι' hιs' hιg' hr`.
+-/
 theorem red_cusp_nu : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (d : ℕ), 0 < d →
     ∀ σ : IrrRep (GL (Fin d) k), IsCuspidal σ.ρ →
       ¬ (multiProd (GlobalTheory.Published.consecBlocks 2 d) (segTerm σ.ρ 2)).IsIrreducible := by

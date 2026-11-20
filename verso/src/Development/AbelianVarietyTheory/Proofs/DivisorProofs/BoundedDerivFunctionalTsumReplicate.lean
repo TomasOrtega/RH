@@ -10,6 +10,39 @@ open scoped ContDiff
 
 namespace GlobalTheory.HCA
 
+/- English proof (translation)
+Introduce `𝔸 _ _ _ _ G 𝔤 h d b _ _ μ hμ S hSc hSL K hK Λ hΛ i`. Use `haveI := hμ`. Use `choose C0 hC0 using hΛ.bdd`. Set `C : List (Fin d) → ℝ` to `fun l => max 0 (C0 l)`. Establish `hC0' : ∀ l, 0 ≤ C l` using `fun l => le_max_left _ _`.
+
+Establish `hC : ∀ l, ∀ f ∈ S, ‖Λ l f‖ ≤ C l * ∫ x in K, ‖f x‖ ∂μ`. Introduce `l f hf`. Establish `hI : 0 ≤ ∫ x in K, ‖f x‖ ∂μ` using `integral_nonneg (fun _ => norm_nonneg _)`. Conclude with `(hC0 l f hf).trans (mul_le_mul_of_nonneg_right (le_max_right _ _) hI)`. Set `D : ℕ → ℕ → ℝ` to `fun p k => C (((Encodable.decode k : Option (List (Fin d))).getD []) ++ List.replicate p i)`.
+
+Set `M : ℕ → ℝ` to `fun p => C (List.replicate p i) + ∑ k ∈ Finset.range (p + 1), D p k`. Establish `hD0 : ∀ p k, 0 ≤ D p k` using `fun p k => hC0' _`. Establish `hM0 : ∀ p, 0 ≤ M p` using `fun p => add_nonneg (hC0' _) (Finset.sum_nonneg fun k _ => hD0 p k)`. Establish `hMl : ∀ l : List (Fin d), ∀ p, Encodable.encode l ≤ p → C (l ++ List.replicate p i) ≤ M p`. Introduce `l p hp`.
+
+Establish `h1 : D p (Encodable.encode l) ≤ ∑ k ∈ Finset.range (p + 1), D p k` using `Finset.single_le_sum (f := D p) (fun k _ => hD0 p k) (Finset.mem_range.2 (Nat.lt_succ_of_le hp))`. Establish `h2 : D p (Encodable.encode l) = C (l ++ List.replicate p i)`. Simplify using `only [D, Encodable.encodek, Option.getD_some]`. Establish `h3` using `hC0' (List.replicate p i)`. Simplify using `only [M]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨M, hM0, ?_, ?_⟩` and prove the remaining obligations. Introduce `p f hf`. Use `(hC _ f hf).trans (mul_le_mul_of_nonneg_right ?_ (integral_nonneg fun _ => norm_nonneg _))` and prove the remaining obligations. Conclude with `le_add_of_nonneg_right (Finset.sum_nonneg fun k _ => hD0 p k)`.
+
+Introduce `c hc`. Establish `hsum : ∀ l, Summable (fun p => |c p| * C (l ++ List.replicate p i))`. Introduce `l`. Use `Summable.of_norm_bounded_eventually_nat hc ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop (Encodable.encode l)] with p hp`.
+
+Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (abs_nonneg _) (hC0' _))]`. Conclude with `mul_le_mul_of_nonneg_left (hMl l p hp) (abs_nonneg _)`. Establish `hterm : ∀ l, ∀ f ∈ S, ∀ p, ‖(c p : ℂ) * Λ (l ++ List.replicate p i) f‖ ≤ |c p| * C (l ++ List.replicate p i) * ∫ x in K, ‖f x‖ ∂μ`. Introduce `l f hf p`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hC _ f hf) (abs_nonneg _)`. Establish `hsumm : ∀ l, ∀ f ∈ S, Summable (fun p => (c p : ℂ) * Λ (l ++ List.replicate p i) f)` using `fun l f hf => Summable.of_norm_bounded ((hsum l).mul_right _) (hterm l f hf)`. Establish `hexp0 : h.expG 0 = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Simplify using the standard rewrite rules. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `l f hf f' hf' a`. Establish `e : ∀ p, (c p : ℂ) * Λ (l ++ List.replicate p i) (a • f + f') = a * ((c p : ℂ) * Λ (l ++ List.replicate p i) f) + (c p : ℂ) * Λ (l ++ List.replicate p i) f'`. Introduce `p`.
+
+Rewrite using `[hΛ.lin _ f hf f' hf' a]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[Summable.tsum_add ((hsumm l f hf).mul_left a) (hsumm l f' hf'), tsum_mul_left]`. Introduce `l`.
+
+Use `⟨∑' p, |c p| * C (l ++ List.replicate p i), fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← tsum_mul_right]`. Conclude with `tsum_of_norm_bounded ((hsum l).mul_right _).hasSum (hterm l f hf)`. Introduce `l j f hf`. Establish `hft : ∀ t : ℝ, (fun y => f (h.expG (t • b j) * y)) ∈ S` using `fun t => hSL f hf _`.
+
+Establish `hcont : Continuous fun q : ℝ × G => f (h.expG (q.1 • b j) * q.2)` using `(hSc f hf).comp ((h.continuous_expG.comp (continuous_fst.smul continuous_const)).mul continuous_snd)`. Take `⟨A, hA⟩` from `((isCompact_Icc (a := (-1 : ℝ)) (b := 1)).prod hK).exists_bound_of_continuousOn hcont.continuousOn`. Establish `hB : ∀ t ∈ Set.Icc (-1 : ℝ) 1, ∫ x in K, ‖f (h.expG (t • b j) * x)‖ ∂μ ≤ max 0 A * μ.real K`. Introduce `t ht`. Establish `h1` using `norm_setIntegral_le_of_norm_le_const (μ := μ) (C := max 0 A) (f := fun x => ‖f (h.expG (t • b j) * x)‖) hK.measure_lt_top (fun x hx => by`.
+
+Rewrite using `[norm_norm]`. Conclude with `(hA (t, x) ⟨ht, hx⟩).trans (le_max_right _ _))`. Conclude with `(Real.le_norm_self _).trans h1`. Establish `hderiv : ∀ (m : List (Fin d)) (t : ℝ), HasDerivAt (fun s : ℝ => Λ m fun y => f (h.expG (s • b j) * y)) (Λ (j :: m) fun y => f (h.expG (t • b j) * y)) t`. Introduce `m t`.
+
+Establish `h0` using `hΛ.der m j _ (hft t)`. Establish `e1 : (fun s : ℝ => Λ m fun y => f (h.expG (t • b j) * (h.expG (s • b j) * y))) = fun s => Λ m fun y => f (h.expG ((t + s) • b j) * y)`. Use function extensionality and compare the values at `s`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[h.expG_add_smul, mul_assoc]`. Rewrite `h0` using `[e1]`. Establish `h1 : HasDerivAt (fun s : ℝ => Λ m fun y => f (h.expG ((t + s) • b j) * y)) (Λ (j :: m) fun y => f (h.expG (t • b j) * y)) (t - t)` using `by rw [sub_self]; exact h0`. Establish `h2` using `h1.comp_sub_const t t`. Establish `e2 : ∀ u : ℝ, t + (u - t) = u` using `fun u => by ring`.
+
+Simplify using `only [e2] at h2`. Conclude with `h2`. Establish `key` using `hasDerivAt_tsum_of_isPreconnected (t := Set.Ioo (-1 : ℝ) 1) (y₀ := 0) (y := 0) (g := fun p s => (c p : ℂ) * Λ (l ++ List.replicate p i) fun y => f (h.expG (s • b j) * y)) (g' := fun p s => (c p : ℂ) * Λ (j :: (l ++ List.replicate p i)) fun y => f (h.expG (s • b j) * y)) (u := fun …`. Simplify using `only [zero_smul, hexp0, one_mul] at key`. Conclude with `key`.
+-/
 theorem smFn_tsum_replicate : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤) (d : ℕ) (b : Module.Basis (Fin d) ℝ 𝔤) [MeasurableSpace G] [BorelSpace G] (μ : Measure G), μ.IsHaarMeasure → ∀ (S : Submodule ℂ (G → ℂ)), (∀ f ∈ S, Continuous f) → (∀ f ∈ S, ∀ g, (fun y => f (g * y)) ∈ S) → ∀ K : Set G, IsCompact K → ∀ Λ : List (Fin d) → (G → ℂ) → ℂ, SmFn h b μ S K Λ → ∀ i, ∃ M : ℕ → ℝ, (∀ p, 0 ≤ M p) ∧ (∀ p, ∀ f ∈ S, ‖Λ (List.replicate p i) f‖ ≤ M p * ∫ x in K, ‖f x‖ ∂μ) ∧ ∀ c : ℕ → ℝ, Summable (fun p => |c p| * M p) → SmFn h b μ S K fun l f => ∑' p, (c p : ℂ) * Λ (l ++ List.replicate p i) f := by
   intro 𝔸 _ _ _ _ G 𝔤 h d b _ _ μ hμ S hSc hSL K hK Λ hΛ i
   classical

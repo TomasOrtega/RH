@@ -9,6 +9,37 @@ open MeasureTheory Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.
   Formalism.L2.SG.TypedSets Formalism.L2.SG.Pf.NcReal
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP ν hinv hsupp hlf`. Take `⟨hb, FdN, FdN', u, hX⟩` from `hP.1`. Take `⟨horb, hsm, hmul, hhm, hcpt, hW, hInd⟩` from `hR X u' ψ hT μinf νinf fibInf hP`. Establish `hk` using `hK X u' ψ hT μinf νinf fibInf hP`. Set `μH : Measure (Hsub (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u'))` to `(X.measW u').μHinf`.
+
+Establish `hH : μH.IsHaarMeasure` using `(X.measW_norm u').2.1`. Establish `hfin : μH Set.univ < ⊤` using `hF X hb FdN FdN' u u' hX`. Establish `hne : μH Set.univ ≠ 0` using `isOpen_univ.measure_ne_zero μH Set.univ_nonempty`. Establish `hne0 : μH ≠ 0` using `fun h => hne (by rw [h]; rfl)`. Establish `hae : ∀ᵐ y ∂ν, ∃ g : GI X, orbM X u' g = y`.
+
+Rewrite using `[ae_iff]`. Conclude with `measure_mono_null (fun y hy => fun h => hy (hW h)) hsupp`. Establish `kapp : ∀ y A, MeasurableSet A → kerI X u' y A = μH ((fun h : Hsub (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u') => sect X u' y * (h : GI X)) ⁻¹' A)` using `fun y A hA => Measure.map_apply (hhm _) hA`. Use `set m : Measure (GI X) := ν.bind (kerI X u') with hm`. Establish `minv : ∀ g : GI X, m.map (fun x => g * x) = m`.
+
+Introduce `g`. Use extensionality with `A hA`. Establish `hA' : MeasurableSet ((fun x => g * x) ⁻¹' A)` using `hmul g hA`. Rewrite using `[Measure.map_apply (hmul g) hA, hm, Measure.bind_apply hA' hk.aemeasurable, Measure.bind_apply hA hk.aemeasurable]`. Establish `hFm : Measurable fun y => kerI X u' y A` using `(Measure.measurable_coe hA).comp hk`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr_ae (hae.mono fun y hy => ?_)` and prove the remaining obligations. Take `⟨h0, e⟩` from `sect_smul X u' g y hy`. Use `show kerI X u' y ((fun x => g * x) ⁻¹' A) = kerI X u' (g • y) A`. Rewrite using `[kapp _ _ hA, kapp _ _ hA', e]`.
+
+Establish `hS : MeasurableSet ((fun h : Hsub (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u') => sect X u' y * (h : GI X)) ⁻¹' ((fun x => g * x) ⁻¹' A))` using `hhm _ hA'`. Rewrite using `[← muH_preimage X u' μH hne0 h0 _ hS]`. Use `congr 1`. Use extensionality with `h`. Simplify using `only [Set.mem_preimage, Subgroup.coe_mul, mul_assoc]`.
+
+Use `_ = ∫⁻ y, kerI X u' y A ∂(ν.map fun y => g • y) := (lintegral_map hFm (hsm g)).symm`. Use `_ = ∫⁻ y, kerI X u' y A ∂ν := by rw [hinv g]`. Establish `mfin : ∀ C : Set (GI X), IsCompact C → m C < ⊤`. Introduce `C hC`. Take `⟨hCm, hCc, hCim⟩` from `hcpt C hC`.
+
+Rewrite using `[hm, Measure.bind_apply hCm hk.aemeasurable]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae (hae.mono fun y hy => ?_)` and prove the remaining obligations. Distinguish the cases in `hyC : y ∈ orbM X u' '' C`. Rewrite using `[Set.indicator_of_mem hyC, Pi.one_apply, mul_one, kapp _ _ hCm]`.
+
+Conclude with `measure_mono (Set.subset_univ _)`. Rewrite using `[Set.indicator_of_notMem hyC, mul_zero, kapp _ _ hCm, nonpos_iff_eq_zero]`. Use `measure_empty (μ := μH)` and compare the differences between its conclusion and the goal. Use extensionality with `h`. Simplify using `only [Set.mem_preimage, Set.mem_empty_iff_false, iff_false]`.
+
+Introduce `hh`. Conclude with `hyC ⟨_, hh, orbM_sect_mul X u' y hy h⟩`. Use `_ = μH Set.univ * ν (orbM X u' '' C) := by`. Rewrite using `[lintegral_const_mul _ (measurable_one.indicator hCim), lintegral_indicator_one hCim]`. Use `_ < ⊤ := ENNReal.mul_lt_top hfin (hlf _ hCc ((Set.image_subset_range _ _).trans hInd))`.
+
+Take `⟨c, hc, hmc⟩` from `hU X u' ψ hT μinf νinf fibInf hP m minv mfin`. Use `⟨c / μH Set.univ, ENNReal.div_ne_top hc hne, Measure.ext fun B hB => ?_⟩` and prove the remaining obligations. Establish `e : μH Set.univ * ν B = c * X.measG.μGinf.map (orbM X u') B`. Rewrite using `[Measure.map_apply horb hB, show c * X.measG.μGinf (orbM X u' ⁻¹' B) = (c • X.measG.μGinf) (orbM X u' ⁻¹' B) by rw [Measure.smul_apply, smul_eq_mul], ← hmc, hm, Measure.bind_apply (horb hB) hk.aemeasurable, ← lintegral_indicator_one hB, ← lintegral_const_mul _ (measurable_one.ind …`. Use `lintegral_congr_ae (hae.mono fun y hy => ?_)` and prove the remaining obligations.
+
+Use `show μH Set.univ * B.indicator 1 y = kerI X u' y (orbM X u' ⁻¹' B)`. Use `symm`. Rewrite using `[kapp _ _ (horb hB)]`. Distinguish the cases in `hyB : y ∈ B`. Rewrite using `[Set.indicator_of_mem hyB, Pi.one_apply, mul_one]`.
+
+Use `congr 1`. Use extensionality with `h`. Simplify using `only [Set.mem_preimage, Set.mem_univ, iff_true, orbM_sect_mul X u' y hy h]`. Conclude with `hyB`. Rewrite using `[Set.indicator_of_notMem hyB, mul_zero]`.
+
+Use `measure_empty (μ := μH)` and compare the differences between its conclusion and the goal. Use extensionality with `h`. Simplify using `only [Set.mem_preimage, Set.mem_empty_iff_false, iff_false, orbM_sect_mul X u' y hy h]`. Conclude with `hyB`. Rewrite using `[Measure.smul_apply, smul_eq_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ENNReal.inv_mul_cancel hne hfin.ne, one_mul]`. Use `_ = (μH Set.univ)⁻¹ * (c * X.measG.μGinf.map (orbM X u') B) := by rw [e]`. Use `_ = c / μH Set.univ * X.measG.μGinf.map (orbM X u') B := by rw [div_eq_mul_inv]; ring`.
+-/
 theorem orbRep_of (hK : KerMeas) (hU : HaarUniqInf) (hR : RegI) (hF : HinfFin) : OrbRep := by
   intro D X u' ψ hT μinf νinf fibInf hP ν hinv hsupp hlf
   obtain ⟨hb, FdN, FdN', u, hX⟩ := hP.1

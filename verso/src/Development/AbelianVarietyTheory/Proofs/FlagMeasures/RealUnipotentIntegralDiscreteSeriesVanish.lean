@@ -13,6 +13,9 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 
 namespace GlobalTheory.RealFibre
 
+/- English proof (translation)
+Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ v), Pi.mulSingle_eq_same]`. Use `congr 1`. Use `Finset.prod_congr rfl fun u hu => ?_` and prove the remaining obligations. Rewrite using `[Pi.mulSingle_eq_of_ne (Finset.ne_of_mem_erase hu), mul_one]`.
+-/
 private lemma prod_mul_mulSingle_mul {ι : Type*} [Fintype ι] {dec : DecidableEq ι} {G : ι → Type*}
     [∀ i, Group (G i)] (f : ∀ i, G i → ℂ) (a b : ∀ i, G i) (v : ι) (m : G v) :
     ∏ u, f u (a u * Pi.mulSingle v m u * b u) =
@@ -22,6 +25,17 @@ private lemma prod_mul_mulSingle_mul {ι : Type*} [Fintype ι] {dec : DecidableE
   refine Finset.prod_congr rfl fun u hu => ?_
   rw [Pi.mulSingle_eq_of_ne (Finset.ne_of_mem_erase hu), mul_one]
 
+/- English proof (translation)
+Introduce `B d h hDS hK hLoc hh v Wv hW ν hν x y`. Take `⟨-, hds, hlow, hfd⟩` from `hDS v`. Establish `hU` using `hds.2.2.1`. Take `⟨α, hαs, hαc, hαf⟩` from `exists_smooth_fix_lowKSub B.I.n (B.I.ε v) (B.lam v) (B.H v) (B.σ v) hU (hK v)`. Establish `hq : 1 ≤ rkR (B.I.ε v)` using `one_le_rkR_of_isIsoC hW`.
+
+Establish `hn : 1 ≤ B.I.n`. Establish `hle : rkR (B.I.ε v) ≤ B.I.n`. Unfold `rkR`. Conclude with `(min_le_left _ _).trans ((Finset.card_filter_le _ _).trans (by simp))`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨h0, hc⟩` from `rate_lt hn hq (hh v)`. Establish `hF` using `GlobalTheory.T.unitary_rep_matrixCoeff_integral_eq_zero B.I.n (B.I.ε v) Wv ν hW hν (B.H v) (B.σ v) (d v) (h / (8 * Real.sqrt (rkR (B.I.ε v)))) α (B.w v) hU hfd (by exact_mod_cast hc) hlow.1 hαs hαc (fun u => hαf (B.w v) hlow.2 u) ⟨Real.exp (h / 8), fun g => (hLoc v g).trans (decE …`. Establish `hpt : ∀ m : UJ (B.I.ε v), phe B d (x * (open Classical in ((Pi.mulSingle v m, 1) : B.I.GA)) * y) = (open Classical in (((∏ u, d u : ℝ) : ℂ) * star (∏ u ∈ Finset.univ.erase v, ⟪B.w u, B.σ u (uMat (x.1 u * y.1 u)) (B.w u)⟫_ℂ) * B.e (x.2 * y.2))) * star ⟪B.w v, B.σ v (umat (x.1 v * …`. Introduce `m`. Simplify using `only [phe, ph, Prod.fst_mul, Prod.snd_mul, Pi.mul_apply, mul_one]`.
+
+Rewrite using `[prod_mul_mulSingle_mul (fun u g => ⟪B.w u, B.σ u (uMat g) (B.w u)⟫_ℂ) x.1 y.1 v m, star_mul]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_const_mul]`. Establish `hconj : ∫ m, star ⟪B.w v, B.σ v (umat (x.1 v * m * y.1 v)) (B.w v)⟫_ℂ ∂ν = star (∫ m, ⟪B.w v, B.σ v (umat (x.1 v * m * y.1 v)) (B.w v)⟫_ℂ ∂ν)` using `integral_conj`.
+
+Rewrite using `[hconj, hF, star_zero, mul_zero]`.
+-/
 theorem integral_phe_eq_zero_of_isKTypeOf : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ), IsDSData B d → (∀ v, Formalism.MainNotions.S.IsKTypeOf (B.I.ε v) (B.σ v) (Formalism.QuantumDeterminants.lowK (B.I.ε v) (B.lam v)) (Formalism.MainNotions.S.lowKSub (B.I.ε v) (B.lam v) (B.σ v))) → LocDec B h → (∀ v, 120 * (B.I.n : ℝ) * ((rkR (B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h) → ∀ (v : InfinitePlace B.I.F) (Wv : Submodule ℂ (Fin B.I.n → ℂ)), IsIsoC (B.I.ε v) Wv → ∀ ν : Measure (UJ (B.I.ε v)), IsHaarSub (NW (B.I.ε v) Wv) ν → ∀ x y : B.I.GA, ∫ m, phe B d (x * (open Classical in ((Pi.mulSingle v m, 1) : B.I.GA)) * y) ∂ν = 0 := by
   intro B d h hDS hK hLoc hh v Wv hW ν hν x y
   obtain ⟨-, hds, hlow, hfd⟩ := hDS v

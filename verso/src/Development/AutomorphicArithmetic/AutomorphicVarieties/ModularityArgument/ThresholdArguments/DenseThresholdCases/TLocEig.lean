@@ -14,6 +14,31 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Z.Sym.Al
 section LocEigAux
 open UpperTheory.V.Hi UpperTheory.V.AlgebraTools
+/- English proof (translation)
+Introduce `n M h1 h2 a ha`. Consider the cases of `n with`. Consider the case `zero`. Establish `: a = 0` using `Subsingleton.elim _ _`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Consider the case `succ N`. Establish `hone : (1 : Fin (N + 1) → ℤ) ∈ M`. Use `h1 (N + 1) le_rfl` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Simplify using `[fund, i.2]`. Set `A : ℕ → ℤ` to `fun m => a ⟨min m N, by omega⟩`. Establish `hA : ∀ m, A (m + 1) ≤ A m` using `fun m => ha (by`. Simplify using `only [Fin.mk_le_mk]`.
+
+Use the proof step `omega)`. Establish `tel : ∀ (m i : ℕ), i ≤ m → ∑ j ∈ Finset.range m, (if i < j + 1 then A j - A (j + 1) else 0) = A i - A m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+
+Introduce `i hi`. Take `rfl : i = 0` from `by omega`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `i hi`.
+
+Rewrite using `[Finset.sum_range_succ]`. Distinguish the cases in `h : i ≤ m`. Rewrite using `[ih i h, if_pos (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Take `rfl : i = m + 1` from `by omega`.
+
+Rewrite using `[if_neg (by omega), Finset.sum_eq_zero]`. Simplify using the standard rewrite rules. Introduce `j hj`. Use `Finset.mem_range.1 hj` as an intermediate fact. Rewrite using `[if_neg (by omega)]`.
+
+Establish `key : a = (A N) • (1 : Fin (N + 1) → ℤ) + ∑ j ∈ Finset.range N, (A j - A (j + 1)).toNat • fund (N + 1) (j + 1)`. Use function extensionality and compare the values at `i`. Establish `hi : A i = a i` using `by show a _ = a i`. Use `congr 1`. Use `ext`.
+
+Use `i.2` as an intermediate fact. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Establish `h3 : ∀ j ∈ Finset.range N, (A j - A (j + 1)).toNat • fund (N + 1) (j + 1) i = if (i : ℕ) < j + 1 then A j - A (j + 1) else 0`. Introduce `j _`.
+
+Establish `: (((A j - A (j + 1)).toNat : ℕ) : ℤ) = A j - A (j + 1)` using `Int.toNat_of_nonneg (sub_nonneg.2 (hA j))`. Simplify using `only [fund, nsmul_eq_mul, this]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h4` using `tel N i (by have := i.2; omega)`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.one_apply, smul_eq_mul, mul_one, Finset.sum_apply]`.
+
+Rewrite using `[Finset.sum_congr rfl h3, h4, hi]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Use `add_mem ?_ (sum_mem fun j hj => nsmul_mem (h1 _ (by have := Finset.mem_range.1 hj; omega)) _)` and prove the remaining obligations. Take `⟨m, e | e⟩` from `(A N).eq_nat_or_neg`.
+
+Rewrite using `[e, natCast_zsmul]`. Conclude with `nsmul_mem hone m`. Rewrite using `[e, neg_smul, ← smul_neg, natCast_zsmul]`. Conclude with `nsmul_mem h2 m`.
+-/
 private theorem antitone_mem : ∀ {n : ℕ} (M : AddSubmonoid (Fin n → ℤ)), (∀ j ≤ n, fund n j ∈ M) → (-1 : Fin n → ℤ) ∈ M →
     ∀ a : Fin n → ℤ, Antitone a → a ∈ M := by
   intro n M h1 h2 a ha
@@ -77,6 +102,13 @@ private theorem antitone_mem : ∀ {n : ℕ} (M : AddSubmonoid (Fin n → ℤ)),
       exact nsmul_mem hone m
     · rw [e, neg_smul, ← smul_neg, natCast_zsmul]
       exact nsmul_mem h2 m
+/- English proof (translation)
+Establish `h : (I.Nconj t).subgroupOf I.N = ⊤`. Rewrite using `[Subgroup.subgroupOf_eq_top]`. Introduce `x hx`. Use `⟨t⁻¹ * x * t, by simpa using I.T_N t⁻¹ (inv_mem ht) x hx, ?_⟩` and prove the remaining obligations. Use `show t * (t⁻¹ * x * t) * t⁻¹ = x`.
+
+Use `group`. Use `haveI : Subsingleton (I.N ⧸ (I.Nconj t).subgroupOf I.N) := by`. Rewrite using `[h]`. Conclude with `QuotientGroup.subsingleton_quotient_top`. Use `letI := Unique.mk' (I.N ⧸ (I.Nconj t).subgroupOf I.N)`.
+
+Rewrite using `[Iwa.uOp, finsum_unique, map_mul, Module.End.mul_apply, hc, map_smul, hv _ (SetLike.coe_mem _)]`.
+-/
 private theorem u_operator_torus_eigen {G : Type} [Group G] (I : Iwa G) {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
     (π : Representation A G M) {t : G} (ht : t ∈ I.T) {v : M} (hv : v ∈ fixd π I.N) {c : A} (hc : π t v = c • v) :
     I.uOp π t v = c • v := by
@@ -94,18 +126,35 @@ private theorem u_operator_torus_eigen {G : Type} [Group G] (I : Iwa G) {A M : T
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 private noncomputable def mu (ψ : Fin n → kˣ →* ℂˣ) (i : Fin n) : kˣ →* ℂˣ :=
   ψ i * (absPow k ((modExp (fun _ : Fin n => Unit) i : ℂ) / 2))⁻¹
+/- English proof (translation)
+Establish `hd : ∀ i, Matrix.GeneralLinearGroup.det (leviTorus k (Fin n) d i) = d i` using `congrFun ((leviTorus k (Fin n)).left_inv d)`. Simplify using `[Dict.expo, deltaHalf_apply, hd, mu, Finset.prod_mul_distrib]`.
+-/
 private theorem expo_eq (ψ : Fin n → kˣ →* ℂˣ) (d : Fin n → kˣ) : Dict.expo ψ d = ((torusChar (mu ψ) d : ℂˣ) : ℂ) := by
   have hd : ∀ i, Matrix.GeneralLinearGroup.det (leviTorus k (Fin n) d i) = d i :=
     congrFun ((leviTorus k (Fin n)).left_inv d)
   simp [Dict.expo, deltaHalf_apply, hd, mu, Finset.prod_mul_distrib]
 private noncomputable def omg (ψ : Fin n → kˣ →* ℂˣ) (i : Fin n) : kˣ →* ℂˣ := ψ i * absPow k (-(((n : ℂ) - 1) / 2))
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[omg, mul_assoc, ← absPow_add, neg_add_cancel, absPow_zero, mul_one]`.
+-/
 private theorem om_shift (ψ : Fin n → kˣ →* ℂˣ) : (fun i => omg ψ i * absPow k (((n : ℂ) - 1) / 2)) = ψ := by
   funext i
   rw [omg, mul_assoc, ← absPow_add, neg_add_cancel, absPow_zero, mul_one]
+/- English proof (translation)
+Simplify using `[omg, isUnram_absPow k _ y hy]`.
+-/
 private theorem om_unit (ψ : Fin n → kˣ →* ℂˣ) (i : Fin n) {y : kˣ} (hy : valuation k (y : k) = 1) : omg ψ i y = ψ i y := by
   simp [omg, isUnram_absPow k _ y hy]
+/- English proof (translation)
+Simplify using `[mu, isUnram_absPow k _ y hy]`.
+-/
 private theorem mu_unit (ψ : Fin n → kˣ →* ℂˣ) (i : Fin n) {y : kˣ} (hy : valuation k (y : k) = 1) : mu ψ i y = ψ i y := by
   simp [mu, isUnram_absPow k _ y hy]
+/- English proof (translation)
+Establish `hq : nabs k (UpperTheory.V.Hi.unif k) = (Nat.card 𝓀[k] : ℝ)⁻¹` using `GlobalTheory.GLDoubling.nabs_unif GlAx.unif_spec`. Establish `e : mu ψ i = omg ψ i * absPow k ((i : ℕ) : ℂ)`. Establish `hi` using `i.2`. Rewrite using `[mu, omg, mul_assoc, ← absPow_add, ← absPow_neg, modExp_fin _ (fun _ => by simp)]`. Use `congr 2`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, MonoidHom.mul_apply, Units.val_mul, val_absPow, hq, Complex.cpow_natCast]`. Simplify using the standard rewrite rules.
+-/
 private theorem mu_unif (ψ : Fin n → kˣ →* ℂˣ) (i : Fin n) :
     (mu ψ i (UpperTheory.V.Hi.unif k) : ℂ) = (omg ψ i (UpperTheory.V.Hi.unif k) : ℂ) * ((Nat.card 𝓀[k] : ℂ) ^ (i : ℕ))⁻¹ := by
   have hq : nabs k (UpperTheory.V.Hi.unif k) = (Nat.card 𝓀[k] : ℝ)⁻¹ := GlobalTheory.GLDoubling.nabs_unif GlAx.unif_spec
@@ -117,6 +166,11 @@ private theorem mu_unif (ψ : Fin n → kˣ →* ℂˣ) (i : Fin n) :
     ring
   rw [e, MonoidHom.mul_apply, Units.val_mul, val_absPow, hq, Complex.cpow_natCast]
   simp
+/- English proof (translation)
+Rewrite using `[torusChar_apply, Units.coe_prod, psEig, Finset.prod_filter]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : (i : ℕ) < j`. Simplify using `only [fund, if_pos h, zpow_one]`. Conclude with `mu_unif ψ i`.
+
+Simplify using `[fund, if_neg h]`.
+-/
 private theorem mu_fund (ψ : Fin n → kˣ →* ℂˣ) (j : ℕ) :
     ((torusChar (mu ψ) (fun i => UpperTheory.V.Hi.unif k ^ fund n j i) : ℂˣ) : ℂ) = psEig (omg ψ) j := by
   rw [torusChar_apply, Units.coe_prod, psEig, Finset.prod_filter]
@@ -125,6 +179,9 @@ private theorem mu_fund (ψ : Fin n → kˣ →* ℂˣ) (j : ℕ) :
   · simp only [fund, if_pos h, zpow_one]
     exact mu_unif ψ i
   · simp [fund, if_neg h]
+/- English proof (translation)
+Introduce `s t h`. Use function extensionality and compare the values at `i`. Use `congrArg (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) i i) h` as an intermediate fact. Simplify using `only [val_diagT, Matrix.diagonal_apply_eq] at this`. Conclude with `Units.ext this`.
+-/
 private theorem diagT_inj : Function.Injective (diagT k (Fin n)) := by
   intro s t h
   funext i
@@ -134,12 +191,20 @@ private theorem diagT_inj : Function.Injective (diagT k (Fin n)) := by
 private noncomputable def phi (ω : Fin n → kˣ →* ℂˣ) : (glIwa k n).T →* ℂˣ :=
   ((torusChar ω)⁻¹ : (Fin n → kˣ) →* ℂˣ).comp ((torusO k (Fin n)).subtype.comp
     ((torusO k (Fin n)).equivMapOfInjective (diagT k (Fin n)) diagT_inj).symm.toMonoidHom)
+/- English proof (translation)
+Establish `: ((torusO k (Fin n)).equivMapOfInjective (diagT k (Fin n)) diagT_inj).symm ⟨diagT k (Fin n) u, u, hu, rfl⟩ = ⟨u, hu⟩`. Rewrite using `[MulEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Conclude with `congrArg (fun x : torusO k (Fin n) => (torusChar ω (x : Fin n → kˣ))⁻¹) this`.
+-/
 private theorem phi_diag (ω : Fin n → kˣ →* ℂˣ) (u : Fin n → kˣ) (hu : u ∈ torusO k (Fin n)) :
     phi ω ⟨diagT k (Fin n) u, u, hu, rfl⟩ = (torusChar ω u)⁻¹ := by
   have : ((torusO k (Fin n)).equivMapOfInjective (diagT k (Fin n)) diagT_inj).symm ⟨diagT k (Fin n) u, u, hu, rfl⟩ = ⟨u, hu⟩ := by
     rw [MulEquiv.symm_apply_eq]
     rfl
   exact congrArg (fun x : torusO k (Fin n) => (torusChar ω (x : Fin n → kˣ))⁻¹) this
+/- English proof (translation)
+Introduce `i y`. Establish `hu : (Pi.mulSingle i (y : kˣ) : Fin n → kˣ) ∈ torusO k (Fin n)` using `fun j => by`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`.
+
+Conclude with `y.2`. Simplify using `[Pi.mulSingle_eq_of_ne h]`. Use `(phi_diag ω _ hu).trans ?_` and prove the remaining obligations. Rewrite using `[torusChar_apply, Fintype.prod_eq_single i (fun j hj => by simp [Pi.mulSingle_eq_of_ne hj])]`. Simplify using the standard rewrite rules.
+-/
 private theorem phi_inv (ω : Fin n → kˣ →* ℂˣ) : IsInvOn (phi ω) ω := by
   intro i y
   have hu : (Pi.mulSingle i (y : kˣ) : Fin n → kˣ) ∈ torusO k (Fin n) := fun j => by
@@ -151,12 +216,45 @@ private theorem phi_inv (ω : Fin n → kˣ →* ℂˣ) : IsInvOn (phi ω) ω :=
   refine (phi_diag ω _ hu).trans ?_
   rw [torusChar_apply, Fintype.prod_eq_single i (fun j hj => by simp [Pi.mulSingle_eq_of_ne hj])]
   simp
+/- English proof (translation)
+Rewrite using `[upow, upow, upow, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[_root_.zpow_add]`.
+-/
 private theorem upow_add (a b : Fin n → ℤ) : upow k n (a + b) = upow k n a * upow k n b := by
   rw [upow, upow, upow, ← map_mul]
   congr 1
   funext i
   simp [_root_.zpow_add]
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨a, ha, rfl⟩`.
+-/
 private theorem upow_mem {a : Fin n → ℤ} (ha : Antitone a) : upow k n a ∈ (glIwa k n).P := ⟨a, ha, rfl⟩
+/- English proof (translation)
+Establish `E_add : ∀ a b : Fin n → ℤ, torusChar (mu ψ) (fun i => UpperTheory.V.Hi.unif k ^ (a + b) i) = torusChar (mu ψ) (fun i => UpperTheory.V.Hi.unif k ^ a i) * torusChar (mu ψ) (fun i => UpperTheory.V.Hi.unif k ^ b i)`. Introduce `a b`. Rewrite using `[← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[_root_.zpow_add]`. Establish `E_zero : torusChar (mu ψ) (fun i => UpperTheory.V.Hi.unif k ^ (0 : Fin n → ℤ) i) = 1`. Establish `: (fun i => UpperTheory.V.Hi.unif k ^ (0 : Fin n → ℤ) i) = 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, map_one]`. Establish `mulOp` using `fun x y hx hy => (uOpMul _ (glIwa k n) ℂ T τ x y hx hy v hv)`. Set `M : AddSubmonoid (Fin n → ℤ)` to `{ carrier := {a | Antitone a ∧ (glIwa k n).uOp τ (upow k n a) v = ((torusChar (mu ψ) (fun i => UpperTheory.V.Hi.unif k ^ a i) : ℂˣ) : ℂ) • v} add_mem' := by`. Introduce and unpack `a b ⟨ha, ea⟩ ⟨hb, eb⟩`. Use `⟨ha.add hb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[upow_add, ← (mulOp _ _ (upow_mem ha) (upow_mem hb)).2.1, eb, map_smul, ea, smul_smul, E_add, Units.val_mul, mul_comm]`. Use the proof step `zero_mem' := by`. Use `⟨fun _ _ _ => le_rfl, ?_⟩` and prove the remaining obligations. Establish `h1 : upow k n (0 : Fin n → ℤ) = 1`. Rewrite using `[upow, ← (diagT k (Fin n)).map_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[h1, E_zero, (mulOp 1 1 (one_mem _) (one_mem _)).2.2.1]`. Simplify using `}`.
+
+Establish `hfund : ∀ j ≤ n, fund n j ∈ M`. Introduce `j hj`. Use `⟨fun i i' h => ?_, ?_⟩` and prove the remaining obligations. Establish `: (i : ℕ) ≤ i'` using `h`. Express the relevant statement in the definitionally equal form `(if (i' : ℕ) < j then (1 : ℤ) else 0) ≤ if (i : ℕ) < j then 1 else 0`.
+
+Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[mu_fund]`. Conclude with `hev j hj`. Establish `hneg : (-1 : Fin n → ℤ) ∈ M`. Establish `anti : Antitone (1 : Fin n → ℤ)` using `fun _ _ _ => le_rfl`.
+
+Establish `anti' : Antitone (-1 : Fin n → ℤ)` using `fun _ _ _ => le_rfl`. Establish `hinv : (upow k n (1 : Fin n → ℤ))⁻¹ = upow k n (-1)`. Rewrite using `[inv_eq_iff_mul_eq_one, ← upow_add]`. Rewrite using `[upow, ← (diagT k (Fin n)).map_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `h1 : fund n n = (1 : Fin n → ℤ)`. Use function extensionality and compare the values at `i`. Simplify using `[fund]`.
+
+Take `⟨-, e1⟩` from `hfund n le_rfl`. Rewrite `e1` using `[h1]`. Establish `u1` using `(mulOp _ _ (upow_mem anti) (upow_mem anti)).2.2.2.2 (by rw [hinv]; exact upow_mem anti')`. Establish `u2` using `(mulOp _ _ (upow_mem anti') (upow_mem anti')).2.2.2.2 (by rw [← hinv, inv_inv]; exact upow_mem anti)`. Use `⟨anti', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[u2]`. Establish `hE : torusChar (mu ψ) (fun i => UpperTheory.V.Hi.unif k ^ (-1 : Fin n → ℤ) i) = (torusChar (mu ψ) (fun i => UpperTheory.V.Hi.unif k ^ (1 : Fin n → ℤ) i))⁻¹`. Rewrite using `[eq_inv_iff_mul_eq_one, ← E_add]`. Rewrite using `[neg_add_cancel]`. Conclude with `E_zero`.
+
+Rewrite using `[hE, ← hinv]`. Rewrite `e1` using `[u1]`. Establish `h3 : τ (upow k n 1)⁻¹ (τ (upow k n 1) v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite `h3` using `[e1, map_smul]`.
+
+Rewrite using `[Units.val_inv_eq_inv_val, eq_inv_smul_iff₀ (Units.ne_zero _)]`. Conclude with `h3`. Conclude with `(antitone_mem M hfund hneg a ha).2`.
+-/
 private theorem uOp_upow {T : Type} [AddCommGroup T] [Module ℂ T] (τ : Representation ℂ (GL (Fin n) k) T)
     (ψ : Fin n → kˣ →* ℂˣ) {v : T} (hv : v ∈ fixd τ (glIwa k n).N)
     (hev : ∀ j ≤ n, (glIwa k n).uOp τ (al k n j) v = psEig (omg ψ) j • v) (a : Fin n → ℤ) (ha : Antitone a) :
@@ -231,6 +329,37 @@ private theorem uOp_upow {T : Type} [AddCommGroup T] [Module ℂ T] (τ : Repres
     exact h3
   exact (antitone_mem M hfund hneg a ha).2
 end LocEigAux
+/- English proof (translation)
+Introduce `hLit k _ _ _ _ n W ψ _ hH T _ _ τ he`. Establish `hE : Nonempty (τ.Equiv (Hi.PS (omg ψ)))` using `by show Nonempty (τ.Equiv (prinSeries fun i => omg ψ i * absPow k (((n : ℂ) - 1) / 2)))`. Rewrite using `[om_shift]`. Conclude with `he`. Establish `hHv : ∀ y ∈ W.H, valuation k (y : k) = 1` using `fun y hy => W.H_le hy`.
+
+Take `⟨v, hv, hv0, hev⟩` from `_root_.UpperTheory.V.Hi.exists_ne_zero_mem_eig_uOp_eq_psEig_smul_of_equiv_ps hLit k n T τ (omg ψ) hE W.c (fun i y hy => by rw [om_unit ψ i (hHv y (W.le hy)), hH i y (W.le hy)]) (phi (omg ψ)) (phi_inv _)`. Establish `hT : ∀ (u : Fin n → kˣ) (hu : u ∈ torusO k (Fin n)), τ (diagT k (Fin n) u) v = ((torusChar (mu ψ) u : ℂˣ) : ℂ) • v`. Introduce `u hu`. Establish `h1` using `hv.2.2 ⟨diagT k (Fin n) u, u, hu, rfl⟩`. Rewrite `h1` using `[phi_diag _ u hu, inv_inv]`.
+
+Establish `h2 : torusChar (omg ψ) u = torusChar (mu ψ) u`. Rewrite using `[torusChar_apply, torusChar_apply]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [om_unit ψ i (hu i), mu_unit ψ i (hu i)]`. Rewrite using `[← h2]`. Conclude with `h1`.
+
+Establish `hvJ : v ∈ Hi.fixd τ (W.J n)`. Set `S : Subgroup (GL (Fin n) k)` to `{ carrier := {g | τ g v = v} mul_mem' := fun {a b} ha hb => by show τ (a * b) v = v`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by show τ 1 v = v`. Simplify using the standard rewrite rules.
+
+Use the proof step `inv_mem' := fun {a} ha => by show τ a⁻¹ v = v conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hle : W.J n ≤ S`. Use `sup_le (sup_le (fun g hg => hv.1 g hg) ?_) fun g hg => hv.2.1 g hg` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`.
+
+Establish `hs' : ∀ i, s i ∈ W.H` using `fun i => hs i trivial`. Use `show τ (diagT k (Fin n) s) v = v`. Rewrite using `[hT s fun i => hHv _ (hs' i), torusChar_apply]`. Establish `: ∏ i, mu ψ i (s i) = 1` using `Finset.prod_eq_one fun i _ => by`. Rewrite using `[mu_unit ψ i (hHv _ (hs' i)), hH i _ (hs' i)]`.
+
+Rewrite using `[this, Units.val_one, one_smul]`. Conclude with `fun g hg => hle hg`. Use `⟨v, hv0, hvJ, fun d hd => ?_⟩` and prove the remaining obligations. Establish `hDd : UpperTheory.V.AlgebraTools.Dom d` using `fun i j hij => by`. Break down `hij.eq_or_lt with rfl | h` into its components or cases.
+
+Conclude with `le_rfl`. Conclude with `(hd i j h).le`. Set `a : Fin n → ℤ` to `fun i => GlobalTheory.SmGL.ord k (d i)`. Establish `ha : Antitone a` using `fun i j hij => by`. Use `hDd i j hij` as an intermediate fact.
+
+Rewrite `this` using `[Sig.val_ord, Sig.val_ord]`. Conclude with `(zpow_le_zpow_iff_right_of_lt_one₀ Hi.GlAx.unif_pos uniformizer_lt_one).1 this`. Set `p : Fin n → kˣ` to `fun i => Hi.unif k ^ a i`. Set `u : Fin n → kˣ` to `d / p`. Establish `hu : u ∈ torusO k (Fin n)` using `fun i => Hi.GlAx.val_div_ord (d i)`.
+
+Establish `hdu : d = u * p` using `by simp [u]`. Establish `hDu : UpperTheory.V.AlgebraTools.Dom u` using `fun i j _ => by rw [hu i, hu j]`. Establish `hDp : UpperTheory.V.AlgebraTools.Dom p` using `fun i j hij => by`. Establish `e : ∀ i, valuation k (p i : k) = valuation k (d i : k)` using `fun i => by`. Rewrite using `[hdu, Pi.mul_apply, Units.val_mul, map_mul, hu i, one_mul]`.
+
+Rewrite using `[e, e]`. Conclude with `hDd i j hij`. Establish `hI` using `((Sig.finFacts k W).2.2.2.2.2 n).1 (Sig.dg d)`. Establish `h0` using `(UpperTheory.V.AlgebraTools.hkApply ℂ _ T τ (W.J n) (W.J n) (Sig.dg d) hI).1 ⟨v, hvJ⟩`. Establish `hm` using `(Sig.hkMul k W n T τ).1 u p hDu hDp`.
+
+Set `X : Hi.fixd τ (W.J n)` to `⟨v, hvJ⟩`. Establish `h1` using `(Sig.hkMul k W n T τ).2 p hDp X`. Establish `h2` using `(Sig.hkMul k W n T τ).2 u hDu X`. Establish `hp : (Hi.glIwa k n).uOp τ (Sig.dg p) v = ((torusChar (mu ψ) p : ℂˣ) : ℂ) • v` using `uOp_upow τ ψ hv.1 hev a ha`. Establish `hu' : (Hi.glIwa k n).uOp τ (Sig.dg u) v = ((torusChar (mu ψ) u : ℂˣ) : ℂ) • v` using `u_operator_torus_eigen (Hi.glIwa k n) τ (t := diagT k (Fin n) u) ⟨u, hu, rfl⟩ hv.1 (hT u hu)`.
+
+Establish `e1 : UpperTheory.V.AlgebraTools.hk τ (W.J n) (Sig.dg p) X = ((torusChar (mu ψ) p : ℂˣ) : ℂ) • X` using `Subtype.ext (h1.trans hp)`. Establish `h0' : Hi.dc τ (W.J n) (W.J n) (Sig.dg d) v = (UpperTheory.V.AlgebraTools.hk τ (W.J n) (Sig.dg (u * p)) X : T)`. Rewrite using `[← hdu]`. Conclude with `h0.symm`. Establish `hc : torusChar (mu ψ) d = torusChar (mu ψ) u * torusChar (mu ψ) p`.
+
+Rewrite using `[← map_mul, ← hdu]`. Rewrite using `[h0', ← hm, Module.End.mul_apply, e1, map_smul]`. Use `show ((torusChar (mu ψ) p : ℂˣ) : ℂ) • (UpperTheory.V.AlgebraTools.hk τ (W.J n) (Sig.dg u) X : T) = _`. Rewrite using `[h2]`. Use `show ((torusChar (mu ψ) p : ℂˣ) : ℂ) • (Hi.glIwa k n).uOp τ (Sig.dg u) v = _`.
+
+Rewrite using `[hu', smul_smul, expo_eq, hc, Units.val_mul, mul_comm]`.
+-/
 theorem UpperTheory.V.Z.Sym.Al.exists_fixd_dc_eq_expo_smul_of_equiv_prinSeries :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (W : Sig.Lev k) (ψ : Fin n → kˣ →* ℂˣ), (∀ i, IsSmoothChar (ψ i)) → (∀ i, ∀ u ∈ W.H, ψ i u = 1) →
         ∀ (T : Type) [AddCommGroup T] [Module ℂ T] (τ : Representation ℂ (GL (Fin n) k) T), Nonempty (τ.Equiv (prinSeries ψ)) →

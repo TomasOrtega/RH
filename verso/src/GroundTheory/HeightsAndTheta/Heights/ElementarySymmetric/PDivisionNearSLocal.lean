@@ -10,6 +10,15 @@ noncomputable section
 
 namespace DivisionNearS
 
+/- English proof (translation)
+Take `⟨p, r, hp⟩` from `hf`. Establish `hps : ∀ y, p.partialSum m y = 0`. Introduce `y`. Use `Finset.sum_eq_zero fun k hk => ?_` and prove the remaining obligations. Establish `h1` using `hp.factorial_smul y k`.
+
+Rewrite `h1` using `[h0 k (Finset.mem_range.mp hk)]`. Establish `h2 : (k.factorial : ℂ) • p k (fun _ => y) = 0`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Simplify using `using h1`. Conclude with `(smul_eq_zero.mp h2).resolve_left (by exact_mod_cast k.factorial_ne_zero)`.
+
+Take `⟨C, hC⟩` from `(hp.hasFPowerSeriesAt.isBigO_sub_partialSum_pow m).bound`. Use `⟨C, ?_⟩` and prove the remaining obligations. Establish `ht : Tendsto (fun w => w - w₀) (𝓝 w₀) (𝓝 0)`. Simplify using `using (tendsto_id.sub_const w₀ : Tendsto (fun w => w - w₀) (𝓝 w₀) (𝓝 (w₀ - w₀)))`. Use `filter_upwards [ht.eventually hC] with w hw`.
+
+Simplify `hw` using `[hps, norm_pow, norm_norm]`.
+-/
 theorem exists_bound_of_iteratedFDeriv_eq_zero {D : ℕ} {f : (Fin D → ℂ) → ℂ}
     {w₀ : Fin D → ℂ} (hf : AnalyticAt ℂ f w₀) (m : ℕ)
     (h0 : ∀ k < m, iteratedFDeriv ℂ k f w₀ = 0) :
@@ -30,6 +39,13 @@ theorem exists_bound_of_iteratedFDeriv_eq_zero {D : ℕ} {f : (Fin D → ℂ) �
   filter_upwards [ht.eventually hC] with w hw
   simpa [hps, norm_pow, norm_norm] using hw
 
+/- English proof (translation)
+Establish `hu : IsUnit (L : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))` using `(LinearMap.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hL)`. Establish `hinj : Function.Injective (L : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))` using `((Module.End.isUnit_iff _).mp hu).injective`. Take `⟨K, hK0, hK⟩` from `(L : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ)).exists_antilipschitzWith (LinearMap.ker_eq_bot.mpr hinj)`. Establish `hb : ∀ v, ‖v‖ ≤ K * ‖L v‖` using `fun v => ZeroHomClass.bound_of_antilipschitz (L : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ)) hK v`. Establish `hKpos : (0 : ℝ) < K` using `by exact_mod_cast hK0`.
+
+Establish `hε` using `hσ.isLittleO.bound (c := 1 / (2 * K)) (by positivity)`. Use `⟨1 / (2 * K), by positivity, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hε] with w hw`. Rewrite `hw` using `[h0, sub_zero]`. Establish `h2 : ‖L (w - w₀)‖ ≤ ‖σ w‖ + 1 / (2 * K) * ‖w - w₀‖`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖w - w₀‖ ≤ K * ‖σ w‖ + ‖w - w₀‖ / 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : ‖w - w₀‖ ≤ 2 * K * ‖σ w‖` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_lowerBound_of_det_ne_zero {D : ℕ} {σ : (Fin D → ℂ) → (Fin D → ℂ)}
     {L : (Fin D → ℂ) →L[ℂ] (Fin D → ℂ)} {w₀ : Fin D → ℂ} (hσ : HasFDerivAt σ L w₀)
     (hL : LinearMap.det (L : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ)) ≠ 0) (h0 : σ w₀ = 0) :
@@ -59,10 +75,24 @@ theorem exists_lowerBound_of_det_ne_zero {D : ℕ} {σ : (Fin D → ℂ) → (Fi
   calc 1 / (2 * K) * ‖w - w₀‖ ≤ 1 / (2 * K) * (2 * K * ‖σ w‖) := by gcongr
     _ = ‖σ w‖ := by field_simp
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex, mul_comm]`.
+-/
 theorem finrank_real_fin_complex (D : ℕ) : Module.finrank ℝ (Fin D → ℂ) = 2 * D := by
   rw [Module.finrank_pi_fintype]
   simp [Complex.finrank_real_complex, mul_comm]
 
+/- English proof (translation)
+Establish `: Nonempty (Fin D)` using `⟨⟨0, hD⟩⟩`. Establish `hint : IntegrableOn (fun x : Fin D → ℂ => ‖x‖ ^ a) (Metric.ball 0 ε) volume`. Rewrite using `[integrableOn_fun_norm_addHaar volume (f := fun y : ℝ => y ^ a), finrank_real_fin_complex]`. Establish `hr : -1 < ((2 * D - 1 : ℕ) : ℝ) + a`. Establish `: ((2 * D - 1 : ℕ) : ℝ) = 2 * D - 1`.
+
+Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hII` using `intervalIntegral.intervalIntegrable_rpow' (a := 0) (b := ε) hr`. Break down `le_or_gt ε 0 with hε | hε` into its components or cases.
+
+Simplify using `[Ioo_eq_empty (not_lt.mpr hε)]`. Establish `hon : IntegrableOn (fun y : ℝ => y ^ (((2 * D - 1 : ℕ) : ℝ) + a)) (Ioo 0 ε)` using `((intervalIntegrable_iff_integrableOn_Ioc_of_le hε.le).mp hII).mono_set Ioo_subset_Ioc_self`. Use `(integrableOn_congr_fun (fun y hy => ?_) measurableSet_Ioo).mp hon` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Rewrite using `[Real.rpow_add hy.1, Real.rpow_natCast]`.
+
+Establish `h1` using `hint.lintegral_lt_top`. Establish `h2 : ∫⁻ w in Metric.ball w₀ ε, ENNReal.ofReal (‖w - w₀‖ ^ a) = ∫⁻ y in Metric.ball (0 : Fin D → ℂ) ε, ENNReal.ofReal (‖y‖ ^ a)`. Rewrite using `[← lintegral_indicator measurableSet_ball, ← lintegral_indicator measurableSet_ball]`. Rewrite using `[← lintegral_sub_right_eq_self (fun y => (Metric.ball (0 : Fin D → ℂ) ε).indicator (fun y => ENNReal.ofReal (‖y‖ ^ a)) y) w₀]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `w`. Simplify using `only [indicator, Metric.mem_ball, dist_eq_norm, sub_zero]`. Rewrite using `[h2]`. Conclude with `h1`.
+-/
 theorem lintegral_ball_rpow_lt_top {D : ℕ} (hD : 1 ≤ D) (w₀ : Fin D → ℂ) (ε a : ℝ)
     (ha : -(2 * D : ℝ) < a) :
     ∫⁻ w in Metric.ball w₀ ε, ENNReal.ofReal (‖w - w₀‖ ^ a) < ⊤ := by

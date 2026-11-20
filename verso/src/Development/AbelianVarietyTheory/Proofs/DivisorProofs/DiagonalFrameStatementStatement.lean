@@ -7,5 +7,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBi
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 open GlobalTheory.LatVal GlobalTheory.LatJet GlobalTheory.LatJet.An
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DiagAH.diagFrame | exact GlobalTheory.DiagAH.diagFrame | (intros; apply GlobalTheory.DiagAH.diagFrame <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.diagonal_frame_statement : DiagFrame := by
   first | exact @GlobalTheory.DiagAH.diagFrame | exact GlobalTheory.DiagAH.diagFrame | (intros; apply GlobalTheory.DiagAH.diagFrame <;> assumption)

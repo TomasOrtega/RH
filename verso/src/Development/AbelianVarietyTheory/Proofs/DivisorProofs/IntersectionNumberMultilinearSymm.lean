@@ -13,6 +13,9 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Use `letI := A.algΓ`. Use `diffVanish_chiPic_of_isProjOver (f := A.X.hom) (fun r => rfl) _ (GlobalTheory.AV.AbVarProj.strHom_eq_and_isProjOver K A).2 ?_` and prove the remaining obligations. Use `(QCoh.suppDim_le _).trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim K A]`.
+-/
 theorem diffVanish_chiPic_structureModule {K : Type} [Field K] (A : AbVar K) :
     letI := A.algΓ
     DiffVanish (A.dim + 1) (chiPic K (QCoh.structureModule A.X.left)) := by
@@ -22,6 +25,9 @@ theorem diffVanish_chiPic_structureModule {K : Type} [Field K] (A : AbVar K) :
   refine (QCoh.suppDim_le _).trans ?_
   rw [GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim K A]
 
+/- English proof (translation)
+Use `letI := A.algΓ`. Conclude with `congrFun ((diffVanish_chiPic_structureModule A).multiDiff_update_add_of_le_card hJ.ge c i a b) 0`.
+-/
 theorem inter_update_add {K : Type} [Field K] (A : AbVar K) {J : Type} [Fintype J] [DecidableEq J]
     (hJ : Fintype.card J = A.dim) (c : J → Pic A.X.left) (i : J) (a b : Pic A.X.left) :
     inter A (Function.update c i (a + b)) = inter A (Function.update c i a) + inter A (Function.update c i b) := by
@@ -32,11 +38,17 @@ def interAdd {K : Type} [Field K] (A : AbVar K) {J : Type} [Fintype J] [Decidabl
     (hJ : Fintype.card J = A.dim) (c : J → Pic A.X.left) (i : J) : Pic A.X.left →+ ℤ :=
   AddMonoidHom.mk' (fun a => inter A (Function.update c i a)) (inter_update_add A hJ c i)
 
+/- English proof (translation)
+Use `letI := A.algΓ`. Conclude with `congrFun (multiDiff_comp_equiv e c _) 0`.
+-/
 theorem inter_comp_equiv {K : Type} [Field K] (A : AbVar K) {J J' : Type} [Fintype J] [Fintype J']
     (e : J' ≃ J) (c : J → Pic A.X.left) : inter A (c ∘ e) = inter A c := by
   letI := A.algΓ
   exact congrFun (multiDiff_comp_equiv e c _) 0
 
+/- English proof (translation)
+Introduce `K _ A J _ hJ`. Use `⟨⟨MultilinearMap.mk' (fun c => inter A c) (fun c i a b => inter_update_add A hJ c i a b) (fun c i n a => map_zsmul (interAdd A hJ c i) n a), fun c => rfl⟩, fun J' _ e c => inter_comp_equiv A e c⟩` and prove the remaining obligations.
+-/
 theorem inter_multilinear_and_symm : ∀ (K : Type) [Field K] (A : AbVar K) (J : Type) [Fintype J], Fintype.card J = A.dim → (∃ M : MultilinearMap ℤ (fun _ : J => Pic A.X.left) ℤ, ∀ c, M c = inter A c) ∧ ∀ (J' : Type) [Fintype J'] (e : J' ≃ J) (c : J → Pic A.X.left), inter A (c ∘ e) = inter A c := by
   intro K _ A J _ hJ
   classical

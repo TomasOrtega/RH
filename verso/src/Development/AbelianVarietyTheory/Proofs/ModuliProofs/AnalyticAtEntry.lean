@@ -4,6 +4,9 @@ namespace GlobalTheory.AnalyticMatrixEntries
 
 universe u_1 u_2
 
+/- English proof (translation)
+Set `L : (E →L[ℂ] E) →L[ℂ] ℂ` to `(LinearMap.toContinuousLinearMap (b.coord i)).comp (ContinuousLinearMap.apply ℂ E (b j))`. Establish `h` using `(L.analyticAt (A a)).comp hA`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using `[L, Module.Basis.coord_apply]`.
+-/
 theorem analyticAt_entry {X : Type u_1} {E : Type u_2} [NormedAddCommGroup X] [NormedSpace ℂ X]
     [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     {ι : Type*} (b : Module.Basis ι ℂ E) {A : X → E →L[ℂ] E} {a : X}
@@ -16,6 +19,13 @@ theorem analyticAt_entry {X : Type u_1} {E : Type u_2} [NormedAddCommGroup X] [N
   funext z
   simp [L, Module.Basis.coord_apply]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ E`. Establish `hfun : (fun z : X => LinearMap.det (A z : E →ₗ[ℂ] E)) = fun z => ∑ σ : Equiv.Perm (Fin (Module.finrank ℂ E)), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, b.repr (A z (b i)) (σ i)`. Use function extensionality and compare the values at `z`. Rewrite using `[← LinearMap.det_toMatrix b, Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Simplify using `[LinearMap.toMatrix_apply]`. Rewrite using `[hfun]`. Use `Finset.analyticAt_fun_sum _ fun σ _ => ?_` and prove the remaining obligations. Use `analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `exact analyticAt_entry b hA (σ i) i`.
+-/
 theorem analyticAt_det {X : Type u_1} {E : Type u_2} [NormedAddCommGroup X] [NormedSpace ℂ X]
     [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     {A : X → E →L[ℂ] E} {a : X} (hA : AnalyticAt ℂ A a) :

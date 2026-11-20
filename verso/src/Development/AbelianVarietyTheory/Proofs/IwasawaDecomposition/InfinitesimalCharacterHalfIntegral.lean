@@ -5,6 +5,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.EtaTildeShift
 
+/- English proof (translation)
+Introduce `D cf jE A t sh h`. Establish `hE : (A.chr.e1 D.naut.etaT).1.HasInfQ (embPsi D.host) (fun _ => (1 / 2 : ℚ))` using `⟨fun _ => 1, fun _ => by norm_num, by rw [A.chr.etaT]; exact cf.isEta.inf⟩`. Establish `h2` using `(A.chr.infG _ _ hE (D.eTau t)).1`. Establish `h3 : D.naut.infG D.naut.etaT (embT D t) = {((1 / 2 : ℚ) : ℂ)}` using `h2`. Rewrite `h` using `[h3]`.
+
+Use `(Multiset.singleton_inj.1 h).symm` as an intermediate fact. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sh_half : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (t : D.what₂.Tau) (sh : ℂ),
     D.naut.infG D.naut.etaT (embT D t) = {sh} → ∃ z : ℤ, sh = (z : ℂ) + 1 / 2 := by
   intro D cf jE A t sh h

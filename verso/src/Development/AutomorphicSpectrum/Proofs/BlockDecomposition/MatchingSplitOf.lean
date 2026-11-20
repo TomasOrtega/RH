@@ -17,13 +17,26 @@ namespace GlobalTheory.CompanionTheory.MatchPowers
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.CompanionTheory.SphLine.isOpen_KL n w, le_rfl, fun _ h => h⟩`.
+-/
 theorem isLevel_KL (n : ℕ) (w : Pl E) : IsLevel (MonoidHom.id _) (KL n w) (KL n w) :=
   ⟨GlobalTheory.CompanionTheory.SphLine.isOpen_KL n w, le_rfl, fun _ h => h⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.UnitaryWord.isHecke_lpow GlobalTheory.CompanionTheory.LocHecke.locAlg (isLevel_KL n w) hf j`.
+-/
 theorem isHecke_lpow_KL {n : ℕ} {w : Pl E} {f : UL n w → ℂ} (hf : IsHecke (KL n w) f) (j : ℕ) :
     IsHecke (KL n w) (lpow (KL n w) f j) :=
   GlobalTheory.CompanionTheory.UnitaryWord.isHecke_lpow GlobalTheory.CompanionTheory.LocHecke.locAlg (isLevel_KL n w) hf j
 
+/- English proof (translation)
+Introduce `hM3 hCt E _ _ _ n a ha w hw μ hμ f hf k hk`. Establish `hc : ∀ j : ℕ, ctMu (Nat.add_sub_cancel' ha) w μ (lpow (KL n w) f j) = Nat.rec (ctMu (Nat.add_sub_cancel' ha) w μ (lone (KL n w))) (fun _ g => mconv (ctMu (Nat.add_sub_cancel' ha) w μ f) g) j`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => rfl`.
+
+Consider the case `succ j ih`. Establish `h` using `hCt E n a ha w hw μ hμ f _ hf (isHecke_lpow_KL hf j)`. Rewrite `h` using `[ih]`. Conclude with `h`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`.
+
+Establish `h` using `hM3 E n a ha w hw μ (KL n w) (isLevel_KL n w) _ (isHecke_lpow_KL hf (j + 1))`. Rewrite `h` using `[hc (j + 1)]`. Conclude with `h`.
+-/
 theorem matchSplitOf : MatchSplitOf := by
   intro hM3 hCt E _ _ _ n a ha w hw μ hμ f hf k hk
   have hc : ∀ j : ℕ, ctMu (Nat.add_sub_cancel' ha) w μ (lpow (KL n w) f j) =

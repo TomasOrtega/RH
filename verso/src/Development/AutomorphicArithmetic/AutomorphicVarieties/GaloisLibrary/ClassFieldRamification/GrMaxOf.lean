@@ -3,6 +3,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Clas
 open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheory.V.CF
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `p _ R G _ _ _ _ hpm hG M hM`. Establish `hcomap : M.comap (algebraMap R (MonoidAlgebra R G)) = IsLocalRing.maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M)`. Use `letI : Field (MonoidAlgebra R G ⧸ M) := Ideal.Quotient.field M`. Establish `hpQ : ((p : ℕ) : MonoidAlgebra R G ⧸ M) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk M), Ideal.Quotient.eq_zero_iff_mem]`.
+
+Establish `h0 : (p : R) ∈ M.comap (algebraMap R (MonoidAlgebra R G))`. Rewrite using `[hcomap]`. Conclude with `hpm`. Simplify using `using h0`. Use `haveI : CharP (MonoidAlgebra R G ⧸ M) p := by`.
+
+Establish `h` using `CharP.ringChar_of_prime_eq_zero (Fact.out : p.Prime) hpQ`. Conclude with `h ▸ ringChar.charP _`. Establish `hg : ∀ g : G, Ideal.Quotient.mk M (MonoidAlgebra.single g 1) = 1`. Introduce `g`. Take `⟨k, hk⟩` from `hG g`.
+
+Establish `h1 : (Ideal.Quotient.mk M (MonoidAlgebra.single g (1 : R)) - 1) ^ p ^ k = 0`. Rewrite using `[sub_pow_char_pow, one_pow, ← map_pow, MonoidAlgebra.single_pow, one_pow, hk, ← MonoidAlgebra.one_def, map_one, sub_self]`. Conclude with `sub_eq_zero.mp ((pow_eq_zero_iff (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)).mp h1)`. Establish `hext : Ideal.Quotient.mkₐ R M = (Algebra.ofId R _).comp (aug R G)`. Apply `MonoidAlgebra.algHom_ext` to reduce the goal to its premises.
+
+Introduce `g`. Simplify using `[hg, aug_single]`. Conclude with `Subsingleton.elim _ _`. Establish `hle : (IsLocalRing.maximalIdeal R).comap (aug R G) ≤ M`. Introduce `x hx`.
+
+Rewrite `hx` using `[Ideal.mem_comap]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `h3` using `congrArg (fun f => f x) hext`. Simplify using `only [Ideal.Quotient.mkₐ_eq_mk, AlgHom.comp_apply, Algebra.ofId_apply] at h3`. Rewrite using `[h3, ← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Establish `h2 : aug R G x ∈ M.comap (algebraMap R (MonoidAlgebra R G))`. Rewrite using `[hcomap]`. Conclude with `hx`. Conclude with `h2`. Use `haveI : ((IsLocalRing.maximalIdeal R).comap (aug R G)).IsMaximal := Ideal.comap_isMaximal_of_surjective (aug R G) (fun r => ⟨MonoidAlgebra.single 1 r, aug_single R G 1 r⟩)`.
+
+Conclude with `(Ideal.IsMaximal.eq_of_le this hM.ne_top hle).symm`.
+-/
 theorem UpperTheory.V.CF.grMaxOf :
     ∀ (p : ℕ) [Fact p.Prime] (R G : Type) [CommRing R] [IsLocalRing R] [CommGroup G] [Finite G], (p : R) ∈ IsLocalRing.maximalIdeal R → IsPGroup p G → ∀ M : Ideal (MonoidAlgebra R G), M.IsMaximal → M = (IsLocalRing.maximalIdeal R).comap (aug R G) := by
   intro p _ R G _ _ _ _ hpm hG M hM

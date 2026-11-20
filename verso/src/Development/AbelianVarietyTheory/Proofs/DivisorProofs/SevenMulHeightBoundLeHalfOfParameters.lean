@@ -2,6 +2,59 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D T ρ PP κ b f r m k H TO Nb nW t hD hb hf hm hmk hr ht hκ0 hκ hT1 hTTO hT2 hρ hH hTO hnW hPP hPPb htn hNb`. Establish `hk0 : 0 < k` using `by linarith`. Establish `hr3 : 3 ≤ r` using `by linarith`. Establish `hr0 : 0 < r` using `by linarith`. Establish `hf0 : 0 < f` using `by linarith`.
+
+Establish `hm0 : 0 < m` using `by linarith`. Establish `hT0 : 0 < T` using `by linarith`. Establish `hTO0 : 0 < TO` using `by linarith`. Establish `hD0 : 0 < D` using `by linarith`. Establish `hnW2 : f * r ^ 2 ≤ nW` using `by linarith [mul_pos hf0 hr0]`.
+
+Establish `h4f : 4 * f ≤ 2 * f * m` using `by linarith [mul_le_mul_of_nonneg_left hm hf0.le]`. Establish `hfm4 : (4 * f) ^ 4 ≤ (2 * f * m) ^ 4` using `pow_le_pow_left₀ (by linarith) h4f 4`. Establish `hf3 : 1 ≤ f ^ 3` using `one_le_pow₀ hf`. Establish `h256 : 256 * f ≤ (2 * f * m) ^ 4`. Establish `e : (4 * f) ^ 4 = 256 * f * f ^ 3` using `by ring`.
+
+Combine the linear relations using `[mul_le_mul_of_nonneg_left hf3 hf0.le]`. Establish `hPPlow : 256 * f * (f * r ^ 2) ≤ PP`. Use `mul_le_mul h256 hnW2 (mul_nonneg hf0.le (sq_nonneg r)) (by positivity)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPP0 : 0 < PP` using `lt_of_lt_of_le (by positivity) hPPlow`.
+
+Establish `hX0 : 0 ≤ D ^ 2 / T` using `div_nonneg (sq_nonneg D) hT0.le`. Establish `hXT : D ^ 2 / T * T = D ^ 2` using `div_mul_cancel₀ _ hT0.ne'`. Establish `h1 : PP ^ 2 * D ^ 2 * k ≤ T * m`. Rewrite `hT1` using `[div_le_iff₀ hm0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hXPP2 : D ^ 2 / T * PP ^ 2 ≤ 1`. Establish `e : D ^ 2 / T * PP ^ 2 * (T * k) = PP ^ 2 * D ^ 2 * k`. Rewrite using `[show D ^ 2 / T * PP ^ 2 * (T * k) = (D ^ 2 / T * T) * PP ^ 2 * k by ring, hXT]; ring`. Establish `hTk : 0 < T * k` using `mul_pos hT0 hk0`. Establish `: D ^ 2 / T * PP ^ 2 * (T * k) ≤ 1 * (T * k)`.
+
+Rewrite using `[e]`. Combine the linear relations using `[mul_le_mul_of_nonneg_left hmk hT0.le]`. Conclude with `le_of_mul_le_mul_right this hTk`. Establish `hfr : 1 ≤ f * r` using `one_le_mul_of_one_le_of_one_le hf (by linarith)`. Establish `h224 : 224 * (f * r) ≤ PP`.
+
+Combine the linear relations using `[mul_le_mul_of_nonneg_left hfr (by linarith : (0:ℝ) ≤ f * r)]`. Establish `hXPP : 0 ≤ D ^ 2 / T * PP` using `mul_nonneg hX0 hPP0.le`. Establish `ha1 : D ^ 2 / T * PP * (224 * (f * r)) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Establish `ha : 7 * (D ^ 2 / T) * (PP * κ) ≤ b / 8`.
+
+Establish `e1 : PP * κ ≤ PP * (4 * f * r * b)` using `mul_le_mul_of_nonneg_left hκ hPP0.le`. Establish `e2` using `mul_le_mul_of_nonneg_left e1 (by linarith [hX0] : (0:ℝ) ≤ 7 * (D ^ 2 / T))`. Establish `e3` using `mul_le_mul_of_nonneg_right ha1 hb.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hNb0 : 0 < Nb` using `by linarith [mul_pos hm0 (by linarith : (0:ℝ) < t + 1)]`.
+
+Establish `hH0 : 0 < H`. Establish `: 0 < TO * Nb * f ^ 2 * m ^ 2 * k * D * PP` using `mul_pos (mul_pos (mul_pos (mul_pos (mul_pos (mul_pos hTO0 hNb0) (pow_pos hf0 2)) (pow_pos hm0 2)) hk0) hD0) hPP0`. Combine the linear equalities and inequalities to obtain the conclusion. Generalize the expression as in `hs : Real.sqrt b = s at hρ hPPb`. Establish `hs0 : 0 < s` using `by rw [← hs]; exact Real.sqrt_pos.mpr hb`.
+
+Establish `hss : s * s = b` using `by rw [← hs]; exact Real.mul_self_sqrt hb.le`. Generalize the expression as in `hS1 : r * r * (2 * (T + D + 1)) / H = S1 at hρ`. Generalize the expression as in `hS2 : 2 * r * r * T * (2 / s) = S2 at hρ`. Establish `hS1H : S1 * H = r * r * (2 * (T + D + 1))`. Rewrite using `[← hS1]`.
+
+Conclude with `div_mul_cancel₀ _ hH0.ne'`. Establish `hS1_0 : 0 ≤ S1`. Rewrite using `[← hS1]; exact div_nonneg (mul_nonneg (mul_self_nonneg r) (by linarith)) hH0.le`. Establish `h2s : (2:ℝ) / s * s = 2` using `div_mul_cancel₀ 2 hs0.ne'`. Establish `hS2s : S2 * s = 4 * r ^ 2 * T`.
+
+Rewrite using `[← hS2]`. Combine the equalities or inequalities in the displayed calculation. Establish `hS2_0 : 0 ≤ S2`. Rewrite using `[← hS2]`. Conclude with `mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hr0.le) hr0.le) hT0.le) (div_nonneg (by norm_num) hs0.le)`.
+
+Establish `hS1b : S1 * H ≤ 4 * r ^ 2 * TO`. Rewrite using `[hS1H]`. Combine the linear relations using `[mul_le_mul_of_nonneg_left (show 2 * (T + D + 1) ≤ 4 * TO by linarith) (mul_self_nonneg r)]`. Establish `hYQ : S1 * D * f ^ 2 * PP * (Nb * m ^ 2 * k) ≤ 4 * r ^ 2`. Establish `e1 : S1 * (TO * Nb * f ^ 2 * m ^ 2 * k * D * PP) ≤ S1 * H` using `mul_le_mul_of_nonneg_left hH hS1_0`.
+
+Establish `e2 : S1 * D * f ^ 2 * PP * (Nb * m ^ 2 * k) * TO ≤ 4 * r ^ 2 * TO`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right e2 hTO0`. Establish `hTO5 : 5000 * r ≤ TO`. Combine the linear relations using `[mul_le_mul_of_nonneg_left (show (2:ℝ) ≤ D + 1 by linarith) hr0.le]`.
+
+Establish `hrr1 : 0 ≤ r * (r + 1)` using `mul_nonneg hr0.le (by linarith)`. Establish `hnW3 : r * (r + 1) ≤ nW`. Combine the linear relations using `[mul_le_mul_of_nonneg_right hf hrr1]`. Establish `hTOnW : 5000 * r * (r * (r + 1)) ≤ TO * nW` using `mul_le_mul hTO5 hnW3 hrr1 hTO0.le`. Establish `ht1 : 5000 * r ^ 3 ≤ t + 1`.
+
+Combine the linear relations using `[mul_le_mul_of_nonneg_left (show (1:ℝ) ≤ r by linarith) hr0.le]`. Establish `hm3 : 8 ≤ m ^ 3`. Use `pow_le_pow_left₀ (by norm_num : (0:ℝ) ≤ 2) hm 3` as an intermediate fact. Combine the linear relations using `[show (2:ℝ) ^ 3 = 8 by norm_num]`. Establish `hm3k : 4 * r ≤ m ^ 3 * k` using `by linarith [mul_le_mul_of_nonneg_right hm3 hk0.le]`.
+
+Establish `hQlow : 20000 * r ^ 4 ≤ Nb * m ^ 2 * k`. Establish `e1 : m * (t + 1) * (m ^ 2 * k) ≤ Nb * (m ^ 2 * k)` using `mul_le_mul_of_nonneg_right hNb (mul_nonneg (sq_nonneg m) hk0.le)`. Establish `e2 : (4 * r) * (5000 * r ^ 3) ≤ (m ^ 3 * k) * (t + 1)` using `mul_le_mul hm3k ht1 (mul_nonneg (by norm_num) (pow_nonneg hr0.le 3)) (mul_nonneg (pow_nonneg hm0.le 3) hk0.le)`. Combine the linear relations using `[e1, e2]`. Establish `hY0 : 0 ≤ S1 * D * f ^ 2 * PP` using `mul_nonneg (mul_nonneg (mul_nonneg hS1_0 hD0.le) (sq_nonneg f)) hPP0.le`.
+
+Establish `hY : S1 * D * f ^ 2 * PP * (5000 * r ^ 2) ≤ 1`. Establish `e1` using `mul_le_mul_of_nonneg_left hQlow hY0`. Establish `hr2 : 0 < 4 * r ^ 2` using `by have := pow_pos hr0 2; linarith`. Establish `e2 : (4 * r ^ 2) * (S1 * D * f ^ 2 * PP * (5000 * r ^ 2)) ≤ (4 * r ^ 2) * 1`. Combine the linear relations using `[hYQ, e1]`.
+
+Conclude with `le_of_mul_le_mul_left e2 hr2`. Establish `hterm1 : 7 * (D * (3 * r * (f * S1))) * (PP * κ) ≤ b / 8`. Establish `e1 : PP * κ ≤ PP * (4 * f * r * b)` using `mul_le_mul_of_nonneg_left hκ hPP0.le`. Establish `hc : 0 ≤ 7 * (D * (3 * r * (f * S1)))` using `mul_nonneg (by norm_num) (mul_nonneg hD0.le (mul_nonneg (mul_nonneg (by norm_num) hr0.le) (mul_nonneg hf0.le hS1_0)))`. Establish `e2` using `mul_le_mul_of_nonneg_left e1 hc`.
+
+Establish `e3` using `mul_le_mul_of_nonneg_right hY hb.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPP2 : 2688 * D * r ^ 4 * f ^ 2 ≤ PP ^ 2 * TO`. Establish `hTOD : D ≤ TO`. Combine the linear relations using `[mul_le_mul_of_nonneg_right hr3 (by linarith : (0:ℝ) ≤ D + 1)]`.
+
+Establish `e1 : (256 * f * (f * r ^ 2)) ^ 2 ≤ PP ^ 2` using `pow_le_pow_left₀ (mul_nonneg (mul_nonneg (by norm_num) hf0.le) (mul_nonneg hf0.le (sq_nonneg r))) hPPlow 2`. Establish `hf2 : 1 ≤ f ^ 2` using `one_le_pow₀ hf`. Establish `e2 : 2688 * r ^ 4 * f ^ 2 ≤ (256 * f * (f * r ^ 2)) ^ 2`. Combine the linear relations using `[mul_le_mul_of_nonneg_right hf2 (by positivity : (0:ℝ) ≤ f ^ 2 * r ^ 4), (by positivity : (0:ℝ) ≤ f ^ 2 * r ^ 4)]`. Establish `e3` using `mul_le_mul (le_trans e2 e1) hTOD hD0.le (sq_nonneg PP)`.
+
+Combine the linear relations using `[e3]`. Establish `hterm2 : 7 * (D * (3 * r * (f * S2))) * (PP * κ) ≤ b / 8`. Establish `e1 : PP * κ ≤ PP * (4 * f * r * b)` using `mul_le_mul_of_nonneg_left hκ hPP0.le`. Establish `hc : 0 ≤ 7 * (D * (3 * r * (f * S2)))` using `mul_nonneg (by norm_num) (mul_nonneg hD0.le (mul_nonneg (mul_nonneg (by norm_num) hr0.le) (mul_nonneg hf0.le hS2_0)))`. Establish `e2` using `mul_le_mul_of_nonneg_left e1 hc`.
+
+Establish `e3 : 7 * (D * (3 * r * (f * S2))) * (PP * (4 * f * r * b)) = 336 * D * r ^ 4 * f ^ 2 * T * PP * s`. Rewrite using `[← hss]`. Combine the equalities or inequalities in the displayed calculation. Establish `e4 : 2688 * D * r ^ 4 * f ^ 2 * T * PP ≤ s`. Establish `f1` using `mul_le_mul hPP2 hTTO hT0.le (mul_nonneg (sq_nonneg PP) hTO0.le)`.
+
+Establish `f2` using `mul_le_mul_of_nonneg_right f1 hPP0.le`. Combine the equalities or inequalities in the displayed calculation. Establish `e5` using `mul_le_mul_of_nonneg_right e4 hs0.le`. Combine the linear relations using `[e2, e3, e5, hss]`. Establish `hDρ : D * ρ * (PP * κ) ≤ D * (3 * r * (f * (S1 + S2))) * (PP * κ)` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hρ hD0.le) (mul_nonneg hPP0.le hκ0)`.
+
+Establish `e : 7 * (D ^ 2 / T + D * ρ) * (PP * κ) = 7 * (D ^ 2 / T) * (PP * κ) + 7 * (D * ρ * (PP * κ))` using `by ring`. Establish `e' : D * (3 * r * (f * (S1 + S2))) * (PP * κ) = D * (3 * r * (f * S1)) * (PP * κ) + D * (3 * r * (f * S2)) * (PP * κ)` using `by ring`. Rewrite using `[e]`. Combine the linear relations using `[ha, hterm1, hterm2, hDρ, e', hb]`.
+-/
 theorem seven_mul_height_bound_le_half :
     ∀ (D T ρ PP κ b f r m k H TO Nb nW t : ℝ), 1 ≤ D → 0 < b → 1 ≤ f → 2 ≤ m → m ≤ k →
       r = k + m - 1 → 0 ≤ t → 0 ≤ κ → κ ≤ 4 * f * r * b → PP ^ 2 * D ^ 2 * k / m ≤ T →

@@ -14,12 +14,18 @@ noncomputable section
 
 namespace GlobalTheory.ArLieBase
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.ShFam.Pad.Guard.sp_comp]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [epsMul, mul_assoc]`.
+-/
 theorem sp_epsMul_mul {S : Type} [CommRing S] (a b : S) :
     spMap (epsMul a) ≫ spMap (epsMul b) = spMap (epsMul (a * b)) := by
   rw [GlobalTheory.ShFam.Pad.Guard.sp_comp]
   congr 1
   ext r <;> simp [epsMul, mul_assoc]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos m with hm | hm` into its components or cases. Substitute `hm` using the available equality. Conclude with `absurd hf (by simp [Subsingleton.elim f 0])`. Take `⟨k₀, -, hk⟩` from `Finset.exists_max_image Finset.univ (fun k => ‖f k‖) ⟨⟨0, hm⟩, Finset.mem_univ _⟩`. Use `⟨k₀, le_antisymm (norm_le_pi_norm f k₀) ((pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun k => hk k (Finset.mem_univ _)), fun k => hk k (Finset.mem_univ _)⟩` and prove the remaining obligations.
+-/
 theorem exists_norm_eq_pi {m : ℕ} {C : Type} [NormedAddCommGroup C] (f : Fin m → C) (hf : 0 < ‖f‖) :
     ∃ k₀, ‖f k₀‖ = ‖f‖ ∧ ∀ k, ‖f k‖ ≤ ‖f k₀‖ := by
   rcases Nat.eq_zero_or_pos m with hm | hm
@@ -29,6 +35,31 @@ theorem exists_norm_eq_pi {m : ℕ} {C : Type} [NormedAddCommGroup C] (f : Fin m
   refine ⟨k₀, le_antisymm (norm_le_pi_norm f k₀) ((pi_norm_le_iff_of_nonneg (norm_nonneg _)).2
     fun k => hk k (Finset.mem_univ _)), fun k => hk k (Finset.mem_univ _)⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H T t R _ x kind sc g M e h hT hP m d hd hn`. Take `⟨⟨n₀, hn₀, hsp⟩, hP2⟩` from `hP`. Take `⟨n, hn0, hnd⟩` from `hd`. Set `h' : Fin (m * M) → Fin g → R` to `fun l => d (finProdFinEquiv.symm l).1 • h (finProdFinEquiv.symm l).2`. Use `⟨m * M, h', ⟨n * n₀, Nat.mul_ne_zero hn0 hn₀, fun i => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ r ∈ Ideal.span (Set.range d), ∀ v ∈ Submodule.span R (Set.range h), r • v ∈ Submodule.span R (Set.range h')`. Introduce `r hr v hv`. Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem r hr`. Take `⟨k, rfl⟩` from `hr`.
+
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨j, rfl⟩` from `hv`. Conclude with `Submodule.subset_span ⟨finProdFinEquiv (k, j), by simp only [h', Equiv.symm_apply_apply]⟩`. Consider the case `zero => simp`.
+
+Consider the case `add v w _ _ hv hw => rw [smul_add]`. Conclude with `add_mem hv hw`. Consider the case `smul c v _ hv => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hv`. Consider the case `zero => simp`.
+
+Consider the case `add r s _ _ hr hs => rw [add_smul]`. Conclude with `add_mem hr hs`. Consider the case `smul c r _ hr => rw [smul_eq_mul, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hr`. Establish `h1` using `key _ hnd _ (hsp i)`.
+
+Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Simplify using `only [Pi.smul_apply, Pi.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [Nat.cast_mul]`. Introduce `p _ φ`.
+
+Take `⟨δ₀, hδ₀, hL⟩` from `hP2 p φ`. Establish `hpos : 0 < (p : ℝ) ^ (-sc p)` using `Real.rpow_pos_of_pos (Nat.cast_pos.2 (Fact.out : p.Prime).pos) _`. Take `⟨k₀, hk₀, hmax⟩` from `exists_norm_eq_pi (fun k => ((φ (d k) : ↥(intO ℂ_[p])) : ℂ_[p])) ((hn p φ).symm ▸ hpos)`. Use `⟨δ₀ * ((φ (d k₀) : ↥(intO ℂ_[p])) : ℂ_[p]), ?_, fun cf w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, hδ₀, neg_zero, Real.rpow_zero, one_mul]`.
+
+Conclude with `hk₀.trans (hn p φ)`. Establish `htan : ∀ i, IsTanAtG t (spMap ((intO ℂ_[p]).subtype.comp φ) ≫ x) (spMap (dualMap ((intO ℂ_[p]).subtype.comp φ)) ≫ e i)` using `fun i => GlobalTheory.FactorDepth.isTanAtG_map t _ (hT.1 i)`. Establish `hw'` using `GlobalTheory.ShFam.Pad.Guard.comb_smul htan hw ((φ (d k₀) : ↥(intO ℂ_[p])) : ℂ_[p])`. Rewrite using `[← sp_epsMul_mul, Category.assoc, hL _ _ hw']`. Establish `e1 : ∀ j, ‖∑ i, ((φ (h j i) : ↥(intO ℂ_[p])) : ℂ_[p]) * (((φ (d k₀) : ↥(intO ℂ_[p])) : ℂ_[p]) * cf i)‖ = ‖((φ (d k₀) : ↥(intO ℂ_[p])) : ℂ_[p])‖ * ‖∑ i, ((φ (h j i) : ↥(intO ℂ_[p])) : ℂ_[p]) * cf i‖`.
+
+Introduce `j`. Rewrite using `[← norm_mul, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `e2 : ∀ l, ‖∑ i, ((φ (h' l i) : ↥(intO ℂ_[p])) : ℂ_[p]) * cf i‖ = ‖((φ (d (finProdFinEquiv.symm l).1) : ↥(intO ℂ_[p])) : ℂ_[p])‖ * ‖∑ i, ((φ (h (finProdFinEquiv.symm l).2 i) : ↥(intO ℂ_[p])) : ℂ_[p]) * cf i‖`.
+
+Introduce `l`. Rewrite using `[← norm_mul, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [h', Pi.smul_apply, smul_eq_mul, map_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e1, e2]`. Prove the components needed by the constructor for the conclusion. Introduce `H l`.
+
+Conclude with `(mul_le_mul_of_nonneg_right (hmax _) (norm_nonneg _)).trans (H _)`. Introduce `H j`. Simplify using `using H (finProdFinEquiv (k₀, j))`.
+-/
 theorem latPres_scale : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (T : Scheme.{0}) (t : SAB H T) (R : Type) [CommRing R] (x : Sp R ⟶ T) (kind : ℕ → Bool) (sc : ℕ → ℝ) (g M : ℕ) (e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)) (h : Fin M → Fin g → R), GlobalTheory.LineNorm.IsTanBasis t x e → LatPres t x kind (fun _ => 0) e h → ∀ (m : ℕ) (d : Fin m → R), (∃ n : ℕ, n ≠ 0 ∧ (n : R) ∈ Ideal.span (Set.range d)) → (∀ (p : ℕ) [Fact p.Prime] (φ : R →+* ↥(intO ℂ_[p])), ‖fun k => ((φ (d k) : ↥(intO ℂ_[p])) : ℂ_[p])‖ = (p : ℝ) ^ (-sc p)) → ∃ (M' : ℕ) (h' : Fin M' → Fin g → R), LatPres t x kind sc e h' := by
   intro E _ _ _ H T t R _ x kind sc g M e h hT hP m d hd hn
   classical

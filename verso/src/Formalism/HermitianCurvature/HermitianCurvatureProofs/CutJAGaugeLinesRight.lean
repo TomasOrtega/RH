@@ -17,6 +17,41 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.PRho.GL
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P Bs e hpl hk he hQQ ζ hζ Fr hFr X hX Y X' hX' ρ`. Take `⟨hOK, hz, hz', hTz, hTz', -, -⟩` from `id hpl`. Establish `hT : 0 < Tz P.k P.r Bs.z` using `Bs.T_pos`. Establish `hT' : 0 < Tz P.k P.r Bs.z'` using `Bs.T'_pos`. Establish `hζ' : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ`.
+
+Rewrite using `[hTz, hTz']`. Conclude with `hζ`. Use `set c0 : Fin P.r → ℂ := fun _ => 1 with hc0def`. Establish `hq : ((c0, ζ) : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨fun _ => one_ne_zero, hζ'⟩`. Use `set g := NF.muZ P.k P.r Bs.μsec ζ with hgdef`.
+
+Set `qq : MA.Qp P.r P.TT` to `⟨(c0, ζ), ⟨fun _ => one_ne_zero, hζ⟩⟩`. Establish `hw : 0 < Gauge.wR P.k P.TT ζ` using `Gauge.GC.SSTr.wR_pos P hζ`. Use `set a : M.Ty P → ℂ := fun σ => ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) * inner ℂ (B.hsVec (e σ ζ)) (B.hsVec X) with hadef`. Take `⟨Φs, -, hΦv⟩` from `Gauge.GC.SSTr.exists_tr P Bs hpl hk e he (fun σ => algebraMap ℂ (MA.SmQ P.r P.TT) (a σ))`. Use `set Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp) := (Φs : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) with hΦdef`.
+
+Establish `hΦ : Φ ∈ Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'` using `Φs.2`. Establish `hval : Φ c0 g = X`. Establish `h1 : Φ c0 g = _` using `hΦv qq`. Rewrite using `[h1]`. Use `conv_rhs => rw [(he.2 ζ hζ).2.2 X hX]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hw' : ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hw.ne'`. Use `show (((Gauge.wR P.k P.TT ζ)⁻¹ : ℝ) : ℂ) * ((algebraMap ℂ (MA.SmQ P.r P.TT) (a σ) : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) qq = _`. Simplify using `only [hadef, Subalgebra.coe_algebraMap, Pi.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hx : (c0, g) ∈ Q.DomR P.k P.r Bs.z Bs.z'` using `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' Bs.sec hq`. Use `set Dc : (Fin P.r → ℂ) → Set (Q.Mx P.k P.r) := fun _ => Formalism.FourierDecayAlt.P.Qx5.Dp P.k P.r Bs.z Bs.z' with hDc`. Establish `hFam : Gauge.FamR P Bs Dc Φ`.
+
+Use `⟨?_, fun c _ => Formalism.FourierDecayAlt.P.Qx5.Dp_dom P.k P.r Bs.z Bs.z', fun q => ?_, ?_, fun c hc => Formalism.FourierDecayAlt.P.Qx5.slice_FF hz hz' hΦ hc⟩` and prove the remaining obligations. Establish `h1 : IsOpen {x : (Fin P.r → ℂ) × Q.Mx P.k P.r | x.1 ∈ OmX P.r}`. Establish `: IsOpen (OmX P.r)`. Establish `e : OmX P.r = ⋂ l, {x : Fin P.r → ℂ | x l ≠ 0}` using `by ext x; simp [OmX]`. Rewrite using `[e]`.
+
+Conclude with `isOpen_iInter_of_finite fun l => isOpen_ne_fun (continuous_apply l) continuous_const`. Conclude with `this.preimage continuous_fst`. Establish `h2 : IsOpen {x : (Fin P.r → ℂ) × Q.Mx P.k P.r | 0 < Q.GGl P.k P.r Bs.z Bs.z' x.2}` using `isOpen_lt continuous_const ((Formalism.FourierDecayAlt.P.Qx5.GGl_continuous P.k P.r Bs.z Bs.z').comp continuous_snd)`. Conclude with `h1.inter h2`. Establish `hq' : ((q.1.1, q.1.2) : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨q.2.1, by rw [hTz, hTz']; exact q.2.2⟩`.
+
+Conclude with `(Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' Bs.sec hq').2.2`. Introduce `x₀ hx₀ hgl`. Conclude with `hΦ.2.1 x₀ ⟨hx₀.1, hgl, hx₀.2⟩`. Establish `hG` using `hQQ Dc Φ hFam Y 1 1 ρ`. Establish `hs1` using `Gauge.raw_gauge_smoothness_holds Wp Wq P Bs hpl hk e he Dc _ (Gauge.quadratic_local_family_holds Wp Wq P Bs hpl hk Dc Φ hFam Y 1 1) ρ`.
+
+Establish `hs0` using `Gauge.raw_gauge_smoothness_holds Wp Wq P Bs hpl hk e he Dc Φ hFam ρ`. Establish `hQ11 : MA.QQr P (MA.DQ P) (Y : ℂ) 1 1 = MA.ggA P (MA.DQ P) * MA.xA P (MA.DQ P) (Y : ℂ)` using `rfl`. Rewrite `hG` using `[hQ11, Gauge.actA_mul, MA.ggA, Gauge.GC.SSC.actA_sc, MA.xA]`. Establish `hev` using `congrArg (fun s : MA.SmQ P.r P.TT => (s : MA.Qp P.r P.TT → ℂ) qq) hG`. Rewrite `hev` using `[Gauge.GC.toSm_of_mem P hs1, Gauge.GC.actA_kap]`.
+
+Establish `hw' : ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hw.ne'`. Establish `hGGv : Q.GGl P.k P.r Bs.z Bs.z' g = Complex.normSq ζ - P.TT`. Unfold `Q.GGl`. Rewrite using `[Formalism.FourierDecayAlt.P.NFRadRedA.zeta_muZ hz hz' Bs.sec hζ', hTz, hTz']`. Both sides reduce to the same expression.
+
+Establish `hGG0 : ((Complex.normSq ζ - P.TT : ℝ) : ℂ) ≠ 0`. Establish `: 0 < Complex.normSq ζ - P.TT` using `by linarith`. Conclude with `this.ne'` after adjusting the coercions. Establish `hsm : ∀ (c : ℂ) (A : Wq →L[ℂ] Wp), B.hsVec (c • A) = c • B.hsVec A`. Introduce `c A`.
+
+Use extensionality with `i`. Simplify using `[B.hsVec]`. Establish `hQLg : Q.QL P.k P.r Bs.z Bs.z' (Fin.last P.r) (Y : ℂ) 1 1 Φ c0 g = (((Complex.normSq ζ - P.TT : ℝ) : ℂ)) • X'`. Use extensionality with `v`. Establish `ht` using `Formalism.FourierDecayAlt.Q.LieAlgebraWeightVectors.top_level_pointwise_identity Formalism.FourierDecayAlt.P.capelli_two_by_two Formalism.FourierDecayAlt.P.right_type_action hz hz' (Formalism.FourierDecayAlt.P.Qx5.Dp_dom P.k P.r Bs.z Bs.z') Bs.π'_rep Bs.π'_cont (Formalism.Fourier …`.
+
+Use `show Q.tL P.k P.r Bs.z Bs.z' (Fin.last P.r) (Y : ℂ) 1 1 (Φ c0) g v = _`. Rewrite using `[ht, hval, ← hX', hGGv, ContinuousLinearMap.smul_apply]`. Establish `hL : Gauge.rawR P Bs.μsec e (Q.QL P.k P.r Bs.z Bs.z' (Fin.last P.r) (↑Y) 1 1 Φ) ρ qq = ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) * (((Complex.normSq ζ - P.TT : ℝ) : ℂ) * inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec X'))` using `by show ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) * inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec (Q.QL P.k P.r Bs.z Bs.z' (Fin.last P.r) (↑Y) 1 1 Φ c0 g)) = _`. Rewrite using `[hQLg, hsm, inner_smul_right]`. Establish `h0 : Gauge.rawR P Bs.μsec e Φ ρ qq = ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) * inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec X)` using `by show ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) * inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec (Φ c0 g)) = _`.
+
+Rewrite using `[hval]`. Set `Gq : MA.SmQ P.r P.TT` to `(MA.DQ P).gg P.TT`. Set `sq : MA.SmQ P.r P.TT` to `M.xC P ρ ↑Y • MA.toSm P (Gauge.rawR P Bs.μsec e Φ ρ)`. Express the relevant statement in the definitionally equal form `_ = ((Gq * sq : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) qq at hev`. Rewrite `hev` using `[Subalgebra.coe_mul, Pi.mul_apply]`.
+
+Establish `hgg : (Gq : MA.Qp P.r P.TT → ℂ) qq = ((Complex.normSq ζ - P.TT : ℝ) : ℂ)` using `by show MA.coordE M.vz qq.1 * MA.coordE M.vzb qq.1 - (P.TT : ℂ) = _`. Simplify using `[MA.coordE, MA.zE, M.vz, M.vzb, Complex.mul_conj, qq]`. Establish `hsq : (sq : MA.Qp P.r P.TT → ℂ) qq = M.xC P ρ ↑Y * Gauge.rawR P Bs.μsec e Φ ρ qq` using `by show ((M.xC P ρ ↑Y • MA.toSm P (Gauge.rawR P Bs.μsec e Φ ρ) : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) qq = _`. Rewrite using `[Subalgebra.coe_smul, Pi.smul_apply, Gauge.GC.toSm_of_mem P hs0, smul_eq_mul]`. Rewrite `hev` using `[hgg, hsq, hL, h0]`.
+
+Establish `h3 : ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) * (((Complex.normSq ζ - P.TT : ℝ) : ℂ) * inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec X')) = ((Gauge.wR P.k P.TT ζ : ℝ) : ℂ) * (((Complex.normSq ζ - P.TT : ℝ) : ℂ) * (M.xC P ρ ↑Y * inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec X)))`. Rewrite using `[hev]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_left_cancel₀ hGG0 (mul_left_cancel₀ hw' h3)`.
+-/
 theorem gauge_right_line_holds : GLRight := by
   intro Wp Wq _ _ _ _ _ _ P Bs e hpl hk he hQQ ζ hζ Fr hFr X hX Y X' hX' ρ
   obtain ⟨hOK, hz, hz', hTz, hTz', -, -⟩ := id hpl

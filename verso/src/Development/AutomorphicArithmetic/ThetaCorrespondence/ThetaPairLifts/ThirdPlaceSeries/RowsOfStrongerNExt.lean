@@ -18,6 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw
 namespace GlobalTheory.HeightCounting.Up
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists}
+/- English proof (translation)
+Take `⟨b, hb⟩` from `h`. Conclude with `⟨{ b with nx := ⟨b.nx.1, Classical.choice (hN _ _ _ _ _ _ _ _ _ _ _ _ _ b.nx.2)⟩ }, hb⟩`.
+-/
 theorem builtE_of_nExt_alt {N N' : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL} {S : SExt} {Γ : GeoP}
     (hN : ∀ K B f T w Z Wt p0 t nch n xd c, N' K B f T w Z Wt p0 t nch n xd c → Nonempty (N K B f T w Z Wt p0 t nch n xd c))
     (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (c : V4.Core K (w.st Z) f T)
@@ -33,6 +36,9 @@ noncomputable def weightedPointOfExtensionImplication {N N' : _root_.GlobalTheor
     (hN : ∀ K B f T w Z Wt p0 t nch n xd c, N' K B f T w Z Wt p0 t nch n xd c → Nonempty (N K B f T w Z Wt p0 t nch n xd c))
     {K : Ctx} (q : WPt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N' S Γ).s K) : WPt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s K :=
   ⟨q.B, q.f, q.T, q.w, q.Z, q.O, _root_.GlobalTheory.HeightCounting.Up.witnessOfExtensionImplication hN q.x⟩
+/- English proof (translation)
+Establish `r` using `h.recPin`. Conclude with `⟨⟨h.x, h.a, h.ax, h.y, { s := ⟨r.s.host, r.s.cols, r.s.full, r.s.g, r.s.theta, r.s.twE, r.s.twGood, r.s.chr, r.s.gal, r.s.nn, r.s.exp, r.s.chiD, r.s.twF, r.s.types, r.s.cover, r.s.plB, r.s.thetaChr, r.s.dt, r.s.pieces, r.s.inK, r.s.geo, r.s.tw⟩ k := ⟨r.k.std, r.k.O, r.k.ent, r.k. …`.
+-/
 theorem nonempty_bWit_wptOfNExt {N N' : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL} {S : SExt} {Γ : GeoP}
     (hN : ∀ K B f T w Z Wt p0 t nch n xd c, N' K B f T w Z Wt p0 t nch n xd c → Nonempty (N K B f T w Z Wt p0 t nch n xd c))
     {K : Ctx} (q : WPt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N' S Γ).s K) {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c) (h : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) :
@@ -46,6 +52,11 @@ theorem nonempty_bWit_wptOfNExt {N N' : _root_.GlobalTheory.Mem.Top.Bl.NormChoic
     h.s, h.pt, h.sx, h.eF, h.fi, h.uS, h.parts, h.cW, h.d3b, h.side, h.colPins⟩⟩
 end GlobalTheory.HeightCounting.Up
 namespace GlobalTheory.HeightCounting.Up
+/- English proof (translation)
+Introduce `hL N N' S Γ hN`. Establish `hB : ∀ K X f T c, IsBuiltE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N' S Γ).s K X f T c → IsBuiltE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s K X f T c` using `positionOf_mono (_root_.GlobalTheory.HeightCounting.Up.builtE_of_nExt_alt hN)`. Establish `hG : ∀ K X f T c, IsGoodE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N' S Γ).s K X f T c → IsGoodE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s K X f T c` using `positionOf_mono fun K B f T w Z c h => ⟨_root_.GlobalTheory.HeightCounting.Up.builtE_of_nExt_alt hN K B f T w Z c h.1, h.2⟩`. Establish `hLk : ∀ K β c b, _root_.GlobalTheory.Mem.Top.Bl.BundleLinkage (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N' S Γ) K β c b → _root_.GlobalTheory.Mem.Top.Bl.BundleLinkage (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) K β c b`. Introduce and unpack `K β c b ⟨q, b', ⟨h⟩, e⟩`.
+
+Conclude with `⟨_root_.GlobalTheory.HeightCounting.Up.weightedPointOfExtensionImplication hN q, b', _root_.GlobalTheory.HeightCounting.Up.nonempty_bWit_wptOfNExt hN q b' h, e⟩`. Use `⟨hB, hG, hLk, fun M DR A => ?_⟩` and prove the remaining obligations. Conclude with `{ hn4 := eventually_coreProperty_mono_fewerCores hB hG (fun _ _ hS h => row_mono_id hS hLk h) A.hn4 jOn := eventually_coreProperty_mono_fewerCores hB hG (fun _ _ hS h => row_mono_id hS hLk h) A.jOn hInstR := eventually_coreProperty_mono_fewerCores hB hG (fun _ _ hS h => row_mono_ …`.
+-/
 theorem rows_of_stronger_nExt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (N N' : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP), (∀ K B f T w Z Wt p0 t nch n xd c, N' K B f T w Z Wt p0 t nch n xd c → Nonempty (N K B f T w Z Wt p0 t nch n xd c)) → (∀ K X f T c, IsBuiltE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N' S Γ).s K X f T c → IsBuiltE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s K X f T c) ∧ (∀ K X f T c, IsGoodE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N' S Γ).s K X f T c → IsGoodE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s K X f T c) ∧ (∀ K β c b, _root_.GlobalTheory.Mem.Top.Bl.BundleLinkage (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N' S Γ) K β c b → _root_.GlobalTheory.Mem.Top.Bl.BundleLinkage (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) K β c b) ∧ ∀ (M : FamClass → Prop) (DR : _root_.GlobalTheory.Fc.R1.DefiniteSideType), _root_.GlobalTheory.Fc.AllRowsAlt KPx (IsBuiltE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s) (IsGoodE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ)) M DR → _root_.GlobalTheory.Fc.AllRowsAlt KPx (IsBuiltE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N' S Γ).s) (IsGoodE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N' S Γ).s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N' S Γ)) M DR := by
   intro hL N N' S Γ hN
   have hB : ∀ K X f T c, IsBuiltE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N' S Γ).s K X f T c → IsBuiltE (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s K X f T c :=

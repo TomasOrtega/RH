@@ -5,10 +5,16 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.UpDiagM
 
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qe40.up_diag_mul hX hY i`.
+-/
 private theorem up_diag_mul {R : Type} [CommRing R] {X Y : M4 R} (hX : IsUp X) (hY : IsUp Y) (i : Fin 4) :
     (X * Y) i i = X i i * Y i i :=
   _root_.UpperTheory.Reformulated.B.Qe40.up_diag_mul hX hY i
 
+/- English proof (translation)
+Establish `h1 : adj n * n = 1`. Use `h.1` as an intermediate fact. Rewrite `this` using `[IsGSp, one_smul]`. Then use the resulting hypothesis. Conclude with `⟨h1, mul_eq_one_comm.1 h1⟩`.
+-/
 private theorem low_inv {R : Type} [CommRing R] {n : M4 R} (h : IsLow n) : adj n * n = 1 ∧ n * adj n = 1 := by
   have h1 : adj n * n = 1 := by
     have := h.1
@@ -35,10 +41,25 @@ private def lin (p q : ℤ) : ℤ × ℤ →+ ℤ where
   map_zero' := by simp
   map_add' x y := by simp only [Prod.fst_add, Prod.snd_add]; ring
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 private theorem tau_nP : ∀ i j : Fin 4, (-2) * (wt i j).1 + (-1) * (wt i j).2 ≤ 0 → wt i j ∉ nP := by decide
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 private theorem tau_nM : ∀ i j : Fin 4, (-1) * (wt i j).1 + (-2) * (wt i j).2 ≤ 0 → wt i j ∉ nM := by decide
 
+/- English proof (translation)
+Introduce `O Γ _ _ _ Φ Λ _ _ a R _ _ _ c Q hc hQ`. Establish `hr : ∀ g i j, res Λ R (Q.r g i j) = c.r g i j` using `fun g i j => by`. Rewrite using `[← hQ.red]`. Both sides reduce to the same expression. Establish `hτ : ∃ τ : ℤ × ℤ →+ ℤ, ∀ g i j, i ≠ j → τ (wt i j) ≤ 0 → c.r g i j = 0`.
+
+Break down `hc.res.shape with h | h` into its components or cases. Conclude with `⟨lin (-2) (-1), fun g i j hij ht => h.1 g i j hij (tau_nP i j ht)⟩`. Conclude with `⟨lin (-1) (-2), fun g i j hij ht => h g i j hij (tau_nM i j ht)⟩`. Take `⟨τ, hτ⟩` from `hτ`. Use `⟨τ, ⟨Q.r, grChar Q hQ.pair⟩, ⟨⟨hQ.pair.mult, hQ.pair.kill, hQ.pair.nrm⟩, hQ.cont, fun v i N => ?_, fun g i => ?_, fun g i j hij ht => ?_, fun v i s => ?_⟩, rfl, ⟨hQ.pair.low, hQ.pair.flag, fun _ _ _ => rfl, fun v i s hs => hQ.pair.mu v s hs i⟩⟩` and prove the remaining obligations.
+
+Conclude with `((sxAdicMat (maximalIdeal R) (fun g => Q.r g) hQ.cont).2 (adj (Q.n v)) (Q.n v) i i N).comp_continuous continuous_subtype_val`. Conclude with `(hr g i i).trans (hc.res.diag g i)`. Conclude with `(res_eq_zero_iff Λ R _).1 ((hr g i j).trans (hτ g i j hij ht))`. Establish `h1` using `(sxPdMap ((algebraMap Λ R).comp a) (res Λ R : R →+* ResidueField Λ) Q).1 v i s`. Rewrite `h1` using `[hQ.red]`.
+
+Conclude with `h1.symm.trans (hc.res.char v s s.2 i)`.
+-/
 theorem UpperTheory.V.Ws.sxPairNear :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {Λ : Type} [CommRing Λ] [IsLocalRing Λ] {a : O →+* Λ} {R : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R] (c : PD Φ.ι Γ (ResidueField Λ)) (Q : PD Φ.ι Γ R), Φ.IsRes ((residue Λ).comp a) c → Φ.Lifts a c Q → ∃ (τ : ℤ × ℤ →+ ℤ) (D : RD Φ R), Φ.Near a τ D ∧ D.r = Q.r ∧ D.Flags Q.n := by
   intro O Γ _ _ _ Φ Λ _ _ a R _ _ _ c Q hc hQ

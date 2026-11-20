@@ -16,6 +16,9 @@ variable {ι : Type} {m n : ℕ}
 def der (m : ℕ) (τ : ι) (k l : Fin n) : Derivation ℂ (Pol ι m n) (Pol ι m n) :=
   ∑ i : Fin m, (X (τ, i, k) : Pol ι m n) • pderiv (τ, i, l)
 
+/- English proof (translation)
+Establish `h (S : Finset (Fin m)) (D : Fin m → Derivation ℂ (Pol ι m n) (Pol ι m n)) : (∑ i ∈ S, D i) P = ∑ i ∈ S, D i P`. Rewrite using `[← Finset.sum_apply]`. Conclude with `congrFun (map_sum Derivation.coeFnAddMonoidHom D S) P`. Simplify using `[der, h, colLie_apply]`.
+-/
 theorem der_apply (τ : ι) (k l : Fin n) (P : Pol ι m n) : der m τ k l P = colLie m τ k l P := by
   have h (S : Finset (Fin m)) (D : Fin m → Derivation ℂ (Pol ι m n) (Pol ι m n)) :
       (∑ i ∈ S, D i) P = ∑ i ∈ S, D i P := by
@@ -23,6 +26,11 @@ theorem der_apply (τ : ι) (k l : Fin n) (P : Pol ι m n) : der m τ k l P = co
     exact congrFun (map_sum Derivation.coeFnAddMonoidHom D S) P
   simp [der, h, colLie_apply]
 
+/- English proof (translation)
+Rewrite using `[der_apply, colLie_apply]`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[pderiv_X, Pi.single_apply]`. Establish `(a' : Fin m) : ((t', a, j) : ι × Fin m × Fin n) ≠ (t, a', l)`.
+
+Introduce `e`. Simplify using `only [Prod.mk.injEq] at e`. Conclude with `h ⟨e.1, e.2.2⟩`. Simplify using `[pderiv_X, this]`.
+-/
 theorem der_X [DecidableEq ι] (t t' : ι) (k l j : Fin n) (a : Fin m) :
     der m t k l (X (t', a, j)) = if t' = t ∧ j = l then X (t, a, k) else 0 := by
   rw [der_apply, colLie_apply]
@@ -33,6 +41,15 @@ theorem der_X [DecidableEq ι] (t t' : ι) (k l j : Fin n) (a : Fin m) :
       intro e; simp only [Prod.mk.injEq] at e; exact h ⟨e.1, e.2.2⟩
     simp [pderiv_X, this]
 
+/- English proof (translation)
+Establish `: ⁅der m t i i, der m t' k l⁆ = (if t = t' then ((if i = k then 1 else 0) - (if i = l then 1 else 0) : ℂ) else 0) • der m t' k l`. Use `MvPolynomial.derivation_ext fun ⟨s, a, j⟩ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.commutator_apply, Derivation.smul_apply]`. Simplify using `only [der_X, apply_ite (der m t i i), apply_ite (der m t' k l), map_zero]`. Distinguish the cases in `h1 : s = t' ∧ j = l`.
+
+Take `⟨rfl, rfl⟩` from `h1`. Distinguish the cases in `h2 : s = t`. Substitute `h2` using the available equality. Apply the tactic sequence `by_cases h3 : i = k <;> by_cases h4 : i = j <;> simp [h3, h4, eq_comm, sub_smul] <;> (try split_ifs) <;> simp_all`. Simplify using `[h2, Ne.symm h2]`.
+
+Simplify using `only [if_neg h1, smul_zero, zero_sub, neg_eq_zero] split_ifs with h2 h3`. Conclude with `absurd ⟨h2.1.trans h3.1, h2.2.trans h3.2⟩ h1`. Both sides reduce to the same expression. Both sides reduce to the same expression. Use `DFunLike.congr_fun this P` as an intermediate fact.
+
+Rewrite `this` using `[Derivation.commutator_apply, Derivation.smul_apply]`. Simplify `this` using `only [der_apply]`.
+-/
 theorem comm [DecidableEq ι] (t t' : ι) (i k l : Fin n) (P : Pol ι m n) :
     colLie m t i i (colLie m t' k l P) - colLie m t' k l (colLie m t i i P) =
       (if t = t' then ((if i = k then 1 else 0) - (if i = l then 1 else 0) : ℂ) else 0) •
@@ -59,11 +76,21 @@ theorem comm [DecidableEq ι] (t t' : ι) (i k l : Fin n) (P : Pol ι m n) :
   rw [Derivation.commutator_apply, Derivation.smul_apply] at this
   simpa only [der_apply] using this
 
+/- English proof (translation)
+Simplify using `only [colLie_apply, X_mul_pderiv_monomial, Int.cast_sum, Int.cast_natCast, Finset.sum_smul, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem diag_monomial (t : ι) (k : Fin n) (s : ι × Fin m × Fin n →₀ ℕ) (c : ℂ) :
     colLie m t k k (monomial s c) = ((∑ a, (s (t, a, k) : ℤ) : ℤ) : ℂ) • monomial s c := by
   simp only [colLie_apply, X_mul_pderiv_monomial, Int.cast_sum,
     Int.cast_natCast, Finset.sum_smul, Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+Rewrite using `[P.as_sum, map_sum, Finset.mul_sum]`. Use `Submodule.sum_mem _ fun s hs => ?_` and prove the remaining obligations. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `h : s b = 0`. Simplify using `[h]`.
+
+Rewrite `hP`, the goal using `[mem_restrictTotalDegree]`. Establish `h1 : (s.sum fun _ e => e) ≤ d` using `(le_totalDegree hs).trans hP`. Establish `h2 : s - Finsupp.single b 1 + Finsupp.single b 1 = s` using `Finsupp.sub_add_single_one_cancel h`. Establish `h3 : ((s - Finsupp.single b 1).sum fun _ e => e) + 1 = s.sum fun _ e => e` using `by conv_rhs => rw [← h2]`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`.
+
+Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Establish `h4` using `totalDegree_monomial_le (s - Finsupp.single b 1) (coeff s P * (s b : ℂ))`. Rewrite using `[totalDegree_X]`. Establish `h5 : ((s - Finsupp.single b 1).sum fun _ => id) = (s - Finsupp.single b 1).sum fun _ e => e` using `rfl`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem X_mul_pderiv_mem {σ : Type} (d : ℕ) (a b : σ) (P : MvPolynomial σ ℂ)
     (hP : P ∈ restrictTotalDegree σ ℂ d) : X a * pderiv b P ∈ restrictTotalDegree σ ℂ d := by
   classical
@@ -85,11 +112,19 @@ theorem X_mul_pderiv_mem {σ : Type} (d : ℕ) (a b : σ) (P : MvPolynomial σ �
     have h5 : ((s - Finsupp.single b 1).sum fun _ => id) = (s - Finsupp.single b 1).sum fun _ e => e := rfl
     omega
 
+/- English proof (translation)
+Rewrite using `[colLie_apply]`. Conclude with `Submodule.sum_mem _ fun i _ => X_mul_pderiv_mem d _ _ P hP`.
+-/
 theorem colLie_mem (d : ℕ) (t : ι) (k l : Fin n) (P : Pol ι m n)
     (hP : P ∈ restrictTotalDegree _ ℂ d) : colLie m t k l P ∈ restrictTotalDegree _ ℂ d := by
   rw [colLie_apply]
   exact Submodule.sum_mem _ fun i _ => X_mul_pderiv_mem d _ _ P hP
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ X`. Use `⟨Finset.univ.sup fun i => (Φ (b i)).totalDegree, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← b.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+
+Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[mem_restrictTotalDegree]`. Conclude with `Finset.le_sup (f := fun i => (Φ (b i)).totalDegree) (Finset.mem_univ i)`.
+-/
 theorem exists_bound {σ X : Type} [AddCommGroup X] [Module ℂ X] [FiniteDimensional ℂ X]
     (Φ : X →ₗ[ℂ] MvPolynomial σ ℂ) : ∃ d, ∀ x, Φ x ∈ restrictTotalDegree σ ℂ d := by
   let b := Module.finBasis ℂ X
@@ -105,6 +140,27 @@ end ColHigh
 
 open ColHigh in
 
+/- English proof (translation)
+Establish `hL : ∀ τ k l, ∀ Φ ∈ U, colLie m τ k l ∘ₗ Φ ∈ U`. Introduce `τ k l Φ hΦ`. Take `⟨d, hd⟩` from `exists_bound Φ`. Take `⟨s, c, h⟩` from `GlobalTheory.T.colLieOperator_eq_sum_colUnitaryAction_bddDegree ι m n d τ k l`. Establish `: colLie m τ k l ∘ₗ Φ = ∑ g ∈ s, c g • (colSub m τ g ∘ₗ Φ)` using `by ext1 x`.
+
+Rewrite using `[LinearMap.comp_apply, ← h _ ((mem_restrictTotalDegree _ _ _).1 (hd x))]`. Simplify using `[LinearMap.sum_apply]`. Rewrite using `[this]`. Conclude with `U.sum_mem fun g _ => U.smul_mem _ (hU Φ hΦ τ g)`. Take `⟨Φ₀, hΦ₀, hne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU0`.
+
+Take `⟨d, hd⟩` from `exists_bound Φ₀`. Set `R : Submodule ℂ (Pol ι m n)` to `restrictTotalDegree _ ℂ d`. Set `B : Submodule ℂ (X →ₗ[ℂ] Pol ι m n)` to `LinearMap.range (LinearMap.llcomp ℂ X R _ R.subtype : (X →ₗ[ℂ] R) →ₗ[ℂ] (X →ₗ[ℂ] Pol ι m n))`. Establish `hB : ∀ Φ, Φ ∈ B ↔ ∀ x, Φ x ∈ R`. Introduce `Φ`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Ψ, rfl⟩ x`. Conclude with `(Ψ x).2`. Introduce `h`. Conclude with `⟨Φ.codRestrict R h, rfl⟩`.
+
+Establish `: FiniteDimensional ℂ B` using `inferInstance`. Establish `: FiniteDimensional ℂ (U ⊓ B : Submodule ℂ _)` using `Submodule.finiteDimensional_of_le inf_le_right`. Set `e : ι → Fin n → Fin n → Module.End ℂ (X →ₗ[ℂ] Pol ι m n)` to `fun τ k l => LinearMap.llcomp ℂ X _ _ (colLie m τ k l)`. Establish `he : ∀ τ k l Φ, e τ k l Φ = colLie m τ k l ∘ₗ Φ` using `fun _ _ _ _ => rfl`. Take `⟨Φ, hΦ, h0, h1, μ, h2⟩` from `GlobalTheory.exists_highest_vector e (by`.
+
+Introduce `t t' i k l`. Use `LinearMap.ext fun Φ => LinearMap.ext fun x => ?_` and prove the remaining obligations. Conclude with `comm t t' i k l (Φ x))`. Use the proof step `(by`. Rewrite using `[eq_top_iff]`.
+
+Introduce `Φ _`. Set `b` to `Module.finBasis ℂ X`. Establish `: Φ = ∑ i, ∑ s ∈ (Φ (b i)).support, (b.coord i).smulRight (monomial s (coeff s (Φ (b i))))`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr x, map_sum]`.
+
+Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply, ← Finset.smul_sum, map_smul, ← as_sum, Module.Basis.coord_apply]`. Rewrite using `[this]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem (fun t k => ∑ a, (s (t, a, k) : ℤ)) ?_` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`.
+
+Introduce `t k`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[he, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.smulRight_apply, map_smul, diag_monomial, smul_comm])`. Use the proof step `(U ⊓ B) (fun τ k l Φ hΦ => ⟨hL τ k l Φ hΦ.1, (hB _).2 fun x => colLie_mem d τ k l _ ((hB _).1 hΦ.2 x)⟩)`. Use the proof step `((Submodule.ne_bot_iff _).2 ⟨Φ₀, ⟨hΦ₀, (hB _).2 hd⟩, hne⟩)`.
+
+Conclude with `⟨Φ, hΦ.1, h0, h1, μ, h2⟩`.
+-/
 theorem exists_colHighest (ι : Type) [Fintype ι] (m n : ℕ) (X : Type) [AddCommGroup X] [Module ℂ X]
     [FiniteDimensional ℂ X] (U : Submodule ℂ (X →ₗ[ℂ] Pol ι m n)) (hU0 : U ≠ ⊥)
     (hU : ∀ Φ ∈ U, ∀ τ g, colSub m τ g ∘ₗ Φ ∈ U) :

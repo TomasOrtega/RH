@@ -31,6 +31,11 @@ noncomputable def minusPart (θ : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ
 
 end Step
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨y, hy0, hy⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Establish `hy0' : star y ≠ 0` using `by simpa using hy0`. Use `hθ.2.2 (star y) hy0'` as an intermediate fact. Rewrite `this` using `[star_star, hy, dotProduct_zero]`.
+
+Simplify using `at this`.
+-/
 theorem det_ne_zero_of_cartan {M θ : Matrix (Fin n) (Fin n) ℂ} (hθ : IsCartan M θ) : M.det ≠ 0 := by
   intro h0
   obtain ⟨y, hy0, hy⟩ := Matrix.exists_mulVec_eq_zero_iff.mpr h0

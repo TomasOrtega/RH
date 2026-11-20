@@ -9,6 +9,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitaryApproximation.Bo
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitaryApproximation.UnitaryScalars
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitaryApproximation.EigenvalueAvoidance
 
+/- English proof (translation)
+The claim follows from `PI.UnitaryApproxFinWork.unitaryApproxFin_of PI.UnitaryApproxFinWork.topStep PI.UnitaryApproxFinWork.cayleyStep PI.UnitaryApproxFinWork.approxEStep PI.UnitaryApproxFinWork.weak_approximation_finite_unitary PI.UnitaryApproxFinWork.bounded_rational_unitary PI.UnitaryApproxFinWork.un …`.
+-/
 theorem unitary_approximation_finite : PI.UnitaryApproxFin.UnitaryApproxFin :=
   PI.UnitaryApproxFinWork.unitaryApproxFin_of PI.UnitaryApproxFinWork.topStep
     PI.UnitaryApproxFinWork.cayleyStep PI.UnitaryApproxFinWork.approxEStep

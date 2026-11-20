@@ -14,10 +14,20 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.SegNcjm
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yhb6.main h`.
+-/
 theorem exists_perm_of_map_eq {α : Type*} {l : ℕ} {x y : Fin l → α}
     (h : Finset.univ.val.map y = Finset.univ.val.map x) : ∃ e : Equiv.Perm (Fin l), ∀ a, y a = x (e a) :=
   _root_.UpperTheory.Reformulated.B.Yhb6.main h
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA l N x hx hxc V _ _ π hs hi h`. Take `⟨c, y, hy, hyc, φ, hφ⟩` from `GlobalTheory.T.support_subscheme_embedding k N V π hs hi`. Establish `h1 : HasSupport π (Finset.univ.val.map x)` using `hasSupport_of_isSubquotient hi hxc h`. Establish `h2 : HasSupport π (Finset.univ.val.map y)` using `hasSupport_of_isSubquotient hi hyc (.of_injective φ hφ)`. Establish `hm` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique GlobalTheory.CompanionTheory.GeoLink.geometricLemma GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness h2 h1`.
+
+Establish `hcl : c = l` using `by simpa using congrArg Multiset.card hm`. Substitute `hcl` using the available equality. Take `⟨e, he⟩` from `exists_perm_of_map_eq hm`. Take `rfl : y = fun a => x (e a)` from `funext he`. Use `⟨e, hy, GlobalTheory.CompanionTheory.FrobJm.one_le_jm hA _ hy π hs φ ?_⟩` and prove the remaining obligations.
+
+Establish `: Nontrivial V` using `GlobalTheory.SmGL.nontrivial_of_irreducible hi`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Conclude with `⟨v, fun h0 => hv (hφ (h0.trans (map_zero φ).symm))⟩`.
+-/
 theorem exists_perm_one_le_jm : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {l N : ℕ} (x : Fin l → IrrGL k)
     (hx : ∑ a, (x a).1 = N) (hxc : ∀ a, (x a).IsCusp) {V : Type} [AddCommGroup V] [Module ℂ V]

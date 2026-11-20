@@ -47,6 +47,17 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 open scoped nonZeroDivisors in
 open scoped CategoryTheory.Obj in
 
+/- English proof (translation)
+Substitute `e` using the available equality. Take `⟨hφ, hφm⟩` from `h`. Take `⟨hψ, hψm⟩` from `n`. Use `⟨hφ.lift ψ (G''.hom ≫ g) (by rw [hψ.w, Category.assoc]), ⟨?_, ?_⟩, hφ.lift_fst _ _ _⟩` and prove the remaining obligations. Use `IsPullback.of_right ?_ (hφ.lift_snd _ _ _) hφ` and prove the remaining obligations.
+
+Rewrite using `[hφ.lift_fst]` and apply the resulting hypothesis. Introduce `T x y x₀ y₀ hx hy`. Apply `hφ.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hφ.lift_fst]`. Set `u : Over.mk ((T.hom ≫ g) ≫ f) ⟶ Over.mk (T.hom ≫ g ≫ f)` to `Over.homMk (𝟙 T.left) (by simp)`.
+
+Set `x₁ : Over.mk (T.hom ≫ g ≫ f) ⟶ G` to `Over.homMk (x.left ≫ ψ) (by`. Simplify using `only [Over.mk_hom, Category.assoc, hψ.w]`. Simplify using `only [← Category.assoc, Over.w])`. Set `y₁ : Over.mk (T.hom ≫ g ≫ f) ⟶ G` to `Over.homMk (y.left ≫ ψ) (by`. Simplify using `only [Over.mk_hom, Category.assoc, hψ.w]`.
+
+Simplify using `only [← Category.assoc, Over.w])`. Establish `hψxy` using `hψm T x y x₁ y₁ rfl rfl`. Establish `hφxy` using `hφm (Over.mk (T.hom ≫ g)) x₀ y₀ (u ≫ x₁) (u ≫ y₁) (by simp [u, x₁, hx, hφ.lift_fst]) (by simp [u, y₁, hy, hφ.lift_fst])`. Rewrite using `[← hφxy, ← hψxy, ← comp_mul]`. Simplify using `[u]`.
+
+Rewrite using `[Category.assoc, hφ.lift_snd, ← Category.assoc, Over.w, Over.w]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.PlaceModel.exists_factor_pullback {S S' S'' : Scheme.{0}} {G : Over S}
     {G' : Over S'} {G'' : Over S''} [GrpObj G]
     [GrpObj G'] [GrpObj G''] {f : S' ⟶ S} {c : S'' ⟶ S} {φ : G'.left ⟶ G.left}
@@ -76,6 +87,19 @@ theorem _root_.GlobalTheory.PlaceModel.exists_factor_pullback {S S' S'' : Scheme
     · rw [Category.assoc, hφ.lift_snd, ← Category.assoc, Over.w, Over.w]
       rfl
 
+/- English proof (translation)
+Introduce `U S j G H _ _ G' H' _ _ φ ψ hG hH M _ s hs e he hgen x`. Set `φ₀ : Over.mk (G'.hom ≫ j) ⟶ G` to `Over.homMk φ hG.1.w`. Set `θ : (G' ⟶ H') → (Over.mk (G'.hom ≫ j) ⟶ H)` to `fun f ↦ Over.homMk (f.left ≫ ψ) (by`. Express the relevant statement in the definitionally equal form `(f.left ≫ ψ) ≫ H.hom = G'.hom ≫ j`. Rewrite using `[Category.assoc, hH.1.w, ← Category.assoc, Over.w f])`.
+
+Set `Θ : (G' ⟶ H') →* (Over.mk (G'.hom ≫ j) ⟶ H)` to `MonoidHom.mk' θ fun a b ↦ Over.OverMorphism.ext (hH.2 G' a b (θ a) (θ b) rfl rfl).symm`. Set `Ξ : (G ⟶ H) →* (Over.mk (G'.hom ≫ j) ⟶ H)` to `MonoidHom.mk' (fun F ↦ φ₀ ≫ F) fun a b ↦ MonObj.comp_mul _ _ _`. Establish `e0 : e 0 = 1`. Establish `h` using `he 0 0`. Rewrite `h` using `[add_zero]`.
+
+Conclude with `left_eq_mul.1 h`. Set `K : AddSubgroup M` to `{ carrier := {x | Θ (e x) ∈ Ξ.range} zero_mem' := by`. Express the relevant statement in the definitionally equal form `Θ (e 0) ∈ Ξ.range`. Rewrite using `[e0, map_one]`. Conclude with `one_mem _`.
+
+Use the proof step `add_mem' := fun {a b} ha hb ↦ by`. Express the relevant statement in the definitionally equal form `Θ (e (a + b)) ∈ Ξ.range`. Rewrite using `[he, map_mul]`. Conclude with `mul_mem ha hb`. Use the proof step `neg_mem' := fun {a} ha ↦ by`.
+
+Express the relevant statement in the definitionally equal form `Θ (e (-a)) ∈ Ξ.range`. Establish `h` using `he (-a) a`. Rewrite `h` using `[neg_add_cancel, e0]`. Rewrite using `[eq_inv_of_mul_eq_one_left h.symm, map_inv]`. Conclude with `inv_mem ha }`.
+
+Establish `hK : Submodule.span ℤ s ≤ AddSubgroup.toIntSubmodule K` using `Submodule.span_le.2 fun y hy ↦ by`. Take `⟨F, hF⟩` from `hgen y hy`. Conclude with `⟨F, Over.OverMorphism.ext hF.symm⟩`. Take `⟨F, hF⟩ : Θ (e x) ∈ Ξ.range` from `hK (hs ▸ Submodule.mem_top)`. Conclude with `⟨F, (congrArg (fun z ↦ z.left) hF).symm⟩`.
+-/
 theorem descends_of_generators : ∀ {U S : Scheme.{0}} (j : U ⟶ S) {G H : Over S} [GrpObj G] [GrpObj H] {G' H' : Over U} [GrpObj G']
     [GrpObj H'] {φ : G'.left ⟶ G.left} {ψ : H'.left ⟶ H.left}, IsGrpPullback G' G j φ → IsGrpPullback H' H j ψ →
     ∀ (M : Type) [AddCommGroup M] (s : Set M), Submodule.span ℤ s = ⊤ → ∀ (e : M → (G' ⟶ H')),
@@ -112,6 +136,17 @@ theorem descends_of_generators : ∀ {U S : Scheme.{0}} (j : U ⟶ S) {G H : Ove
   obtain ⟨F, hF⟩ : Θ (e x) ∈ Ξ.range := hK (hs ▸ Submodule.mem_top)
   exact ⟨F, (congrArg (fun z ↦ z.left) hF).symm⟩
 
+/- English proof (translation)
+Introduce `R₀ R _ _ _ _ ic j hj G₀ _ P₀ Ψ₀ hfin hfl hsurj A _ g hg hA AQ _ pj hpj M MQ hM hMQ e amp`. Set `K` to `FractionRing R`. Set `i : K →+* Qb` to `IsFractionRing.lift hj`. Establish `hi : ∀ r, i (algebraMap R K r) = j r` using `fun r ↦ IsFractionRing.lift_algebraMap hj r`. Establish `hs : spMap i ≫ spMap (algebraMap R K) = spMap j`.
+
+Rewrite using `[HomDescent.spMap_comp]`. Conclude with `congrArg spMap (RingHom.ext hi)`. Establish `hK` using `isGrpPullback_pullback A (spMap (algebraMap R K))`. Take `⟨a, ha, ea⟩` from `exists_factor_pullback hK hpj _ hs`. Establish `hM₀` using `pull_isLB hM (pullback.fst A.hom (spMap (algebraMap R K)))`.
+
+Establish `amp₀` using `AmpleDescent.relAmple_of_fieldExtension K Qb i ((Over.pullback (spMap (algebraMap R K))).obj A) AQ a (M.pull (pullback.fst A.hom (spMap (algebraMap R K)))) MQ (PolPull.isAbelianScheme_of_isGrpPullback hA hK) ha hM₀ hMQ ((cls_eq_iff hMQ (pull_isLB hM₀ _)).1 (by`. Rewrite using `[cls_pull hM₀, cls_pull hM, ← pull_comp, ea, ← cls_pull hM _ (pull_isLB hM _)]`. Conclude with `(cls_eq_iff _ _).2 e)) amp`. Take `⟨P, φ, hφ, -⟩` from `exists_polBaseChange_oAct R₀ R ic P₀`. Establish `w : (φ ≫ Ψ₀.left) ≫ G₀.hom = P.A.hom ≫ spMap ic` using `by rw [Category.assoc, Over.w Ψ₀, hφ.1.w]`.
+
+Set `Ψ : P.A ⟶ A` to `Over.homMk (hg.1.lift _ _ w) (hg.1.lift_snd _ _ _)`. Establish `e₁ : Ψ.left ≫ g = φ ≫ Ψ₀.left` using `hg.1.lift_fst _ _ _`. Establish `sq : IsPullback φ Ψ.left Ψ₀.left g`. Use `IsPullback.of_bot ?_ e₁.symm hg.1` and prove the remaining obligations. Rewrite using `[Over.w Ψ, Over.w Ψ₀]`.
+
+Conclude with `hφ.1`. Conclude with `AmpleDedekind.relAmple_of_generic_of_isogenous abelianSchemeLaws_all.1 abelianSchemeLaws_all.2 R K P A Ψ M _ _ _ hA hM hM₀ (MorphismProperty.of_isPullback (P := @IsFinite) sq hfin) (MorphismProperty.of_isPullback (P := @Flat) sq hfl) (MorphismProperty.of_isPullback (P := @Surject …`.
+-/
 theorem relAmple_of_algebraic_fibre : ∀ (R₀ R : Type) [CommRing R₀] [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (ic : R₀ →+* R) (j : R →+* Qb),
     Function.Injective j → ∀ (G₀ : Over (Sp R₀)) [GrpObj G₀] (P₀ : Out.PolAV (Sp R₀)) (Ψ₀ : P₀.A ⟶ G₀),
     IsFinite Ψ₀.left → Flat Ψ₀.left → Surjective Ψ₀.left →
@@ -146,6 +181,13 @@ theorem relAmple_of_algebraic_fibre : ∀ (R₀ R : Type) [CommRing R₀] [CommR
     (MorphismProperty.of_isPullback (P := @Flat) sq hfl) (MorphismProperty.of_isPullback (P := @Surjective) sq hsurj)
     hK ((cls_eq_iff hM₀ hM₀).1 rfl) amp₀
 
+/- English proof (translation)
+Use `hA.smooth` as an intermediate fact. Use `hB.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hB.proper` as an intermediate fact. Use `hA.comm` as an intermediate fact.
+
+Establish `: LocallyOfFiniteType (f.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: LocallyOfFiniteType f.left` using `locallyOfFiniteType_of_comp _ B.hom`. Establish `: QuasiCompact (f.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: QuasiCompact f.left` using `QuasiCompact.of_comp _ B.hom`. Establish `hSA` using `isSemiAbelian_of_isAbelianScheme A hA`.
+
+Establish `: LocallyQuasiFinite f.left` using `locallyQuasiFinite_of_finite_geometric_ker _ A B f hf inferInstance inferInstance fun Ω _ _ t ↦ by`. Use `HomExt.finite_torsion_points hSA t hm` as an intermediate fact. Conclude with `Finite.of_injective (β := {x : Over.mk t ⟶ A // x ^ m = 1}) (fun x ↦ ⟨x.1, hker _ x.1 x.2⟩) fun a b e ↦ Subtype.ext (congrArg (fun z : {x : Over.mk t ⟶ A // x ^ m = 1} ↦ z.1) e)`. Take `⟨h₁, h₂⟩` from `IsogenyQuasiInverse.flat_surjective_of_field A B g hA hB hAg hBg f`. Conclude with `(exists_monHom_factor_of_flat_surjective _ A B A f u hf hu h₁ h₂ inferInstance h).1`.
+-/
 theorem exists_factor_isogeny {K : Type} [Field K] [IsAlgClosed K] (A B : Over (Sp K)) [GrpObj A] [GrpObj B] (g : ℕ)
     (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) (hAg : SmoothOfRelativeDimension g A.hom)
     (hBg : SmoothOfRelativeDimension g B.hom) (f : A ⟶ B) (hf : IsMonHom f) (m : ℕ) (hm : 0 < m)
@@ -171,6 +213,17 @@ theorem exists_factor_isogeny {K : Type} [Field K] [IsAlgClosed K] (A B : Over (
   obtain ⟨h₁, h₂⟩ := IsogenyQuasiInverse.flat_surjective_of_field A B g hA hB hAg hBg f
   exact (exists_monHom_factor_of_flat_surjective _ A B A f u hf hu h₁ h₂ inferInstance h).1
 
+/- English proof (translation)
+Establish `int : ∀ d ∈ (𝔠 : FractionalIdeal (𝓞 F)⁰ F), ∀ e ∈ ((𝔠⁻¹ : FracId F) : FractionalIdeal (𝓞 F)⁰ F), ∃ a : 𝓞 F, algebraMap (𝓞 F) F a = d * e` using `fun d hd e he ↦ by`. Establish `h` using `FractionalIdeal.mul_mem_mul hd he`. Rewrite `h` using `[Units.mul_inv]`. Conclude with `(FractionalIdeal.mem_one_iff _).1 h`. Establish `h1 : (1 : F) ∈ (𝔠 : FractionalIdeal (𝓞 F)⁰ F) * ((𝔠⁻¹ : FracId F) : FractionalIdeal (𝓞 F)⁰ F)`.
+
+Rewrite using `[Units.mul_inv]`. Conclude with `FractionalIdeal.one_mem_one _`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, e⟩ : ∃ a ∈ Ideal.span {a : 𝓞 F | a ≠ 0 ∧ ∃ d : 𝔠.elt, ∀ d' : 𝔠.elt, ∃ b : 𝓞 F, a • d' = b • d}, algebraMap (𝓞 F) F a = 1 := by`. Use `FractionalIdeal.mul_induction_on (C := fun w ↦ ∃ a ∈ Ideal.span {a : 𝓞 F | a ≠ 0 ∧ ∃ d : 𝔠.elt, ∀ d' : 𝔠.elt, ∃ b : 𝓞 F, a • d' = b • d}, algebraMap (𝓞 F) F a = w) h1 (fun d hd e he ↦ ?_) ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `int d hd e he`.
+
+Use `⟨a, ?_, ha⟩` and prove the remaining obligations. Distinguish the cases in `h0 : a = 0`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Use `Ideal.subset_span ⟨h0, ⟨d, hd⟩, fun d' ↦ ?_⟩` and prove the remaining obligations.
+
+Take `⟨b, hb⟩` from `int d' d'.2 e he`. Use `⟨b, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a • (d' : F) = b • d`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, ha, hb]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, add_mem ha hb, map_add _ _ _⟩`. Rewrite using `[← FaithfulSMul.algebraMap_injective (𝓞 F) F (e.trans (map_one _).symm)]` and apply the resulting hypothesis.
+-/
 theorem span_conductors {F : Type} [Field F] [NumberField F] (𝔠 : FracId F) :
     (1 : 𝓞 F) ∈ Ideal.span {a : 𝓞 F | a ≠ 0 ∧ ∃ d : 𝔠.elt, ∀ d' : 𝔠.elt, ∃ b : 𝓞 F, a • d' = b • d} := by
   have int : ∀ d ∈ (𝔠 : FractionalIdeal (𝓞 F)⁰ F), ∀ e ∈ ((𝔠⁻¹ : FracId F) : FractionalIdeal (𝓞 F)⁰ F),
@@ -199,6 +252,17 @@ theorem span_conductors {F : Type} [Field F] [NumberField F] (𝔠 : FracId F) :
       exact ⟨a + b, add_mem ha hb, map_add _ _ _⟩
   rwa [← FaithfulSMul.algebraMap_injective (𝓞 F) F (e.trans (map_one _).symm)]
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 XQ DQ _ QQ hD gD q x hx ex`. Use `haveI : IsAlgClosed Qb := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Take `⟨t, ht, h1⟩` from `Submodule.mem_span_finite_of_mem_span (span_conductors 𝔠)`. Use `⟨t, (Ideal.eq_top_iff_one _).2 h1, fun a ha ↦ ?_⟩` and prove the remaining obligations. Take `⟨a0, d, hd⟩` from `ht ha`.
+
+Establish `k : ∀ (T : Over (Sp Qb)) (z : T ⟶ XQ.A), z ≫ x d = 1 → z ≫ XQ.rm.act a = 1` using `fun T z hz ↦ by`. Use `XQ.ker d T z ((triv_ev_iff (XQ.isLB d) _ _).2 ?_) a hd` and prove the remaining obligations. Rewrite using `[evc_of_cls q.isLB (XQ.isLB d) ((cls_eq_iff _ (pull_isLB q.isLB _)).2 (ex d)), Category.assoc, hz, MonObj.comp_one]`. Conclude with `evc_one_right q.isLB q.zero _`. Establish `hn : ∀ n : ℕ, XQ.rm.act n = 𝟙 XQ.A ^ n` using `fun n ↦ by`.
+
+Proceed by induction on `n with`. Consider the case `zero`. Establish `e` using `XQ.rm.add 0 0`. Rewrite `e` using `[add_zero]`. Rewrite using `[Nat.cast_zero, pow_zero, left_eq_mul.1 e]`.
+
+Consider the case `succ n ih => rw [Nat.cast_succ, XQ.rm.add, ih, XQ.rm.one, pow_succ]`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {a}))`. Establish `hm : 0 < Ideal.absNorm (Ideal.span {a})` using `Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]; exact a0)`. Use `⟨d, exists_factor_isogeny XQ.A DQ _ XQ.ab hD XQ.dim gD (x d) (hx d) _ hm (fun T z hz ↦ ?_) _ (XQ.rm.hom a) k⟩` and prove the remaining obligations. Use `haveI := XQ.rm.hom b`.
+
+Establish `e : z ≫ XQ.rm.act (b * a) = 1` using `by rw [mul_comm, XQ.rm.mul, ← Category.assoc, k T z hz, MonObj.one_comp]`. Rewrite `e` using `[hb, hn, MonObj.comp_pow, Category.comp_id]`. Then use the resulting hypothesis.
+-/
 theorem exists_hom_from_dual : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (XQ : Obj F 𝔠 (Sp Qb)) (DQ : Over (Sp Qb)) [GrpObj DQ]
     (QQ : LB (XQ.A ⊗ DQ).left), IsAbelianScheme DQ → SmoothOfRelativeDimension (Module.finrank ℚ F) DQ.hom →
     IsDual XQ.A DQ QQ → ∀ x : 𝔠.elt → (XQ.A ⟶ DQ), (∀ c, IsMonHom (x c)) →
@@ -230,6 +294,43 @@ theorem exists_hom_from_dual : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : 
   have e : z ≫ XQ.rm.act (b * a) = 1 := by rw [mul_comm, XQ.rm.mul, ← Category.assoc, k T z hz, MonObj.one_comp]
   rwa [hb, hn, MonObj.comp_pow, Category.comp_id] at e
 
+/- English proof (translation)
+Introduce `l _ lam k₀ R₀ _ _ _ σ hσ G₀ H₀ _ _ hG₀ hH₀ GQ HQ _ _ gQ hQ hgQ hhQ f hf`. Use `letI : Algebra R₀ Qb := σ.toAlgebra`. Use `haveI := hG₀.smooth`. Use `haveI := hG₀.proper`. Use `haveI := hH₀.smooth`.
+
+Use `haveI := hH₀.proper`. Establish `cG` using `isGrpPullback_pullback G₀ (spMap (algebraMap R₀ Qb))`. Establish `cH` using `isGrpPullback_pullback H₀ (spMap (algebraMap R₀ Qb))`. Take `⟨u, hu, eu⟩` from `exists_factor_pullback hgQ cG (𝟙 _) (Category.id_comp _)`. Take `⟨v, hv, ev'⟩` from `exists_factor_pullback hhQ cH (𝟙 _) (Category.id_comp _)`.
+
+Take `⟨u', hu', eu'⟩` from `exists_factor_pullback cG hgQ (𝟙 _) (Category.id_comp _)`. Establish `uu : u' ≫ u = 𝟙 _` using `hgQ.1.hom_ext (by rw [Category.assoc, eu, eu', Category.id_comp]) (by rw [Category.assoc, hu.1.w, ← Category.assoc, hu'.1.w]; simp)`. Take `⟨f', hf', ef'⟩` from `HomDescent.exists_isMonHom_pull hu hv f`. Take `⟨R₁, g₁, ⟨s, hs⟩, hg₁, eg₁⟩` from `HomDescent.exists_fg_isMonHom (k := R₀) (C := Qb) f'`. Set `s' : Set ℂ` to `(fun z : Qb ↦ (z : ℂ)) '' s`.
+
+Use `haveI : Finite s' := (s.finite_toSet.image _).to_subtype`. Use `⟨IntermediateField.adjoin ℚ s', IntermediateField.finiteDimensional_adjoin ?_, fun R hR ic j hic hj ↦ ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, -, rfl⟩`. Conclude with `(mem_algebraicClosure_iff.1 z.2).isIntegral`. Introduce `G H _ _ g h pG pH hg hh hpG hpH epG epH`.
+
+Use `haveI : IsDiscreteValuationRing R := hR.1`. Establish `hji : Function.Injective j` using `fun a b h ↦ by`. Establish `e` using `congrArg (fun z : Qb ↦ (z : ℂ)) h`. Simplify using `only [hj] at e`. Conclude with `Subtype.ext e`.
+
+Set `K` to `FractionRing R`. Set `i : K →+* Qb` to `IsFractionRing.lift hji`. Establish `hi : ∀ r, i (algebraMap R K r) = j r` using `fun r ↦ IsFractionRing.lift_algebraMap hji r`. Establish `hjic : ∀ y, j (ic y) = σ y` using `fun y ↦ Subtype.ext (by rw [hj, hic, hσ])`. Establish `small : ∀ z : Qb, (z : ℂ) ∈ IntermediateField.adjoin ℚ s' → ‖lam z‖ ≤ 1 → z ∈ i.fieldRange` using `fun z hz hn ↦ ⟨algebraMap R K ⟨z, hR.2.2 _ hz ⟨z.2, by rw [Real.rpow_zero]; exact hn⟩⟩, by rw [hi]; exact Subtype.ext (hj _)⟩`.
+
+Establish `mem : ∀ r ∈ R₁, r ∈ i.fieldRange` using `fun r hr ↦ by`. Rewrite `hr` using `[← hs]`. Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem z hz`. Establish `hz' : (z : ℂ) ∈ IntermediateField.adjoin ℚ s'` using `IntermediateField.subset_adjoin _ _ ⟨z, hz, rfl⟩`.
+
+Break down `le_total ‖lam z‖ 1 with hn | hn` into its components or cases. Conclude with `small z hz' hn`. Conclude with `inv_mem_iff.1 (small z⁻¹ (inv_mem hz') (by rw [map_inv₀, norm_inv]; exact inv_le_one_of_one_le₀ hn))`. Consider the case `algebraMap y => exact ⟨algebraMap R K (ic y), (hi _).trans (hjic y)⟩`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`.
+
+Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`. Use `choose ρ₀ hρ₀ using fun r : R₁ ↦ mem r.1 r.2`. Establish `hρ₀' : ∀ r, i (ρ₀ r) = r` using `hρ₀`. Set `ρ : R₁ →+* K` to `{ toFun := ρ₀ map_one' := i.injective (by rw [hρ₀', map_one]; rfl) map_mul' := fun a b ↦ i.injective (by rw [map_mul, hρ₀', hρ₀', hρ₀']; rfl) map_zero' := i.injective (by rw [hρ₀', map_zero]; rfl) map_add' := fun a b ↦ i.injective (by rw [map_add, hρ₀', hρ₀', hρ₀']; rfl) }`. Establish `s₁ : spMap i ≫ spMap (algebraMap R K) = spMap j`.
+
+Rewrite using `[HomDescent.spMap_comp]`. Use `congr 1`. Conclude with `RingHom.ext hi`. Establish `s₂ : spMap ρ ≫ spMap (algebraMap R₀ R₁) = spMap (algebraMap R K) ≫ spMap ic`. Rewrite using `[HomDescent.spMap_comp, HomDescent.spMap_comp]`.
+
+Use `congr 1`. Conclude with `RingHom.ext fun y ↦ i.injective ((hρ₀' _).trans ((hi _).trans (hjic y)).symm)`. Establish `s₃ : spMap i ≫ spMap ρ = spMap R₁.val.toRingHom`. Rewrite using `[HomDescent.spMap_comp]`. Use `congr 1`.
+
+Conclude with `RingHom.ext hρ₀'`. Establish `kG` using `isGrpPullback_pullback G (spMap (algebraMap R K))`. Establish `kH` using `isGrpPullback_pullback H (spMap (algebraMap R K))`. Take `⟨φ, hφ, eφ⟩` from `exists_factor_pullback (isGrpPullback_pullback G₀ (spMap (algebraMap R₀ R₁))) (kG.comp hg) _ s₂`. Take `⟨ψ, hψ, eψ⟩` from `exists_factor_pullback (isGrpPullback_pullback H₀ (spMap (algebraMap R₀ R₁))) (kH.comp hh) _ s₂`.
+
+Take `⟨gK, hgK, egK⟩` from `HomDescent.exists_isMonHom_pull hφ hψ g₁`. Take `⟨Φ, ⟨-, eΦ⟩, -⟩` from `Published.AbelianDualCrystal.hom_extends (K := K) (PolPull.isAbelianScheme_of_isGrpPullback hG₀ hg) (PolPull.isAbelianScheme_of_isGrpPullback hH₀ hh) gK`. Establish `eΦ' : gK.left ≫ pullback.fst _ _ = pullback.fst _ _ ≫ Φ.left`. Rewrite using `[← eΦ]`. Conclude with `ExtUnique.pullback_map_left_fst _ Φ`.
+
+Take `⟨a, ha, ea⟩` from `exists_factor_pullback kG hpG _ s₁`. Establish `ab : a ≫ φ = u' ≫ Spread.bcMap G₀.hom R₁.val`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `(Category.assoc _ _ _).trans (Eq.trans ?_ (Category.assoc _ _ _).symm) erw [eφ, Spread.bcMap_fst, eu', ← Category.assoc, ea, epG]` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans (Eq.trans ?_ (Category.assoc _ _ _).symm)` and prove the remaining obligations.
+
+Establish `b₁` using `congrArg (a ≫ ·) hφ.1.w`. Establish `b₂` using `congrArg (· ≫ spMap ρ) ha.1.w`. Establish `b₃` using `congrArg (u' ≫ ·) (Spread.bcMap_snd G₀.hom R₁.val)`. Establish `b₄` using `congrArg (· ≫ spMap R₁.val.toRingHom) (hu'.1.w.trans (Category.comp_id _))`. Conclude with `b₁.trans ((Category.assoc _ _ _).symm.trans (b₂.trans ((Category.assoc _ _ _).trans ((congrArg (GQ.hom ≫ ·) s₃).trans (b₄.symm.trans ((Category.assoc _ _ _).trans b₃.symm))))))`.
+
+Use `⟨Φ, hh.1.hom_ext ?_ ?_⟩` and prove the remaining obligations. Establish `c₁ : pG ≫ Φ.left = a ≫ gK.left ≫ pullback.fst _ _` using `by rw [eΦ', ← ea, Category.assoc]`. Establish `c₂ : (a ≫ gK.left ≫ pullback.fst _ _) ≫ h = a ≫ (gK.left ≫ ψ) ≫ pullback.fst _ _`. Simplify using `only [Category.assoc]`. Conclude with `congrArg (fun z ↦ a ≫ gK.left ≫ z) eψ.symm`.
+
+Establish `c₃ : a ≫ (gK.left ≫ ψ) ≫ pullback.fst _ _ = u' ≫ f'.left ≫ pullback.fst _ _`. Rewrite using `[egK, ← eg₁, ← Category.assoc, ← Category.assoc, ab]`. Simplify using `only [Category.assoc]`. Establish `c₄ : u' ≫ f'.left ≫ pullback.fst _ _ = f.left ≫ hQ`. Use `congrArg (fun z ↦ u' ≫ f'.left ≫ z) ev'.symm` as an intermediate fact.
+
+Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc f'.left, ef', Category.assoc, ← Category.assoc, uu, Category.id_comp]`. Rewrite using `[c₁, c₂, c₃, c₄, Category.assoc, epH]`. Rewrite using `[Category.assoc, Category.assoc, hpH.1.w, Over.w Φ, hpG.1.w, ← Category.assoc, Over.w f]`.
+-/
 theorem eventually_descendsTo : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (k₀ : IntermediateField ℚ ℂ)
     (R₀ : Subring ℂ), FiniteDimensional ℚ k₀ → IsPlaceOver l lam k₀ R₀ → (∀ x ∈ R₀, x ∈ k₀) →
     ∀ (σ : R₀ →+* Qb), (∀ x, ((σ x : Qb) : ℂ) = x) →
@@ -343,6 +444,13 @@ end GlobalTheory.PlaceModel
 
 namespace GlobalTheory.PlaceModel
 
+/- English proof (translation)
+Take `⟨x, hx, -⟩` from `q.univ B P hP a`. Take `⟨x', hx', -⟩` from `q.univ B P' hP' a'`. Establish `ex : cls P hP = evc q.isLB (fst A B) (snd A B ≫ x)` using `(cls_eq_iff hP (pull_isLB q.isLB _)).2 hx`. Establish `ex' : cls P' hP' = evc q.isLB (fst A B) (snd A B ≫ x')` using `(cls_eq_iff hP' (pull_isLB q.isLB _)).2 hx'`. Establish `ly : ∀ y : B ⟶ D, ∃ y' : B' ⟶ D', g ≫ y.left = y'.left ≫ d` using `fun y ↦ ⟨_, (liftPt_left hd B'.hom (g ≫ y.left) (by rw [Category.assoc, Over.w y, hg.w])).symm⟩`.
+
+Take `⟨y, ey⟩` from `ly x`. Take `⟨y', ey'⟩` from `ly x'`. Take `rfl : y = y'` from `dual_ext q' <| by`. Rewrite using `[← pull_evc_eq l₁ l₂ m₁ m₂ q.isLB q'.isLB ey, ← pull_evc_eq l₁ l₂ m₁ m₂ q.isLB q'.isLB ey', ← ex, ← ex', e]`. Take `rfl : x = x'` from `ExtUnique.over_hom_ext_of_isPullback hg (ey.trans ey'.symm)`.
+
+Conclude with `ex.trans ex'.symm`.
+-/
 theorem cls_eq_of_pull_dominant {S S' : Scheme.{0}} {b : S' ⟶ S} [QuasiCompact b] [IsSchemeTheoreticallyDominant b]
     {A B D : Over S} [GrpObj A] [GrpObj D] [Flat B.hom] [IsSeparated D.hom]
     {A' B' D' : Over S'} [GrpObj A'] [GrpObj D'] {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left} {d : D'.left ⟶ D.left}
@@ -366,6 +474,31 @@ theorem cls_eq_of_pull_dominant {S S' : Scheme.{0}} {b : S' ⟶ S} [QuasiCompact
   obtain rfl : x = x' := ExtUnique.over_hom_ext_of_isPullback hg (ey.trans ey'.symm)
   exact ex.trans ex'.symm
 
+/- English proof (translation)
+Use `haveI := hA₀.comm`. Use `haveI := hA₀.smooth`. Use `haveI := hD₀.proper`. Take `⟨l, l₁, l₂⟩` from `exists_prod_pullback hp hp`. Establish `hx : ∀ c : 𝔠.elt, ∃ P₀ : LB (A₀ ⊗ A₀).left, ∃ h : P₀.IsLB, IsAdditive P₀ ∧ IsAdditive (swap P₀) ∧ CechPic.pull l (cls P₀ h) = cls (X.P c) (X.isLB c) ∧ cls P₀ h = evc q₀.isLB (fst A₀ A₀) (snd A₀ A₀ ≫ y c)` using `fun c ↦ by haveI := hy c`.
+
+Take `⟨b₁, b₂⟩` from `additive_ev q₀.isLB q₀.additive q₀' (y c)`. Use `⟨_, pull_isLB q₀.isLB _, b₁, b₂, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[cls_ev q₀.isLB, ex]`. Conclude with `pull_evc_eq l₁ l₂ m₁ m₂ q₀.isLB q.isLB (e₀ c).symm`. Use `choose P₀ hP₀ a₁ a₂ eP eQ using hx`.
+
+Establish `inj : ∀ {P P' : LB (A₀ ⊗ A₀).left} (hP : P.IsLB) (hP' : P'.IsLB), IsAdditive P → IsAdditive P' → CechPic.pull l (cls P hP) = CechPic.pull l (cls P' hP') → LBIso P P'` using `fun hP hP' a a' e ↦ (cls_eq_iff hP hP').1 (cls_eq_of_pull_dominant hp.1 hd l₁ l₂ m₁ m₂ q₀ q hP hP' a a' e)`. Establish `val : ∀ (c : 𝔠.elt) {Y₀ : Over S} {Y : Over U} (r : Y.left ⟶ Y₀.left) (a₀ t₀ : Y₀ ⟶ A₀) (a t : Y ⟶ X.A), a.left ≫ p = r ≫ a₀.left → t.left ≫ p = r ≫ t₀.left → CechPic.pull r (evc (hP₀ c) a₀ t₀) = evc (X.isLB c) a t` using `fun c Y₀ Y r a₀ t₀ a t ha ht ↦ by`. Rewrite using `[evc, evc, ← eP, ← pull_comp, ← pull_comp]`. Use `congr 2`. Apply `left_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, Category.assoc, lift_left_fst, l₁, lift_left_fst_assoc, ha]`. Rewrite using `[Category.assoc, Category.assoc, lift_left_snd, l₂, lift_left_snd_assoc, ht]`. Establish `hsymm : ∀ c, LBIso (P₀ c) ((P₀ c).pull (lift (snd A₀ A₀) (fst A₀ A₀)).left)` using `fun c ↦ by`. Use `inj (hP₀ c) (pull_isLB (hP₀ c) _) (a₁ c) (a₂ c) ?_` and prove the remaining obligations. Rewrite using `[eP, cls_ev (hP₀ c), val c l _ _ _ _ l₂.symm l₁.symm]`.
+
+Conclude with `(cls_eq_iff _ (pull_isLB (X.isLB c) _)).2 (X.symm c)`. Establish `hsmul : ∀ (a : 𝓞 F) c, LBIso (P₀ (a • c)) ((P₀ c).pull (lift (fst A₀ A₀) (snd A₀ A₀ ≫ rm.act a)).left)` using `fun a c ↦ by`. Establish `hq : (ev (P₀ c) (fst A₀ A₀) (snd A₀ A₀ ≫ rm.act a)).IsLB` using `pull_isLB (hP₀ c) _`. Use `inj (hP₀ _) hq (a₁ _) ((isAdditive_iff hq).2 fun Y u u' t ↦ ?_) ?_` and prove the remaining obligations. Simplify using `only [evc_ev (hP₀ c), lift_fst, lift_snd_assoc]`.
+
+Conclude with `(isAdditive_iff (hP₀ c)).1 (a₁ c) _ _ _ _`. Rewrite using `[eP, cls_ev (hP₀ c), val c l _ _ (fst X.A X.A) (snd X.A X.A ≫ X.rm.act a) l₁.symm (by`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hrm, ← Category.assoc, ← Category.assoc, l₂])]`. Conclude with `(cls_eq_iff _ (pull_isLB (X.isLB c) _)).2 (X.smul a c)`. Establish `vsymm : ∀ c {Y : Over S} (u v : Y ⟶ A₀), evc (hP₀ c) u v = evc (hP₀ c) v u` using `fun c Y u v ↦ by`.
+
+Establish `e : cls (P₀ c) (hP₀ c) = evc (hP₀ c) (snd A₀ A₀) (fst A₀ A₀)` using `(cls_eq_iff _ (pull_isLB (hP₀ c) _)).2 (hsymm c)`. Rewrite using `[evc, e, pull_evc, lift_fst, lift_snd]`. Establish `vsmul : ∀ (a : 𝓞 F) c {Y : Over S} (u v : Y ⟶ A₀), evc (hP₀ (a • c)) u v = evc (hP₀ c) u (v ≫ rm.act a)` using `fun a c Y u v ↦ by`. Establish `e : cls (P₀ (a • c)) (hP₀ _) = evc (hP₀ c) (fst A₀ A₀) (snd A₀ A₀ ≫ rm.act a)` using `(cls_eq_iff _ (pull_isLB (hP₀ c) _)).2 (hsmul a c)`. Rewrite using `[evc, e, pull_evc, lift_fst, lift_snd_assoc]`.
+
+Use `⟨{ A := A₀ ab := hA₀ dim := gA₀ rm := rm P := P₀ isLB := hP₀ rig₁ := fun c ↦ triv_left (hP₀ c) (a₁ c) rig₂ := fun c ↦ triv_right (hP₀ c) (a₂ c)` and prove the remaining obligations. Use symmetry as in `:= hsymm`. Use `add := fun c c' ↦ ?_`. Use `smul := hsmul`. Use `pos := fun c hc ↦ ?_`.
+
+Use `ker := fun c T z hzc a ha ↦ ?_ }, p, g, cm, ⟨hp, hrm, l, ⟨l₁, l₂⟩, fun c ↦ ?_⟩, hg, rfl, h₁, h₂⟩`. Establish `hq` using `LB.isLB_div (hP₀ (c + c')) (hP₀ c)`. Establish `ev' : ∀ (Y : Over S) (a t : Y ⟶ A₀), evc hq a t = evc (hP₀ (c + c')) a t - evc (hP₀ c) a t` using `fun Y a t ↦ by rw [evc, cls_div (hP₀ (c + c')) (hP₀ c), map_sub]; rfl`. Use `inj (hP₀ c') hq (a₁ c') ((isAdditive_iff hq).2 fun Y a a' t ↦ ?_) ?_` and prove the remaining obligations. Rewrite using `[ev', ev', ev', (isAdditive_iff (hP₀ _)).1 (a₁ _), (isAdditive_iff (hP₀ _)).1 (a₁ _)]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[cls_div (hP₀ (c + c')) (hP₀ c), map_sub, eP, eP, eP, ← cls_div (X.isLB (c + c')) (X.isLB c) (LB.isLB_div (X.isLB (c + c')) (X.isLB c))]`. Conclude with `(cls_eq_iff _ _).2 (X.add c c')`. Use `hpos _ _ (pull_isLB (hP₀ c) _) (pull_isLB (X.isLB c) _) ((cls_eq_iff (pull_isLB (X.isLB c) _) (pull_isLB (pull_isLB (hP₀ c) _) _)).1 ?_) (X.pos c hc)` and prove the remaining obligations. Rewrite using `[cls_pull (pull_isLB (hP₀ c) _), cls_ev (hP₀ c), cls_ev (X.isLB c)]`.
+
+Conclude with `(val c p _ _ _ _ (by simp) (by simp)).symm`. Establish `z₀ : evc (hP₀ c) (fst A₀ T) (snd A₀ T ≫ z) = 0` using `(triv_ev_iff (hP₀ c) _ _).1 hzc`. Use `hz T _ fun c' ↦ q₀.eq_one _ ((triv_ev_iff q₀.isLB _ _).2 ?_)` and prove the remaining obligations. Take `⟨b', hb'⟩` from `ha c'`. Establish `z₁` using `congrArg (CechPic.pull (lift (fst A₀ T ≫ rm.act b') (snd A₀ T)).left) z₀`.
+
+Rewrite `z₁` using `[pull_evc, map_zero, lift_fst, lift_snd_assoc]`. Rewrite using `[← Category.assoc, ← evc_of_cls q₀.isLB (hP₀ c') (eQ c'), ← Category.assoc, ← vsmul, hb', vsymm, vsmul, vsymm]`. Conclude with `z₁`. Conclude with `(cls_eq_iff (X.isLB c) (pull_isLB (hP₀ c) _)).1 (by rw [cls_pull (hP₀ c)]; exact (eP c).symm)`.
+-/
 theorem exists_obj_of_homs {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S U : Scheme.{0}} {j : U ⟶ S}
     [QuasiCompact j] [IsSchemeTheoreticallyDominant j] (X : Obj F 𝔠 U) (A₀ : Over S) [GrpObj A₀]
     (p : X.A.left ⟶ A₀.left) (hA₀ : IsAbelianScheme A₀) (gA₀ : SmoothOfRelativeDimension (Module.finrank ℚ F) A₀.hom)
@@ -471,6 +604,15 @@ end GlobalTheory.PlaceModel
 
 namespace GlobalTheory.PlaceModel
 
+/- English proof (translation)
+Establish `hne : (𝔠.elt : Submodule (𝓞 F) F) ≠ ⊥`. Introduce `h`. Apply `𝔠.ne_zero` to reduce the goal to its premises. Conclude with `(FractionalIdeal.coeToSubmodule_eq_bot).mp h`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).mp hne`.
+
+Take `⟨a, ha, hint⟩` from `(𝔠 : FractionalIdeal (𝓞 F)⁰ F).isFractional`. Take `⟨y, hy⟩` from `hint x hx`. Establish `ha0 : a ≠ 0` using `nonZeroDivisors.ne_zero ha`. Establish `hy0 : (algebraMap (𝓞 F) F y) ≠ 0`. Rewrite using `[hy, Algebra.smul_def]`.
+
+Conclude with `mul_ne_zero ((map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 F) F)).mpr ha0) hx0`. Use `⟨⟨(a * y) • x, Submodule.smul_mem _ _ hx⟩, ?_⟩` and prove the remaining obligations. Introduce `τ`. Establish `hval : ((a * y) • x : F) = algebraMap (𝓞 F) F y * algebraMap (𝓞 F) F y`. Rewrite using `[mul_comm a y, mul_smul, ← hy, Algebra.smul_def]`.
+
+Use `show 0 < τ ((a * y) • x)`. Rewrite using `[hval, map_mul]`. Establish `: τ (algebraMap (𝓞 F) F y) ≠ 0` using `(map_ne_zero τ).mpr hy0`. Conclude with `mul_self_pos.mpr this`.
+-/
 theorem totPos {F : Type} [Field F] [NumberField F] (𝔠 : FracId F) : ∃ c : 𝔠.elt, IsTotPos (c : F) := by
   have hne : (𝔠.elt : Submodule (𝓞 F) F) ≠ ⊥ := by
     intro h
@@ -492,6 +634,51 @@ theorem totPos {F : Type} [Field F] [NumberField F] (𝔠 : FracId F) : ∃ c : 
   have : τ (algebraMap (𝓞 F) F y) ≠ 0 := (map_ne_zero τ).mpr hy0
   exact mul_self_pos.mpr this
 
+/- English proof (translation)
+Introduce `HDC HdR F _ _ 𝔠 O _ ofO l _ lam k₀ R₀ hO hk₀ hR₀ hR₀k σ hσ G₀ _ P₀ Ψ₀ hG₀ hΨ hfin hfl hsurj XQ gQ cmQ hgQ hcm`. Establish `gG₀ : SmoothOfRelativeDimension (Module.finrank ℚ F) G₀.hom` using `GlobalTheory.CM.smoothOfRelativeDimension_of_fibre R₀ Qb σ G₀ _ gQ _ _ hG₀ hgQ.1 XQ.dim`. Take `⟨D₀, _, Q₀, DQ, _, dQ, mQ, hD₀, gD₀, q₀, q₀', hdQ, mQ₁, mQ₂, qQ, qQ'⟩` from `exists_dual_pair HDC.1 hG₀ gG₀ hgQ`. Take `⟨c₀, hc₀⟩` from `totPos 𝔠`. Take `⟨H, hH, aH⟩` from `exists_relAmple_prod XQ.ab XQ.ab (pull_isLB (XQ.isLB c₀) _) (XQ.pos c₀ hc₀) (pull_isLB (XQ.isLB c₀) _) (XQ.pos c₀ hc₀)`.
+
+Establish `hx : ∀ c : 𝔠.elt, ∃ x : XQ.A ⟶ DQ, IsMonHom x ∧ cls (XQ.P c) (XQ.isLB c) = evc qQ.isLB (fst XQ.A XQ.A) (snd XQ.A XQ.A ≫ x)` using `fun c ↦ by`. Take `⟨a₁, a₂⟩` from `additive_of_triv XQ.ab XQ.ab hH aH (XQ.isLB c) (XQ.rig₁ c) (XQ.rig₂ c)`. Conclude with `exists_hom qQ qQ' (XQ.isLB c) a₁ a₂`. Use `choose x hxm hxe using hx`. Establish `hxi : ∀ c, LBIso (XQ.P c) (ev (Q₀.pull mQ) (fst XQ.A XQ.A) (snd XQ.A XQ.A ≫ x c))` using `fun c ↦ (cls_eq_iff (XQ.isLB c) (pull_isLB qQ.isLB _)).1 (hxe c)`.
+
+Establish `hxa : ∀ c c', x (c + c') = x c * x c'` using `fun c c' ↦ by`. Use `dual_ext qQ ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, (isAdditive_swap_iff qQ.isLB).1 qQ', ← hxe, ← hxe, ← hxe]`. Establish `e` using `(cls_eq_iff (XQ.isLB c') (LB.isLB_div (XQ.isLB (c + c')) (XQ.isLB c))).2 (XQ.add c c')`. Rewrite `e` using `[cls_div (XQ.isLB (c + c')) (XQ.isLB c)]`.
+
+Rewrite using `[e]`. Normalize the expressions using the abelian group laws. Take `⟨sO, hsO⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℤ O).FG)`. Use `haveI : Module.Finite (𝓞 F) 𝔠.elt := Module.Finite.iff_fg.2 (FractionalIdeal.fg_of_isNoetherianRing le_rfl (𝔠 : FractionalIdeal (𝓞 F)⁰ F))`. Use `haveI : Module.Finite ℤ 𝔠.elt := Module.Finite.trans (𝓞 F) 𝔠.elt`.
+
+Take `⟨s𝔠, hs𝔠⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℤ 𝔠.elt).FG)`. Establish `evFin : ∀ {α : Type} (s : Finset α) (P : α → Subring ℂ → Prop), (∀ a ∈ s, Eventually l lam (P a)) → Eventually l lam fun R ↦ ∀ a ∈ s, P a R`. Introduce `α s P h`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨k₀, hk₀, fun R _ a ha ↦ by simp at ha⟩`.
+
+Consider the case `insert a s ha ih`. Use `((h a (Finset.mem_insert_self a s)).and (ih fun b hb ↦ h b (Finset.mem_insert_of_mem hb))).mono fun R hR b hb ↦ ?_` and prove the remaining obligations. Break down `Finset.mem_insert.1 hb with rfl | hb` into its components or cases. Conclude with `hR.1`. Conclude with `hR.2 b hb`.
+
+Establish `E1` using `evFin sO _ fun a _ ↦ eventually_descendsTo l lam k₀ R₀ hk₀ hR₀ hR₀k σ hσ G₀ G₀ hG₀ hG₀ XQ.A XQ.A gQ gQ hgQ hgQ (cmQ.act a) (cmQ.hom a)`. Establish `E2` using `evFin s𝔠 _ fun c _ ↦ eventually_descendsTo l lam k₀ R₀ hk₀ hR₀ hR₀k σ hσ G₀ D₀ hG₀ hD₀ XQ.A DQ gQ dQ hgQ hdQ (x c) (hxm c)`. Establish `hDQ : IsAbelianScheme DQ` using `PolPull.isAbelianScheme_of_isGrpPullback hD₀ hdQ`. Establish `gDQ : SmoothOfRelativeDimension (Module.finrank ℚ F) DQ.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hdQ.1 gD₀`. Take `⟨t, ht, hw⟩` from `exists_hom_from_dual F 𝔠 XQ DQ _ hDQ gDQ qQ x hxm hxi`.
+
+Use `choose! dd w hwm hwe using hw`. Establish `E3` using `evFin t.attach _ fun a _ ↦ eventually_descendsTo l lam k₀ R₀ hk₀ hR₀ hR₀k σ hσ D₀ G₀ hD₀ hG₀ DQ XQ.A dQ gQ hdQ hgQ (w a.1) (hwm a.1 a.2)`. Take `⟨k, hk, H⟩` from `(E1.and E2).and E3`. Use `⟨k, hk, fun R hR ic j hic hj ↦ ?_⟩` and prove the remaining obligations. Use `haveI : IsDiscreteValuationRing R := hR.1`.
+
+Establish `hji : Function.Injective j` using `fun a b h ↦ by`. Establish `e` using `congrArg (fun z : Qb ↦ (z : ℂ)) h`. Simplify using `only [hj] at e`. Conclude with `Subtype.ext e`. Establish `hjic : ∀ y, j (ic y) = σ y` using `fun y ↦ Subtype.ext (by rw [hj, hic, hσ])`.
+
+Take `⟨⟨H1, H2⟩, H3⟩` from `H R hR`. Establish `D1 : ∀ a, DescendsTo ic j gQ gQ (cmQ.act a)`. Introduce `a G G' _ _ g g' pG pG' h1 h2 h3 h4 h5 h6`. Conclude with `descends_of_generators (spMap j) h3 h4 O sO hsO (fun a ↦ cmQ.act a) (fun a b ↦ cmQ.add a b) (fun b hb ↦ H1 b hb ic j hic hj G G' g g' pG pG' h1 h2 h3 h4 h5 h6) a`. Establish `D2 : ∀ c, DescendsTo ic j gQ dQ (x c)`.
+
+Introduce `c G G' _ _ g g' pG pG' h1 h2 h3 h4 h5 h6`. Conclude with `descends_of_generators (spMap j) h3 h4 𝔠.elt s𝔠 hs𝔠 x hxa (fun b hb ↦ H2 b hb ic j hic hj G G' g g' pG pG' h1 h2 h3 h4 h5 h6) c`. Establish `hs : spMap j ≫ spMap ic = spMap σ`. Rewrite using `[← RingHom.ext hjic (f := j.comp ic)]`. Conclude with `(Spec.map_comp _ _).symm`.
+
+Use `haveI : IsSchemeTheoreticallyDominant (spMap j) := ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom j) hji`. Establish `bc : ∀ (B₀ : Over (Sp R₀)) [GrpObj B₀] (BQ : Over (Sp Qb)) [GrpObj BQ] (bQ : BQ.left ⟶ B₀.left), IsGrpPullback BQ B₀ (spMap σ) bQ → ∃ (B : Over (Sp R)) (_ : GrpObj B) (b : B.left ⟶ B₀.left) (p : BQ.left ⟶ B.left), IsGrpPullback B B₀ (spMap ic) b ∧ IsGrpPullback BQ B (spMap j) p ∧ …`. Introduce `B₀ _ BQ _ bQ h`. Rewrite `h` using `[← hs]`. Conclude with `⟨_, _, _, _, isGrpPullback_pullback B₀ (spMap ic), ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor _ _ h, pullback.lift_fst _ _ _⟩`.
+
+Take `⟨A, _, g, pj, hg, hpj, epj⟩` from `bc G₀ XQ.A gQ hgQ`. Take `⟨D, _, dR, d, hdR, hd, ed⟩` from `bc D₀ DQ dQ hdQ`. Establish `hA : IsAbelianScheme A` using `PolPull.isAbelianScheme_of_isGrpPullback hG₀ hg`. Establish `hD : IsAbelianScheme D` using `PolPull.isAbelianScheme_of_isGrpPullback hD₀ hdR`. Establish `gA : SmoothOfRelativeDimension (Module.finrank ℚ F) A.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hg.1 gG₀`.
+
+Use `haveI := hA.smooth`. Use `haveI := hA.proper`. Use `haveI := hD.proper`. Take `⟨n, n₁, n₂⟩` from `exists_prod_pullback hg hdR`. Take `⟨m, m₁, m₂⟩` from `exists_prod_pullback hpj hd`.
+
+Establish `hQ` using `pull_isLB q₀.isLB n`. Establish `hQ'` using `pull_isLB hQ m`. Establish `q : IsDual A D (Q₀.pull n)` using `q₀.baseChange hg hdR n₁ n₂ hQ ((cls_eq_iff hQ hQ).1 rfl)`. Establish `q₂ : IsAdditive (swap (Q₀.pull n))` using `(additive_pull hg hdR n₁ n₂ q₀.isLB hQ ((cls_eq_iff hQ hQ).1 rfl) q₀.additive q₀'.additive).2`. Establish `q' : IsDual XQ.A DQ ((Q₀.pull n).pull m)` using `q.baseChange hpj hd m₁ m₂ hQ' ((cls_eq_iff hQ' hQ').1 rfl)`.
+
+Establish `emn : m ≫ n = mQ`. Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, n₁, ← Category.assoc, m₁, Category.assoc, epj, mQ₁]`. Rewrite using `[Category.assoc, n₂, ← Category.assoc, m₂, Category.assoc, ed, mQ₂]`. Establish `ecls : cls _ q'.isLB = cls _ qQ.isLB`.
+
+Rewrite using `[cls_pull hQ, cls_pull q₀.isLB, cls_pull q₀.isLB, ← pull_comp, emn]`. Take `⟨cm, hcmR, -⟩` from `ExtUnique.existsUnique_oAct_of_isGrpPullback hpj cmQ fun a ↦ D1 a A A g g pj pj hg hg hpj hpj epj epj`. Take `⟨rm, hrm, -⟩` from `ExtUnique.existsUnique_oAct_of_isGrpPullback hpj XQ.rm fun a ↦ ⟨cm.act (ofO a), by rw [← hcm]; exact hcmR _⟩`. Use `choose y hy using fun c ↦ D2 c A D g dR pj d hg hdR hpj hd epj ed`. Establish `hym : ∀ c, IsMonHom (y c)` using `fun c ↦ by haveI := hxm c`.
+
+Conclude with `ExtUnique.isMonHom_of_isGrpPullback hpj hd (x c) (y c) (hy c)`. Establish `hz : ∀ (T : Over (Sp R)) (z : T ⟶ A), (∀ c, z ≫ y c = 1) → z = 1` using `fun T z hz ↦ by`. Establish `key : ∀ a ∈ Ideal.span (t : Set (𝓞 F)), z ≫ rm.act a = 1` using `fun a ha ↦ by`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha`.
+
+Take `⟨W, hW⟩` from `H3 ⟨a, ha⟩ (Finset.mem_attach _ _) ic j hic hj D A dR g d pj hdR hg hd hpj ed epj`. Use `haveI := hwm a ha`. Use `haveI := hD.smooth`. Use `haveI : IsMonHom W := ExtUnique.isMonHom_of_isGrpPullback hd hpj (w a) W hW`. Establish `e : y (dd a) ≫ W = rm.act a` using `ExtUnique.over_hom_ext_of_isPullback hpj.1 (by`.
+
+Rewrite using `[Over.comp_left, ← Category.assoc, ← hy, Category.assoc, ← hW, ← Category.assoc, ← Over.comp_left, hwe a ha, hrm])`. Rewrite using `[← e, ← Category.assoc, hz, MonObj.one_comp]`. Consider the case `zero`. Establish `e` using `rm.add 0 0`. Rewrite `e` using `[add_zero]`.
+
+Rewrite using `[left_eq_mul.1 e, MonObj.comp_one]`. Consider the case `add a b _ _ ha hb => rw [rm.add, MonObj.comp_mul, ha, hb, _root_.mul_one]`. Consider the case `smul a b _ hb => haveI := rm.hom a`. Rewrite using `[smul_eq_mul, mul_comm, rm.mul, ← Category.assoc, hb, MonObj.one_comp]`. Establish `e` using `key 1 (ht ▸ Submodule.mem_top)`.
+
+Rewrite `e` using `[rm.one, Category.comp_id]`. Then use the resulting hypothesis. Take `⟨X₀, p', g', cm', h1, h2, h3, h4, h5⟩` from `exists_obj_of_homs XQ A pj hA gA hpj rm hrm hD q q₂ hd m₁ m₂ q' x y hym hy (fun c ↦ by rw [hxe, evc, evc, ecls]) (relAmple_of_algebraic_fibre R₀ R ic j hji G₀ P₀ Ψ₀ hfin hfl hsurj A g hg hA XQ.A pj hpj) hz hg ofO cmQ cm (fun a ↦ ExtUnique.over_hom_ext_of_isPullback hpj.1 (by rw [ …`. Conclude with `⟨X₀, p', g', cm', h1, h2, h3.trans epj, h4, h5⟩`.
+-/
 theorem exists_obj_eventually : GlobalTheory.Published.AbelianDualCrystal → GlobalTheory.Published.AbelianDeRham →
   ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (O : Type) [CommRing O] (ofO : 𝓞 F → O) (l : ℕ) [Fact l.Prime]
     (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (k₀ : IntermediateField ℚ ℂ) (R₀ : Subring ℂ), Module.Finite ℤ O →

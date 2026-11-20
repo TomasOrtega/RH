@@ -6,6 +6,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanFG
 
+/- English proof (translation)
+Use `haveI := isNoetherian_of_fg_of_noetherian Q hQ`. Establish `h1 : (P.comap Q.subtype).FG` using `IsNoetherian.noetherian _`. Establish `h2` using `h1.map Q.subtype`. Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.mpr hPQ]`. Then use the resulting hypothesis.
+-/
 theorem fg_of_le_fg {R M : Type*} [CommRing R] [IsNoetherianRing R] [AddCommGroup M] [Module R M]
     {P Q : Submodule R M} (hQ : Q.FG) (hPQ : P ≤ Q) : P.FG := by
   haveI := isNoetherian_of_fg_of_noetherian Q hQ
@@ -13,6 +16,11 @@ theorem fg_of_le_fg {R M : Type*} [CommRing R] [IsNoetherianRing R] [AddCommGrou
   have h2 := h1.map Q.subtype
   rwa [Submodule.map_comap_subtype, inf_eq_right.mpr hPQ] at h2
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ExistsSmulMem.exists_smul_mem`. Consider the case `exact _root_.GlobalTheory.ExistsSmulMem.exists_smul_mem`. Consider the case `(apply _root_.GlobalTheory.ExistsSmulMem.exists_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ExistsSmulMem.exists_smul_mem <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ExistsSmulMem.exists_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ExistsSmulMem.exists_smul_mem ..)`.
+-/
 theorem exists_smul_mem {E : Type} [Field E] [NumberField E] {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E))
     (hsp : Submodule.span E (Lb : Set (Fin N → E)) = ⊤) (v : Fin N → E) :
     ∃ c : 𝓞 E, c ≠ 0 ∧ c • v ∈ Lb := by
@@ -24,11 +32,27 @@ theorem exists_smul_mem {E : Type} [Field E] [NumberField E] {N : ℕ} (Lb : Sub
   | (intros; apply @_root_.GlobalTheory.ExistsSmulMem.exists_smul_mem <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.ExistsSmulMem.exists_smul_mem ..)
 
+/- English proof (translation)
+Simplify using `[hform, Pi.single_apply, mulVec, dotProduct, Finset.mul_sum, mul_assoc, apply_ite σ, ite_mul]`.
+-/
 theorem hform_single {E : Type} [Field E] {N : ℕ} (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E)
     (c : E) (i : Fin N) (y : Fin N → E) :
     hform σ J (c • Pi.single i 1) y = σ c * (J *ᵥ y) i := by
   simp [hform, Pi.single_apply, mulVec, dotProduct, Finset.mul_sum, mul_assoc, apply_ite σ, ite_mul]
 
+/- English proof (translation)
+Use `choose c hc0 hcm using fun i : Fin N => exists_smul_mem Lb hsp (Pi.single i 1)`. Use `⟨Submodule.span (𝓞 E) (Set.range fun i => (σ (c i : E))⁻¹ • (J⁻¹ *ᵥ Pi.single i 1)), Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hint : ∀ i, ∃ w : 𝓞 E, (w : E) = σ (c i : E) * (J *ᵥ y) i`. Introduce `i`.
+
+Establish `h` using `hy _ (hcm i)`. Rewrite `h` using `[← algebraMap_smul E (c i), hform_single]`. Take `⟨w, hw⟩` from `h`. Conclude with `⟨w, hw⟩`. Use `choose w hw using hint`.
+
+Establish `hσ : ∀ i, σ (c i : E) ≠ 0` using `fun i => by`. Rewrite using `[map_ne_zero]`. Conclude with `hc0 i` after adjusting the coercions. Establish `hy' : y = ∑ i, w i • ((σ (c i : E))⁻¹ • (J⁻¹ *ᵥ Pi.single i 1))`. Establish `e1 : y = J⁻¹ *ᵥ (J *ᵥ y)`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul J hJ, Matrix.one_mulVec]`. Use `conv_lhs => rw [e1, ← Finset.univ_sum_single (J *ᵥ y)]`. Rewrite using `[Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul E (w i), smul_smul, ← Matrix.mulVec_smul]`.
+
+Use `congr 1`. Use extensionality with `k`. Simplify using `only [Pi.single_apply, Pi.smul_apply, smul_eq_mul]`. Use `split_ifs`. Use `subst_vars show (J *ᵥ y) k = (algebraMap (𝓞 E) E (w k)) * (σ (c k : E))⁻¹ * 1`.
+
+Rewrite using `[show algebraMap (𝓞 E) E (w k) = (w k : E) from rfl, hw k]`. Clear denominators, using `[hσ k]` for the nonvanishing conditions. Simplify using the standard rewrite rules. Rewrite using `[hy']`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem dualSet_le_fg {E : Type} [Field E] [NumberField E] {N : ℕ} (σ : E →+* E)
     (J : Matrix (Fin N) (Fin N) E) (hJ : IsUnit J.det) (Lb : Submodule (𝓞 E) (Fin N → E))
     (hsp : Submodule.span E (Lb : Set (Fin N → E)) = ⊤) :
@@ -72,6 +96,9 @@ namespace GlobalTheory
 
 open GlobalTheory.CompanFG in
 
+/- English proof (translation)
+Take `⟨M, hM, hle⟩` from `dualSet_le_fg (sp.cm.sig : E →+* E) J hJ Lb hsp`. Establish `h1 : (Submodule.span (𝓞 E) (dualSet (sp.cm.sig : E →+* E) J Lb)).FG` using `fg_of_le_fg hM (Submodule.span_le.mpr hle)`. Conclude with `hfg.sup (fg_of_le_fg h1 Submodule.smul_le_right)`.
+-/
 theorem compan_fg {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (sp : Spaces R F E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E) (hJ : IsUnit J.det) (a : 𝓞 E)
     (Lb : Submodule (𝓞 E) (Fin N → E)) (hfg : Lb.FG) (hsp : Submodule.span E (Lb : Set (Fin N → E)) = ⊤) :

@@ -29,6 +29,9 @@ open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LamT (CMPt)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FrameDenseZ.exists_frame_evR_ne_zero_of_complex | exact GlobalTheory.FrameDenseZ.exists_frame_evR_ne_zero_of_complex | (intros; apply GlobalTheory.FrameDenseZ.exists_frame_evR_ne_zero_of_complex <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_numberFieldFrame_value_ne_zero_of_complex : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algebra c.F K]
     (y : FrPt Xo c K) (e : Ix Dw → ℤ), ∀ F ∈ GlobalTheory.AllWt.secZ Xo c e, ∀ (σ : c.F →+* ℂ) (σ₁ : K →ₐ[c.F] CAt σ)

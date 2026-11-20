@@ -11,6 +11,13 @@ namespace GlobalTheory.Amp.MinorBound
 
 open GlobalTheory.PlueckerBound GlobalTheory.Amp.GramFlag
 
+/- English proof (translation)
+Establish `h` using `norm_det_inner_le (fun a => ∑ i, s i a • u i) (fun a => ∑ i, t i a • v i)`. Rewrite `h` using `[det_inner_sum_smul, ht, mul_one]`. Establish `e : (Matrix.of fun a a' => ⟪∑ i, s i a • u i, v a'⟫_ℂ) = sᴴ * Matrix.of fun a a' => ⟪u a, v a'⟫_ℂ`. Use extensionality with `a a'`. Simplify using `[Matrix.mul_apply, sum_inner, inner_smul_left, mul_comm]`.
+
+Rewrite `h` using `[e, Matrix.det_mul, Matrix.det_conjTranspose, hs, star_one, one_mul]`. Establish `h1 : ∀ {f : Fin l → E} {S : ℝ}, (∀ a, ‖f a‖ ≤ S) → ∏ a, ‖f a‖ ≤ S ^ l` using `fun {f S} hf => by`. Use `Finset.prod_le_prod (s := Finset.univ) (fun a _ => norm_nonneg (f a)) (fun a _ => hf a)` as an intermediate fact. Simplify using `using this`. Establish `h0 : ∀ f : Fin l → E, 0 ≤ ∏ a, ‖f a‖` using `fun f => Finset.prod_nonneg fun a _ => norm_nonneg _`.
+
+Conclude with `h.trans (mul_le_mul (h1 hu) (h1 hv) (h0 _) ((h0 _).trans (h1 hu)))`.
+-/
 theorem norm_det_inner_le_pow {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {l : ℕ} (u v : Fin l → E)
     (s t : Matrix (Fin l) (Fin l) ℂ) (hs : s.det = 1) (ht : t.det = 1) {R R' : ℝ}
     (hu : ∀ a, ‖∑ i, s i a • u i‖ ≤ R) (hv : ∀ a, ‖∑ i, t i a • v i‖ ≤ R') :
@@ -27,6 +34,17 @@ theorem norm_det_inner_le_pow {E : Type} [NormedAddCommGroup E] [InnerProductSpa
   have h0 : ∀ f : Fin l → E, 0 ≤ ∏ a, ‖f a‖ := fun f => Finset.prod_nonneg fun a _ => norm_nonneg _
   exact h.trans (mul_le_mul (h1 hu) (h1 hv) (h0 _) ((h0 _).trans (h1 hu)))
 
+/- English proof (translation)
+Take `⟨u, hu, -⟩` from `gramSchmidt_lengths k r z x hx`. Use `⟨(upper u).submatrix (Fin.castLE hl) (Fin.castLE hl), ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_of_upperTriangular]`. Simplify using `[upper]`. Introduce `a b hab`.
+
+Establish `hab' : b < a` using `hab`. Establish `h1 : ¬ a < b` using `not_lt.2 hab'.le`. Simplify using `[upper, h1, hab'.ne']`. Establish `e : ∑ b, (upper u).submatrix (Fin.castLE hl) (Fin.castLE hl) b a • (x⁻¹ *ᵥ bvec (eI k r (Fin.castLE hl b))) = ∑ b, upper u b (Fin.castLE hl a) • (x⁻¹ *ᵥ bvec (eI k r b))`. Use `Fintype.sum_of_injective (Fin.castLE hl) (Fin.castLE_injective hl) _ _ ?_ (fun b => rfl)` and prove the remaining obligations.
+
+Introduce `b hb`. Establish `hb' : l ≤ b.val`. Assume the negation of the conclusion as `h`. Conclude with `hb ⟨⟨b.val, by omega⟩, rfl⟩`. Establish `ha` using `a.isLt`.
+
+Establish `h1 : ¬ b < Fin.castLE hl a`. Rewrite using `[Fin.lt_def, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : b ≠ Fin.castLE hl a` using `fun h => by`. Rewrite `hb'` using `[h, Fin.val_castLE]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[upper, h1, h2]`. Rewrite using `[e, (hu _).1]`. Conclude with `(Finset.le_fold_max _).2 (Or.inr ⟨_, Finset.mem_univ _, le_rfl⟩)`.
+-/
 theorem exists_short (k r : ℕ) {l : ℕ} (hl : l ≤ r) (z : Fin (2 * r + k + 1) → ℂ) {x : Mat k r} (hx : x ∈ GG k r) :
     ∃ t : Matrix (Fin l) (Fin l) ℂ, t.det = 1 ∧
       ∀ a, eucl (∑ b, t b a • (x⁻¹ *ᵥ bvec (eI k r (Fin.castLE hl b)))) ≤ Sg k r z x := by
@@ -54,20 +72,40 @@ theorem exists_short (k r : ℕ) {l : ℕ} (hl : l ≤ r) (z : Fin (2 * r + k + 
     rw [e, (hu _).1]
     exact (Finset.le_fold_max _).2 (Or.inr ⟨_, Finset.mem_univ _, le_rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[eucl_eq, eucl_eq, @norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, EuclideanSpace.inner_toLp_toLp, EuclideanSpace.inner_toLp_toLp, Matrix.star_mulVec, dotProduct_comm, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, (hpkFacts k r).1, (hpkFacts k r).2.1, Matrix.one_mulVec, d …`.
+-/
 theorem eucl_Hpk (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) : eucl (Hpk k r *ᵥ v) = eucl v := by
   rw [eucl_eq, eucl_eq, @norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, EuclideanSpace.inner_toLp_toLp,
     EuclideanSpace.inner_toLp_toLp, Matrix.star_mulVec, dotProduct_comm, ← Matrix.dotProduct_mulVec,
     Matrix.mulVec_mulVec, (hpkFacts k r).1, (hpkFacts k r).2.1, Matrix.one_mulVec, dotProduct_comm]
 
+/- English proof (translation)
+Establish `hg' : gᴴ * H * g = H` using `hg`. Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg']`.
+-/
 theorem herm_mulVec {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UH H) (v w : Fin n → ℂ) :
     herm H (g *ᵥ v) (g *ᵥ w) = herm H v w := by
   have hg' : gᴴ * H * g = H := hg
   unfold herm
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg']
 
+/- English proof (translation)
+The claim follows from `(Finset.le_fold_max _).2 (Or.inl le_rfl)`.
+-/
 theorem one_le_Sg (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (x : Mat k r) : 1 ≤ Sg k r z x :=
   (Finset.le_fold_max _).2 (Or.inl le_rfl)
 
+/- English proof (translation)
+Establish `hH : IsUnit (Hpk k r).det` using `Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1`. Take `⟨-, hmul, hinv⟩` from `uHGroup _ _ hH`. Establish `hγx` using `hmul γ hγ x hx`. Establish `hl : l.val ≤ r` using `Nat.le_of_lt_succ l.isLt`. Take `⟨s, hs, hs'⟩` from `exists_short k r hl z hγx`.
+
+Take `⟨t, ht, ht'⟩` from `exists_short k r hl z' hx`. Establish `h` using `norm_det_inner_le_pow (E := EuclideanSpace ℂ (Fin (2 * r + k + 1))) (fun a => WithLp.toLp 2 ((γ * x)⁻¹ *ᵥ bvec (eI k r (Fin.castLE hl a)))) (fun a => WithLp.toLp 2 (Hpk k r *ᵥ (x⁻¹ *ᵥ bvec (eI k r (Fin.castLE hl a))))) s t hs ht (R := Sg k r z (γ * x)) (R' := Sg k r z' x) (fun a …`. Use `hs' a` as an intermediate fact. Rewrite using `[eucl_eq, WithLp.toLp_sum] at this)` and apply the resulting hypothesis. Use the proof step `(fun a => by`.
+
+Use `ht' a` as an intermediate fact. Rewrite `this` using `[← eucl_Hpk, eucl_eq, Matrix.mulVec_sum, WithLp.toLp_sum]`. Simplify `this)` using `only [Matrix.mulVec_smul, WithLp.toLp_smul]`. Establish `e : Dmin k r z z' γ l.castSucc = (Matrix.of fun a a' : Fin l.val => ⟪(WithLp.toLp 2 ((γ * x)⁻¹ *ᵥ bvec (eI k r (Fin.castLE hl a))) : EuclideanSpace ℂ (Fin (2 * r + k + 1))), WithLp.toLp 2 (Hpk k r *ᵥ (x⁻¹ *ᵥ bvec (eI k r (Fin.castLE hl a'))))⟫_ℂ).det`. Unfold `Dmin`.
+
+Use `congr 1`. Use extensionality with `a b`. Establish `ha : a.val < r` using `lt_of_lt_of_le a.isLt hl`. Establish `hb : b.val < r` using `lt_of_lt_of_le b.isLt hl`. Rewrite using `[Matrix.of_apply, EuclideanSpace.inner_toLp_toLp, dotProduct_comm, Matrix.submatrix_apply, Zhat, ← herm_mulVec (hinv _ hγx).2, Matrix.mulVec_mulVec, Matrix.mul_inv_rev, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hinv _ hγ).1, Matrix.mul_one, fvec, fvec, dif_pos (by exact hb), di …`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, mul_comm]`. Conclude with `pow_le_pow_right₀ (one_le_mul_of_one_le_of_one_le (one_le_Sg ..) (one_le_Sg ..)) hl`.
+-/
 theorem norm_Dmin_le (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) {γ x : Mat k r} (hγ : γ ∈ GG k r) (hx : x ∈ GG k r)
     (l : Fin (r + 1)) : ‖Dmin k r z z' γ l.castSucc‖ ≤ (Sg k r z' x * Sg k r z (γ * x)) ^ r := by
   have hH : IsUnit (Hpk k r).det := Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1
@@ -104,6 +142,13 @@ theorem norm_Dmin_le (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) {γ x : Ma
   rw [← mul_pow, mul_comm]
   exact pow_le_pow_right₀ (one_le_mul_of_one_le_of_one_le (one_le_Sg ..) (one_le_Sg ..)) hl
 
+/- English proof (translation)
+Take `⟨s, hs, hs'⟩` from `exists_short k r hj z hx`. Establish `h1 : ∀ a, ‖∑ i, s i a • P.starProjection (WithLp.toLp 2 (x⁻¹ *ᵥ bvec (eI k r (Fin.castLE hj i))))‖ ≤ Sg k r z x` using `fun a => by`. Use `hs' a` as an intermediate fact. Rewrite `this` using `[eucl_eq, WithLp.toLp_sum]`. Use `le_trans (le_of_eq ?_) ((P.norm_starProjection_apply_le _).trans this)` and prove the remaining obligations.
+
+Simplify using `only [map_sum, WithLp.toLp_smul, map_smul]`. Establish `h` using `norm_det_inner_le_pow _ _ s s hs hs h1 h1`. Establish `h0` using `one_le_Sg k r z x`. Use `le_trans ?_ (pow_le_pow_right₀ h0 hj)` and prove the remaining obligations. Unfold `gramProj`.
+
+Use `Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[sq]`. Conclude with `h`.
+-/
 theorem gramProj_le (k r : ℕ) {j : ℕ} (hj : j ≤ r) (z : Fin (2 * r + k + 1) → ℂ) {x : Mat k r} (hx : x ∈ GG k r)
     (P : Submodule ℂ (EuclideanSpace ℂ (Fin (2 * r + k + 1)))) :
     gramProj P (fun a : Fin j => x⁻¹ *ᵥ bvec (eI k r (Fin.castLE hj a))) ≤ Sg k r z x ^ r := by
@@ -122,6 +167,11 @@ theorem gramProj_le (k r : ℕ) {j : ℕ} (hj : j ≤ r) (z : Fin (2 * r + k + 1
   rw [sq]
   exact h
 
+/- English proof (translation)
+Introduce `k r j hj z z' γ _ _ hγ x hx`. Establish `hH : IsUnit (Hpk k r).det` using `Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1`. Establish `hγx` using `(uHGroup _ _ hH).2.1 γ hγ x hx`. Use `⟨norm_Dmin_le k r z z' hγ hx, div_nonneg (Real.sqrt_nonneg _) (norm_nonneg _), ?_, fun H₁ hH₁ => ?_⟩` and prove the remaining obligations. Use `div_le_div_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations.
+
+Use `gramProj_le k r hj z hγx (Ppos k r z z' γ x)` as an intermediate fact. Simplify `this` using `only [Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec]`. Use `(Finset.fold_max_le _).2 ⟨le_max_left _ _, fun l _ => le_max_of_le_right ?_⟩` and prove the remaining obligations. Conclude with `div_le_div_of_nonneg_right (norm_Dmin_le k r z z' hγ hx l) (by positivity)`.
+-/
 theorem minor_gram_bound : ∀ (k r j : ℕ) (hj : j ≤ r) (z z' : (Fin (2 * r + k + 1) → ℂ)), ∀ γ : Mat k r, inWb k r z → inWb k r z' → γ ∈ GG k r → ∀ x ∈ GG k r, (∀ l : Fin (r + 1), ‖Dmin k r z z' γ l.castSucc‖ ≤ (Sg k r z' x * Sg k r z (γ * x)) ^ r) ∧ 0 ≤ Yj k r hj z z' γ x ∧ Yj k r hj z z' γ x ≤ Sg k r z (γ * x) ^ r / Dj k r hj z z' γ ∧ ∀ H₁ : ℝ, 1 ≤ H₁ → sgV k r z z' γ H₁ ≤ max 1 ((Sg k r z' x * Sg k r z (γ * x)) ^ r / (2 * H₁) ^ (2 * r)) := by
   intro k r j hj z z' γ _ _ hγ x hx
   have hH : IsUnit (Hpk k r).det := Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1

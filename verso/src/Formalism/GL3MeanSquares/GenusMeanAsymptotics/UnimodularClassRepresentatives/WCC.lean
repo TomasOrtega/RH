@@ -15,6 +15,57 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
 local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 local notation "κ" => algebraMap (𝓞 K) K
 
+/- English proof (translation)
+Establish `hp : 𝔭.IsPrime` using `h𝔭.isPrime`. Take `⟨θ₀, hθ₀⟩` from `idealPowerSpanBounds.exists_theta hK hF h𝔭`. Take `⟨e, he⟩` from `idealPowerSpanBounds.exists_inv_theta (K := K) hθ₀ 1`. Establish `hconj : κ (conjO K θ₀) = star (κ θ₀)` using `rfl`. Use `set δ : K := κ θ₀ - star (κ θ₀) with hδ`.
+
+Establish `hδe : InI 𝔭 1 (δ * κ e - 1)`. Use `⟨1, fun h1 => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h1), _, he, ?_⟩` and prove the remaining obligations. Simplify using `[hδ, hconj]`. Take `⟨hne, hinv⟩` from `InI.unit h𝔭 hF hδe`. Establish `hδe' : 1 + (δ * κ e - 1) = δ * κ e` using `by ring`.
+
+Rewrite `hne`, `hinv` using `[hδe']`. Establish `hδ0 : δ ≠ 0` using `left_ne_zero_of_mul hne`. Establish `he0 : κ e ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hstarδ : star δ = -δ`. Rewrite using `[hδ, star_sub, star_star]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set l : K := κ θ₀ * δ⁻¹ with hl_def`. Establish `hl : l + star l = 1`. Establish `h1 : l + star l = (κ θ₀ - star (κ θ₀)) * δ⁻¹`. Rewrite using `[hl_def, star_mul', star_inv₀, hstarδ, inv_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Conclude with `mul_inv_cancel₀ hδ0`. Establish `hl0 : InI 𝔭 0 l`. Establish `h1` using `InI.mul hp (InI.int hp θ₀) (InI.mul hp (InI.int hp e) hinv)`.
+
+Establish `h2 : κ e * (δ * κ e)⁻¹ = δ⁻¹`. Rewrite using `[mul_inv, mul_comm δ⁻¹, ← mul_assoc, mul_inv_cancel₀ he0, one_mul]`. Rewrite `h1` using `[h2]`. Conclude with `h1`. Establish `hls0 : InI 𝔭 0 (star l)` using `InI.conj hF hl0`.
+
+Use `set d : V := y - x with hd`. Establish `hy : y = x + d` using `by simp [hd]`. Establish `hexp : ∀ a b : V, h (a + b) (a + b) = h a a + h a b + h b a + h b b`. Introduce `a b`. Simplify using `only [map_add, LinearMap.add_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hdd : h x d + h d x + h d d = 0`. Establish `h1` using `hexp x d`. Rewrite `h1` using `[← hy, hyy, hxx]`. Take the linear combination `-h1`.
+
+Use `set z₀ : V := x + star l • d with hz₀`. Establish `hdL : InL 𝔭 A 0 (star l • d)` using `(InL.smul hp hls0 hw).mono (by omega)`. Establish `hz₀L : InL 𝔭 A 0 z₀` using `InL.add hp hx hdL`. Establish `hsymm : ∀ a b : V, star (h a b) = h b a` using `fun a b => by`. Simplify `hs.eq a b` using `[starRingEnd_apply]`.
+
+Use `set c : K := h z₀ z₀ with hc_def`. Establish `hcstar : star c = c` using `hsymm z₀ z₀`. Establish `hn0 : κ (ι n) ≠ 0` using `κι_ne_zero hn`. Establish `hcn : InI 𝔭 (v + (v + J)) (c - κ (ι n))`. Establish `h1 : c - κ (ι n) = h (star l • d) z₀ + h x (star l • d)`.
+
+Rewrite using `[hc_def, hz₀]`. Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[hxx]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`.
+
+Conclude with `InI.add hp ((InL.form hp hF hA (InL.smul hp hls0 hw) hz₀L).mono (by omega)) ((InL.form hp hF hA hx (InL.smul hp hls0 hw)).mono (by omega))`. Use `set ε : K := (κ (ι n))⁻¹ * (c - κ (ι n)) with hε_def`. Establish `hεv : InI 𝔭 (v + J) ε` using `InI.div h𝔭 hn hv hcn`. Take `⟨hne', hinv'⟩` from `InI.unit h𝔭 hF (hεv.mono (by omega))`. Establish `hc : c = κ (ι n) * (1 + ε)`.
+
+Rewrite using `[hε_def, mul_add, mul_one, ← mul_assoc, mul_inv_cancel₀ hn0, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc0 : c ≠ 0`. Rewrite using `[hc]`. Conclude with `mul_ne_zero hn0 hne'`.
+
+Establish `hcinv : c⁻¹ = (1 + ε)⁻¹ * (κ (ι n))⁻¹`. Rewrite using `[hc, mul_inv, mul_comm]`. Use `set w : V := c⁻¹ • d with hw_def`. Establish `hwv : InL 𝔭 A (v + J) w`. Rewrite using `[hw_def, hcinv, mul_smul]`.
+
+Conclude with `(InL.smul hp hinv' (InL.div h𝔭 hn hv hw)).mono (by omega)`. Establish `hwJ : InL 𝔭 A J w` using `hwv.mono (by omega)`. Establish `hw1 : InL 𝔭 A 1 w` using `hwv.mono (by omega)`. Use `set θ : K := c⁻¹ * c⁻¹ * h d z₀ with hθ_def`. Establish `hθJ : InI 𝔭 J θ`.
+
+Establish `h1 : InI 𝔭 (v + (v + J)) (h d z₀)` using `(InL.form hp hF hA hw hz₀L).mono (by omega)`. Establish `h2` using `InI.div h𝔭 hn hv (InI.div h𝔭 hn hv h1)`. Establish `h3` using `InI.mul hp hinv' (InI.mul hp hinv' h2)`. Establish `h4 : θ = (1 + ε)⁻¹ * ((1 + ε)⁻¹ * ((κ (ι n))⁻¹ * ((κ (ι n))⁻¹ * h d z₀)))`. Rewrite using `[hθ_def, hcinv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4]`. Conclude with `h3.mono (by omega)`. Establish `hθ1 : InI 𝔭 1 θ` using `hθJ.mono (by omega)`. Establish `hskew : h d z₀ + h z₀ d = 0`.
+
+Rewrite using `[hz₀]`. Simplify using `only [map_add, LinearMap.add_apply, map_smul, LinearMap.map_smulₛₗ₂, smul_eq_mul, starRingEnd_apply, star_star]`. Take the linear combination `hdd + h d d * hl`. Establish `hθstar : star θ = -θ`. Rewrite using `[hθ_def, star_mul', star_mul', star_inv₀, hcstar, hsymm]`.
+
+Take the linear combination `c⁻¹ * c⁻¹ * hskew`. Use `set Y : V →ₗ[K] V := WCB.skewY h z₀ w θ with hY_def`. Establish `hY` using `WCB.skewY_skew hs z₀ w hθstar`. Establish `hYz : Y z₀ = d`. Rewrite using `[hY_def, WCB.skewY_apply]`.
+
+Establish `hcc : c * c⁻¹ = 1` using `mul_inv_cancel₀ hc0`. Establish `hcoef : θ * c - h w z₀ = 0`. Rewrite using `[hw_def, LinearMap.map_smulₛₗ₂, starRingEnd_apply, star_inv₀, hcstar, smul_eq_mul, hθ_def]`. Take the linear combination `c⁻¹ * h d z₀ * hcc`. Rewrite using `[hcoef, zero_smul, zero_add, hw_def, smul_smul, hcc, one_smul]`.
+
+Take `⟨g, hg, hgz, hs1, hs2⟩` from `WCB.exists_cayley han hY hl`. Use `⟨g, hg, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨z', hz'⟩` from `hs1 z`. Establish `hz'L` using `WCB.mem_of_resolvent h𝔭 hF hA hz₀L hw1 hθ1 hls0 hz hz'`.
+
+Rewrite using `[← hz', hgz]`. Establish `h1 : z' + l • Y z' - (z' - star l • Y z') = (l + star l) • Y z'`. Rewrite using `[add_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[h1, hl, one_smul]`.
+
+Conclude with `WCB.skewY_mem hp hF hA hz₀L hwJ hθJ hz'L`. Introduce `z hz`. Take `⟨z', hz'⟩` from `hs2 z`. Establish `hz'' : z' - (-l) • Y z' = z`. Rewrite using `[neg_smul, sub_neg_eq_add]`.
+
+Conclude with `hz'`. Establish `hz'L` using `WCB.mem_of_resolvent h𝔭 hF hA hz₀L hw1 hθ1 (InI.neg hl0) hz hz''`. Establish `hgs : g.symm z = z' - star l • Y z'`. Rewrite using `[LinearEquiv.symm_apply_eq, hgz, hz']`. Rewrite using `[hgs]`.
+
+Conclude with `InL.sub hp hz'L ((InL.smul hp hls0 (WCB.skewY_mem hp hF hA hz₀L hwJ hθJ hz'L)).mono (by omega))`. Establish `hx' : z₀ - star l • Y z₀ = x`. Rewrite using `[hYz, hz₀]`. Normalize the expressions using the abelian group laws. Rewrite using `[← hx', hgz, hYz, hz₀, hy, add_assoc, ← add_smul, add_comm (star l) l, hl, one_smul]`.
+-/
 theorem core (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm)
     (han : ∀ x, h x x = 0 → x = 0) {A : Submodule (𝓞 K) V} (hA : Formalism.HermitianLatticesTheory.IsIntegralLat h A)
     {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {n : 𝓞 F} (hn : n ≠ 0) {v : ℕ} (hv : n ∉ 𝔭 ^ (v + 1))

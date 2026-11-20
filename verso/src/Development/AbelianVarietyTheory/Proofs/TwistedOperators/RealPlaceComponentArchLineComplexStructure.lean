@@ -24,16 +24,31 @@ namespace GlobalTheory.CartanLinTransfer
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.ArchLineSum.infPart_smul, map_mul, GlobalTheory.ArchLineSum.theta_realAd hθ, Complex.ofReal_one, one_mul]`.
+-/
 theorem phi_smul_realAd {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (a : AE D) :
     θ τ (infPart D (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F 1 • a)) = θ τ (infPart D a) := by
   rw [GlobalTheory.ArchLineSum.infPart_smul, map_mul, GlobalTheory.ArchLineSum.theta_realAd hθ, Complex.ofReal_one, one_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, ← (hθ τ).1]`. Both sides reduce to the same expression.
+-/
 theorem phi_incM {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {m n : Type} (J : Matrix m n D.host.E) :
     (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM J).map ((θ τ).comp (infPart D)) = J.map (tauE D τ) := by
   ext i j
   rw [Matrix.map_apply, Matrix.map_apply, ← (hθ τ).1]
   rfl
 
+/- English proof (translation)
+Establish `hu : IsUnit (A.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (A.fr_unit τ)`. Establish `hJ : (Formalism.REAL.Jm (A.ε τ))ᴴ = Formalism.REAL.Jm (A.ε τ)`. Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Apply the tactic sequence `subst h; simp [Formalism.REAL.Jm, Matrix.conjTranspose_apply]; split_ifs <;> simp`.
+
+Simplify using `[Formalism.REAL.Jm, Matrix.conjTranspose_apply, h, Ne.symm h]`. Establish `hJJ : Formalism.REAL.Jm (A.ε τ) * Formalism.REAL.Jm (A.ε τ) = 1`. Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Apply the tactic sequence `congr 1; ext a; split_ifs <;> simp`. Rewrite using `[← A.fr_gram τ, Fr.cart, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hJ, Matrix.conjTranspose_nonsing_inv]`.
+
+Establish `h1 : ((A.fr τ)ᴴ)⁻¹ * (A.fr τ)ᴴ = 1` using `Matrix.nonsing_inv_mul _ (by rw [Matrix.det_conjTranspose]; exact hu.star)`. Establish `h2 : A.fr τ * (A.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (A.fr τ)ᴴ * (Formalism.REAL.Jm (A.ε τ) * ((A.fr τ * (A.fr τ)⁻¹) * Formalism.REAL.Jm (A.ε τ))) * A.fr τ := by`.
+
+Rewrite using `[h1, h2, Matrix.mul_one, Matrix.one_mul]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+-/
 theorem cartH_gram {V : HSp D} (A : Fr V) (τ : D.what₂.Tau) :
     (A.cart τ)ᴴ * gramAt D V τ = gramAt D V τ * A.cart τ := by
   have hu : IsUnit (A.fr τ).det := (Matrix.isUnit_iff_isUnit_det _).1 (A.fr_unit τ)
@@ -53,6 +68,11 @@ theorem cartH_gram {V : HSp D} (A : Fr V) (τ : D.what₂.Tau) :
         rw [h1, h2, Matrix.mul_one, Matrix.one_mul]
     _ = _ := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Consider the cases of `ε`. Simplify using `[Fr.cart, frSgn]`. Establish `h : Formalism.REAL.Jm (fun a => xor true (A.ε τ a)) = -Formalism.REAL.Jm (A.ε τ)`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`.
+
+Apply the tactic sequence `subst hab; cases h : A.ε τ a <;> simp [Formalism.REAL.Jm, h]`. Simplify using `[Formalism.REAL.Jm, hab]`. Use `show (A.fr τ)⁻¹ * Formalism.REAL.Jm (fun a => xor true (A.ε τ a)) * A.fr τ = _`. Rewrite using `[h, Matrix.mul_neg, Matrix.neg_mul]`. Simplify using `[Fr.cart]`.
+-/
 theorem cart_frSgn' (ε : Bool) {V : HSp D} (A : Fr V) (τ : D.what₂.Tau) :
     (frSgn ε A).cart τ = (if ε then -1 else 1 : ℂ) • A.cart τ := by
   cases ε
@@ -69,16 +89,34 @@ end GlobalTheory.CartanLinTransfer
 
 namespace GlobalTheory.CartanLinTransfer
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem map_conj_conj {m n : Type} (M : Matrix m n ℂ) : (M.map (starRingEnd ℂ)).map (starRingEnd ℂ) = M := by
   ext i j; simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem map_conj_smul {m n : Type} (c : ℂ) (M : Matrix m n ℂ) :
     (c • M).map (starRingEnd ℂ) = (starRingEnd ℂ c) • M.map (starRingEnd ℂ) := by
   ext i j; simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`.
+-/
 theorem map_conj_transpose {m n : Type} (M : Matrix m n ℂ) : (M.map (starRingEnd ℂ))ᵀ = Mᴴ := by
   ext i j; simp [Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun M => M.map (starRingEnd ℂ)) h`. Simplify using `only [map_conj_conj, map_conj_smul, Matrix.map_mul, Matrix.transpose_map, Complex.conj_I, map_neg, hs] at h2`. Rewrite using `[h2]`. Establish `hsub : (Matrix.reindex e e Bc).submatrix e e = Bc`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.reindex_apply]`. Establish `hprod : ∀ K : Matrix (Fin n) (Fin n) ℂ, (Matrix.reindex e e Bc * (Pᵀ * K)).submatrix e id = Bc * (Pᵀ.submatrix e id * K)`. Introduce `K`. Rewrite using `[← Matrix.submatrix_mul_equiv (Matrix.reindex e e Bc) (Pᵀ * K) e e id, hsub]`. Use `congr 1`.
+
+Rewrite using `[Matrix.transpose_smul, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_smul, map_conj_transpose]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.submatrix_smul, Pi.smul_apply, smul_smul]`. Rewrite using `[hprod]`. Simplify using `only [Matrix.mul_assoc, hAG]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alg_step {m n k : ℕ} (e : Fin m ≃ Fin k) (Ac G : Matrix (Fin n) (Fin n) ℂ) (Bc : Matrix (Fin m) (Fin m) ℂ)
     (P P' : Matrix (Fin n) (Fin k) ℂ) (s : ℂ) (hs : starRingEnd ℂ s = s) (hAG : Acᴴ * G = G * Ac)
     (h : P'.map (starRingEnd ℂ) =
@@ -106,6 +144,25 @@ end GlobalTheory.CartanLinTransfer
 
 open GlobalTheory.CartanLinTransfer in
 
+/- English proof (translation)
+Introduce `D θ hθ ε S X A B d e Bs Vs Ws hBs cS hcS u u' hu τ`. Take `⟨τw, hemb, hV, hW⟩` from `hBs (InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E)))`. Use `set w : InfinitePlace D.host.F := InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E)) with hw`. Establish `hembR : (Bs.emb w).1 = (starRingEnd ℂ).comp (tauE D τw)` using `RingHom.ext hemb`. Establish `hτ : τw = τ`.
+
+Apply `(GlobalTheory.CMTypePlaces.places_bijective D).1` to reduce the goal to its premises. Establish `h2` using `(Bs.emb w).2`. Rewrite `h2` using `[hembR]`. Establish `h3` using `congrArg InfinitePlace.mk h2`. Establish `hc : (starRingEnd ℂ).comp ((tauE D τw).comp (algebraMap D.host.F D.host.E)) = ComplexEmbedding.conjugate ((tauE D τw).comp (algebraMap D.host.F D.host.E))` using `RingHom.ext fun x => by simp [ComplexEmbedding.conjugate_coe_eq]`.
+
+Rewrite `h3` using `[InfinitePlace.mk_embedding, RingHom.comp_assoc, hc, InfinitePlace.mk_conjugate_eq]`. Conclude with `h3`. Rewrite `hembR`, `hV`, `hW` using `[hτ]`. Establish `hcomp : ((starRingEnd ℂ).comp (tauE D τ)).comp (algebraMap D.host.F D.host.E) = w.embedding`. Rewrite using `[← hembR]`.
+
+Conclude with `(Bs.emb w).2`. Establish `hE : Bs.emb w = ⟨(starRingEnd ℂ).comp (tauE D τ), hcomp⟩` using `Subtype.ext hembR`. Establish `hpi : ∀ y, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf (Bs.emb w) y = starRingEnd ℂ (((θ τ).comp (infPart D)) y)`. Introduce `y`. Rewrite using `[hE]`.
+
+Conclude with `GlobalTheory.ConjInfExp.piInf_eq θ hθ τ w hcomp y`. Establish `hmap : ∀ v : Matrix (Fin S.rank) (Fin d) (AE D), v.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf (Bs.emb w)) = (v.map ((θ τ).comp (infPart D))).map (starRingEnd ℂ)`. Introduce `v`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, hpi]`.
+
+Establish `hu1` using `hu w`. Rewrite `hu1` using `[hmap, hmap, hV, hW]`. Establish `hz : ∀ v : Matrix (Fin S.rank) (Fin d) (AE D), compAt θ τ (GlobalTheory.VacTransfer.archLine cS v 1) = (v.map ((θ τ).comp (infPart D)))ᵀ.submatrix e id * ((if ε then -1 else 1 : ℂ) • gramAt D S τ)`. Introduce `v`. Use `show (cS (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F 1 • v)).map ((θ τ).comp (infPart D)) = _`.
+
+Rewrite using `[hcS, Matrix.map_mul, phi_incM hθ]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.submatrix_apply, Matrix.transpose_apply, Matrix.smul_apply, id, RingHom.comp_apply, phi_smul_realAd hθ]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `cases ε <;> simp [gramAt, Matrix.smul_apply]`. Apply the tactic sequence `have hsgn : (if ε then 1 else -1 : ℂ) = -(if ε then -1 else 1 : ℂ) := by cases ε <;> simp`. Apply the tactic sequence `have hs : starRingEnd ℂ (if ε then -1 else 1 : ℂ) = (if ε then -1 else 1 : ℂ) := by cases ε <;> simp`. Rewrite `hu1` using `[hsgn]`. Rewrite using `[hz, hz, cart_frSgn', cplxO]`.
+
+Conclude with `alg_step e (A.cart τ) (gramAt D S τ) (B.cart τ) _ _ _ hs (cartH_gram A τ) hu1`.
+-/
 theorem GlobalTheory.CartanLinTransfer.compAt_archLine_cplxO : ∀ (D : D7) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)
       (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E)

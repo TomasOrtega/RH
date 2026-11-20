@@ -12,6 +12,9 @@ open GlobalTheory.Points
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
 
+/- English proof (translation)
+The claim follows from `have := M.lft LocallyOfFiniteType.isLocallyNoetherian M.s`.
+-/
 theorem isLocallyNoetherian [IsNoetherianRing o] : IsLocallyNoetherian M.Z :=
   have := M.lft
   LocallyOfFiniteType.isLocallyNoetherian M.s
@@ -21,6 +24,9 @@ def ptOpen (V : M.Z.Opens) (hV : (V : Set M.Z).Nonempty) : Sp Ω ⟶ V.toScheme 
     rw [Scheme.Opens.range_ι]
     exact (top_le_preimage_iff _ _).1 (M.top_le_preimage_pt hV))
 
+/- English proof (translation)
+The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+-/
 theorem ptOpen_ι (V : M.Z.Opens) (hV : (V : Set M.Z).Nonempty) : M.ptOpen V hV ≫ V.ι = M.pt :=
   IsOpenImmersion.lift_fac _ _ _
 
@@ -50,12 +56,20 @@ def openPart [IsNoetherianRing o] (V : M.Z.Opens) (hV : (V : Set M.Z).Nonempty) 
       rw [ptOpen_ι]
       rfl }
 
+/- English proof (translation)
+The claim follows from `(M.ptOpen_ι V hV).trans ((Category.id_comp _).symm.trans (congrArg (· ≫ M.pt) (Spec.map_id _).symm))`.
+-/
 theorem isHom_openPart [IsNoetherianRing o] (V : M.Z.Opens) (hV : (V : Set M.Z).Nonempty) :
     M.IsHom (M.openPart V hV) (AlgHom.id o Ω) V.ι :=
   (M.ptOpen_ι V hV).trans ((Category.id_comp _).symm.trans (congrArg (· ≫ M.pt) (Spec.map_id _).symm))
 
 variable {M}
 
+/- English proof (translation)
+Use `le_antisymm ?_ fun x hx => h.map_mem_O hx` and prove the remaining obligations. Introduce and unpack `_ ⟨U, g, hz, rfl⟩`. Establish `hz' : j z ∈ j ''ᵁ U` using `⟨z, hz, rfl⟩`. Use `⟨j ''ᵁ U, (j.appIso U).inv g, hz', ?_⟩` and prove the remaining obligations. Use `(h.valF_app ⟨_, hz'⟩ _).symm.trans ?_` and prove the remaining obligations.
+
+Establish `e` using `congrArg (fun φ => φ.hom g) (j.appIso_inv_app U)`. Use `(congrArg _ e).trans ?_` and prove the remaining obligations. Conclude with `N.valF_resG (j.preimage_image_eq U).le ⟨z, hz'⟩ g`.
+-/
 theorem IsHom.O_eq {N : RatModel o Ω} {j : N.Z ⟶ M.Z} (h : M.IsHom N (AlgHom.id o Ω) j) [IsOpenImmersion j]
     (z : N.Z) : N.O z = M.O (j z) := by
   refine le_antisymm ?_ fun x hx => h.map_mem_O hx
@@ -83,6 +97,9 @@ def ProjChart {Ω' : Type} [Field Ω'] [Algebra o Ω'] (N : RatModel o Ω') (φ 
     (U : Set N.Z) = {z' | q z' ∈ W ∧ N.Div t i z'} ∧
     N.ringOn U = Algebra.adjoin o (φ '' (M.ringOn W : Set Ω) ∪ Set.range fun j => t j / t i)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => one_ne_zero, fun _ _ h => (valR_one _ _ (M.top_le_preimage_pt h)).trans (div_one 1).symm⟩`.
+-/
 example : M.GenTriv ⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩ fun _ => 1 :=
   ⟨fun _ => one_ne_zero, fun _ _ h => (valR_one _ _ (M.top_le_preimage_pt h)).trans (div_one 1).symm⟩
 

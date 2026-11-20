@@ -9,5 +9,8 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.ZJ
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ZJ.Core.Law.six_of_few | exact GlobalTheory.ZJ.Core.Law.six_of_few | (intros; apply GlobalTheory.ZJ.Core.Law.six_of_few <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.companionTheory_om_of_tests_torsionSections : Semi.extend_existsSt.{0} → ∀ (C : Core) (L : C.Law) (T : C.Theta) (n : ℕ), C.HasTests → T.BTest L → C.TorsSec n → T.Few n → L.CompanionTheory (T.Om L) := by
   first | exact @GlobalTheory.ZJ.Core.Law.six_of_few | exact GlobalTheory.ZJ.Core.Law.six_of_few | (intros; apply GlobalTheory.ZJ.Core.Law.six_of_few <;> assumption)

@@ -9,6 +9,21 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.HeightCounting.FormsStep
+/- English proof (translation)
+Introduce `D cf jE A S In b0 b1 Sx T Sp hSb hstar i j b hj1 hj2`. Take `⟨Φ, hc, hf, hw⟩` from `descend_exists D T S In i j b hj1 hj2`. Establish `ha` using `descend_actL D T S In i j b hj1 hj2 Φ hc hf`. Establish `he` using `descend_eSum D T S In i j b Φ hc ha`. Use `(GlobalTheory.T.V0T_le_span_image_goodL D S In T i j b hj1 hj2 (eIdem_all D) Φ hc ha he hw).trans (Submodule.span_le.mpr ?_)` and prove the remaining obligations.
+
+Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Rewrite using `[SetLike.mem_coe]`. Use `Submodule.iSup_induction (motive := fun y => Φ y ∈ _) _ (In.span j hj1 hj2 hx) ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ y hy`.
+
+Use `Submodule.iSup_induction (motive := fun y => Φ y ∈ _) _ hy ?_ ?_ ?_` and prove the remaining obligations. Introduce `hσ z hz`. Use `Submodule.mem_iSup_of_mem σ (Submodule.mem_iSup_of_mem hσ ?_)` and prove the remaining obligations. Rewrite `hz`, the goal using `[Submodule.mem_inf]`. Use `⟨descend_mem_V0T D T S In i j b Φ hc ha he z hz.1, ?_⟩` and prove the remaining obligations.
+
+Establish `hz2` using `hz.2`. Simplify using `only [Submodule.mem_iInf] at hz2 ⊢`. Introduce `k P hkP`. Establish `hPb : P ∉ In.Sb` using `fun hP => hkP.2.2.2 (by`. Rewrite using `[← Finset.mem_coe, Sp.ringSpec_excludedPlaces_eq i]`.
+
+Conclude with `Or.inr (Finset.mem_coe.mpr (hSb hP)))`. Conclude with `descend_mem_eigenspace D T S In i j b hj1 hj2 Φ hc hf k P _ z (hz2 k P ⟨hkP.1, hkP.2.1, hkP.2.2.1, hPb⟩)`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `y z hy hz`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hy hz`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `y z hy hz`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hy hz`.
+-/
 theorem goodPart_le_iSup_eigen_alt : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE) (S : RatDat D.ntw)
     (In : RatIn D S) (b0 b1 : Big D) (Sx : Finset (PlE D.host)) (T : TwR D.LL0 D.nd) (Sp : RingSpec D cf b0 b1 Sx T),
     In.Sb ⊆ Sx → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) →

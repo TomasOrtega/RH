@@ -37,6 +37,9 @@ def StepCore : Prop :=
     ∀ α ∈ S, Simeq (be l ex ph (mulBy l ex α.1 (Xv 0)) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p])
         (be l ex ph (Xv 0) (mulBy l ex α.2 (Xv 1)))
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem beConjNorm_of (h : StepCore) : PI.BeConjNorm.BeConjNorm := h
 
 end PI.BeConjNormW

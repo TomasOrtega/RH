@@ -11,6 +11,13 @@ noncomputable section
 
 namespace GlobalTheory.GenFibre
 
+/- English proof (translation)
+Use `letI := φ.toAlgebra`. Establish `: Module.Flat A B` using `hφ`. Establish `hreg : IsSMulRegular B (a ^ 0 * a)`. Rewrite using `[pow_zero, one_mul]`. Conclude with `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := B) ha`.
+
+Use `haveI : Ring.KrullDimLE 0 B := Ring.krullDimLE_iff.2 (le_of_eq (by exact_mod_cast hd))`. Assume the negation of the conclusion as `hna`. Establish `hm : φ a ∈ maximalIdeal B` using `hna`. Take `⟨k, hk⟩` from `Ring.KrullDimLE.isNilpotent_iff_mem_maximalIdeal.2 hm`. Establish `hreg' : IsSMulRegular B (a ^ k)`.
+
+Use `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := B) (pow_mem ha k)` as an intermediate fact. Conclude with `this`. Establish `h1 : (a ^ k) • (1 : B) = (a ^ k) • (0 : B)`. Rewrite using `[smul_zero, Algebra.smul_def, mul_one, map_pow, RingHom.algebraMap_toAlgebra, hk]`. Conclude with `one_ne_zero (hreg' h1)`.
+-/
 theorem isUnit_of_flat_of_dim_zero {A B : Type} [CommRing A] [CommRing B] [IsLocalRing B]
     (φ : A →+* B) (hφ : φ.Flat) (hd : ringKrullDim B = 0) {a : A} (ha : a ∈ nonZeroDivisors A) :
     IsUnit (φ a) := by
@@ -29,6 +36,9 @@ theorem isUnit_of_flat_of_dim_zero {A B : Type} [CommRing A] [CommRing B] [IsLoc
     rw [smul_zero, Algebra.smul_def, mul_one, map_pow, RingHom.algebraMap_toAlgebra, hk]
   exact one_ne_zero (hreg' h1)
 
+/- English proof (translation)
+Establish `e` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`. Rewrite using `[← e]`. Establish `h₁ : Flat (Spec.map (Scheme.stalkClosedPointTo ξ))` using `by rw [Flat.SpecMap_iff]; exact hf`. Establish `h₂` using `GlobalTheory.LocalRingGeneralisation.flat_fromSpecStalk X (ξ (closedPoint _))`. Conclude with `MorphismProperty.comp_mem @Flat _ _ h₁ h₂`.
+-/
 theorem flat_of_stalkClosedPointTo {X : Scheme.{0}} {R : Type} [CommRing R] [IsLocalRing R] (ξ : Sp R ⟶ X)
     (hf : (Scheme.stalkClosedPointTo ξ).hom.Flat) : Flat ξ := by
   have e := Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ
@@ -37,6 +47,11 @@ theorem flat_of_stalkClosedPointTo {X : Scheme.{0}} {R : Type} [CommRing R] [IsL
   have h₂ := GlobalTheory.LocalRingGeneralisation.flat_fromSpecStalk X (ξ (closedPoint _))
   exact MorphismProperty.comp_mem @Flat _ _ h₁ h₂
 
+/- English proof (translation)
+Introduce `X Y' Y ρ ι _ D n R _ _ ξ hf v hv`. Use `haveI : Flat ξ := flat_of_stalkClosedPointTo ξ hf`. Take `⟨i, hi⟩` from `D.exists_mem (ι (pullback.snd ξ ρ v))`. Establish `hreg` using `GlobalTheory.Cartier.isRegularFn_iff_germ.1 (D.regular i) _ hi`. Establish `hfl : ((pullback.snd ξ ρ).stalkMap v).hom.comp (ι.stalkMap (pullback.snd ξ ρ v)).hom |>.Flat` using `RingHom.Flat.comp (Flat.stalkMap ι _) (Flat.stalkMap (pullback.snd ξ ρ) v)`.
+
+Establish `hu` using `isUnit_of_flat_of_dim_zero _ hfl hv hreg`. Rewrite using `[GlobalTheory.VanStalk.stalkId_comap, GlobalTheory.VanStalk.stalkId_comap, GlobalTheory.Vanishing.stalkId_pow, D.stalkId_idealSheaf i _ hi, Ideal.map_map, Ideal.map_pow, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_eq_top.2 hu, Ideal.top_pow]`.
+-/
 theorem stalkId_eq_top_of_dim_zero : ∀ {X Y' Y : Scheme.{0}} (ρ : Y' ⟶ X) (ι : Y' ⟶ Y) [Flat ι] (D : EffCartierData Y) (n : ℕ) {R : Type} [CommRing R] [IsLocalRing R] (ξ : Sp R ⟶ X), (Scheme.stalkClosedPointTo ξ).hom.Flat → ∀ v : ↥(pullback ξ ρ : Scheme.{0}), ringKrullDim ((pullback ξ ρ).presheaf.stalk v) = 0 → FinalTheorems.stalkId (((D.idealSheaf ^ n).comap ι).comap (pullback.snd ξ ρ)) v = ⊤ := by
   intro X Y' Y ρ ι _ D n R _ _ ξ hf v hv
   haveI : Flat ξ := flat_of_stalkClosedPointTo ξ hf

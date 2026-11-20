@@ -3,6 +3,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.C
 
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Establish `hcc` using `F.c_sq`. Establish `hinv : F.c⁻¹ = F.c` using `inv_eq_of_mul_eq_one_right hcc`. Establish `hm : ∀ γ : F.Γ, γ ∉ F.η.ker → γ * F.c ∈ F.η.ker`. Introduce `γ h`. Rewrite `h`, the goal using `[MonoidHom.mem_ker]`.
+
+Break down `Int.units_eq_one_or (F.η γ) with e | e` into its components or cases. Conclude with `absurd e h`. Rewrite using `[map_mul, e, F.η_c]`. Simplify using the standard rewrite rules. Establish `hn : ∀ g : F.G₀, (g : F.Γ) * F.c ∉ F.η.ker`.
+
+Introduce `g h`. Establish `h2` using `g.2`. Rewrite `h`, `h2` using `[MonoidHom.mem_ker]`. Rewrite `h` using `[map_mul, h2, F.η_c, one_mul]`. Conclude with `absurd h (by decide)`.
+
+Set `f : F.Γ → M` to `fun γ => if h : γ ∈ F.η.ker then a ⟨γ, h⟩ else a ⟨γ * F.c, hm γ h⟩ * t`. Establish `f1 : ∀ g : F.G₀, f g = a g` using `fun g => by simp only [f, dif_pos g.2]`. Establish `f2 : ∀ g : F.G₀, f (g * F.c) = a g * t` using `fun g => by`. Simplify using `only [f, dif_neg (hn g), mul_assoc, hcc, mul_one]`. Establish `cases : ∀ γ : F.Γ, ∃ g : F.G₀, γ = g ∨ γ = g * F.c`.
+
+Introduce `γ`. Distinguish the cases in `h : γ ∈ F.η.ker`. Conclude with `⟨⟨γ, h⟩, Or.inl rfl⟩`. Conclude with `⟨⟨γ * F.c, hm γ h⟩, Or.inr (by simp only [mul_assoc, hcc, mul_one])⟩`. Establish `cj : ∀ g : F.G₀, ((F.conj g : F.G₀) : F.Γ) = F.c * g * F.c` using `fun g => by`.
+
+Rewrite using `[← congrArg (F.c * (g : F.Γ) * ·) hinv]`. Both sides reduce to the same expression. Use `⟨⟨⟨f, f1 1 |>.trans (map_one a)⟩, fun x y => ?_⟩, f1, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨g, rfl | rfl⟩ := cases x <;> obtain ⟨h, rfl | rfl⟩ := cases y`. Use `show f _ = f _ * f _`.
+
+Rewrite using `[← Subgroup.coe_mul, f1, f1, f1, map_mul]`. Use `show f _ = f _ * f _`. Rewrite using `[← mul_assoc, ← Subgroup.coe_mul, f2, f1, f2, map_mul, mul_assoc]`. Use `show f _ = f _ * f _`. Establish `e : (g : F.Γ) * F.c * h = (g * F.conj h : F.G₀) * F.c`.
+
+Rewrite using `[Subgroup.coe_mul, cj]`. Simplify using `only [mul_assoc, hcc, mul_one]`. Rewrite using `[e, f2, f2, f1, map_mul, mul_assoc, mul_assoc, hc]`. Use `show f _ = f _ * f _`. Establish `e : (g : F.Γ) * F.c * (h * F.c) = (g * F.conj h : F.G₀)`.
+
+Rewrite using `[Subgroup.coe_mul, cj]`. Simplify using `only [mul_assoc]`. Rewrite using `[e, f1, f2, f2, map_mul, mul_assoc, ← mul_assoc t, hc, mul_assoc, ht, mul_one]`. Use `f2 1` as an intermediate fact. Rewrite `this` using `[OneMemClass.coe_one, one_mul, map_one, one_mul]`.
+
+Conclude with `this`.
+-/
 private theorem adEx_ext {l : ℕ} [Fact l.Prime] (F : GFrame l) {M : Type} [Monoid M] (a : F.G₀ →* M) (t : M)
     (ht : t * t = 1) (hc : ∀ g, t * a g = a (F.conj g) * t) :
     ∃ f : F.Γ →* M, (∀ g : F.G₀, f g = a g) ∧ f F.c = t := by
@@ -50,6 +71,13 @@ private theorem adEx_ext {l : ℕ} [Fact l.Prime] (F : GFrame l) {M : Type} [Mon
     rw [OneMemClass.coe_one, one_mul, map_one, one_mul] at this
     exact this
 
+/- English proof (translation)
+Introduce `m`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g0`. Establish `h1 : IsOpen {g : H | ρ g (ρ g0 m) = ρ g0 m}` using `(h (ρ g0 m)).isOpen_fiber _`. Establish `h2 : IsOpen (Subtype.val '' {g : H | ρ g (ρ g0 m) = ρ g0 m})` using `hH.isOpenMap_subtype_val _ h1`.
+
+Establish `h3 : IsOpen ((fun g : Γ => g * g0⁻¹) ⁻¹' (Subtype.val '' {g : H | ρ g (ρ g0 m) = ρ g0 m}))` using `h2.preimage (by fun_prop)`. Establish `h4 : g0 ∈ ((fun g : Γ => g * g0⁻¹) ⁻¹' (Subtype.val '' {g : H | ρ g (ρ g0 m) = ρ g0 m}))` using `⟨1, by simp, by simp⟩`. Use `filter_upwards [h3.mem_nhds h4] with g hg`. Take `⟨u, hu, e⟩` from `hg`. Establish `e' : g = (u : Γ) * g0` using `by rw [e]; simp`.
+
+Rewrite using `[e', map_mul]`. Conclude with `hu`.
+-/
 private theorem lc_of_open {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [AddCommGroup M] [Module R M] (ρ : Representation R Γ M) (H : Subgroup Γ) (hH : IsOpen (H : Set Γ))
     (h : ∀ m, IsLocallyConstant fun g : H => ρ g m) : LC ρ := by
@@ -68,6 +96,9 @@ private theorem lc_of_open {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalS
   rw [e', map_mul]
   exact hu
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g0`. Establish `: ∀ᶠ g in nhds g0, ∀ i j, f g i j = f g0 i j` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => (h i j).eventually_eq g0`. Use `filter_upwards [this] with g hg`. Conclude with `Matrix.ext hg`.
+-/
 private theorem lc_mat {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ → Matrix (Fin n) (Fin n) R)
     (h : ∀ i j, IsLocallyConstant fun g => f g i j) : IsLocallyConstant f := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -77,6 +108,11 @@ private theorem lc_mat {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ →
   filter_upwards [this] with g hg
   exact Matrix.ext hg
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `y0`. Establish `hpos : (0 : ℝ) < (l : ℝ) ^ (-(m : ℤ))` using `zpow_pos (by exact_mod_cast (Fact.out : l.Prime).pos) _`. Use `filter_upwards [Metric.closedBall_mem_nhds y0 hpos] with y hy`. Rewrite `hy` using `[Metric.mem_closedBall, dist_eq_norm, PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton']`.
+
+Take `⟨c, hc⟩` from `hy`. Rewrite using `[← sub_eq_zero, ← map_sub, ← hc, map_mul, map_pow, map_natCast, hl, mul_zero]`.
+-/
 private theorem lc_padic {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] (f : ℤ_[l] →+* R) (m : ℕ)
     (hl : (l : R) ^ m = 0) : IsLocallyConstant f := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -87,6 +123,27 @@ private theorem lc_padic {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] (f : �
   obtain ⟨c, hc⟩ := hy
   rw [← sub_eq_zero, ← map_sub, ← hc, map_mul, map_pow, map_natCast, hl, mul_zero]
 
+/- English proof (translation)
+Establish `hcc : χ F.c * χ F.c = 1` using `by rw [← cm, F.c_sq, c1]`. Establish `hinv : F.c⁻¹ = F.c` using `inv_eq_of_mul_eq_one_right F.c_sq`. Establish `hχ : ∀ g : F.G₀, χ (F.conj g : F.G₀) = χ g` using `fun g => by show χ (F.c * g * F.c⁻¹) = _`. Rewrite using `[hinv, cm, cm, mul_right_comm, hcc, one_mul]`. Establish `hQ : Qᵀ * P = s • (1 : Matrix (Fin n) (Fin n) R)`.
+
+Establish `e : Qᵀ * Pᵀ = 1` using `by rw [← transpose_mul, hPQ, transpose_one]`. Rewrite using `[← e, hP, Matrix.mul_smul, smul_smul, hs, one_smul]`. Establish `key : ∀ (g : F.G₀) (Z : Matrix (Fin n) (Fin n) R), Q * (ρ g * Z * ρ g⁻¹)ᵀ * P = ρ (F.conj g) * (Q * Zᵀ * P) * ρ (F.conj g)⁻¹`. Introduce `g Z`. Take `⟨u, hu⟩` from `hf g`.
+
+Establish `e1 : ρ (F.conj g) * Q = u • (Q * (ρ g⁻¹)ᵀ)`. Establish `: (ρ g⁻¹)ᵀ * (ρ g)ᵀ = 1`. Rewrite using `[← transpose_mul, ← hm, mul_inv_cancel, h1, transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, Matrix.one_mul, hQP, Matrix.one_mul]`.
+
+Use `_ = Q * (ρ g⁻¹)ᵀ * ((ρ g)ᵀ * P * ρ (F.conj g)) * Q := by simp only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hu, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc _ P, hPQ, Matrix.mul_one]`. Establish `e2 : (ρ g)ᵀ * P = u • (P * ρ (F.conj g)⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc _ (ρ _), ← hm, mul_inv_cancel, h1, Matrix.mul_one]`.
+
+Use `_ = _ := by rw [hu, Matrix.smul_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [transpose_mul, Matrix.mul_assoc]`. Use `_ = (ρ (F.conj g) * Q) * Zᵀ * (P * ρ (F.conj g)⁻¹) := by`. Rewrite using `[e1, e2]`.
+
+Simplify using `only [Matrix.mul_smul, Matrix.smul_mul]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Set `a0 : F.G₀ → Matrix (Fin n) (Fin n) R →ₗ[A] Matrix (Fin n) (Fin n) R` to `fun g => { toFun := fun Z => χ g • (ρ g * Z * ρ g⁻¹) map_add' := fun X Y => by simp [Matrix.mul_add, Matrix.add_mul] map_smul' := fun c X => by simp [smul_comm c] }`. Set `a : F.G₀ →* (Matrix (Fin n) (Fin n) R →ₗ[A] Matrix (Fin n) (Fin n) R)` to `{ toFun := a0 map_one' := LinearMap.ext fun Z => by simp [a0, h1, c1] map_mul' := fun g h => LinearMap.ext fun Z => by show χ ((g : F.Γ) * h) • (ρ (g * h) * Z * ρ (g * h)⁻¹) = χ g • (ρ g * (χ h • (ρ h * Z * ρ h⁻¹)) * ρ g⁻¹)`. Rewrite using `[_root_.mul_inv_rev, hm, hm, cm]`.
+
+Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc, smul_smul] }`. Set `t : Matrix (Fin n) (Fin n) R →ₗ[A] Matrix (Fin n) (Fin n) R` to `{ toFun := fun Z => -(χ F.c • (Q * Zᵀ * P)) map_add' := fun X Y => by simp [transpose_add, add_comm, Matrix.mul_add, Matrix.add_mul] map_smul' := fun c X => by simp [smul_comm c] }`. Take `⟨f, f1, f2⟩` from `adEx_ext F a t (LinearMap.ext fun Z => by show -(χ F.c • (Q * (-(χ F.c • (Q * Zᵀ * P)))ᵀ * P)) = Z`. Establish `e : Q * (Q * Zᵀ * P)ᵀ * P = Z`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [transpose_mul, transpose_transpose, Matrix.mul_assoc]`. Use `_ = Z := by`. Rewrite using `[hQ, hP]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, hQP, Matrix.one_mul, Matrix.mul_one, smul_smul, hs, one_smul]`. Rewrite using `[transpose_neg, transpose_smul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, e, smul_neg, neg_neg, smul_smul, hcc, one_smul]) (fun g => LinearMap.ext fun Z => by`.
+
+Use `show -(χ F.c • (Q * (χ g • (ρ g * Z * ρ g⁻¹))ᵀ * P)) = χ (F.conj g : F.G₀) • (ρ (F.conj g) * (-(χ F.c • (Q * Zᵀ * P))) * ρ (F.conj g)⁻¹)`. Rewrite using `[transpose_smul, Matrix.mul_smul, Matrix.smul_mul, key, hχ]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_neg, Matrix.neg_mul, smul_neg, smul_smul, mul_comm])`. Use `⟨f, fun g Z => ?_, fun Z => ?_⟩` and prove the remaining obligations. Rewrite using `[f1]`.
+
+Both sides reduce to the same expression. Rewrite using `[f2] show P * -(χ F.c • (Q * Zᵀ * P)) = _`. Rewrite using `[Matrix.mul_neg, Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPQ, Matrix.one_mul]`.
+-/
 private theorem adP_ex {l : ℕ} [Fact l.Prime] (F : GFrame l) (A : Type) {R : Type} [CommRing A] [CommRing R] [Algebra A R]
     {n : ℕ} (ρ : F.G₀ → Matrix (Fin n) (Fin n) R) (P Q : Matrix (Fin n) (Fin n) R) (χ : F.Γ → R) (s : R)
     (h1 : ρ 1 = 1) (hm : ∀ g h, ρ (g * h) = ρ g * ρ h) (hPQ : P * Q = 1) (hQP : Q * P = 1) (hs : s * s = 1)
@@ -157,6 +214,27 @@ private theorem adP_ex {l : ℕ} [Fact l.Prime] (F : GFrame l) (A : Type) {R : T
     show P * -(χ F.c • (Q * Zᵀ * P)) = _
     rw [Matrix.mul_neg, Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPQ, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `l _ L G G0 h O _ _ _ _ _ n y m`. Establish `rmul : ∀ X Y : Matrix (Fin n) (Fin n) O, red m (X * Y) = red m X * red m Y` using `fun X Y => Matrix.map_mul`. Establish `rone : red m (1 : Matrix (Fin n) (Fin n) O) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `rtr : ∀ X : Matrix (Fin n) (Fin n) O, (red m X)ᵀ = red m Xᵀ` using `fun X => rfl`. Establish `rsm : ∀ (u : O) (X : Matrix (Fin n) (Fin n) O), red m (u • X) = Ideal.Quotient.mk (maximalIdeal O ^ m) u • red m X` using `fun u X => Matrix.ext fun i j => map_mul (Ideal.Quotient.mk (maximalIdeal O ^ m)) u (X i j)`.
+
+Establish `h1 : y.ρm h m 1 = 1` using `by rw [Pt.ρm, map_one, map_one, rone]`. Establish `hm : ∀ g g' : G.G₀, y.ρm h m (g * g') = y.ρm h m g * y.ρm h m g'` using `fun g g' => by`. Rewrite using `[Pt.ρm, map_mul, map_mul, rmul]`. Both sides reduce to the same expression. Establish `hc : ∀ g : G.frame.G₀, h.p₀ (G.frame.conj g) = G0.frame.conj (h.p₀ g)`.
+
+Introduce `g`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[GFrame.conj, Glob.Hom.p₀, h.c]`. Establish `hf : ∀ g : G.G₀, ∃ u : Om O m, (y.ρm h m g)ᵀ * red m y.P * y.ρm h m (G.frame.conj g) = u • red m y.P` using `fun g => ⟨_, by rw [Pt.ρm, Pt.ρm, hc, rtr, ← rmul, ← rmul, y.form (h.p₀ g), rsm]⟩`. Establish `hPQ : red m (y.P : Matrix (Fin n) (Fin n) O) * red m ((y.P⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) = 1`.
+
+Rewrite using `[← rmul, Units.mul_inv, rone]`. Establish `hQP : red m ((y.P⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) * red m (y.P : Matrix (Fin n) (Fin n) O) = 1`. Rewrite using `[← rmul, Units.inv_mul, rone]`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hP⟩ : ∃ s : Om O m, s * s = 1 ∧ (red m (y.P : Matrix (Fin n) (Fin n) O))ᵀ = s • red m y.P := by`. Break down `y.sgn with e | e` into its components or cases.
+
+Conclude with `⟨1, one_mul _, by rw [rtr, e, one_smul]⟩`. Use `⟨-1, by ring, ?_⟩` and prove the remaining obligations. Rewrite using `[rtr, e, neg_smul, one_smul]`. Conclude with `Matrix.map_neg _ (map_neg _) _`. Use `⟨adP_ex G.frame O _ _ _ _ s h1 hm hPQ hQP hs hP hf rfl (fun _ _ => (one_mul _).symm), adP_ex G.frame O _ _ _ _ s h1 hm hPQ hQP hs hP hf (by simp [epsm]) (fun _ _ => by simp [epsm]), ?_⟩` and prove the remaining obligations.
+
+Establish `hp : Continuous fun g : G.G₀ => h.p₀ g` using `Continuous.subtype_mk (h.cont.comp continuous_subtype_val) _`. Establish `h0 : IsLocallyConstant fun g : G0.G₀ => red m (mat y.ρ g)` using `lc_mat _ fun i j => y.cont i j m`. Establish `l1 : IsLocallyConstant fun g : G.G₀ => y.ρm h m g` using `h0.comp_continuous hp`. Establish `l2 : IsLocallyConstant fun g : G.G₀ => y.ρm h m g⁻¹` using `l1.comp_continuous continuous_inv`. Establish `main : ∀ (χ : G.Γ → Om O m) (rep : Representation O G.Γ (Mm O n m)), IsLocallyConstant χ → IsAdP G.frame (y.ρm h m) (red m y.P) χ rep → LC rep`.
+
+Introduce `χ rep hχ had`. Use `lc_of_open rep G.η.ker G.η_open fun Z => ?_` and prove the remaining obligations. Establish `l3 : IsLocallyConstant fun g : G.G₀ => χ g` using `hχ.comp_continuous continuous_subtype_val`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g0`.
+
+Use `filter_upwards [l1.eventually_eq g0, l2.eventually_eq g0, l3.eventually_eq g0] with g e1 e2 e3`. Use `(had.1 g Z).trans (Eq.trans ?_ (had.1 g0 Z).symm)` and prove the remaining obligations. Rewrite using `[e1, e2, e3]`. Introduce and unpack `rep (had | had)`. Conclude with `main _ rep (IsLocallyConstant.const _) had`.
+
+Use `main _ rep ?_ had` and prove the remaining obligations. Establish `hl : (l : Om O m) ^ m = 0`. Use `((omFacts l O).2 m).2.2.1 1` as an intermediate fact. Rewrite `this` using `[nsmul_eq_mul, mul_one, Nat.cast_pow]`. Then use the resulting hypothesis. Establish `hc : Continuous fun g : G.Γ => (G.ε g : ℤ_[l])` using `Units.continuous_val.comp G.ε_cont`.
+
+Conclude with `(lc_padic ((algebraMap O (Om O m)).comp (algebraMap ℤ_[l] O)) m hl).comp_continuous hc`.
+-/
 theorem UpperTheory.V.Th.adExP :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (y : Pt G0.frame O n) (m : ℕ), (∃ rep, IsAd0 h y m rep) ∧ (∃ rep, IsAd1 h y m rep) ∧ ∀ rep, IsAd0 h y m rep ∨ IsAd1 h y m rep → LC rep := by
   intro l _ L G G0 h O _ _ _ _ _ n y m

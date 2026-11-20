@@ -22,6 +22,9 @@ variable [IsAlgClosure F Ω]
 section
 variable (K : Type) [Field K] [NumberField K] [IsCMField F] [IsCMField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω]
 end
+/- English proof (translation)
+Introduce `K _ _ _ _ _ _ h2 hi`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed F, haveI := IsAlgClosure.isAlgebraic (R := F) (K := Ω); Algebra.IsAlgebraic.tower_top (K := F) K⟩`. Take `⟨g, hg⟩` from `e`. Establish `e' : RepIso (r.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω)) (r'.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω))` using `⟨g, fun s => hg _⟩`. Conclude with `(h K h2 (isIrr_iso e'.symm' hi)).weak_admissible_iso e'`.
+-/
 theorem WitQ.weak_admissible_iso (e : RepIso r r') (h : _root_.UpperTheory.V.Z.Win.WitAQ ι r) : _root_.UpperTheory.V.Z.Win.WitAQ ι r' := by
   intro K _ _ _ _ _ _ h2 hi
   haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed F, haveI := IsAlgClosure.isAlgebraic (R := F) (K := Ω); Algebra.IsAlgebraic.tower_top (K := F) K⟩
@@ -29,6 +32,9 @@ theorem WitQ.weak_admissible_iso (e : RepIso r r') (h : _root_.UpperTheory.V.Z.W
   have e' : RepIso (r.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω)) (r'.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω)) :=
     ⟨g, fun s => hg _⟩
   exact (h K h2 (isIrr_iso e'.symm' hi)).weak_admissible_iso e'
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h0, fun c => (h.2 (continuous_of_iso c e.symm')).weak_admissible_iso e⟩`.
+-/
 theorem IsAutCsdN.weak_admissible_iso [IsCMField F] (e : RepIso r r') (h0 : AutCsd0 ι r') (h : _root_.UpperTheory.V.Z.Win.IsAutCsdA ι r) :
     _root_.UpperTheory.V.Z.Win.IsAutCsdA ι r' := ⟨h0, fun c => (h.2 (continuous_of_iso c e.symm')).weak_admissible_iso e⟩
 end UpperTheory.GalN.V

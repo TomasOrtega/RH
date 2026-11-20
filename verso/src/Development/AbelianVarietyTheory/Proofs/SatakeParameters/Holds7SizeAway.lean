@@ -40,6 +40,19 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 open GlobalTheory.ResW in
 
+/- English proof (translation)
+Use `set t : ℝ := ((a : ℝ) - 1 - wt) / 2 with ht`. Establish `hr` using `GlobalTheory.UnitLocWeight.rexp_eq ha hw`. Establish `hu : (π.twist (nu E (-t))).IsUnitary`. Establish `e` using `(letter_centralExponent E ⟨a, π⟩).2.2.1 ha (-t)`. Use `((rexp_eq_zero_iff_isUnitary E (tw ⟨a, π⟩ (-t)) ha).1.1 ?_)` and prove the remaining obligations.
+
+Rewrite using `[e, hr]`. Expand and normalize the polynomial expressions, which then agree. Establish `hU` using `isUnitarisable_of_isLocComp_cusp E a _ ha hu w _ (hσ.twist (nu E (-t)))`. Establish `hloc : (nu E (-t)).loc w = GlobalTheory.SmGL.absPow (w.adicCompletion E) ((-t : ℝ) : ℂ)` using `GlobalTheory.HeightCounting.Blocks.loc_of_isAbsPow (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E (-t)) w`. Use `set σ' := σ.twist (CuspSub.locDet a (nu E (-t)) w) (CuspSub.isOpen_ker_locDet (nu E (-t)) w) with hσ'`.
+
+Establish `key : (algNorm σ).nu (((wt : ℝ) / 2 : ℝ) : ℂ) = IrrGL.of σ'.ρ σ'.smooth σ'.irred`. Establish `e1 : (((1 - (a : ℝ)) / 2 : ℝ) : ℂ) + (((wt : ℝ) / 2 : ℝ) : ℂ) = ((-t : ℝ) : ℂ)`. Rewrite using `[ht]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Unfold `algNorm`. Rewrite using `[IrrGL.nu_nu, e1]`. Unfold `IrrGL.nu`. Rewrite using `[IrrGL.tw_of]`. Use `IrrGL.of_eq_of.2 ⟨?_⟩` and prove the remaining obligations.
+
+Establish `e2 : GlobalTheory.SmGL.twist σ.ρ (GlobalTheory.SmGL.detChar (Fin a) (GlobalTheory.SmGL.absPow (w.adicCompletion E) ((-t : ℝ) : ℂ))) = σ'.ρ`. Use extensionality with `g v`. Express the relevant statement in the definitionally equal form `((GlobalTheory.SmGL.detChar (Fin a) (GlobalTheory.SmGL.absPow (w.adicCompletion E) ((-t : ℝ) : ℂ)) g : ℂˣ) : ℂ) • σ.ρ g v = ((CuspSub.locDet a (nu E (-t)) w g : ℂˣ) : ℂ) • σ.ρ g v`. Use `congr 2`. Simplify using `[CuspSub.locDet, hloc, GlobalTheory.SmGL.detChar]`.
+
+Rewrite using `[e2]`. Conclude with `.refl _`. Rewrite using `[key]`. Conclude with `GlobalTheory.GenericUnitary.isUnitarisable_of_equiv (IrrGL.equivOf σ'.ρ σ'.smooth σ'.irred) hU`.
+-/
 theorem isUnitarisable (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (ha : 1 ≤ a)
     (π : CuspSub E a) (wt : ℤ) (hw : IsWeight π wt) (w : HeightOneSpectrum (𝓞 E)) (σ) (hσ : π.IsLocComp w σ) :
     GlobalTheory.SmGL.IsUnitarisable ((algNorm σ).nu (((wt : ℝ) / 2 : ℝ) : ℂ)).rep := by

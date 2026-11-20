@@ -10,6 +10,11 @@ namespace Formalism.L2.SG.Pf.MassDataX
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨k, hk | hk | hk⟩ : ∃ k, r = 3 * k ∨ r = 3 * k + 1 ∨ r = 3 * k + 2` from `⟨r / 3, by omega⟩`. Substitute `hk` using the available equality. Conclude with `⟨(3 * k + 1) * (6 * k + 1) * (4 * k + 1), by ring⟩`. Substitute `hk` using the available equality. Conclude with `⟨(3 * k + 2) * (2 * k + 1) * (12 * k + 7), by ring⟩`.
+
+Substitute `hk` using the available equality. Conclude with `⟨(k + 1) * (8 * (3 * k + 2) ^ 2 + 10 * (3 * k + 2) + 3), by ring⟩`.
+-/
 theorem three_dvd_cubic (r : ℕ) : 3 ∣ (r + 1) * (8 * r ^ 2 + 10 * r + 3) := by
 
   obtain ⟨k, hk | hk | hk⟩ : ∃ k, r = 3 * k ∨ r = 3 * k + 1 ∨ r = 3 * k + 2 := ⟨r / 3, by omega⟩
@@ -26,6 +31,13 @@ variable {D : D7} (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso
   (vR : Formalism.L2.SG.TermDef.Term D u u' F0 what₂ → ℝ) (Q : Formalism.L2.SG.PairVal.PairSys D u u' F0 what₂)
   (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
 
+/- English proof (translation)
+Establish `hMS` using `Formalism.L2.S.Pv.MSTypP.lemmaMSStd_holds X u u' ψ hψ hstd hP`. Establish `hZZ : 0 < (locOf X u u' ψ).volZZ` using `hP.2.2.2.2.2.2.1`. Unfold `Formalism.L2.SG.NGAnalytic.MassDataLemmas.FrameVolAt`. Use `show ((locOf X u u' ψ).localVolumeArchimedean * ∏ p, (locOf X u u' ψ).localVolumeAtPlace p) / (locOf X u u' ψ).volZZ = _`. Unfold `Formalism.L2.SG.Pf.Carrier.EnergyConst.LemmaMS at hMS`.
+
+Rewrite using `[hMS, mul_div_assoc, div_self hZZ.ne', mul_one]`. Establish `hv : 2 * D.host.v = D.host.rdE` using `by unfold Formalism.BasicNotions.Host.v; ring`. Establish `he : (((D.R.f * (D.R.rS + 1) * (8 * D.R.rS ^ 2 + 10 * D.R.rS + 3) : ℕ) : ℝ) / 3) = ((D.R.f * Formalism.L2.SG.Pf.Carrier.EnergyConst.e1 D : ℕ) : ℝ)`. Unfold `Formalism.L2.SG.Pf.Carrier.EnergyConst.e1`. Take `⟨c, hc⟩` from `three_dvd_cubic D.R.rS`.
+
+Rewrite using `[mul_assoc, hc, Nat.mul_div_cancel_left _ (by norm_num : 0 < 3)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hg : (X.B.g : ℝ) = ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ)` using `by rw [X.g_eq]; simp [Formalism.MainNotions.S.Lat.gS]`. Rewrite using `[hv, he, Real.rpow_natCast, hg, mul_assoc D.R.f]`.
+-/
 theorem frameVolAt_of (hψ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCharAF X.B.I.F ψ) (hstd : IsStdChar ψ) (hP : ProdConv X u u' ψ) :
     Formalism.L2.SG.NGAnalytic.MassDataLemmas.FrameVolAt X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq := by
   have hMS := Formalism.L2.S.Pv.MSTypP.lemmaMSStd_holds X u u' ψ hψ hstd hP

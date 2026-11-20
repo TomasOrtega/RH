@@ -10,23 +10,38 @@ namespace GlobalTheory.PrincData
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `hx.map ((IsCMField.complexConj E : E →+* E).toIntAlgHom)`.
+-/
 theorem isIntegral_cc {x : E} (hx : IsIntegral ℤ x) : IsIntegral ℤ (cc x) :=
   hx.map ((IsCMField.complexConj E : E →+* E).toIntAlgHom)
 
+/- English proof (translation)
+Simplify using `only [herm, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem herm_add_left (G : Matrix (Fin r) (Fin r) E) (x x' y : Fin r → E) :
     herm G (x + x') y = herm G x y + herm G x' y := by
   simp only [herm, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [herm, cc, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem herm_add_right (G : Matrix (Fin r) (Fin r) E) (x y y' : Fin r → E) :
     herm G x (y + y') = herm G x y + herm G x y' := by
   simp only [herm, cc, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [herm, Pi.smul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, show algebraMap (𝓞 E) E c = (c : E) from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_smul_left (G : Matrix (Fin r) (Fin r) E) (c : 𝓞 E) (x y : Fin r → E) :
     herm G (c • x) y = (c : E) * herm G x y := by
   simp only [herm, Pi.smul_apply, Finset.mul_sum]
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   rw [Algebra.smul_def, show algebraMap (𝓞 E) E c = (c : E) from rfl]; ring
 
+/- English proof (translation)
+Simplify using `only [herm, Pi.smul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Simplify using `only [cc, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_smul_right (G : Matrix (Fin r) (Fin r) E) (c : 𝓞 E) (x y : Fin r → E) :
     herm G x (c • y) = cc (c : E) * herm G x y := by
   simp only [herm, Pi.smul_apply, Finset.mul_sum]
@@ -35,6 +50,25 @@ theorem herm_smul_right (G : Matrix (Fin r) (Fin r) E) (c : 𝓞 E) (x y : Fin r
   simp only [cc, map_mul]
   ring
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hL`. Take `⟨y0, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ ((s ×ˢ s).image fun p => herm G p.1 p.2)`. Establish `hgen : ∀ a ∈ s, ∀ b ∈ s, IsIntegral ℤ ((y0 : E) * herm G a b)` using `fun a ha b hb => by`. Establish `h` using `hy _ (Finset.mem_image.2 ⟨(a, b), Finset.mem_product.2 ⟨ha, hb⟩, rfl⟩)`. Rewrite `h` using `[zsmul_eq_mul]`. Then use the resulting hypothesis.
+
+Establish `hright : ∀ a ∈ s, ∀ y ∈ Submodule.span (𝓞 E) (s : Set (Fin r → E)), IsIntegral ℤ ((y0 : E) * herm G a y)`. Introduce `a ha y hy'`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem b hb => exact hgen a ha b hb`. Consider the case `zero => simpa [herm, cc] using isIntegral_zero`.
+
+Consider the case `add u v _ _ hu hv => rw [herm_add_right, mul_add]`. Conclude with `hu.add hv`. Consider the case `smul c u _ hu => rw [herm_smul_right, mul_left_comm]`. Conclude with `(isIntegral_cc c.2).mul hu`. Establish `hall : ∀ x ∈ Submodule.span (𝓞 E) (s : Set (Fin r → E)), ∀ y ∈ Submodule.span (𝓞 E) (s : Set (Fin r → E)), IsIntegral ℤ ((y0 : E) * herm G x y)`.
+
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha => exact hright a ha`. Consider the case `zero => intro y _`. Simplify `isIntegral_zero` using `[herm]`.
+
+Consider the case `add u v _ _ hu hv => intro y hy'`. Rewrite using `[herm_add_left, mul_add]`. Conclude with `(hu y hy').add (hv y hy')`. Consider the case `smul c u _ hu => intro y hy'`. Rewrite using `[herm_smul_left, mul_left_comm]`.
+
+Conclude with `c.2.mul (hu y hy')`. Use `⟨y0.natAbs, Int.natAbs_pos.2 hy0, fun x hx y hy' => ?_⟩` and prove the remaining obligations. Establish `key` using `hall x hx y hy'`. Break down `Int.natAbs_eq y0 with h | h` into its components or cases. Establish `e : ((y0.natAbs : ℕ) : E) = (y0 : E)`.
+
+Establish `h'` using `congrArg (fun z : ℤ => (z : E)) h`. Simplify using `only [Int.cast_natCast] at h'`. Conclude with `h'.symm`. Rewrite using `[e]`. Conclude with `key`.
+
+Establish `e : ((y0.natAbs : ℕ) : E) = -(y0 : E)`. Establish `h'` using `congrArg (fun z : ℤ => (z : E)) h`. Simplify using `only [Int.cast_neg, Int.cast_natCast] at h'`. Rewrite using `[h', neg_neg]`. Rewrite using `[e, neg_mul]`.
+
+Conclude with `key.neg`.
+-/
 theorem exists_nat_herm_int (G : Matrix (Fin r) (Fin r) E) (L : Submodule (𝓞 E) (Fin r → E)) (hL : L.FG) :
     ∃ n : ℕ, 0 < n ∧ ∀ x ∈ L, ∀ y ∈ L, IsIntegral ℤ ((n : E) * herm G x y) := by
   classical
@@ -73,6 +107,15 @@ theorem exists_nat_herm_int (G : Matrix (Fin r) (Fin r) E) (L : Submodule (𝓞 
       rw [h', neg_neg]
     rw [e, neg_mul]; exact key.neg
 
+/- English proof (translation)
+Establish `halg : IsAlgebraic ℤ k` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨y, hy, hyi⟩` from `halg.exists_integral_multiple`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩` and prove the remaining obligations. Rewrite `hyi` using `[zsmul_eq_mul]`. Break down `Int.natAbs_eq y with h | h` into its components or cases.
+
+Establish `e : ((y.natAbs : ℕ) : E) = (y : E)`. Establish `h'` using `congrArg (fun z : ℤ => (z : E)) h`. Simplify using `only [Int.cast_natCast] at h'`. Conclude with `h'.symm`. Rewrite using `[e]`.
+
+Conclude with `hyi`. Establish `e : ((y.natAbs : ℕ) : E) = -(y : E)`. Establish `h'` using `congrArg (fun z : ℤ => (z : E)) h`. Simplify using `only [Int.cast_neg, Int.cast_natCast] at h'`. Rewrite using `[h', neg_neg]`.
+
+Rewrite using `[e, neg_mul]`. Conclude with `hyi.neg`.
+-/
 theorem exists_nat_int (k : E) : ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : E) * k) := by
   have halg : IsAlgebraic ℤ k := (IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic _)
   obtain ⟨y, hy, hyi⟩ := halg.exists_integral_multiple
@@ -90,6 +133,15 @@ theorem exists_nat_int (k : E) : ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : E) 
       rw [h', neg_neg]
     rw [e, neg_mul]; exact hyi.neg
 
+/- English proof (translation)
+Introduce `E _ _ _ r M X0 Λ hM hfg hsp`. Take `⟨n, hn, hnint⟩` from `exists_nat_herm_int X0.Gm Λ hfg`. Take `⟨k, hk, hkint⟩` from `exists_nat_int X0.κ0`. Establish `hM0 : (M : E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hint : ∀ x ∈ Λ, ∀ y ∈ Λ, IsIntegral ℤ (((M * n * k : ℕ) : E) / (M : E) * X0.κ0 * herm X0.Gm x y)`.
+
+Introduce `x hx y hy`. Establish `e : ((M * n * k : ℕ) : E) / (M : E) * X0.κ0 * herm X0.Gm x y = ((k : E) * X0.κ0) * ((n : E) * herm X0.Gm x y)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Conclude with `hkint.mul (hnint x hx y hy)`. Take `⟨X, hΨ, hG, hp, hΛ, -, -, -, hΓ, -⟩` from `GlobalTheory.FlagData.exists_data GlobalTheory.latMinkowski E r X0.p0 M (M * n * k) X0.Ψ X0.Gm Λ X0.ξ0 X0.κ0 X0.cmType X0.Gm_herm X0.Gm_det X0.p0_le (fun τ hτ => X0.signature ⟨τ, hτ⟩) hfg hsp hM X0.ξ0_im X0.ξ0_ne X0.κ0_xi (fun τ hτ => X0.κ0_sign ⟨τ, hτ⟩) (by positivity) hint`. Use `⟨X, hG, hΨ, hp, hΛ, fun γ => ?_⟩` and prove the remaining obligations. Rewrite using `[hΓ γ]`. Use `and_congr Iff.rfl (forall₂_congr fun x _ => exists_congr fun y => and_congr Iff.rfl ?_)` and prove the remaining obligations.
+
+Conclude with `sub_eq_iff_eq_add'.symm`.
+-/
 theorem exists_princ_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (M : ℕ) (X0 : Data E r) (Λ : Submodule (𝓞 E) (Fin r → E)), 3 ≤ M → Λ.FG → Submodule.span E (Λ : Set (Fin r → E)) = ⊤ → ∃ X : Data E r, X.Gm = X0.Gm ∧ X.Ψ = X0.Ψ ∧ X.p0 = X0.p0 ∧ X.Λ = Λ ∧ ∀ γ, γ ∈ X.Γ ↔ IsUStab X0.Gm Λ γ ∧ ∀ x ∈ Λ, ∃ y ∈ Λ, (γ : Matrix (Fin r) (Fin r) E).mulVec x - x = M • y := by
   intro E _ _ _ r M X0 Λ hM hfg hsp
   obtain ⟨n, hn, hnint⟩ := exists_nat_herm_int X0.Gm Λ hfg

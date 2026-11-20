@@ -12,6 +12,31 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open MvPolynomial Filter Topology
 
+/- English proof (translation)
+Introduce `σ _ I h w k r φ B hI hIc hh hw hφd hφi hφZ hB hfill`. Use `set Δ := Metric.ball (0 : Fin k → ℂ) r with hΔ`. Establish `hk` using `hdim σ I h w k r φ B hI hh hw hφd hφi hφZ hB hfill`. Use `set ψ : (σ → ℂ) → Fin k → ℂ := Function.invFunOn φ Δ with hψdef`. Establish `hψφ : ∀ t ∈ Δ, ψ (φ t) = t` using `fun t ht => hφi.leftInvOn_invFunOn ht`.
+
+Take `⟨O, hOo, hO⟩` from `hopen σ I k Δ φ hI hIc hk Metric.isOpen_ball hφd hφi hφZ`. Establish `hψc : ∀ z ∈ φ '' Δ, ContinuousWithinAt ψ (φ '' Δ) z`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Rewrite using `[ContinuousWithinAt, hψφ t ht, tendsto_nhds]`. Introduce `V hVo htV`.
+
+Take `⟨O', hO'o, hO'⟩` from `hopen σ I k (V ∩ Δ) φ hI hIc hk (hVo.inter Metric.isOpen_ball) (hφd.mono Set.inter_subset_right) (hφi.mono Set.inter_subset_right) (hφZ.mono_left Set.inter_subset_right)`. Establish `hmem : φ t ∈ zeroSetIn I ∩ O'` using `hO' ▸ Set.mem_image_of_mem φ ⟨htV, ht⟩`. Use `filter_upwards [inter_mem_nhdsWithin (φ '' Δ) (hO'o.mem_nhds hmem.2)] with z hz`. Take `⟨⟨s, hs, rfl⟩, hzO'⟩` from `hz`. Establish `hs' : φ s ∈ φ '' (V ∩ Δ)` using `by rw [hO']; exact ⟨hφZ hs, hzO'⟩`.
+
+Take `⟨s', hs'V, hss'⟩` from `hs'`. Rewrite using `[Set.mem_preimage, hψφ s hs, ← hφi hs'V.2 hs hss']`. Conclude with `hs'V.1`. Take `⟨h', hh', hreg'⟩` from `hreg σ I k hI hk`. Establish `hψreg` using `hreg' Δ φ ψ Metric.isOpen_ball hφd hφi hφZ hψφ`.
+
+Rewrite `hψreg`, `hψc` using `[hO]`. Establish `hcoord : ∀ j : Fin k, ∃ g : (σ → ℂ) → ℂ, HolomorphicOnSubset g (zeroSetIn I ∩ O) ∧ Set.EqOn g (fun z => ψ z j) ((zeroSetIn I ∩ O) \ {z | eval z h' = 0})`. Introduce `j`. Use `hext σ I h' O (fun z => ψ z j) hI hIc hh' hOo ?_ ?_` and prove the remaining obligations. Introduce `z hz`.
+
+Take `⟨U, hUo, hzU, F, hF, hFeq⟩` from `hψreg z hz`. Conclude with `⟨U, hUo, hzU, fun y => F y j, differentiableOn_pi.mp hF j, fun y hy => congrFun (hFeq hy) j⟩`. Use `(Metric.isBounded_closedBall (x := (0 : ℂ)) (r := r)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Establish `hz' : z ∈ φ '' Δ` using `by rw [hO]; exact hz.1`.
+
+Take `⟨t, ht, rfl⟩` from `hz'`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Use `show ‖ψ (φ t) j‖ ≤ r`. Rewrite using `[hψφ t ht]`. Conclude with `(norm_le_pi_norm t j).trans (mem_ball_zero_iff.mp ht).le`.
+
+Use `choose g hg hgeq using hcoord`. Establish `hgψ : ∀ j, ∀ z ∈ zeroSetIn I ∩ O, g j z = ψ z j`. Introduce `j z hz`. Take `⟨B', -, hzB', hB'O, -, hdense⟩` from `hirr σ I h' z hI hIc hh' hz.1 O (hOo.mem_nhds hz.2)`. Use `set P := (zeroSetIn I ∩ B') \ {y | eval y h' = 0} with hP`.
+
+Establish `hPsub : P ⊆ zeroSetIn I ∩ O` using `fun y hy => ⟨hy.1.1, hB'O hy.1.2⟩`. Establish `: (𝓝[P] z).NeBot` using `mem_closure_iff_nhdsWithin_neBot.mp (hdense ⟨hz.1, hzB'⟩)`. Establish `h1 : Tendsto (g j) (𝓝[P] z) (𝓝 (g j z))` using `(((hg j).continuousWithinAt hz).mono hPsub).tendsto`. Establish `h2 : Tendsto (fun y => ψ y j) (𝓝[P] z) (𝓝 (ψ z j))` using `(((continuous_apply j).continuousAt.comp_continuousWithinAt (hψc z hz)).mono hPsub).tendsto`. Use `tendsto_nhds_unique h1 (h2.congr' ?_)` and prove the remaining obligations.
+
+Use `filter_upwards [self_mem_nhdsWithin] with y hy`. Conclude with `(hgeq j ⟨hPsub hy, hy.2⟩).symm`. Use `⟨ψ, ?_, hψφ⟩` and prove the remaining obligations. Rewrite using `[hO]`. Introduce `z hz`.
+
+Use `choose U hUo hzU F hF hFeq using fun j => hg j z hz`. Use `⟨⋂ j, U j, isOpen_iInter_of_finite hUo, Set.mem_iInter.mpr hzU, fun y j => F j y, differentiableOn_pi.mpr fun j => (hF j).mono (Set.iInter_subset _ j), fun y hy => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `show ψ y j = F j y`. Rewrite using `[← hgψ j y hy.1]`.
+
+Conclude with `hFeq j ⟨hy.1, Set.mem_iInter.mp hy.2 j⟩`.
+-/
 theorem BranchInverseHolomorphic.proof (hdim : BranchFillDimension.Statement)
     (hopen : NormalOpenMapping.Statement) (hreg : BranchInverseOffHypersurface.Statement)
     (hext : NormalRiemannExtension.Statement) (hirr : NormalLocallyIrreducible.Statement) :

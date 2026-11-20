@@ -19,6 +19,11 @@ namespace GlobalTheory.RefSum
 
 open AlgebraicGeometry CategoryTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c c' hle T io' y' hy`. Take `⟨pt, rest⟩` from `y'`. Use `letI : Algebra c'.F T.Fr := io'.toAlgebra`. Use `letI : Algebra c.F T.Fr := (io'.comp (IntermediateField.inclusion hle).toRingHom).toAlgebra`. Establish `hover : AlgOver c c' hle T.Fr` using `fun _ => rfl`.
+
+Use `⟨⟨pt.res hle hover, GlobalTheory.FlagTan.fromTest_of_isLocalRing _, rest.2⟩, hy, fun φ hφ => hφ, ?_⟩` and prove the remaining obligations. Introduce `a n f hf`. Conclude with `((GlobalTheory.FieldBC.rulBC_sec_val_linear E H Dw l Xo c c' hle).1 a n f hf).2 T.Fr hover pt`.
+-/
 theorem intFr_res_down : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (c' : Coeff l) (hle : c.F ≤ c'.F) (T : CDVR) (io' : c'.F →+* T.Fr) (y' : IntFr Xo c' T io'), y'.IsAlg → ∃ y : IntFr Xo c T (io'.comp (IntermediateField.inclusion hle).toRingHom), y.IsAlg ∧ (∀ φ : ℝ, HasPhi y' φ → HasPhi y φ) ∧ ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ sec Xo c a n, evI y' (GlobalTheory.FieldBC.rulBC hle f) = evI y f := by
   intro E _ _ _ H Dw l Xo c c' hle T io' y' hy
   obtain ⟨pt, rest⟩ := y'

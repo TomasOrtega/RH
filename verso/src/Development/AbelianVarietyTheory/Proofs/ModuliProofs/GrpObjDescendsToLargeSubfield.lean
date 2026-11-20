@@ -18,6 +18,9 @@ open GrpDense
 
 variable {Z U : Scheme.{0}} {j : U ⟶ Z}
 
+/- English proof (translation)
+Establish `: Epi (pullback.fst X.hom j)` using `Flat.epi_of_flat_of_surjective _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← cancel_epi (pullback.fst X.hom j)]`. Conclude with `congrArg (fun z => z.left) (h (Over.mk (pullback.snd X.hom j)) (Over.homMk (pullback.fst X.hom j) (by simpa using pullback.condition)))`.
+-/
 theorem hom_ext_of_points (j : U ⟶ Z) [Flat j] [Surjective j] {X Y : Over Z} {f g : X ⟶ Y}
     (h : ∀ (T : Over U) (t : Over.mk (T.hom ≫ j) ⟶ X), t ≫ f = t ≫ g) : f = g := by
   have : Epi (pullback.fst X.hom j) := Flat.epi_of_flat_of_surjective _
@@ -31,19 +34,39 @@ variable {G : Over Z} {A : Over U} {φ : A.left ⟶ G.left}
 def sq (w : φ ≫ G.hom = A.hom ≫ j) : (A ⊗ A).left ⟶ (G ⊗ G).left :=
   (lift (pushPt w (fst A A)) (pushPt w (snd A A))).left
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[sq, ← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Rewrite using `[sq, ← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem isSquare_sq (w : φ ≫ G.hom = A.hom ≫ j) : IsSquare φ (sq w) := by
   constructor
   · rw [sq, ← Over.comp_left, lift_fst]; rfl
   · rw [sq, ← Over.comp_left, lift_snd]; rfl
 
+/- English proof (translation)
+The claim follows from `pullback.hom_ext h₁ h₂`.
+-/
 theorem sq_ext {W : Scheme.{0}} {a b : W ⟶ (G ⊗ G).left} (h₁ : a ≫ (fst G G).left = b ≫ (fst G G).left)
     (h₂ : a ≫ (snd G G).left = b ≫ (snd G G).left) : a = b :=
   pullback.hom_ext h₁ h₂
 
+/- English proof (translation)
+The claim follows from `sq_ext (h.1.trans (isSquare_sq w).1.symm) (h.2.trans (isSquare_sq w).2.symm)`.
+-/
 theorem eq_sq (w : φ ≫ G.hom = A.hom ≫ j) {φ₂ : (A ⊗ A).left ⟶ (G ⊗ G).left} (h : IsSquare φ φ₂) :
     φ₂ = sq w :=
   sq_ext (h.1.trans (isSquare_sq w).1.symm) (h.2.trans (isSquare_sq w).2.symm)
 
+/- English proof (translation)
+Establish `w₁ : (fst G G).left ≫ G.hom = (G ⊗ G).hom` using `Over.w _`. Establish `w₂ : (snd G G).left ≫ G.hom = (G ⊗ G).hom` using `Over.w _`. Establish `v₁ : (fst A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w _`. Establish `v₂ : (snd A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w _`. Establish `h₁` using `(isSquare_sq hA.w).1`.
+
+Establish `h₂` using `(isSquare_sq hA.w).2`. Use `⟨⟨by rw [← w₁, reassoc_of% h₁, hA.w, reassoc_of% v₁]⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => pullback.lift (hA.lift (s.fst ≫ (fst G G).left) s.snd (by rw [Category.assoc, w₁, s.condition])) (hA.lift (s.fst ≫ (snd G G).left) s.snd (by rw [Category.assoc, w₂, s.condition])) (by rw [ …` and prove the remaining obligations. Apply `sq_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h₁, ← Category.assoc]`. Conclude with `(congrArg (· ≫ φ) (pullback.lift_fst _ _ _)).trans (IsPullback.lift_fst _ _ _ _)`.
+
+Rewrite using `[Category.assoc, h₂, ← Category.assoc]`. Conclude with `(congrArg (· ≫ φ) (pullback.lift_snd _ _ _)).trans (IsPullback.lift_fst _ _ _ _)`. Rewrite using `[← v₁, ← Category.assoc]`. Conclude with `(congrArg (· ≫ A.hom) (pullback.lift_fst _ _ _)).trans (IsPullback.lift_snd _ _ _ _)`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Use `Eq.trans ?_ (pullback.lift_fst _ _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ (fst A A).left = _`. Apply `hA.hom_ext` to reduce the goal to its premises. Rewrite using `[IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₁]`. Rewrite using `[IsPullback.lift_snd, ← h2, Category.assoc, v₁]`.
+
+Use `Eq.trans ?_ (pullback.lift_snd _ _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ (snd A A).left = _`. Apply `hA.hom_ext` to reduce the goal to its premises. Rewrite using `[IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₂]`. Rewrite using `[IsPullback.lift_snd, ← h2, Category.assoc, v₂]`.
+-/
 theorem isPullback_sq (hA : IsPullback φ A.hom G.hom j) :
     IsPullback (sq hA.w) (A ⊗ A).hom (G ⊗ G).hom j := by
   have w₁ : (fst G G).left ≫ G.hom = (G ⊗ G).hom := Over.w _
@@ -77,6 +100,19 @@ theorem isPullback_sq (hA : IsPullback φ A.hom G.hom j) :
       · rw [IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₂]
       · rw [IsPullback.lift_snd, ← h2, Category.assoc, v₂]
 
+/- English proof (translation)
+Establish `hM` using `fun {T : Over U} => pushPt_mul h.w (fun φ₂ h₂ => by rw [eq_sq h.w h₂, hm]) (T := T)`. Establish `hI` using `fun {T : Over U} => pushPt_inv h.w hi (T := T)`. Establish `hE` using `pushPt_one h.w he`. Use `letI : MonObj G := { one := e mul := m one_mul := hom_ext_of_points j fun T t => by`. Take `⟨x, hx⟩` from `pushPt_surjective h T (t ≫ snd _ _)`.
+
+Take `rfl : t = lift (toUnit _) (pushPt h.w x)` from `CartesianMonoidalCategory.hom_ext _ _ (toUnit_unique _ _) (by rw [lift_snd, hx])`. Rewrite using `[lift_whiskerRight_assoc, hE, hM, _root_.one_mul, lift_leftUnitor_hom]`. Use `mul_one := hom_ext_of_points j fun T t => by`. Take `⟨x, hx⟩` from `pushPt_surjective h T (t ≫ fst _ _)`. Take `rfl : t = lift (pushPt h.w x) (toUnit _)` from `CartesianMonoidalCategory.hom_ext _ _ (by rw [lift_fst, hx]) (toUnit_unique _ _)`.
+
+Rewrite using `[lift_whiskerLeft_assoc, hE, hM, _root_.mul_one, lift_rightUnitor_hom]`. Use `mul_assoc := hom_ext_of_points j fun T t => by`. Take `⟨x, hx⟩` from `pushPt_surjective h T (t ≫ fst _ _ ≫ fst _ _)`. Take `⟨y, hy⟩` from `pushPt_surjective h T (t ≫ fst _ _ ≫ snd _ _)`. Take `⟨z, hz⟩` from `pushPt_surjective h T (t ≫ snd _ _)`.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : t = lift (lift (pushPt h.w x) (pushPt h.w y)) (pushPt h.w z) := by`. Apply the tactic sequence `ext <;> simp [hx, hy, hz]`. Rewrite using `[lift_whiskerRight_assoc, lift_lift_associator_hom_assoc, lift_whiskerLeft_assoc, hM, hM, hM, hM, _root_.mul_assoc] }`. Use `letI : GrpObj G := { inv := i left_inv := hom_ext_of_points j fun T t => by`. Take `⟨x, rfl⟩` from `pushPt_surjective h T t`.
+
+Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ m = _ ≫ _ ≫ e`. Rewrite using `[comp_lift_assoc, Category.comp_id, hI, hM, inv_mul_cancel, comp_toUnit_assoc, hE]`. Use `right_inv := hom_ext_of_points j fun T t => by`. Take `⟨x, rfl⟩` from `pushPt_surjective h T t`. Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ m = _ ≫ _ ≫ e`.
+
+Rewrite using `[comp_lift_assoc, Category.comp_id, hI, hM, mul_inv_cancel, comp_toUnit_assoc, hE] }`. Use `⟨inferInstance, h, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Take `rfl : x₀ = pushPt h.w x` from `Over.OverMorphism.ext hx`. Take `rfl : y₀ = pushPt h.w y` from `Over.OverMorphism.ext hy`. Conclude with `congrArg (fun z => z.left) (hM x y)`.
+-/
 theorem exists_grpObj (j : U ⟶ Z) [Flat j] [Surjective j] [GrpObj A] (h : IsPullback φ A.hom G.hom j)
     (m : G ⊗ G ⟶ G) (i : G ⟶ G) (e : 𝟙_ (Over Z) ⟶ G)
     (hm : sq h.w ≫ m.left = (μ[A]).left ≫ φ) (hi : φ ≫ i.left = (ι[A]).left ≫ φ)
@@ -120,14 +156,23 @@ theorem exists_grpObj (j : U ⟶ Z) [Flat j] [Surjective j] [GrpObj A] (h : IsPu
   obtain rfl : y₀ = pushPt h.w y := Over.OverMorphism.ext hy
   exact congrArg (fun z => z.left) (hM x y)
 
+/- English proof (translation)
+Rewrite using `[Flat.SpecMap_iff]`. Use `letI := β.toAlgebra`. Conclude with `(inferInstance : Module.Flat k K)`.
+-/
 theorem flat_spMap {k K : Type} [Field k] [Field K] (β : k →+* K) : Flat (spMap β) := by
   rw [Flat.SpecMap_iff]
   letI := β.toAlgebra
   exact (inferInstance : Module.Flat k K)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => ⟨default, Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩`.
+-/
 theorem surjective_spMap {k K : Type} [Field k] [Field K] (β : k →+* K) : Surjective (spMap β) :=
   ⟨fun _ => ⟨default, Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_subtype {K : Type} [Field K] {K₀ K₁ : Subfield K} (h : K₀ ≤ K₁) :
     spMap K₁.subtype ≫ spMap (Subfield.inclusion h) = spMap K₀.subtype := by
   rw [← Spec.map_comp]; rfl
@@ -138,6 +183,23 @@ namespace GlobalTheory
 
 open GrpDescent
 
+/- English proof (translation)
+Introduce `K _ K₀ A₀ A _ φ _ _ _ hφ`. Establish `hw` using `hφ.w`. Establish `hq : QuasiCompact (A₀ ⊗ A₀).hom`. Rewrite using `[← Over.w (fst A₀ A₀)]`. Conclude with `(inferInstance : QuasiCompact (pullback.fst A₀.hom A₀.hom ≫ A₀.hom))`.
+
+Establish `hs : QuasiSeparated (A₀ ⊗ A₀).hom`. Rewrite using `[← Over.w (fst A₀ A₀)]`. Conclude with `(inferInstance : QuasiSeparated (pullback.fst A₀.hom A₀.hom ≫ A₀.hom))`. Take `⟨s₁, H₁⟩` from `T.exists_descent_of_morphisms_to_subfield K K₀ _ _ (A₀ ⊗ A₀).hom (A ⊗ A).hom (sq hw) _ A₀.hom Unit (fun _ => (μ[A]).left ≫ φ) (isPullback_sq hφ) (fun _ => by`. Rewrite using `[Category.assoc, hw, ← Category.assoc, Over.w, (isPullback_sq hφ).w])`.
+
+Take `⟨s₂, H₂⟩` from `T.exists_descent_of_morphisms_to_subfield K K₀ _ _ A₀.hom A.hom φ _ A₀.hom Unit (fun _ => (ι[A]).left ≫ φ) hφ (fun _ => by`. Rewrite using `[Category.assoc, hw, ← Category.assoc, Over.w])`. Take `⟨s₃, H₃⟩` from `T.exists_descent_of_morphisms_to_subfield K K₀ _ _ (𝟙 _) (𝟙 _) (spMap K₀.subtype) _ A₀.hom Unit (fun _ => (η[A]).left ≫ φ) (IsPullback.of_vert_isIso ⟨by simp⟩) (fun _ => by`. Rewrite using `[Category.assoc, hw, ← Category.assoc, Over.w]`. Use the proof step `simp)`.
+
+Use `⟨s₁ ∪ s₂ ∪ s₃, fun K₁ h hs A₁ φ₁ ψ hφ₁ hψ hψw => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.coe_union, Set.union_subset_iff] at hs`. Establish `hψp : IsPullback ψ A.hom A₁.hom (spMap K₁.subtype)` using `IsPullback.of_right (by rwa [hψ, spMap_subtype]) hψw hφ₁`. Take `⟨m, hm⟩` from `H₁ K₁ h hs.1.1 _ (A₁ ⊗ A₁).hom (sq hφ₁.w) (sq hψw) (isPullback_sq hφ₁) (eq_sq hw ⟨by rw [Category.assoc, (isSquare_sq _).1, reassoc_of% (isSquare_sq hψw).1, hψ], by rw [Category.assoc, (isSquare_sq _).2, reassoc_of% (isSquare_sq hψw).2, hψ]⟩) (isPullback_sq hψp).w`. Take `⟨i, hi⟩` from `H₂ K₁ h hs.1.2 _ A₁.hom φ₁ ψ hφ₁ hψ hψw`.
+
+Take `⟨e, he⟩` from `H₃ K₁ h hs.2 _ (𝟙 _) (spMap (Subfield.inclusion h)) (spMap K₁.subtype) (IsPullback.of_vert_isIso ⟨by simp⟩) (spMap_subtype h) (by simp)`. Use `flat_spMap K₁.subtype` as an intermediate fact. Use `surjective_spMap K₁.subtype` as an intermediate fact. Use `exists_grpObj _ hψp (Over.homMk (hφ₁.lift (m ()) (A₁ ⊗ A₁).hom ((hm ()).2.trans (isPullback_sq hφ₁).w)) (hφ₁.lift_snd _ _ _)) (Over.homMk (hφ₁.lift (i ()) A₁.hom ((hi ()).2.trans hφ₁.w)) (hφ₁.lift_snd _ _ _)) (Over.homMk (hφ₁.lift (e ()) (𝟙 _) ((he ()).2.trans (by simp))) (hφ₁.li …` and prove the remaining obligations. Apply `hφ₁.hom_ext` to reduce the goal to its premises.
+
+Simplify using `only [Over.homMk_left, Category.assoc, IsPullback.lift_fst, hψ]`. Conclude with `(hm ()).1`. Simplify using `only [Over.homMk_left, Category.assoc, IsPullback.lift_snd, hψw]`. Rewrite using `[(isPullback_sq hψp).w, ← Category.assoc, Over.w]`. Apply `hφ₁.hom_ext` to reduce the goal to its premises.
+
+Simplify using `only [Over.homMk_left, Category.assoc, IsPullback.lift_fst, hψ]`. Conclude with `(hi ()).1`. Simplify using `only [Over.homMk_left, Category.assoc, IsPullback.lift_snd, hψw]`. Rewrite using `[← Category.assoc, Over.w]`. Apply `hφ₁.hom_ext` to reduce the goal to its premises.
+
+Simplify using `only [Over.homMk_left, Category.assoc, IsPullback.lift_fst, hψ]`. Conclude with `(he ()).1`. Simplify using `only [Over.homMk_left, Category.assoc, IsPullback.lift_snd, hψw]`. Rewrite using `[← Category.assoc, Over.w]`. Simplify using the standard rewrite rules.
+-/
 theorem grpObj_descends_to_large_subfield :
     ∀ (K : Type) [Field K] (K₀ : Subfield K) (A₀ : Over (Sp K₀)) (A : Over (Sp K)) [GrpObj A] (φ : A.left ⟶ A₀.left) [QuasiCompact A₀.hom] [QuasiSeparated A₀.hom] [LocallyOfFinitePresentation A₀.hom], IsPullback φ A.hom A₀.hom (spMap K₀.subtype) → ∃ s : Finset K, ∀ (K₁ : Subfield K) (h : K₀ ≤ K₁), (s : Set K) ⊆ K₁ → ∀ (A₁ : Over (Sp K₁)) (φ₁ : A₁.left ⟶ A₀.left) (ψ : A.left ⟶ A₁.left), IsPullback φ₁ A₁.hom A₀.hom (spMap (Subfield.inclusion h)) → ψ ≫ φ₁ = φ → ψ ≫ A₁.hom = A.hom ≫ spMap K₁.subtype → ∃ _ : GrpObj A₁, IsGrpPullback A A₁ (spMap K₁.subtype) ψ := by
   intro K _ K₀ A₀ A _ φ _ _ _ hφ

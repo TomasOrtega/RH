@@ -6,6 +6,13 @@ namespace PI.QnCovHat2W
 
 open Formalism.REAL Formalism.FourierDecayAlt.Q
 
+/- English proof (translation)
+Rewrite using `[sum_fun_succ]`. Repeatedly rewrite using `[sum_fun_succ (r := m)]`. Simplify using `only [Fin.cons_zero, Fin.cons_one, Fin.cons_succ, Fin.prod_univ_succ, Fin.succ_zero_eq_one]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Use `symm`.
+
+Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_congr rfl fun x1 _ => Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x0 _ => Finset.sum_congr rfl fun x1 _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_rows {m : ℕ} {α : Type*} [Fintype α] [DecidableEq α] {M : Type*} [AddCommGroup M]
     [Module ℂ M] (p : Fin (m + 2) → α → ℂ) (f g : α → ℂ) (Φ : (Fin m → α) → M) :
     ∑ x : Fin (m + 2) → α, (f (x 0) * g (x 1) * ∏ k, p k (x k)) • Φ (fun k => x k.succ.succ) =
@@ -24,6 +31,13 @@ theorem sum_rows {m : ℕ} {α : Type*} [Fintype α] [DecidableEq α] {M : Type*
   congr 1
   ring
 
+/- English proof (translation)
+Establish `h1` using `sum_sgnL (M := ℂ) (id : Fin N → Fin N) (fun c => ∏ k, P (x k) (c k))`. Simplify using `only [smul_eq_mul] at h1`. Rewrite using `[h1]`. Establish `h2 : (Matrix.of fun i k => P (x k) i).det = sgnL x id * P.det`. Establish `h3 : (Matrix.of fun i k => P (x k) i) = ((Matrix.of fun k j => if x k = id j then (1 : ℂ) else 0) * P).transpose`.
+
+Use extensionality with `i k`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[h3, Matrix.det_transpose, Matrix.det_mul]`. Both sides reduce to the same expression. Rewrite using `[← h2, Matrix.det_apply']`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem sum_sgnL_prod_row {N : ℕ} (P : Matrix (Fin N) (Fin N) ℂ) (x : Fin N → Fin N) :
     ∑ c : Fin N → Fin N, sgnL c id * ∏ k, P (x k) (c k) = sgnL x id * P.det := by
   have h1 := sum_sgnL (M := ℂ) (id : Fin N → Fin N) (fun c => ∏ k, P (x k) (c k))
@@ -40,6 +54,13 @@ theorem sum_sgnL_prod_row {N : ℕ} (P : Matrix (Fin N) (Fin N) ℂ) (x : Fin N 
   refine Finset.sum_congr rfl fun σ _ => ?_
   simp
 
+/- English proof (translation)
+Establish `h1` using `sum_sgnL (M := ℂ) (id : Fin N → Fin N) (fun d => ∏ k, Q (d k) (y k))`. Simplify using `only [smul_eq_mul] at h1`. Rewrite using `[h1]`. Establish `h2 : (Matrix.of fun i k => Q i (y k)).det = sgnL y id * Q.det`. Establish `h3 : (Matrix.of fun i k => Q i (y k)) = Q * (Matrix.of fun k j => if y k = id j then (1 : ℂ) else 0).transpose`.
+
+Use extensionality with `i k`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[h3, Matrix.det_mul, Matrix.det_transpose, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[← h2, Matrix.det_apply']`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem sum_sgnL_prod_col {N : ℕ} (Q : Matrix (Fin N) (Fin N) ℂ) (y : Fin N → Fin N) :
     ∑ d : Fin N → Fin N, sgnL d id * ∏ k, Q (d k) (y k) = sgnL y id * Q.det := by
   have h1 := sum_sgnL (M := ℂ) (id : Fin N → Fin N) (fun d => ∏ k, Q (d k) (y k))
@@ -56,6 +77,9 @@ theorem sum_sgnL_prod_col {N : ℕ} (Q : Matrix (Fin N) (Fin N) ℂ) (y : Fin N 
   refine Finset.sum_congr rfl fun σ _ => ?_
   simp
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_swap4 {ι κ : Type*} [Fintype ι] [Fintype κ] {M : Type*} [AddCommMonoid M]
     (f : ι → ι → κ → κ → M) :
     ∑ c, ∑ d, ∑ x, ∑ y, f c d x y = ∑ x, ∑ y, ∑ c, ∑ d, f c d x y := by
@@ -66,6 +90,23 @@ theorem sum_swap4 {ι κ : Type*} [Fintype ι] [Fintype κ] {M : Type*} [AddComm
         Finset.sum_congr rfl (fun x _ => Finset.sum_congr rfl (fun c _ => Finset.sum_comm))
     _ = ∑ x, ∑ y, ∑ c, ∑ d, f c d x y := Finset.sum_congr rfl (fun x _ => Finset.sum_comm)
 
+/- English proof (translation)
+Establish `hv : ∀ (v : Fin (m + 2) → ℂ) (i : Fin (m + 2)), (v ᵥ* P) i = ∑ z, v z * P z i`. Introduce `v i`. Simplify using `[Matrix.vecMul, dotProduct]`. Establish `hw : ∀ (v : Fin (m + 2) → ℂ) (i : Fin (m + 2)), (Q *ᵥ v) i = ∑ z, v z * Q i z`. Introduce `v i`.
+
+Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`. Establish `key : ∀ c d : Fin (m + 2) → Fin (m + 2), (sgnL c id * sgnL d id * ((β ᵥ* P) (c 0) * (β' ᵥ* P) (c 1)) * ((Q *ᵥ a) (d 0) * (Q *ᵥ a') (d 1))) • F' (fun k => c k.succ.succ) (fun k => d k.succ.succ) = ∑ x : Fin (m + 2) → Fin (m + 2), ∑ y : Fin (m + 2) → Fin (m + 2), (sgnL c id * (∏ k, …`. Introduce `c d`. Establish `e1 : ∀ x : Fin (m + 2) → Fin (m + 2), ∑ y : Fin (m + 2) → Fin (m + 2), (a (y 0) * a' (y 1) * ∏ k, Q (d k) (y k)) • F (fun k => x k.succ.succ) (fun k => y k.succ.succ) = ((Q *ᵥ a) (d 0) * (Q *ᵥ a') (d 1)) • ∑ y : Fin m → Fin (m + 2), (∏ k, Q (d k.succ.succ) (y k)) • F (fun k => x …`. Introduce `x`.
+
+Rewrite using `[sum_rows (fun k z => Q (d k) z) a a' (fun y => F (fun k => x k.succ.succ) y), hw a, hw a']`. Establish `e2 : ∑ x : Fin (m + 2) → Fin (m + 2), (β (x 0) * β' (x 1) * ∏ k, P (x k) (c k)) • (((Q *ᵥ a) (d 0) * (Q *ᵥ a') (d 1)) • ∑ y : Fin m → Fin (m + 2), (∏ k, Q (d k.succ.succ) (y k)) • F (fun k => x k.succ.succ) y) = ((β ᵥ* P) (c 0) * (β' ᵥ* P) (c 1)) • ∑ x : Fin m → Fin (m + 2), (∏ k …`. Rewrite using `[sum_rows (fun k z => P z (c k)) β β' (fun x => ((Q *ᵥ a) (d 0) * (Q *ᵥ a') (d 1)) • ∑ y : Fin m → Fin (m + 2), (∏ k, Q (d k.succ.succ) (y k)) • F x y), hv β, hv β']`. Establish `e3 : (∑ x : Fin (m + 2) → Fin (m + 2), ∑ y : Fin (m + 2) → Fin (m + 2), (sgnL c id * (∏ k, P (x k) (c k)) * (sgnL d id * ∏ k, Q (d k) (y k)) * (β (x 0) * β' (x 1) * (a (y 0) * a' (y 1)))) • F (fun k => x k.succ.succ) (fun k => y k.succ.succ)) = (sgnL c id * sgnL d id) • ∑ x : Fin …`. Simplify using `only [Finset.smul_sum, smul_smul]`.
+
+Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`. Repeatedly rewrite using `[e1]`.
+
+Rewrite using `[e2, hLin]`. Simplify using `only [Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Unfold `GG`. Repeatedly rewrite using `[key]`. Rewrite using `[sum_swap4, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [← Finset.sum_smul, smul_smul]`. Use `congr 1`. Establish `hcd : ∑ c : Fin (m + 2) → Fin (m + 2), ∑ d : Fin (m + 2) → Fin (m + 2), sgnL c id * (∏ k, P (x k) (c k)) * (sgnL d id * ∏ k, Q (d k) (y k)) * (β (x 0) * β' (x 1) * (a (y 0) * a' (y 1))) = (∑ c : Fin (m + 2) → Fin (m + 2), sgnL c id * ∏ k, P (x k) (c k)) * (∑ d : Fin (m + 2) → Fin …`. Rewrite using `[Finset.sum_mul_sum, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Rewrite using `[hcd, sum_sgnL_prod_row, sum_sgnL_prod_col]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GG_cov {m : ℕ} {M : Type*} [AddCommGroup M] [Module ℂ M]
     (F F' : (Fin m → Fin (m + 2)) → (Fin m → Fin (m + 2)) → M)
     (P Q : Matrix (Fin (m + 2)) (Fin (m + 2)) ℂ)

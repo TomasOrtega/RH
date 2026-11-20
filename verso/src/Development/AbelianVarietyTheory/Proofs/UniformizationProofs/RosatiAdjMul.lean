@@ -17,6 +17,17 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S A _ _ L c f g f' g' h h' s`. Take `⟨U, hs, t, ht⟩` from `h s`. Take `⟨U', hs', t', ht'⟩` from `h' s`. Use `⟨U ⊓ U', ⟨hs, hs'⟩, ?_⟩` and prove the remaining obligations. Set `W : (A ⊗ A).left.Opens` to `(A ⊗ A).hom ⁻¹ᵁ (U ⊓ U')`.
+
+Establish `l : W ≤ (A ⊗ A).hom ⁻¹ᵁ U` using `fun _ hy => hy.1`. Establish `l' : W ≤ (A ⊗ A).hom ⁻¹ᵁ U'` using `fun _ hy => hy.2`. Set `T : Over S` to `Over.mk (W.ι ≫ (A ⊗ A).hom)`. Set `ρ : T ⟶ A ⊗ A` to `Over.homMk W.ι rfl`. Take `⟨x, y, hxy⟩ : ∃ x y : T ⟶ A, (lift x y).left = W.ι` from `⟨ρ ≫ fst A A, ρ ≫ snd A A, congrArg (fun q => q.left) (lift_comp_fst_snd ρ)⟩`.
+
+Establish `pr : ∀ (a b : A ⟶ A) (V : Type) [CommGroup V] (k : (T.left ⟶ A.left) → V) (Y : Scheme.{0}) (m : T.left ⟶ Y) (n : Y ⟶ (A ⊗ A).left), m ≫ n = W.ι → ∏ i, k (m ≫ n ≫ rosatiφ A a b i) ^ rosatiε i = k ((x ≫ a) * y).left * (k (x ≫ a).left)⁻¹ * (k y.left)⁻¹ * (k (x * (y ≫ b)).left)⁻¹ * k …` using `fun a b V _ k Y m n e => (Finset.prod_congr rfl fun i _ => by rw [← Category.assoc, e, hxy]).trans (prod_ros a b x y k)`. Take `⟨u, hu, -⟩` from `exists_gen L.isLB (φ' := fun i => W.ι ≫ rosatiφ A (f * f') (g * g') i) (ε' := rosatiε) (fun V _ k => by`. Use `(DVR.prod_sum₂ (K := Fin 6 ⊕ Fin 6) (K' := thK ⊕ thK) (U := V) _ (DVR.prod_sum₂ (K := Fin 6) (K' := Fin 6) (U := V) _ (pr f g V k _ _ _ (Scheme.homOfLE_ι _ l)) (pr f' g' V k _ _ _ (Scheme.homOfLE_ι _ l'))) (DVR.prod_sum₂ (K := thK) (K' := thK) (U := V) _ (prod_cub (x ≫ f) (x ≫ f' …` and prove the remaining obligations. Use `Eq.trans ?_ ((pr (f * f') (g * g') V k _ (𝟙 _) W.ι (Category.id_comp _)).symm.trans (Finset.prod_congr rfl fun i _ => by rw [Category.id_comp]))` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, MonObj.comp_mul, _root_.mul_assoc x]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Use the proof step `(LB.mulGen L.L _ _ _ _ (LB.mulGen L.L _ _ _ _ (LB.pullGen L.L _ _ t ((A ⊗ A).left.homOfLE l)) (LB.pullGen L.L _ _ t' ((A ⊗ A).left.homOfLE l'))) (LB.mulGen L.L _ _ _ _ (LB.pullGen L.L (thφ A (x3 A)) thε c.t (lift (x ≫ f) (lift (x ≫ f') y)).left) (LB.invGen L.L _ _ (LB.pullGen L.L …`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht _) (DVR.pullGen_isGen _ _ _ _ ht' _)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ c.isGen _) (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ c.isGen _))))`.
+
+Conclude with `⟨u, hu⟩`.
+-/
 theorem rosatiAdj_mul : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : RigLB A) (c : CubicalStr A L) (f g f' g' : A ⟶ A), RosatiAdj A L.L f g → RosatiAdj A L.L f' g' → RosatiAdj A L.L (f * f') (g * g') := by
   intro S A _ _ L c f g f' g' h h' s
   obtain ⟨U, hs, t, ht⟩ := h s

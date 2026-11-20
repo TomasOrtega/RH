@@ -28,6 +28,9 @@ open Limits
 
 variable {k : Type} [CommRing k]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Introduce `σ V s s' y hy`. Both sides reduce to the same expression.
+-/
 theorem isIsometry_pullbackCongr {X Y : Scheme.{0}} {q : Y ⟶ Sp k} {t : X ⟶ Sp k} {E : Y.Modules} {r : ℕ}
     (h : VMetric q E r) {f f' : X ⟶ Y} (e : f = f') (hf : f ≫ q = t) (hf' : f' ≫ q = t) :
     (h.pull f hf).IsIsometry (h.pull f' hf') ((Scheme.Modules.pullbackCongr e).app E) := by
@@ -35,6 +38,9 @@ theorem isIsometry_pullbackCongr {X Y : Scheme.{0}} {q : Y ⟶ Sp k} {t : X ⟶ 
   intro σ V s s' y hy
   rfl
 
+/- English proof (translation)
+Take `⟨-, hc⟩` from `VMetric.isIsometry_pull_id_comp k B q E r h`. Establish `e₁ : (pullback.fst π g ≫ π) ≫ q = pullback.fst π g ≫ p` using `by rw [Category.assoc, w]`. Establish `e₂ : (pullback.snd π g ≫ g) ≫ q = pullback.fst π g ≫ p` using `by rw [Category.assoc, w']`. Conclude with `IsometryPullback.isIsometry_trans (hc Y _ p _ π (pullback.fst π g) w rfl e₁) (IsometryPullback.isIsometry_trans (isIsometry_pullbackCongr h pullback.condition e₁ e₂) (IsometryPullback.isIsometry_symm (hc B' _ (g ≫ q) _ g (pullback.snd π g) rfl w' e₂)))`.
+-/
 theorem isIsometry_bcIso {B Y B' : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ Sp k} (π : Y ⟶ B) (w : π ≫ q = p)
     (g : B' ⟶ B) {E : B.Modules} {r : ℕ} (h : VMetric q E r)
     (w' : pullback.snd π g ≫ g ≫ q = pullback.fst π g ≫ p) :
@@ -47,6 +53,9 @@ theorem isIsometry_bcIso {B Y B' : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ Sp k}
     (IsometryPullback.isIsometry_trans (isIsometry_pullbackCongr h pullback.condition e₁ e₂)
       (IsometryPullback.isIsometry_symm (hc B' _ (g ≫ q) _ g (pullback.snd π g) rfl w' e₂)))
 
+/- English proof (translation)
+Rewrite using `[bcFlag, VMetric.grLB_ofIso (isIsometry_bcIso π w g h w') ((H.pull π w).pull _ rfl)]`. Conclude with `VMetric.isometric_grLB_pull k Y _ p _ _ r (h.pull π w) (H.pull π w) fl (pullback.fst π g) rfl i`.
+-/
 theorem isometric_grLB_bcFlag {B Y B' : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ Sp k} (π : Y ⟶ B) (w : π ≫ q = p)
     (g : B' ⟶ B) {E : B.Modules} {r : ℕ} {h : VMetric q E r} (H : h.IsCInf)
     (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) r)
@@ -61,6 +70,17 @@ end GlobalTheory.CovTest.Reduce
 namespace GlobalTheory.CovTest.Reduce
 open Limits
 
+/- English proof (translation)
+Use `set ρ := pullback.fst π g`. Use `set π' := pullback.snd π g`. Use `set δ := ρ.residueDegree (genericPoint (pullback π g : Scheme.{0}))`. Establish `w' : π' ≫ g ≫ q = ρ ≫ p`. Rewrite using `[← Category.assoc, ← pullback.condition, Category.assoc, w]`.
+
+Use `set L : Fin 3 → HermLB p := ![VMetric.grLB fl 0 (H.pull π w), VMetric.grLB fl 1 (H.pull π w), A.pull π w]`. Use `set L' : Fin 3 → HermLB (ρ ≫ p) := ![VMetric.grLB (bcFlag π g fl) 0 ((H.pull g rfl).pull π' w'), VMetric.grLB (bcFlag π g fl) 1 ((H.pull g rfl).pull π' w'), (A.pull g rfl).pull π' w']`. Establish `iso : ∀ j, ((L j).pull ρ rfl).Isometric (L' j)`. Introduce `j`. Use `fin_cases j`.
+
+Conclude with `(isometric_grLB_bcFlag π w g H fl w' 0).symm`. Conclude with `(isometric_grLB_bcFlag π w g H fl w' 1).symm`. Establish `e₁ : (ρ ≫ π) ≫ q = ρ ≫ p` using `by rw [Category.assoc, w]`. Establish `e₂ : (π' ≫ g) ≫ q = ρ ≫ p` using `by rw [Category.assoc, w']`. Conclude with `(HermLB.isometric_of_refines (HermLB.refines_pull_pull A π w ρ rfl e₁)).trans ((HermLB.isometric_pull_of_eq A pullback.condition e₁ e₂).trans (HermLB.isometric_of_refines (HermLB.refines_pull_comp A g rfl π' w' e₂)))`.
+
+Establish `hΦ' : IsArFun L' (d + 1) ((δ : ℝ) • Φ)` using `(((hA.arIso) k _ (ρ ≫ p) (d + 1) hY').2 (Fin 3) _ _ (((hA.arProj) k Y _ p (ρ ≫ p) (d + 1) hp hY' ρ rfl hfg hfd).2 (Fin 3) L Φ hΦ)).2.1 L' iso`. Establish `hΨ' : IsGeoFun L' (d + 1) ((δ : ℝ) • Ψ)`. Use `⟨fun n => ?_, fun P e he hP => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hΨ.1 n, smul_eq_mul, ← hG k Y _ p (ρ ≫ p) (d + 1) hp hY' ρ rfl hfg hfd (comb L n)]`. Conclude with `((isometric_comb_pull L n ρ rfl).symm.trans (isometric_comb_congr iso n)).gdeg_eq _`.
+
+Rewrite using `[LinearMap.smul_apply, hΨ.2 P e he hP, smul_zero]`. Establish `hflat : Nonempty (Vert.Flag ((Scheme.Modules.pullback g).obj E) 2)` using `⟨(fl.pull s).ofIso ((Scheme.Modules.pullbackComp s π).app E ≪≫ (Scheme.Modules.pullbackCongr hs).app E)⟩`. Establish `key` using `hS k B' _ (g ≫ q) (ρ ≫ p) d hgq hY' hreg π' w' _ (h.pull g rfl) (H.pull g rfl) hflat (bcFlag π g fl) (GlobalTheory.T.flag_bundle_pullback_base_change B Y B' π g Unit (fun _ => E) (fun _ => 2) (fun _ => fl) hfl) (A.pull g rfl) ((δ : ℝ) • Φ) ((δ : ℝ) • Ψ) hΦ' hΨ' a b`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, ← mul_add] at key`. Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.2 hfd) key`.
+-/
 theorem swap_of_section (hA : ArCalc) (hG : GdegPull) {G : ℕ → ℤ → ℤ → MvPolynomial (Fin 3) ℝ} (hS : SwapReg G)
     (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hp : IsArithVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)
@@ -116,6 +136,13 @@ namespace GlobalTheory.CovTest
 
 open Limits in
 
+/- English proof (translation)
+Introduce `hA hR hG G hS k _ B Y _ _ q p d hq hp π w E h H fl hfl A Φ Ψ hΦ hΨ a b`. Take `⟨Z, _, i, hZ, hZg, hZd⟩` from `GlobalTheory.T.rank_two_flag_bundle_section k B Y q p d hq hp π w E h.isVB fl hfl`. Take `⟨B', _, ρ₀, hB', hreg, hρg, hρd⟩` from `GlobalTheory.T.exists_regular_integral_cover_same_dimension hR k Z (i ≫ p) d hZ`. Establish `hgq : IsArithVar ((ρ₀ ≫ i ≫ π) ≫ q) d`. Rewrite using `[Category.assoc, Category.assoc, w]` and apply the resulting hypothesis.
+
+Establish `hgg : (ρ₀ ≫ i ≫ π) (genericPoint B') = genericPoint B`. Rewrite using `[Scheme.Hom.comp_apply, hρg, hZg]`. Establish `hgd : (ρ₀ ≫ i ≫ π).residueDegree (genericPoint B') ≠ 0`. Rewrite using `[CurveDegreesCompare.residueDegree_comp, hρg]`. Conclude with `mul_ne_zero hZd hρd`.
+
+Take `⟨_, hY', hfg, hfd⟩` from `GlobalTheory.T.flag_bundle_base_change_arith_variety k B Y B' q p d hq hp π w E h.isVB fl hfl _ hgq hgg hgd`. Conclude with `Reduce.swap_of_section hA hG hS k B Y q p d hp π w E h H fl hfl A Φ Ψ hΦ hΨ a b B' _ (ρ₀ ≫ i) (Category.assoc _ _ _) hgq hreg hY' hfg hfd`.
+-/
 theorem swap2_of_swapRegular : ArCalc → RegularAlteration → GdegPull →
     ∀ G : ℕ → ℤ → ℤ → MvPolynomial (Fin 3) ℝ, SwapReg G → Swap2 G := by
   intro hA hR hG G hS k _ B Y _ _ q p d hq hp π w E h H fl hfl A Φ Ψ hΦ hΨ a b

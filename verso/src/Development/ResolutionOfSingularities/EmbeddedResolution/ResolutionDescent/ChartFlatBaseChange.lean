@@ -59,6 +59,9 @@ variable {S : EmbeddedBlowupSequence k Y pY} {S' : EmbeddedBlowupSequence k' Y' 
 instance instFlatAmbientMap (F : ChartFlatBaseChange S S') :
     AlgebraicGeometry.Flat F.ambientMap := F.flat_ambientMap
 
+/- English proof (translation)
+Introduce `j hj i hij`. Conclude with `strictMonoOn_Iic_of_lt_succ h (Set.mem_Iic.mpr (le_trans (le_of_lt hij) hj)) (Set.mem_Iic.mpr hj) hij`.
+-/
 private theorem apply_lt_apply_of_forall_lt_succ
     {σ : ℕ → ℕ} {N : ℕ} (h : ∀ j, j < N → σ j < σ (j + 1)) :
     ∀ j, j ≤ N → ∀ i, i < j → σ i < σ j := by
@@ -66,11 +69,17 @@ private theorem apply_lt_apply_of_forall_lt_succ
   exact strictMonoOn_Iic_of_lt_succ h (Set.mem_Iic.mpr (le_trans (le_of_lt hij) hj))
     (Set.mem_Iic.mpr hj) hij
 
+/- English proof (translation)
+The claim follows from `apply_lt_apply_of_forall_lt_succ (σ := F.reindex) (N := S'.length) F.reindex_lt_succ j hj i hij`.
+-/
 theorem reindex_lt_reindex_of_lt (F : ChartFlatBaseChange S S') {i j : ℕ} (hij : i < j) (hj : j ≤ S'.length) :
     F.reindex i < F.reindex j :=
   apply_lt_apply_of_forall_lt_succ (σ := F.reindex) (N := S'.length)
     F.reindex_lt_succ j hj i hij
 
+/- English proof (translation)
+Break down `eq_or_lt_of_le hj with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `le_of_eq F.reindex_len`. Conclude with `le_of_lt (F.reindex_lt j h)`.
+-/
 theorem reindex_le_length (F : ChartFlatBaseChange S S') {j : ℕ} (hj : j ≤ S'.length) :
     F.reindex j ≤ S.length := by
   rcases eq_or_lt_of_le hj with h | h
@@ -78,12 +87,20 @@ theorem reindex_le_length (F : ChartFlatBaseChange S S') {j : ℕ} (hj : j ≤ S
     exact le_of_eq F.reindex_len
   · exact le_of_lt (F.reindex_lt j h)
 
+/- English proof (translation)
+Establish `hst : MorphismProperty.IsStableUnderBaseChange (@AlgebraicGeometry.Flat : MorphismProperty Scheme.{u})` using `inferInstance`. Conclude with `hst.of_isPullback (F.isPullback_level j hj).flip F.flat_ambientMap`.
+-/
 theorem flat_levelMap (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     AlgebraicGeometry.Flat (F.levelMap j hj) := by
   have hst : MorphismProperty.IsStableUnderBaseChange
       (@AlgebraicGeometry.Flat : MorphismProperty Scheme.{u}) := inferInstance
   exact hst.of_isPullback (F.isPullback_level j hj).flip F.flat_ambientMap
 
+/- English proof (translation)
+Establish `h : F.reindex 0 ≤ F.reindex j`. Break down `Nat.eq_zero_or_pos j with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Conclude with `le_rfl`. Conclude with `le_of_lt (F.reindex_lt_reindex_of_lt h0 (le_of_lt hj))`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem reindex_ne_of_lt_reindex_zero (F : ChartFlatBaseChange S S') (m : ℕ)
     (hm : m < F.reindex 0) (j : ℕ) (hj : j < S'.length) : F.reindex j ≠ m := by
   have h : F.reindex 0 ≤ F.reindex j := by
@@ -93,6 +110,13 @@ theorem reindex_ne_of_lt_reindex_zero (F : ChartFlatBaseChange S S') (m : ℕ)
     · exact le_of_lt (F.reindex_lt_reindex_of_lt h0 (le_of_lt hj))
   omega
 
+/- English proof (translation)
+Introduce `hEq`. Break down `Nat.lt_or_ge j' (j + 1) with hlt | hge` into its components or cases. Establish `hle : F.reindex j' ≤ F.reindex j`. Break down `Nat.lt_or_ge j' j with h | h` into its components or cases. Conclude with `le_of_lt (F.reindex_lt_reindex_of_lt h (le_of_lt hj))`.
+
+Establish `hjj : j' = j` using `le_antisymm (Nat.lt_succ_iff.mp hlt) h`. Substitute `hjj` using the available equality. Conclude with `le_rfl`. Use linear arithmetic over natural numbers and integers. Establish `hle : F.reindex (j + 1) ≤ F.reindex j'`.
+
+Break down `Nat.eq_or_lt_of_le hge with h | h` into its components or cases. Conclude with `le_of_eq (congrArg F.reindex h)`. Conclude with `le_of_lt (F.reindex_lt_reindex_of_lt h (le_of_lt hj'))`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem reindex_ne_of_reindex_lt_of_lt_reindex_succ (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length) (m : ℕ)
     (h1 : F.reindex j < m) (h2 : m < F.reindex (j + 1)) (j' : ℕ) (hj' : j' < S'.length) :
     F.reindex j' ≠ m := by
@@ -111,6 +135,17 @@ theorem reindex_ne_of_reindex_lt_of_lt_reindex_succ (F : ChartFlatBaseChange S S
       · exact le_of_lt (F.reindex_lt_reindex_of_lt h (le_of_lt hj'))
     omega
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `i hi hsum _`. Establish `hie : i = F.reindex j` using `by omega`.
+
+Substitute `hie` using the available equality. Rewrite using `[S.ambientSeq.transitionMap_self hi, Category.comp_id]`. Consider the case `succ n ih`. Introduce `i hi hsum hskip`. Establish `hi1 : i + 1 ≤ F.reindex j` using `by omega`.
+
+Establish `hlen : F.reindex j ≤ S.length` using `F.reindex_le_length hj`. Establish `hiS : i + 1 ≤ S.length` using `le_trans hi1 hlen`. Use `S.isNoetherian_schemeAt (i + 1) hiS` as an intermediate fact. Establish `hIH` using `ih (i + 1) hi1 (by omega) (fun m hm hm2 j' hj' => hskip m (by omega) hm2 j' hj')`. Establish `hdown : S.ambientSeq.transitionMap hi1 ≫ S.blowdown i = S.ambientSeq.transitionMap hi`.
+
+Establish `h` using `S.ambientSeq.transitionMap_trans (Nat.le_succ i) hi1`. Rewrite `h` using `[← S.ambientSeq.blowupMorphism_eq_transitionMap]`. Conclude with `h`. Establish `htop : (S.ambientCenter i).comap (F.levelMap j hj ≫ S.ambientSeq.transitionMap hi) = ⊤` using `F.comap_center_skipped i (by omega) (fun j' hj' => hskip i le_rfl (by omega) j' hj') (S'.schemeAt j) (F.levelMap j hj ≫ S.ambientSeq.transitionMap hi) (S'.ambientSeq.projectionToBase j) (F.isPullback_down j hj i hi hskip)`. Establish `hg : ((S.ambientCenter i).comap (S.blowdown i)).comap (F.levelMap j hj ≫ S.ambientSeq.transitionMap hi1) = ⊤`.
+
+Rewrite using `[← Scheme.IdealSheafData.comap_comp, Category.assoc, hdown]`. Conclude with `htop`. Establish `hst` using `strictTransform_comap_of_comap_center_eq_top (S.blowdown i) (S.ambientCenter i) (S.strictTransformIdeal i) (F.levelMap j hj ≫ S.ambientSeq.transitionMap hi1) hg`. Rewrite using `[← hIH, S.strictTransformIdeal_succ i, hst, ← Scheme.IdealSheafData.comap_comp, Category.assoc, hdown]`.
+-/
 private theorem strictTransformIdeal_comap_transitionMap_eq (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     ∀ (n i : ℕ) (hi : i ≤ F.reindex j), i + n = F.reindex j →
       (∀ m, i ≤ m → m < F.reindex j → ∀ j', j' < S'.length → F.reindex j' ≠ m) →
@@ -148,6 +183,23 @@ private theorem strictTransformIdeal_comap_transitionMap_eq (F : ChartFlatBaseCh
       rw [← hIH, S.strictTransformIdeal_succ i, hst, ← Scheme.IdealSheafData.comap_comp, Category.assoc,
         hdown]
 
+/- English proof (translation)
+Use `revert hj`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `hj`. Establish `h0 : (0 : ℕ) ≤ F.reindex 0` using `Nat.zero_le _`.
+
+Establish `hskip : ∀ m, 0 ≤ m → m < F.reindex 0 → ∀ j', j' < S'.length → F.reindex j' ≠ m` using `fun m _ hm j' hj' => F.reindex_ne_of_lt_reindex_zero m hm j' hj'`. Establish `hkey` using `strictTransformIdeal_comap_transitionMap_eq F 0 hj (F.reindex 0) 0 h0 (by omega) hskip`. Establish `hlev : IsPullback (F.levelMap 0 hj ≫ S.ambientSeq.transitionMap h0) (S'.ambientSeq.projectionToBase 0) (S.ambientSeq.projectionToBase 0) F.ambientMap` using `F.isPullback_down 0 hj 0 h0 hskip`. Establish `hcomm : S'.ambientSeq.isoZero.inv ≫ (F.levelMap 0 hj ≫ S.ambientSeq.transitionMap h0) = F.ambientMap ≫ S.ambientSeq.isoZero.inv`. Establish `h1` using `hlev.w`.
+
+Rewrite `h1` using `[S.ambientSeq.projectionToBase_zero, S'.ambientSeq.projectionToBase_zero]`. Establish `h2 : (S'.ambientSeq.isoZero.inv ≫ (F.levelMap 0 hj ≫ S.ambientSeq.transitionMap h0)) ≫ S.ambientSeq.isoZero.hom = (F.ambientMap ≫ S.ambientSeq.isoZero.inv) ≫ S.ambientSeq.isoZero.hom`. Simplify using `only [Category.assoc] at h1 ⊢`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+
+Conclude with `(cancel_mono S.ambientSeq.isoZero.hom).mp h2`. Establish `hD : IsPullback F.ambientMap S'.ambientSeq.isoZero.inv S.ambientSeq.isoZero.inv (F.levelMap 0 hj ≫ S.ambientSeq.transitionMap h0)` using `(IsPullback.of_horiz_isIso ⟨hcomm⟩).flip`. Establish `hC : IsPullback F.baseMap (S'.emb ≫ S'.ambientSeq.isoZero.inv) (S.emb ≫ S.ambientSeq.isoZero.inv) (F.levelMap 0 hj ≫ S.ambientSeq.transitionMap h0)` using `F.isPullback_emb.paste_vert hD`. Establish `: AlgebraicGeometry.QuasiCompact (S.emb ≫ S.ambientSeq.isoZero.inv)` using `inferInstance`. Establish `: AlgebraicGeometry.QuasiCompact (S'.emb ≫ S'.ambientSeq.isoZero.inv)` using `quasiCompact_of_isPullback hC`.
+
+Establish `: AlgebraicGeometry.Flat (F.levelMap 0 hj ≫ S.ambientSeq.transitionMap h0)` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.Flat) hlev.flip inferInstance`. Rewrite using `[← hkey, S'.strictTransformIdeal_zero, S.strictTransformIdeal_zero]`. Conclude with `ker_eq_comap_ker_of_isPullback_of_flat hC`. Consider the case `succ n ih`. Introduce `hj`.
+
+Establish `hn : n < S'.length` using `Nat.lt_of_succ_le hj`. Establish `hnle : n ≤ S'.length` using `Nat.le_of_lt hn`. Establish `hσ : F.reindex n + 1 ≤ F.reindex (n + 1)` using `F.reindex_lt_succ n hn`. Establish `hlen : F.reindex (n + 1) ≤ S.length` using `F.reindex_le_length hj`. Establish `hIH` using `ih hnle`.
+
+Establish `hcenter : S'.ambientCenter n = (S.ambientCenter (F.reindex n)).comap (F.levelMap n hnle)` using `F.center_eq n hn`. Establish `: AlgebraicGeometry.Flat (F.levelMap n hnle)` using `F.flat_levelMap n hnle`. Use `S.isNoetherian_schemeAt (F.reindex n + 1) (le_trans hσ hlen)` as an intermediate fact. Use `S'.isNoetherian_schemeAt (n + 1) hj` as an intermediate fact. Establish `hst` using `comap_strictTransform_of_flat_of_isLocallyNoetherian (S.blowdown (F.reindex n)) (F.levelMap n hnle) (S'.blowdown n) (F.levelMap (n + 1) hj ≫ S.ambientSeq.transitionMap hσ) (F.isPullback_step n hn hσ) (S.ambientCenter (F.reindex n)) (S.strictTransformIdeal (F.reindex n)) (S.ambien …`.
+
+Establish `hbet : ∀ m, F.reindex n + 1 ≤ m → m < F.reindex (n + 1) → ∀ j', j' < S'.length → F.reindex j' ≠ m` using `fun m h1 h2 j' hj' => F.reindex_ne_of_reindex_lt_of_lt_reindex_succ n hn m (by omega) h2 j' hj'`. Establish `hkey` using `strictTransformIdeal_comap_transitionMap_eq F (n + 1) hj (F.reindex (n + 1) - (F.reindex n + 1)) (F.reindex n + 1) hσ (by omega) hbet`. Rewrite using `[← hkey, S.strictTransformIdeal_succ (F.reindex n), hst, ← hIH, ← hcenter]`. Conclude with `S'.strictTransformIdeal_succ n`.
+-/
 theorem strictTransformIdeal_eq_comap (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     S'.strictTransformIdeal j = (S.strictTransformIdeal (F.reindex j)).comap (F.levelMap j hj) := by
   revert hj
@@ -212,6 +264,9 @@ theorem strictTransformIdeal_eq_comap (F : ChartFlatBaseChange S S') (j : ℕ) (
       rw [← hkey, S.strictTransformIdeal_succ (F.reindex n), hst, ← hIH, ← hcenter]
       exact S'.strictTransformIdeal_succ n
 
+/- English proof (translation)
+Use `⟨⟨a, b, ?_, ?_⟩, ha⟩` and prove the remaining obligations. Use `(cancel_mono i).mp ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hb, ha, Category.id_comp]`. Use `(cancel_mono g).mp ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ha, hb, Category.id_comp]`.
+-/
 private theorem exists_iso_of_mono_of_comp_eq
     {A Z W : Scheme.{u}} (g : Z ⟶ A) (i : W ⟶ A)
     [CategoryTheory.Mono g] [CategoryTheory.Mono i] (a : W ⟶ Z) (b : Z ⟶ W)
@@ -223,6 +278,9 @@ private theorem exists_iso_of_mono_of_comp_eq
   · refine (cancel_mono g).mp ?_
     rw [Category.assoc, ha, hb, Category.id_comp]
 
+/- English proof (translation)
+Establish `hker : Scheme.Hom.ker (Scheme.Hom.ker g).subschemeι = Scheme.Hom.ker g` using `AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι _`. Establish `h1 : Scheme.Hom.ker g ≤ Scheme.Hom.ker (Scheme.Hom.ker g).subschemeι` using `le_of_eq hker.symm`. Establish `h2 : Scheme.Hom.ker (Scheme.Hom.ker g).subschemeι ≤ Scheme.Hom.ker g` using `le_of_eq hker`. Conclude with `exists_iso_of_mono_of_comp_eq g (Scheme.Hom.ker g).subschemeι (AlgebraicGeometry.IsClosedImmersion.lift g (Scheme.Hom.ker g).subschemeι h1) (AlgebraicGeometry.IsClosedImmersion.lift (Scheme.Hom.ker g).subschemeι g h2) (AlgebraicGeometry.IsClosedImmersion.lift_fac ..) (AlgebraicGe …`.
+-/
 private theorem exists_iso_subscheme_ker
     {A Z : Scheme.{u}} (g : Z ⟶ A) [AlgebraicGeometry.IsClosedImmersion g] :
     ∃ u : (Scheme.Hom.ker g).subscheme ≅ Z, u.hom ≫ g = (Scheme.Hom.ker g).subschemeι := by
@@ -237,6 +295,11 @@ private theorem exists_iso_subscheme_ker
     (AlgebraicGeometry.IsClosedImmersion.lift_fac ..)
     (AlgebraicGeometry.IsClosedImmersion.lift_fac ..)
 
+/- English proof (translation)
+Substitute `hJ` using the available equality. Establish `: AlgebraicGeometry.IsClosedImmersion (pullback.fst f I.subschemeι)` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.IsClosedImmersion) (IsPullback.of_hasPullback f I.subschemeι).flip inferInstance`. Take `⟨u, hu⟩` from `exists_iso_subscheme_ker (pullback.fst f I.subschemeι)`. Apply the tactic sequence `have hfst : (u ≪≫ pullbackSymmetry f I.subschemeι).hom ≫ pullback.fst I.subschemeι f = u.hom ≫ pullback.snd f I.subschemeι := by`. Rewrite using `[Iso.trans_hom, Category.assoc, pullbackSymmetry_hom_comp_fst]`.
+
+Apply the tactic sequence `have hsnd : (u ≪≫ pullbackSymmetry f I.subschemeι).hom ≫ pullback.snd I.subschemeι f = (Scheme.Hom.ker (pullback.fst f I.subschemeι)).subschemeι := by`. Rewrite using `[Iso.trans_hom, Category.assoc, pullbackSymmetry_hom_comp_snd, hu]`. Apply the tactic sequence `have hcomm : ((u ≪≫ pullbackSymmetry f I.subschemeι).hom ≫ pullback.fst I.subschemeι f) ≫ I.subschemeι = (Scheme.Hom.ker (pullback.fst f I.subschemeι)).subschemeι ≫ f := by`. Rewrite using `[hfst, Category.assoc, ← pullback.condition, ← Category.assoc, hu]`. Apply the tactic sequence `exact ⟨(u ≪≫ pullbackSymmetry f I.subschemeι).hom ≫ pullback.fst I.subschemeι f, hcomm, IsPullback.of_iso_pullback ⟨hcomm⟩ (u ≪≫ pullbackSymmetry f I.subschemeι) rfl hsnd⟩`.
+-/
 private theorem exists_isPullback_subscheme_of_ker_eq
     {A B : Scheme.{u}} (f : A ⟶ B) (I : B.IdealSheafData) (J : A.IdealSheafData)
     (hJ : J = Scheme.Hom.ker (pullback.fst f I.subschemeι)) :
@@ -262,6 +325,9 @@ private theorem exists_isPullback_subscheme_of_ker_eq
   exact ⟨(u ≪≫ pullbackSymmetry f I.subschemeι).hom ≫ pullback.fst I.subschemeι f, hcomm,
     IsPullback.of_iso_pullback ⟨hcomm⟩ (u ≪≫ pullbackSymmetry f I.subschemeι) rfl hsnd⟩
 
+/- English proof (translation)
+Establish `hJ : S'.strictTransformIdeal j = Scheme.Hom.ker (pullback.fst (F.levelMap j hj) (S.strictTransformIdeal (F.reindex j)).subschemeι)` using `F.strictTransformIdeal_eq_comap j hj`. Conclude with `exists_isPullback_subscheme_of_ker_eq (F.levelMap j hj) (S.strictTransformIdeal (F.reindex j)) (S'.strictTransformIdeal j) hJ`.
+-/
 theorem exists_isPullback_strictTransformι (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     ∃ g : S'.strictTransform j ⟶ S.strictTransform (F.reindex j),
       g ≫ S.strictTransformι (F.reindex j) = S'.strictTransformι j ≫ F.levelMap j hj ∧
@@ -276,15 +342,24 @@ def strictTransformComparison (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j �
     S'.strictTransform j ⟶ S.strictTransform (F.reindex j) :=
   (F.exists_isPullback_strictTransformι j hj).choose
 
+/- English proof (translation)
+The claim follows from `(F.exists_isPullback_strictTransformι j hj).choose_spec.1`.
+-/
 theorem strictTransformComparison_comp_strictTransformι (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     F.strictTransformComparison j hj ≫ S.strictTransformι (F.reindex j) = S'.strictTransformι j ≫ F.levelMap j hj :=
   (F.exists_isPullback_strictTransformι j hj).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(F.exists_isPullback_strictTransformι j hj).choose_spec.2`.
+-/
 theorem isPullback_strictTransformComparison_strictTransformι (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     IsPullback (F.strictTransformComparison j hj) (S'.strictTransformι j) (S.strictTransformι (F.reindex j))
       (F.levelMap j hj) :=
   (F.exists_isPullback_strictTransformι j hj).choose_spec.2
 
+/- English proof (translation)
+Establish `hst : MorphismProperty.IsStableUnderBaseChange (@AlgebraicGeometry.Flat : MorphismProperty Scheme.{u})` using `inferInstance`. Conclude with `hst.of_isPullback (F.isPullback_strictTransformComparison_strictTransformι j hj).flip (F.flat_levelMap j hj)`.
+-/
 theorem flat_strictTransformComparison (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     AlgebraicGeometry.Flat (F.strictTransformComparison j hj) := by
   have hst : MorphismProperty.IsStableUnderBaseChange

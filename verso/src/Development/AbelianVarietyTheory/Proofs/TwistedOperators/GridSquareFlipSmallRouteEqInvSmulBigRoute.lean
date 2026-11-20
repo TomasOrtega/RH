@@ -21,6 +21,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = b₂`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Distinguish the cases in `hb' : b = b₁`.
+
+Substitute `hb'` using the available equality. Simplify using `[Function.update_of_ne hb]`. Simplify using `[Function.update_of_ne hb, Function.update_of_ne hb']`.
+-/
 theorem update_two_add (x z : Γ.Args) (b₁ b₂ : Edge) (u u' : Matrix (Fin (Γ.rank b₁.tgt)) (Fin (Γ.rank b₁.src)) k)
     (v v' : Matrix (Fin (Γ.rank b₂.tgt)) (Fin (Γ.rank b₂.src)) k) :
     (Function.update (Function.update (x + z) b₁ (u + u')) b₂ (v + v') : Γ.Args) =
@@ -32,6 +37,11 @@ theorem update_two_add (x z : Γ.Args) (b₁ b₂ : Edge) (u u' : Matrix (Fin (�
     · subst hb'; simp [Function.update_of_ne hb]
     · simp [Function.update_of_ne hb, Function.update_of_ne hb']
 
+/- English proof (translation)
+Distinguish the cases in `hb : b = b₂`. Substitute `hb` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Distinguish the cases in `hb' : b = b₁`. Substitute `hb'` using the available equality.
+
+Rewrite using `[Function.update_of_ne hb, Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne hb, Function.update_of_ne hb']`. Conclude with `hz b`.
+-/
 theorem mem_update_two {c : kˣ} {z : Γ.Args} (hz : ∀ b, z b ∈ matLat _ (c • stdLat k _)) {b₁ b₂ : Edge}
     {u : Matrix (Fin (Γ.rank b₁.tgt)) (Fin (Γ.rank b₁.src)) k} {v : Matrix (Fin (Γ.rank b₂.tgt)) (Fin (Γ.rank b₂.src)) k}
     (hu : u ∈ matLat _ (c • stdLat k _)) (hv : v ∈ matLat _ (c • stdLat k _)) (b : Edge) :
@@ -47,6 +57,9 @@ def setA (i j : ℕ) (x : Γ.Args) (Z : Matrix (Fin (Γ.rank (i + 1, j + 1))) (�
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Rewrite using `[Grid.joinA, setA, Function.update_self, Function.update_of_ne (by simp), Function.update_self, transpose_transpose, fromCols_toCols]`.
+-/
 theorem joinA_setA (i j : ℕ) (x : Γ.Args) (Z : Matrix (Fin (Γ.rank (i + 1, j + 1))) (Γ.Cols i j) k) :
     Γ.joinA i j (setA i j x Z) = Z := by
   rw [Grid.joinA, setA, Function.update_self, Function.update_of_ne (by simp), Function.update_self, transpose_transpose,
@@ -54,6 +67,11 @@ theorem joinA_setA (i j : ℕ) (x : Γ.Args) (Z : Matrix (Fin (Γ.rank (i + 1, j
 
 variable {ϖ : kˣ} {e : ℕ} {γ : List Edge} {S : Γ.Args → ℂ}
 
+/- English proof (translation)
+Use `⟨fun Z hZ => ?_, fun Z Z₀ hZ₀ => ?_⟩` and prove the remaining obligations. Establish `h` using `hf 1 Z`. Simplify using `only [one_smul] at h`. Break down `not_and_or.1 (mt h.2 hZ) with h' | h'` into its components or cases. Conclude with `hS.2.1 _ _ h1 (by rwa [Function.update_of_ne hne, Function.update_self])`.
+
+Conclude with `hS.2.1 _ _ h2 (by rwa [Function.update_self])`. Use `beta_reduce`. Rewrite using `[map_add, map_add, ← hS.2.2 (Function.update (Function.update x b₁ (f₁ Z)) b₂ (f₂ Z)) _ (mem_update_two (z := 0) (fun _ => zero_mem _) ((hf _ _).1 hZ₀).1 ((hf _ _).1 hZ₀).2), ← update_two_add, add_zero]`.
+-/
 theorem isNatDatum_two (hS : Γ.IsTensor ϖ e γ S) {b₁ b₂ : Edge} (h1 : b₁ ∈ γ) (h2 : b₂ ∈ γ) (hne : b₁ ≠ b₂) (x : Γ.Args)
     {A B : Type} (f₁ : Matrix A B k →+ Matrix (Fin (Γ.rank b₁.tgt)) (Fin (Γ.rank b₁.src)) k)
     (f₂ : Matrix A B k →+ Matrix (Fin (Γ.rank b₂.tgt)) (Fin (Γ.rank b₂.src)) k)
@@ -69,6 +87,9 @@ theorem isNatDatum_two (hS : Γ.IsTensor ϖ e γ S) {b₁ b₂ : Edge} (h1 : b�
     rw [map_add, map_add, ← hS.2.2 (Function.update (Function.update x b₁ (f₁ Z)) b₂ (f₂ Z)) _
       (mem_update_two (z := 0) (fun _ => zero_mem _) ((hf _ _).1 hZ₀).1 ((hf _ _).1 hZ₀).2), ← update_two_add, add_zero]
 
+/- English proof (translation)
+Simplify using `only [mem_matLat, SplitFlip.stdLat, smul_diagLat, mem_diagLat, Matrix.row, Sum.forall, toCols₁, toCols₂, of_apply, transpose_apply, Pi.one_apply, forall_and]`. Conclude with `and_congr_right fun _ => forall_comm`.
+-/
 theorem mem_matLat_cols {A B₁ B₂ : Type} (c : kˣ) (Z : Matrix A (B₁ ⊕ B₂) k) :
     Z ∈ matLat A (c • stdLat k _) ↔ Z.toCols₁ ∈ matLat _ (c • stdLat k _) ∧ Z.toCols₂ᵀ ∈ matLat _ (c • stdLat k _) := by
   simp only [mem_matLat, SplitFlip.stdLat, smul_diagLat, mem_diagLat, Matrix.row, Sum.forall, toCols₁, toCols₂, of_apply, transpose_apply,
@@ -83,20 +104,36 @@ omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 def colsR (A B₁ B₂ : Type) : Matrix A (B₁ ⊕ B₂) k →+ Matrix B₂ A k := ⟨⟨fun Z => Z.toCols₂ᵀ, rfl⟩, fun _ _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `isNatDatum_two hS h1 h2 (by simp) x (colsL _ _ _) (colsR _ _ _) mem_matLat_cols`.
+-/
 theorem isNatDatum_small (hS : Γ.IsTensor ϖ e γ S) {i j : ℕ} (h1 : Edge.theta i j ∈ γ) (h2 : Edge.ex i j ∈ γ) (x : Γ.Args) :
     IsNatDatum ϖ e (Γ.sliceB i j S x) :=
   isNatDatum_two hS h1 h2 (by simp) x (colsL _ _ _) (colsR _ _ _) mem_matLat_cols
 
+/- English proof (translation)
+The claim follows from `isNatDatum_two hS h1 h2 (by simp) x (colsL _ _ _) (colsR _ _ _) mem_matLat_cols`.
+-/
 theorem isNatDatum_big (hS : Γ.IsTensor ϖ e γ S) {i j : ℕ} (h1 : Edge.ex i (j + 1) ∈ γ) (h2 : Edge.theta (i + 1) j ∈ γ)
     (x : Γ.Args) : IsNatDatum ϖ e fun Z => S (setA i j x Z) :=
   isNatDatum_two hS h1 h2 (by simp) x (colsL _ _ _) (colsR _ _ _) mem_matLat_cols
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Z`. Rewrite using `[Grid.sliceB, Grid.sliceB, ← hS.2.2 (Function.update (Function.update x _ _) _ _) _ (mem_update_two (b₁ := .theta i j) (b₂ := .ex i j) hz (zero_mem _) (zero_mem _)), ← update_two_add, add_zero, add_zero]`.
+-/
 theorem sliceB_add (hS : Γ.IsTensor ϖ e γ S) (i j : ℕ) (x z : Γ.Args) (hz : ∀ b, z b ∈ matLat _ (ϖ ^ e • stdLat k _)) :
     Γ.sliceB i j S (x + z) = Γ.sliceB i j S x := by
   funext Z
   rw [Grid.sliceB, Grid.sliceB, ← hS.2.2 (Function.update (Function.update x _ _) _ _) _
     (mem_update_two (b₁ := .theta i j) (b₂ := .ex i j) hz (zero_mem _) (zero_mem _)), ← update_two_add, add_zero, add_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Z`. Use `hS.1 fun b hb => ?_` and prove the remaining obligations. Establish `a1 : b ≠ .ex i (j + 1)` using `fun h => h1 (h ▸ hb)`. Establish `a2 : b ≠ .theta (i + 1) j` using `fun h => h2 (h ▸ hb)`. Distinguish the cases in `hb : b = .ex i j`.
+
+Substitute `hb` using the available equality. Rewrite using `[Function.update_self, Function.update_self]`. Distinguish the cases in `hb' : b = .theta i j`. Substitute `hb'` using the available equality. Rewrite using `[Function.update_of_ne hb, Function.update_of_ne hb, Function.update_self, Function.update_self]`.
+
+Rewrite using `[Function.update_of_ne hb, Function.update_of_ne hb, Function.update_of_ne hb', Function.update_of_ne hb', setA, Function.update_of_ne a2, Function.update_of_ne a1]`.
+-/
 theorem sliceB_setA (hS : Γ.IsTensor ϖ e γ S) {i j : ℕ} (h1 : Edge.ex i (j + 1) ∉ γ) (h2 : Edge.theta (i + 1) j ∉ γ)
     (x : Γ.Args) (Y : Matrix (Fin (Γ.rank (i + 1, j + 1))) (Γ.Cols i j) k) :
     Γ.sliceB i j S (setA i j x Y) = Γ.sliceB i j S x := by
@@ -111,6 +148,9 @@ theorem sliceB_setA (hS : Γ.IsTensor ϖ e γ S) {i j : ℕ} (h1 : Edge.ex i (j 
     · rw [Function.update_of_ne hb, Function.update_of_ne hb, Function.update_of_ne hb', Function.update_of_ne hb', setA,
         Function.update_of_ne a2, Function.update_of_ne a1]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h'`. Conclude with `h (hS.2.1 _ b hb (by rwa [Function.update_of_ne h2, Function.update_of_ne h1]))`.
+-/
 theorem mem_of_update_two (hS : Γ.IsTensor ϖ e γ S) {b₁ b₂ : Edge} {x : Γ.Args} {u v}
     (h : S (Function.update (Function.update x b₁ u) b₂ v) ≠ 0) {b : Edge} (hb : b ∈ γ) (h1 : b ≠ b₁) (h2 : b ≠ b₂) :
     x b ∈ matLat _ (stdLat k _) := by
@@ -119,6 +159,11 @@ theorem mem_of_update_two (hS : Γ.IsTensor ϖ e γ S) {b₁ b₂ : Edge} {x : �
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = b₂`. Substitute `hb` using the available equality. Simplify using `[h2, h2']`. Distinguish the cases in `hb' : b = b₁`.
+
+Substitute `hb'` using the available equality. Simplify using `[Function.update_of_ne hb, h1, h1']`. Simplify using `[Function.update_of_ne hb, Function.update_of_ne hb']`.
+-/
 theorem add_update_two {x y : Γ.Args} {b₁ b₂ : Edge} (h1 : x b₁ = 0) (h2 : x b₂ = 0) (h1' : y b₁ = 0) (h2' : y b₂ = 0) (u v) :
     x + Function.update (Function.update (0 : Γ.Args) b₁ u) b₂ v + y = Function.update (Function.update (x + y) b₁ u) b₂ v := by
   funext b
@@ -132,6 +177,17 @@ end Local
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Establish `hv : ∀ κ ∈ s, ∀ d ∈ (σ κ).support, VecAll ρ e _ (((φA κ).append (ψ κ d)).append (φB κ)) (((α κ).append d).append (β κ))` using `fun κ hκ d hd => (vecAll_append ρ e _ _ _ _ _ _).2 ⟨(vecAll_append ρ e _ _ _ _ _ _).2 ⟨hA κ hκ, hσ κ hκ d hd⟩, hB κ hκ⟩`. Set `φ : PureT G ((A.comp r).comp B') → PureT G ((A.comp r).comp B')` to `fun d => if h : ∃ φ, VecAll ρ e _ φ d then h.choose else d`. Establish `hφ : ∀ d φ', VecAll ρ e _ φ' d → φ d = φ'` using `fun d φ' h => by`. Establish `h' : ∃ φ, VecAll ρ e _ φ d` using `⟨φ', h⟩`. Simplify using `only [φ, dif_pos h']`.
+
+Conclude with `vecAll_unique ρ hL he _ hg _ _ d h'.choose_spec h`. Use `⟨φ, fun d hd => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨κ, hκ, hd⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum hd)`. Take `⟨d', hd', hd⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hd)`. Take `rfl` from `Finset.mem_singleton.1 (Finsupp.support_single_subset hd)`.
+
+Rewrite using `[hφ _ _ (hv κ hκ d' hd')]`. Conclude with `hv κ hκ d' hd'`. Take `⟨x', z, rfl⟩` from `exists_append _ _ x`. Take `⟨x, y, rfl⟩` from `exists_append _ _ x'`. Rewrite `hx` using `[halfAll_append, halfAll_append]`.
+
+Rewrite using `[hH x y z hx.1.1 hx.1.2 hx.2]`. Establish `e1 : ∀ τ : TotT G ((A.comp r).comp B'), (τ.sum fun d c => c * famProd _ (φ d) ((x.append y).append z)) = Finsupp.linearCombination ℂ (fun d => famProd _ (φ d) ((x.append y).append z)) τ` using `fun τ => rfl`. Rewrite using `[e1, map_sum]`. Use `Finset.sum_congr rfl fun κ hκ => ?_` and prove the remaining obligations. Rewrite using `[sandwich, map_finsuppSum, Finsupp.mul_sum]`.
+
+Use `Finsupp.sum_congr fun d hd => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.linearCombination_single, hφ _ _ (hv κ hκ d hd), famProd_append, famProd_append, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_rep_sandwich {W : G.Weil} (ρ : RealMatch W) {μ₀ : T} (hL : L.Is μ₀) {t : T} {e : AE D}
     (he : IsIdemSum e (locPl G t)) {X Y Z U : Node} {A : Path T X Y} {r : Path T Y Z} {B' : Path T Z U}
     (hg : OnGrid D.R.m t ((A.comp r).comp B')) {ι : Type} (s : Finset ι) (α φA : ι → PureT G A) (β φB : ι → PureT G B')
@@ -171,9 +227,19 @@ theorem exists_rep_sandwich {W : G.Weil} (ρ : RealMatch W) {μ₀ : T} (hL : L.
     rw [Finsupp.linearCombination_single, hφ _ _ (hv κ hκ d hd), famProd_append, famProd_append, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 theorem edges_routes (t : T) (i j : ℕ) : edges (routeSmall t i j) = [.theta i j, .ex i j] ∧
     edges (routeBig t i j) = [.ex i (j + 1), .theta (i + 1) j] := ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Take `⟨_, _, h1, -, -, a1, a2⟩` from `edges_bound A hA`. Take `⟨rfl, rfl⟩` from `Node.grid.inj h1`. Take `⟨_, _, -, -, -, b1, b2⟩` from `edges_bound Bp hB`. Use `⟨a1, b1, fun b hb hb' => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Use `a2 b hb'` as an intermediate fact.
+
+Use `b2 b hb` as an intermediate fact. Apply the tactic sequence `cases b <;> simp only at * <;> omega`. Break down `hb with hb | hb` into its components or cases. Use `a2 b hb` as an intermediate fact. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> rintro rfl <;> simp only at this <;> omega`.
+
+Use `b2 b hb` as an intermediate fact. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> rintro rfl <;> simp only at this <;> omega`.
+-/
 theorem edges_outer {m : ℕ} {t : T} {i j : ℕ} {A : Path T (.grid 0 m) (.grid i (j + 1))} {Bp : Path T (.grid (i + 1) j) (.grid m 0)}
     (hA : OnGrid m t A) (hB : OnGrid m t Bp) : (edges A).Nodup ∧ (edges Bp).Nodup ∧ (∀ b ∈ edges Bp, b ∉ edges A) ∧
       ∀ b, b ∈ edges A ∨ b ∈ edges Bp → b ≠ .theta i j ∧ b ≠ .ex i j ∧ b ≠ .ex i (j + 1) ∧ b ≠ .theta (i + 1) j := by
@@ -190,6 +256,13 @@ theorem edges_outer {m : ℕ} {t : T} {i j : ℕ} {A : Path T (.grid 0 m) (.grid
     · have := b2 b hb
       refine ⟨?_, ?_, ?_, ?_⟩ <;> rintro rfl <;> simp only at this <;> omega
 
+/- English proof (translation)
+Take `⟨ι, s, φ, d, r, a1, a2⟩` from `GlobalTheory.T.exists_classSum_schwartzProducts_gridPath hL B ρ t he n p hp np (U := ArgT G q × U) (fun x y => K (x + fun w => pathArgs B t w q y.1) y.2) (fun x z y hz => by rw [add_right_comm, h1 _ z _ hz]) fun x y h w hw b hb => by`. Use `h2 _ _ h w hw b (.inl hb)` as an intermediate fact. Rewrite `this` using `[Pi.add_apply, Pi.add_apply, pathArgs_of_notMem B t w q _ b fun h' => hpq b h' hb, add_zero]`. Then use the resulting hypothesis. Take `⟨ι', s', φ', d', r', b1, b2⟩` from `GlobalTheory.T.exists_classSum_schwartzProducts_gridPath hL B ρ t he n q hq nq (U := ι × U) (fun x y => K ((fun w => pathArgs B t w p (r y.1)) + x) y.2) (fun x z y hz => by rw [← add_assoc, h1 _ z _ hz]) fun x y h w hw b hb => by`. Use `h2 _ _ h w hw b (.inr hb)` as an intermediate fact.
+
+Rewrite `this` using `[Pi.add_apply, Pi.add_apply, pathArgs_of_notMem B t w p _ b (hpq b hb), zero_add]`. Then use the resulting hypothesis. Use `⟨ι × ι', s ×ˢ s', fun κ => φ κ.1, fun κ => d κ.1, fun κ => φ' κ.2, fun κ => d' κ.2, fun κ => r κ.1, fun κ => r' κ.2, fun κ hκ => a1 _ (Finset.mem_product.1 hκ).1, fun κ hκ => b1 _ (Finset.mem_product.1 hκ).2, fun x x' y hx hx' => ?_⟩` and prove the remaining obligations. Use `(a2 x (x', y) hx).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_product]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations.
+
+Use `(congrArg _ (b2 x' (κ, y) hx')).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => (mul_assoc _ _ _).symm`.
+-/
 theorem exists_classes_two {μ₀ : T} (hL : L.Is μ₀) {W : G.Weil} (B : Frames G) (ρ : RealMatch W) (t : T) {e : AE D}
     (he : IsIdemSum e (locPl G t)) (n : Pl D.host.E → ℕ) {X Y X' Y' : Node} (p : Path T X Y) (q : Path T X' Y')
     (hp : OnGrid D.R.m t p) (hq : OnGrid D.R.m t q) (np : (edges p).Nodup) (nq : (edges q).Nodup)
@@ -221,6 +294,33 @@ theorem exists_classes_two {μ₀ : T} (hL : L.Is μ₀) {W : G.Weil} (B : Frame
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl fun l _ => (mul_assoc _ _ _).symm
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W B ρ t i j hi hj A Bp hA hB Tl hT hTb e he`. Take `⟨nA, nB, hAB, ho⟩` from `edges_outer hA hB`. Rewrite `hT` using `[edges_comp, edges_comp, (edges_routes t i j).1]`. Rewrite `hTb` using `[edges_comp, edges_comp, (edges_routes t i j).2]`. Establish `hm : ∀ (l : List SplitFlip.Edge) b, b ∈ edges A ∨ b ∈ edges Bp → b ∈ edges A ++ l ++ edges Bp` using `fun l b hb => by`.
+
+Apply the tactic sequence `rcases hb with hb | hb <;> simp [hb]`. Establish `hflip : ∀ w ∈ locPl G t, ∀ x Z, flipAt W t i j w (depthAt G w) ((locGrid G t w).sliceB i j (Tl w) x) Z = (locGrid G t w).flipTensor .one (psiAt W w) (unifAt w) (depthAt G w) i j (givenLevel G t w) (Tl w) (setA i j x Z)` using `fun w hw x Z => by`. Rewrite using `[flipTensor_eq, joinA_setA, sliceB_setA (hT w hw)]`. Simplify using `only [List.mem_append, not_or]`. Conclude with `⟨⟨fun h => (ho _ (.inl h)).2.2.1 rfl, by simp⟩, fun h => (ho _ (.inr h)).2.2.1 rfl⟩`.
+
+Simplify using `only [List.mem_append, not_or]`. Conclude with `⟨⟨fun h => (ho _ (.inl h)).2.2.2 rfl, by simp⟩, fun h => (ho _ (.inr h)).2.2.2 rfl⟩`. Take `⟨ι, s, φA, α, φB, β, rA, rB, vA, vB, hK⟩` from `exists_classes_two hL B ρ t he (depthAt G) A Bp hA hB nA nB hAB (U := (∀ w, Matrix (Fin ((locGrid G t w).rank (i, j))) ((locGrid G t w).Cols i j) (Kw w)) ⊕ ∀ w, Matrix (Fin ((locGrid G t w).rank (i + 1, j + 1))) ((locGrid G t w).Cols i j) (Kw w)) (fun x => Sum.elim (fun Z => ∏ w …`. Apply the tactic sequence `rcases y with Z | Z <;> refine Finset.prod_congr rfl fun w hw => ?_ <;> rw [Pi.add_apply, sliceB_add (hT w hw) _ _ _ _ (hz w hw)])`. Use the proof step `(fun x y h w hw b hb => by`.
+
+Break down `y with Z | Z` into its components or cases. Conclude with `mem_of_update_two (hT w hw) (Finset.prod_ne_zero_iff.1 h w hw) (hm _ b hb) (ho b hb).1 (ho b hb).2.1`. Use `Finset.prod_ne_zero_iff.1 h w hw` as an intermediate fact. Rewrite `this` using `[hflip w hw]`. Conclude with `mem_of_update_two (hTb w hw) this (hm _ b hb) (ho b hb).2.2.1 (ho b hb).2.2.2)`.
+
+Set `Φ : ι → ∀ w, Matrix (Fin ((locGrid G t w).rank (i, j))) ((locGrid G t w).Cols i j) (Kw w) → ℂ` to `fun κ w => (locGrid G t w).sliceB i j (Tl w) (pathArgs B t w A (rA κ) + pathArgs B t w Bp (rB κ))`. Establish `hΦ : ∀ κ, ∀ w ∈ locPl G t, SplitFlip.IsNatDatum (unifAt w) (depthAt G w) (Φ κ w)` using `fun κ w hw => isNatDatum_small (hT w hw) (by simp) (by simp) _`. Establish `hΦ' : ∀ κ, ∀ w ∈ locPl G t, SplitFlip.IsNatDatum (unifAt w) (depthAt G w) (flipAt W t i j w (depthAt G w) (Φ κ w))` using `fun κ w hw => by`. Rewrite using `[funext (hflip w hw _)]`. Conclude with `isNatDatum_big (hTb w hw) (by simp) (by simp) _`.
+
+Use `choose σs hs using fun κ => LocTensor.exists_hasLocal_small B ρ t ⟨i, hi⟩ ⟨j, hj⟩ hL he (hΦ κ)`. Use `choose σb hb using fun κ => LocTensor.exists_hasLocal_big B ρ t ⟨i, hi⟩ ⟨j, hj⟩ hL he (hΦ' κ)`. Use `⟨ι, s, α, β, σs, σb, fun κ _ => ⟨Φ κ, hΦ κ, e, he, hs κ, hb κ⟩, fun κ hκ => ⟨⟨_, vA κ hκ⟩, _, vB κ hκ⟩, ?_, ?_⟩` and prove the remaining obligations. Use `choose φ₁ φ₂ c1 c2 using hs`. Use `exists_rep_sandwich ρ hL he (onGrid_comp (onGrid_comp hA (onGrid_routeSmall t hi hj)) hB) s α φA β φB σs (fun κ d => (((), φ₁ κ d), φ₂ κ d)) vA vB (fun κ _ d hd => ⟨⟨trivial, (c1 κ d hd).1⟩, (c1 κ d hd).2⟩) _ fun x y z hx hy hz => ?_` and prove the remaining obligations.
+
+Use `Eq.trans (Finset.prod_congr rfl fun w hw => ?_) ((hK x z (.inl fun w => Matrix.fromCols (locArg B t w (.down t i j) y.1.2) (locArg B t w (.right i j) y.2).transpose) hx hz).trans (Finset.sum_congr rfl fun κ _ => congrArg _ ?_))` and prove the remaining obligations. Rewrite using `[pathArgs_append, pathArgs_append, pathArgs_snoc, pathArgs_snoc, SplitFlip.Grid.sliceB]`. Conclude with `congrArg _ (add_update_two (pathArgs_of_notMem B t w A x _ fun h => (ho _ (.inl h)).1 rfl) (pathArgs_of_notMem B t w A x _ fun h => (ho _ (.inl h)).2.1 rfl) (pathArgs_of_notMem B t w Bp z _ fun h => (ho _ (.inr h)).1 rfl) (pathArgs_of_notMem B t w Bp z _ fun h => (ho _ (.inr h)). …`. Introduce `b hb h`. Rewrite `hb` using `[(edges_routes t i j).1]`.
+
+Use `ho b (.inl h)` as an intermediate fact. Simplify using `[this.1, this.2.1] at hb`. Introduce `b hb h`. Use `ho b (.inr hb)` as an intermediate fact. Rewrite `h` using `[edges_comp, (edges_routes t i j).1]`.
+
+Simplify using `[this.1, this.2.1, hAB b hb] at h`. Use `Eq.trans ?_ ((c2 κ y.1.2 y.2 hy.1.2 hy.2).symm.trans (Finsupp.sum_congr fun d _ => ?_))` and prove the remaining obligations. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Conclude with `congrArg (Φ κ w) (congrArg₂ Matrix.fromCols (dif_pos (And.intro hi.le hj)) (congrArg Matrix.transpose (dif_pos (And.intro hi hj.le))))`. Conclude with `congrArg _ (congrArg (· * _) (one_mul _).symm)`.
+
+Use `choose φ₁ φ₂ c1 c2 using hb`. Use `exists_rep_sandwich ρ hL he (onGrid_comp (onGrid_comp hA (onGrid_routeBig t hi hj)) hB) s α φA β φB σb (fun κ d => (((), φ₁ κ d), φ₂ κ d)) vA vB (fun κ _ d hd => ⟨⟨trivial, (c1 κ d hd).1⟩, (c1 κ d hd).2⟩) _ fun x y z hx hy hz => ?_` and prove the remaining obligations. Use `Eq.trans (Finset.prod_congr rfl fun w hw => ?_) ((hK x z (.inr fun w => Matrix.fromCols (locArg B t w (.right i (j + 1)) y.1.2) (locArg B t w (.down t (i + 1) j) y.2).transpose) hx hz).trans (Finset.sum_congr rfl fun κ _ => congrArg _ ?_))` and prove the remaining obligations. Rewrite using `[hflip w hw, pathArgs_append, pathArgs_append, pathArgs_snoc, pathArgs_snoc, setA]`. Conclude with `congrArg _ (add_update_two (pathArgs_of_notMem B t w A x _ fun h => (ho _ (.inl h)).2.2.1 rfl) (pathArgs_of_notMem B t w A x _ fun h => (ho _ (.inl h)).2.2.2 rfl) (pathArgs_of_notMem B t w Bp z _ fun h => (ho _ (.inr h)).2.2.1 rfl) (pathArgs_of_notMem B t w Bp z _ fun h => (ho _ …`.
+
+Introduce `b hb h`. Rewrite `hb` using `[(edges_routes t i j).2]`. Use `ho b (.inl h)` as an intermediate fact. Simplify using `[this.2.2.1, this.2.2.2] at hb`. Introduce `b hb h`.
+
+Use `ho b (.inr hb)` as an intermediate fact. Rewrite `h` using `[edges_comp, (edges_routes t i j).2]`. Simplify using `[this.2.2.1, this.2.2.2, hAB b hb] at h`. Use `Eq.trans ?_ ((c2 κ y.1.2 y.2 hy.1.2 hy.2).symm.trans (Finsupp.sum_congr fun d _ => ?_))` and prove the remaining obligations. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Conclude with `congrArg (flipAt W t i j w (depthAt G w) (Φ κ w)) (congrArg₂ Matrix.fromCols (dif_pos (And.intro hi hj)) (congrArg Matrix.transpose (dif_pos (And.intro hi hj))))`. Conclude with `congrArg _ (congrArg (· * _) (one_mul _).symm)`.
+-/
 theorem exists_decomp : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : ℕ) (hi : i < D.R.m) (hj : j < D.R.m) (A : Path T (.grid 0 D.R.m) (.grid i (j + 1))) (Bp : Path T (.grid (i + 1) j) (.grid D.R.m 0)), GlobalTheory.FlipRun.OnGrid D.R.m t A → GlobalTheory.FlipRun.OnGrid D.R.m t Bp → ∀ (Tl : ∀ w, (locGrid G t w).Args → ℂ), (∀ w ∈ locPl G t, (locGrid G t w).IsTensor (unifAt w) (depthAt G w) (GlobalTheory.FlipRun.edges ((A.comp (routeSmall t i j)).comp Bp)) (Tl w)) → (∀ w ∈ locPl G t, (locGrid G t w).IsTensor (unifAt w) (depthAt G w) (GlobalTheory.FlipRun.edges ((A.comp (routeBig t i j)).comp Bp)) ((locGrid G t w).flipTensor .one (psiAt W w) (unifAt w) (depthAt G w) i j (givenLevel G t w) (Tl w))) → ∀ e : AE D, IsIdemSum e (locPl G t) → ∃ (ι : Type) (s : Finset ι) (α : ι → PureT G A) (β : ι → PureT G Bp) (σs : ι → TotT G (routeSmall t i j)) (σb : ι → TotT G (routeBig t i j)), (∀ κ ∈ s, ∃ Φ : ∀ w, Matrix (Fin ((locGrid G t w).rank (i, j))) ((locGrid G t w).Cols i j) (Kw w) → ℂ, (∀ w ∈ locPl G t, GlobalTheory.SplitFlip.IsNatDatum (unifAt w) (depthAt G w) (Φ w)) ∧ HasFlip B t ρ ⟨i, hi⟩ ⟨j, hj⟩ (depthAt G) Φ (σb κ) (σs κ)) ∧ (∀ κ ∈ s, (∃ φA, GlobalTheory.FlipRun.VecAll ρ e A φA (α κ)) ∧ ∃ φB, GlobalTheory.FlipRun.VecAll ρ e Bp φB (β κ)) ∧ (∃ φ : PureT G ((A.comp (routeSmall t i j)).comp Bp) → PureT G ((A.comp (routeSmall t i j)).comp Bp), (∀ d ∈ (∑ κ ∈ s, ((σs κ).sum fun d c => Finsupp.single (((α κ).append d).append (β κ)) c)).support, GlobalTheory.FlipRun.VecAll ρ e ((A.comp (routeSmall t i j)).comp Bp) (φ d) d) ∧ ∀ x : GlobalTheory.FlipRun.ArgT G ((A.comp (routeSmall t i j)).comp Bp), GlobalTheory.FlipRun.HalfAll e ((A.comp (routeSmall t i j)).comp Bp) x → ((∑ κ ∈ s, ((σs κ).sum fun d c => Finsupp.single (((α κ).append d).append (β κ)) c)).sum fun d c => c * GlobalTheory.FlipRun.famProd ((A.comp (routeSmall t i j)).comp Bp) (φ d) x) = ∏ w ∈ locPl G t, (Tl) w (GlobalTheory.FlipRun.pathArgs B t w ((A.comp (routeSmall t i j)).comp Bp) x)) ∧ (∃ φ : PureT G ((A.comp (routeBig t i j)).comp Bp) → PureT G ((A.comp (routeBig t i j)).comp Bp), (∀ d ∈ (∑ κ ∈ s, ((σb κ).sum fun d c => Finsupp.single (((α κ).append d).append (β κ)) c)).support, GlobalTheory.FlipRun.VecAll ρ e ((A.comp (routeBig t i j)).comp Bp) (φ d) d) ∧ ∀ x : GlobalTheory.FlipRun.ArgT G ((A.comp (routeBig t i j)).comp Bp), GlobalTheory.FlipRun.HalfAll e ((A.comp (routeBig t i j)).comp Bp) x → ((∑ κ ∈ s, ((σb κ).sum fun d c => Finsupp.single (((α κ).append d).append (β κ)) c)).sum fun d c => c * GlobalTheory.FlipRun.famProd ((A.comp (routeBig t i j)).comp Bp) (φ d) x) = ∏ w ∈ locPl G t, (fun w => (locGrid G t w).flipTensor .one (psiAt W w) (unifAt w) (depthAt G w) i j (givenLevel G t w) (Tl w)) w (GlobalTheory.FlipRun.pathArgs B t w ((A.comp (routeBig t i j)).comp Bp) x)) := by
   intro D T L sc G μ₀ hL W B ρ t i j hi hj A Bp hA hB Tl hT hTb e he
   obtain ⟨nA, nB, hAB, ho⟩ := edges_outer hA hB
@@ -311,6 +411,13 @@ theorem exists_decomp : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G
           (congrArg₂ Matrix.fromCols (dif_pos (And.intro hi hj)) (congrArg Matrix.transpose (dif_pos (And.intro hi hj))))
       · exact congrArg _ (congrArg (· * _) (one_mul _).symm)
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W B ρ t i j hi hj c hc hcomm A Bp hA hBp Q τ Tl hT hTb hR`. Take `⟨e, he, φ, hφ, hfun⟩` from `hR`. Take `⟨ι, s, α, β, σs, σb, hflip, hout, hR₂, hR'⟩` from `exists_decomp hL W B ρ t i j hi hj A Bp hA hBp Tl hT hTb e he`. Establish `hPs : OnGrid D.R.m t ((A.comp (routeSmall t i j)).comp Bp)` using `onGrid_comp (onGrid_comp hA (onGrid_routeSmall t hi hj)) hBp`. Establish `hPb : OnGrid D.R.m t ((A.comp (routeBig t i j)).comp Bp)` using `onGrid_comp (onGrid_comp hA (onGrid_routeBig t hi hj)) hBp`.
+
+Use `⟨∑ κ ∈ s, sandwich (α κ) (σb κ) (β κ), ⟨e, he, hR'⟩, fun M hM hC F hF _ => ?_⟩` and prove the remaining obligations. Take `⟨φ', hφ', -⟩` from `hR'`. Take `⟨φ₂, hφ₂, hfun₂⟩` from `hR₂`. Use `⟨totConv_tensE M ρ t he hC _ hPb _ φ' hφ' F hF _, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.totalTensorThetaLift_eq_of_schwartz_eq hL M ρ t he hC _ hPs τ _ φ φ₂ hφ hφ₂ (fun x hx => (hfun x hx).trans (hfun₂ x hx).symm) F hF Q, tensE_sum, liftT_sum, tensE_sum, liftT_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun κ hκ => ?_` and prove the remaining obligations. Take `⟨Φ, hΦ, hF'⟩` from `hflip κ hκ`. Take `⟨⟨φA, hφA⟩, φB, hφB⟩` from `hout κ hκ`. Conclude with `GlobalTheory.T.sandwichedFlip_routeThroughSmall_eq_inv_const_routeBig M B ρ t i j hi hj c hc hcomm hM hC A Bp hA hBp e he (α κ) (β κ) φA φB hφA hφB (σs κ) (σb κ) Φ hΦ hF' F hF Q`.
+-/
 theorem oneFlip : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : ℕ) (hi : i < D.R.m) (hj : j < D.R.m) (c : ℂ), c ≠ 0 → CommutesWith W B ρ t ⟨i, hi⟩ ⟨j, hj⟩ c → ∀ (A : Path T (.grid 0 D.R.m) (.grid i (j + 1))) (Bp : Path T (.grid (i + 1) j) (.grid D.R.m 0)), GlobalTheory.FlipRun.OnGrid D.R.m t A → GlobalTheory.FlipRun.OnGrid D.R.m t Bp → ∀ (Q : GlobalTheory.FlipRun.PolE G →₀ ℂ) (τ : TotT G ((A.comp (routeSmall t i j)).comp Bp)) (Tl : ∀ w, (locGrid G t w).Args → ℂ), (∀ w ∈ locPl G t, (locGrid G t w).IsTensor (unifAt w) (depthAt G w) (GlobalTheory.FlipRun.edges ((A.comp (routeSmall t i j)).comp Bp)) (Tl w)) → (∀ w ∈ locPl G t, (locGrid G t w).IsTensor (unifAt w) (depthAt G w) (GlobalTheory.FlipRun.edges ((A.comp (routeBig t i j)).comp Bp)) ((locGrid G t w).flipTensor .one (psiAt W w) (unifAt w) (depthAt G w) i j (givenLevel G t w) (Tl w))) → GlobalTheory.FlipRun.RepFin B ρ t _ τ Tl → ∃ τ' : TotT G ((A.comp (routeBig t i j)).comp Bp), GlobalTheory.FlipRun.RepFin B ρ t _ τ' (fun w => (locGrid G t w).flipTensor .one (psiAt W w) (unifAt w) (depthAt G w) i j (givenLevel G t w) (Tl w)) ∧ ∀ M : Vol G, M.Is t → GlobalTheory.FlipRun.CuspStep W M ρ t → ∀ F : Fn G (.grid 0 D.R.m), GlobalTheory.FlipRun.IsCuspListed W.θ _ F → TotConv W M _ (GlobalTheory.FlipRun.tensE W _ Q τ) F → TotConv W M _ (GlobalTheory.FlipRun.tensE W _ (GlobalTheory.FlipRun.flipPolE ρ i j Q) τ') F ∧ liftT W M _ (GlobalTheory.FlipRun.tensE W _ Q τ) F = c⁻¹ • liftT W M _ (GlobalTheory.FlipRun.tensE W _ (GlobalTheory.FlipRun.flipPolE ρ i j Q) τ') F := by
   intro D T L sc G μ₀ hL W B ρ t i j hi hj c hc hcomm A Bp hA hBp Q τ Tl hT hTb hR
   obtain ⟨e, he, φ, hφ, hfun⟩ := hR

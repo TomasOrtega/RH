@@ -40,6 +40,13 @@ def stabEquiv (K : Subgroup (HA (AF F) σ J)) (g : HA (AF F) σ J) :
 
 end Stab
 
+/- English proof (translation)
+Take `⟨A₀, L₀, h0, hl, hr⟩` from `GlobalTheory.VolPairExists.exists_frame h`. Take `⟨e, -⟩` from `h`. Establish `h1 : (L₀ * Formalism.UG.Jpq P Q * L₀ᴴ * Aᴴ * Formalism.UG.Jpq P Q) * A = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hA, ← h0, Matrix.conjTranspose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = L₀ * (Formalism.UG.Jpq P Q * Formalism.UG.Jpq P Q) * A₀ := by`. Rewrite using `[hr, Matrix.conjTranspose_one, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [GlobalTheory.VolPairExists.jpq_mul_self, Matrix.mul_one, hl]`.
+
+Conclude with `⟨_, h1, (Matrix.mul_eq_one_comm_of_equiv e).1 h1⟩`.
+-/
 theorem frame_inv {n P Q : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.UG.HasSignature G P Q)
     {A : Matrix (Fin P ⊕ Fin Q) (Fin n) ℂ} (hA : Aᴴ * Formalism.UG.Jpq P Q * A = G) :
     ∃ L : Matrix (Fin n) (Fin P ⊕ Fin Q) ℂ, L * A = 1 ∧ A * L = 1 := by
@@ -57,6 +64,11 @@ theorem frame_inv {n P Q : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (h : Formalism.
 
 variable (D : D7)
 
+/- English proof (translation)
+Use extensionality with `h`. Use `⟨fun hh => hh.1, fun hh => ⟨hh, fun ρ => ?_⟩⟩` and prove the remaining obligations. Establish `hsig : Formalism.UG.HasSignature (W.gram.map (embOf D ρ)) P Q`. Use `hW (embOf D ρ)` as an intermediate fact. Rewrite `this` using `[hs]`. Then use the resulting hypothesis.
+
+Take `⟨L, hl, hr⟩` from `frame_inv hsig (hA ρ)`. Establish `hu : (infMat D.sp.cm.sig W.gram (θ ρ) h)ᴴ * W.gram.map (embOf D ρ) * infMat D.sp.cm.sig W.gram (θ ρ) h = W.gram.map (embOf D ρ)` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH (D := D) (θ := θ) hθ W h ρ`. Use `⟨GlobalTheory.VolPairExists.mkU _ (GlobalTheory.VolPairExists.conj_unitary (hA ρ) hr hu), Set.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.VolPairExists.mat_mkU, Matrix.mul_assoc, hl, Matrix.mul_one]`.
+-/
 theorem KSub_eq (W : HSpace D.host.E) (hW : W.SigOK) {P Q : ℕ} (hs : ∀ τ, W.sig τ = (P, Q))
     (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : ∀ ρ, IsInfEmb (embOf D ρ) (θ ρ))
     (A : D.what₂.Tau → Matrix (Fin P ⊕ Fin Q) (Fin W.rank) ℂ)
@@ -73,6 +85,11 @@ theorem KSub_eq (W : HSpace D.host.E) (hW : W.SigOK) {P Q : ℕ} (hs : ∀ τ, W
   refine ⟨GlobalTheory.VolPairExists.mkU _ (GlobalTheory.VolPairExists.conj_unitary (hA ρ) hr hu), Set.mem_univ _, ?_⟩
   rw [GlobalTheory.VolPairExists.mat_mkU, Matrix.mul_assoc, hl, Matrix.mul_one]
 
+/- English proof (translation)
+Use `⟨GlobalTheory.DualPairCompare.exists_infFam D, ?_⟩` and prove the remaining obligations. Establish `hsig : ∀ ρ, Formalism.UG.HasSignature (W.gram.map (embOf D ρ)) P Q` using `fun ρ => by`. Use `hW (embOf D ρ)` as an intermediate fact. Rewrite `this` using `[hs]`. Then use the resulting hypothesis. Use `choose A L hA _ using fun ρ => GlobalTheory.VolPairExists.exists_frame (hsig ρ)`.
+
+Conclude with `⟨A, hA⟩`.
+-/
 theorem exists_data (W : HSpace D.host.E) (hW : W.SigOK) {P Q : ℕ} (hs : ∀ τ, W.sig τ = (P, Q)) :
     (∃ θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ), ∀ ρ, IsInfEmb (embOf D ρ) (θ ρ)) ∧
     ∃ A : D.what₂.Tau → Matrix (Fin P ⊕ Fin Q) (Fin W.rank) ℂ,
@@ -84,6 +101,9 @@ theorem exists_data (W : HSpace D.host.E) (hW : W.SigOK) {P Q : ℕ} (hs : ∀ �
   choose A L hA _ using fun ρ => GlobalTheory.VolPairExists.exists_frame (hsig ρ)
   exact ⟨A, hA⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.StabOpen.isOpen_stab_latHat D W`.
+-/
 theorem isOpen_levelW (W : HSpace D.host.E) :
     IsOpen (levelW D.sp.cm W : Set (HA (AF D.host.F) D.sp.cm.sig W.gram)) :=
   GlobalTheory.StabOpen.isOpen_stab_latHat D W

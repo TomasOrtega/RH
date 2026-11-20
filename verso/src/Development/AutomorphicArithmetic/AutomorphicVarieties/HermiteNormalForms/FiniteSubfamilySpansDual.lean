@@ -4,6 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms
 open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
+/- English proof (translation)
+Take `⟨b, hbs, hspan, hli⟩` from `exists_linearIndependent ℝ (f '' S)`. Establish `hbfin : b.Finite` using `hli.setFinite`. Establish `hch : ∀ φ ∈ b, ∃ y, y ∈ S ∧ f y = φ` using `fun φ hφ => hbs hφ`. Use `choose g hgS hgf using hch`. Use `⟨hbfin.toFinset.attach.image (fun φ => g φ.1 (hbfin.mem_toFinset.mp φ.2)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `haveI : Fintype b := hbfin.fintype`. Combine the equalities or inequalities in the displayed calculation. Introduce `y hy`. Take `⟨φ, _, rfl⟩` from `Finset.mem_image.mp hy`. Conclude with `hgS _ _`.
+
+Introduce `k hk y hy`. Establish `hsub : b ⊆ LinearMap.ker (Module.Dual.eval ℝ E k)`. Introduce `φ hφ`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, Module.Dual.eval_apply, ← hgf φ hφ]`. Conclude with `hk _ (Finset.mem_image.mpr ⟨⟨φ, hbfin.mem_toFinset.mpr hφ⟩, Finset.mem_attach _ _, rfl⟩)`.
+
+Establish `hle` using `Submodule.span_le.mpr hsub`. Rewrite `hle` using `[hspan]`. Establish `hm` using `hle (Submodule.subset_span ⟨y, hy, rfl⟩)`. Rewrite `hm` using `[LinearMap.mem_ker, Module.Dual.eval_apply]`. Then use the resulting hypothesis.
+-/
 private theorem UpperTheory.V.KT.finite_subfamily_spans_dual {E Y : Type*} [AddCommGroup E] [Module ℝ E]
     [Module.Finite ℝ E] (f : Y → Module.Dual ℝ E) (S : Set Y) :
     ∃ M : Finset Y, M.card ≤ Module.finrank ℝ E ∧ (∀ y ∈ M, y ∈ S) ∧
@@ -34,6 +43,15 @@ private theorem UpperTheory.V.KT.finite_subfamily_spans_dual {E Y : Type*} [AddC
     have hm := hle (Submodule.subset_span ⟨y, hy, rfl⟩)
     rwa [LinearMap.mem_ker, Module.Dual.eval_apply] at hm
 
+/- English proof (translation)
+Introduce `L _ _ _ N v`. Take `⟨M, hMc, hMS, hMk⟩` from `UpperTheory.V.KT.finite_subfamily_spans_dual (E := HS L N) (fun y : Lat L N => (ev y : Module.Dual ℝ (HS L N))) {y | y ≠ 0 ∧ q v.1 y = 1}`. Use `⟨M, hMc.trans (rankhs L N), fun y hy => (hMS y hy).2, ?_⟩` and prove the remaining obligations. Introduce `h hh`. Establish `hk : ∀ y ∈ M, ev y (h - v.1) = 0`.
+
+Introduce `y hy`. Rewrite using `[map_sub, ev_apply, ev_apply, hh y hy, (hMS y hy).2, sub_self]`. Establish `hall` using `hMk (h - v.1) hk`. Establish `h0 : h - v.1 = 0`. Apply `v.2.2` to reduce the goal to its premises.
+
+Introduce `y hy`. Establish `hy' : q v.1 y.1 = 1`. Rewrite using `[← ev_apply]`. Conclude with `hy`. Conclude with `hall y.1 ⟨y.2, hy'⟩`.
+
+Conclude with `sub_eq_zero.mp h0`.
+-/
 theorem UpperTheory.V.KT.vxdet :
     ∀ (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N : ℕ) (v : Vx L N),
     ∃ M : Finset (Lat L N), M.card ≤ dd L N * N ∧ (∀ y ∈ M, q v.1 y = 1) ∧

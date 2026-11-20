@@ -13,5 +13,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.InterNumDe
 import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
 import Development.AbelianVarietyTheory.Definitions.Divisors.SemiposAtOfPositive
 open GlobalTheory.CovTop GlobalTheory.BigTop
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTop.covolX_of_slim | exact GlobalTheory.CovTop.covolX_of_slim | (intros; apply GlobalTheory.CovTop.covolX_of_slim <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.covolume_of_height : Slim → HypothesesXH → (∃ r, GlobalTheory.CovTest.Ch2Const r) → CovolX := by
   first | exact @GlobalTheory.CovTop.covolX_of_slim | exact GlobalTheory.CovTop.covolX_of_slim | (intros; apply GlobalTheory.CovTop.covolX_of_slim <;> assumption)

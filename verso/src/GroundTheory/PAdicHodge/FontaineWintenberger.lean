@@ -27,6 +27,15 @@ local notation "Ω♭" => algebraicClosure K♭ C♭
 variable (C) in
 include C in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `_ infer_instance`. Introduce `_`. Use `IsAlgClosed.of_exists_root K fun f hmon hirr => ?_` and prove the remaining obligations. Establish `hdeg : f.degree ≠ 0` using `(Polynomial.degree_pos_of_irreducible hirr).ne'`.
+
+Take `⟨z, hz⟩` from `IsAlgClosed.exists_aeval_eq_zero C f hdeg`. Establish `hint : IsIntegral K z` using `⟨f, hmon, by rwa [← Polynomial.aeval_def]⟩`. Establish `: FiniteDimensional K (IntermediateField.adjoin K {z})` using `IntermediateField.adjoin.finiteDimensional hint`. Take `⟨hfin, -⟩` from `untiltField_tiltIntermediateField (p := p) (IntermediateField.adjoin K {z})`. Establish `h1 : tiltIntermediateField p (IntermediateField.adjoin K {z}) = ⊥` using `IntermediateField.eq_bot_of_isAlgClosed_of_isAlgebraic _`.
+
+Establish `h2 : Module.finrank K (IntermediateField.adjoin K {z}) = 1`. Rewrite using `[← finrank_tiltIntermediateField (p := p), h1, IntermediateField.finrank_bot]`. Establish `h3` using `IntermediateField.finrank_eq_one_iff.1 h2`. Establish `hzb : z ∈ (⊥ : IntermediateField K C)` using `h3 ▸ IntermediateField.mem_adjoin_simple_self K z`. Take `⟨k, rfl⟩` from `IntermediateField.mem_bot.1 hzb`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[Polynomial.aeval_algebraMap_apply]`. Use `(algebraMap K C).injective (hz.trans (map_zero _).symm)` as an intermediate fact. Rewrite `this` using `[Polynomial.coe_aeval_eq_eval]`. Then use the resulting hypothesis.
+-/
 theorem isAlgClosed_iff_isAlgClosed_tilt_of_isAlgClosed : IsAlgClosed K ↔ IsAlgClosed K♭ := by
   constructor
   · intro _
@@ -56,10 +65,16 @@ variable (K C p) in
 def galoisTiltEquiv : (Ω ≃ₐ[K] Ω) ≃ₜ* (Ω♭ ≃ₐ[K♭] Ω♭) :=
   (untiltGalHomeomorph K C p).symm
 
+/- English proof (translation)
+The claim follows from `(untiltGalEquiv K C p).apply_symm_apply σ`.
+-/
 theorem untiltGalEquiv_galoisTiltEquiv (σ : Ω ≃ₐ[K] Ω) :
     untiltGalEquiv K C p (galoisTiltEquiv K C p σ) = σ :=
   (untiltGalEquiv K C p).apply_symm_apply σ
 
+/- English proof (translation)
+Take `⟨hfin, hL⟩` from `untiltField_tiltIntermediateField (p := p) L`. Establish `key` using `untiltGalEquiv_fixes_iff (galoisTiltEquiv K C p σ) (tiltIntermediateField p L)`. Rewrite `key` using `[untiltGalEquiv_galoisTiltEquiv, hL]`. Conclude with `key.symm`.
+-/
 theorem galoisTiltEquiv_fixes_iff (L : IntermediateField K C) [FiniteDimensional K L]
     (σ : Ω ≃ₐ[K] Ω) :
     (∀ y : Ω♭, (y : C♭) ∈ tiltIntermediateField p L → galoisTiltEquiv K C p σ y = y) ↔
@@ -78,6 +93,9 @@ variable {p : ℕ} [Fact p.Prime] [IsPerfectoidField K p]
 
 local notation "K♭" => Tilt K NormedField.valuation (normInteger K) normInteger_integers p
 
+/- English proof (translation)
+Break down `IsPerfectoidField.charZero_or_charP (K := K) p with h0 | hp` into its components or cases. Use `IsPerfectoidField.completeSpace (K := K) p` as an intermediate fact. Establish `: IsPerfectoidField (CompletedAlgClosure K) p` using `isPerfectoidField_of_isAlgClosed_of_normedAlgebra K (CompletedAlgClosure K) p`. Conclude with `isAlgClosed_iff_isAlgClosed_tilt_of_isAlgClosed (CompletedAlgClosure K)`. Conclude with `⟨fun _ => IsAlgClosed.of_ringEquiv K K♭ (tiltRingEquivOfCharP K p).symm, fun _ => IsAlgClosed.of_ringEquiv K♭ K (tiltRingEquivOfCharP K p)⟩`.
+-/
 theorem isAlgClosed_iff_isAlgClosed_tilt : IsAlgClosed K ↔ IsAlgClosed K♭ := by
   rcases IsPerfectoidField.charZero_or_charP (K := K) p with h0 | hp
   · have := IsPerfectoidField.completeSpace (K := K) p
@@ -105,6 +123,9 @@ def absoluteGaloisGroupTiltEquivOfCharP [CharP K p] :
     Field.absoluteGaloisGroup K ≃ₜ* Field.absoluteGaloisGroup K♭ :=
   absoluteGaloisGroupCongr K K♭ (tiltRingEquivOfCharP K p).symm
 
+/- English proof (translation)
+Break down `IsPerfectoidField.charZero_or_charP (K := K) p with h0 | hp` into its components or cases. Conclude with `⟨absoluteGaloisGroupTiltEquiv K p⟩`. Conclude with `⟨absoluteGaloisGroupTiltEquivOfCharP K p⟩`.
+-/
 theorem nonempty_absoluteGaloisGroup_tilt :
     Nonempty (Field.absoluteGaloisGroup K ≃ₜ* Field.absoluteGaloisGroup K♭) := by
   rcases IsPerfectoidField.charZero_or_charP (K := K) p with h0 | hp

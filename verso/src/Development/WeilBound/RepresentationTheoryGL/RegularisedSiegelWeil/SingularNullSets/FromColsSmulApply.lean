@@ -20,22 +20,41 @@ variable {D : D7} {a b r t n : ℕ}
 scoped instance borelMx (m n : ℕ) : BorelSpace (Mx D m n) := ⟨rfl⟩
 scoped instance scMx (m n : ℕ) : SecondCountableTopology (Mx D m n) := (GlobalTheory.MixModel.lattice_Mx D m n).2.2.1
 
+/- English proof (translation)
+Apply the tactic sequence `rintro (k | k) <;> rfl`.
+-/
 theorem fromCols_smul_apply (e : AE D) (x : Mx D a r) (v : Mx D a t) (i : Fin a) :
     ∀ k, Matrix.fromCols (e • x) (e • v) i k = e • Matrix.fromCols x v i k := by
   rintro (k | k) <;> rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `fromCols_smul_apply e x v i _`.
+-/
 theorem jn_smul (hn : r + t = n) (e : AE D) (x : Mx D a r) (v : Mx D a t) : jn hn (e • x) (e • v) = e • jn hn x v := by
   ext i j
   exact fromCols_smul_apply e x v i _
 
+/- English proof (translation)
+Simplify using `only [jn, Matrix.submatrix_apply, id, Equiv.symm_apply_apply, Matrix.fromCols_apply_inl]`.
+-/
 theorem jn_inl (hn : r + t = n) (x : Mx D a r) (v : Mx D a t) (i : Fin a) (k : Fin r) :
     jn hn x v i ((finSumFinEquiv.trans (finCongr hn)) (Sum.inl k)) = x i k := by
   simp only [jn, Matrix.submatrix_apply, id, Equiv.symm_apply_apply, Matrix.fromCols_apply_inl]
 
+/- English proof (translation)
+Simplify using `only [jn, Matrix.submatrix_apply, id, Equiv.symm_apply_apply, Matrix.fromCols_apply_inr]`.
+-/
 theorem jn_inr (hn : r + t = n) (x : Mx D a r) (v : Mx D a t) (i : Fin a) (k : Fin t) :
     jn hn x v i ((finSumFinEquiv.trans (finCongr hn)) (Sum.inr k)) = v i k := by
   simp only [jn, Matrix.submatrix_apply, id, Equiv.symm_apply_apply, Matrix.fromCols_apply_inr]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun w hw i k => ?_, fun w hw i k => ?_⟩` and prove the remaining obligations. Simplify `h w hw i ((finSumFinEquiv.trans (finCongr hn)) (Sum.inl k))` using `only [jn_inl]`. Simplify `h w hw i ((finSumFinEquiv.trans (finCongr hn)) (Sum.inr k))` using `only [jn_inr]`.
+
+Introduce and unpack `⟨hx, hv⟩ w hw i j`. Take `⟨k, rfl⟩` from `(finSumFinEquiv.trans (finCongr hn)).surjective j`. Break down `k with k | k` into its components or cases. Rewrite using `[jn_inl]`. Conclude with `hx w hw i k`.
+
+Rewrite using `[jn_inr]`. Conclude with `hv w hw i k`.
+-/
 theorem intOff_jn (S : Finset (Pl D)) (hn : r + t = n) (x : Mx D a r) (v : Mx D a t) :
     IntOff S (jn hn x v) ↔ IntOff S x ∧ IntOff S v := by
   constructor
@@ -49,14 +68,25 @@ theorem intOff_jn (S : Finset (Pl D)) (hn : r + t = n) (x : Mx D a r) (v : Mx D 
     · rw [jn_inl]; exact hx w hw i k
     · rw [jn_inr]; exact hv w hw i k
 
+/- English proof (translation)
+Rewrite using `[h x, if_pos hx]`.
+-/
 theorem good_pos {S : Finset (Pl D)} {e : AE D} {Φ : Mx D a b → ℂ} (h : Good S e Φ) {x : Mx D a b} (hx : IntOff S x) :
     Φ x = Φ (e • x) := by
   rw [h x, if_pos hx]
 
+/- English proof (translation)
+Rewrite using `[h x, if_neg hx]`.
+-/
 theorem good_neg {S : Finset (Pl D)} {e : AE D} {Φ : Mx D a b → ℂ} (h : Good S e Φ) {x : Mx D a b} (hx : ¬ IntOff S x) :
     Φ x = 0 := by
   rw [h x, if_neg hx]
 
+/- English proof (translation)
+Establish `h : Continuous fun z : Mx D a r × Mx D a t => Matrix.fromCols z.1 z.2`. Use `continuous_pi fun i => continuous_pi fun k => ?_` and prove the remaining obligations. Break down `k with k | k` into its components or cases. Conclude with `(continuous_apply k).comp ((continuous_apply i).comp continuous_fst)`. Conclude with `(continuous_apply k).comp ((continuous_apply i).comp continuous_snd)`.
+
+Conclude with `h.matrix_submatrix _ _`.
+-/
 theorem continuous_jn (hn : r + t = n) : Continuous fun z : Mx D a r × Mx D a t => jn hn z.1 z.2 := by
   have h : Continuous fun z : Mx D a r × Mx D a t => Matrix.fromCols z.1 z.2 := by
     refine continuous_pi fun i => continuous_pi fun k => ?_
@@ -65,12 +95,21 @@ theorem continuous_jn (hn : r + t = n) : Continuous fun z : Mx D a r × Mx D a t
     · exact (continuous_apply k).comp ((continuous_apply i).comp continuous_snd)
   exact h.matrix_submatrix _ _
 
+/- English proof (translation)
+The claim follows from `continuous_const.matrix_mul ((continuous_adj.comp continuous_fst).matrix_mul (continuous_const.matrix_mul continuous_snd))`.
+-/
 theorem continuous_yv (V : HSp D) (b₀ : HermE D r) : Continuous fun z : Mx D V.rank r × Mx D V.rank t => yv V b₀ z :=
   continuous_const.matrix_mul ((continuous_adj.comp continuous_fst).matrix_mul (continuous_const.matrix_mul continuous_snd))
 
+/- English proof (translation)
+The claim follows from `((continuous_const_smul e).measurable.comp measurable_fst).prodMk ((continuous_const_smul e).measurable.comp measurable_snd)`.
+-/
 theorem measurable_sm (e : AE D) : Measurable fun z : Mx D a r × Mx D a t => (e • z.1, e • z.2) :=
   ((continuous_const_smul e).measurable.comp measurable_fst).prodMk ((continuous_const_smul e).measurable.comp measurable_snd)
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg (fun μ : Measure _ => μ Set.univ) h` as an intermediate fact. Simplify using `only [Measure.map_apply (measurable_sm e) MeasurableSet.univ, Set.preimage_univ, Measure.restrict_apply_univ, Measure.coe_zero, Pi.zero_apply] at this`. Conclude with `hs this`.
+-/
 theorem map_ne_zero (ν : Measure (Mx D a r × Mx D a t)) (s : Set (Mx D a r × Mx D a t)) (e : AE D) (hs : ν s ≠ 0) :
     (ν.restrict s).map (fun z => (e • z.1, e • z.2)) ≠ 0 := by
   intro h
@@ -79,6 +118,17 @@ theorem map_ne_zero (ν : Measure (Mx D a r × Mx D a t)) (s : Set (Mx D a r × 
     Measure.coe_zero, Pi.zero_apply] at this
   exact hs this
 
+/- English proof (translation)
+Use `set F : Mx D V.rank r × Mx D V.rank t → ℂ := fun z => Φ (jn hn z.1 z.2) * conj (η (yv V b₀ z)) with hF`. Use `set s : Set (Mx D V.rank r × Mx D V.rank t) := {z | IntOff S z.1 ∧ IntOff S z.2} with hs`. Establish `hFc : Continuous F` using `(hΦc.comp (continuous_jn hn)).mul (Complex.continuous_conj.comp (hηc.comp (continuous_yv V b₀)))`. Establish `hfc : Continuous fun z : Mx D V.rank r × Mx D V.rank t => (e • z.1, e • z.2)` using `((continuous_const_smul e).comp continuous_fst).prodMk ((continuous_const_smul e).comp continuous_snd)`. Establish `key : ∀ z ∈ s, F (e • z.1, e • z.2) = F z`.
+
+Introduce and unpack `z ⟨h1, h2⟩`. Take `⟨hy, hye⟩` from `hyv z h1 h2`. Establish `hj : IntOff S (jn hn z.1 z.2)` using `(intOff_jn S hn z.1 z.2).2 ⟨h1, h2⟩`. Simplify using `only [hF, hye, jn_smul]`. Rewrite using `[← good_pos hΦ hj, ← good_pos hη hy]`.
+
+Establish `off : ∀ z ∉ s, F z = 0`. Introduce `z hz`. Establish `hj : ¬ IntOff S (jn hn z.1 z.2)` using `fun h => hz ((intOff_jn S hn z.1 z.2).1 h)`. Simplify using `only [hF, good_neg hΦ hj, zero_mul]`. Rewrite using `[integral_map (measurable_sm e).aemeasurable hFc.aestronglyMeasurable]`.
+
+Establish `hae : ∀ᵐ z ∂(ν.restrict s), F (e • z.1, e • z.2) = F z`. Establish `hm : MeasurableSet {a : Mx D V.rank r × Mx D V.rank t | ¬F (e • a.1, e • a.2) = F a}` using `(isOpen_ne_fun (hFc.comp hfc) hFc).measurableSet`. Rewrite using `[ae_iff, Measure.restrict_apply hm]`. Use `measure_empty (μ := ν)` and compare the differences between its conclusion and the goal. Conclude with `Set.eq_empty_iff_forall_notMem.2 fun z hz => hz.1 (key z hz.2)`.
+
+Rewrite using `[integral_congr_ae hae, setIntegral_eq_integral_of_forall_compl_eq_zero off]`.
+-/
 theorem transfer (hn : r + t = n) {V : HSp D} {b₀ : HermE D r} {S : Finset (Pl D)} {e : AE D}
     (ν : Measure (Mx D V.rank r × Mx D V.rank t))
     (hyv : ∀ z : Mx D V.rank r × Mx D V.rank t, IntOff S z.1 → IntOff S z.2 →
@@ -111,6 +161,13 @@ theorem transfer (hn : r + t = n) {V : HSp D} {b₀ : HermE D r} {S : Finset (Pl
     exact Set.eq_empty_iff_forall_notMem.2 fun z hz => hz.1 (key z hz.2)
   rw [integral_congr_ae hae, setIntegral_eq_integral_of_forall_compl_eq_zero off]
 
+/- English proof (translation)
+Apply `Measure.measure_univ_eq_zero.mp` to reduce the goal to its premises. Use `le_antisymm ?_ bot_le` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono fun z _ => ?_` and prove the remaining obligations. Distinguish the cases in `hz : Free e z`.
+
+Use `left`. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `hno z hz ⟨h3, h1, h2, h4⟩`. Use `right`. Conclude with `hz`.
+
+Use `_ ≤ _ := measure_union_le _ _`. Use `_ = 0 := by rw [hν.supp, hfree, add_zero]`.
+-/
 theorem orb_null {V : HSp D} {b₀ : HermE D r} {e : AE D} {ν : Measure (Mx D V.rank r × Mx D V.rank t)}
     (hν : IsOrb V b₀ e ν) (hfree : ν {z | ¬ Free e z} = 0)
     (hno : ∀ z : Mx D V.rank r × Mx D V.rank t, Free e z →
@@ -131,6 +188,27 @@ theorem orb_null {V : HSp D} {b₀ : HermE D r} {e : AE D} {ν : Measure (Mx D V
 end PositivityTheory.Rg.Rsw.L.LMuId
 
 open PositivityTheory.Rg.Rsw.L.LMuId in
+/- English proof (translation)
+Introduce `hI hG _ _ hE hN hU hF hT hS D n t B W d hn ψ χ θ μB μW ωB ωW hst mu hmu M m b₀ hb₀ hRho I`. Establish `hdet : b₀.1.det ≠ 0` using `hb₀.2`. Establish `hθ : IsInfFam θ` using `hst.hθ`. Take `⟨S₁, hS₁⟩` from `hE D n t B W d hn ψ χ θ μB μW ωB ωW hst mu hmu M m b₀ hb₀ hRho`. Establish `hΩc : ∀ Ω, IsTh ψ χ θ b₀ m.μ Ω → Continuous (Ω 1)` using `fun Ω hΩ => hΩ.cont.comp (continuous_const.prodMk continuous_id)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `hno Φ Ω hΩ hcs`. Take `⟨S₂, hS₂⟩` from `hF D t B W ⟨d⟩ b₀ hdet hno`. Take `⟨S₃, hS₃⟩` from `hG D θ hθ B.rank n Φ.1 Φ.2`. Take `⟨S₄, hS₄⟩` from `hG D θ hθ W.rank t (Ω 1) (hΩ.mem 1)`.
+
+Use `set S := S₁ ∪ S₂ ∪ S₃ ∪ S₄ with hSdef`. Take `⟨e, he⟩` from `(hI D S).1`. Take `⟨ν, hν, hint⟩` from `hS₁ S (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) e he`. Establish `h0 : ν = 0` using `orb_null hν (hN D W.rank t B b₀ hdet S e he ν hν) (hS₂ S (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) e he)`. Rewrite using `[hint Φ (hS₃ S (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) e he) Ω hΩ (hS₄ S (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) e he) hcs, h0, integral_zero_measure]`.
+
+Introduce `x₀ hx₀`. Establish `: m.μ.IsAddHaarMeasure` using `m.hμ.1`. Take `⟨ν₂, hν₂, ⟨S₅, hS₅⟩, hT2⟩` from `hT D n t B W d hn I θ hθ m.μ inferInstance b₀ hdet x₀ hx₀`. Take `⟨S₆, hS₆⟩` from `hS D W.rank t B b₀ hdet`. Establish `core : ∀ S, S₁ ⊆ S → S₅ ⊆ S → S₆ ⊆ S → ∀ e, IsIdem S e → ∃ c : ℂ, ∀ (Φ : schwartzA θ B.rank n) Ω, IsTh ψ χ θ b₀ m.μ Ω → HasCompactSupport (Ω 1) → Good S e Φ.1 → Good S e (Ω 1) → mu (Rsec M m ψ b₀ (fun g => (ωB g Φ).1 0) 1 Ω) = c * ∫ z, Φ.1 (jn hn z.1 z.2) * conj (Ω 1 (yv B b₀ z)) …`.
+
+Introduce `S h1 h5 h6 e he`. Take `⟨ν, hν, hint⟩` from `hS₁ S h1 e he`. Take `⟨hOrb, hyv⟩` from `hS₆ S h6 e he ν₂ hν₂`. Take `⟨κ, hκ⟩` from `hU D W.rank t B b₀ hdet S e he ν _ hν hOrb (map_ne_zero ν₂ _ e (hS₅ S h5))`. Use `⟨((κ : ℝ) : ℂ), fun Φ Ω hΩ hcs hΦg hΩg => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hint Φ hΦg Ω hΩ hΩg hcs, hκ, integral_smul_nnreal_measure, transfer hn ν₂ hyv Φ.1 (Ω 1) (GlobalTheory.T.schwartz_bound_finite_infinite D θ hθ _ _ Φ.1 Φ.2).1 (hΩc Ω hΩ) hΦg hΩg, NNReal.smul_def, Complex.real_smul]`. Distinguish the cases in `hex : ∃ (Φ₀ : schwartzA θ B.rank n) (Ω₀ : G D t → Mx D W.rank t → ℂ), IsTh ψ χ θ b₀ m.μ Ω₀ ∧ HasCompactSupport (Ω₀ 1) ∧ ∫ z, Φ₀.1 (jn hn z.1 z.2) * conj (Ω₀ 1 (yv B b₀ z)) ∂ν₂ ≠ 0`. Take `⟨Φ₀, Ω₀, hΩ₀, hcs₀, hI₀⟩` from `hex`. Use `⟨mu (Rsec M m ψ b₀ (fun g => (ωB g Φ₀).1 0) 1 Ω₀) / ∫ z, Φ₀.1 (jn hn z.1 z.2) * conj (Ω₀ 1 (yv B b₀ z)) ∂ν₂, fun Φ Ω hΩ hcs => ?_⟩` and prove the remaining obligations. Take `⟨S₃, hS₃⟩` from `hG D θ hθ B.rank n Φ.1 Φ.2`.
+
+Take `⟨S₄, hS₄⟩` from `hG D θ hθ W.rank t (Ω 1) (hΩ.mem 1)`. Take `⟨S₇, hS₇⟩` from `hG D θ hθ B.rank n Φ₀.1 Φ₀.2`. Take `⟨S₈, hS₈⟩` from `hG D θ hθ W.rank t (Ω₀ 1) (hΩ₀.mem 1)`. Use `set S := S₁ ∪ S₅ ∪ S₆ ∪ S₃ ∪ S₄ ∪ S₇ ∪ S₈ with hSdef`. Take `⟨e, he⟩` from `(hI D S).1`.
+
+Take `⟨c, hc⟩` from `core S (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) e he`. Establish `h₀` using `hc Φ₀ Ω₀ hΩ₀ hcs₀ (hS₇ S (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) e he) (hS₈ S (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) e he)`. Establish `h` using `hc Φ Ω hΩ hcs (hS₃ S (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) e he) (hS₄ S (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) e he)`. Establish `hcv : c = mu (Rsec M m ψ b₀ (fun g => (ωB g Φ₀).1 0) 1 Ω₀) / ∫ z, Φ₀.1 (jn hn z.1 z.2) * conj (Ω₀ 1 (yv B b₀ z)) ∂ν₂` using `(eq_div_iff hI₀).mpr h₀.symm`. Rewrite using `[h, ← hcv, (hT2 Φ.1 Φ.2 (Ω 1) (hΩ.mem 1)).2.2]`.
+
+Use `push Not at hex`. Use `⟨0, fun Φ Ω hΩ hcs => ?_⟩` and prove the remaining obligations. Take `⟨S₃, hS₃⟩` from `hG D θ hθ B.rank n Φ.1 Φ.2`. Take `⟨S₄, hS₄⟩` from `hG D θ hθ W.rank t (Ω 1) (hΩ.mem 1)`. Use `set S := S₁ ∪ S₅ ∪ S₆ ∪ S₃ ∪ S₄ with hSdef`.
+
+Take `⟨e, he⟩` from `(hI D S).1`. Take `⟨c, hc⟩` from `core S (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) e he`. Rewrite using `[hc Φ Ω hΩ hcs (hS₃ S (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) e he) (hS₄ S (by intro x hx; simp only [hSdef, Finset.mem_union]; tauto) e he), hex Φ Ω hΩ hcs, mul_zero, zero_mul]`.
+-/
 theorem PositivityTheory.Rg.Rsw.L.muId : IdemEx → GoodEv → BumpEx → ThProd → EisMeas → NullSing → Uniq → NoFrame → ThetaSideMeasure → ToS →
     MuId := by
   classical

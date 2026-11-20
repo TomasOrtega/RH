@@ -15,6 +15,9 @@ def cutP (J : Matrix (Fin n) (Fin n) ℂ) (X Y : Matrix (Fin n) (Fin r) ℂ) (k 
 
 variable {J : Matrix (Fin n) (Fin n) ℂ} {X Y : Matrix (Fin n) (Fin r) ℂ}
 
+/- English proof (translation)
+Use `congrArg conjTranspose hxy` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hJ, conjTranspose_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem dual_swap (hJ : Jᴴ = J) (hxy : Xᴴ * J * Y = 1) : Yᴴ * J * X = 1 := by
   have := congrArg conjTranspose hxy
   rwa [conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hJ, conjTranspose_one, ← Matrix.mul_assoc] at this
@@ -23,10 +26,16 @@ section Global
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => h.2.2.2 τ (C j i)`.
+-/
 theorem map_cT_emb (h : IsCMExt F E σ) (τ : E →+* ℂ) {a b : ℕ} (C : Matrix (Fin a) (Fin b) E) :
     (Formalism.UG.cT (σ : E →+* E) C).map τ = (C.map τ)ᴴ :=
   Matrix.ext fun i j => h.2.2.2 τ (C j i)
 
+/- English proof (translation)
+Simplify using `only [← map_cT_emb h, ← Matrix.map_mul]`. Rewrite using `[hW.xx, hW.yy, hW.xy]`. Conclude with `⟨Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)⟩`.
+-/
 theorem frame_emb (h : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} {X Y : Matrix (Fin n) (Fin r) E}
     (hW : IsWittFrame σ J X Y) (τ : E →+* ℂ) :
     (X.map τ)ᴴ * J.map τ * X.map τ = 0 ∧ (Y.map τ)ᴴ * J.map τ * Y.map τ = 0 ∧ (X.map τ)ᴴ * J.map τ * Y.map τ = 1 := by

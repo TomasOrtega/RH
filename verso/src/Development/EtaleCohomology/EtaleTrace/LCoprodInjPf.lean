@@ -44,6 +44,11 @@ def LTwoH : Prop := Base → ∀ (R : Type) [CommRing R] {A B E : Scheme.{0}} (i
 
 def LFreeEmpty : Prop := ∀ (R : Type) [CommRing R] (E : Scheme.{0}), IsInitial E → IsZero ((free R).obj (yoneda.obj E))
 
+/- English proof (translation)
+Break down `le_or_gt p 0 with h | h` into its components or cases. Take `⟨m, rfl⟩ : ∃ m : ℕ, p = -(m : ℤ)` from `⟨p.natAbs, by omega⟩`. Conclude with `hZ.of_iso (chainsXIso R (sch.obj E) m)`. Apply `HomologicalComplex.isZero_extend_X` to reduce the goal to its premises. Introduce `i hi`.
+
+Establish `: (ComplexShape.embeddingDownNat).f i = -(i : ℤ)` using `rfl`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem chains_zero (R : Type) [CommRing R] (E : Scheme.{0}) (hZ : IsZero ((free R).obj (yoneda.obj E))) (p : ℤ) :
     IsZero (((chains R).obj (sch.obj E)).X p) := by
   rcases le_or_gt p 0 with h | h
@@ -54,6 +59,11 @@ theorem chains_zero (R : Type) [CommRing R] (E : Scheme.{0}) (hZ : IsZero ((free
     have : (ComplexShape.embeddingDownNat).f i = -(i : ℤ) := rfl
     omega
 
+/- English proof (translation)
+Establish `: Subsingleton (CochainComplex.HomComplex.Cochain ((chains R).obj (sch.obj E)) (res R F) n)` using `⟨fun a b => CochainComplex.HomComplex.Cochain.ext _ _ (fun p q _ => (chains_zero R E hZ p).eq_of_src _ _)⟩`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `CochainComplex.HomComplex.CohomologyClass.mk_surjective x`. Take `⟨b, rfl⟩` from `CochainComplex.HomComplex.CohomologyClass.mk_surjective y`. Establish `hab : a = b` using `Subtype.ext (@Subsingleton.elim _ this _ _)`.
+
+Rewrite using `[hab]`.
+-/
 theorem H_sub (R : Type) [CommRing R] (E : Scheme.{0}) (hZ : IsZero ((free R).obj (yoneda.obj E))) (F : Shv R) (n : ℤ) :
     Subsingleton (H R (sch.obj E) F n) := by
   have : Subsingleton (CochainComplex.HomComplex.Cochain ((chains R).obj (sch.obj E)) (res R F) n) :=

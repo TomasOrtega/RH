@@ -16,12 +16,26 @@ noncomputable section
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ m ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+-/
 theorem comp_pow_pt {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {T T' : Over (Sp R)} (ρ : T' ⟶ T)
     (x : T ⟶ A) (m : ℕ) : ρ ≫ x ^ m = (ρ ≫ x) ^ m := by
   induction m with
   | zero => rw [pow_zero, pow_zero, MonObj.comp_one]
   | succ m ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Introduce `R _ A _ _ n hn hR b hb S hS g hg D _ _ x hx`. Take `⟨E, _, _, ψ, z, hff, hz⟩` from `hR D x`. Apply `hff.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ψ (chi n g D x) = ψ (b D x)`. Establish `hpow : ∀ i : ℕ, (z ^ i) ^ n = spOver ψ ≫ x ^ i`.
+
+Introduce `i`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hz, comp_pow_pt]`. Establish `hterm : ∀ i : ℕ, ψ (g D (x ^ i) x) = (S D (x ^ (i + 1)) E ψ (z ^ (i + 1)) - S D (x ^ i) E ψ (z ^ i)) - S D x E ψ z`. Introduce `i`. Establish `h` using `hg D (x ^ i) x E ψ (z ^ i) z (hpow i) hz`.
+
+Rewrite `h` using `[← pow_succ, ← pow_succ]`. Rewrite using `[h]`. Establish `hnE : (n : E) = 0`. Rewrite using `[← map_natCast (algebraMap R E), hn, map_zero]`. Establish `hsum : ψ (chi n g D x) = S D (x ^ n) E ψ (z ^ n) - S D (x ^ 0) E ψ (z ^ 0)`.
+
+Simplify using `only [chi, map_sum, hterm, Finset.sum_sub_distrib, Finset.sum_range_sub (fun i ↦ S D (x ^ i) E ψ (z ^ i)), Finset.sum_const, Finset.card_range, nsmul_eq_mul, hnE, zero_mul, sub_zero]`. Rewrite using `[hsum, hx, pow_zero, pow_zero]`. Establish `h1 : (1 : Pt A E) ^ n = spOver ψ ≫ (1 : Pt A D)` using `by rw [one_pow, MonObj.comp_one]`. Establish `h2 : (z ^ n) ^ n = 1` using `by rw [hz, ← comp_pow_pt, hx, MonObj.comp_one]`. Establish `hs` using `(hS D 1).2 E ψ 1 (z ^ n) h1 h2`.
+
+Rewrite `hs` using `[_root_.one_mul]`. Rewrite using `[hs, add_sub_cancel_left, hz]`. Conclude with `hb.1 D E ψ x hx`.
+-/
 theorem chi_eq_of_torsion : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (n : ℕ),
     (n : R) = 0 → HasRoots A n → ∀ b : Fn0 A, IsTorsChar n b → ∀ S : SecFam A,
     (∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D), IsSec n b x (S D x)) → ∀ g : Fn2 A, IsSecAdd n S g →

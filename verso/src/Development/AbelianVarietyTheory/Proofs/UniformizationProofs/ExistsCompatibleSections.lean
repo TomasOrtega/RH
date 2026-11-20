@@ -7,10 +7,20 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SecLifts
 
+/- English proof (translation)
+Rewrite using `[RingHom.mem_ker, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem mk_mem_ker_factor {R : Type} [CommRing R] {I J : Ideal R} (h : I ≤ J) (x : R) :
     Ideal.Quotient.mk I x ∈ RingHom.ker (Ideal.Quotient.factor h) ↔ x ∈ J := by
   rw [RingHom.mem_ker, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]
 
+/- English proof (translation)
+Proceed by induction on `e with`. Consider the case `zero => exact ⟨β 0, hβ 0, v 0, (hN 0).2⟩`. Consider the case `succ e ih`. Take `⟨j, hj, w, hw⟩` from `ih`. Establish `g` using `(isGen_iff _).1 (hN (e + 1)).2`.
+
+Establish `g'` using `(isGen_iff _).1 hw`. Take `⟨w'', T⟩` from `exists_comp (hN (e + 1)).1 (v (e + 1)) w g g' (hN (e + 1 + 1)).1 (hN 0).1`. Use `⟨j ≫ β (e + 1), ?_, w'', (isGen_iff _).2 (T.pgen_comp (hN (e + 1)).1 g g')⟩` and prove the remaining obligations. Establish `h` using `hj.paste_horiz (hβ (e + 1))`. Rewrite `h` using `[thickTrans, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.factor_comp]`.
+
+Conclude with `h`.
+-/
 theorem exists_closedFibre (V : Type) [CommRing V] (I : Ideal V)
     (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (V ⧸ I ^ (e + 1)))))
     (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left)
@@ -33,6 +43,21 @@ theorem exists_closedFibre (V : Type) [CommRing V] (I : Ideal V)
     rw [thickTrans, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.factor_comp] at h
     exact h
 
+/- English proof (translation)
+Introduce `V _ _ _ Y β hβ hfl N v hN h1 s₀`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `hm : IsLocalRing.maximalIdeal V = Ideal.span {ϖ}` using `hϖ.maximalIdeal_eq`. Establish `hmem : ∀ (n : ℕ) (x : V), x ∈ IsLocalRing.maximalIdeal V ^ n ↔ ϖ ^ n ∣ x` using `fun n x => by`. Rewrite using `[hm, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+
+Establish `step : ∀ e (s' : LB.Sec (N e)), ∃ s : LB.Sec (N (e + 1)), ∀ z (k : (N (e + 1)).ι) (k' : (N e).ι), (β e) z ∈ (N (e + 1)).U k → z ∈ (N e).U k' → gs (β e) z _ (s.f k) = (Geo.Tor.gw (v e) (𝟙 _) z k k').val * gs (𝟙 _) z _ (s'.f k')`. Introduce `e s'`. Take `⟨j, hj, w, hw⟩` from `exists_closedFibre V _ Y β hβ N v hN e`. Use `GlobalTheory.T.exists_sec_lift_alt _ _ _ _ _ (Ideal.Quotient.mk _ (ϖ ^ (e + 1))) (Ideal.Quotient.factor_surjective _) (Ideal.Quotient.factor_surjective _) ?_ ?_ ?_ ?_ _ _ _ _ _ _ j (β e) (hfl (e + 1)) hj (hβ e) (N (e + 1)) (N 0) w (hN (e + 1)).1 (hN 0).1 hw h1 (N e) (v e) (hN e). …` and prove the remaining obligations. Use `⟨e + 1 + 1, ?_⟩` and prove the remaining obligations.
+
+Establish `hle : RingHom.ker (Ideal.Quotient.factor (Ideal.pow_le_pow_right (by omega) : IsLocalRing.maximalIdeal V ^ (e + 1 + 1) ≤ IsLocalRing.maximalIdeal V ^ (0 + 1))) ≤ (IsLocalRing.maximalIdeal V).map (Ideal.Quotient.mk _)`. Introduce `x hx`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[mk_mem_ker_factor, zero_add, pow_one]`. Conclude with `Ideal.mem_map_of_mem _ hx`.
+
+Use `le_bot_iff.1 ((Ideal.pow_right_mono hle _).trans ?_)` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, Ideal.map_quotient_self]`. Use extensionality with `x`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[mk_mem_ker_factor, hmem, Ideal.mem_span_singleton]`.
+
+Use `⟨fun h => map_dvd _ h, fun ⟨y, hy⟩ => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite `hy` using `[← map_mul, Ideal.Quotient.eq, hmem]`. Establish `h₁ : ϖ ^ (e + 1) ∣ x - ϖ ^ (e + 1) * y` using `(pow_dvd_pow ϖ (Nat.le_succ _)).trans hy`. Simplify using `using h₁.add (dvd_mul_right (ϖ ^ (e + 1)) y)`.
+
+Rewrite using `[mk_mem_ker_factor, hmem]`. Conclude with `pow_dvd_pow ϖ (by omega)`. Introduce `x`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[mk_mem_ker_factor, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, hmem, hmem, zero_add, pow_one, pow_succ, mul_dvd_mul_iff_left (pow_ne_zero _ hϖ.ne_zero)]`.
+
+Use `choose L hL using step`. Conclude with `⟨fun e => Nat.rec (motive := fun e => LB.Sec (N e)) s₀ L e, rfl, fun e => hL e _⟩`.
+-/
 theorem exists_compatible_sections : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans V (IsLocalRing.maximalIdeal V) e)) → (∀ e, Flat (Y e).hom) → ∀ (N : ∀ e, LB (Y e).left) (v : ∀ e, LB.Iso (N e) ((N (e + 1)).pull (β e))), (∀ e, (N e).IsLB ∧ (v e).IsGen) → FirstCohomologyVanishes (N 0) → ∀ s₀ : LB.Sec (N 0), ∃ s : ∀ e, LB.Sec (N e), s 0 = s₀ ∧ ∀ e, (∀ z (k : (N (e + 1)).ι) (k' : (N e).ι), (β e) z ∈ (N (e + 1)).U k → z ∈ (N e).U k' → gs (β e) z _ ((s (e + 1)).f k) = (Geo.Tor.gw (v e) (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s e).f k')) := by
   intro V _ _ _ Y β hβ hfl N v hN h1 s₀
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible V

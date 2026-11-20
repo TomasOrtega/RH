@@ -11,6 +11,11 @@ section Local
 variable {W Qq : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq]
   [IsFractionRing W Qq] {k : ℕ}
 
+/- English proof (translation)
+Take `⟨⟨c, s⟩, hs⟩` from `IsLocalization.surj (nonZeroDivisors W) x`. Establish `hs0 : (s : W) ≠ 0` using `nonZeroDivisors.ne_zero s.2`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hs0 hπ`. Use `⟨n, ((u⁻¹ : Wˣ) : W) * c, ?_⟩` and prove the remaining obligations. Simplify using `only at hs`.
+
+Rewrite `hs` using `[hu, map_mul, map_pow]`. Establish `hu' : algebraMap W Qq (u : W) * algebraMap W Qq ((u⁻¹ : Wˣ) : W) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite using `[map_mul]`. Take the linear combination `algebraMap W Qq ((u⁻¹ : Wˣ) : W) * hs - algebraMap W Qq π ^ n * x * hu'`.
+-/
 theorem den_one (π : W) (hπ : Irreducible π) (x : Qq) :
     ∃ (n : ℕ) (c : W), algebraMap W Qq π ^ n * x = algebraMap W Qq c := by
   obtain ⟨⟨c, s⟩, hs⟩ := IsLocalization.surj (nonZeroDivisors W) x
@@ -24,6 +29,11 @@ theorem den_one (π : W) (hπ : Irreducible π) (x : Qq) :
   rw [map_mul]
   linear_combination algebraMap W Qq ((u⁻¹ : Wˣ) : W) * hs - algebraMap W Qq π ^ n * x * hu'
 
+/- English proof (translation)
+Use `choose nn cc hnc using fun i j => den_one π hπ (h i j)`. Use `⟨∑ i, ∑ j, nn i j, Matrix.of fun i j => π ^ (∑ i, ∑ j, nn i j - nn i j) * cc i j, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `hle : nn i j ≤ ∑ i, ∑ j, nn i j` using `(Finset.single_le_sum (fun j _ => Nat.zero_le (nn i j)) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, nn i j) (fun i _ => Nat.zero_le _) (Finset.mem_univ i))`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, Matrix.of_apply, map_mul, map_pow, ← hnc i j]`.
+
+Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`.
+-/
 theorem den_mat (π : W) (hπ : Irreducible π) (h : Matrix (Fin k) (Fin k) Qq) :
     ∃ (N : ℕ) (H : Matrix (Fin k) (Fin k) W), algebraMap W Qq π ^ N • h = H.map (algebraMap W Qq) := by
   choose nn cc hnc using fun i j => den_one π hπ (h i j)
@@ -35,6 +45,11 @@ theorem den_mat (π : W) (hπ : Irreducible π) (h : Matrix (Fin k) (Fin k) Qq) 
   simp only [Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, Matrix.of_apply, map_mul, map_pow, ← hnc i j]
   rw [← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]
 
+/- English proof (translation)
+Unfold `colSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Establish `h : (fun i => (g * U.map (algebraMap W Qq)) i c) = ∑ b, U b c • (fun i => g i b)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Matrix.mul_apply, Finset.sum_apply, Algebra.smul_def, mul_comm]`. Use `show (fun i => (g * U.map (algebraMap W Qq)) i c) ∈ Submodule.span W (Set.range fun c : Fin k => fun i => g i c)`. Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
+-/
 theorem colSpan_mul_le (g : Matrix (Fin k) (Fin k) Qq) (U : Matrix (Fin k) (Fin k) W) :
     colSpan W (g * U.map (algebraMap W Qq)) ≤ colSpan W g := by
   unfold colSpan
@@ -47,6 +62,9 @@ theorem colSpan_mul_le (g : Matrix (Fin k) (Fin k) Qq) (U : Matrix (Fin k) (Fin 
   rw [h]
   exact Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)
 
+/- English proof (translation)
+Apply `le_antisymm (colSpan_mul_le g U)` to reduce the goal to its premises. Establish `h` using `colSpan_mul_le (g * U.map (algebraMap W Qq)) U⁻¹`. Rewrite `h` using `[Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_nonsing_inv U hU, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Then use the resulting hypothesis.
+-/
 theorem colSpan_mul_unit (g : Matrix (Fin k) (Fin k) Qq) (U : Matrix (Fin k) (Fin k) W) (hU : IsUnit U.det) :
     colSpan W (g * U.map (algebraMap W Qq)) = colSpan W g := by
   apply le_antisymm (colSpan_mul_le g U)
@@ -54,6 +72,11 @@ theorem colSpan_mul_unit (g : Matrix (Fin k) (Fin k) Qq) (U : Matrix (Fin k) (Fi
   rwa [Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_nonsing_inv U hU, Matrix.map_one _ (map_zero _) (map_one _),
     Matrix.mul_one] at h
 
+/- English proof (translation)
+Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Establish `hπ0 : IsLocalRing.residue W π = 0` using `(IsLocalRing.residue_eq_zero_iff π).mpr ((IsLocalRing.mem_maximalIdeal _).mpr hπ.not_isUnit)`. Establish `h1 : (IsLocalRing.residue W).mapMatrix (1 + π • D) = 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, hπ0, zero_mul, add_zero, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h1, Matrix.det_one]`. Conclude with `one_ne_zero`.
+-/
 theorem det_one_add_unit (π : W) (hπ : Irreducible π) (D : Matrix (Fin k) (Fin k) W) : IsUnit (1 + π • D).det := by
   rw [← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]
   have hπ0 : IsLocalRing.residue W π = 0 :=
@@ -66,6 +89,15 @@ theorem det_one_add_unit (π : W) (hπ : Irreducible π) (D : Matrix (Fin k) (Fi
   rw [h1, Matrix.det_one]
   exact one_ne_zero
 
+/- English proof (translation)
+Take `⟨N, H, hH⟩` from `den_mat π hπ g⁻¹`. Use `⟨N + 1, fun N' hN A C hA => ?_⟩` and prove the remaining obligations. Establish `hU : IsUnit (1 + π • (π ^ (N' - (N + 1)) • (H * C))).det` using `det_one_add_unit π hπ _`. Establish `hAU : A = g * (1 + π • (π ^ (N' - (N + 1)) • (H * C))).map (algebraMap W Qq)`. Rewrite using `[hA, Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_smul' _ _ _ (map_mul _), Matrix.map_smul' _ _ _ (map_mul _), Matrix.map_mul, map_pow, ← hH, Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_smul, …`.
+
+Use `congr 2`. Rewrite using `[← pow_succ', ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Use `⟨by rw [hAU]; exact colSpan_mul_unit g _ hU, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hAU, Matrix.det_mul]`. Use `hg.mul ?_` and prove the remaining obligations. Establish `h2 : ((1 + π • (π ^ (N' - (N + 1)) • (H * C))).map (algebraMap W Qq)).det = algebraMap W Qq (1 + π • (π ^ (N' - (N + 1)) • (H * C))).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite using `[h2]`. Conclude with `hU.map _`.
+-/
 theorem approx_local (π : W) (hπ : Irreducible π) (g : Matrix (Fin k) (Fin k) Qq) (hg : IsUnit g.det) :
     ∃ N : ℕ, ∀ N', N ≤ N' → ∀ (A : Matrix (Fin k) (Fin k) Qq) (C : Matrix (Fin k) (Fin k) W),
       A = g + algebraMap W Qq π ^ N' • C.map (algebraMap W Qq) → colSpan W A = colSpan W g ∧ IsUnit A.det := by
@@ -98,6 +130,17 @@ def WeakApprox : Prop :=
   ∀ (x : ∀ v, G.P.Qq v) (N : ℕ), ∃ a : E, ∀ v, ∃ c : G.P.W v,
     iw v a = x v + (p : G.P.Qq v) ^ N * algebraMap (G.P.W v) (G.P.Qq v) c
 
+/- English proof (translation)
+Introduce `L hL`. Distinguish the cases in `hne : Nonempty (Fin G.P.nV)`. Use `swap`. Conclude with `⟨1, fun v => (hne ⟨v⟩).elim⟩`. Use `choose g hg hLg using hL`.
+
+Use `fun v => (G.P.setting v).frac_alt` as an intermediate fact. Use `choose N hN using fun v => approx_local (p : G.P.W v) (G.P.setting v).p_unif (g v) (hg v)`. Use `choose a c hac using fun x y => h (fun v => g v x y) (∑ v, N v)`. Establish `key : ∀ v, colSpan (G.P.W v) ((Matrix.of a).map (iw v)) = colSpan (G.P.W v) (g v) ∧ IsUnit ((Matrix.of a).map (iw v)).det` using `fun v => hN v (∑ v, N v) (Finset.single_le_sum (f := N) (fun _ _ => Nat.zero_le _) (Finset.mem_univ v)) ((Matrix.of a).map (iw v)) (fun x y => c x y v) (by`. Use extensionality with `x y`.
+
+Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_natCast]`. Conclude with `hac x y v)`. Take `⟨v0⟩` from `hne`. Establish `hdet : IsUnit (Matrix.of a).det`. Establish `h1` using `(key v0).2`.
+
+Establish `h2 : ((Matrix.of a).map (iw v0)).det = iw v0 (Matrix.of a).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`. Rewrite `h1`, the goal using `[isUnit_iff_ne_zero]`.
+
+Introduce `h0`. Conclude with `h1 (by rw [h0, map_zero])`. Conclude with `⟨Matrix.nonsingInvUnit (Matrix.of a) hdet, fun v => by rw [hLg v]; exact (key v).1.symm⟩`.
+-/
 theorem ratTup_of_weak (h : WeakApprox G iw) : RatTup G iw := by
   intro L hL
   by_cases hne : Nonempty (Fin G.P.nV)

@@ -13,10 +13,18 @@ namespace GlobalTheory.HSNef.ChangePair
 open GlobalTheory.VolBr.NuEq
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Establish `h : x ∈ (⨆ c, M.B.U c)` using `by rw [M.isLB.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 h`.
+-/
 theorem exists_chart (M : HermLB p) (x : X) : ∃ c, x ∈ M.B.U c := by
   have h : x ∈ (⨆ c, M.B.U c) := by rw [M.isLB.cover]; trivial
   exact TopologicalSpace.Opens.mem_iSup.1 h
 
+/- English proof (translation)
+Establish `hs : (P.r e : X.functionField) ≠ 0` using `(P.r e).ne_zero`. Establish `ht : (P.r' g : X.functionField) ≠ 0` using `(P.r' g).ne_zero`. Simplify using `only [Pair.loc, one_mul]`. Rewrite using `[div_zpow, div_zpow, mul_zpow, mul_zpow, ← zpow_mul, ← zpow_mul, ← zpow_mul, ← zpow_mul, zpow_add₀ hs, zpow_add₀ ht, mul_comm a i, mul_comm b i, mul_comm a' j, mul_comm b' j]`. Establish `h1` using `zpow_ne_zero (i * a) hs`.
+
+Establish `h2` using `zpow_ne_zero (i * b) ht`. Establish `h3` using `zpow_ne_zero (j * a') hs`. Establish `h4` using `zpow_ne_zero (j * b') ht`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem loc_eq (P : Pair p) (a b a' b' i j : ℤ) (f : X.functionField) (ρ ρ' : X.functionFieldˣ) (e g) :
     f * (ρ : X.functionField) ^ i * (ρ' : X.functionField) ^ j =
       P.loc (i * a + j * a') (i * b + j * b') f e g *
@@ -38,6 +46,31 @@ namespace GlobalTheory.HSNef
 
 open GlobalTheory.VolBr.NuEq ChangePair in
 
+/- English proof (translation)
+Introduce `k _ X _ p P a b a' b' M N ⟨ρ, hρ, hu, hn⟩ ⟨ρ', hρ', hu', hn'⟩`. Set `Q : Pair p` to `⟨M, N, ρ, ρ', hρ, hρ'⟩`. Establish `hw : ∀ (i j : ℤ) (x : X) c d e g, x ∈ M.B.U c → x ∈ N.B.U d → x ∈ P.L.B.U e → x ∈ P.A.B.U g → UnitAt x (((ρ c : X.functionField) / P.loc a b 1 e g) ^ i * ((ρ' d : X.functionField) / P.loc a' b' 1 e g) ^ j)` using `fun i j x c d e g hc hd he hg => (NuEq.unitAt_zpow (hu x c e g hc he hg) i).mul (NuEq.unitAt_zpow (hu' x d e g hd he hg) j)`. Establish `hH : ∀ i j : ℤ, Q.H i j = P.H (i * a + j * a') (i * b + j * b')`. Introduce `i j`.
+
+Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce `hf x e g he hg`. Take `⟨c, hc⟩` from `exists_chart M x`. Take `⟨d, hd⟩` from `exists_chart N x`.
+
+Establish `hW` using `hw i j x c d e g hc hd he hg`. Establish `h` using `hf x c d hc hd`. Express the relevant statement in the definitionally equal form `RegAt x (f * _ ^ i * _ ^ j) at h`. Rewrite `h` using `[loc_eq P a b a' b' i j f (ρ c) (ρ' d) e g]`. Establish `h'` using `h.mul hW.inv.regAt`.
+
+Rewrite `h'` using `[mul_assoc, mul_inv_cancel₀ hW.ne_zero, mul_one]`. Then use the resulting hypothesis. Introduce `hf x c d hc hd`. Take `⟨e, he⟩` from `exists_chart P.L x`. Take `⟨g, hg⟩` from `exists_chart P.A x`. Express the relevant statement in the definitionally equal form `RegAt x (f * _ ^ i * _ ^ j)`.
+
+Rewrite using `[loc_eq P a b a' b' i j f (ρ c) (ρ' d) e g]`. Conclude with `(hf x e g he hg).mul (hw i j x c d e g hc hd he hg).regAt`. Establish `hnu : ∀ (i j : ℤ) (f : X.functionField), f ∈ P.H (i * a + j * a') (i * b + j * b') → ∀ (σ : k →+* ℂ) (y : CxPts p σ), Q.nu i j σ y f = P.nu (i * a + j * a') (i * b + j * b') σ y f`. Introduce `i j f hf σ y`. Establish `hc` using `mem_pick (M.φ σ).isLB y`.
+
+Establish `hd` using `mem_pick (N.φ σ).isLB y`. Establish `he` using `mem_pick (P.L.φ σ).isLB y`. Establish `hg` using `mem_pick (P.A.φ σ).isLB y`. Use `set c := pick (M.φ σ).isLB y`. Use `set d := pick (N.φ σ).isLB y`.
+
+Use `set e := pick (P.L.φ σ).isLB y`. Use `set g := pick (P.A.φ σ).isLB y`. Establish `hfQ : f ∈ Q.H i j` using `(hH i j).symm ▸ hf`. Rewrite using `[nu_eq k X p Q i j f hfQ σ y c d hc hd, nu_eq k X p P _ _ f hf σ y e g he hg]`. Establish `hU` using `hu _ c e g (mem_ptsIn.1 hc) (mem_ptsIn.1 he) (mem_ptsIn.1 hg)`.
+
+Establish `hU'` using `hu' _ d e g (mem_ptsIn.1 hd) (mem_ptsIn.1 he) (mem_ptsIn.1 hg)`. Establish `hreg : RegAt (under y) (P.loc (i * a + j * a') (i * b + j * b') f e g)` using `hf _ e g (mem_ptsIn.1 he) (mem_ptsIn.1 hg)`. Establish `eU : ‖ratVal ((ρ c : X.functionField) / P.loc a b 1 e g) y‖ = Real.exp ((M.φ σ).φ c y / 2 - (a * (P.L.φ σ).φ e y + b * (P.A.φ σ).φ g y) / 2)`. Rewrite using `[← Real.exp_log (norm_pos_iff.2 (ratVal_ne_zero hU))]`. Use `congr 1`.
+
+Combine the linear relations using `[hn σ y c e g hc he hg]`. Establish `eU' : ‖ratVal ((ρ' d : X.functionField) / P.loc a' b' 1 e g) y‖ = Real.exp ((N.φ σ).φ d y / 2 - (a' * (P.L.φ σ).φ e y + b' * (P.A.φ σ).φ g y) / 2)`. Rewrite using `[← Real.exp_log (norm_pos_iff.2 (ratVal_ne_zero hU'))]`. Use `congr 1`. Combine the linear relations using `[hn' σ y d e g hd he hg]`.
+
+Express the relevant statement in the definitionally equal form `‖ratVal (f * _ ^ i * _ ^ j) y‖ * _ = _`. Rewrite using `[loc_eq P a b a' b' i j f (ρ c) (ρ' d) e g, ratVal_mul hreg ((NuEq.unitAt_zpow hU i).mul (NuEq.unitAt_zpow hU' j)).regAt, ratVal_mul (NuEq.unitAt_zpow hU i).regAt (NuEq.unitAt_zpow hU' j).regAt, ratVal_zpow' hU, ratVal_zpow' hU', norm_mul, norm_mul, norm_zpow, norm_zpow, eU, eU', …`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨Q, rfl, rfl, fun i j R => ?_⟩` and prove the remaining obligations. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf, hR⟩`. Establish `hf' : f ∈ P.H (i * a + j * a') (i * b + j * b')` using `hH i j ▸ hf`.
+
+Conclude with `⟨hf', fun σ y => hnu i j f hf' σ y ▸ hR σ y⟩`. Introduce and unpack `⟨hf, hR⟩`. Conclude with `⟨(hH i j).symm ▸ hf, fun σ y => (hnu i j f hf σ y).symm ▸ hR σ y⟩`.
+-/
 theorem change_pair : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k), ∀ (P : Pair p) (a b a' b' : ℤ) (M N : HermLB p), P.Rep a b M → P.Rep a' b' N → ∃ Q : Pair p, Q.L = M ∧ Q.A = N ∧ ∀ (i j : ℤ) (R : ℝ), Q.Bl i j R = P.Bl (i * a + j * a') (i * b + j * b') R := by
   intro k _ X _ p P a b a' b' M N ⟨ρ, hρ, hu, hn⟩ ⟨ρ', hρ', hu', hn'⟩
   let Q : Pair p := ⟨M, N, ρ, ρ', hρ, hρ'⟩

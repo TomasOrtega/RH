@@ -14,6 +14,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
   {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Proceed by induction on `hh using Submodule.span_induction with`. Consider the case `mem h hh`. Take `⟨z, rfl⟩` from `hh`. Establish `hb : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) := Formalism.UG.Final.RatPtsLe F E (Fin n) σ J (FiniteAdeleRing (𝓞 F) F) ⟨γ, hγ, rfl⟩`. Establish `hk : κ.1 ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)` using `((S.U_eq κ.1).1 κ.2).1`.
+
+Set `z' : UPts σ J (FiniteAdeleRing (𝓞 F) F)` to `⟨bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * z.1 * κ.1, mul_mem (mul_mem hb z.2) hk⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨z', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Conclude with `adelic_value_translate S emb hc hg γ hγ z z' κ rfl y`.
+
+Consider the case `zero`. Establish `e : (fun y => (S.chi κ : ℂ) * (0 : Frames (gramC J emb) → ℂ) (frameTranslate emb hc γ⁻¹ ((UJ (σ : E →+* E) J).inv_mem hγ) y)) = 0` using `by funext y; simp`. Rewrite using `[e]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`.
+
+Establish `e : (fun y => (S.chi κ : ℂ) * (a + b) (frameTranslate emb hc γ⁻¹ ((UJ (σ : E →+* E) J).inv_mem hγ) y)) = (fun y => (S.chi κ : ℂ) * a (frameTranslate emb hc γ⁻¹ ((UJ (σ : E →+* E) J).inv_mem hγ) y)) + (fun y => (S.chi κ : ℂ) * b (frameTranslate emb hc γ⁻¹ ((UJ (σ : E →+* E) J).inv …`. Use function extensionality and compare the values at `y`. Simplify using `[mul_add]`. Rewrite using `[e]`. Conclude with `add_mem ha hb`.
+
+Consider the case `smul r a _ ha`. Establish `e : (fun y => (S.chi κ : ℂ) * (r • a) (frameTranslate emb hc γ⁻¹ ((UJ (σ : E →+* E) J).inv_mem hγ) y)) = r • (fun y => (S.chi κ : ℂ) * a (frameTranslate emb hc γ⁻¹ ((UJ (σ : E →+* E) J).inv_mem hγ) y))`. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ r ha`.
+-/
 theorem translate_mem_span_adelic (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ)
     (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x))
     {g : UPts σ J (FiniteAdeleRing (𝓞 F) F) → Frames (gramC J emb) → ℂ} (hg : g ∈ AdFun S emb)
@@ -51,6 +64,23 @@ theorem translate_mem_span_adelic (S : StepLevel F E σ J T f bad) (emb : ι →
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hgA` using `(Submodule.mem_inf.1 hg).1`. Establish `hgV : ∀ z, g z ∈ ValC (gramC J emb) lam` using `fun z => (Submodule.mem_pi.1 (Submodule.mem_inf.1 hg).2) z trivial`. Establish `hspan : Submodule.span ℂ (Set.range g) ≤ ValC (gramC J emb) lam` using `Submodule.span_le.2 (by rintro _ ⟨z, rfl⟩; exact hgV z)`. Set `G` to `∑ c, rndFillG S emb hc (y c) (Fc c)`. Use `⟨G, Submodule.mem_inf.2 ⟨Submodule.sum_mem _ fun c _ => rnd_fill_mem S emb hc (y c) (hs c) (Fc c), ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `Submodule.mem_pi.2 fun x _ => ?_ show (∑ c, rndFillG S emb hc (y c) (Fc c)) x ∈ _` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : ∃ p : {γ : GL (Fin n) E // γ ∈ UJ (σ : E →+* E) J} × S.U, x.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) p.1.1 * (y c).1 * p.2.1`. Establish `e : rndFillG S emb hc (y c) (Fc c) x = fun yy => (S.chi (Classical.choose hx).2 : ℂ) * Fc c (frameTranslate emb hc (Classical.choose hx).1.1⁻¹ ((UJ (σ : E →+* E) J).inv_mem (Classical.choose hx).1.2) yy)`.
+
+Use function extensionality and compare the values at `yy`. Unfold `rndFillG`. Rewrite using `[dif_pos hx]`. Rewrite using `[e]`. Conclude with `hspan (translate_mem_span_adelic S emb hc hgA _ (Classical.choose hx).1.2 _ (hF c))`.
+
+Establish `e : rndFillG S emb hc (y c) (Fc c) x = 0`. Use function extensionality and compare the values at `yy`. Unfold `rndFillG`. Rewrite using `[dif_neg hx]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `zero_mem _`. Introduce `c show (∑ c', rndFillG S emb hc (y c') (Fc c')) (y c) = Fc c`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single c]`. Conclude with `rnd_fill_at S emb hc (y c) (hs c) (Fc c)`.
+
+Introduce `c' _ hne`. Use function extensionality and compare the values at `yy`. Unfold `rndFillG`. Rewrite using `[dif_neg]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨p, hp⟩`. Apply `hne` to reduce the goal to its premises. Use `hdis c' c p.1.1 p.1.2 p.2⁻¹ ?_` and prove the remaining obligations. Rewrite using `[hp, InvMemClass.coe_inv]`. Use `group`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ c) h`.
+-/
 theorem adelic_function_extends_from_classes (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ)
     (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (lam : ι → DomWeight n)
     {C : Type} [Fintype C] (y : C → UPts σ J (FiniteAdeleRing (𝓞 F) F)) (hs : ∀ c, RndStabTriv S (y c))
@@ -101,6 +131,11 @@ section Tied
 
 variable {D : D7} {u : D.what₂.Word}
 
+/- English proof (translation)
+Introduce `δ hδ κ h`. Apply `adms_core Tf x0 δ hδ` to reduce the goal to its premises. Establish `e : x0.1⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) δ * x0.1 = κ.1 := by`. Rewrite using `[mul_assoc, h]`. Use `group`.
+
+Rewrite using `[e]`. Conclude with `κ.2`.
+-/
 theorem trivial_stabiliser_level_zero (Tf : FormsTied D u) (x0 : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) :
     RndStabTriv (Tf.cls 0 (Nat.zero_le _)).lev x0 := by
   intro δ hδ κ h
@@ -109,6 +144,9 @@ theorem trivial_stabiliser_level_zero (Tf : FormsTied D u) (x0 : UPts (sigD D) (
     rw [mul_assoc, h]; group
   rw [e]; exact κ.2
 
+/- English proof (translation)
+The claim follows from `(Tf.cls i hi).y_bij.1 (rnd_cls _ γ hγ _ _ κ h)`.
+-/
 theorem class_rep_unique_of_translate (Tf : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) (c c' : (D.mem u).C.cls i) (γ : GL (Fin (D.R.N i)) D.host.E)
     (hγ : γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi)) (κ : (Tf.cls i hi).lev.U)
     (h : bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ * ((Tf.cls i hi).y c).1 =
@@ -117,6 +155,21 @@ theorem class_rep_unique_of_translate (Tf : FormsTied D u) (i : ℕ) (hi : i ≤
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨g, hg, hgφ⟩` from `forms_from_adelic_function Tf 0 (Nat.zero_le _) φ hφ`. Establish `hgA` using `(Submodule.mem_inf.1 hg).1`. Establish `key : ∀ c (x : (D.fm u).lv 0 v c), (D.fm u).fv 0 v c x = 1 → ∃ p : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F), (D.fm u).upT 0 v c x (φ ((D.fm u).up 0 v c x)) = fun s => g p ((Tf.val 0 (Nat.zero_le _)).eY s)`. Introduce `c x hx`. Take `⟨z, rfl⟩` from `(Tf.lv 0 (Nat.zero_le _)).pr_surj v c x`.
+
+Take `⟨γ, η, κ, -, hrel, -, -, -, htr⟩` from `upNat_of_tied Tf 0 (Nat.zero_le _) v c z hx`. Use `⟨(Tf.cls 0 (Nat.zero_le _)).y c * η, ?_⟩` and prove the remaining obligations. Rewrite using `[htr, hgφ]`. Conclude with `natTr_adFun Tf 0 (Nat.zero_le _) hgA _ _ η γ κ hrel`. Use `choose pp hpp using key`.
+
+Set `Fc : (D.mem u).C.cls 0 → Fr D 0 (Nat.zero_le _) → ℂ` to `fun c => ∑ x ∈ Finset.univ.filter (fun x : (D.fm u).lv 0 v c => (D.fm u).fv 0 v c x = 1), if hx : (D.fm u).fv 0 v c x = 1 then g (pp c x hx) else 0`. Establish `hU : ∀ c, Formalism.MainNotions.product_first_zeroth_parts.Uop D u 0 v φ c = fun s => Fc c ((Tf.val 0 (Nat.zero_le _)).eY s)`. Introduce `c`. Use function extensionality and compare the values at `s`. Simplify using `only [Formalism.MainNotions.product_first_zeroth_parts.Uop, Formalism.BasicNotions.LT.Uop, LinearMap.pi_apply, LinearMap.sum_apply, Finset.sum_apply, Fc]`.
+
+Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hx1` using `(Finset.mem_filter.1 hx).2`. Rewrite using `[dif_pos hx1]`. Conclude with `congrFun (hpp c x hx1) s`. Establish `hF : ∀ c, Fc c ∈ Submodule.span ℂ (Set.range g)`.
+
+Introduce `c`. Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Conclude with `zero_mem _`.
+
+Take `⟨G, hG, hGc⟩` from `adelic_function_extends_from_classes (Tf.cls 0 (Nat.zero_le _)).lev (embT D) (fun τ x => embedding_conj_compat D τ x) (lamT u 0) (Tf.cls 0 (Nat.zero_le _)).y (fun c => trivial_stabiliser_level_zero Tf _) (fun c c' γ hγ κ h => class_rep_unique_of_translate Tf 0 (Nat.zero_le _) c c …`. Use `((Tf.val 0 (Nat.zero_le _)).Fi _).2 ⟨G, hG, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c z`. Use `show G ((Tf.cls 0 (Nat.zero_le _)).y c) z = _`. Rewrite using `[hGc, hU]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem U_op_preserves_forms_level_zero (Tf : FormsTied D u) (v : (D.mem u).A.vT) (φ : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ)
     (hφ : φ ∈ (D.fm u).Fi 0) : Formalism.MainNotions.product_first_zeroth_parts.Uop D u 0 v φ ∈ (D.fm u).Fi 0 := by
   classical
@@ -160,6 +213,21 @@ theorem U_op_preserves_forms_level_zero (Tf : FormsTied D u) (v : (D.mem u).A.vT
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨g, hg, hgφ⟩` from `forms_from_adelic_function Tf 0 (Nat.zero_le _) φ hφ`. Establish `hgA` using `(Submodule.mem_inf.1 hg).1`. Establish `key : ∀ c (x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c)), x ((D.fm u).te 0 v c) = 1 → ∃ p : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F), (D.fm u).dnT 0 v c x (φ ((D.fm u).dn 0 v c x)) = fun s => g p ((Tf.val 0 (Nat.zero_le _)).eY s)`. Introduce `c x hx`. Establish `hx0 : x ≠ 0`.
+
+Introduce `h0`. Rewrite `hx` using `[h0, LinearMap.zero_apply]`. Conclude with `zero_ne_one hx`. Take `⟨γ, η, κ, -, hrel, -, -, htr⟩` from `dnNat_of_tied Tf 0 (Nat.zero_le _) v c x hx0`. Use `⟨(Tf.cls 0 (Nat.zero_le _)).y c * η, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[htr, hgφ]`. Conclude with `natTr_adFun Tf 0 (Nat.zero_le _) hgA _ _ η γ κ hrel`. Use `choose pp hpp using key`. Set `Fc : (D.mem u).C.cls 0 → Fr D 0 (Nat.zero_le _) → ℂ` to `fun c => ∑ x ∈ Finset.univ.filter (fun x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) => x ((D.fm u).te 0 v c) = 1), if hx : x ((D.fm u).te 0 v c) = 1 then g (pp c x hx) else 0`. Establish `hU : ∀ c, Formalism.MainNotions.product_first_zeroth_parts.Dop D u 0 v φ c = fun s => Fc c ((Tf.val 0 (Nat.zero_le _)).eY s)`.
+
+Introduce `c`. Use function extensionality and compare the values at `s`. Simplify using `only [Formalism.MainNotions.product_first_zeroth_parts.Dop, LinearMap.pi_apply, LinearMap.sum_apply, Finset.sum_apply, Fc]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hx1` using `(Finset.mem_filter.1 hx).2`.
+
+Rewrite using `[dif_pos hx1]`. Conclude with `congrFun (hpp c x hx1) s`. Establish `hF : ∀ c, Fc c ∈ Submodule.span ℂ (Set.range g)`. Introduce `c`. Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Conclude with `zero_mem _`. Take `⟨G, hG, hGc⟩` from `adelic_function_extends_from_classes (Tf.cls 0 (Nat.zero_le _)).lev (embT D) (fun τ x => embedding_conj_compat D τ x) (lamT u 0) (Tf.cls 0 (Nat.zero_le _)).y (fun c => trivial_stabiliser_level_zero Tf _) (fun c c' γ hγ κ h => class_rep_unique_of_translate Tf 0 (Nat.zero_le _) c c …`. Use `((Tf.val 0 (Nat.zero_le _)).Fi _).2 ⟨G, hG, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `c z`. Use `show G ((Tf.cls 0 (Nat.zero_le _)).y c) z = _`. Rewrite using `[hGc, hU]`. Simplify using the standard rewrite rules.
+-/
 theorem D_op_preserves_forms_level_zero (Tf : FormsTied D u) (v : (D.mem u).A.vT) (φ : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ)
     (hφ : φ ∈ (D.fm u).Fi 0) : Formalism.MainNotions.product_first_zeroth_parts.Dop D u 0 v φ ∈ (D.fm u).Fi 0 := by
   classical

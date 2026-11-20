@@ -16,11 +16,17 @@ def listSum (h : IsPlaceOver A w) (L : List (Σ n : ℕ, WDRep h (Fin n → ℂ)
     Σ n : ℕ, WDRep h (Fin n → ℂ) :=
   L.foldr (fun x s => WD.std (x.2.sum s.2)) ⟨0, WDRep.diag h (ι := Fin 0) fun i => i.elim0⟩
 
+/- English proof (translation)
+Rewrite using `[WD.lpSum_mk]`. Conclude with `WD.sound (WD.iso_std _).symm`.
+-/
 theorem mk_listSum_cons (x : Σ n : ℕ, WDRep h (Fin n → ℂ)) (L : List (Σ n : ℕ, WDRep h (Fin n → ℂ))) :
     WD.mk (listSum h (x :: L)).2 = WD.lpSum (WD.mk x.2) (WD.mk (listSum h L).2) := by
   rw [WD.lpSum_mk]
   exact WD.sound (WD.iso_std _).symm
 
+/- English proof (translation)
+Use `show LinearMap.trace ℂ _ (((Module.finBasis ℂ V).equivFun.conjAlgEquiv ℂ (a.ρ σ)) ^ k) = _`. Rewrite using `[← map_pow]`. Conclude with `LinearMap.trace_conj' _ _`.
+-/
 theorem trace_std {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (a : WDRep h V) (σ : Weil h) (k : ℕ) :
     LinearMap.trace ℂ _ ((WD.std a).2.ρ σ ^ k) = LinearMap.trace ℂ V (a.ρ σ ^ k) := by
@@ -28,6 +34,13 @@ theorem trace_std {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional 
   rw [← map_pow]
   exact LinearMap.trace_conj' _ _
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.sum_nil]`. Establish `: Subsingleton (Fin (listSum h []).1 → ℂ)` using `by show Subsingleton (Fin 0 → ℂ); infer_instance`. Establish `hz : (listSum h []).2.ρ σ ^ k = 0` using `LinearMap.ext fun v => Subsingleton.elim _ _`.
+
+Rewrite using `[hz, map_zero]`. Consider the case `cons x L ih`. Simplify using `only [List.map_cons, List.sum_cons]`. Use `(trace_std (x.2.sum (listSum h L).2) σ k).trans ?_` and prove the remaining obligations. Rewrite using `[WDRep.sum_ρ, ← ih]`.
+
+Establish `: ((x.2.ρ σ).prodMap ((listSum h L).2.ρ σ)) ^ k = (x.2.ρ σ ^ k).prodMap ((listSum h L).2.ρ σ ^ k)` using `(map_pow (LinearMap.prodMapRingHom ℂ _ _) (x.2.ρ σ, (listSum h L).2.ρ σ) k).symm`. Rewrite using `[this, LinearMap.trace_prodMap']`.
+-/
 theorem trace_listSum (σ : Weil h) (k : ℕ) (L : List (Σ n : ℕ, WDRep h (Fin n → ℂ))) :
     LinearMap.trace ℂ _ ((listSum h L).2.ρ σ ^ k) =
       (L.map fun x => LinearMap.trace ℂ _ (x.2.ρ σ ^ k)).sum := by
@@ -46,12 +59,18 @@ theorem trace_listSum (σ : Weil h) (k : ℕ) (L : List (Σ n : ℕ, WDRep h (Fi
       (map_pow (LinearMap.prodMapRingHom ℂ _ _) (x.2.ρ σ, (listSum h L).2.ρ σ) k).symm
     rw [this, LinearMap.trace_prodMap']
 
+/- English proof (translation)
+Use `hf (WD.lpZero h) (WD.lpZero h)` as an intermediate fact. Rewrite `this` using `[WD.lpSum_zero]`. Simplify using `using this`.
+-/
 theorem map_lpZero {M : Type} [CommGroup M] (f : WD h → M)
     (hf : ∀ x y, f (x.lpSum y) = f x * f y) : f (WD.lpZero h) = 1 := by
   have := hf (WD.lpZero h) (WD.lpZero h)
   rw [WD.lpSum_zero] at this
   simpa using this
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact map_lpZero f hf`. Consider the case `cons x L ih => rw [mk_listSum_cons, hf, ih, List.map_cons, List.prod_cons]`.
+-/
 theorem map_listSum {M : Type} [CommGroup M] (f : WD h → M)
     (hf : ∀ x y, f (x.lpSum y) = f x * f y) (L : List (Σ n : ℕ, WDRep h (Fin n → ℂ))) :
     f (WD.mk (listSum h L).2) = (L.map fun x => f (WD.mk x.2)).prod := by
@@ -59,6 +78,11 @@ theorem map_listSum {M : Type} [CommGroup M] (f : WD h → M)
   | nil => exact map_lpZero f hf
   | cons x L ih => rw [mk_listSum_cons, hf, ih, List.map_cons, List.prod_cons]
 
+/- English proof (translation)
+Establish `key : ∀ l : List ι, ((l.flatMap fun i => List.replicate (n i) (x i)).map g).prod = (l.map fun i => g (x i) ^ n i).prod`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons i l ih => simp [List.flatMap_cons, List.prod_append, ih, List.map_replicate, List.prod_replicate]`.
+
+Rewrite using `[key, Finset.prod_map_toList]`.
+-/
 theorem prod_flatMap_replicate {ι α M : Type} [CommMonoid M] (s : Finset ι) (n : ι → ℕ)
     (x : ι → α) (g : α → M) :
     ((s.toList.flatMap fun i => List.replicate (n i) (x i)).map g).prod = ∏ i ∈ s, g (x i) ^ n i := by
@@ -70,6 +94,11 @@ theorem prod_flatMap_replicate {ι α M : Type} [CommMonoid M] (s : Finset ι) (
     | cons i l ih => simp [List.flatMap_cons, List.prod_append, ih, List.map_replicate, List.prod_replicate]
   rw [key, Finset.prod_map_toList]
 
+/- English proof (translation)
+Establish `key : ∀ l : List ι, ((l.flatMap fun i => List.replicate (n i) (x i)).map g).sum = (l.map fun i => n i • g (x i)).sum`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons i l ih => simp [List.flatMap_cons, List.sum_append, ih, List.map_replicate, List.sum_replicate]`.
+
+Rewrite using `[key, Finset.sum_map_toList]`.
+-/
 theorem sum_flatMap_replicate {ι α M : Type} [AddCommMonoid M] (s : Finset ι) (n : ι → ℕ)
     (x : ι → α) (g : α → M) :
     ((s.toList.flatMap fun i => List.replicate (n i) (x i)).map g).sum = ∑ i ∈ s, n i • g (x i) := by
@@ -85,6 +114,17 @@ end GlobalTheory.WeilDeligne.VirtualTrace
 
 open GlobalTheory.WeilDeligne.VirtualTrace in
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h f hf1 hf2 ι _ d a c hc`. Set `x : ι → Σ n : ℕ, WDRep h (Fin n → ℂ)` to `fun i => ⟨d i, a i⟩`. Set `L : (ι → ℕ) → List (Σ n : ℕ, WDRep h (Fin n → ℂ))` to `fun n => (Finset.univ : Finset ι).toList.flatMap fun i => List.replicate (n i) (x i)`. Establish `hfL : ∀ n, f (WD.mk (listSum h (L n)).2) = ∏ i, f (WD.mk (a i)) ^ n i` using `fun n => by`. Rewrite using `[map_listSum f hf1]`.
+
+Conclude with `prod_flatMap_replicate _ n x (fun y => f (WD.mk y.2))`. Establish `htL : ∀ n σ (k : ℕ), LinearMap.trace ℂ _ ((listSum h (L n)).2.ρ σ ^ k) = ∑ i, (n i : ℂ) * LinearMap.trace ℂ (Fin (d i) → ℂ) ((a i).ρ σ ^ k)` using `fun n σ k => by`. Rewrite using `[trace_listSum]`. Rewrite using `[sum_flatMap_replicate _ n x (fun y => LinearMap.trace ℂ _ (y.2.ρ σ ^ k))]`. Simplify using `only [nsmul_eq_mul, x]`.
+
+Establish `hcc : ∀ i, ((c i : ℤ) : ℂ) = (((c i).toNat : ℕ) : ℂ) - (((-c i).toNat : ℕ) : ℂ)` using `fun i => by conv_lhs => rw [← Int.toNat_sub_toNat_neg (c i)] push_cast; ring`. Establish `htr : ∀ σ (k : ℕ), LinearMap.trace ℂ _ ((listSum h (L fun i => (c i).toNat)).2.ρ σ ^ k) = LinearMap.trace ℂ _ ((listSum h (L fun i => (-c i).toNat)).2.ρ σ ^ k)` using `fun σ k => by`. Rewrite using `[htL, htL, ← sub_eq_zero, ← Finset.sum_sub_distrib]`. Use `hc (σ ^ k)` as an intermediate fact. Simplify using `only [map_pow, hcc] at this`.
+
+Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `hPQ : f (WD.mk (listSum h (L fun i => (c i).toNat)).2) = f (WD.mk (listSum h (L fun i => (-c i).toNat)).2)` using `hf2 _ _ fun σ => by`. Rewrite using `[WD.charPol_mk, WD.charPol_mk]`. Conclude with `GlobalTheory.T.charpoly_eq_of_trace_powers _ _ _ _ (htr σ)`.
+
+Rewrite `hPQ` using `[hfL, hfL]`. Establish `hz : ∀ i, f (WD.mk (a i)) ^ c i = f (WD.mk (a i)) ^ (c i).toNat * (f (WD.mk (a i)) ^ (-c i).toNat)⁻¹` using `fun i => by conv_lhs => rw [← Int.toNat_sub_toNat_neg (c i)]`. Rewrite using `[zpow_sub, zpow_natCast, zpow_natCast]`. Simplify using `only [hz, Finset.prod_mul_distrib, Finset.prod_inv_distrib, hPQ, mul_inv_cancel]`.
+-/
 theorem GlobalTheory.WeilDeligne.VirtualTrace.prod_zpow_eq_one_of_trace_zero :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (f : WD h → ℂˣ),

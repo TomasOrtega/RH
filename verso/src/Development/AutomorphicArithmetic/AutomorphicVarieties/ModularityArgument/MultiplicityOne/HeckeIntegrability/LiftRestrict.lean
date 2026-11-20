@@ -5,6 +5,9 @@ open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComp
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT GlobalTheory.LFun
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.E PositivityTheory.RgBcC PositivityTheory.Rg.BcB.CG PositivityTheory.Rg.BcB.G8 PositivityTheory.Rg.BcB.F
 
+/- English proof (translation)
+Establish `h : (FreeAlgebra.lift ℂ e).comp (FreeAlgebra.lift ℂ (fun j => FreeAlgebra.ι ℂ (v j))) = FreeAlgebra.lift ℂ (fun j => e (v j))`. Apply `FreeAlgebra.hom_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Conclude with `DFunLike.congr_fun h p`.
+-/
 private theorem lift_lift {J₀ J A : Type} [Ring A] [Algebra ℂ A] (v : J₀ → J) (e : J → A)
     (p : FreeAlgebra ℂ J₀) :
     FreeAlgebra.lift ℂ e (FreeAlgebra.lift ℂ (fun j => FreeAlgebra.ι ℂ (v j)) p) =
@@ -16,6 +19,11 @@ private theorem lift_lift {J₀ J A : Type} [Ring A] [Algebra ℂ A] (v : J₀ �
     simp
   exact DFunLike.congr_fun h p
 
+/- English proof (translation)
+Use `FreeAlgebra.induction ℂ J (motive := fun p => ∀ x : P, ((FreeAlgebra.lift ℂ r p x : P) : V) = FreeAlgebra.lift ℂ e p x) ?_ ?_ ?_ ?_ p` and prove the remaining obligations. Introduce `c x`. Simplify using `[AlgHom.commutes, Module.algebraMap_end_apply]`. Introduce `j x`. Simplify using `using h j x`.
+
+Introduce `a b ha hb x`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, ha, hb]`. Introduce `a b ha hb x`. Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, Submodule.coe_add, ha, hb]`.
+-/
 private theorem lift_restrict {V J : Type} [AddCommGroup V] [Module ℂ V] (P : Submodule ℂ V)
     (e : J → Module.End ℂ V) (r : J → Module.End ℂ P) (h : ∀ j (x : P), ((r j x : P) : V) = e j x)
     (p : FreeAlgebra ℂ J) : ∀ x : P, ((FreeAlgebra.lift ℂ r p x : P) : V) = FreeAlgebra.lift ℂ e p x := by
@@ -30,6 +38,11 @@ private theorem lift_restrict {V J : Type} [AddCommGroup V] [Module ℂ V] (P : 
   · intro a b ha hb x
     rw [map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, Submodule.coe_add, ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => intro x`. Both sides reduce to the same expression. Consider the case `cons a l ih`. Introduce `x`.
+
+Rewrite using `[List.map_cons, List.map_cons, List.prod_cons, List.prod_cons, Module.End.mul_apply, Module.End.mul_apply, h, ih]`.
+-/
 private theorem list_restrict {V ι : Type} [AddCommGroup V] [Module ℂ V] (P : Submodule ℂ V)
     (e : ι → Module.End ℂ V) (r : ι → Module.End ℂ P) (h : ∀ i (x : P), ((r i x : P) : V) = e i x)
     (l : List ι) : ∀ x : P, (((l.map r).prod x : P) : V) = (l.map e).prod x := by
@@ -40,6 +53,11 @@ private theorem list_restrict {V ι : Type} [AddCommGroup V] [Module ℂ V] (P :
     rw [List.map_cons, List.map_cons, List.prod_cons, List.prod_cons, Module.End.mul_apply,
       Module.End.mul_apply, h, ih]
 
+/- English proof (translation)
+Establish `inj` using `Submodule.map_injective_of_injective P.injective_subtype`. Break down `h with h | h` into its components or cases. Use `left`. Conclude with `inj (by rw [h, Submodule.map_bot])`. Use `right`.
+
+Conclude with `inj (by rw [h, Submodule.map_subtype_top])`.
+-/
 private theorem simple_of {V : Type} [AddCommGroup V] [Module ℂ V] (P : Submodule ℂ V) (W : Submodule ℂ P)
     (h : W.map P.subtype = ⊥ ∨ W.map P.subtype = P) : W = ⊥ ∨ W = ⊤ := by
   have inj := Submodule.map_injective_of_injective P.injective_subtype
@@ -49,6 +67,11 @@ private theorem simple_of {V : Type} [AddCommGroup V] [Module ℂ V] (P : Submod
   · right
     exact inj (by rw [h, Submodule.map_subtype_top])
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((u (v x) : P) : V) = ((v (u x) : P) : V)`. Rewrite using `[hu, hv, hv, hu]`.
+
+Conclude with `LinearMap.congr_fun h.eq (x : V)`.
+-/
 private theorem comm_res {V : Type} [AddCommGroup V] [Module ℂ V] (P : Submodule ℂ V) (u v : Module.End ℂ P)
     (u' v' : Module.End ℂ V) (hu : ∀ x : P, ((u x : P) : V) = u' x) (hv : ∀ x : P, ((v x : P) : V) = v' x)
     (h : Commute u' v') : Commute u v := by
@@ -59,6 +82,23 @@ private theorem comm_res {V : Type} [AddCommGroup V] [Module ℂ V] (P : Submodu
   rw [hu, hv, hv, hu]
   exact LinearMap.congr_fun h.eq (x : V)
 
+/- English proof (translation)
+Establish `step : ∀ l : List Z, ((l.flatMap fun w => [(w.1, false), (w.1, true)]).map c).prod = (l.map fun w => c (w.1, false) * c (w.1, true)).prod`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`.
+
+Simplify using `only [List.flatMap_cons, List.cons_append, List.nil_append, List.map_cons, List.prod_cons, mul_assoc]`. Rewrite using `[ih]`. Establish `hnd : ((Finset.univ : Finset Z).toList.flatMap fun w => [(w.1, false), (w.1, true)]).Nodup`. Use `List.nodup_flatMap.2 ⟨fun w _ => by simp, ?_⟩` and prove the remaining obligations. Use `(Finset.nodup_toList _).imp_of_mem ?_` and prove the remaining obligations.
+
+Introduce `a b _ _ hab`. Simplify using `only [Function.onFun, List.disjoint_left]`. Introduce `x hx hx'`. Apply `hab` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hx hx'`. Apply the tactic sequence `rcases hx with rfl | rfl <;> rcases hx' with h | h <;> simpa using h`. Establish `hperm : (Z ×ˢ (Finset.univ : Finset Bool)).toList.Perm ((Finset.univ : Finset Z).toList.flatMap fun w => [(w.1, false), (w.1, true)])`. Use `(List.perm_ext_iff_of_nodup (Finset.nodup_toList _) hnd).2 ?_` and prove the remaining obligations. Introduce and unpack `⟨w, b⟩`.
+
+Simplify using `only [Finset.mem_toList, Finset.mem_product, Finset.mem_univ, and_true, List.mem_flatMap, List.mem_cons, List.not_mem_nil, or_false]`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Use `⟨⟨w, hw⟩, trivial, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `cases b <;> simp`.
+
+Introduce and unpack `⟨a, -, h⟩`. Establish `hw : w = a.1`. Apply the tactic sequence `rcases h with h | h <;> exact (Prod.ext_iff.1 h).1`. Rewrite using `[hw]`. Conclude with `a.2`.
+
+Rewrite using `[← step]`. Use `List.Perm.prod_eq' (hperm.map c) ?_` and prove the remaining obligations. Rewrite using `[List.pairwise_map]`. Use `(Finset.nodup_toList _).imp_of_mem ?_` and prove the remaining obligations. Introduce `a b ha hb hab`.
+
+Conclude with `hc a (Finset.mem_toList.1 ha) b (Finset.mem_toList.1 hb) hab`.
+-/
 private theorem prod_reorder {ι A : Type} [Monoid A] (Z : Finset ι) (c : ι × Bool → A)
     (hc : ∀ i ∈ Z ×ˢ (Finset.univ : Finset Bool), ∀ k ∈ Z ×ˢ (Finset.univ : Finset Bool), i ≠ k → Commute (c i) (c k)) :
     ((Z ×ˢ (Finset.univ : Finset Bool)).toList.map c).prod =
@@ -104,6 +144,41 @@ private theorem prod_reorder {ι A : Type} [Monoid A] (Z : Finset ι) (c : ι ×
   intro a b ha hb hab
   exact hc a (Finset.mem_toList.1 ha) b (Finset.mem_toList.1 hb) hab
 
+/- English proof (translation)
+Introduce `hAdm hPf hPO hLC hYL hZS hYS hIs hSF hAC E _ _ _ n S Z N hS hZ hG π y τ hτ`. Establish `hNo : ∀ w, IsOpen (N w : Set (GLw n w))` using `fun w => (hG w).1`. Establish `hNl : ∀ w, N w ≤ KGL w n` using `fun w => (hG w).2.1`. Establish `hSl : ∀ w ∈ Z, ∀ b, Sl S (w, b)` using `fun w hw b => ⟨(hZ w hw).1, fun _ => (hZ w hw).2⟩`. Establish `hZero : ∀ w, IsHecke (N w) (0 : GLw n w → ℂ)` using `fun w => ⟨HasCompactSupport.zero, fun _ _ _ => ⟨rfl, rfl⟩⟩`.
+
+Establish `hLoc` using `hLC E n S Z N hS hZ hG`. Establish `hfixY : ∀ w ∈ Z, ∀ b, ∀ x ∈ y.Y, x ∈ fixed (rw' n w b) (N w)` using `fun w hw b x hx => ((hLoc (w, b) (hSl w hw b) 0 (hZero w)).1 x (y.fix hx)).1`. Establish `part1 : ∀ w ∈ Z, fixed (τ w).ρ (N w) ≠ ⊥`. Introduce `w hw hbot`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot y.ne`.
+
+Apply `hx0` to reduce the goal to its premises. Use `hIs E n π w (τ w) (hτ w hw) (N w) (hNo w) (hNl w) 1 (fun v hv => by` as an intermediate fact. Rewrite `hv` using `[hbot, Submodule.mem_bot]`. Simplify using `[hv]) x (y.le hx) (hfixY w hw false x hx)`. Simplify using `using this`.
+
+Use `haveI : FiniteDimensional ℂ y.Y := y.fd`. Use `haveI : Nontrivial y.Y := Submodule.nontrivial_iff_ne_bot.2 y.ne`. Use `haveI : ∀ w : ↥Z, FiniteDimensional ℂ (fixed (τ w.1).ρ (N w.1)) := fun w => hAdm E n w.1 (τ w.1) (N w.1) (hNo _)`. Establish `hαinv : ∀ (w : ↥Z) (f : {f : GLw n w.1 → ℂ // IsHecke (N w.1) f}), ∀ x ∈ fixed (τ w.1).ρ (N w.1), Lv (τ w.1).ρ (N w.1) f.1 x ∈ fixed (τ w.1).ρ (N w.1)` using `fun w f x hx => (hSF E n w.1 (τ w.1) (N w.1) (hNo _) (hNl _)).1 f.1 f.2 x hx`. Establish `hYinv : ∀ (b : Bool) (w : ↥Z) (f : {f : GLw n w.1 → ℂ // IsHecke (N w.1) f}), ∀ x ∈ y.Y, Lw N w.1 b f.1 x ∈ y.Y` using `fun b w f x hx => hYL E n S Z N hS hZ hG π y (w.1, b) (hSl w.1 w.2 b) f.1 f.2 x hx`.
+
+Set `α : ∀ w : ↥Z, {f : GLw n w.1 → ℂ // IsHecke (N w.1) f} → Module.End ℂ (fixed (τ w.1).ρ (N w.1))` to `fun w f => (Lv (τ w.1).ρ (N w.1) f.1).restrict (hαinv w f)`. Set `c : Bool → ∀ w : ↥Z, {f : GLw n w.1 → ℂ // IsHecke (N w.1) f} → Module.End ℂ y.Y` to `fun b w f => (Lw N w.1 b f.1).restrict (hYinv b w f)`. Establish `h1 : ∀ (i : ↥Z) (W : Submodule ℂ (fixed (τ i.1).ρ (N i.1))), (∀ f, ∀ x ∈ W, α i f x ∈ W) → W = ⊥ ∨ W = ⊤`. Introduce `w W hW`. Use `simple_of _ W ((hSF E n w.1 (τ w.1) (N w.1) (hNo _) (hNl _)).2 (W.map (Submodule.subtype _)) (Submodule.map_subtype_le _ _) ?_)` and prove the remaining obligations.
+
+Introduce `f hf x hx`. Take `⟨x0, hx0, rfl⟩` from `Submodule.mem_map.1 hx`. Conclude with `Submodule.mem_map.2 ⟨α w ⟨f, hf⟩ x0, hW ⟨f, hf⟩ x0 hx0, rfl⟩`. Establish `h2 : ∀ (i : ↥Z) (p : FreeAlgebra ℂ {f : GLw n i.1 → ℂ // IsHecke (N i.1) f}), FreeAlgebra.lift ℂ (α i) p = 0 → FreeAlgebra.lift ℂ (c false i) p = 0`. Introduce `i p hp`.
+
+Establish `hz : ∀ x ∈ fixed (τ i.1).ρ (N i.1), FreeAlgebra.lift ℂ (Lv (τ i.1).ρ (N i.1)) (FreeAlgebra.lift ℂ (fun j : {f : GLw n i.1 → ℂ // IsHecke (N i.1) f} => FreeAlgebra.ι ℂ j.1) p) x = 0`. Introduce `x hx`. Rewrite using `[lift_lift Subtype.val, ← lift_restrict (fixed (τ i.1).ρ (N i.1)) _ (α i) (fun _ _ => rfl) p ⟨x, hx⟩, hp]`. Both sides reduce to the same expression. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h3` using `hIs E n π i.1 (τ i.1) (hτ i.1 i.2) (N i.1) (hNo _) (hNl _) _ hz x.1 (y.le x.2) (hfixY i.1 i.2 false x.1 x.2)`. Rewrite `h3` using `[lift_lift Subtype.val]`. Establish `h4` using `lift_restrict y.Y (fun j : {f : GLw n i.1 → ℂ // IsHecke (N i.1) f} => Lv (rw' n i.1 false) (N i.1) j.1) (c false i) (fun _ _ => rfl) p x`.
+
+Rewrite `h4` using `[h3]`. Simplify using `using h4`. Establish `h3 : ∀ (i k : ↥Z), i ≠ k → ∀ f g, Commute (c false i f) (c false k g)`. Introduce `i k hik f g`. Use `comm_res y.Y _ _ _ _ (fun _ => rfl) (fun _ => rfl) ((hLoc (i.1, false) (hSl _ i.2 _) f.1 f.2).2 (k.1, false) (hSl _ k.2 _) ?_ g.1 g.2)` and prove the remaining obligations.
+
+Introduce `h`. Conclude with `hik (Subtype.ext (Prod.ext_iff.1 h).1)`. Establish `h4 : ∀ (i k : ↥Z) f g, Commute (c false i f) (c true k g)`. Introduce `i k f g`. Use `comm_res y.Y _ _ _ _ (fun _ => rfl) (fun _ => rfl) ((hLoc (i.1, false) (hSl _ i.2 _) f.1 f.2).2 (k.1, true) (hSl _ k.2 _) (by simp) g.1 g.2)` and prove the remaining obligations.
+
+Establish `h5 : ∀ (i : ↥Z) f, y.A * c false i f = c true i f * y.A`. Introduce `i f`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `hYS E n S Z N hS hZ hG π y i.1 i.2 f.1 f.2 x (c false i f x) rfl`. Establish `h6 : ∀ W : Submodule ℂ y.Y, (∀ (i : ↥Z) f, ∀ x ∈ W, c false i f x ∈ W ∧ c true i f x ∈ W) → W = ⊥ ∨ W = ⊤`. Introduce `W hW`. Use `simple_of _ W (hZS E n S Z N hS hZ hG π y (W.map (Submodule.subtype _)) (Submodule.map_subtype_le _ _) ?_)` and prove the remaining obligations. Introduce `w hw b f hf x hx`.
+
+Take `⟨x0, hx0, rfl⟩` from `Submodule.mem_map.1 hx`. Use `hW ⟨w, hw⟩ ⟨f, hf⟩ x0 hx0` as an intermediate fact. Consider the cases of `b`. Conclude with `Submodule.mem_map.2 ⟨_, this.1, rfl⟩`. Conclude with `Submodule.mem_map.2 ⟨_, this.2, rfl⟩`.
+
+Take `⟨d, hd, key⟩` from `hAC ↥Z (fun w : ↥Z => {f : GLw n w.1 → ℂ // IsHecke (N w.1) f}) (fun w : ↥Z => ↥(fixed (τ w.1).ρ (N w.1))) y.Y α (c false) (c true) y.A h1 h2 h3 h4 y.sq h5 h6`. Use `⟨part1, d, hd, fun F hF => ?_⟩` and prove the remaining obligations. Establish `hFh : ∀ w (_ : w ∈ Z) b, IsHecke (N w) (F w b)` using `fun w hw b => (hF.1 (w, b) (by simp [hw])).2`. Establish `hpf` using `hPf E n S Z N hS hZ hG _ F hF`. Establish `hcomm : ∀ i ∈ Z ×ˢ (Finset.univ : Finset Bool), ∀ k ∈ Z ×ˢ (Finset.univ : Finset Bool), i ≠ k → Commute (Lw N i.1 i.2 (F i.1 i.2)) (Lw N k.1 k.2 (F k.1 k.2))`.
+
+Introduce `i hi k hk hik`. Conclude with `(hLoc i (hF.1 i hi).1 _ (hF.1 i hi).2).2 k (hF.1 k hk).1 hik _ (hF.1 k hk).2`. Establish `e1 : y.r (pf S F) = (((Finset.univ : Finset ↥Z).toList.map fun i => c false i ⟨F i.1 false, hFh _ i.2 _⟩ * c true i ⟨F i.1 true, hFh _ i.2 _⟩).prod)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[y.act _ hpf x, hPO E n S Z N hS hZ hG _ F hF x (y.fix x.2), prod_reorder Z (fun i => Lw N i.1 i.2 (F i.1 i.2)) hcomm]`. Conclude with `(list_restrict y.Y _ _ (fun _ _ => rfl) _ x).symm`. Rewrite using `[e1, key (fun i => ⟨F i.1 false, hFh _ i.2 _⟩) (fun i => ⟨F i.1 true, hFh _ i.2 _⟩)]`. Use `congr 1`.
+
+Rewrite using `[← Finset.prod_coe_sort Z]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hinv : ∀ v ∈ fixed (τ w.1).ρ (N w.1), (Lv (τ w.1).ρ (N w.1) (F w.1 false) * Lv (τ w.1).ρ (N w.1) (F w.1 true)) v ∈ fixed (τ w.1).ρ (N w.1)` using `fun v hv => hαinv w ⟨_, hFh _ w.2 _⟩ _ (hαinv w ⟨_, hFh _ w.2 _⟩ v hv)`. Rewrite using `[GlobalTheory.BCT.trOn, dif_pos hinv]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Z.Mult.Pi.zTrA :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.admitted → PfHecke → ProdOp → LocComm → YLoc → ZSimple → YSwap → Isot → SimpleFix → UpperTheory.V.Z.Mult.Pi.AbsCoreA → UpperTheory.V.Z.Mult.Pi.ZTrA := by
   intro hAdm hPf hPO hLC hYL hZS hYS hIs hSF hAC E _ _ _ n S Z N hS hZ hG π y τ hτ

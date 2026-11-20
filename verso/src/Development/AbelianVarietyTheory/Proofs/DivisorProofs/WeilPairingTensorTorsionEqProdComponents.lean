@@ -18,6 +18,13 @@ open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 
 namespace GlobalTheory.Mum.TensTor
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D D' r W T F _ _ _ N N' ν ν' k hk p' q' ps qs hp hq z hz`. Establish `gt : BrGtSt` using `GlobalTheory.Ex.GtValues.points_correspond`. Establish `wp : BrWpSt` using `GlobalTheory.WeilValues.weil_eq_values gt (GlobalTheory.Ex.brFam GlobalTheory.allSixLaws.1 GlobalTheory.allSixLaws.2.1)`. Establish `hk1 : 1 ≤ k` using `hk`. Establish `hW` using `wp R D.toPre D.psi_even D.tau_bimult F N ν k hk1`.
+
+Establish `hW'` using `wp R D'.toPre D'.psi_even D'.tau_bimult F N' ν' k hk1`. Establish `hF` using `GlobalTheory.T.tensorData_values_facts R ‹_› D D' W T F N N' ν ν'`. Take `⟨a', as, ha', has, hra⟩` from `hp`. Take `⟨b', bs, hb', hbs, hrb⟩` from `hq`. Establish `hv` using `GlobalTheory.T.tensorTorsionPairing_eq_prod_factor_pairings F N N' W (cmp T ν ν') (chi T ν ν') (wv T ν ν') hF k hk1 a' b' as bs hra hrb`.
+
+Use `(hW' p' q' a' b' _ ha' hb').2 ?_` and prove the remaining obligations. Rewrite using `[hv]`. Establish `hz' : ∀ i j, z i j = N.wp (as i) (bs j)` using `fun i j => Units.ext ((hW (ps i) (qs j) (as i) (bs j) _ (has i) (hbs j)).1 (hz i j))`. Simplify using `only [hz']`.
+-/
 theorem weilQk_tens : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N') (k : ℕ), 0 < k → ∀ (p' q' : QkPt D'.toPre F k) (ps qs : Fin r → QkPt D.toPre F k), PtRel T ν ν' p' ps → PtRel T ν ν' q' qs → ∀ z : Fin r → Fin r → Fˣ, (∀ i j, WeilQkIs D.toPre F k (ps i) (qs j) (z i j : F)) → WeilQkIs D'.toPre F k p' q' ((∏ i, ∏ j, z i j ^ (W + W.transpose) i j : Fˣ) : F) := by
   intro R _ _ _ _ D D' r W T F _ _ _ N N' ν ν' k hk p' q' ps qs hp hq z hz
   have gt : BrGtSt := GlobalTheory.Ex.GtValues.points_correspond

@@ -16,6 +16,13 @@ namespace GlobalTheory.PrincipalDecomp
 
 open GlobalTheory.SphericalOps GlobalTheory.HeckeAdjoint GlobalTheory.HeckeOrthSum
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `GlobalTheory.SchurConst.ipM_posDef D θ V S M _ χ μ 𝓕 hθ hμ hF hS (GlobalTheory.GardingVec.sm_ne_bot D V S M)`. Establish `hpos : IsPosOn (Mult θ M (J : Set (GA D V)) χ) (ipM M μ 𝓕)` using `⟨fun x hx y hy z hz c => (h1 x hx y hy z hz c).1, fun x hx y hy => (h1 x hx y hy y hy 0).2, fun x hx => h2 x hx⟩`. Use `hpos.le_iSup_eigen (I := {x : HeightOneSpectrum (𝓞 D.host.E) × List ℤ × Finset (GA D V) // Hecke₂ V (J : Set (GA D V)) χ Sb x.1 x.2.1 x.2.2}) (fun i => heckeOn M i.1.2.2) (fun i => hK _ _ _ i.2) (fun i k T hT => ?_) ?_ Z ?_` and prove the remaining obligations. Rewrite `hT` using `[GlobalTheory.MultMem.mem_mult_iff]`. Conclude with `MultilinearMap.ext fun v => comm_heckeLin (realUnif D _) i.2 k.2 (hT.lev v)`.
+
+Introduce and unpack `⟨⟨P, d, R⟩, hR⟩`. Take `⟨R', hR', -⟩` from `exists_dual (realUnif D P) hR`. Conclude with `⟨⟨(P, dualLab d, R'), hR'⟩, fun T hT T' hT' => ipM_heckeOn_dualLab D V S θ M J χ Sb μ 𝓕 hθ hμ hF hS P d R R' hR hR' T hT T' hT' (hK _ _ _ hR T hT) (hK _ _ _ hR' T' hT')⟩`. Introduce `x T hT hx`. Set `c : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ` to `fun P d => if h : ∃ R, Hecke₂ V (J : Set (GA D V)) χ Sb P d R then x ⟨(P, d, h.choose), h.choose_spec⟩ else 0`.
+
+Use `hZ c (fun P d h => dif_neg h) ((mem_partFull ..).2 ⟨hT, fun P d R hR v => ?_⟩)` and prove the remaining obligations. Establish `h : ∃ R, Hecke₂ V (J : Set (GA D V)) χ Sb P d R` using `⟨R, hR⟩`. Rewrite using `[labelUnique (realUnif D) P d R h.choose hR h.choose_spec (T v) (((GlobalTheory.MultMem.mem_mult_iff ..).1 hT).lev v)]`. Simplify using `only [c, dif_pos h]`. Conclude with `congrArg (fun U : MMap M => U v) (hx ⟨(P, d, h.choose), h.choose_spec⟩)`.
+-/
 theorem mult_le_of_parts {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
     {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {M : DSModel V S} {J : Subgroup (GA D V)}
     {χ : GA D V → ℂ} {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))} {μ : Measure (GA D V)} {𝓕 : Set (GA D V)}
@@ -52,6 +59,19 @@ theorem mult_le_of_parts {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
     simp only [c, dif_pos h]
     exact congrArg (fun U : MMap M => U v) (hx ⟨(P, d, h.choose), h.choose_spec⟩)
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC i σ hS`. Take `⟨hinj, hrange, -⟩` from `hC.models.HW i σ`. Establish `hrange' : LinearMap.range (R.HW i σ).e = Mult R.θ (R.MW i σ) (Lev.levG _ (R.βW i) (R.datWp i R.triv) : Set (GA D (Wc D i))) (chiW R i)` using `hrange`. Use `haveI : FiniteDimensional ℂ (Mult R.θ (R.MW i σ) (Lev.levG _ (R.βW i) (R.datWp i R.triv) : Set (GA D (Wc D i))) (chiW R i)) := by`. Rewrite using `[← hrange']`.
+
+Use `infer_instance`. Take `⟨n, hB⟩` from `hC.lev.βW i`. Establish `key` using `mult_le_of_parts (J := Lev.levG _ (R.βW i) (R.datWp i R.triv)) (Sb := GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.badF R) hC.models.inf (hC.models.νW i).1.1 (hC.models.νW i).2 hS (fun P d Rp h T hT => ?_) ((⨆ (c : GlobalTheory.IndefiniteRowSideFullHecke.PolarisedD …`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Take `⟨y, hy, e⟩` from `key (hrange' ▸ LinearMap.mem_range_self _ x)`. Conclude with `hinj e ▸ hy`. Establish `hN : (((1 ^ n : ℕ) : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Rewrite using `[one_pow, Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 P.isPrime.ne_top`.
+
+Establish `hO : OffS D (GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.badF R) P`. Take `⟨_, _, _, _, hO, -⟩` from `h`. Conclude with `hO`. Establish `hP : ∀ PP, PP ∈ (R.datWp i R.triv).Pg ∨ PP ∈ (R.datWp i R.triv).Q → PP ≠ P ∧ ¬ Lev.IsConjPl PP P`. Introduce and unpack `PP (hP | hP)`.
+
+Conclude with `GlobalTheory.HeckeOffLevel.sep_of_offS hO (by`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.badF`. Conclude with `Finset.mem_image.2 ⟨PP, hP, rfl⟩)`. Conclude with `absurd hP (Finset.notMem_empty _)`. Rewrite `hT`, the goal using `[GlobalTheory.MultMem.mem_mult_iff]`.
+
+Use `isMultMap_heckeOn hT (fun k hk => ?_) fun v => GlobalTheory.HeckeOffLevel.hasType_heckeLin hB hN hP h (hT.lev v)` and prove the remaining obligations. Take `⟨_, _, _, _, -, -, -, -, -, -, -, -, -, -, hc⟩` from `h`. Conclude with `(hc.1 k hk).1`. Take `⟨y, rfl⟩ : T ∈ LinearMap.range (R.HW i σ).e` from `hrange' ▸ hT.1`. Conclude with `Submodule.mem_map_of_mem (le_iSup₂_of_le (f := fun (c : GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.Sys D) (_ : IsNormSys R i c) => partH R i σ c) c hc le_rfl hT)`.
+-/
 theorem iSup_partH_eq_top : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), SchurMult R.θ (R.MW i σ) (levSW R i) (chiW R i) (R.νW i) (R.fdW i) → (⨆ (c : GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.Sys D) (_ : IsNormSys R i c), partH R i σ c) = ⊤ := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i σ hS
   classical

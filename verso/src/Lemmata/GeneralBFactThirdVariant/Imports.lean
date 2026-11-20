@@ -2,6 +2,15 @@ import Mathlib
 
 namespace Bl.general_b_fact_third_variant
 
+/- English proof (translation)
+Introduce `E _ _ Ψ hΨ x hx`. Establish `hall : ∀ σ : RingHom E Complex, (Finset.univ.sum fun k => (Complex.ofReal (x k)) * σ (NumberField.RingOfIntegers.val (NumberField.RingOfIntegers.basis E k))) = 0`. Introduce `σ`. Distinguish the cases in `hσ : σ ∈ Ψ`. Conclude with `hx σ hσ`.
+
+Establish `hc : NumberField.ComplexEmbedding.conjugate σ ∈ Ψ`. Assume the negation of the conclusion as `hc`. Conclude with `hσ ((hΨ σ).mpr hc)`. Establish `h2` using `congrArg (starRingEnd Complex) (hx _ hc)`. Rewrite `h2` using `[map_sum, map_zero]`.
+
+Simplify `h2` using `only [map_mul, Complex.conj_ofReal, NumberField.ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`. Establish `hli` using `(NumberField.canonicalEmbedding.latticeBasis E).linearIndependent`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use function extensionality and compare the values at `k`. Establish `h3` using `hli (fun k => Complex.ofReal (x k)) (by`.
+
+Use function extensionality and compare the values at `σ`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [NumberField.canonicalEmbedding.latticeBasis_apply, Pi.smul_apply, NumberField.canonicalEmbedding.apply_at, NumberField.integralBasis_apply, smul_eq_mul, Pi.zero_apply]`. Conclude with `hall σ) k`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem goal1 :
   ∀ {E : Type} [inst : Field.{0} E] [inst_1 : NumberField.{0} E] {Ψ : Finset.{0} (RingHom.{0, 0} E Complex)},
   (∀ (σ : RingHom.{0, 0} E Complex),

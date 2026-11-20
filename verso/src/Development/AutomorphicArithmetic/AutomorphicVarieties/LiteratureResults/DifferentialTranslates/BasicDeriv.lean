@@ -12,6 +12,9 @@ variable {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommG
 
 end
 
+/- English proof (translation)
+Establish `h1` using `(ContinuousAlternatingMap.apply ℝ V F m).hasFDerivAt.comp (c s) hw.hasFDerivAt`. Conclude with `h1.comp_hasDerivAt s hc`.
+-/
 private theorem hasDerivAt_apply_comp_of_differentiableAt {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {q : ℕ} {w : V → V [⋀^Fin q]→L[ℝ] F}
     {c : ℝ → V} {c' : V} {s : ℝ} (m : Fin q → V) (hw : DifferentiableAt ℝ w (c s))
@@ -20,6 +23,15 @@ private theorem hasDerivAt_apply_comp_of_differentiableAt {V F : Type} [NormedAd
   have h1 := (ContinuousAlternatingMap.apply ℝ V F m).hasFDerivAt.comp (c s) hw.hasFDerivAt
   exact h1.comp_hasDerivAt s hc
 
+/- English proof (translation)
+Establish `hc : HasDerivAt (fun s : ℝ => x + s • v j) (v j) 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const (v j)).const_add x`. Establish `hw0 : DifferentiableAt ℝ w (x + (0 : ℝ) • v j)` using `by simpa using hw`. Establish `d1` using `hasDerivAt_apply_comp_of_differentiableAt (Function.update v j x) hw0 hc`. Establish `d2` using `hasDerivAt_apply_comp_of_differentiableAt v hw0 hc`.
+
+Establish `d3` using `(hasDerivAt_id (0 : ℝ)).smul d2`. Establish `dg` using `d1.add d3`. Establish `hev : ∀ᶠ s in 𝓝 (0 : ℝ), x + s • v j ∈ Y`. Establish `hcont : Continuous fun s : ℝ => x + s • v j` using `by fun_prop`. Conclude with `hcont.continuousAt (x := 0) |>.preimage_mem_nhds (by simpa using hY.mem_nhds hx)`.
+
+Establish `heq : (fun s : ℝ => w (x + s • v j) (Function.update v j x) + id s • w (x + s • v j) v) =ᶠ[𝓝 0] fun _ => (0 : F)` using `by filter_upwards [hev] with s hs`. Establish `h0` using `hR (x + s • v j) hs (Function.update v j (x + s • v j)) j (by simp)`. Rewrite `h0` using `[ContinuousAlternatingMap.map_update_add, ContinuousAlternatingMap.map_update_smul, Function.update_eq_self]`. Simplify using `using h0`. Use `dg.unique ((hasDerivAt_const (0 : ℝ) (0 : F)).congr_of_eventuallyEq heq)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 private theorem fderiv_update_add_eq_zero_of_radBasic {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {Y : Set V} (hY : IsOpen Y) {q : ℕ}
     {w : V → V [⋀^Fin q]→L[ℝ] F} (hR : RadBasic Y w) {x : V} (hx : x ∈ Y)
@@ -45,6 +57,15 @@ private theorem fderiv_update_add_eq_zero_of_radBasic {V F : Type} [NormedAddCom
   have := dg.unique ((hasDerivAt_const (0 : ℝ) (0 : F)).congr_of_eventuallyEq heq)
   simpa using this
 
+/- English proof (translation)
+Establish `h0` using `congrArg (fun f => f (Fin.cons x v)) hd`. Simplify using `only [extDeriv, ContinuousAlternatingMap.alternatizeUncurryFin_apply, Fin.sum_univ_succ] at h0`. Consider the cases of `q with`. Consider the case `zero => simpa using h0`. Consider the case `succ n`.
+
+Establish `hterm : ∀ j : Fin (n + 1), (-1 : ℤ) ^ ((j.succ : Fin (n + 2)) : ℕ) • fderiv ℝ w x ((Fin.cons x v : Fin (n + 2) → V) j.succ) (Fin.removeNth j.succ (Fin.cons x v : Fin (n + 2) → V)) = w x v`. Introduce `j`. Establish `hr : Fin.removeNth j.succ (Fin.cons x v : Fin (n + 2) → V) = Matrix.vecCons x (Fin.removeNth j v)`. Use extensionality with `i`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations.
+
+Simplify using `[Fin.removeNth]`. Simplify using `[Fin.removeNth, Fin.succ_succAbove_succ]`. Rewrite using `[hr, ← ContinuousAlternatingMap.neg_one_pow_smul_map_insertNth, Fin.insertNth_removeNth, Fin.cons_succ, smul_smul]`. Use `fderiv_update_add_eq_zero_of_radBasic hY hR hx hw v j` as an intermediate fact. Rewrite using `[Fin.val_succ, pow_succ, mul_comm, ← mul_assoc, ← pow_add, Even.neg_one_pow ⟨_, rfl⟩, one_mul, neg_one_smul, neg_eq_iff_eq_neg, eq_neg_iff_add_eq_zero]`.
+
+Conclude with `this`. Rewrite `h0` using `[Finset.sum_congr rfl (fun j _ => hterm j)]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Simplify `h0` using `[add_comm]`.
+-/
 private theorem fderiv_self_add_smul_eq_zero_of_radBasic_closed {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {Y : Set V} (hY : IsOpen Y) {q : ℕ}
     {w : V → V [⋀^Fin q]→L[ℝ] F} (hR : RadBasic Y w) {x : V} (hx : x ∈ Y)
@@ -75,6 +96,21 @@ private theorem fderiv_self_add_smul_eq_zero_of_radBasic_closed {V F : Type} [No
     rw [Nat.cast_smul_eq_nsmul]
     simpa [add_comm] using h0
 
+/- English proof (translation)
+Introduce `V F _ _ _ _ Y hY hC q w hw hR hd t ht p hp v`. Establish `hdiff : ∀ x ∈ Y, DifferentiableAt ℝ w x` using `fun x hx => (hw.contDiffAt (hY.mem_nhds hx)).differentiableAt (by simp)`. Use `set k : ℝ → F := fun s => s ^ q • w (s • p) v with hkdef`. Establish `hscale : ∀ s : ℝ, w (s • p) (fun i => s • v i) = k s`. Introduce `s`.
+
+Rewrite using `[ContinuousAlternatingMap.map_smul_univ]`. Simplify using `[k, Finset.prod_const]`. Establish `hk : ∀ s ∈ Set.Ioi (0 : ℝ), HasDerivAt k 0 s`. Introduce `s hs`. Establish `hs0 : s ≠ 0` using `ne_of_gt hs`.
+
+Establish `hsp : s • p ∈ Y` using `hC s hs p hp`. Establish `hc : HasDerivAt (fun r : ℝ => r • p) p s`. Simplify using `using (hasDerivAt_id s).smul_const p`. Establish `dg` using `hasDerivAt_apply_comp_of_differentiableAt v (c := fun r : ℝ => r • p) (hdiff _ hsp) hc`. Establish `dk : HasDerivAt k _ s` using `(hasDerivAt_pow q s).smul dg`.
+
+Establish `key` using `fderiv_self_add_smul_eq_zero_of_radBasic_closed hY hR hsp (hdiff _ hsp) (hd _ hsp) v`. Establish `hA : s • fderiv ℝ w (s • p) p v = -((q : ℝ) • w (s • p) v)`. Rewrite using `[eq_neg_iff_add_eq_zero, ← key]`. Simplify using `[map_smul]`. Establish `hpow : s * ((q : ℝ) * s ^ (q - 1)) = q * s ^ q`.
+
+Consider the cases of `q with`. Consider the case `zero => simp`. Consider the case `succ n => simp [pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Use `dk using 1` and compare the differences between its conclusion and the goal.
+
+Apply `smul_right_injective F hs0` to reduce the goal to its premises. Simplify using `only [smul_zero, smul_add]`. Rewrite using `[smul_comm s (s ^ q), hA, smul_smul, hpow, smul_neg, smul_smul, mul_comm, neg_add_cancel]`. Establish `hconst` using `isOpen_Ioi.is_const_of_deriv_eq_zero isPreconnected_Ioi (fun s hs => (hk s hs).differentiableAt.differentiableWithinAt) (fun s hs => (hk s hs).deriv) (Set.mem_Ioi.mpr ht) (Set.mem_Ioi.mpr one_pos)`. Rewrite using `[hscale, hconst]`.
+
+Simplify using `[k]`.
+-/
 theorem homog : Homog := by
   intro V F _ _ _ _ Y hY hC q w hw hR hd t ht p hp v
   have hdiff : ∀ x ∈ Y, DifferentiableAt ℝ w x := fun x hx =>

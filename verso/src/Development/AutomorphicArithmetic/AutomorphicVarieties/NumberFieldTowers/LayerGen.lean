@@ -7,6 +7,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ l _ hmu`. Take `⟨-, h2, h3, -⟩` from `muQ L Ω l`. Establish `hq` using `h3.1 hmu`. Establish `hr` using `cycRange L Ω l hmu`. Take `⟨p1, p2, p3⟩` from `princGen l _ hq`.
+
+Establish `h0 : ∀ g, cycZ L Ω l g ∈ KStar.TotallyRealRoots.princ l (cZero l L)` using `fun g => hr ▸ ⟨g, rfl⟩`. Establish `hU : ∀ n, Un L Ω l n = (KStar.TotallyRealRoots.princ l n).comap (cycZ L Ω l)` using `fun n => Subgroup.ext fun g => ⟨fun h => h.2, fun h => ⟨trivial, h⟩⟩`. Establish `h1 : 1 ≤ cZero l L`. Use `le_trans ?_ hq` and prove the remaining obligations. Unfold `qExp`.
+
+Apply the tactic sequence `split_ifs <;> omega`. Use `⟨fun m => ?_, fun γ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[layU, hU, Subgroup.index_comap, hr, p3]`. Establish `hn : cycZ L Ω l γ ∉ KStar.TotallyRealRoots.princ l (cZero l L + 1)`. Use `(p1 _ (h0 γ)).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[← hr, MonoidHom.range_eq_map]`. Conclude with `hγ.2`. Take `⟨q1, q2⟩` from `p2 _ (h0 γ) hn`. Use `⟨q1, ?_, fun m => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `: γ ∈ Un L Ω l 1` using `by rw [(h2 1).2 h1]; trivial`.
+
+Conclude with `this`. Rewrite using `[layU, hU, Subgroup.mem_comap, map_pow]`. Conclude with `(q2 m).1`. Rewrite using `[layU, hU, map_pow]`. Conclude with `(Subgroup.map_comap_le _ _).trans (((princGen l (cZero l L + m) (hq.trans (Nat.le_add_right _ _))).1 _ (q2 m).1).2 (q2 m).2)`.
+-/
 theorem UpperTheory.V.Tower.layerGen :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime], HasMuQ l L → (∀ m, (layU l L Ω m).index = l ^ m) ∧
         ∀ γ : G L Ω, IsGen l ⊤ γ → PropA.IsLevel l (cycZ L Ω l γ : ℤ_[l]ˣ) (cZero l L) ∧ γ ∈ levU l ⊤ 1 ∧ ∀ m, IsGen l (layU l L Ω m) (γ ^ l ^ m) := by

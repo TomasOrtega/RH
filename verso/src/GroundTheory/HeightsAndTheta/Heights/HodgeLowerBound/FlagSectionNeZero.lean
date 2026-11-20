@@ -90,16 +90,27 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter (GlobalThe
 
 abbrev ιE : Unit → Type := GlobalTheory 2
 
+/- English proof (translation)
+Introduce `m hm`. Simplify using `at hm`.
+-/
 theorem isMultiHomog_zero' (d : Unit → ℕ) : IsMultiHomog (0 : MRing ιE) d := by
   intro m hm
   simp at hm
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem isMultiHomog_one' : IsMultiHomog (1 : MRing ιE) 0 := by
   intro m hm k
   rw [support_one, Finset.mem_singleton] at hm
   subst hm
   simp
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[support_X_pow, Finset.mem_singleton]`. Substitute `hm` using the available equality. Consider the cases of `k`. Rewrite using `[Fin.sum_univ_two]`.
+
+Apply the tactic sequence `fin_cases i <;> simp`.
+-/
 theorem isMultiHomog_Xpow (i : Fin 2) (e : ℕ) : IsMultiHomog ((X ⟨(), i⟩ : MRing ιE) ^ e) (fun _ => e) := by
   intro m hm k
   rw [support_X_pow, Finset.mem_singleton] at hm
@@ -108,10 +119,16 @@ theorem isMultiHomog_Xpow (i : Fin 2) (e : ℕ) : IsMultiHomog ((X ⟨(), i⟩ :
   rw [Fin.sum_univ_two]
   fin_cases i <;> simp
 
+/- English proof (translation)
+Rewrite using `[Ideal.mem_bot]`. Conclude with `X_ne_zero _`.
+-/
 theorem X_notMem_bot (i : Fin 2) : (X ⟨(), i⟩ : MRing ιE) ∉ (⊥ : Ideal (MRing ιE)) := by
   rw [Ideal.mem_bot]
   exact X_ne_zero _
 
+/- English proof (translation)
+Introduce `h`. Apply `hf` to reduce the goal to its premises. Establish `h'` using `IsFractionRing.injective (MRing ιE ⧸ (⊥ : Ideal (MRing ιE))) (FnField (⊥ : Ideal (MRing ιE))) (h.trans (map_zero _).symm)`. Rewrite `h'` using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_bot]`. Then use the resulting hypothesis.
+-/
 theorem cls_ne_zero {f : MRing ιE} (hf : f ≠ 0) : cls ⊥ f ≠ 0 := by
   intro h
   apply hf
@@ -121,12 +138,23 @@ theorem cls_ne_zero {f : MRing ιE} (hf : f ≠ 0) : cls ⊥ f ≠ 0 := by
 
 def y0E : FnField (⊥ : Ideal (MRing ιE)) := cls ⊥ (X ⟨(), 0⟩)
 
+/- English proof (translation)
+The claim follows from `cls_ne_zero (X_ne_zero _)`.
+-/
 theorem flagSection_ne_zero : y0E ≠ 0 := cls_ne_zero (X_ne_zero _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X ⟨(), 0⟩, 1, fun _ => 1, 0, by simpa using isMultiHomog_Xpow 0 1, isMultiHomog_one', by rw [Ideal.mem_bot]; exact one_ne_zero, by intro k; simp, by simp [y0E, cls]⟩`.
+-/
 theorem isHomogOf_y0E : IsHomogOf ⊥ y0E (fun _ => 1) :=
   ⟨X ⟨(), 0⟩, 1, fun _ => 1, 0, by simpa using isMultiHomog_Xpow 0 1, isMultiHomog_one',
     by rw [Ideal.mem_bot]; exact one_ne_zero, by intro k; simp, by simp [y0E, cls]⟩
 
+/- English proof (translation)
+Establish `h1 : IsMultiHomog ((X ⟨(), 0⟩ : MRing ιE) ^ 2) (fun _ => 2)` using `isMultiHomog_Xpow 0 2`. Establish `h3 : (1 : MRing ιE) ∉ (⊥ : Ideal (MRing ιE))` using `by rw [Ideal.mem_bot]; exact one_ne_zero`. Establish `h4 : ∀ k : Unit, (((fun _ => 2 : Unit → ℕ) k : ℕ) : ℤ) - (((0 : Unit → ℕ) k : ℕ) : ℤ) = 2` using `fun _ => rfl`. Establish `h5 : y0E * y0E * cls ⊥ (1 : MRing ιE) = cls ⊥ ((X ⟨(), 0⟩ : MRing ιE) ^ 2)`. Simplify using `only [y0E, cls, map_one, mul_one, pow_two, map_mul]`.
+
+Conclude with `⟨_, _, _, _, h1, isMultiHomog_one', h3, h4, h5⟩`.
+-/
 theorem isHomogOf_y0E_sq : IsHomogOf (⊥ : Ideal (MRing ιE)) (y0E * y0E) (fun _ => 2) := by
   have h1 : IsMultiHomog ((X ⟨(), 0⟩ : MRing ιE) ^ 2) (fun _ => 2) := isMultiHomog_Xpow 0 2
   have h3 : (1 : MRing ιE) ∉ (⊥ : Ideal (MRing ιE)) := by rw [Ideal.mem_bot]; exact one_ne_zero
@@ -135,6 +163,9 @@ theorem isHomogOf_y0E_sq : IsHomogOf (⊥ : Ideal (MRing ιE)) (y0E * y0E) (fun 
     simp only [y0E, cls, map_one, mul_one, pow_two, map_mul]
   exact ⟨_, _, _, _, h1, isMultiHomog_one', h3, h4, h5⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 1, d, 0, isMultiHomog_zero' d, isMultiHomog_one', by rw [Ideal.mem_bot]; exact one_ne_zero, by intro k; simp, by simp [cls]⟩`.
+-/
 theorem isHomogOf_zeroE (d : Unit → ℕ) : IsHomogOf (⊥ : Ideal (MRing ιE)) 0 (fun k => (d k : ℤ)) :=
   ⟨0, 1, d, 0, isMultiHomog_zero' d, isMultiHomog_one', by rw [Ideal.mem_bot]; exact one_ne_zero,
     by intro k; simp, by simp [cls]⟩
@@ -142,6 +173,9 @@ theorem isHomogOf_zeroE (d : Unit → ℕ) : IsHomogOf (⊥ : Ideal (MRing ιE))
 def basisE : Module.Basis (Fin 2) (FnField (⊥ : Ideal (MRing ιE))) (Fin 2 → FnField (⊥ : Ideal (MRing ιE))) :=
   (Pi.basisFun _ (Fin 2)).unitsSMul fun _ => Units.mk0 y0E flagSection_ne_zero
 
+/- English proof (translation)
+Simplify using `[basisE, Module.Basis.unitsSMul_apply, Pi.single_apply]`.
+-/
 theorem basisE_apply (a l : Fin 2) : basisE a l = if l = a then y0E else 0 := by
   simp [basisE, Module.Basis.unitsSMul_apply, Pi.single_apply]
 

@@ -8,6 +8,13 @@ open Formalism.UG GlobalTheory.SatakeWeyl
 
 namespace GlobalTheory.SatakeWeyl.Heis
 
+/- English proof (translation)
+Establish `h1 : (V.map φ).relIndex φ.range = (V ⊔ φ.ker).index`. Rewrite using `[← Subgroup.index_comap, Subgroup.comap_map_eq]`. Establish `h2 : V.relIndex φ.ker = V.relIndex (V ⊔ φ.ker)`. Use `Nat.card_congr (Equiv.ofBijective (Subgroup.quotientSubgroupOfEmbeddingOfLE V (le_sup_right : φ.ker ≤ V ⊔ φ.ker)) ⟨Function.Embedding.injective _, ?_⟩)` and prove the remaining obligations. Introduce `y`.
+
+Take `⟨⟨g, hg⟩, rfl⟩` from `QuotientGroup.mk_surjective y`. Establish `hg' : g ∈ ((φ.ker ⊔ V : Subgroup A) : Set A)` using `by rw [sup_comm]; exact hg`. Rewrite `hg'` using `[Subgroup.normal_mul]`. Take `⟨a, ha, v, hv, rfl⟩` from `hg'`. Use `⟨QuotientGroup.mk ⟨a, ha⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Subgroup.quotientSubgroupOfEmbeddingOfLE_apply_mk, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using hv`. Rewrite using `[h1, h2, mul_comm, Subgroup.relIndex_mul_index le_sup_left]`.
+-/
 theorem index_eq_map_mul_ker {A B : Type} [Group A] [Group B] (φ : A →* B) (V : Subgroup A) :
     V.index = (V.map φ).relIndex φ.range * V.relIndex φ.ker := by
   have h1 : (V.map φ).relIndex φ.range = (V ⊔ φ.ker).index := by
@@ -30,6 +37,19 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L
 
 def Heisenberg₂ (σ : L →+* L) (x y : L) : Matrix (Fin 3) (Fin 3) L := !![1, x, y; 0, 1, -σ x; 0, 0, 1]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, -⟩`. Establish `hg : ∀ i j : Fin 3, j.val ≤ i.val → mat g i j = (1 : Matrix (Fin 3) (Fin 3) L) i j` using `hg`. Establish `h1 : cT σ (mat g) * antiJ L 3 * mat g = antiJ L 3` using `g.2`. Establish `e00 : mat g 0 0 = 1` using `by simpa using hg 0 0 (by decide)`.
+
+Establish `e10 : mat g 1 0 = 0` using `by simpa using hg 1 0 (by decide)`. Establish `e11 : mat g 1 1 = 1` using `by simpa using hg 1 1 (by decide)`. Establish `e20 : mat g 2 0 = 0` using `by simpa using hg 2 0 (by decide)`. Establish `e21 : mat g 2 1 = 0` using `by simpa using hg 2 1 (by decide)`. Establish `e22 : mat g 2 2 = 1` using `by simpa using hg 2 2 (by decide)`.
+
+Establish `r0 : (0 : Fin 3).rev = 2` using `rfl`. Establish `r1 : (1 : Fin 3).rev = 1` using `rfl`. Establish `r2 : (2 : Fin 3).rev = 0` using `rfl`. Establish `a` using `congrFun (congrFun h1 1) 2`. Establish `b` using `congrFun (congrFun h1 2) 2`.
+
+Rewrite `a`, `b` using `[Matrix.mul_apply, Fin.sum_univ_three]`. Simplify using `only [P.fSatake_cTJ, r0, r1, r2, e11, e21, e22, map_one, map_zero] at a b`. Establish `a' : mat g 1 2 = -σ (mat g 0 1)`. Establish `: antiJ L 3 1 2 = 0` using `by simp [antiJ]`. Take the linear combination `a + this`.
+
+Establish `: antiJ L 3 2 2 = 0` using `by simp [antiJ]`. Rewrite `b` using `[a', map_neg, hσ]`. Use `⟨mat g 0 1, mat g 0 2, by linear_combination b + this, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Heisenberg₂, e00, e10, e11, e20, e21, e22, a']`.
+
+Introduce and unpack `⟨x, y, -, e⟩`. Use `⟨fun i j h => ?_, fun i j h => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [e] fin_cases i <;> fin_cases j <;> simp [Heisenberg₂] at h ⊢`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp at h`.
+-/
 theorem mem_root_iff (hσ : ∀ x, σ (σ x) = x) (g : GU σ 3) :
     g ∈ rootU σ ![0, 0, 0] ↔ ∃ x y, y + σ y + x * σ x = 0 ∧ mat g = Heisenberg₂ σ x y := by
   constructor
@@ -63,6 +83,11 @@ theorem mem_root_iff (hσ : ∀ x, σ (σ x) = x) (g : GU σ 3) :
       fin_cases i <;> fin_cases j <;> simp [Heisenberg₂] at h ⊢
     · fin_cases i <;> fin_cases j <;> simp at h
 
+/- English proof (translation)
+Apply `exists_mat` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_three]`. Establish `r0 : (0 : Fin 3).rev = 2` using `rfl`. Establish `r1 : (1 : Fin 3).rev = 1` using `rfl`.
+
+Establish `r2 : (2 : Fin 3).rev = 0` using `rfl`. Simplify using `only [P.fSatake_cTJ, r0, r1, r2]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Heisenberg₂, antiJ, hσ]`. Take the linear combination `h`.
+-/
 theorem exists_heis (hσ : ∀ x, σ (σ x) = x) {x y : L} (h : y + σ y + x * σ x = 0) :
     ∃ g : GU σ 3, mat g = Heisenberg₂ σ x y := by
   apply exists_mat
@@ -75,6 +100,13 @@ theorem exists_heis (hσ : ∀ x, σ (σ x) = x) {x y : L} (h : y + σ y + x * �
   fin_cases i <;> fin_cases j <;> simp [Heisenberg₂, antiJ, hσ]
   linear_combination h
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_inf, mem_root_iff hσ, mem_KU_iff hv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, x, y, hr, e⟩`. Use `⟨x, ?_, y, ?_, hr, e⟩` and prove the remaining obligations. Simplify `h 0 1` using `[e, Heisenberg₂]`.
+
+Simplify `h 0 2` using `[e, Heisenberg₂]`. Introduce and unpack `⟨x, hx, y, hy, hr, e⟩`. Use `⟨fun i j => ?_, x, y, hr, e⟩` and prove the remaining obligations. Establish `hx' : σ x ∈ intL L` using `by show Valued.v (σ x) ≤ 1`. Rewrite using `[hv]`.
+
+Conclude with `hx`. Rewrite using `[e]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Heisenberg₂, hx, hy, hx', one_mem, zero_mem]`.
+-/
 theorem mem_int_iff (hσ : ∀ x, σ (σ x) = x) (hv : ∀ x, Valued.v (σ x) = Valued.v x) (g : GU σ 3) :
     g ∈ KU σ 3 ⊓ rootU σ ![0, 0, 0] ↔
       ∃ x ∈ intL L, ∃ y ∈ intL L, y + σ y + x * σ x = 0 ∧ mat g = Heisenberg₂ σ x y := by
@@ -93,6 +125,11 @@ theorem mem_int_iff (hσ : ∀ x, σ (σ x) = x) (hv : ∀ x, Valued.v (σ x) = 
     fin_cases i <;> fin_cases j <;> simp [Heisenberg₂, hx, hy, hx', one_mem, zero_mem]
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Establish `: mat s * mat g = Heisenberg₂ σ (ϖ * x) (ϖ * (ϖ * y)) * mat s`. Rewrite using `[e, hs]`. Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Heisenberg₂, hϖ] <;> field_simp`.
+
+Rewrite using `[mat_mul, mat_mul, this, Matrix.mul_assoc, mat_mul_inv, Matrix.mul_one]`.
+-/
 theorem conj_iff {ϖ : L} (h0 : ϖ ≠ 0) (hϖ : σ ϖ = ϖ) {s : GU σ 3}
     (hs : mat s = Matrix.diagonal (fun i => ϖ ^ (![1, 0, -1] : Fin 3 → ℤ) i)) (g : GU σ 3) (x y : L)
     (e : mat g = Heisenberg₂ σ x y) : mat (s * g * s⁻¹) = Heisenberg₂ σ (ϖ * x) (ϖ * (ϖ * y)) := by
@@ -104,6 +141,9 @@ theorem conj_iff {ϖ : L} (h0 : ϖ ≠ 0) (hϖ : σ ϖ = ϖ) {s : GU σ 3}
   rw [mat_mul, mat_mul, this, Matrix.mul_assoc, mat_mul_inv, Matrix.mul_one]
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_three]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Heisenberg₂] <;> ring`.
+-/
 theorem heis_mul (x y x' y' : L) :
     Heisenberg₂ σ x y * Heisenberg₂ σ x' y' = Heisenberg₂ σ (x + x') (y + y' - x * σ x') := by
   ext i j
@@ -111,14 +151,30 @@ theorem heis_mul (x y x' y' : L) :
   fin_cases i <;> fin_cases j <;> simp [Heisenberg₂] <;> ring
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heis_01 (x y : L) : Heisenberg₂ σ x y 0 1 = x := rfl
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heis_02 (x y : L) : Heisenberg₂ σ x y 0 2 = y := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_tz (y : L) : y ∈ (intL L).toAddSubgroup ⊓ (σ.toAddMonoidHom + AddMonoidHom.id L).ker ↔
     y ∈ intL L ∧ σ y + y = 0 := Iff.rfl
 
+/- English proof (translation)
+Take `⟨hσ, hv, -, -, ⟨a, ha, ha1⟩, -⟩` from `hU`. Establish `h0 : σ a - a ≠ 0`. Introduce `h`. Rewrite `ha1` using `[h, map_zero]`. Conclude with `zero_ne_one ha1`.
+
+Establish `h0' : a - σ a ≠ 0` using `fun h => h0 (by linear_combination -h)`. Use `⟨-(σ a / (σ a - a)) * (x * σ x), ?_, ?_⟩` and prove the remaining obligations. Use `show Valued.v (-(σ a / (σ a - a)) * (x * σ x)) ≤ 1`. Establish `hx' : Valued.v x ≤ 1` using `hx`. Establish `ha' : Valued.v a ≤ 1` using `ha`.
+
+Rewrite using `[map_mul, Valuation.map_neg, map_div₀, ha1, div_one, map_mul, hv, hv]`. Conclude with `mul_le_one' ha' (mul_le_one' hx' hx')`. Simplify using `only [map_mul, map_neg, map_div₀, map_sub, hσ]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_snd {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {x : L} (hx : x ∈ intL L) :
     ∃ y ∈ intL L, y + σ y + x * σ x = 0 := by
   obtain ⟨hσ, hv, -, -, ⟨a, ha, ha1⟩, -⟩ := hU
@@ -135,6 +191,61 @@ theorem exists_snd {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {x : L} (hx : x 
     field_simp
     ring
 
+/- English proof (translation)
+Introduce `hI hT L _ _ ϖ σ q hU s hs`. Establish `hI` using `hI L ϖ σ q hU`. Establish `hT` using `hT L ϖ σ q hU`. Establish `hsnd` using `fun x => exists_snd hU (x := x)`. Take `⟨hσ, hv, hϖ, hvϖ, -⟩` from `hU`.
+
+Establish `h0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hvϖ` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe hvϖ`. Establish `hϖO : ϖ ∈ intL L` using `by show Valued.v ϖ ≤ 1`.
+
+Rewrite using `[hvϖ, ← WithZero.coe_one, WithZero.coe_le_coe]`. Evaluate the decidable proposition. Use `set T := (intL L).toAddSubgroup ⊓ (σ.toAddMonoidHom + AddMonoidHom.id L).ker with hTdef`. Establish `mT : ∀ y, y ∈ T ↔ y ∈ intL L ∧ σ y + y = 0` using `fun y => Iff.rfl`. Use `set U := KU σ 3 ⊓ rootU σ ![0, 0, 0] with hUdef`.
+
+Establish `mU : ∀ g, g ∈ U ↔ ∃ x ∈ intL L, ∃ y ∈ intL L, y + σ y + x * σ x = 0 ∧ mat g = Heisenberg₂ σ x y` using `mem_int_iff hσ hv`. Use `set V := U.map (MulAut.conj s).toMonoidHom with hVdef`. Establish `mV : ∀ g, g ∈ V ↔ ∃ x ∈ intL L, ∃ y ∈ intL L, y + σ y + x * σ x = 0 ∧ mat g = Heisenberg₂ σ (ϖ * x) (ϖ * (ϖ * y))`. Introduce `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, hu, rfl⟩`. Take `⟨x, hx, y, hy, hr, e⟩` from `(mU u).1 hu`. Conclude with `⟨x, hx, y, hy, hr, conj_iff h0 hϖ hs u x y e⟩`. Introduce and unpack `⟨x, hx, y, hy, hr, e⟩`. Take `⟨u, hu⟩` from `exists_heis hσ hr`.
+
+Conclude with `⟨u, (mU u).2 ⟨x, hx, y, hy, hr, hu⟩, mat_injective ((conj_iff h0 hϖ hs u x y hu).trans e.symm)⟩`. Establish `VU : V ≤ U`. Introduce `g hg`. Take `⟨x, hx, y, hy, hr, e⟩` from `(mV g).1 hg`. Use `(mU g).2 ⟨_, mul_mem hϖO hx, _, mul_mem hϖO (mul_mem hϖO hy), ?_, e⟩` and prove the remaining obligations.
+
+Simplify using `only [map_mul, hϖ]`. Take the linear combination `ϖ * ϖ * hr`. Set `φ : U →* Multiplicative L` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (mat g.1 0 1)) (by`. Introduce `a b`. Take `⟨x, -, y, -, -, e⟩` from `(mU a).1 a.2`.
+
+Take `⟨x', -, y', -, -, e'⟩` from `(mU b).1 b.2`. Rewrite using `[← ofAdd_add, Subgroup.coe_mul, mat_mul, e, e', heis_mul]`. Use the proof step `rfl)`. Establish `hφ : ∀ g, φ g = Multiplicative.ofAdd (mat g.1 0 1)` using `fun _ => rfl`. Establish `hker : ∀ g : φ.ker, ∃ y ∈ T, mat g.1.1 = Heisenberg₂ σ 0 y`.
+
+Introduce `g`. Take `⟨x, -, y, hy, hr, e⟩` from `(mU g.1).1 g.1.2`. Establish `: mat g.1.1 0 1 = 0` using `g.2`. Rewrite `this` using `[e, heis_01]`. Substitute `this` using the available equality.
+
+Conclude with `⟨y, (mT y).2 ⟨hy, by linear_combination hr⟩, e⟩`. Set `χ : φ.ker →* Multiplicative L` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (mat g.1.1 0 2)) (by`. Introduce `a b`. Take `⟨y, -, e⟩` from `hker a`. Take `⟨y', -, e'⟩` from `hker b`.
+
+Rewrite using `[← ofAdd_add, Subgroup.coe_mul, Subgroup.coe_mul, mat_mul, e, e', heis_mul, heis_02, heis_02, heis_02, zero_mul, sub_zero])`. Establish `r1 : φ.range = AddSubgroup.toSubgroup (intL L).toAddSubgroup`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`.
+
+Take `⟨x, hx, y, -, -, e⟩` from `(mU g).1 g.2`. Use `show mat g.1 0 1 ∈ intL L`. Rewrite using `[e]`. Conclude with `hx`. Introduce `hz`.
+
+Take `⟨y, hy, hr⟩` from `hsnd z.toAdd hz`. Take `⟨u, hu⟩` from `exists_heis hσ hr`. Use `⟨⟨u, (mU u).2 ⟨_, hz, y, hy, hr, hu⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, hu]`. Both sides reduce to the same expression.
+
+Establish `r2 : (V.subgroupOf U).map φ = AddSubgroup.toSubgroup ((intL L).toAddSubgroup.map (AddMonoidHom.mulLeft ϖ))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Take `⟨x, hx, y, -, -, e⟩` from `(mV g).1 hg`.
+
+Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Use `show ϖ * x = mat g.1 0 1`. Rewrite using `[e]`. Both sides reduce to the same expression. Introduce and unpack `⟨x, hx, hz⟩`.
+
+Establish `hz : ϖ * x = z.toAdd` using `hz`. Take `⟨y, hy, hr⟩` from `hsnd x hx`. Establish `hr' : ϖ * (ϖ * y) + σ (ϖ * (ϖ * y)) + ϖ * x * σ (ϖ * x) = 0`. Simplify using `only [map_mul, hϖ]`. Take the linear combination `ϖ * ϖ * hr`.
+
+Take `⟨u, hu⟩` from `exists_heis hσ hr'`. Establish `huV : u ∈ V` using `(mV u).2 ⟨x, hx, y, hy, hr, hu⟩`. Use `⟨⟨u, VU huV⟩, huV, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, hu, heis_01, hz]`. Both sides reduce to the same expression.
+
+Establish `r3 : χ.range = AddSubgroup.toSubgroup T`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Take `⟨y, hy, e⟩` from `hker g`.
+
+Use `show mat g.1.1 0 2 ∈ T`. Rewrite using `[e]`. Conclude with `hy`. Introduce `hz`. Take `⟨hy, hr⟩` from `(mT z.toAdd).1 hz`.
+
+Establish `hr' : z.toAdd + σ z.toAdd + 0 * σ 0 = 0` using `by linear_combination hr`. Take `⟨u, hu⟩` from `exists_heis hσ hr'`. Use `⟨⟨⟨u, (mU u).2 ⟨_, zero_mem _, _, hy, hr', hu⟩⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show mat u 0 1 = 0`. Rewrite using `[hu]`.
+
+Both sides reduce to the same expression. Use `show Multiplicative.ofAdd (mat u 0 2) = z`. Rewrite using `[hu]`. Both sides reduce to the same expression. Establish `r4 : (V.subgroupOf U).subgroupOf φ.ker = (AddSubgroup.toSubgroup ((T.map (AddMonoidHom.mulLeft ϖ)).map (AddMonoidHom.mulLeft ϖ))).comap χ`.
+
+Use extensionality with `g`. Take `⟨w, -, e⟩` from `hker g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨x, hx, y, hy, hr, e'⟩` from `(mV g.1.1).1 hg`.
+
+Establish `hx0 : ϖ * x = 0` using `by rw [← heis_01 (σ := σ) (ϖ * x), ← e', e]; rfl`. Establish `hx0 : x = 0` using `(mul_eq_zero.1 hx0).resolve_left h0`. Substitute `hx0` using the available equality. Use `⟨ϖ * y, ⟨y, (mT y).2 ⟨hy, by linear_combination hr⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show ϖ * (ϖ * y) = mat g.1.1 0 2`.
+
+Rewrite using `[e']`. Both sides reduce to the same expression. Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, hz⟩`. Establish `hz : ϖ * (ϖ * y) = mat g.1.1 0 2` using `hz`. Rewrite `hz` using `[e, heis_02]`.
+
+Take `⟨hy, hr⟩` from `(mT y).1 hy`. Conclude with `(mV g.1.1).2 ⟨0, zero_mem _, y, hy, by linear_combination hr, by rw [e, mul_zero, hz]⟩`. Establish `TT : T.map (AddMonoidHom.mulLeft ϖ) ≤ T`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨hy, hr⟩` from `(mT y).1 hy`.
+
+Use `(mT (ϖ * y)).2 ⟨mul_mem hϖO hy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hϖ]`. Take the linear combination `ϖ * hr`. Establish `r5 : ((T.map (AddMonoidHom.mulLeft ϖ)).map (AddMonoidHom.mulLeft ϖ)).relIndex T = q * q`. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex _ _ _ (AddSubgroup.map_mono TT) TT, AddSubgroup.relIndex_map_map_of_injective _ _ (mul_right_injective₀ h0), hT]`.
+
+Establish `r6 : (V.subgroupOf U).relIndex φ.ker = q * q`. Rewrite using `[Subgroup.relIndex, r4, Subgroup.index_comap, r3, AddSubgroup.relIndex_toSubgroup, r5]`. Rewrite using `[Subgroup.relIndex, index_eq_map_mul_ker φ, r6, r1, r2, AddSubgroup.relIndex_toSubgroup, hI]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem indexThree : IntIndex → TraceZeroIndex → IndexThree := by
   intro hI hT L _ _ ϖ σ q hU s hs
   have hI := hI L ϖ σ q hU

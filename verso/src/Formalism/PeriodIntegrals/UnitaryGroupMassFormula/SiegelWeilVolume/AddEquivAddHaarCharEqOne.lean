@@ -13,6 +13,9 @@ section Equiv
 
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {n M : ℕ}
 
+/- English proof (translation)
+Use `first`. Consider the case `(unfold mulTup; fun_prop)`. Consider the case `(simp only [mulTup]; fun_prop)`. Consider the case `(unfold mulTup; continuity)`. Consider the case `fun_prop`.
+-/
 theorem continuous_mulTup (D : Matrix (Fin n) (Fin n) K) : Continuous (mulTup (M := M) D) := by
   first
   | (unfold mulTup; fun_prop)
@@ -37,6 +40,9 @@ section HermEquiv
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   [TopologicalSpace R] [IsTopologicalRing R] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n : ℕ}
 
+/- English proof (translation)
+Use `first`. Consider the case `(unfold hermMap; fun_prop)`. Consider the case `(simp only [hermMap]; fun_prop)`. Consider the case `(unfold hermMap; exact Continuous.subtype_mk (by fun_prop) _)`. Consider the case `(unfold hermMap; continuity)`.
+-/
 theorem continuous_hermMap [IsTopologicalRing (R ⊗[F] E)] (D : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     Continuous (hermMap R σ hσ D) := by
   first
@@ -62,6 +68,9 @@ section Haar
 variable {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
   [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G] [SecondCountableTopology G]
 
+/- English proof (translation)
+Establish `h` using `MeasureTheory.addEquivAddHaarChar_smul_map μ e`. Establish `hc : (addEquivAddHaarChar e : ℝ≥0) ≠ 0` using `(MeasureTheory.addEquivAddHaarChar_pos e).ne'`. Use `conv_rhs => rw [← h]`. Rewrite using `[ENNReal.smul_def (addEquivAddHaarChar e), smul_smul, ← ENNReal.coe_mul, inv_mul_cancel₀ hc, ENNReal.coe_one, one_smul]`.
+-/
 theorem map_eq_smul (μ : Measure G) [μ.IsAddHaarMeasure] (e : G ≃ₜ+ G) :
     μ.map e = (((addEquivAddHaarChar e)⁻¹ : ℝ≥0) : ℝ≥0∞) • μ := by
   have h := MeasureTheory.addEquivAddHaarChar_smul_map μ e
@@ -88,6 +97,11 @@ def cHerm (D : (Matrix (Fin n) (Fin n) (R ⊗[F] E))ˣ) : ℝ≥0 :=
 
 include hJ in
 
+/- English proof (translation)
+Set `e` to `tupEquiv (M := M) D`. Set `h` to `hermEquiv R σ hσ D`. Establish `hμ : μ.map e.toHomeomorph = (cTup (M` using `M) R D : ℝ≥0∞) • μ := map_eq_smul μ e`. Establish `hν : ν.map h.toHomeomorph.symm = (cHerm σ hσ R D : ℝ≥0∞) • ν`. Use `map_eq_smul ν h.symm` as an intermediate fact.
+
+Rewrite `this` using `[addEquivAddHaarChar_symm, inv_inv]`. Conclude with `this`. Use `fib_map_fixed e.toHomeomorph h.toHomeomorph (f' := gramH R σ hσ J hJ) (continuous_gramH R σ hσ J hJ) (fun _ => rfl) Subtype.val_injective (isOpen_linIndep (Module.finBasis F E) R hU hL) (fun X => gramH_mulTup_of hG R σ hσ J hJ _ X) (preimage_linIndep D) ENNReal.coe_ne_top ENNReal …` as an intermediate fact. Conclude with `this`.
+-/
 theorem fib_map_mulTup (hG : GramMulTup) (hU : IsOpen {r : R | IsUnit r}) (hL : LIP R)
     (μ : Measure (Fin n → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ n))
     [μ.IsAddHaarMeasure] [ν.IsAddHaarMeasure]
@@ -116,6 +130,11 @@ theorem fib_map_mulTup (hG : GramMulTup) (hU : IsOpen {r : R | IsUnit r}) (hL : 
 
 include hJ in
 
+/- English proof (translation)
+Establish `hmap` using `fib_map_mulTup (hJ := hJ) (hG := hG) (hU := hU) (hL := hL) (hfib := hfib) (hS₀ := hS₀)`. Establish `inj : Function.Injective (tupEquiv (M` using `M) D) := (tupEquiv (M := M) D).injective`. Establish `e1` using `MeasurableEquiv.map_apply (μ := fib S₀) ((tupEquiv (M := M) D).toHomeomorph.toMeasurableEquiv) ((tupEquiv (M := M) D) '' A)`. Establish `e2 : ((tupEquiv (M` using `M) D).toHomeomorph.toMeasurableEquiv : _ → _) ⁻¹' ((tupEquiv (M := M) D) '' A) = A := Set.preimage_image_eq A inj`. Rewrite `e1` using `[e2]`.
+
+Establish `e3 : ((tupEquiv (M` using `M) D).toHomeomorph.toMeasurableEquiv : _ → _) = mulTup (D : Matrix (Fin n) (Fin n) (R ⊗[F] E)) := rfl`. Establish `e4 : ((tupEquiv (M` using `M) D) : _ → _) = mulTup (D : Matrix (Fin n) (Fin n) (R ⊗[F] E)) := rfl`. Rewrite `e1` using `[e3, e4, hmap, Measure.smul_apply, smul_eq_mul]`. Conclude with `e1`.
+-/
 theorem fib_image_mulTup (hG : GramMulTup) (hU : IsOpen {r : R | IsUnit r}) (hL : LIP R)
     (μ : Measure (Fin n → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ n))
     [μ.IsAddHaarMeasure] [ν.IsAddHaarMeasure]

@@ -9,6 +9,9 @@ namespace PI.GTNum
 
 open Formalism.BasicNotions PI Finset
 
+/- English proof (translation)
+The claim follows from `|cBr h lam sg| ≤ (2 * (sg.w ⟨0, hn⟩ - lam.w ⟨N - 1, by omega⟩) + (N : ℤ)) ^ (n * ∑ i : Fin n, ((Rset h lam sg i).erase (sg.w i)).card) := by set B : ℤ := 2 * (sg.w ⟨0, hn⟩ - lam.w ⟨N - 1, by omega⟩) + (N : ℤ) with hB unfold cBr rw [← prod_pow_pow] refine abs_prod_le_prod _ _ _ (f …`.
+-/
 theorem abs_cBr_le {n N : ℕ} (h : n + 1 = N) (hn : 0 < n) (lam : DomWeight N) (sg : DomWeight n)
     (hI : Interlace h lam sg) :
     |cBr h lam sg| ≤ (2 * (sg.w ⟨0, hn⟩ - lam.w ⟨N - 1, by omega⟩) + (N : ℤ)) ^
@@ -32,6 +35,17 @@ theorem abs_cBr_le {n N : ℕ} (h : n + 1 = N) (hn : 0 < n) (lam : DomWeight N) 
   rw [hB]
   exact this
 
+/- English proof (translation)
+Establish `hD0 : D0 h lam' sg = D0 h lam sg`. Unfold `D0`. Conclude with `Finset.sum_congr rfl (fun i _ => by rw [hag _ (Nat.succ_ne_zero _)])`. Establish `h1 : lam'.w ⟨1, by omega⟩ = lam.w ⟨1, by omega⟩` using `hag _ (Nat.succ_ne_zero _)`. Establish `key : ∀ i : Fin n, min (lam'.w ⟨i.1, by omega⟩) (lam'.w ⟨i.1 + 1, by omega⟩ + D0 h lam' sg) = min (lam.w ⟨i.1, by omega⟩) (lam.w ⟨i.1 + 1, by omega⟩ + D0 h lam sg) ∧ lam'.w ⟨i.1 + 1, by omega⟩ = lam.w ⟨i.1 + 1, by omega⟩ ∧ min (lam'.w ⟨i.1, by omega⟩ - lam'.w ⟨i.1 + 1, by omega⟩) …`.
+
+Introduce `i`. Establish `e1 : lam'.w ⟨i.1 + 1, by omega⟩ = lam.w ⟨i.1 + 1, by omega⟩` using `hag _ (Nat.succ_ne_zero _)`. Distinguish the cases in `hi : i.1 = 0`. Establish `a0 : lam'.w ⟨i.1, by omega⟩ = lam'.w ⟨0, by omega⟩` using `congrArg lam'.w (Fin.ext hi)`. Establish `b0 : lam.w ⟨i.1, by omega⟩ = lam.w ⟨0, by omega⟩` using `congrArg lam.w (Fin.ext hi)`.
+
+Establish `b1 : lam.w ⟨i.1 + 1, by omega⟩ = lam.w ⟨1, by omega⟩` using `congrArg lam.w (Fin.ext (by simp [hi]))`. Apply the tactic sequence `refine ⟨?_, e1, ?_⟩ <;> omega`. Establish `e0 : lam'.w ⟨i.1, by omega⟩ = lam.w ⟨i.1, by omega⟩` using `hag _ hi`. Rewrite using `[e0, e1, hD0]`. Conclude with `⟨rfl, rfl, rfl⟩`.
+
+Establish `hR : ∀ i : Fin n, Rset h lam' sg i = Rset h lam sg i`. Introduce `i`. Unfold `Rset`. Rewrite using `[(key i).1, (key i).2.1]`. Prove the components needed by the constructor for the conclusion.
+
+Unfold `cBr`. Conclude with `Finset.prod_congr rfl (fun i _ => by rw [hR i])`. Unfold `D1`. Conclude with `Finset.sum_congr rfl (fun i _ => (key i).2.2)`.
+-/
 theorem top_indep {n N : ℕ} (h : n + 1 = N) (hn : 0 < n) (lam lam' : DomWeight N) (sg : DomWeight n)
     (hag : ∀ i : Fin N, i.1 ≠ 0 → lam'.w i = lam.w i)
     (htop : lam.w ⟨1, by omega⟩ + D0 h lam sg ≤ lam.w ⟨0, by omega⟩)
@@ -68,6 +82,11 @@ theorem top_indep {n N : ℕ} (h : n + 1 = N) (hn : 0 < n) (lam lam' : DomWeight
   · unfold D1
     exact Finset.sum_congr rfl (fun i _ => (key i).2.2)
 
+/- English proof (translation)
+Introduce `n N h hn lam sg hI htop`. Use `⟨?_, fun lam' hag htop' => top_indep h hn lam lam' sg hag htop htop'⟩` and prove the remaining obligations. Use `set K : ℕ := ∑ i : Fin n, ((Rset h lam sg i).erase (sg.w i)).card with hK`. Establish `hD1 : (n : ℤ) * D1 h lam sg = ((n * K : ℕ) : ℤ)`. Rewrite using `[interlacing_defect_eq_card h lam sg hI, ← hK, Nat.cast_mul]`.
+
+Establish `hb` using `abs_cBr_le h hn lam sg hI`. Rewrite using `[hD1, Int.cast_natCast, Real.rpow_natCast, ← Int.cast_abs]`. Conclude with `hb` after adjusting the coercions.
+-/
 theorem gTCoefTop_main : PI.GTCoefTop := by
   intro n N h hn lam sg hI htop
   refine ⟨?_, fun lam' hag htop' => top_indep h hn lam lam' sg hag htop htop'⟩

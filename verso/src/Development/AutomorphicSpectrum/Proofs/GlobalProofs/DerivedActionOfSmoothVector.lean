@@ -17,14 +17,25 @@ def coord : Matrix (Fin n) (Fin n) ℂ →L[ℝ] (Fin n → Fin n → ℂ) :=
       map_add' := fun _ _ => rfl
       map_smul' := fun _ _ => rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coord_apply (A : Matrix (Fin n) (Fin n) ℂ) : coord A = Matrix.of.symm A := rfl
 
+/- English proof (translation)
+Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h`. Conclude with `coord.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (h.const_mul g)`.
+-/
 theorem hasDerivAt_coord_mul_exp (g X : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => coord (g * NormedSpace.exp (t • X))) (coord (g * X)) 0 := by
   have h := hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)
   simp only [zero_smul, NormedSpace.exp_zero, one_mul] at h
   exact coord.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (h.const_mul g)
 
+/- English proof (translation)
+Use `contDiff_pi.2 fun a => contDiff_pi.2 fun b => ?_` and prove the remaining obligations. Establish `e : (fun z : Fin n → Fin n → ℂ => Matrix.of.symm (Matrix.of z * X) a b) = fun z => ∑ c, z a c * X c b`. Use function extensionality and compare the values at `z`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[e]`.
+
+Use `ContDiff.sum fun c _ => ContDiff.mul ?_ contDiff_const` and prove the remaining obligations. Conclude with `(contDiff_apply ℝ ℂ c).comp (contDiff_apply ℝ (Fin n → ℂ) a)`.
+-/
 theorem contDiff_mul_right (X : Matrix (Fin n) (Fin n) ℂ) :
     ContDiff ℝ ∞ (fun z : Fin n → Fin n → ℂ => Matrix.of.symm (Matrix.of z * X)) := by
   refine contDiff_pi.2 fun a => contDiff_pi.2 fun b => ?_
@@ -42,6 +53,19 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA
 
 open SmoothDeriv
 
+/- English proof (translation)
+Introduce `n G H _ _ π hG hrep v hv X hX`. Take `⟨F, hF, hFG⟩` from `hv`. Establish `hFd : Differentiable ℝ F` using `hF.differentiable (by simp)`. Establish `key : ∀ g ∈ G, HasDerivAt (fun t : ℝ => π g (π (NormedSpace.exp (t • X)) v)) (fderiv ℝ F (Matrix.of.symm g) (coord (g * X))) 0`. Introduce `g hg`.
+
+Establish `h1` using `((hFd (Matrix.of.symm g)).hasFDerivAt)`. Establish `h2 : HasFDerivAt F (fderiv ℝ F (Matrix.of.symm g)) (coord (g * NormedSpace.exp ((0 : ℝ) • X)))`. Simplify `h1` using `[coord_apply]`. Establish `h3` using `h2.comp_hasDerivAt (0 : ℝ) (hasDerivAt_coord_mul_exp g X)`. Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Establish `hm : g * NormedSpace.exp (t • X) ∈ G` using `hG.mul_mem g hg _ (hX t)`. Use `hFG (Matrix.of.symm (g * NormedSpace.exp (t • X))) (by simpa using hm)` as an intermediate fact. Simplify using `only [Equiv.apply_symm_apply] at this`. Simplify using `only [Function.comp, coord_apply]`. Rewrite using `[← this, hrep.2 g hg _ (hX t)]`.
+
+Both sides reduce to the same expression. Establish `h1 : HasDerivAt (fun t : ℝ => π (NormedSpace.exp (t • X)) v) (fderiv ℝ F (Matrix.of.symm 1) (coord (1 * X))) 0`. Use `key 1 hG.one_mem` as an intermediate fact. Simplify `this` using `[hrep.1]`. Establish `hd : dRep π X v = fderiv ℝ F (Matrix.of.symm 1) (coord (1 * X))` using `h1.deriv`.
+
+Establish `h1' : HasDerivAt (fun t : ℝ => π (NormedSpace.exp (t • X)) v) (dRep π X v) 0`. Rewrite using `[hd]`. Conclude with `h1`. Use `⟨h1', fun z => fderiv ℝ F z (Matrix.of.symm (Matrix.of z * X)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hF.fderiv_right (m := ∞) (by simp)).clm_apply (contDiff_mul_right X)`.
+
+Introduce `z hz`. Establish `h2` using `((π (Matrix.of z)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1'`. Conclude with `h2.unique (key _ hz)`.
+-/
 theorem hasDerivAt_dRep_and_isSmoothVec : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G)
     (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {v : H} (hv : IsSmoothVec G π v) {X : Matrix (Fin n) (Fin n) ℂ}

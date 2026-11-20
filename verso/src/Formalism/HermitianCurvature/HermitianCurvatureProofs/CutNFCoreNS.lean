@@ -50,6 +50,91 @@ def NFCoreNS : Prop :=
               Mb * TBB.Gp p (TBB.bigPt P.r c) ^ (2 * p₀ - N) *
                 ∑ t, ‖B.hsVec (p.V (B.opApply (Th t) f) (TBB.bigPt P.r c))‖ ^ 2
 
+/- English proof (translation)
+Introduce `Cb`. Take `⟨CcL, HL⟩` from `hL Cb`. Take `⟨CcT, HT⟩` from `hT Cb`. Take `⟨IsFirstChernFamily, CcH, HH⟩` from `hH`. Take `⟨C1M, HM⟩` from `hM IsFirstChernFamily`.
+
+Use `set Mx := max (max CcL CcT) (max CcH 0) with hMx`. Use `⟨Mx, max IsFirstChernFamily C1M, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p hΘ Y w hw e Q L hS p₀ N hwN hNp`. Establish `thr : ∀ C : ℝ, C ≤ Mx → ∀ n : ℕ, n ≤ N → ∀ A : ℝ, Mx * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A → C * ((P.r : ℝ) + 1) ^ 4 * ((n : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A`. Introduce `C hC n hn A hA`.
+
+Establish `hM0 : 0 ≤ Mx` using `le_trans (le_max_right _ _) (le_max_right _ _)`. Establish `hnN : (n : ℝ) ≤ N` using `by exact_mod_cast hn`. Establish `hX : 0 ≤ ((P.r : ℝ) + 1) ^ 4 * ((n : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3)`. Check the signs of the components of the expression. Establish `hXN : ((P.r : ℝ) + 1) ^ 4 * ((n : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3)` using `by gcongr`.
+
+Establish `e : ∀ (x : ℝ) (m : ℕ), x * ((P.r : ℝ) + 1) ^ 4 * ((m : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) = x * (((P.r : ℝ) + 1) ^ 4 * ((m : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3))` using `fun x m => by ring`. Rewrite `hA`, the goal using `[e]`. Conclude with `le_trans (mul_le_mul_of_nonneg_right hC hX) (le_trans (mul_le_mul_of_nonneg_left hXN hM0) hA)`. Take `⟨Q', L', -, hS', hLe⟩` from `HL Wp Wq P p hΘ w hw.1 e`. Take `⟨fr, Lv, hfr, hgau, hml, hTie⟩` from `HT Wp Wq P p hΘ`.
+
+Take `⟨m, b, u, Ct, hb, hu, htie⟩` from `hTie Y w hw e Q' L' hS'`. Use `choose m' b' Th hb' hok hprod using fun i : Fin m => HH Wp Wq P p fr Lv hfr hgau hml N (u i) (by rw [(hu i).1]; exact hwN) (hu i).2`. Establish `hTTe : P.TT = Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z'`. Unfold `M.Par.TT`. Rewrite using `[p.hP.2.2.2.1, p.hP.2.2.2.2.1]`.
+
+Establish `hTTpos : 0 < P.TT` using `by rw [hTTe]; exact mul_pos p.T.base.T_pos p.T.base.T'_pos`. Use `choose Cbd hCbd using fun (i : Fin m) (k : Fin (m' i)) => pointwise_bound_normal_form_holds P Lv hTTpos hml (b i * b' i k) (Submonoid.mul_mem _ (hb i) (hb' i k))`. Take `⟨Cn, hCn⟩` from `hN Wp Wq P p fr hfr`. Use `choose Th2 hok2 hTh2 using fun (i : Fin m) (k : Fin (m' i)) => HM Wp Wq P p N (Th i k) (hok i k)`. Set `ι` to `Σ i : Fin m, Fin (m' i) × Bool`.
+
+Set `σ : Fin (Fintype.card ι) ≃ ι` to `(Fintype.equivFin ι).symm`. Set `ThF : ι → B.DiffOp P.k P.r Wp Wq` to `fun x => if x.2.2 then Th2 x.1 x.2.1 else Th x.1 x.2.1`. Use `set K : ℝ := ∑ i : Fin m, ∑ k : Fin (m' i), (m' i : ℝ) * |Cbd i k| * |Cn| * |Ct| with hK`. Establish `hK0 : 0 ≤ K` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun k _ => by positivity`. Use `set cc : Fin (Q' + 1) → Fin (Q' + 1) → ℝ := fun qq j => ((Nat.choose j qq * p₀ ^ ((j : ℕ) - qq) : ℕ) : ℝ) with hcc`.
+
+Use `set Cs : ℝ := ∑ qq : Fin (Q' + 1), ((Q' + 1 : ℕ) : ℝ) * ∑ j, cc qq j ^ 2 with hCs`. Establish `hCs0 : 0 ≤ Cs` using `Finset.sum_nonneg fun qq _ => by positivity`. Use `⟨Fintype.card ι, fun t => ThF (σ t), Cs * K, mul_nonneg hCs0 hK0, fun t => ?_, ?_⟩` and prove the remaining obligations. Use `show NFOpOK (max IsFirstChernFamily C1M) p N (ThF (σ t))`. Simplify using `only [ThF]`.
+
+Use `split_ifs`. Conclude with `nfOpOK_mono (hok2 _ _) (le_max_right _ _)`. Conclude with `nfOpOK_mono (hok _ _) (le_max_left _ _)`. Introduce `f A₀ hf hcc0 hthr hJ qq ρ c hl hG`. Use `set γ := TBB.bigPt P.r c with hγ`.
+
+Use `set G := TBB.Gp p γ with hGdef`. Establish `hG0 : 0 ≤ G` using `hG.le`. Establish `hd : ∀ a, c a ≠ 0` using `fun a => (hl.1 (1, c a) (by rw [hγ]; unfold TBB.bigPt; exact List.mem_ofFn.2 ⟨a, rfl⟩)).2`. Establish `hζ : P.TT < Complex.normSq (c (Fin.last P.r))`. Rewrite using `[hTTe]`.
+
+Conclude with `Formalism.FourierDecayAlt.P.PBM.zeta_big _ c hG`. Set `q : MA.Qp P.r P.TT` to `⟨((fun l => c l.castSucc), c (Fin.last P.r)), fun l => hd _, hζ⟩`. Use `set X : ℝ := ∏ l : Fin P.r, Complex.normSq (c l.castSucc) with hXdef`. Establish `hX : 0 < X` using `Finset.prod_pos fun l _ => Complex.normSq_pos.2 (hd _)`. Establish `hζ' : Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z' ≤ Complex.normSq (c (Fin.last P.r))`.
+
+Rewrite using `[← hTTe]`. Conclude with `hζ.le`. Establish `hn : 0 < TBB.nPt P.k P.r (TBB.TTp p) γ`. Establish `e1` using `nPt_bigPt P.k P.r (Tz P.k P.r p.T.base.z) (Tz P.k P.r p.T.base.z') c hζ'`. Use `show 0 < TBB.nPt P.k P.r (Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z') (TBB.bigPt P.r c)`.
+
+Rewrite using `[e1]`. Unfold `bcWeight`. Rewrite using `[if_pos hζ']`. Use `mul_pos (Finset.prod_pos fun a _ => pow_pos (norm_pos_iff.2 (hd _)) _) (pow_pos ?_ _)` and prove the remaining obligations. Rewrite using `[← hTTe]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set S : ℝ := Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) γ) * Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) γ) with hSdef`. Establish `hSpos : 0 < S` using `mul_pos (Real.sqrt_pos.2 hn) (Real.sqrt_pos.2 hn)`. Use `set Vk : ∀ i : Fin m, Fin (m' i) → ℝ := fun i k => ‖B.hsVec (p.V (B.opApply (Th i k) f) γ)‖ ^ 2 with hVk`. Use `set W : ℝ := ∑ i, ∑ k, Vk i k with hW`.
+
+Establish `hVk0 : ∀ i k, 0 ≤ Vk i k` using `fun i k => sq_nonneg _`. Establish `hVkW : ∀ i k, Vk i k ≤ W` using `fun i k => le_trans (Finset.single_le_sum (f := fun k => Vk i k) (fun k _ => hVk0 i k) (Finset.mem_univ k)) (Finset.single_le_sum (f := fun i => ∑ k, Vk i k) (fun i _ => Finset.sum_nonneg fun k _ => hVk0 i k) (Finset.mem_univ i))`. Establish `hW0 : 0 ≤ W` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun k _ => hVk0 i k`. Establish `hA0 : A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) ≤ A₀` using `sub_le_self _ (Nat.cast_nonneg _)`. Establish `hthrT` using `thr CcT (le_trans (le_max_right _ _) (le_max_left _ _)) w.length hwN A₀ (le_trans hthr hA0)`.
+
+Establish `hthrH` using `thr CcH (le_trans (le_max_left _ _) (le_max_right _ _)) N le_rfl A₀ (le_trans hthr hA0)`. Establish `hthrL` using `thr CcL (le_trans (le_max_left _ _) (le_max_left _ _)) w.length hwN _ hthr`. Establish `stepAB : ∀ j : Fin (Q' + 1), Top.dH P p.l0 (TBB.TTp p) w γ e ρ ^ 2 * ‖B.hsVec ((p.TP.E ρ).comp (p.V (B.opApply (L' j) f) γ))‖ ^ 2 ≤ G ^ (-(w.length : ℤ)) * (K * W)`. Introduce `j`. Establish `h1` using `htie f A₀ hf hcc0 hthrT hJ j ρ c q rfl hl hG`.
+
+Establish `h2 : ∀ i, ∑ ρ', ‖MA.evQ P (MA.actA P (b i * (u i).prod) (trJKB p fr (B.JF p.T.base f)) ρ') q‖ ^ 2 ≤ ∑ k, (m' i : ℝ) * |Cbd i k| * |Cn| * (X * (S * Vk i k))`. Introduce `i`. Rewrite using `[Formalism.FourierDecayAlt.P.MAx3.F.actA_mul, hprod i f A₀ hf hcc0 hthrH hJ, nf_actA_fsum]`. Simplify using `only [← Formalism.FourierDecayAlt.P.MAx3.F.actA_mul]`. Establish `hj : ∀ k ρ', ‖MA.evQ P (trJKB p fr (B.JF p.T.base (B.opApply (Th i k) f)) ρ') q‖ ^ 2 ≥ 0` using `fun _ _ => sq_nonneg _`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun ρ' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, Formalism.FourierDecayAlt.P.MAx2.Jet.evQ_sum]`. Use `nf_norm_sum_sq (Finset.univ : Finset (Fin (m' i))) fun k => MA.evQ P (MA.actA P (b i * b' i k) (trJKB p fr (B.JF p.T.base (B.opApply (Th i k) f))) ρ') q` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Then use the resulting hypothesis.
+
+Use `_ = (m' i : ℝ) * ∑ k, ∑ ρ', ‖MA.evQ P (MA.actA P (b i * b' i k) (trJKB p fr (B.JF p.T.base (B.opApply (Th i k) f))) ρ') q‖ ^ 2 := by`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Use `_ ≤ (m' i : ℝ) * ∑ k, |Cbd i k| * (|Cn| * (X * (S * Vk i k))) := by`. Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun k _ => ?_) (Nat.cast_nonneg _)` and prove the remaining obligations. Establish `hb1` using `hCbd i k (trJKB p fr (B.JF p.T.base (B.opApply (Th i k) f))) q`.
+
+Establish `hn1` using `hCn (B.opApply (Th i k) f) c q rfl hl hG`. Rewrite `hn1` using `[TBBx2.Tri.Ew_top p _ hl]`. Establish `hs0 : 0 ≤ ∑ ρ', ‖MA.evQ P (trJKB p fr (B.JF p.T.base (B.opApply (Th i k) f)) ρ') q‖ ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `hE0 : 0 ≤ X * (S * Vk i k)` using `mul_nonneg hX.le (mul_nonneg hSpos.le (hVk0 i k))`. Establish `hn2 : ∑ ρ', ‖MA.evQ P (trJKB p fr (B.JF p.T.base (B.opApply (Th i k) f)) ρ') q‖ ^ 2 ≤ |Cn| * (X * (S * Vk i k))`.
+
+Use `le_trans hn1 (le_of_eq_of_le ?_ (mul_le_mul_of_nonneg_right (le_abs_self Cn) hE0))` and prove the remaining obligations. Simplify using `only [hVk, hSdef, hXdef, hγ]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Use `_ = ∑ k, (m' i : ℝ) * |Cbd i k| * |Cn| * (X * (S * Vk i k)) := by`.
+
+Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun k _ => by ring`. Establish `hGz : 0 ≤ G ^ (-(w.length : ℤ))` using `zpow_nonneg hG0 _`. Establish `h3 : S * X * (Top.dH P p.l0 (TBB.TTp p) w γ e ρ ^ 2 * ‖B.hsVec ((p.TP.E ρ).comp (p.V (B.opApply (L' j) f) γ))‖ ^ 2) ≤ S * X * (G ^ (-(w.length : ℤ)) * (K * W))`. Use `le_trans h1 ?_` and prove the remaining obligations. Establish `hsum0 : 0 ≤ ∑ i, ∑ ρ', ‖MA.evQ P (MA.actA P (b i * (u i).prod) (trJKB p fr (B.JF p.T.base f)) ρ') q‖ ^ 2` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `le_trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self Ct) hGz) hsum0) ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i _ => h2 i) (mul_nonneg (abs_nonneg _) hGz)`. Use `_ = S * X * (G ^ (-(w.length : ℤ)) * ∑ i, ∑ k, (m' i : ℝ) * |Cbd i k| * |Cn| * |Ct| * Vk i k) := by`. Simplify using `only [Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`.
+
+Use `_ ≤ S * X * (G ^ (-(w.length : ℤ)) * (K * W)) := by`. Use `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left ?_ hGz) (mul_nonneg hSpos.le hX.le)` and prove the remaining obligations. Rewrite using `[hK, Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Conclude with `Finset.sum_le_sum fun k _ => mul_le_mul_of_nonneg_left (hVkW i k) (by positivity)`. Conclude with `le_of_mul_le_mul_left h3 (mul_pos hSpos hX)`. Establish `hV2 : ∀ i k, p.V (B.opApply (Th2 i k) f) γ = ((G ^ N : ℝ) : ℂ) • p.V (B.opApply (Th i k) f) γ`. Introduce `i k`. Establish `e1 : B.opApply (Th2 i k) f = fun g => (((fun x : ℝ => x ^ N) (Gf P.k P.r p.T.base.z p.T.base.z' g) : ℝ) : ℂ) • B.opApply (Th i k) f g`.
+
+Use function extensionality and compare the values at `fun g => hTh2 i k f g`. Rewrite using `[e1]`. Conclude with `vector_multiplication_holds Wp Wq P p (fun x : ℝ => x ^ N) _ γ hl hG`. Establish `hsumT : ∑ t, ‖B.hsVec (p.V (B.opApply (ThF (σ t)) f) γ)‖ ^ 2 = (1 + G ^ (2 * N)) * W`. Rewrite using `[Equiv.sum_comp σ (fun x : ι => ‖B.hsVec (p.V (B.opApply (ThF x) f) γ)‖ ^ 2), Fintype.sum_sigma, hW, add_mul, one_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool]`. Simplify using `only [ThF, if_true, Bool.false_eq_true, if_false, hV2, CutSE.hsVec_smul', norm_smul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, hVk]`.
+
+Rewrite using `[← pow_mul, mul_comm N 2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hF' : B.CkOn ⊤ (B.GV P.k P.r) (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀)`. Rewrite using `[fpm_id]`. Conclude with `ckOn_Gpow_smul p.T.base.z p.T.base.z' p₀ hf`.
+
+Establish `hRHS0 : 0 ≤ Cs * K * G ^ (2 * p₀ - N) * ∑ t, ‖B.hsVec (p.V (B.opApply (ThF (σ t)) f) γ)‖ ^ 2`. Use `pow_nonneg hG0 (2 * p₀ - N)` as an intermediate fact. Establish `: 0 ≤ ∑ t, ‖B.hsVec (p.V (B.opApply (ThF (σ t)) f) γ)‖ ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Check the signs of the components of the expression. Establish `hcong : ∀ H₂ : B.Mat P.k P.r → (Wq →L[ℂ] Wp), (∀ g ∈ B.GPos p.T.base, B.opApply (L qq) (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀) g = H₂ g) → p.V (B.opApply (L qq) (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀)) γ = p.V H₂ γ`.
+
+Introduce `H₂ h`. Conclude with `Formalism.FourierDecayAlt.P.PBE.vecV_congrGPos _ _ _ _ h`. Establish `hdom : ∀ g ∈ B.GPos p.T.base, g ∈ C6.domL p.T.base ∅` using `fun g hg => ⟨hg.1, hg.2, fun l hl => absurd hl (Finset.notMem_empty l)⟩`. Distinguish the cases in `hqQ : (qq : ℕ) ≤ Q'`. Use `swap`.
+
+Establish `h0 : p.V (B.opApply (L qq) (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀)) γ = 0`. Rewrite using `[hcong (fun g => (((fun _ : ℝ => (0 : ℝ)) (Gf P.k P.r p.T.base.z p.T.base.z' g) : ℝ) : ℂ) • f g)]`. Rewrite using `[vector_multiplication_holds Wp Wq P p (fun _ : ℝ => (0 : ℝ)) f γ hl hG]`. Simplify using the standard rewrite rules. Introduce `g hg`.
+
+Rewrite using `[nf_scoef_unique p w e hS hS' _ hF' g (hdom g hg) qq, dif_neg hqQ]`. Simplify using the standard rewrite rules. Establish `hz : B.hsVec (0 : Wq →L[ℂ] Wp) = 0` using `by unfold B.hsVec; ext i; simp`. Rewrite using `[h0, ContinuousLinearMap.comp_zero, hz, norm_zero]`. Simplify using `using hRHS0`.
+
+Use `set qq' : Fin (Q' + 1) := ⟨qq, by omega⟩ with hqq'`. Establish `hV1 : p.V (B.opApply (L qq) (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀)) γ = ((G ^ p₀ : ℝ) : ℂ) • ∑ j : Fin (Q' + 1), ((cc qq' j : ℝ) : ℂ) • p.V (B.opApply (L' j) f) γ`. Rewrite using `[hcong (B.opApply (L' qq') (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀))]`. Rewrite using `[nf_vExtract p w e L' CcL hLe f A₀ p₀ hf hcc0 hthrL γ hl hG qq']`. Use `congr 1`.
+
+Introduce `g hg`. Rewrite using `[nf_scoef_unique p w e hS hS' _ hF' g (hdom g hg) qq, dif_pos hqQ]`. Set `Λ : (Wq →L[ℂ] Wp) →ₗ[ℂ] PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)` to `{ toFun := fun Y => B.hsVec ((p.TP.E ρ).comp Y) map_add' := fun Y₁ Y₂ => by rw [ContinuousLinearMap.comp_add, CutSE.hsVec_add'] map_smul' := fun a Y => by rw [ContinuousLinearMap.comp_smul, CutSE.hsVec_smul']; rfl }`. Establish `hΛ : ∀ Y, Λ Y = B.hsVec ((p.TP.E ρ).comp Y)` using `fun Y => rfl`. Use `set dd : ℝ := Top.dH P p.l0 (TBB.TTp p) w γ e ρ ^ 2 with hdd`.
+
+Establish `hdd0 : 0 ≤ dd` using `sq_nonneg _`. Use `set Y : Fin (Q' + 1) → (Wq →L[ℂ] Wp) := fun j => p.V (B.opApply (L' j) f) γ with hY`. Establish `hnorm : ‖B.hsVec ((p.TP.E ρ).comp (((G ^ p₀ : ℝ) : ℂ) • ∑ j, ((cc qq' j : ℝ) : ℂ) • Y j))‖ ≤ G ^ p₀ * ∑ j, cc qq' j * ‖Λ (Y j)‖`. Rewrite using `[← hΛ, map_smul, map_sum, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (pow_nonneg hG0 _)]`. Use `mul_le_mul_of_nonneg_left (le_trans (norm_sum_le _ _) (le_of_eq (Finset.sum_congr rfl fun j _ => ?_))) (pow_nonneg hG0 _)` and prove the remaining obligations.
+
+Rewrite using `[map_smul, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Nat.cast_nonneg _)]`. Establish `hcs : (∑ j, cc qq' j * ‖Λ (Y j)‖) ^ 2 ≤ ((Q' + 1 : ℕ) : ℝ) * ∑ j, cc qq' j ^ 2 * ‖Λ (Y j)‖ ^ 2`. Use `sq_sum_le_card_mul_sum_sq (s := (Finset.univ : Finset (Fin (Q' + 1)))) (f := fun j => cc qq' j * ‖Λ (Y j)‖)` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Use `le_trans this (le_of_eq ?_)` and prove the remaining obligations.
+
+Use `congr 1; exact Finset.sum_congr rfl fun j _ => by ring`. Establish `hCsq : ((Q' + 1 : ℕ) : ℝ) * ∑ j, cc qq' j ^ 2 ≤ Cs` using `Finset.single_le_sum (f := fun qq : Fin (Q' + 1) => ((Q' + 1 : ℕ) : ℝ) * ∑ j, cc qq j ^ 2) (fun _ _ => by positivity) (Finset.mem_univ qq')`. Establish `hGw : G ^ (2 * p₀) * G ^ (-(w.length : ℤ)) ≤ G ^ (2 * p₀ - N) * (1 + G ^ (2 * N))`. Establish `e1 : G ^ (2 * p₀) * G ^ (-(w.length : ℤ)) = G ^ (2 * p₀ - N) * G ^ (N - w.length)`. Rewrite using `[zpow_neg, zpow_natCast, ← pow_add, show 2 * p₀ - N + (N - w.length) = 2 * p₀ - w.length by omega]`.
+
+Rewrite using `[← pow_sub_mul_pow G (show w.length ≤ 2 * p₀ by omega)]`. Rewrite using `[mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hG.ne'), mul_one]`. Rewrite using `[e1]`. Conclude with `mul_le_mul_of_nonneg_left (nf_pow_le G hG0 (Nat.sub_le N w.length)) (pow_nonneg hG0 _)`. Rewrite using `[hV1, hsumT]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ (pow_nonneg hG0 _)` and prove the remaining obligations. Use `le_trans (mul_le_mul_of_nonneg_left hcs hdd0) (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+
+Use `_ ≤ G ^ (2 * p₀) * (((Q' + 1 : ℕ) : ℝ) * ∑ j, cc qq' j ^ 2 * (G ^ (-(w.length : ℤ)) * (K * W))) := by`. Use `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun j _ => ?_) (by positivity)) (pow_nonneg hG0 _)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (stepAB j) (sq_nonneg _)`. Use `_ = (G ^ (2 * p₀) * G ^ (-(w.length : ℤ))) * ((((Q' + 1 : ℕ) : ℝ) * ∑ j, cc qq' j ^ 2) * (K * W)) := by`. Rewrite using `[← Finset.sum_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (G ^ (2 * p₀ - N) * (1 + G ^ (2 * N))) * (Cs * (K * W)) := by`. Use `mul_le_mul hGw (mul_le_mul_of_nonneg_right hCsq (mul_nonneg hK0 hW0)) ?_ ?_` and prove the remaining obligations. Conclude with `mul_nonneg (by positivity) (mul_nonneg hK0 hW0)`. Conclude with `mul_nonneg (pow_nonneg hG0 _) (by positivity)`.
+
+Use `_ = Cs * K * G ^ (2 * p₀ - N) * ((1 + G ^ (2 * N)) * W) := by ring`.
+-/
 theorem nFCoreNS_of_cut (hL : NFLeibV) (hT : NFTieHatS) (hH : NFHatProdKBS) (hN : NFTrNormKB) (hM : NFOpOKMulG) :
     NFCoreNS := by
   intro Cb
@@ -302,6 +387,9 @@ theorem nFCoreNS_of_cut (hL : NFLeibV) (hT : NFTieHatS) (hH : NFHatProdKBS) (hN 
         · exact mul_nonneg (pow_nonneg hG0 _) (by positivity)
     _ = Cs * K * G ^ (2 * p₀ - N) * ((1 + G ^ (2 * N)) * W) := by ring
 
+/- English proof (translation)
+The claim follows from `nFCoreNS_of_cut hL hT hH trace_norm_bound_constant_one operator_multiplication_admissible`.
+-/
 theorem nFCoreNS_of_open (hL : NFLeibV) (hT : NFTieHatS) (hH : NFHatProdKBS) : NFCoreNS :=
   nFCoreNS_of_cut hL hT hH trace_norm_bound_constant_one operator_multiplication_admissible
 

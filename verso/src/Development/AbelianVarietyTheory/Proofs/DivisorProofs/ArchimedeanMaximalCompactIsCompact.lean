@@ -12,6 +12,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.KinfCompact
 
+/- English proof (translation)
+Introduce `I`. Use `letI := I.fF`. Use `letI := I.nF`. Use `haveI : ∀ v : InfinitePlace I.F, CompactSpace (Formalism.REAL.KG (I.ε v)) := fun v => Formalism.REAL.instCompactKG _ _`. Conclude with `Pi.compactSpace`.
+-/
 theorem compactSpace_Kinf : ∀ I : Formalism.MainNotions.S.AutInst, CompactSpace (GlobalTheory.Dec.Kinf I) := by
   intro I
   letI := I.fF

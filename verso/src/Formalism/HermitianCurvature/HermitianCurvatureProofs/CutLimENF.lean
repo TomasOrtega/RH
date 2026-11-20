@@ -28,6 +28,11 @@ def NFTopDom (p : KB.Pl P Wp Wq) (χ : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq �
 def NFTopId (p : KB.Pl P Wp Wq) (_χ : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter) : Prop :=
   ∫ c, topD p F w c = (p.RR F 0 w [] []).re
 
+/- English proof (translation)
+Introduce `w hw hl`. Take `⟨hmeas, h, hint, hbd⟩` from `hD w hw hl`. Establish `hlim` using `MeasureTheory.tendsto_integral_filter_of_dominated_convergence (μ := volume) (F := fun ε c => topD p (D.cutF p.T.base χ F ε) w c) (f := topD p F w) h hmeas hbd hint ((hP w hw hl).mono fun c hc => Filter.Tendsto.congr' (hc.mono fun ε he => he.symm) tendsto_const_nhds)`. Rewrite using `[← hI w hw hl]`. Use `Filter.Tendsto.congr' ?_ hlim` and prove the remaining obligations.
+
+Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Conclude with `(hT w hw hl ε hε).symm`.
+-/
 theorem limEvT_of_NF (p : KB.Pl P Wp Wq) (χ : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (N : ℕ)
     (hT : ∀ w, TBB.AdmW P p.l0 Y w → w.length ≤ N → NFTopForm p χ F w)
     (hP : ∀ w, TBB.AdmW P p.l0 Y w → w.length ≤ N → NFTopPtw p χ F w)
@@ -81,6 +86,13 @@ def NFTopIdAll : Prop :=
     NFHyp Cb Cc p f A₀ p₀ χ N → ∀ w, TBB.AdmW P p.l0 Y w → w.length ≤ N →
       NFTopId p χ (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀) w
 
+/- English proof (translation)
+Take `⟨C1, k1⟩` from `h1 hA Cb`. Take `⟨C2, k2⟩` from `h2 Cb`. Take `⟨C3, k3⟩` from `h3 Cb`. Take `⟨C4, k4⟩` from `h4 Cb`. Use `⟨max (max C1 C2) (max C3 C4), ?_⟩` and prove the remaining obligations.
+
+Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hH`. Establish `mono : ∀ C, C ≤ max (max C1 C2) (max C3 C4) → NFHyp Cb C p f A₀ p₀ χ N`. Introduce `C hC`. Unfold `NFHyp at hH ⊢`. Take `⟨a1, a2, a3, a4, a5, a6⟩` from `hH`.
+
+Use `⟨a1, a2, a3, a4, le_trans ?_ a5, a6⟩` and prove the remaining obligations. Use `gcongr`. Conclude with `limEvT_of_NF p χ _ Y N (k1 Wp Wq P p f A₀ p₀ χ Y N (mono C1 (by simp))) (k2 Wp Wq P p f A₀ p₀ χ Y N (mono C2 (by simp))) (k3 Wp Wq P p f A₀ p₀ χ Y N (mono C3 (by simp))) (k4 Wp Wq P p f A₀ p₀ χ Y N (mono C4 (by simp)))`.
+-/
 theorem limEvT_fpm_of_NF (hA : P5.ThmPActual) (h1 : NFTopFormAll) (h2 : NFTopPtwAll) (h3 : NFTopDomAll) (h4 : NFTopIdAll) (Cb : ℝ) :
     ∃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
       [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq)

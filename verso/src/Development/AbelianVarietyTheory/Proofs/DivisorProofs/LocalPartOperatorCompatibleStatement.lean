@@ -6,6 +6,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.LemF
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.LemF.locLaw_of_globalLaw | exact GlobalTheory.ThK.LemF.locLaw_of_globalLaw | (intros; apply GlobalTheory.ThK.LemF.locLaw_of_globalLaw <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_part_operator_compatible : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (ψ : AddChar (AF F) ℂ) (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁)
     (M : Model σ X W) (M₁ : Model σ X₁ W₁), M.IsGood ψ → M₁.IsGood ψ →

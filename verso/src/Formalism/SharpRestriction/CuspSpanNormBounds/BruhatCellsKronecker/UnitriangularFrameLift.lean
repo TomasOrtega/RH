@@ -43,6 +43,13 @@ def UnitriangularFrameLift (D : D7) : Prop :=
     (∀ a, F'.fl.e a - F.fl.e a ∈ Xflag F a.val) → F'.fl.z - F.fl.z ∈ Xsp F →
     ∃ n ∈ NLam Λ F, ∀ a, n (F.fl.e a) = F'.fl.e a
 
+/- English proof (translation)
+Introduce `hb`. Apply `hP` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h' : ((Nat.gcd a b : ℕ) : ℤ) = (a : ℤ) * Nat.gcdA a b + (b : ℤ) * Nat.gcdB a b` using `Nat.gcd_eq_gcd_ab a b`. Rewrite `h'` using `[Nat.Coprime.gcd_eq_one h]`.
+
+Establish `h'' : (1 : R) = (a : R) * (Nat.gcdA a b : R) + (b : R) * (Nat.gcdB a b : R)`. Use `congrArg (fun z : ℤ => (z : R)) h'` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[h'']`.
+
+Conclude with `P.add_mem (P.mul_mem_right _ ha) (P.mul_mem_right _ hb)`.
+-/
 theorem id_coprime_notMem {R : Type} [CommRing R] (P : Ideal R) (hP : P ≠ ⊤) (a b : ℕ) (h : Nat.Coprime a b)
     (ha : (a : R) ∈ P) : (b : R) ∉ P := by
   intro hb
@@ -57,6 +64,21 @@ theorem id_coprime_notMem {R : Type} [CommRing R] (P : Ideal R) (hP : P ≠ ⊤)
   rw [h'']
   exact P.add_mem (P.mul_mem_right _ ha) (P.mul_mem_right _ hb)
 
+/- English proof (translation)
+Introduce and unpack `u t ⟨hXa, hXp⟩ hrel`. Establish `hT0 : ((Tu D u : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (tie_Tu_pos D u).ne'`. Take `⟨c, hcc, he, hz⟩` from `h1 D.host.F D.host.E (hS D) D.R.rS _ (X.fl t).fl (X.fl' t).fl hT0 (tie_trace D.sp.cm) hXa hXp ((X.rel_iff t).1 hrel)`. Establish `hX : (X.fl' t).fl.X = (X.fl t).fl.X` using `by rw [tie_X_eq_Xa, tie_X_eq_Xa]; exact hXa _`. Take `⟨o, ho, N, hN, hoN⟩` from `h2 D.host.E (hS D) D.R.rS _ (X.abelian₂ t) (X.fl t) (X.fl' t) c (p_starConj D) (X.lift' t).1 (X.fixed t).2.2.2.2 hcc hz hX`.
+
+Establish `hcong : ∀ i : Fin 2, ∀ P : HeightOneSpectrum (𝓞 D.host.E), ((D.host.g i : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → o - 1 ∈ P.asIdeal`. Introduce `i P hP`. Use `h3 D.host.E (hS D) D.R.rS (Tu D u) (X.abelian₂ t) (gS D) (X.fl t) (X.fl' t) o (X.fixed t).2.1 (X.fixed t).2.2.1.1 (X.adm t) (by rw [ho]; exact hz) P ?_ ?_` and prove the remaining obligations. Unfold `gS`. Rewrite using `[Nat.cast_mul]`.
+
+Use `fin_cases i`. Conclude with `P.asIdeal.mul_mem_right _ hP`. Conclude with `P.asIdeal.mul_mem_left _ hP`. Use `id_coprime_notMem P.asIdeal P.isPrime.ne_top _ _ ?_ hP` and prove the remaining obligations. Use `(Nat.coprime_primes (D.host.g_prime i) (D.mem u).A.T_prime).2 ?_` and prove the remaining obligations.
+
+Use `fin_cases i`. Conclude with `(hTg u).1.symm`. Conclude with `(hTg u).2.symm`. Take `⟨P1, hP1⟩` from `h5 D.host.E _ (D.host.g_prime 0)`. Take `⟨P2, hP2⟩` from `h5 D.host.E _ (D.host.g_prime 1)`.
+
+Establish `ho1 : o = 1` using `h4 (𝓞 D.host.E) o N _ _ P1.asIdeal P2.asIdeal hN hoN (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne P1.isPrime.ne_top P2.isPrime.ne_top hP1 hP2 (hcong 0 P1 hP1) (hcong 1 P2 hP2)`. Establish `hc1 : c = 1` using `by rw [← ho, ho1]; rfl`. Substitute `hc1` using the available equality. Simplify using `only [one_smul] at he hz`. Take `⟨n, hn, hne⟩` from `hL _ (X.abelian₂ t) (X.fl t) (X.fl' t) (X.fixed t) (X.lift' t) (X.conv' t) he hz`.
+
+Use `(X.isId_iff t).2 ⟨n, hn, hne, ?_⟩` and prove the remaining obligations. Establish `hzo : (X.fl t).fl.z ∈ orth (hS D) (Xsp (X.fl t))`. Rewrite using `[p_mem_orth]`. Conclude with `tie_X_le_ker _ _ (X.fl t).fl.z_orth`. Establish `h3'` using `hn.2.2 _ hzo`.
+
+Establish `: n (X.fl t).fl.z - (X.fl' t).fl.z = (n (X.fl t).fl.z - (X.fl t).fl.z) - ((X.fl' t).fl.z - (X.fl t).fl.z)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ h3' hz`.
+-/
 theorem cIdFlag_of_steps (h1 : EqualFlagsScalar) (h2 : ScalarRootOfUnity) (h3 : ScalarCongruentOne) (h4 : RootsOfUnityFormal) (h5 : ExistsPrimeAbove) {D : D7}
     (X : TermTie D) (hL : UnitriangularFrameLift D)
     (hTg : ∀ u : D.what₂.Word, (D.mem u).A.T ≠ D.host.g 0 ∧ (D.mem u).A.T ≠ D.host.g 1) : UnitaryVolumeMass.cIdFlag D X := by

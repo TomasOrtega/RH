@@ -25,10 +25,16 @@ def finProj (v : Pl F) (φ₀ : (κ → Fv F v) → ℂ) (l : ((κ → Fv F v) �
     (κ → Af F) → ℂ :=
   fun z => φ₀ (fun i => evalV F v (z i)) * l fun x => g (finRepl v z x)
 
+/- English proof (translation)
+Simplify using `[finRepl, GlobalTheory.AdelicU.evalV_singleFin_self]`.
+-/
 theorem evalV_finRepl (v : Pl F) (z : κ → Af F) (x : κ → Fv F v) (i : κ) :
     evalV F v (finRepl v z x i) = x i := by
   simp [finRepl, GlobalTheory.AdelicU.evalV_singleFin_self]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `evalV_finRepl v z x i` as an intermediate fact. Simplify using `only [finRepl] at this ⊢`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+-/
 theorem finRepl_finRepl (v : Pl F) (z : κ → Af F) (x : κ → Fv F v) :
     finRepl v (finRepl v z x) (fun i => evalV F v (z i)) = z := by
   funext i
@@ -36,6 +42,9 @@ theorem finRepl_finRepl (v : Pl F) (z : κ → Af F) (x : κ → Fv F v) :
   simp only [finRepl] at this ⊢
   rw [this]; abel
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun p : (κ → Af F) × (κ → Fv F v) => p.1 i` using `(continuous_apply i).comp continuous_fst`. Establish `h2 : Continuous fun p : (κ → Af F) × (κ → Fv F v) => p.2 i` using `(continuous_apply i).comp continuous_snd`. Conclude with `(h1.sub ((GlobalTheory.AdelicU.continuous_singleFin v).comp ((RestrictedProduct.continuous_eval v).comp h1))).add ((GlobalTheory.AdelicU.continuous_singleFin v).comp h2)`.
+-/
 theorem continuous_finRepl (v : Pl F) :
     Continuous fun p : (κ → Af F) × (κ → Fv F v) => finRepl v p.1 p.2 := by
   refine continuous_pi fun i => ?_
@@ -44,6 +53,23 @@ theorem continuous_finRepl (v : Pl F) :
   exact (h1.sub ((GlobalTheory.AdelicU.continuous_singleFin v).comp ((RestrictedProduct.continuous_eval v).comp h1))).add
     ((GlobalTheory.AdelicU.continuous_singleFin v).comp h2)
 
+/- English proof (translation)
+Use `haveI : T2Space (Af F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Establish `he : Continuous fun z : κ → Af F => fun i => evalV F v (z i)` using `continuous_pi fun i => (RestrictedProduct.continuous_eval v).comp (continuous_apply i)`. Establish `hs : Continuous fun z : κ → Af F => fun i => GlobalTheory.AdelicU.singleFin v (evalV F v (z i))` using `continuous_pi fun i => (GlobalTheory.AdelicU.continuous_singleFin v).comp ((RestrictedProduct.continuous_eval v).comp (continuous_apply i))`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+
+Introduce `z₀`. Set `δ : (κ → Af F) → (κ → Af F)` to `fun z => (z₀ - fun i => GlobalTheory.AdelicU.singleFin v (evalV F v (z₀ i))) - (z - fun i => GlobalTheory.AdelicU.singleFin v (evalV F v (z i)))`. Establish `hδ : Filter.Tendsto δ (nhds z₀) (nhds 0)`. Establish `hc : Continuous δ` using `continuous_const.sub (continuous_id.sub hs)`. Simplify `hc.tendsto z₀` using `[δ]`.
+
+Establish `hφe : ∀ᶠ z in nhds z₀, φ₀ (fun i => evalV F v (z i)) = φ₀ (fun i => evalV F v (z₀ i))` using `(hφ₀.1.comp_continuous he).eventually_eq z₀`. Use `filter_upwards [hδ.eventually (GlobalTheory.SBConv.eventually_translate hg), hφe] with z hz h1`. Simplify using `only [finProj]`. Rewrite using `[h1]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `x`. Establish `e : finRepl v z x = finRepl v z₀ x - δ z`. Use function extensionality and compare the values at `i`. Simplify using `only [finRepl, δ, Pi.sub_apply]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e, hz]`. Use `HasCompactSupport.intro ((hg.2.isCompact.prod hφ₀.2.isCompact).image (continuous_finRepl v)) ?_` and prove the remaining obligations. Introduce `z hz`. Assume the negation of the conclusion as `h`. Apply `hz` to reduce the goal to its premises.
+
+Simplify using `only [finProj] at h`. Establish `h1 : φ₀ (fun i => evalV F v (z i)) ≠ 0` using `left_ne_zero_of_mul h`. Establish `h2` using `right_ne_zero_of_mul h`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, g (finRepl v z x) ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Apply `h2` to reduce the goal to its premises. Establish `: (fun x => g (finRepl v z x)) = 0` using `funext hc`. Rewrite using `[this, map_zero]`. Use `⟨(finRepl v z x, fun i => evalV F v (z i)), ⟨subset_tsupport _ hx, subset_tsupport _ h1⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `finRepl_finRepl v z x`.
+-/
 theorem finProj_mem_SB [Fintype κ] (v : Pl F) {φ₀ : (κ → Fv F v) → ℂ} (hφ₀ : φ₀ ∈ SB (κ → Fv F v))
     (l : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ℂ) {g : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) :
     finProj v φ₀ l g ∈ SB (κ → Af F) := by
@@ -88,6 +114,13 @@ theorem finProj_mem_SB [Fintype κ] (v : Pl F) {φ₀ : (κ → Fv F v) → ℂ}
     refine ⟨(finRepl v z x, fun i => evalV F v (z i)), ⟨subset_tsupport _ hx, subset_tsupport _ h1⟩, ?_⟩
     exact finRepl_finRepl v z x
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `e : (fun x => pureA F f g (repl v y x)) = f (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (y i).1) • fun x => g (finRepl v (fun i => (y i).2) x)`. Use function extensionality and compare the values at `x`. Establish `a1 : ∀ i, (repl v y x i).1 = (y i).1` using `fun i => by show (y i).1 - (0 : Ainf F) + 0 = (y i).1`. Rewrite using `[sub_zero, add_zero]`.
+
+Establish `a2 : ∀ i, (repl v y x i).2 = finRepl v (fun i => (y i).2) x i` using `fun i => rfl`. Use `show f (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (repl v y x i).1) * g (fun i => (repl v y x i).2) = _`. Simplify using `only [a1, a2, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[proj_apply, e, map_smul]`. Simplify using `only [pureA, finProj, smul_eq_mul]`.
+
+Express the relevant statement in the definitionally equal form `φ₀ (fun i => evalV F v (y i).2) * _ = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proj_pureA [Fintype κ] (v : Pl F) (φ₀ : (κ → Fv F v) → ℂ) (l : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ℂ)
     (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → Af F) → ℂ) :
     proj v φ₀ l (pureA F f g) = pureA F f (finProj v φ₀ l g) := by
@@ -106,6 +139,15 @@ theorem proj_pureA [Fintype κ] (v : Pl F) (φ₀ : (κ → Fv F v) → ℂ) (l 
   change φ₀ (fun i => evalV F v (y i).2) * _ = _
   ring
 
+/- English proof (translation)
+Introduce `F _ _ κ _ v φ₀ hφ₀ l`. Use `⟨fun Φ hΦ => ?_, fun L hL => ?_⟩` and prove the remaining obligations. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ hΦ`. Take `⟨f, g, hg, rfl⟩` from `hΦ`.
+
+Rewrite using `[proj_pureA]`. Conclude with `Submodule.subset_span ⟨f, _, finProj_mem_SB v hφ₀ l hg, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hx`. Introduce `g hg`. Take `⟨T, hT⟩` from `hL _ (finProj_mem_SB v hφ₀ l hg)`.
+
+Conclude with `⟨T, fun f => by rw [LinearMap.comp_apply, proj_pureA, hT]⟩`.
+-/
 theorem proj_schA_adm : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (v : Pl F) (φ₀ : (κ → Fv F v) → ℂ), φ₀ ∈ SB (κ → Fv F v) → ∀ l : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ℂ,
     (∀ Φ ∈ schA F κ, GlobalTheory.MixedForm.proj v φ₀ l Φ ∈ schA F κ) ∧
       ∀ L ∈ (adeleClass F).adm κ, L ∘ₗ GlobalTheory.MixedForm.proj v φ₀ l ∈ (adeleClass F).adm κ := by

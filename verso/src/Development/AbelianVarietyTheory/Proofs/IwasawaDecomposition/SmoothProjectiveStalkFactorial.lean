@@ -14,6 +14,19 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.SiegelTor
 namespace GlobalTheory.CycAwayReg
 open NumberField
 
+/- English proof (translation)
+Use `haveI : NumberField K := IsCyclotomicExtension.numberField {n} ℚ _`. Establish `h0 : (n : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr (NeZero.ne n)`. Use `set T : Subring Ω := Subring.closure {φ ζ, (n : Ω)⁻¹} with hTdef`. Set `io : 𝓞 K →+* Ω` to `φ.comp (algebraMap _ K)`. Establish `hio : Function.Injective io` using `φ.injective.comp RingOfIntegers.coe_injective`.
+
+Establish `hmem : ∀ x, io x ∈ T`. Introduce `x`. Take `⟨y, hy⟩` from `(IsCyclotomicExtension.Rat.isIntegralClosure_adjoin_singleton hζ).isIntegral_iff.1 (RingOfIntegers.isIntegral_coe x)`. Establish `h1 : (y : K) ∈ Subring.closure ({ζ} : Set K)`. Conclude with `Algebra.mem_adjoin_iff.1 y.2 |> fun h => (Subring.closure_le.2 (by`.
+
+Introduce and unpack `_ (⟨r, rfl⟩ | h)`. Conclude with `intCast_mem (Subring.closure ({ζ} : Set K)) r`. Conclude with `Subring.subset_closure h)) h`. Establish `h2 : Subring.closure ({ζ} : Set K) ≤ T.comap φ`. Rewrite using `[Subring.closure_le]`.
+
+Introduce and unpack `_ rfl`. Conclude with `Subring.subset_closure (Or.inl rfl)`. Establish `h3 : io x = φ y` using `congrArg φ hy.symm`. Rewrite using `[h3]`. Conclude with `h2 h1`.
+
+Use `letI : Algebra (𝓞 K) T := (io.codRestrict _ hmem).toAlgebra`. Establish `hL : IsLocalization (Submonoid.powers (n : 𝓞 K)) T`. Use `GlobalTheory.CycAway.isLocalization_of_le_closure h0 _ _ (fun x y h => hio (congrArg (fun z : T => (z : Ω)) h)) (Subring.subset_closure (Or.inr rfl)) (Subring.closure_mono ?_)` and prove the remaining obligations. Introduce and unpack `x (rfl | h)`. Conclude with `Or.inl ⟨hζ.toInteger, rfl⟩`.
+
+Conclude with `Or.inr h`. Establish `hn' : (n : 𝓞 K) ≠ 0` using `by exact_mod_cast NeZero.ne n`. Conclude with `IsLocalization.isDedekindDomain _ (powers_le_nonZeroDivisors_of_noZeroDivisors hn') _`.
+-/
 theorem isDedekindDomain_closure {Ω K : Type} [Field Ω] [CharZero Ω] [Field K] [CharZero K] {n : ℕ} [NeZero n]
     [IsCyclotomicExtension {n} ℚ K] (φ : K →+* Ω) {ζ : K} (hζ : IsPrimitiveRoot ζ n) :
     IsDedekindDomain (Subring.closure {φ ζ, (n : Ω)⁻¹}) := by
@@ -48,6 +61,11 @@ theorem isDedekindDomain_closure {Ω K : Type} [Field Ω] [CharZero Ω] [Field K
   have hn' : (n : 𝓞 K) ≠ 0 := by exact_mod_cast NeZero.ne n
   exact IsLocalization.isDedekindDomain _ (powers_le_nonZeroDivisors_of_noZeroDivisors hn') _
 
+/- English proof (translation)
+Use `haveI : NeZero n := ⟨hn⟩`. Set `K` to `CyclotomicField n ℚ`. Set `φ : K →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (S := K) (M := ℂ)).toRingHom`. Establish `hζ` using `IsCyclotomicExtension.zeta_spec n ℚ K`. Establish `hz : IsPrimitiveRoot (φ (IsCyclotomicExtension.zeta n ℚ K)) n` using `hζ.map_of_injective φ.injective`.
+
+Establish `he : IsPrimitiveRoot (zeta n) n` using `Complex.isPrimitiveRoot_exp n hn`. Take `⟨k, hk, hkc⟩` from `hz.eq_pow_of_pow_eq_one he.pow_eq_one`. Establish `hζk` using `hζ.pow_of_coprime k (hz.pow_iff_coprime (Nat.pos_of_ne_zero hn) k |>.1 (hkc ▸ he))`. Use `isDedekindDomain_closure φ hζk` as an intermediate fact. Rewrite `this` using `[map_pow, hkc]`. Then use the resulting hypothesis.
+-/
 theorem isDedekindDomain_cycAway_of_ne_zero {n : ℕ} (hn : n ≠ 0) : IsDedekindDomain (cycAway n) := by
   haveI : NeZero n := ⟨hn⟩
   let K := CyclotomicField n ℚ
@@ -60,6 +78,13 @@ theorem isDedekindDomain_cycAway_of_ne_zero {n : ℕ} (hn : n ≠ 0) : IsDedekin
   have := isDedekindDomain_closure φ hζk
   rwa [map_pow, hkc] at this
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `h : cycAway 0 = cycAway 1`. Establish `hb : ∀ m : ℕ, m ≤ 1 → cycAway m = ⊥`. Introduce `m hm`. Use `le_antisymm (Subring.closure_le.2 ?_) bot_le` and prove the remaining obligations.
+
+Introduce and unpack `_ (rfl | rfl)`. Apply the tactic sequence `interval_cases m <;> simp [zeta]`. Apply the tactic sequence `interval_cases m <;> simp`. Rewrite using `[hb 0 zero_le_one, hb 1 le_rfl]`. Rewrite using `[h]`.
+
+Conclude with `isDedekindDomain_cycAway_of_ne_zero one_ne_zero`. Conclude with `isDedekindDomain_cycAway_of_ne_zero hn.ne'`.
+-/
 theorem isDedekindDomain_cycAway (n : ℕ) : IsDedekindDomain (cycAway n) := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · have h : cycAway 0 = cycAway 1 := by
@@ -78,6 +103,13 @@ end GlobalTheory.CycAwayReg
 
 namespace GlobalTheory.CycAwayReg
 
+/- English proof (translation)
+Introduce `n S s X p hproj hs hp hq`. Use `haveI : IsDedekindDomain (cycAway n) := isDedekindDomain_cycAway n`. Use `haveI : IsRegularRing (cycAway n) := inferInstance`. Use `haveI : Smooth (p ≫ s) := inferInstance`. Use `⟨LocallyOfFiniteType.isLocallyNoetherian (p ≫ s), ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨N, i, hi, hcomp⟩` from `hproj haveI : IsProper (PSpace.str (cycAway n) N) := isProper_str (cycAway n) N haveI : CompactSpace S := by`. Rewrite `*` using `[← hcomp]`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str (cycAway n) N)`. Conclude with `QuasiCompact.compactSpace_of_compactSpace p`. Use `haveI : IsRegularRing (X.presheaf.stalk x) := GlobalTheory.ExtendRig.isRegularRing_stalk GlobalTheory.isRegularRing_of_smooth (cycAway n) (p ≫ s) x haveI : IsRegularLocalRing (X.presheaf.stalk x) := IsRegularLocalRing.of_isRegularRing_of_isLocalRing _ haveI : IsDomain (X.presheaf …`.
+
+Conclude with `⟨inferInstance, GlobalTheory.uniqueFactorizationMonoid_of_isRegularRing_of_isLocalRing GlobalTheory.exists_hasProjectiveDimensionLE_of_isRegularLocalRing GlobalTheory.isPrincipal_map_away_of_hasProjectiveDimensionLE _⟩`.
+-/
 theorem smooth_over_projective_factorial : ∀ (n : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp (cycAway n)) (X : Scheme.{0}) (p : X ⟶ S), IsProjOver s → Smooth s → Smooth p → QuasiCompact p → IsLocallyNoetherian X ∧ CompactSpace X ∧ ∀ x : X, IsDomain (X.presheaf.stalk x) ∧ UniqueFactorizationMonoid (X.presheaf.stalk x) := by
   intro n S s X p hproj hs hp hq
   haveI : IsDedekindDomain (cycAway n) := isDedekindDomain_cycAway n

@@ -8,6 +8,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Rewrite using `[AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup f.ker, Nat.card_congr (QuotientAddGroup.quotientKerEquivRange f).toEquiv, mul_comm]`. Conclude with `Nat.mul_le_mul (Nat.card_le_card_of_injective i hi) (Nat.card_le_card_of_injective j hj)`.
+-/
 private theorem reflect_card {A B S T : Type} [AddCommGroup A] [AddCommGroup B] [Finite S] [Finite T] (f : A →+ B)
     (i : f.ker → S) (hi : Function.Injective i) (j : f.range → T) (hj : Function.Injective j) :
     Nat.card A ≤ Nat.card S * Nat.card T := by
@@ -15,6 +18,11 @@ private theorem reflect_card {A B S T : Type} [AddCommGroup A] [AddCommGroup B] 
     Nat.card_congr (QuotientAddGroup.quotientKerEquivRange f).toEquiv, mul_comm]
   exact Nat.mul_le_mul (Nat.card_le_card_of_injective i hi) (Nat.card_le_card_of_injective j hj)
 
+/- English proof (translation)
+Take `⟨j⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Apply `j.injective` to reduce the goal to its premises. Establish `h1 : ‖j ζ‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, hζ.pow_eq_one, map_one]) hn`. Establish `h2 : j (cE K ζ) = starRingEnd ℂ (j ζ)` using `IsCMField.complexEmbedding_complexConj K j ζ`. Rewrite using `[h2, map_inv₀]`.
+
+Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[Complex.conj_mul', h1]`. Simplify using the standard rewrite rules.
+-/
 private theorem reflect_conj {K : Type} [Field K] [NumberField K] [IsCMField K] {n : ℕ} (hn : n ≠ 0) {ζ : K}
     (hζ : IsPrimitiveRoot ζ n) : cE K ζ = ζ⁻¹ := by
   obtain ⟨j⟩ : Nonempty (K →+* ℂ) := inferInstance
@@ -26,6 +34,11 @@ private theorem reflect_conj {K : Type} [Field K] [NumberField K] [IsCMField K] 
   rw [Complex.conj_mul', h1]
   simp
 
+/- English proof (translation)
+Establish `hn0 : n ≠ 0` using `hn.pos.ne'`. Establish `h2` using `(UpperTheory.V.Kum.radClKer K ∅ n hn0 a ha).1 (h1 ▸ one_mem _)`. Take `⟨u, hu, p, ⟨b, rfl⟩, rfl⟩` from `Subgroup.mem_sup.1 h2`. Establish `hb : powMonoidHom n b * Units.map (cE K).toMonoidHom (powMonoidHom n b) ∈ powK K n` using `⟨b * Units.map (cE K).toMonoidHom b, by simp only [powMonoidHom_apply, mul_pow, map_pow]⟩`. Establish `hu' : u * Units.map (cE K).toMonoidHom u ∈ powK K n`.
+
+Rewrite `hc` using `[map_mul, mul_mul_mul_comm]`. Conclude with `(Subgroup.mul_mem_cancel_right _ hb).1 hc`. Take `⟨t, ht, q, ⟨d, rfl⟩, rfl⟩` from `Subgroup.mem_sup.1 ((UpperTheory.V.Kum.unitMinus K n u hu hu').2 hn)`. Conclude with `⟨t, d * b, ht, by simp only [powMonoidHom_apply, mul_pow, mul_assoc]⟩`.
+-/
 private theorem reflect_tors {K : Type} [Field K] [NumberField K] [IsCMField K] {n : ℕ} (hn : Odd n) (a : Kˣ)
     (ha : a ∈ SelK (∅ : Set (HeightOneSpectrum (𝓞 K))) n) (h1 : radCl n a = 1)
     (hc : a * Units.map (cE K).toMonoidHom a ∈ powK K n) :
@@ -41,6 +54,23 @@ private theorem reflect_tors {K : Type} [Field K] [NumberField K] [IsCMField K] 
   obtain ⟨t, ht, q, ⟨d, rfl⟩, rfl⟩ := Subgroup.mem_sup.1 ((UpperTheory.V.Kum.unitMinus K n u hu hu').2 hn)
   exact ⟨t, d * b, ht, by simp only [powMonoidHom_apply, mul_pow, mul_assoc]⟩
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ U n _ N ζ _ _ χ ψ σ hU hn hζ hχ hσ`. Establish `hn0 : n ≠ 0` using `NeZero.ne n`. Take `⟨κ, hκ, -⟩` from `UpperTheory.V.Kum.reflMap F Ω K U n N ζ hU hζ`. Take `⟨hR, hfin⟩` from `UpperTheory.V.Kum.reflRoot F Ω K U n N ζ ψ hU hζ`. Establish `hX` using `(UpperTheory.V.Kum.radXDual F Ω K U n N ζ hU hζ).1`.
+
+Establish `hle : EqEig N U (scalRep (ZMod n) ψ) σ 1 ≤ XDual N U (ZMod n) (ZMod n)` using `fun φ h => h.1.1`. Set `f : EqEig N U (scalRep (ZMod n) ψ) σ 1 →+ Additive (ClassGroup (𝓞 K))` to `κ.comp (Submodule.inclusion hle).toAddMonoidHom`. Establish `key : ∀ φ : EqEig N U (scalRep (ZMod n) ψ) σ 1, ∃ (β : Ω) (a : Kˣ), IsRad (algebraMap K Ω ζ) U φ.1 β ∧ β ^ n = algebraMap K Ω a ∧ a ∈ SelK (∅ : Set (HeightOneSpectrum (𝓞 K))) n ∧ f φ = Additive.ofMul (radCl n a) ∧ a * Units.map (cE K).toMonoidHom a ∈ powK K n ∧ radCl n a ∈ ClTw K …`. Introduce `φ`. Take `⟨β, a, h1, h2, h3⟩` from `hX φ.1 (hle φ.2)`.
+
+Take `⟨h4, h5⟩` from `UpperTheory.V.Kum.reflTw F Ω K U n N ζ χ ψ φ.1 β a hU hζ hχ φ.2.1 h1 h2`. Take `⟨h6, h7⟩` from `h5 (cE K) σ hσ.isLift (reflect_conj hn0 hζ) φ.2.2`. Conclude with `⟨β, a, h1, h2, h3, hκ ⟨φ.1, hle φ.2⟩ β a h1 h2, h6, h4, h7⟩`. Establish `hker : ∀ φ : f.ker, ∃ (β : Ω) (a : Kˣ), IsRad (algebraMap K Ω ζ) U φ.1.1 β ∧ β ^ n = algebraMap K Ω a ∧ IsOfFinOrder β`. Introduce `φ`.
+
+Take `⟨β, a, h1, h2, h3, h4, h5, -⟩` from `key φ.1`. Establish `h0 : radCl n a = 1` using `Additive.ofMul.injective (h4.symm.trans φ.2)`. Take `⟨t, b, ht, rfl⟩` from `reflect_tors hn a h3 h0 h5`. Establish `hb : algebraMap K Ω b ≠ 0` using `(map_ne_zero _).2 b.ne_zero`. Establish `hp : (β / algebraMap K Ω b) ^ n = algebraMap K Ω t`.
+
+Rewrite using `[div_pow, h2, Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, mul_div_cancel_right₀ _ (pow_ne_zero _ hb)]`. Use `⟨β / algebraMap K Ω b, t, ⟨div_ne_zero h1.1 hb, fun u => ?_⟩, hp, ?_⟩` and prove the remaining obligations. Establish `hu : u.1 ∈ galOf F K Ω` using `hU ▸ u.2`. Rewrite using `[map_div₀, h1.2 u, hu (b : K), mul_div_assoc]`. Use `IsOfFinOrder.of_pow ?_ hn0` and prove the remaining obligations.
+
+Rewrite using `[hp]`. Conclude with `((algebraMap K Ω).toMonoidHom.comp (Units.coeHom K)).isOfFinOrder ht`. Establish `hran : ∀ c : f.range, Additive.toMul c.1 ∈ ClTw K n (χ * ψ⁻¹) ⊓ ClMinus (cE K)`. Introduce and unpack `⟨c, φ, rfl⟩`. Take `⟨β, a, -, -, -, h4, -, h6⟩` from `key φ`.
+
+Use `show Additive.toMul (f φ) ∈ _`. Rewrite using `[h4]`. Conclude with `h6`. Use `le_trans (reflect_card f (fun φ => (⟨φ.1.1, φ.1.2.1, hker φ⟩ : {φ : U → ZMod n // φ ∈ EqHom N U (scalRep (ZMod n) ψ) ∧ ∃ (β : Ω) (a : Kˣ), IsRad (algebraMap K Ω ζ) U φ β ∧ β ^ n = algebraMap K Ω a ∧ IsOfFinOrder β})) ?_ (fun c => (⟨Additive.toMul c.1, hran c⟩ : (ClTw K n (χ * ψ⁻¹ …` and prove the remaining obligations. Introduce `x y h`.
+
+Conclude with `Subtype.ext (Subtype.ext (Subtype.mk.inj h))`. Introduce `x y h`. Conclude with `Subtype.ext (Additive.toMul.injective (Subtype.mk.inj h))`.
+-/
 theorem UpperTheory.V.Kum.reflect :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (U : Subgroup (G F Ω)) (n : ℕ) [NeZero n] (N : ℕ) (ζ : K) [Normal F K] [IsCMField K] (χ ψ : G F Ω →* (ZMod n)ˣ) (σ : Ω ≃+* Ω), U = galOf F K Ω → Odd n → IsPrimitiveRoot ζ n → (∀ g : G F Ω, g (algebraMap K Ω ζ) = (algebraMap K Ω ζ) ^ (χ g : ZMod n).val) → IsConjOm σ →
     Nat.card (EqEig N U (scalRep (ZMod n) ψ) σ 1) ≤ Nat.card (scalRep (ZMod n) ψ).invariants * Nat.card (ClTw K n (χ * ψ⁻¹) ⊓ ClMinus (cE K) : Subgroup (ClassGroup (𝓞 K))) := by

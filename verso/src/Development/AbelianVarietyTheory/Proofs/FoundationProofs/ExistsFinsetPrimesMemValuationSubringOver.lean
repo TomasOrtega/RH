@@ -6,6 +6,9 @@ open Matrix GlobalTheory.KZ
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hV : IsIntegral V y` using `hy.tower_top`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hV`. Rewrite using `[← hz]`. Conclude with `z.2`.
+-/
 theorem isIntegral_int_mem_every_valuationSubring {F : Type} [Field F] (V : ValuationSubring F)
     {y : F} (hy : IsIntegral ℤ y) : y ∈ V := by
   have hV : IsIntegral V y := hy.tower_top
@@ -13,6 +16,15 @@ theorem isIntegral_int_mem_every_valuationSubring {F : Type} [Field F] (V : Valu
   rw [← hz]
   exact z.2
 
+/- English proof (translation)
+Take `⟨a, b, hab⟩` from `hn`. Establish `hint : ∀ m : ℤ, V.valuation (m : F) ≤ 1` using `fun m => (V.valuation_le_one_iff _).2 (by simp)`. Establish `hq' : V.valuation ((q : ℕ) : F) < 1` using `V.mem_nonunits_iff.1 hq`. Use `le_antisymm (hint n) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Establish `hsum : ((a : F) * n + (b : F) * ((q : ℕ) : F)) = 1`.
+
+Use `congrArg (fun t : ℤ => (t : F)) hab` as an intermediate fact. Simplify using `using this`. Establish `h1 : V.valuation ((a : F) * n) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hint a)) hlt`.
+
+Establish `h2 : V.valuation ((b : F) * ((q : ℕ) : F)) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hint b)) hq'`. Establish `h3` using `Valuation.map_add_lt _ h1 h2`. Rewrite `h3` using `[hsum, map_one]`.
+
+Conclude with `lt_irrefl _ h3`.
+-/
 theorem valuationSubring_valuation_intCast_coprime_eq_one {F : Type} [Field F] (V : ValuationSubring F)
     {q : ℕ} (hq : ((q : ℕ) : F) ∈ V.nonunits) {n : ℤ} (hn : IsCoprime n (q : ℤ)) :
     V.valuation (n : F) = 1 := by
@@ -32,6 +44,15 @@ theorem valuationSubring_valuation_intCast_coprime_eq_one {F : Type} [Field F] (
   rw [hsum, map_one] at h3
   exact lt_irrefl _ h3
 
+/- English proof (translation)
+Introduce `F _ _ _ s`. Establish `: Algebra.IsAlgebraic ℤ F` using `⟨fun x => (IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic x)⟩`. Take `⟨d, hd0, hd⟩` from `Algebra.IsAlgebraic.exists_integral_multiples ℤ s`. Use `⟨d.natAbs.primeFactors, fun q hq hqS V hqV x hx => ?_⟩` and prove the remaining obligations. Establish `hndvd : ¬ q ∣ d.natAbs` using `fun h => hqS (Nat.mem_primeFactors.2 ⟨hq, h, Int.natAbs_ne_zero.2 hd0⟩)`.
+
+Establish `hcop : IsCoprime d (q : ℤ)`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one]`. Use `(Nat.Prime.coprime_iff_not_dvd hq).2 hndvd` as an intermediate fact. Simplify `this` using `[Int.gcd, Nat.Coprime, Nat.gcd_comm]`. Establish `hdx : (d : F) * x ∈ V`.
+
+Use `isIntegral_int_mem_every_valuationSubring V (hd x hx)` as an intermediate fact. Simplify `this` using `[zsmul_eq_mul]`. Establish `hv1` using `valuationSubring_valuation_intCast_coprime_eq_one V hqV hcop`. Rewrite using `[← V.valuation_le_one_iff]`. Use `(V.valuation_le_one_iff _).2 hdx` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, hv1, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem exists_finset_primes_forall_mem_valuationSubring :
     ∀ {F : Type} [Field F] [CharZero F] [Algebra.IsAlgebraic ℚ F] (s : Finset F),
       ∃ S : Finset ℕ, ∀ q : ℕ, q.Prime → q ∉ S → ∀ V : ValuationSubring F,

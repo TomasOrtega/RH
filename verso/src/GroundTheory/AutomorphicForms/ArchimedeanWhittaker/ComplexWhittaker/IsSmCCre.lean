@@ -15,6 +15,9 @@ abbrev IsSmC (v : H) : Prop := hGL2C.IsSmoothVector (πC σ) v
 
 noncomputable abbrev dπC (X : gl2C) (v : H) : H := hGL2C.derivOp (πC σ) X v
 
+/- English proof (translation)
+The claim follows from `hGL2C.isSmoothVector_derivOp (πC σ) hv X`.
+-/
 theorem isSmC_dπC {v : H} (hv : IsSmC σ v) (X : gl2C) : IsSmC σ (dπC σ X v) :=
   hGL2C.isSmoothVector_derivOp (πC σ) hv X
 

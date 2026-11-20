@@ -19,6 +19,15 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 
 namespace GlobalTheory.ShFam.Cell
 
+/- English proof (translation)
+Introduce `Q W V ι ρ u h t`. Establish `key : ∀ p : Q ⟶ W, p ≫ AffineSpace.homOfVector ρ u = t ↔ (p ≫ ρ = t ≫ 𝔸(ι; V) ↘ V ∧ ∀ i, p.appTop (u i) = t.appTop (AffineSpace.coord V i))`. Introduce `p`. Rewrite using `[AffineSpace.comp_homOfVector]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `rfl`. Use `⟨(AffineSpace.homOfVector_over _ _).symm, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[AffineSpace.homOfVector_appTop_coord]`. Both sides reduce to the same expression. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[AffineSpace.homOfVector_over, h1]`. Introduce `i`. Rewrite using `[AffineSpace.homOfVector_appTop_coord]`. Conclude with `h2 i`.
+
+Take `⟨p, hp, hu⟩` from `h (t ≫ 𝔸(ι; V) ↘ V) (fun i => t.appTop (AffineSpace.coord V i))`. Conclude with `⟨p, (key p).2 hp, fun q hq => hu q ((key q).1 hq)⟩`.
+-/
 theorem existsUnique_of_coords : ∀ (Q W V : Scheme.{0}) (ι : Type) (ρ : W ⟶ V) (u : ι → Γ(W, ⊤)), (∀ (x : Q ⟶ V) (a : ι → Γ(Q, ⊤)), ∃! p : Q ⟶ W, p ≫ ρ = x ∧ ∀ i, p.appTop (u i) = a i) → ∀ t : Q ⟶ 𝔸(ι; V), ∃! p : Q ⟶ W, p ≫ AffineSpace.homOfVector ρ u = t := by
   intro Q W V ι ρ u h t
   have key : ∀ p : Q ⟶ W, p ≫ AffineSpace.homOfVector ρ u = t ↔
@@ -39,6 +48,13 @@ theorem existsUnique_of_coords : ∀ (Q W V : Scheme.{0}) (ι : Type) (ρ : W �
   obtain ⟨p, hp, hu⟩ := h (t ≫ 𝔸(ι; V) ↘ V) (fun i => t.appTop (AffineSpace.coord V i))
   exact ⟨p, (key p).2 hp, fun q hq => hu q ((key q).1 hq)⟩
 
+/- English proof (translation)
+Introduce `D A N j S κ s Φ k y`. Establish `hsm : Smooth (genStr s.T.Z)` using `SmoothOfRelativeDimension.smooth S.Dw.dim _`. Take `⟨V, hV, φV, f₀, hyV, hVi, hstr⟩` from `GlobalTheory.T.exists_affine_eigen_frame_local hsm ((Φ.C k).π y)`. Take `⟨w, hyW⟩` from `GlobalTheory.T.flag_component_eigen_frame_compat (Φ.C k) hV f₀ hstr y hyV`. Take `⟨u, hu⟩` from `GlobalTheory.T.flag_component_frame_permutation (Φ.C k) hV f₀ w`.
+
+Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.affine_space_smooth_normal (gen s.T.Z) _ (genStr s.T.Z) hsm V hV hVi (Coord S.Dw)`. Use `⟨cellOpen (Φ.C k) hV f₀ w, 𝔸(Coord S.Dw; V.toScheme), AffineSpace.homOfVector (cellMap (Φ.C k) hV f₀ w) (coordTop (Φ.C k) hV f₀ w u), (𝔸(Coord S.Dw; V.toScheme) ↘ V.toScheme) ≫ V.ι, hyW, h1, h2, h3, h4, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, AffineSpace.homOfVector_over]`. Conclude with `cellMap_ι _ _ _ _`. Introduce `Ω _ _ t`.
+
+Use `existsUnique_of_coords _ _ _ _ _ _ (fun x a => ?_) t` and prove the remaining obligations. Take `⟨p, hp, hpa⟩` from `GlobalTheory.T.flag_toroidal_eigen_frame_comp Φ k hV f₀ hstr hVi w u hu y hyW Ω x a`. Conclude with `⟨p, ⟨hp, hpa⟩, fun q ⟨hq, hqa⟩ => GlobalTheory.T.flag_toroidal_eigen_frame Φ k hV f₀ w u hu Ω q p (hq.trans hp.symm) fun i => (hqa i).trans (hpa i).symm⟩`.
+-/
 theorem exists_cell_nhds : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (y : (Φ.C k).Y.X), ∃ (W : (Φ.C k).Y.X.Opens) (T : Scheme.{0}) (h : W.toScheme ⟶ T) (g : T ⟶ gen s.T.Z), y ∈ W ∧ Smooth g ∧ LocallyOfFiniteType g ∧ IsIntegral T ∧ (∀ t : T, IsIntegrallyClosed (T.presheaf.stalk t)) ∧ h ≫ g = W.ι ≫ (Φ.C k).π ∧ ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (t : Spec (.of Ω) ⟶ T), ∃! x : Spec (.of Ω) ⟶ W.toScheme, x ≫ h = t := by
   intro D A N j S κ s Φ k y
   have hsm : Smooth (genStr s.T.Z) := SmoothOfRelativeDimension.smooth S.Dw.dim _

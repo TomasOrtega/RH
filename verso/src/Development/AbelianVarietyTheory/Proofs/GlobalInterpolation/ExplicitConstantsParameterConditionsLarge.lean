@@ -29,6 +29,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Take `⟨hF, -, h1, h2, h3, h4, h5, -, -, -, -, h6, h7, -, hM, hL⟩` from `hC`. Take `⟨-, -, -, -, -, -, -, h8, -, -⟩` from `hF`. Simplify using `only [FC.cLast, FC.cMid, List.forall_mem_cons] at hM hL`. Take `⟨hCF, -⟩` from `hM`. Take `⟨a1, a2, a3, a4, a5, -, a6, a7, a8, a9, a10, a11, a12, a13, a14, -⟩` from `hL`.
+
+Establish `a4' : 0 < C.P.cLL` using `inv_pos.mp (lt_of_lt_of_le one_pos a4)`. Simplify using `only [PC.list, List.forall_mem_cons]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, a4', ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, by simp⟩ <;>`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Std.parConsts_pos {C : FC} (hC : Std C) : ∀ c ∈ C.P.list, 0 < c := by
   obtain ⟨hF, -, h1, h2, h3, h4, h5, -, -, -, -, h6, h7, -, hM, hL⟩ := hC
   obtain ⟨-, -, -, -, -, -, -, h8, -, -⟩ := hF
@@ -40,6 +45,11 @@ theorem Std.parConsts_pos {C : FC} (hC : Std C) : ∀ c ∈ C.P.list, 0 < c := b
   refine ⟨?_, ?_, ?_, a4', ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, by simp⟩ <;>
     linarith
 
+/- English proof (translation)
+Use `SzRow.imp ( SzRow.and GlobalTheory.T.sizes_host_degree_and_log_q_and_conductor_bounds <| SzRow.and GlobalTheory.EX.explicitChoice_rankK_lower_upper_bounds <| SzRow.and GlobalTheory.EX.szRow_rank_lower_bounds <| SzRow.and GlobalTheory.EX.szRow_logf <| SzRow.and GlobalTheory.T.size …` and prove the remaining obligations. Introduce `C cD ch D L hC _ h hA`. Take `⟨⟨h_qd_pow, h_logq_ge, h_dlogL1_le, h_condE_le, h_pde_log⟩, ⟨h_k_low, h_k_up, h_R0_ge⟩, ⟨h_k_ge_m2L, h_k_ge_mx, h_klogk, h_flogk⟩, ⟨h_logf_le, h_log2f_le, h_loglogb, h_nW_ge⟩, ⟨h_eta_le, h_logeta, h_t_le_eta, h_teta, h_mteta⟩, ⟨h_mSeta, h_Neta, h_eta2, h_kS_le⟩, ⟨h_TT_card_le, h_ …` from `h`. Establish `hp` using `hC.parConsts_pos`. Simplify using `only [PC.list, List.forall_mem_cons] at hp`.
+
+Take `⟨p_CkLow, p_Ck6, p_CfL, p_cLL, p_CnW, p_Crho, p_CDelG, p_CLw, p_Cj0, p_Cw, p_cw, p_CDel, p_CCount, p_Ch0r, p_Ch0k, p_Ch0N, p_Cgap, p_CetaF, p_CY, p_CYL, p_Cpde, p_CccK, p_CF, -⟩` from `hp`. Conclude with `⟨ { CkLow := C.P.CkLow, CkLow_pos := p_CkLow Ck6 := C.P.Ck6, Ck6_pos := p_Ck6 CfL := C.P.CfL, CfL_pos := p_CfL cLL := C.P.cLL, cLL_pos := p_cLL CnW := C.P.CnW, CnW_pos := p_CnW Crho := C.P.Crho, Crho_pos := p_Crho CDelG := C.P.CDelG, CDelG_pos := p_CDelG CLw := C.P.CLw, CLw_pos : …`.
+-/
 theorem explicitConstants_parameterConditions_large :
     SzRow (fun C D L => HostArith D.host → ∃ P : ParameterChoice' D L, parConsts P = C.PK ∧ P.CnW = C.P.CnW) := by
   refine SzRow.imp (

@@ -23,6 +23,13 @@ section Basis
 variable {K L : Type} [Field K] [Field L] [CharZero K] [CharZero L] [Algebra K L]
   [Algebra.IsQuadraticExtension K L]
 
+/- English proof (translation)
+Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t h`. Rewrite `h` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `h'` using `congrArg c h`. Rewrite `h'` using `[map_add, map_mul, hcK, hcK, hθ, map_zero]`.
+
+Establish `h2 : algebraMap K L (2 * s) = 0` using `by rw [map_mul, map_ofNat]; linear_combination h + h'`. Establish `hs : s = 0`. Use `(algebraMap K L).injective (h2.trans (map_zero _).symm)` as an intermediate fact. Simplify using `using this`. Substitute `hs` using the available equality.
+
+Rewrite `h` using `[map_zero, zero_add]`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `(algebraMap K L).injective (h.trans (map_zero _).symm)`. Conclude with `absurd h hθ0`.
+-/
 theorem linearIndependent_one_theta (c : L →ₐ[ℚ] L) (hcK : ∀ x : K, c (algebraMap K L x) = algebraMap K L x)
     (θ : L) (hθ : c θ = -θ) (hθ0 : θ ≠ 0) : LinearIndependent K ![(1 : L), θ] := by
   rw [LinearIndependent.pair_iff]
@@ -61,6 +68,9 @@ def sigmaA (A : Type) [CommRing A] [Algebra K A] (c : L →ₐ[ℚ] L)
     (hcK : ∀ x : K, c (algebraMap K L x) = algebraMap K L x) : A ⊗[K] L →ₐ[A] A ⊗[K] L :=
   Algebra.TensorProduct.map (AlgHom.id A A) (cK c hcK)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem sigmaA_tmul (A : Type) [CommRing A] [Algebra K A] (c : L →ₐ[ℚ] L)
     (hcK : ∀ x : K, c (algebraMap K L x) = algebraMap K L x) (s : A) (y : L) :
     sigmaA A c hcK (s ⊗ₜ y) = s ⊗ₜ c y := rfl
@@ -99,6 +109,9 @@ def phiW (w : HeightOneSpectrum (𝓞 K)) [w.asIdeal.LiesOver (vP p).asIdeal] :
   Algebra.TensorProduct.lift (iotaW p w).toRatAlgHom (algebraMap K (w.adicCompletion K)).toRatAlgHom
     (fun _ _ => Commute.all _ _)
 
+/- English proof (translation)
+Simplify using `[phiW]`.
+-/
 @[simp] theorem phiW_tmul (w : HeightOneSpectrum (𝓞 K)) [w.asIdeal.LiesOver (vP p).asIdeal]
     (s : ℚ_[p]) (x : K) : phiW p w (s ⊗ₜ x) = iotaW p w s * algebraMap K (w.adicCompletion K) x := by
   simp [phiW]

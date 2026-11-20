@@ -22,6 +22,13 @@ open GlobalTheory.FlatModel
 
 namespace GlobalTheory.FlatModel.FrameLoc
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle hov τ A _ ξ β hβ g e U₁ h₁ U₂ h₂ he heig hu₁ hu₂ L _ _ io yL hyL`. Take `⟨alg, hs, hpt, hemb⟩` from `GlobalTheory.T.integral_model_point_over_inclusion E H Dw l l' Xo Xo' c c' W Y r hle hov A ξ β hβ L io yL hyL`. Use `letI := alg`. Take `⟨z₀, hz₀⟩` from `GlobalTheory.FlagTan.exists_frPt (yL ≫ r ≫ pullback.fst _ _) hs`. Use `choose w₁ hc₁ ht₁ using fun i => GlobalTheory.T.tangent_basis_generic_point E H Dw l' Xo' c' W Y A ξ g e he L io yL hyL (fun b => io (U₁ i b))`.
+
+Use `choose w₂ hc₂ ht₂ using fun i => GlobalTheory.T.tangent_basis_generic_point E H Dw l' Xo' c' W Y A ξ g e he L io yL hyL (fun b => io (U₂ i b))`. Establish `hE₁` using `(heig L io).1`. Establish `hE₂` using `(heig L io).2`. Rewrite `hE₁`, `hE₂` using `[← hyL]`. Establish `hp₁` using `fun i => GlobalTheory.T.embedding_section_compatibility E H Dw l l' Xo Xo' c c' W Y r ν L yL τ.1 (io.comp (β.comp (embV c' W τ.1))) (fun a => hemb _ a) (w₁ i) (ht₁ i) (hE₁ i _ (hc₁ i))`.
+
+Establish `hp₂` using `fun i => GlobalTheory.T.embedding_section_compatibility E H Dw l l' Xo Xo' c c' W Y r ν L yL (conjEmb τ.1) (io.comp (β.comp (embV c' W (conjEmb τ.1)))) (fun a => hemb _ a) (w₂ i) (ht₂ i) (hE₂ i _ (hc₂ i))`. Take `⟨g₁, hg₁, hcg₁⟩` from `GlobalTheory.T.tangent_basis_map_compatible E H Dw l l' Xo Xo' c c' W Y r ν A ξ g e he τ.1 U₁ h₁ hu₁ L io yL hyL z₀ hz₀ w₁ hc₁ ht₁ fun i => (hp₁ i).2`. Take `⟨g₂, hg₂, hcg₂⟩` from `GlobalTheory.T.tangent_basis_map_compatible E H Dw l l' Xo Xo' c c' W Y r ν A ξ g e he (conjEmb τ.1) U₂ h₂ hu₂ L io yL hyL z₀ hz₀ w₂ hc₂ ht₂ fun i => (hp₂ i).2`. Take `⟨z, hzx, hz₁, hz₂⟩` from `GlobalTheory.T.frame_point_tangent_matrices E H Dw l Xo c L z₀ τ g₁ g₂ (fun i => w₁ i ≫ ν.φ) (fun i => w₂ i ≫ ν.φ) hg₁ hg₂ hcg₁ hcg₂`. Conclude with `⟨alg, z, w₁, w₂, hpt z (hzx.trans hz₀), hc₁, hc₂, hz₁, hz₂⟩`.
+-/
 theorem exists_frPt_of_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)
     (Y : Model Xo' c' (c'.V W).subtype) (r : Xo'.XF c' ⟶ Xo.XF c)

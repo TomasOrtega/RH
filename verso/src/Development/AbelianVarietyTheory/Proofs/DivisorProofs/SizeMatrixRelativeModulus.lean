@@ -14,6 +14,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CellExp
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N l d b χ M f z`. Establish `hrow : ∀ i, (M.1 i 0 : ℂ) + M.1 i 1 + M.1 i 2 = b i`. Introduce `i`. Use `M.2.1 i` as an intermediate fact. Simplify using `only [Fintype.card_fin, Fin.sum_univ_three] at this`.
+
+Conclude with `this` after adjusting the coercions. Establish `hmod : ∀ i, modExp (fun j : Fin 3 => Fin (M.1 i j)) 1 = (M.1 i 2 : ℤ) - M.1 i 0`. Introduce `i`. Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_three]`. Establish `hsw : ∀ i a, GlobalTheory.SmGL.swapBlocks k (fun i j => Fin (M.1 i j)) (Pi.mulSingle (1 : Fin 3) z) i a = (Pi.mulSingle (1 : Fin 3) z : ∀ j, GlobalTheory.SmGL.Levi k (fun i : Fin 2 => Fin (M.1 i j))) a i` using `fun _ _ => rfl`.
+
+Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, relDeltaHalf_apply, GlobalTheory.LeviBlockExponent.pairChar, MonoidHom.finsetProd_apply, MonoidHom.comp_apply, Pi.evalMonoidHom_apply, detChar_apply, relEmb_apply, det_leviEmb, deltaHalf_apply, hsw]`. Simplify using `only [Fin.prod_univ_three, Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (show (0 : Fin 3) ≠ 1 by decide), Pi.mulSingle_eq_of_ne (show (2 : Fin 3) ≠ 1 by decide), Pi.one_apply, map_one, one_mul, mul_one, hmod]`. Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Use `congr 1`. Establish `hs : (M.1 i 0 : ℂ) + ((M.1 i 1 : ℂ) - b i) / 2 = -((((M.1 i 2 : ℤ) - M.1 i 0 : ℤ) : ℂ) / 2)`. Rewrite using `[← hrow i]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hs, absPow_neg, MonoidHom.inv_apply]`.
+-/
 theorem jacquetChar_middleColumn : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (N l d : ℕ) (b : Fin 2 → ℕ) (χ : Fin 2 → kˣ →* ℂˣ)
     (M : GlobalTheory.SmGL.SizeMatrix (fun i : Fin 2 => Fin (b i)) (fun j : Fin 3 => Fin (GlobalTheory.CuspBlock.tripSizes l d N j)))

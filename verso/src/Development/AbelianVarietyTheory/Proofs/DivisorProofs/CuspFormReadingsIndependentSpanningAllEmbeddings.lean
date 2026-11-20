@@ -12,6 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.UnifAll
 
+/- English proof (translation)
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[← b.sum_repr u, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+-/
 theorem span_range_le {F U H : Type} [Field F] [AddCommGroup U] [Module F U] [AddCommGroup H] [Module ℂ H] {σ : F →+* ℂ}
     (j : U →ₛₗ[σ] H) {n : ℕ} (b : Module.Basis (Fin n) F U) :
     Submodule.span ℂ (Set.range j) ≤ Submodule.span ℂ (Set.range fun k => j (b k)) := by
@@ -22,6 +27,13 @@ theorem span_range_le {F U H : Type} [Field F] [AddCommGroup U] [Module F U] [Ad
   rw [map_smulₛₗ]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
 
+/- English proof (translation)
+Establish `h1 : Submodule.span ℂ (Set.range fun k => j' (b k)) = ⊤` using `top_le_iff.1 (hs ▸ span_range_le j' b)`. Establish `h2 : Submodule.span ℂ (Set.range fun k => c.symm (j' (b k))) = ⊤`. Establish `h3` using `congrArg (Submodule.map (c.symm : H' →ₗ⋆[ℂ] H)) h1`. Rewrite `h3` using `[Submodule.map_span, ← Set.range_comp, Submodule.map_top, LinearEquiv.range]`. Conclude with `h3`.
+
+Use `haveI : Module.Finite ℂ H := ⟨h2 ▸ Submodule.fg_span (Set.finite_range _)⟩`. Establish `h4 : Module.finrank ℂ H ≤ n` using `by simpa using finrank_le_of_span_eq_top h2`. Establish `h5 : Fintype.card (Fin n) = Module.finrank ℂ H` using `le_antisymm hi.fintype_card_le_finrank (by simpa using h4)`. Use `top_le_iff.1 ((hi.span_eq_top_of_card_eq_finrank' h5).symm.le.trans (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Conclude with `⟨b k, rfl⟩`.
+-/
 theorem span_top {F U H H' : Type} [Field F] [AddCommGroup U] [Module F U] [AddCommGroup H] [Module ℂ H]
     [AddCommGroup H'] [Module ℂ H'] {σ σ' : F →+* ℂ} (j : U →ₛₗ[σ] H) (j' : U →ₛₗ[σ'] H') {n : ℕ}
     (b : Module.Basis (Fin n) F U) (c : H ≃ₗ⋆[ℂ] H') (hi : LinearIndependent ℂ fun k => j (b k))
@@ -39,6 +51,15 @@ theorem span_top {F U H H' : Type} [Field F] [AddCommGroup U] [Module F U] [AddC
   rintro _ ⟨k, rfl⟩
   exact ⟨b k, rfl⟩
 
+/- English proof (translation)
+Set `E : H →ₗ[ℂ] (X → ℂ)` to `{ toFun := ev, map_add' := hadd, map_smul' := hsmul }`. Rewrite `hφ`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `a ha k`. Establish `h1 : ∑ k, starRingEnd ℂ (a k) • φ k = 0`. Use function extensionality and compare the values at `g`.
+
+Establish `h2` using `congrFun (congrArg E ha) g`. Rewrite `h2` using `[map_sum, map_zero, Finset.sum_apply]`. Establish `h3` using `congrArg (starRingEnd ℂ) h2`. Rewrite `h3` using `[map_sum, Pi.zero_apply, map_zero]`. Rewrite using `[Finset.sum_apply, Pi.zero_apply, ← h3]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `show _ = starRingEnd ℂ (a k * ev (w k) g)`. Rewrite using `[h, map_mul, Complex.conj_conj]`. Both sides reduce to the same expression.
+
+Simplify using `using hφ _ h1 k`.
+-/
 theorem indep_of_conj {H X : Type} [AddCommGroup H] [Module ℂ H] {m : ℕ} (ev : H → X → ℂ)
     (hadd : ∀ x y, ev (x + y) = ev x + ev y) (hsmul : ∀ (a : ℂ) x, ev (a • x) = a • ev x) (w : Fin m → H)
     (φ : Fin m → X → ℂ) (hφ : LinearIndependent ℂ φ) (h : ∀ k g, ev (w k) g = starRingEnd ℂ (φ k g)) :
@@ -60,6 +81,13 @@ theorem indep_of_conj {H X : Type} [AddCommGroup H] [Module ℂ H] {m : ℕ} (ev
     rfl
   simpa using hφ _ h1 k
 
+/- English proof (translation)
+Introduce `h1 h2 D G _ _ Pl0 T0 A T _ R κ v₀ hL hM hT hp hκ hn i σ`. Establish `good` using `GlobalTheory.T.uniformisation_goodEmbedding_independent_readings h1 h2 D G Pl0 T0 A T R κ v₀ hL hM hT hp hκ hn i`. Distinguish the cases in `hσ : GoodEmb T.Q.c (res T σ)`. Conclude with `good σ hσ`. Take `⟨hc, hb⟩` from `GlobalTheory.T.hilbertModel_conjugation_antilinear_bijection D G Pl0 T0 A T R κ v₀ hM hT`.
+
+Establish `hbar` using `hb (GlobalTheory.T.cuspFormAdelicFunctions_eq_modelValues_semilinear h1 h2 D G Pl0 T0 A T R κ v₀ hL hM hT hp)`. Establish `hg` using `good_resC T hσ`. Establish `hV` using `hT.laws.spaceW _ (inR i) _ hg`. Take `⟨v, -, hv⟩` from `jTop_bar T R κ v₀ hσ hV (hbar i σ hσ hV)`. Establish `ind : ∀ (m : ℕ) (b : Fin m → Cu T κ i), LinearIndependent T.Q.c.F b → LinearIndependent ℂ fun k => jTop T R κ v₀ i σ (b k)` using `fun m b hb => indep_of_conj (evAt R i σ v) (fun x y => by simp only [evAt, map_add]; rfl) (fun a x => by simp only [evAt, map_smul]; rfl) _ _ (GlobalTheory.PhiIndep.phiC_indep D T κ hT.laws i _ hg hV m b hb) fun k g => congrFun (hv (b k)) g`.
+
+Use `⟨ind, ?_⟩` and prove the remaining obligations. Take `⟨c⟩` from `hc i σ hσ`. Take `⟨b⟩` from `hasB_nTop T hT.laws κ i`. Conclude with `span_top _ _ b c (ind _ _ b.linearIndependent) (good ((starRingEnd ℂ).comp σ) hg).2`.
+-/
 theorem unif_all : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Mem.Vol.FiniteVolume₂ → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.toLevCh.Is A.μ0 → R.IsModels → TieIn T R κ v₀ → T.pb = R.C.P.pb → (∀ i, (κ i).LastPos) → 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → JUnif T R κ v₀ := by
   intro h1 h2 D G _ _ Pl0 T0 A T _ R κ v₀ hL hM hT hp hκ hn i σ
   have good := GlobalTheory.T.uniformisation_goodEmbedding_independent_readings h1 h2 D G Pl0 T0 A T R κ v₀ hL hM hT hp hκ hn i

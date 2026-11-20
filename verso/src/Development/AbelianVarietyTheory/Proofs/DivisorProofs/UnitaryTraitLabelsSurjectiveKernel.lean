@@ -11,6 +11,29 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UPoinc
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw _ l Xo cf C X p _ z ct yy hl`. Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', u', -, -, -, hR', G, _, α, β, -, -, -, y₀, hy₀, u, lb, j, -, hyy, -⟩` from `hl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `m`. Take `⟨χ', rfl⟩` from `QuotientAddGroup.mk_surjective m`.
+
+Take `⟨a, ha⟩` from `lb.yy_onto (QuotientAddGroup.mk (j.symm χ'))`. Conclude with `⟨a, by rw [hyy a _ ha, j.apply_symm_apply]⟩`. Establish `hker : yy.ker = lb.yy.ker`. Use extensionality with `a`. Simplify using `only [AddMonoidHom.mem_ker]`.
+
+Take `⟨χ, hχ⟩` from `QuotientAddGroup.mk_surjective (lb.yy a)`. Rewrite using `[hyy a χ hχ.symm, ← hχ, QuotientAddGroup.eq_zero_iff, QuotientAddGroup.eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Use `⟨j.symm v, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [nsmulAddMonoidHom_apply] at hv ⊢`. Rewrite using `[← map_nsmul, hv, j.symm_apply_apply]`. Introduce and unpack `⟨v, hv⟩`. Use `⟨j v, ?_⟩` and prove the remaining obligations. Simplify using `only [nsmulAddMonoidHom_apply] at hv ⊢`.
+
+Rewrite using `[← map_nsmul, hv]`. Establish `hint : ∀ a : X.o₁, ‖y₀ (algebraMap X.o₁ R' a)‖ ≤ 1` using `fun a => by`. Rewrite using `[hy₀]`. Conclude with `RatModel.norm_val_le_one ct.cen ((X.M.O z).algebraMap_mem a)`. Establish `hcl` using `GlobalTheory.UnitTheta.closure_unit_theta GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 GlobalTheory.ZH.uTors_closed _ _ _ ρ' p y₀ u lb hint`.
+
+Rewrite using `[hker, ← hcl.2]`. Take `⟨x₀, hx₀⟩` from `X.hasDiv z`. Use `set val := X.M.val (gPt p ≫ ct.y) with hval`. Establish `hsp : ∀ w, (gPt p ≫ ct.y) w ⤳ (gPt p ≫ ct.y) (IsLocalRing.closedPoint (PadicAlgCl p))` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton _ _)`. Establish `hgz : (gPt p ≫ ct.y) (IsLocalRing.closedPoint (PadicAlgCl p)) ⤳ z` using `RatModel.gPt_specializes ct.cen _`.
+
+Establish `hy : ∀ x, y₀ ⟨c₀ * X.S.th x, hth x⟩ = val (c₀ * X.S.th x)` using `fun x => hy₀ _`. Establish `hmul : ∀ x, ‖val (c₀ * X.S.th x)‖ = ‖val (X.S.th x / X.S.th x₀)‖ * ‖val (c₀ * X.S.th x₀)‖`. Introduce `x`. Rewrite using `[← norm_mul, hval, ← RatModel.val_mul hsp (RatModel.O_le_of_specializes hgz (hx₀.2 x)) (hR' (hth x₀))]`. Use `congr 2`.
+
+Use `hx₀.1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hδ : ‖val (c₀ * X.S.th x₀)‖ = (X.S.rechart c₀ hc R' fg frac hth hev).delta y₀`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hy]`.
+
+Conclude with `le_ciSup (f := fun x => ‖y₀ ⟨c₀ * X.S.th x, hth x⟩‖) (Set.finite_range _).bddAbove x₀`. Take `⟨x₁, hx₁⟩` from `exists_eq_ciSup_of_finite (f := fun x => ‖y₀ ⟨c₀ * X.S.th x, hth x⟩‖)`. Express the relevant statement in the definitionally equal form `⨆ x, ‖y₀ ⟨c₀ * X.S.th x, hth x⟩‖ ≤ _`. Rewrite using `[← hx₁, hy, hmul x₁]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (RatModel.norm_val_le_one ct.cen (hx₀.2 x₁))`.
+
+Establish `key : ∀ x, x ∈ X.S.supI X.M z ↔ ‖y₀ ⟨c₀ * X.S.th x, hth x⟩‖ = (X.S.rechart c₀ hc R' fg frac hth hev).delta y₀`. Introduce `x`. Express the relevant statement in the definitionally equal form `X.M.Div X.S.th x z ↔ _`. Rewrite using `[hx₀.div_iff_isUnit x, ← RatModel.norm_val_eq_one_iff ct.cen (hx₀.2 x), hy, hmul x, hδ]`. Conclude with `(mul_eq_right₀ hcl.1.ne').symm`.
+
+Rewrite using `[ThetaSys.HH]`. Use `congr 1`. Use extensionality with `x`. Conclude with `(key x).symm`.
+-/
 theorem uIsLab_onto_and_ker : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (cf : Coeff l) (C : UCompact Xo cf), ∀ (X : USetup C) (p : ℕ) [Fact p.Prime] (z : X.M.Z) (ct : UCTrait X p z) (yy : X.S.Gam →+ ModN (X.S.r * X.S.N) ct.T.P.D.toPre.X), UIsLab X ct yy → Function.Surjective yy ∧ yy.ker = X.S.HH X.M z := by
   intro E _ _ _ H Dw _ l Xo cf C X p _ z ct yy hl
   obtain ⟨c₀, hc, R', fg, frac, hth, hev, ρ', u', -, -, -, hR', G, _, α, β, -, -, -, y₀, hy₀, u, lb, j, -, hyy, -⟩ := hl

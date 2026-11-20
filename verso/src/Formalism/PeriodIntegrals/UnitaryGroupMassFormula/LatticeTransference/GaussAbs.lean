@@ -4,6 +4,11 @@ open scoped Real
 
 namespace PI.Tr
 
+/- English proof (translation)
+Establish `h1 : Summable fun i => e i * θ i + e i`. Use `Summable.of_nonneg_of_le (fun i => ?_) (fun i => ?_) (he.mul_left 2)` and prove the remaining obligations. Use `(abs_le.mp (hθ i)).1` as an intermediate fact. Use polynomial arithmetic with `[mul_nonneg (he0 i) (by linarith : 0 ≤ θ i + 1)]`. Use `(abs_le.mp (hθ i)).2` as an intermediate fact.
+
+Use polynomial arithmetic with `[mul_nonneg (he0 i) (by linarith : 0 ≤ 1 - θ i)]`. Conclude with `(h1.sub he).congr (fun i => by ring)`.
+-/
 private theorem summable_mul_of_nonneg_of_abs_le_one {ι : Type} {e θ : ι → ℝ} (he : Summable e)
     (he0 : ∀ i, 0 ≤ e i) (hθ : ∀ i, |θ i| ≤ 1) : Summable fun i => e i * θ i := by
   have h1 : Summable fun i => e i * θ i + e i := by
@@ -14,10 +19,46 @@ private theorem summable_mul_of_nonneg_of_abs_le_one {ι : Type} {e θ : ι → 
       nlinarith [mul_nonneg (he0 i) (by linarith : 0 ≤ 1 - θ i)]
   exact (h1.sub he).congr (fun i => by ring)
 
+/- English proof (translation)
+Establish `h1` using `mul_inv_cancel₀ h.ne'`. Use polynomial arithmetic with `[mul_nonneg (inv_pos.mpr h).le (sub_nonneg.mpr h')]`.
+-/
 private theorem one_le_inv_of_pos_of_le_one {τ : ℝ} (h : 0 < τ) (h' : τ ≤ 1) : 1 ≤ τ⁻¹ := by
   have h1 := mul_inv_cancel₀ h.ne'
   nlinarith [mul_nonneg (inv_pos.mpr h).le (sub_nonneg.mpr h')]
 
+/- English proof (translation)
+Establish `hπ : 0 < π` using `Real.pi_pos`. Establish `hst1 : 0 < s * τ₁` using `mul_pos hs h1`. Establish `hst2 : 0 < s / τ₂` using `div_pos hs h2`. Establish `hQs` using `sQ s hs`. Establish `hQ1` using `sQ _ hst1`.
+
+Establish `hQ2` using `sQ _ hst2`. Establish `hK : 0 < c * s ^ (-n / 2)` using `mul_pos hc (Real.rpow_pos_of_pos hs _)`. Establish `hA : 0 < τ₁ ^ (-n / 2)` using `Real.rpow_pos_of_pos h1 _`. Establish `hT : 0 < τ₂ ^ (-n / 2)` using `Real.rpow_pos_of_pos h2 _`. Establish `hE1 : 0 < Real.exp (-π * s * (1 - τ₁) * R2)` using `Real.exp_pos _`.
+
+Establish `hE2 : 0 < Real.exp (-π * (1 - τ₂) * l2 / s)` using `Real.exp_pos _`. Establish `hS0pos : 0 < ∑' y, Real.exp (-π * q y / s)` using `lt_of_lt_of_le (Real.exp_pos _) (le_hasSum hQs.hasSum y0 (fun j _ => (Real.exp_pos _).le))`. Establish `up1 : ∑' x, Real.exp (-π * s * a x) ≤ Real.exp (-π * s * (1 - τ₁) * R2) * ∑' x, Real.exp (-π * (s * τ₁) * a x)`. Use `hasSum_le (fun x => ?_) (sA s hs).hasSum ((sA _ hst1).hasSum.mul_left _)` and prove the remaining obligations. Rewrite using `[← Real.exp_add]`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `h0 : 0 ≤ π * s * (1 - τ₁)` using `mul_nonneg (mul_nonneg hπ.le hs.le) (sub_nonneg.mpr h1')`. Use polynomial arithmetic with `[mul_nonneg h0 (sub_nonneg.mpr (hR x))]`. Establish `hle1 : ∑' y, Real.exp (-π * q y / (s * τ₁)) * θ y ≤ ∑' y, Real.exp (-π * q y / s)`. Use `hasSum_le (fun y => ?_) (summable_mul_of_nonneg_of_abs_le_one hQ1 (fun _ => (Real.exp_pos _).le) hθ).hasSum hQs.hasSum` and prove the remaining obligations.
+
+Establish `hθ1` using `(abs_le.mp (hθ y)).2`. Establish `he` using `Real.exp_pos (-π * q y / (s * τ₁))`. Establish `hmono : Real.exp (-π * q y / (s * τ₁)) ≤ Real.exp (-π * q y / s)`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hw : 0 ≤ π * q y / s` using `div_nonneg (mul_nonneg hπ.le (hq y)) hs.le`.
+
+Establish `e1 : -π * q y / (s * τ₁) = -(π * q y / s) * τ₁⁻¹` using `by ring`. Establish `e2 : -π * q y / s = -(π * q y / s)` using `by ring`. Establish `hinv` using `one_le_inv_of_pos_of_le_one h1 h1'`. Rewrite using `[e1, e2]`. Use polynomial arithmetic with `[mul_nonneg hw (sub_nonneg.mpr hinv)]`.
+
+Use polynomial arithmetic with `[mul_nonneg he.le (sub_nonneg.mpr hθ1)]`. Establish `up2 : ∑' x, Real.exp (-π * (s * τ₁) * a x) ≤ c * s ^ (-n / 2) * (τ₁ ^ (-n / 2) * ∑' y, Real.exp (-π * q y / s))`. Rewrite using `[Pu _ hst1, Real.mul_rpow hs.le h1.le]`. Combine the equalities or inequalities in the displayed calculation. Establish `hup : ∑' y, Real.exp (-π * q y / s) * θ y ≤ Real.exp (-π * s * (1 - τ₁) * R2) * (τ₁ ^ (-n / 2) * ∑' y, Real.exp (-π * q y / s))`.
+
+Establish `h` using `(Pu s hs).symm.le.trans (up1.trans (mul_le_mul_of_nonneg_left up2 hE1.le))`. Establish `h' : c * s ^ (-n / 2) * ∑' y, Real.exp (-π * q y / s) * θ y ≤ c * s ^ (-n / 2) * (Real.exp (-π * s * (1 - τ₁) * R2) * (τ₁ ^ (-n / 2) * ∑' y, Real.exp (-π * q y / s)))`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_left h' hK`. Establish `hlow : ∑' y, Real.exp (-π * q y / s) - 2 * Real.exp (-π * (1 - τ₂) * l2 / s) * ∑' y, Real.exp (-π * q y / (s / τ₂)) ≤ ∑' y, Real.exp (-π * q y / s) * θ y`.
+
+Use `hasSum_le (fun y => ?_) (hQs.hasSum.sub (hQ2.hasSum.mul_left _)) (summable_mul_of_nonneg_of_abs_le_one hQs (fun _ => (Real.exp_pos _).le) hθ).hasSum` and prove the remaining obligations. Establish `he` using `Real.exp_pos (-π * q y / s)`. Establish `hf` using `Real.exp_pos (-π * q y / (s / τ₂))`. Establish `hprod : 0 < 2 * Real.exp (-π * (1 - τ₂) * l2 / s) * Real.exp (-π * q y / (s / τ₂))` using `mul_pos (mul_pos two_pos hE2) hf`. Distinguish the cases in `hql : q y < l2`.
+
+Rewrite using `[hl y hql, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hql : l2 ≤ q y` using `not_lt.mp hql`. Establish `hef : Real.exp (-π * q y / s) ≤ Real.exp (-π * (1 - τ₂) * l2 / s) * Real.exp (-π * q y / (s / τ₂))`. Rewrite using `[← Real.exp_add]`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `e1 : -π * q y / (s / τ₂) = -π * q y * τ₂ / s` using `div_div_eq_mul_div _ _ _`. Rewrite using `[e1]`. Establish `key : -π * q y / s - (-π * (1 - τ₂) * l2 / s + -π * q y * τ₂ / s) = -(π * (1 - τ₂) * (q y - l2) / s)` using `by ring`. Establish `hnn : 0 ≤ π * (1 - τ₂) * (q y - l2) / s` using `div_nonneg (mul_nonneg (mul_nonneg hπ.le (sub_nonneg.mpr h2')) (sub_nonneg.mpr hql)) hs.le`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hθ0` using `(abs_le.mp (hθ y)).1`. Use polynomial arithmetic with `[mul_nonneg he.le (by linarith : 0 ≤ θ y + 1)]`. Establish `hfB : ∑' y, Real.exp (-π * q y / (s / τ₂)) ≤ τ₂ ^ (-n / 2) * ∑' y, Real.exp (-π * q y / s)`. Establish `m : ∑' x, Real.exp (-π * (s / τ₂) * a0 x) ≤ ∑' x, Real.exp (-π * s * a0 x)`.
+
+Use `hasSum_le (fun x => ?_) (compactWordAction _ hst2).hasSum (compactWordAction s hs).hasSum` and prove the remaining obligations. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hinv` using `one_le_inv_of_pos_of_le_one h2 h2'`. Establish `hsle : s ≤ s / τ₂`. Rewrite using `[div_eq_mul_inv]`.
+
+Use polynomial arithmetic with `[mul_nonneg hs.le (sub_nonneg.mpr hinv)]`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hπ.le (ha0 x)) (sub_nonneg.mpr hsle)]`. Rewrite `m` using `[P0 _ hst2, P0 s hs, Real.div_rpow hs.le h2.le]`. Establish `hPT : s ^ (-n / 2) / τ₂ ^ (-n / 2) * τ₂ ^ (-n / 2) = s ^ (-n / 2)`. Clear denominators, using `[hT.ne']` for the nonvanishing conditions.
+
+Establish `m3 : c * s ^ (-n / 2) * ∑' y, Real.exp (-π * q y / (s / τ₂)) ≤ c * s ^ (-n / 2) * (τ₂ ^ (-n / 2) * ∑' y, Real.exp (-π * q y / s))`. Establish `m2` using `mul_le_mul_of_nonneg_right m hT.le`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_left m3 hK`. Establish `hfin : (∑' y, Real.exp (-π * q y / s)) * 1 ≤ (∑' y, Real.exp (-π * q y / s)) * (Real.exp (-π * s * (1 - τ₁) * R2) * τ₁ ^ (-n / 2) + 2 * (Real.exp (-π * (1 - τ₂) * l2 / s) * τ₂ ^ (-n / 2)))`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hfB (mul_pos two_pos hE2).le]`. Conclude with `le_of_mul_le_mul_left hfin hS0pos`.
+-/
 theorem gauss_abstract {X Y : Type} (a a0 : X → ℝ) (q θ : Y → ℝ) (n c : ℝ)
     (hq : ∀ y, 0 ≤ q y) (ha0 : ∀ x, 0 ≤ a0 x) (hθ : ∀ y, |θ y| ≤ 1) (hc : 0 < c) (y0 : Y)
     (sA : ∀ t : ℝ, 0 < t → Summable fun x => Real.exp (-π * t * a x))

@@ -14,6 +14,13 @@ open scoped Classical
 
 open GlobalTheory.VB
 
+/- English proof (translation)
+Introduce `k _ _ B q hq Y π ι _ E r hE fl hfl a i i' hi'`. Establish `hle : (i : ℕ) + 2 ≤ r a` using `by have := i'.isLt; omega`. Take `⟨G, γ, SG, PG, sG, jG, hS, hP, hs, hj, hQ, hG⟩` from `GlobalTheory.T.exists_grassmannian_pair_bundle B (E a) (r a) i ((i : ℕ) + 2) (hE a) (by omega) hle`. Establish `hGp : IsProjOver (γ ≫ q)` using `GlobalTheory.T.pair_bundle_flag_compat k B q hq (E a) (r a) i ((i : ℕ) + 2) (hE a) (by omega) hle G γ SG PG sG jG hS hP hs hj hG`. Establish `hF : ∀ c, GlobalTheory.VB.IsVB (GlobalTheory.OmitFlag.fam γ E a sG jG c) (GlobalTheory.OmitFlag.rk r a i ((i : ℕ) + 2) c)`.
+
+Introduce and unpack `(b | _ | _)`. Conclude with `(hE b.1).pullback γ`. Conclude with `hQ`. Conclude with `hS`. Take `⟨Y₁, τ, fl', hY₁⟩` from `GlobalTheory.T.exists_flag_bundle G _ (GlobalTheory.OmitFlag.fam γ E a sG jG) (GlobalTheory.OmitFlag.rk r a i ((i : ℕ) + 2)) hF`.
+
+Establish `hY₁p : IsProjOver (τ ≫ γ ≫ q)` using `GlobalTheory.T.flag_bundle_projective_over_base k G Y₁ (γ ≫ q) τ _ _ _ fl' hGp hF hY₁`. Take `⟨ρ, wσ, S, P, E₁, s, j, t, wst, fl₁, A₀, A₁, u, v, h⟩` from `GlobalTheory.T.flag_bundle_successive_grassmannian B Y π ι E r hE fl hfl a i i' hi' G γ SG PG sG jG hS hP hs hj hQ hG Y₁ τ fl' hY₁`. Conclude with `⟨Y₁, τ ≫ γ, ρ, wσ, S, P, E₁, s, j, t, wst, fl₁, A₀, A₁, u, v, by simpa using hY₁p, h⟩`.
+-/
 theorem GlobalTheory.OmitFlag.main : ∀ (k : Type) [CommRing k] [IsNoetherianRing k] (B : Scheme.{0}) (q : B ⟶ Sp k), IsProjOver q →
     ∀ (Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι]
     (E : ι → B.Modules) (r : ι → ℕ), (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) →

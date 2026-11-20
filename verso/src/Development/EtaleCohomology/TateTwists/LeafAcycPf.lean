@@ -20,17 +20,32 @@ def cone {p N : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) :
 def v0 {N : ℕ} : SimplexCategory.mk 0 ⟶ SimplexCategory.mk N :=
   SimplexCategory.mkHom ⟨fun _ => 0, fun _ _ _ => le_rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma cone_zero {p N : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) :
     (cone a).toOrderHom 0 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma cone_succ {p N : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (j : Fin (p + 1)) :
     (cone a).toOrderHom j.succ = a.toOrderHom j := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma vertex_zero_apply {N : ℕ} (j : Fin 1) : (v0 (N := N)).toOrderHom j = 0 := rfl
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `[SimplexCategory.δ]`.
+-/
 lemma δ0_cone {p N : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) :
     SimplexCategory.δ 0 ≫ cone a = a := by
   ext j
   simp [SimplexCategory.δ]
 
+/- English proof (translation)
+Use extensionality with `j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp [SimplexCategory.δ]`. Consider the case `succ j => simp [SimplexCategory.δ, Fin.succ_succAbove_succ]`.
+-/
 lemma δsucc_cone {p N : ℕ} (a : SimplexCategory.mk (p + 1) ⟶ SimplexCategory.mk N) (i : Fin (p + 2)) :
     SimplexCategory.δ i.succ ≫ cone a = cone (SimplexCategory.δ i ≫ a) := by
   ext j
@@ -38,6 +53,9 @@ lemma δsucc_cone {p N : ℕ} (a : SimplexCategory.mk (p + 1) ⟶ SimplexCategor
   | zero => simp [SimplexCategory.δ]
   | succ j => simp [SimplexCategory.δ, Fin.succ_succAbove_succ]
 
+/- English proof (translation)
+Use extensionality with `j`. Use `fin_cases j`. Simplify using `[SimplexCategory.δ]`.
+-/
 lemma δ1_cone {N : ℕ} (a : SimplexCategory.mk 0 ⟶ SimplexCategory.mk N) :
     SimplexCategory.δ 1 ≫ cone a = v0 := by
   ext j
@@ -53,60 +71,107 @@ def Hg {N : ℕ} (z : Pr N) : Pr N →₀ ℤ :=
 
 def H (N : ℕ) : (Pr N →₀ ℤ) →ₗ[ℤ] (Pr N →₀ ℤ) := Finsupp.linearCombination ℤ Hg
 
+/- English proof (translation)
+Simplify using `[Pr.d, X]`.
+-/
 lemma d_X {N p r : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     Pr.d N (X p r a b) = Pr.d₁ (⟨p, r, a, b⟩ : Pr N) + (-1 : ℤ) ^ p • Pr.d₂ (⟨p, r, a, b⟩ : Pr N) := by
   simp [Pr.d, X]
 
+/- English proof (translation)
+Simplify using `[H, X]`.
+-/
 lemma H_X {N p r : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     H N (X p r a b) = Hg (⟨p, r, a, b⟩ : Pr N) := by
   simp [H, X]
 
+/- English proof (translation)
+Simplify using `[Hg]`.
+-/
 lemma Hg_zero {N r : ℕ} (a : SimplexCategory.mk 0 ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     Hg (⟨0, r, a, b⟩ : Pr N) = X 1 r (cone a) b + X 0 (r + 1) v0 (cone b) := by
   simp [Hg]
 
+/- English proof (translation)
+Simplify using `[Hg]`.
+-/
 lemma Hg_succ {N p r : ℕ} (a : SimplexCategory.mk (p + 1) ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     Hg (⟨p + 1, r, a, b⟩ : Pr N) = X (p + 2) r (cone a) b := by
   simp [Hg]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma diffOne_zero {N r : ℕ} (a : SimplexCategory.mk 0 ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     Pr.d₁ (⟨0, r, a, b⟩ : Pr N) = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma simplex_pair_second_face_of_vertex_eq_zero {N p : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk 0 ⟶ SimplexCategory.mk N) :
     Pr.d₂ (⟨p, 0, a, b⟩ : Pr N) = 0 := rfl
 
+/- English proof (translation)
+Simplify using `[Pr.d₁, X]`.
+-/
 lemma simplex_pair_first_face_succ_alternating_sum {N p r : ℕ} (a : SimplexCategory.mk (p + 1) ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     Pr.d₁ (⟨p + 1, r, a, b⟩ : Pr N) = ∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • X p r (SimplexCategory.δ i ≫ a) b := by
   simp [Pr.d₁, X]
 
+/- English proof (translation)
+Simplify using `[Pr.d₂, X]`.
+-/
 lemma simplex_pair_second_face_succ_alternating_sum {N p r : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk (r + 1) ⟶ SimplexCategory.mk N) :
     Pr.d₂ (⟨p, r + 1, a, b⟩ : Pr N) = ∑ i : Fin (r + 2), (-1 : ℤ) ^ (i : ℕ) • X p r a (SimplexCategory.δ i ≫ b) := by
   simp [Pr.d₂, X]
 
+/- English proof (translation)
+Rewrite using `[simplex_pair_first_face_succ_alternating_sum, Fin.sum_univ_two]`. Establish `h1 : SimplexCategory.δ (1 : Fin 2) ≫ cone a = v0` using `δ1_cone a`. Simplify using `only [Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_smul, δ0_cone, h1, neg_smul, sub_eq_add_neg]`.
+-/
 lemma simplex_pair_first_face_cone_vertex_formula {N r : ℕ} (a : SimplexCategory.mk 0 ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     Pr.d₁ (⟨1, r, cone a, b⟩ : Pr N) = X 0 r a b - X 0 r v0 b := by
   rw [simplex_pair_first_face_succ_alternating_sum, Fin.sum_univ_two]
   have h1 : SimplexCategory.δ (1 : Fin 2) ≫ cone a = v0 := δ1_cone a
   simp only [Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_smul, δ0_cone, h1, neg_smul, sub_eq_add_neg]
 
+/- English proof (translation)
+Rewrite using `[simplex_pair_first_face_succ_alternating_sum, Fin.sum_univ_succ]`. Simplify using `only [Fin.val_zero, pow_zero, one_smul, δ0_cone, δsucc_cone, Fin.val_succ, pow_succ, mul_neg, mul_one, neg_smul, Finset.sum_neg_distrib, sub_eq_add_neg]`.
+-/
 lemma simplex_pair_first_face_cone_succ_formula {N p r : ℕ} (a : SimplexCategory.mk (p + 1) ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     Pr.d₁ (⟨p + 2, r, cone a, b⟩ : Pr N) = X (p + 1) r a b - ∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • X (p + 1) r (cone (SimplexCategory.δ i ≫ a)) b := by
   rw [simplex_pair_first_face_succ_alternating_sum, Fin.sum_univ_succ]
   simp only [Fin.val_zero, pow_zero, one_smul, δ0_cone, δsucc_cone, Fin.val_succ, pow_succ, mul_neg, mul_one, neg_smul,
     Finset.sum_neg_distrib, sub_eq_add_neg]
 
+/- English proof (translation)
+Rewrite using `[simplex_pair_second_face_succ_alternating_sum, Fin.sum_univ_succ]`. Simplify using `only [Fin.val_zero, pow_zero, one_smul, δ0_cone, δsucc_cone, Fin.val_succ, pow_succ, mul_neg, mul_one, neg_smul, Finset.sum_neg_distrib, sub_eq_add_neg]`.
+-/
 lemma simplex_pair_second_face_cone_succ_formula {N p r : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk (r + 1) ⟶ SimplexCategory.mk N) :
     Pr.d₂ (⟨p, r + 1 + 1, a, cone b⟩ : Pr N) = X p (r + 1) a b - ∑ i : Fin (r + 2), (-1 : ℤ) ^ (i : ℕ) • X p (r + 1) a (cone (SimplexCategory.δ i ≫ b)) := by
   rw [simplex_pair_second_face_succ_alternating_sum, Fin.sum_univ_succ]
   simp only [Fin.val_zero, pow_zero, one_smul, δ0_cone, δsucc_cone, Fin.val_succ, pow_succ, mul_neg, mul_one, neg_smul,
     Finset.sum_neg_distrib, sub_eq_add_neg]
 
+/- English proof (translation)
+Consider the cases of `p with`. Consider the case `zero => simp [Fin.sum_univ_two]`. Consider the case `succ p => simp`.
+-/
 lemma alt_const {N : ℕ} (p : ℕ) (Y : Pr N →₀ ℤ) :
     ∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • (if p = 0 then Y else 0) = 0 := by
   cases p with
   | zero => simp [Fin.sum_univ_two]
   | succ p => simp
 
+/- English proof (translation)
+Take `⟨p, r, a, b⟩` from `z`. Express the relevant statement in the definitionally equal form `Pr.d N (H N (X p r a b)) + H N (Pr.d N (X p r a b)) = X p r a b`. Consider the cases of `p with`. Consider the case `zero`. Consider the cases of `r with`.
+
+Consider the case `zero => simp at hz`. Consider the case `succ r`. Rewrite using `[H_X, Hg_zero, map_add, d_X, d_X, d_X, simplex_pair_first_face_cone_vertex_formula, diffOne_zero, diffOne_zero, simplex_pair_second_face_cone_succ_formula, simplex_pair_second_face_succ_alternating_sum, simplex_pair_second_face_succ_alternating_sum]`. Simplify using `only [map_add, map_sub, map_sum, map_zsmul, H_X, Hg_zero, smul_add, Finset.sum_add_distrib, zero_add, pow_zero, pow_one, one_smul, neg_smul, map_zero]`. Normalize the expressions using the abelian group laws.
+
+Consider the case `succ p`. Consider the cases of `r with`. Consider the case `zero`. Rewrite using `[H_X, Hg_succ, d_X, d_X, simplex_pair_first_face_cone_succ_formula, simplex_pair_first_face_succ_alternating_sum, simplex_pair_second_face_of_vertex_eq_zero, simplex_pair_second_face_of_vertex_eq_zero]`. Simplify using `only [map_add, map_sub, map_sum, map_zsmul, H_X, smul_zero, add_zero, map_zero]`.
+
+Simplify using `only [Hg, smul_add, Finset.sum_add_distrib, alt_const, add_zero]`. Normalize the expressions using the abelian group laws. Consider the case `succ r`. Rewrite using `[H_X, Hg_succ, d_X, d_X, simplex_pair_first_face_cone_succ_formula, simplex_pair_first_face_succ_alternating_sum, simplex_pair_second_face_succ_alternating_sum, simplex_pair_second_face_succ_alternating_sum]`. Simplify using `only [map_add, map_sub, map_sum, map_zsmul, H_X, Hg_succ, map_zero]`.
+
+Simplify using `only [Hg, smul_add, Finset.sum_add_distrib, alt_const, add_zero]`. Establish `e : (-1 : ℤ) ^ (p + 2) = -(-1) ^ (p + 1)` using `by ring`. Rewrite using `[e, neg_smul]`. Normalize the expressions using the abelian group laws.
+-/
 lemma key {N : ℕ} (z : Pr N) (hz : z.1 + z.2.1 ≠ 0) :
     Pr.d N (H N (Finsupp.single z 1)) + H N (Pr.d N (Finsupp.single z 1)) = Finsupp.single z 1 := by
   obtain ⟨p, r, a, b⟩ := z
@@ -135,6 +200,17 @@ lemma key {N : ℕ} (z : Pr N) (hz : z.1 + z.2.1 ≠ 0) :
       rw [e, neg_smul]
       abel
 
+/- English proof (translation)
+Introduce `z hz`. Establish `e : H N c = ∑ y ∈ c.support, c y • Hg y`. Simplify using `[H, Finsupp.linearCombination_apply, Finsupp.sum]`. Rewrite `hz` using `[e]`. Take `⟨y, hy, hz2⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finsetSum hz)`.
+
+Establish `hz3` using `Finsupp.support_smul hz2`. Establish `hy'` using `hdeg y hy`. Take `⟨p, r, a, b⟩` from `y`. Simplify using `only [Hg] at hz3`. Break down `Finset.mem_union.1 (Finsupp.support_add hz3) with h | h` into its components or cases.
+
+Use `Finsupp.support_single_subset h` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Substitute `this` using the available equality. Express the relevant statement in the definitionally equal form `p + r = k + 1 at hy'`. Express the relevant statement in the definitionally equal form `p + 1 + r = k + 2`.
+
+Use linear arithmetic over natural numbers and integers. Use `split_ifs at h with hp`. Use `Finsupp.support_single_subset h` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Substitute `this` using the available equality.
+
+Express the relevant statement in the definitionally equal form `p + r = k + 1 at hy'`. Express the relevant statement in the definitionally equal form `0 + (r + 1) = k + 2`. Use linear arithmetic over natural numbers and integers. Simplify using `at h`.
+-/
 lemma deg_H {N k : ℕ} {c : Pr N →₀ ℤ} (hdeg : Pr.Deg (k + 1) c) : Pr.Deg (k + 2) (H N c) := by
   intro z hz
   have e : H N c = ∑ y ∈ c.support, c y • Hg y := by
@@ -165,6 +241,13 @@ end LateralTheory.EtaleFoundations.AcycPf
 
 open LateralTheory.EtaleFoundations.AcycPf in
 
+/- English proof (translation)
+Introduce `N k c hdeg hcyc`. Use `⟨H N c, deg_H hdeg, ?_⟩` and prove the remaining obligations. Establish `h : ∀ y ∈ c.support, Pr.d N (H N (Finsupp.single y (c y))) + H N (Pr.d N (Finsupp.single y (c y))) = Finsupp.single y (c y)`. Introduce `y hy`. Establish `hy'` using `hdeg y hy`.
+
+Rewrite using `[← Finsupp.smul_single_one, map_zsmul, map_zsmul, map_zsmul, map_zsmul, ← smul_add, key y (by omega)]`. Establish `e : Pr.d N (H N c) + H N (Pr.d N c) = c` using `by conv_rhs => rw [← Finsupp.sum_single c] conv_lhs => rw [← Finsupp.sum_single c]`. Simplify using `only [Finsupp.sum, map_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl h`. Rewrite `e` using `[hcyc, map_zero, add_zero]`.
+
+Conclude with `e`.
+-/
 theorem LateralTheory.EtaleFoundations.SteenPf.leaf_acyc_of : LateralTheory.EtaleFoundations.SteenPf.leaf_acyc := by
   intro N k c hdeg hcyc
   refine ⟨H N c, deg_H hdeg, ?_⟩

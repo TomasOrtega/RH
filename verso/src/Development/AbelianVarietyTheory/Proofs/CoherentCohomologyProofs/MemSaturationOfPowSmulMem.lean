@@ -22,6 +22,9 @@ def saturation (g : A) (K : Submodule A M) : Submodule A M where
     rw [smul_comm]
     exact K.smul_mem _ hk
 
+/- English proof (translation)
+Introduce `m hm` and use `⟨0, by simpa using hm⟩`.
+-/
 theorem le_saturation (g : A) (K : Submodule A M) : K ≤ saturation g K :=
   fun m hm => ⟨0, by simpa using hm⟩
 

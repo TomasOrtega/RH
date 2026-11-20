@@ -9,17 +9,33 @@ namespace GlobalTheory.HCF.ReproSpan
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `unfold chart; split_ifs <;> rfl`.
+-/
 theorem chart_zero' (g : GA E a) (x : Lie E a) : chart (0 : GA E a → ℂ) g x = 0 := by
   unfold chart; split_ifs <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `unfold chart; split_ifs <;> simp`.
+-/
 theorem chart_add' (φ ψ : GA E a → ℂ) (g : GA E a) (x : Lie E a) :
     chart (φ + ψ) g x = chart φ g x + chart ψ g x := by
   unfold chart; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold chart; split_ifs <;> simp`.
+-/
 theorem chart_smul' (c : ℂ) (φ : GA E a → ℂ) (g : GA E a) (x : Lie E a) :
     chart (c • φ) g x = c * chart φ g x := by
   unfold chart; split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hcont : Continuous (fun x => chart ψ.1 g x * β x)`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Distinguish the cases in `hx : x ∈ invSet E a`. Conclude with `(contDiffAt_chart ψ.2 g hx).continuousAt.mul hβ.continuousAt`.
+
+Establish `hxt : x ∉ tsupport β` using `fun h => hx (hs h)`. Establish `hev : (fun x => chart ψ.1 g x * β x) =ᶠ[𝓝 x] fun _ => 0`. Establish `h0 : β =ᶠ[𝓝 x] 0` using `notMem_tsupport_iff_eventuallyEq.mp hxt`. Use `filter_upwards [h0] with y hy`. Simplify using `[hy]`.
+
+Conclude with `(continuousAt_congr hev).mpr continuousAt_const`. Use `haveI : IsFiniteMeasureOnCompacts (volume : Measure (Fin a → Cinf E)) := inferInstance`. Use `haveI : SigmaFinite (volume : Measure (Fin a → Cinf E)) := inferInstance`. Use `haveI : IsFiniteMeasureOnCompacts (volume : Measure (Lie E a)) := MeasureTheory.Measure.pi.isFiniteMeasureOnCompacts _`. Conclude with `hcont.integrable_of_hasCompactSupport (HasCompactSupport.mul_left hc)`.
+-/
 theorem integrable_chart_mul (ψ : Sm E a) (g : GA E a) (β : Lie E a → ℂ) (hβ : Continuous β)
     (hc : HasCompactSupport β) (hs : tsupport β ⊆ invSet E a) :
     MeasureTheory.Integrable (fun x => chart ψ.1 g x * β x) := by
@@ -44,6 +60,17 @@ end GlobalTheory.HCF.ReproSpan
 
 open GlobalTheory.HCF.ReproSpan in
 
+/- English proof (translation)
+Introduce `E _ _ _ a L W X N β hβ hc hs hform φ hφ`. Establish `hβc : Continuous β` using `hβ.continuous`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact hform x hx`. Consider the case `zero`.
+
+Introduce `g`. Simplify using `only [ZeroMemClass.coe_zero, Pi.zero_apply]`. Simplify using `[chart_zero']`. Consider the case `add x y _ _ hx hy`. Introduce `g`.
+
+Establish `e : (fun z => chart (x + y).1 g z * β z) = fun z => chart x.1 g z * β z + chart y.1 g z * β z`. Use function extensionality and compare the values at `z`. Rewrite using `[Submodule.coe_add, chart_add', add_mul]`. Rewrite using `[e, MeasureTheory.integral_add (integrable_chart_mul x g β hβc hc hs) (integrable_chart_mul y g β hβc hc hs), hx g, hy g]`. Both sides reduce to the same expression.
+
+Consider the case `smul c x _ hx`. Introduce `g`. Establish `e : (fun z => chart (c • x).1 g z * β z) = fun z => c * (chart x.1 g z * β z)`. Use function extensionality and compare the values at `z`. Rewrite using `[Submodule.coe_smul, chart_smul', mul_assoc]`.
+
+Rewrite using `[e, MeasureTheory.integral_const_mul, hx g]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.HCF.repro_span : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (L : Subgroup (GL (Fin a) (Af E)))
     (W : Submodule ℂ (Kinf E a → ℂ)) (X : Set (Module.End ℂ (Sm E a) → ℂ)) (N : ℕ) (β : Lie E a → ℂ),
     ContDiff ℝ ∞ β → HasCompactSupport β → tsupport β ⊆ invSet E a →

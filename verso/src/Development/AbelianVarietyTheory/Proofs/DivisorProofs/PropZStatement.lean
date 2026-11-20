@@ -14,6 +14,13 @@ open ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.IndefiniteRowSideFul
 
 namespace GlobalTheory.PropZRow
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ Z f D hD sig hs`. Take `⟨hI, hN, hP, hF, hC, hL, ht⟩` from `hD`. Use `haveI := hI`. Use `haveI : IsLocallyNoetherian Z := LocallyOfFiniteType.isLocallyNoetherian f`. Use `haveI : CompactSpace Z := (quasiCompact_iff_compactSpace f).mp inferInstance`.
+
+Establish `hD : Hyp f D` using `⟨hI, hN, hP, hF, hC, hL, ht⟩`. Take `⟨τ, hτ, hU, hPow⟩` from `GlobalTheory.T.exists_ratSec_unit_generic_fibre O ϖ hϖ Z f D hF hL sig hs`. Take `⟨hg, hz⟩` from `GlobalTheory.T.flat_scheme_special_fibre_nonempty O ϖ hϖ Z f hF (hC.toNonempty)`. Take `⟨M, n, x₀, hM, hx₀, hreg, hunit⟩` from `GlobalTheory.T.exists_power_section_special_fibre Z hN _ hg hz D τ hL hτ hU`. Take `⟨gen, hgen, heq⟩` from `GlobalTheory.T.regular_section_extends_over_fibre O ϖ hϖ Z f D hD hg (GlobalTheory.T.reduced_special_fibre_global_field O Z f hP hC) (GlobalTheory.T.regular_of_regular_at_codim_one Z hN) τ hτ hU M n x₀ hM hx₀ hreg hunit`.
+
+Conclude with `⟨M, n, hM, ⟨gen, hgen, hPow M n gen heq⟩, GlobalTheory.T.valuation_constant_of_power_eq O ϖ hϖ Z f D hL sig hs M n gen hM hgen (hPow M n gen heq)⟩`.
+-/
 theorem propZ : PropZ := by
   intro O _ _ _ ϖ hϖ Z f D hD sig hs
   obtain ⟨hI, hN, hP, hF, hC, hL, ht⟩ := hD

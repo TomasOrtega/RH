@@ -4,6 +4,23 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Inert
 open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.HeckeGal GlobalTheory.CuspRep UpperTheory.V.Published
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
+/- English proof (translation)
+Introduce `E M Ω F _ _ _ _ _ _ _ _ _ _ _ _ _ g hE hR`. Establish `hnot : ∃ e : E, algebraMap E M e ∉ maximalRealSubfield M`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨φ⟩ : Nonempty (M →+* ℂ)` from `inferInstance`.
+
+Apply `IsTotallyComplex.complexEmbedding_not_isReal (φ.comp (algebraMap E M))` to reduce the goal to its premises. Use `show ComplexEmbedding.conjugate _ = _`. Use extensionality with `x`. Use `(mem_maximalRealSubfield_iff _).1 (h x) φ` as an intermediate fact. Simplify `this` using `[ComplexEmbedding.conjugate_coe_eq]`.
+
+Take `⟨e, he⟩` from `hnot`. Use `set α := algebraMap E M e with hα`. Establish `h2 : Module.finrank (maximalRealSubfield M) M = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `htop : IntermediateField.adjoin (maximalRealSubfield M) {α} = ⊤`. Establish `hd` using `IntermediateField.finrank_dvd_of_le_right (le_top : IntermediateField.adjoin (maximalRealSubfield M) {α} ≤ ⊤)`.
+
+Rewrite `hd` using `[IntermediateField.finrank_top', h2, Nat.dvd_prime Nat.prime_two]`. Break down `hd with hd | hd` into its components or cases. Rewrite `hd` using `[IntermediateField.finrank_eq_one_iff]`. Establish `hmem` using `IntermediateField.mem_adjoin_simple_self (maximalRealSubfield M) α`. Rewrite `hmem` using `[hd, IntermediateField.mem_bot]`.
+
+Take `⟨y, hy⟩` from `hmem`. Conclude with `absurd (hy ▸ y.2) he`. Conclude with `IntermediateField.eq_of_le_of_finrank_eq le_top (by rw [hd, IntermediateField.finrank_top', h2])`. Introduce `x`. Establish `hx : x ∈ IntermediateField.adjoin (maximalRealSubfield M) {α}`.
+
+Rewrite using `[htop]`. Conclude with `IntermediateField.mem_top`. Establish `hx' : x ∈ (IntermediateField.adjoin (maximalRealSubfield M) {α}).toSubfield` using `hx`. Rewrite `hx'` using `[IntermediateField.adjoin_toSubfield]`. Establish `hle : Subfield.closure (Set.range (algebraMap (maximalRealSubfield M) M) ∪ {α}) ≤ RingHom.eqLocusField ((g : Ω →+* Ω).comp (algebraMap M Ω)) (algebraMap M Ω)`.
+
+Rewrite using `[Subfield.closure_le]`. Introduce and unpack `y (⟨z, rfl⟩ | hy)`. Conclude with `hR z`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality.
+
+Establish `h1` using `hE e`. Rewrite `h1` using `[IsScalarTower.algebraMap_apply E M Ω]`. Conclude with `h1`. Conclude with `hle hx'`.
+-/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.realSpan :
     RealSpan := by
   intro E M Ω F _ _ _ _ _ _ _ _ _ _ _ _ _ g hE hR

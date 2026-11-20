@@ -7,6 +7,15 @@ open NumberField NumberField.mixedEmbedding Matrix MeasureTheory GroundTheory.Au
 open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
+/- English proof (translation)
+Introduce `K _ _ n z hz g`. Take `⟨ι, hι, ⟨D⟩⟩` from `UpperTheory.exists_idempotent_decomposition_mixedSpace K`. Establish `hinf : Commute (uAction z) (rtInf (archPart g))`. Establish `hsub : Algebra.adjoin ℂ {x | ∃ τ u, x = capOp D n τ u} ≤ Subalgebra.centralizer ℂ {rtInf (archPart g)}`. Rewrite using `[Algebra.adjoin_le_iff]`.
+
+Introduce and unpack `x ⟨τ, u, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce and unpack `y rfl`. Conclude with `(UpperTheory.capOp_commute_rightTranslation K n ι D τ u (archPart g)).eq.symm`. Establish `hm` using `hsub (UpperTheory.centerU_action_mem_adjoin_capOp K n ι D z hz)`.
+
+Rewrite `hm` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(hm _ rfl).symm`. Establish `hfin : Commute (uAction z) (rtFin (finPart g))`. Use `LinearMap.ext fun φ => ?_` and prove the remaining obligations. Conclude with `uAction_rtFin z (finPart g) φ`.
+
+Conclude with `hinf.mul_right hfin`.
+-/
 theorem UpperTheory.centerU_action_commute_rightTranslation :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), ∀ z ∈ (isExpLieAlgebra K n).centerU, ∀ g, Commute (uAction z) (rt (K := K) (n := n) g) := by
   intro K _ _ n z hz g

@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PartsSign
 
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Set `φ : F →+* ℂ` to `w.embedding`. Establish `hφ : ∀ x, starRingEnd ℂ (φ x) = φ x`. Introduce `x`. Establish `h` using `ComplexEmbedding.isReal_iff.mp (InfinitePlace.isReal_iff.mp hw)`. Conclude with `RingHom.congr_fun h x`.
+
+Use `letI : Algebra F ℂ := φ.toAlgebra`. Set `j : Ω →ₐ[F] ℂ` to `IsAlgClosed.lift`. Use `letI : Algebra Ω ℂ := j.toRingHom.toAlgebra`. Use `haveI : IsScalarTower F Ω ℂ := IsScalarTower.of_algebraMap_eq (fun x => (j.commutes x).symm)`. Set `κ : ℂ ≃ₐ[F] ℂ` to `AlgEquiv.ofRingEquiv (f := starRingAut) (fun x => hφ x)`.
+
+Use `⟨κ.restrictNormal Ω, j.toRingHom, fun x => ?_, ?_⟩` and prove the remaining obligations. Conclude with `AlgEquiv.restrictNormal_commutes κ Ω x`. Establish `e : j.toRingHom.comp (algebraMap F Ω) = φ`. Use extensionality with `x`. Conclude with `j.commutes x`.
+
+Rewrite using `[e]`. Conclude with `InfinitePlace.mk_embedding w`.
+-/
 private theorem cc_at (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (w : InfinitePlace F) (hw : w.IsReal) : ∃ c : G F Ω, IsCCAt w c := by
   classical
@@ -24,6 +33,17 @@ private theorem cc_at (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebr
     rw [e]
     exact InfinitePlace.mk_embedding w
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _`. Use `haveI : Algebra.IsAlgebraic (Lp L) L := Algebra.IsAlgebraic.of_finite (Lp L) L`. Use `haveI : IsAlgClosure (Lp L) Ω := IsAlgClosure.ofAlgebraic (Lp L) L Ω`. Use `⟨fun w => cc_at (Lp L) Ω w (IsTotallyReal.isReal w), ?_⟩` and prove the remaining obligations. Introduce and unpack `c ⟨j, hj⟩`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Apply `j.injective` to reduce the goal to its premises. Use `show j (c (c x)) = j x`.
+
+Rewrite using `[hj, hj, Complex.conj_conj]`. Introduce and unpack `⟨σ, hσ⟩`. Establish `hfix : ∀ y : L, c (algebraMap L Ω y) = algebraMap L Ω y`. Introduce `y`. Rewrite using `[← hσ]`.
+
+Conclude with `σ.commutes y`. Set `ψ : L →+* ℂ` to `j.comp (algebraMap L Ω)`. Establish `hreal : ComplexEmbedding.IsReal ψ`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `y`.
+
+Use `show starRingEnd ℂ (j (algebraMap L Ω y)) = j (algebraMap L Ω y)`. Rewrite using `[← hj, hfix]`. Establish `hR : (InfinitePlace.mk ψ).IsReal` using `InfinitePlace.isReal_mk_iff.mpr hreal`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex _)) hR`. Conclude with `UpperTheory.V.IsConjOm.cyc (E := L) (σ := MulSemiringAction.toRingAut (G (Lp L) Ω) Ω c) ⟨j, hj⟩`.
+-/
 theorem UpperTheory.V.Pa.ccEx :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω], (∀ w : InfinitePlace (Lp L), ∃ c : G (Lp L) Ω, IsCCAt w c) ∧ ∀ c : G (Lp L) Ω, (∃ j : Ω →+* ℂ, ∀ x, j (c x) = starRingEnd ℂ (j x)) → c * c = 1 ∧ c ∉ (resP L Ω).range ∧ cycZ (Lp L) Ω l c = -1 := by
   intro l _ L Ω _ _ _ _ _ _

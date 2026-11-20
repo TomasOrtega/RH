@@ -24,6 +24,9 @@ variable {T T' T'' : LocLat G Qp LL O} (i : LatHom T.L T''.L) (i' : LatHom T'.L 
 def sumEquiv (h : IsSumLat i i') : (T.V × T'.V) ≃ₗ[LL] T''.V :=
   LinearEquiv.ofBijective (i.f.coprod i'.f) h.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sumEquiv_apply (h : IsSumLat i i') (x : T.V) (y : T'.V) :
     sumEquiv i i' h (x, y) = i.f x + i'.f y := rfl
 
@@ -38,6 +41,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {W : _root_.Formalism.BasicNotions.LocWach PD LL O v n} {RA RW : Type} [CommRing RA] [CommRing RW] [Algebra O RA]
     [Algebra O RW] {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA} in
 variable {T T' T'' : _root_.Formalism.BasicNotions.LocLat G Qp LL O} (i : _root_.Formalism.WeaklyAdmissibleFiltrations.LatHom T.L T''.L) (i' : _root_.Formalism.WeaklyAdmissibleFiltrations.LatHom T'.L T''.L) in
+/- English proof (translation)
+Apply `(_root_.GlobalTheory.Survey.UnitsOfFieldRootsOfUnity.sumEquiv i i' h).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, _root_.GlobalTheory.Survey.UnitsOfFieldRootsOfUnity.sumEquiv_apply, i.equiv, i'.equiv, ← map_add, ← _root_.GlobalTheory.Survey.UnitsOfFieldRootsOfUnity.sumEquiv_apply i i' h, Prod.mk.eta, LinearEquiv.apply_symm_apply]`.
+-/
 theorem _root_.GlobalTheory.Survey.UnitsOfFieldRootsOfUnity.symm_act (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitDualParts.IsSumLat i i') (g : G) (z : T''.V) :
     (_root_.GlobalTheory.Survey.UnitsOfFieldRootsOfUnity.sumEquiv i i' h).symm (T''.ρ g z) =
       (T.ρ g ((_root_.GlobalTheory.Survey.UnitsOfFieldRootsOfUnity.sumEquiv i i' h).symm z).1,
@@ -70,18 +76,37 @@ def pr₂ (h : IsSumLat i i') : LatHom T''.L T'.L where
 
 end Sum
 
+/- English proof (translation)
+Consider the cases of `f`. Consider the cases of `g`. Use `congr 1`. Conclude with `LinearMap.ext h`.
+-/
 theorem latHom_ext {T T' : LocLat G Qp LL O} {f g : LatHom T.L T'.L} (h : ∀ x, f.f x = g.f x) :
     f = g := by
   cases f; cases g
   congr 1
   exact LinearMap.ext h
 
+/- English proof (translation)
+Establish `: f = latComp (latSmul T' (0 : O)) f` using `latHom_ext fun y => by`. Simplify using `[latComp, latSmul, h]`. Rewrite using `[this, W.map_comp, W.map_latSmul, zero_smul]`.
+-/
 theorem map_of_zero {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (h : ∀ x, f.f x = 0)
     (x : W.DD T) : W.map f x = 0 := by
   have : f = latComp (latSmul T' (0 : O)) f := latHom_ext fun y => by
     simp [latComp, latSmul, h]
   rw [this, W.map_comp, W.map_latSmul, zero_smul]
 
+/- English proof (translation)
+Establish `e1 : ∀ a, (pr₁ i i' h).f (i.f a) = a` using `fun a => by`. Use `(sumEquiv i i' h).symm_apply_apply (a, 0)` as an intermediate fact. Rewrite `this` using `[sumEquiv_apply, map_zero, add_zero]`. Simplify using `[pr₁, this]`. Establish `e2 : ∀ a, (pr₁ i i' h).f (i'.f a) = 0` using `fun a => by`.
+
+Use `(sumEquiv i i' h).symm_apply_apply (0, a)` as an intermediate fact. Rewrite `this` using `[sumEquiv_apply, map_zero, zero_add]`. Simplify using `[pr₁, this]`. Establish `e3 : ∀ a, (pr₂ i i' h).f (i.f a) = 0` using `fun a => by`. Use `(sumEquiv i i' h).symm_apply_apply (a, 0)` as an intermediate fact.
+
+Rewrite `this` using `[sumEquiv_apply, map_zero, add_zero]`. Simplify using `[pr₂, this]`. Establish `e4 : ∀ a, (pr₂ i i' h).f (i'.f a) = a` using `fun a => by`. Use `(sumEquiv i i' h).symm_apply_apply (0, a)` as an intermediate fact. Rewrite `this` using `[sumEquiv_apply, map_zero, zero_add]`.
+
+Simplify using `[pr₂, this]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `h1` using `W.map_N (pr₁ i i' h) hT'' hT _ hz`. Establish `h2` using `W.map_N (pr₂ i i' h) hT'' hT' _ hz`.
+
+Rewrite `h1`, `h2` using `[map_add, ← W.map_comp, ← W.map_comp]`. Rewrite `h1` using `[show latComp (pr₁ i i' h) i = latId T from latHom_ext e1, W.map_id, map_of_zero (latComp (pr₁ i i' h) i') e2, add_zero]`. Rewrite `h2` using `[show latComp (pr₂ i i' h) i' = latId T' from latHom_ext e4, W.map_id, map_of_zero (latComp (pr₂ i i' h) i) e3, zero_add]`. Conclude with `⟨h1, h2⟩`. Introduce and unpack `⟨hx, hy⟩`.
+
+Conclude with `(W.N T'').add_mem (W.map_N i hT hT'' x hx) (W.map_N i' hT' hT'' y hy)`.
+-/
 theorem sum_N {T T' T'' : LocLat G Qp LL O} (hT : IsCrys PD T.ρ)
     (hT' : IsCrys PD T'.ρ) (hT'' : IsCrys PD T''.ρ)
     (i : LatHom T.L T''.L) (i' : LatHom T'.L T''.L) (h : IsSumLat i i') (x : W.DD T) (y : W.DD T') :
@@ -115,6 +140,23 @@ theorem sum_N {T T' T'' : LocLat G Qp LL O} (hT : IsCrys PD T.ρ)
   · rintro ⟨hx, hy⟩
     exact (W.N T'').add_mem (W.map_N i hT hT'' x hx) (W.map_N i' hT' hT'' y hy)
 
+/- English proof (translation)
+Introduce `T T' T'' hT hT' i i' h`. Establish `key : ∀ a b, (pr₁ i i' h).f (i.f a + i'.f b) = a ∧ (pr₂ i i' h).f (i.f a + i'.f b) = b` using `fun a b => by`. Use `(sumEquiv i i' h).symm_apply_apply (a, b)` as an intermediate fact. Rewrite `this` using `[sumEquiv_apply]`. Simplify using `only [pr₁, pr₂, LinearMap.comp_apply, LinearEquiv.coe_coe, this]`.
+
+Simplify using the standard rewrite rules. Establish `hbij : Function.Bijective ((W.map i).coprod (W.map i'))`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨x, y⟩ hxy`.
+
+Simplify using `only [LinearMap.coprod_apply] at hxy`. Establish `h1` using `congrArg (W.map (pr₁ i i' h)) hxy`. Establish `h2` using `congrArg (W.map (pr₂ i i' h)) hxy`. Rewrite `h1`, `h2` using `[map_add, ← W.map_comp, ← W.map_comp, map_zero]`. Rewrite using `[show latComp (pr₁ i i' h) i = latId T from latHom_ext fun a => by`.
+
+Simplify `(key a 0).1, W.map_id,` using `[latComp, latId]`. Use `map_of_zero (latComp (pr₁ i i' h) i') (fun a => by simpa [latComp] using (key 0 a).1),`. Use the proof step `add_zero] at h1`. Rewrite using `[show latComp (pr₂ i i' h) i' = latId T' from latHom_ext fun a => by`. Simplify `(key 0 a).2, W.map_id,` using `[latComp, latId]`.
+
+Use `map_of_zero (latComp (pr₂ i i' h) i) (fun a => by simpa [latComp] using (key a 0).2),`. Use the proof step `zero_add] at h2`. Simplify using `[h1, h2]`. Introduce `z`. Use `⟨(W.map (pr₁ i i' h) z, W.map (pr₂ i i' h) z), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.coprod_apply]`. Rewrite using `[← W.map_comp, ← W.map_comp, ← W.map_latAdd, show latAdd (latComp i (pr₁ i i' h)) (latComp i' (pr₂ i i' h)) = latId T'' from latHom_ext fun a => by`. Take `⟨⟨x, y⟩, rfl⟩` from `(sumEquiv i i' h).surjective a`. Rewrite using `[sumEquiv_apply]`. Express the relevant statement in the definitionally equal form `i.f ((pr₁ i i' h).f _) + i'.f ((pr₂ i i' h).f _) = _`.
+
+Rewrite using `[(key x y).1, (key x y).2]`. Use the proof step `rfl, W.map_id]`. Use `⟨LinearEquiv.ofBijective _ hbij, fun x y => rfl, fun x y => ?_, fun g x y => ?_, fun x y => sum_N hT hT' (hc T T' T'' i i' h hT hT') i i' h x y⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `W.φD T'' (W.map i x + W.map i' y) = W.map i _ + W.map i' _`. Rewrite using `[map_add, ← W.map_φ, ← W.map_φ]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `W.γD T'' g (W.map i x + W.map i' y) = W.map i _ + W.map i' _`. Rewrite using `[map_add, ← W.map_γ, ← W.map_γ]`. Both sides reduce to the same expression.
+-/
 theorem sumFor_of_crys
     (hc : ∀ (T T' T'' : LocLat G Qp LL O) (i : LatHom T.L T''.L) (i' : LatHom T'.L T''.L),
       IsSumLat i i' → IsCrys PD T.ρ → IsCrys PD T'.ρ → IsCrys PD T''.ρ) : SumFor W := by

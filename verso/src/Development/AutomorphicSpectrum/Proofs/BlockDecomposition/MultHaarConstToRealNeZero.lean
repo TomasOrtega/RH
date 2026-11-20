@@ -10,6 +10,9 @@ namespace GlobalTheory.CompanionTheory.GJOne
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Simplify using `[selfDualMeasure, hψ.2.2]`.
+-/
 theorem selfDualMeasure_eq_of_isStd {ψ : AddChar F Circle} (hψ : IsStd ψ) :
     selfDualMeasure ψ = haarIntegers F := by
   simp [selfDualMeasure, hψ.2.2]

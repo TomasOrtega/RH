@@ -10,6 +10,17 @@ open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HC
 
 namespace GlobalTheory.HeckeUnitaryInf
 
+/- English proof (translation)
+Introduce `L _ _ χ I _ φ n h`. Establish `hinf : ∀ k : Lˣ, ‖((χ.1 (infDiag k) : ℂˣ) : ℂ)‖ = 1`. Introduce `k`. Establish `e : ((χ.1 (infDiag k) : ℂˣ) : ℂ) = _` using `h k`. Rewrite using `[e, norm_prod]`.
+
+Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `h0 : φ i (k : L) ≠ 0` using `(map_ne_zero _).2 k.ne_zero`. Rewrite using `[norm_zpow, norm_div, Complex.norm_real, norm_norm, div_self (norm_ne_zero_iff.2 h0), one_zpow]`. Establish `hI : ∀ y : (InfiniteAdeleRing L)ˣ, ‖((χ.1 (GlobalTheory.HeckeGal.inlInf L y) : ℂˣ) : ℂ)‖ = 1`. Use `(GlobalTheory.HeckeGal.denseRange_units_inf L).equalizer (g := fun y => ‖((χ.1 (GlobalTheory.HeckeGal.inlInf L y) : ℂˣ) : ℂ)‖) (h := fun _ => (1 : ℝ)) ((Units.continuous_val.comp (χ.2.1.comp GlobalTheory.HeckeGal.continuous_inlInf)).norm) continuous_const (funext fun k => by` as an intermediate fact.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[← GlobalTheory.HeckeGal.infDiag_eq]`. Conclude with `hinf k)`. Conclude with `fun y => congrFun this y`. Establish `hF : ∀ x : Ideles L, IsFinIdele x → ‖((χ.1 x : ℂˣ) : ℂ)‖ = 1`.
+
+Introduce `x hx`. Take `⟨m, hm, u, k, u1, u2, e⟩` from `GlobalTheory.UnUnitCmp.Val.exists_pow_eq x hx`. Establish `e1` using `congrArg (fun a => ‖((χ.1 a : ℂˣ) : ℂ)‖) e`. Simplify using `only [map_mul, map_pow, Units.val_mul, Units.val_pow_eq_pow_val, norm_mul, norm_pow, hinf k, GlobalTheory.HeckeFin.norm_eq_one χ u u1 u2, χ.2.2 k, Units.val_one, norm_one, mul_one] at e1`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 e1`.
+
+Introduce `z`. Establish `hz : z = GlobalTheory.HeckeGal.inlInf L (Units.map (MonoidHom.fst (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)) z) * finPartI L z` using `Units.ext (Prod.ext (mul_one _).symm (one_mul _).symm)`. Rewrite using `[hz, map_mul, Units.val_mul, norm_mul, hI, hF _ (fun _ => rfl), one_mul]`.
+-/
 theorem isUnitary_of_hasInf : ∀ (L : Type) [Field L] [NumberField L] (χ : Formalism.L2.Host.HChar L) {I : Type} [Fintype I]
     (φ : I → L →+* ℂ) (n : I → ℤ), χ.HasInf φ n → χ.IsUnitary := by
   intro L _ _ χ I _ φ n h

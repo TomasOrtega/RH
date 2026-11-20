@@ -9,6 +9,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.Hec
 
 namespace GlobalTheory.HeckeTwo
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Use `⟨Unit, inferInstance, fun _ _ => 1, fun _ => (2, 0), fun _ => by fun_prop, fun _ => by simp, fun σ _ y _ => ?_⟩` and prove the remaining obligations. Simplify using `[hTransAB_two_zero]`. Consider the case `succ k ih`.
+
+Take `⟨ι, _, c, ab, hc, hab, h⟩` from `ih`. Use `⟨ι ⊕ ι, inferInstance, Sum.elim (fun i σ => c i σ * (I * (-((ab i).1 : ℂ) - σ))) (fun i σ => c i σ * (I * (((ab i).2 : ℂ) + σ))), Sum.elim (fun i => ((ab i).1 + 1, (ab i).2)) (fun i => ((ab i).1, (ab i).2 + 1)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i)`. Use `hc i` as an intermediate fact. Simplify using `only [Sum.elim_inl]`.
+
+Use `fun_prop`. Use `hc i` as an intermediate fact. Simplify using `only [Sum.elim_inr]`. Use `fun_prop`. Introduce and unpack `(i | i)`.
+
+Use `hab i` as an intermediate fact. Simplify using `only [Sum.elim_inl]`. Use linear arithmetic over natural numbers and integers. Use `hab i` as an intermediate fact. Simplify using `only [Sum.elim_inr]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `σ hσ y hy`. Establish `hev : iteratedDeriv k (hTrans σ n) =ᶠ[nhds y] fun y' => ∑ i, c i σ * hTransAB (ab i).1 (ab i).2 σ n y'` using `by filter_upwards [isOpen_ne.mem_nhds hy] with y' hy' using h σ hσ y' hy'`. Establish `hd` using `(HasDerivAt.fun_sum (u := Finset.univ) (fun i _ => (h1 (ab i).1 (ab i).2 σ n y (hab i) hσ hy).const_mul (c i σ))).congr_of_eventuallyEq hev`. Rewrite using `[iteratedDeriv_succ, hd.deriv, Fintype.sum_sum_type, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iteratedDeriv_hTrans_eq_sum
     (h1 : ∀ (a b : ℕ) (σ : ℂ) (ν y : ℝ), 2 ≤ a + b → σ ∈ halfPlane → y ≠ 0 →
     HasDerivAt (fun y' : ℝ => hTransAB a b σ ν y')
@@ -51,6 +64,11 @@ theorem iteratedDeriv_hTrans_eq_sum
       simp only [Sum.elim_inl, Sum.elim_inr]
       ring
 
+/- English proof (translation)
+Introduce `h1 h2 n k y hy`. Take `⟨ι, _, c, ab, hc, hab, h⟩` from `iteratedDeriv_hTrans_eq_sum h1 n k`. Use `⟨fun σ hσ => ?_, ?_⟩` and prove the remaining obligations. Establish `hev : iteratedDeriv k (hTrans σ n) =ᶠ[nhds y] fun y' => ∑ i, c i σ * hTransAB (ab i).1 (ab i).2 σ n y'` using `by filter_upwards [isOpen_ne.mem_nhds hy] with y' hy' using h σ hσ y' hy'`. Establish `hd` using `(HasDerivAt.fun_sum (u := Finset.univ) (fun i _ => (h1 (ab i).1 (ab i).2 σ n y (hab i) hσ hy).const_mul (c i σ))).congr_of_eventuallyEq hev`.
+
+Rewrite using `[iteratedDeriv_succ]`. Conclude with `hd.differentiableAt.hasDerivAt`. Use `DifferentiableOn.congr (f := fun σ => ∑ i, c i σ * hTransAB (ab i).1 (ab i).2 σ n y) ?_ (fun σ hσ => h σ hσ y hy)` and prove the remaining obligations. Conclude with `DifferentiableOn.fun_sum fun i _ => (hc i).differentiableOn.mul (h2 _ _ n y (hab i) hy)`.
+-/
 theorem iteratedDeriv_hTrans_jet :
     (∀ (a b : ℕ) (σ : ℂ) (ν y : ℝ), 2 ≤ a + b → σ ∈ halfPlane → y ≠ 0 →
     HasDerivAt (fun y' : ℝ => hTransAB a b σ ν y')

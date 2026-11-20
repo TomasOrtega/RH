@@ -15,11 +15,19 @@ namespace GlobalTheory.EtBasis
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Rewrite using `[PadicInt.unitCoeff_spec hx, map_mul, map_pow, map_natCast]`. Conclude with `mul_ne_zero ((PadicInt.unitCoeff hx).isUnit.map _).ne_zero (pow_ne_zero _ (WittVector.irreducible l).ne_zero)`.
+-/
 theorem algebraMap_ne_zero (x : ℤ_[l]) (hx : x ≠ 0) : algebraMap ℤ_[l] (WCb l) x ≠ 0 := by
   rw [PadicInt.unitCoeff_spec hx, map_mul, map_pow, map_natCast]
   exact mul_ne_zero ((PadicInt.unitCoeff hx).isUnit.map _).ne_zero
     (pow_ne_zero _ (WittVector.irreducible l).ne_zero)
 
+/- English proof (translation)
+Introduce `n`. Take `⟨y, hy⟩` from `(Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n x))`. Use `⟨0, (PadicInt.appr x n : bk.S), algebraMap ℤ_[l] (WCb l) y, ?_⟩` and prove the remaining obligations. Establish `: x = (PadicInt.appr x n : ℤ_[l]) + (l : ℤ_[l]) ^ n * y` using `by rw [mul_comm, hy]; ring`. Establish `h2` using `congrArg (algebraMap ℤ_[l] (WCb l)) this`.
+
+Rewrite `h2` using `[map_add, map_mul, map_pow, map_natCast, map_natCast]`. Rewrite using `[pow_zero, one_mul, h2, map_natCast]`.
+-/
 theorem algebraMap_mem_OE {K : FinExt l} (bk : BK K) (x : ℤ_[l]) : algebraMap ℤ_[l] (WCb l) x ∈ bk.OE := by
   intro n
   obtain ⟨y, hy⟩ := (Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n x))
@@ -29,8 +37,16 @@ theorem algebraMap_mem_OE {K : FinExt l} (bk : BK K) (x : ℤ_[l]) : algebraMap 
   rw [map_add, map_mul, map_pow, map_natCast, map_natCast] at h2
   rw [pow_zero, one_mul, h2, map_natCast]
 
+/- English proof (translation)
+Introduce `_` and use `⟨0, s, 0, by simp⟩`.
+-/
 theorem evW_mem_OE {K : FinExt l} (bk : BK K) (s : bk.S) : bk.evW s ∈ bk.OE := fun _ => ⟨0, s, 0, by simp⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨t, ht⟩`. Establish `h` using `congrArg (coeff bk.Ep.natDegree) ht`. Rewrite `h` using `[← map_natCast (C (R := Wq l bk.a)) l, coeff_C_mul, Polynomial.coeff_coe, bk.monic.coeff_natDegree]`. Establish `h2` using `congrArg (WittVector.constantCoeff (p := l) (R := Fq l bk.a)) h`. Rewrite `h2` using `[map_mul, map_natCast, map_one, CharP.cast_eq_zero, zero_mul]`.
+
+Conclude with `one_ne_zero h2`.
+-/
 theorem not_l_dvd_E {K : FinExt l} (bk : BK K) : ¬ (l : bk.S) ∣ bk.E := by
   rintro ⟨t, ht⟩
   have h := congrArg (coeff bk.Ep.natDegree) ht
@@ -39,6 +55,11 @@ theorem not_l_dvd_E {K : FinExt l} (bk : BK K) : ¬ (l : bk.S) ∣ bk.E := by
   rw [map_mul, map_natCast, map_one, CharP.cast_eq_zero, zero_mul] at h2
   exact one_ne_zero h2
 
+/- English proof (translation)
+Establish `h1 : f.det • (f.adjugate * A) = f.det • (B * f.adjugate)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one]`. Use `_ = f.adjugate * (f * B) * f.adjugate := by rw [h]; simp only [Matrix.mul_assoc]`. Use `_ = f.det • (B * f.adjugate) := by`.
+
+Rewrite using `[← Matrix.mul_assoc, Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul]`. Conclude with `smul_right_injective _ hf h1`.
+-/
 theorem adj_comm {d : ℕ} (f A B : Matrix (Fin d) (Fin d) ℤ_[l]) (hf : f.det ≠ 0) (h : f * B = A * f) :
     f.adjugate * A = B * f.adjugate := by
   have h1 : f.det • (f.adjugate * A) = f.det • (B * f.adjugate) := by
@@ -53,6 +74,49 @@ end GlobalTheory.EtBasis
 
 namespace GlobalTheory.EtBasis
 
+/- English proof (translation)
+Introduce `l _ K bk τ _ N d ρ ρ'' F f hf hρ'' hfρ`. Take `⟨hsat1, -, hinvS, -, -, hgalOE, hfrobOE⟩` from `GlobalTheory.T.integral_elements_unit_factorization l K bk`. Establish `hl0 : (l : WCb l) ≠ 0` using `(WittVector.irreducible l).ne_zero`. Establish `hzW : ∀ M : Matrix (Fin d) (Fin d) ℤ_[l], zW M = (algebraMap ℤ_[l] (WCb l)).mapMatrix M` using `fun _ => rfl`. Establish `hzWmul : ∀ M M' : Matrix (Fin d) (Fin d) ℤ_[l], zW (M * M') = zW M * zW M'` using `fun M M' => by`.
+
+Rewrite using `[hzW, hzW, hzW, map_mul]`. Establish `hfadj : zW f * zW f.adjugate = algebraMap ℤ_[l] (WCb l) f.det • (1 : Matrix (Fin d) (Fin d) (WCb l))`. Rewrite using `[← hzWmul, Matrix.mul_adjugate]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [zW, h, Matrix.one_apply]`.
+
+Establish `hTdet : F.T.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 F.unit).ne_zero`. Establish `hdf : algebraMap ℤ_[l] (WCb l) f.det ≠ 0` using `algebraMap_ne_zero _ hf`. Use `set Y1 := zW f.adjugate * F.T with hY1`. Establish `hY1det : Y1.det ≠ 0`. Rewrite using `[hY1, Matrix.det_mul, hzW, ← RingHom.map_det, Matrix.det_adjugate, map_pow]`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ hdf) hTdet`. Take `⟨m, P₀, Y', hP₀, hP₀det, hY', hlat, hsat⟩` from `GlobalTheory.SatLattice.exists_lattice_basis l K bk d Y1 hY1det`. Establish `hlm : (l : WCb l) ^ m ≠ 0` using `pow_ne_zero _ hl0`. Establish `hcancel : ∀ M M' : Matrix (Fin d) (Fin d) (WCb l), (l : WCb l) ^ m • M = (l : WCb l) ^ m • M' → M = M'` using `fun M M' h => Matrix.ext fun i j => mul_left_cancel₀ hlm (congrFun (congrFun h i) j)`. Establish `hY'det : Y'.det ≠ 0`.
+
+Introduce `h0`. Use `congrArg Matrix.det hY'` as an intermediate fact. Rewrite `this` using `[Matrix.det_smul, h0, mul_zero, Matrix.det_mul]`. Conclude with `mul_ne_zero hY1det hP₀det this.symm`. Take `⟨e, he, hEe⟩` from `hinvS bk.E (not_l_dvd_E bk)`.
+
+Establish `hφ : ∃ A'' : Matrix (Fin d) (Fin d) (WCb l), (∀ i j, A'' i j ∈ bk.OE) ∧ Y'.map (frobW l) = Y' * A''` using `by set B := e ^ N • F.A.map bk.evW with hB`. Establish `hB_OE : ∀ i j, B i j ∈ bk.OE` using `fun i j => by`. Simplify using `only [hB, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Conclude with `bk.OE.mul_mem (bk.OE.pow_mem he N) (evW_mem_OE bk _)`. Establish `hTφ : F.T.map (frobW l) = F.T * B`.
+
+Establish `h` using `congrArg (fun M => e ^ N • M) F.φ`. Establish `h1 : e ^ N * bk.evW bk.E ^ N = 1` using `by rw [← mul_pow, mul_comm, hEe, one_pow]`. Simplify using `only [smul_smul, h1, one_smul] at h`. Rewrite using `[h, hB, Matrix.mul_smul]`. Establish `hfrobzW : ∀ M : Matrix (Fin d) (Fin d) ℤ_[l], (zW M).map (frobW l) = zW M` using `fun M => by`.
+
+Conclude with `Matrix.ext fun i j => (frobW l).commutes _`. Establish `hmapmul : ∀ M M' : Matrix (Fin d) (Fin d) (WCb l), (M * M').map (frobW l) = M.map (frobW l) * M'.map (frobW l)` using `fun M M' => Matrix.map_mul (f := (frobW l).toRingHom)`. Establish `hY1φ : Y1.map (frobW l) = Y1 * B`. Rewrite using `[hY1, hmapmul, hfrobzW, hTφ, Matrix.mul_assoc]`. Use `set V := B * P₀.map (frobW l) with hV`.
+
+Establish `hV_OE : ∀ i j, V i j ∈ bk.OE` using `fun i j => by`. Simplify using `only [hV, Matrix.mul_apply]`. Conclude with `bk.OE.sum_mem fun k _ => bk.OE.mul_mem (hB_OE i k) (hfrobOE _ (hP₀ k j))`. Establish `hmain : (l : WCb l) ^ m • Y'.map (frobW l) = Y1 * V`. Establish `h : ((l : WCb l) ^ m • Y').map (frobW l) = (Y1 * P₀).map (frobW l)` using `by rw [hY']`.
+
+Rewrite `h` using `[hmapmul, hY1φ]`. Rewrite using `[hV, ← Matrix.mul_assoc, ← h]`. Use extensionality with `i j`. Simplify using `[map_mul, map_pow, map_natCast]`. Establish `hcol : ∀ j, ∃ w : Fin d → WCb l, (∀ i, w i ∈ bk.OE) ∧ (fun i => V i j) = P₀ *ᵥ w`.
+
+Introduce `j`. Take `⟨w, hw, hvw⟩` from `hlat (fun i => V i j) (fun i => hV_OE i j) m (fun i => by`. Establish `: (Y1 *ᵥ fun i => V i j) i = (Y1 * V) i j`. Simplify using `[Matrix.mulVec, Matrix.mul_apply, dotProduct]`. Rewrite using `[this, ← hmain, Matrix.smul_apply, smul_eq_mul]`.
+
+Conclude with `Dvd.intro _ rfl)`. Conclude with `⟨w, hw, funext fun i => mul_left_cancel₀ hlm (congrFun hvw i)⟩`. Use `choose w hw hvw using hcol`. Use `⟨Matrix.of fun i j => w j i, fun i j => hw j i, ?_⟩` and prove the remaining obligations. Establish `hVP : V = P₀ * Matrix.of fun i j => w j i`.
+
+Use extensionality with `i j`. Use `congrFun (hvw j) i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Simplify using `[Matrix.mul_apply, this]`. Apply `hcancel` to reduce the goal to its premises.
+
+Rewrite using `[hmain, hVP, ← Matrix.mul_assoc, ← hY', Matrix.smul_mul]`. Establish `hg : ∀ g : ↥(GK K), bk.FixFlat g → ∃ R : Matrix (Fin d) (Fin d) (WCb l), IsUnit R ∧ R * Y'.map (galW l (g : GQ l)) = Y'`. Introduce `g hfix`. Use `⟨zW (ρ'' g), by rw [hzW]; exact (hρ'' g).map _, ?_⟩` and prove the remaining obligations. Establish `hgmul : ∀ M M' : Matrix (Fin d) (Fin d) (WCb l), (M * M').map (galW l (g : GQ l)) = M.map (galW l (g : GQ l)) * M'.map (galW l (g : GQ l))` using `fun M M' => Matrix.map_mul (f := (galW l (g : GQ l)).toRingEquiv.toRingHom)`.
+
+Establish `hgzW : ∀ M : Matrix (Fin d) (Fin d) ℤ_[l], (zW M).map (galW l (g : GQ l)) = zW M` using `fun M => by`. Conclude with `Matrix.ext fun i j => (galW l (g : GQ l)).commutes _`. Establish `hgP : P₀.map (galW l (g : GQ l)) = P₀`. Conclude with `Matrix.ext fun i j => hgalOE g hfix _ (hP₀ i j)`. Establish `hcomm : zW (ρ'' g) * zW f.adjugate = zW f.adjugate * zW (ρ g)`.
+
+Rewrite using `[← hzWmul, ← hzWmul, adj_comm f (ρ g) (ρ'' g) hf (hfρ g)]`. Establish `h : ((l : WCb l) ^ m • Y').map (galW l (g : GQ l)) = (Y1 * P₀).map (galW l (g : GQ l))` using `by rw [hY']`. Rewrite `h` using `[hgmul, hY1, hgmul, hgzW, hgP]`. Establish `hs : ((l : WCb l) ^ m • Y').map (galW l (g : GQ l)) = (l : WCb l) ^ m • Y'.map (galW l (g : GQ l))`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Apply `hcancel` to reduce the goal to its premises. Rewrite using `[← Matrix.mul_smul, ← hs, h, hY', hY1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcomm]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [F.fix g hfix]`. Take `⟨A'', hA'', hφ'⟩` from `hφ`. Establish `hunit : IsUnit Y'` using `GlobalTheory.SatInvUnit.isUnit_of_saturated l K bk d Y' A'' hY'det hA'' hφ' hg hsat`. Use `set Ti := F.T⁻¹ with hTi'`.
+
+Establish `hTi : Ti * F.T = 1` using `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 F.unit)`. Establish `hTTi : F.T * Ti = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 F.unit)`. Use `⟨Y', Ti * zW f * Y', hunit, fun i j => ?_, ?_⟩` and prove the remaining obligations. Establish `hP : (l : WCb l) ^ m • (Ti * zW f * Y') = algebraMap ℤ_[l] (WCb l) f.det • P₀`. Rewrite using `[← Matrix.mul_smul, hY', hY1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[hfadj, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.smul_mul, hTi, Matrix.one_mul]`. Use `congrFun (congrFun hP i) j` as an intermediate fact.
+
+Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Use `GlobalTheory.SatLattice.sat_pow bk.OE hl0 hsat1 m _ ?_` and prove the remaining obligations. Rewrite using `[this]`. Conclude with `bk.OE.mul_mem (algebraMap_mem_OE bk _) (hP₀ i j)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hTTi, Matrix.one_mul]`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (N d : ℕ)
     (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l])) (ρ'' : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l]))
     (F : Pre bk N d ρ) (f : Matrix (Fin d) (Fin d) (ℤ_[l])), f.det ≠ 0 → (∀ g, IsUnit (ρ'' g)) →

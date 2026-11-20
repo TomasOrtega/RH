@@ -18,6 +18,15 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Sp
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]
   {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `banach_steinhaus (g := fun x : tsupport w => ρ x) fun u => by`. Take `⟨C, hC⟩` from `hc.isCompact.exists_bound_of_continuousOn (hρ u).continuousOn`. Conclude with `⟨C, fun x => hC x x.2⟩`. Set `L : H →ₗ[ℂ] H` to `{ toFun := fun u => ∫ x, w x • ρ x u ∂μ map_add' := fun u v => by`. Simplify using `only [map_add, smul_add]`.
+
+Conclude with `integral_add (CompanionTheory.D.gk.admitted.Gard.integrable_w μ ρ hρ hw hc u) (CompanionTheory.D.gk.admitted.Gard.integrable_w μ ρ hρ hw hc v)`. Use the proof step `map_smul' := fun c u => by`. Simplify using `only [map_smul, RingHom.id_apply]`. Rewrite using `[← integral_smul]`. Simplify using `only [smul_comm c] }`.
+
+Use `⟨L.mkContinuous ((∫ x, ‖w x‖ ∂μ) * C) fun u => ?_, fun u => rfl⟩` and prove the remaining obligations. Establish `hwi : Integrable (fun x => ‖w x‖) μ` using `(hw.integrable_of_hasCompactSupport hc).norm`. Rewrite using `[mul_assoc, ← integral_mul_const]`. Use `norm_integral_le_of_norm_le (hwi.mul_const _) (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul]`.
+
+Distinguish the cases in `hx : w x = 0`. Simplify using `[hx]`. Conclude with `mul_le_mul_of_nonneg_left (((ρ x).le_opNorm u).trans (mul_le_mul_of_nonneg_right (hC ⟨x, subset_tsupport _ hx⟩) (norm_nonneg _))) (norm_nonneg _)`.
+-/
 theorem exists_avg (ρ : G → H →L[ℂ] H) (hρ : ∀ u, Continuous fun x => ρ x u)
     {w : G → ℝ} (hw : Continuous w) (hc : HasCompactSupport w) :
     ∃ T : H →L[ℂ] H, ∀ u, T u = ∫ x, w x • ρ x u ∂μ := by
@@ -52,6 +61,25 @@ open PI.UpqRep CompanionTheory.D.gk.admitted CompanionTheory.D.gk.admitted.Gard
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Take `⟨h1, hm⟩` from `hσ`. Set `ρ : UJ ε → H →L[ℂ] H` to `fun x => σ (toM x)`. Establish `hρ : ∀ u, Continuous fun x => ρ x u` using `fun u => (hcont u).comp_continuous emb_toM.continuous toM_mem`. Establish `hmul : ∀ x y u, ρ (x * y) u = ρ x (ρ y u)` using `fun x y u => by`. Simplify using `only [ρ, toM_mul, hm _ (toM_mem x) _ (toM_mem y), ContinuousLinearMap.comp_apply]`.
+
+Establish `hρ1 : ∀ u, ρ 1 u = u` using `fun u => by simp only [ρ, toM_one, h1, one_apply_eq_self]`. Take `⟨V, hV, hclose⟩` from `exists_nhds_close ρ hρ hρ1 Y`. Establish `hVi : V⁻¹ ∈ 𝓝 (1 : UJ ε)` using `inv_mem_nhds_one _ hV`. Rewrite `hVi` using `[emb_toM.isInducing.nhds_eq_comap, mem_comap]`. Take `⟨W, hW, hWV⟩` from `hVi`.
+
+Establish `hD : {y : Matrix (Fin n) (Fin n) ℂ | y.det ≠ 0} ∈ 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ)` using `(isOpen_ne_fun continuous_id.matrix_det continuous_const).mem_nhds (by simp)`. Take `⟨f, S, hf, hf0, hf1, hS, hSW, hfS, hfk⟩` from `exists_bump (inter_mem hW hD)`. Set `w : UJ ε → ℝ` to `fun x => f (toM x⁻¹)`. Establish `hw : Continuous w` using `hf.continuous.comp (emb_toM.continuous.comp continuous_inv)`. Establish `hc : HasCompactSupport w`.
+
+Use `HasCompactSupport.intro (emb_toM.isCompact_preimage hS).inv fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hx (hfS _ h)`. Establish `h0 : 0 ≤ w` using `fun x => hf0 _`. Establish `hw1 : w 1 ≠ 0` using `by simpa only [w, inv_one, toM_one] using hf1`.
+
+Take `⟨T, hT⟩` from `exists_avg (muG ε) ρ hρ hw hc`. Establish `hTK : ∀ k ∈ Kset ε, ∀ u, T (σ k u) = σ k (T u)`. Introduce `k hk u`. Take `⟨k', rfl⟩` from `exists_toM (inUJ_of_mem_Kset hk)`. Rewrite using `[hT, hT]`.
+
+Use `T_comm (muG ε) ρ hρ hmul hw hc h0 hw1 k' (fun x => ?_) u` and prove the remaining obligations. Simplify using `only [w, _root_.mul_inv_rev, inv_inv]`. Rewrite using `[← mul_assoc, toM_mul, toM_mul, toM_inv_of_unitary hk.1, hfk _ hk.1]`. Establish `hinj : ∀ y ∈ Y, T y = 0 → y = 0`. Introduce `y hy hTy`.
+
+Rewrite `hTy` using `[hT]`. Use `eq_zero_of_alt_alt (muG ε) ρ hρ hw hc h0 hw1 y (fun x hx => hclose x ?_ y hy) hTy` and prove the remaining obligations. Establish `: x⁻¹ ∈ V⁻¹` using `hWV (hSW (hfS _ hx)).1`. Simplify using `using this`. Take `⟨u, rfl⟩` from `exists_preimage Y T (hY T hTK) hinj v hv`.
+
+Establish `hγ' : ContDiff ℝ ∞ γ` using `contDiff_pi.2 fun a => contDiff_pi.2 fun b => hγ a b`. Use `(contDiff_avg (fun x => ρ x u) (hρ u) hf hS (fun B hB => (hSW hB).2) hfS).comp hγ'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Take `⟨g', hg'⟩` from `exists_toM (ε := ε) (hγU t)`.
+
+Simplify using `only [Function.comp_apply, ← hg']`. Use `show ρ g' (T u) = _`. Rewrite using `[hT, apply_alt (muG ε) ρ hρ hmul hw hc]`. Simplify using `only [w, _root_.mul_inv_rev, inv_inv, toM_mul]`.
+-/
 theorem exists_smooth_ext {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) σ)
     (hcont : ∀ v, ContinuousOn (fun g => σ g v) (UJset ε)) (Y : Submodule ℂ H) [FiniteDimensional ℂ Y]
@@ -114,6 +142,9 @@ open GlobalTheory.SmoothGlob (lieSet)
 section
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+The claim follows from `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ a b)).contDiff.comp (GlobalTheory.GardingVec.contDiff_expProd Xs)`.
+-/
 theorem contDiff_entry {n k : ℕ} (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     ContDiff ℝ ∞ fun t : Fin k → ℝ => ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod) a b :=
   (LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ a b)).contDiff.comp
@@ -124,6 +155,13 @@ end
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
   {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Establish `hd : ∀ v, IsKFin ε π v → v ∈ ⨆ Λ, GlobalTheory.KFinDual.kIso ε π Λ` using `GlobalTheory.KFinDual.decomp n ε H π (GlobalTheory.KFinDual.isURepOn_K h) (GlobalTheory.T.maxCompact_irreducible_has_highest_weight_and_iso n ε H π h.1 h.2.1 h.2.2.1).1`. Use `haveI : ∀ Λ, FiniteDimensional ℂ (GlobalTheory.KFinDual.kIso ε π Λ) := GlobalTheory.KFinDual.finiteDimensional_kIso h`. Take `⟨s, hs⟩` from `GlobalTheory.KFinDual.exists_finset hd v hv`. Introduce `k Xs hX`. Apply the tactic sequence `refine exists_smooth_ext h.1 h.2.1 (s.sup (GlobalTheory.KFinDual.kIso ε π)) (fun T hT y hy => ?_) hs _ (contDiff_entry Xs) fun t => ?_`.
+
+Establish `: (s.sup (GlobalTheory.KFinDual.kIso ε π)).map (T : H →ₗ[ℂ] H) ≤ s.sup (GlobalTheory.KFinDual.kIso ε π)`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `Finset.sup_le fun Λ hΛ => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_le_iff_le_comap]`. Conclude with `(GlobalTheory.KFinDual.map_kIso_le (fun k hk y _ => hT k hk y) Λ).trans (Finset.le_sup hΛ)`.
+
+Conclude with `this ⟨y, hy, rfl⟩`. Use `GlobalTheory.GardingVec.list_prod_mem _ fun g hg => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hg`. Conclude with `GlobalTheory.GardingVec.exp_mem (IsUnit.of_mul_eq_one _ (Jm_mul_self ε)) (hX i) _`.
+-/
 theorem smoothVec_of_kFin (h : IsAdmRep ε π) {v : H} (hv : IsKFin ε π v) : SmoothVec (lieSet ε) π v := by
   have hd : ∀ v, IsKFin ε π v → v ∈ ⨆ Λ, GlobalTheory.KFinDual.kIso ε π Λ :=
     GlobalTheory.KFinDual.decomp n ε H π (GlobalTheory.KFinDual.isURepOn_K h) (GlobalTheory.T.maxCompact_irreducible_has_highest_weight_and_iso n ε H π h.1 h.2.1 h.2.2.1).1
@@ -154,6 +192,13 @@ def lieSub (ε : Fin n → Bool) : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ) wh
     unfold inG at *
     rw [conjTranspose_smul, star_trivial, smul_mul_assoc, mul_smul_comm, ← smul_add, hX, smul_zero]
 
+/- English proof (translation)
+Establish `h1 : k * kᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hk.1`. Establish `h2 : kᴴ * Jm ε = Jm ε * kᴴ`. Use `congrArg conjTranspose hk.2` as an intermediate fact. Simplify `this.symm` using `only [conjTranspose_mul, Jm_conjTranspose]`. Establish `hX' : Xᴴ * Jm ε + Jm ε * X = 0` using `hX`.
+
+Express the relevant statement in the definitionally equal form `(k * X * k⁻¹)ᴴ * Jm ε + Jm ε * (k * X * k⁻¹) = 0`. Rewrite using `[Matrix.inv_eq_right_inv h1]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Use `_ = k * (Xᴴ * Jm ε + Jm ε * X) * kᴴ := by`.
+
+Rewrite using `[h2, ← hk.2]`. Simplify using `only [mul_add, add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hX', mul_zero, zero_mul]`.
+-/
 theorem conj_mem_lieSet {k X : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (hX : X ∈ lieSet ε) :
     k * X * k⁻¹ ∈ lieSet ε := by
   have h1 : k * kᴴ = 1 := Matrix.mem_unitaryGroup_iff.1 hk.1
@@ -169,6 +214,15 @@ theorem conj_mem_lieSet {k X : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) 
         rw [h2, ← hk.2]; simp only [mul_add, add_mul, Matrix.mul_assoc]
     _ = 0 := by rw [hX', mul_zero, zero_mul]
 
+/- English proof (translation)
+Take `⟨S, hS, hvS, hSK⟩` from `hv`. Establish `sm : ∀ w : S, SmoothVec (lieSet ε) π (w : H)` using `fun w => smoothVec_of_kFin h ⟨S, hS, w.2, hSK⟩`. Set `B : lieSub ε →ₗ[ℝ] S →ₗ[ℝ] H` to `LinearMap.mk₂ ℝ (fun Y w => dRep π Y.1 w.1) (fun Y Z w => (GlobalTheory.GKLie.dRep_add_bracket h.1 (sm w) Y.2 Z.2).1) (fun c Y w => GlobalTheory.GKLie.dRep_smul π c Y.1 w.1) (fun Y w w' => GlobalTheory.GKLie.dRep_add_vec (sm w) (sm w') Y.2) (fun c Y w => by`. Use `GlobalTheory.GKLie.dRep_smul_vec (sm w) Y.2 (c : ℂ)` as an intermediate fact. Simplify `this)` using `only [Complex.coe_smul, Submodule.coe_smul_of_tower]`.
+
+Use `haveI : Module.Finite ℝ S := Module.Finite.trans ℂ S`. Take `⟨t, ht⟩ : (LinearMap.range (TensorProduct.lift B)).FG` from `Module.Finite.iff_fg.1 inferInstance`. Set `A : Set H` to `{x | ∃ Y ∈ lieSet ε, ∃ w ∈ S, dRep π Y w = x}`. Establish `hle : Submodule.span ℂ A ≤ Submodule.span ℂ (t : Set H)`. Rewrite using `[← Submodule.span_span_of_tower ℝ ℂ (t : Set H), ht]`.
+
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Y, hY, w, hw, rfl⟩`. Conclude with `⟨(⟨Y, hY⟩ : lieSub ε) ⊗ₜ ⟨w, hw⟩, rfl⟩`. Use `⟨Submodule.span ℂ A, Submodule.finiteDimensional_of_le hle, Submodule.subset_span ⟨X, hX, v, hvS, rfl⟩, fun k hk x hx => ?_⟩` and prove the remaining obligations. Establish `: Submodule.span ℂ A ≤ (Submodule.span ℂ A).comap (π k : H →ₗ[ℂ] H)`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Y, hY, w, hw, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, conj_mem_lieSet hk hY, _, hSK k hk w hw, GlobalTheory.T.derivedRep_conj_maxCompact_intertwines n ε H π h.1 k hk Y hY w (sm ⟨w, hw⟩)⟩`. Conclude with `this hx`.
+-/
 theorem kFin_dRep (h : IsAdmRep ε π) {v : H} (hv : IsKFin ε π v) {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : X ∈ lieSet ε) : IsKFin ε π (dRep π X v) := by
   obtain ⟨S, hS, hvS, hSK⟩ := hv
@@ -203,10 +257,16 @@ namespace GlobalTheory.Published
 
 open GlobalTheory.KFinSmoothModel in
 
+/- English proof (translation)
+Introduce `_ ε _ _ _ _ π h` and use `⟨fun _ hv => smoothVec_of_kFin h hv, fun _ hv => hv, GlobalTheory.GKModule.isKStableOn_kFinVec ε π, fun _ hX _ hv => kFin_dRep h hv hX⟩`.
+-/
 theorem kFiniteVectorsSmooth_holds : KFiniteVectorsSmooth := fun _ ε _ _ _ _ π h =>
   ⟨fun _ hv => smoothVec_of_kFin h hv, fun _ hv => hv, GlobalTheory.GKModule.isKStableOn_kFinVec ε π,
     fun _ hX _ hv => kFin_dRep h hv hX⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(GlobalTheory.RealInd.isIrrAdm_det ε).2.1, eq_top_iff.2 fun _ _ => ⟨⊤, inferInstance, trivial, fun _ _ _ _ => trivial⟩⟩`.
+-/
 theorem kFiniteVectorsSmooth_hyp_det {n : ℕ} (ε : Fin n → Bool) :
     GlobalTheory.RealInd.IsAdmRep ε (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) ∧
       GlobalTheory.GKModule.kFinVec ε (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) = ⊤ :=

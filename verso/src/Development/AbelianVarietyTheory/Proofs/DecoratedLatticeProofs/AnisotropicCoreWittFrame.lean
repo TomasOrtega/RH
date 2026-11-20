@@ -11,10 +11,32 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.WittFrameOfDec
 
+/- English proof (translation)
+Simplify using `only [Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+-/
 theorem form_mulVec {D : D7} {n m : ℕ} (A : Matrix (Fin n) (Fin m) D.host.E) (G : Matrix (Fin n) (Fin n) D.host.E)
     (w : Fin m → D.host.E) : star (A *ᵥ w) ⬝ᵥ (G *ᵥ (A *ᵥ w)) = star w ⬝ᵥ ((Aᴴ * G * A) *ᵥ w) := by
   simp only [Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cT_sig]`. Conclude with `d.ee`. Rewrite using `[cT_sig]`. Conclude with `d.e'e'`.
+
+Rewrite using `[cT_sig]`. Establish `h1` using `congrArg Matrix.conjTranspose d.e'e`. Rewrite `h1` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, gram_conjTranspose, Matrix.conjTranspose_one, ← Matrix.mul_assoc]`. Conclude with `h1`. Introduce `z hX hY hz`.
+
+Rewrite `hX`, `hY` using `[cT_sig]`. Establish `hqY : d.qY *ᵥ z = 0` using `hX`. Establish `hqX : d.qX *ᵥ z = 0` using `hY`. Establish `hz0 : z = d.i₀ *ᵥ (d.q0 *ᵥ z)`. Use `congrArg (fun M => M *ᵥ z) d.sum_eq_one_rat` as an intermediate fact.
+
+Simplify using `only [Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hqX, hqY, Matrix.mulVec_zero, zero_add, add_zero] at this`. Conclude with `this.symm`. Take `⟨z₀, hz₀⟩ : ∃ w, w = d.q0 *ᵥ z` from `⟨_, rfl⟩`. Rewrite `hz0` using `[← hz₀]`. Distinguish the cases in `h0 : z₀ = 0`.
+
+Rewrite using `[hz0, h0, Matrix.mulVec_zero]`. It suffices to derive a contradiction. Establish `e1 : hE D.sp.cm.sig T.gram z z = star z ⬝ᵥ (T.gram *ᵥ z)`. Simplify using `only [hE, Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc]`. Both sides reduce to the same expression. Establish `hzz : star z₀ ⬝ᵥ (T₀.gram *ᵥ z₀) = 0`. Rewrite using `[← d.iso, ← form_mulVec, ← hz0, ← e1, hz]`. Set `C : Matrix (Fin T₀.rank) (Fin 1) D.host.E` to `Matrix.of fun i _ => z₀ i`.
+
+Apply `h 1 C` to reduce the goal to its premises. Use `⟨Nat.one_pos, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `LinearIndependent D.host.E (fun _ : Fin 1 => z₀)`. Conclude with `linearIndependent_unique_iff.2 h0`. Rewrite using `[cT_sig]`.
+
+Use extensionality with `a b`. Use `fin_cases a`. Use `fin_cases b`. Establish `: (Cᴴ * T₀.gram * C) 0 0 = star z₀ ⬝ᵥ (T₀.gram *ᵥ z₀)`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, C, Matrix.of_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`.
+
+Conclude with `Finset.sum_comm`. Simplify using `using this.trans hzz`.
+-/
 theorem isWittFrame_of_hypDec (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec T T₀ r) (h : IsAniso T₀) :
     IsWittFrame D.sp.cm.sig T.gram d.e d.e' := by
   refine ⟨?_, ?_, ?_, ?_⟩

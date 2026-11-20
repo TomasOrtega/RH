@@ -12,6 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RealMult.QUniq
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Rewrite `h2`, `h3` using `[← sub_eq_zero, ← map_sub]`. Take `⟨⟨_, n, rfl⟩, hn⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (2 : R)) _ _).1 h2`. Take `⟨⟨_, m, rfl⟩, hm⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (3 : R)) _ _).1 h3`. Establish `hc : IsCoprime ((2 : R) ^ n) ((3 : R) ^ m)`.
+
+Establish `: IsCoprime (2 : R) 3` using `⟨-1, 1, by norm_num⟩`. Conclude with `this.pow`. Take `⟨a, b, hab⟩` from `hc`. Simplify using `only at hn hm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_of_loc_two_three (R : Type) [CommRing R] (x y : R)
     (h2 : algebraMap R (Localization.Away (2 : R)) x = algebraMap R (Localization.Away (2 : R)) y)
     (h3 : algebraMap R (Localization.Away (3 : R)) x = algebraMap R (Localization.Away (3 : R)) y) : x = y := by
@@ -28,6 +33,13 @@ theorem eq_of_loc_two_three (R : Type) [CommRing R] (x y : R)
     _ = a * (2 ^ n * (x - y)) + b * (3 ^ m * (x - y)) := by ring
     _ = 0 := by rw [hn, hm]; ring
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Set `I : Ideal R` to `LinearMap.ker (LinearMap.toSpanSingleton R R (x - y))`. Establish `hI : I = ⊤`. Assume the negation of the conclusion as `hI`. Take `⟨q, hq, hIq⟩` from `Ideal.exists_le_maximal I hI`.
+
+Set `p : PrimeSpectrum R` to `⟨q, hq.isPrime⟩`. Establish `hp` using `h p`. Rewrite `hp` using `[← sub_eq_zero, ← map_sub]`. Take `⟨⟨_, n, rfl⟩, hn⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (f p)) _ _).1 hp`. Establish `hmem : f p ^ n ∈ I`.
+
+Simplify using `only [I, LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, smul_eq_mul]`. Conclude with `hn`. Conclude with `hf p (hq.isPrime.mem_of_pow_mem n (hIq hmem))`. Establish `h1 : (1 : R) ∈ I` using `hI ▸ Submodule.mem_top`. Simplify `h1` using `[I]`.
+-/
 theorem eq_of_loc_away (R : Type) [CommRing R] (f : PrimeSpectrum R → R) (hf : ∀ p, f p ∉ p.asIdeal)
     (x y : R) (h : ∀ p, algebraMap R (Localization.Away (f p)) x = algebraMap R (Localization.Away (f p)) y) :
     x = y := by
@@ -49,6 +61,9 @@ theorem eq_of_loc_away (R : Type) [CommRing R] (f : PrimeSpectrum R → R) (hf :
 
 variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
 
+/- English proof (translation)
+Rewrite using `[Obj.isRapoport_iff]`. Use `Set.eq_univ_of_forall fun s ↦ ?_` and prove the remaining obligations. Introduce `K _ t hs Y ψ hY`. Take `⟨p, rfl⟩` from `hs`. Conclude with `hr ⟨t p, rfl⟩ K (t ≫ c) ⟨p, rfl⟩ Y (ψ ≫ φ) (hY.comp hX)`.
+-/
 theorem isRapoport_of_range_subset {M : Scheme.{0}} (U : Obj F 𝔠 M) {A : Type} [CommRing A] (c : Sp A ⟶ M)
     (X : Obj F 𝔠 (Sp A)) (φ : X.A.left ⟶ U.A.left) (hX : X.IsPullBy U c φ) (hr : Set.range c ⊆ U.rapLocus) :
     X.IsRapoport := by
@@ -58,6 +73,19 @@ theorem isRapoport_of_range_subset {M : Scheme.{0}} (U : Obj F 𝔠 M) {A : Type
   obtain ⟨p, rfl⟩ := hs
   exact hr ⟨t p, rfl⟩ K (t ≫ c) ⟨p, rfl⟩ Y (ψ ≫ φ) (hY.comp hX)
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 N M sM U V hV hflat hnorm hcod R₀ _ k r s hrap W hW X φ hX δ`. Rewrite using `[← sub_eq_zero]`. Establish `key : TensorProduct.comm ℤ R₀ Γ(M, W) (r.val _ X trivial δ - s.val _ X trivial δ) = 0`. Use `rTensor_eq_zero_of_restrict_affine_inf N M sM V hflat hnorm hcod W hW R₀ _ fun W' hW' hle ↦ ?_` and prove the remaining obligations. Set `ρ : R₀ ⊗[ℤ] Γ(M, W) →ₐ[R₀] R₀ ⊗[ℤ] Γ(M, W')` to `Algebra.TensorProduct.map (AlgHom.id R₀ R₀) (M.presheaf.map (homOfLE (hle.trans inf_le_left)).op).hom.toIntAlgHom`.
+
+Take `⟨X', φ', hX'⟩` from `Obj.exists_isPullBy X (spMap ρ.toRingHom)`. Take `⟨δ', hδ', -⟩` from `Obj.IsPullBy.existsUnique_detGen (R := R₀ ⊗[ℤ] Γ(M, W)) (R' := R₀ ⊗[ℤ] Γ(M, W')) _ hX' δ`. Establish `hU : X'.IsPullBy U (coefSpecMap hW' R₀) (φ' ≫ φ)`. Rewrite using `[← GlobalTheory.T.coefficient_spec_restriction_compatible M W W' hW hW' (hle.trans inf_le_left) R₀]`. Conclude with `hX'.comp hX`.
+
+Establish `hrng : Set.range (coefSpecMap hW' R₀) ⊆ U.rapLocus`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[← hV]`. Establish `: (coefSpecMap hW' R₀) y ∈ Set.range hW'.fromSpec` using `⟨_, rfl⟩`. Rewrite `this` using `[hW'.range_fromSpec]`.
+
+Conclude with `(hle.trans inf_le_right) this`. Establish `hrX'` using `isRapoport_of_range_subset U _ X' _ hU hrng`. Establish `e` using `hrap _ X' hrX' δ'`. Rewrite `e` using `[r.baseChange _ _ ρ X trivial X' trivial φ' δ δ' hX' hδ', s.baseChange _ _ ρ X trivial X' trivial φ' δ δ' hX' hδ', ← sub_eq_zero, ← map_sub]`. Establish `hcomm : ∀ h, LinearMap.rTensor R₀ (M.presheaf.map (homOfLE (hle.trans inf_le_left)).op).hom.toAddMonoidHom.toIntLinearMap (TensorProduct.comm ℤ R₀ Γ(M, W) h) = TensorProduct.comm ℤ R₀ Γ(M, W') (ρ h)`.
+
+Introduce `h`. Proceed by induction on `h using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a g => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Rewrite using `[hcomm, e, map_zero]`. Conclude with `(TensorProduct.comm ℤ R₀ Γ(M, W)).map_eq_zero_iff.1 key`.
+-/
 theorem agreeAt_on_model : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (N : ℕ) (M : Scheme.{0})
     (sM : M ⟶ Sp (Localization.Away (N : ℤ))) (U : Obj F 𝔠 M) (V : M.Opens), (V : Set M) = U.rapLocus → Flat sM →
     (∀ (K : Type) [Field K] (t : Sp K ⟶ Sp (Localization.Away (N : ℤ))), Geo.Tor.IsNormalScheme (pullback sM t)) →
@@ -105,12 +133,20 @@ namespace GlobalTheory.RealMult.QUniq
 
 variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R₀ : Type} [CommRing R₀] {k : ℕ}
 
+/- English proof (translation)
+Introduce `δ`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (δ.2.symm ▸ Submodule.mem_top : δ₀.1 ∈ Submodule.span R {δ.1})`. Rewrite using `[← r.homog R X trivial δ δ₀ c hc.symm, ← s.homog R X trivial δ δ₀ c hc.symm, h]`.
+-/
 theorem agreeAt_of_one (r s : Rule (trivialObjectCondition 𝔠) R₀ k) {R : Type} [CommRing R] [Algebra R₀ R] (X : Obj F 𝔠 (Sp R))
     (δ₀ : X.DetGen) (h : r.val R X trivial δ₀ = s.val R X trivial δ₀) : r.AgreeAt s X := by
   intro δ
   obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.1 (δ.2.symm ▸ Submodule.mem_top : δ₀.1 ∈ Submodule.span R {δ.1})
   rw [← r.homog R X trivial δ δ₀ c hc.symm, ← s.homog R X trivial δ δ₀ c hc.symm, h]
 
+/- English proof (translation)
+Introduce `δ`. Use `hinj _ _ fun i ↦ ?_` and prove the remaining obligations. Take `⟨X', φ, hX'⟩` from `Obj.exists_isPullBy X (spMap (σ i : R →+* R' i))`. Take `⟨δ', hδ', -⟩` from `hX'.existsUnique_detGen (σ i : R →+* R' i) δ`. Establish `e1` using `r.baseChange R (R' i) (σ i) X trivial X' trivial φ δ δ' hX' hδ'`.
+
+Establish `e2` using `s.baseChange R (R' i) (σ i) X trivial X' trivial φ δ δ' hX' hδ'`. Express the relevant statement in the definitionally equal form `r.val (R' i) X' trivial δ' = (σ i : R →+* R' i) _ at e1`. Express the relevant statement in the definitionally equal form `s.val (R' i) X' trivial δ' = (σ i : R →+* R' i) _ at e2`. Use `h i X' φ hX' δ'` as an intermediate fact. Simplify `this` using `[e1, e2]`.
+-/
 theorem agreeAt_of_inj (r s : Rule (trivialObjectCondition 𝔠) R₀ k) {R : Type} [CommRing R] [Algebra R₀ R] (X : Obj F 𝔠 (Sp R))
     {J : Type} (R' : J → Type) [∀ i, CommRing (R' i)] [∀ i, Algebra R₀ (R' i)] (σ : ∀ i, R →ₐ[R₀] R' i)
     (hinj : ∀ x y : R, (∀ i, σ i x = σ i y) → x = y)
@@ -133,6 +169,15 @@ namespace GlobalTheory.RealMult.QUniq
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {𝔠 : FracId F} {R₀ : Type} [CommRing R₀] {k : ℕ}
 
+/- English proof (translation)
+Take `⟨M, sM, U, αU, hfine, -, -, -, hflat, -, ⟨V, hV, -, -, hcod⟩, hnorm, -⟩` from `hDP F 𝔠 N hN`. Set `t : Sp R ⟶ Sp (Localization.Away (N : ℤ))` to `spMap (IsLocalization.Away.lift (S := Localization.Away (N : ℤ)) (N : ℤ) (g := Int.castRingHom R) (by simpa using hu))`. Take `⟨b, ⟨-, φ, hφ, -⟩, -⟩` from `hfine (Sp R) t X α`. Establish `hmod` using `agreeAt_on_model F 𝔠 N M sM U V hV hflat hnorm hcod R₀ k r s hrap`. Use `choose W hW hmW hgen using fun x : Sp R ↦ GlobalTheory.T.determinant_generator_locally_exists F 𝔠 M U R₀ (b x)`.
+
+Use `choose f hf g hg using fun x : Sp R ↦ GlobalTheory.T.local_section_of_coefficient_spec M R₀ R b (W x) (hW x) x (hmW x)`. Use `agreeAt_of_inj r s X (fun x : Sp R ↦ Localization.Away (f x)) (fun x ↦ IsScalarTower.toAlgHom R₀ R _) (eq_of_loc_away R f hf) fun x X' φ' hX' ↦ ?_` and prove the remaining obligations. Take `⟨UW, φW, hUW⟩` from `Obj.exists_isPullBy U (coefSpecMap (hW x) R₀)`. Take `⟨δW⟩` from `hgen x UW φW hUW`. Establish `h1 : X'.IsPullBy U (spMap (g x : _ →+* _) ≫ coefSpecMap (hW x) R₀) (φ' ≫ φ)`.
+
+Rewrite using `[hg x]`. Conclude with `hX'.comp hφ`. Take `⟨ψ, hψ, -⟩` from `h1.cancel hUW`. Take `⟨δ', hδ', -⟩` from `Obj.IsPullBy.existsUnique_detGen (R := R₀ ⊗[ℤ] Γ(M, W x)) (R' := Localization.Away (f x)) _ hψ δW`. Use `agreeAt_of_one r s X' δ' ?_` and prove the remaining obligations.
+
+Rewrite using `[r.baseChange _ _ (g x) UW trivial X' trivial ψ δW δ' hψ hδ', s.baseChange _ _ (g x) UW trivial X' trivial ψ δW δ' hψ hδ', hmod (W x) (hW x) UW φW hUW δW]`.
+-/
 theorem agreeAt_of_level (hDP : GlobalTheory.Published.DelignePappasModel) (r s : Rule (trivialObjectCondition 𝔠) R₀ k)
     (hrap : ∀ (R : Type) [CommRing R] [Algebra R₀ R] (X : Obj F 𝔠 (Sp R)), X.IsRapoport → r.AgreeAt s X)
     (N : ℕ) (hN : 3 ≤ N) {R : Type} [CommRing R] [Algebra R₀ R] (hu : IsUnit (N : R)) (X : Obj F 𝔠 (Sp R))
@@ -156,6 +201,11 @@ theorem agreeAt_of_level (hDP : GlobalTheory.Published.DelignePappasModel) (r s 
   rw [r.baseChange _ _ (g x) UW trivial X' trivial ψ δW δ' hψ hδ',
     s.baseChange _ _ (g x) UW trivial X' trivial ψ δW δ' hψ hδ', hmod (W x) (hW x) UW φW hUW δW]
 
+/- English proof (translation)
+Take `⟨R', _, σ, X', φ, hff, hX', ⟨α⟩⟩` from `hlev F 𝔠 N (by omega) R hu X`. Use `letI : Algebra R₀ R' := (σ.comp (algebraMap R₀ R)).toAlgebra`. Set `σ' : R →ₐ[R₀] R'` to `{ σ with commutes' := fun _ ↦ rfl }`. Use `agreeAt_of_inj r s X (fun _ : Unit ↦ R') (fun _ ↦ σ') (fun x y h ↦ hff.injective (h ())) fun _ X'' φ'' hX'' ↦ ?_` and prove the remaining obligations. Establish `h2 : X''.IsPullBy X (𝟙 _ ≫ spMap σ) φ''` using `by rw [Category.id_comp]; exact hX''`.
+
+Take `⟨ψ, hψ, -⟩` from `h2.cancel hX'`. Take `⟨α'', -⟩` from `hψ.exists_level α`. Conclude with `agreeAt_of_level hDP r s hrap N hN (by simpa using hu.map σ) X'' α''`.
+-/
 theorem agreeAt_of_unit (hDP : GlobalTheory.Published.DelignePappasModel) (hlev : (∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ), 1 ≤ N →
       ∀ (R : Type) [CommRing R], IsUnit (N : R) → ∀ X : Obj F 𝔠 (Sp R),
         ∃ (R' : Type) (_ : CommRing R') (σ : R →+* R') (X' : Obj F 𝔠 (Sp R')) (φ : X'.A.left ⟶ X.A.left),
@@ -173,6 +223,13 @@ theorem agreeAt_of_unit (hDP : GlobalTheory.Published.DelignePappasModel) (hlev 
   obtain ⟨α'', -⟩ := hψ.exists_level α
   exact agreeAt_of_level hDP r s hrap N hN (by simpa using hu.map σ) X'' α''
 
+/- English proof (translation)
+Use `agreeAt_of_inj r s X (fun b : Bool ↦ Localization.Away (if b then (2 : R) else 3)) (fun b ↦ IsScalarTower.toAlgHom R₀ R _) (fun x y h ↦ eq_of_loc_two_three R x y (h true) (h false)) fun b X' φ' hX' ↦ ?_` and prove the remaining obligations. Consider the cases of `b`. Establish `h3 : IsUnit (algebraMap R (Localization.Away (3 : R)) 3)` using `IsLocalization.Away.algebraMap_isUnit 3`. Establish `h3' : IsUnit ((3 : ℕ) : Localization.Away (3 : R))`. Rewrite using `[Nat.cast_ofNat, ← map_ofNat (algebraMap R (Localization.Away (3 : R))) 3]`.
+
+Conclude with `h3`. Conclude with `agreeAt_of_unit hDP hlev r s hrap 3 le_rfl h3' X'`. Establish `h2 : IsUnit (algebraMap R (Localization.Away (2 : R)) 2)` using `IsLocalization.Away.algebraMap_isUnit 2`. Establish `h4 : ((4 : ℕ) : Localization.Away (2 : R)) = algebraMap R _ 2 * algebraMap R _ 2`. Rewrite using `[← map_mul, show (2 : R) * 2 = 4 by norm_num, map_ofNat, Nat.cast_ofNat]`.
+
+Conclude with `agreeAt_of_unit hDP hlev r s hrap 4 (by norm_num) (by rw [h4]; exact h2.mul h2) X'`.
+-/
 theorem agreeAt_all (hDP : GlobalTheory.Published.DelignePappasModel) (hlev : (∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ), 1 ≤ N →
       ∀ (R : Type) [CommRing R], IsUnit (N : R) → ∀ X : Obj F 𝔠 (Sp R),
         ∃ (R' : Type) (_ : CommRing R') (σ : R →+* R') (X' : Obj F 𝔠 (Sp R')) (φ : X'.A.left ⟶ X.A.left),
@@ -193,6 +250,9 @@ theorem agreeAt_all (hDP : GlobalTheory.Published.DelignePappasModel) (hlev : (�
 
 end GlobalTheory.RealMult.QUniq
 
+/- English proof (translation)
+Introduce `hDP F _ _ _ 𝔠 R₀ _ k r s h`. Apply `Rule.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `R _ _ X hX δ`. Conclude with `QUniq.agreeAt_all hDP hlev r s h X δ`.
+-/
 theorem GlobalTheory.RealMult.rule_eq_of_agree_rapoport_of_level (hlev : (∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ), 1 ≤ N →
       ∀ (R : Type) [CommRing R], IsUnit (N : R) → ∀ X : Obj F 𝔠 (Sp R),
         ∃ (R' : Type) (_ : CommRing R') (σ : R →+* R') (X' : Obj F 𝔠 (Sp R')) (φ : X'.A.left ⟶ X.A.left),

@@ -22,19 +22,31 @@ namespace GlobalTheory.USep.EvG.ThetaVal
 
 open GlobalTheory.USep.EvG
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def]`. Both sides reduce to the same expression.
+-/
 theorem one_left' {S X : Scheme.{0}} (G : Over S) [GrpObj G] (t : X ⟶ S) :
     (1 : Over.mk t ⟶ G).left = t ≫ (η[G]).left := by
   rw [Hom.one_def]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression. Use the proof step `@[reassoc]`.
+-/
 theorem toUnit_eta_left {S : Scheme.{0}} (G : Over S) [GrpObj G] :
     (toUnit G ≫ η[G]).left = G.hom ≫ (η[G]).left := by
   rfl
 
 @[reassoc]
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_two' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.GroupBplus.Aff.exists_mulEquiv_points_of_isGrpPullback hF G'.hom (G'.hom ≫ f) rfl`. Establish `h1` using `he 1`. Rewrite `h1` using `[map_one, one_left', one_left']`. Rewrite using `[toUnit_eta_left, ← h1, Category.assoc]`.
+-/
 theorem eta_push {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S}
     {F : G'.left ⟶ G.left} (hF : IsGrpPullback G' G f F) : (toUnit G' ≫ η[G']).left ≫ F = G'.hom ≫ f ≫ (η[G]).left := by
   obtain ⟨e, he⟩ := GlobalTheory.GroupBplus.Aff.exists_mulEquiv_points_of_isGrpPullback hF G'.hom (G'.hom ≫ f) rfl
@@ -44,6 +56,11 @@ theorem eta_push {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [Gr
 
 variable {V₁ : Type} [CommRing V₁] [IsDomain V₁]
 
+/- English proof (translation)
+Establish `h : padd D.P.A (𝟙 D.P.A) (toUnit D.P.A ≫ D.c 0) = 𝟙 D.P.A`. Rewrite using `[GlobalTheory.Poinc.ThetaOne.c_zero D, MonObj.comp_one]`. Conclude with `mul_one (𝟙 D.P.A)`. Use `show (padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c 0)).left = _`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem famφB_one (D : DegPre V₁) : D.famφB 0 1 = 𝟙 _ := by
   have h : padd D.P.A (𝟙 D.P.A) (toUnit D.P.A ≫ D.c 0) = 𝟙 D.P.A := by
     rw [GlobalTheory.Poinc.ThetaOne.c_zero D, MonObj.comp_one]
@@ -51,6 +68,9 @@ theorem famφB_one (D : DegPre V₁) : D.famφB 0 1 = 𝟙 _ := by
   show (padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c 0)).left = _
   rw [h]; rfl
 
+/- English proof (translation)
+Use `show (toUnit D.P.A ≫ D.c 0).left = (toUnit D.P.A ≫ η[D.P.A]).left`. Rewrite using `[GlobalTheory.Poinc.ThetaOne.c_zero D, MonObj.comp_one]`. Both sides reduce to the same expression.
+-/
 theorem famφB_two (D : DegPre V₁) : D.famφB 0 2 = D.famφB 0 3 := by
   show (toUnit D.P.A ≫ D.c 0).left = (toUnit D.P.A ≫ η[D.P.A]).left
   rw [GlobalTheory.Poinc.ThetaOne.c_zero D, MonObj.comp_one]
@@ -70,6 +90,9 @@ def chartPullCompPull {X X' Y : Scheme.{0}} (L : LB X) (F : X' ⟶ X) {K : Type}
         (Set.mem_iInter.1 (le j hj) k) (Set.mem_iInter.1 (le j' hj') k)).symm
       simp only [Category.assoc] }
 
+/- English proof (translation)
+Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) ?_))` and prove the remaining obligations. Conclude with `(gm_res r z _ hm _).trans (gm_pull r (φ' k) z ((L.pull φ).U (fun _ => p k) ⊓ L₂.U (q k)) ⟨Set.mem_iInter.1 hm.1 k, Set.mem_iInter.1 hm.2 k⟩ _)`.
+-/
 theorem gm_linCombIso_pull' {A A₂ Y₂ : Scheme.{0}} {L : LB A} {L₂ : LB A₂} {φ : A₂ ⟶ A} (w : LB.Iso L₂ (L.pull φ))
     {K : Type} [Fintype K] (φ' : K → (Y₂ ⟶ A₂)) (ε : K → ℤ)
     {Z : Scheme.{0}} (r : Z ⟶ Y₂) (z : Z) (p : K → L.ι) (q : K → L₂.ι)
@@ -80,6 +103,21 @@ theorem gm_linCombIso_pull' {A A₂ Y₂ : Scheme.{0}} {L : LB A} {L₂ : LB A�
   exact (gm_res r z _ hm _).trans (gm_pull r (φ' k) z ((L.pull φ).U (fun _ => p k) ⊓ L₂.U (q k))
     ⟨Set.mem_iInter.1 hm.1 k, Set.mem_iInter.1 hm.2 k⟩ _)
 
+/- English proof (translation)
+Use `set E := Over.mk (spMap ev) with hE`. Use `set fK := (fst E D.P.A).left with hfK`. Use `set q := (snd E D.P.A).left with hq`. Establish `hw : q ≫ D.P.A.hom = fK ≫ spMap ev` using `(Over.w (snd E D.P.A)).trans (Over.w (fst E D.P.A)).symm`. Establish `hf : ∀ a, (ev.comp ib) a ∈ k₀` using `hk`.
+
+Take `⟨Φ₀, hΦ₀⟩` from `GlobalTheory.GroupBplus.Aff.exists_mulEquiv_points_of_isGrpPullback hβ (fK ≫ spMap ev) (fK ≫ spMap (ev.comp ib)) (by rw [Category.assoc, spMap_two'])`. Take `⟨Φ₁, hΦ₁⟩` from `GlobalTheory.GroupBplus.Aff.exists_mulEquiv_points_of_isGrpPullback hβ (fK ≫ spMap σ.toRingHom ≫ spMap ev) (fK ≫ spMap (ev.comp ib)) (by rw [Category.assoc, Category.assoc, spMap_two', spMap_conj k₀ _ hf σ hσ])`. Set `qpt : Over.mk (fK ≫ spMap ev) ⟶ D.P.A` to `Over.homMk q hw`. Set `σD` to `Φ₁.symm (Φ₀ qpt)`. Set `a0 : Over.mk (fK ≫ spMap σ.toRingHom ≫ spMap ev) ⟶ E` to `Over.homMk (fK ≫ spMap σ.toRingHom) (Category.assoc _ _ _)`.
+
+Set `σt : (E ⊗ D.P.A).left ⟶ (E ⊗ D.P.A).left` to `(lift a0 σD).left`. Establish `hfst : σt ≫ fK = fK ≫ spMap σ.toRingHom` using `congrArg (fun z => z.left) (lift_fst a0 σD)`. Establish `hsnd : σt ≫ q = σD.left` using `congrArg (fun z => z.left) (lift_snd a0 σD)`. Establish `hproj : σt ≫ q ≫ β = q ≫ β`. Rewrite using `[reassoc_of% hsnd, ← hΦ₁ σD, MulEquiv.apply_symm_apply, hΦ₀]`.
+
+Both sides reduce to the same expression. Use `⟨σt, hfst, hproj, fun x hx hdef => ?_⟩` and prove the remaining obligations. Establish `hEh : (E ⊗ D.P.A).hom = fK ≫ spMap ev` using `(Over.w (fst E D.P.A)).symm`. Set `T : Over (Sp V₁)` to `Over.mk (spMap σ.toRingHom ≫ spMap ev)`. Set `m1 : T ⟶ E ⊗ D.P.A` to `Over.homMk (x ≫ σt) (by show (x ≫ σt) ≫ (E ⊗ D.P.A).hom = spMap σ.toRingHom ≫ spMap ev`.
+
+Rewrite using `[hEh, Category.assoc, reassoc_of% hfst, reassoc_of% hx])`. Set `m2 : T ⟶ E ⊗ D.P.A` to `Over.homMk (spMap σ.toRingHom ≫ x) (by show (spMap σ.toRingHom ≫ x) ≫ (E ⊗ D.P.A).hom = spMap σ.toRingHom ≫ spMap ev`. Rewrite using `[hEh, Category.assoc, reassoc_of% hx])`. Establish `hm : m1 = m2`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+
+Apply `Over.OverMorphism.ext show (x ≫ σt) ≫ fK = (spMap σ.toRingHom ≫ x) ≫ fK` to reduce the goal to its premises. Rewrite using `[Category.assoc, hfst, reassoc_of% hx, Category.assoc, hx, Category.comp_id]`. Take `⟨Φ₂, hΦ₂⟩` from `GlobalTheory.GroupBplus.Aff.exists_mulEquiv_points_of_isGrpPullback hβ (spMap σ.toRingHom ≫ spMap ev) (spMap (ev.comp ib)) (by rw [Category.assoc, spMap_two', spMap_conj k₀ _ hf σ hσ])`. Apply `Φ₂.injective` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[hΦ₂, hΦ₂]`. Use `show (x ≫ σt) ≫ q ≫ β = (spMap σ.toRingHom ≫ x) ≫ q ≫ β`. Take `⟨P₀, hP₀⟩` from `hdef`. Rewrite using `[Category.assoc, hproj, Category.assoc, ← hP₀, ← Category.assoc, spMap_conj k₀ k₀.subtype (fun a => a.2) σ hσ]`. Conclude with `congrArg (fun m => m.left) hm`.
+-/
 theorem exists_conj_fibre_one {V₁ W₀ : Type} [CommRing V₁] [IsDomain V₁] [CommRing W₀] (D : DegPre V₁) (ib : W₀ →+* V₁)
     (B₀ : Over (Sp W₀)) [GrpObj B₀] (β : D.P.A.left ⟶ B₀.left) (hβ : IsGrpPullback D.P.A B₀ (spMap ib) β)
     (K : Type) [Field K] (ev : V₁ →+* K) (k₀ : Subfield K) (hk : ∀ a, ev (ib a) ∈ k₀)
@@ -135,6 +173,11 @@ theorem exists_conj_fibre_one {V₁ W₀ : Type} [CommRing V₁] [IsDomain V₁]
         spMap_conj k₀ k₀.subtype (fun a => a.2) σ hσ]
   exact congrArg (fun m => m.left) hm
 
+/- English proof (translation)
+Establish `hz : r z ∈ (LB.LinComb M₀ (fun k => D.famφB 0 k ≫ β) (DegPre.famε 1)).U (fun k => J₀ (r ≫ (D.famφB 0 k ≫ β))) ⊓ (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)).U (fun k => J (r ≫ D.famφB 0 k))` using `⟨hJ₀.mem (fun k => D.famφB 0 k ≫ β) r, hJ.mem (D.famφB 0) r⟩`. Use `(GlobalTheory.PolDeg.TautFrom.gm_isoPull _ _ _ r z _ hz).trans ?_` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Establish `hm : r z ∈ LB.wchart (M₀.pull β) (D.famφB 0) (fun k _ => J₀ (r ≫ (D.famφB 0 k ≫ β))) ⊓ LB.wchart D.P.L (D.famφB 0) (fun k => J (r ≫ D.famφB 0 k))` using `⟨Set.mem_iInter.2 fun k => mem_pull.2 (Set.mem_iInter.1 hz.1 k), hz.2⟩`. Use `(gm_linCombIso_pull' w (D.famφB 0) (DegPre.famε 1) r z (fun k => J₀ (r ≫ (D.famφB 0 k ≫ β))) (fun k => J (r ≫ D.famφB 0 k)) hm).trans ?_` and prove the remaining obligations.
+
+Establish `h0 : D.famφB 0 0 = 𝟙 _` using `rfl`. Rewrite using `[Fin.prod_univ_four, h0, famφB_one D, famφB_two D]`. Simplify using `only [DegPre.famε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, Nat.cast_one, sub_self, zpow_zero, zpow_one, zpow_neg, one_mul, Category.comp_id, Category.id_comp, mul_inv_cancel_right]`. Rewrite using `[_root_.one_mul, inv_mul_cancel_right]`.
+-/
 theorem gm_thetaIso {V₁ : Type} [CommRing V₁] [IsDomain V₁] (D : DegPre V₁) {B₀ : Scheme.{0}} {M₀ : LB B₀}
     (β : D.P.A.left ⟶ B₀) (w : LB.Iso D.P.L (M₀.pull β)) {K : Type} [Field K] (r : Sp K ⟶ D.P.A.left) (z : Sp K)
     (J : (Sp K ⟶ D.P.A.left) → D.P.L.ι) (J₀ : (Sp K ⟶ B₀) → M₀.ι) (hJ : Good D.P.L z J) (hJ₀ : Good M₀ z J₀) :
@@ -158,6 +201,29 @@ theorem gm_thetaIso {V₁ : Type} [CommRing V₁] [IsDomain V₁] (D : DegPre V�
     Category.comp_id, Category.id_comp, mul_inv_cancel_right]
   rw [_root_.one_mul, inv_mul_cancel_right]
 
+/- English proof (translation)
+Introduce `V₁ _ _ _ _ _ D τ₀ W₀ _ ib B₀ _ M₀ c₀ τ₁ β w hFB K _ _ ev k₀ hk₀ hk z J J₀ hJ hJ₀ θ hθ`. Take `⟨-, hM₀, hβ, hw, -, -, -⟩` from `hFB`. Set `u` to `GlobalTheory.PolDeg.TautFrom.isoPull (chartPullId (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))) (chartPullCompPull M₀ β (D.famφB 0) (DegPre.famε 1)) (LB.linCombIso w (D.famφB 0) (DegPre.famε 1))`. Establish `hu : u.IsGen` using `GlobalTheory.PolDeg.TautFrom.isoPull_isGen _ _ _ (DVR.linCombIso_isGen w hw _ _)`. Establish `hL : (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)).IsLB` using `DVR.linComb_isLB _ D.P.isLB _ _`.
+
+Establish `hM : (LB.LinComb M₀ (fun k => D.famφB 0 k ≫ β) (DegPre.famε 1)).IsLB` using `DVR.linComb_isLB _ hM₀ _ _`. Take `⟨s, hs⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.exists_isoRel hL hM hu (θ : LB.Sec (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)))`. Set `E` to `Over.mk (spMap ev)`. Set `q` to `(snd E D.P.A).left`. Establish `hqw : q ≫ D.P.A.hom = (fst E D.P.A).left ≫ spMap ev` using `(Over.w (snd E D.P.A)).trans (Over.w (fst E D.P.A)).symm`.
+
+Set `R : (Sp K ⟶ (E ⊗ D.P.A).left) → Prop` to `fun x => x ≫ (fst E D.P.A).left = 𝟙 _ ∧ DefOver k₀ (x ≫ q ≫ β)`. Establish `hcases : ∀ k : Fin 4, D.famφB 0 k = 𝟙 _ ∨ D.famφB 0 k ≫ β = D.P.A.hom ≫ spMap ib ≫ (η[B₀]).left`. Introduce `k`. Use `fin_cases k`. Conclude with `Or.inl rfl`.
+
+Conclude with `Or.inl (by show D.famφB 0 1 = _; exact famφB_one D)`. Conclude with `Or.inr (by show D.famφB 0 2 ≫ β = _; rw [famφB_two D]; exact eta_push hβ)`. Conclude with `Or.inr (by show D.famφB 0 3 ≫ β = _; exact eta_push hβ)`. Take `⟨κ, -, hval⟩` from `galois_values k₀ hk₀ (fun k => q ≫ (D.famφB 0 k ≫ β)) (DegPre.famε 1) (ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.pullSec s q) R (fun t => by`. Take `⟨c, hc⟩` from `fibre_one_dim D ev (θ : LB.Sec (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))) (hθ K ev) (fun k => D.famφB 0 k ≫ β) (DegPre.famε 1) hM₀ u hu s hs t`.
+
+Conclude with `⟨c, fun x hR z J hJ => hc x hR.1 z J hJ⟩)`. Use the proof step `(fun σ hσ => by`. Take `⟨σt, hfst, hproj, hfix⟩` from `exists_conj_fibre_one D ib B₀ β hβ K ev k₀ hk σ hσ`. Use `⟨σt, fun k => ?_, fun x hR => hfix x hR.1 hR.2⟩` and prove the remaining obligations. Break down `hcases k with h | h` into its components or cases.
+
+Use `show σt ≫ q ≫ D.famφB 0 k ≫ β = q ≫ D.famφB 0 k ≫ β`. Rewrite using `[h, Category.id_comp]`. Conclude with `hproj`. Use `show σt ≫ q ≫ D.famφB 0 k ≫ β = q ≫ D.famφB 0 k ≫ β`. Establish `hf : ∀ a, (ev.comp ib) a ∈ k₀` using `hk`.
+
+Rewrite using `[h, reassoc_of% hqw, reassoc_of% hfst, spMap_two'_assoc ib ev, reassoc_of% (spMap_conj k₀ _ hf σ hσ)])`. Use `⟨κ, fun p hdef => ?_⟩` and prove the remaining obligations. Establish `hr : (spMap ev ≫ p.left) ≫ D.P.A.hom = spMap ev`. Rewrite using `[Category.assoc, Over.w p]`. Conclude with `Category.comp_id _`.
+
+Set `a1 : Over.mk (spMap ev) ⟶ E` to `Over.homMk (𝟙 (Sp K)) (Category.id_comp _)`. Set `b1 : Over.mk (spMap ev) ⟶ D.P.A` to `Over.homMk (spMap ev ≫ p.left) hr`. Set `x : Sp K ⟶ (E ⊗ D.P.A).left` to `(lift a1 b1).left`. Establish `hxf : x ≫ (fst E D.P.A).left = 𝟙 _` using `congrArg (fun m : Over.mk (spMap ev) ⟶ E => m.left) (lift_fst a1 b1)`. Establish `hxq : x ≫ q = spMap ev ≫ p.left` using `congrArg (fun m : Over.mk (spMap ev) ⟶ D.P.A => m.left) (lift_snd a1 b1)`.
+
+Establish `hRx : R x` using `⟨hxf, by show DefOver k₀ (x ≫ q ≫ β)`. Rewrite using `[reassoc_of% hxq]`. Conclude with `hdef⟩`. Take `⟨c, hc, he⟩` from `hval x hRx z J₀ hJ₀`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : sval s (spMap ev ≫ p.left) z J₀ = toStk z (κ * c)`. Rewrite using `[← he, ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_pullSec s q x z hJ₀, hxq]`. Establish `e2` using `gs_isoRel_at hs _ _ (spMap ev ≫ p.left) z (hJ₀.mem (fun k => D.famφB 0 k ≫ β) (spMap ev ≫ p.left)) (hJ.mem (D.famφB 0) (spMap ev ≫ p.left))`. Rewrite `e2` using `[gm_thetaIso D β w (spMap ev ≫ p.left) z J J₀ hJ hJ₀]`. Establish `e4 : (gwx w z J J₀ (spMap ev ≫ p.left)).val * sval (θ : LB.Sec (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))) (spMap ev ≫ p.left) z J = toStk z (κ * c)`.
+
+Rewrite using `[← e1]`. Conclude with `e2.symm`. Rewrite using `[← e4, Units.inv_mul_cancel_left]`.
+-/
 theorem theta_values : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) →
     ∀ (D : DegPre V₁) (τ₀ : GlobalTheory.UChart.Gens D) (W₀ : Type) [CommRing W₀] (ib : W₀ →+* V₁) (B₀ : Over (Sp W₀)) [GrpObj B₀]
       (M₀ : LB B₀.left) (c₀ : D.X → (Sp W₀ ⟶ B₀.left))

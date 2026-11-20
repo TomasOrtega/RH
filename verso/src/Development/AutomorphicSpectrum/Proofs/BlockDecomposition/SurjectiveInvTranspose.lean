@@ -23,6 +23,23 @@ section Rep
 
 variable {G X V : Type} [Group G] [AddCommGroup X] [Module ℂ X] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `N T _ hne _ hinj`. Conclude with `absurd ((Submodule.eq_bot_iff N).2 fun z hz => hinj z hz fun j => j.elim0) hne`.
+
+Consider the case `succ r ih`. Introduce `N T hN hne hT hinj`. Distinguish the cases in `hK : N ⊓ LinearMap.ker (T 0) = ⊥`. Take `⟨-, hirr⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff τ).1 hτ`. Set `S : N →ₗ[ℂ] V` to `(T 0).comp N.subtype`.
+
+Establish `hker : ∀ z : N, S z = 0 → z = 0` using `fun z hz => by`. Establish `h : (z : X) ∈ N ⊓ LinearMap.ker (T 0)` using `⟨z.2, hz⟩`. Rewrite `h` using `[hK]`. Conclude with `Subtype.ext h`. Establish `hSinj : Function.Injective S` using `(injective_iff_map_eq_zero S).2 hker`.
+
+Take `⟨z₀, hz₀, hz₀'⟩` from `(Submodule.ne_bot_iff N).1 hne`. Establish `hrange : LinearMap.range S = ⊤`. Use `(hirr (LinearMap.range S) ?_).resolve_left fun h => ?_` and prove the remaining obligations. Introduce and unpack `g _ ⟨z, rfl⟩`. Conclude with `⟨⟨ρ g z, hN g z z.2⟩, hT 0 g z⟩`.
+
+Establish `h0 : S ⟨z₀, hz₀⟩ = 0` using `(Submodule.mem_bot ℂ).1 (h ▸ LinearMap.mem_range_self S ⟨z₀, hz₀⟩)`. Conclude with `hz₀' (congrArg Subtype.val (hker _ h0))`. Set `e : N ≃ₗ[ℂ] V` to `LinearEquiv.ofBijective S ⟨hSinj, LinearMap.range_eq_top.1 hrange⟩`. Use `⟨N.subtype ∘ₗ e.symm.toLinearMap, fun h => hz₀' ?_, fun g v => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun h (e ⟨z₀, hz₀⟩)`.
+
+Simplify using `using h1`. Establish `h1 : e.symm (τ g v) = ⟨ρ g (e.symm v), hN g _ (e.symm v).2⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Express the relevant statement in the definitionally equal form `τ g v = T 0 (ρ g (e.symm v))`. Rewrite using `[hT]`.
+
+Conclude with `congrArg (τ g) (e.apply_symm_apply v).symm`. Express the relevant statement in the definitionally equal form `((e.symm (τ g v) : N) : X) = _`. Rewrite using `[h1]`. Both sides reduce to the same expression. Use `ih (N ⊓ LinearMap.ker (T 0)) (fun j => T j.succ) (fun g z hz => ⟨hN g z hz.1, ?_⟩) hK (fun j => hT j.succ) fun z hz h => hinj z hz.1 fun j => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `T 0 (ρ g z) = 0`. Rewrite using `[hT, show T 0 z = 0 from hz.2, map_zero]`. Use `Fin.cases hz.2 h j` and prove the remaining obligations.
+-/
 theorem exists_embed_fin (ρ : Representation ℂ G X) (τ : Representation ℂ G V) (hτ : τ.IsIrreducible) :
     ∀ (r : ℕ) (N : Submodule ℂ X) (T : Fin r → X →ₗ[ℂ] V), (∀ g, ∀ z ∈ N, ρ g z ∈ N) → N ≠ ⊥ →
       (∀ j g x, T j (ρ g x) = τ g (T j x)) → (∀ z ∈ N, (∀ j, T j z = 0) → z = 0) →
@@ -67,6 +84,15 @@ theorem exists_embed_fin (ρ : Representation ℂ G X) (τ : Representation ℂ 
         rw [hT, show T 0 z = 0 from hz.2, map_zero]
       · refine Fin.cases hz.2 h j
 
+/- English proof (translation)
+Take `⟨s, hs, hspan⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 (Module.Finite.iff_fg.1 hfd)`. Establish `hidx : ∀ j : Fin s.card, ∃ i, T i y = (s.equivFin.symm j : V)` using `fun j => hs (s.equivFin.symm j).2`. Use `choose idx hidx using hidx`. Establish `hmem : ∀ i, T i y ∈ Submodule.span ℂ (Set.range fun j => T (idx j) y)` using `fun i => by`. Establish `h1 : T i y ∈ Submodule.span ℂ (s : Set V)` using `hspan ▸ Submodule.subset_span ⟨i, rfl⟩`.
+
+Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Introduce `x hx`. Use `⟨s.equivFin ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Simplify using `[hidx]`. Use `choose c hc using fun i => (Submodule.mem_span_range_iff_exists_fun ℂ).1 (hmem i)`.
+
+Set `N : Submodule ℂ X` to `⨅ i, LinearMap.ker (T i - ∑ j, c i j • T (idx j))`. Establish `hNmem : ∀ z, z ∈ N ↔ ∀ i, T i z = ∑ j, c i j • T (idx j) z` using `fun z => by`. Simplify using `[N, Submodule.mem_iInf, LinearMap.sum_apply, sub_eq_zero]`. Use `exists_embed_fin ρ τ hτ s.card N (fun j => T (idx j)) (fun g z hz => ?_) ?_ (fun j => hT _) fun z hz h => hinj z fun i => ?_` and prove the remaining obligations. Rewrite `hz`, the goal using `[hNmem]`.
+
+Introduce `i`. Simplify using `only [hT, hz i, map_sum, map_smul]`. Use `(Submodule.ne_bot_iff N).2 ⟨y, (hNmem y).2 fun i => (hc i).symm, hy⟩` and prove the remaining obligations. Rewrite using `[(hNmem z).1 hz i]`. Simplify using `[h]`.
+-/
 theorem exists_embed (ρ : Representation ℂ G X) (τ : Representation ℂ G V) (hτ : τ.IsIrreducible) {ι : Type*}
     (T : ι → X →ₗ[ℂ] V) (hT : ∀ i g x, T i (ρ g x) = τ g (T i x)) (hinj : ∀ x, (∀ i, T i x = 0) → x = 0)
     (y : X) (hy : y ≠ 0) (hfd : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun i => T i y))) :
@@ -109,9 +135,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {w : Pl E}
 abbrev sLoc (n : ℕ) (w : Pl E) : GLw n (conjSrc (conjE E) w) →* GLw n w :=
   GeneralLinearGroup.map (conjLoc (conjE E) w)
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_map (conjLoc_spec _ w).1)`.
+-/
 theorem continuous_sLoc (w : Pl E) : Continuous (sLoc n w) :=
   Continuous.units_map _ (continuous_id.matrix_map (conjLoc_spec _ w).1)
 
+/- English proof (translation)
+Introduce `g` and use `⟨invTranspose n R g, GlobalTheory.GelfandKazhdan.invTranspose_invTranspose n R g⟩`.
+-/
 theorem surjective_invTranspose (R : Type) [CommRing R] : Function.Surjective (invTranspose n R) :=
   fun g => ⟨invTranspose n R g, GlobalTheory.GelfandKazhdan.invTranspose_invTranspose n R g⟩
 
@@ -127,6 +159,25 @@ def conjDual (τ : SmIrr (GLw n w)) : SmIrr (GLw n (conjSrc (conjE E) w)) where
   smooth x := ((conjRep τ).smooth x).preimage (GlobalTheory.GelfandKazhdan.continuous_invTranspose n _)
   irred := GlobalTheory.ConjPairLoc.irred_comp _ _ (surjective_invTranspose _) (conjRep τ).irred
 
+/- English proof (translation)
+Take `⟨B, hL, -, hB, -⟩` from `hπ`. Establish `hadm : ∀ σ : SmIrr (GLw n (conjSrc (conjE E) w)), IsAdmissible σ.ρ` using `fun σ => PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top _ n σ.V σ.ρ σ.smooth σ.irred`. Take `⟨e⟩` from `GlobalTheory.GelfandKazhdan.equiv_contra _ n (conjRep τ).V (conjRep τ).ρ (hadm _) (conjRep τ).irred`. Establish `hloc : IsLocCompGL π.V w τ`. Take `⟨f, h0, hf⟩` from `hτ`.
+
+Use `⟨π.V.subtype ∘ₗ f, fun h => h0 (LinearMap.ext fun v => Subtype.ext (LinearMap.congr_fun h v)), fun v => (f v).2, fun g v => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (hf g v)`. Set `Bf (f : GlobalTheory.LocDual.Maps π.V w τ) : (conjRep τ).V →ₗ[ℂ] π.V →ₗ[ℂ] ℂ` to `B.flip.comp (f.1.codRestrict π.V f.2.1)`. Establish `hBf : ∀ f g a ψ, Bf f ((conjRep τ).ρ g a) (π.locRep (conjSrc (conjE E) w) g ψ) = Bf f a ψ`. Introduce `f g a ψ`.
+
+Establish `h1 : f.1.codRestrict π.V f.2.1 ((conjRep τ).ρ g a) = π.op (.fin (GeneralLinearGroup.map (conjFin (conjE E)) (locGL E n _ g))) (f.1.codRestrict π.V f.2.1 a)`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ConjPairLoc.conjFin_locGL]`. Conclude with `f.2.2 _ a`. Express the relevant statement in the definitionally equal form `B (π.locRep _ g ψ) (f.1.codRestrict π.V f.2.1 ((conjRep τ).ρ g a)) = B ψ (f.1.codRestrict π.V f.2.1 a)`.
+
+Rewrite using `[h1, CuspSub.locRep_eq]`. Conclude with `hB _ ψ _`. Set `P (f : GlobalTheory.LocDual.Maps π.V w τ)` to `GlobalTheory.InvPairing.pairMap (conjRep τ).ρ (π.isSmooth_locRep _) (Bf f) (hBf f)`. Set `T (f : GlobalTheory.LocDual.Maps π.V w τ) : π.V →ₗ[ℂ] (conjDual τ).V` to `e.symm.toLinearEquiv.toLinearMap ∘ₗ (P f).toLinearMap`. Establish `hT : ∀ f g ψ, T f (π.locRep _ g ψ) = (conjDual τ).ρ g (T f ψ)` using `fun f g ψ => by`.
+
+Establish `h1` using `LinearMap.congr_fun ((P f).isIntertwining' g) ψ`. Express the relevant statement in the definitionally equal form `e.symm.toLinearEquiv ((P f).toLinearMap (π.locRep _ g ψ)) = _`. Rewrite using `[show (P f).toLinearMap (π.locRep _ g ψ) = _ from h1]`. Conclude with `GlobalTheory.ConjPairLoc.equiv_apply e.symm g _`. Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff π.V).1 π.ne_bot`.
+
+Take `⟨K, hKo, hKc, hK⟩` from `GlobalTheory.SqIntUnit.compactOpen_basis _ n _ ((π.isSmooth_locRep (conjSrc (conjE E) w) ⟨y, hy⟩).mem_nhds (by simp))`. Use `haveI := (hadm (conjDual τ)).2 K hKo hKc`. Establish `hle : Submodule.span ℂ (Set.range fun f => T f ⟨y, hy⟩) ≤ fixed (conjDual τ).ρ K`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`.
+
+Use `LocEx.mem_fix.2 fun k hk => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(conjDual τ).ρ k (T f ⟨y, hy⟩) = T f ⟨y, hy⟩`. Rewrite using `[← hT, show π.locRep _ k ⟨y, hy⟩ = ⟨y, hy⟩ from hK hk]`. Establish `hfd` using `Submodule.finiteDimensional_of_le hle`. Establish `hinj : ∀ ψ, (∀ f, T f ψ = 0) → ψ = 0` using `fun ψ hψ => by`.
+
+Assume the negation of the conclusion as `hne`. Establish `hβ : B ψ ≠ 0` using `fun h => hne (hL ψ fun φ => LinearMap.congr_fun h φ)`. Take `⟨f, hf⟩` from `GlobalTheory.LocDual.exists_comp_ne_zero π.V π.stable π.irred w τ hloc (B ψ) hβ`. Use `hf (LinearMap.ext fun a => ?_)` and prove the remaining obligations. Establish `h1 : (P f).toLinearMap ψ = 0` using `e.symm.toLinearEquiv.map_eq_zero_iff.1 (hψ f)`.
+
+Conclude with `LinearMap.congr_fun (congrArg Subtype.val h1) a`. Take `⟨Φ, h0, hΦ⟩` from `exists_embed (π.locRep _) (conjDual τ).ρ (conjDual τ).irred T hT hinj ⟨y, hy⟩ (fun h => hy0 (congrArg Subtype.val h)) hfd`. Conclude with `⟨Φ, h0, hΦ⟩`.
+-/
 theorem isLocComp_conjDual (π : CuspSub E n) (hπ : GlobalTheory.ContraPair.DualIsConj π) {τ : SmIrr (GLw n w)}
     (hτ : π.IsLocComp w τ) : π.IsLocComp (conjSrc (conjE E) w) (conjDual τ) := by
   obtain ⟨B, hL, -, hB, -⟩ := hπ

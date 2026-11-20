@@ -22,6 +22,9 @@ open NumberField
 open GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl GlobalTheory.CompanionTheory.SW.Core
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.phaseB_pairB_props | exact GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.phaseB_pairB_props | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.phaseB_pairB_props <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.phase_continuous_unitary : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E)
     (n : ℕ) (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (b : HermR (Af F) σ n),

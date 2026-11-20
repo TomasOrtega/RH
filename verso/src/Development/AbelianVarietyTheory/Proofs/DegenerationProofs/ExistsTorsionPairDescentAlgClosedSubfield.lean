@@ -11,6 +11,9 @@ open GlobalTheory
 
 namespace GlobalTheory.QkDescent
 
+/- English proof (translation)
+Introduce `hL R _ _ _ D hB F F' _ _ _ _ _ _ _ f hf k hk p'`. Establish `hk' : (k : F) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Take `⟨p, hp⟩` from `GlobalTheory.ArcExt.exists_qkExt f hf hB hL hk' p'`. Conclude with `⟨p, (GlobalTheory.TorusExt.qkExt_iff hB f hf p p').2 hp.symm⟩`.
+-/
 theorem exists_qkExt_of_isAlgClosed : Laws → ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (D : DegPre R), D.TauBimult → ∀ (F F' : Type) [Field F] [IsAlgClosed F] [CharZero F] [Field F'] [IsAlgClosed F'] [Algebra (FractionRing R) F] [Algebra (FractionRing R) F'] (f : F →+* F'), f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F' → ∀ k : ℕ, 1 ≤ k → ∀ p' : QkPt D F' k, ∃ p : QkPt D F k, QkExt f p p' := by
   intro hL R _ _ _ D hB F F' _ _ _ _ _ _ _ f hf k hk p'
   have hk' : (k : F) ≠ 0 := Nat.cast_ne_zero.2 (by omega)

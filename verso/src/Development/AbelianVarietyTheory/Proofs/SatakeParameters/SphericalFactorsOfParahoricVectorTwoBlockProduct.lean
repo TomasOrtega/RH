@@ -17,6 +17,9 @@ section Contract
 
 variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v w => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 lemma rid_lTensor_map (φ : W →ₗ[ℂ] ℂ) (A : V →ₗ[ℂ] V) (B : W →ₗ[ℂ] W) (y : V ⊗[ℂ] W) :
     TensorProduct.rid ℂ V (φ.lTensor V (TensorProduct.map A B y)) =
       A (TensorProduct.rid ℂ V ((φ ∘ₗ B).lTensor V y)) := by
@@ -25,6 +28,9 @@ lemma rid_lTensor_map (φ : W →ₗ[ℂ] ℂ) (A : V →ₗ[ℂ] V) (B : W →�
   | tmul v w => simp
   | add y z hy hz => simp only [map_add, hy, hz]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v w => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 lemma lid_rTensor_map (ψ : V →ₗ[ℂ] ℂ) (A : V →ₗ[ℂ] V) (B : W →ₗ[ℂ] W) (y : V ⊗[ℂ] W) :
     TensorProduct.lid ℂ W (ψ.rTensor W (TensorProduct.map A B y)) =
       B (TensorProduct.lid ℂ W ((ψ ∘ₗ A).rTensor W y)) := by
@@ -33,6 +39,13 @@ lemma lid_rTensor_map (ψ : V →ₗ[ℂ] ℂ) (A : V →ₗ[ℂ] V) (B : W →�
   | tmul v w => simp
   | add y z hy hz => simp only [map_add, hy, hz]
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℂ W`. Set `e` to `TensorProduct.equivFinsuppOfBasisRight (M := V) b`. Establish `he : e x ≠ 0`. Introduce `h; exact hx (e.injective (by rw [h, map_zero]))`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.mp he`.
+
+Use `⟨b.coord i, ?_⟩` and prove the remaining obligations. Establish `key : ∀ w : V ⊗[ℂ] W, TensorProduct.rid ℂ V ((b.coord i).lTensor V w) = e w i`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul v y => simp [e, TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz, Finsupp.add_apply]`. Rewrite using `[key]`. Simplify using `using hi`.
+-/
 lemma exists_rid_ne_zero {x : V ⊗[ℂ] W} (hx : x ≠ 0) :
     ∃ φ : W →ₗ[ℂ] ℂ, TensorProduct.rid ℂ V (φ.lTensor V x) ≠ 0 := by
   classical
@@ -50,6 +63,13 @@ lemma exists_rid_ne_zero {x : V ⊗[ℂ] W} (hx : x ≠ 0) :
     | add y z hy hz => simp only [map_add, hy, hz, Finsupp.add_apply]
   rw [key]; simpa using hi
 
+/- English proof (translation)
+Establish `hc : TensorProduct.comm ℂ V W x ≠ 0` using `fun h => hx ((TensorProduct.comm ℂ V W).injective (by rw [h, map_zero]))`. Take `⟨ψ, hψ⟩` from `exists_rid_ne_zero hc`. Use `⟨ψ, ?_⟩` and prove the remaining obligations. Establish `key : ∀ y : V ⊗[ℂ] W, TensorProduct.lid ℂ W (ψ.rTensor W y) = TensorProduct.rid ℂ W (ψ.lTensor W (TensorProduct.comm ℂ V W y))`. Introduce `y`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v w => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Rewrite using `[key]`.
+
+Conclude with `hψ`.
+-/
 lemma exists_lid_ne_zero {x : V ⊗[ℂ] W} (hx : x ≠ 0) :
     ∃ ψ : V →ₗ[ℂ] ℂ, TensorProduct.lid ℂ W (ψ.rTensor W x) ≠ 0 := by
   have hc : TensorProduct.comm ℂ V W x ≠ 0 := fun h =>
@@ -69,6 +89,9 @@ end Contract
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `hg`. Establish `h1 : ((GeneralLinearGroup.det (GeneralLinearGroup.map (algebraMap 𝒪[k] k) g) : kˣ) : k) = algebraMap 𝒪[k] k (GeneralLinearGroup.det g : 𝒪[k]ˣ)` using `((algebraMap 𝒪[k] k).map_det _).symm`. Rewrite using `[h1]`. Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit (Units.isUnit _)`.
+-/
 theorem valuation_det_of_mem_KO {n : Type} [Fintype n] [DecidableEq n] {g : GL n k}
     (hg : g ∈ KO k n) : valuation k ((GeneralLinearGroup.det g : kˣ) : k) = 1 := by
   obtain ⟨g, rfl⟩ := hg
@@ -78,6 +101,13 @@ theorem valuation_det_of_mem_KO {n : Type} [Fintype n] [DecidableEq n] {g : GL n
   rw [h1]
   exact (Valuation.integer.integers (valuation k)).one_of_isUnit (Units.isUnit _)
 
+/- English proof (translation)
+Take `⟨g₁, rfl⟩` from `h₁`. Take `⟨g₂, rfl⟩` from `h₂`. Use `⟨emb₂ 𝒪[k] (stdSum (rfl : r + t = r + t)) (g₁, g₂), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(stdSum (rfl : r + t = r + t)).surjective i`.
+
+Take `⟨j, rfl⟩` from `(stdSum (rfl : r + t = r + t)).surjective j`. Establish `hv` using `val_emb₂ 𝒪[k] (stdSum (rfl : r + t = r + t)) (g₁, g₂)`. Establish `hw` using `val_emb₂ k (stdSum (rfl : r + t = r + t)) (GeneralLinearGroup.map (algebraMap 𝒪[k] k) g₁, GeneralLinearGroup.map (algebraMap 𝒪[k] k) g₂)`. Use `show algebraMap 𝒪[k] k ((emb₂ 𝒪[k] (stdSum (rfl : r + t = r + t)) (g₁, g₂)).val _ _) = _`. Rewrite using `[hv, hw]`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [GeneralLinearGroup.map]`.
+-/
 theorem emb₂_mem_KO {r t : ℕ} {m₁ : GL (Fin r) k} {m₂ : GL (Fin t) k} (h₁ : m₁ ∈ KO k (Fin r))
     (h₂ : m₂ ∈ KO k (Fin t)) :
     emb₂ k (stdSum (rfl : r + t = r + t)) (m₁, m₂) ∈ KO k (Fin (r + t)) := by
@@ -93,6 +123,21 @@ theorem emb₂_mem_KO {r t : ℕ} {m₁ : GL (Fin r) k} {m₂ : GL (Fin t) k} (h
   rw [hv, hw]
   rcases i with i | i <;> rcases j with j | j <;> simp [GeneralLinearGroup.map]
 
+/- English proof (translation)
+Establish `hmem` using `emb₂_mem_KO h₁ h₂`. Establish `hv` using `val_emb₂ k (stdSum (rfl : r + t = r + t)) (m₁, m₂)`. Establish `hll : ∀ (i : Fin t) (j : Fin r), valuation k ((emb₂ k (stdSum (rfl : r + t = r + t)) (m₁, m₂)).val (Fin.natAdd r i) (Fin.castAdd t j)) < 1`. Introduce `i j`. Establish `h0 : (emb₂ k (stdSum (rfl : r + t = r + t)) (m₁, m₂)).val (Fin.natAdd r i) (Fin.castAdd t j) = 0`.
+
+Establish `hi : Fin.natAdd r i = (stdSum (rfl : r + t = r + t)) (Sum.inr i)` using `by ext; simp`. Establish `hj : Fin.castAdd t j = (stdSum (rfl : r + t = r + t)) (Sum.inl j)` using `by ext; simp`. Rewrite using `[hv, hi, hj]`. Simplify using the standard rewrite rules. Rewrite using `[h0, map_zero]`.
+
+Conclude with `zero_lt_one`. Establish `hdet : ((GeneralLinearGroup.det m₂ : kˣ) : k) = ((emb₂ k (stdSum (rfl : r + t = r + t)) (m₁, m₂)).val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det`. Establish `hs : (emb₂ k (stdSum (rfl : r + t = r + t)) (m₁, m₂)).val.submatrix (Fin.natAdd r) (Fin.natAdd r) = m₂.val`. Use extensionality with `i j`. Establish `hi : Fin.natAdd r i = (stdSum (rfl : r + t = r + t)) (Sum.inr i)` using `by ext; simp`.
+
+Establish `hj : Fin.natAdd r j = (stdSum (rfl : r + t = r + t)) (Sum.inr j)` using `by ext; simp`. Rewrite using `[submatrix_apply, hv, hi, hj]`. Simplify using the standard rewrite rules. Rewrite using `[hs]`. Both sides reduce to the same expression.
+
+Establish `H` using `congrArg (fun F => F.1.1 (1 : GL (Fin (r + t)) k)) (hf _ hmem hll _ hdet)`. Set `p : parab k (two (stdSum (rfl : r + t = r + t)))` to `⟨leviEmb k (two (stdSum (rfl : r + t = r + t))) (leviTwo k (Fin r) (Fin t) (m₁, m₂)), leviEmb_mem_parab k (two (stdSum (rfl : r + t = r + t))) _⟩`. Establish `H2` using `parInd_law (two (stdSum (rfl : r + t = r + t))) ((extTensor σ₁ σ₂).comp (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom) f p 1`. Establish `hδ : (deltaHalf k (Two (Fin r) (Fin t)) (leviTwo k (Fin r) (Fin t) (m₁, m₂)) : ℂ) = 1`. Rewrite using `[deltaHalf_two, isUnram_absPow k _ _ (valuation_det_of_mem_KO h₁), isUnram_absPow k _ _ (valuation_det_of_mem_KO h₂), mul_one, Units.val_one]`.
+
+Rewrite `H2` using `[leviProj_leviEmb, hδ, one_smul]`. Establish `E1 : f.1.1 ((p : GL (Fin (r + t)) k) * 1) = f.1.1 (1 * emb₂ k (stdSum (rfl : r + t = r + t)) (m₁, m₂))`. Rewrite using `[mul_one, one_mul]`. Both sides reduce to the same expression. Rewrite `H2` using `[E1]`.
+
+Express the relevant statement in the definitionally equal form `f.1.1 (1 * emb₂ k (stdSum (rfl : r + t = r + t)) (m₁, m₂)) = (χ _ : ℂ) • f.1.1 1 at H`. Rewrite `H2` using `[H]`. Rewrite using `[H2]`. Simplify using the standard rewrite rules.
+-/
 theorem extTensor_apply_eq {r t : ℕ} {χ : kˣ →* ℂˣ} {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] {σ₁ : Representation ℂ (GL (Fin r) k) V}
     {σ₂ : Representation ℂ (GL (Fin t) k) W} {f : _} (hf : IsParahoricVec χ (prod₂ σ₁ σ₂) f)
@@ -137,6 +182,17 @@ theorem extTensor_apply_eq {r t : ℕ} {χ : kˣ →* ℂˣ} {V W : Type} [AddCo
   rw [H2]
   simp
 
+/- English proof (translation)
+Introduce `k _ _ _ _ r t χ V _ _ W _ _ σ₁ σ₂ f hf h0`. Prove the components needed by the constructor for the conclusion. Take `⟨φ, hφ⟩` from `exists_rid_ne_zero h0`. Use `(Submodule.ne_bot_iff _).2 ⟨_, ?_, hφ⟩` and prove the remaining obligations. Introduce and unpack `⟨m, hm⟩`.
+
+Establish `H` using `extTensor_apply_eq hf hm (one_mem (KO k (Fin t)))`. Express the relevant statement in the definitionally equal form `TensorProduct.map (σ₁ m) (σ₂ 1) (f.1.1 1) = _ at H`. Use `show σ₁ m _ = ((1 : KO k (Fin r) →* ℂˣ) ⟨m, hm⟩ : ℂ) • _`. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`. Establish `H'` using `congrArg (fun y => TensorProduct.rid ℂ V (φ.lTensor V y)) H`.
+
+Rewrite `H'` using `[rid_lTensor_map]`. Simplify `H'` using `[Module.End.one_eq_id]`. Take `⟨ψ, hψ⟩` from `exists_lid_ne_zero h0`. Use `(Submodule.ne_bot_iff _).2 ⟨_, ?_, hψ⟩` and prove the remaining obligations. Introduce and unpack `⟨m, hm⟩`.
+
+Establish `H` using `extTensor_apply_eq hf (one_mem (KO k (Fin r))) hm`. Express the relevant statement in the definitionally equal form `TensorProduct.map (σ₁ 1) (σ₂ m) (f.1.1 1) = _ at H`. Use `show twist σ₂ (detChar (Fin t) χ⁻¹) m _ = ((1 : KO k (Fin t) →* ℂˣ) ⟨m, hm⟩ : ℂ) • _`. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul, twist_apply]`. Establish `H'` using `congrArg (fun y => TensorProduct.lid ℂ W (ψ.rTensor W y)) H`.
+
+Rewrite `H'` using `[lid_rTensor_map]`. Simplify using `[Module.End.one_eq_id] at H'`. Rewrite using `[H', smul_smul, ← Units.val_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem isSpherical_of_isParahoricVec : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (r t : ℕ) (χ : kˣ →* ℂˣ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (W : Type) [AddCommGroup W] [Module ℂ W] (σ₁ : Representation ℂ (GL (Fin r) k) V)

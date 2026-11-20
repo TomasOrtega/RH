@@ -11,6 +11,29 @@ open scoped LaurentSeries
 
 namespace GlobalTheory.CuspFrom
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ O _ β Y a χ W _ e th y hF hχ hβ hB hA hab`. Establish `hι : algebraMap (PowerSeries ℂ) ℂ⸨X⸩ = HahnSeries.ofPowerSeries ℤ ℂ` using `rfl`. Establish `hFr : algebraMap c.F ℂ⸨X⸩ = ((HahnSeries.ofPowerSeries ℤ ℂ).comp (PowerSeries.C (R` using `ℂ))).comp σ := RingHom.ext hF`. Establish `hcond : χ ≫ Y.s = spMap ((PowerSeries.C (R` using `ℂ)).comp σ) ≫ spMap β := by`. Rewrite using `[hχ, OpenReg.spMap_comp, OpenReg.spMap_comp]`.
+
+Set `χ' : Sp (PowerSeries ℂ) ⟶ gen Y` to `pullback.lift χ (spMap ((PowerSeries.C (R := ℂ)).comp σ)) hcond`. Establish `hχ'1 : χ' ≫ genι Y = χ` using `pullback.lift_fst _ _ _`. Establish `hχ'2 : χ' ≫ genStr Y = spMap ((PowerSeries.C (R` using `ℂ)).comp σ) := pullback.lift_snd _ _ _`. Take `⟨v, hvL, hv⟩` from `hB`. Take `⟨z, t', m1, m2, φ, hz, hzx, hφ, h0, hm, hu, -⟩` from `hA`.
+
+Establish `hG : Out.GlobalFnsSt` using `known_holds.laws.globalFns`. Establish `hzF : z = GlobalTheory.AllWt.ptF y`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[hzx, Descent.ptF_fst]`. Rewrite using `[Descent.ptF_snd]`.
+
+Apply `hβ.right_cancellation` to reduce the goal to its premises. Establish `e1 : z ≫ pullback.snd _ _ = z ≫ Y.jQ ≫ pullback.snd _ _` using `by rw [Y.jQ_over]`. Rewrite using `[e1, Category.assoc, Category.assoc, ← pullback.condition, ← Category.assoc z, ← Category.assoc (z ≫ Y.jQ)]`. Express the relevant statement in the definitionally equal form `(z ≫ Y.j) ≫ Y.s = _`. Rewrite using `[hz, Category.assoc, hχ, OpenReg.spMap_comp, OpenReg.spMap_comp, OpenReg.spMap_comp, hFr]`.
+
+Establish `hw : ∀ τ k, (v τ k).left ≫ W.t.G.hom = spMap (algebraMap (PowerSeries ℂ) (DualNumber (PowerSeries ℂ))) ≫ 𝟙 _` using `fun τ k => (Over.w (v τ k)).trans (Category.comp_id _).symm`. Set `g : EigFrame Y ((PowerSeries.C (R` to `ℂ)).comp σ) (χ' ≫ genι Y) := { v := fun τ k => (v τ k).left ≫ W.m.φ tan := fun τ k => by`. Rewrite using `[hχ'1]`. Conclude with `(OpenReg.tan_iff W.m (Category.id_comp χ) (hw τ k)).2 ((DepthExt.tan_iff W.t (v τ k)).1 ((hv τ).1 k).1)`. Use `eig := fun τ k x => by`.
+
+Conclude with `(OpenReg.eig_iff W.m (hw τ k) x _).2 (((hv τ).1 k).2 x)`. Use `basis := fun τ w htan heig => by`. Rewrite `htan`, the goal using `[hχ'1]`. Take `⟨w0, hw01, hw02⟩` from `OpenReg.exists_lift W.m (spMap (algebraMap (PowerSeries ℂ) (DualNumber (PowerSeries ℂ)))) w (by rw [htan.1])`. Substitute `hw02` using the available equality.
+
+Establish `hw0 : w0 ≫ W.t.G.hom = spMap (algebraMap (PowerSeries ℂ) (DualNumber (PowerSeries ℂ))) ≫ 𝟙 _` using `hw01.trans (Category.comp_id _).symm`. Set `W0 : epsR (PowerSeries ℂ) ⟶ W.t.G` to `Over.homMk w0 hw01`. Establish `t0 : IsTangent W0` using `(DepthExt.tan_iff W.t W0).2 ((OpenReg.tan_iff W.m (Category.id_comp χ) hw0).1 htan)`. Establish `e0 : ∀ x : 𝓞 E, (W0 ≫ W.t.act.act x).left = spMap (epsScaleR (PowerSeries.C (R` using `ℂ) ((σ.comp (embK c τ)) x))) ≫ W0.left := fun x => (OpenReg.eig_iff W.m hw0 x _).1 (heig x)`. Take `⟨cf, hcf, hu1⟩` from `(hv τ).2 W0 t0 e0`.
+
+Use `⟨cf, ?_, fun cf' hcf' => hu1 cf' ?_⟩` and prove the remaining obligations. Conclude with `(OpenReg.comb_iff W.m (Category.id_comp χ) (hw τ) cf hw0).2 ((DepthExt.comb_iff W.t (v τ) cf W0).1 hcf)`. Conclude with `(DepthExt.comb_iff W.t (v τ) cf' W0).2 ((OpenReg.comb_iff W.m (Category.id_comp χ) (hw τ) cf' hw0).1 hcf') }`. Use `⟨χ', g, hχ'2, ?_, fun τ k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hzF]`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hχ'1]`. Conclude with `hz`. Rewrite using `[Category.assoc, Category.assoc, hχ'2, Y.jQ_over, hzF, Descent.ptF_snd, OpenReg.spMap_comp, hFr]`. Take `⟨v1, u', hL, h1, h2, h3⟩` from `hu τ k`.
+
+Take `rfl : v1 = v τ k` from `(ConstLie.main hG E H Dw l Xo c O β Y ℂ (σ.comp β) a χ W (e τ k)).1.unique hL (hvL τ k)`. Use `⟨u' ≫ φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hφ, ← Category.assoc, h3, hzF]`. Rewrite using `[Category.assoc, h0, h1]`. Rewrite using `[Category.assoc, hm, ← Category.assoc, h2, Category.assoc]`.
+
+Rewrite using `[mem_genBd_iff]`. Rewrite `hab` using `[← hχ'1]`. Conclude with `hab`.
+-/
 theorem arc_bdExt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (a : ArcIn Dw l β ℂ (σ.comp β)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : Wit Y a χ) [Algebra c.F ℂ⸨X⸩] (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR ℂ)) (th : a.D₀.P.L.Sec) (y : FrPt Xo c ℂ⸨X⸩), (∀ x : c.F, algebraMap c.F ℂ⸨X⸩ x = HahnSeries.ofPowerSeries ℤ ℂ (PowerSeries.C (R := ℂ) (σ x))) → χ ≫ Y.s = spMap (PowerSeries.C (R := ℂ)) ≫ spMap (σ.comp β) → Mono (spMap β) → ArcBasis W (fun τ => σ.comp (embK c τ)) e → IsArcFr W e th (HahnSeries.ofPowerSeries ℤ ℂ) y → χ (IsLocalRing.closedPoint (PowerSeries ℂ)) ∉ abLocus Y.t.G → BdExt Y ((PowerSeries.C (R := ℂ)).comp σ) y := by
   intro E _ _ _ H Dw l Xo c σ O _ β Y a χ W _ e th y hF hχ hβ hB hA hab
   have hι : algebraMap (PowerSeries ℂ) ℂ⸨X⸩ = HahnSeries.ofPowerSeries ℤ ℂ := rfl

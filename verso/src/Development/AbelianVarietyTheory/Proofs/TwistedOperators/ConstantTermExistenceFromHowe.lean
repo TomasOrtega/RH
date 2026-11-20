@@ -24,6 +24,27 @@ noncomputable section
 
 namespace GlobalTheory.RowEx
 
+/- English proof (translation)
+Introduce `hw hm h1 h2 h3 h4 h5`. Take `⟨C1, H1⟩` from `GlobalTheory.T.matched_theta_integral_value h1 h2 h3 h4 h5`. Take `⟨C2, H2⟩` from `GlobalTheory.T.polynomial_route_submodule hw h1 h2 hm h3 h4 h5`. Use `⟨max C1 C2, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x1, K1⟩` from `H1 ε CF (le_trans (le_max_left _ _) hCF)`.
+
+Take `⟨x2, K2⟩` from `H2 ε CF (le_trans (le_max_right _ _) hCF)`. Use `⟨max x1 x2, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS => ?_⟩` and prove the remaining obligations. Establish `k1` using `K1 D large₂ he (le_trans (le_max_left _ _) hx) Γ Pl0 T A Ks R F hS`. Establish `k2` using `K2 D large₂ he (le_trans (le_max_right _ _) hx) Γ Pl0 T A Ks R F hS`. Introduce `G W hW B`.
+
+Take `⟨rm, hrm⟩` from `GlobalTheory.RowTest.exists_match_over hS.core.lev hS.core.chain hW`. Use `choose r hr1 hr2 hr3 hr4 using k2 G W hW B rm hrm`. Set `rel' : ∀ i j : ℕ, Submodule ℂ (PolRoute G (.grid i (j + 1)) (.grid (i + 1) (j + 1)) (.grid (i + 1) j) × PolRoute G (.grid i (j + 1)) (.grid i j) (.grid (i + 1) j))` to `fun i j => if h : i < D.R.m ∧ j < D.R.m then r ⟨i, h.1⟩ ⟨j, h.2⟩ else rm.rel i j`. Establish `e : ∀ i j : Fin D.R.m, rel' i j = r i j` using `fun i j => dif_pos ⟨i.2, j.2⟩`. Set `ρ : RealMatch W` to `{ rm with rel := rel' onto_big := fun i j a => by`.
+
+Distinguish the cases in `h : i < D.R.m ∧ j < D.R.m`. Simplify using `only [rel', dif_pos h]`. Conclude with `hr1 ⟨i, h.1⟩ ⟨j, h.2⟩ a`. Simplify using `only [rel', dif_neg h]`. Conclude with `rm.onto_big i j a`.
+
+Use `onto_small := fun i j b => by`. Distinguish the cases in `h : i < D.R.m ∧ j < D.R.m`. Simplify using `only [rel', dif_pos h]`. Conclude with `hr2 ⟨i, h.1⟩ ⟨j, h.2⟩ b`. Simplify using `only [rel', dif_neg h]`.
+
+Conclude with `rm.onto_small i j b`. Use `proper := fun i j => by`. Distinguish the cases in `h : i < D.R.m ∧ j < D.R.m`. Simplify using `only [rel', dif_pos h]`. Conclude with `hr3 ⟨i, h.1⟩ ⟨j, h.2⟩`.
+
+Simplify using `only [rel', dif_neg h]`. Conclude with `rm.proper i j }`. Establish `hρ : ρ.Over R` using `hrm`. Establish `hc : ∀ i j t, ∃ c, IsSquareConst W B ρ t i j c`. Introduce `i j t`.
+
+Take `⟨c, hc⟩` from `hr4 i j ρ rfl rfl (e i j) t`. Use `⟨c, fun M hM Θ Θ' hΘ z g g₁ hz => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `k1 G W hW B ρ hρ t i j M hM Θ Θ' hΘ g g₁`. Take `⟨z₀, hz₀, hconv₀, hid⟩` from `hc M hM Θ Θ' hΘ g g₁`. Rewrite `hid` using `[hJ z₀ hconv₀.2]`.
+
+Establish `hI : ∫ u in M.fd _, kerBig W Θ g g₁ u ∂M.ν _ = c * J`. Apply `mul_left_cancel₀ hz₀` to reduce the goal to its premises. Rewrite using `[hid]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hJ z hz.2, hI]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `choose c hc using hc`. Conclude with `⟨ρ, fun i j t => c i j t, hρ, fun i j t => hc i j t⟩`.
+-/
 theorem constEx_of : GlobalTheory.Published.HoweDualityReal → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → ConstEx := by
   intro hw hm h1 h2 h3 h4 h5
   obtain ⟨C1, H1⟩ := GlobalTheory.T.matched_theta_integral_value h1 h2 h3 h4 h5

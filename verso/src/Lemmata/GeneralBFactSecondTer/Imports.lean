@@ -2,6 +2,17 @@ import Mathlib
 
 namespace Bl.general_b_fact_second_ter
 
+/- English proof (translation)
+Introduce `n Q _ hQ p`. Prove the components needed by the constructor for the conclusion. Introduce `hp`. Establish `h : Finset.Iic p ⊆ Finset.filter Q Finset.univ`. Introduce `q hq`.
+
+Rewrite `hq` using `[Finset.mem_Iic]`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `hQ p q hq hp`. Establish `hc` using `Finset.card_le_card h`. Rewrite `hc` using `[Fin.card_Iic]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `hlt`. Assume the negation of the conclusion as `hp`. Establish `h : Finset.filter Q Finset.univ ⊆ Finset.Iio p`. Introduce `q hq`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hq`. Rewrite using `[Finset.mem_Iio]`. Assume the negation of the conclusion as `hqp`. Conclude with `hp (hQ q p (not_lt.mp hqp) hq)`. Establish `hc` using `Finset.card_le_card h`.
+
+Rewrite `hc` using `[Fin.card_Iio]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem goal1 :
   ∀ {n : Nat} (Q : Fin n → Prop) [inst : DecidablePred.{1} Q],
   (∀ (q q' : Fin n), LE.le.{0} q' q → Q q → Q q') →

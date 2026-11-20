@@ -16,6 +16,17 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SiegZar
 open GlobalTheory.SiegPBDescent
 
+/- English proof (translation)
+Introduce `h n B B' B₁ B₂ _ _ _ _ b ζ' ζ₁ ζ₂ T T₁ T₂ sc su s₁ s₂ c u c₁ c₂ p₁ p₂ φ₁ ψ₁ φ₂ ψ₂ hn ho hu m₁ k₁ m₂ k₂ Z g₁ g₂ e`. Take `⟨-, hφ₁, -⟩` from `(sRelBy_one_iff _ _ _ _).1 m₁`. Take `⟨-, hφ₂, -⟩` from `(sRelBy_one_iff _ _ _ _).1 m₂`. Establish `hz : (g₁ ≫ c₁.A.hom) ≫ p₁ = (g₂ ≫ c₂.A.hom) ≫ p₂`. Rewrite using `[Category.assoc, Category.assoc, ← hφ₁.1.w, ← hφ₂.1.w, reassoc_of% e]`.
+
+Take `⟨⟨o, ho'⟩, -⟩` from `GlobalTheory.siegPre_pullback h n B₁ ζ₁ T₁ Z s₁ ((g₁ ≫ c₁.A.hom) ≫ s₁) (g₁ ≫ c₁.A.hom) c₁ rfl`. Take `⟨κ, hκ⟩` from `exists_of_siegPB ho'`. Establish `a₁` using `comp_by m₁ hκ`. Rewrite `a₁` using `[hz]`. Take `⟨κ', hκ', hκ'b⟩` from `cancel_by m₂ a₁`.
+
+Establish `n₁` using `comp_by k₁ hκ`. Establish `n₂` using `comp_by k₂ hκ'b`. Rewrite `n₂` using `[← hz]`. Establish `r` using `GlobalTheory.SiegRigid.eq_of_sRelBy h n n 1 B B₁ b ζ₁ T Z su _ u o _ _ _ hn ho hu n₁ n₂`. Take `⟨-, hκg, -⟩` from `(sRelBy_one_iff _ _ _ _).1 hκ`.
+
+Take `⟨-, hκ'g, -⟩` from `(sRelBy_one_iff _ _ _ _).1 hκ'b`. Establish `hl : g₁ ≫ c₁.A.hom = 𝟙 Z ≫ g₁ ≫ c₁.A.hom` using `(Category.id_comp _).symm`. Establish `h₁ : hκg.1.lift g₁ (𝟙 Z) hl ≫ κ = g₁` using `hκg.1.lift_fst _ _ _`. Establish `h₀ : hκg.1.lift g₁ (𝟙 Z) hl ≫ o.A.hom = 𝟙 Z` using `hκg.1.lift_snd _ _ _`. Establish `h₂ : hκg.1.lift g₁ (𝟙 Z) hl ≫ κ' = g₂`.
+
+Apply `hφ₂.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hκ', ← Category.assoc, h₁, e]`. Rewrite using `[Category.assoc, hκ'g.1.w, ← Category.assoc, h₀, Category.id_comp]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem comp_eq_of_pair : ∀ (h n : ℕ) (B B' B₁ B₂ : Type) [CommRing B] [CommRing B'] [CommRing B₁] [CommRing B₂] (b : TBase B n) (ζ' : B') (ζ₁ : B₁) (ζ₂ : B₂) (T T₁ T₂ : Scheme.{0}) (sc : T ⟶ Sp B') (su : T ⟶ Sp B) (s₁ : T₁ ⟶ Sp B₁) (s₂ : T₂ ⟶ Sp B₂) (c : SiegPre h n ζ' sc) (u : SiegPre h n (b.ζ : B) su) (c₁ : SiegPre h n ζ₁ s₁) (c₂ : SiegPre h n ζ₂ s₂) (p₁ : T₁ ⟶ T) (p₂ : T₂ ⟶ T) (φ₁ : c₁.A.left ⟶ c.A.left) (ψ₁ : c₁.A.left ⟶ u.A.left) (φ₂ : c₂.A.left ⟶ c.A.left) (ψ₂ : c₂.A.left ⟶ u.A.left), 3 ≤ n → Odd n → u.Principal → SRelBy c₁ c 1 1 p₁ φ₁ → SRelBy c₁ u 1 1 p₁ ψ₁ → SRelBy c₂ c 1 1 p₂ φ₂ → SRelBy c₂ u 1 1 p₂ ψ₂ → ∀ (Z : Scheme.{0}) (g₁ : Z ⟶ c₁.A.left) (g₂ : Z ⟶ c₂.A.left), g₁ ≫ φ₁ = g₂ ≫ φ₂ → g₁ ≫ ψ₁ = g₂ ≫ ψ₂ := by
   intro h n B B' B₁ B₂ _ _ _ _ b ζ' ζ₁ ζ₂ T T₁ T₂ sc su s₁ s₂ c u c₁ c₂ p₁ p₂ φ₁ ψ₁ φ₂ ψ₂ hn ho hu m₁ k₁ m₂ k₂ Z g₁ g₂ e
   obtain ⟨-, hφ₁, -⟩ := (sRelBy_one_iff _ _ _ _).1 m₁
@@ -49,11 +60,31 @@ end GlobalTheory.SiegZar
 namespace GlobalTheory.SiegZar
 open GlobalTheory.SiegPBDescent
 
+/- English proof (translation)
+The claim follows from `((sRelBy_one_iff _ _ _ _).1 m).choose_spec.1.1`.
+-/
 theorem isPullback_of_sRelBy {h n : ℕ} {B B' : Type} [CommRing B] [CommRing B'] {ζ : B} {ζ' : B'} {S S' : Scheme.{0}}
     {s : S ⟶ Sp B} {s' : S' ⟶ Sp B'} {c' : SiegPre h n ζ' s'} {c : SiegPre h n ζ s} {f : S' ⟶ S}
     {φ : c'.A.left ⟶ c.A.left} (m : SRelBy c' c 1 1 f φ) : IsPullback φ c'.A.hom c.A.hom f :=
   ((sRelBy_one_iff _ _ _ _).1 m).choose_spec.1.1
 
+/- English proof (translation)
+Introduce `g n B B' _ _ b ζ' S sc su c u hn ho hu hloc`. Use `choose V j cV hj hx m k using hloc`. Use `choose φV hm using fun x => exists_of_siegPB (m x)`. Use `choose ψV hk using fun x => exists_of_siegPB (k x)`. Establish `pφ : ∀ x, IsPullback (φV x) (cV x).A.hom c.A.hom (j x)` using `fun x => isPullback_of_sRelBy (hm x)`.
+
+Establish `pψ : ∀ x, IsPullback (ψV x) (cV x).A.hom u.A.hom (j x)` using `fun x => isPullback_of_sRelBy (hk x)`. Establish `oφ : ∀ x, IsOpenImmersion (φV x)` using `fun x => MorphismProperty.of_isPullback (pφ x).flip (hj x)`. Establish `oψ : ∀ x, IsOpenImmersion (ψV x)` using `fun x => MorphismProperty.of_isPullback (pψ x).flip (hj x)`. Set `𝒰 : c.A.left.OpenCover` to `Scheme.Cover.mkOfCovers S (fun x => (cV x).A.left) φV (fun a => ⟨c.A.hom a, (GlobalTheory.GrpLoc.range_of_isPullback (pφ (c.A.hom a)) a).2 (hx _)⟩) oφ`. Set `𝒰' : u.A.left.OpenCover` to `Scheme.Cover.mkOfCovers S (fun x => (cV x).A.left) ψV (fun a => ⟨u.A.hom a, (GlobalTheory.GrpLoc.range_of_isPullback (pψ (u.A.hom a)) a).2 (hx _)⟩) oψ`.
+
+Establish `pair` using `fun x y => comp_eq_of_pair g n B B' B' B' b ζ' ζ' ζ' S (V x) (V y) sc su (j x ≫ sc) (j y ≫ sc) c u (cV x) (cV y) (j x) (j y) (φV x) (ψV x) (φV y) (ψV y) hn ho hu (hm x) (hk x) (hm y) (hk y)`. Establish `compat : ∀ x y, pullback.fst (𝒰.f x) (𝒰.f y) ≫ ψV x = pullback.snd (𝒰.f x) (𝒰.f y) ≫ ψV y` using `fun x y => pair x y _ _ _ pullback.condition`. Set `φ` to `𝒰.glueMorphisms ψV compat`. Establish `hφ : ∀ x, φV x ≫ φ = ψV x` using `fun x => 𝒰.ι_glueMorphisms ψV compat x`. Establish `hw : φ ≫ u.A.hom = c.A.hom`.
+
+Use `𝒰.hom_ext _ _ fun x => ?_` and prove the remaining obligations. Use `show φV x ≫ φ ≫ u.A.hom = φV x ≫ c.A.hom`. Rewrite using `[reassoc_of% (hφ x), (pψ x).w, (pφ x).w]`. Establish `key : ∀ x y (Z : Scheme.{0}) (g₁ : Z ⟶ (cV x).A.left) (g₂ : Z ⟶ (cV y).A.left), g₁ ≫ ψV x = g₂ ≫ ψV y → g₁ ≫ φV x = g₂ ≫ φV y`. Introduce `x y Z g₁ g₂ e`.
+
+Establish `e₁ : (g₁ ≫ φV x) ≫ c.A.hom = (g₂ ≫ (cV y).A.hom) ≫ j y`. Combine the equalities or inequalities in the displayed calculation. Set `t` to `(pφ y).lift (g₁ ≫ φV x) (g₂ ≫ (cV y).A.hom) e₁`. Establish `t₁ : t ≫ φV y = g₁ ≫ φV x` using `(pφ y).lift_fst _ _ _`. Establish `t₂ : t ≫ (cV y).A.hom = g₂ ≫ (cV y).A.hom` using `(pφ y).lift_snd _ _ _`.
+
+Establish `t₃ : t ≫ ψV y = g₁ ≫ ψV x` using `pair y x _ t g₁ t₁`. Establish `tg : t = g₂` using `(pψ y).hom_ext (t₃.trans e) t₂`. Rewrite using `[← t₁, tg]`. Establish `compat' : ∀ x y, pullback.fst (𝒰'.f x) (𝒰'.f y) ≫ φV x = pullback.snd (𝒰'.f x) (𝒰'.f y) ≫ φV y` using `fun x y => key x y _ _ _ pullback.condition`. Set `ψ` to `𝒰'.glueMorphisms φV compat'`.
+
+Establish `hψ : ∀ x, ψV x ≫ ψ = φV x` using `fun x => 𝒰'.ι_glueMorphisms φV compat' x`. Establish `i₁ : φ ≫ ψ = 𝟙 _` using `𝒰.hom_ext _ _ fun x => by show φV x ≫ φ ≫ ψ = φV x ≫ 𝟙 _`. Rewrite using `[reassoc_of% (hφ x), hψ x, Category.comp_id]`. Establish `i₂ : ψ ≫ φ = 𝟙 _` using `𝒰'.hom_ext _ _ fun x => by show ψV x ≫ ψ ≫ φ = ψV x ≫ 𝟙 _`. Rewrite using `[reassoc_of% (hψ x), hφ x, Category.comp_id]`.
+
+Conclude with `⟨φ, ⟨ψ, i₁, i₂⟩, hw, fun x => ⟨V x, j x, cV x, φV x, hj x, hx x, hm x, by rw [hφ x]; exact hk x⟩⟩`.
+-/
 theorem iso_of_local : ∀ (g n : ℕ) (B B' : Type) [CommRing B] [CommRing B'] (b : TBase B n) (ζ' : B') (S : Scheme.{0}) (sc : S ⟶ Sp B') (su : S ⟶ Sp B) (c : SiegPre g n ζ' sc) (u : SiegPre g n (b.ζ : B) su), 3 ≤ n → Odd n → u.Principal → (∀ x : S, ∃ (V : Scheme.{0}) (j : V ⟶ S) (cV : SiegPre g n ζ' (j ≫ sc)), IsOpenImmersion j ∧ x ∈ Set.range j ∧ SiegPB cV c j ∧ SiegPB cV u j) → ∃ φ : c.A.left ⟶ u.A.left, IsIso φ ∧ φ ≫ u.A.hom = c.A.hom ∧ ∀ x : S, ∃ (V : Scheme.{0}) (j : V ⟶ S) (cV : SiegPre g n ζ' (j ≫ sc)) (φV : cV.A.left ⟶ c.A.left), IsOpenImmersion j ∧ x ∈ Set.range j ∧ SRelBy cV c 1 1 j φV ∧ SRelBy cV u 1 1 j (φV ≫ φ) := by
   intro g n B B' _ _ b ζ' S sc su c u hn ho hu hloc
   choose V j cV hj hx m k using hloc
@@ -108,6 +139,17 @@ end GlobalTheory.SiegZar
 namespace GlobalTheory.SiegZar
 open GlobalTheory.SiegPBDescent
 
+/- English proof (translation)
+Introduce `g n B B' _ _ ζ ζ' S sc su c u φ hi hw hloc`. Establish `gp : IsGrpPullback c.A u.A (𝟙 S) φ` using `GlobalTheory.GrpLoc.isGrpPullback_local_on_base S c.A u.A φ hi hw fun p => by`. Take `⟨V, j, cV, φV, hj, hx, m, k⟩` from `hloc p`. Conclude with `⟨V, j, cV.A, inferInstance, φV, hj, hx, ((sRelBy_one_iff _ _ _ _).1 m).choose_spec.1, ((sRelBy_one_iff _ _ _ _).1 k).choose_spec.1⟩`. Take `⟨φ₂, sq⟩` from `GlobalTheory.SiegDesc.exists_isSquare gp.1.w`.
+
+Establish `lev : ∀ a, (c.lev a).left ≫ φ = 𝟙 S ≫ (u.lev a).left` using `fun a => by`. Use `GlobalTheory.GrpLoc.hom_ext_loc fun p => ?_` and prove the remaining obligations. Take `⟨V, j, cV, φV, hj, hx, m, k⟩` from `hloc p`. Take `⟨-, -, -, -, lm⟩` from `(sRelBy_one_iff _ _ _ _).1 m`. Take `⟨-, -, -, -, lk⟩` from `(sRelBy_one_iff _ _ _ _).1 k`.
+
+Use `⟨V, j, hj, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.id_comp, ← reassoc_of% (lm a), ← lk a]`. Establish `gp₂ : IsGrpPullback (G2 c.A) (G2 u.A) (𝟙 S) φ₂` using `GlobalTheory.ShearLift.isGrpPullback_tensor gp gp sq.1 sq.2`. Establish `rL : Out.Rigidified (G2 c.A) c.P` using `(CechPic.cls_eq_zero_iff (pull_isLB c.isLB _)).1 (by rw [CechPic.cls_pull c.isLB]; exact cls_eSec c)`. Establish `rL' : Out.Rigidified (G2 u.A) u.P` using `(CechPic.cls_eq_zero_iff (pull_isLB u.isLB _)).1 (by rw [CechPic.cls_pull u.isLB]; exact cls_eSec u)`.
+
+Establish `hiso : LBIso c.P (u.P.pull φ₂)` using `GlobalTheory.RigidLocal.lbIso_of_local GlobalTheory.abelianSchemeLaws_all.1.globalFns S (G2 c.A) (G2 u.A) c.P u.P φ₂ (AbelianSchemeGerms.isAbelianScheme_tensor _ _ c.ab c.ab) c.isLB u.isLB rL rL' gp₂ fun p => by`. Take `⟨V, j, cV, φV, hj, hx, m, k⟩` from `hloc p`. Take `⟨φV₂, gm, sm, im, -⟩` from `(sRelBy_one_iff _ _ _ _).1 m`. Take `⟨ψV₂, -, sk, ik, -⟩` from `(sRelBy_one_iff _ _ _ _).1 k`. Establish `e₂ : φV₂ ≫ φ₂ = ψV₂` using `GlobalTheory.SiegDesc.isSquare_comp rfl sm sq sk`.
+
+Use `⟨V, (G2 cV.A).left, j, (G2 cV.A).hom, φV₂, hj, hx, GlobalTheory.SiegDesc.isPullback_of_isSquare gm.1 sm, ?_⟩` and prove the remaining obligations. Rewrite using `[e₂]`. Conclude with `im.symm.trans (pull_isLB c.isLB _) cV.isLB (pull_isLB u.isLB _) ik`. Conclude with `⟨φ, φ₂, gp, sq, hiso, lev⟩`.
+-/
 theorem siegPB_id_of_local : ∀ (g n : ℕ) (B B' : Type) [CommRing B] [CommRing B'] (ζ : B) (ζ' : B') (S : Scheme.{0}) (sc : S ⟶ Sp B') (su : S ⟶ Sp B) (c : SiegPre g n ζ' sc) (u : SiegPre g n ζ su) (φ : c.A.left ⟶ u.A.left), IsIso φ → φ ≫ u.A.hom = c.A.hom → (∀ x : S, ∃ (V : Scheme.{0}) (j : V ⟶ S) (cV : SiegPre g n ζ' (j ≫ sc)) (φV : cV.A.left ⟶ c.A.left), IsOpenImmersion j ∧ x ∈ Set.range j ∧ SRelBy cV c 1 1 j φV ∧ SRelBy cV u 1 1 j (φV ≫ φ)) → SiegPB c u (𝟙 S) := by
   intro g n B B' _ _ ζ ζ' S sc su c u φ hi hw hloc
   have gp : IsGrpPullback c.A u.A (𝟙 S) φ := GlobalTheory.GrpLoc.isGrpPullback_local_on_base S c.A u.A φ hi hw fun p => by
@@ -144,6 +186,15 @@ end GlobalTheory.SiegZar
 namespace GlobalTheory.SiegZar
 open GlobalTheory.SiegelPullComp
 
+/- English proof (translation)
+Introduce `g n hg hn ho F S s' c hloc`. Use `choose V j cV hj hx m f hfs hpb using hloc`. Set `𝒰 : S.OpenCover` to `Scheme.Cover.mkOfCovers S V j (fun x => ⟨x, hx x⟩) hj`. Establish `key : ∀ x y, pullback.fst (j x) (j y) ≫ f x = pullback.snd (j x) (j y) ≫ f y`. Introduce `x y`.
+
+Take `⟨⟨cP, hcP⟩, -⟩` from `GlobalTheory.siegPre_pullback g n (cycAway n) (zetaAway n) S (pullback (j x) (j y)) s' (pullback.fst (j x) (j y) ≫ j x ≫ s') (pullback.fst (j x) (j y) ≫ j x) c (Category.assoc _ _ _)`. Establish `hcP' : SiegPB cP c (pullback.snd (j x) (j y) ≫ j y)` using `by rw [← pullback.condition]; exact hcP`. Establish `h₁` using `pb_comp (hpb x) (pb_cancel (m x) hcP)`. Establish `h₂` using `pb_comp (hpb y) (pb_cancel (m y) hcP')`. Use `GlobalTheory.SiegUniq.eq_of_siegPB g n hg hn ho F _ _ cP _ _ ?_ ?_ h₁ h₂` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hfs x]`. Rewrite using `[Category.assoc, hfs y, pullback.condition_assoc]`. Set `φ` to `𝒰.glueMorphisms f key`. Establish `hφ : ∀ x, j x ≫ φ = f x` using `fun x => 𝒰.ι_glueMorphisms f key x`. Use `⟨φ, 𝒰.hom_ext _ _ fun x => ?_, fun x => ⟨V x, j x, cV x, hj x, hx x, m x, by rw [hφ x]; exact hpb x⟩⟩` and prove the remaining obligations.
+
+Use `show j x ≫ φ ≫ F.s = j x ≫ s'`. Rewrite using `[reassoc_of% (hφ x), hfs x]`.
+-/
 theorem glue_classifying : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ F : SFam g n (zetaAway n), ∀ (S : Scheme.{0}) (s' : S ⟶ Sp (cycAway n)) (c : SiegPre g n (zetaAway n) s'), (∀ x : S, ∃ (V : Scheme.{0}) (j : V ⟶ S) (cV : SiegPre g n (zetaAway n) (j ≫ s')), IsOpenImmersion j ∧ x ∈ Set.range j ∧ SiegPB cV c j ∧ ∃ f : V ⟶ F.X, f ≫ F.s = j ≫ s' ∧ SiegPB cV F.univ f) → ∃ f : S ⟶ F.X, f ≫ F.s = s' ∧ ∀ x : S, ∃ (V : Scheme.{0}) (j : V ⟶ S) (cV : SiegPre g n (zetaAway n) (j ≫ s')), IsOpenImmersion j ∧ x ∈ Set.range j ∧ SiegPB cV c j ∧ SiegPB cV F.univ (j ≫ f) := by
   intro g n hg hn ho F S s' c hloc
   choose V j cV hj hx m f hfs hpb using hloc
@@ -169,6 +220,13 @@ end GlobalTheory.SiegZar
 namespace GlobalTheory.SiegZar
 open GlobalTheory.SiegelPullComp
 
+/- English proof (translation)
+Introduce `g n hg hn ho F S s' c _ hloc`. Take `⟨f, hf, hl⟩` from `glue_classifying g n hg hn ho F S s' c hloc`. Establish `hn0 : n ≠ 0` using `by omega`. Take `⟨⟨u, hu⟩, hpr⟩` from `GlobalTheory.siegPre_pullback g n (cycAway n) (zetaAway n) F.X S F.s (f ≫ F.s) f F.univ rfl`. Establish `hup : u.Principal` using `hpr u hu F.princ`.
+
+Take `⟨φ, hi, hw, hφ⟩` from `iso_of_local g n (cycAway n) (cycAway n) (cycBase hn0) (zetaAway n) S s' (f ≫ F.s) c u hn ho hup fun x => by`. Take `⟨V, j, cV, hj, hx, h₁, h₂⟩` from `hl x`. Conclude with `⟨V, j, cV, hj, hx, h₁, pb_cancel hu h₂⟩`. Establish `e` using `pb_comp hu (siegPB_id_of_local g n (cycAway n) (cycAway n) _ (zetaAway n) S s' (f ≫ F.s) c u φ hi hw hφ)`. Rewrite `e` using `[Category.id_comp]`.
+
+Conclude with `⟨f, hf, e⟩`.
+-/
 theorem classified_of_local : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ F : SFam g n (zetaAway n), ∀ (S : Scheme.{0}) (s' : S ⟶ Sp (cycAway n)) (c : SiegPre g n (zetaAway n) s'), c.Principal → (∀ x : S, ∃ (V : Scheme.{0}) (j : V ⟶ S) (cV : SiegPre g n (zetaAway n) (j ≫ s')), IsOpenImmersion j ∧ x ∈ Set.range j ∧ SiegPB cV c j ∧ ∃ f : V ⟶ F.X, f ≫ F.s = j ≫ s' ∧ SiegPB cV F.univ f) → ∃ f : S ⟶ F.X, f ≫ F.s = s' ∧ SiegPB c F.univ f := by
   intro g n hg hn ho F S s' c _ hloc
   obtain ⟨f, hf, hl⟩ := glue_classifying g n hg hn ho F S s' c hloc

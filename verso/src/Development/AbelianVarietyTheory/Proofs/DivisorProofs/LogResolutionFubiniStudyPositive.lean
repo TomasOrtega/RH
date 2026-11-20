@@ -12,12 +12,18 @@ noncomputable section
 
 namespace GlobalTheory.ArchBound
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.hermitian_similitude_entry_sq_bound`.
+-/
 theorem entries_bound : ∀ {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ), P.IsHermitian →
     (∀ x : Fin n → ℂ, x ≠ 0 → 0 < (star x ⬝ᵥ P *ᵥ x).re) →
     ∃ K : ℝ, ∀ (Y : Matrix (Fin n) (Fin n) ℂ) (s : ℝ), 0 < s → Yᴴ * P * Y = (s : ℂ) • P →
       ∀ i j, ‖Y i j‖ ^ 2 ≤ K * s :=
   GlobalTheory.T.hermitian_similitude_entry_sq_bound
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_posDef_majorant_of_positiveIndex_one`.
+-/
 theorem majorant : ∀ {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHermitian), H.det ≠ 0 → sigPosH hH = 1 →
     ∀ z : Fin n → ℂ, 0 < (star z ⬝ᵥ H *ᵥ z).re →
     ∃ P : Matrix (Fin n) (Fin n) ℂ, P.IsHermitian ∧ (∀ x : Fin n → ℂ, x ≠ 0 → 0 < (star x ⬝ᵥ P *ᵥ x).re) ∧
@@ -27,6 +33,13 @@ theorem majorant : ∀ {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHerm
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Use `set u : G.Cˣ := (y : G.Cˣ × ℚˣ).1`. Use `set s : ℚ := (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)`. Establish `h : (u : G.C) * β * sh G u = algebraMap ℚ G.C s * β` using `y.2.1`. Establish `h1 : sh G u = algebraMap ℚ G.C s * (((β⁻¹ : G.Cˣ) : G.C) * ((u⁻¹ : G.Cˣ) : G.C) * β)`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Use `_ = _ := by`. Rewrite using `[h]`. Simplify using `only [← Algebra.smul_def, mul_smul_comm, mul_assoc]`. Rewrite using `[h1]`.
+
+Simplify using `only [← Algebra.smul_def, smul_mul_assoc, mul_assoc, Units.mul_inv_cancel_left]`. Rewrite using `[Units.inv_mul, mul_one]`.
+-/
 theorem sh_inv_mul (G : HTGroup p) (β : G.Cˣ) (y : grp G β) :
     sh G (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) * ((β⁻¹ : G.Cˣ) : G.C) * (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) =
       algebraMap ℚ G.C (((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) * ((β⁻¹ : G.Cˣ) : G.C) := by
@@ -42,6 +55,9 @@ theorem sh_inv_mul (G : HTGroup p) (β : G.Cˣ) (y : grp G β) :
   simp only [← Algebra.smul_def, smul_mul_assoc, mul_assoc, Units.mul_inv_cancel_left]
   rw [Units.inv_mul, mul_one]
 
+/- English proof (translation)
+Use `((G.psi w).toRatAlgHom).commutes q` as an intermediate fact. Simplify using `only [RingHom.toRatAlgHom_apply] at this`. Rewrite using `[this, Algebra.algebraMap_eq_smul_one]`. Use extensionality with `i j`. Simplify using `[Matrix.smul_apply, Rat.smul_def]`.
+-/
 theorem psi_algebraMap (G : HTGroup p) (w : InfinitePlace G.F) (q : ℚ) :
     G.psi w (algebraMap ℚ G.C q) = ((q : ℝ) : ℂ) • (1 : Matrix (Fin G.n) (Fin G.n) ℂ) := by
   have := ((G.psi w).toRatAlgHom).commutes q
@@ -50,6 +66,11 @@ theorem psi_algebraMap (G : HTGroup p) (w : InfinitePlace G.F) (q : ℚ) :
   ext i j
   simp [Matrix.smul_apply, Rat.smul_def]
 
+/- English proof (translation)
+Establish `h` using `congrArg (G.psi w) (sh_inv_mul G β y)`. Rewrite `h` using `[map_mul, map_mul, map_mul, psi_algebraMap]`. Establish `hs : G.psi w (sh G (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)) = (G.gram w)⁻¹ * (G.psi w (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C))ᴴ * G.gram w` using `G.psi_star w _`. Rewrite `h` using `[hs]`. Establish `hg : IsUnit (G.gram w).det` using `isUnit_iff_ne_zero.2 (G.gram_det w)`.
+
+Unfold `herm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hg, Matrix.one_mul]`. Use `_ = _ := by rw [h, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul]`.
+-/
 theorem herm_sim (G : HTGroup p) (β : G.Cˣ) (y : grp G β) (w : InfinitePlace G.F) :
     (G.psi w (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C))ᴴ * herm G w β * G.psi w (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) =
       (((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) : ℝ) : ℂ) • herm G w β := by
@@ -65,6 +86,17 @@ theorem herm_sim (G : HTGroup p) (β : G.Cˣ) (y : grp G β) (w : InfinitePlace 
         simp only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hg, Matrix.one_mul]
     _ = _ := by rw [h, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul]
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `hR`. Use `⟨Units.map (G.psiR v).toMonoidHom z, ?_⟩` and prove the remaining obligations. Use `set Zm : Matrix (Fin G.n) (Fin G.n) ℂ := G.psiR v (z : ℝ ⊗[ℚ] G.C) with hZm`. Express the relevant statement in the definitionally equal form `G.gram v * G.psi v ((β⁻¹ : G.Cˣ) : G.C) = Zmᴴ * G.gram v * Zm`. Establish `hb : G.psiR v (inC G ℝ (β : G.C)) = G.psi v (β : G.C)`.
+
+Express the relevant statement in the definitionally equal form `G.psiR v ((1 : ℝ) ⊗ₜ (β : G.C)) = _`. Rewrite using `[psiR_tmul, one_smul]`. Establish `h1` using `congrArg (G.psiR v) hz`. Rewrite `h1` using `[map_mul, map_mul, psiR_starT, hb]`. Simplify using `only [Units.val_one, map_one] at h1`.
+
+Rewrite `h1` using `[← hZm]`. Establish `hg : IsUnit (G.gram v).det` using `isUnit_iff_ne_zero.2 (G.gram_det v)`. Use `set M := G.psi v ((β⁻¹ : G.Cˣ) : G.C)`. Establish `hMb : M * G.psi v (β : G.C) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+
+Establish `h2 : G.psi v (β : G.C) * ((G.gram v)⁻¹ * Zmᴴ * G.gram v * Zm) = 1`. Use `mul_eq_one_comm.1 (by simpa [Matrix.mul_assoc] using h1 : Zm * (G.psi v (β : G.C) * ((G.gram v)⁻¹ * Zmᴴ * G.gram v)) = 1)` as an intermediate fact. Simplify `this` using `[Matrix.mul_assoc]`. Establish `h3 : M = (G.gram v)⁻¹ * Zmᴴ * G.gram v * Zm`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h3]`. Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hg, Matrix.one_mul]`.
+-/
 theorem herm_congr (G : HTGroup p) (β : G.Cˣ) (hR : ∃ z : (ℝ ⊗[ℚ] G.C)ˣ, Triv G ℝ β z 1)
     (v : InfinitePlace G.F) :
     ∃ Z : GL (Fin G.n) ℂ, herm G v β =
@@ -100,6 +132,11 @@ namespace GlobalTheory.ArchBound
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Break down `G.sig w with ⟨h1, -⟩ | ⟨h0, -⟩` into its components or cases. It suffices to derive a contradiction. Establish `hc : Fintype.card {v : InfinitePlace G.F // sigPosH (G.gram_herm v) = 1} = 1` using `ha`. Take `⟨x, hx⟩` from `Fintype.card_eq_one_iff.1 hc`. Establish `e1` using `hx ⟨v, hv⟩`.
+
+Establish `e2` using `hx ⟨w, h1⟩`. Conclude with `hw (by rw [← e2] at e1; exact (congrArg Subtype.val e1).symm)`. Conclude with `h0`.
+-/
 theorem sigPosH_eq_zero_of_ne (G : HTGroup p) (ha : G.a = 1) (v : InfinitePlace G.F)
     (hv : sigPosH (G.gram_herm v) = 1) (w : InfinitePlace G.F) (hw : w ≠ v) : sigPosH (G.gram_herm w) = 0 := by
   rcases G.sig w with ⟨h1, -⟩ | ⟨h0, -⟩
@@ -111,6 +148,17 @@ theorem sigPosH_eq_zero_of_ne (G : HTGroup p) (ha : G.a = 1) (v : InfinitePlace 
     exact hw (by rw [← e2] at e1; exact (congrArg Subtype.val e1).symm)
   · exact h0
 
+/- English proof (translation)
+Take `⟨Z, hZ⟩` from `herm_congr G β hR w`. Establish `hH : (herm G w β).IsHermitian`. Rewrite using `[hZ]`. Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, (G.gram_herm w).eq, Matrix.mul_assoc]`.
+
+Establish `hdet : (herm G w β).det ≠ 0`. Rewrite using `[hZ, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `hz0 : (Z : Matrix (Fin G.n) (Fin G.n) ℂ).det ≠ 0` using `(Matrix.isUnits_det_units Z).ne_zero`. Conclude with `mul_ne_zero (mul_ne_zero (by simpa using hz0) (G.gram_det w)) hz0`. Establish `hsig : sigPosH hH = sigPosH (G.gram_herm w)` using `GlobalTheory.SigCong.sigPosH_congr (G.gram w) (G.gram_herm w) (G.gram_det w) Z _ hH hZ`.
+
+Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Take `⟨P, hPh, hPp, hPs⟩` from `majorant (herm G w β) hH hdet (hsig.trans hv) z hz`. Use `⟨P, hPh, hPp, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hy`.
+
+Conclude with `hPs _ _ c (by exact_mod_cast y.2.2) (herm_sim G β y w) hc`. Establish `h0` using `sigPosH_eq_zero_of_ne G ha v hv w hw`. Use `⟨-herm G w β, hH.neg, fun x hx => ?_, fun y _ => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.herm_negDef_of_sigPosH_eq_zero (herm G w β) hH hdet (hsig.trans h0) x hx` as an intermediate fact. Rewrite using `[Matrix.neg_mulVec, dotProduct_neg, Complex.neg_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, herm_sim G β y w, smul_neg]`.
+-/
 theorem exists_majorant (G : HTGroup p) (ha : G.a = 1) (v : InfinitePlace G.F)
     (hv : sigPosH (G.gram_herm v) = 1) (β : G.Cˣ) (hR : ∃ z : (ℝ ⊗[ℚ] G.C)ˣ, Triv G ℝ β z 1)
     (z : Fin G.n → ℂ) (hz : 0 < (star z ⬝ᵥ (herm G v β *ᵥ z)).re) (w : InfinitePlace G.F) :
@@ -147,6 +195,11 @@ end GlobalTheory.ArchBound
 
 open GlobalTheory.ArchBound in
 
+/- English proof (translation)
+Introduce `p _ G ha v hv β _ hR z hz`. Use `choose P hPh hPp hPs using exists_majorant G ha v hv β hR z hz`. Use `choose K hK using fun w => entries_bound (P w) (hPh w) (hPp w)`. Use `⟨∑ w, |K w|, fun y hy w i j => ?_⟩` and prove the remaining obligations. Establish `hs : (0 : ℝ) < ((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) : ℝ)` using `by exact_mod_cast y.2.2`.
+
+Use `(hK w _ _ hs (hPs w y hy) i j).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ((le_abs_self _).trans ?_) hs.le` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun w => |K w|) (fun _ _ => abs_nonneg _) (Finset.mem_univ w)`.
+-/
 theorem GlobalTheory.LKCx.entries_sq_le_of_fixL : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 →
     ∀ v : InfinitePlace G.F, sigPosH (G.gram_herm v) = 1 → ∀ (β : G.Cˣ), sh G β = β →
     (∃ z : (ℝ ⊗[ℚ] G.C)ˣ, Triv G ℝ β z 1) → ∀ (z : Fin G.n → ℂ), 0 < (star z ⬝ᵥ (herm G v β *ᵥ z)).re →

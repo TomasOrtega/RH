@@ -22,6 +22,11 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.ChartLink
 
+/- English proof (translation)
+Establish `e : c.t.s = c'.t.s`. Use `JetSer.gen_ext_val (φ := thφ G (x3 G)) (ε := thε) L.isLB c.isGen c'.isGen fun y J hJ => ?_` and prove the remaining obligations. Use `gen_unique L.isLB (G ⊗ G ⊗ G).hom (lift (1 : 𝟙_ (Over S) ⟶ G) (lift 1 1)).left (Over.w _) h c.isGen c'.isGen (fun y J hJ => ?_) _ _ y J hJ` and prove the remaining obligations. Conclude with `((isCub_cubV c (T := 𝟙_ (Over S)) hJ).face 1 1).trans ((isCub_cubV c' (T := 𝟙_ (Over S)) hJ).face 1 1).symm`. Take `⟨⟨s⟩, _, _, _, _, _⟩` from `c`.
+
+Take `⟨⟨s'⟩, _, _, _, _, _⟩` from `c'`. Take `rfl : s = s'` from `e`. Both sides reduce to the same expression.
+-/
 theorem cubical_eq {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
     (h : Function.Surjective (G ⊗ G ⊗ G).hom.appTop.hom) {L : RigLB G} (c c' : CubicalStr G L) : c = c' := by
   have e : c.t.s = c'.t.s := by
@@ -34,6 +39,11 @@ theorem cubical_eq {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
   obtain rfl : s = s' := e
   rfl
 
+/- English proof (translation)
+Introduce `f`. Take `⟨a, ha⟩` from `h ((fst G G).left.appTop.hom f)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e₁ : (lift (𝟙 G) (𝟙 G)).left ≫ (G ⊗ G).hom = G.hom` using `Over.w _`. Establish `e₂ : (lift (𝟙 G) (𝟙 G)).left ≫ (fst G G).left = 𝟙 _` using `congrArg (fun q => q.left) (lift_fst (𝟙 G) (𝟙 G))`.
+
+Use `congrArg (lift (𝟙 G) (𝟙 G)).left.appTop.hom ha` as an intermediate fact. Rewrite `this` using `[← RingHom.comp_apply, ← RingHom.comp_apply, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, ← Scheme.Hom.comp_appTop, ← Scheme.Hom.comp_appTop, e₁, e₂]`. Simplify using `using this`.
+-/
 theorem surjective_of_sq {S : Scheme.{0}} {G : Over S} (h : Function.Surjective (G ⊗ G).hom.appTop.hom) :
     Function.Surjective G.hom.appTop.hom := by
   intro f
@@ -46,6 +56,9 @@ theorem surjective_of_sq {S : Scheme.{0}} {G : Over S} (h : Function.Surjective 
     ← Scheme.Hom.comp_appTop, ← Scheme.Hom.comp_appTop, e₁, e₂] at this
   simpa using this
 
+/- English proof (translation)
+Unfold `psJet jetCoef`. Rewrite using `[Ideal.Quotient.lift_mk, RingHom.comp_apply]`. Use `congr 1`. Unfold `psTrunc`. Simplify using `[map_sum, MvPolynomial.map_monomial, MvPowerSeries.coeff_map]`.
+-/
 theorem psJet_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {κ : Type} [Fintype κ] [DecidableEq κ]
     (m : ℕ) (g : MvPowerSeries κ R) : psJet m (MvPowerSeries.map f g) = jetCoef f κ m (psJet m g) := by
   unfold psJet jetCoef
@@ -54,6 +67,19 @@ theorem psJet_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {κ 
   unfold psTrunc
   simp [map_sum, MvPolynomial.map_monomial, MvPowerSeries.coeff_map]
 
+/- English proof (translation)
+Introduce `m`. Establish `hL` using `U.LG.isLB`. Establish `key : ∀ i (Z : Scheme.{0}) (r : Z ⟶ Sp (Jet V κ m)) (y : Z) (J), Good U.LG.L y J → sval (σ i) (r ≫ (z m).left) y J = cst r y (psJet m (g i)) * (val (τ m) r y J ^ q).val`. Introduce `i`. Take `⟨v, hv⟩` from `ExpansionValueZero.exists_coeff (A := Jet V κ m) hL (σ i) (z m).left (GeneratorPullback.powGen U.LG.L _ _ (τ m) q) (powGen_isGen_of_isGen _ (hτ m) q) (fun W _ h => by simp only [Category.comp_id, _root_.mul_one])`.
+
+Establish `hv' : ∀ (Z : Scheme.{0}) (r : Z ⟶ Sp (Jet V κ m)) (y : Z) (J), Good U.LG.L y J → sval (σ i) (r ≫ (z m).left) y J = cst r y v * (val (τ m) r y J ^ q).val` using `fun Z r y J hJ => (hv Z r y J hJ).trans (congrArg (fun u => cst r y v * Units.val u) (map_pow _ _ _))`. Take `rfl : v = psJet m (g i)` from `H1.cst_ext fun y => by`. Take `⟨J, hJ, -⟩` from `exists_good U.LG.L hL y (K := PEmpty) PEmpty.elim PEmpty.elim (fun k => k.elim) (fun k => k.elim)`. Establish `e` using `hv' _ (𝟙 _) y J hJ`. Rewrite `e` using `[Category.id_comp]`.
+
+Conclude with `(Units.mul_left_inj _).1 (e.symm.trans (hσ i m y J hJ))`. Conclude with `hv'`. Take `⟨a, a₁, a₂⟩` from `GermBasic.exists_jetPt (F := F) z m`. Use `⟨a, a₁, a₂, fun y J hJ => ?_⟩` and prove the remaining obligations. Use `(BoxExpansion.secLin_val hlin a y hJ).trans ?_` and prove the remaining obligations.
+
+Establish `e : gs (𝟙 _) y ⊤ (toΓ _ (psJet m (∑ i, c i • MvPowerSeries.map (algebraMap V F) (g i)))) = ∑ i, cst (𝟙 _) y (algebraMap F (Jet F κ m) (c i)) * cst (𝟙 _) y (psJet m (MvPowerSeries.map (algebraMap V F) (g i)))`. Use `(congrArg (cst (𝟙 _) y) (GermBasic.psJet_sum m c _)).trans ((ExpansionValueZero.cst_sum _ _ _ _).trans ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i _ => H1.cst_mul _ _ _ _`. Rewrite using `[e, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[a₂, key i _ _ y J hJ, _root_.mul_assoc]`. Use `congrArg₂ (· * ·) ?_ (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Use `(gs_pull a _ y ⊤ trivial _).trans ?_` and prove the remaining obligations. Rewrite using `[a₁, ← ExpansionValueZero.cst_comp, Category.id_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[psJet_map, ← ExpansionValueZero.cst_comp, Category.id_comp]`.
+-/
 theorem germA_comb {V : Type} [CommRing V] [IsDomain V] {I : Ideal V} {D : DegData V I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing V)))} {G : Over (Sp V)} [GrpObj G] [IsCommMonObj G]
     (U : UnifPre I D A G) {κ : Type} [Fintype κ] [DecidableEq κ] (z : JetPts G κ) (τ : Frames U.LG.L z) (hτ : τ.Gen)
@@ -100,6 +126,15 @@ theorem germA_comb {V : Type} [CommRing V] [IsDomain V] {I : Ideal V} {D : DegDa
     rfl
   · rw [psJet_map, ← ExpansionValueZero.cst_comp, Category.id_comp]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl : c = t.cub` from `cubical_eq s₃ _ _`. Use `letI := H.starRing`. Introduce `d BT tg xT eT wPT hC hF hW hU hT τ hEL`. Take `⟨x, hx, hM⟩` from `univConv V t.G _ xT hU d (oneCol d)`.
+
+Take `⟨j, hj⟩` from `JetSer.exists_index_of_local t.PP.L t.PP.isLB η[t.G].left`. Establish `hu : ∀ a : 𝓞 E, ∃ u, JetSer.IsNormRos t.PP.L (t.act.act a) (t.act.act (star a)) u` using `fun a => by`. Use `t.act.hom a` as an intermediate fact. Use `t.act.hom (star a)` as an intermediate fact. Conclude with `(NormRos.normRos_of_lbIso _ t.G t.PP.L t.PP.isLB _ _ (t.adj a)).1`.
+
+Use `choose u hu using hu`. Take `⟨B, hB⟩` from `JetRoad.jetRoad.2.2.2.2.2.2.2.2.2.1 V t.G s₂ s₃ t.PP t.cub (𝓞 E) t.act u hu d x hx j hj`. Use `t.act.hom H.w0` as an intermediate fact. Take `⟨ρ, hρ, hρc⟩` from `(JetSer.exists_unique_normPrim _ t.G t.PP (t.act.act H.w0) t.prim).1`. Take `⟨ε, hε⟩` from `GlobalTheory.T.truncation_frames_local_series E H V t d _ _ _ _ _ _ tg xT eT wPT hC hF hW hT j hj`.
+
+Use `⟨x, j, u, B, ρ, ε, hx, hj, hu, hB, hρ, LinkRel.linkRel E H V t s₂ d BT tg xT eT wPT hC hF hW x hx hM j hj u hu B hB ε hε, fun q σ r S g hr hS hg m y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hEL m y J hJ]`. Conclude with `LinkSec.linkSec E H V t (surjective_of_sq s₂) d BT tg xT eT wPT hC hF hW x hx hM j hj ρ hρ hρc ε hε q σ r S g hr hS hg m y J hJ`.
+-/
 theorem exists_chartData {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {V : Type} [CommRing V]
     [IsLocalRing V] (t : SAB H (Sp V)) (Lr : RigLB t.G) (h : Lr = t.PP) (c : CubicalStr t.G Lr)
     (s₂ : Function.Surjective (t.G ⊗ t.G).hom.appTop.hom)
@@ -146,6 +181,11 @@ theorem exists_chartData {E : Type} [Field E] [NumberField E] [IsCMField E] (H :
   exact LinkSec.linkSec E H V t (surjective_of_sq s₂) d BT tg xT eT wPT hC hF hW x hx hM j hj ρ hρ hρc ε hε q σ r S g
     hr hS hg m y J hJ
 
+/- English proof (translation)
+Establish `e₀ : MvPowerSeries.constantCoeff ε = 1`. Apply the tactic sequence `rw [← GaugeAdjoint.constantCoeff_ev (a := ![0, pt V (n := 1) d 0]) (fun j i => by fin_cases j <;> simp [pt]) ε, h.ax0, map_one]`. Establish `c : comp1 (B'.A.act w0) (pt V (n` using `1) d 0) = B'.A.act w0 := funext fun i => LinkSec.ev_pt_one _`. Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff, diagSer, c, GaugeAdjoint.constantCoeff_ev (fun j i => ?_) ε, e₀]`. Conclude with `isUnit_one`.
+
+Use `fin_cases j`. Simplify using `[pt]`. Conclude with `B'.A.const w0 i`.
+-/
 theorem isUnit_diagSer {V : Type} [CommRing V] {d : ℕ} {O : Type} [CommRing O] [StarRing O] {B B' : FB V d O}
     {φ φi : Pt V 1 d} {ε : PS V 2 d} (h : JetSer.Related B B' φ φi ε) (w0 : O) : IsUnit (diagSer B' w0 ε) := by
   have e₀ : MvPowerSeries.constantCoeff ε = 1 := by
@@ -158,6 +198,17 @@ theorem isUnit_diagSer {V : Type} [CommRing V] {d : ℕ} {O : Type} [CommRing O]
     · simp [pt]
     · exact B'.A.const w0 i
 
+/- English proof (translation)
+Introduce `E _ _ _ H V _ _ _ hc t P tors ϖ hϖ Q hQ F _ _ _ _ v hv d BT tg xT eT wPT hC hF hW hU hT τ hτ hEL`. Use `letI := H.starRing`. Take `⟨s₂, s₃⟩` from `FamGerm.surjective_appTop_sq_cube P.U.toUnifPre`. Take `⟨x, j, u, B, ρ, ε, hx, hj, hu, hB, hρ, hR, hS⟩` from `exists_chartData H t P.U.LG P.bundle P.U.cubG s₂ s₃ d BT tg xT eT wPT hC hF hW hU hT τ hEL`. Use `⟨x, hx, j, hj, u, hu, B, hB, ρ, hρ, ε, hR, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `q s f f' ⟨l, c, σ, fi, g, r, h₁, h₂, h₃, h₄, h₅⟩ hf`. Take `⟨w, hw⟩` from `(isUnit_diagSer hR H.w0).exists_right_inv`. Take `⟨σ', hσ'⟩` from `BoxExpansion.exists_secLin P.U.LG.isLB (fst (TFK (R := V) F) ((Over.pullback (jK V)).obj t.G)).left (UnifPre.gFK (R := V) (G := t.G) F) (fun _ : Fin 1 => UnifPre.gFK (R := V) (G := t.G) F) (fun _ => (Category.comp_id _).symm) σ c`. Use `⟨σ', ⟨l, c, σ, fi, h₁, hσ', h₂⟩, ?_⟩` and prove the remaining obligations. Establish `eV : TWO.algVF (V` using `V) (F := F) = algebraMap V F := (IsScalarTower.algebraMap_eq V _ F).symm`.
+
+Establish `e : f' = ∑ i, c i • MvPowerSeries.map (algebraMap V F) (g i * w ^ q)`. Establish `e₁ : f' = f * MvPowerSeries.map (algebraMap V F) (w ^ q)`. Rewrite using `[← hf, _root_.mul_assoc, ← map_pow, ← map_mul, ← mul_pow, hw, one_pow, map_one, _root_.mul_one]`. Rewrite using `[e₁, h₅, Finset.sum_mul, eV]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, MvPowerSeries.smul_eq_C_mul, _root_.mul_assoc]`. Rewrite using `[e]`. Use `germA_comb P.U.toUnifPre xT τ hτ F q c σ _ (fun i m y J hJ => ?_) σ' hσ'` and prove the remaining obligations. Take `⟨S, hS₁, hS₂⟩` from `h₄ i`. Use `hS q (σ i) r S _ h₃ hS₁ ?_ m y J hJ` and prove the remaining obligations.
+
+Rewrite using `[← hS₂, _root_.mul_assoc, ← mul_pow, ← _root_.mul_assoc, _root_.mul_comm w, hw, _root_.one_mul]`.
+-/
 theorem linkSt_holds : LinkSt := by
   intro E _ _ _ H V _ _ _ hc t P tors ϖ hϖ Q hQ F _ _ _ _ v hv d BT tg xT eT wPT hC hF hW hU hT τ hτ hEL
   letI := H.starRing
@@ -184,6 +235,9 @@ theorem linkSt_holds : LinkSt := by
   refine hS q (σ i) r S _ h₃ hS₁ ?_ m y J hJ
   rw [← hS₂, _root_.mul_assoc, ← mul_pow, ← _root_.mul_assoc, _root_.mul_comm w, hw, _root_.one_mul]
 
+/- English proof (translation)
+Introduce `_ _ _ _` and use `linkSt_holds`.
+-/
 theorem link : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → LinkSt := fun _ _ _ _ => linkSt_holds
 
 end GlobalTheory.ChartLink

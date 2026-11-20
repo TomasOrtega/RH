@@ -11,6 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConeSmallMero.ct_mero | exact GlobalTheory.ConeSmallMero.ct_mero | (intros; apply GlobalTheory.ConeSmallMero.ct_mero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eisenstein_theta_pairing_stabilizer : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ X om om', IsTriple B G X om om' → ∀ K : Subgroup (UA σ G.V'.J), IsStab B K →

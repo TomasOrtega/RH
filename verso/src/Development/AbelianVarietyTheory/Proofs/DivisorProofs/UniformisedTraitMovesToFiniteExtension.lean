@@ -16,6 +16,19 @@ namespace GlobalTheory.Mum.UniEnlarge
 
 open GlobalTheory.Mum.ClosureDescent GlobalTheory.ThetaDescent
 
+/- English proof (translation)
+Introduce `R₁ _ _ _ _ D₁ A hU R₂ _ _ _ i₁₂ hi₁₂ hl₁₂ D₂ ⟨hD₂⟩ A₂ a₂ hA₂`. Take `⟨W, _, _, _, φ, G', _, _, D', A', U', hD', a, hW, hφ, hφl, hG', ga, hga, g₁, l₁⟩` from `hU`. Take `⟨ga₂, hga₂, g₂, l₂⟩` from `hA₂`. Establish `hfin : i₁₂.Finite` using `hi₁₂.2.2`. Set `β : FractionRing W →+* AlgebraicClosure (FractionRing W)` to `algebraMap _ _`.
+
+Establish `hβ : β.IsIntegral` using `fun x => Algebra.IsIntegral.isIntegral (R := FractionRing W) x`. Take `⟨j₁, hj₁⟩` from `exists_extend hfin (algebraMap R₁ (FractionRing R₁)) ga₂ (RingHom.ext fun r => hga₂ r) (β.comp ga)`. Establish `hjρ : ∀ r, j₁ (algebraMap R₂ _ (i₁₂ r)) = β (((algebraMap W (FractionRing W)).comp φ) r)` using `fun r => by`. Rewrite using `[← hga₂, ← RingHom.comp_apply j₁ ga₂, hj₁, RingHom.comp_apply, hga, RingHom.comp_apply]`. Take `⟨s₀, hs₀⟩` from `exists_range_le_gen hfin β ((algebraMap W _).comp φ) j₁ hjρ`.
+
+Set `i` to `β.codRestrict _ (mem_gen β s₀)`. Set `k` to `j₁.codRestrict _ hs₀`. Establish `hi : i.Finite` using `finite_gen β hβ s₀`. Use `hW.1` as an intermediate fact. Establish `hWb : Base W` using `⟨⟨inferInstance, inferInstance, inferInstance, hW.2.1⟩, hW.2.2⟩`.
+
+Take `⟨W₁, _, _, _, io, σ, hio, hiol, hσ⟩` from `GlobalTheory.CommonCover.exists_cover_field W hWb _ i hi`. Take `⟨D₃, hD₃, A₃, U₃, a₃, hA₃⟩` from `exists_unif_fib hWb.1 hio.1 io hio.2.1 (map_maximalIdeal_le io) hG' U' (σ.comp i) ((RingHom.comp_assoc _ _ _).trans hσ)`. Establish `f₁ : Fib A₃ A ((σ.comp i).comp ga) (a₃ ≫ a)` using `hA₃.comp ⟨g₁, l₁⟩ rfl`. Establish `e : (σ.comp k).comp ga₂ = (σ.comp i).comp ga` using `RingHom.ext fun x => congrArg σ (Subtype.ext (DFunLike.congr_fun hj₁ x))`. Take `⟨d, -, hd⟩` from `Fib.cancel (σ.comp k) (⟨g₂, l₂⟩ : Fib A₂ A ga₂ a₂) f₁ e`.
+
+Use `haveI := hio.1.2.2.1`. Take `⟨φ₂, hφ₂, hcomp, hinj, hl⟩` from `exists_restrict hfin (io.comp φ) (σ.comp k) fun r => by`. Establish `e₁ : k (algebraMap R₂ _ (i₁₂ r)) = i (algebraMap W _ (φ r))` using `Subtype.ext (hjρ r)`. Conclude with `(congrArg σ e₁).trans (DFunLike.congr_fun hσ (φ r))`. Take `⟨q⟩` from `GlobalTheory.PullDegComp.nonempty_isPullDeg_comp hφ hio.2.1 hD' hD₃`.
+
+Rewrite `q` using `[← hcomp]`. Take `⟨q₁⟩` from `GlobalTheory.PullDegUniq.nonempty_isPullDeg_cancel hi₁₂.2.1 hinj hD₂ q`. Conclude with `⟨W₁, _, _, _, φ₂, _, inferInstance, inferInstance, D₃, A₃, U₃, q₁, d, cDvr_of_finExt hW hio, hinj, hl, IsSemiAbelian.pullback _ G' hG', σ.comp k, hφ₂, hd.1, hd.2⟩`.
+-/
 theorem uniTrait_of_finExt : ∀ (R₁ : Type) [CommRing R₁] [IsDomain R₁] [IsLocalRing R₁], Base R₁ → ∀ (D₁ : DegData R₁ (maximalIdeal R₁)) (A : PolAV (Sp (FractionRing R₁))), UniTrait D₁.toPre A → ∀ (R₂ : Type) [CommRing R₂] [IsDomain R₂] [IsLocalRing R₂] (i₁₂ : R₁ →+* R₂), FinExt i₁₂ → IsLocalHom i₁₂ → ∀ (D₂ : DegData R₂ (maximalIdeal R₂)), Nonempty (IsPullDeg i₁₂ D₁.toPre D₂.toPre) → ∀ (A₂ : PolAV (Sp (FractionRing R₂))) (a : A₂.A.left ⟶ A.A.left), IsFib i₁₂ A A₂ a → UniTrait D₂.toPre A₂ := by
   intro R₁ _ _ _ _ D₁ A hU R₂ _ _ _ i₁₂ hi₁₂ hl₁₂ D₂ ⟨hD₂⟩ A₂ a₂ hA₂
   classical

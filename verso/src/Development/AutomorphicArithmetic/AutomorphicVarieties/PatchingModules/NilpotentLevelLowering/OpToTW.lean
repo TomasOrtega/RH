@@ -16,6 +16,43 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Pa.Lev.OpP
 
+/- English proof (translation)
+Use `letI : Module Λ W := Module.compHom W (algebraMap Λ R)`. Use `haveI : IsScalarTower Λ R W := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Take `⟨N, _, _, _, _, i, pr, hpi, hC, hX, hr, hc⟩` from `nilPart (Λ := Λ) (fun p => act1 (MvPolynomial.X p - MvPolynomial.C (Sum.elim ut 0 p))) fun _ _ => (Commute.all _ _).map act1`. Establish `hinj : Function.Injective i` using `Function.LeftInverse.injective hpi`. Establish `evT : ∀ p, ev (MvPolynomial.X p - MvPolynomial.C (Sum.elim ut 0 p)) = MvPowerSeries.X p` using `fun p => by`.
+
+Rewrite using `[map_sub, evC, evX, add_sub_cancel_left]`. Establish `evy : ∀ p, s (MvPowerSeries.X p) = ev (MvPolynomial.X (.inr p))` using `fun p => by simp [hs, evX]`. Establish `hi : ∀ t x, i (ev t • x) = act1 t (i x)` using `fun t => by`. Proceed by induction on `t using MvPolynomial.induction_on with`. Consider the case `C c => intro x`.
+
+Rewrite using `[evC, hC]`. Conclude with `(LinearMap.congr_fun (act1.commutes c) _).symm`. Consider the case `add b c hb hc => intro x`. Rewrite using `[map_add, add_smul, map_add, hb, hc, map_add, LinearMap.add_apply]`. Consider the case `mul_X b p hb`.
+
+Introduce `x`. Rewrite using `[map_mul, mul_smul, hb, evX, add_smul, map_add, hC, hX, map_mul, Module.End.mul_apply]`. Simplify using the standard rewrite rules. Establish `hcomm : ∀ t t' m, act1 t (act1 t' m) = act1 t' (act1 t m)` using `fun t t' m => LinearMap.congr_fun ((Commute.all t t').map act1).eq m`. Establish `hpr : ∀ t m, pr (act1 t m) = ev t • pr m` using `fun t m => hinj ((hc ((act1 t).restrictScalars Λ) (fun _ _ => hcomm _ _ _) m).trans (hi _ _).symm)`.
+
+Establish `hρc : ∀ g m, i (pr (ρ g m)) = ρ g (i (pr m))` using `fun g => LinearMap.congr_fun (del_gen hl ((Submonoid.centralizer {(i ∘ₗ pr : Module.End Λ M)}).comap ρ) (fun p => by`. Introduce and unpack `_ rfl`. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Use `show i (pr (ρ _ m)) = ρ _ (i (pr m))`. Rewrite using `[hρ p.1 p.2, hρ p.1 p.2, hpr, hi]) g _ rfl)`.
+
+Take `⟨rk, e, he⟩` from `freePart ρ hl hlm hP i pr hpi hρc s fun p x => by`. Rewrite using `[hρ p.1 p.2, ← hi, map_add, map_add, map_one, map_one, evy]`. Take `⟨j, κ, hj, hκ, hκj, hjr⟩` from `quotPart act1 actw tr hsurj hker (fun p => hu p.1 p.2) ut ev i pr hpi hi hpr hr (fun p => s (MvPowerSeries.X p)) evy`. Take `⟨_, hnS, η, φ, ψ, ηC, ηX, hφ, hψ, hψφ, hφn, hφψ⟩` from `spPart (Λ := Λ) P hm hd β hβ ut ub hub actw f two`. Establish `hη : ∀ t, θ (ev (MvPolynomial.rename Sum.inl t)) = η t` using `fun t => by`.
+
+Proceed by induction on `t using MvPolynomial.induction_on with`. Consider the case `C c => rw [MvPolynomial.rename_C, evC, θC, ηC]`. Consider the case `add b c hb hc => simp only [map_add, hb, hc]`. Consider the case `mul_X b p hb`. Rewrite using `[map_mul, map_mul, map_mul, map_mul, hb, MvPolynomial.rename_X, evX, map_add, θC, θl, ηX p.1 p.2, Sp.u, map_add, Sum.elim_inl, ← hub p.1 p.2]`.
+
+Both sides reduce to the same expression. Use `haveI : Module.Finite Λ N := Module.Finite.of_surjective pr fun x => ⟨_, hpi x⟩`. Set `I : Submodule (MvPowerSeries ((Fin q × Fin n) ⊕ (Fin q × Fin n)) R) N` to `Ideal.span (Set.range fun p => s (MvPowerSeries.X p)) • ⊤`. Establish `hy : ∀ p (x : N ⧸ I), (MvPowerSeries.X (.inr p) : MvPowerSeries ((Fin q × Fin n) ⊕ (Fin q × Fin n)) R) • x = 0` using `fun p x => by`. Take `⟨x, rfl⟩` from `I.mkQ_surjective x`.
+
+Rewrite using `[← map_smul, ← hs]`. Conclude with `(Submodule.Quotient.mk_eq_zero I).2 (Submodule.smul_mem_smul (Ideal.subset_span ⟨p, rfl⟩) trivial)`. Establish `hnX : ∀ p (k : ℕ) (x : N ⧸ I), ∃ d : ℕ, (RingHom.id (MvPowerSeries ((Fin q × Fin n) ⊕ (Fin q × Fin n)) R)) (MvPowerSeries.X p) ^ d • x ∈ (maximalIdeal Λ ^ k • ⊤ : Submodule Λ (N ⧸ I))` using `fun p k x => by`. Take `⟨x, rfl⟩` from `I.mkQ_surjective x`. Take `⟨d, hd⟩` from `mem_topNil_iff_exists.1 (hr.le ⟨x, rfl⟩) p k`.
+
+Use `⟨d, ?_⟩` and prove the remaining obligations. Establish `h1` using `nilMap _ (I.mkQ.restrictScalars Λ ∘ₗ pr).toAddMonoidHom (map_smul (I.mkQ.restrictScalars Λ ∘ₗ pr)) hd`. Establish `h2 : ((act1 (MvPolynomial.X p - MvPolynomial.C (Sum.elim ut 0 p))).restrictScalars Λ ^ d) (i x) = act1 ((MvPolynomial.X p - MvPolynomial.C (Sum.elim ut 0 p)) ^ d) (i x)`. Rewrite using `[map_pow, Module.End.pow_apply, Module.End.pow_apply]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `I.mkQ (pr _) ∈ _ at h1`. Rewrite `h1` using `[h2, hpr, hpi, map_pow, evT, map_smul]`. Then use the resulting hypothesis. Establish `hnS' : ∀ p (k : ℕ) (z : Sp P ub ⊗[B] M₀), ∃ d : ℕ, θ (MvPowerSeries.X p) ^ d • z ∈ (maximalIdeal Λ ^ k • ⊤ : Submodule Λ (Sp P ub ⊗[B] M₀))`. Introduce and unpack `(p | p) k z`. Rewrite using `[θl]`.
+
+Conclude with `hnS p k z`. Conclude with `⟨1, by rw [θr, pow_one, zero_smul]; exact zero_mem _⟩`. Establish `hθL : ∀ c, θ (MvPowerSeries.C (algebraMap Λ R c)) = algebraMap Λ _ c` using `fun c => by`. Rewrite using `[θC, hβ, ← IsScalarTower.algebraMap_apply]`. Establish `hidL : ∀ c, (RingHom.id (MvPowerSeries ((Fin q × Fin n) ⊕ (Fin q × Fin n)) R)) (MvPowerSeries.C (algebraMap Λ R c)) = algebraMap Λ _ c` using `fun c => MvPowerSeries.algebraMap_apply.symm`.
+
+Establish `eC : ∀ c, MvPowerSeries.C c = ev (MvPolynomial.rename Sum.inl (MvPolynomial.C c : PU R q n))` using `fun c => by`. Rewrite using `[MvPolynomial.rename_C, evC]`. Establish `eX : ∀ p, MvPowerSeries.X (.inl p) = ev (MvPolynomial.rename Sum.inl (MvPolynomial.X p - MvPolynomial.C (ut p) : PU R q n))` using `fun p => by`. Rewrite using `[map_sub, MvPolynomial.rename_C, MvPolynomial.rename_X]`. Conclude with `(evT (.inl p)).symm`.
+
+Establish `k1 : ∀ t z, κ (φ (θ (ev (MvPolynomial.rename Sum.inl t)) • z)) = ev (MvPolynomial.rename Sum.inl t) • κ (φ z)` using `fun t z => by rw [hη, hφ, hκ]`. Establish `k2 : ∀ t x, ψ (j (ev (MvPolynomial.rename Sum.inl t) • x)) = θ (ev (MvPolynomial.rename Sum.inl t)) • ψ (j x)` using `fun t z => by rw [hη, hj, hψ]`. Use `⟨N, inferInstance, inferInstance, rk, e, he, fun t ht m => hinj (by rw [hi, ht, map_zero]; rfl), κ.comp φ, ψ.comp j, psLin' θ (RingHom.id _) hθL hidL hnS' hnX _ (fun c z => ?_) ?_, psLin' (RingHom.id _) θ hidL hθL hnX hnS' _ (fun c z => ?_) ?_, fun x => ?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[eC]`. Conclude with `k1 _ z`.
+
+Introduce and unpack `(p | p) z`. Rewrite using `[eX]`. Conclude with `k1 _ z`. Rewrite using `[θr, zero_smul, map_zero]`. Conclude with `(hy p _).symm`.
+
+Rewrite using `[eC]`. Conclude with `k2 _ z`. Introduce and unpack `(p | p) z`. Rewrite using `[eX]`. Conclude with `k2 _ z`.
+
+Rewrite using `[θr, zero_smul, RingHom.id_apply, hy, map_zero]`. Use `show κ (φ (ψ (j x))) = _`. Rewrite using `[hφψ _ ((hjr _).2 ⟨x, rfl⟩), hκ, hκj]`. Use `show ψ (j (κ (φ z))) = _`. Take `⟨x, hx⟩` from `(hjr _).1 (hφn z)`.
+
+Rewrite using `[hη, ← hψφ, ← hx, hκj]`.
+-/
 private theorem opCore {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ]
     {B M₀ : Type} [CommRing B] [IsLocalRing B] [IsNoetherianRing B] [IsAdicComplete (maximalIdeal B) B] [Algebra Λ B]
     [IsLocalHom (algebraMap Λ B)] [AddCommGroup M₀] [Module B M₀] [Module Λ M₀] [IsScalarTower Λ B M₀]
@@ -142,10 +179,16 @@ private theorem opCore {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianR
     obtain ⟨x, hx⟩ := (hjr _).1 (hφn z)
     rw [hη, ← hψφ, ← hx, hκj]
 
+/- English proof (translation)
+Simplify using `only [fEl, map_prod, map_mul, map_sub, map_natCast]`.
+-/
 private theorem fEl_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {q n : ℕ} (Nq : Fin q → ℕ)
     (u : Fin q → Fin n → R) : f (fEl Nq u) = fEl Nq fun j i => f (u j i) := by
   simp only [fEl, map_prod, map_mul, map_sub, map_natCast]
 
+/- English proof (translation)
+Rewrite using `[map_mul, q1El, q1El, map_list_prod, List.map_ofFn, MonoidAlgebra.mapRingHom_single, map_one]`. Use `congr 3`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, map_sub, MonoidAlgebra.mapRingHom_single, map_one]`.
+-/
 private theorem mapRingHom_single_mul_charpoly_of_roots {R S G : Type} [CommRing R] [CommRing S] [Group G] (f : R →+* S) {n : ℕ} (g ph : G) (u : Fin n → R) :
     MonoidAlgebra.mapRingHom G f (MonoidAlgebra.single g 1 * q1El ph u) =
       MonoidAlgebra.single g 1 * q1El ph fun i => f (u i) := by
@@ -154,6 +197,9 @@ private theorem mapRingHom_single_mul_charpoly_of_roots {R S G : Type} [CommRing
   funext i
   simp only [Function.comp_apply, map_sub, MonoidAlgebra.mapRingHom_single, map_one]
 
+/- English proof (translation)
+Rewrite using `[map_mul, q2El, q2El, map_mul, map_list_prod, List.map_ofFn, map_sub, map_sub, MonoidAlgebra.mapRingHom_single, MonoidAlgebra.mapRingHom_single, MonoidAlgebra.mapRingHom_single, map_one, map_one]`. Use `congr 4`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply, apply_ite (MonoidAlgebra.mapRingHom G f), map_sub, MonoidAlgebra.mapRingHom_single, map_one]`.
+-/
 private theorem mapRingHom_single_mul_partial_charpoly {R S G : Type} [CommRing R] [CommRing S] [Group G] (f : R →+* S) {n : ℕ} (g ph ta : G) (u : Fin n → R)
     (i : Fin n) (y : R) : MonoidAlgebra.mapRingHom G f (MonoidAlgebra.single g 1 * q2El ph ta u i y) =
       MonoidAlgebra.single g 1 * q2El ph ta (fun i => f (u i)) i (f y) := by
@@ -163,6 +209,11 @@ private theorem mapRingHom_single_mul_partial_charpoly {R S G : Type} [CommRing 
   funext k
   simp only [Function.comp_apply, apply_ite (MonoidAlgebra.mapRingHom G f), map_sub, MonoidAlgebra.mapRingHom_single, map_one]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[MvPowerSeries.coeff_killCompl, MvPowerSeries.coeff_C]`. Use `split_ifs with h`. Rewrite using `[h, Finsupp.embDomain_zero, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.constantCoeff_rename]`. Use `MvPowerSeries.coeff_rename_eq_zero _ _ ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨y, hy⟩`. Use `h (Finsupp.ext fun a => ?_)` and prove the remaining obligations. Establish `h1` using `DFunLike.congr_fun hy (Function.Embedding.inl a)`. Rewrite `h1` using `[Finsupp.embDomain_apply_self, Finsupp.mapDomain_notin_range _ _ (by simp)]`. Conclude with `h1.symm`.
+-/
 private theorem kill_ren {R σ τ : Type} [CommRing R] [Finite τ] (z : MvPowerSeries τ R) :
     MvPowerSeries.killCompl (Function.Embedding.inl : σ ↪ σ ⊕ τ) (MvPowerSeries.rename Sum.inr z) =
       MvPowerSeries.C (MvPowerSeries.constantCoeff z) := by
@@ -178,6 +229,43 @@ private theorem kill_ren {R σ τ : Type} [CommRing R] [Finite τ] (z : MvPowerS
     rw [Finsupp.embDomain_apply_self, Finsupp.mapDomain_notin_range _ _ (by simp)] at h1
     exact h1.symm
 
+/- English proof (translation)
+Introduce `l hl L G0 O _ _ _ hO _ n r B _ _ _ u J D b G h q N A Nq ph ta ex ut rel`. Use `haveI := hO.complete`. Use `haveI := hO.finite`. Use `haveI := hO.char`. Use `haveI : IsCO O (abelian₂ O Empty D) := co_mvps O O _`.
+
+Use `haveI : IsAdicComplete (maximalIdeal (abelian₂ O Empty D)) (abelian₂ O Empty D) := IsCO.complete (O := O)`. Use `haveI : IsAdicComplete (maximalIdeal B) B := IsCO.complete (O := O)`. Use `haveI : IsCO O (MvPowerSeries ((Fin q × Fin n) ⊕ (Fin q × Fin n)) A.R) := co_mvps O A.R _`. Use `haveI := A.fin1`. Use `haveI := b.fin`.
+
+Establish `hloc : ∀ x ∈ maximalIdeal (abelian₂ O Empty D), b.lam x ∈ maximalIdeal B` using `fun x hx => by`. Rewrite using `[← res_eq_zero_iff O, res_map, res_eq_zero_iff]` and apply the resulting hypothesis. Establish `hβ : A.β.comp (IsScalarTower.toAlgHom O (abelian₂ O Empty D) A.R) = b.lam`. Use `(co_ev O O B (Empty ⊕ Fin D) (Algebra.ofId O B) (fun s => b.lam (MvPowerSeries.X s)) fun s => hloc _ ?_).unique ⟨fun c => AlgHom.commutes _ c, ?_⟩ ⟨fun c => b.lam.commutes c, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff]`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `(s | k)`. Conclude with `s.elim`. Use `show A.β (algebraMap _ A.R _) = _`. Rewrite using `[A.segmentWeightExponent, b.segmentWeightExponent, map_sub, map_mul, map_one, AlgHom.commutes, ← A.β_pair.2]`.
+
+Both sides reduce to the same expression. Use `letI : Algebra (abelian₂ O Empty D) B := b.lam.toRingHom.toAlgebra`. Use `haveI : IsScalarTower (abelian₂ O Empty D) B b.M := IsScalarTower.of_algebraMap_smul fun c m => (b.smul_lam c m).symm`. Use `haveI : IsLocalHom (algebraMap (abelian₂ O Empty D) B) := ⟨fun x hx => by`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `hloc x hn hx⟩`. Establish `hlm : (l : abelian₂ O Empty D) ∈ maximalIdeal (abelian₂ O Empty D)`. Rewrite using `[← res_eq_zero_iff O, map_natCast, CharP.cast_eq_zero]`. Set `s : Sinf O Empty D q n →ₐ[abelian₂ O Empty D] MvPowerSeries ((Fin q × Fin n) ⊕ (Fin q × Fin n)) A.R` to `((MvPowerSeries.rename Sum.inr).restrictScalars _).comp (MvPowerSeries.mapAlgHom (Algebra.ofId (abelian₂ O Empty D) A.R))`. Establish `hs : ∀ z, s z = MvPowerSeries.rename Sum.inr (MvPowerSeries.map (algebraMap (abelian₂ O Empty D) A.R) z)` using `fun _ => rfl`.
+
+Establish `hsX : ∀ p, s (MvPowerSeries.X p) = MvPowerSeries.X (.inr p)` using `fun p => by`. Rewrite using `[hs, MvPowerSeries.map_X, MvPowerSeries.rename_X]`. Set `θ : MvPowerSeries ((Fin q × Fin n) ⊕ (Fin q × Fin n)) A.R →ₐ[O] SpAt u (fun j => h.p₀ (ph j)) ut` to `((Sp.mk _ _).restrictScalars O).comp ((MvPowerSeries.mapAlgHom A.β).comp ((MvPowerSeries.killCompl Function.Embedding.inl).restrictScalars O))`. Establish `hθ : ∀ z, θ z = Sp.mk _ _ (MvPowerSeries.map A.β.toRingHom (MvPowerSeries.killCompl Function.Embedding.inl z))` using `fun _ => rfl`. Establish `θC : ∀ x, θ (MvPowerSeries.C x) = algebraMap B _ (A.β x)` using `fun x => by`.
+
+Rewrite using `[hθ, MvPowerSeries.killCompl_C, MvPowerSeries.map_C]`. Both sides reduce to the same expression. Establish `θl : ∀ p, θ (MvPowerSeries.X (.inl p)) = Sp.mk _ _ (MvPowerSeries.X p)` using `fun p => by`. Rewrite using `[hθ]`. Conclude with `congrArg _ ((congrArg _ (MvPowerSeries.killCompl_X p)).trans (MvPowerSeries.map_X _ _))`.
+
+Establish `θr : ∀ p, θ (MvPowerSeries.X (.inr p)) = 0` using `fun p => by`. Rewrite using `[hθ, MvPowerSeries.killCompl_X_eq_zero (by simp), map_zero, map_zero]`. Set `c : Fin q × Fin n → A.R` to `fun p => algebraMap O A.R (ut p.1 p.2)`. Set `ev : PUY A.R q n →+* MvPowerSeries ((Fin q × Fin n) ⊕ (Fin q × Fin n)) A.R` to `MvPolynomial.eval₂Hom MvPowerSeries.C fun p => MvPowerSeries.C (Sum.elim c 0 p) + MvPowerSeries.X p`. Establish `evC : ∀ x, ev (MvPolynomial.C x) = MvPowerSeries.C x` using `fun x => MvPolynomial.eval₂Hom_C _ _ x`.
+
+Establish `evX : ∀ p, ev (MvPolynomial.X p) = MvPowerSeries.C (Sum.elim c 0 p) + MvPowerSeries.X p` using `fun p => MvPolynomial.eval₂Hom_X' _ _ p`. Take `⟨M, _, _, rk, e, he, hk, φ, ψ, h1, h2, h3, h4⟩` from `opCore (Λ := abelian₂ O Empty D) hl.out hlm _ (fun j => (Det.chiApi u.D _).2.2.1) (fun j => le_antisymm (Det.chiApi u.D _).2.2.2.1 (Polynomial.le_natDegree_of_ne_zero (by`. Establish `h0` using `(Det.chiApi u.D (MonoidAlgebra.single (h.p₀ (ph j)) 1)).1`. Rewrite `h0` using `[GDet.lam, pow_zero, one_mul, Nat.sub_zero]`. Rewrite using `[h0]`.
+
+Conclude with `one_ne_zero)))`. Use the proof step `A.β.toRingHom (AlgHom.congr_fun hβ) c (fun j i => algebraMap O B (ut j i)) (fun j i => (A.β.commutes _).symm)`. Use the proof step `A.act1 A.actw _ rel.two A.ρ A.ρ_gen A.proj A.tr A.tr_surj A.tr_ker A.tr_u s hsX θ.toRingHom θC θl θr ev evC evX`. Set `ι : A.R →ₐ[O] MvPowerSeries ((Fin q × Fin n) ⊕ (Fin q × Fin n)) A.R` to `IsScalarTower.toAlgHom O _ _`. Establish `hι : ∀ x, ι x = MvPowerSeries.C x` using `fun _ => rfl`.
+
+Take `⟨p, hp1, hp2⟩` from `CA.pair_map A.rN A.p ι`. Establish `hf : ev (MvPolynomial.rename Sum.inl (fEl Nq fun j i => (MvPolynomial.X (j, i) : PU A.R q n))) = fEl Nq fun j i => ev (uV A.R j i)`. Use `(fEl_map (ev.comp (MvPolynomial.rename Sum.inl).toRingHom) Nq _).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `htr : ∀ y, ev ((A.p.D.map (MvPolynomial.C : A.R →+* PUY A.R q n)).tr y) = p.D.tr (MonoidAlgebra.mapRingHom _ ev y)` using `fun y => by`.
+
+Establish `hc : ev.comp MvPolynomial.C = (ι : A.R →+* _)` using `RingHom.ext evC`. Rewrite using `[← hp1, ← hc, ← (CA.d_gmap A.p.D).2.1]`. Conclude with `(((CA.d_gmap _).2.2.1 ev y).2 1).symm`. Rewrite `h3`, `h4` using `[hf]`. Use `⟨{ rN := A.rN, compat := A.compat, R := MvPowerSeries ((Fin q × Fin n) ⊕ (Fin q × Fin n)) A.R, p := p s := s.restrictScalars O, s_w := fun k => ?_, U := fun j i => ev (uV A.R j i), U_res := fun j i => ?_ M := M, a := A.a, le_a := A.le_a, rk := rk, e := e, e_smul := he }, ⟨{ θ := …` and prove the remaining obligations.
+
+Use `show s _ = _`. Rewrite using `[hs, MvPowerSeries.map_C, MvPowerSeries.rename_C, A.segmentWeightExponent, ← hι, map_sub, map_mul, map_one, AlgHom.commutes, ← hp2]`. Both sides reduce to the same expression. Rewrite using `[evX, ← ι.commutes, hι, Sum.elim_inl, add_sub_cancel_left, mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff]`. Simplify using the standard rewrite rules.
+
+Use `show p.D.map _ = _`. Rewrite using `[← hp1, ← A.β_pair.1, (CA.d_gmap _).2.1, (CA.d_gmap _).2.1]`. Conclude with `congrArg _ (RingHom.ext θC)`. Use `show pushCh _ (p.ψ v i) = pushCh _ (u.ψ v i)`. Rewrite using `[← hp2, ← A.β_pair.2 v i]`.
+
+Conclude with `MonoidHom.ext fun g => Units.ext (θC _)`. Use `show θ (s z) = _`. Rewrite using `[hθ, hs, kill_ren, MvPowerSeries.map_C, MvPowerSeries.constantCoeff_map, ← hβ]`. Both sides reduce to the same expression. Use `show θ (ev _) = _`.
+
+Rewrite using `[evX, map_add, θC, θl, Sum.elim_inl, A.β.commutes, Sp.u, map_add]`. Both sides reduce to the same expression. Use `hk _ (rel.rel1 j g) m` as an intermediate fact. Rewrite `this` using `[map_pow, map_mul, fEl_map, htr, mapRingHom_single_mul_charpoly_of_roots]`. Then use the resulting hypothesis. Use `hk _ (rel.rel2 j i g) m` as an intermediate fact.
+
+Rewrite `this` using `[map_pow, map_mul, fEl_map, htr, mapRingHom_single_mul_partial_charpoly, evX (.inr _), Sum.elim_inr, Pi.zero_apply, map_zero, zero_add, ← hsX]`. Conclude with `this`.
+-/
 theorem UpperTheory.V.Pa.Lev.opToTW :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (b : TWBase u J Empty D) (G : Glob l L) (h : G.Hom G0) (q N : ℕ) (A : OpMod b h q N) (Nq : Fin q → ℕ) (ph ta : Fin q → G.G₀) (ex : ℕ) (ut : Fin q → Fin n → O), OpRel A Nq ph ta ex → ∃ A' : TWRing b h ut N, Nonempty (TWMaps Nq ph ta A' ex) := by
   intro l hl L G0 O _ _ _ hO _ n r B _ _ _ u J D b G h q N A Nq ph ta ex ut rel

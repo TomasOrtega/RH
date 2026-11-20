@@ -4,6 +4,11 @@ open Polynomial
 
 namespace GlobalTheory.NormFormBound
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Take `⟨ih1, ih2⟩` from `ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, add_mul]`.
+
+Establish `hpa : (p a ^ m a).natDegree ≤ m a * d` using `natDegree_pow_le.trans (Nat.mul_le_mul_left _ (hp a))`. Use `⟨natDegree_mul_le.trans (add_le_add hpa ih1), ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_mul_add_eq_of_natDegree_le hpa ih1, coeff_pow_of_natDegree_le (hp a), ih2, Finset.prod_insert ha]`.
+-/
 theorem prod_pow_bound {k σ : Type} [Field k] (s : Finset σ) (m : σ → ℕ) (p : σ → k[X]) (d : ℕ)
     (hp : ∀ i, (p i).natDegree ≤ d) :
     (∏ i ∈ s, p i ^ m i).natDegree ≤ (∑ i ∈ s, m i) * d ∧
@@ -19,6 +24,27 @@ theorem prod_pow_bound {k σ : Type} [Field k] (s : Finset σ) (m : σ → ℕ) 
     refine ⟨natDegree_mul_le.trans (add_le_add hpa ih1), ?_⟩
     rw [coeff_mul_add_eq_of_natDegree_le hpa ih1, coeff_pow_of_natDegree_le (hp a), ih2, Finset.prod_insert ha]
 
+/- English proof (translation)
+Use `set c := F.support.sup (fun m => (F.coeff m).natDegree) with hc`. Use `set G : MvPolynomial σ k := ∑ m ∈ F.support, MvPolynomial.monomial m ((F.coeff m).coeff c) with hG`. Establish `hsumdeg : ∀ m ∈ F.support, ∑ i ∈ m.support, m i = n`. Introduce `m hm`. Establish `h` using `hF (MvPolynomial.mem_support_iff.mp hm)`.
+
+Simplify `h` using `[Finsupp.weight_apply, Finsupp.sum]`. Establish `hcle : ∀ m ∈ F.support, (F.coeff m).natDegree ≤ c` using `fun m hm => Finset.le_sup (f := fun m => (F.coeff m).natDegree) hm`. Establish `hG0 : G ≠ 0`. Establish `hne : F.support.Nonempty` using `Finset.nonempty_iff_ne_empty.mpr (by rwa [Ne, MvPolynomial.support_eq_empty])`. Take `⟨m0, hm0, hmax⟩` from `Finset.exists_max_image F.support (fun m => (F.coeff m).natDegree) hne`.
+
+Establish `hcm : c = (F.coeff m0).natDegree` using `le_antisymm (Finset.sup_le fun m hm => hmax m hm) (hcle m0 hm0)`. Introduce `hG'`. Establish `h1` using `congrArg (MvPolynomial.coeff m0) hG'`. Rewrite `h1` using `[hG, MvPolynomial.coeff_sum, Finset.sum_eq_single m0]`. Rewrite `h1` using `[MvPolynomial.coeff_monomial, if_pos rfl, hcm, MvPolynomial.coeff_zero]`.
+
+Conclude with `(MvPolynomial.mem_support_iff.mp hm0) (Polynomial.leadingCoeff_eq_zero.mp h1)`. Introduce `m _ hm`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg hm]`. Introduce `h`. Conclude with `absurd hm0 h`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨lam, hlam⟩ : ∃ lam : σ → k, MvPolynomial.eval lam G ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `hG0 (MvPolynomial.funext fun x => by simpa using hall x)`. Use `⟨c, lam, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `d p hp`. Rewrite using `[MvPolynomial.eval_eq]`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun m hm => ?_` and prove the remaining obligations. Establish `hdeg` using `(prod_pow_bound m.support m p d hp).1`. Rewrite `hdeg` using `[hsumdeg m hm]`.
+
+Use `natDegree_mul_le.trans ?_` and prove the remaining obligations. Use `hcle m hm` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `d p hp hpl`. Rewrite using `[MvPolynomial.eval_eq, Polynomial.finset_sum_coeff]`.
+
+Establish `hterm : ∀ m ∈ F.support, (F.coeff m * ∏ i ∈ m.support, p i ^ m i).coeff (n * d + c) = (F.coeff m).coeff c * ∏ i ∈ m.support, lam i ^ m i`. Introduce `m hm`. Establish `hb` using `prod_pow_bound m.support m p d hp`. Rewrite `hb` using `[hsumdeg m hm]`. Rewrite using `[add_comm (n * d) c, coeff_mul_add_eq_of_natDegree_le (hcle m hm) hb.1, hb.2]`.
+
+Simplify using `[hpl]`. Rewrite using `[Finset.sum_congr rfl hterm]`. Establish `hev : MvPolynomial.eval lam G = ∑ m ∈ F.support, (F.coeff m).coeff c * ∏ i ∈ m.support, lam i ^ m i`. Rewrite using `[hG, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.eval_monomial, Finsupp.prod]`. Rewrite using `[← hev]`. Conclude with `hlam`.
+-/
 theorem form_bound {k σ : Type} [Field k] [Infinite k] [Fintype σ] (n : ℕ)
     (F : MvPolynomial σ k[X]) (hF : F.IsHomogeneous n) (h0 : F ≠ 0) :
     ∃ (c : ℕ) (lam : σ → k),
@@ -81,6 +107,15 @@ theorem form_bound {k σ : Type} [Field k] [Infinite k] [Fintype σ] (n : ℕ)
     rw [← hev]
     exact hlam
 
+/- English proof (translation)
+Use `⟨(Matrix.of fun a c => ∑ i, MvPolynomial.C (Algebra.leftMulMatrix b (b i) a c) * MvPolynomial.X i).det, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_apply]`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Establish `hC : ((Equiv.Perm.sign σ : ℤ) : MvPolynomial (Fin n) R) = MvPolynomial.C ((Equiv.Perm.sign σ : ℤ) : R)` using `by simp`.
+
+Rewrite using `[hC]`. Establish `hent : ∀ a ∈ (Finset.univ : Finset (Fin n)), ((Matrix.of fun a c => ∑ i, MvPolynomial.C (Algebra.leftMulMatrix b (b i) a c) * MvPolynomial.X i) (σ a) a).IsHomogeneous 1`. Introduce `a _`. Rewrite using `[Matrix.of_apply]`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `using (MvPolynomial.isHomogeneous_C (Fin n) (Algebra.leftMulMatrix b (b i) (σ a) a)).mul (MvPolynomial.isHomogeneous_X R i)`. Establish `hmul` using `(MvPolynomial.isHomogeneous_C (Fin n) ((Equiv.Perm.sign σ : ℤ) : R)).mul (MvPolynomial.IsHomogeneous.prod _ _ (fun _ => 1) hent)`. Simplify using `using hmul`. Introduce `p`. Rewrite using `[Algebra.norm_eq_matrix_det b, RingHom.map_det]`.
+
+Use `congr 1`. Use extensionality with `a c`. Simplify using `[map_sum, Matrix.sum_apply, mul_comm]`.
+-/
 theorem exists_norm_form {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (n : ℕ)
     (b : Module.Basis (Fin n) R A) :
     ∃ F : MvPolynomial (Fin n) R, F.IsHomogeneous n ∧
@@ -110,6 +145,17 @@ theorem exists_norm_form {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (n
     ext a c
     simp [map_sum, Matrix.sum_apply, mul_comm]
 
+/- English proof (translation)
+Use `haveI : Module.Free k[X] A := Module.Free.of_basis b`. Use `haveI : Module.Finite k[X] A := Module.Finite.of_basis b`. Take `⟨F, hFh, hFev⟩` from `exists_norm_form n b`. Establish `hF0 : F ≠ 0`. Introduce `hF`.
+
+Establish `h1` using `hFev (fun i => b.repr 1 i)`. Rewrite `h1` using `[hF, map_zero, b.sum_repr 1, map_one]`. Conclude with `one_ne_zero h1.symm`. Take `⟨c, lam, hb1, hb2⟩` from `form_bound n F hFh hF0`. Use `⟨c, lam, fun d p hp => ?_, fun d p hp => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hFev]`. Conclude with `hb1 d p hp`. Establish `hq1 : ∀ i, (C (lam i) * X ^ d + p i).natDegree ≤ d` using `fun i => (natDegree_add_le _ _).trans (max_le (natDegree_C_mul_X_pow_le _ _) (natDegree_le_of_degree_le (hp i).le))`. Establish `hq2 : ∀ i, (C (lam i) * X ^ d + p i).coeff d = lam i` using `fun i => by`. Rewrite using `[coeff_add, coeff_C_mul_X_pow, if_pos rfl, coeff_eq_zero_of_degree_lt (hp i), add_zero]`.
+
+Establish `hN : (Algebra.norm k[X] (∑ i, (C (lam i) * X ^ d + p i) • b i)).coeff (n * d + c) ≠ 0`. Rewrite using `[← hFev]`. Conclude with `hb2 d (fun i => C (lam i) * X ^ d + p i) hq1 hq2`. Use `⟨fun h0 => hN (by rw [h0, Algebra.norm_zero, coeff_zero]), ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[← hFev]`. Conclude with `hb1 d (fun i => C (lam i) * X ^ d + p i) hq1`. Conclude with `le_natDegree_of_ne_zero hN`.
+-/
 theorem norm_degree (k A : Type) [Field k] [Infinite k] [CommRing A] [IsDomain A]
     [Algebra k[X] A] (n : ℕ) (b : Module.Basis (Fin n) k[X] A) :
     ∃ (c : ℕ) (lam : Fin n → k),

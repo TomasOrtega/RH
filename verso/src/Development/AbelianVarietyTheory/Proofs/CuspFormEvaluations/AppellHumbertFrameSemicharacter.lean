@@ -9,17 +9,29 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AnVal
 
+/- English proof (translation)
+Simplify using `[hermForm]`.
+-/
 theorem semichar_herm_zero_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (w : Fin g → ℂ) : hermForm Hm 0 w = 0 := by
   simp [hermForm]
 
+/- English proof (translation)
+Simplify using `[hermForm, add_dotProduct]`.
+-/
 theorem semichar_herm_add_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z z' w : Fin g → ℂ) :
     hermForm Hm (z + z') w = hermForm Hm z w + hermForm Hm z' w := by
   simp [hermForm, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[hermForm, star_add, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem semichar_herm_add_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w w' : Fin g → ℂ) :
     hermForm Hm z (w + w') = hermForm Hm z w + hermForm Hm z w' := by
   simp [hermForm, star_add, Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `only [hermForm, dotProduct, Matrix.mulVec, star_sum, star_mul', Finset.mul_sum, Pi.star_apply, star_star]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hH.apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem semichar_herm_swap {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (z w : Fin g → ℂ) :
     hermForm Hm w z = star (hermForm Hm z w) := by
   simp only [hermForm, dotProduct, Matrix.mulVec, star_sum, star_mul', Finset.mul_sum, Pi.star_apply, star_star]
@@ -32,6 +44,11 @@ section
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {x0 : Sp ℂ ⟶ S} {g : ℕ} (Φ : AnFr A L x0 g)
 
+/- English proof (translation)
+Take `⟨pt⟩ : Nonempty (Sp ℂ)` from `inferInstanceAs (Nonempty (PrimeSpectrum ℂ))`. Take `⟨j, hj⟩ : ∃ j, (Φ.e 0).left pt ∈ L.L.U j` from `TopologicalSpace.Opens.mem_iSup.1 (L.isLB.cover.ge (Set.mem_univ _))`. Establish `hj0 : ⊤ ≤ (Φ.e 0).left ⁻¹ᵁ L.L.U j` using `fun z _ => by`. Establish `hz : z = pt` using `Subsingleton.elim (α := PrimeSpectrum ℂ) z pt`. Rewrite using `[hz]`.
+
+Conclude with `hj`. Use `⟨j, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[(Φ.e_ker a).2 ha, ← (Φ.e_ker 0).2 Φ.lat.zero_mem]`. Conclude with `hj0`.
+-/
 theorem AnFr.exists_chart_lat : ∃ j, ∀ a ∈ Φ.lat, ⊤ ≤ (Φ.e a).left ⁻¹ᵁ L.L.U j := by
   obtain ⟨pt⟩ : Nonempty (Sp ℂ) := inferInstanceAs (Nonempty (PrimeSpectrum ℂ))
   obtain ⟨j, hj⟩ : ∃ j, (Φ.e 0).left pt ∈ L.L.U j :=
@@ -44,6 +61,19 @@ theorem AnFr.exists_chart_lat : ∃ j, ∀ a ∈ Φ.lat, ⊤ ≤ (Φ.e a).left �
   rw [(Φ.e_ker a).2 ha, ← (Φ.e_ker 0).2 Φ.lat.zero_mem]
   exact hj0
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `Φ.exists_chart_lat`. Establish `hab` using `Φ.lat.add_mem ha hb`. Establish `h1` using `Φ.fr_per a ha j 0 (hj 0 Φ.lat.zero_mem)`. Establish `h2` using `Φ.fr_per b hb j a (hj a ha)`. Establish `h3` using `Φ.fr_per (a + b) hab j 0 (hj 0 Φ.lat.zero_mem)`.
+
+Establish `hne : Φ.fr j (a + b) ≠ 0` using `Φ.fr_ne j _ (hj _ hab)`. Rewrite `h1` using `[zero_add, h2]`. Rewrite `h3` using `[zero_add]`. Simplify using `only [semichar_herm_zero_left, mul_zero, zero_add] at h1 h3`. Establish `key : Φ.χ (a + b) * Complex.exp (↑Real.pi / 2 * hermForm Φ.Hm (a + b) (a + b)) = Φ.χ a * Φ.χ b * (Complex.exp (↑Real.pi / 2 * hermForm Φ.Hm a a) * Complex.exp (↑Real.pi * hermForm Φ.Hm a b + ↑Real.pi / 2 * hermForm Φ.Hm b b))`.
+
+Use `h3.symm.trans h1` as an intermediate fact. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `this`. Establish `hexp : Complex.exp (↑Real.pi / 2 * hermForm Φ.Hm a a) * Complex.exp (↑Real.pi * hermForm Φ.Hm a b + ↑Real.pi / 2 * hermForm Φ.Hm b b) = Complex.exp (↑Real.pi / 2 * hermForm Φ.Hm (a + b) (a + b)) * Complex.exp (Real.pi * Complex.I * ((hermForm Φ.Hm a b).im : ℂ))`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`.
+
+Use `congr 1`. Rewrite using `[semichar_herm_add_left, semichar_herm_add_right, semichar_herm_add_right, semichar_herm_swap Φ.herm a b]`. Establish `hsc : hermForm Φ.Hm a b - star (hermForm Φ.Hm a b) = 2 * ((hermForm Φ.Hm a b).im : ℂ) * Complex.I`. Rewrite using `[show star (hermForm Φ.Hm a b) = (starRingEnd ℂ) (hermForm Φ.Hm a b) from rfl, Complex.sub_conj]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(↑Real.pi / 2 : ℂ) * hsc`. Rewrite `key` using `[hexp]`. Establish `hE : Complex.exp (↑Real.pi / 2 * hermForm Φ.Hm (a + b) (a + b)) ≠ 0` using `Complex.exp_ne_zero _`. Apply `mul_right_cancel₀ hE` to reduce the goal to its premises.
+
+Take the linear combination `key`.
+-/
 theorem AnFr.χ_add {a b : Fin g → ℂ} (ha : a ∈ Φ.lat) (hb : b ∈ Φ.lat) :
     Φ.χ (a + b) = Φ.χ a * Φ.χ b * Complex.exp (Real.pi * Complex.I * ((hermForm Φ.Hm a b).im : ℂ)) := by
   obtain ⟨j, hj⟩ := Φ.exists_chart_lat
@@ -78,15 +108,28 @@ theorem AnFr.χ_add {a b : Fin g → ℂ} (ha : a ∈ Φ.lat) (hb : b ∈ Φ.lat
   apply mul_right_cancel₀ hE
   linear_combination key
 
+/- English proof (translation)
+Introduce `h` and use `by have := Φ.χ_norm a ha rw [h, norm_zero] at this exact zero_ne_one this`.
+-/
 theorem AnFr.χ_ne_zero {a : Fin g → ℂ} (ha : a ∈ Φ.lat) : Φ.χ a ≠ 0 := fun h => by
   have := Φ.χ_norm a ha
   rw [h, norm_zero] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Rewrite using `[semichar_herm_swap Φ.herm a b]`. Simplify using the standard rewrite rules.
+-/
 theorem AnFr.herm_im_swap (a b : Fin g → ℂ) : (hermForm Φ.Hm b a).im = -(hermForm Φ.Hm a b).im := by
   rw [semichar_herm_swap Φ.herm a b]
   simp
 
+/- English proof (translation)
+Establish `h1` using `Φ.χ_add ha hb`. Establish `h2` using `Φ.χ_add hb ha`. Rewrite `h2` using `[add_comm b a, h1, Φ.herm_im_swap a b, mul_comm (Φ.χ b)]`. Establish `h3` using `mul_left_cancel₀ (mul_ne_zero (Φ.χ_ne_zero ha) (Φ.χ_ne_zero hb)) h2`. Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 h3`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hπ : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Establish `: (((hermForm Φ.Hm a b).im : ℝ) : ℂ) = (n : ℂ)`. Apply `mul_left_cancel₀ hπ` to reduce the goal to its premises. Move the coercions through the operations in `at hn`.
+
+Take the linear combination `hn`. Conclude with `this` after adjusting the coercions.
+-/
 theorem AnFr.herm_im_int {a b : Fin g → ℂ} (ha : a ∈ Φ.lat) (hb : b ∈ Φ.lat) :
     ∃ k : ℤ, (hermForm Φ.Hm a b).im = k := by
   have h1 := Φ.χ_add ha hb
@@ -102,14 +145,23 @@ theorem AnFr.herm_im_int {a b : Fin g → ℂ} (ha : a ∈ Φ.lat) (hb : b ∈ �
     linear_combination hn
   exact_mod_cast this
 
+/- English proof (translation)
+Use `Φ.herm_im_swap a a` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem AnFr.herm_im_self (a : Fin g → ℂ) : (hermForm Φ.Hm a a).im = 0 := by
   have := Φ.herm_im_swap a a
   linarith
 
+/- English proof (translation)
+Rewrite using `[Φ.χ_add ha ha, Φ.herm_im_self]`. Simplify using `[sq]`.
+-/
 theorem AnFr.χ_add_self {a : Fin g → ℂ} (ha : a ∈ Φ.lat) : Φ.χ (a + a) = Φ.χ a ^ 2 := by
   rw [Φ.χ_add ha ha, Φ.herm_im_self]
   simp [sq]
 
+/- English proof (translation)
+Establish `h` using `Φ.χ_add_self Φ.lat.zero_mem`. Rewrite `h` using `[add_zero]`. Apply `mul_left_cancel₀ (Φ.χ_ne_zero Φ.lat.zero_mem)` to reduce the goal to its premises. Take the linear combination `-h`.
+-/
 theorem AnFr.χ_zero : Φ.χ 0 = 1 := by
   have h := Φ.χ_add_self Φ.lat.zero_mem
   rw [add_zero] at h
@@ -118,6 +170,9 @@ theorem AnFr.χ_zero : Φ.χ 0 = 1 := by
 
 end
 
+/- English proof (translation)
+Introduce `S A _ _ L x0 g Φ`. Use `⟨fun a ha b hb => ⟨Φ.herm_im_int ha hb, Φ.χ_add ha hb⟩, Φ.χ_zero, fun h a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[two_smul, Φ.χ_add_self ha, h a ha]`.
+-/
 theorem anFr_semichar : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : RigLB A) (x0 : Sp ℂ ⟶ S) (g : ℕ) (Φ : AnFr A L x0 g), (∀ a ∈ Φ.lat, ∀ b ∈ Φ.lat, (∃ k : ℤ, (hermForm Φ.Hm a b).im = k) ∧ Φ.χ (a + b) = Φ.χ a * Φ.χ b * Complex.exp (Real.pi * Complex.I * ((hermForm Φ.Hm a b).im : ℂ))) ∧ Φ.χ 0 = 1 ∧ ((∀ a ∈ Φ.lat, Φ.χ a ^ 2 = 1) → ∀ a ∈ Φ.lat, Φ.χ ((2 : ℂ) • a) = 1) := by
   intro S A _ _ L x0 g Φ
   refine ⟨fun a ha b hb => ⟨Φ.herm_im_int ha hb, Φ.χ_add ha hb⟩, Φ.χ_zero, fun h a ha => ?_⟩

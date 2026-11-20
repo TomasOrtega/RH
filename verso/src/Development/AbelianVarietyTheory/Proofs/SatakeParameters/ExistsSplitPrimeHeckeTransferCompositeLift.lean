@@ -29,11 +29,21 @@ open Formalism.L2.Col (heckePolyOf blockPoly gaussBin)
 def stepMat (q n t : ℕ) (ν s : ℂ) (k j : ℕ) : ℂ :=
   if j ≤ k then (q : ℂ) ^ ((n - j) * (k - j)) * (gaussBin q t (k - j) : ℂ) * ν ^ (k - j) * s ^ j else 0
 
+/- English proof (translation)
+Unfold `heckePolyOf`. Conclude with `Finset.sum_congr rfl fun i hi => by rw [h i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))]`.
+-/
 theorem heckePolyOf_congr {n q : ℕ} {a b : ℕ → ℂ} (h : ∀ k, k ≤ n → a k = b k) :
     heckePolyOf n q a = heckePolyOf n q b := by
   unfold heckePolyOf
   exact Finset.sum_congr rfl fun i hi => by rw [h i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.KerRangeCount.card_ker_and_heckePolyOf_conv.2 ℂ q n t (fun j => if j ≤ n then a j else 0) ν s (fun j hj => if_neg (by omega))`. Rewrite `h` using `[heckePolyOf_congr (b := a) (fun k hk => if_pos hk)]`. Rewrite using `[← h]`. Use `heckePolyOf_congr fun l _ => ?_` and prove the remaining obligations. Establish `e1 : ∀ (f : ℕ → ℂ) (u v : ℕ), ∑ i ∈ Finset.range (u + 1), (if i ≤ v then f i else 0) = ∑ i ∈ Finset.range (v + 1), (if i ≤ u then f i else 0)`.
+
+Introduce `f u v`. Rewrite using `[← Finset.sum_filter, ← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [stepMat, ite_mul, zero_mul, mul_ite, mul_zero]`. Conclude with `e1 _ _ _`.
+-/
 theorem step_poly (q n t : ℕ) (ν s : ℂ) (a : ℕ → ℂ) :
     heckePolyOf (n + t) q (fun l => ∑ i ∈ Finset.range (n + 1), stepMat q n t ν s l i * a i) =
       (heckePolyOf n q a).comp (C s * X) * blockPoly (ν * (q : ℂ) ^ n) q t := by
@@ -53,6 +63,11 @@ theorem step_poly (q n t : ℕ) (ν s : ℂ) (a : ℕ → ℂ) :
   simp only [stepMat, ite_mul, zero_mul, mul_ite, mul_zero]
   exact e1 _ _ _
 
+/- English proof (translation)
+Unfold `blockPoly`. Rewrite using `[Polynomial.prod_comp]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [sub_comp, one_comp, mul_comp, C_comp, X_comp]`. Rewrite using `[← mul_assoc, ← C_mul]`.
+
+Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem blockPoly_comp (ν s : ℂ) (q t : ℕ) : (blockPoly ν q t).comp (C s * X) = blockPoly (ν * s) q t := by
   unfold blockPoly
   rw [Polynomial.prod_comp]
@@ -62,6 +77,11 @@ theorem blockPoly_comp (ν s : ℂ) (q t : ℕ) : (blockPoly ν q t).comp (C s *
   congr 3
   ring
 
+/- English proof (translation)
+Set `U : ℕ → ℕ → ℕ → ℂ` to `fun d => Nat.rec (fun k i => if i = k then 1 else 0) (fun d u k i => ∑ l ∈ Finset.range (n (m - d) + 1), u k l * M (m - d - 1) l i) d`. Use `⟨fun j => U (m - j), fun k i => by simp [U], fun j hj k i => ?_⟩` and prove the remaining obligations. Establish `e1 : m - j = (m - (j + 1)) + 1` using `by omega`. Establish `e2 : m - (m - (j + 1)) = j + 1` using `by omega`. Use `show U (m - j) k i = _`.
+
+Rewrite using `[e1]`. Use `show ∑ l ∈ Finset.range (n (m - (m - (j + 1))) + 1), U (m - (j + 1)) k l * M (m - (m - (j + 1)) - 1) l i = _`. Rewrite using `[e2]`. Both sides reduce to the same expression.
+-/
 theorem exists_chain (m : ℕ) (n : ℕ → ℕ) (M : ℕ → ℕ → ℕ → ℂ) :
     ∃ W : ℕ → ℕ → ℕ → ℂ, (∀ k i, W m k i = if i = k then 1 else 0) ∧
       ∀ j, j < m → ∀ k i, W j k i = ∑ l ∈ Finset.range (n (j + 1) + 1), W (j + 1) k l * M j l i := by
@@ -76,6 +96,15 @@ theorem exists_chain (m : ℕ) (n : ℕ → ℕ) (M : ℕ → ℕ → ℕ → �
   rw [e2]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero`. Introduce `j hj a`. Take `rfl : j = m` from `hj`. Simplify using `only [Finset.Ico_self, Finset.prod_empty, C_1, one_mul, comp_X, mul_one]`.
+
+Use `heckePolyOf_congr fun k hk => ?_` and prove the remaining obligations. Simplify using `only [h0, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_range]`. Conclude with `if_pos (by omega)`. Consider the case `succ d ih`. Introduce `j hj a`.
+
+Establish `hjm : j < m` using `by omega`. Establish `e : ∀ k, ∑ i ∈ Finset.range (n j + 1), W j k i * a i = ∑ l ∈ Finset.range (n (j + 1) + 1), W (j + 1) k l * ∑ i ∈ Finset.range (n j + 1), stepMat q (n j) t (ν j) (s j) l i * a i`. Introduce `k`. Simplify using `only [h1 j hjm, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+
+Simplify using `only [e]`. Rewrite using `[ih (j + 1) (by omega), hn j, step_poly, mul_comp, blockPoly_comp, comp_assoc, Finset.prod_eq_prod_Ico_succ_bot hjm, Finset.prod_eq_prod_Ico_succ_bot hjm, mul_assoc]`. Simplify using `only [mul_comp, C_comp, X_comp, C_mul, mul_assoc]`.
+-/
 theorem chain_poly (q t m : ℕ) (n : ℕ → ℕ) (hn : ∀ j, n (j + 1) = n j + t) (ν s : ℕ → ℂ) (W : ℕ → ℕ → ℕ → ℂ)
     (h0 : ∀ k i, W m k i = if i = k then 1 else 0)
     (h1 : ∀ j, j < m → ∀ k i, W j k i = ∑ l ∈ Finset.range (n (j + 1) + 1), W (j + 1) k l * stepMat q (n j) t (ν j) (s j) l i)
@@ -105,6 +134,13 @@ theorem chain_poly (q t m : ℕ) (n : ℕ → ℕ) (hn : ∀ j, n (j + 1) = n j 
       Finset.prod_eq_prod_Ico_succ_bot hjm, Finset.prod_eq_prod_Ico_succ_bot hjm, mul_assoc]
     simp only [mul_comp, C_comp, X_comp, C_mul, mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero`. Introduce `j hj`. Take `rfl : j = m` from `hj`. Simplify using `[Nat.not_odd_iff_even.2 hm]`.
+
+Consider the case `succ d ih`. Introduce `j hj`. Rewrite using `[Finset.prod_eq_prod_Ico_succ_bot (by omega : j < m), ih (j + 1) (by omega)]`. Break down `Nat.even_or_odd j with h1 | h1` into its components or cases. Rewrite using `[if_pos h1.add_one, if_pos h1.add_one, if_neg (Nat.not_odd_iff_even.2 h1)]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (Nat.not_odd_iff_even.2 h1.add_one), if_neg (Nat.not_odd_iff_even.2 h1.add_one), if_pos h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_alt (h σ : ℂ) (hh : h ≠ 0) (m : ℕ) (hm : Even m) (d : ℕ) : ∀ j, j + d = m →
     ∏ i ∈ Finset.Ico j m, ((if Odd (i + 1) then h else h⁻¹) * σ) = (if Odd j then h⁻¹ else 1) * σ ^ d := by
   induction d with
@@ -124,11 +160,22 @@ theorem prod_alt (h σ : ℂ) (hh : h ≠ 0) (m : ℕ) (hm : Even m) (d : ℕ) :
 
 variable {D : D7}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem opOf_eq {V : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (P : Pl D.host.E)
     (c : List ℤ →₀ ℂ) : opOf π P c = Finsupp.linearCombination ℂ (fun d => ∑ γ ∈ rep V P d, π γ) c := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualC_eq (c : List ℤ →₀ ℂ) : dualC c = Finsupp.lmapDomain ℂ ℂ dualLab c := rfl
 
+/- English proof (translation)
+Unfold `dualC`. Rewrite using `[← Finsupp.mapDomain_comp]`. Establish `: dualLab ∘ dualLab = id`. Use function extensionality and compare the values at `d`. Simplify using `[dualLab, List.map_reverse]`.
+
+Rewrite using `[this, Finsupp.mapDomain_id]`.
+-/
 theorem dualC_dualC (c : List ℤ →₀ ℂ) : dualC (dualC c) = c := by
   unfold dualC
   rw [← Finsupp.mapDomain_comp]
@@ -137,6 +184,11 @@ theorem dualC_dualC (c : List ℤ →₀ ℂ) : dualC (dualC c) = c := by
     simp [dualLab, List.map_reverse]
   rw [this, Finsupp.mapDomain_id]
 
+/- English proof (translation)
+Introduce `f hf`. Simplify using `only [opOf_eq, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Use `h l hl f hf` as an intermediate fact. Simplify using `only [opOf_eq] at this`.
+
+Rewrite using `[this]`.
+-/
 theorem match_sum {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     {P : Pl D.host.E} (I : Finset ℕ) (w : ℕ → ℂ) (a b : ℕ → List ℤ →₀ ℂ) (h : ∀ l ∈ I, Match ψ om P (a l) (b l)) :
     Match ψ om P (∑ l ∈ I, w l • a l) (∑ l ∈ I, w l • b l) := by
@@ -147,30 +199,48 @@ theorem match_sum {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {om : GA D S ×
   simp only [opOf_eq] at this
   rw [this]
 
+/- English proof (translation)
+Simplify using `only [splitC, Finsupp.single_finsetSum, Finset.smul_sum, Finsupp.smul_single, smul_eq_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem splitC_sum (n : ℕ) (I : Finset ℕ) (w : ℕ → ℂ) (M : ℕ → ℕ → ℂ) :
     splitC n (fun i => ∑ l ∈ I, w l * M l i) = ∑ l ∈ I, w l • splitC n (M l) := by
   simp only [splitC, Finsupp.single_finsetSum, Finset.smul_sum, Finsupp.smul_single, smul_eq_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [splitC, dualC_eq, map_sum, ← map_smul, Finsupp.smul_single, smul_eq_mul, mul_one]`.
+-/
 theorem dualC_splitC (n : ℕ) (w : ℕ → ℂ) :
     dualC (splitC n w) = ∑ l ∈ Finset.range (n + 1), w l • dualC (Finsupp.single (splitLab n l) 1) := by
   simp only [splitC, dualC_eq, map_sum, ← map_smul, Finsupp.smul_single, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Unfold `splitC`. Rewrite using `[Finset.sum_eq_single k (fun b _ hb => by simp [hb]) (fun h => absurd (Finset.mem_range.2 (by omega)) h)]`. Simplify using the standard rewrite rules.
+-/
 theorem splitC_delta {n k : ℕ} (hk : k ≤ n) :
     splitC n (fun i => if i = k then 1 else 0) = Finsupp.single (splitLab n k) 1 := by
   unfold splitC
   rw [Finset.sum_eq_single k (fun b _ hb => by simp [hb]) (fun h => absurd (Finset.mem_range.2 (by omega)) h)]
   simp
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv P.asIdeal (conjPl P).asIdeal (Formalism.DivisionValues.cO D.host.E) rfl).toEquiv).symm`.
+-/
 theorem absNorm_conjPl (P : Pl D.host.E) : Ideal.absNorm (conjPl P).asIdeal = Ideal.absNorm P.asIdeal := by
   rw [Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]
   exact (Nat.card_congr (Ideal.quotientEquiv P.asIdeal (conjPl P).asIdeal (Formalism.DivisionValues.cO D.host.E) rfl).toEquiv).symm
 
+/- English proof (translation)
+Introduce `e f he x h1 h2 h3` and use `by show χ x * (η x)⁻¹ = 1 rw [h e f he x h1 h2 h3, h' e f he x h1 h2 h3, inv_one, mul_one]`.
+-/
 theorem unrPl_mul_inv {P : Pl D.host.E} {χ η : (AE D)ˣ →* Circle} (h : UnrPl P χ) (h' : UnrPl P η) :
     UnrPl P (χ * η⁻¹) := fun e f he x h1 h2 h3 => by
   show χ x * (η x)⁻¹ = 1
   rw [h e f he x h1 h2 h3, h' e f he x h1 h2 h3, inv_one, mul_one]
 
+/- English proof (translation)
+Unfold `Lift.chrStep`. Use `split_ifs`. Conclude with `⟨unrPl_mul_inv h h', h⟩`. Conclude with `⟨h, unrPl_mul_inv h h'⟩`.
+-/
 theorem unrPl_step {P : Pl D.host.E} {μ : ℕ → (AE D)ˣ →* Circle} {η : (AE D)ˣ →* Circle} {j : ℕ} (h : UnrPl P (μ j))
     (h' : UnrPl P η) : UnrPl P (Lift.chrStep μ η j).1 ∧ UnrPl P (Lift.chrStep μ η j).2 := by
   unfold Lift.chrStep
@@ -178,6 +248,13 @@ theorem unrPl_step {P : Pl D.host.E} {μ : ℕ → (AE D)ˣ →* Circle} {η : (
   · exact ⟨unrPl_mul_inv h h', h⟩
   · exact ⟨h, unrPl_mul_inv h h'⟩
 
+/- English proof (translation)
+Substitute `hS hT` using the available equality. Rewrite `hq` using `[← absNorm_conjPl]`. Establish `hP' : conjPl (conjPl P) ≠ conjPl P` using `by rw [Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]; exact hP.symm`. Establish `hv` using `(GlobalTheory.T.thetaVacuum_heckeIdentity_splitPlace ψ S T χS χT om P hW hP u.1 u.2).1`. Establish `hm` using `((GlobalTheory.T.thetaVacuum_heckeIdentity_splitPlace ψ S T χS χT om (conjPl P) hW hP' u'.1 u'.2).2 e ϖ x t he h1 h2 hx).1 hr`.
+
+Rewrite using `[splitC_sum, dualC_splitC]`. Use `match_sum _ _ _ _ fun l hl => ?_` and prove the remaining obligations. Establish `h3` using `(((GlobalTheory.T.thetaVacua_matching_conjugatePrime ψ S T χS χT om P hW).2 hv).2 _ _).1 (hm l (Nat.lt_succ_iff.1 (Finset.mem_range.1 hl)))`. Rewrite `h3` using `[dualC_dualC, ← hq, ← hν]`. Use `h3 using 2` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `j`. Unfold `stepMat`. Use `split_ifs with hj`. Rewrite using `[hs, mul_pow ν, ← mul_assoc, mul_assoc _ (ν ^ (l - j)), ← pow_add, Nat.sub_add_cancel hj]`. Both sides reduce to the same expression.
+-/
 theorem step_match {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} {P : Pl D.host.E} (hW : IsWeilDatumO ψ S T χS χT om)
     (hP : conjPl P ≠ P) (u : UnrPl P χS ∧ UnrPl P χT) (u' : UnrPl (conjPl P) χS ∧ UnrPl (conjPl P) χT)
@@ -204,6 +281,29 @@ theorem step_match {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE
 
 open Formalism.L2.JoinChr in
 
+/- English proof (translation)
+Establish `hc : ∀ a : 𝓞 D.host.E, Formalism.DivisionValues.cO D.host.E (Formalism.DivisionValues.cO D.host.E a) = a` using `fun a => Subtype.ext (star_star _)`. Establish `hmem : ∀ (I : Ideal (𝓞 D.host.E)) (a : 𝓞 D.host.E), a ∈ I.map (Formalism.DivisionValues.cO D.host.E) ↔ Formalism.DivisionValues.cO D.host.E a ∈ I`. Introduce `I a`. Use `conv_lhs => rw [← hc a]`. Conclude with `Ideal.apply_mem_of_equiv_iff`.
+
+Establish `he' : Formalism.L2.NTheta.IsIdemAt (cA D e) P` using `GlobalTheory.MovedIdem.isIdemAt_conj he fun a => by`. Use `hmem P.asIdeal (Formalism.DivisionValues.cO D.host.E a)` as an intermediate fact. Rewrite `this` using `[hc]`. Conclude with `this.symm`. Establish `hpl : IsPlIdem D (cA D e) P`.
+
+Take `⟨⟨a1, a2, v, ε, a3, a4⟩, a5⟩` from `he'`. Conclude with `⟨a1, ⟨v, ε, a3, Or.inl ⟨a2, a4⟩⟩, a5⟩`. Use `set p : 𝓞 D.host.E := Formalism.DivisionValues.cO D.host.E ϖ with hp`. Establish `p1 : p ∈ P.asIdeal` using `(hmem _ _).1 h1`. Establish `p2 : p ∉ P.asIdeal ^ 2` using `fun h => h2 (by`.
+
+Use `(hmem _ _).2 h` as an intermediate fact. Rewrite using `[Ideal.map_pow] at this)` and apply the resulting hypothesis. Establish `p0 : p ≠ 0` using `fun h => p2 (h ▸ zero_mem _)`. Establish `pv : P.valuation D.host.E (p : D.host.E) = WithZero.exp (-1 : ℤ)`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`.
+
+Establish `a1` using `(P.intValuation_le_pow_iff_mem p 1).2 (by simpa using p1)`. Establish `a2` using `mt (P.intValuation_le_pow_iff_mem p 2).1 p2`. Establish `a0` using `P.intValuation_ne_zero p p0`. Rewrite `a1`, `a2`, the goal using `[← WithZero.exp_log a0]`. Rewrite `a1`, `a2` using `[WithZero.exp_le_exp]`.
+
+Use `congr 1`. Move the coercions through the operations in `at a1 a2`. Use linear arithmetic over natural numbers and integers. Set `k : D.host.Eˣ` to `Units.mk0 (p : D.host.E) (RingOfIntegers.coe_ne_zero_iff.2 p0)`. Set `L` to `GlobalTheory.EtaConjLocal.locHom hpl.1`.
+
+Establish `hu : P.valuation D.host.E ((k * (Formalism.L2.Host.unif P)⁻¹ : D.host.Eˣ) : D.host.E) = 1`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, GlobalTheory.EtaConjLocal.val_unif]`. Conclude with `mul_inv_eq_one₀ WithZero.exp_ne_zero |>.2 pv`. Establish `h3 : χ (L (k * (Formalism.L2.Host.unif P)⁻¹)) = 1`. Use `u (cA D e) _ (Or.inl ⟨he', rfl⟩) _ ?_ (GlobalTheory.EtaConjLocal.locE_parts hpl _ hu.le).2 ?_` and prove the remaining obligations.
+
+Use `show _ * (locE D _ _ - 1) = locE D _ _ - 1`. Unfold `locE`. Take the linear combination `(incA D ((k * (Formalism.L2.Host.unif P)⁻¹ : D.host.Eˣ) : D.host.E) - 1) * (he'.1.1 + he'.1.2.1)`. Rewrite using `[← map_inv]`. Use `(GlobalTheory.EtaConjLocal.locE_parts hpl (((k * (Formalism.L2.Host.unif P)⁻¹)⁻¹ : D.host.Eˣ) : D.host.E) ?_).2` and prove the remaining obligations.
+
+Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hu, inv_one]`. Establish `h4 : χ x * χ (L k) = 1` using `GlobalTheory.SplitDetCharacter.char_norm hχ x (L k) (by show locE D _ _ = _`. Rewrite using `[hx, map_add, map_mul, map_sub, map_one, GlobalTheory.MovedIdem.cA_incA]`. Unfold `locE`. Establish `: (k : D.host.E) = star (ϖ : D.host.E)` using `rfl`.
+
+Rewrite using `[this]`. Use the proof step `ring)`. Use `⟨cA D e, L (Formalism.L2.Host.unif P), hpl, rfl, ?_⟩` and prove the remaining obligations. Rewrite `h3` using `[map_mul, map_mul, map_inv, map_inv, mul_inv_eq_one]`. Rewrite using `[← h3]`.
+
+Conclude with `inv_eq_of_mul_eq_one_right h4`.
+-/
 theorem val_conj {χ : (AE D)ˣ →* Circle} {n : ℕ} (hχ : ResEta D χ n) {P : Pl D.host.E} (u : UnrPl P χ)
     {e : AE D} {ϖ : 𝓞 D.host.E} {x : (AE D)ˣ} (he : Formalism.L2.NTheta.IsIdemAt e (conjPl P))
     (h1 : ϖ ∈ (conjPl P).asIdeal) (h2 : ϖ ∉ (conjPl P).asIdeal ^ 2) (hx : (x : AE D) = e * incA D (ϖ : D.host.E) + (1 - e)) :
@@ -262,6 +362,19 @@ theorem val_conj {χ : (AE D)ˣ →* Circle} {n : ℕ} (hχ : ResEta D χ n) {P 
   rw [← h3]
   exact inv_eq_of_mul_eq_one_right h4
 
+/- English proof (translation)
+Use `set σ : ℂ := (Real.sqrt q : ℂ) with hσ`. Establish `h2 : (q : ℂ) = σ ^ 2`. Rewrite using `[hσ, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg q), Complex.ofReal_natCast]`. Establish `h0 : σ ≠ 0` using `fun h => hq (by rw [h] at h2; simpa using h2)`. Establish `e : ∀ i, s i = (if Odd (i + 1) then h else h⁻¹) * σ ^ t`.
+
+Introduce `i`. Use `ha i` as an intermediate fact. Rewrite using `[hs, hν, hS, hT]`. Apply the tactic sequence `split_ifs <;> field_simp <;> ring`. Simplify using `only [e]`.
+
+Use `⟨?_, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[prod_alt h _ hh m hm m 0 (zero_add m), if_neg (by simp), one_mul, h2, ← pow_mul, ← pow_mul]`. Use `congr 1`. Take `⟨c, rfl⟩` from `hm`. Rewrite using `[show (c + c) / 2 = c by omega]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨d, rfl⟩ : ∃ d, m = i + 1 + d` from `⟨m - (i + 1), by omega⟩`. Establish `e2 : 2 * ((r + (i + 1 + d - 1) * t) / 2) = r + i * t + t * d`. Rewrite using `[show i + 1 + d - 1 = i + d by omega, Nat.mul_div_cancel' (even_iff_two_dvd.1 (hr.add_odd (Odd.mul ?_ ht)))]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hm` using `[Nat.even_iff]`. Rewrite using `[Nat.odd_iff]`. Use linear arithmetic over natural numbers and integers. Use `ha i` as an intermediate fact. Rewrite using `[prod_alt h _ hh _ hm d (i + 1) rfl, hν, hS, h2, ← pow_mul σ 2 (_ / 2), e2, ← pow_mul σ 2, ← pow_mul σ t, two_mul, pow_add, pow_add σ (r + i * t)]`.
+
+Apply the tactic sequence `split_ifs <;> field_simp <;> ring`.
+-/
 theorem constants (q r t m : ℕ) (hq : q ≠ 0) (hr : Odd r) (ht : Odd t) (hm : Even m) (a : ℕ → ℂ) (h : ℂ) (ha : ∀ i, a i ≠ 0)
     (hh : h ≠ 0) (cS cT ν s : ℕ → ℂ) (hS : ∀ i, cS i = if Odd (i + 1) then a i * h⁻¹ else a i)
     (hT : ∀ i, cT i = if Odd (i + 1) then a i else a i * h⁻¹)
@@ -297,6 +410,41 @@ theorem constants (q r t m : ℕ) (hq : q ≠ 0) (hr : Odd r) (ht : Odd t) (hm :
       two_mul, pow_add, pow_add σ (r + i * t)]
     split_ifs <;> field_simp <;> ring
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL hC hS t P`. Take `⟨-, g2, -, g4⟩` from `GlobalTheory.T.theta_lift_levels_good_primes_properties R F hC.lev`. Take `⟨hG, hP, hq⟩` from `g4 hC.fam t P P.2`. Establish `hG'` using `(g2 t _ hG).2.1`. Take `⟨u1, u2⟩` from `GlobalTheory.T.splittingCharacters_unramified_offLevels R F hC.lev t _ hG`.
+
+Take `⟨v1, v2⟩` from `GlobalTheory.T.splittingCharacters_unramified_offLevels R F hC.lev t _ hG'`. Establish `hm` using `D.R.two_le_m`. Establish `hP' : conjPl (conjPl (R.pl P)) ≠ conjPl (R.pl P)` using `by rw [Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]; exact hP.symm`. Take `⟨e, he⟩` from `GlobalTheory.MovedIdem.exists_isIdemAt (conjPl (R.pl P)) (by`. Rewrite using `[Formalism.DivisionValues.GluingInclusion.conjIdeal_eq]`.
+
+Conclude with `fun h => hP' (HeightOneSpectrum.ext h))`. Take `⟨ϖ, h1, h2⟩ : ∃ ϖ ∈ (conjPl (R.pl P)).asIdeal, ϖ ∉ (conjPl (R.pl P)).asIdeal ^ 2` from `SetLike.exists_of_lt (Ideal.pow_lt_self _ (conjPl (R.pl P)).ne_bot (conjPl (R.pl P)).isPrime.ne_top 2 le_rfl)`. Establish `h0 : (ϖ : D.host.E) ≠ 0` using `RingOfIntegers.coe_ne_zero_iff.2 fun h => h2 (h ▸ zero_mem _)`. Take `⟨x, hx⟩ : ∃ x : (AE D)ˣ, (x : AE D) = e * incA D (ϖ : D.host.E) + (1 - e)` from `⟨Formalism.L2.JoinChr.locU he.1.1 (Units.mk0 _ h0), by`. Rewrite using `[Formalism.L2.JoinChr.locU_val, Formalism.L2.JoinChr.locE, Units.val_mk0]`.
+
+Use the proof step `ring⟩`. Establish `hY : ∀ j, j ≤ D.R.m → (Yc D j).rank = D.R.r + j * D.R.t` using `fun j hj => by`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), min_eq_left hj]`. Both sides reduce to the same expression. Establish `hX : D.sp.X'.rank = D.R.r + D.R.m * D.R.t` using `D.sp.X'_rank`.
+
+Establish `hn : ∀ j, D.R.r + (j + 1) * D.R.t = D.R.r + j * D.R.t + D.R.t` using `fun j => by ring`. Set `μ` to `R.toLevCh.mu t`. Set `ν : ℕ → ℂ` to `fun i => (((Lift.chrStep μ R.eta (i + 1)).1 x : ℂ) * (Real.sqrt (A.q P) : ℂ) ^ (D.R.r + i * D.R.t))⁻¹`. Set `s : ℕ → ℂ` to `fun i => ν i * (((Lift.chrStep μ R.eta (i + 1)).2 x : ℂ) * (Real.sqrt (A.q P) : ℂ) ^ (D.R.r + (i + 1) * D.R.t))`. Take `⟨W, w0, w1⟩` from `exists_chain D.R.m (fun j => D.R.r + j * D.R.t) fun j => stepMat (A.q P) (D.R.r + j * D.R.t) D.R.t (ν j) (s j)`.
+
+Establish `hmm : D.R.m - 1 + 1 = D.R.m` using `by omega`. Establish `hfix : FixAll R t (R.pl P)`. Use `⟨fun k hk => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Use `unrPl_step (u2 (k + 1) (by omega) hk.le) u1` as an intermediate fact. Conclude with `(GlobalTheory.T.thetaVacuum_heckeIdentity_splitPlace _ _ _ _ _ _ _ (hC.chain.ωY t k hk) hP this.1 this.2).1`.
+
+Use `unrPl_step (u2 D.R.m (by omega) le_rfl) u1` as an intermediate fact. Conclude with `(GlobalTheory.T.thetaVacuum_heckeIdentity_splitPlace _ _ _ _ _ _ _ (hC.chain.ωX t) hP this.1 this.2).1`. Use `u2 ((i : ℕ) + 1) (by omega) i.2` as an intermediate fact. Conclude with `(GlobalTheory.T.thetaVacuum_heckeIdentity_splitPlace _ _ _ _ _ _ _ (hC.thP.ωP i t) hP this (unrPl_mul_inv this u1)).1`. Use `⟨W 0, fun k hk => ?_, fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hY 0 (Nat.zero_le _)]`. Use `GlobalTheory.T.matchE_of_chainStep_matches R F hL hC hS t _ hG hfix _ (fun j => splitC (D.R.r + j * D.R.t) (W j k)) ?_ fun j hj => ?_` and prove the remaining obligations. Establish `hW` using `hC.chain.ωX t`. Establish `h3` using `step_match (ν := ν (D.R.m - 1)) (s := s (D.R.m - 1)) hW hP (unrPl_step (u2 D.R.m (by omega) le_rfl) u1) (unrPl_step (v2 D.R.m (by omega) le_rfl) v1) he h1 h2 hx (hY _ (Nat.sub_le _ _)) hX (by rw [← hn, hmm]) hq (by simp only [ν, hmm, μ]) (by simp only [s, hmm, μ]) (W D.R.m k)`. Rewrite `h3` using `[funext (w0 k), ← hX, splitC_delta hk]`.
+
+Establish `h4` using `funext (w1 (D.R.m - 1) (by omega) k)`. Simplify using `only [hmm] at h4`. Rewrite `h4` using `[funext (w0 k), ← hX]`. Simplify using `only [h4]`. Conclude with `h3`.
+
+Establish `h3` using `step_match (ν := ν j) (s := s j) (hC.chain.ωY t j hj) hP (unrPl_step (u2 (j + 1) (by omega) hj.le) u1) (unrPl_step (v2 (j + 1) (by omega) hj.le) v1) he h1 h2 hx (hY _ (by omega)) (hY _ hj.le) (hn j) hq rfl rfl (W (j + 1) k)`. Simplify using `only [funext (w1 j (by omega) k)]`. Conclude with `h3`. Establish `hq0 : A.q P ≠ 0`. Rewrite using `[hq]`.
+
+Conclude with `fun h => (R.pl P).ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Apply the tactic sequence `obtain ⟨c1, c2⟩ := constants (A.q P) D.R.r D.R.t D.R.m hq0 (Formalism.L2.NTheta.odd_r D.R) D.R.t_odd D.R.m_even (fun i => (μ (i + 1) x : ℂ)) (R.eta x : ℂ) (fun i => Circle.coe_ne_zero _) (Circle.coe_ne_zero _) (fun i => ((Lift.chrStep μ R.eta (i + 1)).1 x : ℂ)) (fun i => ((Lift.c …`. Establish `h3` using `chain_poly (A.q P) D.R.t D.R.m (fun j => D.R.r + j * D.R.t) hn ν s W w0 w1 D.R.m 0 (zero_add _) a`. Rewrite using `[hX, hY 0 (Nat.zero_le _), h3, c1]`. Use `congr 1`.
+
+Take `⟨_, _, _, tie⟩` from `hC.fam.tie`. Take `⟨-, r1, r2⟩` from `tie.ranks`. Establish `hres : ∀ j, j < D.R.m → ∃ n, ResEta D (μ (j + 1)) n`. Introduce `j hj`. Establish `: (∃ n, ResEta D (Lift.chrStep μ R.eta (j + 1)).1 n) ∧ ∃ n, ResEta D (Lift.chrStep μ R.eta (j + 1)).2 n`.
+
+Break down `Nat.lt_or_eq_of_le (Nat.succ_le_of_lt hj) with h | h` into its components or cases. Conclude with `⟨⟨_, (hC.chain.ωY t j h).resS⟩, _, (hC.chain.ωY t j h).resT⟩`. Rewrite using `[show j + 1 = D.R.m from h]`. Conclude with `⟨⟨_, (hC.chain.ωX t).resS⟩, _, (hC.chain.ωX t).resT⟩`. Unfold `Lift.chrStep at this`.
+
+Use `split_ifs at this`. Conclude with `this.2`. Conclude with `this.1`. Establish `hval : ∀ j : Fin D.R.m, ((μ ((j : ℕ) + 1) x : Circle) : ℂ)⁻¹ = D.what₂.embLL (A.muVal j t P : D.what₂.LL)`. Introduce `j`.
+
+Take `⟨n, hn⟩` from `hres j j.2`. Take `⟨e', y, a1, a2, a3⟩` from `val_conj hn (u2 ((j : ℕ) + 1) (by omega) j.2) he h1 h2 hx`. Rewrite using `[← Circle.coe_inv, a3, hC.fam.muVal j t P P.2]`. Establish `b1` using `(hC.lev.mu0 j).2 _ e' a1 _ y a2`. Establish `b2` using `(hC.lev.xi t).2 _ e' a1 _ y a2`.
+
+Use `show ((R.mu0 ((j : ℕ) + 1) y * R.xi t y : Circle) : ℂ) = (((R.C.mu0 j).locK (R.pl P) (Formalism.L2.Host.unif (R.pl P)) * (R.xiH t).locK (R.pl P) (Formalism.L2.Host.unif (R.pl P)) : ℂˣ) : ℂ)`. Rewrite using `[Circle.coe_mul, b1, b2, Units.val_mul]`. Use `show _ = Polynomial.map D.what₂.embLL ((List.ofFn fun j : Fin D.R.m => fun P : A.ok t => Formalism.L2.Col.firstValB (fun P : Pl0 => A.muVal j t P) A.q A.r D.R.m A.t P).map fun ν => blockPoly (ν P) (A.q P) A.t).prod`. Rewrite using `[List.map_ofFn, List.prod_ofFn, Polynomial.map_prod, ← Finset.range_eq_Ico, Finset.prod_range]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, Formalism.L2.Col.map_blockPoly, Formalism.L2.Col.firstValB, map_mul, map_pow, map_natCast]`. Rewrite using `[c2 j j.2, hval, r1, r2]`.
+-/
 theorem exists_transfer : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Chain.LiftInteg D → Core R F → SchurAll R → ∀ t (P : A.ok t), ∃ z : ℕ → ℕ → ℂ, (∀ k, k ≤ D.sp.X'.rank → MatchE R t (R.pl P) (Finsupp.single (splitLab D.sp.X'.rank k) 1) (splitC (Yc D 0).rank (z k))) ∧ ∀ a : ℕ → ℂ, Formalism.L2.Col.heckePolyOf D.sp.X'.rank (A.q P) (fun k => ∑ j ∈ Finset.range ((Yc D 0).rank + 1), z k j * a j) = (Formalism.L2.Col.heckePolyOf (Yc D 0).rank (A.q P) a).comp (C ((A.q P : ℂ) ^ (D.R.m / 2 * D.R.t)) * X) * ((A.fam.R t).blockProd P).map D.what₂.embLL := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL hC hS t P
   obtain ⟨-, g2, -, g4⟩ := GlobalTheory.T.theta_lift_levels_good_primes_properties R F hC.lev

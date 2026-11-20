@@ -5,6 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace LateralTheory.CohomologicalPurity.TubeCut
 
+/- English proof (translation)
+Establish `e` using `AN a6 q _ _ (abvRel U f π' π h) n m i k x (Hs.pull q (abvMap U π) _ _ b)`. Rewrite `e` using `[← hs_pull_comp, abvRel_abvMap]`. Conclude with `e`.
+-/
 theorem sq (AN : LeafActNat) (a6 : DivisorNaturality) (q : ℕ) [NeZero q] {X : Scheme.{0}} (U : X.Opens) {E' E : Spc} (f : E' ⟶ E)
     (π' : E' ⟶ sch.obj X) (π : E ⟶ sch.obj X) (h : f ≫ π = π') {n m i k : ℤ} (x : Ht q E n i) (b : Hs q (opn U) m k) :
     Hs.pull q (abvRel U f π' π h) _ _ (Hs.act q (P := abv U π) x (Hs.pull q (abvMap U π) _ _ b)) =
@@ -13,6 +16,13 @@ theorem sq (AN : LeafActNat) (a6 : DivisorNaturality) (q : ℕ) [NeZero q] {X : 
   rw [← hs_pull_comp, abvRel_abvMap] at e
   exact e
 
+/- English proof (translation)
+Introduce `n i`. Establish `h' : ∀ a, disc.map ((Cofan.mk P g).inj a) ≫ disc.map π = disc.map (π' a)` using `fun a => by`. Rewrite using `[← disc.map_comp]`. Conclude with `congrArg disc.map (h a)`. Establish `tS : IsColimit (Cofan.mk (disc.obj P) fun a => disc.map (g a))` using `isColimitCofanMkObjOfIsColimit disc E g t`.
+
+Establish `hΦ` using `S (ZMod q) (tw q i) A (fun a => disc.obj (E a)) _ ⟨tS⟩ n`. Establish `hΨ` using `HS q X U A E (Cofan.mk P g) ⟨t⟩ π π' h' (n + m) (i + k)`. Establish `hP : Function.Bijective (Pi.map fun a (x : Ht q (disc.obj (E a)) n i) => Hs.act q (P` using `abv U (disc.map (π' a))) x (Hs.pull q (abvMap U (disc.map (π' a))) _ _ b)) := Function.Bijective.piMap fun a => hb a n i`. Use `(Function.Bijective.of_comp_iff' hΨ _).1 ?_` and prove the remaining obligations. Use `hP.comp hΦ using 1` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `all_goals try rfl`. Use function extensionality and compare the values at `x`. Use function extensionality and compare the values at `a`. Conclude with `sq AN a6 q U _ _ _ (h' a) x b`.
+-/
 theorem prd_sum (S : LeafSum) (HS : LeafHsSum) (AN : LeafActNat) (a6 : DivisorNaturality) (q : ℕ) [NeZero q] {X : Scheme.{0}}
     (U : X.Opens) {A : Type} (E : A → PSh) (P : PSh) (g : ∀ a, E a ⟶ P) (t : IsColimit (Cofan.mk P g))
     (π : P ⟶ yoneda.obj X) (π' : ∀ a, E a ⟶ yoneda.obj X) (h : ∀ a, g a ≫ π = π' a) {m k : ℤ} (b : Hs q (opn U) m k)
@@ -34,12 +44,18 @@ theorem prd_sum (S : LeafSum) (HS : LeafHsSum) (AN : LeafActNat) (a6 : DivisorNa
   funext a
   exact sq AN a6 q U _ _ _ (h' a) x b
 
+/- English proof (translation)
+Use extensionality with `U x`. Conclude with `ConcreteCategory.congr_hom (NatTrans.congr_app (hc _ _ (σ.map (homOfLE (Fin.zero_le 0)))) U) x`.
+-/
 theorem inj_aug_RPrdH {J : Type} [SmallCategory J] (D : J ⥤ PSh) {X : Scheme.{0}} (c : ∀ j, D.obj j ⟶ yoneda.obj X)
     (hc : Coc D c) (N : SimplexCategoryᵒᵖ) (σ : Fin (N.unop.len + 1) ⥤ J) :
     inj D N σ ≫ ((aug c hc).app N : (hoc D).obj N ⟶ yoneda.obj X) = c (σ.obj 0) := by
   ext U x
   exact ConcreteCategory.congr_hom (NatTrans.congr_app (hc _ _ (σ.map (homOfLE (Fin.zero_le 0)))) U) x
 
+/- English proof (translation)
+Introduce `hyp q _ J _ D X U c hc m k b hb`. Use `lvl hyp q X U _ (aug c hc) m k b fun N => ?_` and prove the remaining obligations. Conclude with `prd_sum S HS AN hyp.2.2.2.2.1 q U (fun σ : Fin (N.unop.len + 1) ⥤ J => D.obj (σ.obj 0)) ((hoc D).obj N) (inj D N) (L J D N).some ((aug c hc).app N : (hoc D).obj N ⟶ yoneda.obj X) (fun σ : Fin (N.unop.len + 1) ⥤ J => c (σ.obj 0)) (inj_aug_RPrdH D c hc N) b (fun σ : Fin (N.unop.len …`.
+-/
 theorem LeafPrdHoc_of (lvl : LeafPrdLevel) (L : LeafLevel) (S : LeafSum) (HS : LeafHsSum) (AN : LeafActNat) :
     LeafPrdHoc := by
   intro hyp q _ J _ D X U c hc m k b hb

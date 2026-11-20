@@ -21,6 +21,37 @@ namespace GlobalTheory.LiftLevel
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D S T C hn ΛT hsd hAA βS βT hβS hβT Pg Q ξ hPg h2 e he`. Establish `hS : S.gram = 1` using `C.m.gS`. Take `⟨γ, hγ, s, hs, h1, h2'⟩` from `GlobalTheory.T.exists_global_scalar_prime_to_conj_polarisationLattice' D T.rank C.X.Λ ΛT hAA (Pg ∪ Q)`. Take `⟨t, ht, hte⟩` from `GlobalTheory.T.exists_integral_inverse_on_conjugate_half D (Pg ∪ Q) e he s hs`. Establish `hee : e * e = e` using `GlobalTheory.PlaceVec.idemSum_mul_self he`.
+
+Establish `hecinf : infPart D (cA D e) = 0` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart he)`. Establish `hinf : ∀ x : WO S T, IsHalf (cA D e) x → IsFinPt x`. Introduce `x hx`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply]`.
+
+Rewrite using `[← hx i j, map_mul, hecinf, zero_mul]`. Establish `hmulA : ∀ (L1 L2 : Lt D.host.E T.rank) (c : D.host.E), (∀ v ∈ L1, ((s : D.host.E) * c) • v ∈ L2) → ∀ x : WO S T, IsHalf (cA D e) x → x ∈ hatA S T (tens (stdL D.host.E S.rank) L1) → incA D c • x ∈ hatA S T (tens (stdL D.host.E S.rank) L2)`. Introduce `L1 L2 c hc x hx hxm`. Establish `h3` using `GlobalTheory.T.incA_smul_mem_adelicCompletionMatrixGroup D S T _ L1 L2 _ hc x hxm`. Establish `h4` using `smul_mem_hatA_of_int (fun o y hy => HatLat.smul_mem_tens _ _ o hy) ht h3`.
+
+Use `h4 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul]`. Establish `hxij` using `hx i j`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hsc : ∀ (I : Ideal (𝓞 D.host.E)) (L1 L2 : Lt D.host.E T.rank) (c : D.host.E), (∀ v ∈ L1, c • v ∈ L2) → ∀ v ∈ I • L1, c • v ∈ I • L2`. Introduce `I L1 L2 c hc v hv`. Use `Submodule.smul_induction_on hv (fun i hi w hw => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem_smul hi (hc w hw)`.
+
+Rewrite using `[smul_add]`. Conclude with `add_mem ha hb`. Use `⟨e * incA D (star γ⁻¹), ⟨e * incA D (star γ), ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hu : incA D (star γ⁻¹) * incA D (star γ) = 1`. Rewrite using `[← map_mul, star_inv₀, inv_mul_cancel₀ (star_ne_zero.mpr hγ), map_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `x hx`. Establish `hadj : adjA S T βS βT (e * incA D (star γ⁻¹)) x = adjA S T βS βT 1 (incA D γ⁻¹ • x)` using `GlobalTheory.T.ideleFrameAdjointMatrix_half_idempotent_smul D S T βS βT e γ⁻¹ x hx`. Establish `hy : IsHalf (cA D e) (incA D γ⁻¹ • x)`. Introduce `i j`.
+
+Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[mul_left_comm, hx i j]`. Establish `hyf` using `hinf _ hy`. Establish `hback : incA D γ • (incA D γ⁻¹ • x) = x`. Rewrite using `[smul_smul, ← map_mul, mul_inv_cancel₀ hγ, map_one, one_smul]`.
+
+Rewrite using `[hadj]`. Take `⟨hsq, hle, hconj⟩` from `GlobalTheory.T.prod_primes_squarefree_conjugateIdeal_prod D (Pg ∪ Q)`. Establish `hmem : ∀ (I : Ideal (𝓞 D.host.E)), (incA D γ⁻¹ • x ∈ hatA S T (tens (stdL D.host.E S.rank) (I • ΛT)) ↔ x ∈ hatA S T (tens (stdL D.host.E S.rank) (I • C.X.Λ)))`. Introduce `I`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hm`. Use `hmulA (I • ΛT) (I • C.X.Λ) γ (hsc I ΛT C.X.Λ _ h2') _ hy hm` as an intermediate fact. Rewrite `this` using `[hback]`. Then use the resulting hypothesis. Introduce `hm`. Conclude with `hmulA (I • C.X.Λ) (I • ΛT) γ⁻¹ (hsc I C.X.Λ ΛT _ h1) x hx hm`.
+
+Establish `hctop : conjI (⊤ : Ideal (𝓞 D.host.E)) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one]`. Unfold `conjI`. Conclude with `Ideal.subset_span ⟨1, Submodule.mem_top, by simp⟩`. Prove the components needed by the constructor for the conclusion.
+
+Establish `hB` using `GlobalTheory.T.ideleFrameAdjoint_integral_iff_dualLattice D S T hS ΛT hsd βS βT hβT ⊤ (by rw [← Ideal.one_eq_top]; exact squarefree_one) _ hyf`. Rewrite `hB` using `[hctop, Submodule.top_smul]`. Establish `h5` using `hmem ⊤`. Rewrite `h5` using `[Submodule.top_smul, Submodule.top_smul]`. Rewrite using `[← h5, ← hB]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h, fun PP hPP => absurd (top_le_iff.mp hPP) PP.isPrime.ne_top⟩`. Introduce `h`. Conclude with `h.1`.
+
+Establish `hB` using `GlobalTheory.T.ideleFrameAdjoint_integral_iff_dualLattice D S T hS ΛT hsd βS βT hβT _ hsq _ hyf`. Rewrite `hB` using `[hconj]`. Establish `hB' : (IsIntM (adjA S T βS βT 1 (incA D γ⁻¹ • x)) ∧ ∀ PP : Formalism.L2.DIV.Pl D.host.E, (∏ PP ∈ Pg ∪ Q, PP.asIdeal) ≤ PP.asIdeal → redM PP (adjA S T βS βT 1 (incA D γ⁻¹ • x)) = 0) ↔ incA D γ⁻¹ • x ∈ hatA S T (tens (stdL D.host.E S.rank) (liftI Pg Q • ΛT))` using `hB`. Establish `h5` using `hmem (liftI Pg Q)`. Rewrite using `[← h5, ← hB']`.
+
+Simplify using `only [hle]`.
+-/
 theorem exists_isGen : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.rank ≤ S.rank) (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → IsAA C.X.Λ ΛT → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (stdL D.host.E S.rank) → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ), Pg.Nonempty → (∀ PP, PP ∈ Pg ∨ PP ∈ Q → (2 : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ e : AE D, IsIdemSum e (Pg ∪ Q) → ∃ a : AE D, (∃ b : AE D, a * b = e) ∧ GlobalTheory.LiftLevel.IsGen C βS βT Pg Q e a := by
   intro D S T C hn ΛT hsd hAA βS βT hβS hβT Pg Q ξ hPg h2 e he
   have hS : S.gram = 1 := C.m.gS

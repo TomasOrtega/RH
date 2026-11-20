@@ -8,11 +8,20 @@ noncomputable section
 
 namespace GlobalTheory.IsogConst
 
+/- English proof (translation)
+The claim follows from `mem_algebraicClosure_iff`.
+-/
 theorem qbar_iff (x : ℂ) : x ∈ Formalism.MainNotions.TaylorLogMetric.Qbar ↔ IsAlgebraic ℚ x := mem_algebraicClosure_iff
 
+/- English proof (translation)
+The claim follows from `(qbar_iff x).2 (IsAlgebraic.of_pow hn ((qbar_iff _).1 h))`.
+-/
 theorem qbar_of_pow {x : ℂ} {n : ℕ} (hn : 0 < n) (h : x ^ n ∈ Formalism.MainNotions.TaylorLogMetric.Qbar) : x ∈ Formalism.MainNotions.TaylorLogMetric.Qbar :=
   (qbar_iff x).2 (IsAlgebraic.of_pow hn ((qbar_iff _).1 h))
 
+/- English proof (translation)
+Establish `h : ((n : ℕ) : ℂ) ∈ Formalism.MainNotions.TaylorLogMetric.Qbar` using `natCast_mem _ n`. Simplify using `using h`.
+-/
 theorem nat_mem (n : ℕ) [n.AtLeastTwo] : (OfNat.ofNat n : ℂ) ∈ Formalism.MainNotions.TaylorLogMetric.Qbar := by
   have h : ((n : ℕ) : ℂ) ∈ Formalism.MainNotions.TaylorLogMetric.Qbar := natCast_mem _ n
   simpa using h
@@ -21,43 +30,76 @@ open PowerSeries
 
 def InQ (f : PowerSeries ℂ) : Prop := ∀ k, coeff k f ∈ Formalism.MainNotions.TaylorLogMetric.Qbar
 
+/- English proof (translation)
+Introduce `k` and use `by rw [map_add]; exact add_mem (hf k) (hg k)`.
+-/
 theorem inQ_add {f g : PowerSeries ℂ} (hf : InQ f) (hg : InQ g) : InQ (f + g) := fun k => by
   rw [map_add]; exact add_mem (hf k) (hg k)
 
+/- English proof (translation)
+Introduce `k` and use `by rw [map_neg]; exact neg_mem (hf k)`.
+-/
 theorem inQ_neg {f : PowerSeries ℂ} (hf : InQ f) : InQ (-f) := fun k => by
   rw [map_neg]; exact neg_mem (hf k)
 
+/- English proof (translation)
+Introduce `k` and use `by rw [map_sub]; exact sub_mem (hf k) (hg k)`.
+-/
 theorem inQ_sub {f g : PowerSeries ℂ} (hf : InQ f) (hg : InQ g) : InQ (f - g) := fun k => by
   rw [map_sub]; exact sub_mem (hf k) (hg k)
 
+/- English proof (translation)
+Introduce `k` and use `by rw [coeff_mul]; exact sum_mem fun p _ => mul_mem (hf _) (hg _)`.
+-/
 theorem inQ_mul {f g : PowerSeries ℂ} (hf : InQ f) (hg : InQ g) : InQ (f * g) := fun k => by
   rw [coeff_mul]; exact sum_mem fun p _ => mul_mem (hf _) (hg _)
 
+/- English proof (translation)
+Introduce `k` and use `by rw [coeff_C]; split_ifs · exact ha · exact zero_mem _`.
+-/
 theorem inQ_C {a : ℂ} (ha : a ∈ Formalism.MainNotions.TaylorLogMetric.Qbar) : InQ (C a) := fun k => by
   rw [coeff_C]; split_ifs
   · exact ha
   · exact zero_mem _
 
+/- English proof (translation)
+Establish `: (1 : PowerSeries ℂ) = C 1` using `by simp`. Rewrite using `[this]`. Conclude with `inQ_C (one_mem _)`.
+-/
 theorem inQ_one : InQ 1 := by
   have : (1 : PowerSeries ℂ) = C 1 := by simp
   rw [this]; exact inQ_C (one_mem _)
 
+/- English proof (translation)
+Introduce `k` and use `by rw [coeff_X]; split_ifs · exact one_mem _ · exact zero_mem _`.
+-/
 theorem inQ_X : InQ X := fun k => by
   rw [coeff_X]; split_ifs
   · exact one_mem _
   · exact zero_mem _
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `inQ_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `inQ_mul ih hf`.
+-/
 theorem inQ_pow {f : PowerSeries ℂ} (hf : InQ f) (n : ℕ) : InQ (f ^ n) := by
   induction n with
   | zero => rw [pow_zero]; exact inQ_one
   | succ n ih => rw [pow_succ]; exact inQ_mul ih hf
 
+/- English proof (translation)
+Introduce `k` and use `by rw [map_nsmul]; exact nsmul_mem (hf k) n`.
+-/
 theorem inQ_nsmul {f : PowerSeries ℂ} (hf : InQ f) (n : ℕ) : InQ (n • f) := fun k => by
   rw [map_nsmul]; exact nsmul_mem (hf k) n
 
+/- English proof (translation)
+Introduce `k` and use `by rw [coeff_rescale]; exact mul_mem (pow_mem ha k) (hf k)`.
+-/
 theorem inQ_rescale {f : PowerSeries ℂ} (hf : InQ f) {a : ℂ} (ha : a ∈ Formalism.MainNotions.TaylorLogMetric.Qbar) : InQ (rescale a f) := fun k => by
   rw [coeff_rescale]; exact mul_mem (pow_mem ha k) (hf k)
 
+/- English proof (translation)
+Introduce `k` and use `by unfold Formalism.L2.Th1.C.dblInt rw [coeff_mk] split_ifs · exact zero_mem _ · exact div_mem (hf _) (mul_mem (natCast_mem _ k) (sub_mem (natCast_mem _ k) (one_mem _)))`.
+-/
 theorem inQ_dblInt {f : PowerSeries ℂ} (hf : InQ f) : InQ (Formalism.L2.Th1.C.dblInt f) := fun k => by
   unfold Formalism.L2.Th1.C.dblInt
   rw [coeff_mk]
@@ -65,6 +107,9 @@ theorem inQ_dblInt {f : PowerSeries ℂ} (hf : InQ f) : InQ (Formalism.L2.Th1.C.
   · exact zero_mem _
   · exact div_mem (hf _) (mul_mem (natCast_mem _ k) (sub_mem (natCast_mem _ k) (one_mem _)))
 
+/- English proof (translation)
+Introduce `k` and use `by have e : coeff k (Formalism.L2.Th1.C.mvExp f : PowerSeries ℂ) = MvPowerSeries.coeff (Finsupp.single () k) (Formalism.L2.Th1.C.mvExp f) := rfl rw [e, Formalism.L2.Th1.C.coeff_mvExp (f := f) h0 (N := k + 1) (by simp)] refine sum_mem fun j _ => mul_mem (inv_mem (natCast_mem _ _)) …`.
+-/
 theorem inQ_mvExp {f : PowerSeries ℂ} (hf : InQ f) (h0 : constantCoeff f = 0) :
     InQ (Formalism.L2.Th1.C.mvExp f : PowerSeries ℂ) := fun k => by
   have e : coeff k (Formalism.L2.Th1.C.mvExp f : PowerSeries ℂ)
@@ -75,6 +120,31 @@ theorem inQ_mvExp {f : PowerSeries ℂ} (hf : InQ f) (h0 : constantCoeff f = 0) 
 
 open Polynomial in
 
+/- English proof (translation)
+Set `V : ℕ → Submodule Formalism.MainNotions.TaylorLogMetric.Qbar ℂ` to `fun k => (degreeLE Formalism.MainNotions.TaylorLogMetric.Qbar (k : WithBot ℕ)).map (aeval t).toLinearMap`. Establish `mono : ∀ j k, j ≤ k → V j ≤ V k` using `fun j k hjk => Submodule.map_mono (degreeLE_mono (by exact_mod_cast hjk))`. Establish `tpow : ∀ k, t ^ k ∈ V k` using `fun k => Submodule.mem_map.2 ⟨Polynomial.X ^ k, mem_degreeLE.2 (degree_X_pow_le k), by simp⟩`. Establish `smulc : ∀ {x : ℂ} {k : ℕ}, x ∈ V k → ∀ {c : ℂ}, c ∈ Formalism.MainNotions.TaylorLogMetric.Qbar → c * x ∈ V k`. Introduce `x k hx c hc`.
+
+Establish `e : c * x = ((⟨c, hc⟩ : Formalism.MainNotions.TaylorLogMetric.Qbar) • x)` using `rfl`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hsum : ∀ k, k ≤ n + 1 → ∑ i ∈ Finset.range (n + 1), q i * (if i ≤ k then b i (k - i) else 0) = ∑ i ∈ Finset.range (min (k + 1) (n + 1)), q i * b i (k - i)`. Introduce `k _`.
+
+Establish `hsub : Finset.range (min (k + 1) (n + 1)) ⊆ Finset.range (n + 1)` using `Finset.range_subset_range.2 (min_le_right _ _)`. Rewrite using `[← Finset.sum_subset hsub (f := fun i => q i * (if i ≤ k then b i (k - i) else 0))]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_range] at hi`. Rewrite using `[if_pos (by omega)]`.
+
+Introduce `i hi hni`. Simplify using `only [Finset.mem_range] at hi hni`. Rewrite using `[if_neg (by omega), mul_zero]`. Establish `key : ∀ k, k ≤ n → q k ∈ V k`. Introduce `k`.
+
+Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `hk`. Establish `hk'` using `h k (by omega)`. Rewrite `hk'` using `[hsum k (by omega), show min (k + 1) (n + 1) = k + 1 by omega, Finset.sum_range_succ, Nat.sub_self, hb0, mul_one, div_eq_inv_mul]`.
+
+Establish `e : q k = ((k.factorial : ℂ))⁻¹ * t ^ k - ∑ i ∈ Finset.range k, q i * b i (k - i)`. Take the linear combination `(-1 : ℂ) * hk'`. Rewrite using `[e]`. Use `sub_mem (smulc (tpow k) (inv_mem (natCast_mem _ _))) (sum_mem fun i hi => ?_)` and prove the remaining obligations. Simplify using `only [Finset.mem_range] at hi`.
+
+Rewrite using `[mul_comm]`. Conclude with `smulc (mono i k (by omega) (ih i hi (by omega))) (hb i _)`. Establish `hl` using `h (n + 1) le_rfl`. Rewrite `hl` using `[hsum (n + 1) le_rfl, show min (n + 1 + 1) (n + 1) = n + 1 by omega]`. Establish `hmem : t ^ (n + 1) ∈ V n`.
+
+Establish `e : t ^ (n + 1) = (((n + 1).factorial : ℕ) : ℂ) * ∑ i ∈ Finset.range (n + 1), q i * b i (n + 1 - i)`. Establish `hf : (((n + 1).factorial : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Rewrite using `[← hl]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Use `smulc (sum_mem fun i hi => ?_) (natCast_mem _ _)` and prove the remaining obligations. Simplify using `only [Finset.mem_range] at hi`. Rewrite using `[mul_comm]`. Conclude with `smulc (mono i n (by omega) (key i (by omega))) (hb i _)`. Take `⟨p, hp, hpt⟩` from `Submodule.mem_map.1 hmem`.
+
+Establish `hpd : p.degree ≤ n` using `mem_degreeLE.1 hp`. Establish `hP : (Polynomial.X ^ (n + 1) - p : Formalism.MainNotions.TaylorLogMetric.Qbar[X]) ≠ 0`. Introduce `h0`. Establish `e : (Polynomial.X ^ (n + 1) : Formalism.MainNotions.TaylorLogMetric.Qbar[X]) = p` using `sub_eq_zero.1 h0`. Establish `h1 : (Polynomial.X ^ (n + 1) : Formalism.MainNotions.TaylorLogMetric.Qbar[X]).degree = ((n + 1 : ℕ) : WithBot ℕ)` using `degree_X_pow (n + 1)`.
+
+Rewrite `h1` using `[e]`. Rewrite `hpd` using `[h1]`. Establish `: ((n + 1 : ℕ) : WithBot ℕ) ≤ (n : WithBot ℕ)` using `hpd`. Normalize the coercions in `at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `halg : IsAlgebraic Formalism.MainNotions.TaylorLogMetric.Qbar t` using `⟨Polynomial.X ^ (n + 1) - p, hP, by`. Rewrite using `[map_sub, map_pow, aeval_X]`. Establish `: (aeval t) p = t ^ (n + 1)` using `hpt`. Rewrite using `[this, sub_self]⟩`. Conclude with `mem_algebraicClosure_iff.2 (@IsAlgebraic.restrictScalars ℚ Formalism.MainNotions.TaylorLogMetric.Qbar ℂ _ _ _ _ _ _ _ _ (algebraicClosure.isAlgebraic ℚ ℂ) t halg)`.
+-/
 theorem tri_alg (n : ℕ) (b : ℕ → ℕ → ℂ) (hb : ∀ i k, b i k ∈ Formalism.MainNotions.TaylorLogMetric.Qbar) (hb0 : ∀ i, b i 0 = 1) (q : ℕ → ℂ) (t : ℂ)
     (h : ∀ k ≤ n + 1, t ^ k / (k.factorial : ℂ) =
       ∑ i ∈ Finset.range (n + 1), q i * (if i ≤ k then b i (k - i) else 0)) :
@@ -144,6 +214,19 @@ theorem tri_alg (n : ℕ) (b : ℕ → ℕ → ℂ) (hb : ∀ i k, b i k ∈ For
   exact mem_algebraicClosure_iff.2
     (@IsAlgebraic.restrictScalars ℚ Formalism.MainNotions.TaylorLogMetric.Qbar ℂ _ _ _ _ _ _ _ _ (algebraicClosure.isAlgebraic ℚ ℂ) t halg)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨fun _ => 1, by simp⟩`. Consider the case `insert a s ha ih`. Take `⟨q, hq⟩` from `ih`. Use `⟨fun i => (if i ≤ s.card then q i else 0) - (if i = 0 then 0 else c a * q (i - 1)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_insert ha, hq, Finset.card_insert_of_notMem ha]`. Use `set m := s.card`. Establish `e1 : ∑ i ∈ Finset.range (m + 1 + 1), C (if i ≤ m then q i else 0) * Y ^ i * A ^ (m + 1 - i) = A * ∑ i ∈ Finset.range (m + 1), C (q i) * Y ^ i * A ^ (m - i)`. Rewrite using `[Finset.sum_range_succ, if_neg (by omega), map_zero, zero_mul, zero_mul, add_zero, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_range] at hi`. Rewrite using `[if_pos (by omega), show m + 1 - i = m - i + 1 by omega, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∑ i ∈ Finset.range (m + 1 + 1), C (if i = 0 then 0 else c a * q (i - 1)) * Y ^ i * A ^ (m + 1 - i) = C (c a) * Y * ∑ i ∈ Finset.range (m + 1), C (q i) * Y ^ i * A ^ (m - i)`. Rewrite using `[Finset.sum_range_succ', if_pos rfl, map_zero, zero_mul, zero_mul, add_zero, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_range] at hi`. Rewrite using `[if_neg (by omega), Nat.add_sub_cancel, show m + 1 - (i + 1) = m - i by omega, map_mul, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : ∑ i ∈ Finset.range (m + 1 + 1), C ((if i ≤ m then q i else 0) - (if i = 0 then 0 else c a * q (i - 1))) * Y ^ i * A ^ (m + 1 - i) = ∑ i ∈ Finset.range (m + 1 + 1), C (if i ≤ m then q i else 0) * Y ^ i * A ^ (m + 1 - i) - ∑ i ∈ Finset.range (m + 1 + 1), C (if i = 0 then 0 els …`.
+
+Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3, e1, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_expand {ι : Type} (A Y : PowerSeries ℂ) (s : Finset ι) (c : ι → ℂ) :
     ∃ q : ℕ → ℂ, ∏ i ∈ s, (A - C (c i) * Y) =
       ∑ i ∈ Finset.range (s.card + 1), C (q i) * Y ^ i * A ^ (s.card - i) := by
@@ -179,6 +262,11 @@ theorem prod_expand {ι : Type} (A Y : PowerSeries ℂ) (s : Finset ι) (c : ι 
     rw [e3, e1, e2]
     ring
 
+/- English proof (translation)
+Use extensionality with `k`. Rewrite using `[coeff_rescale, coeff_C]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem rescale_C' (a c : ℂ) : rescale a (C c) = C c := by
   ext k
   rw [coeff_rescale, coeff_C]
@@ -188,6 +276,13 @@ theorem rescale_C' (a c : ℂ) : rescale a (C c) = C c := by
 
 open Formalism.L2.Th1.C (mvExp mvExp_add mvExp_neg mvExp_nsmul mvExp_mul_neg rescale_mvExp coeff_mvExp constantCoeff_mvExp)
 
+/- English proof (translation)
+Establish `h0 : MvPowerSeries.constantCoeff (C t * X ^ 2 : PowerSeries ℂ) = 0`. Express the relevant statement in the definitionally equal form `constantCoeff (C t * X ^ 2 : PowerSeries ℂ) = 0`. Simplify using the standard rewrite rules. Establish `e : coeff (2 * k) (mvExp (C t * X ^ 2) : PowerSeries ℂ) = MvPowerSeries.coeff (Finsupp.single () (2 * k)) (mvExp (C t * X ^ 2 : PowerSeries ℂ))` using `rfl`. Establish `ej : ∀ j, MvPowerSeries.coeff (Finsupp.single () (2 * k)) ((C t * X ^ 2 : PowerSeries ℂ) ^ j) = if 2 * k = 2 * j then t ^ j else 0`.
+
+Introduce `j`. Establish `e2 : MvPowerSeries.coeff (Finsupp.single () (2 * k)) ((C t * X ^ 2 : PowerSeries ℂ) ^ j) = coeff (2 * k) ((C t * X ^ 2 : PowerSeries ℂ) ^ j)` using `rfl`. Rewrite using `[e2, mul_pow, ← map_pow, ← pow_mul, coeff_C_mul_X_pow]`. Rewrite using `[e, coeff_mvExp h0 (N := 2 * k + 1) (by rw [Finsupp.degree_single]; omega), Finset.sum_eq_single k]`. Rewrite using `[ej, if_pos rfl, div_eq_inv_mul]`.
+
+Introduce `j _ hj`. Rewrite using `[ej, if_neg (by omega), mul_zero]`. Introduce `hk`. Simplify using `only [Finset.mem_range] at hk`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem coeff_mvExp_gauss (t : ℂ) (k : ℕ) :
     coeff (2 * k) (mvExp (C t * X ^ 2) : PowerSeries ℂ) = t ^ k / (k.factorial : ℂ) := by
   have h0 : MvPowerSeries.constantCoeff (C t * X ^ 2 : PowerSeries ℂ) = 0 := by
@@ -209,6 +304,47 @@ theorem coeff_mvExp_gauss (t : ℂ) (k : ℕ) :
     simp only [Finset.mem_range] at hk
     omega
 
+/- English proof (translation)
+Take `⟨n, hn⟩ : ∃ n, n = Fintype.card ι` from `⟨_, rfl⟩`. Take `⟨D, hD⟩ : ∃ D, D = Formalism.L2.Th1.C.dblInt e` from `⟨_, rfl⟩`. Take `⟨lm, hlm⟩ : ∃ lm, lm = Formalism.L2.Th1.C.lam e s` from `⟨_, rfl⟩`. Take `⟨Φ, hΦ⟩ : ∃ Φ : PowerSeries ℂ, Φ = mvExp (-lm)` from `⟨_, rfl⟩`. Take `⟨Pi, hPi⟩ : ∃ Pi : PowerSeries ℂ, Pi = ∏ P, Formalism.L2.Th1.C.wpShift e (c P)` from `⟨_, rfl⟩`.
+
+Establish `hD0 : constantCoeff D = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, hD]`. Unfold `Formalism.L2.Th1.C.dblInt`. Rewrite using `[coeff_mk]`. Simplify using the standard rewrite rules.
+
+Establish `hlmD : lm = D + C (s / 2) * X ^ 2` using `by rw [hlm, hD]; rfl`. Establish `hlm0 : constantCoeff lm = 0`. Rewrite using `[hlmD, map_add, hD0, map_mul, map_pow, constantCoeff_X]`. Simplify using the standard rewrite rules. Establish `hnl0 : constantCoeff (-lm) = 0` using `by rw [map_neg, hlm0, neg_zero]`.
+
+Establish `h1 : (rescale α Φ) ^ 2 = Φ ^ (2 * (n + 1)) * Pi`. Establish `hI'` using `hI`. Unfold `Formalism.L2.Th1.C.IsogenyFormula Formalism.L2.Th1.C.sgStar at hI'`. Rewrite `hI'` using `[← hlm, ← hΦ, ← hPi, ← hn, map_mul, rescale_X]`. Establish `hne : (C (α ^ 2) * X ^ (2 * n + 2) : PowerSeries ℂ) ≠ 0`.
+
+Use `mul_ne_zero ?_ (pow_ne_zero _ X_ne_zero)` and prove the remaining obligations. Introduce `h0`. Use `congrArg (coeff 0) h0` as an intermediate fact. Rewrite `this` using `[coeff_C, if_pos rfl, map_zero]`. Conclude with `hα0 (pow_eq_zero_iff (by norm_num) |>.1 this)`.
+
+Establish `key : C (α ^ 2) * X ^ (2 * n + 2) * ((rescale α Φ) ^ 2 - Φ ^ (2 * (n + 1)) * Pi) = 0`. Rewrite `hI'`, the goal using `[map_pow]`. Take the linear combination `hI'`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 key).resolve_left hne)`. Establish `hr0 : constantCoeff (rescale α (-lm)) = 0`.
+
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_rescale, coeff_zero_eq_constantCoeff_apply, hnl0, mul_zero]`. Establish `ha0 : constantCoeff ((2 * (n + 1)) • (-lm)) = 0` using `by rw [map_nsmul, hnl0, smul_zero]`. Establish `hna0 : constantCoeff (-((2 * (n + 1)) • (-lm))) = 0` using `by rw [map_neg, ha0, neg_zero]`. Establish `hb0 : constantCoeff (2 • rescale α (-lm)) = 0` using `by rw [map_nsmul, hr0, smul_zero]`. Establish `ha : (mvExp ((2 * (n + 1)) • (-lm)) : PowerSeries ℂ) = Φ ^ (2 * (n + 1))`.
+
+Rewrite using `[hΦ]`. Conclude with `mvExp_nsmul hnl0 _`. Establish `hb : (mvExp (2 • rescale α (-lm)) : PowerSeries ℂ) = (rescale α Φ) ^ 2`. Rewrite using `[hΦ, rescale_mvExp hnl0 α]`. Conclude with `mvExp_nsmul hr0 2`.
+
+Establish `h2 : Pi = mvExp (-((2 * (n + 1)) • (-lm)) + 2 • rescale α (-lm))`. Rewrite using `[mvExp_add hna0 hb0, hb, h1, ← ha, ← mul_assoc, mvExp_neg ha0, one_mul]`. Use `set t : ℂ := (((2 * (n + 1) : ℕ) : ℂ)) * (s / 2) - 2 * (α ^ 2 * (s / 2)) with ht`. Use `set F0 : PowerSeries ℂ := (2 * (n + 1)) • D - 2 • rescale α D with hF0`. Establish `h3 : -((2 * (n + 1)) • (-lm)) + 2 • rescale α (-lm) = F0 + C t * X ^ 2`.
+
+Rewrite using `[hF0, ht, hlmD]`. Simplify using `only [map_neg, map_add, map_mul, map_pow, rescale_X, rescale_C', nsmul_eq_mul, map_sub, map_natCast]`. Use `push_cast`. Rewrite using `[show (C (2 : ℂ) : PowerSeries ℂ) = 2 from map_ofNat C 2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hF00 : constantCoeff F0 = 0`. Rewrite using `[hF0, map_sub, map_nsmul, map_nsmul, hD0, ← coeff_zero_eq_constantCoeff_apply, coeff_rescale, coeff_zero_eq_constantCoeff_apply, hD0]`. Simplify using the standard rewrite rules. Establish `hG0 : constantCoeff (C t * X ^ 2 : PowerSeries ℂ) = 0` using `by simp`. Establish `hnF0 : constantCoeff (-F0) = 0` using `by rw [map_neg, hF00, neg_zero]`.
+
+Establish `h4 : Pi * mvExp (-F0) = mvExp (C t * X ^ 2)`. Rewrite using `[h2, h3, mvExp_add hF00 hG0, mul_comm (mvExp F0), mul_assoc, mvExp_mul_neg hF00, mul_one]`. Establish `hw : ∀ x, Formalism.L2.Th1.C.wpShift e x = (1 + X ^ 2 * e) - C x * X ^ 2`. Introduce `x`. Unfold `Formalism.L2.Th1.C.wpShift`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨q, hq⟩` from `prod_expand (1 + X ^ 2 * e) (X ^ 2) Finset.univ c`. Rewrite `hq` using `[Finset.card_univ, ← hn]`. Establish `hPi' : Pi = ∑ i ∈ Finset.range (n + 1), C (q i) * (X ^ 2) ^ i * (1 + X ^ 2 * e) ^ (n - i)`. Rewrite using `[hPi, ← hq]`.
+
+Simplify using `only [hw]`. Use `set B : ℕ → PowerSeries ℂ := fun i => (1 + X ^ 2 * e) ^ (n - i) * mvExp (-F0) with hB`. Establish `h5 : mvExp (C t * X ^ 2) = ∑ i ∈ Finset.range (n + 1), C (q i) * (X ^ (2 * i) * B i)`. Rewrite using `[← h4, hPi', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hB, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDq : InQ D` using `by rw [hD]; exact inQ_dblInt he`. Establish `hF0q : InQ F0` using `by rw [hF0]; exact inQ_sub (inQ_nsmul hDq _) (inQ_nsmul (inQ_rescale hDq hα) 2)`. Establish `hAq : InQ (1 + X ^ 2 * e)` using `inQ_add inQ_one (inQ_mul (inQ_pow inQ_X 2) he)`.
+
+Establish `hBq : ∀ i, InQ (B i)` using `fun i => inQ_mul (inQ_pow hAq _) (inQ_mvExp (inQ_neg hF0q) hnF0)`. Establish `hB0 : ∀ i, coeff (2 * 0) (B i) = 1`. Introduce `i`. Rewrite using `[mul_zero, coeff_zero_eq_constantCoeff_apply, hB]`. Simplify using `only [map_mul, map_pow, map_add, map_one, constantCoeff_X]`.
+
+Establish `: constantCoeff (mvExp (-F0) : PowerSeries ℂ) = 1` using `constantCoeff_mvExp hnF0`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `htri : t ∈ Formalism.MainNotions.TaylorLogMetric.Qbar`. Use `tri_alg n (fun i k => coeff (2 * k) (B i)) (fun i k => hBq i _) hB0 q t ?_` and prove the remaining obligations.
+
+Introduce `k _`. Rewrite using `[← coeff_mvExp_gauss t k, h5, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_C_mul, coeff_X_pow_mul']`. Use `congr 1`.
+
+Distinguish the cases in `hik : i ≤ k`. Rewrite using `[if_pos (by omega), if_pos hik, show 2 * k - 2 * i = 2 * (k - i) by omega]`. Rewrite using `[if_neg (by omega), if_neg hik]`. Establish `e : (((Fintype.card ι + 1 : ℕ) : ℂ) - α ^ 2) * s = t`. Rewrite using `[ht, ← hn]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `htri`.
+-/
 theorem algebraic_isogenyConstant_of_isogenyFormula (e : PowerSeries ℂ) (he : InQ e) (s α : ℂ) (hα : α ∈ Formalism.MainNotions.TaylorLogMetric.Qbar) (hα0 : α ≠ 0)
     {ι : Type} [Fintype ι] (c : ι → ℂ) (hI : Formalism.L2.Th1.C.IsogenyFormula e s c α) :
     (((Fintype.card ι + 1 : ℕ) : ℂ) - α ^ 2) * s ∈ Formalism.MainNotions.TaylorLogMetric.Qbar := by
@@ -307,6 +443,11 @@ theorem algebraic_isogenyConstant_of_isogenyFormula (e : PowerSeries ℂ) (he : 
     rw [ht, ← hn]; push_cast; ring
   rw [e]; exact htri
 
+/- English proof (translation)
+Establish `h : (((Real.sqrt dK : ℝ) : ℂ)) ^ 2 = (dK : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Establish `e : (((-1 : ℤ) : ℂ) + ((2 : ℤ) : ℂ) * Formalism.L2.Th1.CM.omegaK dK) = Complex.I * ((Real.sqrt dK : ℝ) : ℂ)`. Unfold `Formalism.L2.Th1.CM.omegaK`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, mul_pow, h, Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alpha_sq (dK : ℕ) :
     (((-1 : ℤ) : ℂ) + ((2 : ℤ) : ℂ) * Formalism.L2.Th1.CM.omegaK dK) ^ 2 = -(dK : ℂ) := by
   have h : (((Real.sqrt dK : ℝ) : ℂ)) ^ 2 = (dK : ℂ) := by

@@ -6,6 +6,13 @@ open NumberField IsDedekindDomain Formalism.L2.Pj
 
 namespace GlobalTheory.TwoBasesDet
 
+/- English proof (translation)
+Set `lc : (Fin n → K) →ₗ[K] (Fin g → K)` to `Fintype.linearCombination K b`. Establish `hinj : LinearMap.ker lc = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `c hc`. Conclude with `funext (Fintype.linearIndependent_iff.1 hb c (by simpa [lc, Fintype.linearCombination_apply] using hc))`.
+
+Take `⟨f, hf⟩` from `LinearMap.exists_leftInverse_of_injective lc hinj`. Use `⟨LinearMap.toMatrix' f, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1 : f (b j) = Pi.single j 1`. Establish `: lc (Pi.single j 1) = b j` using `by simp [lc, Fintype.linearCombination_apply_single]`. Rewrite using `[← this, ← LinearMap.comp_apply, hf, LinearMap.id_apply]`.
+
+Establish `h3 : (Matrix.mulVec (LinearMap.toMatrix' f) (b j)) = f (b j)`. Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Establish `h2` using `congrFun (h3.trans h1) i`. Simplify `h2` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem exists_leftInv {K : Type} [Field K] {n g : ℕ} (b : Fin n → Fin g → K)
     (hb : LinearIndependent K b) :
     ∃ A : Matrix (Fin n) (Fin g) K, ∀ i j, ∑ k, A i k * b j k = if i = j then 1 else 0 := by
@@ -24,6 +31,9 @@ theorem exists_leftInv {K : Type} [Field K] {n g : ℕ} (b : Fin n → Fin g →
   have h2 := congrFun (h3.trans h1) i
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using h2
 
+/- English proof (translation)
+Unfold `vV valV`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.2]`. Simplify using the standard rewrite rules. Conclude with `fun h => (HeightOneSpectrum.isPrime _).ne_top (Ideal.eq_top_of_isUnit_mem _ h hu)`.
+-/
 theorem vV_algebraMap_unit (V : Type) {K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [Field K'] [Algebra V K'] [IsFractionRing V K'] {u : V} (hu : IsUnit u) :
     vV V (algebraMap V K' u) = 0 := by
@@ -32,6 +42,11 @@ theorem vV_algebraMap_unit (V : Type) {K' : Type} [CommRing V] [IsDomain V] [IsD
   · simp
   · exact fun h => (HeightOneSpectrum.isPrime _).ne_top (Ideal.eq_top_of_isUnit_mem _ h hu)
 
+/- English proof (translation)
+Rewrite using `[map_div₀]`. Establish `h1 : 𝔓.valuation K (d : K) = 1`. Rewrite using `[show (d : K) = algebraMap (𝓞 K) K d from rfl, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.2 hd`. Rewrite using `[h1, div_one, show (c : K) = algebraMap (𝓞 K) K c from rfl, HeightOneSpectrum.valuation_of_algebraMap]`.
+
+Conclude with `HeightOneSpectrum.intValuation_le_one _ _`.
+-/
 theorem valuation_div_le_one {K : Type} [Field K] [NumberField K] (𝔓 : HeightOneSpectrum (𝓞 K))
     (c d : 𝓞 K) (hd : d ∉ 𝔓.asIdeal) : 𝔓.valuation K ((c : K) / d) ≤ 1 := by
   rw [map_div₀]
@@ -41,6 +56,53 @@ theorem valuation_div_le_one {K : Type} [Field K] [NumberField K] (𝔓 : Height
   rw [h1, div_one, show (c : K) = algebraMap (𝓞 K) K c from rfl, HeightOneSpectrum.valuation_of_algebraMap]
   exact HeightOneSpectrum.intValuation_le_one _ _
 
+/- English proof (translation)
+Introduce `K _ _ 𝔓 T iK hiK g n L b hb M u hu C hW hL`. Use `set B : Fin n → Fin g → T.Fr := fun l k => iK (b l k) with hBdef`. Take `⟨A, hA⟩` from `exists_leftInv b hb.2.1`. Establish `key : ∀ z : Fin n → T.Fr, ∀ i, z i = ∑ k, iK (A i k) * ∑ l, z l * B l k`. Introduce `z i`.
+
+Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h : ∀ l, ∑ k, iK (A i k) * (z l * B l k) = if i = l then z l else 0`. Introduce `l`. Establish `h` using `congrArg iK (hA i l)`.
+
+Rewrite `h` using `[map_sum]`. Simplify using `only [map_mul] at h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun k _ => by simp only [hBdef]; ring`. Apply the tactic sequence `_ = _ := by rw [h]; split_ifs <;> simp`.
+
+Repeatedly rewrite using `[h]`. Simplify using the standard rewrite rules. Establish `hinj : ∀ x y : Fin n → T.Fr, (∀ k, ∑ l, x l * B l k = ∑ l, y l * B l k) → x = y`. Introduce `x y hxy`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[key x i, key y i]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hxy k]`. Use `set P : Matrix (Fin n) (Fin n) T.Fr := C * M.map iK with hPdef`. Establish `hWP : ∀ i k, (∑ j, C i j • fun k => iK (u j k)) k = ∑ l, P i l * B l k`. Introduce `i k`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hu, map_sum, map_mul, hPdef, Matrix.mul_apply, Matrix.map_apply, hBdef, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `hint : ∀ x ∈ L, ∃ p : Fin n → T.V, ∀ k, iK (x k) = ∑ l, algebraMap T.V T.Fr (p l) * B l k`. Introduce `x hx`.
+
+Take `⟨d, hd, hdx⟩` from `hb.2.2 x hx`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hdx`. Establish `hd0 : (d : K) ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises.
+
+Establish `: d = 0` using `by exact_mod_cast h0`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Use `choose p hp using fun l => (hiK ((c l : K) / d)).2 (valuation_div_le_one 𝔓 (c l) d hd)`. Use `⟨p, fun k => ?_⟩` and prove the remaining obligations.
+
+Establish `hk` using `congrFun hc k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Algebra.smul_def] at hk`. Establish `hx' : x k = ∑ l, ((c l : K) / d) * b l k`. Repeatedly rewrite using `[div_mul_eq_mul_div, ← Finset.sum_div]`. Rewrite using `[eq_div_iff hd0]`.
+
+Use `hk.symm using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hp, hBdef, hx', map_sum, map_mul]`. Establish `hspan : ∀ w ∈ Submodule.span T.V ((fun (v : Fin g → K) k => iK (v k)) '' (L : Set (Fin g → K))), ∃ p : Fin n → T.V, ∀ k, w k = ∑ l, algebraMap T.V T.Fr (p l) * B l k`. Introduce `w hw`.
+
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨x, hx, rfl⟩` from `hw`. Conclude with `hint x hx`. Consider the case `zero => exact ⟨0, fun k => by simp⟩`.
+
+Consider the case `add w w' _ _ h h'`. Take `⟨p, hp⟩` from `h`. Take `⟨p', hp'⟩` from `h'`. Conclude with `⟨p + p', fun k => by simp [hp, hp', add_mul, Finset.sum_add_distrib]⟩`. Consider the case `smul a w _ h`.
+
+Take `⟨p, hp⟩` from `h`. Use `⟨a • p, fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, Algebra.smul_def, hp, Finset.mul_sum, smul_eq_mul, map_mul, mul_assoc]`. Conclude with `Finset.sum_congr rfl fun _ _ => by simp only [Algebra.algebraMap_self, RingHom.id_apply]`. Establish `hPint : ∀ i, ∃ p : Fin n → T.V, ∀ l, P i l = algebraMap T.V T.Fr (p l)`.
+
+Introduce `i`. Take `⟨p, hp⟩` from `hspan _ (hW i)`. Use `⟨p, fun l => congrFun (hinj (P i) (fun l => algebraMap T.V T.Fr (p l)) fun k => ?_) l⟩` and prove the remaining obligations. Rewrite using `[← hWP, hp]`. Use `choose Pv hPv using hPint`.
+
+Establish `hPeq : P = (Matrix.of Pv).map (algebraMap T.V T.Fr)`. Use extensionality with `i l`. Simplify using `[hPv i l]`. Establish `hQint : ∀ l, ∃ q : Fin n → T.V, ∀ m, ∑ i, algebraMap T.V T.Fr (q i) * P i m = if l = m then 1 else 0`. Introduce `l`.
+
+Take `⟨q, hq⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 (hL (b l) (hb.1 l))`. Use `⟨q, fun m => congrFun (hinj (fun m => ∑ i, algebraMap T.V T.Fr (q i) * P i m) (fun m => if l = m then 1 else 0) fun k => ?_) m⟩` and prove the remaining obligations. Establish `hk : ∑ i, algebraMap T.V T.Fr (q i) * (∑ j, C i j • fun k => iK (u j k)) k = iK (b l k)`. Rewrite using `[← congrFun hq k, Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, Algebra.smul_def]`.
+
+Simplify using `only [Finset.sum_mul, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hWP, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Use `_ = B l k := hk`. Use `choose Qv hQv using hQint`. Establish `hQP : Matrix.of Qv * Matrix.of Pv = 1`. Apply `(Matrix.map_injective (IsFractionRing.injective T.V T.Fr))` to reduce the goal to its premises.
+
+Use `show (Matrix.of Qv * Matrix.of Pv).map (algebraMap T.V T.Fr) = (1 : Matrix (Fin n) (Fin n) T.V).map (algebraMap T.V T.Fr)`. Rewrite using `[Matrix.map_mul, ← hPeq, Matrix.map_one _ (map_zero _) (map_one _)]`. Use extensionality with `l m`. Simplify `hQv l m` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `hunit : IsUnit (Matrix.of Pv).det`.
+
+Use `congrArg Matrix.det hQP` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `⟨⟨_, _, by rw [mul_comm]; exact this, this⟩, rfl⟩`. Establish `hdetP : P.det = algebraMap T.V T.Fr (Matrix.of Pv).det`. Rewrite using `[hPeq, RingHom.map_det]`.
+
+Both sides reduce to the same expression. Establish `hdetP' : P.det = C.det * iK M.det`. Rewrite using `[hPdef, Matrix.det_mul, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hP0 : P.det ≠ 0`.
+
+Rewrite using `[hdetP]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective T.V T.Fr)).2 hunit.ne_zero`. Establish `hC0 : C.det ≠ 0` using `fun h => hP0 (by rw [hdetP', h, zero_mul])`. Establish `hM0 : iK M.det ≠ 0` using `fun h => hP0 (by rw [hdetP', h, mul_zero])`. Use `⟨fun h => hM0 (by rw [h, map_zero]), hC0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← vV_mul hC0 hM0, ← hdetP', hdetP]`. Conclude with `vV_algebraMap_unit T.V hunit`.
+-/
 theorem det_vV_add_eq_zero : ∀ (K : Type) [Field K] [NumberField K] (𝔓 : HeightOneSpectrum (𝓞 K)) (T : CDVR) (iK : K →+* T.Fr), (∀ z : K, iK z ∈ Set.range (algebraMap T.V T.Fr) ↔ 𝔓.valuation K z ≤ 1) → ∀ (g n : ℕ) (L : Submodule (𝓞 K) (Fin g → K)) (b : Fin n → Fin g → K), GlobalTheory.PtDeg.LocBasis 𝔓 L b → ∀ (M : Matrix (Fin n) (Fin n) K) (u : Fin n → Fin g → K), (∀ i, u i = ∑ j, M i j • b j) → ∀ (C : Matrix (Fin n) (Fin n) T.Fr), (∀ i, (∑ j, C i j • fun k => iK (u j k)) ∈ Submodule.span T.V ((fun (v : Fin g → K) k => iK (v k)) '' (L : Set (Fin g → K)))) → (∀ v ∈ L, (fun k => iK (v k)) ∈ Submodule.span T.V (Set.range fun i => ∑ j, C i j • fun k => iK (u j k))) → M.det ≠ 0 ∧ C.det ≠ 0 ∧ vV T.V C.det + vV T.V (iK M.det) = 0 := by
   intro K _ _ 𝔓 T iK hiK g n L b hb M u hu C hW hL
   set B : Fin n → Fin g → T.Fr := fun l k => iK (b l k) with hBdef

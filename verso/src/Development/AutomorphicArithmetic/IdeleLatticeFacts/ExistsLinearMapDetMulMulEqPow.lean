@@ -10,6 +10,15 @@ open Formalism.IndefR.DatumF MeasureTheory GlobalTheory.FinWeil GlobalTheory.Fin
 open PositivityTheory.ThKW PositivityTheory.ThKW.AutEtaA
 open UpperTheory.TP.W
 
+/- English proof (translation)
+Introduce `K _ m n H G`. Set `T : Matrix (Fin m) (Fin n) K →ₗ[K] Matrix (Fin m) (Fin n) K` to `{ toFun := fun u => H * u * G map_add' := by`. Introduce `u v`. Simplify using `[Matrix.mul_add, Matrix.add_mul]`. Use the proof step `map_smul' := by`.
+
+Introduce `c u`. Simplify using `[Matrix.mul_smul, Matrix.smul_mul] }`. Use `⟨T, fun u => rfl, ?_⟩` and prove the remaining obligations. Establish `hrepr : ∀ (M : Matrix (Fin m) (Fin n) K) (i : Fin m) (j : Fin n), (Matrix.stdBasis K (Fin m) (Fin n)).repr M (i, j) = M i j`. Introduce `M i j`.
+
+Simplify using `[Matrix.stdBasis]`. Establish `hmat : LinearMap.toMatrix (Matrix.stdBasis K (Fin m) (Fin n)) (Matrix.stdBasis K (Fin m) (Fin n)) T = H ⊗ₖ Gᵀ`. Use extensionality with `⟨i, j⟩ ⟨k, l⟩`. Rewrite using `[LinearMap.toMatrix_apply, Matrix.stdBasis_eq_single, hrepr]`. Simplify using `[T, Matrix.kroneckerMap_apply, Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq', Finset.sum_ite_eq, ite_mul]`.
+
+Rewrite using `[← LinearMap.det_toMatrix (Matrix.stdBasis K (Fin m) (Fin n)), hmat, Matrix.det_kronecker, Matrix.det_transpose, Fintype.card_fin, Fintype.card_fin]`.
+-/
 theorem UpperTheory.exists_linearMap_det_mul_mul_eq_pow :
     ∀ {K : Type} [Field K] {m n : ℕ} (H : Matrix (Fin m) (Fin m) K) (G : Matrix (Fin n) (Fin n) K),
         ∃ T : Matrix (Fin m) (Fin n) K →ₗ[K] Matrix (Fin m) (Fin n) K, (∀ u, T u = H * u * G) ∧

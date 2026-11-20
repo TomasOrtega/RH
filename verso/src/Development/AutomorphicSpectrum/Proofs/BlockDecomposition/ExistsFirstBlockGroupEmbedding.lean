@@ -25,6 +25,9 @@ variable {D : D7} {n ρ p : ℕ}
 def firstM (hn : ρ + p = n) (M : Mx D (ρ + ρ) (ρ + ρ)) : Mx D (n + n) (n + n) :=
   blk4 (bl hn (b11 M) 0 0 1) (bl hn (b12 M) 0 0 0) (bl hn (b21 M) 0 0 0) (bl hn (b22 M) 0 0 1)
 
+/- English proof (translation)
+Rewrite using `[firstM, upperLeft_block, upperRight_block, lowerLeft_block_entry, lowerRight_block]`.
+-/
 theorem first_block_embedding_block (hn : ρ + p = n) (a b c d : Mx D ρ ρ) :
     firstM hn (blk4 a b c d) = blk4 (bl hn a 0 0 1) (bl hn b 0 0 0) (bl hn c 0 0 0) (bl hn d 0 0 1) := by
   rw [firstM, upperLeft_block, upperRight_block, lowerLeft_block_entry, lowerRight_block]
@@ -48,6 +51,13 @@ def firstMon (hn : ρ + p = n) : Mx D (ρ + ρ) (ρ + ρ) →* Mx D (n + n) (n +
     rw [submatrix_fromBlocks_mul, first_block_embedding_block, first_block_embedding_block, first_block_embedding_block, submatrix_fromBlocks_mul]
     simp only [block_mul₂, bl_add, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[← block_matrix_of_blocks M]`. Generalize the expression as in `b11 M = a at h ⊢`. Generalize the expression as in `b12 M = b at h ⊢`. Generalize the expression as in `b21 M = c at h ⊢`. Generalize the expression as in `b22 M = d at h ⊢`.
+
+Rewrite `h` using `[adjoint_symplectic_block_product]`. Take `⟨e1, e2, e3, e4⟩` from `blockMatrixTwoByTwoFin_injective h`. Establish `z : bl hn (0 : Mx D ρ ρ) 0 0 (0 : Mx D p p) = 0` using `blockMatrix_zero hn`. Establish `o : bl hn (1 : Mx D ρ ρ) 0 0 (1 : Mx D p p) = 1` using `blockRowSubstitution_one hn`. Establish `m : bl hn (-1 : Mx D ρ ρ) 0 0 (-1 : Mx D p p) = -1` using `blockMatrix_neg_one hn`.
+
+Rewrite using `[first_block_embedding_block, adjoint_symplectic_block_product]`. Simplify using `only [adj_bl, adj_one, adj_zero, block_mul₂, block_sub, bl_add, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add, sub_zero, zero_sub, sub_self, e1, e2, e3, e4, z, o, m]`.
+-/
 theorem firstM_isU (hn : ρ + p = n) (M : Mx D (ρ + ρ) (ρ + ρ))
     (h : (adj M * blk4 0 1 (-1) 0 * M : Mx D (ρ + ρ) (ρ + ρ)) = blk4 0 1 (-1) 0) :
     (adj (firstM hn M) * blk4 0 1 (-1) 0 * firstM hn M : Mx D (n + n) (n + n)) = blk4 0 1 (-1) 0 := by
@@ -68,6 +78,9 @@ theorem firstM_isU (hn : ρ + p = n) (M : Mx D (ρ + ρ) (ρ + ρ))
 def firstF (hn : ρ + p = n) (g : G D ρ) : G D n :=
   mkG (Units.map (firstMon hn) (matHom _ D.sp.cm.sig (Jst D ρ) g)) (firstM_isU hn _ (isU_mat g))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matHom_firstF (hn : ρ + p = n) (g : G D ρ) :
     matHom _ D.sp.cm.sig (Jst D n) (firstF hn g) = Units.map (firstMon hn) (matHom _ D.sp.cm.sig (Jst D ρ) g) := rfl
 
@@ -77,8 +90,14 @@ def firstG (hn : ρ + p = n) : G D ρ →* G D n where
   map_mul' g h := matHom_injective _ D.sp.cm.sig (Jst D n) (by
     rw [map_mul, matHom_firstF, matHom_firstF, matHom_firstF, map_mul, map_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_firstG (hn : ρ + p = n) (h : G D ρ) : mat (firstG hn h) = firstM hn (mat h) := rfl
 
+/- English proof (translation)
+The claim follows from `continuous_block_matrix (continuous_bl hn (continuous_id.matrix_submatrix _ _) continuous_const continuous_const continuous_const) (continuous_bl hn (continuous_id.matrix_submatrix _ _) continuous_const continuous_const continuous_const) (continuous_bl hn (continuous_id.matrix_su …`.
+-/
 theorem continuous_firstM (hn : ρ + p = n) : Continuous (firstM (D := D) hn) :=
   continuous_block_matrix (continuous_bl hn (continuous_id.matrix_submatrix _ _) continuous_const continuous_const
       continuous_const)
@@ -86,6 +105,9 @@ theorem continuous_firstM (hn : ρ + p = n) : Continuous (firstM (D := D) hn) :=
     (continuous_bl hn (continuous_id.matrix_submatrix _ _) continuous_const continuous_const continuous_const)
     (continuous_bl hn (continuous_id.matrix_submatrix _ _) continuous_const continuous_const continuous_const)
 
+/- English proof (translation)
+Establish `h0 : Continuous (Units.map (firstMon (D` using `D) hn : Mx D (ρ + ρ) (ρ + ρ) →* Mx D (n + n) (n + n))) := Continuous.units_map _ (continuous_firstM hn)`. Establish `h : Continuous fun g : G D ρ => Units.map (firstMon (D` using `D) hn) (matHom _ D.sp.cm.sig (Jst D ρ) g) := h0.comp (isEmbedding_matHom (AF D.host.F) D.sp.cm.sig (Jst D ρ)).continuous`. Conclude with `(isEmbedding_matHom (AF D.host.F) D.sp.cm.sig (Jst D n)).continuous_iff.2 h`.
+-/
 theorem continuous_firstG (hn : ρ + p = n) : Continuous (firstG (D := D) hn) := by
   have h0 : Continuous (Units.map (firstMon (D := D) hn : Mx D (ρ + ρ) (ρ + ρ) →* Mx D (n + n) (n + n))) :=
     Continuous.units_map _ (continuous_firstM hn)
@@ -97,6 +119,9 @@ end GlobalTheory.CompanionTheory.FirstBlockEmb
 
 namespace GlobalTheory.CompanionTheory.FirstBlockEmb
 
+/- English proof (translation)
+Introduce `D n ρ p hn`. Use `⟨firstG hn, continuous_firstG hn, fun h a b c d e => ?_⟩` and prove the remaining obligations. Conclude with `(mat_firstG hn h).trans ((congrArg (firstM hn) e).trans (first_block_embedding_block hn a b c d))`.
+-/
 theorem exists_first_emb : ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n), ∃ ι : G D ρ →* G D n, Continuous ι ∧
   ∀ (h : G D ρ) (a b c d : Mx D ρ ρ), mat h = blk4 a b c d →
     mat (ι h) = blk4 (bl hn a 0 0 1) (bl hn b 0 0 0) (bl hn c 0 0 0) (bl hn d 0 0 1) := by

@@ -16,6 +16,15 @@ noncomputable section
 
 namespace GlobalTheory.LevUniLoc
 
+/- English proof (translation)
+Introduce `D i j b k Q ψ e W₀ _ _ ρ₀ τ M kv0 hG hQ hD κ hκ`. Rewrite using `[M.J_mem κ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hU, hL, -, -⟩`. Take `⟨⟨_, hll⟩, huni⟩` from `hL kv0`.
+
+Conclude with `⟨⟨(GlobalTheory.HeckeScalarSph.loc_mem_GLint_iff _ hκ).2 hU, hll⟩, huni⟩`. Introduce and unpack `⟨⟨hGL, hll⟩, huni⟩`. Use `⟨(GlobalTheory.HeckeScalarSph.loc_mem_GLint_iff _ hκ).1 hGL, fun kv => ?_, fun P hP => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : kv = kv0`. Substitute `hk` using the available equality.
+
+Conclude with `⟨⟨fun a b => (GlobalTheory.HeckeScalarSph.mem_GLint_iff.1 hGL).1 a b, hll⟩, huni⟩`. Rewrite using `[GlobalTheory.LevParaLoc.locM_eq_one_of_ne _ _ hκ (hG kv hk)]`. Conclude with `NX.inLevG_one _ _`. Rewrite using `[GlobalTheory.LevParaLoc.locM_eq_one_of_ne _ _ hκ (hQ P hP)]`. Conclude with `NX.inParah_one _ _`.
+
+Rewrite using `[GlobalTheory.LevParaLoc.locM_eq_one_of_ne _ _ hκ (hD P hP)]`. Conclude with `NX.inParah_one _ _`.
+-/
 theorem mem_iff_uniRT : ∀ (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) (k : ℕ) (Q : Finset (PlE D.host))
     (ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ) (e : ℤ) (W₀ : Type) [AddCommGroup W₀] [Module (FractionRing (D.ntw.O i)) W₀]
     (ρ₀ : Representation (FractionRing (D.ntw.O i)) (GQ D.host.E D.R.nV) W₀)

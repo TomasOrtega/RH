@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.SIn
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
+/- English proof (translation)
+Use `set f := (gradedSub 𝒜).val.toLinearMap with hf`. Establish `hinj : Function.Injective f` using `fun a b hab => Subtype.ext hab`. Establish `hind : iSupIndep fun j => (𝒜 j).comap f`. Introduce `i`. Rewrite using `[disjoint_iff_inf_le]`.
+
+Establish `h1 : (⨆ (j) (_ : j ≠ i), (𝒜 j).comap f) ≤ (⨆ (j) (_ : j ≠ i), 𝒜 j).comap f` using `iSup₂_le fun j hj => Submodule.comap_mono (le_iSup₂ (f := fun j (_ : j ≠ i) => 𝒜 j) j hj)`. Combine the equalities or inequalities in the displayed calculation. Establish `hr : LinearMap.range f = ⨆ j, 𝒜 j`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Establish `htop : ⨆ j, (𝒜 j).comap f = ⊤`.
+
+Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises. Rewrite using `[Submodule.map_iSup, Submodule.map_top]`. Repeatedly rewrite using `[Submodule.map_comap_eq, hr]`. Conclude with `le_antisymm (iSup_le fun j => inf_le_left) (iSup_le fun j => le_trans (le_inf (le_iSup 𝒜 j) le_rfl) (le_iSup (fun k => (⨆ j, 𝒜 j) ⊓ 𝒜 k) j))`. Conclude with `(DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top _).2 ⟨hind, htop⟩`.
+-/
 private theorem UpperTheory.V.GradeZeroInterpolatingElement.ptAct_internal {O R X : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup X]
     [DecidableEq X] (𝒜 : X → Submodule O R) [SetLike.GradedMonoid 𝒜] (h : iSupIndep 𝒜) :
     DirectSum.IsInternal fun j => (𝒜 j).comap (gradedSub 𝒜).val.toLinearMap := by
@@ -40,6 +49,13 @@ private def UpperTheory.V.GradeZeroInterpolatingElement.ptAct_chr {K : Type} [Co
     simp only [wv, toAdd_mul, Prod.fst_add, Prod.snd_add, zpow_add]
     exact mul_mul_mul_comm _ _ _ _
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD M K _ _ ξ t`. Set `𝒜' : ℤ × ℤ → Submodule c.O M.SS` to `fun j => (M.sPart j).comap M.SS.val.toLinearMap`. Establish `hint : DirectSum.IsInternal 𝒜'` using `UpperTheory.V.GradeZeroInterpolatingElement.ptAct_internal M.sPart (sInternal D hD M).1`. Use `letI hgm : SetLike.GradedMonoid 𝒜' := { one_mem := by show ((1 : M.SS) : M.S) ∈ M.sPart 0`. Conclude with `SetLike.GradedOne.one_mem`.
+
+Use `mul_mem := fun i j a b ha hb => by show ((a * b : M.SS) : M.S) ∈ M.sPart (i + j)`. Conclude with `SetLike.GradedMul.mul_mem ha hb }`. Use `letI : DirectSum.Decomposition 𝒜' := hint.chooseDecomposition`. Use `letI : GradedAlgebra 𝒜' := { hgm, (inferInstance : DirectSum.Decomposition 𝒜') with }`. Establish `key : ∀ w (f : M.SS), f.1 ∈ M.sPart w → act 𝒜' (UpperTheory.V.GradeZeroInterpolatingElement.ptAct_chr t) ξ f = (wv t w : K) * ξ f` using `fun w f hf => act_of_mem 𝒜' (UpperTheory.V.GradeZeroInterpolatingElement.ptAct_chr t) ξ (j := w) hf`.
+
+Use `⟨act 𝒜' (UpperTheory.V.GradeZeroInterpolatingElement.ptAct_chr t) ξ, fun g => ?_, key⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `show act 𝒜' (UpperTheory.V.GradeZeroInterpolatingElement.ptAct_chr t) ξ (M.ent g i j) = (wv t (wt i j) : K) * ξ (M.ent g i j)`. Conclude with `key _ _ (M.entry_mem g i j)`.
+-/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.ptAct :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ M : Model D, ∀ (K : Type) [CommRing K] [Algebra c.O K] (ξ : M.SS →ₐ[c.O] K) (t : Kˣ × Kˣ), ∃ ξ' : M.SS →ₐ[c.O] K, (∀ g, M.rep ξ' g = tconj t (M.rep ξ g)) ∧ ∀ w (f : M.SS), f.1 ∈ M.sPart w → ξ' f = (wv t w : K) * ξ f := by
   intro Ω _ _ _ l _ c D hD M K _ _ ξ t

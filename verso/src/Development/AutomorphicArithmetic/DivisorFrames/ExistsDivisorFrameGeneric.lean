@@ -7,6 +7,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo GlobalTheory.ProjVar GlobalTheory.LineNorm GlobalTheory.BcLie GlobalTheory.CovTest GlobalTheory.Mean4O GlobalTheory.Cartier GlobalTheory.TrueCx
 open scoped ComplexOrder
 
+/- English proof (translation)
+Take `⟨U, hU, φ, f, hy, hφ, -⟩` from `GlobalTheory.T.exists_affine_stable_lie_eigenspace_frame E H Dw l Xo c O β Z (ρ y)`. Establish `hg : ⊤ ≤ (genericPt Y ≫ ρ) ⁻¹ᵁ U` using `gen_le ρ hy`. Set `χ : Γ(gen Z, U) →+* Y.Fn` to `evalPt (genericPt Y ≫ ρ) U hg`. Establish `hχ : genericPt Y ≫ ρ = spMap χ ≫ hU.fromSpec` using `eq_spec_fromSpec hU _ hg`. Establish `hc : constF e Y = χ.comp φ` using `EigLoc.spMap_inj (by`.
+
+Establish `h1 : genericPt Y ≫ Y.str = spMap (algebraMap F Y.Fn)` using `(GlobalTheory.FlagBundle.ratOf Y).pt_s`. Establish `h2 : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _`. Use `(Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))` and prove the remaining obligations. Conclude with `CommRingCat.hom_ext (RingHom.ext fun a => e.apply_symm_apply a)`. Establish `h3 : spMap (χ.comp φ) = spMap χ ≫ spMap φ` using `by rw [← Spec.map_comp]; rfl`.
+
+Establish `h4 : spMap (constF e Y) = spMap (algebraMap F Y.Fn) ≫ spMap e.symm.toRingHom` using `by rw [← Spec.map_comp]; rfl`. Establish `h5 : spMap χ ≫ spMap φ = (genericPt Y ≫ ρ) ≫ genStr Z`. Rewrite using `[hχ, ← hφ]`. Conclude with `(Category.assoc _ _ _).symm`. Rewrite using `[h3, h4, h5, ← h1, ← hρ]`.
+
+Simplify using `only [Category.assoc, h2, Category.comp_id])`. Take `⟨f', hf'⟩` from `f.exists_isMap χ (x' := genericPt Y ≫ ρ ≫ genι Z) hc (by rw [← Category.assoc, hχ]; exact Category.assoc _ _ _)`. Use `⟨U, g₀.co f' τ, hy, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hs : ⊤ ≤ (stalkPt Y z ≫ ρ) ⁻¹ᵁ U` using `stalk_le ρ hz`. Set `ψ : Γ(gen Z, U) →+* Y.X.presheaf.stalk z` to `evalPt (stalkPt Y z ≫ ρ) U hs`.
+
+Establish `hψ : stalkPt Y z ≫ ρ = spMap ψ ≫ hU.fromSpec` using `eq_spec_fromSpec hU _ hs`. Establish `hcomp : (toFn z).comp ψ = χ` using `EigLoc.spMap_inj ((cancel_mono hU.fromSpec).1 (by`. Establish `h3 : spMap ((toFn z).comp ψ) = spMap (toFn z) ≫ spMap ψ` using `by rw [← Spec.map_comp]; rfl`. Use `Eq.trans ?_ hχ` and prove the remaining obligations. Rewrite using `[h3, ← spMap_toFn z, Category.assoc, Category.assoc, hψ]))`.
+
+Take `⟨k, hk⟩` from `f.exists_isMap ψ (x' := stalkPt Y z ≫ ρ ≫ genι Z) rfl (by rw [← Category.assoc, hψ]; exact Category.assoc _ _ _)`. Establish `hc' : constF e Y = (toFn z).comp (ψ.comp φ)` using `by rw [← RingHom.comp_assoc, hcomp, hc]`. Establish `hm : k.IsMap (toFn z) f'` using `fun τ i => by`. Rewrite using `[hf', hk, GlobalTheory.GradedPieces.dual_comp, hcomp]`. Conclude with `⟨_, k, (fits_iff hc' hm).2 rfl⟩`.
+-/
 private theorem exists_local {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F} {Y : Var F}
@@ -45,6 +58,17 @@ private theorem exists_local {E : Type} [Field E] [NumberField E] [IsCMField E] 
     rw [hf', hk, GlobalTheory.GradedPieces.dual_comp, hcomp]
   exact ⟨_, k, (fits_iff hc' hm).2 rfl⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y ρ hρ g₀ τ`. Use `choose U P hU hP using exists_local hρ g₀ τ`. Establish `hdet : ∀ y, IsUnit (P y).det` using `fun y => by`. Take `⟨φ, f, h⟩` from `hP y y (hU y)`. Conclude with `h.isUnit_det`.
+
+Set `t : Y.X → Y.Fnˣ` to `fun y => (hdet y).unit⁻¹`. Establish `ht : ∀ y, (t y : Y.Fn) = ((P y).det)⁻¹` using `fun y => by`. Simplify using `only [t, Units.val_inv_eq_inv_val, IsUnit.unit_spec]`. Establish `hgerm : ∀ y z, ρ z ∈ U y → germOf z (t z) = germOf z (t y)` using `fun y z hz => by`. Take `⟨φ, f, h⟩` from `hP y z hz`.
+
+Take `⟨φ', f', h'⟩` from `hP z z (hU z)`. Take `rfl` from `h.φ_eq h'`. Rewrite using `[germOf_eq_iff]`. Use `⟨_, f.isUnit_det_co f' τ, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg Matrix.det (h.eq_mul h')`.
+
+Rewrite `h1` using `[det_mul, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Establish `h2 : (t y : Y.Fn) / (t z : Y.Fn) = toFn z (f.co f' τ).det`. Rewrite using `[ht, ht, h1, div_inv_eq_mul, inv_mul_cancel_left₀ (hdet y).ne_zero]`. Conclude with `h2.symm`. Use `⟨show cartierGroup Y.X from ⟨fun y => germOf y (t y), fun y => ⟨ρ ⁻¹ᵁ U y, hU y, t y, fun z hz => hgerm y z hz⟩⟩, t, fun _ => rfl, fun y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨φ, f, h⟩` from `hP y y (hU y)`. Conclude with `⟨φ, f, P y, h, by rw [ht, inv_mul_cancel₀ (hdet y).ne_zero]⟩`.
+-/
 theorem UpperTheory.exists_divisor_frame_generic :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (Y : Var F) (ρ : Y.X ⟶ gen Z) (_ : ρ ≫ genStr Z ≫ spMap e.toRingHom = Y.str) (g₀ : GenFrame e ρ) (τ : E →+* ℂ), ∃ (Δ : Y.Dv) (t : Y.X → Y.Fnˣ), (∀ y, Δ.IsEqn y (t y)) ∧ ∀ y, ∃ φ f P, Fits g₀ τ y φ f P ∧ (t y : Y.Fn) * P.det = 1 := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y ρ hρ g₀ τ

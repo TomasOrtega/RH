@@ -7,10 +7,18 @@ noncomputable section
 
 namespace GlobalTheory.LevNorm.PlaceSys
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply]; exact sum_mem fun k _ => mul_mem (hM i k) (hN k j)`.
+-/
 theorem gU_intM_mul {K : Type} [Field K] (O : ValuationSubring K) {n : ℕ} {M N : Matrix (Fin n) (Fin n) K}
     (hM : ∀ i j, M i j ∈ O) (hN : ∀ i j, N i j ∈ O) : ∀ i j, (M * N) i j ∈ O := fun i j => by
   rw [Matrix.mul_apply]; exact sum_mem fun k _ => mul_mem (hM i k) (hN k j)
 
+/- English proof (translation)
+Establish `h' : N * M = 1` using `mul_eq_one_comm.1 h`. Establish `inj : Function.Injective fun M : Matrix (Fin n) (Fin n) O => M.map O.subtype` using `Matrix.map_injective fun x y hxy => Subtype.ext hxy`. Use `⟨⟨Matrix.of fun i j => ⟨M i j, hM i j⟩, Matrix.of fun i j => ⟨N i j, hN i j⟩, inj ?_, inj ?_⟩, rfl⟩` and prove the remaining obligations. Use `show Matrix.map _ O.subtype = Matrix.map _ O.subtype`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Conclude with `h`. Use `show Matrix.map _ O.subtype = Matrix.map _ O.subtype`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `h'`.
+-/
 theorem gU_glO {K : Type} [Field K] (O : ValuationSubring K) {n : ℕ} (M N : Matrix (Fin n) (Fin n) K)
     (hM : ∀ i j, M i j ∈ O) (hN : ∀ i j, N i j ∈ O) (h : M * N = 1) :
     ∃ y : GL (Fin n) O, ((bc O.subtype y : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = M := by
@@ -25,6 +33,9 @@ theorem gU_glO {K : Type} [Field K] (O : ValuationSubring K) {n : ℕ} (M N : Ma
     rw [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
     exact h'
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, Matrix.one_mul]`. Use `_ = L := by rw [Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`.
+-/
 theorem gU_val_inv {R : Type} [CommRing R] {n : ℕ} (g : GL (Fin n) R) (L : Matrix (Fin n) (Fin n) R)
     (h : L * (g : Matrix (Fin n) (Fin n) R) = 1) : ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = L := by
   calc ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)
@@ -32,10 +43,16 @@ theorem gU_val_inv {R : Type} [CommRing R] {n : ℕ} (g : GL (Fin n) R) (L : Mat
         rw [h, Matrix.one_mul]
     _ = L := by rw [Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem gU_cT_smul {A : Type} [CommRing A] (σ : A →+* A) {n : ℕ} (w : A) (M : Matrix (Fin n) (Fin n) A) :
     cT σ (w • M) = σ w • cT σ M := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem gU_mapMatrix_smul {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n : ℕ} (w : A)
     (M : Matrix (Fin n) (Fin n) A) : φ.mapMatrix (w • M) = φ w • φ.mapMatrix M := by
   ext i j; simp
@@ -43,6 +60,15 @@ theorem gU_mapMatrix_smul {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B
 variable {A : Type} [CommRing A] {S : Subring A} {P : Type} {k : P → Type} [∀ Q, Field (k Q)] {r : ∀ Q, S →+* k Q}
   (Z : PlaceSys A S P k r) {σ : A →+* A}
 
+/- English proof (translation)
+Use `set Gm : Matrix (Fin n) (Fin n) A := ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) with hGm`. Use `set Gi : Matrix (Fin n) (Fin n) A := ((bc S.subtype G⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) with hGi`. Establish `hu' : cT σ (u : Matrix (Fin n) (Fin n) A) * Gm * u = Gm` using `hu`. Establish `hGG : Gi * Gm = 1`. Rewrite using `[hGi, hGm, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+
+Establish `key : ((u⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = Gi * cT σ (u : Matrix (Fin n) (Fin n) A) * Gm`. Apply `gU_val_inv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hu', hGG]`.
+
+Establish `hcT : (Z.p Q').mapMatrix (cT σ (u : Matrix (Fin n) (Fin n) A)) = s d • (W.map s)ᵀ`. Use extensionality with `i j`. Use `congrFun (congrFun h j) i` as an intermediate fact. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul] at this`. Simplify using `only [cT, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[← hs, this, map_mul]`. Use `⟨(Z.p Q').mapMatrix Gi * (W.map s)ᵀ * (Z.p Q').mapMatrix Gm, ?_, ?_⟩` and prove the remaining obligations. Establish `hG1 : ∀ (g : GL (Fin n) S) i j, (Z.p Q').mapMatrix ((bc S.subtype g : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) i j ∈ Z.O Q'` using `fun g i j => (Z.int _).1 ((g : Matrix (Fin n) (Fin n) S) i j).2 Q'`. Conclude with `gU_intM_mul _ (gU_intM_mul _ (hG1 _) fun i j => hsO _ (hW j i)) (hG1 _)`. Rewrite using `[key, map_mul, map_mul, hcT, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem gU_inv_comp {Q Q' : P} {s : Z.K Q →+* Z.K Q'} (hs : ∀ a, s (Z.p Q a) = Z.p Q' (σ a))
     (hsO : ∀ x ∈ Z.O Q, s x ∈ Z.O Q') {n : ℕ} (G : GL (Fin n) S) (u : GL (Fin n) A)
     (hu : u ∈ UJ σ ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A))
@@ -73,6 +99,17 @@ theorem gU_inv_comp {Q Q' : P} {s : Z.K Q →+* Z.K Q'} (hs : ∀ a, s (Z.p Q a)
     exact gU_intM_mul _ (gU_intM_mul _ (hG1 _) fun i j => hsO _ (hW j i)) (hG1 _)
   · rw [key, map_mul, map_mul, hcT, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Use `set X := ((bc (Z.O Q).subtype x : GL (Fin n) (Z.K Q)) : Matrix (Fin n) (Fin n) (Z.K Q)) with hX`. Use `set Xi := ((bc (Z.O Q).subtype x⁻¹ : GL (Fin n) (Z.K Q)) : Matrix (Fin n) (Fin n) (Z.K Q)) with hXi`. Establish `hXint : ∀ i j, X i j ∈ Z.O Q` using `fun i j => ((x : Matrix (Fin n) (Fin n) (Z.O Q)) i j).2`. Establish `hXiint : ∀ i j, Xi i j ∈ Z.O Q` using `fun i j => (((x⁻¹ : GL (Fin n) (Z.O Q)) : Matrix (Fin n) (Fin n) (Z.O Q)) i j).2`. Establish `hXX : Xi * X = 1` using `by rw [hXi, hX, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+
+Establish `hinv : (Z.p Q).mapMatrix ((m⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = (c : Z.K Q)⁻¹ • Xi` using `by show ((bc (Z.p Q) m⁻¹ : GL (Fin n) (Z.K Q)) : Matrix (Fin n) (Fin n) (Z.K Q)) = _`. Rewrite using `[map_inv]`. Apply `gU_val_inv` to reduce the goal to its premises. Use `show _ * (Z.p Q).mapMatrix (m : Matrix (Fin n) (Fin n) A) = 1`. Rewrite using `[hc, Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ c.ne_zero, one_smul, hXX]`.
+
+Take `⟨I1, hI1, e1⟩` from `gU_inv_comp Z hs hsO G m hm c X hXint hc`. Take `⟨I2, hI2, e2⟩` from `gU_inv_comp Z hs hsO G m⁻¹ (inv_mem hm) ((c : Z.K Q)⁻¹) Xi hXiint hinv`. Rewrite `e2` using `[inv_inv, map_inv₀]`. Establish `hsc : s c ≠ 0` using `(map_ne_zero s).2 c.ne_zero`. Establish `h2 : I2 = s c • (Z.p Q').mapMatrix (m : Matrix (Fin n) (Fin n) A)`.
+
+Rewrite using `[e2, smul_smul, mul_inv_cancel₀ hsc, one_smul]`. Establish `h1 : I1 = (s c)⁻¹ • (Z.p Q').mapMatrix ((m⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)`. Rewrite using `[e1, smul_smul, inv_mul_cancel₀ hsc, one_smul]`. Establish `hprod : I2 * I1 = 1`. Rewrite using `[h1, h2, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ hsc, one_smul, ← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]`.
+
+Take `⟨y, hy⟩` from `gU_glO _ I2 I1 hI2 hI1 hprod`. Conclude with `⟨y, by rw [hy]; exact e2⟩`.
+-/
 theorem gU_scal_conj {Q Q' : P} {s : Z.K Q →+* Z.K Q'} (hs : ∀ a, s (Z.p Q a) = Z.p Q' (σ a))
     (hsO : ∀ x ∈ Z.O Q, s x ∈ Z.O Q') {n : ℕ} (G : GL (Fin n) S) (m : GL (Fin n) A)
     (hm : m ∈ UJ σ ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)) (c : (Z.K Q)ˣ)
@@ -113,6 +150,27 @@ namespace GlobalTheory.LevNorm.PlaceSys
 variable {A : Type} [CommRing A] {S : Subring A} {P : Type} {k : P → Type} [∀ Q, Field (k Q)] {r : ∀ Q, S →+* k Q}
   (Z : PlaceSys A S P k r) {σ : A →+* A}
 
+/- English proof (translation)
+Take `⟨s, hs, hsO⟩` from `Z.exists_conj hS hQ`. Take `⟨c, x, hc⟩` from `h`. Establish `hc' : (Z.p Q).mapMatrix (m : Matrix (Fin n) (Fin n) A) = (c : Z.K Q) • ((bc (Z.O Q).subtype x : GL (Fin n) (Z.K Q)) : Matrix (Fin n) (Fin n) (Z.K Q))` using `hc`. Take `⟨y, hy⟩` from `gU_scal_conj Z hs hsO G m hm c x hc'`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases.
+
+Substitute `hn` using the available equality. Conclude with `⟨1, Subsingleton.elim _ _⟩`. Use `set X := ((bc (Z.O Q).subtype x : GL (Fin n) (Z.K Q)) : Matrix (Fin n) (Fin n) (Z.K Q)) with hX`. Use `set Xi := ((bc (Z.O Q).subtype x⁻¹ : GL (Fin n) (Z.K Q)) : Matrix (Fin n) (Fin n) (Z.K Q)) with hXi`. Use `set Y := ((bc (Z.O Q).subtype y : GL (Fin n) (Z.K Q)) : Matrix (Fin n) (Fin n) (Z.K Q)) with hY`.
+
+Use `set Yi := ((bc (Z.O Q).subtype y⁻¹ : GL (Fin n) (Z.K Q)) : Matrix (Fin n) (Fin n) (Z.K Q)) with hYi`. Establish `hXint : ∀ i j, X i j ∈ Z.O Q` using `fun i j => ((x : Matrix (Fin n) (Fin n) (Z.O Q)) i j).2`. Establish `hXiint : ∀ i j, Xi i j ∈ Z.O Q` using `fun i j => (((x⁻¹ : GL (Fin n) (Z.O Q)) : Matrix (Fin n) (Fin n) (Z.O Q)) i j).2`. Establish `hYint : ∀ i j, Y i j ∈ Z.O Q` using `fun i j => ((y : Matrix (Fin n) (Fin n) (Z.O Q)) i j).2`. Establish `hYiint : ∀ i j, Yi i j ∈ Z.O Q` using `fun i j => (((y⁻¹ : GL (Fin n) (Z.O Q)) : Matrix (Fin n) (Fin n) (Z.O Q)) i j).2`.
+
+Establish `hXXi : X * Xi = 1` using `by rw [hXi, hX, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Establish `hYYi : Y * Yi = 1` using `by rw [hYi, hY, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Establish `hsc : s c ≠ 0` using `(map_ne_zero s).2 c.ne_zero`. Use `set t : Z.K Q := (c : Z.K Q) * s c with ht`. Establish `ht0 : t ≠ 0` using `mul_ne_zero c.ne_zero hsc`.
+
+Establish `hYX : t • X = Y`. Establish `e : (c : Z.K Q) • X = (s c)⁻¹ • Y` using `hc'.symm.trans hy`. Combine the equalities or inequalities in the displayed calculation. Establish `hXY : t⁻¹ • Y = X` using `by rw [← hYX, smul_smul, inv_mul_cancel₀ ht0, one_smul]`. Set `i0 : Fin n` to `⟨0, hn⟩`.
+
+Establish `htO : t ∈ Z.O Q`. Establish `e : (Y * Xi) i0 i0 = t`. Rewrite using `[← hYX, Matrix.smul_mul, hXXi, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Rewrite using `[← e]`. Conclude with `gU_intM_mul _ hYint hXiint i0 i0`.
+
+Establish `htiO : t⁻¹ ∈ Z.O Q`. Establish `e : (X * Yi) i0 i0 = t⁻¹`. Rewrite using `[← hXY, Matrix.smul_mul, hYYi, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Rewrite using `[← e]`. Conclude with `gU_intM_mul _ hXint hYiint i0 i0`.
+
+Establish `hcO : (c : Z.K Q) ∈ Z.O Q ∧ (c : Z.K Q)⁻¹ ∈ Z.O Q`. Break down `(Z.O Q).mem_or_inv_mem (c : Z.K Q) with h1 | h1` into its components or cases. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `e : (c : Z.K Q)⁻¹ = s c * t⁻¹`. Rewrite using `[ht, _root_.mul_inv_rev, ← mul_assoc, mul_inv_cancel₀ hsc, one_mul]`.
+
+Rewrite using `[e]`. Conclude with `mul_mem (hsO _ h1) htiO`. Use `⟨?_, h1⟩` and prove the remaining obligations. Establish `e : (c : Z.K Q) = t * (s c)⁻¹` using `by rw [ht, mul_assoc, mul_inv_cancel₀ hsc, mul_one]`. Establish `h2 : (s c)⁻¹ ∈ Z.O Q` using `by rw [← map_inv₀]; exact hsO _ h1`.
+
+Rewrite using `[e]`. Conclude with `mul_mem htO h2`. Take `⟨y', hy'⟩` from `gU_glO _ ((c : Z.K Q) • X) ((c : Z.K Q)⁻¹ • Xi) (fun i j => mul_mem hcO.1 (hXint i j)) (fun i j => mul_mem hcO.2 (hXiint i j)) (by rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ c.ne_zero, one_smul, hXXi])`. Conclude with `⟨y', Units.ext (hy'.trans hc'.symm)⟩`.
+-/
 theorem gU_good_self (hS : ∀ a ∈ S, σ a ∈ S) {Q : P} (hQ : σ (Z.e Q) = Z.e Q) {n : ℕ} (G : GL (Fin n) S)
     (m : GL (Fin n) A) (hm : m ∈ UJ σ ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A))
     (h : IsScal (Z.O Q) (bc (Z.p Q) m)) :
@@ -167,6 +225,9 @@ theorem gU_good_self (hS : ∀ a ∈ S, σ a ∈ S) {Q : P} (hQ : σ (Z.e Q) = Z
     (by rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ c.ne_zero, one_smul, hXXi])
   exact ⟨y', Units.ext (hy'.trans hc'.symm)⟩
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `Z.exists_bar hσ Q`. Establish `h : σ (Z.e R) = Z.e Q` using `by rw [← hR, hσ]`. Take `⟨t, ht, -⟩` from `Z.exists_conj hS h`. Conclude with `⟨R, h, t, ht⟩`.
+-/
 theorem gU_comp_sigma (hσ : ∀ a, σ (σ a) = a) (hS : ∀ a ∈ S, σ a ∈ S) (Q : P) :
     ∃ R, σ (Z.e R) = Z.e Q ∧ ∃ t : Z.K R →+* Z.K Q, ∀ a, t (Z.p R a) = Z.p Q (σ a) := by
   obtain ⟨R, hR⟩ := Z.exists_bar hσ Q
@@ -181,6 +242,35 @@ namespace GlobalTheory.LevNorm.PlaceSys
 variable {A : Type} [CommRing A] {S : Subring A} {P : Type} {k : P → Type} [∀ Q, Field (k Q)] {r : ∀ Q, S →+* k Q}
   (Z : PlaceSys A S P k r) {σ : A →+* A}
 
+/- English proof (translation)
+Take `⟨s, hs, hsO⟩` from `Z.exists_conj hS ha`. Take `⟨c, x, hc⟩` from `hscal a`. Establish `hc' : (Z.p a).mapMatrix (m : Matrix (Fin n) (Fin n) A) = (c : Z.K a) • ((bc (Z.O a).subtype x : GL (Fin n) (Z.K a)) : Matrix (Fin n) (Fin n) (Z.K a))` using `hc`. Take `⟨y, hy⟩` from `gU_scal_conj Z hs hsO G m hm c x hc'`. Establish `hsc : s c ≠ 0` using `(map_ne_zero s).2 c.ne_zero`.
+
+Take `⟨α, hα1, hα2⟩` from `Z.exists_single a ((c : Z.K a) - 1)`. Take `⟨β, hβ1, hβ2⟩` from `Z.exists_single a' ((s c)⁻¹ - 1)`. Use `set z : A := 1 + α + β with hz`. Establish `pa : Z.p a z = c` using `by rw [hz, map_add, map_add, map_one, hα1, hβ2 a hne]; ring`. Establish `pa' : Z.p a' z = (s c)⁻¹` using `by rw [hz, map_add, map_add, map_one, hα2 a' (Ne.symm hne), hβ1]; ring`.
+
+Establish `po : ∀ Q, Q ≠ a → Q ≠ a' → Z.p Q z = 1` using `fun Q h1 h2 => by`. Rewrite using `[hz, map_add, map_add, map_one, hα2 Q h1, hβ2 Q h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `σinj : ∀ u v, σ u = σ v → u = v` using `fun u v h => by rw [← hσ u, h, hσ]`. Establish `einj` using `Z.e_injective`.
+
+Establish `hzz : z * σ z = 1`. Use `Z.ext' fun Q => ?_` and prove the remaining obligations. Take `⟨R, hR, t, ht⟩` from `gU_comp_sigma Z hσ hS Q`. Rewrite using `[map_mul, ← ht, map_one]`. Distinguish the cases in `hQa : Q = a`.
+
+Substitute `hQa` using the available equality. Establish `hRa' : R = a'` using `einj (σinj _ _ (by rw [hR, ← ha, hσ]))`. Substitute `hRa'` using the available equality. Take `⟨w, hw⟩` from `Z.surj Q c`. Establish `e : t (s c) = c` using `by rw [← hw, hs, ht, hσ]`.
+
+Rewrite using `[pa, pa', map_inv₀, e, mul_inv_cancel₀ c.ne_zero]`. Distinguish the cases in `hQa' : Q = a'`. Substitute `hQa'` using the available equality. Establish `hRa : R = a` using `einj (σinj _ _ (by rw [hR, ha]))`. Substitute `hRa` using the available equality.
+
+Take `⟨w, hw⟩` from `Z.surj R c`. Establish `e : t c = s c` using `by rw [← hw, hs, ht]`. Rewrite using `[pa', pa, e, inv_mul_cancel₀ hsc]`. Establish `hR1 : R ≠ a` using `fun h => hQa' (einj (by rw [← hR, h, ha]))`. Establish `hR2 : R ≠ a'` using `fun h => hQa (einj (by rw [← hR, h, ← ha, hσ]))`.
+
+Rewrite using `[po Q hQa hQa', po R hR1 hR2, map_one, mul_one]`. Establish `hzz' : σ z * z = 1` using `by rw [mul_comm]; exact hzz`. Set `m₁ : GL (Fin n) A` to `⟨σ z • (m : Matrix (Fin n) (Fin n) A), z • ((m⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A), by rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, hzz', one_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one], by rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, hzz, one_smul, ← …`. Establish `hm₁ : (m₁ : Matrix (Fin n) (Fin n) A) = σ z • (m : Matrix (Fin n) (Fin n) A)` using `rfl`. Establish `pm : ∀ Q, (Z.p Q).mapMatrix (m₁ : Matrix (Fin n) (Fin n) A) = Z.p Q (σ z) • (Z.p Q).mapMatrix (m : Matrix (Fin n) (Fin n) A)` using `fun Q => by`.
+
+Rewrite using `[hm₁]`. Conclude with `gU_mapMatrix_smul _ _ _`. Establish `pσ : ∀ Q, Z.p Q z * Z.p Q (σ z) = 1` using `fun Q => by rw [← map_mul, hzz, map_one]`. Use `⟨z, m₁, hzz, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm₁, smul_smul, hzz, one_smul]`.
+
+Use `show cT σ (m₁ : Matrix (Fin n) (Fin n) A) * _ * (m₁ : Matrix (Fin n) (Fin n) A) = _`. Establish `hm' : cT σ (m : Matrix (Fin n) (Fin n) A) * ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) * (m : Matrix (Fin n) (Fin n) A) = ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)` using `hm`. Rewrite using `[hm₁, gU_cT_smul, hσ, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hzz, one_smul, hm']`. Introduce `Q`. Take `⟨cQ, xQ, hQ⟩` from `hscal Q`.
+
+Establish `h0 : Z.p Q (σ z) ≠ 0` using `right_ne_zero_of_mul_eq_one (pσ Q)`. Use `⟨Units.mk0 _ h0 * cQ, xQ, ?_⟩` and prove the remaining obligations. Use `show (Z.p Q).mapMatrix (m₁ : Matrix (Fin n) (Fin n) A) = _`. Rewrite using `[pm, Units.val_mul, Units.val_mk0, ← smul_smul]`. Conclude with `congrArg _ hQ`.
+
+Introduce `Q h1 h2`. Apply `Units.ext` to reduce the goal to its premises. Use `show (Z.p Q).mapMatrix (m₁ : Matrix (Fin n) (Fin n) A) = (Z.p Q).mapMatrix (m : Matrix (Fin n) (Fin n) A)`. Establish `e : Z.p Q (σ z) = 1` using `by have := pσ Q; rwa [po Q h1 h2, one_mul] at this`. Rewrite using `[pm, e, one_smul]`.
+
+Use `⟨x, Units.ext ?_⟩ show _ = (Z.p a).mapMatrix (m₁ : Matrix (Fin n) (Fin n) A)` and prove the remaining obligations. Establish `e : Z.p a (σ z) = (c : Z.K a)⁻¹` using `(inv_eq_of_mul_eq_one_right (by rw [← pa]; exact pσ a)).symm`. Rewrite using `[pm, e, hc', smul_smul, inv_mul_cancel₀ c.ne_zero, one_smul]`. Use `⟨y, Units.ext ?_⟩ show _ = (Z.p a').mapMatrix (m₁ : Matrix (Fin n) (Fin n) A)` and prove the remaining obligations. Establish `e : Z.p a' (σ z) = s c` using `(inv_eq_of_mul_eq_one_right (by rw [← pa']; exact pσ a')).symm.trans (inv_inv _)`.
+
+Rewrite using `[pm, e, hy, smul_smul, mul_inv_cancel₀ hsc, one_smul]`.
+-/
 theorem gU_step (hσ : ∀ a, σ (σ a) = a) (hS : ∀ a ∈ S, σ a ∈ S) {n : ℕ} (G : GL (Fin n) S)
     (m : GL (Fin n) A) (hm : m ∈ UJ σ ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A))
     (hscal : ∀ Q, IsScal (Z.O Q) (bc (Z.p Q) m)) {a a' : P} (ha : σ (Z.e a) = Z.e a') (hne : a ≠ a') :
@@ -263,6 +353,19 @@ theorem gU_step (hσ : ∀ a, σ (σ a) = a) (hS : ∀ a ∈ S, σ a ∈ S) {n :
       (inv_eq_of_mul_eq_one_right (by rw [← pa']; exact pσ a')).symm.trans (inv_inv _)
     rw [pm, e, hy, smul_smul, mul_inv_cancel₀ hsc, one_smul]
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `m _ _ hg`. Take `⟨x, hx⟩` from `Z.gl_int (fun Q => hg Q (by simp))`. Conclude with `⟨1, x, by rw [map_one, mul_one], by rw [hx, one_smul]⟩`.
+
+Consider the case `@insert a T haT ih`. Introduce `m hm hscal hg`. Distinguish the cases in `ha : ∃ y : GL (Fin n) (Z.O a), bc (Z.O a).subtype y = bc (Z.p a) m`. Conclude with `ih m hm hscal fun Q hQ => by`. Distinguish the cases in `h : Q = a`.
+
+Substitute `h` using the available equality. Conclude with `ha`. Conclude with `hg Q (by simp [h, hQ])`. Take `⟨a', ha'⟩` from `Z.exists_bar hσ a`. Distinguish the cases in `hne : a = a'`.
+
+Conclude with `absurd (gU_good_self Z hS (by rw [ha', ← hne]) G m hm (hscal a)) ha`. Take `⟨z, m₁, hzz, hmz, hm₁, hs₁, heq, hga, hga'⟩` from `gU_step Z hσ hS G m hm hscal ha' hne`. Take `⟨z₂, x, hz₂, hx⟩` from `ih m₁ hm₁ hs₁ fun Q hQ => by`. Distinguish the cases in `h1 : Q = a`. Substitute `h1` using the available equality.
+
+Conclude with `hga`. Distinguish the cases in `h2 : Q = a'`. Substitute `h2` using the available equality. Conclude with `hga'`. Rewrite using `[heq Q h1 h2]; exact hg Q (by simp [h1, hQ])`.
+
+Use `⟨z * z₂, x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_mul_mul_comm, hzz, hz₂, one_mul]`. Rewrite using `[hmz, hx, smul_smul]`.
+-/
 theorem gU_ind (hσ : ∀ a, σ (σ a) = a) (hS : ∀ a ∈ S, σ a ∈ S) {n : ℕ} (G : GL (Fin n) S) (T : Finset P) :
     ∀ (m : GL (Fin n) A), m ∈ UJ σ ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) →
       (∀ Q, IsScal (Z.O Q) (bc (Z.p Q) m)) →
@@ -300,6 +403,17 @@ end GlobalTheory.LevNorm.PlaceSys
 
 namespace GlobalTheory.LevNorm.PlaceSys
 
+/- English proof (translation)
+Introduce `A _ S P k _ r Z σ hσ hS n G m hm hloc`. Establish `hscal : ∀ Q, IsScal (Z.O Q) (bc (Z.p Q) m)` using `fun Q => by`. Break down `hloc Q with h | ⟨Q', hQ', h⟩` into its components or cases. Conclude with `h`. Take `⟨s, hs, hsO⟩` from `Z.exists_conj hS hQ'`.
+
+Take `⟨c, x, hc⟩` from `h`. Take `⟨y, hy⟩` from `gU_scal_conj Z hs hsO G m hm c x hc`. Establish `hsc : s c ≠ 0` using `(map_ne_zero s).2 c.ne_zero`. Conclude with `⟨(Units.mk0 _ hsc)⁻¹, y, by rw [Units.val_inv_eq_inv_val, Units.val_mk0]; exact hy⟩`. Establish `hfin : {Q | ¬ ∃ y : GL (Fin n) (Z.O Q), bc (Z.O Q).subtype y = bc (Z.p Q) m}.Finite`.
+
+Use `(Set.finite_iUnion (fun ij : Fin n × Fin n => (Z.fin ((m : Matrix (Fin n) (Fin n) A) ij.1 ij.2)).union (Z.fin (((m⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) ij.1 ij.2)))).subset ?_` and prove the remaining obligations. Introduce `Q hQ`. Assume the negation of the conclusion as `hc`. Apply `hQ` to reduce the goal to its premises. Establish `h1 : ∀ i j, Z.p Q ((m : Matrix (Fin n) (Fin n) A) i j) ∈ Z.O Q` using `fun i j =>`.
+
+Assume the negation of the conclusion as `fun h => hc (Set.mem_iUnion.2 ⟨(i, j), Or.inl h⟩)`. Establish `h2 : ∀ i j, Z.p Q (((m⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) i j) ∈ Z.O Q` using `fun i j =>`. Assume the negation of the conclusion as `fun h => hc (Set.mem_iUnion.2 ⟨(i, j), Or.inr h⟩)`. Take `⟨y, hy⟩` from `gU_glO _ ((Z.p Q).mapMatrix (m : Matrix (Fin n) (Fin n) A)) ((Z.p Q).mapMatrix ((m⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)) h1 h2 (by rw [← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one])`. Conclude with `⟨y, Units.ext hy⟩`.
+
+Conclude with `gU_ind Z hσ hS G hfin.toFinset m hm hscal fun Q hQ => by`. Assume the negation of the conclusion as `h`. Conclude with `hQ (hfin.mem_toFinset.2 h)`.
+-/
 theorem unitary_locScal_glue : ∀ {A : Type} [CommRing A] {S : Subring A} {P : Type} {k : P → Type} [∀ Q, Field (k Q)] {r : ∀ Q, S →+* k Q} (Z : PlaceSys A S P k r) (σ : A →+* A), (∀ a, σ (σ a) = a) → (∀ a ∈ S, σ a ∈ S) → ∀ (n : ℕ) (G : GL (Fin n) S) (m : GL (Fin n) A), m ∈ UJ σ ((bc S.subtype G : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) → (∀ Q, IsScal (Z.O Q) (bc (Z.p Q) m) ∨ ∃ Q', σ (Z.e Q') = Z.e Q ∧ IsScal (Z.O Q') (bc (Z.p Q') m)) → ∃ (z : A) (x : GL (Fin n) S), z * σ z = 1 ∧ (m : Matrix (Fin n) (Fin n) A) = z • ((bc S.subtype x : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) := by
   intro A _ S P k _ r Z σ hσ hS n G m hm hloc
   have hscal : ∀ Q, IsScal (Z.O Q) (bc (Z.p Q) m) := fun Q => by

@@ -19,21 +19,38 @@ def a0 {R : Type} [CommRing R] (X : Scheme.{0}) (I : Cx R) (n : ℤ) (z : Sec (I
   | 0, s, h, U, x => (show n = s by omega) ▸ Sec.res (x : U ⟶ X) z
   | _ + 1, _, _, _, _ => 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma etaleSimplicialCochain_scheme_section_extension_degree_zero {R : Type} [CommRing R] (X : Scheme.{0}) (I : Cx R) (n : ℤ) (z : Sec (I.X n) X) (h : -((0:ℕ) : ℤ) + n = n)
     (U : Scheme.{0}) (x : Sx (sch.obj X) 0 U) : a0 X I n z 0 n h U x = Sec.res (x : U ⟶ X) z := rfl
 
+/- English proof (translation)
+Simplify using `[Sec.res, op_comp, Functor.map_comp]`.
+-/
 lemma res_res {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (g : W ⟶ V) (f : V ⟶ U) (z : Sec F U) :
     Sec.res g (Sec.res f z) = Sec.res (g ≫ f) z := by
   simp [Sec.res, op_comp, Functor.map_comp]
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 lemma res_id {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (z : Sec F U) : Sec.res (𝟙 U) z = z := by
   simp [Sec.res]
 
+/- English proof (translation)
+Simplify using `only [Sec.map, Sec.res]`. Conclude with `congrArg (fun f => ModuleCat.Hom.hom f z) (φ.hom.naturality g.op)`.
+-/
 lemma map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (z : Sec F U) :
     Sec.map φ (Sec.res g z) = Sec.res g (Sec.map φ z) := by
   simp only [Sec.map, Sec.res]
   exact congrArg (fun f => ModuleCat.Hom.hom f z) (φ.hom.naturality g.op)
 
+/- English proof (translation)
+Introduce `p s h V U g x`. Consider the cases of `p with`. Consider the case `zero`. Take `rfl : s = n` from `by omega`. Conclude with `res_res g x z`.
+
+Consider the case `succ q => simp [a0, Sec.res]`.
+-/
 lemma etaleSimplicialCochain_scheme_section_extension_naturality {R : Type} [CommRing R] (X : Scheme.{0}) (I : Cx R) (n : ℤ) (z : Sec (I.X n) X) :
     ∀ p s h (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx (sch.obj X) p U),
       Sec.res g (a0 X I n z p s h U x) = a0 X I n z p s h V (x.res g) := by
@@ -47,6 +64,31 @@ lemma etaleSimplicialCochain_scheme_section_extension_naturality {R : Type} [Com
 end LateralTheory.EtaleFoundations
 
 open LateralTheory.EtaleFoundations in
+/- English proof (translation)
+Introduce `R _ X I m n k hmn hnk`. Establish `v0 : ∀ {q : ℤ} (β : Cochain ((chains R).obj (sch.obj X)) I q) (U : Scheme.{0}) (x : Sx (sch.obj X) 0 U), ev β 0 q (by simp) U x = Sec.res (x : U ⟶ X) (ev β 0 q (by simp) X (𝟙 X))`. Introduce `q β U x`. Rewrite using `[(hb R).2.1 β 0 q (by simp) U X x (𝟙 X)]`. Both sides reduce to the same expression.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨α, hα⟩` from `hmk R (a0 X I n z) (etaleSimplicialCochain_scheme_section_extension_naturality X I n z)`. Establish `hδ : δ n k α = 0`. Apply `(hb R).2.2.1` to reduce the goal to its premises.
+
+Introduce `p s h U x`. Rewrite using `[((hb R).1 (δ n k α) (δ n k α) p s h U x).2.2.1]`. Consider the cases of `p with`. Consider the case `zero`. Take `rfl : s = k` from `by omega`.
+
+Rewrite using `[(hdl R hnk α U).1 x, hα, etaleSimplicialCochain_scheme_section_extension_degree_zero]`. Conclude with `(map_res (I.d n s) (x : U ⟶ X) z).trans (by rw [hz]; simp [Sec.res])`. Consider the case `succ p`. Rewrite using `[(hdl R hnk α U).2 p (-((p + 1 : ℕ) : ℤ) + n) s rfl h x]`. Simplify using `only [hα]`.
+
+Consider the cases of `p with`. Consider the case `zero`. Take `rfl : s = n` from `by omega`. Simplify using `[a0, Fin.sum_univ_two]`. Rewrite using `[show x.face 0 = x from rfl, show x.face 1 = x from rfl]`.
+
+Conclude with `add_neg_cancel _`. Consider the case `succ p => simp [a0]`. Use `⟨Cocycle.mk α k hnk hδ, ?_, ?_⟩` and prove the remaining obligations. Introduce `U x; exact hα 0 n (by simp) U x`. Introduce `p s h U x`.
+
+Rewrite using `[show (Cocycle.mk α k hnk hδ).1 = α from rfl, hα]`. Both sides reduce to the same expression. Introduce `α`. Establish `hd0 : Sec.map (I.d n k) (ev α.1 0 n (by simp) X (𝟙 X)) = 0`. Rewrite using `[← (hdl R hnk α.1 X).1 (𝟙 X), Cocycle.δ_eq_zero]`.
+
+Conclude with `((hb R (E := sch.obj X) (I := I) (n := k)).1 0 0 0 k (by simp) X (𝟙 X)).2.2.1`. Use `⟨hd0, ?_⟩` and prove the remaining obligations. Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff α m hmn]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨β, hβ⟩`.
+
+Use `⟨ev β 0 m (by simp) X (𝟙 X), ?_⟩` and prove the remaining obligations. Rewrite using `[← (hdl R hmn β X).1 (𝟙 X), hβ]`. Introduce and unpack `⟨y, hy⟩`. Take `⟨γ, hγ⟩` from `hmk R (a0 X I m y) (etaleSimplicialCochain_scheme_section_extension_naturality X I m y)`. Establish `hc : δ n k (α.1 - δ m n γ) = 0`.
+
+Rewrite using `[δ_sub, Cocycle.δ_eq_zero, δ_δ, sub_zero]`. Take `⟨β, hβ⟩` from `hcob R X I m n hmn (Cocycle.mk (α.1 - δ m n γ) k hnk hc) (by`. Establish `e` using `((hb R).1 (α : Cochain ((chains R).obj (sch.obj X)) I n) (δ m n γ) 0 n (by simp) X (𝟙 X)).2.1`. Establish `e2 : ev (δ m n γ) 0 n (by simp) X (𝟙 X) = Sec.map (I.d m n) y`. Rewrite using `[(hdl R hmn γ X).1 (𝟙 X)]`.
+
+Conclude with `congrArg (Sec.map (I.d m n)) ((hγ 0 m (by simp) X (𝟙 X)).trans (res_id y))`. Conclude with `e.trans ((congrArg (ev (α : Cochain ((chains R).obj (sch.obj X)) I n) 0 n (by simp) X (𝟙 X) - ·) e2).trans (sub_eq_zero.mpr hy.symm)))`. Use `⟨β + γ, ?_⟩` and prove the remaining obligations. Rewrite using `[δ_add, hβ]`. Use `show α.1 - δ m n γ + δ m n γ = α.1`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem LateralTheory.EtaleFoundations.etaleSimplicialCochain_scheme_class_of_evaluation_properties (hmk : EtaleSimplicialCochainExistsFromNaturalSections) (hdl : EtaleSimplicialCochainEvaluationDifferentialFormula)
     (hb : EtaleSimplicialCochainEvaluationProperties) (hcob : EtaleSimplicialSchemeCocycleVanishingAtIdIsCoboundary) : EtaleSchemeGlobalSectionCohomologyClass := by
   intro R _ X I m n k hmn hnk

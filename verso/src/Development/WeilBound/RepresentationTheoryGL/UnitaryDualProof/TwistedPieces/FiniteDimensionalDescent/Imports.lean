@@ -8,6 +8,9 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.TP PositivityTheory.RgUd.TP.D
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `Asm.desc_of k (Restr.Final.restr k) (Piece.Final.pieceGood k) p hU`.
+-/
 theorem desc (p : ℕ) [Fact p.Prime] [CharP k p] (hU : PositivityTheory.RgUd.T.Desc.SLF.Unimod (k := k)) : Desc k :=
   Asm.desc_of k (Restr.Final.restr k) (Piece.Final.pieceGood k) p hU
 

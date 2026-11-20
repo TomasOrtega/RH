@@ -14,6 +14,11 @@ section SlopeTestRemainingChoices
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, Prod.fst_add, Prod.snd_add]`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul, add_assoc x w.1 w'.1]`. Use `congr 2`. Establish `h2 : ⅟(2 : R) * 2 = 1` using `invOf_mul_self 2`.
+
+Simplify using `only [dotProduct_add, add_dotProduct]`. Take the linear combination `(⅟(2 : R)) * h - (w.1 ⬝ᵥ w'.2) * h2`.
+-/
 private theorem schr_schr' {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → R) × (κ → R)) (h : w.1 ⬝ᵥ w'.2 = w'.1 ⬝ᵥ w.2) (φ : (κ → R) → ℂ) :
     schr ψ w (schr ψ w' φ) = schr ψ (w + w') φ := by
@@ -25,6 +30,9 @@ private theorem schr_schr' {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : Ad
   simp only [dotProduct_add, add_dotProduct]
   linear_combination (⅟(2 : R)) * h - (w.1 ⬝ᵥ w'.2) * h2
 
+/- English proof (translation)
+Simplify using `only [Darboux.rho]`. Rewrite using `[schr_schr', map_add]`. Use `d.form w w'` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `sub_eq_zero.mp this.symm`.
+-/
 private theorem rho_rho' {R : Type} [CommRing R] [Invertible (2 : R)] {V : Type} [AddCommGroup V] [Module R V]
     {Bf : V → V → R} {κ : Type} [Fintype κ] (d : Darboux Bf κ) (ψ : AddChar R ℂ) (w w' : V) (h : Bf w w' = 0)
     (φ : (κ → R) → ℂ) : d.rho ψ w (d.rho ψ w' φ) = d.rho ψ (w + w') φ := by
@@ -34,6 +42,11 @@ private theorem rho_rho' {R : Type} [CommRing R] [Invertible (2 : R)] {V : Type}
   rw [h] at this
   exact sub_eq_zero.mp this.symm
 
+/- English proof (translation)
+Establish `hS` using `IsUWeilPair.isUSplitting hW`. Establish `hact : actAB (cA σ) ((g, 1) : UA σ X.J × UA σ W.J) (partInf F u) = partInf F (mat g * u)`. Express the relevant statement in the definitionally equal form `mat g * (partInf F u) * (mat (1 : UA σ W.J))ᵀ = _`. Establish `h1 : mat (1 : UA σ W.J) = 1` using `rfl`. Rewrite using `[h1, Matrix.transpose_one, Matrix.mul_one, partInf, partInf, Matrix.mul_smul]`.
+
+Take `⟨r, h0, hr⟩` from `exists_rest_inf F (Fin n × Fin d)`. Use `DFunLike.coe_injective (eq_of_tens_inf h0 (hr f).1 ?_)` and prove the remaining obligations. Establish `h2` using `hS.impl (g, 1) (partInf F u) _ (hr f).2`. Rewrite `h2` using `[hact, (locOpInf_rho M.co hψ u f).1 r (hr _), acts_locOpInf (hex _) r (hr _), acts_locOpInf (hex _) r (hr _), (locOpInf_rho M.co hψ _ _).1 r (hr _)]`. Conclude with `h2.symm`.
+-/
 private theorem om_rho {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {ψ : AddChar (AF F) ℂ}
     (hψ : IsStd ψ) {χX χW : Chr F E} {om : Rep σ X W} (hW : M.IsWeil ψ χX χW om) {g : UA σ X.J}
     (hex : ∀ f : SInf F (Fin n × Fin d), ∃ f₁ : SInf F (Fin n × Fin d), Acts (evI F) (om (g, 1)) f f₁)
@@ -52,10 +65,18 @@ private theorem om_rho {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ
     (locOpInf_rho M.co hψ _ _).1 r (hr _)] at h2
   exact h2.symm
 
+/- English proof (translation)
+Rewrite using `[partInf, Matrix.smul_vecMulVec]`.
+-/
 private theorem partInf_vec {n d : ℕ} (a : Fin n → AE F E) (w : Fin d → AE F E) :
     partInf F (Matrix.vecMulVec a w) = Matrix.vecMulVec (realAd F 1 • a) w := by
   rw [partInf, Matrix.smul_vecMulVec]
 
+/- English proof (translation)
+Take `⟨r, h0, hr⟩` from `exists_rest_inf F (Fin n × Fin d)`. Use `DFunLike.coe_injective (eq_of_tens_inf h0 (hr f).1 ?_)` and prove the remaining obligations. Rewrite using `[← (locOpInf_rho M.co hψ _ _).1 r (hr _), ← (locOpInf_rho M.co hψ _ _).1 r (hr _), ← (locOpInf_rho M.co hψ _ _).1 r (hr _), rho_rho']`. Rewrite using `[Matrix.add_vecMulVec, partInf, partInf, partInf, smul_add]`. Rewrite using `[partInf_vec, partInf_vec, GlobalTheory.ArchUniq.Coord.vecMulVec_eq_mul, GlobalTheory.ArchUniq.Coord.vecMulVec_eq_mul]`.
+
+Conclude with `GlobalTheory.ArchUniq.Coord.sympM_eq_zero _ _ (GlobalTheory.ArchUniq.Coord.gram_xx hH') _ _`.
+-/
 private theorem rho_add {B : Base F E} {n d d₁ j₀ j₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
     (M : Model σ X W) {H' : Plane E d d₁} (hH' : H'.IsAdapted σ B W W₁ j₀ j₁) (hψ : IsStd B.ψ)
     (a b : Fin n → AE F E) (f : SInf F (Fin n × Fin d)) :
@@ -70,6 +91,11 @@ private theorem rho_add {B : Base F E} {n d d₁ j₀ j₁ : ℕ} {X : Spc F E n
   · rw [partInf_vec, partInf_vec, GlobalTheory.ArchUniq.Coord.vecMulVec_eq_mul, GlobalTheory.ArchUniq.Coord.vecMulVec_eq_mul]
     exact GlobalTheory.ArchUniq.Coord.sympM_eq_zero _ _ (GlobalTheory.ArchUniq.Coord.gram_xx hH') _ _
 
+/- English proof (translation)
+Establish `hSB : ∀ v, M.vac v ∈ SB _` using `fun v => (hM.vac v).1`. Establish `hei : ∀ f, e (pure f M.vac) = pure (ei f) M₁.vac` using `fun f => by`. Rewrite using `[hL.2.2 f _ hSB (Eventually.of_forall fun _ => rfl)]`. Conclude with `congrArg _ (funext fun v => (hL.2.1 v).1)`. Establish `hp` using `GlobalTheory.TensUniq.pure_mem_schA f _ hSB hM.std`.
+
+Establish `h1 : M.co.rho B.ψ (partInf F u) (pure f M.vac) = pure (locOpInf (M.co.rho B.ψ (partInf F u)) f) M.vac` using `(locOpInf_rho M.co hψ u f).1 _ ⟨fun x z hz => GlobalTheory.EvZeroInf.finPart_add _ x z hz, hp⟩`. Use `GlobalTheory.EvZeroInf.eq_of_pure_eq _ (fun v => (hM₁.vac v).2.1) hM₁.std _ _ ?_` and prove the remaining obligations. Rewrite using `[← hei, ← hei, ← h1]`. Conclude with `he.inv _ hu _ hp`.
+-/
 private theorem ei_inv {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
     {M : Model σ X W} {M₁ : Model σ X₁ W₁} (hψ : IsStd B.ψ) (hM : M.IsGood B.ψ) (hM₁ : M₁.IsGood B.ψ)
     {ι : Matrix (Fin n) (Fin n₁) E} {ι' : Matrix (Fin d) (Fin d₁) E} {I : Set (Matrix (Fin n) (Fin d) (AE F E))}
@@ -87,6 +113,15 @@ private theorem ei_inv {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W :
   rw [← hei, ← hei, ← h1]
   exact he.inv _ hu _ hp
 
+/- English proof (translation)
+Use `haveI := hS.lat`. Set `S : Submodule E (Fin n → E)` to `Submodule.span E {H.x} ⊔ LinearMap.range (Matrix.mulVecLin H.ι) ⊔ Submodule.span E {H.y}`. Establish `hle : Submodule.span E (X.L : Set (Fin n → E)) ≤ S`. Rewrite using `[Submodule.span_le]`. Introduce `z hz`.
+
+Take `⟨s, t, u, -, -, -, rfl⟩` from `hA.split z hz`. Use `S.add_mem (S.add_mem ?_ ?_) ?_` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)))`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right ⟨u, rfl⟩)`. Conclude with `Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))`.
+
+Establish `hz : z ∈ S` using `hle (by rw [Submodule.IsLattice.span_eq_top (A := E)]; trivial)`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hz`. Take `⟨a₁, ha₁, a₂, ⟨u, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 ha`. Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.1 ha₁`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hb`.
+
+Conclude with `⟨s, t, u, rfl⟩`.
+-/
 private theorem span_herm {B : Base F E} {n n₁ r s i₀ i₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {H : Plane E n n₁}
     (hS : X.IsHerm σ B r s) (hA : H.IsAdapted σ B X X₁ i₀ i₁) (z : Fin n → E) :
     ∃ (s t : E) (u : Fin n₁ → E), z = s • H.x + H.ι *ᵥ u + t • H.y := by
@@ -108,6 +143,13 @@ private theorem span_herm {B : Base F E} {n n₁ r s i₀ i₁ : ℕ} {X : Spc F
   obtain ⟨t, rfl⟩ := Submodule.mem_span_singleton.1 hb
   exact ⟨s, t, u, rfl⟩
 
+/- English proof (translation)
+Use `choose s t U hU using fun j : Fin n => span_herm hS hA (Pi.single j 1)`. Use `⟨∑ j, z j * inclR (F := F) (AF F) (s j), ∑ j, z j * inclR (F := F) (AF F) (t j), ∑ j, z j • incV F (U j), ?_⟩` and prove the remaining obligations. Establish `h : ∀ j, (Pi.single j 1 : Fin n → AE F E) = inclR (F` using `F) (AF F) (s j) • incV F H.x + incM F H.ι *ᵥ incV F (U j) + inclR (F := F) (AF F) (t j) • incV F H.y := fun j => by`. Use function extensionality and compare the values at `a`. Use `congrArg (inclR (F := F) (AF F)) (congrFun (hU j) a)` as an intermediate fact.
+
+Rewrite `this` using `[Pi.apply_single (fun _ => inclR (F := F) (E := E) (AF F)) (fun _ => map_zero _), map_one]`. Rewrite using `[this]`. Simplify using `[incV, incM, Matrix.mulVec, dotProduct]`. Rewrite using `[Matrix.mulVec_sum, Finset.sum_smul, Finset.sum_smul, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `conv_lhs => rw [pi_eq_sum_univ' z]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[h j, Matrix.mulVec_smul, smul_add, smul_add, smul_smul, smul_smul]`.
+-/
 private theorem span_ad {B : Base F E} {n n₁ r s i₀ i₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {H : Plane E n n₁}
     (hS : X.IsHerm σ B r s) (hA : H.IsAdapted σ B X X₁ i₀ i₁) (z : Fin n → AE F E) :
     ∃ (s t : AE F E) (u : Fin n₁ → AE F E), z = s • incV F H.x + incM F H.ι *ᵥ u + t • incV F H.y := by
@@ -127,11 +169,25 @@ private theorem span_ad {B : Base F E} {n n₁ r s i₀ i₁ : ℕ} {X : Spc F E
   rw [h j, Matrix.mulVec_smul, smul_add, smul_add, smul_smul, smul_smul]
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `h : ∀ a : E, cA σ (inclR (F` using `F) (AF F) a) = inclR (F := F) (AF F) (σ a) := fun a => rfl`. Simplify using `[incV, incM, form, Matrix.mulVec, dotProduct, h]`.
+-/
 private theorem formA_inc {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     incV F x ⬝ᵥ (incM F J *ᵥ fun i => cA σ (incV F y i)) = inclR (F := F) (AF F) (form σ J x y) := by
   have h : ∀ a : E, cA σ (inclR (F := F) (AF F) a) = inclR (F := F) (AF F) (σ a) := fun a => rfl
   simp [incV, incM, form, Matrix.mulVec, dotProduct, h]
 
+/- English proof (translation)
+Establish `hσ : ∀ z, σ (σ z) = z` using `fun z => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [hB.cm.2.2.2, hB.cm.2.2.2, star_star])`. Establish `hc : ∀ z : AE F E, cA σ (cA σ z) = z` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a e => simp [cA, hσ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hsym : ∀ x y : Fin n → E, form σ X.J y x = σ (form σ X.J x y)` using `fun x y => by`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hS.herm, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `hu : incM F H.ι *ᵥ u = ∑ j, u j • incV F (H.ι *ᵥ Pi.single j 1)`. Use function extensionality and compare the values at `i`. Simplify using `[incV, incM, Matrix.mulVec, dotProduct, Pi.single_apply, mul_comm]`.
+
+Establish `e : (fun i => cA σ ((a • incV F H.x + incM F H.ι *ᵥ u + t • incV F H.y) i)) = cA σ a • (fun i => cA σ (incV F H.x i)) + ∑ j, cA σ (u j) • (fun i => cA σ (incV F (H.ι *ᵥ Pi.single j 1) i)) + cA σ t • fun i => cA σ (incV F H.y i)`. Use function extensionality and compare the values at `i`. Simplify using `only [hu, Pi.add_apply, Pi.smul_apply, Finset.sum_apply, smul_eq_mul, map_add, map_mul, map_sum]`. Establish `h0 : ∀ v, form σ X.J H.x (H.ι *ᵥ v) = 0` using `fun v => by rw [hsym, (hA.orth v).1, map_zero]`. Rewrite using `[e]`.
+
+Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_add, dotProduct_sum, dotProduct_smul, formA_inc, hA.xx, hA.xy, h0, map_zero, map_one, smul_zero, Finset.sum_const_zero, zero_add, smul_eq_mul, mul_one, mul_zero, hc]`.
+-/
 private theorem coef_eq {B : Base F E} {n n₁ r s i₀ i₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {H : Plane E n n₁}
     (hB : B.IsGood σ) (hS : X.IsHerm σ B r s) (hA : H.IsAdapted σ B X X₁ i₀ i₁) (a t : AE F E) (u : Fin n₁ → AE F E) :
     cA σ (incV F H.x ⬝ᵥ (incM F X.J *ᵥ fun i => cA σ ((a • incV F H.x + incM F H.ι *ᵥ u + t • incV F H.y) i))) = t := by
@@ -161,6 +217,11 @@ private theorem coef_eq {B : Base F E} {n n₁ r s i₀ i₁ : ℕ} {X : Spc F E
     formA_inc, hA.xx, hA.xy, h0, map_zero, map_one, smul_zero, Finset.sum_const_zero, zero_add, smul_eq_mul, mul_one, mul_zero, hc]
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `hk : (mat k)ᵀ * incM F J * (mat k).map (cA σ) = incM F J` using `k.2`. Establish `h1 : mat k * mat k⁻¹ = 1` using `k.1.mul_inv`. Establish `h2 : (fun i => cA σ ((mat k *ᵥ u) i)) = (mat k).map (cA σ) *ᵥ fun i => cA σ (u i)`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct]`.
+
+Use `conv_lhs => arg 2`. Rewrite using `[← hk]`. Rewrite using `[h2, Matrix.mul_assoc, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, Matrix.mulVec_mulVec]`.
+-/
 private theorem unit_move {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J) (x u : Fin n → AE F E) :
     (mat k⁻¹ *ᵥ x) ⬝ᵥ (incM F J *ᵥ fun i => cA σ (u i)) = x ⬝ᵥ (incM F J *ᵥ fun i => cA σ ((mat k *ᵥ u) i)) := by
   have hk : (mat k)ᵀ * incM F J * (mat k).map (cA σ) = incM F J := k.2
@@ -174,6 +235,11 @@ private theorem unit_move {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J)
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B n d n₁ d₁ r s i₀ i₁ j₀ j₁ X W X₁ W₁ M M₁ H H' χX χW om hB hX hH hH' hM hM₁ hW e he ei ev hL k hk u z f`. Establish `hex` using `GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ _ _ _ _ M B.ψ _ _ om hB.cm hB.std hW k hk`. Take `⟨a, t, v, hv⟩` from `span_ad hX hH (mat k *ᵥ u)`. Rewrite using `[← om_rho hB.std hW hex, Matrix.mul_vecMulVec, unit_move, map_add, hv, coef_eq hB hX hH, ← Matrix.smul_vecMulVec, ← Matrix.smul_vecMulVec, rho_add M hH' hB.std, show cA σ z • incV F H.y + (a • incV F H.x + incM F H.ι *ᵥ v + t • incV F H.y) = a • incV F H.x + (incM F H.ι *ᵥ v + (c …`. Conclude with `Or.inr ⟨realAd F 1 • v, by rw [partInf_vec, Matrix.mulVec_smul]⟩`.
+
+Conclude with `Or.inl ⟨realAd F 1 • a • incV F H'.x, by`. Rewrite using `[partInf, Matrix.smul_vecMulVec, Matrix.vecMulVec_smul, Matrix.vecMulVec_smul]⟩`.
+-/
 theorem UpperTheory.adapted_plane_hermitian_restrict :
     GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d n₁ d₁ r s i₀ i₁ j₀ j₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁)
                  (M : Model σ X W) (M₁ : Model σ X₁ W₁) (H : Plane E n n₁) (H' : Plane E d d₁) (χX χW : Chr F E) (om : Rep σ X W),

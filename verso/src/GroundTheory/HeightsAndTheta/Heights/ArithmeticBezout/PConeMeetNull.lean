@@ -10,6 +10,19 @@ open MvPolynomial MeasureTheory
 
 noncomputable section
 
+/- English proof (translation)
+Use `set J : Ideal (MvPolynomial (Fin n) ℂ) := W ⊔ Ideal.span {g} with hJ`. Establish `hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) ≤ (e : ℕ)` using `ZeroLocusDimH.le_of_add_one_le_succ ((ZeroLocusDimH.ringKrullDim_quot_sup_add_one_le W g hgW).trans hW)`. Set `φ : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] (Fin n → ℂ)` to `(Matrix.transpose h.mat).mulVecLin.comp (WithLp.linearEquiv 2 ℂ (Fin n → ℂ)).toLinearMap`. Establish `hφ : ∀ y, φ y = h.pointOf y` using `fun _ => rfl`. Establish `hinj : Function.Injective φ`.
+
+Establish `hu : IsUnit (Matrix.transpose h.mat)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_transpose]`. Conclude with `h.isUnit_det`. Conclude with `(Matrix.mulVec_injective_iff_isUnit.mpr hu).comp (WithLp.linearEquiv 2 ℂ (Fin n → ℂ)).injective`. Take `⟨K, -, hK⟩` from `(LinearMap.injective_iff_antilipschitz φ).mp hinj`.
+
+Establish `hsub : coneBall h W ∩ coneBall h W' ⊆ φ ⁻¹' {x | ∀ q ∈ J, eval x q = 0}`. Introduce and unpack `y ⟨⟨-, hyW⟩, ⟨-, hyW'⟩⟩`. Establish `hle : J ≤ RingHom.ker (eval (h.pointOf y))`. Use `sup_le (fun q hq => (RingHom.mem_ker).2 (hyW q hq)) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, RingHom.mem_ker]`.
+
+Conclude with `hyW' g hgW'`. Introduce `q hq`. Rewrite using `[hφ]`. Conclude with `(RingHom.mem_ker).1 (hle hq)`. Establish `hdimH : dimH (coneBall h W ∩ coneBall h W') ≤ 2 * (e : ENNReal)` using `(dimH_mono hsub).trans ((hK.dimH_preimage_le _).trans (hZ n e J hdim))`.
+
+Establish `hlt : dimH (coneBall h W ∩ coneBall h W') < (((2 * (e + 1) : ℕ) : NNReal) : ENNReal)`. Use `hdimH.trans_lt ?_` and prove the remaining obligations. Rewrite using `[ENNReal.coe_natCast]`. Conclude with `(by omega : 2 * e < 2 * (e + 1))` after adjusting the coercions. Rewrite using `[show ((2 * (e + 1) : ℕ) : ℝ) = (((2 * (e + 1) : ℕ) : NNReal) : ℝ) from (NNReal.coe_natCast _).symm]`.
+
+Conclude with `hausdorffMeasure_of_dimH_lt hlt`.
+-/
 theorem ConeMeetNull.null_of_mem_not_mem (hZ : ZeroLocusDimH.Statement) {n e : ℕ} (h : HermNorm n)
     (W W' : Ideal (MvPolynomial (Fin n) ℂ)) [W.IsPrime]
     (hW : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ W) ≤ ((e + 1 : ℕ) : WithBot ℕ∞))
@@ -50,6 +63,11 @@ theorem ConeMeetNull.null_of_mem_not_mem (hZ : ZeroLocusDimH.Statement) {n e : �
     (NNReal.coe_natCast _).symm]
   exact hausdorffMeasure_of_dimH_lt hlt
 
+/- English proof (translation)
+Introduce `n e h W W' hWp hW'p hne hW hW'`. Distinguish the cases in `hle : W' ≤ W`. Establish `hnle : ¬ W ≤ W'` using `fun h' => hne (le_antisymm h' hle)`. Take `⟨g, hgW, hgW'⟩` from `Set.not_subset.mp hnle`. Rewrite using `[Set.inter_comm]`.
+
+Conclude with `ConeMeetNull.null_of_mem_not_mem hZ h W' W hW' g hgW hgW'`. Take `⟨g, hgW', hgW⟩` from `Set.not_subset.mp hle`. Conclude with `ConeMeetNull.null_of_mem_not_mem hZ h W W' hW g hgW' hgW`.
+-/
 theorem ConeMeetNull.proof (hZ : ZeroLocusDimH.Statement) : ConeMeetNull.Statement := by
   intro n e h W W' hWp hW'p hne hW hW'
   by_cases hle : W' ≤ W

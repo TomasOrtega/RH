@@ -15,6 +15,9 @@ noncomputable def frobQEquiv (r : ℕ) (hr : 0 < r) : Qr p r ≃ₐ[ℚ_[p]] Qr 
     ((frobQ p r).toLinearMap.injective_iff_surjective.mp (frobQ p r).toRingHom.injective |>
       fun hs => ⟨(frobQ p r).toRingHom.injective, hs⟩)
 
+/- English proof (translation)
+Proceed by induction on `i generalizing b with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[pow_succ, AlgEquiv.mul_apply, ih, pow_succ, AlgEquiv.mul_apply]`. Both sides reduce to the same expression.
+-/
 theorem frobQEquiv_pow_apply (r : ℕ) (hr : 0 < r) (i : ℕ) (b : Qr p r) :
     (((frobQEquiv p r hr ^ i) b : Qr p r) : PadicAlgCl p) = (frobK p (Q0 p) ^ i) (b : PadicAlgCl p) := by
   induction i generalizing b with
@@ -23,6 +26,15 @@ theorem frobQEquiv_pow_apply (r : ℕ) (hr : 0 < r) (i : ℕ) (b : Qr p r) :
     rw [pow_succ, AlgEquiv.mul_apply, ih, pow_succ, AlgEquiv.mul_apply]
     rfl
 
+/- English proof (translation)
+Establish `hK : FiniteDimensional ℚ_[p] (Q0 p)` using `inferInstance`. Establish `key : ∀ i : ℕ, frobQEquiv p r hr ^ i = 1 ↔ r ∣ i`. Introduce `i`. Rewrite using `[← IsFrobOn.pow_fixes_iff p (Q0 p) hK hr ((isFrob_frobK hK).isFrobOn r) i]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h x hx`. Use `frobQEquiv_pow_apply p r hr i ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this.symm`. Introduce `h`.
+
+Use `AlgEquiv.ext fun b => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[frobQEquiv_pow_apply]`. Conclude with `h _ b.2`. Apply `Nat.dvd_antisymm` to reduce the goal to its premises. Conclude with `orderOf_dvd_of_pow_eq_one ((key r).2 dvd_rfl)`.
+
+Conclude with `(key _).1 (pow_orderOf_eq_one _)`.
+-/
 theorem orderOf_frobQEquiv (r : ℕ) (hr : 0 < r) : orderOf (frobQEquiv p r hr) = r := by
   have hK : FiniteDimensional ℚ_[p] (Q0 p) := inferInstance
   have key : ∀ i : ℕ, frobQEquiv p r hr ^ i = 1 ↔ r ∣ i := by

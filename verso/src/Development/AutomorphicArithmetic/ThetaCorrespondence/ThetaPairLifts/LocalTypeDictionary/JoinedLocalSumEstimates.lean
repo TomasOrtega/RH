@@ -9,6 +9,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaIntegralRowSta
 
 section
 namespace GlobalTheory.RowClaim.JoinF
+/- English proof (translation)
+Introduce `hP hK hM` and use `_root_.GlobalTheory.T.thetaLift_row_properties hP hK hM (_root_.GlobalTheory.T.twisted_theta_integral_converges hP.siegelSetUnitary hP) (_root_.GlobalTheory.T.twisted_local_factors_match hP.howeDualityReal hP hK hM) (_root_.GlobalTheory.T.twisted_square_theta_integrals_eq hP hK h …`.
+-/
 theorem joined_local_sum_estimates :
     _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.RowClaim.SumOKK ∧ GlobalTheory.RowClaim.ConstK ∧ GlobalTheory.RowClaim.LinK ∧ GlobalTheory.RowClaim.Formula2K ∧ GlobalTheory.RowClaim.SumRatK :=
   fun hP hK hM =>
@@ -19,6 +22,9 @@ end
 
 section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.RowClaim.JoinF.joined_local_sum_estimates | exact _root_.GlobalTheory.RowClaim.JoinF.joined_local_sum_estimates | (intros; apply _root_.GlobalTheory.RowClaim.JoinF.joined_local_sum_estimates <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_sum_estimates_joined : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.RowClaim.SumOKK ∧ GlobalTheory.RowClaim.ConstK ∧ GlobalTheory.RowClaim.LinK ∧ GlobalTheory.RowClaim.Formula2K ∧ GlobalTheory.RowClaim.SumRatK := by
   first | exact @_root_.GlobalTheory.RowClaim.JoinF.joined_local_sum_estimates | exact _root_.GlobalTheory.RowClaim.JoinF.joined_local_sum_estimates | (intros; apply _root_.GlobalTheory.RowClaim.JoinF.joined_local_sum_estimates <;> assumption)
 end

@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.CentCpt
 
+/- English proof (translation)
+Introduce and unpack `t ⟨ht, hK⟩`. Apply `Subgroup.subset_closure` to reduce the goal to its premises. Use `⟨ht, ?_⟩` and prove the remaining obligations. Establish `hc : IsCompact ((((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)).map (MulAut.conj q).toMonoidHom : Subgroup (GLw a w × GLw b w)) : Set (GLw a w × GLw b w))`. Rewrite using `[Subgroup.coe_map, Subgroup.coe_prod]`.
+
+Use `((GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).2).image ?_` and prove the remaining obligations. Use `show Continuous fun x : GLw a w × GLw b w => q * x * q⁻¹`. Use `fun_prop`. Establish `hz : (Subgroup.zpowers t : Set (GLw a w × GLw b w)) ⊆ _` using `(Subgroup.zpowers_le (H := ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)).map (MulAut.conj q).toMonoidHom)).2 hK`. Conclude with `hc.of_isClosed_subset isClosed_closure (closure_minimal hz hc.isClosed)`.
+-/
 theorem twCent_inf_conjKK_le_cptPart (E : Type) [Field E] [NumberField E] (a b : ℕ) (w : Pl E)
     (m q : GLw a w × GLw b w) :
     twCent (MonoidHom.id _) m ⊓ ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)).map (MulAut.conj q).toMonoidHom ≤

@@ -28,9 +28,49 @@ def rt {G : Type*} [Group G] (K : Subgroup G) : K →* Module.End ℂ (G → ℂ
   map_one' := by ext f x; simp [LinearMap.funLeft_apply]
   map_mul' k k' := by ext f x; simp [LinearMap.funLeft_apply, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rt_apply {G : Type*} [Group G] (K : Subgroup G) (k : K) (f : G → ℂ) (x : G) :
     rt K k f x = f (x * k) := rfl
 
+/- English proof (translation)
+Establish `proj : ∀ U : Submodule ℂ M, FiniteDimensional ℂ U → U ≤ Z → ∀ x ∈ Z, ∃ a ∈ U, ∀ u ∈ U, q u (x - a) = 0`. Introduce `U hU hUZ x hx`. Take `⟨S, hS⟩ : U.FG` from `(Submodule.fg_iff_finiteDimensional U).2 hU`. Establish `hSZ : (↑S : Set M) ⊆ Z` using `fun y hy => hUZ (hS ▸ Submodule.subset_span hy)`. Take `⟨a, ha, h⟩` from `exists_orth Z q hadd hsmul hherm hpos S hSZ x hx`.
+
+Use `⟨a, hS ▸ ha, fun u hu => ?_⟩` and prove the remaining obligations. Conclude with `q_span_left Z q hadd hsmul hSZ (Z.sub_mem hx (hUZ (hS ▸ ha))) h u (hS ▸ hu)`. Use `set T := Submodule.span ℂ (Set.range fun k => ρ k f) with hT`. Use `set Y := Submodule.span ℂ (typeSet ρ Z T) with hY`. Establish `hTZ : T ≤ Z` using `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact hZ k f hf)`.
+
+Establish `hYZ : Y ≤ Z` using `Submodule.span_le.2 (by rintro _ ⟨L, hL, -, t, rfl⟩; exact hL t)`. Establish `hfT : f ∈ T` using `Submodule.subset_span ⟨1, by simp⟩`. Establish `hfY : f ∈ Y` using `Submodule.subset_span ⟨T.subtype, fun t => hTZ t.2, fun k t t' h => h, ⟨f, hfT⟩, rfl⟩`. Use `haveI : FiniteDimensional ℂ ↥(Y ⊓ N) := Submodule.finiteDimensional_of_le inf_le_left`. Take `⟨n, hn, hrn⟩` from `proj (Y ⊓ N) inferInstance (inf_le_right.trans hNZ) f hf`.
+
+Use `⟨n, hn.2, fun m hm => ?_⟩` and prove the remaining obligations. Use `set U := Submodule.span ℂ (Set.range fun k => ρ k m) with hU`. Establish `hUN : U ≤ N` using `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact hN k m hm)`. Establish `hUZ : U ≤ Z` using `hUN.trans hNZ`. Establish `hUst : ∀ k, ∀ u ∈ U, ρ k u ∈ U`.
+
+Introduce `k u hu`. Establish `: U.map (ρ k) ≤ U`. Rewrite using `[hU, Submodule.map_span_le]`. Introduce and unpack `_ ⟨k', rfl⟩`. Conclude with `Submodule.subset_span ⟨k * k', by simp⟩`.
+
+Conclude with `this ⟨u, hu, rfl⟩`. Set `P : M → M → Prop` to `fun x a => a ∈ U ∧ ∀ u ∈ U, q u (x - a) = 0`. Establish `ex : ∀ x ∈ Z, ∃ a, P x a` using `fun x hx => proj U (hfin m hm) hUZ x hx`. Establish `uniq : ∀ x ∈ Z, ∀ a b, P x a → P x b → a = b`. Introduce `x hx a b ha hb`.
+
+Establish `hab : a - b ∈ U` using `U.sub_mem ha.1 hb.1`. Establish `e : a - b = (x - b) - (x - a)` using `by abel`. Use `sub_eq_zero.1 (hpos _ (hUZ hab) ?_)` and prove the remaining obligations. Use `conv_lhs => arg 2`. Rewrite using `[e]`.
+
+Rewrite using `[q_sub_right Z q hadd hsmul hherm (Z.sub_mem hx (hUZ hb.1)) (Z.sub_mem hx (hUZ ha.1)) (hUZ hab), ha.2 _ hab, hb.2 _ hab, sub_zero]`. Establish `Padd : ∀ x ∈ Z, ∀ y ∈ Z, ∀ a b, P x a → P y b → P (x + y) (a + b)`. Introduce `x hx y hy a b ha hb`. Use `⟨U.add_mem ha.1 hb.1, fun u hu => ?_⟩` and prove the remaining obligations. Establish `e : x + y - (a + b) = (x - a) + (y - b)` using `by abel`.
+
+Rewrite using `[e, q_add_right Z q hadd hherm (Z.sub_mem hx (hUZ ha.1)) (Z.sub_mem hy (hUZ hb.1)) (hUZ hu), ha.2 u hu, hb.2 u hu, add_zero]`. Establish `Psmul : ∀ (c : ℂ), ∀ x ∈ Z, ∀ a, P x a → P (c • x) (c • a)`. Introduce `c x hx a ha`. Use `⟨U.smul_mem c ha.1, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_sub, q_smul_right Z q hsmul hherm (Z.sub_mem hx (hUZ ha.1)) (hUZ hu), ha.2 u hu, mul_zero]`.
+
+Establish `Pact : ∀ k, ∀ x ∈ Z, ∀ a, P x a → P (ρ k x) (ρ k a)`. Introduce `k x hx a ha`. Use `⟨hUst k a ha.1, fun u hu => ?_⟩` and prove the remaining obligations. Establish `e : u = ρ k (ρ k⁻¹ u)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+
+Rewrite using `[← map_sub, e, hinv k _ (hUZ (hUst _ u hu)) _ (Z.sub_mem hx (hUZ ha.1))]`. Conclude with `ha.2 _ (hUst _ u hu)`. Establish `key : ∀ y ∈ Y, ∃ a ∈ Y, P y a`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨L, hL, hLe, t, rfl⟩` from `hx`. Set `c : T → M` to `fun t => (ex (L t) (hL t)).choose`. Establish `hc : ∀ t, P (L t) (c t)` using `fun t => (ex (L t) (hL t)).choose_spec`. Set `L' : T →ₗ[ℂ] M` to `{ toFun := c map_add' := fun s t => uniq _ (hL (s + t)) _ _ (hc _) (by`.
+
+Rewrite using `[map_add]`. Conclude with `Padd _ (hL s) _ (hL t) _ _ (hc s) (hc t))`. Use the proof step `map_smul' := fun d t => uniq _ (hL (d • t)) _ _ (hc _) (by`. Rewrite using `[map_smul]`. Conclude with `Psmul d _ (hL t) _ (hc t)) }`.
+
+Use `⟨c t, Submodule.subset_span ⟨L', fun s => hUZ (hc s).1, fun k s s' h => ?_, t, rfl⟩, hc t⟩` and prove the remaining obligations. Use `uniq _ (hL s') _ _ (hc s') ?_` and prove the remaining obligations. Rewrite using `[hLe k s s' h]`. Conclude with `Pact k _ (hL s) _ (hc s)`. Consider the case `zero => exact ⟨0, Y.zero_mem, U.zero_mem, fun u hu => by`.
+
+Use `q_smul_right Z q hsmul hherm Z.zero_mem (hUZ hu) 0` as an intermediate fact. Simplify using `using this⟩`. Consider the case `add x y hx hy ihx ihy`. Take `⟨a, ha, hPa⟩` from `ihx`. Take `⟨b, hb, hPb⟩` from `ihy`.
+
+Conclude with `⟨a + b, Y.add_mem ha hb, Padd _ (hYZ hx) _ (hYZ hy) _ _ hPa hPb⟩`. Consider the case `smul c x hx ihx`. Take `⟨a, ha, hPa⟩` from `ihx`. Conclude with `⟨c • a, Y.smul_mem c ha, Psmul c _ (hYZ hx) _ hPa⟩`. Establish `hrY : f - n ∈ Y` using `Y.sub_mem hfY hn.1`.
+
+Take `⟨a, haY, haU, hPa⟩` from `key _ hrY`. Establish `h1 : q a (f - n) = 0` using `hrn a ⟨haY, hUN haU⟩`. Establish `h2` using `hPa a haU`. Rewrite `h2` using `[q_sub_right Z q hadd hsmul hherm (hYZ hrY) (hUZ haU) (hUZ haU), h1, zero_sub, neg_eq_zero]`. Establish `ha0 : a = 0` using `hpos a (hUZ haU) h2`.
+
+Use `hPa m (Submodule.subset_span ⟨1, by simp⟩)` as an intermediate fact. Rewrite `this` using `[ha0, sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem exists_orth_of_types (Z : Submodule ℂ M) (q : M → M → ℂ)
     (hadd : ∀ a ∈ Z, ∀ b ∈ Z, ∀ c ∈ Z, q (a + b) c = q a c + q b c)
     (hsmul : ∀ a ∈ Z, ∀ c ∈ Z, ∀ t : ℂ, q (t • a) c = t * q a c)
@@ -144,6 +184,9 @@ variable {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] {μ : Measur
 
 omit [μ.IsMulLeftInvariant] [Countable Γ] in
 
+/- English proof (translation)
+Establish `hg' : MeasurePreserving (MeasurableEquiv.mulRight g) μ μ` using `measurePreserving_mul_right μ g`. Conclude with `h𝓕.image_of_equiv (MeasurableEquiv.mulRight g).toEquiv hg'.symm.quasiMeasurePreserving (Equiv.refl _) (fun γ x => by show (γ • x) * g = γ • (x * g)`. Simplify using `only [Subgroup.smul_def, smul_eq_mul, mul_assoc])`.
+-/
 theorem isFundamentalDomain_mul_right (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (g : G) :
     IsFundamentalDomain Γ ((fun x => x * g) '' 𝓕) μ := by
   have hg' : MeasurePreserving (MeasurableEquiv.mulRight g) μ μ := measurePreserving_mul_right μ g
@@ -152,6 +195,9 @@ theorem isFundamentalDomain_mul_right (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (
         show (γ • x) * g = γ • (x * g)
         simp only [Subgroup.smul_def, smul_eq_mul, mul_assoc])
 
+/- English proof (translation)
+Rewrite using `[← (measurePreserving_mul_right μ g).setIntegral_image_emb (measurableEmbedding_mulRight g) f 𝓕]`. Use `(isFundamentalDomain_mul_right h𝓕 g).setIntegral_eq h𝓕 ?_` and prove the remaining obligations. Introduce `γ x`. Rewrite using `[Subgroup.smul_def, smul_eq_mul]`. Conclude with `hf γ γ.2 x`.
+-/
 theorem setIntegral_mul_right {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (h𝓕 : IsFundamentalDomain Γ 𝓕 μ)
     (f : G → V) (hf : ∀ γ ∈ Γ, ∀ x, f (γ * x) = f x) (g : G) :
     ∫ x in 𝓕, f (x * g) ∂μ = ∫ x in 𝓕, f x ∂μ := by
@@ -161,6 +207,9 @@ theorem setIntegral_mul_right {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ
   rw [Subgroup.smul_def, smul_eq_mul]
   exact hf γ γ.2 x
 
+/- English proof (translation)
+Establish `h1 : IntegrableOn f ((fun x => x * g) '' 𝓕) μ` using `((isFundamentalDomain_mul_right h𝓕 g).integrableOn_iff h𝓕 (fun γ x => by`. Rewrite using `[Subgroup.smul_def, smul_eq_mul]`. Conclude with `hf γ γ.2 x)).2 hi`. Conclude with `((measurePreserving_mul_right μ g).integrableOn_image (measurableEmbedding_mulRight g)).1 h1`.
+-/
 theorem integrableOn_mul_right {V : Type} [NormedAddCommGroup V] (h𝓕 : IsFundamentalDomain Γ 𝓕 μ)
     (f : G → V) (hf : ∀ γ ∈ Γ, ∀ x, f (γ * x) = f x) (hi : IntegrableOn f 𝓕 μ) (g : G) :
     IntegrableOn (fun x => f (x * g)) 𝓕 μ := by
@@ -175,6 +224,19 @@ section Deriv
 
 open MeasureTheory
 
+/- English proof (translation)
+Establish `hγ' : Continuous fun t : ℝ => γ (Multiplicative.ofAdd t)` using `hγ.comp continuous_ofAdd`. Establish `hds : ∀ x s, HasDerivAt (fun t : ℝ => f (x * γ (Multiplicative.ofAdd t))) (f₁ (x * γ (Multiplicative.ofAdd s))) s`. Introduce `x s`. Establish `h0` using `hd (x * γ (Multiplicative.ofAdd s))`. Establish `h1 : HasDerivAt (fun t : ℝ => f (x * γ (Multiplicative.ofAdd s) * γ (Multiplicative.ofAdd t))) (f₁ (x * γ (Multiplicative.ofAdd s))) (s - s)` using `by rwa [sub_self]`.
+
+Establish `h2` using `h1.comp_sub_const s s`. Establish `e : (fun t : ℝ => f (x * γ (Multiplicative.ofAdd s) * γ (Multiplicative.ofAdd (t - s)))) = fun t : ℝ => f (x * γ (Multiplicative.ofAdd t))`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, ← map_mul, ← ofAdd_add, add_sub_cancel]`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+
+Establish `ftc : ∀ x, ∫ s in Set.Ioc (0 : ℝ) 1, f₁ (x * γ (Multiplicative.ofAdd s)) = f (x * γ (Multiplicative.ofAdd 1)) - f x`. Introduce `x`. Rewrite using `[← intervalIntegral.integral_of_le zero_le_one, intervalIntegral.integral_eq_sub_of_hasDerivAt (fun s _ => hds x s) ((hc.comp (continuous_const.mul hγ')).intervalIntegrable 0 1)]`. Simplify using the standard rewrite rules. Establish `hint : Integrable (Function.uncurry fun (x : G) (s : ℝ) => f₁ (x * γ (Multiplicative.ofAdd s))) ((μ.restrict 𝓕).prod (volume.restrict (Set.Ioc (0 : ℝ) 1)))`.
+
+Establish `hm : Continuous (Function.uncurry fun (x : G) (s : ℝ) => f₁ (x * γ (Multiplicative.ofAdd s)))` using `hc.comp (continuous_fst.mul (hγ'.comp continuous_snd))`. Rewrite using `[integrable_prod_iff' hm.aestronglyMeasurable]`. Use `⟨Filter.Eventually.of_forall fun s => integrableOn_mul_right h𝓕 f₁ hf₁ hi₁ (γ (Multiplicative.ofAdd s)), ?_⟩` and prove the remaining obligations. Establish `e : (fun s : ℝ => ∫ x in 𝓕, ‖f₁ (x * γ (Multiplicative.ofAdd s))‖ ∂μ) = fun _ => ∫ x in 𝓕, ‖f₁ x‖ ∂μ`. Use function extensionality and compare the values at `fun s => setIntegral_mul_right h𝓕 (fun x => ‖f₁ x‖) (fun c hc x => by rw [hf₁ c hc]) _`.
+
+Simplify using `only [Function.uncurry_apply_pair]`. Rewrite using `[e]`. Conclude with `integrable_const _`. Establish `sw` using `integral_integral_swap hint`. Simplify using `only [ftc] at sw`.
+
+Rewrite `sw` using `[integral_sub (integrableOn_mul_right h𝓕 f hf hi _) hi, setIntegral_mul_right h𝓕 f hf, sub_self]`. Simplify using `only [setIntegral_mul_right h𝓕 f₁ hf₁] at sw`. Simplify using `using sw.symm`.
+-/
 theorem setIntegral_deriv_eq_zero {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
     [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (Γ : Subgroup G) [Countable Γ] (𝓕 : Set G)
@@ -232,10 +294,22 @@ def finU (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Subgrou
   ((Matrix.GeneralLinearGroup.map (n := Fin n)
     (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) : AE F E →+* Ainf F ⊗[F] E)).comp (Subgroup.subtype _)).ker
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => congrArg Units.val (MonoidHom.mem_ker.1 h), fun h => MonoidHom.mem_ker.2 (Units.ext h)⟩`.
+-/
 theorem mem_finU {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {k : UA σ J} :
     k ∈ finU σ J ↔ (mat k).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = 1 :=
   ⟨fun h => congrArg Units.val (MonoidHom.mem_ker.1 h), fun h => MonoidHom.mem_ker.2 (Units.ext h)⟩
 
+/- English proof (translation)
+Establish `hσ` using `GlobalTheory.SkewToHerm.sigma_invol σ hcm`. Take `⟨x, hx⟩` from `GlobalTheory.SkewToHerm.exists_sigma_ne σ hcm`. Take `⟨c, hc, hJ⟩` from `GlobalTheory.SkewToHerm.exists_hermND F E σ hcm B n W r s hW`. Take `⟨_, _, _, _⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ n W.J`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`.
+
+Set `e` to `GlobalTheory.ThK.SquareIntegrability.toGAd hσ W.J hc`. Establish `he : Continuous e` using `continuous_subtype_val.subtype_mk _`. Establish `he' : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`. Use `haveI hH : (μ.map e).IsHaarMeasure := MulEquiv.isHaarMeasure_map μ e he he'`. Establish `hR : (μ.map e).IsMulRightInvariant` using `GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_adelic σ hσ (δ := x - σ x) (sub_ne_zero.2 (Ne.symm hx)) (by rw [map_sub, hσ]; ring) hJ (μ.map e)`.
+
+Establish `e1 : μ = (μ.map e).map e.symm`. Rewrite using `[Measure.map_map he'.measurable he.measurable]`. Simplify using the standard rewrite rules. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [e1, ← hR.map_mul_right_eq_self (e g)]`.
+
+Rewrite using `[Measure.map_map he'.measurable (measurable_mul_const _), Measure.map_map (he'.measurable.comp (measurable_mul_const _)) he.measurable]`. Use `congr 1`.
+-/
 theorem isMulRightInvariant_skew {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (B : Base F E) {n r s : ℕ} (W : Spc F E n)
     (hW : W.IsSkew σ B r s) (μ : Measure (UA σ W.J)) [μ.IsHaarMeasure] : μ.IsMulRightInvariant := by
   have hσ := GlobalTheory.SkewToHerm.sigma_invol σ hcm

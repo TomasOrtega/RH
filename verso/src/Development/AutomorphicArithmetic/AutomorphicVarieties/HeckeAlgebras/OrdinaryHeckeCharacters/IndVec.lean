@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsF
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL GlobalTheory.GalOfCusp GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V UpperTheory.V.Hi
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Gr28.indVec`.
+-/
 theorem UpperTheory.V.Hi.indVec :
     ∀ {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W]
         (H K : Subgroup G) (σ : Representation ℂ H W), IsOpen (K : Set G) → ∀ w : W, (∀ h : H, (h : G) ∈ K → σ h w = w) →

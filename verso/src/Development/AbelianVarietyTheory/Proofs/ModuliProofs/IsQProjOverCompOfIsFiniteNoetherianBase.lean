@@ -13,6 +13,11 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨N, i, hi, hq, rfl⟩` from `h`. Establish `hO : IsAmpleLB (ProjSpace.O1 R N)` using `isAmpleLB_basic.2.2.2.2.2.2.1 R N`. Establish `hY : IsAmpleLB ((ProjSpace.O1 R N).pull i)` using `hO.pull_of_isImmersion i`. Establish `hX : IsAmpleLB (((ProjSpace.O1 R N).pull i).pull f)` using `hY.pull_of_isFinite f`. Use `isProper_str R N` as an intermediate fact.
+
+Establish `: LocallyOfFiniteType (f ≫ i ≫ PSpace.str R N)` using `inferInstance`. Conclude with `hX.isQProjOver _`.
+-/
 theorem isQProjOver_comp_of_isFinite_general {R : Type} [CommRing R] {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f]
     {s : Y ⟶ Sp R} (h : IsQProjOver s) : IsQProjOver (f ≫ s) := by
   obtain ⟨N, i, hi, hq, rfl⟩ := h
@@ -23,6 +28,9 @@ theorem isQProjOver_comp_of_isFinite_general {R : Type} [CommRing R] {X Y : Sche
   have : LocallyOfFiniteType (f ≫ i ≫ PSpace.str R N) := inferInstance
   exact hX.isQProjOver _
 
+/- English proof (translation)
+Introduce `R _ _ X Y f s hf h`. Conclude with `isQProjOver_comp_of_isFinite_general f h`.
+-/
 theorem isQProjOver_comp_of_isFinite_noetherian :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (X Y : Scheme.{0}) (f : X ⟶ Y) (s : Y ⟶ Sp R),
       IsFinite f → IsQProjOver s → IsQProjOver (f ≫ s) := by

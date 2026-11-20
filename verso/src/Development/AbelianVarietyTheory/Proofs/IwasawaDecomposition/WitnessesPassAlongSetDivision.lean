@@ -23,6 +23,13 @@ open GlobalTheory.Mem.Db GlobalTheory.Mem.Top.Bl.WitTr
 
 set_option maxHeartbeats 16000000 in
 
+/- English proof (translation)
+Introduce `𝒮 hS K B f T w Z O x N h hE`. Establish `hR` using `GlobalTheory.T.concreteSplitPrimeAutomorphicData_divisionLatticeChange K.s (w.D Z) x.col.Gt x.col.cmp x.col.g.herm x.col.g.forms N h x.col.isRec`. Set `col` to `columnLocalDataTransportDivision w Z N h x.col hR`. Take `⟨k, hk⟩` from `GlobalTheory.T.kernelTaylorSeries_preserved_divisionLatticeChange w Z x.col.toColT O.X O.Gy x.ker0 x.ker N h hE`. Set `n` to `nchTTr w Z N h x.n`.
+
+Take `⟨dv⟩` from `GlobalTheory.T.divisionLocalData_preserved_divisionLatticeChange w Z x.n O.X N h x.div`. Take `⟨th⟩` from `GlobalTheory.T.thetaAutomorphicWeilData_preserved_divisionLatticeChange w Z x.n O.th N h x.th`. Take `⟨t, hobj, ⟨rx⟩, ⟨nx⟩, ⟨sx⟩, ⟨ox⟩⟩` from `hS K B f T w Z O x N h (O.tr N h) rfl col n`. Establish `hker : (⟨(O.tr N h).gatT, (O.tr N h).cmp, (O.tr N h).tw, (O.tr N h).ker⟩ : Σ (Gt : GatTies (w.D (setDivZ Z N h))) (cmp : LatCmp (w.D (setDivZ Z N h))) (tw : TwForms (w.D (setDivZ Z N h))), KerFam (w.D (setDivZ Z N h)) Gt cmp tw (O.tr N h).Gy) = ⟨col.Gt, col.cmp, w.tw (setDivZ Z N …`. Establish `e` using `congrArg (fun s : Σ (Gt : GatTies (w.D Z)) (cmp : LatCmp (w.D Z)) (tw : TwForms (w.D Z)), KerFam (w.D Z) Gt cmp tw O.Gy => (⟨gatTr (D := w.D Z) N h s.1, cmpTr (D := w.D Z) N h s.2.1, twTr (D := w.D Z) N h s.2.2.1, fun u v g => { s.2.2.2 u v g with }⟩ : Σ (Gt : GatTies (w.D (setDi …`.
+
+Conclude with `e`. Establish `herr : (O.tr N h).errX = Formalism.L2.Herm.toErrXS col.full.1` using `by show errTr (D := w.D Z) N h O.errX = _`. Rewrite using `[x.errX]`. Both sides reduce to the same expression. Use `⟨{ isOver := x.isOver forced := x.forced Wt := x.Wt pin := x.pin coh := x.coh vol := x.vol col := col what₂ := t rx := rx lev := x.lev errX := herr n := n nx := nx sx := sx ker0 := kerTr w Z N h x.ker0 ker_eq := hker ker := k div := dv th := th obj := hobj ox := ox real := { x.re …` and prove the remaining obligations.
+-/
 theorem witMv_of_positionMv : ∀ 𝒮 : Slots, PositionMv 𝒮 → WitMv 𝒮 := by
   intro 𝒮 hS K B f T w Z O x N h hE
   have hR := GlobalTheory.T.concreteSplitPrimeAutomorphicData_divisionLatticeChange K.s (w.D Z) x.col.Gt x.col.cmp x.col.g.herm x.col.g.forms N h x.col.isRec

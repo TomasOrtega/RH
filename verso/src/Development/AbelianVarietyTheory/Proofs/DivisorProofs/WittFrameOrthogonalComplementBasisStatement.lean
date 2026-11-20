@@ -13,6 +13,9 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 open Formalism.UG (cT)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WittCompl.exists_complement_data | exact GlobalTheory.WittCompl.exists_complement_data | (intros; apply GlobalTheory.WittCompl.exists_complement_data <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.witt_frame_orthogonal_complement_basis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n r : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y →
     ∃ (m : ℕ) (I : Matrix (Fin n) (Fin m) E) (Q : Matrix (Fin m) (Fin n) E), m + 2 * r = n ∧

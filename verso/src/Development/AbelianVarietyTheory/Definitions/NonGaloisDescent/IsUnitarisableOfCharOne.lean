@@ -18,10 +18,16 @@ namespace IrrGL
 def IsEssSqInt (x : IrrGL k) : Prop :=
   ∃ (δ : IrrGL k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ), UnitaryDual.IsSquareIntegrable δ ∧ x = δ.tw χ hχ
 
+/- English proof (translation)
+Take `⟨δ, ψ, hψ, hδ, rfl⟩` from `h`. Conclude with `⟨δ, ψ * χ, hψ.mul hχ, hδ, tw_tw _ _ _ _ _⟩`.
+-/
 theorem IsEssSqInt.tw {x : IrrGL k} (h : x.IsEssSqInt) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : (x.tw χ hχ).IsEssSqInt := by
   obtain ⟨δ, ψ, hψ, hδ, rfl⟩ := h
   exact ⟨δ, ψ * χ, hψ.mul hχ, hδ, tw_tw _ _ _ _ _⟩
 
+/- English proof (translation)
+The claim follows from `h.tw _ _`.
+-/
 theorem IsEssSqInt.nu {x : IrrGL k} (h : x.IsEssSqInt) (s : ℂ) : (x.nu s).IsEssSqInt := h.tw _ _
 
 end IrrGL
@@ -38,16 +44,25 @@ section BoxSum
 
 variable {x : Fin t → IrrGL k} {π : Representation ℂ (GL (Fin N) k) V}
 
+/- English proof (translation)
+Take `⟨Δ, σ, hd, hL, hP, hc⟩` from `h`. Conclude with `⟨Δ, σ, hd, hL, hP, hc.of_equiv φ (.refl _)⟩`.
+-/
 theorem IsBoxSum.of_equiv (h : IsBoxSum x π) {σ' : Representation ℂ (GL (Fin N) k) W} (φ : π.Equiv σ') :
     IsBoxSum x σ' := by
   obtain ⟨Δ, σ, hd, hL, hP, hc⟩ := h
   exact ⟨Δ, σ, hd, hL, hP, hc.of_equiv φ (.refl _)⟩
 
+/- English proof (translation)
+Take `⟨-, σ, hd, -⟩` from `h`. Rewrite using `[← hd]`. Conclude with `(Equiv.sum_comp σ (fun a => (x a).1)).symm`.
+-/
 theorem IsBoxSum.sum_fst (h : IsBoxSum x π) : ∑ a, (x a).1 = N := by
   obtain ⟨-, σ, hd, -⟩ := h
   rw [← hd]
   exact (Equiv.sum_comp σ (fun a => (x a).1)).symm
 
+/- English proof (translation)
+Take `⟨φ⟩` from `nonempty_equiv_prodIrr_one y (by simp)`. Conclude with `⟨fun _ => Δ, Equiv.refl _, by simp, fun _ => hΔ, fun i j hij => absurd (Subsingleton.elim i j) hij.ne, (isCosocle_self y.2.rep.irr).of_equiv (.refl _) φ⟩`.
+-/
 theorem isBoxSum_single {y : IrrGL k} {Δ : Segment k} (hΔ : IsLSeg Δ y.rep) :
     IsBoxSum (fun _ : Fin 1 => y) y.rep := by
   obtain ⟨φ⟩ := nonempty_equiv_prodIrr_one y (by simp)
@@ -58,21 +73,36 @@ end BoxSum
 
 section GenSpeh
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.1, h.2.2.2.of_equiv φ⟩`.
+-/
 theorem IsGenSpeh.of_equiv {π₀ : IrrGL k} {π : Representation ℂ (GL (Fin N) k) V} (h : IsGenSpeh π₀ t π)
     {σ : Representation ℂ (GL (Fin N) k) W} (φ : π.Equiv σ) : IsGenSpeh π₀ t σ :=
   ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.of_equiv φ⟩
 
+/- English proof (translation)
+Rewrite using `[← h.2.2.2.sum_fst]`. Simplify using `[spehFactor]`.
+-/
 theorem IsGenSpeh.mul_eq {π₀ : IrrGL k} {π : Representation ℂ (GL (Fin N) k) V} (h : IsGenSpeh π₀ t π) :
     t * π₀.1 = N := by
   rw [← h.2.2.2.sum_fst]
   simp [spehFactor]
 
+/- English proof (translation)
+Introduce `h` and use `by have := h.mul_eq simp [IrrGL.ofChar] at this`.
+-/
 example : ¬ IsGenSpeh (IrrGL.ofChar (1 : kˣ →* ℂˣ) isSmoothChar_one) 1 (detRep (Fin 2) (1 : kˣ →* ℂˣ)) := fun h => by
   have := h.mul_eq
   simp [IrrGL.ofChar] at this
 
+/- English proof (translation)
+Introduce `h` and use `h.2.2.1.false`.
+-/
 example (π₀ : IrrGL k) (π : Representation ℂ (GL (Fin 0) k) V) : ¬ IsGenSpeh π₀ 0 π := fun h => h.2.2.1.false
 
+/- English proof (translation)
+The claim follows from `isBoxSum_single (single_spec (IrrGL.isCusp_ofChar _ _)).2.1`.
+-/
 example : IsBoxSum (fun _ : Fin 1 => IrrGL.ofChar (1 : kˣ →* ℂˣ) isSmoothChar_one)
     (IrrGL.ofChar (1 : kˣ →* ℂˣ) isSmoothChar_one).rep :=
   isBoxSum_single (single_spec (IrrGL.isCusp_ofChar _ _)).2.1

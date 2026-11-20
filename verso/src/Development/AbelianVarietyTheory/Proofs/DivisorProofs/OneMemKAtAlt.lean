@@ -14,6 +14,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def KAt (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) : Set (UA σ W.J) :=
   {k | k ∈ UAt σ W (evFin F v) ∧ ∀ z ∈ latHat W, mat k *ᵥ z ∈ latHat W ∧ mat k⁻¹ *ᵥ z ∈ latHat W}
 
+/- English proof (translation)
+Use `⟨fun u _ => by simp [mat], fun z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [inv_one]`. Simplify `hz` using `[mat]`.
+-/
 theorem one_mem_KAt (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) : (1 : UA σ W.J) ∈ KAt σ W v := by
   refine ⟨fun u _ => by simp [mat], fun z hz => ?_⟩
   simp only [inv_one]

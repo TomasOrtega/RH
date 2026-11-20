@@ -11,6 +11,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheory.UPel.HT.EtLev GlobalTheory.LKTrip GlobalTheory.LKGeo
 open UpperTheory.Gal.Int.Geo
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Establish `h` using `I.add n 0 0`. Rewrite `h` using `[add_zero]`. Simplify using `using h`.
+
+Consider the case `succ m ih => rw [succ_nsmul, I.add, ih, pow_succ]`.
+-/
 private lemma tate_evaluation_nsmul {G : GDatum} {k Q : Type} [Field k] [Group Q] {act : G.O → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
     (I : GTateIso G k Q act e) (n m : ℕ) (x : G.La) : I.ev n (m • x) = I.ev n x ^ m := by
   induction m with
@@ -20,6 +25,19 @@ private lemma tate_evaluation_nsmul {G : GDatum} {k Q : Type} [Field k] [Group Q
     simpa using h
   | succ m ih => rw [succ_nsmul, I.add, ih, pow_succ]
 
+/- English proof (translation)
+Introduce `q _ D R R' _ _ _ b gb β hm N N₀ c hN hpos hcop X₁ s₁ u Ω _ _ y σ hyσ`. Substitute `hN` using the available equality. Establish `hN₀ : 0 < N₀` using `Nat.pos_of_mul_pos_right hpos`. Establish `hc : 0 < c` using `Nat.pos_of_mul_pos_left hpos`. Set `u1` to `GlobalTheory.HTPullEvery.objPull u y (y ≫ s₁) rfl`.
+
+Set `m1` to `GlobalTheory.HTPullEvery.objPullMap u y (y ≫ s₁) rfl`. Set `u2` to `GenCmp.rebase (gb := gb) hm.1 hm.2 hyσ u1`. Set `g0 : GObj gb N₀ σ` to `GenCmp.toGObj u2 (GenCmp.geomFull hcop u2)`. Take `⟨β', hβ'⟩` from `GenCmp.exists_spMap σ`. Take `⟨I, hI⟩` from `g0.geom Ω (𝟙 _) β' (by rw [Category.id_comp, hβ'])`.
+
+Establish `hI' : ∀ z, I.ev N₀ z = g0.eta z`. Introduce `z`. Rewrite using `[← hI z]`. Establish `: toUnit (Over.mk (𝟙 (Sp Ω))) = 𝟙 _` using `toUnit_unique _ _`. Rewrite using `[this, Category.id_comp]`.
+
+Set `o : GObj gb (N₀ * c) σ` to `{ g0 with eta := fun z => I.ev (N₀ * c) z eta_add := fun x z => I.add _ x z eta_lin := fun a z => I.lin _ a z eta_ker := fun x => (I.ker _ hpos _).mpr ⟨x, rfl⟩ geom := by`. Introduce `k _ _ x β₁ hx`. Take `⟨I₁, hI₁⟩` from `UpperTheory.Gal.FiniteEtaleModels.O.tExt _ _ gb _ Ω σ g0 I k x`. Use `⟨I₁, fun z => ?_⟩` and prove the remaining obligations. Use `ext`.
+
+Rewrite using `[hI₁ _ hpos z]`. Simplify using `}`. Establish `key : ∀ z, Over.Hom.left (o.eta (c • z)) ≫ m1.φ = y ≫ Over.Hom.left (u.eta z)`. Introduce `z`. Establish `h1 : o.eta (c • z) = g0.eta z`.
+
+Express the relevant statement in the definitionally equal form `I.ev (N₀ * c) (c • z) = g0.eta z`. Rewrite using `[tate_evaluation_nsmul, I.tower _ _ hN₀ hc, hI']`. Rewrite using `[h1]`. Conclude with `m1.eta z`. Conclude with `⟨o, ⟨⟨m1.φ, m1.φ₂, m1.cart, m1.sq, m1.act, m1.pol, key⟩⟩⟩`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.O.raise :
     UpperTheory.Gal.FiniteEtaleModels.O.Raise := by
   intro q _ D R R' _ _ _ b gb β hm N N₀ c hN hpos hcop X₁ s₁ u Ω _ _ y σ hyσ

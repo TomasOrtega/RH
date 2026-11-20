@@ -7,6 +7,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R R' _ _ _ M _ _ N _ _ M' _ _ N' _ _ f f' g hg hf hf'`. Establish `key : ∀ y, liftSemi g y = (liftSemi f (TensorProduct.prodRight R R' R' M N y).1, liftSemi f' (TensorProduct.prodRight R R' R' M N y).2)`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Both sides reduce to the same expression. Consider the case `tmul x c => simp [liftSemi_tmul, hg]`. Consider the case `add a b ha hb => rw [map_add, ha, hb, map_add]; ext <;> simp`. Establish `e : ⇑(liftSemi g) = Prod.map (liftSemi f) (liftSemi f') ∘ (TensorProduct.prodRight R R' R' M N)`. Use function extensionality and compare the values at `key`.
+
+Rewrite using `[e]`. Conclude with `(hf.prodMap hf').comp (TensorProduct.prodRight R R' R' M N).bijective`.
+-/
 theorem liftSemi_prod_bijective : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (M : Type) [AddCommGroup M] [Module R M] (N : Type) [AddCommGroup N] [Module R N] (M' : Type) [AddCommGroup M'] [Module R' M'] (N' : Type) [AddCommGroup N'] [Module R' N'] (f : M →ₛₗ[algebraMap R R'] M') (f' : N →ₛₗ[algebraMap R R'] N') (g : (M × N) →ₛₗ[algebraMap R R'] (M' × N')), (∀ x, g x = (f x.1, f' x.2)) → Function.Bijective (liftSemi f) → Function.Bijective (liftSemi f') → Function.Bijective (liftSemi g) := by
   intro R R' _ _ _ M _ _ N _ _ M' _ _ N' _ _ f f' g hg hf hf'
   have key : ∀ y, liftSemi g y =

@@ -5,6 +5,9 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain Formalism.Con
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Establish `h1 : f ⁻¹ᵁ (Spec (CommRingCat.of O)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of O)).inv a) = Y.basicOpen (fn f a)` using `Scheme.preimage_basicOpen_top f _`. Rewrite using `[← h1, basicOpen_eq_of_affine]`. Conclude with `Iff.rfl`.
+-/
 private lemma mem_basicOpen_fn {O : Type} [CommRing O] {Y : Scheme.{0}} (f : Y ⟶ Spec (CommRingCat.of O)) (a : O) (x : Y) :
     x ∈ Y.basicOpen (fn f a) ↔ a ∉ (f x).asIdeal := by
   have h1 : f ⁻¹ᵁ (Spec (CommRingCat.of O)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of O)).inv a)
@@ -12,12 +15,22 @@ private lemma mem_basicOpen_fn {O : Type} [CommRing O] {Y : Scheme.{0}} (f : Y �
   rw [← h1, basicOpen_eq_of_affine]
   exact Iff.rfl
 
+/- English proof (translation)
+Establish `: Flat (Spec.map (CommRingCat.ofHom σ))` using `Flat.SpecMap_iff.2 hσ`. Conclude with `MorphismProperty.of_isPullback hp.flip this`.
+-/
 private lemma flat_h {O O' : Type} [CommRing O] [CommRing O'] (σ : O →+* O') (hσ : σ.Flat)
     {Y Y' : Scheme.{0}} {f : Y ⟶ Spec (CommRingCat.of O)} {f' : Y' ⟶ Spec (CommRingCat.of O')} {h : Y' ⟶ Y}
     (hp : IsPullback h f' f (Spec.map (CommRingCat.ofHom σ))) : Flat h := by
   have : Flat (Spec.map (CommRingCat.ofHom σ)) := Flat.SpecMap_iff.2 hσ
   exact MorphismProperty.of_isPullback hp.flip this
 
+/- English proof (translation)
+Establish `key : ∀ w : Y', w ∈ Y'.basicOpen (fn f' ϖ') ↔ h w ∈ Y.basicOpen (fn f ϖ)`. Introduce `w`. Rewrite using `[mem_basicOpen_fn, mem_basicOpen_fn]`. Establish `e : f (h w) = (Spec.map (CommRingCat.ofHom σ)) (f' w)`. Use `congrArg (fun t => t w) (congrArg (fun t : Y' ⟶ _ => (t : Y' → _)) hp.w)` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[e]`. Use `hr (f' w).asIdeal (f' w).isPrime` as an intermediate fact. Express the relevant statement in the definitionally equal form `ϖ' ∉ (f' w).asIdeal ↔ σ ϖ ∉ (f' w).asIdeal`. Conclude with `(not_congr this).symm`.
+
+Use `flat_h σ hσ hp` as an intermediate fact. Use `⟨fun hb => hx.1 ((key x).2 hb), fun x' hx' hs => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, rfl⟩` from `Flat.generalizingMap h hs`. Use `hx.2 w (fun hb => hx' ((key w).1 hb)) hw` as an intermediate fact. Rewrite using `[this]`.
+-/
 private lemma genPt_h {O O' : Type} [CommRing O] [CommRing O'] (σ : O →+* O') (hσ : σ.Flat) (ϖ : O) (ϖ' : O')
     (hr : ∀ P : Ideal O', P.IsPrime → (σ ϖ ∈ P ↔ ϖ' ∈ P))
     {Y Y' : Scheme.{0}} {f : Y ⟶ Spec (CommRingCat.of O)} {f' : Y' ⟶ Spec (CommRingCat.of O')} {h : Y' ⟶ Y}
@@ -39,6 +52,9 @@ private lemma genPt_h {O O' : Type} [CommRing O] [CommRing O'] (σ : O →+* O')
   have := hx.2 w (fun hb => hx' ((key w).1 hb)) hw
   rw [this]
 
+/- English proof (translation)
+Proceed by induction on `m generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, ← ih]`. Simplify using `only [twist, Category.assoc]`.
+-/
 private lemma twist_comp {κ : Type} [CommRing κ] (φ : κ →+* κ) {Y Y' : Scheme.{0}} (h : Y' ⟶ Y)
     (x : Spec (CommRingCat.of κ) ⟶ Y') (m : ℕ) :
     (twist φ Y)^[m] (x ≫ h) = (twist φ Y')^[m] x ≫ h := by
@@ -48,6 +64,11 @@ private lemma twist_comp {κ : Type} [CommRing κ] (φ : κ →+* κ) {Y Y' : Sc
     rw [Function.iterate_succ_apply, Function.iterate_succ_apply, ← ih]
     simp only [twist, Category.assoc]
 
+/- English proof (translation)
+Proceed by induction on `m generalizing x with`. Consider the case `zero => exact hx`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply]`. Use `ih _ ?_` and prove the remaining obligations.
+
+Simplify using `only [twist, Category.assoc, hx, hβ]`.
+-/
 private lemma twist_base {κ : Type} [CommRing κ] (φ : κ →+* κ) {S Y' : Scheme.{0}} (f' : Y' ⟶ S)
     (β : Spec (CommRingCat.of κ) ⟶ S) (hβ : Spec.map (CommRingCat.ofHom φ) ≫ β = β)
     (x : Spec (CommRingCat.of κ) ⟶ Y') (hx : x ≫ f' = β) (m : ℕ) :
@@ -59,6 +80,11 @@ private lemma twist_base {κ : Type} [CommRing κ] (φ : κ →+* κ) {S Y' : Sc
     refine ih _ ?_
     simp only [twist, Category.assoc, hx, hβ]
 
+/- English proof (translation)
+Rewrite using `[resPt, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Establish `h0 : IsLocalRing.residue V (c.hom ϖ') = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 hc`. Establish `h1 : IsLocalRing.residue V (c.hom (a ^ q - a)) = 0`.
+
+Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (hq a)`. Rewrite using `[← hb, map_mul, map_mul, h0, mul_zero]`. Simplify using `only [map_sub, map_pow, sub_eq_zero] at h1`. Simplify `h1` using `[hφ]`.
+-/
 private lemma beta_fix {O' V : Type} [CommRing O'] [CommRing V] [IsLocalRing V] (q : ℕ) (ϖ' : O')
     (hq : ∀ a : O', a ^ q - a ∈ Ideal.span {ϖ'})
     (φ : IsLocalRing.ResidueField V →+* IsLocalRing.ResidueField V) (hφ : ∀ a, φ a = a ^ q)
@@ -75,6 +101,11 @@ private lemma beta_fix {O' V : Type} [CommRing O'] [CommRing V] [IsLocalRing V] 
   simp only [map_sub, map_pow, sub_eq_zero] at h1
   simpa [hφ] using h1
 
+/- English proof (translation)
+Rewrite `hx` using `[mem_basicOpen_fn, not_not]`. Establish `e : f' (y (IsLocalRing.closedPoint V)) = (Spec.map c) (IsLocalRing.closedPoint V)`. Rewrite using `[← hc]`. Both sides reduce to the same expression. Rewrite `hx` using `[e]`.
+
+Conclude with `hx`.
+-/
 private lemma closed_mem {O' V : Type} [CommRing O'] [CommRing V] [IsLocalRing V] (ϖ' : O')
     {Y' : Scheme.{0}} (f' : Y' ⟶ Spec (CommRingCat.of O')) (y : Spec (CommRingCat.of V) ⟶ Y')
     (c : CommRingCat.of O' ⟶ CommRingCat.of V) (hc : y ≫ f' = Spec.map c)
@@ -86,6 +117,27 @@ private lemma closed_mem {O' V : Type} [CommRing O'] [CommRing V] [IsLocalRing V
   rw [e] at hx
   exact hx
 
+/- English proof (translation)
+Introduce `l q n O O' _ _ σ hσ ϖ ϖ' hr hq Y Y' f f' h hp T T' g hg hrr hf hId V _ _ _ _ hl y hG φ hφ I _ z hz`. Establish `hG' : GenPt (fn f ϖ) ((y ≫ h) (IsLocalRing.closedPoint V))` using `genPt_h σ hσ ϖ ϖ' hr hp _ hG`. Set `z' : ∀ j, I j → (T j).Sec (y ≫ h)` to `fun j i => ⟨(z j i).1 ≫ g j, by`. Rewrite using `[Category.assoc, ← (hg j).w, ← Category.assoc, (z j i).2]⟩`. Establish `hz' : ∀ j, Function.Bijective (z' j)`.
+
+Introduce `j`. Prove the components needed by the constructor for the conclusion. Introduce `i₁ i₂ e`. Establish `e' : (z j i₁).1 ≫ g j = (z j i₂).1 ≫ g j` using `congrArg Subtype.val e`. Use `(hz j).1 (Subtype.ext ((hg j).hom_ext ?_ e'))` and prove the remaining obligations.
+
+Rewrite using `[(z j i₁).2, (z j i₂).2]`. Introduce `w`. Take `⟨i, hi⟩` from `(hz j).2 ⟨(hg j).lift y w.1 w.2.symm, (hg j).lift_fst _ _ _⟩`. Use `⟨i, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(z j i).1 ≫ g j = w.1`.
+
+Rewrite using `[hi]`. Conclude with `(hg j).lift_snd _ _ _`. Establish `key` using `hId V hl (y ≫ h) hG' φ hφ I z' hz'`. Set `c : CommRingCat.of O' ⟶ CommRingCat.of V` to `Spec.preimage (y ≫ f')`. Establish `hc : y ≫ f' = Spec.map c` using `(Spec.map_preimage _).symm`.
+
+Establish `hmem` using `closed_mem ϖ' f' y c hc hG.1`. Set `β : Spec (CommRingCat.of (IsLocalRing.ResidueField V)) ⟶ Spec (CommRingCat.of O')` to `resPt V ≫ y ≫ f'`. Establish `hβ : Spec.map (CommRingCat.ofHom φ) ≫ β = β`. Simplify using `only [β, hc]`. Conclude with `beta_fix q ϖ' hq φ hφ c hmem`.
+
+Set `Λ : (Spec (CommRingCat.of (IsLocalRing.ResidueField V)) ⟶ Y) → (Spec (CommRingCat.of (IsLocalRing.ResidueField V)) ⟶ Y')` to `fun x => if hx : x ≫ f = β ≫ Spec.map (CommRingCat.ofHom σ) then hp.lift x β hx else resPt V ≫ y`. Establish `hΛ : ∀ x' : Spec (CommRingCat.of (IsLocalRing.ResidueField V)) ⟶ Y', x' ≫ f' = β → Λ (x' ≫ h) = x'`. Introduce `x' e`. Establish `hx : (x' ≫ h) ≫ f = β ≫ Spec.map (CommRingCat.ofHom σ)`. Rewrite using `[Category.assoc, hp.w, ← Category.assoc, e]`.
+
+Simplify using `only [Λ, dif_pos hx]`. Apply `hp.hom_ext` to reduce the goal to its premises. Conclude with `hp.lift_fst _ _ _`. Rewrite using `[hp.lift_snd, e]`. Establish `hv : ∀ j i, (resPt V ≫ (z j i).1 ≫ (T' j).r) ≫ f' = β`.
+
+Introduce `j i`. Simplify using `only [β, Category.assoc, hf j]`. Rewrite using `[← Category.assoc (z j i).1, (z j i).2]`. Establish `e1 : ∀ j i, resPt V ≫ (z' j i).1 ≫ (T j).r = (resPt V ≫ (z j i).1 ≫ (T' j).r) ≫ h`. Introduce `j i`.
+
+Express the relevant statement in the definitionally equal form `resPt V ≫ ((z j i).1 ≫ g j) ≫ (T j).r = _`. Simplify using `only [Category.assoc, hrr j]`. Establish `hfin : ∀ (m : ℕ) j i, Λ ((twist φ Y)^[m] (resPt V ≫ (z' j i).1 ≫ (T j).r)) = (twist φ Y')^[m] (resPt V ≫ (z j i).1 ≫ (T' j).r)`. Introduce `m j i`. Rewrite using `[e1, twist_comp]`.
+
+Conclude with `hΛ _ (twist_base φ f' β hβ _ (hv j i) m)`. Unfold `AltId at key ⊢`. Use `congrArg (Multiset.map Λ) key` as an intermediate fact. Rewrite `this` using `[pts_map, pts_map]`. Simplify `this` using `only [hfin]`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.ptIdBC_of :
     PtIdBC := by
   classical

@@ -16,6 +16,9 @@ namespace GramDetermines
 
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Simplify using `only [Fintype.linearCombination_apply, map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, hG]`.
+-/
 theorem sesq_linearCombination (h : HermitianForm F E W) {n : ℕ} {e e' : Fin n → W}
     (hG : ∀ a b, h.toSesq (e a) (e b) = h.toSesq (e' a) (e' b)) (c d : Fin n → E) :
     h.toSesq (Fintype.linearCombination E e' c) (Fintype.linearCombination E e' d) =
@@ -25,6 +28,11 @@ theorem sesq_linearCombination (h : HermitianForm F E W) {n : ℕ} {e e' : Fin n
 
 omit [NumberField E] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `hle : AddSubgroup.closure (Set.range e) ≤ (LinearMap.range (Fintype.linearCombination E e)).toAddSubgroup`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨Pi.single a 1, by simp⟩`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hL.span_eq_top, Submodule.span_le]`.
+
+Introduce `x hx`. Conclude with `hle hx`.
+-/
 theorem linearCombination_surjective {n : ℕ} {e : Fin n → W}
     (hL : IsLattice E (AddSubgroup.closure (Set.range e))) :
     Function.Surjective (Fintype.linearCombination E e) := by
@@ -39,6 +47,9 @@ theorem linearCombination_surjective {n : ℕ} {e : Fin n → W}
 
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Apply `h.nonsingular.1` to reduce the goal to its premises. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨d, rfl⟩` from `linearCombination_surjective hL' y`. Rewrite using `[sesq_linearCombination h hG, hc, map_zero, LinearMap.zero_apply, LinearMap.zero_apply]`.
+-/
 theorem linearCombination_eq_zero (h : HermitianForm F E W) {n : ℕ} {e e' : Fin n → W}
     (hL' : IsLattice E (AddSubgroup.closure (Set.range e')))
     (hG : ∀ a b, h.toSesq (e a) (e b) = h.toSesq (e' a) (e' b)) (c : Fin n → E)
@@ -48,6 +59,15 @@ theorem linearCombination_eq_zero (h : HermitianForm F E W) {n : ℕ} {e e' : Fi
   obtain ⟨d, rfl⟩ := linearCombination_surjective hL' y
   rw [sesq_linearCombination h hG, hc, map_zero, LinearMap.zero_apply, LinearMap.zero_apply]
 
+/- English proof (translation)
+Introduce `n e e' hL hL' hG`. Establish `hG' : ∀ a b, h.toSesq (e' a) (e' b) = h.toSesq (e a) (e b)` using `fun a b => (hG a b).symm`. Establish `hs` using `linearCombination_surjective hL`. Establish `hs'` using `linearCombination_surjective hL'`. Establish `hker : LinearMap.ker (Fintype.linearCombination E e) = LinearMap.ker (Fintype.linearCombination E e')`.
+
+Use extensionality with `c`. Simplify using `only [LinearMap.mem_ker]`. Conclude with `⟨linearCombination_eq_zero h hL' hG c, linearCombination_eq_zero h hL hG' c⟩`. Set `γ : W ≃ₗ[E] W` to `((Fintype.linearCombination E e).quotKerEquivOfSurjective hs).symm.trans ((Submodule.quotEquivOfEq _ _ hker).trans ((Fintype.linearCombination E e').quotKerEquivOfSurjective hs'))`. Establish `hγ : ∀ c, γ (Fintype.linearCombination E e c) = Fintype.linearCombination E e' c` using `fun c => by simp [γ, Submodule.quotEquivOfEq_mk]`.
+
+Use `⟨⟨γ, fun x y => ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hs x`. Take `⟨d, rfl⟩` from `hs y`. Rewrite using `[hγ, hγ]`. Conclude with `sesq_linearCombination h hG c d`.
+
+Simplify using `using hγ (Pi.single a 1)`.
+-/
 theorem proof (h : HermitianForm F E W) : GramDetermines.Statement h := by
   intro n e e' hL hL' hG
   have hG' : ∀ a b, h.toSesq (e' a) (e' b) = h.toSesq (e a) (e b) := fun a b => (hG a b).symm

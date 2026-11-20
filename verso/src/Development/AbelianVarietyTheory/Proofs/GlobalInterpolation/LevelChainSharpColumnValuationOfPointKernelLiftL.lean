@@ -18,12 +18,20 @@ variable {D : D7} {u : D.what₂.Word}
 def WtSigns (X : Ch D u) : Prop :=
   (∀ τ ∈ tops D, 0 ≤ X.fm.bTop τ) ∧ ∀ i, i < D.R.m → ∀ τ, 0 ≤ X.C.sDiv i τ
 
+/- English proof (translation)
+Establish `hB : WtBounds X` using `wtBounds_of_nonneg D u X hW.1 hW.2`. Conclude with `levelChainSharpColumnValuation_of_stability D u X (formsStable_of_tgtEq D u X Lv Kt hK.tgt) (levelChainUOperatorCommutation_of_pointPairLaw D u X Lv Kt hK.tgt hK.uk) (UKS.ukSharp D u X Lv Vt Kt hK hS hB) hB`.
+-/
 theorem levelChainSharpColumnValuation_of_pointKernelLiftLaws (X : Ch D u) (Lv : LevTie X) (Vt : ValTie Lv) (Kt : KerTie Lv) (hK : KerLaws Vt Kt)
     (hS : StabUnit X) (hW : WtSigns X) : Conclusion5Sharp X := by
   have hB : WtBounds X := wtBounds_of_nonneg D u X hW.1 hW.2
   exact levelChainSharpColumnValuation_of_stability D u X (formsStable_of_tgtEq D u X Lv Kt hK.tgt)
     (levelChainUOperatorCommutation_of_pointPairLaw D u X Lv Kt hK.tgt hK.uk) (UKS.ukSharp D u X Lv Vt Kt hK hS hB) hB
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← (Z.fm.emb_basis 0).2]`. Conclude with `Submodule.span_mono (by rintro _ ⟨a, rfl⟩; exact ⟨_, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Conclude with `emb_mem_Fi Z 0 x`.
+-/
 private theorem Fi_zero_eq_span_range_emb (Z : Ch D u) :
     Z.fm.Fi 0 = Submodule.span ℂ (Set.range (Z.fm.emb 0)) := by
   apply le_antisymm
@@ -33,6 +41,15 @@ private theorem Fi_zero_eq_span_range_emb (Z : Ch D u) :
     rintro _ ⟨x, rfl⟩
     exact emb_mem_Fi Z 0 x
 
+/- English proof (translation)
+Take `⟨ev, eF, hs⟩` from `h`. Establish `hmap : Y.fm.Fi 0 = (X.fm.Fi 0).map (e : Fn X 0 →ₗ[ℂ] Fn Y 0)`. Rewrite using `[Fi_zero_eq_span_range_emb, Fi_zero_eq_span_range_emb, Submodule.map_span]`. Use `congr 1`. Use extensionality with `ψ`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Establish `hy` using `hs.emb_eq (eL.symm y)`. Rewrite `hy` using `[eL.apply_symm_apply]`. Conclude with `⟨X.fm.emb 0 (eL.symm y), ⟨_, rfl⟩, hy.symm⟩`.
+
+Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨eL x, hs.emb_eq x⟩`. Rewrite using `[hmap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ψ, hψ, hψe⟩`.
+
+Rewrite using `[← e.injective hψe]` and apply the resulting hypothesis. Introduce `hφ`. Conclude with `⟨φ, hφ, rfl⟩`.
+-/
 private theorem mem_Fi_zero_iff_of_shared {X Y : Ch D u} {e : Fn X 0 ≃ₗ[ℂ] Fn Y 0} {eL : Vl X 0 ≃ₗ[D.what₂.LL] Vl Y 0}
     (h : Shared X Y e eL) (φ : Fn X 0) : e φ ∈ Y.fm.Fi 0 ↔ φ ∈ X.fm.Fi 0 := by
   obtain ⟨ev, eF, hs⟩ := h
@@ -54,6 +71,9 @@ private theorem mem_Fi_zero_iff_of_shared {X Y : Ch D u} {e : Fn X 0 ≃ₗ[ℂ]
   · intro hφ
     exact ⟨φ, hφ, rfl⟩
 
+/- English proof (translation)
+Introduce `w hw`. Take `⟨ev, eF, hs⟩` from `h`. Establish `hwo : OverT (own D u) w` using `(hs.overT_iff w).1 ((OverT_tw Tw μ w).2 hw)`. Use `⟨hs.seen_eq w hwo, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `(TwTie.Nlam_iff ⟨ev, eF, hs⟩ hU hw x).2 hx`.
+-/
 theorem step0Tie_of_twTie (Tw : TwForms D) (μ : D.what₂.Tup) (h : TwTie Tw u μ) (hU : UComm (own D u)) :
     Step0Tie Tw u μ := by
   intro w hw
@@ -62,6 +82,11 @@ theorem step0Tie_of_twTie (Tw : TwForms D) (μ : D.what₂.Tup) (h : TwTie Tw u 
   refine ⟨hs.seen_eq w hwo, fun x hx => ?_⟩
   exact (TwTie.Nlam_iff ⟨ev, eF, hs⟩ hU hw x).2 hx
 
+/- English proof (translation)
+Establish `hF` using `mem_Fi_zero_iff_of_shared h`. Take `⟨ev, eF, hs⟩` from `h`. Establish `hmem : ∀ v, ∀ φ ∈ (own D u).fm.Fi 0, Uop (own D u) 0 v φ ∈ (own D u).fm.Fi 0`. Introduce `v φ hφ`. Rewrite using `[← hF, hs.U_eq v φ hφ]`.
+
+Conclude with `hU.1 _ _ ((hF φ).2 hφ)`. Use `⟨hmem, fun v v' hvv' φ hφ => (D.e0Tw u μ).injective ?_⟩` and prove the remaining obligations. Rewrite using `[hs.U_eq v _ (hmem v' φ hφ), hs.U_eq v' φ hφ, hs.U_eq v' _ (hmem v φ hφ), hs.U_eq v φ hφ]`. Conclude with `hU.2 _ _ (fun he => hvv' (ev.injective he)) _ ((hF φ).2 hφ)`.
+-/
 theorem uComm_own_of_twTie (Tw : TwForms D) (μ : D.what₂.Tup) (h : TwTie Tw u μ) (hU : UComm (tw Tw u μ)) :
     UComm (own D u) := by
   have hF := mem_Fi_zero_iff_of_shared h
@@ -75,11 +100,17 @@ theorem uComm_own_of_twTie (Tw : TwForms D) (μ : D.what₂.Tup) (h : TwTie Tw u
   rw [hs.U_eq v _ (hmem v' φ hφ), hs.U_eq v' φ hφ, hs.U_eq v' _ (hmem v φ hφ), hs.U_eq v φ hφ]
   exact hU.2 _ _ (fun he => hvv' (ev.injective he)) _ ((hF φ).2 hφ)
 
+/- English proof (translation)
+The claim follows from `TwSharp.tupleChainSharpColumnValuation_of_twisted D u Tw μ h0 (levelChainSharpColumnValuation_of_pointKernelLiftLaws (tw Tw u μ) Lv Vt Kt hK hS hW)`.
+-/
 theorem tuple_chain_sharp_column_valuation (D : D7) (u : D.what₂.Word) (Tw : TwForms D) (μ : D.what₂.Tup)
     (Lv : LevTie (tw Tw u μ)) (Vt : ValTie Lv) (Kt : KerTie Lv) (hK : KerLaws Vt Kt)
     (hS : StabUnit (tw Tw u μ)) (hW : WtSigns (tw Tw u μ)) (h0 : Step0Tie Tw u μ) : TupleChainSharpColumnValuation Tw u μ :=
   TwSharp.tupleChainSharpColumnValuation_of_twisted D u Tw μ h0 (levelChainSharpColumnValuation_of_pointKernelLiftLaws (tw Tw u μ) Lv Vt Kt hK hS hW)
 
+/- English proof (translation)
+Establish `hF : FormsStable (tw Tw u μ)` using `formsStable_of_tgtEq D u _ Lv Kt hK.tgt`. Establish `hUt : UComm (tw Tw u μ)` using `⟨fun v φ hφ => hF.1 0 (Nat.zero_le _) v φ hφ, fun v v' _ φ hφ => hF.2.1 0 (Nat.zero_le _) v v' φ hφ⟩`. Conclude with `tuple_chain_sharp_column_valuation D u Tw μ Lv Vt Kt hK hS hW (step0Tie_of_twTie Tw μ h0 (uComm_own_of_twTie Tw μ h0 hUt))`.
+-/
 theorem tupleChainSharpColumnValuation_of_kerLaws (D : D7) (u : D.what₂.Word) (Tw : TwForms D) (μ : D.what₂.Tup) (h0 : TwTie Tw u μ)
     (Lv : LevTie (tw Tw u μ)) (Vt : ValTie Lv) (Kt : KerTie Lv) (hK : KerLaws Vt Kt)
     (hS : StabUnit (tw Tw u μ)) (hW : WtSigns (tw Tw u μ)) : TupleChainSharpColumnValuation Tw u μ := by

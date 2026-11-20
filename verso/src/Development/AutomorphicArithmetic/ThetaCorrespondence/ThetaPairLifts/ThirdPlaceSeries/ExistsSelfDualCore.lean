@@ -24,6 +24,33 @@ namespace GlobalTheory.CoreLat
 variable {D : D7}
 end GlobalTheory.CoreLat
 namespace GlobalTheory.CoreLat
+/- English proof (translation)
+Introduce `D Ld hT Gi Gl Kc Yd cX ex W u hPk a y m b₀ k _ _ _ _ ι v o l bas hIs hTau hζ hvτ hNT hoζ hLT hgP htP hdisj hPre hLZ hbas FY sc hFY`. Establish `hξ : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Establish `hsξ : star D.host.xi0 ≠ 0` using `star_ne_zero.2 hξ`. Establish `hline : ∀ σ j (h : j + 2 * σ + 2 = D.R.m), ∃ Λ : Submodule (𝓞 D.host.E) (Fin (y.bes j σ h).L.rank → D.host.E), SelfDualFor (y.bes j σ h).L.gram Λ`. Introduce `σ`.
+
+Proceed by induction on `σ with`. Consider the case `zero`. Introduce `j h`. Take `⟨hg, hv⟩` from `hTau j h`. Establish `hl` using `(y.bes j 0 h).line`.
+
+Establish `hlam0 : (-D.host.xi0 ^ (D.R.m / 2) : D.host.E) ≠ 0` using `neg_ne_zero.2 (pow_ne_zero _ hξ)`. Establish `hc : (-(D.host.xi0 * star D.host.xi0) : D.host.E) ≠ 0` using `neg_ne_zero.2 (mul_ne_zero hξ hsξ)`. Establish `hval` using `quad_mul (y.τ j h) (y.bes j 0 h).L.gram a.ζ₀`. Rewrite `hval` using `[hg, hv, quad_smul, quad_smul_mat, hζ]`. Establish `hT0 : (D.mem u).A.T ≠ 0`.
+
+Introduce `h0`. Rewrite `hval` using `[h0, Nat.cast_zero, mul_zero]`. Conclude with `mul_ne_zero (mul_ne_zero (star_ne_zero.2 hlam0) hlam0) hl.2 hval.symm`. Establish `hr1 : a.Lz.rank ≤ 1`. Establish `hu : IsUnit ((-(D.host.xi0 * star D.host.xi0)) • a.Lz.gram)`.
+
+Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_smul]`. Conclude with `((isUnit_iff_ne_zero.2 hc).pow _).mul (gram_isUnit_det _)`. Establish `hrk` using `Matrix.rank_of_isUnit _ hu`. Rewrite `hrk` using `[← hg, Fintype.card_fin]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hr0 : a.Lz.rank ≠ 0`. Introduce `h0`. Use `haveI : IsEmpty (Fin a.Lz.rank) := ⟨fun i => by have := i.2; omega⟩`. Establish `: star a.ζ₀ ⬝ᵥ (a.Lz.gram *ᵥ a.ζ₀) = 0` using `by simp [dotProduct]`. Rewrite `this` using `[hζ]`.
+
+Conclude with `hT0 (by exact_mod_cast this)`. Take `⟨x, hx⟩` from `exists_prime_not_mem D.host.F hT0`. Establish `hxt : x ∉ v.tP` using `by rw [htP]; exact hx`. Take `⟨LZ, hLZsd, -⟩` from `hLZ D.R.m rfl x hxt`. Use `⟨_, selfDualFor_map (D.host.xi0⁻¹ • y.τ j h) (s := -1) (Or.inr rfl) ?_ (gram_isUnit_det _) ?_ ((isSelfDualC_iff _ _).1 hLZsd)⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`. Rewrite using `[hg, smul_smul]`. Use `(one_smul D.host.E a.Lz.gram).symm using 2` and compare the differences between its conclusion and the goal. Rewrite using `[star_inv₀]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[Fintype.card_fin, Fintype.card_fin, hl.1]`. Use linear arithmetic over natural numbers and integers. Consider the case `succ σ ih`. Introduce `j h`. Take `⟨Λ', hΛ'⟩` from `ih (j + 1 + 1) (idx_step h)`.
+
+Establish `lk` using `y.lnk j σ h`. Establish `hl` using `(y.bes j (σ + 1) h).line`. Establish `hl'` using `(y.bes (j + 1 + 1) σ (idx_step h)).line`. Use `⟨_, selfDualFor_map (D.host.xi0⁻¹ • lk.τ) (s := 1) (Or.inl rfl) ?_ (gram_isUnit_det _) ?_ hΛ'⟩` and prove the remaining obligations. Use `line_mat_eq (by rw [Fintype.card_fin, hl'.1]) hl'.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[one_smul, Matrix.mul_assoc, quad_mul, Matrix.smul_mulVec, lk.map, smul_neg, ← neg_smul, quad_smul]`. Express the relevant statement in the definitionally equal form `_ = star (-D.host.xi0⁻¹) * -D.host.xi0⁻¹ * (star (y.bes j (σ + 1) h).ζ ⬝ᵥ ((y.bes j (σ + 1) h).L.gram *ᵥ (y.bes j (σ + 1) h).ζ))`. Rewrite using `[show star (y.bes j (σ + 1) h).ζ ⬝ᵥ ((y.bes j (σ + 1) h).L.gram *ᵥ (y.bes j (σ + 1) h).ζ) = _ from lk.norm, star_neg, star_inv₀]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Fintype.card_fin, Fintype.card_fin, hl.1, hl'.1]`.
+
+Introduce `j ρ h`. Take `⟨ΛL, hΛL⟩` from `hline ρ j h`. Establish `hA : SelfDualFor (D.sp.X j).gram (a.x j).L` using `(isSelfDualC_iff _ _).1 (hIs.x j (by omega)).sd`. Establish `hs` using `selfDualFor_sum hA hΛL`. Establish `hmap` using `selfDualFor_map (G' := (y.bes j ρ h).V₀.gram) (Matrix.fromCols (y.bes j ρ h).o.iA (y.bes j ρ h).o.iB) (s := 1) (Or.inl rfl) ?_ ?_ ?_ hs`.
+
+Conclude with `⟨_, (isSelfDualC_iff _ _).2 hmap⟩`. Rewrite using `[one_smul, Matrix.conjTranspose_fromCols_eq_fromRows_conjTranspose, Matrix.fromRows_mul, Matrix.fromRows_mul_fromCols, (y.bes j ρ h).o.isoA, (y.bes j ρ h).o.isoB, (y.bes j ρ h).o.orth, (y.bes j ρ h).o.orth']`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁]`. Conclude with `(gram_isUnit_det _).mul (gram_isUnit_det _)`. Rewrite using `[Fintype.card_sum, Fintype.card_fin, Fintype.card_fin, Fintype.card_fin, (y.bes j ρ h).o.rank_add]`.
+-/
 theorem exists_selfDual_core_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ (a : XGeo D) (y : YRat a) (m : YMeas y) (b₀ : ∀ j, GA D (Yc D j)) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (v : VCom (commOf (_root_.GlobalTheory.Fam.pk_z W) u (mkGeo m b₀))) (o : TDat (commOf (_root_.GlobalTheory.Fam.pk_z W) u (mkGeo m b₀)) k ι) (l : ∀ PP, PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg ∨ _root_.GlobalTheory.Fam.QAllAlt W PP → LocX a (_root_.GlobalTheory.Fam.pk_z W).βX PP) (bas : ∀ PP h j c, j + c = (l PP h).s + 1 → GL (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin c) (l PP h).k), (commOf (_root_.GlobalTheory.Fam.pk_z W) u (mkGeo m b₀)).Is → y.Tau (-D.host.xi0 ^ (D.R.m / 2)) → star a.ζ₀ ⬝ᵥ a.Lz.gram *ᵥ a.ζ₀ = (((D.mem u).A.T : ℕ) : D.host.E) → v.τ = y.τ → v.NT = a.LT → o.ζ₀ = a.ζ₀ → IsSelfDualC D.sp.X' a.LT → (∀ p, p ∈ v.gP ↔ ∃ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg, p = PP.under (𝓞 D.host.F)) → (∀ p, p ∈ v.tP ↔ (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal) → Disjoint v.gP v.tP → PreT v o → (∀ n (h : n = D.R.m) x, x ∉ v.tP → ∃ LZ : GlobalTheory.FinPl.Lat a.Lz, IsSelfDualC _ LZ ∧ GlobalTheory.FinPl.OrthAt (a.oT n h) (a.x n).L a.LT LZ x) → (∀ PP h, PP ∉ (_root_.GlobalTheory.Fam.pk_z W).Pg → ∀ j c hc, bas PP h j c hc = 1) → ∀ (FY : ∀ PP h, FYFam (l PP h)) (sc : ∀ PP h, ℕ → (l PP h).k), (∀ PP h, IsNormalFr (l PP h) y (FY PP h) (sc PP h)) → ∀ j ρ h, ∃ L : GlobalTheory.FinPl.Lat (y.bes j ρ h).V₀, IsSelfDualC (y.bes j ρ h).V₀ L := by
   intro D Ld hT Gi Gl Kc Yd cX ex W u hPk a y m b₀ k _ _ _ _ ι v o l bas hIs hTau hζ hvτ hNT hoζ hLT hgP htP hdisj hPre hLZ
     hbas FY sc hFY

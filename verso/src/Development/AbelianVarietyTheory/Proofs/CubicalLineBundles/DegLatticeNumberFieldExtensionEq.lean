@@ -14,6 +14,9 @@ variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Al
 
 variable [Module K V] [IsScalarTower (𝓞 K) K V] [Module K' V'] [IsScalarTower (𝓞 K') K' V']
 
+/- English proof (translation)
+Use `conv_lhs => rw [pi_eq_sum_univ' x, pi_eq_sum_univ' y]`. Simplify using `only [h.ds_form_sum_left, h.ds_form_sum_right, h.ds_form_smul_left, h.smul_right, Finset.mul_sum, mul_assoc]`.
+-/
 theorem form_eq_sum {L : Type} [Field L] {n : ℕ} (h : HermFam L (Fin n → L)) (s : L →+* ℂ) (x y : Fin n → L) :
     h.form s x y = ∑ a, ∑ b, starRingEnd ℂ (s (x a)) * s (y b) * h.form s (Pi.single a 1) (Pi.single b 1) := by
   conv_lhs => rw [pi_eq_sum_univ' x, pi_eq_sum_univ' y]
@@ -26,6 +29,9 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 open scoped ComplexOrder in
 variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K') {n : ℕ} in
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+-/
 private lemma eq_sum_apply_smul_single {F : Type} [Field F] (z : Fin n → F) :
     z = ∑ a, z a • (Pi.single a 1 : Fin n → F) := by
   ext i; simp [Finset.sum_apply, Pi.single_apply]
@@ -34,6 +40,9 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 open scoped ComplexOrder in
 variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K') {n : ℕ} in
+/- English proof (translation)
+Use `conv_rhs => rw [eq_sum_apply_smul_single x, eq_sum_apply_smul_single y]`. Use `conv_lhs => rw [eq_sum_apply_smul_single (fun i => j (x i)), eq_sum_apply_smul_single (fun i => j (y i))]`. Simplify using `only [_root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam.ds_form_sum_left, _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam.ds_form_sum_right, _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam.ds_form_smul_left, _root_.ReciprocityTheory.GeometryOfNumbersTheor …`.
+-/
 private lemma hermFam_form_map_eq_of_eq_on_basis (h : _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam K (Fin n → K)) (h' : _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam K' (Fin n → K'))
     (hf : ∀ s a b, h'.form s (Pi.single a 1) (Pi.single b 1) =
       h.form (s.comp j) (Pi.single a 1) (Pi.single b 1))
@@ -49,6 +58,9 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 open scoped ComplexOrder in
 variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K') {n : ℕ} in
+/- English proof (translation)
+Simplify using `using h.smul_right σ 0 x 0`.
+-/
 private lemma hermFam_form_zero_right {F W : Type} [Field F] [AddCommGroup W] [Module F W]
     (h : _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam F W) (σ : F →+* ℂ) (x : W) : h.form σ x 0 = 0 := by
   simpa using h.smul_right σ 0 x 0
@@ -57,6 +69,17 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 open scoped ComplexOrder in
 variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K') {n : ℕ} in
+/- English proof (translation)
+Take `⟨s⟩ : Nonempty (K' →+* ℂ)` from `inferInstance`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Establish `hpd` using `h.posDef (s.comp j) r v hv`. Establish `hx : (fun a => s (c a)) ≠ 0`. Take `⟨a, ha⟩` from `hne`. Introduce `h0`. Conclude with `ha (s.injective (by simpa using congrFun h0 a))`.
+
+Establish `hpos` using `hpd.dotProduct_mulVec_pos hx`. Establish `hz : (Matrix.of fun a b => h.form (s.comp j) (v a) (v b)).mulVec (fun a => s (c a)) = 0`. Use extensionality with `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply]`. Repeatedly rewrite using `[← hermFam_form_map_eq_of_eq_on_basis j h h' hf s]`.
+
+Establish `hsum : ∑ b, h'.form s (fun i => j (v a i)) (fun i => j (v b i)) * s (c b) = h'.form s (fun i => j (v a i)) (∑ b, c b • fun i => j (v b i))`. Rewrite using `[_root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam.ds_form_sum_right]`. Simplify using `[_root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam.smul_right, mul_comm]`. Rewrite using `[hsum, hc, hermFam_form_zero_right]`. Rewrite `hpos` using `[hz]`.
+
+Simplify using `at hpos`.
+-/
 private lemma linearIndependent_map_of_linearIndependent (h : _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam K (Fin n → K)) (h' : _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam K' (Fin n → K'))
     (hf : ∀ s a b, h'.form s (Pi.single a 1) (Pi.single b 1) =
       h.form (s.comp j) (Pi.single a 1) (Pi.single b 1))
@@ -89,6 +112,9 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 open scoped ComplexOrder in
 variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K') {n : ℕ} in
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hx`. Use `(Submodule.mem_span_range_iff_exists_fun K').2 ⟨fun a => j (c a), ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[Finset.sum_apply, map_sum]`.
+-/
 private lemma map_mem_span_range_map_of_mem_span {r : ℕ} {v : Fin r → Fin n → K} {x : Fin n → K}
     (hx : x ∈ Submodule.span K (Set.range v)) :
     (fun i => j (x i)) ∈ Submodule.span K' (Set.range fun a i => j (v a i)) := by
@@ -101,6 +127,11 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 open scoped ComplexOrder in
 variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K') {n : ℕ} in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.GeometryOfNumbersTheory.IsFrame at hB ⊢`. Take `⟨hmem, hli, hsub⟩` from `hB`. Use `⟨fun a => Submodule.subset_span ⟨v a, hmem a, rfl⟩, linearIndependent_map_of_linearIndependent j h h' hf hli, ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span (𝓞 K') ((fun c i => j (c i)) '' (B : Set (Fin n → K))) ≤ (Submodule.span K' (Set.range fun a i => j (v a i))).restrictScalars (𝓞 K')`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `map_mem_span_range_map_of_mem_span j (hsub hx)`. Introduce `y hy`. Conclude with `hle hy`.
+-/
 private lemma isFrame_span_image_map (h : _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam K (Fin n → K)) (h' : _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam K' (Fin n → K'))
     (hf : ∀ s a b, h'.form s (Pi.single a 1) (Pi.single b 1) =
       h.form (s.comp j) (Pi.single a 1) (Pi.single b 1))
@@ -123,6 +154,15 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 open scoped ComplexOrder in
 variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K') {n : ℕ} in
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[SetLike.mem_coe]`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero`. Use `zero_mem (Submodule.span (𝓞 K') ((fun c i => j (c i)) '' S)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Simplify using the standard rewrite rules.
+
+Consider the case `add x y _ _ hx hy`. Use `add_mem hx hy using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Simplify using the standard rewrite rules. Consider the case `smul c x _ hx`.
+
+Use `Submodule.smul_mem _ (RingOfIntegers.mapRingHom j c) hx using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Simplify using `[Algebra.smul_def]`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+-/
 private lemma span_image_map_span_eq_span_image (S : Set (Fin n → K)) :
     Submodule.span (𝓞 K') ((fun c i => j (c i)) '' (Submodule.span (𝓞 K) S : Set (Fin n → K))) =
       Submodule.span (𝓞 K') ((fun c i => j (c i)) '' S) := by
@@ -147,6 +187,9 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 open scoped ComplexOrder in
 variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K') {n : ℕ} in
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hB`. Rewrite using `[span_image_map_span_eq_span_image]`. Conclude with `Submodule.fg_span (S.finite_toSet.image _)`.
+-/
 private lemma fg_span_image_map_of_fg {B : Submodule (𝓞 K) (Fin n → K)} (hB : B.FG) :
     (Submodule.span (𝓞 K') ((fun c i => j (c i)) '' (B : Set (Fin n → K)))).FG := by
   obtain ⟨S, rfl⟩ := hB
@@ -157,6 +200,9 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 variable {L : Type} [Field L] [NumberField L] {V : Type} [AddCommGroup V] [Module L V]
   [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.GeometryOfNumbersTheory.IsFrame at hB`. Introduce `x hx`. Establish `hx'` using `hB.2.2 hx`. Simplify using `[Set.range_eq_empty] at hx'`. Simplify using `[hx']`.
+-/
 private lemma le_span_range_of_isFrame_fin_zero {B : Submodule (𝓞 L) V} {v : Fin 0 → V}
     (hB : _root_.ReciprocityTheory.GeometryOfNumbersTheory.IsFrame L B v) : B ≤ Submodule.span (𝓞 L) (Set.range v) := by
   unfold _root_.ReciprocityTheory.GeometryOfNumbersTheory.IsFrame at hB
@@ -169,6 +215,11 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 variable {L : Type} [Field L] [NumberField L] {V : Type} [AddCommGroup V] [Module L V]
   [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] in
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_extend ((Module.Basis.span hv).coord (Fin.last r))`. Establish `key : ∀ k, g (v k) = (Module.Basis.span hv).coord (Fin.last r) (Module.Basis.span hv k)`. Introduce `k`. Rewrite using `[← hg]`. Simplify using `[Module.Basis.span_apply]`.
+
+Use `⟨g, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Simplify using `[Finsupp.single_apply, Fin.castSucc_ne_last]`. Rewrite using `[key]`. Simplify using the standard rewrite rules.
+-/
 private lemma exists_linearForm_vanish_init_eq_one_last {r : ℕ} {v : Fin (r + 1) → V} (hv : LinearIndependent L v) :
     ∃ f : V →ₗ[L] L, (∀ i : Fin r, f (v i.castSucc) = 0) ∧ f (v (Fin.last r)) = 1 := by
   obtain ⟨g, hg⟩ := LinearMap.exists_extend ((Module.Basis.span hv).coord (Fin.last r))
@@ -186,6 +237,11 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 variable {L : Type} [Field L] [NumberField L] {V : Type} [AddCommGroup V] [Module L V]
   [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] in
+/- English proof (translation)
+Rewrite using `[Submodule.map_span, Submodule.one_eq_span]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Proceed by induction on `i using Fin.lastCases with`.
+
+Consider the case `last => simp [h1, Submodule.mem_span_singleton_self]`. Consider the case `cast i => simp [h0 i]`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Submodule.subset_span ⟨v (Fin.last r), Set.mem_range_self _, by simp [h1]⟩`.
+-/
 private lemma map_span_range_eq_one_of_form_last {r : ℕ} {v : Fin (r + 1) → V} {f : V →ₗ[L] L}
     (h0 : ∀ i : Fin r, f (v i.castSucc) = 0) (h1 : f (v (Fin.last r)) = 1) :
     (Submodule.span (𝓞 L) (Set.range v)).map (f.restrictScalars (𝓞 L)) = 1 := by
@@ -203,6 +259,13 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 variable {L : Type} [Field L] [NumberField L] {V : Type} [AddCommGroup V] [Module L V]
   [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] in
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨hx, hk⟩`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hx`. Establish `hk' : f (∑ i, c i • v i) = 0` using `hk`. Rewrite `hk'` using `[Fin.sum_univ_castSucc, map_add, map_sum]`.
+
+Simplify using `only [LinearMap.map_smul_of_tower, h0, h1, smul_zero, Finset.sum_const_zero, zero_add] at hk'`. Establish `hc : c (Fin.last r) = 0`. Rewrite `hk'` using `[Algebra.smul_def, mul_one]`. Conclude with `(FaithfulSMul.algebraMap_eq_zero_iff R L).1 hk'`. Rewrite using `[Fin.sum_univ_castSucc, hc, zero_smul, add_zero]`.
+
+Conclude with `(Submodule.mem_span_range_iff_exists_fun R).2 ⟨_, rfl⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨Submodule.subset_span ⟨_, rfl⟩, by simp [h0 i]⟩`.
+-/
 private lemma span_range_inf_ker_eq_span_range_castSucc {R : Type} [CommRing R] [Algebra R L] [Module R V]
     [IsScalarTower R L V] [FaithfulSMul R L] {r : ℕ} {v : Fin (r + 1) → V} {f : V →ₗ[L] L}
     (h0 : ∀ i : Fin r, f (v i.castSucc) = 0) (h1 : f (v (Fin.last r)) = 1) :
@@ -228,6 +291,11 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 variable {L : Type} [Field L] [NumberField L] {V : Type} [AddCommGroup V] [Module L V]
   [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] in
+/- English proof (translation)
+Establish `hk : ∀ C : Submodule (𝓞 L) V, (C ⊓ (LinearMap.ker f).restrictScalars (𝓞 L)).toAddSubgroup = C.toAddSubgroup ⊓ ((f.restrictScalars (𝓞 L) : V →ₗ[𝓞 L] L) : V →+ L).ker`. Introduce `C`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[Submodule.map_toAddSubgroup, Submodule.map_toAddSubgroup, hk, hk]`.
+
+Conclude with `_root_.ReciprocityTheory.MultiplicativeHeights.SemiDegIdx.relIndex_eq_map_mul_ker _ hAB`.
+-/
 private lemma relIndex_eq_relIndex_map_mul_relIndex_inf_ker {A B : Submodule (𝓞 L) V} (hAB : A ≤ B)
     (f : V →ₗ[L] L) :
     A.toAddSubgroup.relIndex B.toAddSubgroup =
@@ -245,6 +313,9 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 variable {L : Type} [Field L] [NumberField L] {V : Type} [AddCommGroup V] [Module L V]
   [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] in
+/- English proof (translation)
+Establish `hq : FractionalIdeal.absNorm 𝔞 * ((1 : Submodule (𝓞 L) L).toAddSubgroup.relIndex (𝔞 : Submodule (𝓞 L) L).toAddSubgroup : ℚ) = 1` using `_root_.ReciprocityTheory.MultiplicativeHeights.SemiDegIdx.absNorm_mul_relIndex_one (𝔞 : Submodule (𝓞 L) L) (FractionalIdeal.fg_of_isNoetherianRing le_rfl 𝔞) h1`. Establish `hr : (FractionalIdeal.absNorm 𝔞 : ℝ) * ((1 : Submodule (𝓞 L) L).toAddSubgroup.relIndex (𝔞 : Submodule (𝓞 L) L).toAddSubgroup : ℝ) = 1`. Conclude with `hq` after adjusting the coercions. Rewrite using `[eq_inv_of_mul_eq_one_right hr, Real.log_inv]`.
+-/
 private lemma log_relIndex_one_eq_neg_log_absNorm_of_one_le (𝔞 : FractionalIdeal (𝓞 L)⁰ L) (h1 : 1 ≤ (𝔞 : Submodule (𝓞 L) L)) :
     Real.log ((1 : Submodule (𝓞 L) L).toAddSubgroup.relIndex (𝔞 : Submodule (𝓞 L) L).toAddSubgroup) =
       -Real.log (FractionalIdeal.absNorm 𝔞 : ℝ) := by
@@ -260,6 +331,49 @@ open NumberField Module in
 open scoped nonZeroDivisors in
 open scoped ComplexOrder in
 variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K') {n : ℕ} in
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero`. Introduce `B v hB hv`. Establish `hv'` using `isFrame_span_image_map j h h' hf hv`. Rewrite using `[AddSubgroup.relIndex_eq_one.2 (le_span_range_of_isFrame_fin_zero hv'), AddSubgroup.relIndex_eq_one.2 (le_span_range_of_isFrame_fin_zero hv)]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ r ih`. Introduce `B v hB hv`. Establish `hv'` using `isFrame_span_image_map j h h' hf hv`. Establish `hB'` using `fg_span_image_map_of_fg j hB`.
+
+Establish `hne` using `_root_.ReciprocityTheory.GeometryOfNumbersTheory.IsFrame.relIndex_ne_zero hB hv`. Establish `hne'` using `_root_.ReciprocityTheory.GeometryOfNumbersTheory.IsFrame.relIndex_ne_zero hB' hv'`. Establish `hv0` using `hv`. Unfold `_root_.ReciprocityTheory.GeometryOfNumbersTheory.IsFrame at hv0`. Take `⟨hmem, hli, hsub⟩` from `hv0`.
+
+Take `⟨f, h0, h1⟩` from `exists_linearForm_vanish_init_eq_one_last hli`. Set `f' : (Fin n → K') →ₗ[K'] K'` to `∑ a, j (f (Pi.single a 1)) • LinearMap.proj a`. Establish `hf' : ∀ x : Fin n → K, f' (fun i => j (x i)) = j (f x)`. Introduce `x`. Use `conv_rhs => rw [eq_sum_apply_smul_single x]`.
+
+Simplify using `[f', map_sum, mul_comm]`. Establish `h0' : ∀ i : Fin r, f' (fun k => j (v i.castSucc k)) = 0` using `fun i => by`. Rewrite using `[hf', h0, map_zero]`. Establish `h1' : f' (fun k => j (v (Fin.last r) k)) = 1` using `by rw [hf', h1, map_one]`. Establish `hA1 : (Submodule.span (𝓞 K) (Set.range v)).map (f.restrictScalars (𝓞 K)) = 1` using `map_span_range_eq_one_of_form_last h0 h1`.
+
+Establish `hAB : Submodule.span (𝓞 K) (Set.range v) ≤ B` using `Submodule.span_le.2 (Set.range_subset_iff.2 hmem)`. Establish `hXfg : (B.map (f.restrictScalars (𝓞 K))).FG` using `hB.map _`. Establish `hX1 : 1 ≤ B.map (f.restrictScalars (𝓞 K))` using `hA1 ▸ Submodule.map_mono hAB`. Take `⟨w, hw1, hw⟩` from `_root_.ReciprocityTheory.MultiplicativeHeights.SemiDegIdx.exists_section_of_image B f hXfg hX1`. Establish `hC : ∀ x ∈ B, x - f x • w ∈ B ⊓ (LinearMap.ker f).restrictScalars (𝓞 K)`.
+
+Introduce `x hx`. Use `⟨sub_mem hx (hw _ ⟨x, hx, rfl⟩), ?_⟩` and prove the remaining obligations. Simplify using `[hw1]`. Establish `hCfg : (B ⊓ (LinearMap.ker f).restrictScalars (𝓞 K)).FG` using `Submodule.FG.of_le hB inf_le_left`. Establish `hCfr : _root_.ReciprocityTheory.GeometryOfNumbersTheory.IsFrame K (B ⊓ (LinearMap.ker f).restrictScalars (𝓞 K)) (fun i : Fin r => v i.castSucc)`.
+
+Unfold `_root_.ReciprocityTheory.GeometryOfNumbersTheory.IsFrame`. Use `⟨fun i => ⟨hmem _, by simp [h0 i]⟩, hli.comp _ (Fin.castSucc_injective r), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hx1 : x ∈ Submodule.span K (Set.range v) ⊓ (LinearMap.ker f).restrictScalars K` using `⟨hsub hx.1, hx.2⟩`. Rewrite `hx1` using `[span_range_inf_ker_eq_span_range_castSucc h0 h1]`.
+
+Conclude with `hx1`. Establish `hIH` using `ih hCfg hCfr`. Establish `hsplit` using `relIndex_eq_relIndex_map_mul_relIndex_inf_ker hAB f`. Rewrite `hsplit` using `[hA1, span_range_inf_ker_eq_span_range_castSucc h0 h1]`. Set `𝔞 : FractionalIdeal (𝓞 K)⁰ K` to `⟨B.map (f.restrictScalars (𝓞 K)), FractionalIdeal.isFractional_of_fg hXfg⟩`.
+
+Establish `h𝔞 : 𝔞 ≠ 0`. Introduce `h𝔞0`. Establish `h1mem : (1 : K) ∈ (𝔞 : Submodule (𝓞 K) K)` using `Submodule.one_le.1 hX1`. Rewrite `h1mem` using `[h𝔞0]`. Simplify using `at h1mem`.
+
+Take `⟨𝔠, -, h𝔠, hN⟩` from `_root_.GlobalTheory.exists_fractionalIdeal_eq_span_image j h𝔞`. Establish `hc1 : 1 ≤ (𝔠 : Submodule (𝓞 K') K')`. Rewrite using `[Submodule.one_le, h𝔠]`. Conclude with `Submodule.subset_span ⟨1, Submodule.one_le.1 hX1, map_one j⟩`. Establish `hA'B' : Submodule.span (𝓞 K') (Set.range fun a i => j (v a i)) ≤ Submodule.span (𝓞 K') ((fun c i => j (c i)) '' (B : Set (Fin n → K)))` using `Submodule.span_le.2 (Set.range_subset_iff.2 fun a => Submodule.subset_span ⟨v a, hmem a, rfl⟩)`.
+
+Establish `hsplit'` using `relIndex_eq_relIndex_map_mul_relIndex_inf_ker hA'B' f'`. Rewrite `hsplit'` using `[map_span_range_eq_one_of_form_last (v := fun a i => j (v a i)) h0' h1', span_range_inf_ker_eq_span_range_castSucc (v := fun a i => j (v a i)) h0' h1']`. Establish `hBX : (Submodule.span (𝓞 K') ((fun c i => j (c i)) '' (B : Set (Fin n → K)))).map (f'.restrictScalars (𝓞 K')) = (𝔠 : Submodule (𝓞 K') K')`. Rewrite using `[h𝔠, Submodule.map_span]`. Use `congr 1`.
+
+Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨f x, ⟨x, hx, rfl⟩, (hf' x).symm⟩`. Introduce and unpack `⟨a, ha, rfl⟩`.
+
+Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 ha`. Conclude with `⟨_, ⟨x, hx, rfl⟩, hf' x⟩`. Establish `hBC : Submodule.span (𝓞 K') ((fun c i => j (c i)) '' (B : Set (Fin n → K))) ⊓ (LinearMap.ker f').restrictScalars (𝓞 K') = Submodule.span (𝓞 K') ((fun c i => j (c i)) '' ((B ⊓ (LinearMap.ker f).restrictScalars (𝓞 K) : Submodule (𝓞 K) (Fin n → K)) : Set (Fin n → K)))`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `y ⟨hy, hk⟩`.
+
+Establish `key : ∀ y ∈ Submodule.span (𝓞 K') ((fun c i => j (c i)) '' (B : Set (Fin n → K))), y - f' y • (fun i => j (w i)) ∈ Submodule.span (𝓞 K') ((fun c i => j (c i)) '' ((B ⊓ (LinearMap.ker f).restrictScalars (𝓞 K) : Submodule (𝓞 K) (Fin n → K)) : Set (Fin n → K)))`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`.
+
+Establish `hm : (fun i => j ((x - f x • w) i)) ∈ Submodule.span (𝓞 K') ((fun c i => j (c i)) '' ((B ⊓ (LinearMap.ker f).restrictScalars (𝓞 K) : Submodule (𝓞 K) (Fin n → K)) : Set (Fin n → K)))` using `Submodule.subset_span ⟨x - f x • w, hC x hx, rfl⟩`. Use `hm using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Simplify using `[hf']`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb`. Use `add_mem ha hb using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_add, add_smul]`. Normalize the expressions using the abelian group laws. Consider the case `smul c a _ ha`.
+
+Use `Submodule.smul_mem _ c ha using 1` and compare the differences between its conclusion and the goal. Rewrite using `[LinearMap.map_smul_of_tower, smul_sub, smul_assoc]`. Establish `hk' : f' y = 0` using `hk`. Simplify `key y hy` using `[hk']`. Use `le_inf (Submodule.span_mono (Set.image_mono inf_le_left)) ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hfx : f x = 0` using `hx.2`. Use `show f' (fun i => j (x i)) = 0`. Rewrite using `[hf', hfx, map_zero]`.
+
+Rewrite `hsplit'` using `[hBX, hBC]`. Establish `e1 : Real.log ((1 : Submodule (𝓞 K) K).toAddSubgroup.relIndex (B.map (f.restrictScalars (𝓞 K))).toAddSubgroup) = -Real.log (FractionalIdeal.absNorm 𝔞 : ℝ)` using `log_relIndex_one_eq_neg_log_absNorm_of_one_le 𝔞 hX1`. Establish `e2` using `log_relIndex_one_eq_neg_log_absNorm_of_one_le 𝔠 hc1`. Rewrite `hne`, the goal using `[hsplit]`. Rewrite `hne'`, the goal using `[hsplit']`.
+
+Take `⟨ha, hb⟩` from `mul_ne_zero_iff.1 hne`. Take `⟨ha', hb'⟩` from `mul_ne_zero_iff.1 hne'`. Use `push_cast`. Rewrite using `[Real.log_mul (Nat.cast_ne_zero.2 ha) (Nat.cast_ne_zero.2 hb), Real.log_mul (Nat.cast_ne_zero.2 ha') (Nat.cast_ne_zero.2 hb'), add_div, add_div, e1, e2, hIH, neg_div, neg_div, hN]`.
+-/
 private lemma log_relIndex_map_lemma_4 (h : _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam K (Fin n → K)) (h' : _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam K' (Fin n → K'))
     (hf : ∀ s a b, h'.form s (Pi.single a 1) (Pi.single b 1) =
       h.form (s.comp j) (Pi.single a 1) (Pi.single b 1)) (r : ℕ) :
@@ -401,6 +515,13 @@ private lemma log_relIndex_map_lemma_4 (h : _root_.ReciprocityTheory.GeometryOfN
 open NumberField Module in
 open scoped nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `K K' _ _ _ _ j n h h' Λ hΛ hf`. Take `⟨r, v, hv⟩` from `_root_.ReciprocityTheory.GeometryOfNumbersTheory.exists_isFullRankFamily_of_fg Λ hΛ`. Establish `hv'` using `isFrame_span_image_map j h h' hf hv`. Rewrite using `[_root_.ReciprocityTheory.GeometryOfNumbersTheory.arakelovDegree_eq_degreeOfFamily h' (fg_span_image_map_of_fg j hΛ) hv', _root_.ReciprocityTheory.GeometryOfNumbersTheory.arakelovDegree_eq_degreeOfFamily h hΛ hv]`. Unfold `_root_.ReciprocityTheory.GeometryOfNumbersTheory.degreeOfFamily`.
+
+Establish `hg : ∀ s : K' →+* ℂ, h'.gram s (fun a i => j (v a i)) = h.gram (s.comp j) v`. Introduce `s`. Unfold `_root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam.gram`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply]`.
+
+Conclude with `hermFam_form_map_eq_of_eq_on_basis j h h' hf s _ _`. Simplify using `only [hg]`. Establish `hm` using `_root_.GlobalTheory.meanLog_comp j (fun σ => (h.gram σ v).det.re)`. Unfold `_root_.ReciprocityTheory.GeometryOfNumbersTheory.meanLog at hm`. Rewrite using `[sub_div, sub_div, log_relIndex_map_lemma_4 j h h' hf r hΛ hv, mul_div_assoc, mul_div_assoc, hm]`.
+-/
 theorem _root_.GlobalTheory.deg_span_image_eq :
     ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K') (n : ℕ)
       (h : _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam K (Fin n → K)) (h' : _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam K' (Fin n → K')) (Λ : Submodule (𝓞 K) (Fin n → K)), Λ.FG →

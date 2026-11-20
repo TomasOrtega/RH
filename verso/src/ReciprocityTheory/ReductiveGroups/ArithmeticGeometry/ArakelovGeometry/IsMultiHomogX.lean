@@ -12,24 +12,45 @@ def lg (J : Ideal (MRing ι)) (a : K → ℕ) : ℝ := Real.log (Nat.card (mPiec
 
 def tdeg (a : K → ℕ) : ℕ := ∑ k, a k
 
+/- English proof (translation)
+Unfold `lg`. Break down `Nat.eq_zero_or_pos (Nat.card (mPiece J a)) with h | h` into its components or cases. Rewrite using `[h]`. Simplify using the standard rewrite rules. Conclude with `Real.log_nonneg (Nat.one_le_cast.mpr h)`.
+-/
 theorem lg_nonneg (J : Ideal (MRing ι)) (a : K → ℕ) : 0 ≤ lg J a := by
   unfold lg
   rcases Nat.eq_zero_or_pos (Nat.card (mPiece J a)) with h | h
   · rw [h]; simp
   · exact Real.log_nonneg (Nat.one_le_cast.mpr h)
 
+/- English proof (translation)
+Unfold `tdeg`. Conclude with `Finset.sum_le_sum fun k _ => Nat.sub_le (a k) (c k)`.
+-/
 theorem tdeg_sub_le (a c : K → ℕ) : tdeg (a - c) ≤ tdeg a := by
   unfold tdeg
   exact Finset.sum_le_sum fun k _ => Nat.sub_le (a k) (c k)
 
+/- English proof (translation)
+Simplify using `[nrm, tdeg, Nat.cast_sum]`.
+-/
 theorem nrm_natCast [DecidableEq K] (a : K → ℕ) : nrm (fun k => (a k : ℤ)) = (tdeg a : ℝ) := by
   simp [nrm, tdeg, Nat.cast_sum]
 
+/- English proof (translation)
+Establish `h' : (tdeg a : ℝ) ≤ tdeg b` using `by exact_mod_cast h`. Use `gcongr`.
+-/
 theorem pow_tdeg_mono {a b : K → ℕ} (h : tdeg a ≤ tdeg b) (m : ℕ) :
     ((tdeg a : ℝ) + 1) ^ m ≤ ((tdeg b : ℝ) + 1) ^ m := by
   have h' : (tdeg a : ℝ) ≤ tdeg b := by exact_mod_cast h
   gcongr
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Distinguish the cases in `hk : k = b`. Substitute `hk` using the available equality.
+
+Simplify using `only [Pi.single_eq_same]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Apply `Finsupp.single_eq_of_ne` to reduce the goal to its premises.
+
+Introduce `h`. Simplify using `only [Sigma.mk.inj_iff, heq_eq_eq, true_and] at h`. Apply the tactic sequence `exact hj (by first | exact h.symm | exact h)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+
+Simplify using `[Finsupp.single_apply, hk, Ne.symm hk]`.
+-/
 theorem isMultiHomog_X' [DecidableEq K] (b : K) (i : ι b) :
     IsMultiHomog (X ⟨b, i⟩ : MRing ι) (Pi.single b 1) := by
   intro m hm k
@@ -48,6 +69,9 @@ theorem isMultiHomog_X' [DecidableEq K] (b : K) (i : ι b) :
     · intro h; exact absurd (Finset.mem_univ i) h
   · simp [Finsupp.single_apply, hk, Ne.symm hk]
 
+/- English proof (translation)
+Establish `hpq : (p : MRing ι) ∈ q` using `(hq _).mpr (J.mul_mem_right _ hpJ)`. Rewrite using `[lg, card_mPiece_step hJ hf hq hca, Nat.cast_mul, Real.log_mul, lg, lg]`. Conclude with `(card_mPiece_pos _ a hp (Ideal.mem_sup_left hpJ)).ne'` after adjusting the coercions. Conclude with `(card_mPiece_pos _ _ hp hpq).ne'` after adjusting the coercions.
+-/
 theorem lg_step {J : Ideal (MRing ι)} (hJ : IsMultiHomogIdeal J) {f : MRing ι} {c : K → ℕ}
     (hf : IsMultiHomog f c) {q : Ideal (MRing ι)} (hq : ∀ g, g ∈ q ↔ g * f ∈ J) {a : K → ℕ}
     (hca : ∀ k, c k ≤ a k) {p : ℕ} (hp : 0 < p) (hpJ : (p : MRing ι) ∈ J) :
@@ -57,6 +81,9 @@ theorem lg_step {J : Ideal (MRing ι)} (hJ : IsMultiHomogIdeal J) {f : MRing ι}
   · exact_mod_cast (card_mPiece_pos _ a hp (Ideal.mem_sup_left hpJ)).ne'
   · exact_mod_cast (card_mPiece_pos _ _ hp hpq).ne'
 
+/- English proof (translation)
+Rewrite using `[lg, card_mPiece_chain a N F f c q h0 hlast hj ha, Nat.cast_prod, Real.log_prod]`. Both sides reduce to the same expression. Introduce `j _`. Conclude with `(card_mPiece_pos _ _ hp (hpq j)).ne'` after adjusting the coercions.
+-/
 theorem lg_chain (a : K → ℕ) {N : ℕ} {F : Fin (N + 1) → Ideal (MRing ι)} {f : Fin N → MRing ι}
     {c : Fin N → K → ℕ} {q : Fin N → Ideal (MRing ι)} (h0 : IsMultiHomogIdeal (F 0))
     (hlast : F (Fin.last N) = ⊤)
@@ -69,6 +96,9 @@ theorem lg_chain (a : K → ℕ) {N : ℕ} {F : Fin (N + 1) → Ideal (MRing ι)
   · intro j _
     exact_mod_cast (card_mPiece_pos _ _ hp (hpq j)).ne'
 
+/- English proof (translation)
+The claim follows from `|Δ a| ≤ |Δ (fun _ => a₁)| + B * m * tdeg a * ((tdeg a : ℝ) + 1) ^ (m - 1) := by have hnn : ∀ a : K → ℕ, 0 ≤ B * m * (tdeg a : ℝ) * ((tdeg a : ℝ) + 1) ^ (m - 1) := fun a => mul_nonneg (mul_nonneg (mul_nonneg hB (Nat.cast_nonneg _)) (Nat.cast_nonneg _)) (pow_nonneg (by positivity) …`.
+-/
 theorem walk_bound [DecidableEq K] (Δ : (K → ℕ) → ℝ) (a₁ m : ℕ) {B : ℝ} (hB : 0 ≤ B)
     (hstep : ∀ a : K → ℕ, ∀ b, (∀ k, a₁ ≤ a k) → a₁ < a b →
       |Δ a - Δ (a - Pi.single b 1)| ≤ B * m * ((tdeg a : ℝ) + 1) ^ (m - 1)) :

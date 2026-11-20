@@ -16,6 +16,23 @@ namespace GlobalTheory.TanRay
 
 open ReciprocityTheory.ChartRestriction.G.PullbackSections (tv_mem mkT tv_mkT tanM_ext tv_add tv_smul)
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ _ _ _ t P`. Use `letI := H.starRing`. Introduce `Y n vH v' hv`. Establish `hc : IsAdicComplete ((maximalIdeal R).map (algebraMap R (DualNumber R))) (DualNumber R)`. Establish `: Module.Finite R (DualNumber R)` using `inferInstanceAs (Module.Finite R (R × R))`.
+
+Conclude with `GlobalTheory.isAdicComplete_map_of_finite (maximalIdeal R) (DualNumber R)`. Establish `: Nontrivial (DualNumber R)` using `(TrivSqZeroExt.inl_injective (R := R) (M := R)).nontrivial`. Establish `: IsLocalRing (DualNumber R)` using `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => by`. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Simplify using `using IsLocalRing.isUnit_or_isUnit_one_sub_self x.fst`.
+
+Establish `hT : GlobalTheory.AdicColimit.IsAdicColimit (maximalIdeal R) (overAt (𝟙 (Sp R)) (DualNumber R))`. Use `GlobalTheory.AdicColimit.IsAdicColimit.of_iso (Over.isoMk (Iso.refl _) ?_) (GlobalTheory.AdicColimit.isAdicColimit_spec_of_isLocalRing R (maximalIdeal R) (DualNumber R) (algebraMap R (DualNumber R)) hc)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hΦ` using `Y.rep`. Take `⟨J, hJ⟩` from `GlobalTheory.TorusModel.exists_mulEquiv P.U.toUnifPre GlobalTheory.allSixLaws.1.globalFns hΦ`.
+
+Establish `nat : ∀ (k : overAt (𝟙 (Sp R)) (DualNumber R) ⟶ overAt (𝟙 (Sp R)) (DualNumber R)) (w : overAt (𝟙 (Sp R)) (DualNumber R) ⟶ Y.H), J _ hT (k ≫ w) = k ≫ J _ hT w` using `fun k w => (hJ _ hT _ _).2 (((hJ _ hT w _).1 rfl).pull k (hΦ.1 _ _ k _))`. Establish `hs : ∀ (a : R) (w : overAt (𝟙 (Sp R)) (DualNumber R) ⟶ Y.H), J _ hT (smT (𝟙 (Sp R)) a w) = smT (𝟙 (Sp R)) a (J _ hT w)` using `fun a w => nat _ w`. Establish `mem : ∀ v : TanM (𝟙 (Sp R)) Y.H, smT (𝟙 (Sp R)) 0 (J _ hT (tv v)) = 1` using `fun v => by`. Rewrite using `[← hs, tv_mem, map_one]`. Set `L : TanM (𝟙 (Sp R)) Y.H →ₗ[R] TanM (𝟙 (Sp R)) t.G` to `{ toFun := fun v => mkT (J _ hT (tv v)) (mem v) map_add' := fun u v => tanM_ext (by`.
+
+Simplify using `only [tv_mkT, tv_add, map_mul])`. Use the proof step `map_smul' := fun a v => tanM_ext (by`. Simplify using `only [tv_mkT, tv_smul, RingHom.id_apply, hs]) }`. Establish `hL : Function.Bijective L`. Use `⟨fun u v h => tanM_ext ((J _ hT).injective ?_), fun w => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg tv h` as an intermediate fact. Simplify `this` using `[L, tv_mkT]`. Establish `h0 : smT (𝟙 (Sp R)) 0 ((J _ hT).symm (tv w)) = 1`. Apply `(J _ hT).injective` to reduce the goal to its premises. Rewrite using `[hs, MulEquiv.apply_symm_apply, tv_mem, map_one]`.
+
+Use `⟨mkT _ h0, tanM_ext ?_⟩` and prove the remaining obligations. Use `show J _ hT ((J _ hT).symm (tv w)) = tv w`. Conclude with `MulEquiv.apply_symm_apply _ _`. Use `⟨vH.map (LinearEquiv.ofBijective L hL), fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.map_apply, LinearEquiv.ofBijective_apply]`.
+
+Use `tanM_ext ?_` and prove the remaining obligations. Conclude with `(hJ _ hT _ _).2 (hv a)`.
+-/
 theorem tanBasis_of_isPointOf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t), letI := H.starRing; ∀ (Y : Ray P.oD) (n : ℕ) (vH : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (v' : Fin n → TanM (𝟙 (Sp R)) t.G), (∀ a, GlobalTheory.FormalPoint.IsPointOf P.U.toUnifPre (Y.Φ _ (tv (vH a))) (tv (v' a))) → ∃ b : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) t.G), ∀ a, b a = v' a := by
   intro E _ _ _ H R _ _ _ _ _ _ t P
   letI := H.starRing

@@ -3,6 +3,9 @@ open UpperTheory.V.Lit.Geo
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af GlobalTheory.UnitaryBC UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Bor
 open scoped ContDiff
 
+/- English proof (translation)
+Take `⟨p, hp⟩ : ∃ p : Polynomial ℂ, ∀ r : ℂ, (1 + r • M).det = 1 + M.trace * r + p.eval r * r ^ 2` from `⟨_, fun r => Matrix.det_one_add_smul r M⟩`. Establish `h1` using `(((hasDerivAt_id (0 : ℂ)).const_mul M.trace).const_add 1).add ((p.hasDerivAt 0).mul ((hasDerivAt_id (0 : ℂ)).pow 2))`. Rewrite using `[funext hp]`. Conclude with `HasDerivAt.congr_deriv h1 (by simp)`.
+-/
 private theorem der_det {a : ℕ} (M : Matrix (Fin a) (Fin a) ℂ) :
     HasDerivAt (fun r : ℂ => (1 + r • M).det) M.trace 0 := by
   obtain ⟨p, hp⟩ : ∃ p : Polynomial ℂ, ∀ r : ℂ, (1 + r • M).det = 1 + M.trace * r + p.eval r * r ^ 2 :=
@@ -12,6 +15,9 @@ private theorem der_det {a : ℕ} (M : Matrix (Fin a) (Fin a) ℂ) :
   rw [funext hp]
   exact HasDerivAt.congr_deriv h1 (by simp)
 
+/- English proof (translation)
+Establish `h1` using `(der_det M).clog (by simp)`. Establish `h2 : HasDerivAt (fun r : ℂ => Complex.log (1 + r • M).det) M.trace ((0 : ℝ) : ℂ)`. Simplify using `using h1`. Establish `h3` using `h2.real_of_complex`. Simplify `h3` using `only [Complex.log_re]`.
+-/
 private theorem der_log {a : ℕ} (M : Matrix (Fin a) (Fin a) ℂ) :
     HasDerivAt (fun t : ℝ => Real.log ‖(1 + (t : ℂ) • M).det‖) M.trace.re 0 := by
   have h1 := (der_det M).clog (by simp)
@@ -22,9 +28,15 @@ private theorem der_log {a : ℕ} (M : Matrix (Fin a) (Fin a) ℂ) :
 
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
+/- English proof (translation)
+The claim follows from `(((Matrix.isUnit_iff_isUnit_det y).1 hy).map (Pi.evalMonoidHom (fun _ : InfinitePlace E => ℂ) w)).ne_zero`.
+-/
 private theorem det_ne {y : Matrix (Fin a) (Fin a) (Cinf E)} (hy : IsUnit y) (w : InfinitePlace E) : y.det w ≠ 0 :=
   (((Matrix.isUnit_iff_isUnit_det y).1 hy).map (Pi.evalMonoidHom (fun _ : InfinitePlace E => ℂ) w)).ne_zero
 
+/- English proof (translation)
+Unfold `sc`. Use `((ContDiffAt.sum fun w _ => ?_).div_const _).neg.exp` and prove the remaining obligations. Establish `h : ContDiff ℝ ∞ fun x : Lie E a => (Matrix.of x).det w` using `(contDiff_apply ℝ ℂ w).comp GlobalTheory.CuspRep.contDiff_det`. Conclude with `(h.contDiffAt.norm ℝ (det_ne hy w)).log (norm_ne_zero_iff.2 (det_ne hy w))`.
+-/
 private theorem sm_at {y : Lie E a} (hy : IsUnit (Matrix.of y)) :
     ContDiffAt ℝ ∞ (fun y : Lie E a => sc (Matrix.of y)) y := by
   unfold sc
@@ -33,6 +45,9 @@ private theorem sm_at {y : Lie E a} (hy : IsUnit (Matrix.of y)) :
     (contDiff_apply ℝ ℂ w).comp GlobalTheory.CuspRep.contDiff_det
   exact (h.contDiffAt.norm ℝ (det_ne hy w)).log (norm_ne_zero_iff.2 (det_ne hy w))
 
+/- English proof (translation)
+Establish `h` using `(Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) w).map_det (Matrix.of (oneL E a + t • X))`. Use `h.trans (congrArg _ ?_)` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [oneL, toL, Matrix.one_apply, hij]`.
+-/
 private theorem det_line (X : Lie E a) (t : ℝ) (w : InfinitePlace E) :
     (Matrix.of (oneL E a + t • X)).det w = (1 + (t : ℂ) • Matrix.of fun i j => X i j w).det := by
   have h := (Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) w).map_det (Matrix.of (oneL E a + t • X))
@@ -40,6 +55,9 @@ private theorem det_line (X : Lie E a) (t : ℝ) (w : InfinitePlace E) :
   ext i j
   by_cases hij : i = j <;> simp [oneL, toL, Matrix.one_apply, hij]
 
+/- English proof (translation)
+Unfold `sc`. Simplify using `only [det_line]`. Establish `h` using `((HasDerivAt.fun_sum (u := Finset.univ) fun (w : InfinitePlace E) _ => der_log (Matrix.of fun i j => X i j w)).div_const ((a : ℝ) * Fintype.card (InfinitePlace E))).neg.exp`. Conclude with `HasDerivAt.congr_deriv h (by simp [ell, Matrix.trace])`.
+-/
 private theorem der_sc (X : Lie E a) :
     HasDerivAt (fun t : ℝ => sc (Matrix.of (oneL E a + t • X))) (-ell E a X) 0 := by
   unfold sc
@@ -48,6 +66,11 @@ private theorem der_sc (X : Lie E a) :
     der_log (Matrix.of fun i j => X i j w)).div_const ((a : ℝ) * Fintype.card (InfinitePlace E))).neg.exp
   exact HasDerivAt.congr_deriv h (by simp [ell, Matrix.trace])
 
+/- English proof (translation)
+Unfold `sc`. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Establish `h : ∀ w, Real.log ‖(y * star y).det w‖ = 2 * Real.log ‖y.det w‖` using `fun w => by`. Rewrite using `[Matrix.det_mul, Matrix.star_eq_conjTranspose, Matrix.det_conjTranspose, Pi.mul_apply, Pi.star_apply, norm_mul, norm_star, ← sq, Real.log_pow]`.
+
+Evaluate the numerical expressions. Simplify using `only [h, ← Finset.mul_sum]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem sc_mul_star {y : Matrix (Fin a) (Fin a) (Cinf E)} : sc (y * star y) = sc y ^ 2 := by
   unfold sc
   rw [← Real.exp_nat_mul]
@@ -60,9 +83,19 @@ private theorem sc_mul_star {y : Matrix (Fin a) (Fin a) (Cinf E)} : sc (y * star
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `[sc]`.
+-/
 private theorem sc_one : sc (1 : Matrix (Fin a) (Fin a) (Cinf E)) = 1 := by
   simp [sc]
 
+/- English proof (translation)
+Introduce `E _ _ a`. Use `⟨fun y hy => (sm_at hy).contDiffWithinAt, sc_one, fun X => ?_, fun h => sc_mul_star, fun k => ?_⟩` and prove the remaining obligations. Establish `h1 : IsUnit (Matrix.of (oneL E a))` using `isUnit_one`. Establish `hd` using `((sm_at h1).differentiableAt (by simp)).hasFDerivAt`. Establish `hl : HasDerivAt (fun t : ℝ => oneL E a + t • X) X 0`.
+
+Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const X).const_add (oneL E a)`. Establish `h2` using `HasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hd hl (by simp)`. Conclude with `h2.unique (der_sc X)`. Establish `h : sc k.1 ^ 2 = 1`. Rewrite using `[← sc_mul_star, Matrix.mem_unitaryGroup_iff.1 k.2, sc_one]`.
+
+Establish `hp : 0 < sc k.1` using `Real.exp_pos _`. Conclude with `(pow_eq_one_iff_of_nonneg hp.le two_ne_zero).1 h`.
+-/
 theorem UpperTheory.deriv_similitudeChar_at_one_eq_trace :
     ScSm := by
   intro E _ _ a

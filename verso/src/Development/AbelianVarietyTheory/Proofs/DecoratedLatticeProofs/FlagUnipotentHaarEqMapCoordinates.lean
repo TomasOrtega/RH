@@ -23,6 +23,15 @@ set_option maxHeartbeats 800000
 
 namespace GlobalTheory.HaarCoordsUnit
 
+/- English proof (translation)
+Use `haveI : ν.IsMulRightInvariant := GlobalTheory.UnitU.isMulRightInvariant_of_fundamentalDomain Γ ν h2 (by rw [h3]; exact one_ne_zero) (by rw [h3]; exact ENNReal.one_ne_top)`. Establish `hinv : ν.inv 𝓝⁻¹ = 1` using `by rw [Measure.inv_apply, inv_inv, h3]`. Establish `e1` using `measure_eq_div_smul m.inv ν.inv (s := 𝓝⁻¹) (by rw [hinv]; exact one_ne_zero) (by rw [hinv]; exact ENNReal.one_ne_top)`. Rewrite `e1` using `[hinv, div_one, Measure.inv_apply, inv_inv]`. Use `set κ := m 𝓝 with hκ`.
+
+Establish `e2 : m = κ • ν`. Use extensionality with `s -`. Use `congrArg (fun μ : Measure G => μ s⁻¹) e1` as an intermediate fact. Simplify `this` using `only [Measure.inv_apply, inv_inv, Measure.smul_apply]`. Establish `hκ0 : κ ≠ 0`.
+
+Introduce `h0`. Rewrite `e2` using `[h0, zero_smul]`. Rewrite `k3` using `[e2]`. Simplify using `at k3`. Use `haveI : m.IsMulLeftInvariant := by rw [e2]; infer_instance`.
+
+Establish `h2' : IsFundamentalDomain Γ 𝓝 m` using `h2.mono (by rw [e2]; exact Measure.smul_absolutelyContinuous)`. Establish `h4 : m 𝓝 = 1` using `(h2'.measure_eq k2).trans k3`. Establish `hk1 : κ = 1` using `by rw [hκ]; exact h4`. Rewrite using `[e2, hk1, one_smul]`.
+-/
 theorem eq_of_rightInvariant_of_fundamentalDomain {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     [LocallyCompactSpace G] [SecondCountableTopology G] (Γ : Subgroup G) [Countable Γ] (ν m : Measure G) (𝓝 𝓕 : Set G)
     (h1 : ν.IsHaarMeasure) (h2 : IsFundamentalDomain Γ 𝓝 ν) (h3 : ν 𝓝 = 1) (k0 : SigmaFinite m) (k1 : m.IsMulRightInvariant)
@@ -48,6 +57,17 @@ theorem eq_of_rightInvariant_of_fundamentalDomain {G : Type} [Group G] [Topologi
   have hk1 : κ = 1 := by rw [hκ]; exact h4
   rw [e2, hk1, one_smul]
 
+/- English proof (translation)
+Introduce `D V V₀ ρ d vN vb vU e he lC 𝓒 hC hCs hCF hC1`. Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨j1, j2, j3, j4⟩` from `GlobalTheory.Mem.TrueRecord.top_NFlag V (isIsoSub_e d)`. Take `⟨hU, 𝓤, hU𝓤, hU1⟩` from `vU.unit`. Take `⟨hb, hbF, hb1⟩` from `vb.covol`.
+
+Take `⟨u1, u2, u3⟩` from `GlobalTheory.UnitU.topology D ρ`. Use `haveI : BorelSpace (UX D ρ) := ⟨rfl⟩`. Take `⟨-, m2, m3, m4, -⟩` from `lattice_Mx D ρ V₀.rank`. Take `⟨-, n2, n3, n4, -⟩` from `lattice_Mx D ρ ρ`. Use `haveI := vN.unit.1`.
+
+Establish `hcl : IsClosed (skewA D ρ : Set (Mx D ρ ρ))` using `isClosed_eq continuous_adj continuous_neg`. Use `haveI : LocallyCompactSpace (skewA D ρ) := hcl.locallyCompactSpace`. Use `haveI : SecondCountableTopology (skewA D ρ) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SigmaFinite lC := inferInstance`. Use `haveI : SigmaFinite vb.μ := inferInstance`.
+
+Use `haveI : SigmaFinite vU.ν := inferInstance`. Use `haveI hm : SigmaFinite ((lC.prod (vb.μ.prod vU.ν)).map e) := e.sigmaFinite_map`. Establish `hR` using `GlobalTheory.T.isMulRightInvariant_map_wittFlagCoordinates_haar D V V₀ ρ d vb vU e he lC hC hCs`. Establish `hF` using `GlobalTheory.T.isFundamentalDomain_flagUnipotent_coords D V V₀ ρ d vb vU e he lC 𝓒 𝓤 hC hCs hCF hU𝓤`. Establish `h1 : (lC.prod (vb.μ.prod vU.ν)).map e (e '' (𝓒 ×ˢ (vb.𝓕 ×ˢ 𝓤))) = 1`.
+
+Rewrite using `[MeasurableEquiv.map_apply, e.preimage_image, Measure.prod_prod, Measure.prod_prod, hC1, hb1, hU1, one_mul, one_mul]`. Conclude with `(eq_of_rightInvariant_of_fundamentalDomain (NFlagQ V d.e) vN.ν _ vN.𝓝 _ vN.unit.1 vN.unit.2.1 vN.unit.2.2 hm hR hF h1).symm`.
+-/
 theorem volN_eq_map_coords : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (vN : VolN d) (vb : VolM D ρ V₀.rank) (vU : VolU D ρ) (e : skewA D ρ × (Mx D ρ V₀.rank × UX D ρ) ≃ᵐ flagN d), (∀ p, (e p : GA D V) = d.nC p.1 * (d.nB p.2.1 * d.levi p.2.2.1)) → ∀ (lC : Measure (skewA D ρ)) (𝓒 : Set (skewA D ρ)), lC.IsAddHaarMeasure → SFinite lC → IsAddFundamentalDomain ((ratMx D ρ ρ).addSubgroupOf (skewA D ρ)) 𝓒 lC → lC 𝓒 = 1 → vN.ν = (lC.prod (vb.μ.prod vU.ν)).map e := by
   intro D V V₀ ρ d vN vb vU e he lC 𝓒 hC hCs hCF hC1
   obtain ⟨i1, i2, i3, i4, i5, i6, i7⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V

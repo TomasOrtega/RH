@@ -14,6 +14,23 @@ noncomputable section
 
 namespace GlobalTheory.VacThetaInd
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W r s r' s' hB hX hW v θ θ' hθ hθ' γ hγ`. Establish `hσ : ∀ x : E, σ (σ x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`.
+
+Establish `hc : ∀ z, cA σ (cA σ z) = z` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [cA, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+
+Establish `hi : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun e => rfl`. Establish `ht : cA σ (hTens (cA σ) (incM F X.J) (incM F W.J) γ γ) = -hTens (cA σ) (incM F X.J) (incM F W.J) γ γ` using `GlobalTheory.VacCocycle.conj_hTens (cA σ) hc (fun i j => by simp only [incM, Matrix.map_apply, hi, hX.herm]) (fun i j => by simp only [incM, Matrix.map_apply, hi, hW.skew, map_neg]) γ γ`. Use `set t := hTens (cA σ) (incM F X.J) (incM F W.J) γ γ with htdef`. Establish `htr : ∀ z, Algebra.trace (AF F) (AE F E) (cA σ z) = Algebra.trace (AF F) (AE F E) z` using `GlobalTheory.VacCocycle.trace_conj (cA σ) hc`. Use `set a := inclR (F := F) (AF F) (θ : E) with ha`.
+
+Use `set a' := inclR (F := F) (AF F) (θ' : E) with ha'`. Establish `hca : cA σ a = 1 - a`. Rewrite using `[ha, hi, eq_sub_of_add_eq' hθ, map_sub, map_one]`. Establish `hca' : cA σ a' = 1 - a'`. Rewrite using `[ha', hi, eq_sub_of_add_eq' hθ', map_sub, map_one]`.
+
+Use `set z := (a - a') * t with hz`. Establish `hcz : cA σ z = z`. Rewrite using `[hz, map_mul, map_sub, hca, hca', ht]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Algebra.trace (AF F) (AE F E) z = 2 * Algebra.trace (AF F) (AE F E) (a * z)`.
+
+Establish `e1 : Algebra.trace (AF F) (AE F E) (cA σ (a * z)) = Algebra.trace (AF F) (AE F E) (a * z)` using `htr _`. Rewrite `e1` using `[map_mul, hca, hcz, sub_mul, one_mul, map_sub]`. Take the linear combination `e1`. Establish `hmul : inclR (F` using `F) (AF F) (((θ * (θ - θ') : 𝓞 E)) : E) = a * (a - a') := by`. Rewrite using `[ha, ha', ← map_sub, ← map_mul]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `key : symp (R` using `AF F) (cA σ) a (incM F X.J) (incM F W.J) γ γ = symp (R := AF F) (cA σ) a' (incM F X.J) (incM F W.J) γ γ + 2 * symp (R := AF F) (cA σ) (inclR (F := F) (AF F) (((θ * (θ - θ') : 𝓞 E)) : E)) (incM F X.J) (incM F W.J) γ γ := by`. Simplify using `only [symp, hmul]`. Rewrite using `[← htdef, mul_assoc, ← hz, ← h2, hz, sub_mul, map_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `GlobalTheory.LatVacArith.psi_symp_latAtV σ B X W r s r' s' hB hX hW v (θ * (θ - θ')) 1 (by rw [map_one]; exact one_mem _) γ hγ γ hγ`. Rewrite using `[key, mul_add, ← mul_assoc, invOf_mul_self, one_mul, AddChar.map_add_eq_mul, ← one_mul (symp (R := AF F) (cA σ) (inclR (F := F) (AF F) (((θ * (θ - θ') : 𝓞 E)) : E)) (incM F X.J) (incM F W.J) γ γ), h1, mul_one]`.
+-/
 theorem psi_half_symp_theta_indep : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →
     ∀ (v : Pl F) (θ θ' : 𝓞 E), (θ : E) + σ θ = 1 → (θ' : E) + σ θ' = 1 → ∀ γ ∈ latAtV X W v,

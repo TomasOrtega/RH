@@ -8,6 +8,11 @@ namespace GlobalTheory.SWQ.RatLattice
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨ξ, rfl⟩ l _`. Conclude with `⟨ξ l, rfl⟩`. Introduce `u hu choose ξ hξ using fun l => hu l trivial`.
+
+Establish `: u = rat ξ` using `funext fun l => (hξ l).symm`. Rewrite using `[this]`. Conclude with `AddSubgroup.subset_closure ⟨ξ, rfl⟩`.
+-/
 theorem closure_range_rat (N : ℕ) :
     AddSubgroup.closure (Set.range (rat : (Fin N → F) → (Fin N → AF F))) =
       AddSubgroup.pi Set.univ fun _ : Fin N => (algebraMap F (AF F)).range.toAddSubgroup := by
@@ -21,6 +26,11 @@ theorem closure_range_rat (N : ℕ) :
     rw [this]
     exact AddSubgroup.subset_closure ⟨ξ, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[closure_range_rat]`. Prove the components needed by the constructor for the conclusion. Introduce `hu choose ξ hξ using fun l => hu l trivial`. Conclude with `⟨ξ, funext fun l => (hξ l).symm⟩`. Introduce and unpack `⟨ξ, rfl⟩ l _`.
+
+Conclude with `⟨ξ l, rfl⟩`.
+-/
 theorem mem_closure_iff (N : ℕ) (u : Fin N → AF F) :
     u ∈ AddSubgroup.closure (Set.range (rat : (Fin N → F) → (Fin N → AF F))) ↔ ∃ ξ, u = rat ξ := by
   rw [closure_range_rat]
@@ -31,6 +41,11 @@ theorem mem_closure_iff (N : ℕ) (u : Fin N → AF F) :
   · rintro ⟨ξ, rfl⟩ l _
     exact ⟨ξ l, rfl⟩
 
+/- English proof (translation)
+Use `haveI : Nontrivial (AF F) := by show Nontrivial (AdeleRing (𝓞 F) F)`. Unfold `AdeleRing`. Use `infer_instance`. Introduce `ξ η h`. Use function extensionality and compare the values at `l`.
+
+Conclude with `(algebraMap F (AF F)).injective (congrFun h l)`.
+-/
 theorem rat_injective (N : ℕ) : Function.Injective (rat : (Fin N → F) → (Fin N → AF F)) := by
   haveI : Nontrivial (AF F) := by
     show Nontrivial (AdeleRing (𝓞 F) F)
@@ -40,6 +55,13 @@ theorem rat_injective (N : ℕ) : Function.Injective (rat : (Fin N → F) → (F
   funext l
   exact (algebraMap F (AF F)).injective (congrFun h l)
 
+/- English proof (translation)
+Establish `hq (i : Fin n)` using `Measure.quasiMeasurePreserving_eval (fun _ : Fin n => ν) i`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.univ_pi_eq_iInter]`. Conclude with `NullMeasurableSet.iInter fun i => hF.nullMeasurableSet.preimage (hq i)`. Use `(ae_all_iff (μ := (Measure.pi fun _ : Fin n => ν))).2 fun i => (hq i).ae hF.ae_covers filter_upwards [this] with z hz choose a ha using hz` as an intermediate fact.
+
+Conclude with `⟨⟨fun i => a i, fun i _ => (a i).2⟩, fun i _ => ha i⟩`. Introduce `a b hab`. Take `⟨i, hi⟩ : ∃ i, a.1 i ≠ b.1 i` from `by by_contra! h`. Conclude with `hab (Subtype.ext (funext h))`. Establish `h` using `hF.aedisjoint (i := ⟨a.1 i, a.2 i trivial⟩) (j := ⟨b.1 i, b.2 i trivial⟩) fun e => hi (congrArg Subtype.val e)`.
+
+Use `measure_mono_null ?_ ((hq i).preimage_null h)` and prove the remaining obligations. Introduce and unpack `z ⟨⟨u, hu, hu'⟩, ⟨v, hv, hv'⟩⟩`. Conclude with `⟨⟨u i, hu i trivial, congrFun hu' i⟩, ⟨v i, hv i trivial, congrFun hv' i⟩⟩`.
+-/
 theorem isFD_pi {Y : Type} [AddCommGroup Y] [MeasurableSpace Y] (ν : Measure Y) [SigmaFinite ν]
     {A : AddSubgroup Y} {D : Set Y} (hF : IsAddFundamentalDomain A D ν) (n : ℕ) :
     IsAddFundamentalDomain (AddSubgroup.pi Set.univ fun _ : Fin n => A) (Set.univ.pi fun _ : Fin n => D)
@@ -65,6 +87,13 @@ theorem isFD_pi {Y : Type} [AddCommGroup Y] [MeasurableSpace Y] (ν : Measure Y)
 end GlobalTheory.SWQ.RatLattice
 
 open GlobalTheory.SWQ.RatLattice in
+/- English proof (translation)
+Introduce `F _ _ N ν hν`. Take `⟨hH, D₀, hD₀m, hD₀, hD₀1⟩` from `hν`. Use `haveI := hH`. Use `⟨?_, mem_closure_iff N, rat_injective N, ?_, ?_⟩` and prove the remaining obligations. Unfold `muV infer_instance`.
+
+Take `⟨K, hK, hKc⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele F`. Use `⟨Set.univ.pi fun _ => K, isCompact_univ_pi fun _ => hK, fun u => ?_⟩` and prove the remaining obligations. Use `choose ξ hξ using fun l => hKc (u l)`. Conclude with `⟨ξ, fun l _ => hξ l⟩`. Use `⟨Set.univ.pi fun _ => D₀, MeasurableSet.univ_pi fun _ => hD₀m, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[closure_range_rat]`. Conclude with `isFD_pi ν hD₀ N`. Unfold `muV`. Rewrite using `[Measure.pi_pi]`. Simplify using `[hD₀1]`.
+-/
 theorem GlobalTheory.SWQ.rat_lattice_fundamentalDomain : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) (ν : Measure (AF F)), IsCov1 ν → (muV N ν).IsAddHaarMeasure ∧ (∀ u : (Fin N → AF F), u ∈ (AddSubgroup.closure (Set.range (rat : (Fin N → F) → (Fin N → AF F)))) ↔ ∃ ξ, u = rat ξ) ∧ Function.Injective (rat : (Fin N → F) → (Fin N → AF F)) ∧ (∃ K : Set (Fin N → AF F), IsCompact K ∧ ∀ u, ∃ ξ, u - rat ξ ∈ K) ∧ ∃ D : Set (Fin N → AF F), MeasurableSet D ∧ IsAddFundamentalDomain (AddSubgroup.closure (Set.range (rat : (Fin N → F) → (Fin N → AF F)))) D (muV N ν) ∧ muV N ν D = 1 := by
   intro F _ _ N ν hν
   obtain ⟨hH, D₀, hD₀m, hD₀, hD₀1⟩ := hν

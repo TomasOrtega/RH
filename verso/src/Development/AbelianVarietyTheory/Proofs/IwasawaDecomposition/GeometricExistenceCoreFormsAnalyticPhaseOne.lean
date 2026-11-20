@@ -21,6 +21,11 @@ namespace GlobalTheory.Mem.R3.GeoExProof
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hRD D G _ _ Pl0 I0 T0 A3 C _ F hVol hL hLC hA hT hVS hn R cG hVal hPre _hlev hpb hK`. Take `⟨dict, mu, chiW, x₀, cE, nW, FW, B, -, -, hFired, -, -, hPre', hchi, hU, -, -⟩` from `GlobalTheory.T.exists_geometricHalf_phase_one_over_lawful_core hRD D G Pl0 T0 A3.A C R hVol hL hLC hA hpb hPre hK.valKs hK.frameKs hVal hT hK.guard hVS hn`. Use `⟨dict, mu, chiW, x₀, cE, nW, FW, hchi, ⟨B⟩, fun i x => ?_⟩` and prove the remaining obligations. Establish `hHW` using `hPre'.models.HW`. Take `⟨m, a, f, hf⟩` from `(hFired.1 i).2.2 x`.
+
+Establish `hm : (1 : ℂ) • ((updFW R nW FW).HW i (sg0 D A3.A)).e (R.thG i A3.A.μ0 (jVx (updFW R nW FW) i A3.A.μ0 x)) ∈ (updFW R nW FW).Wall i (sg0 D A3.A)` using `((updFW R nW FW).Wall i (sg0 D A3.A)).smul_mem 1 ((hHW i _).2.1.le (LinearMap.mem_range_self _ _))`. Take `⟨y, hy⟩` from `GlobalTheory.TwistedClassSum.exists_adForm B.fw hHW hU (B.O i).hV hm a f 1 fun q => (hf q.out).trans (one_mul _).symm`. Rewrite `hy` using `[one_smul, one_smul]`. Conclude with `⟨y, (hHW i _).1 hy.symm⟩`.
+-/
 theorem geoExV_of_top : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T0 : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m) (C : CoreJ D) [Algebra C.Q.c.F D.what₂.LL] (F : Face D A3.A), VolTieG D → LawsJ C → LawsCore C.toCore → AlgTie C → Finite T0 → (∀ i, VStd D i) → 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → GlobalTheory.Mem.R3.GeoExV A3 C F := by
   intro hRD D G _ _ Pl0 I0 T0 A3 C _ F hVol hL hLC hA hT hVS hn R cG hVal hPre _hlev hpb hK
   obtain ⟨dict, mu, chiW, x₀, cE, nW, FW, B, -, -, hFired, -, -, hPre', hchi, hU, -, -⟩ :=

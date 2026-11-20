@@ -10,6 +10,15 @@ section Factorial
 
 variable {C : Type} [NormedField C] [IsUltrametricDist C]
 
+/- English proof (translation)
+Use `le_antisymm (IsUltrametricDist.norm_natCast_le_one C m) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hb : ((Nat.gcd p m : ℤ) : C) = ((p * Nat.gcdA p m + m * Nat.gcdB p m : ℤ) : C)`. Rewrite using `[← Nat.gcd_eq_gcd_ab]`.
+
+Rewrite `hb` using `[h.gcd_eq_one]`. Move the coercions through the operations in `at hb`. Establish `h1 : ‖(p : C) * ((Nat.gcdA p m : ℤ) : C)‖ < 1`. Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one C _)) hp`.
+
+Establish `h2 : ‖(m : C) * ((Nat.gcdB p m : ℤ) : C)‖ < 1`. Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one C _)) hlt`. Establish `h3` using `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h1 h2)`. Rewrite `h3` using `[← hb, norm_one]`.
+
+Conclude with `lt_irrefl _ h3`.
+-/
 theorem norm_natCast_eq_one_of_coprime {p m : ℕ} (hp : ‖(p : C)‖ < 1) (h : Nat.Coprime p m) :
     ‖(m : C)‖ = 1 := by
   refine le_antisymm (IsUltrametricDist.norm_natCast_le_one C m) ?_
@@ -31,6 +40,15 @@ theorem norm_natCast_eq_one_of_coprime {p m : ℕ} (hp : ‖(p : C)‖ < 1) (h :
   rw [← hb, norm_one] at h3
   exact lt_irrefl _ h3
 
+/- English proof (translation)
+Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `hlt : ‖(p : C)‖ < 1` using `by rw [h]; exact inv_lt_one_of_one_lt₀ hp1`. Take `⟨v, m, hm, hv⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (Nat.factorial_ne_zero n) p hp.out.ne_one`. Establish `hval : padicValNat p n.factorial = v`. Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hm (dvd_zero _)`.
+
+Rewrite using `[hv, padicValNat.mul (pow_ne_zero _ hp.out.ne_zero) hm0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hm, add_zero]`. Establish `hle : (p - 1) * v ≤ n`. Rewrite using `[← hval, sub_one_mul_padicValNat_factorial]`. Conclude with `Nat.sub_le _ _`. Establish `hle' : ((p : ℝ) - 1) * v ≤ n`.
+
+Establish `: (((p - 1) * v : ℕ) : ℝ) ≤ n` using `by exact_mod_cast hle`. Rewrite `this` using `[Nat.cast_mul, Nat.cast_sub hp.out.one_le, Nat.cast_one]`. Then use the resulting hypothesis. Establish `hm1 : ‖(m : C)‖ = 1` using `norm_natCast_eq_one_of_coprime hlt ((Nat.Prime.coprime_iff_not_dvd hp.out).2 hm)`. Rewrite using `[norm_inv, hv, Nat.cast_mul, Nat.cast_pow, norm_mul, norm_pow, hm1, h, mul_one, inv_pow, inv_inv, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]`. Use `Real.rpow_le_rpow_of_exponent_le hp1.le ?_` and prove the remaining obligations.
+
+Rewrite using `[one_div, inv_mul_eq_div, le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_factorial_inv_le (p : ℕ) [hp : Fact p.Prime] (h : ‖(p : C)‖ = (p : ℝ)⁻¹) (n : ℕ) :
     ‖((n.factorial : C))⁻¹‖ ≤ ((p : ℝ) ^ (1 / ((p : ℝ) - 1))) ^ n := by
   have hp1 : (1 : ℝ) < p := by exact_mod_cast hp.out.one_lt
@@ -60,6 +78,13 @@ end Factorial
 def dpow (C : Type) [Field C] {B : Type} [CommRing B] [Algebra C B] (n : ℕ) (x : B) : B :=
   ((n.factorial : C))⁻¹ • x ^ n
 
+/- English proof (translation)
+Unfold `dpow`. Rewrite using `[(Commute.all x y).add_pow', Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hm'` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hm`. Rewrite using `[smul_mul_smul_comm, ← Nat.cast_smul_eq_nsmul C, smul_smul]`.
+
+Use `congr 1`. Establish `h` using `Nat.choose_mul_factorial_mul_factorial (n := n) (k := m.1) (by omega)`. Rewrite `h` using `[show n - m.1 = m.2 by omega]`. Establish `h' : (n.choose m.1 : C) * m.1.factorial * m.2.factorial = n.factorial`. Conclude with `h` after adjusting the coercions.
+
+Establish `h1 : (m.1.factorial : C) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `h2 : (m.2.factorial : C) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `h3 : (n.factorial : C) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h'`.
+-/
 theorem dpow_add {C : Type} [Field C] [CharZero C] {B : Type} [CommRing B] [Algebra C B]
     (n : ℕ) (x y : B) :
     dpow C n (x + y) = ∑ m ∈ antidiagonal n, dpow C m.1 x * dpow C m.2 y := by
@@ -79,22 +104,40 @@ theorem dpow_add {C : Type} [Field C] [CharZero C] {B : Type} [CommRing B] [Alge
   field_simp
   linear_combination h'
 
+/- English proof (translation)
+Simplify using `[dpow]`.
+-/
 theorem map_dpow {C : Type} [Field C] {B B' : Type} [CommRing B] [Algebra C B] [CommRing B']
     [Algebra C B'] (f : B →ₐ[C] B') (n : ℕ) (x : B) : f (dpow C n x) = dpow C n (f x) := by
   simp [dpow]
 
+/- English proof (translation)
+Use `Finset.sum_induction f (fun x => N x < T) (fun a b ha hb => ?_) (by rwa [h0]) hf` and prove the remaining obligations. Conclude with `(hadd a b).trans_lt (max_lt ha hb)`.
+-/
 theorem sum_lt {B ι : Type} [AddCommGroup B] (N : B → ℝ) (h0 : N 0 = 0)
     (hadd : ∀ x y, N (x + y) ≤ max (N x) (N y)) {T : ℝ} (hT : 0 < T) (s : Finset ι) (f : ι → B)
     (hf : ∀ i ∈ s, N (f i) < T) : N (∑ i ∈ s, f i) < T := by
   refine Finset.sum_induction f (fun x => N x < T) (fun a b ha hb => ?_) (by rwa [h0]) hf
   exact (hadd a b).trans_lt (max_lt ha hb)
 
+/- English proof (translation)
+Use `Finset.sum_induction f (fun x => N x ≤ T) (fun a b ha hb => ?_) (by rwa [h0]) hf` and prove the remaining obligations. Conclude with `(hadd a b).trans (max_le ha hb)`.
+-/
 theorem sum_le {B ι : Type} [AddCommGroup B] (N : B → ℝ) (h0 : N 0 = 0)
     (hadd : ∀ x y, N (x + y) ≤ max (N x) (N y)) {T : ℝ} (hT : 0 ≤ T) (s : Finset ι) (f : ι → B)
     (hf : ∀ i ∈ s, N (f i) ≤ T) : N (∑ i ∈ s, f i) ≤ T := by
   refine Finset.sum_induction f (fun x => N x ≤ T) (fun a b ha hb => ?_) (by rwa [h0]) hf
   exact (hadd a b).trans (max_le ha hb)
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `eventually_atTop.1 (ht.eventually (gt_mem_nhds (zero_lt_one' ℝ)))`. Establish `hnM : n ∈ range M`. Rewrite using `[mem_range]`. Assume the negation of the conclusion as `h`. Conclude with `absurd (hM n (not_lt.1 h)) (not_lt.2 hn.le)`.
+
+Take `⟨k₀, hk₀, hmax⟩` from `Finset.exists_max_image (range M) t ⟨n, hnM⟩`. Take `⟨k, hk, hlast⟩` from `Finset.exists_max_image ((range M).filter fun a => t a = t k₀) id ⟨k₀, by simp [mem_range.1 hk₀]⟩`. Rewrite `hk` using `[mem_filter]`. Establish `h1 : 1 < t k` using `by rw [hk.2]; exact hn.trans_le (hmax n hnM)`. Establish `hall : ∀ a, t a ≤ t k` using `fun a => by`.
+
+Distinguish the cases in `ha : a < M`. Rewrite using `[hk.2]`. Conclude with `hmax a (mem_range.2 ha)`. Conclude with `((hM a (not_lt.1 ha)).trans h1).le`. Use `⟨k, h1, hall, fun a hka => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `ha : a < M`. Use `lt_of_le_of_ne (hall a) fun h => ?_` and prove the remaining obligations. Use `hlast a (by rw [mem_filter]; exact ⟨mem_range.2 ha, h.trans hk.2⟩)` as an intermediate fact. Conclude with `absurd hka (not_lt.2 this)`. Conclude with `(hM a (not_lt.1 ha)).trans h1`.
+-/
 theorem exists_last_max (t : ℕ → ℝ) (ht : Tendsto t atTop (𝓝 0)) (n : ℕ) (hn : 1 < t n) :
     ∃ k, 1 < t k ∧ (∀ a, t a ≤ t k) ∧ ∀ a, k < a → t a < t k := by
   obtain ⟨M, hM⟩ := eventually_atTop.1 (ht.eventually (gt_mem_nhds (zero_lt_one' ℝ)))
@@ -118,6 +161,43 @@ theorem exists_last_max (t : ℕ → ℝ) (ht : Tendsto t atTop (𝓝 0)) (n : �
     exact absurd hka (not_lt.2 this)
   · exact (hM a (not_lt.1 ha)).trans h1
 
+/- English proof (translation)
+Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.out.pos`. Use `set q : ℝ := (p : ℝ) ^ (1 / ((p : ℝ) - 1)) with hq`. Establish `hq0 : 0 < q` using `Real.rpow_pos_of_pos hp0 _`. Use `set ρ : ℝ := q * ‖c‖ with hρ`. Establish `hρ0 : 0 ≤ ρ` using `mul_nonneg hq0.le (norm_nonneg _)`.
+
+Establish `hρ1 : ρ < 1`. Rewrite `hc` using `[Real.rpow_neg hp0.le, ← hq]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcoef : ∀ n : ℕ, ‖((n.factorial : C))⁻¹‖ * ‖c ^ n‖ ≤ ρ ^ n` using `fun n => by`. Rewrite using `[hρ, mul_pow, norm_pow]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (norm_factorial_inv_le p hpn n) (by positivity)`. Establish `h0 : N₂ 0 = 0` using `by simpa using hs₂ 0 0`. Establish `hneg : ∀ x, N₂ (-x) = N₂ x` using `fun x => by simpa using hs₂ (-1) x`. Use `set e := Δ y - i y - j y with hedef`. Establish `hepow : ∀ l : ℕ, N₂ (e ^ (l + 1)) ≤ 1` using `fun l => by`.
+
+Proceed by induction on `l with`. Consider the case `zero => simpa using he`. Consider the case `succ l ih`. Rewrite using `[pow_succ]`. Conclude with `(hmul _ _).trans (mul_le_one₀ ih (hn₂ _) he)`.
+
+Establish `hd : ∀ l : ℕ, l ≠ 0 → N₂ (dpow C l (c • e)) < 1` using `fun l hl => by`. Take `⟨l', rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hl`. Rewrite using `[dpow, smul_pow, hs₂, hs₂, ← mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Use `set t : ℕ → ℝ := fun n => N₁ (dpow C n (c • y)) with ht`.
+
+Establish `ht0 : ∀ n, 0 ≤ t n` using `fun n => hn₁ _`. Establish `htle : ∀ n, t n ≤ ρ ^ n * K` using `fun n => by`. Simplify using `only [ht]`. Rewrite using `[dpow, smul_pow, hs₁, hs₁, ← mul_assoc]`. Conclude with `mul_le_mul (hcoef _) (hK _) (hn₁ _) (by positivity)`.
+
+Establish `hlim : Tendsto t atTop (𝓝 0)`. Use `squeeze_zero ht0 htle ?_` and prove the remaining obligations. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one hρ0 hρ1).mul_const K`. Assume the negation of the conclusion as `hcon`. Establish `h1 : 1 < t 1` using `by simpa [ht, dpow] using hcon`.
+
+Take `⟨k, hk1, hmax, hlast⟩` from `exists_last_max t hlim 1 h1`. Establish `hk0 : 0 < t k` using `by linarith`. Establish `hT : 0 < t k * t k` using `mul_pos hk0 hk0`. Use `set s := i (c • y) + j (c • y) with hsdef`. Establish `hγs : ∀ m, dpow C m s = ∑ x ∈ antidiagonal m, i (dpow C x.1 (c • y)) * j (dpow C x.2 (c • y))` using `fun m => by`.
+
+Rewrite using `[hsdef, dpow_add]`. Simplify using `only [map_dpow]`. Establish `hsle : ∀ m, N₂ (dpow C m s) ≤ t k * t k` using `fun m => by`. Rewrite using `[hγs]`. Use `sum_le N₂ h0 hadd hT.le _ _ fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hij]`. Conclude with `mul_le_mul (hmax _) (hmax _) (ht0 _) hk0.le`. Establish `hΔz : Δ (c • y) = s + c • e`. Simplify using `only [hsdef, hedef, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+
+Establish `hkk : (k, k) ∈ antidiagonal (k + k)` using `by simp`. Establish `h2k : (k + k, 0) ∈ antidiagonal (k + k)` using `by simp`. Establish `E1` using `dpow_add (C := C) (k + k) s (c • e)`. Rewrite `E1` using `[← hΔz, ← map_dpow, ← Finset.add_sum_erase _ _ h2k]`. Establish `E2` using `hγs (k + k)`.
+
+Rewrite `E2` using `[← Finset.add_sum_erase _ _ hkk]`. Establish `hz : dpow C 0 (c • e) = 1` using `by simp [dpow]`. Simplify using `only [hz, mul_one] at E1 E2`. Establish `hA : N₂ (Δ (dpow C (k + k) (c • y))) < t k * t k`. Use `(hΔ _).trans_lt ((hmax (k + k)).trans_lt ?_)` and prove the remaining obligations.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hB : N₂ (∑ x ∈ (antidiagonal (k + k)).erase (k + k, 0), dpow C x.1 s * dpow C x.2 (c • e)) < t k * t k`. Use `sum_lt N₂ h0 hadd hT _ _ fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[mem_erase, Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hx2 : x.2 ≠ 0` using `fun h => hx.1 (Prod.ext (by have := hx.2; simp only; omega) h)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hC : N₂ (∑ x ∈ (antidiagonal (k + k)).erase (k, k), i (dpow C x.1 (c • y)) * j (dpow C x.2 (c • y))) < t k * t k`. Use `sum_lt N₂ h0 hadd hT _ _ fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[mem_erase, Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[hij]`.
+
+Express the relevant statement in the definitionally equal form `t x.1 * t x.2 < _`. Establish `: k < x.1 ∨ k < x.2`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `hx.2` as an intermediate fact.
+
+Conclude with `hx.1 (Prod.ext (by simp only; omega) (by simp only; omega))`. Break down `this with h | h` into its components or cases. Conclude with `(mul_le_mul_of_nonneg_left (hmax _) (ht0 _)).trans_lt (mul_lt_mul_of_pos_right (hlast _ h) hk0)`. Conclude with `mul_lt_mul' (hmax _) (hlast _ h) (ht0 _) hk0`. Establish `E3 : i (dpow C k (c • y)) * j (dpow C k (c • y)) = Δ (dpow C (k + k) (c • y)) + -(∑ x ∈ (antidiagonal (k + k)).erase (k + k, 0), dpow C x.1 s * dpow C x.2 (c • e)) + -(∑ x ∈ (antidiagonal (k + k)).erase (k, k), i (dpow C x.1 (c • y)) * j (dpow C x.2 (c • y)))`.
+
+Rewrite using `[E1, E2]`. Normalize the expressions using the abelian group laws. Establish `hfin : N₂ (i (dpow C k (c • y)) * j (dpow C k (c • y))) < t k * t k`. Rewrite using `[E3]`. Use `(hadd _ _).trans_lt (max_lt ((hadd _ _).trans_lt (max_lt hA ?_)) ?_)` and prove the remaining obligations.
+
+Rewrite using `[hneg]` and apply the resulting hypothesis. Rewrite using `[hneg]` and apply the resulting hypothesis. Rewrite `hfin` using `[hij]`. Conclude with `lt_irrefl _ hfin`.
+-/
 theorem norm_smul_le_one_of_lt (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C]
     [CharZero C] (p : ℕ) [hp : Fact p.Prime] (hpn : ‖(p : C)‖ = (p : ℝ)⁻¹)
     (B₁ B₂ : Type) [CommRing B₁] [Algebra C B₁] [CommRing B₂] [Algebra C B₂]
@@ -228,6 +308,15 @@ theorem norm_smul_le_one_of_lt (C : Type) [NontriviallyNormedField C] [IsUltrame
   rw [hij] at hfin
   exact lt_irrefl _ hfin
 
+/- English proof (translation)
+Introduce `C _ _ _ _ p hp hpn B₁ B₂ _ _ _ _ N₁ N₂ Δ i j hs₁ hs₂ hn₁ hn₂ hadd hmul hΔ hij y ⟨K, hK⟩ he a ha`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (p : ℝ) hcon`.
+
+Establish `hn0 : n ≠ 0` using `by rintro rfl; rw [pow_zero] at hn; linarith`. Take `⟨b, hb⟩` from `IsAlgClosed.exists_pow_nat_eq (p : C) (Nat.pos_of_ne_zero hn0)`. Establish `hbn : ‖b‖ ^ n = (p : ℝ)⁻¹` using `by rw [← norm_pow, hb, hpn]`. Establish `hb1 : ‖b‖ < 1`. Rewrite using `[← pow_lt_one_iff_of_nonneg (norm_nonneg b) hn0, hbn]`.
+
+Conclude with `inv_lt_one_of_one_lt₀ hp1`. Establish `hpos : 0 < (p : ℝ) ^ (-(1 / ((p : ℝ) - 1)))` using `Real.rpow_pos_of_pos (by linarith) _`. Establish `hc : ‖b * a‖ < (p : ℝ) ^ (-(1 / ((p : ℝ) - 1)))`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul_of_nonneg_left ha (norm_nonneg b)).trans_lt (mul_lt_of_lt_one_left hpos hb1)`.
+
+Establish `h` using `norm_smul_le_one_of_lt C p hpn B₁ B₂ N₁ N₂ Δ i j hs₁ hs₂ hn₁ hn₂ hadd hmul hΔ hij y K hK he (b * a) hc`. Rewrite `h` using `[mul_smul, hs₁]`. Establish `h2` using `pow_le_one₀ (n := n) (mul_nonneg (norm_nonneg b) (hn₁ _)) h`. Rewrite `h2` using `[mul_pow, hbn, inv_mul_le_iff₀ (by linarith), mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_smul_le_one : ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [IsAlgClosed C] [CharZero C] (p : ℕ) [Fact p.Prime], ‖(p : C)‖ = (p : ℝ)⁻¹ → ∀ (B₁ B₂ : Type) [CommRing B₁] [Algebra C B₁] [CommRing B₂] [Algebra C B₂] (N₁ : B₁ → ℝ) (N₂ : B₂ → ℝ) (Δ i j : B₁ →ₐ[C] B₂), (∀ (c : C) x, N₁ (c • x) = ‖c‖ * N₁ x) → (∀ (c : C) x, N₂ (c • x) = ‖c‖ * N₂ x) → (∀ x, 0 ≤ N₁ x) → (∀ x, 0 ≤ N₂ x) → (∀ x y, N₂ (x + y) ≤ max (N₂ x) (N₂ y)) → (∀ x y, N₂ (x * y) ≤ N₂ x * N₂ y) → (∀ x, N₂ (Δ x) ≤ N₁ x) → (∀ x y, N₂ (i x * j y) = N₁ x * N₁ y) → ∀ y : B₁, (∃ K : ℝ, ∀ k : ℕ, N₁ (y ^ k) ≤ K) → N₂ (Δ y - i y - j y) ≤ 1 → ∀ a : C, ‖a‖ ≤ (p : ℝ) ^ (-(1 / ((p : ℝ) - 1))) → N₁ (a • y) ≤ 1 := by
   intro C _ _ _ _ p hp hpn B₁ B₂ _ _ _ _ N₁ N₂ Δ i j hs₁ hs₂ hn₁ hn₂ hadd hmul hΔ hij y ⟨K, hK⟩
     he a ha

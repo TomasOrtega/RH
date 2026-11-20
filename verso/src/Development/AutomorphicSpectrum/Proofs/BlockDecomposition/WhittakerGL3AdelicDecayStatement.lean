@@ -11,6 +11,9 @@ open Ad3.R (G2 Jd md Dt KA Set0 Coord LInv pt dia2 pri)
 open GlobalTheory.CompanionTheory.UnfoldingAlt
 open scoped NumberField.AdeleRing ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.UnfoldingAlt.TrGauge.tr_gauge | exact GlobalTheory.CompanionTheory.UnfoldingAlt.TrGauge.tr_gauge | (intros; apply GlobalTheory.CompanionTheory.UnfoldingAlt.TrGauge.tr_gauge <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.whittaker_GL3_adelic_decay : ∀ W : G3 → ℂ, (∀ (a : (𝔸[ℚ])ˣ) g, W (dg a a a * g) = W g) → (∃ Ω : Set (FiniteAdeleRing (𝓞 ℚ) ℚ), IsCompact Ω ∧ ∃ T : ℕ, ∀ N : ℕ, ∃ C : ℝ, ∀ a b : (𝔸[ℚ])ˣ,
     ∀ k ∈ (maxCompact : Subgroup G3), ∀ w : InfinitePlace ℚ,
       ‖W (dg (a * b) b 1 * k)‖ ≤ C / ((IdeleGroup.ideleModule ℚ a : ℝ) * IdeleGroup.ideleModule ℚ b) ^ T /

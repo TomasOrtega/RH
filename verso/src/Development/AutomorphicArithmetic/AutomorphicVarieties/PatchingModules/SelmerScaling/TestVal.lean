@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Establish `key : ∀ χ : ℤ_[p] →+* K, IsLocalRing.maximalIdeal ℤ_[p] ≤ RingHom.ker χ`. Introduce `χ`. Establish `hne : RingHom.ker χ ≠ ⊥`. Introduce `h`. Establish `hinj : Function.Injective χ` using `(RingHom.injective_iff_ker_eq_bot χ).mpr h`.
+
+Use `haveI : Finite ℤ_[p] := Finite.of_injective χ hinj`. Use `haveI : Infinite ℤ_[p] := Infinite.of_injective (Nat.cast : ℕ → ℤ_[p]) Nat.cast_injective`. Conclude with `not_finite ℤ_[p]`. Establish `hmax : (RingHom.ker χ).IsMaximal` using `(RingHom.ker_isPrime χ).isMaximal hne`. Conclude with `(IsLocalRing.eq_maximalIdeal hmax).ge`.
+
+Establish `h1` using `key φ (PadicInt.sub_zmodRepr_mem z)`. Establish `h2` using `key ψ (PadicInt.sub_zmodRepr_mem z)`. Rewrite `h1`, `h2` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[h1, h2, map_natCast, map_natCast]`.
+-/
 private theorem padicInt_ringHom_finite_field_eq {p : ℕ} [Fact p.Prime] {K : Type} [Field K] [Finite K]
     (φ ψ : ℤ_[p] →+* K) (z : ℤ_[p]) : φ z = ψ z := by
   have key : ∀ χ : ℤ_[p] →+* K, IsLocalRing.maximalIdeal ℤ_[p] ≤ RingHom.ker χ := by
@@ -20,6 +27,23 @@ private theorem padicInt_ringHom_finite_field_eq {p : ℕ} [Fact p.Prime] {K : T
   rw [RingHom.mem_ker, map_sub, sub_eq_zero] at h1 h2
   rw [h1, h2, map_natCast, map_natCast]
 
+/- English proof (translation)
+Introduce `l _ S R _ _ e θ hT`. Establish `hB : ∀ b : S.B, algebraMap S.B S.U.AA b = algebraMap S.Bh S.U.AA (algebraMap S.B S.Bh b)` using `fun b => IsScalarTower.algebraMap_apply S.B S.Bh S.U.AA b`. Establish `hO : ∀ c : S.O, θ (algebraMap S.B S.U.AA (algebraMap S.O S.B c)) = algebraMap S.F R (algebraMap S.x.A S.F (algebraMap S.O S.x.A c))`. Introduce `c`. Take `⟨o, ho⟩` from `S.oo_O c`.
+
+Rewrite using `[hB, ← ho, hT.oo o, ho, S.rF_f, S.P.f.commutes]`. Establish `hpr : ∀ b : S.Bh, S.pr0 (algebraMap S.Bh S.U.AA b) = b`. Introduce `b`. Establish `h1` using `(Ctx.exists_pr S (algebraMap S.Bh S.U.AA b)).choose_spec`. Establish `h2 : algebraMap S.Bh S.U.AA b - algebraMap S.Bh S.U.AA (S.pr0 (algebraMap S.Bh S.U.AA b)) ∈ (1 : Submodule S.Bh S.U.AA)`.
+
+Rewrite using `[← map_sub]`. Conclude with `Submodule.mem_one.mpr ⟨_, rfl⟩`. Establish `h4` using `(Submodule.disjoint_def.mp S.U.compl.disjoint) _ h2 h1`. Rewrite `h4` using `[← map_sub]`. Establish `h5` using `S.U.inj (h4.trans (map_zero _).symm)`.
+
+Conclude with `(sub_eq_zero.mp h5).symm`. Use `⟨hO, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g m`. Rewrite using `[← map_zpow, ← map_zpow]`. Use `show θ (algebraMap S.B S.U.AA (algebraMap S.O S.B (algebraMap ℤ_[l] S.O _))) = _`.
+
+Rewrite using `[hO]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `algebraMap S.O S.x.A (algebraMap ℤ_[l] S.O _) = algebraMap ℤ_[l] S.x.A (algebraMap ℤ_[l] ℤ_[l] _)`. Rewrite using `[Algebra.algebraMap_self, RingHom.id_apply, IsScalarTower.algebraMap_apply ℤ_[l] S.x.K (PowerSeries S.x.K), IsScalarTower.algebraMap_apply S.O S.x.K (PowerSeries S.x.K)]`. Use `congr 1`.
+
+Conclude with `padicInt_ringHom_finite_field_eq ((algebraMap S.O S.x.K).comp (algebraMap ℤ_[l] S.O)) (algebraMap ℤ_[l] S.x.K) _`. Take `⟨o, ho⟩` from `S.ordinaryPointSection`. Rewrite using `[hB, ← ho, hT.oo o, ho, S.rF_f, S.P.f_s]`. Introduce `v i g`. Rewrite using `[hT.res, hB, hpr, S.rF_f]`.
+
+Establish `h` using `congrArg (fun χ => ((χ g : S.x.Aˣ) : S.x.A)) (S.P.maps.2 v i)`. Conclude with `congrArg _ h`. Introduce `v i g hg`. Establish `hψ : ((S.u.ψ v i g : S.Bˣ) : S.B) = algebraMap S.O S.B ((S.r.th v i ⟨g, hg⟩ : S.Oˣ) : S.O)` using `(S.u.psi v i).mu ⟨g, hg⟩`. Establish `h` using `congrArg (fun χ => ((χ g : S.x.Aˣ) : S.x.A)) (S.P.maps.2 v i)`.
+
+Establish `h' : S.P.f ((S.u.ψ v i g : S.Bˣ) : S.B) = ((S.x.ψ v i g : S.x.Aˣ) : S.x.A)` using `h`. Rewrite using `[hψ, hO, ← S.P.f.commutes, ← hψ, h', S.x.ψ_mu v i g hg]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Pa.testVal :
     ∀ (l : ℕ) [Fact l.Prime] (S : Ctx l), ∀ (R : Type) [CommRing R] [Algebra S.F R] (e : R →ₐ[S.F] S.F) (θ : S.U.AA →+* R), S.Test R e θ → (∀ c : S.O, θ (algebraMap S.B S.U.AA (algebraMap S.O S.B c)) = algebraMap S.F R (algebraMap S.x.A S.F (algebraMap S.O S.x.A c))) ∧ (∀ (g : S.G.G₀) (m : ℤ), θ (algebraMap S.B S.U.AA ((S.G.frame.eps S.O S.B g ^ m : S.Bˣ) : S.B)) = algebraMap S.F R (algebraMap S.x.A S.F ((S.G.frame.eps ℤ_[l] S.x.A g ^ m : S.x.Aˣ) : S.x.A))) ∧ θ (algebraMap S.B S.U.AA S.P.s) = algebraMap S.F R (algebraMap S.x.A S.F S.x.t) ∧ (∀ v i g, e (θ (algebraMap S.B S.U.AA (S.u.ψ v i g))) = algebraMap S.x.A S.F (S.x.ψ v i g)) ∧ ∀ v i, ∀ g ∈ S.G.frame.mu v, θ (algebraMap S.B S.U.AA (S.u.ψ v i g)) = 1 := by
   intro l _ S R _ _ e θ hT

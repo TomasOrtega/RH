@@ -27,6 +27,9 @@ variable {R : RealDat D A Ks} {F : Face D A}
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+The claim follows from `h.lev grp := ⟨h.grp.red_R, h.grp.red_L, h.grp.levels, h.grp.record, h.grp.chiW⟩ fam := ⟨h.fam.tie, h.fam.Sb, h.fam.roots, h.fam.pl_onto, h.fam.degR, h.fam.degL, h.fam.muVal, h.fam.etaVal⟩ models := ⟨h.models.inf, h.models.vpos, h.models.cX, h.models.cV, h.models.prX, h.models.HX, …`.
+-/
 theorem char_withTup (h : R.Char F) {mu tw e} (ht : (withTup R mu tw e).IsTup F) : (withTup R mu tw e).Char F where
   lev := h.lev
   grp := ⟨h.grp.red_R, h.grp.red_L, h.grp.levels, h.grp.record, h.grp.chiW⟩
@@ -41,17 +44,29 @@ theorem char_withTup (h : R.Char F) {mu tw e} (ht : (withTup R mu tw e).IsTup F)
   tup := ht
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem withTup_nonzeroIndexPlace_iff {mu tw e} (w) : (withTup R mu tw e).NonzeroIndexPlace F w ↔ R.NonzeroIndexPlace F w := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `char_withTup h ⟨fun w hw => h.tup.tw w ((withTup_nonzeroIndexPlace_iff w).1 hw), h.tup.mu_off, h.tup.mu_used, h.tup.mu_ne, h.tup.mu_conj, h.tup.mu_on⟩`.
+-/
 theorem char_withErr (h : R.Char F) (e) : (withErr R e).Char F :=
   char_withTup h ⟨fun w hw => h.tup.tw w ((withTup_nonzeroIndexPlace_iff w).1 hw), h.tup.mu_off, h.tup.mu_used, h.tup.mu_ne, h.tup.mu_conj, h.tup.mu_on⟩
 
+/- English proof (translation)
+Introduce `h`. Use `h.2.1 w hw j` as an intermediate fact. Establish `h2 : (0 : ℝ) ≤ -1` using `this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem not_onto_neg {w} (hw : w ∈ R.twPl) (j : Fin D.R.m) (C CH : ℝ) : ¬ (withErr R fun _ _ => -1).LOnto F C CH := by
   intro h
   have := h.2.1 w hw j
   have h2 : (0 : ℝ) ≤ -1 := this
   linarith
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨withErr R fun _ _ => -1, char_withErr h _, rfl, rfl, not_onto_neg hw j⟩`.
+-/
 theorem exists_char_not_onto (h : R.Char F) {w} (hw : w ∈ R.twPl) (j : Fin D.R.m) :
     ∃ R' : RealDat D A Ks, R'.Char F ∧ R'.mu = R.mu ∧ R'.twPl = R.twPl ∧ ∀ C CH, ¬ R'.LOnto F C CH :=
   ⟨withErr R fun _ _ => -1, char_withErr h _, rfl, rfl, not_onto_neg hw j⟩

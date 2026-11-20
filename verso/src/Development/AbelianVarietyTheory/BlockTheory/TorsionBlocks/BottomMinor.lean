@@ -42,6 +42,9 @@ def HookNormBottom : Prop :=
     Formalism.E.fock (delBottom h a) (delBottom h a) = ((hookProd a : ℚ) : ℂ)
 
 open MvPolynomial in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.nextPart`. Use `split_ifs with h`. Conclude with `ha (show i ≤ (⟨i + 1, h⟩ : Fin l) from Fin.le_def.mpr (Nat.le_succ _))`. Conclude with `Nat.zero_le _`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.nextPart_le {l : ℕ} {a : Fin l → ℕ} (ha : Antitone a) (i : Fin l) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.nextPart a i ≤ a i := by
   unfold _root_.GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.nextPart
@@ -50,6 +53,11 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.nextPart_le 
   · exact Nat.zero_le _
 
 open MvPolynomial in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.hookDen`. Use `Finset.prod_pos fun i _ => Finset.prod_pos fun j hj => ?_` and prove the remaining obligations. Establish `hij : i < j` using `Finset.mem_Ioi.mp hj`. Establish `hle : a j ≤ a i` using `ha hij.le`. Establish `h1 : ((a j : ℕ) : ℚ) ≤ (a i : ℚ)` using `by exact_mod_cast hle`.
+
+Establish `h2 : ((i : ℕ) : ℚ) < ((j : ℕ) : ℚ)` using `by exact_mod_cast hij`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.hookDen_pos {l : ℕ} {a : Fin l → ℕ} (ha : Antitone a) :
     0 < _root_.GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.hookDen a := by
   unfold _root_.GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.hookDen
@@ -60,11 +68,17 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.hookDen_pos 
   have h2 : ((i : ℕ) : ℚ) < ((j : ℕ) : ℚ) := by exact_mod_cast hij
   linarith
 
+/- English proof (translation)
+Establish `e : Finset.Ioi (1 : Fin 2) = ∅` using `by decide`. Simplify using `[hookProd, hookDen, Fin.prod_univ_two, Nat.factorial, e]`. Evaluate the numerical expressions.
+-/
 example : hookProd ![2, 1] = 3 := by
   have e : Finset.Ioi (1 : Fin 2) = ∅ := by decide
   simp [hookProd, hookDen, Fin.prod_univ_two, Nat.factorial, e]
   norm_num
 
+/- English proof (translation)
+Establish `e : Finset.Ioi (1 : Fin 2) = ∅` using `by decide`. Prove the components needed by the constructor for the conclusion. Simplify using `[hookProd, hookDen, Fin.prod_univ_two, Nat.factorial, e]`. Simplify using `[hookProd, hookDen, Fin.prod_univ_succ, Nat.factorial]`. Evaluate the numerical expressions.
+-/
 example : hookProd ![1, 1] = 2 ∧ hookProd ![1, 1, 0] = 2 := by
   have e : Finset.Ioi (1 : Fin 2) = ∅ := by decide
   constructor
@@ -72,12 +86,18 @@ example : hookProd ![1, 1] = 2 ∧ hookProd ![1, 1, 0] = 2 := by
   · simp [hookProd, hookDen, Fin.prod_univ_succ, Nat.factorial]
     norm_num
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Simplify using `[delTop, topMinor, nextPart]`. Simplify using `[delBottom, bottomMinor, nextPart]`.
+-/
 example (k : ℕ) : delTop (n := 2) (l := 1) (by norm_num) ![k] = X (0, 0) ^ k ∧
     delBottom (n := 2) (l := 1) (by norm_num) ![k] = X (1, 0) ^ k := by
   constructor
   · simp [delTop, topMinor, nextPart]
   · simp [delBottom, bottomMinor, nextPart]
 
+/- English proof (translation)
+Establish `e : delTop (n` using `2) (l := 1) (by norm_num) ![k] = monomial (Finsupp.single (0, 0) k) 1 := by`. Simplify using `[delTop, topMinor, nextPart, X_pow_eq_monomial]`. Establish `e' : Finset.Ioi (0 : Fin 1) = ∅` using `by decide`. Rewrite using `[e]`. Simplify using `[Formalism.E.fock, support_monomial, Formalism.A.mfact, hookProd, hookDen, e']`.
+-/
 example (k : ℕ) : Formalism.E.fock (delTop (n := 2) (l := 1) (by norm_num) ![k])
     (delTop (n := 2) (l := 1) (by norm_num) ![k]) = ((hookProd ![k] : ℚ) : ℂ) := by
   have e : delTop (n := 2) (l := 1) (by norm_num) ![k] = monomial (Finsupp.single (0, 0) k) 1 := by

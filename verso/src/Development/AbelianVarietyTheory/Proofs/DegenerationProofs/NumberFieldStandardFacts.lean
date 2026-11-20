@@ -17,6 +17,15 @@ open GlobalTheory.SS
 
 namespace GlobalTheory.SS
 
+/- English proof (translation)
+Establish `key : ∀ (Ω F : Type) [Field Ω] [Field F] (a : W →+* F) (ψ : F →+* Ω), GeometricallyConnected (pullback.snd f (spMap a)) → ∀ (Z : Scheme.{0}) (fst : Z ⟶ X) (snd : Z ⟶ Sp Ω), IsPullback fst snd f (spMap (ψ.comp a)) → ConnectedSpace Z`. Introduce `Ω F _ _ a ψ h Z fst snd hZ`. Establish `e : spMap (ψ.comp a) = spMap ψ ≫ spMap a`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite `hZ` using `[e]`.
+
+Establish `sq : IsPullback (pullback.lift fst (snd ≫ spMap ψ) (hZ.w.trans (Category.assoc _ _ _).symm)) snd (pullback.snd f (spMap a)) (spMap ψ)` using `IsPullback.of_right (by rw [pullback.lift_fst]; exact hZ) (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback f (spMap a))`. Conclude with `GeometricallyConnected.geometrically_connectedSpace (f := pullback.snd f (spMap a)) _ _ _ sq`. Use `⟨fun Ω _ q Z fst snd hZ => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `Spec.map_surjective q`. Express the relevant statement in the definitionally equal form `IsPullback fst snd f (spMap φ.hom) at hZ`.
+
+Distinguish the cases in `h : RingHom.ker φ.hom = ⊥`. Establish `hinj` using `(RingHom.injective_iff_ker_eq_bot _).2 h`. Establish `e : (IsFractionRing.lift (K` using `L) hinj).comp (algebraMap W L) = φ.hom := RingHom.ext fun x => IsFractionRing.lift_algebraMap hinj x`. Rewrite `hZ` using `[← e]`. Conclude with `key Ω L _ _ h₁ Z fst snd hZ`.
+
+Establish `hm : RingHom.ker φ.hom = IsLocalRing.maximalIdeal W` using `IsLocalRing.eq_maximalIdeal ((RingHom.ker_isPrime φ.hom).isMaximal h)`. Set `ψ : IsLocalRing.ResidueField W →+* Ω` to `Ideal.Quotient.lift (IsLocalRing.maximalIdeal W) φ.hom fun a ha => (RingHom.mem_ker).1 (hm ▸ ha)`. Establish `e : ψ.comp (algebraMap W (IsLocalRing.ResidueField W)) = φ.hom` using `RingHom.ext fun x => rfl`. Rewrite `hZ` using `[← e]`. Conclude with `key Ω _ _ _ h₂ Z fst snd hZ`.
+-/
 theorem geometricallyConnected_of_generic_of_special (W L : Type) [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] {X : Scheme.{0}} (f : X ⟶ Sp W)
     (h₁ : GeometricallyConnected (pullback.snd f (spMap (algebraMap W L))))
@@ -52,6 +61,17 @@ theorem geometricallyConnected_of_generic_of_special (W L : Type) [CommRing W] [
     rw [← e] at hZ
     exact key Ω _ _ _ h₂ Z fst snd hZ
 
+/- English proof (translation)
+Introduce `W _ _ _ L _ _ _ A _ hA G _ hc hs hsep hqc ⟨e, _⟩ hT`. Take `⟨k, _, _, _, ⟨E⟩⟩` from `GlobalTheory.T.exists_finite_splitTorusExtension_of_torusExtension _ _ hT`. Establish `hw : (baseChange W L G).hom = e.hom.left ≫ A.hom` using `(Over.w e.hom).symm`. Establish `: IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.hom))`. Use `hA.proper` as an intermediate fact.
+
+Use `hA.geomConnected` as an intermediate fact. Establish `hp : IsProper (baseChange W L G).hom` using `by rw [hw]; infer_instance`. Establish `hg : GeometricallyConnected (baseChange W L G).hom` using `MorphismProperty.of_isPullback (P := @GeometricallyConnected) (IsPullback.of_horiz_isIso (fst := e.hom.left) (g := 𝟙 _) ⟨by rw [hw, Category.comp_id]⟩) hA.geomConnected`. Establish `hk` using `(GlobalTheory.torusExtension_smooth_geometricallyConnected _ E).2.2.2.1`. Establish `hsurj : Surjective (spMap (algebraMap (IsLocalRing.ResidueField W) k))` using `⟨fun z => ⟨_, Subsingleton.elim (spMap (algebraMap (IsLocalRing.ResidueField W) k) (default : PrimeSpectrum _)) z⟩⟩`.
+
+Establish `hsp : GeometricallyConnected (specialFibre W G).hom` using `@GlobalTheory.geometricallyConnected_of_isPullback_of_surjective _ _ _ _ _ _ _ _ (IsPullback.of_hasPullback (specialFibre W G).hom (spMap (algebraMap (IsLocalRing.ResidueField W) k))) hsurj hk`. Establish `hgc : GeometricallyConnected G.hom` using `geometricallyConnected_of_generic_of_special W L G.hom hg hsp`. Use `isSemiAbelian_of_proper_generic_of_torusExtension W L G ⟨hc, hs, hsep, hqc, hgc⟩ hp k ((algebraMap (IsLocalRing.ResidueField W) k).comp (algebraMap W (IsLocalRing.ResidueField W))) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[RingHom.ker_comp_of_injective _ (algebraMap (IsLocalRing.ResidueField W) k).injective]`. Conclude with `IsLocalRing.ker_residue`.
+
+Use `RingHom.IsIntegral.trans _ _ (RingHom.isIntegral_of_surjective _ IsLocalRing.residue_surjective) ?_` and prove the remaining obligations. Conclude with `Algebra.IsIntegral.isIntegral`. Establish `e' : spMap ((algebraMap (IsLocalRing.ResidueField W) k).comp (algebraMap W (IsLocalRing.ResidueField W))) = spMap (algebraMap (IsLocalRing.ResidueField W) k) ≫ spMap (algebraMap W (IsLocalRing.ResidueField W))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[e']`.
+
+Establish `: IsMonHom (pullCompIso (spMap (algebraMap (IsLocalRing.ResidueField W) k)) (spMap (algebraMap W (IsLocalRing.ResidueField W))) G).symm.hom` using `inferInstanceAs (IsMonHom (pullCompIso _ _ G).inv)`. Conclude with `⟨torusExtOfIso (pullCompIso (spMap (algebraMap (IsLocalRing.ResidueField W) k)) (spMap (algebraMap W (IsLocalRing.ResidueField W))) G).symm E⟩`.
+-/
 theorem isSemiAbelian_of_abelian_generic_of_torusExt : NfSt := by
   intro W _ _ _ L _ _ _ A _ hA G _ hc hs hsep hqc ⟨e, _⟩ hT
   obtain ⟨k, _, _, _, ⟨E⟩⟩ := GlobalTheory.T.exists_finite_splitTorusExtension_of_torusExtension _ _ hT

@@ -15,6 +15,15 @@ noncomputable section
 
 namespace FibreNormDehomCharpoly
 
+/- English proof (translation)
+Take `⟨_, ⟨_, _, hrel⟩, _, _⟩` from `hA`. Take `⟨c, hc⟩` from `CoordArithOfFnField.nonzero_of_relevant y hrel`. Establish `hrel' : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0` using `fun k => ⟨c k, hc k⟩`. Use `set P := pullField y L`. Use `set S : Set Ω := {t | ∃ p q : Σ k, ι k, p.1 = q.1 ∧ t = y p / y q} with hS`.
+
+Establish `hSf : S.Finite` using `(Set.finite_range fun pq : (Σ k, ι k) × (Σ k, ι k) => y pq.1 / y pq.2).subset (by rintro _ ⟨p, q, -, rfl⟩; exact ⟨(p, q), rfl⟩)`. Establish `: Finite S` using `hSf.to_subtype`. Establish `hSi : ∀ x ∈ S, IsIntegral P x`. Introduce and unpack `_ ⟨p, q, hpq, rfl⟩`. Conclude with `(hR K ι Ω y D e L hrel' he hL hz p q hpq).isIntegral`.
+
+Establish `hfd : FiniteDimensional P (IntermediateField.adjoin P S)` using `IntermediateField.finiteDimensional_adjoin hSi`. Establish `htop : IntermediateField.adjoin P S = ⊤`. Use `eq_top_iff.mpr fun x _ => ?_` and prove the remaining obligations. Establish `hx : x ∈ blockFnField y` using `(PullFormsGeneric.blockFnField_eq_top c hc hB).symm ▸ IntermediateField.mem_top`. Establish `hle : blockFnField y ≤ (IntermediateField.adjoin P S).restrictScalars ℚ`.
+
+Rewrite using `[blockFnField, IntermediateField.adjoin_le_iff]`. Conclude with `fun t ht => IntermediateField.subset_adjoin P S ht`. Conclude with `hle hx`. Establish `hfd' : FiniteDimensional P (⊤ : IntermediateField P Ω)` using `htop ▸ hfd`. Conclude with `(IntermediateField.topEquiv (F := P) (E := Ω)).toLinearEquiv.finiteDimensional`.
+-/
 theorem finiteDimensional_pullField (hR : PullRatiosAlgebraic.Statement) {K : Type} [Fintype K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [CharZero Ω] {y : (Σ k, ι k) → Ω} {D : ℕ} {e : K → ℕ}
     {L : Fin (D + 1) → MRing ι} (hA : IsArithVar (mCoordIdeal y) (D + 1)) (hB : Birational y) (he : ∀ k, 1 ≤ e k)
@@ -48,6 +57,13 @@ end FibreNormDehomCharpoly
 
 open FibreNormDehomCharpoly in
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ _ y D e L q hA hB he hL hz`. Establish `hfin : FiniteDimensional (pullField y L) Ω` using `finiteDimensional_pullField hR hA hB he hL hz`. Use `⟨hfin, fun τ s hs j hj => ?_⟩` and prove the remaining obligations. Use `set l : Fin (D + 1) → Ω := fun i => aeval y (L i) with hl`. Establish `hgen : ∀ (d : ℕ) (F : MvPolynomial (Fin (D + 1)) ℚ), F.IsHomogeneous d → aeval l F = 0 → F = 0` using `hG K ι Ω y D e L hA hB he hL hz`.
+
+Establish `hne : ∀ k, l k ≠ 0` using `fun k h0 => X_ne_zero (R := ℚ) k (hgen 1 (X k) (isHomogeneous_X ℚ k) (by rw [aeval_X]; exact h0))`. Establish `hint : ∀ k, s / l j ^ (q * τ) * (l j / l k) ^ (q * τ) ∈ integralClosure (Algebra.adjoin ℚ (Set.range fun i => l i / l k)) Ω`. Introduce `k`. Establish `h : s / l j ^ (q * τ) * (l j / l k) ^ (q * τ) = s / l k ^ (q * τ)`. Rewrite using `[div_pow, div_mul_div_comm, mul_comm (l j ^ (q * τ)), mul_div_mul_right _ _ (pow_ne_zero _ (hne j))]`.
+
+Rewrite using `[h]`. Conclude with `hI K ι Ω y D e L q hA hB he hL hz τ s hs k (hne k)`. Take `⟨c, hc0, hch, hcp, hcn⟩` from `hC Ω D l (pullField y L) rfl hgen j (q * τ) (s / l j ^ (q * τ)) hint`. Conclude with `⟨c, ⟨hj, hfin, hc0, hch, hcp⟩, fun hs0 => hcn (div_ne_zero hs0 (pow_ne_zero _ hj))⟩`.
+-/
 theorem FibreNormDehomCharpoly.proof (hG : PullFormsGeneric.Statement) (hR : PullRatiosAlgebraic.Statement)
     (hI : PullSectionIntegral.Statement) (hC : DehomCharpolyForms.Statement) : FibreNormDehomCharpoly.Statement := by
   intro K _ ι _ Ω _ _ y D e L q hA hB he hL hz

@@ -11,6 +11,29 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.EigFinite
 
+/- English proof (translation)
+Introduce `hP D μ j X l Q B hB hBv`. Establish `hex` using `GlobalTheory.SplitConjPlace.splitEx_all D`. Set `ι` to `{p : PlE D.host × ℕ // GenAt D l Q p.1 p.2}`. Establish `hch : ∀ i : ι, ∃ (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), IsConjPl D.host i.1.1 s.w ∧ IsUnif D.host.E s.v ϖ` using `fun i => hex i.1.1 i.2.1`. Use `choose s ϖ hs hϖ using hch`.
+
+Establish `hfact` using `fun i : ι => hP D.host.E D.R.nV X.wt X.J X.χ B X.J_open hB (s i) (ϖ i) i.1.2 (hBv _ _ _ i.2 (hs i)) (hϖ i) i.2.2.2.2.2.1 i.2.2.2.2.2.2`. Establish `hTS : ∀ y, X.real y ∈ NG.TypeSp X.wt.ρ X.J X.χ` using `fun y => X.real_range ▸ LinearMap.mem_range_self X.real y`. Establish `hmem : ∀ (i : ι) (y : D.what₂.Mt μ j), ∃ y', X.real y' = NG.tN X.J (s i) (ϖ i) i.1.2 (X.real y)` using `fun i y => by`. Establish `h` using `(hfact i).1 _ (hTS y)`. Rewrite `h` using `[← X.real_range]`.
+
+Conclude with `h`. Use `choose g hg using hmem`. Establish `h0 : ∀ i : ι, NG.tN X.J (s i) (ϖ i) i.1.2 0 = 0` using `fun i => by`. Establish `h` using `(hfact i).2.1 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) 1`. Simplify using `only [one_smul, add_zero] at h`.
+
+Simplify using `using h`. Set `op : ι → Module.End ℂ (D.what₂.Mt μ j)` to `fun i => { toFun := g i map_add' := fun y y' => X.real_inj (by`. Rewrite using `[hg, map_add, map_add, hg, hg]`. Establish `h` using `(hfact i).2.1 _ (hTS y) _ (hTS y') 1`. Simplify using `using h)`.
+
+Use the proof step `map_smul' := fun c y => X.real_inj (by`. Rewrite using `[hg, map_smul, map_smul, hg]`. Establish `h` using `(hfact i).2.1 _ (hTS y) 0 (Submodule.zero_mem _) c`. Simplify `h) }` using `[h0]`. Establish `hop : ∀ i y, X.real (op i y) = NG.tN X.J (s i) (ϖ i) i.1.2 (X.real y)` using `fun i y => hg i y`.
+
+Establish `hcomm : ∀ i i' : ι, Commute (op i) (op i')` using `fun i i' => by`. Use extensionality with `y`. Apply `X.real_inj` to reduce the goal to its premises. Use `show X.real (op i (op i' y)) = X.real (op i' (op i y))`. Rewrite using `[hop, hop, hop, hop]`.
+
+Conclude with `(hfact i).2.2.1 (s i') (ϖ i') i'.1.2 (hBv _ _ _ i'.2 (hs i')) (hϖ i') i'.2.2.2.2.2.1 i'.2.2.2.2.2.2 _ (hTS y)`. Establish `hind` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo op (fun i i' φ => Module.End.mapsTo_maxGenEigenspace_of_comm (hcomm i' i) φ)`. Establish `hfin : {χ : ι → ℂ | ⨅ i, (op i).maxGenEigenspace (χ i) ≠ ⊥}.Finite` using `Set.finite_coe_iff.mp (@Finite.of_fintype _ hind.fintypeNeBotOfFiniteDimensional)`. Set `Φ : (PlE D.host → ℕ → ℂ) → (ι → ℂ)` to `fun c i => c i.1.1 i.1.2`. Apply `Set.Finite.of_finite_image (f := Φ)` to reduce the goal to its premises.
+
+Apply `hfin.subset` to reduce the goal to its premises. Introduce and unpack `_ ⟨c, ⟨-, y, hy0, hy⟩, rfl⟩`. Use `show ⨅ i, (op i).maxGenEigenspace (c i.1.1 i.1.2) ≠ ⊥`. Introduce `hbot`. Apply `hy0` to reduce the goal to its premises.
+
+Establish `hyin : y ∈ ⨅ i, (op i).maxGenEigenspace (c i.1.1 i.1.2)`. Rewrite using `[Submodule.mem_iInf]`. Introduce `i`. Apply `Module.End.eigenspace_le_maxGenEigenspace` to reduce the goal to its premises. Rewrite using `[Module.End.mem_eigenspace_iff]`.
+
+Apply `X.real_inj` to reduce the goal to its premises. Rewrite using `[hop, map_smul]`. Conclude with `hy i.1.1 i.1.2 (s i) (ϖ i) i.2 (hs i) (hϖ i)`. Rewrite `hyin` using `[hbot]`. Conclude with `(Submodule.mem_bot ℂ).1 hyin`.
+
+Introduce and unpack `c ⟨hc, -⟩ c' ⟨hc', -⟩ hcc`. Use function extensionality and compare the values at `v k`. Distinguish the cases in `h : GenAt D l Q v k`. Conclude with `congrFun hcc ⟨(v, k), h⟩`. Rewrite using `[hc v k h, hc' v k h]`.
+-/
 theorem eigSet_finite : HeckeStdPlain → ∀ (D : D7) (μ : D.what₂.Tup) (j : ℕ) (X : MtReal D μ j) (l : ℕ) (Q : Finset (PlE D.host)) (B : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)))), NG.HypOutside X.J X.χ B → (∀ v k (s : SplitPlace D.host.E), GenAt D l Q v k → IsConjPl D.host v s.w → s.v ∉ B) → (EigSet X l Q).Finite := by
   intro hP D μ j X l Q B hB hBv
   classical

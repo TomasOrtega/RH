@@ -6,6 +6,45 @@ import Development.AutomorphicArithmetic.TwistedTraces.FixedProjectionInvariantA
 open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.C.Sf
 
+/- English proof (translation)
+Introduce `G H S _ _ _ _ _ _ _ _ _ _ _ τ hτ hirr π K hKc hKo hfd hne t`. Use `haveI := hfd`. Use `haveI : Nontrivial (fixedVectors τ K) := Submodule.nontrivial_iff_ne_bot.2 hne`. Take `⟨p1, -, p3, -⟩` from `UpperTheory.fixedProjection_invariant_and_commuting_reps G G H π π K K`. Set `e : S →ₗ[ℂ] fixedVectors τ K` to `fixedProj τ hτ hKc hKo`.
+
+Set `b : G → Module.End ℂ (fixedVectors τ K)` to `fun g => e ∘ₗ τ g ∘ₗ (fixedVectors τ K).subtype`. Establish `he : ∀ y : fixedVectors τ K, e y = y` using `fun y => Subtype.ext (fixedProj_apply_of_mem hτ hKc hKo y.2)`. Establish `hq : ∀ f, Eqv τ π ⊤ f → ∀ x, prj (fixU π K) (f x) = f (e x)` using `fun f hf x => UpperTheory.fixedProjection_apply_equivariant_eq G H S τ hτ π K hKc hKo f hf x`. Establish `hcomm : ∀ (G' : Type) [Group G'] [TopologicalSpace G'] (π' : UnitaryRep G' H), (∀ g h v, π g (π' h v) = π' h (π g v)) → ∀ h v, prj (fixU π K) (π' h v) = π' h (prj (fixU π K) v)`. Introduce `G' _ _ π' hc`.
+
+Conclude with `((UpperTheory.fixedProjection_invariant_and_commuting_reps G G' H π π' K ⊥).2.2.2 hc).1`. Establish `htop : Algebra.adjoin ℂ (Set.range b) = ⊤`. Take `⟨c, h1, h2⟩` from `UpperTheory.exists_algHom_end_intertwining_mem_adjoin (fixedVectors τ K) (fixedVectors τ K) {LinearMap.id} (Set.range fun g => (b g, b g)) (by simp) (by`. Introduce and unpack `_ ⟨g, rfl⟩ _ rfl`. Use the proof step `rfl) (by`.
+
+Introduce `x hx`. Set `W : Subrepresentation τ` to `⟨Submodule.span ℂ (Set.range fun g => τ g x), fun g v hv => by`. Use `(Submodule.map_span_le (τ g) _ _).2 ?_ (Submodule.mem_map_of_mem hv)` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * h, by simp⟩⟩`.
+
+Establish `hW : Submodule.span ℂ (Set.range fun g => τ g x) = ⊤`. Break down `eq_bot_or_eq_top W with h | h` into its components or cases. Establish `h' : Submodule.span ℂ (Set.range fun g => τ g x) = ⊥` using `congrArg Subrepresentation.toSubmodule h`. Establish `: τ 1 x ∈ Submodule.span ℂ (Set.range fun g => τ g x)` using `Submodule.subset_span ⟨1, rfl⟩`. Rewrite `this` using `[h', map_one]`.
+
+Conclude with `(hx (Subtype.ext this)).elim`. Conclude with `congrArg Subrepresentation.toSubmodule h`. Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Rewrite using `[← he y]`.
+
+Use `(Submodule.map_span_le e (Set.range fun g => τ g x) _).2 ?_ (Submodule.mem_map_of_mem (hW ▸ Submodule.mem_top))` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, ⟨g, rfl⟩, rfl⟩)`. Rewrite using `[eq_top_iff]`. Introduce `s _`.
+
+Establish `hcs : c s = s` using `by simpa using h1 s LinearMap.id rfl`. Rewrite using `[← hcs]`. Use `Algebra.adjoin_mono ?_ (h2 s)` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨g, rfl⟩, rfl⟩`. Conclude with `⟨g, rfl⟩`.
+
+Establish `ht : t ∈ Algebra.adjoin ℂ (Set.range b)` using `by rw [htop]; trivial`. Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem s hs`. Take `⟨g, rfl⟩` from `hs`. Use `⟨prj (fixU π K) ∘L π g ∘L prj (fixU π K), (fixedVectors τ K).subtype ∘ₗ e ∘ₗ τ g ∘ₗ (fixedVectors τ K).subtype ∘ₗ e, ⟨fun v => p1 _, fun x => (e _).2, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `D hD hinv v hv`. Conclude with `p3 D hD hinv _ (hinv g _ (p3 D hD hinv _ hv))`. Introduce `G' _ _ π' hc h v show prj (fixU π K) (π g (prj (fixU π K) (π' h v))) = π' h (prj (fixU π K) (π g (prj (fixU π K) v)))`. Rewrite using `[hcomm G' π' hc h v, hc, hcomm G' π' hc]`. Introduce `f hf x show prj (fixU π K) (π g (prj (fixU π K) (f x))) = f (e (τ g (e x)))`.
+
+Rewrite using `[hq f hf x, ← hf.map, hq f hf]`. Introduce `x show ((e (τ g ((e (x : S) : fixedVectors τ K) : S)) : fixedVectors τ K) : S) = _`. Rewrite using `[he x]`. Both sides reduce to the same expression. Consider the case `algebraMap z`.
+
+Use `⟨z • prj (fixU π K), z • ((fixedVectors τ K).subtype ∘ₗ e), ⟨fun v => (fixU π K).smul_mem z (p1 v), fun x => (fixedVectors τ K).smul_mem z (e x).2, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `D hD hinv v hv`. Conclude with `D.smul_mem z (p3 D hD hinv _ hv)`. Introduce `G' _ _ π' hc h v show z • prj (fixU π K) (π' h v) = π' h (z • prj (fixU π K) v)`. Rewrite using `[hcomm G' π' hc h v, map_smul]`.
+
+Introduce `f hf x show z • prj (fixU π K) (f x) = f (z • ((e x : fixedVectors τ K) : S))`. Rewrite using `[hq f hf x, map_smul]`. Introduce `x show z • ((e (x : S) : fixedVectors τ K) : S) = _`. Rewrite using `[he x]`. Simplify using `[Module.algebraMap_end_apply]`.
+
+Consider the case `add s u _ _ hs hu`. Take `⟨T₁, A₁, ⟨a1, a2, a3, a4, a5⟩, a6⟩` from `hs`. Take `⟨T₂, A₂, ⟨b1, b2, b3, b4, b5⟩, b6⟩` from `hu`. Use `⟨T₁ + T₂, A₁ + A₂, ⟨fun v => (fixU π K).add_mem (a1 v) (b1 v), fun x => (fixedVectors τ K).add_mem (a2 x) (b2 x), ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `D hD hinv v hv`.
+
+Conclude with `D.add_mem (a3 D hD hinv v hv) (b3 D hD hinv v hv)`. Introduce `G' _ _ π' hc h v show T₁ (π' h v) + T₂ (π' h v) = π' h (T₁ v + T₂ v)`. Rewrite using `[a4 G' π' hc, b4 G' π' hc, map_add]`. Introduce `f hf x show T₁ (f x) + T₂ (f x) = f (A₁ x + A₂ x)`. Rewrite using `[a5 f hf, b5 f hf, map_add]`.
+
+Introduce `x show A₁ x + A₂ x = _`. Rewrite using `[a6 x, b6 x]`. Both sides reduce to the same expression. Consider the case `mul s u _ _ hs hu`. Take `⟨T₁, A₁, ⟨a1, a2, a3, a4, a5⟩, a6⟩` from `hs`.
+
+Take `⟨T₂, A₂, ⟨b1, b2, b3, b4, b5⟩, b6⟩` from `hu`. Use `⟨T₁ ∘L T₂, A₁ ∘ₗ A₂, ⟨fun v => a1 _, fun x => a2 _, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `D hD hinv v hv`. Conclude with `a3 D hD hinv _ (b3 D hD hinv v hv)`. Introduce `G' _ _ π' hc h v show T₁ (T₂ (π' h v)) = π' h (T₁ (T₂ v))`.
+
+Rewrite using `[b4 G' π' hc, a4 G' π' hc]`. Introduce `f hf x show T₁ (T₂ (f x)) = f (A₁ (A₂ x))`. Rewrite using `[b5 f hf, a5 f hf]`. Introduce `x show A₁ (A₂ x) = _`. Rewrite using `[b6 x, a6 (u x)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.finiteDimensional_fixedVectors_isotypic_of_irreducible :
     ∀ (G H S : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [AddCommGroup S] [Module ℂ S] (τ : Representation ℂ G S) (_ : GroundTheory.Automorphic.IsSmooth τ) (_ : τ.IsIrreducible) (π : UnitaryRep G H) (K : Subgroup G), IsCompact (K : Set G) → IsOpen (K : Set G) → FiniteDimensional ℂ (fixedVectors τ K) → fixedVectors τ K ≠ ⊥ → ∀ t : Module.End ℂ (fixedVectors τ K), ∃ (T : H →L[ℂ] H) (A : S →ₗ[ℂ] S), ((∀ v, T v ∈ fixU π K) ∧ (∀ x, A x ∈ fixedVectors τ K) ∧ (∀ D : Submodule ℂ H, IsClosed (D : Set H) → π.IsInvariant D → ∀ v ∈ D, T v ∈ D) ∧ (∀ (G' : Type) [Group G'] [TopologicalSpace G'] (π' : UnitaryRep G' H), (∀ g h v, π g (π' h v) = π' h (π g v)) → ∀ h v, T (π' h v) = π' h (T v)) ∧ (∀ f, Eqv τ π ⊤ f → ∀ x, T (f x) = f (A x))) ∧ ∀ x : fixedVectors τ K, A x = t x := by
   intro G H S _ _ _ _ _ _ _ _ _ _ _ τ hτ hirr π K hKc hKo hfd hne t

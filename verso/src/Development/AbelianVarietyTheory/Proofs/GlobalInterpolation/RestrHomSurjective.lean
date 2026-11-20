@@ -15,20 +15,35 @@ open Formalism.UG
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
   (s : A →+* A) (J : Matrix n n A)
 
+/- English proof (translation)
+Simplify using `only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hf_add_right (x y z : n → A) : hform s J x (y + z) = hform s J x y + hform s J x z := by
   simp only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hf_add_left (x y z : n → A) : hform s J (x + y) z = hform s J x z + hform s J y z := by
   simp only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hform, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem hf_smul_right (c : A) (x y : n → A) : hform s J x (c • y) = c * hform s J x y := by
   simp only [hform, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [hform, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem hf_smul_left (c : A) (x y : n → A) : hform s J (c • x) y = s c * hform s J x y := by
   simp only [hform, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [hform, map_sum, map_mul, hs]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hf_herm (hs : ∀ a, s (s a) = a) (hJ : ∀ i j, s (J j i) = J i j) (x y : n → A) :
     s (hform s J x y) = hform s J y x := by
   simp only [hform, map_sum, map_mul, hs]
@@ -37,9 +52,15 @@ theorem hf_herm (hs : ∀ a, s (s a) = a) (hJ : ∀ i j, s (J j i) = J i j) (x y
   rw [hJ]
   ring
 
+/- English proof (translation)
+Simplify using `only [hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hf_eq (x y : n → A) : hform s J x y = (fun i => s (x i)) ⬝ᵥ (J *ᵥ y) := by
   simp only [hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[hf_eq, hf_eq, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec _ (cT s g)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[cT, Matrix.vecMul, Matrix.mulVec, dotProduct, mul_comm]`.
+-/
 theorem hf_mulVec (g : Matrix n n A) (x y : n → A) :
     hform s J (g *ᵥ x) (g *ᵥ y) = hform s (cT s g * J * g) x y := by
   rw [hf_eq, hf_eq, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec _ (cT s g)]
@@ -47,6 +68,9 @@ theorem hf_mulVec (g : Matrix n n A) (x y : n → A) :
   funext i
   simp [cT, Matrix.vecMul, Matrix.mulVec, dotProduct, mul_comm]
 
+/- English proof (translation)
+Simplify using `[hform, Pi.single_apply, apply_ite]`.
+-/
 theorem hf_single (i j : n) : hform s J (Pi.single i 1) (Pi.single j 1) = J i j := by
   simp [hform, Pi.single_apply, apply_ite]
 
@@ -55,6 +79,11 @@ def hfLin (x : n → A) : (n → A) →ₗ[A] A where
   map_add' := hf_add_right s J x
   map_smul' c y := hf_smul_right s J c x y
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `hx.exists_left_inv`. Use `⟨b • hfLin s J x, LinearMap.codRestrict P (LinearMap.id - (b • hfLin s J x).smulRight x) fun y => ?_, fun y => ?_, hb, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hP] show hfLin s J x (y - (b * hfLin s J x y) • x) = 0`. Rewrite using `[map_sub, map_smul, smul_eq_mul]`. Establish `: b * hfLin s J x x = 1` using `hb`.
+
+Take the linear combination `(- hfLin s J x y) * this`. Use `show y = (b * hfLin s J x y) • x + (y - (b * hfLin s J x y) • x)`. Normalize the expressions using the abelian group laws. Use `show b * hform s J x y = 0`. Rewrite using `[(hP y).1 y.2, mul_zero]`.
+-/
 theorem exists_proj (x : n → A) (hx : IsUnit (hform s J x x)) (P : Submodule A (n → A))
     (hP : ∀ y, y ∈ P ↔ hform s J x y = 0) :
     ∃ (c : (n → A) →ₗ[A] A) (p : (n → A) →ₗ[A] P), (∀ y, y = c y • x + (p y : n → A)) ∧
@@ -73,6 +102,21 @@ theorem exists_proj (x : n → A) (hx : IsUnit (hform s J x x)) (P : Submodule A
   · show b * hform s J x y = 0
     rw [(hP y).1 y.2, mul_zero]
 
+/- English proof (translation)
+Take `⟨c, p, h1, h2, h3⟩` from `exists_proj s J x hx P hP`. Set `f : (n → A) →ₗ[A] (n → A)` to `c.smulRight x + P.subtype ∘ₗ u ∘ₗ p`. Establish `hf : ∀ y, f y = c y • x + (u (p y) : n → A)` using `fun y => rfl`. Establish `o1 : ∀ y : P, hform s J x y = 0` using `fun y => (hP y).1 y.2`. Establish `o2 : ∀ y : P, hform s J y x = 0` using `fun y => by rw [← hf_herm s J hs hJ, o1, map_zero]`.
+
+Establish `hiso : ∀ y z, hform s J (f y) (f z) = hform s J y z`. Introduce `y z`. Use `conv_rhs => rw [h1 y, h1 z]`. Simplify using `only [hf, hf_add_left, hf_add_right, hf_smul_left, hf_smul_right, o1, o2, hu]`. Establish `hg : cT s (LinearMap.toMatrix' f) * J * LinearMap.toMatrix' f = J`.
+
+Use extensionality with `i j`. Rewrite using `[← hf_single s (cT s (LinearMap.toMatrix' f) * J * LinearMap.toMatrix' f) i j, ← hf_mulVec, LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec, hiso, hf_single]`. Establish `hdet : IsUnit (LinearMap.toMatrix' f).det`. Rewrite `hd` using `[← hg, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right hd`.
+
+Take `⟨g, hg'⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hdet`. Use `⟨g, ?_, ?_, fun y => ?_⟩` and prove the remaining obligations. Use `show cT s (g : Matrix n n A) * J * (g : Matrix n n A) = J`. Rewrite using `[hg', hg]`. Establish `: p x = 0`.
+
+Use `h1 x` as an intermediate fact. Rewrite `this` using `[h2, one_smul]`. Conclude with `Subtype.ext (by simpa using this)`. Rewrite using `[hg', LinearMap.toMatrix'_mulVec, hf, h2, this]`. Simplify using the standard rewrite rules.
+
+Establish `: p y = y`. Use `h1 y` as an intermediate fact. Rewrite `this` using `[h3, zero_smul, zero_add]`. Conclude with `Subtype.ext this.symm`. Rewrite using `[hg', LinearMap.toMatrix'_mulVec, hf, h3, this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_extend (hs : ∀ a, s (s a) = a) (hJ : ∀ i j, s (J j i) = J i j)
     (hd : IsUnit J.det) (x : n → A) (hx : IsUnit (hform s J x x)) (P : Submodule A (n → A))
     (hP : ∀ y, y ∈ P ↔ hform s J x y = 0) (u : P →ₗ[A] P)
@@ -119,19 +163,31 @@ section Place
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Unfold `stabVec`. Rewrite using `[MulAction.mem_stabilizer_iff]`. Conclude with `⟨fun h => congrFun h 0, fun h => funext fun _ => h⟩`.
+-/
 theorem mem_stabVec (x : Fin M → Ev F E v) (g : HA (Fv F v) σ J) :
     g ∈ stabVec σ J v x ↔ act σ J v g x = x := by
   unfold stabVec
   rw [MulAction.mem_stabilizer_iff]
   exact ⟨fun h => congrFun h 0, fun h => funext fun _ => h⟩
 
+/- English proof (translation)
+Unfold `act`. Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem act_mul (g h : HA (Fv F v) σ J) (x : Fin M → Ev F E v) :
     act σ J v (g * h) x = act σ J v g (act σ J v h x) := by
   unfold act
   rw [Matrix.mulVec_mulVec]; rfl
 
+/- English proof (translation)
+The claim follows from `Matrix.one_mulVec x`.
+-/
 theorem act_one (x : Fin M → Ev F E v) : act σ J v 1 x = x := Matrix.one_mulVec x
 
+/- English proof (translation)
+Unfold `hR act`. Rewrite using `[hf_mulVec]`. Use `congr 1`. Conclude with `(show HR (Fv F v) σ J from g).2`.
+-/
 theorem hR_act (g : HA (Fv F v) σ J) (y z : Fin M → Ev F E v) :
     hR (Fv F v) σ J (act σ J v g y) (act σ J v g z) = hR (Fv F v) σ J y z := by
   unfold hR act
@@ -139,6 +195,9 @@ theorem hR_act (g : HA (Fv F v) σ J) (y z : Fin M → Ev F E v) :
   congr 1
   exact (show HR (Fv F v) σ J from g).2
 
+/- English proof (translation)
+Use `show hR (Fv F v) σ J x (act σ J v g y) = 0 ↔ hR (Fv F v) σ J x y = 0`. Rewrite using `[← hR_act σ J v g x y, (mem_stabVec σ J v x g).1 hg]`.
+-/
 theorem act_mem_perp_iff (x : Fin M → Ev F E v) (g : HA (Fv F v) σ J) (hg : g ∈ stabVec σ J v x)
     (y : Fin M → Ev F E v) : act σ J v g y ∈ perp σ J v x ↔ y ∈ perp σ J v x := by
   show hR (Fv F v) σ J x (act σ J v g y) = 0 ↔ hR (Fv F v) σ J x y = 0
@@ -170,6 +229,13 @@ def restrHom (L' : Submodule (OEv F E v) (Fin M → Ev F E v)) (x : Fin M → Ev
   map_one' := Subtype.ext (LinearEquiv.ext fun y => Subtype.ext (act_one σ J v y))
   map_mul' g h := Subtype.ext (LinearEquiv.ext fun y => Subtype.ext (act_mul σ J v g h y))
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_one]`. Introduce `g hg`. Take `⟨c, p, h1, -, -⟩` from `exists_proj _ _ x hx (perp σ J v x) (fun _ => Iff.rfl)`. Establish `h0 : ∀ y : perp σ J v x, act σ J v g y = y` using `fun y => congrArg (fun u : unitaryLatIn σ J v (perp σ J v x) L' => ((u.1 y : perp σ J v x) : Fin M → Ev F E v)) hg`. Establish `hx'` using `(mem_stabVec σ J v x g).1 g.2.2`.
+
+Establish `h2 : ∀ y, act σ J v g y = y`. Introduce `y`. Rewrite using `[h1 y]`. Use `h0 (p y)` as an intermediate fact. Unfold `act at *`.
+
+Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, hx', this]`. Use `Subtype.ext (Subtype.ext (Units.ext ?_))` and prove the remaining obligations. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Conclude with `(h2 y).trans (act_one σ J v y).symm`.
+-/
 theorem restrHom_injective (L' : Submodule (OEv F E v) (Fin M → Ev F E v)) (x : Fin M → Ev F E v)
     (hx : IsUnit (hR (Fv F v) σ J x x)) : Function.Injective (restrHom σ J v L' x) := by
   rw [injective_iff_map_eq_one]
@@ -190,6 +256,15 @@ theorem restrHom_injective (L' : Submodule (OEv F E v) (Fin M → Ev F E v)) (x 
   refine LinearMap.ext fun y => ?_
   exact (h2 y).trans (act_one σ J v y).symm
 
+/- English proof (translation)
+Introduce and unpack `⟨u, hu, hu'⟩`. Establish `hJ' : ∀ i j, sigR (Fv F v) σ (JR (Fv F v) J j i) = JR (Fv F v) J i j`. Introduce `i j`. Use `show (1 : Fv F v) ⊗ₜ[F] σ (J j i) = (1 : Fv F v) ⊗ₜ[F] J i j`. Rewrite using `[hJ.1]`.
+
+Establish `hd : IsUnit (JR (F` using `F) (Fv F v) J).det := by`. Use `(RingHom.map_det (inclR (F := F) (Fv F v)) J)` as an intermediate fact. Rewrite using `[show JR (F := F) (Fv F v) J = (inclR (F := F) (Fv F v)).mapMatrix J from rfl, ← this]`. Conclude with `(hJ.2.isUnit).map _`. Take `⟨g, hg, hgx, hgu⟩` from `exists_extend _ _ (GlobalTheory.SelfDualLatticeCompare.sigR_sigR (Fv F v) h) hJ' hd x hx (perp σ J v x) (fun _ => Iff.rfl) u.toLinearMap hu`.
+
+Set `g' : HA (Fv F v) σ J` to `(⟨g, hg⟩ : HR (Fv F v) σ J)`. Establish `hv : g' ∈ stabVec σ J v x` using `(mem_stabVec σ J v x g').2 hgx`. Establish `hgu' : ∀ y : perp σ J v x, act σ J v g' y = u y` using `hgu`. Establish `hl : g' ∈ stabLat σ J v (perpLat σ J v L x)` using `by show ∀ y, y ∈ perpLat σ J v L x ↔ act σ J v g' y ∈ perpLat σ J v L x`. Introduce `y`.
+
+Distinguish the cases in `hy : y ∈ perp σ J v x`. Rewrite using `[hgu' ⟨y, hy⟩]`. Conclude with `hu' ⟨y, hy⟩`. Conclude with `⟨fun h => (hy h.1).elim, fun h => (hy ((act_mem_perp_iff σ J v x g' hv y).1 h.1)).elim⟩`. Conclude with `⟨⟨g', hl, hv⟩, Subtype.ext (LinearEquiv.ext fun y => Subtype.ext (hgu' y))⟩`.
+-/
 theorem restrHom_surjective (h : IsCMExt F E σ) (hJ : IsHermND σ J)
     (L : Submodule (OEv F E v) (Fin M → Ev F E v)) (x : Fin M → Ev F E v)
     (hx : IsUnit (hR (Fv F v) σ J x x)) :
@@ -221,6 +296,9 @@ theorem restrHom_surjective (h : IsCMExt F E σ) (hJ : IsHermND σ J)
 
 end Place
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h M J hJ v L x hx`. Conclude with `⟨MulEquiv.ofBijective (restrHom σ J v (perpLat σ J v L x) x) ⟨restrHom_injective σ J v _ x hx, restrHom_surjective σ J v h hJ L x hx⟩, fun _ _ => rfl⟩`.
+-/
 theorem stabiliser_iso : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)) (L : Submodule (OEv F E v) (Fin M → Ev F E v)), ∀ x : Fin M → Ev F E v, IsUnit (hR (Fv F v) σ J x x) → ∃ φ : (stabLat σ J v (perpLat σ J v L x) ⊓ stabVec σ J v x : Subgroup (HA (Fv F v) σ J)) ≃* unitaryLatIn σ J v (perp σ J v x) (perpLat σ J v L x), ∀ g (y : perp σ J v x), (((φ g : perp σ J v x ≃ₗ[Ev F E v] perp σ J v x) y : perp σ J v x) : Fin M → Ev F E v) = act σ J v (g : HA (Fv F v) σ J) y := by
   intro F E _ _ _ _ _ σ h M J hJ v L x hx
   exact ⟨MulEquiv.ofBijective (restrHom σ J v (perpLat σ J v L x) x)

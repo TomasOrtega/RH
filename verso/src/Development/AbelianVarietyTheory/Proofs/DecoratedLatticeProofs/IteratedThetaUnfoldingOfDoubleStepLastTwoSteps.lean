@@ -12,6 +12,9 @@ namespace GlobalTheory.Unf.IterProof
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `key : ∀ h, s.om (x * g, h) Φ = s.om (x, h) (s.om (g, 1) Φ)`. Introduce `h`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Simplify using `only [rTrans, Step.lift, liftS_apply, key]`.
+-/
 theorem rTrans_lift {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (s : Step ψ V V₀ W W₀ ρ σ) (G : GA D W → ℂ) (Φ : WO V W → ℂ)
     (g : GA D V) : rTrans g (s.lift G Φ) = s.lift G (s.om (g, 1) Φ) := by
   funext x
@@ -24,6 +27,13 @@ end GlobalTheory.Unf.IterProof
 
 open GlobalTheory.Unf.IterProof in
 
+/- English proof (translation)
+Introduce `D hD hL ψ T ρ B c`. Proceed by induction on `c with`. Consider the case `@last B t`. Introduce `Φ F φ g hΦ hF hφ _`. Use `show B.per ψ φ (rTrans g (t.s.lift (liftS t.om t.vT.μ t.vT.𝓕 F Φ.2) Φ.1)) = t.Q φ (t.s.om (g, 1) Φ.1) Φ.2 F`.
+
+Rewrite using `[rTrans_lift]`. Conclude with `hL ψ T B t φ _ Φ.2 F hφ hF (t.s.weil.om_pres _ _ hΦ.1) hΦ.2`. Consider the case `@step σ B J B' s₁ s₂ l vL c ih`. Introduce `Φ F φ g hΦ hF hφ hR`. Take `⟨hR₁, hR₂, hR₃⟩` from `hR`.
+
+Take `⟨hΦ₁, hΦ₂, hΦ₃⟩` from `hΦ`. Take `⟨hcont, f₁, h₁, h₂⟩` from `hD ψ σ B J B' s₁ s₂ l vL Φ.1 Φ.2.1 φ (c.down Φ.2.2 F) g hΦ₁ hΦ₂ hφ hR₂ hR₁`. Use `⟨f₁, fun a b => B'.per ψ (Chain.hand s₁ s₂ l vL Φ.1 Φ.2.1 φ g a b) (rTrans b (c.down Φ.2.2 F)), h₁, fun a => ⟨h₂ a, fun b => ?_⟩⟩` and prove the remaining obligations. Conclude with `ih Φ.2.2 F _ b hΦ₃ hF (hcont a b) hR₃`.
+-/
 theorem GlobalTheory.Unf.iter_of_doubleStep_lastLaw : ∀ D : D7, DoubleStep D → LastLaw D → IT D := by
   intro D hD hL ψ T ρ B c
   induction c with

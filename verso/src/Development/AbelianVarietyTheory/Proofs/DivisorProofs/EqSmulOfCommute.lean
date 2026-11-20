@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.ThetaCommutant
 
+/- English proof (translation)
+Take `⟨-, -, hdim, -⟩` from `GlobalTheory.ThetaRep.exists_projective_rep GlobalTheory.allSixLaws.1 GlobalTheory.allSixLaws.2.1 S P F p N hN`. Set `σ` to `(Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv`. Set `j : SecM P.A P.L N (Over.mk p) ≃+ EA P p N` to `{ toFun := fun v => SecMod.mk _ (SecM.toSec P.A v) invFun := fun v => SecM.ofSec P.A v.sec left_inv := fun _ => rfl right_inv := fun _ => rfl map_add' := fun _ _ => rfl }`. Establish `hj : ∀ (c : F) v, j (σ c • v) = c • j v` using `fun _ _ => rfl`. Establish `h` using `rank_eq_of_equiv_equiv (R := F) (R' := Γ((Over.mk p).left, ⊤)) σ j.symm σ.bijective (fun c w => j.injective (by rw [j.apply_symm_apply, hj, j.apply_symm_apply]))`.
+
+Establish `h' : Module.finrank F (EA P p N) = Module.finrank Γ((Over.mk p).left, ⊤) (SecM P.A P.L N (Over.mk p))`. Unfold `Module.finrank`. Simplify using `using congrArg Cardinal.toNat h`. Rewrite using `[h', hdim]`.
+-/
 theorem finrank_eq {S : Scheme.{0}} [IsLocallyNoetherian S] (P : PolAV S) (F : Type) [Field F] [IsAlgClosed F]
     (p : Spec (CommRingCat.of F) ⟶ S) (N : ℕ) (hN : (N : F) ≠ 0) :
     Module.finrank F (EA P p N) = N ^ P.g := by
@@ -32,6 +37,19 @@ theorem finrank_eq {S : Scheme.{0}} [IsLocallyNoetherian S] (P : PolAV S) (F : T
     simpa using congrArg Cardinal.toNat h
   rw [h', hdim]
 
+/- English proof (translation)
+Establish `hN1 : 0 < N` using `Nat.pos_of_ne_zero fun e => hN (by rw [e, Nat.cast_zero])`. Establish `hfr` using `finrank_eq P F p N hN`. Establish `hpos : 0 < Module.finrank F (EA P p N)` using `by rw [hfr]; positivity`. Use `haveI : Module.Finite F (EA P p N) := Module.finite_of_finrank_pos hpos`. Use `haveI : Nontrivial (EA P p N) := Module.nontrivial_of_finrank_pos hpos`.
+
+Take `⟨-, hirr⟩` from `GlobalTheory.ThetaIrred.main GlobalTheory.allSixLaws.1 GlobalTheory.allSixLaws.2.1 S P F p N hN`. Take `⟨ρ, hact, -, hsame, -⟩` from `GlobalTheory.thetaGrp_acts_linearly GlobalTheory.allSixLaws.1.globalFns S P (N : ℤ) (Over.mk p)`. Set `σ` to `(Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv`. Set `j : SecM P.A P.L N (Over.mk p) ≃+ EA P p N` to `{ toFun := fun v => SecMod.mk _ (SecM.toSec P.A v) invFun := fun v => SecM.ofSec P.A v.sec left_inv := fun _ => rfl right_inv := fun _ => rfl map_add' := fun _ _ => rfl }`. Establish `hj : ∀ (c : F) v, j (σ c • v) = c • j v` using `fun _ _ => rfl`.
+
+Establish `hσ : ∀ c : F, σ.symm (σ c) = c` using `σ.symm_apply_apply`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue T`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `key` using `hirr (Module.End.eigenspace T c) fun θ hθ v v' hvv hv => by`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`.
+
+Take `⟨θ₀, h₀, hcomm⟩` from `hT θ.pt hθ`. Take `⟨u, hu⟩` from `hsame θ₀ θ h₀`. Establish `e₁ : ρ θ (j.symm v) = j.symm v'` using `(hact θ _ _).1 hvv`. Establish `e₂ : IsActOf P.A P.L (N : ℤ) θ₀ v.sec (j (ρ θ₀ (j.symm v))).sec` using `(hact θ₀ _ _).2 rfl`. Establish `e₃ : ρ θ₀ (j.symm (T v)) = j.symm (T (j (ρ θ₀ (j.symm v))))` using `(hact θ₀ _ _).1 (hcomm _ _ e₂)`.
+
+Establish `e₄ : v' = σ.symm (u : Γ((Over.mk p).left, ⊤)) • j (ρ θ₀ (j.symm v))`. Rewrite using `[← hj, σ.apply_symm_apply, ← hu, e₁, j.apply_symm_apply]`. Establish `e₅ : T (j (ρ θ₀ (j.symm v))) = c • j (ρ θ₀ (j.symm v))`. Establish `e₆ : j.symm (c • v) = σ c • j.symm v` using `rfl`. Rewrite using `[← j.apply_symm_apply (T (j (ρ θ₀ (j.symm v)))), ← e₃, hv, e₆, map_smul, hj]`.
+
+Rewrite using `[e₄, map_smul, e₅, smul_comm]`. Break down `key with h | h` into its components or cases. Conclude with `absurd h (Module.End.hasEigenvalue_iff.1 hc)`. Introduce `v`. Conclude with `Module.End.mem_eigenspace_iff.1 (h ▸ Submodule.mem_top)`.
+-/
 theorem eq_smul_of_commute {S : Scheme.{0}} [IsLocallyNoetherian S] (P : PolAV S) (F : Type) [Field F] [IsAlgClosed F]
     (p : Spec (CommRingCat.of F) ⟶ S) (N : ℕ) (hN : (N : F) ≠ 0) (T : EA P p N →ₗ[F] EA P p N)
     (hT : ∀ x : Over.mk p ⟶ P.A, x ^ N = 1 → ∃ θ : ThetaGrp P.A P.L (N : ℤ) (Over.mk p), θ.pt = x ∧

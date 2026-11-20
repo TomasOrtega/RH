@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `Γ M _ _ _ _ _ f h`. Use `Units.continuous_iff.2 ⟨h, ?_⟩` and prove the remaining obligations. Use `(h.comp continuous_inv).congr fun g => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, map_inv]`.
+-/
 theorem UpperTheory.Reformulated.B.ContinuousHomomorphism.cont_hom :
     ∀ {Γ M : Type} [inst : Group Γ]
     [inst_1 : TopologicalSpace Γ] [ContinuousInv Γ] [inst_3 : Monoid M] [inst_4 : TopologicalSpace M] (f : Γ →* Mˣ),

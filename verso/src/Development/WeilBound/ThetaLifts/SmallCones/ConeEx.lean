@@ -12,6 +12,11 @@ open GlobalTheory.Doubling (absE)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hc : Continuous fun x : α × β => θ x * w x.1` using `hθ.mul (hw.comp continuous_fst)`. Use `⟨hc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm, lintegral_prod _ hc.measurable.enorm.aemeasurable]`. Use `hfin using 3 with l` and compare the differences between its conclusion and the goal. Simplify using `only [enorm_mul]`.
+
+Rewrite using `[lintegral_mul_const' _ _ (by simp), ← ha, ofReal_norm_eq_enorm]`.
+-/
 theorem int_prod {α β : Type} [TopologicalSpace α] [TopologicalSpace β] [MeasurableSpace α] [MeasurableSpace β] [BorelSpace α]
     [BorelSpace β] [SecondCountableTopology α] [SecondCountableTopology β] (μ : Measure α) (ν : Measure β) [SFinite ν]
     {θ : α × β → ℂ} (hθ : Continuous θ) {w : α → ℂ} (hw : Continuous w) {a : α → ℝ} (ha : ∀ l, ‖w l‖ = a l)
@@ -44,12 +49,18 @@ variable {B : Base F E} {M : Model σ X W} {om : Rep σ X W} {M₀ : Model σ X�
   {e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁} {μ : Measure (AE F E)ˣ} {u : (AE F E)ˣ → Ten F E n d} {ν : Chr F E} {z : ℕ}
   {S : Submodule ℂ (Fn F n d)}
 
+/- English proof (translation)
+Take `⟨l, -, hl⟩` from `h.th g h₁`. Rewrite using `[← hl _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hΨ i)), map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, hl _ (hΨ i), smul_eq_mul]`.
+-/
 theorem LineOK.theta_sum (h : LineOK B M om M₀ om₀ e μ u ν z S) {m : ℕ} (c : Fin m → ℂ) {Ψ : Fin m → Fn F n₁ d₁}
     (hΨ : ∀ i, Ψ i ∈ schA F (Fin n₁ × Fin d₁)) (g h₁) : theta om₀ (∑ i, c i • Ψ i) g h₁ = ∑ i, c i * theta om₀ (Ψ i) g h₁ := by
   obtain ⟨l, -, hl⟩ := h.th g h₁
   rw [← hl _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hΨ i)), map_sum]
   exact Finset.sum_congr rfl fun i _ => by rw [map_smul, hl _ (hΨ i), smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[rho_linear, map_sum]`. Simplify using `only [map_smul]`. Conclude with `h.theta_sum c (fun i => h.sch l _ (h.le _ (hΨ i))) g h₁`.
+-/
 theorem LineOK.val_sum (h : LineOK B M om M₀ om₀ e μ u ν z S) {m : ℕ} (c : Fin m → ℂ) {Ψ : Fin m → Fn F n d} (hΨ : ∀ i, Ψ i ∈ S)
     (l g h₁) : theta om₀ (e (M.co.rho B.ψ (u l) (∑ i, c i • Ψ i))) g h₁ =
       ∑ i, c i * theta om₀ (e (M.co.rho B.ψ (u l) (Ψ i))) g h₁ := by
@@ -57,6 +68,25 @@ theorem LineOK.val_sum (h : LineOK B M om M₀ om₀ e μ u ν z S) {m : ℕ} (c
   simp only [map_smul]
   exact h.theta_sum c (fun i => h.sch l _ (h.le _ (hΨ i))) g h₁
 
+/- English proof (translation)
+Use `choose Λ hΛ hΛ' using fun i => h.lam (Ψ i) (h.le _ (hΨ i))`. Establish `h1 : cone B M om e K μK μ u ν z Φ = ∑ i, (∫ k, c i k ∂μK) • Λ i`. Use function extensionality and compare the values at `y`. Establish `e1 : ∀ k : K, ∫ l, e (M.co.rho B.ψ (u l) (om (k.1, 1) Φ)) y * (ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z ∂μ = ∑ i, c i k * Λ i y` using `fun k => by`. Establish `e2` using `fun i => hΛ' i _ (ev_adm y)`.
+
+Simplify using `only [LinearMap.proj_apply] at e2`. Simplify using `only [hd, rho_linear, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Rewrite using `[integral_finset_sum _ fun i _ => by simpa only [mul_assoc] using (e2 i).1.const_mul (c i k)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(e2 i).2, ← integral_const_mul]`.
+
+Simplify using `only [mul_assoc]`. Simplify using `only [cone, e1, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_finset_sum _ fun i _ => (hc i).mul_const _]`. Simplify using `only [integral_mul_const]`. Establish `h2 : ∀ i g, theta om₀ (Λ i) g h₁ = ∫ l, theta om₀ (e (M.co.rho B.ψ (u l) (Ψ i))) g h₁ * ((ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z) ∂μ` using `fun i g => by`.
+
+Take `⟨l, hl, hl'⟩` from `h.th g h₁`. Rewrite using `[← hl' _ (hΛ i), (hΛ' i l hl).2]`. Simplify using `only [hl' _ (h.sch _ _ (h.le _ (hΨ i))), mul_assoc]`. Establish `h3 : ∀ i, IntegrableOn (fun g => theta om₀ (Λ i) g h₁) M₀.dom M₀.μ` using `fun i => by`. Simplify using `only [h2]`.
+
+Conclude with `(h.int _ (hΨ i) h₁).integral_prod_right`. Use `set T : Fin m → ℂ := fun i => M₀.I om₀ (Λ i) h₁ with hT`. Establish `h4 : ∀ i, ∫ l, M₀.I om₀ (e (M.co.rho B.ψ (u l) (Ψ i))) h₁ * ((ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z) ∂μ = T i` using `fun i => by`. Simplify using `only [hT, Model.I, h2]`. Rewrite using `[← integral_integral_swap (h.int _ (hΨ i) h₁)]`.
+
+Simplify using `only [integral_mul_const]`. Establish `h5 : ∀ i, Integrable (fun l => M₀.I om₀ (e (M.co.rho B.ψ (u l) (Ψ i))) h₁ * ((ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z)) μ` using `fun i => by`. Use `(h.int _ (hΨ i) h₁).integral_prod_left` as an intermediate fact. Simplify `this` using `only [integral_mul_const, Model.I]`. Establish `h6 : ∀ k : K, ∫ l, M₀.I om₀ (e (M.co.rho B.ψ (u l) (om (k.1, 1) Φ))) h₁ * (ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z ∂μ = ∑ i, c i k * T i` using `fun k => by`.
+
+Rewrite using `[← Finset.sum_congr rfl fun i _ => congrArg (c i k * ·) (h4 i)]`. Simplify using `only [← integral_const_mul]`. Rewrite using `[← integral_finset_sum _ fun i _ => (h5 i).const_mul _]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Establish `: ∀ᵐ l ∂μ, ∀ i, Integrable (fun g => theta om₀ (e (M.co.rho B.ψ (u l) (Ψ i))) g h₁ * ((ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z)) (M₀.μ.restrict M₀.dom)` using `ae_all_iff.2 fun i => (h.int _ (hΨ i) h₁).prod_right_ae`.
+
+Use `filter_upwards [this] with l hl`. Simplify using `only [Model.I, hd, h.val_sum _ hΨ, mul_assoc, ← integral_mul_const, ← integral_const_mul, Finset.sum_mul]`. Rewrite using `[integral_finset_sum _ fun i _ => (hl i).const_mul _]`. Rewrite using `[h1]`. Simplify using `only [coneI, h6]`.
+
+Rewrite using `[integral_finset_sum _ fun i _ => (hc i).mul_const _]`. Simplify using `only [integral_mul_const, Model.I, h.theta_sum _ hΛ]`. Rewrite using `[integral_finset_sum _ fun i _ => (h3 i).const_mul _]`. Simplify using `only [integral_const_mul, hT, Model.I]`.
+-/
 theorem LineOK.coneI_eq [SFinite μ] [SFinite M₀.μ] (h : LineOK B M om M₀ om₀ e μ u ν z S) {K : Subgroup (UA σ X.J)} (μK : Measure K)
     {Φ : Fn F n d} {m : ℕ} {Ψ : Fin m → Fn F n d} {c : Fin m → K → ℂ} (hΨ : ∀ i, Ψ i ∈ S) (hc : ∀ i, Integrable (c i) μK)
     (hd : ∀ k : K, om (k.1, 1) Φ = ∑ i, c i k • Ψ i) (h₁ : UA σ W₁.J) :

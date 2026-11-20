@@ -16,12 +16,18 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => simp only [fam, Fin.snoc_last, FlagG.fvec, X.flagZVector u]`. Both sides reduce to the same expression. Consider the case `cast b => simp only [fam, Fin.snoc_castSucc, FlagG.fvec, X.Fu_e u]`. Both sides reduce to the same expression.
+-/
 theorem fam_rv (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) (a : Fin (D.R.rS + 1)) :
     fam (fun b => rv X.B.I v (X.eR b)) (rv X.B.I v (X.zR u)) a = rv X.B.I v (X.crd ((X.Fu u).fvec a)) := by
   induction a using Fin.lastCases with
   | last => simp only [fam, Fin.snoc_last, FlagG.fvec, X.flagZVector u]; rfl
   | cast b => simp only [fam, Fin.snoc_castSucc, FlagG.fvec, X.Fu_e u]; rfl
 
+/- English proof (translation)
+Rewrite using `[← Formalism.L2.SG.Pf.Vanish2.rvHom_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.Vanish2.rv_smul']`. Both sides reduce to the same expression.
+-/
 theorem rv_sum (v : InfinitePlace X.B.I.F) {ι : Type} (t : Finset ι) (c : ι → X.B.I.E) (y : ι → Fin X.B.I.n → X.B.I.E) :
     rv X.B.I v (∑ i ∈ t, c i • y i) = ∑ i ∈ t, X.B.I.φ v (c i) • rv X.B.I v (y i) := by
   rw [← Formalism.L2.SG.Pf.Vanish2.rvHom_apply, map_sum]
@@ -29,6 +35,9 @@ theorem rv_sum (v : InfinitePlace X.B.I.F) {ι : Type} (t : Finset ι) (c : ι �
   rw [Formalism.L2.SG.Pf.Vanish2.rv_smul']
   rfl
 
+/- English proof (translation)
+Take `⟨M, -, hv, -, hcrd⟩` from `hRL`. Simplify using `only [fam_rv]`. Rewrite using `[hv v, Formalism.L2.SG.Pf.rv_mulVec, ← hcrd, hun, Formalism.L2.SG.NormCut.crd_sum']`. Simplify using `only [Formalism.L2.SG.NormCut.crd_smul']`. Rewrite using `[rv_sum]`.
+-/
 theorem real_frame (u : D.what₂.Word) {x : X.B.I.GA} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hRL : Formalism.L2.SG.TermOp.RatLink X x n) (un : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E)
     (hun : ∀ b, n ((X.Fu u).fvec b) = ∑ c, un c b • (X.Fu u).fvec c) (v : InfinitePlace X.B.I.F)
@@ -41,6 +50,9 @@ theorem real_frame (u : D.what₂.Word) {x : X.B.I.GA} {n : (VS D).V ≃ₗ[D.ho
   simp only [Formalism.L2.SG.NormCut.crd_smul']
   rw [rv_sum]
 
+/- English proof (translation)
+Use `FormRegularity.psi_of_frame X u x.1 (fun v => (un.map (fun t => X.B.I.φ v (X.ιE.symm t)))ᵀ) (fun v a => by simpa [Matrix.transpose_apply, Matrix.map_apply] using real_frame X u hRL un hun v a) _ fun v => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, FormRegularity.sgUp_eq, map_sum, star_sum, ← Finset.sum_add_distrib]`.
+-/
 theorem psiInf_rat (u : D.what₂.Word) {x : X.B.I.GA} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hRL : Formalism.L2.SG.TermOp.RatLink X x n) (un : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E)
     (hun : ∀ b, n ((X.Fu u).fvec b) = ∑ c, un c b • (X.Fu u).fvec c) :

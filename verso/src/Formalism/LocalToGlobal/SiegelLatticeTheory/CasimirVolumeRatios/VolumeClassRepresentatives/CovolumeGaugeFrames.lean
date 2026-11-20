@@ -13,6 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
+/- English proof (translation)
+Introduce `X n₀ A C cb hn hX hT`. Take `⟨D, V, fr, P, Q, hXI, hΛ, hε, hV, hs, hTie, hI, hC, hcd⟩` from `hT`. Conclude with `Formalism.MainNotions.FundamentalDomainUnfolding.gauge_volume_bound_of_parts (Formalism.L2.S.S7.UnfoldingBorel.UnfoldVol_of_borel hB) hGD X hX.1 (ZsCovR.covolR_nonneg X) (ZsCovTie.covolSum_of_tie fr X hXI hΛ hV hs hε hTie hI hC hcd (fun v => Formalism.MainNotions.S.Gauge.complex_ …`.
+-/
 theorem covolume_gauge_of_frames (hB : Formalism.L2.SG.LitS.BorelClassFinite)
     (hGD : ∀ (n : ℕ) (ε : Fin n → Bool), Gauge.GaugeDens ε) (hMR : Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.MassRatioStd)
     (hVU : ∀ n, Gauge.VolUn n) :
@@ -32,6 +35,9 @@ theorem covolume_gauge_of_frames (hB : Formalism.L2.SG.LitS.BorelClassFinite)
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(ZsCovR.CasimirBaseCount : ℝ) + 2, by have : (0 : ℝ) ≤ ZsCovR.CasimirBaseCount := Nat.cast_nonneg _; linarith, fun X n₀ A C cb hn hX _ hT => Formalism.MainNotions.BridgeVolRatio.vol_ratio_of_gauge_volume hGD X (le_trans (by norm_num) hn) hX.1 (covolume_gauge_of_frames hB hGD hMR …`.
+-/
 theorem volRatio_of_tiesFr (hB : Formalism.L2.SG.LitS.BorelClassFinite)
     (hGD : ∀ (n : ℕ) (ε : Fin n → Bool), Gauge.GaugeDens ε) (hMR : Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.MassRatioStd)
     (hVU : ∀ n, Gauge.VolUn n) :

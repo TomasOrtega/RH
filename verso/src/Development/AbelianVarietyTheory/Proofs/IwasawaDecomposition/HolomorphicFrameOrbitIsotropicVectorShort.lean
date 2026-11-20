@@ -10,6 +10,41 @@ open ReciprocityTheory.ChartRestriction.G.FD (Data Frame Bor rmul lact mat col d
 
 namespace GlobalTheory.OrbitShort
 
+/- English proof (translation)
+Establish `hMr : (0 : ℝ) < M` using `by exact_mod_cast hM`. Establish `hξk : ∀ (k : ℕ) (w : ℂ), T < w.im → m (w + k * M) ξ = m w ξ`. Introduce `k w hw`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+
+Consider the case `succ k ih`. Establish `e : w + ((k + 1 : ℕ) : ℂ) * M = (w + k * M) + M` using `by push_cast; ring`. Rewrite using `[e, hξ _ (by simpa using hw), ih]`. Establish `hbk : ∀ (k : ℕ) (w : ℂ), T < w.im → m (w + k * M) (b + (k : ℂ) • ξ) = m w b`. Introduce `k w hw`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `e : w + ((k + 1 : ℕ) : ℂ) * M = (w + k * M) + M` using `by push_cast; ring`. Rewrite using `[e, hb _ (by simpa using hw), ih]`.
+
+Use `set w0 : ℂ := ((T + 1 : ℝ) : ℂ) * Complex.I with hw0`. Establish `hw0im : w0.im = T + 1` using `by simp [hw0]`. Establish `hw0re : w0.re = 0` using `by simp [hw0]`. Establish `hm0 : 0 ≤ m w0 b` using `h0 _ (by rw [hw0im]; linarith) _`. Use `⟨(M : ℝ) ^ 2 * ((6 + 2 * (1 + (M : ℝ)) ^ 2) * ((3 + (M : ℝ) ^ 2) * m w0 b)), by positivity, ?_⟩` and prove the remaining obligations.
+
+Establish `strip : ∀ w : ℂ, T + 1 < w.im → 0 ≤ w.re → w.re < M → m w ξ * (w.im - T) ≤ (M : ℝ) ^ 2 * ((6 + 2 * (1 + (M : ℝ)) ^ 2) * ((3 + (M : ℝ) ^ 2) * m w0 b))`. Introduce `w hw hr0 hr1`. Establish `hw' : T < w.im` using `by linarith`. Take `⟨y, hy⟩ : ∃ y, y = w.im - T` from `⟨_, rfl⟩`. Establish `hy1 : 1 < y` using `by linarith`.
+
+Establish `hy0 : 0 < y` using `by linarith`. Rewrite using `[← hy]`. Establish `g1 : m w b ≤ (3 + (M : ℝ) ^ 2) * y * m w0 b`. Use `(hH w0 w (by rw [hw0im]; linarith) hw' b).trans (mul_le_mul_of_nonneg_right ?_ hm0)` and prove the remaining obligations. Establish `e1 : ‖w0 - w‖ ^ 2 = w.re ^ 2 + (y - 1) ^ 2`.
+
+Rewrite using `[Complex.sq_norm, Complex.normSq_apply, Complex.sub_re, Complex.sub_im, hw0im, hw0re, hy]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hw0im, ← hy, show (T + 1 - T) * y = y by ring]`. Establish `: (w.re ^ 2 + (y - 1) ^ 2) / y ≤ (1 + (M : ℝ) ^ 2) * y`. Rewrite using `[div_le_iff₀ hy0]`.
+
+Establish `a1 : w.re ^ 2 ≤ (M : ℝ) ^ 2` using `by nlinarith`. Establish `a2 : (M : ℝ) ^ 2 * 1 ≤ (M : ℝ) ^ 2 * (y * y)` using `mul_le_mul_of_nonneg_left (by nlinarith) (by positivity)`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Choose the witnesses or unpack the hypotheses as in `⟨k, hk1, hk2⟩ : ∃ k : ℕ, y ≤ k * M ∧ (k : ℝ) * M ≤ y + M := by`.
+
+Use `⟨⌈y / M⌉₊, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← div_le_iff₀ hMr]`. Conclude with `Nat.le_ceil _`. Use `(Nat.ceil_lt_add_one (a := y / M) (by positivity)).le` as an intermediate fact. Establish `h2` using `mul_le_mul_of_nonneg_right this hMr.le`.
+
+Rewrite `h2` using `[add_mul, div_mul_cancel₀ _ hMr.ne', one_mul]`. Then use the resulting hypothesis. Establish `hwk : T < (w + k * M).im` using `by simpa using hw'`. Establish `hmb : 0 ≤ m w b` using `h0 _ hw' _`. Establish `g2 : m (w + k * M) b ≤ (2 + (1 + (M : ℝ)) ^ 2) * m w b`. Use `(hH w (w + k * M) hw' hwk b).trans (mul_le_mul_of_nonneg_right ?_ hmb)` and prove the remaining obligations.
+
+Establish `e1 : ‖w - (w + k * M)‖ ^ 2 = ((k : ℝ) * M) ^ 2`. Rewrite using `[show w - (w + k * M) = -(k * M) by ring, norm_neg, norm_mul]; simp`. Establish `e2 : (w + k * M).im = w.im` using `by simp`. Rewrite using `[e1, e2, ← hy]`. Establish `: ((k : ℝ) * M) ^ 2 / (y * y) ≤ (1 + (M : ℝ)) ^ 2`.
+
+Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `a1 : (k : ℝ) * M ≤ (1 + M) * y` using `by nlinarith`. Establish `a2` using `pow_le_pow_left₀ (by positivity) a1 2`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `g3 : (k : ℝ) ^ 2 * m w ξ ≤ (6 + 2 * (1 + (M : ℝ)) ^ 2) * m w b`. Establish `p` using `hpar (w + k * M) (b + (k : ℂ) • ξ) b`. Rewrite `p` using `[show b + (k : ℂ) • ξ - b = (k : ℂ) • ξ by abel, hsm, hξk k w hw', hbk k w hw']`. Use `h0 _ hwk (b + (k : ℂ) • ξ + b)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hmξ : 0 ≤ m w ξ` using `h0 _ hw' _`. Establish `g4 : y ^ 2 * m w ξ ≤ ((k : ℝ) * M) ^ 2 * m w ξ` using `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hy0.le hk1 2) hmξ`. Establish `g5 : (M : ℝ) ^ 2 * ((k : ℝ) ^ 2 * m w ξ) ≤ (M : ℝ) ^ 2 * ((6 + 2 * (1 + (M : ℝ)) ^ 2) * ((3 + (M : ℝ) ^ 2) * y * m w0 b))` using `mul_le_mul_of_nonneg_left (g3.trans (mul_le_mul_of_nonneg_left g1 (by positivity))) (by positivity)`. Use `le_of_mul_le_mul_left ?_ hy0` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+
+Introduce `w hw`. Establish `hper : Function.Periodic (fun s : ℝ => m ((s : ℂ) + (w.im : ℂ) * Complex.I) ξ) (M : ℝ)`. Introduce `s`. Establish `e : ((s + (M : ℝ) : ℝ) : ℂ) + (w.im : ℂ) * Complex.I = ((s : ℂ) + (w.im : ℂ) * Complex.I) + M` using `by push_cast; ring`. Use `show m _ ξ = m _ ξ`.
+
+Rewrite using `[e, hξ _ (by simp; linarith)]`. Take `⟨s, hs, hse⟩` from `hper.exists_mem_Ico₀ hMr w.re`. Simplify using `only [Complex.re_add_im] at hse`. Use `strip ((s : ℂ) + (w.im : ℂ) * Complex.I) (by simpa using hw) (by simpa using hs.1) (by simpa using hs.2)` as an intermediate fact. Rewrite using `[hse]`.
+
+Simplify using `using this`.
+-/
 theorem quad_bound {V : Type} [AddCommGroup V] [Module ℂ V] (m : ℂ → V → ℝ) (T : ℝ) (M : ℕ) (hM : 0 < M) (b ξ : V)
     (h0 : ∀ w : ℂ, T < w.im → ∀ v, 0 ≤ m w v)
     (hsm : ∀ (w : ℂ) (k : ℕ) (v : V), m w ((k : ℂ) • v) = (k : ℝ) ^ 2 * m w v)
@@ -109,6 +144,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ} (X : Data 
 
 open ReciprocityTheory.ChartRestriction.G.FD in
 
+/- English proof (translation)
+Unfold `Data.maj Data.posPart`. Establish `e : ∀ a b c : ℂ, (k : ℂ) * a * b * ((k : ℂ) * c) = (((k : ℝ) ^ 2 : ℝ) : ℂ) * (a * b * c)`. Introduce `a b c`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e' : ∀ a : ℂ, (k : ℂ) * ((k : ℂ) * a) = (((k : ℝ) ^ 2 : ℝ) : ℂ) * a`. Introduce `a`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hermC_smul_left, hermC_smul_right, map_mul, map_natCast, e, e', ← Finset.mul_sum, Complex.re_ofReal_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem maj_natCast_smul (x : Frame X.Ψ N) (τ : X.Ψ) (k : ℕ) (v : Fin N → ℂ) :
     X.maj x τ ((k : ℂ) • v) = (k : ℝ) ^ 2 * X.maj x τ v := by
   unfold Data.maj Data.posPart
@@ -122,6 +164,15 @@ theorem maj_natCast_smul (x : Frame X.Ψ N) (τ : X.Ψ) (k : ℕ) (v : Fin N →
 
 open ReciprocityTheory.ChartRestriction.G.FD in
 
+/- English proof (translation)
+Establish `hs : u - v = u + (-1 : ℂ) • v` using `by simp [sub_eq_add_neg]`. Establish `hp : X.posPart x τ (u + v) + X.posPart x τ (u - v) = 2 * X.posPart x τ u + 2 * X.posPart x τ v`. Unfold `Data.posPart`. Rewrite using `[two_mul, two_mul]`. Simplify using `only [← Complex.add_re, ← Finset.sum_add_distrib]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [hs, hermC_add_left, hermC_smul_left, map_add, map_mul, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hh : hermC τ.1 X.Gm (u + v) (u + v) + hermC τ.1 X.Gm (u - v) (u - v) = hermC τ.1 X.Gm u u + hermC τ.1 X.Gm u u + (hermC τ.1 X.Gm v v + hermC τ.1 X.Gm v v)`.
+
+Simplify using `only [hs, hermC_add_left, hermC_add_right, hermC_smul_left, hermC_smul_right, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hh'` using `congrArg Complex.re hh`. Simplify using `only [Complex.add_re] at hh'`. Unfold `Data.maj`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem maj_parallelogram (x : Frame X.Ψ N) (τ : X.Ψ) (u v : Fin N → ℂ) :
     X.maj x τ (u + v) + X.maj x τ (u - v) = 2 * X.maj x τ u + 2 * X.maj x τ v := by
   have hs : u - v = u + (-1 : ℂ) • v := by simp [sub_eq_add_neg]
@@ -146,6 +197,41 @@ end GlobalTheory.OrbitShort
 
 open GlobalTheory.OrbitShort in
 
+/- English proof (translation)
+Introduce `E _ _ _ N X T M γ x ⟨hM, hγ, hd, hdom, hsh⟩ hsq hne`. Establish `hst` using `X.Γ_stab γ hγ`. Choose the witnesses or unpack the hypotheses as in `⟨b, hbΛ, hb⟩ : ∃ b ∈ X.Λ, Matrix.mulVec ((γ : Matrix (Fin N) (Fin N) E) - 1) b ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Apply `hne` to reduce the goal to its premises. Establish `hz : Matrix.toLin' ((γ : Matrix (Fin N) (Fin N) E) - 1) = 0`. Use `LinearMap.ext_on X.Λ_span fun v hv => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, hc v hv]`. Both sides reduce to the same expression.
+
+Establish `hz' : (γ : Matrix (Fin N) (Fin N) E) - 1 = 0` using `Matrix.toLin'.map_eq_zero_iff.1 hz`. Conclude with `Units.ext (sub_eq_zero.1 hz')`. Take `⟨ξ, hξ⟩ : ∃ ξ, ξ = Matrix.mulVec ((γ : Matrix (Fin N) (Fin N) E) - 1) b` from `⟨_, rfl⟩`. Rewrite `hb` using `[← hξ]`. Establish `hγb : Matrix.mulVec (γ : Matrix (Fin N) (Fin N) E) b = b + ξ`.
+
+Rewrite using `[hξ, Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Establish `hγξ : Matrix.mulVec (γ : Matrix (Fin N) (Fin N) E) ξ = ξ`. Establish `: Matrix.mulVec ((γ : Matrix (Fin N) (Fin N) E) - 1) ξ = 0`. Rewrite using `[hξ, Matrix.mulVec_mulVec, ← sq, hsq, Matrix.zero_mulVec]`.
+
+Rewrite `this` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hξΛ : ξ ∈ X.Λ`. Establish `h1` using `(hst.2 b).1 hbΛ`. Rewrite `h1` using `[hγb]`. Simplify using `using X.Λ.sub_mem h1 hbΛ`.
+
+Establish `hiso : ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm ξ ξ = 0`. Establish `h1` using `hst.1 ξ b`. Rewrite `h1` using `[hγb, hγξ]`. Establish `h2 : ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm ξ (b + ξ) = ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm ξ b + ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm ξ ξ`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.herm, ReciprocityTheory.ChartRestriction.G.FD.cc, mul_add, Finset.sum_add_distrib]`.
+
+Rewrite `h1` using `[h2]`. Simplify using `using h1`. Establish `hemb : ∀ (τ : X.Ψ) (v : Fin N → E), Matrix.mulVec ((γ : Matrix (Fin N) (Fin N) E).map τ.1) (Data.emb τ.1 v) = Data.emb τ.1 (Matrix.mulVec (γ : Matrix (Fin N) (Fin N) E) v)`. Introduce `τ v`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Data.emb, Matrix.mulVec, dotProduct]`. Establish `hshift : ∀ w : ℂ, T < w.im → ∀ (τ : X.Ψ) (v : Fin N → ℂ), X.maj (x (w + M)) τ (Matrix.mulVec ((γ : Matrix (Fin N) (Fin N) E).map τ.1) v) = X.maj (x w) τ v`. Introduce `w hw τ v`. Take `⟨β, hβ, -, he⟩` from `hsh w hw`. Rewrite using `[he, GlobalTheory.MajInv.maj_rmul X (GlobalTheory.MajInv.lact_mem_dom X hst (hdom w hw)) hβ, GlobalTheory.MajInv.maj_lact X hst]`.
+
+Establish `hA : ∀ τ : X.Ψ, ∃ A : ℝ, 0 ≤ A ∧ ∀ w : ℂ, T + 1 < w.im → X.maj (x w) τ (Data.emb τ.1 ξ) * (w.im - T) ≤ A`. Introduce `τ`. Establish `eξ : Matrix.mulVec ((γ : Matrix (Fin N) (Fin N) E).map τ.1) (Data.emb τ.1 ξ) = Data.emb τ.1 ξ`. Rewrite using `[hemb, hγξ]`. Establish `eb : Matrix.mulVec ((γ : Matrix (Fin N) (Fin N) E).map τ.1) (Data.emb τ.1 b) = Data.emb τ.1 b + Data.emb τ.1 ξ`.
+
+Rewrite using `[hemb, hγb]`. Use function extensionality and compare the values at `i`. Simplify using `[Data.emb]`. Use `quad_bound (fun w v => X.maj (x w) τ v) T M hM (Data.emb τ.1 b) (Data.emb τ.1 ξ) ?_ (fun w k v => maj_natCast_smul X _ τ k v) (fun w u v => maj_parallelogram X _ τ u v) (fun w w' hw hw' v => GlobalTheory.T.majorant_harnack_holomorphic_half_plane E N X T x hd hdom w w' hw hw' τ v) …` and prove the remaining obligations. Introduce `w hw v`.
+
+Distinguish the cases in `hv : v = 0`. Use `maj_natCast_smul X (x w) τ 0 v` as an intermediate fact. Substitute `hv` using the available equality. Rewrite `this` using `[smul_zero, Nat.cast_zero, sq, zero_mul, zero_mul]`. Conclude with `this.ge`.
+
+Conclude with `(X.maj_pos (hdom w hw) τ hv).le`. Introduce `w hw`. Use `hshift w hw τ (Data.emb τ.1 ξ)` as an intermediate fact. Rewrite `this` using `[eξ]`. Then use the resulting hypothesis. Introduce `w hw k`.
+
+Use `hshift w hw τ (Data.emb τ.1 b + (k : ℂ) • Data.emb τ.1 ξ)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_add, Matrix.mulVec_smul, eξ, eb]`. Rewrite using `[← this]`. Use `congr 1`. Use `push_cast`.
+
+Rewrite using `[add_smul, one_smul]`. Normalize the expressions using the abelian group laws. Use `choose A hA0 hA using hA`. Establish `hc : ∀ τ : X.Ψ, 0 < X.c τ` using `fun τ => by`. Establish `h : τ.1 X.ξ0 ≠ 0` using `(map_ne_zero_iff τ.1 τ.1.injective).2 X.ξ0_ne`.
+
+Unfold `Data.c`. Check the signs of the components of the expression. Establish `hK0 : 0 ≤ ∑ τ, X.c τ * A τ` using `Finset.sum_nonneg fun τ _ => mul_nonneg (hc τ).le (hA0 τ)`. Use `⟨ξ, 1 / (1 + ∑ τ, X.c τ * A τ), ⟨hξΛ, hiso, hb⟩, by positivity, fun w hw τ => ?_⟩` and prove the remaining obligations. Establish `hv : Data.emb τ.1 ξ ≠ 0` using `fun h => hb (funext fun a => (map_eq_zero_iff τ.1 τ.1.injective).1 (congrFun h a))`.
+
+Establish `hp` using `X.maj_pos (hdom w (by linarith)) τ hv`. Establish `hle : X.c τ * A τ ≤ ∑ τ, X.c τ * A τ` using `Finset.single_le_sum (f := fun τ => X.c τ * A τ) (fun τ _ => mul_nonneg (hc τ).le (hA0 τ)) (Finset.mem_univ τ)`. Establish `h1` using `mul_le_mul_of_nonneg_left (hA τ w hw) (hc τ).le`. Unfold `Data.tt`. Rewrite using `[one_div_mul_eq_div, div_le_div_iff₀ (by positivity) (mul_pos (hc τ) hp)]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem GlobalTheory.orbit_unipotent_short : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) (X : Data E N) (T : ℝ) (M : ℕ) (γ : GL (Fin N) E) (x : ℂ → Frame X.Ψ N), IsOrbit X T M γ x → ((γ : Matrix (Fin N) (Fin N) E) - 1) ^ 2 = 0 → γ ≠ 1 → ∃ (ξ : Fin N → E) (c : ℝ), X.IsIso ξ ∧ 0 < c ∧ ∀ w : ℂ, T + 1 < w.im → ∀ τ, c * (w.im - T) ≤ X.tt ξ (x w) τ := by
   intro E _ _ _ N X T M γ x ⟨hM, hγ, hd, hdom, hsh⟩ hsq hne
   have hst := X.Γ_stab γ hγ

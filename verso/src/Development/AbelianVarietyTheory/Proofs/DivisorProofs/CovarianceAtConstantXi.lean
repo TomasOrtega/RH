@@ -19,6 +19,23 @@ noncomputable section
 
 namespace GlobalTheory.PtIdCore
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hC hT hI i c0L`. Distinguish the cases in `hex : ∃ (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) ∧ CoefficientBaseChange R i O.jL (inC O.c') c0L O.c0'`. Use `swap`. Conclude with `⟨1, norm_one, fun Tp tup O h1 h2 => absurd ⟨Tp, tup, O, h1, h2⟩ hex⟩`. Take `⟨Tp₀, tup₀, O₀, hP₀, hB₀⟩` from `hex`.
+
+Take `⟨ka₀, hn₀, hk₀⟩` from `GlobalTheory.AdTh.PhaseMap.io_eq_phase_smul_ofCore D G Pl0 T0 A T R F κ v₀ hC hT hI i Tp₀ tup₀ O₀ hP₀`. Use `⟨ka₀, hn₀, fun Tp tup O hP hB => ?_⟩` and prove the remaining obligations. Take `⟨ka, -, hk⟩` from `GlobalTheory.AdTh.PhaseMap.io_eq_phase_smul_ofCore D G Pl0 T0 A T R F κ v₀ hC hT hI i Tp tup O hP`. Introduce `lt hlt u hu`. It suffices to establish `h : ka = ka₀ by`.
+
+Substitute `h` using the available equality. Conclude with `hk lt hlt u hu`. Establish `e1` using `hk lt hlt u hu A.μ0 O.hw`. Establish `e2` using `hk₀ lt hlt u hu A.μ0 O₀.hw`. Take `⟨hw1, cga, -, hinj, -, -, -, -, hio, -⟩` from `hP.io`.
+
+Take `⟨hw2, cga', -, -, -, -, -, -, hio₀, -⟩` from `hP₀.io`. Establish `hne : O.io O.hw ≠ 0`. Introduce `h0`. Establish `h1 : O.hw = 0` using `hinj (h0.trans (map_zero _).symm)`. Establish `h2` using `(GlobalTheory.AdTh.coefMap_norm_equivariant_basis_ofCore D G Pl0 T0 A T R F κ v₀ hC hT i Tp tup O hP).1`.
+
+Rewrite `h2` using `[h1, map_zero, norm_zero]`. Conclude with `zero_ne_one h2`. Rewrite `e1` using `[GlobalTheory.PtId.OneScalar.coefficientMap_extremalTensor_baseChange O hw1 hB]`. Rewrite `e2` using `[GlobalTheory.PtId.OneScalar.coefficientMap_extremalTensor_baseChange O₀ hw2 hB₀, hio₀, GlobalTheory.PtId.OneScalar.map_pG_eq O₀.c' O.c' (inC O₀.c') (inC O.c'), ← hio, e1]`. Establish `hV` using `hP.lift.std`.
+
+Take `⟨f1, f2, f3, f4, f5⟩` from `GlobalTheory.AdTh.VecFock.vec_fock_ofCore D G Pl0 T0 A T.Q.c.F R F hC i A.μ0 hV`. Establish `hON : ∀ τ, IsONBasis (gramAt D (Vc D i) τ) 1 1 (Vc D i).rank` using `fun τ => by`. Use `⟨fun _ => 1, fun a => Or.inl ⟨rfl, a.2⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[gramAt, hV.1]`. Simplify using the standard rewrite rules.
+
+Establish `hinjP` using `GlobalTheory.FockVecInj.pureTensorO_injective D R.ψ R.θ (Vc D i) (Wc D i) (hC.thP.ωP i A.μ0).std hC.models.inf (fun _ => 1) (fun _ => 1) (cart (R.MW i (sg0 D A))) (onb (R.MW i (sg0 D A))) (fun _ => (Vc D i).rank) _ f4 f3 hON f5 (D.sp.V_sig _) (D.sp.W_sig _) (R.vP i A.μ0) f1 f2 (G …`. Establish `hlti : Function.Injective lt` using `GlobalTheory.PtId.OneScalar.lt_injective (fun ρ => hT.laws.pins.1.2.2.2 ρ) lt hlt`. Use `smul_left_injective ℂ (fun h0 => hne ?_) e2` and prove the remaining obligations. Establish `h1` using `hinjP (h0.trans (map_zero _).symm)`. Establish `h2` using `MvPolynomial.rename_injective lt hlti (h1.trans (map_zero _).symm)`.
+
+Conclude with `MvPolynomial.map_injective _ (inC O.c').injective (h2.trans (map_zero _).symm)`.
+-/
 theorem exists_scalar_core : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → TieIn T R κ v₀ → IoExt R → ∀ (i : Fin D.R.m) (c0L : VsV D i D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV i).W), ∃ ka : ℂ, ‖ka‖ = 1 ∧ ∀ (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → CoefficientBaseChange R i O.jL (inC O.c') c0L O.c0' → GlobalTheory.PtId.IoAt O (v₀ i (sg0 D A)) ka := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hC hT hI i c0L
   by_cases hex : ∃ (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup),
@@ -62,6 +79,15 @@ theorem exists_scalar_core : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 
 
 open GlobalTheory.AdTh.CoverVal in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hR hT i Tp tup O hO c0 hc t X g bas idx e k xk mk hX hp hs hi hL hxk hmk hk y₂ A₂ hA₂`. Take `⟨hU, hW, g', e', F', ik, φ, th, hth, hD, hval⟩` from `hc t`. Take `⟨hlev, hA, -⟩` from `hO.cov t`. Take `⟨hX₀, hon₀, -, hp₀, -, -, h1, -, hΨ₀, -⟩` from `GlobalTheory.AdTh.models_at_record_ofCore D G Pl0 T0 A T R F κ v₀ hR hT i O.s0 (sOv_eq _ _ _) (T.dict _ O.s0 1).1`. Establish `hσ : GoodEmb (O.dδ t).c₂ ((inC O.c').comp ((O.dδ t).eF.symm : (O.dδ t).c₂.F →+* O.c'.F))` using `rfl`.
+
+Establish `hmod : ∀ j, IsMod (Wc D i) (rank_Wc i) ((O.U₂ t).X j)` using `fun j => isMod_of _ _ _ (hW j) fun ρ => ((hU.2.1 j).2 _).2 ((hΨ₀ _).1 ((hX₀.psi _).2 ⟨ρ, rfl⟩))`. Establish `hor : ∀ j, IsOrthogonalFrame ((O.U₂ t).X j) (T.x₀ ((i : ℕ) + 1) O.s0)` using `fun j τ hτ => by`. Establish `hsp` using `sameSp_of (hmod j) hX₀ ((hU.2.1 j).1.trans hp₀.symm)`. Rewrite using `[hsp.gm, hsp.p0]`. Conclude with `hon₀ ⟨τ, hsp.psi ▸ hτ⟩`.
+
+Take `⟨Wt⟩` from `nonempty_uw ((Formalism.L2.PjFree.isUnf_ofPj _).2 hU)`. Take `⟨hon, γ, ⟨hγ, hl, hf⟩, hma, -⟩` from `GlobalTheory.AdTh.dict_atComp_markAd D _ _ _ _ _ _ _ (O.U₂ t) hσ hU h1 hA R.θ (Wc D i) (rank_Wc i) (O.dict₂ t) (iotaW T i) g' e' F' ik φ th _ hR.models.inf hmod hor hth hD Wt k`. Take `⟨hd, hpt⟩` from `point_eq (Formalism.L2.PjFree.Unf.ofPj (O.U₂ t)) hσ hU h1 hA hR.models.inf (Wc D i) (rank_Wc i) (iotaW T i) _ Wt (O.dict₂ t k).1 (O.dict₂ t k).2 γ k hγ (hmod _) hl hf hon hma X g bas idx e mk hX hp hs hi hL hmk hk y₂ A₂ hA₂`. Take `⟨γ', hγ', h2, h3, -⟩` from `hD.2 k`. Take `⟨-, -, hrat, hmul⟩` from `GlobalTheory.Member.isDetRoot_laws D (Wc D i)`.
+
+Take `⟨a, ha⟩` from `hrat γ' hγ'`. Establish `hv` using `hval k γ' ⟨hγ', h2, h3⟩`. Rewrite `hv` using `[(hO.tuple t).xi _ _ (hmul _ _ _ _ ha hxk), map_mul, (hR.lev.xi (tup t)).1.2 a, _root_.one_mul]`. Conclude with `(evR_eq_of_point _ hlev.2.2.2.2.2.2.2.1 _ y₂ hpt).trans ((dif_pos hd).symm.trans hv)`.
+-/
 theorem covAt_of_xiConst_core : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → TieIn T R κ v₀ → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ∀ c0 : ℂ, GlobalTheory.OneMapTuples.XiConst O (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) c0 → GlobalTheory.PtId.CovAt O c0 := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hR hT i Tp tup O hO c0 hc
     t X g bas idx e k xk mk hX hp hs hi hL hxk hmk hk y₂ A₂ hA₂
@@ -91,6 +117,17 @@ theorem covAt_of_xiConst_core : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (P
 set_option maxHeartbeats 2000000 in
 open Formalism.L2.DIV GlobalTheory.OneMapTuples GlobalTheory.PtId in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hC _ _ ⟨tie⟩ _ hio i lev gramR c0R c0L _`. Establish `hT : TieIn T R κ v₀` using `⟨tie.laws, tie.alg_eq, tie.kap, tie.hv₀, tie.chiR, tie.x0⟩`. Distinguish the cases in `hex : ∃ (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0)`. Use `swap`. Conclude with `⟨fun _ => 1, 1, fun _ => one_ne_zero, fun Tp tup O _ hP => absurd ⟨Tp, tup, O, hP⟩ hex⟩`.
+
+Take `⟨Tp₀, tup₀, O₀, hP₀⟩` from `hex`. Take `⟨ka, hka1, hka⟩` from `exists_scalar_core D G Pl0 T0 A T R F κ v₀ hC hT hio i (c0L i)`. Take `⟨c₀, hc₀⟩` from `GlobalTheory.AdTh.CcEx.exists_ccIs_ofCore GlobalTheory.ChartFree.chartIndep D G Pl0 T0 A T R F κ v₀ hC hT i Tp₀ tup₀ O₀ hP₀`. Establish `hs₀ : O₀.s0 = T.toCore.σ₀` using `sOv_eq _ _ _`. Take `⟨hemb, hiso, -⟩` from `dict_cast T hT.laws _ (inR i) O₀.s0 (hs₀ ▸ T.toCore.good_σ₀) (Wc D i) O₀.hV (rank_Wc i)`.
+
+Take `⟨δ, hδ⟩` from `GlobalTheory.AdTh.ShortSeries.thetaKO_eq_short_series_ofCore D G Pl0 T0 A _ R F hC i hP₀.lift.std _ _ (iotaW T i) hemb hiso`. Use `⟨fun q => cmpConst D ka δ (degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i))) * c₀ (O₀.dict q.out).1, 1, fun q => ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (cmpConst_ne_zero (norm_ne_zero_iff.1 (hka1 ▸ one_ne_zero)) _ _) (norm_ne_zero_iff.1 (hc₀.1 _ ▸ one_ne_zero))`. Introduce `Tp tup O _ hP _ hbc c0 hxi t`. Take `⟨cst, hcst, hceq⟩` from `ccIs_transport (hs₀.trans (sOv_eq _ O.c' O.hle).symm) O₀.hV O.hV hc₀`.
+
+Use `⟨1, one_mem _, ⟨1, Nat.one_pos, one_pow _⟩, fun x hx f hf hcl q => ?_⟩` and prove the remaining obligations. Take `⟨h, J', hR, -, hA, hPl⟩` from `(hP.tuple t).reps`. Take `⟨x₀, hx₀⟩` from `(hPl x).1 hx`. Establish `hL` using `hP.act.2`. Establish `h1 : actLev (Xo` using `T.Q.Xo ((i : ℕ) + 1)) O.c' O.lev2 1 f = f := actL_one _ _ _ hL.total hL.func hL.one hf.1`.
+
+Establish `h2` using `exact_identity_ofCore hC hT O hP (hka Tp tup O hP hbc) hδ (covAt_of_xiConst_core D G Pl0 T0 A T R F κ v₀ hC hT i Tp tup O hP c0 hxi) hcst t h J' hR _ x hx₀ f hcl q.out`. Rewrite using `[rdQ, h1, hA _ x hx₀, one_mul]`. Conclude with `h2.trans (congrArg (fun z => _ * z * _) (hceq q.out))`.
+-/
 theorem point_identity_core : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → R.tup_mu_off → R.tup_mu_used → Nonempty (FWTie T R κ v₀) → T.pb = R.C.P.pb → IoExt R → ∀ (i : Fin D.R.m) (lev : G → (T.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (T.Q.Dw ((i : ℕ) + 1)).La) (gramR : Matrix (Fin D.sp.X'.rank) (Fin D.sp.X'.rank) D.host.E) (c0R : VV D.what₂.LL (fun τ => Bridge.lamRdef (Ptw D) τ) →ₛₗ[D.what₂.embLL] R.cX.coef.W) (c0L : ∀ i : Fin D.R.m, VsV D i D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV i).coef.W), Bridge.FamTie R.B R.pl (R.Sb : Set (Pl D.host.E)) R.Q (labLL D) (fun τ => Bridge.lamRdef (Ptw D) τ) (fun i τ => Bridge.lamLdef (Vc D i).rank ((i : ℕ) + 1) τ) gramR c0R c0L → ∃ (lam : AutQ (Wc D i) → ℂ) (z : G), (∀ q, lam q ≠ 0) ∧ ∀ (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), D.what₂.embLL.toRatAlgHom.fieldRange ≤ O.c'.F → O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → O.lev = lev → CoefficientBaseChange R i O.jL (inC O.c') (c0L i) O.c0' → ∀ c0 : ℂ, XiConst O (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) c0 → PtIdent O (κ i) lam z c0 := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hC _ _ ⟨tie⟩ _ hio i lev gramR c0R c0L _
   have hT : TieIn T R κ v₀ := ⟨tie.laws, tie.alg_eq, tie.kap, tie.hv₀, tie.chiR, tie.x0⟩

@@ -6,6 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.E.LeafVanBStalkPf
 open LateralTheory.E.E4 LateralTheory.E.LeafGhostCut LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafDegCut LateralTheory.E.LeafVanBPf
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `y.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `only [zcomp, Cocycle.mk_coe, Cocycle.ofHom_coe]`. Rewrite using `[Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]`.
+-/
 theorem hkpull_comp (R : Type) [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (F : Shv R) (n : ℤ)
     (y : HK R M F n) : HK.pull R (f ≫ g) F n y = HK.pull R f F n (HK.pull R g F n y) := by
   obtain ⟨y, rfl⟩ := y.mk_surjective
@@ -13,6 +16,9 @@ theorem hkpull_comp (R : Type) [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L 
   simp only [zcomp, Cocycle.mk_coe, Cocycle.ofHom_coe]
   rw [Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]
 
+/- English proof (translation)
+Use `HomologicalComplex.hom_ext _ _ (fun n => ?_)` and prove the remaining obligations. Rewrite using `[mappingCone.ext_from_iff _ (n + 1) n rfl]`. Simplify using `[rmap, mappingCone.map]`.
+-/
 theorem rmap_comp (R : Type) [CommRing R] {U E U' E' U'' E'' : Spc} (f : U ⟶ E) (f' : U' ⟶ E') (f'' : U'' ⟶ E'')
     (u : U' ⟶ U) (e : E' ⟶ E) (u' : U'' ⟶ U') (e' : E'' ⟶ E') (c1 : f' ≫ e = u ≫ f) (c2 : f'' ≫ e' = u' ≫ f')
     (c3 : f'' ≫ (e' ≫ e) = (u' ≫ u) ≫ f) :
@@ -21,6 +27,9 @@ theorem rmap_comp (R : Type) [CommRing R] {U E U' E' U'' E'' : Spc} (f : U ⟶ E
   rw [mappingCone.ext_from_iff _ (n + 1) n rfl]
   simp [rmap, mappingCone.map]
 
+/- English proof (translation)
+Simplify using `only [rpull]`. Rewrite using `[rmap_comp R f f' f'' u e u' e' c1 c2 c3, hkpull_comp]`.
+-/
 theorem rpull_comp (R : Type) [CommRing R] {U E U' E' U'' E'' : Spc} (f : U ⟶ E) (f' : U' ⟶ E') (f'' : U'' ⟶ E'')
     (u : U' ⟶ U) (e : E' ⟶ E) (u' : U'' ⟶ U') (e' : E'' ⟶ E') (c1 : f' ≫ e = u ≫ f) (c2 : f'' ≫ e' = u' ≫ f')
     (c3 : f'' ≫ (e' ≫ e) = (u' ≫ u) ≫ f) (F : Shv R) (n : ℤ) (y : Hrel R f F n) :
@@ -28,11 +37,19 @@ theorem rpull_comp (R : Type) [CommRing R] {U E U' E' U'' E'' : Spc} (f : U ⟶ 
   simp only [rpull]
   rw [rmap_comp R f f' f'' u e u' e' c1 c2 c3, hkpull_comp]
 
+/- English proof (translation)
+Substitute `hu he` using the available equality. Both sides reduce to the same expression.
+-/
 theorem rpull_congr (R : Type) [CommRing R] {U E U' E' : Spc} (f : U ⟶ E) (f' : U' ⟶ E') {u u₀ : U' ⟶ U}
     {e e₀ : E' ⟶ E} (hu : u = u₀) (he : e = e₀) (c : f' ≫ e = u ≫ f) (c₀ : f' ≫ e₀ = u₀ ≫ f) (F : Shv R) (n : ℤ) :
     rpull R f f' u e c F n = rpull R f f' u₀ e₀ c₀ F n := by
   subst hu he; rfl
 
+/- English proof (translation)
+Establish `h1 : resBW ι (b ≫ a) = resBW ι b ≫ resBW ι a`. Apply the tactic sequence `apply pullback.hom_ext <;>`. Apply the tactic sequence `simp only [resBW, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc] <;> rfl`. Establish `h2 : (b ≫ a).left = b.left ≫ a.left` using `rfl`. Simplify using `only [rB, rpl]`.
+
+Rewrite using `[rpull_congr (ZMod q) _ _ (show sch.map (resBW ι (b ≫ a)) = sch.map (resBW ι b) ≫ sch.map (resBW ι a) by`. Rewrite using `[h1, Functor.map_comp])`. Use the proof step `(show sch.map (b ≫ a).left = sch.map b.left ≫ sch.map a.left by rw [h2, Functor.map_comp]) _`. Use the proof step `(by rw [← Functor.map_comp, ← Functor.map_comp, ← Functor.map_comp, ← Functor.map_comp, ← h1, ← h2, pullback.lift_fst])]`. Conclude with `rpull_comp (ZMod q) _ _ _ _ _ _ _ _ _ _ (tw q i) m c`.
+-/
 theorem rB_comp (q : ℕ) (i : ℤ) {B W : Scheme.{0}} (ι : W ⟶ B) {U U' U'' : B.Etale} (a : U' ⟶ U) (b : U'' ⟶ U')
     (m : ℤ) (c : Hrel (ZMod q) (sch.map (prB ι U)) (tw q i) m) :
     rB q i ι (b ≫ a) m c = rB q i ι b m (rB q i ι a m c) := by
@@ -82,6 +99,11 @@ def LeafStalkPt : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (k : Type) [Field k]
   (∀ (A : Type) [CommRing A] [IsLocalRing A] (t : Sp A ⟶ U.left), SH A → IsUnit (q : A) → bpl q i ι U t m c = 0) →
   ∀ x : U.left, ∃ (V : B.Etale) (a : V ⟶ U), x ∈ Set.range a.left ∧ rB q i ι a m c = 0
 
+/- English proof (translation)
+Use `choose V a hx hz using h`. Use `⟨Sieve.ofArrows V a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.ofArrows_mem_smallEtaleTopology_iff]`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_univ, iff_true]`.
+
+Conclude with `⟨x, hx x⟩`. Introduce `U' g hg`. Rewrite `hg` using `[Sieve.mem_ofArrows_iff]`. Take `⟨x, b, rfl⟩` from `hg`. Rewrite using `[rB_comp, hz x, map_zero]`.
+-/
 theorem cov_of_pts {B W : Scheme.{0}} (q : ℕ) (i : ℤ) (ι : W ⟶ B) (U : B.Etale) (m : ℤ)
     (c : Hrel (ZMod q) (sch.map (prB ι U)) (tw q i) m)
     (h : ∀ x : U.left, ∃ (V : B.Etale) (a : V ⟶ U), x ∈ Set.range a.left ∧ rB q i ι a m c = 0) :
@@ -96,6 +118,11 @@ theorem cov_of_pts {B W : Scheme.{0}} (q : ℕ) (i : ℤ) (ι : W ⟶ B) (U : B.
     obtain ⟨x, b, rfl⟩ := hg
     rw [rB_comp, hz x, map_zero]
 
+/- English proof (translation)
+Introduce `hy q _ k _ hq i B W s ι _ U m c hc x`. Take `⟨S⟩` from `hN U x`. Establish `hu : IsUnit (q : S.c.pt)`. Establish `g` using `Spec.preimage (S.t ≫ U.hom ≫ s)`. Simplify using `using hq.map g.hom`.
+
+Use `haveI : IsLocalRing S.c.pt := S.sh.1.toIsLocalRing`. Establish `h0` using `hc S.c.pt S.t S.sh hu`. Take `⟨j, hj⟩` from `hC hy q k hq i s ι U m c x S h0`. Conclude with `⟨S.V j, S.a j, S.hx j, hj⟩`.
+-/
 theorem stalkPt_of (hN : LeafSHSys) (hC : LeafSHCont) : LeafStalkPt := by
   intro hy q _ k _ hq i B W s ι _ U m c hc x
   obtain ⟨S⟩ := hN U x
@@ -107,11 +134,17 @@ theorem stalkPt_of (hN : LeafSHSys) (hC : LeafSHCont) : LeafStalkPt := by
   obtain ⟨j, hj⟩ := hC hy q k hq i s ι U m c x S h0
   exact ⟨S.V j, S.a j, S.hx j, hj⟩
 
+/- English proof (translation)
+Establish `hP` using `stalkPt_of hN hC`. Introduce `hy q _ k _ hq i B W s ι _ U m c hc`. Conclude with `cov_of_pts q i ι U m c (hP hy q k hq i s ι U m c hc)`.
+-/
 theorem LeafVanBStalk_of (hN : LeafSHSys) (hC : LeafSHCont) : LeafVanBStalk := by
   have hP := stalkPt_of hN hC
   intro hy q _ k _ hq i B W s ι _ U m c hc
   exact cov_of_pts q i ι U m c (hP hy q k hq i s ι U m c hc)
 
+/- English proof (translation)
+Introduce `hy q _ k _ hq i B W s ι _ U m c hc`. Conclude with `cov_of_pts q i ι U m c (hP hy q k hq i s ι U m c hc)`.
+-/
 theorem LeafVanBStalk_of_pt (hP : LeafStalkPt) : LeafVanBStalk := by
   intro hy q _ k _ hq i B W s ι _ U m c hc
   exact cov_of_pts q i ι U m c (hP hy q k hq i s ι U m c hc)

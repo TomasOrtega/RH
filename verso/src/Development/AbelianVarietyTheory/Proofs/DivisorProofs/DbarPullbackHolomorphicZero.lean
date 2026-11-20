@@ -23,6 +23,9 @@ open scoped ComplexConjugate ContDiff in
 set_option autoImplicit false in
 variable {n m : ℕ} in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[map_sum, Finsupp.finset_sum_apply]`.
+-/
 theorem _root_.GlobalTheory.CxForm.PullClosed.repr_sum_smul {ι : Type} [Fintype ι] (f : ι → _root_.ReciprocityTheory.L2DbarEstimates.V n → ℂ)
     (e : ι → _root_.GlobalTheory.CxForm.Alt n) (S : Finset (Fin (n + n))) :
     (fun x => (_root_.GlobalTheory.CxForm.bas n).repr (∑ i, f i x • e i) S) =
@@ -35,6 +38,13 @@ open scoped ComplexConjugate ContDiff in
 set_option autoImplicit false in
 variable {n m : ℕ} in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.CxForm.dbarAt`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `key : _root_.GlobalTheory.CxForm.coefwise (fun g => _root_.GlobalTheory.dbar g v (_root_.GlobalTheory.GoodMetric.coordVec a)) (fun x => ∑ i, f i x • e i) = ∑ i, _root_.GlobalTheory.dbar (f i) v (_root_.GlobalTheory.GoodMetric.coordVec a) • e i`. Apply `(_root_.GlobalTheory.CxForm.bas n).repr.injective` to reduce the goal to its premises. Use extensionality with `S`.
+
+Rewrite using `[_root_.GlobalTheory.CxForm.FormMul.repr_coefwise, _root_.GlobalTheory.CxForm.PullClosed.repr_sum_smul]`. Simplify using `only [map_sum, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Rewrite using `[_root_.GlobalTheory.dbar_sum fun i _ => (hf i).mul_const _]`. Simplify using `[ContinuousLinearMap.sum_apply, _root_.GlobalTheory.dbar_mul (hf _) (differentiableAt_const _), _root_.GlobalTheory.dbar_const]`. Rewrite using `[key, Finset.mul_sum]`.
+
+Simplify using `[mul_smul_comm]`.
+-/
 theorem _root_.GlobalTheory.CxForm.PullClosed.dbarAt_sum_smul {ι : Type} [Fintype ι] {v : _root_.ReciprocityTheory.L2DbarEstimates.V n}
     {f : ι → _root_.ReciprocityTheory.L2DbarEstimates.V n → ℂ} (e : ι → _root_.GlobalTheory.CxForm.Alt n)
     (hf : ∀ i, DifferentiableAt ℝ (f i) v) :
@@ -64,6 +74,13 @@ open scoped ComplexConjugate ContDiff in
 set_option autoImplicit false in
 variable {n m : ℕ} in
 
+/- English proof (translation)
+Establish `hanti : ∀ a c : Fin n, (_root_.GlobalTheory.CxForm.dzb a * _root_.GlobalTheory.CxForm.dzb c : _root_.GlobalTheory.CxForm.Alt n) = -(_root_.GlobalTheory.CxForm.dzb c * _root_.GlobalTheory.CxForm.dzb a)`. Introduce `a c`. Unfold `_root_.GlobalTheory.CxForm.dzb`. Conclude with `eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _)`. Use `set X := ∑ a, ∑ c, s a c • (_root_.GlobalTheory.CxForm.dzb a * _root_.GlobalTheory.CxForm.dzb c : _root_.GlobalTheory.CxForm.Alt n) with hX`.
+
+Establish `hneg : X = -X`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hanti a c, hs a c, smul_neg]`. Use `_ = -X := by simp [hX, Finset.sum_neg_distrib]`.
+
+Establish `h2 : (2 : ℂ) • X = 0`. Rewrite using `[two_smul]`. Use `nth_rewrite 2 [hneg]`. Conclude with `add_neg_cancel X`. Conclude with `(smul_eq_zero.mp h2).resolve_left two_ne_zero`.
+-/
 theorem _root_.GlobalTheory.CxForm.PullClosed.sum_symm_dzb {s : Fin n → Fin n → ℂ}
     (hs : ∀ a c, s a c = s c a) :
     ∑ a, ∑ c, s a c • (_root_.GlobalTheory.CxForm.dzb a * _root_.GlobalTheory.CxForm.dzb c :
@@ -96,6 +113,11 @@ open scoped ComplexConjugate ContDiff in
 set_option autoImplicit false in
 variable {n m : ℕ} in
 
+/- English proof (translation)
+Establish `hj : ∀ j : Fin m, AnalyticOnNhd ℂ (fun x => EuclideanSpace.proj j (φ x)) U` using `fun j => _root_.ReciprocityTheory.MultiplicativeHeights.analyticOnNhd_V_of_differentiableOn hU ((EuclideanSpace.proj j : _root_.ReciprocityTheory.L2DbarEstimates.V m →L[ℂ] ℂ).differentiable.comp_differentiableOn hφ)`. Establish `h` using `(analyticOnNhd_pi_iff (𝕜 := ℂ)).mpr hj`. Introduce `x hx`. Use `((EuclideanSpace.equiv (Fin m) ℂ).symm.toContinuousLinearMap.analyticAt _).comp (h x hx)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `y`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.CxForm.PullClosed.analyticOnNhd_of_holo {φ : _root_.ReciprocityTheory.L2DbarEstimates.V n → _root_.ReciprocityTheory.L2DbarEstimates.V m}
     {U : Set (_root_.ReciprocityTheory.L2DbarEstimates.V n)} (hU : IsOpen U) (hφ : DifferentiableOn ℂ φ U) :
     AnalyticOnNhd ℂ φ U := by
@@ -112,6 +134,11 @@ open Set Filter Topology in
 open scoped ComplexConjugate ContDiff in
 set_option autoImplicit false in
 variable {n m : ℕ} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.CxForm.dbarAt`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_add]`. Use `congr 1`.
+
+Apply `(_root_.GlobalTheory.CxForm.bas n).repr.injective` to reduce the goal to its premises. Use extensionality with `S`. Simplify using `only [map_add, Finsupp.add_apply, _root_.GlobalTheory.CxForm.FormMul.repr_coefwise]`. Rewrite using `[_root_.GlobalTheory.dbar_add (hF S) (hG S), ContinuousLinearMap.add_apply]`.
+-/
 private theorem dbarAt_add_of_differentiableAt {v : _root_.ReciprocityTheory.L2DbarEstimates.V n}
     {F G : _root_.ReciprocityTheory.L2DbarEstimates.V n → _root_.GlobalTheory.CxForm.Alt n}
     (hF : ∀ S, DifferentiableAt ℝ (fun x => (_root_.GlobalTheory.CxForm.bas n).repr (F x) S) v)
@@ -133,6 +160,37 @@ open scoped ComplexConjugate ContDiff in
 set_option autoImplicit false in
 variable {n m : ℕ} in
 
+/- English proof (translation)
+Establish `hd : DifferentiableAt ℂ (fderiv ℂ φ) v` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hsymm : IsSymmSndFDerivAt ℂ φ v` using `hφ.isSymmSndFDerivAt (by simp [minSmoothness_of_isRCLikeNormedField])`. Use `set D := fderiv ℂ (fderiv ℂ φ) v with hDdef`. Establish `hD : HasFDerivAt (fderiv ℂ φ) D v` using `hd.hasFDerivAt`. Set `Λ : Fin m → Fin n → (_root_.ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] _root_.ReciprocityTheory.L2DbarEstimates.V m) →L[ℂ] ℂ` to `fun a b => (EuclideanSpace.proj a : _root_.ReciprocityTheory.L2DbarEstimates.V m →L[ℂ] ℂ).comp (ContinuousLinearMap.apply ℂ (_root_.ReciprocityTheory.L2DbarEstimates.V m) (_root_.GlobalTheory.GoodMetric.coordVec b))`.
+
+Establish `hf : ∀ a b, HasFDerivAt (fun x => (fderiv ℂ φ x (_root_.GlobalTheory.GoodMetric.coordVec b)).ofLp a) ((Λ a b).comp D) v` using `fun a b => (Λ a b).hasFDerivAt.comp v hD`. Establish `hfR : ∀ a b, DifferentiableAt ℝ (fun x => (fderiv ℂ φ x (_root_.GlobalTheory.GoodMetric.coordVec b)).ofLp a) v` using `fun a b => (hf a b).differentiableAt.restrictScalars ℝ`. Set `P : _root_.GlobalTheory.CxForm.Alt m → Prop` to `fun θ => (∀ S, DifferentiableAt ℝ (fun x => (_root_.GlobalTheory.CxForm.bas n).repr (_root_.GlobalTheory.CxForm.pull (fderiv ℂ φ x) θ) S) v) ∧ _root_.GlobalTheory.CxForm.dbarAt (fun x => _root_.GlobalTheory.CxForm.pull (fderiv ℂ φ x) θ) v = 0`. Establish `hconst : ∀ r : ℂ, P (algebraMap ℂ _ r)`. Introduce `r`.
+
+Simplify using `only [P, AlgHom.commutes]`. Use `⟨fun S => differentiableAt_const _, ?_⟩` and prove the remaining obligations. Use `_root_.GlobalTheory.CxForm.PullClosed.dbarAt_sum_smul (ι := Unit) (v := v) (f := fun _ _ => (1 : ℂ)) (fun _ => algebraMap ℂ (_root_.GlobalTheory.CxForm.Alt n) r) (fun _ => differentiableAt_const _)` as an intermediate fact. Simplify `this` using `[_root_.GlobalTheory.dbar_const]`. Establish `hmul : ∀ θ₁ θ₂, P θ₁ → P θ₂ → P (θ₁ * θ₂)`.
+
+Introduce `θ₁ θ₂ h₁ h₂`. Simplify using `only [P, map_mul]`. Use `⟨fun S => ?_, ?_⟩` and prove the remaining obligations. Establish `e : (fun x => (_root_.GlobalTheory.CxForm.bas n).repr (_root_.GlobalTheory.CxForm.pull (fderiv ℂ φ x) θ₁ * _root_.GlobalTheory.CxForm.pull (fderiv ℂ φ x) θ₂) S) = _`. Use function extensionality and compare the values at `fun x => _root_.GlobalTheory.CxForm.FormMul.repr_mul _ _ S`.
+
+Rewrite using `[e]`. Conclude with `DifferentiableAt.fun_sum fun p _ => ((h₁.1 p.1).mul (h₂.1 p.2)).mul_const _`. Take `⟨y, hy⟩` from `_root_.GlobalTheory.CxForm.FormMul.dbarAt_mul h₁.1 h₂.1`. Rewrite using `[hy, h₁.2, h₂.2]`. Simplify using the standard rewrite rules.
+
+Establish `hadd : ∀ θ₁ θ₂, P θ₁ → P θ₂ → P (θ₁ + θ₂)`. Introduce `θ₁ θ₂ h₁ h₂`. Simplify using `only [P, map_add]`. Use `⟨fun S => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finsupp.add_apply]`.
+
+Conclude with `(h₁.1 S).add (h₂.1 S)`. Rewrite using `[dbarAt_add_of_differentiableAt h₁.1 h₂.1, h₁.2, h₂.2, add_zero]`. Establish `hsmul : ∀ (c : ℂ) θ, P θ → P (c • θ)`. Introduce `c θ h`. Rewrite using `[Algebra.smul_def]`.
+
+Conclude with `hmul _ _ (hconst c) h`. Establish `hsum : ∀ (w : Fin m → _root_.GlobalTheory.CxForm.Alt m) (c : Fin m → ℂ), (∀ b, P (w b)) → P (∑ b, c b • w b)`. Introduce `w c h`. Use `Finset.sum_induction _ P (fun x y hx hy => hadd x y hx hy) ?_ (fun b _ => hsmul _ _ (h b))` and prove the remaining obligations. Simplify using `using hconst 0`.
+
+Establish `hdz : ∀ a : Fin m, P (_root_.GlobalTheory.CxForm.dz a)`. Introduce `a`. Establish `hg : ∀ L : _root_.ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] _root_.ReciprocityTheory.L2DbarEstimates.V m, _root_.GlobalTheory.CxForm.pull L (_root_.GlobalTheory.CxForm.dz a) = ∑ b, (L (_root_.GlobalTheory.GoodMetric.coordVec b)).ofLp a • _root_.GlobalTheory.CxForm.dz b` using `fun L => (_root_.GlobalTheory.CxForm.pull_dz L a).1`. Simplify using `only [P, hg]`. Use `⟨fun S => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[_root_.GlobalTheory.CxForm.PullClosed.repr_sum_smul]`. Conclude with `DifferentiableAt.fun_sum fun b _ => (hfR a b).mul_const _`. Rewrite using `[_root_.GlobalTheory.CxForm.PullClosed.dbarAt_sum_smul _ (fun b => hfR a b)]`. Simplify using `[_root_.GlobalTheory.dbar_eq_zero (hf a _).differentiableAt]`. Establish `hdzb : ∀ a : Fin m, P (_root_.GlobalTheory.CxForm.dzb a)`.
+
+Introduce `a`. Establish `hg : ∀ L : _root_.ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] _root_.ReciprocityTheory.L2DbarEstimates.V m, _root_.GlobalTheory.CxForm.pull L (_root_.GlobalTheory.CxForm.dzb a) = ∑ b, conj ((L (_root_.GlobalTheory.GoodMetric.coordVec b)).ofLp a) • _root_.GlobalTheory.CxForm.dzb b` using `fun L => (_root_.GlobalTheory.CxForm.pull_dz L a).2`. Establish `hgR : ∀ b, DifferentiableAt ℝ (fun x => conj ((fderiv ℂ φ x (_root_.GlobalTheory.GoodMetric.coordVec b)).ofLp a)) v` using `fun b => (Complex.conjCLE.differentiableAt).comp v (hfR a b)`. Simplify using `only [P, hg]`. Use `⟨fun S => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[_root_.GlobalTheory.CxForm.PullClosed.repr_sum_smul]`. Conclude with `DifferentiableAt.fun_sum fun b _ => (hgR b).mul_const _`. Rewrite using `[_root_.GlobalTheory.CxForm.PullClosed.dbarAt_sum_smul _ hgR]`. Apply `_root_.GlobalTheory.CxForm.PullClosed.sum_symm_dzb` to reduce the goal to its premises. Introduce `c b`.
+
+Rewrite using `[_root_.GlobalTheory.dbar_conj, _root_.GlobalTheory.dbar_conj, _root_.GlobalTheory.del_eq_fderiv (hf a b).differentiableAt, _root_.GlobalTheory.del_eq_fderiv (hf a c).differentiableAt, (hf a b).fderiv, (hf a c).fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Use `show conj ((D (_root_.GlobalTheory.GoodMetric.coordVec c) (_root_.GlobalTheory.GoodMetric.coordVec b)).ofLp a) = conj ((D (_root_.GlobalTheory.GoodMetric.coordVec b) (_root_.GlobalTheory.GoodMetric.coordVec c)).ofLp a)`. Rewrite using `[hsymm]`. Establish `hι : ∀ x, P (ExteriorAlgebra.ι ℂ x)`.
+
+Introduce `x`. Establish `hx : ExteriorAlgebra.ι ℂ x = ∑ a, x (Sum.inl a) • _root_.GlobalTheory.CxForm.dz a + ∑ a, x (Sum.inr a) • _root_.GlobalTheory.CxForm.dzb a` using `by conv_lhs => rw [← Finset.univ_sum_single x]`. Rewrite using `[map_sum, Fintype.sum_sum_type]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun a _ => ?_ <;> [unfold _root_.GlobalTheory.CxForm.dz; unfold _root_.GlobalTheory.CxForm.dzb] <;> (rw [← map_smul]; congr 1; ext j; simp [Pi.single_apply])`. Rewrite using `[hx]`.
+
+Conclude with `hadd _ _ (hsum _ _ hdz) (hsum _ _ hdzb)`. Conclude with `ExteriorAlgebra.induction hconst hι hmul hadd θ`.
+-/
 theorem _root_.GlobalTheory.CxForm.PullClosed.diff_and_closed {φ : _root_.ReciprocityTheory.L2DbarEstimates.V n → _root_.ReciprocityTheory.L2DbarEstimates.V m} {v : _root_.ReciprocityTheory.L2DbarEstimates.V n}
     (hφ : ContDiffAt ℂ 2 φ v) (θ : _root_.GlobalTheory.CxForm.Alt m) :
     (∀ S, DifferentiableAt ℝ (fun x => (_root_.GlobalTheory.CxForm.bas n).repr
@@ -251,6 +309,9 @@ open scoped ComplexConjugate ContDiff in
 set_option autoImplicit false in
 variable {n m : ℕ} in
 
+/- English proof (translation)
+Introduce `n m φ U hU hφ v hv θ`. Conclude with `(_root_.GlobalTheory.CxForm.PullClosed.diff_and_closed ((_root_.GlobalTheory.CxForm.PullClosed.analyticOnNhd_of_holo hU hφ v hv).contDiffAt) θ).2`.
+-/
 theorem _root_.GlobalTheory.CxForm.PullClosed.dbarAt_pull_fderiv : ∀ {n m : ℕ}
     {φ : _root_.ReciprocityTheory.L2DbarEstimates.V n → _root_.ReciprocityTheory.L2DbarEstimates.V m} {U : Set (_root_.ReciprocityTheory.L2DbarEstimates.V n)}, IsOpen U → DifferentiableOn ℂ φ U →
     ∀ {v : _root_.ReciprocityTheory.L2DbarEstimates.V n}, v ∈ U → ∀ (θ : _root_.GlobalTheory.CxForm.Alt m),

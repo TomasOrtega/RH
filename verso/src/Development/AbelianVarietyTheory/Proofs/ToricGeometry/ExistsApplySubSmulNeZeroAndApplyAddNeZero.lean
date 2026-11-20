@@ -12,6 +12,15 @@ namespace GlobalTheory
 
 open Complex Matrix Filter Topology in
 open scoped BigOperators Real in
+/- English proof (translation)
+Establish `hc : {u | h u ≠ 0} = {u | h u = 0}ᶜ`. Use extensionality with `u`. Simplify using the standard rewrite rules. Rewrite using `[hc, ← interior_eq_empty_iff_dense_compl, Set.eq_empty_iff_forall_notMem]`. Introduce `x hx`.
+
+Apply `hne` to reduce the goal to its premises. Establish `hev : ∀ᶠ w in 𝓝 x, h w = 0` using `mem_interior_iff_mem_nhds.1 hx`. Use function extensionality and compare the values at `y`. Establish `ht : Filter.Tendsto (fun t : ℂ => x + t • (y - x)) (𝓝 0) (𝓝 x)`. Establish `hcont : Continuous (fun t : ℂ => x + t • (y - x))` using `by fun_prop`.
+
+Simplify using `using hcont.tendsto 0`. Establish `hφd : Differentiable ℂ (fun t : ℂ => h (x + t • (y - x)))` using `hd.comp ((differentiable_id.smul_const (y - x)).const_add x)`. Establish `hφ0 : (fun t : ℂ => h (x + t • (y - x))) =ᶠ[𝓝 0] 0` using `ht.eventually hev`. Establish `hφa : AnalyticOnNhd ℂ (fun t : ℂ => h (x + t • (y - x))) Set.univ` using `fun t _ => hφd.analyticAt t`. Use `hφa.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) hφ0 (Set.mem_univ 1)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 private lemma dense_setOf_ne_zero_of_differentiable_ne_zero {g : ℕ} {h : (Fin g → ℂ) → ℂ}
     (hd : Differentiable ℂ h) (hne : h ≠ 0) : Dense {u | h u ≠ 0} := by
   have hc : {u | h u ≠ 0} = {u | h u = 0}ᶜ := by
@@ -37,6 +46,23 @@ private lemma dense_setOf_ne_zero_of_differentiable_ne_zero {g : ℕ} {h : (Fin 
 open Complex Matrix Filter Topology in
 open scoped BigOperators Real in
 
+/- English proof (translation)
+Introduce `H g τ hτ N hN z`. Take `⟨⟨hd, hq⟩, hne⟩` from `H g τ hτ`. Establish `hq' : ∀ (n n' : Fin g → ℤ) v, _root_.ReciprocityTheory.PTheta.theta 0 0 (v + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n') τ = _root_.ReciprocityTheory.PTheta.eC (-(1 : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _roo …` using `fun n n' v => hq n n' v`. Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Establish `hM : (M : ℂ) ≠ 0`.
+
+Establish `: M ≠ 0` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hd1 : Differentiable ℂ (fun u => _root_.ReciprocityTheory.PTheta.theta 0 0 (z + u) τ)` using `hd.comp (differentiable_id.const_add z)`. Establish `hd2 : Differentiable ℂ (fun u => _root_.ReciprocityTheory.PTheta.theta 0 0 (z - (M : ℂ) • u) τ)` using `hd.comp ((differentiable_id.const_smul (M : ℂ)).const_sub z)`. Establish `hne1 : (fun u => _root_.ReciprocityTheory.PTheta.theta 0 0 (z + u) τ) ≠ 0`.
+
+Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Use `congr_fun h0 (w - z)` as an intermediate fact. Simplify using `using this`.
+
+Establish `hne2 : (fun u => _root_.ReciprocityTheory.PTheta.theta 0 0 (z - (M : ℂ) • u) τ) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Use `congr_fun h0 (-(M : ℂ)⁻¹ • (w - z))` as an intermediate fact.
+
+Simplify using `only [smul_neg, smul_smul, mul_inv_cancel₀ hM, one_smul, sub_neg_eq_add, add_sub_cancel, Pi.zero_apply] at this`. Simplify `this` using `[mul_inv_cancel₀ hM]`. Establish `hopen : IsOpen {u | _root_.ReciprocityTheory.PTheta.theta 0 0 (z + u) τ ≠ 0}` using `isOpen_ne_fun hd1.continuous continuous_const`. Take `⟨u, hu1, hu2⟩` from `((dense_setOf_ne_zero_of_differentiable_ne_zero hd1 hne1).inter_of_isOpen_left (dense_setOf_ne_zero_of_differentiable_ne_zero hd2 hne2) hopen).nonempty`. Use `⟨fun w => _root_.ReciprocityTheory.PTheta.theta 0 0 (w + u) τ ^ M * _root_.ReciprocityTheory.PTheta.theta 0 0 (w - (M : ℂ) • u) τ, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `((hd.comp (differentiable_id.add_const u)).pow M).mul (hd.comp (differentiable_id.sub_const _))`. Introduce `n n' w`. Establish `e1 : w + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n' + u = (w + u) + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n'` using `by abel`. Establish `e2 : w + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n' - (M : ℂ) • u = (w - (M : ℂ) • u) + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n'` using `by abel`. Simplify using `only`.
+
+Rewrite using `[e1, e2, hq' n n' (w + u), hq' n n' (w - (M : ℂ) • u), mul_pow, ← _root_.GlobalTheory.eC_nat_mul]`. Establish `key : _root_.ReciprocityTheory.PTheta.eC ((M : ℂ) * (-(1 : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n) / 2 + _root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (w + u)))) * _root_.ReciprocityTheory.PTheta.eC (-(1 : ℂ) * (_root_ …`. Rewrite using `[← _root_.ReciprocityTheory.PTheta.eC_add]`. Use `congr 1`. Simplify using `only [dotProduct_add, dotProduct_sub, dotProduct_smul, smul_eq_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← key]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_ne_zero (pow_ne_zero _ hu1) hu2`.
+-/
 theorem _root_.GlobalTheory.exists_level_apply_ne_zero_of_two_le :
     (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g) → (Differentiable ℂ (fun z => _root_.ReciprocityTheory.PTheta.theta 0 0 z τ) ∧ ∀ (n n' : Fin g → ℤ) z, (fun z => _root_.ReciprocityTheory.PTheta.theta 0 0 z τ) (z + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n') = _root_.ReciprocityTheory.PTheta.eC (-(1 : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n) / 2 + _root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ z)) * (fun z => _root_.ReciprocityTheory.PTheta.theta 0 0 z τ) z) ∧ (fun z => _root_.ReciprocityTheory.PTheta.theta 0 0 z τ) ≠ 0) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g) → ∀ N : ℕ, 2 ≤ N → ∀ z, ∃ f : (Fin g → ℂ) → ℂ, (Differentiable ℂ f ∧ ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n') = _root_.ReciprocityTheory.PTheta.eC (-(N : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n) / 2 + _root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ z)) * f z) ∧ f z ≠ 0) := by
   intro H g τ hτ N hN z

@@ -48,14 +48,23 @@ section Asm
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Rewrite using `[← Rat.cast_abs, ← InfinitePlace.prod_eq_abs_norm]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[(IsTotallyComplex.isComplex w).mult_eq_two]`.
+-/
 theorem prod_inf_sq (x : E) : ∏ w : InfinitePlace E, w x ^ 2 = |((Algebra.norm ℚ x : ℚ) : ℝ)| := by
   rw [← Rat.cast_abs, ← InfinitePlace.prod_eq_abs_norm]
   refine Finset.prod_congr rfl fun w _ => ?_
   rw [(IsTotallyComplex.isComplex w).mult_eq_two]
 
+/- English proof (translation)
+Rewrite using `[← prod_inf_sq, Finset.prod_pow, Real.sqrt_sq (Finset.prod_nonneg fun w _ => (w.1.nonneg x))]`.
+-/
 theorem prod_inf (x : E) : ∏ w : InfinitePlace E, w x = Real.sqrt |((Algebra.norm ℚ x : ℚ) : ℝ)| := by
   rw [← prod_inf_sq, Finset.prod_pow, Real.sqrt_sq (Finset.prod_nonneg fun w _ => (w.1.nonneg x))]
 
+/- English proof (translation)
+Rewrite using `[Real.inv_rpow (by positivity), ← Real.rpow_natCast g (2 * f), ← Real.rpow_mul hg.le, ← Real.rpow_natCast g]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem g_pow (g : ℝ) (hg : 0 < g) (f r : ℕ) :
     ((g ^ (2 * f))⁻¹) ^ ((2 * r + 1 : ℝ) / 2) = (g ^ ((2 * r + 1) * f))⁻¹ := by
   rw [Real.inv_rpow (by positivity), ← Real.rpow_natCast g (2 * f), ← Real.rpow_mul hg.le, ← Real.rpow_natCast g]
@@ -63,9 +72,21 @@ theorem g_pow (g : ℝ) (hg : 0 < g) (f r : ℕ) :
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[Real.inv_rpow hx, Real.rpow_neg hx, inv_inv, Real.sqrt_eq_rpow]`.
+-/
 theorem inv_rpow_half (x : ℝ) (hx : 0 ≤ x) : (x⁻¹) ^ (-(1 / 2 : ℝ)) = Real.sqrt x := by
   rw [Real.inv_rpow hx, Real.rpow_neg hx, inv_inv, Real.sqrt_eq_rpow]
 
+/- English proof (translation)
+Use `set f := Fintype.card (InfinitePlace E) with hf`. Rewrite using `[g_pow g hg f r, inv_rpow_half _ (abs_nonneg _), Real.rpow_natCast]`. Simplify using `only [inv_inv]`. Unfold `HPt NGPt NDPt`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ← hf, prod_inf]`.
+
+Establish `hD : ∀ a : Fin γ.1.length, ∏ w : InfinitePlace E, (rd ^ (2 * (endIdx γ a * (2 * r + 1 - endIdx γ a))))⁻¹ * w (endMin γ a) ^ 2 = ((rd ^ (2 * (endIdx γ a * (2 * r + 1 - endIdx γ a))))⁻¹) ^ f * |((Algebra.norm ℚ (endMin γ a) : ℚ) : ℝ)|`. Introduce `a`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ← hf, prod_inf_sq]`. Repeatedly rewrite using `[hD]`. Rewrite using `[Finset.prod_mul_distrib]`.
+
+Establish `hrd : ((rd ^ (2 * r * (r + 1)))⁻¹) ^ f * ∏ a : Fin γ.1.length, ((rd ^ (2 * (endIdx γ a * (2 * r + 1 - endIdx γ a))))⁻¹) ^ f = ((rd ^ (2 * f))⁻¹) ^ nDelta r γ`. Simplify using `only [← inv_pow, ← pow_mul, Finset.prod_inv_distrib, Finset.prod_pow_eq_pow_sum, ← mul_inv, ← pow_add]`. Use `congr 2`. Unfold `nDelta`. Establish `e : ∀ i : Fin γ.1.length, 2 * (endIdx γ i * (2 * r + 1 - endIdx γ i)) * f = 2 * f * (endIdx γ i * (2 * r + 1 - endIdx γ i))` using `fun i => by ring`.
+
+Simplify using `only [e, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hrd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hpt_eq [StarRing E] (r : ℕ) (γ : PN.Pts E r) (rd g : ℝ) (hg : 0 < g) (TT : ℕ) :
     HPt rd g TT γ =
       ((g ^ (2 * Fintype.card (InfinitePlace E)))⁻¹) ^ ((2 * r + 1 : ℝ) / 2) *
@@ -103,6 +124,23 @@ section Main
 
 open Formalism.MainNotions.S.LocNG
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Take `⟨a0, b0, hP2⟩` from `hP Cg cb Cw cT CT C0`. Use `⟨a0, b0, ?_⟩` and prove the remaining obligations. Introduce `C' Cl e1 e2 D large₂ X Y u u' hc Cl' Nu TS cls nml γ Fm hFT`. Take `⟨⟨hG0, hD0⟩, hloc⟩` from `hP2 C' Cl e1 e2 D large₂ X Y u u' hc TS cls nml γ Fm hFT`.
+
+Use `haveI : IsTotallyComplex D.host.E := D.sp.cm.cmUnram.1`. Take `⟨w, F00, F'0, F'1, hw, -, -, -, -, -, -, hgood, -⟩` from `hFT`. Establish `hOK : ∀ p, ((zOf Y).M p).OK` using `fun p => ((zOf Y).agree p).1`. Establish `hPF` using `(product_formula_e D.host.F D.host.E _ (Formalism.MainNotions.BridgeLemma.szf_finrankFE D) D.s.atP).1 (zOf Y).M hOK`. Take `⟨hAf, hAv⟩` from `hT D (zOf Y)`.
+
+Take `⟨hBf, hBv⟩` from `hD D (zOf Y)`. Take `⟨hCf, hCv⟩` from `hPF _ hG0`. Establish `hDf` using `fun a => hPF _ (hD0 a)`. Use `set S : Finset (PlF D) := Fm.P ∪ hAf.toFinset ∪ hBf.toFinset ∪ hCf.toFinset ∪ Finset.univ.biUnion (fun a => (hDf a).1.toFinset) with hS`. Establish `hPS : Fm.P ⊆ S` using `fun p hp => by simp [hS, hp]`.
+
+Establish `hsA : (Function.mulSupport fun p : PlF D => ((zOf Y).M p).modK (algebraMap _ _ (LocNG.theta ((zOf Y).M p)))) ⊆ ↑S` using `fun p hp => by`. Simplify using `[hS, Set.Finite.mem_toFinset, hp]`. Establish `hsB : (Function.mulSupport fun p : PlF D => ((zOf Y).M p).modK (algebraMap _ _ ((zOf Y).δ p))) ⊆ ↑S` using `fun p hp => by simp [hS, Set.Finite.mem_toFinset, hp]`. Establish `hsC : (Function.mulSupport fun p : PlF D => ((zOf Y).M p).modK ((D.s.atP p).ιE (GPt ((Tu D u : ℕ) * (Tu D u' : ℕ)) γ))) ⊆ ↑S` using `fun p hp => by simp [hS, Set.Finite.mem_toFinset, hp]`. Establish `hsD : ∀ a, (Function.mulSupport fun p : PlF D => ((zOf Y).M p).modK ((D.s.atP p).ιE (endMin γ a))) ⊆ ↑S` using `fun a p hp => by`.
+
+Simplify using `only [hS, Finset.coe_union, Finset.coe_biUnion, Finset.coe_univ, Set.mem_union, Set.mem_iUnion, Set.Finite.coe_toFinset, Set.mem_univ, true_and]`. Conclude with `Or.inr ⟨a, trivial, hp⟩`. Establish `hnn : ∀ p (x : (D.s.atP p).Ep), 0 ≤ ((zOf Y).M p).modK x` using `fun p x => ENNReal.toReal_nonneg`. Establish `h1 : Fm.toL.Htot = ∏ p ∈ S, (Fm.FP p).Hp` using `by show ∏ p : {p // p ∈ Fm.P}, (Fm.FP p.1).Hp = _`. Rewrite using `[Finset.prod_coe_sort Fm.P (fun p => (Fm.FP p).Hp)]`.
+
+Conclude with `Finset.prod_subset hPS fun p _ hp => (hloc p).1 (hgood p hp)`. Rewrite using `[h1, Finset.prod_congr rfl fun p _ => (hloc p).2, Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_comm (s := S) (t := Finset.univ), Real.finsetProd_rpow S (fun p => ((zOf Y).M p).modK (algebraMap _ _ (LocNG.theta ((zOf Y).M p)))) (fun p _ => …`. Repeatedly rewrite using `[Finset.prod_inv_distrib]`. Rewrite using `[← finprod_eq_prod_of_mulSupport_subset _ hsA, ← finprod_eq_prod_of_mulSupport_subset _ hsB, ← finprod_eq_prod_of_mulSupport_subset _ hsC, hAv, hBv, hCv]`. Establish `hDv : ∀ a, ∏ p ∈ S, ((zOf Y).M p).modK ((D.s.atP p).ιE (endMin γ a)) = |((Algebra.norm ℚ (endMin γ a) : ℚ) : ℝ)|⁻¹` using `fun a => by`.
+
+Rewrite using `[← finprod_eq_prod_of_mulSupport_subset _ (hsD a), (hDf a).2]`. Repeatedly rewrite using `[hDv]`. Establish `hg : (0 : ℝ) < ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ)`. Establish `h0` using `(D.host.g_prime 0).pos`. Establish `h1` using `(D.host.g_prime 1).pos`.
+
+Conclude with `Nat.mul_pos h0 h1` after adjusting the coercions. Establish `hXg : (X.B.g : ℝ) = ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ)` using `by rw [X.g_eq]`. Rewrite using `[hXg, ← Finset.prod_inv_distrib]`. Conclude with `hpt_eq D.R.rS γ D.host.rdE _ hg _`.
+-/
 theorem hTie_of (hP : HTPlace) (hD : HTDelta) (hT : HTTheta) : Formalism.L2.SG.FamDefs.HTie := by
   intro Cg cb Cw cT CT C0
   obtain ⟨a0, b0, hP2⟩ := hP Cg cb Cw cT CT C0

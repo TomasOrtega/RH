@@ -18,6 +18,11 @@ def ILeft : Prop :=
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' → ∀ Φ ∈ schA F _, ∀ g, M.I om (om (g, 1) Φ) = M.I om Φ
 
+/- English proof (translation)
+Set `J₀ : C →ₗ[ℂ] (UA σ W.J → ℂ)` to `{ toFun := fun Φ => M.I om Φ map_add' := fun Φ Ψ => funext fun h => by`. Establish `e : ∀ g, theta om (Φ.1 + Ψ.1) g h = theta om Φ g h + theta om Ψ g h` using `fun g => by`. Simplify using `only [theta, map_add]`. Conclude with `thetaSum_add F (hw.isUSplitting.pres _ _ (h1 Φ.2)) (hw.isUSplitting.pres _ _ (h1 Ψ.2))`. Simplify using `only [Model.I, Submodule.coe_add, e, Pi.add_apply]`.
+
+Conclude with `integral_add (h2 _ Φ.2 h) (h2 _ Ψ.2 h)`. Use the proof step `map_smul' := fun c Φ => funext fun h => I_smul M om c Φ h }`. Take `⟨J, hJ⟩` from `LinearMap.exists_extend J₀`. Conclude with `⟨J, fun Φ hΦ => LinearMap.congr_fun hJ ⟨Φ, hΦ⟩⟩`.
+-/
 theorem exists_Ilin {ψ : AddChar (AF F) ℂ} {M : Model σ X W} {om : Rep σ X W} {χ χ' : Chr F E} (hw : M.IsWeil ψ χ χ' om)
     (C : Submodule ℂ (Fn F n d)) (h1 : C ≤ schA F _) (h2 : ∀ Φ ∈ C, M.Conv om Φ) :
     ∃ J : Fn F n d →ₗ[ℂ] (UA σ W.J → ℂ), ∀ Φ ∈ C, J Φ = M.I om Φ := by
@@ -33,6 +38,15 @@ theorem exists_Ilin {ψ : AddChar (AF F) ℂ} {M : Model σ X W} {om : Rep σ X 
   obtain ⟨J, hJ⟩ := LinearMap.exists_extend J₀
   exact ⟨J, fun Φ hΦ => LinearMap.congr_fun hJ ⟨Φ, hΦ⟩⟩
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `exists_pureML hw T`. Take `⟨L, hL⟩` from `desc (Q := fun v : T => Q v) ((LinearMap.compMultilinearMapₗ ℂ J) ∘ₗ l) p (fun v : T => q v) S₀ (fun v => S v) (fun f hf ψ hψ hz => by`. Express the relevant statement in the definitionally equal form `J (l f ψ) = 0`. Rewrite using `[hl]`. Use `h f hf _ (fun v => ?_) (ext_off w T ψ) (hz.imp_right fun ⟨v, hv⟩ => ⟨v, ?_⟩)` and prove the remaining obligations.
+
+Unfold `ext`. Use `split_ifs with hv exacts [hψ ⟨v, hv⟩, hS v hv]`. Unfold `ext`. Rewrite using `[dif_pos v.2]`. Conclude with `hv)`.
+
+Use `congrArg L h0` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Rewrite using `[map_sum, ← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hL (f i) (hf i) (fun v => φ i v) fun v => hφ i v]`.
+
+Express the relevant statement in the definitionally equal form `_ = J (l (f i) _)`. Rewrite using `[hl, ext_of (hoff i)]`.
+-/
 theorem vanish {κ : Type} [Fintype κ] {Z P : Type} [AddCommGroup Z] [Module ℂ Z] [AddCommGroup P] [Module ℂ P]
     {Q : Pl F → Type} [∀ v, AddCommGroup (Q v)] [∀ v, Module ℂ (Q v)] (J : ((κ → AF F) → ℂ) →ₗ[ℂ] Z)
     {w : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hw : Std w) (T : Finset (Pl F)) (p : SInf F κ →ₗ[ℂ] P)
@@ -59,8 +73,24 @@ theorem vanish {κ : Type} [Fintype κ] {Z P : Type} [AddCommGroup Z] [Module �
   change _ = J (l (f i) _)
   rw [hl, ext_of (hoff i)]
 
+/- English proof (translation)
+The claim follows from `hM.std`.
+-/
 theorem good_std {ψ : AddChar (AF F) ℂ} {M : Model σ X W} (hM : M.IsGood ψ) : Std M.vac := hM.std
 
+/- English proof (translation)
+Take `⟨r, -, hr⟩` from `GlobalTheory.PureFactor.exists_rest_factor v₁ f φ ((good_std hM).congr h2)`. Establish `key : ∀ z ∈ Submodule.span ℂ (M.SoLoc ψ t), tens (evFin F v₁) z r ∈ M.So ψ t`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`.
+
+Rewrite using `[hr]`. Use `Submodule.subset_span ⟨f, _, fun v => ?_, ?_, by rw [Function.update_self]; exact hz, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = v₁`. Substitute `hv` using the available equality. Rewrite using `[Function.update_self]`.
+
+Conclude with `hz.1`. Rewrite using `[Function.update_of_ne hv]`. Conclude with `h1 v hv`. Use `filter_upwards [h2, Filter.eventually_cofinite_ne v₁] with v hv hne`. Rewrite using `[Function.update_of_ne hne]`.
+
+Conclude with `hv`. Consider the case `zero`. Establish `: tens (evFin F v₁) (0 : (Fin n × Fin d → Fv F v₁) → ℂ) r = 0` using `funext fun x => zero_mul _`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy`. Establish `: tens (evFin F v₁) (x + y) r = tens (evFin F v₁) x r + tens (evFin F v₁) y r` using `funext fun _ => add_mul _ _ _`. Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`.
+
+Establish `: tens (evFin F v₁) (a • x) r = a • tens (evFin F v₁) x r` using `funext fun _ => mul_assoc _ _ _`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ a hx`. Use `key _ h3` as an intermediate fact. Rewrite `this` using `[hr, Function.update_eq_self]`. Then use the resulting hypothesis.
+-/
 theorem pure_mem_So {ψ : AddChar (AF F) ℂ} {M : Model σ X W} (hM : M.IsGood ψ) {v₁ : Pl F} (t : E →ₐ[F] Fv F v₁)
     (f : SInf F (Fin n × Fin d)) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) (h1 : ∀ v ≠ v₁, φ v ∈ SB _)
     (h2 : ∀ᶠ v in cofinite, φ v = M.vac v) (h3 : φ v₁ ∈ Submodule.span ℂ (M.SoLoc ψ t)) : pure f φ ∈ M.So ψ t := by
@@ -88,15 +118,28 @@ theorem pure_mem_So {ψ : AddChar (AF F) ℂ} {M : Model σ X W} (hM : M.IsGood 
   have := key _ h3
   rwa [hr, Function.update_eq_self] at this
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le.2 fun _ h => h.1`.
+-/
 theorem soLoc_le {ψ : AddChar (AF F) ℂ} (M : Model σ X W) {v₁ : Pl F} (t : E →ₐ[F] Fv F v₁) :
     Submodule.span ℂ (M.SoLoc ψ t) ≤ SB _ := Submodule.span_le.2 fun _ h => h.1
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, h1, h2, -, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ h1 ((good_std hM).congr h2)`.
+-/
 theorem so_le {ψ : AddChar (AF F) ℂ} {M : Model σ X W} (hM : M.IsGood ψ) {v₁ : Pl F} (t : E →ₐ[F] Fv F v₁) :
     M.So ψ t ≤ schA F _ := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨f, φ, h1, h2, -, rfl⟩
   exact GlobalTheory.TensUniq.pure_mem_schA f φ h1 ((good_std hM).congr h2)
 
+/- English proof (translation)
+Take `⟨π, h1, h2⟩` from `exists_section (LinearMap.id : Module.End ℂ _) (Submodule.span ℂ (M.SoLoc ψ t))`. Take `⟨O, hO⟩` from `exists_factorOp (κ := Fin n × Fin d) v₁ π`. Use `⟨π, h1, fun m f φ hφ hs => ?_⟩` and prove the remaining obligations. Establish `key : ∀ Φ ∈ M.So ψ t, O Φ = Φ`. Introduce `Φ hΦ`.
+
+Use `LinearMap.eqOn_span (g := LinearMap.id) ?_ hΦ` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, -, h4, h5, rfl⟩`. Rewrite using `[hO f φ ((good_std hM).congr h4), show π (φ v₁) = φ v₁ from h2 _ (Submodule.subset_span h5), Function.update_eq_self]`. Both sides reduce to the same expression. Rewrite using `[← key _ hs, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => hO _ _ (hφ i)`.
+-/
 theorem so_proj {ψ : AddChar (AF F) ℂ} {M : Model σ X W} (hM : M.IsGood ψ) {v₁ : Pl F} (t : E →ₐ[F] Fv F v₁) :
     ∃ π : Module.End ℂ ((Fin n × Fin d → Fv F v₁) → ℂ), (∀ x, π x ∈ Submodule.span ℂ (M.SoLoc ψ t)) ∧
       ∀ (m : ℕ) (f : Fin m → SInf F (Fin n × Fin d)) (φ : Fin m → ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ), (∀ i, Std (φ i)) →
@@ -114,6 +157,31 @@ theorem so_proj {ψ : AddChar (AF F) ℂ} {M : Model σ X W} (hM : M.IsGood ψ) 
   rw [← key _ hs, map_sum]
   exact Finset.sum_congr rfl fun i _ => hO _ _ (hφ i)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf hm`. Take `⟨dc, dc'⟩` from `hD F E σ B a a' G X om om' hm.triple`. Take `⟨k, k'⟩` from `hK F E σ B a a' G X om om' R Rf hm`. Establish `g` using `hm.triple.geo.hM`. Establish `g'` using `hm.triple.geo.hM'`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `Φ ⟨T, -, m, m', f, φ, f', φ', h1, h2, rfl, e0, e⟩`. Take `⟨J, hJ⟩` from `exists_Ilin hm.triple.weil (schA F _) le_rfl dc`. Establish `mem : ∀ f (φ : ∀ v : Pl F, _), (∀ v, φ v ∈ SB _) → (∀ v ∉ T, φ v = G.M.vac v) → pure f φ ∈ schA F _` using `fun f φ a b => GlobalTheory.TensUniq.pure_mem_schA f φ a ((good_std g).congr (ev_of_off b))`. Rewrite using `[← hJ _ (sum_mem fun i _ => mem _ _ (h1 i).2.1 (h1 i).2.2)]`.
+
+Use `vanish J (good_std g) T R.p Rf.p (G.M.Pol B.ψ B.emb) (fun _ => SB _) (fun v _ => (g.vac v).1) (fun f hf φ a b c => ?_) f φ (fun i => (h1 i).1) (fun i => (h1 i).2.1) (fun i => (h1 i).2.2) ?_` and prove the remaining obligations. Rewrite using `[hJ _ (mem f φ a b)]`. Conclude with `k f hf φ a (ev_of_off b) c`. Rewrite using `[e, tens_eq_map (fun v => (g'.vac v).2.1) (good_std g') T f' φ' (ι' := Empty) Empty.elim Empty.elim (fun i => (h2 i).2.2) (fun i => i.elim) (by rw [← e0]; simp)]`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `Φ' hΦ' ⟨T, -, m, m', f, φ, f', φ', h1, h2, e0, rfl, e⟩`. Take `⟨J, hJ⟩` from `exists_Ilin hm.triple.weil' (G.M'.So B.ψ B.τ₁) (so_le g' _) fun Φ h => (dc' Φ h).2.1`. Take `⟨π, p1, p2⟩` from `so_proj g' B.τ₁`. Establish `e1` using `p2 m' f' φ' (fun i => (good_std g').congr (ev_of_off (h2 i).2.2)) hΦ'`. Rewrite using `[← hJ _ hΦ', e1]`.
+
+Establish `z : ∑ j, R.p' (f' j) ⊗ₜ[ℂ] (PiTensorProduct.tprod ℂ fun v : T => Rf.p' v (φ' j v)) = 0`. Rewrite using `[← e, tens_eq_map (fun v => (g.vac v).2.1) (good_std g) T f φ (ι' := Empty) Empty.elim Empty.elim (fun i => (h1 i).2.2) (fun i => i.elim) (by rw [← e0]; simp)]`. Simplify using the standard rewrite rules. Set `w` to `Function.update G.M'.vac B.v₁ (π (G.M'.vac B.v₁))`. Establish `hwv : ∀ᶠ v in cofinite, w v = G.M'.vac v` using `by filter_upwards [Filter.eventually_cofinite_ne B.v₁] with v hv using Function.update_of_ne hv _ _`.
+
+Set `S : ∀ v : Pl F, Submodule ℂ ((Fin a' × Fin (a + a') → Fv F v) → ℂ)` to `Function.update (fun _ => SB _) B.v₁ (Submodule.span ℂ (G.M'.SoLoc B.ψ B.τ₁))`. Establish `S1 : S B.v₁ = Submodule.span ℂ (G.M'.SoLoc B.ψ B.τ₁)` using `Function.update_self _ _ _`. Establish `S2 : ∀ v ≠ B.v₁, S v = SB _` using `fun v hv => Function.update_of_ne hv _ _`. Establish `up : ∀ φ : ∀ v : Pl F, (Fin a' × Fin (a + a') → Fv F v) → ℂ, (∀ v, φ v ∈ SB _) → ∀ v, Function.update φ B.v₁ (π (φ B.v₁)) v ∈ S v` using `fun φ h v => by`. Distinguish the cases in `hv : v = B.v₁`.
+
+Substitute `hv` using the available equality. Rewrite using `[Function.update_self, S1]`. Conclude with `p1 _`. Rewrite using `[Function.update_of_ne hv, S2 v hv]`. Conclude with `h v`.
+
+Establish `off : ∀ j, ∀ v ∉ T, Function.update (φ' j) B.v₁ (π (φ' j B.v₁)) v = w v` using `fun j v hv => by`. Distinguish the cases in `h : v = B.v₁`. Substitute `h` using the available equality. Simplify using `only [w, Function.update_self, (h2 j).2.2 _ hv]`. Simplify using `only [w, Function.update_of_ne h, (h2 j).2.2 _ hv]`.
+
+Use `vanish J ((good_std g').congr hwv) T R.p' Rf.p' (G.M'.Pol B.ψ B.emb) S (fun v _ => up _ (fun v => (g'.vac v).1) v) (fun f hf φ a b c => ?_) f' _ (fun i => (h2 i).1) (fun i => up _ (h2 i).2.1) off ?_` and prove the remaining obligations. Establish `ev : ∀ᶠ v in cofinite, φ v = G.M'.vac v` using `by filter_upwards [ev_of_off b, hwv] with v x y using x.trans y`. Establish `s1 : φ B.v₁ ∈ Submodule.span ℂ (G.M'.SoLoc B.ψ B.τ₁)` using `S1 ▸ a B.v₁`. Establish `s2 : ∀ v, φ v ∈ SB _` using `fun v => by`. Distinguish the cases in `hv : v = B.v₁`.
+
+Substitute `hv` using the available equality. Conclude with `soLoc_le _ _ s1`. Conclude with `S2 v hv ▸ a v`. Rewrite using `[hJ _ (pure_mem_So g' _ f φ (fun v _ => s2 v) ev s1)]`. Conclude with `k' f hf φ s2 ev s1 c`.
+
+Distinguish the cases in `hv : B.v₁ ∈ T`. Rewrite using `[← z]`. Conclude with `(tens_eq_map (fun v => (g'.vac v).2.1) (good_std g') T f' φ' f' _ (fun i => (h2 i).2.2) (fun i v h => by rw [Function.update_of_ne (fun x : v = B.v₁ => h (x ▸ hv))]; exact (h2 i).2.2 v h) e1 _ _).symm`. Rewrite using `[← z]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `congr 2`. Use function extensionality and compare the values at `v`. Rewrite using `[Function.update_of_ne (fun x : v.1 = B.v₁ => hv (x ▸ v.2))]`.
+-/
 theorem factor_of (hD : KDecay) (hK : Kills) : Factor := by
   intro F E _ _ _ _ _ σ B a a' G X om om' R Rf hm
   obtain ⟨dc, dc'⟩ := hD F E σ B a a' G X om om' hm.triple

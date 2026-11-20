@@ -28,6 +28,13 @@ open scoped TensorProduct nonZeroDivisors ComplexConjugate
 
 namespace GlobalTheory.CoreOnto.StageProof
 
+/- English proof (translation)
+Unfold `GlobalTheory.ChiGrid.Places.modul at h`. Take `⟨v, hv, hle⟩` from `(Ideal.IsPrime.prod_le Q.isPrime).1 h`. Establish `hd : 0 < P.depth sc v ∨ P.depth sc v = 0` using `by omega`. Break down `hd with hd | hd` into its components or cases. Establish `h1 : (P.w v).asIdeal ≤ Q.asIdeal` using `Q.isPrime.le_of_pow_le hle`.
+
+Establish `h2 : (P.w v).asIdeal = Q.asIdeal` using `(P.w v).isMaximal.eq_of_le Q.isPrime.ne_top h1`. Establish `h3 : P.w v = Q` using `HeightOneSpectrum.ext h2`. Rewrite using `[← h3, P.w_over v hv]`. Conclude with `hv`. Rewrite `hle` using `[hd, pow_zero, Ideal.one_eq_top, top_le_iff]`.
+
+Conclude with `absurd hle Q.isPrime.ne_top`.
+-/
 theorem under_mem_of_modul_le {D : D7} {T : Type} {L : LevCh D T} (P : GlobalTheory.ChiGrid.Places L) (sc : Consts)
     (Q : HeightOneSpectrum (𝓞 D.host.E)) (h : P.modul sc ≤ Q.asIdeal) : Q.under (𝓞 D.host.F) ∈ P.S0 := by
   unfold GlobalTheory.ChiGrid.Places.modul at h
@@ -42,6 +49,25 @@ theorem under_mem_of_modul_le {D : D7} {T : Type} {L : LevCh D T} (P : GlobalThe
   · rw [hd, pow_zero, Ideal.one_eq_top, top_le_iff] at hle
     exact absurd hle Q.isPrime.ne_top
 
+/- English proof (translation)
+Introduce `D hQ T L μ0 hL sc G W Mv hM i hi`. Establish `hV` using `node_isV G hL (X := .core i) hi`. Establish `hsd : IsSelfDualC (G.V (.core i)) (G.Λ (.core i))` using `hV.sd`. Take `⟨hsd', hstab, hcong⟩` from `GlobalTheory.T.polarisationTwist_lattice_selfDual_same_stabilisers D (G.V (.core i)) (G.Λ (.core i)) hsd i`. Establish `hRL` using `GlobalTheory.T.selfDualLattice_changeOfLattice_laws D`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `hRL.1 _ _ hsd'`. Conclude with `⟨r, hr⟩`. Introduce `r hr v Mo`. Establish `hsdS : IsSelfDualC (gridStage G v i r Mo).V (gridStage G v i r Mo).Λ` using `by show IsSelfDualC r.sp (GlobalTheory.AdelicU.frameLat r.sp)`.
+
+Rewrite using `[hr]`. Conclude with `hsd'`. Establish `hJ : (gridStage G v i r Mo).J = Lev.levA (gridStage G v i r Mo).V (congLev D.sp.cm (gridStage G v i r Mo).V.gram (gridStage G v i r Mo).Λ G.modul)` using `by show lev G (.core i) = Lev.levA r.sp (congLev D.sp.cm r.sp.gram (GlobalTheory.AdelicU.frameLat r.sp) G.modul)`. Rewrite using `[hr]`. Conclude with `(congrArg (Lev.levA (G.V (.core i))) (hcong G.modul)).symm`.
+
+Take `⟨hfin, hopen, hst, hoff, hsph, hsplit⟩` from `GlobalTheory.T.congruenceSubgroup_level_member_clauses D (gridCom W) (gridStage G v i r Mo) G.modul (GlobalTheory.ChiGrid.Places.modul_ne_bot _ _) (fun Q hQ' => under_mem_of_modul_le G.pl sc Q hQ') hsdS hJ`. Establish `hw : GlobalTheory.Cusp.wittIndex r.sp = GlobalTheory.Cusp.wittIndex (G.V (.core i))` using `((hRL.2.1 (G.V (.core i)) r W.θ _ Mo Set.univ).2.2.2).1`. Establish `hwle : GlobalTheory.Cusp.wittIndex (G.V (.core i)) ≤ Node.neg D.R.m (.core i)` using `by haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Establish `hpar` using `GlobalTheory.IndefiniteRowSideFullHecke.WittIndexParallel.parallelSig_of_sigOK hV.sigOK (fun τ => hV.sig τ)`. Take `⟨U, hU, e⟩` from `(GlobalTheory.Cusp.isGreatest_wittIndex ((G.V (.core i)) : HSpace D.host.E)).1`.
+
+Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Establish `h1` using `GlobalTheory.ParallelWitt.finrank_le (E := D.host.E) (G.V (.core i)) τ (hpar τ) U (fun x hx y hy => by`. Use `hU hy` as an intermediate fact. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp, Submodule.mem_iInf, LinearMap.mem_ker] at this`. Conclude with `this x hx)`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `{ rank := hV.rank sigOK := hV.sigOK witt := by`. Rewrite using `[show (gridStage G v i r Mo).V = r.sp from rfl, hw]`. Use `lt_of_le_of_lt hwle ?_` and prove the remaining obligations. Establish `h3` using `D.R.three_m_lt_t`.
+
+Establish `h4` using `D.R.rank_add_five_le`. Establish `h5` using `D.R.m_add_three_le_k`. Simplify using `only [Node.neg, gridCom, sLen]`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+
+Use `selfDual := hsdS`. Use `fin := hfin`. Use `isOpen := hopen`. Use `stab := hst`. Use `off := hoff`.
+
+Use `sph := hsph`. Use `split := hsplit`. Use `haar := (v i).haar`. Use `fund := (v i).fund }`.
+-/
 theorem stageOK : StageOK := by
   intro D hQ T L μ0 hL sc G W Mv hM i hi
   have hV := node_isV G hL (X := .core i) hi

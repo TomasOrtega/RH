@@ -20,6 +20,9 @@ def Match (σ : E ≃ₐ[k] E) (μE : Measure (GL (Fin n) E)) (μk : Measure (GL
   ∀ (γ : GL (Fin n) k) (μγ : Measure (Subgroup.centralizer {γ})),
     IsRegSemisimple γ → (¬ ∃ δ : GL (Fin n) E, IsNormOf σ δ γ) → μγ.IsHaarMeasure → orbIntegralC μk γ μγ f = 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ _ _ _ => by simp [twOrbIntegralC, orbIntegralC, quotIntegral], fun _ _ _ _ _ => by simp [orbIntegralC, quotIntegral]⟩`.
+-/
 example (σ : E ≃ₐ[k] E) (μE : Measure (GL (Fin n) E)) (μk : Measure (GL (Fin n) k)) : Match σ μE μk 0 0 :=
   ⟨fun _ _ _ _ _ _ _ _ _ _ => by simp [twOrbIntegralC, orbIntegralC, quotIntegral],
     fun _ _ _ _ _ => by simp [orbIntegralC, quotIntegral]⟩

@@ -6,6 +6,9 @@ import GroundTheory.ArithmeticGeometry.SchemeCohomology.ProperCohomology.ChowSeg
 open CategoryTheory Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GroundTheory.Arith.SchemeCoh GroundTheory.Arith.SchemeCoh.ProjSpace
 
+/- English proof (translation)
+Use `haveI : MorphismProperty.IsStableUnderComposition (@IsClosedImmersion : MorphismProperty Scheme.{0}) := ⟨fun f g hf hg => by haveI := hf haveI := hg`. Conclude with `IsClosedImmersion.comp f g⟩`. Establish `hmap : IsClosedImmersion (pullback.map (i ≫ toSpecBase R N) (j ≫ toSpecBase R M) (toSpecBase R N) (toSpecBase R M) i j (𝟙 _) ((Category.comp_id _).trans rfl) ((Category.comp_id _).trans rfl))` using `MorphismProperty.pullback_map (P := (@IsClosedImmersion : MorphismProperty Scheme.{0})) inferInstance inferInstance rfl rfl`. Use `⟨pullback.map (i ≫ toSpecBase R N) (j ≫ toSpecBase R M) (toSpecBase R N) (toSpecBase R M) i j (𝟙 _) ((Category.comp_id _).trans rfl) ((Category.comp_id _).trans rfl) ≫ segre R N M, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, segre_toSpecBase, pullback.lift_fst_assoc, Category.assoc]`.
+-/
 private theorem exists_closed_prod {R : Type} [CommRing R] {X Y : Scheme.{0}} (N M : ℕ)
     (i : X ⟶ projectiveSpace R N) (j : Y ⟶ projectiveSpace R M)
     [IsClosedImmersion i] [IsClosedImmersion j] :
@@ -31,6 +34,11 @@ private theorem exists_closed_prod {R : Type} [CommRing R] {X Y : Scheme.{0}} (N
     inferInstance, ?_⟩
   rw [Category.assoc, segre_toSpecBase, pullback.lift_fst_assoc, Category.assoc]
 
+/- English proof (translation)
+Introduce `R _ X Y p q hp`. Take `⟨N, i, hi, rfl⟩` from `hp`. Establish `hprop : IsProper (PSpace.str R N)` using `inferInstanceAs (IsProper (toSpecBase R N))`. Use `⟨?_, fun j hj => ⟨N, j ≫ i, inferInstance, by simp⟩, inferInstance⟩` and prove the remaining obligations. Introduce and unpack `⟨M, j, hj, rfl⟩`.
+
+Take `⟨h, hc, he⟩` from `exists_closed_prod (R := R) N M i j`. Conclude with `⟨_, h, hc, he⟩`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.G.projProd :
     UpperTheory.Gal.KunnethLefschetz.G.ProjProd := by
   intro R _ X Y p q hp

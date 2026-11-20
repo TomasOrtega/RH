@@ -36,14 +36,23 @@ def conjInv (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (h : J =
       Matrix.ext fun _ _ => Formalism.L2.Theta.cA_cA _
     rw [e]; exact hu⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext (Matrix.ext fun _ _ => Formalism.L2.Theta.cA_cA _))`.
+-/
 theorem conjInv_conjU (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (h : J = (-1 : D.host.E) • V.gram)
     (g : GA D V) : conjInv V h (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V (-1) h g) = g :=
   Subtype.ext (Units.ext (Matrix.ext fun _ _ => Formalism.L2.Theta.cA_cA _))
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext (Matrix.ext fun _ _ => Formalism.L2.Theta.cA_cA _))`.
+-/
 theorem conjU_conjInv (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (h : J = (-1 : D.host.E) • V.gram)
     (u : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J) : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V (-1) h (conjInv V h u) = u :=
   Subtype.ext (Units.ext (Matrix.ext fun _ _ => Formalism.L2.Theta.cA_cA _))
 
+/- English proof (translation)
+Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp continuous_subtype_val).matrix_map (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conj D)`. Conclude with `(Units.continuous_coe_inv.comp continuous_subtype_val).matrix_map (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conj D)`.
+-/
 theorem continuous_conjInv (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (h : J = (-1 : D.host.E) • V.gram) :
     Continuous (conjInv V h) := by
   refine Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _
@@ -59,6 +68,9 @@ def conjHomeo (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (h : J
   continuous_toFun := GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conjU V (-1) h
   continuous_invFun := continuous_conjInv V h
 
+/- English proof (translation)
+Use `haveI : BorelSpace (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J) := ⟨rfl⟩`. Conclude with `(conjHomeo V h).measurableEmbedding`.
+-/
 theorem measurableEmbedding_conjU (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E}
     (h : J = (-1 : D.host.E) • V.gram) : MeasurableEmbedding (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V (-1) h) := by
   haveI : BorelSpace (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J) := ⟨rfl⟩
@@ -70,6 +82,9 @@ namespace GlobalTheory.ModGrowth
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨C₁, h₁⟩` from `GlobalTheory.T.infiniteHeight_transposeGramUnitary_le D θ hθ X e hJ`. Take `⟨C₂, h₂⟩` from `GlobalTheory.T.finprod_finiteHeight_transposeGramUnitary_le D X e hJ`. Use `⟨C₁ * C₂, fun h => ?_⟩` and prove the remaining obligations. Use `show (∏ w, GlobalTheory.AdelicU.htInf D.host.F w (Formalism.UG.bc (GlobalTheory.AdelicU.compInf D.host.F D.host.E w) (kapX X e hJ h).1)) * ∏ᶠ v, GlobalTheory.AdelicU.htFin D.host.F v (Formalism.UG.bc (GlobalTheory.AdelicU.compFin D.host.F D.host.E v) (kapX X e hJ h).1) ≤ C₁ * C₂ …`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ht_kapX_le (θ : InfFam D) (hθ : IsInfFam θ) (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d)
     {J : Matrix (Fin d) (Fin d) D.host.E} (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) :
     ∃ C : NNReal, ∀ h : GA D X, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ht (kapX X e hJ h) ≤ C * GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ X h := by
@@ -89,6 +104,17 @@ namespace GlobalTheory.ModGrowth
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
 
+/- English proof (translation)
+Introduce `D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hO hH _ Φ₀ Φ₀D hD hC hB`. Take `⟨C, k, hCk⟩` from `hB`. Take `⟨C', hC'⟩` from `ht_kapX_le θ hθ X e hO.JX`. Establish `hcm` using `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm`. Establish `hvol : ν₁ 𝓕₁ < ⊤` using `GlobalTheory.Mem.VolFin.finVol _ _ D.sp.cm.sig hcm.1 W₁.rank W₁.gram (hcm.2 W₁) ν₁ hH.1 𝓕₁ hH.2`.
+
+Establish `hemb` using `measurableEmbedding_conjU W₁ hO.JW₁`. Establish `key : ∀ g h, thetaKO ωB g h Φ₀ = theta om' Φ₀D (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) hO.JW₁ g) (kapX X e hO.JX h)` using `fun g h => (hO.theta_eq_B hD g h).symm`. Use `⟨k, max C 0 * (C' : ℝ) ^ k * ν₁.real 𝓕₁, fun h => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hi` using `hC (kapX X e hO.JX h)`. Rewrite `hi` using `[hO.measW₁, hO.domW₁, hemb.integrableOn_map_iff, Set.preimage_image_eq _ hemb.injective]`.
+
+Establish `hf : (fun g => thetaKO ωB g h Φ₀) = (fun u => theta om' Φ₀D u (kapX X e hO.JX h)) ∘ GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) hO.JW₁`. Use function extensionality and compare the values at `fun g => key g h`. Rewrite using `[hf]`. Conclude with `hi`. Establish `hht : (ht (kapX X e hO.JX h) : ℝ) ≤ (C' : ℝ) * (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ X h : ℝ)`.
+
+Conclude with `hC' h` after adjusting the coercions. Establish `hb : ∀ g ∈ 𝓕₁, ‖‖thetaKO ωB g h Φ₀‖‖ ≤ max C 0 * ((C' : ℝ) * (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ X h : ℝ)) ^ k`. Introduce `g _`. Rewrite using `[norm_norm, key]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hI` using `norm_setIntegral_le_of_norm_le_const hvol hb`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem modInt_of_bound : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))

@@ -63,9 +63,15 @@ open Classical in
 def smoothIdeal {F : Type} [Field F] [NumberField F] (𝔠 I : Ideal (𝓞 F)) : ℚ :=
   1 - if 𝔠 ∣ I then (Ideal.absNorm 𝔠 : ℚ) else 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 1, differentiable_const _, fun s _ => by simpa using hasSum_fintype (fun _ : Unit => (1 : ℂ)), fun _ => ⟨1, by simp⟩⟩`.
+-/
 example : IsEntRat (fun _ : Unit => 1) (fun _ => 1) :=
   ⟨fun _ => 1, differentiable_const _, fun s _ => by simpa using hasSum_fintype (fun _ : Unit => (1 : ℂ)), fun _ => ⟨1, by simp⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, by simp, by simp⟩`.
+-/
 example : IsSimplicial (Set.Ioi (0 : ℚ)) {1} :=
   ⟨by simp, by simp, by simp⟩
 

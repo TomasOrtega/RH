@@ -19,6 +19,17 @@ variable {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} [NeZero n] {ST SG Q 
 def qdPair {R : Type} [CommRing R] (k : GL (Fin n) R) : Matrix (Fin n) (Fin n) (R × R) :=
   fun i j => ((k : Matrix (Fin n) (Fin n) R) i j, ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) j i)
 
+/- English proof (translation)
+Establish `h1 : (k : Matrix (Fin n) (Fin n) R) * ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = 1` using `Units.mul_inv k`. Use extensionality with `i j`. Use `show (∑ l, ((k : Matrix (Fin n) (Fin n) R) i l, ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) l i) * (((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) l j, ((k⁻¹⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) j l)).1 = _`. Rewrite using `[Prod.fst_sum]`. Use `congrArg (fun A : Matrix (Fin n) (Fin n) R => A i j) h1` as an intermediate fact.
+
+Simplify using `only [Matrix.mul_apply] at this`. Rewrite `this`, the goal using `[Matrix.one_apply]`. Simplify using `only [Prod.fst_mul]`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> rfl`.
+
+Use `show (∑ l, ((k : Matrix (Fin n) (Fin n) R) i l, ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) l i) * (((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) l j, ((k⁻¹⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) j l)).2 = _`. Rewrite using `[Prod.snd_sum, inv_inv]`. Use `congrArg (fun A : Matrix (Fin n) (Fin n) R => A j i) h1` as an intermediate fact. Simplify using `only [Matrix.mul_apply] at this`. Simplify using `only [Prod.snd_mul]`.
+
+Rewrite `this`, the goal using `[Matrix.one_apply]`. Rewrite using `[show (∑ l, ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) l i * (k : Matrix (Fin n) (Fin n) R) j l) = ∑ l, (k : Matrix (Fin n) (Fin n) R) j l * ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) l i from Finset.sum_congr rfl fun l _ => mul_comm _ _, this]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg (Ne.symm h), if_neg h]`. Both sides reduce to the same expression.
+-/
 theorem qdPair_mul_inv {R : Type} [CommRing R] (k : GL (Fin n) R) : qdPair k * qdPair k⁻¹ = 1 := by
   have h1 : (k : Matrix (Fin n) (Fin n) R) * ((k⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = 1 := Units.mul_inv k
   ext i j
@@ -51,12 +62,18 @@ def qdPairGL {R : Type} [CommRing R] (k : GL (Fin n) R) : GL (Fin n) (R × R) :=
 def qdLift (q : QLoc hc n Q Θ) (P : Q) (k : GL (Fin n) ((qv F P.1).adicCompletion F)) : GL (Fin n) (E ⊗[F] (qv F P.1).adicCompletion F) :=
   bc (q.sp P).symm.toRingHom (qdPairGL k)
 
+/- English proof (translation)
+Apply `(q.sp P).injective` to reduce the goal to its premises. Rewrite using `[q.sp_sig, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem qdf_sig_symm (q : QLoc hc n Q Θ) (P : Q) (a b : (qv F P.1).adicCompletion F) :
     sigR hc.sig ((qv F P.1).adicCompletion F) ((q.sp P).symm (a, b)) = (q.sp P).symm (b, a) := by
   apply (q.sp P).injective
   rw [q.sp_sig, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]
   rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show ((q.sp P) ((q.sp P).symm (qdPair k i j))).1 = _`. Rewrite using `[RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem qdLift_fst (q : QLoc hc n Q Θ) (P : Q) (k : GL (Fin n) ((qv F P.1).adicCompletion F)) :
     bc ((RingHom.fst _ _).comp (q.sp P).toRingHom) (qdLift q P k) = k := by
   apply Units.ext
@@ -65,6 +82,19 @@ theorem qdLift_fst (q : QLoc hc n Q Θ) (P : Q) (k : GL (Fin n) ((qv F P.1).adic
   rw [RingEquiv.apply_symm_apply]
   rfl
 
+/- English proof (translation)
+Introduce `P k hk`. Use `⟨qdLift q P k, ?_, ?_, qdLift_fst q P k⟩` and prove the remaining obligations. Use `show cT (sigR hc.sig ((qv F P.1).adicCompletion F)) ((qdLift q P k : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) * (1 : Matrix (Fin n) (Fin n) E).map (inclE (F := F) ((qv F P.1).adicCompletion F)) * ((qdLift q P k : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) = (1 : Matrix (Fin n) (F …`. Establish `hone : (1 : Matrix (Fin n) (Fin n) E).map (inclE (F` using `F) ((qv F P.1).adicCompletion F)) = 1 := Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hcT : cT (sigR hc.sig ((qv F P.1).adicCompletion F)) ((qdLift q P k : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) = ((qdLift q P k⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _)`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show sigR hc.sig ((qv F P.1).adicCompletion F) ((q.sp P).symm (qdPair k j i)) = (q.sp P).symm (qdPair k⁻¹ i j)`. Rewrite using `[qdf_sig_symm]`. Both sides reduce to the same expression. Rewrite using `[hone, mul_one, hcT]`.
+
+Rewrite using `[← Units.val_mul, qdLift, qdLift, ← map_mul]`. Establish `: qdPairGL k⁻¹ * qdPairGL k = 1` using `Units.ext (by`. Establish `h` using `qdPair_mul_inv k⁻¹`. Rewrite `h` using `[inv_inv]`. Conclude with `h)`.
+
+Rewrite using `[this, map_one, Units.val_one]`. Rewrite using `[rll_locL_std, Formalism.UG.P.afsplit_stab_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `show (q.sp P).symm (qdPair k i j) ∈ Formalism.BasicNotions.intV E (qv F P.1)`. Rewrite using `[q.sp_int, RingEquiv.apply_symm_apply]`.
+
+Conclude with `⟨hk.1 i j, hk.2 j i⟩`. Use `show (q.sp P).symm (qdPair k⁻¹ i j) ∈ Formalism.BasicNotions.intV E (qv F P.1)`. Rewrite using `[q.sp_int, RingEquiv.apply_symm_apply]`. Use `⟨hk.2 i j, ?_⟩` and prove the remaining obligations. Establish `e : (k⁻¹⁻¹ : GL (Fin n) ((qv F P.1).adicCompletion F)) = k` using `inv_inv k`.
+
+Use `show ((↑(k⁻¹⁻¹) : Matrix (Fin n) (Fin n) ((qv F P.1).adicCompletion F)) j i) ∈ _`. Rewrite using `[e]`. Conclude with `hk.1 j i`.
+-/
 theorem qdf_lift (q : QLoc hc n Q Θ) : QLift q := by
   intro P k hk
   refine ⟨qdLift q P k, ?_, ?_, qdLift_fst q P k⟩

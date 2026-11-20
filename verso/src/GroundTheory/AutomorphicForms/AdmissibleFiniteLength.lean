@@ -17,6 +17,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ} {α : Type*} [LinearOrder α] {β : Fin n → α}
   {V : Type*} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin n) F) V}
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [mem_fixedVectors]`. Use `forall₂_congr fun y hy => ?_` and prove the remaining obligations. Rewrite using `[jacquetRep, twist_apply, MonoidHom.comp_apply, invSqrtModular_leviIncl_of_mem y (congruenceSubgroup_le F n m (Subgroup.mem_subgroupOf.1 hy)), one_smul]`.
+-/
 theorem fixedVectors_jacquetRep_congruenceSubgroup (m : ℕ) :
     fixedVectors (jacquetRep F n β π) ((congruenceSubgroup F n m).subgroupOf (levi F n β)) =
       fixedVectors (jacquetAction F n β π) ((congruenceSubgroup F n m).subgroupOf (levi F n β)) := by
@@ -27,6 +30,11 @@ theorem fixedVectors_jacquetRep_congruenceSubgroup (m : ℕ) :
     invSqrtModular_leviIncl_of_mem y (congruenceSubgroup_le F n m (Subgroup.mem_subgroupOf.1 hy)),
     one_smul]
 
+/- English proof (translation)
+Use `⟨isSmooth_jacquetRep π hπ.1, fun L hLc hLo => ?_⟩` and prove the remaining obligations. Take `⟨m₁, hm₁⟩` from `exists_subgroupOf_congruenceSubgroup_subset (hLo.mem_nhds L.one_mem)`. Use `set m := max m₁ 1`. Establish `hle : (congruenceSubgroup F n m).subgroupOf (levi F n β) ≤ L` using `fun x hx => hm₁ (Subgroup.mem_subgroupOf.2 (congruenceSubgroup_antitone F n (le_max_left _ _) (Subgroup.mem_subgroupOf.1 hx)))`. Establish `: FiniteDimensional ℂ (fixedVectors π (congruenceSubgroup F n m))` using `hπ.2 _ (isCompact_congruenceSubgroup F n m) (isOpen_congruenceSubgroup F n m)`.
+
+Establish `hfin : FiniteDimensional ℂ (fixedVectors (jacquetRep F n β π) ((congruenceSubgroup F n m).subgroupOf (levi F n β)))`. Rewrite using `[fixedVectors_jacquetRep_congruenceSubgroup]`. Conclude with `Module.Finite.of_surjective _ (jacquetFixedMap_surjective_congruenceSubgroup β hπ (le_max_right m₁ 1))`. Conclude with `Submodule.finiteDimensional_of_le (fixedVectors_antitone _ hle)`.
+-/
 theorem isAdmissible_jacquetRep (hπ : IsAdmissible π) : IsAdmissible (jacquetRep F n β π) := by
   refine ⟨isSmooth_jacquetRep π hπ.1, fun L hLc hLo => ?_⟩
   obtain ⟨m₁, hm₁⟩ := exists_subgroupOf_congruenceSubgroup_subset (hLo.mem_nhds L.one_mem)

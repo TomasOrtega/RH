@@ -7,6 +7,31 @@ open GlobalTheory.Sl2Ad
 
 namespace GlobalTheory.Sl2Ad
 
+/- English proof (translation)
+Introduce `K _ _ Γ _ ρ hirr y hy hstab hform`. Establish `hq : y 0 * y 1 + y 2 * y 2 = 0`. Rewrite `hform` using `[form_apply]`. Establish `h2 : (2 : K) * (y 0 * y 1 + y 2 * y 2) = 0` using `by linear_combination hform`. Break down `mul_eq_zero.mp h2 with h | h` into its components or cases.
+
+Conclude with `absurd h two_ne_zero`. Conclude with `h`. Establish `hconj : ∀ g, ∃ c : K, ofCoord y * (ρ g : Matrix (Fin 2) (Fin 2) K) = (ρ g : Matrix (Fin 2) (Fin 2) K) * (c • ofCoord y)`. Introduce `g`. Take `⟨c, hc⟩` from `hstab g⁻¹`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h1` using `coord_conj_ofCoord (ρ g⁻¹) y`. Rewrite `h1` using `[hc]`. Establish `htr : ((ρ g⁻¹ : Matrix (Fin 2) (Fin 2) K) * ofCoord y * (((ρ g⁻¹)⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K)).trace = 0`. Rewrite using `[trace_conj, trace_ofCoord]`.
+
+Establish `h2` using `ofCoord_coord htr`. Rewrite `h2` using `[h1]`. Establish `h3 : ofCoord (c • y) = c • ofCoord y`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [ofCoord]`. Rewrite `h2` using `[h3, map_inv, inv_inv]`.
+
+Establish `hu : (ρ g : Matrix (Fin 2) (Fin 2) K) * (((ρ g)⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite using `[h2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hu, Matrix.one_mul]`. Set `Wk : Submodule K (Fin 2 → K)` to `LinearMap.ker (Matrix.mulVecLin (ofCoord y))`. Establish `hmem : ∀ x, x ∈ Wk ↔ ofCoord y *ᵥ x = 0` using `fun x => by`.
+
+Simplify using `[Wk, LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Establish `hinv : IsInv ρ Wk`. Introduce `g x hx`. Rewrite `hx`, the goal using `[hmem]`. Take `⟨c, hc⟩` from `hconj g`.
+
+Establish `hs : (c • ofCoord y) *ᵥ x = c • (ofCoord y *ᵥ x)`. Apply the tactic sequence `ext i; fin_cases i <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two] <;> ring`. Rewrite using `[Matrix.mulVec_mulVec, hc, ← Matrix.mulVec_mulVec, hs, hx, smul_zero, Matrix.mulVec_zero]`. Establish `hy0 : ∀ a b c : K, a = 0 → b = 0 → c = 0 → y 0 = a → y 1 = b → y 2 = c → False`. Introduce `a b c ha hb hc h0 h1 h2`.
+
+Apply `hy` to reduce the goal to its premises. Use extensionality with `i`. Use `fin_cases i`. Simplify `h0` using `[ha]`. Simplify `h1` using `[hb]`.
+
+Simplify `h2` using `[hc]`. Break down `hirr.2.2 Wk le_top hinv with h | h` into its components or cases. Establish `hv1 : (![y 0, -y 2] : Fin 2 → K) ∈ Wk`. Apply the tactic sequence `rw [hmem]; ext i; fin_cases i <;> simp [ofCoord, Matrix.mulVec, dotProduct, Fin.sum_univ_two] <;> first | linear_combination | linear_combination hq | linear_combination -hq`. Establish `hv2 : (![y 2, y 1] : Fin 2 → K) ∈ Wk`.
+
+Apply the tactic sequence `rw [hmem]; ext i; fin_cases i <;> simp [ofCoord, Matrix.mulVec, dotProduct, Fin.sum_univ_two] <;> first | linear_combination | linear_combination hq | linear_combination -hq`. Rewrite `hv1`, `hv2` using `[h, Submodule.mem_bot]`. Establish `a0` using `congrFun hv1 0`. Establish `a1` using `congrFun hv1 1`. Establish `b1` using `congrFun hv2 1`.
+
+Simplify using `at a0 a1 b1`. Conclude with `hy0 0 0 0 rfl rfl rfl a0 b1 a1`. Establish `hv1 : (Pi.single 0 1 : Fin 2 → K) ∈ Wk` using `h ▸ Submodule.mem_top`. Establish `hv2 : (Pi.single 1 1 : Fin 2 → K) ∈ Wk` using `h ▸ Submodule.mem_top`. Rewrite `hv1`, `hv2` using `[hmem]`.
+
+Establish `a0` using `congrFun hv1 0`. Establish `a1` using `congrFun hv1 1`. Establish `b0` using `congrFun hv2 0`. Simplify using `[ofCoord, Matrix.mulVec, dotProduct, Fin.sum_univ_two] at a0 a1 b0`. Conclude with `hy0 0 0 0 rfl rfl rfl b0 a1 a0`.
+-/
 theorem form_ne_zero_of_isIrr : ∀ {K : Type} [Field K] [CharZero K] {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin 2) K), IsIrr ρ →
     ∀ y : Fin 3 → K, y ≠ 0 → (∀ g, ∃ c : K, ad (ρ g) *ᵥ y = c • y) → form y y ≠ 0 := by
   intro K _ _ Γ _ ρ hirr y hy hstab hform

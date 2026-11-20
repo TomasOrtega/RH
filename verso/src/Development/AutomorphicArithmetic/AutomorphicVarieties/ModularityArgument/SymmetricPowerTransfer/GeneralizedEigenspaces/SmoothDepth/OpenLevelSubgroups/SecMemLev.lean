@@ -18,13 +18,26 @@ section SlopeTestRemainingChoices
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+The claim follows from `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hy w) rfl)`.
+-/
 private theorem away_one {w : Plc L} {y : UA L n} (hy : y ∈ away n w) : cLoc w y = 1 :=
   MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hy w) rfl)
 
+/- English proof (translation)
+The claim follows from `((Sig.finFacts _ (iw w)).2.2.2.2.2 n).1 x`.
+-/
 private theorem finOrb (w : Plc L) (x : GL (Fin n) (Kw w)) :
     UpperTheory.V.AlgebraTools.FinOrb ((iw w).J n) ((iw w).J n) x :=
   ((Sig.finFacts _ (iw w)).2.2.2.2.2 n).1 x
 
+/- English proof (translation)
+Take `⟨h1, h2, -, -⟩` from `secSpec L n w (hP.split w (Finset.mem_coe.2 hw))`. Establish `hK : secW n w j ∈ Kall L n` using `((factor L n w).2.2.2.2.1 _ (h1 j)).2 (by`. Establish `hKO : GlobalTheory.SplitWeil.KO (w.adicCompletion L) (Fin n) = GlobalTheory.LFun.KGL w n` using `GlobalTheory.SmGL.SphCompletion.KO_completion w n`. Rewrite using `[h2, ← hKO]`. Conclude with `((Sig.finFacts _ (iw w)).2.2.2.2.2 n).2.2.2 hj)`.
+
+Use `Subgroup.mem_inf.2 ⟨hS w hw ⟨h1 j, hK⟩, ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_iInf.2 fun w' => Subgroup.mem_iInf.2 fun hw' => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap]`. Distinguish the cases in `e : w' = w`. Substitute `e` using the available equality.
+
+Rewrite using `[h2]`. Conclude with `hj`. Establish `hne : w.under (𝓞 (Lp L)) ≠ w'.under (𝓞 (Lp L))` using `fun h => e (hP.inj (Finset.mem_coe.2 hw') (Finset.mem_coe.2 hw) h.symm)`. Rewrite using `[away_one ((factor L n w').2.2.1 w hne (h1 j))]`. Conclude with `one_mem _`.
+-/
 private theorem sec_mem_lev {U : Subgroup (UA L n)} {S : Finset (Plc L)} (hP : Places (S : Set (Plc L)))
     (hS : ∀ w ∈ S, locU n w ⊓ Kall L n ≤ U) {w : Plc L} (hw : w ∈ S) {j : GL (Fin n) (Kw w)}
     (hj : j ∈ (iw w).J n) : secW n w j ∈ lev U S iw := by
@@ -45,6 +58,9 @@ private theorem sec_mem_lev {U : Subgroup (UA L n)} {S : Finset (Plc L)} (hP : P
     rw [away_one ((factor L n w').2.2.1 w hne (h1 j))]
     exact one_mem _
 
+/- English proof (translation)
+Use `haveI : Finite (MulAction.orbit ((iw w).J n) ((Sig.dg d : GL (Fin n) (Kw w)) : GL (Fin n) (Kw w) ⧸ (iw w).J n)) := finOrb w _`. Use `haveI := Fintype.ofFinite (MulAction.orbit ((iw w).J n) ((Sig.dg d : GL (Fin n) (Kw w)) : GL (Fin n) (Kw w) ⧸ (iw w).J n))`. Simplify using `only [InSpan, op, UpperTheory.V.Hi.dc, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun q _ => Submodule.subset_span ⟨secW n w (q : GL (Fin n) (Kw w) ⧸ (iw w).J n).out, (secSpec L n w hw).1 _, rfl⟩`.
+-/
 private theorem op_inSpan {w : Plc L} (hw : IsSplitAt w) (d : Fin n → (Kw w)ˣ) (φ : UA L n → V) :
     InSpan w φ (op w (iw w) d φ) := by
   haveI : Finite (MulAction.orbit ((iw w).J n) ((Sig.dg d : GL (Fin n) (Kw w)) : GL (Fin n) (Kw w) ⧸ (iw w).J n)) :=
@@ -54,18 +70,33 @@ private theorem op_inSpan {w : Plc L} (hw : IsSplitAt w) (d : Fin n → (Kw w)ˣ
   exact Submodule.sum_mem _ fun q _ => Submodule.subset_span
     ⟨secW n w (q : GL (Fin n) (Kw w) ⧸ (iw w).J n).out, (secSpec L n w hw).1 _, rfl⟩
 
+/- English proof (translation)
+Introduce `j hj` and use `funext fun g => hφ.level _ (sec_mem_lev hP hS hw hj) g`.
+-/
 private theorem fix_of_AF {R : Representation ℂ (InfinitePlace L → GL (Fin n) ℂ) V} {U : Subgroup (UA L n)}
     {S : Finset (Plc L)} (hP : Places (S : Set (Plc L))) (hS : ∀ w ∈ S, locU n w ⊓ Kall L n ≤ U)
     {w : Plc L} (hw : w ∈ S) {φ : UA L n → V} (hφ : IsAF R (lev U S iw) φ) :
     φ ∈ UpperTheory.V.Hi.fixd ((rightReg ℂ (UA L n) V).comp (secW n w)) ((iw w).J n) := fun j hj =>
   funext fun g => hφ.level _ (sec_mem_lev hP hS hw hj) g
 
+/- English proof (translation)
+The claim follows from `(UpperTheory.V.AlgebraTools.hkApply ℂ _ _ _ _ _ x (finOrb w x)).1 v`.
+-/
 private theorem hk_val {w : Plc L} (x : GL (Fin n) (Kw w))
     (v : UpperTheory.V.Hi.fixd ((rightReg ℂ (UA L n) V).comp (secW n w)) ((iw w).J n)) :
     (UpperTheory.V.AlgebraTools.hk ((rightReg ℂ (UA L n) V).comp (secW n w)) ((iw w).J n) x v : UA L n → V) =
       UpperTheory.V.Hi.dc ((rightReg ℂ (UA L n) V).comp (secW n w)) ((iw w).J n) ((iw w).J n) x v :=
   (UpperTheory.V.AlgebraTools.hkApply ℂ _ _ _ _ _ x (finOrb w x)).1 v
 
+/- English proof (translation)
+Establish `hsp` using `hP.split w (Finset.mem_coe.2 hw)`. Take `⟨-, hc, hsec, -⟩` from `secSpec L n w hsp`. Establish `hA : IsAF R (lev U S iw ⊓ away n w) φ` using `⟨hφ.left, hφ.inf, fun u hu g => hφ.level u hu.1 g⟩`. Establish `hB` using `(spanKeep L n V w φ _ (op_inSpan hsp d φ)).2.1 R _ inf_le_right hA`. Establish `hfix : op w (iw w) d φ ∈ UpperTheory.V.Hi.fixd ((rightReg ℂ (UA L n) V).comp (secW n w)) ((iw w).J n)`.
+
+Establish `h` using `(UpperTheory.V.AlgebraTools.hk ((rightReg ℂ (UA L n) V).comp (secW n w)) ((iw w).J n) (Sig.dg d) ⟨φ, fix_of_AF hP hS hw hφ⟩).2`. Rewrite `h` using `[hk_val]`. Then use the resulting hypothesis. Use `⟨hB.left, hB.inf, fun a ha g => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `(factor L n w).2.1 a`. Establish `hxJ : cLoc w x ∈ (iw w).J n`.
+
+Establish `h : cLoc w (x * y) ∈ (iw w).J n` using `Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 ha.2 w) hw)`. Rewrite `h` using `[map_mul, away_one hy, mul_one]`. Then use the resulting hypothesis. Establish `hxA : x ∈ lev U S iw`. Establish `h` using `sec_mem_lev hP hS hw hxJ`. Rewrite `h` using `[hsec x hx]`. Then use the resulting hypothesis.
+
+Establish `hyA : y ∈ lev U S iw ⊓ away n w` using `⟨by simpa using mul_mem (inv_mem hxA) ha, hy⟩`. Rewrite using `[← mul_assoc, hB.level y hyA]`. Establish `h` using `congrFun (hfix _ hxJ) g`. Rewrite using `[← hsec x hx]`. Conclude with `h`.
+-/
 private theorem op_keep {R : Representation ℂ (InfinitePlace L → GL (Fin n) ℂ) V} {U : Subgroup (UA L n)}
     {S : Finset (Plc L)} (hP : Places (S : Set (Plc L))) (hS : ∀ w ∈ S, locU n w ⊓ Kall L n ≤ U)
     {w : Plc L} (hw : w ∈ S) (d : Fin n → (Kw w)ˣ) {φ : UA L n → V} (hφ : IsAF R (lev U S iw) φ) :
@@ -95,6 +126,11 @@ private theorem op_keep {R : Representation ℂ (InfinitePlace L → GL (Fin n) 
   rw [← hsec x hx]
   exact h
 
+/- English proof (translation)
+Use `haveI : Finite (MulAction.orbit ((iw w).J n) ((Sig.dg d : GL (Fin n) (Kw w)) : GL (Fin n) (Kw w) ⧸ (iw w).J n)) := finOrb w _`. Use `haveI := Fintype.ofFinite (MulAction.orbit ((iw w).J n) ((Sig.dg d : GL (Fin n) (Kw w)) : GL (Fin n) (Kw w) ⧸ (iw w).J n))`. Use `haveI : Finite (MulAction.orbit ((iw w').J n) ((Sig.dg d' : GL (Fin n) (Kw w')) : GL (Fin n) (Kw w') ⧸ (iw w').J n)) := finOrb w' _`. Use `haveI := Fintype.ofFinite (MulAction.orbit ((iw w').J n) ((Sig.dg d' : GL (Fin n) (Kw w')) : GL (Fin n) (Kw w') ⧸ (iw w').J n))`. Simplify using `only [op, UpperTheory.V.Hi.dc, finsum_eq_sum_of_fintype]`.
+
+Use `Commute.sum_left _ _ _ fun q _ => Commute.sum_right _ _ _ fun q' _ => ?_` and prove the remaining obligations. Establish `hc` using `(factor L n w).1 _ ((secSpec L n w hw).1 (q : GL (Fin n) (Kw w) ⧸ (iw w).J n).out) _ ((factor L n w).2.2.1 w' hne ((secSpec L n w' hw').1 (q' : GL (Fin n) (Kw w') ⧸ (iw w').J n).out))`. Use `show _ * _ = _ * _`. Simplify using `only [MonoidHom.comp_apply]`. Rewrite using `[← map_mul, ← map_mul, hc]`.
+-/
 private theorem op_comm {w w' : Plc L} (hw : IsSplitAt w) (hw' : IsSplitAt w')
     (hne : w'.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L))) (d : Fin n → (Kw w)ˣ) (d' : Fin n → (Kw w')ˣ) :
     Commute (op (V := V) w (iw w) d) (op (V := V) w' (iw w') d') := by
@@ -112,6 +148,13 @@ private theorem op_comm {w w' : Plc L} (hw : IsSplitAt w) (hw' : IsSplitAt w')
   simp only [MonoidHom.comp_apply]
   rw [← map_mul, ← map_mul, hc]
 
+/- English proof (translation)
+Establish `hmem : Sig.dg d ∈ (iw w).J n` using `Subgroup.mem_sup_left (Subgroup.mem_sup_right (Subgroup.mem_map.2 ⟨d, fun i _ => hd i, rfl⟩))`. Establish `hf : UpperTheory.V.AlgebraTools.FinOrb ((iw w).J n) ((iw w).J n) (1 : GL (Fin n) (Kw w))` using `finOrb w 1`. Use `set ρ := (rightReg ℂ (UA L n) V).comp (secW n w) with hρ`. Establish `e1` using `(UpperTheory.V.AlgebraTools.hkApply ℂ _ _ ρ _ _ 1 hf).2.2 (Sig.dg d) hmem 1 (one_mem _)`. Establish `e2` using `(UpperTheory.V.AlgebraTools.hkApply ℂ _ _ ρ _ _ 1 hf).2.1 {1} (fun y hy => by`.
+
+Rewrite using `[Finset.mem_singleton.1 hy]`. Conclude with `MulAction.mem_orbit_self _)`. Use the proof step `(fun q hq => by`. Take `⟨a, rfl⟩` from `hq`. Use `⟨1, ⟨Finset.mem_singleton_self _, ?_⟩, fun y hy => Finset.mem_singleton.1 hy.1⟩` and prove the remaining obligations.
+
+Conclude with `(QuotientGroup.eq.2 (by simpa using a.2))) ⟨φ, fix_of_AF hP hS hw hφ⟩`. Establish `e3` using `(UpperTheory.V.AlgebraTools.hkApply ℂ _ _ ρ _ _ (Sig.dg d) (finOrb w _)).1 ⟨φ, fix_of_AF hP hS hw hφ⟩`. Rewrite `e1` using `[mul_one, mul_one]`. Rewrite `e3` using `[e1, e2]`. Simplify using `using e3.symm`.
+-/
 private theorem op_unit {R : Representation ℂ (InfinitePlace L → GL (Fin n) ℂ) V} {U : Subgroup (UA L n)}
     {S : Finset (Plc L)} (hP : Places (S : Set (Plc L))) (hS : ∀ w ∈ S, locU n w ⊓ Kall L n ≤ U)
     {w : Plc L} (hw : w ∈ S) (d : Fin n → (Kw w)ˣ) (hd : ∀ i, d i ∈ UpperTheory.V.Hi.Uo (Kw w))
@@ -136,6 +179,15 @@ private theorem op_unit {R : Representation ℂ (InfinitePlace L → GL (Fin n) 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `L _ _ _ n V _ _ R U _ S hP hS`. Set `u : ∀ w : Plc L, (Fin n → (Kw w)ˣ) → Module.End ℂ (AF R (lev U S iw))` to `fun w d => if hw : w ∈ S then (op w (iw w) d).restrict (fun _ hφ => op_keep hP hS hw d hφ) else 0`. Establish `hu : ∀ w, w ∈ S → ∀ d (φ : AF R (lev U S iw)), ((u w d φ : AF R (lev U S iw)) : UA L n → V) = op w (iw w) d φ`. Introduce `w hw d φ`. Simplify using `only [u, dif_pos hw]`.
+
+Both sides reduce to the same expression. Use `⟨u, fun w hw d _ φ => hu w hw d φ, fun w hw d d' hd hd' => ?_, fun w hw d hd => ?_, fun w hw w' hw' hne d d' _ _ => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hu w hw, Module.End.mul_apply, hu w hw, hu w hw]`. Establish `h` using `congrArg Subtype.val (LinearMap.congr_fun ((Sig.hkMul (Kw w) (iw w) n (UA L n → V) ((rightReg ℂ (UA L n) V).comp (secW n w))).1 d d' hd hd') ⟨φ.1, fix_of_AF hP hS hw φ.2⟩)`.
+
+Rewrite `h` using `[Module.End.mul_apply, hk_val, hk_val, hk_val]`. Conclude with `h.symm`. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hu w hw]`. Conclude with `op_unit hP hS hw d hd φ.2`.
+
+Establish `hne' : w'.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L))` using `fun h => hne (hP.inj (Finset.mem_coe.2 hw') (Finset.mem_coe.2 hw) h).symm`. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hu w hw, hu w' hw', hu w' hw', hu w hw]`. Conclude with `LinearMap.congr_fun (op_comm (hP.split w (Finset.mem_coe.2 hw)) (hP.split w' (Finset.mem_coe.2 hw')) hne' d d') _`.
+-/
 theorem UpperTheory.V.Z.Sym.Al.afOps :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (R : Representation ℂ (InfinitePlace L → GL (Fin n) ℂ) V) (U : Subgroup (UA L n)), U ≤ Kall L n → ∀ S : Finset (Plc L), Places (S : Set (Plc L)) →
         (∀ w ∈ S, locU n w ⊓ Kall L n ≤ U) →

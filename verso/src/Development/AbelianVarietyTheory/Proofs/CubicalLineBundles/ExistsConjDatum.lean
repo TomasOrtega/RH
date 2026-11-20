@@ -11,10 +11,16 @@ namespace GlobalTheory.CM.ConjDatum
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+-/
 theorem bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply RingOfIntegers.ext
   rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]
 
+/- English proof (translation)
+Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`.
+-/
 theorem emb_bar (H : Host E) (τ : E →+* ℂ) (a : 𝓞 E) :
     τ ((H.bar a : 𝓞 E) : E) = starRingEnd ℂ (τ (a : E)) := by
   rw [H.bar_eq, IsCMField.complexEmbedding_complexConj]
@@ -28,9 +34,17 @@ instance {H : Host E} (D : Datum H) : Module (𝓞 E) (ConjLat D) :=
 
 def toLat {H : Host E} (D : Datum H) : ConjLat D ≃+ D.La := AddEquiv.refl _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toLat_smul {H : Host E} (D : Datum H) (s : 𝓞 E) (a : ConjLat D) :
     toLat D (s • a) = H.bar s • toLat D a := rfl
 
+/- English proof (translation)
+Use `D.fin` as an intermediate fact. Set `f : D.La →ₛₗ[(H.bar : 𝓞 E →+* 𝓞 E)] ConjLat D` to `{ toFun := (toLat D).symm map_add' := map_add _ map_smul' := fun s a => by`. Apply `(toLat D).injective` to reduce the goal to its premises. Rewrite using `[toLat_smul]`. Simplify using `[bar_bar] }`.
+
+Conclude with `Module.Finite.of_surjective f (toLat D).symm.surjective`.
+-/
 theorem finite {H : Host E} (D : Datum H) : Module.Finite (𝓞 E) (ConjLat D) := by
   have := D.fin
   let f : D.La →ₛₗ[(H.bar : 𝓞 E →+* 𝓞 E)] ConjLat D :=
@@ -42,6 +56,11 @@ theorem finite {H : Host E} (D : Datum H) : Module.Finite (𝓞 E) (ConjLat D) :
         simp [bar_bar] }
   exact Module.Finite.of_surjective f (toLat D).symm.surjective
 
+/- English proof (translation)
+Use `D.proj` as an intermediate fact. Establish `i1 : RingHomInvPair (H.bar : 𝓞 E →+* 𝓞 E) (H.bar : 𝓞 E →+* 𝓞 E)` using `⟨RingHom.ext (bar_bar H), RingHom.ext (bar_bar H)⟩`. Set `f : D.La ≃ₛₗ[(H.bar : 𝓞 E →+* 𝓞 E)] ConjLat D` to `{ (toLat D).symm with map_smul' := fun s a => by`. Apply `(toLat D).injective` to reduce the goal to its premises. Rewrite using `[toLat_smul]`.
+
+Simplify using `[bar_bar] }`. Conclude with `Module.Projective.of_equiv f`.
+-/
 theorem projective {H : Host E} (D : Datum H) : Module.Projective (𝓞 E) (ConjLat D) := by
   have := D.proj
   have i1 : RingHomInvPair (H.bar : 𝓞 E →+* 𝓞 E) (H.bar : 𝓞 E →+* 𝓞 E) :=
@@ -54,6 +73,9 @@ theorem projective {H : Host E} (D : Datum H) : Module.Projective (𝓞 E) (Conj
         simp [bar_bar] }
   exact Module.Projective.of_equiv f
 
+/- English proof (translation)
+Unfold `Module.finrank`. Rewrite using `[rank_eq_of_equiv_equiv H.bar (toLat D) H.bar.bijective (toLat_smul D)]`.
+-/
 theorem finrank_eq {H : Host E} (D : Datum H) :
     Module.finrank (𝓞 E) (ConjLat D) = Module.finrank (𝓞 E) D.La := by
   unfold Module.finrank
@@ -81,6 +103,9 @@ end GlobalTheory.CM.ConjDatum
 
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ D` and use `⟨ConjDatum.conj D, ConjDatum.toLat D, rfl, rfl, ConjDatum.toLat_smul D, fun _ _ => rfl⟩`.
+-/
 theorem exists_conjDatum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), ∃ (D' : Datum H) (e : D'.La ≃+ D.La), D'.p = D.q ∧ D'.q = D.p ∧ (∀ (s : 𝓞 E) a, e (s • a) = H.bar s • e a) ∧ ∀ a b, D'.EF a b = D.EF (e a) (e b) :=
   fun _ _ _ _ _ D => ⟨ConjDatum.conj D, ConjDatum.toLat D, rfl, rfl, ConjDatum.toLat_smul D, fun _ _ => rfl⟩
 

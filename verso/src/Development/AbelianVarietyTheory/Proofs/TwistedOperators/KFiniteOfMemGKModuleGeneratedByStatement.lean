@@ -19,6 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GKGenKFin.kFinite_of_mem_gkGen | exact GlobalTheory.GKGenKFin.kFinite_of_mem_gkGen | (intros; apply GlobalTheory.GKGenKFin.kFinite_of_mem_gkGen <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.kFinite_of_mem_gKModuleGeneratedBy : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) {V : HSp D} {S : D.what₂.Tau → SPar}
     (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ → ∀ ψ : GA D V → ℂ, IsAutFunSm θ V ψ →
     (∃ W : Submodule ℂ (GA D V → ℂ), FiniteDimensional ℂ W ∧ ψ ∈ W ∧ GlobalTheory.KTypeProj.KStable θ M W) →

@@ -18,9 +18,15 @@ def IntOff {K : Type} [Field K] [NumberField K] (B : Finset ℕ) (ρ : HeightOne
 
 def logSum (B : Finset ℕ) : ℝ := ∑ p ∈ B, Real.log p
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨0, by simp⟩`.
+-/
 theorem intOff_zero {K : Type} [Field K] [NumberField K] (B : Finset ℕ) :
     IntOff B (0 : HeightOneSpectrum (𝓞 K) → ℝ) := fun _ _ => ⟨0, by simp⟩
 
+/- English proof (translation)
+Introduce `w hw` and use `by obtain ⟨n, hn⟩ := h w hw obtain ⟨m, hm⟩ := h' w hw exact ⟨n + m, by simp [hn, hm]⟩`.
+-/
 theorem IntOff.add {K : Type} [Field K] [NumberField K] {B : Finset ℕ} {ρ ρ' : HeightOneSpectrum (𝓞 K) → ℝ}
     (h : IntOff B ρ) (h' : IntOff B ρ') : IntOff B (ρ + ρ') := fun w hw => by
   obtain ⟨n, hn⟩ := h w hw
@@ -62,14 +68,23 @@ variable {U x}
 
 def TwSec.degLo {Z : Comp Xo c} {G₀ : WTZ E} (s : TwSec U x Z G₀) : ℝ := lineDeg s.cInf s.lo
 
+/- English proof (translation)
+Establish `h : idem Z * f = f` using `idem_mul_eq (e := exZ Dw G) ⟨cuspW_le_secZ G hf.1, hf.2⟩`. Rewrite using `[mul_smul_comm, mul_comm f, h]`. Conclude with `Submodule.smul_mem _ _ hf`.
+-/
 theorem mul_smul_idem_mem {Z : Comp Xo c} {G : WTZ E} {f : Rul Xo c} (hf : f ∈ cuspOn U Z G) (a : c.F) :
     f * (a • idem Z) ∈ cuspOn U Z G := by
   have h : idem Z * f = f := idem_mul_eq (e := exZ Dw G) ⟨cuspW_le_secZ G hf.1, hf.2⟩
   rw [mul_smul_comm, mul_comm f, h]
   exact Submodule.smul_mem _ _ hf
 
+/- English proof (translation)
+The claim follows from `funext fun i => exZ_add _ _ i`.
+-/
 theorem exZ_add_eq (G G' : WTZ E) : exZ Dw (G + G') = exZ Dw G + exZ Dw G' := funext fun i => exZ_add _ _ i
 
+/- English proof (translation)
+Apply the tactic sequence `funext i; cases i <;> rfl`.
+-/
 theorem exZ_neg_eq (G : WTZ E) : exZ Dw (-G) = -exZ Dw G := by
   funext i; cases i <;> rfl
 
@@ -77,37 +92,63 @@ namespace TwSec
 
 variable {Z : Comp Xo c} {G₀ G₁ : WTZ E}
 
+/- English proof (translation)
+Rewrite using `[← s.idem_sig, mul_comm]`. Conclude with `mul_mem_suppOn _ (idem_mem_suppOn Z)`.
+-/
 theorem sig_mem_suppOn (s : TwSec U x Z G₀) : s.sig ∈ suppOn Z := by
   rw [← s.idem_sig, mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)
 
+/- English proof (translation)
+Rewrite using `[← s.idem_inv, mul_comm]`. Conclude with `mul_mem_suppOn _ (idem_mem_suppOn Z)`.
+-/
 theorem inv_mem_suppOn (s : TwSec U x Z G₀) : s.inv ∈ suppOn Z := by
   rw [← s.idem_inv, mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)
 
+/- English proof (translation)
+Introduce `h0` and use `by obtain ⟨z, hz⟩ := (s.pts.1 c.F.val.toRingHom).1 have h1 := s.norm_inf _ z hz rw [h0, ← zero_smul c.F (0 : Rul Xo c), homN_smul, map_zero, norm_zero, zero_mul] at h1 exact (s.cInf_pos _).ne h1`.
+-/
 theorem sig_ne_zero (s : TwSec U x Z G₀) : s.sig ≠ 0 := fun h0 => by
   obtain ⟨z, hz⟩ := (s.pts.1 c.F.val.toRingHom).1
   have h1 := s.norm_inf _ z hz
   rw [h0, ← zero_smul c.F (0 : Rul Xo c), homN_smul, map_zero, norm_zero, zero_mul] at h1
   exact (s.cInf_pos _).ne h1
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `s.pts.2 w`. Conclude with `EReal.coe_le_coe_iff.1 ((s.lo_le w v hv).trans (s.le_hi w v hv))`.
+-/
 theorem lo_le_hi (s : TwSec U x Z G₀) (w : HeightOneSpectrum (𝓞 c.F)) : s.lo w ≤ s.hi w := by
   obtain ⟨v, hv⟩ := s.pts.2 w
   exact EReal.coe_le_coe_iff.1 ((s.lo_le w v hv).trans (s.le_hi w v hv))
 
+/- English proof (translation)
+The claim follows from `funext fun σ => by obtain ⟨z, hz⟩ := (s.pts.1 σ).1 rw [← s.norm_inf σ z hz, ← t.norm_inf σ z hz, e]`.
+-/
 theorem cInf_eq (s t : TwSec U x Z G₀) (e : s.sig = t.sig) : s.cInf = t.cInf := funext fun σ => by
   obtain ⟨z, hz⟩ := (s.pts.1 σ).1
   rw [← s.norm_inf σ z hz, ← t.norm_inf σ z hz, e]
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `(s.pts.1 σ).1`. Establish `h2` using `s.norm_inf σ'`. Rewrite `h2` using `[← h]`. Rewrite using `[← s.norm_inf σ z hz, h2 z hz]`.
+-/
 theorem cInf_congr (s : TwSec U x Z G₀) {σ σ' : c.F →+* ℂ} (h : goodOf c σ = goodOf c σ') : s.cInf σ = s.cInf σ' := by
   obtain ⟨z, hz⟩ := (s.pts.1 σ).1
   have h2 := s.norm_inf σ'
   rw [← h] at h2
   rw [← s.norm_inf σ z hz, h2 z hz]
 
+/- English proof (translation)
+Rewrite using `[homN_mul _ x hG s.even _ _ _ hz.1, s.norm_inf σ z hz]`.
+-/
 theorem homN_mul_sig (s : TwSec U x Z G₀) {G : WTZ E} (hG : Even G.2) (f : Rul Xo c) {σ : c.F →+* ℂ} {z}
     (hz : z ∈ framesOn (U (goodOf c σ)) Z) :
     homN (U (goodOf c σ)) x (G + G₀) (f * s.sig) z = homN (U (goodOf c σ)) x G f z * s.cInf σ := by
   rw [homN_mul _ x hG s.even _ _ _ hz.1, s.norm_inf σ z hz]
 
+/- English proof (translation)
+Establish `h1` using `s.lo_le w v hv`. Establish `h2` using `s.le_hi w v hv`. Establish `h` using `(isVal_valOn hv).mul s.sig s.inv`. Rewrite `h` using `[s.mul_inv, val_idem hv]`. Use `lift v s.sig to ℝ using ⟨(h2.trans_lt (EReal.coe_lt_top _)).ne, ((EReal.bot_lt_coe _).trans_le h1).ne'⟩ with a`.
+
+Establish `ht : v s.inv ≠ ⊤` using `fun h' => by rw [h', EReal.coe_add_top] at h; exact EReal.zero_ne_top h`. Use `lift v s.inv to ℝ using ⟨ht, (isVal_valOn hv).ne_bot s.inv⟩ with b`. Rewrite `h` using `[← EReal.coe_add, ← EReal.coe_zero, EReal.coe_eq_coe_iff]`. Conclude with `⟨a, rfl, EReal.coe_eq_coe_iff.2 (by linarith), EReal.coe_le_coe_iff.1 h1, EReal.coe_le_coe_iff.1 h2⟩`.
+-/
 theorem exists_val (s : TwSec U x Z G₀) {w} {v : Rul Xo c → EReal} (hv : v ∈ valOn Z w) :
     ∃ b : ℝ, v s.sig = b ∧ v s.inv = ((-b : ℝ) : EReal) ∧ s.lo w ≤ b ∧ b ≤ s.hi w := by
   have h1 := s.lo_le w v hv
@@ -154,6 +195,9 @@ def mul (s : TwSec U x Z G₀) (t : TwSec U x Z G₁) : TwSec U x Z (G₀ + G₁
   finite_hi := (s.finite_hi.union t.finite_hi).subset (Function.support_add _ _)
   pts := s.pts
 
+/- English proof (translation)
+The claim follows from `lineDeg_mul s.cInf_pos t.cInf_pos s.finite_lo t.finite_lo`.
+-/
 theorem degLo_mul (s : TwSec U x Z G₀) (t : TwSec U x Z G₁) : (s.mul t).degLo = s.degLo + t.degLo :=
   lineDeg_mul s.cInf_pos t.cInf_pos s.finite_lo t.finite_lo
 
@@ -214,6 +258,9 @@ def ofConst {la : Weight Dw} {δ : HeightOneSpectrum (𝓞 c.F) → ℝ} (s : Co
   finite_hi := (hδ.union s.finite_rho).subset (Function.support_add _ _)
   pts := s.hasPts
 
+/- English proof (translation)
+Use `lineDeg_mul (r := 1) (fun _ => one_pos) s.cInf_pos hδ s.finite_rho` as an intermediate fact. Rewrite `this` using `[one_mul]`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `[lineDeg, ConstSec.deg, add_comm]`.
+-/
 theorem degLo_ofConst {la : Weight Dw} {δ : HeightOneSpectrum (𝓞 c.F) → ℝ} (s : ConstSec U x Z la δ)
     (hδ : (Function.support δ).Finite) (h₁ h₂) :
     (ofConst s hδ h₁ h₂).degLo = s.deg + ∑ᶠ w, δ w * lw c.F w := by
@@ -229,6 +276,9 @@ def const (h : HasPts U Z) (a : c.F) (ha : a ≠ 0) : TwSec U x Z 0 :=
     (fun G _ f hf => by rw [wtOf_zero, add_zero]; exact mul_smul_idem_mem hf a)
     (fun G _ f hf => by rw [wtOf_zero, add_zero] at hf; exact mul_smul_idem_mem hf a⁻¹)).copy wtOf_zero
 
+/- English proof (translation)
+Establish `h1 : ∀ σ, (const x h a ha).cInf σ = ‖σ a‖` using `fun σ => mul_one _`. Establish `h2 : ∀ w, (const x h a ha).lo w = vAdd w a` using `fun w => (zero_add _).trans (add_zero _)`. Use `⟨rfl, h1, h2, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[degLo, funext h1, funext h2]`. Conclude with `lineDeg_num ha`.
+-/
 theorem const_spec (h : HasPts U Z) (a : c.F) (ha : a ≠ 0) :
     (const x h a ha).sig = a • idem Z ∧ (∀ σ, (const x h a ha).cInf σ = ‖σ a‖) ∧
       (∀ w, (const x h a ha).lo w = vAdd w a) ∧ (∀ w, (const x h a ha).hi w = vAdd w a) ∧
@@ -241,6 +291,11 @@ theorem const_spec (h : HasPts U Z) (a : c.F) (ha : a ≠ 0) :
 
 end TwSec
 
+/- English proof (translation)
+Use `⟨fun hpq hg hU Z a ha => ?_, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, -, h4⟩` from `TwSec.const_spec (x := x) (hasPts U hpq hg hU Z) a ha`. Conclude with `⟨_, h1, h2, h3, h4⟩`. Take `⟨E, _, _, _, H, Dw, l, Xo, c, U, Z, τ, hp, hU, ⟨s⟩⟩` from `GlobalTheory.FlatLine.Definite.exists_flatSec x`. Use `⟨E, _, _, _, H, Dw, l, Xo, c, U, Z, hp, hU, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h1, h2, h3, -, h4⟩` from `TwSec.const_spec (x := x) s.hasPts a ha`. Conclude with `⟨_, h1, h2, h3, h4⟩`.
+-/
 theorem twSec_inhabited :
     (1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → (∀ σ, GoodEmb c σ → IsUnf (U σ)) →
       ∀ (Z : Comp Xo c) (a : c.F), a ≠ 0 → ∃ s : TwSec U x Z 0, s.sig = a • idem Z ∧ (∀ σ, s.cInf σ = ‖σ a‖) ∧
@@ -268,11 +323,22 @@ def UnramPts (B : Finset ℕ) : Prop :=
 def badPrimes (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) : Finset ℕ :=
   (2 * H.d * (discr E).natAbs * l.M').primeFactors
 
+/- English proof (translation)
+The claim follows from `Nat.prime_of_mem_primeFactors hp`.
+-/
 theorem badPrimes_prime (p : ℕ) (hp : p ∈ badPrimes H l) : p.Prime := Nat.prime_of_mem_primeFactors hp
 
+/- English proof (translation)
+Introduce `Z w hw` and use `h Z w fun p hp => hw p (hB hp)`.
+-/
 theorem UnramPts.mono {B B' : Finset ℕ} (h : UnramPts Xo c B) (hB : B ⊆ B') : UnramPts Xo c B' :=
   fun Z w hw => h Z w fun p hp => hw p (hB hp)
 
+/- English proof (translation)
+Establish `hM : l.M' ≠ 0` using `Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'`. Establish `hD : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr (discr_ne_zero E)`. Establish `hne : 2 * H.d * (discr E).natAbs * l.M' ≠ 0` using `mul_ne_zero (mul_ne_zero (mul_ne_zero two_ne_zero H.d_prime.ne_zero) hD) hM`. Rewrite using `[badPrimes, Nat.mem_primeFactors_of_ne_zero hne]`. Use `and_congr_right fun hp => ?_` and prove the remaining obligations.
+
+Simplify using `only [hp.dvd_mul, Nat.prime_dvd_prime_iff_eq hp Nat.prime_two, Nat.prime_dvd_prime_iff_eq hp H.d_prime, Level.M', hp.dvd_lcm, or_assoc]`.
+-/
 theorem mem_badPrimes {p : ℕ} :
     p ∈ badPrimes H l ↔ p.Prime ∧ (p = 2 ∨ p = H.d ∨ p ∣ (discr E).natAbs ∨ p ∣ l.M ∨ p ∣ l.A) := by
   have hM : l.M' ≠ 0 := Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'
@@ -284,6 +350,9 @@ theorem mem_badPrimes {p : ℕ} :
   simp only [hp.dvd_mul, Nat.prime_dvd_prime_iff_eq hp Nat.prime_two, Nat.prime_dvd_prime_iff_eq hp H.d_prime,
     Level.M', hp.dvd_lcm, or_assoc]
 
+/- English proof (translation)
+Introduce `Z w hw` and use `by obtain ⟨T, ι, y, ho, hy⟩ := h Z w hw refine ⟨_, ⟨PtV.mk w ho y hy () trivial, rfl⟩, fun f => ?_⟩ show nval T.V 1 (evI y f) = ⊤ ∨ ∃ n : ℤ, nval T.V 1 (evI y f) = _ by_cases h0 : evI y f = 0 · rw [h0, nval_zero]; exact Or.inl rfl · exact Or.inr ⟨vV T.V (evI y f), by rw [nval_of_ …`.
+-/
 theorem UnramPts.of_index_one {B : Finset ℕ}
     (h : ∀ (Z : Comp Xo c) (w : HeightOneSpectrum (𝓞 c.F)), (∀ p ∈ B, ((p : ℕ) : 𝓞 c.F) ∉ w.asIdeal) →
       ∃ (T : CDVR) (ι : c.F →+* T.Fr) (y : IntFr Xo c T ι), OverLa w T.V ι 1 ∧ algOn Z T ι y) :
@@ -295,10 +364,19 @@ theorem UnramPts.of_index_one {B : Finset ℕ}
   · rw [h0, nval_zero]; exact Or.inl rfl
   · exact Or.inr ⟨vV T.V (evI y f), by rw [nval_of_ne h0]; simp⟩
 
+/- English proof (translation)
+The claim follows from `mem_badPrimes.2 ⟨Nat.prime_two, Or.inl rfl⟩`.
+-/
 example : 2 ∈ badPrimes H l := mem_badPrimes.2 ⟨Nat.prime_two, Or.inl rfl⟩
 
+/- English proof (translation)
+Simplify using `[logSum]`.
+-/
 example : logSum {2, 3} = Real.log 2 + Real.log 3 := by simp [logSum]
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨n, hn⟩ := h w (by simp) have h2 : (1 : ℝ) = 2 * n := by simp only at hn; linarith have h3 : (1 : ℤ) = 2 * n := by exact_mod_cast h2 omega`.
+-/
 example {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) :
     ¬ IntOff ∅ (fun _ : HeightOneSpectrum (𝓞 K) => (1 / 2 : ℝ)) := fun h => by
   obtain ⟨n, hn⟩ := h w (by simp)

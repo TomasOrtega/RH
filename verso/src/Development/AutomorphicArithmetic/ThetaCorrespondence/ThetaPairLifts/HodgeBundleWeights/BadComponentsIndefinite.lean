@@ -19,6 +19,19 @@ open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.BadIndef
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hX hP hGD hQ hS hT hSA hGr hG hDG hSz hFD hDg hSh`. Establish `hB` using `_root_.GlobalTheory.T.cover_type_lattice_comparison hP hG hDG`. Establish `hW` using `_root_.GlobalTheory.T.local_share_number_bound hP hGr`. Establish `hE` using `_root_.GlobalTheory.T.bad_embedding_locus_covered_by_regular hX hP hGD hQ hS hT hSA hG hDG hSz hFD hDg hSh`. Use `Formalism.MainNotions.Closed.imp (((hB.and hW).and hE).and hDG) ?_` and prove the remaining obligations.
+
+Introduce and unpack `eps Fm CH - ⟨⟨⟨⟨C1, -, x1, h1⟩, ⟨C2, -, x2, h2⟩⟩, ⟨C3, -, x3, h3⟩⟩, ⟨C4, -, x4, h4⟩⟩`. Use `⟨0, le_rfl, max (max x1 x4) (max x2 x3), fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Establish `l1 : x1 ≤ x` using `((le_max_left _ _).trans (le_max_left _ _)).trans hle`. Establish `l4 : x4 ≤ x` using `((le_max_right _ _).trans (le_max_left _ _)).trans hle`. Establish `l2 : x2 ≤ x` using `((le_max_left _ _).trans (le_max_right _ _)).trans hle`.
+
+Establish `l3 : x3 ≤ x` using `((le_max_right _ _).trans (le_max_right _ _)).trans hle`. Take `⟨ψ₀, hψ₀, hsh⟩` from `h2 x hx l2 ι p hp i`. Take `⟨fr, π, s, ρ, χ, Pb, lam, ψ, lamb, H, hsp, hwh, hlb, hhalf, hPb, hH, hρ, hrkT, hrkB⟩` from `h1 x hx l1 ι p hp i hi Y hY`. Establish `hemb` using `fun k => h3 x hx l3 ι p hp i hi Y hY fr π ρ χ Pb lamb H hPb hH hρ k`. Use `choose n hn1 hn2 using hemb`.
+
+Establish `hgd` using `(h4 x hx l4 ι p hp i hi Y hY).1`. Use `haveI : FiniteDimensional Y.d.c₂.F (Y.V (Gk p i)) := finiteDimensional_of_lat _ hgd.2.1 hgd.2.2`. Take `⟨S, hSg, hbd⟩` from `GlobalTheory.T.bad_part_dim_le_sum_local_shares_whittaker (Fm.D x ι) _ _ π s hsp ρ Pb lam ψ hwh lamb hlb H hhalf n (3 / 2) hn1 hn2 ψ₀ hψ₀`. Establish `hs` using `hsh S hSg`. Establish `e0 : (0 : ℝ) ≤ Module.finrank ℂ (eig ρ (Pb.comap π) lamb)` using `Nat.cast_nonneg _`.
+
+Establish `e1 : 0 ≤ Real.exp (-((Fm.L x ι).sc.x ^ ((Fm.L x ι).sc.ez / 7)))` using `(Real.exp_pos _).le`. Establish `k1` using `mul_le_mul_of_nonneg_right hs e0`. Establish `k2` using `mul_nonneg e1 e0`. Establish `key : (Formalism.HN.rkK (CovTop.latBad p.R.toRealDat p.F.lv2 i) : ℝ) ≤ 3 * Real.exp (-((Fm.L x ι).sc.x ^ ((Fm.L x ι).sc.ez / 7))) * Formalism.HN.rkK (latType p.R.toRealDat p.F.lv2 i)`. Rewrite using `[hrkT, hrkB]`.
+
+Use `hbd.trans ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `key`.
+-/
 theorem bad_components_indefinite : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.Published.GreenCuspidal → Gram → DeepGood → Size → FlatDeg → Deg → Share → Covers fun _ _ _ _ p i _ _ _ => BadAt p i := by
   intro hX hP hGD hQ hS hT hSA hGr hG hDG hSz hFD hDg hSh
   have hB := _root_.GlobalTheory.T.cover_type_lattice_comparison hP hG hDG
@@ -65,6 +78,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.BadIndef.bad_components_indefinite | exact _root_.GlobalTheory.BadIndef.bad_components_indefinite | (intros; apply _root_.GlobalTheory.BadIndef.bad_components_indefinite <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.indefinite_at_bad_places : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.Published.GreenCuspidal → Gram → DeepGood → Size → FlatDeg → Deg → Share → Covers fun _ _ _ _ p i _ _ _ => BadAt p i := by
   first | exact @_root_.GlobalTheory.BadIndef.bad_components_indefinite | exact _root_.GlobalTheory.BadIndef.bad_components_indefinite | (intros; apply _root_.GlobalTheory.BadIndef.bad_components_indefinite <;> assumption)
 end

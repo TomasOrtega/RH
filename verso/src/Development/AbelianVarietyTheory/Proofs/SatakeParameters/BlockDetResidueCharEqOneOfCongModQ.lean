@@ -13,6 +13,17 @@ open GlobalTheory.TopStep
 
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K]
 
+/- English proof (translation)
+Establish `hq0 : ((qOf P : ℕ) : E) ≠ 0` using `qOf_ne_zero`. Establish `hx` using `mem_stdAt.1 (hg _ (single_mem_stdAt (P := P) t)) s`. Use `set δ : E := (Pi.single t (1 : E) : Sp E N) s with hδ`. Establish `hδI : IntAt P δ` using `mem_stdAt.1 (single_mem_stdAt (P := P) t) s`. Establish `hdiv : IntAt P ((g (Pi.single t 1) s - δ) / (qOf P : E))`.
+
+Establish `e : (((qOf P : E)⁻¹ • (g (Pi.single t 1) - Pi.single t 1) : Sp E N)) s = (g (Pi.single t 1) s - δ) / (qOf P : E)`. Rewrite using `[Pi.smul_apply, Pi.sub_apply, smul_eq_mul, div_eq_mul_inv, mul_comm]`. Rewrite using `[← e]`. Conclude with `hx`. Establish `hI : IntAt P (g (Pi.single t 1) s - δ)`.
+
+Establish `e : g (Pi.single t 1) s - δ = (qOf P : E) * ((g (Pi.single t 1) s - δ) / (qOf P : E))`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `(intAt_nat _).mul hdiv`. Establish `hI' : IntAt P (g (Pi.single t 1) s)`.
+
+Use `intAt_sub hI (intAt_neg hδI)` as an intermediate fact. Rewrite `this` using `[sub_neg_eq_add, sub_add_cancel]`. Then use the resulting hypothesis. Use `⟨hI', ?_⟩` and prove the remaining obligations. Establish `h0` using `redP_eq_zero_of_div hdiv`. Rewrite `h0` using `[reduction_sub hI' hδI, sub_eq_zero]`.
+
+Rewrite using `[h0, hδ, Pi.single_apply]`. Use `split_ifs`. Conclude with `reduction_one₂`. Conclude with `reduction_zero`.
+-/
 theorem entry_cong (P : HeightOneSpectrum (𝓞 E)) {N : ℕ} (g : HomE E N N)
     (hg : ∀ x ∈ stdAt E N P, (qOf P : E)⁻¹ • (g x - x) ∈ stdAt E N P) (s t : Fin N) :
     IntAt P (g (Pi.single t 1) s) ∧ redP P (g (Pi.single t 1) s) = if s = t then 1 else 0 := by
@@ -42,6 +53,23 @@ theorem entry_cong (P : HeightOneSpectrum (𝓞 E)) {N : ℕ} (g : HomE E N N)
   · exact reduction_one₂
   · exact reduction_zero
 
+/- English proof (translation)
+Introduce `E K _ _ _ _ P ξ kj n N g hn hg`. Unfold `LocE.lamQB`. Use `set D : Matrix (Fin (n - kj)) (Fin (n - kj)) E := Matrix.of fun s t : Fin (n - kj) => Loc.atN (g (Loc.eN E N (kj + t.1))) (kj + s.1) with hD`. Establish `hent : ∀ s t : Fin (n - kj), IntAt P (D s t) ∧ redP P (D s t) = (1 : Matrix _ _ (𝓞 E ⧸ P.asIdeal)) s t`. Introduce `s t`.
+
+Establish `hs : kj + s.1 < N` using `by have := s.2; omega`. Establish `ht : kj + t.1 < N` using `by have := t.2; omega`. Establish `e1 : Loc.eN E N (kj + t.1) = Pi.single ⟨kj + t.1, ht⟩ 1`. Use function extensionality and compare the values at `l`. Unfold `Loc.eN`.
+
+Rewrite using `[Pi.single_apply]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `Fin.ext h`. Introduce `h`. Rewrite using `[h]`. Establish `e2 : D s t = g (Pi.single ⟨kj + t.1, ht⟩ 1) ⟨kj + s.1, hs⟩`. Rewrite using `[hD, Matrix.of_apply, e1]`.
+
+Unfold `Loc.atN`. Rewrite using `[dif_pos hs]`. Take `⟨h1, h2⟩` from `entry_cong P g hg ⟨kj + s.1, hs⟩ ⟨kj + t.1, ht⟩`. Rewrite using `[e2]`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h2, Matrix.one_apply]`. Distinguish the cases in `hst : s = t`. Rewrite using `[if_pos (Fin.ext (by simp [hst])), if_pos hst]`. Rewrite using `[if_neg (fun h => hst (Fin.ext (by have := congrArg Fin.val h; simp at this; omega))), if_neg hst]`. Establish `hdet : redP P D.det = 1`.
+
+Rewrite using `[(det_int fun s t => (hent s t).1).2]`. Establish `: D.map (redP P) = 1` using `Matrix.ext fun s t => (hent s t).2`. Rewrite using `[this, Matrix.det_one]`. Unfold `LocE.unitV`. Establish `hu : IsUnit (redP P D.det)` using `by rw [hdet]; exact isUnit_one`.
+
+Rewrite using `[dif_pos hu]`. Establish `: hu.unit = 1` using `Units.ext (by rw [IsUnit.unit_spec, hdet]; rfl)`. Rewrite using `[this, map_one, Units.val_one, inv_one]`.
+-/
 theorem lamQB_eq_one_of_cong : ∀ {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] (P : HeightOneSpectrum (𝓞 E))
     (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (kj n N : ℕ) (g : HomE E N N), n ≤ N →
     (∀ x ∈ stdAt E N P, (qOf P : E)⁻¹ • (g x - x) ∈ stdAt E N P) → LocE.lamQB ξ kj n g = 1 := by

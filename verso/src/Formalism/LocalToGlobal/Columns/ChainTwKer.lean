@@ -14,6 +14,11 @@ section TwKer
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
+/- English proof (translation)
+Establish `hL` using `twIdx_ok_closed hX hPr hCh h4 G hT hW hval hm hQG hd hz hs hxi`. Establish `hK` using `twCstQ_of hd hz hs hxi`. Establish `hNall` using `twNormAt_all (Ch := Ch) (twNormDC_of (Ch := Ch) (unfoldingNonvanishingDoubleCoset_holds (Ch := Ch) G hm hK)) hd`. Establish `hb : ∀ j (b' : (twIdx Ch sel mu (twCst Ch sel mu G) m2).β j) (w : rowSG Pr sel mu), w.1 ∉ Pr.vGs → TwBdd (Pr` using `Pr) j w.1 ((twIdx Ch sel mu (twCst Ch sel mu G) m2).h j b' w) := fun j b' w hw => twSt_bdd hNall j b' w hw`. Establish `hD : ∀ w : rowSG Pr sel mu, w.1 ∉ Pr.vGs → m2 ≤ (twCst Ch sel mu G).D w` using `fun w hw => by`.
+
+Rewrite using `[twCst_D_Q hw]`. Use linear arithmetic over natural numbers and integers. Conclude with `kerEquivC_repOne W Ch sel mu (twCst Ch sel mu G) (twIdx Ch sel mu (twCst Ch sel mu G) m2) A u m2 hL hX hPr hCh hsel hS hST`. Use `rfl (by show R.m ≤ R.m + 1; omega) (fun j _ b' P hP => twIdx_h_g (Ch := Ch) (cst := twCst Ch sel mu G) (m2 := m2) hP) hOk b hY`. Use the proof step `(fun i hi al be => clXQ_xiLawQ_holds hL hd hb hD hi al be)`.
+-/
 theorem kerEquivC_tw (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E))
     {S : Set ℕ} (mu : Tup X.F X.E X.K S) (A : Amb X) (u : Pr.Word)
     (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (G : ChGlob X R.m)

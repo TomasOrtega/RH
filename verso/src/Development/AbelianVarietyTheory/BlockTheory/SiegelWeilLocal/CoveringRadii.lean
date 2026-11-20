@@ -24,6 +24,13 @@ def InCen (s : A →+* A) (J : Matrix (Fin n) (Fin n) A) (W : Submodule A (Fin n
     (Y : Matrix (Fin n) (Fin n) A) : Prop :=
   InNil s J W Y ∧ ∀ y, (∀ w ∈ W, Formalism.UG.hform s J w y = 0) → Y *ᵥ y = 0
 
+/- English proof (translation)
+Use `⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: Formalism.UG.cT s (0 : Matrix (Fin n) (Fin n) A) = 0`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`. Simplify using `[this]`.
+
+Introduce `y w _`. Simplify using `[Formalism.UG.hform]`. Introduce `y _`. Simplify using the standard rewrite rules. Introduce `w _`.
+
+Simplify using the standard rewrite rules. Introduce `y _`. Simplify using the standard rewrite rules.
+-/
 example (s : A →+* A) (J : Matrix (Fin n) (Fin n) A) (W : Submodule A (Fin n → A)) :
     InCen s J W 0 := by
   refine ⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩
@@ -68,8 +75,14 @@ def normX (x : I.GA) (Y : InfinitePlace I.F → Matrix (Fin I.n) (Fin I.n) ℂ) 
 def nextSize {a : ℕ} (τ : Fin a → ℝ) (i : Fin a) : ℝ :=
   if h : (i : ℕ) + 1 < a then τ ⟨(i : ℕ) + 1, h⟩ else 1 / 2
 
+/- English proof (translation)
+Simplify using `[nextSize]`.
+-/
 example (τ : Fin 1 → ℝ) : nextSize τ 0 = 1 / 2 := by simp [nextSize]
 
+/- English proof (translation)
+Simplify using `[nextSize]`.
+-/
 example (τ : Fin 2 → ℝ) : nextSize τ 0 = τ 1 := by simp [nextSize]
 
 def CoveringRadii : Prop :=

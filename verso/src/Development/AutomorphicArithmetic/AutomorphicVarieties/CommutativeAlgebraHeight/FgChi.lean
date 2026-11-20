@@ -6,12 +6,18 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Establish `h2` using `D.nat A[X] A[X] (aeval (b - 1)) (1 + X ⊗ₜ e)`. Rewrite `h2` using `[h]`. Simplify using `using h2`.
+-/
 private theorem fg_ev {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (e : E) (r : ℕ)
     (h : D.D A[X] (1 + X ⊗ₜ e) = (1 + X) ^ r) (b : A[X]) : D.D A[X] (1 + (b - 1) ⊗ₜ e) = b ^ r := by
   have h2 := D.nat A[X] A[X] (aeval (b - 1)) (1 + X ⊗ₜ e)
   rw [h] at h2
   simpa using h2
 
+/- English proof (translation)
+Rewrite using `[← fg_ev D e r h, ← fg_ev D (1 - e) s h', ← map_mul, Det.chi]`. Use `congr 1`. Rewrite using `[add_mul, mul_add, mul_add, Algebra.TensorProduct.tmul_mul_tmul, he.one_sub_mul_self, tmul_zero]`. Simplify using `only [one_mul, mul_one, tmul_sub, sub_tmul, ← Algebra.TensorProduct.one_def]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem fg_chi {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (e : E)
     (he : IsIdempotentElem e) (r s : ℕ) (h : D.D A[X] (1 + X ⊗ₜ e) = (1 + X) ^ r)
     (h' : D.D A[X] (1 + X ⊗ₜ (1 - e)) = (1 + X) ^ s) : D.chi e = X ^ s * (X - 1) ^ r := by
@@ -21,6 +27,11 @@ private theorem fg_chi {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E
   simp only [one_mul, mul_one, tmul_sub, sub_tmul, ← Algebra.TensorProduct.one_def]
   abel
 
+/- English proof (translation)
+Break down `r with _ | _ | r` into its components or cases. Simplify using `using congrArg (eval 1) h`. Both sides reduce to the same expression. Establish `h0 : (X - 1 : k[X]) ≠ 0` using `by simpa using X_sub_C_ne_zero (1 : k)`. Rewrite `h` using `[pow_succ' _ (r + 1), mul_left_comm]`.
+
+Simplify using `using congrArg (eval 1) (mul_left_cancel₀ h0 h)`.
+-/
 private theorem fg_one {k : Type} [Field k] {r s m : ℕ} (h : (X : k[X]) ^ s * (X - 1) ^ r = (X - 1) * X ^ m) :
     r = 1 := by
   rcases r with _ | _ | r
@@ -30,6 +41,23 @@ private theorem fg_one {k : Type} [Field k] {r s m : ℕ} (h : (X : k[X]) ^ s * 
     rw [pow_succ' _ (r + 1), mul_left_comm] at h
     simpa using congrArg (eval 1) (mul_left_cancel₀ h0 h)
 
+/- English proof (translation)
+Introduce `n B E k _ _ _ _ _ _ _ _ _ D π hD hs hchi`. Take `⟨hu, hint⟩` from `d_unit D hD`. Establish `hunit : ∀ x, π x = 1 → IsUnit x`. Introduce `x hx`. Rewrite using `[hu, ← (d_chi D x).2.2.2.1, Det.lam, Nat.sub_self]`.
+
+Use `(isUnit_one.neg.pow n).mul ?_` and prove the remaining obligations. Use `(isUnit_map_iff (algebraMap B k) _).1 ?_` and prove the remaining obligations. Rewrite using `[← coeff_map, hchi, hx, coeff_zero_eq_eval_zero, isUnit_iff_ne_zero]`. Simplify using `[eval_prod]`. Establish `hk : ∀ x, π x = 0 → x ∈ Ring.jacobson E`.
+
+Introduce `x hx`. Rewrite using `[← Ideal.jacobson_bot, Ideal.mem_jacobson_iff]`. Introduce `y`. Take `⟨u, hu'⟩` from `hunit (y * x + 1) (by simp [hx])`. Use `⟨↑u⁻¹, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Ideal.mem_bot, sub_eq_zero, ← u.inv_mul, hu', mul_add, mul_one, mul_assoc]`. Use `⟨fun x => ⟨hk x, fun hx => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← Ideal.jacobson_bot, Ideal.mem_jacobson_iff]`. Use function extensionality and compare the values at `i`. Assume the negation of the conclusion as `hi`.
+
+Take `⟨y, hy⟩` from `hs fun _ => -(π x i)⁻¹`. Take `⟨z, hz⟩` from `hx y`. Rewrite `hz` using `[Ideal.mem_bot]`. Establish `h1` using `congrFun (congrArg π hz) i`. Establish `hi' : π x i ≠ 0` using `hi`.
+
+Simplify using `only [map_sub, map_add, map_mul, map_one, map_zero, hy, Pi.sub_apply, Pi.add_apply, Pi.mul_apply, Pi.one_apply, Pi.zero_apply] at h1`. Rewrite `h1` using `[mul_assoc, neg_mul, inv_mul_cancel₀ hi']`. Simplify using `at h1`. Take `⟨e, he, he'⟩` from `d_lift_idem π hs hk (fun i => Pi.single i 1) (CompleteOrthogonalIdempotents.single fun _ : Fin n => k)`. Use `⟨e, ⟨hD, he, fun i => ?_⟩, he'⟩` and prove the remaining obligations.
+
+Take `⟨r, -, hr⟩` from `d_idem_rank D (e i) (he.idem i)`. Take `⟨s, -, hs'⟩` from `d_idem_rank D (1 - e i) (he.idem i).one_sub`. Establish `h1` using `hchi (e i)`. Rewrite using `[fg_chi D _ (he.idem i) r s hr hs', he', ← Finset.mul_prod_erase _ _ (Finset.mem_univ i), Finset.prod_congr rfl (g := fun _ => X) (fun j hj => by`. Simplify using `[Pi.single_eq_of_ne (Finset.ne_of_mem_erase hj)]), Finset.prod_const] at h1`.
+
+Simplify using `only [Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_sub, map_X, Polynomial.map_one, Pi.single_eq_same, map_one] at h1`. Rewrite using `[hr, fg_one h1, pow_one]`.
+-/
 theorem UpperTheory.V.CA.f_gma :
     ∀ {n : ℕ} {B E k : Type} [CommRing B] [IsLocalRing B] [IsNoetherianRing B] [IsAdicComplete (maximalIdeal B) B] [Ring E] [Algebra B E] [Field k] [Algebra B k] [IsLocalHom (algebraMap B k)] (D : Det n B E) (π : E →ₐ[B] (Fin n → k)), D.IsCH → Function.Surjective π → (∀ x, (D.chi x).map (algebraMap B k) = ∏ i, (X - C (π x i))) → (∀ x, π x = 0 ↔ x ∈ Ring.jacobson E) ∧ ∃ e : Fin n → E, IsGMA D e ∧ ∀ i, π (e i) = Pi.single i 1 := by
   intro n B E k _ _ _ _ _ _ _ _ _ D π hD hs hchi

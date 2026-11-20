@@ -18,6 +18,39 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.QFEtale
 
+/- English proof (translation)
+Introduce `O R _ _ _ _ _ _ _ _ _ _ f _ hRc hqf hfin hdim hrig`. Use `haveI hOn : IsNoetherianRing O := Algebra.EssFiniteType.isNoetherianRing ℤ O`. Use `letI : Algebra (ResidueField O) (ResidueField R) := (ResidueField.map f).toAlgebra`. Establish `hres : (residue R).comp f = (ResidueField.map f).comp (residue O)`. Use extensionality with `o`.
+
+Simplify using `[ResidueField.map_residue]`. Establish `hfin' : (ResidueField.map f).Finite`. Rewrite `hfin` using `[hres]`. Conclude with `RingHom.Finite.of_comp_finite hfin`. Use `haveI : Module.Finite (ResidueField O) (ResidueField R) := hfin'`.
+
+Set `M` to `separableClosure (ResidueField O) (ResidueField R)`. Set `m : ResidueField O →+* M` to `algebraMap (ResidueField O) M`. Establish `hmf : m.Finite` using `RingHom.finite_algebraMap.2 inferInstance`. Use `haveI : Algebra.IsSeparable (ResidueField O) M := inferInstance`. Use `haveI : Algebra.FormallyUnramified (ResidueField O) M := Algebra.FormallyUnramified.of_isSeparable _ _`.
+
+Establish `hmu : m.FormallyUnramified` using `RingHom.formallyUnramified_algebraMap.2 inferInstance`. Take `⟨A, _, _, _, ψ, hψl, E, hAcn, hψe, hψu, hE⟩` from `GlobalTheory.T.exists_etaleCompletion_with_residueField_equiv O M m hmf hmu`. Take `⟨hAn, hAi, hAc, hA0⟩` from `hAcn`. Set `u' : A →+* ResidueField R` to `(algebraMap M (ResidueField R)).comp ((E.symm : ResidueField A →+* M).comp (residue A))`. Establish `hu' : ∀ a, u' a = 0 ↔ a ∈ maximalIdeal A`.
+
+Introduce `a`. Rewrite using `[← residue_eq_zero_iff]`. Simplify using `only [u', RingHom.comp_apply, RingEquiv.coe_toRingHom, map_eq_zero_iff _ (algebraMap M (ResidueField R)).injective, map_eq_zero_iff _ E.symm.injective]`. Establish `hker : RingHom.ker u' = maximalIdeal A` using `by ext a; exact hu' a`. Establish `hc : (residue R).comp f = u'.comp ψ`.
+
+Use extensionality with `o`. Establish `h1` using `RingHom.congr_fun hE (residue O o)`. Simplify using `only [RingHom.comp_apply, RingEquiv.coe_toRingHom, ResidueField.map_residue] at h1`. Simplify using `only [u', RingHom.comp_apply, RingEquiv.coe_toRingHom, ← h1, RingEquiv.symm_apply_apply, m]`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+
+Both sides reduce to the same expression. Take `⟨b, hb1, hb2⟩` from `GlobalTheory.EtaleCompletionLift.exists_extension O A R (ResidueField R) ψ f u' (residue R) hψe hψu hRc inferInstance hker (ker_residue) hc (fun r => residue_surjective _)`. Establish `hbm : ∀ a, b a ∈ maximalIdeal R ↔ a ∈ maximalIdeal A`. Introduce `a`. Rewrite using `[← residue_eq_zero_iff, ← hu', ← RingHom.comp_apply, hb2]`.
+
+Use `haveI hbl : IsLocalHom b := ⟨fun a ha => by`. Assume the negation of the conclusion as `h`. Conclude with `(mem_maximalIdeal _).1 ((hbm a).2 ((mem_maximalIdeal a).2 h)) ha⟩`. Establish `hbfin : b.Finite`. Use `GlobalTheory.T.ringHom_finite_of_quasiFinite_complete_local A R b hAc (fun p hp h => hqf p hp ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[← hb1, ← Ideal.map_map, hψe.2.1]`. Conclude with `h`. Use `RingHom.Finite.of_comp_finite (f := ψ) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, hb1]`. Conclude with `hfin`.
+
+Establish `hbinj : Function.Injective b` using `GlobalTheory.T.injective_of_finite_of_ringKrullDim_le' A R b hbfin ((GlobalTheory.T.ringKrullDim_le_of_isEtaleCompletion' O A ψ hψe).trans hdim)`. Take `⟨R', _, _, _, θ, hR'cn, hθl, hθi, hθf, hfix⟩` from `GlobalTheory.T.exists_completeNormal_galois_cover_of_finite A R b ⟨hAn, hAi, hAc, hA0⟩ hbfin hbinj`. Set `q` to `ringExpChar M`. Use `haveI : ExpChar M q := ringExpChar.expChar M`. Use `haveI : ExpChar (ResidueField R) q := expChar_of_injective_algebraMap (algebraMap M (ResidueField R)).injective q`.
+
+Establish `hpi : ∀ x : ResidueField R, ∃ n : ℕ, ∃ a : A, x ^ q ^ n = residue R (b a)`. Introduce `x`. Take `⟨n, y, hy⟩` from `IsPurelyInseparable.pow_mem M q x`. Take `⟨a, ha⟩` from `residue_surjective (E y)`. Use `⟨n, a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← RingHom.comp_apply, hb2, ← hy]`. Simplify using `only [u', RingHom.comp_apply, RingEquiv.coe_toRingHom, ha, RingEquiv.symm_apply_apply]`. Establish `hbsurj : Function.Surjective b`. Introduce `r`. Use `hfix r fun σ hσ hσb => hrig R' θ σ hR'cn hθi hθf hσ (fun o => ?_) (fun r => GlobalTheory.T.ringEquiv_sub_mem_maximalIdeal_of_purelyInsep_residue A R R' b θ q σ hpi hσb r) r` and prove the remaining obligations.
+
+Rewrite using `[← hb1]`. Conclude with `hσb (ψ o)`. Establish `hmapsurj : Function.Surjective (ResidueField.map b)`. Introduce `y`. Take `⟨r, rfl⟩` from `residue_surjective y`.
+
+Take `⟨a, rfl⟩` from `hbsurj r`. Conclude with `⟨residue A a, ResidueField.map_residue _ _⟩`. Establish `hres2 : (residue R).comp f = (ResidueField.map b).comp ((residue A).comp ψ)`. Rewrite using `[← hb1]`. Use extensionality with `o`.
+
+Simplify using `[ResidueField.map_residue]`. Use `⟨⟨?_, ?_, hfin⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hb1]`. Conclude with `RingHom.Flat.comp hψe.1 (RingHom.Flat.of_bijective ⟨hbinj, hbsurj⟩)`. Rewrite using `[← hb1, ← Ideal.map_map, hψe.2.1]`.
+
+Conclude with `map_maximalIdeal_of_surjective b hbsurj`. Rewrite using `[hres2]`. Conclude with `RingHom.FormallyUnramified.comp hψu (RingHom.FormallyUnramified.of_surjective hmapsurj)`.
+-/
 theorem isEtaleCompletion_of_galRigid : ∀ (O R : Type) [CommRing O] [IsDomain O] [IsLocalRing O] [IsIntegrallyClosed O] [CharZero O] [Algebra.EssFiniteType ℤ O] [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (f : O →+* R) [IsLocalHom f], IsAdicComplete (maximalIdeal R) R → (∀ p : Ideal R, p.IsPrime → (maximalIdeal O).map f ≤ p → p = maximalIdeal R) → ((residue R).comp f).Finite → ringKrullDim O ≤ ringKrullDim R → GalRigid f → IsEtaleCompletion f ∧ ((residue R).comp f).FormallyUnramified := by
   intro O R _ _ _ _ _ _ _ _ _ _ f _ hRc hqf hfin hdim hrig
   haveI hOn : IsNoetherianRing O := Algebra.EssFiniteType.isNoetherianRing ℤ O

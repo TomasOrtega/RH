@@ -80,6 +80,11 @@ def S9.Statement : Prop :=
 def inhQ : ℕ → Fin 1 → RootPoly 1 (1 + 1) :=
   fun k _ => if k = 1 then C (2⁻¹ : ℚ) * (X (0, 1) - X (0, 0)) else if k = 2 then C (2⁻¹ : ℚ) else 0
 
+/- English proof (translation)
+Use `⟨by norm_num, ?_, fun _ _ _ _ => Or.inl rfl⟩` and prove the remaining obligations. Establish `hI : Finset.Icc 1 (1 + 1) = ({1, 2} : Finset ℕ)` using `by decide`. Simplify using `only [IsPsumDecomposition, restPoly, smallMu, fibClass, alternant, smallRoots, otherRoots, hI, inhQ, blockPsum, Matrix.det_unique, Finset.univ_unique, Finset.sum_singleton, Finset.prod_singleton]`. Rewrite using `[Finset.sum_pair (by norm_num)]`. Simplify using `[staircase, Fin.sum_univ_succ]`.
+
+Establish `h2 : (C (2⁻¹ : ℚ) : RootPoly 1 (1 + 1)) * 2 = 1`. Rewrite using `[show (2 : RootPoly 1 (1 + 1)) = C 2 from (map_ofNat C 2).symm, ← C_mul]`. Evaluate the numerical expressions. Take the linear combination `(-X ((0 : Fin 1), (1 : Fin (1 + 1))) ^ 2) * h2`.
+-/
 theorem S9.hypotheses_inhabited :
     4 * ((1 : ℕ) : ℝ) * ((1 + 1 : ℕ) : ℝ) ^ 2 ≤ 16 ∧
       IsPsumDecomposition 1 (1 + 1) (restPoly 1 1 1 .last) inhQ ∧

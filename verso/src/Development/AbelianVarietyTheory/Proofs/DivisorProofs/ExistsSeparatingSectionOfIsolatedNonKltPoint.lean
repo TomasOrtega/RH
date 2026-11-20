@@ -15,6 +15,27 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 
 namespace GlobalTheory.PairStep
 
+/- English proof (translation)
+Introduce `hNadel X _ _ _ p n hp hn`. Use `letI := algebraΓOfHom p`. Introduce `M Δ m G N D ρ d x x' hM hΔ hm hG hN hdeg hD hdρ hx hxx' hlc hx'`. Use `haveI hNoeth : AlgebraicGeometry.IsNoetherian X := isNoetherian_of_isProjOver hp`. Take `⟨-, H, hH⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hp`.
+
+Take `⟨m', D₀, hm', hD₀, rfl, hDn⟩` from `hD`. Establish `hq0 : 0 < ρ - d` using `sub_pos.2 hdρ`. Use `set a : ℕ := (ρ - d).num.toNat with ha_def`. Use `set b : ℕ := (ρ - d).den with hb_def`. Establish `hb : 0 < b` using `(ρ - d).den_pos`.
+
+Establish `hnum : 0 < (ρ - d).num` using `Rat.num_pos.2 hq0`. Establish `ha : ((a : ℤ) : ℚ) = (ρ - d).num`. Rewrite using `[ha_def, Int.toNat_of_nonneg hnum.le]`. Establish `ha1 : 1 ≤ a` using `by omega`. Establish `hab : ρ - d = (a : ℚ) / b`.
+
+Establish `e` using `Rat.num_div_den (ρ - d)`. Rewrite `e` using `[← ha, Int.cast_natCast]`. Conclude with `e.symm`. Establish `hpS : IsProjOver (strHom ℂ X)` using `by rwa [strHom_eq (f := p) fun _ => rfl]`. Establish `hNa : IsAmpleLB (lbPow N a)` using `(isAmpleLB_pow_iff hN.isLB ha1).2 hN`.
+
+Establish `hdeg' : ∀ C : Closeds X, IsCompleteCurve ℂ C → (interNumRed ℂ C ![M] : ℚ) = interNumRed ℂ C ![toLB (m' • G + m • D₀)] / ((m * m' : ℕ) : ℚ) + interNumRed ℂ C ![lbPow N a] / (b : ℚ)`. Introduce `C hC`. Establish `e` using `hC.interNumRed_of_cls_eq_add hH (isLB_toLB (m' • G + m • D₀)) (isLB_lbPow (isLB_toLB G) m') (isLB_lbPow (isLB_toLB D₀) m) (by rw [cls_lbPow (isLB_toLB G), cls_lbPow (isLB_toLB D₀), ← toPic_apply, ← toPic_apply, ← toPic_apply, map_add, map_nsmul, map_nsmul])`. Rewrite `e` using `[hC.interNumRed_lbPow hH (isLB_toLB G), hC.interNumRed_lbPow hH (isLB_toLB D₀)]`. Establish `h1 : (m : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`.
+
+Establish `h2 : (m' : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hm'.ne'`. Establish `h3 : (b : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hb.ne'`. Establish `hD'` using `hDn C hC`. Rewrite `hD'` using `[div_eq_iff h2]`. Rewrite using `[hdeg C hC, e, hC.interNumRed_lbPow hH hN.isLB a, show ρ = d + a / b by linarith]`.
+
+Use `push_cast`. Rewrite using `[hD']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨J, hJ, hvan⟩` from `hNadel X p n hp hn M (Δ + qWeil D₀ m') (m * m') (m' • G + m • D₀) b (lbPow N a) hM (isEffQDiv_add_of_isQCart X p hp Δ _ hΔ ⟨m', D₀, hm', hD₀, rfl⟩) (Nat.mul_pos hm hm') (isLogCanonicalMultiple_add_qWeil X p n Δ m m' G D₀ hm hm' hG) hb hNa.isNef (IsAmpleLB.isBig ℂ X hpS _ hNa) hde …`.
+
+Establish `hxJ : x ∈ J.support` using `(hJ x).2 hlc.2.1`. Establish `hx'J : x' ∈ J.support` using `(hJ x').2 hx'`. Take `⟨U, hxU, hU⟩` from `exists_open_inter_eq_singleton_of_no_generisation X (J.support : Set X) x J.support.isClosed hx hxJ fun z hz hzx => by`. Assume the negation of the conclusion as `hne`. Take `⟨e, -, he, h1⟩` from `closure_point_topologicalKrullDim X n z hn`.
+
+Establish `h0` using `hlc.2.2 z hzx ((hJ z).1 hz)`. Establish `he1` using `h1 x hzx (Ne.symm hne)`. Rewrite `h0` using `[he]`. Establish `: e ≤ 0` using `by exact_mod_cast h0`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨s, hs1, hs2⟩` from `exists_sec_mem_nonzeroLocus_of_isolated_zero_else ℂ X p hp M hM J x U hx hxU hU (hvan 1 one_pos)`. Conclude with `⟨s, hs1, hs2 x' hx'J (Ne.symm hxx')⟩`.
+-/
 theorem exists_sec_sep_of_lcCut : GlobalTheory.Published.NadelVanishingPair → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → letI := algebraΓOfHom p; ∀ (M : LB X) (Δ : X → ℚ) (m : ℕ) (G : CartierDiv X) (N : LB X) (D : X → ℚ) (ρ d : ℚ) (x x' : X), M.IsLB → IsEffQDiv Δ → 0 < m → IsLogCanonicalMultiple p n Δ m G → IsAmpleLB N → (∀ C : Closeds X, IsCompleteCurve ℂ C → (interNumRed ℂ C ![M] : ℚ) = interNumRed ℂ C ![toLB G] / m + ρ * interNumRed ℂ C ![N]) → QNum p N d D → d < ρ → IsClosed ({x} : Set X) → x ≠ x' → LcCut p n (Δ + D) x 0 → ¬ KltAt p n (Δ + D) x' → ∃ s : M.Sec, x ∈ nonzeroLocus s ∧ x' ∉ nonzeroLocus s := by
   intro hNadel X _ _ _ p n hp hn
   letI := algebraΓOfHom p

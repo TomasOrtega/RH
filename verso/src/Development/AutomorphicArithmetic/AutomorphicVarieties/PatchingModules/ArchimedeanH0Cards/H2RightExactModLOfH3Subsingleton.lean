@@ -9,6 +9,13 @@ variable {k G M : Type} [CommRing k] [Group G] [AddCommGroup M] [Module k M]
 
 end
 
+/- English proof (translation)
+Establish `e0 : (fun i : Fin 2 => g i.succ) = ![g 1, g 2]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Establish `e1 : Fin.contractNth 0 (fun x y : G => x * y) g = ![g 0 * g 1, g 2]`. Apply the tactic sequence `funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl`. Establish `e2 : Fin.contractNth 1 (fun x y : G => x * y) g = ![g 0, g 1 * g 2]`.
+
+Apply the tactic sequence `funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl`. Establish `e3 : Fin.contractNth 2 (fun x y : G => x * y) g = ![g 0, g 1]`. Apply the tactic sequence `funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl`. Simplify using `only [dn, LinearMap.coe_mk, AddHom.coe_mk, Fin.sum_univ_succ, Fin.sum_univ_zero, e0, e1]`. Evaluate the numerical expressions.
+
+Rewrite using `[e2, e3]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem dn_two_apply' {R G M : Type} [CommRing R] [Group G] [AddCommGroup M] [Module R M]
     (rho : Representation R G M) (F : (Fin 2 → G) → M) (g : Fin 3 → G) :
     dn rho 2 F g = rho (g 0) (F ![g 1, g 2]) - F ![g 0 * g 1, g 2] + F ![g 0, g 1 * g 2] - F ![g 0, g 1] := by
@@ -25,6 +32,13 @@ private theorem dn_two_apply' {R G M : Type} [CommRing R] [Group G] [AddCommGrou
   rw [e2, e3]
   abel
 
+/- English proof (translation)
+Establish `e0 : (fun i : Fin 3 => g i.succ) = ![g 1, g 2, g 3]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Establish `e1 : Fin.contractNth 0 (fun x y : G => x * y) g = ![g 0 * g 1, g 2, g 3]`. Apply the tactic sequence `funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl`. Establish `e2 : Fin.contractNth 1 (fun x y : G => x * y) g = ![g 0, g 1 * g 2, g 3]`.
+
+Apply the tactic sequence `funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl`. Establish `e3 : Fin.contractNth 2 (fun x y : G => x * y) g = ![g 0, g 1, g 2 * g 3]`. Apply the tactic sequence `funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl`. Establish `e4 : Fin.contractNth 3 (fun x y : G => x * y) g = ![g 0, g 1, g 2]`. Apply the tactic sequence `funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl`.
+
+Simplify using `only [dn, LinearMap.coe_mk, AddHom.coe_mk, Fin.sum_univ_succ, Fin.sum_univ_zero, e0, e1]`. Evaluate the numerical expressions. Rewrite using `[e2, e3, show (Fin.succ 2 : Fin 4) = 3 from rfl, e4]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem dn_three_apply {R G M : Type} [CommRing R] [Group G] [AddCommGroup M] [Module R M]
     (rho : Representation R G M) (F : (Fin 3 → G) → M) (g : Fin 4 → G) :
     dn rho 3 F g = rho (g 0) (F ![g 1, g 2, g 3]) - F ![g 0 * g 1, g 2, g 3] + F ![g 0, g 1 * g 2, g 3]
@@ -44,6 +58,41 @@ private theorem dn_three_apply {R G M : Type} [CommRing R] [Group G] [AddCommGro
   rw [e2, e3, show (Fin.succ 2 : Fin 4) = 3 from rfl, e4]
   abel
 
+/- English proof (translation)
+Introduce `l G _ _ _ h A _ M M' hl u hu hs`. Introduce `x`. Take `⟨c', rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `set s := Function.surjInv hs with hs_def`. Establish `us : ∀ y, u (s y) = y` using `Function.surjInv_eq hs`.
+
+Set `c : G × G → M.X` to `fun p => s (c'.1 p)`. Establish `hc : Continuous c` using `(continuous_of_discreteTopology (f := s)).comp c'.2.1`. Set `N : Submodule A M.X` to `LinearMap.ker u`. Establish `hN : ∀ g : G, ∀ m ∈ N, M.ρ g m ∈ N`. Introduce `g m hm`.
+
+Simplify using `only [N, LinearMap.mem_ker] at hm ⊢`. Rewrite using `[hu, hm, map_zero]`. Set `ρK : Representation A G N` to `{ toFun := fun g => (M.ρ g).restrict (hN g) map_one' := by`. Use extensionality with `m`. Simplify using the standard rewrite rules.
+
+Use the proof step `map_mul' := by`. Introduce `g g'`. Use extensionality with `m`. Simplify using `}`. Establish `hcont : ContAction ρK` using `continuous_induced_rng.2 (M.cont.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)))`.
+
+Set `K : FRep A G` to `FRep.mk N ρK hcont`. Establish `hKl : ∀ m : K.X, l • m = 0`. Introduce `m`. Conclude with `Subtype.ext (hl m.1)`. Establish `hsub` using `h A K hKl`.
+
+Set `C : (Fin 2 → G) → M.X` to `fun x => c (x 0, x 1)`. Establish `hfN : ∀ g : Fin 3 → G, dn M.ρ 2 C g ∈ N`. Introduce `g`. Simplify using `only [N, LinearMap.mem_ker]`. Rewrite using `[dn_two_apply']`.
+
+Simplify using `only [C, c, map_sub, map_add, hu, us]`. Simplify using `using c'.2.2 (g 0) (g 1) (g 2)`. Set `f : (Fin 3 → G) → N` to `fun g => ⟨dn M.ρ 2 C g, hfN g⟩`. Establish `key : ∀ t : Fin 3 → G, ((f t : N) : M.X) = M.ρ (t 0) (c (t 1, t 2)) - c (t 0 * t 1, t 2) + c (t 0, t 1 * t 2) - c (t 0, t 1)`. Introduce `t`.
+
+Simplify using `[f, dn_two_apply', C]`. Establish `hρK : ∀ (a : G) (m : N), ((ρK a m : N) : M.X) = M.ρ a m` using `fun a m => rfl`. Establish `hmul : ∀ (a b : G) (m : M.X), M.ρ a (M.ρ b m) = M.ρ (a * b) m`. Introduce `a b m`. Simplify using `[map_mul]`.
+
+Establish `fcont : Continuous f`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Establish `e : (Subtype.val ∘ f) = fun t : Fin 3 → G => M.ρ (t 0) (c (t 1, t 2)) - c (t 0 * t 1, t 2) + c (t 0, t 1 * t 2) - c (t 0, t 1)` using `funext key`. Rewrite using `[e]`. Establish `c0` using `continuous_apply (A := fun _ : Fin 3 => G) 0`.
+
+Establish `c1` using `continuous_apply (A := fun _ : Fin 3 => G) 1`. Establish `c2` using `continuous_apply (A := fun _ : Fin 3 => G) 2`. Conclude with `(((M.cont.comp (c0.prodMk (hc.comp (c1.prodMk c2)))).sub (hc.comp ((c0.mul c1).prodMk c2))).add (hc.comp (c0.prodMk (c1.mul c2)))).sub (hc.comp (c0.prodMk c1))`. Establish `fcyc : dn ρK 3 f = 0`. Use function extensionality and compare the values at `g`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[dn_three_apply]`. Simplify using `only [Submodule.coe_add, Submodule.coe_sub, hρK, key, Pi.zero_apply, ZeroMemClass.coe_zero, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, map_sub, map_add, hmul]`. Simplify using `only [mul_assoc]`. Normalize the expressions using the abelian group laws.
+
+Establish `fmem : f ∈ Zn K.ρ 3`. Use `Submodule.mem_inf.2 ⟨fcont, ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.mem_ker.2 fcyc`. Establish `h0 : (Submodule.Quotient.mk ⟨f, fmem⟩ : Hn K.ρ 3) = 0` using `Subsingleton.elim _ _`. Rewrite `h0` using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`.
+
+Express the relevant statement in the definitionally equal form `f ∈ Submodule.map (dn ρK 2) (Cn ρK 2) at h0`. Take `⟨b, hb, hbf⟩` from `h0`. Establish `hbc : Continuous b` using `hb`. Establish `hv : Continuous fun p : G × G => ![p.1, p.2]`. Apply `continuous_pi` to reduce the goal to its premises.
+
+Introduce `i`. Apply the tactic sequence `fin_cases i <;> simp <;> fun_prop`. Set `c2 : G × G → M.X` to `fun p => c p - (b ![p.1, p.2] : M.X)`. Establish `hc2 : c2 ∈ Z2 M.ρ`. Use `⟨hc.sub (continuous_subtype_val.comp (hbc.comp hv)), ?_⟩` and prove the remaining obligations.
+
+Introduce `g g' g''`. Establish `e` using `congrArg Subtype.val (congrFun hbf ![g, g', g''])`. Rewrite `e` using `[dn_two_apply']`. Simplify using `only [Submodule.coe_add, Submodule.coe_sub, hρK, key, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] at e`. Simplify using `only [c2, map_sub]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨Submodule.Quotient.mk ⟨c2, hc2⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [mapH2, Submodule.mapQ_apply]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `p`. Use `show u (c2 p) = c'.1 p`. Simplify using `only [c2, c, map_sub, us, LinearMap.mem_ker.1 (b _).2, sub_zero]`.
+-/
 theorem UpperTheory.V.Pa.B2.H2_right_exact_mod_l_of_H3_subsingleton :
     ∀ (l : ℕ) (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G], (∀ (A : Type) [CommRing A] (M : FRep A G), (∀ m : M.X, l • m = 0) → Subsingleton (Hn M.ρ 3)) → SecondCohomologyRightExactModL l G := by
   intro l G _ _ _ h A _ M M' hl u hu hs

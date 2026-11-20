@@ -15,6 +15,9 @@ noncomputable def lcRing (hS : LcSpec) (H : RIn l) (A : PAlg l) (hA : A.IsTest) 
   map_zero' := map_zero _
   map_add' := map_add _
 
+/- English proof (translation)
+The claim follows from `(hM ℤ (Acris l) (Int.castRingHom (Acris l)) C (lcF (probe H r T n).S (l ^ n)) ((T ⋙ testι l) ⋙ AcrA l n) (lcMor hN H r T n) (fun c => lcRing hS H (T.obj c).obj (T.obj c).property n) (fun c x => rfl)).2 p q m h x y`.
+-/
 theorem lcMor_cup (hM : MorCup) (hS : LcSpec) (hN : LcNat) (H : RIn l) (r : Roots l) {C : Type 1} [Category.{0} C]
     (T : C ⥤ Test l) (n p q m : ℕ) (h : p + q = m) (x : CH.H (probe H r T n).L p) (y : CH.H (probe H r T n).L q) :
     (lcMor hN H r T n).pull m ((mulP (lcF (probe H r T n).S (l ^ n))).cup h x y) =
@@ -24,6 +27,9 @@ theorem lcMor_cup (hM : MorCup) (hS : LcSpec) (hN : LcNat) (H : RIn l) (r : Root
 
 variable {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+Establish `h1` using `hE E.gen E.tw (l ^ n) C (probe H r (G ⋙ CategoryOfElements.π _) n) (gb M) (pts H r M G n) i i' i'' hi j j' j'' hj x y`. Establish `h2` using `lcMor_cup hM hS hN H r (G ⋙ CategoryOfElements.π _) n j j' j'' hj ((pts H r M G n).et i j x) ((pts H r M G n).et i' j' y)`. Conclude with `(congrArg ((lcMor hN H r (G ⋙ CategoryOfElements.π _) n).pull j'') h1).trans h2`.
+-/
 theorem eG_cup (hE : EtCup) (hM : MorCup) (hS : LcSpec) (E : EtIn) (hN : LcNat) (H : RIn l) (r : Roots l)
     (M : Model l K) {C : Type 1} [Category.{0} C] (G : C ⥤ El M.P) (n : ℕ) (i i' i'' : ℤ) (hi : i + i' = i'')
     (j j' j'' : ℕ) (hj : j + j' = j'') (x : Ht (l ^ n) (sch.obj (gb M)) j i) (y : Ht (l ^ n) (sch.obj (gb M)) j' i') :
@@ -35,6 +41,9 @@ theorem eG_cup (hE : EtCup) (hM : MorCup) (hS : LcSpec) (E : EtIn) (hN : LcNat) 
     ((pts H r M G n).et i j x) ((pts H r M G n).et i' j' y)
   exact (congrArg ((lcMor hN H r (G ⋙ CategoryOfElements.π _) n).pull j'') h1).trans h2
 
+/- English proof (translation)
+Introduce `hE hM hS E hN l _ H r K M n i i' i'' hi j j' j'' hj x y`. Conclude with `eG_cup hE hM hS E hN H r M (𝟭 _) n i i' i'' hi j j' j'' hj x y`.
+-/
 theorem fCup : CrystallineSemistableComparison.E.EtCup → CrystallineSemistableComparison.E.MorCup → CrystallineSemistableComparison.E.LcSpec → CrystallineSemistableComparison.E.FCup := by
   intro hE hM hS E hN l _ H r K M n i i' i'' hi j j' j'' hj x y
   exact eG_cup hE hM hS E hN H r M (𝟭 _) n i i' i'' hi j j' j'' hj x y

@@ -16,12 +16,20 @@ open TeichSeq
 
 variable {C : Type} [Field C] {V : VF C}
 
+/- English proof (translation)
+Establish `h0 : V.v u = 0` using `le_antisymm (not_lt.1 hu') (by simpa [VF.Ge] using hu)`. Unfold `VF.Ge at h ⊢`. Rewrite `h` using `[V.v.map_mul, h0, add_zero]`. Then use the resulting hypothesis.
+-/
 theorem ge_of_mul_unit {w : ℝ} {a u : C} (hu : V.Ge 0 u) (hu' : ¬ V.MM u)
     (h : V.Ge w (a * u)) : V.Ge w a := by
   have h0 : V.v u = 0 := le_antisymm (not_lt.1 hu') (by simpa [VF.Ge] using hu)
   unfold VF.Ge at h ⊢
   rwa [V.v.map_mul, h0, add_zero] at h
 
+/- English proof (translation)
+Establish `hq : V.Ge 0 ((V.l : C)⁻¹ * (t - c))` using `by simpa using h.l_inv_mul`. Establish `hd : (V.l : intRing V) ∣ (⟨t, ht⟩ : intRing V) - ⟨c, hc⟩` using `⟨⟨_, hq⟩, Subtype.ext (by show t - c = ((V.l : intRing V) : C) * ((V.l : C)⁻¹ * (t - c))`. Rewrite using `[SubringClass.coe_natCast, mul_inv_cancel_left₀ VF.l_ne_zero])⟩`. Take `⟨z, hz⟩` from `(pow_dvd_pow _ (Nat.le_succ n)).trans (dvd_sub_pow_of_dvd_sub hd n)`. Establish `hz' : t ^ V.l ^ n - c ^ V.l ^ n = (z : C) * (V.l : C) ^ n`.
+
+Use `congrArg Subtype.val hz` as an intermediate fact. Simplify `this` using `[mul_comm]`. Rewrite using `[hz']`. Conclude with `VF.Ge.mul_int z.2 (ge_l_pow V n)`.
+-/
 theorem ge_pow_pow_sub {t c : C} (ht : V.Ge 0 t) (hc : V.Ge 0 c) (h : V.Ge 1 (t - c)) (n : ℕ) :
     V.Ge n (t ^ V.l ^ n - c ^ V.l ^ n) := by
   have hq : V.Ge 0 ((V.l : C)⁻¹ * (t - c)) := by simpa using h.l_inv_mul
@@ -36,6 +44,29 @@ theorem ge_pow_pow_sub {t c : C} (ht : V.Ge 0 t) (hc : V.Ge 0 c) (h : V.Ge 1 (t 
   rw [hz']
   exact VF.Ge.mul_int z.2 (ge_l_pow V n)
 
+/- English proof (translation)
+Introduce `C _ _ V O _ d _ em hint hfrob ⟨ε, ⟨y0, hε2⟩, hε1, hεP⟩`. Establish `hεpow : ∀ n, (V.l : O) ∣ ε ^ (n + 1) - ε` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+
+Establish `: ε ^ (n + 1 + 1) - ε = (ε ^ (n + 1) - ε) * ε + (ε * ε - ε)` using `by ring`. Rewrite using `[this]`. Conclude with `dvd_add (ih.mul_right _) ⟨y0, hε2⟩`. Establish `hprod : ∀ ψ : O →+* C, (∀ x, V.Ge 0 (ψ x)) → V.Ge 1 ((ψ ε - 1) * ψ ε)` using `fun ψ hψ => by`. Establish `h1 : (ψ ε - 1) * ψ ε = ψ y0 * (V.l : C)`.
+
+Use `congrArg ψ hε2` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_mul, map_natCast]`. Take the linear combination `this`. Rewrite using `[h1]`. Conclude with `(hψ y0).mul_int VF.ge_l`.
+
+Establish `hnot : ∀ t : C, V.MM t → ¬ V.MM (t - 1)` using `fun t h1 h2 => by`. Establish `h3 : V.MM (-(t - 1))` using `by unfold VF.MM; rw [V.v.map_neg]; exact h2`. Establish `h4 : 0 < V.v (t + -(t - 1))` using `V.v.map_lt_add h1 h3`. Simplify using `at h4`. Use `⟨fun n => ε ^ V.l ^ n, fun n => ?_, fun a K => ⟨K, fun n hn => ?_⟩, fun φ hφ hsep K => ⟨K, fun n hn => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h1` using `hεpow (V.l - 1)`. Rewrite `h1` using `[Nat.sub_add_cancel V.l_prime.one_lt.le]`. Establish `h2` using `(pow_dvd_pow _ (Nat.le_succ n)).trans (dvd_sub_pow_of_dvd_sub h1 n)`. Rewrite `h2` using `[← pow_mul, ← pow_succ']`. Conclude with `h2`.
+
+Establish `h1 : V.Ge 1 (em a ε - 1)` using `ge_of_mul_unit (hint a ε) (fun h => hnot _ h (hε1 a)) (hprod _ (hint a))`. Establish `h2` using `(ge_pow_pow_sub (hint a ε) VF.Ge.one h1 n).neg`. Rewrite `h2` using `[one_pow, neg_sub, ← map_pow]`. Conclude with `h2.mono (by exact_mod_cast hn)`. Establish `hm : V.MM (φ ε)`.
+
+Assume the negation of the conclusion as `hu`. Take `⟨a, ha⟩` from `ResidueChar.main C V O d em hint hfrob φ hφ (fun x hx => by`. Take `⟨y, hy⟩` from `hεP x hx`. Establish `h1 : φ x * φ ε = φ y * (V.l : C)`. Use `congrArg φ hy` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_mul, map_natCast]`. Take the linear combination `this`. Use `mm_of_ge_one V (ge_of_mul_unit (hφ ε) hu ?_)` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `(hφ y).mul_int VF.ge_l)`.
+
+Take `⟨x, hx⟩` from `hsep a`. Establish `h2 : 0 < V.v (φ x - em a x)` using `ha x`. Rewrite `h2` using `[← neg_sub, V.v.map_neg, hx]`. Conclude with `lt_irrefl _ h2`. Establish `h1 : V.Ge 1 (φ ε - 0)`.
+
+Rewrite using `[sub_zero]`. Use `ge_of_mul_unit ((hφ ε).sub VF.Ge.one) (hnot _ hm) ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `hprod φ hφ`. Establish `h2` using `(ge_pow_pow_sub (hφ ε) (VF.Ge.zero 0) h1 n).neg`.
+
+Rewrite `h2` using `[zero_pow (pow_ne_zero _ V.l_prime.ne_zero), neg_sub, ← map_pow]`. Conclude with `h2.mono (by exact_mod_cast hn)`.
+-/
 theorem main : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] (d : ℕ) [NeZero d] (em : ZMod d → (O →+* C)), (∀ a x, V.Ge 0 (em a x)) → (∀ a x, V.MM (em (a + 1) x - em a x ^ V.l)) → (∃ ε : O, (∃ y, ε * ε - ε = (V.l : O) * y) ∧ (∀ a, V.MM (em a ε - 1)) ∧ ∀ x : O, (∀ a, V.MM (em a x)) → ∃ y, ε * x = (V.l : O) * y) → ∃ s : ℕ → O, (∀ n, ∃ y, s (n + 1) - s n = (V.l : O) ^ n * y) ∧ (∀ (a : ZMod d) (K : ℕ), ∃ n0, ∀ n ≥ n0, V.Ge K (1 - em a (s n))) ∧ ∀ φ : O →+* C, (∀ x, V.Ge 0 (φ x)) → (∀ a, ∃ x, V.v (em a x - φ x) = 0) → ∀ K : ℕ, ∃ n0, ∀ n ≥ n0, V.Ge K (0 - φ (s n)) := by
   intro C _ _ V O _ d _ em hint hfrob ⟨ε, ⟨y0, hε2⟩, hε1, hεP⟩
   have hεpow : ∀ n, (V.l : O) ∣ ε ^ (n + 1) - ε := fun n => by

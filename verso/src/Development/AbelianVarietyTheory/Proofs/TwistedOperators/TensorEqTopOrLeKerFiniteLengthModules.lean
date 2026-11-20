@@ -13,6 +13,37 @@ open scoped TensorProduct
 
 namespace GlobalTheory.TensHead
 
+/- English proof (translation)
+Introduce `ι _ _ M₀ P₀ _ _ _ _ M P _ _ _ _ Op₀ Op Rel₀ Rel p₀ p hr₀ hr hL₀ hloc₀ hRel₀ hK₀ hL hloc hRel hK N hN₀ hNi hS₀ hSi`. Establish `hS : Stab (tensOps Op₀ (piOps Op)) N`. Introduce and unpack `f (⟨g, hg, rfl⟩ | ⟨h, ⟨i, g, hg, rfl⟩, rfl⟩) t ht`. Conclude with `hS₀ g hg t ht`. Conclude with `hSi i g hg t ht`.
+
+Distinguish the cases in `h0 : LinearMap.ker p₀ = ⊤`. Use `right`. Introduce `t _`. Establish `: p₀ = 0` using `LinearMap.ker_eq_top.mp h0`. Rewrite using `[LinearMap.mem_ker, this, TensorProduct.map_zero_left, LinearMap.zero_apply]`.
+
+Distinguish the cases in `hi : ∃ i, LinearMap.ker (p i) = ⊤`. Use `right`. Take `⟨i, hi⟩` from `hi`. Establish `hpi : p i = 0` using `LinearMap.ker_eq_top.mp hi`. Establish `hmap : PiTensorProduct.map p = 0`.
+
+Use extensionality with `y`. Simplify using `only [LinearMap.compMultilinearMap_apply, PiTensorProduct.map_tprod, LinearMap.zero_apply]`. Conclude with `MultilinearMap.map_coord_zero _ i (by simp [hpi])`. Introduce `t _`. Rewrite using `[LinearMap.mem_ker, hmap, TensorProduct.map_zero_right, LinearMap.zero_apply]`.
+
+Use `push_neg at hi`. Distinguish the cases in `hN : N = ⊤`. Conclude with `Or.inl hN`. Establish `hSimple₀ : SimpleOver Op₀ (LinearMap.ker p₀)` using `fun U hU hKU => by`. Distinguish the cases in `hUt : U = ⊤`.
+
+Conclude with `Or.inr hUt`. Conclude with `Or.inl (le_antisymm (hloc₀ U (hRel₀.trans hKU) hU hUt) hKU)`. Establish `hSimple : ∀ i, SimpleOver (Op i) (LinearMap.ker (p i))` using `fun i U hU hKU => by`. Distinguish the cases in `hUt : U = ⊤`. Conclude with `Or.inr hUt`.
+
+Conclude with `Or.inl (le_antisymm (hloc i U ((hRel i).trans hKU) hU hUt) hKU)`. Take `⟨F₀, hF₀⟩` from `GlobalTheory.T.exists_finset_generating_operator_stable_bounded Op₀ Rel₀ hL₀`. Use `choose F hF using fun i => GlobalTheory.T.exists_finset_generating_operator_stable_bounded (Op i) (Rel i) (hL i)`. Set `G : Finset (M₀ ⊗[ℂ] (⨂[ℂ] i, M i))` to `(F₀ ×ˢ Fintype.piFinset F).image (fun q => q.1 ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ q.2)`. Establish `hgen : ∀ U, N ≤ U → Stab (tensOps Op₀ (piOps Op)) U → (↑G : Set (M₀ ⊗[ℂ] (⨂[ℂ] i, M i))) ⊆ (U : Set (M₀ ⊗[ℂ] (⨂[ℂ] i, M i))) → U = ⊤`.
+
+Introduce `U hNU hU hGU`. Use `GlobalTheory.T.eq_top_of_pure_tensors_of_factor_generators Op₀ Op Rel₀ Rel F₀ F hF₀ hF U (fun x hx y => hNU (hN₀ x hx y)) (fun i x hx x₀ y => hNU (hNi i x hx x₀ y)) hU ?_` and prove the remaining obligations. Introduce `x₀ hx₀ y hy`. Apply `hGU` to reduce the goal to its premises. Simplify using `only [G, Finset.coe_image]`.
+
+Conclude with `⟨(x₀, y), by simp [hx₀, Fintype.mem_piFinset, hy], rfl⟩`. Take `⟨N', hNN', hS', hN'top, hmax⟩` from `GlobalTheory.T.exists_maximal_operatorStable_of_finset_generating _ N G hgen N le_rfl hS hN`. Establish `h0'` using `GlobalTheory.T.tensor_maximalStable_contains_leftKernel Op₀ (piOps Op) Rel₀ (LinearMap.ker p₀) hL₀ hloc₀ h0 hK₀ N' (fun x hx y => hNN' (hN₀ x hx y)) hS' hmax`. Establish `hi' : ∀ i, ∀ x ∈ LinearMap.ker (p i), ∀ (x₀ : M₀) (y : ∀ j, M j), x₀ ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ (Function.update y i x) ∈ N'` using `fun i => GlobalTheory.T.piTensor_maximalStable_contains_positionKernel Op₀ Op i (Rel i) (LinearMap.ker (p i)) (hL i) (hloc i) (hi i) (hK i) N' (fun x hx x₀ y => hNN' (hNi i x hx x₀ y)) hS' hmax`. Establish `hKT : tensKer (LinearMap.ker p₀) (piKer fun i => LinearMap.ker (p i)) ≤ N'`.
+
+Rewrite using `[tensKer, Submodule.span_le]`. Introduce and unpack `t ⟨x, y, hxy | hxy, rfl⟩`. Conclude with `h0' x hxy y`. Use `Submodule.span_induction (p := fun y _ => x ⊗ₜ[ℂ] y ∈ N') ?_ ?_ ?_ ?_ hxy` and prove the remaining obligations. Introduce and unpack `_ ⟨z, ⟨i, hzi⟩, rfl⟩`.
+
+Use `hi' i (z i) hzi x z` as an intermediate fact. Rewrite `this` using `[Function.update_eq_self]`. Then use the resulting hypothesis. Simplify using the standard rewrite rules. Introduce `a b _ _ ha hb`. Rewrite using `[TensorProduct.tmul_add]`.
+
+Conclude with `N'.add_mem ha hb`. Introduce `c a _ ha`. Rewrite using `[TensorProduct.tmul_smul]`. Conclude with `N'.smul_mem c ha`. Establish `hPi` using `GlobalTheory.T.simpleOverStableSubmodule_piTensor Op (fun i => LinearMap.ker (p i)) hr hK hSimple`.
+
+Establish `hT` using `GlobalTheory.T.simpleOverStableSubmodule_tensorPureKernelSpan Op₀ (piOps Op) (LinearMap.ker p₀) (piKer fun i => LinearMap.ker (p i)) hr₀ hK₀ (GlobalTheory.T.operatorStable_piTensorPureKernelSpan Op _ hK) hSimple₀ hPi`. Break down `hT N' hS' hKT with h | h` into its components or cases. Use `right`. Rewrite `hNN'` using `[h]`. Use `hNN'.trans ?_` and prove the remaining obligations.
+
+Establish `hle : piKer (fun i => LinearMap.ker (p i)) ≤ LinearMap.ker (PiTensorProduct.map p)`. Rewrite using `[piKer, Submodule.span_le]`. Introduce and unpack `_ ⟨z, ⟨i, hzi⟩, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, PiTensorProduct.map_tprod]`. Conclude with `MultilinearMap.map_coord_zero _ i (LinearMap.mem_ker.mp hzi)`.
+
+Rewrite using `[tensKer, Submodule.span_le]`. Introduce and unpack `t ⟨x, y, hxy | hxy, rfl⟩`. Simplify using `[TensorProduct.map_tmul, LinearMap.mem_ker.mp hxy]`. Simplify using `[TensorProduct.map_tmul, LinearMap.mem_ker.mp (hle hxy)]`. Conclude with `absurd h hN'top`.
+-/
 theorem tensor_eq_top_or_le_ker_map : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] {M₀ P₀ : Type} [AddCommGroup M₀] [Module ℂ M₀] [AddCommGroup P₀] [Module ℂ P₀]
     {M P : ι → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)] [∀ i, AddCommGroup (P i)] [∀ i, Module ℂ (P i)]
     (Op₀ : Set (Module.End ℂ M₀)) (Op : ∀ i, Set (Module.End ℂ (M i)))

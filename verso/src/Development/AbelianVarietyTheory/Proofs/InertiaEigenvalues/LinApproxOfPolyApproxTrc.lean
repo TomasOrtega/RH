@@ -5,6 +5,15 @@ open Formalism.MainNotions.N GlobalTheory.Cong GlobalTheory.PsChar
 
 namespace GlobalTheory.Cong
 
+/- English proof (translation)
+Introduce `k Γ _ _ _ a r C h ε hε`. Take `⟨s, c, hs, hP⟩` from `h ε hε`. Set `f : (Γ → k) → (Γ →* GL (Fin a) k)` to `Function.invFunOn trc C`. Establish `hf : ∀ η ∈ s, f η ∈ C ∧ trc (f η) = η` using `fun η hη => ⟨Function.invFunOn_mem (hs hη), Function.invFunOn_eq (hs hη)⟩`. Establish `hinj : Set.InjOn f (s : Set (Γ → k))` using `fun x hx y hy hxy => by`.
+
+Rewrite using `[← (hf x hx).2, ← (hf y hy).2, hxy]`. Use `⟨s.image f, fun ρ => c (trc ρ), ?_, fun g => ?_⟩` and prove the remaining obligations. Introduce `ρ hρ`. Take `⟨η, hη, rfl⟩` from `Finset.mem_image.mp (Finset.mem_coe.mp hρ)`. Conclude with `(hf η hη).1`.
+
+Use `hP (MvPolynomial.X g)` as an intermediate fact. Simplify using `only [MvPolynomial.aeval_X] at this`. Rewrite using `[Finset.sum_image hinj]`. Establish `e : ∑ x ∈ s, c (trc (f x)) * trc (f x) g = ∑ η ∈ s, c η * η g` using `Finset.sum_congr rfl fun η hη => by rw [(hf η hη).2]`. Rewrite using `[e]`.
+
+Conclude with `this`.
+-/
 theorem linApprox_of_polyApprox_trc : ∀ (k Γ : Type) [NormedField k] [IsUltrametricDist k] [Group Γ] (a : ℕ)
     (r : Γ →* GL (Fin a) k) (C : Set (Γ →* GL (Fin a) k)), PolyApprox (trc r) (trc '' C) → LinApprox r C := by
   intro k Γ _ _ _ a r C h ε hε

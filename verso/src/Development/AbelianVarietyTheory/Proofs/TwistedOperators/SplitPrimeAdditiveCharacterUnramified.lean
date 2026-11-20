@@ -13,6 +13,25 @@ namespace GlobalTheory.SplitUnram
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `h1 : ∀ x : F, ψ (pairA F 0 (algebraMap F (Af F) x)) = 1 ↔ Algebra.trace ℚ F x ∈ (algebraMap ℤ ℚ).range` using `fun x => by`. Rewrite using `[h, mul_comm, Complex.exp_eq_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Use `mul_right_cancel₀ Complex.two_pi_I_ne_zero hn` as an intermediate fact. Rewrite using `[eq_intCast]`. Conclude with `this.symm` after adjusting the coercions. Introduce and unpack `⟨n, hn⟩`. Conclude with `⟨n, by rw [← hn, eq_intCast, Rat.cast_intCast]⟩`.
+
+Establish `h2 : ∀ x : F, x ∈ codiff F ↔ ∀ a : 𝓞 F, ψ (pairA F 0 (algebraMap F (Af F) ((a : F) * x))) = 1` using `fun x => by`. Rewrite using `[FractionalIdeal.mem_dual (one_ne_zero (α := FractionalIdeal (𝓞 F)⁰ F))]`. Repeatedly rewrite using `[h1, Algebra.traceForm_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `H a`.
+
+Rewrite using `[mul_comm]`. Conclude with `H _ ((FractionalIdeal.mem_one_iff _).2 ⟨a, rfl⟩)`. Introduce `H a ha`. Take `⟨a, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Rewrite using `[mul_comm]`.
+
+Conclude with `H a`. Establish `key : ∀ x : F, x ∈ codiff F ↔ ∀ α : Af F, (∀ v, α v ∈ v.adicCompletionIntegers F) → ψ (pairA F 0 (α * algebraMap F (Af F) x)) = 1` using `fun x => by`. Rewrite using `[h2]`. Use `⟨fun H α hα => GlobalTheory.IntDense.addChar_eq_one_of_integral F ψ hc x H α hα, fun H a => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Use `H _ fun v => ?_` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, adele_algebraMap_apply, valued_algebraMap]`. Conclude with `v.valuation_le_one a`. Establish `hint : ∀ α : Af F, (∀ v, α v ∈ v.adicCompletionIntegers F) → ψ (pairA F 0 α) = 1` using `fun α hα => by`. Use `(key 1).1 (one_le_codiff (FractionalIdeal.one_mem_one _)) α hα` as an intermediate fact.
+
+Rewrite `this` using `[map_one, mul_one]`. Then use the resulting hypothesis. Take `⟨x, hx⟩` from `exists_sub_mem_adelicIdeal (one_ne_zero (α := FractionalIdeal (𝓞 F)⁰ F)) y`. Establish `hx1` using `mem_adelicIdeal_one_iff.1 hx`. Establish `hx2 : y - algebraMap F (Af F) x ∈ adelicIdeal (codiff F)`. Use `(mem_adelicIdeal_iff codiff_ne_zero).2 fun v => (hx1 v).trans ?_` and prove the remaining obligations.
+
+Use `FractionalIdeal.count_mono F v (one_ne_zero (α := FractionalIdeal (𝓞 F)⁰ F)) (one_le_codiff (F := F))` as an intermediate fact. Rewrite `this` using `[FractionalIdeal.count_one]`. Rewrite using `[← exp_zero, exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `e : y = algebraMap F (Af F) x + (y - algebraMap F (Af F) x)` using `by ring`.
+
+Rewrite using `[e, (adelicIdeal (codiff F)).add_mem_iff_left hx2, algebraMap_mem_adelicIdeal codiff_ne_zero, key]`. Use `forall_congr' fun α => forall_congr' fun hα => ?_` and prove the remaining obligations. Rewrite using `[mul_add, char_fin_add, hint (α * (y - algebraMap F (Af F) x)) fun v => mul_mem (hα v) (hx1 v), mul_one]`.
+-/
 theorem mem_adelicIdeal_codiff_iff {ψ : AddChar (AF F) ℂ} (hc : Continuous ψ)
     (h : ∀ x : F, ψ (pairA F 0 (algebraMap F (Af F) x)) =
       Complex.exp (2 * Real.pi * Complex.I * ((Algebra.trace ℚ F x : ℚ) : ℂ))) (y : Af F) :
@@ -69,6 +88,15 @@ theorem mem_adelicIdeal_codiff_iff {ψ : AddChar (AF F) ℂ} (hc : Continuous ψ
   rw [mul_add, char_fin_add, hint (α * (y - algebraMap F (Af F) x))
     fun v => mul_mem (hα v) (hx1 v), mul_one]
 
+/- English proof (translation)
+Establish `hp' : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hp'.irreducible`. Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 F)) (Ideal.span {(p : ℤ)}) = Ideal.span {((p : ℕ) : 𝓞 F)}`. Rewrite using `[Ideal.map_span]`. Simplify using the standard rewrite rules.
+
+Establish `hle : Ideal.map (algebraMap ℤ (𝓞 F)) (Ideal.span {(p : ℤ)}) ≤ v.asIdeal`. Rewrite using `[hmap, Ideal.span_le]`. Simplify using `using hv`. Use `v.isPrime` as an intermediate fact. Establish `: v.asIdeal.LiesOver (Ideal.span {(p : ℤ)})` using `⟨hmax.eq_of_le (Ideal.comap_ne_top _ v.isPrime.ne_top) (Ideal.map_le_iff_le_comap.mp hle)⟩`.
+
+Establish `hb : Ideal.span {(p : ℤ)} ≠ ⊥` using `by simpa using hp.ne_zero`. Rewrite using `[not_dvd_differentIdeal_iff]`. Apply `Ideal.ramificationIdx_eq_one_iff.1` to reduce the goal to its premises. Rewrite using `[← Ideal.ramificationIdx'_eq_ramificationIdx (Ideal.span {(p : ℤ)}) v.asIdeal hb]`. Assume the negation of the conclusion as `hne`.
+
+Rewrite `hne` using `[← ne_eq, Ideal.ramificationIdx'_ne_one_iff hle, hmap, Ideal.span_le]`. Conclude with `h2 (by simpa using hne)`.
+-/
 theorem not_dvd_different {p : ℕ} (hp : p.Prime) (v : HeightOneSpectrum (𝓞 F))
     (hv : (p : 𝓞 F) ∈ v.asIdeal) (h2 : (p : 𝓞 F) ∉ v.asIdeal ^ 2) :
     ¬ v.asIdeal ∣ differentIdeal ℤ (𝓞 F) := by
@@ -90,6 +118,9 @@ theorem not_dvd_different {p : ℕ} (hp : p.Prime) (v : HeightOneSpectrum (𝓞 
   rw [← ne_eq, Ideal.ramificationIdx'_ne_one_iff hle, hmap, Ideal.span_le] at hne
   exact h2 (by simpa using hne)
 
+/- English proof (translation)
+Establish `hD : ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) = (codiff F)⁻¹` using `coeIdeal_differentIdeal ℤ ℚ F (𝓞 F)`. Establish `h0 : differentIdeal ℤ (𝓞 F) ≠ 0` using `differentIdeal_ne_bot`. Establish `h1` using `FractionalIdeal.count_coe F v h0`. Rewrite `h1` using `[hD, FractionalIdeal.count_inv, not_not.1 (mt (Associates.count_ne_zero_iff_dvd h0 v.irreducible).1 h)]`. Simplify using `using h1`.
+-/
 theorem count_codiff_eq_zero (v : HeightOneSpectrum (𝓞 F)) (h : ¬ v.asIdeal ∣ differentIdeal ℤ (𝓞 F)) :
     FractionalIdeal.count F v (codiff F) = 0 := by
   have hD : ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) = (codiff F)⁻¹ :=
@@ -100,6 +131,11 @@ theorem count_codiff_eq_zero (v : HeightOneSpectrum (𝓞 F)) (h : ¬ v.asIdeal 
     not_not.1 (mt (Associates.count_ne_zero_iff_dvd h0 v.irreducible).1 h)] at h1
   simpa using h1
 
+/- English proof (translation)
+Introduce `hv`. Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, hQv⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal`. Establish `hb : Q ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q`. Establish `hle : v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E)) ≤ Q` using `Ideal.map_le_iff_le_comap.2 hQv.over.le`.
+
+Establish `h1` using `Ideal.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 E)) hv`. Rewrite `h1` using `[Ideal.map_pow, map_natCast]`. Establish `h2 : (p : 𝓞 E) ∈ Q ^ 2` using `Ideal.pow_right_mono hle 2 h1`. Conclude with `h ⟨Q, hQ.isPrime, hb⟩ (Ideal.pow_le_self two_ne_zero h2) h2`.
+-/
 theorem not_mem_sq_of_ext {E : Type} [Field E] [NumberField E] [Algebra F E] {p : ℕ}
     (h : ∀ w : HeightOneSpectrum (𝓞 E), (p : 𝓞 E) ∈ w.asIdeal → (p : 𝓞 E) ∉ w.asIdeal ^ 2)
     (v : HeightOneSpectrum (𝓞 F)) : (p : 𝓞 F) ∉ v.asIdeal ^ 2 := by
@@ -114,6 +150,15 @@ theorem not_mem_sq_of_ext {E : Type} [Field E] [NumberField E] [Algebra F E] {p 
   have h2 : (p : 𝓞 E) ∈ Q ^ 2 := Ideal.pow_right_mono hle 2 h1
   exact h ⟨Q, hQ.isPrime, hb⟩ (Ideal.pow_le_self two_ne_zero h2) h2
 
+/- English proof (translation)
+Introduce `D p ψ hp hψ v hv α hα`. Establish `hc` using `count_codiff_eq_zero v (not_dvd_different hp.1 v hv (not_mem_sq_of_ext (fun w hw => (hp.2 w hw).2) v))`. Establish `h` using `mem_adelicIdeal_codiff_iff hψ.1.1 (GlobalTheory.StdRat.stdChar_fin_rat D ψ hψ) α`. Establish `h' : (∀ β ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F, ψ (pairA D.host.F 0 (α * β)) = 1) ↔ α ∈ adelicIdeal (codiff D.host.F)`. Rewrite using `[h]`.
+
+Conclude with `forall_congr' fun β => by rw [mul_comm]; rfl`. Rewrite using `[h', mem_adelicIdeal_iff codiff_ne_zero, HeightOneSpectrum.mem_adicCompletionIntegers]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `H v` as an intermediate fact.
+
+Rewrite `this` using `[hc, neg_zero, exp_zero]`. Then use the resulting hypothesis. Introduce `H w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hc, neg_zero, exp_zero]`.
+
+Conclude with `H`. Establish `h0 : α w = 0` using `hα w hw`. Rewrite using `[h0, map_zero]`. Conclude with `zero_le`.
+-/
 theorem psiUnramAt_of_splitsCompletely : ∀ (D : D7) (p : ℕ) (ψ : AddChar (AF D.host.F) ℂ),
     GlobalTheory.IndefiniteRowSideFullHecke.IteratedLiftChains.SplitsCompletely D p → IsStdChar D ψ (-1) →
     ∀ v : HeightOneSpectrum (𝓞 D.host.F), (p : 𝓞 D.host.F) ∈ v.asIdeal → GlobalTheory.IndefiniteRowSideFullHecke.IteratedLiftChains.PsiUnramAt ψ v := by

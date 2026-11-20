@@ -8,6 +8,11 @@ open GlobalTheory.CompanionTheory.LFUDom
 
 namespace GlobalTheory.CompanionTheory.LFUDom
 
+/- English proof (translation)
+Introduce `F _ _ _ _ i j c`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, coe_rowRep, Matrix.det_fin_two_of]`. Establish `h : ((i : ℤ) + j) = ((i + j : ℕ) : ℤ)` using `by push_cast; rfl`. Rewrite using `[h, zpow_natCast, Units.val_pow_eq_pow_val, coe_uniformizerUnit, pow_add]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem det_rowRep_eq_zpow : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (i j : ℕ) (c : Fin j → 𝓀[F]), GeneralLinearGroup.det (rowRep i j c) = uniformizerUnit F ^ ((i : ℤ) + j) := by
   intro F _ _ _ _ i j c
   apply Units.ext

@@ -112,6 +112,9 @@ def newR (R : RealDat3 D A3 Ks) (L : Formalism.IndefR.Links.LevCh D T) (eG : G �
       err0 := fun _ _ => 0 }
     plI := plI, SF := SF, lam3 := fun _ _ _ _ => 0, phs := fun _ => 1 }
 
+/- English proof (translation)
+Establish `hsub : R.Pg ⊆ Sb` using `by rw [hb.sb]; exact Finset.Subset.refl _`. Use `⟨⟨hL, hb.red_R, hb.red_L, h0.levels, h0.record, ⟨hb.tie, hsub, hb.roots, hb.pl_onto, hb.degR, hb.degL, hb.muVal, hb.etaVal⟩, h0.inf, h0.vpos, hcX, hcV, hpr, h0.order, h0.std⟩, ⟨hb.in_tie, hb.in_onto, hb.in_R, hb.in_L, hb.in_SF⟩, ⟨ht.1, ht.2, ht.3, ht.4, ht.5⟩, hb.sb, ⟨h0.std, ?_, …` and prove the remaining obligations. Use `hk.grp.elim fun plg h => h.elim fun iso h => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.SignsAtTypePrimes.signsAtG _ _ _ _ _ _ _ _ cG h0.std hk.psi ⟨plg, iso, h.1, h.2.2.1, h.2.2.2⟩`.
+-/
 theorem newR_clauses (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd)
     (ΛY : type_of% R.ΛY) (ΛV : type_of% R.ΛV) (ΛW : type_of% R.ΛW) (βY : type_of% R.βY) (βW : type_of% R.βW)
     (cX : CoefA D.sp.X') (cV : ∀ i, CoefA (Vc D i))
@@ -133,6 +136,13 @@ theorem newR_clauses (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r
   refine hk.grp.elim fun plg h => h.elim fun iso h => ?_
   exact GlobalTheory.SignsAtTypePrimes.signsAtG _ _ _ _ _ _ _ _ cG h0.std hk.psi ⟨plg, iso, h.1, h.2.2.1, h.2.2.2⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `hlam : lam = lam'`. Use function extensionality and compare the values at `τ`. Establish `h1` using `hl τ`. Break down `hw : lam τ with ⟨w, hw1⟩` into its components or cases.
+
+Break down `hw' : lam' τ with ⟨w', hw1'⟩` into its components or cases. Rewrite `h1` using `[hw, hw']`. Establish `: w = w'` using `funext fun a => by simpa using h1 a`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+
+Substitute `hlam` using the available equality. Conclude with `⟨v, HEq.rfl, HEq.rfl⟩`.
+-/
 theorem vv_cast_map {K : Type} [Field K] {ι : Type} [Fintype ι] {n n' : ℕ} (h : n = n') (lam : ι → DomWeight n) (lam' : ι → DomWeight n')
     (hl : ∀ τ a, (lam τ).w a = (lam' τ).w (Fin.cast h a)) (σ : K →+* ℂ) (v : VV K lam) :
     ∃ v' : VV K lam', HEq v' v ∧ HEq (MvPolynomial.map σ v'.1) (MvPolynomial.map σ v.1) := by
@@ -151,6 +161,11 @@ theorem vv_cast_map {K : Type} [Field K] {ι : Type} [Fintype ι] {n n' : ℕ} (
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hLev` using `hK.1`. Establish `h4` using `hLev.is`. Establish `hL1 : LevOf (w'.st Z') w'.I (usedOf w'.I T' Wt') (newL R.toLevCh ΛY ΛV ΛW βY βW)` using `⟨⟨h4.mu0, h4.eta, h4.xi, h4.xi_inj, h4.xi_base, h4.xi_fin, h4.xi_triv, h4.xi_tame, h4.Pg, h4.Q_pl, h4.Q_off, h4.Q_de, h4.Q_ram, h4.chi, h4.xiR, hY, h4.βX, hV', hW⟩, hLev.C, hLev.xiH, hLev.Pg, hLev.Q, hLev.beta⟩`. Establish `h0` using `hK.2.2.2.2.2.1`. Use `(GlobalTheory.T.exists_adelicReading_definiteForms_given_coefficients (w'.st Z') w'.px w'.I hX' (usedOf w'.I T' Wt') Xg tr (newL R.toLevCh ΛY ΛV ΛW βY βW) R.eG w'.ok hval hL1 hK.2.1 hLev.beta.2 hLev.beta.1 hXl hV R.θ h0.inf R.MX cV c0L h1 h2 h3).elim fun cX h => h.elim fun pl h = …` and prove the remaining obligations.
+
+Establish `hc` using `newR_clauses R (face0 (w'.st Z') w'.I hX' (usedOf w'.I T' Wt') Xg tr) cG ΛY ΛV ΛW βY βW cX cV pl Sb Bd plI SF prX hL1.is h0 hK.2.2.2.2.2.2.2.1 hK.2.2.2.2.2.2.2.2.2.1 hfr h.1 h1 h.2.1 h.2.2.1 h.2.2.2.1`. Use `⟨cX, pl, Sb, Bd, plI, SF, prX, ⟨hL1, hK.2.1, hK.2.2.1, hK.2.2.2.1, hK.2.2.2.2.1, hc.1, hc.2.1, hc.2.2.1, hc.2.2.2.1, hc.2.2.2.2, h.2.2.2.2.1, h.2.2.2.2.2.1⟩, h.2.2.2.1.sb, fun i t ok φ g => ?_⟩` and prove the remaining obligations. Use `(vv_cast_map (LiftBrg.rkEq (w'.st Z') i) (B'.wts.lamV ((i : ℕ) + 1)) (fun τ => Bridge.lamLdef (D := (w'.st Z').toD7) (Vc (w'.st Z').toD7 i).rank ((i : ℕ) + 1) τ) (GlobalTheory.T.baseWeight_eq_forcedLiftWeight (w'.st Z') i) B'.embLL (φ.1 (LiftBrg.ptL (w'.st Z') w'.I (usedOf w'.I T …` and prove the remaining obligations. Conclude with `⟨v', h.2.2.2.2.2.2 i t φ g v' hv.1, hv.2⟩`.
+-/
 theorem stage {B' : Base} {f' : Fr B'.toPre} {T' : TwDat B'} {w' : ColW B' f' T'} {Z' : w'.Lt} {hX' : B'.fields.Ok} {Wt' : Set B'.places.Pl}
     (hV : ∀ i, Seed.FrmC.StdLat (Vc (w'.st Z').toD7 i)) (hXl : Seed.FrmC.StdLat (w'.st Z').toD7.sp.X') (hval : ValsIn w'.I)
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks (w'.st Z').toD7.what₂.LL] {Xg : Finset (Gc B' w'.px → B'.LL)} {tr : TrI B' w'.px}
@@ -191,6 +206,9 @@ theorem stage {B' : Base} {f' : Fr B'.toPre} {T' : TwDat B'} {w' : ColW B' f' T'
       (φ.1 (LiftBrg.ptL (w'.st Z') w'.I (usedOf w'.I T' Wt') i t 1 1 g))).elim fun v' hv => ?_
   exact ⟨v', h.2.2.2.2.2.2 i t φ g v' hv.1, hv.2⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem decoOf_heq {E : Type} [Field E] [NumberField E] [StarRing E] {F : Type} [Field F] [NumberField F] [Algebra F E] {n : ℕ} [NeZero n]
     {S S' : Finset (HeightOneSpectrum (𝓞 E))} (h : S' = S) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
     HEq (Formalism.L2.Col.decoOf ∅ S' x) (Formalism.L2.Col.decoOf ∅ S x) := by
@@ -199,6 +217,15 @@ theorem decoOf_heq {E : Type} [Field E] [NumberField E] [StarRing E] {F : Type} 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `s1` using `rowLevelPrimes_colTuples_eq_vGs w Wt`. Establish `s2` using `rowLevelPrimes_colTuples_eq_vGs w' Wt'`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hPre`. Substitute `hPre` using the available equality.
+
+Establish `hp' : w'.px = w.px` using `eq_of_heq hp`. Establish `hv : ((baseOfColW w').primes w'.px).vGs = ((baseOfColW w).primes w.px).vGs`. Rewrite using `[hp']`. Both sides reduce to the same expression. Take `⟨i, hi0⟩` from `i`.
+
+Take `⟨i', hi1⟩` from `i'`. Simplify using `only at hi`. Substitute `hi` using the available equality. Use `⟨(@rfl Type ↥(@Bridge.Gf (@ColW.st B f T w Z).toD7 (Vc (@ColW.st B f T w Z).toD7 (@Fin.mk (@ColW.st B f T w Z).toD7.R.m i hi0)))), fun h' h e => ?_⟩` and prove the remaining obligations. Establish `e' : h' = (h)` using `eq_of_heq ((e))`.
+
+Rewrite using `[e']`. Establish `hs` using `s2.trans (hv.trans s1.symm)`. Conclude with `(by with_unfolding_all exact ((decoOf_heq (F := B.host.F) hs (((1 : GL (Fin (w.st Z).B.R.nV) (LiftBrg.EA (w.st Z)))⁻¹ * LiftBrg.castGL (LiftBrg.rkEq (w.st Z) ⟨i, hi0⟩).symm (Formalism.UG.bc (swapAE (w.st Z).toD7) (h : GL (Fin (Vc (w.st Z).toD7 ⟨i, hi0⟩).rank) _)) * 1 * 1))) :))`.
+-/
 theorem ptL_enl {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T) (w' : ColW B' f' T')
     (Z : w.Lt) (Z' : w'.Lt) (Wt : Set B.places.Pl) (Wt' : Set B'.places.Pl) (hPre : B'.toPre = B.toPre) (hp : HEq w'.px w.px)
     (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i') :
@@ -228,6 +255,17 @@ theorem ptL_enl {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hPre`. Substitute `hPre` using the available equality. Take `rfl` from `eq_of_heq hf`. Take `⟨px', I', ok', C_eq', S_eq', xi_range', pins', l', l0', δ', exact', fld', val'⟩` from `w'`.
+
+Simplify using `only at hp`. Take `rfl` from `eq_of_heq hp`. Establish `hV : ∀ i, IsSDFrame (Vc (w.st Z).toD7 i) 1 (z.R.ΛV i) 1` using `fun i => by`. Use `z.lev.is.βV i` as an intermediate fact. Rewrite `this` using `[z.lev.beta.1 i]`.
+
+Conclude with `this`. Establish `hall : z.R.Sb = z.R.Pg` using `z.pins.char.allPl`. Use `⟨(z.R.ΛY), (z.R.ΛV), (z.R.ΛW), (z.R.βY), (z.R.βW), ⟨(HEq.refl z.R.ΛY), (HEq.refl z.R.ΛV), (HEq.refl z.R.ΛW), (HEq.refl z.R.βY), (HEq.refl z.R.βW)⟩, (z.lev.is.βY), (hV), (z.lev.is.βW), fun Pg hPg => ?_, fun ψ hψ => ?_, fun θ hθ => ?_, fun βV hβ => ?_⟩` and prove the remaining obligations. Establish `e : Pg = (z.R.Pg)` using `hPg.trans ((by with_unfolding_all exact (z.lev.Pg.symm :)))`. Substitute `e` using the available equality.
+
+Use `⟨by kexactB z.pins.keep.frames, (HEq.refl z.R.Pg), (by with_unfolding_all exact ((heq_of_eq hall.symm) :)), fun eG hG => ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact ((heq_of_eq (isIdG_unique (w.st Z) (px := w.px) z.lev.Pg (eG := (by with_unfolding_all exact (eG :))) ((by with_unfolding_all exact (hG :))) z.idG)) :))`. Conclude with `(by with_unfolding_all exact ((heq_of_eq (isStdChar_unique (D := (w.st Z).toD7) (ψ := (by with_unfolding_all exact (ψ :))) ((by with_unfolding_all exact (hψ :))) z.pins.keep.std)) :))`. Conclude with `(by with_unfolding_all exact ((heq_of_eq (isInfFam_unique (D := (w.st Z).toD7) (θ := (by with_unfolding_all exact (θ :))) ((by with_unfolding_all exact (hθ :))) z.pins.char.base.models.inf)) :))`. Establish `e : ((βV) : type_of% z.R.βV) = z.R.βV` using `funext fun j => Eq.trans ((hβ j)) (z.lev.beta.1 j).symm`.
+
+Conclude with `(by with_unfolding_all exact ((heq_of_eq e) :))`.
+-/
 theorem frames_enl {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} (w' : ColW B' f' T')
     {Z : w.Lt} (Z' : w'.Lt) {hX : B.fields.Ok} {Wt : Set B.places.Pl} (z : Dat (w.st Z) w.I hX T Wt)
     (hPre : B'.toPre = B.toPre) (hf : HEq f' f) (hp : HEq w'.px w.px) :
@@ -271,6 +309,11 @@ theorem frames_enl {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hf hp hS hV hXl hval Ks _ _ _ Xg tr R cG hK`. Use `(GlobalTheory.T.enlargedBase_coefficientSpaces_isometric_maps (w' := w') (Z' := Z') (hX' := hX') (Wt' := Wt') z hE hf hp hS).elim fun cV h => h.elim fun c0L hc => ?_` and prove the remaining obligations. Use `(frames_enl w' Z' z hE.1 hf hp).elim fun ΛY h => h.elim fun ΛV h => h.elim fun ΛW h => h.elim fun βY h => h.elim fun βW hF => ?_` and prove the remaining obligations. Establish `hPg` using `hF.2.2.2.2.1 R.Pg hK.1.Pg`. Use `(stage hV hXl hval R cG hK ΛY ΛV ΛW βY βW hF.2.1 (fun i => (hK.1.beta.1 i).symm ▸ hF.2.2.1 i) hF.2.2.2.1 hPg.1 cV c0L hc.2.1 hc.2.2.1 hc.2.2.2.1).elim fun cX h => h.elim fun pl h => h.elim fun Sb h => h.elim fun Bd h => h.elim fun plI h => h.elim fun SF h => h.elim fun prX h => ? …` and prove the remaining obligations.
+
+Use `⟨newR R (newL R.toLevCh ΛY ΛV ΛW βY βW) R.eG cX cV pl Sb Bd plI SF prX, cG, h.1, hF.2.2.2.2.2.1 R.ψ hK.2.2.2.2.2.1.std, hF.2.2.2.2.2.2.1 R.θ hK.2.2.2.2.2.1.inf, hF.1.2.2.2.2, hF.1.2.2.2.1, hF.1.1, hF.2.2.2.2.2.2.2 R.βV hK.1.beta.1, hF.1.2.1, hF.1.2.2.1, hPg.2.1, hPg.2.2.2 R.eG hK …` and prove the remaining obligations. Establish `hpt` using `ptL_enl w w' Z Z' Wt Wt' hE.1 hp i i' hi`. Use `Function.hfunext hpt.1 fun g' g e => ?_` and prove the remaining obligations. Use `(h.2.2 i' (mu0F (X := B'.fields) (tuOf w'.I (usedOf w'.I T' Wt'))) ok' φ' g').elim fun v' hv => ?_` and prove the remaining obligations. Conclude with `(heq_of_eq hv.1).trans (hc.2.2.2.2 i i' hi ok φ g v' (hv.2.trans (hφ _ _ (hpt.2 g' g e))))`.
+-/
 theorem reset_side : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl} {Wt' : Set B'.places.Pl}
   (z : Dat (w.st Z) w.I hX T Wt), Enl0 B B' → HEq f' f → HEq w'.px w.px → z.Std → (∀ i, Seed.FrmC.StdLat (Vc (w'.st Z').toD7 i)) → Seed.FrmC.StdLat (w'.st Z').toD7.sp.X' → ValsIn w'.I →

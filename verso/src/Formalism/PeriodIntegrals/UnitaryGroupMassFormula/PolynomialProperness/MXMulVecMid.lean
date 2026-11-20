@@ -7,6 +7,11 @@ noncomputable section
 
 namespace PI.PolynomialProperness.TM
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_map Finset.univ e f]`. Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `i _ hi`. Apply `hf` to reduce the goal to its premises.
+
+Introduce `t ht`. Apply `hi` to reduce the goal to its premises. Simplify using `only [Finset.mem_map, Finset.mem_univ, true_and]`. Conclude with `⟨t, ht⟩`.
+-/
 theorem sum_emb {N n : ℕ} (e : Fin n ↪ Fin N) (f : Fin N → ℂ) (hf : ∀ i, (∀ t, e t ≠ i) → f i = 0) :
     ∑ i, f i = ∑ t, f (e t) := by
   rw [← Finset.sum_map Finset.univ e f]
@@ -28,9 +33,21 @@ def esIe (k r : ℕ) : Fin r ↪ Fin (2 * r + k + 1) :=
     have ha := a.isLt; have hb := b.isLt
     simp only [esI] at h1; omega)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eI_val (k r : ℕ) (a : Fin r) : (eI k r a).val = a.val := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eIe_apply (k r : ℕ) (a : Fin r) : eIe k r a = eI k r a := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem esIe_apply (k r : ℕ) (a : Fin r) : esIe k r a = esI k r a := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem esI_val (k r : ℕ) (a : Fin r) : (esI k r a).val = 2 * r + k - a.val := rfl
 
 def pX (k r : ℕ) (x : Fin (2 * r + k + 1) → ℂ) : Fin r → ℂ := fun a => x (eI k r a)
@@ -40,12 +57,20 @@ def qX (k r : ℕ) (x : Fin (2 * r + k + 1) → ℂ) : Fin r → ℂ := fun a =>
 def midF (k r : ℕ) (x y : Fin (2 * r + k + 1) → ℂ) : ℂ :=
   ∑ i : Fin (2 * r + k + 1), if r ≤ i.val ∧ i.val ≤ r + k then star (y i) * (GBasic.sgn k r i * x i) else 0
 
+/- English proof (translation)
+Establish `h : (eI k r t).val < r ∨ r + k < (eI k r t).val` using `Or.inl t.isLt`. Unfold `GBasic.sig`. Rewrite using `[if_pos h]`. Both sides reduce to the same expression.
+-/
 theorem sig_eI (k r : ℕ) (t : Fin r) : GBasic.sig k r (eI k r t) = esI k r t := by
   have h : (eI k r t).val < r ∨ r + k < (eI k r t).val := Or.inl t.isLt
   unfold GBasic.sig
   rw [if_pos h]
   rfl
 
+/- English proof (translation)
+Establish `ht` using `t.isLt`. Establish `h : (esI k r t).val < r ∨ r + k < (esI k r t).val` using `by right show r + k < 2 * r + k - t.val`. Use linear arithmetic over natural numbers and integers. Unfold `GBasic.sig`. Rewrite using `[if_pos h]`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Use `show 2 * r + k - (2 * r + k - t.val) = t.val`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sig_esI (k r : ℕ) (t : Fin r) : GBasic.sig k r (esI k r t) = eI k r t := by
   have ht := t.isLt
   have h : (esI k r t).val < r ∨ r + k < (esI k r t).val := by
@@ -58,6 +83,31 @@ theorem sig_esI (k r : ℕ) (t : Fin r) : GBasic.sig k r (esI k r t) = eI k r t 
   show 2 * r + k - (2 * r + k - t.val) = t.val
   omega
 
+/- English proof (translation)
+Establish `hmul : ∀ i, (Hpk k r *ᵥ x) i = GBasic.sgn k r i * x (GBasic.sig k r i)`. Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct, GBasic.Hpk_eq, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hsplit : ∀ i : Fin (2 * r + k + 1), star (y i) * (GBasic.sgn k r i * x (GBasic.sig k r i)) = (if i.val < r then star (y i) * x (GBasic.sig k r i) else 0) + (if r + k < i.val then star (y i) * x (GBasic.sig k r i) else 0) + (if r ≤ i.val ∧ i.val ≤ r + k then star (y i) * (GBasic.s …`. Introduce `i`.
+
+Distinguish the cases in `h1 : i.val < r`. Establish `hs : GBasic.sgn k r i = 1`. Unfold `GBasic.sgn`. Rewrite using `[if_neg (show ¬ (i.val = r + k) by omega)]`. Rewrite using `[if_pos h1, if_neg (show ¬ (r + k < i.val) by omega), if_neg (show ¬ (r ≤ i.val ∧ i.val ≤ r + k) by omega), hs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h2 : r + k < i.val`. Establish `hs : GBasic.sgn k r i = 1`. Unfold `GBasic.sgn`. Rewrite using `[if_neg (show ¬ (i.val = r + k) by omega)]`.
+
+Rewrite using `[if_neg h1, if_pos h2, if_neg (show ¬ (r ≤ i.val ∧ i.val ≤ r + k) by omega), hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : GBasic.sig k r i = i`. Unfold `GBasic.sig`. Rewrite using `[if_neg (show ¬ (i.val < r ∨ r + k < i.val) by omega)]`.
+
+Rewrite using `[if_neg h1, if_neg h2, if_pos (show r ≤ i.val ∧ i.val ≤ r + k by omega), hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : (∑ i : Fin (2 * r + k + 1), if i.val < r then star (y i) * x (GBasic.sig k r i) else 0) = star (pX k r y) ⬝ᵥ qX k r x`. Use `(sum_emb (eIe k r) _ ?_).trans ?_` and prove the remaining obligations. Introduce `i hi`.
+
+Distinguish the cases in `h : i.val < r`. Conclude with `absurd (Fin.ext rfl : eIe k r ⟨i.val, h⟩ = i) (hi _)`. Rewrite using `[if_neg h]`. Simplify using `only [dotProduct, pX, qX, Pi.star_apply, eIe_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `t _`. Establish `hc : (eI k r t).val < r` using `t.isLt`. Simplify using `[hc, sig_eI]`. Establish `hB : (∑ i : Fin (2 * r + k + 1), if r + k < i.val then star (y i) * x (GBasic.sig k r i) else 0) = star (qX k r y) ⬝ᵥ pX k r x`. Use `(sum_emb (esIe k r) _ ?_).trans ?_` and prove the remaining obligations.
+
+Introduce `i hi`. Distinguish the cases in `h : r + k < i.val`. It suffices to derive a contradiction. Establish `hiL` using `i.isLt`. Apply `hi ⟨2 * r + k - i.val, by omega⟩` to reduce the goal to its premises.
+
+Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[esIe_apply, esI_val]`. Use `show 2 * r + k - (2 * r + k - i.val) = i.val`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h]`.
+
+Simplify using `only [dotProduct, pX, qX, Pi.star_apply, esIe_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `t _`. Establish `ht` using `t.isLt`. Establish `hc : r + k < (esI k r t).val` using `by rw [esI_val]; omega`.
+
+Simplify using `[hc, sig_esI]`. Establish `hH : herm (Hpk k r) x y = ∑ i, star (y i) * (GBasic.sgn k r i * x (GBasic.sig k r i))`. Unfold `herm`. Simplify using `only [dotProduct, Pi.star_apply, hmul]`. Rewrite using `[hH, Finset.sum_congr rfl (fun i _ => hsplit i), Finset.sum_add_distrib, Finset.sum_add_distrib, hA, hB]`.
+
+Unfold `midF`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_coords (k r : ℕ) (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) x y = star (qX k r y) ⬝ᵥ pX k r x + star (pX k r y) ⬝ᵥ qX k r x + midF k r x y := by
   have hmul : ∀ i, (Hpk k r *ᵥ x) i = GBasic.sgn k r i * x (GBasic.sig k r i) := by
@@ -126,6 +176,15 @@ theorem herm_coords (k r : ℕ) (x y : Fin (2 * r + k + 1) → ℂ) :
   unfold midF
   ring
 
+/- English proof (translation)
+Use `show gᴴ * H * g = H`. Establish `hg : ∀ v w : Fin m → ℂ, herm H (g *ᵥ v) (g *ᵥ w) = herm (gᴴ * H * g) v w`. Introduce `v w`. Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+
+Establish `e1 : ∀ (M : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m), herm M (Pi.single j 1) (Pi.single i 1) = M i j`. Introduce `M i j`. Establish `hs : star (Pi.single i 1 : Fin m → ℂ) = (Pi.single i 1 : Fin m → ℂ)`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`.
+
+Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Unfold `herm`. Rewrite using `[hs]`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Use extensionality with `i j`. Establish `h1` using `h (Pi.single j 1) (Pi.single i 1)`. Rewrite `h1` using `[hg, e1, e1]`. Conclude with `h1`.
+-/
 theorem uh_of_herm {m : ℕ} {H g : Matrix (Fin m) (Fin m) ℂ}
     (h : ∀ x y : Fin m → ℂ, herm H (g *ᵥ x) (g *ᵥ y) = herm H x y) : g ∈ UH H := by
   show gᴴ * H * g = H
@@ -151,12 +210,20 @@ theorem uh_of_herm {m : ℕ} {H g : Matrix (Fin m) (Fin m) ℂ}
   rw [hg, e1, e1] at h1
   exact h1
 
+/- English proof (translation)
+Unfold `mX`. Rewrite using `[dif_pos (show (eI k r a).val < r from a.isLt)]`. Both sides reduce to the same expression.
+-/
 theorem mX_eI (k r : ℕ) (vX : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) (j : Fin (2 * r + k + 1)) :
     mX k r vX (eI k r a) j = if h : j.val < r then vX a ⟨j.val, h⟩ else 0 := by
   unfold mX
   rw [dif_pos (show (eI k r a).val < r from a.isLt)]
   rfl
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Unfold `mX`. Rewrite using `[dif_neg (show ¬ ((esI k r a).val < r) by show ¬ (2 * r + k - a.val < r); omega), dif_pos (show r + k < (esI k r a).val by show r + k < 2 * r + k - a.val; omega)]`. Distinguish the cases in `hj : r + k < j.val`. Rewrite using `[dif_pos hj, dif_pos hj]`.
+
+Establish `e : (⟨2 * r + k - (esI k r a).val, by rw [esI_val]; omega⟩ : Fin r) = a` using `Fin.ext (by show 2 * r + k - (esI k r a).val = a.val; rw [esI_val]; omega)`. Rewrite using `[e]`. Rewrite using `[dif_neg hj, dif_neg hj]`.
+-/
 theorem mX_esI (k r : ℕ) (vX : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) (j : Fin (2 * r + k + 1)) :
     mX k r vX (esI k r a) j =
       if h : r + k < j.val then (vXᴴ)⁻¹ a ⟨2 * r + k - j.val, by omega⟩ else 0 := by
@@ -171,11 +238,21 @@ theorem mX_esI (k r : ℕ) (vX : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) (j : Fi
     rw [e]
   · rw [dif_neg hj, dif_neg hj]
 
+/- English proof (translation)
+Unfold `mX`. Rewrite using `[dif_neg (show ¬ (i.val < r) by omega), dif_neg (show ¬ (r + k < i.val) by omega)]`.
+-/
 theorem mX_mid (k r : ℕ) (vX : Matrix (Fin r) (Fin r) ℂ) (i j : Fin (2 * r + k + 1))
     (h1 : r ≤ i.val) (h2 : i.val ≤ r + k) : mX k r vX i j = if i = j then 1 else 0 := by
   unfold mX
   rw [dif_neg (show ¬ (i.val < r) by omega), dif_neg (show ¬ (r + k < i.val) by omega)]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, mX_eI]`. Use `(sum_emb (eIe k r) _ ?_).trans ?_` and prove the remaining obligations. Introduce `i hi`. Distinguish the cases in `h : i.val < r`. Conclude with `absurd (Fin.ext rfl : eIe k r ⟨i.val, h⟩ = i) (hi _)`.
+
+Rewrite using `[dif_neg h, zero_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `t _`. Establish `hc : ((eIe k r) t).val < r` using `t.isLt`. Rewrite using `[dif_pos hc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem mX_mulVec_eI (k r : ℕ) (vX : Matrix (Fin r) (Fin r) ℂ) (x : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     (mX k r vX *ᵥ x) (eI k r a) = (vX *ᵥ pX k r x) a := by
   simp only [Matrix.mulVec, dotProduct, mX_eI]
@@ -190,6 +267,15 @@ theorem mX_mulVec_eI (k r : ℕ) (vX : Matrix (Fin r) (Fin r) ℂ) (x : Fin (2 *
     rw [dif_pos hc]
     rfl
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, mX_esI]`. Use `(sum_emb (esIe k r) _ ?_).trans ?_` and prove the remaining obligations. Introduce `i hi`. Distinguish the cases in `h : r + k < i.val`. It suffices to derive a contradiction.
+
+Establish `hiL` using `i.isLt`. Apply `hi ⟨2 * r + k - i.val, by omega⟩` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[esIe_apply, esI_val]`. Use `show 2 * r + k - (2 * r + k - i.val) = i.val`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg h, zero_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `t _`. Establish `ht` using `t.isLt`.
+
+Establish `hc : r + k < ((esIe k r) t).val` using `by rw [esIe_apply, esI_val]; omega`. Rewrite using `[dif_pos hc]`. Establish `e : (⟨2 * r + k - ((esIe k r) t).val, by rw [esIe_apply, esI_val]; omega⟩ : Fin r) = t` using `Fin.ext (by show 2 * r + k - ((esIe k r) t).val = t.val; rw [esIe_apply, esI_val]; omega)`. Rewrite using `[e]`. Apply the tactic sequence `try rfl`.
+-/
 theorem mX_mulVec_esI (k r : ℕ) (vX : Matrix (Fin r) (Fin r) ℂ) (x : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     (mX k r vX *ᵥ x) (esI k r a) = ((vXᴴ)⁻¹ *ᵥ qX k r x) a := by
   simp only [Matrix.mulVec, dotProduct, mX_esI]
@@ -214,21 +300,35 @@ theorem mX_mulVec_esI (k r : ℕ) (vX : Matrix (Fin r) (Fin r) ℂ) (x : Fin (2 
     rw [e]
     try rfl
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, mX_mid k r vX i _ h1 h2, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem mX_mulVec_mid (k r : ℕ) (vX : Matrix (Fin r) (Fin r) ℂ) (x : Fin (2 * r + k + 1) → ℂ)
     (i : Fin (2 * r + k + 1)) (h1 : r ≤ i.val) (h2 : i.val ≤ r + k) : (mX k r vX *ᵥ x) i = x i := by
   simp only [Matrix.mulVec, dotProduct, mX_mid k r vX i _ h1 h2, ite_mul, one_mul, zero_mul,
     Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Conclude with `mX_mulVec_eI k r vX x a`.
+-/
 theorem pX_mX (k r : ℕ) (vX : Matrix (Fin r) (Fin r) ℂ) (x : Fin (2 * r + k + 1) → ℂ) :
     pX k r (mX k r vX *ᵥ x) = vX *ᵥ pX k r x := by
   funext a
   exact mX_mulVec_eI k r vX x a
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Conclude with `mX_mulVec_esI k r vX x a`.
+-/
 theorem qX_mX (k r : ℕ) (vX : Matrix (Fin r) (Fin r) ℂ) (x : Fin (2 * r + k + 1) → ℂ) :
     qX k r (mX k r vX *ᵥ x) = (vXᴴ)⁻¹ *ᵥ qX k r x := by
   funext a
   exact mX_mulVec_esI k r vX x a
 
+/- English proof (translation)
+Unfold `midF`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Use `split_ifs with h`. Rewrite using `[mX_mulVec_mid k r vX x i h.1 h.2, mX_mulVec_mid k r vX y i h.1 h.2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem midF_mX (k r : ℕ) (vX : Matrix (Fin r) (Fin r) ℂ) (x y : Fin (2 * r + k + 1) → ℂ) :
     midF k r (mX k r vX *ᵥ x) (mX k r vX *ᵥ y) = midF k r x y := by
   unfold midF
@@ -243,6 +343,51 @@ end PI.PolynomialProperness.TM
 namespace PI.PolynomialProperness
 
 open TM in
+/- English proof (translation)
+Introduce `k r vX hU`. Establish `hU1 : ∀ i j, j < i → vX i j = 0` using `hU.1`. Establish `hU2 : ∀ i, vX i i = 1` using `hU.2`. Establish `hdet : vX.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => hU1 i j hij)]`.
+
+Simplify using `[hU2]`. Establish `hu : IsUnit vX.det` using `by rw [hdet]; exact isUnit_one`. Establish `hu' : IsUnit vXᴴ.det` using `by rw [Matrix.det_conjTranspose, hdet, star_one]; exact isUnit_one`. Establish `d1 : ∀ p q : Fin r → ℂ, star ((vXᴴ)⁻¹ *ᵥ q) ⬝ᵥ (vX *ᵥ p) = star q ⬝ᵥ p`. Introduce `p q`.
+
+Rewrite using `[Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_conjTranspose, Matrix.nonsing_inv_mul _ hu, Matrix.vecMul_one]`. Establish `d2 : ∀ p q : Fin r → ℂ, star (vX *ᵥ p) ⬝ᵥ ((vXᴴ)⁻¹ *ᵥ q) = star p ⬝ᵥ q`. Introduce `p q`. Rewrite using `[Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hu', Matrix.vecMul_one]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Nset, Set.mem_setOf_eq]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Apply `uh_of_herm` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[herm_coords, herm_coords]`.
+
+Simplify using `only [pX_mX, qX_mX, midF_mX]`. Rewrite using `[d1, d2]`. Introduce `a i hai`. Unfold `mX`. Distinguish the cases in `hi : i.val < r`.
+
+Rewrite using `[dif_pos hi, dif_pos (show (eI k r a).val < r from a.isLt)]`. Distinguish the cases in `hia : i = eI k r a`. Rewrite using `[if_pos hia]`. Substitute `hia` using the available equality. Conclude with `hU2 a`.
+
+Rewrite using `[if_neg hia]`. Apply `hU1` to reduce the goal to its premises. Establish `hne : i.val ≠ a.val` using `fun h => hia (Fin.ext h)`. Use `show a.val < i.val`. Establish `hai' : a.val ≤ i.val` using `hai`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hi]`. Establish `hne : i ≠ eI k r a`. Introduce `h`. Apply `hi` to reduce the goal to its premises.
+
+Rewrite using `[h]`. Conclude with `a.isLt`. Distinguish the cases in `hi2 : r + k < i.val`. Establish `ha` using `a.isLt`. Rewrite using `[dif_pos hi2, dif_neg (show ¬ (r + k < (eI k r a).val) by show ¬ (r + k < a.val); omega), if_neg hne]`.
+
+Rewrite using `[dif_neg hi2]`. Introduce `i j hj1 hj2 hi`. Unfold `mX`. Rewrite using `[dif_neg (show ¬ (i.val < r) by omega)]`. Distinguish the cases in `hi2 : r + k < i.val`.
+
+Rewrite using `[dif_pos hi2, dif_neg (show ¬ (r + k < j.val) by omega), if_neg (show i ≠ j from fun h => by rw [h] at hi2; omega)]`. Rewrite using `[dif_neg hi2]`. Introduce `p`. Use function extensionality and compare the values at `i`. Establish `hiL` using `i.isLt`.
+
+Distinguish the cases in `hi : i.val < r`. Establish `h1` using `mX_mulVec_eI k r vX (xiV k r p) ⟨i.val, hi⟩`. Establish `e : eI k r ⟨i.val, hi⟩ = i` using `Fin.ext rfl`. Rewrite `h1` using `[e]`. Rewrite using `[h1]`.
+
+Establish `hp : pX k r (xiV k r p) = p`. Use function extensionality and compare the values at `a`. Use `show xiV k r p (eI k r a) = p a`. Unfold `xiV`. Rewrite using `[dif_pos (show (eI k r a).val < r from a.isLt)]`.
+
+Apply the tactic sequence `try rfl`. Rewrite using `[hp]`. Unfold `xiV`. Rewrite using `[dif_pos hi]`. Establish `hz : xiV k r (vX *ᵥ p) i = 0`.
+
+Unfold `xiV`. Rewrite using `[dif_neg hi]`. Rewrite using `[hz]`. Distinguish the cases in `hi2 : r + k < i.val`. Establish `h1` using `mX_mulVec_esI k r vX (xiV k r p) ⟨2 * r + k - i.val, by omega⟩`.
+
+Establish `e : esI k r ⟨2 * r + k - i.val, by omega⟩ = i` using `Fin.ext (by show 2 * r + k - (2 * r + k - i.val) = i.val; omega)`. Rewrite `h1` using `[e]`. Rewrite using `[h1]`. Establish `hq : qX k r (xiV k r p) = 0`. Use function extensionality and compare the values at `a`.
+
+Establish `ha` using `a.isLt`. Use `show xiV k r p (esI k r a) = 0`. Unfold `xiV`. Rewrite using `[dif_neg (show ¬ ((esI k r a).val < r) by show ¬ (2 * r + k - a.val < r); omega)]`. Rewrite using `[hq, Matrix.mulVec_zero, Pi.zero_apply]`.
+
+Rewrite using `[mX_mulVec_mid k r vX _ i (by omega) (by omega)]`. Unfold `xiV`. Rewrite using `[dif_neg hi]`. Introduce `w hw`. Use function extensionality and compare the values at `i`.
+
+Establish `hiL` using `i.isLt`. Distinguish the cases in `hi : i.val < r`. Establish `h1` using `mX_mulVec_eI k r vX w ⟨i.val, hi⟩`. Establish `e : eI k r ⟨i.val, hi⟩ = i` using `Fin.ext rfl`. Rewrite `h1` using `[e]`.
+
+Establish `hp : pX k r w = 0`. Use function extensionality and compare the values at `a`. Conclude with `hw _ (Or.inl a.isLt)`. Rewrite using `[h1, hp, Matrix.mulVec_zero, Pi.zero_apply, hw i (Or.inl hi)]`. Distinguish the cases in `hi2 : r + k < i.val`.
+
+Establish `h1` using `mX_mulVec_esI k r vX w ⟨2 * r + k - i.val, by omega⟩`. Establish `e : esI k r ⟨2 * r + k - i.val, by omega⟩ = i` using `Fin.ext (by show 2 * r + k - (2 * r + k - i.val) = i.val; omega)`. Rewrite `h1` using `[e]`. Establish `hq : qX k r w = 0`. Use function extensionality and compare the values at `a`.
+
+Establish `ha` using `a.isLt`. Conclude with `hw _ (Or.inr (by show r + k < 2 * r + k - a.val; omega))`. Rewrite using `[h1, hq, Matrix.mulVec_zero, Pi.zero_apply, hw i (Or.inr hi2)]`. Conclude with `mX_mulVec_mid k r vX w i (by omega) (by omega)`.
+-/
 theorem mxFacts : MXFacts := by
   intro k r vX hU
   have hU1 : ∀ i j, j < i → vX i j = 0 := hU.1

@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.PullChartDens
 
+/- English proof (translation)
+Introduce `k _ X Y p q σ D π hπ B φ hφ c c' H z hz`. Establish `hz'` using `(H z hz).1`. Establish `hj` using `mem_of_mem_linComb (m := fun _ => PtsOver.map π hπ _ z) (fun _ => rfl) (mem_pick (φ.pull π hπ).isLB z) PUnit.unit`. Rewrite using `[AlgChart.chernDens, AlgChart.chernDens, c.hess_eq hφ hz' hj (mem_pick _ _), AlgChart.hess, AlgChart.hess, ← (H z hz).2, ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr]`. Use `filter_upwards [c'.e.open_target.mem_nhds (c'.e.map_source hz)] with v hv`.
+
+Establish `hw` using `c'.e.map_target hv`. Take `⟨h₁, h₂⟩` from `H _ hw`. Rewrite `h₂` using `[c'.e.right_inv hv]`. Establish `e₁ : c.e.symm v = PtsOver.map π hπ (spMap σ) (c'.e.symm v)`. Conclude with `(congrArg c.e.symm h₂).trans (c.e.left_inv h₁)`.
+
+Rewrite using `[e₁]`. Conclude with `congrArg _ (φ.pull_φ π hπ _ _)`.
+-/
 theorem chernDens_pull_of_chart : ∀ {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ} (π : Y ⟶ X) (hπ : π ≫ p = q) {B : LB X} (φ : Weight p σ B), φ.IsCInf → ∀ (c : AlgChart p σ D) (c' : AlgChart q σ D), (∀ w ∈ c'.e.source, PtsOver.map π hπ (spMap σ) w ∈ c.e.source ∧ c'.e w = c.e (PtsOver.map π hπ (spMap σ) w)) → ∀ w ∈ c'.e.source, c'.chernDens (φ.pull π hπ) w = c.chernDens φ (PtsOver.map π hπ (spMap σ) w) := by
   intro k _ X Y p q σ D π hπ B φ hφ c c' H z hz
   have hz' := (H z hz).1

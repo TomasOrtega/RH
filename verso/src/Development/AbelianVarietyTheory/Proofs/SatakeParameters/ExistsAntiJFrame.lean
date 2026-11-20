@@ -12,6 +12,11 @@ namespace GlobalTheory.InertThetaCompare
 
 def Good (n : ℕ) (d : List ℤ) : Prop := d.length = n ∧ d.Pairwise (fun a b => b ≤ a) ∧ dualLab d = d
 
+/- English proof (translation)
+Substitute `h1` using the available equality. Introduce `i j hij`. Simplify using `only [List.getD_eq_getElem _ _ i.2, List.getD_eq_getElem _ _ j.2]`. Break down `hij.eq_or_lt with rfl | h` into its components or cases. Conclude with `le_rfl`.
+
+Conclude with `List.pairwise_iff_getElem.1 h2 _ _ i.2 j.2 h`.
+-/
 theorem anti_getD {n : ℕ} {d : List ℤ} (h1 : d.length = n) (h2 : d.Pairwise (fun a b => b ≤ a)) :
     Antitone fun i : Fin n => d.getD i.1 0 := by
   subst h1
@@ -21,17 +26,26 @@ theorem anti_getD {n : ℕ} {d : List ℤ} (h1 : d.length = n) (h2 : d.Pairwise 
   · exact le_rfl
   · exact List.pairwise_iff_getElem.1 h2 _ _ i.2 j.2 h
 
+/- English proof (translation)
+Use `List.ext_getElem (h1.trans h2.symm) fun i a b => ?_` and prove the remaining obligations. Use `h ⟨i, h1 ▸ a⟩` as an intermediate fact. Rewrite `this` using `[List.getD_eq_getElem _ _ a, List.getD_eq_getElem _ _ b]`. Then use the resulting hypothesis.
+-/
 theorem eq_of_getD {n : ℕ} {d d' : List ℤ} (h1 : d.length = n) (h2 : d'.length = n)
     (h : ∀ i : Fin n, d.getD i.1 0 = d'.getD i.1 0) : d = d' := by
   refine List.ext_getElem (h1.trans h2.symm) fun i a b => ?_
   have := h ⟨i, h1 ▸ a⟩
   rwa [List.getD_eq_getElem _ _ a, List.getD_eq_getElem _ _ b] at this
 
+/- English proof (translation)
+Use `GlobalTheory.DualDivU.getD_dualLab d h.1 i` as an intermediate fact. Rewrite `this` using `[h.2.2]`. Rewrite using `[this, neg_neg]`.
+-/
 theorem Good.rev {n : ℕ} {d : List ℤ} (h : Good n d) (i : Fin n) : d.getD i.rev.1 0 = -d.getD i.1 0 := by
   have := GlobalTheory.DualDivU.getD_dualLab d h.1 i
   rw [h.2.2] at this
   rw [this, neg_neg]
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_inter_add_sum_sdiff (Finset.Ici k) S, ← Finset.sum_inter_add_sum_sdiff S (Finset.Ici k), Finset.inter_comm S]`. Establish `h1` using `Finset.sum_le_card_nsmul (Finset.Ici k \ S) μ (μ k) fun i hi => hμ (Finset.mem_Ici.1 (Finset.mem_sdiff.1 hi).1)`. Establish `h2` using `Finset.card_nsmul_le_sum (S \ Finset.Ici k) μ (μ k) fun i hi => hμ (le_of_not_ge fun h => (Finset.mem_sdiff.1 hi).2 (Finset.mem_Ici.2 h))`. Rewrite `h1` using `[Finset.card_sdiff_comm hS]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_Ici_le {n : ℕ} {μ : Fin n → ℤ} (hμ : Antitone μ) (k : Fin n) (S : Finset (Fin n))
     (hS : (Finset.Ici k).card = S.card) : ∑ i ∈ Finset.Ici k, μ i ≤ ∑ i ∈ S, μ i := by
   rw [← Finset.sum_inter_add_sum_sdiff (Finset.Ici k) S, ← Finset.sum_inter_add_sum_sdiff S (Finset.Ici k),
@@ -43,6 +57,11 @@ theorem sum_Ici_le {n : ℕ} {μ : Fin n → ℤ} (hμ : Antitone μ) (k : Fin n
   rw [Finset.card_sdiff_comm hS] at h1
   linarith
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Proceed by induction on `k using WellFoundedGT.induction with`. Consider the case `ind k ih`. Use `h k` as an intermediate fact. Rewrite `this` using `[← Finset.Ioi_insert, Finset.sum_insert (by simp), Finset.sum_insert (by simp), Finset.sum_congr rfl fun i hi => ih i (Finset.mem_Ioi.1 hi)]`.
+
+Conclude with `add_right_cancel this`.
+-/
 theorem eq_of_tails {n : ℕ} {a b : Fin n → ℤ} (h : ∀ k, ∑ i ∈ Finset.Ici k, a i = ∑ i ∈ Finset.Ici k, b i) :
     a = b := by
   funext k
@@ -57,6 +76,11 @@ section Local
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, map_mul, ih, map_zpow₀, hϖ, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Use `congr 1`.
+
+Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_prod_zpow {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) {ι : Type} (s : Finset ι) (f : ι → ℤ) :
     Valued.v (∏ i ∈ s, ϖ ^ f i) = WithZero.exp (-∑ i ∈ s, f i) := by
   classical
@@ -69,6 +93,19 @@ theorem val_prod_zpow {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) {ι
     simp only [smul_eq_mul]
     ring
 
+/- English proof (translation)
+Set `ι` to `{i // i ∈ Finset.Ici k}`. Set `B : Matrix ι ι L` to `b.submatrix Subtype.val Subtype.val`. Establish `hB : B.det = ∏ i ∈ Finset.Ici k, ϖ' ^ a i`. Rewrite using `[Matrix.det_of_upperTriangular (M := B) (fun i j hij => hb hij), ← Finset.prod_coe_sort (Finset.Ici k)]`. Conclude with `Finset.prod_congr rfl fun i _ => hd i`.
+
+Establish `hE : B.det = ∑ p : ι → Fin n, (k₁.submatrix Subtype.val p).det * ((∏ i, ϖ ^ μ (p i)) * ∏ i : ι, k₂ (p i) i)`. Establish `hij : ∀ i j : ι, B i j = ∑ l, k₁ i l * (ϖ ^ μ l * k₂ l j)` using `fun i j => by show b i j = _`. Rewrite using `[e, Matrix.mul_assoc, Matrix.mul_apply]`. Simplify using `only [Matrix.diagonal_mul]`. Simplify using `only [Matrix.det_apply', hij, Finset.prod_univ_sum, Finset.mul_sum, Fintype.piFinset_univ, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.prod_mul_distrib, Matrix.submatrix_apply, mul_assoc]`. Both sides reduce to the same expression. Establish `hle : Valued.v B.det ≤ WithZero.exp (-∑ i ∈ Finset.Ici k, μ i)`.
+
+Rewrite using `[hE]`. Use `Valuation.map_sum_le _ fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `hp : Function.Injective p`. Establish `h3 : Valued.v (k₁.submatrix Subtype.val p : Matrix ι ι L).det ≤ 1` using `Formalism.UG.P.cartan_det_mem (intL L) _ fun i j => h₁ _ _`. Establish `h4 : Valued.v (∏ i : ι, k₂ (p i) i) ≤ 1` using `(intL L).prod_mem fun i _ => h₂ _ _`.
+
+Rewrite using `[map_mul, map_mul, val_prod_zpow hϖ]`. Use `(mul_le_of_le_one_left' h3).trans ((mul_le_of_le_one_right' h4).trans ?_)` and prove the remaining obligations. Rewrite using `[WithZero.exp_le_exp, neg_le_neg_iff, ← Finset.sum_image (s := Finset.univ) (g := p) (f := μ) hp.injOn]`. Conclude with `sum_Ici_le hμ k _ (by rw [Finset.card_image_of_injective _ hp]; simp [ι])`. Take `⟨i, j, h1, h2⟩` from `Function.not_injective_iff.1 hp`.
+
+Rewrite using `[Matrix.det_zero_of_column_eq h2 (fun l => by simp [h1]), zero_mul, map_zero]`. Conclude with `zero_le`. Rewrite `hle` using `[hB, val_prod_zpow hϖ', WithZero.exp_le_exp, neg_le_neg_iff]`. Conclude with `hle`.
+-/
 theorem tail_le {ϖ ϖ' : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (hϖ' : Valued.v ϖ' = WithZero.exp (-1 : ℤ))
     {a μ : Fin n → ℤ} (hμ : Antitone μ)
     {b k₁ k₂ : Matrix (Fin n) (Fin n) L} (hb : b.BlockTriangular id) (hd : ∀ i, b i i = ϖ' ^ a i)
@@ -117,6 +154,9 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L
 
 local notation "⟪" b "⟫" => (((b : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)
 
+/- English proof (translation)
+Introduce `h`. Use `hU.2.2.2.1` as an intermediate fact. Rewrite `this` using `[h, Valuation.map_zero]`. Conclude with `absurd this WithZero.zero_ne_coe`.
+-/
 theorem unif_ne_zero (hU : IsUnramInv ϖ σ q) : ϖ ≠ 0 := by
   intro h
   have := hU.2.2.2.1
@@ -128,12 +168,20 @@ def tExp (n m : ℕ) (a : Fin m → ℤ) (i : Fin n) : ℤ :=
   else if h' : n - m ≤ i.val ∧ n - 1 - i.val < m then -(a ⟨n - 1 - i.val, h'.2⟩) else 0
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Unfold `tMat tExp`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem tMat_eq (m : ℕ) (a : Fin m → ℤ) : tMat ϖ n m a = Matrix.diagonal fun i => ϖ ^ tExp n m a i := by
   unfold tMat tExp
   congr 1
   funext i
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `h1` using `h.rev i`. Establish `h2 : (i.rev : ℕ) = n - 1 - i` using `by rw [Fin.val_rev]; omega`. Establish `h3` using `i.2`. Unfold `tExp`. Use `split_ifs with a b`.
+
+Both sides reduce to the same expression. Simplify using `only [← h2, h1, neg_neg]`. Establish `: (i.rev : ℕ) = i` using `by omega`. Rewrite `h1` using `[this]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem tExp_good {d : List ℤ} (h : Good n d) (i : Fin n) :
     tExp n (n / 2) (fun j => d.getD j.1 0) i = d.getD i.1 0 := by
   have h1 := h.rev i
@@ -147,6 +195,9 @@ theorem tExp_good {d : List ℤ} (h : Good n d) (i : Fin n) :
     rw [this] at h1
     omega
 
+/- English proof (translation)
+Take `⟨t, ht, -⟩` from `P.fSatake_diag_exists (σ := σ) (fun i : Fin n => ϖ ^ d.getD i.1 0) fun i => by`. Rewrite using `[map_zpow₀, hU.2.2.1, h.rev, ← zpow_add₀ (unif_ne_zero hU), add_neg_cancel, zpow_zero]`. Conclude with `⟨t, ht⟩`.
+-/
 theorem exists_diag (hU : IsUnramInv ϖ σ q) {d : List ℤ} (h : Good n d) :
     ∃ t : GU σ n, ⟪t⟫ = Matrix.diagonal fun i : Fin n => ϖ ^ d.getD i.1 0 := by
   obtain ⟨t, ht, -⟩ := P.fSatake_diag_exists (σ := σ) (fun i : Fin n => ϖ ^ d.getD i.1 0) fun i => by
@@ -159,6 +210,11 @@ def Cell (ϖ : L) (a : Fin (n / 2) → ℤ) (x : GU σ n ⧸ KU σ n) : Prop :=
 def InLab (ϖ : L) (d : List ℤ) (x : GU σ n ⧸ KU σ n) : Prop :=
   ∃ k₁ ∈ KU σ n, ∃ k₂ ∈ KU σ n, ⟪x.out⟫ = ⟪k₁⟫ * Matrix.diagonal (fun i : Fin n => ϖ ^ d.getD i.1 0) * ⟪k₂⟫
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `exists_diag hU h`. Use `(P.finite_cosets_in_doset (P.isCommensurated_integral_unitary_of_unramified hU n) t).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨k₁, h₁, k₂, h₂, e⟩`. Use `⟨⟨k₁, h₁⟩, ⟨k₂, h₂⟩, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Units.val_mul, ht]`.
+
+Conclude with `e`.
+-/
 theorem finite_inLab (hU : IsUnramInv ϖ σ q) {d : List ℤ} (h : Good n d) :
     {x : GU σ n ⧸ KU σ n | InLab ϖ d x}.Finite := by
   obtain ⟨t, ht⟩ := exists_diag hU h
@@ -171,6 +227,17 @@ theorem finite_inLab (hU : IsUnramInv ϖ σ q) {d : List ℤ} (h : Good n d) :
 def cnt (σ : L →+* L) (n : ℕ) (ϖ : L) (d : List ℤ) (a : Fin (n / 2) → ℤ) : ℕ :=
   {x : GU σ n ⧸ KU σ n | Cell ϖ a x ∧ InLab ϖ d x}.ncard
 
+/- English proof (translation)
+Unfold `SatU`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hf : {x : GU σ n ⧸ KU σ n | Cell ϖ a x ∧ InLab ϖ d x}.Finite` using `(finite_inLab hU h).subset fun x hx => hx.2`. Establish `key : ∀ x : GU σ n ⧸ KU σ n, ∀ [Decidable (Cell ϖ a x)], (if Cell ϖ a x then labInd σ n ϖ d x.out else 0) = if x ∈ hf.toFinset then 1 else 0`.
+
+Introduce `x _`. Simplify using `only [Set.Finite.mem_toFinset]`. Distinguish the cases in `h1 : Cell ϖ a x`. Distinguish the cases in `h2 : InLab ϖ d x`. Rewrite using `[if_pos h1, if_pos (show x ∈ {x | Cell ϖ a x ∧ InLab ϖ d x} from ⟨h1, h2⟩)]`.
+
+Unfold `labInd`. Conclude with `Set.indicator_of_mem (f := (1 : GU σ n → ℂ)) (a := x.out) (by exact h2)`. Rewrite using `[if_pos h1, if_neg (show x ∉ {x | Cell ϖ a x ∧ InLab ϖ d x} from fun h => h2 h.2)]`. Unfold `labInd`. Conclude with `Set.indicator_of_notMem (a := x.out) (by exact h2) _`.
+
+Rewrite using `[if_neg h1, if_neg (show x ∉ {x | Cell ϖ a x ∧ InLab ϖ d x} from fun h => h1 h.1)]`. Use `(finsum_congr fun x => @key x _).trans ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_support_subset (s := hf.toFinset) _ (fun x hx => by`. Assume the negation of the conclusion as `h`. Conclude with `hx (if_neg h)), Finset.sum_congr rfl fun x hx => if_pos hx, cnt, Set.ncard_eq_toFinset_card _ hf]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem satU_labInd (hU : IsUnramInv ϖ σ q) {d : List ℤ} (h : Good n d) (α : Fin (n / 2) → ℂ) :
     SatU ϖ q (labInd σ n ϖ d) α = ∑ᶠ a : Fin (n / 2) → ℤ,
       (∏ i, α i ^ (a i) * (q : ℂ) ^ (-(a i) * ((n : ℤ) - 1 - 2 * (i.val : ℤ)))) * (cnt σ n ϖ d a : ℂ) := by
@@ -198,6 +265,11 @@ theorem satU_labInd (hU : IsUnramInv ϖ σ q) {d : List ℤ} (h : Good n d) (α 
     exact hx (if_neg h)), Finset.sum_congr rfl fun x hx => if_pos hx, cnt, Set.ncard_eq_toFinset_card _ hf]
   simp
 
+/- English proof (translation)
+Use `((finite_inLab hU h).biUnion (t := fun x => {a | Cell ϖ a x}) fun x _ => Set.Subsingleton.finite ?_).subset ?_` and prove the remaining obligations. Introduce and unpack `a ⟨u, hu, k, hk, e⟩ a' ⟨u', hu', k', hk', e'⟩`. Conclude with `P.fSatake_cell_unique hU (Nat.mul_div_le n 2) hu hu' hk hk' (e.symm.trans e')`. Introduce `a ha`. Take `⟨x, hx⟩` from `Set.nonempty_of_ncard_ne_zero ha`.
+
+Conclude with `Set.mem_biUnion hx.2 hx.1`.
+-/
 theorem finite_cnt (hU : IsUnramInv ϖ σ q) {d : List ℤ} (h : Good n d) : {a | cnt σ n ϖ d a ≠ 0}.Finite := by
   refine ((finite_inLab hU h).biUnion (t := fun x => {a | Cell ϖ a x}) fun x _ => Set.Subsingleton.finite ?_).subset ?_
   · rintro a ⟨u, hu, k, hk, e⟩ a' ⟨u', hu', k', hk', e'⟩
@@ -206,6 +278,11 @@ theorem finite_cnt (hU : IsUnramInv ϖ σ q) {d : List ℤ} (h : Good n d) : {a 
     obtain ⟨x, hx⟩ := Set.nonempty_of_ncard_ne_zero ha
     exact Set.mem_biUnion hx.2 hx.1
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `exists_diag hU h`. Use `Set.ncard_ne_zero_of_mem (a := (QuotientGroup.mk t : GU σ n ⧸ KU σ n)) ?_ ((finite_inLab hU h).subset fun x hx => hx.2)` and prove the remaining obligations. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (KU σ n) t`. Use `⟨⟨1, ⟨P.fSatake_borel_one, fun i => by simp⟩, k, k.2, ?_⟩, 1, one_mem _, k, k.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, tMat_eq]`.
+
+Simplify using `only [tExp_good h, Subgroup.coe_mul, Units.val_mul, ht, OneMemClass.coe_one, Units.val_one, Matrix.mul_one]`. Rewrite using `[hk]`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, ht, OneMemClass.coe_one, Units.val_one, Matrix.one_mul]`.
+-/
 theorem cnt_self (hU : IsUnramInv ϖ σ q) {d : List ℤ} (h : Good n d) :
     cnt σ n ϖ d (fun j => d.getD j.1 0) ≠ 0 := by
   obtain ⟨t, ht⟩ := exists_diag hU h
@@ -218,6 +295,11 @@ theorem cnt_self (hU : IsUnramInv ϖ σ q) {d : List ℤ} (h : Good n d) :
   · rw [hk]
     simp only [Subgroup.coe_mul, Units.val_mul, ht, OneMemClass.coe_one, Units.val_one, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨x, ⟨u, hu, k₀, hk₀, e⟩, k₁, h₁, k₂, h₂, e'⟩` from `Set.nonempty_of_ncard_ne_zero hc`. Rewrite `e` using `[tMat_eq]`. Simplify using `only [tExp_good h] at e`. Establish `hub` using `(P.fSatake_borel_iff u).1 hu.1`. Establish `hD : (Matrix.diagonal fun i : Fin n => ϖ ^ d.getD i.1 0).BlockTriangular id` using `Matrix.blockTriangular_diagonal _`.
+
+Use `tail_le (ϖ := ϖ) (ϖ' := ϖ) hU.2.2.2.1 hU.2.2.2.1 (anti_getD h'.1 h'.2.1) (hD.mul hub) (fun i => by rw [Matrix.diagonal_mul, hu.2, mul_one]) (P.fSatake_K_int h₁) (P.fSatake_K_int (mul_mem h₂ (inv_mem hk₀))) ?_ k` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Subgroup.coe_inv]`. Rewrite using `[← Matrix.mul_assoc, ← e', e, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+-/
 theorem tail_of_cnt (hU : IsUnramInv ϖ σ q) {d μ : List ℤ} (h : Good n d) (h' : Good n μ)
     (hc : cnt σ n ϖ μ (fun j => d.getD j.1 0) ≠ 0) (k : Fin n) :
     ∑ i ∈ Finset.Ici k, μ.getD i.1 0 ≤ ∑ i ∈ Finset.Ici k, d.getD i.1 0 := by
@@ -237,6 +319,13 @@ def mono {m : ℕ} (a : Fin m → ℤ) : (Fin m → ℂˣ) →* ℂ where
   map_one' := by simp
   map_mul' α β := by simp [mul_zpow, Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Introduce `a b h`. Use function extensionality and compare the values at `i`. Use `DFunLike.congr_fun h (Pi.mulSingle i (Units.mk0 (2 : ℂ) two_ne_zero))` as an intermediate fact. Establish `e : ∀ c : Fin m → ℤ, mono c (Pi.mulSingle i (Units.mk0 (2 : ℂ) two_ne_zero)) = (2 : ℂ) ^ c i` using `fun c => by show ∏ j : Fin m, _ = _`. Rewrite using `[Finset.prod_eq_single i (fun j _ hj => by rw [Pi.mulSingle_eq_of_ne hj]; simp) (by simp)]`.
+
+Simplify using the standard rewrite rules. Rewrite `this` using `[e, e]`. Establish `h2 : ((2 : ℝ) : ℂ) ^ a i = ((2 : ℝ) : ℂ) ^ b i`. Rewrite using `[Complex.ofReal_ofNat]`. Conclude with `this`.
+
+Rewrite `h2` using `[← Complex.ofReal_zpow, ← Complex.ofReal_zpow, Complex.ofReal_inj]`. Conclude with `zpow_right_injective₀ (by norm_num) (by norm_num) h2`.
+-/
 theorem mono_injective {m : ℕ} : Function.Injective (mono (m := m)) := by
   intro a b h
   funext i
@@ -251,6 +340,21 @@ theorem mono_injective {m : ℕ} : Function.Injective (mono (m := m)) := by
   rw [← Complex.ofReal_zpow, ← Complex.ofReal_zpow, Complex.ofReal_inj] at h2
   exact zpow_right_injective₀ (by norm_num) (by norm_num) h2
 
+/- English proof (translation)
+Establish `hq : (q : ℂ) ≠ 0`. Use `hU.2.2.2.2.2.1` as an intermediate fact. Conclude with `(by omega : q ≠ 0)` after adjusting the coercions. Establish `hA : (⋃ d ∈ (s : Set (List ℤ)), {a | cnt σ n ϖ d a ≠ 0}).Finite` using `s.finite_toSet.biUnion fun d hd => finite_cnt hU (hs d hd)`. Establish `hz : ∀ a ∈ hA.toFinset, (∏ i : Fin (n / 2), (q : ℂ) ^ (-(a i) * ((n : ℤ) - 1 - 2 * (i.val : ℤ)))) * ∑ d ∈ s, c d * (cnt σ n ϖ d a : ℂ) = 0`.
+
+Use `linearIndependent_iff'.1 ((linearIndependent_monoidHom (Fin (n / 2) → ℂˣ) ℂ).comp _ mono_injective) hA.toFinset _ (funext fun α => ?_)` and prove the remaining obligations. Use `h (fun i => α i) fun i => (α i).ne_zero` as an intermediate fact. Rewrite using `[Finset.sum_congr rfl fun d hd => by`. Rewrite using `[satU_labInd hU (hs d hd), finsum_eq_sum_of_support_subset (s := hA.toFinset) _ (fun a ha => by`. Rewrite using `[Finset.mem_coe, Set.Finite.mem_toFinset]`.
+
+Conclude with `Set.mem_biUnion hd fun h0 => ha (by simp [h0])), Finset.mul_sum], Finset.sum_comm] at this`. Rewrite using `[Finset.sum_apply, Pi.zero_apply, ← this]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul, Finset.prod_mul_distrib]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Use `show _ * ∏ i, (α i : ℂ) ^ a i = _`. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨d₀, hd₀, hmin⟩` from `(s.filter fun d => c d ≠ 0).exists_min_image (fun d => ∑ k : Fin n, ∑ i ∈ Finset.Ici k, d.getD i.1 0) (by obtain ⟨d, h1, h2⟩ := hne; exact ⟨d, Finset.mem_filter.2 ⟨h1, h2⟩⟩)`.
+
+Take `⟨h1, h2⟩` from `Finset.mem_filter.1 hd₀`. Establish `h3` using `hz (fun j => d₀.getD j.1 0) (by`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Set.mem_biUnion h1 (cnt_self hU (hs _ h1)))`. Rewrite `h3` using `[mul_eq_zero, Finset.sum_eq_single d₀ ?_ (fun h => absurd h1 h)]`.
+
+Break down `h3 with h3 | h3` into its components or cases. Conclude with `Finset.prod_ne_zero_iff.2 (fun i _ => zpow_ne_zero _ hq) h3`. Conclude with `mul_ne_zero h2 (by exact_mod_cast cnt_self hU (hs _ h1)) h3`. Introduce `μ hμ hne'`. Assume the negation of the conclusion as `h0`.
+
+Establish `h4 : c μ ≠ 0` using `left_ne_zero_of_mul h0`. Establish `h5 : cnt σ n ϖ μ (fun j => d₀.getD j.1 0) ≠ 0` using `fun h => h0 (by rw [h, Nat.cast_zero, mul_zero])`. Establish `h6` using `tail_of_cnt hU (hs _ h1) (hs _ hμ) h5`. Establish `h7` using `(Finset.sum_eq_sum_iff_of_le fun k _ => h6 k).1 (le_antisymm (Finset.sum_le_sum fun k _ => h6 k) (hmin μ (Finset.mem_filter.2 ⟨hμ, h4⟩)))`. Conclude with `hne' (eq_of_getD (hs _ hμ).1 (hs _ h1).1 (congrFun (eq_of_tails fun k => h7 k (Finset.mem_univ k))))`.
+-/
 theorem satU_indep (hU : IsUnramInv ϖ σ q) (s : Finset (List ℤ)) (c : List ℤ → ℂ) (hs : ∀ d ∈ s, Good n d)
     (h : ∀ α : Fin (n / 2) → ℂ, (∀ l, α l ≠ 0) → ∑ d ∈ s, c d * SatU ϖ q (labInd σ n ϖ d) α = 0) :
     ∀ d ∈ s, c d = 0 := by
@@ -307,6 +411,21 @@ open IsDedekindDomain NumberField GlobalTheory.InertDoubleCoset GlobalTheory.Sel
 variable {K : Type} [Field K] [NumberField K] {v : HeightOneSpectrum (𝓞 K)}
   {σ : v.adicCompletion K →+* v.adicCompletion K} {n q : ℕ} {ϖ : v.adicCompletion K}
 
+/- English proof (translation)
+Take `⟨hσσ, hσ, -, -, ⟨x, hx1, hx2⟩, -⟩` from `hU`. Use `isAdicComplete_adicCompletionIntegers v` as an intermediate fact. Establish `: Finite (v.adicCompletionIntegers K ⧸ IsLocalRing.maximalIdeal (v.adicCompletionIntegers K))` using `finite_residueField_adicCompletionIntegers v`. Set `c : v.adicCompletionIntegers K →+* v.adicCompletionIntegers K` to `(σ.comp (v.adicCompletionIntegers K).subtype).codRestrict (v.adicCompletionIntegers K) fun x => by show Valued.v (σ x) ≤ 1`. Rewrite using `[hσ]`.
+
+Conclude with `x.2`. Establish `hc : ∀ x, c (c x) = x` using `fun x => Subtype.ext (hσσ x)`. Establish `hI : ∀ x ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers K), c x ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers K)`. Introduce `x hx hu`. Conclude with `hx (by simpa [hc] using hu.map c)`.
+
+Establish `hω : ∃ ω, IsUnit (ω - c ω)`. Use `⟨⟨x, hx1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Use `show Valued.v (x - σ x) = 1`. Rewrite using `[Valuation.map_sub_swap, hx2]`.
+
+Set `ι` to `(v.adicCompletionIntegers K).subtype`. Set `B : Matrix (Fin n) (Fin n) (v.adicCompletionIntegers K)` to `fun i j => if i.val + j.val + 1 = n then 1 else 0`. Establish `hBι : B.map ι = antiJ (v.adicCompletion K) n`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show ι (if i.val + j.val + 1 = n then 1 else 0) = if i.val + j.val + 1 = n then 1 else 0`.
+
+Rewrite using `[apply_ite ι, map_one, map_zero]`. Establish `hB : cT c B = B`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show c (if j.val + i.val + 1 = n then 1 else 0) = if i.val + j.val + 1 = n then 1 else 0`. Rewrite using `[apply_ite c, map_one, map_zero, add_comm j.val]`.
+
+Establish `hBB : B * B = 1` using `Matrix.map_injective (f := ι) Subtype.val_injective (by show (B * B).map ι = (1 : Matrix _ _ _).map ι`. Rewrite using `[Matrix.map_mul, hBι, GlobalTheory.DualDivU.antiJ_sq, Matrix.map_one _ (map_zero ι) (map_one ι)])`. Take `⟨p, hp⟩` from `GlobalTheory.UnitaryDoubleCoset.exists_poly_norm hc (GlobalTheory.T.exists_norm_eq_X_mod_monic_of_adicComplete_involution (v.adicCompletionIntegers K) _ c hc hI hω) hB (IsUnit.of_mul_eq_one _ hBB)`. Establish `h1 : (B * cT c (Polynomial.aeval B p)) * Polynomial.aeval B p = 1` using `by rw [Matrix.mul_assoc, hp, hBB]`. Use `⟨bc ι ⟨Polynomial.aeval B p, _, mul_eq_one_comm.1 h1, h1⟩, ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show cT σ ((Polynomial.aeval B p).map ι) * 1 * (Polynomial.aeval B p).map ι = _`. Rewrite using `[Matrix.mul_one, GlobalTheory.UnitaryDoubleCoset.cT_map ι (c := c) (fun _ => rfl), ← Matrix.map_mul, hp, hBι]`.
+-/
 theorem exists_antiJ_frame (hU : IsUnramInv ϖ σ q) (n : ℕ) :
     ∃ h ∈ GLint (Fin n) (intL (v.adicCompletion K)), cT σ h.1 * 1 * h.1 = antiJ (v.adicCompletion K) n := by
   obtain ⟨hσσ, hσ, -, -, ⟨x, hx1, hx2⟩, -⟩ := hU
@@ -347,6 +466,11 @@ theorem exists_antiJ_frame (hU : IsUnramInv ϖ σ q) (n : ℕ) :
   show cT σ ((Polynomial.aeval B p).map ι) * 1 * (Polynomial.aeval B p).map ι = _
   rw [Matrix.mul_one, GlobalTheory.UnitaryDoubleCoset.cT_map ι (c := c) (fun _ => rfl), ← Matrix.map_mul, hp, hBι]
 
+/- English proof (translation)
+Take `⟨h, hh, eh⟩` from `exists_antiJ_frame hU n`. Take `⟨k₁, h₁, k₂, h₂, e'⟩` from `GlobalTheory.T.unitary_mem_integralUnitary_doubleCoset_of_GLn_doubleCoset K v σ n hU.1 hU.2.1 hU.2.2.2.2.1 _ (conj_mem_UJ σ (inv_frame σ eh) g.2) _ (conj_mem_UJ σ (inv_frame σ eh) g'.2) (h * a * h⁻¹) (mul_mem (mul_mem hh ha) (inv_mem hh)) (h * b * h⁻¹) (mul_mem (mul_mem hh hb) (i …`. Establish `m : ∀ k ∈ UJ σ (1 : Matrix (Fin n) (Fin n) (v.adicCompletion K)) ⊓ GLint (Fin n) (Ov K v), ∃ k' ∈ KU σ n, (k' : GL (Fin n) (v.adicCompletion K)) = h⁻¹ * k * h` using `fun k hk => ⟨⟨_, conj_mem_UJ σ eh hk.1⟩, ⟨conj_mem_UJ σ eh hk.1, mul_mem (s := GLint (Fin n) (intL (v.adicCompletion K))) (mul_mem (inv_mem hh) hk.2) hh⟩, rfl⟩`. Take `⟨l₁, m₁, e₁⟩` from `m k₁ h₁`. Take `⟨l₂, m₂, e₂⟩` from `m k₂ h₂`.
+
+Use `⟨l₁, m₁, l₂, m₂, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, e₁, e₂]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dc_GU (hU : IsUnramInv ϖ σ q) {g g' : GU σ n} {a b : GL (Fin n) (v.adicCompletion K)}
     (ha : a ∈ GLint (Fin n) (intL (v.adicCompletion K))) (hb : b ∈ GLint (Fin n) (intL (v.adicCompletion K)))
     (e : (g' : GL (Fin n) (v.adicCompletion K)) = a * g * b) : ∃ k₁ ∈ KU σ n, ∃ k₂ ∈ KU σ n, g' = k₁ * g * k₂ := by
@@ -365,6 +489,15 @@ theorem dc_GU (hU : IsUnramInv ϖ σ q) {g g' : GU σ n} {a b : GL (Fin n) (v.ad
   calc (g' : GL (Fin n) (v.adicCompletion K)) = h⁻¹ * (h⁻¹⁻¹ * g' * h⁻¹) * h := by group
     _ = _ := by rw [e']; group
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlaces.divInd GlobalTheory.IndefiniteRowSideFullHecke.InertPlaceSetting.labInd`. Use `split_ifs with hg`. Take `⟨k₁, k₂, e⟩` from `hg`. Take `⟨t, ht⟩` from `exists_diag hU h`.
+
+Take `⟨l₁, m₁, l₂, m₂, e'⟩` from `dc_GU hU (g := t) (g' := g) (a := bc (intL _).subtype k₁) (b := bc (intL _).subtype k₂) ⟨k₁, rfl⟩ ⟨k₂, rfl⟩ (Units.ext (by`. Simplify using `only [Units.val_mul, ht]`. Conclude with `e))`. Use `(Set.indicator_of_mem (f := (1 : GU σ n → ℂ)) ?_).symm` and prove the remaining obligations. Use `⟨l₁, m₁, l₂, m₂, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e']`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, ht]`. Use `(Set.indicator_of_notMem ?_ _).symm` and prove the remaining obligations. Introduce and unpack `⟨l₁, ⟨-, k₁, e₁⟩, l₂, ⟨-, k₂, e₂⟩, e⟩`. Use `hg ⟨k₁, k₂, e.trans ?_⟩` and prove the remaining obligations.
+
+Use `congr 2`. Conclude with `congrArg Units.val e₁.symm`. Conclude with `congrArg Units.val e₂.symm`.
+-/
 theorem divInd_eq_labInd (hU : IsUnramInv ϖ σ q) {d : List ℤ} (h : Good n d) :
     GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlaces.divInd σ n ϖ d = GlobalTheory.IndefiniteRowSideFullHecke.InertPlaceSetting.labInd σ n ϖ d := by
   funext g
@@ -387,6 +520,17 @@ theorem divInd_eq_labInd (hU : IsUnramInv ϖ σ q) {d : List ℤ} (h : Good n d)
     · exact congrArg Units.val e₁.symm
     · exact congrArg Units.val e₂.symm
 
+/- English proof (translation)
+Take `⟨h, hh, eh⟩` from `exists_antiJ_frame hU n`. Take `⟨k₁, h₁, k₂, h₂, e⟩` from `hd`. Establish `h₁' : k₁ ∈ GLint (Fin n) (intL (v.adicCompletion K))` using `h₁`. Establish `h₂' : k₂ ∈ GLint (Fin n) (intL (v.adicCompletion K))` using `h₂`. Take `⟨π', hπ', a, ha, b, hb, e'⟩` from `GlobalTheory.DualDivU.hasDiv_dualLab _ σ n d _ hU.2.1 h1 (conj_mem_UJ σ eh hg) ⟨π, hπ, h⁻¹ * k₁, mul_mem (inv_mem hh) h₁', k₂ * h, mul_mem h₂' hh, by`.
+
+Simplify using `only [Units.val_mul, e, Matrix.mul_assoc]⟩`. Establish `l1 : (dualLab d).length = n` using `by simpa [dualLab] using h1`. Establish `l2 : (dualLab d).Pairwise fun a b => b ≤ a`. Rewrite using `[dualLab, List.pairwise_reverse, List.pairwise_map]`. Conclude with `h2.imp fun h => neg_le_neg h`.
+
+Simplify using `only [Units.val_mul, e] at e'`. Establish `ent` using `fun {x} (hx : x ∈ GLint (Fin n) (intL (v.adicCompletion K))) => GlobalTheory.DualDivU.entry_mem _ hx`. Use `⟨h1, h2, eq_of_getD l1 h1 (congrFun (eq_of_tails fun k => le_antisymm ?_ ?_))⟩` and prove the remaining obligations. Use `tail_le hπ' hπ (anti_getD l1 l2) (Matrix.blockTriangular_diagonal _) (fun i => Matrix.diagonal_apply_eq _ _) (ent (mul_mem (mul_mem (inv_mem h₁') hh) ha)) (ent (mul_mem (mul_mem hb (inv_mem hh)) (inv_mem h₂'))) ?_ k` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc, Units.inv_mul_cancel_left, Units.mul_inv_cancel_left, Units.mul_inv, Matrix.mul_one]`. Use `_ = _ := by rw [e']; simp only [Units.val_mul, Matrix.mul_assoc]`. Use `tail_le hπ hπ' (anti_getD h1 h2) (Matrix.blockTriangular_diagonal _) (fun i => Matrix.diagonal_apply_eq _ _) (ent (mul_mem (mul_mem (inv_mem ha) (inv_mem hh)) h₁')) (ent (mul_mem (mul_mem h₂' hh) (inv_mem hb))) ?_ k` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Units.inv_mul_cancel_left, Units.mul_inv, Matrix.mul_one]`.
+
+Use `_ = _ := by rw [← e']; simp only [Units.val_mul, Matrix.mul_assoc]`.
+-/
 theorem good_of_unitary (hU : IsUnramInv ϖ σ q) {π : v.adicCompletion K} (hπ : Valued.v π = WithZero.exp (-1 : ℤ))
     {d : List ℤ} (h1 : d.length = n) (h2 : d.Pairwise fun a b => b ≤ a) {g : GL (Fin n) (v.adicCompletion K)}
     (hg : g ∈ UJ σ (1 : Matrix (Fin n) (Fin n) (v.adicCompletion K)))
@@ -424,6 +568,9 @@ section Par
 
 open GlobalTheory.IndefiniteRowSideFullHecke.InertPlaceSetting
 
+/- English proof (translation)
+Proceed by induction on `M using Quotient.inductionOn with`. Consider the case `h l`. Take `rfl : l.length = m` from `h`. Conclude with `⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩`.
+-/
 theorem exists_fun_of_card {m : ℕ} (M : Multiset ℂ) (h : M.card = m) :
     ∃ β : Fin m → ℂ, Finset.univ.val.map β = M := by
   induction M using Quotient.inductionOn with
@@ -431,10 +578,20 @@ theorem exists_fun_of_card {m : ℕ} (M : Multiset ℂ) (h : M.card = m) :
     obtain rfl : l.length = m := h
     exact ⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩
 
+/- English proof (translation)
+Simplify using `only [strPar, GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlaces.strPar, Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]`.
+-/
 theorem strPar_eq (q t : ℕ) : strPar q t = GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlaces.strPar q t := by
   simp only [strPar, GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlaces.strPar, Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton,
     Multiset.map_map, Function.comp_def]
 
+/- English proof (translation)
+Rewrite using `[strPar_eq, strPar_eq]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlaces.strPar`. Establish `e : Multiset.range (t + 1) = 0 ::ₘ (Multiset.range t).map (· + 1)` using `by show ((List.range (t + 1) : List ℕ) : Multiset ℕ) = _`. Rewrite using `[List.range_succ_eq_map]`. Both sides reduce to the same expression.
+
+Rewrite using `[Multiset.range_succ, e, Multiset.map_cons, Multiset.map_cons, Multiset.map_map, ← zpow_neg, ← Multiset.singleton_add, ← Multiset.singleton_add]`. Establish `e1 : -(((t + 2 : ℕ) : ℤ) - 1 - 2 * ((t + 1 : ℕ) : ℤ)) = (t : ℤ) + 1` using `by push_cast; ring`. Establish `e2 : -(((t + 2 : ℕ) : ℤ) - 1 - 2 * ((0 : ℕ) : ℤ)) = -((t : ℤ) + 1)` using `by push_cast; ring`. Rewrite using `[e1, e2, Multiset.map_congr rfl (g := fun l : ℕ => (q : ℂ) ^ (-((t : ℤ) - 1 - 2 * (l : ℤ)))) fun l _ => by`. Simplify using `only [Function.comp]`.
+
+Use `congr 1`. Use `push_cast`. Use the proof step `ring]`. Normalize the expressions using the abelian group laws.
+-/
 theorem strPar_add_two (q t : ℕ) :
     strPar q (t + 2) = strPar q t + {(q : ℂ) ^ ((t : ℤ) + 1)} + {((q : ℂ) ^ ((t : ℤ) + 1))⁻¹} := by
   rw [strPar_eq, strPar_eq]
@@ -454,6 +611,13 @@ theorem strPar_add_two (q t : ℕ) :
     ring]
   abel
 
+/- English proof (translation)
+Proceed by induction on `t using Nat.twoStepInduction with`. Consider the case `zero => exact ⟨0, rfl, by simp, by simp [strPar]⟩`. Consider the case `one => exact ⟨0, rfl, by simp, by simp [strPar]⟩`. Consider the case `more t ih _`. Take `⟨H, h1, h2, h3⟩` from `ih`.
+
+Use `⟨H + {(q : ℂ) ^ ((t : ℤ) + 1)}, by simp [h1], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.mem_add, Multiset.mem_singleton]`. Conclude with `fun h => h.elim h2 (zpow_ne_zero _ (Nat.cast_ne_zero.2 hq)).symm`. Rewrite using `[strPar_add_two, h3, Multiset.map_add, Multiset.map_singleton]`. Simplify using `only [Nat.odd_add, Nat.not_odd_iff_even.2 even_two, even_two, iff_true]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem strPar_split {q : ℕ} (hq : q ≠ 0) (t : ℕ) : ∃ H : Multiset ℂ, H.card = t / 2 ∧ (0 : ℂ) ∉ H ∧
     strPar q t = H + H.map (·⁻¹) + if Odd t then {1} else 0 := by
   induction t using Nat.twoStepInduction with
@@ -468,6 +632,17 @@ theorem strPar_split {q : ℕ} (hq : q ≠ 0) (t : ℕ) : ∃ H : Multiset ℂ, 
       simp only [Nat.odd_add, Nat.not_odd_iff_even.2 even_two, even_two, iff_true]
       abel
 
+/- English proof (translation)
+Take `⟨H, h1, h2, h3⟩` from `strPar_split hq t`. Take `⟨β, hβ⟩` from `exists_fun_of_card (m := (a + t) / 2) ((Finset.univ.val.map α).map (fun z => (-1) ^ t * z) + H.map (fun z => (-1) ^ a * z) + if Odd a ∧ Odd t then {-1} else 0) (by`. Simplify using `only [Multiset.card_add, Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin, h1, Nat.odd_iff]`. Use `split_ifs with h`. Rewrite using `[Multiset.card_singleton]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Multiset.card_zero]`. Use the proof step `omega)`. Use `⟨β, fun l h0 => ?_, ?_⟩` and prove the remaining obligations. Establish `: (0 : ℂ) ∈ Finset.univ.val.map β` using `Multiset.mem_map.2 ⟨l, Finset.mem_univ_val l, h0⟩`.
+
+Rewrite `this` using `[hβ]`. Simplify using `only [Multiset.mem_add, Multiset.mem_map, mul_eq_zero, pow_eq_zero_iff', neg_eq_zero, one_ne_zero, false_and, false_or] at this`. Break down `this with (⟨_, ⟨l, -, rfl⟩, h⟩ | ⟨_, h, rfl⟩) | h` into its components or cases. Conclude with `hα l h`. Conclude with `h2 h`.
+
+Apply the tactic sequence `split_ifs at h <;> simp at h`. Establish `e : ∀ {m : ℕ} (γ : Fin m → ℂ), Finset.univ.val.map (fun l => (γ l)⁻¹) = (Finset.univ.val.map γ).map (·⁻¹)` using `fun γ => by`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Unfold `twPar bcPar`.
+
+Rewrite using `[e, e, hβ, h3]`. Generalize the expression as in `Finset.univ.val.map α = A`. Apply the tactic sequence `rcases Nat.even_or_odd a with ha | ha <;> rcases Nat.even_or_odd t with ht | ht <;>`. Apply the tactic sequence `simp [pow_add, ha, ht, Nat.odd_add, Nat.not_odd_iff_even.2, Nat.not_even_iff_odd.2, Even.neg_one_pow, Odd.neg_one_pow, Multiset.map_map, inv_neg] <;>`. Apply the tactic sequence `(try simp only [← Multiset.singleton_add]) <;> abel`.
+-/
 theorem exists_partner {q : ℕ} (hq : q ≠ 0) (a t : ℕ) (α : Fin (a / 2) → ℂ) (hα : ∀ l, α l ≠ 0) :
     ∃ β : Fin ((a + t) / 2) → ℂ, (∀ l, β l ≠ 0) ∧ twPar (a + t) a β = twPar a (a + t) α + strPar q t := by
   obtain ⟨H, h1, h2, h3⟩ := strPar_split hq t

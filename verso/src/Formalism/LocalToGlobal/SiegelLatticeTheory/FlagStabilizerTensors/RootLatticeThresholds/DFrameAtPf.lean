@@ -15,6 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace DFrameAtPf
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, liftU_mulVec]`. Establish `h1` using `congrFun (wCoord_liftM hon U (wb b)) a`. Establish `h2 : wCoord ε wb (wb b) = Pi.single b 1`. Use function extensionality and compare the values at `i`.
+
+Use `show hJ ε (wb i) (wb b) = _`. Rewrite using `[hon, Pi.single_apply]`. Rewrite `h1` using `[h2, mulVec_single_one]`. Conclude with `h1`.
+-/
 theorem matW_liftU {n k : ℕ} {ε : Fin n → Bool} (wb : Fin k → Fin n → ℂ)
     (hon : ∀ i j, hJ ε (wb i) (wb j) = if i = j then 1 else 0)
     (U : Matrix (Fin k) (Fin k) ℂ) (hU : U ∈ Matrix.unitaryGroup (Fin k) ℂ) :
@@ -35,6 +40,15 @@ open DFrameAtPf
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hloc : ∀ v, ∃ h h' : Matrix (Fin D.R.k) (Fin D.R.k) ℂ, IsDFrame (X.B.I.ε v) (frm X u sc v) (frm X u' sc v) (uMat (γ v)) (uMat ((γ v)⁻¹)) (X.wfr u v) (X.wfr u' v) (i0 v) (i0 v) h h'` using `fun v => dframe_loc (frU X u v) (frU X u' v) rfl (i0 v) (γ v) sc hsc (gv_pos_scale (Tw u) (Tw u') (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) (rv X.B.I v (X.zR u')) (uMat (γ v)) s0 sc hsc (hG v))`. Use `choose H H' hH using hloc`. Establish `hon : ∀ uu v, ∀ i j, hJ (X.B.I.ε v) (X.wfr uu v i) (X.wfr uu v j) = if i = j then 1 else 0` using `fun uu v => X.wfr_on uu v`. Establish `hmem : ∀ uu (U : ∀ v, Matrix (Fin D.R.k) (Fin D.R.k) ℂ) (hU : ∀ v, U v ∈ Matrix.unitaryGroup _ ℂ), (fun v => liftU (X.wfr uu v) (hon uu v) (U v) (hU v) : X.B.I.Ginf) ∈ HsetU X uu`. Introduce `uu U hU v x hx`.
+
+Use `show uMat (liftU (X.wfr uu v) (hon uu v) (U v) (hU v)) *ᵥ rv X.B.I v x = rv X.B.I v x`. Rewrite using `[liftU_mulVec]`. Use `liftM_fix _ _ fun i => ?_` and prove the remaining obligations. Break down `hx with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hx` into its components or cases. Conclude with `(frU X uu v).we i a`.
+
+Conclude with `(frU X uu v).wf i a`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `(frU X uu v).wz i`. Establish `hmat : ∀ uu (U : ∀ v, Matrix (Fin D.R.k) (Fin D.R.k) ℂ) (hU : ∀ v, U v ∈ Matrix.unitaryGroup _ ℂ) v, Formalism.L2.SG.HidaSetting.matW X.B.I (X.wfr uu v) v (fun v => liftU (X.wfr uu v) (hon uu v) (U v) (hU v)) = U v` using `fun uu U hU v => matW_liftU (X.wfr uu v) (hon uu v) (U v) (hU v)`.
+
+Use `⟨fun v => liftU (X.wfr u v) (hon u v) (H v) (hH v).1, fun v => liftU (X.wfr u' v) (hon u' v) (H' v) (hH v).2.1, hmem u H (fun v => (hH v).1), hmem u' H' (fun v => (hH v).2.1), fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hmat u H (fun v => (hH v).1) v, hmat u' H' (fun v => (hH v).2.1) v]`. Conclude with `hH v`.
+-/
 theorem dFrame_any (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) (s0 sc : ℝ) (hsc : sc ≠ 0)
     (i0 : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) (γ : X.B.I.Ginf) (hG : ∀ v, 0 < GX X u u' s0 γ v) :
     ∃ h h', IsDFrameX X u u' sc i0 i0 γ h h' := by
@@ -66,6 +80,9 @@ theorem dFrame_any (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.wha
   rw [hmat u H (fun v => (hH v).1) v, hmat u' H' (fun v => (hH v).2.1) v]
   exact hH v
 
+/- English proof (translation)
+Introduce `hsc w _ hG`. Conclude with `dFrame_any X u u' D.host.rdE sc hsc.ne' i0 (gamW X u u' w) hG`.
+-/
 theorem dual_frame_at_places (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) (sc : ℝ)
     (i0 : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) : DFrameAt X u u' sc i0 i0 := by
   intro hsc w _ hG

@@ -20,6 +20,9 @@ def IsKRel (ε : Fin n → Bool) (A : Fin n → Fin n → Module.End ℂ X) : Pr
   ∀ a b c d : Fin n, ε a = ε b → ε c = ε d → A a b * A c d - A c d * A a b =
     (if b = c then A a d else 0) - (if d = a then A c b else 0)
 
+/- English proof (translation)
+The claim follows from `| [], _, a => by simpa [kirrWord, kirrWt] using hu a | p :: l, hl, a => by obtain ⟨b, c⟩ := p have hbc := (hl (b, c) List.mem_cons_self).2 have ih := word_isWeightVector hA hu l (fun q hq => hl q (List.mem_cons_of_mem _ hq)) a have key := LinearMap.congr_fun (hA a a b c rfl hbc) …`.
+-/
 theorem word_isWeightVector (hA : IsKRel ε A) {ν : Fin n → ℝ} {u : X} (hu : ∀ a, A a a u = (ν a : ℂ) • u) :
     ∀ l, KirrLow ε l → ∀ a, A a a (kirrWord A u l) = (kirrWt ν l a : ℂ) • kirrWord A u l
   | [], _, a => by simpa [kirrWord, kirrWt] using hu a
@@ -38,6 +41,21 @@ theorem word_isWeightVector (hA : IsKRel ε A) {ν : Fin n → ℝ} {u : X} (hu 
     · subst h2; (simp [root, h1, add_smul]; abel)
     · simp [root, h1, h2, Ne.symm h2]
 
+/- English proof (translation)
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ a b hab`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases.
+
+Simplify using `[kirrWord, hu.2 a b h hab]`. Simplify using `only [kirrWord]`. Rewrite using `[hu.1 a]`. Conclude with `Submodule.smul_mem _ _ (kirrWord_mem (l := []) u (by simp [KirrLow]))`. Conclude with `kirr_low_mem h hab (kirrWord_mem (l := []) u (by simp [KirrLow]))`.
+
+Consider the case `cons p l ih`. Introduce `hl a b hab`. Establish `hl' : KirrLow ε l` using `fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Take `⟨x, y⟩` from `p`.
+
+Establish `hxy` using `hl (x, y) List.mem_cons_self`. Simplify using `only at hxy`. Establish `key` using `LinearMap.congr_fun (hA a b x y hab hxy.2) (kirrWord A u l)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at key`. Rewrite `key` using `[sub_eq_iff_eq_add]`.
+
+Simplify using `only [kirrWord]`. Rewrite using `[key]`. Use `add_mem ?_ (kirr_low_mem hxy.1 hxy.2 (ih hl' a b hab))` and prove the remaining obligations. Use `sub_mem ?_ ?_` and prove the remaining obligations. Use `split_ifs with h1`.
+
+Substitute `h1` using the available equality. Conclude with `ih hl' a y (hab.trans hxy.2)`. Simplify using the standard rewrite rules. Use `split_ifs with h1`. Substitute `h1` using the available equality.
+
+Conclude with `ih hl' x b (hxy.2.trans hab)`. Simplify using the standard rewrite rules. Rewrite using `[word_isWeightVector hA hu.1 _ hl]`. Conclude with `Submodule.smul_mem _ _ (kirrWord_mem u hl)`. Conclude with `kirr_low_mem h hab (kirrWord_mem u hl)`.
+-/
 theorem compact_mem_wordSpan (hA : IsKRel ε A) {ν : Fin n → ℝ} {u : X} (hu : IsKHWVec ε A ν u) :
     ∀ l, KirrLow ε l → ∀ a b, ε a = ε b → A a b (kirrWord A u l) ∈ kirrSpan ε A u := by
   intro l
@@ -73,6 +91,11 @@ theorem compact_mem_wordSpan (hA : IsKRel ε A) {ν : Fin n → ℝ} {u : X} (hu
       exact Submodule.smul_mem _ _ (kirrWord_mem u hl)
     · exact kirr_low_mem h hab (kirrWord_mem u hl)
 
+/- English proof (translation)
+Introduce `a b hab v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨l, hl, rfl⟩` from `hy`. Conclude with `compact_mem_wordSpan hA hu l hl a b hab`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`. Consider the case `smul c x _ hx => simpa using Submodule.smul_mem _ c hx`.
+-/
 theorem wordSpan_isKStable (hA : IsKRel ε A) {ν : Fin n → ℝ} {u : X} (hu : IsKHWVec ε A ν u) :
     IsKStableSub ε A (kirrSpan ε A u) := by
   intro a b hab v hv
@@ -84,6 +107,9 @@ theorem wordSpan_isKStable (hA : IsKRel ε A) {ν : Fin n → ℝ} {u : X} (hu :
   | add x y _ _ hx hy => simpa using add_mem hx hy
   | smul c x _ hx => simpa using Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+The claim follows from `| [], _ => rfl | p :: l, hl => by simp only [kirrWord] rw [commute_aeval_of_commute_alt hB u l (fun q hq => hl q (List.mem_cons_of_mem _ hq))] have := (hB p.1 p.2 (hl p List.mem_cons_self).2).eq exact LinearMap.congr_fun this _`.
+-/
 theorem commute_aeval_of_commute_alt {B : Module.End ℂ X} (hB : ∀ a b, ε a = ε b → Commute (A a b) B) (u : X) :
     ∀ l, KirrLow ε l → kirrWord A (B u) l = B (kirrWord A u l)
   | [], _ => rfl
@@ -97,6 +123,13 @@ end KRel
 
 section Cone
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `hx`. Take `⟨m', rfl⟩` from `hy`. Use `⟨fun a b => m a b + m' a b, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs`. Use `push_cast`. Rewrite using `[add_smul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem root_swap_eq_neg {x y : Fin n → ℝ} (hx : InRootCone x) (hy : InRootCone y) : InRootCone (x + y) := by
   obtain ⟨m, rfl⟩ := hx
   obtain ⟨m', rfl⟩ := hy
@@ -109,12 +142,21 @@ theorem root_swap_eq_neg {x y : Fin n → ℝ} (hx : InRootCone x) (hy : InRootC
   · push_cast; rw [add_smul]
   · simp
 
+/- English proof (translation)
+Simplify using `using vc_inRootCone_add_root vc_inRootCone_zero' h`.
+-/
 theorem root_mem_rootCone {a b : Fin n} (h : a < b) : InRootCone (root a b) := by
   simpa using vc_inRootCone_add_root vc_inRootCone_zero' h
 
+/- English proof (translation)
+Unfold `root`. Normalize the expressions using the abelian group laws.
+-/
 theorem partialSum_finset_sum (a b : Fin n) : root b a = -root a b := by
   unfold root; abel
 
+/- English proof (translation)
+The claim follows from `| [], _ => by simpa [kirrWt] using (vc_inRootCone_zero' : InRootCone (0 : Fin n → ℝ)) | p :: l, hl => by have ih := weight_sub_mem_rootCone ν l (fun q hq => hl q (List.mem_cons_of_mem _ hq)) have hp := (hl p List.mem_cons_self).1 have e : ν - kirrWt ν (p :: l) = (ν - kirrWt ν l) …`.
+-/
 theorem weight_sub_mem_rootCone {ε : Fin n → Bool} (ν : Fin n → ℝ) :
     ∀ l, KirrLow ε l → InRootCone (ν - kirrWt ν l)
   | [], _ => by simpa [kirrWt] using (vc_inRootCone_zero' : InRootCone (0 : Fin n → ℝ))
@@ -126,18 +168,31 @@ theorem weight_sub_mem_rootCone {ε : Fin n → Bool} (ν : Fin n → ℝ) :
     rw [e]
     exact root_swap_eq_neg ih (root_mem_rootCone hp)
 
+/- English proof (translation)
+Unfold `kirrPs`. Simplify using `only [Finset.sum_apply]`. Conclude with `Finset.sum_comm`.
+-/
 theorem wordAction_commute {ι : Type*} (t : Finset ι) (f : ι → Fin n → ℝ) (k : ℕ) :
     kirrPs k (∑ i ∈ t, f i) = ∑ i ∈ t, kirrPs k (f i) := by
   unfold kirrPs
   simp only [Finset.sum_apply]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Unfold `kirrPs root`. Simplify using `only [Pi.sub_apply, Finset.sum_sub_distrib, Finset.sum_pi_single', Finset.mem_filter, Finset.mem_univ, true_and]`.
+-/
 theorem partialSum_root_eq (k : ℕ) (x y : Fin n) :
     kirrPs k (root x y) = (if (x : ℕ) < k then 1 else 0) - (if (y : ℕ) < k then 1 else 0) := by
   unfold kirrPs root
   simp only [Pi.sub_apply, Finset.sum_sub_distrib, Finset.sum_pi_single', Finset.mem_filter,
     Finset.mem_univ, true_and]
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `hβ`. Rewrite using `[wordAction_commute]`. Use `Finset.sum_nonneg fun a _ => ?_` and prove the remaining obligations. Rewrite using `[wordAction_commute]`. Use `Finset.sum_nonneg fun b _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with h`. Establish `e : kirrPs k ((m a b : ℝ) • root a b) = (m a b : ℝ) * kirrPs k (root a b)`. Simplify using `[kirrPs, Finset.mul_sum]`. Rewrite using `[e, partialSum_root_eq]`. Establish `: (a : ℕ) < b` using `h`.
+
+Use `mul_nonneg (by positivity) ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> first | omega | norm_num`. Simplify using `[kirrPs]`.
+-/
 theorem partialSum_nonneg_of_rootCone {β : Fin n → ℝ} (hβ : InRootCone β) (k : ℕ) : 0 ≤ kirrPs k β := by
   obtain ⟨m, rfl⟩ := hβ
   rw [wordAction_commute]
@@ -153,6 +208,9 @@ theorem partialSum_nonneg_of_rootCone {β : Fin n → ℝ} (hβ : InRootCone β)
     split_ifs <;> first | omega | norm_num
   · simp [kirrPs]
 
+/- English proof (translation)
+The claim follows from `| [], _, h => (h rfl).elim | p :: l, hl, _ => by intro hc have hp := (hl p List.mem_cons_self).1 have hle := kirrPs_wt ((p.2 : ℕ) + 1) ν l (fun q hq => hl q (List.mem_cons_of_mem _ hq)) have h1 := partialSum_nonneg_of_rootCone hc ((p.2 : ℕ) + 1) have e : kirrPs ((p.2 : ℕ) + 1) (k …`.
+-/
 theorem not_rootCone_of_ne {ε : Fin n → Bool} (ν : Fin n → ℝ) :
     ∀ l, KirrLow ε l → l ≠ [] → ¬ InRootCone (kirrWt ν l - ν)
   | [], _, h => (h rfl).elim
@@ -176,18 +234,29 @@ section Poly
 
 variable {U₁ U₂ : Type*} [AddCommGroup U₁] [Module ℂ U₁] [AddCommGroup U₂] [Module ℂ U₂]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `succ k ih => intro x`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]`.
+-/
 theorem rootCone_add_mem (T : U₁ →ₗ[ℂ] U₂) (A : Module.End ℂ U₁) (B : Module.End ℂ U₂)
     (h : ∀ x, T (A x) = B (T x)) (k : ℕ) : ∀ x, T ((A ^ k) x) = (B ^ k) (T x) := by
   induction k with
   | zero => intro x; simp
   | succ k ih => intro x; rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]
 
+/- English proof (translation)
+Rewrite using `[aeval_eq_sum_range, aeval_eq_sum_range, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, map_smul, rootCone_add_mem T A B h]`.
+-/
 theorem aeval_intertwine_alt (T : U₁ →ₗ[ℂ] U₂) (A : Module.End ℂ U₁) (B : Module.End ℂ U₂)
     (h : ∀ x, T (A x) = B (T x)) (p : ℂ[X]) (x : U₁) : T (aeval A p x) = aeval B p (T x) := by
   rw [aeval_eq_sum_range, aeval_eq_sum_range, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [LinearMap.smul_apply, LinearMap.smul_apply, map_smul, rootCone_add_mem T A B h]
 
+/- English proof (translation)
+Establish `hp : ∀ k : ℕ, (B ^ k) y = c ^ k • y`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', Module.End.mul_apply, ih, map_smul, hy, smul_smul, pow_succ', mul_comm]`.
+
+Rewrite using `[aeval_eq_sum_range, eval_eq_sum_range, LinearMap.sum_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hp, smul_smul]`.
+-/
 theorem aeval_eigenvector {B : Module.End ℂ U₂} {c : ℂ} {y : U₂} (hy : B y = c • y) (p : ℂ[X]) :
     aeval B p y = p.eval c • y := by
   have hp : ∀ k : ℕ, (B ^ k) y = c ^ k • y := by
@@ -199,10 +268,16 @@ theorem aeval_eigenvector {B : Module.End ℂ U₂} {c : ℂ} {y : U₂} (hy : B
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [LinearMap.smul_apply, hp, smul_smul]
 
+/- English proof (translation)
+Rewrite using `[aeval_eq_sum_range]`. Conclude with `Commute.sum_right _ _ _ fun i _ => (h.pow_right i).smul_right _`.
+-/
 theorem lagrangeFactor_eval_ne_zero {C B : Module.End ℂ U₂} (h : Commute C B) (p : ℂ[X]) : Commute C (aeval B p) := by
   rw [aeval_eq_sum_range]
   exact Commute.sum_right _ _ _ fun i _ => (h.pow_right i).smul_right _
 
+/- English proof (translation)
+Unfold `prodShift`. Rewrite using `[← List.prod_ofFn, map_list_prod, List.map_ofFn]`. Use `congr 1`. Use `congrArg List.ofFn (funext fun t => ?_)` and prove the remaining obligations. Simplify using `[Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem prodShift_eq_aeval (A : Module.End ℂ U₂) (θ : Fin n → ℝ) :
     prodShift A θ = aeval A (∏ t, (X - C ((θ t : ℝ) : ℂ))) := by
   unfold prodShift
@@ -213,6 +288,11 @@ theorem prodShift_eq_aeval (A : Module.End ℂ U₂) (θ : Fin n → ℝ) :
 
 def k2aQ (lam : Fin n → ℝ) (s : Fin n) : ℂ[X] := ∏ t ∈ univ.erase s, (X - C ((thV lam t : ℝ) : ℂ))
 
+/- English proof (translation)
+Unfold `k2aQ`. Rewrite using `[eval_prod, Finset.prod_ne_zero_iff]`. Introduce `t ht`. Simplify using `only [eval_sub, eval_X, eval_C]`. Rewrite using `[sub_ne_zero, Ne, Complex.ofReal_inj]`.
+
+Unfold `thV`. Introduce `h`. Establish `: lam s = lam t` using `by linarith`. Conclude with `(Finset.ne_of_mem_erase ht) (hanti.injective this).symm`.
+-/
 theorem aux_statement_18 (lam : Fin n → ℝ) (s : Fin n) (hanti : StrictAnti lam) :
     (k2aQ lam s).eval ((thV lam s : ℝ) : ℂ) ≠ 0 := by
   unfold k2aQ
@@ -225,6 +305,9 @@ theorem aux_statement_18 (lam : Fin n → ℝ) (s : Fin n) (hanti : StrictAnti l
   have : lam s = lam t := by linarith
   exact (Finset.ne_of_mem_erase ht) (hanti.injective this).symm
 
+/- English proof (translation)
+Establish `e : (A - ((thV lam s : ℝ) : ℂ) • (1 : Module.End ℂ U₂)) * aeval A (k2aQ lam s) = prodShift A (thV lam)`. Rewrite using `[prodShift_eq_aeval, ← Finset.mul_prod_erase univ (fun t => X - C ((thV lam t : ℝ) : ℂ)) (mem_univ s), map_mul]`. Simplify using `[k2aQ, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[← Module.End.mul_apply, e, h0, LinearMap.zero_apply]`.
+-/
 theorem shifted_aeval_lagrange_eq_zero (A : Module.End ℂ U₂) (lam : Fin n → ℝ) (s : Fin n) (h0 : prodShift A (thV lam) = 0)
     (y : U₂) : (A - ((thV lam s : ℝ) : ℂ) • (1 : Module.End ℂ U₂)) (aeval A (k2aQ lam s) y) = 0 := by
   have e : (A - ((thV lam s : ℝ) : ℂ) • (1 : Module.End ℂ U₂)) * aeval A (k2aQ lam s) = prodShift A (thV lam) := by

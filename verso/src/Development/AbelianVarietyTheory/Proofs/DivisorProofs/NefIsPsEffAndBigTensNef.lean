@@ -15,6 +15,19 @@ namespace GlobalTheory
 
 variable {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)] {B N P : LB X}
 
+/- English proof (translation)
+Establish `hf` using `algebraMap_eq_strHom k X`. Establish `hS : QCoh.suppDim (structureModule X) ≤ D`. Unfold `QCoh.suppDim`. Conclude with `(topologicalKrullDim_subspace_le X _).trans hD.le`. Establish `hV` using `diffVanish_chiPic_of_isProjOver hf (structureModule X) hp hS`.
+
+Establish `hL : ∀ j : Fin 2, ((![B, N] : Fin 2 → LB X) j).IsLB`. Introduce `j`. Use `fin_cases j`. Conclude with `hB.isLB`. Conclude with `hN.isLB`.
+
+Establish `hQ : ∀ _ : Fin D, P.IsLB` using `fun _ => hP`. Establish `hexp` using `hV.interNum_of_cls_eq_sum hL hQ (fun _ _ => (1 : ℤ)) (by`. Introduce `_`. Simplify using `[Fin.sum_univ_two, e])`. Establish `hnn : ∀ a : Fin D → Fin 2, 0 ≤ interNum k (structureModule X) ((![B, N] : Fin 2 → LB X) ∘ a)`.
+
+Introduce `a`. Use `h.interNum_nonneg hp hD ?_` and prove the remaining obligations. Introduce `i`. Use `show IsNef k (![B, N] (a i))`. Generalize the expression as in `a i = j`.
+
+Use `fin_cases j`. Conclude with `hB`. Conclude with `hN`. Rewrite using `[topSelf_def, topSelf_def, hexp]`. Simplify using `only [Finset.prod_const_one, one_mul]`.
+
+Establish `h0` using `Finset.single_le_sum (fun a _ => hnn a) (Finset.mem_univ (fun _ : Fin D => (0 : Fin 2)))`. Conclude with `h0`.
+-/
 theorem IsNef.topSelf_le_of_cls_eq_add (h : Published.NefProductNonneg)
     (hp : IsProjOver (strHom k X)) {D : ℕ} (hD : topologicalKrullDim X = D)
     (hB : IsNef k B) (hN : IsNef k N) (hP : P.IsLB)
@@ -47,6 +60,11 @@ theorem IsNef.topSelf_le_of_cls_eq_add (h : Published.NefProductNonneg)
   have h0 := Finset.single_le_sum (fun a _ => hnn a) (Finset.mem_univ (fun _ : Fin D => (0 : Fin 2)))
   exact h0
 
+/- English proof (translation)
+Take `⟨D, hD, -⟩` from `hb.growth`. Establish `hf` using `algebraMap_eq_strHom k X`. Establish `hT : (CechPic.tens B N).IsLB` using `CechPic.isLB_tens hB.isLB hN.isLB`. Establish `hTn : IsNef k (CechPic.tens B N)` using `IsNef.tens_of_isProjOver hB hN hp`. Establish `hPn : IsNef k P` using `hTn.of_cls_eq hP (by rw [e, CechPic.cls_tens hB.isLB hN.isLB])`.
+
+Establish `hle` using `IsNef.topSelf_le_of_cls_eq_add h.1 hp hD hB hN hP e`. Establish `hpos : 0 < topSelfIntersection k B D` using `(h.2.2.isBig_iff hp hD hB).1 hb`. Conclude with `(h.2.2.isBig_iff hp hD hPn).2 (lt_of_lt_of_le hpos hle)`.
+-/
 theorem IsBig.of_cls_eq_add_nef (h : Published.NefNumerics) (hp : IsProjOver (strHom k X))
     (hb : IsBig k B) (hB : IsNef k B) (hN : IsNef k N) (hP : P.IsLB)
     (e : cls P hP = cls B hB.isLB + cls N hN.isLB) : IsBig k P := by
@@ -59,11 +77,17 @@ theorem IsBig.of_cls_eq_add_nef (h : Published.NefNumerics) (hp : IsProjOver (st
   have hpos : 0 < topSelfIntersection k B D := (h.2.2.isBig_iff hp hD hB).1 hb
   exact (h.2.2.isBig_iff hp hD hPn).2 (lt_of_lt_of_le hpos hle)
 
+/- English proof (translation)
+Establish `hT : (CechPic.tens B N).IsLB` using `CechPic.isLB_tens hB.isLB hN.isLB`. Conclude with `IsBig.of_cls_eq_add_nef h hp hb hB hN hT (CechPic.cls_tens hB.isLB hN.isLB hT)`.
+-/
 theorem IsBig.tens_nef (h : Published.NefNumerics) (hp : IsProjOver (strHom k X))
     (hb : IsBig k B) (hB : IsNef k B) (hN : IsNef k N) : IsBig k (CechPic.tens B N) := by
   have hT : (CechPic.tens B N).IsLB := CechPic.isLB_tens hB.isLB hN.isLB
   exact IsBig.of_cls_eq_add_nef h hp hb hB hN hT (CechPic.cls_tens hB.isLB hN.isLB hT)
 
+/- English proof (translation)
+Establish `hT : (CechPic.tens N B).IsLB` using `CechPic.isLB_tens hN.isLB hB.isLB`. Establish `hbig : IsBig k B` using `IsAmpleLB.isBig k X hp B hB`. Conclude with `IsBig.of_cls_eq_add_nef h hp hbig hB.isNef hN hT (by rw [CechPic.cls_tens hN.isLB hB.isLB hT, add_comm])`.
+-/
 theorem IsNef.isBig_tens_ample [IsIntegral X] (h : Published.NefNumerics)
     (hp : IsProjOver (strHom k X)) (hN : IsNef k N) (hB : IsAmpleLB B) :
     IsBig k (CechPic.tens N B) := by
@@ -72,6 +96,11 @@ theorem IsNef.isBig_tens_ample [IsIntegral X] (h : Published.NefNumerics)
   exact IsBig.of_cls_eq_add_nef h hp hbig hB.isNef hN hT
     (by rw [CechPic.cls_tens hN.isLB hB.isLB hT, add_comm])
 
+/- English proof (translation)
+Introduce `h k _ X _ _ hp N hN`. Take `⟨A, hA⟩` from `exists_isAmpleLB_of_isProjOver hp`. Use `⟨hN.isLB, A, hA, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hNm : IsNef k (lbPow N m)` using `hN.pow hA m`. Establish `hbig : IsBig k (CechPic.tens (lbPow N m) A)` using `IsNef.isBig_tens_ample h hp hNm hA`.
+
+Take `⟨r, hr, hs⟩` from `(hbig.frequently_hasNonzeroSec.and_eventually (Filter.eventually_ge_atTop 1)).exists`. Conclude with `⟨r, hs, hr⟩`.
+-/
 theorem IsNef.isPsEff : Published.NefNumerics → ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X]
     [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ N : LB X, IsNef k N → IsPsEff N := by
   intro h k _ X _ _ hp N hN

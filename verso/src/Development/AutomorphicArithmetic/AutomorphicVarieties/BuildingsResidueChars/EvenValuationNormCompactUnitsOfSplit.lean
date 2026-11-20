@@ -16,30 +16,53 @@ private def phiK (τ r : K) (h : r * r = -1 + τ * r) : Etau K τ →ₐ[K] K wh
   map_add' x y := by simp only [QuadraticAlgebra.re_add, QuadraticAlgebra.im_add]; ring
   commutes' a := by simp [QuadraticAlgebra.algebraMap_eq]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma phiK_apply (h : r * r = -1 + τ * r) (x : Etau K τ) : phiK τ r h x = x.re + x.im * r := rfl
 
+/- English proof (translation)
+Simplify using `only [phiK_apply, QuadraticAlgebra.re_star, QuadraticAlgebra.im_star]`. Take the linear combination `(-x.im) * hs`.
+-/
 private lemma phiK_star (h : r * r = -1 + τ * r) (h' : r' * r' = -1 + τ * r') (hs : r + r' = τ) (x : Etau K τ) :
     phiK τ r h (star x) = phiK τ r' h' x := by
   simp only [phiK_apply, QuadraticAlgebra.re_star, QuadraticAlgebra.im_star]
   linear_combination (-x.im) * hs
 
+/- English proof (translation)
+Simplify using `only [phiK_apply, QuadraticAlgebra.norm_def]`. Take the linear combination `(-(x.re * x.im)) * hs - x.im ^ 2 * hp`.
+-/
 private lemma phiK_norm (h : r * r = -1 + τ * r) (h' : r' * r' = -1 + τ * r') (hs : r + r' = τ) (hp : r * r' = 1)
     (x : Etau K τ) : QuadraticAlgebra.norm x = phiK τ r h x * phiK τ r' h' x := by
   simp only [phiK_apply, QuadraticAlgebra.norm_def]
   linear_combination (-(x.re * x.im)) * hs - x.im ^ 2 * hp
 
+/- English proof (translation)
+The claim follows from `(x.isUnit.map (phiK τ r h)).ne_zero`.
+-/
 private lemma phiK_ne (h : r * r = -1 + τ * r) (x : (Etau K τ)ˣ) : phiK τ r h (x : Etau K τ) ≠ 0 :=
   (x.isUnit.map (phiK τ r h)).ne_zero
 
+/- English proof (translation)
+Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+-/
 private lemma phiK_inv (h : r * r = -1 + τ * r) (x : (Etau K τ)ˣ) :
     phiK τ r h ((x⁻¹ : (Etau K τ)ˣ) : Etau K τ) = (phiK τ r h (x : Etau K τ))⁻¹ := by
   apply eq_inv_of_mul_eq_one_left
   rw [← map_mul, Units.inv_mul, map_one]
 
+/- English proof (translation)
+Rewrite using `[quo, map_mul, phiK_star h h' hs, phiK_inv]`.
+-/
 private lemma phiK_quo (h : r * r = -1 + τ * r) (h' : r' * r' = -1 + τ * r') (hs : r + r' = τ) (x : (Etau K τ)ˣ) :
     phiK τ r h (quo x) = phiK τ r h (x : Etau K τ) * (phiK τ r' h' (x : Etau K τ))⁻¹ := by
   rw [quo, map_mul, phiK_star h h' hs, phiK_inv]
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `h1 : x.re + x.im * r = y.re + y.im * r` using `congrArg Prod.fst hxy`. Establish `h2 : x.re + x.im * r' = y.re + y.im * r'` using `congrArg Prod.snd hxy`. Establish `h3 : x.im = y.im`. Establish `: (x.im - y.im) * (r - r') = 0` using `by linear_combination h1 - h2`.
+
+Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_right (sub_ne_zero.2 hne))`. Use `ext`. Rewrite `h1` using `[h3]`. Conclude with `add_right_cancel h1`. Conclude with `h3`.
+-/
 private lemma phiK_inj (h : r * r = -1 + τ * r) (h' : r' * r' = -1 + τ * r') (hne : r ≠ r') :
     Function.Injective ((phiK τ r h).prod (phiK τ r' h')) := by
   intro x y hxy
@@ -52,6 +75,11 @@ private lemma phiK_inj (h : r * r = -1 + τ * r) (h' : r' * r' = -1 + τ * r') (
   · rw [h3] at h1; exact add_right_cancel h1
   · exact h3
 
+/- English proof (translation)
+Use `sub_ne_zero.2 hne` as an intermediate fact. Use `⟨⟨a - (a - b) / (r - r') * r, (a - b) / (r - r')⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[phiK_apply]`. Simplify using `only [phiK_apply]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma phiK_surj (h : r * r = -1 + τ * r) (h' : r' * r' = -1 + τ * r') (hne : r ≠ r') (a b : K) :
     ∃ x : Etau K τ, phiK τ r h x = a ∧ phiK τ r' h' x = b := by
   have := sub_ne_zero.2 hne
@@ -59,6 +87,11 @@ private lemma phiK_surj (h : r * r = -1 + τ * r) (h' : r' * r' = -1 + τ * r') 
   · simp [phiK_apply]
   · simp only [phiK_apply]; field_simp; ring
 
+/- English proof (translation)
+Take `⟨x, hx1, hx2⟩` from `phiK_surj h h' hne a b`. Take `⟨y, hy1, hy2⟩` from `phiK_surj h h' hne a⁻¹ b⁻¹`. Establish `hxy : x * y = 1`. Apply `phiK_inj h h' hne` to reduce the goal to its premises. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [AlgHom.prod_apply, map_mul, map_one, hx1, hy1]`. Conclude with `mul_inv_cancel₀ ha`. Simplify using `only [AlgHom.prod_apply, map_mul, map_one, hx2, hy2]`. Conclude with `mul_inv_cancel₀ hb`. Conclude with `⟨⟨x, y, hxy, by rw [mul_comm]; exact hxy⟩, hx1, hx2⟩`.
+-/
 private lemma phiK_surjU (h : r * r = -1 + τ * r) (h' : r' * r' = -1 + τ * r') (hne : r ≠ r') (a b : K)
     (ha : a ≠ 0) (hb : b ≠ 0) :
     ∃ x : (Etau K τ)ˣ, phiK τ r h x = a ∧ phiK τ r' h' x = b := by
@@ -73,6 +106,15 @@ private lemma phiK_surjU (h : r * r = -1 + τ * r) (h' : r' * r' = -1 + τ * r')
       exact mul_inv_cancel₀ hb
   exact ⟨⟨x, y, hxy, by rw [mul_comm]; exact hxy⟩, hx1, hx2⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨hx.map ((phiK τ r h).restrictScalars O), hx.map ((phiK τ r' h').restrictScalars O)⟩`. Introduce and unpack `⟨ha, hb⟩ set a := phiK τ r h x set b := phiK τ r' h' x`. Set `f : K →ₐ[O] Etau K τ` to `IsScalarTower.toAlgHom O K (Etau K τ)`.
+
+Establish `ha' : IsIntegral O (algebraMap K (Etau K τ) a)` using `ha.map f`. Establish `hb' : IsIntegral O (algebraMap K (Etau K τ) b)` using `hb.map f`. Establish `hroot : (x - algebraMap K (Etau K τ) a) * (x - algebraMap K (Etau K τ) b) = 0`. Apply `phiK_inj h h' hne` to reduce the goal to its premises. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [AlgHom.prod_apply, map_mul, map_sub, AlgHom.commutes, map_zero, Prod.fst_zero]`. Simplify using `[a]`. Simplify using `only [AlgHom.prod_apply, map_mul, map_sub, AlgHom.commutes, map_zero, Prod.snd_zero]`. Simplify using `[b]`. Set `C` to `integralClosure O (Etau K τ)`.
+
+Establish `hxC : IsIntegral C x`. Use `⟨(Polynomial.X - Polynomial.C (⟨_, ha'⟩ : C)) * (Polynomial.X - Polynomial.C (⟨_, hb'⟩ : C)), (Polynomial.monic_X_sub_C _).mul (Polynomial.monic_X_sub_C _), ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_mul, Polynomial.eval₂_sub, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Conclude with `hroot`. Conclude with `isIntegral_trans x hxC`.
+-/
 private lemma phiK_int (O : Type) [CommRing O] [Algebra O K]
     (h : r * r = -1 + τ * r) (h' : r' * r' = -1 + τ * r') (hne : r ≠ r') (x : Etau K τ) :
     IsIntegral O x ↔ IsIntegral O (phiK τ r h x) ∧ IsIntegral O (phiK τ r' h' x) := by
@@ -102,6 +144,41 @@ private lemma phiK_int (O : Type) [CommRing O] [Algebra O K]
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ Δ τ hL hτ hsq`. Use `haveI := hL.frac`. Establish `h2 : (2 : K) ≠ 0`. Establish `e` using `(hL.two).map (algebraMap O K)`. Rewrite `e` using `[map_ofNat]`.
+
+Conclude with `e.ne_zero`. Take `⟨s, hs⟩` from `hsq`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Apply `hτ` to reduce the goal to its premises.
+
+Rewrite using `[hs, mul_zero]`. Use `set r : K := (τ + s) / 2 with hrE`. Use `set r' : K := (τ - s) / 2 with hr'E`. Establish `hr : r * r = -1 + τ * r`. Rewrite using `[hrE]`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(-1 : K) * hs`. Establish `hr' : r' * r' = -1 + τ * r'`. Rewrite using `[hr'E]`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `(-1 : K) * hs`. Establish `hsum : r + r' = τ`. Rewrite using `[hrE, hr'E]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsum' : r' + r = τ` using `by rw [add_comm]; exact hsum`. Establish `hprod : r * r' = 1`. Rewrite using `[hrE, hr'E]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hs`.
+
+Establish `hne : r ≠ r'`. Introduce `e`. Apply `hs0` to reduce the goal to its premises. Establish `e2 : r - r' = s`. Rewrite using `[hrE, hr'E]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e2, e, sub_self]`. Establish `hint : ∀ v : K, (∃ w : O, algebraMap O K w = v) → IsIntegral O v`. Introduce and unpack `v ⟨w, rfl⟩`.
+
+Conclude with `isIntegral_algebraMap`. Establish `huv : ∀ (u : Oˣ) (v : K), v = algebraMap O K (u : O) → IsIntegral O v ∧ IsIntegral O v⁻¹`. Introduce `u v hv`. Use `⟨hint v ⟨u, hv.symm⟩, hint v⁻¹ ⟨(u⁻¹ : Oˣ), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hv, map_units_inv]`.
+
+Establish `hcint : ∀ (c : (Etau K τ)ˣ) (u : Oˣ), phiK τ r hr (c : Etau K τ) * (phiK τ r' hr' (c : Etau K τ))⁻¹ = algebraMap O K (u : O) → c ∈ Cint O τ`. Introduce `c u hu`. Take `⟨i1, i2⟩` from `huv u _ hu`. Establish `e2 : phiK τ r' hr' (c : Etau K τ) * (phiK τ r hr (c : Etau K τ))⁻¹ = (phiK τ r hr (c : Etau K τ) * (phiK τ r' hr' (c : Etau K τ))⁻¹)⁻¹`. Rewrite using `[mul_inv, inv_inv, mul_comm]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[phiK_int O hr hr' hne, phiK_quo hr hr' hsum, phiK_quo hr' hr hsum', e2]`. Conclude with `⟨i1, i2⟩`. Rewrite using `[phiK_int O hr hr' hne, phiK_quo hr hr' hsum, phiK_quo hr' hr hsum', phiK_inv, phiK_inv, inv_inv, inv_inv]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, e2]`. Conclude with `i2`. Rewrite using `[mul_comm]`. Conclude with `i1`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `c hc`. Take `⟨hc1, -⟩` from `hc`. Rewrite `hc1` using `[phiK_int O hr hr' hne, phiK_quo hr hr' hsum, phiK_quo hr' hr hsum']`. Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hc1.1`. Take `⟨b, hb⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hc1.2`.
+
+Establish `hA` using `phiK_ne hr c`. Establish `hB` using `phiK_ne hr' c`. Establish `hab : a * b = 1`. Apply `IsFractionRing.injective O K` to reduce the goal to its premises. Rewrite using `[map_mul, ha, hb, map_one]`.
+
+Clear the denominators using the available nonvanishing facts. Use `⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, phiK τ r' hr' (c : Etau K τ), hB, ?_⟩` and prove the remaining obligations. Rewrite using `[phiK_norm hr hr' hsum hprod, Units.val_mk, ha]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `y ⟨u, t, ht, hy⟩`.
+
+Establish `hA` using `phiK_ne hr y`. Establish `hB` using `phiK_ne hr' y`. Take `⟨z, hz1, hz2⟩` from `phiK_surjU hr hr' hne 1 (phiK τ r' hr' (y : Etau K τ) / t) one_ne_zero (div_ne_zero hB ht)`. Use `⟨z, y * (z ^ 2)⁻¹, ?_, (inv_mul_cancel_right y (z ^ 2)).symm⟩` and prove the remaining obligations. Apply `hcint _ u` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_mul, map_mul, map_mul, phiK_inv, phiK_inv, Units.val_pow_eq_pow_val, map_pow, map_pow, hz1, hz2]`. Establish `hn` using `phiK_norm hr hr' hsum hprod (y : Etau K τ)`. Rewrite `hn` using `[hy]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-1 : K) * hn`.
+-/
 theorem UpperTheory.evenValuation_norm_compactUnits_of_split :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ → τ ^ 2 - 4 ≠ 0 → IsSquare (τ ^ 2 - 4) → (∀ c ∈ Cint O τ, EvenVal O (QuadraticAlgebra.norm ((c : (Etau K τ)ˣ) : Etau K τ))) ∧ ∀ y : (Etau K τ)ˣ, EvenVal O (QuadraticAlgebra.norm (y : Etau K τ)) → ∃ z : (Etau K τ)ˣ, ∃ c ∈ Cint O τ, y = c * z ^ 2 := by
   intro O K _ _ _ _ _ Δ τ hL hτ hsq

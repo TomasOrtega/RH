@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.Mem.ErrTies
 
+/- English proof (translation)
+Establish `h1` using `Formalism.MainNotions.UnusedSlot33.HK.norm_K H ⟨x, hx⟩`. Establish `h2` using `Formalism.MainNotions.UnusedSlot33.HK.norm_K H ⟨x + 1, add_mem hx (one_mem _)⟩`. Use `⟨Algebra.norm ℚ (⟨x + 1, add_mem hx (one_mem _)⟩ : H.K) - Algebra.norm ℚ (⟨x, hx⟩ : H.K) - 1, ?_⟩` and prove the remaining obligations. Rewrite `h1`, `h2` using `[eq_ratCast]`. Use `push_cast`.
+
+Rewrite using `[h1, h2]`. Simplify using `only [map_add, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trace_rat {R : Ranks} (H : Host R) (x : H.E) (hx : x ∈ H.K) :
     ∃ r : ℚ, (r : H.E) = x + H.conj x := by
   have h1 := Formalism.MainNotions.UnusedSlot33.HK.norm_K H ⟨x, hx⟩
@@ -23,6 +28,19 @@ theorem trace_rat {R : Ranks} (H : Host R) (x : H.E) (hx : x ∈ H.K) :
   simp only [map_add, map_one]
   ring
 
+/- English proof (translation)
+Establish `hTZ : Prime (T : ℤ)` using `Nat.prime_iff_prime_int.1 hT`. Establish `hq : (s.den : ℚ) ≠ 0` using `by exact_mod_cast s.den_ne_zero`. Establish `hs : s * s.den = s.num` using `Rat.mul_den_eq_num s`. Establish `hZ : (T : ℤ) * ((T * a ^ 2 - 4) * (s.den : ℤ) ^ 2) = -d * s.num ^ 2`. Establish `: (T : ℚ) * ((T * a ^ 2 - 4) * (s.den : ℚ) ^ 2) = -d * (s.num : ℚ) ^ 2`.
+
+Rewrite using `[← hs]`. Take the linear combination `(s.den : ℚ) ^ 2 * h`. Conclude with `this` after adjusting the coercions. Establish `hnd : ¬ (T : ℤ) ∣ -(d : ℤ)`. Rewrite using `[dvd_neg, Int.natCast_dvd_natCast]`.
+
+Conclude with `fun h => hTd ((Nat.prime_dvd_prime_iff_eq hT hd).1 h)`. Establish `hp : (T : ℤ) ∣ s.num` using `hTZ.dvd_of_dvd_pow ((hTZ.dvd_or_dvd ⟨_, hZ.symm⟩).resolve_left hnd)`. Take `⟨p, hp'⟩` from `hp`. Establish `hT0 : (T : ℤ) ≠ 0` using `hTZ.ne_zero`. Establish `hZ2 : (T * a ^ 2 - 4) * (s.den : ℤ) ^ 2 = T * (-d * p ^ 2)`.
+
+Apply `mul_left_cancel₀ hT0` to reduce the goal to its premises. Rewrite using `[hZ, hp']`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : (T : ℤ) ∣ 2 ^ 2 * (s.den : ℤ) ^ 2` using `⟨a ^ 2 * (s.den : ℤ) ^ 2 + d * p ^ 2, by linear_combination -hZ2⟩`. Break down `hTZ.dvd_or_dvd h4 with h5 | h5` into its components or cases.
+
+Establish `h6 : (T : ℤ) ∣ ((2 : ℕ) : ℤ)` using `hTZ.dvd_of_dvd_pow h5`. Rewrite `h6` using `[Int.natCast_dvd_natCast]`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq hT Nat.prime_two).1 h6)`. Establish `h6 : T ∣ s.den` using `Int.natCast_dvd_natCast.1 (hTZ.dvd_of_dvd_pow h5)`. Establish `h7 : T ∣ s.num.natAbs` using `Int.natCast_dvd.1 ⟨p, hp'⟩`.
+
+Establish `h8` using `Nat.dvd_gcd h7 h6`. Rewrite `h8` using `[s.reduced]`. Conclude with `hT.one_lt.ne' (Nat.dvd_one.1 h8)`.
+-/
 theorem no_ramified_norm {T d : ℕ} (hT : T.Prime) (hd : d.Prime) (h2 : T ≠ 2) (hTd : T ≠ d)
     (a : ℤ) (s : ℚ) (h : ((T : ℚ) * a) ^ 2 - 4 * T = -d * s ^ 2) : False := by
   have hTZ : Prime (T : ℤ) := Nat.prime_iff_prime_int.1 hT
@@ -55,6 +73,33 @@ theorem no_ramified_norm {T d : ℕ} (hT : T.Prime) (hd : d.Prime) (h2 : T ≠ 2
     rw [s.reduced] at h8
     exact hT.one_lt.ne' (Nat.dvd_one.1 h8)
 
+/- English proof (translation)
+Establish `hTe : π * π' = (T : 𝓞 H.E)`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[← hN, ← hc]`. Establish `hTP : (T : 𝓞 H.E) ∈ P` using `hTe ▸ P.mul_mem_right _ h1`.
+
+Establish `hTM : ¬ T ∣ M`. Introduce and unpack `⟨k, hk⟩`. Apply `hP` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hcong`.
+
+Establish `: (1 : 𝓞 H.E) = π - c * k * T`. Rewrite `hc` using `[hk]`. Move the coercions through the operations in `at hc`. Take the linear combination `hc`. Rewrite using `[this]`.
+
+Conclude with `P.sub_mem h1 (P.mul_mem_left _ hTP)`. Establish `hT2 : T ≠ 2` using `fun h => hTM (h ▸ (Dvd.intro _ rfl).trans hM)`. Establish `hTd : T ≠ H.d` using `fun h => hTM (h ▸ (Dvd.intro_left _ rfl).trans hM)`. Take `⟨r, hr⟩` from `trace_rat H π hK`. Establish `hint : IsIntegral ℤ r`.
+
+Establish `: IsIntegral ℤ (algebraMap ℚ H.E r)`. Rewrite using `[eq_ratCast, hr, ← hc]`. Conclude with `π.isIntegral_coe.add π'.isIntegral_coe`. Conclude with `(isIntegral_algebraMap_iff (algebraMap ℚ H.E).injective).1 this`. Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`.
+
+Rewrite `ha` using `[eq_intCast]`. Establish `haE : (a : 𝓞 H.E) = π + π'`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `push_cast`. Rewrite `hr` using `[← ha]`.
+
+Move the coercions through the operations in `at hr`. Rewrite `hr` using `[← hc]`. Conclude with `(map_intCast (algebraMap (𝓞 H.E) H.E) a).trans hr`. Establish `hTa : (T : ℤ) ∣ a`. Assume the negation of the conclusion as `hn`.
+
+Establish `hcop : IsCoprime (T : ℤ) a` using `((Nat.prime_iff_prime_int.1 hT).irreducible.coprime_iff_not_dvd).2 hn`. Take `⟨x, y, hxy⟩` from `hcop`. Apply `hP` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `: (1 : 𝓞 H.E) = x * T + y * (π + π')`.
+
+Rewrite using `[← haE]`. Conclude with `(congrArg (fun z : ℤ => (z : 𝓞 H.E)) hxy).symm` after adjusting the coercions. Rewrite using `[this]`. Conclude with `P.add_mem (P.mul_mem_left _ hTP) (P.mul_mem_left _ (P.add_mem h1 h2))`. Take `⟨a', rfl⟩` from `hTa`.
+
+Use `set b := H.sqd with hb`. Establish `hb0 : b ≠ 0` using `Formalism.MainNotions.UnusedSlot33.HK.b_ne_zero H`. Establish `hb2 : b ^ 2 = -(H.d : H.E)` using `Examples₂.bE_sq H`. Establish `hbc : H.conj b = -b` using `Examples₂.conj_bE H`. Take `⟨s, hs⟩` from `trace_rat H ((π : H.E) / b) (div_mem hK (Formalism.MainNotions.UnusedSlot33.HK.bE_mem H))`.
+
+Rewrite `hs` using `[map_div₀, hbc]`. Establish `hs' : (s : H.E) * b = π - H.conj π`. Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Use `no_ramified_norm hT H.hyp.2.1 hT2 hTd a' s ?_` and prove the remaining obligations. Establish `hE : (((T : ℚ) * a') ^ 2 - 4 * T : ℚ) = ((-(H.d : ℚ) * s ^ 2 : ℚ) : H.E)`. Rewrite `hr` using `[← ha]`. Move the coercions through the operations in `at hr ⊢`. Rewrite using `[hr, ← hN, ← hb2]`.
+
+Take the linear combination `(-((s : H.E) * b) - (π - H.conj π)) * hs'`. Conclude with `hE` after adjusting the coercions.
+-/
 theorem not_both_mem {R : Ranks} (H : Host R) {T : ℕ} (hT : T.Prime) (π π' : 𝓞 H.E)
     (hK : (π : H.E) ∈ H.K) (hc : (π' : H.E) = H.conj π) (hN : (π : H.E) * H.conj π = T)
     (M : ℕ) (hM : 2 * H.d ∣ M) (hcong : π - 1 ∈ Ideal.span {(M : 𝓞 H.E)})
@@ -121,6 +166,9 @@ theorem not_both_mem {R : Ranks} (H : Host R) {T : ℕ} (hT : T.Prime) (π π' :
     linear_combination (-((s : H.E) * b) - (π - H.conj π)) * hs'
   exact_mod_cast hE
 
+/- English proof (translation)
+Rewrite using `[tauLL, Host.emb, ← D.embE_φ₀]`. Both sides reduce to the same expression.
+-/
 theorem embLL_tauLL (D : D7) (τ : D.what₂.Tau) (x : D.host.E) :
     D.what₂.embLL (tauLL D τ x) = D.host.emb (D.eTau τ).1 x := by
   rw [tauLL, Host.emb, ← D.embE_φ₀]
@@ -138,6 +186,19 @@ def errOfTies (D : D7) (H : Formalism.L2.Herm.ColsHermS D) : ErrX D where
   vPl_inj u := fun _ _ h => (H.base.vT u).injective (Subtype.ext h)
   norm_mem_place_ideal u v := (H.base.vT u v).2
 
+/- English proof (translation)
+Introduce `u w hw`. Choose the witnesses or unpack the hypotheses as in `⟨v⟩ : Nonempty (D.mem u).A.vT := by`. Use `letI := (D.mem u).A.vTFin`. Rewrite using `[← Fintype.card_pos_iff, (D.mem u).A.card_vT]`. Unfold `Ranks.f Ranks.n`.
+
+Check the signs of the components of the expression. Establish `hτ : ∀ τ, tauLL D τ ((H.atT u).piU : D.host.E) = D.embE ((H.atT u).piU : D.host.E)`. Introduce `τ`. Rewrite using `[tauLL, Formalism.MainNotions.UnusedSlot33.HK.sigmaOf_fix_K D.host _ (D.eTau τ).2 _ (H.atT u).piU_K]`. Establish `key` using `(H.atT u).seen w hw v (H.atT u).piU _ (embLL_tauLL D _ _)`.
+
+Rewrite `key` using `[hτ]`. Express the relevant statement in the definitionally equal form `_ ↔ ∀ τ, 0 < D.what₂.places.val w (tauLL D τ ((H.atT u).piU : D.host.E))`. Simplify using `only [hτ]`. Prove the components needed by the constructor for the conclusion. Introduce `hs _`.
+
+Rewrite `key` using `[if_pos hs]`. Conclude with `key.2 ((H.atT u).Pv_pi v)`. Introduce `h`. Assume the negation of the conclusion as `hs`. Rewrite `key` using `[if_neg hs, Formalism.L2.Col.mem_conjIdeal]`.
+
+Use `not_both_mem D.host (D.mem u).A.T_prime (H.atT u).piU _ (H.atT u).piU_K ?_ (H.atT u).piU_norm _ ?_ (H.atT u).piU_cong _ ((H.atT u).Pv_max v).ne_top ((H.atT u).Pv_pi v) (key.1 (h ((D.fm u).tauOf w v)))` and prove the remaining obligations. Conclude with `Examples₂.star_eq_conj D.host _`. Take `⟨c, hc⟩` from `D.host.two_dvd_QS`. Use `⟨c * D.host.q * (D.host.g 0 * D.host.g 1) ^ 2, ?_⟩` and prove the remaining obligations. Use `trans D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem seenDef (D : D7) (H : Formalism.L2.Herm.ColsHermS D) : SeenDef D (errOfTies D H) := by
   intro u w hw
   obtain ⟨v⟩ : Nonempty (D.mem u).A.vT := by
@@ -170,6 +231,13 @@ theorem seenDef (D : D7) (H : Formalism.L2.Herm.ColsHermS D) : SeenDef D (errOfT
       · rw [hc]
         ring
 
+/- English proof (translation)
+Introduce `u w hw v x`. Establish `key` using `(H.atT u).seen w hw v (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) _ (embLL_tauLL D _ _)`. Establish `hx : x ∈ (H.base.vT u v).1.asIdeal ↔ algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x ∈ (H.atT u).Pv v`. Rewrite using `[← (H.atT u).Pv_over v, Ideal.mem_comap]`. Establish `hc : Formalism.L2.Col.cO D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `(Examples₂.star_eq_conj D.host _).trans ((Examples₂.conj_eq_self_iff D.host _).2 (x : D.host.F).2)`. Use `hx.trans (Iff.trans ?_ key.symm)` and prove the remaining obligations. Use `split_ifs`. Both sides reduce to the same expression.
+
+Rewrite using `[Formalism.L2.Col.mem_conjIdeal, hc]`.
+-/
 theorem tauOfDef (D : D7) (H : Formalism.L2.Herm.ColsHermS D) : TauOfDef D (errOfTies D H) := by
   intro u w hw v x
   have key := (H.atT u).seen w hw v (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) _ (embLL_tauLL D _ _)
@@ -185,6 +253,11 @@ theorem tauOfDef (D : D7) (H : Formalism.L2.Herm.ColsHermS D) : TauOfDef D (errO
   · rfl
   · rw [Formalism.L2.Col.mem_conjIdeal, hc]
 
+/- English proof (translation)
+Introduce `D H`. Use `⟨errOfTies D H, rfl, fun _ => rfl, fun _ _ => rfl, ?_, ?_, seenDef D H, tauOfDef D H⟩` and prove the remaining obligations. Introduce `u i v h`. Use `(H.levelZeroCompatibility u).splitG_pi i v h` as an intermediate fact. Rewrite `this` using `[H.piG u D.u₀, Examples₂.star_eq_conj]`.
+
+Conclude with `this`. Introduce `u v z hz y`. Conclude with `(H.levelZeroCompatibility u).fM_pi _ _ z hz y`.
+-/
 theorem exists_errX : ∀ (D : D7) (H : Formalism.L2.Herm.ColsHermS D), ∃ eX : ErrX D, eX.piG = (H.levelZeroCompatibility D.u₀).piG ∧ (∀ u, eX.piT u = (H.atT u).piU) ∧ (∀ u v, eX.vPl u v = (H.base.vT u v).1) ∧ PiGLevel D H.base.lev0 eX ∧ PiTLevel D H.base.lev0 eX ∧ SeenDef D eX ∧ TauOfDef D eX := by
   intro D H
   refine ⟨errOfTies D H, rfl, fun _ => rfl, fun _ _ => rfl, ?_, ?_, seenDef D H, tauOfDef D H⟩

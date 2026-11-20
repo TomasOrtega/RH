@@ -19,6 +19,23 @@ open GlobalTheory.AdelicSim
 
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p}
 
+/- English proof (translation)
+Use `set g : ℕ → D.La →+ D.La := fun n => (ψ : D'.La →+ D.La).comp (f n) with hg`. Establish `hgv : ∀ n x, g n x = ψ (f n x)` using `fun _ _ => rfl`. Establish `htw : ∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → ∀ x, ∃ z, g (n * m) x = g n x + n • z`. Introduce `n m hn hm hc x`. Take `⟨e, he⟩` from `(hw.1 n m hn hm hc).2 x`.
+
+Conclude with `⟨ψ e, by rw [hgv, hgv, he, map_add, map_nsmul]⟩`. Establish `hsurj : ∀ n, 0 < n → n.Coprime p → ∀ x, ∃ y z, g n y = x + n • z`. Introduce `n hn hc x`. Take `⟨-, -, -, h4, -⟩` from `hw.2 n hn hc`. Take `⟨a, e, he⟩` from `h4 (ψ.symm x)`.
+
+Use `⟨a, -ψ e, ?_⟩` and prove the remaining obligations. Establish `: x = ψ (f n a) + n • ψ e`. Rewrite using `[← map_nsmul, ← map_add, ← he, AddEquiv.apply_symm_apply]`. Rewrite using `[hgv, this, smul_neg]`. Normalize the expressions using the abelian group laws.
+
+Establish `hinj : ∀ n, 0 < n → n.Coprime p → ∀ x z, g n x = n • z → ∃ w, x = n • w`. Introduce `n hn hc x z h`. Take `⟨-, -, h3, -, -⟩` from `hw.2 n hn hc`. Use `(h3 x).1 ⟨ψ.symm z, ?_⟩` and prove the remaining obligations. Apply `ψ.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_nsmul, AddEquiv.apply_symm_apply, ← hgv, h]`. Take `⟨g', htw', hgg', hg'g⟩` from `invSys D g htw hsurj hinj`. Take `⟨h₀, h₀L, h₀c⟩` from `modLim D g htw`. Take `⟨h₁, h₁L, h₁c⟩` from `modLim D g' htw'`. Establish `inv_of : ∀ (f₀ f₁ : ℕ → D.La →+ D.La) (k₀ k₁ : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)), (∀ v ∈ LaHat D, k₀ v ∈ LaHat D) → (∀ n : ℕ, 0 < n → n.Coprime p → ∀ x, ∃ w ∈ LaHat D, k₀ (inAf D x) = inAf D (f₀ n x) + n • w) → (∀ n : ℕ, 0 < n → n.Coprime p → ∀ x, ∃ w ∈ LaHat D, k₁ (inAf D x) …`.
+
+Introduce `f₀ f₁ k₀ k₁ hk₀L hk₀ hk₁ hf`. Use `ext_inAf D fun x => ?_` and prove the remaining obligations. Use `modZero D ((k₀ * k₁) (inAf D x) - inAf D x) fun n hn hc => by` as an intermediate fact. Take `⟨w, hw, e⟩` from `hk₁ n hn hc x`. Take `⟨w', hw', e'⟩` from `hk₀ n hn hc (f₁ n x)`.
+
+Take `⟨z, hz⟩` from `hf n hn hc x`. Use `⟨inAf D z + w' + k₀ w, add_mem (add_mem (inAf_mem D z) hw') (hk₀L w hw), ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, e, map_add, e', hz, inAf_add, inAf_nsmul, map_nsmul]`. Simplify using `only [smul_add]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[Module.End.one_apply]`. Conclude with `sub_eq_zero.1 this`. Conclude with `⟨h₀, h₁, inv_of g g' h₀ h₁ h₀L h₀c h₁c hgg', inv_of g' g h₁ h₀ h₁L h₁c h₀c hg'g, h₀L, h₁L, h₀c⟩`.
+-/
 private theorem sys_lim {D' : PLat D.O D.inv} (ψ : D'.La ≃+ D.La) {f : ℕ → D.La →+ D'.La} {nu : ℕ → ℤ} (hw : IsWit D' f nu) :
     ∃ A A' : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D), A * A' = 1 ∧ A' * A = 1 ∧ (∀ v ∈ LaHat D, A v ∈ LaHat D) ∧
       (∀ v ∈ LaHat D, A' v ∈ LaHat D) ∧
@@ -63,6 +80,17 @@ private theorem sys_lim {D' : PLat D.O D.inv} (ψ : D'.La ≃+ D.La) {f : ℕ �
     rw [Module.End.one_apply]; exact sub_eq_zero.1 this
   exact ⟨h₀, h₁, inv_of g g' h₀ h₁ h₀L h₀c h₁c hgg', inv_of g' g h₁ h₀ h₁L h₁c h₀c hg'g, h₀L, h₁L, h₀c⟩
 
+/- English proof (translation)
+Take `⟨c, hcI, hcl⟩` from `lim p nu ht`. Take `⟨c', hcc'⟩` from `unit p c (fun n => (nu n % n).toNat) fun n hn hnp => by`. Take `⟨β, hβ, e⟩` from `hcl n hn hnp`. Establish `hn' : (n : ℤ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hnn : 0 ≤ nu n % n` using `Int.emod_nonneg _ hn'`.
+
+Establish `hcast : (((nu n % n).toNat : ℕ) : ℤ) = nu n % n` using `Int.toNat_of_nonneg hnn`. Establish `h3` using `congrArg (Int.cast : ℤ → AfP p) hcast`. Rewrite `h3` using `[Int.cast_natCast]`. Establish `hdiv : nu n = (nu n % n) + n * (nu n / n)` using `(Int.emod_add_mul_ediv _ _).symm`. Use `⟨?_, (β + ((nu n / n : ℤ) : AfP p)), isInt_add hβ (isInt_intCast _), ?_⟩` and prove the remaining obligations.
+
+Establish `hcop` using `hc n hn hnp`. Establish `h2 : IsCoprime (nu n % n) (n : ℤ)`. Rewrite using `[Int.emod_def]`. Simplify `(IsCoprime.add_mul_left_left hcop (-(nu n / n)))` using `[sub_eq_add_neg, mul_comm]`. Rewrite `h2` using `[← hcast]`.
+
+Conclude with `Nat.isCoprime_iff_coprime.1 h2`. Establish `e2 : (nu n : AfP p) = (((nu n % n).toNat : ℕ) : AfP p) + (n : AfP p) * ((nu n / n : ℤ) : AfP p)`. Establish `h4` using `congrArg (Int.cast : ℤ → AfP p) hdiv`. Rewrite `h4` using `[Int.cast_add, Int.cast_mul, ← h3, Int.cast_natCast]`. Conclude with `h4`.
+
+Rewrite using `[e, e2, nsmul_eq_mul, nsmul_eq_mul, mul_add]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨⟨c, c', hcc', by rw [mul_comm]; exact hcc'⟩, hcl⟩`.
+-/
 private theorem exists_unit_lim {nu : ℕ → ℤ}
     (ht : ∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → (n : ℤ) ∣ nu (n * m) - nu n)
     (hc : ∀ n : ℕ, 0 < n → n.Coprime p → IsCoprime (nu n) (n : ℤ)) :
@@ -90,6 +118,9 @@ private theorem exists_unit_lim {nu : ℕ → ℤ}
       rw [e, e2, nsmul_eq_mul, nsmul_eq_mul, mul_add]; ring
   exact ⟨⟨c, c', hcc', by rw [mul_comm]; exact hcc'⟩, hcl⟩
 
+/- English proof (translation)
+Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => rw [map_add, hx, hy, map_add]`.
+-/
 private theorem bc_inv (T : VQ D ≃ₗ[ℚ] VQ D) :
     T.toLinearMap.baseChange (AfP p) * T.symm.toLinearMap.baseChange (AfP p) = 1 := by
   refine LinearMap.ext fun z => ?_
@@ -98,6 +129,11 @@ private theorem bc_inv (T : VQ D ≃ₗ[ℚ] VQ D) :
   | tmul a b => simp
   | add x y hx hy => rw [map_add, hx, hy, map_add]
 
+/- English proof (translation)
+Establish `h : inC G (AfP p) c = (1 : AfP p) ⊗ₜ[ℚ] c` using `rfl`. Establish `h2 : ∀ a : AfP p, actOn L.rep (AfP p) (a ⊗ₜ[ℚ] c) = a • (L.rep c).baseChange (AfP p)`. Introduce `a`. Simplify using `[actOn, Algebra.TensorProduct.lift_tmul, Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Rewrite using `[h, h2]`. Simplify using the standard rewrite rules.
+-/
 private theorem actOn_inC (L : Link D G) (c : G.C) (u : VQ D) :
     actOn L.rep (AfP p) (inC G (AfP p) c) ((1 : AfP p) ⊗ₜ[ℚ] u) = (1 : AfP p) ⊗ₜ[ℚ] L.rep c u := by
   have h : inC G (AfP p) c = (1 : AfP p) ⊗ₜ[ℚ] c := rfl
@@ -108,10 +144,16 @@ private theorem actOn_inC (L : Link D G) (c : G.C) (u : VQ D) :
   rw [h, h2]
   simp
 
+/- English proof (translation)
+Simplify using `[formAf, LinearMap.BilinForm.baseChange_tmul, Algebra.smul_def]`.
+-/
 private theorem form_one (u w : VQ D) :
     formAf D ((1 : AfP p) ⊗ₜ[ℚ] u) ((1 : AfP p) ⊗ₜ[ℚ] w) = algebraMap ℚ (AfP p) (D.EF.baseChange ℚ u w) := by
   simp [formAf, LinearMap.BilinForm.baseChange_tmul, Algebra.smul_def]
 
+/- English proof (translation)
+Use `⟨fun hz => ?_, hA'L z⟩` and prove the remaining obligations. Use `hAL _ hz` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, h, Module.End.one_apply]`. Then use the resulting hypothesis.
+-/
 private theorem cong_iff {A A' : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)} (h : A * A' = 1)
     (hAL : ∀ v ∈ LaHat D, A v ∈ LaHat D) (hA'L : ∀ v ∈ LaHat D, A' v ∈ LaHat D) (z : AfP p ⊗[ℚ] VQ D) :
     A' z ∈ LaHat D ↔ z ∈ LaHat D := by
@@ -119,6 +161,35 @@ private theorem cong_iff {A A' : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)} (h : 
   have := hAL _ hz
   rwa [← Module.End.mul_apply, h, Module.End.one_apply] at this
 
+/- English proof (translation)
+Introduce `p _ D G L β D' j hj f nu hw`. Take `⟨ψ, T, hT⟩` from `UpperTheory.exists_rational_equiv_of_isPlace L hj`. Take `⟨A, A', hAA', hA'A, hAL, hA'L, hAc⟩` from `sys_lim ψ hw`. Take `⟨c, hc⟩` from `exists_unit_lim (fun n m a b d => (hw.1 n m a b d).1) (fun n a b => (hw.2 n a b).1)`. Take `⟨-, hjO, -, s, hs, hsF⟩` from `hj`.
+
+Use `set Tb := T.toLinearMap.baseChange (AfP p) with hTb`. Use `set Tb' := T.symm.toLinearMap.baseChange (AfP p) with hTb'`. Establish `hTv : ∀ z, Tb ((1 : AfP p) ⊗ₜ[ℚ] z) = (1 : AfP p) ⊗ₜ[ℚ] T z` using `fun z => by simp [hTb]`. Establish `hTv' : ∀ z, Tb' ((1 : AfP p) ⊗ₜ[ℚ] z) = (1 : AfP p) ⊗ₜ[ℚ] T.symm z` using `fun z => by simp [hTb']`. Establish `hTT' : Tb * Tb' = 1` using `bc_inv T`.
+
+Establish `hT'T : Tb' * Tb = 1` using `by simpa using bc_inv T.symm`. Establish `gg' : (Tb * A) * (A' * Tb') = 1`. Rewrite using `[_root_.mul_assoc, ← _root_.mul_assoc A, hAA', _root_.one_mul, hTT']`. Establish `g'g : (A' * Tb') * (Tb * A) = 1`. Rewrite using `[_root_.mul_assoc, ← _root_.mul_assoc Tb', hT'T, _root_.one_mul, hA'A]`.
+
+Establish `c0 : ∀ b : D.O, (Tb * A) * (actQ D b).baseChange (AfP p) = (actQ D b).baseChange (AfP p) * (Tb * A)` using `UpperTheory.primeToP_isogeny_of_adelic_endo_preserving_lattice ψ T hT hjO (fun n a b => (hw.2 n a b).2.1) A hAL hAc`. Establish `c1 : ∀ b : D.O, (A' * Tb') * (actQ D b).baseChange (AfP p) = (actQ D b).baseChange (AfP p) * (A' * Tb')`. Introduce `b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[c0 b]`.
+
+Simplify using `only [_root_.mul_assoc]`. Use `_ = _ := by rw [← _root_.mul_assoc (A' * Tb'), g'g, _root_.one_mul]`. Take `⟨y, hy⟩` from `comm L (Tb * A) c0`. Take `⟨y', hy'⟩` from `comm L (A' * Tb') c1`. Establish `yy' : y * y' = 1` using `inj L (by rw [map_mul, hy, hy', gg', map_one])`.
+
+Establish `y'y : y' * y = 1` using `inj L (by rw [map_mul, hy, hy', g'g, map_one])`. Establish `hform : ∀ v w, algebraMap ℚ (AfP p) s * formAf D (actOn L.rep (AfP p) (inC G (AfP p) ((β⁻¹ : G.Cˣ) : G.C)) (actOn L.rep (AfP p) y v)) (actOn L.rep (AfP p) y w) = (2 * (c : AfP p)) * formAf D v w` using `by set B := actOn L.rep (AfP p) (inC G (AfP p) ((β⁻¹ : G.Cˣ) : G.C)) with hB set F : LinearMap.BilinForm (AfP p) (AfP p ⊗[ℚ] VQ D) := algebraMap ℚ (AfP p) s • (formAf D).compl₁₂ (B * Tb) Tb with hFdef`. Establish `hFv : ∀ v w, F v w = algebraMap ℚ (AfP p) s * formAf D (B (Tb v)) (Tb w)` using `fun v w => by`. Simplify using `only [hFdef, LinearMap.smul_apply, LinearMap.compl₁₂_apply, Module.End.mul_apply, Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Establish `key` using `UpperTheory.form_scalar_of_adelic_endo_preserving_lattice F (fun x x' => D'.EF (ψ.symm x) (ψ.symm x')) (fun x x' => by`. Establish `h1 : ∀ x, Tb (inAf D x) = (1 : AfP p) ⊗ₜ[ℚ] j (ψ.symm x)` using `fun x => by`. Rewrite using `[inAf, hTv, ← hT, ψ.apply_symm_apply]`. Rewrite using `[hFv, h1, h1, hB, actOn_inC, form_one]`. Use `show _ = ((D'.EF (ψ.symm x) (ψ.symm x') : ℤ) : AfP p)`.
+
+Establish `h2` using `hsF (ψ.symm x) (ψ.symm x')`. Rewrite using `[← map_mul]`. Establish `h3 : s * (D.EF.baseChange ℚ) (L.rep ((β⁻¹ : G.Cˣ) : G.C) (j (ψ.symm x))) (j (ψ.symm x')) = ((D'.EF (ψ.symm x) (ψ.symm x') : ℤ) : ℚ)` using `h2.symm`. Rewrite using `[h3, map_intCast])`. Use `A hAL (fun n => (ψ : D'.La →+ D.La).comp (f n)) hAc nu c hc (fun n hn hnp x x' => by`.
+
+Take `⟨-, -, -, -, h5⟩` from `hw.2 n hn hnp`. Simplify using `using h5 x x')`. Introduce `v w`. Establish `h1` using `key v w`. Rewrite `h1` using `[hFv]`.
+
+Rewrite using `[hy]`. Conclude with `h1`. Take `⟨t, ht⟩` from `UpperTheory.exists_unit_triv_of_similitude_factor L β y y' y'y yy' s hs c hform`. Establish `hrd : ∀ w, rd L ⟨y', y, y'y, yy'⟩ 1 w = A' ((1 : AfP p) ⊗ₜ[ℚ] T.symm w)`. Introduce `w`.
+
+Simplify using `only [rd, inv_one, map_one, Module.End.one_apply, hy']`. Rewrite using `[Module.End.mul_apply, hTv']`. Use `⟨⟨y', y, y'y, yy'⟩, t, ht, fun n hn hnp => ⟨fun w => ?_, fun a => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hrd, cong_iff hAA' hAL hA'L, UpperTheory.one_tmul_mem_completedLattice_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨r, u, h⟩`. Use `⟨r, ψ u, ?_⟩` and prove the remaining obligations. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, T.apply_symm_apply, h, hT]`. Introduce and unpack `⟨r, x, h⟩`.
+
+Use `⟨r, ψ.symm x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hT, ψ.apply_symm_apply, ← h, map_nsmul, T.apply_symm_apply]`. Take `⟨w, hwL, e⟩` from `hAc n hn hnp a`. Use `⟨-(A' w), neg_mem (hA'L w hwL), ?_⟩` and prove the remaining obligations. Establish `h1 : T.symm (j (f n a)) = (1 : ℚ) ⊗ₜ[ℤ] ψ (f n a)` using `by rw [← hT, T.symm_apply_apply]`.
+
+Establish `h2 : (1 : AfP p) ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] ψ (f n a)) = A (inAf D a) - n • w`. Rewrite using `[e, add_sub_cancel_right]`. Both sides reduce to the same expression. Rewrite using `[hrd, h1, h2, map_sub, map_nsmul, ← Module.End.mul_apply, hA'A, Module.End.one_apply, smul_neg, sub_eq_add_neg]`.
+-/
 theorem adCore_of : AdCore := by
   intro p _ D G L β D' j hj f nu hw
   obtain ⟨ψ, T, hT⟩ := UpperTheory.exists_rational_equiv_of_isPlace L hj

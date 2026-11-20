@@ -14,11 +14,17 @@ section Fibre
 variable {R : Type*} [CommRing R] {M N : Type*} [AddCommGroup M] [Module R M]
   [AddCommGroup N] [Module R N]
 
+/- English proof (translation)
+Rewrite using `[(baseChangeQuotEquiv S (LinearMap.range φ)).toEquiv.subsingleton_congr, baseChange_range, Submodule.Quotient.subsingleton_iff, LinearMap.range_eq_top]`.
+-/
 theorem baseChange_surjective_iff (S : Type*) [CommRing S] [Algebra R S] (φ : M →ₗ[R] N) :
     Surjective (φ.baseChange S) ↔ Subsingleton (S ⊗[R] (N ⧸ LinearMap.range φ)) := by
   rw [(baseChangeQuotEquiv S (LinearMap.range φ)).toEquiv.subsingleton_congr, baseChange_range,
     Submodule.Quotient.subsingleton_iff, LinearMap.range_eq_top]
 
+/- English proof (translation)
+Establish `h` using `(Module.isClosed_support (R := R) (M := N ⧸ LinearMap.range φ)).isOpen_compl`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `p`. Rewrite using `[Set.mem_setOf_eq, baseChange_surjective_iff, Set.mem_compl_iff, Module.mem_support_iff_nontrivial_residueField_tensorProduct, not_nontrivial_iff_subsingleton]`.
+-/
 theorem isOpen_setOf_baseChange_surjective [Module.Finite R N] (φ : M →ₗ[R] N) :
     IsOpen {p : PrimeSpectrum R | Surjective (φ.baseChange p.asIdeal.ResidueField)} := by
   have h := (Module.isClosed_support (R := R) (M := N ⧸ LinearMap.range φ)).isOpen_compl
@@ -27,6 +33,11 @@ theorem isOpen_setOf_baseChange_surjective [Module.Finite R N] (φ : M →ₗ[R]
   rw [Set.mem_setOf_eq, baseChange_surjective_iff, Set.mem_compl_iff,
     Module.mem_support_iff_nontrivial_residueField_tensorProduct, not_nontrivial_iff_subsingleton]
 
+/- English proof (translation)
+Take `⟨σ, b, -, hb⟩` from `Avoid.exists_basis_map_one_tmul_of_surjective (K := R) (L := k) (V := M)`. Use `rfl LinearMap.id surjective_id id (by simp)`. Use `⟨Fintype.linearCombination R σ, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← b.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Conclude with `⟨1 ⊗ₜ Pi.single j 1, by simp [hb]⟩`.
+-/
 theorem exists_baseChange_surjective [Module.Finite R M] (k : Type*) [Field k] [Algebra R k] :
     ∃ φ : (Fin (finrank k (k ⊗[R] M)) → R) →ₗ[R] M, Surjective (φ.baseChange k) := by
   obtain ⟨σ, b, -, hb⟩ := Avoid.exists_basis_map_one_tmul_of_surjective (K := R) (L := k) (V := M)
@@ -36,11 +47,17 @@ theorem exists_baseChange_surjective [Module.Finite R M] (k : Type*) [Field k] [
   rintro _ ⟨j, rfl⟩
   exact ⟨1 ⊗ₜ Pi.single j 1, by simp [hb]⟩
 
+/- English proof (translation)
+Rewrite using `[(TensorProduct.piScalarRight R k k (Fin n)).finrank_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_baseChange_fin (k : Type*) [Field k] [Algebra R k] (n : ℕ) :
     finrank k (k ⊗[R] (Fin n → R)) = n := by
   rw [(TensorProduct.piScalarRight R k k (Fin n)).finrank_eq]
   simp
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `exists_baseChange_surjective (R := R) (M := M) p.asIdeal.ResidueField`. Use `filter_upwards [(isOpen_setOf_baseChange_surjective φ).mem_nhds hφ] with q hq`. Conclude with `(LinearMap.finrank_le_finrank_of_surjective hq).trans_eq (finrank_baseChange_fin _ _)`.
+-/
 theorem eventually_finrank_fiber_le [Module.Finite R M] (p : PrimeSpectrum R) :
     ∀ᶠ q : PrimeSpectrum R in 𝓝 p,
       finrank q.asIdeal.ResidueField (q.asIdeal.ResidueField ⊗[R] M) ≤
@@ -51,6 +68,9 @@ theorem eventually_finrank_fiber_le [Module.Finite R M] (p : PrimeSpectrum R) :
 
 variable (M) in
 
+/- English proof (translation)
+Introduce `p n hn`. Use `filter_upwards [eventually_finrank_fiber_le (M := M) p] with q hq`. Conclude with `hq.trans_lt hn`.
+-/
 theorem upperSemicontinuous_finrank_fiber [Module.Finite R M] :
     UpperSemicontinuous fun p : PrimeSpectrum R =>
       finrank p.asIdeal.ResidueField (p.asIdeal.ResidueField ⊗[R] M) := by
@@ -60,6 +80,9 @@ theorem upperSemicontinuous_finrank_fiber [Module.Finite R M] :
 
 variable (M) in
 
+/- English proof (translation)
+Use `Module.finitePresentation_of_projective R M` as an intermediate fact. Use `Module.isLocallyConstant_rankAtStalk (R := R) (M := M) using 2 with p` and compare the differences between its conclusion and the goal. Conclude with `(Module.rankAtStalk_eq p).symm`.
+-/
 theorem isLocallyConstant_finrank_fiber [Module.Finite R M] [Module.Projective R M] :
     IsLocallyConstant fun p : PrimeSpectrum R =>
       finrank p.asIdeal.ResidueField (p.asIdeal.ResidueField ⊗[R] M) := by
@@ -67,6 +90,19 @@ theorem isLocallyConstant_finrank_fiber [Module.Finite R M] [Module.Projective R
   convert Module.isLocallyConstant_rankAtStalk (R := R) (M := M) using 2 with p
   exact (Module.rankAtStalk_eq p).symm
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `exists_baseChange_surjective (R := R) (M := M) p.asIdeal.ResidueField`. Establish `h1` using `h.and ((isOpen_setOf_baseChange_surjective φ).mem_nhds hφ)`. Take `⟨_, ⟨f, rfl⟩, hpf, hf⟩` from `(PrimeSpectrum.isTopologicalBasis_basic_opens.mem_nhds_iff).1 h1`. Establish `hker : ∀ x, φ x = 0 → f • x = 0`. Introduce `x hx`.
+
+Use extensionality with `j`. Use `IsReduced.eq_zero _ (nilpotent_iff_mem_prime.2 fun J hJ => ?_)` and prove the remaining obligations. Distinguish the cases in `hfJ : f ∈ J`. Conclude with `J.mul_mem_right _ hfJ`. Take `⟨h2, h3⟩` from `hf (show (⟨J, hJ⟩ : PrimeSpectrum R) ∈ _ from hfJ)`.
+
+Establish `hinj : Injective (φ.baseChange J.ResidueField)` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank ((finrank_baseChange_fin _ _).trans h2.symm)).2 h3`. Establish `h4 : (1 : J.ResidueField) ⊗ₜ[R] x = 0` using `hinj (by simp [hx])`. Establish `h5` using `congrFun (congrArg (TensorProduct.piScalarRight R J.ResidueField J.ResidueField _) h4) j`. Use `J.mul_mem_left _ ?_` and prove the remaining obligations. Rewrite using `[← Ideal.algebraMap_residueField_eq_zero]`.
+
+Simplify `h5` using `[Algebra.smul_def]`. Set `Rₚ` to `Localization.AtPrime p.asIdeal`. Rewrite using `[Module.mem_freeLocus_iff_tensor p Rₚ]`. Establish `hsurj : Surjective (φ.baseChange Rₚ)`. Rewrite `hφ`, the goal using `[baseChange_surjective_iff]`.
+
+Rewrite `hφ` using `[← not_nontrivial_iff_subsingleton, ← Module.mem_support_iff_nontrivial_residueField_tensorProduct, Module.notMem_support_iff]`. Conclude with `(LocalizedModule.equivTensorProduct p.asIdeal.primeCompl _).symm.toEquiv.subsingleton`. Establish `hinj : Injective (φ.baseChange Rₚ)`. Rewrite using `[← LinearMap.ker_eq_bot, ← baseChange_ker, Submodule.baseChange_eq_span, eq_bot_iff, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Establish `hu : IsUnit (algebraMap R Rₚ f)` using `IsLocalization.map_units Rₚ (⟨f, hpf⟩ : p.asIdeal.primeCompl)`. Use `(hu.smul_eq_zero).1 ?_` and prove the remaining obligations. Rewrite using `[algebraMap_smul, ← map_smul, hker x hx, map_zero]`. Conclude with `Module.Free.of_equiv (LinearEquiv.ofBijective _ ⟨hinj, hsurj⟩)`.
+-/
 theorem mem_freeLocus_of_eventually_finrank_eq [IsReduced R] [Module.Finite R M]
     (p : PrimeSpectrum R)
     (h : ∀ᶠ q : PrimeSpectrum R in 𝓝 p,
@@ -108,6 +144,9 @@ theorem mem_freeLocus_of_eventually_finrank_eq [IsReduced R] [Module.Finite R M]
     rw [algebraMap_smul, ← map_smul, hker x hx, map_zero]
   exact Module.Free.of_equiv (LinearEquiv.ofBijective _ ⟨hinj, hsurj⟩)
 
+/- English proof (translation)
+Rewrite using `[← Module.freeLocus_eq_univ_iff, Set.eq_univ_iff_forall]`. Conclude with `fun p => mem_freeLocus_of_eventually_finrank_eq p (h.eventually_eq p)`.
+-/
 theorem projective_of_isLocallyConstant_finrank_fiber [IsReduced R] [Module.FinitePresentation R M]
     (h : IsLocallyConstant fun p : PrimeSpectrum R =>
       finrank p.asIdeal.ResidueField (p.asIdeal.ResidueField ⊗[R] M)) :
@@ -122,6 +161,11 @@ section Regular
 variable {R : Type*} [CommRing R] {M₀ M₁ M₂ : Type*} [AddCommGroup M₀] [Module R M₀]
   [AddCommGroup M₁] [Module R M₁] [AddCommGroup M₂] [Module R M₂]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `Module.projective_lifting_property (LinearMap.range g).mkQ LinearMap.id (Submodule.mkQ_surjective _)`. Establish `ht' : ∀ y, (LinearMap.range g).mkQ (t y) = y` using `fun y => LinearMap.congr_fun ht y`. Set `r : M₂ →ₗ[R] LinearMap.range g` to `(LinearMap.id - t ∘ₗ (LinearMap.range g).mkQ).codRestrict _ fun x => by`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply]`. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, ht', sub_self]`.
+
+Take `⟨s, hs⟩` from `Module.projective_lifting_property g.rangeRestrict r g.surjective_rangeRestrict`. Use `⟨s, LinearMap.ext fun x => ?_⟩` and prove the remaining obligations. Establish `h0 : (LinearMap.range g).mkQ (g x) = 0` using `by simp`. Use `congrArg Subtype.val (LinearMap.congr_fun hs (g x))` as an intermediate fact. Simplify `this` using `[r, h0]`.
+-/
 theorem exists_comp_comp_eq_of_projective (g : M₁ →ₗ[R] M₂) [Module.Projective R M₂]
     [Module.Projective R (M₂ ⧸ LinearMap.range g)] : ∃ s : M₂ →ₗ[R] M₁, g ∘ₗ s ∘ₗ g = g := by
   obtain ⟨t, ht⟩ := Module.projective_lifting_property (LinearMap.range g).mkQ LinearMap.id
@@ -138,6 +182,11 @@ theorem exists_comp_comp_eq_of_projective (g : M₁ →ₗ[R] M₂) [Module.Proj
   have := congrArg Subtype.val (LinearMap.congr_fun hs (g x))
   simpa [r, h0] using this
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `Module.projective_lifting_property g.rangeRestrict LinearMap.id g.surjective_rangeRestrict`. Establish `ht' : ∀ y, g (t y) = y` using `fun y => congrArg Subtype.val (LinearMap.congr_fun ht y)`. Use `⟨(LinearMap.id - t ∘ₗ g.rangeRestrict).codRestrict _ fun x => by simp [ht'], ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `: g.rangeRestrict x = 0` using `Subtype.ext x.2`.
+
+Simplify using `[this]`.
+-/
 theorem exists_retraction_ker_of_projective (g : M₁ →ₗ[R] M₂)
     [Module.Projective R (LinearMap.range g)] :
     ∃ r : M₁ →ₗ[R] LinearMap.ker g, r ∘ₗ (LinearMap.ker g).subtype = LinearMap.id := by
@@ -149,6 +198,9 @@ theorem exists_retraction_ker_of_projective (g : M₁ →ₗ[R] M₂)
   have : g.rangeRestrict x = 0 := Subtype.ext x.2
   simp [this]
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `h` using `congrArg (fun z => r.lTensor N z.1) hxy`. Simplify `h` using `only [LinearMap.tensorKer_coe, ← LinearMap.lTensor_comp_apply, hr, LinearMap.lTensor_id, LinearMap.id_apply]`.
+-/
 theorem tensorKer_injective_of_retraction (S N : Type*) [CommRing S] [Algebra R S]
     [AddCommGroup N] [Module R N] [Module S N] [IsScalarTower R S N] (g : M₁ →ₗ[R] M₂)
     (r : M₁ →ₗ[R] LinearMap.ker g) (hr : r ∘ₗ (LinearMap.ker g).subtype = LinearMap.id) :
@@ -158,6 +210,11 @@ theorem tensorKer_injective_of_retraction (S N : Type*) [CommRing S] [Algebra R 
   simpa only [LinearMap.tensorKer_coe, ← LinearMap.lTensor_comp_apply, hr, LinearMap.lTensor_id,
     LinearMap.id_apply] using h
 
+/- English proof (translation)
+Establish `hs' : ∀ x, g (s (g x)) = g x` using `LinearMap.congr_fun hs`. Set `r : M₁ →ₗ[R] LinearMap.ker g` to `(LinearMap.id - s ∘ₗ g).codRestrict _ fun x => by simp [hs']`. Use `⟨tensorKer_injective_of_retraction S N g r ?_, fun z => ⟨r.lTensor N z.1, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[r]`.
+
+Establish `hz : g.lTensor N z.1 = 0` using `z.2`. Use `ext`. Rewrite using `[LinearMap.tensorKer_coe, ← LinearMap.lTensor_comp_apply, LinearMap.subtype_comp_codRestrict, LinearMap.lTensor_sub, LinearMap.lTensor_id, LinearMap.lTensor_comp, LinearMap.sub_apply, LinearMap.comp_apply, hz, map_zero, sub_zero, LinearMap.id_apply]`.
+-/
 theorem tensorKer_bijective_of_comp_comp_eq (S N : Type*) [CommRing S] [Algebra R S]
     [AddCommGroup N] [Module R N] [Module S N] [IsScalarTower R S N] (g : M₁ →ₗ[R] M₂)
     (s : M₂ →ₗ[R] M₁) (hs : g ∘ₗ s ∘ₗ g = g) : Bijective (LinearMap.tensorKer S N g) := by
@@ -173,6 +230,13 @@ theorem tensorKer_bijective_of_comp_comp_eq (S N : Type*) [CommRing S] [Algebra 
       LinearMap.lTensor_sub, LinearMap.lTensor_id, LinearMap.lTensor_comp, LinearMap.sub_apply,
       LinearMap.comp_apply, hz, map_zero, sub_zero, LinearMap.id_apply]
 
+/- English proof (translation)
+Set `e₀ : S ⊗[R] LinearMap.ker g ≃ₗ[S] LinearMap.ker (g.baseChange S)` to `LinearEquiv.ofBijective (LinearMap.tensorKer S S g) (tensorKer_bijective_of_comp_comp_eq S S g s hs)`. Establish `he₀ : ∀ z, (e₀ z : S ⊗[R] M₁) = (LinearMap.ker g).subtype.baseChange S z` using `fun z => LinearMap.tensorKer_coe S S g z`. Set `f' : M₀ →ₗ[R] LinearMap.ker g` to `f.codRestrict _ (LinearMap.congr_fun hfg)`. Establish `hf' : (LinearMap.range f).submoduleOf (LinearMap.ker g) = LinearMap.range f'` using `(LinearMap.range_codRestrict _ _ _).symm`. Establish `hff' : ∀ y, (e₀ (f'.baseChange S y) : S ⊗[R] M₁) = f.baseChange S y` using `fun y => by`.
+
+Rewrite using `[he₀, ← LinearMap.comp_apply, ← LinearMap.baseChange_comp]`. Both sides reduce to the same expression. Use `⟨baseChangeQuotEquiv S _ ≪≫ₗ Submodule.Quotient.equiv _ _ e₀ ?_, fun a x => rfl⟩` and prove the remaining obligations. Rewrite using `[hf', baseChange_range]`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩`. Conclude with `⟨y, (hff' y).symm⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨_, ⟨y, rfl⟩, Subtype.ext ((hff' y).trans hy)⟩`.
+-/
 theorem exists_baseChange_homology_equiv (S : Type*) [CommRing S] [Algebra R S]
     (f : M₀ →ₗ[R] M₁) (g : M₁ →ₗ[R] M₂) (hfg : g ∘ₗ f = 0)
     (s : M₂ →ₗ[R] M₁) (hs : g ∘ₗ s ∘ₗ g = g) :
@@ -201,6 +265,11 @@ theorem exists_baseChange_homology_equiv (S : Type*) [CommRing S] [Algebra R S]
   · rintro ⟨y, hy⟩
     exact ⟨_, ⟨y, rfl⟩, Subtype.ext ((hff' y).trans hy)⟩
 
+/- English proof (translation)
+Establish `hs' : ∀ x, g (s (g x)) = g x` using `LinearMap.congr_fun hs`. Establish `hu' : ∀ x, f (u (f x)) = f x` using `LinearMap.congr_fun hu`. Establish `hfg' : ∀ x, g (f x) = 0` using `LinearMap.congr_fun hfg`. Use `⟨Submodule.liftQ _ ((LinearMap.id - f ∘ₗ u) ∘ₗ (LinearMap.ker g).subtype) ?_, Submodule.mkQ _ ∘ₗ (LinearMap.id - s ∘ₗ g).codRestrict _ fun x => by simp [hs'], ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩ ⟨y, hy⟩`.
+
+Take `rfl : f y = x` from `hy`. Simplify using `[hu']`. Use `Submodule.linearMap_qext _ (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Use `(Submodule.Quotient.eq _).2 ⟨-u x, ?_⟩` and prove the remaining obligations. Simplify using `[hfg']`.
+-/
 theorem exists_homology_retract (f : M₀ →ₗ[R] M₁) (g : M₁ →ₗ[R] M₂) (hfg : g ∘ₗ f = 0)
     (u : M₁ →ₗ[R] M₀) (hu : f ∘ₗ u ∘ₗ f = f) (s : M₂ →ₗ[R] M₁) (hs : g ∘ₗ s ∘ₗ g = g) :
     ∃ (ι : (LinearMap.ker g ⧸ (LinearMap.range f).submoduleOf (LinearMap.ker g)) →ₗ[R] M₁)
@@ -225,6 +294,9 @@ section Field
 variable {k : Type*} [Field k] {V₀ V₁ V₂ : Type*} [AddCommGroup V₀] [Module k V₀]
   [AddCommGroup V₁] [Module k V₁] [AddCommGroup V₂] [Module k V₂]
 
+/- English proof (translation)
+Establish `h1` using `Submodule.finrank_quotient_add_finrank ((LinearMap.range f).submoduleOf (LinearMap.ker g))`. Rewrite `h1` using `[(Submodule.submoduleOfEquivOfLe (LinearMap.range_le_ker_iff.2 hfg)).finrank_eq]`. Establish `h2` using `g.finrank_range_add_finrank_ker`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_homology_add_finrank_range [Module.Finite k V₁]
     (f : V₀ →ₗ[k] V₁) (g : V₁ →ₗ[k] V₂) (hfg : g ∘ₗ f = 0) :
     finrank k (LinearMap.ker g ⧸ (LinearMap.range f).submoduleOf (LinearMap.ker g)) +
@@ -235,6 +307,9 @@ theorem finrank_homology_add_finrank_range [Module.Finite k V₁]
   have h2 := g.finrank_range_add_finrank_ker
   omega
 
+/- English proof (translation)
+Establish `h1` using `finrank_homology_add_finrank_range f g hfg`. Establish `h2` using `Submodule.finrank_quotient_add_finrank (LinearMap.range f)`. Establish `h3` using `Submodule.finrank_quotient_add_finrank (LinearMap.range g)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_homology_add_finrank [Module.Finite k V₁] [Module.Finite k V₂]
     (f : V₀ →ₗ[k] V₁) (g : V₁ →ₗ[k] V₂) (hfg : g ∘ₗ f = 0) :
     finrank k (LinearMap.ker g ⧸ (LinearMap.range f).submoduleOf (LinearMap.ker g)) +
@@ -251,6 +326,9 @@ section ThreeTerm
 variable {R : Type*} [CommRing R] {M₀ M₁ M₂ : Type*} [AddCommGroup M₀] [Module R M₀]
   [AddCommGroup M₁] [Module R M₁] [AddCommGroup M₂] [Module R M₂]
 
+/- English proof (translation)
+Rewrite using `[(baseChangeQuotEquiv k _).finrank_eq, (baseChangeQuotEquiv k _).finrank_eq, baseChange_range, baseChange_range]`. Conclude with `finrank_homology_add_finrank _ _ (by rw [← LinearMap.baseChange_comp, hfg, LinearMap.baseChange_zero])`.
+-/
 theorem finrank_baseChange_homology_add (k : Type*) [Field k] [Algebra R k]
     [Module.Finite R M₁] [Module.Finite R M₂]
     (f : M₀ →ₗ[R] M₁) (g : M₁ →ₗ[R] M₂) (hfg : g ∘ₗ f = 0) :
@@ -263,6 +341,11 @@ theorem finrank_baseChange_homology_add (k : Type*) [Field k] [Algebra R k]
   exact finrank_homology_add_finrank _ _
     (by rw [← LinearMap.baseChange_comp, hfg, LinearMap.baseChange_zero])
 
+/- English proof (translation)
+Introduce `p n hn`. Use `filter_upwards [eventually_finrank_fiber_le (M := M₁ ⧸ LinearMap.range f) p, eventually_finrank_fiber_le (M := M₂ ⧸ LinearMap.range g) p, (isLocallyConstant_finrank_fiber M₂).eventually_eq p] with q h1 h2 h3`. Establish `h4` using `finrank_baseChange_homology_add p.asIdeal.ResidueField f g hfg`. Establish `h5` using `finrank_baseChange_homology_add q.asIdeal.ResidueField f g hfg`. Use `beta_reduce at hn ⊢`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem upperSemicontinuous_finrank_linearMap_homology
     [Module.Finite R M₁] [Module.Finite R M₂] [Module.Projective R M₂]
     (f : M₀ →ₗ[R] M₁) (g : M₁ →ₗ[R] M₂) (hfg : g ∘ₗ f = 0) :
@@ -279,6 +362,13 @@ theorem upperSemicontinuous_finrank_linearMap_homology
   beta_reduce at hn ⊢
   omega
 
+/- English proof (translation)
+Use `Module.finitePresentation_of_projective R M₁` as an intermediate fact. Use `Module.finitePresentation_of_projective R M₂` as an intermediate fact. Establish `: Module.FinitePresentation R (M₁ ⧸ LinearMap.range f)` using `Module.finitePresentation_of_surjective _ (Submodule.mkQ_surjective _) (by rw [Submodule.ker_mkQ]; exact Submodule.fg_range f)`. Establish `: Module.FinitePresentation R (M₂ ⧸ LinearMap.range g)` using `Module.finitePresentation_of_surjective _ (Submodule.mkQ_surjective _) (by rw [Submodule.ker_mkQ]; exact Submodule.fg_range g)`. Prove the components needed by the constructor for the conclusion.
+
+Use `all_goals`. Use `projective_of_isLocallyConstant_finrank_fiber ((IsLocallyConstant.iff_eventually_eq _).2 fun p => ?_)` and prove the remaining obligations. Use `filter_upwards [eventually_finrank_fiber_le (M := M₁ ⧸ LinearMap.range f) p, eventually_finrank_fiber_le (M := M₂ ⧸ LinearMap.range g) p, (isLocallyConstant_finrank_fiber M₂).eventually_eq p, h.eventually_eq p] with q h1 h2 h3 h6`. Establish `h4` using `finrank_baseChange_homology_add p.asIdeal.ResidueField f g hfg`. Establish `h5` using `finrank_baseChange_homology_add q.asIdeal.ResidueField f g hfg`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem projective_coker_of_isLocallyConstant [IsReduced R] [Module.Finite R M₀]
     [Module.Finite R M₁] [Module.Projective R M₁] [Module.Finite R M₂] [Module.Projective R M₂]
     (f : M₀ →ₗ[R] M₁) (g : M₁ →ₗ[R] M₂) (hfg : g ∘ₗ f = 0)
@@ -306,6 +396,9 @@ theorem projective_coker_of_isLocallyConstant [IsReduced R] [Module.Finite R M�
     have h5 := finrank_baseChange_homology_add q.asIdeal.ResidueField f g hfg
     omega
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `projective_coker_of_isLocallyConstant f g hfg h`. Take `⟨u, hu⟩` from `exists_comp_comp_eq_of_projective f`. Take `⟨s, hs⟩` from `exists_comp_comp_eq_of_projective g`. Take `⟨ι, ρ, hρ⟩` from `exists_homology_retract f g hfg u hu s hs`. Conclude with `⟨Module.Finite.of_surjective ρ (RightInverse.surjective (g := ι) (LinearMap.congr_fun hρ)), Module.Projective.of_split ι ρ hρ, fun S _ _ => exists_baseChange_homology_equiv S f g hfg s hs⟩`.
+-/
 theorem grauert_linearMap_homology [IsReduced R] [Module.Finite R M₀]
     [Module.Finite R M₁] [Module.Projective R M₁] [Module.Finite R M₂] [Module.Projective R M₂]
     (f : M₀ →ₗ[R] M₁) (g : M₁ →ₗ[R] M₂) (hfg : g ∘ₗ f = 0)
@@ -339,12 +432,18 @@ variable {R : Type*} [CommRing R] [IsDomain R] [ValuationRing R] {M₀ M₁ : Ty
 
 variable (R) in
 
+/- English proof (translation)
+Establish `: Module.Flat R M` using `Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.2 (Submodule.isTorsionFree_iff_torsion_eq_bot.1 inferInstance)`. Conclude with `Module.free_of_flat_of_isLocalRing`.
+-/
 theorem free_of_finite_of_isTorsionFree (M : Type*) [AddCommGroup M] [Module R M]
     [Module.Finite R M] [Module.IsTorsionFree R M] : Module.Free R M := by
   have : Module.Flat R M := Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.2
     (Submodule.isTorsionFree_iff_torsion_eq_bot.1 inferInstance)
   exact Module.free_of_flat_of_isLocalRing
 
+/- English proof (translation)
+Establish `h1` using `free_of_finite_of_isTorsionFree R (LinearMap.range d)`. Take `⟨r, hr⟩` from `exists_retraction_ker_of_projective d`. Establish `h2 : Module.Finite R (LinearMap.ker d)` using `Module.Finite.of_surjective r (RightInverse.surjective (g := (LinearMap.ker d).subtype) (LinearMap.congr_fun hr))`. Conclude with `⟨h1, h2, free_of_finite_of_isTorsionFree R _, ⟨_, LinearMap.isCompl_of_proj (LinearMap.congr_fun hr)⟩, fun S N _ _ _ _ _ _ => ⟨tensorKer_injective_of_retraction S N d r hr, fun _ => (LinearMap.tensorKerEquiv S N d).bijective⟩⟩`.
+-/
 theorem ker_of_valuationRing [Module.Finite R M₀] [Module.IsTorsionFree R M₀]
     [Module.IsTorsionFree R M₁] (d : M₀ →ₗ[R] M₁) :
     Module.Free R (LinearMap.range d) ∧
@@ -371,6 +470,11 @@ open CategoryTheory Limits
 variable {C D : Type*} [Category* C] [Category* D] [Preadditive C] [Preadditive D]
   (F : C ⥤ D) [F.Additive]
 
+/- English proof (translation)
+Set `r : X ⟶ kernel g` to `kernel.lift g (𝟙 X - g ≫ s) (by simp [Preadditive.sub_comp, hs])`. Establish `h1 : r ≫ kernel.ι g = 𝟙 X - g ≫ s` using `kernel.lift_ι _ _ _`. Establish `h2 : kernel.ι g ≫ r = 𝟙 _`. Rewrite using `[← cancel_mono (kernel.ι g)]`. Simplify using `[h1, Preadditive.comp_sub]`.
+
+Establish `: Mono (F.map (kernel.ι g))` using `(SplitMono.mk (f := F.map (kernel.ι g)) (F.map r) (by rw [← F.map_comp, h2, F.map_id])).mono`. Use `preservesLimit_of_preserves_limit_cone (kernelIsKernel g) ((isLimitMapConeForkEquiv' F (kernel.condition g)).symm (KernelFork.IsLimit.ofι' _ (by rw [← F.map_comp, kernel.condition, F.map_zero]) fun k hk => ⟨k ≫ F.map r, ?_⟩))` and prove the remaining obligations. Rewrite using `[Category.assoc, ← F.map_comp, h1, F.map_sub, F.map_id, F.map_comp, Preadditive.comp_sub, reassoc_of% hk, zero_comp, sub_zero, Category.comp_id]`.
+-/
 theorem preservesKernel_of_comp_comp_eq {X Y : C} (g : X ⟶ Y) [HasKernel g] (s : Y ⟶ X)
     (hs : g ≫ s ≫ g = g) : PreservesLimit (parallelPair g 0) F := by
   let r : X ⟶ kernel g := kernel.lift g (𝟙 X - g ≫ s) (by simp [Preadditive.sub_comp, hs])
@@ -386,6 +490,11 @@ theorem preservesKernel_of_comp_comp_eq {X Y : C} (g : X ⟶ Y) [HasKernel g] (s
   rw [Category.assoc, ← F.map_comp, h1, F.map_sub, F.map_id, F.map_comp, Preadditive.comp_sub,
     reassoc_of% hk, zero_comp, sub_zero, Category.comp_id]
 
+/- English proof (translation)
+Set `t : cokernel f ⟶ Y` to `cokernel.desc f (𝟙 Y - u ≫ f) (by simp [Preadditive.comp_sub, hu])`. Establish `h1 : cokernel.π f ≫ t = 𝟙 Y - u ≫ f` using `cokernel.π_desc _ _ _`. Establish `h2 : t ≫ cokernel.π f = 𝟙 _`. Rewrite using `[← cancel_epi (cokernel.π f)]`. Simplify using `[reassoc_of% h1, Preadditive.sub_comp]`.
+
+Establish `: Epi (F.map (cokernel.π f))` using `(SplitEpi.mk (f := F.map (cokernel.π f)) (F.map t) (by rw [← F.map_comp, h2, F.map_id])).epi`. Use `preservesColimit_of_preserves_colimit_cocone (cokernelIsCokernel f) ((isColimitMapCoconeCoforkEquiv' F (cokernel.condition f)).symm (CokernelCofork.IsColimit.ofπ' _ (by rw [← F.map_comp, cokernel.condition, F.map_zero]) fun k hk => ⟨F.map t ≫ k, ?_⟩))` and prove the remaining obligations. Rewrite using `[← F.map_comp_assoc, h1, F.map_sub, F.map_id, F.map_comp, Preadditive.sub_comp, Category.assoc, hk, comp_zero, sub_zero, Category.id_comp]`.
+-/
 theorem preservesCokernel_of_comp_comp_eq {X Y : C} (f : X ⟶ Y) [HasCokernel f] (u : Y ⟶ X)
     (hu : f ≫ u ≫ f = f) : PreservesColimit (parallelPair f 0) F := by
   let t : cokernel f ⟶ Y := cokernel.desc f (𝟙 Y - u ≫ f) (by simp [Preadditive.comp_sub, hu])
@@ -402,6 +511,9 @@ theorem preservesCokernel_of_comp_comp_eq {X Y : C} (f : X ⟶ Y) [HasCokernel f
   rw [← F.map_comp_assoc, h1, F.map_sub, F.map_id, F.map_comp, Preadditive.sub_comp,
     Category.assoc, hk, comp_zero, sub_zero, Category.id_comp]
 
+/- English proof (translation)
+Use `⟨fun h => ?_⟩` and prove the remaining obligations. Establish `: HasKernel S.g` using `⟨⟨_, h.hi⟩⟩`. Establish `: HasCokernel h.f'` using `⟨⟨_, h.hπ'⟩⟩`. Conclude with `⟨preservesKernel_of_comp_comp_eq F _ s hs, preservesCokernel_of_comp_comp_eq F _ (h.i ≫ u) (by simp [← cancel_mono h.i, hu])⟩`.
+-/
 theorem preservesLeftHomologyOf_of_comp_comp_eq (S : ShortComplex C) (u : S.X₂ ⟶ S.X₁)
     (hu : S.f ≫ u ≫ S.f = S.f) (s : S.X₃ ⟶ S.X₂) (hs : S.g ≫ s ≫ S.g = S.g) :
     F.PreservesLeftHomologyOf S := by
@@ -411,6 +523,9 @@ theorem preservesLeftHomologyOf_of_comp_comp_eq (S : ShortComplex C) (u : S.X₂
   exact ⟨preservesKernel_of_comp_comp_eq F _ s hs,
     preservesCokernel_of_comp_comp_eq F _ (h.i ≫ u) (by simp [← cancel_mono h.i, hu])⟩
 
+/- English proof (translation)
+Use `⟨fun h => ?_⟩` and prove the remaining obligations. Establish `: HasCokernel S.f` using `⟨⟨_, h.hp⟩⟩`. Establish `: HasKernel h.g'` using `⟨⟨_, h.hι'⟩⟩`. Conclude with `⟨preservesCokernel_of_comp_comp_eq F _ u hu, preservesKernel_of_comp_comp_eq F _ (s ≫ h.p) (by simp [← cancel_epi h.p, hs])⟩`.
+-/
 theorem preservesRightHomologyOf_of_comp_comp_eq (S : ShortComplex C) (u : S.X₂ ⟶ S.X₁)
     (hu : S.f ≫ u ≫ S.f = S.f) (s : S.X₃ ⟶ S.X₂) (hs : S.g ≫ s ≫ S.g = S.g) :
     F.PreservesRightHomologyOf S := by
@@ -428,12 +543,18 @@ open CategoryTheory Limits
 
 universe v u₁ u₂
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨S.moduleCatHomologyIso.toLinearEquiv ≪≫ₗ Submodule.quotEquivOfEq _ _ (LinearMap.range_codRestrict _ _ _)⟩`.
+-/
 theorem nonempty_homology_equiv {R : Type u₁} [Ring R] (S : ShortComplex (ModuleCat.{v} R)) :
     Nonempty (S.homology ≃ₗ[R] (LinearMap.ker S.g.hom ⧸
       (LinearMap.range S.f.hom).submoduleOf (LinearMap.ker S.g.hom))) :=
   ⟨S.moduleCatHomologyIso.toLinearEquiv ≪≫ₗ
     Submodule.quotEquivOfEq _ _ (LinearMap.range_codRestrict _ _ _)⟩
 
+/- English proof (translation)
+Take `⟨φ, rfl⟩ : ∃ φ : R →+* A, inst = φ.toAlgebra` from `⟨algebraMap R A, Algebra.algebra_ext _ _ fun _ => rfl⟩`. Conclude with `nonempty_homology_equiv (S.map (ModuleCat.extendScalars φ))`.
+-/
 theorem nonempty_homology_map_extendScalars_equiv {R : Type u₁} (A : Type u₂) [CommRing R]
     [CommRing A] [inst : Algebra R A] (S : ShortComplex (ModuleCat.{v} R)) :
     Nonempty ((S.map (ModuleCat.extendScalars (algebraMap R A))).homology ≃ₗ[A]
@@ -444,6 +565,9 @@ theorem nonempty_homology_map_extendScalars_equiv {R : Type u₁} (A : Type u₂
     ⟨algebraMap R A, Algebra.algebra_ext _ _ fun _ => rfl⟩
   exact nonempty_homology_equiv (S.map (ModuleCat.extendScalars φ))
 
+/- English proof (translation)
+Take `⟨φ, rfl⟩ : ∃ φ : R →+* A, inst = φ.toAlgebra` from `⟨algebraMap R A, Algebra.algebra_ext _ _ fun _ => rfl⟩`. Conclude with `⟨LinearEquiv.refl _ _⟩`.
+-/
 theorem nonempty_extendScalars_obj_equiv {R : Type u₁} (A : Type u₂) [CommRing R]
     [CommRing A] [inst : Algebra R A] (M : ModuleCat.{v} R) :
     Nonempty ((ModuleCat.extendScalars (algebraMap R A)).obj M ≃ₗ[A] A ⊗[R] M) := by
@@ -451,6 +575,17 @@ theorem nonempty_extendScalars_obj_equiv {R : Type u₁} (A : Type u₂) [CommRi
     ⟨algebraMap R A, Algebra.algebra_ext _ _ fun _ => rfl⟩
   exact ⟨LinearEquiv.refl _ _⟩
 
+/- English proof (translation)
+Set `r : ι → ι → ℕ` to `fun i j => finrank k (LinearMap.range (K.d i j).hom)`. Establish `hr : ∀ i j, r i j ≠ 0 → c.Rel i j ∧ i ∈ s ∧ j ∈ s`. Introduce `i j h`. Establish `hd : K.d i j ≠ 0` using `fun h0 => h (by simp [r, h0])`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> by_contra h'`.
+
+Use `exacts [hd (K.shape i j h'), hd ((hs i h').eq_of_src _ _), hd ((hs j h').eq_of_tgt _ _)]`. Establish `hx : ∀ i, finrank k (K.homology i) + r (c.prev i) i + r i (c.next i) = finrank k (K.X i)`. Introduce `i`. Take `⟨e⟩` from `nonempty_homology_equiv (K.sc i)`. Establish `: Module.Finite k (K.sc i).X₂` using `inferInstanceAs (Module.Finite k (K.X i))`.
+
+Establish `h` using `finrank_homology_add_finrank_range (K.sc i).f.hom (K.sc i).g.hom (congrArg ModuleCat.Hom.hom (K.sc i).zero)`. Rewrite `h` using `[← e.finrank_eq]`. Conclude with `h`. Establish `hsum : ∑ i ∈ s, (c.χ i : ℤ) * r i (c.next i) = ∑ j ∈ s, -((c.χ j : ℤ) * r (c.prev j) j)`. Establish `h1 : ∀ i, (c.χ i : ℤ) * r i (c.next i) ≠ 0 → r i (c.next i) ≠ 0` using `fun i h h0 => h (by simp [h0])`.
+
+Use `Finset.sum_bij_ne_zero (fun i _ _ => c.next i) (fun i _ h => (hr _ _ (h1 i h)).2.2) (fun i _ h i' _ h' e => c.prev_eq (hr _ _ (h1 i h)).1 (e ▸ (hr _ _ (h1 i' h')).1)) (fun j _ h => ?_) (fun i _ h => ?_)` and prove the remaining obligations. Establish `h2 : r (c.prev j) j ≠ 0` using `fun h0 => h (by simp [h0])`. Establish `h3` using `c.next_eq' (hr _ _ h2).1`. Conclude with `⟨c.prev j, (hr _ _ h2).2.1, by simpa [h3] using h2, h3⟩`. Establish `h2` using `(hr _ _ (h1 i h)).1`.
+
+Rewrite using `[c.prev_eq' h2, c.χ_next h2]`. Simplify using the standard rewrite rules. Simplify using `only [← hx, Nat.cast_add, mul_add, Finset.sum_add_distrib, hsum, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_finrank_homology_eq {k : Type u₁} [Field k] {ι : Type*} {c : ComplexShape ι}
     [c.EulerCharSigns] (K : HomologicalComplex (ModuleCat.{v} k) c)
     [∀ i, Module.Finite k (K.X i)] (s : Finset ι) (hs : ∀ i ∉ s, IsZero (K.X i)) :
@@ -497,6 +632,9 @@ universe v u w
 
 variable {R : Type u} [CommRing R] {ι : Type*} {c : ComplexShape ι}
 
+/- English proof (translation)
+Take `⟨e⟩` from `nonempty_homology_map_extendScalars_equiv A (K.sc i)`. Establish `: Module.Finite R (K.sc i).X₂` using `inferInstanceAs (Module.Finite R (K.X i))`. Conclude with `Module.Finite.equiv e.symm`.
+-/
 theorem finite_homology_extendScalars (K : HomologicalComplex (ModuleCat.{v} R) c) (i : ι)
     [Module.Finite R (K.X i)] (A : Type w) [CommRing A] [IsNoetherianRing A] [Algebra R A] :
     Module.Finite A
@@ -505,6 +643,9 @@ theorem finite_homology_extendScalars (K : HomologicalComplex (ModuleCat.{v} R) 
   have : Module.Finite R (K.sc i).X₂ := inferInstanceAs (Module.Finite R (K.X i))
   exact Module.Finite.equiv e.symm
 
+/- English proof (translation)
+Establish `: Module.Finite R (K.sc i).X₂` using `inferInstanceAs (Module.Finite R (K.X i))`. Establish `: Module.Finite R (K.sc i).X₃` using `inferInstanceAs (Module.Finite R (K.X _))`. Establish `: Module.Projective R (K.sc i).X₃` using `inferInstanceAs (Module.Projective R (K.X _))`. Use `upperSemicontinuous_finrank_linearMap_homology (K.sc i).f.hom (K.sc i).g.hom (congrArg ModuleCat.Hom.hom (K.sc i).zero) using 2 with p` and compare the differences between its conclusion and the goal. Conclude with `(nonempty_homology_map_extendScalars_equiv _ (K.sc i)).elim fun e => e.finrank_eq`.
+-/
 theorem upperSemicontinuous_finrank_homology_fiber (K : HomologicalComplex (ModuleCat.{v} R) c)
     [∀ i, Module.Finite R (K.X i)] [∀ i, Module.Projective R (K.X i)] (i : ι) :
     UpperSemicontinuous fun p : PrimeSpectrum R => finrank p.asIdeal.ResidueField
@@ -517,6 +658,9 @@ theorem upperSemicontinuous_finrank_homology_fiber (K : HomologicalComplex (Modu
     (congrArg ModuleCat.Hom.hom (K.sc i).zero) using 2 with p
   exact (nonempty_homology_map_extendScalars_equiv _ (K.sc i)).elim fun e => e.finrank_eq
 
+/- English proof (translation)
+Establish `: ∀ i, Module.Finite k ((((ModuleCat.extendScalars (algebraMap R k)).mapHomologicalComplex c).obj K).X i)` using `fun i => (nonempty_extendScalars_obj_equiv k (K.X i)).elim fun e => Module.Finite.equiv e.symm`. Rewrite using `[sum_finrank_homology_eq _ s fun i hi => (ModuleCat.extendScalars (algebraMap R k)).map_isZero (hs i hi)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Conclude with `(nonempty_extendScalars_obj_equiv k (K.X i)).elim fun e => e.finrank_eq`.
+-/
 theorem sum_finrank_homology_extendScalars [c.EulerCharSigns]
     (K : HomologicalComplex (ModuleCat.{v} R) c) [∀ i, Module.Finite R (K.X i)]
     (s : Finset ι) (hs : ∀ i ∉ s, IsZero (K.X i)) (k : Type w) [Field k] [Algebra R k] :
@@ -532,6 +676,9 @@ theorem sum_finrank_homology_extendScalars [c.EulerCharSigns]
   congr 2
   exact (nonempty_extendScalars_obj_equiv k (K.X i)).elim fun e => e.finrank_eq
 
+/- English proof (translation)
+Rewrite using `[sum_finrank_homology_extendScalars K s hs]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Module.rankAtStalk_eq]`.
+-/
 theorem sum_finrank_homology_fiber_eq_sum_rankAtStalk [c.EulerCharSigns]
     (K : HomologicalComplex (ModuleCat.{v} R) c)
     [∀ i, Module.Finite R (K.X i)] [∀ i, Module.Projective R (K.X i)]
@@ -542,6 +689,9 @@ theorem sum_finrank_homology_fiber_eq_sum_rankAtStalk [c.EulerCharSigns]
   rw [sum_finrank_homology_extendScalars K s hs]
   exact Finset.sum_congr rfl fun i _ => by rw [Module.rankAtStalk_eq]
 
+/- English proof (translation)
+Simplify using `only [sum_finrank_homology_extendScalars K s hs]`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun p => ?_` and prove the remaining obligations. Use `filter_upwards [(Filter.eventually_all_finset s).2 fun i _ => (isLocallyConstant_finrank_fiber (R := R) (K.X i)).eventually_eq p] with q hq`. Conclude with `Finset.sum_congr rfl fun i hi => by rw [hq i hi]`.
+-/
 theorem isLocallyConstant_sum_finrank_homology_fiber [c.EulerCharSigns]
     (K : HomologicalComplex (ModuleCat.{v} R) c)
     [∀ i, Module.Finite R (K.X i)] [∀ i, Module.Projective R (K.X i)]
@@ -556,6 +706,9 @@ theorem isLocallyConstant_sum_finrank_homology_fiber [c.EulerCharSigns]
     (isLocallyConstant_finrank_fiber (R := R) (K.X i)).eventually_eq p] with q hq
   exact Finset.sum_congr rfl fun i hi => by rw [hq i hi]
 
+/- English proof (translation)
+Use `isLocallyConstant_sum_finrank_homology_fiber K s hs using 2 with p` and compare the differences between its conclusion and the goal. Use `HomologicalComplex.homologyEulerChar_eq_sum_finSet_of_finrankSupport_subset _ s ((GradedObject.finrankSupport_subset_iff _ _).2 fun i hi => ?_)` and prove the remaining obligations. Use `ModuleCat.isZero_iff_subsingleton.1 (ShortComplex.isZero_homology_of_isZero_X₂ ((((ModuleCat.extendScalars (algebraMap R p.asIdeal.ResidueField)).mapHomologicalComplex c).obj K).sc i) ((ModuleCat.extendScalars _).map_isZero (hs i hi)))` as an intermediate fact. Conclude with `@Module.finrank_zero_of_subsingleton _ _ _ _ _ _ this`.
+-/
 theorem isLocallyConstant_homologyEulerChar_fiber [c.EulerCharSigns]
     (K : HomologicalComplex (ModuleCat.{v} R) c)
     [∀ i, Module.Finite R (K.X i)] [∀ i, Module.Projective R (K.X i)]
@@ -572,6 +725,9 @@ theorem isLocallyConstant_homologyEulerChar_fiber [c.EulerCharSigns]
         c).obj K).sc i) ((ModuleCat.extendScalars _).map_isZero (hs i hi)))
   exact @Module.finrank_zero_of_subsingleton _ _ _ _ _ _ this
 
+/- English proof (translation)
+Use `isLocallyConstant_sum_finrank_homology_fiber K (Finset.range (n + 1)) (fun i hi => hn i (by simpa using hi)) using 4 with p i` and compare the differences between its conclusion and the goal. Simplify using `[ComplexShape.χ]`.
+-/
 theorem isLocallyConstant_sum_range_finrank_homology_fiber
     (K : CochainComplex (ModuleCat.{v} R) ℕ)
     [∀ i, Module.Finite R (K.X i)] [∀ i, Module.Projective R (K.X i)]
@@ -584,11 +740,17 @@ theorem isLocallyConstant_sum_range_finrank_homology_fiber
     (fun i hi => hn i (by simpa using hi)) using 4 with p i
   simp [ComplexShape.χ]
 
+/- English proof (translation)
+The claim follows from `(F.map_comp _ _).symm.trans ((congrArg F.map (K.iCycles_d i j)).trans (F.map_zero _ _))`.
+-/
 theorem map_iCycles_d {C D : Type*} [Category* C] [Category* D] [Abelian C] [Preadditive D]
     (F : C ⥤ D) [F.Additive] (K : HomologicalComplex C c) (i j : ι) :
     F.map (K.iCycles i) ≫ ((F.mapHomologicalComplex c).obj K).d i j = 0 :=
   (F.map_comp _ _).symm.trans ((congrArg F.map (K.iCycles_d i j)).trans (F.map_zero _ _))
 
+/- English proof (translation)
+Set `h` to `(ShortComplex.LeftHomologyData.canonical (K.sc i)).map F`. Use `⟨h.homologyIso.symm, h.π_comp_homologyIso_inv.trans ?_⟩` and prove the remaining obligations. Use `congrArg (· ≫ ((K.sc i).map F).homologyπ) ?_` and prove the remaining obligations. Conclude with `(cancel_mono ((K.sc i).map F).iCycles).1 (h.cyclesIso_inv_comp_iCycles.trans (((F.mapHomologicalComplex c).obj K).liftCycles_i _ _ _ _).symm)`.
+-/
 theorem exists_map_homology_iso {C D : Type*} [Category* C] [Category* D] [Abelian C] [Abelian D]
     (F : C ⥤ D) [F.Additive] (K : HomologicalComplex C c) (i : ι)
     [F.PreservesLeftHomologyOf (K.sc i)] :
@@ -602,6 +764,11 @@ theorem exists_map_homology_iso {C D : Type*} [Category* C] [Category* D] [Abeli
   exact (cancel_mono ((K.sc i).map F).iCycles).1 (h.cyclesIso_inv_comp_iCycles.trans
     (((F.mapHomologicalComplex c).obj K).liftCycles_i _ _ _ _).symm)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `projective_coker_of_isLocallyConstant (K.d (c.prev i) i).hom (K.d i (c.next i)).hom (congrArg ModuleCat.Hom.hom (K.sc i).zero) (by`. Use `h using 2 with p` and compare the differences between its conclusion and the goal. Conclude with `(nonempty_homology_map_extendScalars_equiv _ (K.sc i)).elim fun e => e.finrank_eq.symm)`. Take `⟨u, hu⟩` from `exists_comp_comp_eq_of_projective (K.d (c.prev i) i).hom`. Take `⟨s, hs⟩` from `exists_comp_comp_eq_of_projective (K.d i (c.next i)).hom`.
+
+Conclude with `⟨⟨ModuleCat.ofHom u, ModuleCat.hom_ext hu⟩, ModuleCat.ofHom s, ModuleCat.hom_ext hs⟩`.
+-/
 theorem exists_generalizedInverse_of_isLocallyConstant [IsReduced R]
     (K : HomologicalComplex (ModuleCat.{v} R) c)
     [∀ i, Module.Finite R (K.X i)] [∀ i, Module.Projective R (K.X i)] (i : ι)
@@ -619,6 +786,9 @@ theorem exists_generalizedInverse_of_isLocallyConstant [IsReduced R]
   obtain ⟨s, hs⟩ := exists_comp_comp_eq_of_projective (K.d i (c.next i)).hom
   exact ⟨⟨ModuleCat.ofHom u, ModuleCat.hom_ext hu⟩, ModuleCat.ofHom s, ModuleCat.hom_ext hs⟩
 
+/- English proof (translation)
+Take `⟨⟨u, hu⟩, s, hs⟩` from `exists_generalizedInverse_of_isLocallyConstant K i h`. Conclude with `⟨preservesLeftHomologyOf_of_comp_comp_eq F (K.sc i) u hu s hs, preservesRightHomologyOf_of_comp_comp_eq F (K.sc i) u hu s hs⟩`.
+-/
 theorem preservesHomologyOf_of_isLocallyConstant [IsReduced R]
     (K : HomologicalComplex (ModuleCat.{v} R) c)
     [∀ i, Module.Finite R (K.X i)] [∀ i, Module.Projective R (K.X i)] (i : ι)
@@ -631,6 +801,11 @@ theorem preservesHomologyOf_of_isLocallyConstant [IsReduced R]
   exact ⟨preservesLeftHomologyOf_of_comp_comp_eq F (K.sc i) u hu s hs,
     preservesRightHomologyOf_of_comp_comp_eq F (K.sc i) u hu s hs⟩
 
+/- English proof (translation)
+Take `⟨⟨u, hu⟩, s, hs⟩` from `exists_generalizedInverse_of_isLocallyConstant K i h`. Take `⟨j, ρ, hρ⟩` from `exists_homology_retract (K.d (c.prev i) i).hom (K.d i (c.next i)).hom (congrArg ModuleCat.Hom.hom (K.sc i).zero) u.hom (congrArg ModuleCat.Hom.hom hu) s.hom (congrArg ModuleCat.Hom.hom hs)`. Take `⟨e⟩` from `nonempty_homology_equiv (K.sc i)`. Establish `h1` using `Module.Finite.of_surjective ρ (RightInverse.surjective (g := j) (LinearMap.congr_fun hρ))`. Establish `h2` using `Module.Projective.of_split j ρ hρ`.
+
+Use `⟨@Module.Finite.equiv _ _ _ _ _ _ _ _ h1 e.symm, @Module.Projective.of_equiv' _ _ _ _ _ _ _ _ h2 e.symm, fun S _ φ => ?_⟩` and prove the remaining obligations. Use `(preservesHomologyOf_of_isLocallyConstant K i h (ModuleCat.extendScalars φ)).1` as an intermediate fact. Conclude with `exists_map_homology_iso _ K i`.
+-/
 theorem grauert_homology [IsReduced R] (K : HomologicalComplex (ModuleCat.{v} R) c)
     [∀ i, Module.Finite R (K.X i)] [∀ i, Module.Projective R (K.X i)] (i : ι)
     (h : IsLocallyConstant fun p : PrimeSpectrum R => finrank p.asIdeal.ResidueField
@@ -657,6 +832,9 @@ theorem grauert_homology [IsReduced R] (K : HomologicalComplex (ModuleCat.{v} R)
   have := (preservesHomologyOf_of_isLocallyConstant K i h (ModuleCat.extendScalars φ)).1
   exact exists_map_homology_iso _ K i
 
+/- English proof (translation)
+Take `⟨-, h1, h2, h3, -⟩` from `ker_of_valuationRing.{_, _, _, 0, 0} d`. Use `IsLocalization.flat F (nonZeroDivisors O)` as an intermediate fact. Conclude with `⟨h1, h2, h3, (LinearMap.tensorKerEquiv F F d).bijective, ((ker_of_valuationRing d).2.2.2.2 _ _).1⟩`.
+-/
 theorem ker_free_of_valuationRing {O : Type*} [CommRing O] [IsDomain O] [ValuationRing O]
     (F : Type*) [Field F] [Algebra O F] [IsFractionRing O F]
     {M₀ M₁ : Type*} [AddCommGroup M₀] [Module O M₀] [AddCommGroup M₁] [Module O M₁]
@@ -670,6 +848,9 @@ theorem ker_free_of_valuationRing {O : Type*} [CommRing O] [IsDomain O] [Valuati
   exact ⟨h1, h2, h3, (LinearMap.tensorKerEquiv F F d).bijective,
     ((ker_of_valuationRing d).2.2.2.2 _ _).1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i _ => finite_homology_extendScalars K i _, upperSemicontinuous_finrank_homology_fiber K, isLocallyConstant_sum_range_finrank_homology_fiber K n hn, fun i _ h => grauert_homology K i h, ker_free_of_valuationRing (FractionRing R) _⟩`.
+-/
 theorem semicontinuity_finite_projective_complex (K : CochainComplex (ModuleCat.{v} R) ℕ)
     [∀ i, Module.Finite R (K.X i)] [∀ i, Module.Projective R (K.X i)]
     (n : ℕ) (hn : ∀ i, n < i → IsZero (K.X i)) :
@@ -708,6 +889,9 @@ theorem semicontinuity_finite_projective_complex (K : CochainComplex (ModuleCat.
     fun i _ h => grauert_homology K i h,
     ker_free_of_valuationRing (FractionRing R) _⟩
 
+/- English proof (translation)
+The claim follows from `upperSemicontinuous_finrank_linearMap_homology _ _ (LinearMap.zero_comp _)`.
+-/
 example : UpperSemicontinuous fun p : PrimeSpectrum ℤ => finrank p.asIdeal.ResidueField
     (LinearMap.ker ((0 : ℤ →ₗ[ℤ] ℤ).baseChange p.asIdeal.ResidueField) ⧸
       (LinearMap.range ((LinearMap.lsmul ℤ ℤ 2).baseChange p.asIdeal.ResidueField)).submoduleOf

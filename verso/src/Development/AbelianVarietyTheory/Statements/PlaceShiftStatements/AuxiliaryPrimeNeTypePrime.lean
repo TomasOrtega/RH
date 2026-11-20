@@ -14,14 +14,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.size, h.host⟩, fun h => ⟨h.1, h.2, rfl, h.1.2.1.2.2.2.2.2.2.1.2.2.2.2.2.1⟩⟩`.
+-/
 theorem rec_iff (large₂ : SizeData₂ D) : Rec large₂ ↔ GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂ ∧ HostHyp D :=
   ⟨fun h => ⟨h.size, h.host⟩, fun h => ⟨h.1, h.2, rfl, h.1.2.1.2.2.2.2.2.2.1.2.2.2.2.2.1⟩⟩
 
+/- English proof (translation)
+Take `⟨x₀, H⟩` from `GlobalTheory.BigTop.Fun.SetAtModel.sizeRows_fam he Fm h`. Conclude with `⟨x₀, fun x hx h0 i p => (rec_iff _).2 ⟨H x hx h0 i, p.host⟩⟩`.
+-/
 theorem rec_fam {eps : ℝ} (he : 0 < eps) (Fm : FamP eps) (h : GlobalTheory.BigTop.FamHyp Fm) :
     ∃ x₀ : ℝ, ∀ x (hx : Fm.x1 < x), x₀ ≤ x → ∀ i, GlobalTheory.BigTop.Pt Fm x hx i → Rec (Fm.L x i) := by
   obtain ⟨x₀, H⟩ := GlobalTheory.BigTop.Fun.SetAtModel.sizeRows_fam he Fm h
   exact ⟨x₀, fun x hx h0 i p => (rec_iff _).2 ⟨H x hx h0 i, p.host⟩⟩
 
+/- English proof (translation)
+Introduce `e`. Establish `h1 : Real.log (q0 D) ≤ large₂.sc.L` using `h.size.2.2.2.2.2.2.2.2.1`. Establish `h2` using `(h.size.2.1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 k k).1`. Establish `hq : (0 : ℝ) < q0 D` using `by exact_mod_cast (leastSplitAuxiliaryPrimeThetaChain_spec D).1.pos`. Establish `h3 : (q0 D : ℝ) ≤ large₂.sc.b` using `(Real.log_le_iff_le_exp hq).1 h1`.
+
+Establish `hb : 1 ≤ large₂.sc.b` using `Real.one_le_exp (Real.rpow_nonneg (by linarith [large₂.sc.one_lt_alt]) _)`. Establish `hk : (2 : ℝ) ≤ D.R.k` using `by have := D.R.m_add_three_le_k; exact_mod_cast (by omega : 2 ≤ D.R.k)`. Establish `h4 : (D.R.k : ℝ) * large₂.sc.b ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8` using `le_self_pow₀ (by nlinarith) (by norm_num)`. Rewrite `h2` using `[← e]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem auxiliary_prime_ne_type_prime {large₂ : SizeData₂ D} (h : Rec large₂) (k : Fin 2) : q0 D ≠ D.host.g k := by
   intro e
   have h1 : Real.log (q0 D) ≤ large₂.sc.L := h.size.2.2.2.2.2.2.2.2.1
@@ -34,12 +45,18 @@ theorem auxiliary_prime_ne_type_prime {large₂ : SizeData₂ D} (h : Rec large�
   rw [← e] at h2
   nlinarith
 
+/- English proof (translation)
+Take `⟨Pm, -⟩` from `h.size.1`. Conclude with `GlobalTheory.ChiGridModel.exists_levCh_gridData C sc Pm.g_mod h1 h2 (auxiliary_prime_ne_type_prime h)`.
+-/
 theorem exists_grid {large₂ : SizeData₂ D} (h : Rec large₂) (C : Formalism.L2.Host.CharFrame D) (h1 : D.host.pde % LevelStarExponents.condE D = 1)
     (h2 : D.host.pde' % LevelStarExponents.condE D = 1) (sc : GlobalTheory.ChiGrid.Consts) :
     ∃ Lc : LevCh D Unit, Lc.C = C ∧ Lc.Is () ∧ Nonempty (GridData Lc sc) := by
   obtain ⟨Pm, -⟩ := h.size.1
   exact GlobalTheory.ChiGridModel.exists_levCh_gridData C sc Pm.g_mod h1 h2 (auxiliary_prime_ne_type_prime h)
 
+/- English proof (translation)
+Introduce and unpack `⟨c, hc⟩`. Take `⟨C0, x₀, h⟩` from `hc ε c le_rfl`. Take `⟨D, large₂, a, b, r, ⟨C⟩, h1, h2⟩` from `H x₀`. Take `⟨Lc, -, hL, ⟨G⟩⟩` from `exists_grid r C h1 h2 ⟨1, c, large₂.sc.b⟩`. Conclude with `h C0 le_rfl D large₂ a b r Unit Lc () hL G`.
+-/
 theorem not_gBig_false (ε : ℝ) (H : ∀ x₀ : ℝ, ∃ (D : D7) (large₂ : SizeData₂ D), large₂.sc.eps = ε ∧ x₀ ≤ large₂.sc.x ∧ Rec large₂ ∧
     Nonempty (Formalism.L2.Host.CharFrame D) ∧ D.host.pde % LevelStarExponents.condE D = 1 ∧ D.host.pde' % LevelStarExponents.condE D = 1) :
     ¬ GBig fun _ _ _ _ _ => False := by
@@ -49,6 +66,11 @@ theorem not_gBig_false (ε : ℝ) (H : ∀ x₀ : ℝ, ∃ (D : D7) (large₂ : 
   obtain ⟨Lc, -, hL, ⟨G⟩⟩ := exists_grid r C h1 h2 ⟨1, c, large₂.sc.b⟩
   exact h C0 le_rfl D large₂ a b r Unit Lc () hL G
 
+/- English proof (translation)
+Take `⟨c, h⟩` from `h`. Take `⟨c', h'⟩` from `h'`. Use `⟨max c c', fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x0, h⟩` from `h ε CF (le_of_max_le_left hCF)`. Take `⟨C1, x1, h'⟩` from `h' ε CF (le_of_max_le_right hCF)`.
+
+Conclude with `⟨max C0 C1, max x0 x1, fun C hC D large₂ a b r T Lc μ hL G => ⟨h C (le_of_max_le_left hC) D large₂ a (le_of_max_le_left b) r T Lc μ hL G, h' C (le_of_max_le_right hC) D large₂ a (le_of_max_le_right b) r T Lc μ hL G⟩⟩`.
+-/
 theorem gBig_and {Q Q' : GP} (h : GBig @Q) (h' : GBig @Q') :
     GBig fun G μ C x b => Q G μ C x b ∧ Q' G μ C x b := by
   obtain ⟨c, h⟩ := h
@@ -60,6 +82,15 @@ theorem gBig_and {Q Q' : GP} (h : GBig @Q) (h' : GBig @Q') :
     ⟨h C (le_of_max_le_left hC) D large₂ a (le_of_max_le_left b) r T Lc μ hL G,
       h' C (le_of_max_le_right hC) D large₂ a (le_of_max_le_right b) r T Lc μ hL G⟩⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `ranks_exact D i j`. Take `⟨u, hu⟩` from `D.R.t_odd`. Take `⟨v, hv⟩` from `odd_sLen D`. Take `⟨a, ha⟩` from `D.R.m_even`. Establish `e : rankV D (i + 1) (j + 1) = rankV D i j + D.R.t + sLen D` using `by simp only [rankV]; ring`.
+
+Establish `r1 : D.R.r ≤ rankV D i j` using `by simp only [rankV]; omega`. Establish `r2` using `D.R.m_add_three_le_k`. Establish `r3 : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `r4 : sLen D = D.R.r + 6` using `rfl`. Establish `hj` using `j.2`.
+
+Establish `b1 : (j.1 + 1) * D.R.t ≤ D.R.m * D.R.t` using `Nat.mul_le_mul_right _ j.2`. Establish `b2 : (i.1 + 1) * sLen D ≤ D.R.m * sLen D` using `Nat.mul_le_mul_right _ i.2`. Establish `b3 : rankV D (i + 1) (j + 1) = D.R.r + (j.1 + 1) * D.R.t + (i.1 + 1) * sLen D` using `rfl`. Establish `b4 : bigN D = D.R.k + (D.R.m * D.R.t + D.R.m * sLen D + D.R.m)` using `by simp only [bigN]; ring`. Simplify using `only [e0, h0, pp, qq, eTop]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem tower_numbers (i j : Fin D.R.m) : e0 D i j + pp D j = eTop D i j + qq D j ∧
     halfRank D i j = h0 D i j + pp D j + qq D j ∧ pp D j + qq D j = D.R.m - 1 - j ∧ 1 ≤ e0 D i j ∧ e0 D i j < h0 D i j ∧
     botBig D i j = e0 D i j + h0 D i j ∧ botSmall D i j + e0 D i j = h0 D i j ∧ eTop D i j + qq D j ≤ halfRank D i j ∧
@@ -83,6 +114,9 @@ theorem tower_numbers (i j : Fin D.R.m) : e0 D i j + pp D j = eTop D i j + qq D 
 
 variable {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) {μ₀ : T}
 
+/- English proof (translation)
+Establish `h : twPl G μ₀ = ∅`. Use `Finset.eq_empty_of_forall_notMem fun w hw => ?_` and prove the remaining obligations. Simplify using `only [twPl, locPl, Finset.mem_filter, Finset.mem_union] at hw`. Conclude with `(hL.Q_ram μ₀ w).2 (Or.inl (hw.1.resolve_left hw.2)) (by rw [hL.xi_base]; intro x _; rfl)`. Simplify using `[Qn, modT, h]`.
+-/
 theorem base_tuple (hL : Lc.Is μ₀) : twPl G μ₀ = ∅ ∧ Qn G μ₀ = 1 ∧ modT G μ₀ = SqNum.condE G.pl := by
   have h : twPl G μ₀ = ∅ := by
     refine Finset.eq_empty_of_forall_notMem fun w hw => ?_
@@ -90,9 +124,15 @@ theorem base_tuple (hL : Lc.Is μ₀) : twPl G μ₀ = ∅ ∧ Qn G μ₀ = 1 �
     exact (hL.Q_ram μ₀ w).2 (Or.inl (hw.1.resolve_left hw.2)) (by rw [hL.xi_base]; intro x _; rfl)
   simp [Qn, modT, h]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun w _ => Ideal.absNorm_eq_zero_iff.not.2 w.ne_bot`.
+-/
 theorem Qn_ne_zero (t : T) : Qn G t ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun w _ => Ideal.absNorm_eq_zero_iff.not.2 w.ne_bot
 
+/- English proof (translation)
+Introduce `_ h` and use `absurd rfl h`.
+-/
 example : ThA G μ₀ fun _ => μ₀ := fun _ h => absurd rfl h
 
 end GlobalTheory.SqTop.Model

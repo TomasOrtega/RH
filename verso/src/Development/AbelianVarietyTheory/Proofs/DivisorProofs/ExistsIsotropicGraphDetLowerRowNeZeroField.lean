@@ -4,6 +4,31 @@ open scoped Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ σ hσ hε n J hJ hJd g hg hQ`. Take `⟨ε, hε0, hε⟩` from `hε`. Establish `hmm : ∀ A : Matrix (Fin n) (Fin n) k, (A.map σ).map σ = A`. Introduce `A`. Use extensionality with `i j`.
+
+Simplify using `[hσ]`. Establish `hJu : IsUnit J.det` using `isUnit_iff_ne_zero.mpr hJd`. Use `set K : Matrix (Fin n) (Fin n) k := J⁻¹ with hK`. Establish `hJK : J * K = 1` using `Matrix.mul_nonsing_inv J hJu`. Establish `hKJ : K * J = 1` using `Matrix.nonsing_inv_mul J hJu`.
+
+Establish `hJh : (J.map σ)ᵀ = J` using `by ext i j; simp [hJ]`. Establish `hKh : (K.map σ)ᵀ = K`. Establish `h1 : (K.map σ)ᵀ * J = 1` using `by conv_lhs => rw [← hJh]`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, hJK]`. Simplify using the standard rewrite rules.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hKt : Kᵀ = K.map σ` using `by conv_lhs => rw [← hKh]`. Simplify using the standard rewrite rules. Establish `hQR : Matrix.fromBlocks 0 K K 0 * Matrix.fromBlocks (0 : Matrix (Fin n) (Fin n) k) J J 0 = (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) k)`. Rewrite using `[Matrix.fromBlocks_multiply]`.
+
+Simplify using `[hKJ]`. Establish `hRQ : Matrix.fromBlocks 0 J J 0 * Matrix.fromBlocks (0 : Matrix (Fin n) (Fin n) k) K K 0 = (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) k)` using `mul_eq_one_comm.mp hQR`. Establish `h2 : (Matrix.fromBlocks 0 K K 0 * gᵀ * Matrix.fromBlocks 0 J J 0) * g.map σ = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᵀ, hQ, hQR]`. Establish `h3` using `mul_eq_one_comm.mp h2`.
+
+Establish `h4 : g.map σ * Matrix.fromBlocks 0 K K 0 * gᵀ = Matrix.fromBlocks 0 K K 0`. Combine the equalities or inequalities in the displayed calculation. Take `⟨A, B, C, D, rfl⟩ : ∃ A B C D, g = Matrix.fromBlocks A B C D` from `⟨_, _, _, _, (Matrix.fromBlocks_toBlocks g).symm⟩`. Rewrite `h4` using `[Matrix.fromBlocks_map, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj]`. Establish `h5` using `h4.2.2.2`.
+
+Simplify using `only [Matrix.mul_zero, zero_add, add_zero] at h5`. Establish `h6 : D * K.map σ * (C.map σ)ᵀ + C * K.map σ * (D.map σ)ᵀ = 0`. Use `congrArg (fun M : Matrix (Fin n) (Fin n) k => M.map σ) h5` as an intermediate fact. Simplify using `only [Matrix.map_add σ (map_add σ), Matrix.map_mul, hmm, Matrix.map_zero σ (map_zero σ)] at this`. Simplify `this` using `[Matrix.transpose_map]`.
+
+Establish `hJσ : K.map σ * J.map σ = 1`. Rewrite using `[← Matrix.map_mul, hKJ]`. Simplify using the standard rewrite rules. Take `⟨V, hV, hdet⟩` from `GlobalTheory.T.exists_skewHermitian_mul_add_det_ne_zero k σ hσ ε hε0 hε n (C * K.map σ) D (by`. Rewrite using `[Matrix.map_mul, hmm, Matrix.transpose_mul, hKt, ← Matrix.mul_assoc, add_comm]`.
+
+Conclude with `h6)`. Use the proof step `(by`. Introduce `a ha hD`. Establish `hC : a ᵥ* C = 0`. Establish `: a ᵥ* (C * K.map σ * J.map σ) = 0`.
+
+Rewrite using `[← Matrix.vecMul_vecMul, ha, Matrix.zero_vecMul]`. Rewrite `this` using `[Matrix.mul_assoc, hJσ, Matrix.mul_one]`. Then use the resulting hypothesis. Establish `h7 : (Sum.elim 0 a) ᵥ* Matrix.fromBlocks A B C D = 0`. Rewrite using `[Matrix.vecMul_fromBlocks]`. Simplify using `[hC, hD]`.
+
+Establish `h8` using `Matrix.eq_zero_of_vecMul_eq_zero hg h7`. Use function extensionality and compare the values at `i`. Conclude with `congrFun h8 (Sum.inr i))`. Use `⟨K.map σ * V, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.transpose_mul, hKh, Matrix.mul_assoc, hKJ, Matrix.mul_one, Matrix.map_mul, hmm, ← Matrix.mul_assoc, hJK, Matrix.one_mul]`.
+
+Establish `: V.map σ = -Vᵀ`. Rewrite using `[← Matrix.transpose_neg, ← hV, Matrix.transpose_transpose]`. Rewrite using `[this, add_neg_cancel]`. Simplify `hdet` using `[Matrix.mul_assoc]`.
+-/
 theorem exists_isotropic_graph_det_lowerRow_ne_zero_field :
     ∀ (k : Type) [Field k] (σ : k →+* k), (∀ x, σ (σ x) = x) → (∃ ε : k, ε ≠ 0 ∧ σ ε = -ε) →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) k), (∀ i j, σ (J j i) = J i j) → J.det ≠ 0 →

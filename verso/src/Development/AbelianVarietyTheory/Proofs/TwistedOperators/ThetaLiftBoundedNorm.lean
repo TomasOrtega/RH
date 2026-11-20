@@ -22,6 +22,23 @@ noncomputable section
 
 namespace GlobalTheory.DownLiftGrowth
 
+/- English proof (translation)
+Introduce `_ D _ G₀ _ _ Pl0 T Af Ks _ _ _ R G hB hG i hi`. Take `⟨N, d, H⟩` from `GlobalTheory.KernelSeminorm.thetaGrowth D (GlobalTheory.Grid.sgn true (G.P (i + 1)).V).rank (G.P i).V.rank`. Use `⟨N, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hω` using `(hG.arrows.dn i hi).weil`. Take `⟨U, hU, hl⟩` from `GlobalTheory.Size.isTheta_iff_level.1 hΦ`.
+
+Take `⟨μ, 𝓕, hμ⟩` from `GlobalTheory.Size.exists_isCovolOne (GlobalTheory.Grid.sgn true (G.P (i + 1)).V) (G.P i).V`. Take `⟨C, hC0, hC⟩` from `(H _ _ rfl rfl).real R.ψ hB.inf hU`. Establish `hb` using `(hC _ _ _ hω μ 𝓕 hμ Φ hl).2`. Use `set K := C * (GlobalTheory.Size.sobO R.ψ R.θ μ 𝓕 d Φ).toReal with hK`. Establish `hK0 : 0 ≤ K` using `mul_nonneg hC0 ENNReal.toReal_nonneg`.
+
+Establish `e : ∀ g h, thetaKO (G.dn i).ω g h Φ = thetaKO ((G.dn i).ω.toSgn true) ((GlobalTheory.Grid.ofSgn true _).symm g) h Φ` using `fun g h => by show (G.dn i).ω (g, h) Φ 0 = (G.dn i).ω (GlobalTheory.Grid.ofSgn true _ ((GlobalTheory.Grid.ofSgn true _).symm g), h) Φ 0`. Rewrite using `[MulEquiv.apply_symm_apply]`. Establish `hinv : ∀ h, ∀ γ ∈ GQ (G.P (i + 1)).V, ∀ g, thetaKO (G.dn i).ω (γ * g) h Φ = thetaKO (G.dn i).ω g h Φ` using `fun h γ hγ g => by`. Rewrite using `[e, e, map_mul]`. Use `GlobalTheory.ChainOnto.ThetaFirstVar.thetaKO_left_fst hω hΦ h _ ?_ _` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.SgnIdent.mem_GQ_sgn, MulEquiv.apply_symm_apply]`. Conclude with `hγ`. Establish `hk : ∀ g h, ‖thetaKO (G.dn i).ω g h Φ‖ ≤ K * 2 ^ N * GlobalTheory.Grow.height (G.P i).V h ^ N * GlobalTheory.Grow.quotHeight (G.P (i + 1)).V g ^ N`. Introduce `g h`. Establish `h1 : ∀ g, ‖thetaKO (G.dn i).ω g h Φ‖ ≤ (K * GlobalTheory.Grow.height (G.P i).V h ^ N) * GlobalTheory.Grow.height (G.P (i + 1)).V g ^ N` using `fun g => by`.
+
+Rewrite using `[e]`. Establish `h2` using `hb ((GlobalTheory.Grid.ofSgn true _).symm g) h`. Establish `hh : GlobalTheory.Grow.height (GlobalTheory.Grid.sgn true (G.P (i + 1)).V) ((GlobalTheory.Grid.ofSgn true _).symm g) = GlobalTheory.Grow.height (G.P (i + 1)).V g` using `rfl`. Rewrite `h2` using `[hh]`. Conclude with `h2.trans_eq (by rw [hK, mul_pow]; ring)`.
+
+Conclude with `(GlobalTheory.Grow.norm_le_quotHeight_pow (hinv h) h1 g).trans_eq (by ring)`. Use `⟨(K * 2 ^ N).toNNReal, fun f => iSup_le fun h => ?_⟩` and prove the remaining obligations. Establish `hg` using `pow_pos (GlobalTheory.Grow.height_pos (G.P i).V h) N`. Rewrite using `[ENNReal.ofReal_div_of_pos hg, ofReal_norm_eq_enorm]`. Use `ENNReal.div_le_of_le_mul ((enorm_integral_le_lintegral_enorm _).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[mul_right_comm, GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.decayInt]`. Use `(lintegral_mono fun g => ?_).trans_eq (lintegral_const_mul' _ _ (ENNReal.mul_ne_top ENNReal.coe_ne_top ENNReal.ofReal_ne_top))` and prove the remaining obligations. Establish `hq` using `(pow_pos (GlobalTheory.Grow.quotHeight_pos (G.P (i + 1)).V g) N).le`. Rewrite using `[← ofReal_norm_eq_enorm]`. Express the relevant statement in the definitionally equal form `ENNReal.ofReal _ ≤ ENNReal.ofReal (K * 2 ^ N) * _ * _`.
+
+Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem growthSize_lift_le_decayInt : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ i, i < D.R.m → ∃ N : ℕ, ∀ Φ, IsThetaFunO R.ψ (GlobalTheory.Grid.neg (G.P (i + 1)).V) (G.P i).V Φ → ∃ C : NNReal, ∀ f : GA D (G.P (i + 1)).V → ℂ, GlobalTheory.Size.growthSize (G.P i).V N (fun h => ∫ g in (G.mP (i + 1)).fd, thetaKO (G.dn i).ω g h Φ * f g ∂(G.mP (i + 1)).ν) ≤ (C : ENNReal) * GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.decayInt (G.mP (i + 1)).ν (G.mP (i + 1)).fd N f := by
   intro _ D _ G₀ _ _ Pl0 T Af Ks _ _ _ R G hB hG i hi
   obtain ⟨N, d, H⟩ := GlobalTheory.KernelSeminorm.thetaGrowth D (GlobalTheory.Grid.sgn true (G.P (i + 1)).V).rank (G.P i).V.rank

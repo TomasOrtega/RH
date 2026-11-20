@@ -17,5 +17,8 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.OpenOmega
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.OpenOmega.snd_pt_tanTors | exact GlobalTheory.OpenOmega.snd_pt_tanTors | (intros; apply GlobalTheory.OpenOmega.snd_pt_tanTors <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tangent_torsion_point_evaluation : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (GG : PDivGroup p R) (θ : TorsionMap G GG) (n : ℕ) (hs : PtSurj θ n), SpecProp θ n hs → ∀ (x : Pdiv.LieG G) (h : zeroSec R R ≫ x.1 = η[G]) (w : Wmod G) (a : GG.A n), dUnit R a = cnθ θ n hs w → (θ.pt n _ (tanTors p n x) a).snd = Ideal.Quotient.mk _ (Phi x.1 h w) := by
   first | exact @GlobalTheory.OpenOmega.snd_pt_tanTors | exact GlobalTheory.OpenOmega.snd_pt_tanTors | (intros; apply GlobalTheory.OpenOmega.snd_pt_tanTors <;> assumption)

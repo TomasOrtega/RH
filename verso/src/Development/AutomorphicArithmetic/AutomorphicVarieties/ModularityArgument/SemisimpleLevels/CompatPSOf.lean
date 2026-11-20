@@ -25,6 +25,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.V.Lev
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by have e := ((ParLaws.hasInfChar_infChar (CG.mk P) τ).twist κ).infChar_eq rw [CG.twist_mk] at e rw [e, (InfType.expo_of_infType K κ).1 m hκ τ] refine ⟨(h τ).1.map (add_left_injective _), fun z hz => ?_⟩ obtain ⟨y, hy, rfl⟩ := M …`.
+-/
 private theorem regAlg_twist {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ} {P : CuspSub K n}
     (h : (CG.mk P).IsRegAlg) {κ : HChar K} {m : (K →+* ℂ) → ℤ} (hκ : κ.IsAlg m) : (CG.mk (P.twist κ)).IsRegAlg := (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by
   have e := ((ParLaws.hasInfChar_infChar (CG.mk P) τ).twist κ).infChar_eq
@@ -35,6 +38,11 @@ private theorem regAlg_twist {K : Type} [Field K] [NumberField K] [IsTotallyComp
   obtain ⟨k, rfl⟩ := (h τ).2 y hy
   exact ⟨k + m τ, by push_cast; ring⟩
 
+/- English proof (translation)
+Take `⟨R, hc, hs, Haw, Hab⟩` from `hS K Ω l ι n hn π hd (P.litN.aut.coh K n (by omega) π hreg)`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : RepIso R r := by`. Use `isoOfFrob P K Ω l ι n R r hc hr hs ha.1 ?_` and prove the remaining obligations. Use `filter_upwards [ha.2, eventually_not_mem K l] with w ⟨B, hB, hf⟩ hw`. Take `⟨⟨σ, hσ⟩, hi⟩` from `locCompC P K n π w`.
+
+Conclude with `⟨_, satFrob P K Ω l ι n R hc w hw σ B (((satLoc P K n w σ).2 _ π.finPart (hi σ hσ) B).1 hB) fun A h rc hrc => Haw w hw A h rc hrc σ hσ, hf⟩`. Establish `h1` using `Hab _ _ (Loc.tiedP l) w A h O Bw hj`. Establish `h3` using `GlobalTheory.PstConj.main K Ω l ι n _ _ (Loc.tiedP l) w A h O Bw hj (R.comp (Dec (F := K) A).subtype) (r.comp (Dec (F := K) A).subtype) p (fun g => hp g.1) h1.1`. Conclude with `⟨h3.1, fun σ hσ rc hrc => h3.2 ▸ h1.2 σ hσ rc hrc⟩`.
+-/
 private theorem compatK (P : Hypotheses₂) (hS : CsdSs) {K Ω : Type} [Field K] [NumberField K] [IsCMField K] [Field Ω] [Algebra K Ω]
     [IsAlgClosure K Ω] {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} (hn : 2 ≤ n) {r : G K Ω →* GL (Fin n) (Qbar l)}
     {π : CuspSub K n} (hr : Continuous r) (hreg : (CG.mk π).IsRegAlg) (hd : GlobalTheory.ContraPair.DualIsConj π) (ha : AttC ι r π)
@@ -57,6 +65,17 @@ private theorem compatK (P : Hypotheses₂) (hS : CsdSs) {K Ω : Type} [Field K]
 end UpperTheory.V.Lev
 
 open UpperTheory.V.Lev in
+/- English proof (translation)
+Introduce `P hS K _ _ _ hK n hn l _ Ω _ _ _ ι r π hr hreg hpol hatt w A h O _ _ _ Bw hj`. Take `⟨χ₀, hχ₀⟩` from `hpol`. Take `⟨χ, -, wt, HT, hN, -, -, hall⟩` from `galoisExistence_from_published P K Ω l ι n (by omega) π χ₀ hreg (fun v v' => (hχ₀.sign v).trans (hχ₀.sign v').symm) hχ₀.dual`. Establish `hG` using `hall r hr hatt`. Establish `hpst : IsPstAt (Loc.PP l) Bw (r.comp (Dec (F` using `K) A).subtype) := by`.
+
+Take `⟨T⟩` from `Loc.tiedP l`. Conclude with `P.litN.aut.berger.isPstAt T Bw _ (Units.continuous_val.comp (hr.comp continuous_subtype_val)) (hG.above _ _ ⟨T⟩ w A h O Bw hj).1`. Use `⟨hpst, fun σ hσ rc hrc hab => ?_⟩` and prove the remaining obligations. Take `⟨μ₀, ⟨-, -, a, -, hχa, -⟩, -⟩` from `hG.pol`. Establish `hχa' : IsAlgPos χ⁻¹ (-a)` using `fun k hk => by`.
+
+Rewrite using `[HChar.inf_inv, Units.val_inv_eq_inv_val, hχa k hk, ← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm`. Take `⟨k, b, hb⟩` from `Cq.signFix K hK χ⁻¹ (-a) hχa'`. Take `⟨κ, mκ, hκ, hκχ⟩` from `Cq.extReal K _ b hb`. Establish `hcsd : GlobalTheory.ContraPair.DualIsConj (π.twist κ)` using `Cq.csdTwist K n π _ κ hχ₀.dual (by`.
+
+Rewrite using `[hκχ, map_mul, map_pow, compNorm_quadChar, one_pow, mul_one, map_inv, hN])`. Take `⟨artK, hartK, hμ⟩` from `(GlobalTheory.Published.GlobalArtinReciprocity.heckeLAdicCharacter_and_principalIdealSt P.litN.aut.art).1 K Ω`. Take `⟨μ, ⟨hμc, hμ⟩, -⟩` from `hμ l ι κ mκ (isAlgPos_of_isAlg hκ)`. Take `⟨c1, c2⟩` from `compatK P hS hn (UpperTheory.galoisRep_irreducibility_criterion.2 _ _ n _ μ hr hμc) (regAlg_twist hreg hκ) hcsd (Cq.attTwist K Ω l ι n _ π hatt artK κ mκ μ hartK hμ) h Bw hj`. Take `⟨ν, hν⟩` from `hab`.
+
+Conclude with `Lev.untwistS P.litN.aut.chA P.litN.aut.chW P.litN.aut.berger K Ω l ι n _ hr artK κ mκ μ hartK (isAlgPos_of_isAlg hκ) hμc hμ w A h O Bw hj hpst c1 σ rc hrc (c2 _ (hσ.twist κ) rc hrc) (Or.inl ((Lev.ssCalc K Ω A w h).1 n _ ν hν))`.
+-/
 theorem UpperTheory.V.Lev.compatPSOf :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Lev.CsdSs → UpperTheory.V.Lev.CompatPS := by
   intro P hS K _ _ _ hK n hn l _ Ω _ _ _ ι r π hr hreg hpol hatt w A h O _ _ _ Bw hj

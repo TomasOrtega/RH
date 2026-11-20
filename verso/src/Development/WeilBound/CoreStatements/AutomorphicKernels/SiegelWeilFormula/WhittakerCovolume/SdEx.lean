@@ -4,6 +4,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSelfdualM
 
 namespace PositivityTheory.SiegelWeilFormula.KWhit
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm M J hJ ψ hψ n`. Conclude with `⟨GlobalTheory.T.exists_selfdual_measure_hermitian_tuples F E σ hcm M J hJ ψ hψ n, GlobalTheory.T.exists_selfdual_measure_hermitian_adeles F E σ hcm ψ hψ n⟩`.
+-/
 theorem sdEx : SdEx := by
   intro F E _ _ _ _ _ σ hcm M J hJ ψ hψ n
   exact ⟨GlobalTheory.T.exists_selfdual_measure_hermitian_tuples F E σ hcm M J hJ ψ hψ n, GlobalTheory.T.exists_selfdual_measure_hermitian_adeles F E σ hcm ψ hψ n⟩

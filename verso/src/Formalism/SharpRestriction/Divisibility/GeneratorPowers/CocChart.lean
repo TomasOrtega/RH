@@ -18,6 +18,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 variable {S : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S] {y : FrPt Xo c S}
 
+/- English proof (translation)
+Use `first`. Consider the case `exact GermD.val_genPowG Xo.univ.t φ ε g k r z J`. Consider the case `exact GermD.val_genPowG (t := Xo.univ.t) φ ε g k r z J`. Consider the case `(simp only [genPow]; exact GermD.val_genPowG _ φ ε g k r z J)`. Consider the case `(unfold genPow; exact GermD.val_genPowG _ φ ε g k r z J)`.
+-/
 theorem val_genPow' {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ Xo.univ.t.G.left)) (ε : K → ℤ)
     (g : LB.Gen (LB.LinComb Xo.univ.t.PP.L φ ε)) (k : ℕ) (r : Z ⟶ Y) (z : Z)
     (J : (Z ⟶ Xo.univ.t.G.left) → Xo.univ.t.PP.L.ι) : val (genPow φ ε g k) r z J = val g r z J ^ k := by
@@ -27,14 +30,23 @@ theorem val_genPow' {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶
   | (simp only [genPow]; exact GermD.val_genPowG _ φ ε g k r z J)
   | (unfold genPow; exact GermD.val_genPowG _ φ ε g k r z J)
 
+/- English proof (translation)
+Simplify using `only [unitΓ, map_mul]`.
+-/
 theorem gmU_mul {A : Type} [CommRing A] [Algebra S A] (z : (overAt y.x A).left) (w w' : Aˣ) :
     gm (𝟙 _) z ⊤ (unitΓ (w * w')) = gm (𝟙 _) z ⊤ (unitΓ w) * gm (𝟙 _) z ⊤ (unitΓ w') := by
   simp only [unitΓ, map_mul]
 
+/- English proof (translation)
+Simplify using `only [unitΓ, map_pow]`.
+-/
 theorem gmU_pow {A : Type} [CommRing A] [Algebra S A] (z : (overAt y.x A).left) (w : Aˣ) (k : ℕ) :
     gm (𝟙 _) z ⊤ (unitΓ (w ^ k)) = gm (𝟙 _) z ⊤ (unitΓ w) ^ k := by
   simp only [unitΓ, map_pow]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(jetSubstP m (actP (Dw := Dw) (S := S) c k)) (u m : Jet S (Fin 1 × Fin (dL Dw)) m) = _`. Rewrite using `[hu, jetSubstP_actP, ExpGF.jetSubstPS_psJet m _ (fun q => ExpGG.const_actPS c k q), ExpGK.expS_actPS φ hφ _ (ExpGA.const_hL C) k]`.
+-/
 theorem val_uk (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
     (hφ : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0) (u : ∀ m, (Jet S (Fin 1 × Fin (dL Dw)) m)ˣ)
     (hu : ∀ m, (u m : Jet S (Fin 1 × Fin (dL Dw)) m) =
@@ -45,6 +57,9 @@ theorem val_uk (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fi
   rw [hu, jetSubstP_actP, ExpGF.jetSubstPS_psJet m _ (fun q => ExpGG.const_actPS c k q),
     ExpGK.expS_actPS φ hφ _ (ExpGA.const_hL C) k]
 
+/- English proof (translation)
+Unfold `ExpGC.Bq`. Conclude with `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull hJ _ _ _) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_inv _ _).trans (congrArg _ (val_pull hJ _ _ _))) ((val_inv _ _).trans (cong …`.
+-/
 theorem val_Bq (C : ChartAt Xo c y) (a : 𝓞 E) (wLa : ExpGC.AdTy Xo a) (wLb : ExpGC.AdTy Xo (H.bar a)) {Z : Scheme.{0}}
     (ρ : Z ⟶ Xo.univ.t.G.left) (z : Z) (J : (Z ⟶ Xo.univ.t.G.left) → Xo.univ.t.PP.L.ι)
     (hJ : Good Xo.univ.t.PP.L z J) :
@@ -73,6 +88,23 @@ theorem val_Bq (C : ChartAt Xo c y) (a : 𝓞 E) (wLa : ExpGC.AdTy Xo a) (wLb : 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hL` using `Xo.univ.t.PP.isLB`. Establish `hbb : H.bar (H.bar a) = a` using `by rw [← hs, ← hs, star_star]`. Establish `hφc` using `hφ.const`. Use `corr_of_val hL fun z J hJ => ?_` and prove the remaining obligations. Take `⟨w1, hw1, e1⟩` from `hP1 E H Dw l Xo c S y C φ hφ hx m 1 (a * H.bar a) ((1 + a * H.bar a) * H.w0) z J hJ`.
+
+Take `⟨w2, hw2, e2⟩` from `hP2 E H Dw l Xo c S y C φ hφ hx m 1 H.w0 (a * H.bar a * H.w0) z J hJ`. Take `⟨w3, hw3, e3⟩` from `hP2 E H Dw l Xo c S y C φ hφ hx m (a * H.bar a) H.w0 (a * H.bar a * H.w0) z J hJ`. Take `⟨w4, hw4, e4⟩` from `hAd E H Dw l Xo c S y C φ hφ hx hact a wLa hra m 1 (a * H.w0) z J hJ`. Take `⟨w5, hw5, e5⟩` from `hAd E H Dw l Xo c S y C φ hφ hx hact (H.bar a) wLb hrb m a H.w0 z J hJ`. Establish `hmo : (xExp y C φ m).left ≫ (toUnit Xo.univ.t.G).left = (homAt y.x (Algebra.ofId S (Jet S (Fin 1 × Fin (dL Dw)) m))).left ≫ (toUnit (overAt y.x S)).left`.
+
+Rewrite using `[← Over.comp_left, ← Over.comp_left, toUnit_unique (xExp y C φ m ≫ toUnit _) (toUnit _), toUnit_unique (homAt y.x (Algebra.ofId S (Jet S (Fin 1 × Fin (dL Dw)) m)) ≫ toUnit _) (toUnit _)]`. Establish `hmo' : (toUnit (overAt y.x S)).left ≫ eSec Xo.univ.t.G = (1 : overAt y.x S ⟶ Xo.univ.t.G).left` using `rfl`. Establish `horig : val (ExpGC.Bq C.wP a wLa wLb) ((xExp y C φ m).left ≫ (toUnit Xo.univ.t.G).left ≫ eSec Xo.univ.t.G) z J * val Xo.univ.t.PP.rig ((xExp y C φ m).left ≫ (toUnit Xo.univ.t.G).left) z J ^ (3 : ℤ) = 1`. Rewrite using `[← Category.assoc, hmo, Category.assoc, hmo']`. Conclude with `hO E H Dw l Xo c hs S y C a wLa hra wLb hrb _ _ z J hJ`.
+
+Establish `hW : ∀ k : 𝓞 E, (xExp y C φ m).left ≫ (Xo.univ.t.act.act k).left = (ptm C ![φa c φ k] m).left ≫ (C.x m).left` using `fun k => by rw [← Over.comp_left, exp_chart_action_point C φ hφc hx m k, Over.comp_left]`. Establish `hW1 : (xExp y C φ m).left = (ptm C ![φ] m).left ≫ (C.x m).left`. Unfold `xExp`. Rewrite using `[Over.comp_left, jφ_eq]`. Establish `hUnit : gm (𝟙 _) z ⊤ (unitΓ (Units.map (jetSubstP m (actP (Dw` using `Dw) (S := S) c (1 + a * H.bar a))).toMonoidHom (u m))) * gm (𝟙 _) z ⊤ (unitΓ w5) = gm (𝟙 _) z ⊤ (unitΓ w1) * gm (𝟙 _) z ⊤ (unitΓ w2) * gm (𝟙 _) z ⊤ (unitΓ w3) * gm (𝟙 _) z ⊤ (unitΓ w4) * gm (𝟙 _) z ⊤ (unitΓ (Units.map (jetSubstP m (actP (Dw := Dw) (S := S) c a)).toMonoidHom (u m) …`.
+
+Simplify using `only [← gmU_mul, ← gmU_pow]`. Use `congr 2`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, val_uk C φ hφc u hu m, hu m, hw1, hw2, hw3, hw4, hw5, φa_one]`. Establish `hp2 : ∀ f : MvPowerSeries (Fin 1 × Fin (dL Dw)) S, psJet m f ^ 2 = psJet m (f ^ 2)` using `fun f => by`.
+
+Rewrite using `[pow_two, pow_two, FBIdJet.psJet_mul]`. Rewrite using `[hp2, ← FBIdJet.psJet_mul, ← FBIdJet.psJet_mul, ← FBIdJet.psJet_mul, ← FBIdJet.psJet_mul, ← FBIdJet.psJet_mul, ← FBIdJet.psJet_mul, ← FBIdJet.psJet_mul]`. Conclude with `congrArg (psJet m) (hUid E H Dw l Xo c hs S y C φ hφ hact a)`. Rewrite using `[val_eAt C φ hφc hact τ u hτc m _ z J hJ, val_mul hJ, val_pull hJ, Category.id_comp, hβ _ _ z J hJ, horig, inv_one, _root_.mul_one, val_mul hJ, val_genPow', val_eAt C φ hφc hact τ u hτc m _ z J hJ, val_mul hJ, val_e C φ hφc hact τ u hτc m z J hJ, val_eAt C φ hφc hact τ u hτc m _ …`. Rewrite using `[val_Bq C a wLa wLb _ z J hJ, e1, e2, e3, e4, e5, hW, hW, hW, hW1, hbb]`.
+
+Simplify using `only [φa_one]`. Establish `hU'` using `eq_mul_inv_of_mul_eq hUnit`. Rewrite using `[hU']`. Put the polynomial expressions in normal form. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_zpow]`. Normalize the expressions using the abelian group laws.
+-/
 theorem coc_chart (hP1 : ExpGJ.PhOneValSt) (hP2 : ExpGJ.PhTwoValSt) (hAd : ExpGJ.AdValSt) (hUid : UnitIdSt)
     (hO : ExpGO.BqOriginSt) (hs : ∀ a : 𝓞 E, star a = H.bar a)
     (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S) (hφ : IsExpOf C.B.G.F C.uvec φ)

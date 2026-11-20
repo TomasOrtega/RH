@@ -14,6 +14,17 @@ noncomputable section
 
 namespace GlobalTheory.Mean4O.LnNSmooth
 
+/- English proof (translation)
+Introduce `F _ _ Y σ Δ m h f z0 hf`. Establish `hp` using `presents_toLB Δ`. Establish `hpos` using `Var.mSmooth.posSet_eq h`. Use `set ψ := Var.Met.toWeight m hpos hp`. Establish `hψ : ψ.IsCInf` using `(Weight.isCInf_iff_isSmooth (Y.an σ)).2 (Var.mSmooth.isSmooth_toWeight h hp)`.
+
+Establish `hpn` using `Var.pn_ofWeight_toWeight hpos hp`. Take `⟨c, hc⟩` from `exists_chart (isLB_toLB Δ) (under z0)`. Take `⟨U, hU, hUg⟩` from `GlobalTheory.CombPot.generatesAt_exists_nhds hf`. Use `set W : Y.X.Opens := U ⊓ (toLB Δ).U c`. Establish `hzW : z0 ∈ ptsIn Y.str σ W` using `mem_ptsIn.2 ⟨hU, hc⟩`.
+
+Establish `hloc : ∀ w ∈ ptsIn Y.str σ W, lnN m f w = (1 / 2) * Real.log (‖ratVal (f * (c.1.2 : Y.Fn)) w‖ ^ 2) + (1 / 2) * (-ψ.φ c w)`. Introduce `w hw`. Establish `hw'` using `mem_ptsIn.1 hw`. Establish `hgen : Δ.GeneratesAt (under w) f` using `hUg _ hw'.1`. Establish `hu : UnitAt (under w) (f * (c.1.2 : Y.Fn))` using `(hp.isEqn c _ hw'.2).generatesAt_iff.1 hgen`.
+
+Establish `eP : (cxSt F).pn Y σ Δ m ((cxSt F).cx Y σ f) w = ‖ratVal (f * (c.1.2 : Y.Fn)) w‖ ^ 2 * Real.exp (-ψ.φ c w)` using `(congrFun (congrFun hpn _) _).symm.trans ((cxSt F).pn_ofWeight Y σ Δ _ _ hp ψ _ w c hw'.2 hgen.regularAt)`. Establish `hA : ratVal (f * (c.1.2 : Y.Fn)) w ≠ 0` using `ratVal_ne_zero hu`. Simplify using `only [lnN]`. Rewrite using `[eP, Real.log_mul (pow_pos (norm_pos_iff.2 hA) 2).ne' (Real.exp_pos _).ne', Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hu0 : UnitAt (under z0) (f * (c.1.2 : Y.Fn))` using `(hp.isEqn c _ hc).generatesAt_iff.1 hf`. Establish `hψc : CInfAt (ψ.φ c) z0` using `hψ c _ (mem_ptsIn.2 hc)`. Use `(((MetricWeightSmoothness.GlobalTheory.CompanionTheory.MetWeightSmooth.cInfAt_log_normSq_ratVal hu0).const_mul (1 / 2)).add (hψc.neg.const_mul (1 / 2))).congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn W).mem_nhds hzW] with w hw using hloc w hw`.
+-/
 theorem cInfAt_lnN : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (σ : F →+* ℂ) (Δ : Y.Dv) (m : (cxSt F).Met Y σ Δ), (cxSt F).mSmooth Y σ Δ m → ∀ (f : Y.Fn) (z0 : Pts Y σ), Δ.GeneratesAt (under z0) f → CInfAt (fun z => lnN m f z) z0 := by
   intro F _ _ Y σ Δ m h f z0 hf
   have hp := presents_toLB Δ

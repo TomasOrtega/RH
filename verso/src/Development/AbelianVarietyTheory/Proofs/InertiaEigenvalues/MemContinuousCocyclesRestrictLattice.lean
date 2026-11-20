@@ -18,6 +18,11 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 section Generic
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible ha hϖ`. Establish `h1 : ϖ ∣ p`. Rewrite using `[← Ideal.mem_span_singleton, ← hϖ.maximalIdeal_eq]`. Conclude with `hp`.
+
+Conclude with `⟨n, hn.dvd.trans (pow_dvd_pow_of_dvd h1 n)⟩`.
+-/
 theorem dvd_pow_of_not_isUnit {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {p : O} (hp : ¬ IsUnit p) {a : O} (ha : a ≠ 0) : ∃ n : ℕ, a ∣ p ^ n := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
@@ -36,6 +41,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G] {LL : Type} 
   [TopologicalSpace V'] [ContinuousAdd V'] [ContinuousConstSMul LL V']
   {ρ' : Representation LL G V'}
 
+/- English proof (translation)
+Take `⟨a, ha, h⟩` from `GlobalTheory.H1fGeneratorBoundAlt.exists_smul_fun_mem L hT c hc.1`. Take `⟨b, hb, h'⟩` from `GlobalTheory.H1fGeneratorBoundAlt.exists_smul_mem L' v`. Take `⟨n, d, hd⟩` from `dvd_pow_of_not_isUnit hp (mul_ne_zero ha hb)`. Establish `h1 : (p : O) ^ n • c ∈ latticeCocycles L`. Use `⟨Submodule.smul_mem ((continuousCocycles ρ).restrictScalars O) _ hc, fun g _ => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(p : O) ^ n • c g ∈ L.T`. Rewrite using `[hd, mul_assoc, mul_comm, mul_smul]`. Conclude with `L.T.smul_mem _ (h g)`. Establish `h2 : (p : O) ^ n • v ∈ L'.T`. Rewrite using `[hd, mul_comm, ← mul_assoc, mul_smul]`.
+
+Conclude with `L'.T.smul_mem _ h'`. Use `⟨n, ⟨_, h1⟩, fun g => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(p : O) ^ n • c g = _`. Rewrite using `[← algebraMap_smul LL, map_pow, map_natCast]`. Rewrite using `[← Nat.cast_smul_eq_nsmul O, ← Submodule.Quotient.mk_smul]`.
+
+Use `(Submodule.Quotient.eq _).2 ⟨_, h2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `ρ' g ((p : O) ^ n • v) - (p : O) ^ n • v = F.f ((p : O) ^ n • c g) - ((p ^ n : ℕ) : O) • (c' : G → V') g`. Rewrite using `[Nat.cast_pow, LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower, ← smul_sub, ← smul_sub, hv]`.
+-/
 theorem lift_integral {L : Lattice (O := O) ρ} {L' : Lattice (O := O) ρ'} (F : LatHom L L')
     (hT : IsOpen (L.T : Set V)) {p : ℕ} (hp : ¬ IsUnit (p : O)) (c' : ↥(latticeCocycles L')) (c : G → V)
     (hc : c ∈ continuousCocycles ρ) (v : V') (hv : ∀ g, F.f (c g) - (c' : G → V') g = ρ' g v - v) :
@@ -65,6 +79,9 @@ theorem lift_integral {L : Lattice (O := O) ρ} {L' : Lattice (O := O) ρ'} (F :
 
 end Generic
 
+/- English proof (translation)
+Take `⟨hD, hDVR, hF⟩` from `hO.1`. Take `⟨n, c₁, h1, h2⟩` from `lift_integral (resHom π H) (GlobalTheory.Cyc.locLat_isOpen hO T₁) hp c₂ c hc v hv`. Conclude with `⟨n, c₁, _, rfl, h1, hκ ▸ h2⟩`.
+-/
 theorem lift_integral_res {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp]
     [TopologicalSpace Qp] [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL]
     [TopologicalSpace LL] (hO : GoodO (Qp := Qp) LL O) (H : Subgroup G) [CompactSpace ↥H]
@@ -79,11 +96,17 @@ theorem lift_integral_res {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : T
   obtain ⟨n, c₁, h1, h2⟩ := lift_integral (resHom π H) (GlobalTheory.Cyc.locLat_isOpen hO T₁) hp c₂ c hc v hv
   exact ⟨n, c₁, _, rfl, h1, hκ ▸ h2⟩
 
+/- English proof (translation)
+The claim follows from `c.2.1`.
+-/
 theorem mem_continuousCocycles_restrictLattice {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp]
     [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
     (T : LocLat G Qp LL O) (H : Subgroup G) (c : ↥(latticeCocycles (resLat T H))) :
     (c : ↥H → T.V) ∈ continuousCocycles (T.ρ.comp H.subtype) := c.2.1
 
+/- English proof (translation)
+Rewrite using `[h, map_smul, ← smul_sub, ← hx]`. Both sides reduce to the same expression.
+-/
 theorem smul_coboundary {Qp LL V B : Type} [Field Qp] [Field LL] [Algebra Qp LL] [AddCommGroup V]
     [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] [CommRing B] [Algebra Qp B]
     (f : V ⊗[Qp] B →ₗ[LL] V ⊗[Qp] B) (a : LL) {y y' : V} {x : V ⊗[Qp] B} (h : y' = a • y)
@@ -93,6 +116,11 @@ theorem smul_coboundary {Qp LL V B : Type} [Field Qp] [Field LL] [Algebra Qp LL]
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Introduce `hu`. Take `⟨u, hu⟩` from `hu.exists_right_inv`. Establish `h1 : ((l : ℕ) : ↥LL.1) * (u : ↥LL.1) = 1`. Use `congrArg (algebraMap ↥(OL LL) ↥LL.1) hu` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_one]`. Then use the resulting hypothesis.
+
+Establish `h2` using `congrArg (P.v LL) h1`. Rewrite `h2` using `[AddValuation.map_mul, AddValuation.map_one, P.v_l]`. Establish `h3 : 0 ≤ P.v LL (u : ↥LL.1)` using `(P.v_O LL _).2 u.2`. Establish `h4 : (1 : WithTop ℚ) ≤ 0` using `h2 ▸ le_add_of_nonneg_right h3`. Conclude with `absurd h4 (by simp)`.
+-/
 theorem not_isUnit_l (P : LocPrime l) (LL : FinExt l) : ¬ IsUnit ((l : ℕ) : ↥(OL LL)) := by
   intro hu
   obtain ⟨u, hu⟩ := hu.exists_right_inv
@@ -105,6 +133,9 @@ theorem not_isUnit_l (P : LocPrime l) (LL : FinExt l) : ¬ IsUnit ((l : ℕ) : �
   have h4 : (1 : WithTop ℚ) ≤ 0 := h2 ▸ le_add_of_nonneg_right h3
   exact absurd h4 (by simp)
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.subtype_mk _`.
+-/
 theorem continuous_incl {K E : FinExt l} (hle : K.1 ≤ E.1) :
     Continuous (Subgroup.inclusion (GK_le hle)) :=
   continuous_subtype_val.subtype_mk _
@@ -117,6 +148,13 @@ def resRep {K LL : FinExt l} (E : FinExt l) (hle : K.1 ≤ E.1) (T : Lt K LL) :
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Set `a : ↥(GK E) → ↥H` to `fun g => ⟨Subgroup.inclusion (GK_le hle) g, (hH _).2 g.2⟩`. Set `b : ↥H → ↥(GK E)` to `fun g => ⟨((g : ↥(GK K)) : GQ l), (hH _).1 g.2⟩`. Establish `ha : Continuous a` using `(continuous_incl hle).subtype_mk _`. Establish `hb : Continuous b` using `(continuous_subtype_val.comp continuous_subtype_val).subtype_mk _`. Establish `hres` using `fun (T : Lt K LL) (hT : IsCrys (P.PD K) T.ρ) => (GlobalTheory.Per.TiedRestrict.restrict_crys_deRham l P AI hP K E LL hle T.V T.ρ).1 hT`.
+
+Establish `hc' : c₂ ∘ a ∈ finiteCocycles (P.PD E) (resRep E hle T₂).ρ`. Use `⟨⟨hc₂.1.comp ha, fun g h => hc₂.2 (a g) (a h)⟩, x₂, fun g => ?_⟩` and prove the remaining obligations. Conclude with `(hx₂ (a g)).trans (congrArg (fun f : T₂.V ⊗[ℚ_[l]] P.R.B →ₗ[↥LL.1] T₂.V ⊗[ℚ_[l]] P.R.B => f x₂ - x₂) (GlobalTheory.Cyc.actVB_inclusion P K E LL hle T₂ g).symm)`. Take `⟨c, ⟨hc, x, hx⟩, v, hv⟩` from `GlobalTheory.T.bloch_kato_right_exact l P AI hP E ↥LL.1 ↥(OL LL) (GlobalTheory.LocalIntegers.good_integers l LL).1 (resRep E hle T₁) (resRep E hle T₂) π.f (fun g y => π.equiv _ y) hπ (hres T₁ h₁) (hres T₂ h₂) _ hc'`. Use `⟨c ∘ b, ⟨hc.1.comp hb, fun g h => hc.2 (b g) (b h)⟩, ⟨x, fun g => ?_⟩, v, fun g => ?_⟩` and prove the remaining obligations.
+
+Set `x' : T₁.V ⊗[ℚ_[l]] P.R.B` to `x`. Conclude with `(hx (b g)).trans (congrArg (fun f : T₁.V ⊗[ℚ_[l]] P.R.B →ₗ[↥LL.1] T₁.V ⊗[ℚ_[l]] P.R.B => f x' - x') (GlobalTheory.Cyc.actVB_inclusion P K E LL hle T₁ (b g)))`. Conclude with `(congrFun hv (b g)).symm`.
+-/
 theorem lift_rational (P : LocPrime l) (AI : LocAinf l P) (hP : LocTied l P AI) {K LL : FinExt l}
     (E : FinExt l) (hle : K.1 ≤ E.1) (H : Subgroup ↥(GK K))
     (hH : ∀ x : ↥(GK K), x ∈ H ↔ (x : GQ l) ∈ GK E) (T₁ T₂ : Lt K LL) (π : LatHom T₁.L T₂.L)
@@ -147,6 +185,9 @@ theorem lift_rational (P : LocPrime l) (AI : LocAinf l P) (hP : LocTied l P AI) 
       (GlobalTheory.Cyc.actVB_inclusion P K E LL hle T₁ (b g)))
   · exact (congrFun hv (b g)).symm
 
+/- English proof (translation)
+Use `GlobalTheory.H1fGeneratorBoundAlt.compactSpace_GK E` as an intermediate fact. Set `a : ↥(GK E) → ↥H` to `fun g => ⟨Subgroup.inclusion (GK_le hle) g, (hH _).2 g.2⟩`. Establish `ha : Continuous a` using `(continuous_incl hle).subtype_mk _`. Establish `hs : Function.Surjective a` using `fun g => ⟨⟨((g : ↥(GK K)) : GQ l), (hH _).1 g.2⟩, rfl⟩`. Conclude with `hs.compactSpace ha`.
+-/
 theorem compactSpace_sub {K E : FinExt l} (hle : K.1 ≤ E.1) (H : Subgroup ↥(GK K))
     (hH : ∀ x : ↥(GK K), x ∈ H ↔ (x : GQ l) ∈ GK E) : CompactSpace ↥H := by
   have := GlobalTheory.H1fGeneratorBoundAlt.compactSpace_GK E
@@ -155,6 +196,9 @@ theorem compactSpace_sub {K E : FinExt l} (hle : K.1 ≤ E.1) (H : Subgroup ↥(
   have hs : Function.Surjective a := fun g => ⟨⟨((g : ↥(GK K)) : GQ l), (hH _).1 g.2⟩, rfl⟩
   exact hs.compactSpace ha
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.Cyc.mem_GKs_iff_mem_Gj, hs]`. Both sides reduce to the same expression.
+-/
 theorem mem_GKs_iff (P : LocPrime l) {K LL : FinExt l} {s m : ℕ}
     (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) m) (hs : W.s = s) (x : ↥(GK K)) :
     x ∈ W.GKs ↔ (x : GQ l) ∈ GK (GlobalTheory.IndefiniteRowSideFullHecke.LevelConstants.KsFin K s) := by
@@ -163,6 +207,9 @@ theorem mem_GKs_iff (P : LocPrime l) {K LL : FinExt l} {s m : ℕ}
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hH` using `mem_GKs_iff P W hs`. Use `compactSpace_sub (E := GlobalTheory.IndefiniteRowSideFullHecke.LevelConstants.KsFin K s) hK W.GKs hH` as an intermediate fact. Use `(lift_rational P AI hP (GlobalTheory.IndefiniteRowSideFullHecke.LevelConstants.KsFin K s) hK W.GKs hH T₁ T₂ π hπ h₁ h₂ _ (mem_continuousCocycles_restrictLattice T₂ W.GKs c₂) x₂ hx₂).elim fun c hc => hc.2.1.elim fun x hx => hc.2.2.elim fun v hv => ?_` and prove the remaining obligations. Use `(lift_integral_res (GlobalTheory.LocalIntegers.good_integers l LL).1 W.GKs T₁ T₂ π (not_isUnit_l P LL) c₂ κ₂ hκ c hc.1 v hv).elim fun n h => h.elim fun c₁ h => h.elim fun κ₁ h => ?_` and prove the remaining obligations. Conclude with `⟨n, c₁, κ₁, h.1, ⟨((l : ↥LL.1) ^ n) • x, fun g => smul_coboundary _ _ (h.2.1 g) (hx g)⟩, h.2.2⟩`.
+-/
 theorem lift_cocycle (P : LocPrime l) (AI : LocAinf l P) (hP : LocTied l P AI) {K LL : FinExt l}
     {s m : ℕ} (hK : K.1 ≤ Ks K s) (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) m) (hs : W.s = s)
     (T₁ T₂ : Lt K LL) (π : LatHom T₁.L T₂.L)

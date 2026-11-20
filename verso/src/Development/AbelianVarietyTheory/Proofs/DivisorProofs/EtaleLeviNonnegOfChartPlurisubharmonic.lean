@@ -12,6 +12,19 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory.OTY
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ ι La _ A U z hE φ hφ`. Unfold `LeviNonneg`. Introduce `x ξ`. Establish `hloc` using `GlobalTheory.T.etale_isLocalHomeomorph' n Y ι La A U z hE`. Take `⟨e, he, hx⟩` from `exists_chart n (fun y : U => z y) hloc x`.
+
+Take `⟨i, hxi, hsm, hpos⟩` from `hφ x.1 x.2`. Establish `hzx : z x = e x` using `he hx`. Establish `hv : e x ∈ e.target` using `e.map_source hx`. Establish `hsx : e.symm (e x) = x` using `e.left_inv hx`. Take `⟨hG, hev, -⟩` from `GlobalTheory.T.contDiffAt_chart_inverse_of_etale n Y ι La A U z hE e he (e x) hv i (by rw [hsx]; exact hxi)`.
+
+Rewrite using `[levi_eq_leviV n _ e he _ x hx ξ]`. Use `show 0 ≤ (leviV n (fun y => ((φ (e.symm y : Y) : ℝ) : ℂ)) (z x) ξ).re`. Rewrite using `[hzx]`. Establish `heq : (fun y => ((φ (e.symm y : Y) : ℝ) : ℂ)) =ᶠ[𝓝 (e x)] (fun w => ((φ ((A.chart i).symm w) : ℝ) : ℂ)) ∘ (fun v' => A.chart i (e.symm v' : Y))` using `by filter_upwards [hev] with v' hv'`. Simplify using `only [Function.comp_apply, (A.chart i).left_inv hv']`.
+
+Establish `hcongr : leviV n (fun y => ((φ (e.symm y : Y) : ℝ) : ℂ)) (e x) ξ = leviV n ((fun w => ((φ ((A.chart i).symm w) : ℝ) : ℂ)) ∘ (fun v' => A.chart i (e.symm v' : Y))) (e x) ξ`. Unfold `leviV`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 2`. Apply `wd_congr` to reduce the goal to its premises.
+
+Use `filter_upwards [heq.eventuallyEq_nhds] with y hy`. Conclude with `ReciprocityTheory.L2DbarEstimates.wdb_congr hy`. Establish `hU : ContDiffAt ℝ 2 (fun w => ((φ ((A.chart i).symm w) : ℝ) : ℂ)) ((fun v' => A.chart i (e.symm v' : Y)) (e x))`. Simplify using `only [hsx]`. Conclude with `((Complex.ofRealCLM.contDiff.contDiffAt).comp _ hsm).of_le (WithTop.coe_le_coe.mpr le_top)`.
+
+Rewrite using `[hcongr, flA_leviV_comp hU (hG.of_le (WithTop.coe_le_coe.mpr le_top)) ξ]`. Simplify using `only [hsx]`. Conclude with `hpos _`.
+-/
 theorem etale_leviNonneg : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (U : Set Y) (z : Y → V n), Etale A U z → ∀ φ : Y → ℝ, (∀ x ∈ U, ∃ i, x ∈ (A.chart i).source ∧ ContDiffAt ℝ ∞ (φ ∘ (A.chart i).symm) (A.chart i x) ∧ ∀ ξ : Fin n → ℂ, 0 ≤ A.leviAt i φ x ξ) → LeviNonneg n (fun y : U => z y) (fun y : U => φ y) := by
   intro n Y _ _ _ _ _ ι La _ A U z hE φ hφ
   unfold LeviNonneg

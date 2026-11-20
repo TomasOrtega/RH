@@ -9,6 +9,9 @@ import GroundTheory.LocalFields.LubinTateReciprocity
 open NumberField IsDedekindDomain ValuativeRel Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocDict GroundTheory.LocalField GroundTheory.LocalField.FormalGroup
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.localArtinMap_unitUniformizerPow_lubinTateTorsion | exact GlobalTheory.localArtinMap_unitUniformizerPow_lubinTateTorsion | (intros; apply GlobalTheory.localArtinMap_unitUniformizerPow_lubinTateTorsion <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lubin_tate_torsion_galois_action : ∀ (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     (Ω : Type) [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [Algebra K Ω]
     [ValuativeExtension K Ω] [IsSepClosure K Ω] {π : 𝒪[K]} (hπ : Irreducible π) {f : PowerSeries 𝒪[K]}

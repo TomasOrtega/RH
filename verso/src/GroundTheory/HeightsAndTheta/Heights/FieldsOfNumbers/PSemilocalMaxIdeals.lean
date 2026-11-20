@@ -20,6 +20,39 @@ universe u
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `F _ K K' _ _ _ _ j ι' _ P' hP' n hP'n hPn W hW hWn hPW`. Use `hP'.isPrime` as an intermediate fact. Establish `hfin` using `h1 F K K' j ι' P' hP' n hP'n hPn W hW hWn hPW`. Establish `h𝒲 : ∀ W' ∈ fibrePrimes j P' W, IsMultiProjPrime W' ∧ P' ≤ W'` using `fun W' hW' => ⟨hW'.1, hW'.2.1⟩`. Establish `hanti : ∀ W₁ ∈ fibrePrimes j P' W, ∀ W₂ ∈ fibrePrimes j P' W, W₁ ≤ W₂ → W₁ = W₂`.
+
+Introduce `W₁ h₁ W₂ h₂ hle`. Assume the negation of the conclusion as `hne`. Use `h₁.1.isPrime` as an intermediate fact. Use `h₂.1.isPrime` as an intermediate fact. Take `⟨f, hf₂, hf₁⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne hle hne)`.
+
+Establish `hd` using `ringKrullDim_add_one_le hle hf₁ hf₂`. Take `⟨D₁, -, hD₁⟩` from `exists_ringKrullDim_eq (fun T _ hq => killBlocks_mem_of_isMultiHomogIdeal h₁.1.multiHomog T hq) h₁.1.relevant`. Take `⟨D₂, -, hD₂⟩` from `exists_ringKrullDim_eq (fun T _ hq => killBlocks_mem_of_isMultiHomogIdeal h₂.1.multiHomog T hq) h₂.1.relevant`. Establish `e₁` using `h2 F K K' j ι' P' hP' n hP'n hPn W hW hWn hPW W₁ h₁`. Establish `e₂` using `h2 F K K' j ι' P' hP' n hP'n hPn W hW hWn hPW W₂ h₂`.
+
+Rewrite `e₁` using `[relDim_eq_int hD₁, natCast_withBot_withTop]`. Rewrite `e₂` using `[relDim_eq_int hD₂, natCast_withBot_withTop]`. Rewrite `hd` using `[hD₁, hD₂]`. Establish `e₁' : (D₁ : ℤ) - Fintype.card K' = n` using `by exact_mod_cast e₁`. Establish `e₂' : (D₂ : ℤ) - Fintype.card K' = n` using `by exact_mod_cast e₂`.
+
+Establish `hd' : D₂ + 1 ≤ D₁` using `by exact_mod_cast hd`. Use linear arithmetic over natural numbers and integers. Use `choose 𝔪 h𝔪 hlen using h7 F K K' j ι' P' hP' n hP'n hPn W hW hWn hPW`. Set `: Fintype (fibrePrimes j P' W)` to `hfin.fintype`. Establish `hprime : ∀ W' : fibrePrimes j P' W, (𝔪 W'.1 W'.2).IsPrime`.
+
+Introduce `W'`. Use `⟨fun htop => (h𝔪 W'.1 W'.2 1).mp (htop ▸ Submodule.mem_top) ⟨1, Subalgebra.one_mem _, by simp⟩, fun {x y} hxy => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_or, h𝔪, h𝔪, not_not, not_not]`. Take `⟨⟨a, ha, hxa⟩, ⟨b, hb, hyb⟩⟩` from `hc`.
+
+Conclude with `(h𝔪 W'.1 W'.2 _).mp hxy ⟨a * b, Subalgebra.mul_mem _ ha hb, by`. Rewrite using `[Subalgebra.coe_mul, mul_mul_mul_comm, hxa, hyb, one_mul]⟩`. Establish `hsep : ∀ W₁ W₂ : fibrePrimes j P' W, W₁ ≠ W₂ → ¬ 𝔪 W₁.1 W₁.2 ≤ 𝔪 W₂.1 W₂.2`. Introduce `W₁ W₂ hne hle`. Take `⟨x, hx, hx₁, hx₂⟩` from `h5 F K' ι' P' hP' _ hfin h𝒲 W₁.1 W₁.2 W₂.1 W₂.2 (fun h => hne (Subtype.ext (hanti _ W₁.2 _ W₂.2 h)))`.
+
+Conclude with `(h𝔪 W₂.1 W₂.2 ⟨x, hx⟩).mp (hle ((h𝔪 W₁.1 W₁.2 ⟨x, hx⟩).mpr hx₁)) hx₂`. Establish `hne` using `h3 F K K' j ι' P' hP' n hP'n hPn W hW hWn hPW`. Establish `hcov : ∀ M : Ideal (degZeroLoc P' (fibrePrimes j P' W)), M.IsMaximal → ∃ W' : fibrePrimes j P' W, M = 𝔪 W'.1 W'.2`. Introduce `M hM`. Set `𝔫 : fibrePrimes j P' W → Ideal (degZeroLoc P' (fibrePrimes j P' W))` to `fun W' => 𝔪 W'.1 W'.2`.
+
+Establish `hsub : (M : Set (degZeroLoc P' (fibrePrimes j P' W))) ⊆ ⋃ W' ∈ ((Finset.univ : Finset (fibrePrimes j P' W)) : Set (fibrePrimes j P' W)), ((𝔫 W' : Ideal (degZeroLoc P' (fibrePrimes j P' W))) : Set _)`. Introduce `x hx`. Establish `hnu : ¬ IsUnit x` using `fun hu => hM.ne_top (M.eq_top_of_isUnit_mem hx hu)`. Establish `: ¬ ∀ W' ∈ fibrePrimes j P' W, ∃ y ∈ degZeroLoc P' {W'}, (x : FractionRing (MRing ι' F ⧸ P')) * y = 1`. Rewrite using `[← h4 F K' ι' P' hP' _ hne h𝒲 x x.2]`.
+
+Introduce and unpack `⟨y, hy, hxy⟩`. Conclude with `hnu (IsUnit.of_mul_eq_one ⟨y, hy⟩ (Subtype.ext hxy))`. Use `push Not at this`. Take `⟨W', hW', hx'⟩` from `this`. Use `Set.mem_iUnion₂.mpr ⟨⟨W', hW'⟩, Finset.mem_coe.mpr (Finset.mem_univ _), ?_⟩` and prove the remaining obligations.
+
+Conclude with `(h𝔪 W' hW' x).mpr (fun ⟨y, hy, hxy⟩ => hx' y hy hxy)`. Take `⟨W', -, hle⟩` from `(Ideal.subset_union_prime (f := 𝔫) ⟨hne.some, hne.some_mem⟩ ⟨hne.some, hne.some_mem⟩ (fun W' _ _ _ => hprime W')).mp hsub`. Conclude with `⟨W', hM.eq_of_le (hprime W').ne_top hle⟩`. Establish `hmax : ∀ W' : fibrePrimes j P' W, (𝔪 W'.1 W'.2).IsMaximal`. Introduce `W'`.
+
+Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ (hprime W').ne_top`. Take `⟨W'', rfl⟩` from `hcov M hM`. Distinguish the cases in `h : W' = W''`. Substitute `h` using the available equality. Conclude with `hM`.
+
+Conclude with `absurd hle (hsep W' W'' h)`. Use `⟨fun W' => 𝔪 W'.1 W'.2, hmax, fun W₁ W₂ he => ?_, hcov, fun W' => ⟨?_, hlen W'.1 W'.2⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hsep W₁ W₂ h (le_of_eq he)`. Set `` to `degZeroLoc.algebraOfSubset P' (Set.singleton_subset_iff.mpr W'.2)`.
+
+Use `(isLocalization_iff _ _).mpr ⟨fun s => ?_, fun z => ?_, fun {x y} hxy => ?_⟩` and prove the remaining obligations. Establish `hs` using `s.2`. Rewrite `hs` using `[Ideal.mem_primeCompl_iff, h𝔪, not_not]`. Take `⟨t, ht, hst⟩` from `hs`. Conclude with `IsUnit.of_mul_eq_one ⟨t, ht⟩ (Subtype.ext hst)`.
+
+Take `⟨b, hb, s, hs, ⟨t, ht, hst⟩, hzs⟩` from `h6 F K' ι' P' hP' _ hfin h𝒲 W'.1 W'.2 z z.2`. Use `⟨(⟨b, hb⟩, ⟨⟨s, hs⟩, ?_⟩), Subtype.ext hzs⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_primeCompl_iff, h𝔪, not_not]`. Conclude with `⟨t, ht, hst⟩`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+
+Establish `h'` using `congrArg Subtype.val hxy`. Establish `hxy' : x = y` using `Subtype.ext h'`. Rewrite using `[hxy']`.
+-/
 theorem SemilocalMaxIdeals.proof (h1 : FibreFinite.Statement.{u}) (h2 : FibreRelDim.Statement.{u})
     (h3 : FibreNonempty.Statement.{u}) (h4 : DegZeroLocUnits.Statement.{u})
     (h5 : DegZeroLocSeparate.Statement.{u}) (h6 : DegZeroLocLocalize.Statement.{u})

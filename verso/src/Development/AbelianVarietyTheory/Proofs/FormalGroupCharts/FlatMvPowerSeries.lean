@@ -5,6 +5,19 @@ open scoped TensorProduct
 
 namespace GlobalTheory.PowerSeriesFlat
 
+/- English proof (translation)
+Apply `Module.Flat.of_forall_isTrivialRelation` to reduce the goal to its premises. Introduce `l f x h`. Set `φ : (Fin l → T) →ₗ[T] T` to `Fintype.linearCombination T f`. Establish `hφ : ∀ v : Fin l → T, φ v = ∑ i, f i * v i`. Introduce `v`.
+
+Simplify using `[φ, Fintype.linearCombination_apply, mul_comm]`. Establish `hfg : (LinearMap.ker φ).FG` using `IsNoetherian.noetherian _`. Take `⟨k, s, hs⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hfg`. Establish `hx : ∀ t : ι, ∃ c : Fin k → T, ∑ j, c j • s j = fun i => x i t`. Introduce `t`.
+
+Establish `hm : (fun i => x i t) ∈ LinearMap.ker φ`. Rewrite using `[LinearMap.mem_ker, hφ]`. Use `congrFun h t` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`. Rewrite `hm` using `[← hs]`.
+
+Conclude with `(Submodule.mem_span_range_iff_exists_fun T).1 hm`. Use `choose c hc using hx`. Use `⟨k, fun i j => s j i, fun j t => c t j, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use function extensionality and compare the values at `t`.
+
+Use `congrFun (hc t) i` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this ⊢`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Introduce `j`.
+
+Establish `hm : s j ∈ LinearMap.ker φ`. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Rewrite `hm` using `[LinearMap.mem_ker, hφ]`. Then use the resulting hypothesis.
+-/
 theorem flat_pi (T : Type*) [CommRing T] [IsNoetherianRing T] (ι : Type*) :
     Module.Flat T (ι → T) := by
   apply Module.Flat.of_forall_isTrivialRelation
@@ -37,6 +50,9 @@ theorem flat_pi (T : Type*) [CommRing T] [IsNoetherianRing T] (ι : Type*) :
       exact Submodule.subset_span ⟨j, rfl⟩
     rwa [LinearMap.mem_ker, hφ] at hm
 
+/- English proof (translation)
+Introduce `T _ _ σ` and use `flat_pi T (σ →₀ ℕ)`.
+-/
 theorem flat_mvPowerSeries :
     ∀ (T : Type) [CommRing T] [IsNoetherianRing T] (σ : Type),
       Module.Flat T (MvPowerSeries σ T) :=

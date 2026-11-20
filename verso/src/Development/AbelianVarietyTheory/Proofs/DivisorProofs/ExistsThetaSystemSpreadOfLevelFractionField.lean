@@ -22,6 +22,9 @@ namespace GlobalTheory.SpreadTheta
 
 open GlobalTheory.ThetaDescent GlobalTheory.SymLevelDescent
 
+/- English proof (translation)
+Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : B →+* C) (g : A →+* B) :
     spMap f ≫ spMap g = spMap (f.comp g) := by
   unfold spMap
@@ -30,6 +33,23 @@ theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (
 
 open NumberField in
 
+/- English proof (translation)
+Set `K` to `CyclotomicField m ℚ`. Use `haveI : IsCyclotomicExtension {m} ℚ K := CyclotomicField.isCyclotomicExtension m ℚ`. Establish `hK` using `IsCyclotomicExtension.zeta_spec m ℚ K`. Set `pb` to `hK.integralPowerBasis`. Establish `hmin : Polynomial.aeval ζ (minpoly ℤ pb.gen) = 0`.
+
+Establish `e₁ : minpoly ℤ pb.gen = Polynomial.cyclotomic m ℤ`. Rewrite using `[IsPrimitiveRoot.integralPowerBasis_gen, Polynomial.cyclotomic_eq_minpoly hK (NeZero.pos m)]`. Conclude with `(minpoly.algebraMap_eq RingOfIntegers.coe_injective hK.toInteger).symm`. Rewrite using `[e₁, Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `hζ.isRoot_cyclotomic (NeZero.pos m)`.
+
+Set `σ : 𝓞 K →+* R₁` to `(pb.lift ζ hmin).toRingHom`. Establish `hσg : σ hK.toInteger = ζ`. Use `pb.lift_gen ζ hmin` as an intermediate fact. Rewrite `this` using `[IsPrimitiveRoot.integralPowerBasis_gen]`. Then use the resulting hypothesis. Establish `hσ : Function.Injective σ`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `hb : RingHom.ker σ = ⊥`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Use `eq_bot_iff.2 fun a ha => ?_` and prove the remaining obligations.
+
+Establish `: σ (algebraMap ℤ (𝓞 K) a) = 0` using `ha`. Rewrite `this` using `[eq_intCast (algebraMap ℤ (𝓞 K)), map_intCast]`. Conclude with `(Ideal.mem_bot).2 (Int.cast_eq_zero.1 this)`. Conclude with `(RingHom.injective_iff_ker_eq_bot σ).2 hb |>.eq_iff.1 (hx.trans (map_zero σ).symm)`. Establish `hun : IsUnit (σ (n : 𝓞 K))` using `by rwa [map_natCast]`.
+
+Set `b : GlobalTheory.ZH.AwayBase K n →+* R₁` to `IsLocalization.Away.lift (n : 𝓞 K) hun`. Establish `hb : ∀ a, b (algebraMap (𝓞 K) _ a) = σ a` using `fun a => IsLocalization.Away.lift_eq _ hun a`. Set `z : GlobalTheory.ZH.AwayBase K n` to `algebraMap (𝓞 K) _ hK.toInteger`. Establish `hz : IsPrimitiveRoot z m` using `hK.toInteger_isPrimitiveRoot.map_of_injective (GlobalTheory.ZH.AwayBase.injective K n)`. Apply the tactic sequence `refine ⟨GlobalTheory.ZH.AwayBase K n, inferInstance, b, (hz.isUnit (NeZero.ne m)).unit, inferInstance, by convert GlobalTheory.ZH.AwayBase.finiteType K n using 1 <;> first | rfl | exact Subsingleton.elim _ _, ?_, GlobalTheory.ZH.AwayBase.isUnit_natCast K n, ?_⟩`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨k, a, e⟩` from `IsLocalization.Away.surj (n : 𝓞 K) x`. Establish `h` using `congrArg b e`. Rewrite `h` using `[map_mul, hx, zero_mul, hb]`.
+
+Rewrite `e` using `[(map_eq_zero_iff σ hσ).1 h.symm, map_zero]`. Conclude with `((IsLocalization.Away.algebraMap_isUnit (n : 𝓞 K)).pow k).mul_left_eq_zero.1 e`. Use `show b z = ζ`. Rewrite using `[hb, hσg]`.
+-/
 theorem exists_base (R₁ : Type) [CommRing R₁] [IsDomain R₁] [CharZero R₁] (n m : ℕ) [NeZero n] [NeZero m]
     (hu : IsUnit (n : R₁)) (ζ : R₁) (hζ : IsPrimitiveRoot ζ m) :
     ∃ (o : Type) (_ : CommRing o) (b : o →+* R₁) (ze : oˣ), IsDedekindDomain o ∧ Algebra.FiniteType ℤ o ∧
@@ -76,6 +96,31 @@ theorem exists_base (R₁ : Type) [CommRing R₁] [IsDomain R₁] [CharZero R₁
   · show b z = ζ
     rw [hb, hσg]
 
+/- English proof (translation)
+Introduce `o K _ _ _ t M ze ⟨w, wd, hw, hwd, hsum, hpol, hadj⟩ ⟨lev⟩`. Set `β : o →+* K` to `algebraMap o K`. Set `act : Bool → (t.A ⟶ t.A)` to `fun j => cond j w wd`. Take `⟨s₀, H₀⟩` from `GlobalTheory.T.exists_finset_isProjOver_descends_to_subfield K (gen β ∅) t.A.left t.A.hom (GlobalTheory.ProjSpace.isProjOver_of_relAmple t.ample)`. Take `⟨X₀, p₀, φ, hp₀, sq⟩` from `H₀ (gen β s₀) (gen_mono β (Finset.empty_subset _)) (subset_gen β le_rfl)`.
+
+Establish `: IsProper p₀` using `isProper_of_isProjOver hp₀`. Establish `: LocallyOfFinitePresentation p₀` using `inferInstance`. Establish `: QuasiCompact (Over.mk p₀).hom` using `inferInstanceAs (QuasiCompact p₀)`. Establish `: QuasiSeparated (Over.mk p₀).hom` using `inferInstanceAs (QuasiSeparated p₀)`. Establish `: LocallyOfFinitePresentation (Over.mk p₀).hom` using `inferInstanceAs (LocallyOfFinitePresentation p₀)`.
+
+Take `⟨s₁, H₁⟩` from `GlobalTheory.grpObj_descends_to_large_subfield K (gen β s₀) (Over.mk p₀) t.A φ sq`. Take `⟨s₂, H₂⟩` from `GlobalTheory.T.exists_lineBundle_descent_to_subfield K (gen β s₀) X₀ t.A.left p₀ t.A.hom φ t.L t.isLB sq`. Take `⟨s₃, H₃⟩` from `GlobalTheory.T.exists_descent_of_morphisms_to_subfield K (gen β s₀) X₀ t.A.left p₀ t.A.hom φ X₀ p₀ Bool (fun j => (act j).left ≫ φ) sq (fun j => by rw [Category.assoc, sq.w, ← Category.assoc, Over.w])`. Take `⟨s₄, H₄⟩` from `GlobalTheory.T.exists_descent_of_morphisms_to_subfield K (gen β s₀) (Sp (gen β s₀)) (Sp K) (𝟙 _) (𝟙 _) (spMap (gen β s₀).subtype) X₀ p₀ (Fin (2 * t.g)) (fun a => (lev.pt a).left ≫ φ) (IsPullback.of_vert_isIso ⟨by simp⟩) (fun a => by`. Establish `e : (lev.pt a).left ≫ t.A.hom = 𝟙 _` using `Over.w (lev.pt a)`.
+
+Rewrite using `[Category.assoc, sq.w, ← Category.assoc, e]`. Use the proof step `simp)`. Set `s : Finset K` to `s₀ ∪ s₁ ∪ s₂ ∪ s₃ ∪ s₄`. Establish `h : gen β s₀ ≤ gen β s` using `gen_mono β (fun x hx => by simp [s, hx])`. Set `inc` to `spMap (Subfield.inclusion h)`.
+
+Set `A₁ : Over (Sp (gen β s))` to `Over.mk (pullback.snd p₀ inc)`. Set `φ₁ : A₁.left ⟶ X₀` to `pullback.fst p₀ inc`. Establish `sq₁ : IsPullback φ₁ A₁.hom p₀ inc` using `IsPullback.of_hasPullback p₀ inc`. Set `ψ : t.A.left ⟶ A₁.left` to `sq₁.lift φ (t.A.hom ≫ spMap (gen β s).subtype) (by rw [Category.assoc, spMap_subtype h, sq.w])`. Establish `hψ₁ : ψ ≫ φ₁ = φ` using `sq₁.lift_fst _ _ _`.
+
+Establish `hψ₂ : ψ ≫ A₁.hom = t.A.hom ≫ spMap (gen β s).subtype` using `sq₁.lift_snd _ _ _`. Take `⟨gr₁, hG⟩` from `H₁ (gen β s) h (subset_gen β (fun x hx => by simp [s, hx])) A₁ φ₁ ψ sq₁ hψ₁ hψ₂`. Take `⟨L₁, hL₁, hL⟩` from `H₂ (gen β s) h (subset_gen β (fun x hx => by simp [s, hx])) A₁.left A₁.hom φ₁ ψ sq₁ hψ₁ hψ₂`. Take `⟨f₁, hf₁⟩` from `H₃ (gen β s) h (subset_gen β (fun x hx => by simp [s, hx])) A₁.left A₁.hom φ₁ ψ sq₁ hψ₁ hψ₂`. Take `⟨x₁, hx₁⟩` from `H₄ (gen β s) h (subset_gen β (fun x hx => by simp [s, hx])) (Sp (gen β s)) (𝟙 _) inc (spMap (gen β s).subtype) (IsPullback.of_vert_isIso ⟨by simp [inc]⟩) (spMap_subtype h) (by simp)`.
+
+Set `act₁ : Bool → (A₁ ⟶ A₁)` to `fun j => Over.homMk (sq₁.lift (f₁ j) A₁.hom (by rw [(hf₁ j).2, sq₁.w])) (sq₁.lift_snd _ _ _)`. Set `pt₁ : Fin (2 * t.g) → (Out.baseOver (Sp (gen β s)) ⟶ A₁)` to `fun a => Over.homMk (sq₁.lift (x₁ a) (𝟙 _) (by rw [(hx₁ a).2]; simp)) (sq₁.lift_snd _ _ _)`. Establish `hpt : ∀ a, (lev.pt a).left ≫ ψ = spMap (gen β s).subtype ≫ (pt₁ a).left` using `fun a => by`. Establish `e : (lev.pt a).left ≫ t.A.hom = 𝟙 _` using `Over.w (lev.pt a)`. Establish `e₁ : (pt₁ a).left ≫ φ₁ = x₁ a` using `sq₁.lift_fst _ _ _`.
+
+Establish `e₂ : (pt₁ a).left ≫ A₁.hom = 𝟙 _` using `sq₁.lift_snd _ _ _`. Apply `sq₁.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ₁]`. Conclude with `((hx₁ a).1.symm.trans (congrArg _ e₁.symm)).trans (Category.assoc _ _ _).symm`. Rewrite using `[Category.assoc, hψ₂, ← Category.assoc, e]`.
+
+Use `(Category.id_comp _).trans (Eq.trans ?_ (Category.assoc _ _ _).symm)` and prove the remaining obligations. Conclude with `((congrArg _ e₂).trans (Category.comp_id _)).symm`. Establish `hact : ∀ j, (act j).left ≫ ψ = ψ ≫ (act₁ j).left` using `fun j => by`. Establish `e₁ : (act₁ j).left ≫ φ₁ = f₁ j` using `sq₁.lift_fst _ _ _`. Apply `sq₁.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hψ₁, Category.assoc, e₁, (hf₁ j).1]`. Rewrite using `[Category.assoc, hψ₂, ← Category.assoc, Over.w, Category.assoc, Over.w, hψ₂]`. Take `⟨hab, hdim⟩` from `GlobalTheory.T.abelian_scheme_descent_smooth_dimension _ K (gen β s).subtype A₁ t.A ψ hG t.isAb`. Take `⟨hr, hs, hk⟩` from `GlobalTheory.T.rigidified_symmetric_kernelTrivial_descend_fieldExt _ K (gen β s).subtype A₁ t.A ψ L₁ t.L hab hG hL₁ t.isLB hL`. Establish `hamp` using `GlobalTheory.AmpleDescent.relAmple_of_fieldExtension _ K (gen β s).subtype A₁ t.A ψ L₁ t.L hab hG hL₁ t.isLB hL t.ample`.
+
+Use `letI : Algebra o (gen β s) := (β.codRestrict _ (mem_gen β s)).toAlgebra`. Take `⟨R₀, hfg, hfrac⟩` from `exists_fg_subalgebra β s`. Use `⟨gen β s, inferInstance, inferInstance, ⟨(gen β s).subtype, fun _ => rfl⟩, R₀, ⟨A₁, hab, t.g, hdim _ t.smoothDim, L₁, hL₁, hr t.rigid, hs t.sym, hamp, hk t.ktriv⟩, ψ, hfg, hfrac, rfl, hG, ?_, ?_, hL⟩` and prove the remaining obligations. Use `t.isAb.comm` as an intermediate fact. Use `hab.comm` as an intermediate fact.
+
+Conclude with `hypS_descend (gen β s).subtype hab hG hL₁ t.isLB hL (hact true).symm (hact false).symm hw hwd hsum hpol hadj`. Conclude with `level_descend (gen β s).subtype t A₁ hab _ L₁ hL₁ _ _ _ _ hG hL M _ lev pt₁ hpt`.
+-/
 theorem descends_to_fg_field_lb : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (Q : Out.PolAV (Sp Ω)) (M : ℕ) (ze : oˣ), (letI := Q.isAb.comm; GlobalTheory.ZH.HypS Q.A Q.L) → Nonempty (Out.Level Q M (unitOn (Units.map (algebraMap o Ω).toMonoidHom ze))) → ∃ (Ω₀ : Type) (_ : Field Ω₀) (_ : Algebra o Ω₀) (j : Ω₀ →ₐ[o] Ω) (R₀ : Subalgebra o Ω₀) (Q₀ : Out.PolAV (Sp Ω₀)) (φ : Q.A.left ⟶ Q₀.A.left), R₀.FG ∧ (∀ x : Ω₀, ∃ a ∈ R₀, ∃ b ∈ R₀, x = a / b) ∧ Q₀.g = Q.g ∧ IsGrpPullback Q.A Q₀.A (spMap j.toRingHom) φ ∧ (letI := Q₀.isAb.comm; GlobalTheory.ZH.HypS Q₀.A Q₀.L) ∧ Nonempty (Out.Level Q₀ M (unitOn (Units.map (algebraMap o Ω₀).toMonoidHom ze))) ∧ LBIso Q.L (Q₀.L.pull φ) := by
   intro o K _ _ _ t M ze ⟨w, wd, hw, hwd, hsum, hpol, hadj⟩ ⟨lev⟩
   classical
@@ -150,6 +195,21 @@ end GlobalTheory.SpreadTheta
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R₁ _ _ _ A₁ hS n k j hn ho hk hj hu ζ lev`. Take `⟨hL, hL₂⟩` from `GlobalTheory.abelianSchemeLaws_all`. Use `haveI : NeZero n := ⟨hn.ne_zero⟩`. Use `haveI : NeZero ((n ^ j * (n ^ k) ^ 2) ^ 2) := ⟨by have := hn.pos; positivity⟩`. Set `F` to `FractionRing R₁`.
+
+Establish `hζ : IsPrimitiveRoot (ζ : R₁) ((n ^ j * (n ^ k) ^ 2) ^ 2)` using `(IsPrimitiveRoot.map_iff_of_injective (f := algebraMap R₁ F) (IsFractionRing.injective R₁ F)).1 (IsPrimitiveRoot.coe_units_iff.2 ((GlobalTheory.SymLevelDescent.isPrimitiveRoot_unitOn_iff _ _).1 lev.prim))`. Take `⟨o, _, b, ze, hded, hft, hbi, hun, hbz⟩` from `GlobalTheory.SpreadTheta.exists_base R₁ n _ hu ζ hζ`. Use `letI : Algebra o F := ((algebraMap R₁ F).comp b).toAlgebra`. Establish `hze : Units.map (algebraMap R₁ F).toMonoidHom ζ = Units.map (algebraMap o F).toMonoidHom ze` using `Units.ext (by show algebraMap R₁ F ζ = algebraMap R₁ F (b ze); rw [hbz])`. Establish `lev₀ : Nonempty (Out.Level A₁ ((n ^ j * (n ^ k) ^ 2) ^ 2) (unitOn (Units.map (algebraMap o F).toMonoidHom ze)))` using `⟨hze ▸ lev⟩`.
+
+Take `⟨Ω₀, _, _, jj, R₀, Q₀, ψ, hR₀, hfr, hg, hψ, hS₀, ⟨lev₁⟩, hLψ⟩` from `GlobalTheory.SpreadTheta.descends_to_fg_field_lb o F A₁ _ ze hS lev₀`. Establish `hcomp : ∀ x : o, jj (algebraMap o Ω₀ x) = algebraMap R₁ F (b x)` using `fun x => jj.commutes x`. Use `haveI : CharZero Ω₀ := RingHom.charZero jj.toRingHom`. Use `haveI : GlobalTheory.ZH.ArithBase o Ω₀ := ⟨hded, hft, inferInstance, fun x y hxy => hbi (IsFractionRing.injective R₁ F (by rw [← hcomp, ← hcomp, hxy]))⟩`. Establish `hM : IsUnit (((n ^ j * (n ^ k) ^ 2) ^ 2 : ℕ) : o)`.
+
+Use `push_cast`. Conclude with `((hun.pow _).mul ((hun.pow _).pow _)).pow _`. Take `⟨R, P', φ₁, lev', hle, hR, hg', hS', hp₁, hl₁, -⟩` from `GlobalTheory.GenSpread.polAV_spreads_out o Ω₀ R₀ hR₀ hfr Q₀ _ ze hM hS₀ lev₁ hL`. Establish `hfr' : ∀ x : Ω₀, ∃ a ∈ R, ∃ c ∈ R, x = a / c` using `fun x => by`. Take `⟨a, ha, c, hc, e⟩` from `hfr x`.
+
+Conclude with `⟨a, hle ha, c, hle hc, e⟩`. Take `⟨S, ρ, h, φ₂, -, hN, hr, hgS, hp₂, hl₂, -⟩` from `GlobalTheory.ThetaReal.exists_thetaSys_real hL hL₂ o Ω₀ R hR hfr' P' n k j ze hn ho hk hj hun hS' lev'`. Establish `e : spMap S.R.val.toRingHom ≫ spMap (Subalgebra.inclusion h).toRingHom = spMap R.val.toRingHom` using `GlobalTheory.SpreadTheta.spMap_comp_spMap _ _`. Establish `w : φ₁ ≫ P'.A.hom = (Q₀.A.hom ≫ spMap S.R.val.toRingHom) ≫ spMap (Subalgebra.inclusion h).toRingHom`. Rewrite using `[hp₁.1.w, Category.assoc, e]`.
+
+Set `χ` to `hp₂.1.lift φ₁ (Q₀.A.hom ≫ spMap S.R.val.toRingHom) w`. Establish `hχ₁ : χ ≫ φ₂ = φ₁` using `hp₂.1.lift_fst _ _ _`. Establish `hχ₂ : χ ≫ ρ.P.A.hom = Q₀.A.hom ≫ spMap S.R.val.toRingHom` using `hp₂.1.lift_snd _ _ _`. Establish `hχ : IsGrpPullback Q₀.A ρ.P.A (spMap S.R.val.toRingHom) χ` using `IsGrpPullback.cancel hp₂ (hp₁.congr e.symm hχ₁.symm) hχ₂`. Establish `hP` using `P'.isLB`.
+
+Establish `c₁ : LBIso A₁.L ((P'.L.pull φ₁).pull ψ)` using `LBIso.trans A₁.isLB (pull_isLB Q₀.isLB _) (pull_isLB (pull_isLB hP _) _) hLψ (GlobalTheory.RigidBundleGlue.LBIso.pull hl₁ ψ)`. Establish `c₂ : LBIso ((P'.L.pull φ₁).pull ψ) (P'.L.pull ((ψ ≫ χ) ≫ φ₂))` using `LBIso.trans (pull_isLB (pull_isLB hP _) _) (pull_isLB hP _) (pull_isLB hP _) (GlobalTheory.MBDesc.lbIso_pullComp hP φ₁ ψ).symm (GlobalTheory.MBDesc.lbIso_pull_congr hP (by rw [Category.assoc, hχ₁]))`. Establish `c₃ : LBIso (P'.L.pull ((ψ ≫ χ) ≫ φ₂)) (ρ.P.L.pull (ψ ≫ χ))` using `LBIso.trans (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) (pull_isLB ρ.P.isLB _) (GlobalTheory.MBDesc.lbIso_pullComp hP φ₂ (ψ ≫ χ)) (GlobalTheory.RigidBundleGlue.LBIso.pull hl₂.symm (ψ ≫ χ))`. Use `⟨o, Ω₀, inferInstance, inferInstance, inferInstance, inferInstance, S, ρ, b, jj.toRingHom, ψ ≫ χ, hgS.trans (hg'.trans hg), hN, hr, hcomp, (hψ.comp hχ).congr (GlobalTheory.SpreadTheta.spMap_comp_spMap _ _) rfl, ?_⟩` and prove the remaining obligations. Conclude with `LBIso.trans A₁.isLB (pull_isLB (pull_isLB hP _) _) (pull_isLB ρ.P.isLB _) c₁ (LBIso.trans (pull_isLB (pull_isLB hP _) _) (pull_isLB hP _) (pull_isLB ρ.P.isLB _) c₂ c₃)`.
+-/
 theorem exists_thetaSys_spread : ∀ (R₁ : Type) [CommRing R₁] [IsDomain R₁] [CharZero R₁] (A₁ : PolAV (Sp (FractionRing R₁))), (letI := A₁.isAb.comm; GlobalTheory.ZH.HypS A₁.A A₁.L) → ∀ (n k j : ℕ), n.Prime → Odd n → 2 ≤ k → 1 ≤ j → IsUnit (n : R₁) → ∀ (ζ : R₁ˣ), ReciprocityTheory.ChartRestriction.G.Out.Level A₁ ((n ^ j * (n ^ k) ^ 2) ^ 2) (unitOn (Units.map (algebraMap R₁ (FractionRing R₁)).toMonoidHom ζ)) → ∃ (o Ω : Type) (_ : CommRing o) (_ : Field Ω) (_ : Algebra o Ω) (_ : GlobalTheory.ZH.ArithBase o Ω) (S : GlobalTheory.ZH.ThetaSys o Ω) (ρS : S.Real) (b : o →+* R₁) (e : Ω →+* FractionRing R₁) (φ : A₁.A.left ⟶ ρS.P.A.left), S.g = A₁.g ∧ S.N = (n ^ k) ^ 2 ∧ S.r = n ^ j ∧ (∀ x : o, e (algebraMap o Ω x) = algebraMap R₁ (FractionRing R₁) (b x)) ∧ IsGrpPullback A₁.A ρS.P.A (spMap (e.comp S.R.val.toRingHom)) φ ∧ LBIso A₁.L (ρS.P.L.pull φ) := by
   intro R₁ _ _ _ A₁ hS n k j hn ho hk hj hu ζ lev
   obtain ⟨hL, hL₂⟩ := GlobalTheory.abelianSchemeLaws_all

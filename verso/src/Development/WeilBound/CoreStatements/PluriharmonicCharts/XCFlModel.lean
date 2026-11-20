@@ -12,6 +12,9 @@ namespace PositivityTheory.Xgp.c_fl_model
 
 section Point
 
+/- English proof (translation)
+Introduce `x _`. Establish `e : f = fun _ => f x` using `funext fun y => congrArg f (Subsingleton.elim y x)`. Rewrite using `[e]`. Conclude with `analyticAt_const`.
+-/
 theorem an0 {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (f : (Fin 0 → ℂ) → E) (U : Set (Fin 0 → ℂ)) :
     AnalyticOnNhd ℂ f U := by
   intro x _
@@ -19,6 +22,9 @@ theorem an0 {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (f : (Fin 0 �
   rw [e]
   exact analyticAt_const
 
+/- English proof (translation)
+Rewrite using `[Subsingleton.elim w 0]`. Conclude with `Metric.mem_ball_self one_pos`.
+-/
 theorem ball0 (w : Fin 0 → ℂ) : w ∈ Metric.ball (0 : Fin 0 → ℂ) 1 := by
   rw [Subsingleton.elim w 0]
   exact Metric.mem_ball_self one_pos
@@ -29,6 +35,9 @@ def ptA : FinHolAtlas 0 (Fin 0 → ℂ) where
   cover _ := ⟨0, trivial⟩
   holo _ _ := an0 _ _
 
+/- English proof (translation)
+Introduce `x` and use `⟨OpenPartialHomeomorph.refl _, fun _ => ⟨an0 _ _, an0 _ _⟩, trivial, fun y _ => by rw [Subsingleton.elim y x]; exact L.mem_U x, Fin.elim0, fun k => k.elim0, fun k => k.elim0, s x, fun _ => an0 _ _, fun y _ => hs x y, fun y _ => by simp⟩`.
+-/
 theorem snc0 (L : LocPot (Fin 0 → ℂ)) (s : (Fin 0 → ℂ) → (Fin 0 → ℂ) → ℂ) (hs : ∀ x y, s x y ≠ 0) :
     IsSNC ptA L s (Fin.elim0 : Fin 0 → ℕ) Fin.elim0 := fun x =>
   ⟨OpenPartialHomeomorph.refl _, fun _ => ⟨an0 _ _, an0 _ _⟩, trivial,
@@ -39,6 +48,11 @@ variable {K : Type} [Fintype K] [IsEmpty K] {ι : K → Type} [∀ k, Fintype (�
 
 instance : IsEmpty (Σ k, ι k) := ⟨fun q => isEmptyElim q.1⟩
 
+/- English proof (translation)
+Use `⟨fun k => isEmptyElim k, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hf' : f = C (f.coeff 0)` using `MvPolynomial.eq_C_of_isEmpty f`. Rewrite `hf` using `[mCoordIdeal, RingHom.mem_ker]`. Rewrite `hf`, the goal using `[hf']`. Simplify using `at hf ⊢`.
+
+Conclude with `hf`.
+-/
 theorem mem_pts (x : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) : z ∈ mcPts (mCoordIdeal x) := by
   refine ⟨fun k => isEmptyElim k, fun f hf => ?_⟩
   have hf' : f = C (f.coeff 0) := MvPolynomial.eq_C_of_isEmpty f
@@ -47,16 +61,31 @@ theorem mem_pts (x : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) : z ∈ mcP
   simp at hf ⊢
   exact hf
 
+/- English proof (translation)
+Introduce `h` and use `by simpa using h.2 1 trivial`.
+-/
 theorem not_mem_top (z : (Σ k, ι k) → ℂ) : z ∉ mcPts (⊤ : Ideal (MRing ι)) := fun h => by
   simpa using h.2 1 trivial
 
+/- English proof (translation)
+Introduce `_ _ k` and use `isEmptyElim k`.
+-/
 theorem homog (f : MRing ι) (d : K → ℕ) : IsMultiHomog f d := fun _ _ k => isEmptyElim k
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 1, fun _ => one_ne_zero, funext fun p => isEmptyElim p⟩`.
+-/
 theorem orbit (z z' : (Σ k, ι k) → ℂ) : SameOrbit z z' := ⟨fun _ => 1, fun _ => one_ne_zero, funext fun p => isEmptyElim p⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 0, C n, 1, homog _ _, homog _ _, fun h => hQ.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp⟩`.
+-/
 theorem regAt_int (x : (Σ k, ι k) → Ω) {Q : Ideal (MRing ι)} (hQ : Q.IsPrime) (n : ℤ) : RegAt x Q (n : Ω) :=
   ⟨fun _ => 0, C n, 1, homog _ _, homog _ _, fun h => hQ.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp⟩
 
+/- English proof (translation)
+The claim follows from `valAt_eq (mem_pts x z) ⟨fun _ => 0, C n, 1, homog _ _, homog _ _, by simp, by simp, by simp, by simp⟩`.
+-/
 theorem valAt_int (x : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) (n : ℤ) : valAt x (n : Ω) z = n :=
   valAt_eq (mem_pts x z) ⟨fun _ => 0, C n, 1, homog _ _, homog _ _, by simp, by simp, by simp, by simp⟩
 
@@ -84,11 +113,17 @@ section Minors
 
 variable {R : Type} [CommRing R] {N : ℕ}
 
+/- English proof (translation)
+Substitute `hJ` using the available equality. Conclude with `dif_pos hI`.
+-/
 theorem minorIJ_eq (h : Matrix (Fin N) (Fin N) R) {I J : Finset (Fin N)} {s : ℕ} (hI : I.card = s) (hJ : J.card = s) :
     minorIJ h I J = (h.submatrix (I.orderEmbOfFin hI) (J.orderEmbOfFin hJ)).det := by
   subst hJ
   exact dif_pos hI
 
+/- English proof (translation)
+Unfold `minorIJ`. Rewrite using `[dif_pos rfl]`. Establish `: (1 : Matrix (Fin N) (Fin N) R).submatrix ⇑(I.orderEmbOfFin rfl) ⇑(I.orderEmbOfFin rfl) = 1` using `Matrix.submatrix_one_embedding (I.orderEmbOfFin rfl).toEmbedding`. Rewrite using `[this, Matrix.det_one]`.
+-/
 theorem minorIJ_one (I : Finset (Fin N)) : minorIJ (1 : Matrix (Fin N) (Fin N) R) I I = 1 := by
   unfold minorIJ
   rw [dif_pos rfl]
@@ -96,9 +131,15 @@ theorem minorIJ_one (I : Finset (Fin N)) : minorIJ (1 : Matrix (Fin N) (Fin N) R
     Matrix.submatrix_one_embedding (I.orderEmbOfFin rfl).toEmbedding
   rw [this, Matrix.det_one]
 
+/- English proof (translation)
+Simplify using `[detFac, minorIJ_one]`.
+-/
 theorem detFac_one (j : ℕ) (i : Fin N) : detFac j i (1 : Matrix (Fin N) (Fin N) R) = 1 := by
   simp [detFac, minorIJ_one]
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem det_submatrix_orderEmbOfFin_congr {a b : ℕ} (hab : a = b) (M : Matrix (Fin N) (Fin N) ℂ) (I J : Finset (Fin N))
     (p1 : J.card = a) (p2 : I.card = a) (p3 : J.card = b) (p4 : I.card = b) :
     (M.submatrix (J.orderEmbOfFin p1) (I.orderEmbOfFin p2)).det =
@@ -106,6 +147,9 @@ private theorem det_submatrix_orderEmbOfFin_congr {a b : ℕ} (hab : a = b) (M :
   subst hab
   rfl
 
+/- English proof (translation)
+Unfold `minorIJ`. Distinguish the cases in `e : I.card = J.card`. Rewrite using `[dif_pos e.symm, dif_pos e, ← Matrix.det_conjTranspose, Matrix.conjTranspose_submatrix]`. Conclude with `det_submatrix_orderEmbOfFin_congr e _ _ _ _ _ _ _`. Rewrite using `[dif_neg (fun e' => e e'.symm), dif_neg e, star_zero]`.
+-/
 theorem minorIJ_conj (h : Matrix (Fin N) (Fin N) ℂ) (I J : Finset (Fin N)) :
     minorIJ hᴴ J I = star (minorIJ h I J) := by
   unfold minorIJ
@@ -116,17 +160,29 @@ theorem minorIJ_conj (h : Matrix (Fin N) (Fin N) ℂ) (I J : Finset (Fin N)) :
 
 def im {s : ℕ} (A : PlueckerData.Incr s N) : Finset (Fin N) := Finset.univ.image A.1
 
+/- English proof (translation)
+Simplify using `[im, Finset.card_image_of_injective _ A.2.injective]`.
+-/
 theorem card_im {s : ℕ} (A : PlueckerData.Incr s N) : (im A).card = s := by
   simp [im, Finset.card_image_of_injective _ A.2.injective]
 
+/- English proof (translation)
+The claim follows from `(Finset.orderEmbOfFin_unique (card_im A) (fun x => by simp [im]) A.2).symm`.
+-/
 theorem emb_im {s : ℕ} (A : PlueckerData.Incr s N) : ⇑((im A).orderEmbOfFin (card_im A)) = A.1 := (Finset.orderEmbOfFin_unique (card_im A) (fun x => by simp [im]) A.2).symm
 
+/- English proof (translation)
+Introduce `A B h`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← emb_im A]`. Conclude with `(Finset.orderEmbOfFin_unique (card_im A) (fun x => by rw [h]; simp [im]) B.2).symm`.
+-/
 theorem im_inj {s : ℕ} : Function.Injective (im : PlueckerData.Incr s N → _) := by
   intro A B h
   apply Subtype.ext
   rw [← emb_im A]
   exact (Finset.orderEmbOfFin_unique (card_im A) (fun x => by rw [h]; simp [im]) B.2).symm
 
+/- English proof (translation)
+Use `⟨⟨I.orderEmbOfFin h, (I.orderEmbOfFin h).strictMono⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using `only [im, Finset.mem_image, Finset.mem_univ, true_and]`. Rewrite using `[← Set.mem_range, Finset.range_orderEmbOfFin]`. Both sides reduce to the same expression.
+-/
 theorem exists_im {s : ℕ} (I : Finset (Fin N)) (h : I.card = s) : ∃ A : PlueckerData.Incr s N, im A = I := by
   refine ⟨⟨I.orderEmbOfFin h, (I.orderEmbOfFin h).strictMono⟩, ?_⟩
   ext a
@@ -134,6 +190,11 @@ theorem exists_im {s : ℕ} (I : Finset (Fin N)) (h : I.card = s) : ∃ A : Plue
   rw [← Set.mem_range, Finset.range_orderEmbOfFin]
   rfl
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `only [stepCols, im, Finset.mem_filter, Finset.mem_univ, true_and, if_pos hi, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Conclude with `⟨⟨a, by omega⟩, Fin.ext (by simp)⟩`.
+
+Introduce and unpack `⟨b, rfl⟩`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cols_eq (i : Fin N) (hi : (i : ℕ) + 1 ≤ N) :
     stepCols N N i = im ⟨Fin.castLE hi, Fin.strictMono_castLE _⟩ := by
   ext a
@@ -145,9 +206,15 @@ theorem cols_eq (i : Fin N) (hi : (i : ℕ) + 1 ≤ N) :
     simp
     omega
 
+/- English proof (translation)
+Rewrite using `[cols_eq i (by omega), card_im]`.
+-/
 theorem card_cols (i : Fin N) : (stepCols N N i).card = i + 1 := by
   rw [cols_eq i (by omega), card_im]
 
+/- English proof (translation)
+Rewrite using `[minorIJ_eq h (card_im A) (card_cols i), emb_im]`. Use `congr 2`. Conclude with `(Finset.orderEmbOfFin_unique (card_cols i) (fun x => by rw [cols_eq i hi]; exact Finset.mem_image_of_mem _ (Finset.mem_univ x)) (Fin.strictMono_castLE hi)).symm`.
+-/
 theorem minor_im (h : Matrix (Fin N) (Fin N) R) (i : Fin N) (hi : (i : ℕ) + 1 ≤ N)
     (A : PlueckerData.Incr (i + 1) N) :
     minorIJ h (im A) (stepCols N N i) = (h.submatrix A.1 (Fin.castLE hi)).det := by
@@ -155,6 +222,15 @@ theorem minor_im (h : Matrix (Fin N) (Fin N) R) (i : Fin N) (hi : (i : ℕ) + 1 
   congr 2
   exact (Finset.orderEmbOfFin_unique (card_cols i) (fun x => by rw [cols_eq i hi]; exact Finset.mem_image_of_mem _ (Finset.mem_univ x)) (Fin.strictMono_castLE hi)).symm
 
+/- English proof (translation)
+Establish `hS` using `card_cols (N := N) i`. Rewrite using `[mul_one, MinorCalc.minorIJ_mul]`. Simplify using `only [minorIJ_conj]`. Rewrite using `[Complex.re_sum]`. Establish `hterm : ∀ I' : Finset (Fin N), (star (minorIJ h I' (stepCols N N i)) * minorIJ h I' (stepCols N N i)).re = ‖minorIJ h I' (stepCols N N i)‖ ^ 2`.
+
+Introduce `I'`. Rewrite using `[Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Simplify using `only [hterm]`. Rewrite using `[← Finset.sum_image (f := fun I => ‖minorIJ h I (stepCols N N i)‖ ^ 2) (fun A _ B _ e => im_inj e)]`. Use `symm`.
+
+Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `I' _ hI'`. Establish `hc : I'.card ≠ (stepCols N N i).card`. Introduce `e`. Rewrite `e` using `[hS]`.
+
+Take `⟨A, hA⟩` from `exists_im (s := (i : ℕ) + 1) I' e`. Conclude with `hI' (Finset.mem_image.2 ⟨A, Finset.mem_univ _, hA⟩)`. Simplify using `[minorIJ, hc]`.
+-/
 theorem gram (h : Matrix (Fin N) (Fin N) ℂ) (i : Fin N) [Fintype (PlueckerData.Incr (i + 1) N)] :
     (minorIJ (hᴴ * 1 * h) (stepCols N N i) (stepCols N N i)).re =
       ∑ A : PlueckerData.Incr (i + 1) N, ‖minorIJ h (im A) (stepCols N N i)‖ ^ 2 := by
@@ -180,6 +256,9 @@ theorem gram (h : Matrix (Fin N) (Fin N) ℂ) (i : Fin N) [Fintype (PlueckerData
     exact hI' (Finset.mem_image.2 ⟨A, Finset.mem_univ _, hA⟩)
   simp [minorIJ, hc]
 
+/- English proof (translation)
+Introduce `a b hab`. Simplify using `at hab`.
+-/
 theorem blockDiag (h : Matrix (Fin N) (Fin N) R) : IsBlockDiag N h := by
   intro a b hab
   simp at hab
@@ -196,6 +275,13 @@ variable {Ψ N}
 def stp (k : FlBlock Ψ N) : Ψ × Fin N := (k.1, ⟨k.2, by have := k.2.2; omega⟩)
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Break down `p with ⟨a, i⟩` into its components or cases. Break down `k with ⟨b, j⟩` into its components or cases. Establish `hj` using `j.2`. Unfold `blk stp`. Use `split_ifs with h`.
+
+Simplify using `[Prod.ext_iff, Fin.ext_iff]`. Simplify using `only [reduceCtorEq, false_iff, Prod.mk.injEq, not_and]`. Introduce `_ e`. Apply `h` to reduce the goal to its premises. Rewrite using `[e]`.
+
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem blk_some {p : Ψ × Fin N} {k : FlBlock Ψ N} : blk Ψ N p = some k ↔ p = stp k := by
   rcases p with ⟨a, i⟩
   rcases k with ⟨b, j⟩
@@ -211,6 +297,11 @@ theorem blk_some {p : Ψ × Fin N} {k : FlBlock Ψ N} : blk Ψ N p = some k ↔ 
     omega
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Use `p.2.2` as an intermediate fact. Unfold `blk IsProperStep`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem blk_none {p : Ψ × Fin N} : blk Ψ N p = none ↔ ¬ IsProperStep N N p.2 := by
   have := p.2.2
   unfold blk IsProperStep
@@ -231,6 +322,11 @@ def frame : FrameData (FlIdx Ψ N) Ψ N ℚ (blk Ψ N) where
   u' I q := coef q I
   υ _ := 1
 
+/- English proof (translation)
+Establish `r1 : RegAt x Q (1 : ℚ)` using `by simpa using regAt_int x hQ 1`. Establish `r0 : RegAt x Q (0 : ℚ)` using `by simpa using regAt_int x hQ 0`. Use `⟨fun k => isEmptyElim k, fun q I => ?_, fun p _ => ⟨one_ne_zero, ?_, ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `e : I = im q.2`. Simplify using `only [frame, coef, if_pos e]`.
+
+Conclude with `⟨r1, r1⟩`. Simplify using `only [frame, coef, if_neg e]`. Conclude with `⟨r0, r0⟩`. Simplify `r1` using `[frame]`. Simplify `r1` using `[frame]`.
+-/
 theorem good (x : (Σ k, baseIdx (FlIdx Ψ N) (blk Ψ N) k) → ℚ) (Q : Ideal (MRing (baseIdx (FlIdx Ψ N) (blk Ψ N))))
     (hQ : Q.IsPrime) :
     (∀ k, (X ⟨k, (frame Ψ N).c k⟩ : MRing (baseIdx (FlIdx Ψ N) (blk Ψ N))) ∉ Q) ∧
@@ -247,6 +343,13 @@ theorem good (x : (Σ k, baseIdx (FlIdx Ψ N) (blk Ψ N) k) → ℚ) (Q : Ideal 
   · simpa [frame] using r1
   · simpa [frame] using r1
 
+/- English proof (translation)
+Take `rfl` from `blk_some.1 hp`. Establish `hc : I.card = (k.2 : ℕ) + 1`. Rewrite using `[hI.1, card_cols]`. Both sides reduce to the same expression. Take `⟨m0, hm0⟩` from `exists_im (N := N) I hc`.
+
+Rewrite using `[Finset.sum_eq_single m0]`. Substitute `hm0` using the available equality. Distinguish the cases in `e : im m0 = I'`. Simplify using `[coef, e]`. Establish `e' : ¬ I' = im m0` using `fun h => e h.symm`.
+
+Simplify using `[coef, e, e']`. Introduce `m _ hm`. Establish `: ¬ I = im m` using `fun h => hm (im_inj (h.symm.trans hm0.symm))`. Simplify using `[coef, this]`. Simplify using the standard rewrite rules.
+-/
 theorem left_inv (p : Ψ × Fin N) (k : FlBlock Ψ N) (hp : blk Ψ N p = some k) (I I' : Finset (Fin N))
     (hI : IsStepRows N N p.2 I) :
     ∑ m : FlIdx Ψ N k, coef ⟨k, m⟩ I * coef ⟨k, m⟩ I' = if I = I' then 1 else 0 := by
@@ -304,6 +407,9 @@ def model : FlagModel (yFl Ψ N) Ψ N N where
 
 instance : IsEmpty (NonPluckerBlocks (model Ψ N).blk) := inferInstanceAs (IsEmpty (NonPluckerBlocks (blk Ψ N)))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => ⟨blockDiag _, show (1 : Matrix (Fin N) (Fin N) ℚ).det ≠ 0 by simp⟩, fun p k _ m (h : Matrix (Fin N) (Fin N) ℚ) _ => show detFac N p.2 (1 : Matrix (Fin N) (Fin N) ℚ) * ∑ I, coef ⟨k, m⟩ I * minorIJ (1 * h) I (stepCols N N p.2) = (∏ _k' : NonPluckerBlocks (blk Ψ N), (0 : ℚ …`.
+-/
 theorem isFrame : (model Ψ N).IsFrame (frame Ψ N) :=
   ⟨fun _ => ⟨blockDiag _, show (1 : Matrix (Fin N) (Fin N) ℚ).det ≠ 0 by simp⟩,
     fun p k _ m (h : Matrix (Fin N) (Fin N) ℚ) _ =>
@@ -315,6 +421,15 @@ theorem isFrame : (model Ψ N).IsFrame (frame Ψ N) :=
     fun p _ => show detFac N p.2 (1 : Matrix (Fin N) (Fin N) ℚ) * 1 =
       (∏ _k' : NonPluckerBlocks (blk Ψ N), (0 : ℚ) ^ (0 : ℤ)) * 1 by simp [detFac_one]⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Unfold `FlagModel.dy`. Rewrite using `[dif_neg (fun h => h (stp q) (blk_some.2 rfl))]`. Establish `e : (model Ψ N).blk p = some q ↔ (q.1 = p.1 ∧ (q.2 : ℕ) = p.2)` using `by show blk Ψ N p = some q ↔ _`. Rewrite using `[blk_some]`.
+
+Break down `p with ⟨a, i⟩` into its components or cases. Break down `q with ⟨b, j⟩` into its components or cases. Simplify using `only [stp, Prod.mk.injEq, Fin.ext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl, h⟩`.
+
+Conclude with `⟨rfl, h.symm⟩`. Introduce and unpack `⟨rfl, h⟩`. Conclude with `⟨rfl, h.symm⟩`. Distinguish the cases in `hc : q.1 = p.1 ∧ (q.2 : ℕ) = p.2`. Rewrite using `[if_pos (e.2 hc), if_pos hc]`.
+
+Rewrite using `[if_neg (fun h => hc (e.1 h)), if_neg hc]`.
+-/
 theorem dy_eq (p : Ψ × Fin N) : (model Ψ N).dy p = fun q => if q.1 = p.1 ∧ (q.2 : ℕ) = p.2 then 1 else 0 := by
   funext q
   unfold FlagModel.dy
@@ -334,6 +449,13 @@ theorem dy_eq (p : Ψ × Fin N) : (model Ψ N).dy p = fun q => if q.1 = p.1 ∧ 
   · rw [if_pos (e.2 hc), if_pos hc]
   · rw [if_neg (fun h => hc (e.1 h)), if_neg hc]
 
+/- English proof (translation)
+Establish `hE : ∀ a : {a : Fin N // (a : ℕ) < N - N}, False` using `fun a => by`. Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨⟨by simp, ?_⟩, fun h _ k => ?_⟩` and prove the remaining obligations. Use `⟨?_, fun x hx => absurd (Finsupp.ext fun a => (hE a).elim) hx⟩` and prove the remaining obligations.
+
+Use extensionality with `a`. Conclude with `(hE a).elim`. Establish `hs : (diagonal fun i : Fin N => ((sigForm N N i : ℝ) : ℂ)) = 1`. Use extensionality with `a b`. Simplify using `[sigForm, Matrix.diagonal_apply, Matrix.one_apply]`.
+
+Simplify using `only [gramHead, gramOf, hs, one_mul, mul_one, Matrix.conjTranspose_one]`.
+-/
 theorem periodGram : IsPeriodGram N (1 : Matrix (Fin N) (Fin N) ℂ) 1 := by
   have hE : ∀ a : {a : Fin N // (a : ℕ) < N - N}, False := fun a => by
     have := a.2
@@ -347,6 +469,33 @@ theorem periodGram : IsPeriodGram N (1 : Matrix (Fin N) (Fin N) ℂ) 1 := by
       simp [sigForm, Matrix.diagonal_apply, Matrix.one_apply]
     simp only [gramHead, gramOf, hs, one_mul, mul_one, Matrix.conjTranspose_one]
 
+/- English proof (translation)
+Introduce `z _ _ _ h _ _`. Establish `v1 : valAt (model Ψ N).x (1 : ℚ) (basePart (model Ψ N).blk z) = 1`. Establish `h1` using `valAt_int (model Ψ N).x (basePart (model Ψ N).blk z) 1`. Move the coercions through the operations in `at h1`. Conclude with `h1`.
+
+Establish `v0 : valAt (model Ψ N).x (0 : ℚ) (basePart (model Ψ N).blk z) = 0`. Establish `h1` using `valAt_int (model Ψ N).x (basePart (model Ψ N).blk z) 0`. Move the coercions through the operations in `at h1`. Conclude with `h1`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `k hp hz`. Take `rfl` from `blk_some.1 hp`. Establish `hpr : IsProperStep N N (stp k).2`. Use `k.2.2` as an intermediate fact. Simplify using `only [IsProperStep, stp]`.
+
+Apply the tactic sequence `constructor <;> omega`. Establish `hz' : ∀ m : FlIdx Ψ N k, z ⟨k, m⟩ = minorIJ h (im m) (stepCols N N (stp k).2)`. Introduce `m`. Rewrite using `[hz m, Finset.sum_eq_single (im m)]`. Simplify using `[frame, coef, v1]`.
+
+Introduce `I _ hI`. Simplify using `[frame, coef, hI, v0]`. Simplify using the standard rewrite rules. Establish `hA : (yLineFl Ψ N (stp k)).h z = (∑ m : FlIdx Ψ N k, ‖z ⟨k, m⟩‖ ^ 2) ^ ((1 : ℝ) / 2)` using `by show refNorm _ z = _`. Unfold `refNorm`.
+
+Rewrite using `[Finset.prod_eq_single k]`. Simplify using `[stp]`. Introduce `q _ hq`. Establish `: ¬ (q.1 = (stp k).1 ∧ (q.2 : ℕ) = (stp k).2)`. Introduce and unpack `⟨e1, e2⟩`.
+
+Conclude with `hq (Prod.ext e1 (Fin.ext e2))`. Simplify using `[this]`. Simplify using the standard rewrite rules. Establish `hg` using `gram h (stp k).2`. Establish `hX : (∑ m : FlIdx Ψ N k, ‖z ⟨k, m⟩‖ ^ 2) = (minorIJ (hᴴ * 1 * h) (stepCols N N (stp k).2) (stepCols N N (stp k).2)).re`.
+
+Simplify using `only [hz']`. Conclude with `hg.symm`. Establish `hnn : 0 ≤ (minorIJ (hᴴ * 1 * h) (stepCols N N (stp k).2) (stepCols N N (stp k).2)).re`. Rewrite using `[← hX]`. Check the signs of the components of the expression.
+
+Rewrite using `[hA, hX]`. Simplify using `only [blockPot, detFac_one, if_pos hpr, Complex.one_re, Real.log_one, mul_zero, zero_add]`. Break down `hnn.lt_or_eq with hpos | h0` into its components or cases. Rewrite using `[Real.log_rpow hpos]`. Rewrite using `[← h0]`.
+
+Simplify using the standard rewrite rules. Introduce `hp`. Establish `hnp : ¬ IsProperStep N N p.2` using `blk_none.1 hp`. Establish `hp2 : ¬ ((p.2 : ℕ) + 1 < N)`. Introduce `h'`.
+
+Conclude with `hnp ⟨by omega, by omega⟩`. Establish `hv : valAt (model Ψ N).x ((frame Ψ N).υ p) (basePart (model Ψ N).blk z) = 1` using `v1`. Establish `hA : (yLineFl Ψ N p).h z = 1` using `by show refNorm _ z = 1`. Unfold `refNorm`. Apply `Finset.prod_eq_one` to reduce the goal to its premises.
+
+Introduce `q _`. Establish `: ¬ (q.1 = p.1 ∧ (q.2 : ℕ) = p.2)`. Introduce and unpack `⟨-, e⟩`. Use `q.2.2` as an intermediate fact. Use `p.2.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[this]`. Rewrite using `[hA, hv]`. Simplify using `[blockPot, detFac_one, hnp]`.
+-/
 theorem induced (zb) (p : Ψ × Fin N) : (model Ψ N).IsInducedAt (frame Ψ N) zb p 1 (yLineFl Ψ N p) := by
   intro z _ _ _ h _ _
   have v1 : valAt (model Ψ N).x (1 : ℚ) (basePart (model Ψ N).blk z) = 1 := by
@@ -456,6 +605,9 @@ end PositivityTheory.Xgp.c_fl_model
 
 end
 
+/- English proof (translation)
+Introduce `Ψ _ _ _ N _`. Use `⟨PositivityTheory.Xgp.c_fl_model.model Ψ N, PositivityTheory.Xgp.c_fl_model.metric Ψ N, fun _ => rfl, fun p => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PositivityTheory.Xgp.c_fl_model.dy_eq]`. Both sides reduce to the same expression. Conclude with `Set.eq_empty_of_forall_notMem fun _ h => one_ne_zero (α := ℂ) h`.
+-/
 theorem PositivityTheory.Xgp.t_c_fl_model : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] [Nonempty Ψ] (N : ℕ), 2 ≤ N → ∃ (M : FlagModel (yFl Ψ N) Ψ N N) (BM : BaseMetric M 0), (∀ p, BM.hom p = yLineFl Ψ N p) ∧ (∀ p, fsHerm (FlIdx Ψ N) (M.dy p) = yLineFl Ψ N p) ∧ bdry BM.s = ∅ := by
   intro Ψ _ _ _ N _
   refine ⟨PositivityTheory.Xgp.c_fl_model.model Ψ N, PositivityTheory.Xgp.c_fl_model.metric Ψ N, fun _ => rfl, fun p => ?_, ?_⟩

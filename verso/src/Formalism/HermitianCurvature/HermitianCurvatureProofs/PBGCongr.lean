@@ -19,6 +19,9 @@ variable {k ρ : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 def PresGV (T : (B.Mat k ρ → V) → (B.Mat k ρ → V)) : Prop :=
   ∀ f f₂ : B.Mat k ρ → V, (∀ g ∈ B.GV k ρ, f g = f₂ g) → ∀ g ∈ B.GV k ρ, T f g = T f₂ g
 
+/- English proof (translation)
+The claim follows from `| [], _ => fun _ _ h g hg => h g hg | T :: L, hL => fun f f₂ h g hg => by simp only [List.foldr_cons] exact hL T (by simp) _ _ (presGV_foldr L (fun T' hT' => hL T' (by simp [hT'])) f f₂ h) g hg`.
+-/
 theorem presGV_foldr : ∀ (L : List ((B.Mat k ρ → V) → (B.Mat k ρ → V))), (∀ T ∈ L, PresGV T) →
     PresGV (fun f => L.foldr (fun T h => T h) f)
   | [], _ => fun _ _ h g hg => h g hg
@@ -26,6 +29,11 @@ theorem presGV_foldr : ∀ (L : List ((B.Mat k ρ → V) → (B.Mat k ρ → V))
       simp only [List.foldr_cons]
       exact hL T (by simp) _ _ (presGV_foldr L (fun T' hT' => hL T' (by simp [hT'])) f f₂ h) g hg
 
+/- English proof (translation)
+Introduce `f f₂ h g hg`. Unfold `qminorOp`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `presGV_foldr _ ?_ f f₂ h g hg` and prove the remaining obligations. Introduce `T hT`. Rewrite `hT` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `hT`. Conclude with `fun f f₂ h g hg => JFxB.top_congr (Q.EH k ρ) (fun c d f f₂ h => JFxB.EH_congr c d f f₂ h) _ _ _ h g hg`.
+-/
 theorem presGV_qminorOp {t : ℕ} (p q : Fin t → Fin (2 * ρ + k + 1)) (u : ℂ) :
     PresGV (qminorOp (Q.EH k ρ) p q u : (B.Mat k ρ → V) → (B.Mat k ρ → V)) := by
   intro f f₂ h g hg
@@ -39,6 +47,9 @@ theorem presGV_qminorOp {t : ℕ} (p q : Fin t → Fin (2 * ρ + k + 1)) (u : �
   obtain ⟨i, rfl⟩ := hT
   exact fun f f₂ h g hg => JFxB.top_congr (Q.EH k ρ) (fun c d f f₂ h => JFxB.EH_congr c d f f₂ h) _ _ _ h g hg
 
+/- English proof (translation)
+Introduce `f f₂ h g hg`. Unfold `Q.chatL`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[presGV_qminorOp _ _ u f f₂ h g hg]`.
+-/
 theorem presGV_chatL {t : ℕ} (pos : Fin t → Fin (2 * ρ + k + 1)) (u : ℂ) (a β : B.Mat k ρ → Fin t → ℂ) :
     PresGV (Q.chatL (Q.EH k ρ) pos u a β : (B.Mat k ρ → V) → (B.Mat k ρ → V)) := by
   intro f f₂ h g hg
@@ -46,6 +57,11 @@ theorem presGV_chatL {t : ℕ} (pos : Fin t → Fin (2 * ρ + k + 1)) (u : ℂ) 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [presGV_qminorOp _ _ u f f₂ h g hg]
 
+/- English proof (translation)
+Introduce `f f₂ h g hg`. Unfold `Q.chat2L`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun i' _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[presGV_qminorOp _ _ u f f₂ h g hg]`.
+
+Both sides reduce to the same expression.
+-/
 theorem presGV_chat2L {t : ℕ} (pos : Fin t → Fin (2 * ρ + k + 1)) (u : ℂ) (a a' β β' : B.Mat k ρ → Fin t → ℂ) :
     PresGV (Q.chat2L (Q.EH k ρ) pos u a a' β β' : (B.Mat k ρ → V) → (B.Mat k ρ → V)) := by
   intro f f₂ h g hg
@@ -56,6 +72,11 @@ theorem presGV_chat2L {t : ℕ} (pos : Fin t → Fin (2 * ρ + k + 1)) (u : ℂ)
   · rw [presGV_qminorOp _ _ u f f₂ h g hg]
   · rfl
 
+/- English proof (translation)
+Introduce `f f₂ h g hg`. Apply the tactic sequence `fin_cases p <;> fin_cases q`. Conclude with `presGV_qminorOp _ _ _ f f₂ h g hg`. Use `show -(Q.chatL _ _ _ _ _ f) g = -(Q.chatL _ _ _ _ _ f₂) g`. Rewrite using `[presGV_chatL _ _ _ _ f f₂ h g hg]`.
+
+Use `show -(Q.chatL _ _ _ _ _ f) g = -(Q.chatL _ _ _ _ _ f₂) g`. Rewrite using `[presGV_chatL _ _ _ _ f f₂ h g hg]`. Use `show -(Q.chat2L _ _ _ _ _ _ _ f) g = -(Q.chat2L _ _ _ _ _ _ _ f₂) g`. Rewrite using `[presGV_chat2L _ _ _ _ _ _ f f₂ h g hg]`.
+-/
 theorem presGV_tL (z z' : Fin (2 * ρ + k + 1) → ℂ) (i : Fin (ρ + 1)) (Y : ℂ) (p q : Fin 2) :
     PresGV (Q.tL k ρ z z' i Y p q : (B.Mat k ρ → V) → (B.Mat k ρ → V)) := by
   intro f f₂ h g hg
@@ -70,27 +91,47 @@ theorem presGV_tL (z z' : Fin (2 * ρ + k + 1) → ℂ) (i : Fin (ρ + 1)) (Y : 
 
 def OpG (T : D.Op (B.Mat k ρ → V)) : Prop := PresGV (T : (B.Mat k ρ → V) → (B.Mat k ρ → V))
 
+/- English proof (translation)
+Introduce `f f₂ h g hg`. Both sides reduce to the same expression.
+-/
 theorem opG_zero : OpG (0 : D.Op (B.Mat k ρ → V)) := by
   intro f f₂ h g hg
   rfl
 
+/- English proof (translation)
+Introduce `f f₂ h g hg`. Conclude with `h g hg`.
+-/
 theorem opG_one : OpG (1 : D.Op (B.Mat k ρ → V)) := by
   intro f f₂ h g hg
   exact h g hg
 
+/- English proof (translation)
+Introduce `f f₂ hf g hg`. Use `show T f g + T' f g = T f₂ g + T' f₂ g`. Rewrite using `[h f f₂ hf g hg, h' f f₂ hf g hg]`.
+-/
 theorem opG_add {T T' : D.Op (B.Mat k ρ → V)} (h : OpG T) (h' : OpG T') : OpG (T + T') := by
   intro f f₂ hf g hg
   show T f g + T' f g = T f₂ g + T' f₂ g
   rw [h f f₂ hf g hg, h' f f₂ hf g hg]
 
+/- English proof (translation)
+Introduce `f f₂ hf g hg`. Conclude with `h _ _ (h' f f₂ hf) g hg`.
+-/
 theorem opG_mul {T T' : D.Op (B.Mat k ρ → V)} (h : OpG T) (h' : OpG T') : OpG (T * T') := by
   intro f f₂ hf g hg
   exact h _ _ (h' f f₂ hf) g hg
 
+/- English proof (translation)
+Introduce `f f₂ hf g hg`. Simplify using `[D.cOp, hf g hg]`.
+-/
 theorem opG_cOp (c : ℂ) : OpG (D.cOp c : D.Op (B.Mat k ρ → V)) := by
   intro f f₂ hf g hg
   simp [D.cOp, hf g hg]
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.sum_empty]`. Conclude with `opG_zero`.
+
+Introduce `a s ha ih h`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `opG_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem opG_sum {ι : Type*} (s : Finset ι) (T : ι → D.Op (B.Mat k ρ → V)) (h : ∀ i ∈ s, OpG (T i)) :
     OpG (∑ i ∈ s, T i) := by
   classical
@@ -107,10 +148,16 @@ variable {S : Type} [Fintype S] [DecidableEq S]
 
 def SlopeTestChoicesGrowth (M : Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V))) : Prop := ∀ a b, OpG (M a b)
 
+/- English proof (translation)
+Introduce `a b`. Conclude with `opG_sum _ _ fun c _ => opG_mul (hM a c) (hN c b)`.
+-/
 theorem matrix_good_mul {M N : Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V))} (hM : SlopeTestChoicesGrowth M) (hN : SlopeTestChoicesGrowth N) : SlopeTestChoicesGrowth (M * N) := by
   intro a b
   exact opG_sum _ _ fun c _ => opG_mul (hM a c) (hN c b)
 
+/- English proof (translation)
+Introduce `a b`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `opG_one`. Conclude with `opG_zero`.
+-/
 theorem matrix_good_one : SlopeTestChoicesGrowth (1 : Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V))) := by
   intro a b
   rw [Matrix.one_apply]
@@ -118,16 +165,25 @@ theorem matrix_good_one : SlopeTestChoicesGrowth (1 : Wd.SlopeTestRemainingChoic
   · exact opG_one
   · exact opG_zero
 
+/- English proof (translation)
+Introduce `a b`. Rewrite using `[Matrix.sum_apply]`. Conclude with `opG_sum _ _ fun i hi => h i hi a b`.
+-/
 theorem matrix_good_sum {ι : Type*} (s : Finset ι) (M : ι → Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V))) (h : ∀ i ∈ s, SlopeTestChoicesGrowth (M i)) :
     SlopeTestChoicesGrowth (∑ i ∈ s, M i) := by
   intro a b
   rw [Matrix.sum_apply]
   exact opG_sum _ _ fun i hi => h i hi a b
 
+/- English proof (translation)
+Introduce `a b`. Conclude with `opG_cOp _`.
+-/
 theorem matrix_good_scalar_map (M : Wd.SlopeTestRemainingChoices S ℂ) : SlopeTestChoicesGrowth (M.map D.cOp : Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V))) := by
   intro a b
   exact opG_cOp _
 
+/- English proof (translation)
+Introduce `a b`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `hT`. Conclude with `opG_zero`.
+-/
 theorem matrix_good_diagonal (T : D.Op (B.Mat k ρ → V)) (hT : OpG T) :
     SlopeTestChoicesGrowth (Matrix.diagonal fun _ : Wd.Ix S => T) := by
   intro a b
@@ -138,19 +194,31 @@ theorem matrix_good_diagonal (T : D.Op (B.Mat k ρ → V)) (hT : OpG T) :
 
 def EntrywiseGood (M : Wd.M2 (Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V)))) : Prop := ∀ p q, SlopeTestChoicesGrowth (M p q)
 
+/- English proof (translation)
+Introduce `p q`. Rewrite using `[Matrix.mul_apply]`. Conclude with `matrix_good_sum _ _ fun r _ => matrix_good_mul (hM p r) (hN r q)`.
+-/
 theorem entrywise_good_mul {M N : Wd.M2 (Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V)))} (hM : EntrywiseGood M) (hN : EntrywiseGood N) : EntrywiseGood (M * N) := by
   intro p q
   rw [Matrix.mul_apply]
   exact matrix_good_sum _ _ fun r _ => matrix_good_mul (hM p r) (hN r q)
 
+/- English proof (translation)
+Introduce `p q a b`. Conclude with `opG_cOp _`.
+-/
 theorem entrywise_good_scalar (M : Wd.M2 (Wd.SlopeTestRemainingChoices S ℂ)) : EntrywiseGood (D.scal M : Wd.M2 (Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V)))) := by
   intro p q a b
   exact opG_cOp _
 
+/- English proof (translation)
+Introduce `p q`. Conclude with `hM q p`.
+-/
 theorem entrywise_good_transpose {M : Wd.M2 (Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V)))} (hM : EntrywiseGood M) : EntrywiseGood M.transpose := by
   intro p q
   exact hM q p
 
+/- English proof (translation)
+The claim follows from `| [], Y => fun p q => by unfold D.TTop rw [Matrix.map_apply] exact matrix_good_diagonal _ (hQ Y p q) | l :: w, Y => by unfold D.TTop split_ifs · exact entrywise_good_mul (entrywise_good_transfer_word QQ hQ w Y) (entrywise_good_scalar _) · exact entrywise_good_mul (entrywise_good_ …`.
+-/
 theorem entrywise_good_transfer_word (QQ : ℂ → Wd.M2 (D.Op (B.Mat k ρ → V))) (hQ : ∀ Y p q, OpG (QQ Y p q)) :
     ∀ (w : List (Wd.Letter ℂ S)) (Y : ℂ), EntrywiseGood (D.TTop QQ w Y)
   | [], Y => fun p q => by
@@ -163,10 +231,16 @@ theorem entrywise_good_transfer_word (QQ : ℂ → Wd.M2 (D.Op (B.Mat k ρ → V
       · exact entrywise_good_mul (entrywise_good_transfer_word QQ hQ w Y) (entrywise_good_scalar _)
       · exact entrywise_good_mul (entrywise_good_scalar _) (entrywise_good_transfer_word QQ hQ w Y)
 
+/- English proof (translation)
+Simplify using `only [D.insOp]`. Conclude with `matrix_good_sum _ _ fun i _ => matrix_good_sum _ _ fun j _ => matrix_good_mul (matrix_good_scalar_map _) (hM i j)`.
+-/
 theorem matrix_good_insert (a : S) {M : Wd.M2 (Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V)))} (hM : EntrywiseGood M) : SlopeTestChoicesGrowth (D.insOp a M) := by
   simp only [D.insOp]
   exact matrix_good_sum _ _ fun i _ => matrix_good_sum _ _ fun j _ => matrix_good_mul (matrix_good_scalar_map _) (hM i j)
 
+/- English proof (translation)
+The claim follows from `| [] => by unfold D.RRop; exact matrix_good_one | l :: w => by unfold D.RRop refine matrix_good_mul (matrix_good_resolvent_word QQ hQ w) (matrix_good_insert _ ?_) split_ifs · exact entrywise_good_transfer_word QQ hQ w l.pt · exact entrywise_good_transpose (entrywise_good_transfer …`.
+-/
 theorem matrix_good_resolvent_word (QQ : ℂ → Wd.M2 (D.Op (B.Mat k ρ → V))) (hQ : ∀ Y p q, OpG (QQ Y p q)) :
     ∀ w : List (Wd.Letter ℂ S), SlopeTestChoicesGrowth (D.RRop QQ w)
   | [] => by unfold D.RRop; exact matrix_good_one
@@ -177,6 +251,9 @@ theorem matrix_good_resolvent_word (QQ : ℂ → Wd.M2 (D.Op (B.Mat k ρ → V))
       · exact entrywise_good_transfer_word QQ hQ w l.pt
       · exact entrywise_good_transpose (entrywise_good_transfer_word QQ hQ w l.pt)
 
+/- English proof (translation)
+Introduce `a g hg`. Simplify using `only [D.actOp, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun b _ => hM a b (x b) (y b) (h b) g hg`.
+-/
 theorem actOp_congr {M : Wd.SlopeTestRemainingChoices S (D.Op (B.Mat k ρ → V))} (hM : SlopeTestChoicesGrowth M) {x y : Wd.Ix S → B.Mat k ρ → V}
     (h : ∀ a, ∀ g ∈ B.GV k ρ, x a g = y a g) : ∀ a, ∀ g ∈ B.GV k ρ, D.actOp M x a g = D.actOp M y a g := by
   intro a g hg
@@ -190,18 +267,29 @@ section levels
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Introduce `f f₂ h g hg`. Use `show (s • Q.tL k (r - j) (T.bs j).z (T.bs j).z' 0 Y p q f) g = (s • Q.tL k (r - j) (T.bs j).z (T.bs j).z' 0 Y p q f₂) g`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, presGV_tL _ _ _ _ p q f f₂ h g hg]`.
+-/
 theorem opG_QQlev (T : D.LevTower k r Wp Wq) (s : ℂ) (j : Fin (r + 1)) (Y : ℂ) (p q : Fin 2) :
     OpG (D.QQlev T s j Y p q) := by
   intro f f₂ h g hg
   show (s • Q.tL k (r - j) (T.bs j).z (T.bs j).z' 0 Y p q f) g = (s • Q.tL k (r - j) (T.bs j).z (T.bs j).z' 0 Y p q f₂) g
   rw [Pi.smul_apply, Pi.smul_apply, presGV_tL _ _ _ _ p q f f₂ h g hg]
 
+/- English proof (translation)
+The claim follows from `matrix_good_resolvent_word (D.QQlev T s j) (opG_QQlev T s j) (D.positionted w)`.
+-/
 theorem matrix_good_level_resolvent (T : D.LevTower k r Wp Wq) (s : ℂ) (j : Fin (r + 1)) (w : List C.Letter) :
     SlopeTestChoicesGrowth (D.RRlev T s j w) :=
   matrix_good_resolvent_word (D.QQlev T s j) (opG_QQlev T s j) (D.positionted w)
 
 variable [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `B.beta Formalism.QuantumDeterminants.betaBig`. Apply `MeasureTheory.integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [Formalism.FourierDecayAlt.P.B7.ae_mem_good_set_or_weight_zero Bs] with q hq`. Break down `hq with hq | hq` into its components or cases. Establish `hg` using `Formalism.FourierDecayAlt.P.B7.gq_mem Bs hq`.
+
+Establish `e` using `Formalism.FourierDecayAlt.P.Qx8.JF_congr Bs (F := H₁) (F' := H₂) (a := 1) (fun g hg => by rw [h g hg, one_smul]) hg`. Rewrite `e` using `[one_smul]`. Unfold `B.gq at e`. Rewrite using `[e]`. Simplify using `[hq]`.
+-/
 theorem beta_congr_right (Bs : B.RealPlaceData k r Wp Wq) {F H₁ H₂ : B.Mat k r → (Wq →L[ℂ] Wp)}
     (h : ∀ g ∈ B.GV k r, H₁ g = H₂ g) : B.beta Bs F H₁ = B.beta Bs F H₂ := by
   unfold B.beta Formalism.QuantumDeterminants.betaBig
@@ -216,11 +304,17 @@ theorem beta_congr_right (Bs : B.RealPlaceData k r Wp Wq) {F H₁ H₂ : B.Mat k
     rw [e]
   · simp [hq]
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.P.Dx1.LZ.beta_congr_left Bs hF, beta_congr_right Bs hH]`.
+-/
 theorem beta_congrGV (Bs : B.RealPlaceData k r Wp Wq) {F₁ F₂ H₁ H₂ : B.Mat k r → (Wq →L[ℂ] Wp)}
     (hF : ∀ g ∈ B.GV k r, F₁ g = F₂ g) (hH : ∀ g ∈ B.GV k r, H₁ g = H₂ g) :
     B.beta Bs F₁ H₁ = B.beta Bs F₂ H₂ := by
   rw [Formalism.FourierDecayAlt.P.Dx1.LZ.beta_congr_left Bs hF, beta_congr_right Bs hH]
 
+/- English proof (translation)
+Unfold `D.formLev`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Conclude with `beta_congrGV (T.bs j) (actOp_congr (matrix_good_level_resolvent T s j w) hx a) (hx' a)`.
+-/
 theorem formLev_congrGV (T : D.LevTower k r Wp Wq) (s : ℂ) (j : Fin (r + 1)) (w : List C.Letter)
     (x x' y y' : Wd.Ix (Fin w.length) → B.Mat k (r - j) → (Wq →L[ℂ] Wp))
     (hx : ∀ a, ∀ g ∈ B.GV k (r - j), x a g = y a g) (hx' : ∀ a, ∀ g ∈ B.GV k (r - j), x' a g = y' a g) :
@@ -229,6 +323,9 @@ theorem formLev_congrGV (T : D.LevTower k r Wp Wq) (s : ℂ) (j : Fin (r + 1)) (
   refine Finset.sum_congr rfl fun a _ => ?_
   exact beta_congrGV (T.bs j) (actOp_congr (matrix_good_level_resolvent T s j w) hx a) (hx' a)
 
+/- English proof (translation)
+The claim follows from `| [], x, y, x', y', hx, hx' => hΞ x x' y y' hx hx' | _ :: ys, x, y, x', y', hx, hx' => by unfold KB.pairJ rw [pairJ_congrGV Ξ hΞ ys _ (fun e => y (Fin.cons (1 : Fin 2) e)) _ (fun e => y' (Fin.cons (0 : Fin 2) e)) (fun e => hx _) (fun e => hx' _), pairJ_congrGV Ξ hΞ ys _ (fun e => …`.
+-/
 theorem pairJ_congrGV {ρ : ℕ} {X : Type} {w : List C.Letter}
     (Ξ : (Wd.Ix (Fin w.length) → B.Mat k ρ → X) → (Wd.Ix (Fin w.length) → B.Mat k ρ → X) → ℂ)
     (hΞ : ∀ x x' y y', (∀ a, ∀ g ∈ B.GV k ρ, x a g = y a g) → (∀ a, ∀ g ∈ B.GV k ρ, x' a g = y' a g) →
@@ -245,6 +342,9 @@ theorem pairJ_congrGV {ρ : ℕ} {X : Type} {w : List C.Letter}
         pairJ_congrGV Ξ hΞ ys _ (fun e => y (Fin.cons (0 : Fin 2) e)) _ (fun e => y' (Fin.cons (1 : Fin 2) e))
           (fun e => hx _) (fun e => hx' _)]
 
+/- English proof (translation)
+Conclude with `pairJ_congrGV (D.formLev T s j w) (fun x x' y y' hx hx' => formLev_congrGV T s j w x x' y y' hx hx') ys x y x' y' hx hx'`.
+-/
 theorem pairJ_formLev_congrGV (T : D.LevTower k r Wp Wq) (s : ℂ) (j : Fin (r + 1)) (w : List C.Letter)
     (ys : List ℝ) (x y : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat k (r - j) → (Wq →L[ℂ] Wp))
     (x' y' : Wd.Ix (Fin (KB.minusW ys w).length) → B.Mat k (r - j) → (Wq →L[ℂ] Wp))

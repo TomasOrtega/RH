@@ -24,14 +24,23 @@ variable [FiniteDimensional Qp LL]
 variable (W : LocWach PD LL O v n) (A : ArcP n) {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (c : ZMod n) {d : ℕ} (b : Fin d → W.DD T₂) (sol : Fin d → ℕ → Fin d → LL) (k₀ : Fin d)
 
+/- English proof (translation)
+The claim follows from `LiftsAtT.mono W A F c b sol k₀ he h`.
+-/
 theorem LiftsAt.liftsAt_mono {f : W.EE} {e e' : ℕ} (he : e ≤ e') (h : LiftsAt W A F c b sol k₀ f e) :
     LiftsAt W A F c b sol k₀ f e' :=
   LiftsAtT.mono W A F c b sol k₀ he h
 
+/- English proof (translation)
+The claim follows from `LiftsAtT.add W A F c b sol k₀ h h'`.
+-/
 theorem LiftsAt.add_proof {f f' : W.EE} {e : ℕ} (h : LiftsAt W A F c b sol k₀ f e)
     (h' : LiftsAt W A F c b sol k₀ f' e) : LiftsAt W A F c b sol k₀ (f + f') e :=
   LiftsAtT.add W A F c b sol k₀ h h'
 
+/- English proof (translation)
+The claim follows from `N_typeT W A F c b sol k₀ hA hc hthick hcase hl hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hArcL hNN hW₁ hW₂ hsur rr hrr hb hk₀ f hf hdown`.
+-/
 theorem liftsAt_thick_letter_type [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (hA : A.OK) (hc : c ∈ A.cuts)
     (hthick : ∀ s < A.len c, (A.ty (c - (s : ZMod n))).thick) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hl : 5 ≤ PD.p)
     (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
@@ -50,6 +59,9 @@ theorem liftsAt_thick_letter_type [IsDomain O] [IsDiscreteValuationRing O] [IsAd
   N_typeT W A F c b sol k₀ hA hc hthick hcase hl hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hArcL hNN hW₁ hW₂
     hsur rr hrr hb hk₀ f hf hdown
 
+/- English proof (translation)
+The claim follows from `constants_typeT W A F c b sol k₀ hA hc hthick hcase hl hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hArcL hW₁ hW₂ hsur rr hrr hb hk₀ b₁ sol₁ hb₁ c₁ hpr x`.
+-/
 theorem liftsAt_constants_type (hA : A.OK) (hc : c ∈ A.cuts)
     (hthick : ∀ s < A.len c, (A.ty (c - (s : ZMod n))).thick) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hl : 5 ≤ PD.p)
     (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
@@ -69,6 +81,9 @@ theorem liftsAt_constants_type (hA : A.OK) (hc : c ∈ A.cuts)
   constants_typeT W A F c b sol k₀ hA hc hthick hcase hl hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hArcL
     hW₁ hW₂ hsur rr hrr hb hk₀ b₁ sol₁ hb₁ c₁ hpr x
 
+/- English proof (translation)
+The claim follows from `C_typeT W A F c b sol k₀ hA hc hthick hcase hl hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hW₁ hW₂ hb Si hSi b₁ sol₁ hb₁ c₁ s₀ hlt hpr f hf hdown hup`.
+-/
 theorem liftsAt_thin_letter_type (hA : A.OK) (hc : c ∈ A.cuts)
     (hthick : ∀ s < A.len c, (A.ty (c - (s : ZMod n))).thick) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hl : 5 ≤ PD.p)
     (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)

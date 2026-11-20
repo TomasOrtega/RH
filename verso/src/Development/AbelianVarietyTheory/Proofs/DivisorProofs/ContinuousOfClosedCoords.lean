@@ -18,6 +18,17 @@ noncomputable section
 
 namespace GlobalTheory.ThK.CuspTransfer
 
+/- English proof (translation)
+Use `haveI : CompactSpace Kc := isCompact_iff_compactSpace.1 hK`. Use `continuous_iff_isClosed.2 fun C hC => ?_` and prove the remaining obligations. Set `D : Set ((G × Kc) × S)` to `{z | (z.1.1 * (z.1.2 : G)⁻¹, z.2) ∈ T ∧ Φ (z.2, z.1.2) ∈ C}`. Establish `hD : IsClosed D` using `(hT.preimage (by fun_prop)).inter (hC.preimage (by fun_prop))`. Establish `hD' : IsClosed (Prod.map id e '' D)` using `(IsClosedEmbedding.id.prodMap he).isClosedMap _ hD`.
+
+Establish `hD'' : IsClosed ((fun z : G × Kc => (z, c (z.1 * (z.2 : G)⁻¹))) ⁻¹' (Prod.map id e '' D))` using `hD'.preimage (by fun_prop)`. Use `isClosedMap_fst_of_compactSpace _ hD'' using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+
+Take `⟨q, hq, k, hk, rfl⟩` from `hs g`. Use `⟨(q.1 * k, ⟨k, hk⟩), ⟨((q.1 * k, ⟨k, hk⟩), q.2), ⟨by simpa using hq, ?_⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← hΨ q hq ⟨k, hk⟩]`. Conclude with `hg`. Simplify using `[hec q hq]`.
+
+Introduce and unpack `⟨⟨g', k⟩, ⟨⟨z, s⟩, ⟨h1, h2⟩, h3⟩, rfl⟩`. Take `rfl : z = (g', k)` from `congrArg Prod.fst h3`. Use `hΨ _ h1 k` as an intermediate fact. Simplify using `only [inv_mul_cancel_right] at this`. Express the relevant statement in the definitionally equal form `Ψ g' ∈ C`.
+
+Rewrite using `[this]`. Conclude with `h2`.
+-/
 theorem continuous_of_closed_coords {G S B : Type*} [TopologicalSpace G] [Group G] [IsTopologicalGroup G]
     [TopologicalSpace S] [TopologicalSpace B] {Kc : Set G} (hK : IsCompact Kc) {e : S → B} (he : IsClosedEmbedding e)
     {c : G → B} (hc : Continuous c) {T : Set (G × S)} (hT : IsClosed T) (hec : ∀ q ∈ T, e q.2 = c q.1)
@@ -54,6 +65,9 @@ def ActsOnFlag (g : Matrix (Fin n) (Fin n) R) (t : R) (h : Matrix (Fin m) (Fin m
 
 variable {x ι} {g g' : Matrix (Fin n) (Fin n) R} {t t' : R} {h h' : Matrix (Fin m) (Fin m) R}
 
+/- English proof (translation)
+Use `⟨by rw [← Matrix.mulVec_mulVec, H'.1, Matrix.mulVec_smul, H.1, smul_smul, mul_comm], fun z => ?_⟩` and prove the remaining obligations. Take `⟨a', ha'⟩` from `H'.2 z`. Take `⟨a, ha⟩` from `H.2 (h' *ᵥ z)`. Use `⟨a + a' * t, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ha', Matrix.mulVec_add, ha, Matrix.mulVec_smul, H.1, smul_smul, add_smul, add_assoc, Matrix.mulVec_mulVec z h h']`.
+-/
 theorem ActsOnFlag.mul (H : ActsOnFlag x ι g t h) (H' : ActsOnFlag x ι g' t' h') :
     ActsOnFlag x ι (g * g') (t * t') (h * h') := by
   refine ⟨by rw [← Matrix.mulVec_mulVec, H'.1, Matrix.mulVec_smul, H.1, smul_smul, mul_comm], fun z => ?_⟩
@@ -63,6 +77,11 @@ theorem ActsOnFlag.mul (H : ActsOnFlag x ι g t h) (H' : ActsOnFlag x ι g' t' h
   rw [← Matrix.mulVec_mulVec, ha', Matrix.mulVec_add, ha, Matrix.mulVec_smul, H.1, smul_smul, add_smul, add_assoc,
     Matrix.mulVec_mulVec z h h']
 
+/- English proof (translation)
+Establish `h1 : g' *ᵥ x = t' • x`. Establish `: g' *ᵥ (g *ᵥ x) = x` using `by rw [Matrix.mulVec_mulVec, hg, Matrix.one_mulVec]`. Rewrite `this` using `[H.1, Matrix.mulVec_smul]`. Use `conv_rhs => rw [← this, smul_smul, ht, one_smul]`. Use `⟨h1, fun z => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `H.2 (h' *ᵥ z)`. Use `congrArg (g' *ᵥ ·) ha` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec z h h', hh, Matrix.one_mulVec, Matrix.mulVec_add, Matrix.mulVec_smul, h1] at this`. Rewrite `this` using `[Matrix.mulVec_mulVec _ g' g, hg, Matrix.one_mulVec, smul_smul]`. Conclude with `⟨-(a * t'), by rw [this, neg_smul, add_neg_cancel_right]⟩`.
+-/
 theorem ActsOnFlag.inv (H : ActsOnFlag x ι g t h) (hg : g' * g = 1) (ht : t' * t = 1) (hh : h * h' = 1) :
     ActsOnFlag x ι g' t' h' := by
   have h1 : g' *ᵥ x = t' • x := by
@@ -76,6 +95,9 @@ theorem ActsOnFlag.inv (H : ActsOnFlag x ι g t h) (hg : g' * g = 1) (ht : t' * 
   rw [Matrix.mulVec_mulVec _ g' g, hg, Matrix.one_mulVec, smul_smul] at this
   exact ⟨-(a * t'), by rw [this, neg_smul, add_neg_cancel_right]⟩
 
+/- English proof (translation)
+Use `⟨by rw [H.1, dotProduct_smul, hl, smul_eq_mul, mul_one], Matrix.ext_of_mulVec_single fun j => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `H.2 (Pi.single j 1)`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_add, Matrix.mulVec_smul, hLx, smul_zero, add_zero, Matrix.mulVec_mulVec _ L, hL, Matrix.one_mulVec]`.
+-/
 theorem ActsOnFlag.coords (H : ActsOnFlag x ι g t h) {l : Fin n → R} (hl : l ⬝ᵥ x = 1) {L : Matrix (Fin m) (Fin n) R}
     (hL : L * ι = 1) (hLx : L *ᵥ x = 0) : t = l ⬝ᵥ (g *ᵥ x) ∧ h = L * g * ι := by
   refine ⟨by rw [H.1, dotProduct_smul, hl, smul_eq_mul, mul_one], Matrix.ext_of_mulVec_single fun j => ?_⟩
@@ -88,6 +110,15 @@ end Tri
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n n₁ : ℕ}
   {H : Plane E n n₁} {W : Spc F E n} {W₁ : Spc F E n₁}
 
+/- English proof (translation)
+Use `⟨incV F (W.J *ᵥ fun i => σ (H.y i)), incM F ((W₁.J⁻¹)ᵀ * (W.J * H.ι.map σ)ᵀ), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `congrArg (inclR (F := F) (AF F)) h.2.2.2.1` as an intermediate fact. Rewrite `this` using `[map_one, form, dotProduct_comm, RingHom.map_dotProduct]`. Conclude with `this`. Rewrite using `[incM, incM, ← Matrix.map_mul, Matrix.mul_assoc, ← Matrix.transpose_transpose H.ι, Matrix.transpose_transpose H.ι, show (W.J * H.ι.map σ)ᵀ * H.ι = W₁.Jᵀ from by`.
+
+Rewrite using `[← h.2.2.2.2.2, Matrix.mul_assoc, Matrix.transpose_mul H.ιᵀ, Matrix.transpose_transpose],`. Use the proof step `← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ (Ne.isUnit hd), Matrix.transpose_one,`. Use the proof step `Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `: (W.J * H.ι.map σ)ᵀ *ᵥ H.x = 0`. Use function extensionality and compare the values at `j`.
+
+Establish `h1` using `GlobalTheory.LeviPlaneSection.form_skew hσ hsk H.x (H.ι *ᵥ Pi.single j 1)`. Rewrite `h1` using `[(h.2.2.2.2.1 _).1, map_zero, neg_zero]`. Rewrite using `[Pi.zero_apply, ← h1, form, Matrix.mulVec_single_one]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Matrix.mul_apply, Matrix.map_apply, Matrix.col_apply, mul_comm]`. Rewrite using `[← GlobalTheory.UnipCocptForm.incV_mulVec, ← Matrix.mulVec_mulVec, this, Matrix.mulVec_zero]`.
+
+Use function extensionality and compare the values at `i`. Conclude with `map_zero _`.
+-/
 theorem exists_dual (hσ : ∀ x, σ (σ x) = x) (h : GLTwo.IsHypPlane σ H W W₁) (hsk : ∀ i j, σ (W.J j i) = -W.J i j)
     (hd : W₁.J.det ≠ 0) : ∃ (l : Fin n → AE F E) (L : Matrix (Fin n₁) (Fin n) (AE F E)),
       l ⬝ᵥ incV F H.x = 1 ∧ L * incM F H.ι = 1 ∧ L *ᵥ incV F H.x = 0 := by
@@ -111,6 +142,11 @@ theorem exists_dual (hσ : ∀ x, σ (σ x) = x) (h : GLTwo.IsHypPlane σ H W W�
     funext i
     exact map_zero _
 
+/- English proof (translation)
+Use `choose α β z hz using fun j : Fin n => GLTwo.IsHypPlane.decompA hσ h hsk hd (Pi.single j 1)`. Use `⟨Matrix.of fun i j => α j * incV F H.x i, Matrix.of fun i j => β j * incV F H.y i, Matrix.of fun i j => (incM F H.ι *ᵥ z j) i, fun t m hm => Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Use `congrFun (congrArg (mat m *ᵥ ·) (hz j)) i` as an intermediate fact. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hm.1, hm.2.1, hm.2.2, mat_one, Matrix.mul_one, Matrix.mulVec_single_one, Matrix.col_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `only [this, Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_levi_formula (hσ : ∀ x, σ (σ x) = x) (h : GLTwo.IsHypPlane σ H W W₁) (hsk : ∀ i j, σ (W.J j i) = -W.J i j)
     (hd : W₁.J.det ≠ 0) : ∃ A B C : Matrix (Fin n) (Fin n) (AE F E), ∀ t (m : UA σ W.J), IsLevi (W₁ := W₁) H t 1 m →
       mat m = t.1 • A + cA σ (t⁻¹).1 • B + C := by
@@ -123,9 +159,15 @@ theorem exists_levi_formula (hσ : ∀ x, σ (σ x) = x) (h : GLTwo.IsHypPlane �
   simp only [this, Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[← mat_mul, mul_inv_cancel, mat_one]`.
+-/
 theorem mat_mul_inv {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) : mat g * mat g⁻¹ = 1 := by
   rw [← mat_mul, mul_inv_cancel, mat_one]
 
+/- English proof (translation)
+Proceed by induction on `hu using Subgroup.closure_induction with`. Consider the case `mem u hu => exact ⟨by rw [one_smul]; exact hu.1, fun z => by rw [Matrix.one_mulVec]; exact hu.2 z⟩`. Consider the case `one => exact ⟨by rw [mat_one, Matrix.one_mulVec, one_smul], fun z => ⟨0, by simp [mat_one]⟩⟩`. Consider the case `mul a b _ _ ha hb => simpa only [mul_one, ← mat_mul] using ha.mul hb`. Consider the case `inv a _ ha => exact ha.inv (mat_inv_mul a) (mul_one _) (mul_one _)`.
+-/
 theorem actsOnFlag_unip {u : UA σ W.J} (hu : u ∈ unip σ W H) : ActsOnFlag (incV F H.x) (incM F H.ι) (mat u) 1 1 := by
   induction hu using Subgroup.closure_induction with
   | mem u hu => exact ⟨by rw [one_smul]; exact hu.1, fun z => by rw [Matrix.one_mulVec]; exact hu.2 z⟩
@@ -133,10 +175,18 @@ theorem actsOnFlag_unip {u : UA σ W.J} (hu : u ∈ unip σ W H) : ActsOnFlag (i
   | mul a b _ _ ha hb => simpa only [mul_one, ← mat_mul] using ha.mul hb
   | inv a _ ha => exact ha.inv (mat_inv_mul a) (mul_one _) (mul_one _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hm.1, fun z => ⟨0, by rw [Matrix.mulVec_mulVec, hm.2.2, Matrix.mulVec_mulVec, zero_smul, add_zero]⟩⟩`.
+-/
 theorem actsOnFlag_levi {t : (AE F E)ˣ} {y : UA σ W₁.J} {m : UA σ W.J} (hm : IsLevi (W₁ := W₁) H t y m) :
     ActsOnFlag (incV F H.x) (incM F H.ι) (mat m) t.1 (mat y) :=
   ⟨hm.1, fun z => ⟨0, by rw [Matrix.mulVec_mulVec, hm.2.2, Matrix.mulVec_mulVec, zero_smul, add_zero]⟩⟩
 
+/- English proof (translation)
+Use `⟨((actsOnFlag_levi hm).inv (h' := 1) (mat_inv_mul m) t.inv_mul (Matrix.mul_one _)).1, ?_, ?_⟩` and prove the remaining obligations. Establish `: mat m⁻¹ *ᵥ (mat m *ᵥ incV F H.y) = incV F H.y` using `by rw [Matrix.mulVec_mulVec, mat_inv_mul, Matrix.one_mulVec]`. Rewrite `this` using `[hm.2.1, Matrix.mulVec_smul]`. Use `conv_rhs => rw [← this, smul_smul, ← map_mul, inv_inv, Units.mul_inv, map_one, one_smul]`. Use `hm.2.2` as an intermediate fact.
+
+Rewrite `this`, the goal using `[mat_one, Matrix.mul_one]`. Use `conv_lhs => rw [← this, ← Matrix.mul_assoc, mat_inv_mul, Matrix.one_mul]`.
+-/
 theorem isLevi_inv {t : (AE F E)ˣ} {m : UA σ W.J} (hm : IsLevi (W₁ := W₁) H t 1 m) : IsLevi (W₁ := W₁) H t⁻¹ 1 m⁻¹ := by
   refine ⟨((actsOnFlag_levi hm).inv (h' := 1) (mat_inv_mul m) t.inv_mul (Matrix.mul_one _)).1, ?_, ?_⟩
   · have : mat m⁻¹ *ᵥ (mat m *ᵥ incV F H.y) = incV F H.y := by rw [Matrix.mulVec_mulVec, mat_inv_mul, Matrix.one_mulVec]
@@ -146,6 +196,29 @@ theorem isLevi_inv {t : (AE F E)ˣ} {m : UA σ W.J} (hm : IsLevi (W₁ := W₁) 
     rw [mat_one, Matrix.mul_one] at this ⊢
     conv_lhs => rw [← this, ← Matrix.mul_assoc, mat_inv_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hg c₀ hc₀ hJ₁ hJ M hMc hM _ r Xf Yf _ X' Y' hW hX _ _ S' χ _ hχ K₁ _ K' _ Kc d ψs a Ψ hI hψ hK ha`. Establish `h : GLTwo.IsHypPlane σ H W W₁` using `⟨hn, hxx, hyy, hxy, horth, hg⟩`. Establish `hd : W₁.J.det ≠ 0` using `fun h0 => hJ₁.2 (by`. Establish `e : (W₁.J.map σ).det = (σ : E →+* E) W₁.J.det` using `by rw [RingHom.map_det]; rfl`. Rewrite using `[Matrix.det_smul, e, h0, map_zero, mul_zero])`.
+
+Take `⟨_, _⟩` from `GlobalTheory.StdPar.ring_facts (F := F) (E := E)`. Take `⟨l, L, hl, hL, hLx⟩` from `exists_dual hσ h hsk hd`. Take `⟨A, B, C, hABC⟩` from `exists_levi_formula hσ h hsk hd`. Establish `hs : Continuous (cA σ : AE F E → AE F E)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Set `φ` to `GlobalTheory.ThK.SquareIntegrability.toGAd hσ W.J hc₀`.
+
+Set `φ₁` to `GlobalTheory.ThK.SquareIntegrability.toGAd hσ W₁.J hc₀`. Establish `hemb : Continuous (emb hσ W W₁ hc₀ M)` using `(GLTwo.continuous_toGAd hσ W.J hc₀).1.comp (hMc.comp (GLTwo.continuous_toGAd hσ W₁.J hc₀).2)`. Establish `hmat : Continuous fun g : GAd σ (c₀ • W.J.map σ) => mat (φ.symm g)` using `GlobalTheory.StdPar.continuous_mat`. Establish `hmat' : Continuous fun g : GAd σ (c₀ • W.J.map σ) => mat (φ.symm g)⁻¹` using `GlobalTheory.StdPar.continuous_mat.comp continuous_inv`. Set `τ : Matrix (Fin n) (Fin n) (AE F E) → AE F E` to `fun g => l ⬝ᵥ (g *ᵥ incV F H.x)`.
+
+Establish `hτ : Continuous τ` using `continuous_const.dotProduct (continuous_id.matrix_mulVec continuous_const)`. Set `μ : AE F E → AE F E → Matrix (Fin n) (Fin n) (AE F E)` to `fun s s' => s • A + cA σ s' • B + C`. Establish `hμ : ∀ {f f' : GAd σ (c₀ • W.J.map σ) → AE F E}, Continuous f → Continuous f' → Continuous fun g => μ (f g) (f' g)` using `fun h1 h2 => ((h1.smul continuous_const).add ((hs.comp h2).smul continuous_const)).add continuous_const`. Set `β : Matrix (Fin n) (Fin n) (AE F E) → Matrix (Fin n₁) (Fin n₁) (AE F E)` to `fun g => L * g * incM F H.ι`. Establish `hβ : Continuous β` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+
+Establish `he` using `(Units.isClosedEmbedding_embedProduct (α := AE F E)).prodMap (((Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) (AE F E))).comp (isClosedEmbedding_matHom_GAd σ (c₀ • W.J.map σ))).prodMap ((Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n₁) (Fin n₁) (AE F …`. Use `continuous_of_closed_coords hK.1 he (c := fun g => ((τ (mat (φ.symm g)), MulOpposite.op (τ (mat (φ.symm g)⁻¹))), (μ (τ (mat (φ.symm g))) (τ (mat (φ.symm g)⁻¹)), MulOpposite.op (μ (τ (mat (φ.symm g)⁻¹)) (τ (mat (φ.symm g))))), (β (mat (φ.symm g)), MulOpposite.op (β (mat (φ.symm g) …` and prove the remaining obligations. Establish `hm` using `hmat.comp (continuous_fst.comp (continuous_snd.comp (continuous_snd (X := GAd σ (c₀ • W.J.map σ)) (Y := (AE F E)ˣ × GAd σ (c₀ • W.J.map σ) × GAd σ (c₀ • W₁.J.map σ)))))`. Establish `ht` using `continuous_fst.comp (continuous_snd (X := GAd σ (c₀ • W.J.map σ)) (Y := (AE F E)ˣ × GAd σ (c₀ • W.J.map σ) × GAd σ (c₀ • W₁.J.map σ)))`. Use `IsClosed.inter (IsClosed.inter ?_ (IsClosed.inter ?_ ?_)) ?_` and prove the remaining obligations.
+
+Conclude with `isClosed_eq (hm.matrix_mulVec continuous_const) ((Units.continuous_val.comp ht).smul continuous_const)`. Conclude with `isClosed_eq (hm.matrix_mulVec continuous_const) ((hs.comp (Units.continuous_coe_inv.comp ht)).smul continuous_const)`. Conclude with `isClosed_eq (hm.matrix_mul continuous_const) continuous_const`. Conclude with `(GlobalTheory.StdPar.isClosed_unip {0} hcm hJ hW).preimage ((continuous_fst.mul (hemb.comp (continuous_snd.comp (continuous_snd.comp continuous_snd))).inv).mul (continuous_fst.comp (continuous_snd.comp continuous_snd)).inv)`. Introduce and unpack `⟨p, t, m, y⟩ ⟨h1, h2⟩`.
+
+Take `⟨u, hu⟩` from `φ.surjective (p * (emb hσ W W₁ hc₀ M y)⁻¹ * m⁻¹)`. Establish `hu' : u ∈ unip σ W H` using `(h.mem_unip_iff hσ hsk hd hc₀ hW (Nat.succ_pos r) hX u).2 (hu ▸ h2)`. Establish `hp : φ.symm p = u * φ.symm m * M (φ₁.symm y)` using `φ.injective (by`. Rewrite using `[map_mul, map_mul, hu, φ.apply_symm_apply, φ.apply_symm_apply, inv_mul_cancel_right]`. Conclude with `(inv_mul_cancel_right _ _).symm)`.
+
+Establish `a1 : ActsOnFlag (incV F H.x) (incM F H.ι) (mat (φ.symm p)) t.1 (mat (φ₁.symm y))`. Simplify `((actsOnFlag_unip hu').mul (actsOnFlag_levi h1)).mul (actsOnFlag_levi (hM (φ₁.symm y)))` using `only [hp, mat_mul, one_mul, mul_one, Units.val_one, mat_one]`. Establish `a2` using `a1.inv (mat_inv_mul _) t.inv_mul (mat_mul_inv _)`. Take `⟨e1, e2⟩` from `a1.coords hl hL hLx`. Take `⟨e3, e4⟩` from `a2.coords hl hL hLx`.
+
+Establish `e5` using `hABC _ _ h1`. Establish `e6` using `hABC _ _ (isLevi_inv h1)`. Rewrite `e6` using `[inv_inv]`. Simplify using `only [τ, β, μ, ← e1, ← e2, ← e3, ← e4]`. Conclude with `Prod.ext rfl (Prod.ext (Prod.ext e5 (congrArg MulOpposite.op e6)) rfl)`.
+
+Conclude with `(hχ.comp (continuous_fst.comp continuous_fst)).mul (continuous_finset_sum _ fun i _ => ((hψ i).1.cont.comp (continuous_snd.comp (continuous_snd.comp continuous_fst))).mul ((ha i).restrict.comp continuous_snd))`. Introduce `g`. Take `⟨u, hu, t, m, y, k, hk, hm, rfl⟩` from `hI.1 g`. Use `⟨(u * φ m * emb hσ W W₁ hc₀ M y, t, φ m, y), ⟨?_, ?_⟩, k, hk, rfl⟩` and prove the remaining obligations. Simplify `hm` using `only [φ.symm_apply_apply]`.
+
+Simplify `hu` using `only [mul_inv_cancel_right]`. Introduce and unpack `⟨p, t, m, y⟩ ⟨h1, h2⟩ k`. Use `hI.2 _ h2 t (φ.symm m) y k k.2 h1` as an intermediate fact. Rewrite `this` using `[show GlobalTheory.ThK.SquareIntegrability.toGAd hσ W.J hc₀ (φ.symm m) = m from φ.apply_symm_apply m, inv_mul_cancel_right, inv_mul_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem continuous_of_isInd : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
       form σ W.J H.x H.x = 0 → form σ W.J H.y H.y = 0 → form σ W.J H.x H.y = 1 →

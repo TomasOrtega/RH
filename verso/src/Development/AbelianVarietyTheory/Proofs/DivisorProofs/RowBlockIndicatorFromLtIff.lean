@@ -20,6 +20,11 @@ def blockPar (R : Type) [CommRing R] (a d : ℕ) : Subgroup (GL (Fin d) R) where
     rw [Matrix.coe_units_inv]
     exact Matrix.blockTriangular_inv_of_blockTriangular hx
 
+/- English proof (translation)
+Use `show (g : Matrix (Fin d) (Fin d) R).BlockTriangular (_root_.GlobalTheory.StdLoc.rowBlockIndicatorFrom a) ↔ _`. Unfold `Matrix.BlockTriangular _root_.GlobalTheory.StdLoc.rowBlockIndicatorFrom`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hj hi`. Apply `h` to reduce the goal to its premises.
+
+Simplify using `[hi, not_le.mpr hj]`. Introduce `h i j hlt`. Apply the tactic sequence `refine h i j ?_ ?_ <;> split_ifs at hlt <;> omega`.
+-/
 theorem _root_.GlobalTheory.StdLoc.mem_blockPar {R : Type} [CommRing R] {a d : ℕ} (g : GL (Fin d) R) :
     g ∈ _root_.GlobalTheory.StdLoc.blockPar R a d ↔ ∀ i j : Fin d, j.1 < a → a ≤ i.1 → (g : Matrix (Fin d) (Fin d) R) i j = 0 := by
   show (g : Matrix (Fin d) (Fin d) R).BlockTriangular (_root_.GlobalTheory.StdLoc.rowBlockIndicatorFrom a) ↔ _

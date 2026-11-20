@@ -11,6 +11,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.StepTwo.TwoBound
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.TameQuot.closure_frob_sup_Ine F Ω A v hA ⟨σ, hσ.1⟩ hσ`. Establish `hc : IsClosed ((L.subgroupOf (Dec (F` using `F) A) : Subgroup (Dec (F := F) A)) : Set (Dec (F := F) A)) := (L.isClosed_of_isOpen hL).preimage continuous_subtype_val`. Establish `h2` using `Subgroup.topologicalClosure_minimal (Subgroup.zpowers (⟨σ, hσ.1⟩ : Dec (F := F) A) ⊔ (Ine (F := F) A).subgroupOf (Dec (F := F) A)) (sup_le ((Subgroup.zpowers_le).2 (Subgroup.mem_subgroupOf.2 hm)) (fun x hx => hI hx)) hc`. Rewrite `h2` using `[h]`. Introduce `g hg`.
+
+Conclude with `h2 (Subgroup.mem_top (⟨g, hg⟩ : Dec (F := F) A))`.
+-/
 theorem dec_le_of_frob_mem {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A v) {σ : G F Ω}
     (hσ : IsFrob A (normV v) σ) {L : Subgroup (G F Ω)} (hL : IsOpen (L : Set (G F Ω))) (hI : Ine (F := F) A ≤ L)
@@ -25,6 +30,11 @@ theorem dec_le_of_frob_mem {F Ω : Type} [Field F] [NumberField F] [Field Ω] [A
   intro g hg
   exact h2 (Subgroup.mem_top (⟨g, hg⟩ : Dec (F := F) A))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Take `⟨y, rfl⟩` from `IsDiscreteValuationRing.addVal_le_iff_dvd.1 hlt.le`. Distinguish the cases in `hy : IsUnit y`. Rewrite `hlt` using `[IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_eq_zero_iff.2 hy, add_zero]`.
+
+Conclude with `lt_irrefl _ hlt`. Conclude with `hx (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self l) hy)`.
+-/
 theorem addVal_le_of_notMem {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {l x : O}
     (hx : x ∉ Ideal.span {l} * IsLocalRing.maximalIdeal O) :
     IsDiscreteValuationRing.addVal O x ≤ IsDiscreteValuationRing.addVal O l := by
@@ -38,25 +48,47 @@ theorem addVal_le_of_notMem {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValu
 
 noncomputable def bound (w e r k : ℕ) : ℕ := Nat.rec w (fun _ b => 2 * (e + 1) * b + 2 + 2 * r) k
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bound_succ (w e r k : ℕ) : bound w e r (k + 1) = 2 * (e + 1) * bound w e r k + 2 + 2 * r := rfl
 
+/- English proof (translation)
+Rewrite using `[bound_succ]`. Use polynomial arithmetic with `[Nat.zero_le (e * bound w e r k)]`.
+-/
 theorem bound_step (w e r k : ℕ) : bound w e r k + 1 + 2 * r ≤ bound w e r (k + 1) := by
   rw [bound_succ]; nlinarith [Nat.zero_le (e * bound w e r k)]
 
+/- English proof (translation)
+The claim follows from `monotone_nat_of_le_succ fun k => le_trans (by omega) (bound_step w e r k)`.
+-/
 theorem bound_mono (w e r : ℕ) : Monotone (bound w e r) :=
   monotone_nat_of_le_succ fun k => le_trans (by omega) (bound_step w e r k)
 
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} {bkP : BKPh X}
   {i : X.Tw} {s : X.Sig i} {M R n : ℕ} {d : PlE D.host → (GE N →* Multiplicative (ZMod (X.l i ^ M)))}
 
+/- English proof (translation)
+Introduce `Q hQ a Φ hΦ F hF` and use `(h Q hQ a Φ hΦ F hF).imp fun _ hm => ⟨hm.1.trans_le hc, hm.2⟩`.
+-/
 theorem NF_mono {P : Fin R ⊕ Fin n → PlE D.host} {c c' : ℕ} (hc : c ≤ c') (h : NF bkP i s M d P c) :
     NF bkP i s M d P c' := fun Q hQ a Φ hΦ F hF =>
   (h Q hQ a Φ hΦ F hF).imp fun _ hm => ⟨hm.1.trans_le hc, hm.2⟩
 
+/- English proof (translation)
+Introduce `Q hQ a Φ hΦ` and use `(h Q hQ a Φ hΦ).imp id fun ⟨b, b', hb⟩ => ⟨b, b', fun F hF => (hb F hF).imp fun _ hm => ⟨hm.1.trans_le hc, hm.2⟩⟩`.
+-/
 theorem NFit_mono {P : Fin R ⊕ Fin n → PlE D.host} {c c' : ℕ} (hc : c ≤ c') (h : NFit bkP i s M d P c) :
     NFit bkP i s M d P c' := fun Q hQ a Φ hΦ =>
   (h Q hQ a Φ hΦ).imp id fun ⟨b, b', hb⟩ => ⟨b, b', fun F hF => (hb F hF).imp fun _ hm => ⟨hm.1.trans_le hc, hm.2⟩⟩
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact fun _ => ⟨P₀, fun _ => rfl, h₀, hF, fun j hj => absurd hj (Nat.not_lt_zero _)⟩`. Consider the case `succ k ih`. Introduce `hk`.
+
+Take `⟨P, hP, hSt, hFit, hNF⟩` from `ih (by omega)`. Establish `hb : bound w e D.R.r (k + 1) ≤ X.l i ^ (M - nu X i - 1)` using `(bound_mono w e D.R.r hk).trans hM`. Establish `hs` using `bound_step w e D.R.r k`. Take `⟨P', hE, hSt', hN⟩` from `hS ⟨k, hk⟩ hl M (R₀ + t) (R₀ + k) H S d A L z P (bound w e D.R.r k) e (by omega) he hb h3 hd hLH hz (hL _) hSt (hFit _)`. Establish `hg` using `fun j => hG j hl M (R₀ + t) (R₀ + k) d A L z P P' (bound w e D.R.r k + 1) (by omega) (hs.trans hb) h3 hz (hL j) hSt' hE`.
+
+Use `⟨P', fun a => (hE (.inl a)).trans (hP a), hSt', fun j => NFit_mono (by omega) ((hg j).2 (hFit j)), fun j hj => ?_⟩` and prove the remaining obligations. Break down `Nat.lt_succ_iff_lt_or_eq.1 hj with hj | hj` into its components or cases. Conclude with `NF_mono (by omega) ((hg j).1 (hNF j hj))`. Take `rfl : j = ⟨k, hk⟩` from `Fin.ext hj`. Conclude with `NF_mono (Nat.le_succ _) hN`.
+-/
 theorem induct (hl : 0 < nu X i) {t R₀ : ℕ} (f : Fin t → X.Sig i) (hG : ∀ j, Grow bkP i (f j)) (hS : ∀ j, Step bkP i (f j))
     {H : Subgroup (GE N)} {S A : Finset (PlE D.host)} {L : Subgroup (GE N)} {z : GE N} {w e : ℕ}
     (he : IsDiscreteValuationRing.addVal (X.O0 i) ((X.l i : X.O0 i) ^ nu X i) = e)
@@ -84,6 +116,27 @@ theorem induct (hl : 0 < nu X i) {t R₀ : ℕ} (f : Fin t → X.Sig i) (hG : �
     · obtain rfl : j = ⟨k, hk⟩ := Fin.ext hj
       exact NF_mono (Nat.le_succ _) hN
 
+/- English proof (translation)
+Introduce `D N X bkP hAB hCh hP i hl T hT`. Take `⟨R₀, hR⟩` from `hCh i T hT`. Establish `: Finite (X.Sig i)` using `(X.finSig i).finite`. Take `⟨t, f, -, hf⟩` from `(Set.toFinite T).fin_param`. Establish `hfT : ∀ j, f j ∈ T` using `fun j => hf ▸ Set.mem_range_self j`.
+
+Establish `hp : (X.l i).Prime` using `(X.lPrime i).out`. Establish `hl0 : (X.l i : X.O0 i) ≠ 0` using `fun h0 => by`. Establish `h1 : (X.emb0 i) (X.l i : D.LL0) = 0`. Rewrite using `[map_natCast, ← map_natCast (algebraMap (X.O0 i) (FractionRing (X.O0 i))), h0, map_zero]`. Conclude with `hp.ne_zero (Nat.cast_eq_zero.1 ((map_eq_zero _).1 h1))`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : ℕ, IsDiscreteValuationRing.addVal (X.O0 i) ((X.l i : X.O0 i) ^ nu X i) = e := by`. Take `⟨e, he⟩` from `ENat.ne_top_iff_exists.1 (mt IsDiscreteValuationRing.addVal_eq_top_iff.1 (pow_ne_zero (nu X i) hl0))`. Conclude with `⟨e, he.symm⟩`. Use `⟨R₀ + t, bound (4 * D.R.r * R₀) e D.R.r t, bound (4 * D.R.r * R₀) e D.R.r t + nu X i + 3, fun M hM H S d hd z hz H' ho hn A => ?_⟩` and prove the remaining obligations. Establish `hw : 4 * D.R.r * R₀ ≤ bound (4 * D.R.r * R₀) e D.R.r t` using `bound_mono (4 * D.R.r * R₀) e D.R.r (Nat.zero_le t)`.
+
+Establish `hlt : 4 * D.R.r * R₀ + 2 < X.l i ^ M` using `lt_of_le_of_lt (by omega) (Nat.lt_pow_self (n := M) hp.one_lt)`. Establish `hle : bound (4 * D.R.r * R₀) e D.R.r t ≤ X.l i ^ (M - nu X i - 1)` using `le_trans (by omega) (Nat.lt_pow_self (n := M - nu X i - 1) hp.one_lt).le`. Take `⟨L, hLo, hLn, hLH, hLs, hLζ, hLi⟩` from `GlobalTheory.ResSel.SmallSub.exists_small D N X bkP i T hT z hz M H hd.1 hd.2.1 hd.2.2.1`. Take `⟨h, U, hh, hUo, hUn, hUL, hco⟩` from `hR z hz L hLo hLn hLs`. Establish `hh' : ∀ a, Fin.append h (fun _ : Fin t => (1 : GE N)) a ∈ L` using `fun a => by`.
+
+Use `Fin.addCases (fun a => ?_) (fun a => ?_) a` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `hh a`. Rewrite using `[Fin.append_right]`. Conclude with `L.one_mem`.
+
+Take `⟨P, hAux, hSt, hIne, hFr⟩` from `hAB i M (by omega) H S d hd z hz (U ⊓ H') (hUo.inter ho) inferInstance A (R₀ + t) (Fin.append h fun _ => 1) (fun a => ⟨hLH (hh' a), hLζ _ (hh' a)⟩)`. Use `choose φ g hφ hg using hFr`. Establish `hUL' : U ⊓ H' ≤ L` using `inf_le_left.trans hUL`. Establish `hφL : ∀ a, φ a ∈ L` using `fun a => by`. Establish `h1` using `L.mul_mem (hUL' (hg a)) (hh' a)`.
+
+Rewrite `h1` using `[inv_mul_cancel_right]`. Simplify `hLn.conj_mem _ h1 (g a)⁻¹` using `[mul_assoc]`. Establish `hcj : ∀ a, IsCj X (φ a) (GlobalTheory.TwistDet.cConj X (φ a))` using `fun a x => rfl`. Establish `hinj : Function.Injective (Sum.map id (Fin.castAdd t) : Fin (R₀ + t) ⊕ Fin R₀ → Fin (R₀ + t) ⊕ Fin (R₀ + t))` using `Function.injective_id.sumMap (Fin.castAdd_injective _ _)`. Establish `h₀ : PiLocalization₂ i M d A L z (fun q : Fin (R₀ + t) ⊕ Fin R₀ => P (Sum.map id (Fin.castAdd t) q))`.
+
+Use `⟨⟨fun q => hAux.1 _, fun q q' hq => hinj (hAux.2.1 _ _ hq), fun q => hAux.2.2 _⟩, fun a => ⟨fun v hv B hB => (hIne _ v hv B hB).trans hUL', fun σ hσ => (hSt.1 a σ hσ).imp fun _ hg => hUL' hg⟩, fun a => ⟨dec_le_of_frob_mem (N.plOm.2 _) (hφ (Fin.castAdd t a)) hLo ((hIne _ _ (Or.inl …` and prove the remaining obligations. Use `hSt.2 (Fin.castAdd t a) b σ hσ` as an intermediate fact. Simplify `this` using `[Fin.ext_iff]`. Establish `hc` using `hco (fun a => φ (Fin.castAdd t a)) (fun a => GlobalTheory.TwistDet.cConj X (φ (Fin.castAdd t a))) (fun a => ⟨hcj _, g (Fin.castAdd t a), by simpa using (hg (Fin.castAdd t a)).1⟩)`. Rewrite `hc` using `[if_neg hl.ne']`.
+
+Take `⟨P', hP', hSt', -, hNF⟩` from `induct hl f (fun j => (hP i _ (hT _ (hfT j))).2.1) (fun j => (hP i _ (hT _ (hfT j))).2.2) he hle (by omega) hd hLH hz (fun j => ⟨hLs _ (hfT j), hLζ, hLi _ (hfT j)⟩) _ h₀ (fun j => (hP i _ (hT _ (hfT j))).1 M (R₀ + t) R₀ d A L z _ _ _ (Nat.le_add_right _ _) hlt hz (hLs _ (hfT j)) …`. Use `⟨P', hSt'.1, ⟨fun a σ hσ => ?_, fun a b σ hσ => ?_⟩, fun s hs Q hQ a Φ hΦ F hF => ?_⟩` and prove the remaining obligations. Rewrite `hσ` using `[hP' a]`. Conclude with `(hSt.1 a σ hσ).imp fun _ hg => hg.2`. Simplify `(hSt'.2.2 a).2 b σ hσ` using `[Fin.ext_iff]`.
+
+Take `⟨j, rfl⟩ : s ∈ Set.range f` from `hf ▸ hs`. Take `⟨m, hm, hu⟩` from `hNF j j.2 Q hQ a Φ hΦ F hF`. Conclude with `⟨m, Nat.lt_succ_iff.1 hm, addVal_le_of_notMem hu⟩`.
+-/
 theorem thmC_of_parts : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X), (∀ i, StepAB X i) → (∀ i, ChooseH bkP i) → (∀ i s, GalHyp bkP i s → Start bkP i s ∧ Grow bkP i s ∧ Step bkP i s) → ThmC bkP := by
   intro D N X bkP hAB hCh hP i hl T hT
   obtain ⟨R₀, hR⟩ := hCh i T hT

@@ -22,6 +22,11 @@ def Alg (u : Unif F s σ) (W : Opens (Tot I g)) : Prop :=
       x ≫ s = spMap ((Hol.comap Prod.fst (fun _ _ ↦ analyticAt_fst) h).toRingHom.comp σ)) ∧
     ∀ (p : Tot I g) (hp : p ∈ W), spMap (Hol.ev p hp).toRingHom ≫ x = u.E p
 
+/- English proof (translation)
+Use `⟨x, fun h ↦ ?_, hx⟩` and prove the remaining obligations. Use `point_hol_ext _ W (Sp B) (⊤_ Scheme.{0}) (terminal.from _) _ _ (terminal.hom_ext _ _) fun p hp ↦ ?_` and prove the remaining obligations. Establish `e` using `hx p hp`. Express the relevant statement in the definitionally equal form `spMap (Hol.ev p hp).toRingHom ≫ _ = spMap (Hol.ev p hp).toRingHom ≫ _`. Rewrite using `[← Category.assoc, e, u.w p (h p hp), ← Cris.spMap_comp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem alg_of_ev (u : Unif F s σ) (W : Opens (Tot I g)) (x : Sp (Hol W) ⟶ X)
     (hx : ∀ (p : Tot I g) (hp : p ∈ W), spMap (Hol.ev p hp).toRingHom ≫ x = u.E p) : Alg u W := by
   refine ⟨x, fun h ↦ ?_, hx⟩
@@ -31,6 +36,9 @@ theorem alg_of_ev (u : Unif F s σ) (W : Opens (Tot I g)) (x : Sp (Hol W) ⟶ X)
   rw [← Category.assoc, e, u.w p (h p hp), ← Cris.spMap_comp]
   rfl
 
+/- English proof (translation)
+Take `⟨x, -, hx⟩` from `a`. Use `alg_of_ev u W' (spMap (Hol.comap id analyticOnNhd_id (fun p hp ↦ h hp)).toRingHom ≫ x) fun p hp ↦ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Cris.spMap_comp, ← hx p (h hp)]`. Both sides reduce to the same expression.
+-/
 theorem alg_mono (u : Unif F s σ) {W W' : Opens (Tot I g)} (h : W' ≤ W) (a : Alg u W) : Alg u W' := by
   obtain ⟨x, -, hx⟩ := a
   refine alg_of_ev u W' (spMap (Hol.comap id analyticOnNhd_id (fun p hp ↦ h hp)).toRingHom ≫ x) fun p hp ↦ ?_
@@ -51,8 +59,20 @@ def real [IsSeparated s] (u : Unif F s σ) : Real (charts u) s σ where
         ← k.2.2.choose_spec.2 _ (h p hp)]
       rfl
 
+/- English proof (translation)
+The claim follows from `fun k ↦ k.2.2.choose_spec.2`.
+-/
 theorem isFor [IsSeparated s] (u : Unif F s σ) : (real u).IsFor u := fun k ↦ k.2.2.choose_spec.2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `p hp`. Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := u.E p (default : PrimeSpectrum ℂ)) (U := ⊤) trivial`. Set `W : Opens (Tot I g)` to `⟨{q | q.1 ∈ F.V ∧ ⊤ ≤ u.E q ⁻¹ᵁ U}, (u.hol U 0).1⟩`. Establish `hol : IsHolTo (W : Set (Tot I g)) u.E` using `fun U' f ↦ ⟨by`.
+
+Establish `e : {q | q ∈ (W : Set (Tot I g)) ∧ ⊤ ≤ u.E q ⁻¹ᵁ U'} = (W : Set (Tot I g)) ∩ {q | q.1 ∈ F.V ∧ ⊤ ≤ u.E q ⁻¹ᵁ U'}` using `Set.ext fun q ↦ ⟨fun h ↦ ⟨h.1, h.1.1, h.2⟩, fun h ↦ ⟨h.1, h.2.2⟩⟩`. Conclude with `e ▸ W.isOpen.inter (u.hol U' f).1,`. Use the proof step `(u.hol U' f).2.mono fun q h ↦ ⟨h.1.1, h.2⟩⟩`. Take `⟨x, -, hx⟩` from `exists_point_hol _ W X u.E U hU hol fun q hq ↦ hq.2`. Use `⟨⟨W, fun q hq ↦ hq.1, alg_of_ev u W x hx⟩, hp, fun y _ ↦ ?_⟩` and prove the remaining obligations.
+
+Take `rfl : y = (default : PrimeSpectrum ℂ)` from `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Conclude with `hpU`. Introduce `l k₁ k₂ p h₁ h₂`. Establish `ho : IsOpen ((k₁.1 : Set (Tot I g)) ∩ F.shift l ⁻¹' (k₂.1 : Set (Tot I g)))` using `(F.shift_analytic l k₁.2.1).continuousOn.isOpen_inter_preimage k₁.1.isOpen k₂.1.isOpen`. Use `⟨⟨⟨_, ho⟩, fun q hq ↦ k₁.2.1 q hq.1, alg_mono u (fun q hq ↦ hq.1) k₁.2.2⟩, ⟨h₁, h₂⟩, fun q hq ↦ ?_, fun q hq ↦ hq.2⟩` and prove the remaining obligations.
+
+Rewrite using `[F.shift_zero]`. Conclude with `hq.1`.
+-/
 theorem rich (u : Unif F s σ) : (charts u).Rich := by
   constructor
   · intro p hp
@@ -81,6 +101,9 @@ end GlobalTheory.AnPer.MaxCharts
 
 namespace GlobalTheory.AnPer
 
+/- English proof (translation)
+Introduce `I _ g Λ _ F B _ X s _ σ u c per per' h h'`. Conclude with `GlobalTheory.T.periodClass_injective_of_rich_charts (MaxCharts.charts u) (MaxCharts.rich u) per per' ((h _ _ (MaxCharts.isFor u)).symm.trans (h' _ _ (MaxCharts.isFor u)))`.
+-/
 theorem period_unique : PUniq := by
   intro I _ g Λ _ F B _ X s _ σ u c per per' h h'
   exact GlobalTheory.T.periodClass_injective_of_rich_charts (MaxCharts.charts u) (MaxCharts.rich u) per per'

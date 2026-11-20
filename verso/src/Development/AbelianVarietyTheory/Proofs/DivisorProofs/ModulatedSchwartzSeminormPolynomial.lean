@@ -5,6 +5,13 @@ open Complex
 
 namespace GlobalTheory.CharModGrowth
 
+/- English proof (translation)
+Establish `ho : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (y : ℂ))` using `Complex.ofRealCLM.contDiff`. Establish `hc : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (1 : ℂ) * Complex.exp ((I * t) * (y : ℂ)))` using `by fun_prop`. Establish `e : (fun x : V => Complex.exp ((I * t) * (L x : ℂ))) = (fun y : ℝ => (1 : ℂ) * Complex.exp ((I * t) * (y : ℂ))) ∘ ⇑L`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, L.iteratedFDeriv_comp_right hc x (i := n) (by exact_mod_cast le_top)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, GlobalTheory.CharFormDeriv.iteratedDeriv_const_mul_cexp]`. Establish `hexp : (I * t) * ((L x : ℝ) : ℂ) = ((t * L x : ℝ) : ℂ) * I` using `by push_cast; ring`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+
+Rewrite using `[norm_mul, hexp, Complex.norm_exp_ofReal_mul_I, norm_mul, norm_pow, norm_mul, Complex.norm_I, Complex.norm_real, Real.norm_eq_abs]`. Simplify using `[mul_pow]`.
+-/
 theorem norm_iteratedFDeriv_char_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : V →L[ℝ] ℝ) (t : ℝ) (n : ℕ) (x : V) :
     ‖iteratedFDeriv ℝ n (fun x : V => Complex.exp ((I * t) * (L x : ℂ))) x‖ ≤ (|t| * ‖L‖) ^ n := by
@@ -27,6 +34,13 @@ theorem norm_iteratedFDeriv_char_le {V : Type} [NormedAddCommGroup V] [NormedSpa
           Complex.norm_I, Complex.norm_real, Real.norm_eq_abs]
         simp [mul_pow]
 
+/- English proof (translation)
+Establish `hS0 : 0 ≤ ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * SchwartzMap.seminorm ℂ k (n - i) f` using `Finset.sum_nonneg fun i _ => mul_nonneg (Nat.cast_nonneg _) (apply_nonneg _ _)`. Establish `hR0 : 0 ≤ R` using `by linarith`. Use `SchwartzMap.seminorm_le_bound ℂ k n u (by positivity) fun x => ?_` and prove the remaining obligations. Establish `hu' : (⇑u) = fun x => Complex.exp ((I * t) * (L x : ℂ)) * f x` using `funext hu`. Rewrite using `[hu']`.
+
+Establish `hmul` using `norm_iteratedFDeriv_mul_le (N := ((⊤ : ℕ∞) : WithTop ℕ∞)) (GlobalTheory.CharFormDeriv.hasTemperateGrowth_char L t).1 (f.smooth ⊤) x (n := n) (by exact_mod_cast le_top)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`.
+
+Establish `h1 : ‖iteratedFDeriv ℝ i (fun x : V => Complex.exp ((I * t) * (L x : ℂ))) x‖ ≤ R ^ n` using `(norm_iteratedFDeriv_char_le L t i x).trans ((pow_le_pow_left₀ (by positivity) hR i).trans (pow_le_pow_right₀ hR1 hi'))`. Establish `h2 : ‖x‖ ^ k * ‖iteratedFDeriv ℝ (n - i) f x‖ ≤ SchwartzMap.seminorm ℂ k (n - i) f` using `SchwartzMap.le_seminorm ℂ k (n - i) f x`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem seminorm_char_mul_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : V →L[ℝ] ℝ) (t : ℝ) (f u : SchwartzMap V ℂ)
     (hu : ∀ x, u x = Complex.exp ((I * t) * (L x : ℂ)) * f x) {R : ℝ} (hR1 : 1 ≤ R)
@@ -63,6 +77,13 @@ theorem seminorm_char_mul_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ 
           _ ≤ _ := mul_le_mul (mul_le_mul_of_nonneg_left h2 (Nat.cast_nonneg _)) h1
               (norm_nonneg _) (mul_nonneg (Nat.cast_nonneg _) (apply_nonneg _ _))
 
+/- English proof (translation)
+Introduce `V _ _ _ P h v hv k n`. Set `Q : V →L[ℝ] (V →L[ℝ] ℝ)` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : (V →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (V →L[ℝ] ℝ)).toLinearMap ∘ₗ LinearMap.flip P)`. Establish `hQ : ∀ μ x, Q μ x = P x μ` using `fun μ x => rfl`. Use `set A : ℝ := |2 * Real.pi| * ‖Q‖ with hA`. Establish `hA0 : 0 ≤ A` using `by positivity`.
+
+Use `⟨(∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * SchwartzMap.seminorm ℂ k (n - i) h) * (1 + A) ^ n, fun μ => ?_⟩` and prove the remaining obligations. Establish `hμ : 0 ≤ ‖μ‖` using `norm_nonneg μ`. Rewrite using `[mul_assoc, ← mul_pow]`. Use `seminorm_char_mul_le (Q μ) (2 * Real.pi) h (v μ) (fun x => ?_) ?_ ?_ k n` and prove the remaining obligations. Rewrite using `[hv, hQ]`.
+
+Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use polynomial arithmetic with `[mul_nonneg hA0 hμ]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem seminorm_char_mul_polynomial_growth :
     ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (P : LinearMap.BilinForm ℝ V) (h : SchwartzMap V ℂ) (v : V → SchwartzMap V ℂ),

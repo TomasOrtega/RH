@@ -16,6 +16,13 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 
 namespace GlobalTheory.PowGerm
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `hL` using `t.PP.isLB`. Establish `heL : ∀ m, (eLG t (𝟙 (Sp V)) d x act e wP m).IsGen` using `fun m => ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen t.PP.L _ _ _ _ _ _ (ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen t.PP.L _ _ _ hpr.1 _) (ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen t.PP.L _ _ _ (hfr.gen m) _)`. Establish `hτ : ∀ m, ∃ τ : LB.Gen (LB.LinComb t.PP.L (Y` using `(jOG (𝟙 (Sp V)) d m 1).left) (K := Fin 1) (fun _ => (x m).left) fun _ => (1 : ℤ)), τ.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (jOG (𝟙 (Sp V)) d m 1).left) (z : Z) (J : (Z ⟶ t.G.left) → t.PP.L.ι), Good t.PP.L z J → val τ r z J = val (eLG t (𝟙 (Sp V)) d x act e wP m) r z J := by`. Introduce `m`.
+
+Use `exists_gen hL ?_ _ (heL m)` and prove the remaining obligations. Introduce `U _ hU`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_one, Category.comp_id, GermD.formEq_eL hch m]`. Rewrite using `[_root_.mul_assoc, ← Finset.prod_mul_distrib]`. Simplify using `only [← zpow_add, neg_add_cancel, zpow_zero, Finset.prod_const_one, _root_.mul_one]`.
+
+Use `choose τ hτg hτv using hτ`. Use `⟨τ, hτg, fun m y J hJ => hτv m _ (𝟙 _) y J hJ, fun htr m y J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(hτv (m + 1) _ (GermD.ρT (𝟙 (Sp V)) d m).left y J hJ).trans ((GermD.val_eL_trunc hch e wP htr m y J hJ).trans (hτv m _ (𝟙 _) y J hJ).symm)`.
+-/
 theorem exists_frames_eL {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {V : Type} [CommRing V]
     (t : SAB H (Sp V)) (L' : LB t.G.left) (h : t.PP.L = L')
     (d : ℕ) (FT : Fin d → PS V 2 d) (act : 𝓞 E → Fin d → PS V 1 d) (ph1 ph2 : PS V 3 d) (sy : PS V 2 d) (ad : 𝓞 E → PS V 2 d)
@@ -48,6 +55,9 @@ theorem exists_frames_eL {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   exact (hτv (m + 1) _ (GermD.ρT (𝟙 (Sp V)) d m).left y J hJ).trans
     ((GermD.val_eL_trunc hch e wP htr m y J hJ).trans (hτv m _ (𝟙 _) y J hJ).symm)
 
+/- English proof (translation)
+Introduce `E _ _ _ H V _ _ _ _ t P d FT act ph1 ph2 sy ad tg xT eT wPT hch hfr hpr`. Conclude with `exists_frames_eL t P.U.LG.L (congrArg RigLB.L P.bundle).symm d FT act ph1 ph2 sy ad tg _ xT eT wPT hch hfr hpr`.
+-/
 theorem frame1St_holds : Frame1St := by
   intro E _ _ _ H V _ _ _ _ t P d FT act ph1 ph2 sy ad tg xT eT wPT hch hfr hpr
   exact exists_frames_eL t P.U.LG.L (congrArg RigLB.L P.bundle).symm d FT act ph1 ph2 sy ad tg _ xT eT wPT hch hfr hpr

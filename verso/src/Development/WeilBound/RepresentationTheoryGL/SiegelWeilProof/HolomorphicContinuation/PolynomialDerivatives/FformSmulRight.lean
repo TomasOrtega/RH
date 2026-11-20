@@ -14,6 +14,11 @@ def cw (c : ℝ) (s : Fin m × Fin n × Bool →₀ ℕ) : ℂ :=
   if ∀ a i, s (a, i, false) = s (a, i, true) then
     ∏ a, ∏ i, (((s (a, i, false)).factorial : ℂ) * (2 * c : ℂ) ^ (s (a, i, false))) else 0
 
+/- English proof (translation)
+Unfold `contr cw`. Rewrite using `[← Finset.sum_subset hS]`. Apply the tactic sequence `refine Finset.sum_congr rfl fun s _ => ?_ split_ifs <;> simp`. Introduce `s _ hs`. Rewrite using `[MvPolynomial.notMem_support_iff.mp hs]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem contr_eq_sum (c : ℝ) (p : PX m n) (S : Finset (Fin m × Fin n × Bool →₀ ℕ)) (hS : p.support ⊆ S) :
     contr c p = ∑ s ∈ S, p.coeff s * cw c s := by
   unfold contr cw
@@ -24,6 +29,9 @@ theorem contr_eq_sum (c : ℝ) (p : PX m n) (S : Finset (Fin m × Fin n × Bool 
     rw [MvPolynomial.notMem_support_iff.mp hs]
     simp
 
+/- English proof (translation)
+Rewrite using `[contr_eq_sum c (p + q) (p.support ∪ q.support) support_add, contr_eq_sum c p (p.support ∪ q.support) Finset.subset_union_left, contr_eq_sum c q (p.support ∪ q.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add, add_mul]`.
+-/
 theorem contr_add (c : ℝ) (p q : PX m n) : contr c (p + q) = contr c p + contr c q := by
   classical
   rw [contr_eq_sum c (p + q) (p.support ∪ q.support) support_add,
@@ -32,6 +40,9 @@ theorem contr_add (c : ℝ) (p q : PX m n) : contr c (p + q) = contr c p + contr
   refine Finset.sum_congr rfl fun s _ => ?_
   rw [coeff_add, add_mul]
 
+/- English proof (translation)
+Rewrite using `[contr_eq_sum c (r • p) p.support (support_smul), contr_eq_sum c p p.support le_rfl, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul, mul_assoc]`.
+-/
 theorem contr_smul (c : ℝ) (r : ℂ) (p : PX m n) : contr c (r • p) = r * contr c p := by
   classical
   rw [contr_eq_sum c (r • p) p.support (support_smul), contr_eq_sum c p p.support le_rfl, Finset.mul_sum]
@@ -43,6 +54,9 @@ def contrL (c : ℝ) : PX m n →ₗ[ℂ] ℂ where
   map_add' := contr_add c
   map_smul' := contr_smul c
 
+/- English proof (translation)
+Unfold `fform`. Rewrite using `[← Finset.sum_subset hS]`. Introduce `s _ hs`. Establish `h1 : p.coeff s = 0` using `MvPolynomial.notMem_support_iff.mp fun h => hs (Finset.mem_union_left _ h)`. Simplify using `[h1]`.
+-/
 theorem fform_eq_sum (c : ℝ) (p q : PX m n) (S : Finset (Fin m × Fin n × Bool →₀ ℕ)) (hS : p.support ∪ q.support ⊆ S) :
     fform c p q = ∑ s ∈ S, star (p.coeff s) * q.coeff s * (wt c s : ℂ) := by
   unfold fform
@@ -51,6 +65,13 @@ theorem fform_eq_sum (c : ℝ) (p q : PX m n) (S : Finset (Fin m × Fin n × Boo
   have h1 : p.coeff s = 0 := MvPolynomial.notMem_support_iff.mp fun h => hs (Finset.mem_union_left _ h)
   simp [h1]
 
+/- English proof (translation)
+Use `set S := p.support ∪ q₁.support ∪ q₂.support`. Rewrite using `[fform_eq_sum c p (q₁ + q₂) S (Finset.union_subset (by intro x hx; simp [S, hx]) (fun x hx => by`. Use `support_add hx` as an intermediate fact. Simplify using `only [S, Finset.mem_union] at this ⊢`. Use the proof step `tauto)),`.
+
+Use `fform_eq_sum c p q₁ S (Finset.union_subset (by intro x hx; simp [S, hx]) (by intro x hx; simp [S, hx])),`. Use `fform_eq_sum c p q₂ S (Finset.union_subset (by intro x hx; simp [S, hx]) (by intro x hx; simp [S, hx])),`. Use the proof step `← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fform_add_right (c : ℝ) (p q₁ q₂ : PX m n) : fform c p (q₁ + q₂) = fform c p q₁ + fform c p q₂ := by
   classical
   set S := p.support ∪ q₁.support ∪ q₂.support
@@ -62,6 +83,9 @@ theorem fform_add_right (c : ℝ) (p q₁ q₂ : PX m n) : fform c p (q₁ + q�
   refine Finset.sum_congr rfl fun s _ => ?_
   rw [coeff_add]; ring
 
+/- English proof (translation)
+Rewrite using `[fform_eq_sum c p (r • q) (p.support ∪ q.support) (Finset.union_subset Finset.subset_union_left (support_smul.trans Finset.subset_union_right)), fform_eq_sum c p q (p.support ∪ q.support) le_rfl, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fform_smul_right (c : ℝ) (p q : PX m n) (r : ℂ) : fform c p (r • q) = r * fform c p q := by
   classical
   rw [fform_eq_sum c p (r • q) (p.support ∪ q.support) (Finset.union_subset Finset.subset_union_left

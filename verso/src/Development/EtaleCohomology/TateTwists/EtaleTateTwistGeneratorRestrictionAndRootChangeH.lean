@@ -6,6 +6,9 @@ noncomputable section
 
 namespace LateralTheory.EtaleFoundations.GenIsoSurjRootPf
 
+/- English proof (translation)
+Establish `h` using `(toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)).naturality g.op`. Establish `h2` using `congrArg (fun f => f.hom x) h`. Simplify using `only [ModuleCat.hom_comp] at h2`. Conclude with `h2.symm`.
+-/
 theorem ofRings_sec_res {R : Type} [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R))
     {V U : Scheme.{0}} (g : V ⟶ U) (x : M.obj Γ(U, ⊤)) :
     Sec.res g (ofRings.sec M U x) = ofRings.sec M V ((M.map g.appTop).hom x) := by
@@ -14,6 +17,9 @@ theorem ofRings_sec_res {R : Type} [CommRing R] (M : CommRingCat.{0} ⥤ ModuleC
   simp only [ModuleCat.hom_comp] at h2
   exact h2.symm
 
+/- English proof (translation)
+Use `(ofRings_sec_res (twF q j) g _).trans ?_` and prove the remaining obligations. Use `congr 1`. Express the relevant statement in the definitionally equal form `Submodule.mapQ _ _ _ (twRel_le q j (Scheme.Hom.appTop g).hom) (Submodule.Quotient.mk _) = _`. Rewrite using `[Submodule.mapQ_apply]`. Simplify using `[Finsupp.mapDomain_single]`.
+-/
 theorem res_twGen (q : ℕ) (j : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (twGen j ζ) = twGen j (ζ.map g.appTop.hom) := by
   refine (ofRings_sec_res (twF q j) g _).trans ?_
@@ -22,6 +28,15 @@ theorem res_twGen (q : ℕ) (j : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Pri
   rw [Submodule.mapQ_apply]
   simp [Finsupp.mapDomain_single]
 
+/- English proof (translation)
+Establish `hrel : (Submodule.Quotient.mk (Finsupp.single ξ 1) : (twF q j).obj Γ(V, ⊤)) = Submodule.Quotient.mk (Finsupp.single ζ (ULift.up ((a ^ j : (ZMod q)ˣ) : ZMod q)))`. Rewrite using `[Submodule.Quotient.eq]`. Conclude with `Submodule.subset_span ⟨ζ, ξ, a, h, rfl⟩`. Establish `hs : (Finsupp.single ζ (ULift.up ((a ^ j : (ZMod q)ˣ) : ZMod q)) : Prim q Γ(V, ⊤) →₀ ULift.{1} (ZMod q)) = ((a ^ j : (ZMod q)ˣ) : ZMod q).val • Finsupp.single ζ 1`. Rewrite using `[Finsupp.smul_single]`.
+
+Use `congr 1`. Apply `ULift.ext` to reduce the goal to its premises. Simplify using `only [nsmul_eq_mul, mul_one]`. Conclude with `(ZMod.natCast_zmod_val _).symm`. Establish `key : ∀ (n : ℕ) (x y : (twF q j).obj Γ(V, ⊤)), x = n • y → ofRings.sec (twF q j) V x = n • ofRings.sec (twF q j) V y`.
+
+Introduce and unpack `n x y rfl`. Conclude with `map_nsmul _ _ _`. Use `key _ _ _ ?_` and prove the remaining obligations. Use `show (Submodule.Quotient.mk (Finsupp.single ξ 1) : (_ ⧸ twRel q j Γ(V, ⊤))) = _ • (Submodule.Quotient.mk (Finsupp.single ζ 1) : (_ ⧸ twRel q j Γ(V, ⊤)))`. Rewrite using `[hrel, hs]`.
+
+Conclude with `map_nsmul (Submodule.mkQ _) _ _`.
+-/
 theorem twGen_pow (q : ℕ) [NeZero q] (j : ℤ) {V : Scheme.{0}} (ζ ξ : Prim q Γ(V, ⊤)) (a : (ZMod q)ˣ)
     (h : ξ.1 = ζ.1 ^ (a : ZMod q).val) :
     twGen j ξ = ((a ^ j : (ZMod q)ˣ) : ZMod q).val • twGen j ζ := by
@@ -53,6 +68,11 @@ def LateralTheory.EtaleFoundations.EtalePrimitiveRootsLocallyPowersOfEachOther :
     Loc U fun _ g => ∃ a : (ZMod q)ˣ, g.appTop.hom ξ.1 = g.appTop.hom ζ.1 ^ (a : ZMod q).val
 
 open LateralTheory.EtaleFoundations.GenIsoSurjRootPf in
+/- English proof (translation)
+Introduce `q _ j`. Use `⟨fun V U g ζ => res_twGen q j g ζ, fun U ζ ξ => ?_⟩` and prove the remaining obligations. Take `⟨S, hS, h⟩` from `hp q U ζ ξ`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `h V g hg`.
+
+Conclude with `⟨_, (res_twGen q j g ξ).trans (twGen_pow q j (ζ.map g.appTop.hom) (ξ.map g.appTop.hom) a ha)⟩`.
+-/
 theorem LateralTheory.EtaleFoundations.etale_tate_twist_generator_root_change_of_local_primitive_root_powers
     (hp : LateralTheory.EtaleFoundations.EtalePrimitiveRootsLocallyPowersOfEachOther) :
     LateralTheory.EtaleFoundations.EtaleTateTwistGeneratorRestrictionAndRootChange := by
@@ -65,6 +85,23 @@ theorem LateralTheory.EtaleFoundations.etale_tate_twist_generator_root_change_of
 
 namespace LateralTheory.EtaleFoundations.GenIsoSurjRootPf
 
+/- English proof (translation)
+Establish `hqK : (q : K) ≠ 0`. Use `hq.map f` as an intermediate fact. Simplify using `using this.ne_zero`. Establish `: NeZero (q : K)` using `⟨hqK⟩`. Establish `root : ∀ x : A, Polynomial.aeval x (Polynomial.cyclotomic q ℤ) = 0 → IsPrimitiveRoot (f x) q`.
+
+Introduce `x hx`. Rewrite using `[← Polynomial.isRoot_cyclotomic_iff, ← Polynomial.map_cyclotomic_int, Polynomial.IsRoot.def, Polynomial.eval_map]`. Establish `h1` using `congrArg f hx`. Rewrite `h1` using `[Polynomial.aeval_def, Polynomial.hom_eval₂, map_zero]`. Rewrite `h1` using `[show f.comp (algebraMap ℤ A) = Int.castRingHom K from RingHom.ext_int _ _]`. Then use the resulting hypothesis.
+
+Establish `pq : ∀ x : A, Polynomial.aeval x (Polynomial.cyclotomic q ℤ) = 0 → x ^ q = 1`. Introduce `x hx`. Take `⟨r, hr⟩` from `Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ`. Use `congrArg (Polynomial.aeval x) hr` as an intermediate fact. Rewrite `this` using `[map_mul, hx, zero_mul]`.
+
+Simplify `this` using `[sub_eq_zero]`. Take `⟨i, hi, he⟩` from `(root ζ hζ).eq_pow_of_pow_eq_one (root ξ hξ).pow_eq_one`. Establish `hcop : i.Coprime q`. Establish `h2` using `root ξ hξ`. Rewrite `h2` using `[← he]`.
+
+Conclude with `((root ζ hζ).pow_iff_coprime (NeZero.pos q) i).1 h2`. Use `⟨ZMod.unitOfCoprime i hcop, ∑ m ∈ Finset.range q, ξ ^ m * (ζ ^ i) ^ (q - 1 - m), ?_, ?_⟩` and prove the remaining obligations. Establish `hv : ((ZMod.unitOfCoprime i hcop : (ZMod q)ˣ) : ZMod q).val = i`. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi]`. Introduce `h0`.
+
+Rewrite `h0` using `[map_sum]`. Establish `: ∀ m ∈ Finset.range q, f (ξ ^ m * (ζ ^ i) ^ (q - 1 - m)) = (f ζ ^ i) ^ (q - 1)`. Introduce `m hm`. Rewrite using `[map_mul, map_pow, map_pow, map_pow, ← he, ← pow_add]`. Use `congr 1`.
+
+Use `Finset.mem_range.1 hm` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `h0` using `[Finset.sum_congr rfl this, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `hqK h`.
+
+Conclude with `(root ζ hζ).ne_zero (NeZero.ne q) (eq_zero_of_pow_eq_zero (eq_zero_of_pow_eq_zero h))`. Establish `hv : ((ZMod.unitOfCoprime i hcop : (ZMod q)ˣ) : ZMod q).val = i`. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi]`. Rewrite using `[hv, geom_sum₂_mul]`. Rewrite using `[pq ξ hξ, ← pow_mul, mul_comm i q, pow_mul, pq ζ hζ, one_pow, sub_self]`.
+-/
 theorem alg_prim_pow {A : Type} [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A)) (ζ ξ : A)
     (hζ : Polynomial.aeval ζ (Polynomial.cyclotomic q ℤ) = 0) (hξ : Polynomial.aeval ξ (Polynomial.cyclotomic q ℤ) = 0)
     {K : Type} [Field K] (f : A →+* K) : ∃ (a : (ZMod q)ˣ) (s : A), f s ≠ 0 ∧ s * (ξ - ζ ^ (a : ZMod q).val) = 0 := by
@@ -108,11 +145,19 @@ theorem alg_prim_pow {A : Type} [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (
     rw [hv, geom_sum₂_mul]
     rw [pq ξ hξ, ← pow_mul, mul_comm i q, pow_mul, pq ζ hζ, one_pow, sub_self]
 
+/- English proof (translation)
+Introduce and unpack `O h rfl`. Conclude with `RingedSpace.isUnit_res_basicOpen U.toRingedSpace s`.
+-/
 theorem unit_res {U : Scheme.{0}} (s : Γ(U, ⊤)) : ∀ (O : U.Opens) (h : O ≤ ⊤), O = U.basicOpen s →
     IsUnit (U.presheaf.map (homOfLE h).op s) := by
   rintro O h rfl
   exact RingedSpace.isUnit_res_basicOpen U.toRingedSpace s
 
+/- English proof (translation)
+Use `choose s hs hPs using h`. Set `S : Sieve U` to `{ arrows := fun V g => P V g, downward_closed := fun hg k => hP _ _ _ k hg }`. Use `⟨S, Scheme.zariskiTopology_le_etaleTopology _ ?_, fun V g hg => hg⟩` and prove the remaining obligations. Rewrite using `[Scheme.mem_grothendieckTopology_iff]`. Use `⟨U.openCoverOfIsOpenCover (fun x => U.basicOpen (s x)) ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hs x⟩`. Introduce and unpack `V g ⟨x⟩`. Conclude with `hPs x`.
+-/
 theorem loc_of_points {U : Scheme.{0}} (P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop)
     (hP : ∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V), P V g → P W (k ≫ g))
     (h : ∀ x : U, ∃ s : Γ(U, ⊤), x ∈ U.basicOpen s ∧ P _ (U.basicOpen s).ι) : Loc U P := by
@@ -125,6 +170,13 @@ theorem loc_of_points {U : Scheme.{0}} (P : ∀ V : Scheme.{0}, (V ⟶ U) → Pr
   · rintro V g ⟨x⟩
     exact hPs x
 
+/- English proof (translation)
+Introduce `q _ U ζ ξ`. Establish `hq : IsUnit (q : Γ(U, ⊤))` using `ζ.2.1`. Use `loc_of_points _ ?_ fun x => ?_` and prove the remaining obligations. Introduce and unpack `V W g k ⟨a, ha⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Scheme.Hom.comp_appTop]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, ha, map_pow]`. Take `⟨a, s, hs, hd⟩` from `alg_prim_pow q hq ζ.1 ξ.1 ζ.2.2 ξ.2.2 (U.Γevaluation x).hom`. Use `⟨s, (U.evaluation_ne_zero_iff_mem_basicOpen x (show x ∈ (⊤ : U.Opens) from trivial) s).1 hs, a, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit ((U.basicOpen s).ι.appTop.hom s)` using `unit_res s _ _ (by simp)`.
+
+Establish `h0` using `congrArg (U.basicOpen s).ι.appTop.hom hd`. Rewrite `h0` using `[map_mul, map_zero, map_sub, map_pow]`. Conclude with `sub_eq_zero.1 ((hu.mul_right_eq_zero).1 h0)`.
+-/
 theorem prim_root_loc : LateralTheory.EtaleFoundations.EtalePrimitiveRootsLocallyPowersOfEachOther := by
   intro q _ U ζ ξ
   have hq : IsUnit (q : Γ(U, ⊤)) := ζ.2.1
@@ -142,5 +194,8 @@ theorem prim_root_loc : LateralTheory.EtaleFoundations.EtalePrimitiveRootsLocall
 
 end LateralTheory.EtaleFoundations.GenIsoSurjRootPf
 
+/- English proof (translation)
+The claim follows from `LateralTheory.EtaleFoundations.etale_tate_twist_generator_root_change_of_local_primitive_root_powers LateralTheory.EtaleFoundations.GenIsoSurjRootPf.prim_root_loc`.
+-/
 theorem LateralTheory.EtaleFoundations.etale_tate_twist_generator_restriction_and_root_change_holds : LateralTheory.EtaleFoundations.EtaleTateTwistGeneratorRestrictionAndRootChange :=
   LateralTheory.EtaleFoundations.etale_tate_twist_generator_root_change_of_local_primitive_root_powers LateralTheory.EtaleFoundations.GenIsoSurjRootPf.prim_root_loc

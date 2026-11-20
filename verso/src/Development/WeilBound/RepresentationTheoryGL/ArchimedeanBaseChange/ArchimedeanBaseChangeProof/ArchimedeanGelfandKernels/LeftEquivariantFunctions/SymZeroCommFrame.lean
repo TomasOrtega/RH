@@ -147,6 +147,9 @@ def GelFlagOf : Prop := GelComm → GelN → GelFlag
 def VCOf : Prop := WaveEx → WaveSpeed → MultAlg → GelComm → GelFlag → FlagField → NilUni → KerZero → VCSt
 def LOf : Prop := WaveEx → WaveSpeed → KerEx → MultAlg → Chain → ConeSt → Homot → SuppSt → LSt
 
+/- English proof (translation)
+Introduce `n lam hlam`. Take `⟨E, Fr, ε, ι, S, Γ, T, h⟩` from `h0 n lam hlam`. Conclude with `⟨E, T, h.TK, h.Tiso, h.Tsq, fun μ _ k val τ hk => ⟨h1 n lam E Fr ε ι S Γ T h μ k val τ hk, h2 n lam E Fr ε ι S Γ T h μ k val τ hk⟩⟩`.
+-/
 theorem lef_of (h0 : CxEx) (h1 : VCSt) (h2 : LSt) : Lef := by
   intro n lam hlam
   obtain ⟨E, Fr, ε, ι, S, Γ, T, h⟩ := h0 n lam hlam

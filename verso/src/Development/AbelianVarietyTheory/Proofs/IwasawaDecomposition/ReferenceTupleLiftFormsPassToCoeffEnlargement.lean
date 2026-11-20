@@ -19,6 +19,13 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 
 namespace GlobalTheory.Mem.R3.Tr
 
+/- English proof (translation)
+Establish `hle : c₁.range ≤ c₂.range`. Introduce `y hy`. Take `⟨x, rfl⟩` from `RingHom.mem_range.1 hy`. Take `⟨z, hz⟩` from `h ⟨x, rfl⟩`. Conclude with `RingHom.mem_range.2 ⟨z, hz⟩`.
+
+Set `e : K₂ ≃+* c₂.range` to `RingEquiv.ofBijective c₂.rangeRestrict ⟨fun a b hab => c₂.injective (congrArg Subtype.val hab), RingHom.rangeRestrict_surjective c₂⟩`. Use `⟨e.symm.toRingHom.comp ((Subring.inclusion hle).comp c₁.rangeRestrict), fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : c₂ (e.symm ⟨c₁ x, hle (RingHom.mem_range_self c₁ x)⟩) = c₁ x`. Use `congrArg Subtype.val (e.apply_symm_apply ⟨c₁ x, hle (RingHom.mem_range_self c₁ x)⟩)` as an intermediate fact. Conclude with `this`.
+
+Conclude with `h1`.
+-/
 theorem exists_iota_comp {K₁ K₂ : Type} [Field K₁] [Field K₂] (c₁ : K₁ →+* ℂ) (c₂ : K₂ →+* ℂ)
     (h : Set.range c₁ ⊆ Set.range c₂) : ∃ ι : K₁ →+* K₂, ∀ x, c₂ (ι x) = c₁ x := by
   have hle : c₁.range ≤ c₂.range := by
@@ -36,6 +43,15 @@ theorem exists_iota_comp {K₁ K₂ : Type} [Field K₁] [Field K₂] (c₁ : K�
 
 abbrev baseOfColW {B : Base} {f : Fr B.toPre} {T : TwDat B} (_ : ColW B f T) : Base := B
 
+/- English proof (translation)
+Use `⟨⟨fun d => Formalism.L2.Col.hfsJ ι lam (φ₁.1 d), ?_⟩, fun d => rfl⟩` and prove the remaining obligations. Introduce `g d`. Establish `hg : g.2.1 ∈ Λ₁.grp`. Introduce `w _`. Establish `h' : (g.2.1 w) ∈ (Λ₂ w).H` using `g.2.2 w (Set.mem_univ _)`.
+
+Rewrite `h'` using `[hH w]`. Conclude with `h'`. Establish `h1 : φ₁.1 (g • d) = (((Λ₁.chr ⟨g.2.1, hg⟩ : X.Kˣ)) : X.K) • Formalism.L2.DIV.rhoVr X.emb lam (Formalism.L2.Col.ufGL X.E n g.1) (φ₁.1 d)` using `φ₁.2 (g.1, ⟨g.2.1, hg⟩) d`. Establish `he' : e = fun τ => ι.comp (X.emb τ)` using `funext fun τ => (he τ).symm`. Substitute `he'` using the available equality.
+
+Use `show Formalism.L2.Col.hfsJ ι lam (φ₁.1 (g • d)) = (((Λ₂.chr g.2 : Lˣ)) : L) • Formalism.L2.DIV.rhoVr (fun τ => ι.comp (X.emb τ)) lam (Formalism.L2.Col.ufGL X.E n g.1) (Formalism.L2.Col.hfsJ ι lam (φ₁.1 d))`. Establish `h2` using `Formalism.L2.Col.hfs_rhoVr ι lam X.emb (Formalism.L2.Col.ufGL X.E n g.1) (φ₁.1 d)`. Use `erw [h2, h1, Formalism.L2.Col.hfsJ_smul]`. Use `congr 1`. Rewrite using `[Formalism.L2.Col.LevFam.chr_apply, show Λ₂.chr g.2 = _ from Formalism.L2.Col.piChar_apply _ _ g.2, Units.coe_prod, Units.coe_prod, map_prod]`.
+
+Conclude with `Finset.prod_congr rfl fun w _ => hl w _ _ rfl`.
+-/
 theorem levelFamily_coefficientChange_liftRound (X : Formalism.L2.Col.Fields) {L : Type} [Field L] [NumberField L] [StarRing L] (ι : X.K →+* L)
     (e : X.Tau → X.E →+* L) (he : ∀ τ, ι.comp (X.emb τ) = e τ) {n : ℕ} (lam : X.Tau → DomWeight n)
     {SG : Finset (HeightOneSpectrum (𝓞 X.E))} (Λ₁ : Formalism.L2.Col.LevFam X.E X.K n SG) (Λ₂ : Formalism.L2.Col.LevFam X.E L n SG)
@@ -66,6 +82,13 @@ theorem levelFamily_coefficientChange_liftRound (X : Formalism.L2.Col.Fields) {L
   rw [Formalism.L2.Col.LevFam.chr_apply, show Λ₂.chr g.2 = _ from Formalism.L2.Col.piChar_apply _ _ g.2, Units.coe_prod, Units.coe_prod, map_prod]
   exact Finset.prod_congr rfl fun w _ => hl w _ _ rfl
 
+/- English proof (translation)
+Substitute `hS` using the available equality. Establish `hΛ' : Λ₂ = Λ₁.coefMap ι` using `funext fun w => hΛ w w.2`. Substitute `hΛ'` using the available equality. Use `⟨rfl, fun φ₁ => ?_⟩` and prove the remaining obligations. Take `⟨φ₂, h⟩` from `levelFamily_coefficientChange_liftRound X ι e he lam Λ₁ (Λ₁.coefMap ι) (fun w => rfl) (fun w h₁ h₂ hh => by`.
+
+Establish `: h₁ = h₂` using `Subtype.ext hh`. Substitute `this` using the available equality. Use the proof step `rfl) φ₁`. Use `⟨φ₂, fun d₁ d₂ hd => ?_⟩` and prove the remaining obligations. Consider the cases of `hd`.
+
+Rewrite using `[h, MvPolynomial.map_map]`. Establish `hc' : c₂.comp ι = c₁` using `RingHom.ext hc`. Rewrite using `[hc']`.
+-/
 theorem liftRound_reidx (X : Formalism.L2.Col.Fields) {L : Type} [Field L] [NumberField L] [StarRing L] (ι : X.K →+* L)
     (e : X.Tau → X.E →+* L) (he : ∀ τ, ι.comp (X.emb τ) = e τ) {n : ℕ} (lam : X.Tau → DomWeight n)
     {SG₁ SG₂ : Finset (HeightOneSpectrum (𝓞 X.E))} (hS : SG₂ = SG₁)
@@ -92,12 +115,18 @@ theorem liftRound_reidx (X : Formalism.L2.Col.Fields) {L : Type} [Field L] [Numb
   have hc' : c₂.comp ι = c₁ := RingHom.ext hc
   rw [hc']
 
+/- English proof (translation)
+Establish `e : Formalism.L2.Col.QE w.I.sel (w.I.tup w.I.mu0 : Chr B.fields.F B.fields.E B.fields.K) = ∅` using `ColIn.twistPrimes_reference_tuple_eq_empty w.I`. Rewrite `e` using `[w.I.trueColumn_tuple_trivial_eq_one]`. Conclude with `e`.
+-/
 theorem twistRamifiedPrimes_empty_colTuples {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (W : Set B.places.Pl) :
     Formalism.L2.Col.QE w.I.sel ((mu0F (X := B.fields) (tuOf w.I (usedOf w.I T W))).1 : Chr B.fields.F B.fields.E B.fields.K) = ∅ := by
   have e : Formalism.L2.Col.QE w.I.sel (w.I.tup w.I.mu0 : Chr B.fields.F B.fields.E B.fields.K) = ∅ := ColIn.twistPrimes_reference_tuple_eq_empty w.I
   rw [w.I.trueColumn_tuple_trivial_eq_one] at e
   exact e
 
+/- English proof (translation)
+Use `show Formalism.L2.Col.uSG _ _ = _`. Rewrite using `[twistRamifiedPrimes_empty_colTuples w W]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem rowLevelPrimes_colTuples_eq_vGs {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (W : Set B.places.Pl) :
     Formalism.L2.Col.rowSG (B.primes w.px) w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T W))).1 = (B.primes w.px).vGs := by
   show Formalism.L2.Col.uSG _ _ = _
@@ -105,6 +134,13 @@ theorem rowLevelPrimes_colTuples_eq_vGs {B : Base} {f : Fr B.toPre} {T : TwDat B
   ext x
   simp
 
+/- English proof (translation)
+Introduce `w hw`. Establish `h1 : w.1 ∈ SG₁`. Use `w.2` as an intermediate fact. Simplify using `only [Formalism.L2.Col.uSG, hQ₁, Finset.union_empty] at this`. Conclude with `this`.
+
+Establish `h2 : w.1 ∈ SG₂`. Use `hw` as an intermediate fact. Simplify using `only [Formalism.L2.Col.uSG, hQ₂, Finset.union_empty] at this`. Conclude with `this`. Use `show ((A₂.glue B₂) ⟨w.1, hw⟩).inv = (((A₁.glue B₁) w).inv).coefMap ι`.
+
+Rewrite using `[Formalism.L2.Col.LevFam.glue_of_mem _ _ _ h2, Formalism.L2.Col.LevFam.glue_of_mem _ _ _ h1, ← Formalism.L2.Col.Lev.coefMap_inv, hA ⟨w.1, h1⟩ h2]`.
+-/
 theorem glue_inv_coefMap_of_empty {E K L : Type} [Field E] [NumberField E] [Field K] [Field L] (ι : K →+* L) {n : ℕ}
     {SG₁ Q₁ SG₂ Q₂ : Finset (HeightOneSpectrum (𝓞 E))} (hQ₁ : Q₁ = ∅) (hQ₂ : Q₂ = ∅)
     (A₁ : Formalism.L2.Col.LevFam E K n SG₁) (B₁ : Formalism.L2.Col.LevFam E K n Q₁)
@@ -125,6 +161,11 @@ theorem glue_inv_coefMap_of_empty {E K L : Type} [Field E] [NumberField E] [Fiel
   rw [Formalism.L2.Col.LevFam.glue_of_mem _ _ _ h2, Formalism.L2.Col.LevFam.glue_of_mem _ _ _ h1, ← Formalism.L2.Col.Lev.coefMap_inv,
     hA ⟨w.1, h1⟩ h2]
 
+/- English proof (translation)
+Establish `hχ : χ₂ = fun s => (Units.map ι.toMonoidHom).comp (χ₁ s)`. Use function extensionality and compare the values at `fun s => MonoidHom.ext fun c => Units.ext (h s c)`. Substitute `hχ` using the available equality. Establish `h' : (fun _ : ℕ => (Formalism.L2.Col.extChi (fun s => (Units.map ι.toMonoidHom).comp (χ₁ s)) s)⁻¹) = fun _ : ℕ => (Units.map ι.toMonoidHom).comp (Formalism.L2.Col.extChi χ₁ s)⁻¹`. Use function extensionality and compare the values at `fun _ => (congrArg (·⁻¹) (Formalism.L2.Col.extChi_coefMap ι χ₁ s)).trans (Formalism.L2.Col.coefMap_comp_inv ι _)`.
+
+Conclude with `congrArg (Formalism.L2.Col.Lev.mk (Formalism.L2.Col.HKV (𝓞 E ⧸ w.asIdeal) nV r t)) ((congrArg (fun χ => Formalism.L2.Col.lamK χ nV r [t]) h').trans (Formalism.L2.Col.lamK_coefMap ι _ _ _))`.
+-/
 theorem levKV_coefMap_of {E K L : Type} [Field E] [NumberField E] [Field K] [Field L] (ι : K →+* L) {m : ℕ}
     (w : HeightOneSpectrum (𝓞 E)) (χ₁ : Fin m → (𝓞 E ⧸ w.asIdeal)ˣ →* Kˣ) (χ₂ : Fin m → (𝓞 E ⧸ w.asIdeal)ˣ →* Lˣ)
     (h : ∀ s c, ((χ₂ s c : Lˣ) : L) = ι ((χ₁ s c : Kˣ) : K)) (nV r t s : ℕ) :
@@ -140,6 +181,17 @@ theorem levKV_coefMap_of {E K L : Type} [Field E] [NumberField E] [Field K] [Fie
   exact congrArg (Formalism.L2.Col.Lev.mk (Formalism.L2.Col.HKV (𝓞 E ⧸ w.asIdeal) nV r t))
     ((congrArg (fun χ => Formalism.L2.Col.lamK χ nV r [t]) h').trans (Formalism.L2.Col.lamK_coefMap ι _ _ _))
 
+/- English proof (translation)
+Introduce `B₁ B₂ f₁ f₂ T₁ T₂ w₁ w₂ W₁ W₂ hE hv hchi j₁ j₂ hj`. Substitute `hj` using the available equality. Take `⟨hpre, -, -, hrange⟩` from `hE`. Take `⟨ι, hι⟩` from `exists_iota_comp B₁.embLL B₂.embLL hrange`. Consider the cases of `B₁ with | mk P₁ =>`.
+
+Consider the cases of `B₂ with | mk P₂ =>`. Simplify using `only at hpre`. Substitute `hpre` using the available equality. Use `liftRound_reidx (baseOfColW w₁).fields ι (baseOfColW w₂).tauLL ?_ _ ?_ _ _ ?_ (baseOfColW w₁).embLL (baseOfColW w₂).embLL hι` and prove the remaining obligations. Introduce `τ`.
+
+Use extensionality with `x`. Apply `(baseOfColW w₂).embLL.injective` to reduce the goal to its premises. Establish `h1` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w₁) τ)`. Establish `h2` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w₂) τ)`. Simplify using `only [Formalism.L2.Col.Fields.embC, RingHom.comp_apply] at h1 h2`.
+
+Rewrite using `[RingHom.comp_apply, hι]`. Conclude with `h1.trans h2.symm`. Conclude with `(rowLevelPrimes_colTuples_eq_vGs w₂ W₂).trans ((eq_of_heq hv).trans (rowLevelPrimes_colTuples_eq_vGs w₁ W₁).symm)`. Use `glue_inv_coefMap_of_empty ι (twistRamifiedPrimes_empty_colTuples w₁ W₁) (twistRamifiedPrimes_empty_colTuples w₂ W₂) _ _ _ _ ?_` and prove the remaining obligations. Introduce `w hw`.
+
+Use `levKV_coefMap_of ι w.1 (fun s => w₁.I.Ch.chi s w) (fun s => w₂.I.Ch.chi s ⟨w.1, hw⟩) ?_ _ _ _ _` and prove the remaining obligations. Introduce `s c`. Apply `(baseOfColW w₂).embLL.injective` to reduce the goal to its premises. Rewrite using `[hι]`. Conclude with `hchi s s rfl w ⟨w.1, hw⟩ HEq.rfl c c HEq.rfl`.
+-/
 theorem lift_refTuple_enl : ∀ {B₁ B₂ : Base} {f₁ : Fr B₁.toPre} {f₂ : Fr B₂.toPre} {T₁ : TwDat B₁} {T₂ : TwDat B₂} (w₁ : ColW B₁ f₁ T₁) (w₂ : ColW B₂ f₂ T₂) (W₁ : Set B₁.places.Pl) (W₂ : Set B₂.places.Pl), Enl B₁ B₂ → HEq (B₂.primes w₂.px).vGs (B₁.primes w₁.px).vGs → (∀ (j₁ : Fin B₁.R.m) (j₂ : Fin B₂.R.m), (j₁ : ℕ) = j₂ → ∀ (p₁ : {p // p ∈ (B₁.primes w₁.px).vGs}) (p₂ : {p // p ∈ (B₂.primes w₂.px).vGs}), HEq p₂.1 p₁.1 → ∀ (c₁ : (𝓞 B₁.fields.E ⧸ p₁.1.asIdeal)ˣ) (c₂ : (𝓞 B₂.fields.E ⧸ p₂.1.asIdeal)ˣ), HEq c₂ c₁ → B₂.embLL ((w₂.I.Ch.chi j₂ p₂ c₂ : B₂.fields.Kˣ) : B₂.fields.K) = B₁.embLL ((w₁.I.Ch.chi j₁ p₁ c₁ : B₁.fields.Kˣ) : B₁.fields.K)) → ∀ j₁ j₂ : ℕ, j₁ = j₂ → (Formalism.L2.Col.mtKGSD (Pr := B₂.primes w₂.px) B₂.wts w₂.I.Ch w₂.I.sel (mu0F (X := B₂.fields) (tuOf w₂.I (usedOf w₂.I T₂ W₂))).1 j₂).D = (Formalism.L2.Col.mtKGSD (Pr := B₁.primes w₁.px) B₁.wts w₁.I.Ch w₁.I.sel (mu0F (X := B₁.fields) (tuOf w₁.I (usedOf w₁.I T₁ W₁))).1 j₁).D ∧ ∀ φ₁ : (Formalism.L2.Col.mtKGSD (Pr := B₁.primes w₁.px) B₁.wts w₁.I.Ch w₁.I.sel (mu0F (X := B₁.fields) (tuOf w₁.I (usedOf w₁.I T₁ W₁))).1 j₁).EqFun, ∃ φ₂ : (Formalism.L2.Col.mtKGSD (Pr := B₂.primes w₂.px) B₂.wts w₂.I.Ch w₂.I.sel (mu0F (X := B₂.fields) (tuOf w₂.I (usedOf w₂.I T₂ W₂))).1 j₂).EqFun, ∀ d₁ d₂, HEq d₂ d₁ → HEq (MvPolynomial.map (B₂.embLL : B₂.fields.K →+* ℂ) (φ₂.1 d₂).1) (MvPolynomial.map (B₁.embLL : B₁.fields.K →+* ℂ) (φ₁.1 d₁).1) := by
   intro B₁ B₂ f₁ f₂ T₁ T₂ w₁ w₂ W₁ W₂ hE hv hchi j₁ j₂ hj
   subst hj

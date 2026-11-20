@@ -65,6 +65,9 @@ def lerp (W₀ W₁ : Weight L) (t : ℝ) : Weight L where
 def diff (W₁ W₀ : Weight L) (x : X) : ℝ :=
   W₁.φ (chartIdx A x) x - W₀.φ (chartIdx A x) x
 
+/- English proof (translation)
+Establish `hi : x ∈ (A.chart (chartIdx A x)).source` using `Classical.choose_spec (A.cover x)`. Rewrite using `[diff, W₁.compat (chartIdx A x) j x ⟨hi, hx⟩, W₀.compat (chartIdx A x) j x ⟨hi, hx⟩]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem diff_eq (W₁ W₀ : Weight L) (j : Fin A.n) {x : X} (hx : x ∈ (A.chart j).source) :
     diff W₁ W₀ x = W₁.φ j x - W₀.φ j x := by
   have hi : x ∈ (A.chart (chartIdx A x)).source := Classical.choose_spec (A.cover x)

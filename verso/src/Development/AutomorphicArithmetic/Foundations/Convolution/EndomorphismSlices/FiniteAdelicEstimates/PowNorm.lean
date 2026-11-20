@@ -1,5 +1,16 @@
 import Development.AutomorphicArithmetic.Foundations.Convolution.EndomorphismSlices.SphComm2
 
+/- English proof (translation)
+Introduce `H _ _ Q U ρ hQ hU k`. Establish `hρ : 0 ≤ ρ` using `(norm_nonneg _).trans hU`. Establish `hb : ∀ f ∈ Q, ‖U f‖ ≤ ρ * ‖f‖`. Introduce `f hf`. Conclude with `(U ∘L Q.subtypeL).le_of_opNorm_le hU ⟨f, hf⟩`.
+
+Establish `key : ∀ k : ℕ, ∀ f ∈ Q, (U ^ k) f ∈ Q ∧ ‖(U ^ k) f‖ ≤ ρ ^ k * ‖f‖`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `f hf`.
+
+Simplify using `[hf]`. Consider the case `succ k ih`. Introduce `f hf`. Take `⟨h1, h2⟩` from `ih f hf`. Establish `e : (U ^ (k + 1)) f = U ((U ^ k) f)`.
+
+Rewrite using `[pow_succ']`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `⟨hQ _ h1, (hb _ h1).trans ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left h2 hρ`. Use `⟨fun f hf => (key k f hf).1, ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.opNorm_le_bound _ (pow_nonneg hρ k) fun q => ?_` and prove the remaining obligations. Conclude with `(key k q q.2).2`.
+-/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.powNorm :
     UpperTheory.Zero.ConvolutionTheory.EB.PowNorm := by
   intro H _ _ Q U ρ hQ hU k

@@ -10,6 +10,11 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
   Topology Filter
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h : ∀ᶠ c in 𝓝 (0 : 𝕜), ∀ y ∈ L, c • y ∈ N`. Use `hLc.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `ht : Tendsto (fun z : 𝕜 × V => z.1 • z.2) (𝓝 ((0 : 𝕜), y)) (𝓝 ((0 : 𝕜) • y))` using `continuous_smul.continuousAt`. Rewrite `ht` using `[zero_smul]`. Conclude with `ht hN`.
+
+Conclude with `(hπ.eventually h).exists`.
+-/
 private theorem exists_pow_smul_mem_nhds_of_isCompact' {𝕜 V : Type} [Field 𝕜] [TopologicalSpace 𝕜] [AddCommGroup V]
     [Module 𝕜 V] [TopologicalSpace V] [ContinuousSMul 𝕜 V] (L : Set V) (hLc : IsCompact L)
     (π : 𝕜) (hπ : Tendsto (fun k : ℕ => π ^ k) atTop (𝓝 0)) (N : Set V) (hN : N ∈ 𝓝 (0 : V)) :
@@ -22,6 +27,13 @@ private theorem exists_pow_smul_mem_nhds_of_isCompact' {𝕜 V : Type} [Field �
     exact ht hN
   exact (hπ.eventually h).exists
 
+/- English proof (translation)
+Introduce `N hN`. Take `⟨k, hk⟩` from `exists_pow_smul_mem_nhds_of_isCompact' (L : Set V) hLc π hπ N hN`. Establish `hc : π ^ k ≠ 0` using `pow_ne_zero k h0`. Establish `himg : ((L.map (DistribMulAction.toAddMonoidHom V (π ^ k)) : AddSubgroup V) : Set V) = (fun x => π ^ k • x) '' (L : Set V)`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Use `⟨L.map (DistribMulAction.toAddMonoidHom V (π ^ k)), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[himg]`. Conclude with `isOpenMap_smul₀ hc _ hLo`. Rewrite using `[himg]`.
+
+Conclude with `hLc.image (continuous_const_smul _)`. Rewrite using `[himg]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hk y hy`.
+-/
 theorem hasCOSub_of_lat {𝕜 V : Type} [Field 𝕜] [TopologicalSpace 𝕜] [AddCommGroup V]
     [Module 𝕜 V] [TopologicalSpace V] [ContinuousSMul 𝕜 V] (L : AddSubgroup V)
     (hLo : IsOpen (L : Set V)) (hLc : IsCompact (L : Set V)) (π : 𝕜) (h0 : π ≠ 0)
@@ -42,6 +54,13 @@ theorem hasCOSub_of_lat {𝕜 V : Type} [Field 𝕜] [TopologicalSpace 𝕜] [Ad
     rintro _ ⟨y, hy, rfl⟩
     exact hk y hy
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Establish `hv : Valued.v (π : v.adicCompletion F) = WithZero.exp (-1 : ℤ)`. Rewrite using `[v.valuedAdicCompletion_eq_valuation' π, hπ]`. Use `⟨π, fun h => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[h, map_zero]`.
+
+Conclude with `WithZero.exp_ne_zero hv.symm`. Establish `h1 : Valued.v (π : v.adicCompletion F) < 1`. Rewrite using `[hv]`. Evaluate the decidable proposition. Establish `hlt : ‖(π : v.adicCompletion F)‖ < 1` using `Valued.toNormedField.norm_lt_one_iff.2 h1`.
+
+Conclude with `tendsto_pow_atTop_nhds_zero_of_norm_lt_one hlt`.
+-/
 theorem exists_pow_tendsto_zero_Fv {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) :
     ∃ π : Fv F v, π ≠ 0 ∧ Tendsto (fun k : ℕ => π ^ k) atTop (𝓝 0) := by
@@ -79,6 +98,9 @@ def latSub {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d : �
     simp only [Pi.neg_apply, map_neg, Finsupp.neg_apply]
     exact neg_mem (hx i j k)
 
+/- English proof (translation)
+Unfold `TensNA InCtx`. Introduce `F E _ _ _ _ _ σ _ M J _ _ _ a _ _ X0 hT _ v`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨π, h0, hπ⟩` from `exists_pow_tendsto_zero_Fv v`. Conclude with `hasCOSub_of_lat (latSub (Module.finBasis F E) v a M) (PositiveNearLattice.isClopen_latV (b := Module.finBasis F E) (v := v) a M).isOpen (PositiveNearLattice.isCompact_latV (b := Module.finBasis F E) (v := v) a M) π h0 hπ`.
+-/
 theorem tensNA_holds : TensNA := by
   unfold TensNA InCtx
   intro F E _ _ _ _ _ σ _ M J _ _ _ a _ _ X0 hT _ v
@@ -92,6 +114,13 @@ def scaledB (𝕜 : Type) {V : Type} [Field 𝕜] [AddCommGroup V] [Module 𝕜 
     (Λ : AddSubgroup V) : Prop :=
   ∃ c : 𝕜, c ≠ 0 ∧ Λ = L.map (DistribMulAction.toAddMonoidHom V c)
 
+/- English proof (translation)
+Introduce `N hN`. Take `⟨k, hk⟩` from `exists_pow_smul_mem_nhds_of_isCompact' (L : Set V) hLc π hπ N hN`. Establish `hc : π ^ k ≠ 0` using `pow_ne_zero k h0`. Establish `himg : ((L.map (DistribMulAction.toAddMonoidHom V (π ^ k)) : AddSubgroup V) : Set V) = (fun x => π ^ k • x) '' (L : Set V)`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Use `⟨L.map (DistribMulAction.toAddMonoidHom V (π ^ k)), ⟨π ^ k, hc, rfl⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[himg]`. Conclude with `isOpenMap_smul₀ hc _ hLo`. Rewrite using `[himg]`.
+
+Conclude with `hLc.image (continuous_const_smul _)`. Rewrite using `[himg]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hk y hy`.
+-/
 theorem isCOBasis_scaled {𝕜 V : Type} [Field 𝕜] [TopologicalSpace 𝕜] [AddCommGroup V]
     [Module 𝕜 V] [TopologicalSpace V] [ContinuousSMul 𝕜 V] (L : AddSubgroup V)
     (hLo : IsOpen (L : Set V)) (hLc : IsCompact (L : Set V)) (π : 𝕜) (h0 : π ≠ 0)
@@ -112,6 +141,9 @@ theorem isCOBasis_scaled {𝕜 V : Type} [Field 𝕜] [TopologicalSpace 𝕜] [A
     rintro _ ⟨y, hy, rfl⟩
     exact hk y hy
 
+/- English proof (translation)
+Take `⟨π, h0, hπ⟩` from `exists_pow_tendsto_zero_Fv v`. Conclude with `isCOBasis_scaled (latSub b v a M) (PositiveNearLattice.isClopen_latV (b := b) (v := v) a M).isOpen (PositiveNearLattice.isCompact_latV (b := b) (v := v) a M) π h0 hπ`.
+-/
 theorem isCOBasis_latSub {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     [FiniteDimensional F E] {d : ℕ} (b : Module.Basis (Fin d) F E)
     (v : HeightOneSpectrum (𝓞 F)) (a M : ℕ) :
@@ -128,6 +160,19 @@ def DensVLat : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
       DensCosB (scaledB (Fv F v) (latSub b v a M)) μv (gramR (Fv F v) σ J) Subtype.val νv
         {X | LinearIndependent (Fv F v ⊗[F] E) X}
 
+/- English proof (translation)
+Unfold `DensVLC InCtx`. Unfold `DensVLat InCtx at hC`. Unfold `TensAll InCtx at hT`. Introduce `F E _ _ _ _ _ σ hcm M J hJ hs1 hs2 a ha1 ha2 X0 hT' hdet ψ hψ v μv hμ νv hν`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`.
+
+Take `⟨-, htf⟩` from `hT F E σ hcm M J hJ hs1 hs2 a ha1 ha2 X0 hT' hdet`. Take `⟨h1, h2, h3, -⟩` from `htf v`. Use `haveI : OpensMeasurableSpace (Fv F v ⊗[F] E) := by first`. Consider the case `infer_instance`. Consider the case `exact ⟨le_rfl⟩`.
+
+Use `haveI : OpensMeasurableSpace (Fin a → Fin M → Fv F v ⊗[F] E) := by first`. Consider the case `infer_instance`. Consider the case `exact ⟨le_rfl⟩`. Use `haveI : OpensMeasurableSpace ↥(HermR (Fv F v) σ a) := by first`. Consider the case `infer_instance`.
+
+Consider the case `exact ⟨le_rfl⟩`. Use `haveI : IsFiniteMeasureOnCompacts μv := by first`. Consider the case `infer_instance`. Consider the case `(haveI := hμ.1; infer_instance)`. Consider the case `(haveI := hμ.2.1; infer_instance)`.
+
+Consider the case `(haveI := hμ.1.1; infer_instance)`. Consider the case `(haveI := hμ.2; infer_instance)`. Use `haveI : IsFiniteMeasureOnCompacts νv := by first`. Consider the case `infer_instance`. Consider the case `(haveI := hν.1; infer_instance)`.
+
+Consider the case `(haveI := hν.2.1; infer_instance)`. Consider the case `(haveI := hν.1.1; infer_instance)`. Consider the case `(haveI := hν.2; infer_instance)`. Establish `h` using `hC F E σ hcm M J hJ hs1 hs2 a ha1 ha2 X0 hT' hdet ψ hψ v μv hμ νv hν _ (Module.finBasis F E)`. Conclude with `densLC_of_cosB _ _ (isCOBasis_latSub (Module.finBasis F E) v a M) h`.
+-/
 theorem densVLC_of_lat (hT : TensAll) (hC : DensVLat) : DensVLC := by
   unfold DensVLC InCtx
   unfold DensVLat InCtx at hC
@@ -166,9 +211,15 @@ theorem densVLC_of_lat (hT : TensAll) (hC : DensVLat) : DensVLC := by
     (Module.finBasis F E)
   exact densLC_of_cosB _ _ (isCOBasis_latSub (Module.finBasis F E) v a M) h
 
+/- English proof (translation)
+The claim follows from `densV_of hT tensNA_holds (densVLC_of_lat hT hC)`.
+-/
 theorem densV_of_lat (hT : TensAll) (hC : DensVLat) : DensV :=
   densV_of hT tensNA_holds (densVLC_of_lat hT hC)
 
+/- English proof (translation)
+The claim follows from `densV_of_cos hT tensNA_holds hC`.
+-/
 theorem densV_of_core (hT : TensAll) (hC : DensVCs) : DensV :=
   densV_of_cos hT tensNA_holds hC
 

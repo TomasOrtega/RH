@@ -97,6 +97,11 @@ def UnfoldingAnyLattice (D : D7) : Prop :=
       (∀ τ, W'.sig τ = (if s then (P - 1, Q) else (P, Q - 1))) →
       UnfoldAt D W W' P Q (if s then P - 1 else P) (if s then Q else Q - 1) (if s then 1 else -1) x
 
+/- English proof (translation)
+Take `⟨C, -, -, h⟩` from `hj`. Establish `h1` using `(h g'⁻¹).1`. Establish `e : UpqT.mat (j g' * g)⁻¹ = UpqT.mat g⁻¹ * UpqT.mat (j g'⁻¹)`. Rewrite using `[_root_.mul_inv_rev, ← map_inv]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, ← Matrix.mulVec_mulVec, h1]`.
+-/
 theorem IsStabEmb.inv_mul_fix {P' Q' P Q : ℕ} {x₀ : Fin P ⊕ Fin Q → ℂ} {j : UpqT P' Q' →* UpqT P Q}
     (hj : IsStabEmb x₀ j) (g' : UpqT P' Q') (g : UpqT P Q) :
     UpqT.mat (j g' * g)⁻¹ *ᵥ x₀ = UpqT.mat g⁻¹ *ᵥ x₀ := by
@@ -106,6 +111,9 @@ theorem IsStabEmb.inv_mul_fix {P' Q' P Q : ℕ} {x₀ : Fin P ⊕ Fin Q → ℂ}
     rw [_root_.mul_inv_rev, ← map_inv]; rfl
   rw [e, ← Matrix.mulVec_mulVec, h1]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp, by simp, fun g => ⟨by simp, by simp⟩⟩`.
+-/
 example (P Q : ℕ) : IsStabEmb (0 : Fin P ⊕ Fin Q → ℂ) (MonoidHom.id (UpqT P Q)) :=
   ⟨1, by simp, by simp, fun g => ⟨by simp, by simp⟩⟩
 

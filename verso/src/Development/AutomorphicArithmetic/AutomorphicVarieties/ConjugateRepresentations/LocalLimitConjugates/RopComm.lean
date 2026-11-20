@@ -5,6 +5,11 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ Γ _ μ _ _ T hT f hf F`. Establish `hF` using `GlobalTheory.AutomorphicL2Unitary.isRepOp_Rop (Γ := Γ) (μ := μ) hf F`. Establish `hTF` using `GlobalTheory.AutomorphicL2Unitary.isRepOp_Rop (Γ := Γ) (μ := μ) hf (T F)`. Rewrite using `[hF.2, hTF.2]`. Use `(T.integral_comp_comm hF.1).symm.trans ?_` and prove the remaining obligations.
+
+Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show T (f g • (GlobalTheory.AutomorphicL2Unitary.R Γ μ g) F) = f g • (GlobalTheory.AutomorphicL2Unitary.R Γ μ g) (T F)`. Rewrite using `[map_smul, hT g F]`.
+-/
 theorem UpperTheory.V.Cj.H.ropComm :
     UpperTheory.V.Cj.H.RopComm := by
   intro G _ _ _ _ _ _ _ _ Γ _ μ _ _ T hT f hf F

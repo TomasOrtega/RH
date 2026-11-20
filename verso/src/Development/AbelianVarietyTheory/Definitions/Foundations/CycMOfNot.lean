@@ -62,6 +62,9 @@ def Adm2 {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (e : ℕ) (gN : Newfor
       (∀ s ∈ Ine (F := ℚ) A, mat W s 1 1 * (cycBar ℚ Ω l s : Qbar l) ^ (e : ℤ) * ((dt W s : Qbar l)⁻¹ * (χ s : Qbar l)) = 1) ∧
       ∀ s : G ℚ Ω, (χ s : Qbar l) = ψ ((((cycMod (F := ℚ) (Ω := Ω) l 1 s : ZMod (l ^ 1))).val : ℕ) : ZMod l)
 
+/- English proof (translation)
+Unfold `cycM`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem cycM_spec (M : ℕ) (s : Ω ≃ₐ[ℚ] Ω)
     (h : ∃ y : (ZMod M)ˣ, ∀ z : Ω, z ^ M = 1 → s z = z ^ (y : ZMod M).val) :
     ∀ z : Ω, z ^ M = 1 → s z = z ^ (cycM M s : ZMod M).val := by
@@ -70,13 +73,25 @@ theorem cycM_spec (M : ℕ) (s : Ω ≃ₐ[ℚ] Ω)
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+The claim follows from `Classical.epsilon_spec h`.
+-/
 theorem repM_spec (M : ℕ) (y : (ZMod M)ˣ)
     (h : ∃ s : Ω ≃ₐ[ℚ] Ω, ∀ z : Ω, z ^ M = 1 → s z = z ^ (y : ZMod M).val) :
     ∀ z : Ω, z ^ M = 1 → (repM M y : Ω ≃ₐ[ℚ] Ω) z = z ^ (y : ZMod M).val :=
   Classical.epsilon_spec h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : topM 5 1 1 3 = 75 := rfl
+/- English proof (translation)
+The claim follows from `Subsingleton.elim _ _`.
+-/
 example : cycM (Ω := Ω) 1 AlgEquiv.refl = 1 := Subsingleton.elim _ _
+/- English proof (translation)
+The claim follows from `map_one _`.
+-/
 example (l r : ℕ) : redL l r 1 = 1 := map_one _
 
 end GlobalTheory.K4

@@ -7,6 +7,9 @@ namespace Formalism.L2.SG.Pf.IndexCocycleOrbits.CU
 
 open Formalism.MainNotions.S Matrix
 
+/- English proof (translation)
+The claim follows from `| [], _, _ => rfl | (t, s) :: bs, i, j => by simp only [ptEntry] rw [ptEntry_symm bs (i - s) (j - s)] split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem ptEntry_symm {K : Type*} [Zero K] :
     ∀ (bs : List (K × ℕ)) (i j : ℕ), ptEntry bs i j = ptEntry bs j i
   | [], _, _ => rfl
@@ -15,6 +18,9 @@ theorem ptEntry_symm {K : Type*} [Zero K] :
     rw [ptEntry_symm bs (i - s) (j - s)]
     split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+The claim follows from `| [], _, _, h => (h rfl).elim | (t, s) :: bs, i, j, h => by simp only [ptEntry] at h simp only [List.map_cons, List.sum_cons] split_ifs at h <;> first | exact (h rfl).elim | omega | (have := ptEntry_lt bs _ _ h; omega)`.
+-/
 theorem ptEntry_lt {K : Type*} [Zero K] :
     ∀ (bs : List (K × ℕ)) (i j : ℕ), ptEntry bs i j ≠ 0 → j < (bs.map Prod.snd).sum
   | [], _, _, h => (h rfl).elim
@@ -23,6 +29,9 @@ theorem ptEntry_lt {K : Type*} [Zero K] :
     simp only [List.map_cons, List.sum_cons]
     split_ifs at h <;> first | exact (h rfl).elim | omega | (have := ptEntry_lt bs _ _ h; omega)
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _, h, _ => (h rfl).elim | (t, s) :: bs, i, j, j', h, h' => by simp only [ptEntry] at h h' split_ifs at h h' <;> first | exact (h rfl).elim | exact (h' rfl).elim | omega | (have := ptEntry_uniq bs _ _ _ h h'; omega)`.
+-/
 theorem ptEntry_uniq {K : Type*} [Zero K] :
     ∀ (bs : List (K × ℕ)) (i j j' : ℕ), ptEntry bs i j ≠ 0 → ptEntry bs i j' ≠ 0 → j = j'
   | [], _, _, _, h, _ => (h rfl).elim
@@ -31,6 +40,9 @@ theorem ptEntry_uniq {K : Type*} [Zero K] :
     split_ifs at h h' <;> first | exact (h rfl).elim | exact (h' rfl).elim | omega |
       (have := ptEntry_uniq bs _ _ _ h h'; omega)
 
+/- English proof (translation)
+The claim follows from `| [], _, i, hi => by simp at hi | (t, s) :: bs, hb, i, hi => by simp only [List.map_cons, List.sum_cons] at hi by_cases h1 : i < s · refine ⟨s - 1 - i, ?_⟩ have ht : t ≠ 0 := hb (t, s) (by simp) simp only [ptEntry] rw [if_pos (by omega), if_pos (by omega)] exact ht · obtain ⟨j, h …`.
+-/
 theorem ptEntry_exists {K : Type*} [Zero K] :
     ∀ (bs : List (K × ℕ)), (∀ b ∈ bs, b.1 ≠ 0) → ∀ i, i < (bs.map Prod.snd).sum → ∃ j, ptEntry bs i j ≠ 0
   | [], _, i, hi => by simp at hi
@@ -53,6 +65,13 @@ structure Mono {N : ℕ} {K : Type*} [Zero K] (P : Matrix (Fin N) (Fin N) K) : P
   row : ∀ i j j', P i j ≠ 0 → P i j' ≠ 0 → j = j'
   col : ∀ i i' j, P i j ≠ 0 → P i' j ≠ 0 → i = i'
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `ptEntry_exists p.1 (fun b hb => (p.2.1 b hb).1) i.val (by rw [p.2.2]; exact i.2)`. Establish `hjN : j < N` using `by have := ptEntry_lt p.1 _ _ hj; rwa [p.2.2] at this`. Conclude with `⟨⟨j, hjN⟩, hj⟩`. Use `row i j j' h h' := Fin.ext (ptEntry_uniq p.1 i.val _ _ h h')`. Use `col i i' j h h' := by`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Apply `ptEntry_uniq p.1 j.val` to reduce the goal to its premises. Rewrite using `[ptEntry_symm]`. Conclude with `h`. Rewrite using `[ptEntry_symm]`.
+
+Conclude with `h'`.
+-/
 theorem mono_ptMat {K : Type*} [Zero K] {N : ℕ} (p : Point K N) : Mono (ptMat p) where
   ex i := by
     obtain ⟨j, hj⟩ := ptEntry_exists p.1 (fun b hb => (p.2.1 b hb).1) i.val (by rw [p.2.2]; exact i.2)
@@ -65,6 +84,27 @@ theorem mono_ptMat {K : Type*} [Zero K] {N : ℕ} (p : Point K N) : Mono (ptMat 
     · rw [ptEntry_symm]; exact h
     · rw [ptEntry_symm]; exact h'
 
+/- English proof (translation)
+Use `choose σ hσ using hP.ex`. Use `choose τ hτ using hQ.ex`. Establish `hPz : ∀ i j, j ≠ σ i → P i j = 0` using `fun i j hj => by`. Assume the negation of the conclusion as `hne`. Conclude with `hj (hP.row i j (σ i) hne (hσ i))`.
+
+Establish `hQz : ∀ i j, j ≠ τ i → Q i j = 0` using `fun i j hj => by`. Assume the negation of the conclusion as `hne`. Conclude with `hj (hQ.row i j (τ i) hne (hτ i))`. Establish `key : ∀ i, P i (σ i) = Q i (τ i) * V (τ i) (σ i)`. Introduce `i`.
+
+Establish `e` using `congrFun (congrFun h i) (σ i)`. Simplify using `only [Matrix.mul_apply] at e`. Rewrite `e` using `[Finset.sum_eq_single i, Finset.sum_eq_single (τ i)]`. Rewrite `e` using `[(hM i i).2 rfl, one_mul]`. Conclude with `e`.
+
+Introduce `k _ hk`. Rewrite using `[hQz i k hk, zero_mul]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`. Introduce `k _ hk`.
+
+Establish `: P k (σ i) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hk (hP.col k i (σ i) hne (hσ i))`. Rewrite using `[this, mul_zero]`. Introduce `hn`.
+
+Conclude with `absurd (Finset.mem_univ _) hn`. Establish `hle : ∀ i, τ i ≤ σ i`. Introduce `i`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
+
+Use `key i` as an intermediate fact. Rewrite `this` using `[(hV (τ i) (σ i)).1 hlt, mul_zero]`. Conclude with `hσ i this`. Establish `hσi : Function.Injective σ` using `fun a b hab => hP.col a b (σ a) (hσ a) (by rw [hab]; exact hσ b)`. Establish `hτi : Function.Injective τ` using `fun a b hab => hQ.col a b (τ a) (hτ a) (by rw [hab]; exact hτ b)`.
+
+Establish `h1` using `Equiv.sum_comp (Equiv.ofBijective τ (Finite.injective_iff_bijective.mp hτi)) (fun j : Fin N => (j : ℕ))`. Establish `h2` using `Equiv.sum_comp (Equiv.ofBijective σ (Finite.injective_iff_bijective.mp hσi)) (fun j : Fin N => (j : ℕ))`. Simplify using `only [Equiv.ofBijective_apply] at h1 h2`. Establish `hsum : ∑ i, ((τ i : Fin N) : ℕ) = ∑ i, ((σ i : Fin N) : ℕ)` using `by rw [h1, h2]`. Establish `heq : ∀ i, τ i = σ i`.
+
+Introduce `i`. Use `(Finset.sum_eq_sum_iff_of_le (s := Finset.univ) (fun i _ => Fin.le_iff_val_le_val.mp (hle i))).1 hsum i (Finset.mem_univ _)` as an intermediate fact. Conclude with `Fin.ext this`. Use extensionality with `i j`. Distinguish the cases in `hj : j = σ i`.
+
+Substitute `hj` using the available equality. Rewrite using `[key i, heq i, (hV (σ i) (σ i)).2 rfl, mul_one]`. Rewrite using `[hPz i j hj, hQz i j (by rw [heq i]; exact hj)]`.
+-/
 theorem mono_eq {K : Type*} [Field K] {N : ℕ} {P Q M V : Matrix (Fin N) (Fin N) K}
     (hP : Mono P) (hQ : Mono Q) (hM : IsLoUni M) (hV : IsUpUni V) (h : M * P = Q * V) : P = Q := by
   classical

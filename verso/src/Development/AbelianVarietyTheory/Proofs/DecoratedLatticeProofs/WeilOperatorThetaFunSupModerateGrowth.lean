@@ -19,6 +19,9 @@ open scoped ComplexOrder ENNReal NNReal ContDiff
 
 namespace GlobalTheory.SupThetaGrowth
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hom f hf`. Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Take `⟨N, hN⟩` from `GlobalTheory.WeilWordGrowth.om_pointwise D ψ S T χS χT om hom θ hθ`. Take `⟨c, -, hc⟩` from `hN f hf`. Conclude with `⟨c, N, hc⟩`.
+-/
 theorem om_sup_growth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ f, IsThetaFunO ψ S T f → ∃ (C : ℝ) (A : ℕ), ∀ g h w, ‖om (g, h) f w‖ ≤ C * (height S g * height T h) ^ A := by
   intro D ψ S T χS χT om hom f hf
   obtain ⟨θ, hθ⟩ := GlobalTheory.Member.exists_isInfFam_family D

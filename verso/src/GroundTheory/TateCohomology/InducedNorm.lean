@@ -38,6 +38,11 @@ noncomputable def fromCoindRes (φ : M.V →ₗ[k] M.V) :
       rw [← Module.End.mul_apply (M.ρ g) (M.ρ (x * g)⁻¹), ← map_mul, mul_inv_rev,
         mul_inv_cancel_left]⟩
 
+/- English proof (translation)
+Use extensionality with `m`. Express the relevant statement in the definitionally equal form `(fromCoindRes M φ).hom.toLinearMap ((toCoindRes M).hom.toLinearMap m) = m`. Use `(LinearMap.sum_apply _ _ _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ x : G, M.ρ x⁻¹ (φ (M.ρ x m)) = m`. Use `conv_rhs => rw [← hφ m]`.
+
+Conclude with `Fintype.sum_equiv (Equiv.inv G) _ _ fun x => by simp`.
+-/
 theorem toCoindRes_fromCoindRes (φ : M.V →ₗ[k] M.V)
     (hφ : ∀ m : M, ∑ g : G, M.ρ g (φ (M.ρ g⁻¹ m)) = m) :
     toCoindRes M ≫ fromCoindRes M φ = 𝟙 M := by
@@ -48,6 +53,9 @@ theorem toCoindRes_fromCoindRes (φ : M.V →ₗ[k] M.V)
   conv_rhs => rw [← hφ m]
   exact Fintype.sum_equiv (Equiv.inv G) _ _ fun x => by simp
 
+/- English proof (translation)
+The claim follows from `(tateAcyclic_coind_bot _).of_retract _ _ (toCoindRes_fromCoindRes M φ hφ)`.
+-/
 theorem tateAcyclic_of_sum_eq (φ : M.V →ₗ[k] M.V)
     (hφ : ∀ m : M, ∑ g : G, M.ρ g (φ (M.ρ g⁻¹ m)) = m) : TateAcyclic M :=
   (tateAcyclic_coind_bot _).of_retract _ _ (toCoindRes_fromCoindRes M φ hφ)
@@ -63,11 +71,21 @@ noncomputable def coeffOneProj : MonoidAlgebra k G →ₗ[k] MonoidAlgebra k G :
 
 omit [Fintype G] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeffOneProj_apply (x : MonoidAlgebra k G) :
     coeffOneProj x = MonoidAlgebra.single 1 (x.coeff 1) := rfl
 
 variable (B : Rep.{u} k G)
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Finset.sum_add_distrib, hx, hy]`. Consider the case `tmul x b`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [TensorProduct.add_tmul, map_add, Finset.sum_add_distrib, hx, hy]`. Consider the case `single h c`. Rewrite using `[Fintype.sum_eq_single h]`. Simplify using `[Rep.tensor_ρ, coeffOneProj_apply]`.
+
+Introduce `g hg`. Establish `: g⁻¹ * h ≠ 1` using `fun e => hg (inv_mul_eq_one.mp e)`. Simplify using `[Rep.tensor_ρ, coeffOneProj_apply, this]`.
+-/
 theorem sum_leftRegular_tensor (t : (leftRegular k G ⊗ B : Rep k G)) :
     ∑ g : G, (leftRegular k G ⊗ B).ρ g
       (TensorProduct.map coeffOneProj LinearMap.id ((leftRegular k G ⊗ B).ρ g⁻¹ t)) = t := by
@@ -85,16 +103,28 @@ theorem sum_leftRegular_tensor (t : (leftRegular k G ⊗ B : Rep k G)) :
         have : g⁻¹ * h ≠ 1 := fun e => hg (inv_mul_eq_one.mp e)
         simp [Rep.tensor_ρ, coeffOneProj_apply, this]
 
+/- English proof (translation)
+The claim follows from `tateAcyclic_of_sum_eq _ (TensorProduct.map coeffOneProj LinearMap.id) (sum_leftRegular_tensor B)`.
+-/
 theorem tateAcyclic_leftRegular_tensor : TateAcyclic (leftRegular k G ⊗ B) :=
   tateAcyclic_of_sum_eq _ (TensorProduct.map coeffOneProj LinearMap.id) (sum_leftRegular_tensor B)
 
+/- English proof (translation)
+The claim follows from `tateAcyclic_leftRegular_tensor _`.
+-/
 theorem tateAcyclic_leftRegular_tensor_trivial (V : Type u) [AddCommGroup V] [Module k V] :
     TateAcyclic (leftRegular k G ⊗ trivial k G V) :=
   tateAcyclic_leftRegular_tensor _
 
+/- English proof (translation)
+The claim follows from `(tateAcyclic_leftRegular_tensor (𝟙_ (Rep k G))).of_iso (ρ_ (leftRegular k G)).symm`.
+-/
 theorem tateAcyclic_leftRegular : TateAcyclic (leftRegular k G) :=
   (tateAcyclic_leftRegular_tensor (𝟙_ (Rep k G))).of_iso (ρ_ (leftRegular k G)).symm
 
+/- English proof (translation)
+Conclude with `(tateAcyclic_leftRegular_tensor_trivial _).of_iso (leftRegularTensorTrivialIsoFree k G α).symm`.
+-/
 theorem tateAcyclic_free (α : Type u) : TateAcyclic (free k G α) := by
   classical
   exact (tateAcyclic_leftRegular_tensor_trivial _).of_iso (leftRegularTensorTrivialIsoFree k G α).symm

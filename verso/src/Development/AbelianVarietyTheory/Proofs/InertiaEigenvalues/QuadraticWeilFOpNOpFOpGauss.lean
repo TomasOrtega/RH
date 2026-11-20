@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.JR.WeilQuad.Fnf
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `a`. Use `(continuousAt_const (y := ψ a)).congr ?_` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds a one_pos] with y hy`. Use `show ψ a = ψ y`.
+
+Establish `h1 : ψ (y - a) = 1` using `hψ.1 _ (by rw [← dist_eq_norm]; exact (Metric.mem_ball.1 hy).le)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem continuous_std {F : Type} [NormedField F] (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) : Continuous ψ := by
   rw [continuous_iff_continuousAt]
   intro a
@@ -21,6 +26,11 @@ theorem continuous_std {F : Type} [NormedField F] (ψ : AddChar F ℂ) (hψ : Is
   calc ψ a = ψ a * ψ (y - a) := by rw [h1, mul_one]
     _ = ψ y := by rw [← AddChar.map_add_eq_mul]; congr 1; abel
 
+/- English proof (translation)
+Establish `: ((H ⊔ K : AddSubgroup V) : Set V) = (fun p : V × V => p.1 + p.2) '' ((H : Set V) ×ˢ (K : Set V))`. Use extensionality with `v`. Simplify using `only [SetLike.mem_coe, AddSubgroup.mem_sup, Set.mem_image, Set.mem_prod, Prod.exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`.
+
+Conclude with `⟨a, b, ⟨ha, hb⟩, rfl⟩`. Introduce and unpack `⟨a, b, ⟨ha, hb⟩, rfl⟩`. Conclude with `⟨a, ha, b, hb, rfl⟩`. Rewrite using `[this]`. Conclude with `(hH.prod hK).image continuous_add`.
+-/
 theorem isCompact_sup {V : Type} [AddCommGroup V] [TopologicalSpace V] [ContinuousAdd V]
     (H K : AddSubgroup V) (hH : IsCompact (H : Set V)) (hK : IsCompact (K : Set V)) :
     IsCompact ((H ⊔ K : AddSubgroup V) : Set V) := by
@@ -34,6 +44,9 @@ theorem isCompact_sup {V : Type} [AddCommGroup V] [TopologicalSpace V] [Continuo
   rw [this]
   exact (hH.prod hK).image continuous_add
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a t ha ih => rw [Finset.sup_insert]`. Conclude with `isCompact_sup _ _ (hH a) ih`.
+-/
 theorem isCompact_finset_sup {V ι : Type} [AddCommGroup V] [TopologicalSpace V] [ContinuousAdd V]
     (t : Finset ι) (H : ι → AddSubgroup V) (hH : ∀ i, IsCompact (H i : Set V)) :
     IsCompact ((t.sup H : AddSubgroup V) : Set V) := by
@@ -42,6 +55,17 @@ theorem isCompact_finset_sup {V ι : Type} [AddCommGroup V] [TopologicalSpace V]
   | empty => simp
   | insert a t ha ih => rw [Finset.sup_insert]; exact isCompact_sup _ _ (hH a) ih
 
+/- English proof (translation)
+Take `⟨c, hc1⟩` from `NormedField.exists_one_lt_norm F`. Establish `hc0 : c ≠ 0` using `norm_pos_iff.1 (one_pos.trans hc1)`. Set `S : ℕ → AddSubgroup V` to `fun n => (c ^ n) • Λ₀`. Establish `hS : ∀ n, (S n : Set V) = (c ^ n) • (Λ₀ : Set V)` using `fun n => AddSubgroup.coe_pointwise_smul _ _`. Establish `hSo : ∀ n, IsOpen (S n : Set V)` using `fun n => by rw [hS]; exact ho.smul₀ (pow_ne_zero _ hc0)`.
+
+Establish `hSc : ∀ n, IsCompact (S n : Set V)` using `fun n => by rw [hS]; exact hc.smul _`. Establish `hcov : C ⊆ ⋃ n, (S n : Set V)`. Introduce `y _`. Establish `ht : Tendsto (fun n : ℕ => (c⁻¹) ^ n • y) atTop (𝓝 0)`. Establish `h1 : Tendsto (fun n : ℕ => (c⁻¹) ^ n) atTop (𝓝 0)` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one (by rw [norm_inv]; exact inv_lt_one_of_one_lt₀ hc1)`.
+
+Simplify using `using h1.smul_const y`. Take `⟨n, hn⟩` from `(ht.eventually (ho.mem_nhds Λ₀.zero_mem)).exists`. Use `Set.mem_iUnion.2 ⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[hS]`. Use `⟨(c⁻¹) ^ n • y, hn, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[smul_smul, mul_inv_cancel₀ (pow_ne_zero n hc0)]`. Take `⟨t, ht⟩` from `hC.elim_finite_subcover (fun n => (S n : Set V)) hSo hcov`. Use `⟨Λ₀ ⊔ t.sup S, AddSubgroup.isOpen_mono le_sup_left ho, isCompact_sup _ _ hc (isCompact_finset_sup t S hSc), le_sup_left, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨n, hn, hy'⟩` from `Set.mem_iUnion₂.1 (ht hy)`.
+
+Conclude with `(le_sup_right : t.sup S ≤ Λ₀ ⊔ t.sup S) (Finset.le_sup (f := S) hn hy')`.
+-/
 theorem exists_big {F V : Type} [NontriviallyNormedField F] [AddCommGroup V] [Module F V] [TopologicalSpace V]
     [IsTopologicalAddGroup V] [ContinuousSMul F V]
     (Λ₀ : AddSubgroup V) (ho : IsOpen (Λ₀ : Set V)) (hc : IsCompact (Λ₀ : Set V)) (C : Set V)
@@ -71,6 +95,11 @@ theorem exists_big {F V : Type} [NontriviallyNormedField F] [AddCommGroup V] [Mo
   obtain ⟨n, hn, hy'⟩ := Set.mem_iUnion₂.1 (ht hy)
   exact (le_sup_right : t.sup S ≤ Λ₀ ⊔ t.sup S) (Finset.le_sup (f := S) hn hy')
 
+/- English proof (translation)
+Rewrite using `[← integral_indicator hΛ, ← integral_indicator hΛ]`. Establish `: (Set.indicator (Λ : Set V) fun y => g (w + y)) = fun y => Set.indicator (Λ : Set V) g (w + y)`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ Λ`. Establish `h2 : w + y ∈ Λ` using `Λ.add_mem hw hy`.
+
+Simplify using `[Set.indicator_apply, hy, h2]`. Establish `h2 : w + y ∉ Λ` using `fun h => hy (by simpa using Λ.sub_mem h hw)`. Simplify using `[Set.indicator_apply, hy, h2]`. Rewrite using `[this, integral_add_left_eq_self (fun y => Set.indicator (Λ : Set V) g y) w]`.
+-/
 theorem setIntegral_add_left_mem {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddLeftInvariant] (Λ : AddSubgroup V)
     (hΛ : MeasurableSet (Λ : Set V)) (g : V → ℂ) (w : V) (hw : w ∈ Λ) :
@@ -87,6 +116,9 @@ theorem setIntegral_add_left_mem {V : Type} [AddCommGroup V] [TopologicalSpace V
 
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
+/- English proof (translation)
+Take `⟨-, hinj, hN, htr, -⟩` from `Et.quadratic_structure F E A`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_add, map_add, hN, hN, hN, htr, star_add, star_mul', star_star]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem NL_add [Unram F E] (A : Et F E) (a b : A.L) :
     A.NL (a + b) = A.NL a + A.NL b + Algebra.trace A.K A.L (star a * b) := by
   obtain ⟨-, hinj, hN, htr, -⟩ := Et.quadratic_structure F E A
@@ -94,12 +126,18 @@ theorem NL_add [Unram F E] (A : Et F E) (a b : A.L) :
   rw [map_add, map_add, hN, hN, hN, htr, star_add, star_mul', star_star]
   ring
 
+/- English proof (translation)
+Take `⟨-, hinj, hN, -, -⟩` from `Et.quadratic_structure F E A`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_pow, hN, hN, EtMeas.star_smul_K, Algebra.smul_def, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem NL_smul [Unram F E] (A : Et F E) (c : A.K) (a : A.L) : A.NL (c • a) = c ^ 2 * A.NL a := by
   obtain ⟨-, hinj, hN, -, -⟩ := Et.quadratic_structure F E A
   apply hinj
   rw [map_mul, map_pow, hN, hN, EtMeas.star_smul_K, Algebra.smul_def, Algebra.smul_def]
   ring
 
+/- English proof (translation)
+Take `⟨-, hinj, -, htr, -⟩` from `Et.quadratic_structure F E A`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[htr, htr, star_mul', star_mul', star_star, star_star]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tr_symm [Unram F E] (A : Et F E) (a b : A.L) :
     Algebra.trace A.K A.L (star a * b) = Algebra.trace A.K A.L (star b * a) := by
   obtain ⟨-, hinj, -, htr, -⟩ := Et.quadratic_structure F E A
@@ -107,15 +145,24 @@ theorem tr_symm [Unram F E] (A : Et F E) (a b : A.L) :
   rw [htr, htr, star_mul', star_mul', star_star, star_star]
   ring
 
+/- English proof (translation)
+Rewrite using `[mul_smul_comm, map_smul, smul_eq_mul]`.
+-/
 theorem tr_smul_right (A : Et F E) (c : A.K) (a b : A.L) :
     Algebra.trace A.K A.L (star a * (c • b)) = c * Algebra.trace A.K A.L (star a * b) := by
   rw [mul_smul_comm, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[mul_add, map_add]`.
+-/
 theorem tr_add_right (A : Et F E) (a b b' : A.L) :
     Algebra.trace A.K A.L (star a * (b + b')) =
       Algebra.trace A.K A.L (star a * b) + Algebra.trace A.K A.L (star a * b') := by
   rw [mul_add, map_add]
 
+/- English proof (translation)
+Simplify using `only [Et.psiK, map_add, AddChar.map_add_eq_mul]`.
+-/
 theorem psiK_add (A : Et F E) (ψ : AddChar F ℂ) (a b : A.K) :
     A.psiK ψ (a + b) = A.psiK ψ a * A.psiK ψ b := by
   simp only [Et.psiK, map_add, AddChar.map_add_eq_mul]
@@ -126,6 +173,47 @@ namespace GlobalTheory.JR.WeilQuad
 
 open Fnf in
 
+/- English proof (translation)
+Take `⟨-, -, hψ, hsd, -⟩` from `hH`. Use `U.charZero` as an intermediate fact. Use `U.ultraF` as an intermediate fact. Use `U.lcF` as an intermediate fact. Establish `: ProperSpace F` using `.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace F`.
+
+Use `EtMeas.finite_L A` as an intermediate fact. Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.L`. Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.K`. Establish `: IsTopologicalRing A.L` using `IsModuleTopology.isTopologicalRing F A.L`. Establish `: ContinuousStar A.L` using `⟨IsModuleTopology.continuous_of_linearMap (EtMeas.starF A)⟩`.
+
+Establish `hμ : μ.IsAddHaarMeasure` using `hsd.1`. Take `⟨-, hinj, -, htr, hnd0⟩` from `Et.quadratic_structure F E A`. Establish `hψc` using `continuous_std ψ hψ`. Establish `htrKc : Continuous (Algebra.trace F A.K)` using `IsModuleTopology.continuous_of_linearMap _`. Establish `htrLc : Continuous (Algebra.trace A.K A.L)` using `IsModuleTopology.continuous_of_linearMap ((Algebra.trace A.K A.L).restrictScalars F)`.
+
+Establish `hec : Continuous (A.psiK ψ)` using `by show Continuous fun t => ψ (Algebra.trace F A.K t)`. Conclude with `hψc.comp htrKc`. Establish `hNc` using `EtMeas.continuous_NL A`. Establish `hk2 : Continuous (fun p : A.L × A.L => A.kerL ψ x p.1 p.2)` using `by show Continuous fun p : A.L × A.L => A.psiK ψ ((x : A.K) * Algebra.trace A.K A.L (star p.1 * p.2))`. Conclude with `hec.comp (continuous_const.mul (htrLc.comp ((continuous_star.comp continuous_fst).mul continuous_snd)))`.
+
+Establish `hφc : Continuous φ` using `hφ.1.continuous`. Establish `hsmc : ∀ c : A.K, Continuous (fun v : A.L => c • v)` using `fun c => by`. Repeatedly rewrite using `[Algebra.smul_def]`. Conclude with `continuous_const.mul continuous_id`. Establish `hs : (EtMeas.formL A x).IsSymm` using `⟨fun y y' => by`.
+
+Rewrite using `[EtMeas.formL_apply, EtMeas.formL_apply]`. Use `congr 2`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[htr, htr]`. Simplify using `[add_comm, mul_comm]⟩`.
+
+Establish `hl : ∀ y', (∀ y, EtMeas.formL A x y' y = 0) → y' = 0` using `fun y' h => hnd0 y' fun y => by`. Establish `h1 : (x : A.K) * Algebra.trace A.K A.L (star y' * y) = 0` using `EtMeas.eq_zero_of_trace F A.K _ fun k => by`. Use `h (k • y)` as an intermediate fact. Rewrite `this` using `[EtMeas.formL_apply, mul_smul_comm, map_smul, smul_eq_mul]`. Rewrite using `[← this]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `using h1`. Establish `hfφ : IsTest (fOp A ψ x μ φ)` using `(SelfDualUniq.selfDual_exists_unique_isTest F E ψ hψ A.L (EtMeas.formL A x) hs ⟨hl, fun y h => hl y fun y' => by rw [hs.eq]; exact h y'⟩).2 μ hμ φ hφ`. Use `set ui : A.K := ((u⁻¹ : A.Kˣ) : A.K) with hui`.
+
+Establish `huui : (u : A.K) * ui = 1` using `by simp [hui]`. Take `⟨Λ₀, hΛ₀o, hΛ₀c, hΛ₀⟩` from `hG`. Use `set S := tsupport φ with hSdef`. Establish `hSc : IsCompact S` using `hφ.2`. Establish `hSm : MeasurableSet S` using `(isClosed_tsupport φ).measurableSet`.
+
+Establish `hCc : IsCompact (tsupport (fOp A ψ x μ φ) ∪ (fun y => ui • (y + z)) '' S)` using `hfφ.2.union (hSc.image ((hsmc ui).comp (continuous_id.add continuous_const)))`. Take `⟨Λ, hΛo, hΛc, hΛ₀Λ, hCΛ⟩` from `exists_big (F := F) Λ₀ hΛ₀o hΛ₀c _ hCc`. Establish `hGΛ : gaussInt A ψ x μ u Λ = G` using `hΛ₀ Λ hΛo hΛc hΛ₀Λ`. Establish `hΛm : MeasurableSet (Λ : Set A.L)` using `hΛo.measurableSet`. Establish `hφ0 : ∀ y ∉ S, φ y = 0` using `fun y hy => image_eq_zero_of_notMem_tsupport hy`.
+
+Establish `hf0 : ∀ y' ∉ (Λ : Set A.L), fOp A ψ x μ φ y' = 0` using `fun y' hy' => image_eq_zero_of_notMem_tsupport fun h => hy' (hCΛ (Or.inl h))`. Establish `hfS : ∀ y', fOp A ψ x μ φ y' = ∫ y in S, φ y * A.kerL ψ x y y' ∂μ` using `fun y' => (setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => by rw [hφ0 y hy, zero_mul]).symm`. Establish `e1 : fOp A ψ x μ (nOp A ψ x u (fOp A ψ x μ φ)) z = ∫ y' in (Λ : Set A.L), ∫ y in S, φ y * (A.psiK ψ ((u : A.K) * x * A.NL y') * A.kerL ψ x y y' * A.kerL ψ x y' z) ∂μ ∂μ` using `by show ∫ y', nOp A ψ (x : A.K) (u : A.K) (fOp A ψ x μ φ) y' * A.kerL ψ x y' z ∂μ = _`. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero (s := (Λ : Set A.L))]`. Use `setIntegral_congr_fun hΛm fun y' _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [nOp, hfS y']`. Rewrite using `[← integral_const_mul, ← integral_mul_const]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `y' hy'`. Simplify using `only [nOp, hf0 y' hy', mul_zero, zero_mul]`. Establish `hint : Integrable (Function.uncurry fun y' y => φ y * (A.psiK ψ ((u : A.K) * x * A.NL y') * A.kerL ψ x y y' * A.kerL ψ x y' z)) ((μ.restrict Λ).prod (μ.restrict S))`. Rewrite using `[Measure.prod_restrict]`. Establish `hc : Continuous fun p : A.L × A.L => φ p.2 * (A.psiK ψ ((u : A.K) * x * A.NL p.1) * A.kerL ψ x p.2 p.1 * A.kerL ψ x p.1 z)` using `(hφc.comp continuous_snd).mul (((hec.comp (continuous_const.mul (hNc.comp continuous_fst))).mul (hk2.comp continuous_swap)).mul (hk2.comp (continuous_fst.prodMk continuous_const)))`.
+
+Conclude with `hc.continuousOn.integrableOn_compact (hΛc.prod hSc)`. Establish `e2` using `integral_integral_swap hint`. Establish `e3 : ∀ y ∈ S, ∫ y' in (Λ : Set A.L), φ y * (A.psiK ψ ((u : A.K) * x * A.NL y') * A.kerL ψ x y y' * A.kerL ψ x y' z) ∂μ = φ y * (G * A.psiK ψ (-(ui * x * A.NL (y + z))))`. Introduce `y hy`. Establish `hw : ui • (y + z) ∈ Λ` using `hCΛ (Or.inr ⟨y, hy, rfl⟩)`.
+
+Establish `hpt : (fun y' => φ y * (A.psiK ψ ((u : A.K) * x * A.NL y') * A.kerL ψ x y y' * A.kerL ψ x y' z)) = fun y' => (φ y * A.psiK ψ (-(ui * x * A.NL (y + z)))) * A.psiK ψ ((u : A.K) * x * A.NL (ui • (y + z) + y'))`. Use function extensionality and compare the values at `y'`. Establish `h3 : A.psiK ψ ((u : A.K) * x * A.NL y') * A.kerL ψ x y y' * A.kerL ψ x y' z = A.psiK ψ (-(ui * x * A.NL (y + z))) * A.psiK ψ ((u : A.K) * x * A.NL (ui • (y + z) + y'))`. Simplify using `only [Et.kerL]`. Rewrite using `[← psiK_add, ← psiK_add, ← psiK_add]`.
+
+Use `congr 1`. Rewrite using `[NL_add A (ui • (y + z)) y', NL_smul, tr_symm A (ui • (y + z)) y', tr_smul_right, tr_add_right, tr_symm A y y']`. Take the linear combination `(-(ui * x * A.NL (y + z)) - (x : A.K) * (Algebra.trace A.K A.L (star y' * y) + Algebra.trace A.K A.L (star y' * z))) * huui`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hT : ∫ y' in (Λ : Set A.L), A.psiK ψ ((u : A.K) * x * A.NL (ui • (y + z) + y')) ∂μ = G`. Rewrite using `[← hGΛ]`. Conclude with `setIntegral_add_left_mem μ Λ hΛm (fun t => A.psiK ψ ((u : A.K) * x * A.NL t)) _ hw`. Rewrite using `[hpt, integral_const_mul, hT]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1, e2, setIntegral_congr_fun hSm e3]`. Use `show _ = G * A.psiK ψ (-ui * x * A.NL z) * ∫ y, nOp A ψ (x : A.K) (-ui) φ y * A.kerL ψ x y (-ui • z) ∂μ`. Establish `hR : ∫ y, nOp A ψ (x : A.K) (-ui) φ y * A.kerL ψ x y (-ui • z) ∂μ = ∫ y in S, nOp A ψ (x : A.K) (-ui) φ y * A.kerL ψ x y (-ui • z) ∂μ` using `(setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => by`. Simplify using `only [nOp, hφ0 y hy, mul_zero, zero_mul]).symm`. Rewrite using `[hR, ← integral_const_mul]`.
+
+Use `setIntegral_congr_fun hSm fun y _ => ?_` and prove the remaining obligations. Simplify using `only [nOp, Et.kerL]`. Establish `h4 : -(ui * x * A.NL (y + z)) = -ui * x * A.NL z + (-ui * x * A.NL y + (x : A.K) * Algebra.trace A.K A.L (star y * (-ui • z)))`. Rewrite using `[NL_add, tr_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h4, psiK_add, psiK_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fOp_nOp_fOp (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [U : Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.Kˣ) (μ : Measure A.L) (ω : A.K → ℂ)
     (hH : Hyp A ψ x μ ω) (u : A.Kˣ) (G : ℂ) (hG : IsStableGauss A ψ x μ u G) (φ : A.L → ℂ) (hφ : IsTest φ)

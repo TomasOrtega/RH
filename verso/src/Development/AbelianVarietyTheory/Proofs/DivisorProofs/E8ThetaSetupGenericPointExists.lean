@@ -15,6 +15,15 @@ namespace GlobalTheory.Poinc.GSetup
 
 open GlobalTheory.ThetaSysOfObj
 
+/- English proof (translation)
+Establish `lt : ∀ m : ℕ, m < n ^ m` using `fun m => Nat.lt_pow_self hn`. Take `⟨k₀, hk₀⟩` from `exists_nat_gt (1 + 2 * (g : ℝ) * (2 : ℝ) ^ ((g : ℝ) / 2))`. Use `set K := max k₀ B with hK`. Use `set N := (n ^ (K + 2)) ^ 2 with hN`. Establish `hN₁ : K + 2 < N` using `(lt _).trans_le (Nat.le_self_pow two_ne_zero _)`.
+
+Take `⟨j₀, hj₀⟩` from `exists_nat_gt (2 * ((N ^ g * g.factorial : ℕ) : ℝ) * ((g : ℝ) * (3 / 2 : ℝ) ^ g * (2 : ℝ) ^ ((g : ℝ) / 2 - 1)))`. Use `⟨K + 2, j₀ + 6 * (N ^ g * g.factorial) + 1, by omega, ?_, by omega, fun j hj o Ω _ _ _ S hg hS hr => ?_⟩` and prove the remaining obligations. Establish `: B ≤ K` using `le_max_right _ _`. Use linear arithmetic over natural numbers and integers. Establish `hj'` using `lt j`.
+
+Unfold `ThetaSys.Big`. Rewrite using `[hg, hS, hr, ← hN]`. Establish `hk₀K : k₀ ≤ K` using `le_max_left _ _`. Use `⟨hk₀.trans (by exact_mod_cast (by omega : k₀ < N)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul (n ^ j)]`.
+
+Conclude with `mul_lt_mul_of_pos_right (hj₀.trans (by exact_mod_cast (by omega : j₀ < n ^ j))) (by exact_mod_cast (by omega : 0 < N))`. Conclude with `lt_of_lt_of_le (by omega) (Nat.le_mul_of_pos_right _ (by omega))`.
+-/
 theorem exists_big_ge (g n : ℕ) (hn : 2 ≤ n) (B : ℕ) : ∃ k j₁ : ℕ, 2 ≤ k ∧ B ≤ (n ^ k) ^ 2 ∧ 1 ≤ j₁ ∧ ∀ j ≥ j₁,
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω),
       S.g = g → S.N = (n ^ k) ^ 2 → S.r = n ^ j → S.Big := by
@@ -38,6 +47,13 @@ theorem exists_big_ge (g n : ℕ) (hn : 2 ≤ n) (B : ℕ) : ∃ k j₁ : ℕ, 2
       (by exact_mod_cast (by omega : 0 < N))
   · exact lt_of_lt_of_le (by omega) (Nat.le_mul_of_pos_right _ (by omega))
 
+/- English proof (translation)
+Introduce `n g hn ho B`. Take `⟨hL, hL₂⟩` from `GlobalTheory.abelianSchemeLaws_all`. Take `⟨k, j₁, hk, hBk, hj₁, big⟩` from `exists_big_ge g n hn.two_le B`. Use `⟨k, j₁ + 2 * k, hBk, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩ : ∃ j', j = j' + k * 2` from `⟨j - k * 2, by omega⟩`.
+
+Rewrite using `[pow_add, pow_mul]`. Introduce `o Ω _ _ _ hb R J b u w₁ w₂ hR hΩ hpr`. Use `u.ab.comm` as an intermediate fact. Establish `: NeZero ((n ^ j * (n ^ k) ^ 2) ^ 2)` using `⟨by have := hn.pos; positivity⟩`. Establish `hS : ZH.HypS u.A u.L` using `⟨u.act w₁, u.act w₂, u.hom w₁, u.hom w₂, hpr.1, hpr.2.2, hpr.2.1⟩`.
+
+Establish `hun : IsUnit (n : o)` using `isUnit_of_dvd_unit (Nat.cast_dvd_cast (((dvd_pow_self n (by omega : j ≠ 0)).trans (dvd_mul_right _ _)).trans (dvd_pow_self _ two_ne_zero))) b.unit`. Take `⟨lev, -⟩` from `exists_level R u`. Take `⟨S, ρ, h, φ, -, hN, hr, hg, hp, hlb, -⟩` from `GlobalTheory.ThetaReal.exists_thetaSys_real hL hL₂ o Ω R hR hΩ u.pol n k j b.ζ hn ho hk (by omega) hun hS lev`. Conclude with `⟨S, ρ, h, φ, big j (by omega) o Ω S hg hN hr, hN, hp, hlb⟩`.
+-/
 theorem exists_big_thetaSys_ge : ∀ (ℓ g : ℕ), ℓ.Prime → Odd ℓ → ∀ B : ℕ, ∃ k j₀ : ℕ, B ≤ (ℓ ^ k) ^ 2 ∧ ∀ j ≥ j₀, ∀ (o Ω : Type) [CommRing o]
     [Field Ω] [Algebra o Ω] [ArithBase o Ω] (R : Subalgebra o Ω) (J : Type) (b : TBase o ((ℓ ^ j) ^ 2))
     (u : TObj g ((ℓ ^ j) ^ 2) J b (spMap (algebraMap o R))) (w w' : J), R.FG → (∀ x : Ω, ∃ a ∈ R, ∃ c ∈ R, x = a / c) →
@@ -60,6 +76,13 @@ theorem exists_big_thetaSys_ge : ∀ (ℓ g : ℕ), ℓ.Prime → Odd ℓ → �
     GlobalTheory.ThetaReal.exists_thetaSys_real hL hL₂ o Ω R hR hΩ u.pol n k j b.ζ hn ho hk (by omega) hun hS lev
   exact ⟨S, ρ, h, φ, big j (by omega) o Ω S hg hN hr, hN, hp, hlb⟩
 
+/- English proof (translation)
+Introduce `g n hg hn ho F W hW η hη B`. Take `⟨ℓ, hℓ, hℓo, H⟩` from `GlobalTheory.T.exists_chart_siegelLevelCover_sharpTheta g n hg hn ho F W hW η hη`. Take `⟨k, j₀, hBk, Hs⟩` from `exists_big_thetaSys_ge ℓ (8 * g) hℓ hℓo B`. Take `⟨o, Ω, i₁, i₂, i₃, i₄, κ, R, J, b, t, w, w', x, hfg, hfr, hprim, hsh, hηx, hbase, hκ, hst⟩` from `H (max j₀ 1) (le_max_right _ _)`. Take `⟨S, ρ, hR, φ, hbig, hN, hpb, hL⟩` from `Hs (max j₀ 1) (le_max_left _ _) o Ω R J b t w w' hfg hfr hprim`.
+
+Establish `ef : spMap S.R.val.toRingHom ≫ spMap (Subalgebra.inclusion hR).toRingHom = spMap R.val.toRingHom` using `(Spec.map_comp (CommRingCat.ofHom (Subalgebra.inclusion hR).toRingHom) (CommRingCat.ofHom S.R.val.toRingHom)).symm`. Use `⟨o, Ω, i₁, i₂, i₃, i₄, κ, S, ρ, spMap (Subalgebra.inclusion hR).toRingHom ≫ x, hbig, hN ▸ hBk, hsh _ _ ρ.P φ hpb hL, ?_, ?_, hκ, ?_⟩` and prove the remaining obligations. Introduce `w`. Rewrite using `[← Category.assoc, ef]`. Conclude with `hηx w`.
+
+Rewrite using `[Category.assoc, ← Category.assoc (spMap S.R.val.toRingHom), ef]`. Conclude with `hbase`. Rewrite using `[← Category.assoc, ef]`. Conclude with `hst`.
+-/
 theorem exists_thetaSys_at : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ),
     IsE8 W → ∀ η ∈ genericPoints F.X, ∀ B : ℕ, ∃ (o₁ Ω₁ : Type) (_ : CommRing o₁) (_ : Field Ω₁) (_ : Algebra o₁ Ω₁)
       (_ : ArithBase o₁ Ω₁) (κ : cycAway n →+* o₁) (S : ThetaSys o₁ Ω₁) (ρ : S.Real) (u : Sp S.R ⟶ F.X),
@@ -84,6 +107,13 @@ theorem exists_thetaSys_at : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → 
   · rw [← Category.assoc, ef]
     exact hst
 
+/- English proof (translation)
+Introduce `g n hg hn ho F Z z i hproj hZn hopen hiz hden W hW hT η hη B`. Take `⟨o₁, Ω₁, _, _, _, _, κ, S, ρ, u, hbig, hB, hsharp, hgen, hbase, hκ, hstalk⟩` from `exists_thetaSys_at g n hg hn ho F W hW η hη B`. Use `haveI : IsDedekindDomain (cycAway n) := GlobalTheory.CycAwayReg.isDedekindDomain_cycAway _`. Use `haveI : IsProper z := ((isProjOver_iff_isProper_and_exists_isAmpleLB z).1 hproj).1`. Establish `hp : (spMap S.R.val.toRingHom ≫ u ≫ i) ≫ z = spMap ((algebraMap o₁ Ω₁).comp κ)`.
+
+Simplify using `only [Category.assoc, hiz]`. Simplify `hbase` using `only [Category.assoc]`. Establish `hst : ((spMap S.R.val.toRingHom ≫ u ≫ i).stalkMap (genericPoint (Sp Ω₁))).hom.Finite`. Rewrite using `[← Category.assoc, Scheme.Hom.stalkMap_comp]`. Conclude with `RingHom.Finite.comp hstalk (RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (i.stalkMap _)).2)`.
+
+Take `⟨M, π, hMn, hπ, hcomp⟩` from `GlobalTheory.T.exists_normal_model_normalisation_dedekind (cycAway n) o₁ Ω₁ κ hκ Z z inferInstance inferInstance inferInstance (spMap S.R.val.toRingHom ≫ u ≫ i) hp hst`. Conclude with `⟨Setup.mk o₁ Ω₁ S ρ hbig u hsharp (fun w => (hgen w).symm ▸ hη) M (GlobalTheory.IsNormalScheme.of_pred hMn) π hπ hcomp hg hn ho z hproj (GlobalTheory.IsNormalScheme.of_pred hZn) hopen hiz hden hW hT κ hbase, hB, hgen⟩`.
+-/
 theorem exists_setup : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n))
     (i : F.X ⟶ Z), IsProjOver z → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → IsOpenImmersion i → i ≫ z = F.s →
     Dense (Set.range i) → ∀ W : Matrix (Fin 8) (Fin 8) ℤ, IsE8 W → ThetaInt F W i →

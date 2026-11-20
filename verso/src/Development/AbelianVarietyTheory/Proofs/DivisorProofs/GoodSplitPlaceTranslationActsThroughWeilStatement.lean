@@ -18,6 +18,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 open ValuativeRel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LocWeilAct.act_omB | exact GlobalTheory.LocWeilAct.act_omB | (intros; apply GlobalTheory.LocWeilAct.act_omB <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.goodSplitPlace_translation_acts_through_weil : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (t : T) (i j : Fin D.R.m) (M : Vol G)
     (e : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Num G i j) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j)
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V Γ.W)

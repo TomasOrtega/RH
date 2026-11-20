@@ -10,6 +10,17 @@ namespace GlobalTheory.CompanionTheory.CMDelta
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `: Algebra.IsQuadraticExtension F E` using `{ finrank_eq_two' := h.2.2.1 }`. Establish `: IsGalois F E` using `inferInstance`. Establish `hσ` using `GlobalTheory.LFun.InertChart.conj_conj h`. Establish `hne` using `GlobalTheory.LFun.InertChart.conj_ne h`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e, σ e ≠ e := by`.
+
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Conclude with `hne hn`. Set `s : E ≃ₐ[F] E` to `AlgEquiv.ofAlgHom σ σ (AlgHom.ext hσ) (AlgHom.ext hσ)`. Establish `hs1 : s ≠ 1` using `fun hs => he (congrArg (fun t : E ≃ₐ[F] E => t e) hs)`.
+
+Establish `hfix : ∀ t : E ≃ₐ[F] E, t ((e - σ e) ^ 2) = (e - σ e) ^ 2` using `fun t => by`. Establish `hc : Nat.card (E ≃ₐ[F] E) = 2` using `(IsGalois.card_aut_eq_finrank F E).trans h.2.2.1`. Take `⟨u, -, hu⟩` from `(Nat.card_eq_two_iff' (1 : E ≃ₐ[F] E)).1 hc`. Distinguish the cases in `ht : t = 1`. Rewrite using `[ht]`.
+
+Both sides reduce to the same expression. Rewrite using `[(hu t ht).trans (hu s hs1).symm]`. Express the relevant statement in the definitionally equal form `σ _ = _`. Rewrite using `[map_pow, map_sub, hσ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨d, hd⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed _).2 hfix`. Conclude with `⟨e - σ e, d, sub_ne_zero.2 (Ne.symm he), by rw [map_sub, hσ]; ring, hd⟩`.
+-/
 theorem exists_delta (h : IsCMExt F E σ) :
     ∃ (δ : E) (d : F), δ ≠ 0 ∧ σ δ = -δ ∧ algebraMap F E d = δ ^ 2 := by
   have : Algebra.IsQuadraticExtension F E := { finrank_eq_two' := h.2.2.1 }
@@ -33,6 +44,9 @@ theorem exists_delta (h : IsCMExt F E σ) :
   obtain ⟨d, hd⟩ := (IsGalois.mem_range_algebraMap_iff_fixed _).2 hfix
   exact ⟨e - σ e, d, sub_ne_zero.2 (Ne.symm he), by rw [map_sub, hσ]; ring, hd⟩
 
+/- English proof (translation)
+Establish `hram : w.asIdeal.ramificationIdx (𝓞 F) = 1` using `Ideal.ramificationIdx_eq_one_of_isUnramifiedAt`. Establish `h1` using `valued_completionMap (below F w) w (algebraMap F _ d)`. Rewrite `h1` using `[completionMap_algebraMap, hram, pow_one, IsScalarTower.algebraMap_apply F E (w.adicCompletion E), HeightOneSpectrum.algebraMap_adicCompletion, HeightOneSpectrum.algebraMap_adicCompletion]`. Simplify using `only [Function.comp_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', Algebra.algebraMap_self, RingHom.id_apply] at h1`. Rewrite using `[← h1, hd, map_pow]`.
+-/
 theorem val_square (hU : Algebra.Unramified (𝓞 F) (𝓞 E)) {δ : E} {d : F} (hd : algebraMap F E d = δ ^ 2)
     (w : HeightOneSpectrum (𝓞 E)) :
     w.valuation E δ ^ 2 = (below F w).valuation F d := by
@@ -43,11 +57,33 @@ theorem val_square (hU : Algebra.Unramified (𝓞 F) (𝓞 E)) {δ : E} {d : F} 
   simp only [Function.comp_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', Algebra.algebraMap_self, RingHom.id_apply] at h1
   rw [← h1, hd, map_pow]
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletion]`. Simplify using `only [Function.comp_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', Algebra.algebraMap_self, RingHom.id_apply]`.
+-/
 theorem valued_alg {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (x : K) :
     Valued.v (algebraMap K (v.adicCompletion K) x) = v.valuation K x := by
   rw [HeightOneSpectrum.algebraMap_adicCompletion]
   simp only [Function.comp_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', Algebra.algebraMap_self, RingHom.id_apply]
 
+/- English proof (translation)
+Use `choose π hπ using fun v : HeightOneSpectrum (𝓞 F) => v.valuation_exists_uniformizer F`. Set `n : HeightOneSpectrum (𝓞 F) → ℤ` to `fun v => WithZero.log (v.valuation F d) / 2`. Establish `hev : ∀ᶠ v in Filter.cofinite, n v = 0`. Establish `h1` using `(algebraMap F (FiniteAdeleRing (𝓞 F) F) d).2`. Establish `h2` using `(algebraMap F (FiniteAdeleRing (𝓞 F) F) d⁻¹).2`.
+
+Use `filter_upwards [h1, h2] with v a b`. Establish `a' : v.valuation F d ≤ 1`. Use `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) F v).1 a` as an intermediate fact. Conclude with `(valued_alg v d).symm.le.trans this`. Establish `b' : v.valuation F d⁻¹ ≤ 1`.
+
+Use `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) F v).1 b` as an intermediate fact. Conclude with `(valued_alg v d⁻¹).symm.le.trans this`. Establish `: v.valuation F d = 1`. Rewrite `b'` using `[map_inv₀]`. Conclude with `le_antisymm a' ((inv_le_one₀ (zero_lt_iff.2 (by simpa using hd0))).1 b')`.
+
+Simplify using `[n, this]`. Set `f : ℤ → ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletion F` to `fun s v => (algebraMap F (v.adicCompletion F) (π v)) ^ (s * n v)`. Establish `hfmem : ∀ s : ℤ, ∀ᶠ v in Filter.cofinite, f s v ∈ v.adicCompletionIntegers F` using `fun s => by filter_upwards [hev] with v hv`. Simplify using `[f, hv, one_mem]`. Set `X (s : ℤ) : FiniteAdeleRing (𝓞 F) F` to `⟨f s, hfmem s⟩`.
+
+Establish `hne : ∀ v : HeightOneSpectrum (𝓞 F), algebraMap F (v.adicCompletion F) (π v) ≠ 0` using `fun v h => by`. Use `valued_alg v (π v)` as an intermediate fact. Rewrite `this` using `[h, map_zero, hπ v]`. Conclude with `WithZero.exp_ne_zero this.symm`. Use `⟨⟨X (-1), X 1, ?_, ?_⟩, fun v k hk => ?_⟩` and prove the remaining obligations.
+
+Use `FiniteAdeleRing.ext (K := F) fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (-1) v * f 1 v = 1`. Simplify using `only [f]`. Rewrite using `[← zpow_add₀ (hne v)]`. Simplify using the standard rewrite rules.
+
+Use `FiniteAdeleRing.ext (K := F) fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f 1 v * f (-1) v = 1`. Simplify using `only [f]`. Rewrite using `[← zpow_add₀ (hne v)]`. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `Valued.v (f (-1) v) = _`. Establish `hn : n v = k`. Simplify using `only [n]`. Rewrite using `[hk, WithZero.log_exp]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [f, hn]`. Rewrite using `[map_zpow₀, valued_alg, hπ]`. Rewrite using `[← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_finIdele {d : F} (hd0 : d ≠ 0) :
     ∃ (X : (FiniteAdeleRing (𝓞 F) F)ˣ), ∀ (v : HeightOneSpectrum (𝓞 F)) (k : ℤ),
       v.valuation F d = WithZero.exp (2 * k) → Valued.v ((X : FiniteAdeleRing (𝓞 F) F) v) = WithZero.exp k := by
@@ -99,6 +135,17 @@ theorem exists_finIdele {d : F} (hd0 : d ≠ 0) :
     rw [← WithZero.exp_zsmul]
     simp
 
+/- English proof (translation)
+Establish `key : ∀ v : InfinitePlace F, ∃ t : v.Completion, t ≠ 0 ∧ (t ^ 2 = algebraMap F (InfiniteAdeleRing F) d v ∨ t ^ 2 = -algebraMap F (InfiniteAdeleRing F) d v)`. Introduce `v`. Establish `hv : v.IsReal` using `NumberField.IsTotallyReal.isReal v`. Set `f` to `InfinitePlace.Completion.ringEquivRealOfIsReal hv`. Establish `ha : algebraMap F (InfiniteAdeleRing F) d v ≠ 0` using `(map_ne_zero (algebraMap F v.Completion)).2 hd0`.
+
+Use `set a := algebraMap F (InfiniteAdeleRing F) d v with hadef`. Establish `hfa : f a ≠ 0` using `(map_ne_zero f).2 ha`. Use `⟨f.symm (Real.sqrt |f a|), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(map_ne_zero f.symm).2 (Real.sqrt_ne_zero'.2 (abs_pos.2 hfa))`. Rewrite using `[← map_pow, Real.sq_sqrt (abs_nonneg _)]`.
+
+Break down `abs_choice (f a) with h | h` into its components or cases. Use `left`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Use `right`.
+
+Rewrite using `[h, map_neg]`. Simplify using the standard rewrite rules. Use `choose t ht0 ht using key`. Use `⟨⟨t, fun v => (t v)⁻¹, ?_, ?_⟩, ht⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`.
+
+Conclude with `mul_inv_cancel₀ (ht0 v)`. Use function extensionality and compare the values at `v`. Conclude with `inv_mul_cancel₀ (ht0 v)`.
+-/
 theorem exists_infIdele {d : F} (hd0 : d ≠ 0) (hr : NumberField.IsTotallyReal F) :
     ∃ T : (InfiniteAdeleRing F)ˣ, ∀ v : InfinitePlace F,
       (T : InfiniteAdeleRing F) v ^ 2 = algebraMap F (InfiniteAdeleRing F) d v ∨
@@ -123,6 +170,43 @@ theorem exists_infIdele {d : F} (hd0 : d ≠ 0) (hr : NumberField.IsTotallyReal 
   · funext v; exact mul_inv_cancel₀ (ht0 v)
   · funext v; exact inv_mul_cancel₀ (ht0 v)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ χ c hcm hU _ _`. Take `⟨δ, d, hδ0, hσ, hd⟩` from `exists_delta hcm`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`. Rewrite `hd` using `[map_zero]`.
+
+Conclude with `hδ0 (pow_eq_zero_iff (two_ne_zero) |>.1 hd.symm)`. Take `⟨X, hX⟩` from `exists_finIdele hd0`. Take `⟨T, hT⟩` from `exists_infIdele hd0 hcm.1`. Set `α : IdeleGroup F` to `MulEquiv.prodUnits.symm (T, X)`. Set `δu : Eˣ` to `Units.mk0 δ hδ0`.
+
+Set `A` to `PositivityTheory.RgEis.adCM σ χ`. Set `ν` to `PositivityTheory.RgEis.So.nuCM F E`. Set `u` to `Units.map A.i.toMonoidHom δu * (Units.map ν.toMonoidHom α)⁻¹`. Establish `hνe : ∀ z, PositivityTheory.RgEis.eqv F E (ν z) = adeleMap F E z` using `fun z => by`. Express the relevant statement in the definitionally equal form `GroundTheory.BlockD.ThmBHecke.adeleEquiv F E (z ⊗ₜ 1) = _`.
+
+Rewrite using `[GroundTheory.BlockD.ThmBHecke.adeleEquiv_tmul, map_one, one_mul]`. Establish `hie : ∀ e, PositivityTheory.RgEis.eqv F E (A.i e) = algebraMap E 𝔸[E] e` using `fun e => by`. Express the relevant statement in the definitionally equal form `GroundTheory.BlockD.ThmBHecke.adeleEquiv F E (1 ⊗ₜ e) = _`. Rewrite using `[GroundTheory.BlockD.ThmBHecke.adeleEquiv_tmul, map_one, mul_one]`. Establish `hdec : A.i δ = ν α * u`.
+
+Express the relevant statement in the definitionally equal form `A.i δ = ν α * (A.i δ * ((Units.map ν.toMonoidHom α)⁻¹ : (_)ˣ).1)`. Establish `: ν α * ((Units.map ν.toMonoidHom α)⁻¹ : (_)ˣ).1 = 1` using `Units.mul_inv (Units.map ν.toMonoidHom α)`. Rewrite using `[mul_left_comm, this, mul_one]`. Use `set y := PositivityTheory.RgEis.eqv F E u with hy`. Use `set y' := PositivityTheory.RgEis.eqv F E ((u⁻¹ : (_)ˣ) : _) with hy'`.
+
+Establish `h1 : adeleMap F E α * y = algebraMap E 𝔸[E] δ`. Rewrite using `[← hνe, hy, ← map_mul, ← hdec, hie]`. Establish `h2 : y * y' = 1`. Rewrite using `[hy, hy', ← map_mul, Units.mul_inv, map_one]`. Establish `hfin : ∀ w : HeightOneSpectrum (𝓞 E), Valued.v (y.2 w) = 1`.
+
+Introduce `w`. Establish `hram : w.asIdeal.ramificationIdx (𝓞 F) = 1` using `Ideal.ramificationIdx_eq_one_of_isUnramifiedAt`. Establish `hw0 : w.valuation E δ ≠ 0` using `by simpa using hδ0`. Take `⟨k, hk⟩ : ∃ k : ℤ, w.valuation E δ = WithZero.exp k` from `⟨WithZero.log (w.valuation E δ), (WithZero.exp_log hw0).symm⟩`. Establish `hsq` using `val_square hU hd w`.
+
+Establish `hval : (below F w).valuation F d = WithZero.exp (2 * k)`. Rewrite using `[← hsq, hk, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules. Establish `hX'` using `hX (below F w) k hval`. Establish `hA : Valued.v ((adeleMap F E α).2 w) = WithZero.exp k`.
+
+Express the relevant statement in the definitionally equal form `Valued.v (completionMap (below F w) w ((X : FiniteAdeleRing (𝓞 F) F) (below F w))) = _`. Rewrite using `[valued_completionMap, hram, pow_one, hX']`. Establish `hc : (adeleMap F E α).2 w * y.2 w = algebraMap E (w.adicCompletion E) δ` using `congrArg (fun z : 𝔸[E] => z.2 w) h1`. Establish `hv` using `congrArg Valued.v hc`. Rewrite `hv` using `[map_mul, hA, show Valued.v (algebraMap E (w.adicCompletion E) δ) = w.valuation E δ from valued_alg w δ, hk]`.
+
+Conclude with `mul_left_cancel₀ (WithZero.exp_ne_zero (a := k)) (hv.trans (mul_one _).symm)`. Establish `hfin' : ∀ w : HeightOneSpectrum (𝓞 E), Valued.v (y'.2 w) = 1`. Introduce `w`. Establish `hc : y.2 w * y'.2 w = 1` using `congrArg (fun z : 𝔸[E] => z.2 w) h2`. Establish `hv` using `congrArg Valued.v hc`.
+
+Rewrite `hv` using `[map_mul, hfin w, one_mul, map_one]`. Then use the resulting hypothesis. Establish `hinf : ∀ w : InfinitePlace E, ‖y.1 w‖ = 1`. Introduce `w`. Use `set D : w.Completion := algebraMap E (InfiniteAdeleRing E) δ w with hD`. Establish `hD0 : D ≠ 0` using `(map_ne_zero (algebraMap E w.Completion)).2 hδ0`.
+
+Use `set v := w.comap (algebraMap F E) with hv`. Use `set Aw : w.Completion := (adeleMap F E α).1 w with hAw`. Establish `hAsq : Aw ^ 2 = D ^ 2 ∨ Aw ^ 2 = -D ^ 2`. Take `⟨g, hg⟩ : ∃ g : v.Completion →+* w.Completion, ∀ x : InfiniteAdeleRing F, GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K` from `F) (L := E) x w = g (x v) := ⟨_, fun x => GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap_apply x w⟩`. Establish `hAw' : Aw = g ((T : InfiniteAdeleRing F) v)` using `hg _`.
+
+Establish `hm : g (algebraMap F (InfiniteAdeleRing F) d v) = D ^ 2`. Use `congrFun (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap_algebraMap (K := F) (L := E) d) w` as an intermediate fact. Rewrite `this` using `[hg, hd, map_pow]`. Conclude with `this`. Break down `hT v with h | h` into its components or cases.
+
+Use `left`. Rewrite using `[hAw', ← map_pow, h, hm]`. Use `right`. Rewrite using `[hAw', ← map_pow, h, map_neg, hm]`. Establish `hnorm : ‖Aw‖ = ‖D‖`.
+
+Establish `: ‖Aw‖ ^ 2 = ‖D‖ ^ 2`. Break down `hAsq with h | h` into its components or cases. Rewrite using `[← norm_pow, h, norm_pow]`. Rewrite using `[← norm_pow, h, norm_neg, norm_pow]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 this`.
+
+Establish `hc : Aw * y.1 w = D` using `congrArg (fun z : 𝔸[E] => z.1 w) h1`. Establish `hn` using `congrArg norm hc`. Rewrite `hn` using `[norm_mul, hnorm]`. Conclude with `mul_left_cancel₀ (norm_ne_zero_iff.2 hD0) (hn.trans (mul_one _).symm)`. Establish `hint : ∀ z : 𝔸[E], (∀ w : HeightOneSpectrum (𝓞 E), Valued.v (z.2 w) = 1) → z ∈ PositivityTheory.RgEis.intAd E`.
+
+Introduce `z hz`. Use `(Subring.mem_iInf).2 fun w => ?_` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).2 (hz w).le`. Establish `hφ : ∀ w : InfinitePlace E, ‖(InfinitePlace.Completion.extensionEmbedding w) (y.1 w)‖ = 1` using `fun w => by`. Rewrite using `[← hinf w]`.
+
+Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) _`. Use `⟨δu, α, u, hσ, hdec, hint y hfin, hint y' hfin', fun w => hφ w⟩` and prove the remaining obligations.
+-/
 theorem bDel : PositivityTheory.RgEis.So.BDel := by
   intro F E _ _ _ _ _ σ χ c hcm hU _ _
   obtain ⟨δ, d, hδ0, hσ, hd⟩ := exists_delta hcm

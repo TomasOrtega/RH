@@ -20,6 +20,9 @@ def IsExt (ρ : Representation LL G V) (ρ' : Representation LL G W) (i : V →�
 def IsCocycleOf (ρ' : Representation LL G W) (i : V →ₗ[LL] W) (p : W →ₗ[LL] LL) (c : G → V) : Prop :=
   ∃ e : W, p e = 1 ∧ ∀ g, ρ' g e = e + i (c g)
 
+/- English proof (translation)
+Take `⟨-, hex, hs, -, hp⟩` from `h`. Take `⟨e, he⟩` from `hs 1`. Establish `: ∀ g, ∃ x, i x = ρ' g e - e` using `fun g => (hex _).mp (by rw [map_sub, hp, sub_self])`. Use `choose c hc using this`. Conclude with `⟨c, e, he, fun g => by rw [hc]; abel⟩`.
+-/
 theorem IsExt.exists_cocycle {ρ : Representation LL G V} {ρ' : Representation LL G W} {i : V →ₗ[LL] W}
     {p : W →ₗ[LL] LL} (h : IsExt ρ ρ' i p) : ∃ c : G → V, IsCocycleOf ρ' i p c := by
   obtain ⟨-, hex, hs, -, hp⟩ := h
@@ -28,6 +31,11 @@ theorem IsExt.exists_cocycle {ρ : Representation LL G V} {ρ' : Representation 
   choose c hc using this
   exact ⟨c, e, he, fun g => by rw [hc]; abel⟩
 
+/- English proof (translation)
+Take `⟨e, -, he⟩` from `hc`. Apply `h.1` to reduce the goal to its premises. Establish `h1` using `he (g * k)`. Rewrite `h1` using `[map_mul, Module.End.mul_apply, he k, map_add, he g, ← h.2.2.2.1, add_assoc]`. Rewrite using `[map_add]`.
+
+Conclude with `(add_left_cancel h1).symm`.
+-/
 theorem IsExt.cocycle_mul {ρ : Representation LL G V} {ρ' : Representation LL G W} {i : V →ₗ[LL] W}
     {p : W →ₗ[LL] LL} (h : IsExt ρ ρ' i p) {c : G → V} (hc : IsCocycleOf ρ' i p c) (g k : G) :
     c (g * k) = c g + ρ g (c k) := by
@@ -38,6 +46,11 @@ theorem IsExt.cocycle_mul {ρ : Representation LL G V} {ρ' : Representation LL 
   rw [map_add]
   exact (add_left_cancel h1).symm
 
+/- English proof (translation)
+Take `⟨e, h1, he⟩` from `hc`. Take `⟨e', h1', he'⟩` from `hc'`. Take `⟨x, hx⟩` from `(h.2.1 (e - e')).mp (by rw [map_sub, h1, h1', sub_self])`. Use `⟨x, funext fun g => h.1 ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `i (ρ g x - x) = i (c g - c' g)`.
+
+Rewrite using `[map_sub, map_sub, h.2.2.2.1, hx, map_sub, he, he']`. Normalize the expressions using the abelian group laws.
+-/
 theorem IsExt.cocycle_sub_mem_coboundaries {ρ : Representation LL G V} {ρ' : Representation LL G W} {i : V →ₗ[LL] W}
     {p : W →ₗ[LL] LL} (h : IsExt ρ ρ' i p) {c c' : G → V} (hc : IsCocycleOf ρ' i p c)
     (hc' : IsCocycleOf ρ' i p c') : c - c' ∈ B1 ρ := by
@@ -62,6 +75,9 @@ def extRep (ρ : Representation LL G V) (c : ↥(continuousCocycles ρ)) : Repre
     simp [c.2.2 g k]
     abel
 
+/- English proof (translation)
+Use `⟨⟨LinearMap.inl_injective, Function.Exact.inl_snd, LinearMap.snd_surjective, fun g x => ?_, fun _ _ => rfl⟩, (0, 1), rfl, fun g => ?_⟩` and prove the remaining obligations. Simplify using `[extRep]`. Simplify using `[extRep]`.
+-/
 theorem extRep_isExt (ρ : Representation LL G V) (c : ↥(continuousCocycles ρ)) :
     IsExt ρ (extRep ρ c) (LinearMap.inl LL V LL) (LinearMap.snd LL V LL) ∧
       IsCocycleOf (extRep ρ c) (LinearMap.inl LL V LL) (LinearMap.snd LL V LL) (c : G → V) := by
@@ -86,6 +102,11 @@ def H1fSubmodule {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScal
     Submodule LL (H1V ρ) :=
   ((finiteCocycles PD ρ).comap (continuousCocycles ρ).subtype).map (Submodule.mkQ _)
 
+/- English proof (translation)
+Use `⟨?_, fun h => ⟨c, h, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨c', ⟨-, x, hx⟩, h⟩`. Take `⟨b, hb⟩` from `(Submodule.Quotient.eq _).mp h`. Use `⟨c.2, x - b ⊗ₜ[Qp] (1 : B), fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : ρ g b - b = (c' : G → V) g - (c : G → V) g` using `congrFun hb g`.
+
+Establish `h2 : (c : G → V) g = (c' : G → V) g - (ρ g b - b)` using `by rw [h1]; abel`. Establish `h3 : actVB PD ρ g (b ⊗ₜ[Qp] (1 : B)) = ρ g b ⊗ₜ[Qp] (1 : B)` using `by simp [actVB]`. Establish `h4 : (c' : G → V) g ⊗ₜ[Qp] (1 : B) = actVB PD ρ g x - x` using `hx g`. Rewrite using `[h2, sub_tmul, sub_tmul, h4, map_sub, h3]`. Normalize the expressions using the abelian group laws.
+-/
 theorem mk_mem_H1fSub {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V] (ρ : Representation LL G V)
     (c : ↥(continuousCocycles ρ)) : (Submodule.Quotient.mk c : H1V ρ) ∈ H1fSubmodule PD ρ ↔ (c : G → V) ∈ finiteCocycles PD ρ := by

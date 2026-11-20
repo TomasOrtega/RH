@@ -23,6 +23,11 @@ namespace Plus
 
 variable {t}
 
+/- English proof (translation)
+Rewrite using `[show x - y = x + -y from sub_eq_add_neg x y]`. Establish `h1` using `add_cong x (-y) n`. Establish `h2` using `neg_cong y n`. Establish `e : (x + -y).1 n - (x.1 n - y.1 n) = ((x + -y).1 n - (x.1 n + (-y).1 n)) + ((-y).1 n - -y.1 n)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `nrm_add_le_of_le h1 h2`.
+-/
 theorem sub_cong (x y : t.Plus) (n : ℕ) : nrm K ((x - y).1 n - (x.1 n - y.1 n)) ≤ t.ρ := by
   rw [show x - y = x + -y from sub_eq_add_neg x y]
   have h1 := add_cong x (-y) n
@@ -32,6 +37,13 @@ theorem sub_cong (x y : t.Plus) (n : ℕ) : nrm K ((x - y).1 n - (x.1 n - y.1 n)
   rw [e]
   exact nrm_add_le_of_le h1 h2
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `t.exists_le_cnt 0 M`. Use `⟨j, hj.trans ?_⟩` and prove the remaining obligations. Use `clear hj`. Proceed by induction on `j with`. Consider the case `zero => simp [cnt, D]`.
+
+Consider the case `succ j ih`. Rewrite using `[cnt_succ, D_succ]`. Use `split_ifs with hk`. Establish `h2 : 2 ≤ p ^ t.k (0 + j)` using `(t.prime.two_le).trans (Nat.le_self_pow hk _)`. Use `t.D_pos 0 j` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `Nat.one_le_pow (t.k (0 + j)) p t.prime.pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_le_D (M : ℕ) : ∃ j, M ≤ t.D 0 j := by
   obtain ⟨j, hj⟩ := t.exists_le_cnt 0 M
   refine ⟨j, hj.trans ?_⟩
@@ -53,6 +65,11 @@ namespace Fam
 
 variable {t}
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun n ↦ ?_)` and prove the remaining obligations. Rewrite using `[mul_val, inv_val]`. Express the relevant statement in the definitionally equal form `x.1 n = (Plus.unif t).1 n ^ m * x.1 n * ((Plus.unif t ^ m).1 n)⁻¹`. Rewrite using `[Plus.pow_val]`. Use `Plus.unif_val_ne_zero (t := t) n` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem eq_scalePlus_mul_inv (x : t.Fam) (m : ℕ) (h : t.value 0 ^ m * nrm K (x.1 0) ≤ 1) :
     x = (scalePlus x m h).toFam * ((Plus.unif t ^ m).toFam)⁻¹ := by
   refine Subtype.ext (funext fun n ↦ ?_)
@@ -62,6 +79,19 @@ theorem eq_scalePlus_mul_inv (x : t.Fam) (m : ℕ) (h : t.value 0 ^ m * nrm K (x
   have := Plus.unif_val_ne_zero (t := t) n
   field_simp
 
+/- English proof (translation)
+Take `⟨mx, hmx⟩` from `exists_scale x`. Take `⟨my, hmy⟩` from `exists_scale y`. Use `set m := max mx my`. Establish `hv0` using `t.value_pos 0`. Establish `hv1` using `(t.value_lt_one 0).le`.
+
+Establish `hm : ∀ {z : t.Fam} {mz : ℕ}, mz ≤ m → t.value 0 ^ mz * nrm K (z.1 0) ≤ 1 → t.value 0 ^ m * nrm K (z.1 0) ≤ 1` using `fun hle hz ↦ (mul_le_mul_of_nonneg_right (pow_le_pow_of_le_one hv0.le hv1 hle) (nrm_nonneg _)).trans hz`. Establish `hx` using `hm (le_max_left _ _) hmx`. Establish `hy` using `hm (le_max_right _ _) hmy`. Use `set a := scalePlus x m hx`. Use `set b := scalePlus y m hy`.
+
+Use `set w := (Plus.unif t ^ m).toFam`. Establish `hxy : x + y = (a + b).toFam * w⁻¹` using `by conv_lhs => rw [eq_scalePlus_mul_inv x m hx, eq_scalePlus_mul_inv y m hy]`. Rewrite using `[toFam_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hw : nrm K (w⁻¹.1 0) = (t.value 0 ^ m)⁻¹`.
+
+Rewrite using `[inv_val, nrm_inv]`. Express the relevant statement in the definitionally equal form `(nrm K ((Plus.unif t ^ m).1 0))⁻¹ = _`. Rewrite using `[Plus.pow_val, nrm_pow, Plus.nrm_unif]`. Establish `ha : nrm K (x.1 0) = nrm K (a.1 0) * (t.value 0 ^ m)⁻¹` using `by conv_lhs => rw [eq_scalePlus_mul_inv x m hx]`. Rewrite using `[mul_val, nrm_mul, hw]`.
+
+Both sides reduce to the same expression. Establish `hb : nrm K (y.1 0) = nrm K (b.1 0) * (t.value 0 ^ m)⁻¹` using `by conv_lhs => rw [eq_scalePlus_mul_inv y m hy]`. Rewrite using `[mul_val, nrm_mul, hw]`. Both sides reduce to the same expression. Rewrite using `[hxy, mul_val, nrm_mul, hw, ha, hb, ← max_mul_of_nonneg _ _ (inv_nonneg.mpr (pow_nonneg hv0.le _))]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (Plus.nrm_add_val_zero_le a b) (inv_nonneg.mpr (pow_nonneg hv0.le _))`.
+-/
 theorem nrm_add_val_zero_le (x y : t.Fam) :
     nrm K ((x + y).1 0) ≤ max (nrm K (x.1 0)) (nrm K (y.1 0)) := by
   obtain ⟨mx, hmx⟩ := exists_scale x
@@ -102,9 +132,15 @@ def abv : AbsoluteValue t.Fam ℝ where
   eq_zero' x := by rw [nrm_eq_zero, ← eq_zero_iff]
   add_le' x y := (nrm_add_val_zero_le x y).trans (max_le_add_of_nonneg (nrm_nonneg _) (nrm_nonneg _))
 
+/- English proof (translation)
+The claim follows from `nrm_add_val_zero_le x y`.
+-/
 theorem abv_add_le_max (x y : t.Fam) : abv t (x + y) ≤ max (abv t x) (abv t y) :=
   nrm_add_val_zero_le x y
 
+/- English proof (translation)
+The claim follows from `Plus.nrm_unif 0`.
+-/
 theorem abv_unif : abv t (Plus.unif t).toFam = t.value 0 :=
   Plus.nrm_unif 0
 
@@ -114,8 +150,14 @@ namespace Fam
 
 variable {t}
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun n ↦ by rw [zero_val]; rfl)`.
+-/
 theorem toFam_zero : (0 : t.Plus).toFam = 0 := Subtype.ext (funext fun n ↦ by rw [zero_val]; rfl)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun n ↦ by rw [one_val]; rfl)`.
+-/
 theorem toFam_one : (1 : t.Plus).toFam = 1 := Subtype.ext (funext fun n ↦ by rw [one_val]; rfl)
 
 variable (t) in
@@ -127,9 +169,15 @@ def toFamHom : t.Plus →+* t.Fam where
   map_zero' := toFam_zero
   map_add' := toFam_add
 
+/- English proof (translation)
+The claim follows from `map_sub (toFamHom t) a b`.
+-/
 theorem toFam_sub (a b : t.Plus) : (a - b).toFam = a.toFam - b.toFam :=
   map_sub (toFamHom t) a b
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (toFamHom t), Plus.natCast_p, map_zero]`.
+-/
 theorem natCast_p : ((p : ℕ) : t.Fam) = 0 := by
   rw [← map_natCast (toFamHom t), Plus.natCast_p, map_zero]
 
@@ -139,11 +187,17 @@ instance charP : CharP t.Fam p :=
 instance instNormedField : NormedField t.Fam :=
   (abv t).toNormedField
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem norm_def (x : t.Fam) : ‖x‖ = nrm K (x.1 0) := rfl
 
 instance instIsUltrametricDist : IsUltrametricDist t.Fam :=
   IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm abv_add_le_max
 
+/- English proof (translation)
+The claim follows from `abv_unif`.
+-/
 theorem norm_unif : ‖(Plus.unif t).toFam‖ = t.value 0 := abv_unif
 
 instance instNontriviallyNormedField : NontriviallyNormedField t.Fam where
@@ -153,6 +207,13 @@ instance instNontriviallyNormedField : NontriviallyNormedField t.Fam where
 def intFamSet : Set (ℕ → Ω) := {z | t.IsIntFam z}
 
 variable (t) in
+/- English proof (translation)
+Establish `hP : IsCompact {z : ℕ → Ω | ∀ n, z n ∈ t.intSet n}` using `isCompact_pi_infinite t.isCompact_intSet`. Establish `hC : IsClosed {z : ℕ → Ω | ∀ n, nrm K (t.N n (z (n + 1)) - z n) ≤ 0}`. Establish `e : {z : ℕ → Ω | ∀ n, nrm K (t.N n (z (n + 1)) - z n) ≤ 0} = ⋂ n, {z : ℕ → Ω | nrm K (t.N n (z (n + 1)) - z n) ≤ 0}` using `by ext; simp`. Rewrite using `[e]`. Conclude with `isClosed_iInter fun n ↦ isClosed_le ((continuous_nrm K Ω).comp (((t.continuous_N n).comp (continuous_apply _)).sub (continuous_apply _))) continuous_const`.
+
+Use `hP.inter_right hC using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using `only [intFamSet, Set.mem_ofPred_eq, Set.mem_inter_iff, IsIntFam, IsFam, intSet]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h1⟩`.
+
+Conclude with `⟨fun n ↦ ⟨(h n).1, h1 n⟩, fun n ↦ by rw [(h n).2, sub_self, nrm_zero]⟩`. Introduce and unpack `⟨h, h1⟩`. Use `⟨fun n ↦ ⟨(h n).1, ?_⟩, fun n ↦ (h n).2⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← nrm_eq_zero (K := K)]`. Conclude with `le_antisymm (h1 n) (nrm_nonneg _)`.
+-/
 theorem isCompact_intFamSet : IsCompact (intFamSet (t := t)) := by
   have hP : IsCompact {z : ℕ → Ω | ∀ n, z n ∈ t.intSet n} :=
     isCompact_pi_infinite t.isCompact_intSet
@@ -178,11 +239,29 @@ open Classical in
 def ofSeq (z : ℕ → Ω) : t.Fam :=
   if h : t.IsFam z then ⟨z, h⟩ else 0
 
+/- English proof (translation)
+Unfold `ofSeq`. Conclude with `dif_pos h`.
+-/
 theorem ofSeq_of_isFam {z : ℕ → Ω} (h : t.IsFam z) : ofSeq z = ⟨z, h⟩ := by
   unfold ofSeq; exact dif_pos h
 
 variable (t) in
 
+/- English proof (translation)
+Establish `himage : Metric.closedBall (0 : t.Fam) 1 = ofSeq '' intFamSet (t` using `t) := by`. Use extensionality with `x`. Simplify using `only [Metric.mem_closedBall, dist_zero_right, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨x.1, isIntFam_of_nrm_le hx, ofSeq_of_isFam x.2⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[ofSeq_of_isFam hz.1]`. Conclude with `hz.2 0`. Rewrite using `[himage]`.
+
+Use `(isCompact_intFamSet t).image_of_continuousOn fun z₀ hz₀ ↦ ?_` and prove the remaining obligations. Rewrite using `[ContinuousWithinAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Use `set ρ' := max t.ρ (1 / 2)`. Establish `hρ'1 : ρ' < 1` using `max_lt t.ρ_lt_one (by norm_num)`.
+
+Establish `hρ'0 : 0 < ρ'` using `lt_max_of_lt_right (by norm_num)`. Take `⟨M, hM⟩` from `exists_pow_lt_of_lt_one hε hρ'1`. Take `⟨j, hj⟩` from `Plus.exists_le_D (t := t) M`. Establish `hU : {z : ℕ → Ω | nrm K (z j - z₀ j) < ρ'} ∈ 𝓝[intFamSet (t` using `t)] z₀ := by`. Use `mem_nhdsWithin_of_mem_nhds (IsOpen.mem_nhds ?_ ?_)` and prove the remaining obligations.
+
+Conclude with `isOpen_lt ((continuous_nrm K Ω).comp ((continuous_apply j).sub continuous_const)) continuous_const`. Use `show nrm K (z₀ j - z₀ j) < ρ'`. Rewrite using `[sub_self, nrm_zero]`. Conclude with `hρ'0`. Use `filter_upwards [hU, self_mem_nhdsWithin] with z hz hzI`.
+
+Set `a : t.Plus` to `⟨z, hzI⟩`. Set `b : t.Plus` to `⟨z₀, hz₀⟩`. Establish `ha : ofSeq z = a.toFam` using `ofSeq_of_isFam hzI.1`. Establish `hb : ofSeq z₀ = b.toFam` using `ofSeq_of_isFam hz₀.1`. Rewrite using `[dist_eq_norm, ha, hb, ← toFam_sub, norm_def]`.
+
+Establish `h1 : nrm K ((a - b).1 j) ≤ ρ'`. Establish `e : (a - b).1 j = ((a - b).1 j - (a.1 j - b.1 j)) + (a.1 j - b.1 j)` using `by ring`. Rewrite using `[e]`. Conclude with `nrm_add_le_of_le ((Plus.sub_cong a b j).trans (le_max_left _ _)) hz.le`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isCompact_closedBall : IsCompact (Metric.closedBall (0 : t.Fam) 1) := by
   have himage : Metric.closedBall (0 : t.Fam) 1 = ofSeq '' intFamSet (t := t) := by
     ext x
@@ -240,6 +319,9 @@ instance instProperSpace : ProperSpace t.Fam := by
 instance instValuativeRel : ValuativeRel t.Fam :=
   ValuativeRel.ofValuation (NormedField.valuation (K := t.Fam))
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `NormedField.valuation x ≤ NormedField.valuation y ↔ _`. Conclude with `NNReal.coe_le_coe`.
+-/
 theorem vle_iff_norm_le (x y : t.Fam) : x ≤ᵥ y ↔ ‖x‖ ≤ ‖y‖ := by
   change NormedField.valuation x ≤ NormedField.valuation y ↔ _
   exact NNReal.coe_le_coe

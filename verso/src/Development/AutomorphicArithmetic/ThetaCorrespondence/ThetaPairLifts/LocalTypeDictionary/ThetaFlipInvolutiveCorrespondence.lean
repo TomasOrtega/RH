@@ -17,6 +17,35 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.TopFlip
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Establish `hT` using `(GlobalTheory.SquareDict.dict hL W t i j A A₁ AV AV₁ hA hA₁ hV hV₁).1 hst M hM`. Take `⟨e, Bs, Γ, X, om₀, om₀', h, hT₀, hti⟩` from `exists_tiedBoth hL W t i j hst M hM`. Establish `hR : GlobalTheory.TripleRead.IsReading W.ψ A A₁ (frSum AV AV₁) _ _ (e.symm.trans finSumFinEquiv) Bs Γ X` using `⟨h.ψ, h.JW, h.JW₁, by`. Rewrite using `[h.JWW, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram, ← GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk_transpose, ← GlobalTheory.SquareIdent.blkMat_submatrix, GlobalTheory.Doubling.gram_hsum]`. Use the proof step `rfl, fun w => by`.
+
+Take `⟨τ, a, b, c, d⟩` from `h.cart w`. Use `⟨τ, a, b.trans (hA τ).2.symm, c.trans (congrArg Neg.neg (hA₁ τ).2.symm), d.trans ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SquareAlg.cart_frSum, (hV τ).2, (hV₁ τ).2, ← GlobalTheory.SquareIdent.blkMat_submatrix], h.α, h.β⟩`. Take `⟨om, om', R, Rf, hm, rf, rl, p, p', hM', HA, HB⟩` from `_root_.GlobalTheory.TopFlip.thetaFlip_tensor_match hP.howeDualityReal hP hTL W.θ_is A A₁ _ hT hωA hωB hR hT₀`. Establish `hT'` using `hm.triple`.
+
+Establish `H` using `fun (w : Pl D.host.E) (hw : w ∈ locPl G t) => local_charts hL W B t i j M hst h hm hti hw`. Use `choose! ιA ι ιB ι' l hl h1 h2 h3 h4 h5 h6 h7 using H`. Take `⟨f, -, f2, f3⟩` from `GlobalTheory.T.exists_gaussianVacuum_product_unitVacua hL W ρ t i j M hst e Bs Γ X om om' h hT' hti.1`. Take `⟨f', -, g2, g3⟩` from `GlobalTheory.T.unitVacua_product_eq_gaussianDatum_smallModel hL W ρ t i j M hst e Bs Γ X om om' h hT' hti`. Take `⟨hs, a⟩` from `mixglobA hL W B ρ t i j M hst e Bs Γ X om om' h hT' hti.1 f f3 ι h3`.
+
+Take `⟨hs', b⟩` from `mixglobB hL W B ρ t i j M hst e Bs Γ X om om' h hT' hti f' g3 ι' h4`. Establish `vA : ∏ w ∈ locPl G t, ιA w (Γ.M.vac _) 0 = ∏ w ∈ locPl G t, ι w (Γ.M.vac _) 0` using `Finset.prod_congr rfl fun w hw => by`. Establish `k` using `GlobalTheory.T.mixedModel_vacuum_eq_integralMatrix_indicator hL W B t i j M hst e Bs Γ X om om' h hT' hti.1 w hw _ (h3 w hw)`. Establish `k2` using `fourierSum_ind (A := Fin ((locGrid G t w).rank (i + 1, j + 1))) (psiAt W w)⁻¹ (isUnif_unifAt w) (Assignment.one.block (Fin ((locGrid G t w).rank (i, j + 1))) (Fin ((locGrid G t w).rank (i + 1, j))))ᶜ (ι w (Γ.M.vac _) 0)`. Rewrite `k2` using `[← k]`.
+
+Rewrite using `[h5 w hw _ (hT'.geo.hM.vac _).1 0 k2.1, k2.2]`. Establish `vB : ∏ w ∈ locPl G t, ιB w (Γ.M'.vac _) 0 = ∏ w ∈ locPl G t, ι' w (Γ.M'.vac _) 0` using `Finset.prod_congr rfl fun w hw => by`. Establish `k` using `GlobalTheory.T.mixedModel_vacuum_eq_smul_integralMatrix_indicator hL W B t i j M hst e Bs Γ X om om' h hT' hti w hw _ (h4 w hw)`. Establish `k2` using `fourierSum_ind (A := Fin ((locGrid G t w).rank (i, j))) (psiAt W w) (isUnif_unifAt w) (Assignment.one.block (Fin ((locGrid G t w).rank (i, j + 1))) (Fin ((locGrid G t w).rank (i + 1, j)))) (ι' w (Γ.M'.vac _) 0)`. Rewrite `k2` using `[← k]`.
+
+Rewrite using `[h6 w hw _ (hT'.geo.hM'.vac _).1 0 k2.1, k2.2]`. Establish `la` using `GlobalTheory.T.negW_local_functions_theta_pure_tensor hL W B t i j M hst e Bs Γ X om om' h hT' hti.1 ρ f (datumA_vac ρ i j t ▸ GlobalTheory.SquareIdent.isDatum_of_isDatumA f3) ιA h1`. Establish `lb` using `GlobalTheory.TopFlip.LinSmall.isDatum_linB hL W B t i j M hst e Bs Γ X om om' h hT' hti ρ f' (datumB_vac ρ i j t ▸ GlobalTheory.SquareIdent.isDatum_of_isDatumB g3) ιB h2`. Rewrite `la` using `[vA]`. Rewrite `lb` using `[vB]`.
+
+Use `⟨_, rf, rl, p, p', hM', fun ε hε Ξ Ψ u F F' hΞ hF hF' n Φ τ τ' hn ⟨ε', hε', c, d⟩ => ?_⟩` and prove the remaining obligations. Establish `hf : ∀ w ∈ locPl G t, IsNatDatum (unifAt w) (n w) (flipAt W t i j w (n w) (Φ w))` using `fun w hw => LocTensor.isNatDatum_flipAt hL W i j hw (notMem_of_standing hst hw) (hn w hw).1 (hn w hw).2`. Establish `hinj : ∀ w ∈ locPl G t, ∀ w' ∈ locPl G t, w.under (𝓞 D.host.F) = w'.under (𝓞 D.host.F) → w = w'` using `fun w hw w' hw' e => Good.under_injOn hL G t hw hw' e`. Take `⟨φ, p1, p2⟩` from `exists_finPart hT'.geo.hM hti.1.2.2.1 hinj (fun w φ => ι w φ = flipAt W t i j w (n w) (Φ w)) fun w hw => (h3 w hw).1.2.2 (mem_SB_of_isNatDatum (hf w hw))`. Take `⟨φ', q1, q2⟩` from `exists_finPart hT'.geo.hM' hti.1.2.2.1 hinj (fun w φ => ι' w φ = Φ w) fun w hw => (h4 w hw).1.2.2 (mem_SB_of_isNatDatum (hn w hw).2)`.
+
+Take `⟨χ, r1, r2⟩` from `exists_finPart hT'.geo.hM hti.1.2.2.1 hinj (fun w φ => ιA w φ = Ξ w) fun w hw => (h1 w hw).1.2.2 (hΞ w hw).1`. Take `⟨χ', s1, s2⟩` from `exists_finPart hT'.geo.hM' hti.1.2.2.1 hinj (fun w φ => ιB w φ = Ψ w) fun w hw => (h2 w hw).1.2.2 (hΞ w hw).2.1`. Establish `dA` using `GlobalTheory.SquareIdent.isDatum_of_isDatumA (a ε' hε' n _ τ hf d φ p1 p2)`. Establish `dB` using `GlobalTheory.SquareIdent.isDatum_of_isDatumB (b ε' hε' n _ τ' (fun w hw => (hn w hw).2) c φ' q1 q2)`. Establish `dF` using `la ε hε Ξ F hF χ r1 r2`.
+
+Establish `dF'` using `lb ε hε Ψ F' hF' χ' s1 s2`. Establish `gA` using `isGauss_smul f2 hs`. Establish `gB` using `isGauss_smul g2 hs'`. Establish `y₀` using `pureT_loc hL hm hti.1 r1 s1 (c := fun w => l w * u w) fun w hw => h7 w hw _ (r1.1 _) _ (s1.1 _) _ (by rw [r2 w hw, s2 w hw]; exact (hΞ w hw).2.2)`. Establish `y₁` using `pureT_loc hL hm hti.1 p1 q1 (c := fun w => l w * ((levVol G t i j w : ℝ) : ℂ)⁻¹) fun w hw => h7 w hw _ (p1.1 _) _ (q1.1 _) _ (by`.
+
+Rewrite using `[h5 w hw _ (p1.1 _) (n w) (by rw [p2 w hw]; exact hf w hw), h6 w hw _ (q1.1 _) (n w) (by rw [q2 w hw]; exact (hn w hw).2), p2 w hw, q2 w hw]`. Conclude with `(zeta_flip hL W i j hst hw).2 _ _ (hn w hw).1 (hn w hw).2)`. Take `⟨_, k1⟩` from `HA _ gA 0`. Take `⟨_, k2⟩` from `HB _ gB 0`. Use `⟨(k1 _ r1 _ dF).1, (k2 _ s1 _ dF').1, (k1 _ p1 _ dA).1, (k2 _ q1 _ dB).1, fun P P' g hne hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `HA _ gA P`. Take `⟨y, hy⟩` from `HB _ gB P'`. Rewrite `hne`, `hg` using `[(hy _ s1 _ dF').2]`. Rewrite `hg` using `[(hx _ r1 _ dF).2, y₀]`. Rewrite using `[(hx _ p1 _ dA).2, (hy _ q1 _ dB).2, y₁]`.
+
+Generalize the expression as in `(GlobalTheory.SmallThetaModules.pureT (GlobalTheory.TripleAssembly.vacIm Γ Rf) fun v => Rf.p' v (χ' v)) = z₀ at hne hg`. Generalize the expression as in `(GlobalTheory.SmallThetaModules.pureT (GlobalTheory.TripleAssembly.vacIm Γ Rf) fun v => Rf.p' v (φ' v)) = z`. Establish `hz : z₀ ≠ 0` using `fun h0 => hne (by rw [h0, TensorProduct.tmul_zero])`. Take `⟨lz, hlz⟩` from `Module.Projective.exists_dual_eq_one ℂ hz`. Establish `e1 : (∏ w ∈ locPl G t, l w * u w) • x = g • y`.
+
+Use `congrArg (TensorProduct.rid ℂ R.Pi ∘ LinearMap.lTensor R.Pi lz) hg` as an intermediate fact. Simplify `this` using `[hlz]`. Establish `hV : ((∏ w ∈ locPl G t, levVol G t i j w : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun w hw => (zeta_flip hL W i j hst hw).1)`. Establish `e2 : (∏ w ∈ locPl G t, u w) * ((∏ w ∈ locPl G t, levVol G t i j w : ℝ) : ℂ) * ∏ w ∈ locPl G t, l w * ((levVol G t i j w : ℝ) : ℂ)⁻¹ = ∏ w ∈ locPl G t, l w * u w`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_inv_distrib, ← Complex.ofReal_prod]`.
+
+Clear the denominators using the available nonvanishing facts. Express the relevant statement in the definitionally equal form `_ • (x ⊗ₜ[ℂ] (_ • z) : GlobalTheory.TripleAssembly.PiT R Γ Rf) = g • (y ⊗ₜ[ℂ] z : GlobalTheory.TripleAssembly.PiT R Γ Rf)`. Rewrite using `[TensorProduct.tmul_smul, smul_smul, e2, TensorProduct.smul_tmul', e1, TensorProduct.smul_tmul']`.
+-/
 theorem thetaFlip_tuple_match (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hTL : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching) (hL : L.Is μ₀) (W : G.Weil) (i j : Fin D.R.m)
     {A : Fr (spW G i j)} {A₁ : Fr (spW₁ G i j)} {AV : Fr (spV G i j)} {AV₁ : Fr (spV₁ G i j)} (hA : IsGridFr W _ A)
     (hA₁ : IsGridFr W _ A₁) (hV : IsGridFr W _ AV) (hV₁ : IsGridFr W _ AV₁) (t : T) (B : Frames G) (ρ : RealMatch W) (M : Vol G)
@@ -129,6 +158,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 open GlobalTheory.ConstRatio (Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 namespace GlobalTheory.TopFlip
+/- English proof (translation)
+Take `⟨ζ, ⟨a, k, k', ⟨b, hb⟩, ha⟩, rfl⟩` from `h`. Use `⟨ζ⁻¹, ?_, map_inv₀ _ _⟩` and prove the remaining obligations. Distinguish the cases in `hm : m = 0`. Substitute `hm` using the available equality. Conclude with `⟨0, 1, 1, by simp, by simp⟩`.
+
+Establish `hm' : (m : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Establish `hb' : (m : D.what₂.LL) ^ k' = (a : D.what₂.LL) * (b : D.what₂.LL)` using `by exact_mod_cast congrArg (fun x : 𝓞 D.what₂.LL => (x : D.what₂.LL)) hb`. Establish `hζ : ζ ≠ 0` using `fun h0 => pow_ne_zero k' hm' (by rw [hb', ← ha, h0, zero_mul, zero_mul])`. Use `⟨b * (m : 𝓞 D.what₂.LL) ^ k, k', k' + k, ⟨a, by rw [pow_add, hb]; ring⟩, ?_⟩` and prove the remaining obligations. Establish `e : ((b * (m : 𝓞 D.what₂.LL) ^ k : 𝓞 D.what₂.LL) : D.what₂.LL) = (b : D.what₂.LL) * (m : D.what₂.LL) ^ k` using `by push_cast; rfl`.
+
+Rewrite using `[e, hb', ← ha]`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem away_imaginary_inv {D : D7} {m : ℕ} {z : ℂ} (h : GlobalTheory.KappaArith.AwayIm D m z) : GlobalTheory.KappaArith.AwayIm D m z⁻¹ := by
   obtain ⟨ζ, ⟨a, k, k', ⟨b, hb⟩, ha⟩, rfl⟩ := h
   refine ⟨ζ⁻¹, ?_, map_inv₀ _ _⟩
@@ -142,6 +178,11 @@ private theorem away_imaginary_inv {D : D7} {m : ℕ} {z : ℂ} (h : GlobalTheor
   have e : ((b * (m : 𝓞 D.what₂.LL) ^ k : 𝓞 D.what₂.LL) : D.what₂.LL) = (b : D.what₂.LL) * (m : D.what₂.LL) ^ k := by push_cast; rfl
   rw [e, hb', ← ha]
   field_simp
+/- English proof (translation)
+Establish `mA : fockF ψ θ true A B f P ∈ algF ψ θ true A B` using `Submodule.subset_span ⟨_, _, hf, rfl⟩`. Establish `mB : fockF ψ θ false A₁ B f' P' ∈ algF ψ θ false A₁ B` using `Submodule.subset_span ⟨_, _, hf', rfl⟩`. Rewrite using `[om_fockF hθ A B hm.weilA hh hf, om_fockF hθ A₁ B hm.weilB hh hf', map_smul, map_smul, hm.mapA.eqf h hh _ mA, hg, map_smul, hm.mapB.eqf h hh _ mB]`. Use `⟨smul_ne_zero (inv_ne_zero hb) fun h0 => hne ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `hm.mapB.eqf h⁻¹ (inv_mem hh) _ (hm.mapB.stabX.1 h hh _ mB)`.
+
+Rewrite `e` using `[hm.mapB.eqf h hh _ mB, h0, map_zero, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, inv_mul_cancel, one_mul, ← Prod.one_eq_mk, map_one, Module.End.one_apply]`. Conclude with `e`. Rewrite using `[smul_smul, smul_smul, mul_assoc, mul_inv_cancel₀ hb, mul_one]`.
+-/
 private theorem fock_move_relation {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) {W W₁ X : HSp D} {A : Fr W}
     {A₁ : Fr W₁} {B : Fr X} {α β : (AE D)ˣ →* Circle} {ωA ωB Pi rf rl p p'} (hm : IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p')
     {h : GA D X} (hh : h ∈ GfC X) {f f'} (hf : IsFinF ψ θ true A B f) (hf' : IsFinF ψ θ false A₁ B f') {a b : ℂ} (hb : b ≠ 0)
@@ -161,6 +202,33 @@ private theorem fock_move_relation {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ
   · rw [smul_smul, smul_smul, mul_assoc, mul_inv_cancel₀ hb, mul_one]
 end GlobalTheory.TopFlip
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hP hK hM`. Take `⟨F1, H1⟩` from `_root_.GlobalTheory.T.theta_parameter_dictionary_bijective hP`. Take `⟨F2, H2⟩` from `_root_.GlobalTheory.T.theta_stage_unique hP hK hM`. Use `⟨max F1 F2, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, x1, H1⟩` from `H1 ε CF (le_of_max_le_left hCF)`.
+
+Take `⟨C2, x2, H2⟩` from `H2 ε CF (le_of_max_le_right hCF)`. Use `⟨max C1 C2, max x1 x2, fun C hC D large₂ he hx hR T Lc μ₀ hL G => ?_⟩` and prove the remaining obligations. Use `replace H1 := H1 C (le_of_max_le_left hC) D large₂ he (le_of_max_le_left hx) hR T Lc μ₀ hL G`. Use `replace H2 := H2 C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) hR T Lc μ₀ hL G`. Establish `hst : ∀ t, SquareStanding G t` using `fun t => GlobalTheory.ThetaRegularizationComparison.standing hR hR.size.2.1.eleven_le hL G t`.
+
+Introduce `W S hψ hN ρ i j X hTG hSC A A₁ AV AV₁ hA hA₁ hV hV₁`. Take `⟨σ, σ', hσ⟩` from `H1 W i j X hTG hSC A A₁ AV AV₁ hA hA₁ hV hV₁`. Use `replace H2 := H2 W i j _ _ _ _ _ X hSC A A₁ (frSum AV AV₁)`. Establish `hIs` using `hSC.2.2.2.2.2.2.2`. Establish `hrk : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps G i j = rankV D i j % 2` using `congrArg (· % 2) (Nat.add_right_cancel hSC.2.2.2.1)`.
+
+Establish `eα : ∀ t, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j = Lc.mu t (j + 1) * Lc.eta ^ (rankV D i j % 2)` using `fun t => by`. Rewrite using `[← hrk]`. Both sides reduce to the same expression. Establish `eβ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j = G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2)`. Rewrite using `[← hrk]`.
+
+Both sides reduce to the same expression. Establish `hI : X.Is W.ψ W.θ (fun t => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j) (fun _ => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j) (fun t => nuH G t i j) (locPl G)`. Simplify using `only [eα, eβ]`. Conclude with `hIs`. Take `⟨h, hh, cA, cB, y, hcA, hcB, hmv⟩` from `GlobalTheory.TopFlip.exists_move hL hst S.B ρ hTG hI hV hV₁`.
+
+Take `⟨x, hx⟩` from `GlobalTheory.TopFlip.zeta_std hL W S.B X hst (hTG.1 ▸ hI.rigA.2.1) (hTG.2.1 ▸ hI.rigA'.2.1) (by have := hI.rigW.2.1; rwa [hTG.2.2.1] at this)`. Take `⟨s₀, hs₀, hs⟩` from `GlobalTheory.TopFlip.MeasW.exists_ratio (G := G) hL i j X.m hI.meas.1`. Take `⟨c₁, hc₁, hc⟩` from `GlobalTheory.TopFlip.MeasLevel.measure_mul_levVol (G := G) hL hst i j X.m' hI.meas'.1`. Use `set u : T → ℂ := fun t => ∏ w ∈ locPl G t, (((locGrid G t w).nu i j (x w) : ℂˣ) : ℂ) with hu`. Establish `hu0 : ∀ t, u t ≠ 0` using `fun t => Finset.prod_ne_zero_iff.2 fun w _ => Units.ne_zero _`.
+
+Establish `hξ0 : ∀ t, ((Lc.xi t y : Circle) : ℂ) ≠ 0` using `fun t => Circle.coe_ne_zero _`. Establish `hs₀' : ((s₀ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hs₀`. Establish `hc₁' : (c₁ : ℂ) ≠ 0` using `by exact_mod_cast hc₁`. Use `⟨fun t => ((s₀ : ℝ) : ℂ) * cA⁻¹ * cB * (c₁ : ℂ)⁻¹ * ((Lc.xi t y : Circle) : ℂ) * (u t)⁻¹, fun t => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero hs₀' (inv_ne_zero hcA)) hcB) (inv_ne_zero hc₁')) (hξ0 t)) (inv_ne_zero (hu0 t))`.
+
+Take `⟨z, hz, ez⟩` from `GlobalTheory.TopFlipNu.nu_arith hL hN.chars i j x t fun w hw => (hx t w hw).1`. Take `⟨ζ, h1, h2⟩` from `((GlobalTheory.XiAway.xi_awayIm hL t (hN.chars.xi t) (Qn G t) y).mul (GlobalTheory.TopFlip.away_imaginary_inv (GlobalTheory.XiAway.xi_awayIm hL μ₀ (hN.chars.xi μ₀) (Qn G t) y))).mul (GlobalTheory.TopFlip.away_imaginary_inv hz)`. Use `⟨ζ, h1, ?_⟩` and prove the remaining obligations. Establish `e : u t = z * u μ₀` using `ez`. Use `hξ0 μ₀` as an intermediate fact.
+
+Simplify using `only`. Rewrite using `[h2, e, mul_inv]`. Clear the denominators using the available nonvanishing facts. Introduce `t M hM' s s' es es' Pi rf rl p p' hm n Φ τ τ' hn hfl P P' g hne hg`. Take `⟨Pi₀, rf₀, rl₀, p₀, p₀', hm₀, H⟩` from `_root_.GlobalTheory.TopFlip.thetaFlip_tuple_match hP hM hL W i j hA hA₁ hV hV₁ t S.B ρ M (hst t) hM' (hI.weil t) (hI.weil' t)`.
+
+Take `⟨f1, f2, f3, f4, H⟩` from `H _ (hI.idem t) _ _ _ _ _ (fun w hw => (hx t w hw).2) (hmv t).1 (hmv t).2 n Φ τ τ' hn hfl`. Take `⟨E, c, hc0, eA, eB⟩` from `H2 t Pi₀ rf₀ rl₀ p₀ p₀' Pi rf rl p p' (by rw [← eα, ← eβ]; exact hm₀) (by rw [← eα, ← eβ]; exact hm)`. Take `⟨k1, k2⟩` from `GlobalTheory.TopFlip.fock_move_relation W.θ_is hm hh (hσ t).1 (hσ t).2.1 (a := cA⁻¹) (mul_ne_zero hcB (hξ0 t)) hne hg`. Rewrite `k1`, `k2` using `[eB _ (Submodule.subset_span ⟨_, _, f2, rfl⟩)]`. Rewrite `k2` using `[eA _ (Submodule.subset_span ⟨_, _, f1, rfl⟩)]`.
+
+Establish `k3` using `H P P' (c⁻¹ * (cA⁻¹ * g * (cB * ((Lc.xi t y : Circle) : ℂ)))) (fun h0 => k1 (by rw [h0, map_zero])) (E.injective (by rw [map_smul, mul_smul, ← k2, smul_smul, inv_mul_cancel₀ hc0, one_smul]))`. Rewrite using `[eA _ (Submodule.subset_span ⟨_, _, f3, rfl⟩), eB _ (Submodule.subset_span ⟨_, _, f4, rfl⟩)]`. Establish `e1 : s = s₀` using `hs t M hM' s es`. Establish `e2 : ((s' : ℝ) : ℂ) * ((∏ w ∈ locPl G t, GlobalTheory.TopFlip.levVol G t i j w : ℝ) : ℂ) = c₁` using `by exact_mod_cast hc t M hM' s' es'`. Establish `k4` using `congrArg E k3`.
+
+Rewrite `k4` using `[map_smul, map_smul]`. Express the relevant statement in the definitionally equal form `(u t * _) • _ = _ at k4`. Generalize the expression as in `((∏ w ∈ locPl G t, GlobalTheory.TopFlip.levVol G t i j w : ℝ) : ℂ) = V at e2 k4`. Establish `hV0 : V ≠ 0` using `fun h0 => hc₁' (by rw [← e2, h0, mul_zero])`. Establish `hs' : ((s' : ℝ) : ℂ) ≠ 0` using `fun h0 => hc₁' (by rw [← e2, h0, zero_mul])`.
+
+Use `hu0 t` as an intermediate fact. Rewrite using `[(eq_inv_smul_iff₀ (mul_ne_zero this hV0)).2 k4, smul_smul, smul_smul, smul_smul, e1, ← e2]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem _root_.GlobalTheory.T.thetaFlip_involutive_correspondence : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) → NumbersIn D.what₂.embLL S μ₀ → ∀ (ρ : RealMatch W) (i j : Fin D.R.m) (X : TriG G i j), TopGrid W i j X → IsStageC W i j (pp D j) (qq D j) X →
     ∀ (A : Fr (G.V (.grid (i + 1) (j + 1)))) (A₁ : Fr (G.V (.grid i j))) (AV : Fr (G.V (.grid i (j + 1)))) (AV₁ : Fr (G.V (.grid (i + 1) j))), IsGridFr W _ A → IsGridFr W _ A₁ → IsGridFr W _ AV → IsGridFr W _ AV₁ →

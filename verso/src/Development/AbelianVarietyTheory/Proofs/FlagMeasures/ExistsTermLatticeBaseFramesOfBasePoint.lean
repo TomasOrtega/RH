@@ -12,6 +12,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Unfold
 
+/- English proof (translation)
+Introduce `D X Y u u' F F' w hZ hG t hpt`. Establish `hcF : IsInCell (ZhatOM (ZhatL F F')) w`. Use `⟨(1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E), 1, ?_, ?_, by rw [hZ]; simp⟩` and prove the remaining obligations. Introduce `i j`. Conclude with `⟨fun h => Matrix.one_apply_ne h.ne, fun h => h ▸ Matrix.one_apply_eq i⟩`.
+
+Introduce `i j`. Conclude with `⟨fun h => Matrix.one_apply_ne h.ne', fun h => h ▸ Matrix.one_apply_eq i⟩`. Establish `hGw` using `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.gpt_eq F F' w hcF`. Establish `hw : Formalism.L2.SG.PairVal.ptOf t.toTerm = w` using `Formalism.L2.SG.NGCut.NormalVectorPairings.toPts_inj _ _ hpt`. Establish `hex : ∃ w, t.toTerm.atPt w ∧ t.toTerm.relevant`.
+
+Assume the negation of the conclusion as `h`. Apply `hG` to reduce the goal to its premises. Rewrite using `[← hGw, ← hpt]`. Use `show GPt _ (toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm)) = 0`. Unfold `Formalism.L2.SG.PairVal.ptOf`.
+
+Rewrite using `[dif_neg h]`. Conclude with `Formalism.L2.SG.NGCut.NormalVectorPairings.GPt_junk D u u'`. Take `⟨F'', ⟨hP, hmk⟩, -, hcell⟩` from `Formalism.L2.SG.PairVal.ptOf_spec t.toTerm hex`. Rewrite `hcell` using `[hw]`. Establish `hΛ` using `(Y.rowsOK u).1 t.lam t.mem`.
+
+Establish `hmk' : Formalism.L2.SG.TermDef.mk _ _ _ ⟨F'', hP⟩ = Formalism.L2.SG.TermDef.mk _ _ _ ⟨t.frame, t.rep.2.2.2.2⟩` using `hmk`. Establish `hrel` using `(Formalism.L2.SG.Closed.TermEqIff_holds D u u' (X.Fu u) t.lam hΛ _ _).1 hmk'`. Establish `hcell' : IsInCell (ZhatOM (ZhatL (lf D (X.Fu u)) t.frame)) w` using `((Formalism.L2.SG.Closed.TermFun_holds D u u' (X.Fu u) t.lam hΛ).2.1 _ _ hrel w).1 hcell`. Establish `hGt : Gval (lf D (X.Fu u)) t.frame ≠ 0`. Introduce `h0`.
+
+Apply `hG` to reduce the goal to its premises. Rewrite using `[← hGw]`. Conclude with `(Formalism.L2.SG.NGCut.LeadingMinorIntegrality.gpt_eq (T := Tu D u) (T' := Tu D u') _ _ w hcell').trans h0`. Take `⟨-, γ, hγ, ⟨A, hA, hc⟩, ⟨B, hB, hd⟩⟩` from `GlobalTheory.T.rationalFramePairs_differ_isometry_unitriangular D (lf D (X.Fu u)) F t.frame F' w (Formalism.L2.SG.Corank.tu_ne_zero u) (Formalism.L2.SG.Corank.tu_ne_zero u') hGt hcell' hZ`. Conclude with `⟨Formalism.HermitianLatticesTheory.gmap γ t.lam, γ, ⟨hγ, fun a => GlobalTheory.FlagChange.chg_sub_mem F.fl hA hc a⟩, ⟨hγ, fun a => GlobalTheory.FlagChange.chg_sub_mem F'.fl hB hd a⟩, rfl⟩`.
+-/
 theorem tg_of_base_point : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ t : TauC Y u u', ptPN t = toPts w → ∃ Λ, TG F F' t Λ := by
   intro D X Y u u' F F' w hZ hG t hpt
   have hcF : IsInCell (ZhatOM (ZhatL F F')) w := by

@@ -6,6 +6,15 @@ namespace ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory
 
+/- English proof (translation)
+Establish `hΔ : IsClosedImmersion (pullback.diagonal s)` using `inferInstance`. Establish `hi : IsClosedImmersion (pullback.snd (pullback.diagonal s) (pullback.lift f g h))` using `inferInstance`. Establish `hj : (ι ≫ f) ≫ pullback.diagonal s = ι ≫ pullback.lift f g h`. Apply the tactic sequence `apply pullback.hom_ext <;>`. Simplify using `only [Category.assoc, pullback.diagonal_fst, pullback.diagonal_snd, Category.comp_id,`.
+
+Use the proof step `pullback.lift_fst, pullback.lift_snd, hU]`. Establish `hji : pullback.lift (ι ≫ f) ι hj ≫ pullback.snd (pullback.diagonal s) (pullback.lift f g h) = ι` using `pullback.lift_snd _ _ _`. Establish `hker : (pullback.snd (pullback.diagonal s) (pullback.lift f g h)).ker = ⊥`. Apply `le_bot_iff.mp` to reduce the goal to its premises. Establish `h0` using `Scheme.Hom.le_ker_comp (pullback.lift (ι ≫ f) ι hj) (pullback.snd (pullback.diagonal s) (pullback.lift f g h))`.
+
+Rewrite `h0` using `[hji, (inferInstance : IsSchemeTheoreticallyDominant ι).1]`. Conclude with `h0`. Establish `hiso : IsIso (pullback.snd (pullback.diagonal s) (pullback.lift f g h))` using `IsClosedImmersion.isIso_iff_ker_eq_bot.mpr hker`. Establish `hc` using `pullback.condition (f := pullback.diagonal s) (g := pullback.lift f g h)`. Establish `h1 : pullback.fst (pullback.diagonal s) (pullback.lift f g h) = pullback.snd (pullback.diagonal s) (pullback.lift f g h) ≫ f`.
+
+Simplify `congrArg (· ≫ pullback.fst s s) hc` using `only [Category.assoc, pullback.diagonal_fst, pullback.diagonal_snd, Category.comp_id, pullback.lift_fst, pullback.lift_snd]`. Establish `h2 : pullback.fst (pullback.diagonal s) (pullback.lift f g h) = pullback.snd (pullback.diagonal s) (pullback.lift f g h) ≫ g`. Simplify `congrArg (· ≫ pullback.snd s s) hc` using `only [Category.assoc, pullback.diagonal_fst, pullback.diagonal_snd, Category.comp_id, pullback.lift_fst, pullback.lift_snd]`. Conclude with `(cancel_epi _).mp (h1.symm.trans h2)`.
+-/
 theorem ext_of_schDom {W X Y Z : Scheme.{0}} {f g : X ⟶ Y} (s : Y ⟶ Z) [IsSeparated s] (h : f ≫ s = g ≫ s)
     (ι : W ⟶ X) [IsSchemeTheoreticallyDominant ι] (hU : ι ≫ f = ι ≫ g) : f = g := by
   have hΔ : IsClosedImmersion (pullback.diagonal s) := inferInstance
@@ -36,6 +45,9 @@ theorem ext_of_schDom {W X Y Z : Scheme.{0}} {f g : X ⟶ Y} (s : Y ⟶ Z) [IsSe
       pullback.lift_fst, pullback.lift_snd] using congrArg (· ≫ pullback.snd s s) hc
   exact (cancel_epi _).mp (h1.symm.trans h2)
 
+/- English proof (translation)
+Use `haveI : IsDominant (Spec.map (CommRingCat.ofHom φ)) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (f := φ)).mpr (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot φ).mp hφ]`. Conclude with `bot_le)⟩`. Conclude with `IsSchemeTheoreticallyDominant.of_isDominant _`.
+-/
 theorem schDom_spec_map {A B : Type} [CommRing A] [CommRing B] [IsReduced A] (φ : A →+* B)
     (hφ : Function.Injective φ) : IsSchemeTheoreticallyDominant (Spec.map (CommRingCat.ofHom φ)) := by
   haveI : IsDominant (Spec.map (CommRingCat.ofHom φ)) :=
@@ -45,6 +57,19 @@ theorem schDom_spec_map {A B : Type} [CommRing A] [CommRing B] [IsReduced A] (φ
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hop : IsOpenImmersion (equalizer.ι u v).left`. Use `MorphismProperty.of_isPullback ((Limits.isPullback_equalizer_prod u v).map (Over.forget _)).flip ?_` and prove the remaining obligations. Use `show IsOpenImmersion (prod.lift (𝟙 Y) (𝟙 Y)).left`. Rewrite using `[← MorphismProperty.cancel_right_of_respectsIso @IsOpenImmersion _ (Over.prodLeftIsoPullback Y Y).hom]`. Use `convert! (inferInstance : IsOpenImmersion (pullback.diagonal Y.hom))`.
+
+Apply the tactic sequence `ext1 <;> simp [← Over.comp_left] <;> first | rw [prod.lift_fst, Over.id_left] | rw [prod.lift_snd, Over.id_left]`. Establish `: JacobsonSpace K.left` using `LocallyOfFiniteType.jacobsonSpace K.hom`. Establish `hcl : closedPoints K.left ⊆ Set.range (equalizer.ι u v).left`. Introduce `x hx`. Set `p : 𝟙_ (Over (Spec (CommRingCat.of F))) ⟶ K` to `Over.homMk (pointOfClosedPoint K.hom x hx) (pointOfClosedPoint_comp K.hom x hx)`.
+
+Set `q` to `equalizer.lift p (h p)`. Set `pt : (𝟙_ (Over (Spec (CommRingCat.of F)))).left` to `IsLocalRing.closedPoint F`. Use `⟨q.left pt, ?_⟩` and prove the remaining obligations. Establish `e : q.left ≫ (equalizer.ι u v).left = p.left` using `by rw [← Over.comp_left, equalizer.lift_ι]`. Establish `e' : (q.left ≫ (equalizer.ι u v).left) pt = p.left pt` using `by rw [e]`.
+
+Conclude with `e'.trans (pointOfClosedPoint_apply K.hom x hx pt)`. Establish `hsurj : Function.Surjective (equalizer.ι u v).left`. Assume the negation of the conclusion as `hns`. Take `⟨x, hx⟩` from `not_forall.1 hns`. Establish `hC : IsClosed (Set.range (equalizer.ι u v).left)ᶜ` using `(equalizer.ι u v).left.isOpenEmbedding.isOpen_range.isClosed_compl`.
+
+Take `⟨y, hy1, hy2⟩` from `nonempty_inter_closedPoints ⟨x, hx⟩ hC.isLocallyClosed`. Conclude with `hy1 (hcl hy2)`. Establish `: Surjective (equalizer.ι u v).left` using `⟨hsurj⟩`. Establish `: IsIso (equalizer.ι u v).left` using `(isIso_iff_isOpenImmersion_and_surjective _).2 ⟨hop, this⟩`. Establish `h0 : IsIso ((Over.forget _).map (equalizer.ι u v))` using `(inferInstance : IsIso (equalizer.ι u v).left)`.
+
+Establish `: IsIso (equalizer.ι u v)` using `isIso_of_reflects_iso _ (Over.forget _)`. Conclude with `(cancel_epi (equalizer.ι u v)).1 (equalizer.condition u v)`.
+-/
 theorem over_ext_of_points {F : Type} [Field F] [IsAlgClosed F] {K Y : Over (Spec (CommRingCat.of F))}
     [LocallyOfFiniteType K.hom] [FormallyUnramified Y.hom] [LocallyOfFiniteType Y.hom] (u v : K ⟶ Y)
     (h : ∀ p : 𝟙_ (Over (Spec (CommRingCat.of F))) ⟶ K, p ≫ u = p ≫ v) : u = v := by
@@ -81,6 +106,31 @@ theorem over_ext_of_points {F : Type} [Field F] [IsAlgClosed F] {K Y : Over (Spe
 open MonObj in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨-, -, -, het, -⟩` from `hMul _ P M hM1`. Establish `hunit : IsUnit ((M : ℕ) : Γ(Spec (CommRingCat.of F), ⊤))`. Establish `e` using `(Scheme.ΓSpecIso (CommRingCat.of F)).commRingCatIsoToRingEquiv`. Establish `: IsUnit (e.symm (M : F))` using `(isUnit_iff_ne_zero.2 hM).map e.symm`. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+
+Establish `: Etale (Out.mulA P.A M).left` using `het hunit`. Establish `hpow : ∀ {Z : Over (Spec (CommRingCat.of F))} (z : Z ⟶ P.A), z ^ M = z ≫ Out.mulA P.A M` using `fun z => (congrArg (· ^ M) (Category.comp_id z).symm).trans (MonObj.comp_pow (𝟙 P.A) M z).symm`. Establish `hcomm : σ ≫ Out.mulA P.A M = Out.mulA P.A M ≫ σ`. Rewrite using `[← hpow, Out.mulA, MonObj.pow_comp, Category.id_comp]`. Set `m` to `(Out.mulA P.A M).left`.
+
+Set `e` to `(η[P.A]).left`. Set `K : Over (Spec (CommRingCat.of F))` to `Over.mk (show pullback m e ⟶ Spec (CommRingCat.of F) from pullback.snd m e)`. Establish `hw : pullback.fst m e ≫ P.A.hom = pullback.snd m e`. Rewrite using `[← Over.w (Out.mulA P.A M), ← Category.assoc, pullback.condition, Category.assoc, Over.w η[P.A]]`. Conclude with `Category.comp_id _`.
+
+Establish `hσm : (pullback.fst m e ≫ σ.left) ≫ m = pullback.snd m e ≫ e`. Establish `h1 : σ.left ≫ m = m ≫ σ.left` using `congrArg CommaMorphism.left hcomm`. Establish `h2 : e ≫ σ.left = e` using `congrArg CommaMorphism.left (IsMonHom.one_hom σ)`. Rewrite using `[Category.assoc, h1, ← Category.assoc, pullback.condition, Category.assoc, h2]`. Set `τ : K ⟶ K` to `Over.homMk (pullback.lift _ _ hσm) (pullback.lift_snd _ _ _)`.
+
+Establish `hKe : Etale K.hom` using `by show Etale (pullback.snd m e); infer_instance`. Establish `: LocallyOfFinitePresentation K.hom` using `inferInstance`. Establish `: LocallyOfFiniteType K.hom` using `inferInstance`. Establish `: FormallyUnramified K.hom` using `inferInstance`. Establish `hτ : τ = 𝟙 K`.
+
+Use `over_ext_of_points τ (𝟙 K) fun p => ?_` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Use `ext1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show p.left ≫ pullback.lift _ _ hσm ≫ pullback.fst m e = p.left ≫ pullback.fst m e`.
+
+Rewrite using `[pullback.lift_fst]`. Establish `hp1 : p.left ≫ pullback.snd m e = 𝟙 _` using `Over.w p`. Set `q : 𝟙_ (Over (Spec (CommRingCat.of F))) ⟶ P.A` to `Over.homMk (p.left ≫ pullback.fst m e) (by`. Rewrite using `[Category.assoc, hw, hp1]`. Use the proof step `rfl)`.
+
+Establish `hq : q ^ M = 1`. Rewrite using `[hpow]`. Use `ext1`. Use `show (p.left ≫ pullback.fst m e) ≫ m = (toUnit _ ≫ η[P.A]).left`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hp1, Category.id_comp, Over.comp_left]`.
+
+Establish `: toUnit (𝟙_ (Over (Spec (CommRingCat.of F)))) = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite using `[this, Over.id_left, Category.id_comp]`. Use `congrArg CommaMorphism.left (hσ q hq)` as an intermediate fact. Rewrite using `[← Category.assoc]`. Conclude with `this`.
+
+Use `show p.left ≫ pullback.lift _ _ hσm ≫ pullback.snd m e = p.left ≫ pullback.snd m e`. Rewrite using `[pullback.lift_snd]`. Establish `hxm : x.left ≫ m = T.hom ≫ e`. Use `congrArg CommaMorphism.left ((hpow x).symm.trans hx)` as an intermediate fact. Conclude with `this`.
+
+Set `κ : T ⟶ K` to `Over.homMk (pullback.lift x.left T.hom hxm) (pullback.lift_snd _ _ _)`. Establish `hτl : pullback.lift _ _ hσm = 𝟙 _` using `congrArg CommaMorphism.left hτ`. Use `ext1`. Use `show x.left ≫ σ.left = x.left`. Establish `k1 : x.left = κ.left ≫ pullback.fst m e` using `(pullback.lift_fst _ _ _).symm`.
+
+Rewrite using `[k1, Category.assoc, ← pullback.lift_fst (pullback.fst m e ≫ σ.left) (pullback.snd m e) hσm, hτl, Category.id_comp]`.
+-/
 theorem fix_torsion (hMul : Out.MulNSt) {F : Type} [Field F] [IsAlgClosed F] (P : Out.PolAV (Spec (CommRingCat.of F)))
     (M : ℕ) (hM1 : 1 ≤ M) (hM : (M : F) ≠ 0) (σ : P.A ⟶ P.A) [IsMonHom σ]
     (hσ : ∀ x : 𝟙_ (Over (Spec (CommRingCat.of F))) ⟶ P.A, x ^ M = 1 → x ≫ σ = x)

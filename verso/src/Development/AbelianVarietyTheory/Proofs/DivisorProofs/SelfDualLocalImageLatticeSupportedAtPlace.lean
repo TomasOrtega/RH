@@ -25,11 +25,17 @@ namespace GlobalTheory.LatVac.DualLoc
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Rewrite using `[co.form, co.form, map_smul]`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, smul_dotProduct, dotProduct_smul, smul_eq_mul, mul_sub]`.
+-/
 theorem form_smul_left {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F} {κ : Type} [Fintype κ]
     (co : GlobalTheory.WeilM.Darboux B κ) (u : AF F) (z γ : W) : B (u • z) γ = u * B z γ := by
   rw [co.form, co.form, map_smul]
   simp only [Prod.smul_fst, Prod.smul_snd, smul_dotProduct, dotProduct_smul, smul_eq_mul, mul_sub]
 
+/- English proof (translation)
+Introduce `u hu`. Rewrite using `[smul_eq_mul, ← form_smul_left co, hz u hu, co.form]`. Simplify using the standard rewrite rules.
+-/
 theorem at_form {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F} {κ : Type} [Fintype κ]
     (co : GlobalTheory.WeilM.Darboux B κ) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {z : W}
     (hz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) z) (γ : W) : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) (B z γ) := by
@@ -37,6 +43,9 @@ theorem at_form {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → A
   rw [smul_eq_mul, ← form_smul_left co, hz u hu, co.form]
   simp
 
+/- English proof (translation)
+Rewrite using `[co.form]`. Simplify using `only [dotProduct, map_sub, map_sum, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem evFin_form {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F} {κ : Type} [Fintype κ]
     (co : GlobalTheory.WeilM.Darboux B κ) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) (z γ : W) :
     evFin F v (B z γ) = (GlobalTheory.LatVac.locCo co v z).1 ⬝ᵥ (GlobalTheory.LatVac.locCo co v γ).2 -
@@ -45,6 +54,9 @@ theorem evFin_form {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W �
   simp only [dotProduct, map_sub, map_sum, map_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.VacIndic.psi_of_at ψ (at_form co v hz γ), ← evFin_form co v z γ]`. Both sides reduce to the same expression.
+-/
 theorem psi_form {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F} {κ : Type} [Fintype κ]
     (co : GlobalTheory.WeilM.Darboux B κ) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) (ψ : AddChar (AF F) ℂ) {z : W}
     (hz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) z) (γ : W) :
@@ -53,6 +65,19 @@ theorem psi_form {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → 
   rw [GlobalTheory.VacIndic.psi_of_at ψ (at_form co v hz γ), ← evFin_form co v z γ]
   rfl
 
+/- English proof (translation)
+Introduce `F _ _ v W _ _ B κ _ co ψ Λ hat hdual w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩ l ⟨γ, hγ, rfl⟩`. Rewrite using `[← psi_form co v ψ (hat z hz) γ]`. Conclude with `(hdual z (hat z hz)).1 hz γ hγ`.
+
+Introduce `hw`. Take `⟨p, hp⟩ : ∃ p : (κ → AF F) × (κ → AF F), p = (fun k => GlobalTheory.LatVac.liftV v (w.1 k), fun k => GlobalTheory.LatVac.liftV v (w.2 k))` from `⟨_, rfl⟩`. Establish `hzat : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) (co.e.symm p)`. Introduce `u hu`. Establish `hp0 : u • p = 0`.
+
+Substitute `hp` using the available equality. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.LatVac.at_liftV v (w.1 k) u hu`. Conclude with `GlobalTheory.LatVac.at_liftV v (w.2 k) u hu`. Rewrite using `[← map_smul, hp0, map_zero]`.
+
+Establish `hloc : GlobalTheory.LatVac.locCo co v (co.e.symm p) = w`. Substitute `hp` using the available equality. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Use `show evFin F v ((co.e (co.e.symm _)).1 k) = w.1 k`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+
+Conclude with `GlobalTheory.LatVac.evFin_liftV v (w.1 k)`. Use `show evFin F v ((co.e (co.e.symm _)).2 k) = w.2 k`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `GlobalTheory.LatVac.evFin_liftV v (w.2 k)`. Establish `hz : co.e.symm p ∈ Λ` using `(hdual _ hzat).2 fun γ hγ => by`.
+
+Rewrite using `[psi_form co v ψ hzat γ, hloc]`. Conclude with `hw _ ⟨γ, hγ, rfl⟩`. Conclude with `⟨_, hz, hloc⟩`.
+-/
 theorem map_selfDual : ∀ {F : Type} [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {W : Type} [AddCommGroup W]
     [Module (AF F) W] {B : W → W → AF F} {κ : Type} [Fintype κ] (co : GlobalTheory.WeilM.Darboux B κ) (ψ : AddChar (AF F) ℂ)
     (Λ : AddSubgroup W), (∀ γ ∈ Λ, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) γ) →

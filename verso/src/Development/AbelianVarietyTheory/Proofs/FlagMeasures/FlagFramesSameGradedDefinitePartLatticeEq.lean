@@ -13,12 +13,18 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : 
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+The claim follows from `_root_.Formalism.HermitianLatticeCounting.P.Xa_mono F h`.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.xa_mono (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) {a b : ℕ} (h : a ≤ b) : F.Xa a ≤ F.Xa b :=
   _root_.Formalism.HermitianLatticeCounting.P.Xa_mono F h
 
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+The claim follows from `_root_.Formalism.HermitianLatticeCounting.P.e_mem_Xa F b h`.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.e_mem_xa (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) (b : Fin r) {a : ℕ} (h : b.val < a) :
     F.e b.castSucc ∈ F.Xa a :=
   _root_.Formalism.HermitianLatticeCounting.P.e_mem_Xa F b h
@@ -26,12 +32,18 @@ theorem _root_.GlobalTheory.DegAsm.AdaptInv.e_mem_xa (F : _root_.Formalism.Hermi
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem Xa_eq_span_e_castSucc (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) (n : ℕ) :
     F.Xa n = Submodule.span K ((fun b : Fin r => F.e b.castSucc) '' {b | b.val < n}) := rfl
 
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.DegAsm.SameGr at h`. Conclude with `h a`.
+-/
 private theorem sameGr_e_sub_mem_Xa {F G : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} (h : _root_.GlobalTheory.DegAsm.SameGr F G)
     (a : Fin (r + 1)) : G.e a - F.e a ∈ F.Xa a := by
   unfold _root_.GlobalTheory.DegAsm.SameGr at h
@@ -40,6 +52,17 @@ private theorem sameGr_e_sub_mem_Xa {F G : _root_.Formalism.HermitianLatticeCoun
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+Establish `key : ∀ n, F.Xa n ≤ G.Xa n`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Rewrite using `[Xa_eq_span_e_castSucc F n, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `hd` using `sameGr_e_sub_mem_Xa h b.castSucc`. Simplify using `only [Fin.coe_castSucc] at hd`. Establish `h1 : G.e b.castSucc ∈ G.Xa n` using `_root_.Formalism.HermitianLatticeCounting.P.e_mem_Xa G b hb`. Establish `h2 : G.e b.castSucc - F.e b.castSucc ∈ G.Xa n` using `_root_.Formalism.HermitianLatticeCounting.P.Xa_mono G (le_of_lt hb) (ih b hb hd)`.
+
+Establish `h3` using `Submodule.sub_mem _ h1 h2`. Simplify using `using h3`. Use `le_antisymm ?_ (key n)` and prove the remaining obligations. Rewrite using `[Xa_eq_span_e_castSucc G n, Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+
+Establish `hd` using `sameGr_e_sub_mem_Xa h b.castSucc`. Simplify using `only [Fin.coe_castSucc] at hd`. Establish `h1 : F.e b.castSucc ∈ F.Xa n` using `_root_.Formalism.HermitianLatticeCounting.P.e_mem_Xa F b hb`. Establish `h2 : G.e b.castSucc - F.e b.castSucc ∈ F.Xa n` using `_root_.Formalism.HermitianLatticeCounting.P.Xa_mono F (le_of_lt hb) hd`. Establish `h3` using `Submodule.add_mem _ h1 h2`.
+
+Simplify using `using h3`.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.xa_eq {F G : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} (h : _root_.GlobalTheory.DegAsm.SameGr F G) (n : ℕ) :
     G.Xa n = F.Xa n := by
   have key : ∀ n, F.Xa n ≤ G.Xa n := by
@@ -67,6 +90,9 @@ theorem _root_.GlobalTheory.DegAsm.AdaptInv.xa_eq {F G : _root_.Formalism.Hermit
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.DegAsm.SameGr`. Introduce `a`. Rewrite using `[_root_.GlobalTheory.DegAsm.AdaptInv.xa_eq h]`. Establish `hd` using `Submodule.neg_mem _ (sameGr_e_sub_mem_Xa h a)`. Rewrite `hd` using `[neg_sub]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.sameGr_symm {F G : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} (h : _root_.GlobalTheory.DegAsm.SameGr F G) :
     _root_.GlobalTheory.DegAsm.SameGr G F := by
   unfold _root_.GlobalTheory.DegAsm.SameGr
@@ -78,6 +104,9 @@ theorem _root_.GlobalTheory.DegAsm.AdaptInv.sameGr_symm {F G : _root_.Formalism.
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.X`. Conclude with `_root_.GlobalTheory.DegAsm.AdaptInv.xa_eq h r`.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.x_eq {F G : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} (h : _root_.GlobalTheory.DegAsm.SameGr F G) :
     G.X = F.X := by
   unfold _root_.Formalism.HermitianLatticeCounting.S6.FlagD.X
@@ -86,6 +115,9 @@ theorem _root_.GlobalTheory.DegAsm.AdaptInv.x_eq {F G : _root_.Formalism.Hermiti
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+Establish `hd` using `sameGr_e_sub_mem_Xa h (Fin.last r)`. Simplify using `only [Fin.val_last] at hd`. Conclude with `hd`.
+-/
 private theorem sameGr_z_sub_mem_X {F G : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r}
     (h : _root_.GlobalTheory.DegAsm.SameGr F G) : G.z - F.z ∈ F.X := by
   have hd := sameGr_e_sub_mem_Xa h (Fin.last r)
@@ -95,6 +127,11 @@ private theorem sameGr_z_sub_mem_X {F G : _root_.Formalism.HermitianLatticeCount
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+Use `show G.X ⊔ G'.X ⊔ Submodule.span K {G.z, G'.z} ≤ _`. Rewrite using `[_root_.GlobalTheory.DegAsm.AdaptInv.x_eq h, _root_.GlobalTheory.DegAsm.AdaptInv.x_eq h']`. Use `sup_le (sup_le (_root_.Formalism.HermitianLatticeCounting.P.isotropicSpan_le_jointSpan_left F F') (_root_.Formalism.HermitianLatticeCounting.P.isotropicSpan_le_jointSpan_right F F')) ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `v (rfl | rfl)`.
+
+Establish `h3` using `Submodule.add_mem _ (_root_.Formalism.HermitianLatticeCounting.P.lastVector_mem_jointSpan_left F F') (_root_.Formalism.HermitianLatticeCounting.P.isotropicSpan_le_jointSpan_left F F' (sameGr_z_sub_mem_X h))`. Simplify using `using h3`. Establish `h3` using `Submodule.add_mem _ (_root_.Formalism.HermitianLatticeCounting.P.lastVector_mem_jointSpan_right F F') (_root_.Formalism.HermitianLatticeCounting.P.isotropicSpan_le_jointSpan_right F F' (sameGr_z_sub_mem_X h'))`. Simplify using `using h3`.
+-/
 private theorem sameGr_V0_le {F G F' G' : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r}
     (h : _root_.GlobalTheory.DegAsm.SameGr F G) (h' : _root_.GlobalTheory.DegAsm.SameGr F' G') :
     _root_.Formalism.HermitianLatticeCounting.S6.V0 G G' ≤ _root_.Formalism.HermitianLatticeCounting.S6.V0 F F' := by
@@ -113,6 +150,9 @@ private theorem sameGr_V0_le {F G F' G' : _root_.Formalism.HermitianLatticeCount
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+The claim follows from `le_antisymm (sameGr_V0_le h h') (sameGr_V0_le (_root_.GlobalTheory.DegAsm.AdaptInv.sameGr_symm h) (_root_.GlobalTheory.DegAsm.AdaptInv.sameGr_symm h'))`.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.sitesCommonSpace_v0_eq_Vp {F G F' G' : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} (h : _root_.GlobalTheory.DegAsm.SameGr F G) (h' : _root_.GlobalTheory.DegAsm.SameGr F' G') : _root_.Formalism.HermitianLatticeCounting.S6.V0 G G' = _root_.Formalism.HermitianLatticeCounting.S6.V0 F F' :=
   le_antisymm (sameGr_V0_le h h')
     (sameGr_V0_le (_root_.GlobalTheory.DegAsm.AdaptInv.sameGr_symm h) (_root_.GlobalTheory.DegAsm.AdaptInv.sameGr_symm h'))
@@ -120,6 +160,17 @@ theorem _root_.GlobalTheory.DegAsm.AdaptInv.sitesCommonSpace_v0_eq_Vp {F G F' G'
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+Use `choose L hLsupp hL using fun a => (Finsupp.mem_span_image_iff_linearCombination K).1 (h a)`. Use `set M : Matrix (Fin l) (Fin l) K := 1 + Matrix.of fun a c => L a c with hM`. Establish `hrow : ∀ a, u' a = ∑ c, M a c • u c`. Introduce `a`. Establish `h1` using `hL a`.
+
+Rewrite `h1` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [hM, Matrix.add_apply, Matrix.one_apply, Matrix.of_apply, add_smul, Finset.sum_add_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true, h1]`. Normalize the expressions using the abelian group laws. Establish `hmat : (Matrix.of fun a b => H.B (u' a) (w b)) = M * Matrix.of fun a b => H.B (u a) (w b)`. Use extensionality with `a b`.
+
+Rewrite using `[Matrix.of_apply, hrow a, _root_.Formalism.HermitianLatticeCounting.P.B_sum_left, Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply]`. Establish `hdet : M.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations.
+
+Establish `h0 : L a a = 0` using `(Finsupp.mem_supported' K (L a)).1 (hLsupp a) a (by simp)`. Simplify using `[hM, h0]`. Introduce `i j hij`. Establish `hij' : i < j` using `hij`. Establish `h0 : L i j = 0` using `(Finsupp.mem_supported' K (L i)).1 (hLsupp i) j (by simpa using hij'.le)`.
+
+Simplify using `[hM, h0, Matrix.one_apply_ne hij'.ne]`. Rewrite using `[hmat, Matrix.det_mul, hdet, one_mul]`.
+-/
 private theorem det_of_eq_of_sub_mem_span_lt {l : ℕ} (u u' w : Fin l → V)
     (h : ∀ a, u' a - u a ∈ Submodule.span K (u '' {c | c < a})) :
     (Matrix.of fun a b => H.B (u' a) (w b)).det = (Matrix.of fun a b => H.B (u a) (w b)).det := by
@@ -152,6 +203,13 @@ private theorem det_of_eq_of_sub_mem_span_lt {l : ℕ} (u u' w : Fin l → V)
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+Rewrite using `[_root_.Formalism.HermitianLatticeCounting.P.Dl_eq, _root_.Formalism.HermitianLatticeCounting.P.Dl_eq]`. Apply `det_of_eq_of_sub_mem_span_lt (fun a => F.e (Fin.castLE hl a)) (fun a => G.e (Fin.castLE hl a))` to reduce the goal to its premises. Introduce `a`. Establish `hd` using `sameGr_e_sub_mem_Xa h (Fin.castLE hl a)`. Simplify using `only [Fin.coe_castLE] at hd`.
+
+Use `(show F.Xa a ≤ _ from ?_) hd` and prove the remaining obligations. Rewrite using `[Xa_eq_span_e_castSucc F, Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨⟨b.val, by have := a.isLt; simp only [Set.mem_setOf_eq] at hb; omega⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_setOf_eq] at hb ⊢`. Conclude with `Fin.mk_lt_of_lt_val hb`. Simplify using `only`. Use `congr 1`.
+-/
 private theorem sameGr_Dl_left_eq {F G : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} (h : _root_.GlobalTheory.DegAsm.SameGr F G)
     (F' : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) (l : ℕ) (hl : l ≤ r + 1) : _root_.Formalism.HermitianLatticeCounting.S6.Dl G F' l hl = _root_.Formalism.HermitianLatticeCounting.S6.Dl F F' l hl := by
   rw [_root_.Formalism.HermitianLatticeCounting.P.Dl_eq, _root_.Formalism.HermitianLatticeCounting.P.Dl_eq]
@@ -173,6 +231,9 @@ private theorem sameGr_Dl_left_eq {F G : _root_.Formalism.HermitianLatticeCounti
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.dl_eq {F G F' G' : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} (h : _root_.GlobalTheory.DegAsm.SameGr F G) (h' : _root_.GlobalTheory.DegAsm.SameGr F' G') (l : ℕ) (hl : l ≤ r + 1) :
     _root_.Formalism.HermitianLatticeCounting.S6.Dl G G' l hl = _root_.Formalism.HermitianLatticeCounting.S6.Dl F F' l hl := by
   calc _root_.Formalism.HermitianLatticeCounting.S6.Dl G G' l hl = _root_.Formalism.HermitianLatticeCounting.S6.Dl F G' l hl := sameGr_Dl_left_eq h G' l hl
@@ -183,6 +244,19 @@ theorem _root_.GlobalTheory.DegAsm.AdaptInv.dl_eq {F G F' G' : _root_.Formalism.
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
+/- English proof (translation)
+Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.InN at hs ⊢`. Take `⟨hiso, hbij, hflag, hperp⟩` from `hs`. Use `⟨hiso, hbij, ?_, ?_⟩` and prove the remaining obligations. Establish `hXa : ∀ n, ∀ x ∈ F.Xa n, s x - x ∈ F.Xa n`. Introduce `n x hx`.
+
+Establish `hle : Submodule.span K ((fun b : Fin r => F.e b.castSucc) '' {b | b.val < n}) ≤ (F.Xa n).comap (s - LinearMap.id)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.sub_apply, LinearMap.id_apply]`. Conclude with `_root_.Formalism.HermitianLatticeCounting.P.Xa_mono F (le_of_lt hb) (hflag b)`.
+
+Establish `h3` using `hle (by rwa [← Xa_eq_span_e_castSucc])`. Simplify using `using h3`. Introduce `a`. Rewrite using `[_root_.GlobalTheory.DegAsm.AdaptInv.xa_eq h]`. Establish `hd` using `sameGr_e_sub_mem_Xa h a.castSucc`.
+
+Simplify using `only [Fin.coe_castSucc] at hd`. Establish `h3` using `Submodule.add_mem _ (hflag a) (hXa a _ hd)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws.
+
+Introduce `y hy`. Rewrite using `[_root_.GlobalTheory.DegAsm.AdaptInv.x_eq h]`. Apply `hperp` to reduce the goal to its premises. Introduce `a`. Establish `hmem : F.e a.castSucc ∈ G.X`.
+
+Rewrite using `[_root_.GlobalTheory.DegAsm.AdaptInv.x_eq h]`. Conclude with `_root_.Formalism.HermitianLatticeCounting.P.e_mem_X F a`. Conclude with `_root_.Formalism.HermitianLatticeCounting.P.perp_X G hy _ hmem`.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.inN_of {F G : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} (h : _root_.GlobalTheory.DegAsm.SameGr F G) (s : V →ₗ[K] V) (hs : F.InN s) : G.InN s := by
   unfold _root_.Formalism.HermitianLatticeCounting.S6.FlagD.InN at hs ⊢
   obtain ⟨hiso, hbij, hflag, hperp⟩ := hs
@@ -220,6 +294,13 @@ open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
 variable {R : Type} [CommRing R] [Algebra R K] [Module R V] [IsScalarTower R K V] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HermLat.lead`. Rewrite using `[_root_.GlobalTheory.DegAsm.AdaptInv.xa_eq h]`. Use extensionality with `t`. Simplify using `only [Submodule.mem_comap, LinearMap.coe_restrictScalars, LinearMap.toSpanSingleton_apply]`. Establish `hd : t • (G.e a - F.e a) ∈ Λ ⊔ _root_.GlobalTheory.HermLat.rs R (F.Xa a)`.
+
+Apply `Submodule.mem_sup_right` to reduce the goal to its premises. Unfold `_root_.GlobalTheory.HermLat.rs`. Rewrite using `[Submodule.restrictScalars_mem]`. Conclude with `Submodule.smul_mem _ t (sameGr_e_sub_mem_Xa h a)`. Establish `h3 : t • G.e a = t • F.e a + t • (G.e a - F.e a)`.
+
+Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[h3, Submodule.add_mem_iff_left _ hd]`.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.lead_eq {F G : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r}
     (h : _root_.GlobalTheory.DegAsm.SameGr F G) (Λ : Submodule R V) (a : Fin (r + 1)) :
     _root_.GlobalTheory.HermLat.lead G Λ a = _root_.GlobalTheory.HermLat.lead F Λ a := by
@@ -241,6 +322,11 @@ open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
 variable {R : Type} [CommRing R] [Algebra R K] [Module R V] [IsScalarTower R K V] in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.DegAsm.AdaptInv.xa_eq h]`. Establish `hd` using `sameGr_e_sub_mem_Xa h a`. Establish `h3 : x - t • G.e a = (x - t • F.e a) - t • (G.e a - F.e a)`. Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[h3, Submodule.sub_mem_iff_left _ (Submodule.smul_mem _ t hd)]`.
+-/
 private theorem sameGr_sub_smul_e_mem_Xa_iff {F G : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r}
     (h : _root_.GlobalTheory.DegAsm.SameGr F G) (a : Fin (r + 1)) (t : K) (x : V) :
     x - t • G.e a ∈ G.Xa a ↔ x - t • F.e a ∈ F.Xa a := by
@@ -255,6 +341,9 @@ open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
 variable {R : Type} [CommRing R] [Algebra R K] [Module R V] [IsScalarTower R K V] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HermLat.IsAdm`. Simplify using `only [sameGr_sub_smul_e_mem_Xa_iff h, sameGr_sub_smul_e_mem_Xa_iff h']`.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.isAdm_iff {F G F' G' : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} (h : _root_.GlobalTheory.DegAsm.SameGr F G) (h' : _root_.GlobalTheory.DegAsm.SameGr F' G') (Λ : Submodule R V) (g : R) :
     _root_.GlobalTheory.HermLat.IsAdm G G' Λ g ↔ _root_.GlobalTheory.HermLat.IsAdm F F' Λ g := by
   unfold _root_.GlobalTheory.HermLat.IsAdm
@@ -264,6 +353,9 @@ open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
 variable {R : Type} [CommRing R] [Algebra R K] [Module R V] [IsScalarTower R K V] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HermLat.IsFramed _root_.GlobalTheory.HermLat.IsFrame`. Simplify using `only [_root_.GlobalTheory.DegAsm.AdaptInv.lead_eq h, _root_.GlobalTheory.DegAsm.AdaptInv.lead_eq h']`.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.isFramed_iff {F G F' G' : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} (h : _root_.GlobalTheory.DegAsm.SameGr F G) (h' : _root_.GlobalTheory.DegAsm.SameGr F' G') (Λ : Submodule R V)
     (aa : Fin r → Submodule R K) : _root_.GlobalTheory.HermLat.IsFramed G G' Λ aa ↔ _root_.GlobalTheory.HermLat.IsFramed F F' Λ aa := by
   unfold _root_.GlobalTheory.HermLat.IsFramed _root_.GlobalTheory.HermLat.IsFrame
@@ -273,6 +365,9 @@ open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
 variable {R : Type} [CommRing R] [Algebra R K] [Module R V] [IsScalarTower R K V] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HermLat.latL _root_.GlobalTheory.HermLat.uPerp`. Rewrite using `[_root_.GlobalTheory.DegAsm.AdaptInv.x_eq h, _root_.GlobalTheory.DegAsm.AdaptInv.x_eq h']`.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.latL_eq {F G F' G' : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} (h : _root_.GlobalTheory.DegAsm.SameGr F G) (h' : _root_.GlobalTheory.DegAsm.SameGr F' G') (Λ : Submodule R V) :
     _root_.GlobalTheory.HermLat.latL G G' Λ = _root_.GlobalTheory.HermLat.latL F F' Λ := by
   unfold _root_.GlobalTheory.HermLat.latL _root_.GlobalTheory.HermLat.uPerp
@@ -282,6 +377,9 @@ open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
 variable {R : Type} [CommRing R] [Algebra R K] [Module R V] [IsScalarTower R K V] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HermLat.flagPairDefinitePartLattice _root_.GlobalTheory.HermLat.wSp`. Rewrite using `[_root_.GlobalTheory.DegAsm.AdaptInv.latL_eq h h', _root_.GlobalTheory.DegAsm.AdaptInv.sitesCommonSpace_v0_eq_Vp h h']`.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.flagFramesSameGraded_definitePartLattice_eq {F G F' G' : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} (h : _root_.GlobalTheory.DegAsm.SameGr F G) (h' : _root_.GlobalTheory.DegAsm.SameGr F' G') (Λ : Submodule R V) :
     _root_.GlobalTheory.HermLat.flagPairDefinitePartLattice G G' Λ = _root_.GlobalTheory.HermLat.flagPairDefinitePartLattice F F' Λ := by
   unfold _root_.GlobalTheory.HermLat.flagPairDefinitePartLattice _root_.GlobalTheory.HermLat.wSp
@@ -292,6 +390,9 @@ open NumberField in
 open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} in
 variable {R : Type} [CommRing R] [Algebra R K] [Module R V] [IsScalarTower R K V] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HermLat.iotaGraph`. Rewrite using `[_root_.GlobalTheory.DegAsm.AdaptInv.flagFramesSameGraded_definitePartLattice_eq h h', _root_.GlobalTheory.DegAsm.AdaptInv.flagFramesSameGraded_definitePartLattice_eq h' h, _root_.GlobalTheory.DegAsm.AdaptInv.x_eq h, _root_.GlobalTheory.DegAsm.AdaptInv.x_eq h']`.
+-/
 theorem _root_.GlobalTheory.DegAsm.AdaptInv.iotaGraph_eq {F G F' G' : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} (h : _root_.GlobalTheory.DegAsm.SameGr F G) (h' : _root_.GlobalTheory.DegAsm.SameGr F' G') (Λ : Submodule R V) (g : R) :
     _root_.GlobalTheory.HermLat.iotaGraph G G' Λ g = _root_.GlobalTheory.HermLat.iotaGraph F F' Λ g := by
   unfold _root_.GlobalTheory.HermLat.iotaGraph
@@ -305,6 +406,13 @@ open AdaptInv
 
 open NumberField in
 open scoped Pointwise ENNReal Classical in
+/- English proof (translation)
+Establish `hj : N.j ≤ r` using `N.j_le`. Establish `hdet : _root_.Formalism.HermitianLatticeCounting.S6.Dl N.F N.F' N.j (by omega) ≠ 0` using `_root_.GlobalTheory.DegCnt.NFGeom.Dl_ne N`. Establish `hsup : N.F.X = N.F.Xa N.j ⊔ _root_.Formalism.HermitianLatticeCounting.S6.II N.F N.F'`. Apply `_root_.Formalism.HermitianLatticeCounting.P.X_eq_of_levels N.F N.j _ (by unfold _root_.Formalism.HermitianLatticeCounting.S6.II; exact inf_le_left)` to reduce the goal to its premises. Introduce `a ha`.
+
+Conclude with `⟨_, _root_.GlobalTheory.DegCnt.NFGeom.e_mem_II N a ha, 1, _root_.Formalism.HermitianLatticeCounting.P.e_level N.F a⟩`. Establish `hinf : _root_.Formalism.HermitianLatticeCounting.S6.II N.F N.F' ⊓ N.F.Xa N.j = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨hxI, hxa⟩`. Establish `hx' : x ∈ N.F'.X`.
+
+Unfold `_root_.Formalism.HermitianLatticeCounting.S6.II at hxI`. Conclude with `hxI.2`. Conclude with `(Submodule.mem_bot K).2 (_root_.Formalism.HermitianLatticeCounting.P.Dl_injL N.F N.F' hj hdet hxa fun u hu => _root_.Formalism.HermitianLatticeCounting.P.X_iso N.F' hx' (_root_.Formalism.HermitianLatticeCounting.P.Xa_le_X N.F' _ hu))`. Rewrite using `[_root_.Formalism.HermitianLatticeCounting.P.finrank_compl N.F hj _ hsup hinf]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem NF_j_eq_sub_finrank_II {K V : Type} [Field K] [NumberField K]
     [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ}
     (N : _root_.GlobalTheory.DegCnt.NF H r) :
@@ -332,6 +440,15 @@ private theorem NF_j_eq_sub_finrank_II {K V : Type} [Field K] [NumberField K]
 
 open NumberField in
 open scoped Pointwise ENNReal Classical in
+/- English proof (translation)
+Rewrite using `[_root_.Formalism.HermitianLatticeCounting.P.Dl_eq]`. Apply `Matrix.det_eq_zero_of_row_eq_zero ⟨N.j, hjl⟩` to reduce the goal to its premises. Introduce `b`. Simplify using `only [Matrix.of_apply]`. Establish `hmem : N.F.e (⟨N.j, by omega⟩ : Fin r).castSucc ∈ _root_.Formalism.HermitianLatticeCounting.S6.II N.F N.F'` using `_root_.GlobalTheory.DegCnt.NFGeom.e_mem_II N ⟨N.j, by omega⟩ le_rfl`.
+
+Establish `hX : N.F.e (Fin.castLE hl ⟨N.j, hjl⟩) ∈ N.F'.X`. Establish `h1 : Fin.castLE hl ⟨N.j, hjl⟩ = (⟨N.j, by omega⟩ : Fin r).castSucc`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[h1]`.
+
+Unfold `_root_.Formalism.HermitianLatticeCounting.S6.II at hmem`. Conclude with `hmem.2`. Establish `hb : N.F'.e (Fin.castLE hl b) ∈ N.F'.X`. Establish `h1 : Fin.castLE hl b = (⟨b.val, by have` using `b.isLt; omega⟩ : Fin r).castSucc := by`. Use `ext`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `_root_.Formalism.HermitianLatticeCounting.P.e_mem_X N.F' _`. Conclude with `_root_.Formalism.HermitianLatticeCounting.P.X_iso N.F' hX hb`.
+-/
 private theorem NF_Dl_eq_zero_of_j_lt {K V : Type} [Field K] [NumberField K]
     [StarRing K] [AddCommGroup V] [Module K V] {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ}
     (N : _root_.GlobalTheory.DegCnt.NF H r) (l : ℕ) (hl : l ≤ r + 1) (hjl : N.j < l)
@@ -363,6 +480,13 @@ private theorem NF_Dl_eq_zero_of_j_lt {K V : Type} [Field K] [NumberField K]
 open NumberField in
 open scoped Pointwise ENNReal Classical in
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H _ r F F' 𝔡 N hN`. Unfold `_root_.GlobalTheory.DegAsm.Adapt at hN`. Take `⟨-, h, h'⟩` from `hN`. Establish `hI : _root_.Formalism.HermitianLatticeCounting.S6.II N.F N.F' = _root_.Formalism.HermitianLatticeCounting.S6.II F F'`. Unfold `_root_.Formalism.HermitianLatticeCounting.S6.II`.
+
+Rewrite using `[_root_.GlobalTheory.DegAsm.AdaptInv.x_eq h, _root_.GlobalTheory.DegAsm.AdaptInv.x_eq h']`. Use `⟨fun a => ⟨_root_.GlobalTheory.DegAsm.AdaptInv.xa_eq h a, _root_.GlobalTheory.DegAsm.AdaptInv.xa_eq h' a⟩, _root_.GlobalTheory.DegAsm.AdaptInv.x_eq h, _root_.GlobalTheory.DegAsm.AdaptInv.x_eq h', _root_.GlobalTheory.DegAsm.AdaptInv.sitesCommonSpace_v0_eq_Vp h h', ?_, fun l hl => …` and prove the remaining obligations. Rewrite using `[← hI]`. Conclude with `NF_j_eq_sub_finrank_II N`. Introduce `l hl hjl hlr`.
+
+Rewrite using `[← _root_.GlobalTheory.DegAsm.AdaptInv.dl_eq h h' l hl]`. Conclude with `NF_Dl_eq_zero_of_j_lt N l hl hjl hlr`. Unfold `_root_.GlobalTheory.DegCnt.NF.IsTerm`. Rewrite using `[_root_.GlobalTheory.DegAsm.AdaptInv.isFramed_iff h h', _root_.GlobalTheory.DegAsm.AdaptInv.isAdm_iff h h']`.
+-/
 theorem _root_.GlobalTheory.DegAsm.adapt_invariants : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V), _root_.Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), ∀ (F F' : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) (𝔡 : Ideal (𝓞 K)) (N : _root_.GlobalTheory.DegCnt.NF H r), _root_.GlobalTheory.DegAsm.Adapt F F' 𝔡 N → (∀ a : ℕ, N.F.Xa a = F.Xa a ∧ N.F'.Xa a = F'.Xa a) ∧ N.F.X = F.X ∧ N.F'.X = F'.X ∧ _root_.Formalism.HermitianLatticeCounting.S6.V0 N.F N.F' = _root_.Formalism.HermitianLatticeCounting.S6.V0 F F' ∧ N.j = r - Module.finrank K (_root_.Formalism.HermitianLatticeCounting.S6.II F F') ∧ (∀ (l : ℕ) (hl : l ≤ r + 1), _root_.Formalism.HermitianLatticeCounting.S6.Dl N.F N.F' l hl = _root_.Formalism.HermitianLatticeCounting.S6.Dl F F' l hl) ∧ (∀ (l : ℕ) (hl : l ≤ r + 1), N.j < l → l ≤ r → _root_.Formalism.HermitianLatticeCounting.S6.Dl F F' l hl = 0) ∧ (∀ s : V →ₗ[K] V, (N.F.InN s ↔ F.InN s) ∧ (N.F'.InN s ↔ F'.InN s)) ∧ ∀ (g : ℕ) (Λ : Submodule (𝓞 K) V), (N.IsTerm g Λ ↔ _root_.GlobalTheory.HermLat.IsFramed F F' Λ N.aa ∧ _root_.GlobalTheory.HermLat.IsAdm F F' Λ (g : 𝓞 K)) ∧ _root_.GlobalTheory.HermLat.latL N.F N.F' Λ = _root_.GlobalTheory.HermLat.latL F F' Λ ∧ _root_.GlobalTheory.HermLat.latL N.F' N.F Λ = _root_.GlobalTheory.HermLat.latL F' F Λ ∧ _root_.GlobalTheory.HermLat.flagPairDefinitePartLattice N.F N.F' Λ = _root_.GlobalTheory.HermLat.flagPairDefinitePartLattice F F' Λ ∧ _root_.GlobalTheory.HermLat.flagPairDefinitePartLattice N.F' N.F Λ = _root_.GlobalTheory.HermLat.flagPairDefinitePartLattice F' F Λ ∧ _root_.GlobalTheory.HermLat.iotaGraph N.F N.F' Λ (g : 𝓞 K) = _root_.GlobalTheory.HermLat.iotaGraph F F' Λ (g : 𝓞 K) := by
   intro K V _ _ _ _ _ _ _ _ H _ r F F' 𝔡 N hN
   unfold _root_.GlobalTheory.DegAsm.Adapt at hN

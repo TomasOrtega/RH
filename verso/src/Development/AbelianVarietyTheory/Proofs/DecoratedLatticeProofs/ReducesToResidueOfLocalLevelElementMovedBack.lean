@@ -15,6 +15,27 @@ open GlobalTheory.LevZeroRead
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D c v G PP b β hL hbf hr g x hg hS`. Take `⟨π', h1, h2, -⟩` from `GlobalTheory.FinPl.SplitPt.exists_lift_isRed D G.k G.q PP hL.idem`. Take `⟨e, he, hM⟩` from `hL.frame (G.s + 1) (Nat.zero_add _)`. Take `⟨m, hm⟩` from `hS`. Use `choose f hf using toEAf_onto D`.
+
+Establish `hπ : ∀ {a b : ℕ} (Z : Matrix (Fin a) (Fin b) (Formalism.L2.Theta.AE D)), (Z.map (toEAf D)).map π' = Z.map (GlobalTheory.LocMod.ofSplit G.q).π` using `fun Z => by`. Use extensionality with `i j`. Conclude with `h1 _`. Establish `hb : ((β.val.map f).map (toEAf D)) = β.val` using `by ext i j; exact hf _`. Establish `hM'` using `hM _ hb`.
+
+Rewrite `hM'` using `[← hπ, Matrix.map_mul (f := toEAf D), hb, ← finE_val]`. Establish `hg2` using `hg.2`. Rewrite `hg2` using `[← hπ, ← finE_val]`. Establish `hmul : Lev.finE (c.V 0) b * β * intGL _ _ _ m = Lev.finE (c.V 0) g * (Lev.finE (c.V 0) b * β)`. Establish `: β * intGL _ _ _ m * β⁻¹ = _` using `hm`.
+
+Rewrite `this` using `[map_mul, map_mul, map_inv]`. Rewrite using `[mul_assoc, eq_mul_of_mul_inv_eq this]`. Use `group`. Establish `hmul'` using `congrArg (fun Z : GL (Fin (c.V 0).rank) (Lev.EAf D) => Z.val.map π') hmul`. Simplify using `only [Units.val_mul] at hmul'`.
+
+Rewrite `hmul'` using `[Matrix.map_mul (L := _ * _), Matrix.map_mul (M := _ * _), hM', hg2]`. Establish `key` using `matrix_in_frame _ _ (G.FY 0 (G.s + 1) (Nat.zero_add _)).γβ _ _ e (x.1.val.submatrix (GlobalTheory.StepData.ixZero _ (Fin D.R.t)).symm (GlobalTheory.StepData.ixZero _ (Fin D.R.t)).symm) _ hmul'`. Establish `hn : (c.V 0).rank ≤ D.R.r`. Use `Fintype.card_congr e` as an intermediate fact. Simplify using `at this`.
+
+Use `G.hs` as an intermediate fact. Use `show _ ≤ D.R.k + D.R.m - 1`. Use linear arithmetic over natural numbers and integers. Introduce `a b a' b' ha hb' z hz`. Rewrite `hz` using `[upperLeftBlock_apply_of_eq hr hn, ← hm, redFn_frGL]`.
+
+Establish `ea : e.symm (Fin.castLE hr a') = Sum.inl a`. Apply the tactic sequence `rw [Equiv.symm_apply_eq]; apply Fin.ext; rw [he]; rcases a with a | a <;> exact ha`. Establish `eb : e.symm (Fin.castLE hr b') = Sum.inl b`. Apply the tactic sequence `rw [Equiv.symm_apply_eq]; apply Fin.ext; rw [he]; rcases b with b | b <;> exact hb'`. Establish `k2` using `congrFun (congrFun key (Fin.castLE hr a')) (Fin.castLE hr b')`.
+
+Rewrite `k2` using `[Matrix.submatrix_apply, ea, eb]`. Establish `k3 : resS D.host.F PP (m.val (Fin.castLE hr a') (Fin.castLE hr b') - oToS D.host.F D.host.E z) = 0`. Rewrite using `[map_sub, resS_oToS, hz]`. Conclude with `sub_self _`. Establish `k4` using `(h2.ker _).1 k3`.
+
+Rewrite `k4` using `[map_sub]`. Establish `k5 : π' (oToS D.host.F D.host.E z).1 = (GlobalTheory.LocMod.ofSplit G.q).pr (z : D.host.E)`. Use `Eq.trans (congrArg π' ?_) (h1 (incA D (z : D.host.E)))` and prove the remaining obligations. Both sides reduce to the same expression. Use `k4 using 3` and compare the differences between its conclusion and the goal.
+
+Conclude with `k2.symm`. Conclude with `k5.symm`.
+-/
 theorem red_of_isLoc : ∀ {D : D7} {c : Comm D} {v : VCom c} (G : GLoc v) (PP : Formalism.L2.DIV.Pl D.host.E) (b : GA D (c.V 0)) (β : GL (Fin (c.V 0).rank) (Lev.EAf D)), GlobalTheory.LevZero.LocAt G PP b β → b ∈ GfC (c.V 0) → ∀ (hr : D.R.r ≤ (c.V 0).rank) (g : GA D (c.V 0)) (x : G.S.P.J), (ofSplit G.q).IsLoc (G.FY 0 (G.s + 1) (Nat.zero_add _)) g (GlobalTheory.LevZeroGen.upZero G.S (Fin D.R.t) x.1) → finE (c.V 0) (b⁻¹ * g * b) ∈ Formalism.L2.DIV.St β → GlobalTheory.LevZero.Red G PP x (upperLeftBlock hr (redFn β PP (finE (c.V 0) (b⁻¹ * g * b)))) := by
   intro D c v G PP b β hL hbf hr g x hg hS
   obtain ⟨π', h1, h2, -⟩ := GlobalTheory.FinPl.SplitPt.exists_lift_isRed D G.k G.q PP hL.idem

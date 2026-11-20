@@ -13,6 +13,11 @@ open scoped ComplexConjugate Classical
 
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E
 
+/- English proof (translation)
+Use `haveI hl : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Establish `hs : Function.Surjective (completionMap (w.under (𝓞 K)) w)` using `h ⟨w, hl⟩`. Establish `h1 : w.asIdeal.ramificationIdx (𝓞 K) * w.asIdeal.inertiaDeg (𝓞 K) = 1`.
+
+Rewrite using `[← finrank_eq_ramificationIdx_mul_inertiaDeg M (w.under (𝓞 K)) w]`. Establish `hb : Function.Bijective (Algebra.linearMap ((w.under (𝓞 K)).adicCompletion K) (w.adicCompletion M))` using `⟨(completionMap (w.under (𝓞 K)) w).injective, hs⟩`. Rewrite using `[← (LinearEquiv.ofBijective _ hb).finrank_eq, Module.finrank_self]`. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 M) w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, Nat.eq_one_of_mul_eq_one_left h1, pow_one]`.
+-/
 private theorem norm_of_split {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
     (w : HeightOneSpectrum (𝓞 M)) (h : GM.Split M (w.under (𝓞 K))) :
     Formalism.ConjugateSelfDual.normV w = Formalism.ConjugateSelfDual.normV (w.under (𝓞 K)) := by
@@ -29,6 +34,21 @@ private theorem norm_of_split {K M : Type} [Field K] [NumberField K] [Field M] [
   rw [← Ideal.absNorm_relNorm (𝓞 K) (𝓞 M) w.asIdeal,
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, Nat.eq_one_of_mul_eq_one_left h1, pow_one]
 
+/- English proof (translation)
+Introduce `K M _ _ _ _ _ _ _ _ h2 π π' P hsw hW`. Establish `hp : (Module.finrank K M).Prime` using `h2 ▸ Nat.prime_two`. Take `⟨χ, hχ, hP⟩` from `R.twoParts_holds K M hp (2 * 2) P (Fin 2) (fun _ => 2) ![π, π'] (by norm_num) (fun _ => by norm_num) (by simp) hW`. Take `⟨η, hη⟩` from `R.classChar2 K M hp`. Take `⟨j, hj0, hj, rfl⟩` from `(R.normCharPow_holds K M hp η hη).1 χ hχ`.
+
+Take `rfl : j = 1` from `by omega`. Rewrite `hP` using `[pow_one]`. Use `filter_upwards [hW, hη.2, (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under K M).eventually (R.decomp K M hp)] with w hw hg hd`. Establish `hq : 1 < Formalism.ConjugateSelfDual.normV (w.under (𝓞 K))` using `NumberField.HeightOneSpectrum.one_lt_absNorm _`. Use `⟨fun w' hne hu => ?_, fun hn => ?_⟩` and prove the remaining obligations.
+
+Establish `hn : Formalism.ConjugateSelfDual.normV w = Formalism.ConjugateSelfDual.normV (w.under (𝓞 K))`. Break down `hd with hd | hd` into its components or cases. Conclude with `hd.2 w rfl`. Conclude with `absurd (congrArg Subtype.val ((Nat.card_eq_one_iff_unique.1 hd.1).1.elim ⟨w', hu⟩ ⟨w, rfl⟩)) hne`. Take `⟨A, hA, B, hB, e⟩` from `hw 1 (by rw [pow_one]; exact hn)`.
+
+Establish `e' : A = B 0 + B 1` using `by simpa [Fin.sum_univ_two] using e`. Conclude with `⟨B 0, B 1, hB 0, (hsw w w' hu.symm (Or.inl hne.symm) _).1 (hB 1), e' ▸ hA⟩`. Establish `hne : Formalism.ConjugateSelfDual.normV w ≠ Formalism.ConjugateSelfDual.normV (w.under (𝓞 K))` using `fun e => by`. Establish `: (2 : ℕ) = 1` using `Nat.pow_right_injective hq ((hn.symm.trans e).trans (pow_one _).symm)`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hv : η.val (w.under (𝓞 K)) = -1`. Establish `h` using `hg.2.resolve_left hne`. Rewrite `h` using `[h2]`. Conclude with `Units.ext (IsPrimitiveRoot.coe_units_iff.2 h).eq_neg_one_of_two_right`. Take `⟨A, hA, B, hB, e⟩` from `hw 2 hn`.
+
+Establish `hB0 : π.HasSat w (B 0)` using `hB 0`. Establish `hB1 : π.HasSat w (B 1)` using `(hsw w w rfl (Or.inr fun h => hne (norm_of_split w h)) _).1 (hB 1)`. Establish `e1 : B 1 = B 0` using `hB1.unique hB0`. Establish `hT` using `hA.twist hg.1`. Rewrite `hT` using `[hP, hv]`.
+
+Establish `hs : A.map (fun x => -x) = A` using `by simpa using hT.unique hA`. Take `⟨B', h3, h4⟩` from `signMs A (B 0) hA.card hB0.card hs (by rw [e, Fin.sum_univ_two, e1])`. Conclude with `⟨A, B', h3 ▸ hB0, h4, hA⟩`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.sysOf :
     SysOf := by
   intro K M _ _ _ _ _ _ _ _ h2 π π' P hsw hW

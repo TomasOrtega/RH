@@ -28,6 +28,9 @@ def ValAt {X' : Scheme.{0}} (G : Over X') [GrpObj G] (n : ℕ) {V : Scheme.{0}} 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `h1` using `TF.Y.m.cart.1.w`. Establish `h2` using `Over.w (TF.Y.oF.eta b)`. Simplify using `only [Category.assoc] at h1 ⊢`. Rewrite using `[h1, ← Category.assoc ((TF.Y.oF.eta b).left), h2, reassoc_of% hℓ, j₀_ι]`. Conclude with `congrArg (i₀ TF.Y Z ≫ ·) (Category.id_comp _)`.
+-/
 theorem etaSec_w (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ : X' ⟶ X₀ TF.Y Z) (ℓ : V₀ TF.Y Z ⟶ X')
     (hℓ : ℓ ≫ φ = j₀ TF.Y Z) (b : Dw.La) :
     (i₀ TF.Y Z ≫ (TF.Y.oF.eta b).left ≫ TF.Y.m.φ) ≫ TF.Y.t.G.hom = ℓ ≫ φ ≫ (barComp TF.Y Z).ι := by
@@ -41,6 +44,9 @@ def etaSec (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ : X' ⟶ X�
     (hℓ : ℓ ≫ φ = j₀ TF.Y Z) (b : Dw.La) : V₀ TF.Y Z ⟶ (GlobalTheory.EqvAct.pullG TF Z φ).left :=
   pullback.lift _ _ (etaSec_w TF Z φ ℓ hℓ b)
 
+/- English proof (translation)
+Rewrite `h` using `[Submodule.Quotient.eq]`. Use `TF.Y.oF.eta_add b' (b - b')` as an intermediate fact. Rewrite `this` using `[add_sub_cancel, TF.Y.oF.eta_ker _ h, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem eta_eq_of_mk_eq (TF : TorFlag Xo c) {b b' : Dw.La}
     (h : (Submodule.Quotient.mk b : LevelMod Dw l) = Submodule.Quotient.mk b') :
     TF.Y.oF.eta b = TF.Y.oF.eta b' := by
@@ -56,12 +62,18 @@ def etaSecL (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ : X' ⟶ X
     congr 2
     rw [e]
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `pullback.lift_snd _ _ _`.
+-/
 theorem etaSecL_w (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ : X' ⟶ X₀ TF.Y Z) (ℓ : V₀ TF.Y Z ⟶ X')
     (hℓ : ℓ ≫ φ = j₀ TF.Y Z) (x : LevelMod Dw l) :
     etaSecL TF Z φ ℓ hℓ x ≫ (GlobalTheory.EqvAct.pullG TF Z φ).hom = ℓ := by
   obtain ⟨b, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   exact pullback.lift_snd _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem etaSecL_ψ (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}} (φ : X' ⟶ X₀ TF.Y Z) (ℓ : V₀ TF.Y Z ⟶ X')
     (hℓ : ℓ ≫ φ = j₀ TF.Y Z) (b : Dw.La) :
     etaSecL TF Z φ ℓ hℓ (Submodule.Quotient.mk b) ≫ GlobalTheory.EqvAct.pullψ TF Z φ =

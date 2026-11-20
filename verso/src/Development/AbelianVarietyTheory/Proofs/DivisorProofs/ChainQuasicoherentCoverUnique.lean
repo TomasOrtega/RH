@@ -19,6 +19,15 @@ open GlobalTheory.ChainDesc
 
 namespace GlobalTheory.ChainDesc.DownAct
 
+/- English proof (translation)
+Use `letI := appLEAlgebra f e`. Use `letI := appLEModule f ((Scheme.Modules.pullback f).obj G) e`. Use `haveI := appLE_isScalarTower f ((Scheme.Modules.pullback f).obj G) e`. Rewrite using `[eq_top_iff]`. Introduce `y hy`.
+
+Use `clear hy`. Proceed by induction on `y using (isBaseChange_pullbackSections f G hU hV e).inductionOn with`. Consider the case `zero => exact zero_mem _`. Consider the case `tmul s`. Establish `hs : s ∈ Submodule.span Γ(Y, V) T` using `hT ▸ trivial`.
+
+Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem s hs => exact Submodule.subset_span ⟨s, hs, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`.
+
+Conclude with `add_mem ha hb`. Consider the case `smul a b _ hb => rw [pullbackSections_smul]`. Conclude with `Submodule.smul_mem _ _ hb`. Consider the case `smul a b hb => exact Submodule.smul_mem _ _ hb`. Consider the case `add a b ha hb => exact add_mem ha hb`.
+-/
 theorem span_pullbackSections {X Y : Scheme.{0}} (f : X ⟶ Y) (G : Y.Modules) [G.IsQuasicoherent] {U : X.Opens} {V : Y.Opens}
     (hU : IsAffineOpen U) (hV : IsAffineOpen V) (e : U ≤ f ⁻¹ᵁ V) (T : Set Γ(G, V)) (hT : Submodule.span Γ(Y, V) T = ⊤) :
     Submodule.span Γ(X, U) ((fun s => pullbackSections f G e s) '' T : Set Γ((Scheme.Modules.pullback f).obj G, U)) = ⊤ := by
@@ -42,6 +51,19 @@ theorem span_pullbackSections {X Y : Scheme.{0}} (f : X ⟶ Y) (G : Y.Modules) [
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `O _ _ _ p B B' Λ _ h o Lie Om π γ M C f g qL qO hC hf U S D a hD hS`. Take `⟨l, m, hl, hm, hmap, hL, hb, hρ, hd, hp⟩` from `hD`. Take `⟨l₀, m₀, hl₀, hm₀, H⟩` from `hC.2 U a`. Establish `hU` using `hf.isAffineOpen U`. Set `l'` to `appLinear ((Scheme.Modules.pullback f.f).map (Lie.ρ a : Lie.V ⟶ Lie.V)) (f.f ⁻¹ᵁ U.1)`.
+
+Set `m'` to `appLinear ((Scheme.Modules.pullback f.f).map (Om.ρ a : Om.V ⟶ Om.V)) (f.f ⁻¹ᵁ U.1)`. Establish `hll : ∀ y, l₀ (l y) = l (l' y)` using `fun y => by`. Establish `hy : y ∈ Submodule.span _ _` using `span_pullbackSections f.f Lie.V hU U.2.1 le_rfl Set.univ Submodule.span_univ ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨s, -, rfl⟩` from `hy`. Rewrite using `[hl, hl₀, ← hl]`. Conclude with `congrArg l (pullback_map_app_pullbackSections f.f (Lie.ρ a : Lie.V ⟶ Lie.V) le_rfl s).symm`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y _ _ hx hy => simp only [map_add, hx, hy]`.
+
+Consider the case `smul r y _ hy => rw [map_smulₛₗ, map_smul, map_smul, map_smulₛₗ, hy]`. Use `GlobalTheory.RingChain.MapDown.map_down p h o _ _ _ _ (g U) (g U) (RingHom.id _) (RingHom.id _) _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ D D (C U) (C U) (M a) l m l.toAddMonoidHom m l₀ m₀ l' m' _ rfl rfl (hf.map_cst U π) hd hp (fun n hn x hx => (hL n hn x).2 hx) hb hmap hmap H hll (span_p …` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨s, hs, rfl, s', hs', e₁, e₂⟩, rfl⟩`. Take `⟨x, hx, kx⟩` from `hρ s hs`. Take `⟨x', hx', kx'⟩` from `hρ s' hs'`.
+
+Use `⟨x, x', ?_, kx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `hf.2.2.1 U ?_` and prove the remaining obligations. Use `congrFun (hx'.trans e₂) i` as an intermediate fact. Rewrite `this` using `[← hx, GlobalTheory.RingChain.MapDown.mv_apply]`.
+
+Rewrite using `[GlobalTheory.RingChain.MapDown.mv_apply, map_sum]`. Simplify using `only [map_mul, map_intCast]`. Conclude with `this`. Rewrite using `[← kx', e₁]`. Conclude with `congrArg D.ρ (pullback_map_app_pullbackSections f.f (Om.ρ a : Om.V ⟶ Om.V) le_rfl s.1)`.
+-/
 theorem map_act : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) (B B' : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (C : ChainsBp p h o Lie Om π γ) (f : GlobalTheory.Vert.Model.Hom B' B) (g : ∀ U : AffOp B.X, Γ(B'.X, f.f ⁻¹ᵁ U.1) →+* U.Bp), Lie.V.IsQuasicoherent → Om.V.IsQuasicoherent → IsSys C M → IsCov f g → ∀ (U : AffOp B.X) (S : Set (Γ(Om.V, U.1) × (C U).L 0)) (D : ChainUp p h o Lie Om π γ f (f.f ⁻¹ᵁ U.1)) (a : Λ), IsDown C f g U S D → Submodule.span Γ(B.X, U.1) {w | ∃ s ∈ S, s.1 = w ∧ ∃ s' ∈ S, s'.1 = (Om.ρ a : Om.V ⟶ Om.V).app _ w ∧ s'.2.1 = mv (RingHom.id _) (M a) s.2.1} = ⊤ → D.Map D (RingHom.id _) (M a) ((((pullA f.f).obj Lie).ρ a : ((pullA f.f).obj Lie).V ⟶ ((pullA f.f).obj Lie).V).app _) ((((pullA f.f).obj Om).ρ a : ((pullA f.f).obj Om).V ⟶ ((pullA f.f).obj Om).V).app _) := by
   intro O _ _ _ p B B' Λ _ h o Lie Om π γ M C f g qL qO hC hf U S D a hD hS
   obtain ⟨l, m, hl, hm, hmap, hL, hb, hρ, hd, hp⟩ := hD

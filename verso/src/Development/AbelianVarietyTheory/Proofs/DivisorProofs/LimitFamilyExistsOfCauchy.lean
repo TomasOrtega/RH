@@ -10,6 +10,13 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.Mean4
 
+/- English proof (translation)
+Establish `h0 : Tendsto (fun R : ℝ => C * Real.log R ^ d / Real.sqrt R) atTop (𝓝 0)`. Establish `h1` using `(isLittleO_log_rpow_rpow_atTop (d : ℝ) (s := 1 / 2) (by norm_num)).tendsto_div_nhds_zero`. Establish `h2` using `h1.const_mul C`. Rewrite `h2` using `[mul_zero]`. Use `h2.congr fun R => ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.sqrt_eq_rpow, Real.rpow_natCast, mul_div_assoc]`. Establish `hc : CauchySeq F`. Rewrite using `[Metric.cauchySeq_iff']`. Introduce `ε hε`. Take `⟨R, hR1, hR2⟩` from `((h0.eventually (gt_mem_nhds hε)).and (eventually_ge_atTop R₀)).exists`.
+
+Use `⟨R, fun R' hR' => ?_⟩` and prove the remaining obligations. Rewrite using `[dist_comm, Real.dist_eq]`. Conclude with `(h R R' hR2 hR').trans_lt hR1`. Conclude with `cauchySeq_tendsto_of_complete hc`.
+-/
 theorem exists_tendsto_of_log_pow_div_sqrt_bound (F : ℝ → ℝ) (C R₀ : ℝ) (d : ℕ)
     (h : ∀ R R' : ℝ, R₀ ≤ R → R ≤ R' → |F R - F R'| ≤ C * Real.log R ^ d / Real.sqrt R) :
     ∃ L, Tendsto F atTop (𝓝 L) := by
@@ -28,6 +35,17 @@ theorem exists_tendsto_of_log_pow_div_sqrt_bound (F : ℝ → ℝ) (C R₀ : ℝ
     exact (h R R' hR2 hR').trans_lt hR1
   exact cauchySeq_tendsto_of_complete hc
 
+/- English proof (translation)
+Use `choose P hP hev using fun R => exists_form_of_functional ι N d (G R)`. Take `⟨Q, -, hQ, -⟩` from `GlobalTheory.exists_poly_limit_of_tendsto_on_open (ι × Fin N) d P U hU hne (fun R => (hP R).totalDegree_le) (fun x hx => by`. Take `⟨L, hL⟩` from `hl x hx`. Conclude with `⟨L, hL.congr fun R => (hev R _).symm⟩)`. Establish `hm : ∀ m : (ι × Fin N) →₀ ℕ, ∃ L, Tendsto (fun R => G R (monomial m 1)) atTop (𝓝 L)`.
+
+Introduce `m`. Distinguish the cases in `hd : m.degree = d`. Establish `hc : ((-1 : ℝ) ^ d * (Nat.multinomial Finset.univ m : ℝ)) ≠ 0` using `mul_ne_zero (pow_ne_zero _ (by norm_num)) (by exact_mod_cast (Nat.multinomial_pos _ _).ne')`. Use `⟨_, ((hQ m).div_const ((-1 : ℝ) ^ d * (Nat.multinomial Finset.univ m : ℝ))).congr fun R => ?_⟩` and prove the remaining obligations. Rewrite using `[(coeff_eq_of_polarisation ι N d (G R) (P R) (hev R) m hd).1, mul_div_cancel_left₀ _ hc]`.
+
+Conclude with `⟨0, tendsto_const_nhds.congr fun R => (hG R _ _ hd (isHomogeneous_monomial _ rfl)).symm⟩`. Use `choose L hL using hm`. Use `⟨(basisMonomials (ι × Fin N) ℝ).constr ℝ L, fun F => ?_⟩` and prove the remaining obligations. Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial m a`.
+
+Establish `h1 : (monomial m a : Pol ι N) = a • monomial m 1` using `by rw [smul_monomial, smul_eq_mul, mul_one]`. Establish `h2 : (basisMonomials (ι × Fin N) ℝ).constr ℝ L (monomial m 1) = L m`. Simplify using `using (basisMonomials (ι × Fin N) ℝ).constr_basis ℝ L m`. Simplify using `only [h1, map_smul, smul_eq_mul, h2]`. Conclude with `(hL m).const_mul a`.
+
+Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+-/
 theorem exists_limit_functional {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (d : ℕ)
     (G : ℝ → (Pol ι N →ₗ[ℝ] ℝ))
     (hG : ∀ R (P : Pol ι N) (e : ℕ), e ≠ d → P.IsHomogeneous e → G R P = 0)
@@ -60,6 +78,21 @@ theorem exists_limit_functional {ι : Type} [Fintype ι] [DecidableEq ι] {N : �
     simp only [map_add]
     exact hp.add hq
 
+/- English proof (translation)
+Introduce `D Y h`. Set `U : Set (D.what₂.Tau × Fin Y.N → ℝ)` to `(⋂ τ, ⋂ a : Fin Y.N, ⋂ b : Fin Y.N, {x | a < b → x (τ, b) < x (τ, a)}) ∩ ⋂ y, {x | |x y| < 1}`. Establish `hU : IsOpen U`. Use `IsOpen.inter (isOpen_iInter_of_finite fun τ => isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => ?_) (isOpen_iInter_of_finite fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `hab : a < b`.
+
+Simplify using `only [hab, forall_true_left]`. Conclude with `isOpen_lt (continuous_apply _) (continuous_apply _)`. Simplify using `[hab]`. Conclude with `isOpen_lt (continuous_apply y).abs continuous_const`. Establish `hne : U.Nonempty`.
+
+Use `⟨fun y => -((y.2 : ℕ) : ℝ) / Y.N, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq]`. Introduce `τ a b hab`. Establish `hN : (0 : ℝ) < Y.N` using `by exact_mod_cast a.pos`. Establish `: ((a : ℕ) : ℝ) < (b : ℕ)` using `by exact_mod_cast hab`.
+
+Conclude with `div_lt_div_of_pos_right (by linarith) hN`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq]`. Introduce `y`. Establish `hN : (0 : ℝ) < Y.N` using `by exact_mod_cast y.2.pos`. Establish `: ((y.2 : ℕ) : ℝ) < Y.N` using `by exact_mod_cast y.2.2`.
+
+Rewrite using `[abs_div, abs_neg, Nat.abs_cast, Nat.abs_cast, div_lt_one hN]`. Conclude with `this`. Establish `key : ∀ B : ℝ, ∃ Φ : Fn Y, 2 ≤ B → IsLimDeg Y B Φ`. Introduce `B`. Distinguish the cases in `hB : 2 ≤ B`.
+
+Take `⟨Φ, hΦ⟩` from `exists_limit_functional (dimFl D.what₂.Tau Y.N + 1) (fun R => Y.arDeg (setB Y B) R) (fun R P e he hP => Y.arDeg_homog _ R P e he hP) U hU hne (fun x hx => by`. Take `⟨hx1, hx2⟩` from `hx`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq] at hx1 hx2`. Take `⟨C, R₀, hC⟩` from `h B hB (fun τ i => x (τ, i)) (fun τ a b hab _ => sub_nonneg.2 (hx1 τ a b (by rw [Fin.lt_def]; omega)).le) (Real.iSup_le (fun y => (hx2 y).le) zero_le_one)`. Conclude with `exists_tendsto_of_log_pow_div_sqrt_bound _ C R₀ _ hC)`.
+
+Conclude with `⟨Φ, fun _ => hΦ⟩`. Conclude with `⟨0, fun h => absurd h hB⟩`. Use `choose Φ hΦ using key`. Conclude with `⟨Φ, hΦ⟩`.
+-/
 theorem exists_limFam_of_cauchy : ∀ (D : D7) (Y : ShimX D.what₂.Tau), (∀ B : ℝ, 2 ≤ B → ∀ u : Wt Y, CptGaps Y 0 u → supAbs Y u ≤ 1 → ∃ C R₀ : ℝ, ∀ R R' : ℝ, R₀ ≤ R → R ≤ R' → |Y.arDeg (setB Y B) R (linRoot u ^ (dimFl D.what₂.Tau Y.N + 1)) - Y.arDeg (setB Y B) R' (linRoot u ^ (dimFl D.what₂.Tau Y.N + 1))| ≤ C * Real.log R ^ (dimY Y + 1) / Real.sqrt R) → ∃ Φ : ℝ → Fn Y, LimFam Φ := by
   intro D Y h
   let U : Set (D.what₂.Tau × Fin Y.N → ℝ) :=

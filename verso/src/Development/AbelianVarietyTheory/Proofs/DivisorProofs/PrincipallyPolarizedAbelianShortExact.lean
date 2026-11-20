@@ -18,6 +18,11 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 
 namespace GlobalTheory.TwoFiltrations
 
+/- English proof (translation)
+Introduce `hX hP hD p _ T _ _ A _ g hA hg hc`. Take `⟨H, hH⟩` from `GlobalTheory.DeRhamSheaf.exists_isDeRhamSheaf hP.p5 T A g hA hg`. Establish `hV` using `GlobalTheory.DeRhamSheaf.VB.isVB_of_isDeRhamSheaf hP.p5 T A g hA hg H hH`. Take `⟨S₁, h₁, ⟨e₁⟩, ⟨a₁⟩, ⟨b₁⟩⟩` from `GlobalTheory.T.de_rham_hodge_short_exact hX hP hD T A g hA hg hc H hH`. Take `⟨S₂, h₂, ⟨e₂⟩, ⟨a₂⟩, ⟨b₂⟩⟩` from `GlobalTheory.T.de_rham_conjugate_filtration_exists hX.dual hX.cube hX.conj hP hD p T A g hA hg hc H hH`.
+
+Conclude with `⟨S₁, S₂, h₁, h₂, hV.of_iso e₁.symm, ⟨e₁ ≪≫ e₂.symm⟩, ⟨a₁⟩, ⟨b₁⟩, ⟨a₂⟩, ⟨b₂⟩⟩`.
+-/
 theorem main : GlobalTheory.CovTop.HypothesesXH → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.PoincareDeRhamDuality →
   ∀ (p : ℕ) [Fact p.Prime] (T : Scheme.{0}) [Algebra (ZMod p) Γ(T, ⊤)],
     GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.IsProjSurface (ZMod p) T →

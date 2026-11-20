@@ -12,6 +12,11 @@ variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Representa
 def avg (ρ : Representation ℂ G V) (K : Subgroup G) (H : Subgroup K) (v : V) : V :=
   ∑ᶠ κ : K ⧸ H, ρ ((κ.out : K) : G) v
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, e⟩`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply] at e`. Rewrite using `[← e]`.
+
+Simplify `hk` using `[mul_assoc]`. Introduce `h`. Conclude with `⟨_, h, by simp [mul_assoc]⟩`.
+-/
 theorem mem_conj {g : G} {t : K} :
     t ∈ (K.map (MulAut.conj g).toMonoidHom).subgroupOf K ↔ g⁻¹ * (t : G) * g ∈ K := by
   rw [Subgroup.mem_subgroupOf, Subgroup.mem_map]
@@ -22,6 +27,9 @@ theorem mem_conj {g : G} {t : K} :
   · intro h
     exact ⟨_, h, by simp [mul_assoc]⟩
 
+/- English proof (translation)
+Establish `hm` using `QuotientGroup.eq.1 hab`. Establish `: (b : G) = a * ((a⁻¹ * b : K) : G)` using `by simp`. Rewrite using `[this, map_mul, Module.End.mul_apply, hv _ hm]`.
+-/
 theorem fix_eq {H : Subgroup K} {v : V} (hv : ∀ h ∈ H, ρ ((h : K) : G) v = v) {a b : K} (hab : (a : K ⧸ H) = b) :
     ρ (a : G) v = ρ (b : G) v := by
   have hm := QuotientGroup.eq.1 hab

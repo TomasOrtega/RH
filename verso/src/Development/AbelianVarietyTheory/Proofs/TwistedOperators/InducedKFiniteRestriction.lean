@@ -14,6 +14,31 @@ noncomputable section
 
 namespace GlobalTheory.DualInd
 
+/- English proof (translation)
+Introduce `n ε I φ hφ hKφ`. Take `⟨hcont, hlaw⟩` from `mem_indFun_top.1 hφ`. Take `⟨h, hc, h1, hhK, hh⟩` from `exists_height I.flag I.pos`. Use `set S : Set (UJ ε → I.V) := {ψ | ∃ k ∈ KG ε, ψ = fun g => φ (g * k)} with hS`. Establish `hSfns : Submodule.span ℂ S ≤ I.fns` using `Submodule.span_le.2 fun ψ ⟨k, _, e⟩ => e ▸ indFun_mul_right hφ trivial`.
+
+Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ S) := hKφ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `set c : Fin I.a → ℂ := -star I.s - I.s with hc'`. Establish `hec : Continuous fun g => Complex.exp (pairing I.j c (h g))` using `by unfold pairing; fun_prop`. Set `L : (UJ ε → I.V) →ₗ[ℂ] (UJ ε → I.V)` to `{ toFun := fun ψ g => Complex.exp (pairing I.j c (h g)) • ψ g map_add' := fun ψ ψ' => funext fun g => smul_add _ _ _ map_smul' := fun r ψ => funext fun g => smul_comm _ r _ }`.
+
+Use `⟨L φ, mem_indFun_top.2 ⟨hec.smul hcont, fun u hu m hm x t ht g => ?_⟩, ?_, fun k hk => ?_⟩` and prove the remaining obligations. Use `show Complex.exp _ • φ _ = _ • I.σ (uMat m) (Complex.exp _ • φ g)`. Rewrite using `[hh u hu m hm x t ht g, hlaw u hu m hm x t ht g, map_smul, smul_smul, smul_smul, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 2`. Simplify using `only [pairing, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hc', Pi.add_apply, Pi.sub_apply, Pi.neg_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hle : Submodule.span ℂ {ψ : UJ ε → I.V | ∃ k ∈ KG ε, ψ = fun g => L φ (g * k)} ≤ (Submodule.span ℂ S).map L`.
+
+Rewrite using `[Submodule.map_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `ψ ⟨k, hk, rfl⟩`. Use `⟨fun g => φ (g * k), ⟨k, hk, rfl⟩, funext fun g => ?_⟩` and prove the remaining obligations. Use `show Complex.exp _ • φ _ = Complex.exp _ • φ _`.
+
+Rewrite using `[hhK g k hk]`. Conclude with `Submodule.finiteDimensional_of_le hle`. Use `show Complex.exp _ • φ k = φ k`. Establish `: h k = 0` using `by simpa [h1] using hhK 1 k hk`. Simplify using `[this, pairing]`.
+
+Establish `h1N : (1 : UJ ε) ∈ flagN ε I.W` using `⟨fun i y _ => by simp [show uMat (1 : UJ ε) = 1 from rfl], fun y _ => by simp [show uMat (1 : UJ ε) = 1 from rfl]⟩`. Set `ev : (UJ ε → I.V) →ₗ[ℂ] I.V` to `LinearMap.proj (1 : UJ ε)`. Use `⟨(Submodule.span ℂ S).map ev, inferInstance, ⟨φ, Submodule.subset_span ⟨1, (KG ε).one_mem, by simp⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `k ⟨hkK, hkM⟩ _ ⟨ψ, hψ, rfl⟩`. Set `T : (UJ ε → I.V) →ₗ[ℂ] (UJ ε → I.V)` to `{ toFun := fun ψ g => ψ (g * k) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+
+Establish `hT : (Submodule.span ℂ S).map T ≤ Submodule.span ℂ S`. Rewrite using `[Submodule.map_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨k', hk', rfl⟩, rfl⟩`. Conclude with `⟨k * k', (KG ε).mul_mem hkK hk', funext fun g => by simp [T, mul_assoc]⟩`.
+
+Use `⟨T ψ, hT ⟨ψ, hψ, rfl⟩, ?_⟩` and prove the remaining obligations. Use `(mem_indFun_top.1 (hSfns hψ)).2 1 h1N k hkM 0 1 isSplit_one 1` as an intermediate fact. Simplify using `only [one_mul, mul_one] at this`. Use `show ψ (1 * k) = I.σ (uMat k) (ψ 1)`. Rewrite using `[one_mul, this]`.
+
+Simplify using `[pairing]`. Introduce `hne`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Use `hne (funext fun g => ?_)` and prove the remaining obligations.
+
+Take `⟨k, hk, hp⟩` from `GlobalTheory.RealIwasawa.exists_stab_mul_compact I.flag g`. Take `⟨u, hu, m, hm, x, t, ht, e⟩` from `exists_langlands_decomp I.flag I.pos hp`. Establish `hk' : k ∈ KG ε` using `((KG_eq ε).symm ▸ hk :)`. Establish `hg : g = u * m * t * k` using `by rw [← e, inv_mul_cancel_right]`. Rewrite using `[hg, hlaw u hu m hm x t ht k, hall k hk']`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem dualFn_values : ∀ (n : ℕ) (ε : Fin n → Bool) (I : Datum ε) (φ : UJ ε → I.V), φ ∈ I.fns → IsKFinFun φ →
     (∃ f' ∈ I.dualFns, IsKFinFun f' ∧ ∀ k ∈ KG ε, f' k = φ k) ∧ IsKFinIn I.M I.σ (φ 1) ∧
       (φ ≠ 0 → ∃ k ∈ KG ε, φ k ≠ 0) := by

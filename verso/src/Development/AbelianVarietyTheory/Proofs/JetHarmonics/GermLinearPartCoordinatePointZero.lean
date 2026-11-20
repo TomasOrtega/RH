@@ -24,11 +24,17 @@ section Calc
 
 variable {k : Type} [CommRing k] {d : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, zero_add]`. Simplify using the standard rewrite rules.
+-/
 theorem cc_pderiv (f : PS k 1 d) (i : Fin d) :
     constantCoeff (pderiv k ((0 : Fin 1), i) f) = coeff (Finsupp.single ((0 : Fin 1), i) 1) f := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, zero_add]
   simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `(FormalCalc.coeff_single_subst (a := fun p : Fin 1 × Fin d => (![ψ] : Fin 1 → Pt k 1 d) p.1 p.2) (fun p => single_point_zero_constant hψ p.1 p.2) (φ i) _).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, Fin.sum_univ_one, Matrix.mul_apply]`. Both sides reduce to the same expression.
+-/
 theorem dLin_comp (φ ψ : Pt k 1 d) (hψ : GP ψ) : dLin (comp1 φ ψ) = dLin φ * dLin ψ := by
   ext i j
   refine (FormalCalc.coeff_single_subst (a := fun p : Fin 1 × Fin d => (![ψ] : Fin 1 → Pt k 1 d) p.1 p.2)
@@ -36,6 +42,11 @@ theorem dLin_comp (φ ψ : Pt k 1 d) (hψ : GP ψ) : dLin (comp1 φ ψ) = dLin �
   rw [Fintype.sum_prod_type, Fin.sum_univ_one, Matrix.mul_apply]
   rfl
 
+/- English proof (translation)
+Establish `hz : FormalLog.CZ (![a] : Fin 1 → Pt k n d)` using `fun j l => single_point_zero_constant ha j l`. Use `show ev ![a] (∑ j : Fin d, MvPowerSeries.C (U i j) * X ((0 : Fin 1), j)) = _`. Rewrite using `[FormalLog.ev_sum hz]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[FormalLog.ev_mul hz, FormalLog.ev_C hz, FormalLog.ev_X hz]`.
+
+Both sides reduce to the same expression.
+-/
 theorem germComp_matrixLinearMap_apply {n : ℕ} (U : Matrix (Fin d) (Fin d) k) (a : Pt k n d) (ha : GP a) (i : Fin d) :
     comp1 (LogExpAdaptedGauge.linMap U) a i = ∑ j, C (U i j) * a j := by
   have hz : FormalLog.CZ (![a] : Fin 1 → Pt k n d) := fun j l => single_point_zero_constant ha j l
@@ -45,14 +56,23 @@ theorem germComp_matrixLinearMap_apply {n : ℕ} (U : Matrix (Fin d) (Fin d) k) 
   rw [FormalLog.ev_mul hz, FormalLog.ev_C hz, FormalLog.ev_X hz]
   rfl
 
+/- English proof (translation)
+Introduce `i` and use `by simp [LogExpAdaptedGauge.linMap]`.
+-/
 theorem gp_linMap (U : Matrix (Fin d) (Fin d) k) : GP (LogExpAdaptedGauge.linMap U) := fun i => by
   simp [LogExpAdaptedGauge.linMap]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[dLin, LogExpAdaptedGauge.linMap, coeff_C_mul, coeff_X, Finsupp.single_left_inj]`.
+-/
 theorem dLin_linMap (U : Matrix (Fin d) (Fin d) k) : dLin (LogExpAdaptedGauge.linMap U) = U := by
   classical
   ext i j
   simp [dLin, LogExpAdaptedGauge.linMap, coeff_C_mul, coeff_X, Finsupp.single_left_inj]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `rw [germComp_matrixLinearMap_apply _ _ ha, Finset.sum_eq_single i] <;> simp +contextual [Matrix.one_apply, eq_comm]`.
+-/
 theorem linMap_one {n : ℕ} (a : Pt k n d) (ha : GP a) : comp1 (LogExpAdaptedGauge.linMap (1 : Matrix (Fin d) (Fin d) k)) a = a := by
   classical
   funext i
@@ -64,6 +84,11 @@ section Log
 
 variable {k : Type} [CommRing k] [Algebra ℚ k] {d : ℕ}
 
+/- English proof (translation)
+Establish `hV` using `pair_points_zero_constant ha hb`. Establish `e` using `congrArg (evP ![a, b]) hψ`. Establish `e2 : ∀ u v : Pt k 2 d, evP ![a, b] (u + v) = evP ![a, b] u + evP ![a, b] v` using `fun u v =>`. Use function extensionality and compare the values at `fun i => gt_ev_add _ hV _ _`. Rewrite `e` using `[e2, evP_comp1 _ hV _ _ (gp_addOf F hF _ _ (gp_pt 0) (gp_pt 1)), evP_addOf _ hV _ _ _ (gp_pt 0) (gp_pt 1), evP_comp1 _ hV _ _ (gp_pt 0), evP_comp1 _ hV _ _ (gp_pt 1), evP_pt _ hV, evP_pt _ hV]`.
+
+Conclude with `e`.
+-/
 theorem additive_at {n : ℕ} (F : Fin d → PS k 2 d) (hF : ∀ i, constantCoeff (F i) = 0) (ψ : Pt k 1 d)
     (hψ : comp1 ψ (addOf F (pt k (n := 2) d 0) (pt k (n := 2) d 1)) =
       comp1 ψ (pt k (n := 2) d 0) + comp1 ψ (pt k (n := 2) d 1))
@@ -77,9 +102,27 @@ theorem additive_at {n : ℕ} (F : Fin d → PS k 2 d) (hF : ∀ i, constantCoef
     evP_comp1 _ hV _ _ (gp_pt 1), evP_pt _ hV, evP_pt _ hV] at e
   exact e
 
+/- English proof (translation)
+Rewrite using `[← linMap_one (pt k (n := 1) d 0) (gp_pt 0), gt_comp1_pt_right, dLin_linMap]`.
+-/
 theorem germLinearPart_coordinatePoint_zero : dLin (pt k (n := 1) d 0) = 1 := by
   rw [← linMap_one (pt k (n := 1) d 0) (gp_pt 0), gt_comp1_pt_right, dLin_linMap]
 
+/- English proof (translation)
+Establish `hε : GP ε` using `hi.2.1`. Establish `hℓ0 : GP ℓ` using `hi.1`. Establish `p0 : GP (pt k (n` using `2) d 0) := gp_pt 0`. Establish `p1 : GP (pt k (n` using `2) d 1) := gp_pt 1`. Establish `q0` using `gp_comp1 _ _ hε p0`.
+
+Establish `q1` using `gp_comp1 _ _ hε p1`. Establish `ps : GP (pt k (n` using `2) d 0 + pt k (n := 2) d 1) := fun i => by simp [pt]`. Establish `e1 : comp1 ε (pt k (n` using `2) d 0 + pt k (n := 2) d 1) = addOf F (comp1 ε (pt k (n := 2) d 0)) (comp1 ε (pt k (n := 2) d 1)) := by`. Rewrite using `[← gt_comp_inv' hi _ (gp_addOf F hF _ _ q0 q1), additive_at F hF ℓ hℓ _ _ q0 q1, gt_comp_inv hi _ p0, gt_comp_inv hi _ p1]`. Establish `e2 : comp1 (comp1 ψ ε) (pt k (n` using `2) d 0 + pt k (n := 2) d 1) = comp1 (comp1 ψ ε) (pt k (n := 2) d 0) + comp1 (comp1 ψ ε) (pt k (n := 2) d 1) := by`.
+
+Rewrite using `[gt_comp1_comp1 _ _ hε _ ps, gt_comp1_comp1 _ _ hε _ p0, gt_comp1_comp1 _ _ hε _ p1, e1, additive_at F hF ψ hψ _ _ q0 q1]`. Establish `hdε : dLin ε = 1`. Use `dLin_comp ℓ ε hε` as an intermediate fact. Rewrite `this` using `[hi.2.2.1, germLinearPart_coordinatePoint_zero, h1, one_mul, eq_comm]`. Then use the resulting hypothesis. Establish `e3 : comp1 ψ ε = LogExpAdaptedGauge.linMap (dLin ψ)`.
+
+Establish `hd : dLin (comp1 ψ ε) = dLin (LogExpAdaptedGauge.linMap (dLin ψ))`. Rewrite using `[dLin_comp _ _ hε, hdε, mul_one, dLin_linMap]`. Use function extensionality and compare the values at `i`. Use extensionality with `e`. Distinguish the cases in `he : e.degree = 1`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨⟨s, j⟩, rfl⟩ : ∃ s, e = Finsupp.single s 1 := by`. Conclude with `(Finsupp.sum_eq_one_iff e).1 he`. Take `rfl : s = 0` from `Subsingleton.elim _ _`. Conclude with `congrFun (congrFun hd i) j`. Rewrite using `[addition_linear k d _ (congrFun e2 i) e he]`.
+
+Simplify using `only [LogExpAdaptedGauge.linMap, map_sum, coeff_C_mul, coeff_X]`. Use `(Finset.sum_eq_zero fun j _ => ?_).symm` and prove the remaining obligations. Rewrite using `[if_neg, mul_zero]`. Introduce and unpack `rfl`. Simplify using `at he`.
+
+Rewrite using `[← e3, gt_comp1_comp1 _ _ hε _ hℓ0, hi.2.2.2, gt_comp1_pt_right]`.
+-/
 theorem additive_eq_lin (F : Fin d → PS k 2 d) (hF : ∀ i, constantCoeff (F i) = 0) (ℓ ε ψ : Pt k 1 d)
     (h1 : dLin ℓ = 1) (hℓ : comp1 ℓ (addOf F (pt k (n := 2) d 0) (pt k (n := 2) d 1)) =
       comp1 ℓ (pt k (n := 2) d 0) + comp1 ℓ (pt k (n := 2) d 1)) (hi : IsInvPair ℓ ε) (h0 : GP ψ)
@@ -123,6 +166,9 @@ theorem additive_eq_lin (F : Fin d → PS k 2 d) (hF : ∀ i, constantCoeff (F i
       simp at he
   rw [← e3, gt_comp1_comp1 _ _ hε _ hℓ0, hi.2.2.2, gt_comp1_pt_right]
 
+/- English proof (translation)
+Take `⟨ℓ, h0, h1, h2⟩` from `FormalLog.logSt k d (FBMap.mapLaw (algebraMap R k) G)`. Take `⟨ε, hε⟩` from `ChartInv.exists_isInvPair k d ℓ h0 (by rw [h1, Matrix.det_one]; exact isUnit_one)`. Conclude with `⟨ℓ, ε, h1, h2, hε⟩`.
+-/
 theorem exists_isLogExp {R : Type} [CommRing R] [Algebra R k] (G : FGLaw R d) :
     ∃ ℓ ε : Pt k 1 d, LogExpAdaptedGauge.IsLogExp k G ℓ ε := by
   obtain ⟨ℓ, h0, h1, h2⟩ := FormalLog.logSt k d (FBMap.mapLaw (algebraMap R k) G)

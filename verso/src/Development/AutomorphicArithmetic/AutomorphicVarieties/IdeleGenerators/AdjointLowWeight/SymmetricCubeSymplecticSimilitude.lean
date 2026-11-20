@@ -18,6 +18,9 @@ def low (x : R) : M2 R := !![1, 0; x, 1]
 
 def s3 (u : R) (g : M2 R) : M4 R := Matrix.diagonal ![1, 1, -1, 3] * symCubeMatrixHom R g * Matrix.diagonal ![1, 1, -1, u]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [s3, symCubeMatrixHom, Matrix.diagonal_mul, Matrix.mul_diagonal] <;> ring`.
+-/
 theorem symmetric_cube_explicit (u : R) (g : M2 R) : s3 u g =
     !![g 0 0 ^ 3, g 0 0 ^ 2 * g 0 1, -(g 0 0 * g 0 1 ^ 2), u * g 0 1 ^ 3;
     3 * g 0 0 ^ 2 * g 1 0, g 0 0 ^ 2 * g 1 1 + 2 * g 0 0 * g 0 1 * g 1 0, -(2 * g 0 0 * g 0 1 * g 1 1 + g 0 1 ^ 2 * g 1 0),
@@ -28,11 +31,17 @@ theorem symmetric_cube_explicit (u : R) (g : M2 R) : s3 u g =
   ext i j
   fin_cases i <;> fin_cases j <;> simp [s3, symCubeMatrixHom, Matrix.diagonal_mul, Matrix.mul_diagonal] <;> ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[symmetric_cube_explicit, symmetric_cube_explicit]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [map_ofNat]`.
+-/
 theorem symmetric_cube_map (f : R →+* R') (u : R) (g : M2 R) : (s3 u g).map f = s3 (f u) (g.map f) := by
   ext i j
   rw [symmetric_cube_explicit, symmetric_cube_explicit]
   fin_cases i <;> fin_cases j <;> simp [map_ofNat]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [low]`.
+-/
 theorem low_map (f : R →+* R') (x : R) : (low x).map f = low (f x) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [low]
@@ -40,11 +49,19 @@ theorem low_map (f : R →+* R') (x : R) : (low x).map f = low (f x) := by
 variable {u : R} (hu : 3 * u = 1)
 include hu
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[symmetric_cube_explicit]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [hu]`.
+-/
 theorem symmetric_cube_one : s3 u 1 = 1 := by
   ext i j
   rw [symmetric_cube_explicit]
   fin_cases i <;> fin_cases j <;> simp [hu]
 
+/- English proof (translation)
+Establish `e : (Matrix.diagonal ![1, 1, -1, u] * Matrix.diagonal ![1, 1, -1, 3] : M4 R) = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [mul_comm u 3, hu]`.
+
+Simplify using `only [s3, map_mul, mul_assoc]`. Rewrite using `[← mul_assoc (Matrix.diagonal ![1, 1, -1, u]), e, one_mul]`.
+-/
 theorem symmetric_cube_mul (g h : M2 R) : s3 u (g * h) = s3 u g * s3 u h := by
   have e : (Matrix.diagonal ![1, 1, -1, u] * Matrix.diagonal ![1, 1, -1, 3] : M4 R) = 1 := by
     rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -54,16 +71,25 @@ theorem symmetric_cube_mul (g h : M2 R) : s3 u (g * h) = s3 u g * s3 u h := by
   simp only [s3, map_mul, mul_assoc]
   rw [← mul_assoc (Matrix.diagonal ![1, 1, -1, u]), e, one_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[adj_apply, symmetric_cube_explicit, symmetric_cube_explicit, Matrix.adjugate_fin_two]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [sgn, Fin.rev, hu] <;> ring`.
+-/
 theorem adjoint_symmetric_cube (g : M2 R) : adj (s3 u g) = s3 u g.adjugate := by
   ext i j
   rw [adj_apply, symmetric_cube_explicit, symmetric_cube_explicit, Matrix.adjugate_fin_two]
   fin_cases i <;> fin_cases j <;> simp [sgn, Fin.rev, hu] <;> ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[symmetric_cube_explicit, symmetric_cube_explicit]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> ring`.
+-/
 theorem symmetric_cube_smul (a : R) (g : M2 R) : s3 u (a • g) = a ^ 3 • s3 u g := by
   ext i j
   rw [symmetric_cube_explicit, symmetric_cube_explicit]
   fin_cases i <;> fin_cases j <;> simp <;> ring
 
+/- English proof (translation)
+Establish `e : adj (a • s3 u g) = a • adj (s3 u g)`. Use extensionality with `i j`. Simplify using `only [adj_apply, Matrix.smul_apply]`. Rewrite using `[smul_comm]`. Rewrite using `[IsGSp, e, adjoint_symmetric_cube hu, Matrix.smul_mul, Matrix.mul_smul, ← symmetric_cube_mul hu, Matrix.adjugate_mul, symmetric_cube_smul hu, symmetric_cube_one hu, smul_smul, smul_smul, ← sq]`.
+-/
 theorem symmetric_cube_symplectic_similitude (a : R) (g : M2 R) : IsGSp (a ^ 2 * g.det ^ 3) (a • s3 u g) := by
   have e : adj (a • s3 u g) = a • adj (s3 u g) := by
     ext i j
@@ -72,11 +98,17 @@ theorem symmetric_cube_symplectic_similitude (a : R) (g : M2 R) : IsGSp (a ^ 2 *
   rw [IsGSp, e, adjoint_symmetric_cube hu, Matrix.smul_mul, Matrix.mul_smul, ← symmetric_cube_mul hu, Matrix.adjugate_mul, symmetric_cube_smul hu, symmetric_cube_one hu,
     smul_smul, smul_smul, ← sq]
 
+/- English proof (translation)
+Rewrite using `[adjoint_symmetric_cube hu]`. Use `congr 1`. Simplify using `[low, Matrix.adjugate_fin_two]`.
+-/
 theorem adjoint_symmetric_cube_lower (x : R) : adj (s3 u (low x)) = s3 u (low (-x)) := by
   rw [adjoint_symmetric_cube hu]
   congr 1
   simp [low, Matrix.adjugate_fin_two]
 
+/- English proof (translation)
+Use `⟨?_, fun i => ?_, fun i j h => ?_⟩` and prove the remaining obligations. Simplify `symmetric_cube_symplectic_similitude hu 1 (low x)` using `[low]`. Apply the tactic sequence `rw [symmetric_cube_explicit] fin_cases i <;> simp [low, hu]`. Apply the tactic sequence `rw [symmetric_cube_explicit] fin_cases i <;> fin_cases j <;> simp [low] at h ⊢`.
+-/
 theorem symmetric_cube_lower_unipotent (x : R) : IsLow (s3 u (low x)) := by
   refine ⟨?_, fun i => ?_, fun i j h => ?_⟩
   · simpa [low] using symmetric_cube_symplectic_similitude hu 1 (low x)
@@ -85,6 +117,9 @@ theorem symmetric_cube_lower_unipotent (x : R) : IsLow (s3 u (low x)) := by
   · rw [symmetric_cube_explicit]
     fin_cases i <;> fin_cases j <;> simp [low] at h ⊢
 
+/- English proof (translation)
+Rewrite using `[adjoint_symmetric_cube_lower hu, Matrix.mul_smul, Matrix.smul_mul, ← symmetric_cube_mul hu, ← symmetric_cube_mul hu]`. Use `congr 2`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [low, Matrix.mul_apply, Fin.sum_univ_succ, Matrix.vecMul, dotProduct] <;> ring`.
+-/
 theorem conjugate_symmetric_cube_flags (a x y : R) (g : M2 R) : adj (s3 u (low y)) * (a • s3 u g) * s3 u (low x) =
     a • s3 u !![g 0 0 + g 0 1 * x, g 0 1; g 1 0 + g 1 1 * x - (g 0 0 + g 0 1 * x) * y, g 1 1 - y * g 0 1] := by
   rw [adjoint_symmetric_cube_lower hu, Matrix.mul_smul, Matrix.smul_mul, ← symmetric_cube_mul hu, ← symmetric_cube_mul hu]
@@ -93,16 +128,25 @@ theorem conjugate_symmetric_cube_flags (a x y : R) (g : M2 R) : adj (s3 u (low y
   fin_cases i <;> fin_cases j <;> simp [low, Matrix.mul_apply, Fin.sum_univ_succ, Matrix.vecMul, dotProduct] <;> ring
 
 omit hu in
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[symmetric_cube_explicit]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [h] at hij ⊢`.
+-/
 theorem symmetric_cube_upper_triangular (a : R) {g : M2 R} (h : g 1 0 = 0) : IsUp (a • s3 u g) := by
   intro i j hij
   rw [symmetric_cube_explicit]
   fin_cases i <;> fin_cases j <;> simp [h] at hij ⊢
 
 omit hu in
+/- English proof (translation)
+Rewrite using `[symmetric_cube_explicit]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [h] at hij ⊢`.
+-/
 theorem symmetric_cube_lower_entries_zero (a : R) {g : M2 R} (h : g 0 1 = 0) {i j : Fin 4} (hij : i < j) : (a • s3 u g) i j = 0 := by
   rw [symmetric_cube_explicit]
   fin_cases i <;> fin_cases j <;> simp [h] at hij ⊢
 
+/- English proof (translation)
+Rewrite using `[symmetric_cube_explicit]`. Apply the tactic sequence `fin_cases i <;> simp [hu]`. Take the linear combination `(2 * a * g 0 0) * h`. Take the linear combination `(2 * a * g 1 1) * h`.
+-/
 theorem symmetric_cube_diagonal_entries (a : R) {g : M2 R} (h : g 0 1 * g 1 0 = 0) (i : Fin 4) :
     (a • s3 u g) i i = a * (g 0 0 ^ (3 - (i : ℕ)) * g 1 1 ^ (i : ℕ)) := by
   rw [symmetric_cube_explicit]
@@ -115,6 +159,9 @@ def rep {Γ : Type} [Group Γ] (δ : Γ →* Rˣ) (ρ : Γ →* M2 R) : Γ →* 
   map_one' := by simp [symmetric_cube_one hu]
   map_mul' g h := by simp [symmetric_cube_mul hu, smul_smul, mul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rep_apply {Γ : Type} [Group Γ] (δ : Γ →* Rˣ) (ρ : Γ →* M2 R) (g : Γ) : rep hu δ ρ g = (δ g : R) • s3 u (ρ g) := rfl
 
 end Alg

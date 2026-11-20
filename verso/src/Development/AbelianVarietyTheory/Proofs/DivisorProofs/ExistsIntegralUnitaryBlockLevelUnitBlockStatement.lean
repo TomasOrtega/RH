@@ -10,6 +10,9 @@ open GlobalTheory.ChiGrid GlobalTheory.LeafRestExamples GlobalTheory.FunObj.SqNu
 open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FunObj.StdDatum.BlockPoint.exists_intG_unitBlock | exact GlobalTheory.FunObj.StdDatum.BlockPoint.exists_intG_unitBlock | (intros; apply GlobalTheory.FunObj.StdDatum.BlockPoint.exists_intG_unitBlock <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_integralUnitary_blockLevel_unitBlock : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → IsCoprime 𝔪 (D.host.conj • 𝔪) → ∀ {a d : ℕ}, a ≤ d →
     ∀ h ∈ intG D d, (∀ i j : Fin d, j.1 < a → a ≤ i.1 →
       ((h : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) i j ∈ hatId D 𝔪) →

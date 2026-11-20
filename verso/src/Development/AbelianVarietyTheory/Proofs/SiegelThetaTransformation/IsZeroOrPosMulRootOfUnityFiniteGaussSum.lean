@@ -5,6 +5,23 @@ open scoped ComplexConjugate Real
 
 namespace GlobalTheory.Phase.GaussSum
 
+/- English proof (translation)
+Distinguish the cases in `hz : ∑ x, e (Q x) = 0`. Conclude with `Or.inl hz`. Use `right`. Establish `hsq : (∑ x, e (Q x)) * (∑ x, e (Q x)) = ∑ z, e (Q z) * ∑ x, e (ψ x + B x z)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Finset.sum_mul, ← hT]`. Use `_ = ∑ x, ∑ z, e (Q z) * e (ψ x + B x z) := by`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp (Equiv.addLeft x), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← he, ← he, Equiv.coe_addLeft, hQ]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Use `_ = _ := by`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [Finset.mul_sum]`. Establish `hne : ∑ z, e (Q z) * ∑ x, e (ψ x + B x z) ≠ 0` using `hsq ▸ mul_ne_zero hz hz`. Take `⟨a, -, ha⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Establish `ha'` using `right_ne_zero_of_mul ha`. Establish `h1 : ∀ y, e (ψ y + B y a) = 1`.
+
+Introduce `y`. Establish `: ∑ x, e (ψ x + B x a) = e (ψ y + B y a) * ∑ x, e (ψ x + B x a)` using `by conv_lhs => rw [← Equiv.sum_comp (Equiv.addLeft y)]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← he, Equiv.coe_addLeft]`.
+
+Use `congr 1`. Simplify using `only [map_add, AddMonoidHom.add_apply]`. Normalize the expressions using the abelian group laws. Conclude with `(mul_eq_right₀ ha').1 this.symm`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [hT]`. Rewrite using `[map_sum, ← Equiv.sum_comp (Equiv.addRight a) (fun x => conj (e (Q x))), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← hc, ← he, Equiv.coe_addRight, hQ, ← mul_one (e (Q a + _)), ← h1 x, ← he]`. Use `congr 1`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem twist {N W : Type} [AddCommGroup N] [Fintype N] [AddCommGroup W] (e : W → ℂ)
     (he : ∀ s t, e (s + t) = e s * e t) (hc : ∀ t, e (-t) = conj (e t)) (h0 : e 0 = 1)
     (Q : N → W) (B : N →+ N →+ W) (hQ : ∀ x y, Q (x + y) = Q x + Q y + B x y) (ψ : N →+ W)
@@ -54,15 +71,24 @@ def quat {M : Type} [AddCommGroup M] (a b c d : ℤ) (x : Fin 4 → M) : Fin 4 �
     c • x 0 + d • x 1 + a • x 2 + (-b) • x 3,
     d • x 0 + (-c) • x 1 + b • x 2 + a • x 3]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [quat] <;> module`.
+-/
 theorem quat_add {M : Type} [AddCommGroup M] (a b c d : ℤ) (x y : Fin 4 → M) :
     quat a b c d (x + y) = quat a b c d x + quat a b c d y := by
   funext i
   fin_cases i <;> simp [quat] <;> module
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> simp [quat] <;> module`.
+-/
 theorem quat_conj {M : Type} [AddCommGroup M] (a b c d : ℤ) (x : Fin 4 → M) (i : Fin 4) :
     quat a (-b) (-c) (-d) (quat a b c d x) i = (a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2) • x i := by
   fin_cases i <;> simp [quat] <;> module
 
+/- English proof (translation)
+Simplify using `only [Fin.sum_univ_four, quat, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, map_add, map_zsmul, AddMonoidHom.add_apply, AddMonoidHom.smul_apply]`. Use `module`.
+-/
 theorem quat_form {M W : Type} [AddCommGroup M] [AddCommGroup W] (β : M →+ M →+ W) (a b c d : ℤ)
     (x y : Fin 4 → M) :
     ∑ i, β (quat a b c d x i) (quat a b c d y i) =
@@ -71,6 +97,25 @@ theorem quat_form {M W : Type} [AddCommGroup M] [AddCommGroup W] (β : M →+ M 
     map_add, map_zsmul, AddMonoidHom.add_apply, AddMonoidHom.smul_apply]
   module
 
+/- English proof (translation)
+Use `set n := Fintype.card M with hn`. Establish `hn1 : 1 ≤ n` using `Fintype.card_pos`. Establish `hnx : ∀ x : M, (n : ℤ) • x = 0` using `fun x => by`. Rewrite using `[natCast_zsmul]`. Conclude with `card_nsmul_eq_zero`.
+
+Take `⟨a, b, c, d, habcd⟩` from `Nat.sum_four_squares (n - 1)`. Establish `hm : ((a : ℤ) ^ 2 + (b : ℤ) ^ 2 + (c : ℤ) ^ 2 + (d : ℤ) ^ 2) = (n : ℤ) - 1`. Establish `h` using `congrArg (fun t : ℕ => (t : ℤ)) habcd`. Move the coercions through the operations in `[Nat.cast_sub hn1] at h`. Conclude with `h`.
+
+Establish `hinj : Function.Injective (quat (M` using `M) (a : ℤ) b c d) := by`. Introduce `x y hxy`. Use function extensionality and compare the values at `i`. Establish `hx` using `quat_conj (a : ℤ) b c d x i`. Establish `hy` using `quat_conj (a : ℤ) b c d y i`.
+
+Rewrite `hx`, `hy` using `[hm, sub_smul, hnx, one_smul, zero_sub]`. Rewrite using `[← neg_inj, ← hx, ← hy, hxy]`. Establish `hbij` using `hinj.bijective_of_finite`. Establish `hprod : ∀ y : Fin 4 → W, e (∑ i, y i) = ∏ i, e (y i)`. Introduce `y`.
+
+Simplify using `only [Fin.sum_univ_four, Fin.prod_univ_four, he]`. Establish `hS4 : (∑ x, e (q x)) ^ 4 = ∑ x : Fin 4 → M, e (∑ i, q (x i))`. Rewrite using `[Finset.sum_pow', Fintype.piFinset_univ]`. Conclude with `Finset.sum_congr rfl (fun x _ => (hprod (fun i => q (x i))).symm)`. Set `B : (Fin 4 → M) →+ (Fin 4 → M) →+ W` to `AddMonoidHom.mk' (fun x => AddMonoidHom.mk' (fun y => ∑ i, β (x i) (y i)) (fun y z => by simp [Finset.sum_add_distrib])) (fun x y => by ext z; simp [Finset.sum_add_distrib])`.
+
+Establish `hB : ∀ x y, B x y = ∑ i, β (x i) (y i)` using `fun _ _ => rfl`. Establish `hQ : ∀ x y : Fin 4 → M, ∑ i, q ((x + y) i) = ∑ i, q (x i) + ∑ i, q (y i) + B x y`. Introduce `x y`. Simplify using `only [hB, Pi.add_apply, hq, Finset.sum_add_distrib]`. Establish `hnB : ∀ x y, (n : ℤ) • B x y = 0`.
+
+Introduce `x y`. Rewrite using `[← map_zsmul]`. Establish `: (n : ℤ) • y = 0` using `funext fun i => hnx (y i)`. Rewrite using `[this, map_zero]`. Set `ψ : (Fin 4 → M) →+ W` to `AddMonoidHom.mk' (fun x => ∑ i, q (quat (a : ℤ) b c d x i) + ∑ i, q (x i)) (by`.
+
+Introduce `x y`. Rewrite using `[quat_add, hQ, hQ, hB (quat _ _ _ _ _), quat_form, hm, ← hB, sub_smul, hnB, one_smul]`. Use the proof step `abel)`. Use `twist e he hc h0 (fun x : Fin 4 → M => ∑ i, q (x i)) B hQ ψ (by` as an intermediate fact. Rewrite using `[← hbij.sum_comp (fun x => e (∑ i, q (x i)))]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[ψ])`. Rewrite `this` using `[← hS4]`. Simplify `this` using `only [hprod]`.
+-/
 theorem pow_four {M W : Type} [AddCommGroup M] [Fintype M] [AddCommGroup W] (e : W → ℂ)
     (he : ∀ s t, e (s + t) = e s * e t) (hc : ∀ t, e (-t) = conj (e t)) (h0 : e 0 = 1)
     (q : M → W) (β : M →+ M →+ W) (hq : ∀ x y, q (x + y) = q x + q y + β x y) :
@@ -125,18 +170,51 @@ theorem pow_four {M W : Type} [AddCommGroup M] [Fintype M] [AddCommGroup W] (e :
   rw [← hS4] at this
   simpa only [hprod] using this
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `ha`. Take `⟨k, hk, h'⟩` from `hb`. Use `⟨m * k, Nat.mul_pos hm hk, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, pow_mul, h, mul_comm m, pow_mul, h']`. Simplify using the standard rewrite rules.
+-/
 theorem isMu_mul {a b : ℂ} (ha : IsMu a) (hb : IsMu b) : IsMu (a * b) := by
   obtain ⟨m, hm, h⟩ := ha
   obtain ⟨k, hk, h'⟩ := hb
   refine ⟨m * k, Nat.mul_pos hm hk, ?_⟩
   rw [mul_pow, pow_mul, h, mul_comm m, pow_mul, h']; simp
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `ha`. Use `congrArg norm h` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 this`.
+-/
 theorem isMu_norm {a : ℂ} (ha : IsMu a) : ‖a‖ = 1 := by
   obtain ⟨m, hm, h⟩ := ha
   have := congrArg norm h
   rw [norm_pow, norm_one] at this
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 this
 
+/- English proof (translation)
+Introduce `M _ _ f ⟨h1, h3⟩`. Establish `hmu : ∀ x, IsMu (f x)` using `fun x => h1 x trivial`. Set `u : M → Circle` to `fun x => ⟨f x, mem_sphere_zero_iff_norm.2 (isMu_norm (hmu x))⟩`. Set `p : M → Additive Circle` to `fun x => Additive.ofMul (u x)`. Establish `hp : ∀ x y z, p (x + y + z) + p x + p y + p z = p (x + y) + p (y + z) + p (x + z) + p 0`.
+
+Introduce `x y z`. Establish `: u (x + y + z) * u x * u y * u z = u (x + y) * u (y + z) * u (x + z) * u 0` using `Circle.ext (by simp only [Circle.coe_mul]; exact h3 x trivial y trivial z trivial)`. Conclude with `congrArg Additive.ofMul this`. Set `β : M →+ M →+ Additive Circle` to `AddMonoidHom.mk' (fun x => AddMonoidHom.mk' (fun y => p (x + y) - p x - p y + p 0) (fun y z => by`. Use `hp x y z` as an intermediate fact.
+
+Rewrite using `[← add_assoc]`. Rewrite `this`, the goal using `[← sub_eq_zero]`. Rewrite using `[← this]`. Use the proof step `abel))`. Use the proof step `(fun x y => by ext1 z`.
+
+Use `hp x y z` as an intermediate fact. Simplify using `only [AddMonoidHom.mk'_apply, AddMonoidHom.add_apply]`. Rewrite `this`, the goal using `[← sub_eq_zero]`. Rewrite using `[← this]`. Use the proof step `abel)`.
+
+Set `e : Additive Circle → ℂ` to `fun t => ((Additive.toMul t : Circle) : ℂ)`. Establish `he : ∀ s t, e (s + t) = e s * e t` using `fun s t => by simp [e]`. Establish `hc : ∀ t, e (-t) = conj (e t)` using `fun t => by`. Simplify using `only [e, toMul_neg]`. Conclude with `Circle.coe_inv_eq_conj _`.
+
+Establish `hf : ∀ x, f x = f 0 * e (p x - p 0)`. Introduce `x`. Establish `: e (p 0 + (p x - p 0)) = e (p x)` using `by congr 1; abel`. Rewrite `this` using `[he]`. Conclude with `this.symm`.
+
+Establish `hmu' : ∀ x, IsMu (e (p x - p 0))`. Introduce `x`. Rewrite using `[sub_eq_add_neg, he, hc]`. Use `isMu_mul (hmu x) ?_` and prove the remaining obligations. Take `⟨m, hm, h⟩` from `hmu 0`.
+
+Conclude with `⟨m, hm, by rw [← map_pow]; change conj (f 0 ^ m) = 1; rw [h, map_one]⟩`. Establish `hsum : ∑ x, f x = f 0 * ∑ x, e (p x - p 0)`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => hf x`. Rewrite using `[hsum]`.
+
+Break down `pow_four e he hc (by simp [e]) (fun x => p x - p 0) β (fun x y => by` into its components or cases. Simplify using `only [β, AddMonoidHom.mk'_apply]`. Use the proof step `abel) with h | ⟨a, h⟩`. Rewrite `h` using `[pow_eq_zero_iff (by norm_num)]`. Rewrite using `[h, mul_zero]`.
+
+Conclude with `ph_zero`. Use `set S := ∑ x, e (p x - p 0)`. Establish `hz : IsMu (f 0 ^ 8 * ∏ i, e (p (a i) - p 0))`. Use `isMu_mul ?_ ?_` and prove the remaining obligations. Take `⟨m, hm, h⟩` from `hmu 0`.
+
+Conclude with `⟨m, hm, by rw [← pow_mul, mul_comm, pow_mul, h, one_pow]⟩`. Rewrite using `[Fin.prod_univ_four]`. Conclude with `isMu_mul (isMu_mul (isMu_mul (hmu' _) (hmu' _)) (hmu' _)) (hmu' _)`. Take `⟨m, hm, hz⟩` from `hz`. Use `⟨8 * m, by omega, ?_⟩` and prove the remaining obligations.
+
+Establish `h8 : (f 0 * S) ^ 8 = (f 0 ^ 8 * ∏ i, e (p (a i) - p 0)) * ((‖f 0 * S‖ : ℝ) : ℂ) ^ 8`. Establish `hn : ((‖S‖ : ℝ) : ℂ) ^ 8 = S ^ 4 * conj (S ^ 4)`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, norm_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[norm_mul, isMu_norm (hmu 0), one_mul, hn]`. Take the linear combination `f 0 ^ 8 * S ^ 4 * h`. Rewrite using `[pow_mul, h8, mul_pow, hz, one_mul, pow_mul]`.
+-/
 theorem ph_sum : ∀ (M : Type) [AddCommGroup M] [Fintype M] (f : M → ℂ), Quad ⊤ f → Ph (∑ x, f x) := by
   intro M _ _ f ⟨h1, h3⟩
   have hmu : ∀ x, IsMu (f x) := fun x => h1 x trivial

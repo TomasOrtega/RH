@@ -18,6 +18,13 @@ section Comm
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hstd : IsStd B.ψ` using `hP.base.std`. Establish `h1m : (1 : UA σ W.J) ∈ UAt σ W (evFin F v)` using `(UAtSub σ W (evFin F v)).one_mem`. Establish `hspl` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hP.weil`. Use `GlobalTheory.TensUniq.eq_of_tens_eq v ψ _ _ hψ fun r hr => ?_` and prove the remaining obligations. Establish `h1 : Acts (evFin F v) (om (q, 1)) ψ (locOp v (om (q, 1)) ψ)` using `acts_locOp_om hA hP hq h1m hψ`.
+
+Establish `hR1 : Rest (evFin F v) (locOp v (om (q, 1)) ψ) r` using `⟨hr.1, by rw [← h1 r hr]; exact hspl.pres _ _ hr.2⟩`. Establish `h2` using `(locOp_rho M.co hstd.1 v w hψ).1`. Establish `hR2 : Rest (evFin F v) (locOp v (M.co.rho B.ψ (partFin v w)) ψ) r` using `⟨hr.1, by rw [← h2 r hr]; exact GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hstd _ _ hr.2⟩`. Establish `h3` using `(locOp_rho M.co hstd.1 v w (locOp_mem v (om (q, 1)) ψ)).1 r hR1`. Establish `h4` using `acts_locOp_om hA hP hq h1m (locOp_mem v (M.co.rho B.ψ (partFin v w)) ψ) r hR2`.
+
+Rewrite using `[← h3, ← h4, ← h1 r hr, ← h2 r hr, hspl.impl _ _ _ hr.2]`. Use `congr 2`. Simplify using `only [actAB, partFin]`. Rewrite using `[show (((1 : UA σ W.J) : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = 1 from rfl, Matrix.transpose_one, Matrix.mul_one, Matrix.mul_smul]`. Conclude with `congrArg (fun z => GlobalTheory.LatVac.liftV v 1 • z) hw.symm`.
+-/
 theorem locOp_rho_comm (hA : ActsEx) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W}
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') {v : Pl F}
     {q : UA σ X.J} (hq : q ∈ UAt σ X (evFin F v)) {w : Matrix (Fin n) (Fin d) (AE F E)} (hw : mat q * w = w)
@@ -47,6 +54,25 @@ end GlobalTheory.ThK.EvFunProps
 
 namespace GlobalTheory.ThK.EvFunProps
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he ei ev hloc X om om' om₁ om₁' hT hT₁ v l hl φ hφ`. Establish `hA : ActsEx` using `GlobalTheory.T.theta_action_exists hPr`. Establish `hP` using `Inhab.pairV hT`. Establish `h1W : (1 : UA σ G.W.J) ∈ UAt σ G.W (evFin F v)` using `(UAtSub σ G.W (evFin F v)).one_mem`. Establish `hcomp : ∀ x y, x ∈ UAt σ G.V (evFin F v) → y ∈ UAt σ G.V (evFin F v) → ∀ ψ ∈ SB (Fin (b + 2) × Fin (b + 2 + a') → Fv F v), locOp v (om (x * y, 1)) ψ = locOp v (om (x, 1)) (locOp v (om (y, 1)) ψ)`.
+
+Introduce `x y hx hy ψ hψ`. Establish `h` using `locOpMul hPr F E σ B _ _ G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hP v (x, 1) (y, 1) hx h1W hy h1W ψ hψ`. Rewrite `h` using `[Prod.mk_mul_mk, mul_one]`. Then use the resulting hypothesis. Establish `hEv` using `GlobalTheory.T.eval_invariance_first_of_hypotheses hPr F E σ B b a' G G₁ H H' hC e he ei ev hloc X om om' om₁ om₁' hT hT₁ v l hl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `q hq hqx x hx`. Establish `hw : mat q * shiftA H H' 1 = shiftA H H' 1`. Rewrite using `[shiftA, Units.val_one, one_smul]`. Use extensionality with `i j`. Establish `hi` using `congrFun hqx i`.
+
+Use `(show _ = ∑ k, mat q i k * (incV F H.x k * incV F H'.y j) from rfl).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.vecMulVec_apply, ← hi]`. Use `Eq.trans ?_ (show (∑ k, mat q i k * incV F H.x k) * incV F H'.y j = _ from rfl)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => (mul_assoc _ _ _).symm`.
+
+Simplify using `only [coneEvFun]`. Rewrite using `[hcomp q x hq hx φ hφ, locOp_rho_comm hA hP hq hw (locOp_mem v _ φ)]`. Take `⟨u, hu, huv, g₀, g, hlev, hg, hg₀, rfl⟩` from `GlobalTheory.T.stabilizer_fixes_isotropic_vector F E σ B b a' G G₁ H H' hC X om om' om₁ om₁' hT hT₁ v q hq hqx`. Rewrite using `[hcomp u g huv hg _ (locOp_mem v _ _), hEv.1 u hu huv _ (locOp_mem v _ _), hEv.2 g₀ g hlev hg hg₀ _ (locOp_mem v _ _)]`. Introduce `g hg x hx`.
+
+Simplify using `only [coneEvFun]`. Rewrite using `[hcomp x g hx hg φ hφ]`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Take `⟨U, hU, hUfix⟩` from `(hA F E σ B _ _ G.V G.W G.M X.β _ om _ _ _ _ hP v).2.2 φ hφ`. Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations.
+
+Establish `hc : Continuous fun y : UAtSub σ G.V (evFin F v) => ((x.1⁻¹ * y.1, (1 : UA σ G.W.J)) : UA σ G.V.J × UA σ G.W.J)` using `(continuous_const.mul continuous_subtype_val).prodMk continuous_const`. Establish `hx1 : ((x.1⁻¹ * x.1, (1 : UA σ G.W.J)) : UA σ G.V.J × UA σ G.W.J) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Establish `hS : {y : UAtSub σ G.V (evFin F v) | ((x.1⁻¹ * y.1, (1 : UA σ G.W.J)) : UA σ G.V.J × UA σ G.W.J) ∈ U} ∈ 𝓝 x` using `hc.continuousAt.preimage_mem_nhds (by rw [hx1]; exact hU)`.
+
+Use `(continuousAt_const : ContinuousAt (fun _ : UAtSub σ G.V (evFin F v) => coneEvFun B G H H' om v (ev v) l φ x.1) x).congr ?_` and prove the remaining obligations. Use `filter_upwards [hS] with y hy`. Establish `hmem : x.1⁻¹ * y.1 ∈ UAt σ G.V (evFin F v)` using `(UAtSub σ G.V (evFin F v)).mul_mem (inv_mem x.2) y.2`. Establish `hfix : locOp v (om (x.1⁻¹ * y.1, 1)) φ = φ` using `locOp_eq hφ hφ (hUfix _ hy hmem h1W)`. Establish `hy' : y.1 = x.1 * (x.1⁻¹ * y.1)` using `(mul_inv_cancel_left _ _).symm`.
+
+Simplify using `only [coneEvFun]`. Use `conv_rhs => rw [hy', hcomp x.1 _ x.2 hmem φ hφ, hfix]`.
+-/
 theorem evFunProps : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ ei ev, IsLocPart G.M G₁.M e ei ev →

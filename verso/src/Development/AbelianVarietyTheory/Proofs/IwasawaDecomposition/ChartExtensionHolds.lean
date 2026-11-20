@@ -8,6 +8,9 @@ noncomputable section
 
 namespace GlobalTheory.LocM.Cht
 
+/- English proof (translation)
+Use `IsFractionRing.of_field _ _ fun z => ?_` and prove the remaining obligations. Distinguish the cases in `h : ‖z‖ ≤ 1`. Conclude with `⟨⟨z, h⟩, 1, by rw [map_one, div_one]; rfl⟩`. Conclude with `⟨1, ⟨z⁻¹, show ‖z⁻¹‖ ≤ 1 by rw [norm_inv]; exact inv_le_one_of_one_le₀ (le_of_not_ge h)⟩, by rw [map_one, one_div]; exact (inv_inv z).symm⟩`.
+-/
 theorem isFractionRing_ball (C : Type) [NormedField C] [IsUltrametricDist C] : IsFractionRing (intO C) C := by
   refine IsFractionRing.of_field _ _ fun z => ?_
   by_cases h : ‖z‖ ≤ 1
@@ -20,6 +23,19 @@ section Ext
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W}
 
+/- English proof (translation)
+Use `(Y i).jQ_open` as an intermediate fact. Set `g : i.c.V W →+* k` to `(Spec.preimage (x ≫ (Y i).s)).hom`. Establish `hg : spMap g = x ≫ (Y i).s` using `Spec.map_preimage _`. Establish `hinj : Function.Injective g`. Take `⟨q⟩ : Nonempty (Sp k)` from `inferInstanceAs (Nonempty (PrimeSpectrum k))`.
+
+Take `⟨y₀, hy₀⟩` from `hx ⟨q, rfl⟩`. Establish `e1 : (spMap g) q = (pullback.snd _ _ ≫ spMap (i.c.V W).subtype) y₀`. Rewrite using `[hg, ← Model.j_s, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hy₀]`. Rewrite `e1` using `[Scheme.Hom.comp_apply]`. Take `⟨r, hr⟩ : ∃ r : PrimeSpectrum i.c.F, (spMap g) q = (spMap (i.c.V W).subtype) r` from `⟨_, e1⟩`.
+
+Establish `e2` using `congrArg PrimeSpectrum.asIdeal hr`. Express the relevant statement in the definitionally equal form `Ideal.comap g q.asIdeal = Ideal.comap (i.c.V W).subtype r.asIdeal at e2`. Rewrite `e2` using `[@Ideal.eq_bot_of_prime _ _ _ q.2, Ideal.eq_bot_of_prime (K := i.c.F) r.asIdeal, Ideal.comap_bot_of_injective _ (i.c.V W).subtype_injective]`. Conclude with `(RingHom.injective_iff_ker_eq_bot g).2 e2`. Set `f : i.c.F →+* k` to `IsFractionRing.lift hinj`.
+
+Establish `hf : f.comp (i.c.V W).subtype = g` using `RingHom.ext fun a => IsFractionRing.lift_algebraMap hinj a`. Establish `hpre : IsPreimmersion (spMap (i.c.V W).subtype)` using `IsPreimmersion.of_isLocalization (R := i.c.V W) (S := i.c.F) (nonZeroDivisors _)`. Set `q : Sp k ⟶ pullback (Y i).s (spMap (i.c.V W).subtype)` to `pullback.lift x (spMap f) (by rw [← hg, ← hf, spMap_comp])`. Establish `hq : q ≫ pullback.fst _ _ = x` using `pullback.lift_fst _ _ _`. Establish `hr : Set.range q ⊆ Set.range (Y i).jQ`.
+
+Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨y, hy⟩` from `hx ⟨z, rfl⟩`. Use `⟨y, (pullback.fst (Y i).s (spMap (i.c.V W).subtype)).isEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hq]`. Conclude with `hy`.
+
+Use `⟨f, IsOpenImmersion.lift _ q hr, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← (Y i).jQ_over, IsOpenImmersion.lift_fac_assoc]`. Conclude with `pullback.lift_snd _ _ _`. Rewrite using `[Model.j, IsOpenImmersion.lift_fac_assoc, hq]`.
+-/
 theorem exists_pt_of_range (i : Idx H p) (k : Type) [Field k] (x : Sp k ⟶ (Y i).X)
     (hx : Set.range x ⊆ Set.range (Y i).j) :
     ∃ (f : i.c.F →+* k) (y : Sp k ⟶ (Xo i.l).XF i.c), y ≫ pullback.snd _ _ = spMap f ∧ y ≫ (Y i).j = x := by
@@ -56,6 +72,13 @@ theorem exists_pt_of_range (i : Idx H p) (k : Type) [Field k] (x : Sp k ⟶ (Y i
     exact pullback.lift_snd _ _ _
   · rw [Model.j, IsOpenImmersion.lift_fac_assoc, hq]
 
+/- English proof (translation)
+Set `alg : Z.i.c.V W →+* ↥(intO ↥C.S)` to `(Spec.preimage (z ≫ Z.s)).hom`. Establish `halg : spMap alg = z ≫ Z.s` using `Spec.map_preimage _`. Take `⟨f, y, hy₁, hy₂⟩` from `exists_pt_of_range (Y := Y) Z.i ↥C.S (spMap (intO ↥C.S).subtype ≫ z ≫ Z.π) (by`. Introduce and unpack `_ ⟨q, rfl⟩`. Use `hz ⟨q, rfl⟩` as an intermediate fact.
+
+Rewrite using `[← Category.assoc]`. Conclude with `this)`. Establish `hs : z ≫ Z.π ≫ (Y Z.i).s = spMap alg` using `by rw [halg, Z.π_s]`. Establish `compat : (intO ↥C.S).subtype.comp alg = f.comp (Z.i.c.V W).subtype`. Establish `h : spMap ((intO ↥C.S).subtype.comp alg) = spMap (f.comp (Z.i.c.V W).subtype)`.
+
+Rewrite using `[spMap_comp, spMap_comp, ← hs, ← hy₁, Category.assoc, ← Model.j_s, ← Category.assoc y, hy₂]`. Simplify using `only [Category.assoc]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`. Conclude with `⟨⟨⟨alg, f, compat, y, hy₁, z ≫ Z.π, hs, by rw [hy₂]⟩, z, rfl⟩, rfl⟩`.
+-/
 theorem exists_ptAt {i₀ : Idx H p} (Z : Mdl Y i₀) (C : SCF p) (z : Sp ↥(intO ↥C.S) ⟶ Z.X)
     (hz : Set.range (spMap (intO ↥C.S).subtype ≫ z) ⊆ Z.opn) : ∃ y : PtAt Z C, y.z = z := by
   let alg : Z.i.c.V W →+* ↥(intO ↥C.S) := (Spec.preimage (z ≫ Z.s)).hom
@@ -73,6 +96,11 @@ theorem exists_ptAt {i₀ : Idx H p} (Z : Mdl Y i₀) (C : SCF p) (z : Sp ↥(in
     exact congrArg CommRingCat.Hom.hom (Spec.map_injective h)
   exact ⟨⟨⟨alg, f, compat, y, hy₁, z ≫ Z.π, hs, by rw [hy₂]⟩, z, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Establish `: IsProper Z.s` using `projProper _ _ Z.s ⟨Z.n, Z.I.subschemeι, inferInstance, rfl⟩`. Use `isFractionRing_ball ↥C.S` as an intermediate fact. Establish `hE : ValuativeCriterion.Existence Z.s` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed Z.s) : (ValuativeCriterion.Existence ⊓ @QuasiCompact : MorphismProperty Scheme) Z.s).1`. Set `S : ValuativeCommSq Z.s` to `{ R := ↥(intO ↥C.S) K := ↥C.S i₁ := w i₂ := spMap alg commSq := ⟨by rw [hws, spMap_comp]; rfl⟩ }`. Take `⟨⟨l⟩⟩` from `hE S`.
+
+Establish `hl : spMap (intO ↥C.S).subtype ≫ l.l = w` using `l.fac_left`. Take `⟨y, hy⟩` from `exists_ptAt Z C l.l (by rw [hl]; exact hw)`. Conclude with `⟨y, by rw [PtAt.gen, hy, hl]⟩`.
+-/
 theorem exists_ptAt_gen {i₀ : Idx H p} (Z : Mdl Y i₀) (C : SCF p) (w : Sp ↥C.S ⟶ Z.X)
     (alg : Z.i.c.V W →+* ↥(intO ↥C.S)) (hw : Set.range w ⊆ Z.opn)
     (hws : w ≫ Z.s = spMap ((intO ↥C.S).subtype.comp alg)) : ∃ y : PtAt Z C, y.gen = w := by
@@ -92,6 +120,9 @@ theorem exists_ptAt_gen {i₀ : Idx H p} (Z : Mdl Y i₀) (C : SCF p) (w : Sp �
   obtain ⟨y, hy⟩ := exists_ptAt Z C l.l (by rw [hl]; exact hw)
   exact ⟨y, by rw [PtAt.gen, hy, hl]⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀`. Conclude with `⟨fun i k _ x hx => exists_pt_of_range i k x hx, fun Z C z hz => exists_ptAt Z C z hz, fun Z C w alg hw hws => exists_ptAt_gen Z C w alg hw hws⟩`.
+-/
 theorem extendSt : ExtendSt := by
   intro E _ _ _ H Dw Xo p W Y i₀
   exact ⟨fun i k _ x hx => exists_pt_of_range i k x hx, fun Z C z hz => exists_ptAt Z C z hz,

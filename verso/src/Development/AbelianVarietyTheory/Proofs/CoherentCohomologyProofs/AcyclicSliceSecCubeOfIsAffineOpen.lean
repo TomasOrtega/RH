@@ -40,6 +40,13 @@ def secCubeLE {κ : Type} (V : Finset κ → Y.Opens) (hV : Antitone V) : Cube.{
 
 variable {M}
 
+/- English proof (translation)
+Establish `e₁ : W ⊓ Y.basicOpen a = Y.basicOpen (rs Y h a)` using `(Y.basicOpen_res a (homOfLE h).op).symm`. Establish `e₂ : W ⊓ Y.basicOpen a = Y.basicOpen (rs Y (e.trans h) a)` using `(le_antisymm (le_inf ha inf_le_right) (inf_le_inf_right _ e)).trans (Y.basicOpen_res a (homOfLE (e.trans h)).op).symm`. Take `⟨k₁, c₁⟩` from `secOn_basicOpen_localization Y M W _ _ inf_le_left hM hW.isCompact hW.isQuasiSeparated e₁`. Take `⟨k₂, -⟩` from `secOn_basicOpen_localization Y M W' _ _ ha hM hW'.isCompact hW'.isQuasiSeparated e₂`. Use `⟨fun y hy => ?_, fun z => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_pow]`. Use `k₁ y ?_` and prove the remaining obligations. Rewrite using `[← SecOn.restrict_restrict e ha, hy, map_zero]`. Take `⟨n, x, hx⟩` from `c₁ (SecOn.restrict M ha z)`. Take `⟨m, hm⟩` from `k₂ (SecOn.restrict M e x - rs Y (e.trans h) a ^ n • z) (by`.
+
+Rewrite using `[map_sub, SecOn.restrict_restrict, hx, map_smulₛₗ, map_pow, rs_rs, rs_rs, sub_self])`. Use `⟨m + n, rs Y h a ^ m • x, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[smul_sub, sub_eq_zero]`. Rewrite using `[map_smulₛₗ, map_pow, rs_rs, hm, map_pow, pow_add, mul_smul]`.
+-/
 theorem restrict_torsion (hM : M.IsLB) {V W W' : Y.Opens} (hW : IsAffineOpen W)
     (hW' : IsAffineOpen W') (h : W ≤ V) (e : W' ≤ W) (a : Γ(Y, V))
     (ha : W ⊓ Y.basicOpen a ≤ W') :
@@ -65,6 +72,15 @@ theorem restrict_torsion (hM : M.IsLB) {V W W' : Y.Opens} (hW : IsAffineOpen W)
     rw [smul_sub, sub_eq_zero] at hm
     rw [map_smulₛₗ, map_pow, rs_rs, hm, map_pow, pow_add, mul_smul]
 
+/- English proof (translation)
+Rewrite using `[HomologicalComplex.exactAt_iff_isZero_homology, ModuleCat.isZero_iff_subsingleton]`. Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Set `S : Set Γ(Y, V ∅)` to `{a | ∃ k, Y.basicOpen a ≤ U k}`. Establish `hS : Ideal.span S = ⊤`. Rewrite using `[← (ha ∅).self_le_iSup_basicOpen_iff]`.
+
+Introduce `y hy`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hU hy)`. Take `⟨a, h₁, h₂⟩` from `(ha ∅).exists_basicOpen_le (V := U k) ⟨y, hk⟩ hy`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨a, k, h₁⟩, h₂⟩`. Use `(Submodule.mem_bot _).1 (Submodule.mem_of_span_eq_top_of_smul_pow_mem ⊥ _ hS x ?_)` and prove the remaining obligations.
+
+Introduce and unpack `⟨a, k, hk⟩`. Establish `key (s : Finset κ)` using `restrict_torsion hM (ha s) (ha (insert k s)) (hV (Finset.empty_subset s)) (hV (Finset.subset_insert k s)) a ((inf_le_inf_left _ hk).trans (hVU k s))`. Take `⟨_, ⟨n, rfl⟩, h⟩` from `cubeComplex_exists_smul_homology_eq_zero (secCubeLE M V hV) (.powers a) k (fun s _ y hy => by`. Take `⟨n, hn⟩` from `(key s).1 y hy`. Conclude with `⟨_, ⟨n, rfl⟩, hn⟩)`.
+
+Use the proof step `(fun s _ z => by`. Take `⟨n, y, hn⟩` from `(key s).2 z`. Conclude with `⟨_, ⟨n, rfl⟩, y, hn⟩) p x`. Conclude with `⟨n, h⟩`.
+-/
 theorem secCubeLE_exactAt (hM : M.IsLB) {κ : Type} [LinearOrder κ] [Finite κ]
     (V : Finset κ → Y.Opens) (hV : Antitone V) (ha : ∀ s, IsAffineOpen (V s)) (U : κ → Y.Opens)
     (hU : V ∅ ≤ ⨆ k, U k) (hVU : ∀ k s, V s ⊓ U k ≤ V (insert k s)) (p : ℕ) :
@@ -93,6 +109,15 @@ theorem secCubeLE_exactAt (hM : M.IsLB) {κ : Type} [LinearOrder κ] [Finite κ]
       exact ⟨_, ⟨n, rfl⟩, y, hn⟩) p x
   exact ⟨n, h⟩
 
+/- English proof (translation)
+Introduce `R _ Y f M μ κ _ _ _ D e s₀ hM hc ha p`. Set `V : Finset κ → Y.Opens` to `fun t => ⨅ i ∈ s₀ ∪ t.map e.toEmbedding, D i`. Establish `hV : Antitone V` using `fun _ _ h => iInf_le_iInf_of_subset D (Cube.monotone_union_map e s₀ h)`. Establish `H` using `secCubeLE_exactAt hM V hV ha (fun k => D (e k)) ((iInf_le_iInf_of_subset D Finset.subset_union_left).trans hc) (fun k s => by`. Simplify using `only [V, Finset.map_insert, Finset.union_insert, Finset.iInf_insert]`.
+
+Conclude with `le_inf inf_le_right inf_le_left)`. Establish `hd (q : ℕ) (x : Cube.Term (Cube.slice e s₀ (secCube f M D)) q) : Cube.d (Cube.slice e s₀ (secCube f M D)) q x = Cube.d (secCubeLE M V hV) q x`. Use function extensionality and compare the values at `fun t => (Cube.d_apply _ q x t).trans (Cube.d_apply (secCubeLE M V hV) q x t).symm`. Consider the cases of `p with`. Consider the case `zero`.
+
+Rewrite using `[cubeComplex_exactAt_zero_iff']`. Conclude with `fun x y h => (cubeComplex_exactAt_zero_iff' _).1 (H 0) ((hd 0 x).symm.trans (h.trans (hd 0 y)))`. Consider the case `succ p`. Rewrite using `[cubeComplex_exactAt_succ_iff]`. Introduce `x`.
+
+Use `⟨fun hx => ?_, by rintro ⟨y, rfl⟩; exact Cube.d_d _ p y⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `((cubeComplex_exactAt_succ_iff _ p).1 (H (p + 1)) x).1 ((hd _ x).symm.trans hx)`. Conclude with `⟨y, (hd p y).trans hy⟩`.
+-/
 theorem acyclic_slice_secCube_of_isAffineOpen :
     ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (M : LB Y) (μ κ : Type) [LinearOrder μ] [LinearOrder κ] [Fintype κ] (D : μ → Y.Opens) (e : κ ↪o μ) (s₀ : Finset μ), M.IsLB → (⨅ i ∈ s₀, D i) ≤ ⨆ k, D (e k) → (∀ t : Finset κ, IsAffineOpen (⨅ i ∈ s₀ ∪ t.map e.toEmbedding, D i)) → (cubeComplex (Cube.slice e s₀ (secCube f M D))).Acyclic := by
   intro R _ Y f M μ κ _ _ _ D e s₀ hM hc ha p

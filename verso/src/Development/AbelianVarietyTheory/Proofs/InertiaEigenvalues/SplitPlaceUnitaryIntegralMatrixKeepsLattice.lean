@@ -18,6 +18,17 @@ noncomputable section
 
 namespace GlobalTheory.DownLift.SplitIntLift
 
+/- English proof (translation)
+Use `choose Y hY using fun i j => hl (h.1 i j)`. Take `⟨u, hu⟩` from `hl (h⁻¹).1.det`. Establish `eY : (Matrix.of Y).map (π.comp S.subtype) = h.1.map ι` using `Matrix.ext hY`. Use `⟨Matrix.of Y, p * u, hY, Subtype.ext ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : π ((Matrix.of Y).det : S) = ι h.1.det`.
+
+Rewrite using `[RingHom.map_det ι, RingHom.mapMatrix_apply, ← eY, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Both sides reduce to the same expression. Use `hinj (u * ((Matrix.of Y).det : S) - 1) (by` as an intermediate fact. Rewrite using `[map_sub, map_mul, hu, e1, ← map_mul, ← Matrix.det_mul, Units.inv_mul, Matrix.det_one, map_one, map_one, sub_self])`. Use `push_cast`.
+
+Take the linear combination `this`. Establish `e2 : Matrix.GeneralLinearGroup.map π g = Matrix.GeneralLinearGroup.map π β * Matrix.GeneralLinearGroup.map ι h * Matrix.GeneralLinearGroup.map π β⁻¹`. Rewrite using `[← hg, map_inv]`. Use `group`. Establish `e3 : g.1.map π = (β.1 * (Matrix.of Y).map S.subtype * (β⁻¹).1).map π`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.map_map]`. Conclude with `(congrArg Units.val e2).trans (congrArg (fun z => β.1.map π * z * (β⁻¹).1.map π) eY.symm)`. Use extensionality with `i j`. Use `hinj (g.1 i j - (β.1 * (Matrix.of Y).map S.subtype * (β⁻¹).1) i j) (by` as an intermediate fact. Rewrite using `[map_sub, sub_eq_zero]`.
+
+Conclude with `congrFun (congrFun e3 i) j)`. Rewrite `this` using `[mul_sub, sub_eq_zero]`. Conclude with `this`.
+-/
 theorem exists_lift {R K O : Type} [CommRing R] [CommRing K] [CommRing O] {n : ℕ} (S : Subring R) (π : R →+* K)
     (ι : O →+* K) (p : S) (hinj : ∀ x, π x = 0 → (p : R) * x = 0) (hl : ∀ o, ∃ s : S, π s = ι o)
     (h : GL (Fin n) O) (β g : GL (Fin n) R)
@@ -52,9 +63,17 @@ open GlobalTheory.LevSplit GlobalTheory.ParahoricLift Formalism.L2.NTheta Global
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SplitProjChart.rdE_toEAf φ a`.
+-/
 theorem rdE_finSw {v : FinPl D} (φ : SplitProj D v) (a : Formalism.L2.Theta.AE D) : rdE φ (finSw D a) = rdA φ a :=
   GlobalTheory.SplitProjChart.rdE_toEAf φ a
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, RingHom.map_zero _⟩`. Consider the case `tmul x a => exact ⟨(show AF D.host.F from (0, a)) ⊗ₜ x, rfl⟩`. Consider the case `add a b ha hb`. Take `⟨s, rfl⟩` from `ha`.
+
+Take `⟨t, rfl⟩` from `hb`. Conclude with `⟨s + t, RingHom.map_add _ _ _⟩`.
+-/
 theorem finSw_surjective (z : Formalism.IndefR.Lev.EAf D) : ∃ w, finSw D w = z := by
   induction z using TensorProduct.induction_on with
   | zero => exact ⟨0, RingHom.map_zero _⟩
@@ -64,12 +83,18 @@ theorem finSw_surjective (z : Formalism.IndefR.Lev.EAf D) : ∃ w, finSw D w = z
     obtain ⟨t, rfl⟩ := hb
     exact ⟨s + t, RingHom.map_add _ _ _⟩
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `finSw_surjective x`. Rewrite `hx` using `[rdE_finSw]`. Rewrite using `[← RingHom.map_mul, ((GlobalTheory.SplitProjChart.chart_rdA D v φ e he).1.2.1 w).1 hx, RingHom.map_zero]`.
+-/
 theorem cut_inj {v : FinPl D} {φ : SplitProj D v} {e : Formalism.L2.Theta.AE D} (he : IsIdemOf φ e)
     (x : Formalism.IndefR.Lev.EAf D) (hx : rdE φ x = 0) : finSw D e * x = 0 := by
   obtain ⟨w, rfl⟩ := finSw_surjective x
   rw [rdE_finSw] at hx
   rw [← RingHom.map_mul, ((GlobalTheory.SplitProjChart.chart_rdA D v φ e he).1.2.1 w).1 hx, RingHom.map_zero]
 
+/- English proof (translation)
+Take `⟨h1, -, -, h4⟩` from `(GlobalTheory.SplitProjChart.chart_rdA D v φ e he).1`. Take `⟨a, ha⟩` from `h1 (algebraMap (OI v) (Fv D.host.F v) o)`. Use `⟨⟨finSw D (e * a), swapAE_int ((h4 a).2 ⟨o, ha.symm⟩)⟩, ?_⟩` and prove the remaining obligations. Use `show rdE φ (finSw D (e * a)) = _`. Rewrite using `[rdE_finSw, RingHom.map_mul, he.2.2, one_mul, ha]`.
+-/
 theorem int_lift {v : FinPl D} {φ : SplitProj D v} {e : Formalism.L2.Theta.AE D} (he : IsIdemOf φ e) (o : OI v) :
     ∃ s : Formalism.L2.Herm.intAf D.host.F D.host.E, rdE φ s = algebraMap (OI v) (Fv D.host.F v) o := by
   obtain ⟨h1, -, -, h4⟩ := (GlobalTheory.SplitProjChart.chart_rdA D v φ e he).1
@@ -80,6 +105,19 @@ theorem int_lift {v : FinPl D} {φ : SplitProj D v} {e : Formalism.L2.Theta.AE D
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D V β Λ N hB P v φ e hP0 he0 red hred h κ hs hκ0`. Establish `he : IsIdemAt e P` using `(((GlobalTheory.SplitIdemDict.idem_dictionary D).2 v φ P hP0).2.2 e he0).1`. Take `⟨p, hp, hpp, hres⟩` from `exists_idem_int he`. Establish `hg : (Matrix.GeneralLinearGroup.map (rdE φ) β)⁻¹ * Matrix.GeneralLinearGroup.map (rdE φ) (finE V κ) * Matrix.GeneralLinearGroup.map (rdE φ) β = Matrix.GeneralLinearGroup.map (algebraMap (OI v) (Fv D.host.F v)) h`. Rewrite using `[← hκ0]`.
+
+Establish `: Matrix.GeneralLinearGroup.map (rdE φ) (finE V κ) = Matrix.GeneralLinearGroup.map (rdA φ) (Formalism.L2.Theta.matHom V κ)` using `Units.ext (Matrix.ext fun i j => rdE_finSw φ (Formalism.L2.Theta.mt V κ i j))`. Rewrite using `[this]`. Both sides reduce to the same expression. Take `⟨Y, u, hY, hu', hκ⟩` from `exists_lift (Formalism.L2.Herm.intAf D.host.F D.host.E) (rdE φ) (algebraMap (OI v) (Fv D.host.F v)) p (fun x hx => hp ▸ cut_inj he0 x hx) (int_lift he0) h β (finE V κ) hg`. Establish `hP : IsPrimeIdem P e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`.
+
+Take `⟨-, -, T3, -⟩` from `GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V`. Establish `hsf` using `supp_fin V (f := e + cA D e) hs`. Establish `hf : finSw D (e + cA D e) = p + Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) p`. Rewrite using `[RingHom.map_add, finSw_cA, hp]`. Establish `hSt : finE V κ ∈ St β` using `mem_St_of_part D.sp.cm.sig V.gram Λ β hB.1 (hatL_selfDual hB) p u hpp (sigR_int p.2) Y hu' (finE V κ) (finE_mem_UA V κ) _ hf hsf hκ`.
+
+Use `⟨(T3 P e _ hP).2.2.1 κ hs, hSt, Units.ext ?_, fun P' h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[redFn_of_smul_eq β P _ hSt p hres Y hκ]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Take `⟨hi, hr⟩` from `hred (Y i j) (Y i j).2`. Conclude with `hr.symm.trans (congrArg red (Subtype.ext (hY i j)))`.
+
+Take `⟨y, y', hy, hyy, a1, a2⟩` from `exists_sep h1 fun h => h2 (isConjPl_symm h)`. Take `⟨w, hw⟩` from `idem_div_int hP y y' hyy a1 a2`. Use `redFn_eq_one β P' _ hSt (w * oToS D.host.F D.host.E y) ?_ ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, resS_oToS, Ideal.Quotient.eq_zero_iff_mem.2 hy, mul_zero]`. Establish `e1 : ((w * oToS D.host.F D.host.E y : Formalism.L2.Herm.intAf D.host.F D.host.E) : Formalism.IndefR.Lev.EAf D) = finSw D (e + cA D e)` using `hw`.
+
+Rewrite using `[e1]`. Conclude with `hsf`.
+-/
 theorem lift_of_integral : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsBaseFrame V β Λ N → ∀ (PP : Pl D.host.E) (v : FinPl D) (φ : SplitProj D v) (e : Formalism.L2.Theta.AE D), IsProjAt φ PP → IsIdemOf φ e → ∀ (red : OI v →+* kP PP), (∀ (a : Formalism.IndefR.Lev.EAf D) (ha : a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), ∃ h : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ a ∈ v.adicCompletionIntegers D.host.F, red ⟨GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ a, h⟩ = resS D.host.F PP ⟨a, ha⟩) → ∀ (h : GL (Fin V.rank) (OI v)) (κ : GA D V), Formalism.L2.Theta.SuppAt e V κ → grpCo φ V (frCo φ β) κ = Matrix.GeneralLinearGroup.map (algebraMap (OI v) (Fv D.host.F v)) h → κ ∈ GfC V ∧ finE V κ ∈ Formalism.L2.DIV.St β ∧ redFn β PP (finE V κ) = Matrix.GeneralLinearGroup.map red h ∧ ∀ PP', PP' ≠ PP → ¬ Formalism.IndefR.Lev.IsConjPl PP PP' → redFn β PP' (finE V κ) = 1 := by
   intro D V β Λ N hB P v φ e hP0 he0 red hred h κ hs hκ0
   have he : IsIdemAt e P := (((GlobalTheory.SplitIdemDict.idem_dictionary D).2 v φ P hP0).2.2 e he0).1

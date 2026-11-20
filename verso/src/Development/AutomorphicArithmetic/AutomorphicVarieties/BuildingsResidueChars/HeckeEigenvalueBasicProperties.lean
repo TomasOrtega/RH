@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Af.Sol
 
+/- English proof (translation)
+Unfold `UpperTheory.V.Af.algSat at h`. Establish `hc : ((((q : ℝ) ^ (((n : ℝ) - 1) / 2)) : ℝ) : ℂ) ≠ 0`. Establish `: (0 : ℝ) < (q : ℝ) ^ (((n : ℝ) - 1) / 2)` using `Real.rpow_pos_of_pos (by exact_mod_cast Nat.pos_of_ne_zero hq) _`. Conclude with `this.ne'` after adjusting the coercions. Establish `h1` using `Multiset.map_injective (mul_right_injective₀ hc) h`.
+
+Establish `h2 : ∀ s : Multiset ℂˣ, (do let a ← s; pure (a : ℂ)) = Multiset.map (fun a : ℂˣ => (a : ℂ)) s` using `fun s => Multiset.bind_singleton _ _`. Rewrite `h1` using `[h2, h2]`. Conclude with `Multiset.map_injective Units.val_injective h1`.
+-/
 private theorem algSat_injective (n q : ℕ) (hq : q ≠ 0) (B B' : Multiset ℂˣ)
     (h : UpperTheory.V.Af.algSat n q B = UpperTheory.V.Af.algSat n q B') : B = B' := by
   unfold UpperTheory.V.Af.algSat at h
@@ -15,6 +20,17 @@ private theorem algSat_injective (n q : ℕ) (hq : q ≠ 0) (B B' : Multiset ℂ
   rw [h2, h2] at h1
   exact Multiset.map_injective Units.val_injective h1
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ ι v`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω v`. Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_isFrob hA`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `δ δ' z z' hz hz' A' hA'`.
+
+Take `⟨hi, hf⟩` from `hz A' hA'`. Take `⟨hi', hf'⟩` from `hz' A' hA'`. Use `⟨fun s hs => ?_, fun τ hτ => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, hi s hs, hi' s hs, inv_one, mul_one]`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, hf τ hτ, hf' τ hτ]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Introduce `δ z z' hz hz'`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← (hz A hA).2 σ hσ, ← (hz' A hA).2 σ hσ]`.
+
+Introduce `n r B B' hB hB'`. Establish `e1` using `(hB A hA).2 σ hσ`. Establish `e2` using `(hB' A hA).2 σ hσ`. Rewrite `e2` using `[e1]`. Establish `e3` using `congrArg Polynomial.roots e2`.
+
+Rewrite `e3` using `[Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Establish `hq : Formalism.ConjugateSelfDual.normV v ≠ 0`. Unfold `Formalism.ConjugateSelfDual.normV`. Conclude with `Nat.card_pos.ne'`. Conclude with `algSat_injective n _ hq B B' e3`.
+-/
 theorem UpperTheory.hecke_eigenvalue_basic_properties :
     UpperTheory.V.Af.Sol.EigBasic := by
   intro F Ω _ _ _ _ _ l _ ι v

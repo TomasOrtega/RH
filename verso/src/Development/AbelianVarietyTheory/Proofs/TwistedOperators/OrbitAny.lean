@@ -16,6 +16,11 @@ namespace GlobalTheory.AscFin.OrbitAny
 
 open GlobalTheory.FinPl.SplitOrbit
 
+/- English proof (translation)
+Introduce `D V₀ A L o ζ hζ L₀ LA LL v hL₀ hLA hLL hO γ hγ hz`. Establish `hT` using `GlobalTheory.FinPl.TamePlaces.tame D v`. Establish `hM` using `isSDAt_pre_unitary (GlobalTheory.T.isSelfDualLatticeAtPlace_latticeCompletion D V₀ L₀ v hL₀) γ⁻¹`. Take `⟨hA, hsplit⟩` from `split_of_le o hM (GlobalTheory.T.isSelfDualLatticeAtPlace_latticeCompletion D L LL v hLL) (line_le o hζ hO _ hz)`. Take `⟨a, ha, hmv⟩` from `GlobalTheory.T.selfDualLattices_single_orbit_tamePlace D A v _ _ hT (GlobalTheory.T.isSelfDualLatticeAtPlace_latticeCompletion D A LA v hLA) hA`.
+
+Conclude with `⟨a, ha, (o.emb (a, 1))⁻¹ * γ, ⟨mul_mem (inv_mem (emb_mem_grpAt o ha)) hγ, moves_of_split o hO γ a hsplit hmv⟩, (mul_inv_cancel_left _ _).symm⟩`.
+-/
 theorem orbitAny : ∀ (D : D7) (V₀ A L : HSp D) (o : OrthDec V₀ A L) (ζ : Fin L.rank → D.host.E), IsLineVec L ζ → ∀ (L₀ : Lat V₀) (LA : Lat A) (LL : Lat L) (v : GlobalTheory.FinPl.Pl D), IsSelfDualC V₀ L₀ → IsSelfDualC A LA → IsSelfDualC L LL → OrthAt o L₀ LA LL v → ∀ γ ∈ grpAt V₀ (· = v), (∀ a : AE D, a • ratV (vecB o ζ) ∈ latA V₀ L₀ (· = v) → mt V₀ γ⁻¹ *ᵥ (a • ratV (vecB o ζ)) ∈ latA V₀ L₀ (· = v)) → ∃ a ∈ grpAt A (· = v), ∃ κ, InK V₀ L₀ (· = v) κ ∧ γ = o.emb (a, 1) * κ := by
   intro D V₀ A L o ζ hζ L₀ LA LL v hL₀ hLA hLL hO γ hγ hz
   have hT := GlobalTheory.FinPl.TamePlaces.tame D v

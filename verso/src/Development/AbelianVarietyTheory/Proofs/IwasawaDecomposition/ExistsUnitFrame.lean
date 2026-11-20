@@ -8,10 +8,16 @@ noncomputable section
 
 namespace GlobalTheory.MtIn
 
+/- English proof (translation)
+Unfold `GlobalTheory.StdFrameExist.IsOrthF GlobalTheory.StdFrameExist.gA`. Rewrite using `[h, Matrix.map_one _ (map_zero _) (map_one _), Units.val_one, Formalism.UG.cT_one, Matrix.mul_one, Matrix.mul_one]`.
+-/
 theorem isOrthF_one {D : D7} (V : HSp D) (h : V.gram = 1) : GlobalTheory.StdFrameExist.IsOrthF V 1 := by
   unfold GlobalTheory.StdFrameExist.IsOrthF GlobalTheory.StdFrameExist.gA
   rw [h, Matrix.map_one _ (map_zero _) (map_one _), Units.val_one, Formalism.UG.cT_one, Matrix.mul_one, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Units.val_one, Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+-/
 theorem intM_one {D : D7} (n : ℕ) : GlobalTheory.StdFrameExist.IntM (GlobalTheory.StdFrameExist.SI D) (1 : GL (Fin n) (Lev.EAf D)).1 := by
   intro i j
   rw [Units.val_one, Matrix.one_apply]
@@ -19,6 +25,11 @@ theorem intM_one {D : D7} (n : ℕ) : GlobalTheory.StdFrameExist.IntM (GlobalThe
   · exact one_mem _
   · exact zero_mem _
 
+/- English proof (translation)
+Introduce `D V hF hg hV`. Establish `h` using `isOrthF_one V hg`. Use `⟨GlobalTheory.StdFrameExist.rowPsi V 1 h, GlobalTheory.StdFrameExist.stdFrame_rowPsi hF hV h (intM_one _) ?_, fun κ => ?_⟩` and prove the remaining obligations. Rewrite using `[inv_one]`. Conclude with `intM_one _`.
+
+Use `show finE V (GlobalTheory.StdFrameExist.psiF V 1 h κ) = _`. Rewrite using `[GlobalTheory.StdFrameExist.finE_psiF, one_mul, inv_one, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem exists_unit_frame : ∀ (D : D7) (V : HSp D) (hF : D.host.F = maximalRealSubfield D.host.E), V.gram = 1 → Seed.FrmC.StdLat V → ∃ P : principalLevelFrame.RowPsi V V.rank, StdFrame hF P ∧ UnitFr P := by
   intro D V hF hg hV
   have h := isOrthF_one V hg

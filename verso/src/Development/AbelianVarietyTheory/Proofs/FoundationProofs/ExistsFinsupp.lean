@@ -22,9 +22,23 @@ def dm (x y : ℂ × ℂ) : ℂ × ℂ := (x.1 * y.1, x.1 * y.2 + x.2 * y.1)
 
 variable {M : ℕ} {A : ℤ} {v : ℂ}
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨k, h, rfl⟩`.
+-/
 theorem gen_mem {s k : ℤ} (h : (M : ℤ) ∣ s - A * k) : (v ^ k, k * v ^ k) ∈ jets M A v s :=
   AddSubgroup.subset_closure ⟨k, h, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨k, hk, rfl⟩` from `hx`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+
+Take `⟨l, hl, rfl⟩` from `hy`. Establish `h : (M : ℤ) ∣ s + t - A * (k + l)`. Use `dvd_add hk hl` as an intermediate fact. Rewrite `this` using `[show s - A * k + (t - A * l) = s + t - A * (k + l) by ring]`. Then use the resulting hypothesis. Use `gen_mem (v := v) h using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [dm, zpow_add₀ hv]`. Use `push_cast`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp only [dm, Prod.fst_zero, Prod.snd_zero, mul_zero, zero_mul, add_zero]`.
+
+Conclude with `zero_mem (jets M A v (s + t))`. Consider the case `add y y' _ _ h1 h2 => convert add_mem h1 h2 using 1; simp only [dm, Prod.mk_add_mk, Prod.fst_add, Prod.snd_add]; congr 1 <;> ring`. Consider the case `neg y _ h1 => convert neg_mem h1 using 1; simp only [dm, Prod.neg_mk, Prod.fst_neg, Prod.snd_neg]; congr 1 <;> ring`. Consider the case `zero => simp only [dm, Prod.fst_zero, Prod.snd_zero, mul_zero, zero_mul, add_zero]`. Conclude with `zero_mem (jets M A v (s + t))`.
+
+Consider the case `add y y' _ _ h1 h2 => convert add_mem h1 h2 using 1; simp only [dm, Prod.mk_add_mk, Prod.fst_add, Prod.snd_add]; congr 1 <;> ring`. Consider the case `neg y _ h1 => convert neg_mem h1 using 1; simp only [dm, Prod.neg_mk, Prod.fst_neg, Prod.snd_neg]; congr 1 <;> ring`.
+-/
 theorem dm_mem (hv : v ≠ 0) {s t : ℤ} {x y : ℂ × ℂ} (hx : x ∈ jets M A v s) (hy : y ∈ jets M A v t) :
     dm x y ∈ jets M A v (s + t) := by
   induction hx using AddSubgroup.closure_induction with
@@ -48,6 +62,15 @@ theorem dm_mem (hv : v ≠ 0) {s t : ℤ} {x y : ℂ × ℂ} (hx : x ∈ jets M 
   | add y y' _ _ h1 h2 => convert add_mem h1 h2 using 1; simp only [dm, Prod.mk_add_mk, Prod.fst_add, Prod.snd_add]; congr 1 <;> ring
   | neg y _ h1 => convert neg_mem h1 using 1; simp only [dm, Prod.neg_mk, Prod.fst_neg, Prod.snd_neg]; congr 1 <;> ring
 
+/- English proof (translation)
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨k, hk, rfl⟩` from `hx`. Use `⟨Finsupp.single k 1, fun l hl => ?_, by simp, by simp⟩` and prove the remaining obligations. Rewrite using `[(Finsupp.single_apply_ne_zero.1 hl).1]` and apply the resulting hypothesis.
+
+Consider the case `zero => exact ⟨0, by simp, by simp, by simp⟩`. Consider the case `add y y' _ _ h1 h2`. Take `⟨θ, a1, a2, a3⟩` from `h1`. Take `⟨θ', b1, b2, b3⟩` from `h2`. Use `⟨θ + θ', fun k hk => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h : θ k = 0`. Conclude with `b1 k (by simpa [h] using hk)`. Conclude with `a1 k h`. Rewrite using `[Finsupp.sum_add_index' (by simp) (by intros; push_cast; ring), Prod.fst_add, a2, b2]`. Rewrite using `[Finsupp.sum_add_index' (by simp) (by intros; push_cast; ring), Prod.snd_add, a3, b3]`.
+
+Consider the case `neg y _ h1`. Take `⟨θ, a1, a2, a3⟩` from `h1`. Use `⟨-θ, fun k hk => a1 k (by simpa using hk), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.sum_neg_index (by simp), Prod.fst_neg, a2]; simp [Finsupp.sum]`. Rewrite using `[Finsupp.sum_neg_index (by simp), Prod.snd_neg, a3]; simp [Finsupp.sum]`.
+-/
 theorem exists_finsupp {s : ℤ} {x : ℂ × ℂ} (hx : x ∈ jets M A v s) :
     ∃ θ : ℤ →₀ ℤ, (∀ k, θ k ≠ 0 → (M : ℤ) ∣ s - A * k) ∧ x.1 = θ.sum (fun k n => (n : ℂ) * v ^ k) ∧
       x.2 = θ.sum (fun k n => ((k * n : ℤ) : ℂ) * v ^ k) := by
@@ -74,11 +97,19 @@ theorem exists_finsupp {s : ℤ} {x : ℂ × ℂ} (hx : x ∈ jets M A v s) :
 
 abbrev Hol (F : ℂ → ℂ) : Prop := DifferentiableOn ℂ F (Metric.ball 0 1)
 
+/- English proof (translation)
+The claim follows from `HasQ.coeff_unique one_pos (hasQ_tc (hF.add hG) one_pos) ((hasQ_tc hF one_pos).add (hasQ_tc hG one_pos))`.
+-/
 theorem tc_add {F G : ℂ → ℂ} (hF : Hol F) (hG : Hol G) : tc (fun z => F z + G z) = fun n => tc F n + tc G n :=
   HasQ.coeff_unique one_pos (hasQ_tc (hF.add hG) one_pos) ((hasQ_tc hF one_pos).add (hasQ_tc hG one_pos))
 
 def dc (U L : ℂ → ℂ) (n : ℕ) : ℂ × ℂ := (tc U n, tc (fun z => U z * L z) n)
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_sum, dc, dm, tc_mul h1 h3, conv]`. Establish `e : (fun z => U z * U' z * (L z + L' z)) = fun z => U z * (U' z * L' z) + (U z * L z) * U' z`. Use function extensionality and compare the values at `z`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [Prod.snd_sum, dc, dm, e]`. Rewrite using `[tc_add (h1.fun_mul (h3.fun_mul h4)) ((h1.fun_mul h2).fun_mul h3), tc_mul h1 (h3.fun_mul h4), tc_mul (h1.fun_mul h2) h3]`. Simplify using `only [conv, Finset.sum_add_distrib]`.
+-/
 theorem dc_mul {U L U' L' : ℂ → ℂ} (h1 : Hol U) (h2 : Hol L) (h3 : Hol U') (h4 : Hol L') (n : ℕ) :
     dc (fun z => U z * U' z) (fun z => L z + L' z) n =
       ∑ p ∈ Finset.HasAntidiagonal.antidiagonal n, dm (dc U L p.1) (dc U' L' p.2) := by
@@ -91,13 +122,24 @@ theorem dc_mul {U L U' L' : ℂ → ℂ} (h1 : Hol U) (h2 : Hol L) (h3 : Hol U')
       tc_mul (h1.fun_mul h2) h3]
     simp only [conv, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [dc, tc_const]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem dc_one (n : ℕ) : dc (fun _ => 1) (fun _ => 0) n = if n = 0 then (1, 0) else 0 := by
   simp only [dc, tc_const]
   split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `DifferentiableOn.div (by fun_prop) (by fun_prop) fun z hz => lin_ne_zero hw he (by simpa using hz)`.
+-/
 theorem hol_frac {w : ℂ} (hw : ‖w‖ ≤ 1) {e : ℕ} (he : 0 < e) : Hol fun z => w * z ^ e / (1 - w * z ^ e) :=
   DifferentiableOn.div (by fun_prop) (by fun_prop) fun z hz => lin_ne_zero hw he (by simpa using hz)
 
+/- English proof (translation)
+Establish `: tc (fun z => (1 - w * z ^ e) * (-J * (w * z ^ e / (1 - w * z ^ e)))) = tc (fun z => (1 - (J * w) * z ^ e) + -1)` using `tc_congr fun z hz => by`. Use `lin_ne_zero hw he hz` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [dc, this]`.
+
+Rewrite using `[tc_add (by unfold Hol; fun_prop) (by unfold Hol; fun_prop), tc_lin, tc_lin, tc_const]`. Apply the tactic sequence `by_cases h0 : n = 0 <;> by_cases h1 : n = e <;> simp [h0, h1, he.ne, he.ne']`.
+-/
 theorem dc_lin {w : ℂ} (hw : ‖w‖ ≤ 1) (J : ℂ) {e : ℕ} (he : 0 < e) (n : ℕ) :
     dc (fun z => 1 - w * z ^ e) (fun z => -J * (w * z ^ e / (1 - w * z ^ e))) n =
       (if n = 0 then (1, 0) else 0) - if n = e then (w, J * w) else 0 := by
@@ -119,15 +161,24 @@ structure IsU (M : ℕ) (A : ℤ) (v : ℂ) (U L : ℂ → ℂ) : Prop where
   L0 : L 0 = 0
   mem : ∀ n : ℕ, dc U L n ∈ jets M A v n
 
+/- English proof (translation)
+Simplify using `using gen_mem (M := M) (A := A) (v := v) (s := 0) (k := 0) (by simp)`.
+-/
 theorem one_mem_jets : ((1, 0) : ℂ × ℂ) ∈ jets M A v 0 := by
   simpa using gen_mem (M := M) (A := A) (v := v) (s := 0) (k := 0) (by simp)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨differentiableOn_const _, differentiableOn_const _, by simp, rfl, rfl, fun n => by rw [dc_one]; split_ifs with h · subst h; exact one_mem_jets · exact zero_mem _⟩`.
+-/
 theorem IsU.one : IsU M A v (fun _ => 1) (fun _ => 0) :=
   ⟨differentiableOn_const _, differentiableOn_const _, by simp, rfl, rfl, fun n => by
     rw [dc_one]; split_ifs with h
     · subst h; exact one_mem_jets
     · exact zero_mem _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.dU.mul h'.dU, h.dL.add h'.dL, fun z hz => mul_ne_zero (h.ne z hz) (h'.ne z hz), by simp [h.U0, h'.U0], by simp [h.L0, h'.L0], fun n => by rw [dc_mul h.dU h.dL h'.dU h'.dL] refine sum_mem fun p hp => ?_ have := dm_mem hv (h.mem p.1) (h'.mem p.2) rwa [← Nat.cast_add, Finset.HasA …`.
+-/
 theorem IsU.mul (hv : v ≠ 0) {U L U' L' : ℂ → ℂ} (h : IsU M A v U L) (h' : IsU M A v U' L') :
     IsU M A v (fun z => U z * U' z) (fun z => L z + L' z) :=
   ⟨h.dU.mul h'.dU, h.dL.add h'.dL, fun z hz => mul_ne_zero (h.ne z hz) (h'.ne z hz), by simp [h.U0, h'.U0],
@@ -137,6 +188,17 @@ theorem IsU.mul (hv : v ≠ 0) {U L U' L' : ℂ → ℂ} (h : IsU M A v U L) (h'
     have := dm_mem hv (h.mem p.1) (h'.mem p.2)
     rwa [← Nat.cast_add, Finset.HasAntidiagonal.mem_antidiagonal.mp hp] at this⟩
 
+/- English proof (translation)
+Establish `hd : Hol fun z => (U z)⁻¹` using `h.dU.inv fun z hz => h.ne z (by simpa using hz)`. Use `⟨hd, h.dL.neg, fun z hz => inv_ne_zero (h.ne z hz), by simp [h.U0], by simp [h.L0], fun n => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ n, ∑ p ∈ Finset.HasAntidiagonal.antidiagonal n, dm (dc U L p.1) (dc (fun z => (U z)⁻¹) (fun z => -L z) p.2) = if n = 0 then (1, 0) else 0` using `fun n => by`. Rewrite using `[← dc_mul h.dU h.dL hd h.dL.fun_neg, ← dc_one]`. Simplify using `only [dc]`.
+
+Rewrite using `[tc_congr (G := fun _ => 1) fun z hz => mul_inv_cancel₀ (h.ne z hz)]`. Simplify using the standard rewrite rules. Establish `h0 : ∀ x, dm (dc U L 0) x = x` using `fun x => by simp [dm, dc, tc_zero, h.U0, h.L0]`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+
+Break down `n with _ | n` into its components or cases. Use `hc 0` as an intermediate fact. Simplify using `only [Finset.HasAntidiagonal.antidiagonal_zero, Finset.sum_singleton, h0, if_true] at this`. Rewrite using `[this]`. Conclude with `one_mem_jets`.
+
+Establish `h1` using `hc (n + 1)`. Simplify using `only [Finset.Nat.antidiagonal_succ, Finset.sum_cons, Finset.sum_map, h0, Nat.succ_ne_zero, if_false] at h1`. Rewrite using `[eq_neg_of_add_eq_zero_left h1]`. Use `neg_mem (sum_mem fun p hp => ?_)` and prove the remaining obligations. Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hp`.
+
+Use `dm_mem hv (h.mem (p.1 + 1)) (ih p.2 (by omega))` as an intermediate fact. Rewrite `this` using `[← Nat.cast_add, show p.1 + 1 + p.2 = n + 1 by omega]`. Conclude with `this`.
+-/
 theorem IsU.inv (hv : v ≠ 0) {U L : ℂ → ℂ} (h : IsU M A v U L) : IsU M A v (fun z => (U z)⁻¹) (fun z => -L z) := by
   have hd : Hol fun z => (U z)⁻¹ := h.dU.inv fun z hz => h.ne z (by simpa using hz)
   refine ⟨hd, h.dL.neg, fun z hz => inv_ne_zero (h.ne z hz), by simp [h.U0], by simp [h.L0], fun n => ?_⟩
@@ -162,6 +224,11 @@ theorem IsU.inv (hv : v ≠ 0) {U L : ℂ → ℂ} (h : IsU M A v U L) : IsU M A
       rw [← Nat.cast_add, show p.1 + 1 + p.2 = n + 1 by omega] at this
       exact this
 
+/- English proof (translation)
+Establish `hw : ‖v ^ j‖ ≤ 1` using `by simp [hv]`. Use `⟨by unfold Hol; fun_prop, (hol_frac hw he).const_mul _, fun z hz => lin_ne_zero hw he hz, by simp [he.ne'], by simp [he.ne'], fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[dc_lin hw _ he]`. Apply the tactic sequence `refine sub_mem ?_ ?_ <;> split_ifs with h`. Substitute `h` using the available equality.
+
+Conclude with `one_mem_jets`. Conclude with `zero_mem _`. Substitute `h` using the available equality. Conclude with `gen_mem hd`. Conclude with `zero_mem _`.
+-/
 theorem IsU.lin (hv : ‖v‖ = 1) {j : ℤ} {e : ℕ} (he : 0 < e) (hd : (M : ℤ) ∣ e - A * j) :
     IsU M A v (fun z => 1 - v ^ j * z ^ e) (fun z => -j * (v ^ j * z ^ e / (1 - v ^ j * z ^ e))) := by
   have hw : ‖v ^ j‖ ≤ 1 := by simp [hv]
@@ -174,6 +241,11 @@ theorem IsU.lin (hv : ‖v‖ = 1) {j : ℤ} {e : ℕ} (he : 0 < e) (hd : (M : �
   · subst h; exact gen_mem hd
   · exact zero_mem _
 
+/- English proof (translation)
+Establish `he : 0 < e` using `by omega`. Rewrite using `[dc_mul h1 h2 (by unfold Hol; fun_prop) ((hol_frac hw he).const_mul _), Finset.sum_eq_single (n, 0)]`. Rewrite using `[dc_lin hw J he]`. Simplify using `[he.ne, dm]`. Introduce `p hp hne`.
+
+Use `Finset.HasAntidiagonal.mem_antidiagonal.mp hp` as an intermediate fact. Establish `h2 : p.2 ≠ 0` using `fun h2 => hne (Prod.ext (by simp; omega) h2)`. Rewrite using `[dc_lin hw J he]; simp [h2, show p.2 ≠ e by omega, dm]`. Simplify using the standard rewrite rules.
+-/
 theorem dc_mul_lin {U L : ℂ → ℂ} (h1 : Hol U) (h2 : Hol L) {w : ℂ} (hw : ‖w‖ ≤ 1) (J : ℂ) {e n : ℕ} (h : n < e) :
     dc (fun z => U z * (1 - w * z ^ e)) (fun z => L z + -J * (w * z ^ e / (1 - w * z ^ e))) n = dc U L n := by
   have he : 0 < e := by omega
@@ -187,6 +259,13 @@ theorem dc_mul_lin {U L : ℂ → ℂ} (h1 : Hol U) (h2 : Hol L) {w : ℂ} (hw :
 
 def lam (M : ℕ) (w : ℂ) (e : ℕ) (z : ℂ) : ℂ := ∑' m : ℕ, w * z ^ (e + m * M) / (1 - w * z ^ (e + m * M))
 
+/- English proof (translation)
+Rewrite using `[tendstoLocallyUniformlyOn_iff_forall_isCompact Metric.isOpen_ball]`. Introduce `K hK hcK`. Break down `K.eq_empty_or_nonempty with hN | hN` into its components or cases. Simplify `tendstoUniformlyOn_empty` using `[hN]`. Take `⟨q₀, hq₀, _, HB⟩` from `hcK.exists_sSup_image_eq_and_ge hN (show ContinuousOn (fun q : ℂ ↦ ‖q‖) K by fun_prop)`.
+
+Establish `hq : ‖q₀‖ < 1` using `by simpa using hK hq₀`. Use `tendstoUniformlyOn_tsum_nat (u := fun m => ‖q₀‖ ^ (m + 1) / (1 - ‖q₀‖)) (((summable_nat_add_iff 1).mpr (summable_geometric_of_lt_one (norm_nonneg _) hq)).div_const _) fun m x hx => ?_` and prove the remaining obligations. Establish `h1` using `norm_term_le hM hw he (HB x hx) hq m`. Rewrite `h1` using `[norm_neg]`. Establish `h2 : ‖q₀‖ ^ (m + 1) ≤ ‖q₀‖` using `pow_le_of_le_one (norm_nonneg _) hq.le (by omega)`.
+
+Establish `h3` using `norm_sub_norm_le (1 : ℂ) (w * x ^ (e + m * M))`. Rewrite `h3` using `[norm_one]`. Rewrite using `[norm_div]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lam_locUnif (hM : 0 < M) {w : ℂ} (hw : ‖w‖ ≤ 1) {e : ℕ} (he : 0 < e) :
     TendstoLocallyUniformlyOn (fun (N : ℕ) (z : ℂ) => ∑ m ∈ Finset.range N,
       w * z ^ (e + m * M) / (1 - w * z ^ (e + m * M))) (lam M w e) atTop (Metric.ball 0 1) := by
@@ -209,6 +288,25 @@ theorem lam_locUnif (hM : 0 < M) {w : ℂ} (hw : ‖w‖ ≤ 1) {e : ℕ} (he : 
     gcongr
     linarith
 
+/- English proof (translation)
+Establish `hw : ‖v ^ j‖ ≤ 1` using `by simp [hv]`. Establish `hv0 : v ≠ 0` using `by rintro rfl; simp at hv`. Use `set w := v ^ j with hwd`. Establish `h` using `(ep_locUnif hM hw he).tendstoLocallyUniformlyOn_finsetRange`. Establish `h'` using `lam_locUnif hM hw he`.
+
+Use `set F : ℕ → ℂ → ℂ := fun N z => ∏ m ∈ Finset.range N, (1 - w * z ^ (e + m * M)) with hF`. Use `set G : ℕ → ℂ → ℂ := fun N z => ∑ m ∈ Finset.range N, w * z ^ (e + m * M) / (1 - w * z ^ (e + m * M)) with hG`. Establish `e1 : ∀ N, F (N + 1) = fun z => F N z * (1 - w * z ^ (e + N * M))` using `fun N => by`. Use function extensionality and compare the values at `z`. Simplify using `only [hF, Finset.prod_range_succ]`.
+
+Establish `e2 : ∀ N, (fun z => -j * G (N + 1) z) = fun z => -j * G N z + -j * (w * z ^ (e + N * M) / (1 - w * z ^ (e + N * M)))` using `fun N => by`. Use function extensionality and compare the values at `z`. Simplify using `only [hG, Finset.sum_range_succ, mul_add]`. Establish `hg : ∀ N, IsU M A v (F N) (fun z => -j * G N z)` using `fun N => by`. Proceed by induction on `N with`.
+
+Consider the case `zero => simpa [hF, hG] using IsU.one`. Consider the case `succ N ih`. Rewrite using `[e1, e2]`. Use `ih.mul hv0 (IsU.lin hv (by omega) ?_)` and prove the remaining obligations. Use `dvd_add hd (dvd_mul_left (M : ℤ) N)` as an intermediate fact.
+
+Rewrite `this` using `[show e - A * j + N * (M : ℤ) = ((e + N * M : ℕ) : ℤ) - A * j by push_cast; ring]`. Then use the resulting hypothesis. Establish `hGd : ∀ N, Hol (G N)` using `fun N => DifferentiableOn.fun_sum fun m _ => hol_frac hw (by omega)`. Establish `d1 : Hol (SiegQ.ep M w e)` using `h.differentiableOn (.of_forall fun N => (hg N).dU) Metric.isOpen_ball`. Establish `d2 : Hol (lam M w e)` using `h'.differentiableOn (.of_forall hGd) Metric.isOpen_ball`. Use `⟨d1, d2.const_mul _, fun z hz => ep_ne_zero hM hw he hz, ep_zero M w he, ?_, fun n => ?_⟩` and prove the remaining obligations.
+
+Establish `: ∀ m : ℕ, (0 : ℂ) ^ (e + m * M) = 0` using `fun m => zero_pow (by omega)`. Simplify using `[lam, this]`. Establish `t1 : ∀ i, Tendsto (fun N => tc (F N) i) atTop (𝓝 (tc (SiegQ.ep M w e) i))` using `fun i => (tendsto_iteratedDeriv i h fun N => (hg N).dU).const_mul _`. Establish `t2 : ∀ i, Tendsto (fun N => tc (G N) i) atTop (𝓝 (tc (lam M w e) i))` using `fun i => (tendsto_iteratedDeriv i h' hGd).const_mul _`. Establish `cm : ∀ {H : ℂ → ℂ}, Hol H → ∀ i, tc (fun z => -j * H z) i = -j * tc H i` using `fun {H} hH i => congrFun (HasQ.coeff_unique one_pos (hasQ_tc (hH.const_mul _) one_pos) ((hasQ_tc hH one_pos).const_mul (-j))) i`.
+
+Establish `ht : Tendsto (fun N => dc (F N) (fun z => -j * G N z) n) atTop (𝓝 (dc (SiegQ.ep M w e) (fun z => -j * lam M w e z) n))`. Use `(t1 n).prodMk_nhds ?_` and prove the remaining obligations. Simplify using `only [tc_mul d1 (d2.const_mul _), fun N => tc_mul (hg N).dU (hg N).dL, conv, cm d2, fun N => cm (hGd N)]`. Conclude with `tendsto_finset_sum _ fun p _ => (t1 _).mul ((t2 _).const_mul _)`. Establish `hs : ∀ N, n ≤ N → dc (F N) (fun z => -j * G N z) n = dc (F n) (fun z => -j * G n z) n`.
+
+Introduce `N hN`. Proceed by induction on `N, hN using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ N hN ih => rw [e1, e2, dc_mul_lin (hg N).dU (hg N).dL hw _ (by nlinarith), ih]`. Rewrite using `[tendsto_nhds_unique ht (tendsto_const_nhds.congr' (by filter_upwards [eventually_ge_atTop n] with N hN using (hs N hN).symm))]`.
+
+Conclude with `(hg n).mem n`.
+-/
 theorem IsU.ep (hM : 0 < M) (hv : ‖v‖ = 1) {j : ℤ} {e : ℕ} (he : 0 < e) (hd : (M : ℤ) ∣ e - A * j) :
     IsU M A v (ep M (v ^ j) e) (fun z => -j * lam M (v ^ j) e z) := by
   have hw : ‖v ^ j‖ ≤ 1 := by simp [hv]
@@ -261,24 +359,41 @@ def Form (M : ℕ) (A : ℤ) (v : ℂ) (f l : ℂ → ℂ) : Prop :=
   ∃ (k i : ℤ) (σ : ℂ) (U L : ℂ → ℂ), (σ = 1 ∨ σ = -1) ∧ (M : ℤ) ∣ k - A * i ∧ IsU M A v U L ∧
     ∀ z, z ≠ 0 → ‖z‖ < 1 → f z = σ * z ^ k * v ^ i * U z ∧ l z = i + L z
 
+/- English proof (translation)
+Take `⟨k, i, σ, U, L, h1, h2, h3, h4⟩` from `h`. Conclude with `⟨k, i, σ, U, L, h1, h2, h3, fun z a b => by rw [(e z a b).1, (e z a b).2]; exact h4 z a b⟩`.
+-/
 theorem Form.congr {f l f' l' : ℂ → ℂ} (h : Form M A v f l)
     (e : ∀ z, z ≠ 0 → ‖z‖ < 1 → f' z = f z ∧ l' z = l z) : Form M A v f' l' := by
   obtain ⟨k, i, σ, U, L, h1, h2, h3, h4⟩ := h
   exact ⟨k, i, σ, U, L, h1, h2, h3, fun z a b => by rw [(e z a b).1, (e z a b).2]; exact h4 z a b⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨k, i, σ, _, _, h1, h2, IsU.one, fun z _ _ => by simp⟩`.
+-/
 theorem Form.mono {k i : ℤ} {σ : ℂ} (h1 : σ = 1 ∨ σ = -1) (h2 : (M : ℤ) ∣ k - A * i) :
     Form M A v (fun z => σ * z ^ k * v ^ i) (fun _ => i) :=
   ⟨k, i, σ, _, _, h1, h2, IsU.one, fun z _ _ => by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 0, 1, U, L, Or.inl rfl, by simp, h, fun z _ _ => by simp⟩`.
+-/
 theorem IsU.form {U L : ℂ → ℂ} (h : IsU M A v U L) : Form M A v U L :=
   ⟨0, 0, 1, U, L, Or.inl rfl, by simp, h, fun z _ _ => by simp⟩
 
+/- English proof (translation)
+Take `⟨k, i, σ, U, L, h1, h2, h3, h4⟩` from `h`. Rewrite using `[(h4 z h0 hz).1]`. Use `mul_ne_zero (mul_ne_zero (mul_ne_zero ?_ (zpow_ne_zero _ h0)) (zpow_ne_zero _ hv)) (h3.ne z hz)` and prove the remaining obligations. Apply the tactic sequence `rcases h1 with rfl | rfl <;> simp`.
+-/
 theorem Form.ne (hv : v ≠ 0) {f l : ℂ → ℂ} (h : Form M A v f l) {z : ℂ} (h0 : z ≠ 0) (hz : ‖z‖ < 1) : f z ≠ 0 := by
   obtain ⟨k, i, σ, U, L, h1, h2, h3, h4⟩ := h
   rw [(h4 z h0 hz).1]
   refine mul_ne_zero (mul_ne_zero (mul_ne_zero ?_ (zpow_ne_zero _ h0)) (zpow_ne_zero _ hv)) (h3.ne z hz)
   rcases h1 with rfl | rfl <;> simp
 
+/- English proof (translation)
+Take `⟨k, i, σ, U, L, h1, h2, h3, h4⟩` from `h`. Take `⟨k', i', σ', U', L', h1', h2', h3', h4'⟩` from `h'`. Use `⟨k + k', i + i', σ * σ', _, _, ?_, ?_, h3.mul hv h3', fun z a b => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases h1 with rfl | rfl <;> rcases h1' with rfl | rfl <;> simp`. Use `dvd_add h2 h2'` as an intermediate fact.
+
+Rewrite `this` using `[show k - A * i + (k' - A * i') = k + k' - A * (i + i') by ring]`. Then use the resulting hypothesis. Simplify using `only [(h4 z a b).1, (h4 z a b).2, (h4' z a b).1, (h4' z a b).2, zpow_add₀ a, zpow_add₀ hv]`. Use `push_cast`. Apply the tactic sequence `constructor <;> ring`.
+-/
 theorem Form.mul (hv : v ≠ 0) {f l f' l' : ℂ → ℂ} (h : Form M A v f l) (h' : Form M A v f' l') :
     Form M A v (fun z => f z * f' z) (fun z => l z + l' z) := by
   obtain ⟨k, i, σ, U, L, h1, h2, h3, h4⟩ := h
@@ -291,6 +406,11 @@ theorem Form.mul (hv : v ≠ 0) {f l f' l' : ℂ → ℂ} (h : Form M A v f l) (
     push_cast
     constructor <;> ring
 
+/- English proof (translation)
+Take `⟨k, i, σ, U, L, h1, h2, h3, h4⟩` from `h`. Use `⟨-k, -i, σ, _, _, h1, ?_, h3.inv hv, fun z a b => ?_⟩` and prove the remaining obligations. Use `h2.neg_right` as an intermediate fact. Rewrite `this` using `[show -(k - A * i) = -k - A * -i by ring]`. Then use the resulting hypothesis. Apply the tactic sequence `have : σ⁻¹ = σ := by rcases h1 with rfl | rfl <;> simp`.
+
+Simplify using `only [(h4 z a b).1, (h4 z a b).2, zpow_neg, mul_inv, this]`. Use `push_cast`. Conclude with `⟨trivial, by ring⟩`.
+-/
 theorem Form.inv (hv : v ≠ 0) {f l : ℂ → ℂ} (h : Form M A v f l) : Form M A v (fun z => (f z)⁻¹) (fun z => -l z) := by
   obtain ⟨k, i, σ, U, L, h1, h2, h3, h4⟩ := h
   refine ⟨-k, -i, σ, _, _, h1, ?_, h3.inv hv, fun z a b => ?_⟩
@@ -301,6 +421,9 @@ theorem Form.inv (hv : v ≠ 0) {f l : ℂ → ℂ} (h : Form M A v f l) : Form 
     push_cast
     exact ⟨trivial, by ring⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using IsU.one.form`. Consider the case `succ n ih => exact (ih.mul hv h).congr fun z _ _ => ⟨pow_succ _ _, by push_cast; ring⟩`.
+-/
 theorem Form.pow (hv : v ≠ 0) {f l : ℂ → ℂ} (h : Form M A v f l) (n : ℕ) :
     Form M A v (fun z => f z ^ n) (fun z => n * l z) := by
   induction n with
@@ -309,6 +432,9 @@ theorem Form.pow (hv : v ≠ 0) {f l : ℂ → ℂ} (h : Form M A v f l) (n : �
 
 def Th (q t : ℂ) : ℂ := (1 - t) * gP q t * gP q t⁻¹
 
+/- English proof (translation)
+Establish `h` using `hasProd_gP hq (q * a)`. Establish `h1 : HasProd (fun m : ℕ => 1 - q ^ (m + 1 + 1) * a) (gP q (q * a))` using `h.congr_fun fun m => by ring`. Use `HasProd.prod_range_mul (k := 1) (f := fun m : ℕ => 1 - q ^ (m + 1) * a) h1` as an intermediate fact. Simplify using `using (hasProd_gP hq a).unique this`.
+-/
 theorem gP_eq_one_sub_mul_gP {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) : gP q a = (1 - q * a) * gP q (q * a) := by
   have h := hasProd_gP hq (q * a)
   have h1 : HasProd (fun m : ℕ => 1 - q ^ (m + 1 + 1) * a) (gP q (q * a)) :=
@@ -316,6 +442,9 @@ theorem gP_eq_one_sub_mul_gP {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) : gP q a = (
   have := HasProd.prod_range_mul (k := 1) (f := fun m : ℕ => 1 - q ^ (m + 1) * a) h1
   simpa using (hasProd_gP hq a).unique this
 
+/- English proof (translation)
+Establish `sm : Summable (fun m : ℕ => q ^ (m + 1) * a / (1 - q ^ (m + 1) * a))` using `((summable_lambert hq a).mul_right a).congr fun m => by ring`. Rewrite using `[gS, sm.tsum_eq_zero_add, gS]`. Use `congr 1`. Simplify using the standard rewrite rules. Conclude with `tsum_congr fun m => by rw [pow_succ q (m + 1), mul_assoc]`.
+-/
 theorem gS_step {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) : gS q a = q * a / (1 - q * a) + gS q (q * a) := by
   have sm : Summable (fun m : ℕ => q ^ (m + 1) * a / (1 - q ^ (m + 1) * a)) :=
     ((summable_lambert hq a).mul_right a).congr fun m => by ring
@@ -324,6 +453,13 @@ theorem gS_step {q : ℂ} (hq : ‖q‖ < 1) (a : ℂ) : gS q a = q * a / (1 - q
   · simp
   · exact tsum_congr fun m => by rw [pow_succ q (m + 1), mul_assoc]
 
+/- English proof (translation)
+Establish `e : q * (q * t)⁻¹ = t⁻¹` using `by field_simp`. Establish `h1 : 1 - t ≠ 0` using `sub_ne_zero.2 ht.symm`. Establish `h2 : t - 1 ≠ 0` using `sub_ne_zero.2 ht`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Th, Th, gP_eq_one_sub_mul_gP hq t, gP_eq_one_sub_mul_gP hq (q * t)⁻¹, e]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[E, E, gS_step hq t, gS_step hq (q * t)⁻¹, e]`. Establish `: t⁻¹ / (1 - t⁻¹) = -(t / (1 - t)) - 1` using `by field_simp; ring`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Th_step {q t : ℂ} (hq : ‖q‖ < 1) (hq0 : q ≠ 0) (ht0 : t ≠ 0) (ht : t ≠ 1) :
     Th q (q * t) = -t⁻¹ * Th q t ∧ E q (q * t) = E q t - 1 := by
   have e : q * (q * t)⁻¹ = t⁻¹ := by field_simp
@@ -337,6 +473,15 @@ theorem Th_step {q t : ℂ} (hq : ‖q‖ < 1) (hq0 : q ≠ 0) (ht0 : t ≠ 0) (
     have : t⁻¹ / (1 - t⁻¹) = -(t / (1 - t)) - 1 := by field_simp; ring
     rw [this]; ring
 
+/- English proof (translation)
+Establish `hv0 : v ≠ 0` using `by rintro rfl; simp at hv`. Establish `h1` using `IsU.lin (M := M) (A := A) hv h0 hd`. Establish `h2` using `IsU.ep (A := A) hM hv (j := j) (e := M + B) (by omega) (by`. Use `dvd_add hd (dvd_refl (M : ℤ))` as an intermediate fact. Rewrite using `[show B - A * j + (M : ℤ) = ((M + B : ℕ) : ℤ) - A * j by push_cast; ring] at this)` and apply the resulting hypothesis.
+
+Establish `h3` using `IsU.ep (A := A) hM hv (j := -j) (e := M - B) (by omega) (by`. Use `dvd_sub (dvd_refl (M : ℤ)) hd` as an intermediate fact. Rewrite using `[show (M : ℤ) - (B - A * j) = ((M - B : ℕ) : ℤ) - A * -j by push_cast [hB.le]; ring] at this)` and apply the resulting hypothesis. Use `((h1.mul hv0 h2).mul hv0 h3).form.congr fun z hz0 hz => ?_` and prove the remaining obligations. Establish `e1 : ∀ m : ℕ, (z ^ M) ^ (m + 1) * (z ^ B * v ^ j) = v ^ j * z ^ (M + B + m * M)` using `fun m => by ring`.
+
+Establish `e2 : ∀ m : ℕ, (z ^ M) ^ (m + 1) * (z ^ B * v ^ j)⁻¹ = v ^ (-j) * z ^ (M - B + m * M)` using `fun m => by`. Establish `h : M * (m + 1) = M - B + m * M + B`. Establish `: M - B + B = M` using `by omega`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[← pow_mul, h, pow_add _ _ B, zpow_neg]`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using `only [zpow_natCast, Th, E, gP, gS, e1, e2, SiegQ.ep, lam]`. Rewrite using `[mul_comm (z ^ B)]`. Use `push_cast`. Conclude with `⟨rfl, by ring⟩`.
+-/
 theorem form_base (hM : 0 < M) (hv : ‖v‖ = 1) {j : ℤ} {B : ℕ} (h0 : 0 < B) (hB : B < M) (hd : (M : ℤ) ∣ B - A * j) :
     Form M A v (fun z => Th (z ^ M) (z ^ (B : ℤ) * v ^ j)) (fun z => j * E (z ^ M) (z ^ (B : ℤ) * v ^ j)) := by
   have hv0 : v ≠ 0 := by rintro rfl; simp at hv
@@ -360,6 +505,11 @@ theorem form_base (hM : 0 < M) (hv : ‖v‖ = 1) {j : ℤ} {B : ℕ} (h0 : 0 < 
   push_cast
   exact ⟨rfl, by ring⟩
 
+/- English proof (translation)
+Establish `hv0 : v ≠ 0` using `by rintro rfl; simp at hv`. Establish `hq : ‖z ^ M‖ < 1` using `by rw [norm_pow]; exact pow_lt_one₀ (norm_nonneg _) hz hM.ne'`. Establish `ht : z ^ B * v ^ j ≠ 1` using `fun h => by`. Use `congrArg norm h` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_zpow, norm_zpow, hv, one_zpow, mul_one, norm_one, zpow_eq_one_iff_right₀ (norm_nonneg _) hz.ne]`.
+
+Conclude with `h0 this`. Use `Th_step hq (pow_ne_zero _ hz0) (mul_ne_zero (zpow_ne_zero B hz0) (zpow_ne_zero j hv0)) ht` as an intermediate fact. Rewrite using `[show z ^ (B + M) * v ^ j = z ^ M * (z ^ B * v ^ j) by rw [zpow_add₀ hz0, zpow_natCast]; ring, this.1, this.2, zpow_neg, zpow_neg, mul_inv]`. Conclude with `⟨by ring, rfl⟩`.
+-/
 theorem form_step (hM : 0 < M) (hv : ‖v‖ = 1) {j B : ℤ} (h0 : B ≠ 0) {z : ℂ} (hz0 : z ≠ 0) (hz : ‖z‖ < 1) :
     Th (z ^ M) (z ^ (B + M) * v ^ j) = -1 * z ^ (-B) * v ^ (-j) * Th (z ^ M) (z ^ B * v ^ j) ∧
       E (z ^ M) (z ^ (B + M) * v ^ j) = E (z ^ M) (z ^ B * v ^ j) - 1 := by
@@ -375,6 +525,23 @@ theorem form_step (hM : 0 < M) (hv : ‖v‖ = 1) {j B : ℤ} (h0 : B ≠ 0) {z 
     zpow_neg, zpow_neg, mul_inv]
   exact ⟨by ring, rfl⟩
 
+/- English proof (translation)
+Establish `hv0 : v ≠ 0` using `by rintro rfl; simp at hv`. Establish `hMz : (0 : ℤ) < M` using `by exact_mod_cast hM`. Choose the witnesses or unpack the hypotheses as in `⟨B0, n, rfl, b1, b2⟩ : ∃ (B0 : ℕ) (n : ℤ), B = B0 + n * M ∧ 0 < B0 ∧ B0 < M := by`. Establish `a1` using `Int.emod_nonneg B hMz.ne'`. Establish `a2` using `Int.emod_lt_of_pos B hMz`.
+
+Establish `a3 : B % M ≠ 0` using `fun h => h0 (Int.dvd_of_emod_eq_zero h)`. Use `⟨(B % M).toNat, B / M, ?_, by omega, by omega⟩` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg a1, mul_comm, Int.emod_add_mul_ediv]`. Establish `hd0 : (M : ℤ) ∣ B0 - A * j`. Use `dvd_sub hd (dvd_mul_left (M : ℤ) n)` as an intermediate fact.
+
+Rewrite `this` using `[show B0 + n * (M : ℤ) - A * j - n * M = B0 - A * j by ring]`. Then use the resulting hypothesis. Establish `hne : ∀ n : ℤ, (B0 : ℤ) + n * M ≠ 0` using `fun m h => by`. Establish `: (M : ℤ) ∣ B0` using `⟨-m, by linarith⟩`. Use `Int.le_of_dvd (by exact_mod_cast b1) this` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hdn : ∀ n : ℤ, (M : ℤ) ∣ B0 + n * M - A * j` using `fun m => by`. Use `dvd_add hd0 (dvd_mul_left (M : ℤ) m)` as an intermediate fact. Rewrite `this` using `[show B0 - A * j + m * (M : ℤ) = B0 + m * M - A * j by ring]`. Then use the resulting hypothesis. Use `clear h0 hd`. Proceed by induction on `n using Int.induction_on with`.
+
+Consider the case `zero => simpa using form_base hM hv b1 b2 hd0`. Consider the case `succ n ih`. Use `((Form.mono (σ := -1) (k := -(B0 + n * M)) (i := -j) (Or.inr rfl) ?_).mul hv0 ih).congr fun z a b => ?_` and prove the remaining obligations. Use `(hdn n).neg_right` as an intermediate fact. Rewrite `this` using `[show -(B0 + n * (M : ℤ) - A * j) = -(B0 + n * M) - A * -j by ring]`. Then use the resulting hypothesis.
+
+Use `form_step hM hv (j := j) (hne n) a b` as an intermediate fact. Rewrite using `[show (B0 : ℤ) + (n + 1) * M = B0 + n * M + M by ring, this.1, this.2]`. Use `push_cast`. Conclude with `⟨rfl, by ring⟩`. Consider the case `pred n ih`.
+
+Use `((Form.mono (σ := -1) (k := B0 + (-n - 1) * M) (i := j) (Or.inr rfl) (hdn _)).mul hv0 ih).congr fun z a b => ?_` and prove the remaining obligations. Use `form_step hM hv (j := j) (hne (-n - 1)) a b` as an intermediate fact. Rewrite `this` using `[show (B0 : ℤ) + (-n - 1) * M + M = B0 + -n * M by ring]`. Rewrite using `[this.1, this.2, zpow_neg, zpow_neg]`. Use `zpow_ne_zero (B0 + (-n - 1) * (M : ℤ)) a` as an intermediate fact.
+
+Use `zpow_ne_zero j hv0` as an intermediate fact. Conclude with `⟨by field_simp, by ring⟩`.
+-/
 theorem form_Th (hM : 0 < M) (hv : ‖v‖ = 1) {j B : ℤ} (h0 : ¬ (M : ℤ) ∣ B) (hd : (M : ℤ) ∣ B - A * j) :
     Form M A v (fun z => Th (z ^ M) (z ^ B * v ^ j)) (fun z => j * E (z ^ M) (z ^ B * v ^ j)) := by
   have hv0 : v ≠ 0 := by rintro rfl; simp at hv
@@ -416,6 +583,15 @@ theorem form_Th (hM : 0 < M) (hv : ‖v‖ = 1) {j B : ℤ} (h0 : ¬ (M : ℤ) �
     have := zpow_ne_zero j hv0
     exact ⟨by field_simp, by ring⟩
 
+/- English proof (translation)
+Establish `hv0 : v ≠ 0` using `by rintro rfl; simp at hv`. Establish `a` using `form_Th (A := A) hM hv (j := 1) h1 (by simp)`. Establish `b` using `form_Th (A := A) hM hv (j := c) h2 (by simp)`. Establish `m` using `Form.mono (M := M) (A := A) (v := v) (σ := (-1) ^ kk c) (k := (M * ((c ^ 2 - 1) / 12) : ℕ) + A * kk c) (i := kk c) (by rcases Int.even_or_odd (kk c) with h | h`. Conclude with `Or.inl h.neg_one_zpow`.
+
+Conclude with `Or.inr h.neg_one_zpow) (by simp)`. Use `((m.mul hv0 (a.pow hv0 (c ^ 2))).mul hv0 (b.inv hv0)).congr fun z hz0 hz => ?_` and prove the remaining obligations. Establish `hq : ‖z ^ M‖ < 1` using `by rw [norm_pow]; exact pow_lt_one₀ (norm_nonneg _) hz hM.ne'`. Establish `e : z ^ (A * c) * v ^ (c : ℤ) = (z ^ A * v) ^ c` using `by rw [zpow_mul, zpow_natCast, zpow_natCast, mul_pow]`. Establish `hb` using `b.ne hv0 hz0 hz`.
+
+Simplify using `only [e, Th, mul_assoc] at hb`. Simplify using `only [e, zpow_one]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[cth, tprod_cthFac_eq hq c (right_ne_zero_of_mul hb), ← kk, zpow_add₀ hz0, zpow_natCast, pow_mul, zpow_mul, neg_eq_neg_one_mul (z ^ A * v), mul_zpow, mul_zpow, Th, Th]`. Simplify using `only [div_eq_mul_inv, mul_inv, mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_cth (hM : 0 < M) (hv : ‖v‖ = 1) {c : ℕ} (h1 : ¬ (M : ℤ) ∣ A) (h2 : ¬ (M : ℤ) ∣ A * c) :
     Form M A v (fun z => cth c (z ^ M) (z ^ A * v))
       (fun z => (kk c : ℂ) + c ^ 2 * E (z ^ M) (z ^ A * v) - c * E (z ^ M) ((z ^ A * v) ^ c)) := by
@@ -440,6 +616,31 @@ theorem form_cth (hM : 0 < M) (hv : ‖v‖ = 1) {c : ℕ} (h1 : ¬ (M : ℤ) �
     ring
   · push_cast; ring
 
+/- English proof (translation)
+Use `set v := ee ((b : ℂ) / M) with hvd`. Use `set x : Fin 2 → ℚ := ![(A : ℚ) / M, (b : ℚ) / M] with hxd`. Establish `hM0 : (M : ℂ) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `hv : ‖v‖ = 1`. Rewrite using `[hvd, norm_ee, show (b : ℂ) / M = ((b / M : ℝ) : ℂ) by push_cast; rfl, Complex.ofReal_im]; simp`.
+
+Establish `hv0 : v ≠ 0` using `ee_ne_zero _`. Take `⟨k, i, σ, U, L, s1, s2, s3, s4⟩` from `form_cth hM hv h1 h2`. Establish `key : ∀ τ : ℍ, sg c x τ * ee (-((k : ℂ) / M) * (τ : ℂ)) = σ * v ^ i * U (qv M τ) ∧ -cF c 1 x τ = i + L (qv M τ)`. Introduce `τ`. Establish `hz0 : qv M τ ≠ 0` using `Complex.exp_ne_zero _`.
+
+Establish `e1 : ee τ = qv M τ ^ M`. Rewrite using `[ee, qv, ← Complex.exp_nat_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `e2 : ee (pt x τ) = qv M τ ^ A * v`.
+
+Rewrite using `[hvd, ee, ee, qv, ← Complex.exp_int_mul, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [pt, hxd, Matrix.cons_val_one, Matrix.cons_val_zero]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e3 : ee (-((k : ℂ) / M) * (τ : ℂ)) = qv M τ ^ (-k)`. Rewrite using `[ee, qv, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨t1, t2⟩` from `s4 _ hz0 (norm_qv_lt hM τ)`. Use `beta_reduce at t1 t2`. Prove the components needed by the constructor for the conclusion. Rewrite using `[sg, e1, e2, e3, t1, zpow_neg]`. Use `zpow_ne_zero k hz0` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[← t2, ← e2, ← e1]`. Establish `hc : ¬ ((c • x) 0 ∈ Set.range ((↑) : ℤ → ℚ) ∧ (c • x) 1 ∈ Set.range ((↑) : ℤ → ℚ))`. Simplify using `using hadm.2.2`. Establish `hx : ¬ (x 0 ∈ Set.range ((↑) : ℤ → ℚ) ∧ x 1 ∈ Set.range ((↑) : ℤ → ℚ))`.
+
+Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Conclude with `hadm.2.2 ⟨⟨c * a, by rw [← ha]; push_cast; ring⟩, ⟨c * b, by rw [← hb]; push_cast; ring⟩⟩`. Rewrite using `[ee_pt_pow, E_eq hx, E_eq hc, cF]`. Establish `e : (2 : ℂ) * ((kk c : ℤ) : ℂ) = (c : ℂ) - (c : ℂ) ^ 2`. Unfold `kk`.
+
+Conclude with `congrArg (Int.cast : ℤ → ℂ) (exponent_exact hadm.2.1).2` after adjusting the coercions. Establish `e2 : (((c • x) 0 : ℚ) : ℂ) = c * (x 0 : ℂ)` using `by simp`. Establish `e3 : (c : ℂ) ^ (2 - ((1 : ℕ) : ℤ)) = c` using `by norm_num`. Rewrite using `[e2, e3]`. Take the linear combination `(-1 / 2 : ℂ) * e`.
+
+Establish `q1` using `hasQ_tc s3.dU hM`. Establish `q2` using `hasQ_tc (s3.dU.fun_mul s3.dL) hM`. Use `⟨k, fun n => σ * v ^ i * tc U n, fun n => σ * v ^ i * tc (fun z => U z * L z) n + σ * (i * v ^ i) * tc U n, ?_, ?_, fun n => ?_, i, ?_⟩` and prove the remaining obligations. Simplify using `only [fun τ => (key τ).1]`. Conclude with `q1.const_mul _`.
+
+Use `(q2.const_mul (σ * v ^ i)).add (q1.const_mul (σ * (i * v ^ i)))` as an intermediate fact. Use `this using 2 with τ` and compare the differences between its conclusion and the goal. Rewrite using `[(key τ).1, (key τ).2]`. Expand and normalize the polynomial expressions, which then agree. Establish `g : (σ * v ^ i, σ * (i * v ^ i)) ∈ jets M A v k`.
+
+Break down `s1 with rfl | rfl` into its components or cases. Simplify using `using gen_mem s2`. Simplify using `using neg_mem (gen_mem (v := v) s2)`. Conclude with `dm_mem hv0 g (s3.mem n)`. Apply the tactic sequence `rcases s1 with rfl | rfl <;> simp [tc_zero, s3.U0]`.
+-/
 theorem sg_jets {c : ℕ} {b : ℤ} (hM : 0 < M) (hadm : admitted c ![(A : ℚ) / M, (b : ℚ) / M]) (h1 : ¬ (M : ℤ) ∣ A)
     (h2 : ¬ (M : ℤ) ∣ A * c) :
     ∃ (k : ℤ) (a g : ℕ → ℂ),
@@ -511,6 +712,49 @@ theorem sg_jets {c : ℕ} {b : ℤ} (hM : 0 < M) (hadm : admitted c ![(A : ℚ) 
 
 open GlobalTheory.KZ in
 
+/- English proof (translation)
+Take `⟨φ, C, hφ, hsum⟩` from `T.an_exp f`. Establish `hMq : (M : ℚ) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `hMc : (M : ℂ) ≠ 0` using `by exact_mod_cast hM.ne'`. Set `ι : ℕ → ℚ` to `fun n => ((k : ℚ) + n) / M`. Establish `hι : Function.Injective ι`.
+
+Introduce `n m h`. Simplify using `only [ι] at h`. Rewrite `h` using `[div_left_inj' hMq, add_right_inj]`. Conclude with `h` after adjusting the coercions. Set `B : ℚ → ℂ` to `fun r => if h : ∃ n, ι n = r then A' h.choose else 0`.
+
+Establish `hBι : ∀ n, B (ι n) = A' n`. Introduce `n`. Establish `h : ∃ m, ι m = ι n` using `⟨n, rfl⟩`. Simplify using `only [B, dif_pos h]`. Rewrite using `[hι h.choose_spec]`.
+
+Establish `hB0 : ∀ r, r ∉ Set.range ι → B r = 0`. Introduce `r hr`. Simplify using `only [B]`. Rewrite using `[dif_neg]`. Conclude with `hr`.
+
+Establish `hBsum : ∀ z : ℂ, 0 < z.im → HasSum (fun r : ℚ => B r * Complex.exp (2 * Real.pi * Complex.I * (r : ℂ) * z)) (g (UpperHalfPlane.ofComplex z))`. Introduce `z hz`. Establish `h2` using `(hA' ⟨z, hz⟩).mul_left (ee ((k : ℂ) / M * z))`. Rewrite using `[← hι.hasSum_iff (fun r hr => by simp [hB0 r hr])]`. Establish `e1 : ((fun r : ℚ => B r * Complex.exp (2 * Real.pi * Complex.I * (r : ℂ) * z)) ∘ ι) = fun n : ℕ => ee ((k : ℂ) / M * z) * (A' n * Complex.exp (2 * Real.pi * Complex.I * n * z / M))`.
+
+Use function extensionality and compare the values at `n`. Simplify using `only [Function.comp_apply, hBι, ι, ee]`. Rewrite using `[mul_left_comm, ← Complex.exp_add]`. Use `congr 2`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Establish `e2 : g (UpperHalfPlane.ofComplex z) = ee ((k : ℂ) / M * z) * (g ⟨z, hz⟩ * ee (-((k : ℂ) / M) * z))`. Simplify using `only [UpperHalfPlane.ofComplex_apply_of_im_pos hz]`. Rewrite using `[mul_left_comm, ee, ee, ← Complex.exp_add]`. Establish `: 2 * Real.pi * Complex.I * ((k : ℂ) / M * z) + 2 * Real.pi * Complex.I * (-((k : ℂ) / M) * (z : ℂ)) = 0`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.exp_zero, mul_one]`. Rewrite using `[e1, e2]`. Simplify using `using h2`. Establish `hgerm : φ =ᶠ[Filter.codiscreteWithin Hs] fun z => g (UpperHalfPlane.ofComplex z)`.
+
+Use `hφ.symm.trans hmem` as an intermediate fact. Conclude with `Filter.Germ.coe_eq.mp this`. Set `S : Set ℂ` to `{z | C < z.im ∧ 0 < z.im ∧ φ z = g (UpperHalfPlane.ofComplex z)}`. Establish `hS : ∀ y : ℝ, ∃ z ∈ S, y < z.im`. Introduce `y`.
+
+Use `set Y := max (max y C) 0 + 1 with hY`. Use `set w : ℂ := Complex.I * Y`. Establish `hwim : w.im = Y` using `by simp [w]`. Establish `hw : w ∈ Hs` using `by show 0 < w.im`. Rewrite using `[hwim]`.
+
+Use `le_max_right (max y C) 0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `mem_codiscreteWithin_iff_forall_mem_nhdsNE.mp hgerm w hw`. Establish `h2 : Metric.ball w (1 / 2) ∈ nhdsWithin w {w}ᶜ` using `nhdsWithin_le_nhds (Metric.ball_mem_nhds w (by norm_num))`. Take `⟨z, hz1, hz2⟩` from `Filter.nonempty_of_mem (Filter.inter_mem h1 h2)`.
+
+Establish `hdist : |z.im - Y| < 1 / 2`. Use `Complex.abs_im_le_norm (z - w)` as an intermediate fact. Rewrite `hz2` using `[Metric.mem_ball, dist_eq_norm]`. Rewrite `this` using `[Complex.sub_im, hwim]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hyY : y ≤ max (max y C) 0` using `le_trans (le_max_left _ _) (le_max_left _ _)`. Establish `hCY : C ≤ max (max y C) 0` using `le_trans (le_max_right _ _) (le_max_left _ _)`. Establish `h0Y : 0 ≤ max (max y C) 0` using `le_max_right _ _`. Establish `hzim : max (max y C) 0 + 1 / 2 < z.im`. Use `(abs_lt.mp hdist).1` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hzH : z ∈ Hs` using `show 0 < z.im by linarith`. Use `⟨z, ⟨by linarith, by linarith, ?_⟩, by linarith⟩` and prove the remaining obligations. Break down `hz1 with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd hzH h`. Set `d : ℚ → ℂ` to `fun r => ε ((T.exp f).coeff r) - B r`. Establish `hd : d = 0`. Use `GlobalTheory.KExp.uniq d ?_ S ?_ (Complex.I * (|C| + 1)) ?_ hS` and prove the remaining obligations. Establish `hR : (Set.range ι).IsWF`.
+
+Establish `: Set.range ι = ι '' Set.univ` using `Set.image_univ.symm`. Rewrite using `[this]`. Use `(Set.IsPWO.image_of_monotone (Set.isPWO_of_wellQuasiOrderedLE _) ?_).isWF` and prove the remaining obligations. Introduce `n m h`. Simplify using `only [ι]`.
+
+Use `gcongr`. Use `((T.exp f).isWF_support.union hR).mono ?_` and prove the remaining obligations. Introduce `r hr`. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, not_or] at hn`.
+
+Apply `hr` to reduce the goal to its premises. Simplify using `only [d, hB0 r hn.2]`. Establish `: (T.exp f).coeff r = 0` using `by simpa [HahnSeries.support] using hn.1`. Simplify using `[this]`. Introduce `z hz`.
+
+Use `(hsum z hz.1).sub (hBsum z hz.2.1)` as an intermediate fact. Rewrite `this` using `[hz.2.2, sub_self]`. Simplify `this` using `[d, sub_mul]`. Establish `hzi : C < (Complex.I * (|C| + 1)).im` using `by simp; have := le_abs_self C; linarith`. Establish `hzp : 0 < (Complex.I * (|C| + 1)).im` using `by simp; positivity`.
+
+Use `((hsum _ hzi).summable.sub (hBsum _ hzp).summable)` as an intermediate fact. Simplify `this` using `[d, sub_mul]`. Establish `hdr : ∀ r, ε ((T.exp f).coeff r) = B r` using `fun r => sub_eq_zero.mp (congrFun hd r)`. Use `⟨fun n => by rw [hdr]; exact hBι n, fun r hr => ?_⟩` and prove the remaining obligations. Establish `hr' : r ∉ Set.range ι`.
+
+Introduce and unpack `⟨n, rfl⟩`. Conclude with `hr n rfl`. Use `hdr r` as an intermediate fact. Rewrite `this` using `[hB0 r hr']`. Conclude with `(map_eq_zero_iff ε ε.injective).mp this`.
+-/
 theorem exp_of_hasQ {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (T : Tower Ω ε) (f : T.K) (g : ℍ → ℂ) {M : ℕ}
     (hM : 0 < M) (k : ℤ) (A' : ℕ → ℂ)
     (hmem : T.an f = ((fun z => g (UpperHalfPlane.ofComplex z) : ℂ → ℂ) : Mero))

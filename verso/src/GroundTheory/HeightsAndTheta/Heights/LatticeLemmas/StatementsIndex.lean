@@ -21,9 +21,15 @@ variable {V : Type*} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalar
 def localScalar (v : HeightOneSpectrum (𝓞 K)) (b : 𝓞 K) : v.adicCompletion K :=
   (algebraMap (𝓞 K) (v.adicCompletionIntegers K) b : v.adicCompletion K)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem localScalar_eq (v : HeightOneSpectrum (𝓞 K)) (b : 𝓞 K) :
     localScalar v b = FinitePlace.embedding v (b : K) := rfl
 
+/- English proof (translation)
+Rewrite using `[localScalar_eq]`. Conclude with `(map_ne_zero _).mpr (by exact_mod_cast hb)`.
+-/
 theorem localScalar_ne_zero (v : HeightOneSpectrum (𝓞 K)) {b : 𝓞 K} (hb : b ≠ 0) :
     localScalar v b ≠ 0 := by
   rw [localScalar_eq]
@@ -33,6 +39,9 @@ def localSmul (v : HeightOneSpectrum (𝓞 K)) {b : 𝓞 K} (hb : b ≠ 0) :
     (v.adicCompletion K ⊗[K] V) ≃ₗ[v.adicCompletion K] (v.adicCompletion K ⊗[K] V) :=
   LinearEquiv.smulOfNeZero _ _ (localScalar v b) (localScalar_ne_zero v hb)
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul K b x, map_smul, ← algebraMap_smul (v.adicCompletion K) (algebraMap (𝓞 K) K b) (toLocal v x)]`. Both sides reduce to the same expression.
+-/
 theorem toLocal_smul_eq (v : HeightOneSpectrum (𝓞 K)) (b : 𝓞 K) (x : V) :
     toLocal v (b • x) = localScalar v b • toLocal v x := by
   rw [← algebraMap_smul K b x, map_smul,
@@ -42,14 +51,29 @@ theorem toLocal_smul_eq (v : HeightOneSpectrum (𝓞 K)) (b : 𝓞 K) (x : V) :
 def smulSub (b : 𝓞 K) (L : Submodule (𝓞 K) V) : Submodule (𝓞 K) V :=
   L.map (b • LinearMap.id)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨x, hx, rfl⟩`.
+-/
 theorem mem_smulSub_of_mem (b : 𝓞 K) {L : Submodule (𝓞 K) V} {x : V} (hx : x ∈ L) :
     b • x ∈ smulSub b L :=
   ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `L.smul_mem b hx`.
+-/
 theorem smulSub_le (b : 𝓞 K) (L : Submodule (𝓞 K) V) : smulSub b L ≤ L := by
   rintro _ ⟨x, hx, rfl⟩
   exact L.smul_mem b hx
 
+/- English proof (translation)
+Use `set f := ((localSmul v hb : (v.adicCompletion K ⊗[K] V) ≃ₗ[v.adicCompletion K] _).toLinearMap.restrictScalars (v.adicCompletionIntegers K))`. Establish `h1 : toLocal v '' (smulSub b L : Set V) = f '' (toLocal v '' (L : Set V))`. Rewrite using `[Set.image_image]`. Use extensionality with `w`. Simplify using `only [Set.mem_image, SetLike.mem_coe]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[toLocal_smul_eq]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨b • x, mem_smulSub_of_mem b hx, ?_⟩` and prove the remaining obligations. Rewrite using `[toLocal_smul_eq]`. Both sides reduce to the same expression.
+
+Establish `h2 : localLattice v (smulSub b L) = (localLattice v L).map f`. Rewrite using `[localLattice, localLattice, Submodule.map_span, h1]`. Rewrite using `[h2, Submodule.map_coe]`. Both sides reduce to the same expression.
+-/
 theorem localLattice_smulSub (v : HeightOneSpectrum (𝓞 K)) {b : 𝓞 K} (hb : b ≠ 0)
     (L : Submodule (𝓞 K) V) :
     (localLattice v (smulSub b L) : Set (v.adicCompletion K ⊗[K] V)) =
@@ -106,6 +130,9 @@ section Witness
 
 variable (K : Type u) [Field K] [NumberField K]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨smulSub_le _ _, fun v ↦ localLattice_smulSub v _ _⟩`.
+-/
 theorem LocalIndex.witness :
     (scaledLattice (FullLattice.standard K 2) (two_ne_zero (α := 𝓞 K))).carrier ≤
         (FullLattice.standard K 2).carrier ∧
@@ -113,7 +140,13 @@ theorem LocalIndex.witness :
           Set (v.adicCompletion K ⊗[K] (Fin 2 → K))) = localSmul v (two_ne_zero (α := 𝓞 K)) '' localLattice v (FullLattice.standard K 2).carrier :=
   ⟨smulSub_le _ _, fun v ↦ localLattice_smulSub v _ _⟩
 
+/- English proof (translation)
+The claim follows from `LocalIndex.witness ℚ`.
+-/
 example := LocalIndex.witness ℚ
+/- English proof (translation)
+The claim follows from `LocalIndex.witness GaussianField`.
+-/
 example := LocalIndex.witness GaussianField
 
 end Witness

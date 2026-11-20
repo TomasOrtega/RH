@@ -2,15 +2,24 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af GlobalTheory.UnitaryBC UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Bor
 
+/- English proof (translation)
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.ofReal_re]`.
+-/
 private lemma re_mul_conj (z : ℂ) : (z * (starRingEnd ℂ) z).re = ‖z‖ ^ 2 := by
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.ofReal_re]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (Finset.single_le_sum (fun j _ => hg j) (Finset.mem_univ i)) (hf i)`.
+-/
 private lemma sum_mul_le {ι : Type} [Fintype ι] (f g : ι → ℝ) (hf : ∀ i, 0 ≤ f i) (hg : ∀ i, 0 ≤ g i) :
     ∑ i, f i * g i ≤ (∑ i, f i) * ∑ i, g i := by
   rw [Finset.sum_mul]
   exact Finset.sum_le_sum fun i _ =>
     mul_le_mul_of_nonneg_left (Finset.single_le_sum (fun j _ => hg j) (Finset.mem_univ i)) (hf i)
 
+/- English proof (translation)
+Use `le_trans ?_ (Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun i => ‖f i‖) (fun i => ‖g i‖))` and prove the remaining obligations. Use `pow_le_pow_left₀ (norm_nonneg _) ?_ 2` and prove the remaining obligations. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 private lemma cs_norm {ι : Type} [Fintype ι] (f g : ι → ℂ) :
     ‖∑ i, f i * g i‖ ^ 2 ≤ (∑ i, ‖f i‖ ^ 2) * ∑ i, ‖g i‖ ^ 2 := by
   refine le_trans ?_ (Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun i => ‖f i‖) (fun i => ‖g i‖))
@@ -21,13 +30,22 @@ private lemma cs_norm {ι : Type} [Fintype ι] (f g : ι → ℂ) :
 section
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
+/- English proof (translation)
+Unfold `qf`. Conclude with `Finset.sum_comm`.
+-/
 private lemma qf_eq (w : Fin a → Cinf E) : qf w = ∑ v : InfinitePlace E, ∑ i, ‖w i v‖ ^ 2 := by
   unfold qf; exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `[trF, Matrix.trace, Matrix.mul_apply, Fintype.sum_prod_type, Finset.sum_apply]`.
+-/
 private lemma trF_eq (X Y : Matrix (Fin a) (Fin a) (Cinf E)) :
     trF X Y = (∑ p : InfinitePlace E × Fin a × Fin a, X p.2.1 p.2.2 p.1 * Y p.2.2 p.2.1 p.1).re := by
   simp [trF, Matrix.trace, Matrix.mul_apply, Fintype.sum_prod_type, Finset.sum_apply]
 
+/- English proof (translation)
+Unfold `quad`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.vecMul_vecMulVec, smul_dotProduct, ← re_mul_conj]`. Use `congr 1`. Simplify using `[dotProduct, Finset.sum_apply, mul_comm]`.
+-/
 private lemma quad_eq (w x : Fin a → Cinf E) :
     quad (vecMulVec w (star w)) x = ∑ v : InfinitePlace E, ‖(x ⬝ᵥ w) v‖ ^ 2 := by
   unfold quad
@@ -38,6 +56,21 @@ private lemma quad_eq (w x : Fin a → Cinf E) :
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ a w`. Use `⟨?_, fun M => ?_, fun x => ⟨?_, ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[qf_eq]`. Unfold `trF`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.one_mul, Matrix.trace, Matrix.diag, vecMulVec_apply, Finset.sum_apply, Complex.re_sum, Pi.mul_apply, Pi.star_apply, Complex.star_def, re_mul_conj]`. Establish `hM : ∀ i j v, M.1 j i v = (starRingEnd ℂ) (M.1 i j v)`. Introduce `i j v`. Establish `h : star M.1 = M.1` using `M.2`. Use `conv_lhs => rw [← h]`.
+
+Both sides reduce to the same expression. Establish `h1 : trF M.1 M.1 = ∑ p : InfinitePlace E × Fin a × Fin a, ‖M.1 p.2.1 p.2.2 p.1‖ ^ 2`. Rewrite using `[trF_eq, Complex.re_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hM p.2.1 p.2.2, re_mul_conj]`.
+
+Establish `h2 : ∑ p : InfinitePlace E × Fin a × Fin a, ‖(vecMulVec w (star w)) p.2.2 p.2.1 p.1‖ ^ 2 ≤ qf w ^ 2`. Rewrite using `[qf_eq, sq (∑ v : InfinitePlace E, ∑ i, ‖w i v‖ ^ 2)]`. Use `le_trans (le_of_eq ?_) (sum_mul_le _ _ (fun v => by positivity) (fun v => by positivity))` and prove the remaining obligations. Simplify using `only [Fintype.sum_prod_type, Finset.sum_mul_sum, vecMulVec_apply, Pi.mul_apply, Pi.star_apply, norm_mul, norm_star, mul_pow, mul_comm]`. Rewrite using `[h1, trF_eq]`.
+
+Use `le_trans ?_ ((cs_norm _ _).trans (mul_le_mul_of_nonneg_left h2 (by positivity)))` and prove the remaining obligations. Conclude with `sq_le_sq' (abs_le.1 (Complex.abs_re_le_norm _)).1 (abs_le.1 (Complex.abs_re_le_norm _)).2`. Rewrite using `[quad_eq]`. Establish `hs : 0 ≤ ∑ v : InfinitePlace E, ‖(x ⬝ᵥ w) v‖ ^ 2` using `by positivity`. Rewrite using `[← Real.le_sqrt (norm_nonneg _) hs]`.
+
+Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun v => ?_` and prove the remaining obligations. Rewrite using `[Real.le_sqrt (norm_nonneg _) hs]`. Conclude with `Finset.single_le_sum (f := fun v => ‖(x ⬝ᵥ w) v‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ v)`. Rewrite using `[quad_eq, qf_eq, qf_eq, mul_comm]`. Use `le_trans ?_ (sum_mul_le _ _ (fun v => by positivity) (fun v => by positivity))` and prove the remaining obligations.
+
+Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations. Use `cs_norm (fun i => x i v) (fun i => w i v)` as an intermediate fact. Simplify `this` using `[dotProduct, Finset.sum_apply]`. Rewrite using `[quad_eq, h]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.traceForm_cauchy_schwarz_cmDatum :
     RankOne := by
   intro E _ _ a w

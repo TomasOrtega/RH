@@ -32,6 +32,29 @@ open scoped ComplexConjugate
 
 namespace GlobalTheory.CoreOnto.PreSteps
 
+/- English proof (translation)
+Introduce `D hQ hS T L μ0 hL sc hc G W Mv hM i hi r r' hr hr' v M M'`. Take `⟨hth, -, -, hbij, hmeas, hweil⟩` from `GlobalTheory.T.adjointExchange_laws_thetaHeisenberg D W.ψ (G.V (.core i)) (G.V (.core (i + 1))) W.ψ_std`. Establish `hom` using `W.om_is (.core i) (show i + 1 ≤ D.R.m by omega)`. Take `⟨hcS, hcT⟩` from `G.chr_core (i := i) (by omega)`. Rewrite `hom` using `[hcS, hcT]`.
+
+Take `⟨ω, hω, hωx⟩` from `hweil _ _ _ hom`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.T.exists_latticeHom_onto_modulo_depthIdeal D hQ T L μ0 hL sc G W Mv hM i hi`. Take `⟨f, hvac, hsph, hcos⟩` from `GlobalTheory.T.exists_cosetFockVacuumDatum D hQ T L μ0 hL sc G W Mv hM i hi r r' hr hr' _ _ (r.mod M) (r'.mod M') x₀ hx₀.1`. Establish `hRL` using `(GlobalTheory.T.selfDualLattice_changeOfLattice_laws D).2.2 W.ψ (G.V (.core i)) (G.V (.core (i + 1))) r r'`. Establish `hinj : Function.Injective (exch (G.V (.core i)) (G.V (.core (i + 1))))`.
+
+Introduce `F₁ F₂ h`. Use function extensionality and compare the values at `w`. Take `⟨x, rfl⟩` from `hbij.2 w`. Conclude with `congrFun h x`. Use `⟨ω, f, ⟨(hRL.2 _ _ ω).2 hω, fun τ => ?_, hvac, hsph, ?_, ?_⟩, hωx, fun φ => (hcos φ).1⟩` and prove the remaining obligations.
+
+Use `show GlobalTheory.EvenOnto.UpPair (sLen D - 1) (Node.par D sc.cGap (.core i) τ) (Node.par D sc.cGap (.core (i + 1)) τ) (-(cen D sc.cGap τ (D.R.m - i) : ℚ)) (-(cen D sc.cGap τ (D.R.m - i) : ℚ))`. Rewrite using `[hc]`. Conclude with `GlobalTheory.T.coreChain_realParameters_correspond D hS i hi τ`. Introduce `φ κ hκ κ' hκ'`. Establish `hD` using `(hcos φ).1`.
+
+Establish `hthF` using `(hth _).2 hD.1`. Conclude with `hinj ((hωx _ hthF κ κ').symm.trans (hDF D hQ T L μ0 hL sc G W Mv hM i hi (.core i) (Or.inr rfl) _ hD κ hκ κ' hκ'))`. Introduce `m X hX φ g hg hgb`. Assume the negation of the conclusion as `hne`. Apply `hgb` to reduce the goal to its premises.
+
+Establish `hD` using `(hcos φ).1`. Establish `hthF` using `(hth _).2 hD.1`. Take `⟨m', X', hX', heq⟩` from `hmeas m X hX`. Establish `hne' : (∫ w in X', W.om (.core i) (1, g) (exch (G.V (.core i)) (G.V (.core (i + 1))) (GlobalTheory.Chain.ptOf (V` using `r.sp) (W := r'.sp) W.ψ W.θ (r.mod M) (r'.mod M') f φ)) w * conj (exch (G.V (.core i)) (G.V (.core (i + 1))) (GlobalTheory.Chain.ptOf (V := r.sp) (W := r'.sp) W.ψ W.θ (r.mod M) (r'.mod M') f φ) w) ∂m') ≠ 0 := by`. Establish `h1` using `hωx _ hthF g 1`.
+
+Rewrite `h1` using `[map_one]`. Rewrite using `[h1, ← heq]`. Conclude with `hne`. Establish `hsd` using `(G.sp.P_is i (by omega)).sd`. Establish `hstab : ∀ w ∉ G.pl.S0, GlobalTheory.AdelicU.proj D.sp.cm.sig (G.V (.core i)).gram w g ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig (G.V (.core i)).gram (G.Λ (.core i)) w`.
+
+Introduce `w hw`. Establish `h0` using `hg w hw`. Establish `h1 : GlobalTheory.AdelicU.proj D.sp.cm.sig (G.V (.core i)).gram w g ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig (G.V (.core i)).gram (GlobalTheory.AdelicU.frameLat r.sp) w` using `h0`. Establish `hΛ : GlobalTheory.AdelicU.frameLat r.sp = scaleLat ((D.host.AAbar * D.host.AA⁻¹) ^ i) (G.Λ (.core i))` using `hr`. Rewrite `h1` using `[hΛ, (GlobalTheory.T.polarisationTwist_lattice_selfDual_same_stabilisers D (G.V (.core i)) (G.Λ (.core i)) hsd i).2.1 w]`.
+
+Conclude with `h1`. Establish `hfin` using `GlobalTheory.T.cosetSupported_coefficient_congruenceSubgroup D hQ T L μ0 hL sc G W Mv hM i hi x₀ hx₀ _ (hcos φ) m' X' hX' g hstab hne'`. Take `⟨a, ha, k, hk, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D (G.V (.core i))).1 g`. Use `⟨⟨a, ha⟩, k, Subgroup.mem_inf.2 ⟨hk, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `ha' : Lev.finE (G.V (.core i)) a = 1`.
+
+Establish `h : finHom (G.V (.core i)) a = 1` using `ha`. Use `show Formalism.UG.bc (Lev.swapAE D) (finHom (G.V (.core i)) a) = 1`. Rewrite using `[h, map_one]`. Use `show Lev.finE (G.V (.core i)) k ∈ G.levCong (.core i)`. Rewrite `hfin` using `[map_mul, ha', one_mul]`.
+
+Conclude with `hfin`.
+-/
 theorem preOK (hDF : DepFixed) : PreOK := by
   intro D hQ hS T L μ0 hL sc hc G W Mv hM i hi r r' hr hr' v M M'
   obtain ⟨hth, -, -, hbij, hmeas, hweil⟩ := GlobalTheory.T.adjointExchange_laws_thetaHeisenberg D W.ψ (G.V (.core i)) (G.V (.core (i + 1))) W.ψ_std

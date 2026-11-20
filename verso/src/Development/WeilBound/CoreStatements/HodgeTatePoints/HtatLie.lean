@@ -16,6 +16,17 @@ namespace Lie
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G]
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Use `choose P iA iM iL ist ifin iproj m nat using hch`. Establish `hix : ∀ g : Idx f, ∃ i, f i ∣ g.1` using `fun g => g.2`. Use `choose ix hix using hix`. Establish `hqc : ∀ (g g' : Idx f) (h : g.1 ∣ g'.1) (t : R), g'.1 = g.1 * t → ∀ r : (P (ix g) →ₗ[R] Localization.Away g.1) →ₗ[R] (P (ix g') →ₗ[R] Localization.Away g'.1), (∀ y, ((m (ix g') _ (unit_of_dvd (hix g'))).pt (r y)).left = spMap (dualMap (cmap h).toRingHom) ≫ ((m (ix g) _ (unit_of_d …`.
+
+Introduce `g g' h t ht r hr`. Establish `hu' : IsUnit (algebraMap R (Localization.Away g'.1) (f (ix g)))` using `unit_of_dvd ((hix g).trans h)`. Take `⟨e, he⟩` from `exists_equiv (R := R) (ptAt x g'.1) (m (ix g) _ hu') (m (ix g') _ (unit_of_dvd (hix g')))`. Use `haveI := cmap_loc h ht`. Use `haveI hcr := GlobalTheory.T.localized_module_base_change R (P (ix g)) (Localization.Away g.1) (Localization.Away g'.1) (f (ix g)) t (unit_of_dvd (hix g)) (cmap h) (cmap_loc h ht)`.
+
+Establish `hrr : r = (e : _ →ₗ[R] _) ∘ₗ LinearMap.compRight R (cmap h).toLinearMap`. Use `LinearMap.ext fun y => pt_left_inj (m (ix g') _ (unit_of_dvd (hix g'))) ?_` and prove the remaining obligations. Rewrite using `[hr]`. Use `Eq.trans ?_ (he _).symm` and prove the remaining obligations. Conclude with `(nat (ix g) _ _ (unit_of_dvd (hix g)) hu' (cmap h) y).symm`.
+
+Rewrite using `[hrr]`. Conclude with `IsLocalizedModule.of_linearEquiv _ _ _`. Take `⟨ρ, hρ, hloc⟩` from `loc_of_family x f hf M (fun g => P (ix g) →ₗ[R] Localization.Away g.1) (fun g => m (ix g) _ (unit_of_dvd (hix g))) hqc`. Take `⟨e, he⟩` from `exists_equiv (R := R) (ptAt x (f i)) (m (ix ⟨f i, i, dvd_rfl⟩) _ (unit_of_dvd (hix ⟨f i, i, dvd_rfl⟩))) Mi`. Establish `hrr : r = (e : _ →ₗ[R] _) ∘ₗ ρ ⟨f i, i, dvd_rfl⟩` using `LinearMap.ext fun y => pt_left_inj Mi ((hr y).trans ((he _).trans (hρ ⟨f i, i, dvd_rfl⟩ y)).symm)`.
+
+Rewrite using `[hrr]`. Use `haveI := hloc i`. Conclude with `IsLocalizedModule.of_linearEquiv _ _ _`.
+-/
 theorem loc_of_charts {R : Type} [CommRing R] (x : Sp R ⟶ S) {J : Type} [Finite J] (f : J → R)
     (hf : Ideal.span (Set.range f) = ⊤) (hch : ∀ i, LieChart G x (f i)) {E : Type} [AddCommGroup E] [Module R E]
     (M : LieModel G x E) (i : J) {F : Type} [AddCommGroup F] [Module R F] [Module (Localization.Away (f i)) F]
@@ -63,19 +74,35 @@ def SmChart {R : Type} [CommRing R] (x : Sp R ⟶ S) (f : R) : Prop :=
     RingHom.Smooth (G.hom.appLE V U hUV).hom ∧ ∃ u : Γ(G.left, U) →+* Localization.Away f,
       (1 : Over.mk (spMap (algebraMap R (Localization.Away f)) ≫ x) ⟶ G).left = spMap u ≫ hU.fromSpec
 
+/- English proof (translation)
+Take `⟨U, V, hU, hV, hUV, hsm, u, hu⟩` from `h`. Conclude with `lieChart_of_smooth_chart S G R x f U V hU hV hUV hsm u hu`.
+-/
 theorem SmChart.lieChart {R : Type} [CommRing R] {x : Sp R ⟶ S} {f : R} (h : SmChart G x f) : LieChart G x f := by
   obtain ⟨U, V, hU, hV, hUV, hsm, u, hu⟩ := h
   exact lieChart_of_smooth_chart S G R x f U V hU hV hUV hsm u hu
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply R R' (Localization.Away (algebraMap R R' f))]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`.
+-/
 theorem unit_away {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (f : R) :
     IsUnit (algebraMap R (Localization.Away (algebraMap R R' f)) f) := by
   rw [IsScalarTower.algebraMap_apply R R' (Localization.Away (algebraMap R R' f))]
   exact IsLocalization.Away.algebraMap_isUnit _
 
+/- English proof (translation)
+Rewrite using `[ptAt, ← Category.assoc, spMap_comp', ← IsScalarTower.algebraMap_eq]`.
+-/
 theorem pt_eq {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (x : Sp R ⟶ S) (g : R') :
     spMap (algebraMap R (Localization.Away g)) ≫ x = ptAt (spMap (algebraMap R R') ≫ x) g := by
   rw [ptAt, ← Category.assoc, spMap_comp', ← IsScalarTower.algebraMap_eq]
 
+/- English proof (translation)
+Take `⟨U, V, hU, hV, hUV, hsm, u, hu⟩` from `h`. Set `κ : Localization.Away f →+* Localization.Away (algebraMap R R' f)` to `IsLocalization.Away.lift f (unit_away (R' := R') f)`. Establish `hκ : κ.comp (algebraMap R _) = algebraMap R _` using `IsLocalization.Away.lift_comp f _`. Use `⟨U, V, hU, hV, hUV, hsm, κ.comp u, ?_⟩` and prove the remaining obligations. Rewrite `hu`, the goal using `[ChartDer.one_left]`.
+
+Simplify using `only [Over.mk_hom] at hu ⊢`. Establish `e` using `pt_eq x (algebraMap R R' f)`. Rewrite `e` using `[← hκ, ← spMap_comp']`. Rewrite using `[← spMap_comp' u κ, Category.assoc (spMap κ), ← hu]`. Use `(congrArg (· ≫ η[G].left) e.symm).trans ?_` and prove the remaining obligations.
+
+Simplify using `only [Category.assoc]`.
+-/
 theorem SmChart.base {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {x : Sp R ⟶ S} {f : R}
     (h : SmChart G x f) : SmChart G (spMap (algebraMap R R') ≫ x) (algebraMap R R' f) := by
   obtain ⟨U, V, hU, hV, hUV, hsm, u, hu⟩ := h
@@ -91,6 +118,11 @@ theorem SmChart.base {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {x 
   refine (congrArg (· ≫ η[G].left) e.symm).trans ?_
   simp only [Category.assoc]
 
+/- English proof (translation)
+Establish `hspan : Ideal.span {f : R | SmChart G x f} = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨p, hp, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨f, hf, h⟩` from `GlobalTheory.T.smooth_group_tangent_lift S G R x p`. Conclude with `hf (hle (Ideal.subset_span h))`.
+
+Take `⟨s, hs, hsp⟩` from `(Ideal.span_eq_top_iff_finite _).mp hspan`. Use `⟨s, inferInstance, fun i => i, ?_, fun i => hs i.2⟩` and prove the remaining obligations. Rewrite using `[Subtype.range_coe_subtype]`. Conclude with `hsp`.
+-/
 theorem exists_cover [Smooth G.hom] {R : Type} [CommRing R] (x : Sp R ⟶ S) :
     ∃ (J : Type) (_ : Finite J) (f : J → R), Ideal.span (Set.range f) = ⊤ ∧ ∀ i, SmChart G x (f i) := by
   have hspan : Ideal.span {f : R | SmChart G x f} = ⊤ := by
@@ -103,6 +135,23 @@ theorem exists_cover [Smooth G.hom] {R : Type} [CommRing R] (x : Sp R ⟶ S) :
   rw [Subtype.range_coe_subtype]
   exact hsp
 
+/- English proof (translation)
+Take `⟨J, _, f, hf, hch⟩` from `exists_cover (G := G) x`. Establish `hf' : Ideal.span (Set.range fun i => algebraMap R R' (f i)) = ⊤`. Use `congrArg (Ideal.map (algebraMap R R')) hf` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Then use the resulting hypothesis. Set `φ : R' ⊗[R] L →ₗ[R'] L'` to `β.liftBaseChange R'`.
+
+Establish `hφ : ∀ e, φ (1 ⊗ₜ e) = β e` using `fun e => by`. Rewrite using `[LinearMap.liftBaseChange_tmul, one_smul]`. Establish `hbij : Function.Bijective φ`. Use `bijective_of_cover _ hf' φ fun i => ?_` and prove the remaining obligations. Take `⟨P, _, _, _, _, _, _, m, nat⟩` from `(hch i).lieChart`.
+
+Set `A` to `Localization.Away (f i)`. Set `C` to `Localization.Away (algebraMap R R' (f i))`. Establish `hA : IsUnit (algebraMap R A (f i))` using `IsLocalization.Away.algebraMap_isUnit _`. Establish `hC : IsUnit (algebraMap R C (f i))` using `unit_away (f i)`. Set `κ : A →+* C` to `IsLocalization.Away.lift (f i) hC`.
+
+Establish `hκ : κ.comp (algebraMap R A) = algebraMap R C` using `IsLocalization.Away.lift_comp _ _`. Use `letI : Algebra A C := κ.toAlgebra`. Use `haveI : IsScalarTower R A C := IsScalarTower.of_algebraMap_eq' hκ.symm`. Set `c : A →ₐ[R] C` to `IsScalarTower.toAlgHom R A C`. Take `⟨a, ha⟩` from `exists_trL (R := R') (spMap (algebraMap R R') ≫ x) (spMap (algebraMap R C) ≫ x) (algebraMap R' C) (fun _ => rfl) (pt_eq x _).symm M' (m C hC)`.
+
+Take `⟨ρ, hρ⟩` from `exists_trL (R := R) x (spMap (algebraMap R A) ≫ x) (algebraMap R A) (fun _ => rfl) rfl M (m A hA)`. Establish `l1 : IsLocalizedModule (Submonoid.powers (algebraMap R R' (f i))) a` using `loc_of_charts (spMap (algebraMap R R') ≫ x) (fun i => algebraMap R R' (f i)) hf' (fun i => (hch i).base.lieChart) M' i _ (pt_eq x _) (m C hC) a ha`. Establish `l2 : IsLocalizedModule (Submonoid.powers (f i)) ρ` using `loc_of_charts x f hf (fun i => (hch i).lieChart) M i _ rfl (m A hA) ρ hρ`. Establish `b2 : IsBaseChange A ρ` using `(isLocalizedModule_iff_isBaseChange (Submonoid.powers (f i)) A ρ).1 l2`. Set `g : (P →ₗ[R] A) →ₗ[A] (P →ₗ[R] C)` to `{ toFun := fun w => c.toLinearMap ∘ₗ w map_add' := fun w w' => LinearMap.comp_add _ _ _ map_smul' := fun r w => LinearMap.ext fun p => by show κ (r * w p) = r • κ (w p)`.
+
+Rewrite using `[map_mul, Algebra.smul_def]`. Use `rfl }`. Establish `b3 : IsBaseChange C g` using `isBaseChange_hom (fun w r p => GlobalTheory.CompanionTheory.LocHom.map_away_smul (AlgHom.id R A) w r p) (fun w r p => GlobalTheory.CompanionTheory.LocHom.map_away_smul c w r p) g fun _ _ => rfl`. Establish `b4` using `b2.comp b3`. Establish `e : (g.restrictScalars R) ∘ₗ ρ = ((a ∘ₗ φ).restrictScalars R) ∘ₗ (TensorProduct.mk R R' L 1)`.
+
+Use `LinearMap.ext fun l => pt_left_inj (m C hC) ?_` and prove the remaining obligations. Use `show ((m C hC).pt (c.toLinearMap ∘ₗ ρ l)).left = ((m C hC).pt (a (φ (1 ⊗ₜ l)))).left`. Rewrite using `[nat A C hA hC c, hρ, ha, hφ, hβ, ← Category.assoc, ← Category.assoc, spMap_dual_comp, spMap_dual_comp, ← IsScalarTower.algebraMap_eq, ← hκ]`. Both sides reduce to the same expression. Rewrite `b4` using `[e]`.
+
+Establish `b5 : IsBaseChange C (a ∘ₗ φ)` using `(TensorProduct.isBaseChange R L R').of_comp b4`. Conclude with `⟨P →ₗ[R] C, inferInstance, inferInstance, a, l1, (isLocalizedModule_iff_isBaseChange (Submonoid.powers (algebraMap R R' (f i))) C _).2 b5⟩`. Conclude with `IsBaseChange.of_equiv (LinearEquiv.ofBijective φ hbij) hφ`.
+-/
 theorem isBaseChange_lie [Smooth G.hom] {R : Type} [CommRing R] (x : Sp R ⟶ S) {L : Type} [AddCommGroup L]
     [Module R L] (M : LieModel G x L) (R' : Type) [CommRing R'] [Algebra R R'] (L' : Type) [AddCommGroup L']
     [Module R' L'] [Module R L'] [IsScalarTower R R' L'] (M' : LieModel G (spMap (algebraMap R R') ≫ x) L')
@@ -164,6 +213,9 @@ end Lie
 
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct in
 open GlobalTheory.CompanionTheory.Ar in
+/- English proof (translation)
+Introduce `S G _ _ R _ x L _ _ M`. Take `⟨J, _, f, hf, hch⟩` from `Lie.exists_cover (G := G) x`. Take `⟨h1, h2⟩` from `lieModel_finite_projective S G R x J f hf (fun i => (hch i).lieChart) L M`. Conclude with `⟨h1, h2, fun R' _ _ L' _ _ _ _ M' β hβ => Lie.isBaseChange_lie x M R' L' M' β hβ⟩`.
+-/
 theorem lie_proj : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [Smooth G.hom] (R : Type) [CommRing R] (x : Spec (CommRingCat.of R) ⟶ S) (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L), Module.Finite R L ∧ Module.Projective R L ∧ ∀ (R' : Type) [CommRing R'] [Algebra R R'] (L' : Type) [AddCommGroup L'] [Module R' L'] [Module R L'] [IsScalarTower R R' L'] (M' : LieModel G (Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x) L') (β : L →ₗ[R] L'), (∀ e, (M'.pt (β e)).left = Spec.map (CommRingCat.ofHom (dualMap (algebraMap R R'))) ≫ (M.pt e).left) → IsBaseChange R' β := by
   intro S G _ _ R _ x L _ _ M
   obtain ⟨J, _, f, hf, hch⟩ := Lie.exists_cover (G := G) x

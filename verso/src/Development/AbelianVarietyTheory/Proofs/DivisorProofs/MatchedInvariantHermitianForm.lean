@@ -13,6 +13,29 @@ noncomputable section
 
 namespace GlobalTheory.PolarizedDataL2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf h`. Use `letI mA : MeasurableSpace (Fin a' × Fin (a + a') → AF F) := borel _`. Use `haveI : BorelSpace (Fin a' × Fin (a + a') → AF F) := ⟨rfl⟩`. Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `set μ : Measure (Fin a' × Fin (a + a') → AF F) := Measure.addHaar with hμdef`.
+
+Use `haveI hH : μ.IsAddHaarMeasure := by rw [hμdef]; infer_instance`. Use `set D := GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁ with hD`. Establish `memS : ∀ z : D, (z : GlobalTheory.ThK.Fn F a' (a + a')) ∈ schA F (Fin a' × Fin (a + a'))` using `fun z => GlobalTheory.ThKRatInv.polData_le_schA B G.M' h.triple.geo.hM' (Submodule.mem_inf.1 z.2).1`. Establish `hL : ∀ z : D, MemLp (z : GlobalTheory.ThK.Fn F a' (a + a')) 2 μ` using `fun z => GlobalTheory.WeilM.schA_memLp_two F _ μ hH _ (memS z)`. Set `L : D → Lp ℂ 2 μ` to `fun z => (hL z).toLp z`.
+
+Establish `Ladd : ∀ x y : D, L (x + y) = L x + L y` using `fun x y => MemLp.toLp_add (hL x) (hL y)`. Establish `Lsmul : ∀ (c : ℂ) (x : D), L (c • x) = c • L x` using `fun c x => MemLp.toLp_const_smul c (hL x)`. Establish `Lnorm : ∀ z : D, ‖L z‖ = (eLpNorm (z : GlobalTheory.ThK.Fn F a' (a + a')) 2 μ).toReal` using `fun z => Lp.norm_toLp _ _`. Set `Bf : D →ₗ⋆[ℂ] D →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun x y => inner ℂ (L x) (L y)) (fun x₁ x₂ y => by simp only [Ladd, inner_add_left]) (fun c x y => by simp only [Lsmul, inner_smul_left, smul_eq_mul]) (fun x y₁ y₂ => by simp only [Ladd, inner_add_right]) (fun c x y => by simp only …`. Use `⟨Bf, fun x y => ?_, fun x hx => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show inner ℂ (L y) (L x) = starRingEnd ℂ (inner ℂ (L x) (L y))`. Conclude with `(inner_conj_symm _ _).symm`. Use `show 0 < (inner ℂ (L x) (L x)).re`. Establish `e1 : (inner ℂ (L x) (L x)).re = ‖L x‖ ^ 2`. Use `inner_self_eq_norm_sq (𝕜 := ℂ) (L x)` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[e1]`. Use `pow_pos (norm_pos_iff.2 fun h0 => hx ?_) 2` and prove the remaining obligations. Establish `hae : (x : GlobalTheory.ThK.Fn F a' (a + a')) =ᵐ[μ] 0`. Establish `h1` using `(hL x).coeFn_toLp`.
+
+Establish `h2 : ((L x : Lp ℂ 2 μ) : GlobalTheory.ThK.Fn F a' (a + a')) =ᵐ[μ] 0`. Rewrite using `[h0]`. Conclude with `Lp.coeFn_zero _ _ _`. Conclude with `h1.symm.trans h2`. Establish `hc : Continuous (x : GlobalTheory.ThK.Fn F a' (a + a'))` using `GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F (memS x)`.
+
+Establish `hz` using `(Continuous.ae_eq_iff_eq μ hc continuous_const).1 hae`. Conclude with `Subtype.ext hz`. Introduce `k _ x y x' y' hx hy`. Establish `U` using `(IsUWeilPair.isUSplitting h.triple.weil').unit`. Establish `key : ∀ c : ℂ, ‖L x' + c • L y'‖ = ‖L x + c • L y‖` using `fun c => by`.
+
+Rewrite using `[← Lsmul, ← Ladd, ← Lsmul, ← Ladd, Lnorm, Lnorm]`. Use `congr 1`. Establish `e : ((x' + c • y' : D) : GlobalTheory.ThK.Fn F a' (a + a')) = om' (1, k) ((x + c • y : D) : GlobalTheory.ThK.Fn F a' (a + a'))`. Simplify using `only [Submodule.coe_add, Submodule.coe_smul, map_add, map_smul, hx, hy]`. Rewrite using `[e]`.
+
+Establish `u` using `U μ hH (1, k) _ (memS (x + c • y))`. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top, eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `only [ENNReal.toReal_ofNat, ENNReal.rpow_two]`. Rewrite using `[u]`. Establish `s : ∀ (u v : Lp ℂ 2 μ) (c : ℂ), u - c • v = u + (-c) • v` using `fun u v c => by rw [neg_smul, sub_eq_add_neg]`.
+
+Establish `k1 : ‖L x' + L y'‖ = ‖L x + L y‖` using `by simpa using key 1`. Establish `k2 : ‖L x' - L y'‖ = ‖L x - L y‖`. Use `key (-1)` as an intermediate fact. Simplify using `only [neg_smul, one_smul, ← sub_eq_add_neg] at this`. Conclude with `this`.
+
+Establish `k3 : ∀ c : ℂ, ‖L x' - c • L y'‖ = ‖L x - c • L y‖` using `fun c => by rw [s, s]; exact key _`. Use `show inner ℂ (L x') (L y') = inner ℂ (L x) (L y)`. Rewrite using `[inner_eq_sum_norm_sq_div_four (L x') (L y'), inner_eq_sum_norm_sq_div_four (L x) (L y), k1, k2, k3, key]`.
+-/
 theorem exists_invariant_form : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∃ Bf : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) →ₗ⋆[ℂ] ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) →ₗ[ℂ] ℂ, (∀ x y, Bf y x = starRingEnd ℂ (Bf x y)) ∧ (∀ x, x ≠ 0 → 0 < (Bf x x).re) ∧ ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ G.W B.emb, ∀ x y x' y' : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), (x' : GlobalTheory.ThK.Fn F a' (a + a')) = om' (1, k) x → (y' : GlobalTheory.ThK.Fn F a' (a + a')) = om' (1, k) y → Bf x' y' = Bf x y := by
   intro F E _ _ _ _ _ σ B a a' G X om om' R Rf h
   letI mA : MeasurableSpace (Fin a' × Fin (a + a') → AF F) := borel _

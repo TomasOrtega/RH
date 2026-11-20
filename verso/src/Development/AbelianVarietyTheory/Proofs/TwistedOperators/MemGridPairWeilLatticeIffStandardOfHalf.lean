@@ -24,6 +24,9 @@ namespace GlobalTheory.StdHalfLat
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 
+/- English proof (translation)
+Introduce `w hw`. Break down `Finset.mem_union.1 hw with hw0 | hwQ` into its components or cases. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hw0`. Conclude with `Or.inl ((G.pl.under_w hv).symm ▸ hv)`. Conclude with `Or.inr ⟨w, hwQ, rfl⟩`.
+-/
 theorem locPl_over {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData L sc) (t : T) :
     ∀ w ∈ locPl G t, w.under (𝓞 D.host.F) ∈ G.pl.S0 ∨ ∃ w' ∈ L.Q t, w.under (𝓞 D.host.F) = w'.under (𝓞 D.host.F) := by
   classical
@@ -33,11 +36,29 @@ theorem locPl_over {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGri
     exact Or.inl ((G.pl.under_w hv).symm ▸ hv)
   · exact Or.inr ⟨w, hwQ, rfl⟩
 
+/- English proof (translation)
+The claim follows from `exists_kill N (Set.mem_univ t) (FinDatum.ind G t p (locPl G t) (locPl_over G t) e he) hX`.
+-/
 private theorem kill_lemma' {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc}
     (N : Std G Set.univ) {t : T} {e : AE D} (he : IsIdemSum e (locPl G t)) (p : Pair T) {X : Node}
     (hX : DefNode D.R.m X) : ∃ a : AE D, e * (a + cA D a) = 0 ∧ SuppAt a (G.V X) (N.u X).1 :=
   exists_kill N (Set.mem_univ t) (FinDatum.ind G t p (locPl G t) (locPl_over G t) e he) hX
 
+/- English proof (translation)
+Introduce `D T L sc G W S t p hp e he x hx`. Consider the cases of `p with`. Consider the case `chi i j`. Take `⟨hi, rfl⟩` from `hp`. Establish `hXS : DefNode D.R.m (.grid (i + 1) D.R.m)` using `⟨hi, rfl⟩`.
+
+Establish `hXT : DefNode D.R.m (.grid i D.R.m)` using `⟨by omega, rfl⟩`. Take `⟨hS1, hS2⟩` from `hat_moves S.N hXS`. Take `⟨hT1, hT2⟩` from `hat_moves S.N hXT`. Take `⟨a, ha, hga⟩` from `kill_lemma' S.N he (.chi i D.R.m) hXS`. Take `⟨b, hb, hhb⟩` from `kill_lemma' S.N he (.chi i D.R.m) hXT`.
+
+Use `(mem_latO_iff_of_half (negGA _ (S.N.u (.grid (i + 1) D.R.m)).1) (S.N.u (.grid i D.R.m)).1 ?_ ?_ hT1 hT2 ha hb ?_ hhb hx).symm` and prove the remaining obligations. Introduce `v hv`. Establish `h` using `hS1 v hv`. Rewrite `h` using `[← mt_negGA]`. Conclude with `h`.
+
+Introduce `v hv`. Establish `h` using `hS2 v hv`. Rewrite `h` using `[← mt_negGA, map_inv]`. Conclude with `h`. Unfold `SuppAt at hga ⊢`.
+
+Rewrite `hga` using `[← mt_negGA]`. Conclude with `hga`. Consider the case `top t' j`. Establish `hXS : DefNode D.R.m (.top j)` using `by simp only [DefPair] at hp; show j ≤ D.R.m; omega`. Establish `hXT : DefNode D.R.m (.top (j + 1))` using `hp`.
+
+Take `⟨hS1, hS2⟩` from `hat_moves S.N hXS`. Take `⟨hT1, hT2⟩` from `hat_moves S.N hXT`. Take `⟨a, ha, hga⟩` from `kill_lemma' S.N he (.top t' j) hXS`. Take `⟨b, hb, hhb⟩` from `kill_lemma' S.N he (.top t' j) hXT`. Conclude with `(mem_latO_iff_of_half _ _ hS1 hS2 hT1 hT2 ha hb hga hhb hx).symm`.
+
+Consider the case `mu _ _ _ => exact hp.elim`. Consider the case `core _ => exact hp.elim`.
+-/
 theorem mem_pairLat_iff_std : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {W : G.Weil} (S : GridChoice W Set.univ) (t : T) (p : Pair T), DefPair D.R.m p → ∀ (e : AE D), IsIdemSum e (locPl G t) → ∀ x : WO (G.pS p) (G.pT p), IsHalf e x → (x ∈ pairLat G p ↔ x ∈ latO (G.pS p) (G.pT p) (S.N.latS p : Set (Fin (G.pS p).rank → D.host.E)) (S.N.latT p : Set (Fin (G.pT p).rank → D.host.E)) fun _ => True) := by
   intro D T L sc G W S t p hp e he x hx
   cases p with

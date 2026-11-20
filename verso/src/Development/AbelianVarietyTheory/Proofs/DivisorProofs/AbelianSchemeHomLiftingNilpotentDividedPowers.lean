@@ -16,6 +16,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeUnobst
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LiftFour.abelianLifting_of_four GlobalTheory.T.abelianScheme_deRham_locallyFree_hodgeDegenerates GlobalTheory.T.dualAbelianScheme_exists_biduality (GlobalTheory.PoincareDeRhamDualityProof.poincareDeRhamDuality_of_hodge GlobalTheory.T.abelianScheme_deRham_locallyFree_ …`.
+-/
 theorem abelianScheme_hom_lifting_nilpotent_dividedPowers : GlobalTheory.Published.AbelianLifting :=
   GlobalTheory.LiftFour.abelianLifting_of_four GlobalTheory.T.abelianScheme_deRham_locallyFree_hodgeDegenerates GlobalTheory.T.dualAbelianScheme_exists_biduality
     (GlobalTheory.PoincareDeRhamDualityProof.poincareDeRhamDuality_of_hodge GlobalTheory.T.abelianScheme_deRham_locallyFree_hodgeDegenerates GlobalTheory.T.dualAbelianScheme_exists_biduality)

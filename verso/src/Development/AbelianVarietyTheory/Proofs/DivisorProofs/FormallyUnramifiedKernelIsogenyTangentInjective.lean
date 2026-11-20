@@ -16,6 +16,39 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.KerUnram
 
+/- English proof (translation)
+Introduce `K _ _ B f hf H`. Establish `hfin : IsFinite (Hom.hom f).left` using `hf.1`. Use `set Z := pullback (Hom.hom f).left η[B.X].left with hZ`. Use `set p : Z ⟶ Sp K := pullback.snd (Hom.hom f).left η[B.X].left with hp`. Establish `: IsFinite p` using `inferInstance`.
+
+Establish `: IsAffine Z` using `isAffine_of_isAffineHom p`. Establish `hnat` using `Scheme.isoSpec_hom_naturality p`. Establish `hS : Spec.map p.appTop = Z.isoSpec.inv ≫ p ≫ (Sp K).isoSpec.hom`. Rewrite using `[← hnat]`. Simplify using the standard rewrite rules.
+
+Establish `hfinS : IsFinite (Spec.map p.appTop)` using `by rw [hS]; infer_instance`. Establish `hfinR : p.appTop.hom.Finite` using `(IsFinite.SpecMap_iff _).1 hfinS`. Set `ψ : CommRingCat.of K ⟶ Γ(Z, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ p.appTop`. Set `_ : Algebra K Γ(Z, ⊤)` to `ψ.hom.toAlgebra`. Establish `: Module.Finite K Γ(Z, ⊤)`.
+
+Establish `h : ψ.hom.Finite` using `by show (p.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom).Finite`. Conclude with `hfinR.comp (RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).2)`. Conclude with `h`. Establish `hp' : p.appTop = (Scheme.ΓSpecIso (CommRingCat.of K)).hom ≫ ψ` using `by simp [ψ]`. Establish `: IsAffine (𝟙_ (Over (Sp K))).left` using `inferInstanceAs (IsAffine (Sp K))`.
+
+Rewrite using `[HasRingHomProperty.iff_of_isAffine (P := @FormallyUnramified), hp', CommRingCat.hom_comp, RingHom.RespectsIso.cancel_left_isIso RingHom.FormallyUnramified.respectsIso]`. Use `show Algebra.FormallyUnramified K Γ(Z, ⊤)`. Use `GlobalTheory.T.formally_unramified_of_dual_numbers K Γ(Z, ⊤) fun φ r => ?_` and prove the remaining obligations. Set `q : Sp (DualNumber K) ⟶ Z` to `Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ Z.isoSpec.inv`. Establish `hq : q ≫ p = spMap (algebraMap K (DualNumber K))`.
+
+Establish `e` using `Scheme.isoSpec_inv_naturality p`. Simplify using `only [q, Category.assoc]`. Rewrite using `[← e, Scheme.isoSpec_Spec]`. Simplify using `only [Functor.mapIso_inv, Iso.op_inv, Scheme.Spec_map, Quiver.Hom.unop_op]`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+
+Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations. Conclude with `φ.commutes a`. Establish `hfst : ∀ {T : Scheme} (g : T ⟶ Z), (g ≫ pullback.fst (Hom.hom f).left η[B.X].left) ≫ B.X.hom = g ≫ p`. Introduce `T g`.
+
+Rewrite using `[Category.assoc, ← Over.w (Hom.hom f), ← Category.assoc (pullback.fst _ _), pullback.condition, Category.assoc, Over.w η[B.X]]`. Both sides reduce to the same expression. Set `v : epsPtR (𝟙 (Sp K)) ⟶ B.X` to `Over.homMk (q ≫ pullback.fst _ _) (by`. Rewrite using `[hfst, hq]`. Conclude with `(Category.comp_id _).symm)`.
+
+Establish `hv : v ≫ Hom.hom f = 1` using `by ext1`. Rewrite using `[Over.comp_left, Hom.one_def, Over.comp_left]`. Simplify using `only [v, Over.homMk_left, Category.assoc]`. Rewrite using `[pullback.condition, ← Category.assoc q, hq]`. Both sides reduce to the same expression.
+
+Set `T₀ : Over (Sp K)` to `Over.mk (𝟙 (Sp K))`. Set `red : T₀ ⟶ epsPtR (𝟙 (Sp K))` to `Over.homMk (spMap (TrivSqZeroExt.fstHom K K K).toRingHom) (by`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ ≫ 𝟙 _ = 𝟙 _`. Rewrite using `[Category.comp_id, ← Spec.map_comp, ← Spec.map_id]`. Use `congr 1)`.
+
+Set `bas : epsPtR (𝟙 (Sp K)) ⟶ T₀` to `Over.homMk (spMap (algebraMap K (DualNumber K))) rfl`. Establish `hrb : red ≫ bas = 𝟙 T₀` using `by ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`.
+
+Set `w : epsPtR (𝟙 (Sp K)) ⟶ B.X` to `v * (bas ≫ red ≫ v)⁻¹`. Establish `hw₀ : red ≫ w = 1`. Simplify using `only [w]`. Rewrite using `[comp_mul, GrpObj.comp_inv, ← Category.assoc red bas, hrb, Category.id_comp, mul_inv_cancel]`. Establish `hwf : w ≫ Hom.hom f = 1`.
+
+Simplify using `only [w]`. Rewrite using `[mul_comp, GrpObj.inv_comp, Category.assoc, Category.assoc, hv, comp_one, comp_one, inv_one, _root_.mul_one]`. Establish `hw : w = 1` using `H w (by`. Use `congrArg Over.Hom.left hw₀` as an intermediate fact. Rewrite `this` using `[Over.comp_left]`.
+
+Conclude with `this) hwf`. Establish `hvc : v = bas ≫ red ≫ v` using `mul_inv_eq_one.mp hw`. Establish `hq2 : q = spMap (algebraMap K (DualNumber K)) ≫ spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ q`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Use `congrArg Over.Hom.left hvc` as an intermediate fact.
+
+Simplify `this` using `[v, red, bas]`. Express the relevant statement in the definitionally equal form `q ≫ p = _ ≫ _ ≫ q ≫ p`. Rewrite using `[hq, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Simplify using `only [q, ← Category.assoc] at hq2`.
+
+Rewrite `hq2` using `[cancel_mono, ← Spec.map_comp, ← Spec.map_comp]`. Use `congrArg TrivSqZeroExt.snd congr($(Spec.map_injective hq2).hom r)` as an intermediate fact. Simplify `this` using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem formallyUnramified_ker : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : AbVar K) (f : B ⟶ B), IsIsogeny f → (∀ v : epsPtR (𝟙 (Sp K)) ⟶ B.X, spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ v.left = (1 : Over.mk (𝟙 (Sp K)) ⟶ B.X).left → v ≫ Hom.hom f = 1 → v = 1) → FormallyUnramified (pullback.snd (Hom.hom f).left η[B.X].left) := by
   intro K _ _ B f hf H
   have hfin : IsFinite (Hom.hom f).left := hf.1

@@ -4,6 +4,15 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 
 namespace GlobalTheory.SteepMult.Equivariance
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `e : ∀ (i : Fin k) (y : ι) (j : Fin k), Function.update g i.succ y j.succ = Function.update (fun j : Fin k => g j.succ) i y j`. Introduce `i y j`.
+
+Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hj, Function.update_of_ne (fun h' => hj (Fin.succ_injective _ h'))]`. Establish `e0 : ∀ (y : ι) (j : Fin k), Function.update g 0 y j.succ = g j.succ` using `fun y j => Function.update_of_ne (Fin.succ_ne_zero j) _ _`.
+
+Establish `e1 : ∀ (i : Fin k) (y : ι), Function.update g i.succ y 0 = g 0` using `fun i y => Function.update_of_ne (Fin.succ_ne_zero i).symm _ _`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [List.ofFn_succ, List.prod_cons, e, e0, e1, Function.update_self]`. Rewrite using `[← mul_assoc, h, add_mul, mul_assoc, ih (fun j => g j.succ), mul_add, Finset.sum_mul, Finset.mul_sum]`. Simplify using `only [Finset.mul_sum, mul_smul_comm, smul_mul_assoc, mul_assoc]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 lemma mul_prod_ofFn {A ι : Type} [Ring A] [Algebra ℂ A] [Fintype ι] (X : ι → A) (z : A) (c : ι → ι → ℂ)
     (h : ∀ x, z * X x = X x * z + ∑ y, c y x • X y) (k : ℕ) (g : Fin k → ι) :
     z * (List.ofFn fun i => X (g i)).prod = (List.ofFn fun i => X (g i)).prod * z +
@@ -29,6 +38,25 @@ lemma mul_prod_ofFn {A ι : Type} [Ring A] [Algebra ℂ A] [Fintype ι] (X : ι 
 
 variable {R S : ℕ}
 
+/- English proof (translation)
+Take `⟨⟨a, b⟩, hab⟩` from `x`. Use extensionality with `c d`. Establish `hab' : ¬ sameBlock a b` using `hab`. Establish `hl : (Z * eNC ⟨(a, b), hab⟩ - eNC ⟨(a, b), hab⟩ * Z) c d = Z c a * (if d = b then 1 else 0) - (if c = a then 1 else 0) * Z b d`. Simplify using `only [eNC, Eab, Matrix.sub_apply, Matrix.mul_apply, Matrix.single_apply]`.
+
+Use `congr 1`. Distinguish the cases in `h : d = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+
+Distinguish the cases in `h : c = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Rewrite using `[hl, Matrix.sum_apply]`.
+
+Distinguish the cases in `hcd : sameBlock c d`. Rewrite using `[Finset.sum_eq_zero]`. Establish `h1 : Z c a * (if d = b then 1 else 0) = 0`. Distinguish the cases in `h : d = b`. Substitute `h` using the available equality.
+
+Rewrite using `[hZ c a, zero_mul]`. Use `clear hl hab`. Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c <;> rcases d with d | d <;> simp_all [sameBlock]`. Simplify using `[h]`. Establish `h2 : (if c = a then 1 else 0) * Z b d = 0`.
+
+Distinguish the cases in `h : c = a`. Substitute `h` using the available equality. Rewrite using `[hZ b d, mul_zero]`. Use `clear h1 hl hab`. Apply the tactic sequence `rcases b with b | b <;> rcases c with c | c <;> rcases d with d | d <;> simp_all [sameBlock]`.
+
+Simplify using `[h]`. Rewrite using `[h1, h2, sub_zero]`. Introduce and unpack `⟨⟨u, v⟩, huv⟩ _`. Establish `: ¬ (u = c ∧ v = d)`. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Conclude with `huv hcd`. Simplify using `[eNC, Eab, Matrix.single_apply, this]`. Rewrite using `[Finset.sum_eq_single (⟨(c, d), hcd⟩ : NC R S)]`. Simplify using `[eNC, Eab, adP]`. Introduce and unpack `⟨⟨u, v⟩, huv⟩ _ hne`.
+
+Establish `: ¬ (u = c ∧ v = d)`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hne rfl`. Simplify using `[eNC, Eab, Matrix.single_apply, this]`. Simplify using the standard rewrite rules.
+-/
 lemma bracket_eNC {Z : Mat R S} (hZ : IsKC Z) (x : NC R S) :
     Z * eNC x - eNC x * Z = ∑ y, adP Z y x • eNC y := by
   obtain ⟨⟨a, b⟩, hab⟩ := x
@@ -76,6 +104,9 @@ lemma bracket_eNC {Z : Mat R S} (hZ : IsKC Z) (x : NC R S) :
       simp [eNC, Eab, Matrix.single_apply, this]
     · simp
 
+/- English proof (translation)
+Rewrite using `[← Fintype.sum_prod_type', ← Fintype.sum_prod_type']`. Apply the tactic sequence `refine Finset.sum_nbij' (fun p => (Function.update p.1 i p.2, p.1 i)) (fun p => (Function.update p.1 i p.2, p.1 i)) ?_ ?_ ?_ ?_ ?_ <;> simp`.
+-/
 lemma sum_update_swap {ι B : Type} [Fintype ι] [DecidableEq ι] [AddCommMonoid B] {k : ℕ} (i : Fin k)
     (F : (Fin k → ι) → (Fin k → ι) → ι → ι → B) :
     ∑ g, ∑ x, F g (Function.update g i x) (g i) x = ∑ g, ∑ y, F (Function.update g i y) g y (g i) := by
@@ -83,6 +114,15 @@ lemma sum_update_swap {ι B : Type} [Fintype ι] [DecidableEq ι] [AddCommMonoid
   refine Finset.sum_nbij' (fun p => (Function.update p.1 i p.2, p.1 i))
     (fun p => (Function.update p.1 i p.2, p.1 i)) ?_ ?_ ?_ ?_ ?_ <;> simp
 
+/- English proof (translation)
+Introduce `R S M N hN k Z hZ Ψ`. Establish `h : ∀ x : NC R S, M.act Z * M.act (eNC x) = M.act (eNC x) * M.act Z + ∑ y, adP Z y x • M.act (eNC y)`. Introduce `x`. Establish `h1` using `M.lie Z (eNC x)`. Rewrite `h1` using `[bracket_eNC hZ, map_sum]`.
+
+Simplify using `only [map_smul] at h1`. Rewrite using `[h1]`. Normalize the expressions using the abelian group laws. Establish `hw : ∀ (g : Fin k → NC R S) (v : M.V), M.act Z (word M.act g v) = word M.act g (M.act Z v) + ∑ i, ∑ y, adP Z y (g i) • word M.act (Function.update g i y) v`. Introduce `g v`.
+
+Use `congrArg (fun T : Module.End ℂ M.V => T v) (mul_prod_ofFn (fun x => M.act (eNC x)) (M.act Z) (adP Z) h k g)` as an intermediate fact. Simplify `this` using `[word, LinearMap.sum_apply]`. Simplify using `only [phiN_apply, tAct_apply, map_sum, hw, Submodule.coe_add, Submodule.coe_sum, Submodule.coe_smul, restrAct_apply, kpart_of_isKC hZ, map_add, map_smul, Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`.
+
+Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `sum_update_swap i (fun g g' y x => adP Z y x • word M.act g (Ψ g' : M.V))`.
+-/
 theorem phiN_tAct : ∀ (R S : ℕ) (M : GKMod R S) (N : Submodule ℂ M.V) (hN : KStable M.act N) (k : ℕ) (Z : Mat R S),
     IsKC Z → ∀ Ψ : (Fin k → NC R S) → N,
       phiN M.act N k (tAct k (restrAct M.act N hN) Z Ψ) = M.act Z (phiN M.act N k Ψ) := by

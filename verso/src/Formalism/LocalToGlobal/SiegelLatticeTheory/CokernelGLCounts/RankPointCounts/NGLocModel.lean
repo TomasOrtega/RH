@@ -22,6 +22,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
   {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M V} {r : ℕ}
 
+/- English proof (translation)
+Unfold `sumSq`. Rewrite using `[← Finset.sum_subtype_of_mem (fun d => ENNReal.ofReal (Datum.wt d0 d) * ((‖amp R d S‖₊ : ENNReal) ^ 2)) hD]`. Conclude with `ENNReal.sum_le_tsum _`.
+-/
 theorem sum_le_sumSq {P : FPair H r} (R : Reps P) (d0 : Datum P) (S : Term V M r → Prop) (Ds : Finset (Datum P))
     (hD : ∀ d ∈ Ds, d ∈ R.RD) :
     ∑ d ∈ Ds, ENNReal.ofReal (Datum.wt d0 d) * ((‖amp R d S‖₊ : ENNReal) ^ 2) ≤ sumSq R d0 S := by
@@ -30,6 +33,11 @@ theorem sum_le_sumSq {P : FPair H r} (R : Reps P) (d0 : Datum P) (S : Term V M r
     (fun d => ENNReal.ofReal (Datum.wt d0 d) * ((‖amp R d S‖₊ : ENNReal) ^ 2)) hD]
   exact ENNReal.sum_le_tsum _
 
+/- English proof (translation)
+Establish `h1` using `(sum_le_sumSq R d0 S Ds hD).trans hB`. Establish `hfin : ∀ d ∈ Ds, ENNReal.ofReal (Datum.wt d0 d) * ((‖amp R d S‖₊ : ENNReal) ^ 2) ≠ ⊤` using `fun d _ => ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.pow_ne_top ENNReal.coe_ne_top)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun d _ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal', ENNReal.toReal_pow, ENNReal.coe_toReal, coe_nnnorm]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)`. Use `_ = (∑ d ∈ Ds, ENNReal.ofReal (Datum.wt d0 d) * ((‖amp R d S‖₊ : ENNReal) ^ 2)).toReal := (ENNReal.toReal_sum hfin).symm`. Use `_ ≤ B.toReal := ENNReal.toReal_mono hBt h1`.
+-/
 theorem real_sum_le {P : FPair H r} (R : Reps P) (d0 : Datum P) (S : Term V M r → Prop) (Ds : Finset (Datum P))
     (hD : ∀ d ∈ Ds, d ∈ R.RD) {B : ENNReal} (hB : sumSq R d0 S ≤ B) (hBt : B ≠ ⊤) :
     ∑ d ∈ Ds, Datum.wt d0 d * ‖amp R d S‖ ^ 2 ≤ B.toReal := by
@@ -45,6 +53,15 @@ theorem real_sum_le {P : FPair H r} (R : Reps P) (d0 : Datum P) (S : Term V M r 
         (ENNReal.toReal_sum hfin).symm
     _ ≤ B.toReal := ENNReal.toReal_mono hBt h1
 
+/- English proof (translation)
+Take `⟨h1, h2, -, -⟩` from `hNG R d0`. Establish `hq : (0 : ℝ) ≤ ((qF F : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `eC : ((C1 : ℕ) : ℝ) * ((r : ℝ) + 1) ^ 2 = ((C1 * (r + 1) ^ 2 : ℕ) : ℝ)` using `by push_cast; ring`. Establish `hk' : ((k - 2 * r - 5 : ℕ) : ℝ) = (k : ℝ) - 2 * r - 5`. Establish `e1 : k - 2 * r - 5 + (2 * r + 5) = k` using `by omega`.
+
+Establish `e2` using `congrArg (Nat.cast (R := ℝ)) e1`. Move the coercions through the operations in `at e2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `eK : -((k : ℝ) - 2 * r - 5) = -((k - 2 * r - 5 : ℕ) : ℝ)` using `by rw [hk']`. Rewrite `h1`, `h2` using `[eC, Real.rpow_natCast]`.
+
+Rewrite `h1` using `[eK, Real.rpow_neg hq, Real.rpow_natCast]`. Establish `hX1 : 0 ≤ P.Hp ^ (C1 * (r + 1) ^ 2) * (((qF F : ℕ) : ℝ) ^ (k - 2 * r - 5))⁻¹` using `mul_nonneg (pow_nonneg hHp _) (inv_nonneg.mpr (pow_nonneg hq _))`. Establish `hX2 : 0 ≤ P.Hp ^ (C1 * (r + 1) ^ 2)` using `pow_nonneg hHp _`. Prove the components needed by the constructor for the conclusion. Establish `h3` using `real_sum_le R d0 _ Ds hD h1 (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hn)`.
+
+Rewrite `h3` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal hX1]`. Then use the resulting hypothesis. Establish `h3` using `real_sum_le R d0 _ Ds hD h2 (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hn)`. Rewrite `h3` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal hX2]`. Then use the resulting hypothesis.
+-/
 theorem ngAt_real (k C1 : ℕ) (hk : 2 * r + 5 ≤ k) {P : FPair H r} (hNG : NGAt k P (C1 : ℝ)) (R : Reps P)
     (d0 : Datum P) (Ds : Finset (Datum P)) (hD : ∀ d ∈ Ds, d ∈ R.RD) (hn : nn R d0 ≠ ⊤) (hHp : 0 ≤ P.Hp) :
     ∑ d ∈ Ds, Datum.wt d0 d * ‖amp R d (BBne (H := H))‖ ^ 2 ≤
@@ -104,6 +121,11 @@ def LocFam.toL {Z : LocDat D} {Cl Nu : Type} (Fm : LocFam Z Cl Nu) : PN.LocalNG 
   rw := Fm.rw
   dat := Fm.dat
 
+/- English proof (translation)
+Unfold `PN.LocalNG.NGAt`. Use `⟨fun p _ => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `(ngAt_real D.R.k C1 hk (hNG p.1 p.2) (Fm.R p.1) (Fm.d0 p.1) (Fm.Ds p.1) (hD p.1 p.2) (hn p.1 p.2) (hH p.1 p.2)).1`. Rewrite `h1` using `[← Finset.sum_coe_sort (Fm.Ds p.1)]`. Conclude with `h1`.
+
+Introduce `p`. Establish `h1` using `(ngAt_real D.R.k C1 hk (hNG p.1 p.2) (Fm.R p.1) (Fm.d0 p.1) (Fm.Ds p.1) (hD p.1 p.2) (hn p.1 p.2) (hH p.1 p.2)).2`. Rewrite `h1` using `[← Finset.sum_coe_sort (Fm.Ds p.1)]`. Conclude with `h1`.
+-/
 theorem ngAt_toL {Z : LocDat D} {Cl Nu : Type} (Fm : LocFam Z Cl Nu) (C1 : ℕ) (hk : 2 * D.R.rS + 5 ≤ D.R.k)
     (hNG : ∀ p ∈ Fm.P, LocNG.NGAt D.R.k (Fm.FP p) (C1 : ℝ))
     (hD : ∀ p ∈ Fm.P, ∀ d ∈ Fm.Ds p, d ∈ (Fm.R p).RD) (hn : ∀ p ∈ Fm.P, LocNG.nn (Fm.R p) (Fm.d0 p) ≠ ⊤)
@@ -137,6 +159,9 @@ def a2W {Cl Nu : Type} (L : PN.LocalNG Cl Nu) (amp : (∀ p, L.D p) → ℂ) (c 
   | none => 0
   | some d => L.rw c * ‖amp d‖ ^ 2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem localAmplitudeSq_eq_weighted {Cl Nu : Type} (L : PN.LocalNG Cl Nu) (c : Cl) (ν : Nu) : L.a2 c ν = a2W L L.ampNG c ν := rfl
 
 def FamOKS {Z : LocDat D} {τ : Type} {Cl Nu : Type}
@@ -151,12 +176,28 @@ def FamOKS {Z : LocDat D} {τ : Type} {Cl Nu : Type}
   (∀ x ∈ S, N.a2 x.1 γ x.2 = a2W Fm.toL (amp Fm.toL) x.1 x.2) ∧ N.Hh γ = Fm.toL.Htot ∧
   0 < Fm.toL.ngenTot ∧ Fm.toL.ngenTot ≤ AAre * 2 * N.Hh γ ^ PN.eN D.R.rS * N.n γ
 
+/- English proof (translation)
+Unfold `FamOK FamOKS`. Simplify using `only [localAmplitudeSq_eq_weighted]`.
+-/
 theorem famOK_iff {Z : LocDat D} {τ : Type} {Cl Nu : Type}
     (N : PN.NGData τ D.host.E D.R.rS Cl Nu) (γ : PN.Pts D.host.E D.R.rS) (S : Finset (Cl × Nu)) (C0n : ℕ) (AAre : ℝ)
     (Fm : LocFam Z Cl Nu) : FamOK N γ S C0n AAre Fm ↔ FamOKS N γ S C0n AAre (fun L => L.ampNG) Fm := by
   unfold FamOK FamOKS
   simp only [localAmplitudeSq_eq_weighted]
 
+/- English proof (translation)
+Introduce `γ hγ S`. Take `⟨Fm, hR, hex, hOm, hD, hn, hV0, hrw, hM, hU, ha, hH, hpos, hle⟩` from `h γ hγ S`. Establish `hrank : ∀ p : PlF D, Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.k + 2 * D.R.rS + 1`. Introduce `p`. Rewrite using `[finrank_Vp]`.
+
+Establish `h1` using `D.R.r_eq`. Establish `h2 : 2 * D.R.rS + 2 = D.R.m`. Establish `hm2` using `D.R.two_le_m`. Take `⟨j, hj⟩` from `D.R.m_even`. Simplify using `only [Formalism.BasicNotions.Ranks.rS]`.
+
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hNG : ∀ p ∈ Fm.P, LocNG.NGAt D.R.k (Fm.FP p) (C1 : ℝ)` using `fun p hp => hQ (D.s.atP p).Fp (D.s.atP p).Ep (Z.M p) (Z.agree p).1 (Vp D p) (locH Z p) (hrank p) (Fm.FP p) (hR p hp)`. Establish `hq2 : ∀ p ∈ Fm.P, 2 ≤ LocNG.qF (D.s.atP p).Fp` using `fun p hp => Formalism.MainNotions.KappaEndpoints.two_le_residue_card (Z.agree p).1`. Establish `hqH : ∀ p ∈ Fm.P, ¬ (Fm.FP p).PrimeTo → (LocNG.qF (D.s.atP p).Fp : ℝ) ≤ (Fm.FP p).Hp` using `fun p hp hpr => Formalism.L2.SG.Pf.residue_le_height_nonprime (Z.agree p).1 (hR p hp) (hex p hp) hpr`.
+
+Establish `hH1 : ∀ p ∈ Fm.P, 1 ≤ (Fm.FP p).Hp`. Introduce `p hp`. Distinguish the cases in `hpr : (Fm.FP p).PrimeTo`. Conclude with `le_of_eq ((hNG p hp (Fm.R p) (Fm.d0 p)).2.2.2 hpr).1.symm`. Establish `h2 : (2 : ℝ) ≤ (LocNG.qF (D.s.atP p).Fp : ℝ)` using `by exact_mod_cast hq2 p hp`.
+
+Combine the linear relations using `[hqH p hp hpr]`. Establish `hHp : ∀ p ∈ Fm.P, 0 ≤ (Fm.FP p).Hp` using `fun p hp => le_trans zero_le_one (hH1 p hp)`. Establish `hB : Fm.toL.Basic`. Use `⟨fun p d => ?_, fun p => hH1 p.1 p.2, fun p => hq2 p.1 p.2, fun p hp => hqH p.1 p.2 ((hOm p).1 hp), fun p => ENNReal.toReal_nonneg, hV0, hrw⟩` and prove the remaining obligations. Use `show 0 ≤ LocNG.Datum.wt (Fm.d0 p.1) d.1`.
+
+Unfold `LocNG.Datum.wt LocNG.volRel`. Check the signs of the components of the expression. Conclude with `⟨Fm.toL, hB, ngAt_toL Fm C1 hk hNG hD hn hHp, hM, hU, ha, hH, hpos, hle⟩`.
+-/
 theorem localLe_of_fam {Z : LocDat D} {τ Rw I H H₁ : Type} [Fintype I] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (X : PB.Terms τ Rw I H H₁) {Cl Nu : Type}
     (N : PN.NGData τ D.host.E D.R.rS Cl Nu) (C1 C0n : ℕ) (AAre : ℝ) (hk : 2 * D.R.rS + 5 ≤ D.R.k)
@@ -220,6 +261,15 @@ def StepFamC : Prop :=
             FamOK (NOf2 Y u u' (sc s ν) ν (fun _ => 0)) γ S C0n
               (PN.abelian₂ (2 * D.host.v) D.R.rS D.R.k D.R.f * (bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq).AA) Fm
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Take `⟨C0n, CSt, hCSt, a₀, b₀, h2⟩` from `hF Cg cb Cw cT CT C0`. Use `⟨39, C0n, CSt, hCSt, a₀, b₀, fun C' Cl e1 e2 D large₂ X Y u u' hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk ν hν => ?_⟩` and prove the remaining obligations. Take `⟨s, hs1, hs0, hsb, hL⟩` from `h2 C' Cl e1 e2 D large₂ X Y u u' hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk ν hν`. Establish `hk4 : 4 * D.R.rS + 7 ≤ D.R.k`.
+
+Take `⟨⟨hH, _, _⟩, _, _⟩` from `hc`. Unfold `Formalism.MainNotions.S.StandingHypotheses at hH`. Simplify using `only at hH`. Take `⟨-, -, h3, h4, -⟩` from `hH`. Establish `hm2` using `D.R.two_le_m`.
+
+Take `⟨j, hj⟩` from `D.R.m_even`. Establish `hmr : 2 * D.R.rS + 2 = D.R.m` using `by simp only [Formalism.BasicNotions.Ranks.rS]; omega`. Establish `: 2 * D.R.m + 3 ≤ D.R.m ^ 4` using `by nlinarith [Nat.pow_le_pow_left hm2 3]`. Use linear arithmetic over natural numbers and integers. Establish `hQ : Formalism.MainNotions.NonGenericAndKTwoTheorems.NonGenericLocalBound D.R.k D.R.rS ((39 : ℕ) : ℝ)`.
+
+Use `hQ5 D hk4` as an intermediate fact. Conclude with `this` after adjusting the coercions. Conclude with `⟨s, hs1, hs0, hsb, localLe_of_fam _ _ 39 C0n _ (by omega) hQ hL⟩`.
+-/
 theorem stepLocPinnedC_of_fam (hQ5 : ∀ D : D7, Formalism.MainNotions.NonGenericAndKTwoTheorems.Conclusion1 D 39) (hF : StepFamC) : StepLocPinnedC := by
   intro Cg cb Cw cT CT C0
   obtain ⟨C0n, CSt, hCSt, a₀, b₀, h2⟩ := hF Cg cb Cw cT CT C0
@@ -242,6 +292,9 @@ theorem stepLocPinnedC_of_fam (hQ5 : ∀ D : D7, Formalism.MainNotions.NonGeneri
     exact_mod_cast this
   exact ⟨s, hs1, hs0, hsb, localLe_of_fam _ _ 39 C0n _ (by omega) hQ hL⟩
 
+/- English proof (translation)
+Conclude with `rowNGC_of_loc hR hCh hX hB hE hT0 (stepLocPinnedC_of_fam hQ5 hF) hT hQ hN hP hO`.
+-/
 theorem rowNGC_of_fam (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hQ5 : ∀ D : D7, Formalism.MainNotions.NonGenericAndKTwoTheorems.Conclusion1 D 39) (hX : NondegenerateGramTuple)
     (hB : StepChoiceConstantsC) (hE : StepPinExists) (hT0 : StepTermVanish) (hF : StepFamC) (hT : StepThmBPinnedC)
     (hQ : CorankOneEquivalence) (hN : StepNormals) (hP : StepPoints) (hO : StepNormOne) : RowNGC := by

@@ -8,6 +8,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HeightCounting.Up
 
+/- English proof (translation)
+Introduce `hP hS hL`. Use `StepW.trans (StepW.and (GlobalTheory.T.same_galois_extension_state hP hS hL) (GlobalTheory.T.carried_state_lift_listing hP hS hL)) (StepW.of_all fun K B' f' T' w' _ _ h => ?_)` and prove the remaining obligations. Take `⟨h, h'⟩` from `h`. Introduce `B f T w hE hf hSt hpx hsel hJ hδ P x l P' hExt x' l' hG`. Take `⟨x₁, ⟨l₁⟩, hC₁, hL₁⟩` from `h B f T w hE hf hSt hpx hsel hJ hδ P x l P' hExt x' l' hG`.
+
+Take `⟨x₂, hl₂, hC₂, hL₂⟩` from `h' P' x₁ (Dof x) l₁ hC₁`. Conclude with `⟨x₂, hl₂, hC₂, fun c hc => hL₂ c (hL₁ c hc)⟩`.
+-/
 theorem mvB_of_classicalTheorems : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, MvB hL := by
   intro hP hS hL
   refine StepW.trans (StepW.and (GlobalTheory.T.same_galois_extension_state hP hS hL) (GlobalTheory.T.carried_state_lift_listing hP hS hL)) (StepW.of_all fun K B' f' T' w' _ _ h => ?_)

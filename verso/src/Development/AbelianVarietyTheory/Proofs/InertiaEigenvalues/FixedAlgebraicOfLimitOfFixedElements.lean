@@ -17,6 +17,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.FixApprox
 
+/- English proof (translation)
+Establish `hb : b ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality.
+
+Simplify using `only [map_zero]`. Conclude with `(Valuation.pos_iff _).2 (by simpa using hb)`. Establish `hta : τ a ≠ 0` using `by simpa using ha`. Rewrite `h`, the goal using `[← not_le]`. Introduce `h'`.
+
+Apply `h` to reduce the goal to its premises. Establish `h1 : B.valuation (τ b / τ a) ≤ 1`. Rewrite using `[map_div₀, div_le_one₀ ((Valuation.pos_iff _).2 hta)]`. Conclude with `h'`. Rewrite `h1` using `[ValuationSubring.valuation_le_one_iff, ← map_div₀, hB]`.
+
+Rewrite `h1` using `[← ValuationSubring.valuation_le_one_iff, map_div₀, div_le_one₀ ((Valuation.pos_iff _).2 ha)]`. Conclude with `h1`.
+-/
 theorem val_lt_map {K : Type} [Field K] (B : ValuationSubring K) (τ : K ≃+* K)
     (hB : ∀ z, τ z ∈ B ↔ z ∈ B) (a b : K) (h : B.valuation a < B.valuation b) :
     B.valuation (τ a) < B.valuation (τ b) := by
@@ -36,6 +45,19 @@ theorem val_lt_map {K : Type} [Field K] (B : ValuationSubring K) (τ : K ≃+* K
     rw [← ValuationSubring.valuation_le_one_iff, map_div₀, div_le_one₀ ((Valuation.pos_iff _).2 ha)] at h1
     exact h1
 
+/- English proof (translation)
+Introduce `K _ _ B τ hB y _ happ`. Assume the negation of the conclusion as `hne`. Use `set m := τ y with hm`. Use `set s := τ.symm y with hs`. Establish `hym : y - m ≠ 0` using `sub_ne_zero.2 (Ne.symm hne)`.
+
+Establish `hys : y - s ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Establish `h'` using `congrArg τ (sub_eq_zero.1 h)`. Rewrite `h'` using `[hs, RingEquiv.apply_symm_apply]`.
+
+Conclude with `h'`. Apply the tactic sequence `obtain ⟨u, hu, hlt⟩ := happ (if B.valuation (y - m) ≤ B.valuation (y - s) then y - m else y - s) (by split_ifs <;> assumption)`. Establish `h1 : B.valuation (y - u) < B.valuation (y - m)` using `by split_ifs at hlt with hc`. Conclude with `hlt`. Conclude with `lt_of_lt_of_le hlt (le_of_lt (not_le.1 hc))`.
+
+Establish `h2 : B.valuation (y - u) < B.valuation (y - s)` using `by split_ifs at hlt with hc`. Conclude with `lt_of_lt_of_le hlt hc`. Conclude with `hlt`. Establish `h3` using `val_lt_map B τ hB _ _ h2`. Establish `e1 : τ (y - u) = m - u` using `by rw [map_sub, hu]`.
+
+Establish `e2 : τ (y - s) = m - y` using `by rw [map_sub, hs, RingEquiv.apply_symm_apply]`. Rewrite `h3` using `[e1, e2]`. Establish `h4 : B.valuation (m - y) = B.valuation (y - m)` using `Valuation.map_sub_swap _ _ _`. Establish `h5 : m - y = (m - u) - (y - u)` using `by ring`. Establish `h6 : B.valuation (m - y) < B.valuation (m - y)`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `lt_irrefl _ h6`.
+-/
 theorem fix_of_approx : ∀ (K : Type) [Field K] [CharZero K] (B : ValuationSubring K) (τ : K ≃+* K), (∀ z, τ z ∈ B ↔ z ∈ B) → ∀ y : K, IsAlgebraic ℚ y → (∀ δ : K, δ ≠ 0 → ∃ u : K, τ u = u ∧ B.valuation (y - u) < B.valuation δ) → τ y = y := by
   intro K _ _ B τ hB y _ happ
   by_contra hne

@@ -13,20 +13,34 @@ section Aut
 variable (D : D7) (u : D.what₂.Word) (hT : Tu D u ≠ 0) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
   (he : F0.e = D.sp.hypE) (hz : F0.z = D.zmOf u)
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.mem_orth_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_perpS_iff_mem_orth (y : (VS D).V) : y ∈ perpS (VS D) F0.X ↔ y ∈ orth (hS D) F0.X := by
   rw [Formalism.MainNotions.mem_orth_iff]
   rfl
 
+/- English proof (translation)
+Use `hσ.2.1 D.R.rS` as an intermediate fact. Rewrite `this` using `[partial_isotropic_top]`. Then use the resulting hypothesis.
+-/
 theorem flag_stabilizer_map_isotropic (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hσ : σ ∈ stabF D F0) :
     F0.X.map (σ : (VS D).V →ₗ[D.host.E] (VS D).V) = F0.X := by
   have := hσ.2.1 D.R.rS
   rwa [partial_isotropic_top] at this
 
+/- English proof (translation)
+Rewrite using `[← flag_stabilizer_map_isotropic D u F0 σ hσ]`. Conclude with `⟨x, hx, rfl⟩`.
+-/
 theorem flag_stabilizer_mem_isotropic (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hσ : σ ∈ stabF D F0) (x : (VS D).V) (hx : x ∈ F0.X) :
     σ x ∈ F0.X := by
   rw [← flag_stabilizer_map_isotropic D u F0 σ hσ]
   exact ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[← flag_stabilizer_map_isotropic D u F0 σ hσ]`. Take `⟨x', hx', rfl⟩` from `hx`. Express the relevant statement in the definitionally equal form `(VS D).hT (σ x') (σ y) = 0`. Rewrite using `[hσ.1 x' y]`.
+
+Conclude with `hy x' hx'`.
+-/
 theorem flag_stabilizer_mem_perp (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hσ : σ ∈ stabF D F0) (y : (VS D).V)
     (hy : y ∈ perpS (VS D) F0.X) : σ y ∈ perpS (VS D) F0.X := by
   intro x hx
@@ -37,6 +51,9 @@ theorem flag_stabilizer_mem_perp (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hσ 
   exact hy x' hx'
 
 include he in
+/- English proof (translation)
+Introduce `x hx`. Establish `h1 : (VS D).hT x (D.sp.iXY 0 w) = 0` using `Formalism.MainNotions.hT_swap_zero ((Formalism.MainNotions.mem_orth_iff _ _).1 (isotropic_le_orth_range D u F0 he hx) _ ⟨w, rfl⟩)`. Establish `h2 : (VS D).hT x F0.z = 0` using `Formalism.MainNotions.hT_zero_of_mem_X F0 F0.z_orth x hx`. Rewrite using `[map_add, map_smul, h1, h2, smul_zero, add_zero]`.
+-/
 theorem embedding_add_smul_z_mem_perp (w : (D.sp.X 0).V) (c : D.host.E) : D.sp.iXY 0 w + c • F0.z ∈ perpS (VS D) F0.X := by
   intro x hx
   have h1 : (VS D).hT x (D.sp.iXY 0 w) = 0 :=
@@ -48,6 +65,11 @@ def quotientClass (w : (D.sp.X 0).V) (c : D.host.E) : WbQ D F0 :=
   Submodule.Quotient.mk ⟨D.sp.iXY 0 w + c • F0.z, embedding_add_smul_z_mem_perp D u F0 he w c⟩
 
 include hT hz in
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨w, c, h⟩` from `exists_decomp_orth_isotropic D u hT F0 he hz x.1 ((mem_perpS_iff_mem_orth D u F0 _).1 x.2)`. Use `⟨w, c, ?_⟩` and prove the remaining obligations. Unfold `quotientClass`. Rewrite using `[Submodule.Quotient.eq]`.
+
+Conclude with `h`.
+-/
 theorem quotientClass_surjective (q : WbQ D F0) : ∃ w c, q = quotientClass D u F0 he w c := by
   obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q
   obtain ⟨w, c, h⟩ := exists_decomp_orth_isotropic D u hT F0 he hz x.1 ((mem_perpS_iff_mem_orth D u F0 _).1 x.2)
@@ -57,6 +79,17 @@ theorem quotientClass_surjective (q : WbQ D F0) : ∃ w c, q = quotientClass D u
   exact h
 
 include hT hz in
+/- English proof (translation)
+Unfold `quotientClass at h`. Rewrite `h` using `[Submodule.Quotient.eq]`. Establish `h' : D.sp.iXY 0 w + c • F0.z - (D.sp.iXY 0 w' + c' • F0.z) ∈ F0.X` using `h`. Establish `hT' : ((Tu D u : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hT`. Establish `hzW : ∀ v, (VS D).hT F0.z (D.sp.iXY 0 v) = 0` using `fun v => by rw [hz]; exact z_orth_embedding D u v`.
+
+Establish `h0 : (VS D).hT F0.z (D.sp.iXY 0 w + c • F0.z - (D.sp.iXY 0 w' + c' • F0.z)) = 0` using `Formalism.MainNotions.hT_swap_zero (Formalism.MainNotions.hT_zero_of_mem_X F0 F0.z_orth _ h')`. Establish `hc : c = c'`. Simplify using `only [map_sub, map_add, map_smul, hzW, F0.z_norm, smul_eq_mul, zero_add] at h0`. Establish `: (c - c') * ((Tu D u : ℕ) : D.host.E) = 0` using `by linear_combination -h0`. Break down `mul_eq_zero.1 this with h1 | h1` into its components or cases.
+
+Conclude with `sub_eq_zero.1 h1`. Conclude with `absurd h1 hT'`. Substitute `hc` using the available equality. Establish `h2 : D.sp.iXY 0 (w - w') ∈ Wsp D ⊓ Xsp (lf D F0)`. Use `⟨⟨_, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `e : D.sp.iXY 0 (w - w') = D.sp.iXY 0 w + c • F0.z - (D.sp.iXY 0 w' + c • F0.z)`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `h'`.
+
+Rewrite `h2` using `[(Formalism.MainNotions.WHyp_Wsp D u hT (lf D F0) he hz).2.1, Submodule.mem_bot]`. Conclude with `sub_eq_zero.1 (embedding_W_injective D (by rw [h2, map_zero]))`.
+-/
 theorem quotientClass_injective_left {w w' : (D.sp.X 0).V} {c c' : D.host.E} (h : quotientClass D u F0 he w c = quotientClass D u F0 he w' c') :
     w = w' := by
   unfold quotientClass at h
@@ -85,6 +118,11 @@ theorem quotientClass_injective_left {w w' : (D.sp.X 0).V} {c c' : D.host.E} (h 
 def ActsAsExtendByOne (φ : WbQ D F0 → WbQ D F0) (γ : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).V) : Prop :=
   ∀ w c, φ (quotientClass D u F0 he w c) = quotientClass D u F0 he (γ w) c
 
+/- English proof (translation)
+Introduce `w c`. Unfold `quotientClass`. Rewrite using `[hφ _ (flag_stabilizer_mem_perp D u F0 σ hσ _ (embedding_add_smul_z_mem_perp D u F0 he w c)), Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `σ (D.sp.iXY 0 w + c • F0.z) - (D.sp.iXY 0 (γ w) + c • F0.z) ∈ F0.X`. Establish `e : σ (D.sp.iXY 0 w + c • F0.z) - (D.sp.iXY 0 (γ w) + c • F0.z) = σ (D.sp.iXY 0 w) - D.sp.iXY 0 (γ w)`.
+
+Rewrite using `[map_add, map_smul, hσ.2.2]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `hind w`.
+-/
 theorem actsAsExtendByOne_of_induced (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hσ : σ ∈ stabF D F0)
     (γ : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).V) (hind : ∀ w, σ (D.sp.iXY 0 w) - D.sp.iXY 0 (γ w) ∈ F0.X)
     (φ : WbQ D F0 → WbQ D F0)
@@ -100,6 +138,19 @@ theorem actsAsExtendByOne_of_induced (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (
   rw [e]
   exact hind w
 
+/- English proof (translation)
+Establish `hX` using `flag_stabilizer_map_isotropic D u F0 σ hσ`. Apply the tactic sequence `have hLs := Lsub_gmap_of_isometry F0 σ hσ.1 hX Λ`. Use extensionality with `⟨w, c⟩`. Establish `e : (extendByOne D γ).symm (w, c) = (γ.symm w, c)` using `rfl`. Rewrite using `[isomAct_mem_gmap, e, mem_latticeWithZ_iff, mem_latticeWithZ_iff, hLs, isomAct_mem_gmap]`.
+
+Establish `hd : σ.symm (D.sp.iXY 0 w + c • F0.z) - (D.sp.iXY 0 (γ.symm w) + c • F0.z) ∈ F0.X`. Establish `h1` using `hind (γ.symm w)`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Establish `h2 : σ.symm (σ (D.sp.iXY 0 (γ.symm w)) - D.sp.iXY 0 w) ∈ F0.X`. Rewrite using `[← Submodule.mem_map_equiv, hX]`.
+
+Conclude with `h1`. Establish `hzs : σ.symm F0.z = F0.z`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `hσ.2.2.symm`. Establish `e3 : σ.symm (D.sp.iXY 0 w + c • F0.z) - (D.sp.iXY 0 (γ.symm w) + c • F0.z) = -(σ.symm (σ (D.sp.iXY 0 (γ.symm w)) - D.sp.iXY 0 w))`.
+
+Rewrite using `[map_add, map_smul, hzs, map_sub, LinearEquiv.symm_apply_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3]`. Conclude with `F0.X.neg_mem h2`. Establish `hd'` using `isotropic_le_Lsub F0 Λ hd`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `ha`. Use `(Lsub Λ (lf D F0)).add_mem ha hd'` as an intermediate fact. Simplify using `using this`. Introduce `hb`.
+
+Use `(Lsub Λ (lf D F0)).sub_mem hb hd'` as an intermediate fact. Simplify using `using this`.
+-/
 theorem gmap_latticeWithZ_of_induced (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hσ : σ ∈ stabF D F0)
     (γ : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).V) (hind : ∀ w, σ (D.sp.iXY 0 w) - D.sp.iXY 0 (γ w) ∈ F0.X)
     (Λ : LatV D) : gmap (extendByOne D γ) (latticeWithZ D F0 Λ) = latticeWithZ D F0 (gmap σ Λ) := by

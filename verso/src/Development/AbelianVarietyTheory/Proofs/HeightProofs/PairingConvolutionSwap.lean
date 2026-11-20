@@ -19,6 +19,21 @@ open MeasureTheory GlobalTheory.KFourier
 noncomputable section
 namespace GlobalTheory.KFourier
 
+/- English proof (translation)
+Use `haveI : IsProbabilityMeasure (muK ε) := (compact_haar_holds n ε).1`. Use `haveI : (muK ε).IsInvInvariant := ⟨(compact_haar_holds n ε).2.2.2⟩`. Use `haveI : SecondCountableTopology (KG ε) := TopologicalSpace.Subtype.secondCountableTopology (KG ε : Set (UJ ε))`. Establish `h1 : ∀ k' : KG ε, ∫ k, e k * g (k' * k) ∂(muK ε) = ∫ y, e (k'⁻¹ * y) * g y ∂(muK ε)`. Introduce `k'`.
+
+Use `integral_mul_left_eq_self (μ := muK ε) (fun y => e (k'⁻¹ * y) * g y) k'` as an intermediate fact. Rewrite using `[← this]`. Simplify using `[← mul_assoc]`. Establish `h2 : ∀ y : KG ε, ∫ k', star (q k') * e (k'⁻¹ * y) ∂(muK ε) = ∫ x, e x * star (q (y * x⁻¹)) ∂(muK ε)`. Introduce `y`.
+
+Establish `a` using `integral_inv_eq_self (fun x => star (q (y * x)) * e ((y * x)⁻¹ * y)) (muK ε)`. Establish `b` using `integral_mul_left_eq_self (μ := muK ε) (fun k' => star (q k') * e (k'⁻¹ * y)) y`. Rewrite using `[← b, ← a]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[mul_comm]`. Use `congr 2`. Use `group`. Establish `hcont : Continuous (fun p : KG ε × KG ε => star (q p.1) * e (p.1⁻¹ * p.2) * g p.2)` using `by fun_prop`. Establish `hint : Integrable (Function.uncurry fun (k' y : KG ε) => star (q k') * e (k'⁻¹ * y) * g y) ((muK ε).prod (muK ε))` using `hcont.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `k'`. Rewrite using `[h1, ← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ y, ∫ k', star (q k') * e (k'⁻¹ * y) * g y ∂(muK ε) ∂(muK ε) := integral_integral_swap hint`. Use `_ = ∫ y, g y * ∫ x, e x * star (q (y * x⁻¹)) ∂(muK ε) ∂(muK ε) := by`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[← h2, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k'`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairing_convolution_swap {n : ℕ} (ε : Fin n → Bool) (e q g : KG ε → ℂ)
     (he : Continuous e) (hq : Continuous q) (hg : Continuous g) :
     ∫ k', star (q k') * ∫ k, e k * g (k' * k) ∂(muK ε) ∂(muK ε) =

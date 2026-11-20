@@ -18,6 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SourceLaw
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `omegaG`. Both sides reduce to the same expression.
+-/
 theorem omegaG_levelDatum_zero_indep_chars (a r t : ℕ) (ha : r ≤ a) (Pg : Finset (Pl D.host.E)) (P : LevelP Pg r ℂ)
     (χ χ' : ℕ → ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (ξ ξ' χj : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) {b : ℕ}
     (y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)) :
@@ -27,6 +30,17 @@ theorem omegaG_levelDatum_zero_indep_chars (a r t : ℕ) (ha : r ≤ a) (Pg : Fi
 
 open GlobalTheory.AdjDatumMove in
 
+/- English proof (translation)
+Establish `sg' : finE S g⁻¹ ∈ St βS` using `by rw [map_inv]; exact inv_mem sg`. Establish `s1 : finE T (1 : GA D T)⁻¹ ∈ St βT` using `by rw [inv_one, map_one]; exact one_mem _`. Establish `hγ : ∀ PP, redFn βS PP (finE S g⁻¹) = (redFn βS PP (finE S g))⁻¹` using `fun PP => by rw [map_inv, redFn_inv sg]`. Establish `h1' : ∀ PP, (redFn βT PP (finE T (1 : GA D T)⁻¹))⁻¹ = 1` using `fun PP => by`. Rewrite using `[inv_one, map_one, redFn_one, inv_one]`.
+
+Unfold `GlobalTheory.FinZeta.levDatum`. Distinguish the cases in `hx : IsHalf (cA D e) x ∧ IsIntM (frMapAdj S T βS βT x)`. Establish `h1` using `red_actO S T βS βT sg' s1 hx.2`. Establish `h2 : ∀ PP, redM PP (frMapAdj S T βS βT (actO S T g⁻¹ 1⁻¹ x)) = ((redFn βS PP (finE S g))⁻¹).val * redM PP (frMapAdj S T βS βT x)` using `fun PP => by`. Rewrite using `[h1.2 PP, hγ PP, h1' PP, Units.val_one, Matrix.mul_one]`.
+
+Establish `hq` using `omegaQ_mul hTS Q m (fun PP => (redFn βS PP (finE S g))⁻¹) (fun _ => 1) (fun PP hP => inv_mem (hQ PP hP)) (fun PP => redM PP (frMapAdj S T βS βT x))`. Simplify using `only [inv_one, Units.val_one, Matrix.mul_one, map_one, mul_one] at hq`. Establish `hm` using `GlobalTheory.ChainOnto.omegaG_levelP_move D T.rank S.rank r t 0 ha hb ea eb Pg P (fun _ => m) (fun _ => 1) (fun PP => redFn βS PP (finE S g)) hG hP (fun PP => redM PP (frMapAdj S T βS βT x))`. Rewrite using `[if_pos hx, if_pos ⟨isHalf_actO' _ _ hx.1, h1.1⟩, funext h2, hq, omegaG_levelDatum_zero_indep_chars T.rank r t ha Pg P (fun _ _ => 1) (fun _ => m) (fun _ => 1) (fun _ => 1) m (fun PP => ((redFn βS PP (finE S g))⁻¹).val * redM PP (frMapAdj S T βS βT x)), omegaG_levelDatum_zero_ind …`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg hx, if_neg, mul_zero]`. Introduce and unpack `⟨h1, h2⟩`. Establish `e'` using `GlobalTheory.AdelicLatMove.actO_actO_inv S T g (1 : GA D T) x`. Establish `h3` using `isHalf_actO' g (1 : GA D T) h1`. Establish `h4` using `(red_actO S T βS βT sg (by rw [map_one]; exact one_mem _) h2).1`.
+
+Rewrite `h3`, `h4` using `[e']`. Conclude with `hx ⟨h3, h4⟩`.
+-/
 theorem levelDatum_target_under_sourceLevel_element (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D))
     (r t : ℕ) (ha : r ≤ T.rank) (hb : r ≤ S.rank) (hTS : T.rank ≤ S.rank) (ea : T.rank = r + 0 * t)
     (eb : S.rank = r + (0 + 1) * t)
@@ -79,6 +93,31 @@ namespace GlobalTheory.SourceLaw
 open GlobalTheory.AdelicScalar GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨hC, -, -, -, hch, hW, -, hlv, -, -, -⟩` from `h`. Rewrite `hlv` using `[GlobalTheory.FinZeta.isLevelVec_iff]`. Take `⟨hvac, e, he, hth⟩` from `hlv`. Establish `hL` using `hC.lev`. Establish `hκG : κ ∈ GfC (Vc D i)` using `(Subgroup.mem_inf.1 hκ).1`.
+
+Establish `hκL : finE (Vc D i) κ ∈ lev D.sp.cm (Vc D i).gram (R.βV i) (datV i R.Pg (R.Q t) P m)` using `(Subgroup.mem_inf.1 hκ).2`. Establish `sV : finE (Vc D i) κ ∈ St (R.βV i)` using `parLev_St hκL.1`. Establish `sW : finE (Wc D i) 1 ∈ St (R.βW i)` using `by rw [map_one]; exact one_mem _`. Establish `dV` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βV i)`. Establish `dW` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βW i)`.
+
+Establish `fV` using `(hL.βV i).choose_spec.1`. Establish `fW` using `(hL.βW i).choose_spec.1`. Establish `hch'` using `GlobalTheory.T.conjugatedThetaCharacters_restriction_ramification R hL i t s cμ cη m hch`. Establish `hres : ∀ PP ∈ (R.datWp i P).Pg ∪ R.Q t, GlobalTheory.StepLaw.ResAt cμ PP (m PP) ∧ GlobalTheory.StepLaw.ResAt (cμ * cη⁻¹) PP (m PP)` using `fun PP hP => hch'.1 PP (Finset.mem_union.1 hP)`. Establish `hun` using `hch'.2.1 ((R.datWp i P).Pg ∪ R.Q t) (fun PP h => Finset.mem_union.2 h)`.
+
+Establish `hvac1` using `GlobalTheory.StepVecLaw.om_vac hW (D.sp.V_sig _) (D.sp.W_sig _) (fun τ => GlobalTheory.ZetaLaw.isCartanInv_one_of_onb (hC.models.BV i τ)) (GlobalTheory.Chain.VacVec.cart_isCartanInv (R.MW i σ)) dV dW fV fW hvac he (fun PP hP => (hres PP hP).1) (fun PP hP => (hres PP hP).2) hun.1 …`. Establish `rV : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `rW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `hr : (Wc D i).rank ≤ (Vc D i).rank` using `by omega`. Establish `hb : D.R.r ≤ (Vc D i).rank` using `(datV i R.Pg (R.Q t) P m).hr`.
+
+Establish `hQ : ∀ PP ∈ R.Q t, redFn (R.βV i) PP (finE (Vc D i) κ) ∈ blockTri (blk2 (Wc D i).rank)` using `fun PP hP => by`. Rewrite using `[rW]`. Conclude with `parLev_q hκL.1 hP`. Establish `hlaw` using `levelDatum_target_under_sourceLevel_element (Vc D i) (Wc D i) (R.βV i) (R.βW i) D.R.r D.R.t (r_le_rank_Wc i) hb hr (by rw [rW]; ring) (by rw [rV]; ring) R.Pg (R.Q t) P m e κ sV (fun PP hP => parLev_g hκL.1 hP) hκL.2 hQ`. Establish `hee` using `GlobalTheory.PlaceVec.idemSum_mul_self he`.
+
+Establish `hcc : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, hee]`. Establish `hinf` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart he)`. Establish `hfin` using `GlobalTheory.T.weilRep_theta_datum_half_eq_smul D R.ψ (Vc D i) (Wc D i) cμ (cμ * cη⁻¹) ω hW (cA D e) _ f₀ _ f (GlobalTheory.T.schrodingerIntertwiner_schwartzBruhat_isTheta D R.ψ hW.std (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) dV dW (cA D e) hcc hinf f₀ hvac.2.theta) hth κ 1 (GlobalThe …`. Rewrite using `[hfin]`. Use `congr 1`.
+
+Establish `hd : Disjoint (R.datWp i P).Pg (R.Q t)` using `(GlobalTheory.T.levelCharacters_unramified_off_levelPlaces D T R.toLevCh A.μ0 hL t).1`. Establish `hQf : ∀ PP ∈ R.Q t, (m PP (Matrix.GeneralLinearGroup.det (redFn (R.βV i) PP (finE (Vc D i) κ))))⁻¹ * (m PP (Matrix.GeneralLinearGroup.det (upperLeftBlock hr (redFn (R.βV i) PP (finE (Vc D i) κ))⁻¹)))⁻¹ = (m PP (dBlk (blk2 D.R.r) 1 (redFn (R.βV i) PP (finE (Vc D i) κ))))⁻¹` using `fun PP hP => by`. Establish `h1` using `(GlobalTheory.VecInv.TwoBlockDet.det_blocks (kP PP) _ _ 0 hr (redFn (R.βV i) PP (finE (Vc D i) κ))).1 (hQ PP hP)`. Establish `e1 : dBlk (blk2 (Wc D i).rank) 1 (redFn (R.βV i) PP (finE (Vc D i) κ)) = dBlk (blk2 D.R.r) 1 (redFn (R.βV i) PP (finE (Vc D i) κ))` using `by rw [rW]`. Establish `e2 : upperLeftBlock hr (redFn (R.βV i) PP (finE (Vc D i) κ))⁻¹ = (upperLeftBlock hr (redFn (R.βV i) PP (finE (Vc D i) κ)))⁻¹` using `extendOne_inv _ (hQ PP hP)`.
+
+Rewrite using `[e2, map_inv, map_inv, inv_inv, h1, e1, map_mul, mul_inv, mul_comm, ← mul_assoc, mul_inv_cancel, one_mul]`. Establish `hone : ∀ PP, m PP (Matrix.GeneralLinearGroup.det (redFn (R.βW i) PP (finE (Wc D i) 1))) = 1` using `fun PP => by`. Rewrite using `[map_one, redFn_one, map_one, map_one]`. Unfold `Lev.levChi levFn`. Rewrite using `[extendOne_of_mem _ hκL.2]`.
+
+Establish `hchi : (datV i R.Pg (R.Q t) P m).P.chi ⟨rTup (R.βV i) (datV i R.Pg (R.Q t) P m) (finE (Vc D i) κ), hκL.2⟩ = P.chi ⟨fun PP => upperLeftBlock hb (redFn (R.βV i) PP.1 (finE (Vc D i) κ)), hκL.2⟩` using `rfl`. Rewrite using `[hchi]`. Simplify using `only [IndefiniteRowSideFullHecke.TwistedLevelValues.datV, hone, mul_one]`. Rewrite using `[← Units.coe_prod, ← Units.val_mul, ← Units.val_mul, ← Units.val_inv_eq_inv_val]`. Use `congr 1`.
+
+Rewrite using `[Finset.prod_union hd]`. Establish `hX2 : (∏ PP ∈ R.Q t, (m PP (Matrix.GeneralLinearGroup.det (redFn (R.βV i) PP (finE (Vc D i) κ))))⁻¹) * ∏ PP ∈ R.Q t, (m PP (Matrix.GeneralLinearGroup.det (upperLeftBlock hr (redFn (R.βV i) PP (finE (Vc D i) κ))⁻¹)))⁻¹ = (∏ PP ∈ R.Q t, m PP (dBlk (blk2 D.R.r) 1 (redFn (R.βV i) PP …`. Rewrite using `[← Finset.prod_mul_distrib, Finset.prod_congr rfl hQf, Finset.prod_inv_distrib]`. Generalize the expression as in `(∏ PP ∈ R.Q t, (m PP (Matrix.GeneralLinearGroup.det (redFn (R.βV i) PP (finE (Vc D i) κ))))⁻¹) = X2 at hX2 ⊢`. Generalize the expression as in `(∏ PP ∈ R.Q t, (m PP (Matrix.GeneralLinearGroup.det (upperLeftBlock hr (redFn (R.βV i) PP (finE (Vc D i) κ))⁻¹)))⁻¹) = Z at hX2 ⊢`.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : X2 = (∏ PP ∈ R.Q t, m PP (dBlk (blk2 D.R.r) 1 (redFn (R.βV i) PP (finE (Vc D i) κ))))⁻¹ * Z⁻¹ := by`. Rewrite using `[← hX2, mul_inv_cancel_right]`. Rewrite using `[Finset.prod_inv_distrib]`. Simplify using `only [zero_add]`. Rewrite using `[show (R.datWp i P).Pg = R.Pg from rfl]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem om_src_law {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
     (i : Fin D.R.m) (t : T) (σ : D.what₂.LL →+* ℂ) (s : ℂ ≃+* ℂ) (P : LevelP R.Pg D.R.r ℂ) (cμ cη : (AE D)ˣ →* Circle)
@@ -167,6 +206,9 @@ end GlobalTheory.SourceLaw
 
 namespace GlobalTheory.SourceLaw
 
+/- English proof (translation)
+Introduce `_ D G _ _ Pl0 T A Ks _ _ _ R F _ i t σ s P cμ cη m ω BW f₀ f c io h κ hκ Q`. Establish `hf` using `om_src_law R F i t σ s P cμ cη m ω BW f₀ f c io h κ hκ`. Take `⟨hC, -, -, -, -, hW, -, -, hpt, -, -⟩` from `h`. Conclude with `GlobalTheory.FiniteFock.om_pureTensorO_of_finite R.ψ R.θ (Vc D i) (Wc D i) _ _ ω hC.models.inf hW _ _ _ _ f hpt κ (Subgroup.mem_inf.1 hκ).1 1 (one_mem _) _ hf Q`.
+-/
 theorem sourceLevelLaw : GlobalTheory.IndefiniteRowSideFullHecke.LocalIntegralGL.LocalIntegralSingleBlock → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.PlaceModels D → SourceLevelLawC R F := by
   intro _ D G _ _ Pl0 T A Ks _ _ _ R F _ i t σ s P cμ cη m ω BW f₀ f c io h κ hκ Q
   have hf := om_src_law R F i t σ s P cμ cη m ω BW f₀ f c io h κ hκ

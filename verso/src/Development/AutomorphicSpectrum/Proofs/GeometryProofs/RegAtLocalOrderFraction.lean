@@ -9,6 +9,9 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.HtPt.Ma.reg_local`.
+-/
 theorem regAt_local_mono_frac : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X), (∀ p : Cpt ξ, IsLocalRing (regAt ξ p)) ∧ (∀ p q : Cpt ξ, q.1 ⤳ p.1 → regAt ξ p ≤ regAt ξ q) ∧ (IsCptGen ξ → ∀ (p : Cpt ξ) (a : Ω), ∃ u ∈ regAt ξ p, ∃ v ∈ regAt ξ p, v ≠ 0 ∧ a = u / v) :=
   @PositivityTheory.HtPt.Ma.reg_local
 

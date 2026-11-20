@@ -29,6 +29,11 @@ instance isLocalRing_regAt {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (C
     IsLocalRing (regAt ξ p) :=
   (LocalSubring.range (genMap ξ p)).isLocalRing
 
+/- English proof (translation)
+Use `letI : Algebra A B := (Subalgebra.inclusion hAB).toRingHom.toAlgebra`. Use `haveI : IsScalarTower A B K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Algebra.IsIntegral A B := ⟨fun b => by`. Use `hB b b.2` as an intermediate fact. Conclude with `(isIntegral_algebraMap_iff (A := B) (B := K) (x := b) Subtype.val_injective).1 this⟩`.
+
+Conclude with `isIntegral_trans a ha`.
+-/
 theorem int_trans {o K : Type} [CommRing o] [Field K] [Algebra o K] (A B : Subalgebra o K)
     (hAB : ∀ a ∈ A, a ∈ B) (hB : ∀ b ∈ B, IsIntegral A b) (a : K) (ha : IsIntegral B a) : IsIntegral A a := by
   letI : Algebra A B := (Subalgebra.inclusion hAB).toRingHom.toAlgebra
@@ -38,6 +43,9 @@ theorem int_trans {o K : Type} [CommRing o] [Field K] [Algebra o K] (A B : Subal
     exact (isIntegral_algebraMap_iff (A := B) (B := K) (x := b) Subtype.val_injective).1 this⟩
   exact isIntegral_trans a ha
 
+/- English proof (translation)
+Take `⟨v, -, hv0, hvi, hi⟩` from `GlobalTheory.T.integral_over_localization_scaled A D hAD hD a ha`. Establish `e : a = (v * a) * v⁻¹` using `by field_simp`. Rewrite using `[e]`. Conclude with `mul_mem (hAD _ (hA _ hi)) hvi`.
+-/
 theorem mem_of_isIntegral_loc {o K : Type} [CommRing o] [Field K] [Algebra o K] (A : Subalgebra o K) (D : Subring K)
     (hA : ∀ a, IsIntegral A a → a ∈ A) (hAD : ∀ a ∈ A, a ∈ D)
     (hD : ∀ a ∈ D, ∃ u ∈ A, ∃ v ∈ A, v ≠ 0 ∧ v⁻¹ ∈ D ∧ a = u / v) (a : K) (ha : IsIntegral D a) : a ∈ D := by
@@ -46,6 +54,13 @@ theorem mem_of_isIntegral_loc {o K : Type} [CommRing o] [Field K] [Algebra o K] 
   rw [e]
   exact mul_mem (hAD _ (hA _ hi)) hvi
 
+/- English proof (translation)
+Establish `hRT : ∀ r ∈ R, r ∈ (integralClosure R K).toSubring` using `fun r hr => isIntegral_algebraMap (x := (⟨r, hr⟩ : R))`. Establish `key : ∀ Q₁ Q₂ : Ideal (integralClosure R K).toSubring, (∀ t : (integralClosure R K).toSubring, IsIntegral A (t : K) → t ∈ Q₁ → t ∈ Q₂) → Q₁ ≤ Q₂`. Introduce `Q₁ Q₂ h t ht`. Take `⟨v, hv, hv0, hvi, hi⟩` from `GlobalTheory.T.integral_over_localization_scaled A R hAR hR t t.2`. Establish `h1` using `h (⟨v, hRT v (hAR v hv)⟩ * t) hi (Q₁.mul_mem_left _ ht)`.
+
+Establish `h2` using `Q₂.mul_mem_left ⟨v⁻¹, hRT _ hvi⟩ h1`. Establish `e : (⟨v⁻¹, hRT _ hvi⟩ : (integralClosure R K).toSubring) * (⟨v, hRT v (hAR v hv)⟩ * t) = t`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `v⁻¹ * (v * (t : K)) = t`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Conclude with `le_antisymm (key _ _ fun t ht => (hag t ht).1) (key _ _ fun t ht => (hag t ht).2)`.
+-/
 theorem ideal_ext {o K : Type} [CommRing o] [Field K] [Algebra o K] (A : Subalgebra o K) (R : Subring K)
     (hAR : ∀ a ∈ A, a ∈ R) (hR : ∀ r ∈ R, ∃ u ∈ A, ∃ v ∈ A, v ≠ 0 ∧ v⁻¹ ∈ R ∧ r = u / v)
     (P₁ P₂ : Ideal (integralClosure R K).toSubring)
@@ -65,11 +80,25 @@ theorem ideal_ext {o K : Type} [CommRing o] [Field K] [Algebra o K] (A : Subalge
     rwa [e] at h2
   exact le_antisymm (key _ _ fun t ht => (hag t ht).1) (key _ _ fun t ht => (hag t ht).2)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `M.tie.cover ⟨genPt M.ξ, specializes_rfl⟩`. Conclude with `⟨c, hc.1⟩`.
+-/
 theorem exists_ne {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} {x : κ → Ω}
     (M : PModel o x) : ∃ c, x c ≠ 0 := by
   obtain ⟨c, hc⟩ := M.tie.cover ⟨genPt M.ξ, specializes_rfl⟩
   exact ⟨c, hc.1⟩
 
+/- English proof (translation)
+Establish `hcd : x c ^ d ≠ 0` using `pow_ne_zero _ hc`. Establish `h1 : ∀ k, z k / x c ^ d ∈ chRing o (joinCo (RingHom.id Ω) x z) (c, Sum.inl c)` using `fun k => by`. Establish `e : joinCo (RingHom.id Ω) x z (c, k) / joinCo (RingHom.id Ω) x z (c, Sum.inl c) = z k / x c ^ d`. Simplify using `only [joinCo, RingHom.id_apply, hz]`. Rewrite using `[mul_div_mul_left _ _ hc]`.
+
+Rewrite using `[← e]`. Conclude with `Algebra.subset_adjoin ⟨(c, k), rfl⟩`. Establish `h2 : ∀ j, x j / x c ∈ chRing o (joinCo (RingHom.id Ω) x z) (c, Sum.inl c)` using `fun j => by`. Establish `e : joinCo (RingHom.id Ω) x z (j, Sum.inl c) / joinCo (RingHom.id Ω) x z (c, Sum.inl c) = x j / x c`. Simplify using `only [joinCo, RingHom.id_apply, hz]`.
+
+Rewrite using `[mul_div_mul_right _ _ hcd]`. Rewrite using `[← e]`. Conclude with `Algebra.subset_adjoin ⟨(j, Sum.inl c), rfl⟩`. Establish `h3 : chRing o x c ≤ chRing o (joinCo (RingHom.id Ω) x z) (c, Sum.inl c)` using `Algebra.adjoin_le (by rintro _ ⟨j, rfl⟩; exact h2 j)`. Establish `key : ∀ a ∈ Submodule.span (chRing o x c) (Set.range fun k => z k / x c ^ d), a ∈ chRing o (joinCo (RingHom.id Ω) x z) (c, Sum.inl c)`.
+
+Introduce `a h`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem a h => obtain ⟨k, rfl⟩ := h`. Conclude with `h1 k`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `smul r a _ h => exact mul_mem (h3 r.2) h`. Conclude with `key a ((hi c hc a).1 ha)`.
+-/
 theorem join_chart {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} (x : κ → Ω) (d n : ℕ)
     (z : κ ⊕ Fin n → Ω) (hz : ∀ c, z (Sum.inl c) = x c ^ d)
     (hi : ∀ c, x c ≠ 0 → ∀ a : Ω, IsIntegral (chRing o x c) a ↔
@@ -101,6 +130,13 @@ theorem join_chart {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω]
     | smul r a _ h => exact mul_mem (h3 r.2) h
   exact key a ((hi c hc a).1 ha)
 
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a h`. Take `⟨j, rfl⟩` from `h`. Rewrite using `[map_div₀]`. Conclude with `Algebra.subset_adjoin ⟨j, rfl⟩`.
+
+Consider the case `algebraMap r`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `Subalgebra.algebraMap_mem _ r`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
+
+Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`.
+-/
 theorem map_chRing {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} (x : κ → Ω)
     (Ω' : Type) [Field Ω'] [Algebra Ω Ω'] [Algebra o Ω'] [IsScalarTower o Ω Ω'] (c : κ) (a : Ω)
     (ha : a ∈ chRing o x c) : algebraMap Ω Ω' a ∈ chRing o (fun k => algebraMap Ω Ω' (x k)) c := by
@@ -115,6 +151,13 @@ theorem map_chRing {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω]
   | add a b _ _ ha hb => rw [map_add]; exact add_mem ha hb
   | mul a b _ _ ha hb => rw [map_mul]; exact mul_mem ha hb
 
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a h`. Take `⟨j, rfl⟩` from `h`. Conclude with `⟨x j / x c, Algebra.subset_adjoin ⟨j, rfl⟩, map_div₀ _ _ _⟩`. Consider the case `algebraMap r`.
+
+Conclude with `⟨algebraMap o Ω r, Subalgebra.algebraMap_mem _ r, (IsScalarTower.algebraMap_apply o Ω Ω' r).symm⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨a', h1, rfl⟩` from `ha`. Take `⟨b', h2, rfl⟩` from `hb`. Conclude with `⟨a' + b', add_mem h1 h2, map_add _ _ _⟩`.
+
+Consider the case `mul a b _ _ ha hb`. Take `⟨a', h1, rfl⟩` from `ha`. Take `⟨b', h2, rfl⟩` from `hb`. Conclude with `⟨a' * b', mul_mem h1 h2, map_mul _ _ _⟩`.
+-/
 theorem exists_of_mem_chRing {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} (x : κ → Ω)
     (Ω' : Type) [Field Ω'] [Algebra Ω Ω'] [Algebra o Ω'] [IsScalarTower o Ω Ω'] (c : κ) (a : Ω')
     (ha : a ∈ chRing o (fun k => algebraMap Ω Ω' (x k)) c) : ∃ b ∈ chRing o x c, algebraMap Ω Ω' b = a := by
@@ -133,6 +176,11 @@ theorem exists_of_mem_chRing {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Alg
     obtain ⟨b', h2, rfl⟩ := hb
     exact ⟨a' * b', mul_mem h1 h2, map_mul _ _ _⟩
 
+/- English proof (translation)
+Introduce `p' a ha`. Take `⟨c, hcS, hp⟩` from `hS p'`. Establish `h` using `GlobalTheory.T.regAt_chart_localization o Ω' κ' y M' c p' hp`. Use `mem_of_isIntegral_loc (chRing o y c) (regAt M'.ξ p') (hI c hcS) h.1 (fun a ha => ?_) a ha` and prove the remaining obligations. Take `⟨u, hu, v, hv, hvu, rfl⟩` from `(h.2 a).1 ha`.
+
+Conclude with `⟨u, hu, v, hv, hvu.1, hvu.2.2, rfl⟩`.
+-/
 theorem normal_of_charts {o : Type} [CommRing o] {Ω' : Type} [Field Ω'] [Algebra o Ω'] {κ' : Type} [Finite κ']
     {y : κ' → Ω'} (M' : PModel o y) (S : Set κ') (hS : ∀ p' : Cpt M'.ξ, ∃ c ∈ S, InChart M'.ξ y c p')
     (hI : ∀ c ∈ S, ∀ a : Ω', IsIntegral (chRing o y c) a → a ∈ chRing o y c) : Flat.NormalCpt M'.ξ := by
@@ -143,6 +191,9 @@ theorem normal_of_charts {o : Type} [CommRing o] {Ω' : Type} [Field Ω'] [Algeb
   obtain ⟨u, hu, v, hv, hvu, rfl⟩ := (h.2 a).1 ha
   exact ⟨u, hu, v, hv, hvu.1, hvu.2.2, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(map_ne_zero i).2 hu.1, h _ hu.2.1, by rw [← map_inv₀]; exact h _ hu.2.2⟩`.
+-/
 theorem unitAt_map {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} (i : Ω →+* Ω') {p : Cpt ξ} {p' : Cpt ξ'}
     (h : ∀ a ∈ regAt ξ p, i a ∈ regAt ξ' p') {u : Ω} (hu : unitAt ξ p u) : unitAt ξ' p' (i u) :=
@@ -156,6 +207,9 @@ variable {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Typ
 
 variable {M Ω' M' f} in
 
+/- English proof (translation)
+Take `⟨h', hl⟩` from `GlobalTheory.T.dominates_regAt_local M.X Ω M.ξ M'.X Ω' M'.ξ (algebraMap Ω Ω') f hD p'`. Establish `e : (⟨f p'.1, h'⟩ : Cpt M.ξ) = p` using `Subtype.ext h`. Rewrite `hl` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem dom_of_eq (hD : Dominates M'.ξ M.ξ f (algebraMap Ω Ω')) {p : Cpt M.ξ} {p' : Cpt M'.ξ} (h : f p'.1 = p.1) :
     (∀ a ∈ regAt M.ξ p, algebraMap Ω Ω' a ∈ regAt M'.ξ p') ∧
       ∀ a ∈ regAt M.ξ p, unitAt M'.ξ p' (algebraMap Ω Ω' a) → unitAt M.ξ p a := by
@@ -163,6 +217,19 @@ theorem dom_of_eq (hD : Dominates M'.ξ M.ξ f (algebraMap Ω Ω')) {p : Cpt M.�
   have e : (⟨f p'.1, h'⟩ : Cpt M.ξ) = p := Subtype.ext h
   rwa [e] at hl
 
+/- English proof (translation)
+Establish `hr` using `GlobalTheory.T.regAt_chart_localization o Ω κ x M c p hp`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hl` using `dom_of_eq hD h`. Use `⟨hC c hp.1 p' fun j => ?_, fun u hu => ⟨unitAt_map _ hl.1, hl.2 u (hr.1 u hu)⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_div₀]`. Conclude with `hl.1 _ (hp.2 j)`. Introduce and unpack `⟨hp', hu⟩`. Establish `hr'` using `GlobalTheory.T.regAt_chart_localization o Ω' κ' y M' (e c) p' hp'`. Establish `hA : ∀ u ∈ chRing o x c, algebraMap Ω Ω' u ∈ regAt M'.ξ p'` using `fun u hu' => hr'.1 _ (hB c hp.1 _ (isIntegral_algebraMap (x := (⟨_, map_chRing x Ω' c u hu'⟩ : chRing o (fun k => algebraMap Ω Ω' (x k)) c))))`.
+
+Establish `hl : (∀ a ∈ regAt M.ξ p, algebraMap Ω Ω' a ∈ regAt M'.ξ p') ∧ ∀ a ∈ regAt M.ξ p, unitAt M'.ξ p' (algebraMap Ω Ω' a) → unitAt M.ξ p a`. Use `⟨fun a ha => ?_, fun a ha h => ?_⟩` and prove the remaining obligations. Take `⟨u, h1, v, h2, hv, rfl⟩` from `(hr.2 a).1 ha`. Use `((hu v h2).1 hv).2.2` as an intermediate fact. Rewrite using `[map_div₀, div_eq_mul_inv]`.
+
+Conclude with `mul_mem (hA u h1) this`. Take `⟨u, h1, v, h2, hv, rfl⟩` from `(hr.2 a).1 ha`. Establish `h3 : unitAt M'.ξ p' (algebraMap Ω Ω' u)`. Establish `h4` using `Flat.ZUnit.mul h ((hu v h2).1 hv)`. Establish `h5 : algebraMap Ω Ω' (u / v) * algebraMap Ω Ω' v = algebraMap Ω Ω' u`.
+
+Rewrite using `[← map_mul, div_mul_cancel₀ _ hv.1]`. Rewrite `h4` using `[h5]`. Then use the resulting hypothesis. Establish `h4` using `Flat.ZUnit.mul ((hu u h1).2 h3) (Flat.ZUnit.inv hv)`. Rewrite `h4` using `[← div_eq_mul_inv]`. Then use the resulting hypothesis. Take `⟨h', hl'⟩` from `GlobalTheory.T.dominates_regAt_local M.X Ω M.ξ M'.X Ω' M'.ξ (algebraMap Ω Ω') f hD p'`.
+
+Conclude with `congrArg Subtype.val (GlobalTheory.T.regular_functions_two_components M M'.ξ (algebraMap Ω Ω') p' ⟨f p'.1, h'⟩ p hl' hl)`.
+-/
 theorem fibre_iff (hD : Dominates M'.ξ M.ξ f (algebraMap Ω Ω'))
     (hB : ∀ c, x c ≠ 0 → ∀ a : Ω', IsIntegral (chRing o (fun k => algebraMap Ω Ω' (x k)) c) a → a ∈ chRing o y (e c))
     (hC : ∀ c, x c ≠ 0 → ∀ p' : Cpt M'.ξ, (∀ j, algebraMap Ω Ω' (x j) / algebraMap Ω Ω' (x c) ∈ regAt M'.ξ p') →
@@ -200,6 +267,13 @@ theorem fibre_iff (hD : Dominates M'.ξ M.ξ f (algebraMap Ω Ω'))
     obtain ⟨h', hl'⟩ := GlobalTheory.T.dominates_regAt_local M.X Ω M.ξ M'.X Ω' M'.ξ (algebraMap Ω Ω') f hD p'
     exact congrArg Subtype.val (GlobalTheory.T.regular_functions_two_components M M'.ξ (algebraMap Ω Ω') p' ⟨f p'.1, h'⟩ p hl' hl)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hp'`. Establish `hr'` using `GlobalTheory.T.regAt_chart_localization o Ω' κ' y M' (e c) p' hp'`. Establish `hA : ∀ u ∈ chRing o x c, algebraMap Ω Ω' u ∈ regAt M'.ξ p'` using `fun u hu' => hr'.1 _ (hB c hc _ (isIntegral_algebraMap (x := (⟨_, map_chRing x Ω' c u hu'⟩ : chRing o (fun k => algebraMap Ω Ω' (x k)) c))))`. Take `⟨p₀, hl, -, hch⟩` from `GlobalTheory.T.centre_set_dominating_point o Ω κ x M M'.X Ω' M'.ξ (algebraMap Ω Ω') p' ⟨c, hc, hA⟩`.
+
+Take `⟨h', hl'⟩` from `GlobalTheory.T.dominates_regAt_local M.X Ω M.ξ M'.X Ω' M'.ξ (algebraMap Ω Ω') f hD p'`. Conclude with `⟨p₀, congrArg Subtype.val (GlobalTheory.T.regular_functions_two_components M M'.ξ (algebraMap Ω Ω') p' p₀ ⟨f p'.1, h'⟩ hl hl'), hch c hc fun j => hA _ (Algebra.subset_adjoin ⟨j, rfl⟩)⟩`. Introduce and unpack `⟨p, hpf, hp⟩`. Establish `hl` using `dom_of_eq hD hpf.symm`. Use `hC c hc p' fun j => ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_div₀]`. Conclude with `hl.1 _ (hp.2 j)`.
+-/
 theorem chart_over (hD : Dominates M'.ξ M.ξ f (algebraMap Ω Ω'))
     (hB : ∀ c, x c ≠ 0 → ∀ a : Ω', IsIntegral (chRing o (fun k => algebraMap Ω Ω' (x k)) c) a → a ∈ chRing o y (e c))
     (hC : ∀ c, x c ≠ 0 → ∀ p' : Cpt M'.ξ, (∀ j, algebraMap Ω Ω' (x j) / algebraMap Ω Ω' (x c) ∈ regAt M'.ξ p') →
@@ -224,10 +298,16 @@ theorem chart_over (hD : Dominates M'.ξ M.ξ f (algebraMap Ω Ω'))
 
 end Sit
 
+/- English proof (translation)
+The claim follows from `IsIntegral.map_of_comp_eq (A.val.toRingHom.codRestrict R fun a => h a a.2) (RingHom.id K) (by ext; rfl) hb`.
+-/
 theorem isIntegral_mono {o K : Type} [CommRing o] [Field K] [Algebra o K] (A : Subalgebra o K) (R : Subring K)
     (h : ∀ a ∈ A, a ∈ R) (b : K) (hb : IsIntegral A b) : IsIntegral R b :=
   IsIntegral.map_of_comp_eq (A.val.toRingHom.codRestrict R fun a => h a a.2) (RingHom.id K) (by ext; rfl) hb
 
+/- English proof (translation)
+The claim follows from `IsIntegral.map_of_comp_eq (Subring.inclusion h) (RingHom.id K) (by ext; rfl) hb`.
+-/
 theorem isIntegral_mono' {K : Type} [Field K] {R D : Subring K} (h : R ≤ D) (b : K) (hb : IsIntegral R b) :
     IsIntegral D b :=
   IsIntegral.map_of_comp_eq (Subring.inclusion h) (RingHom.id K) (by ext; rfl) hb
@@ -241,6 +321,35 @@ variable {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Typ
 local notation "i₀" => algebraMap Ω Ω'
 local notation "A₀" => chRing o (fun k => algebraMap Ω Ω' (x k))
 
+/- English proof (translation)
+Take `⟨c, hp⟩` from `M.tie.cover p`. Establish `hc` using `hp.1`. Establish `hr` using `GlobalTheory.T.regAt_chart_localization o Ω κ x M c p hp`. Establish `hB1 : ∀ c, x c ≠ 0 → ∀ a : Ω', IsIntegral (A₀ c) a → a ∈ chRing o y (e c)` using `fun c hc a => (hB c hc a).2`. Establish `hAR : ∀ a ∈ A₀ c, a ∈ (regAt M.ξ p).map i₀` using `fun a ha => by`.
+
+Take `⟨b, hb, rfl⟩` from `exists_of_mem_chRing x Ω' c a ha`. Conclude with `⟨b, hr.1 b hb, rfl⟩`. Establish `hR : ∀ r ∈ (regAt M.ξ p).map i₀, ∃ u ∈ A₀ c, ∃ v ∈ A₀ c, v ≠ 0 ∧ v⁻¹ ∈ (regAt M.ξ p).map i₀ ∧ r = u / v`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Take `⟨u, hu, v, hv, hvu, rfl⟩` from `(hr.2 a).1 ha`.
+
+Conclude with `⟨i₀ u, map_chRing x Ω' c u hu, i₀ v, map_chRing x Ω' c v hv, (map_ne_zero _).2 hvu.1, ⟨v⁻¹, hvu.2.2, map_inv₀ _ _⟩, map_div₀ _ _ _⟩`. Establish `first : ∀ p' : Cpt M'.ξ, f p'.1 = p.1 → ∃ (P : Ideal (integralClosure ((regAt M.ξ p).map i₀) Ω').toSubring) (_ : P.IsMaximal), regAt M'.ξ p' = (LocalSubring.ofPrime _ P).toSubring ∧ ∀ t : (integralClosure ((regAt M.ξ p).map i₀) Ω').toSubring, t ∈ P ↔ ¬ ((t : Ω') ≠ 0 ∧ (t : Ω')⁻¹ …`. Introduce `p' hf`. Establish `hl` using `dom_of_eq hD hf`. Establish `hch` using `((fibre_iff M Ω' M' f e hD hB1 hC c p hp p').1 hf).1`.
+
+Establish `hr'` using `GlobalTheory.T.regAt_chart_localization o Ω' κ' y M' (e c) p' hch`. Establish `hRD : (regAt M.ξ p).map i₀ ≤ regAt M'.ξ p'`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `hl.1 a ha`. Use `GlobalTheory.T.local_subring_integral_closure_max ((regAt M.ξ p).map i₀) (regAt M'.ξ p') (chRing o y (e c)).toSubring hRD ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, ha, rfl⟩ h0 hinv`. Establish `hu : unitAt M'.ξ p' (i₀ a)` using `⟨h0, hl.1 a ha, hinv⟩`. Conclude with `⟨a⁻¹, (hl.2 a ha hu).2.2, map_inv₀ _ _⟩`. Introduce `t ht`. Conclude with `hN p' t (isIntegral_mono' hRD t ht)`.
+
+Introduce `b hb`. Conclude with `isIntegral_mono _ _ hAR b ((hB c hc b).1 hb)`. Introduce `a ha`. Take `⟨u, hu, v, hv, hvu, rfl⟩` from `(hr'.2 a).1 ha`. Conclude with `⟨u, hu, v, hv, hvu.1, hvu.2.2, rfl⟩`.
+
+Use `⟨fun p' hf => ?_, fun P hPm => ?_, hD⟩` and prove the remaining obligations. Take `⟨P, hPm, hD', -⟩` from `first p' hf`. Conclude with `⟨P, hPm, hD'⟩`. Establish `hBT : ∀ b : chRing o y (e c), (b : Ω') ∈ (integralClosure ((regAt M.ξ p).map i₀) Ω').toSubring` using `fun b => isIntegral_mono _ _ hAR _ ((hB c hc b).1 b.2)`. Set `ι : chRing o y (e c) →+* (integralClosure ((regAt M.ξ p).map i₀) Ω').toSubring` to `{ toFun := fun b => ⟨b, hBT b⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`.
+
+Take `⟨p', ⟨hch, hmem⟩, huniq⟩` from `GlobalTheory.T.chart_prime_existsUnique_point o Ω' κ' y M' (e c) (hy c hc) (P.comap ι) inferInstance`. Establish `hr'` using `GlobalTheory.T.regAt_chart_localization o Ω' κ' y M' (e c) p' hch`. Establish `hf : f p'.1 = p.1`. Use `(fibre_iff M Ω' M' f e hD hB1 hC c p hp p').2 ⟨hch, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hub : i₀ u ∈ chRing o y (e c)` using `(hB c hc _).2 (isIntegral_algebraMap (x := (⟨_, map_chRing x Ω' c u hu⟩ : A₀ c)))`.
+
+Establish `h1 : ι ⟨i₀ u, hub⟩ ∈ P ↔ ¬ unitAt M'.ξ p' (i₀ u)` using `hmem ⟨i₀ u, hub⟩`. Establish `h2` using `GlobalTheory.T.maximal_ideal_membership_of_local ((regAt M.ξ p).map i₀) P hPm (ι ⟨i₀ u, hub⟩) ⟨u, hr.1 u hu, rfl⟩`. Establish `h3 : unitAt M.ξ p u ↔ (i₀ u ≠ 0 ∧ (i₀ u)⁻¹ ∈ (regAt M.ξ p).map i₀)`. Use `⟨fun h => ⟨(map_ne_zero _).2 h.1, ⟨u⁻¹, h.2.2, map_inv₀ _ _⟩⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨h0, a, ha, e'⟩`.
+
+Establish `hu0 : u ≠ 0` using `fun h => h0 (by rw [h, map_zero])`. Establish `: a = u⁻¹` using `(algebraMap Ω Ω').injective (by rw [map_inv₀]; exact e')`. Conclude with `⟨hu0, hr.1 u hu, this ▸ ha⟩`. Rewrite using `[h3]`. Conclude with `not_iff_not.1 (h2.symm.trans h1)`.
+
+Take `⟨P', hPm', hD', hP'⟩` from `first p' hf`. Establish `e' : P = P'`. Use `ideal_ext (A₀ c) ((regAt M.ξ p).map i₀) hAR hR P P' fun t ht => ?_` and prove the remaining obligations. Establish `hb : (t : Ω') ∈ chRing o y (e c)` using `(hB c hc _).2 ht`. Establish `h1 : t ∈ P ↔ ¬ unitAt M'.ξ p' (t : Ω')` using `hmem ⟨t, hb⟩`.
+
+Rewrite using `[h1, hP' t]`. Conclude with `not_congr ⟨fun h => ⟨h.1, h.2.2⟩, fun h => ⟨h.1, hr'.1 _ hb, h.2⟩⟩`. Substitute `e'` using the available equality. Use `⟨p', ⟨hf, hD'⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `p'' ⟨hf'', hD''⟩`.
+
+Establish `hch''` using `((fibre_iff M Ω' M' f e hD hB1 hC c p hp p'').1 hf'').1`. Establish `hr''` using `GlobalTheory.T.regAt_chart_localization o Ω' κ' y M' (e c) p'' hch''`. Use `huniq p'' ⟨hch'', fun u => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.prime_mem_iff_not_unit_localization _ P inferInstance (ι u)`. Rewrite `h` using `[← hD'']`.
+
+Use `h.trans (not_congr ⟨fun h => ⟨h.1, hr''.1 _ u.2, h.2⟩, fun h => ⟨h.1, h.2.2⟩⟩)` and prove the remaining obligations.
+-/
 theorem normAt_of_charts (hD : Dominates M'.ξ M.ξ f (algebraMap Ω Ω'))
     (hy : ∀ c, x c ≠ 0 → y (e c) ≠ 0)
     (hB : ∀ c, x c ≠ 0 → ∀ a : Ω', a ∈ chRing o y (e c) ↔ IsIntegral (chRing o (fun k => algebraMap Ω Ω' (x k)) c) a)
@@ -328,6 +437,27 @@ theorem normAt_of_charts (hD : Dominates M'.ξ M.ξ f (algebraMap Ω Ω'))
 
 end Sit
 
+/- English proof (translation)
+Introduce `o _ _ Ω _ _ κ _ x M Ω' _ _ _ _ _`. Establish `hinj : ∀ c, x c ≠ 0 → algebraMap Ω Ω' (x c) ≠ 0` using `fun c hc => by`. Simplify using `using hc`. Establish `hinj' : ∀ c, algebraMap Ω Ω' (x c) ≠ 0 → x c ≠ 0` using `fun c hc h => hc (by simp [h])`. Take `⟨d, n, z, hz1, hz2⟩` from `GlobalTheory.T.integral_closure_chart_span o Ω' κ (fun k => algebraMap Ω Ω' (x k)) (fun c hc => GlobalTheory.T.chart_ring_integral_closure_finite M Ω' c (hinj' c hc))`.
+
+Use `set x' : κ → Ω' := fun k => algebraMap Ω Ω' (x k) with hx'`. Use `set y := joinCo (RingHom.id Ω') x' z with hy`. Take `⟨c₀, hc₀⟩` from `exists_ne M`. Establish `hyne : ∀ c, x c ≠ 0 → y (c, Sum.inl c) ≠ 0` using `fun c hc => by`. Simplify using `only [hy, joinCo, RingHom.id_apply, hz1]`.
+
+Conclude with `mul_ne_zero (hinj c hc) (pow_ne_zero _ (hinj c hc))`. Establish `hJ` using `fun c (hc : x c ≠ 0) a (ha : IsIntegral (chRing o x' c) a) => join_chart (o := o) x' d n z hz1 hz2 c (hinj c hc) a ha`. Take `⟨M'⟩ : Nonempty (PModel o y)` from `GlobalTheory.T.projective_model_nonempty o Ω' (κ × (κ ⊕ Fin n)) y ⟨(c₀, Sum.inl c₀), hyne c₀ hc₀, fun a => by`. Take `⟨b, v, hb, hv, hv0, rfl⟩` from `GlobalTheory.T.chart_ring_integral_fraction M Ω' c₀ hc₀ a`. Conclude with `⟨b, hJ c₀ hc₀ b hb, v, hJ c₀ hc₀ v (isIntegral_algebraMap (x := (⟨v, hv⟩ : chRing o x' c₀))), rfl⟩⟩`.
+
+Establish `hT` using `GlobalTheory.T.join_coords_chart_integral o Ω' κ x' d n z M' hz1 hz2`. Establish `hB : ∀ c, x c ≠ 0 → ∀ a : Ω', a ∈ chRing o y (c, Sum.inl c) ↔ IsIntegral (chRing o x' c) a` using `fun c hc => (hT c (hinj c hc)).1`. Establish `hC : ∀ c, x c ≠ 0 → ∀ p' : Cpt M'.ξ, (∀ j, x' j / x' c ∈ regAt M'.ξ p') → InChart M'.ξ y (c, Sum.inl c) p'` using `fun c hc => (hT c (hinj c hc)).2`. Establish `hcov : ∀ p' : Cpt M'.ξ, ∃ c, x c ≠ 0 ∧ InChart M'.ξ y (c, Sum.inl c) p'`. Introduce `p'`.
+
+Take `⟨⟨c, k⟩, h0, h1⟩` from `M'.tie.cover p'`. Establish `hc' : x' c ≠ 0` using `left_ne_zero_of_mul h0`. Establish `hk : z k ≠ 0` using `right_ne_zero_of_mul h0`. Use `⟨c, hinj' c hc', hC c (hinj' c hc') p' fun j => ?_⟩` and prove the remaining obligations. Use `h1 (j, k)` as an intermediate fact.
+
+Simplify using `only [hy, joinCo, RingHom.id_apply] at this`. Rewrite `this` using `[mul_div_mul_right _ _ hk]`. Then use the resulting hypothesis. Establish `hreg : ∀ (c : κ) (p' : Cpt M'.ξ), InChart M'.ξ y (c, Sum.inl c) p' → ∀ a ∈ chRing o x c, algebraMap Ω Ω' a ∈ regAt M'.ξ p'`. Introduce `c p' hp a ha`. Establish `hc : x c ≠ 0` using `hinj' c (left_ne_zero_of_mul hp.1)`.
+
+Conclude with `(GlobalTheory.T.regAt_chart_localization o Ω' _ y M' _ p' hp).1 _ ((hB c hc _).2 (isIntegral_algebraMap (x := (⟨_, map_chRing x Ω' c a ha⟩ : chRing o x' c))))`. Take `⟨f, hf, -⟩` from `GlobalTheory.T.existsUnique_dominating_map o Ω κ x M o Ω' _ y M' (algebraMap Ω Ω') fun p' => by`. Take `⟨c, hc, hp⟩` from `hcov p'`. Conclude with `⟨c, hc, hreg c p' hp⟩`. Establish `hN : Flat.NormalCpt M'.ξ`.
+
+Use `normal_of_charts M' {q | ∃ c, x c ≠ 0 ∧ q = (c, Sum.inl c)} (fun p' => ?_) ?_` and prove the remaining obligations. Take `⟨c, hc, hp⟩` from `hcov p'`. Conclude with `⟨_, ⟨c, hc, rfl⟩, hp⟩`. Introduce and unpack `_ ⟨c, hc, rfl⟩ a ha`. Rewrite using `[hB c hc]`.
+
+Use `int_trans (chRing o x' c) (chRing o y (c, Sum.inl c)) (fun b hb => (hB c hc b).2 (isIntegral_algebraMap (x := (⟨b, hb⟩ : chRing o x' c)))) (fun b hb => (hB c hc b).1 hb) a ha` and prove the remaining obligations. Use `⟨_, inferInstance, y, M', f, hf, hN, ?_, fun p => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.dominating_model_chart_compat M Ω' M' f (fun c => (c, Sum.inl c)) hf hyne (fun c hc p' => chart_over M Ω' M' f _ hf (fun c hc a ha => (hB c hc a).2 ha) hC c hc p') fun c hc => ?_` and prove the remaining obligations. Use `⟨(Set.finite_range fun k => z k / x' c ^ d).toFinset, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset]`.
+
+Conclude with `(hB c hc a).trans (hz2 c (hinj c hc) a)`. Conclude with `normAt_of_charts M Ω' M' f (fun c => (c, Sum.inl c)) hf hyne hB hC hN p`.
+-/
 theorem exists_normalisation : ∀ (o : Type) [CommRing o] [Algebra.EssFiniteType ℤ o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (Ω' : Type) [Field Ω'] [Algebra Ω Ω'] [FiniteDimensional Ω Ω'] [Algebra o Ω'] [IsScalarTower o Ω Ω'], ∃ (κ' : Type) (_ : Finite κ') (y : κ' → Ω') (M' : PModel o y) (f : M'.X ⟶ M.X), Dominates M'.ξ M.ξ f (algebraMap Ω Ω') ∧ Flat.NormalCpt M'.ξ ∧ IsFinite f ∧ ∀ p : Cpt M.ξ, NormAt M'.ξ f (algebraMap Ω Ω') p := by
   intro o _ _ Ω _ _ κ _ x M Ω' _ _ _ _ _
   have hinj : ∀ c, x c ≠ 0 → algebraMap Ω Ω' (x c) ≠ 0 := fun c hc => by

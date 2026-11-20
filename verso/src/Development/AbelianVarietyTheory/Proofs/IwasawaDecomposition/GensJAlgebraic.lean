@@ -31,6 +31,9 @@ def allSetJ (P : Pre) (J : AmbIn P.host) (χ : HChar P.host.E) (Ξ : Set (HChar 
   ⋃ k ∈ {k : P.Word × ℕ × Finset (HeightOneSpectrum (𝓞 P.host.E)) × Finset (HeightOneSpectrum (𝓞 P.host.E)) |
       (k.2.1 < P.R.m ∧ (∀ Q ∈ k.2.2.1, Q ∈ badP P Ξ) ∧ ∀ Q ∈ k.2.2.2, Q ∈ badP P Ξ) ∧ FinAlg (stepSetJ P J χ k)}, stepSetJ P J χ k
 
+/- English proof (translation)
+Establish `hb` using `badPrimes_finite₂ P h`. Establish `hs : {S : Finset (HeightOneSpectrum (𝓞 P.host.E)) | ∀ Q ∈ S, Q ∈ badP P Ξ}.Finite` using `hb.toFinset.powerset.finite_toSet.subset fun S hS => Finset.mem_coe.2 (Finset.mem_powerset.2 fun Q hQ => hb.mem_toFinset.2 (hS Q hQ))`. Use `finAlg_biUnion ?_ fun k hk => hk.2` and prove the remaining obligations. Conclude with `(Set.finite_univ.prod ((Set.finite_Iio P.R.m).prod (hs.prod hs))).subset fun k hk => ⟨trivial, hk.1⟩`.
+-/
 theorem finAlg_allSetJ (P : Pre) (J : AmbIn P.host) (χ : HChar P.host.E) {Ξ : Set (HChar P.host.E)} (h : Ξ.Finite) :
     FinAlg (allSetJ P J χ Ξ) := by
   have hb := badPrimes_finite₂ P h
@@ -45,6 +48,9 @@ open Classical in
 def gensJ (P : Pre) (J : AmbIn P.host) (χ : HChar P.host.E) (Ξ : Set (HChar P.host.E)) : Finset ℂ :=
   if h : FinAlg (allSetJ P J χ Ξ) then h.choose else ∅
 
+/- English proof (translation)
+Unfold `gensJ`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Simplify using the standard rewrite rules.
+-/
 theorem gensJ_algebraic (P : Pre) (J : AmbIn P.host) (χ : HChar P.host.E) (Ξ : Set (HChar P.host.E)) :
     ∀ z ∈ gensJ P J χ Ξ, IsAlgebraic ℚ z := by
   unfold gensJ
@@ -52,12 +58,24 @@ theorem gensJ_algebraic (P : Pre) (J : AmbIn P.host) (χ : HChar P.host.E) (Ξ :
   · exact h.choose_spec.1
   · simp
 
+/- English proof (translation)
+Establish `h1` using `finAlg_allSetJ P J χ h`. Rewrite `hK` using `[gensJ, dif_pos h1]`. Conclude with `h1.choose_spec.2.trans (Subfield.closure_le.2 hK)`.
+-/
 theorem allSetJ_subset (P : Pre) (J : AmbIn P.host) (χ : HChar P.host.E) {Ξ : Set (HChar P.host.E)} (h : Ξ.Finite)
     {K : Subfield ℂ} (hK : ∀ z ∈ gensJ P J χ Ξ, z ∈ K) : allSetJ P J χ Ξ ⊆ K := by
   have h1 := finAlg_allSetJ P J χ h
   rw [gensJ, dif_pos h1] at hK
   exact h1.choose_spec.2.trans (Subfield.closure_le.2 hK)
 
+/- English proof (translation)
+Establish `hall` using `allSetJ_subset B.toPre I.J I.C.chiPsi (Set.finite_range I.xi) hK`. Use `I.jetsIn_iff.2 fun a u i hi N N' c x hx e he => ?_` and prove the remaining obligations. Establish `hM : I.modulus a u = (∏ Q ∈ rowSG (B.primes X) I.sel (I.tup a), qOf Q) ^ (B.R.m + 1) * (B.T u * (∏ Q ∈ rowSG (B.primes X) I.sel (I.tup a), qOf Q) ^ (B.R.m + 1))`. Unfold `ColIn.modulus cAof cBof`. Rewrite using `[ht.cst_eq a, Finset.prod_coe_sort _ qOf]`.
+
+Both sides reduce to the same expression. Establish `hS : stepSetJ B.toPre I.J I.C.chiPsi (u, i, I.Sb a u, rowSG (B.primes X) I.sel (I.tup a)) = jetSet I.A (B.R.N i) (B.R.N (i + 1)) (I.Sb a u) (I.modulus a u) (totDeg B.toPre u i)`. Rewrite using `[hM, ColIn.A]`. Conclude with `(jetSet_amb B _ _ _ _ _ _ _).symm`. Establish `hpos : 0 < I.modulus a u`.
+
+Rewrite using `[hM]`. Use `Finset.prod_pos fun Q (_ : Q ∈ rowSG (B.primes X) I.sel (I.tup a)) => Nat.pos_of_ne_zero (by simpa using qPow_ne_zero Q 1 : qOf Q ≠ 0)` as an intermediate fact. Use `(B.T_prime u).pos` as an intermediate fact. Check the signs of the components of the expression. Use `hall (Set.mem_iUnion₂.2 ⟨(u, i, I.Sb a u, rowSG (B.primes X) I.sel (I.tup a)), ⟨⟨hi, Sb_subset h a u, rowSG_subset h a⟩, ?_⟩, ?_⟩)` and prove the remaining obligations.
+
+Rewrite using `[hS]`. Conclude with `finAlg_step hL h a u _ _ _ _ hpos`. Rewrite using `[hS]`. Conclude with `⟨N, N', c, x, e, hx, degree_eq_totDeg B u i e he, rfl⟩`.
+-/
 theorem jetsIn_of_isTw {B : Base} {X : PreX B.toPre} (hL : StagesInhab.HasLetters B.toPre) {I : ColIn B X} (h : I.Ok)
     (ht : TC.IsTw I) (hK : ∀ z ∈ gensJ B.toPre I.J I.C.chiPsi (Set.range I.xi), z ∈ B.embLL.fieldRange) : I.JetsIn := by
   have hall := allSetJ_subset B.toPre I.J I.C.chiPsi (Set.finite_range I.xi) hK
@@ -96,6 +114,27 @@ namespace GlobalTheory.Mem.Top.ReW
 
 open GlobalTheory.Mem.Col2.InEx
 
+/- English proof (translation)
+Use `choose M hM _ _ m1 m2 _ _ _ _ using fun (B : Pre) (f : Top.Fr B) => FrameVal.frame_values B.R B.host _ f fun j τ => (B.hc τ).e_int j`. Use `choose α hα gα using fun (B : Pre) (f : Top.Fr B) => @DatHecke.exists_gen (M B f) (hM B f)`. Use `choose M' hM' _ hok using fun B : Pre => PerField.exists_fieldOK B.R B.host ⊥ inferInstance`. Use `choose β hβ gβ using fun B : Pre => @DatHecke.exists_gen (M' B) (hM' B)`. Use `choose r hr using fun q : ℕ => IsAlgClosed.exists_pow_nat_eq (q : ℂ) (n := 2) two_pos`.
+
+Use `choose Z hZ gZ using fun (B : Pre) (Ξ : Set (HChar B.host.E)) => exists_holds (2 * B.R.m) Ξ`. Use `⟨fun P J g Ξ => insert (α P g) (insert (β P) (Z P Ξ ∪ (Finset.univ.image fun k => r (P.host.g k)) ∪ gensJ P J g.chiPsi Ξ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `P J g Ξ z hz`. Simplify using `only [Finset.mem_insert, Finset.mem_union, Finset.mem_image, Finset.mem_univ, true_and] at hz`. Break down `hz with rfl | rfl | ((h | ⟨k, rfl⟩) | h)` into its components or cases.
+
+Conclude with `hα P g`. Conclude with `hβ P`. Conclude with `hZ P Ξ z h`. Conclude with `IsAlgebraic.of_pow two_pos (by rw [hr]; exact isAlgebraic_natCast _)`. Conclude with `gensJ_algebraic P J _ Ξ z h`.
+
+Introduce `B X f T sel J hsp hdu hL hX hsel hJ hS`. Establish `hα'` using `hS _ (Finset.mem_insert_self _ _)`. Establish `hβ'` using `hS _ (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))`. Establish `hZ' : ∀ z ∈ Z B.toPre (T.set f), ∃ x, B.embLL x = z` using `fun z hz => hS z (by simp [hz])`. Establish `hr' : ∀ k, ∃ x, B.embLL x = r (B.host.g k)` using `fun k => hS _ (by simp)`.
+
+Establish `hG' : ∀ z ∈ gensJ B.toPre J f.chiPsi (T.set f), ∃ x, B.embLL x = z` using `fun z hz => hS z (by simp [hz])`. Establish `i1` using `gα B.toPre f B.LL B.embLL hα'`. Establish `hf` using `(TwFin.tw_fin B f T).1`. Establish `ht` using `isTwist_of_mem_set B f T`. Establish `hold : ∀ ξ ∈ T.set f, Holds B.embLL (2 * B.R.m) ξ` using `fun ξ hξ => gZ B.toPre _ hf B.LL B.embLL hZ' ξ hξ (ht ξ hξ).1`.
+
+Take `⟨I0, h0, e1, e2, e3, e4, e5, hc⟩` from `exists_colIn B X f hX hsp hdu (avoid B.toPre) (fun u => ⟨Or.inr (Or.inr (Or.inr (Or.inr (Or.inl (Exists.intro u rfl))))), B.T_ne_pde u⟩) (fun i => ⟨Or.inr (Or.inl (Exists.intro i rfl)), (B.host.pde_ne_g i).1.symm, (B.host.pde_ne_g i).2.symm⟩) (fun _ hp h => mem_avoid_of_dvd _ hp …`. Take `⟨s, hs⟩` from `hr' i`. Conclude with `⟨s, B.embLL.injective (by rw [map_pow, hs, hr, map_natCast])⟩) sel hsel J hJ`. Establish `hD : TC.Deep I0` using `fun a P hP => by rw [(hc a).2.2.2 P hP]`. Establish `hI : (TC.canon I0).Ok` using `TC.canon_ok h0 hD`.
+
+Use `⟨(TC.canon I0), hI, TC.canon_isTw I0, jetsIn_of_isTw hL hI (TC.canon_isTw I0) fun z hz => ?_, e1, e2, e3, e4, e5, fun a P => ?_, fun a P hP => ?_, hok B.toPre B.LL B.embLL B.embE B.embE_φ₀ (gβ B.toPre B.LL B.embLL hβ')⟩` and prove the remaining obligations. Establish `hz' : z ∈ gensJ B.toPre J f.chiPsi (T.set f)`. Rewrite `hz` using `[show (TC.canon I0).J = J from e5, show (TC.canon I0).C = f from e1, show Set.range (TC.canon I0).xi = T.set f from e3]`. Conclude with `hz`. Conclude with `RingHom.mem_fieldRange.2 (hG' z hz')`.
+
+Establish `hx : I0.xi a ∈ T.set f` using `e3 ▸ ⟨a, rfl⟩`. Conclude with `RingHom.mem_range.1 ((hold _ hx).1 _)`. Establish `hx : I0.xi a ∈ T.set f` using `e3 ▸ ⟨a, rfl⟩`. Establish `htw : Chr.IsTwist B.host I0.S (I0.xi a)` using `e2 ▸ ht _ hx`. Take `⟨P', hP', hn⟩` from `exists_ram_of_mem_QE B h0.sel_ok (I0.tup a) htw (h0.xi_reads a) hP`.
+
+Take `⟨ζ, hζ⟩` from `((hold _ hx).2 P' hP').2`. Establish `hm` using `B.R.two_le_m`. Establish `hq : 0 < Ideal.absNorm P'.asIdeal` using `Nat.pos_of_ne_zero fun h => P'.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Use `⟨ζ ^ (Ideal.absNorm P'.asIdeal ^ (2 * B.R.m - 1)), ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, hn]`.
+
+Conclude with `hζ.pow (pow_pos hq _) (by rw [← pow_succ]; congr 1; omega)`.
+-/
 theorem exists_bound : ∃ S : ∀ P : Pre, AmbIn P.host → Fr P → Set (HChar P.host.E) → Finset ℂ,
     (∀ P J g Ξ, ∀ z ∈ S P J g Ξ, IsAlgebraic ℚ z) ∧
     ∀ (B : Base) (X : PreX B.toPre) (f : Fr B.toPre) (T : TwDat B)
@@ -175,12 +214,34 @@ namespace GlobalTheory.Mem.Top.ReW
 
 open GlobalTheory.Mem.Col2.InEx
 
+/- English proof (translation)
+Introduce `v hv` and use `by obtain ⟨y, hy⟩ := h v hv obtain ⟨x, hx⟩ := hσ y exact ⟨x, hx.trans hy⟩`.
+-/
 theorem valuesIn_lift {L : Type} [Field L] [NumberField L] {χ : HChar L} {s : ℝ} {C C' : Type} [Field C] [Field C']
     {σ : C →+* ℂ} {σ' : C' →+* ℂ} (h : χ.ValuesIn s σ) (hσ : ∀ y, ∃ x, σ' x = σ y) : χ.ValuesIn s σ' := fun v hv => by
   obtain ⟨y, hy⟩ := h v hv
   obtain ⟨x, hx⟩ := hσ y
   exact ⟨x, hx.trans hy⟩
 
+/- English proof (translation)
+Take `⟨S, hSa, hS⟩` from `exists_bound`. Use `evG_all fun K B f T w hO ⟨cp⟩ => ?_` and prove the remaining obligations. Use `⟨fun _ => ∅, fun P g Ξ => if h : P = B.toPre then S P (h ▸ w.I.J) g Ξ else ∅, fun P g Ξ z hz => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only at hz`. Distinguish the cases in `h : P = B.toPre`.
+
+Rewrite `hz` using `[dif_pos h]`. Conclude with `hSa _ _ _ _ z hz`. Rewrite `hz` using `[dif_neg h]`. Simplify using `at hz`. Introduce `B' f' T' hE hf _ hS₂`.
+
+Establish `hK` using `Enl.KsC_eq hE`. Establish `hrng : ∀ y : B.LL0, ∃ x : B'.LL0, B'.embLL x = B.embLL y` using `fun y => by`. Establish `: B.embLL y.1 ∈ B'.embLL '' (B'.LL0 : Set B'.LL)` using `hE.2.2.1 ▸ ⟨y.1, y.2, rfl⟩`. Take `⟨x, hx, hxy⟩` from `this`. Conclude with `⟨⟨x, hx⟩, hxy⟩`.
+
+Establish `hL` using `GlobalTheory.Mem.Col2.JetEx.hasLetters_of_over hO`. Establish `hP` using `(base_fields_primes_ok B w.px).2.1`. Establish `hX : Oriented w.px f.P` using `fun k v => by`. Establish `h1` using `w.ok.pibar k v`. Rewrite `h1` using `[DatHecke.mem_vG hP, w.C_eq]`.
+
+Rewrite using `[← h1]`. Conclude with `(iff_of_eq (congrArg (· ∈ v.asIdeal) (RingOfIntegers.ext (B.fields_conjO_coe _)))).symm`. Establish `hsp` using `of_over hO`. Take `⟨⟨B0, C0, W0, V0, S0, N0, G0⟩, hB0, -⟩` from `StagesInhab.exists_stages_over B hL 1`. Simplify using `only at hB0`.
+
+Substitute `hB0` using the available equality. Establish `hv` using `w.val C0 W0 V0 S0 N0 G0`. Establish `e1` using `hE.1`. Use `clear hE`. Consider the cases of `B0`.
+
+Simplify using `only at e1`. Substitute `e1` using the available equality. Establish `ef` using `eq_of_heq hf`. Substitute `ef` using the available equality. Simplify using `only at hS₂`.
+
+Rewrite `hS₂` using `[dif_pos rfl]`. Take `⟨I, hI, hTw, hJets, hC, hSS, hxi, hsel, hJ, hval, hroot, hfld⟩` from `hS B' w.px f' T' w.I.sel w.I.J hsp.1 hsp.2 hL hX w.ok.sel_ok w.ok.amb_ok hS₂`. Establish `hval0 : ∀ C W V S N G, Formalism.L2.Host.ValLL0 (assemble B' C W V S N G) (Fr.at ⟨B', C, W, V, S, N, G⟩ f')` using `fun C W V S N G => ⟨fun j => valuesIn_lift (hv.mu0 j) hrng, valuesIn_lift hv.eta hrng, valuesIn_lift hv.chiPsi hrng, valuesIn_lift hv.del hrng, valuesIn_lift hv.del' hrng⟩`. Set `w' : ColW B' f' T'` to `{ px := w.px I := I ok := hI C_eq := hC S_eq := hSS xi_range := hxi pins := ⟨w.pins.iX, w.pins.cof⟩ l := TC.laws_of_ok I hI l0 := StepZero.law0 I hI _ δ := w.δ`. Conclude with `:= hK.trans w.exact`.
+
+Use `fld := hfld`. Use `val := hval0 }`. Establish `cp' : ColPin w'` using `{ isTw := hTw jets := hJets hX := (base_fields_primes_ok B' w.px).1 above := fun v => by rw [hsel]; exact cp.above v half := by rw [hsel]; exact cp.half d3b := cp.d3b selectedPlacesAgree := by rw [hsel]; exact cp.selectedPlacesAgree vals := fun a P _ => hval a P roots := hroot }`. Conclude with `⟨w', ⟨cp'⟩, HEq.rfl, heq_of_eq hsel, heq_of_eq hJ, HEq.rfl⟩`.
+-/
 theorem extend_pinned : EvG fun K => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), K.Over B.toPre →
     Pinned K B f T w → ∃ (A : ℕ → Finset ℕ) (S₂ : ∀ P : Pre, Fr P → Set (HChar P.host.E) → Finset ℂ),
     (∀ P g Ξ, ∀ z ∈ S₂ P g Ξ, IsAlgebraic ℚ z) ∧ ∀ (B' : Base) (f' : Fr B'.toPre) (T' : TwDat B'), Enl B B' → HEq f' f →

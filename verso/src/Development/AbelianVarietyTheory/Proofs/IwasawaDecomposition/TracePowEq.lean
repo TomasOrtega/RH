@@ -4,6 +4,19 @@ namespace GlobalTheory.TracePowEq
 
 open Matrix
 
+/- English proof (translation)
+Take `⟨S, hS⟩ : ∃ S : Matrix (Fin m) (Fin n) A, S = Qᵀ.map (algebraMap ℂ A)` from `⟨_, rfl⟩`. Take `⟨T, hT⟩ : ∃ T : Matrix (Fin n) (Fin m) A, T = Pᵀ.map (algebraMap ℂ A)` from `⟨_, rfl⟩`. Establish `hTS : T * S = 1`. Rewrite using `[hT, hS, ← Matrix.map_mul, ← Matrix.transpose_mul, hQP, Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hST : S * T = 1`.
+
+Rewrite using `[hT, hS, ← Matrix.map_mul, ← Matrix.transpose_mul, hPQ, Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hE : (Matrix.of E' : Matrix (Fin m) (Fin m) A) = S * Matrix.of E * T`. Use extensionality with `a b`. Establish `key : ∀ c d, (Q c a * P b d) • E c d = S a c * E c d * T d b`. Introduce `c d`.
+
+Rewrite using `[hS, hT, Matrix.map_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.transpose_apply, Algebra.smul_def, map_mul, mul_assoc, Algebra.commutes (P b d) (E c d), ← mul_assoc]`. Rewrite using `[Matrix.of_apply, h a b]`. Simplify using `only [key, Matrix.mul_apply, Matrix.of_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Establish `hpow : ∀ j : ℕ, (S * Matrix.of E * T) ^ j = S * Matrix.of E ^ j * T`.
+
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, pow_zero, Matrix.mul_one, hST]`. Consider the case `succ j ih`. Rewrite using `[pow_succ, ih, pow_succ]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hcyc : ∀ X : Matrix (Fin n) (Fin m) A, ∑ c, (S * X) c c = ∑ d, (X * S) d d`. Introduce `X`. Simplify using `only [Matrix.mul_apply]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hS, Matrix.map_apply, Algebra.commutes]`. Rewrite using `[hE, hpow, Matrix.mul_assoc, hcyc, Matrix.mul_assoc, hTS, Matrix.mul_one]`.
+-/
 theorem trace_pow_eq {A : Type} [Ring A] [Algebra ℂ A] {n m : ℕ}
     (E : Fin n → Fin n → A) (E' : Fin m → Fin m → A)
     (P : Matrix (Fin m) (Fin n) ℂ) (Q : Matrix (Fin n) (Fin m) ℂ)

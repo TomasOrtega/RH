@@ -8,6 +8,11 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Introduce `k H _ _ _ _ n j hn`. Establish `hdim : Module.finrank k H = Module.finrank k (Fin n → k)` using `by simp [hn]`. Set `e : H ≃ₗ[k] (Fin n → k)` to `LinearEquiv.ofFinrankEq H (Fin n → k) hdim`. Apply `Nat.card_congr` to reduce the goal to its premises. Use `(Submodule.orderIsoMapComap e).toEquiv.subtypeEquiv ?_` and prove the remaining obligations.
+
+Introduce `D`. Express the relevant statement in the definitionally equal form `Module.finrank k D = j ↔ Module.finrank k (D.map (e : H →ₗ[k] (Fin n → k))) = j`. Rewrite using `[LinearEquiv.finrank_map_eq]`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.grCard_of :
     GrCard := by
   intro k H _ _ _ _ n j hn

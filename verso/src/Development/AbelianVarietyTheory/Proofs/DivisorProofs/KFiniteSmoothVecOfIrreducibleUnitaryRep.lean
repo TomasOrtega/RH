@@ -14,6 +14,9 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.HdSmooth
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ _ σ hU hI v hv`. Establish `h` using `(GlobalTheory.HcPort.kFiniteVectors_analytic_indefiniteUnitary n ε H σ hU hI v hv).smoothVec (P := 1) (G := Formalism.REAL.Jm ε) isUnit_one (by simp)`. Simplify `h` using `[inG]`.
+-/
 theorem kFinite_smoothVec : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [Nontrivial H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsURepOn (UJset ε) σ → IsIrredOn (UJset ε) σ → ∀ v, IsKFin ε σ v → Formalism.L2.Theta.SmoothVec {X | inG ε X} σ v := by
   intro n ε H _ _ _ _ σ hU hI v hv
   have h := (GlobalTheory.HcPort.kFiniteVectors_analytic_indefiniteUnitary n ε H σ hU hI v hv).smoothVec (P := 1)

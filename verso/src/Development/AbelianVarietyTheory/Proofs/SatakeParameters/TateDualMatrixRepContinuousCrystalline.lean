@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.HTW.Rec
 
+/- English proof (translation)
+Introduce `l _ P K LL k M hT hM hC`. Use `haveI : IsTopologicalRing ↥LL.1 := by first`. Consider the case `infer_instance`. Consider the case `exact Subring.instIsTopologicalRing LL.1.toSubring`. Consider the case `exact inferInstanceAs (IsTopologicalRing ↥LL.1.toSubfield.toSubring)`.
+
+Establish `hχ` using `GlobalTheory.T.continuous_cyclotomicCharacter_periodDatum P K LL`. Establish `hinv : Continuous fun g : ↥(GK K) => M g⁻¹` using `hM.comp continuous_inv`. Establish `hc : Continuous (twistM (dualM M) (cycLL (P.PD K) ↥LL.1))`. Express the relevant statement in the definitionally equal form `Continuous fun g => ((cycLL (P.PD K) ↥LL.1 g : (↥LL.1)ˣ) : ↥LL.1) • (M g⁻¹).transpose`. Conclude with `hχ.smul hinv.matrix_transpose`.
+
+Use `⟨hc, ?_⟩` and prove the remaining obligations. Conclude with `hT (TwistDualLoc.matGRep ℚ_[l] ↥(OL LL) M hM) (TwistDualLoc.matGRep ℚ_[l] ↥(OL LL) _ hc) (dotProductBilin ↥LL.1 ↥LL.1) (TwistDualLoc.isDual1_dot (P.PD K) M) hC`.
+-/
 theorem tateDual_matRep_crys : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) {k : ℕ} (M : ↥(GK K) →* Matrix (Fin k) (Fin k) ↥LL.1), (∀ (A A' : GRep ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (Pr : A.V →ₗ[↥LL.1] A'.V →ₗ[↥LL.1] ↥LL.1), IsDual1 (P.PD K) A.ρ A'.ρ Pr → IsCrys (P.PD K) A.ρ → IsCrys (P.PD K) A'.ρ) → Continuous M → IsCrys (P.PD K) (matRep M) → Continuous (twistM (dualM M) (cycLL (P.PD K) ↥LL.1)) ∧ IsCrys (P.PD K) (matRep (twistM (dualM M) (cycLL (P.PD K) ↥LL.1))) := by
   intro l _ P K LL k M hT hM hC
   haveI : IsTopologicalRing ↥LL.1 := by

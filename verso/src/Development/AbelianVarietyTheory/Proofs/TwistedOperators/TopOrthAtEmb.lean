@@ -20,11 +20,19 @@ namespace GlobalTheory.RowChain.LastSeeSawStep
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `topOrth_emb G h'`.
+-/
 theorem topOrthAt_emb (G : GridData L sc) {n : ℕ} (h : D.R.m = n) (h' : GA D (G.V (.grid D.R.m D.R.m))) :
     (topOrthAt G h).emb (h', 1) = topEmb G h h' := by
   subst h
   exact topOrth_emb G h'
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[pLine_gram]`. Establish `h1 : ∀ a b : Fin (GlobalTheory.SeeSaw.Model.nLine D).rank, (GlobalTheory.SeeSaw.Model.nLine D).gram a b = -1` using `nLine_gram`. Simplify using `only [Matrix.mul_apply, conjTranspose_apply, lastTau, Matrix.of_apply, Matrix.smul_apply, h1]`. Express the relevant statement in the definitionally equal form `∑ x : Fin 1, star (-D.host.xi0) * ∑ y : Fin 1, (-1) * (-D.host.xi0) = (-(D.host.xi0 * star D.host.xi0)) * antiDiagonalSignGramMatrix (R := D.host.E) 1 1 i j`.
+
+Establish `hij : i = j` using `Subsingleton.elim (α := Fin 1) _ _`. Substitute `hij` using the available equality. Establish `hi : (i : ℕ) = 0` using `by have := i.2; change (i : ℕ) < 1 at this; omega`. Simplify using `[antiDiagonalSignGramMatrix, hi]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lastTau_gram :
     (lastTau (D := D))ᴴ * ((GlobalTheory.SeeSaw.Model.nLine D).gram * lastTau) =
       (-(D.host.xi0 * star D.host.xi0)) • (pLine D).gram := by
@@ -45,6 +53,33 @@ namespace GlobalTheory.RowChain.LastSeeSawStep
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D T L sc G Wl t M hM j hj vN Φ₁ Φ₂ F φ hΦ₁ hΦ₂ hF hφ g`. Establish `hψ : IsStdChar D Wl.ψ (-1)` using `Wl.ψ_std`. Take `⟨χz, hzH, hzE, -, hev, hodd⟩` from `GlobalTheory.RowChars.rowChars G Wl t`. Take `⟨hS0, hT0⟩` from `hodd j (by omega) (by omega)`. Take `⟨hS1, hT1⟩` from `hev (j + 1) (by omega) (by omega)`.
+
+Establish `homa : IsWeilDatumO Wl.ψ (G.V (.top j)) (G.V (.top (j + 1))) (G.chrS (.top t j)) (G.chrT (.top t j)) (Wl.om (.top t j))` using `Wl.om_is (.top t j) (by show j + 1 ≤ D.R.m; omega)`. Establish `homX0 : IsWeilDatumO Wl.ψ (G.V (.top (j + 1))) (G.V (.top (j + 1 + 1))) (G.chrS (.top t (j + 1))) (G.chrT (.top t (j + 1))) (Wl.om (.top t (j + 1)))` using `Wl.om_is (.top t (j + 1)) (by show j + 1 + 1 ≤ D.R.m; omega)`. Establish `homX : IsWeilDatumO Wl.ψ (G.V (.top (j + 1))) (G.V (.top (j + 1 + 1))) (G.chrS (.top t (j + 1))) (G.chrT (.top t (j + 1)) * χz * χz⁻¹) (Wl.om (.top t (j + 1)))`. Rewrite using `[mul_inv_cancel_right]`. Conclude with `homX0`.
+
+Establish `hom₁ : IsWeilDatumO Wl.ψ (besAt G hM j 0 hj vN).V₀ (G.V (.top (j + 1))) (G.chrS (.top t j) * χz) (G.chrT (.top t j)) (lastAt G Wl t hM j hj vN).s.om₀`. Rewrite using `[← hS0, ← hT0]`. Conclude with `(lastAt G Wl t hM j hj vN).s.weil₀`. Take `⟨omT, homT⟩` from `(GlobalTheory.Desc.weil_data_descend D Wl.ψ _ _ _ _ _ (lastAt G Wl t hM j hj vN).weil).1 (G.V (.top (j + 1))) 0 (rowJac G (j + 1) (by omega) 0 (by omega))`. Establish `homT' : IsWeilDatumO Wl.ψ (G.V (.top (j + 1))) (G.V (.grid D.R.m D.R.m)) (G.chrS (.top t (j + 1))) (G.chrT (.top t (j + 1)) * χz) omT`.
+
+Rewrite using `[← hS1, ← hT1]`. Conclude with `homT`. Take `⟨omz, homz⟩` from `GlobalTheory.WeilDatumExistence.weilDatumExists D (GlobalTheory.SeeSaw.Model.nLine D) (G.V (.top (j + 1))) Wl.ψ χz (G.chrT (.top t j)) hψ hzH homa.hecT hzE homa.resT`. Take `⟨hzH', hzE'⟩` from `GlobalTheory.StdUnn.isHeckeChar_resEta_inv D χz 1 hzH hzE`. Take `⟨omz'', homz''⟩` from `GlobalTheory.WeilDatumExistence.weilDatumExists D (G.V (.top (j + 1))) (pLine D) Wl.ψ (G.chrS (.top t (j + 1))) χz⁻¹ hψ homX0.hecS hzH' homX0.resS hzE'`.
+
+Establish `hΨ : IsThetaFunO Wl.ψ _ _ ((lastAt G Wl t hM j hj vN).s.om (g, 1) Φ₁)` using `(lastAt G Wl t hM j hj vN).s.weil.om_pres _ _ hΦ₁`. Establish `hΞ : IsThetaFunO Wl.ψ (besAt G hM j 0 hj vN).V₀ (G.V (.top (j + 1))) (flatBF (lastAt G Wl t hM j hj vN).s ((lastAt G Wl t hM j hj vN).s.om (g, 1) Φ₁))` using `(GlobalTheory.LastRed.val_zero (lastAt G Wl t hM j hj vN).s hΨ).1`. Establish `hΦ₂' : IsThetaFunO Wl.ψ (G.V (.top (j + 1))) (G.V (.grid D.R.m D.R.m)) (fun w => Φ₂ ((rowJac G (j + 1) (by omega) 0 (by omega)).ext0 _ w))` using `GlobalTheory.RankZeroVac.isThetaFunction_comp_wittExtendByZero _ _ hΦ₂`. Take `⟨-, key⟩` from `GlobalTheory.SeeLastPf.seeLast D Wl.ψ (besAt G hM j 0 hj vN).V₀ (G.V (.top j)) (GlobalTheory.SeeSaw.Model.nLine D) (G.V (.top (j + 1))) (G.V (.top (j + 1 + 1))) (G.V (.grid D.R.m D.R.m)) (pLine D) (besAt G hM j 0 hj vN).o (topOrthAt G (show D.R.m = j + 1 + 1 by omega)) lastTau rf …`. Establish `hC` using `GlobalTheory.LastBiTheta.isBiTheta_lastBi D Wl.ψ hψ (besAt G hM j 0 hj vN).V₀ (G.V (.top j)) (GlobalTheory.SeeSaw.Model.nLine D) (G.V (.top (j + 1))) (G.V (.top (j + 1 + 1))) (G.V (.grid D.R.m D.R.m)) (pLine D) (besAt G hM j 0 hj vN).o (topOrthAt G (show D.R.m = j + 1 + 1 by omeg …`.
+
+Take `⟨-, -, hcomm, -⟩` from `GlobalTheory.SeeSaw.biAct_all D Wl.ψ (G.V (.top j)) (G.V (.top (j + 1))) (G.V (.top (j + 1 + 1))) _ _ _ _ (Wl.om (.top t j)) (Wl.om (.top t (j + 1))) homa homX0 _ hC`. Establish `pt : ∀ h' g₀ h₀, omT (g₀, h') (fun w => Φ₂ ((rowJac G (j + 1) (by omega) 0 (by omega)).ext0 _ w)) 0 * (φ h₀ * (lastAt G Wl t hM j hj vN).s.om₀ ((besAt G hM j 0 hj vN).o.emb (h₀, 1), g₀) (flatBF (lastAt G Wl t hM j hj vN).s ((lastAt G Wl t hM j hj vN).s.om (g, 1) Φ₁)) 0) = φ h₀ * …`. Introduce `h' g₀ h₀`. Rewrite using `[mul_left_comm]`. Use `congr 1`.
+
+Use `(key h₀ g₀ h').trans ?_` and prove the remaining obligations. Rewrite using `[← topOrthAt_emb]`. Conclude with `(hcomm (h₀, g₀) (g₀, _) 0 0).symm`. Establish `inner : ∀ h', (∫ h in (lastAt G Wl t hM j hj vN).s.vW.𝓕, (lastAt G Wl t hM j hj vN).om (h, h') Φ₂ 0 * (∫ h₀ in (besAt G hM j 0 hj vN).vA.𝓕, φ h₀ * (lastAt G Wl t hM j hj vN).s.om (embA (besAt G hM j 0 hj vN).d (besAt G hM j 0 hj vN).o h₀, h) ((lastAt G Wl t hM j hj vN).s.om (g, 1 …`. Introduce `h'`.
+
+Use `(GlobalTheory.RowVolZero.vol_rankZero G t hM (j + 1) (by omega) (fun h => (lastAt G Wl t hM j hj vN).om (h, h') Φ₂ 0 * (∫ h₀ in (besAt G hM j 0 hj vN).vA.𝓕, φ h₀ * (lastAt G Wl t hM j hj vN).s.om (embA (besAt G hM j 0 hj vN).d (besAt G hM j 0 hj vN).o h₀, h) ((lastAt G Wl t hM j …` and prove the remaining obligations. Introduce `γ hγ x`. Establish `a1 : (lastAt G Wl t hM j hj vN).om (γ * x, h') Φ₂ 0 = (lastAt G Wl t hM j hj vN).om (x, h') Φ₂ 0`. Establish `hm : (lastAt G Wl t hM j hj vN).om (γ * x, h') = (lastAt G Wl t hM j hj vN).om (γ, 1) * (lastAt G Wl t hM j hj vN).om (x, h')`. Rewrite using `[← map_mul]`.
+
+Conclude with `congrArg _ (Prod.ext rfl (one_mul h').symm)`. Rewrite using `[hm]`. Conclude with `(lastAt G Wl t hM j hj vN).weil.om_aut γ hγ 1 (one_mem _) _ ((lastAt G Wl t hM j hj vN).weil.om_pres _ _ hΦ₂)`. Establish `a2 : ∀ h₀, (lastAt G Wl t hM j hj vN).s.om (embA (besAt G hM j 0 hj vN).d (besAt G hM j 0 hj vN).o h₀, γ * x) ((lastAt G Wl t hM j hj vN).s.om (g, 1) Φ₁) 0 = (lastAt G Wl t hM j hj vN).s.om (embA (besAt G hM j 0 hj vN).d (besAt G hM j 0 hj vN).o h₀, x) ((lastAt G Wl t hM j hj vN) …`. Introduce `h₀`.
+
+Establish `hm : (lastAt G Wl t hM j hj vN).s.om (embA (besAt G hM j 0 hj vN).d (besAt G hM j 0 hj vN).o h₀, γ * x) = (lastAt G Wl t hM j hj vN).s.om (1, γ) * (lastAt G Wl t hM j hj vN).s.om (embA (besAt G hM j 0 hj vN).d (besAt G hM j 0 hj vN).o h₀, x)`. Rewrite using `[← map_mul]`. Conclude with `congrArg _ (Prod.ext (one_mul _).symm rfl)`. Rewrite using `[hm]`. Conclude with `(lastAt G Wl t hM j hj vN).s.weil.om_aut 1 (one_mem _) γ hγ _ ((lastAt G Wl t hM j hj vN).s.weil.om_pres _ _ hΨ)`.
+
+Simplify using `only [a1, a2]`. Unfold `GlobalTheory.SeeSaw.biLift`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g₀ => ?_)` and prove the remaining obligations. Establish `e1 : (lastAt G Wl t hM j hj vN).om ((rowJac G (j + 1) (by omega) 0 (by omega)).emb0 g₀, h') Φ₂ 0 = omT (g₀, h') (fun w => Φ₂ ((rowJac G (j + 1) (by omega) 0 (by omega)).ext0 _ w)) 0` using `GlobalTheory.FinPl.VLast.Transport.weilRep_rankZeroWittEmbedding_valueAtZero D Wl.ψ _ _ _ (rowJac G (j + 1) (by omega) 0 (by omega)) _ _ _ omT (lastAt G Wl t hM j hj vN).weil homT Φ₂ hΦ₂ g₀ h'`. Establish `e2 : ∀ h₀, (lastAt G Wl t hM j hj vN).s.om (embA (besAt G hM j 0 hj vN).d (besAt G hM j 0 hj vN).o h₀, (rowJac G (j + 1) (by omega) 0 (by omega)).emb0 g₀) ((lastAt G Wl t hM j hj vN).s.om (g, 1) Φ₁) 0 = (lastAt G Wl t hM j hj vN).s.om₀ ((besAt G hM j 0 hj vN).o.emb (h₀, 1), g₀) ( …` using `fun h₀ => GlobalTheory.FinPl.VLast.Transport.om_flatBF_rankZero D Wl.ψ (besAt G hM j 0 hj vN) (lastAt G Wl t hM j hj vN).J (lastAt G Wl t hM j hj vN).s _ hΨ h₀ g₀`.
+
+Use `show (lastAt G Wl t hM j hj vN).om ((rowJac G (j + 1) (by omega) 0 (by omega)).emb0 g₀, h') Φ₂ 0 * (∫ h₀ in (besAt G hM j 0 hj vN).vA.𝓕, φ h₀ * (lastAt G Wl t hM j hj vN).s.om (embA (besAt G hM j 0 hj vN).d (besAt G hM j 0 hj vN).o h₀, (rowJac G (j + 1) (by omega) 0 (by omega)).e …`. Rewrite using `[e1]`. Simplify using `only [e2]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h₀ => ?_)` and prove the remaining obligations.
+
+Conclude with `pt h' g₀ h₀`. Unfold `Last.Q`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h' => ?_)` and prove the remaining obligations. Conclude with `congrArg (F h' * ·) (inner h')`.
+-/
 theorem main : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (Wl : G.Weil) (t : T) {M : GlobalTheory.FunObj.Vol G}
     (hM : M.Is t) (j : ℕ) (hj : j + 2 * 0 + 2 = D.R.m) (vN : VolN (besDecAt G j 0 hj))
     (Φ₁ : WO (G.V (.grid D.R.m j)) (G.V (.grid D.R.m (j + 1))) → ℂ)

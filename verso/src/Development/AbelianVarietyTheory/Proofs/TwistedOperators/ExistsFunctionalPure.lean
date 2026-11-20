@@ -6,6 +6,15 @@ open NumberField IsDedekindDomain Filter
 
 namespace GlobalTheory.FiniteAdelicPoints
 
+/- English proof (translation)
+Set `P : (ι →₀ ℂ) →ₗ[ℂ] V` to `Finsupp.linearCombination ℂ p`. Set `A : (ι →₀ ℂ) →ₗ[ℂ] ℂ` to `Finsupp.linearCombination ℂ a`. Establish `hk : LinearMap.ker P ≤ LinearMap.ker A`. Introduce `c hc`. Rewrite `hc`, the goal using `[LinearMap.mem_ker]`.
+
+Establish `h0 : ∑ i ∈ c.support, c i • p i = 0`. Simplify `hc` using `[P, Finsupp.linearCombination_apply, Finsupp.sum]`. Simplify `h c.support c h0` using `[A, Finsupp.linearCombination_apply, Finsupp.sum]`. Set `B : LinearMap.range P →ₗ[ℂ] ℂ` to `((LinearMap.ker P).liftQ A hk).comp (P.quotKerEquivRange.symm : LinearMap.range P →ₗ[ℂ] _)`. Take `⟨Λ, hΛ⟩` from `LinearMap.exists_extend B`.
+
+Use `⟨Λ, fun i => ?_⟩` and prove the remaining obligations. Establish `hp : P (Finsupp.single i 1) = p i` using `by simp [P]`. Establish `hA : A (Finsupp.single i 1) = a i` using `by simp [A]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [B, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, LinearMap.quotKerEquivRange_symm_apply_image, Submodule.mkQ_apply, Submodule.liftQ_apply]`.
+
+Use `_ = a i := hA`.
+-/
 theorem exists_functional {ι V : Type} [AddCommGroup V] [Module ℂ V] (p : ι → V) (a : ι → ℂ)
     (h : ∀ (s : Finset ι) (c : ι → ℂ), ∑ i ∈ s, c i • p i = 0 → ∑ i ∈ s, c i * a i = 0) :
     ∃ Λ : V →ₗ[ℂ] ℂ, ∀ i, Λ (p i) = a i := by
@@ -34,6 +43,19 @@ theorem exists_functional {ι V : Type} [AddCommGroup V] [Module ℂ V] (p : ι 
         LinearMap.quotKerEquivRange_symm_apply_image, Submodule.mkQ_apply, Submodule.liftQ_apply]
     _ = a i := hA
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `c hc`. Simplify using `using hc (fun v => Classical.arbitrary (X v))`. Consider the case `insert w T hw ih`.
+
+Introduce `c hc`. Establish `key : ∀ y : ∀ v, X v, ∑ i ∈ s, (c i * l w (φ i w)) * ∏ v ∈ T, φ i v (y v) = 0`. Introduce `y`. Establish `hfun : (∑ i ∈ s, (c i * ∏ v ∈ T, φ i v (y v)) • φ i w) = 0`. Use function extensionality and compare the values at `t`.
+
+Establish `hupd : ∀ i, ∏ v ∈ T, φ i v (Function.update y w t v) = ∏ v ∈ T, φ i v (y v)` using `fun i => Finset.prod_congr rfl fun v hv => by`. Rewrite using `[Function.update_of_ne (fun h => hw (by rw [← h]; exact hv))]`. Establish `h1` using `hc (Function.update y w t)`. Simplify using `only [Finset.prod_insert hw, Function.update_self, hupd] at h1`. Rewrite using `[Finset.sum_apply, Pi.zero_apply, ← h1]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg (l w) hfun`. Rewrite `h2` using `[map_sum, map_zero]`.
+
+Simplify using `only [map_smul, smul_eq_mul] at h2`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `ih (fun i => c i * l w (φ i w)) key`.
+
+Rewrite using `[← h3]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_insert hw]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_prod_apply {ι P : Type} {X : P → Type} [∀ v, Nonempty (X v)] (s : Finset ι) (φ : ι → ∀ v, X v → ℂ)
     (l : ∀ v, (X v → ℂ) →ₗ[ℂ] ℂ) (T : Finset P) :
     ∀ c : ι → ℂ, (∀ y : ∀ v, X v, ∑ i ∈ s, c i * ∏ v ∈ T, φ i v (y v) = 0) →
@@ -89,6 +111,17 @@ def adPt {κ : Type} (T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTe
 
 open Classical in
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`. Establish `h1 : (fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (adPt T x y i)) = x`. Use function extensionality and compare the values at `i`. Simplify using `[adPt, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI]`. Establish `h2 : ∀ v, (fun i => GlobalTheory.AdelicU.evFin F v (adPt T x y i)) = fun i => if v ∈ T then y v i else (0 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v)` using `fun v => by`.
+
+Use function extensionality and compare the values at `i`. Both sides reduce to the same expression. Rewrite using `[h1]`. Use `congr 1`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := T)]`.
+
+Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[h2 v]`. Simplify using `only [if_pos hv]`. Introduce `v hv`. Assume the negation of the conclusion as `hvT`.
+
+Establish `hvT' : v ∉ T` using `by simpa using hvT`. Establish `h0 : (fun i => if v ∈ T then y v i else (0 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v)) = 0`. Use function extensionality and compare the values at `i`. Simplify using `[hvT']`. Rewrite `hv` using `[Function.mem_mulSupport, h2 v, h0]`.
+
+Conclude with `hv (hφ v hvT')`.
+-/
 theorem pure_apply {κ : Type} [Fintype κ] (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ)
     (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) → ℂ) (T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F))
     (hφ : ∀ v ∉ T, φ v 0 = 1) (x : κ → mixedEmbedding.mixedSpace F)
@@ -119,6 +152,25 @@ theorem pure_apply {κ : Type} [Fintype κ] (f : GlobalTheory.IndefiniteRowSideF
     rw [Function.mem_mulSupport, h2 v, h0] at hv
     exact hv (hφ v hvT')
 
+/- English proof (translation)
+Take `⟨Λ, hΛ⟩` from `exists_functional (ι := {q : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ × ((v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) → (κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) → ℂ) // ∀ᶠ v in Filter.cofinite, q.2 v = …`. Introduce `s c hc`. Establish `f1` using `Filter.eventually_cofinite.1 hvac`. Establish `f2` using `s.finite_toSet.biUnion fun q _ => Filter.eventually_cofinite.1 q.2`. Set `T : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)` to `((hl.union f1).union f2).toFinset`.
+
+Establish `hout : ∀ v ∉ T, l v (vac v) = 1 ∧ (∀ q ∈ s, q.1.2 v = vac v) ∧ vac v 0 = 1`. Introduce `v hv`. Simplify using `only [T, Set.Finite.mem_toFinset, Set.mem_union, Set.mem_ofPred_eq, Set.mem_iUnion, Finset.mem_coe, not_or, not_exists, not_not, ne_eq] at hv`. Take `⟨⟨hv0, hv1⟩, hv2⟩` from `hv`. Use `⟨hv0, fun q hq => hv2 q hq, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hv1]`. Establish `hz : (0 : κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) ∈ {x : κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v | ∀ i, x i ∈ HeightOneSpectrum.adicCompletionIntegers F v}` using `fun i => zero_mem _`. Rewrite using `[Set.indicator_of_mem hz, Pi.one_apply]`. Establish `hrel : ∀ (x : κ → mixedEmbedding.mixedSpace F) (y : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v), ∑ q ∈ s, c q * (q.1.1 x * ∏ v ∈ T, q.1.2 v (y v)) = 0`. Introduce `x y`.
+
+Establish `h0` using `congrFun hc (adPt T x y)`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h0`. Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[pure_apply q.1.1 q.1.2 T (fun v hv => by rw [(hout v hv).2.1 q hq, (hout v hv).2.2]) x y]`.
+
+Establish `hrel2 : ∀ y : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v, ∑ q ∈ s, (c q * lam q.1.1) * ∏ v ∈ T, q.1.2 v (y v) = 0`. Introduce `y`. Establish `hz : ∑ q ∈ s, (c q * ∏ v ∈ T, q.1.2 v (y v)) • q.1.1 = 0`. Use extensionality with `x`. Simplify using `only [sum_apply, smul_apply, smul_eq_mul, zero_apply]`.
+
+Rewrite using `[← hrel x y]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `congrArg lam hz`. Rewrite `h0` using `[map_sum, map_zero]`.
+
+Simplify using `only [map_smul, smul_eq_mul] at h0`. Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `sum_prod_apply s (fun q v => q.1.2 v) l T (fun q => c q * lam q.1.1) hrel2`.
+
+Rewrite using `[← h3]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := T)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `v hv`.
+
+Assume the negation of the conclusion as `hvT`. Rewrite `hv` using `[Function.mem_mulSupport, (hout v (by simpa using hvT)).2.1 q hq]`. Conclude with `hv (hout v (by simpa using hvT)).1)`. Conclude with `⟨Λ, fun f φ hφ => hΛ ⟨(f, φ), hφ⟩⟩`.
+-/
 theorem exists_functional_pure {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (vac : (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) → (κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) → ℂ)
     (hvac : ∀ᶠ (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) in Filter.cofinite, vac v =

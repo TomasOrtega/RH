@@ -19,6 +19,9 @@ open Classical
 variable {D : D7} {n m : ℕ}
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Establish `hp : Matrix.of (piF θ τ fr y) = fr⁻¹ * compAt θ τ y` using `rfl`. Rewrite using `[Matrix.map_sub (psiT D τ) (fun a b => map_sub (psiT D τ) a b), ← PlaceFactsH.compAt_eq_psiT hθ, ← PlaceFactsH.compAt_eq_psiT hθ, show sIns (D := D) τ fr (piF θ τ fr y) = insT τ (fr * Matrix.of (piF θ τ fr y)) from rfl, compAt_insT hθ, if_pos rfl, hp, ← Matrix.mul_assoc, Matrix.m …`.
+-/
 theorem compAt_sub_sIns {θ : InfFam D} (hθ : IsInfFam θ) {τ : D.what₂.Tau} {fr : Matrix (Fin m) (Fin m) ℂ}
     (hdet : IsUnit fr.det) (y : Mx D m n) :
     (y - sIns τ fr (piF θ τ fr y)).map (psiT D τ) = 0 := by
@@ -29,6 +32,15 @@ theorem compAt_sub_sIns {θ : InfFam D} (hθ : IsInfFam θ) {τ : D.what₂.Tau}
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Apply `mat_ext D` to reduce the goal to its premises. Introduce `τ''`. Rewrite using `[map_inner, map_inner]`. Distinguish the cases in `h : τ'' = τ`. Substitute `h` using the available equality.
+
+Rewrite using `[hz, Matrix.mul_zero, Matrix.mul_zero, Matrix.mul_zero]`. Use `hx τ'' h` as an intermediate fact. Rewrite `this` using `[eq_thetaC D hθ]`. Express the relevant statement in the definitionally equal form `x.map (psiT D τ'') = x'.map (psiT D τ'') at this`. Rewrite using `[this]`.
+
+Establish `ha : (adj x).map (finPart D) = (adj x').map (finPart D)`. Use extensionality with `i j`. Simplify using `only [adj, Matrix.map_apply, Matrix.transpose_apply, cA]`. Rewrite using `[finPart_sigR, finPart_sigR]`. Use `congr 1`.
+
+Conclude with `congrFun (congrFun hf j) i`. Use `show (adj x * (gA V * z)).map (finPart D) = (adj x' * (gA V * z)).map (finPart D)`. Rewrite using `[Matrix.map_mul, ha, ← Matrix.map_mul]`.
+-/
 theorem inner_away {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau} (x x' z : Mx D V.rank n)
     (hx : ∀ τ', τ' ≠ τ → compAt θ τ' x = compAt θ τ' x') (hf : x.map (finPart D) = x'.map (finPart D))
     (hz : z.map (psiT D τ) = 0) : inner V x z = inner V x' z := by

@@ -11,6 +11,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open GlobalTheory.Cartier GlobalTheory.CovTest.SwapLine
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IntLinPow.homog_eq_sum_pow_intLin | exact GlobalTheory.IntLinPow.homog_eq_sum_pow_intLin | (intros; apply GlobalTheory.IntLinPow.homog_eq_sum_pow_intLin <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.homogeneous_form_powers_linear : ∀ (D : ℕ) (F : MvPolynomial (Fin 5) ℝ), F.IsHomogeneous D →
     ∃ (s : Finset (Fin 5 → ℤ)) (c : (Fin 5 → ℤ) → ℝ), F = ∑ n ∈ s, c n • lin (fun i => (n i : ℝ)) ^ D := by
   first | exact @GlobalTheory.IntLinPow.homog_eq_sum_pow_intLin | exact GlobalTheory.IntLinPow.homog_eq_sum_pow_intLin | (intros; apply GlobalTheory.IntLinPow.homog_eq_sum_pow_intLin <;> assumption)

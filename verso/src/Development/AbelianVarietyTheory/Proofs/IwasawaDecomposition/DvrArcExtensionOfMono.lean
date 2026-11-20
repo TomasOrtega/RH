@@ -10,6 +10,13 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 
 namespace GlobalTheory.ArcExt
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y hβ T io b y z hb hy hz hzj t m P hP hx`. Take `⟨T', g, ϖ, io', z', t', m', P', hg, hloc, hϖ, hb', hz', hzj', hP', hdvd, hrep⟩` from `GlobalTheory.T.dvr_arc_extension_mono_base E H D l Xo c O β Y hβ T io b y z hb hy hz hzj t m P hP`. Establish `hcl : (spMap g ≫ y) (closedPoint T'.V) ∉ abLocus Y.t.G`. Establish `e : (spMap g) (closedPoint T'.V) = closedPoint T.V` using `IsLocalRing.comap_closedPoint g`. Introduce `h`.
+
+Apply `hx` to reduce the goal to its premises. Rewrite using `[← e]`. Conclude with `h`. Establish `hnt` using `GlobalTheory.T.nontrivial_degeneration_outside_abelian E H D l Xo c O β Y T' (spMap g ≫ y) t' m' P' hcl`. Establish `hy' : (spMap g ≫ y) ≫ Y.s = spMap (g.comp b)`.
+
+Rewrite using `[Category.assoc, hy]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Take `⟨a, ha⟩` from `GlobalTheory.T.dvr_arc_extension_generic_fibre E H D l Xo c O β Y T' io' (g.comp b) (spMap g ≫ y) z' hb' hy' hz' hzj' t' m' P' hP' hnt ϖ hϖ hdvd hrep`. Conclude with `⟨T', g, ϖ, a, hg, hloc, hϖ, ha⟩`.
+-/
 theorem exists_hasArcData_of_unif : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β), Mono (spMap β) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (b : O →+* T.V) (y : Sp T.V ⟶ Y.X) (z : Sp T.Fr ⟶ Xo.XF c), (algebraMap T.V T.Fr).comp b = io.comp β → y ≫ Y.s = spMap b → z ≫ pullback.snd _ _ = spMap io → z ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ y → ∀ (t : SAB H (Sp T.V)) (_ : SABMap t Y.t y) (P : PELUnif (maximalIdeal T.V) t), P.TorsionIso → y (closedPoint T.V) ∉ abLocus Y.t.G → ∃ (T' : CDVR) (g : T.V →+* T'.V) (ϖ : T'.V) (a : ArcIn D l β T'.V (g.comp b)), Function.Injective g ∧ IsLocalHom g ∧ Irreducible ϖ ∧ Y.HasArcData a (Ideal.span {ϖ}) (RingHom.id T'.V) ϖ (spMap g ≫ y) := by
   intro E _ _ _ H D l Xo c O _ β Y hβ T io b y z hb hy hz hzj t m P hP hx
   obtain ⟨T', g, ϖ, io', z', t', m', P', hg, hloc, hϖ, hb', hz', hzj', hP', hdvd, hrep⟩ :=

@@ -22,28 +22,51 @@ def evP {m n : ℕ} (b : Fin m → Pt k n d) (u : Pt k m d) : Pt k n d := fun i 
 
 def lin {n : ℕ} (A : Matrix (Fin d) (Fin d) k) (u : Pt k n d) : Pt k n d := fun i => ∑ j, C (A i j) * u j
 
+/- English proof (translation)
+Introduce `j`. Use `fin_cases j`. Conclude with `hu`.
+-/
 theorem nc1 {n : ℕ} {u : Pt k n d} (hu : NoConst u) : ∀ j, NoConst (![u] j) := by
   intro j; fin_cases j; exact hu
 
+/- English proof (translation)
+Introduce `j`. Use `fin_cases j`. Use `exacts [hu, hv]`.
+-/
 theorem nc2 {n : ℕ} {u v : Pt k n d} (hu : NoConst u) (hv : NoConst v) : ∀ j, NoConst (![u, v] j) := by
   intro j; fin_cases j; exacts [hu, hv]
 
+/- English proof (translation)
+Introduce `j`. Use `fin_cases j`. Use `exacts [hu, hv, hw]`.
+-/
 theorem nc3 {n : ℕ} {u v w : Pt k n d} (hu : NoConst u) (hv : NoConst v) (hw : NoConst w) :
     ∀ j, NoConst (![u, v, w] j) := by
   intro j; fin_cases j; exacts [hu, hv, hw]
 
+/- English proof (translation)
+Introduce `i` and use `by simp [hu i, hv i]`.
+-/
 theorem nc_add {n : ℕ} {u v : Pt k n d} (hu : NoConst u) (hv : NoConst v) : NoConst (u + v) :=
   fun i => by simp [hu i, hv i]
 
+/- English proof (translation)
+The claim follows from `subst_comp_subst_apply (hasSubst_of ha) (hasSubst_of hb) f`.
+-/
 theorem ev_ev {l m n : ℕ} {b : Fin m → Pt k n d} (hb : ∀ j, NoConst (b j)) {a : Fin l → Pt k m d}
     (ha : ∀ j, NoConst (a j)) (f : PS k l d) : ev b (ev a f) = ev (fun j => evP b (a j)) f :=
   subst_comp_subst_apply (hasSubst_of ha) (hasSubst_of hb) f
 
+/- English proof (translation)
+Rewrite using `[ev_ev hb (nc2 hu hv)]`. Apply the tactic sequence `congr 1; funext j; fin_cases j <;> rfl`.
+-/
 theorem germEv_germEv_two_points {m n : ℕ} {b : Fin m → Pt k n d} (hb : ∀ j, NoConst (b j)) {u v : Pt k m d}
     (hu : NoConst u) (hv : NoConst v) (f : PS k 2 d) : ev b (ev ![u, v] f) = ev ![evP b u, evP b v] f := by
   rw [ev_ev hb (nc2 hu hv)]
   congr 1; funext j; fin_cases j <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `ev b (ev ![u] (φ i)) = ev ![evP b u] (φ i)`. Rewrite using `[ev_ev hb (nc1 hu)]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem evalPoints_comp {m n : ℕ} {b : Fin m → Pt k n d} (hb : ∀ j, NoConst (b j)) (φ : Pt k 1 d) {u : Pt k m d}
     (hu : NoConst u) : evP b (comp1 φ u) = comp1 φ (evP b u) := by
   funext i
@@ -51,20 +74,35 @@ theorem evalPoints_comp {m n : ℕ} {b : Fin m → Pt k n d} (hb : ∀ j, NoCons
   rw [ev_ev hb (nc1 hu)]
   congr 1; funext j; fin_cases j; rfl
 
+/- English proof (translation)
+The claim follows from `funext fun i => germEv_germEv_two_points hb hu hv (F i)`.
+-/
 theorem evalPoints_formalGroupAdd {m n : ℕ} {b : Fin m → Pt k n d} (hb : ∀ j, NoConst (b j)) (F : Pt k 2 d) {u v : Pt k m d}
     (hu : NoConst u) (hv : NoConst v) : evP b (addOf F u v) = addOf F (evP b u) (evP b v) :=
   funext fun i => germEv_germEv_two_points hb hu hv (F i)
 
+/- English proof (translation)
+The claim follows from `funext fun i => subst_X (hasSubst_of hb) (j, i)`.
+-/
 theorem evalPoints_coordinatePoint {m n : ℕ} {b : Fin m → Pt k n d} (hb : ∀ j, NoConst (b j)) (j : Fin m) :
     evP b (pt k d j) = b j :=
   funext fun i => subst_X (hasSubst_of hb) (j, i)
 
+/- English proof (translation)
+The claim follows from `subst_add (hasSubst_of hb) f g`.
+-/
 theorem ev_add' {m n : ℕ} {b : Fin m → Pt k n d} (hb : ∀ j, NoConst (b j)) (f g : PS k m d) :
     ev b (f + g) = ev b f + ev b g := subst_add (hasSubst_of hb) f g
 
+/- English proof (translation)
+The claim follows from `funext fun i => ev_add' hb (u i) (v i)`.
+-/
 theorem evalPoints_add {m n : ℕ} {b : Fin m → Pt k n d} (hb : ∀ j, NoConst (b j)) (u v : Pt k m d) :
     evP b (u + v) = evP b u + evP b v := funext fun i => ev_add' hb (u i) (v i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [evP, lin, ev]`. Rewrite using `[← coe_substAlgHom (hasSubst_of hb), map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, coe_substAlgHom, subst_C]`.
+-/
 theorem evalPoints_linear {m n : ℕ} {b : Fin m → Pt k n d} (hb : ∀ j, NoConst (b j)) (A : Matrix (Fin d) (Fin d) k)
     (u : Pt k m d) : evP b (lin A u) = lin A (evP b u) := by
   funext i
@@ -73,6 +111,11 @@ theorem evalPoints_linear {m n : ℕ} {b : Fin m → Pt k n d} (hb : ∀ j, NoCo
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [map_mul, coe_substAlgHom, subst_C]
 
+/- English proof (translation)
+Simplify using `only [evP, bilSer, ev]`. Rewrite using `[← coe_substAlgHom (hasSubst_of hb), map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, coe_substAlgHom, subst_C]`.
+-/
 theorem ev_bilSer {m n : ℕ} {b : Fin m → Pt k n d} (hb : ∀ j, NoConst (b j)) (β : Matrix (Fin d) (Fin d) k)
     (u v : Pt k m d) : ev b (bilSer β u v) = bilSer β (evP b u) (evP b v) := by
   simp only [evP, bilSer, ev]
@@ -82,6 +125,11 @@ theorem ev_bilSer {m n : ℕ} {b : Fin m → Pt k n d} (hb : ∀ j, NoConst (b j
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [map_mul, map_mul, coe_substAlgHom, subst_C]
 
+/- English proof (translation)
+Establish `e : (fun p : Fin 2 × Fin d => (![pt k (n` using `2) d 0, pt k d 1] p.1) p.2) = X := by`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Apply the tactic sequence `fin_cases j <;> rfl`. Rewrite using `[ev, e, subst_self]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ev_self2 (f : PS k 2 d) : ev (n := 2) ![pt k d 0, pt k d 1] f = f := by
   have e : (fun p : Fin 2 × Fin d => (![pt k (n := 2) d 0, pt k d 1] p.1) p.2) = X := by
     funext p
@@ -90,14 +138,25 @@ theorem ev_self2 (f : PS k 2 d) : ev (n := 2) ![pt k d 0, pt k d 1] f = f := by
   rw [ev, e, subst_self]
   rfl
 
+/- English proof (translation)
+The claim follows from `(evalPoints_comp (nc1 hu) φ hψ).symm`.
+-/
 theorem germComp1_germComp1_eq_substitute {n : ℕ} (φ : Pt k 1 d) {ψ : Pt k 1 d} (hψ : NoConst ψ) {u : Pt k n d} (hu : NoConst u) :
     comp1 φ (comp1 ψ u) = evP ![u] (comp1 φ ψ) := (evalPoints_comp (nc1 hu) φ hψ).symm
 
+/- English proof (translation)
+Rewrite using `[germComp1_germComp1_eq_substitute φ hψ hu, h, evalPoints_coordinatePoint (nc1 hu)]`. Both sides reduce to the same expression.
+-/
 theorem germComp1_cancel_of_inverse {n : ℕ} {φ ψ : Pt k 1 d} (hψ : NoConst ψ) (h : comp1 φ ψ = pt k (n := 1) d 0) {u : Pt k n d}
     (hu : NoConst u) : comp1 φ (comp1 ψ u) = u := by
   rw [germComp1_germComp1_eq_substitute φ hψ hu, h, evalPoints_coordinatePoint (nc1 hu)]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `subst (fun p : Fin 1 × Fin d => (![(0 : Pt k n d)] p.1) p.2) (φ i) = 0`. Establish `e : (fun p : Fin 1 × Fin d => (![(0 : Pt k n d)] p.1) p.2) = 0`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e]`. Conclude with `subst_zero_of_constantCoeff_zero (hφ i)`.
+-/
 theorem germComp1_zero_of_noConstantCoeff {n : ℕ} {φ : Pt k 1 d} (hφ : NoConst φ) : comp1 φ (0 : Pt k n d) = 0 := by
   funext i
   change subst (fun p : Fin 1 × Fin d => (![(0 : Pt k n d)] p.1) p.2) (φ i) = 0
@@ -106,26 +165,44 @@ theorem germComp1_zero_of_noConstantCoeff {n : ℕ} {φ : Pt k 1 d} (hφ : NoCon
   rw [e]
   exact subst_zero_of_constantCoeff_zero (hφ i)
 
+/- English proof (translation)
+Simplify using `[bilSer]`.
+-/
 theorem bilSer_zero_left {n : ℕ} (β : Matrix (Fin d) (Fin d) k) (v : Pt k n d) : bilSer β 0 v = 0 := by
   simp [bilSer]
 
+/- English proof (translation)
+Simplify using `[bilSer]`.
+-/
 theorem bilSer_zero_right {n : ℕ} (β : Matrix (Fin d) (Fin d) k) (u : Pt k n d) : bilSer β u 0 = 0 := by
   simp [bilSer]
 
+/- English proof (translation)
+Simplify using `only [bilSer, Pi.add_apply, add_mul, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem bilSer_add_left {n : ℕ} (β : Matrix (Fin d) (Fin d) k) (u u' v : Pt k n d) :
     bilSer β (u + u') v = bilSer β u v + bilSer β u' v := by
   simp only [bilSer, Pi.add_apply, add_mul, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [bilSer, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem bilSer_add_right {n : ℕ} (β : Matrix (Fin d) (Fin d) k) (u v v' : Pt k n d) :
     bilSer β u (v + v') = bilSer β u v + bilSer β u v' := by
   simp only [bilSer, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [bilSer, Matrix.transpose_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem bilSer_swap {n : ℕ} (β : Matrix (Fin d) (Fin d) k) (u v : Pt k n d) :
     bilSer β v u = bilSer β.transpose u v := by
   simp only [bilSer, Matrix.transpose_apply]
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [bilSer, lin, Matrix.mul_apply, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring`.
+-/
 theorem bilSer_lin_right {n : ℕ} (β A : Matrix (Fin d) (Fin d) k) (u v : Pt k n d) :
     bilSer β u (lin A v) = bilSer (β * A) u v := by
   simp only [bilSer, lin, Matrix.mul_apply, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]
@@ -133,10 +210,22 @@ theorem bilSer_lin_right {n : ℕ} (β A : Matrix (Fin d) (Fin d) k) (u v : Pt k
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring
 
+/- English proof (translation)
+Rewrite using `[bilSer_swap, bilSer_lin_right, bilSer_swap, Matrix.transpose_mul, Matrix.transpose_transpose]`.
+-/
 theorem bilSer_lin_left {n : ℕ} (β A : Matrix (Fin d) (Fin d) k) (u v : Pt k n d) :
     bilSer β (lin A u) v = bilSer (A.transpose * β) u v := by
   rw [bilSer_swap, bilSer_lin_right, bilSer_swap, Matrix.transpose_mul, Matrix.transpose_transpose]
 
+/- English proof (translation)
+Establish `key : ∀ i' j' : Fin d, (Finsupp.single ((0 : Fin 2), i) 1 + Finsupp.single ((1 : Fin 2), j) 1 : Fin 2 × Fin d →₀ ℕ) = Finsupp.single ((0 : Fin 2), i') 1 + Finsupp.single ((1 : Fin 2), j') 1 ↔ i = i' ∧ j = j'`. Introduce `i' j'`. Use `⟨fun h => ⟨?_, ?_⟩, by rintro ⟨rfl, rfl⟩; rfl⟩` and prove the remaining obligations. Use `DFunLike.congr_fun h (0, i)` as an intermediate fact. Assume the negation of the conclusion as `hne`.
+
+Simplify using `[Finsupp.single_apply, Ne.symm hne] at this`. Use `DFunLike.congr_fun h (1, j)` as an intermediate fact. Assume the negation of the conclusion as `hne`. Simplify using `[Finsupp.single_apply, Ne.symm hne] at this`. Simplify using `only [bilSer, pt, map_sum, coeff_C_mul, X_def, monomial_mul_monomial, coeff_monomial, key]`.
+
+Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_bilSer (β : Matrix (Fin d) (Fin d) k) (i j : Fin d) :
     coeff (Finsupp.single ((0 : Fin 2), i) 1 + Finsupp.single ((1 : Fin 2), j) 1)
       (bilSer β (pt k (n := 2) d 0) (pt k d 1)) = β i j := by
@@ -159,24 +248,74 @@ theorem coeff_bilSer (β : Matrix (Fin d) (Fin d) k) (i j : Fin d) :
   · intro b _ hb; simp [Ne.symm hb]
   · simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[← coeff_bilSer β i j, ← coeff_bilSer γ i j]`. Conclude with `h _ (by simpa using hm)`.
+-/
 theorem eq_of_jEq_bilSer {m : ℕ} (hm : 2 ≤ m) {β γ : Matrix (Fin d) (Fin d) k}
     (h : JEq m (bilSer β (pt k (n := 2) d 0) (pt k d 1)) (bilSer γ (pt k (n := 2) d 0) (pt k d 1))) : β = γ := by
   ext i j
   rw [← coeff_bilSer β i j, ← coeff_bilSer γ i j]
   exact h _ (by simpa using hm)
 
+/- English proof (translation)
+Introduce `e he` and use `(h e he).symm`.
+-/
 theorem jEq_symm {σ : Type} {m : ℕ} {f g : MvPowerSeries σ k} (h : JEq m f g) : JEq m g f :=
   fun e he => (h e he).symm
 
+/- English proof (translation)
+Introduce `e he` and use `(h1 e he).trans (h2 e he)`.
+-/
 theorem jEq_trans {σ : Type} {m : ℕ} {f g h : MvPowerSeries σ k} (h1 : JEq m f g) (h2 : JEq m g h) : JEq m f h :=
   fun e he => (h1 e he).trans (h2 e he)
 
+/- English proof (translation)
+The claim follows from `h ▸ JEq.refl m f`.
+-/
 theorem jEq_of_eq {σ : Type} {m : ℕ} {f g : MvPowerSeries σ k} (h : f = g) : JEq m f g := h ▸ JEq.refl m f
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.ChartCmp.JCalc.jeq_calculus k m).2.2.2.1 d l n b b f g hb hb (fun _ _ => JEq.refl _ _) h`.
+-/
 theorem jEq_ev {m l n : ℕ} {b : Fin l → Pt k n d} (hb : ∀ j, NoConst (b j)) {f g : PS k l d} (h : JEq m f g) :
     JEq m (ev b f) (ev b g) :=
   (GlobalTheory.ChartCmp.JCalc.jeq_calculus k m).2.2.2.1 d l n b b f g hb hb (fun _ _ => JEq.refl _ _) h
 
+/- English proof (translation)
+Introduce `R _ d O _ _ B k _ _ _ m hm g hg`. Use `set G : FGLaw k d := mapLaw (algebraMap R k) B.G with hG`. Use `set A : OAct O G := mapAct (algebraMap R k) B.A with hA`. Take `⟨ℓ, hℓ, hlin, hadd⟩` from `GlobalTheory.FormalLog.logSt k d G`. Take `⟨e, -, he, hle, hel⟩` from `GlobalTheory.ChartInv.exists_isInvPair k d ℓ hℓ (by rw [hlin, Matrix.det_one]; exact isUnit_one)`.
+
+Use `replace hℓ : NoConst ℓ := hℓ`. Use `replace he : NoConst e := he`. Establish `hF : NoConst (B.FK k)` using `G.const`. Establish `hα : ∀ a, NoConst (B.actK k a)` using `A.const`. Establish `hp : ∀ {n : ℕ} (j : Fin n), NoConst (pt k d j)` using `nc_pt`.
+
+Establish `hlog : ∀ {n : ℕ} {u v : Pt k n d}, NoConst u → NoConst v → comp1 ℓ (addOf (B.FK k) u v) = comp1 ℓ u + comp1 ℓ v`. Introduce `n u v hu hv`. Establish `h0 : comp1 ℓ (addOf (B.FK k) (pt k (n` using `2) d 0) (pt k (n := 2) d 1)) = comp1 ℓ (pt k (n := 2) d 0) + comp1 ℓ (pt k (n := 2) d 1) := hadd`. Establish `hb` using `nc2 hu hv`. Establish `h1` using `congrArg (evP ![u, v]) h0`.
+
+Rewrite `h1` using `[evalPoints_add hb, evalPoints_comp hb ℓ (nc_addOf hF (hp 0) (hp 1)), evalPoints_formalGroupAdd hb _ (hp 0) (hp 1), evalPoints_comp hb ℓ (hp 0), evalPoints_comp hb ℓ (hp 1), evalPoints_coordinatePoint hb, evalPoints_coordinatePoint hb]`. Conclude with `h1`. Establish `hexp : ∀ {n : ℕ} {u v : Pt k n d}, NoConst u → NoConst v → addOf (B.FK k) (comp1 e u) (comp1 e v) = comp1 e (u + v)`. Introduce `n u v hu hv`. Establish `h1` using `hlog (nc_comp1 he hu) (nc_comp1 he hv)`.
+
+Rewrite `h1` using `[germComp1_cancel_of_inverse he hle hu, germComp1_cancel_of_inverse he hle hv]`. Rewrite using `[← h1, germComp1_cancel_of_inverse hℓ hel (nc_addOf hF (nc_comp1 he hu) (nc_comp1 he hv))]`. Establish `hact : ∀ (a : O) {n : ℕ} {u : Pt k n d}, NoConst u → comp1 ℓ (comp1 (B.actK k a) u) = lin (dLin (B.actK k a)) (comp1 ℓ u)`. Introduce `a n u hu`. Establish `h0 : comp1 ℓ (B.actK k a) = lin (dLin (B.actK k a)) ℓ`.
+
+Use function extensionality and compare the values at `(GlobalTheory.LogLinear.formalGroup_log_endomorphism_linear k d G ℓ (B.actK k a) hℓ hlin hadd (hα a) (A.hom a))`. Rewrite using `[germComp1_germComp1_eq_substitute ℓ (hα a) hu, h0, evalPoints_linear (nc1 hu)]`. Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨g₀, hg₀⟩ : ∃ g₀ : PS k 2 d, ∀ {n : ℕ} {u v : Pt k n d}, NoConst u → NoConst v → ev ![u, v] g₀ = ev ![comp1 e u, comp1 e v] g := by`. Use `⟨ev (n := 2) ![comp1 e (pt k d 0), comp1 e (pt k d 1)] g, ?_⟩` and prove the remaining obligations.
+
+Introduce `n u v hu hv`. Establish `hb` using `nc2 hu hv`. Rewrite using `[germEv_germEv_two_points hb (nc_comp1 he (hp 0)) (nc_comp1 he (hp 1)), evalPoints_comp hb e (hp 0), evalPoints_comp hb e (hp 1), evalPoints_coordinatePoint hb, evalPoints_coordinatePoint hb]`. Both sides reduce to the same expression. Establish `hb3` using `nc3 (nc_comp1 he (hp (n := 3) 0)) (nc_comp1 he (hp (n := 3) 1)) (nc_comp1 he (hp (n := 3) 2))`.
+
+Take `⟨β, hβ⟩ : ∃ β : Matrix (Fin d) (Fin d) k, JEq m g₀ (bilSer β (pt k (n` from `2) d 0) (pt k d 1)) := by`. Use `⟨_, GlobalTheory.T.jetEq_bilinearSeries_of_biadditive k d m g₀ ?_ ?_⟩` and prove the remaining obligations. Establish `h1` using `jEq_ev hb3 hg.add1`. Rewrite `h1` using `[ev_add' hb3, germEv_germEv_two_points hb3 (nc_addOf hF (hp 0) (hp 1)) (hp 2), germEv_germEv_two_points hb3 (hp 0) (hp 2), germEv_germEv_two_points hb3 (hp 1) (hp 2), evalPoints_formalGroupAdd hb3 _ (hp 0) (hp 1), evalPoints_coordinatePoint hb3, evalPoints_coordinatePoint hb3, ev …`. Rewrite using `[hg₀ (nc_add (hp 0) (hp 1)) (hp 2), hg₀ (hp 0) (hp 2), hg₀ (hp 1) (hp 2), ← hexp (hp 0) (hp 1)]`.
+
+Conclude with `h1`. Establish `h1` using `jEq_ev hb3 hg.add2`. Rewrite `h1` using `[ev_add' hb3, germEv_germEv_two_points hb3 (hp 0) (nc_addOf hF (hp 1) (hp 2)), germEv_germEv_two_points hb3 (hp 0) (hp 1), germEv_germEv_two_points hb3 (hp 0) (hp 2), evalPoints_formalGroupAdd hb3 _ (hp 1) (hp 2), evalPoints_coordinatePoint hb3, evalPoints_coordinatePoint hb3, ev …`. Rewrite using `[hg₀ (hp 0) (nc_add (hp 1) (hp 2)), hg₀ (hp 0) (hp 1), hg₀ (hp 0) (hp 2), ← hexp (hp 1) (hp 2)]`. Conclude with `h1`.
+
+Establish `hmain : ∀ {n : ℕ} {u v : Pt k n d}, NoConst u → NoConst v → JEq m (ev ![u, v] g) (bilSer β (comp1 ℓ u) (comp1 ℓ v))`. Introduce `n u v hu hv`. Establish `hb` using `nc2 (nc_comp1 hℓ hu) (nc_comp1 hℓ hv)`. Establish `h1` using `jEq_ev hb hβ`. Rewrite `h1` using `[hg₀ (nc_comp1 hℓ hu) (nc_comp1 hℓ hv), germComp1_cancel_of_inverse hℓ hel hu, germComp1_cancel_of_inverse hℓ hel hv, ev_bilSer hb, evalPoints_coordinatePoint hb, evalPoints_coordinatePoint hb]`.
+
+Conclude with `h1`. Establish `he0` using `nc_comp1 he (hp (n := 2) 0)`. Establish `he1` using `nc_comp1 he (hp (n := 2) 1)`. Establish `hb2` using `nc2 he0 he1`. Establish `hsym : β.transpose = β`.
+
+Establish `h1` using `jEq_ev hb2 hg.sym`. Rewrite `h1` using `[germEv_germEv_two_points hb2 (hp 1) (hp 0), evalPoints_coordinatePoint hb2, evalPoints_coordinatePoint hb2]`. Establish `h2` using `jEq_trans (jEq_symm (hmain he1 he0)) (jEq_trans h1 (hmain he0 he1))`. Rewrite `h2` using `[germComp1_cancel_of_inverse he hle (hp 0), germComp1_cancel_of_inverse he hle (hp 1), bilSer_swap]`. Conclude with `eq_of_jEq_bilSer hm h2`.
+
+Establish `hbal : ∀ a : O, (dLin (B.actK k a)).transpose * β = β * dLin (B.actK k (star a))`. Introduce `a`. Establish `h1` using `jEq_ev hb2 (hg.bal a)`. Rewrite `h1` using `[germEv_germEv_two_points hb2 (nc_comp1 (hα a) (hp 0)) (hp 1), germEv_germEv_two_points hb2 (hp 0) (nc_comp1 (hα _) (hp 1)), evalPoints_comp hb2 _ (hp 0), evalPoints_comp hb2 _ (hp 1), evalPoints_coordinatePoint hb2, evalPoints_coordinatePoint hb2]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at h1`.
+
+Establish `h2` using `jEq_trans (jEq_symm (hmain (nc_comp1 (hα a) he0) he1)) (jEq_trans h1 (hmain he0 (nc_comp1 (hα (star a)) he1)))`. Rewrite `h2` using `[hact a he0, hact _ he1, germComp1_cancel_of_inverse he hle (hp 0), germComp1_cancel_of_inverse he hle (hp 1), bilSer_lin_left, bilSer_lin_right]`. Conclude with `eq_of_jEq_bilSer hm h2`. Establish `hg' : ∀ {n : ℕ} {u v : Pt k n d}, NoConst u → NoConst v → ev ![u, v] (bilSer β (comp1 ℓ (pt k (n` using `2) d 0)) (comp1 ℓ (pt k d 1))) = bilSer β (comp1 ℓ u) (comp1 ℓ v) := by`. Introduce `n u v hu hv`.
+
+Establish `hb` using `nc2 hu hv`. Rewrite using `[ev_bilSer hb, evalPoints_comp hb ℓ (hp 0), evalPoints_comp hb ℓ (hp 1), evalPoints_coordinatePoint hb, evalPoints_coordinatePoint hb]`. Both sides reduce to the same expression. Use `⟨bilSer β (comp1 ℓ (pt k (n := 2) d 0)) (comp1 ℓ (pt k d 1)), fun m' => ⟨jEq_of_eq ?_, jEq_of_eq ?_, jEq_of_eq ?_, jEq_of_eq ?_, jEq_of_eq ?_, fun a => jEq_of_eq ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hg' nc_zero (hp 0), germComp1_zero_of_noConstantCoeff hℓ, bilSer_zero_left]`.
+
+Rewrite using `[hg' (hp 0) nc_zero, germComp1_zero_of_noConstantCoeff hℓ, bilSer_zero_right]`. Rewrite using `[hg' (nc_addOf hF (hp 0) (hp 1)) (hp 2), hg' (hp 0) (hp 2), hg' (hp 1) (hp 2), hlog (hp 0) (hp 1), bilSer_add_left]`. Rewrite using `[hg' (hp 0) (nc_addOf hF (hp 1) (hp 2)), hg' (hp 0) (hp 1), hg' (hp 0) (hp 2), hlog (hp 1) (hp 2), bilSer_add_right]`. Rewrite using `[hg' (hp 1) (hp 0), bilSer_swap, hsym]`. Rewrite using `[hg' (nc_comp1 (hα a) (hp 0)) (hp 1), hg' (hp 0) (nc_comp1 (hα _) (hp 1)), hact a (hp 0), hact _ (hp 1), bilSer_lin_left, bilSer_lin_right, hbal]`.
+
+Establish `h1` using `hmain (hp (n := 2) 0) (hp 1)`. Rewrite `h1` using `[ev_self2]`. Then use the resulting hypothesis.
+-/
 theorem exists_biadd_jEq : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (m : ℕ), 2 ≤ m → ∀ g : PS k 2 d, Biadd m B k g → ∃ g' : PS k 2 d, (∀ m', Biadd m' B k g') ∧ JEq m g g' := by
   intro R _ d O _ _ B k _ _ _ m hm g hg
   set G : FGLaw k d := mapLaw (algebraMap R k) B.G with hG

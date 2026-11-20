@@ -19,6 +19,11 @@ namespace GlobalTheory.QkRationalExt
 
 open GlobalTheory.ArcPull GlobalTheory.TorusExt GlobalTheory.QkNumberField
 
+/- English proof (translation)
+Use `letI : Algebra M F := f.toAlgebra`. Establish `: Algebra.IsAlgebraic M L` using `Algebra.IsAlgebraic.tower_top (K := K) M`. Establish `: Module.IsTorsionFree M F` using `DivisionSemiring.to_moduleIsTorsionFree`. Establish `: Module.IsTorsionFree M L` using `DivisionSemiring.to_moduleIsTorsionFree`. Set `σ : L →ₐ[M] F` to `IsAlgClosed.lift`.
+
+Conclude with `⟨σ.toRingHom, RingHom.ext fun x => σ.commutes x⟩`.
+-/
 theorem exists_ringHom_extend {K L F : Type} [Field K] [Field L] [Field F] [Algebra K L] [Algebra.IsAlgebraic K L]
     [IsAlgClosed F] (M : IntermediateField K L) (f : M →+* F) : ∃ σ : L →+* F, σ.comp M.val.toRingHom = f := by
   letI : Algebra M F := f.toAlgebra
@@ -33,6 +38,9 @@ section Ext
 variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ : R →+* R'} {D : DegPre R}
   {D' : DegPre R'}
 
+/- English proof (translation)
+Unfold `qkExt qkMk`. Both sides reduce to the same expression.
+-/
 theorem qkExt_g (hB : D.TauBimult) {F F' : Type} [Field F] [Algebra (FractionRing R) F] [Field F']
     [Algebra (FractionRing R) F'] (f : F →+* F')
     (hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F') {k : ℕ} (z : QkPt D F k) :
@@ -40,11 +48,17 @@ theorem qkExt_g (hB : D.TauBimult) {F F' : Type} [Field F] [Algebra (FractionRin
   unfold qkExt qkMk
   rfl
 
+/- English proof (translation)
+The claim follows from `((qkExt_iff hB f hf z _).2 rfl).1`.
+-/
 theorem qkExt_y (hB : D.TauBimult) {F F' : Type} [Field F] [Algebra (FractionRing R) F] [Field F']
     [Algebra (FractionRing R) F'] (f : F →+* F')
     (hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F') {k : ℕ} (z : QkPt D F k) :
     (qkExt hB f hf z).y = z.y := ((qkExt_iff hB f hf z _).2 rfl).1
 
+/- English proof (translation)
+Use `qk_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[qkExt_y, qkExt_y, qkExt_y]`. Rewrite using `[qkExt_g, qkExt_g, qkExt_g]`. Conclude with `gtExt_gtExt f hf f' hf' f'' hf'' e z.g`.
+-/
 theorem qkExt_qkExt (hB : D.TauBimult) {F F' F'' : Type} [Field F] [Algebra (FractionRing R) F] [Field F']
     [Algebra (FractionRing R) F'] [Field F''] [Algebra (FractionRing R) F''] (f : F →+* F')
     (hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F') (f' : F' →+* F'')
@@ -56,6 +70,11 @@ theorem qkExt_qkExt (hB : D.TauBimult) {F F' F'' : Type} [Field F] [Algebra (Fra
   · rw [qkExt_g, qkExt_g, qkExt_g]
     exact gtExt_gtExt f hf f' hf' f'' hf'' e z.g
 
+/- English proof (translation)
+Establish `h₁ : QkExt f z (qkExt hB f hf z)` using `(qkExt_iff hB f hf _ _).2 rfl`. Establish `h₂ : QkExt f (pullQk hD hG hF hB hB' z) (qkExt hB' f hf' (pullQk hD hG hF hB hB' z))` using `(qkExt_iff hB' f hf' _ _).2 rfl`. Establish `h₃ : IsPullGtF φ hD F z.g (pullQk hD hG hF hB hB' z).g` using `((eq_pullQk_iff hD hG hF hB hB' z _).1 rfl).2`. Establish `h₄` using `isPullGtF_ext hD hF' f hf' h₃ h₁ h₂`. Establish `h₅ : (qkExt hB' f hf' (pullQk hD hG hF hB hB' z)).y = hD.xe.symm (qkExt hB f hf z).y`.
+
+Rewrite using `[h₂.1, h₁.1, pullQk_y]`. Rewrite using `[← (eq_pullQk_iff hD hG hF' hB hB' _ _).2 ⟨h₅, h₄⟩]`. Conclude with `h₂`.
+-/
 theorem qkExt_pullQk (hD : IsPullDeg φ D D') (hG : GlobalFnsSt) (hB : D.TauBimult) (hB' : D'.TauBimult)
     {F F' : Type} [Field F] [Algebra (FractionRing R) F] [Algebra (FractionRing R') F] [Field F']
     [Algebra (FractionRing R) F'] [Algebra (FractionRing R') F'] (hF : Compat φ F) (hF' : Compat φ F') (f : F →+* F')
@@ -74,6 +93,15 @@ theorem qkExt_pullQk (hD : IsPullDeg φ D D') (hG : GlobalFnsSt) (hB : D.TauBimu
 
 end Ext
 
+/- English proof (translation)
+Establish `hG` using `hL.globalFns`. Use `letI : Algebra (FractionRing R) (FractionRing R') := (fracMap hφ).toAlgebra`. Use `letI : Algebra (FractionRing R) F := ((algebraMap (FractionRing R') F).comp (fracMap hφ)).toAlgebra`. Establish `hK : Compat φ (FractionRing R')` using `fracMap_algebraMap hφ`. Establish `hF : Compat φ F` using `fun r => congrArg (algebraMap (FractionRing R') F) (fracMap_algebraMap hφ r)`.
+
+Take `⟨q₀, rfl⟩` from `pullQk_surjective hD hG hF hB hB' q`. Establish `hjf : j.comp (algebraMap (FractionRing R) M) = algebraMap (FractionRing R) (FractionRing R')` using `IsLocalization.ringHom_ext (nonZeroDivisors R) (RingHom.ext fun r => (hj r).trans (fracMap_algebraMap hφ r).symm)`. Take `⟨σ, e⟩` from `exists_ringHom_extend M ((algebraMap (FractionRing R') F).comp j)`. Establish `hh : (algebraMap (FractionRing R') F).comp (algebraMap (FractionRing R) (FractionRing R')) = algebraMap (FractionRing R) F` using `rfl`. Establish `hc : ((algebraMap (FractionRing R') F).comp j).comp (algebraMap (FractionRing R) M) = algebraMap (FractionRing R) F`.
+
+Rewrite using `[RingHom.comp_assoc, hjf, hh]`. Establish `hσ : σ.comp (algebraMap (FractionRing R) L) = algebraMap (FractionRing R) F`. Rewrite using `[← val_comp M, ← RingHom.comp_assoc, e, hc]`. Take `⟨x, rfl⟩` from `GlobalTheory.ArcExt.exists_qkExt σ hσ hB hL (Nat.cast_ne_zero.2 hk) q₀`. Take `⟨z, rfl⟩` from `H x`.
+
+Use `⟨pullQk hD hG hK hB hB' (qkExt hB j hjf z), ?_⟩` and prove the remaining obligations. Rewrite using `[qkExt_qkExt hB _ (val_comp M) σ hσ _ hc e z, ← qkExt_qkExt hB j hjf _ hh _ hc rfl z]`. Conclude with `qkExt_pullQk hD hG hB hB' hK hF _ hh (RingHom.comp_id _) _`.
+-/
 theorem exists_rational_of_finite (hL : Laws) {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
     {φ : R →+* R'} (hφ : Function.Injective φ) {D : DegPre R} {D' : DegPre R'} (hD : IsPullDeg φ D D')
     (hB : D.TauBimult) (hB' : D'.TauBimult) {L : Type} [Field L] [Algebra (FractionRing R) L]
@@ -107,6 +135,21 @@ theorem exists_rational_of_finite (hL : Laws) {R R' : Type} [CommRing R] [IsDoma
   rw [qkExt_qkExt hB _ (val_comp M) σ hσ _ hc e z, ← qkExt_qkExt hB j hjf _ hh _ hc rfl z]
   exact qkExt_pullQk hD hG hB hB' hK hF _ hh (RingHom.comp_id _) _
 
+/- English proof (translation)
+Introduce `T D hB N hN ϖ hϖ`. Establish `hL : Laws` using `GlobalTheory.allSixLaws.1`. Establish `: CharZero (FractionRing T.V)` using `charZero_of_injective_algebraMap (IsFractionRing.injective T.V _)`. Take `⟨M, hM, H⟩` from `exists_finite_qk (D := D) (L := AlgebraicClosure (FractionRing T.V)) hL hB (Nat.cast_ne_zero.2 hN.ne')`. Take `⟨π, hπ⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap (FractionRing T.V) (AlgebraicClosure (FractionRing T.V)) (algebraMap T.V _ ϖ)) hN`.
+
+Establish `h₁ : FiniteDimensional (FractionRing T.V) (IntermediateField.adjoin (FractionRing T.V) {π})` using `IntermediateField.finiteDimensional_adjoin fun y _ => Algebra.IsIntegral.isIntegral y`. Set `M₂` to `M ⊔ IntermediateField.adjoin (FractionRing T.V) {π}`. Establish `h₂ : FiniteDimensional (FractionRing T.V) M₂` using `inferInstance`. Set `π₂ : M₂` to `⟨π, (le_sup_right : _ ≤ M₂) (IntermediateField.mem_adjoin_simple_self _ π)⟩`. Establish `hπ₂ : π₂ ^ N = algebraMap (FractionRing T.V) M₂ (algebraMap T.V _ ϖ)` using `Subtype.ext hπ`.
+
+Take `⟨W, _, _, _, _, _, _, _, hc, hfin, hinj, -, hint, -⟩` from `GlobalTheory.SS.exists_complete_dvr_finite_extension T.V (FractionRing T.V) M₂`. Establish `: CharZero W` using `charZero_of_injective_algebraMap hinj`. Take `⟨w, hw⟩` from `hint π₂ ⟨Polynomial.X ^ N - Polynomial.C ϖ, Polynomial.monic_X_pow_sub_C _ hN.ne', by`. Simplify using `[hπ₂]⟩`. Establish `hwN : w ^ N = algebraMap T.V W ϖ` using `IsFractionRing.injective W M₂ (by`.
+
+Rewrite using `[map_pow, hw, hπ₂]`. Conclude with `(RingHom.congr_fun hc ϖ).symm)`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Rewrite `hwN` using `[zero_pow hN.ne']`.
+
+Conclude with `hϖ.ne_zero (hinj (hwN.symm.trans (map_zero _).symm))`. Take `⟨ϖ', hϖ'⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Take `⟨m, hm⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hw0 hϖ'`. Set `ε` to `FractionRing.algEquiv W M₂`. Set `j : M →+* FractionRing W` to `ε.symm.toRingEquiv.toRingHom.comp (IntermediateField.inclusion (le_sup_left : M ≤ M₂)).toRingHom`.
+
+Establish `hj : ∀ r : T.V, j (algebraMap (FractionRing T.V) M (algebraMap T.V _ r)) = algebraMap W _ (algebraMap T.V W r)` using `fun r => ε.injective (by`. Use `(ε.apply_symm_apply _).trans (Eq.trans ?_ (ε.commutes _).symm)` and prove the remaining obligations. Conclude with `(RingHom.congr_fun hc r).symm)`. Use `⟨Formalism.L2.Pj.CDVR.mk W, algebraMap T.V W, ϖ', m * N, hinj, RingHom.finite_algebraMap.2 hfin, hϖ', Dvd.intro_left m rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hwN, pow_mul]`.
+
+Conclude with `hm.pow_pow`. Introduce `D' hD hB' k hk q`. Establish `hk0 : k ≠ 0` using `by rintro rfl; exact hN.ne' (Nat.eq_zero_of_zero_dvd hk)`. Conclude with `exists_rational_of_finite hL hinj hD hB hB' M j hj hk0 (H k hk) q`.
+-/
 theorem exists_cdvr_ext_rational : ∀ (T : Formalism.L2.Pj.CDVR) (D : DegPre T.V), D.TauBimult → ∀ N : ℕ, 0 < N → ∀ ϖ : T.V, Irreducible ϖ → ∃ (T' : Formalism.L2.Pj.CDVR) (g : T.V →+* T'.V) (ϖ' : T'.V) (e : ℕ), Function.Injective g ∧ g.Finite ∧ Irreducible ϖ' ∧ N ∣ e ∧ Associated (g ϖ) (ϖ' ^ e) ∧ ∀ (D' : DegPre T'.V) (_ : IsPullDeg g D D'), D'.TauBimult → ∀ k : ℕ, k ∣ N → ∀ q : QkPt D' (AlgebraicClosure (FractionRing T'.V)) k, ∃ p : QkPt D' (FractionRing T'.V) k, QkExt (algebraMap (FractionRing T'.V) (AlgebraicClosure (FractionRing T'.V))) p q := by
   intro T D hB N hN ϖ hϖ
   have hL : Laws := GlobalTheory.allSixLaws.1

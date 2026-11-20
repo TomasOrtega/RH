@@ -23,6 +23,9 @@ def tr : Cinf E →ₗ[ℝ] ℝ where
     simp only [Pi.smul_apply, Complex.real_smul, Complex.re_ofReal_mul, RingHom.id_apply, smul_eq_mul, Finset.mul_sum]
     exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tr_apply (x : Cinf E) : tr E x = ∑ w, 2 * (x w).re := rfl
 
 end UpperTheory.V.TG

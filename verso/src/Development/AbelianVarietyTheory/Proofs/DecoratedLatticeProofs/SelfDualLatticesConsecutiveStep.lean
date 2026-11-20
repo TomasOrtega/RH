@@ -22,6 +22,13 @@ open GlobalTheory.FinPl hiding Pl
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, hβi, hβ, c, hc, x, hx, rfl⟩` from `hz`. Rewrite `hc` using `[Set.mem_singleton_iff]`. Substitute `hc` using the available equality.
+
+Use `AddSubgroup.subset_closure ⟨β, hβi, hβ, a, ha, x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add z z' _ _ hz hz' => rw [smul_add]`. Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz => rw [smul_neg]`. Conclude with `neg_mem hz`.
+-/
 theorem smul_mem_latA {S : HSp D} {L : Lat S} {P : GlobalTheory.FinPl.Pl D → Prop} {a : D.host.E} (ha : a ∈ D.host.AA)
     {y : Fin S.rank → AE D} (hy : y ∈ latV S L P) :
     ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) • y ∈ latA S L P := by
@@ -37,18 +44,33 @@ theorem smul_mem_latA {S : HSp D} {L : Lat S} {P : GlobalTheory.FinPl.Pl D → P
   | add z z' _ _ hz hz' => rw [smul_add]; exact add_mem hz hz'
   | neg z _ hz => rw [smul_neg]; exact neg_mem hz
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_mul₀ (V : HSp D) (g h : GA D V) : mt V (g * h) = mt V g * mt V h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_one₀ (V : HSp D) : mt V 1 = 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, ← mt_mul₀, mul_inv_cancel, mt_one₀, Matrix.one_mulVec]`.
+-/
 theorem mt_mul_inv (V : HSp D) (g : GA D V) (y : Fin V.rank → AE D) : mt V g *ᵥ (mt V g⁻¹ *ᵥ y) = y := by
   rw [Matrix.mulVec_mulVec, ← mt_mul₀, mul_inv_cancel, mt_one₀, Matrix.one_mulVec]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `sum_mem fun j _ => Ideal.mul_mem_left _ _ (hy j)`.
+-/
 theorem mulVec_mem_idAt {n : ℕ} (A : Matrix (Fin n) (Fin n) (AE D)) {P : GlobalTheory.FinPl.Pl D → Prop} {y : Fin n → AE D}
     (hy : ∀ i, y i ∈ idAt D P) (i : Fin n) : (A *ᵥ y) i ∈ idAt D P := by
   simp only [Matrix.mulVec, dotProduct]
   exact sum_mem fun j _ => Ideal.mul_mem_left _ _ (hy j)
 
+/- English proof (translation)
+Introduce `y hy`. Establish `e` using `h (mt S g⁻¹ *ᵥ y) (mulVec_mem_idAt _ hy)`. Rewrite `e` using `[mt_mul_inv]`. Conclude with `e.symm`.
+-/
 theorem moves_inv {S : HSp D} {g : GA D S} {L M : Lat S} {P : GlobalTheory.FinPl.Pl D → Prop} (h : Moves S g L M P) :
     Moves S g⁻¹ M L P := by
   intro y hy
@@ -56,6 +78,15 @@ theorem moves_inv {S : HSp D} {g : GA D S} {L M : Lat S} {P : GlobalTheory.FinPl
   rw [mt_mul_inv] at e
   exact e.symm
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨β, hβi, hβ, a, ha, x, hx, rfl⟩` from `hy`. Use `set y' : Fin S.rank → AE D := fun i => pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x i) with hy'`. Establish `hy'm : y' ∈ latV S L P` using `AddSubgroup.subset_closure ⟨β, hβi, hβ, 1, rfl, x, hx, rfl⟩`.
+
+Establish `hsplit : (fun i => pairA D.host.F 0 β ⊗ₜ[D.host.F] (a * x i)) = ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) • y'`. Use function extensionality and compare the values at `i`. Simplify using `only [hy', Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[hsplit, Matrix.mulVec_smul]`. Conclude with `smul_mem_latA ha ((h y' (GlobalTheory.FinPl.FrameLat.latV_supp hy'm)).1 hy'm)`.
+
+Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ hz hz' => rw [Matrix.mulVec_add]`. Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz => rw [Matrix.mulVec_neg]`.
+
+Conclude with `neg_mem hz`.
+-/
 theorem mulVec_mem_latA {S : HSp D} {g : GA D S} {L M : Lat S} {P : GlobalTheory.FinPl.Pl D → Prop} (h : Moves S g L M P)
     {z : Fin S.rank → AE D} (hz : z ∈ latA S L P) : mt S g *ᵥ z ∈ latA S M P := by
   induction hz using AddSubgroup.closure_induction with
@@ -72,9 +103,19 @@ theorem mulVec_mem_latA {S : HSp D} {g : GA D S} {L M : Lat S} {P : GlobalTheory
   | add z z' _ _ hz hz' => rw [Matrix.mulVec_add]; exact add_mem hz hz'
   | neg z _ hz => rw [Matrix.mulVec_neg]; exact neg_mem hz
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actO_eq (S T : HSp D) (g : GA D S) (h : GA D T) (u : WO S T) :
     actO S T g h u = HMul.hMul (HMul.hMul (mt T h) (u : Matrix (Fin T.rank) (Fin S.rank) (AE D))) (mt S g⁻¹) := rfl
 
+/- English proof (translation)
+Rewrite `hu` using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D S T Λ Λ' hΛ hΛ' P]`. Rewrite using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D S T M M' hM hM' P]`. Take `⟨hmx, hmap⟩` from `hu`. Use `⟨fun i j => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[actO_eq, Matrix.mul_apply]`.
+
+Use `sum_mem fun l _ => Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => Ideal.mul_mem_left _ _ (hmx k l)`. Express the relevant statement in the definitionally equal form `(HMul.hMul (HMul.hMul (mt T h) (u : Matrix (Fin T.rank) (Fin S.rank) (AE D))) (mt S g⁻¹)) *ᵥ y ∈ _`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
+
+Establish `h1 : mt S g⁻¹ *ᵥ y ∈ latV S Λ P` using `(moves_inv hg y (GlobalTheory.FinPl.FrameLat.latV_supp hy)).1 hy`. Conclude with `mulVec_mem_latA hh (hmap _ h1)`.
+-/
 theorem actO_mem_latO {S T : HSp D} {Λ M : Lat S} {Λ' M' : Lat T} (hΛ : IsSelfDualC S Λ) (hM : IsSelfDualC S M)
     (hΛ' : IsSelfDualC T Λ') (hM' : IsSelfDualC T M') {P : GlobalTheory.FinPl.Pl D → Prop} {g : GA D S} {h : GA D T}
     (hg : Moves S g Λ M P) (hh : Moves T h Λ' M' P) {u : WO S T}
@@ -93,6 +134,9 @@ theorem actO_mem_latO {S T : HSp D} {Λ M : Lat S} {Λ' M' : Lat T} (hΛ : IsSel
       (moves_inv hg y (GlobalTheory.FinPl.FrameLat.latV_supp hy)).1 hy
     exact mulVec_mem_latA hh (hmap _ h1)
 
+/- English proof (translation)
+Rewrite using `[actO_eq, actO_eq, inv_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← mt_mul₀, mul_inv_cancel, mt_one₀, Matrix.one_mul, Matrix.mul_assoc, ← mt_mul₀, mul_inv_cancel, mt_one₀, Matrix.mul_one]`.
+-/
 theorem actO_actO_inv {S T : HSp D} (g : GA D S) (h : GA D T) (u : WO S T) : actO S T g h (actO S T g⁻¹ h⁻¹ u) = u := by
   rw [actO_eq, actO_eq, inv_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← mt_mul₀, mul_inv_cancel, mt_one₀, Matrix.one_mul,
     Matrix.mul_assoc, ← mt_mul₀, mul_inv_cancel, mt_one₀, Matrix.mul_one]
@@ -103,6 +147,11 @@ section Gen
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[actO_eq]`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← hu k l]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isHalf_actO (g : GA D S) (h : GA D T) {e : AE D} {u : WO S T} (hu : IsHalf e u) : IsHalf e (actO S T g h u) := by
   intro i j
   rw [actO_eq]
@@ -111,6 +160,13 @@ theorem isHalf_actO (g : GA D S) (h : GA D T) {e : AE D} {u : WO S T} (hu : IsHa
   conv_rhs => rw [← hu k l]
   ring
 
+/- English proof (translation)
+Establish `back : ∀ u : WO S T, actO S T g h (actO S T g⁻¹ h⁻¹ u) = u` using `actO_actO_inv g h`. Establish `mem : ∀ u ∈ latO S T (M : Set _) (M' : Set _) P, actO S T g⁻¹ h⁻¹ u ∈ latO S T (Λ : Set _) (Λ' : Set _) P` using `fun u hu => actO_mem_latO hM hΛ hM' hΛ' (moves_inv hg) (moves_inv hh) hu`. Use `⟨hW.om_pres _ _ hf.1, fun u hu => ?_, fun e he u hu hh' => ?_⟩` and prove the remaining obligations. Establish `h1` using `hf.2.1 _ (mem u hu)`. Establish `h2 : (2 • actO S T g⁻¹ h⁻¹ u : WO S T) = actO S T g⁻¹ h⁻¹ (2 • u)`.
+
+Rewrite using `[actO_eq, actO_eq, two_nsmul, two_nsmul, Matrix.mul_add, Matrix.add_mul]`. Establish `h3` using `hW.om_heis g h (actO S T g⁻¹ h⁻¹ (2 • u)) f hf.1`. Rewrite `h3` using `[back, ← h2, h1]`. Conclude with `h3.symm`. Establish `h1` using `hf.2.2 e he _ (mem u hu) (isHalf_actO g⁻¹ h⁻¹ hh')`.
+
+Establish `h3` using `hW.om_heis g h (actO S T g⁻¹ h⁻¹ u) f hf.1`. Rewrite `h3` using `[back, h1]`. Conclude with `h3.symm`.
+-/
 theorem vac_move (hW : IsWeilDatumO ψ S T χS χT om) {Λ M : GlobalTheory.FinPl.Lat S} {Λ' M' : GlobalTheory.FinPl.Lat T}
     (hΛ : IsSelfDualC S Λ) (hM : IsSelfDualC S M) (hΛ' : IsSelfDualC T Λ') (hM' : IsSelfDualC T M')
     {P : GlobalTheory.FinPl.Pl D → Prop} {g : GA D S} {h : GA D T} (hg : GlobalTheory.FinPl.Moves S g Λ M P) (hh : GlobalTheory.FinPl.Moves T h Λ' M' P)
@@ -130,12 +186,20 @@ theorem vac_move (hW : IsWeilDatumO ψ S T χS χT om) {Λ M : GlobalTheory.FinP
     rw [back, h1] at h3
     exact h3.symm
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨⟨p, hp⟩, hall⟩` from `hf.2.norm`. Use `hall p hp` as an intermediate fact. Simplify using `[nrm2] at this`.
+-/
 theorem vacO_ne_zero {sS sT LS LT} {f : WO S T → ℂ} (hf : IsVacO ψ θ S T sS sT LS LT f) : f ≠ 0 := by
   rintro rfl
   obtain ⟨⟨p, hp⟩, hall⟩ := hf.2.norm
   have := hall p hp
   simp [nrm2] at this
 
+/- English proof (translation)
+Introduce `h0`. Apply `hf` to reduce the goal to its premises. Establish `: om p⁻¹ (om p f) = f`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[← this, h0, map_zero]`.
+-/
 theorem om_ne_zero (p : GA D S × GA D T) {f : WO S T → ℂ} (hf : f ≠ 0) : om p f ≠ 0 := by
   intro h0
   apply hf
@@ -143,6 +207,11 @@ theorem om_ne_zero (p : GA D S × GA D T) {f : WO S T → ℂ} (hf : f ≠ 0) : 
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]; rfl
   rw [← this, h0, map_zero]
 
+/- English proof (translation)
+Establish `hθ : IsInfFam θ` using `hf.2.inf`. Use `⟨fun P x hx x' hx' => ?_, ?_⟩` and prove the remaining obligations. Establish `hv : GlobalTheory.FinPl.Vac ψ S T M M' (fun _ => True) (om (g, h) f)` using `vac_move hW hΛ hM hΛ' hM' hg hh ⟨hf.2.theta, hf.2.lat⟩`. Establish `hfin` using `GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ S T χS χT om hW hθ sS sS BS BS sT sT BT BT g h (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ hgf, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ hhf, Matrix.mul_on …`. Establish `e1 : ((x * g, x' * h) : GA D S × GA D T) = (x, x') * (g, h)` using `rfl`.
+
+Rewrite using `[e1, map_mul, Module.End.mul_apply, hfin.2]`. Conclude with `(GlobalTheory.FockComb.om_pureTensorO_comb D ψ θ S T χS χT om hθ hW sS sT BS BT 0 (om (g, h) f) 0 0 (fun u hu => by simp at hu) hv.1 GlobalTheory.OrientedHeis.theta_zero 1 (one_mem _) 1 (one_mem _) (by rw [map_zero, zero_smul]) P x hx x' hx').2 M M' hv`. Rewrite using `[GlobalTheory.FiniteFock.pureTensorO_one]`. Conclude with `om_ne_zero _ (vacO_ne_zero hf)`.
+-/
 theorem gen (hW : IsWeilDatumO ψ S T χS χT om) {Λ M : GlobalTheory.FinPl.Lat S} {Λ' M' : GlobalTheory.FinPl.Lat T}
     (hΛ : IsSelfDualC S Λ) (hM : IsSelfDualC S M) (hΛ' : IsSelfDualC T Λ') (hM' : IsSelfDualC T M')
     {g : GA D S} {h : GA D T} (hgf : g ∈ GfC S) (hhf : h ∈ GfC T)
@@ -170,6 +239,9 @@ theorem gen (hW : IsWeilDatumO ψ S T χS χT om) {Λ M : GlobalTheory.FinPl.Lat
 
 end Gen
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W hW j hj g g' hg hg' M M' hM hM' hm hm'`. Establish `hLev` using `hW.bot.hyp.2.2.2.1.lev`. Establish `sd : ∀ i, i < D.R.m → IsSelfDualC (Yc D i) ((pk W).ΛY i)` using `fun i hi => GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hLev.βY i hi)`. Conclude with `gen (W.Q.charW.base.chain.ωY W.P.A3.A.μ0 j hj) (sd j (by omega)) hM (sd (j + 1) hj) hM' hg hg' (hm _) (hm' _) _ _ (W.Q.charW.base.chain.vY W.P.A3.A.μ0 j hj).1`.
+-/
 theorem fock_vac_moved : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ j, j + 1 < D.R.m → ∀ (g : GA D (Yc D j)) (g' : GA D (Yc D (j + 1))), g ∈ GfC (Yc D j) → g' ∈ GfC (Yc D (j + 1)) → ∀ (M : GlobalTheory.FinPl.Lat (Yc D j)) (M' : GlobalTheory.FinPl.Lat (Yc D (j + 1))), IsSelfDualC (Yc D j) M → IsSelfDualC (Yc D (j + 1)) M' → (∀ P, GlobalTheory.FinPl.Moves (Yc D j) g ((pk W).ΛY j) M P) → (∀ P, GlobalTheory.FinPl.Moves (Yc D (j + 1)) g' ((pk W).ΛY (j + 1)) M' P) → (∀ P, ∀ x ∈ GinfC (Yc D j), ∀ x' ∈ GinfC (Yc D (j + 1)), GlobalTheory.FinPl.Vac (pk W).ψ (Yc D j) (Yc D (j + 1)) M M' (fun _ => True) ((pk W).ωY W.P.A3.A.μ0 j (x * g, x' * g') (pureTensorO (pk W).ψ (pk W).θ (Yc D j) (Yc D (j + 1)) (cart ((pk W).MY j)) (cart ((pk W).MY (j + 1))) (onb ((pk W).MY j)) (onb ((pk W).MY (j + 1))) ((pk W).vac j) P))) ∧ (pk W).ωY W.P.A3.A.μ0 j (g, g') (pureTensorO (pk W).ψ (pk W).θ (Yc D j) (Yc D (j + 1)) (cart ((pk W).MY j)) (cart ((pk W).MY (j + 1))) (onb ((pk W).MY j)) (onb ((pk W).MY (j + 1))) ((pk W).vac j) 1) ≠ 0 := by
   intro D L hT Gi Gl Kc Yd cX ex W hW j hj g g' hg hg' M M' hM hM' hm hm'
   have hLev := hW.bot.hyp.2.2.2.1.lev

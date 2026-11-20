@@ -9,6 +9,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.OverCompare
 
+/- English proof (translation)
+Set `a : FiniteAdeleRing (𝓞 F) F` to `⟨t, Filter.Eventually.of_forall ht⟩`. Take `⟨ρ, w, hw, e⟩` from `Formalism.UG.P.csGlob_intAdApprox F (T : 𝓞 F) (by exact_mod_cast hT) a ht`. Use `⟨ρ, fun v => ⟨w v, hw v, ?_⟩⟩` and prove the remaining obligations. Rewrite `e` using `[map_natCast, ← nsmul_eq_mul]`. Establish `h : a v = (algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) ρ + T • w) v` using `by rw [← e]`.
+
+Conclude with `h`.
+-/
 theorem exists_int_approx_all (F : Type) [Field F] [NumberField F] (T : ℕ) (hT : T ≠ 0)
     (t : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletion F)
     (ht : ∀ v, t v ∈ v.adicCompletionIntegers F) :
@@ -21,6 +26,15 @@ theorem exists_int_approx_all (F : Type) [Field F] [NumberField F] (T : ℕ) (hT
   have h : a v = (algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) ρ + T • w) v := by rw [← e]
   exact h
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ k Λ hΛ T hT y hy`. Take `⟨m, l, hl, H⟩` from `GlobalTheory.T.exists_generators_mem_completedLattice_iff F E k Λ hΛ`. Use `choose t ht hyt using fun v : HeightOneSpectrum (𝓞 F) => (H (v.adicCompletion F) (v.adicCompletionIntegers F).toSubring (y v)).1 (hy v)`. Use `choose ρ hρ using fun j : Fin m => exists_int_approx_all F T hT (fun v => t v j) (fun v => ht v j)`. Use `⟨∑ j, algebraMap (𝓞 F) (𝓞 E) (ρ j) • l j, Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hl j), fun v => ?_⟩` and prove the remaining obligations.
+
+Use `choose w hw hwt using fun j => hρ j v`. Use `⟨fun i => ∑ j, l j i ⊗ₜ[F] w j, (H (v.adicCompletion F) (v.adicCompletionIntegers F).toSubring _).2 ⟨w, hw, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hyt v]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Finset.sum_apply, map_sum, Finset.smul_sum, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hwt j, TensorProduct.tmul_add]`. Use `congr 1`. Establish `h1 : algebraMap (𝓞 F) (𝓞 E) (ρ j) • l j i = (ρ j : F) • l j i`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul]`. Both sides reduce to the same expression. Conclude with `map_nsmul (TensorProduct.mk F E (v.adicCompletion F) (l j i)) T (w j)`.
+-/
 theorem exists_lattice_approx_all : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (k : ℕ) (Λ : Submodule (𝓞 E) (Fin k → E)), Module.Finite (𝓞 E) Λ → ∀ (T : ℕ), T ≠ 0 → ∀ (y : ∀ v : HeightOneSpectrum (𝓞 F), Fin k → E ⊗[F] v.adicCompletion F), (∀ v, y v ∈ locLat v Λ) → ∃ x ∈ Λ, ∀ v : HeightOneSpectrum (𝓞 F), ∃ z ∈ locLat v Λ, y v = (fun i => inclE (F := F) (v.adicCompletion F) (x i)) + T • z := by
   intro F E _ _ _ _ _ k Λ hΛ T hT y hy
   obtain ⟨m, l, hl, H⟩ := GlobalTheory.T.exists_generators_mem_completedLattice_iff F E k Λ hΛ

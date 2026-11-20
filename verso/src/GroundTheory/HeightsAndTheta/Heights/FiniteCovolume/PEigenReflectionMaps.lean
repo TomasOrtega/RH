@@ -12,12 +12,22 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Establish `h1 : star y ⬝ᵥ (P *ᵥ x) = star (P *ᵥ y) ⬝ᵥ x`. Rewrite using `[dotProduct_mulVec, star_mulVec, hP.eq]`. Rewrite using `[h1, star_dotProduct, star_star]`.
+-/
 theorem star_dotProduct_mulVec_of_isHermitian {P : Matrix ι ι ℂ} (hP : P.IsHermitian)
     (x y : ι → ℂ) : star (star y ⬝ᵥ (P *ᵥ x)) = star x ⬝ᵥ (P *ᵥ y) := by
   have h1 : star y ⬝ᵥ (P *ᵥ x) = star (P *ᵥ y) ⬝ᵥ x := by
     rw [dotProduct_mulVec, star_mulVec, hP.eq]
   rw [h1, star_dotProduct, star_star]
 
+/- English proof (translation)
+Distinguish the cases in `hs : s = 0`. Conclude with `⟨1, by simp, by simp [hs], by simp [hs]⟩`. Establish `hn : (‖s‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.mpr hs`. Use `⟨s / ‖s‖, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, Complex.norm_real, Real.norm_eq_abs, abs_norm, div_self (norm_ne_zero_iff.mpr hs)]`.
+
+Rewrite using `[div_mul_eq_mul_div, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[star_div₀, Complex.star_def, Complex.conj_ofReal, div_mul_eq_mul_div, mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_unit_mul_star_eq_norm (s : ℂ) : ∃ α : ℂ, ‖α‖ = 1 ∧ α * star s = ‖s‖ ∧ star α * s = ‖s‖ := by
   by_cases hs : s = 0
   · exact ⟨1, by simp, by simp [hs], by simp [hs]⟩
@@ -34,6 +44,23 @@ theorem exists_unit_mul_star_eq_norm (s : ℂ) : ∃ α : ℂ, ‖α‖ = 1 ∧ 
 
 variable (ι) in
 
+/- English proof (translation)
+Introduce `H P hMaj ε hε a a' ha ha' hρ`. Establish `hPh : P.IsHermitian` using `hMaj.1.isHermitian`. Take `⟨α, hα1, hαs, hαs'⟩` from `exists_unit_mul_star_eq_norm (star a ⬝ᵥ (P *ᵥ a'))`. Use `⟨α, hα1, ?_⟩` and prove the remaining obligations. Use `set v : ι → ℂ := a' - α • a with hv`.
+
+Distinguish the cases in `hv0 : v = 0`. Use `⟨1, by simp, by simp, ?_, fun u _ => by simp⟩` and prove the remaining obligations. Rewrite using `[one_mulVec]`. Conclude with `sub_eq_zero.mp hv0`. Establish `hAv : majInvolution H P *ᵥ v = ε • v`.
+
+Rewrite using `[hv, mulVec_sub, mulVec_smul, ha, ha', smul_sub, smul_comm]`. Take `⟨hRP, hRH, hRv, hRfix⟩` from `h₁ H P hMaj ε hε v hv0 hAv`. Use `⟨pReflection P v, hRP, hRH, ?_, ?_⟩` and prove the remaining obligations. Establish `hconj : star a' ⬝ᵥ (P *ᵥ a) = star (star a ⬝ᵥ (P *ᵥ a'))` using `(star_dotProduct_mulVec_of_isHermitian hPh a' a).symm`. Establish `hαα : star α * α = 1`.
+
+Rewrite using `[Complex.star_def, mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hα1]`. Simplify using the standard rewrite rules. Establish `hw : star v ⬝ᵥ (P *ᵥ (a' + α • a)) = 0`. Rewrite using `[hv, star_sub, star_smul, mulVec_add, mulVec_smul, sub_dotProduct, dotProduct_add, dotProduct_add, smul_dotProduct, smul_dotProduct, dotProduct_smul, dotProduct_smul, hconj, smul_eq_mul, smul_eq_mul, smul_eq_mul, smul_eq_mul, ← hρ]`. Establish `e1 : star α * (α * (star a ⬝ᵥ (P *ᵥ a))) = (star α * α) * (star a ⬝ᵥ (P *ᵥ a))`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hαα, hαs, hαs']`. Expand and normalize the polynomial expressions, which then agree. Establish `hRw` using `hRfix _ hw`. Establish `hsplit : a' = (1 / 2 : ℂ) • (a' + α • a) + (1 / 2 : ℂ) • v`.
+
+Rewrite using `[hv]`. Use extensionality with `i`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, mulVec_add, mulVec_smul, mulVec_smul, hRw, hRv, hv]`.
+
+Use extensionality with `i`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce `u hu`. Apply `hRfix` to reduce the goal to its premises.
+
+Break down `hε with rfl | rfl` into its components or cases. Establish `h` using `h₂ H P hMaj v u (by rw [hAv, one_smul]) (by rw [hu, neg_smul, one_smul])`. Conclude with `h`. Establish `h` using `h₂ H P hMaj u v (by rw [hu, neg_neg, one_smul]) (by rw [hAv, neg_smul, one_smul])`. Rewrite using `[← star_dotProduct_mulVec_of_isHermitian hPh, h, star_zero]`.
+-/
 theorem EigenReflectionMaps.proof (h₁ : EigenReflection.Statement ι)
     (h₂ : EigenspacesOrthogonal.Statement ι) : EigenReflectionMaps.Statement ι := by
   intro H P hMaj ε hε a a' ha ha' hρ

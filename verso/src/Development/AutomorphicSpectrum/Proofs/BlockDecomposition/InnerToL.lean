@@ -24,8 +24,14 @@ def Ld (X : Mat n) (f : Mat n → V) : Mat n → V := fun g => fderiv ℝ f g (X
 def Lw (w : List (Bool × Fin n × Fin n)) (f : Mat n → V) : Mat n → V :=
   w.foldr (fun p h => Ld (bs p) h) f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Lw_nil (f : Mat n → V) : Lw [] f = f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Lw_cons (p : Bool × Fin n × Fin n) (w : List (Bool × Fin n × Fin n)) (f : Mat n → V) :
     Lw (p :: w) f = Ld (bs p) (Lw w f) := rfl
 
@@ -62,6 +68,9 @@ def toL (μ : Measure (G n)) (f : Mat n → V) : Lp V 2 μ :=
 def IsRep (μ : Measure (G n)) (b : Mat n → V) (y : Lp V 2 μ) : Prop :=
   (y : G n → V) =ᵐ[μ] fun g => b g.val
 
+/- English proof (translation)
+Unfold `IsRep toL`. Rewrite using `[dif_pos h]`. Conclude with `h.coeFn_toLp`.
+-/
 theorem toL_coe {μ : Measure (G n)} {f : Mat n → V} (h : MemLp (fun y : G n => f y.val) 2 μ) :
     IsRep μ f (toL μ f) := by
   unfold IsRep toL

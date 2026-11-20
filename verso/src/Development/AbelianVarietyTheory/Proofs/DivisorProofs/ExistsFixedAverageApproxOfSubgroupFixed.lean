@@ -8,6 +8,27 @@ namespace GlobalTheory
 open MeasureTheory in
 open scoped ContDiff in
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ K _ _ _ ρ _ hcont H U hU hconj v hv ε hε`. Use `set W : Set G := (U : Set G) ∩ {y | ‖ρ y v - v‖ < ε / 2} with hW`. Establish `hWo : IsOpen W` using `hU.inter (isOpen_lt ((hcont v).sub continuous_const).norm continuous_const)`. Establish `h1W : (1 : G) ∈ W` using `⟨U.one_mem, by simp [half_pos hε]⟩`. Take `⟨f, hf1, hf0, hfc, hfI⟩` from `exists_continuous_one_zero_of_isCompact (isCompact_singleton (x := (1 : G))) hWo.isClosed_compl (Set.disjoint_singleton_left.2 fun h => h h1W)`.
+
+Establish `hf1' : f 1 = 1` using `by simpa using hf1 (Set.mem_singleton (1 : G))`. Establish `hfpos : 0 < ∫ y, f y ∂μ` using `f.continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero hfc (fun x => (hfI x).1) (x := 1) (by rw [hf1']; norm_num)`. Use `set c := ∫ y, f y ∂μ with hc`. Use `set η : G → ℂ := fun y => ((c⁻¹ * f y : ℝ) : ℂ) with hηdef`. Establish `hηc : Continuous η` using `Complex.continuous_ofReal.comp (continuous_const.mul f.continuous)`.
+
+Establish `hηs : HasCompactSupport η` using `hfc.comp_left (g := fun r : ℝ => ((c⁻¹ * r : ℝ) : ℂ)) (by simp)`. Establish `hηW : ∀ y, η y ≠ 0 → y ∈ W`. Introduce `y hy`. Assume the negation of the conclusion as `hyW`. Conclude with `hy (by simp [hηdef, hf0 hyW])`.
+
+Establish `hηI : Integrable η μ` using `hηc.integrable_of_hasCompactSupport hηs`. Establish `hint : Integrable (fun y => η y • ρ y v) μ` using `(hηc.smul (hcont v)).integrable_of_hasCompactSupport hηs.smul_right`. Establish `hnormη : (fun y => ‖η y‖) = fun y => c⁻¹ * f y`. Use function extensionality and compare the values at `y`. Simplify using `only [hηdef, Complex.norm_real, Real.norm_eq_abs]`.
+
+Conclude with `abs_of_nonneg (mul_nonneg (inv_nonneg.2 hfpos.le) (hfI y).1)`. Establish `hη1 : ∫ y, η y ∂μ = 1`. Simplify using `only [hηdef]`. Rewrite using `[integral_complex_ofReal, integral_const_mul, inv_mul_cancel₀ hfpos.ne', Complex.ofReal_one]`. Use `⟨η, hηc, hηs, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `k hk`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ hint]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [map_smul]`. Distinguish the cases in `hy : η y = 0`.
+
+Simplify using `[hy]`. Establish `hyU : y ∈ U` using `(hηW y hy).1`. Use `congr 1`. Establish `hky : k * y = y * (y⁻¹ * k * y)` using `by group`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hsplit : v - ∫ y, η y • ρ y v ∂μ = ∫ y, η y • (v - ρ y v) ∂μ`. Repeatedly rewrite using `[smul_sub]`. Rewrite using `[integral_sub (hηI.smul_const v) hint, integral_smul_const, hη1, one_smul]`. Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `norm_integral_le_of_norm_le (hηI.norm.mul_const _) (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul]`. Distinguish the cases in `hy : η y = 0`. Simplify using `[hy]`. Conclude with `mul_le_mul_of_nonneg_left (by rw [norm_sub_rev]; exact (hηW y hy).2.le) (norm_nonneg _)`.
+
+Use `_ = ε / 2 := by`. Rewrite using `[integral_mul_const, hnormη, integral_const_mul, inv_mul_cancel₀ hfpos.ne', one_mul]`. Use `_ < ε := half_lt_self hε`.
+-/
 theorem _root_.GlobalTheory.exists_average_fixed_approx_of_fixed :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (K : Type) [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K], ∀ (ρ : G →* (K →L[ℂ] K)), (∀ g v, ‖ρ g v‖ = ‖v‖) → (∀ v, Continuous fun g => ρ g v) → ∀ (H U : Subgroup G), IsOpen (U : Set G) → (∀ y ∈ U, ∀ k ∈ H, y⁻¹ * k * y ∈ H) → ∀ v : K, (∀ k ∈ H, ρ k v = v) → ∀ ε : ℝ, 0 < ε → ∃ η : G → ℂ, Continuous η ∧ HasCompactSupport η ∧ (∀ k ∈ H, ρ k (∫ y, η y • ρ y v ∂μ) = ∫ y, η y • ρ y v ∂μ) ∧ ‖v - ∫ y, η y • ρ y v ∂μ‖ < ε := by
   intro G _ _ _ _ _ _ _ _ μ _ K _ _ _ ρ _ hcont H U hU hconj v hv ε hε

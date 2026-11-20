@@ -35,6 +35,37 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [local instance] _root_.GlobalTheory.Fam.GeometricFamily.fld _root_.GlobalTheory.Fam.GeometricFamily.val _root_.GlobalTheory.Fam.GeometricFamily.top _root_.GlobalTheory.Fam.GeometricFamily.loc
 namespace GlobalTheory.QVecJoin
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat J hJ row col hCh sc cT t`. Establish `hC3` using `hW.pk.bot.hyp.2.2.2.1`. Establish `hL` using `hC3.lev`. Take `⟨hinj, hund⟩` from `_root_.GlobalTheory.Fam.QJPlaces.places_under_alt W hW u a ha hat t (J t) (hJ t)`. Establish `hV` using `(ha.tie row col).1`.
+
+Establish `hQS : ∀ p, p ∈ ((_root_.GlobalTheory.Fam.familyOfRowColumnChoices a J row col hCh t).pinTup sc cT).Q ↔ ∃ i, ((J t).G i).q.v = p`. Introduce `p`. Simplify using `only [QFam.pinTup, _root_.GlobalTheory.Fam.familyOfRowColumnChoices, Finset.mem_image]`. Conclude with `⟨fun ⟨i, _, h⟩ => ⟨i, h⟩, fun ⟨i, h⟩ => ⟨i, Finset.mem_univ _, h⟩⟩`. Establish `hSQ : ∀ p, (∃ i, ((J t).G i).q.v = p) ↔ ∃ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Q t, p = PP.under (𝓞 (I.rec7 l Z).host.F)`.
+
+Introduce `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨(J t).pl i, (J t).mem i, hund i⟩`. Introduce and unpack `⟨PP, hPP, rfl⟩`.
+
+Take `⟨i, rfl⟩` from `(hJ t).surj PP hPP`. Conclude with `⟨i, hund i⟩`. Establish `hQiff : ∀ PP, PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Q t ↔ ∃ i, (J t).pl i = PP` using `fun PP => ⟨fun h => (hJ t).surj PP h, by rintro ⟨i, rfl⟩; exact (J t).mem i⟩`. Establish `hrk : ∀ i, (I.rec7 l Z).R.r = (I.rec7 l Z).R.k + (((J t).G i).s + 1)`. Introduce `i`.
+
+Establish `e1 : (I.rec7 l Z).R.r = (I.rec7 l Z).R.k + (I.rec7 l Z).R.m - 1` using `rfl`. Establish `e2` using `((J t).G i).hs`. Use linear arithmetic over natural numbers and integers. Establish `gIn : ∀ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg, ∃ k, (((I.rec7 l Z).host.g k : ℕ) : 𝓞 (I.rec7 l Z).host.E) ∈ PP.asIdeal`. Introduce `PP hPP`.
+
+Take `⟨k, hk⟩` from `(hL.Pg PP).1 hPP`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hmemK : (((I.rec7 l Z).host.g k : ℕ) : 𝓞 (I.rec7 l Z).host.K) ∈ (PP.under (𝓞 (I.rec7 l Z).host.K)).asIdeal`. Establish `hk' : PP.under (𝓞 (I.rec7 l Z).host.K) = (_root_.GlobalTheory.Fam.pk_z W).C.P.pb k` using `hk`. Rewrite using `[hk']`.
+
+Conclude with `(_root_.GlobalTheory.Fam.pk_z W).C.P.pb_over k`. Establish `h2 : algebraMap (𝓞 (I.rec7 l Z).host.K) (𝓞 (I.rec7 l Z).host.E) (((I.rec7 l Z).host.g k : ℕ) : 𝓞 (I.rec7 l Z).host.K) ∈ PP.asIdeal` using `hmemK`. Simplify using `using h2`. Establish `hoff : ∀ p, (∃ i, ((J t).G i).q.v = p) → p ∉ a.v.gP`. Introduce `p hp hxg`.
+
+Take `⟨PP, hPP, rfl⟩` from `(hSQ p).1 hp`. Take `⟨PP', hPP', e⟩` from `(hV.gP _).1 hxg`. Take `⟨k, hk⟩` from `gIn PP' hPP'`. Establish `hg : (((I.rec7 l Z).host.g k : ℕ) : 𝓞 (I.rec7 l Z).host.E) ∈ PP.asIdeal` using `(natCast_mem_under PP _).1 (e ▸ (natCast_mem_under PP' _).2 hk)`. Take `⟨⟨q, hq, hcard, -, hne⟩, -⟩` from `hL.Q_pl t PP hPP`.
+
+Use `haveI : PP.asIdeal.IsPrime := PP.isPrime`. Use `haveI : Finite (Formalism.L2.DIV.kP PP) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hq.ne_zero)`. Use `haveI : Fintype (Formalism.L2.DIV.kP PP) := Fintype.ofFinite _`. Establish `hq0 : ((q : ℕ) : 𝓞 (I.rec7 l Z).host.E) ∈ PP.asIdeal`. Establish `h0q : ((q : ℕ) : Formalism.L2.DIV.kP PP) = 0`.
+
+Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Conclude with `Nat.cast_card_eq_zero (Formalism.L2.DIV.kP PP)`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem (I := PP.asIdeal)).1 (by simpa using h0q)`. Conclude with `false_of_coprime_mem PP ((Nat.coprime_primes hq ((I.rec7 l Z).host.g_prime k)).2 (hne k)) hq0 hg`. Establish `hS : (· ∈ ((_root_.GlobalTheory.Fam.familyOfRowColumnChoices a J row col hCh t).pinTup sc cT).Q) = (fun p => ∃ i, ((J t).G i).q.v = p)`.
+
+Use function extensionality and compare the values at `fun p => propext (hQS p)`. Establish `hmv : ∀ j, j < (I.rec7 l Z).R.m → GlobalTheory.FinPl.Moves _ (a.g.b j) ((_root_.GlobalTheory.Fam.pk_z W).ΛY j) (a.v.N j) (fun p => ∃ i, ((J t).G i).q.v = p)` using `fun j hj => hV.moves j hj _ hoff`. Establish `hb : ∀ j, a.g.b j ∈ GfC (Yc (I.rec7 l Z) j)` using `fun j => (hV.b j) ▸ ha.vis.b j`. Establish `hS' : (fun p => ∃ i, ((J t).G i).q.v = p) = fun p => ∃ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Q t, p = PP.under (𝓞 (I.rec7 l Z).host.F)`. Use function extensionality and compare the values at `fun p => propext (hSQ p)`.
+
+Establish `sdY : ∀ j, j < (I.rec7 l Z).R.m → IsSelfDualC (Yc (I.rec7 l Z) j) ((_root_.GlobalTheory.Fam.pk_z W).ΛY j)` using `fun j hj => GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame _ _ _ _ _ (hL.βY j hj)`. Establish `sdX : IsSelfDualC (I.rec7 l Z).sp.X' (_root_.GlobalTheory.Fam.pk_z W).ΛX` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame _ _ _ _ _ hL.βX`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `j hj d hd g hg`. Establish `hmid : ((_root_.GlobalTheory.Fam.familyOfRowColumnChoices a J row col hCh t).pinTup sc cT).eQ j = aconv (List.ofFn fun i => ((J t).E i).eL j)` using `if_pos hj`.
+
+Rewrite using `[hmid]`. Rewrite `hg` using `[hS]`. Conclude with `step_mid (I.rec7 l Z) (commOf (_root_.GlobalTheory.Fam.pk_z W) u a.g) a.v (baseOf (_root_.GlobalTheory.Fam.pk_z W) (_root_.GlobalTheory.Fam.complexLevelStructure W) u a.g) (_root_.GlobalTheory.Fam.chrK_alt W t) ha.vis (J t).r (J t).pl (fun i => (J t).G i) (fun i => (J t).E i) ((_ …`. Introduce `j hj d hd g hg`. Rewrite `hg` using `[hS]`.
+
+Establish `hmT : GlobalTheory.FinPl.Moves _ a.g.bT (_root_.GlobalTheory.Fam.pk_z W).ΛX a.v.NT (fun p => ∃ i, ((J t).G i).q.v = p)`. Rewrite using `[hV.bT.2]`. Conclude with `hV.movesT _`. Establish `hbT : a.g.bT ∈ GfC (I.rec7 l Z).sp.X'`. Establish `h1` using `ha.vis.bT`.
+
+Rewrite `h1` using `[hV.bT.1]`. Then use the resulting hypothesis. Conclude with `step_top (I.rec7 l Z) (commOf (_root_.GlobalTheory.Fam.pk_z W) u a.g) a.v (baseOf (_root_.GlobalTheory.Fam.pk_z W) (_root_.GlobalTheory.Fam.complexLevelStructure W) u a.g) (_root_.GlobalTheory.Fam.chrK_alt W t) ha.vis (J t).r (J t).pl (fun i => (J t).G i) (fun i => (J t).E i) ((_ …`.
+-/
 theorem qVec_pinTup_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ (J : ∀ t, _root_.GlobalTheory.Fam.QuadraticExtensionData a t), (∀ t, (J t).Reads) → ∀ (row : ∀ t, RowCh (_root_.GlobalTheory.Fam.pk_z W) (_root_.GlobalTheory.Fam.complexLevelStructure W) u a.g t)
     (col : ∀ t : W.P.T, ColCh (D := I.rec7 l Z) u ((I.rec7 l Z).chTw u (W.P.I.tup t))) (hCh : ∀ t, (col t).Ch = (J t).Ch) (sc cT : ℕ → ℂ) t,
     _root_.GlobalTheory.Fam.RationalVectorCondition (a.fam row col) ((_root_.GlobalTheory.Fam.familyOfRowColumnChoices a J row col hCh t).pinTup sc cT) := by

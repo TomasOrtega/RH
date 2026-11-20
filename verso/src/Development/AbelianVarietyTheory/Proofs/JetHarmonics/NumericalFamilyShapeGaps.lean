@@ -7,6 +7,11 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.NumFam
 
+/- English proof (translation)
+Establish `h1 : ¬ a.val < k - 1` using `by omega`. Establish `h2 : ¬ c.val < k - 1` using `by omega`. Simplify using `only [PI.BesselPeriodGGP.eps48]`. Rewrite using `[if_neg h1, if_neg h2, hc]`. Break down `Nat.mod_two_eq_zero_or_one (a.val - (k - 1)) with h3 | h3` into its components or cases.
+
+Establish `h4 : (a.val + 1 - (k - 1)) % 2 = 1` using `by omega`. Simplify using `[h3, h4]`. Establish `h4 : (a.val + 1 - (k - 1)) % 2 = 0` using `by omega`. Simplify using `[h3, h4]`.
+-/
 theorem eps_adj (k r : ℕ) (a c : Fin (2 * r + k + 1)) (ha : k ≤ a.val + 1) (hc : c.val = a.val + 1) :
     PI.BesselPeriodGGP.eps48 k r a ≠ PI.BesselPeriodGGP.eps48 k r c := by
   have h1 : ¬ a.val < k - 1 := by omega
@@ -19,6 +24,11 @@ theorem eps_adj (k r : ℕ) (a c : Fin (2 * r + k + 1)) (ha : k ≤ a.val + 1) (
   · have h4 : (a.val + 1 - (k - 1)) % 2 = 0 := by omega
     simp [h3, h4]
 
+/- English proof (translation)
+Establish `h1 : (ν a).natAbs ≤ n1 ν`. Unfold `n1`. Conclude with `Finset.single_le_sum (f := fun i => (ν i).natAbs) (fun i _ => Nat.zero_le _) (Finset.mem_univ a)`. Establish `h2 : |(ν a : ℝ)| = ((ν a).natAbs : ℝ)`. Rewrite using `[← Int.cast_abs, ← Int.natCast_natAbs, Int.cast_natCast]`.
+
+Rewrite using `[h2]`. Conclude with `h1.trans h` after adjusting the coercions.
+-/
 theorem abs_le_of_lOneNorm_le_coord {n : ℕ} (ν : Fin n → ℤ) (q0 : ℕ) (h : n1 ν ≤ q0) (a : Fin n) : |(ν a : ℝ)| ≤ q0 := by
   have h1 : (ν a).natAbs ≤ n1 ν := by
     unfold n1
@@ -28,6 +38,9 @@ theorem abs_le_of_lOneNorm_le_coord {n : ℕ} (ν : Fin n → ℤ) (q0 : ℕ) (h
   rw [h2]
   exact_mod_cast h1.trans h
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `H`. Establish `ha : aOf r h ≤ aOf r h'`. Unfold `aOf`. Use `gcongr`. Conclude with `⟨h1, h2.trans hh, h3.trans ha, h4.trans ha⟩`.
+-/
 theorem gapOK_mono (k r : ℕ) {h h' : ℝ} (hh : h ≤ h') (H : GapOK k r h) : GapOK k r h' := by
   obtain ⟨h1, h2, h3, h4⟩ := H
   have ha : aOf r h ≤ aOf r h' := by
@@ -35,6 +48,19 @@ theorem gapOK_mono (k r : ℕ) {h h' : ℝ} (hh : h ≤ h') (H : GapOK k r h) : 
     gcongr
   exact ⟨h1, h2.trans hh, h3.trans ha, h4.trans ha⟩
 
+/- English proof (translation)
+Take `⟨hk, ⟨hanti, -⟩, -, -, -, hcl, hnd, -, -, hga, hgap, -, hq1, hq2, -⟩` from `H`. Establish `hhb : h ≤ bv`. Establish `he` using `eps_adj k r ⟨k - 1, by omega⟩ ⟨k, by omega⟩ (show k ≤ k - 1 + 1 by omega) (show k = k - 1 + 1 by omega)`. Establish `h0` using `hnd ⟨k - 1, by omega⟩ (show k ≤ k - 1 + 1 by omega)`. Establish `h1` using `hnd ⟨k, by omega⟩ (show k ≤ k + 1 by omega)`.
+
+Establish `hg` using `hgap _ _ he`. Establish `hb : |lam ⟨k - 1, by omega⟩ - lam ⟨k, by omega⟩| ≤ bv` using `abs_sub_le_iff.mpr ⟨by linarith [h0.1, h0.2, h1.1, h1.2], by linarith [h0.1, h0.2, h1.1, h1.2]⟩`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hadj : ∀ a c : Fin (2 * r + k + 1), c.val = a.val + 1 → 100 * ((q0 : ℝ) + 1) ≤ lam a - lam c`. Introduce `a c hac`.
+
+Establish `hlt : a < c` using `Fin.lt_def.mpr (by omega)`. Establish `hlam : lam c < lam a` using `hanti hlt`. Distinguish the cases in `h1 : k ≤ a.val + 1`. Establish `hg` using `hgap a c (eps_adj k r a c h1 hac)`. Rewrite `hg` using `[abs_of_pos (by linarith)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `h2 : c.val + 1 < k`. Combine the linear relations using `[hga a c hlt h2]`. Establish `h3` using `hcl a (by omega)`. Establish `h4` using `hnd c (by omega)`.
+
+Combine the linear relations using `[h3.1, h4.2]`. Use `⟨hhb, fun a c hac => ?_⟩` and prove the remaining obligations. Establish `h5 : a.val < c.val` using `hac`. Establish `hcN` using `c.isLt`. Establish `hle : a ≤ ⟨c.val - 1, by omega⟩` using `Fin.le_def.mpr (show a.val ≤ c.val - 1 by omega)`.
+
+Establish `h6` using `hadj ⟨c.val - 1, by omega⟩ c (show c.val = c.val - 1 + 1 by omega)`. Establish `h7` using `hanti.antitone hle`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma le_bv_and_lam_gap_of_num (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ)
     (q0 : ℕ) (H : Num k r lam u b bv ga h q0) :
     h ≤ bv ∧ ∀ a c : Fin (2 * r + k + 1), a < c → 100 * ((q0 : ℝ) + 1) ≤ lam a - lam c := by
@@ -70,6 +96,25 @@ private lemma le_bv_and_lam_gap_of_num (k r : ℕ) (lam : Fin (2 * r + k + 1) �
   have h7 := hanti.antitone hle
   linarith
 
+/- English proof (translation)
+Introduce `k r lam u b bv ga h q0 H`. Take `⟨hhb, hgaps⟩` from `le_bv_and_lam_gap_of_num k r lam u b bv ga h q0 H`. Take `⟨hk, ⟨hanti, hint⟩, -, -, -, hcl, hnd, hlb, -, -, hgap, hok, hq1, hq2, hbv⟩` from `H`. Establish `hq0 : (0 : ℝ) ≤ q0` using `Nat.cast_nonneg _`. Establish `hN1 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ 2 * r + k + 1)`.
+
+Establish `hN7 : ((2 * r + k + 1 : ℕ) : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 7` using `le_self_pow₀ hN1 (by norm_num)`. Establish `hNc : ((2 * r + k + 1 : ℕ) : ℝ) = 2 * (r : ℝ) + k + 1` using `by push_cast; ring`. Establish `hL` using `hnd ⟨2 * r + k, by omega⟩ (show k ≤ 2 * r + k + 1 by omega)`. Establish `hLb` using `hlb ⟨2 * r + k, by omega⟩`. Establish `hLa` using `neg_le_abs (lam ⟨2 * r + k, by omega⟩)`.
+
+Establish `hbvb : bv ≤ b` using `by linarith [hL.2]`. Establish `h100 : 100 * (q0 : ℝ) ≤ bv` using `by linarith`. Use `⟨⟨hbvb, by linarith, by linarith, h100, gapOK_mono k r (by linarith) hok⟩, fun ν hν => ?_⟩` and prove the remaining obligations. Establish `hνb : ∀ a, -(q0 : ℝ) ≤ ν a ∧ (ν a : ℝ) ≤ q0` using `fun a => abs_le.mp (abs_le_of_lOneNorm_le_coord ν q0 hν a)`. Establish `hgap2 : ∀ a c : Fin (2 * r + k + 1), a < c → 2 ≤ (lam a + (ν a : ℝ)) - (lam c + (ν c : ℝ))`.
+
+Introduce `a c hac`. Combine the linear relations using `[hgaps a c hac, (hνb a).1, (hνb a).2, (hνb c).1, (hνb c).2]`. Use `⟨⟨fun a c hac => ?_, fun a => ?_⟩, ⟨hk, by omega, fun a c hac => hgap2 a c hac, fun a ha => ?_, fun a ha => ?_, hbv⟩, fun a c he => ?_, fun a c hac => hgap2 a c hac⟩` and prove the remaining obligations. Use `show lam c + (ν c : ℝ) < lam a + ν a`. Combine the linear relations using `[hgap2 a c hac]`.
+
+Take `⟨m, hm⟩` from `hint a`. Use `⟨m + ν a, ?_⟩` and prove the remaining obligations. Use `show lam a + (ν a : ℝ) - (((2 * r + k + 1 : ℕ) : ℝ) - 1) / 2 = ((m + ν a : ℤ) : ℝ)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[PI.BesselPeriodGGP.eps48, show a.val < k - 1 by omega]`. Use `show -(bv / 100) ≤ lam a + (ν a : ℝ)`. Combine the linear relations using `[(hcl a ha).1, (hνb a).1]`. Use `show lam a + (ν a : ℝ) ≤ bv / 8 + bv / 100`.
+
+Combine the linear relations using `[(hcl a ha).2, (hνb a).2]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show -2 * bv - bv / 100 ≤ lam a + (ν a : ℝ)`. Combine the linear relations using `[(hnd a ha).1, (hνb a).1]`. Use `show lam a + (ν a : ℝ) ≤ -bv + bv / 100`.
+
+Combine the linear relations using `[(hnd a ha).2, (hνb a).2]`. Use `show h / 2 ≤ |(lam a + (ν a : ℝ)) - (lam c + (ν c : ℝ))|`. Establish `hg` using `hgap a c he`. Break down `le_abs.mp hg with h1 | h1` into its components or cases. Conclude with `le_abs.mpr (Or.inl (by linarith [(hνb a).1, (hνb a).2, (hνb c).1, (hνb c).2]))`.
+
+Conclude with `le_abs.mpr (Or.inr (by linarith [(hνb a).1, (hνb a).2, (hνb c).1, (hνb c).2]))`.
+-/
 theorem num_fam : ∀ (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ), Num k r lam u b bv ga h q0 → (bv ≤ b ∧ (1000000 : ℝ) ≤ bv ∧ ((2 * r + k + 1) : ℝ) ≤ b ∧ 100 * (q0 : ℝ) ≤ bv ∧ GapOK k r (h / 2)) ∧ ∀ ν : Fin (2 * r + k + 1) → ℤ, n1 ν ≤ q0 → Formalism.QuantumDeterminants.IsHCParam (fun a => lam a + (ν a : ℝ)) ∧ Shape (PI.BesselPeriodGGP.eps48 k r) k (fun a => lam a + (ν a : ℝ)) bv ∧ Formalism.QuantumDeterminants.GapAtLeast (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν a : ℝ)) (h / 2) ∧ ∀ a c, a < c → 2 ≤ (lam a + (ν a : ℝ)) - (lam c + (ν c : ℝ)) := by
   intro k r lam u b bv ga h q0 H
   obtain ⟨hhb, hgaps⟩ := le_bv_and_lam_gap_of_num k r lam u b bv ga h q0 H

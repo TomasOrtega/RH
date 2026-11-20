@@ -4,6 +4,15 @@ open NumberField MeasureTheory Formalism.L2.Host GlobalTheory.CuspRep GlobalTheo
 open UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Bor
 open scoped GlobalTheory.CuspRep.CuspidalL2GL
 
+/- English proof (translation)
+Introduce `E _ _ _ a μ _ F hF hpos hI h0`. Establish `hL : GlobalTheory.AutomorphicL2Unitary.LeftInv (latticeGL E a) F` using `CuspidalL2GL.leftInv_latticeGL hF.left hF.centre`. Establish `hn : ∀ g, F g = ((‖F g‖ : ℝ) : ℂ)` using `fun g => by`. Take `⟨t, ht, e⟩` from `hpos g`. Rewrite using `[e, Complex.norm_real, Real.norm_of_nonneg ht]`.
+
+Establish `h1 : ∫ x : GlobalTheory.AutomorphicL2Unitary.Quot (latticeGL E a), ‖F x.out‖ ∂(GlobalTheory.AutomorphicL2Unitary.quotMeasure (latticeGL E a) μ) = 0`. Establish `h2 : Pf.qint μ F = ((∫ x : GlobalTheory.AutomorphicL2Unitary.Quot (latticeGL E a), ‖F x.out‖ ∂(GlobalTheory.AutomorphicL2Unitary.quotMeasure (latticeGL E a) μ) : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun x => hn _)`. Rewrite `h2` using `[h0]`.
+
+Conclude with `h2.symm` after adjusting the coercions. Establish `h3` using `(integral_eq_zero_iff_of_nonneg (fun x => norm_nonneg _) (Integrable.norm hI)).1 h1`. Establish `h4 : F =ᵐ[μ] fun _ => 0` using `by filter_upwards [GlobalTheory.AutomorphicL2Unitary.ae_quotMeasure_iff.1 h3] with g hg`. Establish `e : F (GlobalTheory.AutomorphicL2Unitary.mk (latticeGL E a) g).out = F g` using `hL.descend_mk g`. Simplify `hg` using `[e]`.
+
+Conclude with `fun g => congrFun ((Continuous.ae_eq_iff_eq μ hF.cont continuous_const).1 h4) g`.
+-/
 theorem UpperTheory.V.Lit.Geo.Pf.zeroInt :
     UpperTheory.V.Lit.Geo.Pf.ZeroInt := by
   intro E _ _ _ a μ _ F hF hpos hI h0

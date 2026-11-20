@@ -24,10 +24,20 @@ def ev_k (w : _root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d) (z : ℂ) (u
     4 * Real.pi * Complex.I * z.im * (⟪w, u⟫_ℝ + z.re * ((‖w‖ ^ 2 : ℝ) : ℂ)) +
     ((-(2 * Real.pi * (‖u‖ ^ 2 + 2 * z.re * ⟪w, u⟫_ℝ + z.re ^ 2 * ‖w‖ ^ 2)) : ℝ) : ℂ)
 def bv_k (w : _root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d) (z : ℂ) (u : _root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d) : ℂ := star (Complex.exp (_root_.PositivityTheory.SiegelWeilFormula.KFP.ev_k w z u))
+/- English proof (translation)
+Rewrite using `[norm_add_sq_real, inner_smul_right, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, real_inner_comm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_add_smul_sq_k (w u : _root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d) (x : ℝ) :
     ‖u + x • w‖ ^ 2 = ‖u‖ ^ 2 + 2 * x * ⟪w, u⟫_ℝ + x ^ 2 * ‖w‖ ^ 2 := by
   rw [norm_add_sq_real, inner_smul_right, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, real_inner_comm]
   ring
+/- English proof (translation)
+Unfold `_root_.PositivityTheory.SiegelWeilFormula.KFP.vline_k`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFP.T_rho_sum'_k hH hΩ, _root_.PositivityTheory.SiegelWeilFormula.KFP.psi_sp_k R hW, _root_.PositivityTheory.SiegelWeilFormula.KFP.psi_tw_k R hW, hTΩ]`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.KFP.vac_k]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFP.gau_eq_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.arc_add_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.arc_realAd_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.fin_add_of_k R (_root_.PositivityTheory.SiegelWeilFormula.KF …`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.KFP.bv_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.ev_k]`.
+
+Rewrite using `[show star (Complex.exp _) = Complex.exp (conj _) from (Complex.exp_conj _).symm, Complex.ofReal_exp, ← mul_assoc, ← mul_assoc, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 2`. Rewrite using `[inner_add_right, inner_smul_right, real_inner_self_eq_norm_sq, _root_.PositivityTheory.SiegelWeilFormula.KFP.norm_add_smul_sq_k]`. Simplify using `only [map_add, map_sub, map_mul, map_ofNat, Complex.conj_I, Complex.conj_ofReal]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem T_vline_k (hH : _root_.PositivityTheory.SiegelWeilFormula.THeis_k) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {g : _root_.PositivityTheory.SiegelWeilFormula.KFP.Yf_k d → ℂ} {Ω : d.Fn} (hΩ : Ω ∈ d.sch) (hTΩ : d.T Ω = _root_.PositivityTheory.SiegelWeilFormula.KFP.vac_k R g)
     {W : Mx F E d.m d.n} (hW : finOne F • W = 0) (z : ℂ) (X : Mx F E d.m d.n) :
     d.T (d.dd.rho d.B.ψ (_root_.PositivityTheory.SiegelWeilFormula.KFP.vline_k R W z) Ω) X = _root_.PositivityTheory.SiegelWeilFormula.KFP.bv_k (_root_.PositivityTheory.SiegelWeilFormula.KFP.arc_k R W) z (_root_.PositivityTheory.SiegelWeilFormula.KFP.arc_k R X) * g (_root_.PositivityTheory.SiegelWeilFormula.KFP.fin_k d X) := by
@@ -43,10 +53,18 @@ theorem T_vline_k (hH : _root_.PositivityTheory.SiegelWeilFormula.THeis_k) (R : 
   simp only [map_add, map_sub, map_mul, map_ofNat, Complex.conj_I, Complex.conj_ofReal]
   push_cast
   ring
+/- English proof (translation)
+Unfold `_root_.PositivityTheory.SiegelWeilFormula.KFP.bv_k _root_.PositivityTheory.SiegelWeilFormula.KFP.ev_k`. Use `continuous_star.comp (Complex.continuous_exp.comp ?_)` and prove the remaining obligations. Use `fun_prop`.
+-/
 theorem continuous_bv_k (w : _root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d) (z : ℂ) : Continuous (_root_.PositivityTheory.SiegelWeilFormula.KFP.bv_k w z) := by
   unfold _root_.PositivityTheory.SiegelWeilFormula.KFP.bv_k _root_.PositivityTheory.SiegelWeilFormula.KFP.ev_k
   refine continuous_star.comp (Complex.continuous_exp.comp ?_)
   fun_prop
+/- English proof (translation)
+Unfold `_root_.PositivityTheory.SiegelWeilFormula.KFP.bv_k`. Rewrite using `[norm_star, Complex.norm_exp]`. Apply `Real.exp_le_one_iff.2` to reduce the goal to its premises. Establish `h : ‖u‖ ^ 2 + 2 * z.re * ⟪w, u⟫_ℝ + z.re ^ 2 * ‖w‖ ^ 2 ≥ 0`. Rewrite using `[← _root_.PositivityTheory.SiegelWeilFormula.KFP.norm_add_smul_sq_k]`.
+
+Check the signs of the components of the expression. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.KFP.ev_k, Complex.sub_re, Complex.add_re, Complex.mul_re, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im, Complex.re_ofNat, Complex.im_ofNat, Complex.add_im, Complex.mul_im]`. Use polynomial arithmetic with `[Real.pi_pos]`.
+-/
 theorem norm_bv_le_k (w : _root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d) (z : ℂ) (u : _root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d) : ‖_root_.PositivityTheory.SiegelWeilFormula.KFP.bv_k w z u‖ ≤ 1 := by
   unfold _root_.PositivityTheory.SiegelWeilFormula.KFP.bv_k
   rw [norm_star, Complex.norm_exp]

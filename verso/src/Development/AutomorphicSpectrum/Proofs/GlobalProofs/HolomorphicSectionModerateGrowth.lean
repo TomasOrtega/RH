@@ -16,6 +16,17 @@ open GlobalTheory GlobalTheory.CxPts
 
 namespace GlobalTheory.CompanionTheory.Gaga
 
+/- English proof (translation)
+Introduce `Y p hp B hB s hs hc i V hVa hV`. Use `compactSpace_cxPts_of_isProper Y p hp` as an intermediate fact. Take `⟨n, u, hu⟩` from `GlobalTheory.T.regular_function_polynomial_growth Y p inferInstance inferInstance V hVa`. Use `⟨n, u, ?_⟩` and prove the remaining obligations. Establish `h0 (y) : 0 ≤ ∑ l, ‖ev p (RingHom.id ℂ) V (u l) y‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+
+Use `SectionGrowth.global_bound _ (fun y => ‖s i y‖) _ (fun y => le_add_of_nonneg_right (h0 y)) fun y₀ => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_mem_ptsIn hB.cover y₀`. Take `⟨W, hW, hxW, hle⟩` from `exists_isAffineOpen_mem_and_subset (U := B.U j) (mem_ptsIn.1 hj)`. Establish `h2 : W ≤ B.U j` using `hle`. Establish `hW₀ : y₀ ∈ ptsIn p (RingHom.id ℂ) W` using `mem_ptsIn.2 hxW`.
+
+Establish `h3 : V ⊓ W ≤ B.U i ⊓ B.U j` using `inf_le_inf hV h2`. Take `⟨r, m, w, hb⟩` from `hu W hW (resG Y h3 (B.g i j).val)`. Establish `hn` using `(isOpen_ptsIn W).mem_nhds hW₀`. Set `F : CxPts p (RingHom.id ℂ) → ℝ` to `fun y => (∑ k, ‖ev p (RingHom.id ℂ) W (w k) y‖) * ‖s j y‖`. Establish `hF : ContinuousAt F y₀` using `(tendsto_finset_sum _ fun k _ => ((continuousOn_ev (w k)).continuousAt hn).norm).mul ((hc j).continuousAt ((isOpen_ptsIn _).mem_nhds hj)).norm`.
+
+Use `⟨|F y₀| + 1, m, by positivity, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hn, hF.eventually (eventually_le_nhds (lt_of_le_of_lt (le_abs_self _) (lt_add_one |F y₀|)))] with y hy hFy hyV`. Establish `hVW : y ∈ ptsIn p (RingHom.id ℂ) (V ⊓ W)` using `mem_ptsIn_inf.2 ⟨hyV, hy⟩`. Establish `hb'` using `hb y hVW`. Establish `hij : y ∈ ptsIn p (RingHom.id ℂ) (B.U i ⊓ B.U j)` using `ptsIn_mono h3 hVW`.
+
+Establish `e : ev p (RingHom.id ℂ) (V ⊓ W) (resG Y h3 (B.g i j).val) y = ev p (RingHom.id ℂ) (B.U i ⊓ B.U j) (B.g i j).val y` using `ev_res _ hVW _`. Rewrite `hb'` using `[e]`. Rewrite using `[hs.1 i j y (ptsIn_mono hV hyV) (ptsIn_mono h2 hy), CxPts.gv, norm_mul]`. Establish `hT : 0 ≤ (1 + ∑ l, ‖ev p (RingHom.id ℂ) V (u l) y‖) ^ m` using `pow_nonneg (add_nonneg zero_le_one (h0 y)) _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem continuous_section_polynomial_growth_of_isProper : ∀ (Y : Scheme.{0}) (p : Y ⟶ Sp ℂ), IsProper p → ∀ (B : LB Y), B.IsLB → ∀ s ∈ fibSec p (RingHom.id ℂ) B, (∀ j, ContinuousOn (s j) (ptsIn p (RingHom.id ℂ) (B.U j))) → ∀ (i : B.ι) (V : Y.Opens), IsAffineOpen V → V ≤ B.U i → ∃ (n : ℕ) (u : Fin n → Γ(Y, V)) (C : ℝ) (m : ℕ), ∀ y ∈ ptsIn p (RingHom.id ℂ) V, ‖s i y‖ ≤ C * (1 + ∑ l, ‖ev p (RingHom.id ℂ) V (u l) y‖) ^ m := by
   intro Y p hp B hB s hs hc i V hVa hV
   have := compactSpace_cxPts_of_isProper Y p hp

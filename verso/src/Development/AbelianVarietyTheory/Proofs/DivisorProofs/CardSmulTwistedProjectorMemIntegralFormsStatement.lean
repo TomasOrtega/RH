@@ -4,6 +4,9 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.GramCEqTranspose
 open NumberField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.card_smul_eOp_mem_Mall | exact GlobalTheory.card_smul_eOp_mem_Mall | (intros; apply GlobalTheory.card_smul_eOp_mem_Mall <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.card_smul_twistedProjector_mem_integralForms : ∀ {LL Ks : Type} [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] [Algebra Ks LL]
     {WL : Type} [AddCommGroup WL] [Module LL WL] [Module Ks WL] [IsScalarTower Ks LL WL]
     [Module (𝓞 LL) WL] [IsScalarTower (𝓞 LL) LL WL] [Module (𝓞 Ks) WL] [IsScalarTower (𝓞 Ks) Ks WL]

@@ -23,6 +23,11 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   (A : Rep.{u} k G) [IsDiscreteRep A] (Aᵥ : ∀ v, Rep.{u} k (H v)) [∀ v, IsDiscreteRep (Aᵥ v)]
   (a : ∀ v, Rep.res (φ v).toMonoidHom A ⟶ Aᵥ v)
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Use `mono_compactToGlobal_zero φ A Aᵥ a` as an intermediate fact. Conclude with `Finite.of_injective _ ((ModuleCat.mono_iff_injective _).1 this)`. Consider the case `succ m`.
+
+Establish `: ∀ v, Finite (cohomology (Aᵥ v) m)` using `hloc m rfl`. Establish `: Finite (ModuleCat.of k (∀ v, cohomology (Aᵥ v) m))` using `inferInstanceAs (Finite (∀ v, cohomology (Aᵥ v) m))`. Conclude with `finite_of_exact (localToCompact φ A Aᵥ a m).hom.toAddMonoidHom (compactToGlobal φ A Aᵥ a (m + 1)).hom.toAddMonoidHom ((ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 (compactCohomology_exact_compact φ A Aᵥ a m))`.
+-/
 theorem finite_compactCohomology [Finite ι] (n : ℕ) [Finite (cohomology A n)]
     (hloc : ∀ m, m + 1 = n → ∀ v, Finite (cohomology (Aᵥ v) m)) :
     Finite (compactCohomology φ A Aᵥ a n) := by
@@ -44,6 +49,9 @@ end Abstract
 variable (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) [Finite S]
   (ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))
 
+/- English proof (translation)
+Use `finite_compactCohomology _ M _ _ r fun m _ v => ?_` and prove the remaining obligations. Establish `: Finite (Rep.res (gsFinFamily S ιs v).toMonoidHom M)` using `inferInstanceAs (Finite M)`. Use `finite_cohomology_localField _ (by` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((Nat.card M : ℕ) : (v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) ≠ 0`. Conclude with `Nat.cast_ne_zero.2 Nat.card_pos.ne') m`.
+-/
 theorem finite_compactCohomologyRes_gs_of_finite
     (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep M] [Finite M]
     (r : ℕ) [Finite (cohomology M r)] :
@@ -54,6 +62,9 @@ theorem finite_compactCohomologyRes_gs_of_finite
     change ((Nat.card M : ℕ) : (v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) ≠ 0
     exact Nat.cast_ne_zero.2 Nat.card_pos.ne') m
 
+/- English proof (translation)
+Use `finite_cohomology_gs K S M hS r hr` as an intermediate fact. Conclude with `finite_compactCohomologyRes_gs_of_finite K S ιs M r`.
+-/
 theorem finite_compactCohomologyRes_gs
     (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep M] [Finite M]
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((Nat.card M : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)

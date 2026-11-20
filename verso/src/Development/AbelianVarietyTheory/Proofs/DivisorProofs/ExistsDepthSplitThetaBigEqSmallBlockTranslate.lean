@@ -19,6 +19,9 @@ open GlobalTheory.PureMatch GlobalTheory.SquareFlipReach ValuativeRel
 
 namespace GlobalTheory.PureMatch
 
+/- English proof (translation)
+Simplify using `only [smallP, smallF, mul_assoc, integral_const_mul, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem smallP_smul_measure_mul {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] {A A' C : Type} [Fintype A'] [DecidableEq A'] [Fintype C] [DecidableEq C]
     (μ : Measure (GL A' k)) (c : NNReal) (z : ℂ) (σ : A ⊕ A' ≃ C) (ν α : kˣ →* ℂˣ) (Ψ : Matrix A' C k → ℂ)
@@ -27,6 +30,9 @@ theorem smallP_smul_measure_mul {k : Type} [Field k] [ValuativeRel k] [Topologic
     Complex.real_smul]
   ring
 
+/- English proof (translation)
+Simplify using `only [bigZetaIntegral_eq, bigF, shellSum_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bigZetaIntegral_const_mul {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] {a : ℕ} {A' C : Type} [Fintype C] [DecidableEq C]
     (μ : @Measure (GL (Fin a) k) Units.instMeasurableSpace) (ϖ : kˣ) (σ : Fin a ⊕ A' ≃ C) (ν β : kˣ →* ℂˣ) (z : ℂ)
@@ -35,6 +41,23 @@ theorem bigZetaIntegral_const_mul {k : Type} [Field k] [ValuativeRel k] [Topolog
   simp only [bigZetaIntegral_eq, bigF, shellSum_smul]
   ring
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ a A' C _ _ _ _ μ₀ _ σ ν β ϖ P g₀ c₀ Ψ hΨ hϖ`. Establish `hΨ' : (fun Y : Matrix A' C k => Ψ (Y * c₀.valᵀ)) ∈ GlobalTheory.WeilM.SB (Matrix A' C k)`. Use `comp_mul_mem_SB (1 : GL A' k) (invT c₀)⁻¹ hΨ` as an intermediate fact. Simplify using `only [invT_inv_val, Units.val_one, Matrix.one_mul] at this`. Conclude with `this`.
+
+Take `⟨m, hm⟩` from `GlobalTheory.T.schwartzBruhat_blockScaled_hasLatticeDepth k A' C ϖ P _ hΨ' hϖ`. Use `⟨m, fun n hn μ _ σ' r hr => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hphi⟩` from `GlobalTheory.T.exists_ne_zero_primitiveFrameDatum_renumber k (Fin a) A' C μ σ σ' ν`. Take `⟨c, hc0, hc⟩ : ∃ c : NNReal, c ≠ 0 ∧ μ = c • μ₀` from `⟨Measure.haarScalarFactor μ μ₀, (Measure.haarScalarFactor_pos_of_isHaarMeasure μ μ₀).ne', Measure.isMulLeftInvariant_eq_smul μ μ₀⟩`. Use `set N : GL C k := c₀ * diagGL (fun col => if col ∈ P then ϖ ^ m else (ϖ ^ m)⁻¹) with hN`.
+
+Use `set κ : ℂ := (ν (gdet g₀) : ℂ) * apow (gdet g₀) ((Fintype.card C : ℂ) / 2) * (ν (gdet N) : ℂ) * apow (gdet N) ((Fintype.card C : ℂ) / 2) with hκ`. Establish `hκ0 : κ ≠ 0` using `mul_ne_zero (mul_ne_zero (mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _)) (Units.ne_zero _)) (apow_ne_zero _ _)`. Establish `hc0' : ((c : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc0`. Establish `hNT : ∀ Y : Matrix A' C k, Y * N.valᵀ = Y * diagonal (fun col => if col ∈ P then ((ϖ ^ m : kˣ) : k) else (((ϖ ^ m)⁻¹ : kˣ) : k)) * c₀.valᵀ`. Introduce `Y`.
+
+Rewrite using `[hN, Units.val_mul, transpose_mul, diagGL_val, diagonal_transpose, Matrix.mul_assoc]`. Use `congr 3`. Use function extensionality and compare the values at `col`. Apply the tactic sequence `split_ifs <;> rfl`. Use `⟨fun Y => (κ / (r * u * c)) * Ψ (Y * N.valᵀ), ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `(depthSpace A' ϖ n (blockLat ϖ n P)).smul_mem (κ / (r * u * c)) (hm n hn)`. Simplify using `only [hNT]`. Conclude with `h1`. Use function extensionality and compare the values at `h`. Establish `h2` using `GlobalTheory.T.zetaIntegral_twoSidedMovedDatum_eq_smallZeta k a A' C μ σ ν β ϖ n (blockUnits ϖ n P) (fun Y => (κ / (r * u * c)) * Ψ (Y * N.valᵀ)) g₀ N h hϖ`.
+
+Establish `h3 : ∀ Y : Matrix A' C k, Y * (invT N).val * N.valᵀ = Y` using `fun Y => by`. Rewrite using `[Matrix.mul_assoc, ← invT_inv_val, Units.mul_inv, Matrix.mul_one]`. Simplify using `only [h3] at h2`. Establish `h4` using `smallP_smul_measure_mul μ₀ c (κ / (r * u * c)) σ ν (ν * β) Ψ h`. Rewrite `h4` using `[← hc, ← h2, ← hκ]`.
+
+Simplify using `only [hphi, ← mul_assoc]`. Rewrite using `[bigZetaIntegral_const_mul]`. Apply `mul_left_cancel₀ hκ0` to reduce the goal to its premises. Rewrite using `[mul_left_comm]`. Use `(congrArg (fun x => r * u * x) h4).trans ?_` and prove the remaining obligations.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_depth_bigP_eq_smallP : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (a : ℕ) (A' C : Type) [Fintype A'] [DecidableEq A'] [Fintype C] [DecidableEq C] (μ₀ : Measure (GL A' k)) [μ₀.IsHaarMeasure]
     (σ : Fin a ⊕ A' ≃ C) (ν β : kˣ →* ℂˣ) (ϖ : kˣ) (P : Finset C) (g₀ : GL (Fin a) k) (c₀ : GL C k) (Ψ : Matrix A' C k → ℂ),

@@ -88,6 +88,11 @@ noncomputable section
 namespace GlobalTheory.ThetaTri
 open MeasureTheory Formalism.IndefR.Datum GlobalTheory.ThetaLoc
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n r : ℕ}
+/- English proof (translation)
+Establish `hle : (⨆ (ι : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin r) (s.w.adicCompletion E)) →ₗ[ℂ] Θ) (_ : IsLinAt ω₁ s μ η ι ∧ ∀ Φ, P (ι Φ)), LinearMap.range ι).map T ≤ ⨆ (ι : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin r) (s.w.adicCompletion E)) →ₗ[ℂ] Ω) (_ : IsLinAt ω₂ s μ η ι ∧ …`. Rewrite using `[Submodule.map_iSup]`. Use `iSup_le fun ι => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_iSup]`. Use `iSup_le fun hι => ?_` and prove the remaining obligations.
+
+Rewrite using `[← LinearMap.range_comp]`. Conclude with `le_iSup₂_of_le (T ∘ₗ ι) ⟨isLinAt_comp ω₁ ω₂ P T hT s μ η ι hι.2 hι.1, fun Φ => hTQ _ (hι.2 Φ)⟩ le_rfl`. Conclude with `hle (Submodule.mem_map_of_mem hf)`.
+-/
 theorem map_mem_iSup_range_isLinAt {Θ Ω : Type} [AddCommGroup Θ] [Module ℂ Θ] [AddCommGroup Ω] [Module ℂ Ω]
     (ω₁ : GAf E n × GAf E r →* Module.End ℂ Θ) (ω₂ : GAf E n × GAf E r →* Module.End ℂ Ω)
     (P : Θ → Prop) (Q : Ω → Prop) (T : Θ →ₗ[ℂ] Ω) (hT : ∀ p f, P f → T (ω₁ p f) = ω₂ p (T f))
@@ -107,6 +112,9 @@ theorem map_mem_iSup_range_isLinAt {Θ Ω : Type} [AddCommGroup Θ] [Module ℂ 
     rw [← LinearMap.range_comp]
     exact le_iSup₂_of_le (T ∘ₗ ι) ⟨isLinAt_comp ω₁ ω₂ P T hT s μ η ι hι.2 hι.1, fun Φ => hTQ _ (hι.2 Φ)⟩ le_rfl
   exact hle (Submodule.mem_map_of_mem hf)
+/- English proof (translation)
+Set `bB` to `Module.finBasis ℂ B`. Rewrite using `[eq_sum_single1 bB φ]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Conclude with `_root_.GlobalTheory.ThetaTri.map_mem_iSup_range_isLinAt ω (valAct1 ω) P Q (single1 (bB.coord l)) (fun p f _ => single1_valAct1 ω _ p f) (fun f hf => hQ _ f hf) s μ η (hφ _)`.
+-/
 theorem mem_iSup_range_isLinAt_valAct1 {Θ B : Type} [AddCommGroup Θ] [Module ℂ Θ] [AddCommGroup B] [Module ℂ B]
     [FiniteDimensional ℂ B] (ω : GAf E n × GAf E r →* Module.End ℂ Θ) (P : Θ → Prop) (Q : (B →ₗ[ℂ] Θ) → Prop)
     (hQ : ∀ β f, P f → Q (single1 β f))

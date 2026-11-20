@@ -4,6 +4,15 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ChoiceOfTops
 
 open Finset UpperTheory.BernoulliSumsFrobeniusOrbits Formalism.G0
 
+/- English proof (translation)
+Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty`. Introduce `f _ _`. Rewrite using `[GlobalTheory.RandomTops.ex_empty]`. Simplify using `[exP]`.
+
+Consider the case `insert a S ha ih`. Introduce `f hf hp`. Establish `hpS : ∀ b ∈ S, 0 ≤ p b ∧ p b ≤ δ` using `fun b hb => hp b (Finset.mem_insert_of_mem hb)`. Take `⟨hpa0, hpa1⟩` from `hp a (Finset.mem_insert_self _ _)`. Establish `e1` using `ih f hf hpS`.
+
+Establish `e2` using `ih (fun T => f (insert a T)) (fun T U hTU => hf (Finset.insert_subset_insert a hTU)) hpS`. Establish `e3 : GlobalTheory.RandomTops.ex δ S f ≤ GlobalTheory.RandomTops.ex δ S (fun T => f (insert a T))` using `GlobalTheory.RandomTops.ex_mono h0 h1 fun T _ => hf (Finset.subset_insert a T)`. Rewrite using `[(UpperTheory.BernoulliSumsFrobeniusOrbits.expectation_spec p).2.2.2.2.1 a S f ha, GlobalTheory.RandomTops.ex_insert ha]`. Establish `k1` using `mul_le_mul_of_nonneg_left e1 (show 0 ≤ 1 - p a by linarith)`. Establish `k2` using `mul_le_mul_of_nonneg_left e2 hpa0`.
+
+Establish `k3` using `mul_le_mul_of_nonneg_left e3 (show 0 ≤ δ - p a by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem UpperTheory.BernoulliSumsFrobeniusOrbits.bernoulliExpectation_le_of_monotone (p : ℕ → ℝ) (δ : ℝ) (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (A : Finset ℕ) :
     ∀ f : Finset ℕ → ℝ, Monotone f → (∀ a ∈ A, 0 ≤ p a ∧ p a ≤ δ) →
       exP p A f ≤ GlobalTheory.RandomTops.ex δ A f := by
@@ -27,6 +36,11 @@ private theorem UpperTheory.BernoulliSumsFrobeniusOrbits.bernoulliExpectation_le
     have k3 := mul_le_mul_of_nonneg_left e3 (show 0 ≤ δ - p a by linarith)
     linarith
 
+/- English proof (translation)
+Introduce `p δ A G K hp h0 h1 hG`. Establish `hmono : Monotone (fun T : Finset ℕ => ind (K ≤ T.card))`. Introduce `T U hTU`. Establish `hc` using `Finset.card_le_card hTU`. Simplify using `only [ind]`.
+
+Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | norm_num`. Establish `hle` using `UpperTheory.BernoulliSumsFrobeniusOrbits.bernoulliExpectation_le_of_monotone p δ h0 h1 A _ hmono hp`. Conclude with `⟨le_trans hle (GlobalTheory.RandomTops.tail_le_choose h0 h1 hG K), le_trans hle (GlobalTheory.RandomTops.tail_le_binUpper h0 h1 hG K)⟩`.
+-/
 theorem UpperTheory.BernoulliSumsFrobeniusOrbits.tail_le :
     ∀ (p : ℕ → ℝ) (δ : ℝ) (A : Finset ℕ) (G K : ℕ), (∀ a ∈ A, 0 ≤ p a ∧ p a ≤ δ) → 0 ≤ δ → δ ≤ 1 → A.card ≤ G →
       exP p A (fun T => ind (K ≤ T.card)) ≤ (G.choose K : ℝ) * δ ^ K ∧ exP p A (fun T => ind (K ≤ T.card)) ≤ binUpper G δ K := by

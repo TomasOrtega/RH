@@ -159,6 +159,9 @@ def ChartAt.toRaw [StarRing (𝓞 E)] {S : Type} [CommRing S] [Algebra c.F S] [A
     ⟨C.chart.zero, C.chart.trunc, C.chart.law, C.chart.act, C.chart.tan, C.chart.basis⟩,
     ⟨C.frame.gen, C.frame.ph1, C.frame.ph2, C.frame.sy, C.frame.ad⟩, C.prim, C.gauge, C.rig0⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isGerm_iff_raw {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (d : ℕ)
     (x : ∀ m, jO y d m 1 ⟶ Xo.univ.t.G) (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S)
     (e : ∀ m, FrTy y d x m) (wP : PrimTy H Xo) (k : ℕ)

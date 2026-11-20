@@ -11,27 +11,48 @@ variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] {r : ℕ
 
 def pV (D : Dat A n r) : (n → A) →ₗ[A] (n → A) := LinearMap.id - D.pX - D.pXv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem hL_apply_lemma (D : Dat A n r) (x y : n → A) : D.hL x y = D.h x y := rfl
 
+/- English proof (translation)
+Simplify using `only [Dat.pX, LinearMap.sum_apply, LinearMap.smulRight_apply, hL_apply_lemma]`.
+-/
 private theorem pX_apply_lemma_2 (D : Dat A n r) (x : n → A) :
     D.pX x = ∑ a, D.h (D.f a) x • D.e a := by
   simp only [Dat.pX, LinearMap.sum_apply, LinearMap.smulRight_apply, hL_apply_lemma]
 
+/- English proof (translation)
+Simplify using `only [Dat.pXv, LinearMap.sum_apply, LinearMap.smulRight_apply, hL_apply_lemma]`.
+-/
 private theorem pXv_apply_lemma_3 (D : Dat A n r) (x : n → A) :
     D.pXv x = ∑ a, D.h (D.e a) x • D.f a := by
   simp only [Dat.pXv, LinearMap.sum_apply, LinearMap.smulRight_apply, hL_apply_lemma]
 
+/- English proof (translation)
+The claim follows from `map_add (D.hL v) x y`.
+-/
 private theorem h_add_lemma_4 (D : Dat A n r) (v x y : n → A) : D.h v (x + y) = D.h v x + D.h v y :=
   map_add (D.hL v) x y
 
+/- English proof (translation)
+The claim follows from `map_sub (D.hL v) x y`.
+-/
 private theorem h_sub_lemma_5 (D : Dat A n r) (v x y : n → A) : D.h v (x - y) = D.h v x - D.h v y :=
   map_sub (D.hL v) x y
 
+/- English proof (translation)
+Rewrite using `[← hL_apply_lemma, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, hL_apply_lemma]`.
+-/
 private theorem h_sum_lemma_6 (D : Dat A n r) (v : n → A) (t : Fin r → A) (w : Fin r → n → A) :
     D.h v (∑ a, t a • w a) = ∑ a, t a * D.h v (w a) := by
   rw [← hL_apply_lemma, map_sum]
   simp only [map_smul, smul_eq_mul, hL_apply_lemma]
 
+/- English proof (translation)
+Use `show (∑ i, ∑ j, D.σA (y i) * D.JA i j * x j) = D.σA (∑ i, ∑ j, D.σA (x i) * D.JA i j * y j)`. Simplify using `only [map_sum, map_mul, H.σσ, H.herm]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 private theorem h_swap_lemma_7 (D : Dat A n r) (H : D.Hyp) (x y : n → A) :
     D.h y x = D.σA (D.h x y) := by
   show (∑ i, ∑ j, D.σA (y i) * D.JA i j * x j) = D.σA (∑ i, ∑ j, D.σA (x i) * D.JA i j * y j)
@@ -39,22 +60,37 @@ private theorem h_swap_lemma_7 (D : Dat A n r) (H : D.Hyp) (x y : n → A) :
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Rewrite using `[h_swap_lemma_7 D H, H.ef]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem h_fe_lemma_8 (D : Dat A n r) (H : D.Hyp) (a b : Fin r) :
     D.h (D.f a) (D.e b) = if b = a then 1 else 0 := by
   rw [h_swap_lemma_7 D H, H.ef]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[h_swap_lemma_7 D H, h_add_lemma_4, map_add, ← h_swap_lemma_7 D H, ← h_swap_lemma_7 D H]`.
+-/
 private theorem h_add_left_lemma_9 (D : Dat A n r) (H : D.Hyp) (x x' y : n → A) :
     D.h (x + x') y = D.h x y + D.h x' y := by
   rw [h_swap_lemma_7 D H, h_add_lemma_4, map_add, ← h_swap_lemma_7 D H, ← h_swap_lemma_7 D H]
 
+/- English proof (translation)
+Rewrite using `[h_swap_lemma_7 D H, h_sum_lemma_6, map_sum]`. Simplify using `only [map_mul, ← h_swap_lemma_7 D H]`.
+-/
 private theorem h_sum_left_lemma_10 (D : Dat A n r) (H : D.Hyp) (t : Fin r → A) (w : Fin r → n → A)
     (y : n → A) : D.h (∑ a, t a • w a) y = ∑ a, D.σA (t a) * D.h (w a) y := by
   rw [h_swap_lemma_7 D H, h_sum_lemma_6, map_sum]
   simp only [map_mul, ← h_swap_lemma_7 D H]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pV_apply (D : Dat A n r) (x : n → A) : pV D x = x - D.pX x - D.pXv x := rfl
 
+/- English proof (translation)
+Rewrite using `[pV_apply]`. Normalize the expressions using the abelian group laws.
+-/
 theorem decomp (D : Dat A n r) (x : n → A) : x = pV D x + D.pX x + D.pXv x := by
   rw [pV_apply]
   abel
@@ -63,6 +99,9 @@ def levL (D : Dat A n r) (U W : Matrix (Fin r) (Fin r) A) : (n → A) →ₗ[A] 
   pV D + ∑ a, ∑ b, U a b • (D.hL (D.f b)).smulRight (D.e a) +
     ∑ d, ∑ b, W d b • (D.hL (D.e b)).smulRight (D.f d)
 
+/- English proof (translation)
+Simplify using `only [levL, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.smulRight_apply, hL_apply_lemma, Finset.sum_smul, smul_smul]`.
+-/
 theorem levL_apply (D : Dat A n r) (U W : Matrix (Fin r) (Fin r) A) (x : n → A) :
     levL D U W x = pV D x + ∑ a, (∑ b, U a b * D.h (D.f b) x) • D.e a +
       ∑ d, (∑ b, W d b * D.h (D.e b) x) • D.f d := by
@@ -76,40 +115,67 @@ section Hyp
 variable (H : D.Hyp)
 include H
 
+/- English proof (translation)
+Rewrite using `[pX_apply_lemma_2, h_sum_lemma_6]`. Simplify using `[h_fe_lemma_8 D H]`.
+-/
 theorem h_f_pX (c : Fin r) (x : n → A) : D.h (D.f c) (D.pX x) = D.h (D.f c) x := by
   rw [pX_apply_lemma_2, h_sum_lemma_6]
   simp [h_fe_lemma_8 D H]
 
+/- English proof (translation)
+Rewrite using `[pXv_apply_lemma_3, h_sum_lemma_6]`. Simplify using `[H.ff]`.
+-/
 theorem h_f_pXv (c : Fin r) (x : n → A) : D.h (D.f c) (D.pXv x) = 0 := by
   rw [pXv_apply_lemma_3, h_sum_lemma_6]
   simp [H.ff]
 
+/- English proof (translation)
+Rewrite using `[pX_apply_lemma_2, h_sum_lemma_6]`. Simplify using `[H.ee]`.
+-/
 theorem h_e_pX' (c : Fin r) (x : n → A) : D.h (D.e c) (D.pX x) = 0 := by
   rw [pX_apply_lemma_2, h_sum_lemma_6]
   simp [H.ee]
 
+/- English proof (translation)
+Rewrite using `[pXv_apply_lemma_3, h_sum_lemma_6]`. Simplify using `[H.ef]`.
+-/
 theorem h_e_pXv (c : Fin r) (x : n → A) : D.h (D.e c) (D.pXv x) = D.h (D.e c) x := by
   rw [pXv_apply_lemma_3, h_sum_lemma_6]
   simp [H.ef]
 
+/- English proof (translation)
+Rewrite using `[pV_apply, h_sub_lemma_5, h_sub_lemma_5, h_f_pX H, h_f_pXv H]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem h_f_pV (c : Fin r) (x : n → A) : D.h (D.f c) (pV D x) = 0 := by
   rw [pV_apply, h_sub_lemma_5, h_sub_lemma_5, h_f_pX H, h_f_pXv H]
   ring
 
+/- English proof (translation)
+Rewrite using `[pV_apply, h_sub_lemma_5, h_sub_lemma_5, h_e_pX' H, h_e_pXv H]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem h_e_pV (c : Fin r) (x : n → A) : D.h (D.e c) (pV D x) = 0 := by
   rw [pV_apply, h_sub_lemma_5, h_sub_lemma_5, h_e_pX' H, h_e_pXv H]
   ring
 
+/- English proof (translation)
+Rewrite using `[levL_apply, h_add_lemma_4, h_add_lemma_4, h_f_pV H, h_sum_lemma_6, h_sum_lemma_6]`. Simplify using `[h_fe_lemma_8 D H, H.ff]`.
+-/
 theorem h_f_levL (U W : Matrix (Fin r) (Fin r) A) (c : Fin r) (x : n → A) :
     D.h (D.f c) (levL D U W x) = ∑ b, U c b * D.h (D.f b) x := by
   rw [levL_apply, h_add_lemma_4, h_add_lemma_4, h_f_pV H, h_sum_lemma_6, h_sum_lemma_6]
   simp [h_fe_lemma_8 D H, H.ff]
 
+/- English proof (translation)
+Rewrite using `[levL_apply, h_add_lemma_4, h_add_lemma_4, h_e_pV H, h_sum_lemma_6, h_sum_lemma_6]`. Simplify using `[H.ee, H.ef]`.
+-/
 theorem h_e_levL (U W : Matrix (Fin r) (Fin r) A) (c : Fin r) (x : n → A) :
     D.h (D.e c) (levL D U W x) = ∑ b, W c b * D.h (D.e b) x := by
   rw [levL_apply, h_add_lemma_4, h_add_lemma_4, h_e_pV H, h_sum_lemma_6, h_sum_lemma_6]
   simp [H.ee, H.ef]
 
+/- English proof (translation)
+Rewrite using `[pV_apply, pX_apply_lemma_2, pXv_apply_lemma_3]`. Simplify using `only [h_f_levL H, h_e_levL H]`. Rewrite using `[levL_apply]`. Normalize the expressions using the abelian group laws.
+-/
 theorem pV_levL (U W : Matrix (Fin r) (Fin r) A) (x : n → A) :
     pV D (levL D U W x) = pV D x := by
   rw [pV_apply, pX_apply_lemma_2, pXv_apply_lemma_3]
@@ -117,12 +183,20 @@ theorem pV_levL (U W : Matrix (Fin r) (Fin r) A) (x : n → A) :
   rw [levL_apply]
   abel
 
+/- English proof (translation)
+Rewrite using `[decomp D y, decomp D y', h1, pX_apply_lemma_2, pX_apply_lemma_2, pXv_apply_lemma_3, pXv_apply_lemma_3]`. Simplify using `only [h2, h3]`.
+-/
 theorem ext_coord {y y' : n → A} (h1 : pV D y = pV D y')
     (h2 : ∀ c, D.h (D.f c) y = D.h (D.f c) y') (h3 : ∀ c, D.h (D.e c) y = D.h (D.e c) y') :
     y = y' := by
   rw [decomp D y, decomp D y', h1, pX_apply_lemma_2, pX_apply_lemma_2, pXv_apply_lemma_3, pXv_apply_lemma_3]
   simp only [h2, h3]
 
+/- English proof (translation)
+Apply `ext_coord H` to reduce the goal to its premises. Rewrite using `[pV_levL H, pV_levL H, pV_levL H]`. Introduce `c`. Simplify using `only [h_f_levL H, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+
+Introduce `c`. Simplify using `only [h_e_levL H, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem levL_comp (U W U' W' : Matrix (Fin r) (Fin r) A) (x : n → A) :
     levL D U W (levL D U' W' x) = levL D (U * U') (W * W') x := by
   apply ext_coord H
@@ -134,6 +208,11 @@ theorem levL_comp (U W U' W' : Matrix (Fin r) (Fin r) A) (x : n → A) :
     simp only [h_e_levL H, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]
     exact Finset.sum_comm
 
+/- English proof (translation)
+Apply `ext_coord H` to reduce the goal to its premises. Conclude with `pV_levL H 1 1 x`. Introduce `c`. Rewrite using `[h_f_levL H]`. Simplify using `[Matrix.one_apply]`.
+
+Introduce `c`. Rewrite using `[h_e_levL H]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem levL_one (x : n → A) : levL D 1 1 x = x := by
   apply ext_coord H
   · exact pV_levL H 1 1 x
@@ -144,21 +223,35 @@ theorem levL_one (x : n → A) : levL D 1 1 x = x := by
     rw [h_e_levL H]
     simp [Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[levL_apply, pV_apply, pX_apply_lemma_2, pXv_apply_lemma_3]`. Simplify using `[h_fe_lemma_8 D H, H.ee]`.
+-/
 theorem levL_e (U W : Matrix (Fin r) (Fin r) A) (b : Fin r) :
     levL D U W (D.e b) = ∑ a, U a b • D.e a := by
   rw [levL_apply, pV_apply, pX_apply_lemma_2, pXv_apply_lemma_3]
   simp [h_fe_lemma_8 D H, H.ee]
 
+/- English proof (translation)
+Rewrite using `[levL_apply, pV_apply, pX_apply_lemma_2, pXv_apply_lemma_3]`. Simplify using `[H.ff, H.ef]`.
+-/
 theorem levL_f (U W : Matrix (Fin r) (Fin r) A) (b : Fin r) :
     levL D U W (D.f b) = ∑ d, W d b • D.f d := by
   rw [levL_apply, pV_apply, pX_apply_lemma_2, pXv_apply_lemma_3]
   simp [H.ff, H.ef]
 
+/- English proof (translation)
+Rewrite using `[levL_apply, pV_apply, pX_apply_lemma_2, pXv_apply_lemma_3]`. Simplify using `[hf, he]`.
+-/
 theorem levL_alt (U W : Matrix (Fin r) (Fin r) A) {w : n → A} (hf : ∀ b, D.h (D.f b) w = 0)
     (he : ∀ b, D.h (D.e b) w = 0) : levL D U W w = w := by
   rw [levL_apply, pV_apply, pX_apply_lemma_2, pXv_apply_lemma_3]
   simp [hf, he]
 
+/- English proof (translation)
+Establish `key : levL D U W v - v = ∑ a, (∑ b, U a b * D.h (D.f b) v) • D.e a - ∑ a, D.h (D.f a) v • D.e a`. Rewrite using `[levL_apply, pV_apply, pX_apply_lemma_2, pXv_apply_lemma_3]`. Simplify using `only [he, mul_zero, Finset.sum_const_zero, zero_smul, sub_zero, add_zero]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`.
+
+Conclude with `Submodule.sub_mem _ (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)) (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))`.
+-/
 theorem levL_sub_perp (U W : Matrix (Fin r) (Fin r) A) {v : n → A} (he : ∀ b, D.h (D.e b) v = 0) :
     levL D U W v - v ∈ Submodule.span A (Set.range D.e) := by
   have key : levL D U W v - v =
@@ -171,12 +264,23 @@ theorem levL_sub_perp (U W : Matrix (Fin r) (Fin r) A) {v : n → A} (he : ∀ b
     (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))
     (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))
 
+/- English proof (translation)
+Rewrite using `[h_swap_lemma_7 D H, h_e_pV H, map_zero]`.
+-/
 private theorem h_pV_e_lemma_11 (x : n → A) (a : Fin r) : D.h (pV D x) (D.e a) = 0 := by
   rw [h_swap_lemma_7 D H, h_e_pV H, map_zero]
 
+/- English proof (translation)
+Rewrite using `[h_swap_lemma_7 D H, h_f_pV H, map_zero]`.
+-/
 private theorem h_pV_f_lemma_12 (x : n → A) (a : Fin r) : D.h (pV D x) (D.f a) = 0 := by
   rw [h_swap_lemma_7 D H, h_f_pV H, map_zero]
 
+/- English proof (translation)
+Establish `hx : D.h x y = D.h (pV D x) y + D.h (D.pX x) y + D.h (D.pXv x) y` using `by conv_lhs => rw [decomp D x]`. Rewrite using `[h_add_left_lemma_9 D H, h_add_left_lemma_9 D H]`. Establish `hy : D.h (pV D x) y = D.h (pV D x) (pV D y)` using `by conv_lhs => rw [decomp D y]`. Rewrite using `[h_add_lemma_4, h_add_lemma_4, pX_apply_lemma_2, pXv_apply_lemma_3, h_sum_lemma_6, h_sum_lemma_6]`. Simplify using `[h_pV_e_lemma_11 H, h_pV_f_lemma_12 H]`.
+
+Rewrite using `[hx, hy, pX_apply_lemma_2, pXv_apply_lemma_3, h_sum_left_lemma_10 D H, h_sum_left_lemma_10 D H]`.
+-/
 theorem h_decomp (x y : n → A) :
     D.h x y = D.h (pV D x) (pV D y) + ∑ a, D.σA (D.h (D.f a) x) * D.h (D.e a) y +
       ∑ a, D.σA (D.h (D.e a) x) * D.h (D.f a) y := by
@@ -191,6 +295,13 @@ theorem h_decomp (x y : n → A) :
 
 end Hyp
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Use `_ = ∑ b, σ (α b) * β b := by`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `[h]`.
+-/
 theorem sum_conj (σ : A →+* A) (U W : Fin r → Fin r → A) (α β : Fin r → A)
     (h : ∀ b c, ∑ a, σ (U a b) * W a c = if b = c then 1 else 0) :
     ∑ a, σ (∑ b, U a b * α b) * ∑ c, W a c * β c = ∑ b, σ (α b) * β b := by
@@ -207,6 +318,9 @@ theorem sum_conj (σ : A →+* A) (U W : Fin r → Fin r → A) (α β : Fin r �
         rw [Finset.sum_comm]
         simp [h]
 
+/- English proof (translation)
+Rewrite using `[h_decomp H (levL D U W x), h_decomp H x y, pV_levL H, pV_levL H]`. Simplify using `only [h_f_levL H, h_e_levL H]`. Rewrite using `[sum_conj D.σA U W _ _ hUW, sum_conj D.σA W U _ _ hWU]`.
+-/
 theorem levL_uni (H : D.Hyp) (U W : Matrix (Fin r) (Fin r) A)
     (hUW : ∀ b c, ∑ a, D.σA (U a b) * W a c = if b = c then 1 else 0)
     (hWU : ∀ b c, ∑ a, D.σA (W a b) * U a c = if b = c then 1 else 0) (x y : n → A) :

@@ -13,5 +13,8 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.S
 open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.IrrAn
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IrrAn.ptsOf_subset_closure_inter | exact GlobalTheory.IrrAn.ptsOf_subset_closure_inter | (intros; apply GlobalTheory.IrrAn.ptsOf_subset_closure_inter <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.irreducible_dense_open_analytic : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [LocallyOfFiniteType p] (σ : k →+* ℂ) (T : Set (Limits.pullback p (spMap σ) : Scheme.{0})) (W : (Limits.pullback p (spMap σ) : Scheme.{0}).Opens), IsClosed T → IsIrreducible T → (T ∩ (W : Set (Limits.pullback p (spMap σ) : Scheme.{0}))).Nonempty → GlobalTheory.IrrAn.ptsOf p σ T ⊆ closure (GlobalTheory.IrrAn.ptsOf p σ (T ∩ (W : Set (Limits.pullback p (spMap σ) : Scheme.{0})))) := by
   first | exact @GlobalTheory.IrrAn.ptsOf_subset_closure_inter | exact GlobalTheory.IrrAn.ptsOf_subset_closure_inter | (intros; apply GlobalTheory.IrrAn.ptsOf_subset_closure_inter <;> assumption)

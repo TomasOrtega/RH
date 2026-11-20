@@ -21,12 +21,24 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ChainDesc.KerJ
 
+/- English proof (translation)
+Take `⟨y, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hx`. Use `(Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨piMap φ (Fin h) y, trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`.
+-/
 theorem piMap_mem_baseOf {A R : Type} [CommRing A] [CommRing R] (φ : A →+* R) {h : ℕ} {π : A} {x : Fin h → A}
     (hx : x ∈ baseOf π h) : piMap φ (Fin h) x ∈ baseOf (φ π) h := by
   obtain ⟨y, -, rfl⟩ := (Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hx
   refine (Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨piMap φ (Fin h) y, trivial, ?_⟩
   rw [LinearMap.map_smulₛₗ]
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 ?_) fun z hz => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `piMap_mem_baseOf φ ((hS x).1 hx)`. Take `⟨y, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hz`. Rewrite using `[pi_eq_sum_univ' y, Finset.smul_sum]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Establish `hm : π • (fun j => if j = i then (1 : A) else 0) ∈ baseOf π h` using `(Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨_, trivial, rfl⟩`. Take `⟨x, hx⟩` from `hκ _ hm`.
+
+Use `⟨x, (hS x).2 (hx ▸ hm), ?_⟩` and prove the remaining obligations. Rewrite using `[hx, LinearMap.map_smulₛₗ]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `_ = φ (if j = i then (1 : A) else 0)`.
+
+Apply the tactic sequence `split_ifs with hj <;> simp [hj]`.
+-/
 theorem span_eq_baseOf {A R P : Type} [CommRing A] [CommRing R] (φ : A →+* R) {h : ℕ} {π : A} (κ : P → (Fin h → A))
     (S : P → Prop) (hS : ∀ x, S x ↔ κ x ∈ baseOf π h) (hκ : ∀ y ∈ baseOf π h, ∃ x, κ x = y) :
     Submodule.span R {z | ∃ x₀ : P, S x₀ ∧ z = piMap φ (Fin h) (κ x₀)} = baseOf (φ π) h := by
@@ -49,6 +61,11 @@ theorem span_eq_baseOf {A R P : Type} [CommRing A] [CommRing R] (φ : A →+* R)
     change _ = φ (if j = i then (1 : A) else 0)
     split_ifs with hj <;> simp [hj]
 
+/- English proof (translation)
+Use `⟨fun ⟨x', hx', hc⟩ => ?_, fun hc => ⟨x, hx, hc⟩⟩` and prove the remaining obligations. Establish `hd : ∑ l, c l • piMap φ _ (x l).1 - ∑ l, c l • piMap φ _ (x' l).1 ∈ baseOf (φ π) h`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_sub, ← map_sub]`.
+
+Conclude with `Submodule.smul_mem _ _ (piMap_mem_baseOf φ ((Submodule.Quotient.eq ((baseOf π h).comap (C.L 0).subtype)).1 ((hx l).symm.trans (hx' l))))`. Simplify using `using Submodule.add_mem _ hd hc`.
+-/
 theorem mem_kerJ_iff {A R : Type} [CommRing A] [CommRing R] {p h o : ℕ} {π : A} {γ : ℕ → A} {Lie Om : Type}
     [AddCommGroup Lie] [Module A Lie] [AddCommGroup Om] [Module A Om] (C : RChain p A h o π γ Lie Om) (φ : A →+* R) {r : ℕ}
     (y : Fin r → Lie) (x : Fin r → C.L 0) (hx : ∀ l, C.j (y l) = Submodule.Quotient.mk (x l)) (c : Fin r → R) :
@@ -62,6 +79,19 @@ theorem mem_kerJ_iff {A R : Type} [CommRing A] [CommRing R] {p h o : ℕ} {π : 
       ((Submodule.Quotient.eq ((baseOf π h).comap (C.L 0).subtype)).1 ((hx l).symm.trans (hx' l))))
   simpa using Submodule.add_mem _ hd hc
 
+/- English proof (translation)
+Introduce `O _ _ _ p B B' Λ _ h o Lie Om π γ M C f g E ι Q t j k hL hQ U hJ R _ φ hπ hw r e`. Use `haveI := hQ.1`. Use `haveI := (hL 0).2.1`. Establish `hV` using `k.isAffineOpen U`. Use `letI : Algebra Γ(B'.X, f.f ⁻¹ᵁ U.1) R := (φ.comp (g U)).toAlgebra`.
+
+Use `haveI := (GlobalTheory.T.vector_bundle_sections_finite_projective _ _ _ (hL 0).1 _ hV).2`. Take `⟨h1, h2, -⟩` from `hQ.2 _ hV`. Use `choose x y hy hj ht using fun l => hJ (e l)`. Establish `hb : baseOf (resG B'.X le_top (f.f.appTop π)) h ≤ LinearMap.range (crd (ι 0) (f.f ⁻¹ᵁ U.1))` using `fun z hz => by`. Establish `h3` using `piMap_mem_baseOf (g U) hz`.
+
+Rewrite `h3` using `[k.map_cst]`. Establish `h4 : z ∈ latOf (ι 0) (f.f ⁻¹ᵁ U.1)`. Rewrite using `[((hL 0).2.2 U).1]`. Conclude with `(C U).base_le _ h3`. Conclude with `h4`.
+
+Establish `hc : algebraMap Γ(B'.X, f.f ⁻¹ᵁ U.1) R (resG B'.X le_top (f.f.appTop π)) = φ (cstBp U π)` using `congrArg φ (k.map_cst U π)`. Use extensionality with `c`. Use `((KerTens.main B'.X R _ Q.V j.hom _ r _ c).1 (k.isAffineOpen U) hw).trans ?_` and prove the remaining obligations. Rewrite using `[mem_kerJ_iff (C U) φ _ y hj]`. Establish `key` using `GlobalTheory.T.tensor_relation_lattice_nonzerodivisor _ R h _ _ (crd (ι 0) (f.f ⁻¹ᵁ U.1)) (appLinear t _) _ (crd_injective _ _) hb (hc ▸ hπ) h1 r x c`.
+
+Rewrite `key` using `[span_eq_baseOf _ (crd (ι 0) (f.f ⁻¹ᵁ U.1)) (fun x => appLinear t (f.f ⁻¹ᵁ U.1) x = 0) h2 hb, hc]`. Use `Iff.trans (Iff.of_eq ?_) (key.trans (Iff.of_eq ?_))` and prove the remaining obligations. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun l _ => congrArg _ (ht l)`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hy l]`. Both sides reduce to the same expression.
+-/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) (B B' : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (C : ChainsBp p h o Lie Om π γ) (f : GlobalTheory.Vert.Model.Hom B' B) (g : ∀ U : AffOp B.X, Γ(B'.X, f.f ⁻¹ᵁ U.1) →+* U.Bp) (E : ℕ → B'.X.Modules) (ι : ∀ n, E n ⟶ freeModule B'.X (Fin h)) (Q : AM B' Λ) (t : E 0 ⟶ Q.V) (j : (pullA f.f).obj Lie ⟶ Q) (k : IsCov f g), IsLatOf C f g ι → IsQuot M (ι 0) (baseOn h (f.f.appTop π)) Q t → ∀ U : AffOp B.X, JUp C f g U (ι 0) t j.hom → ∀ (R : Type) [CommRing R] (φ : U.Bp →+* R), φ (cstBp U π) ∈ nonZeroDivisors R → ∀ (hw : ⊤ ≤ (spMap (φ.comp (g U)) ≫ (k.isAffineOpen U).fromSpec) ⁻¹ᵁ f.f ⁻¹ᵁ U.1) (r : ℕ) (e : Fin r → Γ(Lie.V, U.1)), kerAt (spMap (φ.comp (g U)) ≫ (k.isAffineOpen U).fromSpec) j.hom hw (fun l => pullbackSections f.f Lie.V le_rfl (e l)) = (C U).kerJ φ fun l => 1 ⊗ₜ e l := by
   intro O _ _ _ p B B' Λ _ h o Lie Om π γ M C f g E ι Q t j k hL hQ U hJ R _ φ hπ hw r e
   haveI := hQ.1

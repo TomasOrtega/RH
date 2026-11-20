@@ -11,6 +11,9 @@ namespace GlobalTheory.RepLattice
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hone` using `Formalism.UG.P.global_lattice_one_holds F E (Fin n) N (Module.Finite.iff_fg.mpr hN.fg) hN.span_eq_top`. Establish `e0 : x ∈ N ↔ (fun j => Formalism.UG.inclE (F` using `F) (Formalism.L2.Herm.Af F) (x j)) ∈ Formalism.L2.Herm.hatL (F := F) N := by conv_lhs => rw [← hone] show (((1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ (fun i => Form …`. Rewrite using `[inv_one, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[e0, h1, _root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec, ← h2]`. Conclude with `Formalism.L2.Col.mem_latS_std _`.
+-/
 theorem mem_iff_of_carries (y k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (N : Submodule (𝓞 E) (Fin n → E))
     (hN : Submodule.IsLattice E N) (h1 : Formalism.L2.Herm.Carries (y * k) (Formalism.L2.Col.stdLat E n) N)
     (h2 : Formalism.L2.Herm.Carries k (Formalism.L2.Col.stdLat E n) (Formalism.L2.Col.stdLat E n)) (x : Fin n → E) :
@@ -24,6 +27,9 @@ theorem mem_iff_of_carries (y k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) 
   rw [e0, h1, _root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec, ← h2]
   exact Formalism.L2.Col.mem_latS_std _
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Express the relevant statement in the definitionally equal form `(Formalism.L2.Theta.mt V (g * h)).map (toEAf D) = (Formalism.L2.Theta.mt V g).map (toEAf D) * (Formalism.L2.Theta.mt V h).map (toEAf D)`. Rewrite using `[← Matrix.map_mul]`. Use `congr 1`.
+-/
 theorem finM_mul' {D : D7} (V : HSp D) {m : ℕ} (hn : V.rank = m) (g h : GA D V) :
     finM V hn (g * h) = finM V hn g * finM V hn h := by
   subst hn
@@ -31,6 +37,11 @@ theorem finM_mul' {D : D7} (V : HSp D) {m : ℕ} (hn : V.rank = m) (g h : GA D V
   rw [← Matrix.map_mul]
   congr 1
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Express the relevant statement in the definitionally equal form `(Formalism.L2.Theta.mt V 1).map (toEAf D) = 1`. Establish `e : Formalism.L2.Theta.mt V 1 = 1`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem finM_one' {D : D7} (V : HSp D) {m : ℕ} (hn : V.rank = m) : finM V hn 1 = 1 := by
   subst hn
   change (Formalism.L2.Theta.mt V 1).map (toEAf D) = 1

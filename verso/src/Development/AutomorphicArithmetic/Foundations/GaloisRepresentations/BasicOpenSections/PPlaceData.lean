@@ -10,6 +10,9 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 
 namespace UpperTheory.Gal.Mod.PlaceDataValuations
 
+/- English proof (translation)
+Establish `h : IsIntegral A b` using `hb.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[A.valuation_le_one_iff, ← hy]`. Conclude with `y.2`.
+-/
 private theorem int_le {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {b : Ω} (hb : IsIntegral ℤ b) :
     A.valuation b ≤ 1 := by
   have h : IsIntegral A b := hb.tower_top
@@ -17,6 +20,17 @@ private theorem int_le {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {b : Ω}
   rw [A.valuation_le_one_iff, ← hy]
   exact y.2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨b, hb⟩` from `h.exists_right_inv`. Establish `h1 : w.valuation E (a : E) * w.valuation E (b : E) = 1`. Rewrite using `[← map_mul]`.
+
+Establish `: ((a : E) * (b : E)) = 1` using `congrArg Subtype.val hb`. Rewrite using `[this, map_one]`. Establish `ha : w.valuation E (a : E) ≤ 1` using `a.2`. Establish `hb' : w.valuation E (b : E) ≤ 1` using `b.2`. Use `le_antisymm ha (not_lt.1 fun hlt => ?_)` and prove the remaining obligations.
+
+Use `mul_lt_one_of_nonneg_of_lt_one_left zero_le hlt hb'` as an intermediate fact. Rewrite `this` using `[h1]`. Conclude with `lt_irrefl _ this`. Introduce `h`. Establish `h0 : (a : E) ≠ 0`.
+
+Introduce `h0`. Rewrite `h` using `[h0, map_zero]`. Conclude with `zero_ne_one h`. Establish `hi : w.valuation E (a : E)⁻¹ ≤ 1`. Rewrite using `[map_inv₀, h, inv_one]`.
+
+Conclude with `IsUnit.of_mul_eq_one (⟨(a : E)⁻¹, hi⟩ : Ow w) (Subtype.ext (mul_inv_cancel₀ h0))`.
+-/
 private theorem isUnit_iff {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (a : Ow w) :
     IsUnit a ↔ w.valuation E (a : E) = 1 := by
   constructor
@@ -41,12 +55,18 @@ private theorem isUnit_iff {E : Type} [Field E] [NumberField E] (w : HeightOneSp
       rw [map_inv₀, h, inv_one]
     exact IsUnit.of_mul_eq_one (⟨(a : E)⁻¹, hi⟩ : Ow w) (Subtype.ext (mul_inv_cancel₀ h0))
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_iff]`. Establish `ha : w.valuation E (a : E) ≤ 1` using `a.2`. Conclude with `⟨fun h => lt_of_le_of_ne ha h, fun h => h.ne⟩`.
+-/
 private theorem mem_max_iff {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (a : Ow w) :
     a ∈ IsLocalRing.maximalIdeal (Ow w) ↔ w.valuation E (a : E) < 1 := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_iff]
   have ha : w.valuation E (a : E) ≤ 1 := a.2
   exact ⟨fun h => lt_of_le_of_ne ha h, fun h => h.ne⟩
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qk67.pow_sub_mem w x`.
+-/
 private theorem pow_sub_mem {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (x : 𝓞 E) :
     x ^ Ideal.absNorm w.asIdeal - x ∈ w.asIdeal :=
   _root_.UpperTheory.Reformulated.B.Qk67.pow_sub_mem w x
@@ -54,6 +74,33 @@ private theorem pow_sub_mem {E : Type} [Field E] [NumberField E] (w : HeightOneS
 end UpperTheory.Gal.Mod.PlaceDataValuations
 
 open UpperTheory.Gal.Mod.PlaceDataValuations in
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ w A hA`. Establish `hle : ∀ y : 𝓞 E, A.valuation (algebraMap E Ω (y : E)) ≤ 1` using `fun y => int_le A (y.isIntegral_coe.map (algebraMap E Ω).toIntAlgHom)`. Establish `h1 : ∀ y : 𝓞 E, y ∉ w.asIdeal → A.valuation (algebraMap E Ω (y : E)) = 1` using `fun y hy => le_antisymm (hle y) (not_lt.1 fun hh => hy ((hA y).1 hh))`. Establish `key : ∀ x : E, w.valuation E x ≤ 1 → ∃ c s : 𝓞 E, s ∉ w.asIdeal ∧ x * (s : E) = (c : E)`. Introduce `x hx`.
+
+Take `⟨c, s, hs⟩` from `w.exists_primeCompl_mul_eq_of_integer x hx`. Conclude with `⟨c, s, s.2, hs⟩`. Establish `hval : ∀ (x : E) (c s : 𝓞 E), s ∉ w.asIdeal → x * (s : E) = (c : E) → A.valuation (algebraMap E Ω x) = A.valuation (algebraMap E Ω (c : E))`. Introduce `x c s hs he`. Rewrite using `[← he, map_mul, map_mul, h1 s hs, mul_one]`.
+
+Establish `hws : ∀ s : 𝓞 E, s ∉ w.asIdeal → w.valuation E (s : E) = 1` using `fun s hs => w.valuation_eq_one_iff_notMem.2 hs`. Establish `hwm : ∀ c : 𝓞 E, c ∈ w.asIdeal → w.valuation E (c : E) < 1` using `fun c hc => (w.valuation_lt_one_iff_mem c).2 hc`. Set `ι : 𝓞 E →+* Ow w` to `{ toFun := fun x => ⟨(x : E), w.valuation_le_one x⟩ map_one' := Subtype.ext (map_one (algebraMap (𝓞 E) E)) map_mul' := fun a b => Subtype.ext (map_mul (algebraMap (𝓞 E) E) a b) map_zero' := Subtype.ext (map_zero (algebraMap (𝓞 E) E)) map_add' := fun a b => Subtype.ext (map_add (a …`. Establish `hιm : ∀ c : 𝓞 E, c ∈ w.asIdeal → IsLocalRing.residue (Ow w) (ι c) = 0` using `fun c hc => (IsLocalRing.residue_eq_zero_iff _).2 ((mem_max_iff w _).2 (hwm c hc))`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a`. Take `⟨c, s, hs, he⟩` from `key _ a.2`. Establish `: A.valuation (algebraMap E Ω (algebraMap (Ow w) E a)) ≤ 1`. Rewrite using `[hval (algebraMap (Ow w) E a) c s hs he]`. Conclude with `hle c`.
+
+Conclude with `(A.valuation_le_one_iff _).1 this`. Introduce `a ha`. Take `⟨c, s, hs, he⟩` from `key _ a.2`. Rewrite using `[hval (algebraMap (Ow w) E a) c s hs he]`. Use `(hA c).2 ?_` and prove the remaining obligations.
+
+Establish `h2 : w.valuation E (a : E) < 1` using `(mem_max_iff w a).1 ha`. Establish `h3 : w.valuation E (c : E) < 1`. Rewrite using `[← he, map_mul, hws s hs, mul_one]`. Conclude with `h2`. Conclude with `(w.valuation_lt_one_iff_mem c).1 h3`.
+
+Introduce `a`. Take `⟨b, rfl⟩` from `IsLocalRing.residue_surjective a`. Take `⟨c, s, hs, he⟩` from `key _ b.2`. Take `⟨s', i, hi, hs'⟩` from `w.isMaximal.exists_inv hs`. Establish `hb : IsLocalRing.residue (Ow w) b = IsLocalRing.residue (Ow w) (ι (s' * c))`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, mem_max_iff]`. Establish `h2 : ((b - ι (s' * c) : Ow w) : E) * (s : E) = ((c * i : 𝓞 E) : E)`. Establish `h3 : ((ι (s' * c) : Ow w) : E) = (s' : E) * (c : E)`. Simplify using `[ι]`. Establish `h4 : (s' : E) * (s : E) + (i : E) = 1`.
+
+Conclude with `congrArg (algebraMap (𝓞 E) E) hs'` after adjusting the coercions. Establish `h5 : (b : E) * (s : E) = (c : E)` using `he`. Use `push_cast`. Rewrite using `[h3, sub_mul, h5]`. Take the linear combination `(-(c : E)) * h4`.
+
+Establish `h6` using `hwm _ (w.asIdeal.mul_mem_left c hi)`. Rewrite `h6` using `[← h2, map_mul, hws s hs, mul_one]`. Conclude with `h6`. Rewrite using `[hb, ← map_pow, ← map_pow, ← sub_eq_zero, ← map_sub, ← map_sub]`. Conclude with `hιm _ (pow_sub_mem w _)`.
+
+Rewrite using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Introduce `m hm`. Simplify using `using h1 (m : 𝓞 E) hm`. Introduce `m hm hu`. Establish `h2` using `(isUnit_iff w (m : Ow w)).1 hu`.
+
+Establish `hc : ((m : Ow w) : E) = ((m : 𝓞 E) : E)` using `by simp`. Rewrite `h2` using `[hc]`. Conclude with `(hwm _ hm).ne h2`. Introduce `s hs`. Conclude with `⟨fun v hv => (apply_mem_iff_of_mem_Dec hs.1 v).2 hv, fun v hv => hs.2 v ((A.valuation_le_one_iff v).2 hv)⟩`.
+
+Introduce `q σ hσ`. Conclude with `⟨fun v hv => (apply_mem_iff_of_mem_Dec hσ.1 v).2 hv, fun v hv => hσ.2 v ((A.valuation_le_one_iff v).2 hv)⟩`.
+-/
 theorem UpperTheory.Gal.Mod.placeData :
     PlaceData := by
   intro E Ω _ _ _ _ _ w A hA

@@ -10,20 +10,44 @@ open scoped ENNReal TensorProduct
 
 namespace GlobalTheory.FibrePositive
 
+/- English proof (translation)
+Establish `: UpqT.mat (g * h) = UpqT.mat g * UpqT.mat h` using `rfl`. Simplify using `only [ActionCoordinates.act, this, Matrix.mulVec_mulVec]`.
+-/
 theorem act_mul {P Q : ℕ} (g h : UpqT P Q) (x : ActionCoordinates.Wsp P Q) :
     ActionCoordinates.act (g * h) x = ActionCoordinates.act g (ActionCoordinates.act h x) := by
   have : UpqT.mat (g * h) = UpqT.mat g * UpqT.mat h := rfl
   simp only [ActionCoordinates.act, this, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Establish `: UpqT.mat (1 : UpqT P Q) = 1` using `rfl`. Simplify using `only [ActionCoordinates.act, this, Matrix.one_mulVec]`.
+-/
 theorem act_one {P Q : ℕ} (x : ActionCoordinates.Wsp P Q) : ActionCoordinates.act (1 : UpqT P Q) x = x := by
   have : UpqT.mat (1 : UpqT P Q) = 1 := rfl
   simp only [ActionCoordinates.act, this, Matrix.one_mulVec]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← h]`. Rewrite using `[← act_mul, inv_mul_cancel, act_one]`.
+-/
 theorem act_inv_of_fix {P Q : ℕ} {g : UpqT P Q} {x : ActionCoordinates.Wsp P Q} (h : ActionCoordinates.act g x = x) :
     ActionCoordinates.act g⁻¹ x = x := by
   conv_lhs => rw [← h]
   rw [← act_mul, inv_mul_cancel, act_one]
 
+/- English proof (translation)
+Introduce `hQ c P Q β hβ x₀ hx₀ fib hfib φ hφ hpos h0`. Take `⟨h1, ⟨P', Q', j, ι, -, -, hfr⟩, h3⟩` from `hQ P Q β hβ x₀ hx₀`. Take `⟨htop, -, -, -, hbor, hcl⟩` from `GlobalTheory.UpqTopology.upq_lcsc P Q`. Use `choose s0 hs0 using h1`. Set `s : ActionCoordinates.Wsp P Q → UpqT P Q` to `fun y => if h : ActionCoordinates.qf y = β then s0 y h else 1`.
+
+Establish `hs : ∀ y, ActionCoordinates.qf y = β → ActionCoordinates.act (s y)⁻¹ x₀ = y`. Introduce `y hy`. Simplify using `only [s, dif_pos hy]`. Conclude with `hs0 y hy`. Establish `hc : Continuous fun g : UpqT P Q => ActionCoordinates.act g⁻¹ x₀` using `(hcl.continuous.comp continuous_inv).matrix_mulVec continuous_const`.
+
+Establish `hfc : Continuous fun g : UpqT P Q => ENNReal.ofReal (φ (ActionCoordinates.act g⁻¹ x₀))` using `ENNReal.continuous_ofReal.comp (hφ.comp hc)`. Establish `key` using `(h3 P' Q' j ι hfr).2 c fib hfib s hs _ hfc.measurable`. Establish `hφm : Measurable fun y => ENNReal.ofReal (φ y)` using `(ENNReal.continuous_ofReal.comp hφ).measurable`. Establish `hae` using `(lintegral_eq_zero_iff hφm).1 h0`. Establish `hqm : MeasurableSet {y : ActionCoordinates.Wsp P Q | ActionCoordinates.qf y = β}`.
+
+Establish `: Continuous (ActionCoordinates.qf : ActionCoordinates.Wsp P Q → ℝ)`. Unfold `ActionCoordinates.qf ActionCoordinates.herm`. Use `fun_prop`. Conclude with `(isClosed_eq this continuous_const).measurableSet`. Establish `hR : ∫⁻ y in {y | ActionCoordinates.qf y = β}, (∫⁻ g', ENNReal.ofReal (φ (ActionCoordinates.act (ι g' * s y)⁻¹ x₀)) ∂(c.cd P' Q')) ∂(fib β) = 0`.
+
+Use `lintegral_eq_zero_of_ae_eq_zero ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_of_ae hae, ae_restrict_mem hqm] with y hy hq`. Establish `: ∀ g', ENNReal.ofReal (φ (ActionCoordinates.act (ι g' * s y)⁻¹ x₀)) = 0`. Introduce `g'`. Rewrite using `[_root_.mul_inv_rev, act_mul, act_inv_of_fix (hfr.2.2 g').1, hs y hq]`.
+
+Conclude with `hy`. Simplify using `only [this, lintegral_zero, Pi.zero_apply]`. Rewrite `key` using `[hR, mul_zero]`. Use `c.haar P Q` as an intermediate fact. Establish `hz` using `(hfc.ae_eq_iff_eq (c.cd P Q) continuous_const).1 ((lintegral_eq_zero_iff hfc.measurable).1 key)`.
+
+Establish `h1 : ENNReal.ofReal (φ (ActionCoordinates.act (1 : UpqT P Q)⁻¹ x₀)) = 0` using `congrFun hz 1`. Rewrite `h1` using `[inv_one, act_one, ENNReal.ofReal_eq_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem fibre_lintegral_ne_zero : ActionCoordinates.QuotientMeasure → CDHaar → ∀ (P Q : ℕ) (β : ℝ), (β = 1 ∨ β = -1) → ∀ x₀ : ActionCoordinates.Wsp P Q, ActionCoordinates.qf x₀ = β → ∀ fib : ℝ → Measure (ActionCoordinates.Wsp P Q), ActionCoordinates.IsDxDq β fib → ∀ φ : ActionCoordinates.Wsp P Q → ℝ, Continuous φ → 0 < φ x₀ → ∫⁻ y, ENNReal.ofReal (φ y) ∂(fib β) ≠ 0 := by
   intro hQ c P Q β hβ x₀ hx₀ fib hfib φ hφ hpos h0
   obtain ⟨h1, ⟨P', Q', j, ι, -, -, hfr⟩, h3⟩ := hQ P Q β hβ x₀ hx₀

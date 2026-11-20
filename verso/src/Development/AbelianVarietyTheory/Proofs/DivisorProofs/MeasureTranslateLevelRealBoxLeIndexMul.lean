@@ -10,6 +10,11 @@ namespace GlobalTheory.CovTop.VolBox
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ρ`. Use `GlobalTheory.RealBoxMeasure.mat_cancel V hV A hA ρ ?_` and prove the remaining obligations. Establish `h1 : infMat D.sp.cm.sig V.gram (θ ρ) k = 1`. Establish `h2` using `congrArg Units.val ((MonoidHom.mem_ker).1 hk)`. Use `show (Units.val (infHom V k)).map (θ ρ) = 1`.
+
+Rewrite using `[h2]`. Simplify using the standard rewrite rules. Rewrite using `[hrp, h1, Pi.one_apply, GlobalTheory.Mem.VolExists.mat_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem rp_eq_one (V : HSp D) (θ : InfFam D) (A : Frames V) (rp : GA D V →* (∀ ρ, Upq V ρ)) (hV : V.SigOK)
     (hA : IsFrames V A) (hrp : IsRealPart V θ A rp) (k : GA D V) (hk : k ∈ GfC V) : rp k = 1 := by
   funext ρ
@@ -21,6 +26,11 @@ theorem rp_eq_one (V : HSp D) (θ : InfFam D) (A : Frames V) (rp : GA D V →* (
     simp
   rw [hrp, h1, Pi.one_apply, GlobalTheory.Mem.VolExists.mat_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ρ`. Use `GlobalTheory.RealBoxMeasure.mat_cancel V hV A hA ρ ?_` and prove the remaining obligations. Take `⟨C, h1, -⟩` from `(GlobalTheory.Mem.SignatureFactor.exists_factor _ _ _ _ (hV (tauE D ρ))).2.2 (A ρ) (hA ρ)`. Establish `e : UpqT.mat (b ρ) * A ρ = A ρ * (C * (UpqT.mat (b ρ) * A ρ))`. Rewrite using `[← Matrix.mul_assoc (A ρ), h1, Matrix.one_mul]`.
+
+Rewrite using `[hrp, GlobalTheory.RealBoxMeasure.infMat_realElt θ hθ V _ (fun τ => GlobalTheory.RealBoxMeasure.realMat_mem V hV A hA τ _) ρ, GlobalTheory.RealBoxMeasure.realMat_of V A hA ρ _ _ e, ← e]`.
+-/
 theorem rp_realElt (V : HSp D) (θ : InfFam D) (A : Frames V) (rp : GA D V →* (∀ ρ, Upq V ρ)) (hV : V.SigOK)
     (hθ : IsInfFam θ) (hA : IsFrames V A) (hrp : IsRealPart V θ A rp) (b : ∀ ρ, Upq V ρ) :
     rp (realElt θ V fun ρ => realMat V A ρ (b ρ)) = b := by
@@ -32,6 +42,9 @@ theorem rp_realElt (V : HSp D) (θ : InfFam D) (A : Frames V) (rp : GA D V →* 
   rw [hrp, GlobalTheory.RealBoxMeasure.infMat_realElt θ hθ V _ (fun τ => GlobalTheory.RealBoxMeasure.realMat_mem V hV A hA τ _) ρ,
     GlobalTheory.RealBoxMeasure.realMat_of V A hA ρ _ _ e, ← e]
 
+/- English proof (translation)
+Use `⟨(realElt θ V fun ρ => realMat V A ρ (rp h ρ))⁻¹ * h, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, rp_realElt V θ A rp hV hθ hA hrp, inv_mul_cancel]`. Rewrite using `[map_mul, map_inv, GlobalTheory.RealBoxMeasure.finE_realElt, inv_one, one_mul]`.
+-/
 theorem exists_fin (V : HSp D) (θ : InfFam D) (A : Frames V) (rp : GA D V →* (∀ ρ, Upq V ρ)) (hV : V.SigOK)
     (hθ : IsInfFam θ) (hA : IsFrames V A) (hrp : IsRealPart V θ A rp) (h : GA D V) :
     ∃ k : GA D V, rp k = 1 ∧ finE V k = finE V h := by
@@ -39,6 +52,13 @@ theorem exists_fin (V : HSp D) (θ : InfFam D) (A : Frames V) (rp : GA D V →* 
   · rw [map_mul, map_inv, rp_realElt V θ A rp hV hθ hA hrp, inv_mul_cancel]
   · rw [map_mul, map_inv, GlobalTheory.RealBoxMeasure.finE_realElt, inv_one, one_mul]
 
+/- English proof (translation)
+Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.1`. Take `⟨-, hsc, hbo, -⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable V`.
+
+Use `haveI := hsc`. Use `haveI := hbo`. Establish `hBm : MeasurableSet (rp ⁻¹' B)` using `hc.measurable hB`. Establish `H` using `GlobalTheory.RealBoxMeasure.lintegral_levelSet_eq_pi D θ hθ V hV K μ hμ A hA m hm ((rp ⁻¹' B).indicator 1) (measurable_one.indicator hBm) (fun g k hk => by`. Establish `: rp (g * k) = rp g` using `by rw [map_mul, rp_eq_one V θ A rp hV hA hrp k hk.1, mul_one]`.
+
+Conclude with `Set.indicator_eq_indicator (by rw [Set.mem_preimage, this, Set.mem_preimage]) rfl) hK.measurableSet`. Rewrite `H` using `[lintegral_indicator_one hBm, Measure.restrict_apply hBm]`. Rewrite using `[← lintegral_indicator_one hB, show {h | finE V h ∈ K ∧ rp h ∈ B} = rp ⁻¹' B ∩ {h : GA D V | finE V h ∈ K} from Set.ext fun h => and_comm, H]`. Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Conclude with `Set.indicator_eq_indicator (by rw [Set.mem_preimage, rp_realElt V θ A rp hV hθ hA hrp]) rfl`.
+-/
 theorem meas_level (V : HSp D) (θ : InfFam D) (A : Frames V) (m : ∀ ρ, Measure (Upq V ρ))
     (rp : GA D V →* (∀ ρ, Upq V ρ)) (K : Subgroup (GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))) (μ : Measure (GA D V))
     (hV : V.SigOK) (hθ : IsInfFam θ) (hA : IsFrames V A) (hm : ∀ ρ, IsMinf (m ρ)) (hc : Continuous rp)
@@ -63,6 +83,19 @@ theorem meas_level (V : HSp D) (θ : InfFam D) (A : Frames V) (m : ∀ ρ, Measu
   refine lintegral_congr fun b => ?_
   exact Set.indicator_eq_indicator (by rw [Set.mem_preimage, rp_realElt V θ A rp hV hθ hA hrp]) rfl
 
+/- English proof (translation)
+Introduce `D V θ A m rp K K₀ μ hV hθ hA hm hc hrp _ hi hK hμ g _ B hB`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Use `haveI := hμ.1`. Use `haveI : (K.subgroupOf K₀).FiniteIndex := ⟨hi⟩`.
+
+Use `haveI : Fintype (K₀ ⧸ K.subgroupOf K₀) := Fintype.ofFinite _`. Set `S : (K₀ ⧸ K.subgroupOf K₀) → Set (GA D V)` to `fun q => {h | (∃ hh : finE V (g⁻¹ * h) ∈ K₀, (QuotientGroup.mk ⟨_, hh⟩ : K₀ ⧸ K.subgroupOf K₀) = q) ∧ rp h ∈ B}`. Establish `hS : ∀ q, μ (S q) ≤ Measure.pi m B`. Introduce `q`. Break down `(S q).eq_empty_or_nonempty with h0 | ⟨h₀, ⟨hh₀, hq₀⟩, -⟩` into its components or cases.
+
+Rewrite using `[h0, measure_empty]`. Conclude with `zero_le`. Take `⟨k, hk1, hk2⟩` from `exists_fin V θ A rp hV hθ hA hrp h₀`. Rewrite using `[← meas_level V θ A m rp K μ hV hθ hA hm hc hrp hK hμ B hB, ← measure_preimage_mul μ k⁻¹ {h | finE V h ∈ K ∧ rp h ∈ B}]`. Use `measure_mono ?_` and prove the remaining obligations.
+
+Introduce and unpack `h ⟨⟨hh, hq⟩, hb⟩`. Establish `h1` using `Subgroup.mem_subgroupOf.1 (QuotientGroup.eq.1 (hq₀.trans hq.symm))`. Use `show finE V (k⁻¹ * h) ∈ K ∧ rp (k⁻¹ * h) ∈ B`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h2 : finE V (k⁻¹ * h) = (finE V (g⁻¹ * h₀))⁻¹ * finE V (g⁻¹ * h)`.
+
+Simplify using `only [map_mul, map_inv, hk2]`. Use `group`. Rewrite using `[h2]`. Conclude with `h1`. Rewrite using `[map_mul, map_inv, hk1, inv_one, one_mul]` and apply the resulting hypothesis.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]`.
+-/
 theorem meas_translate_le : ∀ (D : D7) (V : HSp D) (θ : InfFam D) (A : Frames V) (m : ∀ ρ, Measure (Upq V ρ)) (rp : GA D V →* (∀ ρ, Upq V ρ)) (K K₀ : Subgroup (GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))) (μ : Measure (GA D V)), V.SigOK → IsInfFam θ → IsFrames V A → (∀ ρ, IsMinf (m ρ)) → Continuous rp → IsRealPart V θ A rp → K ≤ K₀ → K.relIndex K₀ ≠ 0 → IsOpen {h : GA D V | finE V h ∈ K} → IsMeasLev V K μ → ∀ g ∈ GfC V, ∀ B : Set (∀ ρ, Upq V ρ), MeasurableSet B → μ {h | finE V (g⁻¹ * h) ∈ K₀ ∧ rp h ∈ B} ≤ (K.relIndex K₀ : ℝ≥0∞) * Measure.pi m B := by
   intro D V θ A m rp K K₀ μ hV hθ hA hm hc hrp _ hi hK hμ g _ B hB
   haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _

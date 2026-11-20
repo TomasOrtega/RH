@@ -7,6 +7,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 
 namespace GlobalTheory.PMon.Ram
 
+/- English proof (translation)
+Introduce `F M _ _ _ _ _ _ _ _ _ _ _ _ p e v hcomm hv hord σ hσ`. Set `f : M →ₐ[F] SeparableClosure F` to `IsSepClosed.lift`. Set `φ : M ≃ₐ[F] f.fieldRange` to `f.equivFieldRange`. Use `haveI : FiniteDimensional F f.fieldRange := LinearEquiv.finiteDimensional φ.toLinearEquiv`. Use `haveI : IsMulCommutative (M ≃ₐ[F] M) := ⟨⟨hcomm⟩⟩`.
+
+Use `haveI : IsAbelianGalois F M := IsAbelianGalois.mk`. Use `haveI : IsAbelianGalois F f.fieldRange := IsAbelianGalois.of_algHom φ.symm.toAlgHom`. Establish `h1 : φ.autCongr σ ∈ upperRamificationGroup F f.fieldRange v`. Rewrite using `[← map_upperRamificationGroup_autCongr φ v]`. Conclude with `⟨σ, hσ, rfl⟩`.
+
+Establish `h2` using `GlobalTheory.T.pow_mem_upperRamificationGroup_abelian_real F f.fieldRange p e v hv hord _ h1`. Rewrite `h2` using `[← map_upperRamificationGroup_autCongr φ]`. Take `⟨τ, hτ, hτσ⟩` from `h2`. Establish `hτ' : τ = σ ^ p` using `φ.autCongr.injective (by simpa [map_pow] using hτσ)`. Conclude with `hτ' ▸ hτ`.
+-/
 theorem pow_mem_upperRamificationGroup_of_comm : ∀ (F M : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Field M] [ValuativeRel M] [TopologicalSpace M] [IsNonarchimedeanLocalField M] [Algebra F M] [ValuativeExtension F M] [FiniteDimensional F M] [IsGalois F M] (p e : ℕ) (v : ℝ), (∀ σ τ : M ≃ₐ[F] M, σ * τ = τ * σ) → 0 ≤ v → OrdIs F p e → ∀ σ ∈ upperRamificationGroup F M v, σ ^ p ∈ upperRamificationGroup F M (min (2 * v) (v + e)) := by
   intro F M _ _ _ _ _ _ _ _ _ _ _ _ p e v hcomm hv hord σ hσ
 

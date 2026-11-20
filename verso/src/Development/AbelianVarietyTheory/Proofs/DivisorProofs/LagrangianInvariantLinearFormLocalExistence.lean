@@ -19,6 +19,13 @@ namespace GlobalTheory.LagLocForm
 section
 variable {F : Type} [Field F] [NumberField F] {v : Pl F}
 
+/- English proof (translation)
+Establish `h1 : ∀ s, conj (ψ₀ s) = ψ₀ (-s)`. Introduce `s`. Establish `h` using `GlobalTheory.norm_addChar_nonarch ψ₀ hψ s`. Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, h]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← integral_add_right_eq_self (fun y => f y * conj (schr ψ₀ (-w) g y)) w.1]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [schr, Prod.fst_neg, Prod.snd_neg, map_mul, h1, add_neg_cancel_right]`. Establish `h2 : ⅟(2 : Fv F v) * 2 = 1` using `invOf_mul_self 2`.
+
+Establish `e : -((y + w.1) ⬝ᵥ -w.2 + ⅟(2 : Fv F v) * (-w.1 ⬝ᵥ -w.2)) = y ⬝ᵥ w.2 + ⅟(2 : Fv F v) * (w.1 ⬝ᵥ w.2)`. Simplify using `only [add_dotProduct, dotProduct_neg, neg_dotProduct, neg_neg]`. Take the linear combination `(-(w.1 ⬝ᵥ w.2)) * h2`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schr_adj (ψ₀ : AddChar (Fv F v) ℂ) (hψ : Continuous ψ₀) {κ : Type} [Fintype κ]
     [MeasurableSpace (κ → Fv F v)] [BorelSpace (κ → Fv F v)] (μ : Measure (κ → Fv F v)) [μ.IsAddHaarMeasure]
     (w : (κ → Fv F v) × (κ → Fv F v)) (f g : (κ → Fv F v) → ℂ) :
@@ -38,6 +45,11 @@ theorem schr_adj (ψ₀ : AddChar (Fv F v) ℂ) (hψ : Continuous ψ₀) {κ : T
     linear_combination (-(w.1 ⬝ᵥ w.2)) * h2
   rw [e]; ring
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `Function.ne_iff.1 h0`. Establish `e : (fun y => g y * conj (g y)) = fun y => ((Complex.normSq (g y) : ℝ) : ℂ)`. Use function extensionality and compare the values at `y`. Conclude with `Complex.mul_conj (g y)`. Rewrite using `[e, integral_complex_ofReal, Complex.ofReal_ne_zero]`.
+
+Use `ne_of_gt ?_` and prove the remaining obligations. Use `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := x) (Complex.continuous_normSq.comp hg.1.continuous) (hg.2.comp_left (g := Complex.normSq) (map_zero _)) (fun y => Complex.normSq_nonneg _) ?_` and prove the remaining obligations. Simplify using `using hx`.
+-/
 theorem ip_self_ne {κ : Type} [Fintype κ] [MeasurableSpace (κ → Fv F v)] [BorelSpace (κ → Fv F v)]
     (μ : Measure (κ → Fv F v)) [μ.IsAddHaarMeasure] (g : (κ → Fv F v) → ℂ) (hg : g ∈ SB (κ → Fv F v))
     (h0 : g ≠ 0) : ∫ y, g y * conj (g y) ∂μ ≠ 0 := by
@@ -53,6 +65,69 @@ theorem ip_self_ne {κ : Type} [Fintype κ] [MeasurableSpace (κ → Fv F v)] [B
 
 end
 
+/- English proof (translation)
+Introduce `F _ _ v ψ₀ κ _ Λ Γ vac hψ hcond hiso hΓo hΓc hdual hvSB hv0 heig hfix`. Use `letI : MeasurableSpace (κ → Fv F v) := borel _`. Use `haveI : BorelSpace (κ → Fv F v) := ⟨rfl⟩`. Set `μ : Measure (κ → Fv F v)` to `Measure.addHaar`. Set `c : ((κ → Fv F v) → ℂ) → ((κ → Fv F v) × (κ → Fv F v)) → ℂ` to `fun φ w => ∫ y, schr ψ₀ w φ y * conj (vac y) ∂μ`.
+
+Establish `hc : ∀ (φ : (κ → Fv F v) → ℂ) (w : (κ → Fv F v) × (κ → Fv F v)), c φ w = ∫ y, schr ψ₀ w φ y * conj (vac y) ∂μ` using `fun _ _ => rfl`. Establish `schr_zero : ∀ φ : (κ → Fv F v) → ℂ, schr ψ₀ 0 φ = φ`. Introduce `φ`. Use function extensionality and compare the values at `x`. Simplify using `[schr]`.
+
+Establish `schr_add : ∀ (w : (κ → Fv F v) × (κ → Fv F v)) (φ₁ φ₂ : (κ → Fv F v) → ℂ), schr ψ₀ w (φ₁ + φ₂) = schr ψ₀ w φ₁ + schr ψ₀ w φ₂`. Introduce `w φ₁ φ₂`. Use function extensionality and compare the values at `x`. Simplify using `[schr, mul_add]`. Establish `schr_smul : ∀ (w : (κ → Fv F v) × (κ → Fv F v)) (a : ℂ) (φ : (κ → Fv F v) → ℂ), schr ψ₀ w (a • φ) = a • schr ψ₀ w φ`.
+
+Introduce `w a φ`. Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `comp_iso : ∀ w ∈ Λ, ∀ w' ∈ Λ, ∀ φ : (κ → Fv F v) → ℂ, schr ψ₀ w (schr ψ₀ w' φ) = schr ψ₀ (w + w') φ`.
+
+Introduce `w hw w' hw' φ`. Rewrite using `[GlobalTheory.ThetaQuasiRat.schr_schr, hiso w hw w' hw', mul_zero, AddChar.map_zero_eq_one, one_smul]`. Establish `hconst : ∀ φ : (κ → Fv F v) → ℂ, ∀ l ∈ Λ, ∀ γ ∈ Γ, γ ∈ Λ → c φ (l + γ) = c φ l`. Introduce `φ l hl γ hγ hγΛ`. Rewrite using `[hc, hc, add_comm, ← comp_iso γ hγΛ l hl, schr_adj ψ₀ hψ μ γ (schr ψ₀ l φ) vac, hfix (-γ) (AddSubgroup.mem_inf.2 ⟨Γ.neg_mem hγ, Λ.neg_mem hγΛ⟩)]`.
+
+Set `H : AddSubgroup Λ` to `Γ.addSubgroupOf Λ`. Set `ct : ((κ → Fv F v) → ℂ) → Λ ⧸ H → ℂ` to `fun φ => Quotient.lift (s := QuotientAddGroup.leftRel H) (fun l : Λ => c φ l) (by`. Introduce `a b hab`. Establish `hab : -a + b ∈ H` using `QuotientAddGroup.leftRel_apply.1 hab`. Rewrite `hab` using `[AddSubgroup.mem_addSubgroupOf]`.
+
+Establish `e : (b : (κ → Fv F v) × (κ → Fv F v)) = a + ((-a + b : Λ) : (κ → Fv F v) × (κ → Fv F v))`. Simplify using the standard rewrite rules. Use `show c φ a = c φ b`. Rewrite using `[e, hconst φ a a.2 _ hab (-a + b).2])`. Establish `hct : ∀ (φ : (κ → Fv F v) → ℂ) (l : Λ), ct φ (l : Λ ⧸ H) = c φ l` using `fun _ _ => rfl`.
+
+Establish `hfin : ∀ φ ∈ SB (κ → Fv F v), (Function.support (ct φ)).Finite`. Introduce `φ hφ`. Take `⟨C, hCc, hC⟩` from `GlobalTheory.T.schwartzBruhat_matrixCoefficient_compactSupport_finitePlace v ψ₀ κ μ hψ hcond φ hφ vac hvSB`. Take `⟨t, ht⟩` from `hCc.elim_finite_subcover (fun i : C => (fun z => z - (i : (κ → Fv F v) × (κ → Fv F v))) ⁻¹' Γ) (fun i => hΓo.preimage (continuous_sub_right _)) (fun z hz => Set.mem_iUnion.2 ⟨⟨z, hz⟩, by simp [Set.mem_preimage, sub_self, zero_mem]⟩)`. Use `Set.Finite.subset (t.finite_toSet.biUnion fun i _ => (Set.Subsingleton.finite (s := (QuotientAddGroup.mk : Λ → Λ ⧸ H) '' {l : Λ | (l : (κ → Fv F v) × (κ → Fv F v)) - i ∈ Γ}) ?_)) ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨l₁, h₁, rfl⟩ _ ⟨l₂, h₂, rfl⟩`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Use `Γ.sub_mem (show (l₂ : (κ → Fv F v) × (κ → Fv F v)) - i ∈ Γ from h₂) (show (l₁ : (κ → Fv F v) × (κ → Fv F v)) - i ∈ Γ from h₁)` as an intermediate fact. Simplify `this` using `[sub_sub_sub_cancel_right, neg_add_eq_sub]`. Introduce `q hq`.
+
+Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H l`. Rewrite `hq` using `[Function.mem_support, hct]`. Establish `hlC` using `hC _ hq`. Take `⟨i, hi, hli⟩` from `Set.mem_iUnion₂.1 (ht hlC)`.
+
+Conclude with `Set.mem_biUnion hi ⟨l, hli, rfl⟩`. Establish `hint : ∀ (w : (κ → Fv F v) × (κ → Fv F v)), ∀ φ ∈ SB (κ → Fv F v), Integrable (fun y => schr ψ₀ w φ y * conj (vac y)) μ`. Introduce `w φ hφ`. Establish `h1` using `GlobalTheory.SchrSBFin.schr_mem_SB v ψ₀ hψ w φ hφ`. Conclude with `(h1.1.continuous.mul (Complex.continuous_conj.comp hvSB.1.continuous)).integrable_of_hasCompactSupport (hvSB.2.comp_left (g := conj) (map_zero _)).mul_left`.
+
+Establish `ct_add : ∀ φ₁ ∈ SB (κ → Fv F v), ∀ φ₂ ∈ SB (κ → Fv F v), ct (φ₁ + φ₂) = ct φ₁ + ct φ₂`. Introduce `φ₁ h₁ φ₂ h₂`. Use function extensionality and compare the values at `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H m`.
+
+Simplify using `only [hct, Pi.add_apply, hc, schr_add, add_mul]`. Conclude with `integral_add (hint _ _ h₁) (hint _ _ h₂)`. Establish `ct_smul : ∀ (a : ℂ) (φ : (κ → Fv F v) → ℂ), ct (a • φ) = a • ct φ`. Introduce `a φ`. Use function extensionality and compare the values at `q`.
+
+Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H m`. Simplify using `only [hct, Pi.smul_apply, smul_eq_mul, hc, schr_smul, mul_assoc]`. Conclude with `integral_const_mul a _`. Set `l₀ : SB (κ → Fv F v) →ₗ[ℂ] ℂ` to `{ toFun := fun φ => ∑ᶠ q, ct φ q map_add' := fun φ₁ φ₂ => by show ∑ᶠ q, ct ((φ₁ : (κ → Fv F v) → ℂ) + φ₂) q = ∑ᶠ q, ct φ₁ q + ∑ᶠ q, ct φ₂ q`.
+
+Rewrite using `[ct_add _ φ₁.2 _ φ₂.2]`. Conclude with `finsum_add_distrib (hfin _ φ₁.2) (hfin _ φ₂.2)`. Use the proof step `map_smul' := fun a φ => by show ∑ᶠ q, ct (a • (φ : (κ → Fv F v) → ℂ)) q = (RingHom.id ℂ) a • ∑ᶠ q, ct φ q`. Rewrite using `[ct_smul, RingHom.id_apply, smul_eq_mul, mul_finsum]`. Use `rfl }`.
+
+Take `⟨l, hl⟩` from `LinearMap.exists_extend l₀`. Establish `hl' : ∀ φ (hφ : φ ∈ SB (κ → Fv F v)), l φ = ∑ᶠ q, ct φ q` using `fun φ hφ => LinearMap.congr_fun hl ⟨φ, hφ⟩`. Use `⟨l, fun w hw φ hφ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hl' _ (GlobalTheory.SchrSBFin.schr_mem_SB v ψ₀ hψ w φ hφ), hl' φ hφ]`. Establish `e : ct (schr ψ₀ w φ) = fun q => ct φ (q + ((⟨w, hw⟩ : Λ) : Λ ⧸ H))`.
+
+Use function extensionality and compare the values at `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H m`. Rewrite using `[← QuotientAddGroup.mk_add, hct, hct, hc, hc, comp_iso m m.2 w hw]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `finsum_comp_equiv (Equiv.addRight _)`. Establish `hX0 : c vac 0 ≠ 0`. Rewrite using `[hc, schr_zero]`. Conclude with `ip_self_ne μ vac hvSB hv0`.
+
+Establish `hd : ∀ w, c vac w ≠ 0 → w ∈ Γ`. Introduce `w hw`. Rewrite using `[hdual]`. Introduce `γ hγ`. Take `⟨a, ha⟩` from `heig γ hγ`.
+
+Establish `hinv : a • schr ψ₀ (-γ) vac = vac`. Rewrite using `[← schr_smul, ← ha, GlobalTheory.ThetaQuasiRat.schr_schr, neg_add_cancel, schr_zero]`. Establish `: (-γ).1 ⬝ᵥ γ.2 - γ.1 ⬝ᵥ (-γ).2 = 0`. Simplify using `only [Prod.fst_neg, Prod.snd_neg, neg_dotProduct, dotProduct_neg]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, mul_zero, AddChar.map_zero_eq_one, one_smul]`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Apply `hv0` to reduce the goal to its premises. Rewrite using `[← hinv, zero_smul]`.
+
+Establish `hneg : schr ψ₀ (-γ) vac = a⁻¹ • vac`. Rewrite using `[← hinv, smul_smul, inv_mul_cancel₀ ha0, one_smul, hinv]`. Establish `key : ∀ w : (κ → Fv F v) × (κ → Fv F v), ψ₀ (γ.1 ⬝ᵥ w.2 - w.1 ⬝ᵥ γ.2) * a * c vac w = conj a⁻¹ * c vac w`. Introduce `w`. Establish `e1 : schr ψ₀ γ (schr ψ₀ w vac) = (ψ₀ (γ.1 ⬝ᵥ w.2 - w.1 ⬝ᵥ γ.2) * a) • schr ψ₀ w vac`.
+
+Establish `h1` using `GlobalTheory.ThetaQuasiRat.schr_schr ψ₀ γ w vac`. Establish `h2` using `GlobalTheory.ThetaQuasiRat.schr_schr ψ₀ w γ vac`. Rewrite `h2` using `[ha, schr_smul, add_comm w γ]`. Rewrite using `[h1, mul_smul, h2, smul_smul, ← AddChar.map_add_eq_mul]`. Establish `h3 : ⅟(2 : Fv F v) * 2 = 1` using `invOf_mul_self 2`.
+
+Establish `e4 : ⅟(2 : Fv F v) * (γ.1 ⬝ᵥ w.2 - w.1 ⬝ᵥ γ.2) = (γ.1 ⬝ᵥ w.2 - w.1 ⬝ᵥ γ.2) + ⅟(2 : Fv F v) * (w.1 ⬝ᵥ γ.2 - γ.1 ⬝ᵥ w.2)`. Take the linear combination `(γ.1 ⬝ᵥ w.2 - w.1 ⬝ᵥ γ.2) * h3`. Rewrite using `[e4]`. Establish `e3 : ∫ y, (ψ₀ (γ.1 ⬝ᵥ w.2 - w.1 ⬝ᵥ γ.2) * a) * (schr ψ₀ w vac y * conj (vac y)) ∂μ = ∫ y, conj a⁻¹ * (schr ψ₀ w vac y * conj (vac y)) ∂μ`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[e1, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ y, schr ψ₀ w vac y * conj (schr ψ₀ (-γ) vac y) ∂μ := schr_adj ψ₀ hψ μ γ _ vac`.
+
+Use `_ = ∫ y, conj a⁻¹ * (schr ψ₀ w vac y * conj (vac y)) ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[hneg, Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `e3` using `[integral_const_mul, integral_const_mul]`. Rewrite using `[hc]`. Conclude with `e3`. Establish `haa : a = conj a⁻¹`. Establish `k0` using `key 0`.
+
+Simplify using `only [Prod.snd_zero, Prod.fst_zero, dotProduct_zero, zero_dotProduct, sub_zero, AddChar.map_zero_eq_one, one_mul] at k0`. Conclude with `mul_right_cancel₀ hX0 k0`. Establish `hk` using `key w`. Rewrite `hk` using `[← haa]`. Establish `hψω : ψ₀ (γ.1 ⬝ᵥ w.2 - w.1 ⬝ᵥ γ.2) = 1`.
+
+Use `mul_right_cancel₀ hw hk` as an intermediate fact. Conclude with `mul_right_cancel₀ ha0 (by rw [this, one_mul])`. Rewrite using `[show w.1 ⬝ᵥ γ.2 - γ.1 ⬝ᵥ w.2 = -(γ.1 ⬝ᵥ w.2 - w.1 ⬝ᵥ γ.2) by ring, AddChar.map_neg_eq_inv, hψω, inv_one]`. Rewrite using `[hl' vac hvSB, finsum_eq_single _ (0 : Λ ⧸ H)]`. Use `show ct vac ((0 : Λ) : Λ ⧸ H) ≠ 0`.
+
+Rewrite using `[hct]`. Simplify using `using hX0`. Introduce `q hq`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H m`.
+
+Assume the negation of the conclusion as `hm`. Rewrite `hm` using `[hct]`. Conclude with `hq ((QuotientAddGroup.eq_zero_iff m).2 (AddSubgroup.mem_addSubgroupOf.2 (hd m hm)))`.
+-/
 theorem lagr_local_form : ∀ {F : Type} [Field F] [NumberField F] (v : Pl F) (ψ₀ : AddChar (Fv F v) ℂ) (κ : Type) [Fintype κ]
     (Λ Γ : AddSubgroup ((κ → Fv F v) × (κ → Fv F v))) (vac : (κ → Fv F v) → ℂ), Continuous ψ₀ →
     (∀ x : Fv F v, (∀ y ∈ v.adicCompletionIntegers F, ψ₀ (x * y) = 1) → x ∈ v.adicCompletionIntegers F) →

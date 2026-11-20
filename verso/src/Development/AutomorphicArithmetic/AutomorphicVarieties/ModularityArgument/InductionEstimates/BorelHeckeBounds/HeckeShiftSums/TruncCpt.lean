@@ -8,6 +8,9 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg.Tf.IntegralApplyAeEq UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.IntegralApplyAeEq UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.K
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 
+/- English proof (translation)
+Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hp D d d' A A' a P Λ T ha hD hP hT hΛ`. Take `⟨kk, -, -, -, -, h⟩` from `truncKer K μ μ₂ τ₁ τ₂ hp D d d' A A' a P hP ha hD`. Conclude with `(h T Λ hT hΛ).2.2.1.isCompactOperator`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.truncCpt :
     ForAllC fun _ _ _ μ _ _ _ _ _ _ _ _ A A' => TruncCpt μ A A' := by
   intro K _ _ _ μ _ μ₂ _ τ₁ τ₂ hp D d d' A A' a P Λ T ha hD hP hT hΛ

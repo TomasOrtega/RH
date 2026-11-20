@@ -25,6 +25,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Closed
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw p _ k _ _ t ht`. Use `haveI : CharZero k := ht.charZero`. Take `⟨hP, -, -, ⟨I⟩⟩` from `ht`. Take `⟨GG, ⟨tw⟩⟩` from `GlobalTheory.T.exists_p_divisible_group_torsion_tower t p hP`. Take `⟨pol, hpol⟩` from `GlobalTheory.T.exists_polarization_weil_pairing_eq tw I`.
+
+Establish `hext` using `GlobalTheory.T.dual_maps_eq_of_equal_pairings tw I`. Establish `hp : IsUnit (p : k)` using `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero).isUnit`. Take `⟨hsub, hom⟩` from `GlobalTheory.T.omega_trivial_of_p_unit (TorsionMap.ofTower tw) hp`. Use `⟨GG, tw.act t.act, pol, TorsionMap.ofTower tw, eps p I, tau tw I, ?_⟩` and prove the remaining obligations. Conclude with `{ height := GlobalTheory.T.p_divisible_height_eq_signature_degree tw I equivariant := fun a => by haveI := t.act.hom a`.
+
+Rewrite using `[TorsionTower.act_apply]`. Conclude with `TorsionMap.ofTower_intertwines tw _`. Use `interior := TorsionMap.ofTower_isIsoOver tw _`. Use `nearZero := TorsionMap.ofTower_isOpenNearZero tw`. Use `omega := ⟨0, hom, fun _ _ _ _ => Subsingleton.elim _ _⟩`.
+
+Use `adj := GlobalTheory.T.polarization_unique_of_pairing_injective tw I pol.hom hext hpol`. Use `skew := GlobalTheory.T.dualHom_bidual_comp_eq_neg_of_weil_pairing tw I pol.hom hext hpol`. Use `prim := fun n => by rw [muRoot_eps]; exact zeta_prim p I n`. Use `lin := GlobalTheory.T.tate_map_equivariant_integers tw I`. Use `pair := GlobalTheory.T.weil_pairing_formula_all_points tw I pol.hom hpol`.
+
+Use `onto := fun n K _ _ _ φ => GlobalTheory.T.tate_point_surjective_on_finite_level tw I n K φ`. Use `weil := fun n K _ _ _ _ _ x x' y u h1 h2 => GlobalTheory.T.proper_polarization_from_pairing tw I hP pol.hom hpol n K x x' y u h1 h2 }`.
+-/
 theorem exists_isPropG : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (p : ℕ)
     [Fact p.Prime] (k : Type) [Field k] [IsAlgClosed k] (t : SAB H (Sp k)), IsOfType Dw t →
       ∃ GG act pol θ ε τ, IsPropG (p := p) Dw t GG act pol θ ε τ := by

@@ -22,9 +22,17 @@ section Gen
 
 variable {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε ε' : K → ℤ}
 
+/- English proof (translation)
+Introduce `_ hy` and use `Set.mem_iInter.2 fun k => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy k`.
+-/
 theorem wchart_le_pow (d : ℕ) (j : K → L.ι) : LB.wchart L φ j ≤ LB.wchart (lbPow L d) φ (fun k _ => j k) :=
   fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy k
 
+/- English proof (translation)
+Use `⟨⟨fun j => res (wchart_le_pow d j) (a.s fun k _ => j k)⟩, fun j j' => unit_ext fun y hy => ?_, fun Z r z j hj => gm_res r z _ hj _⟩` and prove the remaining obligations. Use `(gm_res _ y _ hy _).trans ((gm_res _ y _ hy.1 _).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linComb L φ ε' (𝟙 Y) y j j' hy.1 hy.2) ((gm_res _ y _ hy _).trans (gm_res _ y _ hy.2 _)))).symm))` and prove the remaining obligations. Use `(gen_trans ha (𝟙 Y) y (wchart_le_pow d j hy.1) (wchart_le_pow d j' hy.2)).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e` using `gm_linComb L (fun _ : PUnit => 𝟙 X) (fun _ => (d : ℤ)) (𝟙 Y ≫ φ k) y (fun _ => j k) (fun _ => j' k) (Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy.1 k) (Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy.2 k)`.
+
+Rewrite `e` using `[Fintype.prod_unique, Category.comp_id]`. Use `(congrArg (· ^ ε k) e).trans ?_` and prove the remaining obligations. Rewrite using `[hε, mul_comm (ε k), zpow_mul]`.
+-/
 theorem exists_gen_of_lbPow (d : ℕ) (hε : ∀ k, ε' k = ε k * d) (a : LB.Gen (LB.LinComb (lbPow L d) φ ε))
     (ha : a.IsGen) : ∃ u : LB.Gen (LB.LinComb L φ ε'), u.IsGen ∧
       ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (j : K → L.ι), r z ∈ LB.wchart L φ j →
@@ -42,6 +50,11 @@ theorem exists_gen_of_lbPow (d : ℕ) (hε : ∀ k, ε' k = ε k * d) (a : LB.Ge
   refine (congrArg (· ^ ε k) e).trans ?_
   rw [hε, mul_comm (ε k), zpow_mul]
 
+/- English proof (translation)
+Use `⟨⟨fun j => t.s j ^ d⟩, fun i j => ?_, fun Z r z J => map_pow _ _ _⟩` and prove the remaining obligations. Establish `h` using `congrArg (· ^ d) (ht i j)`. Simplify using `only [mul_pow, ← map_pow] at h`. Use `h.trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Use `(Finset.prod_pow _ _ _).symm.trans (Finset.prod_congr rfl fun a _ => ?_)` and prove the remaining obligations.
+
+Conclude with `((zpow_natCast _ _).symm.trans (zpow_mul _ _ _).symm).trans (congrArg _ (hε a).symm)`.
+-/
 theorem exists_gen_pow (d : ℕ) (hε : ∀ k, ε' k = ε k * d) (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) :
     ∃ u : LB.Gen (LB.LinComb L φ ε'), u.IsGen ∧
       ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), val u r z J = val t r z J ^ d := by
@@ -52,6 +65,9 @@ theorem exists_gen_pow (d : ℕ) (hε : ∀ k, ε' k = ε k * d) (t : LB.Gen (LB
   refine (Finset.prod_pow _ _ _).symm.trans (Finset.prod_congr rfl fun a _ => ?_)
   exact ((zpow_natCast _ _).symm.trans (zpow_mul _ _ _).symm).trans (congrArg _ (hε a).symm)
 
+/- English proof (translation)
+Take `⟨b, hb, hm⟩` from `H1.exists_gen_move hM (DVR.linComb_isLB L hL _ _) w ((isGen_iff w).1 hw) φ₀ φ ε h hc t ht`. Take `⟨u, hu, hv⟩` from `exists_gen_of_lbPow d hε b hb`. Use `⟨u, hu, fun Z r z J J₀ hJ hJ₀ => ?_⟩` and prove the remaining obligations. Establish `m` using `hm _ r z (fun i => J₀ ((r ≫ φ i) ≫ F)) (fun i _ => J (r ≫ φ i)) (fun i => hJ₀ ((r ≫ φ i) ≫ F)) (fun i => Set.mem_iInter.2 fun _ => hJ (r ≫ φ i))`. Conclude with `(val_of t _ z J₀ _ (fun i => congrArg J₀ (by rw [Category.assoc, Category.assoc, hc]))).trans (m.trans (congrArg (_ * ·) (hv _ r z _ (hJ.mem φ r)).symm))`.
+-/
 theorem exists_gen_move_pow {X₀ Y₀ : Scheme.{0}} {M : LB X₀} {F : X ⟶ X₀} (hL : L.IsLB) (hM : M.IsLB) {d : ℕ}
     (w : LB.Iso (lbPow L d) (M.pull F)) (hw : w.IsGen) (hε : ∀ k, ε' k = ε k * d) {φ₀ : K → (Y₀ ⟶ X₀)} (h : Y ⟶ Y₀)
     (hc : ∀ k, φ k ≫ F = h ≫ φ₀ k) (t : LB.Gen (LB.LinComb M φ₀ ε)) (ht : t.IsGen) :
@@ -70,6 +86,9 @@ end Gen
 
 variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] {L : LB A.left} {M : LB B.left}
 
+/- English proof (translation)
+Introduce `p`. Take `⟨V, hV, θx, θy, ex, ey, H⟩` from `h p`. Use `⟨V, hV, ⟨θx, θy, ex, ey⟩, fun θ θ' e e' => (commIsOf_iff hL _ _ _).2 fun Z t b z J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(commVal_indep hG hA hL θ θ' θx θy t t (by rw [e, ex]) (by rw [e', ey]) b z J hJ).trans ((commIsOf_iff hL _ _ _).1 H _ t b z J hJ)`.
+-/
 theorem weilIs_of_local (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB) {k : ℤ} {T : Over S}
     {x y : T ⟶ A} {c : Γ(T.left, ⊤)ˣ}
     (h : ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧ ∃ θx θy : ThetaGrp A L k (overRes V),
@@ -81,6 +100,9 @@ theorem weilIs_of_local (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB
   exact (commVal_indep hG hA hL θ θ' θx θy t t (by rw [e, ex]) (by rw [e', ey]) b z J hJ).trans
     ((commIsOf_iff hL _ _ _).1 H _ t b z J hJ)
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨u, hu, hv⟩ := exists_gen_pow (L := L) (K := Fin 2) (φ := ![(snd T A).left, (translPt A θ.pt).left]) (ε := ![n, -n]) (ε' := ![n * d, -(n * d)]) d (fun k => by fin_cases k <;> simp) θ.φ θ.isGen`. Conclude with `⟨⟨θ.pt, u, hu⟩, rfl, fun Z t a z J => hv _ _ z J⟩`.
+-/
 theorem exists_theta_pow (d : ℕ) {n : ℤ} {T : Over S} (θ : ThetaGrp A L n T) :
     ∃ θ' : ThetaGrp A L (n * d) T, θ'.pt = θ.pt ∧ ∀ (Z : Over S) (t : Z ⟶ T) (a : Z ⟶ A) (z : Z.left) (J),
       thetaVal θ' t a z J = thetaVal θ t a z J ^ d := by
@@ -88,6 +110,11 @@ theorem exists_theta_pow (d : ℕ) {n : ℤ} {T : Over S} (θ : ThetaGrp A L n T
     (ε := ![n, -n]) (ε' := ![n * d, -(n * d)]) d (fun k => by fin_cases k <;> simp) θ.φ θ.isGen
   exact ⟨⟨θ.pt, u, hu⟩, rfl, fun Z t a z J => hv _ _ z J⟩
 
+/- English proof (translation)
+Use `weilIs_of_local hG hA hL fun p => ?_` and prove the remaining obligations. Take `⟨V, hV, ⟨θx, θy, ex, ey⟩, H⟩` from `h p`. Take `⟨θx', fx, vx⟩` from `exists_theta_pow d θx`. Take `⟨θy', fy, vy⟩` from `exists_theta_pow d θy`. Use `⟨V, hV, θx', θy', fx.trans ex, fy.trans ey, (commIsOf_iff hL _ _ _).2 fun Z t a z J hJ => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `(commIsOf_iff hL _ _ _).1 (H θx θy ex ey) Z t a z J hJ`. Establish `e' : unitRes V (c ^ d) = unitRes V c ^ d` using `map_pow _ _ _`. Rewrite using `[e', map_pow, ← e, commVal, commVal, vx, vx, vy, vy, fx, fy]`. Simplify using `only [mul_pow, inv_pow]`.
+-/
 theorem weilIs_pow (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB) (d : ℕ) {n : ℤ} {T : Over S}
     {x y : T ⟶ A} {c : Γ(T.left, ⊤)ˣ} (h : WeilIs A L n x y c) : WeilIs A L (n * d) x y (c ^ d) := by
   refine weilIs_of_local hG hA hL fun p => ?_
@@ -100,6 +127,13 @@ theorem weilIs_pow (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB) (d 
   rw [e', map_pow, ← e, commVal, commVal, vx, vx, vy, vy, fx, fy]
   simp only [mul_pow, inv_pow]
 
+/- English proof (translation)
+Establish `hl : ∀ {Z : Over S} (t : Z ⟶ T) (a : Z ⟶ A), lift t a ≫ (T ◁ ψ) = lift t (a ≫ ψ)` using `fun t a => by simp`. Establish `h₀ : snd T A ≫ ψ = (T ◁ ψ) ≫ snd T B` using `by simp`. Establish `h₁ : translPt A x ≫ ψ = (T ◁ ψ) ≫ translPt B θ₀.pt` using `by show ((fst T A ≫ x) * snd T A) ≫ ψ = (T ◁ ψ) ≫ ((fst T B ≫ θ₀.pt) * snd T B)`. Rewrite using `[MonObj.comp_mul, MonObj.mul_comp, hx]`. Simplify using the standard rewrite rules.
+
+Establish `hc : ∀ i : Fin 2, ![(snd T A).left, (translPt A x).left] i ≫ ψ.left = (T ◁ ψ).left ≫ ![(snd T B).left, (translPt B θ₀.pt).left] i` using `fun i => by fin_cases i`. Conclude with `congrArg CommaMorphism.left h₀`. Conclude with `congrArg CommaMorphism.left h₁`. Apply the tactic sequence `obtain ⟨u, hu, hv⟩ := exists_gen_move_pow (ε := ![n, -n]) (ε' := ![n * d, -(n * d)]) hL hM w hw (fun k => by fin_cases k <;> simp) (T ◁ ψ).left hc θ₀.φ θ₀.isGen`. Use `⟨⟨x, u, hu⟩, rfl, fun Z t a z J J₀ hJ hJ₀ => ?_⟩` and prove the remaining obligations.
+
+Establish `m` using `hv _ (lift t a).left z J J₀ hJ hJ₀`. Rewrite `m` using `[← Over.comp_left, hl, prod_theta x t a (fun χ : Z.left ⟶ A.left => gw w χ z (J₀ (χ ≫ ψ.left)) (fun _ => J χ))]`. Conclude with `m`.
+-/
 theorem exists_theta_pull (hL : L.IsLB) (hM : M.IsLB) (ψ : A ⟶ B) [IsMonHom ψ] {d : ℕ}
     (w : LB.Iso (lbPow L d) (M.pull ψ.left)) (hw : w.IsGen) {n : ℤ} {T : Over S} (x : T ⟶ A)
     (θ₀ : ThetaGrp B M n T) (hx : θ₀.pt = x ≫ ψ) :
@@ -127,6 +161,15 @@ theorem exists_theta_pull (hL : L.IsLB) (hM : M.IsLB) (ψ : A ⟶ B) [IsMonHom �
     (fun χ : Z.left ⟶ A.left => gw w χ z (J₀ (χ ≫ ψ.left)) (fun _ => J χ))] at m
   exact m
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hw`. Use `hA.comm` as an intermediate fact. Use `weilIs_of_local hG hA hL fun p => ?_` and prove the remaining obligations. Take `⟨V, hV, ⟨θx₀, θy₀, ex, ey⟩, H⟩` from `h p`. Take `⟨θx, fx, vx⟩` from `exists_theta_pull hL hM ψ w hw (overResι V ≫ x) θx₀ (by rw [ex, Category.assoc])`.
+
+Take `⟨θy, fy, vy⟩` from `exists_theta_pull hL hM ψ w hw (overResι V ≫ y) θy₀ (by rw [ey, Category.assoc])`. Use `⟨V, hV, θx, θy, fx, fy, (commIsOf_iff hL _ _ _).2 fun Z t a z J hJ => ?_⟩` and prove the remaining obligations. Use `choose J₀ hJ₀ using fun χ : Z.left ⟶ B.left => exists_chart hM (χ z)`. Establish `e` using `(commIsOf_iff hM _ _ _).1 (H θx₀ θy₀ ex ey) Z t (a ≫ ψ) z J₀ hJ₀`. Establish `gx : (t ≫ θx₀.pt) * (a ≫ ψ) = ((t ≫ overResι V ≫ x) * a) ≫ ψ`.
+
+Rewrite using `[MonObj.mul_comp, ex]`. Simplify using `only [Category.assoc]`. Establish `gy : (t ≫ θy₀.pt) * (a ≫ ψ) = ((t ≫ overResι V ≫ y) * a) ≫ ψ`. Rewrite using `[MonObj.mul_comp, ey]`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[← e, commVal, commVal, gx, gy, vx _ _ _ _ _ _ hJ hJ₀, vx _ _ _ _ _ _ hJ hJ₀, vy _ _ _ _ _ _ hJ hJ₀, vy _ _ _ _ _ _ hJ hJ₀, fx, fy, mul_left_comm (t ≫ overResι V ≫ y) (t ≫ overResι V ≫ x) a]`. Simplify using `only [zpow_neg]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem weilIs_pull_hom (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB) (hM : M.IsLB) (ψ : A ⟶ B)
     [IsMonHom ψ] {d : ℕ} (hw : LBIso (lbPow L d) (M.pull ψ.left)) {n : ℤ} {T : Over S} {x y : T ⟶ A}
     {c : Γ(T.left, ⊤)ˣ} (h : WeilIs B M n (x ≫ ψ) (y ≫ ψ) c) : WeilIs A L (n * d) x y c := by
@@ -154,6 +197,9 @@ end GlobalTheory.WeilIsogeny
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hG S A B _ _ ψ L M d n T x y c c' hA _ hL hM hψ hw h`. Establish `h'` using `WeilIsogeny.weilIs_pull_hom hG hA hL hM ψ hw h`. Conclude with `⟨h', fun hc => CommutatorPairing.weilIs_unique hG hA hL h' (WeilIsogeny.weilIs_pow hG hA hL d hc)⟩`.
+-/
 theorem weilIs_along_hom : Out.GlobalFnsSt → ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [GrpObj B] (ψ : A ⟶ B)
     (L : LB A.left) (M : LB B.left) (d : ℕ) (n : ℤ) (T : Over S) (x y : T ⟶ A) (c c' : Γ(T.left, ⊤)ˣ),
     IsAbelianScheme A → IsAbelianScheme B → L.IsLB → M.IsLB → IsMonHom ψ → LBIso (lbPow L d) (M.pull ψ.left) →

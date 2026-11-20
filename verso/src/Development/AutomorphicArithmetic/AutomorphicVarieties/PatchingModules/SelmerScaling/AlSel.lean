@@ -4,6 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `l _ S`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `α hα`. Take `⟨u, ψ, hU, -, h2⟩` from `defUTest l S 1 (fun _ => α) (fun _ => 0) 0 (fun _ => hα) (fun _ => S.La.zero_mem) (by intro b y; simp)`. Establish `h` using `defUSel l _ _ _ S.h S.n S.x 1 u ψ hU 0`.
+
+Rewrite `h` using `[h2 0]`. Conclude with `h.1`. Introduce `μ hμ`. Take `⟨u, ψ, hU, h1, -⟩` from `defUTest l S 1 (fun _ => 0) (fun _ => μ) 0 (fun _ => S.Tp.zero_mem) (fun _ => hμ) (by intro b y; simp)`. Establish `h` using `defUSel l _ _ _ S.h S.n S.x 1 u ψ hU 0`.
+
+Rewrite `h` using `[h1 0]`. Conclude with `h.2`. Introduce `ι _ c α`. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply]`.
+
+Simplify using `only [Pi.smul_apply, Ctx.alC]`. Simplify using `only [← smul_mul_assoc]`. Rewrite using `[← Finset.sum_mul]`. Use `congr 1`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.map_apply, Matrix.sum_apply, AddMonoidHom.finset_sum_apply]`. Introduce `ι _ c μ`. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, Ctx.laC]`.
+
+Simplify using `only [← smul_mul_assoc]`. Rewrite using `[← Finset.sum_mul]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Matrix.sum_apply, AddMonoidHom.finset_sum_apply]`.
+-/
 theorem UpperTheory.V.Pa.alSel :
     ∀ (l : ℕ) [Fact l.Prime] (S : Ctx l), (∀ α ∈ S.Tp, S.alC α ∈ SelP S.h S.x S.F ∧ BndM S.x.t (S.alC α)) ∧ (∀ μ ∈ S.La, S.laC μ ∈ SelM S.h S.x S.F ∧ BndM S.x.t (S.laC μ)) ∧ (∀ (ι : Type) [Fintype ι] (c : ι → S.F) (α : ι → S.Bh →+ S.F), S.alC (∑ i, c i • α i) = ∑ i, c i • S.alC (α i)) ∧ ∀ (ι : Type) [Fintype ι] (c : ι → S.F) (μ : ι → S.U.N →+ S.F), S.laC (∑ i, c i • μ i) = ∑ i, c i • S.laC (μ i) := by
   intro l _ S

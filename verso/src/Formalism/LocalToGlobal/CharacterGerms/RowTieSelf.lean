@@ -114,6 +114,11 @@ def ValEqSelfSt : Prop :=
       ∃ f : PS C n dd, IntS V f ∧
         Y.nab Ls n f P = ∏ o, ValOf ((Y.rawSelf (p o)).rowData (H o)).hL (Po o) (kind o) (gr o)
 
+/- English proof (translation)
+Take `⟨f, hf, e⟩` from `hv hs N pl P hP Po hQ kind hk S t ht gr hg`. Establish `h1 : V.v (Y.nab Ls n f P) = ∑ o, V.v (ValOf ((Y.rawSelf (p o)).rowData (H o)).hL (Po o) (kind o) (gr o))`. Rewrite using `[e]`. Conclude with `map_prod_add V Finset.univ _`. Rewrite using `[← h1]`.
+
+Conclude with `iInf₂_le (f := fun x (_ : x ∈ Y.valSet Ls n) => (WithBot.some x : WithBot (WithTop ℝ))) (V.v (Y.nab Ls n f P)) ⟨P, hP, f, hf, rfl⟩`.
+-/
 theorem val_self (hs : SelfSep Y p) (hv : ValEqSelfSt Y p H Ls n) (N : ℕ) (pl : Fin N × Fin 2 ↪ Fin n)
     (P : MvPolynomial (Ls.ι n) C) (hP : P ∈ Ls.FF n) (Po : ∀ o, MvPolynomial (Fin N × WV fun _ => I0 o) C)
     (hQ : IsImgS (fun o => Y.rawSelf (p o)) pl (Ls.cp n) (Ls.uv n) P (∏ o, toAll o (Po o)))

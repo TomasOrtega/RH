@@ -18,6 +18,11 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Establish `e : ω (w * u * g) Φ = ω w (ω u (ω g Φ))`. Simplify using `only [map_mul, Module.End.mul_apply]`. Rewrite using `[e, hω.weyl w hw _ 0]`. Unfold `Jt`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Establish `h0 : GlobalTheory.StdUnn.inner V (0 : Mx D V.rank n) y = 0`. Simplify using `[GlobalTheory.StdUnn.inner, GlobalTheory.MixModel.adj]`. Simplify using `only [h0, Matrix.trace_zero, map_zero, AddChar.map_zero_eq_one, mul_one]`. Rewrite using `[hω.unip u b.1 hu (ω g Φ) y, mul_comm]`.
+-/
 theorem weil_cell_zero {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D} {V : HSp D}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)}
     (hω : IsWeilSch ψ χ θ V μ ω) {w u : G D n} (hw : mat w = blk4 0 1 (-1) 0) (b : hermA D n)
@@ -33,6 +38,11 @@ theorem weil_cell_zero {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circ
   simp only [h0, Matrix.trace_zero, map_zero, AddChar.map_zero_eq_one, mul_one]
   rw [hω.unip u b.1 hu (ω g Φ) y, mul_comm]
 
+/- English proof (translation)
+Introduce `hU hT hW D n V ψ χ θ μ ω H l s ν Φ hS hR nb lam 𝓖 hC β hβ g`. Take `⟨w, hw⟩` from `GlobalTheory.StdUnn.Model.exists_weyl (D := D) (n := n)`. Establish `h1` using `hW D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hC w hw β hβ g`. Rewrite using `[hT D n V ψ χ θ μ ω H l s ν Φ hS hR nb lam 𝓖 hC β hβ g]`. Use `h1.congr ⟨(n : ℝ) / 2, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Use `show _ = fc ψ lam 𝓖 nb (fun x => eis ω H Φ x z) β g`. Rewrite using `[(hU D n V ψ χ θ μ ω H l s ν Φ hS hR nb lam 𝓖 hC w hw β hβ z hz g).2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Use `show _ * _ = sect ω H Φ z (w * nb b * g) * _`. Rewrite using `[sect, weil_cell_zero hS.hω hw b (hC.1 b) Φ g]`.
+-/
 theorem ndOfWhit : PositivityTheory.PfSWUS.NDOfWhit := by
   intro hU hT hW D n V ψ χ θ μ ω H l s ν Φ hS hR nb lam 𝓖 hC β hβ g
   obtain ⟨w, hw⟩ := GlobalTheory.StdUnn.Model.exists_weyl (D := D) (n := n)

@@ -16,6 +16,13 @@ namespace UpperTheory.Lit.Full.RedU
 
 universe u v w
 
+/- English proof (translation)
+Establish `hR : ∀ T, {x | R x ∧ s x = T}.Finite` using `fun T => (hf T).subset fun x hx => hx.2`. Establish `h1 : {p : X × X | a ∉ s p.1 ∧ R p.2 ∧ s p.1 + s p.2 = S} = ⋃ q ∈ ((S.antidiagonal.toFinset.filter (fun q => a ∉ q.1) : Finset _) : Set (Multiset A × Multiset A)), {x | s x = q.1} ×ˢ {x | R x ∧ s x = q.2}`. Use extensionality with `p`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion, Finset.coe_filter, Multiset.mem_toFinset, Multiset.mem_antidiagonal, Set.mem_prod]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨(s p.1, s p.2), ⟨h3, h1⟩, rfl, h2, rfl⟩`. Introduce and unpack `⟨q, ⟨h3, h1⟩, e1, h2, e2⟩`. Rewrite using `[e1, e2]`. Conclude with `⟨h1, h2, h3⟩`.
+
+Rewrite using `[h1, Set.Finite.ncard_biUnion (Finset.finite_toSet _) (fun q _ => (hf _).prod (hR _)), finsum_mem_coe_finset]`. Conclude with `Finset.sum_congr rfl fun q _ => Set.ncard_prod`. Introduce `q _ q' _ hne`. Use `Set.disjoint_left.2 fun p hp hp' => hne ?_` and prove the remaining obligations. Conclude with `Prod.ext (hp.1.symm.trans hp'.1) (hp.2.2.symm.trans hp'.2.2)`.
+-/
 private theorem ncard_pairs {A : Type u} {X : Type v} [DecidableEq A] (s : X → Multiset A)
     (hf : ∀ S, {x | s x = S}.Finite) (a : A) (R : X → Prop) (S : Multiset A) :
     {p : X × X | a ∉ s p.1 ∧ R p.2 ∧ s p.1 + s p.2 = S}.ncard =
@@ -41,6 +48,15 @@ private theorem ncard_pairs {A : Type u} {X : Type v} [DecidableEq A] (s : X →
     refine Set.disjoint_left.2 fun p hp hp' => hne ?_
     exact Prod.ext (hp.1.symm.trans hp'.1) (hp.2.2.symm.trans hp'.2.2)
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `T hn hT`. Establish `h1` using `h T hT`.
+
+Establish `hm : ((0 : Multiset A), T) ∈ T.antidiagonal.toFinset.filter (fun q => a ∉ q.1)`. Simplify using the standard rewrite rules. Rewrite `h1` using `[← Finset.add_sum_erase _ _ hm, ← Finset.add_sum_erase _ _ hm]`. Establish `h2 : ∑ q ∈ (T.antidiagonal.toFinset.filter (fun q => a ∉ q.1)).erase (0, T), c q.1 * f q.2 = ∑ q ∈ (T.antidiagonal.toFinset.filter (fun q => a ∉ q.1)).erase (0, T), c q.1 * g q.2`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations.
+
+Take `⟨hne, hq⟩` from `Finset.mem_erase.1 hq`. Establish `hq' : q.1 + q.2 = T`. Simplify using `using (Finset.mem_filter.1 hq).1`. Establish `hq0 : q.1 ≠ 0` using `fun e => hne (Prod.ext e (by rw [e, zero_add] at hq'; exact hq'))`. Establish `hc` using `congrArg Multiset.card hq'`.
+
+Rewrite `hc` using `[Multiset.card_add]`. Establish `hp` using `Multiset.card_pos.2 hq0`. Rewrite using `[ih q.2.card (by omega) q.2 rfl fun y hy => hT y (hq' ▸ Multiset.mem_add.2 (Or.inr hy))]`. Rewrite `h1` using `[h2, h0]`. Simplify using `using h1`.
+-/
 private theorem eq_of_conv {A : Type u} [DecidableEq A] (a : A) (U : Set A) (c f g : Multiset A → ℕ) (h0 : c 0 = 1)
     (h : ∀ S : Multiset A, (∀ y ∈ S, y ∈ U) →
       ∑ q ∈ S.antidiagonal.toFinset.filter (fun q => a ∉ q.1), c q.1 * f q.2 =
@@ -70,17 +86,31 @@ private theorem eq_of_conv {A : Type u} [DecidableEq A] (a : A) (U : Set A) (c f
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `(IrrGL.nu_intCast_inj hρ.1 (a := (a : ℤ)) (b := (b : ℤ))).1 (by simpa using h)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 private theorem nu_inj {ρ : IrrGL k} (hρ : ρ.IsCusp) {a b : ℕ} (h : ρ.nu (a : ℂ) = ρ.nu (b : ℂ)) : a = b := by
   have := (IrrGL.nu_intCast_inj hρ.1 (a := (a : ℤ)) (b := (b : ℤ))).1 (by simpa using h)
   exact_mod_cast this
 
+/- English proof (translation)
+The claim follows from `Segment.mem_ms.2 (Segment.mem_carrier.2 ⟨0, Δ.len_pos, by simp⟩)`.
+-/
 private theorem first_mem (Δ : Segment k) : Δ.first ∈ Δ.ms :=
   Segment.mem_ms.2 (Segment.mem_carrier.2 ⟨0, Δ.len_pos, by simp⟩)
 
+/- English proof (translation)
+The claim follows from `Multiset.mem_bind`.
+-/
 private theorem mem_msupp {𝔪 : Multiset (Segment k)} {x : IrrGL k} : x ∈ msupp 𝔪 ↔ ∃ Δ ∈ 𝔪, x ∈ Δ.ms :=
   Multiset.mem_bind
 
 open Classical in
+/- English proof (translation)
+Establish `hnd : Δ.ms.Nodup`. Use `Multiset.Nodup.map (fun a b e => Fin.ext (nu_inj hρ ?_)) Finset.univ.nodup` and prove the remaining obligations. Simplify `e` using `only [Segment.term, h]`. Rewrite using `[Multiset.count_eq_of_nodup hnd]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations.
+
+Rewrite using `[Segment.mem_ms, Segment.mem_carrier, h]`. Conclude with `⟨fun ⟨a, ha, e⟩ => nu_inj hρ e ▸ ha, fun hn => ⟨n, hn, rfl⟩⟩`.
+-/
 private theorem count_ms {ρ : IrrGL k} (hρ : ρ.IsCusp) {Δ : Segment k} (h : Δ.first = ρ) (n : ℕ) :
     Δ.ms.count (ρ.nu (n : ℂ)) = if n < Δ.len then 1 else 0 := by
   have hnd : Δ.ms.Nodup := by
@@ -92,6 +122,15 @@ private theorem count_ms {ρ : IrrGL k} (hρ : ρ.IsCusp) {Δ : Segment k} (h : 
   exact ⟨fun ⟨a, ha, e⟩ => nu_inj hρ e ▸ ha, fun hn => ⟨n, hn, rfl⟩⟩
 
 open Classical in
+/- English proof (translation)
+Proceed by induction on `𝔪 using Multiset.induction_on with`. Consider the case `empty => simp [msupp]`. Consider the case `cons D 𝔪 ih`. Establish `hD` using `hm D (Multiset.mem_cons_self _ _)`. Establish `ih'` using `ih fun E hE => hm E (Multiset.mem_cons_of_mem hE)`.
+
+Rewrite using `[← Multiset.singleton_add, msupp_add, msupp_singleton, Multiset.count_add, Multiset.count_add, Multiset.count_add, ih', count_ms hρ hD, count_ms hρ hD, Multiset.count_singleton]`. Establish `hp` using `Δ.len_pos`. Distinguish the cases in `e : Δ = D`. Substitute `e` using the available equality. Rewrite using `[if_pos (by omega), if_neg (by omega), if_pos rfl]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hl : Δ.len ≠ D.len` using `fun e' => e (Segment.ext_first (h.trans hD.symm) e')`. Rewrite using `[if_neg e]`. Distinguish the cases in `e2 : Δ.len < D.len`. Rewrite using `[if_pos (by omega), if_pos e2]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg (by omega), if_neg e2]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem count_msupp {ρ : IrrGL k} (hρ : ρ.IsCusp) {Δ : Segment k} (h : Δ.first = ρ)
     (𝔪 : Multiset (Segment k)) (hm : ∀ D ∈ 𝔪, D.first = ρ) :
     (msupp 𝔪).count (ρ.nu ((Δ.len - 1 : ℕ) : ℂ)) = (msupp 𝔪).count (ρ.nu ((Δ.len : ℕ) : ℂ)) + 𝔪.count Δ := by
@@ -115,6 +154,11 @@ private theorem count_msupp {ρ : IrrGL k} (hρ : ρ.IsCusp) {Δ : Segment k} (h
       · rw [if_neg (by omega), if_neg e2]
         omega
 
+/- English proof (translation)
+Use extensionality with `Δ`. Distinguish the cases in `e : Δ.first = ρ`. Establish `h1` using `count_msupp hρ e 𝔪 hm`. Establish `h2` using `count_msupp hρ e 𝔫 hn`. Rewrite `h1` using `[h]`.
+
+Establish `h3` using `h1.symm.trans h2`. Use `Nat.add_left_cancel h3` and compare the differences between its conclusion and the goal. Rewrite using `[Multiset.count_eq_zero.2 fun hh => e (hm _ hh), Multiset.count_eq_zero.2 fun hh => e (hn _ hh)]`.
+-/
 private theorem start_unique {ρ : IrrGL k} (hρ : ρ.IsCusp) {𝔪 𝔫 : Multiset (Segment k)}
     (hm : ∀ D ∈ 𝔪, D.first = ρ) (hn : ∀ D ∈ 𝔫, D.first = ρ) (h : msupp 𝔪 = msupp 𝔫) : 𝔪 = 𝔫 := by
   classical
@@ -127,6 +171,19 @@ private theorem start_unique {ρ : IrrGL k} (hρ : ρ.IsCusp) {𝔪 𝔫 : Multi
     convert Nat.add_left_cancel h3
   · rw [Multiset.count_eq_zero.2 fun hh => e (hm _ hh), Multiset.count_eq_zero.2 fun hh => e (hn _ hh)]
 
+/- English proof (translation)
+Use `symm`. Use `Set.ncard_congr (fun p _ => p.1 + p.2) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `p ⟨-, -, h⟩`. Conclude with `(msupp_add _ _).trans h`. Establish `key : ∀ p : Multiset (Segment k) × Multiset (Segment k), ρ ∉ msupp p.1 → (∀ D ∈ p.2, D.first = ρ) → (p.1 + p.2).filter (fun D => D.first = ρ) = p.2` using `fun p h1 h2 => by`.
+
+Rewrite using `[Multiset.filter_add, Multiset.filter_eq_self.2 h2, Multiset.filter_eq_nil.2, zero_add]`. Introduce `D hD e`. Conclude with `h1 (mem_msupp.2 ⟨D, hD, e ▸ first_mem D⟩)`. Introduce and unpack `p q ⟨h1, h2, -⟩ ⟨h3, h4, -⟩ e`. Establish `e2 : p.2 = q.2` using `by rw [← key p h1 h2, ← key q h3 h4]; exact congrArg _ e`.
+
+Use `Prod.ext ?_ e2` and prove the remaining obligations. Establish `e' : p.1 + p.2 = q.1 + q.2` using `e`. Rewrite `e'` using `[e2]`. Conclude with `add_right_cancel e'`. Introduce `𝔪 hm`.
+
+Establish `hm' : msupp 𝔪 = S` using `hm`. Establish `hs : 𝔪.filter (fun D => ¬ D.first = ρ) + 𝔪.filter (fun D => D.first = ρ) = 𝔪`. Rewrite using `[add_comm, Multiset.filter_add_not]`. Use `⟨(𝔪.filter (fun D => ¬ D.first = ρ), 𝔪.filter (fun D => D.first = ρ)), ⟨?_, ?_, ?_⟩, hs⟩` and prove the remaining obligations. Introduce `h`.
+
+Take `⟨D, hD, h⟩` from `mem_msupp.1 h`. Take `⟨hD, hne⟩` from `Multiset.mem_filter.1 hD`. Take `⟨n, hn⟩` from `hS D.first (hm' ▸ mem_msupp.2 ⟨D, hD, first_mem D⟩)`. Take `⟨a, -, ha⟩` from `Segment.mem_carrier.1 (Segment.mem_ms.1 h)`. Rewrite `ha` using `[hn, IrrGL.nu_nu]`.
+
+Establish `h0 : n + a = 0` using `nu_inj hρ (by simpa using ha)`. Establish `hn0 : n = 0` using `by omega`. Conclude with `hne (by simpa [hn0] using hn)`. Conclude with `fun D hD => (Multiset.mem_filter.1 hD).2`. Rewrite using `[← msupp_add, hs, hm']`.
+-/
 private theorem seg_pairs {ρ : IrrGL k} (hρ : ρ.IsCusp) (S : Multiset (IrrGL k)) (hS : ∀ y ∈ S, y ∈ up ρ) :
     {𝔪 : Multiset (Segment k) | msupp 𝔪 = S}.ncard =
       {p : Multiset (Segment k) × Multiset (Segment k) |
@@ -164,6 +221,9 @@ private theorem seg_pairs {ρ : IrrGL k} (hρ : ρ.IsCusp) (S : Multiset (IrrGL 
     · exact fun D hD => (Multiset.mem_filter.1 hD).2
     · rw [← msupp_add, hs, hm']
 
+/- English proof (translation)
+Take `⟨hd, f, hf⟩` from `h`. Use `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr (y := ![y, z]) (hd := hd) (t := ![A, B]) (fun a => by fin_cases a; exacts [hA, hB]) x.2.rep.irr (.of_injective f hf)` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem supp_emb {x y z : IrrGL k} (h : Emb x y z) {A B : Multiset (IrrGL k)}
     (hA : HasSupport y.rep A) (hB : HasSupport z.rep B) : HasSupport x.rep (A + B) := by
   obtain ⟨hd, f, hf⟩ := h
@@ -171,6 +231,13 @@ private theorem supp_emb {x y z : IrrGL k} (h : Emb x y z) {A B : Multiset (IrrG
     (fun a => by fin_cases a; exacts [hA, hB]) x.2.rep.irr (.of_injective f hf)
   simpa using this
 
+/- English proof (translation)
+Use `choose φ hφ using fun y z : IrrGL k => (socle hB k y z).1`. Establish `hP : ∀ y, SuppIn y {ρ}ᶜ ↔ ρ ∉ s y` using `fun y => ⟨fun ⟨A, hA, h⟩ hm => h ρ ((hs y A).1 hA ▸ hm) rfl, fun h => ⟨s y, (hs _ _).2 rfl, fun w hw e => h ((Set.mem_singleton_iff.1 e) ▸ hw)⟩⟩`. Establish `hadd : ∀ x y z, Emb x y z → s x = s y + s z` using `fun x y z h => (hs _ _).1 (supp_emb h ((hs _ _).2 rfl) ((hs _ _).2 rfl))`. Use `symm`. Use `Set.ncard_congr (fun p _ => φ p.1 p.2) ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce and unpack `p ⟨-, -, h⟩`. Conclude with `(hadd _ _ _ (hφ p.1 p.2)).trans h`. Introduce and unpack `p q ⟨h1, h2, -⟩ ⟨h3, h4, -⟩ e`. Establish `e' : φ p.1 p.2 = φ q.1 q.2` using `e`. Use `data hG hB k {ρ}ᶜ (φ p.1 p.2) p.1 p.2 q.1 q.2 (hφ _ _) (e' ▸ hφ _ _) ((hP _).2 h1) ((hP _).2 h3) (by rwa [compl_compl]) (by rwa [compl_compl])` as an intermediate fact.
+
+Conclude with `Prod.ext this.1 this.2`. Introduce `x hx`. Take `⟨y, z, h1, h2, h3⟩` from `decompL hG hB k x {ρ}ᶜ`. Use `⟨(y, z), ⟨(hP _).1 h2, by rwa [compl_compl] at h3, (hadd _ _ _ h1).symm.trans hx⟩, ?_⟩` and prove the remaining obligations. Conclude with `(socle hB k y z).2 _ rfl (multOne hG hB k {ρ}ᶜ y z _ rfl h2 h3) _ _ (hφ y z) h1`.
+-/
 private theorem cls_pairs (hG : GlobalTheory.Published.GeometricLemma) (hB : GlobalTheory.Published.BernsteinZelevinskyFiniteness)
     (s : IrrGL k → Multiset (IrrGL k)) (hs : ∀ x A, HasSupport x.rep A ↔ s x = A) (ρ : IrrGL k)
     (S : Multiset (IrrGL k)) :
@@ -199,6 +266,17 @@ private theorem cls_pairs (hG : GlobalTheory.Published.GeometricLemma) (hB : Glo
 end UpperTheory.Lit.Full.RedU
 
 open UpperTheory.Lit.Full.RedU in
+/- English proof (translation)
+Introduce `hG hB hZ k _ _ _ _ ρ hρ T hT x hx hxF`. Use `choose s hs0 using fun x : IrrGL k => GlobalTheory.CompanionTheory.Hypotheses₂.TD.exists_hasSupport hB hG x`. Establish `hs : ∀ (x : IrrGL k) A, HasSupport x.rep A ↔ s x = A` using `fun x A => ⟨fun h => GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique hG hB (hs0 x) h, fun h => h ▸ hs0 x⟩`. Establish `hc` using `count hG hB hZ k`. Simplify using `only [hs] at hc`.
+
+Establish `h0 : {𝔪 : Multiset (Segment k) | msupp 𝔪 = 0}.ncard = 1`. Use `Set.ncard_eq_one.2 ⟨0, ?_⟩` and prove the remaining obligations. Use extensionality with `𝔪`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Use `⟨fun h => Multiset.eq_zero_of_forall_notMem fun D hD => ?_, fun h => by simp [h, msupp]⟩` and prove the remaining obligations.
+
+Establish `: D.first ∈ msupp 𝔪` using `mem_msupp.2 ⟨D, hD, first_mem D⟩`. Simplify using `[h] at this`. Establish `key` using `eq_of_conv ρ (up ρ) (fun S => {𝔪 : Multiset (Segment k) | msupp 𝔪 = S}.ncard) (fun S => {x : IrrGL k | FirstIn x {ρ} ∧ s x = S}.ncard) (fun S => {𝔪 : Multiset (Segment k) | (∀ D ∈ 𝔪, D.first = ρ) ∧ msupp 𝔪 = S}.ncard) h0 (fun S hS => by`. Establish `e1` using `ncard_pairs s (fun S => (hc S).1) ρ (fun x => FirstIn x {ρ}) S`. Establish `e2` using `ncard_pairs (msupp (k := k)) (fun S => (hc S).2.1) ρ (fun 𝔪 => ∀ D ∈ 𝔪, D.first = ρ) S`.
+
+Rewrite using `[← e2, ← seg_pairs hρ S hS, ← (hc S).2.2, cls_pairs hG hB s hs ρ S, e1]`. Conclude with `Finset.sum_congr rfl fun q _ => by rw [(hc q.1).2.2]) _ T rfl hT`. Establish `hfin : {x : IrrGL k | FirstIn x {ρ} ∧ s x = T}.Finite` using `(hc T).1.subset fun x hx => hx.2`. Establish `hxm : x ∈ {x : IrrGL k | FirstIn x {ρ} ∧ s x = T}` using `⟨hxF, (hs _ _).1 hx⟩`. Establish `hpos` using `(Set.ncard_pos hfin).2 ⟨x, hxm⟩`.
+
+Establish `hle : {𝔪 : Multiset (Segment k) | (∀ D ∈ 𝔪, D.first = ρ) ∧ msupp 𝔪 = T}.ncard ≤ 1` using `(Set.ncard_le_one ((hc T).2.1.subset fun x hx => hx.2)).2 fun a ha b hb => start_unique hρ ha.1 hb.1 (ha.2.trans hb.2.symm)`. Use `⟨?_, fun x' hx' hF' => ?_⟩` and prove the remaining obligations. Take `⟨𝔪, h1, h2⟩` from `Set.nonempty_of_ncard_ne_zero (key ▸ hpos.ne' : {𝔪 : Multiset (Segment k) | (∀ D ∈ 𝔪, D.first = ρ) ∧ msupp 𝔪 = T}.ncard ≠ 0)`. Conclude with `⟨𝔪, h2, h1⟩`. Conclude with `(Set.ncard_le_one hfin).1 (key.le.trans hle) x' ⟨hF', (hs _ _).1 hx'⟩ x hxm`.
+-/
 theorem UpperTheory.Lit.Full.redUnique :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ρ : IrrGL k), ρ.IsCusp → ∀ (T : Multiset (IrrGL k)), (∀ y ∈ T, y ∈ up ρ) → ∀ x : IrrGL k, HasSupport x.rep T → FirstIn x {ρ} → (∃ 𝔪 : Multiset (Segment k), msupp 𝔪 = T ∧ ∀ Δ ∈ 𝔪, Δ.first = ρ) ∧ ∀ x' : IrrGL k, HasSupport x'.rep T → FirstIn x' {ρ} → x' = x := by
   classical

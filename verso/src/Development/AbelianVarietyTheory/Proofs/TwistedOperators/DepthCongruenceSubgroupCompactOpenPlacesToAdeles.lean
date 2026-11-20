@@ -28,6 +28,11 @@ namespace GlobalTheory.PlaceLevelCosets
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h3 : g ∈ grpOff V (fun _ => True)`. Use `GlobalTheory.FinPl.PlacesAdeles.mem_congGrp.2 fun i j => ?_` and prove the remaining obligations. Establish `a` using `GlobalTheory.FinPl.PlacesAdeles.mem_congGrp.1 h1 i j`. Establish `b` using `GlobalTheory.FinPl.PlacesAdeles.mem_congGrp.1 h2 i j`. Simplify using `only [GlobalTheory.FinPl.idOff, Submodule.mem_iInf] at a b ⊢`.
+
+Introduce `w`. Distinguish the cases in `hw : S w.1`. Conclude with `a ⟨w.1, hw⟩`. Conclude with `b ⟨w.1, hw⟩`. Conclude with `GlobalTheory.FinPl.OffInh.mem_GinfC_of_all (fun _ => trivial) h3`.
+-/
 theorem mem_GinfC_of_off (V : HSp D) (S : GlobalTheory.FinPl.Pl D → Prop) {g : GA D V} (h1 : g ∈ grpOff V S)
     (h2 : g ∈ grpOff V (fun v => ¬ S v)) : g ∈ GinfC V := by
   have h3 : g ∈ grpOff V (fun _ => True) := by
@@ -44,6 +49,23 @@ theorem mem_GinfC_of_off (V : HSp D) (S : GlobalTheory.FinPl.Pl D → Prop) {g :
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Establish `hfg : (G.Λ X).FG` using `Submodule.IsLattice.fg (A := D.host.E)`. Take `⟨hGf, hpr⟩` from `(GlobalTheory.FinPl.KOpen.mem_grpAt_iff (G.V X) _ κ).1 hκ.1`. Take `⟨β, hβ⟩` from `Formalism.L2.DIV.frame_exists_alt D.host.F D.host.E (G.V X).rank (G.Λ X) hΛ`. Establish `hS : Lev.finE (G.V X) κ ∈ Formalism.L2.DIV.St β` using `(GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D (G.V X) β (G.Λ X) hβ κ).2 (GlobalTheory.AdelicU.mem_levelOpen.1 (GlobalTheory.FinPl.KOpen.levelOpen_of_inK (G.V X) (G.Λ X) hfg _ hκ))`. Use `⟨hGf, ?_⟩` and prove the remaining obligations.
+
+Use `show Lev.finE (G.V X) κ ∈ congLev D.sp.cm (G.V X).gram (G.Λ X) G.modul`. Rewrite using `[← GlobalTheory.ColMeas.princ_eq_congLev D.sp.cm (G.V X).gram hβ G.modul]`. Use `⟨GlobalTheory.LevSplit.finE_mem_UA (G.V X) κ, ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hS`. Use `GlobalTheory.Grid.mem_princGL.2 ⟨y, hy, fun a b => ?_⟩` and prove the remaining obligations.
+
+Establish `hE : ∀ c d, ((Lev.finE (G.V X) κ).1 - 1) c d = toEAf D ((Formalism.L2.Theta.mt (G.V X) κ - 1) c d)`. Introduce `c d`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, RingHom.map_sub]`. Use `congr 1`. Distinguish the cases in `h : c = d`.
+
+Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one]`. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne h, RingHom.map_zero]`. Establish `hW : ∀ w ∈ G.pl.W0, ((Lev.finE (G.V X) κ).1 - 1).map (GlobalTheory.StdFrames.cpt w) = 0`. Introduce `w hw`.
+
+Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hw`. Establish `h1` using `(GlobalTheory.FinPl.KOpen.proj_eq_one_iff (G.V X) v κ).1 (hpr v (not_not.2 hv))`. Use `Matrix.ext fun c d => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, hE, Matrix.zero_apply]`. Conclude with `(GlobalTheory.LocHat.prV_eq_zero_iff_cpt v _).1 (GlobalTheory.StabOff.prV_toEAf_eq_zero v _ (h1 c d)) _ (G.pl.under_w hv)`.
+
+Establish `hconj : (Lev.finE (G.V X) κ).1 = β.1 * (Formalism.L2.DIV.intGL D.host.F D.host.E _ y).1 * (β⁻¹).1`. Rewrite using `[← hy]`. Both sides reduce to the same expression. Establish `hY` using `GlobalTheory.LevRedTriv.conj_sub_one β _ _ hconj`. Use `(GlobalTheory.FunObj.Comparison₂.mem_idS_modul G _).2 fun w hw => ?_` and prove the remaining obligations.
+
+Establish `hM : ((Formalism.L2.DIV.intGL D.host.F D.host.E _ y).1 - 1).map (GlobalTheory.StdFrames.cpt w) = 0`. Rewrite using `[hY, Matrix.map_mul, Matrix.map_mul, hW w hw, Matrix.mul_zero, Matrix.zero_mul]`. Establish `e0 : GlobalTheory.StdFrames.cpt w (((y.1 - 1) a b : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D) = 0`. Rewrite using `[GlobalTheory.LevRedTriv.coe_sub_one_apply]`. Conclude with `congrFun (congrFun hM a) b`.
+
+Rewrite using `[e0, map_zero]`. Conclude with `zero_le'`.
+-/
 theorem mem_lev_of_inK {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (X : Node)
     (hΛ : Submodule.IsLattice D.host.E (G.Λ X)) {κ : GA D (G.V X)}
     (hκ : InK (G.V X) (G.Λ X) (fun v => v ∉ G.pl.S0) κ) : κ ∈ lev G X := by
@@ -87,11 +109,17 @@ theorem mem_lev_of_inK {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L 
   rw [e0, map_zero]
   exact zero_le'
 
+/- English proof (translation)
+Introduce `a ha`. Simplify using `only [GlobalTheory.FinPl.idAt, GlobalTheory.FinPl.idOff, Submodule.mem_inf, Submodule.mem_iInf] at ha ⊢`. Conclude with `fun w => ha.2 ⟨w.1, not_not.2 w.2⟩`.
+-/
 theorem idAt_le_idOff_compl (P : GlobalTheory.FinPl.Pl D → Prop) : idAt D (fun v => ¬ P v) ≤ idOff D P := by
   intro a ha
   simp only [GlobalTheory.FinPl.idAt, GlobalTheory.FinPl.idOff, Submodule.mem_inf, Submodule.mem_iInf] at ha ⊢
   exact fun w => ha.2 ⟨w.1, not_not.2 w.2⟩
 
+/- English proof (translation)
+Introduce `a ha`. Simplify using `only [GlobalTheory.FinPl.idAt, GlobalTheory.FinPl.idOff, Submodule.mem_inf, Submodule.mem_iInf] at ha ⊢`. Conclude with `fun w => ha.2 ⟨w.1, w.2⟩`.
+-/
 theorem idAt_le_idOff_compl' (P : GlobalTheory.FinPl.Pl D → Prop) : idAt D P ≤ idOff D (fun v => ¬ P v) := by
   intro a ha
   simp only [GlobalTheory.FinPl.idAt, GlobalTheory.FinPl.idOff, Submodule.mem_inf, Submodule.mem_iInf] at ha ⊢
@@ -101,6 +129,23 @@ end GlobalTheory.PlaceLevelCosets
 
 open GlobalTheory.PlaceLevelCosets GlobalTheory.FinPl.PlacesAdeles in
 
+/- English proof (translation)
+Introduce `D _ T L μ0 hL sc G W M _ i hi`. Establish `hV` using `node_isV G hL (X := .grid i 0) ⟨hi, Nat.zero_le _⟩`. Establish `hlat : Submodule.IsLattice D.host.E (G.Λ (.grid i 0))` using `hV.sd.1`. Establish `hoc` using `congLev_open_compact (G.V (.grid i 0)) hlat (G.pl.modul_ne_bot sc)`. Use `⟨⟨inf_le_left, hoc.2, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (((lev G (.grid i 0)).subgroupOf (GfC _) : Subgroup (GfC (G.V (.grid i 0)))) : Set (GfC (G.V (.grid i 0)))) = Subtype.val ⁻¹' ((((congLev D.sp.cm (G.V (.grid i 0)).gram (G.Λ (.grid i 0)) G.modul).comap (Lev.finE (G.V (.grid i 0))) : Subgroup (GA D (G.V (.grid i 0)))) : Set (G …`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_preimage]`. Conclude with `⟨fun h => h.2, fun h => ⟨x.2, h⟩⟩`. Rewrite using `[e]`.
+
+Conclude with `hoc.1.preimage continuous_subtype_val`. Introduce `R h hA hB`. Establish `hsd : IsSelfDualC (G.V (.grid i 0)) (G.Λ (.grid i 0))` using `hV.sd`. Establish `hoff : ∀ v, (fun v => v ∉ G.pl.S0) v → ∃ hv ∈ grpAt (G.V (.grid i 0)) (· = v), ∃ h' ∈ grpOff (G.V (.grid i 0)) (· = v), h = hv * h' ∧ ∃ r ∈ R, r ∈ grpAt (G.V (.grid i 0)) (· = v) ∧ ∃ κ, InK (G.V (.grid i 0)) (G.Λ (.grid i 0)) (· = v) κ ∧ hv = r * κ`. Introduce `v hv`.
+
+Take `⟨x, hx, y, hy, e⟩` from `((GlobalTheory.FinPl.localComponents D (· = v)).2 (G.V (.grid i 0))).1 h`. Conclude with `⟨x, hx, y, hy, e, hA v hv x hx y hy e⟩`. Take `⟨r₁, hr₁, hr₁P, g, hg, κ₁, hκ₁, e₁⟩` from `GlobalTheory.FinPl.placesToAdeles_all D (G.V (.grid i 0)) (G.Λ (.grid i 0)) (fun v => v ∉ G.pl.S0) hsd R h hoff`. Take `⟨hdec, hcomm, -, -⟩` from `(GlobalTheory.FinPl.localComponents D (fun v => v ∈ G.pl.S0)).2 (G.V (.grid i 0))`. Take `⟨g₁, hg₁, g₂, hg₂, eg⟩` from `hdec g`.
+
+Establish `hin : ∀ x ∈ grpAt (G.V (.grid i 0)) (fun v => v ∉ G.pl.S0), x ∈ grpOff (G.V (.grid i 0)) (fun v => v ∈ G.pl.S0)` using `fun x hx => congGrp_mono (idAt_le_idOff_compl (fun v => v ∈ G.pl.S0)) hx`. Establish `hr₁off` using `hin r₁ hr₁P`. Establish `hκ₁off` using `hin κ₁ hκ₁.1`. Establish `hg₁off : g₁ ∈ grpOff (G.V (.grid i 0)) (fun v => ¬ v ∈ G.pl.S0)` using `congGrp_mono (idAt_le_idOff_compl' (fun v => v ∈ G.pl.S0)) hg₁`. Establish `hg₂off : g₂ ∈ grpOff (G.V (.grid i 0)) (fun v => ¬ v ∈ G.pl.S0)`.
+
+Establish `: g₂ = g₁⁻¹ * g` using `by rw [eg]; group`. Rewrite using `[this]`. Conclude with `mul_mem (inv_mem hg₁off) hg`. Establish `c1 : r₁ * g₁ = g₁ * r₁` using `(hcomm g₁ hg₁ r₁ hr₁off).symm`. Establish `eh : h = g₁ * (r₁ * g₂ * κ₁)`.
+
+Rewrite using `[e₁, eg, ← mul_assoc, ← mul_assoc, ← mul_assoc, c1]`. Take `⟨r₀, hr₀, -, k₀, hk₀, hk₀S, ek⟩` from `hB g₁ hg₁ _ (mul_mem (mul_mem hr₁off hg₂) hκ₁off) eh`. Establish `c2 : k₀ * r₁ = r₁ * k₀` using `hcomm k₀ hk₀S r₁ hr₁off`. Establish `c3 : k₀ * g₂ = g₂ * k₀` using `hcomm k₀ hk₀S g₂ hg₂`. Use `⟨r₀ * r₁, R.mul_mem hr₀ hr₁, g₂, mem_GinfC_of_off _ _ hg₂ hg₂off, k₀ * κ₁, mul_mem hk₀ (mem_lev_of_inK G _ hlat hκ₁), ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.PlaceLevelCosets.levCoset_of_places : All fun {D} _ _ _ {G} _ _ => ∀ i, i ≤ D.R.m → (lev G (.grid i 0) ≤ GfC _ ∧ IsCompact (lev G (.grid i 0) : Set (GA D (G.V (.grid i 0)))) ∧ IsOpen (((lev G (.grid i 0)).subgroupOf (GfC _) : Subgroup (GfC (G.V (.grid i 0)))) : Set (GfC (G.V (.grid i 0))))) ∧ ∀ (R : Subgroup (GA D (G.V (.grid i 0)))) h, (∀ v ∉ G.pl.S0, ∀ h₁ ∈ grpAt _ (· = v), ∀ h₂ ∈ grpOff _ (· = v), h = h₁ * h₂ → CosetAt _ R (G.Λ (.grid i 0)) v h₁) → (∀ h₁ ∈ grpAt _ (fun v => v ∈ G.pl.S0), ∀ h₂ ∈ grpOff _ (fun v => v ∈ G.pl.S0), h = h₁ * h₂ → ∃ r ∈ R, r ∈ grpAt _ (fun v => v ∈ G.pl.S0) ∧ ∃ k ∈ lev G (.grid i 0), k ∈ grpAt _ (fun v => v ∈ G.pl.S0) ∧ h₁ = r * k) → ∃ r ∈ R, ∃ a ∈ GinfC _, ∃ k ∈ lev G (.grid i 0), h = r * a * k := by
   intro D _ T L μ0 hL sc G W M _ i hi
   have hV := node_isV G hL (X := .grid i 0) ⟨hi, Nat.zero_le _⟩

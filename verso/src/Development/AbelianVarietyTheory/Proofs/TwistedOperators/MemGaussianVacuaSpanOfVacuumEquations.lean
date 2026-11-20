@@ -17,17 +17,31 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def evIHom : AF F →+* mixedEmbedding.mixedSpace F :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp (RingHom.fst _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evIHom_apply (a : AF F) : evIHom a = evI F a := rfl
 
+/- English proof (translation)
+Rewrite using `[← evIHom_apply, map_mul, evIHom_apply, evIHom_apply, Algebra.smul_def]`. Use `congr 1`. Simplify using `[evI, realAd]`.
+-/
 theorem evI_realAd_mul (t : ℝ) (c : AF F) : evI F (realAd F t * c) = t • evI F c := by
   rw [← evIHom_apply, map_mul, evIHom_apply, evIHom_apply, Algebra.smul_def]
   congr 1
   simp [evI, realAd]
 
+/- English proof (translation)
+Use `show (realAd F t).2 * c.2 = 0`. Simplify using `[realAd]`.
+-/
 theorem realAd_mul_snd (t : ℝ) (c : AF F) : (realAd F t * c).2 = 0 := by
   show (realAd F t).2 * c.2 = 0
   simp [realAd]
 
+/- English proof (translation)
+Introduce `b hb`. Establish `h1 : b.1 = 0`. Establish `: InfiniteAdeleRing.ringEquiv_mixedSpace F b.1 = 0` using `hb`. Conclude with `(map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective).mp this`. Rewrite using `[smul_eq_mul, ← mul_assoc]`.
+
+Establish `: b * realAd F t = 0` using `Prod.ext (by show b.1 * _ = 0; rw [h1, zero_mul]) (by show _ * (realAd F t).2 = 0; simp [realAd])`. Rewrite using `[this, zero_mul]`.
+-/
 theorem at_realAd_mul (t : ℝ) (c : AF F) : At (evI F) (realAd F t * c) := by
   intro b hb
   have h1 : b.1 = 0 := by
@@ -42,11 +56,25 @@ def gam (w : (κ → AF F) × (κ → AF F)) (f : SInf F κ) (t : ℝ) (y : κ �
       ((t * Algebra.trace ℝ _ (y ⬝ᵥ fun i => evI F (w.2 i)) + t ^ 2 * Algebra.trace ℝ _ (evI F (⅟(2 : AF F) * (w.1 ⬝ᵥ w.2))) : ℝ) : ℂ)) *
     f (y + t • fun i => evI F (w.1 i))
 
+/- English proof (translation)
+Unfold `gam`. Use `fun_prop`.
+-/
 theorem gam_differentiableAt (w : (κ → AF F) × (κ → AF F)) (f : SInf F κ) (y : κ → mixedEmbedding.mixedSpace F) :
     DifferentiableAt ℝ (fun t => gam w f t y) 0 := by
   unfold gam
   fun_prop
 
+/- English proof (translation)
+Establish `hK : x ⬝ᵥ (realAd F t • w).2 + ⅟(2 : AF F) * ((realAd F t • w).1 ⬝ᵥ (realAd F t • w).2) = realAd F t * (x ⬝ᵥ w.2 + realAd F t * (⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)))`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, dotProduct_smul, smul_dotProduct, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hev : evI F (realAd F t * (x ⬝ᵥ w.2 + realAd F t * (⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)))) = t • ((fun i => evI F (x i)) ⬝ᵥ (fun i => evI F (w.2 i)) + t • evI F (⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)))`. Rewrite using `[evI_realAd_mul]`.
+
+Use `congr 1`. Rewrite using `[← evIHom_apply, map_add, evIHom_apply, evIHom_apply, evI_realAd_mul, ← evIHom_apply (x ⬝ᵥ w.2), RingHom.map_dotProduct]`. Both sides reduce to the same expression. Unfold `schr pureA gam`. Rewrite using `[hK, hψ.2.2 _ (at_realAd_mul _ _), hev]`.
+
+Establish `hf : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + (realAd F t • w).1) i).1) = (fun i => evI F (x i)) + t • fun i => evI F (w.1 i)`. Use function extensionality and compare the values at `i`. Use `show evIHom (x i + realAd F t * w.1 i) = evI F (x i) + t • evI F (w.1 i)`. Rewrite using `[map_add, evIHom_apply, evIHom_apply, evI_realAd_mul]`. Establish `hg : (fun i => ((x + (realAd F t • w).1) i).2) = fun i => (x i).2`.
+
+Use function extensionality and compare the values at `i`. Use `show (x i).2 + (realAd F t * w.1 i).2 = (x i).2`. Rewrite using `[realAd_mul_snd, add_zero]`. Rewrite using `[hf, hg]`. Simplify using `only [map_smul, map_add, smul_eq_mul]`.
+
+Put the polynomial expressions in normal form.
+-/
 theorem schr_pureA (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (w : (κ → AF F) × (κ → AF F)) (t : ℝ) (f : SInf F κ)
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (x : κ → AF F) :
     schr ψ (realAd F t • w) (pureA F f g) x = gam w f t (fun i => evI F (x i)) * g (fun i => (x i).2) := by
@@ -88,6 +116,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def dgam (w : (κ → AF F) × (κ → AF F)) (f : SInf F κ) (y : κ → mixedEmbedding.mixedSpace F) : ℂ :=
   deriv (fun t => gam w f t y) 0
 
+/- English proof (translation)
+Take `⟨m₀, c, p, hp⟩` from `Submodule.mem_span_set'.mp hΦ`. Use `choose f₀ g₀ hg₀ hp₀ using fun i => (p i).2`. Use `set f₁ : Fin m₀ → SInf F κ := fun i => c i • f₀ i`. Establish `hΦ' : Φ = ∑ i, pureA F (f₁ i) (g₀ i)`. Rewrite using `[← hp]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hp₀ i]`. Use function extensionality and compare the values at `x`. Simplify using `[f₁, pureA, mul_assoc]`. Use `set V := Submodule.span ℂ (Set.range g₀)`.
+
+Use `haveI : FiniteDimensional ℂ V := FiniteDimensional.span_of_finite ℂ (Set.finite_range g₀)`. Set `b` to `Module.finBasis ℂ V`. Establish `hmem : ∀ i, g₀ i ∈ V` using `fun i => Submodule.subset_span ⟨i, rfl⟩`. Set `a : Fin m₀ → Fin (Module.finrank ℂ V) → ℂ` to `fun i j => b.repr ⟨g₀ i, hmem i⟩ j`. Establish `hg : ∀ i z, g₀ i z = ∑ j, a i j * (b j : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) z`.
+
+Introduce `i z`. Use `congrArg (fun v : V => (v : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) z) (b.sum_repr ⟨g₀ i, hmem i⟩)` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `this.symm`. Use `⟨Module.finrank ℂ V, fun j => ∑ i, a i j • f₁ i, fun j => (b j : _), fun j => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact hg₀ i)) (b j).2`. Conclude with `b.linearIndependent.map' V.subtype (Submodule.ker_subtype V)`. Rewrite using `[hΦ']`. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, pureA, hg, Finset.mul_sum, Finset.sum_mul, SchwartzMap.sum_apply, SchwartzMap.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem exists_indep {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     ∃ (m : ℕ) (f : Fin m → SInf F κ) (g : Fin m → (κ → FiniteAdeleRing (𝓞 F) F) → ℂ),
       (∀ k, g k ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) ∧ LinearIndependent ℂ g ∧ Φ = ∑ k, pureA F (f k) (g k) := by
@@ -120,12 +161,18 @@ theorem exists_indep {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     rw [Finset.sum_comm]
     exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Unfold `Model.heisLine Darboux.rho`. Rewrite using `[map_smul, schr_pureA ψ hψ]`.
+-/
 theorem heisLine_pureA (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (u : Matrix (Fin n) (Fin d) (AE F E))
     (t : ℝ) (f : SInf F (Fin n × Fin d)) (g : (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) → ℂ) (x : Fin n × Fin d → AF F) :
     M.heisLine ψ u t (pureA F f g) x = gam (M.co.e u) f t (fun i => evI F (x i)) * g (fun i => (x i).2) := by
   unfold Model.heisLine Darboux.rho
   rw [map_smul, schr_pureA ψ hψ]
 
+/- English proof (translation)
+Simplify using `only [heisLine_pureA M ψ hψ]`. Conclude with `(gam_differentiableAt _ _ _).hasDerivAt.mul_const _`.
+-/
 theorem hasDerivAt_heisLine_pureA (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
     (u : Matrix (Fin n) (Fin d) (AE F E)) (f : SInf F (Fin n × Fin d)) (g : (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) → ℂ)
     (x : Fin n × Fin d → AF F) :
@@ -134,6 +181,9 @@ theorem hasDerivAt_heisLine_pureA (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (
   simp only [heisLine_pureA M ψ hψ]
   exact (gam_differentiableAt _ _ _).hasDerivAt.mul_const _
 
+/- English proof (translation)
+Establish `e : (fun t : ℝ => M.heisLine ψ u t (∑ k, pureA F (f k) (g k)) x) = fun t => ∑ k, M.heisLine ψ u t (pureA F (f k) (g k)) x`. Use function extensionality and compare the values at `t`. Simplify using `only [Model.heisLine, Darboux.rho, schr, Finset.sum_apply, Finset.mul_sum]`. Rewrite using `[e]`. Conclude with `HasDerivAt.fun_sum fun k _ => hasDerivAt_heisLine_pureA M ψ hψ u (f k) (g k) x`.
+-/
 theorem hasDerivAt_heisLine_sum (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
     (u : Matrix (Fin n) (Fin d) (AE F E)) {m : ℕ} (f : Fin m → SInf F (Fin n × Fin d))
     (g : Fin m → (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) → ℂ) (x : Fin n × Fin d → AF F) :
@@ -150,6 +200,29 @@ end GlobalTheory.VacFactor
 
 open GlobalTheory.VacFactor in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M ψ τ hψ Φ hΦ hG`. Take `⟨m, f, g, hg, hgi, rfl⟩` from `exists_indep hΦ`. Take `⟨ε, hε⟩` from `hG`. Set `mk : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) → (Fin n × Fin d → AF F)` to `fun y z i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i), z i)`. Establish `hmk1 : ∀ y z, (fun i => evI F (mk y z i)) = y` using `fun y z => by`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[mk, evI]`. Establish `hmk2 : ∀ y z, (fun i => (mk y z i).2) = z` using `fun y z => rfl`. Establish `key : ∀ u u' : Matrix (Fin n) (Fin d) (AE F E), At (evI F) u → At (evI F) u' → (∀ w, u'.map (piInf (τ w)) = (((ε w : ℤ) : ℂ) * Complex.I) • (X.θ w * u.map (piInf (τ w)) * (W.θ w)ᵀ)) → ∀ k y, dgam (M.co.e u') (f k) y = Complex.I * dgam (M.co.e u) (f k) y`. Introduce `u u' hu hu' hr k y`.
+
+Establish `h0 : ∑ k, (dgam (M.co.e u') (f k) y - Complex.I * dgam (M.co.e u) (f k) y) • g k = 0`. Use function extensionality and compare the values at `z`. Establish `e` using `hε u u' hu hu' hr (mk y z)`. Rewrite `e` using `[(hasDerivAt_heisLine_sum M ψ hψ u' f g (mk y z)).deriv, (hasDerivAt_heisLine_sum M ψ hψ u f g (mk y z)).deriv, hmk1, hmk2]`. Rewrite using `[Finset.sum_apply]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[e, Finset.mul_sum]`. Simplify using `only [mul_assoc, sub_self]`. Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hgi _ h0 k)`. Establish `hgne : ∀ k, ∃ z, g k z ≠ 0` using `fun k => by`.
+
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hgi.ne_zero k (funext h)`. Establish `gauss : ∀ k, M.IsGauss ψ τ (f k)`. Introduce `k`.
+
+Take `⟨z₀, hz₀⟩` from `hgne k`. Use `⟨ε, fun u u' hu hu' hr f₁ f₁' h1 h1' => ?_⟩` and prove the remaining obligations. Establish `hR : Rest (evI F) (⇑(f k)) (fun x : Fin n × Fin d → AF F => g k (fun i => (x i).2))`. Use `⟨fun x z hz => ?_, Submodule.subset_span ⟨f k, g k, hg k, rfl⟩⟩` and prove the remaining obligations. Establish `hz2 : ∀ i, (z i).2 = 0`.
+
+Introduce `i`. Establish `h0 : evI F (show AF F from ((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F))) = 0` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : InfiniteAdeleRing F) = 0`. Conclude with `map_zero _`. Use `congrArg (fun v : Fin n × Fin d → AF F => (v i).2) (hz _ h0)` as an intermediate fact. Express the relevant statement in the definitionally equal form `(1 : FiniteAdeleRing (𝓞 F) F) * (z i).2 = 0 at this`.
+
+Simplify using `using this`. Establish `hxz : (fun i => ((x + z) i).2) = fun i => (x i).2`. Use function extensionality and compare the values at `i`. Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[hz2, add_zero]`.
+
+Conclude with `congrArg (g k) hxz`. Establish `hD : ∀ (v : Matrix (Fin n) (Fin d) (AE F E)) (f₂ : SInf F (Fin n × Fin d)), ActsD (evI F) (M.heisLine ψ v) (⇑(f k)) (⇑f₂) → ∀ y, f₂ y = dgam (M.co.e v) (f k) y`. Introduce `v f₂ h y`. Establish `a` using `h _ hR (mk y z₀)`. Establish `b` using `hasDerivAt_heisLine_pureA M ψ hψ v (f k) (g k) (mk y z₀)`.
+
+Use `a.unique b` as an intermediate fact. Simplify using `only [tens, hmk1, hmk2] at this`. Conclude with `mul_right_cancel₀ hz₀ this`. Use `DFunLike.ext _ _ fun y => ?_` and prove the remaining obligations. Rewrite using `[hD u' f₁' h1' y, key u u' hu hu' hr k y, ← hD u f₁ h1 y]`.
+
+Simplify using the standard rewrite rules. Use `Submodule.sum_mem _ fun k _ => Submodule.subset_span ⟨f k, g k, ?_, hg k, rfl⟩` and prove the remaining obligations. Conclude with `Submodule.mem_sInf.mpr fun N hN => hN.1 _ (gauss k)`.
+-/
 theorem GlobalTheory.VacFactor.mem_span_of_isGaussEq : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ X W) (ψ : AddChar (AF F) ℂ)
     (τ : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ →

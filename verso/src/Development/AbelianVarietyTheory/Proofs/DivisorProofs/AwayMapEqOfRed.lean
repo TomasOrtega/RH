@@ -7,17 +7,29 @@ noncomputable section
 
 namespace GlobalTheory.SecGlue.Red
 
+/- English proof (translation)
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B)
     (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Simplify using `only [spMap]`. Conclude with `Spec.map_id _`.
+-/
 theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   simp only [spMap]; exact Spec.map_id _
 
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers a) h`.
+-/
 theorem away_ext {R T : Type} [CommRing R] [CommRing T] (a : R) (φ ψ : Localization.Away a →+* T)
     (h : φ.comp (algebraMap R _) = ψ.comp (algebraMap R _)) : φ = ψ :=
   IsLocalization.ringHom_ext (Submonoid.powers a) h
 
+/- English proof (translation)
+Rewrite using `[← hρ]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit a).map ρ`.
+-/
 theorem isUnit_of_away {R T : Type} [CommRing R] [CommRing T] [Algebra R T] (a : R)
     (ρ : Localization.Away a →+* T) (hρ : ρ.comp (algebraMap R _) = algebraMap R T) :
     IsUnit (algebraMap R T a) := by
@@ -35,10 +47,16 @@ def redPsi (π : R →+* R₀) (hπ : Function.Surjective π) (S : Type) [CommRi
       rw [RingHom.mem_ker, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]
       exact Ideal.mem_map_of_mem _ hx⟩
 
+/- English proof (translation)
+The claim follows from `RingHom.liftOfRightInverse_comp _ _ _ _`.
+-/
 theorem redPsi_comp (π : R →+* R₀) (hπ : Function.Surjective π) (S : Type) [CommRing S]
     [Algebra R S] : (redPsi π hπ S).comp π = (Ideal.Quotient.mk (redI π S)).comp (algebraMap R S) :=
   RingHom.liftOfRightInverse_comp _ _ _ _
 
+/- English proof (translation)
+Rewrite using `[Ideal.mk_ker, ← Ideal.map_pow, h, Ideal.map_bot]`.
+-/
 theorem ker_mk_sq (π : R →+* R₀) (h : RingHom.ker π ^ 2 = ⊥) (S : Type) [CommRing S]
     [Algebra R S] : RingHom.ker (Ideal.Quotient.mk (redI π S)) ^ 2 = ⊥ := by
   rw [Ideal.mk_ker, ← Ideal.map_pow, h, Ideal.map_bot]
@@ -47,12 +65,22 @@ def IsRed (π : R →+* R₀) (hπ : Function.Surjective π) {Y : Scheme.{0}} (g
     (S : Type) [CommRing S] [Algebra R S] (u : Sp S ⟶ Y) : Prop :=
   spMap (Ideal.Quotient.mk (redI π S)) ≫ u = spMap (redPsi π hπ S) ≫ g₀
 
+/- English proof (translation)
+The claim follows from `hu.trans hv.symm`.
+-/
 theorem IsRed.eq {π : R →+* R₀} {hπ : Function.Surjective π} {Y : Scheme.{0}} {g₀ : Sp R₀ ⟶ Y}
     {S : Type} [CommRing S] [Algebra R S] {u v : Sp S ⟶ Y} (hu : IsRed π hπ g₀ S u)
     (hv : IsRed π hπ g₀ S v) :
     spMap (Ideal.Quotient.mk (redI π S)) ≫ u = spMap (Ideal.Quotient.mk (redI π S)) ≫ v :=
   hu.trans hv.symm
 
+/- English proof (translation)
+Establish `hunit : IsUnit (redPsi π hπ S (π a))`. Establish `e : redPsi π hπ S (π a) = Ideal.Quotient.mk (redI π S) (algebraMap R S a)`. Rewrite using `[← RingHom.comp_apply (redPsi π hπ S) π, redPsi_comp, RingHom.comp_apply]`. Rewrite using `[e]`. Conclude with `(isUnit_of_away a ρ hρ).map _`.
+
+Set `lam` to `IsLocalization.Away.lift (S := Localization.Away (π a)) (π a) hunit`. Establish `key : (Ideal.Quotient.mk (redI π S)).comp ρ = lam.comp (Localization.awayMap π a)`. Apply `away_ext a` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, hρ, RingHom.comp_assoc]`. Establish `e1 : (Localization.awayMap π a).comp (algebraMap R (Localization.Away a)) = (algebraMap R₀ (Localization.Away (π a))).comp π` using `IsLocalization.map_comp _`.
+
+Rewrite using `[e1, ← RingHom.comp_assoc, IsLocalization.Away.lift_comp, redPsi_comp]`. Unfold `IsRed`. Rewrite using `[← Category.assoc, ← spMap_comp, key, spMap_comp, Category.assoc, hu, ← Category.assoc, ← spMap_comp, IsLocalization.Away.lift_comp]`.
+-/
 theorem isRed_of_away (π : R →+* R₀) (hπ : Function.Surjective π) {Y : Scheme.{0}}
     (g₀ : Sp R₀ ⟶ Y) (a : R) (u : Sp (Localization.Away a) ⟶ Y)
     (hu : spMap (Localization.awayMap π a) ≫ u =
@@ -74,6 +102,9 @@ theorem isRed_of_away (π : R →+* R₀) (hπ : Function.Surjective π) {Y : Sc
   rw [← Category.assoc, ← spMap_comp, key, spMap_comp, Category.assoc, hu, ← Category.assoc,
     ← spMap_comp, IsLocalization.Away.lift_comp]
 
+/- English proof (translation)
+Use `isRed_of_away π hπ g₀ a u hu (Localization.Away a) (RingHom.id _) rfl` as an intermediate fact. Rewrite `this` using `[spMap_id, Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem isRed_self (π : R →+* R₀) (hπ : Function.Surjective π) {Y : Scheme.{0}}
     (g₀ : Sp R₀ ⟶ Y) (a : R) (u : Sp (Localization.Away a) ⟶ Y)
     (hu : spMap (Localization.awayMap π a) ≫ u =
@@ -82,6 +113,13 @@ theorem isRed_self (π : R →+* R₀) (hπ : Function.Surjective π) {Y : Schem
   have := isRed_of_away π hπ g₀ a u hu (Localization.Away a) (RingHom.id _) rfl
   rwa [spMap_id, Category.id_comp] at this
 
+/- English proof (translation)
+Establish `hle : redI π S ≤ (redI π S').comap σ`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, ← RingHom.comp_apply σ, hσ]`. Conclude with `Ideal.mem_map_of_mem _ hx`.
+
+Establish `h1 : (Ideal.Quotient.mk (redI π S')).comp σ = (Ideal.quotientMap (redI π S') σ hle).comp (Ideal.Quotient.mk (redI π S))` using `(Ideal.quotientMap_comp_mk hle).symm`. Establish `h2 : (Ideal.quotientMap (redI π S') σ hle).comp (redPsi π hπ S) = redPsi π hπ S'`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `y`. Take `⟨x, rfl⟩` from `hπ y`.
+
+Rewrite using `[RingHom.comp_apply, ← RingHom.comp_apply (redPsi π hπ S), redPsi_comp, ← RingHom.comp_apply (redPsi π hπ S'), redPsi_comp, RingHom.comp_apply, RingHom.comp_apply, Ideal.quotientMap_mk, ← RingHom.comp_apply σ, hσ]`. Unfold `IsRed at *`. Rewrite using `[← Category.assoc, ← spMap_comp, h1, spMap_comp, Category.assoc, hu, ← Category.assoc, ← spMap_comp, h2]`.
+-/
 theorem isRed_comp (π : R →+* R₀) (hπ : Function.Surjective π) {Y : Scheme.{0}}
     (g₀ : Sp R₀ ⟶ Y) {S S' : Type} [CommRing S] [Algebra R S] [CommRing S'] [Algebra R S']
     (σ : S →+* S') (hσ : σ.comp (algebraMap R S) = algebraMap R S') {u : Sp S ⟶ Y}
@@ -103,6 +141,13 @@ theorem isRed_comp (π : R →+* R₀) (hπ : Function.Surjective π) {Y : Schem
   rw [← Category.assoc, ← spMap_comp, h1, spMap_comp, Category.assoc, hu, ← Category.assoc,
     ← spMap_comp, h2]
 
+/- English proof (translation)
+Establish `H : ∀ x ∈ redI π (Localization.Away a), Localization.awayMap π a x = 0`. Introduce `x hx`. Establish `hle : redI π (Localization.Away a) ≤ RingHom.ker (Localization.awayMap π a)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `y hy`.
+
+Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← RingHom.comp_apply, show (Localization.awayMap π a).comp (algebraMap R (Localization.Away a)) = (algebraMap R₀ (Localization.Away (π a))).comp π from IsLocalization.map_comp _, RingHom.comp_apply, RingHom.mem_ker.1 hy, map_zero]`. Conclude with `hle hx`. Establish `e : Localization.awayMap π a = (Ideal.Quotient.lift _ (Localization.awayMap π a) H).comp (Ideal.Quotient.mk _)`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, spMap_comp, Category.assoc, Category.assoc, h]`.
+-/
 theorem awayMap_eq_of_red (π : R →+* R₀) {Y : Scheme.{0}} (a : R)
     (u v : Sp (Localization.Away a) ⟶ Y)
     (h : spMap (Ideal.Quotient.mk (redI π (Localization.Away a))) ≫ u =

@@ -28,6 +28,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Algebra O RW] {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA}
     (E : EtTie W RA RW inclR φR gR πA)
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Fintype.sum_prod_type, mul_smul, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => smul_comm _ _ _`.
+-/
 theorem bil_expand {R M M' M'' : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup M']
     [Module R M'] [AddCommGroup M''] [Module R M''] (b : M →ₗ[R] M' →ₗ[R] M'') {ι κ : Type}
     [Fintype ι] [Fintype κ] (u : ι → R) (x : ι → M) (u' : κ → R) (y : κ → M') :
@@ -37,6 +40,9 @@ theorem bil_expand {R M M' M'' : Type} [CommRing R] [AddCommGroup M] [Module R M
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => smul_comm _ _ _
 
+/- English proof (translation)
+Use `choose U hU using fun a => (Submodule.mem_span_range_iff_exists_fun W.EE).1 ((exists_frob_inv E hm hφ T e).ge (Submodule.mem_top (x := e a)))`. Use `⟨U, fun a => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hU a, map_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [E.jD_smul, E.jD_φ]`.
+-/
 theorem exists_frob_mat (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRingHom ≠ ⊤)
     (hφ : Function.Surjective φR) (T : LocLat G Qp LL O) {ι : Type} [Fintype ι]
     (e : Module.Basis ι W.EE (W.DD T)) : ∃ U : ι → ι → W.EE, ∀ a,
@@ -47,6 +53,9 @@ theorem exists_frob_mat (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.to
   conv_lhs => rw [← hU a, map_sum]
   exact Finset.sum_congr rfl fun b _ => by rw [E.jD_smul, E.jD_φ]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `hb`. Use `⟨Module.Basis.mk h3 h4.ge, (Module.Basis.span h1).map (LinearEquiv.ofEq _ _ h2), fun i => ?_⟩` and prove the remaining obligations. Simplify using `[Module.Basis.span_apply]`.
+-/
 theorem exists_bases {T : LocLat G Qp LL O} {r : ℕ} {b : Fin r → W.DD T} (hb : IsWachBasis W T b) :
     ∃ (e : Module.Basis (Fin r) W.EE (W.DD T)) (c : Module.Basis (Fin r) (LetA O n) ↥(W.N T)),
       ∀ i, e i = (c i : W.DD T) := by
@@ -54,6 +63,19 @@ theorem exists_bases {T : LocLat G Qp LL O} {r : ℕ} {b : Fin r → W.DD T} (hb
   refine ⟨Module.Basis.mk h3 h4.ge, (Module.Basis.span h1).map (LinearEquiv.ofEq _ _ h2), fun i => ?_⟩
   simp [Module.Basis.span_apply]
 
+/- English proof (translation)
+Take `⟨f₁, hf₁⟩` from `exists_extend T ((TensorProduct.mk O ↥T.L.T ↥T'.L.T).compr₂ (T''.L.T.subtype ∘ₗ m.toLinearMap))`. Take `⟨f₂, hf₂⟩` from `exists_extend T' f₁.flip`. Establish `hf : ∀ (x : ↥T.L.T) (y : ↥T'.L.T), f₂ y x = (m (x ⊗ₜ[O] y) : T''.V)` using `fun x y => by`. Rewrite using `[hf₂, LinearMap.flip_apply, hf₁]`. Both sides reduce to the same expression.
+
+Use `hq _ (T.ρ.tprod T'.ρ) _ T''.ρ (TensorProduct.lift f₂.flip) ?_ ?_ (ht _ _ _ _ hT hT')` and prove the remaining obligations. Introduce `g z`. Establish `: (f₂.flip.compl₁₂ (T.ρ g) (T'.ρ g)) = f₂.flip.compr₂ (T''.ρ g)`. Use `ext_lat T fun x => ext_lat T' fun y => ?_` and prove the remaining obligations. Establish `h1` using `hf (T.actT g x) (T'.actT g y)`.
+
+Rewrite `h1` using `[hm]`. Express the relevant statement in the definitionally equal form `f₂ (T'.ρ g y) (T.ρ g x) = T''.ρ g (f₂ y x)`. Rewrite using `[hf]`. Conclude with `h1`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x y => simpa using LinearMap.congr_fun₂ this x y`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← T''.L.span, Submodule.span_le]`. Introduce `z hz`.
+
+Take `⟨w, hw⟩` from `m.surjective ⟨z, hz⟩`. Establish `hz' : z = (m w : T''.V)` using `by rw [hw]`. Rewrite using `[hz']`. Use `clear hw hz' hz`. Proceed by induction on `w using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, Submodule.coe_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul x y => exact ⟨(x : T.V) ⊗ₜ[LL] (y : T'.V), by simp [hf]⟩`.
+-/
 theorem isCrys_tensor [IsFractionRing O LL] (hq : QuotCrys PD LL) (ht : TensorCrys PD LL)
     {T T' T'' : LocLat G Qp LL O} (hT : IsCrys PD T.ρ) (hT' : IsCrys PD T'.ρ)
     (m : ↥T.L.T ⊗[O] ↥T'.L.T ≃ₗ[O] ↥T''.L.T) (hm : IsTensorLat m) : IsCrys PD T''.ρ := by
@@ -86,6 +108,13 @@ theorem isCrys_tensor [IsFractionRing O LL] (hq : QuotCrys PD LL) (ht : TensorCr
     | add x y hx hy => rw [map_add, Submodule.coe_add]; exact Submodule.add_mem _ hx hy
     | tmul x y => exact ⟨(x : T.V) ⊗ₜ[LL] (y : T'.V), by simp [hf]⟩
 
+/- English proof (translation)
+Take `⟨e⟩` from `exists_basis_DD E T`. Take `⟨e'⟩` from `exists_basis_DD E T'`. Take `⟨U, hU⟩` from `exists_frob_mat E hm hφ T e`. Take `⟨U', hU'⟩` from `exists_frob_mat E hm hφ T' e'`. Establish `hact : ∀ (g : G) (x : TW RW T) (y : TW RW T'), TWact (gR g) T'' g (mulL RW m.toLinearMap x y) = mulL RW m.toLinearMap (TWact (gR g) T g x) (TWact (gR g) T' g y)` using `fun g x y => map_mulL RW m.toLinearMap (gR g) (T.actT g) (T'.actT g) (T''.actT g) (hmt g) x y`.
+
+Establish `hfr : ∀ (x : TW RW T) (y : TW RW T'), TWmap φR T'' (mulL RW m.toLinearMap x y) = mulL RW m.toLinearMap (TWmap φR T x) (TWmap φR T' y)` using `fun x y => map_mulL RW m.toLinearMap φR LinearMap.id LinearMap.id LinearMap.id (fun _ _ => rfl) x y`. Generalize the expression as in `mulL RW m.toLinearMap = b at hact hfr ⊢`. Establish `key` using `mem_range_jD E hd T'' (ι := Fin (Module.finrank O ↥T.L.T) × Fin (Module.finrank O ↥T'.L.T)) (fun p q => U p.1 q.1 * U' p.2 q.2) (fun p => b (E.jD T (e p.1)) (E.jD T' (e' p.2))) (fun g hg p => by simp only [hact, jD_fixed E T g hg, jD_fixed E T' g hg]) (fun p => by`. Simplify using `only [hfr, map_mul]`. Rewrite using `[← bil_expand b (fun b => E.ioE (U p.1 b)) (fun b => TWmap φR T (E.jD T (e b))) (fun b => E.ioE (U' p.2 b)) (fun b => TWmap φR T' (E.jD T' (e' b))), ← hU, ← hU'])`.
+
+Conclude with `exists_descend E.ioE (E.jD T).toAddMonoidHom (E.jD T').toAddMonoidHom (E.jD T'').toAddMonoidHom (E.jD_smul T) (E.jD_smul T') (E.jD_smul T'') (E.jD_inj T'') b e e' fun a c => key (a, c)`.
+-/
 theorem exists_mul (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRingHom ≠ ⊤)
     (hφ : Function.Surjective φR) (hd : Descends E) {T T' T'' : LocLat G Qp LL O}
     (m : ↥T.L.T ⊗[O] ↥T'.L.T ≃ₗ[O] ↥T''.L.T) (hmt : IsTensorLat m) :
@@ -116,6 +145,21 @@ theorem exists_mul (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRingH
     (E.jD T'').toAddMonoidHom (E.jD_smul T) (E.jD_smul T') (E.jD_smul T'') (E.jD_inj T'')
     b e e' fun a c => key (a, c)
 
+/- English proof (translation)
+Use `haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial`. Use `haveI := nontrivial_EE W`. Use `haveI := T.L.free`. Use `haveI := T'.L.free`. Take `⟨c, hc⟩` from `exists_basis_jD E T e`.
+
+Take `⟨c', hc'⟩` from `exists_basis_jD E T' e'`. Establish `hsp : Submodule.span W.EE (Set.range fun p : ι × κ => μ (e p.1) (e' p.2)) = ⊤`. Use `eq_top_DD E hm T'' _ ?_` and prove the remaining obligations. Use `set S := Submodule.span RW (E.jD T'' '' (Submodule.span W.EE (Set.range fun p : ι × κ => μ (e p.1) (e' p.2)) : Set (W.DD T''))) with hS`. Establish `h1 : ∀ x y, mulL RW m.toLinearMap x y ∈ S`.
+
+Introduce `x y`. Rewrite using `[← c.sum_repr x, ← c'.sum_repr y]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Rewrite using `[hc, hc', ← hμ]`.
+
+Conclude with `Submodule.subset_span ⟨_, Submodule.subset_span ⟨(i, k), rfl⟩, rfl⟩`. Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact S.zero_mem`.
+
+Consider the case `add x y hx hy => exact S.add_mem hx hy`. Consider the case `tmul r u`. Take `⟨w, rfl⟩` from `m.surjective u`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => rw [map_add, TensorProduct.tmul_add]`. Conclude with `S.add_mem hx hy`. Consider the case `tmul x y`. Use `h1 (r ⊗ₜ[O] x) ((1 : RW) ⊗ₜ[O] y)` as an intermediate fact. Rewrite `this` using `[mulL_tmul, mul_one]`. Then use the resulting hypothesis.
+
+Use `⟨basisOfTopLeSpanOfCardEqFinrank _ hsp.ge ?_, fun i => congrFun (coe_basisOfTopLeSpanOfCardEqFinrank _ _ _) i⟩` and prove the remaining obligations. Rewrite using `[(W.DD_free T'').2, ← m.finrank_eq, Module.finrank_tensorProduct, ← (W.DD_free T).2, ← (W.DD_free T').2, Module.finrank_eq_card_basis e, Module.finrank_eq_card_basis e', Fintype.card_prod]`.
+-/
 theorem exists_basis_mul (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRingHom ≠ ⊤)
     {T T' T'' : LocLat G Qp LL O} (m : ↥T.L.T ⊗[O] ↥T'.L.T ≃ₗ[O] ↥T''.L.T)
     (μ : W.DD T →ₗ[W.EE] W.DD T' →ₗ[W.EE] W.DD T'')
@@ -161,6 +205,53 @@ theorem exists_basis_mul (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.t
     ← (W.DD_free T').2, Module.finrank_eq_card_basis e, Module.finrank_eq_card_basis e',
     Fintype.card_prod]
 
+/- English proof (translation)
+Introduce `T T' T'' hT hT' m hmt`. Take `⟨μ, hμ⟩` from `exists_mul E hm hφ hd m hmt`. Take `⟨⟨b₀, hb₀⟩, -⟩` from `hF T hT`. Take `⟨⟨b₀', hb₀'⟩, -⟩` from `hF T' hT'`. Take `⟨e, b, heb⟩` from `exists_bases hb₀`.
+
+Take `⟨e', b', heb'⟩` from `exists_bases hb₀'`. Take `⟨e'', he''⟩` from `exists_basis_mul E hm m μ hμ e e'`. Establish `hφμ : ∀ x y, W.φD T'' (μ x y) = μ (W.φD T x) (W.φD T' y)` using `fun x y => by`. Apply `E.jD_inj` to reduce the goal to its premises. Rewrite using `[E.jD_φ, hμ, hμ, E.jD_φ, E.jD_φ]`.
+
+Conclude with `map_mulL RW m.toLinearMap φR LinearMap.id LinearMap.id LinearMap.id (fun _ _ => rfl) _ _`. Establish `hγμ : ∀ (g : W.Gam) x y, W.γD T'' g (μ x y) = μ (W.γD T g x) (W.γD T' g y)` using `fun g x y => by`. Take `⟨g, rfl⟩` from `W.resΓ_onto g`. Apply `E.jD_inj` to reduce the goal to its premises. Rewrite using `[E.jD_act, hμ, hμ, E.jD_act, E.jD_act]`.
+
+Conclude with `map_mulL RW m.toLinearMap (gR g) (T.actT g) (T'.actT g) (T''.actT g) (hmt g) _ _`. Establish `hA₁ : ∀ (a : LetA O n) x y, μ (a • x) y = a • μ x y` using `fun a x y => by`. Rewrite using `[← algebraMap_smul W.EE a x, map_smul, LinearMap.smul_apply, algebraMap_smul]`. Establish `hA₂ : ∀ (a : LetA O n) x y, μ x (a • y) = a • μ x y` using `fun a x y => by`. Rewrite using `[← algebraMap_smul W.EE a y, map_smul, algebraMap_smul]`.
+
+Set `ν₀ : ↥(W.N T) ⊗[LetA O n] ↥(W.N T') →ₗ[LetA O n] W.DD T''` to `TensorProduct.lift (LinearMap.mk₂ (LetA O n) (fun x y => μ (x : W.DD T) (y : W.DD T')) (fun x x' y => by simp) (fun a x y => hA₁ a x y) (fun x y y' => by simp) (fun a x y => hA₂ a x y))`. Establish `hν₀ : ∀ x y, ν₀ (x ⊗ₜ y) = μ (x : W.DD T) (y : W.DD T')` using `fun x y => rfl`. Establish `hνb : ∀ p, ν₀ (b.tensorProduct b' p) = e'' p` using `fun p => by`. Rewrite using `[Module.Basis.tensorProduct_apply', hν₀, he'', heb, heb']`. Establish `hinj : Function.Injective ν₀`.
+
+Establish `h1 : LinearIndependent (LetA O n) e''` using `e''.linearIndependent.restrict_scalars (by`. Simplify `W.EE_inj)` using `[Algebra.smul_def]`. Establish `h2 : ν₀ = (b.tensorProduct b').constr (LetA O n) e''` using `(b.tensorProduct b').ext fun p => by rw [hνb, Module.Basis.constr_basis]`. Rewrite using `[h2]`. Conclude with `(b.tensorProduct b').injective_constr_of_linearIndependent h1`.
+
+Establish `hmem : ∀ x ∈ W.N T, ∀ y ∈ W.N T', μ x y ∈ LinearMap.range ν₀` using `fun x hx y hy => ⟨(⟨x, hx⟩ : ↥(W.N T)) ⊗ₜ (⟨y, hy⟩ : ↥(W.N T')), rfl⟩`. Establish `hγmem : ∀ (g : W.Gam), ∀ z ∈ LinearMap.range ν₀, W.γD T'' g z ∈ LinearMap.range ν₀`. Introduce and unpack `g _ ⟨w, rfl⟩`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul x y => rw [hν₀, hγμ]`. Conclude with `hmem _ (W.N_Γ T g x x.2) _ (W.N_Γ T' g y y.2)`. Establish `hN : LinearMap.range ν₀ = W.N T''`.
+
+Use `hU T'' (isCrys_tensor hq ht hT hT' m hmt) _ ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `⟨_, (b.tensorProduct b').map (LinearEquiv.ofInjective ν₀ hinj), e'', fun p => (hνb p).symm⟩`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hγmem W.gam x hx`.
+
+Introduce `x hx`. Use `⟨W.γD T'' W.gam⁻¹ x, hγmem _ x hx, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `W.γD T'' W.gam (W.γD T'' W.gam⁻¹ x) = x`. Rewrite using `[← W.γD_mul, mul_inv_cancel, W.γD_one]`. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨u, hu, hu'⟩` from `hx`. Take `⟨u', hv, hv'⟩` from `hy`.
+
+Use `⟨u + u', Submodule.add_mem _ hu hv, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, smul_add, ← hu', ← hv']`. Normalize the expressions using the abelian group laws. Consider the case `tmul x y`. Take `⟨x', hx', h1⟩` from `W.N_π T W.gam x x.2`.
+
+Take `⟨y', hy', h2⟩` from `W.N_π T' W.gam y y.2`. Use `⟨μ x' (W.γD T' W.gam y) + μ x y', Submodule.add_mem _ (hmem _ hx' _ (W.N_Γ T' _ y y.2)) (hmem _ x.2 _ hy'), ?_⟩` and prove the remaining obligations. Rewrite using `[hν₀, smul_add, ← hA₁, ← hA₂, ← h1, ← h2, LocWach.γ, hγμ]`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Normalize the expressions using the abelian group laws.
+
+Apply `le_antisymm` to reduce the goal to its premises. Apply `invSub_le` to reduce the goal to its premises. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨w, rfl⟩, rfl⟩`. Proceed by induction on `w using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul x y`. Take `⟨k, hk⟩` from `W.N_φ T x x.2`.
+
+Take `⟨k', hk'⟩` from `W.N_φ T' y y.2`. Use `⟨k + k', ?_⟩` and prove the remaining obligations. Rewrite using `[hν₀, hφμ, pow_add, mul_smul, ← hA₂, ← hA₁]`. Conclude with `hmem _ hk _ hk'`. Apply `invSub_le` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨w, rfl⟩`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `tmul x y`. Take `⟨k, hk⟩` from `W.N_φinv T x x.2`. Take `⟨k', hk'⟩` from `W.N_φinv T' y y.2`. Use `⟨k + k', ?_⟩` and prove the remaining obligations. Rewrite using `[hν₀, pow_add, mul_smul, ← hA₂, ← hA₁]`.
+
+Establish `key : ∀ u ∈ Submodule.span (LetA O n) (W.φD T '' (W.N T : Set (W.DD T))), ∀ u' ∈ Submodule.span (LetA O n) (W.φD T' '' (W.N T' : Set (W.DD T'))), μ u u' ∈ phiSpan W T'' (LinearMap.range ν₀)`. Introduce `u hu u' hu'`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, LinearMap.add_apply]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [hA₁]`. Conclude with `Submodule.smul_mem _ _ hx`. Consider the case `mem u hu`. Proceed by induction on `hu' using Submodule.span_induction with`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [hA₂]`. Conclude with `Submodule.smul_mem _ _ hx`.
+
+Consider the case `mem u' hu'`. Take `⟨x, hx, rfl⟩` from `hu`. Take `⟨y, hy, rfl⟩` from `hu'`. Conclude with `Submodule.subset_span ⟨μ x y, hmem _ hx _ hy, hφμ x y⟩`. Conclude with `key _ hk _ hk'`.
+
+Use `⟨μ, hμ, ?_, hφμ, hγμ, (LinearEquiv.ofInjective ν₀ hinj).trans (LinearEquiv.ofEq _ _ hN), fun x y => rfl⟩` and prove the remaining obligations. Establish `: TensorProduct.lift μ = ((e.tensorProduct e').equiv e'' (Equiv.refl _)).toLinearMap` using `(e.tensorProduct e').ext fun p => by`. Rewrite using `[LinearEquiv.coe_coe, Module.Basis.equiv_apply, Module.Basis.tensorProduct_apply', TensorProduct.lift.tmul, Equiv.refl_apply, he'']`. Rewrite using `[this]`. Conclude with `LinearEquiv.bijective _`.
+-/
 theorem tensorFor [IsFractionRing O LL]
     (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRingHom ≠ ⊤)
     (hφ : Function.Surjective φR) (hd : Descends E) (hq : QuotCrys PD LL) (ht : TensorCrys PD LL)

@@ -42,6 +42,9 @@ structure CubeMap {S S' : Scheme.{u}} (G' : Over S') (G : Over S) [GrpObj G'] [I
 variable {S S' : Scheme.{u}} {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj G']
   [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h0 : (eSec G').base x ∈ (L.pull F).U (j ⟨⟩)` using `Set.mem_iInter.1 hx ⟨⟩`. Establish `h1 : x ∈ (eSec G' ≫ F) ⁻¹ᵁ L.U (j ⟨⟩ ⟨⟩)` using `Set.mem_iInter.1 h0 ⟨⟩`. Rewrite `h1` using `[he]`. Conclude with `Set.mem_iInter.2 fun _ => h1`.
+-/
 lemma rigPull_le (F : G'.left ⟶ G.left) (e : (𝟙_ (Over S')).left ⟶ (𝟙_ (Over S)).left)
     (he : eSec G' ≫ F = e ≫ eSec G) (L : LB G.left)
     (j : PUnit.{u+1} → PUnit.{u+1} → L.ι) :
@@ -60,6 +63,11 @@ def rigPullOf (F : G'.left ⟶ G.left) (e : (𝟙_ (Over S')).left ⟶ (𝟙_ (O
 
 namespace CubeMap
 
+/- English proof (translation)
+Introduce `x hx`. Use `Set.mem_iInter.2 fun I => ?_` and prove the remaining obligations. Establish `h0 : (thφ G' (x3 G') I).base x ∈ (L.pull m.F).U (j I)` using `Set.mem_iInter.1 hx I`. Establish `h1 : x ∈ ((psum G' (x3 G') I.down).left ≫ m.F) ⁻¹ᵁ L.U (j I ⟨⟩)` using `Set.mem_iInter.1 h0 ⟨⟩`. Rewrite `h1` using `[m.psum_comm I.down]`.
+
+Conclude with `h1`.
+-/
 lemma theta_le (m : CubeMap G' G) (L : LB G.left) (j : thK.{u} → PUnit.{u+1} → L.ι) :
     LB.wchart (L.pull m.F) (thφ G' (x3 G')) j ≤
       m.F3 ⁻¹ᵁ LB.wchart L (thφ G (x3 G)) (fun I => j I ⟨⟩) := by
@@ -102,6 +110,11 @@ section OfHom
 
 variable {T G'' G₀ : Over S} [GrpObj G''] [IsCommMonObj G''] [GrpObj G₀] [IsCommMonObj G₀]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp only [List.foldr_nil, pzero, Category.assoc, IsMonHom.one_hom]`. Consider the case `cons k l ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[← ih]`.
+
+Simplify using `only [padd, Category.assoc, IsMonHom.mul_hom, CartesianMonoidalCategory.lift_map_assoc]`.
+-/
 lemma foldr_padd_comp (f : G'' ⟶ G₀) [IsMonHom f] {n : ℕ} (x : Fin n → (T ⟶ G''))
     (l : List (Fin n)) :
     l.foldr (fun k acc => padd G'' (x k) acc) (pzero G'' T) ≫ f =
@@ -114,6 +127,11 @@ lemma foldr_padd_comp (f : G'' ⟶ G₀) [IsMonHom f] {n : ℕ} (x : Fin n → (
     simp only [padd, Category.assoc, IsMonHom.mul_hom,
       CartesianMonoidalCategory.lift_map_assoc]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Simplify using `only [List.foldr_nil, pzero]`. Rewrite using `[← Category.assoc, CartesianMonoidalCategory.comp_toUnit]`. Consider the case `cons k l ih`.
+
+Simplify using `only [List.foldr_cons]`. Rewrite using `[ih]`. Simplify using `only [padd, CartesianMonoidalCategory.comp_lift_assoc]`.
+-/
 lemma foldr_padd_pre {T' : Over S} (h : T' ⟶ T) {n : ℕ} (x : Fin n → (T ⟶ G₀))
     (l : List (Fin n)) :
     l.foldr (fun k acc => padd G₀ (h ≫ x k) acc) (pzero G₀ T') =
@@ -127,6 +145,9 @@ lemma foldr_padd_pre {T' : Over S} (h : T' ⟶ T) {n : ℕ} (x : Fin n → (T �
     rw [ih]
     simp only [padd, CartesianMonoidalCategory.comp_lift_assoc]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases k <;>`. Simplify using `[x3, CartesianMonoidalCategory.tensorHom_fst, CartesianMonoidalCategory.tensorHom_snd, CartesianMonoidalCategory.tensorHom_fst_assoc, CartesianMonoidalCategory.tensorHom_snd_assoc]`.
+-/
 lemma cubeProj_comp_map (f : G'' ⟶ G₀) (k : Fin 3) :
     x3 G'' k ≫ f = (f ⊗ₘ f ⊗ₘ f) ≫ x3 G₀ k := by
   fin_cases k <;>

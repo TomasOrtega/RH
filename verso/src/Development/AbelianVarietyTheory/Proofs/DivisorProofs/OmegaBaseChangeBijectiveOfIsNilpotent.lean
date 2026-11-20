@@ -14,6 +14,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PDivGroup
 
+/- English proof (translation)
+Introduce `p _ R R' _ _ _ hnil G`. Take `⟨N, hN⟩` from `hnil`. Establish `hN' : (p : R') ^ N = 0`. Rewrite using `[← map_natCast (algebraMap R R'), ← map_pow, hN, map_zero]`. Establish `hL` using `omegaLevel_bijective_of_pow_eq_zero p R N hN G N le_rfl`.
+
+Establish `hL'` using `omegaLevel_bijective_of_pow_eq_zero p R' N hN' (G.baseChange R') N le_rfl`. Establish `hg` using `PDiv.liftSemi_toBaseChange_cot_bijective R R' (G.A N)`. Set `e : R' ⊗[R] G.omega ≃ₗ[R'] R' ⊗[R] Cot R (G.A N)` to `LinearEquiv.baseChange R R' _ _ (LinearEquiv.ofBijective (G.omegaLevel N) hL)`. Establish `key : ∀ x, (G.baseChange R').omegaLevel N (PDiv.liftSemi (G.toBase R').omega x) = PDiv.liftSemi (toBaseChange R R' (G.A N)).cot (e x)`. Introduce `x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, map_add, hx, hy]`. Consider the case `tmul r w`. Simplify using `only [PDiv.liftSemi_tmul, map_smul, e, LinearEquiv.baseChange_tmul, LinearEquiv.ofBijective_apply]`.
+
+Use `congr 1`. Establish `hcomp : ⇑((G.baseChange R').omegaLevel N) ∘ ⇑(PDiv.liftSemi (G.toBase R').omega) = ⇑(PDiv.liftSemi (toBaseChange R R' (G.A N)).cot) ∘ ⇑e` using `funext key`. Conclude with `(Function.Bijective.of_comp_iff' hL' _).1 (hcomp ▸ hg.comp e.bijective)`.
+-/
 theorem omega_baseChange_bijective_of_isNilpotent : ∀ (p : ℕ) [Fact p.Prime] (R R' : Type) [CommRing R]
     [CommRing R'] [Algebra R R'], IsNilpotent (p : R) → ∀ G : PDivGroup p R,
     Function.Bijective (PDiv.liftSemi (G.toBase R').omega) := by

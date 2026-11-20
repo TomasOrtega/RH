@@ -17,6 +17,19 @@ open scoped Matrix TensorProduct Pointwise
 
 namespace GlobalTheory.LevelFaithful
 
+/- English proof (translation)
+Establish `key : ∀ i j, φ (y.1 i j) = (1 : Matrix (Fin n) (Fin n) k) i j`. Introduce `i j`. Establish `e0 : (β⁻¹).1 *ᵥ (β.1 *ᵥ Pi.single j 1) = Pi.single j 1`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Take `⟨w, hw, e⟩` from `hx (β.1 *ᵥ Pi.single j 1) ((hH _).2 fun i => by`.
+
+Rewrite using `[e0, Pi.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _])`. Establish `e1` using `congrArg (fun v => ((β⁻¹).1 *ᵥ v) i) e`. Establish `hy : (Formalism.UG.bc S.subtype y).1 i j = (y.1 i j : R)` using `rfl`.
+
+Simplify using `only [Matrix.mulVec_smul, Matrix.mulVec_sub, e0, Units.val_mul, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul] at e1`. Rewrite `e1` using `[Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one, Matrix.mulVec_single_one]`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, smul_eq_mul, Matrix.col_apply, hy] at e1`. Establish `hc` using `(hH w).1 hw i`. Establish `e2 : s * (y.1 i j - (Pi.single j 1 : Fin n → S) i) = N • (⟨_, hc⟩ : S)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(s : R) * ((y.1 i j : R) - ((Pi.single j (1 : S) : Fin n → S) i : R)) = N • (((β⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) *ᵥ w) i`. Rewrite using `[← e1]`. Use `congr 2`. Rewrite using `[Pi.single_apply, Pi.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `e3` using `congrArg φ e2`. Rewrite `e3` using `[map_mul, map_nsmul, nsmul_eq_mul, hN, zero_mul, hs.mul_right_eq_zero, map_sub, sub_eq_zero]`. Rewrite using `[e3, Pi.single_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Conclude with `key i j`.
+-/
 theorem bc_eq_one_of_cong {R : Type} [CommRing R] {n : ℕ} (S : Subring R) (β : GL (Fin n) R) (H : Set (Fin n → R)) (N : ℕ)
     (hH : ∀ z, z ∈ H ↔ ∀ i, ((β⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).mulVec z i ∈ S)
     (y : GL (Fin n) S) (s : S)
@@ -50,6 +63,9 @@ theorem bc_eq_one_of_cong {R : Type} [CommRing R] {n : ℕ} (S : Subring R) (β 
   refine Units.ext (Matrix.ext fun i j => ?_)
   exact key i j
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨y, hy, e⟩` from `h _ (GlobalTheory.PrincInLevel.swap_symm_mem_hat Λ z hz)`. Use `⟨_, GlobalTheory.PrincInLevel.swap_mem_hatL Λ y hy, funext fun i => ?_⟩` and prove the remaining obligations. Use `congrArg (Algebra.TensorProduct.comm F _ E) (congrFun e i)` as an intermediate fact. Simplify `this` using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_mul, map_nsmul, Matrix.mulVec, dotProduct, map_sum, AlgEquiv.apply_symm_apply, Matrix.map_apply]`.
+-/
 theorem cong_swap_smul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (Λ : Submodule (𝓞 E) (Fin n → E)) (N : ℕ) (t : FiniteAdeleRing (𝓞 F) F ⊗[F] E)
     (K : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F ⊗[F] E))
@@ -70,6 +86,13 @@ namespace GlobalTheory.LevelFaithful
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hl' : latHat V = GlobalTheory.AdLat.hat D.host.F ((Λ : Submodule (𝓞 D.host.E) _) : Set (Fin V.rank → D.host.E))` using `(GlobalTheory.OneMapRef.Lift.hatV_eq hβ).symm`. Use `set s : FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E := (1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] ((c : 𝓞 D.host.E) : D.host.E) with hs`. Establish `e : ∀ z : Fin V.rank → FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E, Matrix.diagonal (fun _ => s) *ᵥ z = s • z` using `fun z => by`. Use function extensionality and compare the values at `j`. Rewrite using `[Matrix.mulVec_diagonal]`.
+
+Both sides reduce to the same expression. Establish `hN : ∀ z ∈ latHat V, Matrix.diagonal (fun _ => s) *ᵥ z ∈ latHat V`. Introduce `z hz`. Rewrite using `[e]`. Rewrite `hz`, the goal using `[hl']`.
+
+Use `GlobalTheory.PrincInLevel.smul_mem_hat Λ _ (Formalism.L2.DIV.oToS D.host.F D.host.E c).2 z hz` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[Formalism.L2.DIV.oToS_coe, Algebra.TensorProduct.comm_symm_tmul]`. Rewrite using `[← e]`. Conclude with `GlobalTheory.LevelUnique.mulVec_mem_latGHat _ hN w hw`.
+-/
 theorem smul_mem_latGHat {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hβ : IsSDFrame V β Λ 1) (c : 𝓞 D.host.E) {w : Fin V.rank → FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E}
     (hw : w ∈ latGHat V 1) :
@@ -94,6 +117,19 @@ theorem smul_mem_latGHat {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Su
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `set s : FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E := (1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] ((c : 𝓞 D.host.E) : D.host.E) with hs`. Take `⟨w, hw, e⟩` from `hcong (c • a) (Submodule.smul_mem_smul hc Submodule.mem_top)`. Establish `hdm : c • (f (c • a) - c • a) ∈ (M : 𝓞 D.host.E) • (⊤ : Submodule (𝓞 D.host.E) La)`. Use `Submodule.smul_mem_smul hc (hd (c • a))` as an intermediate fact. Rewrite `this` using `[← Submodule.mul_smul, mul_comm, hprod, Submodule.ideal_span_singleton_smul]`.
+
+Conclude with `this`. Take `⟨m, -, hm'⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hdm`. Use `set F := GlobalTheory.LevelActionPinned.fvec V ι with hF`. Establish `eF : ∀ (b : 𝓞 D.host.E) x, F (b • x) = ((1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] (b : D.host.E)) • F x` using `fun b x => GlobalTheory.LevelActionPinned.fvec_smul V ι b x`. Establish `E1 : F (c • a) = s • F a` using `eF c a`.
+
+Establish `eM : ((1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] (((M : ℕ) : 𝓞 D.host.E) : D.host.E)) = ((M : ℕ) : FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)`. Establish `h0 : (((M : ℕ) : 𝓞 D.host.E) : D.host.E) = ((M : ℕ) : D.host.E)` using `by simp`. Rewrite using `[h0]`. Conclude with `map_natCast (Algebra.TensorProduct.includeRight : D.host.E →ₐ[D.host.F] _) _`. Establish `E2 : s • (F (f (c • a)) - F (c • a)) = M • F m`.
+
+Rewrite using `[← map_sub, ← eF, ← hm', eF, eM, Nat.cast_smul_eq_nsmul]`. Establish `e' : F (f (c • a)) - K *ᵥ F (c • a) = M • w` using `e`. Use `⟨F m - s • w, sub_mem (((GlobalTheory.MarkCoset.latG_spec D V 1).1 _).1 (hι.2 ▸ LinearMap.mem_range_self ι m)) (smul_mem_latGHat hβ c hw), ?_⟩` and prove the remaining obligations. Use `show (s * s) • (K *ᵥ F a - F a) = _`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_smul, Matrix.mulVec_smul K s (F a), smul_sub]`. Use `_ = s • ((F (f (c • a)) - F (c • a)) - M • w) := by`. Rewrite using `[← E1, ← e']`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+
+Use `_ = M • (F m - s • w) := by`. Rewrite using `[smul_sub, E2, smul_comm s M w, smul_sub]`.
+-/
 theorem cong_of_trivial {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hβ : IsSDFrame V β Λ 1) {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
     {ι : La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)} (hι : LatEmb V ι) {M : ℕ} {Mb Mh : Ideal (𝓞 D.host.E)}
@@ -140,6 +176,23 @@ theorem cong_of_trivial {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Sub
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hl' : latHat V = GlobalTheory.AdLat.hat D.host.F ((Λ : Submodule (𝓞 D.host.E) _) : Set (Fin V.rank → D.host.E))` using `(GlobalTheory.OneMapRef.Lift.hatV_eq hβ).symm`. Rewrite `h` using `[hl']`. Establish `hS` using `cong_swap_smul Λ M _ _ h`. Take `⟨yi, hyi⟩` from `hκ`. Take `⟨cc, hfr, -⟩` from `hβ`.
+
+Establish `hx : ∀ z ∈ (Formalism.L2.Herm.hatL (F` using `D.host.F) Λ : Set (Fin V.rank → Lev.EAf D)), ∃ w ∈ (Formalism.L2.Herm.hatL (F := D.host.F) Λ : Set (Fin V.rank → Lev.EAf D)), ((Formalism.L2.DIV.oToS D.host.F D.host.E (c * c) : Formalism.L2.Herm.intAf D.host.F D.host.E) : Lev.EAf D) • ((β * Formalism.UG.bc (Formalism.L2.Herm.int …`. Introduce `z hz`. Take `⟨y, hy, e⟩` from `hS z hz`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `hs' : ((Formalism.L2.DIV.oToS D.host.F D.host.E (c * c) : Formalism.L2.Herm.intAf D.host.F D.host.E) : Lev.EAf D) = Algebra.TensorProduct.comm D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) D.host.E (((1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] ((c : 𝓞 D.host.E) : …`.
+
+Rewrite using `[Formalism.L2.DIV.oToS_coe, Algebra.TensorProduct.tmul_mul_tmul, one_mul, Algebra.TensorProduct.comm_tmul, map_mul]`. Establish `e2 : β * Formalism.UG.bc (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype yi * β⁻¹ = Formalism.L2.DIV.frGL β yi` using `rfl`. Establish `hK' : (β * Formalism.UG.bc (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype yi * β⁻¹ : GL (Fin V.rank) (Lev.EAf D)).1 = (finHom V κ).1.map (Algebra.TensorProduct.comm D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) D.host.E)`. Rewrite using `[e2, hyi]`. Both sides reduce to the same expression.
+
+Rewrite using `[hs', hK']`. Conclude with `e`. Establish `hred : ∀ PP ∈ L.Pg, Formalism.L2.DIV.redFn β PP (Lev.finE V κ) = 1`. Introduce `PP hP`. Establish `hN : ((M : ℕ) : Formalism.L2.DIV.kP PP) = 0`.
+
+Rewrite using `[← map_natCast (Ideal.Quotient.mk PP.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hM PP hP)`. Establish `hsu : IsUnit (Formalism.L2.DIV.resS D.host.F PP (Formalism.L2.DIV.oToS D.host.F D.host.E (c * c)))`. Rewrite using `[Formalism.L2.DIV.resS_oToS]`. Establish `e1 : Ideal.Quotient.mk PP.asIdeal c = 1`.
+
+Rewrite using `[← map_one (Ideal.Quotient.mk PP.asIdeal)]`. Conclude with `Ideal.Quotient.eq.2 (hc PP hP)`. Rewrite using `[map_mul, e1, mul_one]`. Conclude with `isUnit_one`. Establish `hr` using `bc_eq_one_of_cong (Formalism.L2.Herm.intAf D.host.F D.host.E) β (Formalism.L2.Herm.hatL (F := D.host.F) Λ : Set (Fin V.rank → Lev.EAf D)) M hfr yi (Formalism.L2.DIV.oToS D.host.F D.host.E (c * c)) hx (Formalism.L2.DIV.resS D.host.F PP) hN hsu`.
+
+Rewrite using `[← hyi, Formalism.L2.DIV.redFn_frGL, hr]`. Establish `e3 : Formalism.L2.DIV.rTup β L (Lev.finE V κ) = Formalism.L2.DIV.rTup β L 1`. Use function extensionality and compare the values at `PP`. Use `show Formalism.L2.DIV.upperLeftBlock _ _ = Formalism.L2.DIV.upperLeftBlock _ _`. Rewrite using `[hred PP.1 PP.2, Formalism.L2.DIV.redFn_one]`.
+
+Rewrite using `[e3, Formalism.L2.DIV.rTup_one]`.
+-/
 theorem rTup_eq_one_of_cong {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hβ : IsSDFrame V β Λ 1) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) {M : ℕ} {c : 𝓞 D.host.E}
     (hM : ∀ PP ∈ L.Pg, ((M : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) (hc : ∀ PP ∈ L.Pg, c - 1 ∈ PP.asIdeal) {κ : GA D V}
@@ -203,6 +256,23 @@ open GlobalTheory.LevelFaithful in
 set_option maxHeartbeats 1600000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p _ r h _ i`. Take `⟨v⟩` from `GlobalTheory.ShareOn.nonempty_place D`. Establish `hlev` using `h.level v i`. Establish `hι` using `GlobalTheory.TraceLattice.latEmb_iotaW (h.laws v) i`. Establish `hβ : IsSDFrame (Wc D i) ((R2 p).βW i) ((R2 p).ΛW i) 1` using `p.charW.base.lev.βW i`.
+
+Take `⟨h1, hm⟩` from `GlobalTheory.LevelActionPinned.congr_of_levIs (R2 p) i hι hβ h.half hlev`. Use `⟨fun g g' => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use `LinearEquiv.ext fun x => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `e1` using `liftLa_spec (r.lev i (g * g')) a`.
+
+Establish `e2` using `liftLa_spec (r.lev i g) (liftLa (r.lev i g') a)`. Establish `e3` using `liftLa_spec (r.lev i g') a`. Simplify using `only [Submodule.mkQ_apply] at e1 e2 e3`. Rewrite using `[LinearEquiv.mul_apply, ← e3, ← e2, ← e1]`. Conclude with `(Submodule.Quotient.eq _).2 (hm g g' a)`.
+
+Apply `(R2 p).eG.injective` to reduce the goal to its premises. Rewrite using `[map_one]`. Take `⟨κ, hκ, hcong⟩` from `hlev g`. Rewrite using `[← hκ.2.2]`. Establish `hd : ∀ a, liftLa (r.lev i g) a - a ∈ p.T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (p.T.Q.Dw ((i : ℕ) + 1)).La)`.
+
+Introduce `a`. Rewrite using `[hg, ← Submodule.Quotient.eq]`. Conclude with `liftLa_spec 1 a`. Take `⟨b, hb, c, hc, hbc⟩` from `Submodule.mem_sup.1 (p.T.Q.l.coprime ▸ Submodule.mem_top : (1 : 𝓞 D.host.E) ∈ p.T.Q.l.Mb ⊔ Mfr p.T.Q.l)`. Establish `hc1 : c - 1 ∈ p.T.Q.l.Mb`.
+
+Establish `e : c - 1 = -b` using `by rw [← hbc]; ring`. Rewrite using `[e]`. Conclude with `neg_mem hb`. Establish `hMbP : ∀ PP ∈ (R2 p).Pg, p.T.Q.l.Mb ≤ PP.asIdeal` using `fun PP hP => by`. Rewrite using `[h.half]`.
+
+Conclude with `Ideal.prod_le_inf.trans (Finset.inf_le hP)`. Establish `hp : p.T.Q.l.Mb * Mfr p.T.Q.l = Ideal.span {((p.T.Q.l.M : ℕ) : 𝓞 D.host.E)}` using `p.T.Q.l.prod`. Establish `hMm : ((p.T.Q.l.M : ℕ) : 𝓞 D.host.E) ∈ p.T.Q.l.Mb`. Establish `h0 : ((p.T.Q.l.M : ℕ) : 𝓞 D.host.E) ∈ p.T.Q.l.Mb * Mfr p.T.Q.l`. Rewrite using `[hp]`.
+
+Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `(Ideal.mul_le_inf.trans (inf_le_left : p.T.Q.l.Mb ⊓ Mfr p.T.Q.l ≤ p.T.Q.l.Mb)) h0`. Establish `hA` using `cong_of_trivial hβ hι hp hc hd _ hcong`. Establish `hB` using `GlobalTheory.T.congruence_on_selfDual_lattice_completion (Wc D i) hβ _ _ _ (GlobalTheory.T.congruence_on_selfDual_lattice_of_datum_image (Wc D i) hβ hι _ _ _ hA)`. Conclude with `rTup_eq_one_of_cong hβ ((R2 p).datWp i (R2 p).triv) (fun PP hP => hMbP PP hP hMm) (fun PP hP => hMbP PP hP hc1) (Formalism.L2.DIV.parLev_St hκ.2.1) hB`.
+-/
 theorem GlobalTheory.LevelFaithful.lev_mul_and_faithful : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), More p → ∀ (r : TwoRuns p.T p.P.Gp) (h : RunsOk (fw2 p) r), OwnPin r → ∀ (i : Fin D.R.m), (∀ g g' : p.P.Gp, r.lev i (g * g') = r.lev i g * r.lev i g') ∧ ∀ g : p.P.Gp, r.lev i g = 1 → g = 1 := by
   intro D L hT Gi Gl Kc Y cX ex Csz p _ r h _ i
   obtain ⟨v⟩ := GlobalTheory.ShareOn.nonempty_place D

@@ -5,6 +5,9 @@ namespace GlobalTheory.CompanionTheory.LocCompareHalves
 
 open PositivityTheory.Rg.BcB.G8.Fin GlobalTheory.UnitaryBC GlobalTheory.BCT
 
+/- English proof (translation)
+Introduce `hI hS hC E _ _ _ hU a b S hSec φ₁ φ₂ h₁ h₂ δ₁ δ₂ e₁ e₂ w hw`. Distinguish the cases in `hs : IsSplitAt w`. Conclude with `hS hC E hU a b S hSec φ₁ φ₂ h₁ h₂ δ₁ δ₂ e₁ e₂ w hw hs`. Conclude with `hI hC E hU a b S hSec φ₁ φ₂ h₁ h₂ δ₁ δ₂ e₁ e₂ w hw hs`.
+-/
 theorem locCompareOf : PositivityTheory.Rg.BcB.G8.Fin.LocCompareOf := by
   intro hI hS hC E _ _ _ hU a b S hSec φ₁ φ₂ h₁ h₂ δ₁ δ₂ e₁ e₂ w hw
   by_cases hs : IsSplitAt w

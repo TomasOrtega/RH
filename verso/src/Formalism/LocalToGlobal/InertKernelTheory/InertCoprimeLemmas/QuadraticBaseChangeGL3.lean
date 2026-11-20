@@ -12,6 +12,15 @@ section Dict
 
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (j : ℕ)
 
+/- English proof (translation)
+Unfold `trDY`. Rewrite using `[MvPolynomial.coeff_sum]`. Distinguish the cases in `hα : α ∈ R.support`. Rewrite using `[Finset.sum_eq_single α]`. Rewrite using `[MvPolynomial.coeff_monomial, if_pos rfl]`.
+
+Introduce `β _ hβ`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg]`. Introduce `h`. Conclude with `hβ (Finsupp.mapDomain_injective he h)`. Introduce `h`.
+
+Conclude with `absurd hα h`. Rewrite using `[Finset.sum_eq_zero]`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hα, map_zero]`. Introduce `β hβ`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg]`.
+
+Introduce `h`. Conclude with `hα (by rwa [← Finsupp.mapDomain_injective he h])`.
+-/
 theorem coeff_trDY (D : D7) {N N' : ℕ} {ι : ℂ →+* Kc} (e : GL3Theta.Idx D N N' → X.ZA j) (he : Function.Injective e)
     (Φ₀ : MvPolynomial (GL3Theta.FrV D N') ℂ →ₛₗ[ι] XspC (X.Pj (j + 1)) Kc)
     (R : MvPolynomial (GL3Theta.Idx D N N') (MvPolynomial (GL3Theta.FrV D N') ℂ)) (α : GL3Theta.Idx D N N' →₀ ℕ) :
@@ -35,6 +44,11 @@ theorem coeff_trDY (D : D7) {N N' : ℕ} {ι : ℂ →+* Kc} (e : GL3Theta.Idx D
       intro h
       exact hα (by rwa [← Finsupp.mapDomain_injective he h])
 
+/- English proof (translation)
+Introduce `n hn`. Assume the negation of the conclusion as `hni`. Apply `MvPolynomial.mem_support_iff.1 hn` to reduce the goal to its premises. Unfold `trDY`. Rewrite using `[MvPolynomial.coeff_sum]`.
+
+Use `Finset.sum_eq_zero fun α hα => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_monomial, if_neg]`. Introduce `h`. Conclude with `hni (Finset.mem_image.2 ⟨α, hα, h⟩)`.
+-/
 theorem support_trDY (D : D7) {N N' : ℕ} {ι : ℂ →+* Kc} (e : GL3Theta.Idx D N N' → X.ZA j)
     (Φ₀ : MvPolynomial (GL3Theta.FrV D N') ℂ →ₛₗ[ι] XspC (X.Pj (j + 1)) Kc)
     (R : MvPolynomial (GL3Theta.Idx D N N') (MvPolynomial (GL3Theta.FrV D N') ℂ)) [DecidableEq (X.ZA j →₀ ℕ)] :
@@ -51,12 +65,22 @@ theorem support_trDY (D : D7) {N N' : ℕ} {ι : ℂ →+* Kc} (e : GL3Theta.Idx
 
 end Dict
 
+/- English proof (translation)
+Use `show (α.mapDomain e).prod (fun _ n => (n.factorial : Kc)) = _`. Conclude with `Finsupp.prod_mapDomain_index_inj he`.
+-/
 theorem prod_fact_mapDomain (Kc : Type) [CommSemiring Kc] {A B : Type} (e : A → B) (he : Function.Injective e)
     (α : A →₀ ℕ) :
     (∏ x ∈ (α.mapDomain e).support, (((α.mapDomain e) x).factorial : Kc)) = α.prod fun _ n => (n.factorial : Kc) := by
   show (α.mapDomain e).prod (fun _ n => (n.factorial : Kc)) = _
   exact Finsupp.prod_mapDomain_index_inj he
 
+/- English proof (translation)
+Introduce `p _ X Kc _ _ j D N N' ι e he Φ₀ R Θ f w hdeg hser`. Rewrite using `[Formalism.L2.G.Pend.pairD_eq X Kc j _ f _ (support_trDY X Kc j D e Φ₀ R), Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective he h)]`. Unfold `pairR`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations.
+
+Rewrite using `[coeff_trDY X Kc j D e he Φ₀ R α]`. Establish `hC : MvPolynomial.coeff α R * MvPolynomial.C ((α.prod fun _ n => (n.factorial : ℂ)) * TaylorLogMetric.taylor D Θ α) = ((α.prod fun _ n => (n.factorial : ℂ)) * TaylorLogMetric.taylor D Θ α) • MvPolynomial.coeff α R`. Rewrite using `[MvPolynomial.smul_eq_C_mul]`. Conclude with `mul_comm _ _`. Rewrite using `[hC, LinearMap.map_smulₛₗ, smul_smul]`.
+
+Unfold `Formalism.L2.G.Pend.derAt`. Rewrite using `[if_pos (hdeg α hα), hser α hα, prod_fact_mapDomain Kc e he α]`. Use `congr 1`. Simplify using `only [map_mul, Finsupp.prod, map_prod, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairing_dictionary : PairDict := by
   intro p _ X Kc _ _ j D N N' ι e he Φ₀ R Θ f w hdeg hser
   classical
@@ -77,6 +101,9 @@ theorem pairing_dictionary : PairDict := by
   simp only [map_mul, Finsupp.prod, map_prod, map_natCast]
   ring
 
+/- English proof (translation)
+Use `Function.LeftInverse.injective (g := fun z : X.ZA j => ((pos ⟨z.1, z.2.1⟩, Fin.cast hN.2.symm z.2.2.2, Fin.cast hN.1.symm z.2.2.1) : GL3Theta.Idx D (D.R.N j) (D.R.N (j + 1)))) ?_` and prove the remaining obligations. Introduce and unpack `⟨τ, b, a⟩`. Simplify using `[eIdx]`.
+-/
 theorem eIdx_injective {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
     (j : ℕ) (hN : RankTie X D j) : Function.Injective (eIdx X D pos j hN) := by
   refine Function.LeftInverse.injective (g := fun z : X.ZA j =>

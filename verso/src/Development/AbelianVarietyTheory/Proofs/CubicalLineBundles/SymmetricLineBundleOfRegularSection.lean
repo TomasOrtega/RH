@@ -7,6 +7,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.SymOfZeroDivisor
 
+/- English proof (translation)
+Establish `h' : f ''ᵁ V ≤ W`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `h hy`. Establish `e : (f.appLE W V h).hom a = (f.appIso V).hom.hom (resG X h' a)`. Rewrite using `[Scheme.Hom.appIso_hom']`.
+
+Express the relevant statement in the definitionally equal form `_ = (X.presheaf.map (homOfLE h').op ≫ f.appLE _ _ _).hom a`. Rewrite using `[Scheme.Hom.map_appLE]`. Rewrite using `[e]`. Rewrite using `[← MulEquivClass.map_nonZeroDivisors (f.appIso V).commRingCatIsoToRingEquiv]`. Conclude with `Submonoid.mem_map_of_mem _ (ha _ h')`.
+-/
 theorem appLE_mem_nonZeroDivisors {X Y : Scheme.{0}} (f : Y ⟶ X) [IsOpenImmersion f]
     (W : X.Opens) (a : Γ(X, W))
     (ha : ∀ (V : X.Opens) (h : V ≤ W), resG X h a ∈ nonZeroDivisors Γ(X, V))
@@ -22,6 +27,11 @@ theorem appLE_mem_nonZeroDivisors {X Y : Scheme.{0}} (f : Y ⟶ X) [IsOpenImmers
   rw [← MulEquivClass.map_nonZeroDivisors (f.appIso V).commRingCatIsoToRingEquiv]
   exact Submonoid.mem_map_of_mem _ (ha _ h')
 
+/- English proof (translation)
+Establish `h1 : (GrpObj.inv : A ⟶ A).left ≫ A.hom = A.hom` using `Over.w _`. Establish `h2 : eSec A ≫ (GrpObj.inv : A ⟶ A).left = eSec A`. Unfold `eSec`. Rewrite using `[← Over.comp_left, GrpObj.one_inv]`. Establish `h3 : (t ≫ (GrpObj.inv : A ⟶ A).left) ≫ A.hom ≫ eSec A = (t ≫ A.hom ≫ eSec A) ≫ (GrpObj.inv : A ⟶ A).left`.
+
+Rewrite using `[Category.assoc, reassoc_of% h1]`. Simplify using `only [Category.assoc]`. Conclude with `congrArg (fun u => t ≫ A.hom ≫ u) h2.symm`. Rewrite using `[h3]`. Conclude with `cancel_mono _`.
+-/
 theorem inv_eq_zero_iff {S : Scheme.{0}} (A : Over S) [GrpObj A] {T : Scheme.{0}} (t : T ⟶ A.left) :
     t ≫ (GrpObj.inv : A ⟶ A).left = (t ≫ (GrpObj.inv : A ⟶ A).left) ≫ A.hom ≫ eSec A ↔
       t = t ≫ A.hom ≫ eSec A := by
@@ -37,6 +47,11 @@ theorem inv_eq_zero_iff {S : Scheme.{0}} (A : Over S) [GrpObj A] {T : Scheme.{0}
   rw [h3]
   exact cancel_mono _
 
+/- English proof (translation)
+Introduce `S A _ L θ hL hreg hz s`. Use `⟨⊤, trivial, ?_⟩` and prove the remaining obligations. Use `haveI : IsIso (GrpObj.inv : A ⟶ A).left := inferInstanceAs (IsIso ((Over.forget S).map (GrpObj.inv : A ⟶ A)))`. Use `GlobalTheory.T.isoLineBundle_of_regularPullbacks_sameZeroScheme A.left _ L θ _ _ hL (fun i V h => appLE_mem_nonZeroDivisors _ _ _ (hreg i) V h) (fun i V h => appLE_mem_nonZeroDivisors _ _ _ (hreg i) V h) ?_` and prove the remaining obligations. Introduce `T t i j h h'`.
+
+Rewrite using `[hz, hz, ← Category.assoc t]`. Conclude with `inv_eq_zero_iff A _`.
+-/
 theorem sym_of_regular_section : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] (L : LB A.left) (θ : L.Sec), L.IsLB → (∀ (i : L.ι) (V : Scheme.Opens A.left) (h : V ≤ L.U i), resG A.left h (θ.f i) ∈ nonZeroDivisors Γ(A.left, V)) → (∀ (T : Scheme.{0}) (t : T ⟶ A.left) (i : L.ι) (h : ⊤ ≤ t ⁻¹ᵁ L.U i), (t.appLE (L.U i) ⊤ h).hom (θ.f i) = 0 ↔ t = t ≫ A.hom ≫ eSec A) → Out.Sym A L := by
   intro S A _ L θ hL hreg hz s
   refine ⟨⊤, trivial, ?_⟩

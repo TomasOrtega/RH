@@ -23,41 +23,65 @@ def markedTripleOrderOne (k : Type u) [Field k] (X : Scheme.{u})
     (E : List X.IdealSheafData) : MarkedIdealWithBoundary.{u} :=
   MarkedIdealWithBoundary.mk k X p I 1 E
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem markedTripleOrderOne_baseField (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).base = k := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem markedTripleOrderOne_scheme (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).scheme = X := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem markedTripleOrderOne_structureMorphism (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).structMap = p := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem markedTripleOrderOne_ideal (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).ideal = I := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem markedTripleOrderOne_mult (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).mult = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem markedTripleOrderOne_boundary (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).boundary = E := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem markedTripleOrderOne_dim (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).krullDimSucc = krullDimSucc X := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem markedTripleOrderOne_pullbackAlong (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) (Y : Scheme.{u})
@@ -65,6 +89,9 @@ theorem markedTripleOrderOne_pullbackAlong (k : Type u) [Field k] (X : Scheme.{u
     (markedTripleOrderOne k X p I E).pullbackAlong Y q h
       = markedTripleOrderOne k Y q (I.comap h) (E.map fun D => D.comap h) := rfl
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (CharZero k) locallyOfFiniteType := inferInstanceAs (AlgebraicGeometry.LocallyOfFiniteType p) nonzeroOnComponents := hI one_le_mult := le_refl 1 quasiCompact := inferInstanceAs (AlgebraicGeometry.QuasiCompact p) smooth := inferInstanceAs (AlgebraicGeometry.Smooth …`.
+-/
 theorem markedTripleOrderOne_isAdmissible (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] [AlgebraicGeometry.LocallyOfFiniteType p]
@@ -93,6 +120,9 @@ def markedBlowupSeq (B : PrincipalizationRules.{u}) (k : Type u) [Field k] (X : 
     (E : List X.IdealSheafData) : MarkedSequenceOfBlowups p I 1 E :=
   (B.outputLevelData (krullDimSucc X)).maxOrderRed (markedTripleOrderOne k X p I E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sequence_eq_maxOrderReduction (B : PrincipalizationRules.{u}) (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
@@ -121,6 +151,9 @@ def CommutesWithClosedImmersion (B : PrincipalizationRules.{u}) : Prop :=
 
 namespace PrincipalizationRules
 
+/- English proof (translation)
+Establish `hs : (B.outputLevelData (krullDimSucc X)).maxOrderRed (markedTripleOrderOne k X p I E) = (B.outputLevelData N).maxOrderRed (markedTripleOrderOne k X p I E)` using `(B.outputLevelData_maxOrderReduction_eq_of_le h (markedTripleOrderOne k X p I E) (le_of_eq (markedTripleOrderOne_dim k X p I E))).symm`. Conclude with `congrArg (fun s : (markedTripleOrderOne k X p I E).SequenceOfBlowups => s.toSequenceOfBlowups) hs`.
+-/
 private theorem markedBlowupSeq_toSequenceOfBlowups_eq_of_le (B : PrincipalizationRules.{u}) (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) {N : ℕ} (h : krullDimSucc X ≤ N) :
@@ -132,6 +165,9 @@ private theorem markedBlowupSeq_toSequenceOfBlowups_eq_of_le (B : Principalizati
       (le_of_eq (markedTripleOrderOne_dim k X p I E))).symm
   exact congrArg (fun s : (markedTripleOrderOne k X p I E).SequenceOfBlowups => s.toSequenceOfBlowups) hs
 
+/- English proof (translation)
+Introduce `i hi J hJ`. Establish `hsm : AlgebraicGeometry.Smooth (((B.markedBlowupSeq k X p I E).center i).subschemeι ≫ (B.markedBlowupSeq k X p I E).projectionToSpec i)`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`. Conclude with `(B.markedBlowupSeq k X p I E).center_smooth i hi`. Conclude with `hrad k ((B.markedBlowupSeq k X p I E).schemeAt i) ((B.markedBlowupSeq k X p I E).projectionToSpec i) ((B.markedBlowupSeq k X p I E).center i) J hJ`.
+-/
 theorem hasReducedCenters_markedBlowupSeq (B : PrincipalizationRules.{u}) (hrad : SmoothSubschemeIdealIsRadical.{u})
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k))
@@ -162,6 +198,9 @@ def principalization (B : PrincipalizationRules.{u}) (hrad : SmoothSubschemeIdea
   fun k ik icz X p ism ift iqc I hI E hE =>
     @principalizationSeq B hrad k ik icz X p ism ift iqc I hI E hE
 
+/- English proof (translation)
+The claim follows from `MarkedSequenceOfBlowups.toMarkedSequence_toSequenceOfBlowups (B.markedBlowupSeq k X p I E) (B.hasReducedCenters_markedBlowupSeq hrad k X p I hI E hE)`.
+-/
 theorem principalization_toSequenceOfBlowups (B : PrincipalizationRules.{u}) (hrad : SmoothSubschemeIdealIsRadical.{u})
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k))
@@ -174,6 +213,9 @@ theorem principalization_toSequenceOfBlowups (B : PrincipalizationRules.{u}) (hr
   MarkedSequenceOfBlowups.toMarkedSequence_toSequenceOfBlowups (B.markedBlowupSeq k X p I E)
     (B.hasReducedCenters_markedBlowupSeq hrad k X p I hI E hE)
 
+/- English proof (translation)
+The claim follows from `MarkedSequenceOfBlowups.toMarkedSequence_lastIdeal (B.markedBlowupSeq k X p I E) (B.hasReducedCenters_markedBlowupSeq hrad k X p I hI E hE)`.
+-/
 theorem principalization_lastIdeal (B : PrincipalizationRules.{u}) (hrad : SmoothSubschemeIdealIsRadical.{u})
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k))
@@ -186,6 +228,11 @@ theorem principalization_lastIdeal (B : PrincipalizationRules.{u}) (hrad : Smoot
   MarkedSequenceOfBlowups.toMarkedSequence_lastIdeal (B.markedBlowupSeq k X p I E)
     (B.hasReducedCenters_markedBlowupSeq hrad k X p I hI E hE)
 
+/- English proof (translation)
+Establish `hV` using `markedTripleOrderOne_isAdmissible k X p I hI E hE`. Establish `hV'` using `markedTripleOrderOne_isAdmissible k X' p' (I.comap φ) hI' (E.map fun D => D.comap φ) hE'`. Establish `hdimLe : (markedTripleOrderOne k X p I E).krullDimSucc ≤ max (krullDimSucc X) (krullDimSucc X')` using `le_max_left _ _`. Establish `hPY : (markedTripleOrderOne k X' p' (I.comap φ) (E.map fun D => D.comap φ)).krullDimSucc ≤ max (krullDimSucc X) (krullDimSucc X')` using `le_max_right _ _`. Rewrite using `[B.markedBlowupSeq_toSequenceOfBlowups_eq_of_le k X p I E (le_max_left (krullDimSucc X) (krullDimSucc X')), B.markedBlowupSeq_toSequenceOfBlowups_eq_of_le k X' p' (I.comap φ) (E.map fun D => D.comap φ) (le_max_right (krullDimSucc X) (krullDimSucc X'))]`.
+
+Conclude with `@IsMaxOrderReduction.isPullbackBlowupSequence_of_smooth (fun d => d ≤ max (krullDimSucc X) (krullDimSucc X')) ((B.outputLevelData (max (krullDimSucc X) (krullDimSucc X'))).maxOrderRed) ((B.outputLevelData (max (krullDimSucc X) (krullDimSucc X'))).orderRed) (B.isMaxOrderReduction_ …`.
+-/
 private theorem markedBlowupSeq_smoothPullback_isPullback (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k))
@@ -219,6 +266,11 @@ private theorem markedBlowupSeq_smoothPullback_isPullback (B : PrincipalizationR
     (markedTripleOrderOne k X p I E) hV hdimLe X' p' φ
     (inferInstanceAs (AlgebraicGeometry.Smooth φ)) hφ hV' hPY
 
+/- English proof (translation)
+Establish `hV` using `markedTripleOrderOne_isAdmissible k X p I hI E hE`. Establish `hV'` using `markedTripleOrderOne_isAdmissible k X' p' (I.comap φ) hI' (E.map fun D => D.comap φ) hE'`. Establish `hdimLe : (markedTripleOrderOne k X p I E).krullDimSucc ≤ max (krullDimSucc X) (krullDimSucc X')` using `le_max_left _ _`. Establish `hPY : (markedTripleOrderOne k X' p' (I.comap φ) (E.map fun D => D.comap φ)).krullDimSucc ≤ max (krullDimSucc X) (krullDimSucc X')` using `le_max_right _ _`. Rewrite using `[B.markedBlowupSeq_toSequenceOfBlowups_eq_of_le k X p I E (le_max_left (krullDimSucc X) (krullDimSucc X')), B.markedBlowupSeq_toSequenceOfBlowups_eq_of_le k X' p' (I.comap φ) (E.map fun D => D.comap φ) (le_max_right (krullDimSucc X) (krullDimSucc X'))]`.
+
+Conclude with `@IsMaxOrderReduction.isStrictPullbackBlowupSeq_of_smooth_surjective (fun d => d ≤ max (krullDimSucc X) (krullDimSucc X')) ((B.outputLevelData (max (krullDimSucc X) (krullDimSucc X'))).maxOrderRed) ((B.outputLevelData (max (krullDimSucc X) (krullDimSucc X'))).orderRed) (B.isMaxOrd …`.
+-/
 private theorem markedBlowupSeq_smoothPullback_isStrictPullback (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k))
@@ -254,6 +306,11 @@ private theorem markedBlowupSeq_smoothPullback_isStrictPullback (B : Principaliz
     (inferInstanceAs (AlgebraicGeometry.Smooth φ))
     (inferInstanceAs (AlgebraicGeometry.Surjective φ)) hφ hV' hPY
 
+/- English proof (translation)
+Establish `hV` using `markedTripleOrderOne_isAdmissible k X p I hI E hE`. Establish `hV'` using `markedTripleOrderOne_isAdmissible K (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f)) (CategoryTheory.Limits.pullback.snd p (specMapOfFieldHom k K f)) (I.comap (CategoryTheory.Limits.pullback.fst p (specMapOfFieldHom k K f))) hI' (E.map fun D => D.comap (CategoryTheory …`. Establish `hdimLe : (markedTripleOrderOne k X p I E).krullDimSucc ≤ max (krullDimSucc X) (krullDimSucc (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f)))` using `le_max_left _ _`. Establish `hPY : (markedTripleOrderOne K (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f)) (CategoryTheory.Limits.pullback.snd p (specMapOfFieldHom k K f)) (I.comap (CategoryTheory.Limits.pullback.fst p (specMapOfFieldHom k K f))) (E.map fun D => D.comap (CategoryTheory.Limits.pu …` using `le_max_right _ _`. Rewrite using `[B.markedBlowupSeq_toSequenceOfBlowups_eq_of_le k X p I E (le_max_left (krullDimSucc X) (krullDimSucc (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f)))), B.markedBlowupSeq_toSequenceOfBlowups_eq_of_le K (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f)) (Cat …`.
+
+Conclude with `(B.isMaxOrderReduction_outputLevelData hB (max (krullDimSucc X) (krullDimSucc (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f))))).isPullbackBlowupSequence_baseChange (markedTripleOrderOne k X p I E) hV hdimLe K f hV' hPY`.
+-/
 private theorem markedBlowupSeq_baseChange_isPullback (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k))
@@ -310,6 +367,11 @@ private theorem markedBlowupSeq_baseChange_isPullback (B : PrincipalizationRules
         (krullDimSucc (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f))))).isPullbackBlowupSequence_baseChange
     (markedTripleOrderOne k X p I E) hV hdimLe K f hV' hPY
 
+/- English proof (translation)
+Establish `hV` using `markedTripleOrderOne_isAdmissible k X p I hI E hE`. Establish `hV'` using `markedTripleOrderOne_isAdmissible K (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f)) (CategoryTheory.Limits.pullback.snd p (specMapOfFieldHom k K f)) (I.comap (CategoryTheory.Limits.pullback.fst p (specMapOfFieldHom k K f))) hI' (E.map fun D => D.comap (CategoryTheory …`. Establish `hdimLe : (markedTripleOrderOne k X p I E).krullDimSucc ≤ max (krullDimSucc X) (krullDimSucc (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f)))` using `le_max_left _ _`. Establish `hPY : (markedTripleOrderOne K (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f)) (CategoryTheory.Limits.pullback.snd p (specMapOfFieldHom k K f)) (I.comap (CategoryTheory.Limits.pullback.fst p (specMapOfFieldHom k K f))) (E.map fun D => D.comap (CategoryTheory.Limits.pu …` using `le_max_right _ _`. Rewrite using `[B.markedBlowupSeq_toSequenceOfBlowups_eq_of_le k X p I E (le_max_left (krullDimSucc X) (krullDimSucc (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f)))), B.markedBlowupSeq_toSequenceOfBlowups_eq_of_le K (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f)) (Cat …`.
+
+Conclude with `(B.isMaxOrderReduction_outputLevelData hB (max (krullDimSucc X) (krullDimSucc (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f))))).isStrictPullbackBlowupSeq_baseChange (markedTripleOrderOne k X p I E) hV hdimLe K f hV' hPY`.
+-/
 private theorem markedBlowupSeq_baseChange_isStrictPullback (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k))
@@ -367,6 +429,11 @@ private theorem markedBlowupSeq_baseChange_isStrictPullback (B : Principalizatio
           (specMapOfFieldHom k K f))))).isStrictPullbackBlowupSeq_baseChange
     (markedTripleOrderOne k X p I E) hV hdimLe K f hV' hPY
 
+/- English proof (translation)
+Establish `hV` using `markedTripleOrderOne_isAdmissible k X p I hI E hE`. Establish `hP : (markedTripleOrderOne k X p I E).krullDimSucc ≤ krullDimSucc X` using `le_refl _`. Establish `hres : MarkedSequenceOfBlowups.IsResolution (B.markedBlowupSeq k X p I E)` using `(B.isMaxOrderReduction_outputLevelData hB (krullDimSucc X)).resolves (markedTripleOrderOne k X p I E) hV hP`. Establish `h1 : FunctorialResolution.EmbeddedResolution.orderAtLeastLocus (B.markedBlowupSeq k X p I E).lastIdeal 1 = ∅` using `(MarkedSequenceOfBlowups.isResolution_iff (B.markedBlowupSeq k X p I E)).mp hres`. Apply `(AlgebraicGeometry.Scheme.IdealSheafData.eq_top_iff_support_eq_empty _).mpr` to reduce the goal to its premises.
+
+Apply `Set.eq_empty_of_subset_empty` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : x ∈ FunctorialResolution.EmbeddedResolution.orderAtLeastLocus (B.markedBlowupSeq k X p I E).lastIdeal 1` using `(mem_orderAtLeastLocus_one_iff (B.markedBlowupSeq k X p I E).lastIdeal x).mpr hx`. Rewrite `hx'` using `[h1]`. Conclude with `hx'`.
+-/
 private theorem markedBlowupSeq_lastIdeal_eq_top (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k))
@@ -389,6 +456,17 @@ private theorem markedBlowupSeq_lastIdeal_eq_top (B : PrincipalizationRules.{u})
   rw [h1] at hx'
   exact hx'
 
+/- English proof (translation)
+Introduce `k _ _ S X pS p _ _ _ _ _ _ j _ hjp c hc hcc I hI hIX hES hEX`. Rewrite using `[B.principalization_toSequenceOfBlowups hrad k S pS I hI [] hES, B.principalization_toSequenceOfBlowups hrad k X p (imageIdealSheaf j I) hIX [] hEX]`. Conclude with `hemb k S X pS p j hjp c hc hcc I hI hIX hES hEX`. Use `base_change := by`. Introduce `k _ _ X p _ _ _ I hI E hE K _ _ f _ _ _ hI' hE'`.
+
+Rewrite using `[B.principalization_toSequenceOfBlowups hrad K (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f)) (CategoryTheory.Limits.pullback.snd p (specMapOfFieldHom k K f)) (I.comap (CategoryTheory.Limits.pullback.fst p (specMapOfFieldHom k K f))) hI' (E.map fun D => D.comap (Cat …`. Conclude with `B.markedBlowupSeq_baseChange_isPullback hB k X p I hI E hE K f hI' hE'`. Use `base_change_strict := by`. Introduce `k _ _ X p _ _ _ I hI E hE K _ _ f _ _ _ hI' hE'`. Rewrite using `[B.principalization_toSequenceOfBlowups hrad K (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f)) (CategoryTheory.Limits.pullback.snd p (specMapOfFieldHom k K f)) (I.comap (CategoryTheory.Limits.pullback.fst p (specMapOfFieldHom k K f))) hI' (E.map fun D => D.comap (Cat …`.
+
+Conclude with `B.markedBlowupSeq_baseChange_isStrictPullback hB k X p I hI E hE K f hI' hE'`. Use `lastIdeal_eq_top := by`. Introduce `k _ _ X p _ _ _ I hI E hE`. Rewrite using `[B.principalization_lastIdeal hrad k X p I hI E hE]`. Conclude with `B.markedBlowupSeq_lastIdeal_eq_top hB k X p I hI E hE`.
+
+Use `smooth_pullback := by`. Introduce `k _ _ X p _ _ _ I hI E hE X' p' _ _ _ φ _ hφ hI' hE'`. Rewrite using `[B.principalization_toSequenceOfBlowups hrad k X' p' (I.comap φ) hI' (E.map fun D => D.comap φ) hE', B.principalization_toSequenceOfBlowups hrad k X p I hI E hE]`. Conclude with `B.markedBlowupSeq_smoothPullback_isPullback hB k X p I hI E hE X' p' φ hφ hI' hE'`. Use `smooth_pullback_strict := by`.
+
+Introduce `k _ _ X p _ _ _ I hI E hE X' p' _ _ _ φ _ _ hφ hI' hE'`. Rewrite using `[B.principalization_toSequenceOfBlowups hrad k X' p' (I.comap φ) hI' (E.map fun D => D.comap φ) hE', B.principalization_toSequenceOfBlowups hrad k X p I hI E hE]`. Conclude with `B.markedBlowupSeq_smoothPullback_isStrictPullback hB k X p I hI E hE X' p' φ hφ hI' hE'`.
+-/
 theorem isFunctorialPrincipalization_principalization (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (hrad : SmoothSubschemeIdealIsRadical.{u}) (hemb : CommutesWithClosedImmersion.{u} B) :
     IsFunctorialPrincipalization (B.principalization hrad) where

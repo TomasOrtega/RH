@@ -14,6 +14,11 @@ open scoped Pointwise
 
 namespace Formalism.L2.Th1.H
 
+/- English proof (translation)
+Establish `h1 : HasSum (fun g : G => ∫ x in g +ᵥ D, f x ∂μ) (∫ z, f z ∂μ)`. Establish `h` using `hasSum_integral_measure (μ := fun g : G => μ.restrict (g +ᵥ D)) (f := f) (by rwa [hD.sum_restrict])`. Rewrite `h` using `[hD.sum_restrict]`. Then use the resulting hypothesis. Establish `h2 : ∀ g : G, ∫ x in g +ᵥ D, f x ∂μ = ∫ x in D, f (x - ((-g : G) : V)) ∂μ`. Introduce `g`.
+
+Rewrite using `[← Set.image_vadd, (measurePreserving_vadd g μ).setIntegral_image_emb (measurableEmbedding_const_vadd g) f D]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `[AddSubgroup.vadd_def, add_comm]`. Rewrite `h1` using `[h2]`. Conclude with `(Equiv.neg G).hasSum_iff.mp h1`.
+-/
 theorem hasSum_unfold {V E : Type*} [NormedAddCommGroup V] [MeasurableSpace V] [BorelSpace V]
     [NormedAddCommGroup E] [NormedSpace ℝ E] (μ : Measure V) [μ.IsAddLeftInvariant]
     (G : AddSubgroup V) [Countable G] {D : Set V} (hD : IsAddFundamentalDomain G D μ) {f : V → E}
@@ -41,6 +46,15 @@ def repMap {Λ Λ' : AddSubgroup V} (Ae : V ≃ₗ[ℂ] V) {S : Finset V}
     (p : S × Λ') : Λ :=
   ⟨(p.1 : V) + Ae (p.2 : V), Λ.add_mem (hS.1 _ p.1.2) (hle ⟨p.2, p.2.2, rfl⟩)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨s, hs⟩, ⟨y, hy⟩⟩ ⟨⟨s', hs'⟩, ⟨y', hy'⟩⟩ h`. Establish `h0 : s + Ae y = s' + Ae y'` using `congrArg Subtype.val h`. Establish `h1 : s - s' = Ae (y' - y)`. Rewrite using `[map_sub, sub_eq_sub_iff_add_eq_add, h0, add_comm]`.
+
+Establish `h2 : s = s'` using `hS.2.1 s hs s' hs' (h1 ▸ ⟨y' - y, Λ'.sub_mem hy' hy, rfl⟩)`. Substitute `h2` using the available equality. Establish `h3 : y = y'` using `Ae.injective (add_left_cancel h0)`. Substitute `h3` using the available equality. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨x, hx⟩`. Take `⟨s, hs, y, hy, hxy⟩` from `hS.2.2 x hx`. Use `⟨(⟨s, hs⟩, ⟨y, hy⟩), Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h : Ae y = x - s` using `hxy`. Express the relevant statement in the definitionally equal form `s + Ae y = x`.
+
+Rewrite using `[h]`. Normalize the expressions using the abelian group laws.
+-/
 theorem repMap_bijective {Λ Λ' : AddSubgroup V} (Ae : V ≃ₗ[ℂ] V) {S : Finset V}
     (hle : imgLat (Ae : V →ₗ[ℂ] V) Λ' ≤ Λ) (hS : IsReps (imgLat (Ae : V →ₗ[ℂ] V) Λ') Λ S) :
     Function.Bijective (repMap Ae hle hS) := by
@@ -64,6 +78,25 @@ theorem repMap_bijective {Λ Λ' : AddSubgroup V} (Ae : V ≃ₗ[ℂ] V) {S : Fi
 
 end Reps
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ μ _ H Λ α δ Ae hL hU D' hD' _ S hS`. Use `set Λ' : AddSubgroup V := Λ ⊓ imgLat (δ : V →ₗ[ℂ] V) Λ with hΛ'`. Establish `: ProperSpace V` using `FiniteDimensional.proper ℂ V`. Establish `: DiscreteTopology Λ` using `hL.1`. Establish `hc : Countable Λ` using `TopologicalSpace.separableSpace_iff_countable.mp inferInstance`.
+
+Establish `hc' : Countable Λ'` using `(AddSubgroup.inclusion_injective (inf_le_left : Λ' ≤ Λ)).countable`. Take `⟨hT, -⟩` from `kernelTermShift V H hU.herm α δ Ae hU.isom hU.cay`. Establish `hgq : Integrable (gq H Ae) μ` using `(cayleyGaussianIntegral V μ H hU.herm hU.pos δ Ae hU.isom hU.cay).1`. Establish `hle : imgLat (Ae : V →ₗ[ℂ] V) Λ' ≤ Λ` using `ud_latA_le hU`. Set `e : S × Λ' ≃ Λ` to `Equiv.ofBijective _ (repMap_bijective Ae hle hS)`.
+
+Set `f : V → V → ℂ` to `fun s z => gq H Ae (z - Ae.symm s)`. Establish `hf : ∀ s, Integrable (f s) μ` using `fun s => hgq.comp_sub_right _`. Establish `hfi : ∀ s, ∫ z, f s z ∂μ = ∫ z, gq H Ae z ∂μ` using `fun s => integral_sub_right_eq_self (μ := μ) (gq H Ae) (Ae.symm s)`. Establish `hFe : ∀ (p : S × Λ') z, termT H α δ ((e p : Λ) : V) z = phiC H α Ae p.1 * f p.1 (z - (p.2 : V))`. Introduce `p z`.
+
+Rewrite using `[hT]`. Establish `h1 : ((e p : Λ) : V) = (p.1 : V) + Ae (p.2 : V)` using `rfl`. Rewrite using `[h1, ud_phi_wd hU (hS.1 _ p.1.2) (show Ae (p.2 : V) ∈ latA Λ δ Ae from ⟨p.2, p.2.2, rfl⟩)]`. Simplify using `only [f, map_add, LinearEquiv.symm_apply_apply]`. Use `congr 2`.
+
+Normalize the expressions using the abelian group laws. Establish `hint : ∀ x : Λ, Integrable (fun z => termT H α δ (x : V) z) (μ.restrict D')`. Introduce `x`. Repeatedly rewrite using `[hT]`. Conclude with `((hgq.comp_sub_right _).const_mul _).restrict`.
+
+Establish `hsumn : Summable fun x : Λ => ∫ z in D', ‖termT H α δ (x : V) z‖ ∂μ`. Establish `key : Summable fun p : S × Λ' => ∫ z in D', ‖termT H α δ ((e p : Λ) : V) z‖ ∂μ`. Use `(summable_prod_of_nonneg (fun p => integral_nonneg fun z => norm_nonneg _)).mpr ⟨fun s => ?_, Summable.of_finite⟩` and prove the remaining obligations. Establish `h` using `(hasSum_unfold μ Λ' hD' (hf s).norm).summable.mul_left ‖phiC H α Ae s‖`. Use `h.congr fun y => ?_` and prove the remaining obligations.
+
+Simplify using `only [hFe, norm_mul, integral_const_mul]`. Conclude with `e.summable_iff.mp key`. Establish `hmain` using `hasSum_integral_of_summable_integral_norm hint hsumn`. Establish `hker : ∀ z, kerP H α Λ (δ.symm z) z * (wt H z : ℂ) = ∑' x : Λ, termT H α δ (x : V) z`. Introduce `z`.
+
+Simplify using `only [kerP, termT, tsum_mul_right]`. Repeatedly rewrite using `[hker]`. Establish `hs2 : Summable fun c : S × Λ' => ∫ a in D', termT H α δ ((e c : Λ) : V) a ∂μ` using `e.summable_iff.mpr hmain.summable`. Rewrite using `[← hmain.tsum_eq, ← e.tsum_eq, hs2.tsum_prod, tsum_fintype, Finset.sum_mul, ← Finset.sum_coe_sort S]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Repeatedly rewrite using `[hFe, integral_const_mul]`. Rewrite using `[tsum_mul_left, (hasSum_unfold μ Λ' hD' (hf s)).tsum_eq, hfi]`.
+-/
 theorem unfoldingIntegral : UnfoldIntegral := by
   intro V _ _ _ _ _ μ _ H Λ α δ Ae hL hU D' hD' _ S hS
   classical

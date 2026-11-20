@@ -29,6 +29,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.Link
 
+/- English proof (translation)
+Introduce `hAI hHS hBig hResK hSA hFHT hGaga hLine hQ hZ`. Take `⟨hM, hKey, hSA', hSeg, hResK', _hSAst, hFHT', hGaga', _hSlope, hPB, hPHS, hPAn, hNine, _hAnti⟩` from `GlobalTheory.T.given_of_all_inputs hAI hHS hBig hResK hSA hFHT hGaga hLine`. Conclude with `GlobalTheory.T.final_theorem_of_inputs_right hM hKey hSA' hSeg hResK' hFHT' hGaga' hLine hPB hPHS hPAn hNine (GlobalTheory.T.points_integrable_of_resolution_statement hResK) GlobalTheory.CompanionTheory.Ar.Giv.topAvoid hQ hZ GlobalTheory.thetaUnifAV_closed`.
+-/
 theorem good_tower_and_volume_final :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement →
     ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiBigStatement → ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement →

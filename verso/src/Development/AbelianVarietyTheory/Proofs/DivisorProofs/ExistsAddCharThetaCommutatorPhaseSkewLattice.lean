@@ -12,11 +12,17 @@ open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 
 namespace GlobalTheory.CommPhase
 
+/- English proof (translation)
+Simplify using `only [Formalism.MainNotions.TaylorLogMetric.kap, GlobalTheory.NormSum.VacMove.hf_add_right, Complex.add_im, Complex.ofReal_add, mul_add, Complex.exp_add]`.
+-/
 theorem kap_add (D : D7) (T : Tor D) {N N' : ℕ} (x y z : VC D N N') :
     Formalism.MainNotions.TaylorLogMetric.kap D T x (y + z) = Formalism.MainNotions.TaylorLogMetric.kap D T x y * Formalism.MainNotions.TaylorLogMetric.kap D T x z := by
   simp only [Formalism.MainNotions.TaylorLogMetric.kap, GlobalTheory.NormSum.VacMove.hf_add_right, Complex.add_im, Complex.ofReal_add, mul_add,
     Complex.exp_add]
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.TaylorLogMetric.kap, h]`. Establish `: -(2 * (Real.pi : ℂ) * Complex.I) * (((m : ℝ)) : ℂ) = ((-m : ℤ) : ℂ) * (2 * Real.pi * Complex.I)` using `by push_cast; ring`. Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I]`.
+-/
 theorem kap_eq_one_of_int (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') (m : ℤ)
     (h : (Hf D T x y).im = m) : Formalism.MainNotions.TaylorLogMetric.kap D T x y = 1 := by
   rw [Formalism.MainNotions.TaylorLogMetric.kap, h]
@@ -24,6 +30,17 @@ theorem kap_eq_one_of_int (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') (m
     push_cast; ring
   rw [this, Complex.exp_int_mul_two_pi_mul_I]
 
+/- English proof (translation)
+Introduce `D δ hc 𝔪 a d x hx`. Establish `k0 : KLat D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) a d)` using `GlobalTheory.NormSum.VacMove.klat _ (GlobalTheory.NormSum.VacMove.moves_one D a) (GlobalTheory.NormSum.VacMove.moves_one D d)`. Establish `hint : ∀ y ∈ La0 D (tor0 D ⊤ δ) a d, ∃ m : ℤ, (Hf D (tor0 D ⊤ δ) x y).im = m` using `(GlobalTheory.ThetaLine.theta_line D (GlobalTheory.InducedType.induced_type D).1 ⊤ δ hc a d _ k0).2.2.1 x hx`. Use `set Lp := La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)`. Use `set S := (La0 D (tor0 D ⊤ δ) a d).addSubgroupOf Lp`.
+
+Establish `hwd : ∀ u v : Lp, (QuotientAddGroup.leftRel S) u v → Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) x (u : VC D a d) = Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) x (v : VC D a d)`. Introduce `u v huv`. Rewrite `huv` using `[QuotientAddGroup.leftRel_apply]`. Establish `hm : ((-u + v : Lp) : VC D a d) ∈ La0 D (tor0 D ⊤ δ) a d` using `AddSubgroup.mem_addSubgroupOf.mp huv`. Take `⟨m, hm⟩` from `hint _ hm`.
+
+Establish `h1` using `kap_eq_one_of_int D (tor0 D ⊤ δ) x _ m hm`. Establish `hv : (v : VC D a d) = (u : VC D a d) + ((-u + v : Lp) : VC D a d)` using `by push_cast; abel`. Rewrite using `[hv, kap_add, h1, mul_one]`. Set `χ : AddChar (Lp ⧸ S) ℂ` to `{ toFun := fun q => Quotient.liftOn' q (fun y : Lp => Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) x (y : VC D a d)) hwd map_zero_eq_one' := by show Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) x ((0 : Lp) : VC D a d) = 1`. Conclude with `kap_eq_one_of_int D (tor0 D ⊤ δ) x _ 0 (by simp [Hf])`.
+
+Use the proof step `map_add_eq_mul' := by`. Introduce `q r`. Proceed by induction on `q using QuotientAddGroup.induction_on`. Proceed by induction on `r using QuotientAddGroup.induction_on`. Name the introduced variables `u v`.
+
+Use `show Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) x ((u + v : Lp) : VC D a d) = Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) x (u : VC D a d) * Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) x (v : VC D a d)`. Use `push_cast`. Conclude with `kap_add _ _ _ _ _ }`. Conclude with `⟨χ, fun y => rfl⟩`.
+-/
 theorem chars : ∀ (D : D7) (δ : ℂ), Crv D ⊤ δ → ∀ (𝔪 : Ideal (𝓞 D.host.E)) {a d : ℕ}, ∀ x ∈ (La0 D (tor0 D ⊤ δ) a d), ∃ χ : AddChar ((La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)) ⧸ (La0 D (tor0 D ⊤ δ) a d).addSubgroupOf (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))) ℂ, ∀ y : (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)), χ (y : (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)) ⧸ (La0 D (tor0 D ⊤ δ) a d).addSubgroupOf (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))) = Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) x (y : VC D a d) := by
   intro D δ hc 𝔪 a d x hx
   have k0 : KLat D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) a d) :=

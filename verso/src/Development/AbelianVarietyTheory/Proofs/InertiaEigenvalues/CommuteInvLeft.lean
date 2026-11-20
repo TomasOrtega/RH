@@ -2,6 +2,9 @@ import Mathlib
 
 namespace GlobalTheory.CommuteInvLeft
 
+/- English proof (translation)
+Introduce `B _ x xi y h1 h2 h`. Establish `h' : x * y = y * x` using `h`. Use `show xi * y = y * xi`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem commute_inv_left : ∀ {B : Type} [inst : Ring B] {x xi y : B},
     x * xi = (1 : B) → xi * x = (1 : B) → Commute x y → Commute xi y := by
   intro B _ x xi y h1 h2 h

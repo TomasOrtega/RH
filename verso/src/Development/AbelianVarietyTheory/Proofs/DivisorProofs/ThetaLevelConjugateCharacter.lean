@@ -12,11 +12,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.R3.LinkLev
 
+/- English proof (translation)
+Substitute `hF` using the available equality. Rewrite using `[eq_of_heq h]`.
+-/
 theorem spack_X_eq_of_heq {D : D7} {F F' : ∀ u, Formalism.L2.Forms.Forms0 D u} (hF : F = F') (P : GlobalTheory.Mem.SRe.SPack D F)
     (P' : GlobalTheory.Mem.SRe.SPack D F') (h : HEq P P') : P.X = P'.X := by
   subst hF
   rw [eq_of_heq h]
 
+/- English proof (translation)
+Substitute `hX` using the available equality. Substitute `hι` using the available equality. Substitute `ht` using the available equality. Conclude with `hc`.
+-/
 theorem conjLevel_of_setting_eq {D : D7} (X X' : Formalism.L2.SG.HidaSetting.HidaSetting D) (hX : X = X')
     (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (h' : X'.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (ι : Formalism.L2.Theta.GA D (D.sp.Y 0) ≃* X.B.I.GA) (hι : ι = (Formalism.L2.SG.RowsJoinPinned.iotaX X h).toMulEquiv)
@@ -30,6 +36,9 @@ theorem conjLevel_of_setting_eq {D : D7} (X X' : Formalism.L2.SG.HidaSetting.Hid
   subst ht
   exact hc
 
+/- English proof (translation)
+Substitute `hX` using the available equality. Substitute `ht` using the available equality. Conclude with `hP`.
+-/
 theorem of_setting_eq {D : D7}
     (P : ∀ X : Formalism.L2.SG.HidaSetting.HidaSetting D, X.B.I = Formalism.L2.SG.InstExistsPf.instOf D → Formalism.L2.Theta.GA D (D.sp.Y 0) → Prop)
     (X X' : Formalism.L2.SG.HidaSetting.HidaSetting D) (hX : X = X') (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
@@ -45,6 +54,9 @@ namespace GlobalTheory.Mem.R3.LinkLev
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem levels_withErr_updS (R : RealDat3 D A3 Ks) (kap : ℝ) (lam e) (F : Face3 D A3) (Dc Sp Zsc)
     (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (t : Formalism.L2.Theta.GA D (D.sp.Y 0)) :
     (Formalism.IndefR.AutomorphicEvaluation.ConjLevel t⁻¹ (levS _ (((R.updS kap lam).withErr e).βY 0) (((R.updS kap lam).withErr e).dat0 (((R.updS kap lam).withErr e).toRealDat.levR (reFace F Dc Sp Zsc).lv2 true)))
@@ -63,6 +75,11 @@ open GlobalTheory.Mem.Col2 GlobalTheory.Mem.R3.Tr
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Consider the cases of `ax`. Take `⟨Dc, Sp, Zsc, lam, err, lam_eq, x, pack, _⟩` from `a`. Take `⟨G, grp, fin, Pl0, I0, T0, A3, core, alg, R, F, cG, _⟩` from `x`. Simplify using `only at pack ⊢`. Consider the cases of `pack`.
+
+Conclude with `(levels_withErr_updS _ _ _ _ _ _ _ _ _ _ _).2 hs`.
+-/
 theorem levels_of_twArgs {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}
     {L : SizeData₂ (w.st Z).toD7} {hT : GatTies (w.st Z).toD7} {Gi : Formalism.MainNotions.G.Inst (w.st Z).toD7 L} {Gl : Formalism.MainNotions.G.LatInst (w.st Z).toD7}
     {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (w.st Z).toD7} {cX : ExtraC} {ex : Extra (w.st Z).toD7 L hT Gi Gl Kc Yd cX}
@@ -88,6 +105,15 @@ namespace GlobalTheory.Mem.R3.LinkLev
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hL p`. Use `GlobalTheory.Fc.EvP.of_all fun _ K _ => ?_` and prove the remaining obligations. Introduce `q c b w hsc`. Take `⟨sP, sS, hP, hS, hb⟩` from `w.s`. Establish `see` using `q.sat.see`.
+
+Establish `ht : w.y.y.tS = q.sat.t` using `eq_of_heq w.pt.1`. Establish `hι` using `(GlobalTheory.Mem.JIota.heq_iota_iff _ _ w.y.y.instEq w.y.y.ιS).1 w.y.y.ιS_eq`. Establish `hX : b.S.X = q.sat.P.X`. Rewrite using `[hb]`. Conclude with `spack_X_eq_of_heq (by rw [w.recPin.s.cols]; exact rfl) sP q.sat.P hP`.
+
+Establish `key` using `levels_of_twArgs w.a w.x w.ax q.sat.P.X q.sat.P.inst q.sat.t ⟨see.conj, see.mat⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`. Conclude with `see.fin`. Conclude with `conjLevel_of_setting_eq _ _ hX _ _ _ hι _ _ ht _ _ key.1`.
+
+Conclude with `of_setting_eq (fun X h t => Formalism.L2.SG.RowLevelMatch.RowLevelMatchAt w.x.R.toRealDat w.x.F.lv2 X h t) _ _ hX _ _ _ _ ht key.2`.
+-/
 theorem tS_fin_conj_match : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Prm hL), GlobalTheory.Fc.EvP fun _ K => ∀ (q : WPt p.s K) (c : ℝ) (b : GlobalTheory.Fc.Bundle (q.w.D q.Z) q.O c) (w : BWit q b), q.O.L.sc = K.s → w.y.y.tS ∈ Formalism.L2.Theta.GfC (Yc (q.w.D q.Z) 0) ∧ Formalism.IndefR.AutomorphicEvaluation.ConjLevel w.y.y.tS⁻¹ (levS _ (w.x.R.βY 0) (w.x.R.dat0 (w.x.R.toRealDat.levR w.x.F.lv2 true))) (Formalism.IndefR.Lev.levChi _ (w.x.R.βY 0) (w.x.R.dat0 (w.x.R.toRealDat.levR w.x.F.lv2 true))) (w.y.y.ιS ⁻¹' seeKS b.S.X) (fun k => seeChiS b.S.X (w.y.y.ιS k)) ∧ Formalism.L2.SG.RowLevelMatch.RowLevelMatchAt w.x.R.toRealDat w.x.F.lv2 b.S.X w.y.y.instEq w.y.y.tS := by
   intro hL p
   refine GlobalTheory.Fc.EvP.of_all fun _ K _ => ?_

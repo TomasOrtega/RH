@@ -17,6 +17,19 @@ namespace GlobalTheory.HSAmp
 
 open GlobalTheory.TrueGeo.SmallSec
 
+/- English proof (translation)
+Introduce `k _ X _ p Y _ q π hπ hgen P`. Substitute `hπ` using the available equality. Establish `hη : π (genericPoint Y) ⤳ genericPoint X` using `hgen ▸ specializes_rfl`. Set `Q : Pair (π ≫ p)` to `⟨P.L.pull π rfl, P.A.pull π rfl, _, _, MultPull.isRatSec_pull_map π hη P.hr, MultPull.isRatSec_pull_map π hη P.hr'⟩`. Establish `hloc : ∀ (a b : ℤ) (f : X.functionField) (i : Q.L.B.ι) (j : Q.A.B.ι), Q.loc a b (fnMap π hη f) i j = fnMap π hη (P.loc a b f (i PUnit.unit) (j PUnit.unit))`.
+
+Introduce `a b f i j`. Simplify using `only [Pair.loc, map_mul, map_zpow₀]`. Both sides reduce to the same expression. Establish `hmem : ∀ (a b : ℤ), ∀ f ∈ P.H a b, fnMap π hη f ∈ Q.H a b`. Introduce `a b f hf x i j hi hj`.
+
+Rewrite using `[hloc]`. Conclude with `FrameGlue.Pull.regAt_fnMap π hη (hf (π x) (i PUnit.unit) (j PUnit.unit) (Set.mem_iInter.1 hi PUnit.unit) (Set.mem_iInter.1 hj PUnit.unit))`. Use `⟨Q, fnMap π hη, rfl, rfl, fun a b f hf => ⟨hmem a b f hf, fun σ y => ?_⟩⟩` and prove the remaining obligations. Set `z` to `Points.PtsOver.map π (rfl : π ≫ p = π ≫ p) (spMap σ) y`. Use `set i0 := pick (P.L.φ σ).isLB z`.
+
+Use `set j0 := pick (P.A.φ σ).isLB z`. Establish `hi0 : z ∈ ptsIn p σ (P.L.B.U i0)` using `mem_pick _ z`. Establish `hj0 : z ∈ ptsIn p σ (P.A.B.U j0)` using `mem_pick _ z`. Establish `hi : y ∈ ptsIn (π ≫ p) σ (Q.L.B.U fun _ => i0)` using `mem_ptsIn.2 (Set.mem_iInter.2 fun _ => mem_ptsIn.1 hi0)`. Establish `hj : y ∈ ptsIn (π ≫ p) σ (Q.A.B.U fun _ => j0)` using `mem_ptsIn.2 (Set.mem_iInter.2 fun _ => mem_ptsIn.1 hj0)`.
+
+Establish `hreg : RegAt (under z) (P.loc a b f i0 j0)` using `hf (under z) i0 j0 (mem_ptsIn.1 hi0) (mem_ptsIn.1 hj0)`. Establish `hval : ratVal (fnMap π hη (P.loc a b f i0 j0)) y = ratVal (P.loc a b f i0 j0) z` using `by show ratVal (fnMap π hη (P.loc a b f i0 j0)) y = ratVal (P.loc a b f i0 j0) (Points.PtsOver.map π (rfl : π ≫ p = π ≫ p) (spMap σ) y)`. Rewrite using `[ratVal_eq_valAt y (FrameGlue.Pull.regAt_fnMap π hη hreg), valAt_fnMap π hη _ hreg, ratVal_eq_valAt _ hreg]`. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.VolBr.nu_eq k Y (π ≫ p) Q a b _ (hmem a b f hf) σ y _ _ hi hj, GlobalTheory.VolBr.nu_eq k X p P a b f hf σ z i0 j0 hi0 hj0]`.
+
+Use `erw [hloc a b f (fun _ => i0) (fun _ => j0), hval]`. Use `erw [(P.L.φ σ).pull_φ π rfl (fun _ => i0) y, (P.A.φ σ).pull_φ π rfl (fun _ => j0) y]`.
+-/
 theorem pair_pull : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (Y : Scheme.{0})
     [IsIntegral Y] (q : Y ⟶ Sp k) (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X →
     ∀ P : Pair p, ∃ (Q : Pair q) (e : X.functionField →+* Y.functionField), Q.L = P.L.pull π hπ ∧

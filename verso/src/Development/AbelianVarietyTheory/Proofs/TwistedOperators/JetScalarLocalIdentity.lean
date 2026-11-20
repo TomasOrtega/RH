@@ -22,6 +22,13 @@ noncomputable section
 
 namespace GlobalTheory.SplitMoveKappa
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch p s x s' y v`. Establish `e1 : ((s * x * ch.S.N.u p.small : FinPt ch.G p.small) : Formalism.L2.Theta.GA D (ch.G.V p.small)) = (s : Formalism.L2.Theta.GA D (ch.G.V p.small)) * ((x * ch.S.N.u p.small : FinPt ch.G p.small) : Formalism.L2.Theta.GA D (ch.G.V p.small))`. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression. Establish `e2 : ((s' * y * ch.S.N.u p.big : FinPt ch.G p.big) : Formalism.L2.Theta.GA D (ch.G.V p.big)) = (s' : Formalism.L2.Theta.GA D (ch.G.V p.big)) * ((y * ch.S.N.u p.big : FinPt ch.G p.big) : Formalism.L2.Theta.GA D (ch.G.V p.big))`.
+
+Rewrite using `[mul_assoc]`. Both sides reduce to the same expression. Establish `e3 : ∀ (a b : Formalism.L2.Theta.GA D (ch.G.V p.small)) (c d : Formalism.L2.Theta.GA D (ch.G.V p.big)), ch.G.toPair p (a * b) (c * d) = ch.G.toPair p a c * ch.G.toPair p b d`. Introduce `a b c d`. Apply the tactic sequence `cases p <;> simp [GlobalTheory.ChiGrid.GridData.toPair, map_mul]`.
+
+Rewrite using `[e1, e2, e3, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem om_toPair_mul : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R) (p : Pair T) (s x : FinPt ch.G p.small) (s' y : FinPt ch.G p.big) (v : WO (ch.G.pS p) (ch.G.pT p) → ℂ),
@@ -42,6 +49,21 @@ theorem om_toPair_mul : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T 
   rw [e1, e2, e3, map_mul]
   rfl
 
+/- English proof (translation)
+Introduce `hP hI D Γ _ _ Pl0 T A Ks _ _ _ R ch hch p hp x y κ hκ e he s s' hs hs'`. Take `⟨x₀, y₀, hx₀, hy₀, ζ, ⟨n, hn, hζ⟩, r, hr, hread⟩` from `GlobalTheory.T.split_idempotent_lattice_pair hP hI ch hch p hp x y e he s s' hs hs'`. Establish `hC` using `ch.S.Z.crv`. Establish `he0` using `ch.S.Z.e0_is p hp`. Establish `hsd` using `GlobalTheory.T.lattices_self_dual_moved_pair hP hI ch hch p hp x y`.
+
+Establish `hsd'` using `GlobalTheory.T.lattices_self_dual_moved_pair hP hI ch hch p hp (s * x) (s' * y)`. Establish `hG` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `he0ne : ch.S.Z.e0 p ≠ 0`. Introduce `h`. Establish `hn` using `he0.2.2.1`.
+
+Rewrite `hn` using `[h]`. Establish `h0 : Formalism.MainNotions.TaylorLogMetric.normSq D (tor0 D D.host.ccK ch.S.Z.δ) (Formalism.MainNotions.StandardLatticesGL3.La0 D (tor0 D D.host.ccK ch.S.Z.δ) (ch.G.pS p).rank (ch.G.pT p).rank) (0 : Formalism.MainNotions.TaylorLogMetric.VC D (ch.G.pS p).rank (ch.G.pT p).rank → ℂ) …`. Simplify using `[Formalism.MainNotions.TaylorLogMetric.normSq]`. Rewrite `hn` using `[h0]`. Conclude with `pow_ne_zero _ (GlobalTheory.ConjJet.thetaZeroNormSq_ne_zero_cmLattice D hG D.host.ccK ch.S.Z.δ _ hC ch.S.Z.pt0) hn.symm`.
+
+Establish `hK0 : Formalism.MainNotions.StandardLatticesGL3.KLat D (tor0 D D.host.ccK ch.S.Z.δ) (Formalism.MainNotions.StandardLatticesGL3.La0 D (tor0 D D.host.ccK ch.S.Z.δ) (ch.G.pS p).rank (ch.G.pT p).rank)` using `Or.inr ⟨_, _, GlobalTheory.NormSum.VacInt.sd_std D _, GlobalTheory.NormSum.VacInt.sd_std D _, rfl⟩`. Establish `hK1 : Formalism.MainNotions.StandardLatticesGL3.KLat D (tor0 D D.host.ccK ch.S.Z.δ) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) (GlobalTheory.MovedDict.srcLat ch.S.toGridChoice p x y) (GlobalTheory.MovedDict.tgtLat ch.S.toGridChoice p x y))` using `Or.inr ⟨_, _, hsd.1, hsd.2, rfl⟩`. Establish `hK2 : Formalism.MainNotions.StandardLatticesGL3.KLat D (tor0 D D.host.ccK ch.S.Z.δ) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) (GlobalTheory.MovedDict.srcLat ch.S.toGridChoice p (s * x) (s' * y)) (GlobalTheory.MovedDict.tgtLat ch.S.toGridChoice p (s …` using `Or.inr ⟨_, _, hsd'.1, hsd'.2, rfl⟩`. Take `⟨-, -, -, htrip⟩` from `GlobalTheory.ThetaTriple.klat_triples D D.host.ccK ch.S.Z.δ hC (ch.G.pS p).rank (ch.G.pT p).rank`. Take `⟨μ, hμ⟩` from `htrip _ _ _ hK0 hK1 hK2 _ he0.1 he0ne`.
+
+Establish `hμ8 : μ ^ 8 = 1` using `hμ.2.2.2.2.2.2.2.2.1`. Establish `hμI` using `hμ.2.2.2.2.2.2.2.2.2`. Use `⟨x₀, y₀, hx₀, hy₀, ζ * μ, ⟨8 * n, by omega, by rw [mul_pow, pow_mul', hζ, pow_mul, hμ8, one_pow, one_pow, one_mul]⟩, r, hr, ?_⟩` and prove the remaining obligations. Establish `hd` using `GlobalTheory.MovedDict.Entire.differentiable_intertwining_moved hP hI ch hch p hp x y`. Establish `h1` using `hread (fun z => κ * Iop D (tor0 D D.host.ccK ch.S.Z.δ) (Formalism.MainNotions.StandardLatticesGL3.La0 D (tor0 D D.host.ccK ch.S.Z.δ) _ _) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) (GlobalTheory.MovedDict.srcLat ch.S.toGridChoice p x y) (GlobalTheory …`.
+
+Introduce `k`. Rewrite using `[om_toPair_mul, h1 k]`. Use `congr 3`. Use `congrArg _ (funext fun z => ?_)` and prove the remaining obligations. Establish `hs1 : (fun z => κ * Iop D (tor0 D D.host.ccK ch.S.Z.δ) (Formalism.MainNotions.StandardLatticesGL3.La0 D (tor0 D D.host.ccK ch.S.Z.δ) _ _) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) (GlobalTheory.MovedDict.srcLat ch.S.toGridChoice p x y) (GlobalTheory …` using `rfl`.
+
+Rewrite using `[hs1, GlobalTheory.InertSign.Iop_smul, hμI]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jetKap_split_move : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R), ch.Is → ∀ (p : Pair T), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big) (κ : ℂ), GlobalTheory.MovedKappaEx.JetKap ch p x y κ →

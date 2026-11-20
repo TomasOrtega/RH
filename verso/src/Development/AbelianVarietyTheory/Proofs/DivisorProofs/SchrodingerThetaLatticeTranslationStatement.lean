@@ -12,6 +12,9 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LagrInv.lagrForm_schr_invariant | exact GlobalTheory.LagrInv.lagrForm_schr_invariant | (intros; apply GlobalTheory.LagrInv.lagrForm_schr_invariant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schrodinger_theta_lattice_translation : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (κ : Type) [Fintype κ] (Λ : Submodule F ((κ → F) × (κ → F))),
     (∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) → ∀ (r : ℕ) (u : Fin r → (κ → F) × (κ → F)), (∀ j, u j ∈ Λ) →
     (∀ v ∈ Λ, ∃ c : Fin r → F, v.1 = ∑ j, c j • (u j).1) →

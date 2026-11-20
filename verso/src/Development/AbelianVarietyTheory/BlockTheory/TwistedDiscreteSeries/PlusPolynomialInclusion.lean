@@ -17,6 +17,9 @@ def IsPPol (c : E ≃ₐ[F] E) (r : ℕ) (P : E[X]) : Prop :=
 
 variable {c : E ≃ₐ[F] E} {r : ℕ} {P : E[X]}
 
+/- English proof (translation)
+Use `haveI : Fact (Irreducible P) := ⟨hP.2.1⟩`. Use `Ne.isUnit fun h => hP.2.2.2.1 ?_` and prove the remaining obligations. Establish `h1` using `AdjoinRoot.eval₂_root P`. Rewrite `h1` using `[h, eval₂_at_zero]`. Conclude with `(map_eq_zero_iff _ (AdjoinRoot.of P).injective).1 h1`.
+-/
 theorem isUnit_root (hP : IsPPol c r P) : IsUnit (AdjoinRoot.root P) := by
   haveI : Fact (Irreducible P) := ⟨hP.2.1⟩
   refine Ne.isUnit fun h => hP.2.2.2.1 ?_
@@ -26,8 +29,18 @@ theorem isUnit_root (hP : IsPPol c r P) : IsUnit (AdjoinRoot.root P) := by
 
 def alpha (hP : IsPPol c r P) : (AdjoinRoot P)ˣ := (isUnit_root hP).unit
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem alpha_val (hP : IsPPol c r P) : (alpha hP : AdjoinRoot P) = AdjoinRoot.root P := rfl
 
+/- English proof (translation)
+Rewrite using `[← eval₂_map]`. Use `letI : Invertible (((alpha hP)⁻¹ : (AdjoinRoot P)ˣ) : AdjoinRoot P) := Units.invertible _`. Establish `hd : (P.map (c : E →+* E)).natDegree ≤ r` using `hP.2.2.1 ▸ natDegree_map_le`. Rewrite using `[← eval₂_reflect_eq_zero_iff _ _ r _ hd]`. Establish `h1 : ⅟(((alpha hP)⁻¹ : (AdjoinRoot P)ˣ) : AdjoinRoot P) = AdjoinRoot.root P` using `rfl`.
+
+Establish `h2 : reflect r (P.map (c : E →+* E)) = C (c (P.coeff 0)) * P`. Establish `hne : c (P.coeff 0) ≠ 0` using `by simpa using hP.2.2.2.1`. Use `conv_rhs => rw [hP.2.2.2.2]`. Rewrite using `[← hP.2.2.2.2]`. Use `conv_rhs => arg 2`.
+
+Rewrite using `[hP.2.2.2.2]`. Rewrite using `[sharp, ← mul_assoc, ← C_mul, mul_inv_cancel₀ hne, C_1, one_mul]`. Rewrite using `[h1, h2, eval₂_mul, AdjoinRoot.eval₂_root, mul_zero]`.
+-/
 theorem eval₂_conj_inv (hP : IsPPol c r P) :
     P.eval₂ ((AdjoinRoot.of P).comp (c : E →+* E)) ((alpha hP)⁻¹ : (AdjoinRoot P)ˣ) = 0 := by
   rw [← eval₂_map]
@@ -51,14 +64,27 @@ def starL (hP : IsPPol c r P) : AdjoinRoot P →ₐ[F] AdjoinRoot P :=
       rw [h]
       simp }
 
+/- English proof (translation)
+Simplify using `[starL]`.
+-/
 theorem starL_of (hP : IsPPol c r P) (e : E) :
     starL hP (AdjoinRoot.of P e) = AdjoinRoot.of P (c e) := by
   simp [starL]
 
+/- English proof (translation)
+Simplify using `[starL]`.
+-/
 theorem starL_root (hP : IsPPol c r P) :
     starL hP (AdjoinRoot.root P) = ((alpha hP)⁻¹ : (AdjoinRoot P)ˣ) := by
   simp [starL]
 
+/- English proof (translation)
+Establish `h : ((starL hP).comp (starL hP)).toRingHom = RingHom.id _`. Apply `AdjoinRoot.ringHom_ext` to reduce the goal to its premises. Use extensionality with `e`. Simplify using `[starL_of, hc]`. Establish `h1 : starL hP (AdjoinRoot.root P) * AdjoinRoot.root P = 1`.
+
+Rewrite using `[starL_root]`. Conclude with `(alpha hP).inv_mul`. Establish `h2` using `congrArg (starL hP) h1`. Rewrite `h2` using `[map_mul, map_one, starL_root hP, mul_comm]`. Establish `h3` using `congrArg (fun t => (alpha hP : AdjoinRoot P) * t) h2`.
+
+Simplify using `only [← mul_assoc, Units.mul_inv, one_mul, mul_one] at h3`. Simplify `h3` using `[starL_root, alpha_val]`. Conclude with `RingHom.congr_fun h y`.
+-/
 theorem starL_starL (hP : IsPPol c r P) (hc : ∀ e, c (c e) = e) (y : AdjoinRoot P) :
     starL hP (starL hP y) = y := by
   have h : ((starL hP).comp (starL hP)).toRingHom = RingHom.id _ := by
@@ -170,6 +196,9 @@ def ClassParam : Prop :=
     Algebra.Unramified (𝓞 F) (𝓞 E) →
     ∀ c : E ≃ₐ[F] E, c ≠ 1 → ∀ r : ℕ, Odd r → ∀ (P : E[X]) (hP : IsPPol c r P), AllFields hP
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ h1 h2 h3 _ c hc r _ P hP` and use `h F E h1 h2 h3 c hc r P hP`.
+-/
 theorem classParam_of_CM (h : ClassParamCM) : ClassParam :=
   fun F E _ _ _ _ _ h1 h2 h3 _ c hc r _ P hP => h F E h1 h2 h3 c hc r P hP
 

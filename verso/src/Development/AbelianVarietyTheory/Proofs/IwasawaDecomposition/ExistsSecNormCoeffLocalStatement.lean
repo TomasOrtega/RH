@@ -10,6 +10,9 @@ open AlgebraicGeometry CategoryTheory Polynomial
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.NormalDescent
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NormalDescent.exists_sec_normCoeff_local | exact GlobalTheory.NormalDescent.exists_sec_normCoeff_local | (intros; apply GlobalTheory.NormalDescent.exists_sec_normCoeff_local <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_sec_normCoeff_local' : ∀ {X Y : Scheme.{0}} (f : Y ⟶ X) [IsFinite f] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     {M : LB X}, M.IsLB → ∀ t : (M.pull f).Sec, ∃ u : ∀ k, (lbPow M k).Sec, ∀ x : X,
       ∃ (V : X.Opens) (hV : IsAffineOpen V) (_ : IsDomain Γ(X, V)) (_ : IsIntegrallyClosed Γ(X, V))

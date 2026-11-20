@@ -19,6 +19,19 @@ namespace GlobalTheory.Fam.ChiZero
 
 open GlobalTheory.Mem.Col2.MemChart
 
+/- English proof (translation)
+Take `⟨_, y, rfl⟩` from `w`. Establish `e : redAt 1 P ⟨frGL 1 y, ⟨y, rfl⟩⟩ = bc (resS F P) y` using `by show bc (resS F P) (pullFr 1 ⟨frGL 1 y, ⟨y, rfl⟩⟩) = _`. Rewrite using `[pullFr_frGL]`. Rewrite using `[e]`. Establish `e1 : frGL 1 y = intGL F E n y` using `by simp [frGL]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Take `⟨s, hs, hm⟩` from `h a b`. Establish `hq : ((Formalism.L2.Col.qOf P : ℕ) : E) ≠ 0`. Establish `: Formalism.L2.Col.qOf P ≠ 0` using `fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`.
+
+Conclude with `this` after adjusting the coercions. Establish `hqm : Ideal.Quotient.mk P.asIdeal ((Formalism.L2.Col.qOf P : ℕ) : 𝓞 E) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.absNorm_mem _)`. Establish `key : oToS F E s * ((y.1 - 1) a b) = oToS F E ((Formalism.L2.Col.qOf P : ℕ) : 𝓞 E) ^ D * ⟨_, hm⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `c1 : ∀ r : 𝓞 E, ((oToS F E r : Formalism.L2.Herm.intAf F E) : E ⊗[F] Formalism.L2.Herm.Af F) = iA F E (algebraMap (𝓞 E) E r)` using `fun _ => rfl`.
+
+Establish `c2 : (((y.1 - 1) a b : Formalism.L2.Herm.intAf F E) : E ⊗[F] Formalism.L2.Herm.Af F) = ((frGL 1 y).1 - 1) a b`. Rewrite using `[e1, Matrix.sub_apply, Matrix.sub_apply, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[Subring.coe_mul, Subring.coe_mul, SubmonoidClass.coe_pow, c1, c1, c2, ← map_pow, map_natCast]`. Use `show _ = _ * (_ * (_ * _))`.
+
+Rewrite using `[mul_left_comm, ← mul_assoc (iA F E (_ ^ D)), ← map_mul, mul_inv_cancel₀ (pow_ne_zero _ hq), map_one, one_mul]`. Establish `k2` using `congrArg (resS F P) key`. Rewrite `k2` using `[map_mul, map_mul, map_pow, resS_oToS, resS_oToS, hqm, zero_pow (by omega), zero_mul]`. Use `haveI := P.isPrime`. Establish `k3` using `(mul_eq_zero.1 k2).resolve_left (fun h0 => hs (Ideal.Quotient.eq_zero_iff_mem.1 h0))`.
+
+Rewrite `k3` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Use `show resS F P (y.1 a b) = (1 : Matrix (Fin n) (Fin n) (kP P)) a b`. Rewrite using `[k3, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem redAt_eq_one_of_congAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n D : ℕ} (hD : 1 ≤ D)
     (P : Pl E) (w : St (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))) (h : GlobalTheory.TwU.CongAt P D w.1) : redAt 1 P w = 1 := by
   obtain ⟨_, y, rfl⟩ := w
@@ -55,6 +68,11 @@ theorem redAt_eq_one_of_congAt {F E : Type} [Field F] [NumberField F] [Field E] 
 
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X)
 
+/- English proof (translation)
+Use `GlobalTheory.T.decoratedLattice_diagonalBasePoint_mul _ _ B.sp.cm n _ _ Q g _ p _ h k1 k2 fun P r j hr => ?_` and prove the remaining obligations. Establish `hu : IsUnit (Ideal.Quotient.mk P.1.asIdeal (B.fields.conjO ((B.primes X).piT u)))`. Establish `h0 : Ideal.Quotient.mk P.1.asIdeal (B.fields.conjO ((B.primes X).piT u)) ≠ 0` using `fun h0 => (basePi_of_ok (GlobalTheory.Mem.FieldsLaws.fields_ok B) hPr u).conj_notMem P.2 (Ideal.Quotient.eq_zero_iff_mem.1 h0)`. Conclude with `@Ne.isUnit (Res P.1) _ _ h0`. Establish `e : ((diaT (Pr` using `B.primes X) u P : (𝓞 B.fields.E ⧸ P.1.asIdeal)ˣ) : 𝓞 B.fields.E ⧸ P.1.asIdeal) = Ideal.Quotient.mk P.1.asIdeal (B.fields.conjO (X.piT u)) := by`.
+
+Unfold `diaT`. Rewrite using `[dif_pos hu]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `k3 P r j hr`.
+-/
 theorem dia_of_base (hPr : (B.primes X).Ok) (u : B.Word) {n : ℕ} [NeZero n] {Q : Finset (HeightOneSpectrum (𝓞 B.fields.E))} {g k : GA B n}
     (k1 : ∃ p : DecoF B.fields.E n ∅ ∅ ∅, PtOf k p ∧ p.deco.1.N = stdLat B.fields.E n)
     (k2 : ∀ w ∈ (B.primes X).vGs, bc (prV (E := B.host.E) (w.under (𝓞 B.host.F))) k = 1)
@@ -83,6 +101,15 @@ abbrev typ0 (u : B.Word) : levelZeroSubgroupOfWord I u →* ℂˣ :=
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hL` using `hI.idx_ok a`. Establish `hΛ` using `StepZero.levGAt_zero (I.Tp a) hL`. Establish `hΘ` using `StepZero.levQAt_zero (I.Tp a) hL`. Take `⟨κ, h1, h2, -⟩` from `(hR.lev c x.1 q hq).1 x.2`. Substitute `h2` using the available equality.
+
+Establish `hg` using `dia_of_base hPr u (hR.k_std _) k2 (hR.k_T _) (hR.pt c)`. Establish `hx` using `dia_of_base hPr u (hR.k_std _) k2 (hR.k_T _) hq`. Establish `e1 : κ.1 = 1` using `ufGL_inj B.sp.cm (B.R.N 0) (h1.trans (map_one _).symm)`. Take `⟨hJ, hr⟩` from `red_of_act B.sp.cm (B.R.N 0) (diaT (Pr := B.primes X) u) hg.1 hx.1 κ.2.1.1 (by`. Rewrite using `[hg.2, hx.2]`.
+
+Use `show ((κ.1, κ.2.1.1) : UF B.fields.E (B.R.N 0) × GLG B.fields.E (B.R.N 0) (B.primes X).vGs) • _ = _`. Rewrite using `[e1]`. Use the proof step `rfl)`. Establish `hm : κ.2.1.1 ∈ (colLev I.Ch 0).grp` using `hΛ c.1 ▸ κ.2.1.2`. Establish `hxU : x.1 ∈ levelZeroSubgroupOfWord I u` using `(mem_levU _ _ _ _ _).2 ⟨hJ, by rw [hr]; exact inv_mem hm⟩`.
+
+Use `⟨hxU, Units.ext ((hR.chr c x κ h1 hq).trans (Eq.symm ?_))⟩` and prove the remaining obligations. Establish `e2 : Formalism.L2.Col.levRed B.sp.cm (B.R.N 0) _ _ _ ⟨x.1, hxU⟩ = (⟨κ.2.1.1, hm⟩ : (colLev I.Ch 0).grp)⁻¹` using `Subtype.ext hr`. Use `show ((Units.map B.embLL.toMonoidHom ((colLev I.Ch 0).chr (Formalism.L2.Col.levRed B.sp.cm (B.R.N 0) _ _ _ ⟨x.1, hxU⟩)))⁻¹ : ℂˣ).1 = B.embLL (((Chart0.lvG I a c.1).chr κ.2.1 * (Chart0.lvQ I a c.1).chr κ.2.2 : B.LLˣ) : B.LL)`. Rewrite using `[e2, StepZero.chr_eq_one (hΘ c.1), mul_one, StepZero.chr_congr (hΛ c.1), map_inv, map_inv, inv_inv]`. Both sides reduce to the same expression.
+-/
 theorem stepZeroChartLevel_mem_columnLevel_of_stdBase (hI : I.Ok) (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) {Ch : Type} {chOf : (I.stp u a 0).Cl → Ch}
     {Lb : Ch → Submodule (𝓞 B.host.E) (Fin (B.R.N 0) → B.host.E)} {U : Ch → Subgroup (GA B (B.R.N 0))} {chi : ∀ β, U β →* ℂˣ}
     {y : (I.stp u a 0).Cl → GA B (B.R.N 0)} {st : ∀ c, (I.stp u a 0).Stab c → GL (Fin (B.R.N 0)) B.host.E}
@@ -113,6 +140,11 @@ theorem stepZeroChartLevel_mem_columnLevel_of_stdBase (hI : I.Ok) (hPr : (B.prim
   rw [e2, StepZero.chr_eq_one (hΘ c.1), mul_one, StepZero.chr_congr (hΛ c.1), map_inv, map_inv, inv_inv]
   rfl
 
+/- English proof (translation)
+Establish `e : Formalism.L2.Col.levRed B.sp.cm (B.R.N 0) _ _ _ (x⁻¹ * x') = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Take `⟨D, hD, hc⟩` from `h w.1 w.2`. Conclude with `redAt_eq_one_of_congAt hD w.1 ⟨(x⁻¹ * x').1, congruence_subgroup_le_stabilizer _ _ _ (unipotentLevel_le_mirabolicLevel _ _ _ _ _ (x⁻¹ * x').2)⟩ hc`.
+
+Establish `e2 : typ0 I u (x⁻¹ * x') = 1` using `by show (((Units.map B.embLL.toMonoidHom).comp (colLev I.Ch 0).chr) (Formalism.L2.Col.levRed B.sp.cm (B.R.N 0) _ _ _ (x⁻¹ * x')))⁻¹ = 1`. Rewrite using `[e, map_one, inv_one]`. Rewrite `e2` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `e2`.
+-/
 theorem stepZeroColumnLevelType_eq_of_congruent_typePrimes (u : B.Word) (x x' : levelZeroSubgroupOfWord I u)
     (h : ∀ w ∈ (B.primes X).vGs, ∃ D, 1 ≤ D ∧ GlobalTheory.TwU.CongAt (F := B.host.F) (E := B.host.E) w D (x.1⁻¹ * x'.1)) :
     typ0 I u x = typ0 I u x' := by
@@ -141,6 +173,19 @@ open GlobalTheory.Fam.ChiZero GlobalTheory.Mem.Col2.MemChart
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z C hC u a Ch A hA β hβ x x' hxx`. Establish `hPr` using `l.pr`. Use `haveI : NeZero (B.R.N 0) := ⟨(B.R.N_pos 0).ne'⟩`. Take `⟨c, rfl⟩` from `hA.chOf_onto 0 (Nat.zero_le _) β`. Establish `hR` using `hA.reads 0 (Nat.zero_le _)`.
+
+Take `⟨n, hn, hfin⟩` from `hA.fin 0 (Nat.zero_le _) (A.chOf 0 c)`. Take `⟨x₁, e₁, ⟨q, hq⟩, hcg⟩` from `GlobalTheory.Mem.Col2.AdT.LevelElt.exists_level_elt I hI hP l Z u a 0 (Nat.zero_le _) (A.bad 0) (Ch 0) (A.chOf 0) (A.K 0 (Nat.zero_le _)) (A.kb 0) hR c ⟨n, hn, fun κ _ => hfin κ⟩ x`. Take `⟨hx₁, f₁⟩` from `stepZeroChartLevel_mem_columnLevel_of_stdBase I hI hPr u a hR c (fun w hw => by`. Rewrite using `[hβ]`. Conclude with `(kStd_spec hPr u _).2.1 _ fun hT => Formalism.L2.Col.rls_T_notUnder hPr u _ hT ⟨w, hw, rfl⟩) x₁ q hq`.
+
+Take `⟨k, hR'⟩` from `(hC u).ends 0 (Nat.zero_le _) (Or.inl rfl)`. Take `⟨c', -⟩` from `hR'.onto ()`. Establish `hg1 : gramN (I.rec7 l Z) 0 (Nat.zero_le _) = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 0 (Nat.zero_le _)).1`. Establish `eU : Formalism.UG.UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F) = Formalism.L2.Col.UAd B.sp.cm (B.R.N 0)` using `by rw [hg1]; rfl`. Set `yc : TC.GA B (B.R.N 0)` to `(((C.forms u).cls 0 (Nat.zero_le _) (Or.inl rfl)).y c').1`.
+
+Set `xg : TC.GA B (B.R.N 0)` to `x'.1`. Establish `hxg : xg ∈ Formalism.L2.Col.UAd B.sp.cm (B.R.N 0)` using `eU ▸ (((C.forms u).to0.cls0.lev.U_eq x'.1).1 x'.2).1`. Establish `hyc : yc ∈ Formalism.L2.Col.UAd B.sp.cm (B.R.N 0)` using `eU ▸ (((C.forms u).cls 0 (Nat.zero_le _) (Or.inl rfl)).y c').2`. Take `⟨p0, hp0, -⟩` from `hR'.k_std ()`. Establish `hk : k () ∈ Formalism.L2.Col.UAd B.sp.cm (B.R.N 0)` using `hp0.uni`.
+
+Take `⟨q', hq'⟩ : ∃ q' : Formalism.L2.Col.ChPt (Pr` from `B.primes X) (R := B.R) I.sel (I.tup I.mu0) u 0, TC.PtOf (yc * xg * k ()) q' := GlobalTheory.Mem.Col2.ChiFinTop.exists_isPtOf_of_mem B.sp.cm I.twistPrimes_reference_tuple_eq_empty (mul_mem (mul_mem hyc hxg) hk)`. Take `⟨hx', f'⟩` from `stepZeroChartLevel_mem_columnLevel_of_stdBase I hI hPr u I.mu0 hR' c' (fun w hw => hR'.k_off () _ (fun hT => Formalism.L2.Col.rls_T_notUnder hPr u _ hT ⟨w, hw, rfl⟩) (fun ⟨P, hP, _⟩ => by rw [I.twistPrimes_reference_tuple_eq_empty] at hP; exact Finset.notMem_empty _ hP) (Or.inl r …`. Use `e₁.symm.trans (f₁.trans (Eq.trans (Eq.symm ?_) f'.symm))` and prove the remaining obligations. Use `stepZeroColumnLevelType_eq_of_congruent_typePrimes I u _ _ fun w hw => ?_` and prove the remaining obligations. Establish `hw' : w ∈ GlobalTheory.Mem.Col2.AdT.SBof I a` using `Finset.mem_union_left _ hw`.
+
+Use `⟨(I.cst a).D ⟨w, hw'⟩, (hI.idx_ok a).cst_ok.D_pos _, ?_⟩` and prove the remaining obligations. Establish `h1` using `hcg ⟨w, hw'⟩`. Rewrite `h1` using `[(GlobalTheory.Mem.Col2.AdT.AdelicValuationDictionary.main I hI l Z a (B.R.N 0) 0 ⟨w, hw'⟩ x.1).1, hxx]`. Conclude with `h1`.
+-/
 theorem chi_zero_std : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (C : Formalism.L2.Forms.ColsTiedSym (I.rec7 l Z)), I.StdC l Z C → ∀ (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : GlobalTheory.AdForm.TwDat I l Z u a Ch), A.Is → ∀ (β : Ch 0), A.kb 0 β = TC.kStd X u (B.R.N 0) → ∀ (x : (A.K 0 (Nat.zero_le _) β).lev.U) (x' : (C.forms u).to0.cls0.lev.U), x.1 = x'.1 → (A.K 0 (Nat.zero_le _) β).lev.chi x = (C.forms u).to0.cls0.lev.chi x' := by
   intro B X I hI hP l Z C hC u a Ch A hA β hβ x x' hxx
   have hPr := l.pr

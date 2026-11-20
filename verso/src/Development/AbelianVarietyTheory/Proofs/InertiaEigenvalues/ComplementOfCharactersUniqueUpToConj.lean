@@ -12,6 +12,25 @@ section Cancel
 
 variable {K Γ V W : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
 
+/- English proof (translation)
+Break down `hE : e (v₀, 1) with ⟨w', δ⟩` into its components or cases. Establish `hd0 : δ ≠ 0` using `by rw [hE] at hd; exact hd`. Establish `hb : ∀ g, b g w' = c g • w'`. Introduce `g`. Establish `h1` using `h g v₀ 1`.
+
+Establish `h2 : ((a g v₀, c g * 1) : V × K) = c g • ((v₀, 1) : V × K)`. Rewrite using `[hv]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2, map_smul, hE]`. Establish `h3` using `congrArg Prod.fst h1`.
+
+Simplify using `at h3`. Conclude with `h3.symm`. Use `⟨{ toFun := fun v => (e (v, 0)).1 - ((e (v, 0)).2 / δ) • w' invFun := fun w => (e.symm (w, 0)).1 - (e.symm (w, 0)).2 • v₀ map_add' := ?_, map_smul' := ?_, left_inv := ?_, right_inv := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `x y`. Establish `hxy : ((x + y, (0 : K)) : V × K) = (x, 0) + (y, 0)` using `by simp`.
+
+Rewrite using `[hxy, map_add]`. Simplify using `only [Prod.fst_add, Prod.snd_add, add_div, add_smul]`. Normalize the expressions using the abelian group laws. Introduce `s x`. Establish `hsx : ((s • x, (0 : K)) : V × K) = s • (x, 0)` using `by simp`.
+
+Rewrite using `[hsx, map_smul]`. Simplify using `[smul_sub, smul_smul, mul_div_assoc]`. Introduce `v dsimp only`. Establish `key : (((e (v, 0)).1 - ((e (v, 0)).2 / δ) • w', (0 : K)) : W × K) = e (v, 0) - ((e (v, 0)).2 / δ) • e (v₀, 1)`. Rewrite using `[hE]`.
+
+Use `ext`. Simplify using the standard rewrite rules. Simplify using `only [Prod.snd_sub, Prod.smul_snd, smul_eq_mul]`. Rewrite using `[div_mul_cancel₀ _ hd0, sub_self]`. Rewrite using `[key, map_sub, map_smul, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`.
+
+Simplify using the standard rewrite rules. Introduce `w dsimp only`. Establish `key : (((e.symm (w, 0)).1 - (e.symm (w, 0)).2 • v₀, (0 : K)) : V × K) = e.symm (w, 0) - (e.symm (w, 0)).2 • (v₀, 1)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[key, map_sub, map_smul, LinearEquiv.apply_symm_apply, hE]`.
+
+Simplify using `only [Prod.fst_sub, Prod.snd_sub, Prod.smul_fst, Prod.smul_snd, smul_eq_mul, zero_sub]`. Rewrite using `[neg_div, mul_div_cancel_right₀ _ hd0, neg_smul, sub_neg_eq_add, sub_add_cancel]`. Introduce `g v show (e (a g v, 0)).1 - ((e (a g v, 0)).2 / δ) • w' = b g ((e (v, 0)).1 - ((e (v, 0)).2 / δ) • w')`. Establish `h1` using `h g v 0`. Rewrite `h1` using `[mul_zero]`.
+
+Rewrite using `[h1, map_sub, map_smul, hb, smul_smul]`. Simplify using `only`. Rewrite using `[show c g * (e (v, 0)).2 / δ = (e (v, 0)).2 / δ * c g by ring]`.
+-/
 theorem ennreal_volume_ratio_step_cancel (a : Γ → V →ₗ[K] V) (b : Γ → W →ₗ[K] W) (c : Γ → K) (e : (V × K) ≃ₗ[K] (W × K))
     (h : ∀ g v x, e (a g v, c g * x) = (b g (e (v, x)).1, c g * (e (v, x)).2))
     (v₀ : V) (hv : ∀ g, a g v₀ = c g • v₀) (hd : (e (v₀, 1)).2 ≠ 0) :
@@ -66,6 +85,15 @@ theorem ennreal_volume_ratio_step_cancel (a : Γ → V →ₗ[K] V) (b : Γ → 
     dsimp only
     rw [show c g * (e (v, 0)).2 / δ = (e (v, 0)).2 / δ * c g by ring]
 
+/- English proof (translation)
+Distinguish the cases in `hd : (e ((0 : V), (1 : K))).2 = 0`. Break down `hq : e.symm ((0 : W), (1 : K)) with ⟨v₁, d'⟩` into its components or cases. Establish `hq' : e (v₁, d') = ((0 : W), (1 : K))` using `by rw [← hq]; simp`. Establish `hv1 : ∀ g, a g v₁ = c g • v₁`. Introduce `g`.
+
+Establish `h1` using `h g v₁ d'`. Rewrite `h1` using `[hq']`. Simplify using `only [map_zero, mul_one] at h1`. Establish `h2 : e (c g • v₁, c g * d') = ((0 : W), c g)`. Establish `h3 : ((c g • v₁, c g * d') : V × K) = c g • (v₁, d')` using `by simp`.
+
+Rewrite using `[h3, map_smul, hq']`. Simplify using the standard rewrite rules. Establish `h4` using `e.injective (h1.trans h2.symm)`. Simplify using `using congrArg Prod.fst h4`. Establish `hd1 : (e (v₁, 1)).2 ≠ 0`.
+
+Apply the tactic sequence `have h5 : ((v₁, 1) : V × K) = (v₁, d') + (1 - d') • ((0 : V), (1 : K)) := by ext <;> simp`. Rewrite using `[h5, map_add, map_smul, hq']`. Simplify using `[hd]`. Conclude with `ennreal_volume_ratio_step_cancel a b c e h v₁ hv1 hd1`. Conclude with `ennreal_volume_ratio_step_cancel a b c e h 0 (fun g => by simp) hd`.
+-/
 theorem cancel_one (a : Γ → V →ₗ[K] V) (b : Γ → W →ₗ[K] W) (c : Γ → K) (e : (V × K) ≃ₗ[K] (W × K))
     (h : ∀ g v x, e (a g v, c g * x) = (b g (e (v, x)).1, c g * (e (v, x)).2)) :
     ∃ f : V ≃ₗ[K] W, ∀ g v, f (a g v) = b g (f v) := by
@@ -104,6 +132,19 @@ def splitFirst (V : Type) [AddCommGroup V] [Module K V] (t : ℕ) :
     refine Prod.ext rfl (funext fun j => ?_)
     refine Fin.cases ?_ (fun j => ?_) j <;> simp
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero`. Introduce `c e h`. Use `⟨((LinearEquiv.prodUnique : (V × (Fin 0 → K)) ≃ₗ[K] V).symm.trans e).trans (LinearEquiv.prodUnique : (W × (Fin 0 → K)) ≃ₗ[K] W), fun g v => ?_⟩` and prove the remaining obligations. Establish `hx : ((a g v, fun j => c j g * (default : Fin 0 → K) j) : V × (Fin 0 → K)) = (a g v, default)` using `Prod.ext rfl (Subsingleton.elim _ _)`.
+
+Establish `h1` using `h g v default`. Rewrite `h1` using `[hx]`. Use `show (e (a g v, default)).1 = b g (e (v, default)).1`. Rewrite using `[h1]`. Consider the case `succ t ih`.
+
+Introduce `c e h`. Set `S` to `splitFirst (K := K) V t`. Set `T` to `splitFirst (K := K) W t`. Set `a' : Γ → (V × (Fin t → K)) →ₗ[K] (V × (Fin t → K))` to `fun g => (a g).prodMap (LinearMap.pi fun j => c j.succ g • LinearMap.proj j)`. Set `b' : Γ → (W × (Fin t → K)) →ₗ[K] (W × (Fin t → K))` to `fun g => (b g).prodMap (LinearMap.pi fun j => c j.succ g • LinearMap.proj j)`.
+
+Use `(cancel_one a' b' (c 0) ((S.trans e).trans T.symm) ?_).elim fun f' hf' => ?_` and prove the remaining obligations. Introduce `g p y`. Take `⟨v, x⟩` from `p`. Establish `hS : ∀ (u : V) (z : Fin t → K) (s : K), S ((u, z), s) = (u, Fin.cons s z)` using `fun _ _ _ => rfl`. Establish `hT : ∀ q : W × (Fin (t + 1) → K), T.symm q = ((q.1, fun j => q.2 j.succ), q.2 0)` using `fun _ => rfl`.
+
+Establish `ha : a' g (v, x) = (a g v, fun j => c j.succ g * x j)` using `rfl`. Establish `hcons : (Fin.cons (c 0 g * y) (fun j => c j.succ g * x j) : Fin (t + 1) → K) = fun j => c j g * (Fin.cons y x : Fin (t + 1) → K) j`. Apply the tactic sequence `funext j; refine Fin.cases ?_ (fun j => ?_) j <;> simp`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[ha, hS, hS, hcons, h g v (Fin.cons y x : Fin (t + 1) → K), hT, hT]`.
+
+Both sides reduce to the same expression. Conclude with `ih (fun j => c j.succ) f' (fun g v x => hf' g (v, x))`.
+-/
 theorem cancel_fin (a : Γ → V →ₗ[K] V) (b : Γ → W →ₗ[K] W) (t : ℕ) :
     ∀ (c : Fin t → Γ → K) (e : (V × (Fin t → K)) ≃ₗ[K] (W × (Fin t → K))),
     (∀ g v x, e (a g v, fun j => c j g * x j) = (b g (e (v, x)).1, fun j => c j g * (e (v, x)).2 j)) →
@@ -143,11 +184,25 @@ theorem cancel_fin (a : Γ → V →ₗ[K] V) (b : Γ → W →ₗ[K] W) (t : �
 
 end Cancel
 
+/- English proof (translation)
+Simplify using `[overK, mat, toFr, matRep, mapM]`.
+-/
 theorem overK_apply {Γ A : Type} [Group Γ] [CommRing A] [IsDomain A] [IsLocalRing A] {k : ℕ}
     (σ : Γ →* GL (Fin k) A) (g : Γ) (u : Fin k → FractionRing A) :
     overK σ g u = ((mat σ g).map (toFr A)).mulVec u := by
   simp [overK, mat, toFr, matRep, mapM]
 
+/- English proof (translation)
+Take `⟨Pm, hPm⟩` from `hP`. Take `⟨e, he⟩` from `h`. Take `⟨e', he'⟩` from `h'`. Set `L : (Fin n → FractionRing A) ≃ₗ[FractionRing A] (Fin n → FractionRing A)` to `LinearEquiv.ofLinearMap (Matrix.toLin' (Pm : Matrix (Fin n) (Fin n) (FractionRing A))) (Matrix.toLin' ((Pm⁻¹ : GL (Fin n) (FractionRing A)) : Matrix (Fin n) (Fin n) (FractionRing A))) (by rw [← Matrix.toLin'_mul, Units.mul_inv, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, Uni …`. Establish `hL : ∀ g u, L (overK σ g u) = overK σ' g (L u)`.
+
+Introduce `g u`. Simplify using `only [L, LinearEquiv.coe_ofLinearMap, Matrix.toLin'_apply, overK_apply, Matrix.mulVec_mulVec, hPm g]`. Use `(cancel_fin (fun g => overK ρ g) (fun g => overK ρ' g) t (fun j g => toFr A ((χ (↑j + 1) g : Aˣ) : A)) ((e.symm.trans L).trans e') ?_).elim fun f hf => ?_` and prove the remaining obligations. Introduce `g v x`. Establish `he1` using `he g (e.symm (v, x))`.
+
+Simplify using `only [LinearEquiv.apply_symm_apply] at he1`. Establish `h2 : e.symm (overK ρ g v, fun j => toFr A ((χ (↑j + 1) g : Aˣ) : A) * x j) = overK σ g (e.symm (v, x))`. Rewrite using `[← he1, LinearEquiv.symm_apply_apply]`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[h2, hL, he']`.
+
+Use `⟨⟨LinearMap.toMatrix' (f : (Fin r → FractionRing A) →ₗ[FractionRing A] (Fin r → FractionRing A)), LinearMap.toMatrix' (f.symm : (Fin r → FractionRing A) →ₗ[FractionRing A] (Fin r → FractionRing A)), ?_, ?_⟩, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules. Rewrite using `[← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_mul, LinearMap.comp_apply, Matrix.toLin'_toMatrix', Matrix.toLin'_apply, ← overK_apply, LinearEquiv.coe_coe]`. Conclude with `hf g v`.
+-/
 theorem conj_of_isDecomp {Γ A : Type} [Group Γ] [CommRing A] [IsDomain A] [IsLocalRing A] {n r t : ℕ}
     (σ σ' : Γ →* GL (Fin n) A) (ρ ρ' : Γ →* GL (Fin r) A) (χ : ℕ → (Γ →* Aˣ))
     (hP : ∃ Pm : GL (Fin n) (FractionRing A), ∀ g,
@@ -188,6 +243,9 @@ theorem conj_of_isDecomp {Γ A : Type} [Group Γ] [CommRing A] [IsDomain A] [IsL
         Matrix.toLin'_apply, ← overK_apply, LinearEquiv.coe_coe]
       exact hf g v
 
+/- English proof (translation)
+Introduce `R H what₂ N i r r' ρ ρ' π _ hP h h'`. Conclude with `conj_of_isDecomp (r π) (r' π) (ρ π) (ρ' π) (N.chi i) hP h h'`.
+-/
 theorem main : ∀ {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (i : N.Loc) (r r' : (N.X i → (GE N →* GL (Fin R.nV) (N.O i)))) (ρ ρ' : (N.X i → (GE N →* GL (Fin R.r) (N.O i)))) (π : N.X i), IsSSRep (mapRep (algebraMap (N.O i) (Kf N i)) (r π)) → (∃ Pm : GL (Fin R.nV) (KK N i), ∀ g, (Pm : Matrix (Fin R.nV) (Fin R.nV) (KK N i)) * (rO N i r π g).map (toK N i) = (rO N i r' π g).map (toK N i) * (Pm : Matrix (Fin R.nV) (Fin R.nV) (KK N i))) → (∃ e, IsDecomp (t := R.t) (r π) (ρ π) (N.chi i) e) → (∃ e, IsDecomp (t := R.t) (r' π) (ρ' π) (N.chi i) e) → (∃ Pm : GL (Fin R.r) (KK N i), ∀ g, (Pm : Matrix (Fin R.r) (Fin R.r) (KK N i)) * (rhoO N i ρ π g).map (toK N i) = (rhoO N i ρ' π g).map (toK N i) * (Pm : Matrix (Fin R.r) (Fin R.r) (KK N i))) := by
   intro R H what₂ N i r r' ρ ρ' π _ hP h h'
   exact conj_of_isDecomp (r π) (r' π) (ρ π) (ρ' π) (N.chi i) hP h h'

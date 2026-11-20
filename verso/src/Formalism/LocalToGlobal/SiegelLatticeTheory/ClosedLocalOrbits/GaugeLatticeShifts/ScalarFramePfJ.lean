@@ -16,34 +16,84 @@ section Scal
 
 variable {D : D7} (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T T' : D.host.E}
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (by rintro _ ⟨a, rfl⟩; exact ⟨Sum.inl a, rfl⟩)`.
+-/
 theorem span_left_le (F : LFlag (VS D) D.R.rS T) (F₁ : LFlag (VS D) D.R.rS T') :
     Submodule.span D.host.E (Set.range F.fl.fvec) ≤
       Submodule.span D.host.E (Set.range (Sum.elim F.fl.fvec F₁.fl.fvec)) :=
   Submodule.span_mono (by rintro _ ⟨a, rfl⟩; exact ⟨Sum.inl a, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (by rintro _ ⟨a, rfl⟩; exact ⟨Sum.inr a, rfl⟩)`.
+-/
 theorem span_right_le (F : LFlag (VS D) D.R.rS T) (F₁ : LFlag (VS D) D.R.rS T') :
     Submodule.span D.host.E (Set.range F₁.fl.fvec) ≤
       Submodule.span D.host.E (Set.range (Sum.elim F.fl.fvec F₁.fl.fvec)) :=
   Submodule.span_mono (by rintro _ ⟨a, rfl⟩; exact ⟨Sum.inr a, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[Xsp, FlagG.X, Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.subset_span ⟨a.castSucc, fvec_castSucc _ _⟩`.
+-/
 theorem Xsp_le_span (F : LFlag (VS D) D.R.rS T) :
     Xsp F ≤ Submodule.span D.host.E (Set.range F.fl.fvec) := by
   rw [Xsp, FlagG.X, Submodule.span_le]
   rintro _ ⟨a, rfl⟩
   exact Submodule.subset_span ⟨a.castSucc, fvec_castSucc _ _⟩
 
+/- English proof (translation)
+The claim follows from `(Xs_fvec F.fl).symm`.
+-/
 theorem Xsp_eq_Xs (F : LFlag (VS D) D.R.rS T) : Xsp F = Xs (S := VS D) F.fl.fvec := (Xs_fvec F.fl).symm
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨Fin.last _, fvec_last _⟩`.
+-/
 theorem z_mem_span (F : LFlag (VS D) D.R.rS T) :
     F.fl.z ∈ Submodule.span D.host.E (Set.range F.fl.fvec) :=
   Submodule.subset_span ⟨Fin.last _, fvec_last _⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
+-/
 theorem Gom'_mem (u v : Fin (D.R.rS + 1) → (VS D).V) : Gom' u v ∈ Submodule.span D.host.E (Set.range v) :=
   Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
+-/
 theorem Gom_mem (u v : Fin (D.R.rS + 1) → (VS D).V) : Gom u v ∈ Submodule.span D.host.E (Set.range u) :=
   Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)
 
+/- English proof (translation)
+Use `set f := F.fl.fvec with hf`. Use `set f1 := F₁.fl.fvec with hf1`. Use `set f2 := F₂.fl.fvec with hf2`. Use `set D1 := GDl f f1 (D.R.rS + 1) with hD1def`. Use `set D2 := GDl f f2 (D.R.rS + 1) with hD2def`.
+
+Use `set R1 := GDl f f1 D.R.rS with hR1def`. Use `set R2 := GDl f f2 D.R.rS with hR2def`. Use `set om1 := Gom' f f1 with hom1`. Use `set om2 := Gom' f f2 with hom2`. Establish `hfl : f (Fin.last _) = F.fl.z` using `fvec_last _`.
+
+Establish `hfc : ∀ a : Fin D.R.rS, f a.castSucc = F.fl.e a` using `fun a => fvec_castSucc _ a`. Establish `p1 : ∀ a, (VS D).hT (f a) om1 = if a = Fin.last _ then D1 else 0` using `om'_pair f f1`. Establish `p2 : ∀ a, (VS D).hT (f a) om2 = if a = Fin.last _ then D2 else 0` using `om'_pair f f2`. Establish `hzz : (VS D).hT F.fl.z F.fl.z = -T` using `F.fl.z_norm`. Use `set u2 := om2 + (D2 / T) • F.fl.z with hu2`.
+
+Establish `hu2U : u2 ∈ UUE Λ F F₂`. Rewrite using `[hU2]`. Conclude with `Submodule.add_mem _ (span_right_le F F₂ (Gom'_mem f f2)) (Submodule.smul_mem _ _ (span_left_le F F₂ (z_mem_span F)))`. Establish `hu2o : u2 ∈ orth (VS D) (Xplus F)`. Rewrite using `[Xplus, mem_orth_Xplus]`.
+
+Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `p2 a.castSucc`. Rewrite `h1` using `[if_neg (Fin.castSucc_ne_last a), hfc]`. Rewrite using `[hu2, map_add, map_smul, h1, F.fl.z_orth a, smul_zero, add_zero]`. Establish `h1` using `p2 (Fin.last _)`.
+
+Rewrite `h1` using `[if_pos rfl, hfl]`. Rewrite using `[hu2, map_add, map_smul, h1, hzz, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hu2U1` using `htr u2 hu2U hu2o`.
+
+Establish `hx2 : om2 - R2 • F₂.fl.z ∈ Xsp F₂`. Rewrite using `[Xsp_eq_Xs, ← fvec_last F₂.fl]`. Conclude with `om'_decomp f f2`. Establish `hsg : SgRel F F₂ u2 0 (D2 / T) R2` using `⟨0, Submodule.zero_mem _, om2 - R2 • F₂.fl.z, hx2, by rw [hz, hz₂, hu2]; abel⟩`. Take `⟨x, hx, x1, hx1, heq⟩` from `hsc u2 (Submodule.mem_inf.2 ⟨hu2U1, hu2o⟩) (Submodule.mem_inf.2 ⟨hu2U, hu2o⟩) _ _ hsg`.
+
+Rewrite `heq` using `[hz, hz₁, hu2, sub_zero]`. Establish `hp : R2 • F₁.fl.z + x1 = om2 - x`. Establish `: om2 - x = (om2 + (D2 / T) • F.fl.z) - (D2 / T) • F.fl.z - x` using `by abel`. Rewrite using `[this, heq]`. Normalize the expressions using the abelian group laws.
+
+Establish `hpspan : om2 - x ∈ Submodule.span D.host.E (Set.range f1)`. Rewrite using `[← hp]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (z_mem_span F₁)) (Xsp_le_span F₁ hx1)`. Establish `hxX : x ∈ F.fl.X` using `hx`. Establish `hq0 : D1 • (om2 - x) - D2 • om1 = 0`.
+
+Use `lemB f f1 hD1 (Submodule.sub_mem _ (Submodule.smul_mem _ _ hpspan) (Submodule.smul_mem _ _ (Gom'_mem f f1))) fun a => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, map_smul, map_sub, p1, p2, smul_eq_mul, smul_eq_mul]`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[if_pos rfl, if_pos rfl, hfl, hT_z_X F.fl hxX]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `cast a`. Rewrite using `[if_neg (Fin.castSucc_ne_last a), if_neg (Fin.castSucc_ne_last a), hfc, hT_X_X F.fl (Submodule.subset_span ⟨a, rfl⟩) hxX]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨x, hx, (sub_eq_zero.1 hq0).symm⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hy1 : om1 - R1 • f1 (Fin.last _) ∈ Xs (S` using `VS D) f1 := om'_decomp f f1`. Establish `hx1' : x1 ∈ Xs (S` using `VS D) f1 := by rw [← Xsp_eq_Xs]; exact hx1`. Establish `hlast1 : f1 (Fin.last _) = F₁.fl.z` using `fvec_last _`. Establish `e : (D1 * R2 - D2 * R1) • f1 (Fin.last _) = D2 • (om1 - R1 • f1 (Fin.last _)) - D1 • x1 + (D1 • (om2 - x) - D2 • om1)`. Rewrite using `[← hp, hlast1]`.
+
+Use `module`. Rewrite `e` using `[hq0, add_zero]`. Establish `hmem : (D1 * R2 - D2 * R1) • f1 (Fin.last _) ∈ Xs (S` using `VS D) f1 := by`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Submodule.smul_mem _ _ hy1) (Submodule.smul_mem _ _ hx1')`.
+
+Establish `hc` using `lemC f1 hind hmem`. Take the linear combination `hc`.
+-/
 theorem scal_dir (F : LFlag (VS D) D.R.rS T) (F₁ F₂ : LFlag (VS D) D.R.rS T')
     (hz : F.zt = F.fl.z) (hz₁ : F₁.zt = F₁.fl.z) (hz₂ : F₂.zt = F₂.fl.z) (hT0 : T ≠ 0)
     (hU2 : UUE Λ F F₂ = Submodule.span D.host.E (Set.range (Sum.elim F.fl.fvec F₂.fl.fvec)))

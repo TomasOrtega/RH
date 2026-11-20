@@ -23,6 +23,19 @@ open GlobalTheory.UT GlobalTheory.Mum GlobalTheory.Mum.Two
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D A G _ _ hG U O _ _ _ o oA oG hlin w ν hw hν hν1 hev hpsi`. Use `haveI : CharZero R := hR.2`. Take `⟨P, hP, hE⟩` from `GlobalTheory.Mum.PrimCube.exists_cp_evenOn R hR D A G hG U O o oA oG hlin w hw hpsi`. Take `⟨A', gen', hgen, hgL⟩` from `GlobalTheory.Mum.GenPol.exists_polAV_generic R hR D A G hG U O o oA oG hlin w hw hpsi P hP`. Take `⟨D', U', hLG, -⟩` from `GlobalTheory.Mum.exists_unif_even R hR G P hG hE A' gen' hgen hgL`.
+
+Take `⟨hlam, hadj, hprim⟩` from `GlobalTheory.T.lineBundleIso_mumford_adjoint_primitive_of_twist R hR D A G hG U O o oA oG hlin w hw P hP`. Rewrite `hlam`, `hadj`, `hprim` using `[← hLG]`. Take `⟨hbal1, hbal2⟩` from `GlobalTheory.UT.allU_balanced R (maximalIdeal R) hR.1 D' A' G hG U'`. Take `⟨oA', hoA'⟩` from `GlobalTheory.PELOfUnif.exists_oAct_unif U'.toUnifPre oG hadj`. Take `⟨md, o', hlin'⟩` from `hbal1 O oA' oG hoA' hadj`.
+
+Use `letI := md`. Establish `hpsi' : TraceFormTwistIso D'.toPre o' w` using `hbal2 O o' oA' oG hlin' hadj w ν hw hν hν1 hev hprim`. Take `⟨Φ, xe, hΦ, hov, hto, hcB, hxs, hxc, hwΛ⟩` from `GlobalTheory.T.polarisedDegenerationData_iso_of_mumfordBundle_iso R hR D A G hG U O o oA oG hlin D' A' U' o' oA' hlin' hlam`. Take `⟨hD, hxe, heΦ⟩` from `GlobalTheory.T.primitive_degeneration_data_iso_of_polarised_iso R hR D D' O o o' w hpsi hpsi' Φ xe hΦ ⟨hcB, hxs, hxc⟩ hwΛ`. Take `⟨ψ, bc, φ, hψ, hbc, hcomp, hpu, -⟩` from `GlobalTheory.unif_determined_by_data_normal R hR.1 D A G hG U D' A' G hG U' hD`.
+
+Take `⟨hov', hto'⟩` from `GlobalTheory.T.uniformisationPullbackAlongId_lies_over_dataIso R hR D A G hG U D' A' U' hD ψ.hom bc Φ.hom hψ hcomp heΦ hpu`. Rewrite `hto'` using `[hxe]`. Establish `h1 : ψ.hom = 𝟙 G` using `GlobalTheory.T.uniformisedGroupHom_ext_of_induced_maps R hR D A G hG U D' A' U' ψ.hom (𝟙 G) Φ.hom xe.symm hψ inferInstance hov' hov hto' hto`. Take `⟨wL, hwL, -⟩` from `hpu.lg`. Establish `hc : bc.hom.left ≫ pullback.fst G.hom (specOf (RingHom.id R)) = 𝟙 G.left`.
+
+Rewrite using `[hcomp, h1]`. Both sides reduce to the same expression. Establish `e1 : LBIso U'.LG.L (U.LG.L.pull (bc.hom.left ≫ pullback.fst G.hom (specOf (RingHom.id R))))` using `⟨wL, hwL⟩`. Rewrite `e1` using `[hc, hLG]`. Establish `hL` using `U.LG.isLB`.
+
+Establish `hPL` using `P.L.isLB`. Establish `hN : (cubeLB G ![𝟙 G, oG.act w] U.LG.L).IsLB` using `GlobalTheory.LamCalc.cubeLB_isLB hL _`. Establish `hL1 : (U.LG.L.pull (𝟙 G.left)).IsLB` using `pull_isLB hL _`. Establish `e0 : LBIso U.LG.L (U.LG.L.pull (𝟙 G.left))` using `(GlobalTheory.DescendedPrincipal.lbIso_pull_id hL).symm`. Conclude with `LBIso.trans hL hPL hN (LBIso.trans hL hL1 hPL e0 e1.symm) hP`.
+-/
 theorem mumfordBundle_primitive_of_evenNorm_data : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (O : Type) [CommRing O] [StarRing O] [Module O D.toPre.X] (o : D.toPre.OAct O) (oA : A.OAct O) (oG : RingAct G O), U.toUnifPre.OLinear O o oA oG → ∀ (w : O) (ν : ℕ), w + star w = 1 → w * star w = (ν : O) → 1 ≤ ν → Even ν → TraceFormTwistIso D.toPre o w → LBIso U.LG.L (cubeLB G ![𝟙 G, oG.act w] U.LG.L) := by
   intro R _ _ _ hR D A G _ _ hG U O _ _ _ o oA oG hlin w ν hw hν hν1 hev hpsi
   haveI : CharZero R := hR.2

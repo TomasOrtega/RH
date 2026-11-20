@@ -7,6 +7,11 @@ namespace LateralTheory.E.E8.ExciseCut.ConeZeroPf
 
 universe u v
 
+/- English proof (translation)
+Establish `hy : T.mor₂ ≫ x = 0`. Apply `(hb n).1` to reduce the goal to its premises. Simplify using `only [comp_zero, ← Category.assoc, comp_distTriang_mor_zero₁₂ T hT, zero_comp]`. Take `⟨g, rfl⟩` from `Triangle.yoneda_exact₃ T hT x hy`. Take `⟨h, hh⟩` from `(CategoryTheory.shiftFunctor D (1 : ℤ)).map_surjective (g ≫ (e n).hom)`.
+
+Take `⟨k, rfl⟩` from `(hb (n - 1)).2 h`. Establish `: g = (CategoryTheory.shiftFunctor D (1 : ℤ)).map (T.mor₁ ≫ k) ≫ (e n).inv`. Rewrite using `[hh, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[this, Functor.map_comp]`. Simplify using `only [← Category.assoc, comp_distTriang_mor_zero₃₁ T hT, zero_comp]`.
+-/
 theorem tri_zero {D : Type u} [Category.{v} D] [Preadditive D] [HasZeroObject D] [HasShift D ℤ]
     [∀ n : ℤ, Functor.Additive (CategoryTheory.shiftFunctor D n)] [Pretriangulated D]
     (T : Triangle D) (hT : T ∈ distTriang D) (Y : ℤ → D) (e : ∀ n, Y n ≅ (Y (n - 1))⟦(1 : ℤ)⟧)
@@ -24,6 +29,11 @@ theorem tri_zero {D : Type u} [Category.{v} D] [Preadditive D] [HasZeroObject D]
 
 variable (R : Type) [CommRing R]
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `x.mk_surjective`. Establish `: zcomp (Cocycle.ofHom φ) b (zero_add n) = b.precomp φ`. Use extensionality with `p q hpq`. Simplify using `[zcomp, Cocycle.precomp]`. Express the relevant statement in the definitionally equal form `CohomologyClass.toHom (CohomologyClass.mk (zcomp (Cocycle.ofHom φ) b (zero_add n))) = _`.
+
+Rewrite using `[this, CohomologyClass.toHom_mk, CohomologyClass.toHom_mk, Cocycle.equivHomShift_symm_precomp, Functor.map_comp]`.
+-/
 theorem pull_toHom {K L : Cx R} (φ : K ⟶ L) (F : Shv R) (n : ℤ) (x : HK R L F n) :
     CohomologyClass.toHom (HK.pull R φ F n x) =
       (HomotopyCategory.quotient _ _).map φ ≫ CohomologyClass.toHom x := by
@@ -34,6 +44,11 @@ theorem pull_toHom {K L : Cx R} (φ : K ⟶ L) (F : Shv R) (n : ℤ) (x : HK R L
   change CohomologyClass.toHom (CohomologyClass.mk (zcomp (Cocycle.ofHom φ) b (zero_add n))) = _
   rw [this, CohomologyClass.toHom_mk, CohomologyClass.toHom_mk, Cocycle.equivHomShift_symm_precomp, Functor.map_comp]
 
+/- English proof (translation)
+Establish `: (fun g : (HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).obj L ⟶ (HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).obj ((res R F)⟦n⟧) => (HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).map φ ≫ g) = (CohomologyClass.homAddEquiv) ∘ (HK.pull R φ F n) ∘ (Cohom …`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, CohomologyClass.homAddEquiv_apply, pull_toHom]`. Use `congr 1`. Conclude with `(CohomologyClass.homAddEquiv.apply_symm_apply g).symm`.
+
+Rewrite using `[this]`. Conclude with `CohomologyClass.homAddEquiv.bijective.comp ((hb n).comp CohomologyClass.homAddEquiv.symm.bijective)`.
+-/
 theorem hb' {K L : Cx R} (φ : K ⟶ L) (F : Shv R) (hb : ∀ n, Function.Bijective (HK.pull R φ F n)) (n : ℤ) :
     Function.Bijective (fun g : (HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).obj L ⟶
       (HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).obj ((res R F)⟦n⟧) =>
@@ -59,6 +74,9 @@ def shIso (E : Cx R) (n : ℤ) :
 end LateralTheory.E.E8.ExciseCut.ConeZeroPf
 
 open LateralTheory.E.E8.ExciseCut.ConeZeroPf in
+/- English proof (translation)
+Introduce `R _ K L φ F hb n`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Apply `(CohomologyClass.toHom_bijective _ _ _).1` to reduce the goal to its premises. Establish `hz` using `fun x : HK R (mappingCone φ) F n => tri_zero (mappingCone.triangleh φ) (HomotopyCategory.mappingCone_triangleh_distinguished φ) (fun n => (HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).obj ((res R F)⟦n⟧)) (shIso R (res R F)) (hb' R φ F hb) n (CohomologyClass.toHom x)`. Conclude with `(hz x).trans (hz y).symm`.
+-/
 theorem LateralTheory.E.E8.ExciseCut.LeafConeZero_of : LateralTheory.E.E8.ExciseCut.LeafConeZero := by
   intro R _ K L φ F hb n
   refine ⟨fun x y => ?_⟩

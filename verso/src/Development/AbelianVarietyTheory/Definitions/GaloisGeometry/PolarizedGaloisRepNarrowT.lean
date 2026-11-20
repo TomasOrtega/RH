@@ -102,6 +102,9 @@ namespace GlobalTheory.GalNarrowT
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : ℕ} [Fact l.Prime] {a : ℕ}
   [IsAlgClosure E Ω] [IsCMField E]
 
+/- English proof (translation)
+Introduce `w σ hσ`. Take `⟨s, hs, hy⟩` from `H w σ hσ`. Conclude with `⟨s, hs, fun y hy' => Or.inl (hy y hy')⟩`.
+-/
 theorem everywhereGood_of_toral {π : CuspSub E a}
     (H : ∀ (w : HeightOneSpectrum (𝓞 E)) (σ : SmIrr (GL (Fin a) (w.adicCompletion E))), π.IsLocComp w σ →
       UpperTheory.Zero.LLC.Toral (IrrGL.of σ.ρ σ.smooth σ.irred)) : EverywhereGood π := by
@@ -109,6 +112,11 @@ theorem everywhereGood_of_toral {π : CuspSub E a}
   obtain ⟨s, hs, hy⟩ := H w σ hσ
   exact ⟨s, hs, fun y hy' => Or.inl (hy y hy')⟩
 
+/- English proof (translation)
+Use `everywhereGood_of_toral fun w σ _ => ?_` and prove the remaining obligations. Establish `hx : (IrrGL.of σ.ρ σ.smooth σ.irred).IsCusp` using `IrrGL.isCusp_of.2 ⟨one_pos, σ.smooth, fun s d e he => absurd ((Subgroup.eq_bot_iff_forall _).2 fun u hu => by`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Take `rfl : i = j` from `Subsingleton.elim _ _`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`.
+
+Simplify using `using (SmGL.mem_unipRad.1 hu).2 a i i) he⟩`. Use `⟨_, hasSupport_self hx, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.mem_singleton.1 hy]`. Both sides reduce to the same expression.
+-/
 theorem everywhereGood_rank_one (π : CuspSub E 1) : EverywhereGood π := by
   refine everywhereGood_of_toral fun w σ _ => ?_
   have hx : (IrrGL.of σ.ρ σ.smooth σ.irred).IsCusp := IrrGL.isCusp_of.2 ⟨one_pos, σ.smooth, fun s d e he =>
@@ -121,6 +129,9 @@ theorem everywhereGood_rank_one (π : CuspSub E 1) : EverywhereGood π := by
   rw [Multiset.mem_singleton.1 hy]
   rfl
 
+/- English proof (translation)
+Take `⟨_, _, L⟩` from `hrc`. Take `⟨_, _, L'⟩` from `hrc'`. Rewrite using `[algNorm, L.nu, L'.nu, e _ (hπ w σ hσ)]`.
+-/
 theorem EverywhereGood.rc_algNorm_eq {π : CuspSub E a} (hπ : EverywhereGood π) {w : HeightOneSpectrum (𝓞 E)}
     {A : ValuationSubring Ω} {h : IsPlaceOver A w} {rc rc' : IrrGL (w.adicCompletion E) → WD h}
     (hrc : UpperTheory.Zero.LLC.IsRecT h rc) (hrc' : UpperTheory.Zero.LLC.IsRecT h rc')
@@ -130,9 +141,15 @@ theorem EverywhereGood.rc_algNorm_eq {π : CuspSub E a} (hπ : EverywhereGood π
   obtain ⟨_, _, L'⟩ := hrc'
   rw [algNorm, L.nu, L'.nu, e _ (hπ w σ hσ)]
 
+/- English proof (translation)
+Simplify using `using GlobalTheory.WeilDeligne.deg_one (h := h)`.
+-/
 example {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) : ¬ (deg (1 : Weil h) ≠ 0) := by
   simpa using GlobalTheory.WeilDeligne.deg_one (h := h)
 
+/- English proof (translation)
+Establish `hd' : (0 : ℝ) < |(d : ℝ)|` using `abs_pos.2 (Int.cast_ne_zero.2 hd)`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Use `mul_pos hd' hn'` as an intermediate fact. Conclude with `⟨Real.rpow_lt_one_of_one_lt_of_neg hq (by linarith), Real.one_lt_rpow hq (by linarith)⟩`.
+-/
 example {q : ℝ} (hq : 1 < q) {d : ℤ} (hd : d ≠ 0) {n : ℕ} (hn : 1 ≤ n) :
     q ^ (-(|d| : ℝ) * (n : ℝ) / 2) < 1 ∧ 1 < q ^ ((|d| : ℝ) * (n : ℝ) / 2) := by
   have hd' : (0 : ℝ) < |(d : ℝ)| := abs_pos.2 (Int.cast_ne_zero.2 hd)
@@ -140,9 +157,15 @@ example {q : ℝ} (hq : 1 < q) {d : ℤ} (hd : d ≠ 0) {n : ℕ} (hn : 1 ≤ n)
   have := mul_pos hd' hn'
   exact ⟨Real.rpow_lt_one_of_one_lt_of_neg hq (by linarith), Real.one_lt_rpow hq (by linarith)⟩
 
+/- English proof (translation)
+The claim follows from `H.cont`.
+-/
 example {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)}
     {wt : ℤ} {HT : (E →+* Qbar l) → Multiset ℤ} (H : PropsN π χ ι r wt HT) : Continuous r := H.cont
 
+/- English proof (translation)
+The claim follows from `H.awaySS w hl A h rc (UpperTheory.Zero.LLC.isRecT_of_isRec hD hrc) σ hσ g`.
+-/
 example (hD : GlobalTheory.Published.DepthZeroTypeInertia) {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ}
     {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ} {HT : (E →+* Qbar l) → Multiset ℤ} (H : PropsN π χ ι r wt HT)
     (w : HeightOneSpectrum (𝓞 E)) (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (A : ValuationSubring Ω) (h : IsPlaceOver A w)

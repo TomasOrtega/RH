@@ -5,6 +5,25 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E _ _ _ S hS g hg G`. Establish `hG : ∀ w, G w = ∏ u ∈ hg.toFinset with u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)), g u`. Introduce `w`. Use `finprod_mem_eq_prod_of_inter_mulSupport_eq g ?_` and prove the remaining obligations. Use extensionality with `u`.
+
+Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Finset.coe_filter, Set.Finite.mem_toFinset, Function.mem_mulSupport]`. The claim follows by propositional logic. Establish `hne : ∀ w, G w ≠ 1 → ∃ u ∈ hg.toFinset, u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))`. Introduce `w hw`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Apply `hw` to reduce the goal to its premises. Rewrite using `[hG w, Finset.filter_false_of_mem hcon, Finset.prod_empty]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `((hg.toFinset.finite_toSet.biUnion (fun u _ => GlobalTheory.QNorm.finite_places_over (maximalRealSubfield E) E (u.under (𝓞 (maximalRealSubfield E)))))).subset ?_` and prove the remaining obligations.
+
+Introduce `w hw`. Take `⟨u, hu, huw⟩` from `hne w hw`. Conclude with `Set.mem_biUnion (Finset.mem_coe.mpr hu) huw.symm`. Use `choose σ hσS hσ using fun w => (hS w).exists`. Establish `huniq : ∀ u w, w ∈ S → u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)) → σ u = w`.
+
+Introduce `u w hw h`. Conclude with `(hS u).unique ⟨hσS u, hσ u⟩ ⟨hw, h.symm⟩`. Establish `hS' : S ∩ Function.mulSupport G = ((hg.toFinset.image σ : Finset (Pl E)) : Set (Pl E)) ∩ Function.mulSupport G`. Use extensionality with `w`. Simplify using `only [Set.mem_inter_iff, Finset.coe_image, Set.mem_image, Finset.mem_coe]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, hw'⟩`. Take `⟨u, hu, huw⟩` from `hne w hw'`. Conclude with `⟨⟨u, hu, huniq u w hw huw⟩, hw'⟩`. Introduce and unpack `⟨⟨u, _, rfl⟩, hw'⟩`.
+
+Conclude with `⟨hσS u, hw'⟩`. Rewrite using `[finprod_mem_eq_prod_of_inter_mulSupport_eq G hS', finprod_eq_prod g hg, ← Finset.prod_fiberwise_of_maps_to (t := hg.toFinset.image σ) (g := σ) (fun u hu => Finset.mem_image_of_mem σ hu) g]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Take `⟨u₀, _, rfl⟩` from `Finset.mem_image.mp hw`. Rewrite using `[hG]`.
+
+Use `Finset.prod_congr (Finset.filter_congr fun u _ => ?_) fun _ _ => rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `huniq u _ (hσS u₀) h`. Introduce `h`.
+
+Rewrite using `[← h, hσ u]`.
+-/
 theorem UpperTheory.ConvolutionTheory.G2.regroup :
     UpperTheory.ConvolutionTheory.G2.Regroup := by
   intro E _ _ _ S hS g hg G

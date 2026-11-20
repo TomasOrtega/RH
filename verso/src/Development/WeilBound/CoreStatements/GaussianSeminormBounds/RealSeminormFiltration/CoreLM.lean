@@ -11,6 +11,13 @@ open scoped InnerProductSpace
 
 namespace PositivityTheory.KReal
 
+/- English proof (translation)
+Introduce `D h`. Take `⟨hn, hm, e1, e2, hP, hQ, hQ', hP'⟩` from `nm_facts h`. Establish `c1 : ((D.κ : ℂ) / 2) = (((D.κ : ℚ) / 2 : ℚ) : ℂ)` using `by push_cast; rfl`. Establish `c2 : (-((D.κ : ℂ) / 2)) = ((-((D.κ : ℚ) / 2) : ℚ) : ℂ)` using `by push_cast; rfl`. Establish `n1 : Nontrivial (ThV D)` using `nontrivial_of_pair _ _ c1 (c1 ▸ pair_pos hP hQ hn hm _ e1 e2)`.
+
+Establish `n2 : Nontrivial (ThV' D)` using `nontrivial_of_pair _ _ c2 (c2 ▸ pair_neg hQ' hP' hn hm _ (by linarith) (by linarith))`. Establish `s1` using `side_of ((D.κ : ℂ) / 2) 0 _ 0 c1 (by simp) _ (combV h) n1`. Establish `s2` using `side_of (-((D.κ : ℂ) / 2)) ((D.κ : ℂ) / 2) _ _ c2 c1 _ (combV' h) n2`. Rewrite `s2` using `[la_eq h]`. Take `⟨Pi, i1, i2, act, π, π', h1, h2, h3, h4, h5, h6⟩` from `common_quot _ _ _ _ _ s1 s2`.
+
+Use `⟨Pi, i1, i2, act, π, π', h1, h2, fun W x => ?_, fun W x => h4 W x, h5, h6⟩` and prove the remaining obligations. Rewrite using `[← h3 W x]`. Use `congr 1`. Simplify using `[thAct, opV]`.
+-/
 theorem coreLM : CoreLM := by
   intro D h
   obtain ⟨hn, hm, e1, e2, hP, hQ, hQ', hP'⟩ := nm_facts h

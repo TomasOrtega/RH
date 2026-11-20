@@ -29,6 +29,9 @@ noncomputable def UpperTheory.Reformulated.B.CyclotomicBarContinuous.cycBar :
               ℤ_[l] →* UpperTheory.Reformulated.B.CyclotomicBarContinuous.Qbar l)).comp
         (UpperTheory.Reformulated.B.CyclotomicBarContinuous.cycZ E Ω l)
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ l _`. Establish `hZ : Continuous (UpperTheory.Reformulated.B.CyclotomicBarContinuous.cycZ F Ω l)` using `cyclotomicCharacter.continuous l F Ω`. Establish `hι : Continuous (↑((Algebra.algebraMap ℚ_[l] (UpperTheory.Reformulated.B.CyclotomicBarContinuous.Qbar l)).comp PadicInt.Coe.ringHom) : ℤ_[l] →* UpperTheory.Reformulated.B.CyclotomicBarContinuous.Qbar l)` using `(continuous_algebraMap ℚ_[l] (PadicAlgCl l)).comp continuous_subtype_val`. Conclude with `(Units.continuous_map hι).comp hZ`.
+-/
 theorem UpperTheory.Reformulated.B.CyclotomicBarContinuous.cont_cycBar :
     ∀ (F Ω : Type) [inst : Field F] [NumberField F] [inst_2 : Field Ω] [inst_3 : Algebra F Ω] (l : ℕ)
       [inst_4 : Fact (Nat.Prime l)],

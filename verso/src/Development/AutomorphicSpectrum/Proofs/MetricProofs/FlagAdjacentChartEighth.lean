@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.WMan
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, hn, heq⟩` from `hs`. Establish `hy` using `GlobalTheory.CompanionTheory.Ar.PB.ValRing.aeval_ne_zero_of_notMem hz hh hn`. Establish `h0` using `GlobalTheory.CompanionTheory.Ar.PB.ValRing.eval_ne_zero_of_notMem hh hn`. Establish `cg : Continuous fun w : (Σ k, ι k) → ℂ => eval w (map (Int.castRingHom ℂ) g)` using `MvPolynomial.continuous_eval _`. Establish `ch : Continuous fun w : (Σ k, ι k) → ℂ => eval w (map (Int.castRingHom ℂ) h)` using `MvPolynomial.continuous_eval _`.
+
+Establish `hnear : valAt x s =ᶠ[𝓝[mcPts (mCoordIdeal x)] zb] fun w => eval w (map (Int.castRingHom ℂ) g) / eval w (map (Int.castRingHom ℂ) h)` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (ch.continuousAt.eventually_ne h0)] with w hw hw0`. Conclude with `valAt_eq hw ⟨d, g, h, hg, hh, hy, heq, hw0, rfl⟩`. Establish `hat : valAt x s zb = eval zb (map (Int.castRingHom ℂ) g) / eval zb (map (Int.castRingHom ℂ) h)` using `valAt_eq hz ⟨d, g, h, hg, hh, hy, heq, h0, rfl⟩`. Conclude with `(cg.continuousAt.div ch.continuousAt h0).continuousWithinAt.congr_of_eventuallyEq hnear hat`.
+-/
 theorem continuousWithinAt_valAt_of_regAt {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type}
     [Field Ω] {x : (Σ k, ι k) → Ω} {zb : (Σ k, ι k) → ℂ} (hz : zb ∈ mcPts (mCoordIdeal x)) {s : Ω}
     (hs : RegAt x (mCoordIdeal zb) s) : ContinuousWithinAt (valAt x s) (mcPts (mCoordIdeal x)) zb := by
@@ -34,6 +39,9 @@ section Flag
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ}
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ}
 
+/- English proof (translation)
+Simplify using `only [twMinor, pluck]`. Use `tendsto_finset_sum _ fun I _ => Tendsto.const_mul _ (tendsto_finset_sum _ fun m _ => Tendsto.mul ?_ ?_)` and prove the remaining obligations. Conclude with `ContinuousWithinAt.comp (g := valAt M.x (F.u' I ⟨k, m⟩)) (continuousWithinAt_valAt_of_regAt hz (hG.2.1 _ _).2) hβ hS`. Conclude with `((continuous_apply (⟨k, m⟩ : Σ k, ι k)).continuousAt.comp_continuousWithinAt hP)`.
+-/
 theorem twMinor_continuousWithinAt (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) {Z : Type}
     [TopologicalSpace Z] {S : Set Z} {z₀ : Z} {β : Z → (Σ k, baseIdx ι M.blk k) → ℂ} {P : Z → (Σ k, ι k) → ℂ}
     (hβ : ContinuousWithinAt β S z₀) (hS : Set.MapsTo β S (mcPts (mCoordIdeal M.x)))
@@ -46,6 +54,27 @@ theorem twMinor_continuousWithinAt (M : FlagModel y Ψ N j) (F : FrameData ι Ψ
       (continuousWithinAt_valAt_of_regAt hz (hG.2.1 _ _).2) hβ hS
   · exact ((continuous_apply (⟨k, m⟩ : Σ k, ι k)).continuousAt.comp_continuousWithinAt hP)
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε H`. Take `⟨hb, hab, hk, hca, hcb, hy, hF, hB, horb, hr, hh⟩` from `H`. Take `⟨hVo, hVt, -, -, hbl⟩` from `hB`. Establish `hbase : Set.MapsTo (baseOf M k₀) (wO M Rb τ a k₀ ca cb F kb V r h) (mcPts (mCoordIdeal M.x))` using `fun z hz => GlobalTheory.CompanionTheory.Ar.PB.CPts.base_mem M (GlobalTheory.CompanionTheory.Ar.PB.CPts.comp_mem_mcPts (GlobalTheory.CompanionTheory.Ar.PB.WSq.Pts.isBlockMap_v₀ k₀) (algebraMap Φ (RatFunc Φ)) (funext fun _ => rfl) hz.1)`. Establish `cB : Continuous (baseOf M k₀)` using `continuous_pi fun q => continuous_apply _`.
+
+Establish `cF : Continuous (fstPt (ι` using `ι) k₀) := continuous_pi fun q => continuous_apply _`. Establish `cS : Continuous (sndPt (ι` using `ι) k₀) := continuous_pi fun q => continuous_apply _`. Establish `hgood : ∀ z ∈ wO M Rb τ a k₀ ca cb F kb V r h, M.GoodAt F (mCoordIdeal (baseOf M k₀ z))`. Introduce `z hz`. Establish `h3` using `(hbl _ hz.2.2.1).2.2`.
+
+Rewrite `h3` using `[(Rb.A.chart kb).left_inv hz.2.1]`. Establish `e` using `orbit_trans (orbit_symm (horb _ (hbase hz))) h3.2`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.PB.CovMap.mCoordIdeal_eq_of_sameOrbit e]`. Conclude with `h3.1`. Establish `cLow : ∀ (P : ((Σ o : Option K, ι (o.getD k₀)) → ℂ) → (Σ k, ι k) → ℂ), Continuous P → ∀ (τ' : Ψ) (a' b' : Fin N), ∀ z ∈ wO M Rb τ a k₀ ca cb F kb V r h, (∀ k, M.blk (τ', stepOf N j b') = some k → twMinor M F (baseOf M k₀ z) (stepOf N j b') k (h τ')⁻¹ (P z) (stepCols N j (stepOf N …`.
+
+Introduce `P hP τ' a' b' z hz hne`. Establish `cT` using `fun (k : K) (J : Finset (Fin N)) => twMinor_continuousWithinAt M F cB.continuousWithinAt hbase (hbase hz) (hgood z hz) hP.continuousWithinAt (stepOf N j b') k (h τ')⁻¹ J`. Consider the cases of `e : M.blk (τ', stepOf N j b') with`. Consider the case `none`. Simplify using `only [lowRead, e, Option.elim_none]`.
+
+Conclude with `continuousWithinAt_const`. Consider the case `some k`. Simplify using `only [lowRead, e, Option.elim_some]`. Conclude with `(cT k _).div (cT k _) (hne k e)`. Establish `hst : stepOf N j ca = a`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Establish `h1` using `a.2`. Establish `h2` using `ca.2`. Establish `h3` using `M.j_le`. Simplify using `only [stepOf, lastCol] at hca ⊢`.
+
+Apply the tactic sequence `split_ifs at hca ⊢ <;> omega`. Introduce `z hz`. Establish `hz₄ : ∀ p k, M.blk p = some k → twMinor M F (baseOf M k₀ z) p.2 k (h p.1)⁻¹ (fstPt k₀ z) (stepCols N j p.2) ≠ 0` using `hz.2.2.2.1`. Establish `hz₅ : twMinor M F (baseOf M k₀ z) a k₀ (h τ)⁻¹ (sndPt k₀ z) (stepCols N j a) ≠ 0` using `hz.2.2.2.2`. Use `continuousWithinAt_pi.2 fun i => ?_` and prove the remaining obligations.
+
+Break down `e : ε.symm i with l | q | u` into its components or cases. Simplify using `only [wRho, e]`. Establish `c2 : ContinuousWithinAt (r ∘ baseOf M k₀) (wO M Rb τ a k₀ ca cb F kb V r h) z` using `ContinuousWithinAt.comp (hr _ (hbase hz)) cB.continuousWithinAt hbase`. Establish `c3 : ContinuousAt (fun x => Rb.A.chart kb x l) ((r ∘ baseOf M k₀) z)` using `(continuous_apply l).continuousAt.comp ((Rb.A.chart kb).continuousAt hz.2.1)`. Conclude with `ContinuousAt.comp_continuousWithinAt (g := fun x => Rb.A.chart kb x l) c3 c2`.
+
+Simplify using `only [wRho, e]`. Conclude with `cLow (fstPt k₀) cF q.1.1 q.1.2.1 q.1.2.2 z hz fun k e' => hz₄ (q.1.1, stepOf N j q.1.2.2) k e'`. Simplify using `only [wRho, e]`. Use `(cLow (sndPt k₀) cS τ cb ca z hz fun k e' => ?_).sub (cLow (fstPt k₀) cF τ cb ca z hz fun k e' => ?_)` and prove the remaining obligations. Rewrite `e'`, the goal using `[hst]`.
+
+Take `rfl : k₀ = k` from `Option.some.inj (hk.symm.trans e')`. Conclude with `hz₅`. Conclude with `hz₄ (τ, stepOf N j ca) k e'`.
+-/
 theorem wRho_continuousOn : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ LowIdx Ψ N j ⊕ Unit ≃ Fin (d + 2)), IsWCtx M Rb τ a b k₀ ca cb d F kb V bl r h → ContinuousOn (wRho M Rb τ k₀ ca cb F kb r h ε) (wO M Rb τ a k₀ ca cb F kb V r h) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε H
   obtain ⟨hb, hab, hk, hca, hcb, hy, hF, hB, horb, hr, hh⟩ := H

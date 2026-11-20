@@ -14,6 +14,21 @@ def FamilyClassConnected (ℰ : FamClass) : Prop :=
   ∃ eD eL ε₁ : ℝ, 0 < ε₁ ∧ ∀ eps : ℝ, 0 < eps → eps < ε₁ →
     ∃ Fm : FamP eps, ℰ Fm ∧ ∃ K cHH eK CL x0 : ℝ, ∀ x ≥ x0, x ∈ Fm.Win → ChainTied Fm eD eL K cHH eK CL x
 
+/- English proof (translation)
+Use `letI := D.nd.instOm`. Use `letI := D.nd.algOm`. Use `haveI := D.nd.acOm`. Take `⟨h1, h2⟩` from `h D.nd.Om D.nd.ldat`. Establish `key : ∀ (p : ℕ) [Fact p.Prime], ((∑ e ∈ Finset.Ico 1 D.R.t, D.what₂.shaLen p e : ℚ) : ℝ) = ∑ e ∈ Finset.Ico 1 D.R.t, ((Formalism.GaloisCohomology.shaLen (D.nd.ldat p) (e : ℤ)).toNat : ℝ)`.
+
+Introduce `p _`. Use `push_cast`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Take `⟨a, b⟩` from `Finset.mem_Ico.1 he`. Rewrite using `[D.nd.sha_eq p e a b _ (ENat.coe_toNat (h1 p e a b)).symm]`.
+
+Use `norm_cast`. Establish `bd : ∀ l : ℕ, 0 ≤ vvTerm D l ∧ ∀ hl : l.Prime, vvTerm D l ≤ Real.log l * ∑ e ∈ Finset.Ico 1 D.R.t, ((@Formalism.GaloisCohomology.shaLen _ D.nd.Om _ _ _ _ _ l ⟨hl⟩ (@Formalism.BasicNotions.NData.ldat _ _ _ D.nd l ⟨hl⟩) (e : ℤ)).toNat : ℝ)`. Introduce `l`. Distinguish the cases in `hl : l.Prime`. Use `haveI : Fact l.Prime := ⟨hl⟩`.
+
+Establish `hk` using `key l`. Establish `hn : 0 ≤ Real.log l * ∑ e ∈ Finset.Ico 1 D.R.t, ((Formalism.GaloisCohomology.shaLen (D.nd.ldat l) (e : ℤ)).toNat : ℝ)` using `mul_nonneg (Real.log_natCast_nonneg _) (Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _)`. Unfold `vvTerm`. Use `split_ifs`. Apply the tactic sequence `all_goals first`.
+
+Consider the case `exact ⟨le_rfl, fun _ => hn⟩`. Consider the case `(rw [hk, mul_comm]; exact ⟨hn, fun _ => le_rfl⟩)`. Establish `: vvTerm D l = 0` using `by unfold vvTerm; simp [hl]`. Conclude with `⟨this.ge, fun h => absurd h hl⟩`. Establish `part : ∀ s : Finset ℕ, ∑ l ∈ s, vvTerm D l ≤ B`.
+
+Introduce `s`. Use `le_trans ?_ (h2 (s.subtype Nat.Prime))` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter_of_ne (p := Nat.Prime) (fun l _ hne => by`. Assume the negation of the conclusion as `hl`. Conclude with `hne (by unfold vvTerm; simp [hl])), ← Finset.sum_subtype_eq_sum_filter]`.
+
+Conclude with `Finset.sum_le_sum fun l _ => (bd l).2 l.2`. Use `⟨?_, summable_of_sum_le (fun l => (bd l).1) part, Real.tsum_le_of_sum_le (fun l => (bd l).1) part⟩` and prove the remaining obligations. Introduce `p _ e`. Use `intros`. Conclude with `h1 p e ‹_› ‹_›`.
+-/
 theorem vvRecord (D : D7) (B : ℝ) (h : VVle D.host.E D.R.t B) :
     ShaFinOdd D ∧ Summable (vvTerm D) ∧ ∑' l, vvTerm D l ≤ B := by
   letI := D.nd.instOm
@@ -56,6 +71,13 @@ theorem vvRecord (D : D7) (B : ℝ) (h : VVle D.host.E D.R.t B) :
   intros
   exact h1 p e ‹_› ‹_›
 
+/- English proof (translation)
+Establish `h1` using `(isLittleO_log_rpow_atTop (half_pos h)).bound one_pos`. Take `⟨x0, hx0⟩` from `Filter.eventually_atTop.1 h1`. Use `⟨max x0 1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx1 : 1 ≤ x` using `le_trans (le_max_right _ _) hx`. Establish `h2` using `hx0 x (le_trans (le_max_left _ _) hx)`.
+
+Establish `hp : 0 ≤ x ^ (eps / 2)` using `Real.rpow_nonneg (by linarith) _`. Rewrite `h2` using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (Real.log_nonneg hx1), abs_of_nonneg hp, one_mul]`. Establish `h3 : x ^ eps = (x ^ (eps / 2)) ^ 2`. Rewrite using `[sq, ← Real.rpow_add (by linarith)]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Conclude with `pow_le_pow_left₀ (Real.log_nonneg hx1) h2 2`.
+-/
 theorem log_sq_le_rpow {eps : ℝ} (h : 0 < eps) :
     ∃ x0 : ℝ, ∀ x ≥ x0, Real.log x ^ 2 ≤ x ^ eps := by
   have h1 := (isLittleO_log_rpow_atTop (half_pos h)).bound one_pos
@@ -73,6 +95,21 @@ theorem log_sq_le_rpow {eps : ℝ} (h : 0 < eps) :
   rw [h3]
   exact pow_le_pow_left₀ (Real.log_nonneg hx1) h2 2
 
+/- English proof (translation)
+Establish `hx : 0 < L.sc.x` using `lt_trans one_pos L.sc.one_lt_alt`. Establish `hy : 1 ≤ L.sc.x ^ L.sc.eps` using `Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le`. Establish `hf : (1 : ℝ) ≤ D.R.f`. Establish `: 0 < D.R.f` using `by unfold Ranks.f Ranks.n; positivity`. Conclude with `this` after adjusting the coercions.
+
+Establish `hm : (1 : ℝ) ≤ D.R.m`. Establish `h` using `Finset.mem_Icc.1 hj`. Conclude with `le_trans h.1 h.2` after adjusting the coercions. Establish `hbpos : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hNc : 0 ≤ L.Nc`.
+
+Simplify using `only [SizeData₂.Nc, budgetNc, rankBudget, bSize]`. Check the signs of the components of the expression. Establish `hB : L.B0 = (D.R.f : ℝ) * D.R.m * L.sc.b * L.sc.x ^ L.sc.eps` using `rfl`. Establish `hL : L.sc.L = L.sc.x ^ L.sc.eps` using `rfl`. Establish `hE` using `hN hs`.
+
+Rewrite `hE` using `[hd, hL]`. Unfold `DIVinN_at`. Use `le_trans hE (mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _))` and prove the remaining obligations. Use `set y := L.sc.x ^ L.sc.eps with hydef`. Establish `hfm : 1 ≤ (D.R.f : ℝ) * D.R.m` using `one_le_mul_of_one_le_of_one_le hf hm`.
+
+Establish `hbB : L.sc.b ≤ L.B0`. Rewrite using `[hB]`. Establish `h1 : 1 ≤ (D.R.f : ℝ) * D.R.m * y` using `one_le_mul_of_one_le_of_one_le hfm hy`. Use the polynomial consequences of the given equalities and inequalities. Establish `hB0 : 0 ≤ L.B0` using `le_trans hbpos.le hbB`.
+
+Establish `hP1 : (D.R.f : ℝ) * D.R.m * L.sc.b * y ^ 2 = y * L.B0` using `by rw [hB]; ring`. Establish `hP2 : Real.log L.sc.x ^ 2 * L.Nc ≤ y * L.Nc` using `mul_le_mul_of_nonneg_right hlog hNc`. Establish `hP0 : 0 ≤ y * L.B0 + Real.log L.sc.x ^ 2 * L.Nc` using `by positivity`. Rewrite using `[hP1]`. Establish `h1 : C * (y * L.B0 + Real.log L.sc.x ^ 2 * L.Nc) ≤ |C| * (y * (L.B0 + L.Nc))` using `le_trans (mul_le_mul_of_nonneg_right (le_abs_self C) hP0) (mul_le_mul_of_nonneg_left (by linarith) (abs_nonneg C))`.
+
+Establish `h2 : L.B0 ≤ y * (L.B0 + L.Nc)` using `by nlinarith`. Establish `h3 : (|C| + 1) * y * (L.B0 + L.Nc) = |C| * (y * (L.B0 + L.Nc)) + y * (L.B0 + L.Nc)` using `by ring`. Rewrite using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem divinN_at {D : D7} (L : SizeData₂ D) (j : ℕ) (C : ℝ) (hj : j ∈ SizeData₂.lifts D)
     (hN : LinkN_at L j C) (hs : Summable (vvTerm D)) (hb : ∑' l, vvTerm D l ≤ L.sc.b)
     (hd : L.dZ0 j = D.what₂.D0) (hlog : Real.log L.sc.x ^ 2 ≤ L.sc.x ^ L.sc.eps) :
@@ -114,6 +151,13 @@ theorem divinN_at {D : D7} (L : SizeData₂ D) (j : ℕ) (C : ℝ) (hj : j ∈ S
   rw [h3]
   linarith
 
+/- English proof (translation)
+Take `⟨x1, h1⟩` from `hV`. Take `⟨C, x3, h3⟩` from `hN`. Take `⟨x4, h4⟩` from `hR`. Take `⟨x6, h6⟩` from `log_sq_le_rpow heps`. Use `⟨|C| + 1, max (max x1 (max x3 x4)) (max x6 (Fm.x1 + 1)), fun x hx i j hj => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [ge_iff_le, max_le_iff] at hx`. Take `⟨⟨g1, g3, g4⟩, g6, g7⟩` from `hx`. Take `⟨hf, hs, hle⟩` from `vvRecord _ _ (h1 x g1 i)`. Establish `hb : 1 ≤ (Fm.L x i).sc.b` using `Real.one_le_exp (Real.rpow_nonneg (by linarith [(Fm.L x i).sc.one_lt_alt]) _)`. Use `divinN_at _ j C hj (h3 x g3 i hf j hj) hs (hle.trans (Real.sqrt_le_self_iff.2 (Or.inr hb))) (h4 x g4 i j hj) ?_` and prove the remaining obligations.
+
+Rewrite using `[Fm.L_x x i (by linarith), Fm.L_eps x i]`. Conclude with `h6 x g6`.
+-/
 theorem divinN_of_hypV {eps : ℝ} (Fm : FamP eps) (heps : 0 < eps) (hV : HypV Fm.toFamCore) (hN : LinkN Fm) (hR : SmallLevelRankEq Fm) :
     DIVinN Fm := by
   obtain ⟨x1, h1⟩ := hV

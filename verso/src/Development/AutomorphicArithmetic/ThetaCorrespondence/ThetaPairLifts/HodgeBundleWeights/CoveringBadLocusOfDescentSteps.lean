@@ -16,6 +16,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 namespace GlobalTheory.CovTop
+/- English proof (translation)
+Introduce `hX hP hGD hQ hST hTF hSA hGC hGr hEx hDG hS hF hD hSh`. Establish `h1` using `_root_.GlobalTheory.T.exists_lift_at_definite_bad_places hP hGC hGr`. Establish `h2` using `_root_.GlobalTheory.T.indefinite_at_bad_places hX hP hGD hQ hST hTF hSA hGC hGr hDG hS hF hD hSh`. Unfold `Bad Lifts`. Unfold `Covers Lifts at h2`.
+
+Unfold `Lifts at h1`. Unfold `DeepEx Lifts at hEx`. Use `((h1.and h2).and hEx).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨⟨C1, -, e1⟩, ⟨C2, -, e2⟩⟩, ⟨C3, -, e3⟩⟩` from `h`. Take `⟨x0, e⟩` from `(e1.and e2).and e3`.
+
+Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i => ?_⟩` and prove the remaining obligations. Take `⟨⟨a1, a2⟩, a3⟩` from `e x hx hle ι p hp`. Break down `Nat.lt_or_ge ((i : ℕ) + 1) (Fm.D x ι).R.m with hlt | hge` into its components or cases. Take `⟨Y, hY⟩` from `a3 i hlt`. Conclude with `a2 i hlt Y hY`.
+
+Conclude with `a1 i (le_antisymm (Nat.succ_le_of_lt i.isLt) hge)`.
+-/
 theorem covering_bad_locus_of_descent_steps : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral →
     GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.Published.GreenCuspidal →
     Gram → DeepEx → DeepGood → Size →
@@ -50,6 +59,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.covering_bad_locus_of_descent_steps | exact _root_.GlobalTheory.CovTop.covering_bad_locus_of_descent_steps | (intros; apply _root_.GlobalTheory.CovTop.covering_bad_locus_of_descent_steps <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.covering_bad_locus_criterion : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.Published.GreenCuspidal → Gram → DeepEx → DeepGood → Size → FlatDeg → Deg → Share → Bad := by
   first | exact @_root_.GlobalTheory.CovTop.covering_bad_locus_of_descent_steps | exact _root_.GlobalTheory.CovTop.covering_bad_locus_of_descent_steps | (intros; apply _root_.GlobalTheory.CovTop.covering_bad_locus_of_descent_steps <;> assumption)
 end

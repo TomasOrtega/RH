@@ -41,10 +41,16 @@ variable {Nm : (F →+* ℂ) → V → ℝ} {M : Submodule (𝓞 F) V} (f : LatF
 
 def gram (σ : F →+* ℂ) : Matrix (Fin f.N) (Fin f.N) ℂ := (f.A σ)⁻¹ᴴ * (f.A σ)⁻¹
 
+/- English proof (translation)
+The claim follows from `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_iff_isUnit.2 (Matrix.isUnit_nonsing_inv_iff.2 ((Matrix.isUnit_iff_isUnit_det _).2 (f.isFrame.herm σ).isUnit)))`.
+-/
 theorem posDef_gram (σ : F →+* ℂ) : (f.gram σ).PosDef :=
   Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_iff_isUnit.2
     (Matrix.isUnit_nonsing_inv_iff.2 ((Matrix.isUnit_iff_isUnit_det _).2 (f.isFrame.herm σ).isUnit)))
 
+/- English proof (translation)
+Rewrite using `[frameNorm, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _), gram, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`. Simplify using `[dotProduct, Complex.conj_mul']`.
+-/
 theorem form_gram (σ : F →+* ℂ) (x : Fin f.N → ℂ) :
     star x ⬝ᵥ f.gram σ *ᵥ x = ((frameNorm (f.A σ) x ^ 2 : ℝ) : ℂ) := by
   rw [frameNorm, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _), gram, ← Matrix.mulVec_mulVec,
@@ -53,11 +59,17 @@ theorem form_gram (σ : F →+* ℂ) (x : Fin f.N → ℂ) :
 
 def fam : HermFam F V := ofGram f.b f.gram f.posDef_gram
 
+/- English proof (translation)
+Rewrite using `[← f.isFrame.norm σ x]`. Conclude with `(congrArg (fun z : ℂ => Real.sqrt z.re) (f.form_gram σ _)).trans (by rw [Complex.ofReal_re]; exact Real.sqrt_sq (Real.sqrt_nonneg _))`.
+-/
 theorem nrm_fam (σ : F →+* ℂ) (x : V) : f.fam.nrm σ x = Nm σ x := by
   rw [← f.isFrame.norm σ x]
   exact (congrArg (fun z : ℂ => Real.sqrt z.re) (f.form_gram σ _)).trans
     (by rw [Complex.ofReal_re]; exact Real.sqrt_sq (Real.sqrt_nonneg _))
 
+/- English proof (translation)
+The claim follows from `isConjInv_ofGram _ _ fun σ i j => by let P := f.gram (ComplexEmbedding.conjugate σ) - (f.gram σ).map (starRingEnd ℂ) have h₀ : ∀ y, star y ⬝ᵥ P *ᵥ y = 0 := fun y => by have e : star y ⬝ᵥ (f.gram σ).map (starRingEnd ℂ) *ᵥ y = starRingEnd ℂ (star (star y) ⬝ᵥ f.gram σ *ᵥ star y) := …`.
+-/
 theorem isConjInv_fam : f.fam.IsConjInv := isConjInv_ofGram _ _ fun σ i j => by
   let P := f.gram (ComplexEmbedding.conjugate σ) - (f.gram σ).map (starRingEnd ℂ)
   have h₀ : ∀ y, star y ⬝ᵥ P *ᵥ y = 0 := fun y => by
@@ -75,6 +87,11 @@ theorem isConjInv_fam : f.fam.IsConjInv := isConjInv_ofGram _ _ fun σ i j => by
 
 include f in
 
+/- English proof (translation)
+Use `⟨f.isFrame.span ▸ Submodule.fg_span (Set.finite_range _), top_le_iff.1 fun x _ => ?_⟩` and prove the remaining obligations. Establish `h : f.b.equivFun x ∈ Submodule.span F (Set.range f.w.col)` using `f.isFrame.full ▸ trivial`. Rewrite using `[← f.b.equivFun.symm_apply_apply x]`. Use `Submodule.span_le.2 ?_ (Submodule.apply_mem_span_image_of_mem_span f.b.equivFun.symm.toLinearMap h)` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`.
+
+Conclude with `Submodule.subset_span (f.isFrame.span.le (Submodule.subset_span ⟨k, (f.b.equivFun_symm_apply _).symm⟩))`.
+-/
 theorem isFull [IsScalarTower (𝓞 F) F V] : IsFull M := by
   refine ⟨f.isFrame.span ▸ Submodule.fg_span (Set.finite_range _), top_le_iff.1 fun x _ => ?_⟩
   have h : f.b.equivFun x ∈ Submodule.span F (Set.range f.w.col) := f.isFrame.full ▸ trivial
@@ -93,6 +110,9 @@ variable {Y : Scheme.{0}} {p : Y ⟶ Sp F} {U : Y.Opens} {D : ℕ} {B : LB Y}
 
 omit [NumberField F] in
 
+/- English proof (translation)
+The claim follows from `ext_germ fun z hz => (exists_chart (LB.isLB_pull hB r) z).imp fun i hi => ⟨hi, by rw [germ_restr, germ_pull, germ_pull]⟩`.
+-/
 theorem restr_pull (hB : B.IsLB) {T : Scheme.{0}} (r : T ⟶ Y) {O O' : T.Opens} (h : O ≤ r ⁻¹ᵁ U) (h' : O' ≤ O)
     (f : H0 p B U) : restr h' (H0.pull r h f) = H0.pull r (h'.trans h) f :=
   ext_germ fun z hz => (exists_chart (LB.isLB_pull hB r) z).imp fun i hi => ⟨hi,
@@ -109,10 +129,16 @@ def bd : Closeds M.X := M.opn.compl
 
 def off : M.X.Opens := M.bd.compl
 
+/- English proof (translation)
+The claim follows from `Opens.compl_compl _`.
+-/
 theorem off_eq : M.off = M.σ ⁻¹ᵁ U := Opens.compl_compl _
 
 def pullOff : H0 p B U →ₗ[F] H0 M.str (B.pull M.σ) M.off := H0.pull M.σ M.off_eq.le
 
+/- English proof (translation)
+The claim follows from `have := M.iso (isoOver_of_isIso M.σ).bijective_pull hB _ M.off_eq.ge`.
+-/
 theorem bijective_pullOff (hB : B.IsLB) : Function.Bijective (M.pullOff (B := B)) :=
   have := M.iso
   (isoOver_of_isIso M.σ).bijective_pull hB _ M.off_eq.ge
@@ -121,10 +147,16 @@ def K : CanonLB M.str D := CanonLB.all _ _
 
 variable {hB : B.IsLB} {W : Submodule F (H0 p B ⊤)} (Δ : Cartier ((baseIdeal hB W).comap M.σ))
 
+/- English proof (translation)
+Introduce `z hz` and use `by rw [Scheme.IdealSheafData.support_comap] exact h _ (M.off_eq.le hz)`.
+-/
 theorem notMem_support (h : NoBase hB W U) : ∀ z ∈ M.off, z ∉ ((baseIdeal hB W).comap M.σ).support := fun z hz => by
   rw [Scheme.IdealSheafData.support_comap]
   exact h _ (M.off_eq.le hz)
 
+/- English proof (translation)
+Introduce `w w' e` and use `by refine Subtype.ext (restr_injective_of_dense le_top hU ((M.bijective_pull hB).1 ?_)) have := congrArg (fun s => restr (le_top : M.opn ≤ ⊤) (Δ.incl ⊤ s)) e simp only [Δ.incl_lift] at this exact (pull_restr _ _ _ _).trans ((restr_pull hB _ _ _ _).symm.trans (this.trans ((restr_p …`.
+-/
 theorem lift_injective [IsReduced Y] (hU : Dense (U : Set Y)) : Function.Injective Δ.lift := fun w w' e => by
   refine Subtype.ext (restr_injective_of_dense le_top hU ((M.bijective_pull hB).1 ?_))
   have := congrArg (fun s => restr (le_top : M.opn ≤ ⊤) (Δ.incl ⊤ s)) e
@@ -150,12 +182,18 @@ abbrev sys (abelian₂ : ℝ) : HermSys F where
   A := f.A
   abelian₂ := abelian₂
 
+/- English proof (translation)
+Use `(LinSys.ofSec_comb (M.sys Δ φ f abelian₂).toLinSys ⊤ u).trans ?_` and prove the remaining obligations. Rewrite using `[f.b.equivFun_symm_apply, map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_smul, map_smul]; exact congrArg _ (ofSec_toSec _)`.
+-/
 theorem ofSec_comb (abelian₂ : ℝ) (u : Fin f.N → F) :
     H0.ofSec M.str ⊤ ((M.sys Δ φ f abelian₂).comb u) = Δ.lift (φ (f.b.equivFun.symm u)) := by
   refine (LinSys.ofSec_comb (M.sys Δ φ f abelian₂).toLinSys ⊤ u).trans ?_
   rw [f.b.equivFun_symm_apply, map_sum, map_sum]
   exact Finset.sum_congr rfl fun j _ => by rw [map_smul, map_smul]; exact congrArg _ (ofSec_toSec _)
 
+/- English proof (translation)
+Use `⟨⟨M.smooth, M.proj, hc, hD⟩, fun u hu => ?_, f.isFrame.full, Δ.iSup_nonzeroLocus ?_⟩` and prove the remaining obligations. Use `M.ofSec_comb Δ φ f abelian₂ u` as an intermediate fact. Rewrite `this` using `[hu, map_zero]`. Conclude with `f.b.equivFun.symm.map_eq_zero_iff.1 (φ.map_eq_zero_iff.1 (M.lift_injective Δ hU (this.symm.trans (map_zero _).symm)))`. Conclude with `(f.b.map φ).span_eq`.
+-/
 theorem isAlgebraicData [IsReduced Y] (hU : Dense (U : Set Y)) (hc : GeometricallyConnected M.str) (hD : 1 ≤ D)
     (abelian₂ : ℝ) : (M.sys Δ φ f abelian₂).IsAlgebraicData := by
   refine ⟨⟨M.smooth, M.proj, hc, hD⟩, fun u hu => ?_, f.isFrame.full, Δ.iSup_nonzeroLocus ?_⟩
@@ -165,6 +203,9 @@ theorem isAlgebraicData [IsReduced Y] (hU : Dense (U : Set Y)) (hc : Geometrical
       (M.lift_injective Δ hU (this.symm.trans (map_zero _).symm)))
   · exact (f.b.map φ).span_eq
 
+/- English proof (translation)
+Introduce `e` and use `by have : ConnectedSpace M.X := GeometricallyConnected.connectedSpace_of_subsingleton M.str obtain ⟨z, hz⟩ := M.dense.nonempty exact (e.ge (Set.mem_univ z)) hz`.
+-/
 theorem bd_ne_top (hc : GeometricallyConnected M.str) : M.bd ≠ ⊤ := fun e => by
   have : ConnectedSpace M.X := GeometricallyConnected.connectedSpace_of_subsingleton M.str
   obtain ⟨z, hz⟩ := M.dense.nonempty
@@ -203,12 +244,18 @@ abbrev A : LB R.X := R.pb (a₂ + D • a₁)
 def e : (LB.div R.A (tw R.L₂ R.L D)).Sec :=
   toSec ((R.com.effChart R.Δ₁.isLB R.Δ₂.isLB rfl).mul (H0.ofSec R.str ⊤ R.Δ₂.t) (H0.ofSec R.str ⊤ (R.Δ₁.pow D)))
 
+/- English proof (translation)
+The claim follows from `(ger_toSec _ _ _ _).trans <| ((R.com.effChart R.Δ₁.isLB R.Δ₂.isLB rfl).germ_mul _ _ t z _ h₂ (mem_zpow_U.2 h₁) h).trans (congrArg₂ (· * ·) (germ_ofSec _ _ _ _ _) (R.Δ₁.germ_pow _ D _ z _ h₁ _))`.
+-/
 theorem ger_e (t : R.Δ₂.P.ι × C.J × R.Δ₁.P.ι) (z : R.X) (h₂ : z ∈ R.Δ₂.P.U t.1) (h₁ : z ∈ R.Δ₁.P.U t.2.2) (h) :
     ger z h (R.e.f ((R.com.effChart R.Δ₁.isLB R.Δ₂.isLB rfl).c t)) =
       ger z h₂ (R.Δ₂.t.f t.1) * ger z h₁ (R.Δ₁.t.f t.2.2) ^ D :=
   (ger_toSec _ _ _ _).trans <| ((R.com.effChart R.Δ₁.isLB R.Δ₂.isLB rfl).germ_mul _ _ t z _ h₂ (mem_zpow_U.2 h₁) h).trans
     (congrArg₂ (· * ·) (germ_ofSec _ _ _ _ _) (R.Δ₁.germ_pow _ D _ z _ h₁ _))
 
+/- English proof (translation)
+Introduce `z hz` and use `by obtain ⟨t, ha, hb, hc⟩ := (R.com.effChart (n := D) R.Δ₁.isLB R.Δ₂.isLB (rfl : a₂ + D • a₁ = _)).cover z refine (isUnit_ger_iff _ hc).1 ?_ rw [R.ger_e t z ha (mem_zpow_U.1 hb)] exact ((isUnit_ger_iff _ _).2 ((R.Δ₂.mem_nonzeroLocus z).2 (R.notMem_support h₂ z hz))).mul (((isUnit …`.
+-/
 theorem off_le_nonzeroLocus_e (h₁ : NoBase (C.isLB a₁) W₁ U) (h₂ : NoBase (C.isLB a₂) W₂ U) :
     R.off ≤ nonzeroLocus R.e := fun z hz => by
   obtain ⟨t, ha, hb, hc⟩ := (R.com.effChart (n := D) R.Δ₁.isLB R.Δ₂.isLB (rfl : a₂ + D • a₁ = _)).cover z
@@ -233,6 +280,9 @@ def adjEquiv (hω : NowhereZero ω) (h₁ : NoBase (C.isLB a₁) W₁ U) (j : �
   ((R.com.canChart R.K.isLB h).mulEquiv hω).trans ((R.com.poleChart R.K.isLB R.Δ₁.isLB rfl).mulEquiv
     (R.Δ₁.nowhereZero_pow R.str (R.notMem_support h₁) j)).symm
 
+/- English proof (translation)
+The claim follows from `((R.com.poleChart R.K.isLB R.Δ₁.isLB rfl).mulEquiv (R.Δ₁.nowhereZero_pow R.str (R.notMem_support h₁) j)).apply_symm_apply _`.
+-/
 theorem mulPole_adjEquiv (hω : NowhereZero ω) (h₁ : NoBase (C.isLB a₁) W₁ U) (j : ℕ) {s : Λ}
     (h : κ + (a₂ + D • a₁ + j • a₁) = s) (m : H0 R.str (R.pb s) R.off) :
     R.mulPole j R.off (R.adjEquiv ω hω h₁ j h m) = R.mulCan ω h m :=
@@ -242,6 +292,9 @@ theorem mulPole_adjEquiv (hω : NowhereZero ω) (h₁ : NoBase (C.isLB a₁) W�
 abbrev adjIdx (j : ℕ) (t : R.K.bundle.ι × C.J × R.Δ₁.P.ι) : (R.adj j).ι :=
   twIdx (M := tens R.K.bundle R.A) (L := R.L) j (t.1, R.com.idx _ t.2.1) (R.com.idx a₁ t.2.1, t.2.2)
 
+/- English proof (translation)
+Establish `hc : z ∈ (tens R.K.bundle (R.pb (a₂ + D • a₁ + j • a₁))).U (t.1, R.com.idx _ t.2.1)` using `⟨hω'.1, (R.com.mem _ _ _).2 ((R.com.mem _ _ _).1 hs)⟩`. Rewrite using `[← R.Δ₁.germ_pow R.str j _ z hz hP (mem_zpow_U.2 hP)]`. Conclude with `((R.com.poleChart R.K.isLB R.Δ₁.isLB rfl).germ_mul _ _ t z hz _ ha hc).symm.trans ((congrArg _ (R.mulPole_adjEquiv ω hω h₁ j h m)).trans ((R.com.canChart R.K.isLB h).germ_mul _ _ (t.1, t.2.1) z hz hω' hs hc))`.
+-/
 theorem germ_adjEquiv (hω : NowhereZero ω) (h₁ : NoBase (C.isLB a₁) W₁ U) (j : ℕ) {s : Λ}
     (h : κ + (a₂ + D • a₁ + j • a₁) = s) (m : H0 R.str (R.pb s) R.off) (t : R.K.bundle.ι × C.J × R.Δ₁.P.ι) (z : R.X)
     (hz : z ∈ R.off) (hP : z ∈ R.Δ₁.P.U t.2.2) (ha : z ∈ (R.adj j).U (R.adjIdx j t))
@@ -255,6 +308,9 @@ theorem germ_adjEquiv (hω : NowhereZero ω) (h₁ : NoBase (C.isLB a₁) W₁ U
     ((congrArg _ (R.mulPole_adjEquiv ω hω h₁ j h m)).trans
       ((R.com.canChart R.K.isLB h).germ_mul _ _ (t.1, t.2.1) z hz hω' hs hc))
 
+/- English proof (translation)
+The claim follows from `ext_germ fun z hz => by obtain ⟨i, hi⟩ := exists_chart R.K.isLB z obtain ⟨k, hk⟩ := R.com.cover z obtain ⟨n, hn⟩ := exists_chart R.Δ₁.isLB z have hk' (a : Λ) : z ∈ (R.pb a).U (R.com.idx a k) := (R.com.mem a k z).2 hk have ha (j : ℕ) : z ∈ (R.adj j).U (R.adjIdx j (i, k, n)) := mem …`.
+-/
 theorem adjEquiv_mul (hω : NowhereZero ω) (h₁ : NoBase (C.isLB a₁) W₁ U) (j : ℕ) {s s' : Λ}
     (h : κ + (a₂ + D • a₁ + j • a₁) = s) (h' : κ + (a₂ + D • a₁ + (j + 1) • a₁) = s') (hs : a₁ + s = s') (w : W₁)
     (m : H0 R.str (R.pb s) R.off) :
@@ -347,6 +403,9 @@ def rangeIf : Submodule F X := if q then LinearMap.range ψ else ⊥
 
 omit [NumberField F] [Module (𝓞 F) S] [IsScalarTower (𝓞 F) F S] [Module (𝓞 F) X] [IsScalarTower (𝓞 F) F X] in
 
+/- English proof (translation)
+Unfold `rangeIf`. Use `split_ifs`. Use `exacts [le_rfl, bot_le]`.
+-/
 theorem rangeIf_le : rangeIf ψ q ≤ LinearMap.range ψ := by
   unfold rangeIf
   split_ifs
@@ -357,11 +416,17 @@ def invIf : rangeIf ψ q →ₗ[F] S :=
 
 omit [NumberField F] [Module (𝓞 F) S] [IsScalarTower (𝓞 F) F S] [Module (𝓞 F) X] [IsScalarTower (𝓞 F) F X] in
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val ((LinearEquiv.ofInjective ψ hψ).apply_symm_apply ⟨x, rangeIf_le ψ q x.2⟩)`.
+-/
 theorem apply_invIf (x : rangeIf ψ q) : ψ (invIf ψ hψ q x) = x :=
   congrArg Subtype.val ((LinearEquiv.ofInjective ψ hψ).apply_symm_apply ⟨x, rangeIf_le ψ q x.2⟩)
 
 omit [NumberField F] [Module (𝓞 F) S] [IsScalarTower (𝓞 F) F S] [Module (𝓞 F) X] [IsScalarTower (𝓞 F) F X] in
 
+/- English proof (translation)
+Introduce `x y e` and use `Subtype.ext (by rw [← apply_invIf ψ hψ, e, apply_invIf])`.
+-/
 theorem invIf_injective : Function.Injective (invIf ψ hψ q) := fun x y e =>
   Subtype.ext (by rw [← apply_invIf ψ hψ, e, apply_invIf])
 
@@ -376,6 +441,11 @@ def latIf : Submodule (𝓞 F) (rangeIf ψ q) := M.comap ((invIf ψ hψ q).restr
 variable {q M} (h : q → Nonempty (LatFrame Nm M))
 include h
 
+/- English proof (translation)
+Distinguish the cases in `hq : q`. Take `⟨f⟩` from `h hq`. Set `e` to `equivIf ψ hψ q hq`. Establish `: latIf ψ hψ q M = M.map (e.symm.toLinearMap.restrictScalars (𝓞 F))` using `Submodule.ext fun x => ⟨fun hx => ⟨e x, hx, e.symm_apply_apply x⟩, fun ⟨s, hs, ex⟩ => ex ▸ ((e.apply_symm_apply s).symm ▸ hs : e (e.symm s) ∈ M)⟩`. Rewrite using `[this]`.
+
+Use `⟨f.isFull.fg.map _, ?_⟩` and prove the remaining obligations. Use `(Submodule.span_image e.symm.toLinearMap).trans ?_` and prove the remaining obligations. Rewrite using `[f.isFull.span, Submodule.map_top, LinearEquiv.range]`. Establish `: Subsingleton (rangeIf ψ q)` using `by rw [rangeIf, if_neg hq]; infer_instance`. Conclude with `⟨by rw [Subsingleton.elim (latIf ψ hψ q M) ⊥]; exact Submodule.fg_bot, Subsingleton.elim _ _⟩`.
+-/
 theorem isFull_latIf : IsFull (latIf ψ hψ q M) := by
   by_cases hq : q
   · obtain ⟨f⟩ := h hq
@@ -389,6 +459,9 @@ theorem isFull_latIf : IsFull (latIf ψ hψ q M) := by
   · have : Subsingleton (rangeIf ψ q) := by rw [rangeIf, if_neg hq]; infer_instance
     exact ⟨by rw [Subsingleton.elim (latIf ψ hψ q M) ⊥]; exact Submodule.fg_bot, Subsingleton.elim _ _⟩
 
+/- English proof (translation)
+Distinguish the cases in `hq : q`. Take `⟨f⟩` from `h hq`. Conclude with `⟨HermTools.comap f.fam _ (invIf_injective ψ hψ q), isConjInv_comap f.isConjInv_fam _ _, fun _ σ x => f.nrm_fam σ _⟩`. Use `(isFull_latIf ψ hψ h).finiteDimensional` as an intermediate fact. Conclude with `⟨ofBasis (Module.finBasis F _), isConjInv_ofBasis _, fun h => absurd h hq⟩`.
+-/
 theorem exists_famIf : ∃ g : HermFam F (rangeIf ψ q), g.IsConjInv ∧ (q → ∀ σ x, g.nrm σ x = Nm σ (invIf ψ hψ q x)) := by
   by_cases hq : q
   · obtain ⟨f⟩ := h hq
@@ -428,13 +501,22 @@ def dataOf : Data F where
 
 def dataEquiv {j : ℕ} (hj : j ≤ T) : S j ≃ₗ[F] (dataOf G T hT ψ hψ hM hle h0 k).V j := (equivIf (ψ j) (hψ j) _ hj).symm
 
+/- English proof (translation)
+The claim follows from `(apply_invIf _ (hψ j) _ _).symm.trans (congrArg _ ((equivIf (ψ j) (hψ j) _ hj).apply_symm_apply s))`.
+-/
 theorem coe_dataEquiv {j : ℕ} (hj : j ≤ T) (s : S j) : (dataEquiv G T hT ψ hψ hM hle h0 k hj s).1 = ψ j s :=
   (apply_invIf _ (hψ j) _ _).symm.trans (congrArg _ ((equivIf (ψ j) (hψ j) _ hj).apply_symm_apply s))
 
+/- English proof (translation)
+The claim follows from `Iff.of_eq (congrArg (· ∈ M j) ((equivIf (ψ j) (hψ j) _ hj).apply_symm_apply s))`.
+-/
 theorem dataEquiv_mem {j : ℕ} (hj : j ≤ T) (s : S j) :
     dataEquiv G T hT ψ hψ hM hle h0 k hj s ∈ (dataOf G T hT ψ hψ hM hle h0 k).M j ↔ s ∈ M j :=
   Iff.of_eq (congrArg (· ∈ M j) ((equivIf (ψ j) (hψ j) _ hj).apply_symm_apply s))
 
+/- English proof (translation)
+The claim follows from `((exists_famIf _ (hψ j) (hM j)).choose_spec.2 hj σ _).trans (congrArg _ ((equivIf (ψ j) (hψ j) _ hj).apply_symm_apply s))`.
+-/
 theorem nrm_dataEquiv {j : ℕ} (hj : j ≤ T) (σ : F →+* ℂ) (s : S j) :
     ((dataOf G T hT ψ hψ hM hle h0 k).nm j).nrm σ (dataEquiv G T hT ψ hψ hM hle h0 k hj s) = Nm j σ s :=
   ((exists_famIf _ (hψ j) (hM j)).choose_spec.2 hj σ _).trans
@@ -442,6 +524,11 @@ theorem nrm_dataEquiv {j : ℕ} (hj : j ≤ T) (σ : F →+* ℂ) (s : S j) :
 
 end Data
 
+/- English proof (translation)
+Establish `hv` using `projSys.isVariety F M hM`. Establish `: IsIntegral (PSpace F M)` using `hv.isIntegral`. Establish `hg` using `projSys.gen_mem F M (Fin.last M)`. Establish `e (n : ℕ) (hn : 1 ≤ n)` using `(nonzeroLocus_secToPow (ProjSpace.coord F M (Fin.last M)) hn).trans (ProjSpace.nonzeroLocus_coord F M (Fin.last M))`. Set `Δ (n : ℕ) (hn : 1 ≤ n)` to `Cartier.ofSec (Twist.isLB_lbZPow (ProjSpace.O1_isLB F M) n) (secToPow (ProjSpace.coord F M (Fin.last M)) n) ((e n hn).ge hg)`.
+
+Conclude with `⟨_, _, ⟨Modif.refl hv.smooth hv.proj ((ProjSpace.chart F M _).isOpen.dense ⟨_, hg⟩), { Δ 1 le_rfl with cut := (baseIdeal_span _ _).symm.trans (Scheme.IdealSheafData.comap_id _).symm }, { Δ 2 one_le_two with cut := (baseIdeal_span _ _).symm.trans (Scheme.IdealSheafData.comap_id _) …`.
+-/
 theorem exists_resol_projSpace (F : Type) [Field F] [NumberField F] {M : ℕ} (hM : 1 ≤ M) :
     ∃ (W₁ : Submodule F (H0 (PSpace.str F M) (lbZPow (ProjSpace.O1 F M) 1) ⊤))
       (W₂ : Submodule F (H0 (PSpace.str F M) (lbZPow (ProjSpace.O1 F M) 2) ⊤))
@@ -459,6 +546,9 @@ theorem exists_resol_projSpace (F : Type) [Field F] [NumberField F] {M : ℕ} (h
     { Δ 2 one_le_two with cut := (baseIdeal_span _ _).symm.trans (Scheme.IdealSheafData.comap_id _).symm }⟩,
     e 1 le_rfl, e 2 one_le_two, fun h => h.le hg⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨2, 2, Pi.basisFun F _, 1, fun _ => 1, congrArg (fun v => Submodule.span _ (Set.range v)) (funext fun k => by simp [Matrix.one_apply]), (Proj.isAlgebraicData F 1 le_rfl).spans, by simp, fun σ x => by simp [frameNorm], fun _ _ => rfl⟩, rfl⟩`.
+-/
 example : ∃ f : LatFrame (fun (σ : F →+* ℂ) (x : Fin 2 → F) => frameNorm 1 fun j => σ (x j))
     (Submodule.span (𝓞 F) (Set.range (Pi.basisFun F (Fin 2)))), f.N = 2 :=
   ⟨⟨2, 2, Pi.basisFun F _, 1, fun _ => 1, congrArg (fun v => Submodule.span _ (Set.range v))

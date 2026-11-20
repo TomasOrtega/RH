@@ -20,6 +20,13 @@ open scoped Matrix
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {r : ℕ} {P : PPol σ r}
   {k : Type} [Field k] [Algebra F k] {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Establish `hv : JR (F` using `F) k J *ᵥ b = 0 := by`. Use function extensionality and compare the values at `i`. Use `hb (Pi.single i 1)` as an intermediate fact. Simplify `this` using `[Formalism.UG.hform, Pi.single_apply, Matrix.mulVec, dotProduct]`. Establish `hdet : IsUnit (JR (F` using `F) k J).det := by`.
+
+Establish `: (JR (F` using `F) k J).det = inclR (F := F) k J.det := by`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(isUnit_iff_ne_zero.mpr hJ.2).map _`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nondeg (hJ : IsHermND σ J) (b : Fin n → k ⊗[F] E)
     (hb : ∀ a, Formalism.UG.hform (sigR k σ) (JR k J) a b = 0) : b = 0 := by
   have hv : JR (F := F) k J *ᵥ b = 0 := by
@@ -34,6 +41,9 @@ theorem nondeg (hJ : IsHermND σ J) (b : Fin n → k ⊗[F] E)
   calc b = ((JR (F := F) k J)⁻¹ * JR (F := F) k J) *ᵥ b := by rw [Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]
     _ = 0 := by rw [← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Establish `: φ z = 0` using `nondeg hJ _ fun a => by`. Take `⟨y', rfl⟩` from `φ.surjective a`. Rewrite using `[h]`. Conclude with `hz y'`. Simplify using `using this`.
+-/
 theorem zero_of_hx (hJ : IsHermND σ J) {x : k ⊗[F] Fld P}
     {φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)} (h : IsIsom P k J x φ) (z : k ⊗[F] Fld P)
     (hz : ∀ y', hx P k x z y' = 0) : z = 0 := by
@@ -42,6 +52,11 @@ theorem zero_of_hx (hJ : IsHermND σ J) {x : k ⊗[F] Fld P}
     rw [h]; exact hz y'
   simpa using this
 
+/- English proof (translation)
+Use `haveI : Module.Finite k (k ⊗[F] Fld P) := Module.Finite.base_change F k (Fld P)`. Establish `hinj : Function.Injective (LinearMap.mulLeft k x)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Use `zero_of_hx hJ h y fun y' => ?_` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.mulLeft_apply] at hy`. Simplify using `[hx, hy]`. Take `⟨y, hy⟩` from `LinearMap.injective_iff_surjective.mp hinj 1`. Conclude with `isUnit_iff_exists_inv.mpr ⟨y, hy⟩`.
+-/
 theorem isUnit_of_isIsom [Module.Finite F (Fld P)] (hJ : IsHermND σ J) {x : k ⊗[F] Fld P}
     {φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)} (h : IsIsom P k J x φ) : IsUnit x := by
   haveI : Module.Finite k (k ⊗[F] Fld P) := Module.Finite.base_change F k (Fld P)
@@ -54,12 +69,20 @@ theorem isUnit_of_isIsom [Module.Finite F (Fld P)] (hJ : IsHermND σ J) {x : k �
   obtain ⟨y, hy⟩ := LinearMap.injective_iff_surjective.mp hinj 1
   exact isUnit_iff_exists_inv.mpr ⟨y, hy⟩
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR, hσ]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+-/
 theorem sigR_sigR (hσ : ∀ e, σ (σ e) = e) (z : k ⊗[F] E) : sigR k σ (sigR k σ z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
   | tmul a e => simp [sigR, hσ]
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Establish `hG : ∀ i j, sigR k σ (JR (F` using `F) k J i j) = JR (F := F) k J j i := by`. Introduce `i j`. Simplify using `only [JR, Matrix.map_apply, inclR]`. Express the relevant statement in the definitionally equal form `sigR k σ (1 ⊗ₜ J i j) = 1 ⊗ₜ J j i`. Simplify using `[sigR, hJ.1]`.
+
+Unfold `Formalism.UG.hform`. Simplify using `only [map_sum, map_mul, sigR_sigR hσ, hG]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+-/
 theorem hform_herm (hσ : ∀ e, σ (σ e) = e) (hJ : IsHermND σ J) (a b : Fin n → k ⊗[F] E) :
     sigR k σ (Formalism.UG.hform (sigR k σ) (JR k J) a b) = Formalism.UG.hform (sigR k σ) (JR k J) b a := by
   have hG : ∀ i j, sigR k σ (JR (F := F) k J i j) = JR (F := F) k J j i := by
@@ -72,6 +95,11 @@ theorem hform_herm (hσ : ∀ e, σ (σ e) = e) (hJ : IsHermND σ J) (a b : Fin 
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Set `e₁ : E ≃+* E` to `RingEquiv.ofBijective σ (Function.Involutive.bijective hσ)`. Set `e₂ : Fld P ≃+* Fld P` to `RingEquiv.ofBijective (star' P) (Algebra.IsAlgebraic.algHom_bijective _)`. Establish `he : (algebraMap E (Fld P)).comp (e₁ : E →+* E) = (e₂ : Fld P →+* Fld P).comp (algebraMap E (Fld P))` using `RingHom.ext fun e => (star'_algebraMap P e).symm`. Use `Algebra.trace_eq_of_equiv_equiv e₁ e₂ he l` as an intermediate fact. Establish `h2` using `congrArg e₁ this`.
+
+Rewrite `h2` using `[RingEquiv.apply_symm_apply]`. Conclude with `h2.symm`.
+-/
 theorem trace_star [Module.Finite F (Fld P)] (hσ : ∀ e, σ (σ e) = e) (l : Fld P) :
     Algebra.trace E (Fld P) (star' P l) = σ (Algebra.trace E (Fld P) l) := by
   let e₁ : E ≃+* E := RingEquiv.ofBijective σ (Function.Involutive.bijective hσ)
@@ -83,6 +111,9 @@ theorem trace_star [Module.Finite F (Fld P)] (hσ : ∀ e, σ (σ e) = e) (l : F
   rw [RingEquiv.apply_symm_apply] at h2
   exact h2.symm
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a l => simp [trBase, sigR, trace_star hσ]`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb, map_add]`.
+-/
 theorem trBase_star [Module.Finite F (Fld P)] (hσ : ∀ e, σ (σ e) = e) (z : k ⊗[F] Fld P) :
     trBase P k (sigR k (star' P) z) = sigR k σ (trBase P k z) := by
   induction z using TensorProduct.induction_on with
@@ -90,6 +121,17 @@ theorem trBase_star [Module.Finite F (Fld P)] (hσ : ∀ e, σ (σ e) = e) (z : 
   | tmul a l => simp [trBase, sigR, trace_star hσ]
   | add a b ha hb => rw [map_add, map_add, map_add, ha, hb, map_add]
 
+/- English proof (translation)
+Establish `hu` using `isUnit_of_isIsom hJ h`. Establish `hsym : ∀ y, trBase P k ((x - sigR k (star' P) x) * sigR k (star' P) y) = 0`. Introduce `y`. Establish `h1` using `h 1 y`. Establish `h2` using `h y 1`.
+
+Establish `h3` using `hform_herm hσ hJ (φ 1) (φ y)`. Rewrite `h3` using `[h2, h1]`. Simplify using `only [hx, map_one, mul_one] at h3`. Rewrite `h3` using `[← trBase_star hσ, map_mul]`. Rewrite using `[sub_mul, map_sub, ← h3, sub_self]`.
+
+Establish `hd : x - sigR k (star' P) x = 0`. Take `⟨v, hv⟩` from `hu`. Establish `h0` using `zero_of_hx hJ h (↑v⁻¹ * (x - sigR k (star' P) x)) fun y' => by`. Simplify using `only [hx]`. Rewrite using `[show x * (↑v⁻¹ * (x - sigR k (star' P) x)) * sigR k (star' P) y' = (x - sigR k (star' P) x) * sigR k (star' P) y' by`.
+
+Rewrite using `[← mul_assoc, ← hv, Units.mul_inv, one_mul]]`. Conclude with `hsym y'`. Use `congrArg (fun w => (v : k ⊗[F] Fld P) * w) h0` as an intermediate fact. Simplify `this` using `[← mul_assoc]`. Use `⟨⟨hu.unit, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Use `show Units.map (sigR k (star' P)).toMonoidHom hu.unit = MonoidHom.id _ hu.unit`. Use `ext`. Simplify using `using (sub_eq_zero.mp hd).symm`.
+-/
 theorem plusUnits_gen [Module.Finite F (Fld P)] (hσ : ∀ e, σ (σ e) = e) (hJ : IsHermND σ J)
     {x : k ⊗[F] Fld P} {φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)} (h : IsIsom P k J x φ) :
     ∃ u : plusUnits P k, u.1.1 = x := by
@@ -120,6 +162,9 @@ theorem plusUnits_gen [Module.Finite F (Fld P)] (hσ : ∀ e, σ (σ e) = e) (hJ
 
 end Gen
 
+/- English proof (translation)
+Use `haveI : Module.Finite D.host.F D.host.E := inferInstance`. Use `haveI : Module.Finite D.host.F (Fld P) := Module.Finite.trans D.host.E (Fld P)`. Conclude with `plusUnits_gen (fun e => star_star e) (GlobalTheory.DefiniteQuotient.gram_hermND V) h`.
+-/
 theorem plusUnits_of_isIsom {D : D7} (V : HSp D) (P : PPol D.sp.cm.sig V.rank) (ρ : D.what₂.Tau) {x φ}
     (h : IsIsom P (placeOf D ρ).Completion V.gram x φ) :
     ∃ u : plusUnits P (placeOf D ρ).Completion, u.1.1 = x := by
@@ -127,6 +172,9 @@ theorem plusUnits_of_isIsom {D : D7} (V : HSp D) (P : PPol D.sp.cm.sig V.rank) (
   haveI : Module.Finite D.host.F (Fld P) := Module.Finite.trans D.host.E (Fld P)
   exact plusUnits_gen (fun e => star_star e) (GlobalTheory.DefiniteQuotient.gram_hermND V) h
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (R ⊗[F] E) := IsModuleTopology.isTopologicalRing R _`. Conclude with `inferInstanceAs (IsTopologicalGroup (HR R σ J))`.
+-/
 theorem topGrp {F E : Type} [Field F] [Field E] [Algebra F E] [Module.Finite F E] (R : Type) [CommRing R]
     [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     IsTopologicalGroup (HA R σ J) := by
@@ -134,10 +182,18 @@ theorem topGrp {F E : Type} [Field F] [Field E] [Algebra F E] [Module.Finite F E
   haveI : IsTopologicalRing (R ⊗[F] E) := IsModuleTopology.isTopologicalRing R _
   exact inferInstanceAs (IsTopologicalGroup (HR R σ J))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem borel {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] [TopologicalSpace R] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     BorelSpace (HA R σ J) := ⟨rfl⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Establish `hj : j = 0` using `Subsingleton.elim _ _`.
+
+Substitute `hi hj` using the available equality. Express the relevant statement in the definitionally equal form `(s.1.1 * t.1.1 : Matrix (Fin 1) (Fin 1) _) 0 0 = (t.1.1 * s.1.1 : Matrix (Fin 1) (Fin 1) _) 0 0`. Simplify using `[Matrix.mul_apply, mul_comm]`.
+-/
 theorem torComm {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] (σ : E →ₐ[F] E) (J : Matrix (Fin 1) (Fin 1) E) (s t : HA R σ J) : s * t = t * s := by
   apply Subtype.ext
@@ -149,6 +205,13 @@ theorem torComm {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommR
   change (s.1.1 * t.1.1 : Matrix (Fin 1) (Fin 1) _) 0 0 = (t.1.1 * s.1.1 : Matrix (Fin 1) (Fin 1) _) 0 0
   simp [Matrix.mul_apply, mul_comm]
 
+/- English proof (translation)
+Establish `hcomm : ∀ a b : H, a * b = b * a`. Introduce `a b`. Use `congrArg e (hc (e.symm a) (e.symm b))` as an intermediate fact. Simplify `this` using `[map_mul]`. Use `haveI hH : (dt.map e).IsHaarMeasure := e.isHaarMeasure_map dt`.
+
+Use `⟨hH, ⟨fun g => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `: (fun a : H => a * g) = (fun a => g * a)` using `funext fun a => hcomm a g`. Rewrite using `[this]`. Conclude with `map_mul_left_eq_self _ g`. Rewrite using `[Measure.real, Measure.real, Measure.map_apply (show Measurable (e : G → H) from e.continuous.measurable) MeasurableSet.univ, Set.preimage_univ]`.
+
+Conclude with `⟨fun hc => e.toHomeomorph.symm.compactSpace, fun hc => e.toHomeomorph.compactSpace⟩`.
+-/
 theorem measFacts {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [MeasurableSpace H] [BorelSpace H]
     (hc : ∀ a b : G, a * b = b * a) (e : G ≃ₜ* H) (dt : Measure G) [dt.IsHaarMeasure] :
@@ -166,6 +229,15 @@ theorem measFacts {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGrou
   · rw [Measure.real, Measure.real, Measure.map_apply (show Measurable (e : G → H) from e.continuous.measurable) MeasurableSet.univ, Set.preimage_univ]
   · exact ⟨fun hc => e.toHomeomorph.symm.compactSpace, fun hc => e.toHomeomorph.compactSpace⟩
 
+/- English proof (translation)
+Introduce `D V P ρ dt _ x φ h`. Take `⟨u, rfl⟩` from `plusUnits_of_isIsom V P ρ h`. Establish `H` using `GlobalTheory.T.unitaryTorus_equiv_centralizer_with_measure D.host.F D.host.E D.sp.cm.sig (GlobalTheory.DefiniteQuotient.cmExt D) V.rank V.rank P V.gram (GlobalTheory.DefiniteQuotient.gram_hermND V) (placeOf D ρ).Completion u φ h`. Take `⟨e, H2⟩` from `H`. Establish `hm` using `H2.2`.
+
+Use `haveI : Module.Finite D.host.F D.host.E := inferInstance`. Use `haveI : Module.Finite D.host.F (Fld P) := Module.Finite.trans D.host.E (Fld P)`. Use `haveI := topGrp (placeOf D ρ).Completion D.sp.cm.sig V.gram`. Use `haveI := topGrp (placeOf D ρ).Completion (star' P) (one₁ P)`. Use `haveI := borel (placeOf D ρ).Completion D.sp.cm.sig V.gram`.
+
+Use `haveI := borel (placeOf D ρ).Completion (star' P) (one₁ P)`. Simplify using `only [hm dt]`. Establish `hc` using `torComm (placeOf D ρ).Completion (star' P) (one₁ P)`. Establish `hf` using `measFacts (G := Tor P (placeOf D ρ).Completion) (H := cent (gam h)) hc e dt`. Use `⟨hf.1, hf.2.1, hf.2.2.1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[isCompact_iff_compactSpace]`. Conclude with `hf.2.2.2`.
+-/
 theorem centMeas_real_place : ∀ {D : D7} (V : HSp D) (P : PPol D.sp.cm.sig V.rank) (ρ : D.what₂.Tau)
     (dt : Measure (Tor P (placeOf D ρ).Completion)) [dt.IsHaarMeasure] {x φ}
     (h : IsIsom P (placeOf D ρ).Completion V.gram x φ),

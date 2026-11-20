@@ -4,6 +4,23 @@ open scoped MatrixGroups
 
 namespace GlobalTheory.KZ.H3
 
+/- English proof (translation)
+Introduce `G _ R _ V _ _ ρ hmul hone h2 S hS Δ hΔ hΔtriv c hc hk φ hφS hφadd hφinv`. Take `⟨u, hu⟩` from `h2`. Establish `hinv : ∀ g v, ρ g (ρ g⁻¹ v) = v`. Introduce `g v`. Rewrite using `[← hmul, inv_mul_cancel, hone]`.
+
+Establish `hconj : ∀ g, ∀ δ ∈ Δ, φ (g * δ * g⁻¹) = ρ g⁻¹ (φ δ)`. Introduce `g δ hδ`. Rewrite using `[← hφinv g δ hδ, ← hmul, mul_inv_cancel, hone]`. Establish `hkmul : ∀ g h : G, c * (g * h) * c⁻¹ * (g * h)⁻¹ = (c * g * c⁻¹ * g⁻¹) * (g * (c * h * c⁻¹ * h⁻¹) * g⁻¹)`. Introduce `g h`.
+
+Use `group`. Establish `hw : ∀ g h : G, ρ (g * h) (φ (c * (g * h) * c⁻¹ * (g * h)⁻¹)) = ρ h (ρ g (φ (c * g * c⁻¹ * g⁻¹))) + ρ h (φ (c * h * c⁻¹ * h⁻¹))`. Introduce `g h`. Rewrite using `[hkmul, hφadd _ (hk g) _ (hΔ.conj_mem _ (hk h) g), hconj g _ (hk h), hmul, map_add, map_add, hinv]`. Establish `h1 : φ 1 = 0`.
+
+Use `hφadd 1 Δ.one_mem 1 Δ.one_mem` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_add.mp this`. Establish `hneg : ∀ δ ∈ Δ, φ δ⁻¹ = -φ δ`. Introduce `δ hδ`.
+
+Use `hφadd δ hδ δ⁻¹ (Δ.inv_mem hδ)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1]`. Conclude with `(neg_eq_of_add_eq_zero_right this.symm).symm`. Use `⟨fun g => -(↑u⁻¹ : R) • ρ g (φ (c * g * c⁻¹ * g⁻¹)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`.
+
+Conclude with `S.smul_mem _ (hS g _ (hφS _ (hk g)))`. Introduce `g h`. Simplify using `only`. Rewrite using `[hw, smul_add, map_smul]`. Introduce `δ hδ`.
+
+Simplify using `only`. Establish `hcδ : c * δ * c⁻¹ ∈ Δ` using `hΔ.conj_mem _ hδ c`. Establish `hc' : φ (c * δ * c⁻¹) = -φ δ`. Establish `e1` using `hφinv c δ hδ`. Rewrite `e1` using `[hc _ (hφS _ hcδ)]`.
+
+Rewrite using `[← e1, neg_neg]`. Rewrite using `[hΔtriv δ hδ, hφadd _ hcδ _ (Δ.inv_mem hδ), hc', hneg δ hδ, show -φ δ + -φ δ = -((2 : R) • φ δ) by rw [two_smul, neg_add], smul_neg, neg_smul, neg_neg, smul_smul, ← hu, Units.inv_mul, one_smul]`.
+-/
 theorem exists_cocycle_extension_of_neg_action : ∀ (G : Type) [Group G] (R : Type) [CommRing R] (V : Type) [AddCommGroup V] [Module R V] (ρ : G → V →ₗ[R] V), (∀ g h v, ρ (g * h) v = ρ h (ρ g v)) → (∀ v, ρ 1 v = v) → IsUnit (2 : R) → ∀ (S : Submodule R V), (∀ g, ∀ v ∈ S, ρ g v ∈ S) → ∀ (Δ : Subgroup G), Δ.Normal → (∀ δ ∈ Δ, ∀ v, ρ δ v = v) → ∀ c : G, (∀ v ∈ S, ρ c v = -v) → (∀ g, c * g * c⁻¹ * g⁻¹ ∈ Δ) → ∀ φ : G → V, (∀ δ ∈ Δ, φ δ ∈ S) → (∀ δ ∈ Δ, ∀ δ' ∈ Δ, φ (δ * δ') = φ δ + φ δ') → (∀ g, ∀ δ ∈ Δ, ρ g (φ (g * δ * g⁻¹)) = φ δ) → ∃ z : G → V, (∀ g, z g ∈ S) ∧ (∀ g h, z (g * h) = ρ h (z g) + z h) ∧ ∀ δ ∈ Δ, z δ = φ δ := by
   intro G _ R _ V _ _ ρ hmul hone h2 S hS Δ hΔ hΔtriv c hc hk φ hφS hφadd hφinv
   obtain ⟨u, hu⟩ := h2

@@ -15,6 +15,11 @@ open GlobalTheory.LN
 
 namespace GlobalTheory.LN.GenericPoint
 
+/- English proof (translation)
+Establish `hinj : Function.Injective g`. Rewrite using `[RingHom.injective_iff_ker_eq_bot, eq_bot_iff]`. Introduce `a ha`. Assume the negation of the conclusion as `h0`. Establish `hF : IsAlgebraic ℤ (a : F)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic _)`.
+
+Establish `hV : IsAlgebraic ℤ a` using `(isAlgebraic_algHom_iff (V.subtype.toIntAlgHom) Subtype.val_injective).1 hF`. Use `Ideal.comap_ne_bot_of_algebraic_mem h0 ha hV (eq_bot_iff.2 fun n hn => ?_)` and prove the remaining obligations. Establish `e : (n : K) = 0` using `by simpa using hn`. Conclude with `e` after adjusting the coercions. Conclude with `⟨IsFractionRing.lift hinj, RingHom.ext fun a => IsFractionRing.lift_algebraMap hinj a⟩`.
+-/
 theorem exists_extend {F K : Type} [Field F] [CharZero F] [Algebra.IsAlgebraic ℚ F] [Field K] [CharZero K]
     (V : ValuationSubring F) (g : V →+* K) : ∃ g' : F →+* K, g'.comp V.subtype = g := by
   have hinj : Function.Injective g := by
@@ -30,6 +35,11 @@ theorem exists_extend {F K : Type} [Field F] [CharZero F] [Algebra.IsAlgebraic �
     exact_mod_cast e
   exact ⟨IsFractionRing.lift hinj, RingHom.ext fun a => IsFractionRing.lift_algebraMap hinj a⟩
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `h`. Use `Specializes.mem_open (x := jK R q) (y := x) ?_ hU hx` and prove the remaining obligations. Use `(PrimeSpectrum.le_iff_specializes (R := R) _ _).1 fun a ha => ?_` and prove the remaining obligations. Establish `hq : q.asIdeal = ⊥` using `(Ideal.eq_bot_or_top q.asIdeal).resolve_right q.isPrime.ne_top`. Establish `h1 : algebraMap R (FractionRing R) a ∈ q.asIdeal` using `ha`.
+
+Rewrite `h1` using `[hq, Ideal.mem_bot, map_eq_zero_iff _ (IsFractionRing.injective R (FractionRing R))]`. Rewrite using `[h1]`. Conclude with `Ideal.zero_mem _`.
+-/
 theorem jK_mem {R : Type} [CommRing R] [IsDomain R] {U : Set (Sp R)} (hU : IsOpen U) (h : U.Nonempty)
     (q : Sp (FractionRing R)) : jK R q ∈ U := by
   obtain ⟨x, hx⟩ := h
@@ -40,17 +50,28 @@ theorem jK_mem {R : Type} [CommRing R] [IsDomain R] {U : Set (Sp R)} (hU : IsOpe
   rw [hq, Ideal.mem_bot, map_eq_zero_iff _ (IsFractionRing.injective R (FractionRing R))] at h1
   rw [h1]; exact Ideal.zero_mem _
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (Geo.Tor.chartPullPull M j j rfl) (chartPullSame L _ _ _ j fun _ => ha) h`.
+-/
 theorem lbIso_pull {W X Y : Scheme.{0}} {L : LB X} {M : LB Y} {a : Y ⟶ X} (h : LBIso M (L.pull a)) (j : W ⟶ Y)
     {a' : W ⟶ X} (ha : a' = j ≫ a) : LBIso (M.pull j) (L.pull a') :=
   LBIso.chartPull (Geo.Tor.chartPullPull M j j rfl) (chartPullSame L _ _ _ j fun _ => ha) h
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`.
+-/
 theorem lbIso_of_sabMap {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f) :
     LBIso t'.PP.L (t.PP.L.pull m.φ) := by
   obtain ⟨w, hw, -⟩ := m.lin
   exact ⟨w, hw⟩
 
+/- English proof (translation)
+Establish `g₁ : IsGrpPullback ((Over.pullback x).obj t.G) T.G (x ≫ ξ) (pullback.fst t.G.hom x ≫ m.φ)` using `(isGrpPullback_pullback t.G x).comp m.cart`. Establish `w : (pullback.fst t.G.hom x ≫ m.φ) ≫ T.G.hom = (pullback.snd t.G.hom x ≫ y) ≫ j` using `g₁.1.w.trans (by rw [Category.assoc, h]; rfl)`. Take `⟨ψ, h₁, h₂⟩ : ∃ ψ : pullback t.G.hom x ⟶ t'.G.left, ψ ≫ m'.φ = pullback.fst t.G.hom x ≫ m.φ ∧ ψ ≫ t'.G.hom = pullback.snd t.G.hom x ≫ y` from `⟨_, m'.cart.1.lift_fst _ _ w, m'.cart.1.lift_snd _ _ w⟩`. Establish `g₂ : IsGrpPullback ((Over.pullback x).obj t.G) t'.G y ψ` using `m'.cart.cancel (g₁.congr h.symm h₁.symm) h₂`. Establish `e : LBIso (t.PP.L.pull (pullback.fst t.G.hom x)) (t'.PP.L.pull ψ)` using `LBIso.trans (pull_isLB t.PP.isLB _) (pull_isLB T.PP.isLB _) (pull_isLB t'.PP.isLB _) (lbIso_pull (lbIso_of_sabMap m) _ rfl) (lbIso_pull (lbIso_of_sabMap m') _ h₁.symm).symm`.
+
+Establish `hp' : IsProper (pullback.snd t.G.hom x)` using `MorphismProperty.of_isPullback (P := @IsProper) g₂.1 hp`. Establish `hq` using `amplePt Z K y t'.G ((Over.pullback x).obj t.G) ψ g₂ t'.PP.L (t.PP.L.pull (pullback.fst t.G.hom x)) t'.PP.isLB (pull_isLB t.PP.isLB (pullback.fst t.G.hom x)) e hA hK`. Conclude with `⟨hp', hq.1, hq.2⟩`.
+-/
 theorem polAt_of_lift {X S Z : Scheme.{0}} {T : SAB H X} {t : SAB H S} {t' : SAB H Z} {ξ : S ⟶ X} {j : Z ⟶ X}
     (m : SABMap t T ξ) (m' : SABMap t' T j) (hp : IsProper t'.G.hom) (hA : RelAmple t'.G t'.PP.L)
     (hK : KTriv t'.G t'.PP.L) {K : Type} [Field K] (x : Sp K ⟶ S) (y : Sp K ⟶ Z) (h : y ≫ j = x ≫ ξ) : PolAt t x := by
@@ -75,6 +96,15 @@ end GlobalTheory.LN.GenericPoint
 
 open GlobalTheory.LN.GenericPoint in
 
+/- English proof (translation)
+Introduce `_ _ E _ _ _ H D l Xo c W₀ Y p ⟨_, _, _, ⟨U, hU, _⟩, _⟩ R _ _ _ ξ t m hne`. Establish `hop : IsOpen (ξ ⁻¹' abLocus Y.t.G)`. Rewrite using `[← hU]`. Conclude with `U.isOpen.preimage ξ.continuous`. Use `c.fin` as an intermediate fact.
+
+Take `⟨g, hg⟩` from `exists_extend (K := FractionRing R) (c.V W₀) (Spec.preimage ((jK R ≫ ξ) ≫ Y.s)).hom`. Establish `sq : (jK R ≫ ξ) ≫ Y.s = spMap g ≫ spMap (c.V W₀).subtype`. Rewrite using `[← Geo.Tor.spMap_comp, hg]`. Conclude with `(Spec.map_preimage _).symm`. Use `Y.jQ_open` as an intermediate fact.
+
+Establish `hr : Set.range (pullback.lift _ _ sq) ⊆ Set.range Y.jQ`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[← Y.ab_gen, Set.mem_preimage, ← Scheme.Hom.comp_apply, pullback.lift_fst, Scheme.Hom.comp_apply]`. Conclude with `jK_mem hop hne q`. Establish `hy : IsOpenImmersion.lift Y.jQ _ hr ≫ Y.j = jK R ≫ ξ`.
+
+Rewrite using `[Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]`. Conclude with `⟨⟨_, hy⟩, polAt_of_lift m Y.m Y.oF.proper Y.oF.ample Y.oF.ktriv _ _ hy, Set.ext fun x => abLocus_pullback abLocusOne Y.t.semi m.cart.1 x⟩`.
+-/
 theorem GlobalTheory.LN.generic_point_of_meets_abLocus : Laws → Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype) (p : ℕ), Y.LevelStructureConditions p → ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (ξ : Sp R ⟶ Y.X) (t : SAB H (Sp R)) (_ : SABMap t Y.t ξ), (ξ ⁻¹' abLocus Y.t.G).Nonempty → (∃ y : Sp (FractionRing R) ⟶ Xo.XF c, y ≫ Y.j = jK R ≫ ξ) ∧ PolAt t (jK R) ∧ ξ ⁻¹' abLocus Y.t.G = abLocus t.G := by
   intro _ _ E _ _ _ H D l Xo c W₀ Y p ⟨_, _, _, ⟨U, hU, _⟩, _⟩ R _ _ _ ξ t m hne
   have hop : IsOpen (ξ ⁻¹' abLocus Y.t.G) := by

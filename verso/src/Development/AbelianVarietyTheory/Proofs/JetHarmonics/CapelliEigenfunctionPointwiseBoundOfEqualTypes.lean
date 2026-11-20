@@ -12,6 +12,13 @@ open BpJoin Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P Formalism.Four
 
 namespace GlobalTheory.capelliEigenfunction_pointwiseBound_of_equalTypes
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, -, h6, h7, h8, h9, h10, h11⟩` from `h`. Use `⟨h1, h2, h3, h4, ?_, h6, h7, h8, ?_, h10, h11⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `|Function.update P.u' l x l| ≤ b`. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Introduce `s hs`.
+
+Take `⟨ha, hb⟩` from `h9 s hs`. Use `⟨fun hne => ?_, fun hne => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lam s + 1 / 2 ≤ Function.update P.u' l x (s.val + 1)`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `ha hne`.
+
+Express the relevant statement in the definitionally equal form `Function.update P.u' l x (s.val + 2) + 1 / 2 ≤ lam s`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `hb hne`.
+-/
 theorem gridNum_update {C b c : ℝ} {P : M.Par} {l : ℕ} {lam : Fin (2 * P.r + P.k + 1) → ℝ}
     (h : GridNum C b c P l lam) (x : ℝ) (hx : |x| ≤ b) :
     GridNum C b c (shP P P.u (Function.update P.u' l x)) l lam := by
@@ -27,6 +34,11 @@ theorem gridNum_update {C b c : ℝ} {P : M.Par} {l : ℕ} {lam : Fin (2 * P.r +
     · change Function.update P.u' l x (s.val + 2) + 1 / 2 ≤ lam s
       rw [Function.update_of_ne hne]; exact hb hne
 
+/- English proof (translation)
+Use `set n := 2 * r + k + 1 with hn`. Establish `h1 : r + 1 ≤ n` using `by linarith`. Establish `h2 : r * n + 1 ≤ n ^ 2` using `by nlinarith`. Establish `h3 : n ^ 2 ≤ n ^ 3` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `h4 : (r + 1) ^ 2 ≤ (r + 1) ^ 4` using `pow_le_pow_right₀ (by linarith) (by norm_num)`.
+
+Establish `h5 : 0 ≤ N * n ^ 2` using `by positivity`. Establish `h6 : 0 ≤ r * n + 1` using `by nlinarith`. Conclude with `mul_le_mul h4 (by linarith) h6 (by positivity)`.
+-/
 theorem decay_le (r k N : ℝ) (hr : 0 ≤ r) (hk : 0 ≤ k) (hN : 0 ≤ N) :
     (r + 1) ^ 2 * (r * (2 * r + k + 1) + 1) ≤ (r + 1) ^ 4 * (N * (2 * r + k + 1) ^ 2 + (2 * r + k + 1) ^ 3) := by
   set n := 2 * r + k + 1 with hn
@@ -38,6 +50,31 @@ theorem decay_le (r k N : ℝ) (hr : 0 ≤ r) (hk : 0 ≤ k) (hN : 0 ≤ N) :
   have h6 : 0 ≤ r * n + 1 := by nlinarith
   exact mul_le_mul h4 (by linarith) h6 (by positivity)
 
+/- English proof (translation)
+Introduce `hX hP hNF C C₃ C₀ hC hC₃ hC₀`. Take `⟨c₃, Cb, -, hS⟩` from `GlobalTheory.T.wignerShiftedPlacesExist_proof`. Take `⟨C₄, Cc, hT⟩` from `GlobalTheory.T.capelli_eigenfunction_bound_three_places hX hP hNF Cb C₃ (7 + C) C₀ hC₃ (by linarith) hC₀`. Use `⟨C₄, max (max Cc c₃) 0, ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq _ _ _ _ _ _ p f b c A₀ n₀ p₀ lam lam' hstd hcase hp₀ hp₀' heig hA hlam hreg`.
+
+Take `⟨hn₀, he, l, hl1, hl2, hg⟩` from `hcase`. Take `⟨hG, -⟩` from `hstd`. Take `⟨hf1, hf2, hf3⟩` from `heig`. Establish `hml : l ∈ Finset.Icc 1 P.k` using `Finset.mem_Icc.2 ⟨hl1, hl2.le⟩`. Establish `hml' : l + 1 ∈ Finset.Icc 1 P.k` using `Finset.mem_Icc.2 ⟨by omega, by omega⟩`.
+
+Establish `Gl` using `hG l hml`. Establish `Gl'` using `hG (l + 1) hml'`. Establish `hc1 : 1 ≤ c` using `Gl.1`. Establish `hcb : c + 2 ≤ b` using `Gl.2.1`. Establish `hul : |P.u' l| ≤ b` using `Gl.2.2.2.2.1`.
+
+Establish `hul' : |P.u' (l + 1)| ≤ b` using `Gl'.2.2.2.2.1`. Establish `hn : (0 : ℝ) ≤ n₀` using `Nat.cast_nonneg _`. Rewrite `hul`, `hul'` using `[abs_le]`. Establish `hnb : (n₀ : ℝ) ≤ b` using `by linarith [hul.2, hul'.1]`. Take `⟨Wqp, i1, i2, i3, Wqm, j1, j2, j3, pp, pm, Ap, Am, ApPt, AmPt, a1, b1, a2, a3, -, b2, b3, -, a8, b8, c1, c2, -, c4⟩` from `hS P Wp Wq p l n₀ (l + 1) l b he hl1 hl2 hg (fun i hi => (hG i hi).2.2.2.2.1) hnb (by linarith) (by omega) (by omega) hl1 hl2.le`.
+
+Establish `hr : (0 : ℝ) ≤ P.r` using `Nat.cast_nonneg _`. Establish `hk : (0 : ℝ) ≤ P.k` using `Nat.cast_nonneg _`. Establish `hdec` using `decay_le P.r P.k ((3 * (P.r + 1) : ℕ) : ℝ) hr hk (Nat.cast_nonneg _)`. Establish `hM0 : 0 ≤ max (max Cc c₃) 0` using `le_max_right _ _`. Establish `hM1 : Cc ≤ max (max Cc c₃) 0` using `(le_max_left _ _).trans (le_max_left _ _)`.
+
+Establish `hM2 : c₃ ≤ max (max Cc c₃) 0` using `(le_max_right _ _).trans (le_max_left _ _)`. Use `set M := max (max Cc c₃) 0 with hM`. Rewrite `hA` using `[mul_assoc]`. Establish `hA1 : c₃ * ((P.r : ℝ) + 1) ^ 2 * ((P.r : ℝ) * ((2 * P.r + P.k + 1 : ℕ) : ℝ) + 1) ≤ A₀`. Establish `e : ((2 * P.r + P.k + 1 : ℕ) : ℝ) = 2 * (P.r : ℝ) + P.k + 1` using `by push_cast; ring`.
+
+Rewrite using `[e, mul_assoc]`. Establish `t1` using `mul_le_mul_of_nonneg_right hM2 (show 0 ≤ ((P.r : ℝ) + 1) ^ 2 * ((P.r : ℝ) * (2 * (P.r : ℝ) + P.k + 1) + 1) by positivity)`. Establish `t2` using `mul_le_mul_of_nonneg_left hdec hM0`. Establish `t3 : (0 : ℝ) ≤ (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hA2 : Cc * ((P.r : ℝ) + 1) ^ 4 * (((3 * (P.r + 1) : ℕ) : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) - ((n₀ * (P.r + 1) : ℕ) : ℝ)`. Rewrite using `[mul_assoc]`. Establish `t1` using `mul_le_mul_of_nonneg_right hM1 (show 0 ≤ ((P.r : ℝ) + 1) ^ 4 * (((3 * (P.r + 1) : ℕ) : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) by positivity)`. Rewrite `hA` using `[Nat.cast_add ((2 * P.r + 2) * p₀)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `Gp` using `gridNum_update Gl' (P.u' (l + 1) + (n₀ : ℝ)) (abs_le.2 ⟨by linarith [hul'.1], by linarith [hul.2]⟩)`. Establish `Gm` using `gridNum_update Gl (P.u' l - (n₀ : ℝ)) (abs_le.2 ⟨by linarith [hul'.1], by linarith [hul.2]⟩)`. Take `⟨hpos, hΛ, Yp, hWp, hLp⟩` from `GlobalTheory.T.grids_at_place_longCut_normaliserPositive C b c _ Wp Wqp pp lam hC (by rw [a1]; exact Gp) (by`. Rewrite using `[a1]`. Express the relevant statement in the definitionally equal form `((30 * (P.r + 1) ^ 2 + 6 : ℕ) : ℝ) ≤ |P.u (l + 1) - Function.update P.u' (l + 1) (P.u' (l + 1) + (n₀ : ℝ)) (l + 1)|`.
+
+Rewrite using `[Function.update_self, he _ hml', ← hn₀]`. Conclude with `le_abs.2 (Or.inr (by linarith)))`. Take `⟨-, -, Ym, hWm, hLm⟩` from `GlobalTheory.T.grids_at_place_longCut_normaliserPositive C b c _ Wp Wqm pm lam hC (by rw [b1]; exact Gm) (by`. Rewrite using `[b1]`. Express the relevant statement in the definitionally equal form `((30 * (P.r + 1) ^ 2 + 6 : ℕ) : ℝ) ≤ |P.u l - Function.update P.u' l (P.u' l - (n₀ : ℝ)) l|`.
+
+Rewrite using `[Function.update_self, he _ hml, ← hn₀]`. Conclude with `le_abs.2 (Or.inl (by linarith)))`. Establish `hgap : ∀ s t, s ≠ t → 2 * c ≤ |lam s - lam t|`. Introduce `s t hst`. Break down `lt_or_gt_of_ne hst with h | h` into its components or cases.
+
+Conclude with `le_abs.2 (Or.inl (by linarith [Gl.2.2.2.2.2.2.1 s t h]))`. Conclude with `le_abs.2 (Or.inr (by linarith [Gl.2.2.2.2.2.2.1 t s h]))`. Conclude with `hT P Wp Wq Wqp Wqm _ _ _ _ p pp pm f Ap Am ApPt AmPt b (b ^ ((7 + C) * ((2 * P.r + 2 : ℕ) : ℝ))) A₀ n₀ p₀ (n₀ * (P.r + 1)) (Pst lam c) (Pst lam c) Yp Ym 3 (3 * (P.r + 1)) (by linarith) hΛ le_rfl hn₀.le hp₀' a2 a3 b2 b3 le_rfl (by omega) hpos hpos a8 b8 hf1 hf2 c1 c2 hA2 (c4 A₀ f …`.
+-/
 theorem thmBp_eig_eq : GlobalTheory.HCXi.BesselXiIntegrable → P5.ThmPActualCpt → NFTopDomAll → ∀ C C₃ C₀ : ℝ, 0 ≤ C → 0 ≤ C₃ → 0 ≤ C₀ → ∃ C₄ Cc : ℝ, ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (b c A₀ : ℝ) (n₀ p₀ : ℕ) (lam lam' : Fin (2 * P.r + P.k + 1) → ℝ), StdNum C b c P lam → (n₀ = 30 * (P.r + 1) ^ 2 + 6 ∧ (∀ i ∈ Finset.Icc 1 P.k, P.u i = P.u' i) ∧ ∃ l, 1 ≤ l ∧ l < P.k ∧ 2 * (n₀ : ℝ) + 1 ≤ P.u' l - P.u' (l + 1)) → 3 * (P.r + 1) ≤ 2 * p₀ → (p₀ : ℝ) ≤ C₀ * ((P.r : ℝ) + 1) ^ 2 → EigDec f A₀ lam' → Cc * ((P.r : ℝ) + 1) ^ 4 * (((3 * (P.r + 1) : ℕ) : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A₀ - (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ) → (∀ s, |lam' s - lam s| + (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ) ≤ c - 1) → TBB.RegularityBoundBigCell p f b C₃ (2 * p₀ + n₀) → TBB.ThmBpAt p f b C₄ n₀ p₀ := by
   intro hX hP hNF C C₃ C₀ hC hC₃ hC₀
   obtain ⟨c₃, Cb, -, hS⟩ := GlobalTheory.T.wignerShiftedPlacesExist_proof

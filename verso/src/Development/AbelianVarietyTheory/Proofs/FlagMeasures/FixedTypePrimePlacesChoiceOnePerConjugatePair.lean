@@ -11,6 +11,25 @@ open Formalism.MainNotions.BridgeLemma IsDedekindDomain
 
 namespace GlobalTheory.RowLev.FixedChoice
 
+/- English proof (translation)
+Introduce `D X`. Set `e : 𝓞 X.B.I.E ≃+* 𝓞 D.host.E` to `RingOfIntegers.mapRingEquiv X.ιE`. Establish `he : ∀ a : 𝓞 X.B.I.E, ((e a : 𝓞 D.host.E) : D.host.E) = X.ιE (a : X.B.I.E)` using `fun a => rfl`. Establish `hnat : ∀ m : ℕ, e (m : 𝓞 X.B.I.E) = (m : 𝓞 D.host.E)` using `fun m => map_natCast e m`. Establish `hmemB : ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (a : 𝓞 X.B.I.E), a ∈ (Formalism.L2.SG.Pf.RowDictPf.wB X w).asIdeal ↔ e a ∈ w.asIdeal` using `fun w a => Iff.rfl`.
+
+Establish `hspl : ∀ k, SplitsCompl D.host.E (D.host.g k)`. Introduce `k`. Establish `hp` using `D.host.g_prime k`. Use `span_isMaximal hp` as an intermediate fact. Apply `splitsCompl_of_ncard _ _ hp` to reduce the goal to its premises.
+
+Rewrite using `[← IsDedekindDomain.coe_primesOverFinset (span_ne_bot hp) (𝓞 D.host.E), ← image_plOver _ hp, (injOn_asIdeal _ _).ncard_image]`. Conclude with `D.nd.g_split k`. Establish `hsp : ∀ k (P : Ideal (𝓞 X.B.I.E)), P.IsMaximal → ((D.host.g k : ℕ) : 𝓞 X.B.I.E) ∈ P → Ideal.absNorm P = D.host.g k ∧ ((D.host.g k : ℕ) : 𝓞 X.B.I.E) ∉ P ^ 2`. Introduce `k P hP hg`. Establish `hQ : (P.map e).IsMaximal` using `Ideal.map_isMaximal_of_equiv e`.
+
+Establish `hgQ : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P.map e`. Rewrite using `[← hnat]`. Conclude with `Ideal.mem_map_of_mem _ hg`. Take `⟨h1, h2⟩` from `hspl k _ hQ hgQ`. Use `⟨?_, fun h => h2 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h1, Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `Nat.card_congr (Ideal.quotientEquiv P (P.map e) e rfl).toEquiv`. Rewrite using `[← hnat, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ h`. Establish `hf : X.B.I.f = D.R.f` using `Formalism.L2.SG.Pf.RowDictPf.f_eq X`.
+
+Use `(GlobalTheory.SplitChoice.exists_isChoice_and_isChoice_of_card X.B.I D.host.g D.host.g_prime D.host.g_ne hsp).2 D.nd.PlG _ (fun k => by rw [hf]; convert D.nd.card_PlG k) (fun k v => ?_) (fun k => ?_) (fun k v v' hc => ?_)` and prove the remaining obligations. Rewrite using `[hmemB, hnat]`. Conclude with `D.naut.plGw_over k v`. Introduce `v v' h`. Simplify using `only at h`.
+
+Apply `D.naut.plGw_inj k` to reduce the goal to its premises. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Establish `h1 : ∀ w : HeightOneSpectrum (𝓞 D.host.E), (Formalism.L2.SG.Pf.RowDictPf.wB X w).asIdeal.map e = w.asIdeal` using `fun w => Ideal.map_comap_of_surjective _ e.surjective w.asIdeal`. Rewrite using `[← h1, ← h1 (D.naut.plGw k v'), h]`. Apply `D.naut.plGw_nconj k v v'` to reduce the goal to its premises.
+
+Introduce `x y hxy`. Establish `hst : ((e.symm y : 𝓞 X.B.I.E) : X.B.I.E) = star ((e.symm x : 𝓞 X.B.I.E) : X.B.I.E)`. Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[X.ιE_conj, ← he, ← he, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply, hxy]`. Use `hc (e.symm x) (e.symm y) hst` as an intermediate fact.
+
+Rewrite `this` using `[hmemB, hmemB, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem isChoice_wB_plGw : ∀ (D : D7) (X : HidaSetting D), GlobalTheory.RowLev.IsChoice X.B.I D.host.g D.nd.PlG (fun k v => Formalism.L2.SG.Pf.RowDictPf.wB X (D.naut.plGw k v)) := by
   intro D X
   let e : 𝓞 X.B.I.E ≃+* 𝓞 D.host.E := RingOfIntegers.mapRingEquiv X.ιE

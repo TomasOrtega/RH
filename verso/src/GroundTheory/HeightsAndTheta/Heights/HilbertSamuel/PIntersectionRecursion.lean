@@ -12,6 +12,9 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [blockWeight, unitDeg, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem blockWeight_cast_eq_unitDeg {K : Type} [DecidableEq K] (ι : K → Type) (b : K) (i : ι b) :
     (fun k => ((blockWeight ι ⟨b, i⟩ k : ℕ) : ℤ)) = unitDeg b := by
   funext k
@@ -20,6 +23,23 @@ theorem blockWeight_cast_eq_unitDeg {K : Type} [DecidableEq K] (ι : K → Type)
 
 open Classical in
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ q d hq hdim b i hX bs`. Establish `: q.IsPrime` using `hq.isPrime`. Use `set x : MRing ι F := X ⟨b, i⟩ with hxdef`. Use `set J : Ideal (MRing ι F) := q ⊔ Ideal.span {x} with hJdef`. Establish `hx : IsMultiHomog x (blockWeight ι ⟨b, i⟩)` using `isWeightedHomogeneous_X F _ _`.
+
+Establish `hlt : ringKrullDim (MRing ι F ⧸ q) < ((d + 2 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[hdim]`. Conclude with `(by omega : d + 1 + Fintype.card K < d + 2 + Fintype.card K)` after adjusting the coercions. Establish `hcut` using `CutByForm.full F K ι d q hq.isPrime hq.multiHomog hlt x (blockWeight ι ⟨b, i⟩) hx hX bs`. Rewrite `hcut` using `[blockWeight_cast_eq_unitDeg]`.
+
+Rewrite using `[hcut, cycEval]`. Establish `hle : q ≤ J` using `le_sup_left`. Establish `hr : Ideal.Quotient.mk q x ∈ nonZeroDivisors (MRing ι F ⧸ q)` using `mem_nonZeroDivisors_of_ne_zero fun h => hX (Ideal.Quotient.eq_zero_iff_mem.mp h)`. Establish `hsucc : ringKrullDim (MRing ι F ⧸ J) + 1 ≤ ringKrullDim (MRing ι F ⧸ q)` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hle) (Ideal.Quotient.factor_surjective hle) hr (by`. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `Ideal.mem_sup_right (Ideal.subset_span rfl))`. Rewrite `hsucc` using `[hdim]`. Establish `hJlt : ringKrullDim (MRing ι F ⧸ J) < ((d + Fintype.card K + 1 : ℕ) : WithBot ℕ∞)`. Establish `h` using `HilbDegBound.lt_of_add_one_le_natCast hsucc`. Rewrite `h` using `[show d + 1 + Fintype.card K = d + Fintype.card K + 1 by omega]`. Then use the resulting hypothesis.
+
+Establish `hJh : IsMultiHomogIdeal J` using `isMultiHomogIdeal_sup_span_of_form hq.multiHomog hx`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Unfold `divCycle`. Distinguish the cases in `hW : W ∈ J.minimalPrimes ∧ IsRelevant W`. Rewrite using `[dif_pos hW]`.
+
+Establish `hWp : W.IsPrime` using `hW.1.1.1`. Establish `hWh : IsMultiHomogIdeal W` using `MinimalPrimeMultiHomog.proof F K ι J W hJh hW.1`. Establish `hWle : ringKrullDim (MRing ι F ⧸ W) ≤ ringKrullDim (MRing ι F ⧸ J)` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor hW.1.1.2) (Ideal.Quotient.factor_surjective hW.1.1.2)`. Distinguish the cases in `hWd : ringKrullDim (MRing ι F ⧸ W) = ((d + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[dif_pos ⟨⟨hWp, hWh, hW.2⟩, hW.1.1.2, hWd⟩]`.
+
+Rewrite using `[dif_neg fun h => hWd h.2.2]`. Establish `hWlt : ringKrullDim (MRing ι F ⧸ W) < ((d + Fintype.card K : ℕ) : WithBot ℕ∞)`. Conclude with `lt_of_le_of_ne (HilbDegBound.le_natCast_of_lt_natCast_succ (lt_of_le_of_lt hWle hJlt)) hWd`. Rewrite using `[IntNumVanish.full F K ι d W hWp hWh (Or.inr hWlt) bs, mul_zero]`. Rewrite using `[dif_neg hW, zero_mul, dif_neg]`.
+
+Introduce and unpack `⟨hWq, hJW, hWd⟩`. Establish `: W.IsPrime` using `hWq.isPrime`. Use `hW ⟨TopDimMinimal.full _ J W (d + Fintype.card K) hJW hJlt ?_, hWq.relevant⟩` and prove the remaining obligations. Rewrite using `[hWd]`. Conclude with `lt_irrefl _`.
+-/
 theorem IntersectionRecursion.proof : IntersectionRecursion.Statement.{u} := by
   intro F _ K _ _ ι _ q d hq hdim b i hX bs
   have : q.IsPrime := hq.isPrime

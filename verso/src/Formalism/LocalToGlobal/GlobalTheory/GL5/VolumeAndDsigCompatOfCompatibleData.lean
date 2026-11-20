@@ -7,6 +7,9 @@ namespace Formalism.L2.GlobalTheoryTheory.GenusMassVolumes
 
 open Formalism.BasicNotions
 
+/- English proof (translation)
+Introduce `_ _ h _ _` and use `h`.
+-/
 theorem siegel_weil_part_one_of_weil_theorem : SiegelWeilPartOneFromWeil := fun _ _ h _ _ => h
 
 end Formalism.L2.GlobalTheoryTheory.GenusMassVolumes

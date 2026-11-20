@@ -8,6 +8,9 @@ open GlobalTheory.CompanionTheory.Ar.Num (dotDual)
 
 namespace PositivityTheory.Xgn.DualReverseTriangular
 
+/- English proof (translation)
+Use `conv_rhs => rw [← v.sum_repr z]`. Rewrite using `[dotProduct_sum]`. Simplify using `only [dotProduct_smul, h, Fin.rev_inj, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem repr_eq_dot {Ω : Type} [Field Ω] {r : ℕ} (w v : Module.Basis (Fin r) Ω (Fin r → Ω))
     (h : ∀ i j, w i ⬝ᵥ v j = if i = j.rev then 1 else 0) (z : Fin r → Ω) (j : Fin r) :
     v.repr z j = w j.rev ⬝ᵥ z := by
@@ -16,6 +19,9 @@ theorem repr_eq_dot {Ω : Type} [Field Ω] {r : ℕ} (w v : Module.Basis (Fin r)
   simp only [dotProduct_smul, h, Fin.rev_inj, smul_eq_mul, mul_ite, mul_one, mul_zero]
   simp
 
+/- English proof (translation)
+Use `conv_rhs => rw [← w.sum_repr z]`. Rewrite using `[sum_dotProduct]`. Simplify using `only [smul_dotProduct, h, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem repr_eq_dot' {Ω : Type} [Field Ω] {r : ℕ} (w v : Module.Basis (Fin r) Ω (Fin r → Ω))
     (h : ∀ i j, w i ⬝ᵥ v j = if i = j.rev then 1 else 0) (z : Fin r → Ω) (j : Fin r) :
     w.repr z j.rev = z ⬝ᵥ v j := by
@@ -24,6 +30,15 @@ theorem repr_eq_dot' {Ω : Type} [Field Ω] {r : ℕ} (w v : Module.Basis (Fin r
   simp only [smul_dotProduct, h, smul_eq_mul, mul_ite, mul_one, mul_zero]
   simp
 
+/- English proof (translation)
+Establish `hAB` using `w.toMatrix_mul_toMatrix_flip w'`. Establish `hBA` using `w'.toMatrix_mul_toMatrix_flip w`. Use `letI : Invertible (w.toMatrix w') := ⟨w'.toMatrix w, hBA, hAB⟩`. Establish `hA : (w.toMatrix w').BlockTriangular id`. Introduce `i j hji`.
+
+Rewrite using `[Module.Basis.toMatrix_apply]`. Conclude with `h j i hji`. Establish `hB : (w'.toMatrix w).BlockTriangular id`. Establish `hinv` using `Matrix.blockTriangular_inv_of_blockTriangular hA`. Rewrite `hinv` using `[Matrix.inv_eq_right_inv hAB]`. Then use the resulting hypothesis.
+
+Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify `hB hij` using `[Module.Basis.toMatrix_apply]`. Establish `e` using `congrFun (congrFun hBA i) i`. Rewrite `e` using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Simplify `e` using `[Module.Basis.toMatrix_apply]`.
+
+Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with hlt | hlt` into its components or cases. Rewrite using `[hB hlt, zero_mul]`. Rewrite using `[hA hlt, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem tri_inv {Ω : Type} [Field Ω] {r : ℕ} (w w' : Module.Basis (Fin r) Ω (Fin r → Ω))
     (h : ∀ i j, i < j → w.repr (w' i) j = 0) :
     (∀ i j, i < j → w'.repr (w i) j = 0) ∧ ∀ i, w'.repr (w i) i * w.repr (w' i) i = 1 := by
@@ -50,6 +65,11 @@ theorem tri_inv {Ω : Type} [Field Ω] {r : ℕ} (w w' : Module.Basis (Fin r) Ω
 
 end PositivityTheory.Xgn.DualReverseTriangular
 
+/- English proof (translation)
+Introduce `Ω _ r w w' v v' h h' ht`. Take `⟨h1, h2⟩` from `PositivityTheory.Xgn.DualReverseTriangular.tri_inv w w' ht`. Establish `key : ∀ i j, v.repr (v' i) j = w'.repr (w j.rev) i.rev` using `fun i j => by`. Rewrite using `[PositivityTheory.Xgn.DualReverseTriangular.repr_eq_dot w v h, PositivityTheory.Xgn.DualReverseTriangular.repr_eq_dot' w' v' h']`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[key]`. Conclude with `h1 _ _ (Fin.rev_lt_rev.mpr hij)`. Rewrite using `[key]`. Conclude with `h2 _`.
+-/
 theorem PositivityTheory.Xgn.dual_basis_reverse_triangular : ∀ (Ω : Type) [Field Ω] (r : ℕ) (w w' v v' : Module.Basis (Fin r) Ω (Fin r → Ω)),
     (∀ i j, w i ⬝ᵥ v j = if i = j.rev then 1 else 0) → (∀ i j, w' i ⬝ᵥ v' j = if i = j.rev then 1 else 0) →
     (∀ i j, i < j → w.repr (w' i) j = 0) →

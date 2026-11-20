@@ -13,6 +13,11 @@ namespace PositivityTheory.AdelicQuotientData
 
 namespace QuadraticTransferReal
 
+/- English proof (translation)
+Establish `h1 : Measurable fun q : α × β => ∫⁻ h, F q.1 q.2 h ∂ν`. Establish `: Measurable fun p : (α × β) × γ => F p.1.1 p.1.2 p.2` using `hF.comp (measurable_fst.fst.prodMk (measurable_fst.snd.prodMk measurable_snd))`. Conclude with `this.lintegral_prod_right'`. Rewrite using `[lintegral_lintegral_swap (f := fun g r => ∫⁻ h, F g r h ∂ν) h1.aemeasurable]`. Use `lintegral_congr fun r => ?_` and prove the remaining obligations.
+
+Establish `h2 : Measurable fun q : α × γ => F q.1 r q.2` using `hF.comp (measurable_fst.prodMk (measurable_const.prodMk measurable_snd))`. Conclude with `lintegral_lintegral_swap (f := fun g h => F g r h) h2.aemeasurable`.
+-/
 theorem swap3 {α β γ : Type*} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
     (μ : Measure α) (ρ : Measure β) (ν : Measure γ) [SFinite μ] [SFinite ρ] [SFinite ν]
     (F : α → β → γ → ℝ≥0∞) (hF : Measurable fun p : α × β × γ => F p.1 p.2.1 p.2.2) :
@@ -31,6 +36,27 @@ section
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
+/- English proof (translation)
+Establish `hβm` using `hβ.1`. Establish `hm : Measurable fun p : G × G × G => β p.1 * Φ p.1 * β₁ (p.2.1⁻¹ * p.2.2 * p.1)` using `by fun_prop`. Establish `hm' : Measurable fun p : G × G × G => β₁ p.1 * (Φ (p.2.1 * p.1) * β (p.2.2⁻¹ * p.2.1 * p.1))` using `by fun_prop`. Establish `hint : ∀ x, ∫⁻ h, β (h⁻¹ * x) ∂ν = 1`. Introduce `x`.
+
+Use `lintegral_map (f := fun h => β (h * x)) (g := fun h : G => h⁻¹) (μ := ν) (hβm.comp (measurable_mul_const x)) measurable_inv` as an intermediate fact. Rewrite `this` using `[hinv, hβ.2 x]`. Conclude with `this.symm`. Establish `hR : Measurable fun g => ∫⁻ r, Φ (r * g) ∂ρ`. Establish `: Measurable fun p : G × G => Φ (p.2 * p.1)` using `hΦ.comp (measurable_snd.mul measurable_fst)`.
+
+Conclude with `this.lintegral_prod_right'`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ hβm hΦ, lintegral_withDensity_eq_lintegral_mul _ hβ₁ hR]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Establish `hr : Measurable fun r => ∫⁻ h, β₁ (r⁻¹ * h * g) ∂ν`.
+
+Establish `: Measurable fun p : G × G => β₁ (p.1⁻¹ * p.2 * g)` using `by fun_prop`. Conclude with `this.lintegral_prod_right'`. Establish `e : ∀ r, ∫⁻ h, β g * Φ g * β₁ (r⁻¹ * h * g) ∂ν = β g * Φ g * ∫⁻ h, β₁ (r⁻¹ * h * g) ∂ν`. Introduce `r`. Conclude with `lintegral_const_mul _ (by fun_prop)`.
+
+Simplify using `only [e, Pi.mul_apply]`. Rewrite using `[lintegral_const_mul _ hr, h1 g, mul_one]`. Use `_ = ∫⁻ r, ∫⁻ h, ∫⁻ g, β g * Φ g * β₁ (r⁻¹ * h * g) ∂μ ∂ν ∂ρ := swap3 μ ρ ν (fun g r h => β g * Φ g * β₁ (r⁻¹ * h * g)) hm`. Use `_ = ∫⁻ r, ∫⁻ h, ∫⁻ g, β₁ g * (Φ (r * g) * β (h⁻¹ * r * g)) ∂μ ∂ν ∂ρ := by`. Use `lintegral_congr fun r => lintegral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hH] with h hh`. Rewrite using `[← lintegral_mul_left_eq_self _ (h⁻¹ * r)]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Establish `e1 : r⁻¹ * h * (h⁻¹ * r * g) = g` using `by group`. Establish `e2 : Φ (h⁻¹ * r * g) = Φ (r * g)`.
+
+Use `hΦH h hh (h⁻¹ * (r * g))` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Rewrite using `[mul_assoc]`. Conclude with `this.symm`. Simplify using `only [e1, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫⁻ g, ∫⁻ r, ∫⁻ h, β₁ g * (Φ (r * g) * β (h⁻¹ * r * g)) ∂ν ∂ρ ∂μ := (swap3 μ ρ ν (fun g r h => β₁ g * (Φ (r * g) * β (h⁻¹ * r * g))) hm').symm`. Use `_ = ∫⁻ g, (β₁ * fun g => ∫⁻ r, Φ (r * g) ∂ρ) g ∂μ := by`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Establish `e : ∀ r, ∫⁻ h, β₁ g * (Φ (r * g) * β (h⁻¹ * r * g)) ∂ν = β₁ g * Φ (r * g)`.
+
+Introduce `r`. Repeatedly rewrite using `[← mul_assoc (β₁ g)]`. Rewrite using `[lintegral_const_mul _ (by fun_prop)]`. Repeatedly rewrite using `[mul_assoc _ r g]`. Rewrite using `[hint, mul_one]`.
+
+Simplify using `only [e, Pi.mul_apply]`. Conclude with `lintegral_const_mul _ (hΦ.comp (measurable_mul_const g))`.
+-/
 theorem q1' (μ : Measure G) [μ.IsHaarMeasure] (ν ρ : Measure G) [SFinite ν] [SFinite ρ] (H : Set G)
     (β β₁ : G → ℝ≥0∞) (hinv : Measure.map (fun h => h⁻¹) ν = ν) (hH : ∀ᵐ h ∂ν, h ∈ H)
     (hβ : IsWt ν β) (hβ₁ : Measurable β₁) (h1 : ∀ g, ∫⁻ r, ∫⁻ h, β₁ (r⁻¹ * h * g) ∂ν ∂ρ = 1)
@@ -91,6 +117,9 @@ theorem q1' (μ : Measure G) [μ.IsHaarMeasure] (ν ρ : Measure G) [SFinite ν]
 
 end
 
+/- English proof (translation)
+Rewrite using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part hi, integral_eq_lintegral_pos_part_sub_lintegral_neg_part hiB, h₁, h₂]`.
+-/
 theorem real_transfer {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y] (A : Measure X)
     (B : Measure Y) (m : Y → X) (F : X → ℝ) (hi : Integrable F A) (hiB : Integrable (fun y => F (m y)) B)
     (h₁ : ∫⁻ x, ENNReal.ofReal (F x) ∂A = ∫⁻ y, ENNReal.ofReal (F (m y)) ∂B)
@@ -99,6 +128,15 @@ theorem real_transfer {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y] (A :
   rw [integral_eq_lintegral_pos_part_sub_lintegral_neg_part hi,
     integral_eq_lintegral_pos_part_sub_lintegral_neg_part hiB, h₁, h₂]
 
+/- English proof (translation)
+Establish `hiB : Integrable (fun y => Φ (m y)) B`. Use `⟨(hΦ.comp hm).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `hP _ (by fun_prop) hn` as an intermediate fact. Rewrite using `[HasFiniteIntegral, ← this]`. Conclude with `hi.2`.
+
+Use `⟨hiB, ?_⟩` and prove the remaining obligations. Apply `Complex.ext` to reduce the goal to its premises. Establish `a1` using `integral_re hi`. Establish `a2` using `integral_re hiB`. Simplify using `only [RCLike.re_to_complex] at a1 a2`.
+
+Rewrite using `[← a1, ← a2]`. Conclude with `real_transfer A B m (fun x => (Φ x).re) hi.re hiB.re (hP _ (by fun_prop) hr₁) (hP _ (by fun_prop) hr₂)`. Establish `a1` using `integral_im hi`. Establish `a2` using `integral_im hiB`. Simplify using `only [RCLike.im_to_complex] at a1 a2`.
+
+Rewrite using `[← a1, ← a2]`. Conclude with `real_transfer A B m (fun x => (Φ x).im) hi.im hiB.im (hP _ (by fun_prop) hi₁) (hP _ (by fun_prop) hi₂)`.
+-/
 theorem transfer {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y] (A : Measure X)
     (B : Measure Y) (m : Y → X) (hm : Measurable m) (Φ : X → ℂ) (hΦ : Measurable Φ) (P : (X → ℝ≥0∞) → Prop)
     (hP : ∀ f, Measurable f → P f → ∫⁻ x, f x ∂A = ∫⁻ y, f (m y) ∂B)
@@ -128,6 +166,11 @@ theorem transfer {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y] (A : Meas
 
 end QuadraticTransferReal
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ μ _ ν ρ _ _ H β β₁ hinv hH hβ hβ₁ h1 Φ hΦ hΦH hi`. Establish `hm : Measurable fun p : G × G => p.2 * p.1` using `measurable_snd.mul measurable_fst`. Establish `key` using `QuadraticTransferReal.transfer (μ.withDensity β) ((μ.withDensity β₁).prod ρ) (fun p : G × G => p.2 * p.1) hm Φ hΦ (fun f => ∀ h ∈ H, ∀ g, f (h * g) = f g) (fun f hf hfH => by`. Rewrite using `[QuadraticTransferReal.q1' μ ν ρ H β β₁ hinv hH hβ hβ₁ h1 f hf hfH, lintegral_prod (fun p : G × G => f (p.2 * p.1)) (hf.comp hm).aemeasurable])`. Use the proof step `(fun h hh g => by simp only [hΦH h hh]) (fun h hh g => by simp only [hΦH h hh])`.
+
+Use the proof step `(fun h hh g => by simp only [hΦH h hh]) (fun h hh g => by simp only [hΦH h hh])`. Use the proof step `(fun h hh g => by simp only [hΦH h hh]) hi`. Take `⟨hiB, he⟩` from `key`. Use `⟨hiB.integral_prod_left, ?_⟩` and prove the remaining obligations. Rewrite using `[he, integral_prod _ hiB]`.
+-/
 theorem closedSubgroup_cutoff_exists : Q2 := by
   intro G _ _ _ _ _ _ _ μ _ ν ρ _ _ H β β₁ hinv hH hβ hβ₁ h1 Φ hΦ hΦH hi
   have hm : Measurable fun p : G × G => p.2 * p.1 := measurable_snd.mul measurable_fst

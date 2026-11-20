@@ -23,6 +23,13 @@ set_option synthInstance.maxHeartbeats 200000
 
 namespace UpperTheory.V.Z.J.D
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace T μ F).1 h`. Establish `h1 : ∀ j : ℕ, ((T - μ • 1) ^ j) F = (a - μ) ^ j • F`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`.
+
+Consider the case `succ j ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, map_smul, LinearMap.sub_apply, ha]`. Simplify using `only [LinearMap.smul_apply, Module.End.one_apply]`. Rewrite using `[← sub_smul, smul_smul, pow_succ]`. Rewrite `hk` using `[h1 k]`.
+
+Establish `h2` using `(smul_eq_zero.1 hk).resolve_right hF`. Assume the negation of the conclusion as `hne`. Conclude with `pow_ne_zero k (sub_ne_zero.2 hne) h2`.
+-/
 private theorem ev_of_gen {M : Type} [AddCommGroup M] [Module ℂ M] (T : Module.End ℂ M) (μ a : ℂ) (F : M) (hF : F ≠ 0)
     (h : F ∈ T.maxGenEigenspace μ) (ha : T F = a • F) : a = μ := by
   obtain ⟨k, hk⟩ := (Module.End.mem_maxGenEigenspace T μ F).1 h
@@ -39,6 +46,13 @@ private theorem ev_of_gen {M : Type} [AddCommGroup M] [Module ℂ M] (T : Module
   by_contra hne
   exact pow_ne_zero k (sub_ne_zero.2 hne) h2
 
+/- English proof (translation)
+Establish `hp : heckePol n q a = heckePol n q a'`. Rewrite using `[UpperTheory.V.Hi.heckePol, UpperTheory.V.Hi.heckePol]`. Conclude with `Finset.sum_congr rfl fun j hj => by rw [haa j (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))]`. Establish `hr : UpperTheory.V.Af.algSat n q B = UpperTheory.V.Af.algSat n q B'`. Rewrite using `[← Polynomial.roots_multiset_prod_X_sub_C (UpperTheory.V.Af.algSat n q B), h, hp, ← h', Polynomial.roots_multiset_prod_X_sub_C]`.
+
+Establish `hc : ((((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ)) ≠ 0`. Establish `: (0 : ℝ) < (q : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hq`. Conclude with `(Real.rpow_pos_of_pos this _).ne'` after adjusting the coercions. Unfold `UpperTheory.V.Af.algSat at hr`. Simplify using `only [Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map] at hr`.
+
+Conclude with `Multiset.map_injective (fun x y hxy => Units.ext (mul_left_cancel₀ hc hxy)) hr`.
+-/
 private theorem sat_eq (n q : ℕ) (hq : q ≠ 0) (B B' : Multiset ℂˣ) (a a' : ℕ → ℂ) (haa : ∀ j ≤ n, a j = a' j)
     (h : ((UpperTheory.V.Af.algSat n q B).map fun b => X - C b).prod = heckePol n q a)
     (h' : ((UpperTheory.V.Af.algSat n q B').map fun b => X - C b).prod = heckePol n q a') : B = B' := by
@@ -55,12 +69,20 @@ private theorem sat_eq (n q : ℕ) (hq : q ≠ 0) (B B' : Multiset ℂˣ) (a a' 
   simp only [Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map] at hr
   exact Multiset.map_injective (fun x y hxy => Units.ext (mul_left_cancel₀ hc hxy)) hr
 
+/- English proof (translation)
+The claim follows from `(Submodule.mem_iInf _).1 hF.2 i`.
+-/
 private theorem mem_gen {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
     {c : Coef l} (H : HSet L Ω l n c) {A : Type} [CommRing A] [Algebra c.O A] (θ : H.X.I.T →* Aˣ) (ι : Qbar l ≃+* ℂ)
     (x : A →+* Qbar l) (lam : Wt L l n) {d : ℕ} (ξ : GV n H.Sl →* GL (Fin d) ℂ) (K : H.Lev) (b : ℕ) (ev : H.Op → ℂ) (i : H.Op)
     (F : Fin H.m → H.X.Fn ℂ d) (hF : F ∈ zPart H θ ι x lam ξ K b ev) : F ∈ (H.opC ι lam d i).maxGenEigenspace (ev i) :=
   (Submodule.mem_iInf _).1 hF.2 i
 
+/- English proof (translation)
+Take `⟨-, a, ha0, ha, hp⟩` from `satT L n w.1 τ B hB`. Use `⟨a, ha0, fun j => ?_, hp⟩` and prove the remaining obligations. Take `⟨F, hF, hF0⟩` from `(Submodule.ne_bot_iff _).1 hY`. Establish `hAx : (hset Q τ₀).Ax` using `axU hN l L Ω s n hn V Q c m τ₀`. Establish `h1` using `partUR2Sph l L Ω s n hn V Q c ι m τ₀ lam d e ξ hξ σ hσ hAx w.1 w.2.1 w.2.2 τ hτ (j + 1) _ (ha (j + 1)) F hF.1`.
+
+Conclude with `ev_of_gen _ _ _ F hF0 (hZ (.inl (w, j)) F hF.2) h1`.
+-/
 private theorem vals (hN : GlobalTheory.Mem.LiteralAutomorphy.LitN) {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
     (s : HidaSetting l L Ω) (n : ℕ) (hn : 1 ≤ n) (V : s.Lev) (Q : QData V) (c : Coef l) (ι : Qbar l ≃+* ℂ) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O)
     (lam : Wt L l n) (d : ℕ) (e : (Fin d → ℂ) ≃ₗ[ℂ] ⨂[ℂ] e : Emb l (fun v : V.frame.Vl => s.w v.1), nablaSq ℂ n (lam e.res))
@@ -77,6 +99,17 @@ private theorem vals (hN : GlobalTheory.Mem.LiteralAutomorphy.LitN) {l : ℕ} [F
   have h1 := partUR2Sph l L Ω s n hn V Q c ι m τ₀ lam d e ξ hξ σ hσ hAx w.1 w.2.1 w.2.2 τ hτ (j + 1) _ (ha (j + 1)) F hF.1
   exact ev_of_gen _ _ _ F hF0 (hZ (.inl (w, j)) F hF.2) h1
 
+/- English proof (translation)
+Introduce `hN l _ L Ω _ _ _ _ _ _ s n hn V hV Q c ι m τ₀ lam d e ξ hξ A _ _ _ θ x c0 sp hWt hSp K ev σ σ' hσ hσ' h1 h2 π hπ`. Establish `hZ` using `fun i F hF => mem_gen (hset Q τ₀) θ ι x.toRingHom lam ξ K c0 ev i F hF`. Establish `hY' : YOf Q ι τ₀ e ξ σ' ≠ ⊥` using `fun h => h2 (eq_bot_iff.2 (inf_le_left.trans h.le))`. Establish `hU` using `partUR2Unr l L Ω s n hn V Q c ι m τ₀ lam d e ξ hξ σ' hσ' hY'`. Establish `hfin : ∀ᶠ w : Plc L in cofinite, w.under (𝓞 (Lp L)) ∉ V.S'` using `(GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under (Lp L) L).eventually V.fin.compl_mem_cofinite`.
+
+Use `(hπ.and hfin).mono ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hw, hS⟩ hsp`. Take `⟨τ, B, hτ, hB, hs⟩` from `hw hsp`. Take `⟨τ', -, h1', h2'⟩` from `GlobalTheory.DefU.exists_locComp_split L n ⟨σ', hσ'⟩ w hsp`. Take `⟨B', hB'⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible τ'.smooth τ'.irred (h2'.1 (hU w hS))`.
+
+Set `w' : (hset Q τ₀).Wp` to `⟨w, hS, hsp⟩`. Take `⟨a, a0, ha, hp⟩` from `vals hN s n hn V Q c ι m τ₀ lam d e ξ hξ _ ev hZ σ hσ h1 w' τ hτ B hB`. Take `⟨a', a0', ha', hp'⟩` from `vals hN s n hn V Q c ι m τ₀ lam d e ξ hξ _ ev hZ σ' hσ' h2 w' τ' h1' B' hB'`. Establish `hBB` using `sat_eq n (normV w) (GlobalTheory.LFun.qV_ne_zero w) B B' a a' (fun j hj => by`. Break down `j with _ | j` into its components or cases.
+
+Rewrite using `[a0, a0']`. Use `ha ⟨j, hj⟩` as an intermediate fact. Establish `h'` using `ha' ⟨j, hj⟩`. Conclude with `this.trans h'.symm) hp hp'`. Substitute `hBB` using the available equality.
+
+Conclude with `⟨τ', B, h1', hB', hs⟩`.
+-/
 theorem atSame : AtSame := by
   intro hN l _ L Ω _ _ _ _ _ _ s n hn V hV Q c ι m τ₀ lam d e ξ hξ A _ _ _ θ x c0 sp hWt hSp K ev σ σ' hσ hσ' h1 h2 π hπ
   have hZ := fun i F hF => mem_gen (hset Q τ₀) θ ι x.toRingHom lam ξ K c0 ev i F hF

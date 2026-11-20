@@ -12,6 +12,9 @@ namespace Elliptic
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `(CMCurve.toEll_eq_iff E E').2 ⟨1, by rw [one_smul, h]⟩`.
+-/
 theorem CMCurve.toEll_eq_of_curve_eq {E E' : CMCurve K} (h : E.curve = E'.curve) :
     E.toEll = E'.toEll :=
   (CMCurve.toEll_eq_iff E E').2 ⟨1, by rw [one_smul, h]⟩
@@ -21,6 +24,9 @@ def CMCurve.map (σ : ℂ ≃+* ℂ) (E : CMCurve K) : CMCurve K where
   endIso := ⟨(endMapEquiv σ).symm.trans E.endIso.some⟩
 
 omit [NumberField K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CMCurve.map_curve (σ : ℂ ≃+* ℂ) (E : CMCurve K) :
     (E.map σ).curve = E.curve.map (σ : ℂ →+* ℂ) :=
   rfl
@@ -32,9 +38,15 @@ def ELL.map (σ : ℂ ≃+* ℂ) : ELL K → ELL K :=
     exact ⟨C.map (σ : ℂ →+* ℂ), by
       rw [CMCurve.map_curve, CMCurve.map_curve, map_variableChange, hC]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ELL.map_toEll (σ : ℂ ≃+* ℂ) (E : CMCurve K) : ELL.map σ E.toEll = (E.map σ).toEll :=
   rfl
 
+/- English proof (translation)
+Take `⟨E, rfl⟩` from `ELL.exists_eq x`. Rewrite using `[ELL.map_toEll]`. Apply `CMCurve.toEll_eq_of_curve_eq` to reduce the goal to its premises. Rewrite using `[CMCurve.map_curve]`. Conclude with `WeierstrassCurve.map_id E.curve`.
+-/
 theorem ELL.map_one (x : ELL K) : ELL.map 1 x = x := by
   obtain ⟨E, rfl⟩ := ELL.exists_eq x
   rw [ELL.map_toEll]
@@ -42,6 +54,9 @@ theorem ELL.map_one (x : ELL K) : ELL.map 1 x = x := by
   rw [CMCurve.map_curve]
   exact WeierstrassCurve.map_id E.curve
 
+/- English proof (translation)
+Take `⟨E, rfl⟩` from `ELL.exists_eq x`. Rewrite using `[ELL.map_toEll, ELL.map_toEll, ELL.map_toEll]`. Apply `CMCurve.toEll_eq_of_curve_eq` to reduce the goal to its premises. Rewrite using `[CMCurve.map_curve, CMCurve.map_curve, CMCurve.map_curve, WeierstrassCurve.map_map]`. Both sides reduce to the same expression.
+-/
 theorem ELL.map_mul (σ τ : ℂ ≃+* ℂ) (x : ELL K) : ELL.map (σ * τ) x = ELL.map σ (ELL.map τ x) := by
   obtain ⟨E, rfl⟩ := ELL.exists_eq x
   rw [ELL.map_toEll, ELL.map_toEll, ELL.map_toEll]
@@ -49,6 +64,9 @@ theorem ELL.map_mul (σ τ : ℂ ≃+* ℂ) (x : ELL K) : ELL.map (σ * τ) x = 
   rw [CMCurve.map_curve, CMCurve.map_curve, CMCurve.map_curve, WeierstrassCurve.map_map]
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem j_congr {W W' : WeierstrassCurve ℂ} [W.IsElliptic] [W'.IsElliptic] (h : W = W') :
     W.j = W'.j := by
   subst h
@@ -62,9 +80,15 @@ def ELL.j : ELL K → ℂ :=
     exact j_congr hC
 
 omit [NumberField K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ELL.j_toEll (E : CMCurve K) : ELL.j E.toEll = E.curve.j :=
   rfl
 
+/- English proof (translation)
+Introduce `x y h`. Take `⟨E, rfl⟩` from `ELL.exists_eq x`. Take `⟨E', rfl⟩` from `ELL.exists_eq y`. Rewrite `h` using `[ELL.j_toEll, ELL.j_toEll]`. Conclude with `(CMCurve.toEll_eq_iff E E').2 (exists_variableChange_of_j_eq E.curve E'.curve h)`.
+-/
 theorem ELL.j_injective : Function.Injective (ELL.j (K := K)) := by
   intro x y h
   obtain ⟨E, rfl⟩ := ELL.exists_eq x
@@ -72,6 +96,9 @@ theorem ELL.j_injective : Function.Injective (ELL.j (K := K)) := by
   rw [ELL.j_toEll, ELL.j_toEll] at h
   exact (CMCurve.toEll_eq_iff E E').2 (exists_variableChange_of_j_eq E.curve E'.curve h)
 
+/- English proof (translation)
+Take `⟨E, rfl⟩` from `ELL.exists_eq x`. Rewrite using `[ELL.map_toEll, ELL.j_toEll, ELL.j_toEll]`. Conclude with `map_j E.curve (σ : ℂ →+* ℂ)`.
+-/
 theorem ELL.j_map (σ : ℂ ≃+* ℂ) (x : ELL K) : ELL.j (ELL.map σ x) = σ (ELL.j x) := by
   obtain ⟨E, rfl⟩ := ELL.exists_eq x
   rw [ELL.map_toEll, ELL.j_toEll, ELL.j_toEll]
@@ -82,6 +109,9 @@ section Quadratic
 variable (hK : finrank ℚ K = 2) [IsTotallyComplex K]
 include hK
 
+/- English proof (translation)
+Use `finite_ell hK` as an intermediate fact. Use `(Set.finite_range (ELL.j (K := K))).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨σ, rfl⟩`. Conclude with `⟨ELL.map σ x, ELL.j_map σ x⟩`.
+-/
 theorem ELL.finite_range_conj (x : ELL K) :
     (Set.range fun σ : ℂ ≃+* ℂ ↦ σ (ELL.j x)).Finite := by
   have := finite_ell hK
@@ -89,6 +119,9 @@ theorem ELL.finite_range_conj (x : ELL K) :
   rintro _ ⟨σ, rfl⟩
   exact ⟨ELL.map σ x, ELL.j_map σ x⟩
 
+/- English proof (translation)
+The claim follows from `Complex.isAlgebraic_of_finite_conjugates (ELL.finite_range_conj hK x)`.
+-/
 theorem ELL.isAlgebraic_j (x : ELL K) : IsAlgebraic ℚ (ELL.j x) :=
   Complex.isAlgebraic_of_finite_conjugates (ELL.finite_range_conj hK x)
 
@@ -96,6 +129,11 @@ end Quadratic
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Use `set W := WeierstrassCurve.ofJ (⟨E.curve.j, mem_adjoin_simple_self ℚ _⟩ : ℚ⟮E.curve.j⟯)`. Use `⟨W, inferInstance, ?_⟩` and prove the remaining obligations. Establish `hj : (W.baseChange ℂ).j = E.curve.j` using `by show (W.map (algebraMap ℚ⟮E.curve.j⟯ ℂ)).j = _`. Rewrite using `[map_j, ofJ_j]`. Both sides reduce to the same expression.
+
+Conclude with `exists_variableChange_of_j_eq _ _ hj`.
+-/
 theorem CMCurve.exists_model (E : CMCurve K) :
     ∃ (W : WeierstrassCurve ℚ⟮E.curve.j⟯) (_ : W.IsElliptic) (C : VariableChange ℂ),
       C • W.baseChange ℂ = E.curve := by

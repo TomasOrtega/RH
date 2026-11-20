@@ -14,6 +14,33 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp Formalism.L2.SG.Full Formalism.FourierDecayAlt Formalism.L2.SG.NGData Formalism.L2.SG.NGCut in
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u _ νL νB ng γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨c, ν, t, ht, hv, -, hpt, -⟩` from `hγ`. Establish `hG : t.toTerm.G ≠ 0`. Introduce `h`.
+
+Apply `ht.1` to reduce the goal to its premises. Use `show Gt t = 0`. Establish `h' : t.G = 0` using `h`. Simplify using `[Gt, h']`. Establish `hrel : t.toTerm.relevant`.
+
+Assume the negation of the conclusion as `hr`. Apply `hv` to reduce the goal to its premises. Establish `h0 : OOt t = 0` using `hOV D X Y u u t hr`. Use `show vec (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) t = 0`. Unfold `vec ampN`.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Take `⟨w, hw⟩` from `hAt D X Y u u t.toTerm hG hrel`. Establish `hat` using `Formalism.L2.SG.PairVal.ptOf_spec t.toTerm ⟨w, hw, hrel⟩`.
+
+Take `⟨F', ⟨hP, -⟩, hGv, hcell⟩` from `hat`. Establish `hrow` using `(Y.rowsOK u).1 t.toTerm.lam t.toTerm.mem`. Establish `hun` using `hrow.2.1.2.1`. Establish `hz` using `hrow.2.1.2.2.1.1`. Establish `hX` using `hrow.2.2`.
+
+Establish `hz'` using `hP.1.1`. Establish `hX'` using `hP.2.2.2`. Establish `hF : ∀ b, frame (lf D (X.Fu u)) b ∈ t.toTerm.lam` using `PtPf.frame_mem _ hz hX`. Establish `hF' : ∀ b, frame F' b ∈ t.toTerm.lam` using `PtPf.frame_mem _ hz' hX'`. Rewrite using `[← hpt]`.
+
+Use `show 1 ≤ NGPt D.host.rdE ((Tu D u : ℕ) * (Tu D u : ℕ)) (toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm)) ∧ 1 ≤ NDPt D.host.rdE (toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm))`. Establish `hlead : ∀ q, q ≤ D.R.rS + 1 → ∃ o ∈ dI D ^ (q * (2 * D.R.rS + 1 - q)), (o : D.host.E) = leadingPrincipalMinor (ptMat (Formalism.L2.SG.PairVal.ptOf t.toTerm)) q` using `fun q hq => by`. Take `⟨o, ho, e⟩` from `lead_mem hun (lf D (X.Fu u)) F' hz hX hz' hX' q hq`. Conclude with `⟨o, ho, e.trans (lead_cell _ _ hcell q).symm⟩`. Prove the components needed by the constructor for the conclusion.
+
+Establish `hGeq` using `gpt_eq (T := Tu D u) (T' := Tu D u) (lf D (X.Fu u)) F' _ hcell`. Take `⟨o1, ho1, e1⟩` from `hlead (D.R.rS + 1) le_rfl`. Take `⟨o0, ho0, e0⟩` from `hlead D.R.rS (Nat.le_succ _)`. Take `⟨o1', ho1', e1'⟩` from `star_mem_pow _ o1 ho1`. Take `⟨o0', ho0', e0'⟩` from `star_mem_pow _ o0 ho0`.
+
+Establish `ex1 : (D.R.rS + 1) * (2 * D.R.rS + 1 - (D.R.rS + 1)) + (D.R.rS + 1) * (2 * D.R.rS + 1 - (D.R.rS + 1)) = 2 * D.R.rS * (D.R.rS + 1)`. Rewrite using `[show 2 * D.R.rS + 1 - (D.R.rS + 1) = D.R.rS by omega]; ring`. Establish `ex0 : D.R.rS * (2 * D.R.rS + 1 - D.R.rS) + D.R.rS * (2 * D.R.rS + 1 - D.R.rS) = 2 * D.R.rS * (D.R.rS + 1)`. Rewrite using `[show 2 * D.R.rS + 1 - D.R.rS = D.R.rS + 1 by omega]; ring`. Establish `hm1 : o1 * o1' ∈ dI D ^ (2 * D.R.rS * (D.R.rS + 1))`.
+
+Rewrite using `[← ex1, pow_add]`. Conclude with `Ideal.mul_mem_mul ho1 ho1'`. Establish `hm0 : o0 * o0' ∈ dI D ^ (2 * D.R.rS * (D.R.rS + 1))`. Rewrite using `[← ex0, pow_add]`. Conclude with `Ideal.mul_mem_mul ho0 ho0'`.
+
+Use `one_le_NGPt _ _ (o1 * o1' - (((Tu D u : ℕ) * (Tu D u : ℕ) : ℕ) : 𝓞 D.host.E) * (o0 * o0')) (Ideal.sub_mem _ hm1 (Ideal.mul_mem_left _ _ hm0)) ?_ (by rw [hGeq]; exact hGv)` and prove the remaining obligations. Establish `e1a : algebraMap (𝓞 D.host.E) D.host.E o1 = leadingPrincipalMinor (ptMat (Formalism.L2.SG.PairVal.ptOf t.toTerm)) (D.R.rS + 1)` using `e1`. Establish `e0a : algebraMap (𝓞 D.host.E) D.host.E o0 = leadingPrincipalMinor (ptMat (Formalism.L2.SG.PairVal.ptOf t.toTerm)) D.R.rS` using `e0`. Establish `e1b : algebraMap (𝓞 D.host.E) D.host.E o1' = star (algebraMap (𝓞 D.host.E) D.host.E o1)` using `e1'`. Establish `e0b : algebraMap (𝓞 D.host.E) D.host.E o0' = star (algebraMap (𝓞 D.host.E) D.host.E o0)` using `e0'`.
+
+Use `show algebraMap (𝓞 D.host.E) D.host.E _ = _`. Unfold `GPt`. Rewrite using `[dlast_eq, dr_eq, map_sub, map_mul, map_mul, map_mul, map_natCast, e1b, e0b, e1a, e0a]`. Use `one_le_NDPt _ fun a => ?_` and prove the remaining obligations. Establish `hj : endIdx (toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm)) a ≤ D.R.rS + 1` using `(toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm)).1.sizeUpTo_le _`.
+
+Take `⟨o, ho, e⟩` from `hlead _ hj`. Establish `hE` using `PtPf.blockEndMinors_of_cell _ (PtPf.zhatOM_isIntegral _ _ hun hF hF') _ hcell`. Conclude with `⟨o, ho, by rw [e, endMin_eq], (hE a).2⟩`.
+-/
 theorem stepNormOneG_of
     (hOV : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
       Formalism.L2.SG.TermOp.KExpCut.OOVanish (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') (X := X))
@@ -90,6 +117,9 @@ theorem stepNormOneG_of
 
 open Formalism.L2.SG.TermOp.Vanish in
 
+/- English proof (translation)
+Use `stepNormOneG_of ?_ hAt` and prove the remaining obligations. Introduce `D X Y u u'`. Unfold `Formalism.L2.SG.TermOp.KExpCut.OOVanish`. Introduce `t ht`. Conclude with `ooVanish_of hA hU hN hC hG h1 h2 h3 h4 Y t ht`.
+-/
 theorem stepNormOneG_of_leaves (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTrivialC) (hG : PsiInfChar)
     (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC) (h4 : NonRelCharC)
     (hAt : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)

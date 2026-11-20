@@ -13,6 +13,9 @@ def conv {G : Type} [Group G] [MeasurableSpace G] (μ : Measure G) (a b : G → 
 def CptMod {G : Type} [Group G] [TopologicalSpace G] (H : Subgroup G) (F : G → ℂ) : Prop :=
   ∃ C : Set G, IsCompact C ∧ ∀ g, F g ≠ 0 → ∃ h ∈ H, ∃ c ∈ C, g = h * c
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨∅, isCompact_empty, fun _ h => absurd rfl h⟩`.
+-/
 example {G : Type} [Group G] [TopologicalSpace G] (H : Subgroup G) : CptMod H 0 := ⟨∅, isCompact_empty, fun _ h => absurd rfl h⟩
 
 def GLTop : Prop :=

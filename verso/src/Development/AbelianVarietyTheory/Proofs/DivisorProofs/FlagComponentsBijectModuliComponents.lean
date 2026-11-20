@@ -14,6 +14,15 @@ open CategoryTheory AlgebraicGeometry
 
 namespace GlobalTheory.CovHt.Link
 
+/- English proof (translation)
+Introduce `D A N j S κ s Φ`. Take `⟨q, hq⟩` from `GlobalTheory.ShFam.PtComp.exists_equiv s`. Use `⟨q, fun k => ?_⟩` and prove the remaining obligations. Use `letI := (constF κ.e (Φ.C k).Y).toAlgebra`. Introduce `t`.
+
+Establish `hx : (GlobalTheory.AllWt.ptF (Φ.C k).y0 ≫ s.T.Z.jQ) t = (Φ.C k).π (genericPt (Φ.C k).Y t)`. Rewrite using `[(Φ.C k).y0_x]`. Both sides reduce to the same expression. Establish `hon : OnComp s k ((Φ.C k).π (genericPt (Φ.C k).Y t))`. Take `⟨z, hz⟩ : ((s.U κ.σ₀).X k).dom.Nonempty` from `GlobalTheory.OrbitScalar.exists_mem_dom _`.
+
+Use `⟨⟨z, hz⟩, fun pt => ?_⟩` and prove the remaining obligations. Conclude with `(isPreconnected_range (Φ.C k).π.continuous).subset_connectedComponent ⟨_, rfl⟩ (Φ.label k ⟨z, hz⟩ pt)`. Establish `e` using `(hq k _).1 hon`. Use `show GlobalTheory.AllWt.ptF (Φ.C k).y0 t ∈ ((q k : _) : Set _)`. Rewrite using `[e]`.
+
+Rewrite using `[Set.mem_preimage]`. Establish `: s.T.Z.jQ (GlobalTheory.AllWt.ptF (Φ.C k).y0 t) = (GlobalTheory.AllWt.ptF (Φ.C k).y0 ≫ s.T.Z.jQ) t` using `rfl`. Rewrite using `[this, hx]`. Conclude with `mem_connectedComponent`.
+-/
 theorem exists_equiv_over : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag), ∃ q : s.Comp ≃ Comp s.Xo κ.c, ∀ k, Over Φ k (q k) := by
   intro D A N j S κ s Φ
   obtain ⟨q, hq⟩ := GlobalTheory.ShFam.PtComp.exists_equiv s

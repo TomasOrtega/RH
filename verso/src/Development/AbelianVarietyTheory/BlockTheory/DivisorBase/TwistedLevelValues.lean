@@ -21,6 +21,9 @@ def twVal {E : Type} [Field E] [NumberField E] (χ : Formalism.L2.Host.HChar E) 
 def IsGalConj {E : Type} [Field E] [NumberField E] (s : ℂ ≃+* ℂ) (w : ℝ) (χ χ' : Formalism.L2.Host.HChar E) : Prop :=
   ∀ (P : HeightOneSpectrum (𝓞 E)) (k : Eˣ), twVal χ' w P k = s (twVal χ w P k)
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 theorem isGalConj_refl {E : Type} [Field E] [NumberField E] (w : ℝ) (χ : Formalism.L2.Host.HChar E) :
     IsGalConj (RingEquiv.refl ℂ) w χ χ := fun _ _ => rfl
 
@@ -29,6 +32,9 @@ variable (D) in
 def IsEmbOverK (σ : D.what₂.LL →+* ℂ) (s : ℂ ≃+* ℂ) : Prop :=
   (∀ a, σ a = s (D.what₂.embLL a)) ∧ ∀ x : D.host.E, x ∈ D.host.K → σ (D.embE x) = D.what₂.embLL (D.embE x)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => rfl, fun _ _ => rfl⟩`.
+-/
 theorem isEmbOverK_base : IsEmbOverK D D.what₂.embLL (RingEquiv.refl ℂ) := ⟨fun _ => rfl, fun _ _ => rfl⟩
 
 def hookOf (n : ℕ) (a : ℕ → ℕ) : ℕ :=

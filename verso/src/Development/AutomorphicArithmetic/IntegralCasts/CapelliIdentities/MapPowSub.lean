@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `K _ σ V E _ _ _ _ f T S h a k`. Establish `h1 : ∀ v : V, f ((T - a • (1 : Module.End K V)) v) = (S - σ a • (1 : Module.End ℂ E)) (f v)`. Introduce `v`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, h, LinearMap.map_smulₛₗ]`. Proceed by induction on `k with`.
+
+Consider the case `zero => intro v`. Simplify using `only [pow_zero, Module.End.one_apply]`. Consider the case `succ n ih`. Introduce `v`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h1]`.
+-/
 theorem UpperTheory.Reformulated.B.MapPowSub.map_pow_sub :
     ∀ {K : Type} [inst : Field K]
       {σ :

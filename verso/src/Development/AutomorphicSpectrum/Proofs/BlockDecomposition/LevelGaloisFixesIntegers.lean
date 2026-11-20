@@ -3,6 +3,9 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 
 namespace GlobalTheory.CompanionTheory.LatC
 
+/- English proof (translation)
+Establish `h1 : (toBot g.1) • algClToBdR l (K.val x) = algClToBdR l ((toBot g.1) (K.val x))` using `gal_smul_algClToBdR _ _`. Establish `h2 : (toBot g.1) (K.val x) = K.val x` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 _ x.2`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+-/
 theorem gP_kP {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
     (g : K.fixingSubgroup) (x : K) : gP l g (kP l K x) = kP l K x := by
   have h1 : (toBot g.1) • algClToBdR l (K.val x) = algClToBdR l ((toBot g.1) (K.val x)) :=
@@ -11,6 +14,11 @@ theorem gP_kP {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgC
   rw [h2] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `l _ K M h k g a`. Apply `ι_injective (fk l k) (xi0 l) l M` to reduce the goal to its premises. Use `show gB h k g (pk l k (kP l K a)) = pk l k (kP l K a)`. Use `show Ideal.quotientMap _ (gP l g) (h.galT k g) (Ideal.Quotient.mk _ (kP l K a)) = _`. Rewrite using `[Ideal.quotientMap_mk, gP_kP]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sigA_fix : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ} (h : LevHyp l K M) (k : ℕ), ∀ g (a : OK l K), (lev h k).σA g (algebraMap (OK l K) (lev h k).A a) = algebraMap (OK l K) (lev h k).A a := by
   intro l _ K M h k g a
   apply ι_injective (fk l k) (xi0 l) l M

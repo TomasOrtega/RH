@@ -14,8 +14,16 @@ section Size
 
 variable {l : ℕ} [Fact l.Prime] {lam : algebraicClosure ℚ ℂ →+* ℂ_[l]}
 
+/- English proof (translation)
+Conclude with `(Fact.out : l.Prime).pos` after adjusting the coercions.
+-/
 theorem l_pos : (0 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).pos
 
+/- English proof (translation)
+Take `⟨hx, h1⟩` from `hx`. Take `⟨hy, h2⟩` from `hy`. Use `⟨mul_mem hx hy, ?_⟩` and prove the remaining obligations. Establish `e : (⟨x * y, mul_mem hx hy⟩ : algebraicClosure ℚ ℂ) = ⟨x, hx⟩ * ⟨y, hy⟩` using `rfl`. Rewrite using `[e, map_mul, norm_mul, Real.rpow_add l_pos]`.
+
+Conclude with `mul_le_mul h1 h2 (norm_nonneg _) (Real.rpow_nonneg l_pos.le _)`.
+-/
 theorem sz_mul {r r' : ℝ} {x y : ℂ} (hx : Sz l lam r x) (hy : Sz l lam r' y) : Sz l lam (r + r') (x * y) := by
   obtain ⟨hx, h1⟩ := hx
   obtain ⟨hy, h2⟩ := hy
@@ -24,11 +32,19 @@ theorem sz_mul {r r' : ℝ} {x y : ℂ} (hx : Sz l lam r x) (hy : Sz l lam r' y)
   rw [e, map_mul, norm_mul, Real.rpow_add l_pos]
   exact mul_le_mul h1 h2 (norm_nonneg _) (Real.rpow_nonneg l_pos.le _)
 
+/- English proof (translation)
+Use `⟨one_mem _, ?_⟩` and prove the remaining obligations. Establish `e : (⟨1, one_mem _⟩ : algebraicClosure ℚ ℂ) = 1` using `rfl`. Rewrite using `[e, map_one, norm_one, Real.rpow_zero]`.
+-/
 theorem sz_one : Sz l lam 0 (1 : ℂ) := by
   refine ⟨one_mem _, ?_⟩
   have e : (⟨1, one_mem _⟩ : algebraicClosure ℚ ℂ) = 1 := rfl
   rw [e, map_one, norm_one, Real.rpow_zero]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using (sz_one (lam := lam))`. Consider the case `succ n ih`. Establish `h` using `sz_mul ih hx`. Rewrite using `[pow_succ]`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sz_pow {r : ℝ} {x : ℂ} (hx : Sz l lam r x) (n : ℕ) : Sz l lam ((n : ℝ) * r) (x ^ n) := by
   induction n with
   | zero => simpa using (sz_one (lam := lam))
@@ -38,6 +54,9 @@ theorem sz_pow {r : ℝ} {x : ℂ} (hx : Sz l lam r x) (n : ℕ) : Sz l lam ((n 
     convert h using 1
     push_cast; ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (sz_one (lam := lam))`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj]`. Conclude with `sz_mul (h j (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem sz_prod {ι : Type} (s : Finset ι) (r : ι → ℝ) (f : ι → ℂ) (h : ∀ i ∈ s, Sz l lam (r i) (f i)) :
     Sz l lam (∑ i ∈ s, r i) (∏ i ∈ s, f i) := by
   classical
@@ -47,6 +66,11 @@ theorem sz_prod {ι : Type} (s : Finset ι) (r : ι → ℝ) (f : ι → ℂ) (h
     rw [Finset.sum_insert hj, Finset.prod_insert hj]
     exact sz_mul (h j (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Establish `hmem : ((l : ℂ) ^ n)⁻¹ ∈ algebraicClosure ℚ ℂ` using `inv_mem (pow_mem (natCast_mem _ l) n)`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Establish `e : (⟨((l : ℂ) ^ n)⁻¹, hmem⟩ : algebraicClosure ℚ ℂ) = ((l : algebraicClosure ℚ ℂ) ^ n)⁻¹`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Establish `hl : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹`. Establish `h1` using `PadicComplex.norm_extends' l (l : ℚ_[l])`. Rewrite `h1` using `[Padic.norm_p]`. Simplify using `using h1`. Rewrite using `[e, map_inv₀, map_pow, map_natCast, norm_inv, norm_pow, hl, inv_pow, inv_inv, Real.rpow_natCast]`.
+-/
 theorem sz_inv_l_pow (n : ℕ) : Sz l lam (n : ℝ) (((l : ℂ) ^ n)⁻¹) := by
   have hmem : ((l : ℂ) ^ n)⁻¹ ∈ algebraicClosure ℚ ℂ :=
     inv_mem (pow_mem (natCast_mem _ l) n)
@@ -59,6 +83,11 @@ theorem sz_inv_l_pow (n : ℕ) : Sz l lam (n : ℝ) (((l : ℂ) ^ n)⁻¹) := by
     simpa using h1
   rw [e, map_inv₀, map_pow, map_natCast, norm_inv, norm_pow, hl, inv_pow, inv_inv, Real.rpow_natCast]
 
+/- English proof (translation)
+Break down `Int.units_eq_one_or ε with rfl | rfl` into its components or cases. Simplify using `using (sz_one (lam := lam))`. Establish `hmem : (-1 : ℂ) ∈ algebraicClosure ℚ ℂ` using `neg_mem (one_mem _)`. Establish `e : (⟨-1, hmem⟩ : algebraicClosure ℚ ℂ) = -1` using `rfl`. Use `⟨by simpa using hmem, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one, inv_neg, inv_one]`. Rewrite using `[e, map_neg, map_one, norm_neg, norm_one, Real.rpow_zero]`.
+-/
 theorem sz_sign (ε : ℤˣ) : Sz l lam 0 (((ε : ℤ) : ℂ)⁻¹) := by
   rcases Int.units_eq_one_or ε with rfl | rfl
   · simpa using (sz_one (lam := lam))
@@ -70,6 +99,15 @@ theorem sz_sign (ε : ℤˣ) : Sz l lam 0 (((ε : ℤ) : ℂ)⁻¹) := by
 
 end Size
 
+/- English proof (translation)
+Establish `h3 : ∏ i, (e⁻¹ * (b i / (a i * A i))) ^ κ i = (∏ i, (b i / a i) ^ κ i) / ∏ i, (e * A i) ^ κ i`. Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← div_pow]`. Use `congr 1`.
+
+Clear denominators, using `[ha i, hA i, he]` for the nonvanishing conditions. Establish `h1 : ∏ i, ((b i / a i) ^ κ i / a i ^ k) = (∏ i, (b i / a i) ^ κ i) / ∏ i, a i ^ k`. Rewrite using `[Finset.prod_div_distrib]`. Establish `h2 : (C / ∏ i, a i) ^ k = C ^ k / ∏ i, a i ^ k` using `by rw [div_pow, Finset.prod_pow]`. Establish `hP2 : ∏ i, a i ^ k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (ha i)`.
+
+Establish `hP3 : ∏ i, (e * A i) ^ κ i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (mul_ne_zero he (hA i))`. Rewrite using `[h1, h2, h3]`. Generalize the expression as in `∏ i, (b i / a i) ^ κ i = P1 at *`. Generalize the expression as in `∏ i, a i ^ k = P2 at *`. Generalize the expression as in `∏ i, (e * A i) ^ κ i = P3 at *`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(-P1) * h`.
+-/
 theorem expand_id {I : Type} [Fintype I] (D x m C e : ℂ) (a b A : I → ℂ) (κ : I → ℕ) (k : ℕ)
     (hm : m ≠ 0) (he : e ≠ 0) (ha : ∀ i, a i ≠ 0) (hA : ∀ i, A i ≠ 0)
     (h : C ^ k * x = m * D * ∏ i, (e * A i) ^ κ i) :
@@ -96,6 +134,11 @@ end GlobalTheory.JetIntegral
 
 namespace GlobalTheory.JetIntegral
 
+/- English proof (translation)
+Establish `hl : (l : ℚ) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Distinguish the cases in `hq : z C / 2 ^ Module.finrank ℚ (maximalRealSubfield E) = 0`. Rewrite using `[hq, mul_zero, padicValRat.zero]`. Rewrite using `[padicValRat.mul (pow_ne_zero _ hl) hq, padicValRat.pow, padicValRat.self (Fact.out : l.Prime).one_lt, mul_one]`. Establish `h1 : (-padicValRat l (z C / 2 ^ Module.finrank ℚ (maximalRealSubfield E))).toNat ≤ cE_vp l z` using `Finset.le_sup (f := fun C => (-padicValRat l (z C / 2 ^ Module.finrank ℚ (maximalRealSubfield E))).toNat) (Finset.mem_univ C)`.
+
+Establish `h2` using `Int.self_le_toNat (-padicValRat l (z C / 2 ^ Module.finrank ℚ (maximalRealSubfield E)))`. Establish `h3 : ((-padicValRat l (z C / 2 ^ Module.finrank ℚ (maximalRealSubfield E))).toNat : ℤ) ≤ (cE_vp l z : ℤ)`. Conclude with `h1` after adjusting the coercions. Use linear arithmetic over natural numbers and integers.
+-/
 theorem padicVal_nonneg {E : Type} [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] (z : ClassGroup (OF E) → ℚ)
     (C : ClassGroup (OF E)) :
     0 ≤ padicValRat l ((l : ℚ) ^ cE_vp l z * (z C / 2 ^ Module.finrank ℚ (maximalRealSubfield E))) := by
@@ -111,6 +154,23 @@ theorem padicVal_nonneg {E : Type} [Field E] [NumberField E] (l : ℕ) [Fact l.P
     exact_mod_cast h1
   omega
 
+/- English proof (translation)
+Introduce `hEis hJet hMod`. Introduce `E _ _ _ _ I _ d φ s hFD hs z hz 𝔣 Λ h𝔣 hΛ l hl Q hQ hQl y hy _ lam Ω hΩ`. Take `⟨𝔠, R, hloc, X₀, δ₀, N, T, a, b, hR0, hRq, hAdm, hOver, hab, hC⟩` from `hMod E I d φ s hFD hs z hz 𝔣 Λ h𝔣 hΛ l hl Q hQ hQl y hy lam Ω hΩ`. Use `⟨a, b, fun i => ⟨(hab i).1, (hab i).2.1, (hab i).2.2.2.1, (hab i).2.2.2.2.1⟩, ?_⟩` and prove the remaining obligations. Introduce `g κ u hg hu`.
+
+Take `⟨-, -, hUn, -, -, -, hCM, -⟩` from `hFD`. Establish `hf2 : 2 ≤ Module.finrank ℚ (maximalRealSubfield E)` using `GlobalTheory.LatAlgebraic.two_le_finrank hUn`. Establish `hc0 : condQ 𝔣 Q ≠ ⊥` using `by show 𝔣 * ∏ q ∈ Q, q.asIdeal ≠ 0`. Conclude with `mul_ne_zero h𝔣.1 (Finset.prod_ne_zero_iff.2 fun q _ => q.ne_bot)`. Establish `hl0 : (l : ℂ) ≠ 0` using `by exact_mod_cast hl.ne_zero`.
+
+Use `set m : ℂ := (l : ℂ) ^ cE_vp l z with hmdef`. Establish `hm0 : m ≠ 0` using `pow_ne_zero _ hl0`. Establish `hmR : m ∈ R`. Establish `h` using `hRq ((l : ℚ) ^ cE_vp l z) (by`. Rewrite using `[padicValRat.pow, padicValRat.self hl.one_lt]`.
+
+Use the proof step `positivity)`. Simplify `h` using `[hmdef]`. Establish `hmz : ∀ C, m * ((z C / 2 ^ Module.finrank ℚ (FR E) : ℚ) : ℂ) ∈ R`. Introduce `C`. Establish `h` using `hRq _ (padicVal_nonneg l z C)`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Move the coercions through the operations in `[hmdef]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨r, hr⟩` from `hEis E hf2 𝔠 s hs z hz R m hmR hmz`. Take `⟨ε, hε⟩` from `hJet`.
+
+Take `⟨x, hx⟩` from `hε E I 𝔠 hf2 R s r hs R X₀ δ₀ N hAdm κ`. Establish `hxe` using `hx R.subtype (fun a => rfl) φ (condQ 𝔣 Q) y m hCM hc0 (hr I φ (condQ 𝔣 Q) y hCM hc0) T hOver g u hg hu`. Establish `hε0 : ((ε : ℤ) : ℂ) ≠ 0` using `by exact_mod_cast ε.ne_zero`. Rewrite using `[expand_id (iterD u g 0) (R.subtype x) m T.C ((ε : ℤ) : ℂ) a b T.A κ (2 * s) hm0 hε0 (fun i => (hab i).1) (fun i => (hab i).2.2.1) hxe]`. Establish `hx0 : Sz l lam 0 (R.subtype x)` using `hR0 _ x.2`.
+
+Establish `hmi : Sz l lam (cE_vp l z : ℝ) m⁻¹` using `sz_inv_l_pow _`. Establish `hCp` using `sz_pow hC (2 * s)`. Establish `hP` using `sz_prod Finset.univ (fun i => (κ i : ℝ) * (0 + c_vp 𝔣 l)) _ (fun i _ => sz_pow (sz_mul (sz_sign ε) (hab i).2.2.2.2.2) (κ i))`. Establish `htot` using `sz_mul (sz_mul (sz_mul hx0 hmi) hCp) hP`. Use `htot using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Rewrite using `[← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jetInt : EisRule → JetCore → ModelInt → JetInt := by
   intro hEis hJet hMod
   intro E _ _ _ _ I _ d φ s hFD hs z hz 𝔣 Λ h𝔣 hΛ l hl Q hQ hQl y hy _ lam Ω hΩ

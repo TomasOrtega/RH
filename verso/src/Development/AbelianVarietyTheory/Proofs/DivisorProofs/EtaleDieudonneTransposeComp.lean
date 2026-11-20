@@ -12,6 +12,11 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 
 namespace GlobalTheory.Dieu.EtFromConn
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span R (Set.range b)` using `b.span_eq ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`. Conclude with `h i`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => rw [map_add, map_add, hy, hz]`. Consider the case `smul c y _ hy => rw [h₁, h₂, hy]`.
+-/
 theorem addHom_eq_of_basis {R S M ι : Type} [CommRing R] [CommRing S] [AddCommGroup M] [Module R M]
     (b : Module.Basis ι R M) (ρ : R →+* S) (F₁ F₂ : M →+ S)
     (h₁ : ∀ (c : R) x, F₁ (c • x) = ρ c * F₁ x) (h₂ : ∀ (c : R) x, F₂ (c • x) = ρ c * F₂ x)
@@ -23,6 +28,9 @@ theorem addHom_eq_of_basis {R S M ι : Type} [CommRing R] [CommRing S] [AddCommG
   | add y z _ _ hy hz => rw [map_add, map_add, hy, hz]
   | smul c y _ hy => rw [h₁, h₂, hy]
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[WittVector.map_coeff]`.
+-/
 theorem wittMap_comp (p : ℕ) [Fact p.Prime] {k k' k'' : Type} [CommRing k] [CommRing k'] [CommRing k'']
     (σ : k →+* k') (τ : k' →+* k'') (x : WittVector p k) :
     WittVector.map (τ.comp σ) x = WittVector.map τ (WittVector.map σ x) := by
@@ -31,6 +39,47 @@ theorem wittMap_comp (p : ℕ) [Fact p.Prime] {k k' k'' : Type} [CommRing k] [Co
 
 end GlobalTheory.Dieu.EtFromConn
 
+/- English proof (translation)
+Introduce `p _ B k k' k'' _ _ _ _ _ _ _ _ _ σ τ υ G'' G' G h'' h' h s t u hu l l' l'' hs ht`. Establish `hυ : υ = τ.comp σ`. Use extensionality with `r`. Establish `e` using `congrArg (Coalgebra.counit (R := k'')) (hu 0 (algebraMap k (G.A 0) r))`. Rewrite `e` using `[(u.app 0).counit_map, (t.app 0).counit_map, (s.app 0).counit_map, Bialgebra.counit_algebraMap]`.
+
+Simplify using `using e`. Substitute `hυ` using the available equality. Take `rfl : u = t.comp s` from `SemiHom.ext_apply hu`. Use `letI iσ : Algebra k k' := σ.toAlgebra`. Use `letI iτ : Algebra k' k'' := τ.toAlgebra`.
+
+Use `letI iυ : Algebra k k'' := (τ.comp σ).toAlgebra`. Simplify using `only [IsTr] at hs ht ⊢`. Take `⟨hb, lb, hlb, hl'⟩` from `hs`. Take `⟨hb', lb', hlb', hl''⟩` from `ht`. Establish `hD` using `dual_conn h`.
+
+Establish `hbu : (G.dual.baseChange k'').IsConn` using `(baseChange_isConn_isEt p k k'' G.dual).1 hD`. Use `haveI := B.free G.dual hD`. Use `haveI := B.finite G.dual hD`. Set `b` to `Module.Free.chooseBasis (WittVector p k) (B.M G.dual hD)`. Take `⟨bu, hbu_eq⟩` from `GlobalTheory.T.dieudonne_baseChange_basis p _ B k k'' G.dual hD hbu _ b`.
+
+Take `⟨bk, hbk_eq⟩` from `GlobalTheory.T.dieudonne_baseChange_basis p _ B k k' G.dual hD hb _ b`. Set `lbu : Module.Dual (WittVector p k'') (B.M (G.dual.baseChange k'') hbu)` to `bu.constr (WittVector p k'') fun i => WittVector.map (τ.comp σ) (l (b i))`. Establish `hlbu : ∀ x, lbu (B.smap hbu hD (G.dual.toBase k'') x) = WittVector.map (τ.comp σ) (l x)`. Introduce `x`. Use `addHom_eq_of_basis b (WittVector.map (τ.comp σ)) ((lbu : _ →+ WittVector p k'').comp (B.smap hbu hD (G.dual.toBase k''))) ((WittVector.map (τ.comp σ)).toAddMonoidHom.comp (l : _ →+ WittVector p k)) ?_ ?_ ?_ x` and prove the remaining obligations.
+
+Introduce `c x show lbu (B.smap hbu hD (G.dual.toBase k'') (c • x)) = _ * lbu (B.smap hbu hD (G.dual.toBase k'') x)`. Rewrite using `[B.smap_smul, LinearMap.map_smul, smul_eq_mul]`. Both sides reduce to the same expression. Introduce `c x`. Simplify using `[map_smul, smul_eq_mul, map_mul]`.
+
+Introduce `i`. Simplify using `only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe]`. Rewrite using `[← hbu_eq, Module.Basis.constr_basis]`. Use `⟨hbu, lbu, hlbu, fun y => ?_⟩` and prove the remaining obligations. Set `β : G'.baseChange k'' ⟶ G.baseChange k''` to `SemiHom.lift (((G'.toBase k'').comp s : SemiHom ((algebraMap k' k'').comp σ) _ G) : SemiHom (algebraMap k k'') _ G)`.
+
+Establish `hβ : ∀ n (b : G.A n), β.app n ((G.toBase k'').app n b) = (G'.toBase k'').app n (s.app n b)`. Introduce `n b`. Rewrite using `[toBase_app, SemiHom.lift_app, one_smul]`. Both sides reduce to the same expression. Establish `hlift : (t.comp s).lift = t.lift ≫ β` using `baseChange_hom_ext fun n a => by`.
+
+Rewrite using `[SemiHom.lift_app, one_smul, comp_app, BialgHom.comp_apply, ← toBase_app, hβ, toBase_app, SemiHom.lift_app, one_smul]`. Both sides reduce to the same expression. Set `φs` to `(PerfdLat.dualBaseChange k' G).inv ≫ dualHom G' (G.baseChange k') s.lift`. Set `φt` to `(PerfdLat.dualBaseChange k'' G').inv ≫ dualHom G'' (G'.baseChange k'') t.lift`. Set `ψ : G.dual.baseChange k'' ⟶ G'.dual.baseChange k''` to `(PerfdLat.dualBaseChange k'' G).inv ≫ dualHom _ _ β ≫ (PerfdLat.dualBaseChange k'' G').hom`.
+
+Establish `hψ : (PerfdLat.dualBaseChange k'' G).inv ≫ dualHom G'' (G.baseChange k'') (t.comp s).lift = ψ ≫ φt`. Simplify using `only [hlift, dualHom_comp, ψ, φt, Category.assoc, Iso.hom_inv_id_assoc]`. Set `ρ : SemiHom τ (G.dual.baseChange k'') (G.dual.baseChange k')` to `(G.dual.toBase k'').liftOver τ (fun _ => rfl)`. Establish `hρ : ∀ n (χ : G.dual.A n), ρ.app n ((G.dual.toBase k').app n χ) = (G.dual.toBase k'').app n χ`. Introduce `n χ`.
+
+Rewrite using `[toBase_app, SemiHom.liftOver_app, map_one, one_smul]`. Establish `hinv : ∀ {O' : Type} [Field O'] [Algebra k O'] (n : ℕ) (Z : (G.baseChange O').dual.A n), (PerfdLat.dualBaseChange O' G).hom.app n ((PerfdLat.dualBaseChange O' G).inv.app n Z) = Z` using `fun {O'} _ _ n Z => DFunLike.congr_fun (congrArg (fun f => Hom.app f n) (PerfdLat.dualBaseChange O' G).hom_inv_id) Z`. Establish `hinj : ∀ n, Function.Injective ((PerfdLat.dualBaseChange k'' G).hom.app n)` using `fun n x y hxy => by`. Establish `e : ∀ x, (PerfdLat.dualBaseChange k'' G).inv.app n ((PerfdLat.dualBaseChange k'' G).hom.app n x) = x` using `fun x => DFunLike.congr_fun (congrArg (fun f => Hom.app f n) (PerfdLat.dualBaseChange k'' G).inv_hom_id) x`. Rewrite using `[← e x, ← e y, hxy]`.
+
+Establish `hE : ∀ n (y : (G.dual.baseChange k').A n) (b : G.A n), ((PerfdLat.dualBaseChange k'' G).hom.app n (ρ.app n y)).ofConv ((G.toBase k'').app n b) = τ (((PerfdLat.dualBaseChange k' G).hom.app n y).ofConv ((G.toBase k').app n b))`. Introduce `n y b`. Proceed by induction on `y using baseChange_induction k' (G := G.dual) n with`. Consider the case `h0 => simp`. Consider the case `h1 r χ`.
+
+Rewrite using `[(ρ.app n).smul_map, map_smul, WithConv.ofConv_smul, LinearMap.smul_apply, map_smul, WithConv.ofConv_smul, LinearMap.smul_apply, hρ, dualBaseChange_toBase, dualBaseChange_toBase, smul_eq_mul, smul_eq_mul, map_mul]`. Both sides reduce to the same expression. Consider the case `h2 z w hz hw`. Rewrite using `[map_add, map_add, WithConv.ofConv_add, LinearMap.add_apply, map_add, WithConv.ofConv_add, LinearMap.add_apply, map_add, hz, hw]`. Establish `hC : ∀ n a, ψ.app n ((G'.dual.toBase k'').app n a) = ρ.app n (φs.app n a)`.
+
+Introduce `n a`. Apply `hinj n` to reduce the goal to its premises. Apply `WithConv.ofConv_injective` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using baseChange_induction k'' (G := G) n with`.
+
+Consider the case `h0 => simp`. Consider the case `h1 r b`. Rewrite using `[map_smul, map_smul, hE]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `((PerfdLat.dualBaseChange k'' G).hom.app n ((PerfdLat.dualBaseChange k'' G).inv.app n (CartierDual.map (β.app n) ((PerfdLat.dualBaseChange k'' G').hom.app n ((G'.dual.toBase k'').app n a))))).ofConv ((G.toBase k'').app n b) = τ (((PerfdLat.dualBaseChange k' G).hom.app n ((PerfdLa …`.
+
+Rewrite using `[hinv, hinv, CartierDual.map_apply, CartierDual.map_apply, hβ, dualBaseChange_toBase, toBase_app, SemiHom.lift_app, one_smul]`. Both sides reduce to the same expression. Consider the case `h2 z w hz hw => rw [map_add, map_add, hz, hw]`. Establish `hD' : ∀ v, lbu (B.smap hbu hb ρ v) = WittVector.map τ (lb v)`. Introduce `v`.
+
+Use `addHom_eq_of_basis bk (WittVector.map τ) ((lbu : _ →+ WittVector p k'').comp (B.smap hbu hb ρ)) ((WittVector.map τ).toAddMonoidHom.comp (lb : _ →+ WittVector p k')) ?_ ?_ ?_ v` and prove the remaining obligations. Introduce `c x show lbu (B.smap hbu hb ρ (c • x)) = _ * lbu (B.smap hbu hb ρ x)`. Rewrite using `[B.smap_smul, LinearMap.map_smul, smul_eq_mul]`. Introduce `c x`. Simplify using `[map_smul, smul_eq_mul, map_mul]`.
+
+Introduce `i show lbu (B.smap hbu hb ρ (bk i)) = WittVector.map τ (lb (bk i))`. Rewrite using `[hbk_eq, hlb, ← B.smap_comp hbu hb hD (G.dual.toBase k') ρ (G.dual.toBase k'') (fun n a => (hρ n a).symm), hlbu, wittMap_comp]`. Establish `hA : ∀ z, lb' z = lbu (B.map hbu hb' ψ z)` using `by haveI := B.free G'.dual (dual_conn h') haveI := B.finite G'.dual (dual_conn h')`. Set `b'` to `Module.Free.chooseBasis (WittVector p k') (B.M G'.dual (dual_conn h'))`. Take `⟨b'', hb''⟩` from `GlobalTheory.T.dieudonne_baseChange_basis p _ B k' k'' G'.dual (dual_conn h') hb' _ b'`.
+
+Establish `key` using `b''.ext (f₁ := lb') (f₂ := lbu.comp (B.map hbu hb' ψ)) fun i => by`. Rewrite using `[hb'', hlb', hl', LinearMap.comp_apply]`. Express the relevant statement in the definitionally equal form `_ = lbu (B.smap hbu hb' (SemiHom.ofHom ψ) (B.smap hb' (dual_conn h') (G'.dual.toBase k'') (b' i)))`. Rewrite using `[← B.smap_comp hbu hb' (dual_conn h') (G'.dual.toBase k'') (SemiHom.ofHom ψ) (ρ.comp (SemiHom.ofHom φs)) (fun n a => (hC n a).symm), B.smap_comp hbu hb (dual_conn h') (SemiHom.ofHom φs) ρ (ρ.comp (SemiHom.ofHom φs)) (fun _ _ => rfl), hD']`. Both sides reduce to the same expression.
+
+Conclude with `fun z => LinearMap.congr_fun key z`. Rewrite using `[hl'', hA, hψ]`. Conclude with `congrArg lbu (B.smap_comp hbu hb' (dual_conn h'') (SemiHom.ofHom φt) (SemiHom.ofHom ψ) (SemiHom.ofHom (ψ ≫ φt)) (fun _ _ => rfl) y).symm`.
+-/
 theorem GlobalTheory.Dieu.EtFromConn.isTr_comp : ∀ (p : ℕ) [Fact p.Prime] (B : Base p (fun _ _ G => G.IsConn)) (k k' k'' : Type) [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p] [PerfectRing k' p] [Field k''] [CharP k'' p] [PerfectRing k'' p] (σ : k →+* k') (τ : k' →+* k'') (υ : k →+* k'') (G'' : PDivGroup p k'') (G' : PDivGroup p k') (G : PDivGroup p k) (h'' : G''.IsEt) (h' : G'.IsEt) (h : G.IsEt) (s : SemiHom σ G' G) (t : SemiHom τ G'' G') (u : SemiHom υ G'' G), (∀ n a, u.app n a = t.app n (s.app n a)) → ∀ (l : Mod B G h) (l' : Mod B G' h') (l'' : Mod B G'' h''), IsTr B σ h' h s l l' → IsTr B τ h'' h' t l' l'' → IsTr B υ h'' h u l l'' := by
   intro p _ B k k' k'' _ _ _ _ _ _ _ _ _ σ τ υ G'' G' G h'' h' h s t u hu l l' l'' hs ht
   have hυ : υ = τ.comp σ := by

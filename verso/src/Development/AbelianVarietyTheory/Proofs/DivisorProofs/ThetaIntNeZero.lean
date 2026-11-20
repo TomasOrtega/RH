@@ -49,10 +49,18 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {W W₁ X : H
   {cA : Matrix (Fin W.rank) (Fin (W.rank + W₁.rank)) (AE D) ≃+ WO W X}
   {cB : Matrix (Fin W₁.rank) (Fin (W.rank + W₁.rank)) (AE D) ≃+ WO W₁ X}
 
+/- English proof (translation)
+The claim follows from `thetaInt_eq_modelI D W X _ _ _ Γ.M 1 hO.JW ν 𝓕 ωA om (kapX X e hO.JX) ΦD Φ hO.measW hO.domW (hO.theta_eq_A hD) h`.
+-/
 theorem int_eq (hO : IsOver ψ θ A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB) {ΦD : _} {Φ : WO W X → ℂ}
     (hD : IsDatum Γ.M ψ cA ΦD Φ) (h : GA D X) : thetaInt ωA ν 𝓕 Φ h = Γ.M.I om ΦD (kapX X e hO.JX h) :=
   thetaInt_eq_modelI D W X _ _ _ Γ.M 1 hO.JW ν 𝓕 ωA om (kapX X e hO.JX) ΦD Φ hO.measW hO.domW (hO.theta_eq_A hD) h
 
+/- English proof (translation)
+Take `⟨ΦD, -, hD⟩` from `hO.algA Φ hΦ`. Establish `he` using `conjU_measurableEmbedding W 1 hO.JW`. Establish `h1` using `hC ΦD hD.1 (kapX X e hO.JX h)`. Rewrite `h1` using `[hO.measW, hO.domW, he.integrableOn_map_iff, Set.preimage_image_eq _ he.injective]`. Establish `e1 : (fun g => thetaKO ωA g h Φ) = (fun g => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om ΦD g (kapX X e hO.JX h)) ∘ GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hO.JW` using `funext fun g => (hO.theta_eq_A hD g h).symm`.
+
+Rewrite using `[e1]`. Conclude with `h1`.
+-/
 theorem integrable_big (hO : IsOver ψ θ A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB)
     (hC : ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F _, Γ.M.Conv om Φ) {Φ : WO W X → ℂ} (hΦ : Φ ∈ algF ψ θ true A B) (h : GA D X) :
     IntegrableOn (fun g => thetaKO ωA g h Φ) 𝓕 ν := by
@@ -65,6 +73,19 @@ theorem integrable_big (hO : IsOver ψ θ A A₁ B α β ν 𝓕 ν₁ 𝓕₁ �
   rw [e1]
   exact h1
 
+/- English proof (translation)
+Take `⟨γ, hγ, hγt⟩` from `GlobalTheory.KapXLine.exists_line D θ X τ Y hθ hY e Γ.W hO.JX`. Take `⟨δ, hδ⟩` from `GlobalTheory.OscLie.exists_lie_deriv_pol Bs Γ Xc om om' hT γ hγ`. Take `⟨ΦD, hΦD, hD⟩` from `hO.algA Φ hΦ`. Take `⟨Φ'D, -, hD'⟩` from `hO.algA Φ' hΦ'`. Establish `hPD : ΦD ∈ GlobalTheory.ThK.PolData Bs Γ.M`.
+
+Use `Submodule.span_mono ?_ hΦD` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, h1, h2, h3, rfl⟩`. Conclude with `⟨f, h1, φ, h2, h3, rfl⟩`. Take `⟨T, m, f, φ, hf, rfl⟩` from `GlobalTheory.ThK.CycGen.exists_decOn_some Γ.M ΦD hPD`. Establish `e1` using `GlobalTheory.SquareAgree.DatA.datum_lieDer hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hO hT τ Y γ hγt hγ Φ Φ' hd T m f (fun i => δ (f i)) φ hf (fun i => (hδ _ (hf i).1).2) hD Φ'D hD'`.
+
+Take `⟨l, hla, hl⟩` from `GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral Γ.M Bs.ψ _ _ om hT.weil hC`. Take `⟨Φ₁, -, hp, hI⟩` from `GlobalTheory.ThetaIntegralLine.exists_deriv hP Γ.M Bs.ψ _ _ om hT.base.cm hT.base.std hT.weil hC (fun g hg x => by`. Take `⟨L, hL⟩` from `hT.weil.isUSplitting.adm (1, x) l hla g hg`. Use `L.continuous.congr fun u => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.BigNZ.I_eq_l hT hl (Submodule.subset_span ⟨u, g, hg, rfl⟩), ← hL u]`.
+
+Use the proof step `rfl) hγ hD.1`. Establish `hM` using `hT.geo.hM`. Establish `hrest : ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (⇑(f i)) (GlobalTheory.EvZeroInf.finPart (φ i))` using `fun i => ⟨fun x z hz => GlobalTheory.EvZeroInf.finPart_add _ x z hz, by`. Rewrite using `[← GlobalTheory.EvZeroInf.pure_eq_tens]`. Conclude with `(GlobalTheory.BigNZ.IsFinPart.fam (M := Γ.M) (T := T) (hf i).2).mem hM _⟩`.
+
+Establish `e2 : Φ₁ = Φ'D`. Use function extensionality and compare the values at `x`. Use `(hp x).unique ?_` and prove the remaining obligations. Rewrite using `[e1]`. Simplify using `only [map_sum, Finset.sum_apply, GlobalTheory.EvZeroInf.pure_eq_tens]`.
+
+Conclude with `HasDerivAt.fun_sum fun i _ => (hδ _ (hf i).1).2 _ (hrest i) x`. Use `hI (kapX X e hO.JX h)` as an intermediate fact. Rewrite `this` using `[e2]`. Simplify using `only [int_eq hO hD, int_eq hO hD', GlobalTheory.KapXLine.kapX_mul, ← hγt]`. Conclude with `this`.
+-/
 theorem hasDerivAt_big (hP : GlobalTheory.FunPr.Hypotheses₂) (hθ : IsInfFam θ)
     (hO : IsOver ψ θ A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB) (hT : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ Xc om om')
     (hC : ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F _, Γ.M.Conv om Φ) {τ : D.what₂.Tau} {Y : Matrix (Fin X.rank) (Fin X.rank) ℂ}
@@ -105,6 +126,11 @@ theorem hasDerivAt_big (hP : GlobalTheory.FunPr.Hypotheses₂) (hθ : IsInfFam �
   simp only [int_eq hO hD, int_eq hO hD', GlobalTheory.KapXLine.kapX_mul, ← hγt]
   exact this
 
+/- English proof (translation)
+Take `⟨R, Rf, hm⟩` from `hL _ _ _ Bs _ _ Γ Xc om om' hT`. Take `⟨dec, hk⟩` from `hK.1 _ _ _ Bs _ _ Γ Xc om om' hT`. Take `⟨hc, hco⟩` from `hk R Rf hm`. Take `⟨l, hla, hl⟩` from `GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral Γ.M Bs.ψ _ _ om hT.weil dec.1`. Take `⟨f, hf, φ, hφ, hne⟩` from `GlobalTheory.BigNZ.exists_I_ne_zero hm hc hco hla hl`.
+
+Take `⟨Φ, hΦ, hD⟩` from `hO.algA' _ (Submodule.subset_span ⟨f, φ, hf, hφ.fam.1, hφ.fam.2, rfl⟩)`. Use `⟨Φ, hΦ, fun h0 => hne (funext fun x => ?_)⟩` and prove the remaining obligations. Take `⟨h, rfl⟩` from `GlobalTheory.LineAtPlace.kapX_surj X e hO.JX x`. Rewrite using `[← int_eq hO hD, h0]`. Both sides reduce to the same expression.
+-/
 theorem exists_big_ne (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree) (hL : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching)
     (hO : IsOver ψ θ A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB) (hT : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ Xc om om') :
     ∃ Φ ∈ algF ψ θ true A B, thetaInt ωA ν 𝓕 Φ ≠ 0 := by
@@ -121,6 +147,31 @@ theorem exists_big_ne (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMo
 
 end Over
 
+/- English proof (translation)
+Introduce `hP hK hL D ψ θ hψ hθ W W₁ X A A₁ B α β hT ν₁ 𝓕₁ hν₁ ωA ωB Pm rf rl p p' hm Φ' hΦ' hint' hp' h0'`. Take `⟨ν, 𝓕, hν⟩` from `GlobalTheory.Ker.HypModel.exists_haar_fundDom D W`. Take `⟨e, Bs, Γ, Xc, om, om', cA, cB, hO, hTD⟩` from `GlobalTheory.T.exists_placewise_seesaw_triple_over_hermitian D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB hm.weilA hm.weilB`. Establish `hC` using `(hK.1 _ _ _ Bs _ _ Γ Xc om om' hTD).1.1`. Take `⟨c, -, hc⟩` from `GlobalTheory.T.square_commutation_integral_identity hP hK hL D ψ θ hψ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pm rf rl p p' hm`.
+
+Use `set S := algF ψ θ true A B with hS`. Establish `hint : ∀ Φ ∈ S, ∀ h, IntegrableOn (fun g => thetaKO ωA g h Φ) 𝓕 ν` using `fun Φ hΦ h => integrable_big hO hC hΦ h`. Establish `tr : ∀ (Φ : WO W X → ℂ) (h k : GA D X), thetaInt ωA ν 𝓕 (ωA (1, k) Φ) h = thetaInt ωA ν 𝓕 Φ (h * k)`. Introduce `Φ h k`. Simplify using `only [thetaInt, thetaKO, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+
+Establish `tadd : ∀ Φ ∈ S, ∀ Ψ ∈ S, thetaInt ωA ν 𝓕 (Φ + Ψ) = thetaInt ωA ν 𝓕 Φ + thetaInt ωA ν 𝓕 Ψ`. Introduce `Φ hΦ Ψ hΨ`. Use function extensionality and compare the values at `h`. Establish `e : (fun g => thetaKO ωA g h (Φ + Ψ)) = fun g => thetaKO ωA g h Φ + thetaKO ωA g h Ψ`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[thetaKO, map_add]`. Simplify using `only [thetaInt, Pi.add_apply]`. Rewrite using `[e]`. Conclude with `integral_add (hint Φ hΦ h) (hint Ψ hΨ h)`. Establish `tsmul : ∀ (s : ℂ) Φ, thetaInt ωA ν 𝓕 (s • Φ) = s • thetaInt ωA ν 𝓕 Φ`.
+
+Introduce `s Φ`. Use function extensionality and compare the values at `h`. Establish `e : (fun g => thetaKO ωA g h (s • Φ)) = fun g => s * thetaKO ωA g h Φ`. Use function extensionality and compare the values at `g`. Simplify using `[thetaKO, map_smul]`.
+
+Simplify using `only [thetaInt, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[e]`. Conclude with `integral_const_mul s _`. Set `K : Submodule ℂ (WO W X → ℂ)` to `{ carrier := {Φ | Φ ∈ S ∧ thetaInt ωA ν 𝓕 Φ = 0} add_mem' := fun {a b} ha hb => ⟨S.add_mem ha.1 hb.1, by rw [tadd a ha.1 b hb.1, ha.2, hb.2, add_zero]⟩ zero_mem' := ⟨S.zero_mem, by funext h; simp [thetaInt, thetaKO]⟩ smul_mem' := fun s a ha => ⟨S.smul_mem s ha.1, by rw [tsmul, ha …`. Establish `kill : ∀ Ψ ∈ S, p Ψ = 0 → thetaInt ωA ν 𝓕 Ψ = 0` using `fun Ψ hΨ h0 => by`.
+
+Rewrite using `[hc Ψ hΨ 0 (zero_mem _) (fun h => by simp [thetaKO]) (by rw [h0, map_zero])]`. Use function extensionality and compare the values at `h`. Simplify using `[thetaInt, thetaKO]`. Establish `stf : ∀ g ∈ GfC X, ∀ x ∈ K.map p, rf g x ∈ K.map p`. Introduce and unpack `g hg _ ⟨Ψ, ⟨hΨS, hΨ0⟩, rfl⟩`.
+
+Use `⟨ωA (1, g) Ψ, ⟨hm.mapA.stabX.1 g hg Ψ hΨS, ?_⟩, hm.mapA.eqf g hg Ψ hΨS⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`. Rewrite using `[tr, hΨ0]`. Both sides reduce to the same expression. Establish `stl : ∀ τ, ∀ Y ∈ lieAt X τ, ∀ x ∈ K.map p, rl τ Y x ∈ K.map p`.
+
+Introduce and unpack `τ Y hY _ ⟨Ψ, ⟨hΨS, hΨ0⟩, rfl⟩`. Take `⟨Ψ', hΨ'S, hder⟩` from `hm.mapA.stabX.2 τ Y hY Ψ hΨS`. Use `⟨Ψ', ⟨hΨ'S, funext fun h => ?_⟩, hm.mapA.eql τ Y hY Ψ hΨS Ψ' hΨ'S hder⟩` and prove the remaining obligations. Establish `h1` using `hasDerivAt_big hP hθ hO hTD hC hY hΨS hΨ'S hder h`. Rewrite `h1` using `[hΨ0]`.
+
+Conclude with `h1.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))`. Break down `hm.irred.2 (K.map p) stf stl with hbot | htop` into its components or cases. Take `⟨Φ, hΦ, hpΦ⟩ : p' Φ' ∈ S.map p` from `hm.mapA.onto ▸ Submodule.mem_top`. Establish `h1 : p Φ ∈ K.map p` using `⟨Φ, ⟨hΦ, by rw [hc Φ hΦ Φ' hΦ' hint' hpΦ, h0', smul_zero]⟩, rfl⟩`. Rewrite `h1` using `[hbot, Submodule.mem_bot, hpΦ]`.
+
+Conclude with `hp' h1`. Take `⟨Φ, hΦ, hne⟩` from `exists_big_ne hK hL hO hTD`. Take `⟨Ψ, ⟨hΨS, hΨ0⟩, hΨp⟩ : p Φ ∈ K.map p` from `by rw [htop]; exact Submodule.mem_top`. Establish `h1` using `tadd _ (S.sub_mem hΦ hΨS) Ψ hΨS`. Rewrite `h1` using `[sub_add_cancel, kill _ (S.sub_mem hΦ hΨS) (by rw [map_sub, hΨp, sub_self]), hΨ0, add_zero]`.
+
+Conclude with `hne h1`.
+-/
 theorem thetaInt_ne_zero : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

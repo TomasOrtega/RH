@@ -12,6 +12,9 @@ noncomputable section
 
 namespace GlobalTheory.Asc
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Asc.FamilyModel.conjRead`.
+-/
 theorem conjRead_holds : ConjRead := GlobalTheory.Asc.FamilyModel.conjRead
 
 end GlobalTheory.Asc

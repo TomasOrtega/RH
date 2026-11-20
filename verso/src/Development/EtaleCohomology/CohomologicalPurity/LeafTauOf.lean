@@ -5,6 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace LateralTheory.CohomologicalPurity.Thom.ThomClassRestriction
 
+/- English proof (translation)
+The claim follows from `LeafTau_ofU hBd hG hPB hTl hU hT`.
+-/
 theorem LeafTau_of (hBd : LeafBd) (hG : LeafGeo) (hPB : LeafPB) (hTl : LeafTail)
     (hU : LeafTauU) (hT : LeafTauTop) : LeafTau :=
   LeafTau_ofU hBd hG hPB hTl hU hT

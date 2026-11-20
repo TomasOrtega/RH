@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.AlgWtHW
 
+/- English proof (translation)
+Establish `h` using `RingHom.map_adjugate (MvPolynomial.eval (fun p : Fin n × Fin n => g p.1 p.2)) (Matrix.mvPolynomialX (Fin n) (Fin n) ℂ)`. Establish `h2 : (MvPolynomial.eval (fun p : Fin n × Fin n => g p.1 p.2)).mapMatrix (Matrix.mvPolynomialX (Fin n) (Fin n) ℂ) = g`. Use extensionality with `i j`. Simplify using `[Matrix.mvPolynomialX]`. Rewrite `h` using `[h2]`.
+
+Simplify using `using congrFun (congrFun h x) y`.
+-/
 theorem eval_adjugate_mvPolynomialX {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n) :
     MvPolynomial.eval (fun p : Fin n × Fin n => g p.1 p.2)
       ((Matrix.mvPolynomialX (Fin n) (Fin n) ℂ).adjugate x y) = g.adjugate x y := by
@@ -28,6 +33,9 @@ theorem eval_adjugate_mvPolynomialX {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (
   rw [h2] at h
   simpa using congrFun (congrFun h x) y
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.mvPolynomialX]`.
+-/
 theorem eval_det_mvPolynomialX {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     MvPolynomial.eval (fun p : Fin n × Fin n => g p.1 p.2) (Matrix.mvPolynomialX (Fin n) (Fin n) ℂ).det = g.det := by
   rw [RingHom.map_det]
@@ -35,6 +43,9 @@ theorem eval_det_mvPolynomialX {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
   ext i j
   simp [Matrix.mvPolynomialX]
 
+/- English proof (translation)
+Establish `h : B.val.adjugate = B.val.det • (B⁻¹).val`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, Matrix.smul_apply, smul_eq_mul]`.
+-/
 theorem det_mul_inv_apply {n : ℕ} (B : GL (Fin n) ℂ) (x y : Fin n) :
     B.val.det * (B⁻¹).val x y = B.val.adjugate x y := by
   have h : B.val.adjugate = B.val.det • (B⁻¹).val := by
@@ -43,6 +54,15 @@ theorem det_mul_inv_apply {n : ℕ} (B : GL (Fin n) ℂ) (x y : Fin n) :
       _ = _ := by rw [Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul]
   rw [h, Matrix.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨0, MvPolynomial.C a, fun B => by simp⟩`. Consider the case `add p q hp hq`. Take `⟨d₁, P₁, h₁⟩` from `hp`. Take `⟨d₂, P₂, h₂⟩` from `hq`.
+
+Use `⟨d₁ + d₂, P₁ * (Matrix.mvPolynomialX (Fin n) (Fin n) ℂ).det ^ d₂ + P₂ * (Matrix.mvPolynomialX (Fin n) (Fin n) ℂ).det ^ d₁, fun B => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, eval_det_mvPolynomialX, ← h₁ B, ← h₂ B]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p v hp`. Take `⟨d, P, h⟩` from `hp`.
+
+Consider the cases of `v with`. Consider the case `inl x`. Use `⟨d, P * MvPolynomial.X x, fun B => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, MvPolynomial.eval_X, Sum.elim_inl, ← h B]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `inr x`. Use `⟨d + 1, P * (Matrix.mvPolynomialX (Fin n) (Fin n) ℂ).adjugate x.1 x.2, fun B => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, MvPolynomial.eval_X, Sum.elim_inr, eval_adjugate_mvPolynomialX, ← h B, ← det_mul_inv_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_det_pow_mul_eq_poly {n : ℕ} (Q : MvPolynomial ((Fin n × Fin n) ⊕ (Fin n × Fin n)) ℂ) :
     ∃ (d : ℕ) (P : MvPolynomial (Fin n × Fin n) ℂ), ∀ B : GL (Fin n) ℂ,
       B.val.det ^ d * MvPolynomial.eval (Sum.elim (fun p => B.val p.1 p.2) (fun p => (B⁻¹).val p.1 p.2)) Q =
@@ -69,6 +89,31 @@ theorem exists_det_pow_mul_eq_poly {n : ℕ} (Q : MvPolynomial ((Fin n × Fin n)
         ← det_mul_inv_apply]
       ring
 
+/- English proof (translation)
+Introduce `n lam ι _ _ Φ hΦ M hU B v`. Use function extensionality and compare the values at `k`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl (nablaSq ℂ n lam)`. Set `π` to `(nablaSq ℂ n lam).linearProjOfIsCompl C hC`. Set `l : Module.Dual ℂ (MvPolynomial (Fin n × Fin n) ℂ)` to `LinearMap.proj k ∘ₗ M ∘ₗ π`.
+
+Establish `hl : ∀ B' : GL (Fin n) ℂ, M (GlobalTheory.Branching.sqRep ℂ n lam B' v) k = detPow ℂ n B' lam.detShift * l (Formalism.GradedWeylDivisibility.rowAct ℂ (B'.val)ᵀ v.1)`. Introduce `B'`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [l, π, LinearMap.comp_apply, LinearMap.proj_apply]`. Use `Submodule.linearProjOfIsCompl_apply_left hC (GlobalTheory.Branching.sqRep ℂ n lam B' v)` as an intermediate fact.
+
+Rewrite using `[← GlobalTheory.Branching.sqRep_coe]`. Conclude with `(congrArg (fun w => M w k) this).symm`. Use `_ = _ := by rw [sqAct, map_smul, smul_eq_mul]`. Take `⟨P₁, hP₁⟩` from `GlobalTheory.Branching.exists_poly_rowAct_coef n n v.1 l`. Set `R₁` to `MvPolynomial.rename Prod.swap P₁`.
+
+Establish `hR₁ : ∀ g : Matrix (Fin n) (Fin n) ℂ, MvPolynomial.eval (fun x => g x.1 x.2) R₁ = l (Formalism.GradedWeylDivisibility.rowAct ℂ gᵀ v.1)`. Introduce `g`. Rewrite using `[hP₁, MvPolynomial.eval_rename]`. Both sides reduce to the same expression. Use `choose Q hQ using hΦ.poly`.
+
+Set `Qs` to `∑ j, Q k j * MvPolynomial.C ((M v) j)`. Establish `hQs : ∀ B' : GL (Fin n) ℂ, MvPolynomial.eval (Sum.elim (fun p => B'.val p.1 p.2) (fun p => (B'⁻¹).val p.1 p.2)) Qs = (Φ B' *ᵥ M v) k`. Introduce `B'`. Simplify using `only [Qs, map_sum, map_mul, MvPolynomial.eval_C, ← hQ, Matrix.mulVec, dotProduct]`. Take `⟨d, P₂, hP₂⟩` from `exists_det_pow_mul_eq_poly Qs`.
+
+Use `set a := lam.detShift`. Use `set m : ℕ := a.natAbs`. Establish `ha : 0 ≤ a + (m : ℤ)` using `by omega`. Establish `hdet : ∀ B' : GL (Fin n) ℂ, B'.val.det ≠ 0` using `fun B' => (Matrix.isUnits_det_units B').ne_zero`. Establish `hdp : ∀ B' : GL (Fin n) ℂ, detPow ℂ n B' a = B'.val.det ^ a`.
+
+Introduce `B'`. Simplify using `[detPow, Units.val_zpow_eq_zpow_val]`. Establish `key : ∀ B' : GL (Fin n) ℂ, B'.val.det ^ d * B'.val.det ^ (a + (m : ℤ)).toNat * l (Formalism.GradedWeylDivisibility.rowAct ℂ (B'.val)ᵀ v.1) - B'.val.det ^ m * MvPolynomial.eval (fun p => B'.val p.1 p.2) P₂ = B'.val.det ^ d * B'.val.det ^ m * (M (GlobalTheory.Branching.sqRep ℂ n la …`. Introduce `B'`. Establish `hx` using `hdet B'`.
+
+Rewrite using `[hl, ← hQs, ← hP₂, hdp]`. Establish `e1 : B'.val.det ^ (a + (m : ℤ)).toNat = B'.val.det ^ m * B'.val.det ^ a`. Rewrite using `[← zpow_natCast (B'.val.det) (a + (m : ℤ)).toNat, Int.toNat_of_nonneg ha, zpow_add₀ hx, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Set `Dp` to `(Matrix.mvPolynomialX (Fin n) (Fin n) ℂ).det`. Set `Qd` to `Dp ^ d * Dp ^ (a + (m : ℤ)).toNat * R₁ - Dp ^ m * P₂`. Establish `hQd : ∀ g : Matrix (Fin n) (Fin n) ℂ, MvPolynomial.eval (fun x => g x.1 x.2) Qd = g.det ^ d * g.det ^ (a + (m : ℤ)).toNat * l (Formalism.GradedWeylDivisibility.rowAct ℂ gᵀ v.1) - g.det ^ m * MvPolynomial.eval (fun p => g p.1 p.2) P₂`. Introduce `g`.
+
+Simplify using `only [Qd, Dp, map_sub, map_mul, map_pow, eval_det_mvPolynomialX, hR₁]`. Establish `Q0 : Qd = 0`. Use `GlobalTheory.Branching.eq_zero_of_vanish_unitaryGroup n Qd fun u hu => ?_` and prove the remaining obligations. Establish `h1` using `key (GlobalTheory.Branching.unitaryIncl n ⟨u, hu⟩)`. Establish `h2` using `congrFun (hU ⟨u, hu⟩ v) k`.
+
+Rewrite `h1` using `[h2, sub_self, mul_zero]`. Rewrite using `[hQd]`. Conclude with `h1`. Establish `h3` using `key B`. Rewrite `h3` using `[← hQd, Q0, map_zero]`.
+
+Establish `hx` using `hdet B`. Establish `h4 : B.val.det ^ d * B.val.det ^ m ≠ 0` using `mul_ne_zero (pow_ne_zero _ hx) (pow_ne_zero _ hx)`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h3.symm).resolve_left h4)`.
+-/
 theorem sqRep_intertwines_of_unitary : ∀ (n : ℕ) (lam : DomWeight n) (ι : Type) [Fintype ι] [DecidableEq ι] (Φ : GL (Fin n) ℂ → Matrix ι ι ℂ), GlobalTheory.AlgWtHW.IsPolyRep Φ → ∀ M : nablaSq ℂ n lam →ₗ[ℂ] (ι → ℂ), (∀ (u : Matrix.unitaryGroup (Fin n) ℂ) (v : nablaSq ℂ n lam), M (GlobalTheory.Branching.sqRep ℂ n lam (GlobalTheory.Branching.unitaryIncl n u) v) = Matrix.mulVec (Φ (GlobalTheory.Branching.unitaryIncl n u)) (M v)) → ∀ (B : GL (Fin n) ℂ) (v : nablaSq ℂ n lam), M (GlobalTheory.Branching.sqRep ℂ n lam B v) = Matrix.mulVec (Φ B) (M v) := by
   classical
   intro n lam ι _ _ Φ hΦ M hU B v

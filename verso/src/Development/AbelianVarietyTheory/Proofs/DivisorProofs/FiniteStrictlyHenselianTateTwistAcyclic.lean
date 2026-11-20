@@ -7,6 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial GlobalTheory.Et
 
 namespace GlobalTheory.EtC.GmStep
 
+/- English proof (translation)
+Introduce `q _ A _ hA _ T _ _ hfin s i hs`. Take `⟨hH, hsep⟩` from `hA`. Take `⟨ι, hι, F, hF, hAF, e, hHF, hF'⟩` from `GlobalTheory.finite_algebra_strictly_henselian_pi A T`. Conclude with `acycF_of_pi_sh (ZMod q) (tw q i) ι F T ⟨e.toRingEquiv⟩ (fun j => ⟨hHF j, (hF' j).1⟩) s hs`.
+-/
 theorem finite_sh_acyclic_twists : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A], SH A → IsUnit (q : A) → ∀ (T : Type) [CommRing T] [Algebra A T],
   Module.Finite A T → ∀ s i : ℤ, 0 < s → Subsingleton (Ht q (sp T) s i) := by
   intro q _ A _ hA _ T _ _ hfin s i hs

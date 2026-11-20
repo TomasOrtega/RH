@@ -33,12 +33,18 @@ def firstBlock : Submodule F (Fin (r + t) → F) where
 
 attribute [local instance] act
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_def (g : GL (Fin (r + t)) F) (W : Submodule F (Fin (r + t) → F)) :
     g • W = W.map (Matrix.mulVecLin (g : Matrix (Fin (r + t)) (Fin (r + t)) F)) := rfl
 
 def lequiv (g : GL (Fin (r + t)) F) : (Fin (r + t) → F) ≃ₗ[F] (Fin (r + t) → F) :=
   LinearMap.GeneralLinearGroup.generalLinearEquiv F _ (Matrix.GeneralLinearGroup.toLin g)
 
+/- English proof (translation)
+Rewrite using `[lequiv, LinearMap.GeneralLinearGroup.generalLinearEquiv_to_linearMap, Matrix.GeneralLinearGroup.coe_toLin]`.
+-/
 theorem lequiv_coe (g : GL (Fin (r + t)) F) :
     ((lequiv F r t g : (Fin (r + t) → F) ≃ₗ[F] (Fin (r + t) → F)) :
         (Fin (r + t) → F) →ₗ[F] (Fin (r + t) → F)) =
@@ -46,10 +52,26 @@ theorem lequiv_coe (g : GL (Fin (r + t)) F) :
   rw [lequiv, LinearMap.GeneralLinearGroup.generalLinearEquiv_to_linearMap,
     Matrix.GeneralLinearGroup.coe_toLin]
 
+/- English proof (translation)
+Rewrite using `[smul_def, ← lequiv_coe, LinearEquiv.finrank_map_eq]`.
+-/
 theorem finrank_smul (g : GL (Fin (r + t)) F) (W : Submodule F (Fin (r + t) → F)) :
     finrank F (g • W : Submodule F (Fin (r + t) → F)) = finrank F W := by
   rw [smul_def, ← lequiv_coe, LinearEquiv.finrank_map_eq]
 
+/- English proof (translation)
+Rewrite using `[MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hi hj`. Establish `hmem : (Pi.single j (1 : F) : Fin (r + t) → F) ∈ firstBlock F r t`. Introduce `k hk`.
+
+Establish `hkj : k ≠ j`. Introduce `e`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Simplify using `[hkj]`.
+
+Establish `h2 : Matrix.mulVecLin (g : Matrix (Fin (r + t)) (Fin (r + t)) F) (Pi.single j 1) ∈ firstBlock F r t`. Rewrite using `[← h, smul_def]`. Conclude with `Submodule.mem_map_of_mem hmem`. Establish `h3` using `h2 i hi`. Simplify `h3` using `[Matrix.mulVecLin_apply, Matrix.mulVec_single_one]`.
+
+Introduce `hg`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[smul_def]`. Introduce and unpack `_ ⟨v, hv, rfl⟩ i hi`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct]`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `hj : (j : ℕ) < r`. Simplify using `[hg i j hi hj]`. Simplify using `[hv j (by omega)]`.
+
+Conclude with `finrank_smul F r t g _`.
+-/
 theorem mem_stabilizer_iff (g : GL (Fin (r + t)) F) :
     g ∈ MulAction.stabilizer (GL (Fin (r + t)) F) (firstBlock F r t) ↔
       g ∈ parabolicSet F r t := by

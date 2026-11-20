@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Polynomial
 open scoped Pointwise nonZeroDivisors TensorProduct
 
+/- English proof (translation)
+Use `(Set.Finite.pi (t := fun i => {y : F | Polynomial.eval₂ ρ y (f i) = 0}) fun i => ?_).subset ?_` and prove the remaining obligations. Establish `h0 : (f i).map ρ ≠ 0` using `((hf i).map ρ).ne_zero`. Use `(Polynomial.finite_setOf_isRoot h0).subset ?_` and prove the remaining obligations. Introduce `y hy`. Simplify `hy` using `[Polynomial.IsRoot, Polynomial.eval_map]`.
+
+Introduce `v hv i _`. Conclude with `hv i`.
+-/
 private theorem finite_setOf_roots_of_monic_family {Λ F : Type*} [CommRing Λ] [Field F] (ρ : Λ →+* F) {r : ℕ}
     (f : Fin r → Polynomial Λ) (hf : ∀ i, (f i).Monic) :
     {v : Fin r → F | ∀ i, Polynomial.eval₂ ρ (v i) (f i) = 0}.Finite := by
@@ -14,6 +19,21 @@ private theorem finite_setOf_roots_of_monic_family {Λ F : Type*} [CommRing Λ] 
   · intro v hv i _
     exact hv i
 
+/- English proof (translation)
+Set `P : (Fin r → F) → Polynomial F` to `fun u => ∑ i, Polynomial.C (u i) * Polynomial.X ^ (i : ℕ)`. Establish `hev : ∀ u (y : F), (P u).eval y = ∑ i, u i * y ^ (i : ℕ)`. Introduce `u y`. Simplify using `[P, Polynomial.eval_finset_sum]`. Establish `hco : ∀ u (j : Fin r), (P u).coeff j = u j`.
+
+Introduce `u j`. Simplify using `only [P, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `i _ hij`.
+
+Rewrite using `[if_neg]`. Conclude with `fun h => hij (Fin.ext h).symm`. Simplify using the standard rewrite rules. Establish `hsub : {s : ℕ | ∃ v ∈ T, ∃ w ∈ T, v ≠ w ∧ ∑ i, v i * (s : F) ^ (i : ℕ) = ∑ i, w i * (s : F) ^ (i : ℕ)} ⊆ ⋃ p ∈ T ×ˢ T, {s : ℕ | p.1 ≠ p.2 ∧ (P (p.1 - p.2)).eval (s : F) = 0}`. Introduce and unpack `s ⟨v, hv, w, hw, hne, heq⟩`.
+
+Simplify using `only [Set.mem_iUnion]`. Use `⟨(v, w), ⟨hv, hw⟩, hne, ?_⟩` and prove the remaining obligations. Rewrite using `[hev]`. Simplify using `only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[heq, sub_self]`.
+
+Use `Set.Finite.subset ((hT.prod hT).biUnion fun p _ => ?_) hsub` and prove the remaining obligations. Distinguish the cases in `hp : p.1 = p.2`. Simplify using `[hp]`. Establish `h0 : P (p.1 - p.2) ≠ 0`. Introduce `h0`.
+
+Apply `hp` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Use `hco (p.1 - p.2) j` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `only [Polynomial.coeff_zero, Pi.sub_apply] at this`.
+
+Conclude with `sub_eq_zero.mp this.symm`. Use `(Set.Finite.preimage (Nat.cast_injective.injOn) (Polynomial.finite_setOf_isRoot h0)).subset ?_` and prove the remaining obligations. Introduce `s hs`. Conclude with `hs.2`.
+-/
 private theorem finite_setOf_nat_polynomial_collision {F : Type*} [Field F] [CharZero F] {r : ℕ} (T : Set (Fin r → F))
     (hT : T.Finite) :
     {s : ℕ | ∃ v ∈ T, ∃ w ∈ T, v ≠ w ∧
@@ -57,6 +77,25 @@ private theorem finite_setOf_nat_polynomial_collision {F : Type*} [Field F] [Cha
     intro s hs
     exact hs.2
 
+/- English proof (translation)
+Establish `hArt : IsArtinianRing A` using `isArtinian_of_tower L inferInstance`. Use `letI hF : ∀ m : MaximalSpectrum A, Field (A ⧸ m.asIdeal) := fun m => @Ideal.Quotient.field _ _ m.asIdeal m.isMaximal`. Use `haveI : Fintype (MaximalSpectrum A) := Fintype.ofFinite _`. Use `haveI hfd : ∀ m : MaximalSpectrum A, FiniteDimensional L (A ⧸ m.asIdeal) := fun m => Module.Finite.of_surjective (Ideal.Quotient.mkₐ L m.asIdeal).toLinearMap Ideal.Quotient.mk_surjective`. Set `e : A ≃ₐ[L] ((m : MaximalSpectrum A) → A ⧸ m.asIdeal)` to `(IsArtinianRing.equivPi A).restrictScalars L`.
+
+Establish `h1 : Module.finrank L A = ∑ m : MaximalSpectrum A, Module.finrank L (A ⧸ m.asIdeal)` using `e.toLinearEquiv.finrank_eq.trans (Module.finrank_pi_fintype L)`. Establish `h2 : ∀ m : MaximalSpectrum A, Nat.card (A ⧸ m.asIdeal →ₐ[L] Ω) = Module.finrank L (A ⧸ m.asIdeal)` using `fun m => AlgHom.natCard_of_splits L (A ⧸ m.asIdeal) Ω (fun _ => IsAlgClosed.splits _)`. Set `g : (Σ m : MaximalSpectrum A, (A ⧸ m.asIdeal →ₐ[L] Ω)) → (A →ₐ[L] Ω)` to `fun p => p.2.comp (Ideal.Quotient.mkₐ L p.1.asIdeal)`. Establish `hg : Function.Injective g`. Introduce and unpack `⟨m, φ⟩ ⟨m', φ'⟩ h`.
+
+Establish `hk : ∀ (n : MaximalSpectrum A) (χ : A ⧸ n.asIdeal →ₐ[L] Ω) (a : A), χ.comp (Ideal.Quotient.mkₐ L n.asIdeal) a = 0 ↔ a ∈ n.asIdeal`. Introduce `n χ a`. Establish `hinj : Function.Injective χ` using `χ.toRingHom.injective`. Rewrite using `[AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, map_eq_zero_iff χ hinj, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hm : m = m'`.
+
+Use extensionality with `a`. Rewrite using `[← hk m φ a, ← hk m' φ' a]`. Conclude with `Iff.of_eq (congrArg (fun χ : A →ₐ[L] Ω => χ a = 0) h)`. Substitute `hm` using the available equality. Establish `: φ = φ'`.
+
+Use extensionality with `y`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `DFunLike.congr_fun h a`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+
+Use `set S := Algebra.adjoin L {t}`. Set `res : (A →ₐ[L] Ω) → (S →ₐ[L] Ω)` to `fun φ => φ.comp S.val`. Establish `hres : Function.Injective res`. Introduce `φ ψ h`. Apply `ht` to reduce the goal to its premises.
+
+Conclude with `DFunLike.congr_fun h ⟨t, Algebra.self_mem_adjoin_singleton L t⟩`. Establish `h3 : Module.finrank L A ≤ Module.finrank L S`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Conclude with `Finset.sum_congr rfl (fun m _ => (h2 m).symm)`.
+
+Use `_ = Nat.card (Σ m : MaximalSpectrum A, (A ⧸ m.asIdeal →ₐ[L] Ω)) := by`. Rewrite using `[Nat.card_sigma]`. Use `_ ≤ Nat.card (A →ₐ[L] Ω) := Nat.card_le_card_of_injective g hg`. Use `_ ≤ Nat.card (S →ₐ[L] Ω) := Nat.card_le_card_of_injective res hres`. Use `_ ≤ Module.finrank L S := card_algHom_le_finrank L S Ω`.
+
+Rewrite using `[← Algebra.toSubmodule_eq_top]`. Conclude with `Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le _) h3)`.
+-/
 private theorem adjoin_singleton_eq_whole_of_separates_homs {L A Ω : Type*} [Field L] [CharZero L] [CommRing A] [Algebra L A]
     [FiniteDimensional L A] [IsReduced A] [Field Ω] [IsAlgClosed Ω] [Algebra L Ω] (t : A)
     (ht : ∀ φ ψ : A →ₐ[L] Ω, φ t = ψ t → φ = ψ) : Algebra.adjoin L {t} = ⊤ := by
@@ -113,6 +152,31 @@ private theorem adjoin_singleton_eq_whole_of_separates_homs {L A Ω : Type*} [Fi
   rw [← Algebra.toSubmodule_eq_top]
   exact Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le _) h3)
 
+/- English proof (translation)
+Establish `hann : ∀ b : B, (∀ m : M, b • m = 0) → b ∈ J`. Introduce `b hb`. Apply `h.rad` to reduce the goal to its premises. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `p ⟨hJp, hp⟩`.
+
+Conclude with `(h.supp p hp).mpr hJp (Module.mem_annihilator.mpr hb)`. Use `haveI := h.free`. Use `haveI := h.fin`. Set `F : B → Module.End Λ M` to `fun b => { toFun := fun m => b • m map_add' := smul_add b map_smul' := fun c m => by`. Simplify using `only [RingHom.id_apply]`.
+
+Rewrite using `[h.hs, h.hs, smul_smul, smul_smul, mul_comm] }`. Establish `hFa : ∀ a b, F (a + b) = F a + F b` using `fun a b => LinearMap.ext fun m => add_smul a b m`. Establish `hFs : ∀ a b, F (a - b) = F a - F b` using `fun a b => LinearMap.ext fun m => sub_smul a b m`. Establish `hFm : ∀ a b, F (a * b) = F a * F b` using `fun a b => LinearMap.ext fun m => mul_smul a b m`. Establish `hF0 : F 0 = 0` using `LinearMap.ext fun m => zero_smul B m`.
+
+Establish `hF1 : F 1 = 1` using `LinearMap.ext fun m => one_smul B m`. Establish `hFl : ∀ (c : Λ) b, F (lam c * b) = c • F b` using `fun c b => LinearMap.ext fun m => by show (lam c * b) • m = c • (b • m)`. Rewrite using `[h.hs, mul_smul]`. Establish `hFp : ∀ a (k : ℕ), F (a ^ k) = F a ^ k`. Introduce `a k`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp [hF1]`. Consider the case `succ k ih => rw [pow_succ, hFm, ih, pow_succ]`. Establish `hJ : ∀ b, F b = 0 → b ∈ J` using `fun b hb => hann b fun m => LinearMap.congr_fun hb m`. Set `N : Submodule Λ (Module.End Λ M)` to `{ carrier := Set.range F add_mem' := by`.
+
+Introduce and unpack `_ _ ⟨a, rfl⟩ ⟨b, rfl⟩`. Conclude with `⟨a + b, hFa a b⟩`. Use the proof step `zero_mem' := ⟨0, hF0⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨b, rfl⟩`.
+
+Conclude with `⟨lam c * b, hFl c b⟩ }`. Use `haveI : IsNoetherian Λ (Module.End Λ M) := isNoetherian_of_isNoetherianRing_of_finite Λ _`. Take `⟨r, s, hs⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp (IsNoetherian.noetherian N)`. Establish `hsN : ∀ i, s i ∈ N` using `fun i => hs ▸ Submodule.subset_span (Set.mem_range_self i)`. Use `choose b hb using hsN`.
+
+Use `⟨⟨r, b, fun a => ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Establish `hmem : F a ∈ Submodule.span Λ (Set.range s)` using `hs.symm ▸ ⟨a, rfl⟩`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun Λ).mp hmem`. Use `⟨c, hJ _ ?_⟩` and prove the remaining obligations. Establish `hsum : ∀ (t : Finset (Fin r)), F (∑ i ∈ t, lam (c i) * b i) = ∑ i ∈ t, c i • s i`.
+
+Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp [hF0]`. Consider the case `insert j t hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, hFa, ih, hFl, hb]`. Rewrite using `[hFs, hsum, hc, sub_self]`.
+
+Use `⟨(F a).charpoly, (F a).charpoly_monic, hJ _ ?_⟩` and prove the remaining obligations. Establish `hp : ∀ p : Polynomial Λ, F (Polynomial.eval₂ (lam : Λ →+* B) a p) = Polynomial.aeval (F a) p`. Introduce `p`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C c`.
+
+Rewrite using `[Polynomial.eval₂_C, Polynomial.aeval_C]`. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Rewrite using `[Module.algebraMap_end_apply]`. Conclude with `(h.hs c m).symm`. Consider the case `add p q hp hq => rw [Polynomial.eval₂_add, map_add, hFa, hp, hq]`.
+
+Consider the case `monomial n c _`. Rewrite using `[Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow]`. Rewrite using `[show (lam : Λ →+* B) c = lam c from rfl, hFl, hFp, map_mul, Polynomial.aeval_C, map_pow, Polynomial.aeval_X, Algebra.smul_def]`. Rewrite using `[hp, LinearMap.aeval_self_charpoly]`.
+-/
 private theorem finite_span_mod_and_integral_of_j_dat {O Λ B : Type} [CommRing O] [CommRing Λ] [IsNoetherianRing Λ]
     [CommRing B] [Algebra O Λ] [Algebra O B] (lam : Λ →ₐ[O] B) (J : Ideal B) (M : Type)
     [AddCommGroup M] [Module B M] [Module Λ M] (h : UpperTheory.V.J.Dat lam J M) :
@@ -187,6 +251,35 @@ private theorem finite_span_mod_and_integral_of_j_dat {O Λ B : Type} [CommRing 
           Polynomial.aeval_X, Algebra.smul_def]
     rw [hp, LinearMap.aeval_self_charpoly]
 
+/- English proof (translation)
+Set `L` to `FractionRing Λ`. Set `A` to `Localization (Algebra.algebraMapSubmonoid R (nonZeroDivisors Λ))`. Set `Ω` to `AlgebraicClosure L`. Use `haveI : CharZero L := charZero_of_injective_algebraMap (IsFractionRing.injective Λ L)`. Use `haveI : Module.Finite L A := Module.Finite.of_isLocalization Λ R (nonZeroDivisors Λ)`.
+
+Set `ι : R →+* A` to `algebraMap R A`. Establish `hιl : ∀ c : Λ, ι (algebraMap Λ R c) = algebraMap L A (algebraMap Λ L c)`. Introduce `c`. Rewrite using `[← IsScalarTower.algebraMap_apply Λ L A, IsScalarTower.algebraMap_apply Λ R A]`. Set `ρ : Λ →+* Ω` to `(algebraMap L Ω).comp (algebraMap Λ L)`.
+
+Establish `hχl : ∀ (χ : A →ₐ[L] Ω) (c : Λ), χ (ι (algebraMap Λ R c)) = ρ c`. Introduce `χ c`. Rewrite using `[hιl, AlgHom.commutes]`. Both sides reduce to the same expression. Set `T` to `{v : Fin r → Ω | ∀ i, Polynomial.eval₂ ρ (v i) (f i) = 0}`.
+
+Establish `hT : T.Finite` using `finite_setOf_roots_of_monic_family ρ f hf`. Establish `hv : ∀ χ : A →ₐ[L] Ω, (fun i => χ (ι (b i))) ∈ T`. Introduce `χ i`. Establish `h0` using `congrArg (fun y => χ (ι y)) (hfb i)`. Simplify using `only [map_zero] at h0`.
+
+Rewrite using `[← h0, Polynomial.aeval_def]`. Establish `hc : ((χ : A →+* Ω).comp ι).comp (algebraMap Λ R) = ρ` using `RingHom.ext (hχl χ)`. Rewrite using `[← hc]`. Conclude with `(Polynomial.hom_eval₂ (f i) (algebraMap Λ R) ((χ : A →+* Ω).comp ι) (b i)).symm`. Use `(finite_setOf_nat_polynomial_collision T hT).subset ?_` and prove the remaining obligations.
+
+Introduce `s hs`. Assume the negation of the conclusion as `hnb`. Apply `hs` to reduce the goal to its premises. Use `set t : R := ∑ i : Fin r, (s : R) ^ (i : ℕ) * b i with ht`. Establish `hsum : ∀ χ : A →ₐ[L] Ω, χ (ι t) = ∑ i, χ (ι (b i)) * (s : Ω) ^ (i : ℕ)`.
+
+Introduce `χ`. Simplify using `only [ht, map_sum, map_mul, map_pow, map_natCast]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hsep : ∀ φ ψ : A →ₐ[L] Ω, φ (ι t) = ψ (ι t) → φ = ψ`. Introduce `φ ψ hφψ`.
+
+Establish `htup : (fun i => φ (ι (b i))) = (fun i => ψ (ι (b i)))`. Assume the negation of the conclusion as `hne`. Conclude with `hnb ⟨_, hv φ, _, hv ψ, hne, by rw [← hsum, ← hsum]; exact hφψ⟩`. Establish `hB : ∀ y : R, φ (ι y) = ψ (ι y)`. Introduce `y`.
+
+Take `⟨c, rfl⟩` from `hgen y`. Simplify using `only [map_sum, map_mul, hχl]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [congr_fun htup i]`. Apply `AlgHom.coe_ringHom_injective` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext (Algebra.algebraMapSubmonoid R (nonZeroDivisors Λ))` to reduce the goal to its premises.
+
+Use extensionality with `y`. Conclude with `hB y`. Establish `htop` using `adjoin_singleton_eq_whole_of_separates_homs (L := L) (A := A) (Ω := Ω) (ι t) hsep`. Introduce `y`. Establish `hy : ι y ∈ Algebra.adjoin L {ι t}` using `htop ▸ Algebra.mem_top`.
+
+Rewrite `hy` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨Q, hQ⟩` from `hy`. Take `⟨d, hd0, hd⟩` from `IsLocalization.integerNormalization_spec (nonZeroDivisors Λ) Q`. Use `set P := IsLocalization.integerNormalization (nonZeroDivisors Λ) Q with hP`. Establish `hPQ : P.map (algebraMap Λ L) = Polynomial.C (algebraMap Λ L d) * Q`.
+
+Rewrite using `[hd, Algebra.smul_def, Polynomial.algebraMap_apply]`. Establish `hkey : ι (algebraMap Λ R d * y - Polynomial.aeval t P) = 0`. Establish `e1 : ι (Polynomial.aeval t P) = Polynomial.aeval (ι t) (P.map (algebraMap Λ L))`. Rewrite using `[Polynomial.aeval_map_algebraMap, Polynomial.aeval_def, Polynomial.aeval_def, Polynomial.hom_eval₂]`. Use `congr 1`.
+
+Rewrite using `[map_sub, e1, hPQ, map_mul, map_mul, Polynomial.aeval_C, hιl]`. Express the relevant statement in the definitionally equal form `_ * ι y - _ * (Polynomial.aeval (ι t)) Q = 0`. Rewrite using `[← hQ]`. Conclude with `sub_self _`. Take `⟨⟨m, hm⟩, hm0⟩` from `(IsLocalization.map_eq_zero_iff (Algebra.algebraMapSubmonoid R (nonZeroDivisors Λ)) A _).mp hkey`.
+
+Take `⟨e, he, rfl⟩` from `hm`. Use `⟨d, nonZeroDivisors.ne_zero hd0, P, ?_⟩` and prove the remaining obligations. Conclude with `sub_eq_zero.mp (htf e (nonZeroDivisors.ne_zero he) _ hm0)`.
+-/
 private theorem finite_setOf_nat_not_primitive_element {Λ R : Type} [CommRing Λ] [IsDomain Λ] [CharZero Λ] [CommRing R]
     [Algebra Λ R] [IsReduced R] [Module.Finite Λ R]
     (htf : ∀ c : Λ, c ≠ 0 → ∀ y : R, algebraMap Λ R c * y = 0 → y = 0)
@@ -267,6 +360,37 @@ private theorem finite_setOf_nat_not_primitive_element {Λ R : Type} [CommRing �
   refine ⟨d, nonZeroDivisors.ne_zero hd0, P, ?_⟩
   exact sub_eq_zero.mp (htf e (nonZeroDivisors.ne_zero he) _ hm0)
 
+/- English proof (translation)
+Introduce `O Λ B K _ _ _ _ _ _ _ _ _ _ _ lam J M _ _ _ h x hx`. Take `⟨⟨r, b, hgen⟩, hmon⟩` from `finite_span_mod_and_integral_of_j_dat lam J M h`. Use `choose f hfm hfJ using fun i => hmon (b i)`. Use `letI : Algebra Λ (B ⧸ J) := ((Ideal.Quotient.mk J).comp (lam : Λ →+* B)).toAlgebra`. Establish `hmk : ∀ c : Λ, algebraMap Λ (B ⧸ J) c = Ideal.Quotient.mk J (lam c)` using `fun c => rfl`.
+
+Use `haveI : IsReduced (B ⧸ J) := (Ideal.isRadical_iff_quotient_reduced J).mp h.rad`. Establish `hgenR : ∀ y : B ⧸ J, ∃ c : Fin r → Λ, y = ∑ i, algebraMap Λ (B ⧸ J) (c i) * Ideal.Quotient.mk J (b i)`. Introduce `y`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨c, hc⟩` from `hgen a`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.eq.mpr hc, map_sum]`. Simplify using `only [map_mul, hmk]`. Use `haveI : Module.Finite Λ (B ⧸ J) := by`. Use `⟨⟨Finset.univ.image (fun i => Ideal.Quotient.mk J (b i)), ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨c, rfl⟩` from `hgenR y`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`. Establish `htf : ∀ c : Λ, c ≠ 0 → ∀ y : B ⧸ J, algebraMap Λ (B ⧸ J) c * y = 0 → y = 0`. Introduce `c hc y hy`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite `hy` using `[hmk, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (h.tf c hc a hy)`. Establish `hfb : ∀ i, Polynomial.aeval (Ideal.Quotient.mk J (b i)) (f i) = 0`. Introduce `i`. Rewrite using `[Polynomial.aeval_def]`. Use `Polynomial.hom_eval₂ (f i) (lam : Λ →+* B) (Ideal.Quotient.mk J) (b i)` as an intermediate fact.
+
+Rewrite `this` using `[Ideal.Quotient.eq_zero_iff_mem.mpr (hfJ i)]`. Conclude with `this.symm`. Establish `hbadR` using `finite_setOf_nat_not_primitive_element htf (fun i => Ideal.Quotient.mk J (b i)) hgenR f hfm hfb`. Set `ρK : Λ →+* K` to `(x : B →+* K).comp (lam : Λ →+* B)`. Set `TK` to `{v : Fin r → K | ∀ i, Polynomial.eval₂ ρK (v i) (f i) = 0}`.
+
+Establish `hTK : TK.Finite` using `finite_setOf_roots_of_monic_family ρK f hfm`. Take `⟨s, hs⟩` from `((hbadR.union (finite_setOf_nat_polynomial_collision TK hTK)).infinite_compl).nonempty`. Simplify using `only [Set.mem_compl_iff, Set.mem_union, not_or] at hs`. Take `⟨hs1, hs2⟩` from `hs`. Simplify using `only [Set.mem_setOf_eq, not_not] at hs1`.
+
+Use `⟨∑ i : Fin r, (s : B) ^ (i : ℕ) * b i, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Take `⟨c, hc, P, hP⟩` from `hs1 (Ideal.Quotient.mk J a)`. Use `⟨c, hc, P, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, ← hmk, hP, Polynomial.aeval_def, Polynomial.hom_eval₂]`.
+
+Simplify using `only [map_sum, map_mul, map_pow, map_natCast]`. Rewrite using `[sub_eq_zero]`. Both sides reduce to the same expression. Introduce `x' hx' hcomp hxt`. Establish `hv : ∀ χ : B →ₐ[O] K, J ≤ RingHom.ker χ → χ.comp lam = x.comp lam → (fun i => χ (b i)) ∈ TK`.
+
+Introduce `χ hχ hχc i`. Establish `h0 : (χ : B →+* K) (Polynomial.eval₂ (lam : Λ →+* B) (b i) (f i)) = 0` using `RingHom.mem_ker.mp (hχ (hfJ i))`. Establish `hρ : (χ : B →+* K).comp (lam : Λ →+* B) = ρK` using `RingHom.ext fun c => AlgHom.congr_fun hχc c`. Rewrite `h0` using `[Polynomial.hom_eval₂, hρ]`. Conclude with `h0`.
+
+Establish `hsum : ∀ χ : B →ₐ[O] K, χ (∑ i : Fin r, (s : B) ^ (i : ℕ) * b i) = ∑ i, χ (b i) * (s : K) ^ (i : ℕ)`. Introduce `χ`. Simplify using `only [map_sum, map_mul, map_pow, map_natCast]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `htup : (fun i => x' (b i)) = (fun i => x (b i))`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hs2 ⟨_, hv x' hx' hcomp, _, hv x hx rfl, hne, by rw [← hsum, ← hsum]; exact hxt⟩`. Use extensionality with `a`. Take `⟨c, hc⟩` from `hgen a`. Establish `e1 : ∀ χ : B →ₐ[O] K, J ≤ RingHom.ker χ → χ a = ∑ i, χ (lam (c i)) * χ (b i)`.
+
+Introduce `χ hχ`. Use `RingHom.mem_ker.mp (hχ hc)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Rewrite using `[this, map_sum]`. Simplify using `only [map_mul]`.
+
+Rewrite using `[e1 x' hx', e1 x hx]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `AlgHom.congr_fun hcomp (c i)`. Simplify using `only [AlgHom.comp_apply] at h1`. Rewrite using `[h1, congr_fun htup i]`.
+-/
 theorem UpperTheory.V.J.primEx :
     UpperTheory.V.J.PrimEx := by
   intro O Λ B K _ _ _ _ _ _ _ _ _ _ _ lam J M _ _ _ h x hx

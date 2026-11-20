@@ -14,6 +14,11 @@ open private UpperTheory.V.Sd.cent UpperTheory.V.Sd.reps UpperTheory.V.Sd.pi_mem
 
 namespace UpperTheory.V.Z.Win.Birth
 
+/- English proof (translation)
+Introduce `F _ _ w σ c lam hc ⟨v, hv, hfix, hU⟩`. Take `⟨ω, hω⟩` from `UpperTheory.V.Sd.cent w σ`. Take `⟨S, hS, hcard⟩` from `UpperTheory.V.Sd.reps w`. Establish `hsum` using `(uopSum F w σ.V σ.ρ c v hfix).2 _ hS`. Rewrite `hsum` using `[if_neg hc, add_zero, hU]`.
+
+Establish `hπ : Valued.v ((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) = WithZero.exp (-1 : ℤ)` using `unif_spec w`. Rewrite using `[← hcard]`. Use `UpperTheory.V.Sd.gen (w.adicCompletionIntegers F).toSubring (w.adicCompletionIntegers F).mem_or_inv_mem (atFin w (unif w)) (UpperTheory.V.Sd.pi_mem hπ) (UpperTheory.V.Sd.pi_pow hπ) (IsUnitAt w) (UpperTheory.V.Sd.pi_dec hπ) σ.ρ σ.irred (UpperTheory.V.Sd.tors σ) (UpperTheory.V.Sd.f …` and prove the remaining obligations. Simplify using `using hfix _ (UpperTheory.V.Sd.affine_mem_iwahori_level w c 1 ⟨x, hx⟩)`.
+-/
 private theorem jacq : JacqOfU := by
   intro F _ _ w σ c lam hc ⟨v, hv, hfix, hU⟩
   obtain ⟨ω, hω⟩ := UpperTheory.V.Sd.cent w σ
@@ -29,6 +34,29 @@ private theorem jacq : JacqOfU := by
     (fun u hu => hfix _ (UpperTheory.V.Sd.unit_mem c u hu)) S lam hsum.symm
   simpa using hfix _ (UpperTheory.V.Sd.affine_mem_iwahori_level w c 1 ⟨x, hx⟩)
 
+/- English proof (translation)
+Use `set δ : (Fin 2 → kˣ) →* ℂˣ := (deltaHalf k fun _ : Fin 2 => Unit).comp (leviTorus k (Fin 2)).toMonoidHom with hδ`. Set `χ : (Fin 2 → kˣ) →* ℂˣ` to `torusChar ![μ₁, μ₂] * δ⁻¹`. Establish `hker : twKer π (unipB k (Fin 2)) 1 ≤ LinearMap.ker L`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`.
+
+Take `⟨u1, u2⟩` from `(mem_unipB k).1 u.2`. Establish `e : (u : GL (Fin 2) k) = Matrix.GeneralLinearGroup.scalar (Fin 2) 1 * aff (1 / 1) (u.1.val 0 1)`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, u2, u1 1 0]`. Use `H 1 1 (u.1.val 0 1) v` as an intermediate fact.
+
+Rewrite `this` using `[← e]`. Simplify using `[this]`. Set `l : Jacquet π (unipB k (Fin 2)) →ₗ[ℂ] ℂ` to `Submodule.liftQ _ L hker`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, L v ≠ 0 := by`. Assume the negation of the conclusion as `hn`.
+
+Use `push Not at hn`. Conclude with `hL (LinearMap.ext hn)`. Establish `hle : ∀ t x, l (jacB π t x) = (χ t : ℂ) * l x` using `fun t x => by`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `e : diagT k (Fin 2) t = Matrix.GeneralLinearGroup.scalar (Fin 2) (t 1) * aff (t 0 / t 1) 0`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, val_diagT, Matrix.GeneralLinearGroup.scalar, mul_div_cancel₀]`. Rewrite using `[UnramFixed.jacB_apply, jacBU_mk, map_smul, e]`. Express the relevant statement in the definitionally equal form `_ * L _ = _ * L y`. Rewrite using `[H, ← mul_assoc, ← Units.val_mul, mul_comm _ (μ₁ _ * _)]`.
+
+Simplify using `[χ, torusChar_apply, hδ]`. Establish `hs : IsSmoothChar χ`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((isSmooth_jacB hπ (Submodule.Quotient.mk v)).mem_nhds (by simp)) ?_)` and prove the remaining obligations. Introduce `g hg`. Establish `hg' : jacB π g (Submodule.Quotient.mk v) = Submodule.Quotient.mk v` using `hg`.
+
+Establish `h` using `hle g (Submodule.Quotient.mk v)`. Rewrite `h` using `[hg']`. Conclude with `Units.ext (mul_right_cancel₀ (show l (Submodule.Quotient.mk v) ≠ 0 from hv) (h.symm.trans (one_mul _).symm))`. Establish `htc : torusChar (fun i => χ.comp (MonoidHom.mulSingle (fun _ => kˣ) i)) = χ` using `MonoidHom.ext fun t => by`. Rewrite using `[torusChar_apply]`.
+
+Use `conv_rhs => rw [← Finset.univ_prod_mulSingle t, map_prod]`. Both sides reduce to the same expression. Use `⟨fun i => χ.comp (MonoidHom.mulSingle (fun _ => kˣ) i), fun i => hs.comp _ (continuous_mulSingle (A := fun _ => kˣ) i), ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.SatakeExists.isSubquotient_of_eigenform hπ hi χ l (fun e => hv (LinearMap.congr_fun e (Submodule.Quotient.mk v))) hle`. Rewrite `key` using `[← htc]`.
+
+Conclude with `key`. Establish `hd : ∀ (t : Fin 2 → kˣ) i, Matrix.GeneralLinearGroup.det (leviTorus k (Fin 2) t i) = t i` using `fun t => congrFun ((leviTorus k (Fin 2)).left_inv t)`. Establish `e0 : modExp (fun _ : Fin 2 => Unit) 0 = 1` using `by decide`. Establish `e1 : modExp (fun _ : Fin 2 => Unit) 1 = -1` using `by decide`. Establish `h1 : δ (Pi.mulSingle 0 x) = absPow k (1 / 2) x`.
+
+Rewrite using `[hδ, MonoidHom.comp_apply]`. Express the relevant statement in the definitionally equal form `deltaHalf k (fun _ : Fin 2 => Unit) (leviTorus k (Fin 2) (Pi.mulSingle 0 x)) = _`. Rewrite using `[deltaHalf_apply, Fin.prod_univ_two, hd, hd, e0, e1]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `torusChar ![μ₁, μ₂] (Pi.mulSingle 0 x) * (δ (Pi.mulSingle 0 x))⁻¹ = _`.
+
+Rewrite using `[h1]`. Simplify using `[torusChar_apply]`.
+-/
 private theorem ps_of_form {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin 2) k) V} (hπ : IsSmooth π)
     (hi : π.IsIrreducible) (μ₁ μ₂ : kˣ →* ℂˣ) (L : V →ₗ[ℂ] ℂ) (hL : L ≠ 0)
@@ -94,12 +122,18 @@ private theorem ps_of_form {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
     rw [h1]
     simp [torusChar_apply]
 
+/- English proof (translation)
+Establish `h : Valued.v (x : w.adicCompletion F) = 1` using `hx`. Rewrite using `[GlobalTheory.LGrp.nabs_eq_zpow, SphCompletion.ord_completion, h]`. Simplify using the standard rewrite rules.
+-/
 private theorem nabs_unit {F : Type} [Field F] [NumberField F] (w : Pl F) (x : (w.adicCompletion F)ˣ)
     (hx : IsUnitAt w x) : nabs (w.adicCompletion F) x = 1 := by
   have h : Valued.v (x : w.adicCompletion F) = 1 := hx
   rw [GlobalTheory.LGrp.nabs_eq_zpow, SphCompletion.ord_completion, h]
   simp
 
+/- English proof (translation)
+Establish `h : Valued.v ((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) = WithZero.exp (-1 : ℤ)` using `unif_spec w`. Rewrite using `[GlobalTheory.LGrp.nabs_eq_zpow, SphCompletion.ord_completion, h, GlobalTheory.LocLanglands.resCard_eq_normV]`. Simplify using the standard rewrite rules.
+-/
 private theorem nabs_pi {F : Type} [Field F] [NumberField F] (w : Pl F) :
     nabs (w.adicCompletion F) (atFin w (unif w)) = (normV w : ℝ)⁻¹ := by
   have h : Valued.v ((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) = WithZero.exp (-1 : ℤ) :=
@@ -109,6 +143,17 @@ private theorem nabs_pi {F : Type} [Field F] [NumberField F] (w : Pl F) :
 
 end UpperTheory.V.Z.Win.Birth
 
+/- English proof (translation)
+Introduce `F _ _ w c lam σ hc hl hU`. Take `⟨μ₁, μ₂, L, hL, hμ, hlam, hlaw⟩` from `UpperTheory.V.Z.Win.Birth.jacq F w σ c (Units.mk0 lam hl) hc hU`. Take `⟨ψ, hψ, hs, h0⟩` from `UpperTheory.V.Z.Win.Birth.ps_of_form σ.smooth σ.irred μ₁ μ₂ L hL hlaw`. Use `⟨ψ, hψ, hs, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `hA : absPow (w.adicCompletion F) (1 / 2) x = 1` using `Units.ext (by`.
+
+Rewrite using `[val_absPow, UpperTheory.V.Z.Win.Birth.nabs_unit w x hx]`. Use the proof step `simp)`. Rewrite using `[h0, hμ x hx, hA]`. Simplify using the standard rewrite rules. Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0`.
+
+Use `GlobalTheory.WeilDeligne.one_lt_normV w` as an intermediate fact. Conclude with `(zero_lt_one.trans this).ne'` after adjusting the coercions. Establish `hA : ((absPow (w.adicCompletion F) (1 / 2) (atFin w (unif w)) : ℂˣ) : ℂ) ^ 2 = ((normV w : ℕ) : ℂ)⁻¹`. Establish `hq' : (((normV w : ℝ)⁻¹ : ℝ) : ℂ) ≠ 0`. Use `push_cast`.
+
+Conclude with `inv_ne_zero hq`. Rewrite using `[val_absPow, UpperTheory.V.Z.Win.Birth.nabs_pi, sq, ← Complex.cpow_add _ _ hq']`. Evaluate the numerical expressions. Establish `hA0 : ((absPow (w.adicCompletion F) (1 / 2) (atFin w (unif w)) : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `hl' : ((normV w : ℕ) : ℂ) * ((μ₁ (atFin w (unif w)) : ℂˣ) : ℂ) = lam`.
+
+Simplify using `using hlam`. Rewrite using `[h0, Units.val_mul, Units.val_inv_eq_inv_val, mul_pow, inv_pow, hA, inv_inv, ← hl']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Z.Win.Birth.uLoc :
     UpperTheory.V.Z.Win.Birth.ULoc := by
   intro F _ _ w c lam σ hc hl hU

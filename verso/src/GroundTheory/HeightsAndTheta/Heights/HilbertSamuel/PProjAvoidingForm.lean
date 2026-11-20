@@ -10,6 +10,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 noncomputable section
 
+/- English proof (translation)
+Use `show coeff 0 (homogeneousComponent d G) = 0`. Rewrite using `[coeff_homogeneousComponent]`. Use `split_ifs with h`. Simplify using `at h`. Use linear arithmetic over natural numbers and integers.
+
+Both sides reduce to the same expression.
+-/
 theorem ProjAvoidingForm.constantCoeff_homogeneousComponent {σ : Type} {G : MvPolynomial σ ℚ} {d : ℕ}
     (hd : 0 < d) : constantCoeff (homogeneousComponent d G) = 0 := by
   show coeff 0 (homogeneousComponent d G) = 0
@@ -19,6 +24,69 @@ theorem ProjAvoidingForm.constantCoeff_homogeneousComponent {σ : Type} {G : MvP
     omega
   · rfl
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y D df f hV hf hfP`. Establish `hV'` using `hV`. Take `⟨-, ⟨hprime, -, hrelv⟩, hhor, -⟩` from `hV'`. Establish `: CharZero Ω`. Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations.
+
+Establish `h1 : ((n : ℤ) : MRing ι) ∈ mCoordIdeal y`. Rewrite using `[mCoordIdeal, RingHom.mem_ker, map_intCast, Int.cast_natCast, ← map_natCast (C : Ω →+* MvPolynomial K Ω), hn, map_zero]`. Establish `h2 : (n : ℤ) ∈ (mCoordIdeal y).comap (C : ℤ →+* MRing ι)`. Simplify using `using h1`. Rewrite `h2` using `[hhor]`.
+
+Conclude with `Ideal.mem_bot.mp h2` after adjusting the coercions. Establish `hx` using `hSeg K ι Ω y D hV`. Use `set x := segreCoords y with hxdef`. Take `⟨B, e, ⟨B', hB'⟩, hF⟩` from `RatNoetherFrame.proof D Ω ((k : K) → ι k) x hx`. Use `set x' := matAct B x with hx'def`.
+
+Use `set w : Fin (D + 1) → Ω := x' ∘ e with hwdef`. Use `set R₀ := coneRing ℚ w`. Establish `hBB : ∀ p l, ∑ i, B' p i * B i l = if p = l then 1 else 0`. Introduce `p l`. Use `congrFun (hB' (Pi.single l 1)).2 p` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite]`. Establish `hxinv : ∀ p, x p = ∑ i, (B' p i : Ω) * x' i`. Introduce `p`. Simplify using `only [hx'def, matAct, Finset.mul_sum, ← mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+
+Repeatedly rewrite using `[← Finset.sum_mul]`. Establish `h1 : ∀ l, (∑ i, (B' p i : Ω) * (B i l : Ω)) = if p = l then 1 else 0` using `fun l => by`. Use `congrArg (fun q : ℚ => (q : Ω)) (hBB p l)` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[this]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[h1]`. Establish `hlin : ∀ c : Ix ((k : K) → ι k) → ℚ, (∑ i, C (c i) * X i : MvPolynomial (Ix ((k : K) → ι k)) ℚ).IsHomogeneous 1` using `fun c => IsHomogeneous.sum _ _ _ fun i _ => (isHomogeneous_X _ _).C_mul _`. Establish `hint : ∀ p, IsIntegral R₀ (Polynomial.C (x p) * Polynomial.X)`. Introduce `p`.
+
+Use `isIntegral_coneMap x' R₀ hF.integral (∑ i, C (B' p i) * X i)` as an intermediate fact. Rewrite `this` using `[coneMap_of_isHomogeneous ℚ x' (hlin _), pow_one]`. Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hxinv p]`. Simplify using `[map_sum]`.
+
+Set `ℓq : Fin (D + 1) → MvPolynomial (Ix ((k : K) → ι k)) ℚ` to `fun j => ∑ i, C (B (e j) i) * X i`. Establish `hℓhom : ∀ j, (ℓq j).IsHomogeneous 1` using `fun j => hlin _`. Establish `hℓx : ∀ j, aeval x (ℓq j) = w j` using `fun j => by`. Simplify using `[ℓq, hwdef, hx'def, matAct]`. Use `set N : ℕ := ∏ j, ∏ i, (B (e j) i).den with hNdef`.
+
+Establish `hN : (N : ℚ) ≠ 0`. Rewrite using `[hNdef]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun j _ => Finset.prod_ne_zero_iff.mpr fun i _ => (B (e j) i).den_nz` after adjusting the coercions. Establish `hden : ∀ j i, ∃ n : ℤ, (n : ℚ) = (N : ℚ) * B (e j) i`. Introduce `j i`.
+
+Take `⟨r, hr⟩ : (B (e j) i).den ∣ N` from `(Finset.dvd_prod_of_mem (fun i => (B (e j) i).den) (Finset.mem_univ i)).trans (Finset.dvd_prod_of_mem (fun j => ∏ i, (B (e j) i).den) (Finset.mem_univ j))`. Use `⟨r * (B (e j) i).num, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Establish `hq` using `Rat.num_div_den (B (e j) i)`. Establish `hd : ((B (e j) i).den : ℚ) ≠ 0` using `by exact_mod_cast (B (e j) i).den_nz`.
+
+Establish `h3 : ((B (e j) i).num : ℚ) = B (e j) i * (B (e j) i).den` using `(div_eq_iff hd).mp hq`. Use `push_cast`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree. Use `choose n hn using hden`.
+
+Set `L : Fin (D + 1) → MRing ι` to `fun j => segreSub (∑ i, C (n j i) * X i)`. Establish `hLhom : ∀ j, IsMultiHomog (L j) (fun _ => 1)` using `fun j => isMultiHomog_segreSub_linear (n j)`. Establish `hLz : ∀ (z : (Σ k, ι k) → ℂ) j, eval z (map (Int.castRingHom ℂ) (L j)) = (N : ℂ) * aeval (segreCoords z) (ℓq j)`. Introduce `z j`. Simplify using `only [L, ℓq, eval_segreSub, map_sum, map_mul, map_C, map_X, eval_X, eval_C, aeval_C, aeval_X, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congrArg (fun q : ℚ => (q : ℂ)) (hn j i)` as an intermediate fact. Move the coercions through the operations in `at this`. Simplify using `[this, mul_assoc]`. Establish `hNC : (N : ℂ) ≠ 0` using `by exact_mod_cast hN`.
+
+Establish `hnz : ∀ z ∈ mcPts (mCoordIdeal y), ∃ j, eval z (map (Int.castRingHom ℂ) (L j)) ≠ 0`. Introduce `z hz`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Establish `hℓ0 : (fun j => aeval (segreCoords z) (ℓq j)) = 0` using `funext fun j => by`.
+
+Use `hLz z j` as an intermediate fact. Rewrite `this` using `[hall j]`. Conclude with `(mul_eq_zero.mp this.symm).resolve_left hNC`. Establish `hu0 : ∀ p, segreCoords z p = 0`. Introduce `p`.
+
+Establish `hα : IsIntegral R₀ (coneMap ℚ x (X p))` using `isIntegral_coneMap x R₀ hint (X p)`. Establish `hg : ∀ k, ∃ g, coneMap ℚ w g = ((minpoly R₀ (coneMap ℚ x (X p))).coeff k : Polynomial Ω)` using `fun k => (AlgHom.mem_range _).mp ((minpoly R₀ (coneMap ℚ x (X p))).coeff k).2`. Use `choose g hg using hg`. Establish `hrel` using `key_relation y w ℓq hℓhom hℓx (isHomogeneous_X ℚ p) _ (minpoly.aeval R₀ _) g hg (minpoly R₀ (coneMap ℚ x (X p))).natDegree hz`. Simplify using `only [← hxdef] at hrel`.
+
+Rewrite using `[hℓ0, Finset.sum_range_succ, Finset.sum_eq_zero fun k hk => by`. Rewrite `hk` using `[Finset.mem_range]`. Rewrite using `[if_pos (by omega), aeval_zero, constantCoeff_homogeneousComponent (by omega), map_zero, mul_zero],`. Use the proof step `zero_add, if_pos (by omega), one_mul, Nat.sub_self, aeval_zero, homogeneousComponent_zero, constantCoeff_C] at hrel`. Establish `htop : coeff 0 (g (minpoly R₀ (coneMap ℚ x (X p))).natDegree) = 1`.
+
+Establish `h1` using `congrArg (fun q => Polynomial.coeff q 0) (hg (minpoly R₀ (coneMap ℚ x (X p))).natDegree)`. Simplify using `only [coeff_coneMap, homogeneousComponent_zero, aeval_C] at h1`. Rewrite `h1` using `[(minpoly.monic hα).coeff_natDegree]`. Simplify using `only [OneMemClass.coe_one, Polynomial.coeff_one_zero] at h1`. Conclude with `(algebraMap ℚ Ω).injective (h1.trans (map_one _).symm)`.
+
+Rewrite `hrel` using `[htop, map_one, mul_one]`. Simplify using `using eq_zero_of_pow_eq_zero hrel`. Take `⟨c, hc⟩ : ∃ c : (k : K) → ι k, ∀ k, z ⟨k, c k⟩ ≠ 0` from `⟨fun k => (hz.1 k).choose, fun k => (hz.1 k).choose_spec⟩`. Conclude with `Finset.prod_ne_zero_iff.mpr (fun k _ => hc k) (hu0 ⟨(), c⟩)`. Use `choose ic hic using hrelv`.
+
+Take `⟨F, hFhom, hFeq⟩` from `exists_segre_form hf ic`. Establish `hW : (∏ k, (X ⟨k, ic k⟩ : MRing ι) ^ (∑ k', df k' - df k)) ∉ mCoordIdeal y`. Introduce `h`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff (p := mCoordIdeal y)).mp h`. Conclude with `hic k (hprime.mem_of_pow_mem _ hk)`.
+
+Establish `hα0 : coneMap ℚ x (qmap F) ≠ 0`. Introduce `h`. Rewrite `h` using `[coneMap_qmap]`. Use `segreSub_mem y (Q := F) (RingHom.mem_ker.mpr h)` as an intermediate fact. Rewrite `this` using `[hFeq]`.
+
+Break down `hprime.mem_or_mem this with h1 | h1` into its components or cases. Conclude with `hfP h1`. Conclude with `hW h1`. Establish `hαint : IsIntegral R₀ (coneMap ℚ x (qmap F))` using `isIntegral_coneMap x R₀ hint (qmap F)`. Establish `hg : ∀ k, ∃ g, coneMap ℚ w g = ((minpoly R₀ (coneMap ℚ x (qmap F))).coeff k : Polynomial Ω)` using `fun k => (AlgHom.mem_range _).mp ((minpoly R₀ (coneMap ℚ x (qmap F))).coeff k).2`.
+
+Use `choose g hg using hg`. Establish `hg0 : g 0 ≠ 0`. Introduce `h`. Establish `h1` using `hg 0`. Rewrite `h1` using `[h, map_zero]`.
+
+Conclude with `minpoly_coeff_zero_ne hαint hα0 (Subtype.ext h1.symm)`. Take `⟨d, hd⟩` from `exists_homogeneousComponent_ne_zero hg0`. Take `⟨M, hM, G, hG⟩` from `exists_int_mul_eq_qmap (homogeneousComponent d (g 0))`. Use `⟨fun _ => 1, L, G, fun _ => le_rfl, hLhom, hnz, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Rewrite `hG` using `[map_zero, mul_eq_zero]`. Break down `hG with h | h` into its components or cases. Conclude with `hM (by exact_mod_cast h)`. Conclude with `hd h`. Introduce and unpack `ζ hGζ z hz ⟨t, ht⟩ hfz`.
+
+Establish `hrel` using `key_relation y w ℓq hℓhom hℓx (hFhom.map (Int.castRingHom ℚ)) _ (minpoly.aeval R₀ _) g hg d hz`. Simplify using `only [← hxdef] at hrel`. Establish `hFu : aeval (segreCoords z) (qmap F) = 0`. Rewrite using `[aeval_qmap, ← eval_segreSub, hFeq, map_mul, eval_mul, hfz, zero_mul]`. Rewrite `hrel` using `[Finset.sum_eq_single 0 (fun k _ hk => by rw [hFu, zero_pow hk]; simp) (by simp)]`.
+
+Simplify using `only [mul_zero, zero_le, if_true, pow_zero, one_mul, Nat.sub_zero] at hrel`. Establish `hℓu : (fun j => aeval (segreCoords z) (ℓq j)) = fun j => (t / N) * ζ j` using `funext fun j => by`. Use `hLz z j` as an intermediate fact. Rewrite `this` using `[ht j]`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `this.symm`. Rewrite `hrel` using `[hℓu, aeval_mul_of_isHomogeneous (homogeneousComponent_isHomogeneous d (g 0))]`. Establish `hG1 : aeval ζ (homogeneousComponent d (g 0)) ≠ 0`. Introduce `h`. Apply `hGζ` to reduce the goal to its premises.
+
+Rewrite using `[← aeval_qmap, ← hG, map_mul, h, mul_zero]`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Take `⟨j, hj⟩` from `hnz z hz`. Conclude with `hj (by rw [ht j, zero_mul])`.
+
+Break down `mul_eq_zero.mp hrel with h | h` into its components or cases. Conclude with `pow_ne_zero _ (div_ne_zero ht0 hNC) h`. Conclude with `hG1 h`.
+-/
 theorem ProjAvoidingForm.proof (hSeg : SegreArith.Statement) : ProjAvoidingForm.Statement := by
   intro K _ ι _ Ω _ y D df f hV hf hfP
   classical

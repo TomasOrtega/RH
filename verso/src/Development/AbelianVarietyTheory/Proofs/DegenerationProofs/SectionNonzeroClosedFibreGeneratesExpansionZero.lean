@@ -14,6 +14,9 @@ open GlobalTheory.Ex.OneGen GlobalTheory.UT
 noncomputable section
 namespace GlobalTheory.Ex.PrimitiveExpansion
 
+/- English proof (translation)
+Introduce `j₁ j₂ hc`. Establish `e : scal π (1 : R) = 1` using `by simp [scal]`. Use `H j₁ j₂ hc` as an intermediate fact. Rewrite using `[Fin.sum_univ_one, e, this]`. Simplify using `only [map_one, _root_.one_mul]`.
+-/
 theorem secLin_one {X Y Y' : Scheme.{0}} {L : LB X} {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂]
     {φ₁ : K₁ → (Y' ⟶ X)} {ε₁ : K₁ → ℤ} {s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)}
     {φ₂ : K₂ → (Y ⟶ X)} {ε₂ : K₂ → ℤ} {s₂ : LB.Sec (LB.LinComb L φ₂ ε₂)} {h : Y' ⟶ Y}
@@ -26,6 +29,13 @@ theorem secLin_one {X Y Y' : Scheme.{0}} {L : LB X} {K₁ K₂ : Type} [Fintype 
   rw [Fin.sum_univ_one, e, this]
   simp only [map_one, _root_.one_mul]
 
+/- English proof (translation)
+Introduce `hL V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ _ U σ ⟨x, hx, hn⟩`. Take `⟨g, hE, hnd, H⟩` from `GlobalTheory.NonzeroClosedFibre.main hL.1.globalFns V ϖ hϖ D Q hQ A G U σ (ThetaUnit.nonzeroOnSpecial_of_mem U σ x hx hn)`. Establish `hgen` using `GlobalTheory.IndivisibleSection.secBGenerates_of_not_dvd hL.1.secBaseChange V ϖ hϖ D (g 0) (fun ⟨g', h'⟩ => hnd ⟨g', fun j => (h' j).trans rfl⟩)`. Use `⟨fun s => ?_, fun σ' hσ' => ?_⟩` and prove the remaining obligations. Take `⟨Φ, hΦ, -⟩` from `H (FractionRing V) (GlobalTheory.FamInt.ordVal hϖ) (GlobalTheory.FamInt.valOver_ordVal hϖ)`.
+
+Take `⟨b, hb⟩` from `ThetaUnit.exists_eq_smul_group hL.1.globalFns le_rfl U hE (fun α => (ThetaUnit.secScal_one_iff D.toPre Φ α _).1 (hΦ α)) (fun t => (hgen t).exists.imp fun b hb => (ThetaUnit.secIsMul_iff _ _ _ _).1 hb) s`. Conclude with `⟨b, (ThetaUnit.secIsMul_iff _ _ _ _).2 hb⟩`. Take `⟨ϑ, hϑ, h₀, h₁⟩` from `H F v hv`. Use `⟨ϑ, ⟨1, fun _ => 1, fun _ => σ, fun _ => g, fun _ => hE, secLin_one _ (SectionScalarValuation.secScal_of_sval U.LG.isLB fun y J hJ => ?_), fun α => secLin_one _ (hϑ α)⟩, h₀, fun r hr h => h₁ ⟨r, hr, h⟩⟩` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+
+Conclude with `(hσ' y J hJ).symm`.
+-/
 theorem main : LL → AllUV fun {V} _ _ _ {ϖ} hϖ {D} Q {F} _ _ {v} hv {A} {G} _ _ U => ∀ σ : H0 U.LG.L 1, (∃ g, G.hom g = closedPoint V ∧ g ∈ nonzeroLocus σ) → (∀ s : H0 U.LG.L 1, ∃ b : V, SecIsMul G.hom b s σ) ∧ ∀ σ' : U.SecGF F 1, (∀ z J, Good U.LG.L z J → sval σ' (𝟙 _) z J = sval σ (UnifPre.gFK (G := G) F) z J) → ∃ ϑ, U.ExpandsG F 1 σ' ϑ ∧ Prim D Q v ϑ := by
   intro hL V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ _ U σ ⟨x, hx, hn⟩
   obtain ⟨g, hE, hnd, H⟩ := GlobalTheory.NonzeroClosedFibre.main hL.1.globalFns V ϖ hϖ D Q hQ A G U σ

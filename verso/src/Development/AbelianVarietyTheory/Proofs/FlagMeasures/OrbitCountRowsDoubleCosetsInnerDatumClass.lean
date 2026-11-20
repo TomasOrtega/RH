@@ -18,6 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.OrbitCount
 
+/- English proof (translation)
+Unfold `Subgroup.relIndex`. Rewrite using `[← Subgroup.index_prod, ← Subgroup.index_comap_of_surjective ((H.subgroupOf K).prod (H'.subgroupOf K')) (f := (Subgroup.prodEquiv K K').toMonoidHom) (Subgroup.prodEquiv K K').surjective]`. Use `congr 1`.
+-/
 theorem relIndex_prod_prod {G G' : Type} [Group G] [Group G'] (H K : Subgroup G) (H' K' : Subgroup G') :
     (H.prod H').relIndex (K.prod K') = H.relIndex K * H'.relIndex K' := by
   unfold Subgroup.relIndex
@@ -26,6 +29,15 @@ theorem relIndex_prod_prod {G G' : Type} [Group G] [Group G'] (H K : Subgroup G)
       (f := (Subgroup.prodEquiv K K').toMonoidHom) (Subgroup.prodEquiv K K').surjective]
   congr 1
 
+/- English proof (translation)
+Unfold `Subgroup.relIndex Subgroup.index`. Use `symm`. Use `Nat.card_congr (Equiv.ofBijective (Quotient.lift (s := QuotientGroup.leftRel (B.subgroupOf P)) (fun p : P => (⟨f p, p, p.2, rfl⟩ : f '' (P : Set Γ))) ?_) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `a b h`. Establish `h'` using `QuotientGroup.leftRel_apply.mp h`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hf a a.2 b b.2).2 (by simpa [Subgroup.mem_subgroupOf] using h')`. Introduce `x y hxy`. Proceed by induction on `x using Quotient.inductionOn with | h a => ?_`. Proceed by induction on `y using Quotient.inductionOn with | h b => ?_`.
+
+Apply `Quotient.sound` to reduce the goal to its premises. Apply `QuotientGroup.leftRel_apply.mpr` to reduce the goal to its premises. Use `congrArg Subtype.val hxy` as an intermediate fact. Simplify using `only [Quotient.lift_mk] at this`. Simplify `(hf a a.2 b b.2).1 this` using `[Subgroup.mem_subgroupOf]`.
+
+Introduce and unpack `⟨_, p, hp, rfl⟩`. Conclude with `⟨Quotient.mk _ ⟨p, hp⟩, rfl⟩`.
+-/
 theorem card_image_eq_relIndex {Γ α : Type} [Group Γ] (P B : Subgroup Γ) (f : Γ → α)
     (hf : ∀ p ∈ P, ∀ q ∈ P, f p = f q ↔ p⁻¹ * q ∈ B) :
     Nat.card (f '' (P : Set Γ)) = B.relIndex P := by
@@ -49,6 +61,9 @@ theorem card_image_eq_relIndex {Γ α : Type} [Group Γ] (P B : Subgroup Γ) (f 
   · rintro ⟨_, p, hp, rfl⟩
     exact ⟨Quotient.mk _ ⟨p, hp⟩, rfl⟩
 
+/- English proof (translation)
+Use `⟨1, ⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).one_mem, fun a => rfl, fun a => rfl⟩, ?_⟩` and prove the remaining obligations. Use `congr 1`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+-/
 theorem lrel_refl {D : D7} {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') (Λ : LV D) :
     LRel F F' Λ Λ := by
   refine ⟨1, ⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).one_mem, fun a => rfl, fun a => rfl⟩, ?_⟩
@@ -59,6 +74,47 @@ end GlobalTheory.OrbitCount
 
 namespace GlobalTheory.OrbitCount
 
+/- English proof (translation)
+Introduce `D X Y u u' F F' w hw hG t₀ Λ₀ h₀ K hK`. Take `⟨A, N, hA, hN, hNA, hNn, hiA, hcA⟩` from `GlobalTheory.T.rowLattice_automorphisms_eq_adapted_mod_unipotent D X Y u u' t₀.lam t₀.mem`. Take `⟨A', N', hA', hN', hNA', hNn', hiA', hcA'⟩` from `GlobalTheory.T.rowLattice_automorphisms_eq_adapted_mod_unipotent D X Y u' u t₀.lam' t₀.mem'`. Take `⟨B, hB, hNB, hBiff⟩` from `GlobalTheory.T.exists_subgroup_unitriangular_pairs_keeping_doubleCoset D X Y u u' t₀`. Establish `hS` using `GlobalTheory.T.card_stabilizer_innerDatum_rowDoubleCoset D X Y u u' F F' w hw hG t₀ Λ₀ h₀ B N N' hB hN hN'`.
+
+Establish `mA : ∀ a, a ∈ A ↔ a ∈ Aut0 (lf D (X.Fu u)) t₀.lam` using `fun a => SetLike.mem_coe.symm.trans (Set.ext_iff.mp hA a)`. Establish `mA' : ∀ a, a ∈ A' ↔ a ∈ Aut0 (lf D (X.Fu u')) t₀.lam'` using `fun a => SetLike.mem_coe.symm.trans (Set.ext_iff.mp hA' a)`. Establish `mN : ∀ a, a ∈ N ↔ a ∈ NLam t₀.lam (lf D (X.Fu u))` using `fun a => SetLike.mem_coe.symm.trans (Set.ext_iff.mp hN a)`. Establish `mN' : ∀ a, a ∈ N' ↔ a ∈ NLam t₀.lam' (lf D (X.Fu u'))` using `fun a => SetLike.mem_coe.symm.trans (Set.ext_iff.mp hN' a)`. Use `set P : Subgroup (GV D × GV D) := A.prod A' with hP`.
+
+Establish `htr : ∀ p : GV D × GV D, ∃ s : TauC Y u u', p ∈ P → (s.lam = t₀.lam ∧ s.lam' = t₀.lam' ∧ ∃ n ∈ NLam t₀.lam (lf D (X.Fu u)), ∃ n' ∈ NLam t₀.lam' (lf D (X.Fu u')), s.lin = n * (p.1 * t₀.lin * p.2⁻¹) * n')`. Introduce `p`. Distinguish the cases in `hp : p ∈ P`. Take `⟨s, h1, h2, n, hn, n', hn', h3⟩` from `GlobalTheory.T.exists_term_translate_by_adapted_lattice_automorphisms D X Y u u' t₀ p.1 ((mA _).1 hp.1) p.2 ((mA' _).1 hp.2)`. Conclude with `⟨s, fun _ => ⟨h1, h2, n, hn, n', hn', h3⟩⟩`.
+
+Conclude with `⟨t₀, fun h => absurd h hp⟩`. Use `choose s hs using htr`. Establish `hTG : ∀ p ∈ P, TG F F' (s p) Λ₀`. Introduce `p hp`. Take `⟨h1, -, n, hn, n', hn', h3⟩` from `hs p hp`.
+
+Conclude with `GlobalTheory.T.baseFrameLattice_invariant_under_adapted_translate D X Y u u' F F' t₀ (s p) Λ₀ p.1 p.2 n n' h₀ ((mA _).1 hp.1) ((mA' _).1 hp.2) hn hn' h1 h3`. Establish `hfib : ∀ p ∈ P, ∀ q ∈ P, key (s p) = key (s q) ↔ p⁻¹ * q ∈ B`. Introduce `p hp q hq`. Take `⟨hp1, hp2, n, hn, n', hn', hpl⟩` from `hs p hp`. Take `⟨hq1, hq2, m, hm, m', hm', hql⟩` from `hs q hq`.
+
+Rewrite using `[GlobalTheory.T.term_row_double_coset_eq_iff_isometries D X Y u u' (s p) (s q), hp1, hq1, hp2, hq2]`. Simplify using `only [true_and]`. Establish `ep : (s p).lin = (n * p.1) * t₀.lin * (n'⁻¹ * p.2)⁻¹` using `by rw [hpl]; group`. Establish `eq : (s q).lin = (m * q.1) * t₀.lin * (m'⁻¹ * q.2)⁻¹` using `by rw [hql]; group`. Establish `hnA : n ∈ A` using `hNA ((mN n).2 hn)`.
+
+Establish `hmA : m ∈ A` using `hNA ((mN m).2 hm)`. Establish `hnA' : n'⁻¹ ∈ A'` using `A'.inv_mem (hNA' ((mN' n').2 hn'))`. Establish `hmA' : m'⁻¹ ∈ A'` using `A'.inv_mem (hNA' ((mN' m').2 hm'))`. Rewrite using `[ep, eq, hBiff (n * p.1) ((mA _).1 (A.mul_mem hnA hp.1)) (m * q.1) ((mA _).1 (A.mul_mem hmA hq.1)) (n'⁻¹ * p.2) ((mA' _).1 (A'.mul_mem hnA' hp.2)) (m'⁻¹ * q.2) ((mA' _).1 (A'.mul_mem hmA' hq.2))]`. Establish `hx : p.1⁻¹ * (n⁻¹ * m) * p.1⁻¹⁻¹ ∈ N` using `hNn _ (A.inv_mem hp.1) _ (N.mul_mem (N.inv_mem ((mN n).2 hn)) ((mN m).2 hm))`.
+
+Establish `hx' : p.2⁻¹ * (n' * m'⁻¹) * p.2⁻¹⁻¹ ∈ N'` using `hNn' _ (A'.inv_mem hp.2) _ (N'.mul_mem ((mN' n').2 hn') (N'.inv_mem ((mN' m').2 hm')))`. Establish `hmB : (p.1⁻¹ * (n⁻¹ * m) * p.1⁻¹⁻¹, p.2⁻¹ * (n' * m'⁻¹) * p.2⁻¹⁻¹) ∈ B` using `hNB _ ((mN _).1 hx) _ ((mN' _).1 hx')`. Establish `heq : ((n * p.1)⁻¹ * (m * q.1), (n'⁻¹ * p.2)⁻¹ * (m'⁻¹ * q.2)) = (p.1⁻¹ * (n⁻¹ * m) * p.1⁻¹⁻¹, p.2⁻¹ * (n' * m'⁻¹) * p.2⁻¹⁻¹) * (p⁻¹ * q)`. Apply the tactic sequence `ext <;> simp only [Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv] <;> group`. Rewrite using `[heq, B.mul_mem_cancel_left hmB]`.
+
+Establish `hKim : K = (fun p => key (s p)) '' (P : Set (GV D × GV D))`. Rewrite using `[hK]`. Use extensionality with `κ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, Λ₁, ht, hrel, rfl⟩`.
+
+Take `⟨a, ha, a', ha', hkey⟩` from `GlobalTheory.T.matching_translate_same_row_double_coset D X Y u u' F F' w hw hG t₀ t Λ₀ Λ₁ h₀ ht hrel`. Establish `hp : (a, a') ∈ P` using `⟨(mA a).2 ha, (mA' a').2 ha'⟩`. Take `⟨h1, h2, n, hn, n', hn', h3⟩` from `hs (a, a') hp`. Conclude with `⟨(a, a'), hp, hkey (s (a, a')) h1 h2 ⟨n, hn, n', hn', h3⟩⟩`. Introduce and unpack `⟨p, hp, rfl⟩`.
+
+Conclude with `⟨s p, Λ₀, hTG p hp, lrel_refl F F' Λ₀, rfl⟩`. Establish `hcardK : Nat.card K = B.relIndex P`. Rewrite using `[hKim]`. Conclude with `card_image_eq_relIndex P B _ hfib`. Establish `hBP : B ≤ P` using `fun b hb => ⟨(mA _).2 ((hB b).1 hb).1, (mA' _).2 ((hB b).1 hb).2.1⟩`.
+
+Establish `hNNB : N.prod N' ≤ B` using `fun b hb => by`. Use `hNB b.1 ((mN _).1 hb.1) b.2 ((mN' _).1 hb.2)` as an intermediate fact. Simplify using `using this`. Establish `hprod : (N.prod N').relIndex B * B.relIndex P = Nat.card (autLz D (X.Fu u) t₀.lam) * Nat.card (autLz D (X.Fu u') t₀.lam')`. Rewrite using `[Subgroup.relIndex_mul_relIndex _ _ _ hNNB hBP, hP, relIndex_prod_prod, hiA, hiA']`.
+
+Use `set k := B.relIndex P with hk`. Use `set m := (N.prod N').relIndex B with hm`. Use `set c := Nat.card (autLz D (X.Fu u) t₀.lam) with hc`. Use `set c' := Nat.card (autLz D (X.Fu u') t₀.lam') with hc'`. Establish `hmk : 0 < m * k` using `by rw [hprod]; exact Nat.mul_pos hcA hcA'`.
+
+Establish `hk0 : 0 < k` using `Nat.pos_of_mul_pos_left hmk`. Establish `hm0 : 0 < m` using `Nat.pos_of_mul_pos_right hmk`. Establish `hKfin : K.Finite`. Establish `: 0 < Nat.card K` using `hcardK ▸ hk0`. Conclude with `Set.finite_coe_iff.mp (Nat.card_pos_iff.mp this).2`.
+
+Establish `hSfin : (stabL F F' Λ₀).Finite`. Establish `: 0 < Nat.card (stabL F F' Λ₀)` using `hS ▸ hm0`. Conclude with `Set.finite_coe_iff.mp (Nat.card_pos_iff.mp this).2`. Establish `hKenc : K.encard = (k : ℕ∞)`. Rewrite using `[← hKfin.cast_ncard_eq, ← Nat.card_coe_set_eq, hcardK]`.
+
+Establish `hSenc : (stabL F F' Λ₀).encard = (m : ℕ∞)`. Rewrite using `[← hSfin.cast_ncard_eq, ← Nat.card_coe_set_eq, hS]`. Establish `hwt : ∀ (t : TauC Y u u'), t.lam = t₀.lam → t.lam' = t₀.lam' → wt t = wt t₀`. Introduce `t h1 h2`. Simplify using `only [wt, h1, h2]`.
+
+Use `⟨hKfin, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `κ hκ`. Rewrite `hκ` using `[hKim]`. Take `⟨p, hp, rfl⟩` from `hκ`. Conclude with `⟨s p, hTG p hp, rfl⟩`.
+
+Introduce `t Λ₁ ht hrel`. Take `⟨h1, h2, -⟩` from `GlobalTheory.T.terms_same_rational_inner_class_are_translates D X Y u u' F F' w hw hG t₀ t Λ₀ Λ₁ h₀ ht hrel`. Conclude with `hwt t h1 h2`. Establish `hw2 : wt t₀ ^ 2 = (c : ℝ)⁻¹ * (c' : ℝ)⁻¹`. Simplify using `only [wt]`.
+
+Rewrite using `[Real.sq_sqrt (by unfold wRow; positivity)]`. Both sides reduce to the same expression. Rewrite using `[hKenc, hSenc, hw2, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_inv_of_pos (by exact_mod_cast hcA), ENNReal.ofReal_inv_of_pos (by exact_mod_cast hcA'), ENNReal.ofReal_natCast, ENNReal.ofReal_natCast]`. Establish `hcc : ((c : ℝ≥0∞))⁻¹ * ((c' : ℝ≥0∞))⁻¹ = ((m : ℝ≥0∞))⁻¹ * ((k : ℝ≥0∞))⁻¹`. Rewrite using `[← ENNReal.mul_inv (Or.inr (ENNReal.natCast_ne_top _)) (Or.inl (ENNReal.natCast_ne_top _)), ← ENNReal.mul_inv (Or.inr (ENNReal.natCast_ne_top _)) (Or.inl (ENNReal.natCast_ne_top _))]`.
+
+Use `congr 1`. Conclude with `hprod.symm` after adjusting the coercions. Simplify using `only [ENat.toENNReal_coe]`. Rewrite using `[hcc, mul_comm, mul_assoc, ENNReal.inv_mul_cancel (by exact_mod_cast hk0.ne') (ENNReal.natCast_ne_top _), mul_one]`.
+-/
 theorem orbit_count : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (t₀ : TauC Y u u') (Λ₀ : LV D), TG F F' t₀ Λ₀ → ∀ K, K = {κ | ∃ (t : TauC Y u u') (Λ₁ : LV D), TG F F' t Λ₁ ∧ LRel F F' Λ₀ Λ₁ ∧ key t = κ} → K.Finite ∧ (∀ κ ∈ K, ∃ t : TauC Y u u', TG F F' t Λ₀ ∧ key t = κ) ∧ (∀ (t : TauC Y u u') (Λ₁ : LV D), TG F F' t Λ₁ → LRel F F' Λ₀ Λ₁ → wt t = wt t₀) ∧ (K.encard : ℝ≥0∞) * ENNReal.ofReal (wt t₀ ^ 2) = (((stabL F F' Λ₀).encard : ℝ≥0∞))⁻¹ := by
   intro D X Y u u' F F' w hw hG t₀ Λ₀ h₀ K hK
   obtain ⟨A, N, hA, hN, hNA, hNn, hiA, hcA⟩ := GlobalTheory.T.rowLattice_automorphisms_eq_adapted_mod_unipotent D X Y u u' t₀.lam t₀.mem

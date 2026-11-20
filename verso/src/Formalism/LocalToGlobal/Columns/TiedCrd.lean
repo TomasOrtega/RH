@@ -30,18 +30,29 @@ structure HostHyp (d : ColDat) : Prop where
 
 variable {d : ColDat} (a : ColArgs d)
 
+/- English proof (translation)
+Use `Matrix.ext fun x y => ?_` and prove the remaining obligations. Use `show (d.sp.X i).hT ((d.sp.X i).frame _) ((d.sp.X i).frame _) = _`. Rewrite using `[hS.X_on i hi, Matrix.one_apply]`. Simplify using `only [EmbeddingLike.apply_eq_iff_eq]`.
+-/
 theorem gramN_eq (hS : SpStd d.toColBase) (i : ℕ) (hi : i ≤ d.R.m) : CF.gramN (d.colRec a) i hi = 1 := by
   refine Matrix.ext fun x y => ?_
   show (d.sp.X i).hT ((d.sp.X i).frame _) ((d.sp.X i).frame _) = _
   rw [hS.X_on i hi, Matrix.one_apply]
   simp only [EmbeddingLike.apply_eq_iff_eq]
 
+/- English proof (translation)
+Use `Matrix.ext fun x y => ?_` and prove the remaining obligations. Use `show d.sp.X'.hT (d.sp.X'.frame _) (d.sp.X'.frame _) = _`. Rewrite using `[hS.P_on, Matrix.one_apply]`. Simplify using `only [EmbeddingLike.apply_eq_iff_eq]`.
+-/
 theorem gramP_eq (hS : SpStd d.toColBase) : CF.gramP (d.colRec a) = 1 := by
   refine Matrix.ext fun x y => ?_
   show d.sp.X'.hT (d.sp.X'.frame _) (d.sp.X'.frame _) = _
   rw [hS.P_on, Matrix.one_apply]
   simp only [EmbeddingLike.apply_eq_iff_eq]
 
+/- English proof (translation)
+Use `show (d.clsLat u i c).map (((d.crd i hi : (d.sp.X i).V ≃ₗ[d.host.E] (Fin (d.R.N i) → d.host.E)) : (d.sp.X i).V →ₗ[d.host.E] (Fin (d.R.N i) → d.host.E)).restrictScalars (𝓞 d.host.E)) = _`. Unfold `ColDat.clsLat`. Rewrite using `[dif_pos hi, ← Submodule.map_comp]`. Use `Submodule.map_id _` and compare the differences between its conclusion and the goal. Use extensionality with `x j`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem clsCrd_eq (u : d.what₂.Word) (i : ℕ) (hi : i ≤ d.R.m) (c : StCl (Pr := d.Pr) d.W d.lev u i) :
     CF.clsCrd (d.colRec a) u i hi c = (d.repr u i c).1.L := by
   show (d.clsLat u i c).map (((d.crd i hi : (d.sp.X i).V ≃ₗ[d.host.E] (Fin (d.R.N i) → d.host.E)) :
@@ -52,11 +63,17 @@ theorem clsCrd_eq (u : d.what₂.Word) (i : ℕ) (hi : i ≤ d.R.m) (c : StCl (P
   ext x j
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show d.host.φ₀.comp _ = (d.what₂.embLL).comp (d.embE.comp _)`. Rewrite using `[← hH.embE_φ₀, RingHom.comp_assoc]`.
+-/
 theorem embT_eq (hH : HostHyp d) : CF.embT (d.colRec a) = d.X.embC d.σ₀ := by
   funext τ
   show d.host.φ₀.comp _ = (d.what₂.embLL).comp (d.embE.comp _)
   rw [← hH.embE_φ₀, RingHom.comp_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem T_eq (u : d.what₂.Word) : ((d.colRec a).mem u).A.T = d.T u := rfl
 
 end Formalism.L2.Col

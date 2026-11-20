@@ -91,6 +91,9 @@ def IsHyperbolicFrameAt (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.h
     ∀ x : (D.sp.X j).V, ∀ i' < D.R.m - 1 - j,
       (D.sp.Y j).hT (D.sp.iXY j x) (vecY j (adaptedVector e ev z j i')) = 0
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem is_adapted_vector_system_iff (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.host.E) (z : ∀ j : ℕ, Fin (D.sp.Y j).rank → D.host.E) :
     IsAdaptedVectorSystem e ev z ↔ ∀ j < D.R.m, IsHyperbolicFrameAt e ev z j := Iff.rfl
 
@@ -106,6 +109,9 @@ def ColsAt (βY : ∀ j : ℕ, GL (Fin (D.sp.Y j).rank) (EAf D)) (e ev : ∀ j :
     (∀ col : Fin (D.sp.Y j).rank, (col.val < D.R.k ∨ D.R.k + (D.R.m - 1 - j) ≤ col.val) →
       XSpanAt j (βY j).val ei col)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem normalFrames_iff (βY : ∀ j : ℕ, GL (Fin (D.sp.Y j).rank) (EAf D))
     (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.host.E) (z : ∀ j : ℕ, Fin (D.sp.Y j).rank → D.host.E)
     (κ : ℕ → ℕ → D.host.E) (s : ℕ → D.host.E) (S Pg : Finset (Pl D.host.E)) :
@@ -114,23 +120,48 @@ theorem normalFrames_iff (βY : ∀ j : ℕ, GL (Fin (D.sp.Y j).rank) (EAf D))
       (∀ PP ∈ Pg, ∀ j < D.R.m, ∀ i < D.R.m - 1 - j, PP.valuation D.host.E (nfScal κ s j i) = 1) ∧
       ∀ PP ∈ S, ∀ ei : AE D, Formalism.L2.NTheta.IsIdemAt ei PP → ∀ j < D.R.m, ColsAt βY e ev z κ s Pg PP ei j := Iff.rfl
 
+/- English proof (translation)
+Simplify using `[vecY]`.
+-/
 theorem vecY_repr (j : ℕ) (v : (D.sp.Y j).V) : vecY (D := D) j ⇑((D.sp.Y j).frame.repr v) = v := by
   simp [vecY]
 
+/- English proof (translation)
+Simplify using `[vecY]`.
+-/
 theorem vecY_zero (j : ℕ) : vecY (D := D) j 0 = 0 := by
   simp [vecY]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Use `show (D.R.m - 1 - 0) / 2 = D.R.m / 2 - 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem m_sub_one_div_two : (D.R.m - 1 - 0) / 2 = D.R.rS := by
   obtain ⟨a, ha⟩ := D.R.m_even
   have h2 := D.R.two_le_m
   show (D.R.m - 1 - 0) / 2 = D.R.m / 2 - 1
   omega
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem m_sub_one_mod_two : (D.R.m - 1 - 0) % 2 = 1 := by
   obtain ⟨a, ha⟩ := D.R.m_even
   have h2 := D.R.two_le_m
   omega
 
+/- English proof (translation)
+Establish `hd : (D.R.m - 1 - 0) / 2 = D.R.rS` using `m_sub_one_div_two`. Unfold `IsHyperbolicFrameAt`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi l hl`. Rewrite `hi`, `hl` using `[hd]`.
+
+Simplify using `only [patchE, patchEv, baseHyperbolicVector, baseDualHyperbolicVector, dif_pos hi, dif_pos hl, vecY_repr]`. Use `⟨?_, D.sp.hyp_ee _ _, D.sp.hyp_ff _ _⟩` and prove the remaining obligations. Rewrite using `[D.sp.hyp_ef]`. Simplify using `[Fin.ext_iff]`. Introduce `_`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [patchZ, baseLineVector, vecY_repr]`. Conclude with `D.sp.zm_norm`. Introduce `i hi`. Rewrite `hi` using `[hd]`.
+
+Simplify using `only [patchZ, patchE, patchEv, baseLineVector, baseHyperbolicVector, baseDualHyperbolicVector, dif_pos hi, vecY_repr]`. Conclude with `D.sp.hyp_orthz ⟨i, hi⟩`. Introduce `x i _`. Unfold `adaptedVector`. Rewrite using `[hd]`.
+
+Use `split_ifs with h1 h2`. Simplify using `only [patchE, baseHyperbolicVector, dif_pos h1, vecY_repr]`. Conclude with `(D.sp.hyp_orthX _ x).1`. Simplify using `only [patchZ, baseLineVector, vecY_repr]`. Conclude with `D.sp.zm_orth x`.
+
+Simplify using `only [patchEv, baseDualHyperbolicVector] split_ifs with h3`. Rewrite using `[vecY_repr]`. Conclude with `(D.sp.hyp_orthX _ x).2`. Apply the tactic sequence `rw [vecY_zero] first | exact map_zero _ | simp`.
+-/
 theorem adapted_relations_at_zero (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.host.E) (z : ∀ j : ℕ, Fin (D.sp.Y j).rank → D.host.E) :
     IsHyperbolicFrameAt (patchE e) (patchEv ev) (patchZ z) 0 := by
   have hd : (D.R.m - 1 - 0) / 2 = D.R.rS := m_sub_one_div_two
@@ -165,6 +196,11 @@ theorem adapted_relations_at_zero (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).ra
       · rw [vecY_zero]
         first | exact map_zero _ | simp
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp [nfScal, patchS]`. Consider the case `succ i ih => show patchK κ 0 i * nfScal (patchK κ) (patchS s) 0 i = _`. Rewrite using `[ih]`. Establish `hk : patchK κ 0 i = kap0 (D` using `D) i := if_pos rfl`.
+
+Rewrite using `[hk]`. Unfold `kap0`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`.
+-/
 theorem nfScal_patch_zero (κ : ℕ → ℕ → D.host.E) (s : ℕ → D.host.E) (i : ℕ) :
     nfScal (patchK κ) (patchS s) 0 i = if i ≤ D.R.rS then 1 else -(D.sp.T : D.host.E) := by
   induction i with
@@ -177,6 +213,9 @@ theorem nfScal_patch_zero (κ : ℕ → ℕ → D.host.E) (s : ℕ → D.host.E)
     unfold kap0
     split_ifs <;> first | (exfalso; omega) | simp
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp [nfScal, patchS]`. Consider the case `succ i ih => show patchK κ (j + 1) i * nfScal (patchK κ) (patchS s) (j + 1) i = κ (j + 1) i * nfScal κ s (j + 1) i`. Rewrite using `[ih]`. Simplify using `[patchK]`.
+-/
 theorem nfScal_patch_succ (κ : ℕ → ℕ → D.host.E) (s : ℕ → D.host.E) (j i : ℕ) :
     nfScal (patchK κ) (patchS s) (j + 1) i = nfScal κ s (j + 1) i := by
   induction i with
@@ -186,6 +225,13 @@ theorem nfScal_patch_succ (κ : ℕ → ℕ → D.host.E) (s : ℕ → D.host.E)
     rw [ih]
     simp [patchK]
 
+/- English proof (translation)
+Establish `hd : (D.R.m - 1 - 0) / 2 = D.R.rS` using `m_sub_one_div_two`. Establish `hm : (D.R.m - 1 - 0) % 2 = 1` using `m_sub_one_mod_two`. Rewrite using `[nfScal_patch_zero]`. Unfold `adaptedVector frame0`. Break down `lt_trichotomy i D.R.rS with h | h | h` into its components or cases.
+
+Rewrite using `[if_pos (by omega : i ≤ D.R.rS), if_pos (by omega : i < (D.R.m - 1 - 0) / 2), dif_pos h]`. Simplify using `[patchE, baseHyperbolicVector, h]`. Rewrite using `[if_pos (by omega : i ≤ D.R.rS), if_neg (by omega : ¬ i < (D.R.m - 1 - 0) / 2), if_pos (⟨hm, by omega⟩ : (D.R.m - 1 - 0) % 2 = 1 ∧ i = (D.R.m - 1 - 0) / 2), dif_neg (by omega : ¬ i < D.R.rS), if_pos h]`. Simplify using `[patchZ, baseLineVector]`. Establish `hk : D.R.m - 1 - 0 - 1 - i = 2 * D.R.rS - i` using `by omega`.
+
+Establish `h4 : 2 * D.R.rS - i < D.R.rS` using `by omega`. Rewrite using `[if_neg (by omega : ¬ i ≤ D.R.rS), if_neg (by omega : ¬ i < (D.R.m - 1 - 0) / 2), if_neg (by rintro ⟨-, hc⟩; omega), dif_neg (by omega : ¬ i < D.R.rS), if_neg (by omega : ¬ i = D.R.rS), dif_pos h4, hk]`. Simplify using `[patchEv, baseDualHyperbolicVector, h4]`.
+-/
 theorem normalised_adapted_vector_zero (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.host.E) (z : ∀ j : ℕ, Fin (D.sp.Y j).rank → D.host.E)
     (κ : ℕ → ℕ → D.host.E) (s : ℕ → D.host.E) (i : ℕ) (hi : i < D.R.m - 1) (r : Fin (D.sp.Y 0).rank) :
     nfScal (patchK κ) (patchS s) 0 i * adaptedVector (patchE e) (patchEv ev) (patchZ z) 0 i r = frame0 i r := by
@@ -207,6 +253,11 @@ theorem normalised_adapted_vector_zero (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y 
       dif_pos h4, hk]
     simp [patchEv, baseDualHyperbolicVector, h4]
 
+/- English proof (translation)
+Rewrite using `[nfScal_patch_zero]`. Use `split_ifs`. Conclude with `map_one _`. Rewrite using `[Valuation.map_neg, ← map_natCast (algebraMap (𝓞 D.host.E) D.host.E), IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap] first`. Consider the case `exact le_antisymm (PP.intValuation_le_one _) (not_lt.mp fun h => hT (Ideal.dvd_span_singleton.mp ((PP.intValuation_lt_one_iff_dvd _).mp h)))`.
+
+Consider the case `exact le_antisymm (PP.intValuation_le_one _) (not_lt.mp fun h => hT ((PP.intValuation_lt_one_iff_mem _).mp h))`. Consider the case `exact (IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff PP _).mpr hT`.
+-/
 theorem val_nfScal_patch_zero (κ : ℕ → ℕ → D.host.E) (s : ℕ → D.host.E) (PP : Pl D.host.E)
     (hT : ((D.sp.T : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) (i : ℕ) :
     PP.valuation D.host.E (nfScal (patchK κ) (patchS s) 0 i) = 1 := by
@@ -223,6 +274,15 @@ theorem val_nfScal_patch_zero (κ : ℕ → ℕ → D.host.E) (s : ℕ → D.hos
 
 open Classical in
 
+/- English proof (translation)
+Establish `hN : D.R.N 0 = D.R.k` using `by simp [Formalism.BasicNotions.Ranks.N]`. Introduce `PP hPP ei hei`. Take `⟨h1, h2⟩` from `h0 PP hPP ei hei`. Unfold `ColsAt`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i hi col hcol`. Simplify using `only [normalised_adapted_vector_zero e ev z κ s i (by omega)]`. Conclude with `h1 i (by omega) col (by rw [hN]; exact hcol)`. Introduce `col hcol`. Break down `hcol with hc | hc` into its components or cases.
+
+Conclude with `h2 col (by rw [hN]; exact hc)`. It suffices to derive a contradiction. Establish `hr` using `D.sp.Y_rank 0 (Nat.zero_le _)`. Establish `hlt` using `col.isLt`. Simplify using `only [Formalism.BasicNotions.Ranks.rankY, Formalism.BasicNotions.Ranks.r] at hr`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem colsAt_zero (βY : ∀ j : ℕ, GL (Fin (D.sp.Y j).rank) (EAf D)) (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.host.E)
     (z : ∀ j : ℕ, Fin (D.sp.Y j).rank → D.host.E) (κ : ℕ → ℕ → D.host.E) (s : ℕ → D.host.E) (S Pg : Finset (Pl D.host.E))
     (h0 : NormalFrame0 (βY 0) S Pg) :
@@ -245,6 +305,9 @@ theorem colsAt_zero (βY : ∀ j : ℕ, GL (Fin (D.sp.Y j).rank) (EAf D)) (e ev 
       simp only [Formalism.BasicNotions.Ranks.rankY, Formalism.BasicNotions.Ranks.r] at hr
       omega
 
+/- English proof (translation)
+Establish `h1 : ∀ i, nfScal (patchK κ) (patchS s) (j + 1) i = nfScal κ s (j + 1) i` using `fun i => nfScal_patch_succ κ s j i`. Simplify using `only [ColsAt, h1]`. Apply the tactic sequence `try exact Iff.rfl`.
+-/
 theorem colsAt_patch_succ (βY : ∀ j : ℕ, GL (Fin (D.sp.Y j).rank) (EAf D))
     (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.host.E) (z : ∀ j : ℕ, Fin (D.sp.Y j).rank → D.host.E)
     (κ : ℕ → ℕ → D.host.E) (s : ℕ → D.host.E) (Pg : Finset (Pl D.host.E)) (PP : Pl D.host.E) (ei : AE D) (j : ℕ) :
@@ -279,6 +342,19 @@ def LatFramesExist {T : Type} (Pg Sd : Finset (Pl D.host.E)) (Q : T → Finset (
       (ι : GL (Fin (D.sp.W ((i : ℕ) + 1)).rank) (EAf D)),
       VertexAt ((i : ℕ) + 1) (betaYOf βY 0) (βW i) eW ι Pg
 
+/- English proof (translation)
+Take `⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, hSD, hN, hV⟩` from `hL`. Use `⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, hSD, patchE e, patchEv ev, patchZ z, patchK κ, patchS s, fun t => ⟨?_, (hN t).2⟩, hV⟩` and prove the remaining obligations. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j hj`. Consider the cases of `j with`.
+
+Consider the case `zero => exact adapted_relations_at_zero e ev z`. Consider the case `succ j => exact haux (j + 1) (Nat.succ_pos j) hj`. Introduce `j i`. Consider the cases of `j with`. Consider the case `zero`.
+
+Establish `hT0 : (D.sp.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr D.sp.T_prime.ne_zero`. Simplify using `only [patchK, kap0]`. Apply the tactic sequence `split_ifs <;> simp_all`. Consider the case `succ j => simpa [patchK] using hκ (j + 1) (by omega) i`. Introduce `j`.
+
+Consider the cases of `j with`. Consider the case `zero => simp [patchS]`. Consider the case `succ j => simpa [patchS] using hs (j + 1) (by omega)`. Introduce `PP hPP j hj i hi`. Consider the cases of `j with`.
+
+Consider the case `zero => exact val_nfScal_patch_zero κ s PP (hT PP hPP) i`. Consider the case `succ j`. Rewrite using `[nfScal_patch_succ]`. Conclude with `hu PP hPP (j + 1) (by omega) hj i hi`. Introduce `PP hPP ei hei j hj`.
+
+Consider the cases of `j with`. Consider the case `zero => exact colsAt_zero (betaYOf βY) e ev z κ s _ Pg (hN t).2 PP hPP ei hei`. Consider the case `succ j => exact (colsAt_patch_succ _ e ev z κ s Pg PP ei j).mpr ((hN t).1 PP hPP ei hei (j + 1) (by omega) hj)`.
+-/
 theorem framesExist_of {T : Type} (Pg Sd : Finset (Pl D.host.E)) (Q : T → Finset (Pl D.host.E))
     (hT : ∀ PP ∈ Pg, ((D.sp.T : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal)
     (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.host.E) (z : ∀ j : ℕ, Fin (D.sp.Y j).rank → D.host.E)
@@ -317,6 +393,9 @@ theorem framesExist_of {T : Type} (Pg Sd : Finset (Pl D.host.E)) (Q : T → Fins
     | zero => exact colsAt_zero (betaYOf βY) e ev z κ s _ Pg (hN t).2 PP hPP ei hei
     | succ j => exact (colsAt_patch_succ _ e ev z κ s Pg PP ei j).mpr ((hN t).1 PP hPP ei hei (j + 1) (by omega) hj)
 
+/- English proof (translation)
+Take `⟨e, ev, z, κ, s, h1, h2, h3, h4, h5⟩` from `h`. Conclude with `framesExist_of Pg Sd Q hT e ev z κ s h1 h2 h3 h4 h5`.
+-/
 theorem framesExist_of_open {T : Type} (Pg Sd : Finset (Pl D.host.E)) (Q : T → Finset (Pl D.host.E))
     (hT : ∀ PP ∈ Pg, ((D.sp.T : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal)
     (h : ∃ (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.host.E) (z : ∀ j : ℕ, Fin (D.sp.Y j).rank → D.host.E)
@@ -327,6 +406,31 @@ theorem framesExist_of_open {T : Type} (Pg Sd : Finset (Pl D.host.E)) (Q : T →
   obtain ⟨e, ev, z, κ, s, h1, h2, h3, h4, h5⟩ := h
   exact framesExist_of Pg Sd Q hT e ev z κ s h1 h2 h3 h4 h5
 
+/- English proof (translation)
+Introduce `PP hPP hTmem`. Take `⟨htd, hPg⟩` from `h`. Establish `hab : pb 0 * pb 1 ∈ PP.asIdeal`. Rewrite `hPP` using `[hPg]`. Unfold `Formalism.L2.DIV.primesOf at hPP`.
+
+Use `split_ifs at hPP with h0`. Simplify using `at hPP`. Rewrite `hPP` using `[Set.Finite.mem_toFinset]`. Conclude with `Ideal.dvd_span_singleton.mp hPP`. Establish `key : ∀ i, pb i ∈ PP.asIdeal → ((D.host.g i : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`.
+
+Introduce `i hi`. Establish `hc : ((D.host.g i : ℕ) : 𝓞 D.host.E) = pb i * NumberField.RingOfIntegers.mapRingHom (starRingEnd D.host.E) (pb i)`. Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Rewrite using `[map_natCast, map_mul]`. Conclude with `(htd.norm i).symm`.
+
+Rewrite using `[hc]`. Conclude with `PP.asIdeal.mul_mem_right _ hi`. Establish `hg : ∃ i, ((D.host.g i : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Break down `PP.isPrime.mem_or_mem hab with h1 | h1` into its components or cases. Conclude with `⟨0, key 0 h1⟩`.
+
+Conclude with `⟨1, key 1 h1⟩`. Take `⟨i, hi⟩` from `hg`. Take `⟨π, -, hπT, hπ1⟩` from `D.T_norm D.u₀`. Establish `hT' : D.sp.T = (D.mem D.u₀).A.T` using `D.sp_T`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp hπ1`.
+
+Establish `hn : ((D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Establish `hdv : D.host.g i ∣ D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2`. Apply `Dvd.dvd.mul_left` to reduce the goal to its premises. Apply `Dvd.dvd.pow _ two_ne_zero` to reduce the goal to its premises. Use `fin_cases i`.
+
+Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_left _ _`. Take `⟨k, hk⟩` from `hdv`. Rewrite using `[hk, Nat.cast_mul]`. Conclude with `PP.asIdeal.mul_mem_right _ hi`.
+
+Establish `hy' : (y : D.host.E) * ((D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2 : ℕ) : D.host.E) = (π : D.host.E) - 1`. Use `congrArg (algebraMap (𝓞 D.host.E) D.host.E) hy` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, map_one, map_natCast]`. Conclude with `this`. Establish `hconj : D.conjF (y : D.host.E) * ((D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2 : ℕ) : D.host.E) = D.conjF (π : D.host.E) - 1`.
+
+Use `congrArg D.conjF hy'` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, map_one, map_natCast]`. Conclude with `this`. Establish `hmain : ((D.sp.T : ℕ) : D.host.E) - 1 = ((π : D.host.E) - 1) * D.conjF (π : D.host.E) + D.conjF (y : D.host.E) * ((D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2 : ℕ) : D.host.E)`. Rewrite using `[hconj, hT', ← hπT, D.conjF_eq]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hmem : ((D.sp.T : ℕ) : 𝓞 D.host.E) - 1 = (π - 1) * NumberField.RingOfIntegers.mapRingHom D.conjF.toRingHom π + NumberField.RingOfIntegers.mapRingHom D.conjF.toRingHom y * ((D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2 : ℕ) : 𝓞 D.host.E)`. Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Rewrite using `[map_sub, map_one, map_natCast, map_add, map_mul, map_mul, map_sub, map_one, map_natCast]`. Conclude with `hmain`.
+
+Establish `h1 : ((D.sp.T : ℕ) : 𝓞 D.host.E) - 1 ∈ PP.asIdeal`. Rewrite using `[hmem]`. Use `PP.asIdeal.add_mem (PP.asIdeal.mul_mem_right _ ?_) (PP.asIdeal.mul_mem_left _ hn)` and prove the remaining obligations. Rewrite using `[← hy]`. Conclude with `PP.asIdeal.mul_mem_left _ hn`.
+
+Apply `PP.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h2` using `PP.asIdeal.sub_mem hTmem h1`. Rewrite `h2` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem T_notMem_of_typePlaces {pb : Fin 2 → 𝓞 D.host.E} {Pg : Finset (Pl D.host.E)}
     (h : Formalism.IndefR.Lev.IsTypePlaces (D := D) D.host.g pb Pg) :
     ∀ PP ∈ Pg, ((D.sp.T : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal := by
@@ -402,6 +506,9 @@ theorem T_notMem_of_typePlaces {pb : Fin 2 → 𝓞 D.host.E} {Pg : Finset (Pl D
   have h2 := PP.asIdeal.sub_mem hTmem h1
   rwa [sub_sub_cancel] at h2
 
+/- English proof (translation)
+The claim follows from `framesExist_of_open Pg Sd Q (T_notMem_of_typePlaces hPg) h`.
+-/
 theorem framesExist_of_typePlaces {T : Type} {pb : Fin 2 → 𝓞 D.host.E} (Pg Sd : Finset (Pl D.host.E))
     (Q : T → Finset (Pl D.host.E)) (hPg : Formalism.IndefR.Lev.IsTypePlaces (D := D) D.host.g pb Pg)
     (h : ∃ (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.host.E) (z : ∀ j : ℕ, Fin (D.sp.Y j).rank → D.host.E)

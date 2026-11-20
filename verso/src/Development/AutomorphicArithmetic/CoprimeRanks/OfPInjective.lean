@@ -30,9 +30,15 @@ structure Comparison₂ (C : Core) {φ : Frame} (H : HostRaw φ) extends FrameIs
 def Comparison₂.resMap {C : Core} {φ : Frame} {H : HostRaw φ} (t : Comparison₂ C H) : (ZMod H.condN)ˣ →* C.E.Gal :=
   t.iso.symm.toMonoidHom.comp H.art
 
+/- English proof (translation)
+The claim follows from `t.iso.apply_symm_apply _`.
+-/
 theorem Comparison₂.iso_resMap {C : Core} {φ : Frame} {H : HostRaw φ} (t : Comparison₂ C H) (u : (ZMod H.condN)ˣ) :
     t.iso (t.resMap u) = H.art u := t.iso.apply_symm_apply _
 
+/- English proof (translation)
+Introduce `a h h'` and use `t.iso.injective ((t.iso_resMap _).trans (t.art_res a h h'))`.
+-/
 theorem Comparison₂.isRes {C : Core} {φ : Frame} {H : HostRaw φ} (t : Comparison₂ C H) : IsRes C.E t.resMap := fun a h h' =>
   t.iso.injective ((t.iso_resMap _).trans (t.art_res a h h'))
 
@@ -58,29 +64,59 @@ def ofP (ψ : PChar) : PrimChar := ⟨ψ.N, ψ.χ⟩
 
 def toP (κ : PrimChar) (h : 0 < κ.1) (hp : κ.2.IsPrimitive) : PChar := @PChar.mk κ.1 ⟨h.ne'⟩ κ.2 hp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofP_toP (κ : PrimChar) (h : 0 < κ.1) (hp : κ.2.IsPrimitive) : ofP (toP κ h hp) = κ := rfl
 
+/- English proof (translation)
+The claim follows from `Nat.pos_of_ne_zero (NeZero.ne ψ.N)`.
+-/
 theorem ofP_fst_pos (ψ : PChar) : 0 < (ofP ψ).1 := Nat.pos_of_ne_zero (NeZero.ne ψ.N)
 
+/- English proof (translation)
+The claim follows from `ψ.prim`.
+-/
 theorem ofP_snd_isPrimitive (ψ : PChar) : (ofP ψ).2.IsPrimitive := ψ.prim
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toPrimitive_ofPrimitive (ψ : PChar) : toP (ofP ψ) (ofP_fst_pos ψ) (ofP_snd_isPrimitive ψ) = ψ := rfl
 
+/- English proof (translation)
+Introduce and unpack `⟨N, χ, h⟩ ⟨N', χ', h'⟩ e`. Take `⟨rfl, e2⟩` from `Sigma.mk.inj e`. Take `rfl` from `eq_of_heq e2`. Both sides reduce to the same expression.
+-/
 theorem ofP_injective : Function.Injective ofP := by
   rintro ⟨N, χ, h⟩ ⟨N', χ', h'⟩ e
   obtain ⟨rfl, e2⟩ := Sigma.mk.inj e
   obtain rfl := eq_of_heq e2
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rintro ⟨ψ, rfl⟩; exact ⟨ofP_fst_pos ψ, ofP_snd_isPrimitive ψ⟩, fun h => ⟨toP κ h.1 h.2, rfl⟩⟩`.
+-/
 theorem mem_range_ofP (κ : PrimChar) : κ ∈ Set.range ofP ↔ 0 < κ.1 ∧ κ.2.IsPrimitive :=
   ⟨by rintro ⟨ψ, rfl⟩; exact ⟨ofP_fst_pos ψ, ofP_snd_isPrimitive ψ⟩, fun h => ⟨toP κ h.1 h.2, rfl⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofP_of {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : ofP (PChar.of χ) = prim χ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofP_one : ofP PChar.one = ⟨1, 1⟩ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofP_inv (ψ : PChar) : ofP ψ.inv = ⟨(ofP ψ).1, (ofP ψ).2⁻¹⟩ := rfl
 
+/- English proof (translation)
+The claim follows from `dif_neg (NeZero.ne ψ.N)`.
+-/
 theorem kappaP_ofP (ψ : PChar) : kappaP (ofP ψ) = An.logDerivativeAtOne ψ.χ := dif_neg (NeZero.ne ψ.N)
 
 structure TypeTie (T : HostType) (T' : HType) (κ : HConst) : Prop where
@@ -97,6 +133,9 @@ structure TypeTie (T : HostType) (T' : HType) (κ : HConst) : Prop where
 
 def rescale (T : HostType) (T' : HType) (X : ℝ) : ℝ := X ^ ((T'.J : ℝ) / T.J)
 
+/- English proof (translation)
+Establish `hJ : T.J ≠ 0` using `(lt_of_lt_of_le one_pos T.one_le_J).ne'`. Rewrite using `[rescale, ← h, div_self hJ, Real.rpow_one]`.
+-/
 theorem rescale_of_eq {T : HostType} {T' : HType} (h : T.J = T'.J) (X : ℝ) : rescale T T' X = X := by
   have hJ : T.J ≠ 0 := (lt_of_lt_of_le one_pos T.one_le_J).ne'
   rw [rescale, ← h, div_self hJ, Real.rpow_one]
@@ -126,6 +165,11 @@ structure PreRows (T : HType) (κ : HConst) (X x : ℝ) {φ : Frame} (H : HostRa
   ha9 : H.ModulusSizeBounds (T.z X)
   ha12 : H.PrimePairSizeCondition (T.z X) κ.rB rr rr'
 
+/- English proof (translation)
+Use `⟨rfl, h.kept, h.e, hs, h.c1, fun θ hθ N _ χ hχ => (h.b.2 θ hθ N χ hχ).trans ?_⟩` and prove the remaining obligations. Establish `h1` using `hr.one_le_X`. Establish `hJ : (0 : ℝ) < T.J` using `by exact_mod_cast T.one_le_J`. Establish `h3` using `Real.log_le_log (Real.rpow_pos_of_pos (by linarith) _) hr.x_ge`. Rewrite `h3` using `[Real.log_rpow (by linarith), div_mul_eq_mul_div, one_mul, div_le_iff₀ hJ]`.
+
+Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (by linarith) hC`.
+-/
 theorem PreRows.eAtH {T : HType} {κ : HConst} {X x : ℝ} {φ : Frame} {H : HostRaw φ} {rr rr' : ℕ}
     (hr : PreRows T κ X x H rr rr') (hC : 0 ≤ κ.C) (h : Formalism.HC.HostConditions T κ X x H) {TT : Finset φ.A}
     (hs : φ.Shares TT (x ^ (-1 + T.eps))) : EAtH (T.level φ.o) H TT x T.eps (κ.C * T.J) := by

@@ -16,6 +16,21 @@ namespace GlobalTheory.CovHt.GeomBound
 section Point
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
+/- English proof (translation)
+Take `⟨hsig1, hsig2, -⟩` from `hw.sig`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hp1 : 1 ≤ (dat p i).p` using `by rw [hsig1]; simp only [Ranks.sigW]; omega`. Establish `hq1 : 1 ≤ (dat p i).q` using `by rw [hsig2]; simp only [Ranks.sigW]; omega`. Establish `hf : 2 < Module.finrank ℚ D.host.E / 2` using `by rw [hN.deg]; have := hN.f8; omega`.
+
+Establish `hj : InR D ((i : ℕ) + 1)` using `⟨by omega, hi.le⟩`. Establish `hL : LawsJ p.T` using `p.fw.laws`. Establish `hYg` using `hY.1`. Take `⟨-, -, -, -, -, -, hq⟩` from `hsz`. Take `⟨-, hq⟩` from `hq hi`.
+
+Take `⟨-, -, hρ1, -⟩` from `hq u1 hu`. Establish `hgap` using `quo_gaps p i hN hw hi u1 hu`. Establish `hsa : ∀ τ, StrictAnti (u1 τ)` using `fun τ => strictAnti_of_step fun a b hb => by`. Use `hgap τ a b hb` as an intermediate fact. Establish `: (0 : ℤ) ≤ (((dimFlag (dat p i) + 3) ^ 2 + 2 * ((dat p i).p + (dat p i).q) : ℕ) : ℤ)` using `by positivity`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hg1 : ∀ τ, 1 ≤ GlobalTheory.CompHS.gap (u1 τ) ((dat p i).p - 1)` using `fun τ => by`. Establish `e` using `GlobalTheory.CompHS.gap_eq (u1 τ) (i := ⟨(dat p i).p - 1, by omega⟩) (j := ⟨(dat p i).p, by omega⟩) (by simp only; omega)`. Simplify using `only at e`. Rewrite using `[e]`.
+
+Use `hgap τ ⟨(dat p i).p - 1, by omega⟩ ⟨(dat p i).p, by omega⟩ (by simp only; omega)` as an intermediate fact. Establish `: (0 : ℤ) ≤ ((dimFlag (dat p i) + 3) ^ 2 + 2 * ((dat p i).p + (dat p i).q) : ℕ)` using `by positivity`. Move the coercions through the operations in `at *`. Use the polynomial consequences of the given equalities and inequalities. Establish `hgood` using `_root_.GlobalTheory.T.covering_domain_lattice_regularity hP _ p.T hL _ hp1 hq1 hf hj Y _ _ hYg u1 (fun τ => (hsa τ).antitone) hg1`.
+
+Establish `hbir` using `_root_.GlobalTheory.T.birOn_wtOf_of_consecutive_gap_bound hX hG hQ hS1 (_root_.GlobalTheory.T.covering_topology_refinement hP) hP.q15 hP.q16 _ p.T hL _ hp1 hq1 Y _ _ hYg u1 hgap`. Establish `hprop` using `(_root_.GlobalTheory.T.proportionality_principle_compactification hP hS1 hS2 hS3 _ p.T hL _ hp1 hq1 hf hj Y _ _ hYg).1`. Introduce `Z`. Use `⟨hgood.2 Z, hbir Z, ?_⟩` and prove the remaining obligations. Establish `hv : vdm u1 ≠ 0` using `(GlobalTheory.CompHt.vdm_pos hsa).ne'`.
+
+Rewrite using `[delPrime_eq Y.U Z hv]`. Conclude with `mul_le_mul_of_nonneg_left (GlobalTheory.DegTop.compDeg_le hprop Z hsa) (by linarith)`.
+-/
 theorem geometric_height_bound_at_place (hX : GlobalTheory.CovTop.HypothesesX) (hG : GlobalTheory.Published.GrothendieckDeformation) (hQ : GlobalTheory.HSCore.Quoted)
     (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) (hS1 : GlobalTheory.Published.SiegelToroidalIntegral) (hS2 : GlobalTheory.Published.ToroidalForFanKS)
     (hS3 : GlobalTheory.Published.SemiAbelianLieSeminegative)
@@ -55,6 +70,13 @@ theorem geometric_height_bound_at_place (hX : GlobalTheory.CovTop.HypothesesX) (
   rw [delPrime_eq Y.U Z hv]
   exact mul_le_mul_of_nonneg_left (GlobalTheory.DegTop.compDeg_le hprop Z hsa) (by linarith)
 end Point
+/- English proof (translation)
+Introduce `hX hG hQ hP h1 h2 h3 _ hS`. Establish `hH` using `Sizes.hostN 0`. Establish `hW` using `WtShape.wtN`. Unfold `Geom Covers Lifts`. Unfold `Size Lifts at hS`.
+
+Unfold `HostN Lifts at hH`. Unfold `WtN Lifts at hW`. Use `((hS.and hH).and hW).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨⟨C1, -, e1⟩, ⟨C2, -, e2⟩⟩, ⟨C3, -, e3⟩⟩` from `h`. Take `⟨x0, hx0⟩` from `(e1.and e2).and e3`.
+
+Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i hi Y hY u1 hu => ?_⟩` and prove the remaining obligations. Take `⟨⟨b1, b2⟩, b3⟩` from `hx0 x hx hle ι p hp`. Conclude with `_root_.GlobalTheory.CovHt.GeomBound.geometric_height_bound_at_place p i hX hG hQ hP h1 h2 h3 (b1 i) (b2 i) (b3 i) hi Y hY u1 hu`.
+-/
 theorem geom_of_deepGood_size : GlobalTheory.CovTop.HypothesesX → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems →
     GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS →
     GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → Geom := by
@@ -78,6 +100,9 @@ end
 section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.CovHt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovHt.GeomBound.geom_of_deepGood_size | exact _root_.GlobalTheory.CovHt.GeomBound.geom_of_deepGood_size | (intros; apply _root_.GlobalTheory.CovHt.GeomBound.geom_of_deepGood_size <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.geom_of_published_inputs : GlobalTheory.CovTop.HypothesesX → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → Geom := by
   first | exact @_root_.GlobalTheory.CovHt.GeomBound.geom_of_deepGood_size | exact _root_.GlobalTheory.CovHt.GeomBound.geom_of_deepGood_size | (intros; apply _root_.GlobalTheory.CovHt.GeomBound.geom_of_deepGood_size <;> assumption)
 end

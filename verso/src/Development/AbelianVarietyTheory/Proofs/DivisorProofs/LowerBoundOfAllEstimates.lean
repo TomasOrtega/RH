@@ -15,6 +15,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CovTop.LowCover
 
+/- English proof (translation)
+Establish `hK : 0 < K ∨ b = 0`. Break down `eq_or_lt_of_le hb with h0 | h0` into its components or cases. Conclude with `Or.inr h0.symm`. Conclude with `Or.inl (h0.trans_le hbK)`. Establish `hE : 0 ≤ E` using `hb.trans hbE`.
+
+Establish `hC1E : 0 ≤ C1 * E` using `mul_nonneg hC1 hE`. Establish `ht : |-M - C1 * E - 2 * b| ≤ |M| + C1 * E + 2 * b`. Use `abs_sub (-M - C1 * E) (2 * b)` as an intermediate fact. Establish `h2` using `abs_sub (-M) (C1 * E)`. Rewrite `h2` using `[abs_neg]`.
+
+Rewrite `h2` using `[abs_of_nonneg hC1E]`. Rewrite `this` using `[abs_of_nonneg (by linarith : (0:ℝ) ≤ 2 * b)]`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `hK with hK | hb0` into its components or cases. Use `set ε := b / K with hε`.
+
+Establish `hε0 : 0 ≤ ε` using `div_nonneg hb hK.le`. Establish `hε1 : ε ≤ 1` using `(div_le_one hK).2 hbK`. Establish `hεK : ε * K = b` using `div_mul_cancel₀ b hK.ne'`. Establish `h1 : ε * |-M - C1 * E - 2 * b| ≤ ε * |M| + ε * (C1 * E + 2 * b)`. Rewrite using `[← mul_add]; exact mul_le_mul_of_nonneg_left (by linarith) hε0`.
+
+Establish `h2 : ε * |M| ≤ b` using `hεK ▸ mul_le_mul_of_nonneg_left hMK hε0`. Establish `h3 : ε * (C1 * E + 2 * b) ≤ C1 * E + 2 * b`. Establish `: 0 ≤ C1 * E + 2 * b` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : ε * (|-M - C1 * E - 2 * b| + 2 * K) = ε * |-M - C1 * E - 2 * b| + 2 * b`.
+
+Rewrite using `[mul_add, ← hεK]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[h4]`. Use the polynomial consequences of the given equalities and inequalities. Substitute `hb0` using the available equality.
+
+Simplify using `only [zero_div, zero_mul, sub_zero, mul_zero] at h hR`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem numeric {M E b K C1 muB mu0 : ℝ} (hb : 0 ≤ b) (hbE : b ≤ E) (hbK : b ≤ K) (hMK : |M| ≤ K) (hC1 : 0 ≤ C1)
     (h : (-M - C1 * E - 2 * b) - b / K * (|-M - C1 * E - 2 * b| + 2 * K) ≤ muB) (hR : muB - 2 * b ≤ mu0) :
     -M - (2 * C1 + 9) * E ≤ mu0 := by
@@ -53,15 +68,34 @@ theorem numeric {M E b K C1 muB mu0 : ℝ} (hb : 0 ≤ b) (hbE : b ≤ E) (hbK :
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}
 
+/- English proof (translation)
+Simplify using `[Formalism.HN.rkK]`.
+-/
 theorem rkK_bot' {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] :
     Formalism.HN.rkK (⊥ : Submodule (𝓞 K) V) = 0 := by
   simp [Formalism.HN.rkK]
 
+/- English proof (translation)
+Unfold `LowAt at *`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hC hE]`.
+-/
 theorem lowAt_mono {p : PtAt ex Csz} {i : Fin D.R.m} {C C' : ℝ} (h : LowAt p i C) (hC : C ≤ C') (hE : 0 ≤ unitE p) :
     LowAt p i C' := by
   unfold LowAt at *
   nlinarith [mul_le_mul_of_nonneg_right hC hE]
 
+/- English proof (translation)
+Take `⟨hb1, hbE, -, -, hMK, hbK, -⟩` from `hS`. Take `⟨hGk, hGm', -, -, hrk0, -, -, -⟩` from `hG`. Take `⟨n, φ, hint, hinj, hnorm, hrk⟩` from `hM`. Establish `hTC : IsTotallyComplex Y.d.c₂.F` using `⟨fun v => by`. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`.
+
+Conclude with `fun e => GlobalTheory.CompHt.conj_comp_ne (c := Y.d.c₂) v.embedding (RingHom.ext fun a => RingHom.congr_fun e a)⟩`. Establish `hKpos : 0 < PP * kap p i` using `by linarith`. Establish `hBle : latDeep p i Y ≤ latW Y.U (Gk p i)` using `inf_le_left`. Establish `hBfg : (latDeep p i Y).FG` using `GlobalTheory.HalfRankSub.fg_of_le_fg hGk.2.1 hBle`. Establish `hA0 : latW Y.U (Gs p i (-(cZero D ((i : ℕ) + 1)))) ≠ ⊥`.
+
+Introduce `h`. Express the relevant statement in the definitionally equal form `0 < Formalism.HN.rkK (latW Y.U (Gs p i (-(cZero D ((i : ℕ) + 1))))) at hrk0`. Rewrite `hrk0` using `[h]`. Rewrite `hrk0` using `[rkK_bot']`. Conclude with `lt_irrefl _ hrk0`.
+
+Establish `hrkR : (n : ℝ) * Formalism.HN.rkK (latDeep p i Y) ≤ (1 + L.sc.b / (PP * kap p i)) * Formalism.HN.rkK (latW Y.U (Gs p i (-(cZero D ((i : ℕ) + 1)))))`. Establish `h1 : ((n * Formalism.HN.rkK (latDeep p i Y) : ℕ) : ℝ) ≤ (Y.rk (Gs p i (cZero D ((i : ℕ) + 1))) : ℝ)`. Conclude with `hrk` after adjusting the coercions. Move the coercions through the operations in `at h1`. Conclude with `h1.trans hK`.
+
+Establish `hmu : Y.mu (Gs p i (-(cZero D ((i : ℕ) + 1)))) = slope_sq (Y.nrm (Gs p i (-(cZero D ((i : ℕ) + 1))))) (latW Y.U (Gs p i (-(cZero D ((i : ℕ) + 1)))))` using `rfl`. Establish `ht : -mainT p i - (CF + CU) * unitE p - 2 * L.sc.b ≤ slope_sq (Y.nrm (Gs p i (-(cZero D ((i : ℕ) + 1))))) (latW Y.U (Gs p i (-(cZero D ((i : ℕ) + 1))))) - 2 * L.sc.b`. Unfold `FlatAt at hF`. Unfold `UAt at hU`. Rewrite using `[← hmu]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hd` using `GlobalTheory.DescentFamily.descent Y.d.c₂.F _ _ (Y.nrm (Gs p i (-(cZero D ((i : ℕ) + 1))))) (Y.nrm (Gk p i)) (latW Y.U (Gs p i (-(cZero D ((i : ℕ) + 1))))) (latDeep p i Y) n φ L.sc.b (PP * kap p i) (L.sc.b / (PP * kap p i)) (-mainT p i - (CF + CU) * unitE p - 2 * L.sc.b) hGm'.1 h …`. Unfold `LowAt`. Unfold `RingAt at hR`. Conclude with `numeric (by linarith) hbE hbK hMK (by linarith) hd hR`.
+-/
 theorem lowAt_of_cover (p : PtAt ex Csz) (i : Fin D.R.m) (PP CS CF CU : ℝ) (hCF : 0 ≤ CF) (hCU : 0 ≤ CU)
     (hS : SizeAt p i PP CS) (Y : Cov p i) (hG : DeepGoodAt p i Y) (hR : RingAt p i Y) (hM : MapsAt p i Y)
     (hK : RkAt p i Y PP) (hGm : GminAt p i Y PP) (hF : FlatAt p i Y CF) (hU : UAt p i Y CU) :
@@ -104,6 +138,13 @@ theorem lowAt_of_cover (p : PtAt ex Csz) (i : Fin D.R.m) (PP CS CF CU : ℝ) (hC
   unfold RingAt at hR
   exact numeric (by linarith) hbE hbK hMK (by linarith) hd hR
 
+/- English proof (translation)
+Introduce `hS hD hE hG hR hM hK hGm hF hU`. Use `Closed.imp (((((((((hS.and hD).and hE).and hG).and hR).and hM).and hK).and hGm).and hF).and hU) ?_` and prove the remaining obligations. Introduce `eps Fm CH _ hh`. Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨CS, -, aS⟩, CD, -, aD⟩, _, -, aE⟩, _, -, aG⟩, _, -, aR⟩, _, -, aM⟩, _, -, aK⟩, _, -, aGm⟩, CF, hCF, aF⟩, CU, hCU, aU⟩` from `hh`. Use `⟨max CD (2 * (CF + CU) + 9), le_max_of_le_right (by linarith), ?_⟩` and prove the remaining obligations.
+
+Take `⟨x0, h⟩` from `((((((((aS.and aD).and aE).and aG).and aR).and aM).and aK).and aGm).and aF).and aU`. Use `⟨x0, fun x hx hle ι p hp i => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨bS, bD⟩, bE⟩, bG⟩, bR⟩, bM⟩, bK⟩, bGm⟩, bF⟩, bU⟩` from `h x hx hle ι p hp`. Establish `hS'` using `bS i`. Establish `hE0 : 0 ≤ unitE p` using `by obtain ⟨a, b, -⟩ := hS'; linarith`.
+
+Break down `(Nat.succ_le_of_lt i.isLt).eq_or_lt with heq | hlt` into its components or cases. Conclude with `lowAt_mono (bD i heq) (le_max_left _ _) hE0`. Take `⟨Y, hY⟩` from `bE i hlt`. Conclude with `lowAt_mono (lowAt_of_cover p i _ CS CF CU hCF hCU hS' Y (bG i hlt Y hY) (bR i hlt Y hY) (bM i hlt Y hY) (bK i hlt Y hY) (bGm i hlt Y hY) (bF i hlt Y hY) (bU i hlt Y hY)) (le_max_right _ _) hE0`.
+-/
 theorem low : Size → LowDef → DeepEx → DeepGood → Ring → Maps → Rk → Gmin → Flat → ULow → Low := by
   intro hS hD hE hG hR hM hK hGm hF hU
   refine Closed.imp (((((((((hS.and hD).and hE).and hG).and hR).and hM).and hK).and hGm).and hF).and hU) ?_

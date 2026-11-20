@@ -2,6 +2,19 @@ import Mathlib
 
 namespace GlobalTheory.LocalGenerators
 
+/- English proof (translation)
+Establish `hP : P.asIdeal ≠ ⊤` using `P.isPrime.ne_top`. Establish `hlt : ¬ J ≤ J * P.asIdeal`. Introduce `h`. Establish `heq : J * P.asIdeal = J * ⊤`. Rewrite using `[Ideal.mul_top]`.
+
+Conclude with `le_antisymm Ideal.mul_le_left h`. Conclude with `hP (mul_left_cancel₀ hJ heq)`. Take `⟨d, hdJ, hdn⟩` from `SetLike.not_le_iff_exists.mp hlt`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hdn (Submodule.zero_mem _)`. Establish `hdvd : J ∣ Ideal.span {d}` using `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem J).mpr hdJ)`. Take `⟨K, hK⟩` from `hdvd`. Establish `hKP : ¬ K ≤ P.asIdeal`. Introduce `h`.
+
+Apply `hdn` to reduce the goal to its premises. Establish `: Ideal.span {d} ≤ J * P.asIdeal` using `hK ▸ Ideal.mul_mono_right h`. Conclude with `this (Ideal.mem_span_singleton_self d)`. Take `⟨s, hsK, hsP⟩` from `SetLike.not_le_iff_exists.mp hKP`. Use `⟨d, hdJ, hd0, s, hsP, ?_⟩` and prove the remaining obligations.
+
+Introduce `y hy`. Establish `hm : s * y ∈ Ideal.span {d}`. Rewrite using `[hK, mul_comm s y]`. Conclude with `Ideal.mul_mem_mul hy hsK`. Take `⟨o, ho⟩` from `Ideal.mem_span_singleton'.mp hm`.
+
+Conclude with `⟨o, ho.symm⟩`.
+-/
 theorem local_gen {R : Type*} [CommRing R] [IsDedekindDomain R]
     (P : IsDedekindDomain.HeightOneSpectrum R) (J : Ideal R) (hJ : J ≠ ⊥) :
     ∃ d ∈ J, d ≠ (0 : R) ∧ ∃ s ∉ P.asIdeal, ∀ y ∈ J, ∃ o : R, s * y = o * d := by
@@ -30,6 +43,9 @@ theorem local_gen {R : Type*} [CommRing R] [IsDedekindDomain R]
   obtain ⟨o, ho⟩ := Ideal.mem_span_singleton'.mp hm
   exact ⟨o, ho.symm⟩
 
+/- English proof (translation)
+Introduce `E _ _ P J hJ`. Conclude with `local_gen P J hJ`.
+-/
 theorem main : ∀ {E : Type} [inst : Field E] [NumberField E]
     (P : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E))
     (J : Ideal (NumberField.RingOfIntegers E)), J ≠ ⊥ →

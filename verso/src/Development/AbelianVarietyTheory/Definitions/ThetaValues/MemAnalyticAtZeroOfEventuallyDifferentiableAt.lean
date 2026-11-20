@@ -11,6 +11,21 @@ section Formal
 
 variable {σ R : Type*} [CommRing R] [IsAddTorsionFree R]
 
+/- English proof (translation)
+Establish `key : ∀ n : ℕ, ∀ F ∈ Ideal.span S, ∀ m : σ →₀ ℕ, m.degree < n → MvPowerSeries.coeff m F = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro F _ m hm`. Use linear arithmetic over natural numbers and integers.
+
+Consider the case `succ n ih`. Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Introduce `m hm`.
+
+Distinguish the cases in `h : m = 0`. Rewrite using `[h, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h0 F hF]`. Take `⟨i, hi⟩ : ∃ i, m i ≠ 0` from `by simpa using Finsupp.ne_iff.1 h`. Establish `hle : Finsupp.single i 1 ≤ m`. Rewrite using `[Finsupp.single_le_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨m', rfl⟩` from `exists_add_of_le hle`. Establish `h1` using `ih _ (hd F hF i) m' (by`. Rewrite `hm` using `[map_add, Finsupp.degree_single]`. Use the proof step `omega)`.
+
+Rewrite `h1` using `[MvPowerSeries.coeff_pderiv, add_comm m', mul_comm, ← Nat.cast_succ, ← nsmul_eq_mul, smul_eq_zero_iff_right (Nat.succ_ne_zero _)]`. Conclude with `h1`. Consider the case `zero => intro m _`. Simplify using the standard rewrite rules. Consider the case `add F G _ _ hF hG => intro m hm`.
+
+Rewrite using `[map_add, hF m hm, hG m hm, add_zero]`. Consider the case `smul G F _ hF`. Introduce `m hm`. Rewrite using `[smul_eq_mul, MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations.
+
+Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[hF p.2 (by rw [← hp, map_add] at hm; omega), mul_zero]`. Introduce `F hF`. Use extensionality with `m`. Rewrite using `[key _ F (Ideal.subset_span hF) m (Nat.lt_succ_self _), map_zero]`.
+-/
 theorem mvPowerSeries_eq_zero_of_pderiv_mem_span (S : Set (MvPowerSeries σ R))
     (h0 : ∀ F ∈ S, MvPowerSeries.constantCoeff F = 0)
     (hd : ∀ F ∈ S, ∀ i, MvPowerSeries.pderiv R i F ∈ Ideal.span S) : ∀ F ∈ S, F = 0 := by
@@ -54,6 +69,9 @@ section Operator
 
 variable {σ W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W]
 
+/- English proof (translation)
+Simplify using `[ReciprocityTheory.ChartRestriction.G.I2.polyDeriv, MvPolynomial.support_monomial]`.
+-/
 theorem dirPolyDeriv_monomial_one (m : σ →₀ ℕ) (u : σ → W) (F : W → ℂ) (x : W) :
     ReciprocityTheory.ChartRestriction.G.I2.polyDeriv (MvPolynomial.monomial m 1) u F x =
       iteratedFDeriv ℂ (Multiset.card (Finsupp.toMultiset m)) F x
@@ -62,12 +80,20 @@ theorem dirPolyDeriv_monomial_one (m : σ →₀ ℕ) (u : σ → W) (F : W → 
   classical
   simp [ReciprocityTheory.ChartRestriction.G.I2.polyDeriv, MvPolynomial.support_monomial]
 
+/- English proof (translation)
+Simplify using `only [dirPolyDeriv_monomial_one]`. Both sides reduce to the same expression.
+-/
 theorem dirPolyDeriv_eq_sum (P : MvPolynomial σ ℂ) (u : σ → W) (F : W → ℂ) (x : W) :
     ReciprocityTheory.ChartRestriction.G.I2.polyDeriv P u F x = ∑ m ∈ P.support,
       P.coeff m * ReciprocityTheory.ChartRestriction.G.I2.polyDeriv (MvPolynomial.monomial m 1) u F x := by
   simp only [dirPolyDeriv_monomial_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[dirPolyDeriv_monomial_one, ← lineDerivList_ofFn hF]`. Establish `h1 : (List.ofFn fun k : Fin (Multiset.card (Finsupp.toMultiset m)) => u ((Finsupp.toMultiset m).toList.get (k.cast (Multiset.length_toList _).symm))) = (Finsupp.toMultiset m).toList.map u`. Apply the tactic sequence `apply List.ext_getElem <;> simp`. Rewrite using `[h1]`. Use `lineDerivList_perm hF (List.Perm.map _ ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Multiset.coe_eq_coe, Multiset.coe_toList, hl]`.
+-/
 theorem dirPolyDeriv_monomial_eq_lineDerivList {m : σ →₀ ℕ} {l : List σ}
     (hl : (l : Multiset σ) = Finsupp.toMultiset m) (u : σ → W) {F : W → ℂ} {x : W}
     (hF : AnalyticAt ℂ F x) :
@@ -94,37 +120,60 @@ noncomputable def taylorDir (u : σ → W) (f : W → ℂ) : MvPowerSeries σ �
 
 variable (u : σ → W) {f g : W → ℂ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_taylorDir (f : W → ℂ) (m : σ →₀ ℕ) :
     MvPowerSeries.coeff m (taylorDir u f) = ((∏ i, (m i).factorial : ℕ) : ℂ)⁻¹ *
       ReciprocityTheory.ChartRestriction.G.I2.polyDeriv (MvPolynomial.monomial m 1) u f 0 := rfl
 
 omit [NormedAddCommGroup W] [NormedSpace ℂ W] in
 
+/- English proof (translation)
+The claim follows from `Nat.cast_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => (m i).factorial_ne_zero)`.
+-/
 theorem cast_prod_factorial_ne_zero (m : σ →₀ ℕ) : ((∏ i, (m i).factorial : ℕ) : ℂ) ≠ 0 :=
   Nat.cast_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => (m i).factorial_ne_zero)
 
+/- English proof (translation)
+Rewrite using `[coeff_taylorDir, mul_inv_cancel_left₀ (cast_prod_factorial_ne_zero m)]`.
+-/
 theorem dirPolyDeriv_monomial_eq_coeff (f : W → ℂ) (m : σ →₀ ℕ) :
     ReciprocityTheory.ChartRestriction.G.I2.polyDeriv (MvPolynomial.monomial m 1) u f 0 =
       ((∏ i, (m i).factorial : ℕ) : ℂ) * MvPowerSeries.coeff m (taylorDir u f) := by
   rw [coeff_taylorDir, mul_inv_cancel_left₀ (cast_prod_factorial_ne_zero m)]
 
+/- English proof (translation)
+Rewrite using `[dirPolyDeriv_eq_sum]`. Simplify using `only [dirPolyDeriv_monomial_eq_coeff, mul_assoc]`.
+-/
 theorem dirPolyDeriv_eq_sum_coeff_taylorDir (P : MvPolynomial σ ℂ) (f : W → ℂ) :
     ReciprocityTheory.ChartRestriction.G.I2.polyDeriv P u f 0 = ∑ m ∈ P.support,
       P.coeff m * ((∏ i, (m i).factorial : ℕ) : ℂ) * MvPowerSeries.coeff m (taylorDir u f) := by
   rw [dirPolyDeriv_eq_sum]
   simp only [dirPolyDeriv_monomial_eq_coeff, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[coeff_taylorDir, dirPolyDeriv_monomial_eq_lineDerivList hl u hf]`.
+-/
 theorem coeff_taylorDir_eq_lineDerivList (hf : AnalyticAt ℂ f 0) {m : σ →₀ ℕ} {l : List σ}
     (hl : (l : Multiset σ) = Finsupp.toMultiset m) :
     MvPowerSeries.coeff m (taylorDir u f) =
       ((∏ i, (m i).factorial : ℕ) : ℂ)⁻¹ * lineDerivList ℂ (l.map u) f 0 := by
   rw [coeff_taylorDir, dirPolyDeriv_monomial_eq_lineDerivList hl u hf]
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_taylorDir, coeff_taylorDir, dirPolyDeriv_monomial_one, dirPolyDeriv_monomial_one, (h.iteratedFDeriv ℂ _).eq_of_nhds]`.
+-/
 theorem taylorDir_congr (h : f =ᶠ[𝓝 0] g) : taylorDir u f = taylorDir u g := by
   ext m
   rw [coeff_taylorDir, coeff_taylorDir, dirPolyDeriv_monomial_one, dirPolyDeriv_monomial_one,
     (h.iteratedFDeriv ℂ _).eq_of_nhds]
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_taylorDir, dirPolyDeriv_monomial_one]`. Establish `: ∀ (n : ℕ) (_ : n = 0) (v : Fin n → W), iteratedFDeriv ℂ n f 0 v = f 0`. Introduce and unpack `n rfl v`. Simplify using the standard rewrite rules. Rewrite using `[this _ (by simp)]`.
+
+Simplify using the standard rewrite rules.
+-/
 @[simp] theorem constantCoeff_taylorDir (f : W → ℂ) :
     MvPowerSeries.constantCoeff (taylorDir u f) = f 0 := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_taylorDir,
@@ -134,6 +183,9 @@ theorem taylorDir_congr (h : f =ᶠ[𝓝 0] g) : taylorDir u f = taylorDir u g :
   rw [this _ (by simp)]
   simp
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[map_add, coeff_taylorDir_eq_lineDerivList u (hf.add hg) (Multiset.coe_toList _), coeff_taylorDir_eq_lineDerivList u hf (Multiset.coe_toList _), coeff_taylorDir_eq_lineDerivList u hg (Multiset.coe_toList _), ← mul_add, ← lineDerivList_add hf hg]`. Both sides reduce to the same expression.
+-/
 theorem taylorDir_add (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     taylorDir u (f + g) = taylorDir u f + taylorDir u g := by
   ext m
@@ -143,6 +195,11 @@ theorem taylorDir_add (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     ← lineDerivList_add hf hg]
   rfl
 
+/- English proof (translation)
+Use extensionality with `m`. Establish `h` using `congrFun (lineDerivList_const_smul ((Finsupp.toMultiset m).toList.map u) c f) 0`. Rewrite using `[map_smul, coeff_taylorDir_eq_lineDerivList u hf.const_smul (Multiset.coe_toList _), coeff_taylorDir_eq_lineDerivList u hf (Multiset.coe_toList _)]`. Express the relevant statement in the definitionally equal form `_ * lineDerivList ℂ _ (fun z => c • f z) 0 = _`. Rewrite using `[h, smul_eq_mul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem taylorDir_smul (c : ℂ) (hf : AnalyticAt ℂ f 0) :
     taylorDir u (c • f) = c • taylorDir u f := by
   ext m
@@ -153,10 +210,20 @@ theorem taylorDir_smul (c : ℂ) (hf : AnalyticAt ℂ f 0) :
   rw [h, smul_eq_mul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `((ContinuousLinearMap.apply ℂ ℂ v).analyticAt _).comp hf.fderiv`.
+-/
 theorem analyticAt_fderiv_apply {x : W} (hf : AnalyticAt ℂ f x) (v : W) :
     AnalyticAt ℂ (fun z => fderiv ℂ f z v) x :=
   ((ContinuousLinearMap.apply ℂ ℂ v).analyticAt _).comp hf.fderiv
 
+/- English proof (translation)
+Establish `h1 : (fun z => fderiv ℂ f z (u i)) =ᶠ[𝓝 0] lineDerivList ℂ [u i] f` using `by filter_upwards [hf.eventually_analyticAt] with z hz`. Conclude with `hz.differentiableAt.lineDeriv_eq_fderiv.symm`. Use extensionality with `m`. Rewrite using `[taylorDir_congr u h1, MvPowerSeries.coeff_pderiv, coeff_taylorDir_eq_lineDerivList u (analyticAt_lineDerivList hf _) (Multiset.coe_toList _), coeff_taylorDir_eq_lineDerivList u hf (l := (Finsupp.toMultiset m).toList ++ [i]) (by rw [← Multiset.coe_add]; simp), List.map_append, li …`. Establish `h2 : (∏ j, ((m + Finsupp.single i 1 : σ →₀ ℕ) j).factorial : ℕ) = (m i + 1) * ∏ j, (m j).factorial`.
+
+Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), ← Finset.mul_prod_erase _ (fun j => (m j).factorial) (Finset.mem_univ i), ← mul_assoc]`. Use `congr 1`. Simplify using `[Nat.factorial_succ]`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Simplify using `[Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hj)]`.
+
+Establish `h3` using `cast_prod_factorial_ne_zero m`. Establish `h4 : ((m i : ℂ) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero (m i)`. Rewrite using `[h2, Nat.cast_mul, Nat.cast_succ, List.map_singleton]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem taylorDir_fderiv (hf : AnalyticAt ℂ f 0) (i : σ) :
     taylorDir u (fun z => fderiv ℂ f z (u i)) = MvPowerSeries.pderiv ℂ i (taylorDir u f) := by
   classical
@@ -180,6 +247,11 @@ theorem taylorDir_fderiv (hf : AnalyticAt ℂ f 0) (i : σ) :
   rw [h2, Nat.cast_mul, Nat.cast_succ, List.map_singleton]
   field_simp
 
+/- English proof (translation)
+Establish `h0 : taylorDir u (fun _ => (0 : ℂ)) = 0`. Use `taylorDir_smul u 0 (analyticAt_const (v := (0 : ℂ)) (x := (0 : W)))` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Conclude with `this`. Use `MvPowerSeries.pderiv.ext (fun i => ?_) (by simp)` and prove the remaining obligations.
+
+Rewrite using `[← taylorDir_fderiv u analyticAt_const]`. Simplify using `[h0]`.
+-/
 @[simp] theorem taylorDir_const (c : ℂ) : taylorDir u (fun _ => c) = MvPowerSeries.C c := by
   have h0 : taylorDir u (fun _ => (0 : ℂ)) = 0 := by
     have := taylorDir_smul u 0 (analyticAt_const (v := (0 : ℂ)) (x := (0 : W)))
@@ -189,12 +261,25 @@ theorem taylorDir_fderiv (hf : AnalyticAt ℂ f 0) (i : σ) :
   rw [← taylorDir_fderiv u analyticAt_const]
   simp [h0]
 
+/- English proof (translation)
+The claim follows from `(taylorDir_const u 0).trans (map_zero _)`.
+-/
 @[simp] theorem taylorDir_zero : taylorDir u (0 : W → ℂ) = 0 :=
   (taylorDir_const u 0).trans (map_zero _)
 
+/- English proof (translation)
+The claim follows from `(taylorDir_const u 1).trans (map_one _)`.
+-/
 @[simp] theorem taylorDir_one : taylorDir u (1 : W → ℂ) = 1 :=
   (taylorDir_const u 1).trans (map_one _)
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `mvPowerSeries_eq_zero_of_pderiv_mem_span {F | ∃ f g : W → ℂ, AnalyticAt ℂ f 0 ∧ AnalyticAt ℂ g 0 ∧ F = taylorDir u (f * g) - taylorDir u f * taylorDir u g} ?_ ?_ _ ⟨f, g, hf, hg, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, -, -, rfl⟩`. Simplify using the standard rewrite rules. Introduce and unpack `_ ⟨f, g, hf, hg, rfl⟩ i`.
+
+Establish `hf'` using `analyticAt_fderiv_apply hf (u i)`. Establish `hg'` using `analyticAt_fderiv_apply hg (u i)`. Establish `h1 : (fun z => fderiv ℂ (f * g) z (u i)) =ᶠ[𝓝 0] f * (fun z => fderiv ℂ g z (u i)) + (fun z => fderiv ℂ f z (u i)) * g` using `by filter_upwards [hf.eventually_analyticAt, hg.eventually_analyticAt] with z hz hz'`. Rewrite using `[fderiv_mul hz.differentiableAt hz'.differentiableAt]`. Simplify using `[mul_comm]`.
+
+Rewrite using `[map_sub, ← taylorDir_fderiv u (hf.mul hg), taylorDir_congr u h1, taylorDir_add u (hf.mul hg') (hf'.mul hg), Derivation.leibniz, ← taylorDir_fderiv u hf, ← taylorDir_fderiv u hg, smul_eq_mul, smul_eq_mul, add_sub_add_comm, mul_comm (taylorDir u g)]`. Conclude with `Ideal.add_mem _ (Ideal.subset_span ⟨_, _, hf, hg', rfl⟩) (Ideal.subset_span ⟨_, _, hf', hg, rfl⟩)`.
+-/
 theorem taylorDir_mul (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     taylorDir u (f * g) = taylorDir u f * taylorDir u g := by
   rw [← sub_eq_zero]
@@ -218,6 +303,9 @@ theorem taylorDir_mul (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     exact Ideal.add_mem _ (Ideal.subset_span ⟨_, _, hf, hg', rfl⟩)
       (Ideal.subset_span ⟨_, _, hf', hg, rfl⟩)
 
+/- English proof (translation)
+Use `MvPowerSeries.pderiv.ext (fun i => ?_) (by simp)` and prove the remaining obligations. Rewrite using `[← taylorDir_fderiv u (ℓ.analyticAt 0)]`. Simplify using `[MvPowerSeries.pderiv_X, Pi.single_apply, MvPowerSeries.smul_eq_C_mul]`.
+-/
 theorem taylorDir_clm (ℓ : W →L[ℂ] ℂ) :
     taylorDir u ℓ = ∑ i, ℓ (u i) • (MvPowerSeries.X i : MvPowerSeries σ ℂ) := by
   classical
@@ -225,6 +313,11 @@ theorem taylorDir_clm (ℓ : W →L[ℂ] ℂ) :
   rw [← taylorDir_fderiv u (ℓ.analyticAt 0)]
   simp [MvPowerSeries.pderiv_X, Pi.single_apply, MvPowerSeries.smul_eq_C_mul]
 
+/- English proof (translation)
+Use extensionality with `m`. Establish `hc : AnalyticAt ℂ (fun z => f (L z)) 0` using `hf.comp_of_eq (L.analyticAt 0) (map_zero L)`. Establish `h` using `congrFun (lineDerivList_comp_linearMap (L : W' →ₗ[ℂ] W) ((Finsupp.toMultiset m).toList.map v) f) 0`. Rewrite `h` using `[map_zero, List.map_map]`. Rewrite using `[coeff_taylorDir_eq_lineDerivList v hc (Multiset.coe_toList _), coeff_taylorDir_eq_lineDerivList _ hf (Multiset.coe_toList _)]`.
+
+Conclude with `congrArg _ h`.
+-/
 theorem taylorDir_comp_clm {W' : Type*} [NormedAddCommGroup W'] [NormedSpace ℂ W']
     (L : W' →L[ℂ] W) (v : σ → W') (hf : AnalyticAt ℂ f 0) :
     taylorDir v (fun z => f (L z)) = taylorDir (fun i => L (v i)) f := by
@@ -237,6 +330,13 @@ theorem taylorDir_comp_clm {W' : Type*} [NormedAddCommGroup W'] [NormedSpace ℂ
     coeff_taylorDir_eq_lineDerivList _ hf (Multiset.coe_toList _)]
   exact congrArg _ h
 
+/- English proof (translation)
+Establish `hdeg : ∀ m : σ →₀ ℕ, Multiset.card (Finsupp.toMultiset m) = m.degree` using `fun m => by`. Rewrite using `[Finsupp.card_toMultiset]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `ContinuousMultilinearMap.toMultilinearMap_injective (MultilinearMap.ext_of_span_eq_top (g := fun _ => u) (fun _ => hu) fun j => ?_)` and prove the remaining obligations. Establish `hl : ((List.ofFn j : List σ) : Multiset σ) = Finsupp.toMultiset (Multiset.toFinsupp (List.ofFn j : List σ))` using `by simp`. Establish `h1` using `h (Multiset.toFinsupp (List.ofFn j : List σ)) (by rw [← hdeg, ← hl]; simp)`. Rewrite `h1` using `[coeff_taylorDir_eq_lineDerivList u hf hl, List.map_ofFn, lineDerivList_ofFn hf, mul_eq_zero_iff_left (inv_ne_zero (cast_prod_factorial_ne_zero _))]`. Conclude with `h1`.
+
+Introduce and unpack `h m rfl`. Rewrite `h` using `[← hdeg]`. Rewrite using `[coeff_taylorDir, dirPolyDeriv_monomial_one, h]`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_taylorDir_eq_zero_iff (hu : Submodule.span ℂ (Set.range u) = ⊤)
     (hf : AnalyticAt ℂ f 0) (n : ℕ) :
     (∀ m : σ →₀ ℕ, m.degree = n → MvPowerSeries.coeff m (taylorDir u f) = 0) ↔
@@ -259,6 +359,11 @@ theorem coeff_taylorDir_eq_zero_iff (hu : Submodule.span ℂ (Set.range u) = ⊤
     rw [coeff_taylorDir, dirPolyDeriv_monomial_one, h]
     simp
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => by rw [taylorDir_congr u h, taylorDir_zero]⟩` and prove the remaining obligations. Establish `h1 : ∀ n, iteratedFDeriv ℂ n f 0 = 0` using `fun n => (coeff_taylorDir_eq_zero_iff u hu hf n).1 fun m _ => by rw [h, map_zero]`. Take `⟨p, r, hp⟩` from `hf`. Use `filter_upwards [Metric.eball_mem_nhds (0 : W) hp.r_pos] with y hy`. Establish `h2` using `hp.hasSum_iteratedFDeriv hy`.
+
+Simplify using `only [h1, ContinuousMultilinearMap.zero_apply, smul_zero, zero_add] at h2`. Conclude with `h2.unique hasSum_zero`.
+-/
 theorem taylorDir_eq_zero_iff (hu : Submodule.span ℂ (Set.range u) = ⊤)
     (hf : AnalyticAt ℂ f 0) : taylorDir u f = 0 ↔ f =ᶠ[𝓝 0] 0 := by
   refine ⟨fun h => ?_, fun h => by rw [taylorDir_congr u h, taylorDir_zero]⟩
@@ -280,6 +385,9 @@ def analyticAtZero : Subalgebra ℂ (W → ℂ) where
 
 omit [Fintype σ] in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 @[simp] theorem mem_analyticAtZero : f ∈ analyticAtZero W ↔ AnalyticAt ℂ f 0 := Iff.rfl
 
 noncomputable def taylorDirAlgHom : analyticAtZero W →ₐ[ℂ] MvPowerSeries σ ℂ where
@@ -290,16 +398,30 @@ noncomputable def taylorDirAlgHom : analyticAtZero W →ₐ[ℂ] MvPowerSeries �
   map_add' f g := taylorDir_add u f.2 g.2
   commutes' c := taylorDir_const u c
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem taylorDirAlgHom_apply (f : analyticAtZero W) :
     taylorDirAlgHom u f = taylorDir u f := rfl
 
+/- English proof (translation)
+Rewrite using `[← neg_one_smul ℂ f, taylorDir_smul u _ hf, neg_one_smul]`.
+-/
 theorem taylorDir_neg (hf : AnalyticAt ℂ f 0) : taylorDir u (-f) = -taylorDir u f := by
   rw [← neg_one_smul ℂ f, taylorDir_smul u _ hf, neg_one_smul]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, taylorDir_add u hf hg.neg, taylorDir_neg u hg, sub_eq_add_neg]`.
+-/
 theorem taylorDir_sub (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     taylorDir u (f - g) = taylorDir u f - taylorDir u g := by
   rw [sub_eq_add_neg, taylorDir_add u hf hg.neg, taylorDir_neg u hg, sub_eq_add_neg]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Establish `hs : ∀ k ∈ s, AnalyticAt ℂ (F k) 0` using `fun k hk => hF k (Finset.mem_insert_of_mem hk)`. Simplify using `only [Finset.sum_insert hj]`.
+
+Rewrite using `[← ih hs]`. Conclude with `taylorDir_add u (hF j (Finset.mem_insert_self _ _)) (Finset.analyticAt_fun_sum _ hs)`.
+-/
 theorem taylorDir_sum {κ : Type*} (s : Finset κ) {F : κ → W → ℂ}
     (hF : ∀ k ∈ s, AnalyticAt ℂ (F k) 0) :
     taylorDir u (fun z => ∑ k ∈ s, F k z) = ∑ k ∈ s, taylorDir u (F k) := by
@@ -312,6 +434,11 @@ theorem taylorDir_sum {κ : Type*} (s : Finset κ) {F : κ → W → ℂ}
     rw [← ih hs]
     exact taylorDir_add u (hF j (Finset.mem_insert_self _ _)) (Finset.analyticAt_fun_sum _ hs)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Establish `hs : ∀ k ∈ s, AnalyticAt ℂ (F k) 0` using `fun k hk => hF k (Finset.mem_insert_of_mem hk)`. Simplify using `only [Finset.prod_insert hj]`.
+
+Rewrite using `[← ih hs]`. Conclude with `taylorDir_mul u (hF j (Finset.mem_insert_self _ _)) (Finset.analyticAt_fun_prod _ hs)`.
+-/
 theorem taylorDir_prod {κ : Type*} (s : Finset κ) {F : κ → W → ℂ}
     (hF : ∀ k ∈ s, AnalyticAt ℂ (F k) 0) :
     taylorDir u (fun z => ∏ k ∈ s, F k z) = ∏ k ∈ s, taylorDir u (F k) := by
@@ -324,6 +451,11 @@ theorem taylorDir_prod {κ : Type*} (s : Finset κ) {F : κ → W → ℂ}
     rw [← ih hs]
     exact taylorDir_mul u (hF j (Finset.mem_insert_self _ _)) (Finset.analyticAt_fun_prod _ hs)
 
+/- English proof (translation)
+Establish `h` using `MvPolynomial.comp_aeval_apply (f := fun k => (⟨φ k, hφ k⟩ : analyticAtZero W)) (taylorDirAlgHom u) P`. Simplify using `only [taylorDirAlgHom_apply] at h`. Rewrite using `[← h]`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+
+Conclude with `(MvPolynomial.comp_aeval_apply (f := fun k => (⟨φ k, hφ k⟩ : analyticAtZero W)) ((Pi.evalAlgHom ℂ (fun _ : W => ℂ) z).comp (analyticAtZero W).val) P).symm`.
+-/
 theorem taylorDir_eval {κ : Type*} {φ : κ → W → ℂ} (hφ : ∀ k, AnalyticAt ℂ (φ k) 0)
     (P : MvPolynomial κ ℂ) :
     taylorDir u (fun z => MvPolynomial.eval (fun k => φ k z) P) =
@@ -337,12 +469,18 @@ theorem taylorDir_eval {κ : Type*} {φ : κ → W → ℂ} (hφ : ∀ k, Analyt
   exact (MvPolynomial.comp_aeval_apply (f := fun k => (⟨φ k, hφ k⟩ : analyticAtZero W))
     ((Pi.evalAlgHom ℂ (fun _ : W => ℂ) z).comp (analyticAtZero W).val) P).symm
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← taylorDir_sub u hf hg, taylorDir_eq_zero_iff u hu (hf.sub hg), ← Filter.eventuallyEq_iff_sub]`.
+-/
 theorem taylorDir_eq_iff (hu : Submodule.span ℂ (Set.range u) = ⊤)
     (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     taylorDir u f = taylorDir u g ↔ f =ᶠ[𝓝 0] g := by
   rw [← sub_eq_zero, ← taylorDir_sub u hf hg, taylorDir_eq_zero_iff u hu (hf.sub hg),
     ← Filter.eventuallyEq_iff_sub]
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_smul]`. Rewrite using `[taylorDir_sum u _ (F := fun i z => a i • fderiv ℂ f z (u i)) fun i _ => (analyticAt_fderiv_apply hf (u i)).const_smul (c := a i)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← taylorDir_fderiv u hf, ← taylorDir_smul u _ (analyticAt_fderiv_apply hf (u i))]`. Both sides reduce to the same expression.
+-/
 theorem taylorDir_fderiv_sum (hf : AnalyticAt ℂ f 0) (a : σ → ℂ) :
     taylorDir u (fun z => fderiv ℂ f z (∑ i, a i • u i)) =
       ∑ i, a i • MvPowerSeries.pderiv ℂ i (taylorDir u f) := by
@@ -364,59 +502,104 @@ noncomputable def taylor (f : (σ → ℂ) → ℂ) : MvPowerSeries σ ℂ :=
 
 variable {f g : (σ → ℂ) → ℂ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem taylor_eq_taylorDir (f : (σ → ℂ) → ℂ) :
     taylor f = taylorDir (fun i => (Pi.single i 1 : σ → ℂ)) f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_taylor (f : (σ → ℂ) → ℂ) (m : σ →₀ ℕ) :
     MvPowerSeries.coeff m (taylor f) = ((∏ i, (m i).factorial : ℕ) : ℂ)⁻¹ *
       ReciprocityTheory.ChartRestriction.G.I2.polyDeriv (MvPolynomial.monomial m 1)
         (fun i => (Pi.single i 1 : σ → ℂ)) f 0 := rfl
 
+/- English proof (translation)
+The claim follows from `dirPolyDeriv_eq_sum_coeff_taylorDir _ P f`.
+-/
 theorem dirPolyDeriv_eq_sum_coeff_taylor (P : MvPolynomial σ ℂ) (f : (σ → ℂ) → ℂ) :
     ReciprocityTheory.ChartRestriction.G.I2.polyDeriv P (fun i => (Pi.single i 1 : σ → ℂ)) f 0 = ∑ m ∈ P.support,
       P.coeff m * ((∏ i, (m i).factorial : ℕ) : ℂ) * MvPowerSeries.coeff m (taylor f) :=
   dirPolyDeriv_eq_sum_coeff_taylorDir _ P f
 
+/- English proof (translation)
+The claim follows from `constantCoeff_taylorDir _ f`.
+-/
 @[simp] theorem constantCoeff_taylor (f : (σ → ℂ) → ℂ) :
     MvPowerSeries.constantCoeff (taylor f) = f 0 := constantCoeff_taylorDir _ f
 
+/- English proof (translation)
+The claim follows from `taylorDir_add _ hf hg`.
+-/
 theorem taylor_add (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     taylor (f + g) = taylor f + taylor g := taylorDir_add _ hf hg
 
+/- English proof (translation)
+The claim follows from `taylorDir_const _ c`.
+-/
 @[simp] theorem taylor_const (c : ℂ) :
     taylor (fun _ : σ → ℂ => c) = MvPowerSeries.C c := taylorDir_const _ c
 
+/- English proof (translation)
+The claim follows from `taylorDir_zero _`.
+-/
 @[simp] theorem taylor_zero : taylor (0 : (σ → ℂ) → ℂ) = 0 := taylorDir_zero _
 
+/- English proof (translation)
+The claim follows from `taylorDir_one _`.
+-/
 @[simp] theorem taylor_one : taylor (1 : (σ → ℂ) → ℂ) = 1 := taylorDir_one _
 
+/- English proof (translation)
+The claim follows from `taylorDir_mul _ hf hg`.
+-/
 theorem taylor_mul (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     taylor (f * g) = taylor f * taylor g := taylorDir_mul _ hf hg
 
+/- English proof (translation)
+The claim follows from `taylorDir_sum _ s hF`.
+-/
 theorem taylor_sum {κ : Type*} (s : Finset κ) {F : κ → (σ → ℂ) → ℂ}
     (hF : ∀ k ∈ s, AnalyticAt ℂ (F k) 0) :
     taylor (fun z => ∑ k ∈ s, F k z) = ∑ k ∈ s, taylor (F k) := taylorDir_sum _ s hF
 
+/- English proof (translation)
+The claim follows from `taylorDir_fderiv (fun i => (Pi.single i 1 : σ → ℂ)) hf i`.
+-/
 theorem taylor_fderiv (hf : AnalyticAt ℂ f 0) (i : σ) :
     taylor (fun z => fderiv ℂ f z (Pi.single i 1)) = MvPowerSeries.pderiv ℂ i (taylor f) :=
   taylorDir_fderiv (fun i => (Pi.single i 1 : σ → ℂ)) hf i
 
+/- English proof (translation)
+The claim follows from `taylorDir_clm _ ℓ`.
+-/
 theorem taylor_clm (ℓ : (σ → ℂ) →L[ℂ] ℂ) :
     taylor ℓ = ∑ i, ℓ (Pi.single i 1) • (MvPowerSeries.X i : MvPowerSeries σ ℂ) :=
   taylorDir_clm _ ℓ
 
+/- English proof (translation)
+Establish `h` using `taylor_clm (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : σ => ℂ) i)`. Simplify using `only [ContinuousLinearMap.proj_apply, Pi.single_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h`. Conclude with `h`.
+-/
 @[simp] theorem taylor_coord (i : σ) : taylor (fun z : σ → ℂ => z i) = MvPowerSeries.X i := by
   have h := taylor_clm (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : σ => ℂ) i)
   simp only [ContinuousLinearMap.proj_apply, Pi.single_apply, ite_smul, one_smul, zero_smul,
     Finset.sum_ite_eq, Finset.mem_univ, if_true] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `(Pi.basisFun ℂ σ).span_eq`. Rewrite using `[show ⇑(Pi.basisFun ℂ σ) = fun i : σ => (Pi.single i 1 : σ → ℂ) from` and apply the resulting hypothesis. Use function extensionality and compare the values at `fun i => Pi.basisFun_apply ℂ σ i] at h`.
+-/
 theorem span_range_single_one :
     Submodule.span ℂ (Set.range fun i : σ => (Pi.single i 1 : σ → ℂ)) = ⊤ := by
   have h := (Pi.basisFun ℂ σ).span_eq
   rwa [show ⇑(Pi.basisFun ℂ σ) = fun i : σ => (Pi.single i 1 : σ → ℂ) from
     funext fun i => Pi.basisFun_apply ℂ σ i] at h
 
+/- English proof (translation)
+The claim follows from `taylorDir_eq_iff _ span_range_single_one hf hg`.
+-/
 theorem taylor_eq_iff (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     taylor f = taylor g ↔ f =ᶠ[𝓝 0] g :=
   taylorDir_eq_iff _ span_range_single_one hf hg
@@ -424,13 +607,24 @@ theorem taylor_eq_iff (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
 noncomputable def taylorAlgHom : analyticAtZero (σ → ℂ) →ₐ[ℂ] MvPowerSeries σ ℂ :=
   taylorDirAlgHom fun i => (Pi.single i 1 : σ → ℂ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem taylorAlgHom_apply (f : analyticAtZero (σ → ℂ)) : taylorAlgHom f = taylor f := rfl
 
+/- English proof (translation)
+The claim follows from `taylorDir_eval _ hφ P`.
+-/
 theorem taylor_eval_comp {κ : Type*} {φ : κ → (σ → ℂ) → ℂ} (hφ : ∀ k, AnalyticAt ℂ (φ k) 0)
     (P : MvPolynomial κ ℂ) :
     taylor (fun z => MvPolynomial.eval (fun k => φ k z) P) =
       MvPolynomial.aeval (fun k => taylor (φ k)) P := taylorDir_eval _ hφ P
 
+/- English proof (translation)
+Establish `h` using `taylor_eval_comp (φ := fun (k : σ) (z : σ → ℂ) => z k) (fun k => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : σ => ℂ) k).analyticAt 0) P`. Simplify using `only [taylor_coord] at h`. Use `h.trans ?_` and prove the remaining obligations. Establish `: MvPolynomial.aeval (fun k : σ => (MvPowerSeries.X k : MvPowerSeries σ ℂ)) = MvPolynomial.coeToMvPowerSeries.algHom (R` using `ℂ) ℂ := by ext1 k; simp`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem taylor_eval (P : MvPolynomial σ ℂ) :
     taylor (fun z : σ → ℂ => MvPolynomial.eval z P) = (P : MvPowerSeries σ ℂ) := by
   have h := taylor_eval_comp (φ := fun (k : σ) (z : σ → ℂ) => z k)
@@ -445,10 +639,16 @@ theorem taylor_eval (P : MvPolynomial σ ℂ) :
 
 variable {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W]
 
+/- English proof (translation)
+The claim follows from `taylorDir_comp_clm L _ hF`.
+-/
 theorem taylor_comp_clm (L : (σ → ℂ) →L[ℂ] W) {F : W → ℂ} (hF : AnalyticAt ℂ F 0) :
     taylor (fun z => F (L z)) = taylorDir (fun i => L (Pi.single i 1)) F :=
   taylorDir_comp_clm L _ hF
 
+/- English proof (translation)
+Establish `h` using `taylor_comp_clm (LinearMap.toContinuousLinearMap (Fintype.linearCombination ℂ u)) hF`. Simplify using `only [LinearMap.coe_toContinuousLinearMap', Fintype.linearCombination_apply_single, one_smul] at h`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+-/
 theorem taylorDir_eq_taylor (u : σ → W) {F : W → ℂ} (hF : AnalyticAt ℂ F 0) :
     taylorDir u F = taylor fun z : σ → ℂ => F (∑ i, z i • u i) := by
   have h := taylor_comp_clm (LinearMap.toContinuousLinearMap (Fintype.linearCombination ℂ u)) hF
@@ -461,12 +661,18 @@ end Coord
 
 section Examples
 
+/- English proof (translation)
+Establish `h` using `taylor_eval (MvPolynomial.X 0 * MvPolynomial.X 1 + MvPolynomial.C 3 : MvPolynomial (Fin 2) ℂ)`. Simplify using `using h`.
+-/
 example : taylor (fun z : Fin 2 → ℂ => z 0 * z 1 + 3) =
     MvPowerSeries.X 0 * MvPowerSeries.X 1 + MvPowerSeries.C 3 := by
   have h := taylor_eval (MvPolynomial.X 0 * MvPolynomial.X 1 + MvPolynomial.C 3 :
     MvPolynomial (Fin 2) ℂ)
   simpa using h
 
+/- English proof (translation)
+Establish `h` using `taylor_eval (MvPolynomial.X 0 ^ 2 : MvPolynomial (Fin 1) ℂ)`. Simplify using `only [map_pow, MvPolynomial.eval_X] at h`. Rewrite using `[dirPolyDeriv_monomial_eq_coeff, ← taylor_eq_taylorDir, h, MvPolynomial.coeff_coe, MvPolynomial.coeff_X_pow]`. Simplify using the standard rewrite rules.
+-/
 example : ReciprocityTheory.ChartRestriction.G.I2.polyDeriv (MvPolynomial.monomial (Finsupp.single 0 2) 1)
     (fun i : Fin 1 => (Pi.single i 1 : Fin 1 → ℂ)) (fun z => z 0 ^ 2) 0 = 2 := by
   have h := taylor_eval (MvPolynomial.X 0 ^ 2 : MvPolynomial (Fin 1) ℂ)
@@ -475,6 +681,9 @@ example : ReciprocityTheory.ChartRestriction.G.I2.polyDeriv (MvPolynomial.monomi
     MvPolynomial.coeff_X_pow]
   simp
 
+/- English proof (translation)
+Establish `hd : ∀ z : Fin 1 → ℂ, HasFDerivAt (fun z : Fin 1 → ℂ => Complex.exp (z 0)) (Complex.exp (z 0) • ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin 1 => ℂ) 0) z := fun z => (hasFDerivAt_apply 0 z).cexp`. Rewrite using `[← taylor_fderiv (SCV.analyticAt_iff_eventually_differentiableAt.2 (Eventually.of_forall fun z => (hd z).differentiableAt))]`. Simplify using `[fun z => (hd z).fderiv]`.
+-/
 example : MvPowerSeries.pderiv ℂ 0 (taylor fun z : Fin 1 → ℂ => Complex.exp (z 0)) =
     taylor fun z : Fin 1 → ℂ => Complex.exp (z 0) := by
   have hd : ∀ z : Fin 1 → ℂ, HasFDerivAt (fun z : Fin 1 → ℂ => Complex.exp (z 0))

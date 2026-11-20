@@ -9,6 +9,9 @@ open IsLocalRing
 
 section Affine
 
+/- English proof (translation)
+The claim follows from `Algebra.FiniteType.trans (S := A) inferInstance inferInstance`.
+-/
 theorem finiteType_int_of_finiteType (A B : Type*) [CommRing A] [CommRing B] [Algebra A B]
     [Algebra.FiniteType ℤ A] [Algebra.FiniteType A B] : Algebra.FiniteType ℤ B :=
   Algebra.FiniteType.trans (S := A) inferInstance inferInstance
@@ -16,6 +19,29 @@ theorem finiteType_int_of_finiteType (A B : Type*) [CommRing A] [CommRing B] [Al
 variable {p : ℕ} [Fact p.Prime] {A : Type*} [CommRing A] [IsDomain A] [CharZero A]
   [Algebra.FiniteType ℤ A]
 
+/- English proof (translation)
+Establish `hm` using `(inferInstance : m.IsMaximal).ne_top`. Establish `h1m : (1 : A) ∉ m` using `(Ideal.ne_top_iff_one m).mp hm`. Establish `hb : b ≠ 0`. Introduce and unpack `rfl`. Conclude with `h 1 h1m (by simp)`.
+
+Use `haveI : IsDomain L := IsLocalization.isDomain_of_atPrime L m`. Set `F` to `FractionRing L`. Establish `hinj : Function.Injective (algebraMap A F)`. Rewrite using `[IsScalarTower.algebraMap_eq A L F]`. Conclude with `(IsFractionRing.injective L F).comp (IsLocalization.injective L m.primeCompl_le_nonZeroDivisors)`.
+
+Establish `hne : ∀ {x : A}, x ≠ 0 → algebraMap A F x ≠ 0` using `fun hx h0 => hx (hinj (h0.trans (map_zero _).symm))`. Use `set ψ : F := algebraMap A F c / algebraMap A F b with hψ`. Establish `hψ0 : ψ ≠ 0` using `div_ne_zero (hne hc) (hne hb)`. Set `B` to `Algebra.adjoin A {ψ}`. Set `ψ' : B` to `⟨ψ, Algebra.subset_adjoin rfl⟩`.
+
+Establish `hJ : m.map (algebraMap A B) ⊔ Ideal.span {ψ'} ≠ ⊤`. Introduce `heq`. Use `letI := invertibleOfNonzero hψ0`. Take `⟨q, hq, hqx⟩` from `Algebra.exists_aeval_invOf_eq_zero_of_idealMap_adjoin_sup_span_eq_top ψ _ hm heq`. Establish `hs : q.leadingCoeff ∉ m` using `fun h' => h1m (by simpa using sub_mem h' hq)`.
+
+Establish `hint : IsIntegral L (q.leadingCoeff • ⅟ψ)` using `(isIntegral_leadingCoeff_smul q _ hqx).tower_top`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint`. Take `⟨⟨a, t⟩, hat⟩` from `IsLocalization.surj m.primeCompl z`. Use `h (t * q.leadingCoeff) (m.primeCompl.mul_mem t.2 hs) ⟨a, hinj ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (algebraMap L F) hat`.
+
+Rewrite `e` using `[map_mul, hz, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, invOf_eq_inv, hψ, inv_div, Algebra.smul_def]`. Simplify using `only [map_mul] at e ⊢`. Rewrite `e` using `[div_eq_mul_inv]`. Take the linear combination `algebraMap A F c * e - algebraMap A F t * algebraMap A F q.leadingCoeff * algebraMap A F b * mul_inv_cancel₀ (hne hc)`. Take `⟨m₁, hm₁, hle⟩` from `Ideal.exists_le_maximal _ hJ`.
+
+Establish `hinjB : Function.Injective (algebraMap A B)` using `fun x x' e => hinj (congrArg Subtype.val e)`. Use `haveI : CharZero B := charZero_of_injective_algebraMap hinjB`. Use `haveI : Algebra.FiniteType A B := .adjoin_of_finite (Set.finite_singleton ψ)`. Use `haveI := finiteType_int_of_finiteType A B`. Establish `hcom : m₁.comap (algebraMap A B) = m` using `((inferInstance : m.IsMaximal).eq_of_le (Ideal.comap_ne_top _ hm₁.ne_top) (Ideal.map_le_iff_le_comap.mp (le_sup_left.trans hle))).symm`.
+
+Take `⟨K₀, hK₀, H⟩` from `exists_padic_point_forall_ge (p := p) m₁ (by rw [← map_natCast (algebraMap A B), ← Ideal.mem_comap, hcom]; exact hp) (f := algebraMap A B (f * b)) (fun h0 => mul_ne_zero hf hb (hinjB (h0.trans (map_zero _).symm)))`. Use `⟨K₀, hK₀, fun K _ hK => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hyf⟩` from `H K hK`. Rewrite `hyf` using `[map_mul, map_mul]`. Use `⟨y.comp (algebraMap A B), by rw [← Ideal.comap_comap, hy, hcom], left_ne_zero_of_mul hyf, ?_⟩` and prove the remaining obligations.
+
+Establish `hψm : y ψ' ∈ maximalIdeal (integralClosure ℤ_[p] K)`. Rewrite using `[← Ideal.mem_comap, hy]`. Conclude with `hle (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Rewrite `hψm` using `[mem_maximalIdeal_integralClosure_iff]`. Establish `e : algebraMap A B c = ψ' * algebraMap A B b` using `Subtype.ext (div_mul_cancel₀ _ (hne hb)).symm`.
+
+Establish `hb' : ((y (algebraMap A B b) : K) : PadicAlgCl p) ≠ 0`. Conclude with `right_ne_zero_of_mul hyf` after adjusting the coercions. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[e, map_mul]`. Use `push_cast`.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_lt_of_lt_one_left (norm_pos_iff.mpr hb') hψm`.
+-/
 theorem exists_padic_point_norm_lt (m : Ideal A) [m.IsMaximal] (hp : (p : A) ∈ m)
     (L : Type*) [CommRing L] [Algebra A L] [IsLocalization.AtPrime L m] [IsIntegrallyClosed L]
     {b c f : A} (hc : c ≠ 0) (hf : f ≠ 0) (h : ∀ s ∉ m, ¬ c ∣ s * b) :
@@ -90,6 +116,9 @@ theorem exists_padic_point_norm_lt (m : Ideal A) [m.IsMaximal] (hp : (p : A) ∈
   rw [norm_mul]
   exact mul_lt_of_lt_one_left (norm_pos_iff.mpr hb') hψm
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Take `⟨K, hK, H⟩` from `exists_padic_point_norm_lt m hp L hc hf hn`. Take `⟨y, h1, h2, h3⟩` from `H K le_rfl`. Conclude with `absurd (h K y h1 h2) (not_le.mpr h3)`.
+-/
 theorem exists_notMem_dvd_mul_of_forall_norm_le (m : Ideal A) [m.IsMaximal] (hp : (p : A) ∈ m)
     (L : Type*) [CommRing L] [Algebra A L] [IsLocalization.AtPrime L m] [IsIntegrallyClosed L]
     {b c f : A} (hc : c ≠ 0) (hf : f ≠ 0)
@@ -106,6 +135,9 @@ theorem exists_notMem_dvd_mul_of_forall_norm_le (m : Ideal A) [m.IsMaximal] (hp 
 
 omit [IsDomain A] [CharZero A] [Algebra.FiniteType ℤ A] in
 
+/- English proof (translation)
+The claim follows from `IsUnit.mk0 _ fun h0 => h (Subtype.ext h0)`.
+-/
 theorem isUnit_val_comp_of_ne_zero {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
     (y : A →+* integralClosure ℤ_[p] K) {a : A} (h : y a ≠ 0) :
     IsUnit ((algebraMap (integralClosure ℤ_[p] K) K).comp y a) :=
@@ -113,6 +145,15 @@ theorem isUnit_val_comp_of_ne_zero {K : IntermediateField ℚ_[p] (PadicAlgCl p)
 
 variable {a : A} {S : Type*} [CommRing S] [Algebra A S] [IsLocalization.Away a S]
 
+/- English proof (translation)
+Take `⟨n, b, hb⟩` from `IsLocalization.Away.surj a φ`. Take `⟨K₀, hK₀, H⟩` from `exists_padic_point_norm_lt (b := b) m hp L (pow_ne_zero n ha) (mul_ne_zero ha hf) (by`. Introduce and unpack `s hs ⟨d, hd⟩`. Use `h s hs d (((IsLocalization.Away.algebraMap_isUnit (S := S) a).pow n).mul_left_cancel ?_)` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_mul, ← hd, map_mul, ← hb, map_pow]`.
+
+Use the proof step `ring)`. Use `⟨K₀, hK₀, fun K _ hK => ?_⟩` and prove the remaining obligations. Take `⟨y, h1, h2, h3⟩` from `H K hK`. Rewrite `h2` using `[map_mul]`. Use `⟨y, left_ne_zero_of_mul h2, h1, right_ne_zero_of_mul h2, ?_⟩` and prove the remaining obligations.
+
+Use `set v := IsLocalization.Away.lift (S := S) a (isUnit_val_comp_of_ne_zero y (left_ne_zero_of_mul h2))`. Establish `e : v φ * (y (a ^ n) : K) = (y b : K)`. Use `congrArg v hb` as an intermediate fact. Rewrite `this` using `[map_mul, ← map_pow, IsLocalization.Away.lift_eq, IsLocalization.Away.lift_eq]`. Conclude with `this`.
+
+Rewrite `h3` using `[← e, IntermediateField.coe_mul, norm_mul]`. Assume the negation of the conclusion as `hn`. Conclude with `absurd h3 (not_lt.mpr (mul_le_of_le_one_left (norm_nonneg _) (not_lt.mp hn)))`.
+-/
 theorem exists_padic_point_one_lt_norm (m : Ideal A) [m.IsMaximal] (hp : (p : A) ∈ m)
     (L : Type*) [CommRing L] [Algebra A L] [IsLocalization.AtPrime L m] [IsIntegrallyClosed L]
     (ha : a ≠ 0) {f : A} (hf : f ≠ 0) {φ : S}
@@ -144,6 +185,9 @@ theorem exists_padic_point_one_lt_norm (m : Ideal A) [m.IsMaximal] (hp : (p : A)
   by_contra hn
   exact absurd h3 (not_lt.mpr (mul_le_of_le_one_left (norm_nonneg _) (not_lt.mp hn)))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Take `⟨K, hK, H⟩` from `exists_padic_point_one_lt_norm m hp L ha one_ne_zero hn`. Take `⟨y, h1, h2, -, h3⟩` from `H K le_rfl`. Conclude with `absurd (h K y h1 h2) (not_le.mpr h3)`.
+-/
 theorem exists_notMem_mul_eq_of_forall_norm_le_one (m : Ideal A) [m.IsMaximal] (hp : (p : A) ∈ m)
     (L : Type*) [CommRing L] [Algebra A L] [IsLocalization.AtPrime L m] [IsIntegrallyClosed L]
     (ha : a ≠ 0) {φ : S}
@@ -160,6 +204,17 @@ theorem exists_notMem_mul_eq_of_forall_norm_le_one (m : Ideal A) [m.IsMaximal] (
 
 omit [IsDomain A] [CharZero A] [Algebra.FiniteType ℤ A] [IsLocalization.Away a S] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Take `⟨⟨b, s⟩, hbs⟩` from `IsLocalization.surj m.primeCompl z`. Establish `hinj : Function.Injective (algebraMap S F)` using `IsLocalization.injective_of_map_algebraMap_zero (M := Submonoid.powers a) S _ fun x hx => by`. Rewrite `hx` using `[← IsScalarTower.algebraMap_apply]`.
+
+Rewrite using `[(FaithfulSMul.algebraMap_eq_zero_iff A F).mp hx, map_zero]`. Use `⟨s, s.2, b, hinj ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (algebraMap L F) hbs`. Rewrite `e` using `[map_mul, hz, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, mul_comm, e]`.
+
+Introduce and unpack `⟨s, hs, b, hb⟩`. Use `⟨IsLocalization.mk' L b (⟨s, hs⟩ : m.primeCompl), ?_⟩` and prove the remaining obligations. Establish `hs0 : algebraMap A F s ≠ 0`. Rewrite using `[Ne, FaithfulSMul.algebraMap_eq_zero_iff]`. Introduce and unpack `rfl`.
+
+Conclude with `hs m.zero_mem`. Use `mul_left_cancel₀ hs0 ?_` and prove the remaining obligations. Establish `e` using `congrArg (algebraMap S F) hb`. Rewrite `e` using `[map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[e, IsScalarTower.algebraMap_apply A L F s, ← map_mul, IsScalarTower.algebraMap_apply A L F b]`.
+
+Conclude with `congrArg _ (IsLocalization.mk'_spec' L b (⟨s, hs⟩ : m.primeCompl))`.
+-/
 theorem algebraMap_mem_range_atPrime_iff (a : A) [IsLocalization.Away a S] (m : Ideal A) [m.IsPrime]
     (L : Type*) [CommRing L] [Algebra A L] [IsLocalization.AtPrime L m]
     (F : Type*) [Field F] [Algebra A F] [FaithfulSMul A F] [Algebra S F] [Algebra L F]
@@ -189,6 +244,9 @@ theorem algebraMap_mem_range_atPrime_iff (a : A) [IsLocalization.Away a S] (m : 
     rw [e, IsScalarTower.algebraMap_apply A L F s, ← map_mul, IsScalarTower.algebraMap_apply A L F b]
     exact congrArg _ (IsLocalization.mk'_spec' L b (⟨s, hs⟩ : m.primeCompl))
 
+/- English proof (translation)
+The claim follows from `(algebraMap_mem_range_atPrime_iff a m L F φ).mpr (exists_notMem_mul_eq_of_forall_norm_le_one m hp L ha h)`.
+-/
 theorem mem_range_atPrime_of_forall_norm_le_one (m : Ideal A) [m.IsMaximal] (hp : (p : A) ∈ m)
     (L : Type*) [CommRing L] [Algebra A L] [IsLocalization.AtPrime L m] [IsIntegrallyClosed L]
     (ha : a ≠ 0) (F : Type*) [Field F] [Algebra A F] [FaithfulSMul A F] [Algebra S F]
@@ -203,6 +261,11 @@ theorem mem_range_atPrime_of_forall_norm_le_one (m : Ideal A) [m.IsMaximal] (hp 
 
 omit [IsDomain A] [CharZero A] [Algebra.FiniteType ℤ A] in
 
+/- English proof (translation)
+Use `set v := IsLocalization.Away.lift (S := S) a (isUnit_val_comp_of_ne_zero y hya)`. Establish `e : (y s : K) * v φ = (y b : K)`. Use `congrArg v hb` as an intermediate fact. Rewrite `this` using `[map_mul, IsLocalization.Away.lift_eq, IsLocalization.Away.lift_eq]`. Conclude with `this`.
+
+Rewrite `hs` using `[← hy, Ideal.mem_comap, mem_maximalIdeal_integralClosure_iff, not_lt]`. Establish `h1` using `(mem_integralClosure_padicInt_iff K _).mp (y b).2`. Rewrite `h1` using `[← e, IntermediateField.coe_mul, norm_mul]`. Conclude with `(le_mul_of_one_le_left (norm_nonneg _) hs).trans h1`.
+-/
 theorem norm_le_one_of_mul_eq {m : Ideal A} {φ : S} {s b : A} (hs : s ∉ m)
     (hb : algebraMap A S s * φ = algebraMap A S b)
     (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
@@ -219,6 +282,9 @@ theorem norm_le_one_of_mul_eq {m : Ideal A} {φ : S} {s b : A} (hs : s ∉ m)
   rw [← e, IntermediateField.coe_mul, norm_mul] at h1
   exact (le_mul_of_one_le_left (norm_nonneg _) hs).trans h1
 
+/- English proof (translation)
+Use `⟨fun h K _ y hya hy => ?_, mem_range_atPrime_of_forall_norm_le_one m hp L ha F⟩` and prove the remaining obligations. Take `⟨s, hs, b, hb⟩` from `(algebraMap_mem_range_atPrime_iff a m L F φ).mp h`. Conclude with `norm_le_one_of_mul_eq hs hb K y hya hy`.
+-/
 theorem mem_range_atPrime_iff_forall_norm_le_one (m : Ideal A) [m.IsMaximal] (hp : (p : A) ∈ m)
     (L : Type*) [CommRing L] [Algebra A L] [IsLocalization.AtPrime L m] [IsIntegrallyClosed L]
     (ha : a ≠ 0) (F : Type*) [Field F] [Algebra A F] [FaithfulSMul A F] [Algebra S F]
@@ -233,6 +299,13 @@ theorem mem_range_atPrime_iff_forall_norm_le_one (m : Ideal A) [m.IsMaximal] (hp
   obtain ⟨s, hs, b, hb⟩ := (algebraMap_mem_range_atPrime_iff a m L F φ).mp h
   exact norm_le_one_of_mul_eq hs hb K y hya hy
 
+/- English proof (translation)
+Set `I : Ideal A` to `(Submodule.span A {(1 : S)}).comap (LinearMap.toSpanSingleton A S φ)`. Establish `hI : ∀ s, s ∈ I ↔ ∃ b, algebraMap A S s * φ = algebraMap A S b` using `fun s => by`. Simplify using `[I, Submodule.mem_span_singleton, Algebra.smul_def, eq_comm]`. Establish `: I = ⊤`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal I hne`. Take `⟨q, hq, hqm⟩` from `exists_prime_natCast_mem_of_finiteType_int m`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Use `haveI : IsIntegrallyClosed (Localization.AtPrime m) := isIntegrallyClosed_of_isLocalization _ _ m.primeCompl_le_nonZeroDivisors`. Take `⟨s, hs, hb⟩` from `exists_notMem_mul_eq_of_forall_norm_le_one m hqm (Localization.AtPrime m) ha (φ := φ) fun K _ y hya _ => h q K y hya`.
+
+Conclude with `hs (hle ((hI s).mpr hb))`. Take `⟨b, hb⟩` from `(hI 1).mp (this ▸ Submodule.mem_top)`. Conclude with `⟨b, by simpa using hb.symm⟩`.
+-/
 theorem mem_range_of_forall_norm_le_one [IsIntegrallyClosed A] (ha : a ≠ 0) {φ : S}
     (h : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
       [FiniteDimensional ℚ_[p] K] (y : A →+* integralClosure ℤ_[p] K) (hya : y a ≠ 0),
@@ -263,6 +336,11 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace Opposite
 local notation "genericPt(" p ", " K ", " y ")" =>
   Spec.map (CommRingCat.ofHom (algebraMap (integralClosure ℤ_[p] K) K)) ≫ y
 
+/- English proof (translation)
+Establish `key : ∀ q : Spec (.of K), (Spec.map (CommRingCat.ofHom (algebraMap O K)) ≫ y) q = y (genericPoint _)` using `fun q => by`. Rewrite using `[Scheme.Hom.comp_apply, genericPoint_eq_bot_of_affine]`. Use `congrArg y (PrimeSpectrum.ext ?_)` and prove the remaining obligations. Rewrite using `[Subsingleton.elim q (⊥ : PrimeSpectrum K)]`. Conclude with `Ideal.comap_bot_of_injective (algebraMap O K) (FaithfulSMul.algebraMap_injective O K)`.
+
+Use `⟨fun h => ?_, fun h q _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← key (⊥ : PrimeSpectrum K)]`. Conclude with `h (Set.mem_univ _)`. Rewrite `h` using `[← key q]`. Conclude with `h`.
+-/
 theorem top_le_preimage_iff_genericPoint_mem {O K : Type} [CommRing O] [IsDomain O] [Field K]
     [Algebra O K] [FaithfulSMul O K] {Z : Scheme.{0}} (y : Spec (.of O) ⟶ Z) (U : Z.Opens) :
     ⊤ ≤ (Spec.map (CommRingCat.ofHom (algebraMap O K)) ≫ y) ⁻¹ᵁ U ↔ y (genericPoint _) ∈ U := by
@@ -278,6 +356,11 @@ theorem top_le_preimage_iff_genericPoint_mem {O K : Type} [CommRing O] [IsDomain
   · rw [← key q] at h
     exact h
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `h`. Take `⟨V, hV, s, rfl⟩` from `Z.presheaf.exists_germ_eq g`. Use `haveI : Nonempty V := ⟨⟨x, hV⟩⟩`. Use `haveI : Nonempty (V ⊓ W : Z.Opens) := ⟨⟨x, hV, hx⟩⟩`. Use `⟨V ⊓ W, inferInstance, Z.presheaf.map (homOfLE inf_le_left).op s, ⟨hV, hx⟩, inf_le_right, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Scheme.algebraMap_germ_eq_germToFunctionField]`. Conclude with `Z.presheaf.germ_res_apply (homOfLE inf_le_left) _ _ s`.
+-/
 theorem exists_germToFunctionField_eq_of_mem_range_stalk {Z : Scheme.{0}} [IsIntegral Z]
     {t : Z.functionField} {x : Z}
     (h : t ∈ (algebraMap (Z.presheaf.stalk x) Z.functionField).range) {W : Z.Opens} (hx : x ∈ W) :
@@ -292,6 +375,9 @@ theorem exists_germToFunctionField_eq_of_mem_range_stalk {Z : Scheme.{0}} [IsInt
   rw [Scheme.algebraMap_germ_eq_germToFunctionField]
   exact Z.presheaf.germ_res_apply (homOfLE inf_le_left) _ _ s
 
+/- English proof (translation)
+Use `IsNormalScheme.exists_germToFunctionField_eq_of_locally W t fun x hx => ?_` and prove the remaining obligations. Take `⟨z, ⟨hzx, hzW⟩, hz⟩` from `nonempty_inter_closedPoints (Z := closure {x} ∩ (W : Set Z)) ⟨x, subset_closure rfl, hx⟩ (isClosed_closure.isLocallyClosed.inter W.isOpen.isLocallyClosed)`. Take `⟨V, hV, s, hzV, hVW, hs⟩` from `exists_germToFunctionField_eq_of_mem_range_stalk (h z hzW hz) hzW`. Conclude with `⟨V, hV, s, (specializes_iff_mem_closure.mpr hzx).mem_open V.isOpen hzV, hVW, hs⟩`.
+-/
 theorem exists_germToFunctionField_eq_of_closedPoints {Z : Scheme.{0}} [IsIntegral Z]
     [JacobsonSpace Z] (W : Z.Opens) [Nonempty W] (t : Z.functionField)
     (h : ∀ x ∈ W, IsClosed ({x} : Set Z) →
@@ -304,6 +390,9 @@ theorem exists_germToFunctionField_eq_of_closedPoints {Z : Scheme.{0}} [IsIntegr
     (h z hzW hz) hzW
   exact ⟨V, hV, s, (specializes_iff_mem_closure.mpr hzx).mem_open V.isOpen hzV, hVW, hs⟩
 
+/- English proof (translation)
+The claim follows from `haveI := ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int haveI : JacobsonSpace (Spec (.of ℤ)) := inferInstanceAs (JacobsonSpace (PrimeSpectrum ℤ)) LocallyOfFiniteType.jacobsonSpace π`.
+-/
 theorem jacobsonSpace_of_finiteType_over_int {Z : Scheme.{0}} (π : Z ⟶ Spec (.of ℤ))
     [LocallyOfFiniteType π] : JacobsonSpace Z :=
   haveI := ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int
@@ -314,6 +403,27 @@ variable {Z : Scheme.{0}} [IsIntegral Z] (π : Z ⟶ Spec (.of ℤ)) [Flat π] [
 
 include π
 
+/- English proof (translation)
+Take `⟨V, hV, hxV, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := x) trivial`. Use `haveI : Nonempty V := ⟨⟨x, hxV⟩⟩`. Use `haveI := finiteType_int_sections π hV`. Use `haveI := charZero_sections_of_flat π hV`. Use `haveI := hV.primeIdealOf_isMaximal_of_isClosed ⟨x, hxV⟩ hx`.
+
+Establish `hg : ∀ (W : Z.Opens) [Nonempty W], genericPoint Z ∈ W` using `fun W h => ((genericPoint_spec Z).mem_open_set_iff W.isOpen).mpr (by simpa using h)`. Take `⟨f, hfU, hxf⟩` from `hV.exists_basicOpen_le (V := U ⊓ U') ⟨_, hg U, hg U'⟩ (hg V)`. Establish `hf : f ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hxf`.
+
+Use `haveI : Nonempty (Z.basicOpen f) := ⟨⟨_, hxf⟩⟩`. Use `letI : Algebra Γ(Z, V) (Z.presheaf.stalk x) := Z.presheaf.algebra_section_stalk ⟨x, hxV⟩`. Use `haveI : IsLocalization.AtPrime (Z.presheaf.stalk x) (hV.primeIdealOf ⟨x, hxV⟩).asIdeal := hV.isLocalization_stalk ⟨x, hxV⟩`. Use `haveI : IsScalarTower Γ(Z, V) (Z.presheaf.stalk x) Z.functionField := functionField_isScalarTower Z V ⟨x, hxV⟩`. Use `haveI := hV.isLocalization_basicOpen f`.
+
+Use `haveI : IsScalarTower Γ(Z, V) Γ(Z, Z.basicOpen f) Z.functionField := .of_algebraMap_eq fun a => (Z.presheaf.germ_res_apply (homOfLE (Z.basicOpen_le f)) _ _ a).symm`. Use `haveI : FaithfulSMul Γ(Z, V) Z.functionField := (faithfulSMul_iff_algebraMap_injective _ _).mpr (Z.germToFunctionField_injective V)`. Set `φ' : Γ(Z, Z.basicOpen f)` to `Z.presheaf.map (homOfLE (hfU.trans inf_le_left)).op φ`. Establish `hφ' : algebraMap _ Z.functionField φ' = Z.germToFunctionField U φ` using `Z.presheaf.germ_res_apply (homOfLE (hfU.trans inf_le_left)) _ _ φ`. Rewrite `h` using `[← hφ', algebraMap_mem_range_atPrime_iff f (hV.primeIdealOf ⟨x, hxV⟩).asIdeal]`.
+
+Use `push Not at h`. Take `⟨K₀, hK₀, H⟩` from `exists_padic_point_one_lt_norm (p := p) (hV.primeIdealOf ⟨x, hxV⟩).asIdeal ((mem_primeIdealOf_iff_evaluation_eq_zero hV hxV _).mpr (by simpa using hp)) (Z.presheaf.stalk x) hf one_ne_zero h`. Use `⟨K₀, hK₀, fun K _ hK => ?_⟩` and prove the remaining obligations. Take `⟨y, hyf, hy, -, hlt⟩` from `H K hK`. Set `y' : Spec (.of (integralClosure ℤ_[p] K)) ⟶ Z` to `Spec.map (CommRingCat.ofHom y) ≫ hV.fromSpec`.
+
+Establish `hgen : y' (genericPoint _) ∈ Z.basicOpen f`. Rewrite using `[Scheme.Hom.comp_apply, ← Scheme.Hom.mem_preimage, hV.fromSpec_preimage_basicOpen, genericPoint_eq_bot_of_affine]`. Conclude with `hyf`. Establish `hD` using `(top_le_preimage_iff_genericPoint_mem (K := K) y' _).mpr hgen`. Establish `hU` using `(top_le_preimage_iff_genericPoint_mem (K := K) y' U).mpr (hfU hgen).1`.
+
+Use `⟨y', hU, ?_, (hfU hgen).2, ?_⟩` and prove the remaining obligations. Use `(Scheme.Hom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Conclude with `(congrArg hV.fromSpec (PrimeSpectrum.ext hy)).trans (hV.fromSpec_primeIdealOf ⟨x, hxV⟩)`. Establish `e : IsLocalization.Away.lift f (isUnit_val_comp_of_ne_zero y hyf) = ((genericPt(p, K, y')).appLE (Z.basicOpen f) ⊤ hD ≫ (Scheme.ΓSpecIso (.of K)).hom).hom`. Use `IsLocalization.ringHom_ext (Submonoid.powers f) ?_` and prove the remaining obligations.
+
+Rewrite using `[IsLocalization.Away.lift_comp]`. Establish `e1 : (genericPt(p, K, y')) = Spec.map (CommRingCat.ofHom ((algebraMap (integralClosure ℤ_[p] K) K).comp y)) ≫ hV.fromSpec`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Establish `e2 : ∀ (t : Spec (.of K) ⟶ Z) (ht : ⊤ ≤ t ⁻¹ᵁ Z.basicOpen f) (g : Γ(Z, V) ⟶ .of K), t = Spec.map g ≫ hV.fromSpec → g = Z.presheaf.map (homOfLE (Z.basicOpen_le f)).op ≫ t.appLE (Z.basicOpen f) ⊤ ht ≫ (Scheme.ΓSpecIso (.of K)).hom`. Introduce and unpack `t ht g rfl`.
+
+Rewrite using `[Scheme.Hom.map_appLE_assoc, AffinePointValues.appLE_specMap_fromSpec]`. Conclude with `congrArg CommRingCat.Hom.hom (e2 _ hD _ e1)`. Rewrite `hlt` using `[e]`. Establish `e3` using `(genericPt(p, K, y')).map_appLE hD (homOfLE (hfU.trans inf_le_left)).op`. Rewrite using `[← e3]`.
+
+Conclude with `hlt`.
+-/
 theorem exists_padic_point_scheme_one_lt_norm {p : ℕ} [Fact p.Prime] {x : Z}
     (hx : IsClosed ({x} : Set Z)) (hp : (p : Z.residueField x) = 0)
     [IsIntegrallyClosed (Z.presheaf.stalk x)] {U : Z.Opens} [Nonempty U] (U' : Z.Opens)
@@ -388,6 +498,9 @@ theorem exists_padic_point_scheme_one_lt_norm {p : ℕ} [Fact p.Prime] {x : Z}
     rw [← e3]
     exact hlt
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Take `⟨K, hK, H⟩` from `exists_padic_point_scheme_one_lt_norm π hx hp U hn`. Take `⟨y, hy, h1, -, h2⟩` from `H K le_rfl`. Conclude with `absurd (h K y hy h1) (not_le.mpr h2)`.
+-/
 theorem mem_range_stalk_of_forall_norm_le_one {p : ℕ} [Fact p.Prime] {x : Z}
     (hx : IsClosed ({x} : Set Z)) (hp : (p : Z.residueField x) = 0)
     [IsIntegrallyClosed (Z.presheaf.stalk x)] {U : Z.Opens} [Nonempty U] {φ : Γ(Z, U)}
@@ -402,6 +515,13 @@ theorem mem_range_stalk_of_forall_norm_le_one {p : ℕ} [Fact p.Prime] {x : Z}
   obtain ⟨y, hy, h1, -, h2⟩ := H K le_rfl
   exact absurd (h K y hy h1) (not_le.mpr h2)
 
+/- English proof (translation)
+Use `haveI := jacobsonSpace_of_finiteType_over_int π`. Use `exists_germToFunctionField_eq_of_closedPoints W _ fun x hxW hx => ?_` and prove the remaining obligations. Distinguish the cases in `hxU : x ∈ U`. Conclude with `⟨_, Scheme.algebraMap_germ_eq_germToFunctionField Z hxU φ⟩`. Use `haveI := hn x hxW hxU hx`.
+
+Take `⟨p, hp, hpx⟩` from `exists_prime_residueField_eq_zero π hx`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Assume the negation of the conclusion as `hne`. Take `⟨K₀, hK₀, H⟩` from `exists_padic_point_scheme_one_lt_norm π hx hpx U' hne`. Take `⟨K, hK, hle, H'⟩` from `h p K₀`.
+
+Take `⟨y, hy, h1, h2, h3⟩` from `H K hle`. Conclude with `absurd (H' y hy (h1 ▸ hxW) (h1 ▸ hxU) h2) (not_le.mpr h3)`.
+-/
 theorem exists_germToFunctionField_eq_of_frequently_norm_le_one {U : Z.Opens} [Nonempty U]
     (U' W : Z.Opens) [Nonempty U'] [Nonempty W]
     (hn : ∀ x ∈ W, x ∉ U → IsClosed ({x} : Set Z) → IsIntegrallyClosed (Z.presheaf.stalk x))
@@ -428,6 +548,9 @@ theorem exists_germToFunctionField_eq_of_frequently_norm_le_one {U : Z.Opens} [N
   obtain ⟨y, hy, h1, h2, h3⟩ := H K hle
   exact absurd (H' y hy (h1 ▸ hxW) (h1 ▸ hxU) h2) (not_le.mpr h3)
 
+/- English proof (translation)
+The claim follows from `exists_germToFunctionField_eq_of_frequently_norm_le_one π U W (fun _ _ _ _ => inferInstance) fun p _ K hK => ⟨K, hK, le_rfl, fun y hy hW _ _ => h p K y hy hW⟩`.
+-/
 theorem exists_germToFunctionField_eq_of_forall_norm_le_one [IsNormalScheme Z] {U : Z.Opens}
     [Nonempty U] (W : Z.Opens) [Nonempty W] {φ : Γ(Z, U)}
     (h : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
@@ -439,6 +562,9 @@ theorem exists_germToFunctionField_eq_of_forall_norm_le_one [IsNormalScheme Z] {
   exists_germToFunctionField_eq_of_frequently_norm_le_one π U W (fun _ _ _ _ => inferInstance)
     fun p _ K hK => ⟨K, hK, le_rfl, fun y hy hW _ _ => h p K y hy hW⟩
 
+/- English proof (translation)
+Use `haveI : Nonempty (⊤ : Z.Opens) := ⟨⟨genericPoint Z, trivial⟩⟩`. Take `⟨ψ, hψ⟩` from `exists_germToFunctionField_eq_of_forall_norm_le_one π ⊤ (φ := φ) fun p _ K _ y hy _ => h p K y hy`. Establish `e : Z.presheaf.map (homOfLE le_top).op ψ = φ` using `Z.germToFunctionField_injective U ((Z.presheaf.germ_res_apply (homOfLE le_top) _ _ ψ).trans hψ)`. Conclude with `⟨ψ, e, fun ψ' h' => map_injective_of_isIntegral Z (homOfLE le_top) (h'.trans e.symm)⟩`.
+-/
 theorem existsUnique_extension_of_forall_norm_le_one [IsNormalScheme Z] {U : Z.Opens}
     [Nonempty U] {φ : Γ(Z, U)}
     (h : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
@@ -457,6 +583,9 @@ theorem existsUnique_extension_of_forall_norm_le_one [IsNormalScheme Z] {U : Z.O
 
 omit π [IsIntegral Z] [Flat π] [LocallyOfFiniteType π] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ m _ hp _ _ ha _ h => exists_notMem_mul_eq_of_forall_norm_le_one m hp (Localization.AtPrime m) ha h, fun _ _ π _ _ _ _ _ => ⟨fun _ _ _ hx hp _ h => mem_range_stalk_of_forall_norm_le_one π hx hp h, fun _ W _ h => exists_germToFunctionField_eq_of_forall_norm_le_on …`.
+-/
 theorem regular_of_forall_padic_point_norm_le_one :
     (∀ (p : ℕ) [Fact p.Prime] (A : Type*) [CommRing A] [IsDomain A] [CharZero A]
       [Algebra.FiniteType ℤ A] (m : Ideal A) [m.IsMaximal], (p : A) ∈ m →

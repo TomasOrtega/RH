@@ -17,6 +17,13 @@ section Two
 
 variable {K : Type} [Field K] [CharZero K] {d : ℕ}
 
+/- English proof (translation)
+Establish `hYs : HasSubst Y` using `hasSubst_of_constantCoeff_zero hY`. Establish `hA` using `GlobalTheory.LogJacobian.hasSubst_substSecondBlockZero (C := K) d`. Establish `hB : HasSubst (fun q : Fin 2 × Fin d => subst (GlobalTheory.LogJacobian.substSecondBlockZero (C` using `K) d) (twoVars K d q)) := hasSubst_of_constantCoeff_zero fun q => constantCoeff_subst_eq_zero hA (GlobalTheory.LogJacobian.constantCoeff_substSecondBlockZero d) (cc_twoVars q)`. Rewrite using `[subst_comp_subst_apply hs_twoVars hA, subst_comp_subst_apply hB hYs]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `q`. Simplify using `only [twoVars]`. Rewrite using `[subst_X hA]`. Use `split_ifs with h`. Simplify using `[GlobalTheory.LogJacobian.substSecondBlockZero, subst_X hYs]`.
+
+Simplify using `only [GlobalTheory.LogJacobian.substSecondBlockZero, Sum.elim_inr]`. Rewrite using `[← coe_substAlgHom hYs, map_zero]`.
+-/
 theorem subst_secondBlockZero_twoPointVariables {ι : Type} (Y : Fin d → MvPowerSeries ι K) (hY : ∀ i, constantCoeff (Y i) = 0)
     (f : PS K 2 d) :
     subst Y (subst (GlobalTheory.LogJacobian.substSecondBlockZero (C := K) d) (subst (twoVars K d) f : MvPowerSeries (Fin d ⊕ Fin d) K) :
@@ -37,6 +44,11 @@ theorem subst_secondBlockZero_twoPointVariables {ι : Type} (Y : Fin d → MvPow
   · simp only [GlobalTheory.LogJacobian.substSecondBlockZero, Sum.elim_inr]
     rw [← coe_substAlgHom hYs, map_zero]
 
+/- English proof (translation)
+Rewrite using `[ReciprocityTheory.ChartRestriction.G.TB.LogPf.pderiv_subst cc_twoVars, Finset.sum_eq_single ((1 : Fin 2), k)]`. Simplify using `[twoVars, pderiv_X, Pi.single_apply]`. Introduce `q _ hq`. Take `⟨a, i⟩` from `q`. Use `fin_cases a`.
+
+Simplify using `[twoVars, pderiv_X, Pi.single_apply]`. Establish `: i ≠ k` using `fun h => hq (by simp [h])`. Simplify using `[twoVars, pderiv_X, Pi.single_apply, this]`. Simplify using the standard rewrite rules.
+-/
 theorem pderiv_inr_twoVars (k : Fin d) (f : PS K 2 d) :
     pderiv K (Sum.inr k) (subst (twoVars K d) f) = subst (twoVars K d) (pderiv K ((1 : Fin 2), k) f) := by
   classical
@@ -56,6 +68,9 @@ section Main
 
 variable {K : Type} [Field K] [CharZero K] {v : AddValuation K (WithTop ℝ)} {d n : ℕ} {ι : Type}
 
+/- English proof (translation)
+Rewrite using `[← subst_secondBlockZero_twoPointVariables Y hY, ← pderiv_inr_twoVars]`. Both sides reduce to the same expression.
+-/
 theorem subst_jacEntry (F : FGLaw K d) (hF : ∀ a, MvIsInt v (subst (twoVars K d) (F.F a)))
     (Y : Fin d → MvPowerSeries ι K) (hY : ∀ i, constantCoeff (Y i) = 0) (k j : Fin d) :
     subst Y (GlobalTheory.LogJacobian.jacEntry (logFGLOf v F hF) k j) =
@@ -65,6 +80,13 @@ theorem subst_jacEntry (F : FGLaw K d) (hF : ∀ a, MvIsInt v (subst (twoVars K 
 
 omit [CharZero K] in
 
+/- English proof (translation)
+Establish `hTs : HasSubst T` using `hasSubst_of_constantCoeff_zero hT`. Establish `h2 : HasSubst (fun p : Fin 2 × Fin d => (![pt K d b, 0] : Fin 2 → Pt K n d) p.1 p.2)` using `hasSubst_of_constantCoeff_zero fun p => by`. Take `⟨j, i⟩` from `p`. Apply the tactic sequence `fin_cases j <;> simp [pt]`. Unfold `ev`.
+
+Rewrite using `[subst_comp_subst_apply h2 hTs]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Use `fin_cases j`.
+
+Simplify using `[pt, subst_X hTs]`. Simplify using `only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_zero, Pi.zero_apply, one_ne_zero, if_false]`. Rewrite using `[← coe_substAlgHom hTs, map_zero]`.
+-/
 theorem subst_ev_pt_zero [Finite ι] (T : Fin n × Fin d → MvPowerSeries ι K) (hT : ∀ q, constantCoeff (T q) = 0)
     (b : Fin n) (g : PS K 2 d) :
     subst T (ev (n := n) ![pt K d b, 0] g) =
@@ -86,6 +108,9 @@ theorem subst_ev_pt_zero [Finite ι] (T : Fin n × Fin d → MvPowerSeries ι K)
 
 omit [CharZero K] in
 
+/- English proof (translation)
+Establish `hs : HasSubst T` using `hasSubst_of_constantCoeff_zero hT`. Establish `h0 : constantCoeff (subst T (f - (constantCoeff f) • 1) : MvPowerSeries ι K) = 0` using `constantCoeff_subst_eq_zero hs hT (by simp)`. Rewrite `h0` using `[← coe_substAlgHom hs, map_sub, map_smul, map_one, coe_substAlgHom hs]`. Simplify `h0` using `[sub_eq_zero]`.
+-/
 theorem constantCoeff_subst_self {σ : Type} [Finite σ] (T : σ → MvPowerSeries ι K)
     (hT : ∀ q, constantCoeff (T q) = 0) (f : MvPowerSeries σ K) :
     constantCoeff (subst T f : MvPowerSeries ι K) = constantCoeff f := by
@@ -101,11 +126,19 @@ def logLin (cp : ι → Fin n) (u : ι → Fin d → K) (b : Fin n) : Fin d → 
   fun e => ∑ l, (if cp l = b then u l e else 0) • (X l : MvPowerSeries ι K)
 
 omit [CharZero K] in
+/- English proof (translation)
+Simplify using `only [logLin, map_sum, constantCoeff_smul, constantCoeff_X, smul_zero, Finset.sum_const_zero]`.
+-/
 theorem cc_logLin (cp : ι → Fin n) (u : ι → Fin d → K) (b : Fin n) (e : Fin d) :
     constantCoeff (logLin cp u b e) = 0 := by
   simp only [logLin, map_sum, constantCoeff_smul, constantCoeff_X, smul_zero, Finset.sum_const_zero]
 
 omit [CharZero K] in
+/- English proof (translation)
+Unfold `logLin`. Rewrite using `[map_sum, Finset.sum_eq_single l]`. Apply the tactic sequence `rw [Derivation.map_smul, pderiv_X_self, smul_eq_C_mul, mul_one] split_ifs <;> simp`. Introduce `l' _ hl`. Rewrite using `[Derivation.map_smul, pderiv_X_of_ne hl, smul_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem pderiv_logLin (cp : ι → Fin n) (u : ι → Fin d → K) (b : Fin n) (e : Fin d) (l : ι) :
     pderiv K l (logLin cp u b e) = if cp l = b then C (u l e) else 0 := by
   classical
@@ -117,6 +150,19 @@ theorem pderiv_logLin (cp : ι → Fin n) (u : ι → Fin d → K) (b : Fin n) (
     rw [Derivation.map_smul, pderiv_X_of_ne hl, smul_zero]
   · simp
 
+/- English proof (translation)
+Use `set G := logFGLOf v F hF with hG`. Use `set T : Fin n × Fin d → MvPowerSeries ι K := fun q => expPt G (logLin cp u q.1) q.2 with hTdef`. Establish `hT : ∀ q, constantCoeff (T q) = 0` using `fun q => cc_expPt G (cc_logLin cp u q.1) q.2`. Establish `hTs : HasSubst T` using `hasSubst_of_constantCoeff_zero hT`. Establish `key : ∀ b j, pderiv K l (T (b, j)) = if cp l = b then ∑ i : Fin d, C (u l i) * subst T (ev (n` using `n) ![pt K d b, 0] (pderiv K ((1 : Fin 2), i) (F.F j))) else 0 := by`.
+
+Introduce `b j`. Establish `h1 : pderiv K l (T (b, j)) = ∑ i, subst (logLin cp u b) (pderiv K i (expOf G j)) * pderiv K l (logLin cp u b i)` using `ReciprocityTheory.ChartRestriction.G.TB.LogPf.pderiv_subst (cc_logLin cp u b) (expOf G j) l`. Establish `h2 : ∀ i, subst (logLin cp u b) (pderiv K i (expOf G j)) =`. Substitute `T (ev (n := n) ![pt K d b, 0] (pderiv K ((1 : Fin 2), i) (F.F j))) := by` using the available equality. Introduce `i`.
+
+Rewrite using `[GlobalTheory.LogJacobian.pderiv_expOf, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (isExp_expOf G).1) (hasSubst_of_constantCoeff_zero (cc_logLin cp u b)), subst_ev_pt_zero T hT]`. Apply the tactic sequence `exact subst_jacEntry F hF (fun e => T (b, e)) (fun e => hT (b, e)) i j`. Rewrite using `[h1]`. Simplify using `only [h2, pderiv_logLin]`. Use `split_ifs`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Simplify using the standard rewrite rules. Rewrite using `[ReciprocityTheory.ChartRestriction.G.TB.LogPf.pderiv_subst hT, Fintype.sum_prod_type, Finset.sum_eq_single (cp l)]`. Unfold `DofN`. Simplify using `only [key, if_true]`.
+
+Rewrite using `[← coe_substAlgHom hTs, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_sum, mul_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, coe_substAlgHom hTs, subst_C]`. Introduce `b _ hb`. Simplify using `[key, Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem pderiv_subst_expPt (F : FGLaw K d) (hF : ∀ a, MvIsInt v (subst (twoVars K d) (F.F a)))
     (cp : ι → Fin n) (u : ι → Fin d → K) (l : ι) (Φ : PS K n d) :
     subst (fun q : Fin n × Fin d => expPt (logFGLOf v F hF) (logLin cp u q.1) q.2) (DofN F.F (cp l) (u l) Φ) =
@@ -158,6 +204,21 @@ theorem pderiv_subst_expPt (F : FGLaw K d) (hF : ∀ a, MvIsInt v (subst (twoVar
 
 end Main
 
+/- English proof (translation)
+Introduce `K _ _ v d F hF n ι _ cp u P Φ`. Use `show _ = derivAt0 P (subst (fun q : Fin n × Fin d => expPt (logFGLOf v F hF) (logLin cp u q.1) q.2) Φ)`. Establish `hk` using `pderiv_subst_expPt F hF cp u`. Use `set T : Fin n × Fin d → MvPowerSeries ι K := fun q => expPt (logFGLOf v F hF) (logLin cp u q.1) q.2`. Establish `hT : ∀ q, constantCoeff (T q) = 0` using `fun q => cc_expPt _ (cc_logLin cp u q.1) q.2`.
+
+Establish `hit : ∀ (l : ι) (c : ℕ) (g : PS K n d),`. Substitute `T ((DofN F.F (cp l) (u l))^[c] g) = (pderiv K l)^[c] (subst T g : MvPowerSeries ι K) := by` using the available equality. Introduce `l c`. Proceed by induction on `c with`. Consider the case `zero => intro g`.
+
+Both sides reduce to the same expression. Consider the case `succ c ih => intro g`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, ih, hk]`. Establish `hfold : ∀ (m : ι →₀ ℕ) (L : List ι),`. Substitute `T (L.foldr (fun l g => (DofN F.F (cp l) (u l))^[m l] g) Φ) = L.foldr (fun l g => (pderiv K l)^[m l] g) (subst T Φ : MvPowerSeries ι K) := by` using the available equality.
+
+Introduce `m L`. Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons a L ih => rw [List.foldr_cons, List.foldr_cons, hit, ih]`. Unfold `DpolyN derivAt0`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, constantCoeff_C, mul_assoc, ← constantCoeff_subst_self T hT]`. Use `congr 1`. Unfold `DmonN`.
+
+Rewrite using `[hfold, ← coeff_zero_eq_constantCoeff_apply, ReciprocityTheory.ChartRestriction.G.TB.MV.coeff_fold (fun l : ι => l) (fun _ _ h => h) m _ _ (Finset.nodup_toList _) 0, Finset.sum_map_toList, Finset.prod_map_toList]`. Establish `h1 : (∑ l, m l • Finsupp.single l 1 : ι →₀ ℕ) = m`. Simplify using `only [Finsupp.smul_single, smul_eq_mul, mul_one]`. Conclude with `Finsupp.univ_sum_single m`. Establish `h2 : (mfact m : K) = ∏ l, ((m l).factorial : K)` using `Finsupp.prod_fintype _ _ (by simp)`.
+
+Simplify using `only [zero_add, Finsupp.coe_zero, Pi.zero_apply, Nat.one_ascFactorial]`. Rewrite using `[h1, h2, mul_comm]`.
+-/
 theorem invDer : InvDerSt := by
   intro K _ _ v d F hF n ι _ cp u P Φ
   classical

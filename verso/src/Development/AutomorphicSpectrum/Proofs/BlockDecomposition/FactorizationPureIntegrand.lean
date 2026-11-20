@@ -19,12 +19,18 @@ namespace GlobalTheory.CompanionTheory.GL2Factorization.PT
 section Mat
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem diagonal_mul_diagonal_alt (a b c d : Rˣ) : (dg2 a b : GL (Fin 2) R) * dg2 c d = dg2 (a * c) (b * d) := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]
 end Mat
 
+/- English proof (translation)
+Establish `h : (AdelicGLn.prodEquiv ℚ 2 (x * y)).1 = (AdelicGLn.prodEquiv ℚ 2 x).1 * (AdelicGLn.prodEquiv ℚ 2 y).1`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map RationalIdeles.realEquiv.toRingHom _ = Matrix.GeneralLinearGroup.map RationalIdeles.realEquiv.toRingHom _ * Matrix.GeneralLinearGroup.map RationalIdeles.realEquiv.toRingHom _`. Rewrite using `[h, map_mul]`.
+-/
 theorem realPart_mul (x y : G2) : GroundTheory.Automorphic.GL2Classical.realPart (x * y) =
     GroundTheory.Automorphic.GL2Classical.realPart x * GroundTheory.Automorphic.GL2Classical.realPart y := by
   have h : (AdelicGLn.prodEquiv ℚ 2 (x * y)).1 =
@@ -35,6 +41,11 @@ theorem realPart_mul (x y : G2) : GroundTheory.Automorphic.GL2Classical.realPart
     Matrix.GeneralLinearGroup.map RationalIdeles.realEquiv.toRingHom _
   rw [h, map_mul]
 
+/- English proof (translation)
+Set `φ : ℝ →+* ℝ` to `(GP.eR.toRingHom.comp (Pi.evalRingHom _ GP.wR)).comp RationalIdeles.realEquiv.symm.toRingHom`. Establish `hφ : φ = RingHom.id ℝ` using `Subsingleton.elim _ _`. Establish `h : φ (RationalIdeles.realEquiv x) = RationalIdeles.realEquiv x` using `by rw [hφ]; rfl`. Establish `h2 : φ (RationalIdeles.realEquiv x) = GP.eR (x GP.wR)`. Express the relevant statement in the definitionally equal form `GP.eR ((RationalIdeles.realEquiv.symm (RationalIdeles.realEquiv x)) GP.wR) = _`.
+
+Rewrite using `[RingEquiv.symm_apply_apply]`. Conclude with `h2.symm.trans h`.
+-/
 theorem eR_eq (x : InfiniteAdeleRing ℚ) : GP.eR (x GP.wR) = RationalIdeles.realEquiv x := by
   let φ : ℝ →+* ℝ := (GP.eR.toRingHom.comp (Pi.evalRingHom _ GP.wR)).comp
     RationalIdeles.realEquiv.symm.toRingHom

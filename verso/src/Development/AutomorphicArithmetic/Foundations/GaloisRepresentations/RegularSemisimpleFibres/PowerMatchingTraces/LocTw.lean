@@ -10,6 +10,11 @@ open Formalism.L2.Host UpperTheory.V.Published UpperTheory.CBC
 open scoped Classical
 open UpperTheory.Gal.InertialTypesAlt.G
 
+/- English proof (translation)
+Introduce `K _ _ _ n _ π χ v τ hτ`. Establish `h' : (π.twist χ).IsLocComp v (τ.twist (CuspSub.locDet n χ v) (CuspSub.isOpen_ker_locDet χ v))` using `PositivityTheory.RSHS.LocalComponentTwist.isLocComp_twist π χ hτ`. Use `⟨⟨_, h'⟩, fun τ₁ h₁ => ?_⟩` and prove the remaining obligations. Take `⟨e⟩` from `GlobalTheory.CuspRep.LocUniq.isLocComp_unique (π.twist χ) v _ τ₁ h' h₁`. Use `⟨e.toLinearEquiv, fun g x => ?_⟩` and prove the remaining obligations.
+
+Conclude with `LinearMap.congr_fun (e.isIntertwining' g) x`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.G.locTw :
     UpperTheory.Gal.InertialTypesAlt.G.LocTw := by
   intro K _ _ _ n _ π χ v τ hτ

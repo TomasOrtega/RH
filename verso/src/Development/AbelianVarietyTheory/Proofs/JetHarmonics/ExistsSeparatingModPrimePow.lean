@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsIsUnitSubOfRin
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp (hA x)`. Conclude with `Ideal.mem_span_singleton'.mpr ⟨σ c, by rw [← map_natCast σ g, ← map_mul, hc, map_sub, map_pow]⟩`.
+-/
 private lemma ringHom_pow_sub_mem_span {A O : Type} [CommRing A] [CommRing O] (g : ℕ)
     (hA : ∀ x : A, x ^ g - x ∈ Ideal.span {(g : A)}) (σ : A →+* O) (x : A) :
     σ x ^ g - σ x ∈ Ideal.span {(g : O)} := by
@@ -11,6 +14,31 @@ private lemma ringHom_pow_sub_mem_span {A O : Type} [CommRing A] [CommRing O] (g
   exact Ideal.mem_span_singleton'.mpr
     ⟨σ c, by rw [← map_natCast σ g, ← map_mul, hc, map_sub, map_pow]⟩
 
+/- English proof (translation)
+Introduce `A O _ _ _ _ g hg hgO hA T _ _ σ hσ K t₀`. Establish `h2 : 2 ≤ g` using `hg.two_le`. Establish `hgm : (g : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr hgO)`. Establish `hspan : Ideal.span {(g : O)} ≤ IsLocalRing.maximalIdeal O` using `(Ideal.span_singleton_le_iff_mem _).mpr hgm`. Establish `hb : ∀ t, t ≠ t₀ → ∃ b : A, σ t b ∈ Ideal.span {(g : O)} ∧ IsUnit (σ t₀ b)`.
+
+Introduce `t ht`. Take `⟨a, ha⟩` from `_root_.GlobalTheory.exists_isUnit_sub_of_ringHom_ne A O g hg hgO hA (σ t₀) (σ t) (fun h => ht (hσ h).symm)`. Take `⟨⟨i, hi⟩, -⟩` from `_root_.GlobalTheory.hom_value_congruent_int_mod_prime A O g hg hgO hA (σ t) a`. Use `⟨a - (i : A), by rwa [map_sub, map_intCast], ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_intCast]`.
+
+Assume the negation of the conclusion as `hn`. Establish `h1 : σ t₀ a - (i : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr hn)`. Establish `h3 : σ t₀ a - σ t a ∈ IsLocalRing.maximalIdeal O`. Use `Ideal.sub_mem _ h1 (hspan hi)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+
+Conclude with `(mem_nonunits_iff.mp ((IsLocalRing.mem_maximalIdeal _).mp h3)) ha`. Use `choose! b hb1 hb2 using hb`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc0, hct⟩ : ∃ c : A, IsUnit (σ t₀ c) ∧ ∀ t, t ≠ t₀ → σ t c ∈ Ideal.span {(g : O)} := by`. Use `⟨∏ t ∈ Finset.univ.erase t₀, b t, ?_, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`.
+
+Conclude with `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one (fun t ht => hb2 t (Finset.ne_of_mem_erase ht))`. Rewrite using `[map_prod, ← Finset.mul_prod_erase _ _ (Finset.mem_erase.mpr ⟨ht, Finset.mem_univ t⟩)]`. Conclude with `Ideal.mul_mem_right _ _ (hb1 t ht)`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf0, hft⟩ : ∃ f : A, σ t₀ f - 1 ∈ Ideal.span {(g : O)} ∧ ∀ t, t ≠ t₀ → σ t f ∈ Ideal.span {(g : O)} := by`. Use `⟨c ^ (g - 1), ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_pow]`. Establish `hz : σ t₀ c * (σ t₀ c ^ (g - 1) - 1) = σ t₀ c ^ g - σ t₀ c`. Rewrite using `[mul_sub, mul_one, ← pow_succ']`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+
+Establish `: σ t₀ c ^ (g - 1) - 1 = (σ t₀ c ^ g - σ t₀ c) * ↑hc0.unit⁻¹`. Rewrite using `[← hz, mul_comm (σ t₀ c), mul_assoc, IsUnit.mul_val_inv, mul_one]`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ (ringHom_pow_sub_mem_span g hA (σ t₀) c)`. Rewrite using `[map_pow]`.
+
+Conclude with `Ideal.pow_mem_of_mem _ (hct t ht) _ (by omega)`. Use `⟨1 - (1 - f ^ K) ^ K, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.span_singleton_pow]`. Use `split_ifs with ht`. Substitute `ht` using the available equality.
+
+Simplify using `only [map_sub, map_one, map_pow]`. Establish `h1 : 1 - σ t f ^ K ∈ Ideal.span {(g : O)}`. Rewrite `hf0`, the goal using `[← Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[map_sub, map_one, map_pow]`. Rewrite `hf0` using `[map_sub, map_one, sub_eq_zero]`.
+
+Rewrite using `[hf0, one_pow, sub_self]`. Establish `: 1 - (1 - σ t f ^ K) ^ K - 1 = -((1 - σ t f ^ K) ^ K)` using `by ring`. Rewrite using `[this]`. Conclude with `neg_mem (Ideal.pow_mem_pow h1 K)`. Simplify using `only [map_sub, map_one, map_pow]`.
+
+Establish `hw : σ t f ^ K ∈ Ideal.span {(g : O)} ^ K` using `Ideal.pow_mem_pow (hft t ht) K`. Establish `hgs` using `geom_sum_mul (1 - σ t f ^ K) K`. Establish `: 1 - (1 - σ t f ^ K) ^ K - 0 = (∑ i ∈ Finset.range K, (1 - σ t f ^ K) ^ i) * σ t f ^ K`. Take the linear combination `hgs`. Rewrite using `[this]`.
+
+Conclude with `Ideal.mul_mem_left _ _ hw`.
+-/
 theorem _root_.GlobalTheory.exists_separating_mod_prime_pow : ∀ (A O : Type) [CommRing A] [Module.Finite ℤ A] [CommRing O] [IsLocalRing O] (g : ℕ), g.Prime → ¬ IsUnit (g : O) → (∀ x : A, x ^ g - x ∈ Ideal.span {(g : A)}) → ∀ (T : Type) [Fintype T] [DecidableEq T] (σ : T → A →+* O), Function.Injective σ → ∀ (K : ℕ) (t₀ : T), ∃ e : A, ∀ t, σ t e - (if t = t₀ then 1 else 0) ∈ Ideal.span {(g : O) ^ K} := by
   intro A O _ _ _ _ g hg hgO hA T _ _ σ hσ K t₀
   have h2 : 2 ≤ g := hg.two_le

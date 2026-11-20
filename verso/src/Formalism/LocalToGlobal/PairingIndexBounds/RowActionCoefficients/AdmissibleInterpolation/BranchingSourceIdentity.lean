@@ -24,6 +24,9 @@ def nuC (b : GlobalTheory P) : Fin N → ℕ := fun t => nuB P b (Fin.cast hm.sy
 variable (g : ∀ v, Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) (P.Qq v)) (hg : ∀ v, IsUnit (g v).det)
 
 include hg in
+/- English proof (translation)
+Substitute `hm` using the available equality. Conclude with `htupW_le P g hg hinj T hT`.
+-/
 theorem htupW_leC (hinj : Function.Injective (algebraMap O Kf)) (T : Submodule O P.Xsp)
     (hT : ∀ F : GlobalTheory P → MvPolynomial (Fin N × Fin N) Kf,
       (∀ b, F b ∈ deltaL O Kf N (nuC P N hm b) (gamC P N hm g b)) →
@@ -33,6 +36,9 @@ theorem htupW_leC (hinj : Function.Injective (algebraMap O Kf)) (T : Submodule O
   exact htupW_le P g hg hinj T hT
 
 include hg in
+/- English proof (translation)
+Substitute `hm` using the available equality. Conclude with `mem_htupW P g hg hinj F hF`.
+-/
 theorem mem_htupWC (hinj : Function.Injective (algebraMap O Kf)) (F : GlobalTheory P → MvPolynomial (Fin N × Fin N) Kf)
     (hF : ∀ b, F b ∈ deltaL O Kf N (nuC P N hm b) (gamC P N hm g b)) :
     (∏ b : GlobalTheory P, (gamC P N hm g b).det ^ (-(eB P b))) • ∏ b, rename (emC P N hm b) (F b) ∈
@@ -45,6 +51,11 @@ end Cast
 attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNotions.G.GAtP.domO Formalism.MainNotions.G.GAtP.dvrO Formalism.MainNotions.G.GAtP.fieldK
   Formalism.MainNotions.G.GAtP.algOK
 
+/- English proof (translation)
+Introduce `p _ X hinj j L g hg hL T hT`. Consider the cases of `j with`. Consider the case `zero`. Establish `hLe : L = fun v => colSpan (X.G.P.W v) (g v)` using `funext hL`. Rewrite using `[hLe]`.
+
+Conclude with `htupW_leC X.G.P _ (rankJ X 0) g hg hinj T hT`. Consider the case `succ j`. Establish `hLe : L = fun v => colSpan (X.G.P.W v) (g v)` using `funext hL`. Rewrite using `[hLe]`. Conclude with `htupW_leC (X.Fl.Pj (j + 1)) _ (rankJ X (j + 1)) g hg hinj T hT`.
+-/
 theorem branching_source_identity : XBrS := by
   intro p _ X hinj j L g hg hL T hT
   cases j with
@@ -57,6 +68,11 @@ theorem branching_source_identity : XBrS := by
     rw [hLe]
     exact htupW_leC (X.Fl.Pj (j + 1)) _ (rankJ X (j + 1)) g hg hinj T hT
 
+/- English proof (translation)
+Introduce `p _ X hinj j L g hg hL F hF`. Consider the cases of `j with`. Consider the case `zero`. Establish `hLe : L = fun v => colSpan (X.G.P.W v) (g v)` using `funext hL`. Rewrite using `[hLe]`.
+
+Conclude with `mem_htupWC X.G.P _ (rankJ X 0) g hg hinj F hF`. Consider the case `succ j`. Establish `hLe : L = fun v => colSpan (X.G.P.W v) (g v)` using `funext hL`. Rewrite using `[hLe]`. Conclude with `mem_htupWC (X.Fl.Pj (j + 1)) _ (rankJ X (j + 1)) g hg hinj F hF`.
+-/
 theorem branching_target_identity : XBrT := by
   intro p _ X hinj j L g hg hL F hF
   cases j with

@@ -16,8 +16,16 @@ def locU (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) : UnitaryR
   (rightRegularRep (rationalGLOne K n) μ).compHom ((MultiplicityOne.finProj K n).comp (AdelicGLn.localEmbedding w))
     (MultiplicityOne.continuous_finProj.comp (UpperTheory.ConvolutionTheory.Tf.locEmb K n w).1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locU_apply (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) (g : Gw n w) : locU μ w g = rhoL μ w g := rfl
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [mem_fixU, fixL, fixF, Submodule.mem_iInf, LinearMap.mem_eqLocus, ContinuousLinearMap.coe_coe, LinearMap.id_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨u, hu, rfl⟩`. Conclude with `h u hu`.
+
+Introduce `h u hu`. Conclude with `h _ (Subgroup.mem_map_of_mem _ hu)`.
+-/
 theorem fixU_locU (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) (J : Subgroup (Gw n w)) :
     fixU (locU μ w) J = fixL μ w J := by
   ext v

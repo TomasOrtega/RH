@@ -11,6 +11,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RayPrincipalIdeals
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Introduce `hb`. Apply `hp` to reduce the goal to its premises. Rewrite `h` using `[Ideal.isCoprime_iff_sup_eq]`. Rewrite using `[eq_top_iff, ← h]`. Conclude with `sup_le ((Ideal.span_singleton_le_iff_mem _).2 hb) hle`.
+-/
 theorem not_mem_of_coprime {𝔞 𝔭 : Ideal (𝓞 K)} {b : 𝓞 K} (h : IsCoprime (Ideal.span {b}) 𝔞) (hle : 𝔞 ≤ 𝔭)
     (hp : 𝔭 ≠ ⊤) : b ∉ 𝔭 := by
   intro hb

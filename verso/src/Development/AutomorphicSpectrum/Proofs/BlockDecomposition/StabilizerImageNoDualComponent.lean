@@ -14,18 +14,32 @@ namespace GlobalTheory.CompanionTheory.HyperbolicDecompositionLaw
 
 variable {D : D7} {T T₀ T' : HSp D} {r : ℕ}
 
+/- English proof (translation)
+Take the linear combination `Gi * h + (1 - c * x) * hg`.
+-/
 theorem mul_eq_one_of_gram {R : Type} [CommRing R] {c x G Gi : R} (hg : G * Gi = 1) (h : c * (G * x) = G) : c * x = 1 := by
   linear_combination Gi * h + (1 - c * x) * hg
 
+/- English proof (translation)
+Rewrite `h` using `[← sq]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le (n := 2) (by norm_num)).1 h`.
+-/
 theorem nnreal_eq_one_of_sq {x : ℝ≥0} (h : x * x = 1) : x = 1 := by
   rw [← sq] at h
   exact (pow_eq_one_iff_of_nonneg zero_le (n := 2) (by norm_num)).1 h
 
+/- English proof (translation)
+Establish `h3` using `congrArg (absE D.host.F D.host.E) h`. Rewrite `h3` using `[map_mul, absE_conjUnit, map_one]`. Conclude with `nnreal_eq_one_of_sq h3`.
+-/
 theorem absA_eq_one_of_conj (u : (AE D)ˣ) (h : conjUnit D.sp.cm.sig u * u = 1) : absA D u = 1 := by
   have h3 := congrArg (absE D.host.F D.host.E) h
   rw [map_mul, absE_conjUnit, map_one] at h3
   exact nnreal_eq_one_of_sq h3
 
+/- English proof (translation)
+Establish `hg : (gA T₀).det * (giA T₀).det = 1` using `by rw [← Matrix.det_mul, gA_mul_giA, Matrix.det_one]`. Establish `h` using `congrArg Matrix.det (mt_unitary T₀ g)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `hadj : (adj (mt T₀ g)).det = cA D (mt T₀ g).det`. Rewrite using `[adj, Matrix.det_transpose, RingHom.map_det]`.
+
+Both sides reduce to the same expression. Rewrite `h` using `[hadj]`. Establish `h2 : conjUnit D.sp.cm.sig (Matrix.GeneralLinearGroup.det (matHom T₀ g)) * Matrix.GeneralLinearGroup.det (matHom T₀ g) = 1` using `Units.ext (mul_eq_one_of_gram hg h)`. Conclude with `absA_eq_one_of_conj _ h2`.
+-/
 theorem absA_det_matHom (g : GA D T₀) : absA D (Matrix.GeneralLinearGroup.det (matHom T₀ g)) = 1 := by
   have hg : (gA T₀).det * (giA T₀).det = 1 := by rw [← Matrix.det_mul, gA_mul_giA, Matrix.det_one]
   have h := congrArg Matrix.det (mt_unitary T₀ g)
@@ -37,6 +51,11 @@ theorem absA_det_matHom (g : GA D T₀) : absA D (Matrix.GeneralLinearGroup.det 
       Matrix.GeneralLinearGroup.det (matHom T₀ g) = 1 := Units.ext (mul_eq_one_of_gram hg h)
   exact absA_eq_one_of_conj _ h2
 
+/- English proof (translation)
+Establish `h` using `mul_jX d p`. Establish `h1 : adj (onX d p).1 ⬝ (d.pY ⬝ (mt T p ⬝ d.j0)) = 0`. Establish `e : adj (onX d p).1 ⬝ (d.pY ⬝ (mt T p ⬝ d.j0)) = adj (d.jX ⬝ (onX d p).1) ⬝ (gA T ⬝ (mt T p ⬝ d.j0))`. Rewrite using `[d.pY_eq, adj_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[e, ← h, adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA T), ← Matrix.mul_assoc (adj (mt T p)), mt_unitary T p]`. Conclude with `d.wittDecomp_gram_X_anisotropic`. Establish `h2 : adj ((onX d p)⁻¹).1 ⬝ adj (onX d p).1 = 1`. Rewrite using `[← adj_mul, Units.mul_inv, adj_one]`. Rewrite using `[← Matrix.one_mul (d.pY ⬝ (mt T p ⬝ d.j0)), ← h2, Matrix.mul_assoc, h1, Matrix.mul_zero]`.
+-/
 theorem stabilizer_image_no_dual_component (d : HypDec T T₀ r) (p : stab d) : d.pY ⬝ (mt T p ⬝ d.j0) = 0 := by
   have h := mul_jX d p
   have h1 : adj (onX d p).1 ⬝ (d.pY ⬝ (mt T p ⬝ d.j0)) = 0 := by
@@ -48,6 +67,9 @@ theorem stabilizer_image_no_dual_component (d : HypDec T T₀ r) (p : stab d) : 
     rw [← adj_mul, Units.mul_inv, adj_one]
   rw [← Matrix.one_mul (d.pY ⬝ (mt T p ⬝ d.j0)), ← h2, Matrix.mul_assoc, h1, Matrix.mul_zero]
 
+/- English proof (translation)
+Establish `h : (d.jX ⬝ d.pX + d.j0 ⬝ d.p0 + d.jY ⬝ d.pY) ⬝ (mt T p ⬝ d.j0) = mt T p ⬝ d.j0`. Rewrite using `[d.sum_eq_one, Matrix.one_mul]`. Rewrite `h` using `[Matrix.add_mul, Matrix.add_mul, Matrix.mul_assoc d.jX, Matrix.mul_assoc d.j0, Matrix.mul_assoc d.jY, stabilizer_image_no_dual_component, Matrix.mul_zero, add_zero]`. Conclude with `h.symm`.
+-/
 theorem stabilizer_image_hyperbolic (d : HypDec T T₀ r) (p : stab d) :
     mt T p ⬝ d.j0 = d.jX ⬝ (d.pX ⬝ (mt T p ⬝ d.j0)) + d.j0 ⬝ (d.p0 ⬝ (mt T p ⬝ d.j0)) := by
   have h : (d.jX ⬝ d.pX + d.j0 ⬝ d.p0 + d.jY ⬝ d.pY) ⬝ (mt T p ⬝ d.j0) = mt T p ⬝ d.j0 := by
@@ -56,6 +78,9 @@ theorem stabilizer_image_hyperbolic (d : HypDec T T₀ r) (p : stab d) :
     Matrix.mul_zero, add_zero] at h
   exact h.symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `incA D (Matrix.fromCols M N i (finSumFinEquiv.symm j)) = Matrix.fromCols (rat M) (rat N) i (finSumFinEquiv.symm j)`. Generalize the expression as in `finSumFinEquiv.symm j = s`. Apply the tactic sequence `cases s <;> rfl`.
+-/
 theorem rat_lag {n a b : ℕ} (M : Matrix (Fin n) (Fin a) D.host.E) (N : Matrix (Fin n) (Fin b) D.host.E) :
     rat ((Matrix.fromCols M N).submatrix id finSumFinEquiv.symm) =
       (Matrix.fromCols (rat M) (rat N)).submatrix id finSumFinEquiv.symm := by
@@ -68,11 +93,19 @@ section Blocks
 
 variable {R : Type} [CommRing R] {n a b : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `ext i (j | j) <;> simp [Matrix.mul_apply, Fintype.sum_sum_type]`.
+-/
 theorem fromCols_mul_fromBlocks (P : Matrix (Fin n) (Fin a) R) (Q : Matrix (Fin n) (Fin b) R)
     (x : Matrix (Fin a) (Fin a) R) (y : Matrix (Fin a) (Fin b) R) (z : Matrix (Fin b) (Fin b) R) :
     Matrix.fromCols P Q * Matrix.fromBlocks x y 0 z = Matrix.fromCols (P * x) (P * y + Q * z) := by
   ext i (j | j) <;> simp [Matrix.mul_apply, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Establish `hdet : ((Matrix.fromBlocks x.1 y 0 z.1).submatrix finSumFinEquiv.symm finSumFinEquiv.symm : Matrix (Fin (a + b)) (Fin (a + b)) R).det = x.1.det * z.1.det`. Rewrite using `[Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`. Establish `hu : IsUnit ((Matrix.fromBlocks x.1 y 0 z.1).submatrix finSumFinEquiv.symm finSumFinEquiv.symm : Matrix (Fin (a + b)) (Fin (a + b)) R).det`. Rewrite using `[hdet]`. Conclude with `(Matrix.GeneralLinearGroup.det x * Matrix.GeneralLinearGroup.det z).isUnit`.
+
+Conclude with `⟨Matrix.GeneralLinearGroup.mk'' _ hu, rfl, Units.ext hdet⟩`.
+-/
 theorem exists_gl_block (x : Matrix.GeneralLinearGroup (Fin a) R) (z : Matrix.GeneralLinearGroup (Fin b) R)
     (y : Matrix (Fin a) (Fin b) R) : ∃ B : Matrix.GeneralLinearGroup (Fin (a + b)) R,
       B.1 = (Matrix.fromBlocks x.1 y 0 z.1).submatrix finSumFinEquiv.symm finSumFinEquiv.symm ∧
@@ -86,6 +119,9 @@ theorem exists_gl_block (x : Matrix.GeneralLinearGroup (Fin a) R) (z : Matrix.Ge
     exact (Matrix.GeneralLinearGroup.det x * Matrix.GeneralLinearGroup.det z).isUnit
   exact ⟨Matrix.GeneralLinearGroup.mk'' _ hu, rfl, Units.ext hdet⟩
 
+/- English proof (translation)
+Rewrite using `[← Matrix.submatrix_mul _ _ _ _ _ finSumFinEquiv.symm.bijective, fromCols_mul_fromBlocks, ← c1, ← c2, ← Matrix.mul_fromCols]`. Both sides reduce to the same expression.
+-/
 theorem mul_cols_block (X : Matrix (Fin n) (Fin n) R) (P : Matrix (Fin n) (Fin a) R) (Q : Matrix (Fin n) (Fin b) R)
     (x : Matrix (Fin a) (Fin a) R) (y : Matrix (Fin a) (Fin b) R) (z : Matrix (Fin b) (Fin b) R)
     (c1 : X * P = P * x) (c2 : X * Q = P * y + Q * z) :
@@ -95,6 +131,9 @@ theorem mul_cols_block (X : Matrix (Fin n) (Fin n) R) (P : Matrix (Fin n) (Fin a
     ← Matrix.mul_fromCols]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_add, ← Matrix.mul_assoc, e1, Matrix.mul_assoc, h0, e2, Matrix.mul_add, Matrix.add_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, add_assoc]`.
+-/
 theorem mul_sum_eq {t : ℕ} {X : Matrix (Fin n) (Fin n) R} {P : Matrix (Fin n) (Fin t) R} {g : Matrix (Fin t) (Fin t) R}
     {Q : Matrix (Fin n) (Fin b) R} {J : Matrix (Fin t) (Fin a) R} {J₀ : Matrix (Fin t) (Fin b) R}
     {y : Matrix (Fin a) (Fin b) R} {z : Matrix (Fin b) (Fin b) R} (e1 : X * P = P * g) (e2 : X * Q = Q * z)
@@ -104,6 +143,13 @@ theorem mul_sum_eq {t : ℕ} {X : Matrix (Fin n) (Fin n) R} {P : Matrix (Fin n) 
 
 end Blocks
 
+/- English proof (translation)
+Take `⟨B, hB, hdet⟩` from `exists_gl_block (onX d p) (matHom T₀ (m p)) (d.pX ⬝ (mt T p ⬝ d.j0))`. Use `⟨B, ?_, hdet⟩` and prove the remaining obligations. Establish `hJ : d'.jX = (Matrix.fromCols (rat jT ⬝ d.jX) (rat jT ⬝ d.j0 + rat j₀)).submatrix id finSumFinEquiv.symm`. Rewrite using `[HypDec.jX, hL, rat_lag, rat_mul, rat_add, rat_mul]`. Both sides reduce to the same expression.
+
+Establish `h0 : mt T p ⬝ d.j0 = d.jX ⬝ (d.pX ⬝ (mt T p ⬝ d.j0)) + d.j0 ⬝ mt T₀ (m p)`. Rewrite using `[hM p]`. Conclude with `stabilizer_image_hyperbolic d p`. Take `⟨e1, e2⟩` from `hE (p : GA D T) (m p)`. Rewrite using `[hB, hJ]`.
+
+Use `mul_cols_block _ _ _ _ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[cancel₂ e1, Matrix.mul_assoc, mul_jX d p, Matrix.mul_assoc]`. Conclude with `mul_sum_eq e1 e2 h0`.
+-/
 theorem exists_block (d : HypDec T T₀ r) {jT : Matrix (Fin T'.rank) (Fin T.rank) D.host.E}
     {j₀ : Matrix (Fin T'.rank) (Fin T₀.rank) D.host.E} {d' : HypDec T' (zeroSp D) (r + T₀.rank)}
     {ι : GA D T × GA D T₀ →* GA D T'} {m : stab d →* GA D T₀} (hE : IsEmb jT j₀ ι) (hL : IsLag d jT j₀ d')
@@ -123,6 +169,11 @@ theorem exists_block (d : HypDec T T₀ r) {jT : Matrix (Fin T'.rank) (Fin T.ran
   · rw [cancel₂ e1, Matrix.mul_assoc, mul_jX d p, Matrix.mul_assoc]
   · exact mul_sum_eq e1 e2 h0
 
+/- English proof (translation)
+Introduce `D T T₀ T' r d jT j₀ d' ι m _ hE hL hM p`. Take `⟨B, key, hdet⟩` from `exists_block d hE hL hM p`. Establish `hmem : ι ((p : GA D T), m p) ∈ stab d'` using `⟨B, key⟩`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Establish `hon : onX d' ⟨_, hmem⟩ = B` using `Units.ext ((eq_of_mul_jX d' (mul_jX d' _)).trans (eq_of_mul_jX d' key).symm)`.
+
+Express the relevant statement in the definitionally equal form `absA D (Matrix.GeneralLinearGroup.det (onX d' ⟨_, hmem⟩)) = absA D (Matrix.GeneralLinearGroup.det (onX d p))`. Rewrite using `[hon, hdet, map_mul, absA_det_matHom, mul_one]`.
+-/
 theorem law : Law := by
   intro D T T₀ T' r d jT j₀ d' ι m _ hE hL hM p
   obtain ⟨B, key, hdet⟩ := exists_block d hE hL hM p

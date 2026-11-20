@@ -10,6 +10,9 @@ open scoped Matrix ContDiff ComplexOrder
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ f _` and use `⟨CxPts.continuous_of_comp (f := f) fun _ => rfl, fun j i => AlgChart.holo_map (f := f) (fun _ => rfl) j i⟩`.
+-/
 theorem ptMap_isHolo : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X Y : Var F) (f : Y.X ⟶ X.X) (hf : f ≫ X.str = Y.str),
     (atlas X σ).IsHolo (atlas Y σ) (ptMap σ f hf) := fun _ _ _ _ _ f _ =>
   ⟨CxPts.continuous_of_comp (f := f) fun _ => rfl, fun j i => AlgChart.holo_map (f := f) (fun _ => rfl) j i⟩

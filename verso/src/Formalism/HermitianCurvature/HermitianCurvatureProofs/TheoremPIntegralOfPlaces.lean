@@ -9,12 +9,20 @@ open Formalism.FourierDecayAlt
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S Kr hK0 Th e`. Unfold `J.Inst J.PlacesOf`. Conclude with `⟨rfl, rfl, fun _ _ => rfl, S.hv, fun _ _ => rfl, fun _ _ => rfl, fun _ => rfl, fun _ _ => rfl, fun _ _ _ => rfl, fun _ _ => rfl⟩`.
+-/
 theorem concrete_data_instance : Formalism.FourierDecayAlt.JC.MkDataInst := by
   intro E _ _ _ Wp Wq _ _ _ _ S Kr hK0 Th e
   unfold J.Inst J.PlacesOf
   exact ⟨rfl, rfl, fun _ _ => rfl, S.hv, fun _ _ => rfl, fun _ _ => rfl, fun _ => rfl, fun _ _ => rfl,
     fun _ _ _ => rfl, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Introduce `hLSJ hIS hBox hLG hIM hNI hDF hFP hX hILS hMk`. Take `⟨C₁, hC₁, h⟩` from `hILS hLSJ hIS hBox hLG hIM hNI hDF hFP hX`. Use `⟨C₁, hC₁, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ S Kr hK0 Th e Θ hU hg1 hg2 hCA hlen hΘ hgr`. Establish `hI` using `hMk E Wp Wq S Kr hK0 Th e`.
+
+Take `⟨h1, h2⟩` from `h E _ (S.mkData Kr hK0 Th e) S.pl S.G S.CA S.de S.de' S.T S.T' S.l Θ hU hI hg1 hg2 hCA hlen hΘ hgr`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hK : (S.mkData Kr hK0 Th e).K = 5` using `hI.2.1`. Rewrite `h2` using `[hK]`. Conclude with `h2`.
+-/
 theorem concrete_sizes_of_parts : Formalism.FourierDecayAlt.JC.SizesConcreteOfParts := by
   intro hLSJ hIS hBox hLG hIM hNI hDF hFP hX hILS hMk
   obtain ⟨C₁, hC₁, h⟩ := hILS hLSJ hIS hBox hLG hIM hNI hDF hFP hX
@@ -28,6 +36,9 @@ theorem concrete_sizes_of_parts : Formalism.FourierDecayAlt.JC.SizesConcreteOfPa
   rw [hK] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `hAx hLC hA13 E _ _ _ Wp Wq _ _ _ _ S Kr hK0 Th hLM`. Conclude with `hAx hLC hA13 E _ (S.mkData Kr hK0 Th fun _ => 0) hLM`.
+-/
 theorem concrete_axioms : Formalism.FourierDecayAlt.JC.AxiomsConcrete := by
   intro hAx hLC hA13 E _ _ _ Wp Wq _ _ _ _ S Kr hK0 Th hLM
   exact hAx hLC hA13 E _ (S.mkData Kr hK0 Th fun _ => 0) hLM
@@ -38,6 +49,9 @@ namespace Formalism.FourierDecayAlt.P.JCx1
 
 open NumberField
 
+/- English proof (translation)
+Use `show ‖S.emb v t‖ = S.pl v t`. Rewrite using `[← S.hemb v, NumberField.InfinitePlace.apply]`.
+-/
 theorem norm_σ {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
     [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
@@ -51,6 +65,11 @@ open Formalism.FourierDecayAlt
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Apply `Set.Finite.subset (((Set.finite_Iic N).image b).union ((((Set.finite_Iic N).prod (Set.finite_Iic (N + 1))).image (fun q : ℕ × ℕ => c q.1 q.2)).union ((Set.finite_Iic N).image d)) |>.insert a)` to reduce the goal to its premises. Introduce and unpack `x ⟨i, hi1, hiN, h | h | ⟨s, hs2, hsi, h⟩ | h⟩`. Rewrite using `[h.2]`. Conclude with `Set.mem_insert _ _`. Rewrite using `[h.2]`.
+
+Conclude with `Set.mem_insert_of_mem _ (Set.mem_union_left _ (Set.mem_image_of_mem b (Set.mem_Iic.2 hiN)))`. Rewrite using `[h]`. Conclude with `Set.mem_insert_of_mem _ (Set.mem_union_right _ (Set.mem_union_left _ (Set.mem_image_of_mem (fun q : ℕ × ℕ => c q.1 q.2) (Set.mk_mem_prod (Set.mem_Iic.2 hiN) (Set.mem_Iic.2 (by omega))))))`. Rewrite using `[h]`. Conclude with `Set.mem_insert_of_mem _ (Set.mem_union_right _ (Set.mem_union_right _ (Set.mem_image_of_mem d (Set.mem_Iic.2 hiN))))`.
+-/
 private theorem setOf_threshold_values_finite (N : ℕ) (a : ℝ) (b d : ℕ → ℝ) (c : ℕ → ℕ → ℝ) :
     {x : ℝ | ∃ i : ℕ, 1 ≤ i ∧ i ≤ N ∧ ((i = 1 ∧ x = a) ∨ (2 ≤ i ∧ x = b i) ∨
       (∃ s : ℕ, 2 ≤ s ∧ s + i ≤ N + 1 ∧ x = c i s) ∨ x = d i)}.Finite := by
@@ -70,6 +89,13 @@ private theorem setOf_threshold_values_finite (N : ℕ) (a : ℝ) (b d : ℕ →
     exact Set.mem_insert_of_mem _ (Set.mem_union_right _ (Set.mem_union_right _
       (Set.mem_image_of_mem d (Set.mem_Iic.2 hiN))))
 
+/- English proof (translation)
+Introduce `ι _ G C de de' T T' l hf hpos`. Establish `hfin : (G.thrSet C de de' T T' l).Finite` using `setOf_threshold_values_finite _ _ _ _ _`. Establish `hne : (G.thrSet C de de' T T' l).Nonempty`. Unfold `Set.Nonempty Sz.Glob.thrSet`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Conclude with `⟨_, 1, le_rfl, by omega, Or.inl ⟨rfl, rfl⟩⟩`. Establish `hmem` using `hne.csSup_mem hfin`. Establish `hgr : IsGreatest (G.thrSet C de de' T T' l) (sSup (G.thrSet C de de' T T' l))` using `⟨hmem, fun x hx => le_csSup hfin.bddAbove hx⟩`. Establish `hm0 : 0 < sSup (G.thrSet C de de' T T' l)` using `hpos _ hmem`. Establish `hf0 : (G.f : ℝ) ≠ 0` using `by exact_mod_cast (by omega : G.f ≠ 0)`.
+
+Use `⟨sSup (G.thrSet C de de' T T' l) ^ (-(1 / (G.f : ℝ))), Real.rpow_pos_of_pos hm0 _, ?_⟩` and prove the remaining obligations. Establish `e : ((sSup (G.thrSet C de de' T T' l) ^ (-(1 / (G.f : ℝ)))) ^ G.f)⁻¹ = sSup (G.thrSet C de de' T T' l)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hm0.le, neg_mul, one_div_mul_cancel hf0, Real.rpow_neg_one, inv_inv]`. Rewrite using `[e]`. Conclude with `hgr`.
+-/
 theorem jc_theta_exists_variant : Formalism.FourierDecayAlt.JC.ThetaExistence₂ := by
   intro ι _ G C de de' T T' l hf hpos
   have hfin : (G.thrSet C de de' T T' l).Finite := setOf_threshold_values_finite _ _ _ _ _
@@ -98,10 +124,16 @@ namespace Formalism.FourierDecayAlt.P.JCx1
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Conclude with `contDiff_apply_apply ℝ ℂ i j`.
+-/
 theorem contDiff_entry {k r : ℕ} (i j : Fin (2 * r + k + 1)) :
     ContDiff ℝ (⊤ : ℕ∞) (fun g : B.Mat k r => g i j) := by
   exact contDiff_apply_apply ℝ ℂ i j
 
+/- English proof (translation)
+Establish `hdet : (fun g => (M g).det) = fun g => ∑ σ : Equiv.Perm n, ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, M g (σ i) i`. Use function extensionality and compare the values at `g`. Conclude with `Matrix.det_apply' (M g)`. Rewrite using `[hdet]`. Conclude with `ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun i _ => hM _ _)`.
+-/
 theorem contDiff_det {n : Type} [Fintype n] [DecidableEq n] {k r : ℕ} (M : B.Mat k r → Matrix n n ℂ)
     (hM : ∀ a b, ContDiff ℝ (⊤ : ℕ∞) (fun g => M g a b)) : ContDiff ℝ (⊤ : ℕ∞) (fun g => (M g).det) := by
   have hdet : (fun g => (M g).det) = fun g => ∑ σ : Equiv.Perm n, ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, M g (σ i) i := by
@@ -110,6 +142,9 @@ theorem contDiff_det {n : Type} [Fintype n] [DecidableEq n] {k r : ℕ} (M : B.M
   rw [hdet]
   exact ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun i _ => hM _ _)
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.Zhat Formalism.QuantumDeterminants.herm`. Simplify using `only [dotProduct, Matrix.mulVec]`. Apply the tactic sequence `exact ContDiff.sum fun i _ => contDiff_const.mul (ContDiff.sum fun j _ => contDiff_const.mul (ContDiff.sum fun l _ => (contDiff_entry j l).mul contDiff_const))`.
+-/
 theorem contDiff_Zhat {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r + 1)) :
     ContDiff ℝ (⊤ : ℕ∞) (fun g : B.Mat k r => Formalism.QuantumDeterminants.Zhat k r z z' g a b) := by
   unfold Formalism.QuantumDeterminants.Zhat Formalism.QuantumDeterminants.herm
@@ -117,11 +152,19 @@ theorem contDiff_Zhat {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (a b : Fi
   exact ContDiff.sum fun i _ => contDiff_const.mul (ContDiff.sum fun j _ => contDiff_const.mul
     (ContDiff.sum fun l _ => (contDiff_entry j l).mul contDiff_const))
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.Dmin`. Conclude with `contDiff_det _ fun a b => contDiff_Zhat z z' _ _`.
+-/
 theorem contDiff_Dmin {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
     ContDiff ℝ (⊤ : ℕ∞) (fun g : B.Mat k r => Formalism.QuantumDeterminants.Dmin k r z z' g l) := by
   unfold Formalism.QuantumDeterminants.Dmin
   exact contDiff_det _ fun a b => contDiff_Zhat z z' _ _
 
+/- English proof (translation)
+Establish `h1 : ContDiff ℝ (⊤ : ℕ∞) (fun c : ℂ => c.re)` using `Complex.reCLM.contDiff`. Establish `h2 : ContDiff ℝ (⊤ : ℕ∞) (fun c : ℂ => c.im)` using `Complex.imCLM.contDiff`. Establish `e : (fun c : ℂ => Complex.normSq c) = fun c => c.re * c.re + c.im * c.im`. Use function extensionality and compare the values at `Complex.normSq_apply`. Rewrite using `[e]`.
+
+Conclude with `(h1.mul h1).add (h2.mul h2)`.
+-/
 theorem contDiff_normSq : ContDiff ℝ (⊤ : ℕ∞) (fun c : ℂ => Complex.normSq c) := by
   have h1 : ContDiff ℝ (⊤ : ℕ∞) (fun c : ℂ => c.re) := Complex.reCLM.contDiff
   have h2 : ContDiff ℝ (⊤ : ℕ∞) (fun c : ℂ => c.im) := Complex.imCLM.contDiff
@@ -130,6 +173,9 @@ theorem contDiff_normSq : ContDiff ℝ (⊤ : ℕ∞) (fun c : ℂ => Complex.no
   rw [e]
   exact (h1.mul h1).add (h2.mul h2)
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.Gf`. Conclude with `(contDiff_normSq.comp (contDiff_Dmin z z' _)).sub (contDiff_const.mul (contDiff_normSq.comp (contDiff_Dmin z z' _)))`.
+-/
 theorem contDiff_Gf {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) :
     ContDiff ℝ (⊤ : ℕ∞) (fun g : B.Mat k r => Formalism.QuantumDeterminants.Gf k r z z' g) := by
   unfold Formalism.QuantumDeterminants.Gf
@@ -142,6 +188,11 @@ namespace Formalism.FourierDecayAlt.P
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ Bs χ f ε hχ hf hε g₀ hg₀`. Take `⟨U, f', hU, hg₀U, hf', hff'⟩` from `hf g₀ hg₀`. Use `⟨U, fun g => ((χ (Formalism.QuantumDeterminants.Gf k r Bs.z Bs.z' g / ε) : ℝ) : ℂ) • f' g, hU, hg₀U, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun g : B.Mat k r => ((χ (Formalism.QuantumDeterminants.Gf k r Bs.z Bs.z' g / ε) : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp (hχ.1.comp ((JCx1.contDiff_Gf Bs.z Bs.z').div_const ε))`. Conclude with `h1.contDiffOn.smul hf'`.
+
+Introduce `g hgU hgV`. Simplify using `only [D.cutF, hff' g hgU hgV]`.
+-/
 theorem cutoff_smooth : Formalism.FourierDecayAlt.JC.CutFSmooth := by
   intro k r Wp Wq _ _ _ _ Bs χ f ε hχ hf hε g₀ hg₀
   obtain ⟨U, f', hU, hg₀U, hf', hff'⟩ := hf g₀ hg₀
@@ -163,6 +214,19 @@ open Formalism.FourierDecayAlt Filter Topology
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `hE hLZ hGA hM`. Take `⟨C₂, C₆, _hC₂, hC₆, hMod⟩` from `hM`. Use `⟨C₆, hC₆, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ L j lam c Cm σ hB hsm hcut hmod`. Use `hE hLZ hGA E Wp Wq S T f χ ν' m₀ top A₀ _ hB hsm (fun w v => ?_)` and prove the remaining obligations.
+
+Take `⟨_hχ, _hCm, hσ, hSet, hDec, hAdj, hEig, hRR, hSys⟩` from `hmod v`. Establish `hadm : D.AdmAt S v (w.1 v)` using `⟨w, rfl⟩`. Take `⟨hA, hsz⟩` from `hSys (C₂ * S.Ntop * ((S.G.r : ℝ) + 1) ^ 2) (w.1 v) hadm`. Establish `hlen : (w.1 v).length ≤ S.Ntop` using `le_trans (Finset.le_sup (f := fun v => (w.1 v).length) (Finset.mem_univ v)) w.2.2`. Establish `hN : S.G.r + 1 ≤ S.Ntop`.
+
+Simplify using `only [C.HidaSetting.Ntop, C.Kst]`. Use linear arithmetic over natural numbers and integers. Establish `hT` using `hMod (D.parOf S v) (S.l + 1) (L v) (j v) (lam v) (S.cutLo v) (S.cutHi v) c S.Ntop hSet hDec hAdj hEig hN (hcut v) (w.1 v) hA hlen`. Establish `h1 : Tendsto (fun ε : ℝ => σ v * ε) (𝓝[>] 0) (𝓝[>] 0)`. Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_` and prove the remaining obligations.
+
+Establish `: Tendsto (fun ε : ℝ => σ v * ε) (𝓝 0) (𝓝 (σ v * 0))` using `((continuous_const.mul continuous_id).tendsto 0)`. Rewrite `this` using `[mul_zero]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with ε hε using mul_pos hσ hε`. Establish `h3` using `(Complex.continuous_ofReal.tendsto _).comp ((hT.comp h1).const_mul (Cm v))`.
+
+Establish `key : ∀ x : ℝ, (S.sizeAt v (w.1 v) * (Cm v * x) : ℝ) = Cm v * ((MA.sysQ (D.parOf S v) (S.l + 1) (L v) (j v) (lam v) (S.cutLo v) (S.cutHi v) (C₂ * S.Ntop * ((S.G.r : ℝ) + 1) ^ 2) c S.Ntop).size (w.1 v) * x)` using `fun x => by rw [hsz]; ring`. Use `Tendsto.congr' (f₁ := fun ε => ((Cm v * MA.cutoffEnergyForm (D.parOf S v) (S.l + 1) (j v) c (σ v * ε) (w.1 v) : ℝ) : ℂ)) ?_ ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Conclude with `(hRR ε hε (w.1 v) hadm).symm`. Rewrite using `[key]`.
+
+Conclude with `h3`.
+-/
 theorem lemma_E_of_model : Formalism.FourierDecayAlt.JC.LemmaEOfModel := by
   intro hE hLZ hGA hM
   obtain ⟨C₂, C₆, _hC₂, hC₆, hMod⟩ := hM
@@ -211,6 +275,13 @@ namespace Formalism.FourierDecayAlt.P.JCx1.decay
 open Formalism.FourierDecayAlt.TB
 open scoped ComplexOrder
 
+/- English proof (translation)
+Repeatedly rewrite using `[Finset.sum_mul, ite_mul, one_mul, zero_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun h hh => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (⟨g h, hg h hh⟩ : P)]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `e`. Conclude with `hb (Subtype.ext e.symm)`. Introduce `hn`.
+
+Conclude with `absurd (Finset.mem_univ _) hn`.
+-/
 theorem sum_mult {Z X : Type} [DecidableEq Z] (P : Finset Z) (F : Z → ℂ) (Y : Finset X) (g : X → Z)
     (hg : ∀ h ∈ Y, g h ∈ P) :
     ∑ p : P, (∑ h ∈ Y, if g h = (p : Z) then (1 : ℂ) else 0) * F p = ∑ h ∈ Y, F (g h) := by
@@ -226,6 +297,15 @@ theorem sum_mult {Z X : Type} [DecidableEq Z] (P : Finset Z) (F : Z → ℂ) (Y 
   · intro hn
     exact absurd (Finset.mem_univ _) hn
 
+/- English proof (translation)
+Establish `hH' : Matrix.PosSemidef (Matrix.of fun x y : P => H x y)` using `hH`. Establish `key : ∀ (j : J) (F : Z → ℂ), ∑ p : P, (∑ h ∈ Y j, if g j h = (p : Z) then (1 : ℂ) else 0) * F p = ∑ h ∈ Y j, F (g j h)` using `fun j F => sum_mult P F (Y j) (g j) (hg j)`. Establish `hst : ∀ (j : J) (p : P), star (∑ h ∈ Y j, if g j h = (p : Z) then (1 : ℂ) else 0) = ∑ h ∈ Y j, if g j h = (p : Z) then (1 : ℂ) else 0`. Introduce `j p`. Rewrite using `[star_sum]`.
+
+Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Establish `hmat` using `hH'.conjTranspose_mul_mul_same (Matrix.of fun (p : P) (j : J) => ∑ h ∈ Y j, if g j h = (p : Z) then (1 : ℂ) else 0)`. Use `hmat using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j k`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, hst]`. Establish `e1 : ∀ q : P, ∑ p : P, (∑ h ∈ Y j, if g j h = (p : Z) then (1 : ℂ) else 0) * H p q = ∑ h ∈ Y j, H (g j h) q` using `fun q => key j (fun z => H z q)`. Simplify using `only [e1]`. Establish `e2 : ∑ q : P, (∑ h ∈ Y j, H (g j h) q) * (∑ h' ∈ Y k, if g k h' = (q : Z) then (1 : ℂ) else 0) = ∑ h' ∈ Y k, ∑ h ∈ Y j, H (g j h) (g k h')`. Use `Eq.trans ?_ (key k (fun z => ∑ h ∈ Y j, H (g j h) z))` and prove the remaining obligations.
+
+Conclude with `Finset.sum_congr rfl fun q _ => mul_comm _ _`. Rewrite using `[e2, Finset.sum_comm]`.
+-/
 theorem psd_compress {Z X J : Type} [Fintype J] [DecidableEq Z] (P : Finset Z) (H : Z → Z → ℂ)
     (hH : PSDOn P H) (Y : J → Finset X) (g : J → X → Z) (hg : ∀ j, ∀ h ∈ Y j, g j h ∈ P) :
     Matrix.PosSemidef (Matrix.of fun j k : J => ∑ h ∈ Y j, ∑ h' ∈ Y k, H (g j h) (g k h')) := by
@@ -253,11 +333,23 @@ theorem psd_compress {Z X J : Type} [Fintype J] [DecidableEq Z] (P : Finset Z) (
     exact Finset.sum_congr rfl fun q _ => mul_comm _ _
   rw [e2, Finset.sum_comm]
 
+/- English proof (translation)
+Establish `hH' : Matrix.PosSemidef (Matrix.of fun x y : P => H x y)` using `hH`. Conclude with `hH'.submatrix (fun y : Y => (⟨g y, hg y y.2⟩ : P))`.
+-/
 theorem psd_pull {Z X : Type} [DecidableEq Z] (P : Finset Z) (H : Z → Z → ℂ) (hH : PSDOn P H)
     (Y : Finset X) (g : X → Z) (hg : ∀ h ∈ Y, g h ∈ P) : PSDOn Y (fun x y => H (g x) (g y)) := by
   have hH' : Matrix.PosSemidef (Matrix.of fun x y : P => H x y) := hH
   exact hH'.submatrix (fun y : Y => (⟨g y, hg y y.2⟩ : P))
 
+/- English proof (translation)
+Establish `hH` using `hM.1`. Establish `h01 : star (M 0 1) = M 1 0` using `hH.apply 1 0`. Establish `h00 : star (M 0 0) = M 0 0` using `hH.apply 0 0`. Establish `h11 : star (M 1 1) = M 1 1` using `hH.apply 1 1`. Establish `hd0 : (M 0 0).im = 0` using `Complex.conj_eq_iff_im.1 h00`.
+
+Establish `hd1 : (M 1 1).im = 0` using `Complex.conj_eq_iff_im.1 h11`. Establish `hdet : 0 ≤ M.det` using `hM.det_nonneg`. Establish `p0 : 0 ≤ M 0 0` using `hM.diag_nonneg`. Establish `p1 : 0 ≤ M 1 1` using `hM.diag_nonneg`. Rewrite `hdet` using `[Matrix.det_fin_two, ← h01]`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Establish `hre` using `(Complex.le_def.1 hdet).1`. Simplify using `only [Complex.zero_re, Complex.sub_re, Complex.mul_re, hd0, hd1, Complex.star_def, Complex.conj_re, Complex.conj_im] at hre`. Use polynomial arithmetic with `[hre]`.
+
+Use `(Complex.le_def.1 p0).1` as an intermediate fact. Simplify using `using this`. Use `(Complex.le_def.1 p1).1` as an intermediate fact. Simplify using `using this`.
+-/
 theorem psd_two_cs (M : Matrix (Fin 2) (Fin 2) ℂ) (hM : M.PosSemidef) :
     ‖M 0 1‖ ^ 2 ≤ (M 0 0).re * (M 1 1).re ∧ 0 ≤ (M 0 0).re ∧ 0 ≤ (M 1 1).re := by
   have hH := hM.1
@@ -285,12 +377,26 @@ attribute [local instance] Classical.propDecidable
 
 variable {E W : Type} [Field E] (D : Data E W)
 
+/- English proof (translation)
+Introduce `h hh`. Unfold `pts`. Conclude with `Finset.mem_image.2 ⟨(h, t), Finset.mem_product.2 ⟨hh, ht⟩, rfl⟩`.
+-/
 theorem join_mem (Y : Finset (Pt E)) (s : ℕ) (T : Finset E) (t : E) (ht : t ∈ T) :
     ∀ h ∈ Y, join h s t ∈ pts Y s T := by
   intro h hh
   unfold pts
   exact Finset.mem_image.2 ⟨(h, t), Finset.mem_product.2 ⟨hh, ht⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hA' : Matrix.PosSemidef (Matrix.of fun x y : F => A x y)` using `hA`. Establish `hB' : Matrix.PosSemidef (Matrix.of fun x y : F => B x y)` using `hB`. Use `show Matrix.PosSemidef (Matrix.of fun x y : F => A x y * B x y)`. Use `first`. Consider the case `exact hA'.hadamard hB'`.
+
+Consider the case `exact Matrix.PosSemidef.hadamard hA' hB'`. Consider the case `obtain ⟨C, hC⟩ : ∃ C : Matrix F F ℂ, (Matrix.of fun x y : F => A x y) = C.conjTranspose * C := by first`. Consider the case `exact ⟨hA'.sqrt, by rw [hA'.posSemidef_sqrt.1.eq, hA'.sqrt_mul_self]⟩`. Consider the case `exact Matrix.posSemidef_iff_eq_conjTranspose_mul_self.1 hA'`. Consider the case `exact Matrix.posSemidef_iff_exists_eq_conjTranspose_mul_self.1 hA'`.
+
+Establish `hsum : (Matrix.of fun x y : F => A x y * B x y) = ∑ k : F, (Matrix.diagonal fun i => C k i).conjTranspose * (Matrix.of fun x y : F => B x y) * Matrix.diagonal fun i => C k i`. Use extensionality with `i j`. Establish `hij : A i j = ∑ k : F, star (C k i) * C k j`. Use `congrFun (congrFun hC i) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`.
+
+Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.of_apply, Pi.star_apply]`. Rewrite using `[hij, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[hsum]`.
+
+Use `Finset.sum_induction _ Matrix.PosSemidef (fun _ _ h1 h2 => h1.add h2) Matrix.PosSemidef.zero ?_` and prove the remaining obligations. Introduce `k _`. Conclude with `hB'.conjTranspose_mul_mul_same _`.
+-/
 private theorem psdOn_hadamard_mul_of_psdOn {α : Type} (F : Finset α) (A B : α → α → ℂ) (hA : PSDOn F A)
     (hB : PSDOn F B) : PSDOn F (fun x y => A x y * B x y) := by
   have hA' : Matrix.PosSemidef (Matrix.of fun x y : F => A x y) := hA
@@ -321,6 +427,13 @@ private theorem psdOn_hadamard_mul_of_psdOn {α : Type} (F : Finset α) (A B : �
     intro k _
     exact hB'.conjTranspose_mul_mul_same _
 
+/- English proof (translation)
+Establish `hwt : 0 < D.wt w` using `hW w`. Establish `hH : PSDOn (pts Y s T) (fun a b => κ a b * D.gram ε i w a b)` using `psdOn_hadamard_mul_of_psdOn _ _ _ hκ (hG ε hε i w _)`. Establish `hg : ∀ j : Fin 2, ∀ h ∈ Y, join h s (![t, t] j) ∈ pts Y s T`. Introduce `j h hh`. Use `fin_cases j`.
+
+Conclude with `join_mem Y s T t ht h hh`. Conclude with `join_mem Y s T t ht h hh`. Establish `hM` using `psd_two_cs _ (psd_compress (pts Y s T) _ hH (fun _ : Fin 2 => Y) (fun j h => join h s (![t, t] j)) hg)`. Establish `key : ∀ b : ℂ, 0 ≤ b.re → 0 ≤ (b / (D.wt w : ℂ)).re` using `fun b hb => by`. Rewrite using `[Complex.div_ofReal_re]`.
+
+Conclude with `div_nonneg hb hwt.le`. Conclude with `key _ hM.2.1`.
+-/
 theorem nst_diag_nonneg (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ} (hε : 0 < ε) (i s : ℕ) (w : W)
     (Y : Finset (Pt E)) (T : Finset E) (κ : Pt E → Pt E → ℂ) (hκ : PSDOn (pts Y s T) κ) (t : E) (ht : t ∈ T) :
     0 ≤ (D.Nst ε i s w Y (blk κ s t t) t t).re := by
@@ -339,6 +452,13 @@ theorem nst_diag_nonneg (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ} (hε : 0 <
     exact div_nonneg hb hwt.le
   exact key _ hM.2.1
 
+/- English proof (translation)
+Establish `hwt : 0 < D.wt w` using `hW w`. Establish `hH : PSDOn (pts Y s T) (fun a b => κ a b * D.gram ε i w a b)` using `psdOn_hadamard_mul_of_psdOn _ _ _ hκ (hG ε hε i w _)`. Establish `hg : ∀ j : Fin 2, ∀ h ∈ Y, join h s (![t, t'] j) ∈ pts Y s T`. Introduce `j h hh`. Use `fin_cases j`.
+
+Conclude with `join_mem Y s T t ht h hh`. Conclude with `join_mem Y s T t' ht' h hh`. Establish `hM` using `psd_two_cs _ (psd_compress (pts Y s T) _ hH (fun _ : Fin 2 => Y) (fun j h => join h s (![t, t'] j)) hg)`. Establish `key : ∀ a b c : ℂ, ‖a‖ ^ 2 ≤ b.re * c.re → PairingProductCorollary.PairingGramInequality (a / (D.wt w : ℂ)) (b / (D.wt w : ℂ)).re (c / (D.wt w : ℂ)).re`. Introduce `a b c h`.
+
+Unfold `PairingProductCorollary.PairingGramInequality`. Rewrite using `[norm_div, Complex.norm_real, Real.norm_of_nonneg hwt.le, Complex.div_ofReal_re, Complex.div_ofReal_re, div_pow, div_mul_div_comm, ← sq]`. Use `gcongr`. Conclude with `key _ _ _ hM.1`.
+-/
 theorem nst_gram (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ} (hε : 0 < ε) (i s : ℕ) (w : W)
     (Y : Finset (Pt E)) (T : Finset E) (κ : Pt E → Pt E → ℂ) (hκ : PSDOn (pts Y s T) κ) (t t' : E)
     (ht : t ∈ T) (ht' : t' ∈ T) :
@@ -363,6 +483,11 @@ theorem nst_gram (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ} (hε : 0 < ε) (i
     gcongr
   exact key _ _ _ hM.1
 
+/- English proof (translation)
+Unfold `PairingProductCorollary.minFac`. Use `split_ifs with h`. Rewrite using `[min_eq_right]`. Conclude with `pow_le_one₀ (div_nonneg hx ha.le) ((div_le_one ha).2 h.le)`. Rewrite using `[min_eq_left]`.
+
+Conclude with `one_le_pow₀ ((one_le_div ha).2 (not_lt.1 h))`.
+-/
 theorem minFac_eq (x a : ℝ) (K : ℕ) (hx : 0 ≤ x) (ha : 0 < a) : PairingProductCorollary.minFac x a K = min 1 ((x / a) ^ K) := by
   unfold PairingProductCorollary.minFac
   split_ifs with h
@@ -371,6 +496,15 @@ theorem minFac_eq (x a : ℝ) (K : ℕ) (hx : 0 ≤ x) (ha : 0 < a) : PairingPro
   · rw [min_eq_left]
     exact one_le_pow₀ ((one_le_div ha).2 (not_lt.1 h))
 
+/- English proof (translation)
+Establish `hpt : ∀ v, min 1 ((x v / a v) ^ K) = if v ∈ A then (x v / a v) ^ K else 1`. Introduce `v`. Establish `hxv : 0 ≤ x v` using `(hL v).trans (hLx v)`. Use `split_ifs with hv`. Conclude with `min_eq_right (pow_le_one₀ (div_nonneg hxv (ha v).le) ((div_le_one (ha v)).2 ((hA v).1 hv).le))`.
+
+Conclude with `min_eq_left (one_le_pow₀ ((one_le_div (ha v)).2 (not_lt.1 fun h => hv ((hA v).2 h))))`. Establish `hprod : (∏ v, min 1 ((x v / a v) ^ K)) = ∏ v ∈ A, (x v / a v) ^ K`. Rewrite using `[Finset.prod_congr rfl fun v _ => hpt v, Finset.prod_ite_mem, Finset.univ_inter]`. Rewrite using `[hprod]`. Establish `hPa : 0 < ∏ v ∈ A, a v ^ K` using `Finset.prod_pos fun v _ => pow_pos (ha v) K`.
+
+Establish `hq : (∏ v ∈ A, (x v / a v) ^ K) = (∏ v ∈ A, x v ^ K) / ∏ v ∈ A, a v ^ K`. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `Finset.prod_congr rfl fun v _ => div_pow _ _ _`. Establish `hLx' : (∏ v ∈ A, abelian₂ v ^ K) ≤ ∏ v ∈ A, x v ^ K` using `Finset.prod_le_prod (fun v _ => pow_nonneg (hL v) K) fun v _ => pow_le_pow_left₀ (hL v) (hLx v) K`. Rewrite using `[hq, div_mul_eq_mul_div, le_div_iff₀ hPa]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem combine {ι : Type} [Fintype ι] [DecidableEq ι] (K : ℕ) (abelian₂ x a : ι → ℝ) (N M : ℝ)
     (A : Finset ι) (hA : ∀ v, v ∈ A ↔ x v < a v)
     (hL : ∀ v, 0 ≤ abelian₂ v) (hLx : ∀ v, abelian₂ v ≤ x v) (ha : ∀ v, 0 < a v) (hM : 0 ≤ M)
@@ -399,6 +533,13 @@ theorem combine {ι : Type} [Fintype ι] [DecidableEq ι] (K : ℕ) (abelian₂ 
 end Formalism.FourierDecayAlt.P.JCx1.decay
 
 open Formalism.FourierDecayAlt.P.JCx1.decay in
+/- English proof (translation)
+Introduce `hGP hWP E _ _ _ Wp Wq _ _ _ _ S abelian₂ hPos hGr hWave hThr ε hε i hi1 hir w hw hcnt`. Establish `hG : S.base.GramPSD` using `hGP E Wp Wq S hPos hGr _ _ _ _`. Establish `hW : S.base.WordsPos` using `hWP E Wp Wq S hGr _ _ _ _`. Take `⟨θ, hθ, hb⟩` from `hWave ε hε i hi1 hir w hw hcnt`. Use `⟨θ, hθ, ?_⟩` and prove the remaining obligations.
+
+Introduce `Y hY κ hκ l hl hl0`. Establish `key` using `hb Y hY κ hκ l hl hl0 (S.bigPlaces i l)`. Establish `hM : 0 ≤ ∑ w' ∈ S.base.Wb (S.base.cnt w + C.Kst), θ (S.bigPlaces i l) w' * S.base.N0 ε (i - 1) w' Y κ` using `Finset.sum_nonneg fun w' _ => mul_nonneg ((hθ _).1 w') (BaseGramNonnegativity.baseGram_nonneg _ hG hW hε _ _ Y κ hκ)`. Establish `hav : ∀ v, 0 < S.base.av v l` using `fun v => by show 0 < S.pl v l`. Conclude with `(S.pl v).pos_iff.mpr hl0`.
+
+Conclude with `combine C.Kst (abelian₂ i) (S.base.szD i) (fun v => S.base.av v l) _ _ _ (fun v => by simp [C.HidaSetting.bigPlaces]; rfl) (fun v => (hThr i hi1 hir v).1) (fun v => (hThr i hi1 hir v).2) hav hM key`.
+-/
 theorem Formalism.FourierDecayAlt.P.plane_exponential_bound_of_places : Formalism.FourierDecayAlt.JC.PlaneExponentialBoundOfPlaces := by
   intro hGP hWP E _ _ _ Wp Wq _ _ _ _ S abelian₂ hPos hGr hWave hThr ε hε i hi1 hir w hw hcnt
   have hG : S.base.GramPSD := hGP E Wp Wq S hPos hGr _ _ _ _
@@ -415,11 +556,53 @@ theorem Formalism.FourierDecayAlt.P.plane_exponential_bound_of_places : Formalis
   exact combine C.Kst (abelian₂ i) (S.base.szD i) (fun v => S.base.av v l) _ _ _ (fun v => by simp [C.HidaSetting.bigPlaces]; rfl) (fun v => (hThr i hi1 hir v).1)
     (fun v => (hThr i hi1 hir v).2) hav hM key
 
+/- English proof (translation)
+Introduce `hEst hG hW E _ _ _ Wp Wq _ _ _ _ S C₄ hpos hgrid hsum`. Conclude with `hEst _ _ S.base C₄ (hG E Wp Wq S hpos hgrid _ _ _ _) (hW E Wp Wq S hgrid _ _ _ _) hsum`.
+-/
 theorem Formalism.FourierDecayAlt.P.corollary_T_of_sum_form : Formalism.FourierDecayAlt.JC.CorollaryTOfSumForm := by
   intro hEst hG hW E _ _ _ Wp Wq _ _ _ _ S C₄ hpos hgrid hsum
   exact hEst _ _ S.base C₄ (hG E Wp Wq S hpos hgrid _ _ _ _) (hW E Wp Wq S hgrid _ _ _ _) hsum
 
 open Formalism.FourierDecayAlt.P.JCx1.decay Formalism.FourierDecayAlt.TB in
+/- English proof (translation)
+Introduce `hP3 hGP hWP E _ _ _ Wp Wq _ _ _ _ S abelian₂ Lam' hPos hGr hBelow hTop hThr`. Establish `hG : S.base.GramPSD` using `hGP E Wp Wq S hPos hGr _ _ _ _`. Establish `hW : S.base.WordsPos` using `hWP E Wp Wq S hGr _ _ _ _`. Introduce `ε hε i s hs hsi hir hns w hw hcnt`. Establish `hir' : i ≤ S.G.r + 1` using `hir`.
+
+Establish `hav : ∀ v (x : E), x ≠ 0 → 0 < S.base.av v x` using `fun v x hx => by show 0 < S.pl v x`. Conclude with `(S.pl v).pos_iff.mpr hx`. Distinguish the cases in `hi : i ≤ S.G.r`. Take `⟨θ, hθ, hb⟩` from `hBelow ε hε i s hs hsi hi w hw hcnt`. Use `⟨fun (π : Fin S.f → Fin 3) => θ (univ.filter fun v => π v ≠ 0), fun π => hθ _, ?_⟩` and prove the remaining obligations.
+
+Introduce `Y T κ hY hκ t ht t' ht' h0 h0' ho`. Use `⟨fun v => if S.base.szL (i - s + 1) s v < S.base.av v (t⁻¹ - t'⁻¹) then 1 else 0, ?_⟩` and prove the remaining obligations. Establish `hthr : ∀ v, 0 ≤ abelian₂ (i - s + 1) s v ∧ abelian₂ (i - s + 1) s v ≤ S.base.szL (i - s + 1) s v` using `fun v => hThr.1 (i - s + 1) s (by omega) hs (by omega) v`. Establish `hM : ∀ A, 0 ≤ ∑ x ∈ S.base.Wb (S.base.cnt w + S.base.K) ×ˢ S.base.Wb (S.base.cnt w + S.base.K), θ A x * (((S.base.Nst ε i s x.1 Y (blk κ s t t) t t).re + (S.base.Nst ε i s x.2 Y (blk κ s t' t') t' t').re) / 2)` using `fun A => Finset.sum_nonneg fun x _ => mul_nonneg ((hθ A).1 x) (div_nonneg (add_nonneg (nst_diag_nonneg _ hG hW hε i s x.1 Y T κ hκ t ht) (nst_diag_nonneg _ hG hW hε i s x.2 Y T κ hκ t' ht')) zero_le_two)`. Conclude with `combine S.base.K (abelian₂ (i - s + 1) s) (S.base.szL (i - s + 1) s) (fun v => S.base.av v (t⁻¹ - t'⁻¹)) _ _ _ (fun v => by`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `split_ifs with h <;> simp [h])`. Use the proof step `(fun v => (hthr v).1) (fun v => (hthr v).2) (fun v => hav v _ ho) (hM _)`. Use the proof step `(hb Y T κ hY hκ t ht t' ht' h0 h0' ho _)`. Establish `hi' : i = S.G.r + 1` using `by omega`.
+
+Substitute `hi'` using the available equality. Establish `hs2 : 2 ≤ s`. Assume the negation of the conclusion as `hc`. Conclude with `hns ⟨rfl, by omega⟩`. Take `⟨θ, hθ, hb⟩` from `hTop ε hε s hs2 hsi w hw hcnt`.
+
+Establish `hbs : S.G.r + 1 - s + 1 = S.G.r + 2 - s` using `by omega`. Rewrite using `[hbs]`. Set `θ2 : (Fin S.f → Fin 3) → S.W × S.W → ℝ` to `fun π x => θ (univ.filter fun v => π v = 1) x.1 * θ (univ.filter fun v => π v = 2) x.2`. Use `⟨θ2, fun π => ⟨fun x => mul_nonneg ((hθ _).1 _) ((hθ _).1 _), fun x hx => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[Finset.mem_product, not_and_or]`.
+
+Break down `hx with hx | hx` into its components or cases. Simplify using `only [θ2, (hθ _).2.1 _ hx, zero_mul]`. Simplify using `only [θ2, (hθ _).2.1 _ hx, mul_zero]`. Simplify using `only [θ2]`. Rewrite using `[Finset.sum_product, ← Finset.sum_mul_sum, (hθ _).2.2, (hθ _).2.2, one_mul]`.
+
+Introduce `Y T κ hY hκ t ht t' ht' h0 h0' ho`. Set `tv : Fin S.f → ℂ` to `fun v => S.σ v t`. Set `tv' : Fin S.f → ℂ` to `fun v => S.σ v t'`. Set `L : Fin S.f → ℝ` to `Lam' (S.G.r + 2 - s) s`. Establish `hthr : ∀ v, 0 ≤ L v ∧ 2 * L v ≤ S.base.szL (S.G.r + 2 - s) s v` using `fun v => hThr.2 s hs2 hsi v`.
+
+Establish `hoA : ∀ v, PairingProductCorollary.oAbs tv tv' v = S.base.av v (t⁻¹ - t'⁻¹)` using `fun v => by`. Simplify using `only [PairingProductCorollary.oAbs, tv, tv', one_div, ← map_inv₀, ← map_sub]`. Conclude with `Formalism.FourierDecayAlt.P.JCx1.norm_σ S v _`. Establish `htv : ∀ v, ‖tv v‖ = S.base.av v t` using `fun v => Formalism.FourierDecayAlt.P.JCx1.norm_σ S v _`. Set `π : Fin S.f → Fin 3` to `fun v => if 2 * L v < PairingProductCorollary.oAbs tv tv' v then (if ‖tv v‖ ≤ ‖tv' v‖ then 1 else 2) else 0`.
+
+Use `⟨π, ?_⟩` and prove the remaining obligations. Establish `hY' : ∀ h ∈ Y, TB.level h = S.G.r + 1 - s` using `hY`. Establish `hκt : PSDOn Y (blk κ s t t)` using `by classical`. Conclude with `psd_pull _ κ hκ Y (fun h => join h s t) (join_mem Y s T t ht)`. Establish `hκt' : PSDOn Y (blk κ s t' t')` using `by classical`.
+
+Conclude with `psd_pull _ κ hκ Y (fun h => join h s t') (join_mem Y s T t' ht')`. Use `set B1 : Finset (Fin S.f) := univ.filter fun v => π v = 1 with hB1`. Use `set B2 : Finset (Fin S.f) := univ.filter fun v => π v = 2 with hB2`. Use `set S1 := ∑ w' ∈ S.base.Wb (S.base.cnt w + S.base.K), θ B1 w' * (S.base.Nst ε (S.G.r + 1) s w' Y (blk κ s t t) t t).re with hS1`. Use `set S2 := ∑ w' ∈ S.base.Wb (S.base.cnt w + S.base.K), θ B2 w' * (S.base.Nst ε (S.G.r + 1) s w' Y (blk κ s t' t') t' t').re with hS2`.
+
+Establish `hS1n : 0 ≤ S1` using `Finset.sum_nonneg fun x _ => mul_nonneg ((hθ _).1 x) (nst_diag_nonneg _ hG hW hε _ s x Y T κ hκ t ht)`. Establish `hS2n : 0 ≤ S2` using `Finset.sum_nonneg fun x _ => mul_nonneg ((hθ _).1 x) (nst_diag_nonneg _ hG hW hε _ s x Y T κ hκ t' ht')`. Establish `e1 : univ.filter (fun v => 2 * L v < PairingProductCorollary.oAbs tv tv' v ∧ ‖tv v‖ ≤ ‖tv' v‖) = B1`. Use extensionality with `v`. Simplify using `only [hB1, π, Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Apply the tactic sequence `split_ifs <;> simp_all`. Establish `e2 : univ.filter (fun v => 2 * L v < PairingProductCorollary.oAbs tv tv' v ∧ ¬ ‖tv v‖ ≤ ‖tv' v‖) = B2`. Use extensionality with `v`. Simplify using `only [hB2, π, Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+
+Establish `hB1b : (S.base.Nst ε (S.G.r + 1) s w Y (blk κ s t t) t t).re ≤ (∏ v ∈ univ.filter (fun v => 2 * L v < PairingProductCorollary.oAbs tv tv' v ∧ ‖tv v‖ ≤ ‖tv' v‖), (‖tv v‖ * L v) ^ (2 * S.base.K)) * S1`. Rewrite using `[e1]`. Use `hb Y hY' (blk κ s t t) hκt t h0 B1` as an intermediate fact. Simplify `this` using `only [htv]`. Establish `hB2b : (S.base.Nst ε (S.G.r + 1) s w Y (blk κ s t' t') t' t').re ≤ (∏ v ∈ univ.filter (fun v => 2 * L v < PairingProductCorollary.oAbs tv tv' v ∧ ¬ ‖tv v‖ ≤ ‖tv' v‖), (‖tv' v‖ * L v) ^ (2 * S.base.K)) * S2`.
+
+Rewrite using `[e2]`. Use `hb Y hY' (blk κ s t' t') hκt' t' h0' B2` as an intermediate fact. Establish `htv' : ∀ v, ‖tv' v‖ = S.base.av v t'` using `fun v => Formalism.FourierDecayAlt.P.JCx1.norm_σ S v _`. Simplify `this` using `only [htv']`. Establish `hmain` using `hP3 (Fin S.f) S.base.K L tv tv' (S.base.Nst ε (S.G.r + 1) s w Y (blk κ s t t') t t') (S.base.Nst ε (S.G.r + 1) s w Y (blk κ s t t) t t).re (S.base.Nst ε (S.G.r + 1) s w Y (blk κ s t' t') t' t').re S1 S2 (fun v => ⟨(map_ne_zero (S.σ v)).mpr h0, (map_ne_zero (S.σ v)).mpr h0'⟩) (fun …`.
+
+Establish `hsum : ∑ x ∈ S.base.Wb (S.base.cnt w + S.base.K) ×ˢ S.base.Wb (S.base.cnt w + S.base.K), θ2 π x * (((S.base.Nst ε (S.G.r + 1) s x.1 Y (blk κ s t t) t t).re + (S.base.Nst ε (S.G.r + 1) s x.2 Y (blk κ s t' t') t' t').re) / 2) = (S1 + S2) / 2`. Rewrite using `[Finset.sum_product]`. Simplify using `only [θ2, ← hB1, ← hB2]`. Establish `hsplit : ∀ x y : S.W, θ B1 x * θ B2 y * (((S.base.Nst ε (S.G.r + 1) s x Y (blk κ s t t) t t).re + (S.base.Nst ε (S.G.r + 1) s y Y (blk κ s t' t') t' t').re) / 2) = (θ B1 x * (S.base.Nst ε (S.G.r + 1) s x Y (blk κ s t t) t t).re) * θ B2 y / 2 + θ B1 x * (θ B2 y * (S.base.Nst ε (S. …`. Introduce `x y`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hsplit, Finset.sum_add_distrib, ← Finset.sum_div, ← Finset.sum_mul_sum, hS1, hS2, (hθ B1).2.2, (hθ B2).2.2, mul_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Use `hmain.trans (mul_le_mul_of_nonneg_right ?_ (by positivity))` and prove the remaining obligations.
+
+Use `Finset.prod_le_prod (fun v _ => ?_) (fun v _ => ?_)` and prove the remaining obligations. Unfold `PairingProductCorollary.minFac`. Use `split_ifs`. Conclude with `pow_nonneg (div_nonneg (by linarith [(hthr v).1]) (norm_nonneg _)) _`. Conclude with `zero_le_one`.
+
+Establish `hpos : 0 < PairingProductCorollary.oAbs tv tv' v` using `by rw [hoA]; exact hav v _ ho`. Rewrite using `[minFac_eq _ _ _ (by linarith [(hthr v).1]) hpos, hoA]`. Use `min_le_min_left _ (pow_le_pow_left₀ (div_nonneg (by linarith [(hthr v).1]) (hav v _ ho).le) ?_ _)` and prove the remaining obligations. Conclude with `div_le_div_of_nonneg_right (hthr v).2 (hav v _ ho).le`.
+-/
 theorem Formalism.FourierDecayAlt.P.off_diagonal_lift_bound_of_places : Formalism.FourierDecayAlt.JC.OffDiagonalLiftBoundOfPlaces := by
   intro hP3 hGP hWP E _ _ _ Wp Wq _ _ _ _ S abelian₂ Lam' hPos hGr hBelow hTop hThr
   have hG : S.base.GramPSD := hGP E Wp Wq S hPos hGr _ _ _ _
@@ -557,6 +740,9 @@ open Formalism.FourierDecayAlt Filter Topology MeasureTheory NumberField
 
 namespace Formalism.FourierDecayAlt.P.JCx1.needs
 
+/- English proof (translation)
+Unfold `D.ptSize C.loc TB.level`. Simplify using `[List.map_map, Function.comp_def]`.
+-/
 theorem ptSize_loc {E : Type} [Field E] (σ : E →+* ℂ) (p : TB.Pt E) :
     D.ptSize (C.loc σ p) = TB.level p := by
   unfold D.ptSize C.loc TB.level
@@ -566,6 +752,13 @@ end Formalism.FourierDecayAlt.P.JCx1.needs
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S Hv _ _ V H _ _ Vt hT hG Y hY`. Establish `hv : ∀ v, ∀ᶠ ε in 𝓝[>] (0:ℝ), ∀ p ∈ Y.image (C.loc (S.σ v)), ∀ q ∈ Y.image (C.loc (S.σ v)), (S.pd v).RR ε (S.G.r + 1) [] p q = inner ℂ (V v q) (V v p)`. Introduce `v`. Apply `hG v` to reduce the goal to its premises. Introduce `p hp`.
+
+Take `⟨p', hp', rfl⟩` from `Finset.mem_image.mp hp`. Rewrite using `[Formalism.FourierDecayAlt.P.JCx1.needs.ptSize_loc]`. Conclude with `(hY p' hp').1`. Use `filter_upwards [Filter.eventually_all.mpr hv] with ε hε`. Introduce `p hp q hq`.
+
+Rewrite using `[hT p q (hY p hp) (hY q hq)]`. Simplify using `only [C.HidaSetting.gram, le_refl, if_true, C.HidaSetting.gramLoc, C.Word.emp]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hε v _ (Finset.mem_image_of_mem _ hp) _ (Finset.mem_image_of_mem _ hq)]`.
+-/
 theorem gram_proposition_of_places : Formalism.FourierDecayAlt.JC.PropGramOfPlaces := by
   intro E _ _ _ Wp Wq _ _ _ _ S Hv _ _ V H _ _ Vt hT hG Y hY
   have hv : ∀ v, ∀ᶠ ε in 𝓝[>] (0:ℝ), ∀ p ∈ Y.image (C.loc (S.σ v)), ∀ q ∈ Y.image (C.loc (S.σ v)),
@@ -591,16 +784,33 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.Gf`. Rewrite using `[Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs Bs hp, Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs Bs hp]`.
+-/
 theorem gf_sgs (Bs : RealPlaceData k r Wp Wq) {p : SS k r} (hp : Bs.inSS p) (g : Mat k r) :
     Gf k r Bs.z Bs.z' (sgs p g) = Gf k r Bs.z Bs.z' g := by
   unfold Formalism.QuantumDeterminants.Gf
   rw [Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs Bs hp, Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs Bs hp]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem choose_congr {α : Sort*} {P Q : α → Prop} (e : P = Q) (hP : ∃ x, P x) (hQ : ∃ x, Q x) :
     hP.choose = hQ.choose := by
   subst e
   rfl
 
+/- English proof (translation)
+Unfold `D.orbJ`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Rewrite using `[zero_smul]`. Use `split_ifs with hF`.
+
+Use `(integral_congr_ae ?_).trans (integral_zero _ _)` and prove the remaining obligations. Conclude with `hFG.mono fun p hp => by simp only [hp, zero_smul, smul_zero]`. Apply the tactic sequence `all_goals rfl`. Establish `hiff : ∀ θ : B.SS k r → ℝ, Integrable (fun p => θ p • D.orbIntegrand Bs γ F p) Bs.μSS ↔ Integrable (fun p => θ p • D.orbIntegrand Bs γ G p) Bs.μSS`. Introduce `θ`.
+
+Establish `e : (fun p => θ p • D.orbIntegrand Bs γ F p) =ᵐ[Bs.μSS] fun p => c • (θ p • D.orbIntegrand Bs γ G p)` using `hFG.mono fun p hp => by`. Simplify using `only [hp]`. Conclude with `smul_comm _ _ _`. Rewrite using `[integrable_congr e]`. Conclude with `integrable_smul_iff hc (fun p => θ p • D.orbIntegrand Bs γ G p)`.
+
+Use `split_ifs with hF hG hG`. Rewrite using `[choose_congr (by funext θ; exact propext (and_congr_right fun _ => hiff θ)) hF hG, ← integral_smul]`. Use `integral_congr_ae (hFG.mono fun p hp => ?_)` and prove the remaining obligations. Simplify using `only [hp]`. Conclude with `smul_comm _ _ _`.
+
+Conclude with `(hG ⟨hF.choose, hF.choose_spec.1, (hiff _).1 hF.choose_spec.2⟩).elim`. Conclude with `(hF ⟨hG.choose, hG.choose_spec.1, (hiff _).2 hG.choose_spec.2⟩).elim`. Simplify using the standard rewrite rules.
+-/
 theorem orbJ_smul_of_ae (Bs : RealPlaceData k r Wp Wq) (γ : Mat k r) (μR : Measure (Mt k r))
     (F G : Mat k r → (Wq →L[ℂ] Wp)) (c : ℂ)
     (hFG : ∀ᵐ p ∂Bs.μSS, D.orbIntegrand Bs γ F p = c • D.orbIntegrand Bs γ G p) :
@@ -633,6 +843,17 @@ theorem orbJ_smul_of_ae (Bs : RealPlaceData k r Wp Wq) (γ : Mat k r) (μR : Mea
     · exact (hF ⟨hG.choose, hG.choose_spec.1, (hiff _).2 hG.choose_spec.2⟩).elim
     · simp
 
+/- English proof (translation)
+Establish `hfin : ∀ (U : Set (Mat k r)) (μ : Measure (Mt k r)), IsHaarOn U μ → SFinite μ`. Introduce `U μ h`. Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨h.finite_compact⟩`. Use `infer_instance`. Use `haveI := hfin _ _ Bs.haarW`.
+
+Use `haveI := hfin _ _ Bs.haarN`. Use `haveI := hfin _ _ Bs.haarW'`. Establish `hW : ∀ᵐ x ∂Bs.μW, Matrix.of x ∈ UWset k r Bs.z` using `ae_iff.2 Bs.haarW.conc`. Establish `hN : ∀ᵐ x ∂Bs.μN, Matrix.of x ∈ Nset k r` using `ae_iff.2 Bs.haarN.conc`. Establish `hW' : ∀ᵐ x ∂Bs.μW', Matrix.of x ∈ UWset k r Bs.z'` using `ae_iff.2 Bs.haarW'.conc`.
+
+Establish `a1 : ∀ᵐ p ∂((Bs.μW.prod Bs.μN).prod (Bs.μW'.prod Bs.μN)), Matrix.of p.1.1 ∈ UWset k r Bs.z` using `(Measure.quasiMeasurePreserving_fst (μ := Bs.μW.prod Bs.μN) (ν := Bs.μW'.prod Bs.μN)).ae ((Measure.quasiMeasurePreserving_fst (μ := Bs.μW) (ν := Bs.μN)).ae hW)`. Establish `a2 : ∀ᵐ p ∂((Bs.μW.prod Bs.μN).prod (Bs.μW'.prod Bs.μN)), Matrix.of p.1.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst (μ := Bs.μW.prod Bs.μN) (ν := Bs.μW'.prod Bs.μN)).ae ((Measure.quasiMeasurePreserving_snd (μ := Bs.μW) (ν := Bs.μN)).ae hN)`. Establish `a3 : ∀ᵐ p ∂((Bs.μW.prod Bs.μN).prod (Bs.μW'.prod Bs.μN)), Matrix.of p.2.1 ∈ UWset k r Bs.z'` using `(Measure.quasiMeasurePreserving_snd (μ := Bs.μW.prod Bs.μN) (ν := Bs.μW'.prod Bs.μN)).ae ((Measure.quasiMeasurePreserving_fst (μ := Bs.μW') (ν := Bs.μN)).ae hW')`. Establish `a4 : ∀ᵐ p ∂((Bs.μW.prod Bs.μN).prod (Bs.μW'.prod Bs.μN)), Matrix.of p.2.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_snd (μ := Bs.μW.prod Bs.μN) (ν := Bs.μW'.prod Bs.μN)).ae ((Measure.quasiMeasurePreserving_snd (μ := Bs.μW') (ν := Bs.μN)).ae hN)`. Establish `hae : ∀ᵐ p ∂Bs.μSS, Bs.inSS p`.
+
+Unfold `RealPlaceData.μSS`. Use `filter_upwards [a1, a2, a3, a4] with p h1 h2 h3 h4`. Conclude with `⟨h1, h2, h3, h4⟩`. Apply `orbJ_smul_of_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with p hp`.
+
+Simplify using `only [D.orbIntegrand, B.rho, D.cutF, gf_sgs Bs hp γ]`. Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_comm]`.
+-/
 theorem orbJ_cutF (Bs : RealPlaceData k r Wp Wq) (γ : Mat k r) (μR : Measure (Mt k r))
     (χ : ℝ → ℝ) (f : Mat k r → (Wq →L[ℂ] Wp)) (ε : ℝ) :
     D.orbJ Bs γ μR (D.cutF Bs χ f ε) = ((χ (Gf k r Bs.z Bs.z' γ / ε) : ℝ) : ℂ) • D.orbJ Bs γ μR f := by
@@ -667,6 +888,11 @@ theorem orbJ_cutF (Bs : RealPlaceData k r Wp Wq) (γ : Mat k r) (μR : Measure (
   simp only [D.orbIntegrand, B.rho, D.cutF, gf_sgs Bs hp γ]
   rw [ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_comm]
 
+/- English proof (translation)
+Unfold `D.vecV`. Use `split_ifs with h h'`. Establish `hG : 0 < Gf k r Bs.z Bs.z' h'.choose`. Rewrite using `[← hGS k r Bs.z Bs.z' p h'.choose h.1 h'.choose_spec.2.1]`. Conclude with `h.2`.
+
+Use `filter_upwards [Ioo_mem_nhdsGT hG] with ε hε`. Rewrite using `[orbJ_cutF, hχ.2.2 _ ((one_le_div hε.1).2 hε.2.le)]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem vecV_cutF_eventually (hGS : D.PtGSpec) (Bs : RealPlaceData k r Wp Wq) (ν' : Fin (2 * r + k + 1) → ℂ)
     (m₀ : Mat k r) (χ : ℝ → ℝ) (hχ : C6.IsCut0 χ) (f : Mat k r → (Wq →L[ℂ] Wp)) (p : C.LPt) :
     ∀ᶠ ε in 𝓝[>] (0:ℝ), D.vecV Bs ν' m₀ (D.cutF Bs χ f ε) p = D.vecV Bs ν' m₀ f p := by
@@ -681,11 +907,17 @@ theorem vecV_cutF_eventually (hGS : D.PtGSpec) (Bs : RealPlaceData k r Wp Wq) (�
   · simp
   · simp
 
+/- English proof (translation)
+Unfold `D.vecV`. Rewrite using `[dif_neg (fun h' => h h'.1)]`.
+-/
 theorem vecV_of_not {Bs : RealPlaceData k r Wp Wq} {ν' : Fin (2 * r + k + 1) → ℂ} {m₀ : Mat k r}
     {F : Mat k r → (Wq →L[ℂ] Wp)} {p : C.LPt} (h : ¬ D.IsLocPt p (r + 1)) : D.vecV Bs ν' m₀ F p = 0 := by
   unfold D.vecV
   rw [dif_neg (fun h' => h h'.1)]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[hsVec]`.
+-/
 theorem hsVec_zero [FiniteDimensional ℂ Wq] : hsVec (0 : Wq →L[ℂ] Wp) = 0 := by
   ext i
   simp [hsVec]
@@ -696,10 +928,24 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ Bs γ μR χ f ε _ _ _`. Conclude with `JCx1.needs.orbJ_cutF Bs γ μR χ f ε`.
+-/
 theorem orbital_integral_cutoff_scalar : Formalism.FourierDecayAlt.JC.OrbJCutScalar := by
   intro k r Wp Wq _ _ _ _ Bs γ μR χ f ε _ _ _
   exact JCx1.needs.orbJ_cutF Bs γ μR χ f ε
 
+/- English proof (translation)
+Introduce `_ hGS _ _ _ E _ _ _ Wp Wq _ _ _ _ _ S T f χ ν' m₀ top A₀ _ _ hB v Y hY`. Take `⟨hχ, hv⟩` from `hB`. Establish `hpd` using `(hv v).1`. Establish `hev : ∀ᶠ ε in 𝓝[>] (0:ℝ), ∀ p ∈ Y, D.vecV (T v).base (ν' v) (m₀ v) (D.cutF (T v).base χ (f v) ε) (D.toStd S.G.r (S.g : ℝ) 1 p) = D.vecV (T v).base (ν' v) (m₀ v) (f v) (D.toStd S.G.r (S.g : ℝ) 1 p)`. Rewrite using `[Filter.eventually_all_finset]`.
+
+Introduce `p _`. Conclude with `Formalism.FourierDecayAlt.P.JCx1.needs.vecV_cutF_eventually hGS _ _ _ χ hχ _ _`. Use `filter_upwards [hev] with ε hε`. Introduce `p hp q hq`. Rewrite using `[hpd]`.
+
+Simplify using `only [D.componentFamilySetting_ofSetting, D.RRplace, JC.vecPlace]`. Distinguish the cases in `hpq : D.IsLocPt (D.toStd S.G.r (S.g : ℝ) 1 p) (S.G.r + 1) ∧ D.IsLocPt (D.toStd S.G.r (S.g : ℝ) 1 q) (S.G.r + 1)`. Simplify using `only [dif_pos hpq, dif_neg (show ¬ (S.G.r + 1 ≤ S.G.r) by omega), ↓reduceIte]`. Rewrite using `[hε p hp, hε q hq]`. Simplify using `only [D.GamLev, Finset.Ioc_self, Finset.prod_empty, one_pow, hsInner, inner_smul_left, inner_smul_right, Complex.conj_ofReal]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg hpq]`. Break down `not_and_or.mp hpq with h | h` into its components or cases. Rewrite using `[Formalism.FourierDecayAlt.P.JCx1.needs.vecV_of_not h]`.
+
+Simplify using `[Formalism.FourierDecayAlt.P.JCx1.needs.hsVec_zero]`. Rewrite using `[Formalism.FourierDecayAlt.P.JCx1.needs.vecV_of_not h]`. Simplify using `[Formalism.FourierDecayAlt.P.JCx1.needs.hsVec_zero]`.
+-/
 theorem gram_at_built_place : Formalism.FourierDecayAlt.JC.GramPlaceBuilt := by
   intro _ hGS _ _ _ E _ _ _ Wp Wq _ _ _ _ _ S T f χ ν' m₀ top A₀ _ _ hB v Y hY
   obtain ⟨hχ, hv⟩ := hB
@@ -741,15 +987,26 @@ open scoped Classical
 
 variable (E : Type) [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Conclude with `⟨fun w => NumberField.InfinitePlace.not_isReal_iff_isComplex.2 (NumberField.IsTotallyComplex.isComplex w.1) w.2⟩`.
+-/
 theorem isEmptyReal' : IsEmpty {w : InfinitePlace E // w.IsReal} := by
   exact ⟨fun w => NumberField.InfinitePlace.not_isReal_iff_isComplex.2
     (NumberField.IsTotallyComplex.isComplex w.1) w.2⟩
 
 def cpx (c : J.CV E) : {w : InfinitePlace E // w.IsComplex} → ℂ := (Formalism.FourierDecayAlt.P.Jx2.ee E c).2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cpx_apply (c : J.CV E) (w : {w : InfinitePlace E // w.IsComplex}) : cpx E c w = c w.1 := by
   rfl
 
+/- English proof (translation)
+Use `haveI := isEmptyReal' E`. Establish `h1 : MeasurePreserving (Formalism.FourierDecayAlt.P.Jx2.ee E) volume volume` using `by first`. Consider the case `exact Formalism.FourierDecayAlt.P.Jx2.ee_mp E`. Consider the case `exact Formalism.FourierDecayAlt.P.Jx2.ee_mp`. Use `haveI : IsProbabilityMeasure (volume : Measure ({w : InfinitePlace E // w.IsReal} → ℝ)) := by`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[MeasureTheory.volume_pi, Measure.pi_of_empty]`. Simplify using the standard rewrite rules. Establish `h2 : MeasurePreserving (Prod.snd : NumberField.mixedEmbedding.mixedSpace E → _) volume volume` using `measurePreserving_snd`. Conclude with `h2.comp h1`.
+-/
 theorem cpx_mp : MeasurePreserving (cpx E) volume volume := by
   haveI := isEmptyReal' E
   have h1 : MeasurePreserving (Formalism.FourierDecayAlt.P.Jx2.ee E) volume volume := by
@@ -774,18 +1031,29 @@ def eqv (S : C.HidaSetting E Wp Wq) : Fin S.f ≃ {w : InfinitePlace E // w.IsCo
 def Qm (S : C.HidaSetting E Wp Wq) (c : J.CV E) : Fin S.f → ℂ :=
   MeasurableEquiv.piCongrLeft (fun _ => ℂ) (eqv S).symm (cpx E c)
 
+/- English proof (translation)
+Establish `h1 : (eqv S).symm (eqv S v) = v` using `Equiv.symm_apply_apply _ _`. Use `conv_lhs => rw [← h1]`. Rewrite using `[Qm, MeasurableEquiv.piCongrLeft_apply_apply, cpx_apply]`. Both sides reduce to the same expression.
+-/
 theorem Qm_apply (S : C.HidaSetting E Wp Wq) (c : J.CV E) (v : Fin S.f) : Qm S c v = c (S.pl v) := by
   have h1 : (eqv S).symm (eqv S v) = v := Equiv.symm_apply_apply _ _
   conv_lhs => rw [← h1]
   rw [Qm, MeasurableEquiv.piCongrLeft_apply_apply, cpx_apply]
   rfl
 
+/- English proof (translation)
+Conclude with `(measurePreserving_piCongrLeft (fun _ : Fin S.f => (volume : Measure ℂ)) (eqv S).symm).comp (cpx_mp E)`.
+-/
 theorem Qm_mp (S : C.HidaSetting E Wp Wq) : MeasurePreserving (Qm S) volume volume := by
   exact (measurePreserving_piCongrLeft (fun _ : Fin S.f => (volume : Measure ℂ)) (eqv S).symm).comp
     (cpx_mp E)
 
 end meas
 
+/- English proof (translation)
+Establish `hg : Integrable (fun c : ℂ => (1 + ‖c‖) ^ (-(3 : ℝ)))`. Apply `integrable_one_add_norm` to reduce the goal to its premises. Rewrite using `[Complex.finrank_real_complex]`. Evaluate the numerical expressions. Use `(hg.const_mul Cφ).mono' hc.aestronglyMeasurable (ae_of_all _ fun c => ?_)` and prove the remaining obligations.
+
+Establish `h1 : (0 : ℝ) ≤ 1 + ‖c‖` using `by positivity`. Rewrite using `[Real.rpow_neg h1, show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Conclude with `hb c`.
+-/
 theorem integrable_of_decay {φ : ℂ → ℂ} (hc : Continuous φ) {Cφ : ℝ}
     (hb : ∀ c, ‖φ c‖ ≤ Cφ * ((1 + ‖c‖) ^ 3)⁻¹) : Integrable φ := by
   have hg : Integrable (fun c : ℂ => (1 + ‖c‖) ^ (-(3 : ℝ))) := by
@@ -798,6 +1066,45 @@ theorem integrable_of_decay {φ : ℂ → ℂ} (hc : Continuous φ) {Cφ : ℝ}
   exact hb c
 
 open scoped ComplexConjugate in
+/- English proof (translation)
+Introduce `ε hε i hi1 hi2 w Y hY κ hκ`. Establish `H : ∀ (v : Fin S.f) (h h' : Y), ∃ φ : ℂ → ℂ, Continuous φ ∧ (∀ c : ℂ, c ≠ 0 → φ c = S.gramLoc v ε i (w.1 v) (C.loc (S.σ v) h ++ [(1, c)]) (C.loc (S.σ v) h' ++ [(1, c)])) ∧ (∃ Cφ : ℝ, ∀ c : ℂ, ‖φ c‖ ≤ Cφ * ((1 + ‖c‖) ^ 3)⁻¹) ∧ ∫ c : ℂ, φ c = (dl i v : ℂ) * S.gramLoc v ε (i - 1) (w …`. Introduce `v h h'`. Conclude with `hpl v ε hε i hi1 hi2 w _ _ (by rw [ptSize_loc]; exact hY h h.2) (by rw [ptSize_loc]; exact hY h' h'.2)`. Use `choose φ hφc hφe hφb hφi using H`.
+
+Use `choose Cφ hCφ using hφb`. Use `set sz : ℂ := (C.Word.size S.P w.1 : ℂ) with hsz`. Use `set Φ : (Fin S.f → ℂ) → ℂ := fun y => (∑ h : Y, ∑ h' : Y, κ h h' * ∏ v, φ v h h' (y v)) / sz with hΦ`. Establish `hΦc : Continuous Φ`. Apply `Continuous.div_const` to reduce the goal to its premises.
+
+Conclude with `continuous_finsetSum _ fun h _ => continuous_finsetSum _ fun h' _ => continuous_const.mul (continuous_finsetProd _ fun v _ => (hφc v h h').comp (continuous_apply v))`. Establish `hN1 : ∀ c : J.CV E, (∀ v, c (S.pl v) ≠ 0) → S.N1 ε i w.1 Y κ c = Φ (Qm S c)`. Introduce `c hc`. Simplify using `only [C.HidaSetting.N1, hΦ, Qm_apply]`. Use `congr 1`.
+
+Rewrite using `[← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hφe v h h' _ (hc v)]`. Establish `hQc : Continuous (Qm S)`. Establish `: Qm S = fun c v => c (S.pl v)` using `funext fun c => funext fun v => Qm_apply S c v`. Rewrite using `[this]`.
+
+Conclude with `continuous_pi fun v => (EuclideanSpace.proj (𝕜 := ℂ) (S.pl v)).continuous`. Use `⟨⟨fun c => Φ (Qm S c), hΦc.comp hQc, fun c hc => (hN1 c hc).symm, (∑ h : Y, ∑ h' : Y, ‖κ h h'‖ * ∏ v, Cφ v h h') / ‖sz‖, fun c => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [hΦ, Qm_apply, norm_div]`. Rewrite using `[div_mul_eq_mul_div]`. Use `gcongr`.
+
+Rewrite using `[Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun h _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun h' _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_prod, mul_assoc, ← Finset.prod_mul_distrib]`.
+
+Use `gcongr with v`. Conclude with `hCφ v h h' _`. Establish `hpsi : ∀ c, S.psiInf 0 c = 1`. Introduce `c`. Simplify using `[C.HidaSetting.psiInf]`.
+
+Simplify using `only [C.HidaSetting.Nhat, hpsi, mul_one]`. Establish `hae : S.N1 ε i w.1 Y κ =ᵐ[volume] fun c => Φ (Qm S c)`. Establish `hnull : volume (Qm S ⁻¹' (⋃ v, {y : Fin S.f → ℂ | y v = 0})) = 0`. Rewrite using `[(Qm_mp S).measure_preimage (MeasurableSet.iUnion fun v => measurableSet_eq_fun (measurable_pi_apply v) measurable_const).nullMeasurableSet]`. Conclude with `measure_iUnion_null fun v => Measure.pi_hyperplane _ v 0`.
+
+Use `filter_upwards [measure_eq_zero_iff_ae_notMem.mp hnull] with c hc`. Apply `hN1 c` to reduce the goal to its premises. Introduce `v hv`. Conclude with `hc (Set.mem_preimage.mpr (Set.mem_iUnion.mpr ⟨v, by simp [Qm_apply, hv]⟩))`. Establish `hmap : ∫ c, Φ (Qm S c) = ∫ y, Φ y` using `by conv_rhs => rw [← (Qm_mp S).map_eq]`.
+
+Rewrite using `[integral_map (Qm_mp S).measurable.aemeasurable hΦc.aestronglyMeasurable]`. Establish `hint : ∀ (h h' : Y), Integrable (fun y : Fin S.f → ℂ => ∏ v, φ v h h' (y v))` using `fun h h' => Integrable.fintype_prod (fun v => integrable_of_decay (hφc v h h') (hCφ v h h'))`. Establish `hΦi : ∫ y, Φ y = (∑ h : Y, ∑ h' : Y, κ h h' * ((ZLattice.covolume (J.eLat E (S6.perLat E S.g (S6.nuBlock S.G.r i 1) 1) 1) : ℂ) * S.gram ε (i - 1) w.1 h h')) / sz`. Simplify using `only [hΦ]`. Rewrite using `[integral_div, integral_finsetSum _ fun h _ => integrable_finsetSum _ fun h' _ => (hint h h').const_mul _]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun h' _ => (hint h h').const_mul _]`. Use `Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_fintype_prod_volume_eq_prod]`.
+
+Use `congr 1`. Simplify using `only [hφi, Finset.prod_mul_distrib, C.HidaSetting.gram, if_pos (show i - 1 ≤ S.G.r + 1 by omega)]`. Rewrite using `[← Complex.ofReal_prod, hprod i hi1 hi2]`. Establish `hκH : ∀ h ∈ Y, ∀ h' ∈ Y, conj (κ h h') = κ h' h`. Introduce `h hh h' hh'`.
+
+Conclude with `hκ.1.apply (⟨h', hh'⟩ : Y) (⟨h, hh⟩ : Y)`. Establish `hgH : ∀ h h' : TB.Pt E, conj (S.gram ε (i - 1) w.1 h h') = S.gram ε (i - 1) w.1 h' h`. Introduce `h h'`. Simplify using `only [C.HidaSetting.gram, if_pos (show i - 1 ≤ S.G.r + 1 by omega), map_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Establish `hP` using `hpos v ε hε (i - 1) (by omega) w {C.loc (S.σ v) h, C.loc (S.σ v) h'}`. Conclude with `hP.1.apply (⟨C.loc (S.σ v) h', by simp⟩ : ({C.loc (S.σ v) h, C.loc (S.σ v) h'} : Finset C.LPt)) (⟨C.loc (S.σ v) h, by simp⟩ : ({C.loc (S.σ v) h, C.loc (S.σ v) h'} : Finset C.LPt))`. Use `set X : ℂ := ∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * S.gram ε (i - 1) w.1 h h' with hX`. Establish `hXr : ((X.re : ℝ) : ℂ) = X`. Rewrite using `[← Complex.conj_eq_iff_re, hX, map_sum, Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun h' hh' => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun h hh => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hκH h' hh' h hh, hgH h' h]`. Establish `hN0 : ((S.base.N0 ε (i - 1) w Y κ : ℝ) : ℂ) = X / sz` using `by show (((X.re / C.Word.size S.P w.1 : ℝ)) : ℂ) = X / sz`.
+
+Rewrite using `[Complex.ofReal_div, hXr]`. Rewrite using `[hN0, integral_congr_ae hae, hmap, hΦi]`. Establish `hcv` using `hcov i hi1 hi2`. Use `set cv : ℝ := ZLattice.covolume (J.eLat E (S6.perLat E S.g (S6.nuBlock S.G.r i 1) 1) 1) with hcvd`. Establish `hcv' : (cv : ℂ) ≠ 0` using `by exact_mod_cast hcv`.
+
+Establish `hsum : ∑ h : Y, ∑ h' : Y, κ h h' * ((cv : ℂ) * S.gram ε (i - 1) w.1 h h') = (cv : ℂ) * X`. Rewrite using `[hX, Finset.mul_sum, ← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem thmPInt_of_covolume_prod (E : Type) [Field E] [NumberField E] [IsCMField E]
     (Wp Wq : InfinitePlace E → Type)
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
@@ -926,6 +1233,9 @@ end Formalism.FourierDecayAlt.P.JCx1.needs
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S dl hpos hprod hcov hpl`. Conclude with `JCx1.needs.thmPInt_of_covolume_prod E Wp Wq S dl hpos hcov hprod hpl`.
+-/
 theorem theorem_P_integral_of_places : Formalism.FourierDecayAlt.JC.ThmPIntOfPlaces := by
   intro E _ _ _ Wp Wq _ _ _ _ S dl hpos hprod hcov hpl
   exact JCx1.needs.thmPInt_of_covolume_prod E Wp Wq S dl hpos hcov hprod hpl

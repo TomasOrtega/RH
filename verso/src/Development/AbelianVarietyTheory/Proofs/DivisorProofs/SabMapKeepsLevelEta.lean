@@ -12,10 +12,16 @@ namespace GlobalTheory.UCanon
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Use `Over.w (toUnit T)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem toUnit_left_eq' {X : Scheme.{0}} (T : Over X) : (toUnit T).left = T.hom := by
   have := Over.w (toUnit T)
   simpa using this
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using hx`. Consider the case `succ n ih`. Rewrite using `[pow_succ x₀, pow_succ x]`. Conclude with `hφ.2 T _ _ _ _ ih hx`.
+-/
 theorem grpPullback_pow_succ {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (hφ : IsGrpPullback G' G f φ) {T : Over S'} (x : T ⟶ G')
     (x₀ : Over.mk (T.hom ≫ f) ⟶ G) (hx : x₀.left = x.left ≫ φ) (n : ℕ) :
@@ -26,6 +32,11 @@ theorem grpPullback_pow_succ {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G :
     rw [pow_succ x₀, pow_succ x]
     exact hφ.2 T _ _ _ _ ih hx
 
+/- English proof (translation)
+Take `⟨-, I, -, hA, hM⟩` from `o.geom k x β hx`. Establish `hM0 : 0 < l.M` using `by have := l.three_le; omega`. Establish `hdvd : l.M ∣ l.M'` using `Nat.dvd_lcm_left l.M l.A`. Establish `hM'0 : 0 < l.M'` using `Nat.lcm_pos hM0 l.A_pos`. Establish `hq : 0 < l.M' / l.M` using `Nat.div_pos (Nat.le_of_dvd hM'0 hdvd) hM0`.
+
+Establish `hmul : l.M * (l.M' / l.M) = (LowDat.lowLevel l).A` using `Nat.mul_div_cancel' hdvd`. Rewrite using `[hM a ha, hA a, ← hmul]`. Conclude with `(I.tower l.M (l.M' / l.M) hM0 hq a).symm`.
+-/
 theorem eta_eq_etaA_pow {D : Datum H} {l : Geo.Tor.Level H} {B : Type} [CommRing B] {bb : Base (LowDat.lowLevel l) B}
     {S : Scheme.{0}} {s : S ⟶ Sp B} (o : Obj D (LowDat.lowLevel l) bb s) (k : Type) [Field k] [IsAlgClosed k]
     (x : Sp k ⟶ S) (β : B →+* k) (hx : x ≫ s = spMap β) (a : D.La)
@@ -44,6 +55,29 @@ end GlobalTheory.UCanon
 
 namespace GlobalTheory.UCanon
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l c A W _ _ _ bA b o' o f hf m hA a`. Substitute `hf` using the available equality. Establish `h1 : (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `by rw [l.coprime]; exact Submodule.mem_top`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 h1`. Establish `ha : u • a + v • a = a` using `by rw [← add_smul, huv, one_smul]`.
+
+Establish `hu' : u • a ∈ (LowDat.lowLevel l).Mb • (⊤ : Submodule (𝓞 E) D.La)` using `Submodule.smul_mem_smul hu Submodule.mem_top`. Establish `hv' : v • a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La)` using `Submodule.smul_mem_smul hv Submodule.mem_top`. Establish `e1 : o'.eta a = o'.eta (v • a)` using `by conv_lhs => rw [← ha]`. Rewrite using `[o'.eta_add, o'.eta_ker _ hu', _root_.one_mul]`. Establish `e2 : o.eta a = o.eta (v • a)` using `by conv_lhs => rw [← ha]`.
+
+Rewrite using `[o.eta_add, o.eta_ker _ hu', _root_.one_mul]`. Rewrite using `[e1, e2]`. Generalize the expression as in `v • a = a' at hv' ⊢`. Set `K` to `AlgebraicClosure (FractionRing A)`. Set `κ : A →+* K` to `(algebraMap (FractionRing A) K).comp (algebraMap A (FractionRing A))`.
+
+Establish `hκ : Function.Injective κ` using `(algebraMap (FractionRing A) K).injective.comp (IsFractionRing.injective A (FractionRing A))`. Use `haveI : IsDominant (spMap κ) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical κ).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 hκ]`. Conclude with `bot_le)⟩`. Use `haveI := o.proper`.
+
+Use `haveI : IsReduced (𝟙_ (Over (Sp A))).left := (inferInstance : IsReduced (Sp A))`. Use `ext_of_isDominant_of_isSeparated o.t.G.hom ?_ (spMap κ) ?_` and prove the remaining obligations. Establish `w1` using `Over.w (o'.eta a')`. Establish `w2` using `Over.w (o.eta a')`. Establish `w3` using `m.cart.1.w`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[w3, ← Category.assoc, w1, w2]`. Simplify using the standard rewrite rules. Set `β : KA (LowDat.lowLevel l) →+* K` to `κ.comp ((f.comp b).comp (IntermediateField.inclusion (LowDat.ka_le l c)).toRingHom)`. Establish `hx' : spMap κ ≫ lowMap c (f.comp b) = spMap β`.
+
+Unfold `lowMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hx : (spMap κ ≫ spMap f) ≫ lowMap c b = spMap β`. Unfold `lowMap`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `p'` using `eta_eq_etaA_pow o' K (spMap κ) β hx' a' hv'`. Establish `p` using `eta_eq_etaA_pow o K (spMap κ ≫ spMap f) β hx a' hv'`. Establish `hM0 : 0 < l.M` using `by have := l.three_le; omega`.
+
+Establish `hdvd : l.M ∣ l.M'` using `Nat.dvd_lcm_left l.M l.A`. Establish `hq : 0 < l.M' / l.M` using `Nat.div_pos (Nat.le_of_dvd (Nat.lcm_pos hM0 l.A_pos) hdvd) hM0`. Take `⟨n, hn⟩ : ∃ n, l.M' / l.M = n + 1` from `⟨l.M' / l.M - 1, by omega⟩`. Rewrite `p`, `p'` using `[hn]`. Establish `key` using `grpPullback_pow_succ m.cart (T := Over.mk (spMap κ)) (toUnit _ ≫ o'.etaA a') (toUnit (Over.mk (spMap κ ≫ spMap f)) ≫ o.etaA a') (by`.
+
+Rewrite using `[Over.comp_left, Over.comp_left, toUnit_left_eq', toUnit_left_eq']`. Simplify using `only [Over.mk_hom, Category.assoc]`. Rewrite using `[hA a']) n`. Establish `q'` using `congrArg Over.Hom.left p'`. Establish `q` using `congrArg Over.Hom.left p`.
+
+Rewrite `q`, `q'` using `[Over.comp_left, toUnit_left_eq']`. Simplify using `only [Over.mk_hom] at q q'`. Rewrite using `[← Category.assoc, q', ← key, ← q, Category.assoc]`.
+-/
 theorem sabMap_keeps_eta : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H} (c : Coeff l) (A W : Type) [CommRing A] [IsDomain A] [CommRing W] (bA : c.F →+* A) (b : c.F →+* W) (o' : LowObj D c bA) (o : LowObj D c b) (f : W →+* A), f.comp b = bA → ∀ m : SABMap o'.t o.t (spMap f), (∀ a, (o'.etaA a).left ≫ m.φ = spMap f ≫ (o.etaA a).left) → ∀ a, (o'.eta a).left ≫ m.φ = spMap f ≫ (o.eta a).left := by
   intro E _ _ _ H D l c A W _ _ _ bA b o' o f hf m hA a
   subst hf

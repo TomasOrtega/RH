@@ -39,6 +39,17 @@ def lev (K : Type) [Field K] [NumberField K] (N : ℕ) : Subgroup (Ideles K) whe
     rw [h2]
     exact ha.2 v⟩
 
+/- English proof (translation)
+Establish `hO : IsOpen {a : FiniteAdeleRing (𝓞 K) K | ∀ v, a v ∈ v.adicCompletionIntegers K}` using `RestrictedProduct.isOpen_forall_mem (A := fun v : HeightOneSpectrum (𝓞 K) => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) fun _ => Valued.isOpen_valuationSubring _`. Establish `h1 : Continuous fun x : Ideles K => x.val.2` using `continuous_snd.comp Units.continuous_val`. Establish `h2 : Continuous fun x : Ideles K => (x⁻¹).val.2` using `h1.comp continuous_inv`. Establish `h3 : Continuous fun x : Ideles K => (x.val.2 - 1) * algebraMap K (FiniteAdeleRing (𝓞 K) K) (N : K)⁻¹` using `(h1.sub continuous_const).mul continuous_const`. Establish `hU` using `((hO.preimage h1).inter (hO.preimage h2)).inter (hO.preimage h3)`.
+
+Use `Filter.mem_of_superset (hU.mem_nhds ⟨⟨fun v => one_mem _, fun v => one_mem _⟩, fun v => ?_⟩) ?_` and prove the remaining obligations. Establish `: ((1 : Ideles K).val.2 - 1) = 0` using `sub_self _`. Simplify using `only [this, zero_mul]`. Conclude with `zero_mem _`. Introduce and unpack `y ⟨⟨hy, hy'⟩, hy''⟩`.
+
+Use `⟨fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `e : y.val.2 v * (y⁻¹).val.2 v = 1` using `congrArg (fun a : AdeleRing (𝓞 K) K => a.2 v) y.mul_inv`. Establish `e'` using `congrArg Valued.v e`. Rewrite `e'` using `[map_mul, map_one]`. Conclude with `eq_one_of_one_le_mul_left (hy v) (hy' v) e'.ge`.
+
+Establish `e : Valued.v ((y.val.2 v - 1) * algebraMap K (v.adicCompletion K) (N : K)⁻¹) ≤ 1` using `hy'' v haveI : CharZero (v.adicCompletion K) := charZero_of_injective_algebraMap (algebraMap K _).injective`. Establish `h0 : Valued.v (N : v.adicCompletion K) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `Nat.cast_ne_zero.2 hN`. Rewrite `e` using `[map_inv₀, map_natCast, map_mul, map_inv₀, mul_inv_le_iff₀ (zero_lt_iff.2 h0), one_mul]`.
+
+Conclude with `e`.
+-/
 theorem lev_mem_nhds (K : Type) [Field K] [NumberField K] {N : ℕ} (hN : N ≠ 0) :
     (lev K N : Set (Ideles K)) ∈ nhds (1 : Ideles K) := by
   have hO : IsOpen {a : FiniteAdeleRing (𝓞 K) K | ∀ v, a v ∈ v.adicCompletionIntegers K} :=
@@ -70,6 +81,15 @@ theorem lev_mem_nhds (K : Type) [Field K] [NumberField K] {N : ℕ} (hN : N ≠ 
       rw [map_inv₀, map_natCast, map_mul, map_inv₀, mul_inv_le_iff₀ (zero_lt_iff.2 h0), one_mul] at e
       exact e
 
+/- English proof (translation)
+Establish `he : ∀ w : HeightOneSpectrum (𝓞 L), (w.under (𝓞 K)).asIdeal.ramificationIdx' w.asIdeal ≠ 0` using `fun w => Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver w.asIdeal (w.under (𝓞 K)).ne_bot`. Establish `hc : ∀ w : HeightOneSpectrum (𝓞 L), (ideleMap K L y).val.2 w = finiteCompletionMap K L w (y.val.2 (w.under (𝓞 K)))` using `fun w => rfl`. Establish `h1 : ∀ w : HeightOneSpectrum (𝓞 L), Valued.v ((ideleMap K L y).val.2 w) = 1 ↔ Valued.v (y.val.2 (w.under (𝓞 K))) = 1` using `fun w => by`. Rewrite using `[hc, GlobalTheory.UpIdeleMod.valued_finiteCompletionMap, pow_eq_one_iff_of_nonneg zero_le (he w)]`. Establish `h2 : ∀ w : HeightOneSpectrum (𝓞 L), Valued.v ((ideleMap K L y).val.2 w - 1) ≤ Valued.v (N : w.adicCompletion L) ↔ Valued.v (y.val.2 (w.under (𝓞 K)) - 1) ≤ Valued.v (N : (w.under (𝓞 K)).adicCompletion K)` using `fun w => by`.
+
+Rewrite using `[hc, ← map_one (finiteCompletionMap K L w), ← map_sub, ← map_natCast (finiteCompletionMap K L w), GlobalTheory.UpIdeleMod.valued_finiteCompletionMap, GlobalTheory.UpIdeleMod.valued_finiteCompletionMap, pow_le_pow_iff_left₀ zero_le zero_le (he w)]`. Establish `hs : ∀ v : HeightOneSpectrum (𝓞 K), ∃ w : HeightOneSpectrum (𝓞 L), w.under (𝓞 K) = v` using `fun v => by haveI := v.isPrime`. Take `⟨⟨P, hP, hP'⟩⟩` from `(inferInstance : Nonempty (v.asIdeal.primesOver (𝓞 L)))`. Conclude with `⟨⟨P, hP, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩, HeightOneSpectrum.ext hP'.over.symm⟩`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, b⟩`. Use `⟨fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `hs v`. Conclude with `(h1 w).1 (a w)`. Take `⟨w, rfl⟩` from `hs v`.
+
+Conclude with `(h2 w).1 (b w)`. Introduce and unpack `⟨a, b⟩`. Conclude with `⟨fun w => (h1 w).2 (a _), fun w => (h2 w).2 (b _)⟩`.
+-/
 theorem ideleMap_mem_lev (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (N : ℕ) (y : Ideles K) : ideleMap K L y ∈ lev L N ↔ y ∈ lev K N := by
   have he : ∀ w : HeightOneSpectrum (𝓞 L), (w.under (𝓞 K)).asIdeal.ramificationIdx' w.asIdeal ≠ 0 := fun w =>
@@ -99,6 +119,15 @@ theorem ideleMap_mem_lev (K L : Type) [Field K] [NumberField K] [Field L] [Numbe
   · rintro ⟨a, b⟩
     exact ⟨fun w => (h1 w).2 (a _), fun w => (h2 w).2 (b _)⟩
 
+/- English proof (translation)
+Establish `hN0 : (N : K) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Assume the negation of the conclusion as `hne`. Establish `hb0 : ((ε : K) - 1) / N ≠ 0` using `div_ne_zero (sub_ne_zero.2 fun h => hne (Units.ext h)) hN0`. Establish `hint : IsIntegral ℤ (((ε : K) - 1) / N)`. Take `⟨r, hr⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 K) K (((ε : K) - 1) / N) fun v => by`.
+
+Establish `e : Valued.v (algebraMap K (v.adicCompletion K) ε - 1) ≤ Valued.v (N : v.adicCompletion K)` using `h.2 v`. Rewrite `e` using `[← map_one (algebraMap K (v.adicCompletion K)), ← map_sub, ← map_natCast (algebraMap K (v.adicCompletion K)), GlobalTheory.UpIdeleMod.valued_algebraMap, GlobalTheory.UpIdeleMod.valued_algebraMap]`. Rewrite using `[map_div₀]`. Conclude with `div_le_one_of_le₀ e zero_le`. Rewrite using `[← hr]`.
+
+Conclude with `r.isIntegral_coe`. Establish `hlt : ∀ φ : K →+* ℂ, ‖φ (((ε : K) - 1) / N)‖ < 1` using `fun φ => by`. Establish `h3 : (3 : ℝ) ≤ N` using `by exact_mod_cast hN`. Rewrite using `[map_div₀, map_sub, map_one, map_natCast, norm_div, Complex.norm_natCast, div_lt_one (by linarith)]`. Use `norm_sub_le (φ ε) 1` as an intermediate fact.
+
+Rewrite `this` using `[hε, norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨n, hn, hp⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_le_one K ℂ hb0 hint fun φ => (hlt φ).le`. Take `⟨φ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Conclude with `(hlt φ).ne (Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, hp, map_one]) hn.ne')`.
+-/
 theorem eq_one_of_mem_lev (K : Type) [Field K] [NumberField K] {N : ℕ} (hN : 3 ≤ N) (ε : Kˣ)
     (h : diagUnits K ε ∈ lev K N) (hε : ∀ φ : K →+* ℂ, ‖φ ε‖ = 1) : ε = 1 := by
   have hN0 : (N : K) ≠ 0 := Nat.cast_ne_zero.2 (by omega)

@@ -12,6 +12,13 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Tor.Level H} {Xo : Moduli D l}
   {c : Coeff l}
 
+/- English proof (translation)
+Introduce `m s hs`. Take `⟨x, hx, hev⟩` from `h m s fun a => by`. Take `⟨v, hv⟩` from `hs a`. Use `show ∃ v, 𝔐.M.ValAt (spMap (starRingEnd ℂ) ≫ z (star (star t₀))) (s a) v`. Rewrite using `[star_star]`.
+
+Conclude with `⟨_, Cj.valAt_conj 𝔐.M _ _ v hv⟩`. Use `⟨fun a t => star (x a (star t)), fun a => Cj.analyticAt_star_star (hx a), ?_⟩` and prove the remaining obligations. Use `filter_upwards [(continuous_star.continuousAt (x := t₀)).tendsto.eventually hev] with t ht`. Take `⟨v, hv, hF⟩` from `ht`. Establish `key : ∀ (w w' : Sp ℂ ⟶ 𝔐.X) (v : Fin m → (epsAt w ⟶ 𝔐.t.G)), w' = spMap (starRingEnd ℂ) ≫ w → (∀ a, 𝔐.M.ValAt w (s a) (v a)) → FibreLatVec 𝔐.t w (R (star t)) (fun a => x a (star t)) v → ∃ v' : Fin m → (epsAt w' ⟶ 𝔐.t.G), (∀ a, 𝔐.M.ValAt w' (s a) (v' a)) ∧ FibreLatVec 𝔐.t w' (R' t …`.
+
+Introduce and unpack `w _ v rfl hv hF`. Conclude with `⟨fun a => Cj.cjVec w (v a), fun a => Cj.valAt_conj 𝔐.M w _ _ (hv a), Cj.fibreLatVec_conj 𝔐.t w _ _ _ v (hR t).1 (hR t).2.1 (hR t).2.2 (fun a => (hv a).isTanAt) hF⟩`. Conclude with `key _ _ v (by rw [Cj.cj_cj, star_star]) hv hF`.
+-/
 theorem vecAt_conj {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ} {Ω : Type} [Field Ω] {K : Type} [Fintype K]
     {J : K → Type} {y : (Σ k, J k) → Ω} (𝔐 : HodgeCpt Y S y) {n g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
     (R R' : (Fin n → ℂ) → RiemLat E g Λ) (z : (Fin n → ℂ) → (Sp ℂ ⟶ 𝔐.X)) (t₀ : Fin n → ℂ)
@@ -36,6 +43,31 @@ theorem vecAt_conj {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ}
       Cj.fibreLatVec_conj 𝔐.t w _ _ _ v (hR t).1 (hR t).2.1 (hR t).2.2 (fun a => (hv a).isTanAt) hF⟩
   exact key _ _ v (by rw [Cj.cj_cj, star_star]) hv hF
 
+/- English proof (translation)
+Introduce and unpack `E _ _ _ H D l Xo c Y sm j j' n g q κ ⟨U⟩`. Use `choose F' hq hσ hform hR using fun k => GlobalTheory.T.conjugate_universal_family E (CMType H) j j' n g (U.Di k).La (U.F k)`. Establish `hcanc : ∀ {X : Scheme.{0}} {a b : Sp ℂ ⟶ X}, spMap (starRingEnd ℂ) ≫ a = spMap (starRingEnd ℂ) ≫ b → a = b` using `fun {X a b} e => by rw [← Cj.cj_cj a, e, Cj.cj_cj]`. Establish `hs : spMap (((starRingEnd ℂ).comp κ).comp (algebraMap (𝓞 c.F) c.F)) = spMap (starRingEnd ℂ) ≫ spMap (κ.comp (algebraMap (𝓞 c.F) c.F))` using `Spec.map_comp (CommRingCat.ofHom (κ.comp (algebraMap (𝓞 c.F) c.F))) (CommRingCat.ofHom (starRingEnd ℂ))`. Use `⟨{ ι := U.ι fin := U.fin Di := U.Di sig := U.sig F := F' q_eq := fun k => (hq k).trans (U.q_eq k) form_eq := fun k => ?_ σ_eq := fun k τ => ?_ Γ := U.Γ mem_Γ := U.mem_Γ arith := fun k => ?_ pt := fun k t => spMap (starRingEnd ℂ) ≫ U.pt k (star t) hol := fun k => ?_ comp_s_eq_spMa …` and prove the remaining obligations.
+
+Rewrite using `[hform]`. Apply the tactic sequence `rcases U.form_eq k with h | h <;> rw [h]`. Conclude with `Or.inr rfl`. Conclude with `Or.inl (neg_neg _)`. Rewrite using `[hσ, U.σ_eq]`.
+
+Both sides reduce to the same expression. Establish `h` using `U.arith k`. Unfold `UnivFam.IsArith at h ⊢`. Rewrite using `[hform, Cj.autGrp_neg]` and apply the resulting hypothesis. Establish `h` using `GlobalTheory.T.holomorphic_family_conjugate _ _ _ _ (U.hol k)`.
+
+Rewrite `h` using `[Cj.preimage_star_ballDom]`. Then use the resulting hypothesis. Rewrite using `[Category.assoc, U.comp_s_eq_spMap_of_isOver k _ (Cj.star_mem_ballDom ht), hs]`. Rewrite using `[Cj.centre_conj]`. Conclude with `U.interior k _ (Cj.star_mem_ballDom ht)`. Establish `h` using `U.fibre k _ (Cj.star_mem_ballDom ht) _ (Cj.star_mem_ballDom ht')`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `e`. Take `⟨γ, hγ, he⟩` from `h.1 (hcanc e)`. Conclude with `⟨γ, hγ, Cj.eqvBy_conj (hR k t).1 (hR k t').1 he⟩`. Introduce and unpack `⟨γ, hγ, he⟩`.
+
+Establish `e` using `h.2 ⟨γ, hγ, Cj.eqvBy_conj (fun x => by rw [(hR k t).1, star_star]) (fun x => by rw [(hR k t').1, star_star]) he⟩`. Use `show spMap (starRingEnd ℂ) ≫ U.pt k (star t) = spMap (starRingEnd ℂ) ≫ U.pt k (star t')`. Rewrite using `[e]`. Take `⟨k, t, ht, e⟩` from `U.onto (spMap (starRingEnd ℂ) ≫ p) (by rwa [Cj.centre_conj]) (by rw [Category.assoc, hps, hs, Cj.cj_cj])`. Use `⟨k, star t, Cj.star_mem_ballDom ht, ?_⟩` and prove the remaining obligations.
+
+Use `show spMap (starRingEnd ℂ) ≫ U.pt k (star (star t)) = p`. Rewrite using `[star_star, e, Cj.cj_cj]`. Establish `h` using `Cj.fibreLatVec_conj Y.t _ _ ((F' k).R t) _ _ (hR k t).1 (hR k t).2.1 (hR k t).2.2 (fun a => a.elim) (U.lat k _ (Cj.star_mem_ballDom ht))`. Take `⟨A, i, φ, u, χ, h1, h2, h3, h4, h5, -⟩` from `h`. Conclude with `⟨A, i, φ, u, χ, h1, h2, h3, h4, h5, fun a => a.elim⟩`.
+
+Use `vecAt_conj 𝔐 (U.F k).R (F' k).R z t₀ (hR k) ?_` and prove the remaining obligations. Use `U.vec S Ω K J y 𝔐 k (star ⁻¹' V) _ (hV.preimage continuous_star) (fun t ht => ?_) (GlobalTheory.T.holomorphic_family_conjugate _ _ _ _ hz) (fun t ht => ?_) _ (by simpa using ht₀)` and prove the remaining obligations. Simplify using `using Cj.star_mem_ballDom (hVs ht)`. Rewrite using `[Category.assoc, hzf _ ht, Cj.cj_cj, star_star]`. Establish `hpre : IsPreconnected (star ⁻¹' T : Set (Fin m → ℂ))`.
+
+Establish `e₀ : (star ⁻¹' T : Set (Fin m → ℂ)) = star '' T`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨star x, h, star_star x⟩`.
+
+Introduce and unpack `⟨a, ha, rfl⟩ show star (star a) ∈ T`. Rewrite using `[star_star]` and apply the resulting hypothesis. Rewrite using `[e₀]`. Conclude with `hTc.image _ continuous_star.continuousOn`. Use `U.locc m (star ⁻¹' T) _ (hT.preimage continuous_star) hpre (GlobalTheory.T.holomorphic_family_conjugate _ _ _ _ hy) (fun a ha => ?_) (fun a ha => ?_) (star b) (by simpa using hb) (star b') (by simpa using hb') k k' _ (Cj.star_mem_ballDom ht) _ (Cj.star_mem_ballDom ht') ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Cj.centre_conj]`. Conclude with `hyi _ ha`. Rewrite using `[Category.assoc, hys _ ha, hs, Cj.cj_cj]`. Use `show spMap (starRingEnd ℂ) ≫ y (star (star b)) = _`. Rewrite using `[star_star, e, Cj.cj_cj]`.
+
+Use `show spMap (starRingEnd ℂ) ≫ y (star (star b')) = _`. Rewrite using `[star_star, e', Cj.cj_cj]`.
+-/
 theorem kUnifConj : KUnifConj := by
   rintro E _ _ _ H D l Xo c Y sm j j' n g q κ ⟨U⟩
   choose F' hq hσ hform hR using fun k => GlobalTheory.T.conjugate_universal_family E (CMType H) j j' n g (U.Di k).La (U.F k)

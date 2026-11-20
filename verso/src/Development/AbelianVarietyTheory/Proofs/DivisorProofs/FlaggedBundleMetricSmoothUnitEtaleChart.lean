@@ -10,6 +10,15 @@ open scoped Matrix ContDiff ComplexOrder
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Introduce `F _ σ X ι _ m k E H hH y A hA τ`. Use `set U : Set (CxPts X.str σ) := interior {z : CxPts X.str σ | A ∈ E.S (under z)} with hU`. Establish `hyU : y ∈ U` using `mem_interior_iff_mem_nhds.2 (GlobalTheory.T.adaptedFrame_eventually_frame_near_complex_point F σ X ι m k E y A hA)`. Establish `hUo : IsOpen U` using `isOpen_interior`. Establish `hUS : ∀ z ∈ U, A ∈ E.S (under z)` using `fun z hz => interior_subset (s := {z : CxPts X.str σ | A ∈ E.S (under z)}) hz`.
+
+Establish `key : ∀ c : AlgChart X.str σ X.dim, y ∈ c.e.source → ∀ᶠ v in 𝓝 (c.e y), MContDiffAt ∞ (fun u => H A (c.e.symm u) τ) v ∧ (H A (c.e.symm v) τ).PosDef`. Introduce `c hc`. Establish `ho : IsOpen (c.e.target ∩ c.e.symm ⁻¹' U)` using `c.e.isOpen_inter_preimage_symm hUo`. Establish `hm : c.e y ∈ c.e.target ∩ c.e.symm ⁻¹' U` using `⟨c.e.map_source hc, by simpa [Set.mem_preimage, c.e.left_inv hc] using hyU⟩`. Use `filter_upwards [ho.mem_nhds hm] with v hv`.
+
+Use `⟨fun i j => ?_, hH.posDef _ A (hUS _ hv.2) τ⟩` and prove the remaining obligations. Establish `hre` using `contDiffOn_chart (S := U) (f := fun z => (H A z τ i j).re) (fun z hz => (hH.smooth z A (hUS z hz) τ i j).1) c`. Establish `him` using `contDiffOn_chart (S := U) (f := fun z => (H A z τ i j).im) (fun z hz => (hH.smooth z A (hUS z hz) τ i j).2) c`. Establish `h1` using `(hre.contDiffAt (ho.mem_nhds hv))`. Establish `h2` using `(him.contDiffAt (ho.mem_nhds hv))`.
+
+Establish `h3 : ContDiffAt ℝ ∞ (fun u => ((((H A (c.e.symm u) τ i j).re : ℝ) : ℂ) + (((H A (c.e.symm u) τ i j).im : ℝ) : ℂ) * Complex.I)) v` using `(Complex.ofRealCLM.contDiff.contDiffAt.comp v h1).add ((Complex.ofRealCLM.contDiff.contDiffAt.comp v h2).mul contDiffAt_const)`. Use `h3.congr_of_eventuallyEq (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `[Complex.re_add_im]`. Use `⟨⟨?_, fun c hc => (key c hc).mono fun v hv => hv.1⟩, key⟩` and prove the remaining obligations. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (hH.posDef y A hA τ).isUnit`.
+-/
 theorem isMetricFr_smoothUnitAt : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) [Finite ι] (m k : ι → ℕ) (E : Fr (ratOf X) m k) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ), IsMetricFr E H → ∀ (y : CxPts X.str σ), ∀ A ∈ E.S (under y), ∀ τ, SmoothUnitAt (atlas X σ) (fun z => H A z τ) y ∧ ∀ c : AlgChart X.str σ X.dim, y ∈ c.e.source → ∀ᶠ v in 𝓝 (c.e y), MContDiffAt ∞ (fun u => H A (c.e.symm u) τ) v ∧ (H A (c.e.symm v) τ).PosDef := by
   intro F _ σ X ι _ m k E H hH y A hA τ
   set U : Set (CxPts X.str σ) := interior {z : CxPts X.str σ | A ∈ E.S (under z)} with hU

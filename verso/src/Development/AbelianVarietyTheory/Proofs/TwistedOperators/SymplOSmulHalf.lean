@@ -29,6 +29,11 @@ namespace GlobalTheory.CosDual
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hc : ∀ c b, cA D (y c b) = e * cA D (y c b)` using `fun c b => by conv_lhs => rw [← hy c b]`. Rewrite using `[map_mul, GlobalTheory.LatVac.cA_cA]`. Unfold `symplO`. Use `congr 2`. Unfold `hO`.
+
+Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => Finset.sum_congr rfl (fun c _ => Finset.sum_congr rfl (fun d _ => ?_))))` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Use `conv_rhs => rw [hc c b]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symplO_smul_half (S T : HSp D) (e : AE D) (u y : WO S T) (hy : IsHalf (cA D e) y) :
     symplO S T (e • u) y = symplO S T u y := by
   have hc : ∀ c b, cA D (y c b) = e * cA D (y c b) := fun c b => by
@@ -43,6 +48,11 @@ theorem symplO_smul_half (S T : HSp D) (e : AE D) (u y : WO S T) (hy : IsHalf (c
   conv_rhs => rw [hc c b]
   ring
 
+/- English proof (translation)
+Establish `hYe : c • Y = Y`. Use extensionality with `a b`. Conclude with `hY a b`. Establish `hm : c • actO S T 1 h Y = actO S T 1 h Y`. Unfold `actO`.
+
+Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hYe]`. Introduce `a b`. Conclude with `congrFun (congrFun hm a) b`.
+-/
 theorem half_actO (S T : HSp D) (c : AE D) (h : GA D T) (Y : WO S T) (hY : IsHalf c Y) :
     IsHalf c (actO S T 1 h Y) := by
   have hYe : c • Y = Y := by
@@ -54,11 +64,19 @@ theorem half_actO (S T : HSp D) (c : AE D) (h : GA D T) (Y : WO S T) (hY : IsHal
   intro a b
   exact congrFun (congrFun hm a) b
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem actO_add (S T : HSp D) (h : GA D T) (Y Y' : WO S T) :
     actO S T 1 h (Y + Y') = actO S T 1 h Y + actO S T 1 h Y' := by
   unfold actO
   rw [Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Establish `h1 : Formalism.L2.Theta.mt T h * Formalism.L2.Theta.mt T h⁻¹ = 1`. Unfold `Formalism.L2.Theta.mt`. Use `first`. Consider the case `rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Consider the case `simp`.
+
+Unfold `actO`. Simplify using `[← Matrix.mul_assoc, h1]`.
+-/
 theorem actO_inv (S T : HSp D) (h : GA D T) (y : WO S T) :
     actO S T 1 h (actO S T 1 h⁻¹ y) = y := by
   have h1 : Formalism.L2.Theta.mt T h * Formalism.L2.Theta.mt T h⁻¹ = 1 := by

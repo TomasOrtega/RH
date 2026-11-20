@@ -9,6 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LabPi
 
 namespace GlobalTheory.RealTrivIota
 
+/- English proof (translation)
+Introduce `D X h g hg`. Conclude with `(GlobalTheory.SeeConjRead.iotaX_fst_eq_one_iff X h g).2 hg`.
+-/
 theorem iotaX_fst_eq_one_of_mem_GfC : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (g : Formalism.L2.Theta.GA D (D.sp.Y 0)), g ∈ GfC (D.sp.Y 0) → (Formalism.L2.SG.RowsJoinPinned.iotaX X h g).1 = 1 := by
   intro D X h g hg
   exact (GlobalTheory.SeeConjRead.iotaX_fst_eq_one_iff X h g).2 hg

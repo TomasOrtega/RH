@@ -6,6 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace LateralTheory.EtaleFoundations
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_range_diag_flip]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.mem_range]`. Rewrite using `[show N + 1 - p = N - p + 1 by omega]`.
+-/
 lemma aw_diag {M : Type*} [AddCommMonoid M] (N : ℕ) (Φ : ℕ → ℕ → M) :
     ∑ q ∈ Finset.range (N + 1), ∑ p ∈ Finset.range (q + 1), Φ p (q - p) =
       ∑ p ∈ Finset.range (N + 1), ∑ r ∈ Finset.range (N - p + 1), Φ p r := by
@@ -14,12 +17,18 @@ lemma aw_diag {M : Type*} [AddCommMonoid M] (N : ℕ) (Φ : ℕ → ℕ → M) :
   rw [Finset.mem_range] at hp
   rw [show N + 1 - p = N - p + 1 by omega]
 
+/- English proof (translation)
+Use `map_zsmul (f.flip b) c a` as an intermediate fact. Simplify using `using this`.
+-/
 lemma bil_zsmul_left {S A B C : Type*} [CommRing S] [AddCommGroup A] [Module S A] [AddCommGroup B] [Module S B]
     [AddCommGroup C] [Module S C] (f : A →ₗ[S] B →ₗ[S] C) (c : ℤ) (a : A) (b : B) :
     f (c • a) b = c • f a b := by
   have := map_zsmul (f.flip b) c a
   simpa using this
 
+/- English proof (translation)
+Use `map_sum (f.flip b) a s` as an intermediate fact. Simplify using `using this`.
+-/
 lemma bil_sum_left {S A B C ι : Type*} [CommRing S] [AddCommGroup A] [Module S A] [AddCommGroup B] [Module S B]
     [AddCommGroup C] [Module S C] (f : A →ₗ[S] B →ₗ[S] C) (s : Finset ι) (a : ι → A) (b : B) :
     f (∑ i ∈ s, a i) b = ∑ i ∈ s, f (a i) b := by
@@ -28,6 +37,9 @@ lemma bil_sum_left {S A B C ι : Type*} [CommRing S] [AddCommGroup A] [Module S 
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Substitute `ht hj` using the available equality. Both sides reduce to the same expression.
+-/
 lemma mul_ev_right {A B C : Cx R} (P : Pair A B C) {E : Spc} {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) {s k w : ℤ}
     (a : Sec (A.X s) U) (γ : Cochain ((chains R).obj E) B k) (t t' j j' : ℕ) (ht : t = t') (hj : j = j')
     (h : s + (-(t : ℤ) + k) = w) (h' : s + (-(t' : ℤ) + k) = w) (hl : j + t ≤ N) (hl' : j' + t' ≤ N) :
@@ -35,6 +47,23 @@ lemma mul_ev_right {A B C : Cx R} (P : Pair A B C) {E : Spc} {N : ℕ} {U : Sche
       P.mul U s (-(t' : ℤ) + k) w h' a (ev γ t' _ rfl U (x.sub j' t' hl')) := by
   subst ht hj; rfl
 
+/- English proof (translation)
+Introduce `R _ I J K M M' L μ ν μ' ν' hass E n m k nm mk w h1 h2 h3 h4 α β γ ab bc x y hab hx hbc hy`. Use `(hev R).2.2.1 x y fun N s hs U z => ?_` and prove the remaining obligations. Rewrite using `[hx N s hs U z, hy N s hs U z]`. Set `Φ : ℕ → ℕ → Sec (L.X s) U` to `fun p r => if h : p + r ≤ N then (((m * (p : ℤ) + k * ((p : ℤ) + r)).negOnePow : ℤˣ) : ℤ) • ν'.mul U (-(p : ℤ) + n) (-((N - p : ℕ) : ℤ) + mk) s (by omega) (ev α p _ rfl U (z.sub 0 p (by omega))) (μ'.mul U (-(r : ℤ) + m) (-((N - p - r : ℕ) : ℤ) + k) (-((N - p : ℕ) : ℤ) + mk) (by o …`. Establish `hsg : ∀ a b c : ℤ, a + b = c → ((a.negOnePow : ℤˣ) : ℤ) * ((b.negOnePow : ℤˣ) : ℤ) = ((c.negOnePow : ℤˣ) : ℤ)`.
+
+Introduce `a b c h`. Rewrite using `[← Units.val_mul, ← Int.negOnePow_add, h]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hab, bil_sum_left, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `hp` using `p.is_lt`. Establish `hq` using `q.is_lt`. Simplify using `only [Φ]`. Rewrite using `[dif_pos (by omega), Units.smul_def, Units.smul_def, bil_zsmul_left, smul_smul, hsg _ _ (m * ((p : ℕ) : ℤ) + k * (((p : ℕ) : ℤ) + (((q : ℕ) - (p : ℕ) : ℕ) : ℤ))) (by push_cast [Nat.cast_sub (show (p : ℕ) ≤ q by omega)]; ring)]`.
+
+Use `congr 1`. Rewrite using `[hass U _ _ _ _ (-((N - p : ℕ) : ℤ) + mk) s _ _ (by omega) (by omega)]`. Rewrite using `[(hsub z).1 0 q 0 p, (hsub z).1 0 q p (q - p)]`. Simplify using `only [Nat.zero_add]`. Use `congr 1`.
+
+Conclude with `mul_ev_right _ z _ γ (N - q) (N - p - (q - p)) q (p + (q - p)) (by omega) (by omega) _ _ _ _`. Use `_ = ∑ q ∈ Finset.range (N + 1), ∑ p ∈ Finset.range (q + 1), Φ p (q - p) := by`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun q => ∑ p ∈ Finset.range (q + 1), Φ p (q - p))]`. Conclude with `Finset.sum_congr rfl fun q _ => Fin.sum_univ_eq_sum_range (fun p => Φ p (q - p)) _`. Use `_ = ∑ p ∈ Finset.range (N + 1), ∑ r ∈ Finset.range (N - p + 1), Φ p r := aw_diag N Φ`.
+
+Use `_ = ∑ p : Fin (N + 1), ∑ r : Fin (N - (p : ℕ) + 1), Φ p r := by`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun p => ∑ r ∈ Finset.range (N - p + 1), Φ p r)]`. Conclude with `Finset.sum_congr rfl fun p _ => (Fin.sum_univ_eq_sum_range (fun r => Φ p r) _).symm`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hbc, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Establish `hp` using `p.is_lt`. Establish `hr` using `r.is_lt`. Simplify using `only [Φ]`.
+
+Rewrite using `[dif_pos (by omega), Units.smul_def, Units.smul_def, map_zsmul, smul_smul, hsg _ _ (m * ((p : ℕ) : ℤ) + k * (((p : ℕ) : ℤ) + ((r : ℕ) : ℤ))) (by subst h3; ring)]`. Rewrite using `[(hsub z).1 p (N - p) 0 r, (hsub z).1 p (N - p) r (N - p - r)]`. Simplify using `only [Nat.add_zero]`.
+-/
 theorem t_aw_assoc0_of (hev : EtaleCochainEvaluationLinear) (hsub : EtaleSimplexSubfaceComposition) : t_aw_assoc0 := by
   intro R _ I J K M M' L μ ν μ' ν' hass E n m k nm mk w h1 h2 h3 h4 α β γ ab bc x y hab hx hbc hy
   refine (hev R).2.2.1 x y fun N s hs U z => ?_

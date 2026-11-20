@@ -17,6 +17,13 @@ namespace GlobalTheory
 
 open GlobalTheory.ZeroDimSystem in
 
+/- English proof (translation)
+Introduce `k _ _ X _ p L _ n u hu S hS`. Use `letI : Algebra k Γ(X, ⊤) := (p.appTop.hom.comp (Scheme.ΓSpecIso (.of k)).inv.hom).toAlgebra`. Establish `hne : ∀ x ∈ hS.toFinset, vanishAt (k` using `k) u x ≠ ⊤ := fun x _ h => by`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hu.ge (Set.mem_univ x))`. Conclude with `single_notMem_vanishAt (k := k) u hi (h.symm ▸ Submodule.mem_top)`.
+
+Establish `h` using `Subspace.biUnion_ne_univ_of_top_notMem (k := k) (E := Fin n → k) (s := hS.toFinset.image (vanishAt (k := k) u)) (by`. Rewrite using `[Finset.mem_image]`. Introduce and unpack `⟨x, hx, h⟩`. Conclude with `hne x hx h)`. Take `⟨c, hc⟩` from `(Set.ne_univ_iff_exists_notMem _).1 h`.
+
+Use `⟨comb u c, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hxc`. Conclude with `hc (Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_image_of_mem _ (hS.mem_toFinset.2 hx))) ((mem_vanishAt u x c).2 hxc))`.
+-/
 theorem exists_sec_nonzero_on_finite_of_generated :
     ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [AlgebraicGeometry.IsNoetherian X] (p : X ⟶ Sp k) (L : LB X), L.IsLB → ∀ (n : ℕ) (u : Fin n → L.Sec), ⨆ i, nonzeroLocus (u i) = ⊤ → ∀ S : Set X, S.Finite → ∃ s : L.Sec, ∀ x ∈ S, x ∈ nonzeroLocus s := by
   intro k _ _ X _ p L _ n u hu S hS

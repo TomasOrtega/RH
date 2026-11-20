@@ -20,6 +20,41 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Establish `hT : IsCrys PD T₁.ρ` using `hW₁.1`. Establish `hR : GS.RD W` using `NTB.ringData_of_crystalline W hcase hP9 T₁ hT`. Take `⟨y, hyP, hyy⟩` from `hy₁`. Rewrite `hyy` using `[one_smul]`. Substitute `hyy` using the available equality.
+
+Take `⟨Zp, hZP, hZZ⟩` from `hZ`. Rewrite `hZZ` using `[one_smul]`. Substitute `hZZ` using the available equality. Establish `hLD` using `DYB.Pp_le_HLD W T₁ (c - 1) hyP`. Rewrite `hLD` using `[sub_add_cancel]`.
+
+Establish `hup : up c = false`. Establish `h1` using `(halt (c - 2)).1`. Establish `h2` using `(halt (c - 1)).1`. Establish `e1 : c - 2 + 1 = c - 1` using `by ring`. Rewrite `h1` using `[e1, hD]`.
+
+Rewrite `h2` using `[sub_add_cancel]`. Apply the tactic sequence `cases hc1 : up (c - 1) <;> simp_all`. Establish `hJL : Formalism.MainNotions.DeltaInvariantLattices.JumpsLet W T₁ (fun i => if up i then η else size i + S) (fun i => if up i then size i + S else η)`. Introduce `τ i hτ a ha`. Establish `h` using `hW₁.2 i τ hτ a ha`.
+
+Establish `hok` using `hOK.2.2.2.2.1 i`. Simplify using `only [arcOf] at h hok`. Apply the tactic sequence `cases hi : up i <;> simp [hi, Formalism.MainNotions.LocalTheoryWindows.LT.win, Formalism.MainNotions.LocalTheoryWindows.LT.ok] at h hok ⊢ <;> omega`. Establish `h5` using `(hP5 T₁ _ _ hT hJL).1 c`. Simplify using `only [hup, Bool.false_eq_true, ↓reduceIte] at h5`.
+
+Establish `hring` using `((hP9 T₁ hT hcase.2.1 hcase.2.2).2.2 (NTB.finrank_one W hcase)).1`. Take `⟨wq, hwq⟩` from `hring.2.2.2.2.1`. Establish `hQ : W.Q = (wq : LetA O n) * qA W`. Establish `hQq : W.Q = W.q`. Unfold `LocWach.Q`.
+
+Rewrite using `[hcase.2.1]`. Simplify using the standard rewrite rules. Rewrite using `[hQq, hwq]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat, qA, lA]`. Establish `hq : ∀ x, Formalism.MainNotions.LiftingTheory.InNΔi W T₁ (c - 1) x → qA W ^ (size c + S) • W.φD T₁ x ∈ W.N T₁`. Introduce `x hx`. Establish `h` using `h5 x hx.2`. Rewrite `h` using `[hQ, mul_pow, mul_smul]`.
+
+Establish `h'` using `(W.N T₁).smul_mem (((wq⁻¹ : (LetA O n)ˣ) : LetA O n) ^ (size c + S)) h`. Rewrite `h'` using `[smul_smul, ← mul_pow, Units.inv_mul, one_pow, one_smul]`. Then use the resulting hypothesis. Establish `hγP : W.γ T₁ y₁ - y₁ ∈ Pp W T₁ (c - 1) 1` using `sub_mem (DYB.Pp_γ W T₁ (c - 1) hyP) hyP`. Take `⟨w, hwΔ, hwφ⟩` from `NTB.w_mem hR`. Take `⟨u, huΔ, hγπ⟩` from `GS.gamma_pi0_eq_pi0_mul_unit hR`.
+
+Take `⟨r, rfl⟩ : ∃ r, R₀ = r + 1` from `⟨R₀ - 1, by omega⟩`. Take `⟨t, ht⟩ : ∃ t, (PD.p - 1) * (r + 1) = (size c + S) + t` from `⟨_, (Nat.add_sub_of_le hR₀).symm⟩`. Establish `hπΔ` using `GS.π₀_mem W`. Establish `hqΔ` using `GS.qA_mem W`. Establish `hlΔ : lA W ∈ W.AΔ` using `NTB.lA_mem'`.
+
+Establish `ha₁ : lA W ^ σ₁ * (w : LetA O n) ^ (r + 1) * W.π₀ ^ r * qA W ^ t ∈ W.AΔ` using `W.AΔ.mul_mem (W.AΔ.mul_mem (W.AΔ.mul_mem (W.AΔ.pow_mem hlΔ _) (W.AΔ.pow_mem hwΔ _)) (W.AΔ.pow_mem hπΔ _)) (W.AΔ.pow_mem hqΔ _)`. Establish `hu' : (1 + (u : LetA O n) * qA W) * (1 + (u : LetA O n) * W.π₀) ^ (size c + S) ∈ W.AΔ` using `W.AΔ.mul_mem (W.AΔ.add_mem (W.AΔ.one_mem) (W.AΔ.mul_mem huΔ hqΔ)) (W.AΔ.pow_mem (W.AΔ.add_mem (W.AΔ.one_mem) (W.AΔ.mul_mem huΔ hπΔ)) _)`. Establish `hbrP : (lA W ^ σ₁ * (w : LetA O n) ^ (r + 1) * W.π₀ ^ r * qA W ^ t) • W.φD T₁ x₁ - (((1 + (u : LetA O n) * qA W) * (1 + (u : LetA O n) * W.π₀) ^ (size c + S)) • W.γ T₁ Z - Z) ∈ Pp W T₁ (c - 1) 1`. Use `sub_mem (AddSubgroup.subset_closure ⟨_, ha₁, x₁, hx₁, by rw [pow_one]⟩) (sub_mem (DYB.Pp_smul W T₁ (c - 1) hu' (DYB.Pp_γ W T₁ (c - 1) hZP)) hZP)` and prove the remaining obligations. Establish `e1 : W.γ T₁ (lA W ^ κ₁ • y₁) = lA W ^ κ₁ • W.γ T₁ y₁`.
+
+Rewrite using `[DYB.γ_smulA, DYB.γA_lA_pow]`. Establish `e2 : lA W ^ κ₁ • y₁ = lA W ^ σ₁ • W.φD T₁ X₁ - (W.π₀ * qA W ^ (size c + S)) • Z` using `eq_sub_of_add_eq hrel`. Establish `e3 : W.γ T₁ (W.φD T₁ X₁) = W.φD T₁ X₁ + ((w : LetA O n) * W.π₀ * qA W ^ (PD.p - 1)) ^ (r + 1) • W.φD T₁ x₁`. Establish `h1 : W.γ T₁ (W.φD T₁ X₁) = W.φD T₁ (W.γ T₁ X₁)` using `(W.φγ_comm T₁ W.gam X₁).symm`. Rewrite using `[h1, ← hwφ, ← map_pow, ← DYB.φD_smulA, ← map_add, ← hγX, add_sub_cancel]`.
+
+Establish `e4 : W.γ T₁ ((W.π₀ * qA W ^ (size c + S)) • Z) = ((W.π₀ * qA W ^ (size c + S)) * ((1 + (u : LetA O n) * qA W) * (1 + (u : LetA O n) * W.π₀) ^ (size c + S))) • W.γ T₁ Z`. Rewrite using `[DYB.γ_smulA, map_mul, map_pow, hγπ, GS.γqA hγπ, mul_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e5 : W.γ T₁ (lA W ^ σ₁ • W.φD T₁ X₁) = lA W ^ σ₁ • W.γ T₁ (W.φD T₁ X₁)`.
+
+Rewrite using `[DYB.γ_smulA, DYB.γA_lA_pow]`. Establish `hscal : ((w : LetA O n) * W.π₀ * qA W ^ (PD.p - 1)) ^ (r + 1) = W.π₀ * qA W ^ (size c + S) * ((w : LetA O n) ^ (r + 1) * W.π₀ ^ r * qA W ^ t)`. Rewrite using `[mul_pow, mul_pow, ← pow_mul, ht, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hkey : lA W ^ κ₁ • (W.γ T₁ y₁ - y₁) = (W.π₀ * qA W ^ (size c + S)) • ((lA W ^ σ₁ * (w : LetA O n) ^ (r + 1) * W.π₀ ^ r * qA W ^ t) • W.φD T₁ x₁ - (((1 + (u : LetA O n) * qA W) * (1 + (u : LetA O n) * W.π₀) ^ (size c + S)) • W.γ T₁ Z - Z))`.
+
+Rewrite using `[smul_sub, ← e1, e2, map_sub, e5, e3, e4, hscal]`. Simplify using `only [smul_add, smul_sub, smul_smul]`. Rewrite using `[show lA W ^ σ₁ * (W.π₀ * qA W ^ (size c + S) * ((w : LetA O n) ^ (r + 1) * W.π₀ ^ r * qA W ^ t)) = W.π₀ * qA W ^ (size c + S) * (lA W ^ σ₁ * (w : LetA O n) ^ (r + 1) * W.π₀ ^ r * qA W ^ t) by ring]`. Normalize the expressions using the abelian group laws. Establish `hfP : W.π₀ * qA W ^ (size c + S) ∈ PiPs W`.
+
+Establish `h0 : ps W 0 = qA W` using `by simp [ps]`. Conclude with `(PiPs W).mul_mem (Submonoid.subset_closure (Set.mem_insert _ _)) ((PiPs W).pow_mem (Submonoid.subset_closure (Set.mem_insert_of_mem _ ⟨0, h0⟩)) _)`. Take `⟨tt, httP, htt⟩` from `hSatP hcase T₁ (c - 1) 1 (W.π₀ * qA W ^ (size c + S)) 1 hT hfP (PiPs W).one_mem (W.γ T₁ y₁ - y₁) ⟨_, hγP, rfl⟩ ⟨κ₁, _, hbrP, hkey⟩`. Establish `httq` using `DYB.Pp_qpow W T₁ (c - 1) _ hq httP`. Establish `httL` using `DYB.Pp_le_HLD W T₁ (c - 1) httP`.
+
+Rewrite `httL` using `[sub_add_cancel]`. Use `⟨⟨hLD.1, hLD.2, qA W ^ (size c + S) • tt, httq, ?_, ?_⟩, qA W ^ (size c + S) • y₁, DYB.Pp_qpow W T₁ (c - 1) _ hq hyP, ?_, (one_smul _ _).symm⟩` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm, ← smul_smul, httL.1]`. Rewrite using `[htt, smul_smul]`. Rewrite using `[smul_smul, mul_comm, ← smul_smul, hLD.1]`.
+-/
 theorem arc_length_three_gamma_first_lift [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

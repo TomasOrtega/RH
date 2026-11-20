@@ -13,6 +13,9 @@ section SlopeTestRemainingChoices
 
 variable (k : Type) [Field k]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `exact Fin.ext rfl`. Consider the case `(apply Fin.ext`. Simplify using `[GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.two, GlobalTheory.SmGL.stdSum])`.
+-/
 theorem blockIndex_false (m j : ℕ) (a : Fin m) :
     eGP m j ⟨false, a⟩ = Fin.castSucc (two (stdSum (rfl : m + j = m + j)) ⟨false, a⟩) := by
   first
@@ -21,6 +24,9 @@ theorem blockIndex_false (m j : ℕ) (a : Fin m) :
     | (apply Fin.ext
        simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.two, GlobalTheory.SmGL.stdSum])
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `exact Fin.ext rfl`. Consider the case `(apply Fin.ext`. Simplify using `[GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.two, GlobalTheory.SmGL.stdSum])`.
+-/
 theorem blockIndex_true_castSucc (m j : ℕ) (b : Fin j) :
     eGP m j ⟨true, Fin.castSucc b⟩ = Fin.castSucc (two (stdSum (rfl : m + j = m + j)) ⟨true, b⟩) := by
   first
@@ -29,24 +35,43 @@ theorem blockIndex_true_castSucc (m j : ℕ) (b : Fin j) :
     | (apply Fin.ext
        simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.two, GlobalTheory.SmGL.stdSum])
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.BZMir.glEmbMat]`.
+-/
 theorem glEmbMat_castSucc (n : ℕ) (A : Matrix (Fin n) (Fin n) k) (a b : Fin n) :
     glEmbMat k n A (Fin.castSucc a) (Fin.castSucc b) = A a b := by
   simp [GlobalTheory.BZMir.glEmbMat]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.BZMir.glEmbMat]`.
+-/
 theorem glEmbMat_last_castSucc (n : ℕ) (A : Matrix (Fin n) (Fin n) k) (b : Fin n) :
     glEmbMat k n A (Fin.last n) (Fin.castSucc b) = 0 := by
   simp [GlobalTheory.BZMir.glEmbMat]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.BZMir.glEmbMat]`.
+-/
 theorem glEmbMat_castSucc_last (n : ℕ) (A : Matrix (Fin n) (Fin n) k) (a : Fin n) :
     glEmbMat k n A (Fin.castSucc a) (Fin.last n) = 0 := by
   simp [GlobalTheory.BZMir.glEmbMat]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.BZMir.glEmbMat]`.
+-/
 theorem glEmbMat_last_last (n : ℕ) (A : Matrix (Fin n) (Fin n) k) :
     glEmbMat k n A (Fin.last n) (Fin.last n) = 1 := by
   simp [GlobalTheory.BZMir.glEmbMat]
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `k _ _ _ _ m j p hp hp'`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Simplify using `only [GlobalTheory.BZMir.Leib.gpProj, GlobalTheory.BZMir.Leib.hgpIncl, MonoidHom.prod_apply, MonoidHom.comp_apply, MonoidHom.codRestrict_apply, Pi.evalMonoidHom_apply, MonoidHom.coe_mk, OneHom.coe_mk]`.
+
+Apply the tactic sequence `(try erw [GlobalTheory.SmGL.leviProj_apply])`. Apply the tactic sequence `(try erw [GlobalTheory.SmGL.leviProj_apply])`. Simplify using `[GlobalTheory.SmGL.leviProj_apply, GlobalTheory.BZMir.levi, GlobalTheory.BZMir.glEmb, GlobalTheory.BZMir.glEmbHom, GlobalTheory.CompanionTheory.LeibGP.blockIndex_false, GlobalTheory.CompanionTheory.LeibGP.blockIndex_true_castSucc, GlobalTheory.BZMir.Leib.blockIndex_true_last, Glo …`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Use extensionality with `a b`. Simplify using `only [GlobalTheory.BZMir.Leib.gpProj, GlobalTheory.BZMir.Leib.hgpIncl, MonoidHom.prod_apply, MonoidHom.comp_apply, MonoidHom.codRestrict_apply, Pi.evalMonoidHom_apply, MonoidHom.coe_mk, OneHom.coe_mk]`. Apply the tactic sequence `(try erw [GlobalTheory.SmGL.leviProj_apply])`. Apply the tactic sequence `induction a using Fin.lastCases <;> induction b using Fin.lastCases <;>`. Simplify using `[GlobalTheory.SmGL.leviProj_apply, GlobalTheory.BZMir.levi, GlobalTheory.BZMir.glEmb, GlobalTheory.BZMir.glEmbHom, GlobalTheory.CompanionTheory.LeibGP.blockIndex_false, GlobalTheory.CompanionTheory.LeibGP.blockIndex_true_castSucc, GlobalTheory.BZMir.Leib.blockIndex_true_last, Glo …`.
+-/
 theorem gpProj_levi : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (m j : ℕ) (p : GL (Fin (m + j)) k) (hp : p ∈ parab k (two (stdSum (rfl : m + j = m + j)))) (hp' : levi k (m + j) p ∈ MirabolicParabolic k m j), gpProj k m j ⟨levi k (m + j) p, hp'⟩ = (leviProj k (two (stdSum (rfl : m + j = m + j))) ⟨p, hp⟩ false, levi k j (leviProj k (two (stdSum (rfl : m + j = m + j))) ⟨p, hp⟩ true)) := by
   intro k _ _ _ _ m j p hp hp'
   refine Prod.ext ?_ ?_

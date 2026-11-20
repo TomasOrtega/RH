@@ -14,6 +14,17 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 open TensorProduct in
+/- English proof (translation)
+Use `letI : Algebra A K := χ.toAlgebra`. Use `letI : Module A W := Module.compHom W χ`. Use `haveI : IsScalarTower A K W := ⟨fun a k w => mul_smul (χ a) k w⟩`. Set `s : Y →ₗ[A] W` to `{ toFun := fun f => sp f map_add' := fun f g => hadd _ f.2 _ g.2 map_smul' := fun b f => hsmul _ f.2 b }`. Establish `hs : Function.Injective (s.liftBaseChange K)`.
+
+Set `b` to `Module.Free.chooseBasis A Y`. Establish `h1 : s.liftBaseChange K = Finsupp.linearCombination K (fun i => sp (b i)) ∘ₗ (b.baseChange K).repr.toLinearMap` using `(b.baseChange K).ext fun i => by`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, Module.Basis.repr_self, Finsupp.linearCombination_single, Module.Basis.baseChange_apply, LinearMap.liftBaseChange_tmul]`. Both sides reduce to the same expression. Rewrite using `[h1, LinearMap.coe_comp]`.
+
+Conclude with `Function.Injective.comp (hind _ b) (b.baseChange K).repr.injective`. Take `⟨v, hv, hv'⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.pointEig (M := Y) ({ z with commutes' := fun b => RingHom.congr_fun hz b } : heckeAlg Y op →ₐ[A] K)`. Use `⟨s.liftBaseChange K v, ?_, fun h => hv (hs (h.trans (map_zero _).symm)), fun i => ?_⟩` and prove the remaining obligations. Establish `h : s.liftBaseChange K v ∈ LinearMap.range (s.liftBaseChange K)` using `⟨v, rfl⟩`. Rewrite `h` using `[LinearMap.range_liftBaseChange]`.
+
+Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `⟨f, f.2, rfl⟩`. Establish `h1 : opC i ∘ₗ s.liftBaseChange K = s.liftBaseChange K ∘ₗ (Algebra.lsmul A A Y (heckeGen Y op i)).baseChange K`. Use extensionality with `y`.
+
+Simplify using `only [AlgebraTensorModule.curry_apply, LinearMap.restrictScalars_self, curry_apply, LinearMap.coe_restrictScalars, LinearMap.comp_apply, LinearMap.baseChange_tmul, LinearMap.liftBaseChange_tmul, one_smul]`. Conclude with `(hop i _ y.2).symm`. Establish `h2` using `LinearMap.congr_fun h1 v`. Rewrite `h2` using `[LinearMap.comp_apply, LinearMap.comp_apply, hv', map_smul]`. Conclude with `h2`.
+-/
 private theorem op_eig {A K M W ι : Type} [CommRing A] [Field K] [AddCommGroup M] [Module A M]
     [AddCommGroup W] [Module K W] (Y : Submodule A M) [Module.Free A Y] [Module.Finite A Y]
     (op : ι → Module.End A M) [hc : Fact (CommOn Y op)] (χ : A →+* K) (sp : M → W)
@@ -55,6 +66,11 @@ private theorem op_eig {A K M W ι : Type} [CommRing A] [Field K] [AddCommGroup 
     have h2 := LinearMap.congr_fun h1 v
     rw [LinearMap.comp_apply, LinearMap.comp_apply, hv', map_smul] at h2
     exact h2
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ l _ n c H hH A _ _ _ θ hθ ι P hP x lam d ξ c0 sp hsp hlam K _ z hz`. Take `⟨-, hfin, hfree, -⟩` from `hiComm L Ω l n c H hH A θ hθ K`. Take `⟨F, hF, hF0, h⟩` from `op_eig (H.X.Ord (H.τA A) θ (H.lev K)) (H.op A) (ι.toRingHom.comp x.toRingHom) sp (hsp.add K) (hsp.smul K) (hsp.indep K) (H.opC ι lam d) (hsp.op K) (ι.toRingHom.comp z) (by rw [RingHom.comp_assoc, hz])`. Rewrite `hF` using `[hsp.span K c0 le_rfl, (_root_.UpperTheory.V.Hi.clParts_alt L Ω l n c H hH A θ hθ ι P hP x lam d ξ c0 sp hsp hlam K c0 le_rfl).2]`. Take `⟨Y, hY⟩` from `levelUR2EigPart ℂ _ (H.Wp × Fin n) {Y : H.PartAltAlt ι lam ξ // P lam Y.r} (fun i => H.opC ι lam d (.inl i)) (fun Y => Y.1.Y) (fun Y i => Y.1.a i.1 (i.2 + 1)) (fun Y i G hG => Y.1.sph i.1 _ G hG) F (SetLike.le_def.1 (iSup_mono fun _ => inf_le_left) hF) hF0 (fun i => ι (z (heckeGe …`.
+
+Conclude with `⟨Y.1, fun w k => congrFun hY (w, k)⟩`.
+-/
 theorem UpperTheory.V.Hi.levelUR2OrdPt_alt :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →
     ∀ (A : Type) [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (θ : H.X.I.T →* Aˣ), H.IsWt θ →

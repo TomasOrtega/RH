@@ -21,6 +21,9 @@ open Formalism.MainNotions.LocalSituation
 variable {l : ℕ} [Fact l.Prime] (LT : LocTheory) (HW : HWOf LT) (AI : LocAinf l (LT l)) {K : FinExt l}
   {s : ℕ} {LL : FinExt l} (h : Good K s LL)
 
+/- English proof (translation)
+Establish `h2 : Y.ρ g = resKs h Y g'` using `congrArg Y.ρ (Subtype.ext hg)`. Establish `h3 : (((LT l).PD K).actB g).toAlgHom.toLinearMap.restrictScalars ℚ_[l] = (((LT l).PD (levelField K s)).actB g').toAlgHom.toLinearMap.restrictScalars ℚ_[l]` using `LinearMap.ext fun b => (((LT l).PD_actB K g b).trans (by rw [hg])).trans ((LT l).PD_actB (levelField K s) g' b).symm`. Unfold `actVB`. Rewrite using `[h2, h3]`.
+-/
 theorem actVB_res (Y : Lat K LL) (g : ↥(GK K)) (g' : ↥(GK (levelField K s))) (hg : (g : GQ l) = g') :
     actVB ((LT l).PD K) Y.ρ g = actVB ((LT l).PD (levelField K s)) (resKs h Y) g' := by
   have h2 : Y.ρ g = resKs h Y g' := congrArg Y.ρ (Subtype.ext hg)
@@ -31,14 +34,23 @@ theorem actVB_res (Y : Lat K LL) (g : ↥(GK K)) (g' : ↥(GK (levelField K s)))
   unfold actVB
   rw [h2, h3]
 
+/- English proof (translation)
+The claim follows from `le_antisymm (le_iInf fun b => by obtain ⟨a, ha⟩ := h2 b; exact ha ▸ iInf_le f a) (le_iInf fun a => by obtain ⟨b, hb⟩ := h1 a; exact hb ▸ iInf_le g b)`.
+-/
 theorem iInf_eq_of {α β γ : Type} [CompleteLattice γ] (f : α → γ) (g : β → γ)
     (h1 : ∀ a, ∃ b, f a = g b) (h2 : ∀ b, ∃ a, f a = g b) : ⨅ a, f a = ⨅ b, g b :=
   le_antisymm (le_iInf fun b => by obtain ⟨a, ha⟩ := h2 b; exact ha ▸ iInf_le f a)
     (le_iInf fun a => by obtain ⟨b, hb⟩ := h1 a; exact hb ▸ iInf_le g b)
 
+/- English proof (translation)
+Rewrite using `[e]`.
+-/
 theorem finrank_congr {R M : Type} [Field R] [AddCommGroup M] [Module R M] {X X' : Submodule R M}
     (e : X = X') : Module.finrank R ↥X = Module.finrank R ↥X' := by rw [e]
 
+/- English proof (translation)
+Use `iInf_eq_of _ _ (fun g => ?_) fun g' => ?_` and prove the remaining obligations. Establish `hg : (g.1.1 : GQ l) ∈ GK (levelField K s)` using `(mem_GKs ((HW l).W_s K s LL h) g.1).mp g.2`. Conclude with `⟨⟨g.1.1, hg⟩, congrArg (fun T => LinearMap.ker (T - LinearMap.id)) (actVB_res LT h Y g.1 ⟨g.1.1, hg⟩ rfl)⟩`. Conclude with `⟨⟨⟨g'.1, GK_le (K := K) (K' := levelField K s) h.2.2.1 g'.2⟩, (mem_GKs ((HW l).W_s K s LL h) _).mpr g'.2⟩, congrArg (fun T => LinearMap.ker (T - LinearMap.id)) (actVB_res LT h Y _ _ rfl)⟩`.
+-/
 theorem fixed_eq (Y : Lat K LL) : (⨅ g : ((HW l).W K s LL h).GKs,
       LinearMap.ker (actVB ((LT l).PD K) Y.ρ (g : ↥(GK K)) - LinearMap.id)) =
       Dcris ((LT l).PD (levelField K s)) (resKs h Y) := by
@@ -50,6 +62,9 @@ theorem fixed_eq (Y : Lat K LL) : (⨅ g : ((HW l).W K s LL h).GKs,
       (mem_GKs ((HW l).W_s K s LL h) _).mpr g'.2⟩,
       congrArg (fun T => LinearMap.ker (T - LinearMap.id)) (actVB_res LT h Y _ _ rfl)⟩
 
+/- English proof (translation)
+Establish `h1` using `finrank_congr (fixed_eq LT HW h Y)`. Establish `h2` using `congrArg (· * Module.finrank ↥LL.1 Y.V) (finrank_maxUnramified_levelFieldFiniteExtension K s h.1).symm`. Conclude with `iff_of_eq (congrArg₂ Eq h1 h2)`.
+-/
 theorem crys_iff (Y : Lat K LL) :
     IsCrysOn (sit LT HW l AI K s LL h) (sit LT HW l AI K s LL h).W.GKs Y ↔
       IsCrys ((LT l).PD (levelField K s)) (resKs h Y) := by

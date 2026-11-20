@@ -21,12 +21,26 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 def fixRoot (p : ℕ) (ζ : LL) : LL := if ∃ j : ℕ, IsPrimitiveRoot ζ (p ^ j) then ζ else 1
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem fixRoot_of {p : ℕ} {ζ : LL} (h : ∃ j : ℕ, IsPrimitiveRoot ζ (p ^ j)) : fixRoot p ζ = ζ := if_pos h
 
+/- English proof (translation)
+The claim follows from `if_neg h`.
+-/
 theorem fixRoot_not {p : ℕ} {ζ : LL} (h : ¬ ∃ j : ℕ, IsPrimitiveRoot ζ (p ^ j)) : fixRoot p ζ = 1 := if_neg h
 
+/- English proof (translation)
+Apply the tactic sequence `unfold fixRoot; split_ifs <;> rfl`.
+-/
 theorem fixRoot_one (p : ℕ) : fixRoot p (1 : LL) = 1 := by unfold fixRoot; split_ifs <;> rfl
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `h`. Establish `h1 : orderOf (ζ ^ a) ∣ p ^ j`. Apply `orderOf_dvd_of_pow_eq_one` to reduce the goal to its premises. Rewrite using `[← pow_mul, mul_comm, pow_mul, hj.pow_eq_one, one_pow]`. Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hp).mp h1`.
+
+Conclude with `⟨k, hk ▸ IsPrimitiveRoot.orderOf _⟩`.
+-/
 theorem prim_pow {p : ℕ} (hp : p.Prime) {ζ : LL} (h : ∃ j : ℕ, IsPrimitiveRoot ζ (p ^ j)) (a : ℕ) :
     ∃ j : ℕ, IsPrimitiveRoot (ζ ^ a) (p ^ j) := by
   obtain ⟨j, hj⟩ := h
@@ -60,6 +74,17 @@ def ser (C : CmpTie W E ιdR p1 tS zS) : WSer (gam W) :=
       exact C.lev_φ i ζ h f
     lev_junk := fun i ζ h => by rw [fixRoot_not h, fixRoot_one] }
 
+/- English proof (translation)
+Take `⟨e, he, hT⟩` from `W.one_line`. Establish `hne : (e₀ : W.one.V) ≠ 0`. Introduce `h0`. Establish `heT : e ∈ W.one.L.T` using `hT ▸ Submodule.mem_span_singleton_self e`. Establish `: (⟨e, heT⟩ : ↥W.one.L.T) ∈ Submodule.span O {e₀}` using `h₀ ▸ Submodule.mem_top`.
+
+Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.mp this`. Apply `he` to reduce the goal to its premises. Use `congrArg Subtype.val ha` as an intermediate fact. Simplify using `only [Submodule.coe_smul, h0, smul_zero] at this`. Conclude with `this.symm`.
+
+Establish `hbij : Function.Bijective (LinearMap.toSpanSingleton O ↥W.one.L.T e₀)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Use `congrArg Subtype.val ha` as an intermediate fact.
+
+Simplify using `only [LinearMap.toSpanSingleton_apply, Submodule.coe_smul, Submodule.coe_zero] at this`. Rewrite `this` using `[← algebraMap_smul LL a, smul_eq_zero]`. Conclude with `hO (by rw [this.resolve_right hne, map_zero])`. Rewrite using `[← LinearMap.range_eq_top, LinearMap.range_toSpanSingleton, h₀]`. Set `ψ` to `(LinearEquiv.ofBijective _ hbij).symm`.
+
+Establish `hψ : ψ e₀ = 1`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Simplify using the standard rewrite rules. Use `congrArg (fun x => TensorProduct.rid O RW (LinearMap.lTensor RW ψ.toLinearMap x)) h` as an intermediate fact. Simplify `this` using `[hψ]`.
+-/
 theorem tmul_cancel (hO : Function.Injective (algebraMap O LL)) (W : LocWach PD LL O v n)
     (e₀ : ↥W.one.L.T) (h₀ : Submodule.span O {e₀} = ⊤) {r r' : RW}
     (h : (r ⊗ₜ[O] e₀ : TW RW W.one) = r' ⊗ₜ[O] e₀) : r = r' := by
@@ -89,6 +114,9 @@ theorem tmul_cancel (hO : Function.Injective (algebraMap O LL)) (W : LocWach PD 
   have := congrArg (fun x => TensorProduct.rid O RW (LinearMap.lTensor RW ψ.toLinearMap x)) h
   simpa [hψ] using this
 
+/- English proof (translation)
+Take `⟨e, e₀, h₀, he, -⟩` from `E.one_e`. Establish `h1` using `E.jD_φ W.one (a • e)`. Rewrite `h1` using `[W.φD_smul, E.jD_smul, E.jD_smul, E.jD_φ, he]`. Simplify using `only [TWmap, smul_tmul', smul_eq_mul, mul_one, map_tmul, AlgHom.toLinearMap_apply, map_one, LinearMap.id_apply] at h1`. Conclude with `tmul_cancel hO W e₀ h₀ h1`.
+-/
 theorem ioE_φ (hO : Function.Injective (algebraMap O LL))
     (E : EtTie W (O ⊗[Zl] Ai) RW inclR φR gR πA) (a : W.EE) : E.ioE (W.φE a) = φR (E.ioE a) := by
   obtain ⟨e, e₀, h₀, he, -⟩ := E.one_e
@@ -98,6 +126,11 @@ theorem ioE_φ (hO : Function.Injective (algebraMap O LL))
     LinearMap.id_apply] at h1
   exact tmul_cancel hO W e₀ h₀ h1
 
+/- English proof (translation)
+Take `⟨e, e₀, h₀, he, -⟩` from `E.one_e`. Establish `h1` using `E.jD_act W.one g (a • e)`. Establish `h2 : W.one.actT g e₀ = e₀` using `Subtype.ext (W.one_triv g _)`. Rewrite `h1` using `[W.γD_smul, E.jD_smul, E.jD_smul, E.jD_act, he]`. Simplify using `only [TWact, smul_tmul', smul_eq_mul, mul_one, map_tmul, AlgHom.toLinearMap_apply, map_one, h2] at h1`.
+
+Conclude with `tmul_cancel hO W e₀ h₀ h1`.
+-/
 theorem ioE_γ (hO : Function.Injective (algebraMap O LL))
     (E : EtTie W (O ⊗[Zl] Ai) RW inclR φR gR πA) (g : G) (a : W.EE) :
     E.ioE (W.γE (W.resΓ g) a) = gR g (E.ioE a) := by
@@ -126,10 +159,19 @@ def cl (hO : Function.Injective (algebraMap O LL)) (C : CmpTie W E ιdR p1 tS zS
 def Ncut (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) : Submodule (LetA O n) (W.DD T) :=
   if IsCrys PD T.ρ then W.N T else ⊥
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem Ncut_of {T : LocLat G Qp LL O} (h : IsCrys PD T.ρ) : Ncut W T = W.N T := if_pos h
 
+/- English proof (translation)
+The claim follows from `if_neg h`.
+-/
 theorem Ncut_not {T : LocLat G Qp LL O} (h : ¬ IsCrys PD T.ρ) : Ncut W T = ⊥ := if_neg h
 
+/- English proof (translation)
+Unfold `Ncut`. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `bot_le`.
+-/
 theorem Ncut_le (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) : Ncut W T ≤ W.N T := by
   unfold Ncut; split_ifs
   · exact le_rfl
@@ -242,6 +284,9 @@ def cm [FiniteDimensional Qp LL] (hO : Function.Injective (algebraMap O LL)) (C 
     rw [fixRoot_of (hz ι ζ h2)]
     exact C.levN_dR T h i ζ ι h1 h2 (inc W T x)
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Conclude with `⟨gam W, ser C, io hO C, et hO C, wn hO C hproj, rfl, rfl, ⟨cl hO C⟩, ⟨cm hO C hproj hz⟩⟩`.
+-/
 theorem exists_layers [FiniteDimensional Qp LL] (hO : Function.Injective (algebraMap O LL))
     (C : CmpTie W E ιdR p1 tS zS) {zl : PowerSeries Zl →+* LetA O n}
     (hproj : ∀ T, @Module.Projective (PowerSeries Zl) _ ↥(W.N T) _ (Module.compHom _ zl))
@@ -259,6 +304,9 @@ section Concrete
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => simpa using P.ζQ_zero`. Consider the case `succ m ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]`.
+-/
 theorem zeta_pow (P : LocPrime l) (s : ℕ) : P.ζQ s ^ (l ^ s) = 1 := by
   induction s with
   | zero => simpa using P.ζQ_zero
@@ -266,6 +314,17 @@ theorem zeta_pow (P : LocPrime l) (s : ℕ) : P.ζQ s ^ (l ^ s) = 1 := by
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Use `haveI : Nontrivial P.R.BdR := by`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Apply `(P.PD K).not_mem_filtration_two` to reduce the goal to its premises.
+
+Rewrite using `[Subsingleton.elim ((P.PD K).ι (P.PD K).t) 0]`. Conclude with `Submodule.zero_mem _`. Take `⟨Γ, R, I, E', Mo, h1, h2, ⟨Cl⟩, ⟨Cm⟩⟩` from `exists_layers (O := ↥(OL LL)) Subtype.val_injective (C.C K s LL g).tie (H.W_proj K s LL g) (fun ι ζ h => by`. Establish `h1 : ζ ^ (l ^ s) = 1`. Apply `ι.toRingHom.injective` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `ι (ζ ^ (l ^ s)) = ι 1`. Rewrite using `[map_pow, h, ← map_pow, zeta_pow, map_one, map_one]`. Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow (Fact.out : l.Prime)).mp (orderOf_dvd_of_pow_eq_one h1)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[P.PD_p, ← hk]`.
+
+Conclude with `IsPrimitiveRoot.orderOf _)`. Use the proof step `(H.W_s K s LL g)`. Use `⟨⟨Γ, R, I, ?_, E', Mo, Cl, Cm⟩⟩` and prove the remaining obligations. Introduce `c m hm hl hc xb hx o ho`. Rewrite using `[h2]`.
+
+Conclude with `(F.E K s LL g).inertia_action_on_roots c m hm hl hc xb hx o (fun i => by rw [ho, h1])`.
+-/
 theorem layers_of_exists (P : LocPrime l) (AI : LocAinf l P) (H : LocHW l P) (F : LocFon l P AI H)
     (C : LocCmpT l P AI H F) (K : FinExt l) (s : ℕ) (LL : FinExt l) (g : Good K s LL) :
     Nonempty (Layers P AI K s LL) := by

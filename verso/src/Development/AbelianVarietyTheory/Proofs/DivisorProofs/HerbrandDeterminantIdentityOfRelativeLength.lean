@@ -12,6 +12,11 @@ namespace GlobalTheory.HerbDet
 
 variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)}
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨w, hw, hw0⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Apply `hw` to reduce the goal to its premises. Establish `hs : ∑ i, w i • u i = 0`. Use function extensionality and compare the values at `j`.
+
+Use `congr_fun hw0 j` as an intermediate fact. Simplify `this` using `only [Matrix.vecMul, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, Matrix.of_apply]`. Conclude with `funext (Fintype.linearIndependent_iff.1 hu w hs)`.
+-/
 theorem det_ne_zero_of_linearIndependent {n : ℕ} (u : Fin n → (Fin n → Int0 v))
     (hu : LinearIndependent (Int0 v) u) : (Matrix.of u).det ≠ 0 := by
   intro h0
@@ -27,6 +32,11 @@ theorem det_ne_zero_of_linearIndependent {n : ℕ} (u : Fin n → (Fin n → Int
 variable {S : Type} [Fintype S] [DecidableEq S] {a : S → Int0 v} {N : ℕ}
   {Fil : Submodule (RS a) (Fin N → RS a)} {τ : S}
 
+/- English proof (translation)
+Rewrite `hz` using `[← hE8]`. Take `⟨y, hy, hyz⟩` from `hz`. Establish `hzy : z - y ∈ Fil.restrictScalars (Int0 v)`. Establish `h0 : proj a Fil (z - y) = 0` using `by rw [map_sub, hyz, sub_self]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 h0`.
+
+Simplify using `using add_mem (hE10 hzy) hy`.
+-/
 theorem mem_preEig_of_proj_mem
     (hE8 : (preEig a Fil τ).map (proj a Fil) = eigSub a τ ((Fin N → RS a) ⧸ Fil))
     (hE10 : Fil.restrictScalars (Int0 v) ≤ preEig a Fil τ) (z : Fin N → RS a)
@@ -38,6 +48,19 @@ theorem mem_preEig_of_proj_mem
     exact (Submodule.Quotient.mk_eq_zero _).1 h0
   simpa using add_mem (hE10 hzy) hy
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `w hw`. Rewrite `hw` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at hw`. Establish `hmem : ∑ j, w (Sum.inr j) • (f j : Fin N → Int0 v) ∈ (Fil.restrictScalars (Int0 v)).map (comp a N τ)` using `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (f j).2`.
+
+Take `⟨φ, hφ, hφe⟩` from `hmem`. Establish `hzX : ∑ i, w (Sum.inl i) • x i ∈ preEig a Fil τ` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hxX i)`. Establish `hcomp : comp a N τ (∑ i, w (Sum.inl i) • x i + φ) = 0`. Rewrite using `[map_add, map_sum, hφe]`. Simplify `hw` using `[map_smul]`.
+
+Establish `hzφ : ∑ i, w (Sum.inl i) • x i + φ ∈ Fil.restrictScalars (Int0 v)` using `hE4 ⟨add_mem hzX (hE10 hφ), hcomp⟩`. Establish `hz : ∑ i, w (Sum.inl i) • x i ∈ Fil.restrictScalars (Int0 v)`. Simplify using `using sub_mem hzφ hφ`. Establish `hprojz : proj a Fil (∑ i, w (Sum.inl i) • x i) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hz`. Establish `hl : ∑ i, w (Sum.inl i) • l i = 0`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite `hprojz` using `[map_sum]`. Simplify using `only [map_smul, hx] at hprojz`. Simplify using `using hprojz`. Establish `hα` using `Fintype.linearIndependent_iff.1 l.linearIndependent _ hl`.
+
+Establish `hf : ∑ j, w (Sum.inr j) • f j = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hα, zero_smul, Finset.sum_const_zero, zero_add] at hw`. Simplify using `using hw`. Establish `hβ` using `Fintype.linearIndependent_iff.1 f.linearIndependent _ hf`.
+
+Introduce and unpack `(i | j)`. Conclude with `hα i`. Conclude with `hβ j`.
+-/
 theorem linearIndependent_comb {ι κ : Type} [Fintype ι] [Fintype κ]
     (hE4 : preEig a Fil τ ⊓ LinearMap.ker (comp a N τ) ≤ Fil.restrictScalars (Int0 v))
     (hE10 : Fil.restrictScalars (Int0 v) ≤ preEig a Fil τ)
@@ -81,6 +104,15 @@ theorem linearIndependent_comb {ι κ : Type} [Fintype ι] [Fintype κ]
   · exact hα i
   · exact hβ j
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `hy`. Establish `hpz : proj a Fil z ∈ eigSub a τ ((Fin N → RS a) ⧸ Fil)`. Rewrite using `[← hE8]`. Conclude with `Submodule.mem_map_of_mem hz`. Establish `hl` using `congrArg Subtype.val (l.sum_repr ⟨proj a Fil z, hpz⟩)`.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at hl`. Establish `hsum : proj a Fil (z - ∑ i, l.repr ⟨proj a Fil z, hpz⟩ i • x i) = 0`. Rewrite using `[map_sub, map_sum]`. Simplify using `only [map_smul, hx]`. Rewrite using `[hl, sub_self]`.
+
+Establish `hw : z - ∑ i, l.repr ⟨proj a Fil z, hpz⟩ i • x i ∈ Fil.restrictScalars (Int0 v)` using `(Submodule.Quotient.mk_eq_zero _).1 hsum`. Establish `hfw : comp a N τ (z - ∑ i, l.repr ⟨proj a Fil z, hpz⟩ i • x i) ∈ eigQuot a Fil τ` using `Submodule.mem_map_of_mem hw`. Establish `h2` using `congrArg Subtype.val (f.sum_repr ⟨_, hfw⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h2`. Use `⟨Sum.elim (l.repr ⟨proj a Fil z, hpz⟩) (f.repr ⟨_, hfw⟩), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Establish `h3 : comp a N τ (z - ∑ i, l.repr ⟨proj a Fil z, hpz⟩ i • x i) = comp a N τ z - ∑ i, l.repr ⟨proj a Fil z, hpz⟩ i • comp a N τ (x i)`. Simplify using `only [map_sub, map_sum, map_smul]`. Conclude with `eq_sub_iff_add_eq'.1 (h2.trans h3)`.
+-/
 theorem span_comb {ι κ : Type} [Fintype ι] [Fintype κ]
     (hE8 : (preEig a Fil τ).map (proj a Fil) = eigSub a τ ((Fin N → RS a) ⧸ Fil))
     (l : Basis ι (Int0 v) (eigSub a τ ((Fin N → RS a) ⧸ Fil)))
@@ -120,6 +152,13 @@ variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)}
 variable {S : Type} [Fintype S] [DecidableEq S] {a : S → Int0 v} {N : ℕ}
   {Fil : Submodule (RS a) (Fin N → RS a)} {τ : S}
 
+/- English proof (translation)
+Establish `hxX : ∀ i, x i ∈ preEig a Fil τ` using `fun i => mem_preEig_of_proj_mem hE8 hE10 (x i) (by rw [hx i]; exact (l i).2)`. Establish `hmem : ∀ s, Sum.elim (fun i => comp a N τ (x i)) (fun j => (f j : Fin N → Int0 v)) s ∈ (preEig a Fil τ).map (comp a N τ)`. Introduce and unpack `(i | j)`. Conclude with `Submodule.mem_map_of_mem (hxX i)`. Conclude with `Submodule.map_mono hE10 (f j).2`.
+
+Establish `hli` using `linearIndependent_comb hE4 hE10 l x hx hxX f`. Establish `hli' : LinearIndependent (Int0 v) (fun s => (⟨_, hmem s⟩ : (preEig a Fil τ).map (comp a N τ)))`. Apply `LinearIndependent.of_comp ((preEig a Fil τ).map (comp a N τ)).subtype` to reduce the goal to its premises. Conclude with `hli`. Use `⟨Basis.mk hli' ?_, fun s => by rw [Basis.mk_apply]⟩` and prove the remaining obligations.
+
+Introduce `y _`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `span_comb hE8 l x hx f y y.2`. Conclude with `⟨c, Subtype.ext (by simpa using hc)⟩`.
+-/
 theorem exists_basis_comb {ι κ : Type} [Fintype ι] [Fintype κ]
     (hE4 : preEig a Fil τ ⊓ LinearMap.ker (comp a N τ) ≤ Fil.restrictScalars (Int0 v))
     (hE8 : (preEig a Fil τ).map (proj a Fil) = eigSub a τ ((Fin N → RS a) ⧸ Fil))
@@ -148,6 +187,17 @@ theorem exists_basis_comb {ι κ : Type} [Fintype ι] [Fintype κ]
   obtain ⟨c, hc⟩ := span_comb hE8 l x hx f y y.2
   exact ⟨c, Subtype.ext (by simpa using hc)⟩
 
+/- English proof (translation)
+Establish `hli : LinearIndependent (Int0 v) (fun k => comp a N τ (h k : Fin N → RS a))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `w hw`. Establish `hm : ((∑ k, w k • h k : eigSub a τ (Fin N → RS a)) : Fin N → RS a) ∈ eigSub a τ (Fin N → RS a) ⊓ LinearMap.ker (comp a N τ)`. Use `Submodule.mem_inf.2 ⟨Subtype.mem _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.mem_ker, Submodule.coe_sum, map_sum]`. Simplify `hw` using `[map_smul]`. Rewrite `hm` using `[hE6, Submodule.mem_bot]`. Conclude with `Fintype.linearIndependent_iff.1 h.linearIndependent w (Subtype.ext hm)`. Establish `hmem : ∀ k, comp a N τ (h k : Fin N → RS a) ∈ (eigSub a τ (Fin N → RS a)).map (comp a N τ)` using `fun k => Submodule.mem_map_of_mem (h k).2`.
+
+Establish `hli' : LinearIndependent (Int0 v) (fun k => (⟨_, hmem k⟩ : (eigSub a τ (Fin N → RS a)).map (comp a N τ)))`. Apply `LinearIndependent.of_comp ((eigSub a τ (Fin N → RS a)).map (comp a N τ)).subtype` to reduce the goal to its premises. Conclude with `hli`. Use `⟨Basis.mk hli' ?_, fun k => by rw [Basis.mk_apply]⟩` and prove the remaining obligations. Introduce and unpack `⟨_, z, hz, rfl⟩ _`.
+
+Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨h.repr ⟨z, hz⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg Subtype.val (h.sum_repr ⟨z, hz⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h1`. Establish `h2` using `congrArg (comp a N τ) h1`.
+
+Simplify using `only [map_sum, map_smul] at h2`. Simplify using `using h2`.
+-/
 theorem exists_basis_image {ι : Type} [Fintype ι]
     (hE6 : eigSub a τ (Fin N → RS a) ⊓ LinearMap.ker (comp a N τ) = ⊥)
     (h : Basis ι (Int0 v) (eigSub a τ (Fin N → RS a))) :
@@ -179,6 +229,25 @@ theorem exists_basis_image {ι : Type} [Fintype ι]
   simp only [map_sum, map_smul] at h2
   simpa using h2
 
+/- English proof (translation)
+Establish `hex : ∀ i : Fin N, ∃ z ∈ eigSub a τ (Fin N → RS a), comp a N τ z = d • (Pi.single i 1 : Fin N → Int0 v)`. Introduce `i`. Establish `: d • (Pi.single i 1 : Fin N → Int0 v) ∈ (eigSub a τ (Fin N → RS a)).map (comp a N τ)`. Rewrite using `[hE7]`. Conclude with `⟨Pi.single i 1, trivial, rfl⟩`.
+
+Take `⟨z, hz, hze⟩` from `this`. Conclude with `⟨z, hz, hze⟩`. Use `choose z hz hze using hex`. Establish `hinj : ∀ y ∈ eigSub a τ (Fin N → RS a), comp a N τ y = 0 → y = 0`. Introduce `y hy hy0`.
+
+Establish `: y ∈ eigSub a τ (Fin N → RS a) ⊓ LinearMap.ker (comp a N τ)` using `⟨hy, hy0⟩`. Rewrite `this` using `[hE6, Submodule.mem_bot]`. Then use the resulting hypothesis. Establish `hcomb : ∀ w : Fin N → Int0 v, comp a N τ (∑ i, w i • z i) = d • w`. Introduce `w`. Rewrite using `[map_sum]`.
+
+Simplify using `only [map_smul, hze]`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply, mul_comm, mul_left_comm]`. Establish `hli : LinearIndependent (Int0 v) (fun i => (⟨z i, hz i⟩ : eigSub a τ (Fin N → RS a)))`. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `w hw`. Establish `h0 : ∑ i, w i • z i = 0`. Use `congrArg Subtype.val hw` as an intermediate fact. Simplify using `using this`. Establish `h1 : d • w = 0` using `by rw [← hcomb, h0, map_zero]`.
+
+Establish `h2 : w = 0` using `(smul_eq_zero.1 h1).resolve_left hd`. Introduce `i`. Rewrite using `[h2]`. Both sides reduce to the same expression. Use `⟨Basis.mk hli ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨y, hy⟩ _`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Establish `hy' : comp a N τ y ∈ (eigSub a τ (Fin N → RS a)).map (comp a N τ)` using `Submodule.mem_map_of_mem hy`. Rewrite `hy'` using `[hE7]`. Take `⟨u, -, hu⟩` from `hy'`.
+
+Use `⟨u, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hmem : y - ∑ i, u i • z i ∈ eigSub a τ (Fin N → RS a)` using `sub_mem hy (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hz i))`. Establish `hc : comp a N τ (y - ∑ i, u i • z i) = 0`. Rewrite using `[map_sub, hcomb, ← hu]`. Simplify using the standard rewrite rules.
+
+Use `hinj _ hmem hc` as an intermediate fact. Rewrite `this` using `[sub_eq_zero]`. Simplify using `using this.symm`.
+-/
 theorem exists_basis_eigSub (d : Int0 v) (hd : d ≠ 0)
     (hE6 : eigSub a τ (Fin N → RS a) ⊓ LinearMap.ker (comp a N τ) = ⊥)
     (hE7 : (eigSub a τ (Fin N → RS a)).map (comp a N τ) =
@@ -236,6 +305,19 @@ variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)}
 variable {S : Type} [Fintype S] [DecidableEq S] {a : S → Int0 v} {N : ℕ}
   {Fil : Submodule (RS a) (Fin N → RS a)} {τ : S}
 
+/- English proof (translation)
+Set `A : Matrix (Fin N) (Fin N) (Int0 v)` to `fun i k => bX.repr ⟨(bX' k : Fin N → Int0 v), hle (bX' k).2⟩ i`. Establish `hA : ∀ k, ((bX' k : Fin N → Int0 v)) = ∑ i, A i k • (bX i : Fin N → Int0 v)`. Introduce `k`. Use `congrArg Subtype.val (bX.sum_repr ⟨(bX' k : Fin N → Int0 v), hle (bX' k).2⟩)` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at this`.
+
+Conclude with `this.symm`. Establish `hM : (Matrix.of fun k : Fin N => (bX' k : Fin N → Int0 v)) = A.transpose * Matrix.of fun k : Fin N => (bX k : Fin N → Int0 v)`. Use extensionality with `k j`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply, Matrix.transpose_apply]`.
+
+Rewrite using `[hA k, Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Establish `hli : LinearIndependent (Int0 v) (fun k => (bX k : Fin N → Int0 v))` using `bX.linearIndependent.map' X.subtype (Submodule.ker_subtype _)`. Establish `hli' : LinearIndependent (Int0 v) (fun k => (bX' k : Fin N → Int0 v))` using `bX'.linearIndependent.map' X'.subtype (Submodule.ker_subtype _)`. Establish `hM0` using `det_ne_zero_of_linearIndependent _ hli`.
+
+Establish `hM0'` using `det_ne_zero_of_linearIndependent _ hli'`. Establish `hA0 : A.det ≠ 0`. Introduce `h0`. Apply `hM0'` to reduce the goal to its premises. Rewrite using `[hM, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul]`.
+
+Establish `hvA : v (A.det : C) ≠ ⊤`. Rewrite using `[Ne, AddValuation.top_iff]`. Conclude with `fun h0 => hA0 (Subtype.ext h0)`. Establish `hRL' : RelLen v X' X ((v (A.det : C)).untop hvA)` using `⟨N, bX, bX', A, hA, by rw [WithTop.coe_untop]⟩`. Establish `hrr` using `RelLen.unique v hRL hRL'`.
+
+Use `⟨(A.det : C), ?_, hM0, ?_⟩` and prove the remaining obligations. Rewrite using `[hrr, WithTop.coe_untop]`. Rewrite using `[hM, Matrix.det_mul, Matrix.det_transpose, Subring.coe_mul]`.
+-/
 theorem det_eq_mul_of_relLen {X' X : Submodule (Int0 v) (Fin N → Int0 v)} (hle : X' ≤ X) {r : ℝ}
     (hRL : RelLen v X' X r) (bX : Basis (Fin N) (Int0 v) X) (bX' : Basis (Fin N) (Int0 v) X') :
     ∃ c : C, v c = r ∧
@@ -275,6 +357,13 @@ theorem det_eq_mul_of_relLen {X' X : Submodule (Int0 v) (Fin N → Int0 v)} (hle
   · rw [hrr, WithTop.coe_untop]
   · rw [hM, Matrix.det_mul, Matrix.det_transpose, Subring.coe_mul]
 
+/- English proof (translation)
+Take `⟨bL0, hbL0⟩` from `exists_basis_comb hE4 hE8 hE10 l x hx f`. Take `⟨bh, hbh⟩` from `exists_basis_image hE6 h`. Establish `hbL : (fun k => ((bL0.reindex e.symm) k : Fin N → Int0 v)) = fun k => Sum.elim (fun i => comp a N τ (x i)) (fun i => (f i : Fin N → Int0 v)) (e k)`. Use function extensionality and compare the values at `k`. Use `hbL0 (e k)` as an intermediate fact.
+
+Simplify `this` using `only [Basis.reindex_apply, Equiv.symm_symm]`. Establish `hbh' : (fun k => (bh k : Fin N → Int0 v)) = fun k => comp a N τ (h k : Fin N → RS a)`. Use function extensionality and compare the values at `hbh`. Use `det_eq_mul_of_relLen (Submodule.map_mono hE9) hRL (bL0.reindex e.symm) bh` as an intermediate fact. Rewrite `this` using `[hbL, hbh']`.
+
+Conclude with `this`.
+-/
 theorem det_part
     (hE4 : preEig a Fil τ ⊓ LinearMap.ker (comp a N τ) ≤ Fil.restrictScalars (Int0 v))
     (hE6 : eigSub a τ (Fin N → RS a) ⊓ LinearMap.ker (comp a N τ) = ⊥)
@@ -307,6 +396,23 @@ theorem det_part
   rw [hbL, hbh'] at this
   exact this
 
+/- English proof (translation)
+Introduce `C _ v S _ _ a ha N Fil hsat τ r hr hRL`. Take `⟨hd, -, -, hE4, -, hE6, hE7, hE8, hE9, hE10, -, -⟩` from `GlobalTheory.T.adjoinRootProdLinearFactors_lattice_facts C v S a ha N Fil hsat τ`. Take `⟨hfFil, -, -, -, hfLie, -, -⟩` from `GlobalTheory.T.finite_eigenFiltration_pieces_addValInt C v S a ha N Fil hsat τ`. Use `haveI : Module.IsTorsionFree (Int0 v) (eigSub a τ ((Fin N → RS a) ⧸ Fil)) := Module.IsTorsionFree.of_smul_eq_zero fun c m hcm => by`. Distinguish the cases in `hc : c = 0`.
+
+Conclude with `Or.inl hc`. Use `right`. Take `⟨m, hm⟩` from `m`. Apply `Subtype.ext` to reduce the goal to its premises. Proceed by induction on `m using Submodule.Quotient.induction_on with`.
+
+Consider the case `H z`. Establish `h0 : (c • Submodule.Quotient.mk z : (Fin N → RS a) ⧸ Fil) = 0` using `congrArg Subtype.val hcm`. Rewrite `h0` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `show Submodule.Quotient.mk z = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `hsat c z hc h0`. Use `haveI := hfLie`. Use `haveI := GlobalTheory.free_of_finite_of_isTorsionFree_of_valuationRing (Int0 v) (eigSub a τ ((Fin N → RS a) ⧸ Fil))`. Use `haveI := hfFil`. Use `haveI hfQ : Module.Finite (Int0 v) (eigQuot a Fil τ) := Module.Finite.map (Fil.restrictScalars (Int0 v)) (comp a N τ)`.
+
+Use `haveI := GlobalTheory.free_of_finite_of_isTorsionFree_of_valuationRing (Int0 v) (eigQuot a Fil τ)`. Establish `hrk : finrank (Int0 v) (eigQuot a Fil τ) = eigRank v a Fil τ` using `GlobalTheory.T.finrank_int0_submodule_eq_finrank_span C v N (eigQuot a Fil τ) hfQ`. Establish `bF` using `Module.finBasisOfFinrankEq (Int0 v) (eigQuot a Fil τ) hrk`. Establish `bLie` using `Module.finBasis (Int0 v) (eigSub a τ ((Fin N → RS a) ⧸ Fil))`. Take `⟨bH⟩` from `exists_basis_eigSub (ev a τ (cofac a τ)) hd hE6 hE7`.
+
+Use `⟨finrank (Int0 v) (eigSub a τ ((Fin N → RS a) ⧸ Fil)), ?_, ⟨bH⟩, ⟨bLie⟩, ⟨bF⟩, ?_⟩` and prove the remaining obligations. Take `⟨n, b1, b1', -, -, -⟩` from `hRL`. Establish `hlift : ∀ i, ∃ z : Fin N → RS a, proj a Fil z = (bLie i : (Fin N → RS a) ⧸ Fil)` using `fun i => Submodule.mkQ_surjective Fil _`. Use `choose x hx using hlift`. Take `⟨bL, -⟩` from `exists_basis_comb hE4 hE8 hE10 bLie x hx bF`.
+
+Take `⟨bHi, -⟩` from `exists_basis_image hE6 bH`. Establish `h1` using `Fintype.card_congr (bL.indexEquiv b1)`. Establish `h2` using `Fintype.card_congr (bHi.indexEquiv b1')`. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at h1 h2`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `h l x hx f e`. Take `⟨c, hc, h1, h2⟩` from `det_part hE4 hE6 hE8 hE9 hE10 hRL h l x hx f e`. Conclude with `⟨c, hc.trans hr, h1, h2⟩`.
+-/
 theorem detIdentity_of_relLen : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (S : Type)
     [Fintype S] [DecidableEq S] (a : S → Int0 v), Function.Injective a →
     ∀ (N : ℕ) (Fil : Submodule (RS a) (Fin N → RS a)),

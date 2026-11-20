@@ -21,6 +21,19 @@ namespace UpperTheory.ConvolutionTheory.R2.H.T0
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `hD : Matrix.diagonal ε * Matrix.diagonal ε = (1 : Matrix κ κ F)`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `hε k`.
+
+Set `M : Matrix κ ι F` to `(Matrix.diagonal ε).submatrix id e.symm`. Set `N : Matrix ι κ F` to `(Matrix.diagonal ε).submatrix e.symm id`. Establish `hNM : N * M = 1`. Establish `h` using `Matrix.submatrix_mul (Matrix.diagonal ε) (Matrix.diagonal ε) e.symm id e.symm Function.bijective_id`. Rewrite `h` using `[hD, Matrix.submatrix_one_equiv]`.
+
+Conclude with `h.symm`. Establish `hMN : M * N = 1`. Establish `h` using `Matrix.submatrix_mul (Matrix.diagonal ε) (Matrix.diagonal ε) id e.symm id e.symm.bijective`. Rewrite `h` using `[hD, Matrix.submatrix_id_id]`. Conclude with `h.symm`.
+
+Establish `h` using `GroundTheory.Heights₂.Theta.comp_mulVec_mem_schwartzBruhatPi M N hNM hMN hG`. Establish `hx : ∀ x : ι → A F, (M.map (algebraMap F (A F)) *ᵥ x) = fun k => rt (ε k) * x (e k)`. Introduce `x`. Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, M, Matrix.submatrix_apply, id]`.
+
+Rewrite using `[← e.sum_comp]`. Simplify using `only [Matrix.diagonal_apply]`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Simplify `h` using `only [hx]`.
+-/
 private theorem comp_signed_mem {ι κ : Type} [Fintype ι] [Fintype κ] (e : κ ≃ ι) (ε : κ → F)
     (hε : ∀ k, ε k * ε k = 1) {G : (κ → A F) → ℂ} (hG : G ∈ schwartzBruhatPi F κ) :
     (fun x : ι → A F => G fun k => rt (ε k) * x (e k)) ∈ schwartzBruhatPi F ι := by
@@ -70,6 +83,11 @@ private def sn : Fin 3 ⊕ Unit → F := Sum.elim 1 fun _ => -1
 
 private def FF (φ : V4 F → ℂ) (z : Fin 3 ⊕ Unit → A F) : ℂ := φ fun i => z (eS.symm i)
 
+/- English proof (translation)
+Establish `h` using `comp_signed_mem (F := F) eS.symm (fun _ => 1) (fun _ => by simp) hφ`. Establish `he : FF φ = fun x => φ fun k => rt ((fun _ => 1 : Fin 4 → F) k) * x (eS.symm k)`. Use function extensionality and compare the values at `x`. Simplify using `[FF]`. Rewrite using `[he]`.
+
+Conclude with `h`.
+-/
 private theorem FF_mem {φ : V4 F → ℂ} (hφ : φ ∈ schwartzBruhatPi F (Fin 4)) :
     FF φ ∈ schwartzBruhatPi F (Fin 3 ⊕ Unit) := by
   have h := comp_signed_mem (F := F) eS.symm (fun _ => 1) (fun _ => by simp) hφ
@@ -79,6 +97,13 @@ private theorem FF_mem {φ : V4 F → ℂ} (hφ : φ ∈ schwartzBruhatPi F (Fin
   rw [he]
   exact h
 
+/- English proof (translation)
+Establish `hmp` using `measurePreserving_funUnique (adeleMeasure F) Unit`. Establish `h` using `hmp.integral_comp' (g := fun s => φ (Function.update x 1 s) * ψ (-(s * x 1)))`. Rewrite using `[hat, ← h, GroundTheory.Heights₂.Theta.partialFourierPi, adelicFourierPi, adeleMeasurePi]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `h1 : Function.update x 1 (MeasurableEquiv.funUnique Unit (A F) y) = fun i => (Sum.elim (fun i => rt (sn (Sum.inl i)) * x (eS (Sum.inl i))) y : Fin 3 ⊕ Unit → A F) (eS.symm i)`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [eS, sn]`. Establish `h2 : ψ (-(MeasurableEquiv.funUnique Unit (A F) y * x 1)) = ((adelicChar F (∑ i, y i * (rt (sn (Sum.inr i)) * x (eS (Sum.inr i)))) : Circle) : ℂ)`. Simplify using `[ψ, eS, sn]`. Simplify using `only [FF]`.
+
+Rewrite using `[h1, h2]`.
+-/
 private theorem hat_eq (φ : V4 F → ℂ) (x : V4 F) :
     hat φ x = GroundTheory.Heights₂.Theta.partialFourierPi (FF φ) fun k => rt (sn k) * x (eS k) := by
   have hmp := measurePreserving_funUnique (adeleMeasure F) Unit
@@ -96,6 +121,9 @@ private theorem hat_eq (φ : V4 F → ℂ) (x : V4 F) :
   simp only [FF]
   rw [h1, h2]
 
+/- English proof (translation)
+Rewrite using `[hat_eq, hat_eq, hat_eq]`. Establish `e : FF (a + b) = FF a + FF b` using `rfl`. Rewrite using `[e]`. Conclude with `congrFun (adelicFourierPi_add (GroundTheory.Heights₂.Theta.integrable_partialFourierPi_slice (FF_mem ha) _) (GroundTheory.Heights₂.Theta.integrable_partialFourierPi_slice (FF_mem hb) _)) _`.
+-/
 private theorem hat_add {a b : V4 F → ℂ} (ha : a ∈ schwartzBruhatPi F (Fin 4))
     (hb : b ∈ schwartzBruhatPi F (Fin 4)) (x : V4 F) : hat (a + b) x = hat a x + hat b x := by
   rw [hat_eq, hat_eq, hat_eq]
@@ -105,6 +133,13 @@ private theorem hat_add {a b : V4 F → ℂ} (ha : a ∈ schwartzBruhatPi F (Fin
     (GroundTheory.Heights₂.Theta.integrable_partialFourierPi_slice (FF_mem ha) _)
     (GroundTheory.Heights₂.Theta.integrable_partialFourierPi_slice (FF_mem hb) _)) _
 
+/- English proof (translation)
+Establish `h` using `(poisson_of_mem_schwartzBruhatPi (UpperTheory.ConvolutionTheory.R2.D.hatMem F χ).1).1`. Establish `hinj : Function.Injective (fun ξ : Fin 2 → F => (![0, 0, ξ 0, ξ 1] : Fin 4 → F))`. Introduce `a b hab`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Conclude with `congrFun hab 2`. Conclude with `congrFun hab 3`. Use `(h.of_norm.comp_injective hinj).congr fun ξ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`.
+-/
 private theorem row_summable (χ : S4 F) :
     Summable fun ξ : Fin 2 → F => hat χ.1 ![0, 0, rt (ξ 0), rt (ξ 1)] := by
   have h := (poisson_of_mem_schwartzBruhatPi (UpperTheory.ConvolutionTheory.R2.D.hatMem F χ).1).1
@@ -120,6 +155,9 @@ private theorem row_summable (χ : S4 F) :
   funext i
   fin_cases i <;> simp
 
+/- English proof (translation)
+Unfold `ThRow`. Rewrite using `[← (row_summable a).tsum_add (row_summable b)]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Conclude with `hat_add a.2 b.2 _`.
+-/
 private theorem thRow_add (a b : S4 F) :
     ThRow 0 0 (a + b : S4 F).1 = ThRow 0 0 a.1 + ThRow 0 0 b.1 := by
   unfold ThRow
@@ -127,32 +165,53 @@ private theorem thRow_add (a b : S4 F) :
   refine tsum_congr fun ξ => ?_
   exact hat_add a.2 b.2 _
 
+/- English proof (translation)
+Unfold `ThRow hat`. Simplify using the standard rewrite rules.
+-/
 private theorem thRow_zero : ThRow 0 0 (0 : S4 F).1 = 0 := by
   unfold ThRow hat
   simp
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using thRow_zero`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, thRow_add, ih]`.
+-/
 private theorem thRow_sum {ι : Type} (s : Finset ι) (c : ι → S4 F) :
     ThRow 0 0 (∑ k ∈ s, c k : S4 F).1 = ∑ k ∈ s, ThRow 0 0 (c k).1 := by
   induction s using Finset.induction_on with
   | empty => simpa using thRow_zero
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, thRow_add, ih]
 
+/- English proof (translation)
+The claim follows from `(Valuation.map_add _ x y).trans (max_le hx hy)`.
+-/
 private theorem int_add {v : P F} {x y : Kv v} (hx : IsInt x) (hy : IsInt y) : IsInt (x + y) :=
   (Valuation.map_add _ x y).trans (max_le hx hy)
 
+/- English proof (translation)
+Unfold `IsInt at *`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' hx hy`.
+-/
 private theorem int_mul {v : P F} {x y : Kv v} (hx : IsInt x) (hy : IsInt y) : IsInt (x * y) := by
   unfold IsInt at *
   rw [map_mul]
   exact mul_le_one' hx hy
 
+/- English proof (translation)
+Unfold `IsInt at *`. Rewrite using `[Valuation.map_neg]` and apply the resulting hypothesis.
+-/
 private theorem int_neg {v : P F} {x : Kv v} (hx : IsInt x) : IsInt (-x) := by
   unfold IsInt at *
   rwa [Valuation.map_neg]
 
+/- English proof (translation)
+Unfold `IsInt`. Rewrite using `[map_one]`.
+-/
 private theorem int_one {v : P F} : IsInt (1 : Kv v) := by
   unfold IsInt
   rw [map_one]
 
+/- English proof (translation)
+Unfold `IsInt`. Rewrite using `[map_zero]`. Conclude with `zero_le'`.
+-/
 private theorem int_zero {v : P F} : IsInt (0 : Kv v) := by
   unfold IsInt
   rw [map_zero]
@@ -198,6 +257,13 @@ private def KP (v : P F) (ϖ : (Kv v)ˣ) : Subgroup (Matrix.SpecialLinearGroup (
     · rw [e]; simpa using int_neg c
     · rw [e]; simpa using int_neg d
 
+/- English proof (translation)
+Establish `hO : IsCompact (v.adicCompletionIntegers F : Set (Kv v))` using `isCompact_iff_compactSpace.2 (inferInstanceAs (CompactSpace (v.adicCompletionIntegers F)))`. Establish `e : {x : Kv v | IsInt ((c : Kv v) * x)} = (fun y => ((c⁻¹ : (Kv v)ˣ) : Kv v) * y) '' (v.adicCompletionIntegers F : Set (Kv v))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨(c : Kv v) * x, hx, by simp⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `: IsInt y` using `hy`. Simplify `this` using `[Set.mem_setOf_eq]`. Rewrite using `[e]`.
+
+Conclude with `hO.image (continuous_const.mul continuous_id)`.
+-/
 private theorem ball_compact (v : P F) (c : (Kv v)ˣ) : IsCompact {x : Kv v | IsInt ((c : Kv v) * x)} := by
   have hO : IsCompact (v.adicCompletionIntegers F : Set (Kv v)) :=
     isCompact_iff_compactSpace.2 (inferInstanceAs (CompactSpace (v.adicCompletionIntegers F)))
@@ -213,6 +279,19 @@ private theorem ball_compact (v : P F) (c : (Kv v)ˣ) : IsCompact {x : Kv v | Is
   rw [e]
   exact hO.image (continuous_const.mul continuous_id)
 
+/- English proof (translation)
+Set `cc : Fin 2 → Fin 2 → (Kv v)ˣ` to `![![1, ϖ⁻¹], ![ϖ, 1]]`. Set `C : Set (Matrix (Fin 2) (Fin 2) (Kv v))` to `Set.pi Set.univ fun i => Set.pi Set.univ fun k => {x : Kv v | IsInt ((cc i k : Kv v) * x)}`. Establish `hC : IsCompact C` using `isCompact_univ_pi fun i => isCompact_univ_pi fun k => ball_compact v _`. Establish `hcl : IsClosed {A : Matrix (Fin 2) (Fin 2) (Kv v) | A.det = 1}` using `isClosed_eq (Continuous.matrix_det continuous_id) continuous_const`. Establish `hemb : Topology.IsClosedEmbedding (Subtype.val : Matrix.SpecialLinearGroup (Fin 2) (Kv v) → Matrix (Fin 2) (Fin 2) (Kv v))` using `hcl.isClosedEmbedding_subtypeVal`.
+
+Establish `hK : IsCompact ((KP v ϖ : Subgroup _) : Set (Matrix.SpecialLinearGroup (Fin 2) (Kv v)))`. Establish `e : ((KP v ϖ : Subgroup _) : Set (Matrix.SpecialLinearGroup (Fin 2) (Kv v))) = Subtype.val ⁻¹' C`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro ⟨a, b, c, d⟩ i - k - fin_cases i <;> fin_cases k`.
+
+Use `show IsInt (((1 : (Kv v)ˣ) : Kv v) * x.1 0 0)`. Rewrite using `[Units.val_one, one_mul]`. Conclude with `a`. Conclude with `c`. Conclude with `d`.
+
+Use `show IsInt (((1 : (Kv v)ˣ) : Kv v) * x.1 1 1)`. Rewrite using `[Units.val_one, one_mul]`. Conclude with `b`. Introduce `h`. Establish `h00 : IsInt (((1 : (Kv v)ˣ) : Kv v) * x.1 0 0)` using `h 0 (Set.mem_univ _) 0 (Set.mem_univ _)`.
+
+Establish `h11 : IsInt (((1 : (Kv v)ˣ) : Kv v) * x.1 1 1)` using `h 1 (Set.mem_univ _) 1 (Set.mem_univ _)`. Rewrite `h00`, `h11` using `[Units.val_one, one_mul]`. Conclude with `⟨h00, h11, h 0 (Set.mem_univ _) 1 (Set.mem_univ _), h 1 (Set.mem_univ _) 0 (Set.mem_univ _)⟩`. Rewrite using `[e]`. Conclude with `hemb.isCompact_preimage hC`.
+
+Conclude with `isCompact_iff_compactSpace.1 hK`.
+-/
 private theorem kp_compact (v : P F) (ϖ : (Kv v)ˣ) : CompactSpace (KP v ϖ) := by
   let cc : Fin 2 → Fin 2 → (Kv v)ˣ := ![![1, ϖ⁻¹], ![ϖ, 1]]
   let C : Set (Matrix (Fin 2) (Fin 2) (Kv v)) :=
@@ -252,15 +331,24 @@ private def lK {v : P F} (c : Kv v) : Matrix.SpecialLinearGroup (Fin 2) (Kv v) :
 
 private def lU (c : A F) : G1 F := ⟨!![1, 0; c, 1], by simp [Matrix.det_fin_two]⟩
 
+/- English proof (translation)
+Establish `h` using `(sgLaws F v).1 0 0`. Simplify using `using h`.
+-/
 private theorem sg_zero (v : P F) : sg v (0 : Kv v) = 0 := by
   have h := (sgLaws F v).1 0 0
   simpa using h
 
+/- English proof (translation)
+Establish `h` using `(sgLaws F v).1 x (-x)`. Rewrite `h` using `[add_neg_cancel, sg_zero]`. Conclude with `(neg_eq_of_add_eq_zero_right h.symm).symm`.
+-/
 private theorem sg_neg (v : P F) (x : Kv v) : sg v (-x) = -sg v x := by
   have h := (sgLaws F v).1 x (-x)
   rw [add_neg_cancel, sg_zero] at h
   exact (neg_eq_of_add_eq_zero_right h.symm).symm
 
+/- English proof (translation)
+Rewrite using `[mul_inv_eq_iff_eq_mul]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) (A F)) * !![1, t; 0, 1] = !![1, 0; -t, 1] * !![0, 1; -1, 0]`. Simplify using `[Matrix.mul_fin_two]`.
+-/
 private theorem w_conj (t : A F) : wW F * nU t * (wW F)⁻¹ = lU (-t) := by
   rw [mul_inv_eq_iff_eq_mul]
   apply Subtype.ext
@@ -272,6 +360,41 @@ end UpperTheory.ConvolutionTheory.R2.H.T0
 end
 
 open UpperTheory.ConvolutionTheory.R2.H.T0 in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M v ϖ hϖ hGd hAn j hj f φ hfL hfR hint`. Establish `hH : St.Hat W` using `hatSt F E D W`. Take `⟨hjc, hAt, -, hent⟩` from `(jEx F v).2 j hj`. Set `ρ : KP v ϖ →* Module.End ℂ (S4 F)` to `W.Om.comp (j.comp (KP v ϖ).subtype)`. Use `haveI : CompactSpace (KP v ϖ) := kp_compact v ϖ`.
+
+Establish `hρ : ∀ (k : KP v ϖ) (χ : S4 F), ρ k χ = W.Om (j k.1) χ` using `fun _ _ => rfl`. Establish `hev : ∀ᶠ h in 𝓝 (1 : KP v ϖ), ρ h φ = φ`. Establish `ht : Tendsto (fun h : KP v ϖ => j h.1) (𝓝 1) (𝓝 1)`. Establish `h1` using `(hjc.comp continuous_subtype_val).tendsto (1 : KP v ϖ)`. Simplify using `only [OneMemClass.coe_one, map_one, Function.comp_apply] at h1`.
+
+Conclude with `h1`. Use `filter_upwards [ht.eventually (W.level φ)] with h hh`. Conclude with `hh (hAt h.1).1`. Take `⟨s, hs, hfix⟩` from `avg (KP v ϖ) (S4 F) ρ φ hev`. Use `set φ₂ : S4 F := ∑ k ∈ s, ρ k φ with hφ₂`.
+
+Establish `hnj : ∀ b : Kv v, j (nK b) = nU (sg v b)`. Introduce `b`. Apply `Matrix.SpecialLinearGroup.ext` to reduce the goal to its premises. Introduce `i k`. Rewrite using `[hent]`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [nK, nU, sg_zero]`. Establish `hlj : ∀ c : Kv v, j (lK c) = lU (sg v c)`. Introduce `c`. Apply `Matrix.SpecialLinearGroup.ext` to reduce the goal to its premises. Introduce `i k`.
+
+Rewrite using `[hent]`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [lK, lU, sg_zero]`. Establish `hn : ∀ b, IsInt b → W.Om (nU (sg v ((ϖ : Kv v) * b))) φ₂ = φ₂`. Introduce `b hb`. Establish `hm : nK ((ϖ : Kv v) * b) ∈ KP v ϖ`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `int_one` using `[nK]`. Simplify `int_one` using `[nK]`. Simplify `hb` using `[nK]`. Simplify `int_zero` using `[nK]`.
+
+Use `hfix ⟨_, hm⟩` as an intermediate fact. Rewrite `this` using `[hρ]`. Simplify `this` using `only [hnj]`. Establish `hw : ∀ c, IsInt c → W.Om (wW F * nU (sg v (((ϖ⁻¹ : (Kv v)ˣ) : Kv v) * c)) * (wW F)⁻¹) φ₂ = φ₂`. Introduce `c hc`.
+
+Establish `hm : lK (-(((ϖ⁻¹ : (Kv v)ˣ) : Kv v) * c)) ∈ KP v ϖ`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `int_one` using `[lK]`. Simplify `int_one` using `[lK]`. Simplify `int_zero` using `[lK]`.
+
+Simplify `int_neg hc` using `[lK]`. Use `hfix ⟨_, hm⟩` as an intermediate fact. Rewrite `this` using `[hρ]`. Simplify using `only [hlj, sg_neg] at this`. Rewrite using `[w_conj]`.
+
+Conclude with `this`. Establish `hker` using `slKer F E D W φ₂ (slZero F E D W v ϖ hϖ hGd hAn φ₂ hn hw)`. Set `u : G1 F → ℂ` to `fun g => f g * ThRow 0 0 (W.Om g φ).1`. Establish `hu : ∀ γ g, u (ratS F γ * g) = u g`. Introduce `γ g`.
+
+Establish `h` using `hH.row γ 0 (W.Om g φ)`. Simplify using `only [Matrix.zero_vecMul, Pi.zero_apply, map_zero] at h`. Use `show f (ratS F γ * g) * ThRow 0 0 (W.Om (ratS F γ * g) φ).1 = f g * ThRow 0 0 (W.Om g φ).1`. Rewrite using `[hfL, map_mul, Module.End.mul_apply, h]`. Establish `hk : ∀ (k : KP v ϖ) g, u (g * j k.1) = f g * ThRow 0 0 (W.Om g (ρ k φ)).1`.
+
+Introduce `k g`. Take `⟨x, a, b, c, d⟩` from `k`. Use `show f (g * j x) * ThRow 0 0 (W.Om (g * j x) φ).1 = _`. Rewrite using `[hfR g x a b c d, map_mul, Module.End.mul_apply]`. Both sides reduce to the same expression.
+
+Establish `hz : ∀ g, ∑ k ∈ s, u (g * j k.1) = 0`. Introduce `g`. Simplify using `only [hk]`. Rewrite using `[← Finset.mul_sum]`. Establish `e : W.Om g φ₂ = ∑ k ∈ s, W.Om g (ρ k φ)` using `by rw [hφ₂, map_sum]`.
+
+Establish `h` using `hker g`. Rewrite `h` using `[e, thRow_sum]`. Rewrite using `[h, mul_zero]`. Establish `hsum : ∑ k ∈ s, ∫ g in M.D, u (g * j k.1) ∂M.μ = 0`. Rewrite using `[← integral_finset_sum s fun k _ => (rightInv F M u hu hint (j k.1)).1]`.
+
+Simplify using `only [hz, integral_zero]`. Establish `hcard : (s.card : ℂ) * ∫ g in M.D, u g ∂M.μ = 0`. Establish `e : ∀ k ∈ s, ∫ g in M.D, u (g * j k.1) ∂M.μ = ∫ g in M.D, u g ∂M.μ` using `fun k _ => (rightInv F M u hu hint (j k.1)).2`. Rewrite `hsum` using `[Finset.sum_congr rfl e, Finset.sum_const, nsmul_eq_mul]`. Conclude with `hsum`.
+
+Establish `hne : (s.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 hs)`. Conclude with `(mul_eq_zero.1 hcard).resolve_left hne`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.H.integral_thetaRowZero_eq_zero_of_iwahori_invariant :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (v : P F) (ϖ : (Kv v)ˣ), IsU ϖ → Gd D.δ v → Aniso D.δ v → ∀ j, IsJ v j →
       ∀ (f : G1 F → ℂ) (φ : S4 F), (∀ γ g, f (ratS F γ * g) = f g) →

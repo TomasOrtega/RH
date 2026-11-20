@@ -5,6 +5,9 @@ import Mathlib.RingTheory.AdicCompletion.Completeness
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa UpperTheory.V.Pa.Core
 open scoped TensorProduct
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.mem_ker, ← AdicCompletion.pow_smul_top_eq_ker_eval (hI.map _), Ideal.smul_top_eq_map, ← Ideal.map_pow, Ideal.map_map, Submodule.restrictScalars_mem, ← IsScalarTower.algebraMap_eq]`.
+-/
 private theorem yCpl_mem {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (I : Ideal R) (hI : I.FG)
     (n : ℕ) (x : AdicCompletion (I.map (algebraMap R S)) S) :
     x ∈ (I ^ n).map (algebraMap R (AdicCompletion (I.map (algebraMap R S)) S)) ↔
@@ -12,6 +15,9 @@ private theorem yCpl_mem {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (I
   rw [← LinearMap.mem_ker, ← AdicCompletion.pow_smul_top_eq_ker_eval (hI.map _), Ideal.smul_top_eq_map,
     ← Ideal.map_pow, Ideal.map_map, Submodule.restrictScalars_mem, ← IsScalarTower.algebraMap_eq]
 
+/- English proof (translation)
+Rewrite using `[yCpl_mem I hI, AdicCompletion.algebraMap_apply, AdicCompletion.eval_of, Submodule.mkQ_apply, Algebra.algebraMap_self, RingHom.id_apply, Submodule.Quotient.mk_eq_zero, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.map_pow]`.
+-/
 private theorem yCpl_mem_of {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (I : Ideal R) (hI : I.FG)
     (n : ℕ) (s : S) :
     algebraMap S (AdicCompletion (I.map (algebraMap R S)) S) s ∈
@@ -21,6 +27,19 @@ private theorem yCpl_mem_of {R S : Type} [CommRing R] [CommRing S] [Algebra R S]
     Algebra.algebraMap_self, RingHom.id_apply,
     Submodule.Quotient.mk_eq_zero, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.map_pow]
 
+/- English proof (translation)
+Introduce `R σ _ _ _ y f`. Use `set S := Localization.Away f`. Use `set I : Ideal R := Ideal.span (Set.range y)`. Use `set A := AdicCompletion (I.map (algebraMap R S)) S`. Establish `hI : I.FG` using `Submodule.fg_span (Set.finite_range y)`.
+
+Establish `hS : IsNoetherianRing S` using `IsLocalization.isNoetherianRing (Submonoid.powers f) S inferInstance`. Establish `hRA : ∀ r : R, algebraMap R A r = algebraMap S A (algebraMap R S r)` using `fun r => IsScalarTower.algebraMap_apply R S A r`. Use `⟨GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion S _, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hRA]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit f).map _`.
+
+Introduce `n x`. Take `⟨s, hs⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (I.map (algebraMap R S)) S n x)`. Take `⟨⟨r, _, ⟨k, rfl⟩⟩, hr⟩` from `IsLocalization.surj (Submonoid.powers f) s`. Simplify using `only at hr`. Use `⟨k, r, ?_⟩` and prove the remaining obligations.
+
+Establish `hmem : x - algebraMap S A s ∈ (I ^ n).map (algebraMap R A)`. Rewrite using `[yCpl_mem I hI, map_sub, AdicCompletion.algebraMap_apply, AdicCompletion.eval_of, ← hs, Algebra.algebraMap_self, RingHom.id_apply, Submodule.mkQ_apply, sub_self]`. Establish `heq : algebraMap R A f ^ k * x - algebraMap R A r = algebraMap R A (f ^ k) * (x - algebraMap S A s)`. Rewrite using `[mul_sub, hRA r, ← hr, map_mul, ← hRA (f ^ k), map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[heq]`. Conclude with `Ideal.mul_mem_left _ _ hmem`. Introduce `n r hr`. Rewrite `hr` using `[hRA, yCpl_mem_of I hI]`. Take `⟨m, ⟨k, rfl⟩, hm⟩` from `(IsLocalization.algebraMap_mem_map_algebraMap_iff (Submonoid.powers f) S (I ^ n) r).1 hr`.
+
+Conclude with `⟨k, hm⟩`.
+-/
 theorem UpperTheory.V.Pa.Core.yCpl :
     ∀ (R σ : Type) [CommRing R] [IsNoetherianRing R] [Fintype σ] (y : σ → R) (f : R), IsYCpl y f (AdicCompletion ((Ideal.span (Set.range y)).map (algebraMap R (Localization.Away f))) (Localization.Away f)) := by
   intro R σ _ _ _ y f

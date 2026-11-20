@@ -9,6 +9,9 @@ noncomputable section
 
 namespace HeightCancellation
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m n`.
+-/
 theorem ht_cancel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' S'' : Scheme.{0}} {t : SAB H S}
     {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S} {g : S'' ⟶ S'} {k : S'' ⟶ S} (m : SABMap t' t f)
     (n : SABMap t'' t k) (e : k = g ≫ f) : ∃ m' : SABMap t'' t' g, n.φ = m'.φ ≫ m.φ := by
@@ -16,6 +19,37 @@ theorem ht_cancel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   exact sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m n
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω Ω' _ _ K K' _ _ J J' _ _ y y' A A' h i j ⟨hdom, hf, hcst, hext, hjo⟩ hR _ hvb`. Use `haveI : CharZero Ω := charZero_of_injective_ringHom A.cst.injective`. Use `haveI : CharZero Ω' := charZero_of_injective_ringHom i.injective`. Establish `hmono : Mono (spMap (algebraMap (𝓞 c.F) c.F))`. Use `c.fin` as an intermediate fact.
+
+Establish `: NumberField c.F` using `{}`. Establish `: IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 c.F))`. Use `infer_instance`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.T.hodge_component_factor_point E H D l Xo c _ _ Y S Ω K J y A hmono`. Take `⟨x, hx⟩ : ∃ x : Sp Ω ⟶ Xo.XF c, A.ξ ≫ A.f = x ≫ Y.j` from `⟨spMap A.fn ≫ x₀, by`.
+
+Rewrite using `[Category.assoc, ← hx₀]`. Conclude with `A.fn_over⟩`. Establish `hgen` using `A.tie.gen`. Establish `hgen'` using `A'.tie.gen`. Take `⟨mh, hmh⟩` from `ht_cancel A.m A'.m hf`.
+
+Take `⟨j₀, hj₀⟩` from `GlobalTheory.T.lie_model_pullback_map A.X A'.X Ω Ω' A.ξ A'.ξ h i A.t.G A'.t.G mh.φ A.Li A'.Li A.M A'.M hdom mh.cart`. Establish `hjj : ∀ w, j w = j₀ w` using `fun w => by`. Apply `A'.M.inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `A'.m.cart.1.hom_ext` to reduce the goal to its premises.
+
+Use `(hjo w).trans ?_ show _ = (A'.M.pt (j₀ w)).left ≫ A'.m.φ` and prove the remaining obligations. Rewrite using `[hmh, ← Category.assoc (A'.M.pt (j₀ w)).left, hj₀ w, Category.assoc]`. Rewrite using `[Over.w, Over.w]`. Establish `hj : ∀ e, (A'.M.pt (j e)).left ≫ mh.φ = Spec.map (CommRingCat.ofHom (dualMap i)) ≫ (A.M.pt e).left` using `fun e => by rw [hjj e]; exact hj₀ e`. Establish `hsm : Smooth A.t.G.hom` using `A.t.semi.smooth`.
+
+Take `⟨-, hspan, -⟩` from `GlobalTheory.T.lie_lattice_dominant_compat A.X A'.X Ω Ω' A.ξ A'.ξ h i A.t.G A'.t.G mh.φ A.Li A'.Li A.M A'.M j hgen hgen' hdom mh.cart hsm hj`. Establish `hρj` using `GlobalTheory.T.lie_model_pullback_action A.X A'.X Ω Ω' A.ξ A'.ξ h i A.t.G A'.t.G mh.φ A.Li A'.Li A.M A'.M j (𝓞 E) A.t.act.act A'.t.act.act A.ρ A'.ρ hdom mh.cart hj A.act A'.act (fun a => mh.act a)`. Take `⟨jd, hjd⟩` from `GlobalTheory.T.dual_map_of_field_extension Ω Ω' i A.Li A'.Li j hext hspan`. Establish `hW : ∀ s, eigSp A'.ρ ((i.comp A.cst).comp (labelEmb c s)) = Submodule.span Ω' (j '' (A.Vgen s : Set A.Li))` using `fun s => GlobalTheory.T.eigenspace_field_extension E Ω Ω' i A.Li A'.Li j A.ρ A'.ρ (A.emb s) hext hspan hρj`. Establish `hdm` using `GlobalTheory.CompanionTheory.Ar.RegAtDom.regAt_dominates A.X Ω A.ξ A'.X Ω' A'.ξ h i hdom`.
+
+Establish `hsp : ∀ p' : Cpt A'.ξ, genPt A.ξ ⤳ h p'.1` using `fun p' => (hdm p').choose`. Establish `hreg : ∀ (p' : Cpt A'.ξ), ∀ a ∈ regAt A.ξ ⟨h p'.1, hsp p'⟩, i a ∈ regAt A'.ξ p'` using `fun p' => (hdm p').choose_spec.1`. Establish `hun : ∀ (p' : Cpt A'.ξ), ∀ a ∈ regAt A.ξ ⟨h p'.1, hsp p'⟩, unitAt A'.ξ p' (i a) → unitAt A.ξ ⟨h p'.1, hsp p'⟩ a` using `fun p' => (hdm p').choose_spec.2 hgen'`. Establish `hfib : ∀ (p : ℕ) (p' : Cpt A'.ξ), InFibre A'.ξ p p' ↔ InFibre A.ξ p ⟨h p'.1, hsp p'⟩`. Introduce `p p'`.
+
+Use `not_congr ⟨fun hu => ?_, fun ⟨a, b, d⟩ => ?_⟩` and prove the remaining obligations. Establish `hr : (p : Ω) ∈ regAt A.ξ ⟨h p'.1, hsp p'⟩` using `natCast_mem _ p`. Conclude with `hun p' _ hr (by simpa using hu)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `e`.
+
+Apply `a` to reduce the goal to its premises. Apply `i.injective` to reduce the goal to its premises. Simplify using `using e`. Simplify using `using hreg p' _ b`. Simplify using `using hreg p' _ d`.
+
+Establish `hnoeth` using `(GlobalTheory.T.regAt_noetherian_model_noetherian A.X Ω A.ξ ℤ _ _ A.tie).1`. Establish `hnoeth'` using `(GlobalTheory.T.regAt_noetherian_model_noetherian A'.X Ω' A'.ξ ℤ _ _ A'.tie).1`. Establish `hic : ∀ q : Cpt A.ξ, IsIntegrallyClosed (A.X.presheaf.stalk q.1)` using `fun q => (A.normal q.1).2`. Establish `hic' : ∀ q : Cpt A'.ξ, IsIntegrallyClosed (A'.X.presheaf.stalk q.1)` using `fun q => (A'.normal q.1).2`. Establish `htors : ∀ p ∈ S, FullTorsion A'.t.G A'.ξ (p ^ A.R p)` using `fun p hp => GlobalTheory.T.full_torsion_pullback A.X A'.X Ω Ω' A.ξ A'.ξ h i A.t.G A'.t.G mh.φ _ hdom mh.cart (A.tors p hp)`.
+
+Establish `hω : ∀ p ∈ S, ∀ p' : Cpt A'.ξ, 0 < D.p + D.q → A'.M.htOm A'.t.PP.L (p ^ A.R p) p' = Submodule.span (regAt A'.ξ p') (jd '' (A.M.htOm A.t.PP.L (p ^ A.R p) ⟨h p'.1, hsp p'⟩ : Set _))`. Introduce `p hp p' hpos`. Establish `hN : 0 < p ^ A.R p` using `pow_pos (A.S_prime p hp).pos _`. Take `⟨s0, o, ⟨m0⟩⟩` from `GlobalTheory.T.abelian_scheme_point_object E H D l Xo c _ _ Y A.X A.f A.t A.m Ω A.ξ x hx`. Take `⟨s0', o', ⟨m0'⟩⟩` from `GlobalTheory.T.abelian_scheme_point_object E H D l Xo c _ _ Y A'.X A'.f A'.t A'.m Ω' A'.ξ (spMap i ≫ x) (by`.
+
+Rewrite using `[hf, ← Category.assoc, hdom, Category.assoc, hx, Category.assoc])`. Establish `hc1 : IsIntegrallyClosed (A.X.presheaf.stalk (h p'.1))` using `hic ⟨h p'.1, hsp p'⟩`. Establish `hn1 : IsNoetherianRing (A.X.presheaf.stalk (h p'.1))` using `noeth_stalk hgen ⟨h p'.1, hsp p'⟩ (hnoeth _)`. Establish `h1` using `PositivityTheory.UnitarySelfGeneration.lattice_integrally_closed_torsion E H D l (KA l) (baseKA l) A.X Ω A.ξ s0 o A.t m0 A.Li A.M (p ^ A.R p) ⟨h p'.1, hsp p'⟩ hgen hN (A.tors p hp) hc1 hn1`. Establish `h1'` using `PositivityTheory.UnitarySelfGeneration.lattice_integrally_closed_torsion E H D l (KA l) (baseKA l) A'.X Ω' A'.ξ s0' o' A'.t m0' A'.Li A'.M (p ^ A.R p) p' hgen' hN (htors p hp) (hic' _) (noeth_stalk hgen' _ (hnoeth' _))`.
+
+Establish `h2` using `PositivityTheory.UnitarySelfGeneration.height_pullback_dominating_map A.X A'.X Ω Ω' A.ξ A'.ξ h i A.t.G A'.t.G mh.φ A.Li A'.Li A.M A'.M j hgen hgen' hdom mh.cart hsm hj jd hjd (p ^ A.R p) hN p' (hsp p') hc1 hn1 (h1.2.1 hpos) h1.1`. Rewrite using `[h1'.2.2, h2, pull_eq A'.ξ h _ jd p' (hsp p'), h1.2.2]`. Establish `hpos : ∀ s, 0 < labelRk D s → 0 < D.p + D.q`. Introduce `s hs`. Break down `s with τ | τ` into its components or cases.
+
+Establish `: 0 < D.p` using `hs`. Use linear arithmetic over natural numbers and integers. Establish `: 0 < D.q` using `hs`. Use linear arithmetic over natural numbers and integers. Introduce `p hp s`.
+
+Establish `e1 : A'.Vgen s = eigSp A'.ρ ((i.comp A.cst).comp (labelEmb c s))`. Rewrite using `[← hcst]`. Both sides reduce to the same expression. Rewrite using `[hR]`. Conclude with `GlobalTheory.T.lattice_flag_field_extension A.X A'.X Ω Ω' A.ξ A'.ξ h i A.Li A'.Li j jd (A.Vgen s) _ (A.M.htOm A.t.PP.L (p ^ A.R p)) (A'.M.htOm A'.t.PP.L (p ^ A.R p)) {q | InFibre A.ξ p q} {q | InFibre A'.ξ p q} (labelRk D s) hdom hgen' hext hjd (e1.trans (hW s)) (hvb p hp s) fun …`.
+-/
 theorem stHt : SquareStatements.StHt := by
   intro E _ _ _ H D l Xo c Y S Ω Ω' _ _ K K' _ _ J J' _ _ y y' A A' h i j ⟨hdom, hf, hcst, hext, hjo⟩ hR _ hvb
   haveI : CharZero Ω := charZero_of_injective_ringHom A.cst.injective

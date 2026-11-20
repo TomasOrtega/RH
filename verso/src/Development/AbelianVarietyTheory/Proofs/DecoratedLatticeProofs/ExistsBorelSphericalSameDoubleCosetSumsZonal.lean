@@ -22,6 +22,17 @@ section Abstract
 variable {G X V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup X] [Module ℂ X]
   [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hf v`. Take `⟨w, hw, hfw⟩` from `IwahoriOnto.exists_fixed_map_eq hρ hK f.toLinearMap u fun h hh => by show f (ρ h u) = f u`. Rewrite using `[f.isIntertwining]`. Simplify using `using hv ⟨h, hh⟩`. Establish `hw' : ∀ x ∈ K, ρ x w = w` using `fun x hx => by simpa using hw ⟨x, hx⟩`.
+
+Establish `hfw' : f w = f u` using `hfw`. Establish `hEw : E w ≠ 0` using `fun h => by`. Establish `h0` using `hE w hw' h`. Rewrite `hfw'` using `[h0, map_zero]`. Rewrite `hlv` using `[← hfw', map_zero]`.
+
+Conclude with `zero_ne_one hlv`. Use `⟨(E w)⁻¹ • w, fun x hx => by rw [map_smul, hw' x hx], by simp [hEw], fun S hS => ?_⟩` and prove the remaining obligations. Use `set z := (E w)⁻¹ • w with hz`. Establish `hzK : ∀ x ∈ K, ρ x z = z` using `fun x hx => by rw [hz, map_smul, hw' x hx]`. Establish `hEz : E z = 1` using `by simp [hz, hEw]`.
+
+Establish `hfz : f z = (E w)⁻¹ • f u` using `by rw [hz, map_smul, hfw']`. Establish `h1` using `hE (∑ c ∈ S, ρ c.out z - (∑ c ∈ S, E (ρ c.out z)) • z) (fun x hx => by rw [map_sub, Rep.sum_fixed ρ K hzK S hS x hx, map_smul, hzK x hx]) (by rw [map_sub, map_sum, map_smul, hEz, smul_eq_mul, mul_one, sub_self])`. Establish `h2` using `congrArg (fun y => l (f y)) (sub_eq_zero.1 h1)`. Establish `hI : ∀ c : G ⧸ K, f (ρ c.out z) = π c.out (f z)` using `fun c => f.isIntertwining _ _ _ _`. Simplify using `only [map_sum, map_smul, hI, hfz, smul_eq_mul, hlv, mul_one] at h2`.
+
+Rewrite `h2` using `[← Finset.mul_sum]`. Conclude with `(mul_right_injective₀ (inv_ne_zero hEw)).eq_iff.1 (h2.trans (mul_comm _ _))`.
+-/
 theorem exists_fixed_sum_eq {ρ : Representation ℂ G X} {π : Representation ℂ G V} (hρ : IsSmooth ρ)
     {K : Subgroup G} (hK : IsCompact (K : Set G)) (f : ρ.IntertwiningMap π) (hf : Function.Surjective f)
     (E : X →ₗ[ℂ] ℂ) (hE : ∀ u : X, (∀ x ∈ K, ρ x u = u) → E u = 0 → u = 0) {v : V} (hv : v ∈ fixed π K)
@@ -56,6 +67,23 @@ theorem exists_fixed_sum_eq {ρ : Representation ℂ G X} {π : Representation �
 
 end Abstract
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n V _ _ π α ⟨_, _hs, S, f, hf⟩ ω ⟨v, hv, l, _hl, hlv, hω⟩`. Establish `hsm : IsSmooth S.toRepresentation` using `IsSubquotient.isSmooth ⟨S, .id _, Function.surjective_id⟩ (isSmooth_parInd _ _)`. Set `E : S.toSubmodule →ₗ[ℂ] ℂ` to `⟨⟨fun u => u.1.1.1 1, fun _ _ => rfl⟩, fun _ _ => rfl⟩`. Establish `hr : ∀ u : S.toSubmodule, (∀ x ∈ KO k (Fin n), S.toRepresentation x u = u) → ∀ g, ∀ x ∈ KO k (Fin n), u.1.1.1 (g * x) = u.1.1.1 g` using `fun u h g x hx => congrArg (fun z : S.toSubmodule => z.1.1.1 g) (h x hx)`. Take `⟨z, hzK, hEz, key⟩` from `exists_fixed_sum_eq hsm SplitFlip.isCompact_KO f hf E (fun u h h0 => by`.
+
+Use `Subtype.ext (Subtype.ext (Subtype.ext (funext fun g => ?_)))` and prove the remaining obligations. Take `⟨b, hb, x, hx, rfl⟩` from `iwasawa_blockTriangular k (Fin n) Fin.val g`. Establish `h1` using `parInd_law _ _ u.1 ⟨b, (mem_borel _).2 hb⟩ 1`. Establish `h2 : u.1.1.1 1 = 0` using `h0`. Rewrite `h1` using `[h2, map_zero, smul_zero, mul_one]`.
+
+Conclude with `(hr u h b x hx).trans h1) hv l hlv`. Use `⟨fun g => z.1.1.1 g, ⟨hr z hzK, fun b hb t ht => ?_⟩, fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `Rep.law α z.1 b hb t ht 1`. Establish `h2 : z.1.1.1 1 = 1` using `hEz`. Rewrite `h1` using `[h2, mul_one, mul_one]`. Then use the resulting hypothesis.
+
+Establish `hK : IsCommensurated (KO k (Fin n))` using `PI.UnitaryGroupMassFormula.AdIndexEq.commensurated_of_isOpen_isCompact _ SplitFlip.isOpen_KO SplitFlip.isCompact_KO`. Establish `hfin` using `Formalism.UG.P.finite_support_cosets hK (Formalism.UG.Final.DosetIndMem _ (KO k (Fin n)) ℂ g).2`. Establish `hmem : ∀ c : GL (Fin n) k ⧸ KO k (Fin n), c ∈ hfin.toFinset ↔ c.out ∈ DoubleCoset.doubleCoset g (KO k (Fin n) : Set (GL (Fin n) k)) (KO k (Fin n))` using `fun c => by`. Simplify using `[dosetInd]`. Establish `hT : ∀ x ∈ KO k (Fin n), ∀ c ∈ hfin.toFinset, x • c ∈ hfin.toFinset`.
+
+Introduce `x hx c hc`. Take `⟨a, ha, rfl⟩` from `(GlobalTheory.ChainOnto.out_mem_doubleCoset_iff g c).1 ((hmem c).1 hc)`. Use `(hmem _).2 ((GlobalTheory.ChainOnto.out_mem_doubleCoset_iff g _).2 ⟨x * a, mul_mem hx ha, ?_⟩)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression.
+
+Establish `e : ∀ F : GL (Fin n) k → ℂ, hAct (KO k (Fin n)) (dosetInd ℂ (KO k (Fin n)) g) F 1 = ∑ c ∈ hfin.toFinset, F c.out`. Introduce `F`. Rewrite using `[hAct, finsum_eq_sum_of_support_subset (s := hfin.toFinset)]`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations. Rewrite using `[dosetInd, Set.indicator_of_mem ((hmem c).1 hc), one_mul, Pi.one_apply, one_smul]`.
+
+Introduce `c hc`. Rewrite `hc` using `[Function.mem_support]`. Use `(hmem c).2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Rewrite `hc` using `[dosetInd, Set.indicator_of_notMem h, zero_smul]`.
+
+Conclude with `hc rfl`. Rewrite using `[e, e]`. Use `((Finset.sum_congr rfl fun c _ => hω c.out).trans (key _ hT)).trans (Finset.sum_congr rfl fun c _ => ?_)` and prove the remaining obligations. Use `show z.1.1.1 (1 * c.out) = _`. Rewrite using `[one_mul]`.
+-/
 theorem exists_isBorelSph_hAct_eq : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (α : Fin n → ℂˣ), HasSatake π α → ∀ ω : GL (Fin n) k → ℂ, IsZonal π (KO k (Fin n)) ω → ∃ φ : GL (Fin n) k → ℂ, IsBorelSph k (fun i : Fin n => (α i : ℂ) * (((resCard k : ℝ) ^ (((i : ℕ) : ℝ) - ((n : ℝ) - 1) / 2) : ℝ) : ℂ)) φ ∧ ∀ g, Formalism.UG.hAct (KO k (Fin n)) (Formalism.UG.dosetInd ℂ (KO k (Fin n)) g) ω 1 = Formalism.UG.hAct (KO k (Fin n)) (Formalism.UG.dosetInd ℂ (KO k (Fin n)) g) φ 1 := by
   intro k _ _ _ _ n V _ _ π α ⟨_, _hs, S, f, hf⟩ ω ⟨v, hv, l, _hl, hlv, hω⟩
   have hsm : IsSmooth S.toRepresentation :=

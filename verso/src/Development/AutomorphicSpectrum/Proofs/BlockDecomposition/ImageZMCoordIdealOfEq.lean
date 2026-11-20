@@ -24,6 +24,11 @@ variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 def scaleT (c : K → Ω) : MvPolynomial K Ω →ₐ[Ω] MvPolynomial K Ω :=
   aeval fun k => C (c k) * X k
 
+/- English proof (translation)
+Establish `h : (scaleT (fun k => (c k)⁻¹)).comp (scaleT c) = AlgHom.id Ω _`. Use `MvPolynomial.algHom_ext fun k => ?_` and prove the remaining obligations. Simplify using `only [scaleT, AlgHom.comp_apply, aeval_X, map_mul, algHom_C, AlgHom.id_apply]`. Rewrite using `[MvPolynomial.algebraMap_eq, ← mul_assoc, ← C_mul, mul_inv_cancel₀ (hc k), C_1, one_mul]`. Conclude with `Function.LeftInverse.injective (g := scaleT fun k => (c k)⁻¹) fun f => by`.
+
+Simplify using `using congrArg (fun g => g f) h`.
+-/
 theorem scaleT_injective (c : K → Ω) (hc : ∀ k, c k ≠ 0) : Function.Injective (scaleT c) := by
   have h : (scaleT (fun k => (c k)⁻¹)).comp (scaleT c) = AlgHom.id Ω _ := by
     refine MvPolynomial.algHom_ext fun k => ?_
@@ -32,6 +37,13 @@ theorem scaleT_injective (c : K → Ω) (hc : ∀ k, c k ≠ 0) : Function.Injec
   exact Function.LeftInverse.injective (g := scaleT fun k => (c k)⁻¹) fun f => by
     simpa using congrArg (fun g => g f) h
 
+/- English proof (translation)
+Set `ψ : MvPolynomial K Ω₀ →+* MvPolynomial K' Ω` to `((rename κ : MvPolynomial K Ω →ₐ[Ω] MvPolynomial K' Ω).toRingHom.comp (scaleT fun k => (b k)⁻¹).toRingHom).comp (MvPolynomial.map φ)`. Establish `hψ : Function.Injective ψ` using `(rename_injective κ hκ).comp ((scaleT_injective _ fun k => inv_ne_zero (hb k)).comp (map_injective φ φ.injective))`. Establish `key : ∀ f : Geo.MRing ι, ψ (Geo.mConeMap y₀ f) = Geo.mConeMap y (rename v f)`. Introduce `f`. Establish `e : ψ.comp (Geo.mConeMap y₀ : Geo.MRing ι →ₐ[ℤ] MvPolynomial K Ω₀).toRingHom = ((Geo.mConeMap y : Geo.MRing ι' →ₐ[ℤ] MvPolynomial K' Ω).toRingHom.comp (rename v : Geo.MRing ι →ₐ[ℤ] Geo.MRing ι').toRingHom)`.
+
+Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [ψ, Geo.mConeMap, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X, rename_X, map_mul, map_C, map_X, scaleT, algHom_C, rename_C]`. Rewrite using `[hv p, h p]`. Simplify using `only [MvPolynomial.algebraMap_eq, rename_C]`.
+
+Rewrite using `[← mul_assoc, ← C_mul, mul_comm (b p.1), mul_assoc, mul_inv_cancel₀ (hb p.1), mul_one]`. Conclude with `congrArg (fun g => g f) e`. Use extensionality with `f`. Simplify using `only [imageZ, Geo.mCoordIdeal, Ideal.mem_comap, RingHom.mem_ker, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[← key, map_eq_zero_iff ψ hψ]`.
+-/
 theorem imageZ_mCoordIdeal_of_eq (κ : K → K') (hκ : Function.Injective κ) (v : (Σ k, ι k) → (Σ k', ι' k'))
     (hv : ∀ p, (v p).1 = κ p.1) (φ : Ω₀ →+* Ω) (b : K → Ω) (hb : ∀ k, b k ≠ 0)
     (y₀ : (Σ k, ι k) → Ω₀) (y : (Σ k', ι' k') → Ω) (h : ∀ p, φ (y₀ p) = b p.1 * y (v p)) :
@@ -65,12 +77,30 @@ end GlobalTheory.CompanionTheory.MPDict.ProjImage
 
 namespace GlobalTheory.CompanionTheory.MPDict.ProjImage
 
+/- English proof (translation)
+Use `show X.residue x (X.presheaf.germ V x hx (X.presheaf.map (homOfLE h).op s)) = _`. Rewrite using `[TopCat.Presheaf.germ_res_apply]`. Both sides reduce to the same expression.
+-/
 theorem evaluation_resG {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (x : X) (hx : x ∈ V) (s : Γ(X, U)) :
     X.evaluation V x hx (resG X h s) = X.evaluation U x (h hx) s := by
   show X.residue x (X.presheaf.germ V x hx (X.presheaf.map (homOfLE h).op s)) = _
   rw [TopCat.Presheaf.germ_res_apply]
   rfl
 
+/- English proof (translation)
+Set `F : MP ℤ (m + 1) (consN n' n) ⟶ MP ℤ m n` to `qpSnd n' m n`. Set `P : MP ℤ (m + 1) (consN n' n) ⟶ PSpace ℤ (n k)` to `prB (consN n' n) k.succ`. Establish `hP : F ≫ prB n k = P` using `rfl`. Set `c₀` to `ptChart (F x) k`. Set `c₁` to `ptChart x k.succ`.
+
+Establish `hx₀ : F x ∈ blockChart n k c₀` using `mem_ptChart _ _`. Establish `hx₁ : x ∈ blockChart (consN n' n) k.succ c₁` using `mem_ptChart _ _`. Set `W₀ : (MP ℤ (m + 1) (consN n' n)).Opens` to `F ⁻¹ᵁ blockChart n k c₀`. Set `W₁ : (MP ℤ (m + 1) (consN n' n)).Opens` to `blockChart (consN n' n) k.succ c₁`. Establish `h₀ : W₀ ≤ P ⁻¹ᵁ chart ℤ (n k) c₀` using `le_rfl`.
+
+Establish `h₁ : W₁ ≤ P ⁻¹ᵁ chart ℤ (n k) c₁` using `le_rfl`. Set `V` to `W₀ ⊓ W₁`. Establish `hxV : x ∈ V` using `⟨hx₀, hx₁⟩`. Establish `hV₀ : V ≤ P ⁻¹ᵁ chart ℤ (n k) c₀` using `inf_le_left.trans h₀`. Establish `hV₁ : V ≤ P ⁻¹ᵁ chart ℤ (n k) c₁` using `inf_le_right.trans h₁`.
+
+Establish `e₀ : ∀ i : Bk n k, F.residueFieldMap x (ptCoord (F x) ⟨k, i⟩) = (MP ℤ (m + 1) (consN n' n)).evaluation V x hxV (pullRatio P V c₀ hV₀ i)`. Introduce `i`. Use `show F.residueFieldMap x ((MP ℤ m n).evaluation (blockChart n k c₀) (F x) hx₀ (pullRatio (prB n k) _ c₀ le_rfl i)) = _`. Rewrite using `[Scheme.evaluation_naturality_apply, Scheme.Hom.app_eq_appLE, appLE_pullRatio, ← evaluation_resG (inf_le_left : V ≤ W₀) x hxV, resG_pullRatio]`. Both sides reduce to the same expression.
+
+Establish `e₁ : ∀ i : Bk n k, ptCoord x ⟨k.succ, i⟩ = (MP ℤ (m + 1) (consN n' n)).evaluation V x hxV (pullRatio P V c₁ hV₁ i)`. Introduce `i`. Use `show (MP ℤ (m + 1) (consN n' n)).evaluation W₁ x hx₁ (pullRatio P W₁ c₁ h₁ i) = _`. Rewrite using `[← evaluation_resG (inf_le_right : V ≤ W₁) x hxV]`. Conclude with `congrArg _ (resG_pullRatio (φ := P) (hi := h₁) inf_le_right)`.
+
+Use `⟨(MP ℤ (m + 1) (consN n' n)).evaluation V x hxV (pullRatio P V c₀ hV₀ c₁), ?_, fun i => ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `e` using `congrArg ((MP ℤ (m + 1) (consN n' n)).evaluation V x hxV) ((pullRatio_mul_pullRatio (φ := P) (hi := hV₀) (hj := hV₁) (k := c₀)).trans pullRatio_self)`. Rewrite `e` using `[map_mul, h0, zero_mul, map_one]`. Conclude with `zero_ne_one e`.
+
+Use `(e₀ i).trans ?_` and prove the remaining obligations. Rewrite using `[e₁ i, ← map_mul]`. Conclude with `congrArg _ (pullRatio_mul_pullRatio (φ := P) (hi := hV₀) (hj := hV₁) (k := i)).symm`.
+-/
 theorem ptCoord_qpSnd (n' m : ℕ) (n : Fin (m + 1) → ℕ) (x : MP ℤ (m + 1) (consN n' n)) (k : Fin (m + 1)) :
     ∃ b : (MP ℤ (m + 1) (consN n' n)).residueField x, b ≠ 0 ∧ ∀ i : Bk n k,
       (qpSnd n' m n).residueFieldMap x (ptCoord (qpSnd n' m n x) ⟨k, i⟩) = b * ptCoord x ⟨k.succ, i⟩ := by
@@ -117,6 +147,9 @@ end GlobalTheory.CompanionTheory.MPDict.ProjImage
 
 namespace GlobalTheory.CompanionTheory.MPDict.ProjImage
 
+/- English proof (translation)
+Use `choose b hb h using ptCoord_qpSnd n' m n x`. Conclude with `imageZ_mCoordIdeal_of_eq Fin.succ (Fin.succ_injective _) (sv n' n) (fun _ => rfl) ((qpSnd n' m n).residueFieldMap x).hom b hb (ptCoord (qpSnd n' m n x)) (ptCoord x) fun p => h p.1 p.2`.
+-/
 theorem imageZ_ptIdeal (n' m : ℕ) (n : Fin (m + 1) → ℕ) (x : MP ℤ (m + 1) (consN n' n)) :
     imageZ (sv n' n) (ptIdeal x) = ptIdeal (qpSnd n' m n x) := by
   choose b hb h using ptCoord_qpSnd n' m n x

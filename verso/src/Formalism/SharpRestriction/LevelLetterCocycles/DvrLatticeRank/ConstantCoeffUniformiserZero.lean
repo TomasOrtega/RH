@@ -20,11 +20,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Establish `: π' i = (w : LetA O n) i * PowerSeries.X ^ s'` using `by rw [hw]; rfl`. Rewrite using `[this, map_mul, map_pow, PowerSeries.constantCoeff_X, zero_pow (by omega), mul_zero]`.
+-/
 theorem constantCoeff_uniformiser_zero {s' : ℕ} {π' : LetA O n} (w : (LetA O n)ˣ) (hw : π' = (w : LetA O n) * letπ ^ s')
     (hs : 1 ≤ s') (i : ZMod n) : PowerSeries.constantCoeff (π' i) = 0 := by
   have : π' i = (w : LetA O n) i * PowerSeries.X ^ s' := by rw [hw]; rfl
   rw [this, map_mul, map_pow, PowerSeries.constantCoeff_X, zero_pow (by omega), mul_zero]
 
+/- English proof (translation)
+Introduce `δ hδ i F`. Rewrite using `[DualFramesAlt.EigenUniformiser.algHom_subst (W.γ₀ δ) (W.γ₀_X δ).1 (hπ0 i)]`. Use `congr 1`. Conclude with `congrFun (hπΔ δ hδ) i`.
+-/
 theorem u2ringPfC_subΔ {π' : LetA O n} (hπΔ : ∀ δ ∈ W.DelF, W.γA δ π' = π')
     (hπ0 : ∀ i, PowerSeries.constantCoeff (π' i) = 0) :
     ∀ δ ∈ W.DelF, ∀ i (F : PowerSeries O),
@@ -34,6 +40,13 @@ theorem u2ringPfC_subΔ {π' : LetA O n} (hπΔ : ∀ δ ∈ W.DelF, W.γA δ π
   congr 1
   exact congrFun (hπΔ δ hδ) i
 
+/- English proof (translation)
+Establish `hsub0 : ∀ i, PowerSeries.subst (π' i) (0 : PowerSeries O) = 0` using `fun i => by`. Rewrite using `[← PowerSeries.coe_substAlgHom (PowerSeries.HasSubst.of_constantCoeff_zero' (hπ0 i)), map_zero]`. Establish `hmem` using `u2ringPfB_single_mem W c (PowerSeries.subst (π' c) F) (fun δ hδ => u2ringPfC_subΔ W hπΔ hπ0 δ hδ c F)`. Take `⟨f, -, huniq⟩` from `hsub _ hmem`. Establish `key : ∀ H, PowerSeries.subst (π' c) H = PowerSeries.subst (π' c) F → (Pi.single c H : ZMod n → PowerSeries O) = f` using `fun H hH => huniq _ (fun i => by`.
+
+Distinguish the cases in `hi : i = c`. Substitute `hi` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `hH.symm`. Simplify using `only [Pi.single_eq_of_ne hi, hsub0])`.
+
+Use `congrFun ((key F rfl).trans (key F' hFF.symm).symm) c` as an intermediate fact. Simplify using `using this`.
+-/
 theorem u2ringPfC_inj {π' : LetA O n} (hπΔ : ∀ δ ∈ W.DelF, W.γA δ π' = π')
     (hsub : ∀ a, Formalism.MainNotions.DeltaInvariantLattices.InAΔ W a → ∃! f : ZMod n → PowerSeries O,
       ∀ i, a i = PowerSeries.subst (π' i) (f i))
@@ -52,6 +65,9 @@ theorem u2ringPfC_inj {π' : LetA O n} (hπΔ : ∀ δ ∈ W.DelF, W.γA δ π' 
   have := congrFun ((key F rfl).trans (key F' hFF.symm).symm) c
   simpa using this
 
+/- English proof (translation)
+Take `⟨f, hf, -⟩` from `hsub _ (u2ringPfB_single_mem W c x hx)`. Use `⟨f c, ?_⟩` and prove the remaining obligations. Use `hf c` as an intermediate fact. Simplify using `only [Pi.single_eq_same] at this`. Conclude with `this.symm`.
+-/
 theorem u2ringPfC_pre {π' : LetA O n}
     (hsub : ∀ a, Formalism.MainNotions.DeltaInvariantLattices.InAΔ W a → ∃! f : ZMod n → PowerSeries O,
       ∀ i, a i = PowerSeries.subst (π' i) (f i)) (c : ZMod n) (x : PowerSeries O)
@@ -62,6 +78,29 @@ theorem u2ringPfC_pre {π' : LetA O n}
   simp only [Pi.single_eq_same] at this
   exact this.symm
 
+/- English proof (translation)
+Take `⟨hπΔ, -, ⟨w, hw⟩, -, ⟨w₁, hq⟩, -, ⟨w₂, hγ⟩, -⟩` from `hR`. Establish `hπ0` using `constantCoeff_uniformiser_zero w hw hs`. Use `set Ê := Formalism.MainNotions.DeltaInvariantLattices.Eat E π' with hÊdef`. Establish `hq₀` using `u2ringPfB_q₀_ne_zero W PD.hp.ne_zero`. Establish `hÊ0 : ∀ i, Ê i ≠ 0`.
+
+Introduce `i h`. Apply `hq₀` to reduce the goal to its premises. Establish `e1 : W.q₀ = (w₁ : LetA O n) i * Ê i` using `congrFun hq i`. Rewrite using `[e1, h, mul_zero]`. Establish `hπΔ' : ∀ δ ∈ W.DelF, ∀ i, W.γ₀ δ (π' i) = π' i` using `fun δ hδ i => congrFun (hπΔ δ hδ) i`.
+
+Establish `hÊΔ : ∀ δ ∈ W.DelF, ∀ i, W.γ₀ δ (Ê i) = Ê i`. Introduce `δ hδ i`. Use `show W.γ₀ δ (Polynomial.aeval (π' i) (E i)) = Polynomial.aeval (π' i) (E i)`. Rewrite using `[← Polynomial.aeval_algHom_apply, hπΔ' δ hδ i]`. Establish `hU : ∀ i, ∃ u : PowerSeries O, IsUnit u ∧ W.γ₀ W.gam (Ê i) = Ê i * u`.
+
+Introduce `i`. Establish `hγi : W.γ₀ W.gam (π' i) - π' i = (w₂ : LetA O n) i * π' i * Ê i` using `congrFun hγ i`. Take `⟨D, hD⟩` from `Polynomial.sub_dvd_eval_sub (W.γ₀ W.gam (π' i)) (π' i) ((E i).map (algebraMap O (PowerSeries O)))`. Use `⟨1 + (w₂ : LetA O n) i * π' i * D, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff]`.
+
+Simplify using `[hπ0 i]`. Establish `e2 : W.γ₀ W.gam (Ê i) = Polynomial.aeval (W.γ₀ W.gam (π' i)) (E i)` using `(Polynomial.aeval_algHom_apply (W.γ₀ W.gam) (π' i) (E i)).symm`. Establish `e3 : Ê i = Polynomial.aeval (π' i) (E i)` using `rfl`. Establish `hD' : Polynomial.aeval (W.γ₀ W.gam (π' i)) (E i) - Polynomial.aeval (π' i) (E i) = (W.γ₀ W.gam (π' i) - π' i) * D`. Rewrite using `[Polynomial.aeval_def, Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.eval₂_eq_eval_map]`.
+
+Conclude with `hD`. Rewrite `hγi` using `[e3]`. Rewrite `hD'` using `[hγi]`. Rewrite using `[e2, e3]`. Take the linear combination `hD'`.
+
+Use `choose U hUu hUeq using hU`. Establish `hUunit : IsUnit (U : LetA O n)` using `Pi.isUnit_iff.2 hUu`. Use `set V : LetA O n := ((hUunit.unit⁻¹ : (LetA O n)ˣ) : LetA O n) with hV`. Establish `hVU : V * U = 1` using `by rw [hV]; exact hUunit.val_inv_mul`. Establish `hUΔ : ∀ δ ∈ W.DelF, ∀ i, W.γ₀ δ (U i) = U i`.
+
+Introduce `δ hδ i`. Establish `h1` using `congrArg (W.γ₀ δ) (hUeq i)`. Rewrite `h1` using `[u2ringPfB_γ₀_comm, map_mul, hÊΔ δ hδ i, hUeq i]`. Conclude with `(mul_left_cancel₀ (hÊ0 i) h1).symm`. Use `⟨V ^ h', ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `δ hδ`. Use function extensionality and compare the values at `i`. Use `show W.γ₀ δ ((V ^ h') i) = (V ^ h') i`. Rewrite using `[Pi.pow_apply, map_pow]`. Use `congr 1`.
+
+Establish `hVi : V i * U i = 1` using `congrFun hVU i`. Establish `h1` using `congrArg (W.γ₀ δ) hVi`. Rewrite `h1` using `[map_mul, hUΔ δ hδ i, map_one]`. Conclude with `mul_right_cancel₀ (hUu i).ne_zero (h1.trans hVi.symm)`. Establish `hγÊ : W.γA W.gam Ê = Ê * U` using `funext fun i => hUeq i`.
+
+Rewrite using `[hK, map_pow, hγÊ]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem u2ringPfC_nu [IsDomain O] [CharZero O] {e s' : ℕ} {π' : LetA O n} {E : ZMod n → Polynomial O}
     (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W e s' π' E) (hs : 1 ≤ s') (hK : W.gamK = W.gam) (h' : ℕ) :
     ∃ ν : LetA O n, ν ∈ W.AΔ ∧

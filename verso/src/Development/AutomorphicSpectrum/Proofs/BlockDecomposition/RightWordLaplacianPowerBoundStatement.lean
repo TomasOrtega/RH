@@ -9,6 +9,9 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Fc
 open PositivityTheory.RgTw (Mat G)
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FcSmooth.WordBd.word_bound | exact GlobalTheory.CompanionTheory.FcSmooth.WordBd.word_bound | (intros; apply GlobalTheory.CompanionTheory.FcSmooth.WordBd.word_bound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.right_word_laplacian_power_bound : ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (V : Type)
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V],
     LgFacts → Unimod → RCalc → AlgEst → ClsFacts → IbpSob →

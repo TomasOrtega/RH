@@ -13,6 +13,25 @@ open GlobalTheory.KS
 
 namespace GlobalTheory.KS.Kunneth
 
+/- English proof (translation)
+Use `letI : Algebra K A := f.hom.toAlgebra`. Use `letI : Algebra K B := g.hom.toAlgebra`. Establish `hw : f ≫ CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom (R` using `K) (A := A) (B := B)) = g ≫ CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R := K) (A := A) (B := B)).toRingHom := by`. Use extensionality with `c`. Use `show f.hom c ⊗ₜ[K] (1 : B) = (1 : A) ⊗ₜ[K] g.hom c`.
+
+Establish `h1 : f.hom c = c • (1 : A)` using `by rw [Algebra.smul_def, _root_.mul_one]; rfl`. Establish `h2 : g.hom c = c • (1 : B)` using `by rw [Algebra.smul_def, _root_.mul_one]; rfl`. Rewrite using `[h1, h2, TensorProduct.smul_tmul]`. Take `⟨φ, hφi', hφj'⟩ : ∃ φ : C ⟶ CommRingCat.of (A ⊗[K] B), i ≫ φ = CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom ∧ j ≫ φ = CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R` from `K) (A := A) (B := B)).toRingHom := ⟨po.desc _ _ hw, po.inl_desc _ _ hw, po.inr_desc _ _ hw⟩`. Establish `hφi : ∀ a, φ.hom (i.hom a) = a ⊗ₜ[K] (1 : B)` using `fun a => by`.
+
+Use `congrArg (fun m => m.hom a) hφi'` as an intermediate fact. Conclude with `this`. Establish `hφj : ∀ b, φ.hom (j.hom b) = (1 : A) ⊗ₜ[K] b` using `fun b => by`. Use `congrArg (fun m => m.hom b) hφj'` as an intermediate fact. Conclude with `this`.
+
+Use `⟨fun α β hα hβ => ?_, fun G hG w => ?_⟩` and prove the remaining obligations. Set `α' : A →ₗ[K] K` to `{ toFun := α, map_add' := α.map_add, map_smul' := fun c a => by rw [Algebra.smul_def]; exact hα c a }`. Set `β' : B →ₗ[K] K` to `{ toFun := β, map_add' := β.map_add, map_smul' := fun c b => by rw [Algebra.smul_def]; exact hβ c b }`. Use `⟨((LinearMap.mul' K K).comp (TensorProduct.map α' β')).toAddMonoidHom.comp φ.hom.toAddMonoidHom, fun a b => ?_⟩` and prove the remaining obligations. Use `show LinearMap.mul' K K (TensorProduct.map α' β' (φ.hom (i.hom a * j.hom b))) = α a * β b`.
+
+Rewrite using `[map_mul, hφi, hφj, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, _root_.one_mul, TensorProduct.map_tmul, LinearMap.mul'_apply]`. Both sides reduce to the same expression. Use `letI : Algebra K C := (f ≫ i).hom.toAlgebra`. Set `iA : A →ₐ[K] C` to `{ i.hom with commutes' := fun _ => rfl }`. Set `jA : B →ₐ[K] C` to `{ j.hom with commutes' := fun c => (congrArg (fun m => m.hom c) po.w).symm }`.
+
+Set `ψ` to `Algebra.TensorProduct.productMap iA jA`. Establish `hψ : φ ≫ CommRingCat.ofHom ψ.toRingHom = 𝟙 C`. Apply `po.hom_ext` to reduce the goal to its premises. Use extensionality with `a show ψ (φ.hom (i.hom a)) = i.hom a`. Rewrite using `[hφi, Algebra.TensorProduct.productMap_apply_tmul]`.
+
+Use `show i.hom a * j.hom 1 = i.hom a`. Rewrite using `[map_one, _root_.mul_one]`. Use extensionality with `b show ψ (φ.hom (j.hom b)) = j.hom b`. Rewrite using `[hφj, Algebra.TensorProduct.productMap_apply_tmul]`. Use `show i.hom 1 * j.hom b = j.hom b`.
+
+Rewrite using `[map_one, _root_.one_mul]`. Establish `hw' : ψ (φ.hom w) = w` using `congrArg (fun m => m.hom w) hψ`. Rewrite using `[← hw']`. Generalize the expression as in `φ.hom w = t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a b`. Rewrite using `[Algebra.TensorProduct.productMap_apply_tmul]`. Conclude with `hG a b`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+-/
 theorem pushout_functional {K : Type} [Field K] {A B C : CommRingCat.{0}} (f : CommRingCat.of K ⟶ A)
     (g : CommRingCat.of K ⟶ B) (i : A ⟶ C) (j : B ⟶ C) (po : IsPushout f g i j) :
     (∀ (α : A →+ K) (β : B →+ K), (∀ c a, α (f.hom c * a) = c * α a) → (∀ c b, β (g.hom c * b) = c * β b) →
@@ -75,16 +94,25 @@ theorem pushout_functional {K : Type} [Field K] {A B C : CommRingCat.{0}} (f : C
       exact hG a b
     | add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]
 
+/- English proof (translation)
+Unfold `pbT`. Rewrite using `[dif_pos h]`.
+-/
 theorem pbT_of_le {Z Y : Scheme.{0}} (f : Z ⟶ Y) {O₀ : Y.Opens} (s : Γ(Y, O₀)) {O : Z.Opens}
     (h : O ≤ f ⁻¹ᵁ O₀) : pbT f s O = (f.appLE O₀ O h).hom s := by
   unfold pbT
   rw [dif_pos h]
 
+/- English proof (translation)
+Unfold `rsT`. Rewrite using `[dif_pos h]`.
+-/
 theorem rsT_of_le {Y : Scheme.{0}} {O₀ : Y.Opens} (s : Γ(Y, O₀)) {O : Y.Opens}
     (h : O ≤ O₀) : rsT s O = resG Y h s := by
   unfold rsT
   rw [dif_pos h]
 
+/- English proof (translation)
+Rewrite using `[pbT_of_le f s h, rsT_of_le s h₁, pbT_of_le f _ h₂]`. Use `show (f.appLE O₀ O h ≫ Z.presheaf.map (homOfLE h').op).hom s = (Y.presheaf.map (homOfLE h₁).op ≫ f.appLE O₁ O' h₂).hom s`. Rewrite using `[Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`.
+-/
 theorem res_pbT {Z Y : Scheme.{0}} (f : Z ⟶ Y) {O₀ O₁ : Y.Opens} (s : Γ(Y, O₀)) {O O' : Z.Opens}
     (h : O ≤ f ⁻¹ᵁ O₀) (h' : O' ≤ O) (h₁ : O₁ ≤ O₀) (h₂ : O' ≤ f ⁻¹ᵁ O₁) :
     resG Z h' (pbT f s O) = pbT f (rsT s O₁) O' := by
@@ -93,6 +121,9 @@ theorem res_pbT {Z Y : Scheme.{0}} (f : Z ⟶ Y) {O₀ O₁ : Y.Opens} (s : Γ(Y
     (Y.presheaf.map (homOfLE h₁).op ≫ f.appLE O₁ O' h₂).hom s
   rw [Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Rewrite using `[rsT_of_le s le_rfl]`. Simplify using `[resG]`.
+-/
 theorem rsT_self {Y : Scheme.{0}} {O₀ : Y.Opens} (s : Γ(Y, O₀)) : rsT s O₀ = s := by
   rw [rsT_of_le s le_rfl]
   simp [resG]
@@ -101,9 +132,17 @@ noncomputable def cstHom {K : Type} [Field K] {Y : Scheme.{0}} (q : Y ⟶ Sp K) 
     CommRingCat.of K ⟶ Γ(Y, O) :=
   (Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ q.appLE ⊤ O (fun _ _ => trivial)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cstHom_apply {K : Type} [Field K] {Y : Scheme.{0}} (q : Y ⟶ Sp K) (O : Y.Opens) (c : K) :
     (cstHom q O).hom c = constFn q O c := rfl
 
+/- English proof (translation)
+Rewrite using `[← cstHom_apply, ← cstHom_apply]`. Establish `e : cstHom q O ≫ Y.presheaf.map (homOfLE h).op = cstHom q O'`. Unfold `cstHom`. Rewrite using `[Category.assoc]`. Use `congr 1`.
+
+Conclude with `Scheme.Hom.appLE_map _ _ _`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+-/
 theorem res_constFn {K : Type} [Field K] {Y : Scheme.{0}} (q : Y ⟶ Sp K) {O O' : Y.Opens} (h : O' ≤ O) (c : K) :
     resG Y h (constFn q O c) = constFn q O' c := by
   rw [← cstHom_apply, ← cstHom_apply]
@@ -115,6 +154,13 @@ theorem res_constFn {K : Type} [Field K] {Y : Scheme.{0}} (q : Y ⟶ Sp K) {O O'
   rw [← e]
   rfl
 
+/- English proof (translation)
+Establish `hO1 : p₁ ⁻¹ᵁ O ⊓ p₂ ⁻¹ᵁ O' ≤ p₁ ⁻¹ᵁ O` using `inf_le_left`. Establish `hO2 : p₁ ⁻¹ᵁ O ⊓ p₂ ⁻¹ᵁ O' ≤ p₂ ⁻¹ᵁ O'` using `inf_le_right`. Establish `hiso` using `isIso_pushoutSection_of_isAffineOpen H (US := ⊤) (UX := O) (UT := O') (UY := p₁ ⁻¹ᵁ O ⊓ p₂ ⁻¹ᵁ O') (by simp) (by simp) rfl (isAffineOpen_top _) hO' hO`. Establish `po₀` using `(isIso_pushoutSection_iff H _ _ _).mp hiso`. Establish `po : IsPushout (cstHom q O) (cstHom q O') (p₁.appLE O _ hO1) (p₂.appLE O' _ hO2)` using `IsPushout.of_iso po₀ (Scheme.ΓSpecIso (CommRingCat.of K)) (Iso.refl _) (Iso.refl _) (Iso.refl _) (by simp [cstHom]) (by simp [cstHom]) (by simp) (by simp)`.
+
+Take `⟨h1, h2⟩` from `pushout_functional (cstHom q O) (cstHom q O') _ _ po`. Use `⟨fun α β hα hβ => ?_, fun G hG w => ?_⟩` and prove the remaining obligations. Take `⟨F, hF⟩` from `h1 α β (fun c a => by rw [cstHom_apply]; exact hα c a) (fun c b => by rw [cstHom_apply]; exact hβ c b)`. Conclude with `⟨F, fun a b => by rw [pbT_of_le p₁ a hO1, pbT_of_le p₂ b hO2]; exact hF a b⟩`. Use `h2 G (fun a b => ?_) w` and prove the remaining obligations.
+
+Establish `e` using `hG a b`. Rewrite `e` using `[pbT_of_le p₁ a hO1, pbT_of_le p₂ b hO2]`. Then use the resulting hypothesis.
+-/
 theorem prod_functional {K : Type} [Field K] {Y Z : Scheme.{0}} {q : Y ⟶ Sp K} {p₁ p₂ : Z ⟶ Y}
     (H : IsPullback p₁ p₂ q q) {O O' : Y.Opens} (hO : IsAffineOpen O) (hO' : IsAffineOpen O') :
     (∀ (α : Γ(Y, O) →+ K) (β : Γ(Y, O') →+ K), (∀ c a, α (constFn q O c * a) = c * α a) →
@@ -141,6 +187,11 @@ theorem prod_functional {K : Type} [Field K] {Y Z : Scheme.{0}} {q : Y ⟶ Sp K}
     have e := hG a b
     rwa [pbT_of_le p₁ a hO1, pbT_of_le p₂ b hO2] at e
 
+/- English proof (translation)
+Establish `hc : c = ∑ i, ∑ j, (Pi.single i (Pi.single j (c i j)) : C1 U)` using `by conv_lhs => rw [← Finset.univ_sum_single c]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← Finset.univ_sum_single (c i)]`. Conclude with `map_sum (AddMonoidHom.single _ i) _ _`. Use `conv_lhs => rw [hc]`.
+
+Simplify using `only [map_sum]`.
+-/
 theorem functional_eq_sum {K : Type} [Field K] {Y : Scheme.{0}} {I : Type} [Fintype I] [DecidableEq I]
     {U : I → Y.Opens} (α : C1 U →+ K) (c : C1 U) :
     α c = ∑ i, ∑ j, α (Pi.single i (Pi.single j (c i j))) := by
@@ -152,6 +203,19 @@ theorem functional_eq_sum {K : Type} [Field K] {Y : Scheme.{0}} {I : Type} [Fint
   conv_lhs => rw [hc]
   simp only [map_sum]
 
+/- English proof (translation)
+Establish `hz : ∀ (O₀ O : Y.Opens), rsT (0 : Γ(Y, O₀)) O = 0`. Introduce `O₀ O`. Unfold `rsT`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hcob` using `h (fun i k => rsT ((Pi.single j b : ∀ i, Γ(Y, U i)) k) (U i ⊓ U k) - rsT ((Pi.single j b : ∀ i, Γ(Y, U i)) i) (U i ⊓ U k)) ⟨Pi.single j b, fun _ _ => rfl⟩`.
+
+Rewrite `hcob` using `[functional_eq_sum]`. Simplify using `only [Pi.single_sub, map_sub, Finset.sum_sub_distrib, sub_eq_zero] at hcob`. Establish `e1 : ∀ i, ∑ k, α (Pi.single i (Pi.single k (rsT ((Pi.single j b : ∀ i, Γ(Y, U i)) k) (U i ⊓ U k)))) = α (Pi.single i (Pi.single j (rsT b (U i ⊓ U j))))`. Introduce `i`. Rewrite using `[Finset.sum_eq_single j]`.
+
+Rewrite using `[Pi.single_eq_same]`. Introduce `k _ hk`. Rewrite using `[Pi.single_eq_of_ne hk, hz, Pi.single_zero, Pi.single_zero, map_zero]`. Introduce `hj`. Conclude with `absurd (Finset.mem_univ j) hj`.
+
+Establish `e2 : ∑ i, ∑ k, α (Pi.single i (Pi.single k (rsT ((Pi.single j b : ∀ i, Γ(Y, U i)) i) (U i ⊓ U k)))) = ∑ k, α (Pi.single j (Pi.single k (rsT b (U j ⊓ U k))))`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `only [Pi.single_eq_same]`. Introduce `i _ hi`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.single_eq_of_ne hi, hz, Pi.single_zero, Pi.single_zero, map_zero]`. Introduce `hj`. Conclude with `absurd (Finset.mem_univ j) hj`. Rewrite `hcob` using `[e2]`. Simplify using `only [e1] at hcob`.
+
+Conclude with `hcob`.
+-/
 theorem functional_cob {K : Type} [Field K] {Y : Scheme.{0}} {I : Type} [Fintype I] [DecidableEq I]
     {U : I → Y.Opens} (α : C1 U →+ K) (h : ∀ c, IsCob U c → α c = 0) (j : I) (b : Γ(Y, U j)) :
     ∑ k, α (Pi.single k (Pi.single j (rsT b (U k ⊓ U j)))) =
@@ -184,6 +248,63 @@ theorem functional_cob {K : Type} [Field K] {Y : Scheme.{0}} {I : Type} [Fintype
   simp only [e1] at hcob
   exact hcob
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite I`. Use `haveI := hq`. Establish `haff : ∀ i i', IsAffineOpen (U i ⊓ U i')` using `fun i i' => (isAffineHom_diagonal_iff (f := q)).mp inferInstance ⊤ (isAffineOpen_top _) (U i) (by simp) (U i') (by simp) (hU i) (hU i')`. Set `sg : ∀ i i', Γ(Y, U i ⊓ U i') →+ C1 U` to `fun i i' => (AddMonoidHom.single (fun k => ∀ l, Γ(Y, U k ⊓ U l)) i).comp (AddMonoidHom.single (fun l => Γ(Y, U i ⊓ U l)) i')`. Establish `hcs : ∀ (c : K) i i' (x : Γ(Y, U i ⊓ U i')), (fun k l => constFn q (U k ⊓ U l) c * (Pi.single i (Pi.single i' x) : C1 U) k l) = (Pi.single i (Pi.single i' (constFn q (U i ⊓ U i') c * x)) : C1 U)`.
+
+Introduce `c i i' x`. Use function extensionality and compare the values at `k l`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Distinguish the cases in `hl : l = i'`.
+
+Substitute `hl` using the available equality. Simplify using `only [Pi.single_eq_same]`. Simplify using `only [Pi.single_eq_same, Pi.single_eq_of_ne hl, MulZeroClass.mul_zero]`. Simplify using `only [Pi.single_eq_of_ne hk, Pi.zero_apply, MulZeroClass.mul_zero]`. Establish `hαc : ∀ i i' (c : K) (x : Γ(Y, U i ⊓ U i')), (α.comp (sg i i')) (constFn q (U i ⊓ U i') c * x) = c * (α.comp (sg i i')) x`.
+
+Introduce `i i' c x`. Use `show α (Pi.single i (Pi.single i' (constFn q _ c * x))) = c * α (Pi.single i (Pi.single i' x))`. Rewrite using `[← hcs c i i' x]`. Conclude with `hα c _`. Establish `hβc : ∀ i i' (c : K) (x : Γ(Y, U i ⊓ U i')), (β.comp (sg i i')) (constFn q (U i ⊓ U i') c * x) = c * (β.comp (sg i i')) x`.
+
+Introduce `i i' c x`. Use `show β (Pi.single i (Pi.single i' (constFn q _ c * x))) = c * β (Pi.single i (Pi.single i' x))`. Rewrite using `[← hcs c i i' x]`. Conclude with `hβ c _`. Establish `hF0 : ∀ i i' j j', ∃ F : Γ(Z, (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j'))) →+ K, ∀ a b, F (pbT p₁ a (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')) * pbT p₂ b (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j'))) = α (Pi.single i (Pi.single i' a)) * β (Pi.single j (Pi.single j' b))` using `fun i i' j j' => (prod_functional H (haff i i') (haff j j')).1 (α.comp (sg i i')) (β.comp (sg j j')) (hαc i i') (hβc j j')`.
+
+Use `choose F hF using hF0`. Establish `T1 : ∀ i i', ∑ j, ∑ j', (F i i' j j' (rsT (u i i' j') _) - F i i' j j' (rsT (u i i' j) _)) = 0`. Introduce `i i'`. Establish `hG : ∀ j (w : Γ(Z, p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ U j)), ∑ j', (F i i' j' j (rsT w _) - F i i' j j' (rsT w _)) = 0`. Introduce `j`.
+
+Establish `hle1 : ∀ j', (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j' ⊓ U j)) ≤ p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ U j` using `fun j' => by`. Introduce `x hx`. Conclude with `⟨hx.1, hx.2.2⟩`. Establish `hle2 : ∀ j', (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')) ≤ p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ U j` using `fun j' => by`. Introduce `x hx`.
+
+Conclude with `⟨hx.1, hx.2.1⟩`. Set `G : Γ(Z, p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ U j) →+ K` to `∑ j', ((F i i' j' j).comp (resG Z (hle1 j')).toAddMonoidHom - (F i i' j j').comp (resG Z (hle2 j')).toAddMonoidHom)`. Establish `hGw : ∀ w, G w = ∑ j', (F i i' j' j (rsT w _) - F i i' j j' (rsT w _))`. Introduce `w`. Simplify using `only [G, AddMonoidHom.finsetSum_apply, AddMonoidHom.sub_apply, AddMonoidHom.comp_apply]`.
+
+Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Rewrite using `[rsT_of_le w (hle1 j'), rsT_of_le w (hle2 j')]`. Both sides reduce to the same expression. Introduce `w`. Rewrite using `[← hGw]`.
+
+Use `(prod_functional H (haff i i') (hU j)).2 G (fun a b => ?_) w` and prove the remaining obligations. Rewrite using `[hGw]`. Establish `e : ∀ j', F i i' j' j (rsT (pbT p₁ a (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ U j) * pbT p₂ b (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ U j)) _) - F i i' j j' (rsT (pbT p₁ a (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ U j) * pbT p₂ b (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ U j)) _) = α (Pi.single i (Pi.single i' a)) * (β (Pi. …`. Introduce `j'`. Rewrite using `[rsT_of_le _ (hle1 j'), rsT_of_le _ (hle2 j'), map_mul (resG Z (hle1 j')), map_mul (resG Z (hle2 j')), res_pbT p₁ a inf_le_left (hle1 j') le_rfl inf_le_left, res_pbT p₂ b inf_le_right (hle1 j') inf_le_right inf_le_right, res_pbT p₁ a inf_le_left (hle2 j') le_rfl inf_le_left, res_ …`.
+
+Rewrite using `[Finset.sum_congr rfl fun j' _ => e j', ← Finset.mul_sum, Finset.sum_sub_distrib, functional_cob β hβ0 j b, sub_self, MulZeroClass.mul_zero]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_sub_distrib]`. Use `congr 1`. Conclude with `Finset.sum_comm`.
+
+Use `_ = ∑ j, ∑ j', (F i i' j' j (rsT (u i i' j) _) - F i i' j j' (rsT (u i i' j) _)) := by`. Simplify using `only [Finset.sum_sub_distrib]`. Use `_ = 0 := Finset.sum_eq_zero fun j _ => hG j (u i i' j)`. Establish `T2 : ∀ j j', ∑ i, ∑ i', (F i i' j j' (rsT (u' i' j j') _) - F i i' j j' (rsT (u' i j j') _)) = 0`. Introduce `j j'`.
+
+Establish `hG : ∀ i (w : Γ(Z, p₁ ⁻¹ᵁ U i ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j'))), ∑ i', (F i' i j j' (rsT w _) - F i i' j j' (rsT w _)) = 0`. Introduce `i`. Establish `hle1 : ∀ i', (p₁ ⁻¹ᵁ (U i' ⊓ U i) ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')) ≤ p₁ ⁻¹ᵁ U i ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')` using `fun i' => by`. Introduce `x hx`. Conclude with `⟨hx.1.2, hx.2⟩`.
+
+Establish `hle2 : ∀ i', (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')) ≤ p₁ ⁻¹ᵁ U i ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')` using `fun i' => by`. Introduce `x hx`. Conclude with `⟨hx.1.1, hx.2⟩`. Set `G : Γ(Z, p₁ ⁻¹ᵁ U i ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')) →+ K` to `∑ i', ((F i' i j j').comp (resG Z (hle1 i')).toAddMonoidHom - (F i i' j j').comp (resG Z (hle2 i')).toAddMonoidHom)`. Establish `hGw : ∀ w, G w = ∑ i', (F i' i j j' (rsT w _) - F i i' j j' (rsT w _))`.
+
+Introduce `w`. Simplify using `only [G, AddMonoidHom.finsetSum_apply, AddMonoidHom.sub_apply, AddMonoidHom.comp_apply]`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Rewrite using `[rsT_of_le w (hle1 i'), rsT_of_le w (hle2 i')]`. Both sides reduce to the same expression.
+
+Introduce `w`. Rewrite using `[← hGw]`. Use `(prod_functional H (hU i) (haff j j')).2 G (fun a b => ?_) w` and prove the remaining obligations. Rewrite using `[hGw]`. Establish `e : ∀ i', F i' i j j' (rsT (pbT p₁ a (p₁ ⁻¹ᵁ U i ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')) * pbT p₂ b (p₁ ⁻¹ᵁ U i ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j'))) _) - F i i' j j' (rsT (pbT p₁ a (p₁ ⁻¹ᵁ U i ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')) * pbT p₂ b (p₁ ⁻¹ᵁ U i ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j'))) _) = (α (Pi.single i' (Pi.single i (rsT a (U i' …`.
+
+Introduce `i'`. Rewrite using `[rsT_of_le _ (hle1 i'), rsT_of_le _ (hle2 i'), map_mul (resG Z (hle1 i')), map_mul (resG Z (hle2 i')), res_pbT p₁ a inf_le_left (hle1 i') inf_le_right inf_le_left, res_pbT p₂ b inf_le_right (hle1 i') le_rfl inf_le_right, res_pbT p₁ a inf_le_left (hle2 i') inf_le_left inf_le_left, …`. Rewrite using `[Finset.sum_congr rfl fun i' _ => e i', ← Finset.sum_mul, Finset.sum_sub_distrib, functional_cob α hα0 i a, sub_self, MulZeroClass.zero_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_sub_distrib]`.
+
+Use `congr 1`. Conclude with `Finset.sum_comm`. Use `_ = ∑ i, ∑ i', (F i' i j j' (rsT (u' i j j') _) - F i i' j j' (rsT (u' i j j') _)) := by`. Simplify using `only [Finset.sum_sub_distrib]`. Use `_ = 0 := Finset.sum_eq_zero fun i _ => hG i (u' i j j')`.
+
+Establish `key : ∀ i i' j j', ∑ a, (α (Pi.single i (Pi.single i' (θ a i i'))) * β (Pi.single j (Pi.single j' (φ a j j'))) - α (Pi.single i (Pi.single i' (φ a i i'))) * β (Pi.single j (Pi.single j' (θ a j j')))) = F i i' j j' (rsT (u i i' j') _ - rsT (u i i' j) _ + (rsT (u' i' j j') _ - rsT …`. Introduce `i i' j j'`. Rewrite using `[← hu, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, hF, hF]`.
+
+Establish `expand : ∀ x y : C1 U, α x * β y = ∑ i, ∑ i', ∑ j, ∑ j', α (Pi.single i (Pi.single i' (x i i'))) * β (Pi.single j (Pi.single j' (y j j')))`. Introduce `x y`. Rewrite using `[functional_eq_sum α x, functional_eq_sum β y, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Establish `step : ∀ f : Fin g → I → I → I → I → K, ∑ a, ∑ i, ∑ i', ∑ j, ∑ j', f a i i' j j' = ∑ i, ∑ i', ∑ j, ∑ j', ∑ a, f a i i' j j'`.
+
+Introduce `f`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Establish `swap : ∀ f : I → I → I → I → K, ∑ i, ∑ i', ∑ j, ∑ j', f i i' j j' = ∑ j, ∑ j', ∑ i, ∑ i', f i i' j j'`. Introduce `f`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `_ = ∑ j, ∑ j', ∑ i, ∑ i', f i i' j j' := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Establish `hsplit : ∀ i i' j j', F i i' j j' (rsT (u i i' j') _ - rsT (u i i' j) _ + (rsT (u' i' j j') _ - rsT (u' i j j') _)) = (F i i' j j' (rsT (u i i' j') _) - F i i' j j' (rsT (u i i' j) _)) + (F i i' j j' (rsT (u' i' j j') _) - F i i' j j' (rsT (u' i j j') _))`.
+
+Introduce `i i' j j'`. Rewrite using `[map_add, map_sub, map_sub]`. Rewrite using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Establish `e1 : ∀ a, α (θ a) * β (φ a) - α (φ a) * β (θ a) = ∑ i, ∑ i', ∑ j, ∑ j', (α (Pi.single i (Pi.single i' (θ a i i'))) * β (Pi.single j (Pi.single j' (φ a j j'))) - α (Pi.single i (Pi.single i' (φ a i i'))) * β (Pi.single j (Pi.single j' (θ a j j'))))`. Introduce `a`.
+
+Rewrite using `[expand (θ a) (φ a), expand (φ a) (θ a)]`. Simplify using `only [← Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_congr rfl fun a _ => e1 a, step]`. Simplify using `only [key, hsplit, Finset.sum_add_distrib, T1, _root_.zero_add]`. Rewrite using `[swap]`.
+
+Simplify using `only [T2, Finset.sum_const_zero]`.
+-/
 theorem pair_symm {K : Type} [Field K] {Y Z : Scheme.{0}} {q : Y ⟶ Sp K} {p₁ p₂ : Z ⟶ Y} {I : Type} [Finite I]
     {U : I → Y.Opens} {g : ℕ} (θ φ : Fin g → C1 U) (hq : IsSeparated q) (H : IsPullback p₁ p₂ q q)
     (hU : ∀ i, IsAffineOpen (U i)) (u : ∀ i i' j, Γ(Z, p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ U j))
@@ -379,6 +500,29 @@ theorem pair_symm {K : Type} [Field K] {Y Z : Scheme.{0}} {q : Y ⟶ Sp K} {p₁
   rw [swap]
   simp only [T2, Finset.sum_const_zero]
 
+/- English proof (translation)
+Introduce `K _ Y Z q p₁ p₂ I _ U g θ φ hq H hU hind u u' hu`. Use `letI : ∀ i j : I, Module K Γ(Y, U i ⊓ U j) := fun i j => (cstHom q (U i ⊓ U j)).hom.toModule`. Establish `hsmul : ∀ (c : K) (x : C1 U), c • x = fun i j => constFn q (U i ⊓ U j) c * x i j`. Introduce `c x`. Use function extensionality and compare the values at `i j`.
+
+Rewrite using `[← cstHom_apply]`. Both sides reduce to the same expression. Establish `hrs_add : ∀ {O₀ O : Y.Opens} (s t : Γ(Y, O₀)), rsT (s + t) O = rsT s O + rsT t O`. Introduce `O₀ O s t`. Unfold `rsT`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hrs_cmul : ∀ {O₀ O : Y.Opens} (c : K) (s : Γ(Y, O₀)), O ≤ O₀ → rsT (constFn q O₀ c * s) O = constFn q O c * rsT s O`. Introduce `O₀ O c s h`. Rewrite using `[rsT_of_le _ h, rsT_of_le _ h, map_mul, res_constFn]`. Set `B : Submodule K (C1 U)` to `{ carrier := {c | IsCob U c} add_mem' := by`.
+
+Introduce and unpack `x y ⟨b, hb⟩ ⟨b', hb'⟩`. Use `⟨b + b', fun i j => ?_⟩` and prove the remaining obligations. Use `show x i j + y i j = _`. Rewrite using `[hb, hb', Pi.add_apply, Pi.add_apply, hrs_add, hrs_add]`. Normalize the expressions using the abelian group laws.
+
+Use the proof step `zero_mem' := ⟨0, fun i j => by simp [rsT]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c x ⟨b, hb⟩`. Use `⟨fun i => constFn q (U i) c * b i, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hsmul]`.
+
+Use `show constFn q _ c * x i j = _`. Rewrite using `[hb, hrs_cmul c _ inf_le_right, hrs_cmul c _ inf_le_left, mul_sub] }`. Establish `hlc : ∀ c : Fin g → K, lc q c φ = ∑ a, c a • φ a`. Introduce `c`. Use function extensionality and compare the values at `i j`.
+
+Simplify using `only [lc, Finset.sum_apply, hsmul]`. Establish `hind' : ∀ c : Fin g → K, ∑ a, c a • φ a ∈ B → c = 0`. Introduce `c hc`. Apply `hind c` to reduce the goal to its premises. Rewrite using `[hlc]`.
+
+Conclude with `hc`. Take `⟨Θ, hΘ, hmem⟩` from `exists_symm_matrix_mod_subspace K (C1 U) B g θ φ hind' (fun α β hα hβ => pair_symm θ φ hq H hU u u' hu α.toAddMonoidHom β.toAddMonoidHom (fun c x => by`. Establish `e` using `hsmul c x`. Rewrite using `[← e]`. Use `show α (c • x) = c * α x`.
+
+Rewrite using `[map_smul, smul_eq_mul])`. Use the proof step `(fun c x => by`. Establish `e` using `hsmul c x`. Rewrite using `[← e]`. Use `show β (c • x) = c * β x`.
+
+Rewrite using `[map_smul, smul_eq_mul])`. Use the proof step `(fun c hc => LinearMap.mem_ker.mp (hα hc))`. Use the proof step `(fun c hc => LinearMap.mem_ker.mp (hβ hc)))`. Use `⟨Θ, hΘ, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[hlc]`.
+
+Conclude with `hmem b`.
+-/
 theorem kunneth_symm : ∀ (K : Type) [Field K] (Y Z : Scheme.{0}) (q : Y ⟶ Sp K) (p₁ p₂ : Z ⟶ Y) (I : Type) [Finite I] (U : I → Y.Opens) (g : ℕ) (θ φ : Fin g → C1 U), IsSeparated q → IsPullback p₁ p₂ q q → (∀ i, IsAffineOpen (U i)) → (∀ c, IsCob U (lc q c φ) → c = 0) → ∀ (u : ∀ i i' j, Γ(Z, p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ U j)) (u' : ∀ i j j', Γ(Z, p₁ ⁻¹ᵁ U i ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j'))), (∀ i i' j j', ∑ a, (pbT p₁ (θ a i i') (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')) * pbT p₂ (φ a j j') (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')) - pbT p₁ (φ a i i') (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')) * pbT p₂ (θ a j j') (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j'))) = (rsT (u i i' j') (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')) - rsT (u i i' j) (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j'))) + (rsT (u' i' j j') (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')) - rsT (u' i j j') (p₁ ⁻¹ᵁ (U i ⊓ U i') ⊓ p₂ ⁻¹ᵁ (U j ⊓ U j')))) → ∃ Θ : Matrix (Fin g) (Fin g) K, Θ.IsSymm ∧ ∀ b, IsCob U (θ b - lc q (Θ b) φ) := by
   intro K _ Y Z q p₁ p₂ I _ U g θ φ hq H hU hind u u' hu
   letI : ∀ i j : I, Module K Γ(Y, U i ⊓ U j) := fun i j => (cstHom q (U i ⊓ U j)).hom.toModule

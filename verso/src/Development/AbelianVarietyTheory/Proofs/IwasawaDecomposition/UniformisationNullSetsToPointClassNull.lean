@@ -16,6 +16,9 @@ namespace GlobalTheory.UnifNull
 
 open Set in
 
+/- English proof (translation)
+Establish `hle : (⨆ i, μ i) ≤ (⨆ i, μ i).restrict Tᶜ` using `iSup_le fun i => Measure.le_iff.2 fun B hB => by`. Rewrite using `[Measure.restrict_apply hB, ← measure_inter_add_diff B hT, diff_eq, measure_mono_null inter_subset_right (h i), zero_add]`. Conclude with `Measure.le_iff'.1 (le_iSup μ i) _`. Use `le_antisymm ((Measure.le_iff'.1 hle T).trans ?_) (zero_le)` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply hT, inter_compl_self, measure_empty]`.
+-/
 theorem iSup_apply_eq_zero {Z : Type*} [MeasurableSpace Z] {ι : Type*} (μ : ι → Measure Z) {T : Set Z}
     (hT : MeasurableSet T) (h : ∀ i, μ i T = 0) : (⨆ i, μ i) T = 0 := by
   have hle : (⨆ i, μ i) ≤ (⨆ i, μ i).restrict Tᶜ := iSup_le fun i => Measure.le_iff.2 fun B hB => by
@@ -27,6 +30,23 @@ theorem iSup_apply_eq_zero {Z : Type*} [MeasurableSpace Z] {ι : Type*} (μ : ι
 
 open Set in
 
+/- English proof (translation)
+Introduce `k _ Y p σ D _ ρ S hS`. Take `⟨I, hIc, hI⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun c : AlgChart p σ D => c.e.source) fun c => c.e.open_source`. Set `Z : AlgChart p σ D → Set (ReciprocityTheory.L2DbarEstimates.V D)` to `fun c => toMeasurable volume (c.e '' (c.e.source ∩ S))`. Establish `hZ : ∀ c, volume (Z c) = 0` using `fun c => (measure_toMeasurable _).trans (hS c)`. Establish `hTm : ∀ c : AlgChart p σ D, MeasurableSet (c.e.source ∩ c.e ⁻¹' Z c)`.
+
+Introduce `c`. Establish `hm` using `(c.e.continuousOn.measurable_piecewise (continuousOn_const (c := (0 : ReciprocityTheory.L2DbarEstimates.V D))) c.e.open_source.measurableSet) (measurableSet_toMeasurable volume (c.e '' (c.e.source ∩ S)))`. Use `c.e.open_source.measurableSet.inter hm using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using `only [mem_inter_iff, mem_preimage]`.
+
+Apply the tactic sequence `constructor <;> rintro ⟨h1, h2⟩ <;> refine ⟨h1, ?_⟩ <;> simpa [Set.piecewise_eq_of_mem _ _ _ h1] using h2`. Set `T : Set (CxPts p σ)` to `(⋃ c : AlgChart p σ D, c.e.source)ᶜ ∪ ⋃ c ∈ I, (c.e.source ∩ c.e ⁻¹' Z c)`. Establish `hT : MeasurableSet T` using `(isOpen_iUnion fun c : AlgChart p σ D => c.e.open_source).measurableSet.compl.union (MeasurableSet.biUnion hIc fun c _ => hTm c)`. Establish `hST : S ⊆ T`. Introduce `y hy`.
+
+Distinguish the cases in `hO : y ∈ ⋃ c : AlgChart p σ D, c.e.source`. Use `right`. Rewrite `hO` using `[← hI]`. Take `⟨c, hc, hyc⟩` from `mem_iUnion₂.1 hO`. Conclude with `mem_biUnion hc ⟨hyc, subset_toMeasurable _ _ ⟨y, ⟨hyc, hy⟩, rfl⟩⟩`.
+
+Conclude with `Or.inl hO`. Establish `hc0 : ∀ c : AlgChart p σ D, chartMeas c.e (ρ c) T = 0`. Introduce `c`. Rewrite using `[chartMeas_apply _ _ hT]`. Use `setLIntegral_measure_zero _ _ ?_` and prove the remaining obligations.
+
+Establish `hsub : c.e '' (c.e.source ∩ T) ⊆ ⋃ c' ∈ I, (c.e ∘ c'.e.symm) '' (Z c' ∩ (c'.e.target ∩ c'.e.symm ⁻¹' c.e.source))`. Introduce and unpack `_ ⟨y, ⟨hy, hyT⟩, rfl⟩`. Break down `hyT with hyO | hyT` into its components or cases. Conclude with `(hyO (mem_iUnion.2 ⟨c, hy⟩)).elim`. Take `⟨c', hc', hy1, hy2⟩` from `mem_iUnion₂.1 hyT`.
+
+Use `mem_biUnion hc' ⟨c'.e y, ⟨hy2, c'.e.map_source hy1, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [mem_preimage, c'.e.left_inv hy1]`. Conclude with `hy`. Simplify using `only [Function.comp_apply, c'.e.left_inv hy1]`. Use `measure_mono_null hsub ((measure_biUnion_null_iff hIc).2 fun c' _ => ?_)` and prove the remaining obligations.
+
+Conclude with `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume (((AlgChart.holo_trans c' c).restrictScalars ℝ).mono inter_subset_right) (measure_mono_null inter_subset_left (hZ c'))`. Conclude with `measure_mono_null hST (iSup_apply_eq_zero _ hT hc0)`.
+-/
 theorem glueNull : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} (p : Y ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) [SecondCountableTopology (CxPts p σ)] (ρ : AlgChart p σ D → CxPts p σ → ENNReal) (S : Set (CxPts p σ)), (∀ c : AlgChart p σ D, volume (c.e '' (c.e.source ∩ S)) = 0) → glueMeas (fun c : AlgChart p σ D => c.e) ρ S = 0 := by
   intro k _ Y p σ D _ ρ S hS
   classical
@@ -75,6 +95,15 @@ theorem glueNull : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} (p : Y ⟶ Sp k)
 
 open Set in
 
+/- English proof (translation)
+Establish `hc : ∀ i : ι, Continuous fun v : ι × Fin p × Fin q → ℂ => (hQ (unflat v i)).det.re`. Introduce `i`. Use `Complex.continuous_re.comp (Continuous.matrix_det ?_)` and prove the remaining obligations. Establish `hu : Continuous fun v : ι × Fin p × Fin q → ℂ => unflat v i` using `continuous_pi fun a => continuous_pi fun b => continuous_apply (i, a, b)`. Unfold `hQ`.
+
+Conclude with `continuous_const.sub (Continuous.matrix_mul (Continuous.matrix_conjTranspose hu) hu)`. Establish `hm : Measurable fun v : ι × Fin p × Fin q → ℂ => ENNReal.ofReal (∏ i, ((hQ (unflat v i)).det.re) ^ (-((p + q : ℕ) : ℤ)))`. Use `ENNReal.measurable_ofReal.comp (Finset.measurable_prod _ fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [zpow_neg, zpow_natCast]`. Conclude with `((hc i).measurable.pow_const _).inv`.
+
+Establish `hpos : ∀ v ∈ DomFlat ι p q, ENNReal.ofReal (∏ i, ((hQ (unflat v i)).det.re) ^ (-((p + q : ℕ) : ℤ))) ≠ 0`. Introduce `v hv`. Use `(ENNReal.ofReal_pos.2 (Finset.prod_pos fun i _ => zpow_pos ?_ _)).ne'` and prove the remaining obligations. Establish `h` using `(hv i : (1 - (unflat v i)ᴴ * unflat v i).PosDef).det_pos`. Conclude with `(Complex.pos_iff.1 h).1`.
+
+Rewrite `h0` using `[muD, withDensity_apply_eq_zero' hm.aemeasurable, Measure.restrict_apply' GlobalTheory.HodgeDomain.ActionDeriv.isOpen_domFlat.measurableSet]`. Use `measure_mono_null ?_ h0` and prove the remaining obligations. Introduce `v hv`. Conclude with `⟨⟨hpos v (hN hv), hv⟩, hN hv⟩`.
+-/
 theorem volume_null_of_muD {ι : Type} [Fintype ι] {p q : ℕ} {N : Set (ι × Fin p × Fin q → ℂ)}
     (hN : N ⊆ DomFlat ι p q) (h0 : muD ι p q N = 0) : volume N = 0 := by
   have hc : ∀ i : ι, Continuous fun v : ι × Fin p × Fin q → ℂ => (hQ (unflat v i)).det.re := by
@@ -103,6 +132,17 @@ theorem volume_null_of_muD {ι : Type} [Fintype ι] {p q : ℕ} {N : Set (ι × 
 
 open Set in
 
+/- English proof (translation)
+Use `set t := s ∩ ψ ⁻¹' c.e.source with ht`. Establish `e1 : c.e '' (c.e.source ∩ ψ '' s) = (c.e ∘ ψ) '' t`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨h1, w, hw, rfl⟩, rfl⟩`.
+
+Conclude with `⟨w, ⟨hw, h1⟩, rfl⟩`. Introduce and unpack `⟨w, ⟨hw, h1⟩, rfl⟩`. Conclude with `⟨ψ w, ⟨h1, w, hw, rfl⟩, rfl⟩`. Establish `hd : DifferentiableOn ℂ (c.e ∘ ψ) t` using `differentiableOn_euclidean.2 fun a => ((hψ a).mono fun w hw => ⟨hw.1, c.source_subset hw.2⟩).congr fun w hw => c.apply_eq _ hw.2 a`. Establish `hfin : Module.finrank ℝ (ι → ℂ) = Module.finrank ℝ (ReciprocityTheory.L2DbarEstimates.V D)`.
+
+Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ (ι → ℂ), ← Module.finrank_mul_finrank ℝ ℂ (ReciprocityTheory.L2DbarEstimates.V D)]`. Simplify using `[hD]`. Set `L : (ι → ℂ) ≃L[ℝ] ReciprocityTheory.L2DbarEstimates.V D` to `ContinuousLinearEquiv.ofFinrankEq hfin`. Establish `h1 : volume ((L.symm ∘ (c.e ∘ ψ)) '' t) = 0` using `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume (L.symm.differentiable.comp_differentiableOn (hd.restrictScalars ℝ)) (measure_mono_null inter_subset_left hs)`. Establish `e2 : (c.e ∘ ψ) '' t = L.symm ⁻¹' ((L.symm ∘ (c.e ∘ ψ)) '' t)`.
+
+Rewrite using `[← L.image_eq_preimage_symm, image_image]`. Simplify using the standard rewrite rules. Use `haveI : (Measure.map L.symm (volume : Measure (ReciprocityTheory.L2DbarEstimates.V D))).IsAddHaarMeasure := L.symm.isAddHaarMeasure_map volume`. Establish `hac` using `Measure.absolutelyContinuous_isAddHaarMeasure (Measure.map L.symm (volume : Measure (ReciprocityTheory.L2DbarEstimates.V D))) volume`. Rewrite using `[e1, e2]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem chart_image_null {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
     {ι : Type} [Fintype ι] (c : AlgChart p σ D) (ψ : (ι → ℂ) → CxPts p σ) {s : Set (ι → ℂ)}
     (hD : D = Fintype.card ι) (hs : volume s = 0)
@@ -136,6 +176,13 @@ theorem chart_image_null {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp 
         (L.symm.toHomeomorph.toMeasurableEquiv.map_apply _).symm
     _ = 0 := hac h1
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ N hN h0`. Establish `hH` using `GlobalTheory.T.uniformisationComponent_holomorphic_boundedDomain E H Dw l Xo c O β Y T F e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ`. Establish `hv` using `volume_null_of_muD hN h0`. Establish `hdim : X.dim = Fintype.card ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p))`. Rewrite using `[(GlobalTheory.FlagBaseDim.dims E H Dw l Xo c O β Y T F e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL).2]`.
+
+Establish `h1` using `ReciprocityTheory.ChartRestriction.G.FD.RealPlaceEmbeddings.two_card_Psi (U.X k)`. Establish `h2 : Fintype.card (GlobalTheory.AllWt.Psi H) = Module.finrank ℚ E / 2`. Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `GlobalTheory.PeriodCoord.card_cmType H`. Establish `h3 : Fintype.card (GlobalTheory.AllWt.Psi H) = Fintype.card (U.X k).Ψ` using `by omega`.
+
+Simplify using `only [Fintype.card_prod, Fintype.card_fin, h3, Nat.add_sub_cancel_left]`. Unfold `chernTopPart`. Conclude with `glueNull X.str (σ.comp e.toRingHom) X.dim _ _ fun ch => chart_image_null ch ψ hdim hv fun a => (hH ch.U (ch.x a)).mono fun w hw => ⟨hN hw.1, hw.2⟩`.
+-/
 theorem image_null : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (Φ : FlagTor T.Z e U) (k : U.Comp), ∀ (X : Var F) (j : X.X ⟶ gen T.Z) (f : (Φ.C k).Y.X ⟶ X.X) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsLieBase e (Φ.C k) X j f f₀ Eb A₀ → ∀ ψ : ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ) → CxPts X.str (σ.comp e.toRingHom), (∀ x : (U.X k).dom, cxOf e σ hj (ψ (flat (domPt (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl (U.X k).Ψ) x.1))) = cxPt T.Z (U.un k x)) → ∀ N ⊆ DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p), muD (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p) N = 0 → chernTopPart Eb (lieGram e U hj f₀ A₀) (pointPoly H Dw) 1 (ψ '' N) = 0 := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ N hN h0
   have hH := GlobalTheory.T.uniformisationComponent_holomorphic_boundedDomain E H Dw l Xo c O β Y T F e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ

@@ -10,5 +10,8 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RowBig.latRow_le_latBig | exact GlobalTheory.RowBig.latRow_le_latBig | (intros; apply GlobalTheory.RowBig.latRow_le_latBig <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.depthLatticeGridRow_le_selfDualHomLatticeShift : All fun {D} _ _ _ {G} _ _ => ∀ i, 1 ≤ i → i < D.R.m → latRow G i ≤ latBig G i := by
   first | exact @GlobalTheory.RowBig.latRow_le_latBig | exact GlobalTheory.RowBig.latRow_le_latBig | (intros; apply GlobalTheory.RowBig.latRow_le_latBig <;> assumption)

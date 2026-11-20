@@ -8,6 +8,9 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 
 namespace MassDataMassesW
 
+/- English proof (translation)
+Introduce `D X u hT _hc _hK hKo hfin 𝓕 h𝓕`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := Module.finite_of_finrank_pos (by rw [X.B.I.cm.deg2]; norm_num)`. Establish `hU : MeasurableSet ((KH X u : Subgroup ↥(Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) : Set ↥(Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))` using `(hKo.preimage continuous_subtype_val).measurableSet`. Conclude with `massUnfold_gen X.B.I.cm.sig X.B.I.J (frameOf X u) (isCMExt_of_cmData X.B.I.cm) (isHermND_of_setting X) (X.measW u) hT (KH X u) hU hfin 𝓕 h𝓕`.
+-/
 theorem massUnfold_holds : MassUnfold := by
   intro D X u hT _hc _hK hKo hfin 𝓕 h𝓕
   haveI : FiniteDimensional X.B.I.F X.B.I.E :=

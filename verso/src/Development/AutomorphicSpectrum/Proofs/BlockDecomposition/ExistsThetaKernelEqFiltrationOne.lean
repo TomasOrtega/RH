@@ -7,6 +7,11 @@ open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison Crys
 
 namespace GlobalTheory.CompanionTheory.PerfectAlg
 
+/- English proof (translation)
+Take `⟨hsurj, hker, -, -⟩` from `GlobalTheory.T.quotient_maps_surjective_with_kernels A n`. Use `⟨((Ideal.quotEquivOfEq hker).toRingHom.comp (RingHom.quotientKerEquivOfSurjective hsurj).symm.toRingHom).comp (Ideal.Quotient.mk (A.Fil n 1)), fun x => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : A.uToQ n (A.th x) = Ideal.Quotient.mk (A.Fil n 1) (A.toAcr n x)` using `by rfl`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[← h1, ← RingHom.quotientKerEquivOfSurjective_apply_mk hsurj, RingEquiv.symm_apply_apply, Ideal.quotEquivOfEq_mk]`.
+
+Use extensionality with `y`. Simplify using `only [RingHom.mem_ker, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[map_eq_zero_iff _ (RingEquiv.injective _), map_eq_zero_iff _ (RingEquiv.injective _), Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem exists_theta_mod {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ) :
     ∃ θ : A.Acr n →+* A.Un n, (∀ x : A.W, θ (A.toAcr n x) = Ideal.Quotient.mk _ (A.th x)) ∧
       RingHom.ker θ = A.Fil n 1 := by

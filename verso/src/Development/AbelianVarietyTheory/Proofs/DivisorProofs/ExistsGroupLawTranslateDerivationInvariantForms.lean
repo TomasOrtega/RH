@@ -20,6 +20,11 @@ namespace GlobalTheory.InvForm
 section Alg
 variable {R C E : Type} [CommRing R] [CommRing C] [Algebra R C] [CommRing E] [Algebra R E]
 
+/- English proof (translation)
+Use `letI : Algebra C E := (redHom φ).toAlgebra`. Use `haveI : IsScalarTower R C E := IsScalarTower.of_algebraMap_eq fun r ↦ (redHom_algebraMap φ r).symm`. Unfold `dVal`. Simplify using `only [LinearMap.coe_restrictScalars]`. Rewrite using `[LinearMap.map_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem dVal_smul_left (φ : C →ₐ[R] DualNumber E) (c : C) (x : Ω[C⁄R]) :
     dVal φ (c • x) = (φ c).fst * dVal φ x := by
   letI : Algebra C E := (redHom φ).toAlgebra
@@ -41,9 +46,17 @@ def semiDerHom (σ : C →ₐ[R] E) (θ : Ω[C⁄R] →ₗ[R] E) (hθ : ∀ (c :
   map_add' a b := by ext <;> simp
   commutes' r := by ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl']
 
+/- English proof (translation)
+Simplify using `[semiDerHom]`.
+-/
 theorem fst_semiDerHom (σ : C →ₐ[R] E) (θ : Ω[C⁄R] →ₗ[R] E) (hθ : ∀ (c : C) (x : Ω[C⁄R]), θ (c • x) = σ c * θ x)
     (c : C) : (semiDerHom σ θ hθ c).fst = σ c := by simp [semiDerHom]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x ↦ ?_` and prove the remaining obligations. Proceed by induction on `x using GlobalTheory.CechDR.ind1 with`. Consider the case `h b c`. Rewrite using `[dVal_smul_left, dVal_D, hθ, fst_semiDerHom]`. Simplify using `[semiDerHom]`.
+
+Consider the case `h0 => simp`. Consider the case `ha x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem dVal_semiDerHom (σ : C →ₐ[R] E) (θ : Ω[C⁄R] →ₗ[R] E) (hθ : ∀ (c : C) (x : Ω[C⁄R]), θ (c • x) = σ c * θ x) :
     dVal (semiDerHom σ θ hθ) = θ := by
   refine LinearMap.ext fun x ↦ ?_
@@ -59,6 +72,25 @@ end GlobalTheory.InvForm
 
 namespace GlobalTheory.InvForm
 
+/- English proof (translation)
+Introduce `R _ A _ U V θ hθ`. Set `σ : Sec A.hom V.unop.1 →ₐ[R] Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1` to `Algebra.TensorProduct.includeRight`. Establish `hθ' : ∀ (c : Sec A.hom V.unop.1) (x : Ω[Sec A.hom V.unop.1⁄R]), θ (c • x) = σ c * θ x` using `hθ`. Set `φ` to `semiDerHom σ θ hθ'`. Set `aV : GlobalTheory.PDiv.SpAlg R (Sec A.hom V.unop.1) ⟶ A` to `Over.homMk (affPt A.hom V.unop) (affPt_w A.hom V.unop)`.
+
+Set `aU : GlobalTheory.PDiv.SpAlg R (Sec A.hom U.unop.1) ⟶ A` to `Over.homMk (affPt A.hom U.unop) (affPt_w A.hom U.unop)`. Set `p : Over.mk (spMap (algebraMap R (DualNumber (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1)))) ⟶ A` to `GlobalTheory.DeRham.spOver φ ≫ aV`. Set `x₀ : Over.mk (spMap (algebraMap R (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1))) ⟶ A` to `GlobalTheory.DeRham.spOver (Algebra.TensorProduct.includeLeft : Sec A.hom U.unop.1 →ₐ[R] _) ≫ aU`. Set `y₀ : Over.mk (spMap (algebraMap R (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1))) ⟶ A` to `GlobalTheory.DeRham.spOver σ ≫ aV`. Set `q'` to `y₀⁻¹ * x₀`.
+
+Set `q` to `GlobalTheory.DeRham.spOver (TrivSqZeroExt.inlAlgHom R (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1) (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1)) ≫ q'`. Set `red` to `GlobalTheory.DeRham.spOver (TrivSqZeroExt.fstHom R (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1) (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1))`. Establish `h1 : red ≫ p = y₀`. Simplify using `only [red, p, y₀, ← Category.assoc, GlobalTheory.DeRham.spOver_comp]`. Use `congr 2`.
+
+Establish `h2 : red ≫ q = q'`. Simplify using `only [red, q, ← Category.assoc, GlobalTheory.DeRham.spOver_comp]`. Establish `: (TrivSqZeroExt.fstHom R (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1) (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1)).comp (TrivSqZeroExt.inlAlgHom R _ _) = AlgHom.id R _` using `AlgHom.ext fun x ↦ by simp`. Rewrite using `[this, GlobalTheory.PDiv.spOver_id, Category.id_comp]`. Establish `h3 : red ≫ (p * q) = x₀`.
+
+Rewrite using `[MonObj.comp_mul, h1, h2, mul_inv_cancel_left]`. Establish `htop : ⊤ ≤ (p * q).left ⁻¹ᵁ U.unop.1`. Apply `GlobalTheory.PtExt.pt_dual_le_of_fst R A _ (p * q) U.unop.1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `⊤ ≤ (red ≫ (p * q)).left ⁻¹ᵁ U.unop.1`. Rewrite using `[h3]`.
+
+Introduce `t _`. Express the relevant statement in the definitionally equal form `(U.unop.2.fromSpec).base ((spMap _).base t) ∈ U.unop.1`. Establish `k` using `IsAffineOpen.range_fromSpec U.unop.2`. Rewrite `k` using `[Set.ext_iff]`. Conclude with `(k _).1 ⟨_, rfl⟩`.
+
+Establish `hs : (p * q).left ≫ A.hom = spMap (algebraMap R (DualNumber (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1)))` using `Over.w (p * q)`. Set `ψ` to `GlobalTheory.CechKS.FormLocal.valHom (s := A.hom) (U := U.unop.1) (p * q).left htop hs`. Establish `hψ : spMap (ψ : Sec A.hom U.unop.1 →+* DualNumber (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1)) ≫ affPt A.hom U.unop = (p * q).left` using `GlobalTheory.CechKS.FormLocal.valHom_pt U.unop.2 _ htop hs`. Establish `hfst : (TrivSqZeroExt.fstHom R (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1) (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1)).toRingHom.comp (ψ : Sec A.hom U.unop.1 →+* DualNumber (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1)) = ((Algebra.TensorProduct.includeLeft : Sec A.hom U.unop.1 …`. Apply `GlobalTheory.CechKS.FormLocal.ringHom_ext_affPt (s := A.hom) U.unop.2` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `spMap _ ≫ affPt A.hom U.unop = spMap _ ≫ affPt A.hom U.unop`. Rewrite using `[Cris.spMap_comp, Category.assoc, hψ]`. Conclude with `congrArg CommaMorphism.left h3`. Use `⟨ψ, fun b ↦ RingHom.congr_fun hfst b, fun w ↦ ?_⟩` and prove the remaining obligations. Establish `key` using `w.2 (Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1) V.unop U.unop φ ψ p q q'.left rfl rfl hψ.symm`.
+
+Rewrite `key` using `[dVal_semiDerHom]`. Conclude with `key`.
+-/
 theorem exists_transl_val : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (U V : AffOp A.left)
     (θ : Ω[Sec A.hom V.unop.1⁄R] →ₗ[R] Sec A.hom U.unop.1 ⊗[R] Sec A.hom V.unop.1),
     (∀ (c : Sec A.hom V.unop.1) (x : Ω[Sec A.hom V.unop.1⁄R]), θ (c • x) = (1 ⊗ₜ c) * θ x) →

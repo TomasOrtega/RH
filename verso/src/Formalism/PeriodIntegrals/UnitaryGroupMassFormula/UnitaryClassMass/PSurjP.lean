@@ -25,6 +25,9 @@ def IdemStep : Prop :=
             ∀ q : Ideal (𝓞 E), q.IsMaximal → (∀ p ∈ W, hcompl (K := E) q ≠ hcompl (K := E) p) →
               v ∈ loc (K := E) q L0)
 
+/- English proof (translation)
+Rewrite using `[LinearEquiv.symm_apply_eq, linOf_one_apply]`.
+-/
 theorem linOf_one_symm_apply {E : Type} [Field E] {V : Type} [AddCommGroup V] [Module E V] {M : ℕ}
     (b : Module.Basis (Fin M) E V) (v : V) : (linOf b (1 : GL (Fin M) E)).symm v = v := by
   rw [LinearEquiv.symm_apply_eq, linOf_one_apply]

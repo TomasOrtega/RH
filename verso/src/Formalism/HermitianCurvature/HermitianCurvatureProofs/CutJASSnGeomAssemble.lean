@@ -11,6 +11,17 @@ noncomputable section
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos m with hm | hm` into its components or cases. Substitute `hm` using the available equality. Take `⟨C0, hC0⟩` from `h0`. Use `⟨C0, fun u w _ _ hl g hg hgε => ?_⟩` and prove the remaining obligations. Establish `hu : u = []` using `List.eq_nil_of_length_eq_zero (by omega)`.
+
+Establish `hw : w = []` using `List.eq_nil_of_length_eq_zero (by omega)`. Substitute `hu hw` using the available equality. Simplify using `only [Nat.cast_zero, mul_zero, Real.rpow_zero, mul_one]`. Conclude with `hC0 g ⟨hg, hgε⟩`. Take `⟨⟨C, hC0, hUB⟩, -⟩` from `hU m`.
+
+Use `⟨C, fun u w hu hw hl g hg hgε => ?_⟩` and prove the remaining obligations. Establish `hA : admitted m (wL u ++ wR w)` using `⟨u, w, hu, hw, hl, rfl⟩`. Establish `hb` using `hUB _ hA g ⟨hg, hgε⟩`. Rewrite using `[dLR_eq]`. Use `hb.trans (mul_le_mul_of_nonneg_left ?_ hC0)` and prove the remaining obligations.
+
+Establish `h1 : 1 ≤ B.gN g` using `gN_ge_one hg`. Rewrite using `[← Real.rpow_natCast]`. Apply `Real.rpow_le_rpow_of_exponent_le h1` to reduce the goal to its premises. Rewrite using `[len_LR]`. Establish `hm1 : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`.
+
+Establish `hl' : ((u.length + w.length : ℕ) : ℝ) ≤ m` using `by exact_mod_cast hl`. Establish `he : (0 : ℝ) ≤ e` using `Nat.cast_nonneg _`. Establish `hγ : (0 : ℝ) ≤ γ` using `Nat.cast_nonneg _`. Move the coercions through the operations in `at hl' ⊢`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hl' hγ, mul_le_mul_of_nonneg_left hm1 he, mul_le_mul_of_nonneg_right hBg (by linarith : (0 : ℝ) ≤ m)]`.
+-/
 theorem bd_of_ubl {k r : ℕ} {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F]
     (z z' : Fin (2 * r + k + 1) → ℂ) (φ : B.Mat k r → F) (e γ : ℕ) (Bg : ℝ)
     (hBg : (e : ℝ) + γ ≤ Bg) (ε : ℝ)
@@ -45,6 +56,23 @@ theorem bd_of_ubl {k r : ℕ} {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ
     nlinarith [mul_le_mul_of_nonneg_left hl' hγ, mul_le_mul_of_nonneg_left hm1 he,
       mul_le_mul_of_nonneg_right hBg (by linarith : (0 : ℝ) ≤ m)]
 
+/- English proof (translation)
+Introduce `hS hEn hEi hAt hB0 hU`. Use `⟨6, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `Cc Cb hCc hCb E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v`. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Use `set Bs := (T v).base with hBs`.
+
+Establish `hk : 1 ≤ S.G.k` using `Bs.k_pos`. Establish `hz : C2.StdZ S.G.k S.G.r Bs.z` using `⟨Bs.z_mem, Bs.T_pos⟩`. Establish `hz' : C2.StdZ S.G.k S.G.r Bs.z'` using `⟨Bs.z'_mem, Bs.T'_pos⟩`. Use `⟨nuG Bs.z Bs.z', nuG' Bs.z Bs.z', ioG Bs.z Bs.z', ?_⟩` and prove the remaining obligations. Take `⟨s1, s2, s3⟩` from `hS _ _ _ _ hk hz hz'`.
+
+Take `⟨C0, hC0⟩` from `hB0 _ _ _ _ hk hz hz'`. Establish `hr0 : (0 : ℝ) ≤ S.G.r` using `Nat.cast_nonneg _`. Establish `hBg : ∀ e γ : ℕ, e ≤ 4 * (S.G.r + 1) → γ ≤ 2 * (S.G.r + 1) → (e : ℝ) + γ ≤ Cb * ((S.G.r : ℝ) + 1)`. Introduce `e γ he hγ`. Establish `he' : (e : ℝ) ≤ 4 * ((S.G.r : ℝ) + 1)` using `by exact_mod_cast he`.
+
+Establish `hγ' : (γ : ℝ) ≤ 2 * ((S.G.r : ℝ) + 1)` using `by exact_mod_cast hγ`. Use the polynomial consequences of the given equalities and inequalities. Establish `hpos : ∀ ε : ℝ, 0 < ε → ∀ g ∈ geG S.G.k S.G.r Bs.z Bs.z' ε, g ∈ posG S.G.k S.G.r Bs.z Bs.z'` using `fun ε hε g hg => ⟨hg.1, lt_of_lt_of_le hε hg.2⟩`. Use `⟨s1, s2, s3, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp g hg`.
+
+Take `⟨h1, h2⟩` from `hEn _ _ _ _ hk hz hz' _ hp.1 _ hp.2.1 _ hp.2.2.1 _ hp.2.2.2 g hg`. Conclude with `⟨h1, h2, hEi _ _ _ _ hk hz hz' _ hp.1 _ hp.2.1 _ hp.2.2.1 _ hp.2.2.2 g hg⟩`. Introduce `ε hε m`. Take `⟨⟨e, γ, he, hγ, hu⟩, -, -⟩` from `hU _ _ _ _ hk hz hz' ε hε`. Conclude with `bd_of_ubl Bs.z Bs.z' _ e γ _ (hBg e γ he hγ) ε ⟨C0, fun g hg => (hC0 g (hpos ε hε g hg)).1⟩ hu m`.
+
+Introduce `ε hε m`. Take `⟨-, ⟨e, γ, he, hγ, hu⟩, -⟩` from `hU _ _ _ _ hk hz hz' ε hε`. Conclude with `bd_of_ubl Bs.z Bs.z' _ e γ _ (hBg e γ he hγ) ε ⟨C0, fun g hg => (hC0 g (hpos ε hε g hg)).2.1⟩ hu m`. Introduce `ε hε m`. Take `⟨-, -, ⟨e, γ, he, hγ, hu⟩⟩` from `hU _ _ _ _ hk hz hz' ε hε`.
+
+Conclude with `bd_of_ubl Bs.z Bs.z' _ e γ _ (hBg e γ he hγ) ε ⟨C0, fun g hg => (hC0 g (hpos ε hε g hg)).2.2⟩ hu m`. Introduce `q hq`. Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r Bs.z * Tz S.G.k S.G.r Bs.z'` using `by show (D.parOf S v).T * (D.parOf S v).T' = _`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`. Establish `hq2 : Tz S.G.k S.G.r Bs.z * Tz S.G.k S.G.r Bs.z' < Complex.normSq q.2` using `hTT ▸ hq.2`.
+
+Conclude with `hAt _ _ _ _ Bs.μsec hk hz hz' Bs.sec q.1 q.2 hq.1 hq2`.
+-/
 theorem geometry_assembly_holds : GeomAssemble := by
   intro hS hEn hEi hAt hB0 hU
   refine ⟨6, by norm_num, ?_⟩

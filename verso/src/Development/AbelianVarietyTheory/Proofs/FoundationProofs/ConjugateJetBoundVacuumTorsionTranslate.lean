@@ -22,6 +22,19 @@ open scoped BigOperators
 
 namespace GlobalTheory.ArchFree.jet
 
+/- English proof (translation)
+Establish `hg1 : admG1 D` using `(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1`. Take `⟨hdata, htors⟩` from `(GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D hg1).2 cc δ hc`. Take `⟨hA, hAU, -⟩` from `GlobalTheory.T.thetaTaylorCoeffs_algebraic_at_complexMultiplication D cc δ hc t0 ht a d L L' h1 h2 hev G hG`. Take `⟨hTh, -⟩` from `GlobalTheory.T.thetaVacua_conjugates_cmPoints D cc δ hc t0 ht a d L L' h1 h2 hev G hG Qbar ρ hdata hA`. Take `⟨t', ht'⟩` from `(GlobalTheory.T.exists_twoTorsionCMPoint_all_conjugates D cc δ hc).2 Qbar ρ hdata.2.1 hdata.2.2`.
+
+Take `⟨hN, -⟩` from `GlobalTheory.T.vacuumNorm_conj_cmPoints_all_embeddings D cc δ hc t0 ht a d L L' h1 h2 hev G hG Qbar ρ hdata hA t' ht'`. Take `⟨cc', δ', hc', -, hΛ⟩` from `GlobalTheory.T.conjugate_curveDatum_lattice_isCurveLattice D cc δ hc Qbar ρ hρ hdata.2.1 hdata.2.2 1 one_pos`. Take `⟨π, hπ⟩` from `(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).2 Qbar ρ hρ hdata.1`. Establish `hne : fnConj D Qbar ρ G ≠ 0`. Introduce `h`.
+
+Rewrite `hN` using `[h, hΛ]`. Rewrite `ht'` using `[hΛ]`. Use `pow_ne_zero _ (GlobalTheory.ConjJet.thetaZeroNormSq_ne_zero_cmLattice D hg1 cc' δ' t' hc' ht') (hN.symm.trans ?_)` and prove the remaining obligations. Simplify using `[normSq]`. Take `⟨m, hm, hmy⟩` from `id hy`.
+
+Take `⟨y', hy', -⟩` from `GlobalTheory.T.galois_data_exists D cc δ hc Qbar ρ hρ hdata htors a d L L' h1 h2 y (2 * m) hy (by omega)`. Establish `hgal` using `(GlobalTheory.T.thetaTranslate_galoisRationality_cmPoints D cc δ hc Qbar ρ hρ hdata a d L L' h1 h2 1 (fun _ => 1) (fun _ => 0) G y y' m hGT hm hmy (fun _ => by simp) hy' (by rw [GlobalTheory.ConjJet.comb_one]; exact hA) (by rw [GlobalTheory.ConjJet.comb_one]; exact hAU y hy)).1`. Rewrite `hgal` using `[GlobalTheory.ConjJet.comb_one]`. Establish `hdiff` using `GlobalTheory.ConjJet.U_diff D (torConj D (tor0 D cc δ) Qbar ρ) y' _ hTh.1`. Take `⟨hmem, hcj⟩` from `(GlobalTheory.ConjSeries.taylor_fnConj D a d Qbar ρ (U D (tor0 D cc δ) y G) (by rw [hgal]; exact hdiff) (by rw [hgal]; exact GlobalTheory.ConjJet.U_ne_zero D _ _ _ hne)).2 (hAU y hy) n T`.
+
+Use `⟨hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[hcj, hgal]`. Establish `hr : 0 ≤ D.host.rdE` using `Real.rpow_nonneg (abs_nonneg _) _`. Use `(GlobalTheory.MinorBound.minor_bound D a d n _ _ (area (lamConj Qbar ρ (lamOf D cc δ))) B (by rw [hΛ]; exact GlobalTheory.ConjJet.area_pos D hg1 cc' δ' hc') hB ?_ hn hdiff fun z => ?_).2 T` and prove the remaining obligations. Use `GlobalTheory.ConjJet.normSq_nonneg D (torConj D (tor0 D cc δ) Qbar ρ) (La D (torConj D (tor0 D cc δ) Qbar ρ) L L') (fnConj D Qbar ρ G)` as an intermediate fact.
+
+Check the signs of the components of the expression. Use `GlobalTheory.ConjJet.sup_perm D hg1 cc' δ' hc' (torConj D (tor0 D cc δ) Qbar ρ) π hΛ hπ a d L L' h1 h2 _ hTh y' z` as an intermediate fact. Rewrite `this` using `[GlobalTheory.ConjJet.Hf_re, ← mul_div_assoc]`. Conclude with `this`.
+-/
 theorem jet_bound_fix (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ)
     (hc : Crv D cc δ) (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0) (a d : ℕ) (L L')
     (h1 : SD D L) (h2 : SD D L') (hev : Even (a * d)) (G : VC D a d → ℂ)
@@ -73,6 +86,11 @@ theorem jet_bound_fix (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ
     rw [GlobalTheory.ConjJet.Hf_re, ← mul_div_assoc] at this
     exact this
 
+/- English proof (translation)
+Take `⟨b, κ, hb, -, rfl⟩` from `hG`. Take `⟨-, ⟨hd, hinv⟩, -⟩` from `GlobalTheory.T.intertwinerUnitary_all D cc δ hc a d _ _ (Or.inl ⟨_, b, hb, rfl⟩) (Or.inr ⟨L, L', h1, h2, rfl⟩) _ (GlobalTheory.VacuumMove.pullbackOrthonormal_normalizedTheta_mem_thetaSpace D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ t0 hc ht b hb.1)`. Use `⟨hd.const_mul κ, fun x hx z => ?_⟩` and prove the remaining obligations. Use `hinv x hx z` as an intermediate fact. Simplify using `only [U] at this ⊢`.
+
+Rewrite using `[show (tor0 D cc δ).abelian₂ = lamOf D cc δ from rfl, ← this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vacuum_mem_thetaSpace_pair (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ)
     (hc : Crv D cc δ) (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0) (a d : ℕ) (L L')
     (h1 : SD D L) (h2 : SD D L') (G : VC D a d → ℂ)
@@ -87,6 +105,15 @@ theorem vacuum_mem_thetaSpace_pair (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : �
   rw [show (tor0 D cc δ).abelian₂ = lamOf D cc δ from rfl, ← this]
   ring
 
+/- English proof (translation)
+Introduce `D cc δ t0 hc ht a d L L' h1 h2 hev G hG y hy n B hB hn ρ t0' ht' T`. Establish `hGT` using `vacuum_mem_thetaSpace_pair D cc δ t0 hc ht a d L L' h1 h2 G hG`. Take `⟨hdata, -⟩` from `(GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1).2 cc δ hc`. Take `⟨hA, -⟩` from `GlobalTheory.T.thetaTaylorCoeffs_algebraic_at_complexMultiplication D cc δ hc t0 ht a d L L' h1 h2 hev G hG`. Take `⟨hN, -⟩` from `GlobalTheory.T.vacuumNorm_conj_cmPoints_all_embeddings D cc δ hc t0 ht a d L L' h1 h2 hev G hG Qbar ρ hdata hA t0' ht'`.
+
+Rewrite using `[← hN]`. Take `⟨hfix | hfix, htor, hbar⟩` from `GlobalTheory.T.cmTheta_complexConjugation_compatible D cc δ hc Qbar ρ hdata`. Conclude with `jet_bound_fix D cc δ t0 hc ht a d L L' h1 h2 hev G hG hGT y hy n B hB hn ρ hfix T`. Take `⟨hmem, hle⟩` from `jet_bound_fix D cc δ t0 hc ht a d L L' h1 h2 hev G hG hGT y hy n B hB hn (rhoBar Qbar ρ) hfix T`. Use `⟨hmem, ?_⟩` and prove the remaining obligations.
+
+Take `⟨hTh, -⟩` from `GlobalTheory.T.thetaVacua_conjugates_cmPoints D cc δ hc t0 ht a d L L' h1 h2 hev G hG Qbar ρ hdata hA`. Establish `hn2` using `((hbar a d L L' (fnConj D Qbar ρ G)).2.2 hTh).2 h1 h2 0`. Rewrite `hn2` using `[GlobalTheory.ConjJet.U_zero]`. Establish `hL : lamConj Qbar (rhoBar Qbar ρ) (lamOf D cc δ) = (lamConj Qbar ρ (lamOf D cc δ)).map (starRingEnd ℂ).toAddMonoidHom` using `congrArg Tor.abelian₂ htor`. Rewrite `hle` using `[GlobalTheory.ConjJet.cj_bar, (hbar a d L L' G).1, htor, hn2, hL, GlobalTheory.ConjJet.area_conj]`.
+
+Conclude with `hle`.
+-/
 theorem conj_jet_bound : ∀ (D : D7), ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ), Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → ∀ (a d : ℕ) L L', SD D L → SD D L' → Even (a * d) → ∀ G, ThetaVectorUpToUnits D (tor0 D cc δ) t0 L L' G → ∀ y, LaQ D (tor0 D cc δ) L L' y → ∀ (n : D.what₂.Tau → ℕ) (B : ℝ), 1 ≤ B → (∀ τ, (n τ : ℝ) ≤ 2 * B) → ∀ (ρ : Qbar →ₐ[ℚ] ℂ) t0', GL3Theta.IsTwoTorsionPointUnkilled D (lamConj Qbar ρ (lamOf D cc δ)) t0' → ∀ T : Tup D a d n, GL3Theta.applyAt0 D (minorPol D T) (U D (tor0 D cc δ) y G) ∈ Qbar ∧ ‖cj Qbar ρ (GL3Theta.applyAt0 D (minorPol D T) (U D (tor0 D cc δ) y G))‖ ^ 2 ≤ ((a.factorial : ℝ) ^ (∑ τ, n τ)) ^ 2 * (3 * (2 * ((fF D * a * d : ℕ) : ℝ) * D.host.rdE + 1) ^ (fF D * a * d) * nrm1Sq (lamConj Qbar ρ (lamOf D cc δ)) (GL3Theta.th0 (lamConj Qbar ρ (lamOf D cc δ)) t0') ^ (fF D * a * d) * (2 * Real.exp 1 * Real.pi * B / area (lamConj Qbar ρ (lamOf D cc δ))) ^ (a * ∑ τ, n τ)) := by
   intro D cc δ t0 hc ht a d L L' h1 h2 hev G hG y hy n B hB hn ρ t0' ht' T
   have hGT := vacuum_mem_thetaSpace_pair D cc δ t0 hc ht a d L L' h1 h2 G hG

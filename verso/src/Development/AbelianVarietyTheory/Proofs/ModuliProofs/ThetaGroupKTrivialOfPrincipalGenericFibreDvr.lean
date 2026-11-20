@@ -25,6 +25,17 @@ open GlobalTheory.ZM
 noncomputable section
 namespace GlobalTheory.KTrivSpread
 
+/- English proof (translation)
+Use `hA.proper` as an intermediate fact. Use `schemeTheoreticallyDominant_fractionField V K` as an intermediate fact. Set `Y` to `pullback Z.hom (spMap (algebraMap V K))`. Establish `: IsAffine Y` using `isAffine_of_isAffineHom (pullback.snd Z.hom (spMap (algebraMap V K)))`. Establish `: IsSchemeTheoreticallyDominant (pullback.fst Z.hom (spMap (algebraMap V K)))` using `.of_isPullback (IsPullback.of_hasPullback Z.hom (spMap (algebraMap V K))).flip`.
+
+Set `d : Sp Γ(Y, ⊤) ⟶ Z.left` to `Y.isoSpec.inv ≫ pullback.fst Z.hom (spMap (algebraMap V K))`. Set `t : Sp Γ(Y, ⊤) ⟶ Sp K` to `Y.isoSpec.inv ≫ pullback.snd Z.hom (spMap (algebraMap V K))`. Establish `hd : d ≫ Z.hom = t ≫ spMap (algebraMap V K)`. Simplify using `only [d, t, Category.assoc, pullback.condition]`. Establish `hdi : (d ≫ i.left) ≫ A.hom = t ≫ spMap (algebraMap V K)`.
+
+Rewrite using `[Category.assoc, Over.w i, hd]`. Set `x : Over.mk t ⟶ A'` to `Over.homMk (h.1.lift _ _ hdi) (h.1.lift_snd _ _ _)`. Set `z : Over.mk (t ≫ spMap (algebraMap V K)) ⟶ Z` to `Over.homMk d hd`. Establish `hz : z ≫ i = pushPt h.1.w x` using `Over.OverMorphism.ext (h.1.lift_fst _ _ hdi).symm`. Establish `hx : x = 1` using `hk _ t x (memKL_of_push h hL hL' hw x ((hZ _ _).2 ⟨z, hz⟩))`.
+
+Establish `hx' : pushPt h.1.w x = 1` using `(congrArg (pushHom h (Over.mk t)) hx).trans (map_one _)`. Establish `hi : i = toUnit Z ≫ η[A]`. Establish `: IsSchemeTheoreticallyDominant d` using `by dsimp only [d]; infer_instance`. Use `over_ext_of_schemeTheoreticallyDominant d (congrArg (fun q => q.left) (show z ≫ i = z ≫ toUnit Z ≫ η[A] from ?_))` and prove the remaining obligations. Rewrite using `[hz, hx', ← Category.assoc, comp_toUnit]`.
+
+Both sides reduce to the same expression. Introduce `R _ s y hy`. Take `⟨u, rfl⟩` from `(hZ _ y).1 hy`. Rewrite using `[hi, ← Category.assoc, comp_toUnit]`.
+-/
 theorem kTriv_of_finite_flat {V K : Type} [CommRing V] [IsDomain V] [Field K] [Algebra V K] [IsFractionRing V K]
     {A : Over (Sp V)} [GrpObj A] (hA : IsAbelianScheme A) {L : LB A.left} (hL : L.IsLB) {Z : Over (Sp V)} (i : Z ⟶ A)
     [IsFinite Z.hom] [Flat Z.hom]
@@ -59,6 +70,11 @@ theorem kTriv_of_finite_flat {V K : Type} [CommRing V] [IsDomain V] [Field K] [A
   obtain ⟨u, rfl⟩ := (hZ _ y).1 hy
   rw [hi, ← Category.assoc, comp_toUnit]
 
+/- English proof (translation)
+Introduce `hL V K _ _ _ _ _ _ P B _ _ M φ hB h hw ha`. Establish `hM` using `M.L.isLB`. Establish `hP : AbLaw.IsProjBy B.hom` using `(AmpleBaseChange.isProjBy_smooth_isProper_geometricallyIntegral _ B M.L.L hB hM ha V (𝟙 _) B.left (𝟙 _) B.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)).1`. Take `⟨hO, hu, hK⟩` from `UU.TrivTwist.inK_iff_trivial_twist _ B M.L.L hM`. Take `⟨H, j, hj, hH⟩` from `GlobalTheory.T.exists_closed_subscheme_translation_kernel hL.globalFns V B hB hP M.L.L _ hM hO`.
+
+Establish `hfin : IsFinite H.hom` using `AmpleStabFinite.isFinite_of_relAmple hL.globalFns V B hB M.L.L _ hM hO ha H j hj hH`. Establish `hflat : Flat H.hom` using `GlobalTheory.T.flat_kernelPolarisation_cosets_over_DVR hL.globalFns V B hB hP M.L M.c _ hO hu H j hj hH hfin`. Conclude with `kTriv_of_finite_flat hB hM j (fun T x => (hK _ rfl T x).trans (hH T x)) h P.isLB hw P.ktriv`.
+-/
 theorem kTriv_of_generic_fibre : Laws → ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (P : PolAV (Sp K)) (B : Over (Sp V)) [GrpObj B] [IsCommMonObj B] (M : GlobalTheory.UU.CP B) (φ : P.A.left ⟶ B.left), IsAbelianScheme B → IsGrpPullback P.A B (spMap (algebraMap V K)) φ → LBIso P.L (M.L.L.pull φ) → RelAmple B M.L.L → KTriv B M.L.L := by
   intro hL V K _ _ _ _ _ _ P B _ _ M φ hB h hw ha
   have hM := M.L.isLB

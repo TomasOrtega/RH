@@ -26,8 +26,18 @@ namespace GlobalTheory.TypeSum.KProjApprox
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Mx n → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨[], 0, by simp, fun w _ => by simp⟩`.
+-/
 theorem sobCont_zero' : Sobolev₂ (lieSet ε) σ (0 : H →ₗ[ℂ] ℂ) := ⟨[], 0, by simp, fun w _ => by simp⟩
 
+/- English proof (translation)
+Take `⟨S, C, hS, hC⟩` from `h`. Take `⟨S', C', hS', hC'⟩` from `h'`. Use `⟨S ++ S', max (max C C') 0, words_append hS hS', fun w hw => ?_⟩` and prove the remaining obligations. Establish `e1` using `hC w hw`. Establish `e2` using `hC' w hw`.
+
+Establish `s1 : 0 ≤ sobNorm σ S w` using `sobNorm_nonneg σ S w`. Establish `s2 : 0 ≤ sobNorm σ S' w` using `sobNorm_nonneg σ S' w`. Establish `h3 : sobNorm σ (S ++ S') w = sobNorm σ S w + sobNorm σ S' w` using `sobNorm_append σ S S' w`. Express the relevant statement in the definitionally equal form `‖ℓ w + ℓ' w‖ ≤ max (max C C') 0 * sobNorm σ (S ++ S') w`. Express the relevant statement in the definitionally equal form `‖ℓ w‖ ≤ C * sobNorm σ S w at e1`.
+
+Express the relevant statement in the definitionally equal form `‖ℓ' w‖ ≤ C' * sobNorm σ S' w at e2`. Rewrite using `[h3]`. Establish `a1 : C * sobNorm σ S w ≤ max (max C C') 0 * sobNorm σ S w` using `mul_le_mul_of_nonneg_right (le_max_of_le_left (le_max_left _ _)) s1`. Establish `a2 : C' * sobNorm σ S' w ≤ max (max C C') 0 * sobNorm σ S' w` using `mul_le_mul_of_nonneg_right (le_max_of_le_left (le_max_right _ _)) s2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sobCont_add' {ℓ ℓ' : H →ₗ[ℂ] ℂ} (h : Sobolev₂ (lieSet ε) σ ℓ) (h' : Sobolev₂ (lieSet ε) σ ℓ') :
     Sobolev₂ (lieSet ε) σ (ℓ + ℓ') := by
   obtain ⟨S, C, hS, hC⟩ := h
@@ -49,6 +59,11 @@ theorem sobCont_add' {ℓ ℓ' : H →ₗ[ℂ] ℂ} (h : Sobolev₂ (lieSet ε) 
   calc ‖ℓ w + ℓ' w‖ ≤ ‖ℓ w‖ + ‖ℓ' w‖ := norm_add_le _ _
     _ ≤ _ := by nlinarith
 
+/- English proof (translation)
+Take `⟨S, C, hS, hC⟩` from `h`. Use `⟨S, ‖c‖ * C, hS, fun w hw => ?_⟩` and prove the remaining obligations. Establish `e1` using `hC w hw`. Express the relevant statement in the definitionally equal form `‖c * ℓ w‖ ≤ ‖c‖ * C * (S.map fun l => ‖l.foldr (dRep σ) w‖).sum`. Rewrite using `[norm_mul, mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left e1 (norm_nonneg c)`.
+-/
 theorem sobCont_smul' (c : ℂ) {ℓ : H →ₗ[ℂ] ℂ} (h : Sobolev₂ (lieSet ε) σ ℓ) : Sobolev₂ (lieSet ε) σ (c • ℓ) := by
   obtain ⟨S, C, hS, hC⟩ := h
   refine ⟨S, ‖c‖ * C, hS, fun w hw => ?_⟩
@@ -57,6 +72,9 @@ theorem sobCont_smul' (c : ℂ) {ℓ : H →ₗ[ℂ] ℂ} (h : Sobolev₂ (lieSe
   rw [norm_mul, mul_assoc]
   exact mul_le_mul_of_nonneg_left e1 (norm_nonneg c)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction _ _ (fun _ _ => sobCont_add') sobCont_zero' fun i _ => h i`.
+-/
 theorem sobCont_sum {ι : Type} (s : Finset ι) (ℓ : ι → (H →ₗ[ℂ] ℂ)) (h : ∀ i, Sobolev₂ (lieSet ε) σ (ℓ i)) :
     Sobolev₂ (lieSet ε) σ (∑ i ∈ s, ℓ i) :=
   Finset.sum_induction _ _ (fun _ _ => sobCont_add') sobCont_zero' fun i _ => h i
@@ -67,6 +85,21 @@ namespace GlobalTheory.TypeSum
 
 open GlobalTheory.TypeSum.KProjApprox
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ h f hf happ e he hK`. Take `⟨m, a, c, -, haK, -, hsum⟩` from `kAvg_finite_rank n ε H σ h e hK`. Use `⟨m, a, haK, fun C hC δ hδ => ?_⟩` and prove the remaining obligations. Establish `: IsFiniteMeasure (muK ε)` using `⟨isCompact_univ.measure_lt_top⟩`. Use `set I := ∫ k, ‖e k‖ ∂(muK ε) with hIdef`.
+
+Establish `hI : 0 ≤ I` using `integral_nonneg fun _ => norm_nonneg _`. Establish `hC' : IsCompact ((fun p : Mx n × KG ε => p.1 * toMK p.2) '' (C ×ˢ Set.univ))` using `(hC.prod isCompact_univ).image (continuous_fst.mul ((continuous_toMK ε).comp continuous_snd))`. Take `⟨m', ℓ, v, hℓ, hv, happ'⟩` from `happ _ hC' (δ / (1 + I)) (by positivity)`. Use `⟨fun j => ∑ i, ⟪c j, v i⟫_ℂ • ℓ i, fun j => sobCont_sum _ _ fun i => sobCont_smul' _ (hℓ i), fun y hy hyU => ?_⟩` and prove the remaining obligations. Establish `hsm : ∀ w, Sm ε σ (kAvg ε σ e w)` using `fun w => h.2.2.1 _ (by`.
+
+Rewrite using `[hsum]`. Conclude with `(kfin ε σ).sum_mem fun j _ => (kfin ε σ).smul_mem _ (haK j))`. Establish `hmem : ∀ k : KG ε, y * toMK k ∈ UJset ε` using `fun k => mul_mem_UJ hyU (GlobalTheory.ExpansionAverage.toMK_mem k)`. Establish `hcm : Continuous fun k : KG ε => y * toMK k` using `continuous_const.mul (continuous_toMK ε)`. Establish `hci : ∀ i, Continuous fun k : KG ε => ℓ i (σ (y * toMK k) (v i))` using `fun i => (h.continuousOn_coef (hℓ i) (hv i)).comp_continuous hcm hmem`.
+
+Establish `hcf : Continuous fun k : KG ε => f (y * toMK k)` using `hf.comp_continuous hcm hmem`. Establish `h1 : ∀ i, ℓ i (σ y (kAvg ε σ e (v i))) = ∫ k, e k * ℓ i (σ (y * toMK k) (v i)) ∂(muK ε)`. Introduce `i`. Use `GlobalTheory.ExpansionAverage.form_kAvg h he (sobCont_translate h.1 (hℓ i) hyU) (hv i) (hsm _)` as an intermediate fact. Simplify `this` using `[sigma_mul h.1 hyU (GlobalTheory.ExpansionAverage.toMK_mem _)]`.
+
+Establish `hid : ∑ j, (∑ i, ⟪c j, v i⟫_ℂ • ℓ i) (σ y (a j)) = ∫ k, e k * ∑ i, ℓ i (σ (y * toMK k) (v i)) ∂(muK ε)`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[integral_finsetSum (f := fun i k => e k * ℓ i (σ (y * toMK k) (v i))) Finset.univ fun i _ => GlobalTheory.ExpansionAverage.integrable_K (he.mul (hci i))]`. Repeatedly rewrite using `[← h1, hsum, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `hint : ∀ k : KG ε, ‖e k * f (y * toMK k) - e k * ∑ i, ℓ i (σ (y * toMK k) (v i))‖ ≤ ‖e k‖ * (δ / (1 + I))`. Introduce `k`. Rewrite using `[← mul_sub, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (happ' _ ⟨(y, k), ⟨hy, Set.mem_univ _⟩, rfl⟩ (hmem k)).le (norm_nonneg _)`. Establish `i1 : Integrable (fun k : KG ε => e k * f (y * toMK k)) (muK ε)` using `GlobalTheory.ExpansionAverage.integrable_K (he.mul hcf)`.
+
+Establish `i2 : Integrable (fun k : KG ε => e k * ∑ i, ℓ i (σ (y * toMK k) (v i))) (muK ε)` using `GlobalTheory.ExpansionAverage.integrable_K (he.mul (continuous_finsetSum _ fun i _ => hci i))`. Rewrite using `[hid, ← integral_sub i1 i2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_div_assoc', div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem kAvg_approx_coef : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (σ : GlobalTheory.TypeSum.Mx n → (H →L[ℂ] H)), GlobalTheory.TypeSum.Std ε σ →
     ∀ f : GlobalTheory.TypeSum.Mx n → ℂ, ContinuousOn f (UJset ε) →

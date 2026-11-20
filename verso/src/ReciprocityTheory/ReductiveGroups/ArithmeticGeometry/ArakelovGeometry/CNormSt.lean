@@ -11,6 +11,11 @@ open scoped ComplexOrder
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] {D : ℕ}
 
+/- English proof (translation)
+Rewrite using `[eval_eq, eval_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ m.support, m i = n`. Establish `h` using `hφ (mem_support_iff.1 hm)`. Simplify `h` using `[Finsupp.weight_apply, Finsupp.sum]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_smul_of_isHomogeneous {ι : Type*} {φ : MvPolynomial ι ℂ} {n : ℕ}
     (hφ : φ.IsHomogeneous n) (c : ℂ) (z : ι → ℂ) :
     eval (c • z) φ = c ^ n * eval z φ := by
@@ -22,6 +27,9 @@ theorem eval_smul_of_isHomogeneous {ι : Type*} {φ : MvPolynomial ι ℂ} {n : 
   simp only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]
   ring
 
+/- English proof (translation)
+Use `⟨smul_ne_zero hc hz.1, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hH` using `coordIdeal_isHomogIdeal ℤ x`. Rewrite using `[← sum_homogeneousComponent f, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[eval_smul_of_isHomogeneous ((homogeneousComponent_isHomogeneous d f).map _), hz.2 _ (hH f hf d), mul_zero]`.
+-/
 theorem smul_mem_pts_coord {J : Type} [Fintype J] (x : J → Ω) {z : J → ℂ}
     (hz : z ∈ pts (coordIdeal ℤ x)) {c : ℂ} (hc : c ≠ 0) : c • z ∈ pts (coordIdeal ℤ x) := by
   refine ⟨smul_ne_zero hc hz.1, fun f hf => ?_⟩
@@ -31,6 +39,11 @@ theorem smul_mem_pts_coord {J : Type} [Fintype J] (x : J → Ω) {z : J → ℂ}
   rw [eval_smul_of_isHomogeneous ((homogeneousComponent_isHomogeneous d f).map _),
     hz.2 _ (hH f hf d), mul_zero]
 
+/- English proof (translation)
+Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `U hU ⟨w, hw⟩`. Assume the negation of the conclusion as `hne`. Apply `hΔ` to reduce the goal to its premises. Establish `h0 : ∀ v ∈ U, eval v Δ = 0` using `fun v hv => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hne ⟨v, hv, h⟩`. Establish `han : AnalyticOnNhd ℂ (fun v => eval v Δ) Set.univ` using `AnalyticOnNhd.eval_mvPolynomial Δ`. Establish `hz` using `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ w) (Filter.eventually_of_mem (hU.mem_nhds hw) h0)`. Conclude with `MvPolynomial.funext fun v => by simpa using hz (Set.mem_univ v)`.
+-/
 theorem dense_eval_ne_zero {N : ℕ} {Δ : MvPolynomial (Fin N) ℂ} (hΔ : Δ ≠ 0) :
     Dense {w | eval w Δ ≠ 0} := by
   rw [dense_iff_inter_open]
@@ -45,6 +58,19 @@ theorem dense_eval_ne_zero {N : ℕ} {Δ : MvPolynomial (Fin N) ℂ} (hΔ : Δ �
     (Set.mem_univ w) (Filter.eventually_of_mem (hU.mem_nhds hw) h0)
   exact MvPolynomial.funext fun v => by simpa using hz (Set.mem_univ v)
 
+/- English proof (translation)
+Establish `hρc : ContinuousOn m.ρ {z | z ≠ 0}` using `hg.semipos.1.continuousOn`. Use `set K : Set (Ix κ → ℂ) := Metric.sphere 0 1 ∩ {z | ∀ g ∈ coordIdeal ℤ x, eval z (map (Int.castRingHom ℂ) g) = 0} with hKdef`. Establish `hcl : IsClosed {z : Ix κ → ℂ | ∀ g ∈ coordIdeal ℤ x, eval z (map (Int.castRingHom ℂ) g) = 0}`. Simplify using `only [Set.ofPred_forall]`. Conclude with `isClosed_iInter fun g => isClosed_iInter fun _ => isClosed_eq (continuous_eval _) continuous_const`.
+
+Establish `hKc : IsCompact K` using `(isCompact_sphere 0 1).inter_right hcl`. Establish `hsub : K ⊆ {z | z ≠ 0}` using `fun z hz h0 => by`. Use `hz.1` as an intermediate fact. Rewrite `this` using `[mem_sphere_zero_iff_norm, h0, norm_zero]`. Conclude with `zero_ne_one this`.
+
+Establish `hF : ContinuousOn (fun z => ‖eval z f‖ / m.ρ z ^ n) K` using `(continuous_eval f).norm.continuousOn.div ((hρc.mono hsub).pow n) fun z hz => pow_ne_zero n (m.pos z (hsub hz)).ne'`. Take `⟨C, hC⟩` from `hKc.exists_bound_of_continuousOn hF`. Use `⟨C, fun z hz => ?_⟩` and prove the remaining obligations. Establish `ht : 0 < ‖z‖` using `norm_pos_iff.mpr hz.1`. Use `set c : ℂ := ((‖z‖⁻¹ : ℝ) : ℂ) with hcdef`.
+
+Establish `hcn : ‖c‖ = ‖z‖⁻¹`. Rewrite using `[hcdef, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr ht)]`. Establish `hc0 : c ≠ 0`. Introduce `h`. Rewrite `hcn` using `[h, norm_zero]`.
+
+Conclude with `(inv_pos.mpr ht).ne' hcn.symm`. Establish `hzK : c • z ∈ K`. Use `⟨?_, (smul_mem_pts_coord x hz hc0).2⟩` and prove the remaining obligations. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, hcn, inv_mul_cancel₀ ht.ne']`. Establish `h1` using `hC _ hzK`.
+
+Establish `hρ : 0 < m.ρ z` using `m.pos z hz.1`. Establish `hcpos : 0 < ‖c‖` using `norm_pos_iff.mpr hc0`. Rewrite `h1` using `[eval_smul_of_isHomogeneous hf, m.smul, norm_mul, norm_pow, mul_pow, mul_div_mul_left _ _ (pow_ne_zero n hcpos.ne'), Real.norm_eq_abs, abs_of_nonneg (div_nonneg (norm_nonneg _) (pow_nonneg hρ.le n))]`. Conclude with `(div_le_iff₀ (pow_pos hρ n)).mp h1`.
+-/
 theorem sec_sup_bdd {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)} {μ : Measure (Ix κ → ℂ)}
     (hg : IsGood D x m μ) (n : ℕ) (f : MvPolynomial (Ix κ) ℂ) (hf : f.IsHomogeneous n) :
     ∃ S : ℝ, ∀ z ∈ pts (coordIdeal ℤ x), ‖eval z f‖ ≤ S * m.ρ z ^ n := by
@@ -86,6 +112,19 @@ theorem sec_sup_bdd {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)} {μ : Measur
     abs_of_nonneg (div_nonneg (norm_nonneg _) (pow_nonneg hρ.le n))] at h1
   exact (div_le_iff₀ (pow_pos hρ n)).mp h1
 
+/- English proof (translation)
+Take `⟨Δ, hΔ0, hΔ⟩` from `exists_isDiscr hfr`. Establish `hFc : Continuous fun w : Fin (D + 1) → ℂ => ‖∑ k, c k * eval w (map (Int.castRingHom ℂ) (g k))‖` using `(continuous_finsetSum _ fun k _ => continuous_const.mul (continuous_eval _)).norm`. Establish `hGc : Continuous fun w : Fin (D + 1) → ℂ => (projDeg x e : ℝ) * S * Real.sqrt (sqN w) ^ n`. Unfold `sqN`. Use `fun_prop`.
+
+Establish `hgood : ∀ w ∈ {w : Fin (D + 1) → ℂ | eval w Δ ≠ 0}, w ∈ {w : Fin (D + 1) → ℂ | ‖∑ k, c k * eval w (map (Int.castRingHom ℂ) (g k))‖ ≤ (projDeg x e : ℝ) * S * Real.sqrt (sqN w) ^ n}`. Introduce `w hw`. Take `⟨hfin, hcard, -, htrace⟩` from `hΔ w hw`. Establish `hk : ∀ k, eval w (map (Int.castRingHom ℂ) (g k)) = ∑ z ∈ hfin.toFinset, eval z (map (Int.castRingHom ℂ) (f k))` using `fun k => by`. Rewrite using `[htrace n (f k) (g k) (hf k) (hgh k) (htr k), finsum_mem_eq_finite_toFinset_sum _ hfin]`.
+
+Establish `hsum : ∑ k, c k * eval w (map (Int.castRingHom ℂ) (g k)) = ∑ z ∈ hfin.toFinset, ∑ k, c k * eval z (map (Int.castRingHom ℂ) (f k))`. Repeatedly rewrite using `[hk, Finset.mul_sum]`. Conclude with `Finset.sum_comm`. Simplify using `only [Set.mem_ofPred_eq]`. Rewrite using `[hsum]`.
+
+Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `hb : ∀ z ∈ hfin.toFinset, ‖∑ k, c k * eval z (map (Int.castRingHom ℂ) (f k))‖ ≤ S * Real.sqrt (sqN w) ^ n`. Introduce `z hz`. Rewrite `hz` using `[Set.Finite.mem_toFinset]`. Establish `h` using `hS z hz.1`.
+
+Rewrite `h` using `[hFS z hz.1, show (∑ k, ‖z (e k)‖ ^ 2) = sqN w by simp [sqN, hz.2]]`. Then use the resulting hypothesis. Use `(Finset.sum_le_sum hb).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul, ← Set.ncard_eq_toFinset_card _ hfin, hcard, mul_assoc]`. Establish `hcl` using `closure_minimal hgood (isClosed_le hFc hGc)`. Rewrite `hcl` using `[(dense_eval_ne_zero hΔ0).closure_eq]`.
+
+Conclude with `hcl (Set.mem_univ w)`.
+-/
 theorem trace_sup_le {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)} {μ : Measure (Ix κ → ℂ)}
     (hg : IsGood D x m μ) {e : Fin (D + 1) → Ix κ} (hfr : IsProjFrame x e) (hFS : IsPullFS x e m)
     {n r : ℕ} (f : Fin r → MvPolynomial (Ix κ) ℤ) (g : Fin r → MvPolynomial (Fin (D + 1)) ℤ)

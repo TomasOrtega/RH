@@ -8,10 +8,16 @@ namespace Formalism.HC
 
 open Formalism.FrobeniusOrbits
 
+/- English proof (translation)
+Rewrite using `[Units.ext_iff, D7.unitsMap_val, ← ZMod.natCast_eq_natCast_iff, ZMod.natCast_zmod_val]`.
+-/
 theorem unitsMap_eq_iff {M N : ℕ} [NeZero N] [NeZero M] (h : M ∣ N) (u : (ZMod N)ˣ) (v : (ZMod M)ˣ) :
     ZMod.unitsMap h u = v ↔ (u : ZMod N).val ≡ (v : ZMod M).val [MOD M] := by
   rw [Units.ext_iff, D7.unitsMap_val, ← ZMod.natCast_eq_natCast_iff, ZMod.natCast_zmod_val]
 
+/- English proof (translation)
+Use `haveI : NeZero M := ⟨by`. Introduce and unpack `rfl`. Conclude with `NeZero.ne N (Nat.eq_zero_of_zero_dvd h)⟩`. Rewrite using `[unitsMap_eq_iff h u 1, Units.val_one, ZMod.val_one_eq_one_mod]`. Conclude with `⟨fun h1 => h1.trans (Nat.mod_modEq 1 M), fun h1 => h1.trans (Nat.mod_modEq 1 M).symm⟩`.
+-/
 theorem unitsMap_eq_one_iff {M N : ℕ} [NeZero N] (h : M ∣ N) (u : (ZMod N)ˣ) :
     ZMod.unitsMap h u = 1 ↔ (u : ZMod N).val ≡ 1 [MOD M] := by
   haveI : NeZero M := ⟨by
@@ -20,10 +26,20 @@ theorem unitsMap_eq_one_iff {M N : ℕ} [NeZero N] (h : M ∣ N) (u : (ZMod N)ˣ
   rw [unitsMap_eq_iff h u 1, Units.val_one, ZMod.val_one_eq_one_mod]
   exact ⟨fun h1 => h1.trans (Nat.mod_modEq 1 M), fun h1 => h1.trans (Nat.mod_modEq 1 M).symm⟩
 
+/- English proof (translation)
+The claim follows from `(unitsMap_eq_iff h u _).mp rfl`.
+-/
 theorem unitsMap_val_modEq {M N : ℕ} [NeZero N] [NeZero M] (h : M ∣ N) (u : (ZMod N)ˣ) :
     (u : ZMod N).val ≡ ((ZMod.unitsMap h u : (ZMod M)ˣ) : ZMod M).val [MOD M] :=
   (unitsMap_eq_iff h u _).mp rfl
 
+/- English proof (translation)
+Take `⟨t1, h1a, h1b⟩` from `Nat.chineseRemainder hab x y`. Take `⟨t, h2ab, h2c⟩` from `Nat.chineseRemainder (Nat.Coprime.mul hac hbc) t1 z`. Establish `hta : t ≡ x [MOD a]` using `(h2ab.of_mul_right b).trans h1a`. Establish `htb : t ≡ y [MOD b]` using `(h2ab.of_mul_left a).trans h1b`. Establish `hca : Nat.Coprime t a` using `hta.gcd_eq.trans hx`.
+
+Establish `hcb : Nat.Coprime t b` using `htb.gcd_eq.trans hy`. Establish `hcc : Nat.Coprime t c` using `h2c.gcd_eq.trans hz`. Establish `hcop : Nat.Coprime t (a * b * c)` using `Nat.Coprime.mul_right (Nat.Coprime.mul_right hca hcb) hcc`. Establish `hm` using `Nat.mod_modEq t (a * b * c)`. Apply the tactic sequence `refine ⟨ZMod.unitOfCoprime t hcop, ?_, ?_, ?_⟩ <;> rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast]`.
+
+Conclude with `((hm.of_mul_right c).of_mul_right b).trans hta`. Conclude with `((hm.of_mul_right c).of_mul_left a).trans htb`. Conclude with `(hm.of_mul_left (a * b)).trans h2c`.
+-/
 theorem exists_unit_three {a b c : ℕ} [NeZero (a * b * c)] (hab : Nat.Coprime a b) (hac : Nat.Coprime a c) (hbc : Nat.Coprime b c)
     (x y z : ℕ) (hx : Nat.Coprime x a) (hy : Nat.Coprime y b) (hz : Nat.Coprime z c) :
     ∃ u : (ZMod (a * b * c))ˣ, (u : ZMod (a * b * c)).val ≡ x [MOD a] ∧
@@ -62,10 +78,16 @@ instance neZero : NeZero D.m := ⟨D.m_pos.ne'⟩
 
 def cl : (ZMod D.m)ˣ →* HGrp D.e := (QuotientGroup.mk' _).comp (ZMod.unitsMap D.tower)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cl_apply (u : (ZMod D.m)ˣ) : D.cl u = hcl D.e (ZMod.unitsMap D.tower u) := rfl
 
 def eta : (ZMod D.m)ˣ →* HGrp D.e × D.B := D.cl.prod D.ξ
 
+/- English proof (translation)
+Use `Prod.ext ?_ D.even` and prove the remaining obligations. Use `show (QuotientGroup.mk' _) (ZMod.unitsMap D.tower (-1)) = 1`. Rewrite using `[D7.unitsMap_neg_one, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Conclude with `Subgroup.mem_zpowers _`.
+-/
 theorem eta_neg_one : D.eta (-1) = 1 := by
   refine Prod.ext ?_ D.even
   show (QuotientGroup.mk' _) (ZMod.unitsMap D.tower (-1)) = 1
@@ -82,16 +104,27 @@ def p1 : D.R →* HGrp D.e := (MonoidHom.fst _ _).comp D.eta.range.subtype
 
 def p2 : D.R →* D.B := (MonoidHom.snd _ _).comp D.eta.range.subtype
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Prod.ext h1 h2`.
+-/
 theorem eq_one_of {x : D.R} (h1 : D.p1 x = 1) (h2 : D.p2 x = 1) : x = 1 := by
   apply Subtype.ext
   exact Prod.ext h1 h2
 
+/- English proof (translation)
+Introduce `h`. Take `⟨w, rfl⟩` from `QuotientGroup.mk'_surjective _ h`. Take `⟨u, rfl⟩` from `ZMod.unitsMap_surjective D.tower w`. Conclude with `⟨⟨D.eta u, u, rfl⟩, rfl⟩`.
+-/
 theorem projection_surjective : Function.Surjective D.p1 := by
   intro h
   obtain ⟨w, rfl⟩ := QuotientGroup.mk'_surjective _ h
   obtain ⟨u, rfl⟩ := ZMod.unitsMap_surjective D.tower w
   exact ⟨⟨D.eta u, u, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Use `haveI : IsCyclic (HGrp D.e) := (Formalism.TwoAdicCyclotomicDecomposition.towerProperties.1.2.1 D.e).1`. Set `f : D.p2.ker →* HGrp D.e` to `D.p1.comp D.p2.ker.subtype`. Establish `hf : Function.Injective f` using `(injective_iff_map_eq_one f).mpr fun x hx => Subtype.ext (D.eq_one_of hx (MonoidHom.mem_ker.mp x.2))`. Use `haveI : IsCyclic D.p2.ker := isCyclic_of_surjective (MonoidHom.ofInjective hf).symm (MulEquiv.surjective _)`. Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := D.p2.ker)`.
+
+Use `⟨g, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.mp (hg ⟨x, MonoidHom.mem_ker.mpr hx⟩)`. Conclude with `Subgroup.mem_zpowers_iff.mpr ⟨k, by rw [← Subgroup.coe_zpow, hk]⟩`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hx`. Conclude with `MonoidHom.mem_ker.mp (D.p2.ker.zpow_mem g.2 k)`.
+-/
 theorem exists_gen : ∃ a : D.R, ∀ x : D.R, D.p2 x = 1 ↔ x ∈ Subgroup.zpowers a := by
   haveI : IsCyclic (HGrp D.e) := (Formalism.TwoAdicCyclotomicDecomposition.towerProperties.1.2.1 D.e).1
   let f : D.p2.ker →* HGrp D.e := D.p1.comp D.p2.ker.subtype
@@ -107,15 +140,26 @@ theorem exists_gen : ∃ a : D.R, ∀ x : D.R, D.p2 x = 1 ↔ x ∈ Subgroup.zpo
 
 def gen : D.R := D.exists_gen.choose
 
+/- English proof (translation)
+The claim follows from `D.exists_gen.choose_spec x`.
+-/
 theorem gen_spec (x : D.R) : D.p2 x = 1 ↔ x ∈ Subgroup.zpowers D.gen := D.exists_gen.choose_spec x
 
 def hA : Additive D.R →+ Additive (HGrp D.e) := MonoidHom.toAdditive D.p1
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x, hx⟩` from `D.projection_surjective (Additive.toMul y)`. Conclude with `⟨Additive.ofMul x, hx⟩`.
+-/
 theorem hA_surj : Function.Surjective D.hA := by
   intro y
   obtain ⟨x, hx⟩ := D.projection_surjective (Additive.toMul y)
   exact ⟨Additive.ofMul x, hx⟩
 
+/- English proof (translation)
+Establish `h2 : D.p2 D.gen = 1` using `(D.gen_spec D.gen).mpr (Subgroup.mem_zpowers _)`. Establish `hk' : D.p1 (D.gen ^ k) = 1` using `hk`. Establish `h3` using `D.eq_one_of hk' (by rw [map_zpow, h2, one_zpow])`. Use `show Additive.ofMul (D.gen ^ k) = 0`. Rewrite using `[h3]`.
+
+Both sides reduce to the same expression.
+-/
 theorem hA_ker (k : ℤ) (hk : D.hA (k • Additive.ofMul D.gen) = 0) : k • Additive.ofMul D.gen = 0 := by
   have h2 : D.p2 D.gen = 1 := (D.gen_spec D.gen).mpr (Subgroup.mem_zpowers _)
   have hk' : D.p1 (D.gen ^ k) = 1 := hk
@@ -135,20 +179,35 @@ def iso : D.frame.MA ≃* D.R where
   right_inv x := by simp
   map_mul' a b := by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frame_e : D.frame.e = D.e := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hH_eq (a : D.frame.MA) : D.frame.hH a = D.p1 (D.iso a) := rfl
 
+/- English proof (translation)
+Use `show (Fintype.equivFin (Additive D.R)).symm ((Fintype.equivFin (Additive D.R)).symm.symm (Additive.ofMul D.gen)) = _`. Conclude with `Equiv.apply_symm_apply _ _`.
+-/
 private theorem isoA_a0_eq_ofMul_gen : D.isoA D.frame.a0 = Additive.ofMul D.gen := by
   show (Fintype.equivFin (Additive D.R)).symm
     ((Fintype.equivFin (Additive D.R)).symm.symm (Additive.ofMul D.gen)) = _
   exact Equiv.apply_symm_apply _ _
 
+/- English proof (translation)
+Use `show Additive.toMul (D.isoA D.frame.a0) = D.gen`. Rewrite using `[isoA_a0_eq_ofMul_gen]`. Both sides reduce to the same expression.
+-/
 theorem iso_generator : D.iso (D.frame.iota D.frame.a0) = D.gen := by
   show Additive.toMul (D.isoA D.frame.a0) = D.gen
   rw [isoA_a0_eq_ofMul_gen]
   rfl
 
+/- English proof (translation)
+Use `show Fintype.card (Additive D.R) = Nat.card D.R`. Rewrite using `[← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression.
+-/
 theorem ord_eq : D.frame.ord = Nat.card D.R := by
   show Fintype.card (Additive D.R) = Nat.card D.R
   rw [← Nat.card_eq_fintype_card]
@@ -156,26 +215,46 @@ theorem ord_eq : D.frame.ord = Nat.card D.R := by
 
 def toA : (ZMod D.m)ˣ →* D.frame.MA := D.iso.symm.toMonoidHom.comp D.eta.rangeRestrict
 
+/- English proof (translation)
+The claim follows from `D.iso.apply_symm_apply _`.
+-/
 theorem iso_toA (u : (ZMod D.m)ˣ) : D.iso (D.toA u) = D.eta.rangeRestrict u :=
   D.iso.apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `D.iso.symm.surjective.comp D.eta.rangeRestrict_surjective`.
+-/
 theorem toA_surj : Function.Surjective D.toA :=
   D.iso.symm.surjective.comp D.eta.rangeRestrict_surjective
 
+/- English proof (translation)
+Rewrite using `[← D.iso.map_eq_one_iff, iso_toA, Subtype.ext_iff, MonoidHom.coe_rangeRestrict, OneMemClass.coe_one]`.
+-/
 theorem toA_eq_one_iff (u : (ZMod D.m)ˣ) : D.toA u = 1 ↔ D.eta u = 1 := by
   rw [← D.iso.map_eq_one_iff, iso_toA, Subtype.ext_iff, MonoidHom.coe_rangeRestrict, OneMemClass.coe_one]
 
+/- English proof (translation)
+Rewrite using `[hH_eq, iso_toA]`. Both sides reduce to the same expression.
+-/
 theorem hH_toA (u : (ZMod D.m)ˣ) : D.frame.hH (D.toA u) = D.cl u := by
   rw [hH_eq, iso_toA]
   rfl
 
 def xiA : D.frame.MA →* D.B := D.p2.comp D.iso.toMonoidHom
 
+/- English proof (translation)
+Use `show D.p2 (D.iso (D.toA u)) = D.ξ u`. Rewrite using `[iso_toA]`. Both sides reduce to the same expression.
+-/
 theorem xiA_toA (u : (ZMod D.m)ˣ) : D.xiA (D.toA u) = D.ξ u := by
   show D.p2 (D.iso (D.toA u)) = D.ξ u
   rw [iso_toA]
   rfl
 
+/- English proof (translation)
+Use `show t ∈ AddSubgroup.zmultiples D.frame.a0 ↔ D.p2 (Additive.toMul (D.isoA t)) = 1`. Rewrite using `[D.gen_spec, AddSubgroup.mem_zmultiples_iff, Subgroup.mem_zpowers_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Conclude with `⟨k, by rw [map_zsmul, isoA_a0_eq_ofMul_gen, toMul_zsmul, toMul_ofMul]⟩`.
+
+Introduce and unpack `⟨k, hk⟩`. Use `⟨k, D.isoA.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, isoA_a0_eq_ofMul_gen, ← ofMul_zpow, hk, ofMul_toMul]`.
+-/
 theorem mem_cusp_forms_iff_automorphic_compact (t : D.frame.A) : t ∈ D.frame.A0 ↔ D.xiA (D.frame.iota t) = 1 := by
   show t ∈ AddSubgroup.zmultiples D.frame.a0 ↔ D.p2 (Additive.toMul (D.isoA t)) = 1
   rw [D.gen_spec, AddSubgroup.mem_zmultiples_iff, Subgroup.mem_zpowers_iff]
@@ -186,10 +265,20 @@ theorem mem_cusp_forms_iff_automorphic_compact (t : D.frame.A) : t ∈ D.frame.A
     refine ⟨k, D.isoA.injective ?_⟩
     rw [map_zsmul, isoA_a0_eq_ofMul_gen, ← ofMul_zpow, hk, ofMul_toMul]
 
+/- English proof (translation)
+Establish `h : D.ξ = D.xiA.comp D.toA` using `MonoidHom.ext fun u => (D.xiA_toA u).symm`. Rewrite using `[h, MonoidHom.range_comp, MonoidHom.range_eq_top.mpr D.toA_surj, ← MonoidHom.range_eq_map]`.
+-/
 theorem range_xiA : D.xiA.range = D.ξ.range := by
   have h : D.ξ = D.xiA.comp D.toA := MonoidHom.ext fun u => (D.xiA_toA u).symm
   rw [h, MonoidHom.range_comp, MonoidHom.range_eq_top.mpr D.toA_surj, ← MonoidHom.range_eq_map]
 
+/- English proof (translation)
+Establish `hz : Subgroup.zpowers D.gen = D.p2.ker` using `Subgroup.ext fun x => (D.gen_spec x).symm.trans MonoidHom.mem_ker.symm`. Establish `hn0 : D.frame.n0 = Nat.card D.p2.ker` using `by show addOrderOf D.frame.a0 = _`. Rewrite using `[← addOrderOf_injective D.isoA.toAddMonoidHom D.isoA.injective D.frame.a0]`. Use `show addOrderOf (D.isoA D.frame.a0) = _`. Rewrite using `[isoA_a0_eq_ofMul_gen, addOrderOf_ofMul_eq_orderOf, ← Nat.card_zpowers, hz]`.
+
+Establish `hr : D.p2.range = D.ξ.range`. Rewrite using `[← D.range_xiA]`. Use `show _ = (D.p2.comp D.iso.toMonoidHom).range`. Establish `htop : D.iso.toMonoidHom.range = ⊤` using `MonoidHom.range_eq_top.mpr D.iso.surjective`. Rewrite using `[MonoidHom.range_comp, htop, ← MonoidHom.range_eq_map]`.
+
+Establish `hc : Nat.card D.R = Nat.card D.p2.range * Nat.card D.p2.ker`. Rewrite using `[Subgroup.card_eq_card_quotient_mul_card_subgroup D.p2.ker, Nat.card_congr (QuotientGroup.quotientKerEquivRange D.p2).toEquiv]`. Establish `hpos : 0 < Nat.card D.p2.ker` using `Nat.card_pos`. Use `show D.frame.ord / D.frame.n0 = _`. Rewrite using `[D.ord_eq, hn0, hc, Nat.mul_div_cancel _ hpos, hr]`.
+-/
 theorem o_eq : D.frame.o = Nat.card D.ξ.range := by
   have hz : Subgroup.zpowers D.gen = D.p2.ker :=
     Subgroup.ext fun x => (D.gen_spec x).symm.trans MonoidHom.mem_ker.symm
@@ -210,6 +299,13 @@ theorem o_eq : D.frame.o = Nat.card D.ξ.range := by
   show D.frame.ord / D.frame.n0 = _
   rw [D.ord_eq, hn0, hc, Nat.mul_div_cancel _ hpos, hr]
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `h`. Establish `hcard : Nat.card (HGrp D.e) = 2 ^ D.e` using `(Formalism.TwoAdicCyclotomicDecomposition.towerProperties.1.2.1 D.e).2.1`. Establish `hpg : IsPGroup 2 D.R`. Introduce and unpack `⟨_, u, rfl⟩`. Use `⟨D.e + j, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show D.eta u ^ 2 ^ (D.e + j) = 1`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show D.cl u ^ 2 ^ (D.e + j) = 1`. Rewrite using `[show (2 : ℕ) ^ (D.e + j) = 2 ^ D.e * 2 ^ j from pow_add 2 D.e j, pow_mul, ← hcard, pow_card_eq_one', one_pow]`.
+
+Use `show D.ξ u ^ 2 ^ (D.e + j) = 1`. Rewrite using `[show (2 : ℕ) ^ (D.e + j) = 2 ^ j * 2 ^ D.e by rw [pow_add, mul_comm], pow_mul, hj, one_pow]`. Take `⟨n, hn⟩` from `IsPGroup.iff_card.mp hpg`. Conclude with `⟨n, (D.ord_eq).trans hn⟩`.
+-/
 theorem twoGroup (h : ∃ j : ℕ, ∀ u, D.ξ u ^ 2 ^ j = 1) : D.frame.TwoGroup := by
   obtain ⟨j, hj⟩ := h
   have hcard : Nat.card (HGrp D.e) = 2 ^ D.e := (Formalism.TwoAdicCyclotomicDecomposition.towerProperties.1.2.1 D.e).2.1
@@ -231,19 +327,39 @@ section Host
 
 variable {q d : ℕ} (hH : HostHyp q d)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨q * d, by ring⟩`.
+-/
 theorem m_dvd (q d : ℕ) : D.m ∣ D.m * q * d := ⟨q * d, by ring⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨D.m * d, by ring⟩`.
+-/
 theorem q_dvd (q d : ℕ) : q ∣ D.m * q * d := ⟨D.m * d, by ring⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨D.m * q, by ring⟩`.
+-/
 theorem d_dvd (q d : ℕ) : d ∣ D.m * q * d := ⟨D.m * q, by ring⟩
 
 include hH in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Nat.mul_ne_zero (Nat.mul_ne_zero D.m_pos.ne' hH.1.ne_zero) hH.2.1.ne_zero⟩`.
+-/
 theorem neZeroN : NeZero (D.m * q * d) :=
   ⟨Nat.mul_ne_zero (Nat.mul_ne_zero D.m_pos.ne' hH.1.ne_zero) hH.2.1.ne_zero⟩
 
 def art : (ZMod (D.m * q * d))ˣ →* D.frame.GG :=
   ((D7.sgnN hH.1 (D.q_dvd q d)).prod (D7.sgnN hH.2.1 (D.d_dvd q d))).prod (D.toA.comp (ZMod.unitsMap (D.m_dvd q d)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem art_snd (u : (ZMod (D.m * q * d))ˣ) : (D.art hH u).2 = D.toA (ZMod.unitsMap (D.m_dvd q d) u) := rfl
 
+/- English proof (translation)
+Use `haveI := D.neZeroN hH`. Use `haveI := Fact.mk hH.1`. Use `show ((D7.sgnN hH.1 (D.q_dvd q d) u : ℤˣ) : ℤ) = _`. Simplify using `only [D7.sgnN, MonoidHom.coe_comp, Function.comp_apply, MulChar.coe_toUnitHom, D7.unitsMap_val]`. Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym q (((u : ZMod (D.m * q * d)).val : ℕ) : ℤ)]`.
+
+Simplify using `[legendreSym]`.
+-/
 theorem art_ps (u : (ZMod (D.m * q * d))ˣ) :
     (((D.art hH u).1.1 : ℤˣ) : ℤ) = jacobiSym (((u : ZMod (D.m * q * d)).val : ℕ) : ℤ) q := by
   haveI := D.neZeroN hH
@@ -253,6 +369,11 @@ theorem art_ps (u : (ZMod (D.m * q * d))ˣ) :
   rw [← jacobiSym.legendreSym.to_jacobiSym q (((u : ZMod (D.m * q * d)).val : ℕ) : ℤ)]
   simp [legendreSym]
 
+/- English proof (translation)
+Use `haveI := D.neZeroN hH`. Use `haveI := Fact.mk hH.2.1`. Use `show ((D7.sgnN hH.2.1 (D.d_dvd q d) u : ℤˣ) : ℤ) = _`. Simplify using `only [D7.sgnN, MonoidHom.coe_comp, Function.comp_apply, MulChar.coe_toUnitHom, D7.unitsMap_val]`. Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym d (((u : ZMod (D.m * q * d)).val : ℕ) : ℤ)]`.
+
+Simplify using `[legendreSym]`.
+-/
 theorem art_ch (u : (ZMod (D.m * q * d))ˣ) :
     (((D.art hH u).1.2 : ℤˣ) : ℤ) = jacobiSym (((u : ZMod (D.m * q * d)).val : ℕ) : ℤ) d := by
   haveI := D.neZeroN hH
@@ -262,6 +383,11 @@ theorem art_ch (u : (ZMod (D.m * q * d))ˣ) :
   rw [← jacobiSym.legendreSym.to_jacobiSym d (((u : ZMod (D.m * q * d)).val : ℕ) : ℤ)]
   simp [legendreSym]
 
+/- English proof (translation)
+Establish `h1` using `D.art_ps hH u`. Establish `h2 : jacobiSym (((u : ZMod (D.m * q * d)).val : ℕ) : ℤ) q = jacobiSym (y : ℤ) q`. Rewrite using `[jacobiSym.mod_left, jacobiSym.mod_left (y : ℤ)]`. Use `congr 1`. Conclude with `(hu : _ % q = _ % q)` after adjusting the coercions.
+
+Rewrite `h1` using `[h2, hy]`. Conclude with `Units.ext h1`.
+-/
 theorem art_ps_one (u : (ZMod (D.m * q * d))ˣ) {y : ℕ} (hu : (u : ZMod (D.m * q * d)).val ≡ y [MOD q])
     (hy : jacobiSym (y : ℤ) q = 1) : (D.art hH u).1.1 = 1 := by
   have h1 := D.art_ps hH u
@@ -272,6 +398,11 @@ theorem art_ps_one (u : (ZMod (D.m * q * d))ˣ) {y : ℕ} (hu : (u : ZMod (D.m *
   rw [h2, hy] at h1
   exact Units.ext h1
 
+/- English proof (translation)
+Establish `h1` using `D.art_ch hH u`. Establish `h2 : jacobiSym (((u : ZMod (D.m * q * d)).val : ℕ) : ℤ) d = jacobiSym (y : ℤ) d`. Rewrite using `[jacobiSym.mod_left, jacobiSym.mod_left (y : ℤ)]`. Use `congr 1`. Conclude with `(hu : _ % d = _ % d)` after adjusting the coercions.
+
+Rewrite `h1` using `[h2, hy]`. Conclude with `Units.ext h1`.
+-/
 theorem art_ch_one (u : (ZMod (D.m * q * d))ˣ) {y : ℕ} (hu : (u : ZMod (D.m * q * d)).val ≡ y [MOD d])
     (hy : jacobiSym (y : ℤ) d = 1) : (D.art hH u).1.2 = 1 := by
   have h1 := D.art_ch hH u
@@ -282,6 +413,9 @@ theorem art_ch_one (u : (ZMod (D.m * q * d))ˣ) {y : ℕ} (hu : (u : ZMod (D.m *
   rw [h2, hy] at h1
   exact Units.ext h1
 
+/- English proof (translation)
+Use `haveI := D.neZeroN hH`. Rewrite using `[art_snd, (unitsMap_eq_one_iff _ u).mpr hu, map_one]`.
+-/
 theorem art_snd_one (u : (ZMod (D.m * q * d))ˣ) (hu : (u : ZMod (D.m * q * d)).val ≡ 1 [MOD D.m]) : (D.art hH u).2 = 1 := by
   haveI := D.neZeroN hH
   rw [art_snd, (unitsMap_eq_one_iff _ u).mpr hu, map_one]
@@ -289,6 +423,25 @@ theorem art_snd_one (u : (ZMod (D.m * q * d))ˣ) (hu : (u : ZMod (D.m * q * d)).
 variable (hc : Nat.Coprime D.m (q * d))
 
 include hc in
+/- English proof (translation)
+Establish `hsgn : ∀ {p : ℕ} (hp : p.Prime) (hp4 : p % 4 = 3) (s : ℤˣ), ∃ y : ℕ, Nat.Coprime y p ∧ jacobiSym (y : ℤ) p = (s : ℤ)`. Introduce `p hp hp4 s`. Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Conclude with `⟨1, Nat.coprime_one_left p, by simp⟩`. Establish `h2` using `hp.two_le`.
+
+Use `⟨p - 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `hd`. Use `Nat.le_of_dvd (by omega) hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hodd : Odd p` using `hp.odd_of_ne_two (by omega)`. Establish `e : ((p - 1 : ℕ) : ℤ) % (p : ℤ) = (-1 : ℤ) % (p : ℤ)`. Rewrite using `[Int.emod_eq_emod_iff_emod_sub_eq_zero]`. Move the coercions through the operations in `[Nat.cast_sub (by omega : 1 ≤ p)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[jacobiSym.mod_left, e, ← jacobiSym.mod_left, jacobiSym.at_neg_one hodd, ZMod.χ₄_nat_three_mod_four hp4]`. Simplify using the standard rewrite rules. Use `haveI := D.neZeroN hH`. Introduce and unpack `⟨⟨s1, s2⟩, a⟩`. Take `⟨w, rfl⟩` from `D.toA_surj a`.
+
+Take `⟨y, hy, hys⟩` from `hsgn hH.1 (D7.q4 hH) s1`. Take `⟨z, hz, hzs⟩` from `hsgn hH.2.1 (D7.d4 hH) s2`. Establish `hqd : Nat.Coprime q d` using `(Nat.coprime_primes hH.1 hH.2.1).mpr (by`. Introduce `h`. Establish `h1` using `hH.2.2.1`.
+
+Establish `h2` using `hH.2.2.2.1`. Substitute `h` using the available equality. Use the proof step `omega)`. Take `⟨u, hu1, hu2, hu3⟩` from `exists_unit_three (a := D.m) (b := q) (c := d) (Nat.Coprime.coprime_dvd_right (dvd_mul_right q d) hc) (Nat.Coprime.coprime_dvd_right (dvd_mul_left d q) hc) hqd _ y z (ZMod.val_coe_unit_coprime w) hy hz`. Use `⟨u, Prod.ext (Prod.ext ?_ ?_) ?_⟩` and prove the remaining obligations.
+
+Use `show (D.art hH u).1.1 = s1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[D.art_ps hH u, jacobiSym.mod_left, ← hys, jacobiSym.mod_left (y : ℤ)]`. Use `congr 1`. Conclude with `(hu2 : _ % q = _ % q)` after adjusting the coercions.
+
+Use `show (D.art hH u).1.2 = s2`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[D.art_ch hH u, jacobiSym.mod_left, ← hzs, jacobiSym.mod_left (z : ℤ)]`. Use `congr 1`. Conclude with `(hu3 : _ % d = _ % d)` after adjusting the coercions.
+
+Use `show D.toA (ZMod.unitsMap (D.m_dvd q d) u) = D.toA w`. Rewrite using `[(unitsMap_eq_iff _ u w).mpr hu1]`.
+-/
 theorem art_surj : Function.Surjective (D.art hH) := by
   have hsgn : ∀ {p : ℕ} (hp : p.Prime) (hp4 : p % 4 = 3) (s : ℤˣ),
       ∃ y : ℕ, Nat.Coprime y p ∧ jacobiSym (y : ℤ) p = (s : ℤ) := by
@@ -373,20 +526,51 @@ def charData : CharData D.frame where
 
 def host : HostRaw D.frame := (D.charData hH hc he hs).toHostRaw
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem host_q : (D.host hH hc he hs).q = q := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem host_d : (D.host hH hc he hs).d = d := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem host_QS : (D.host hH hc he hs).QS = D.m := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem host_art : (D.host hH hc he hs).art = D.art hH := rfl
 
+/- English proof (translation)
+Introduce `u`. Conclude with `D.art_ps hH u`.
+-/
 theorem psQ : (D.host hH hc he hs).PsQ := by
   intro u
   exact D.art_ps hH u
 
+/- English proof (translation)
+The claim follows from `(D.charData hH hc he hs).exists_sqq (D.psQ hH hc he hs)`.
+-/
 theorem exists_sqq : ∃ s : (D.host hH hc he hs).E, s ^ 2 = -((D.host hH hc he hs).q : (D.host hH hc he hs).E) ∧
     ∀ σ : (D.host hH hc he hs).E ≃ₐ[ℚ] (D.host hH hc he hs).E,
       σ s = (((((D.host hH hc he hs).gal σ).1.1 : ℤˣ) : ℤ) : (D.host hH hc he hs).E) * s :=
   (D.charData hH hc he hs).exists_sqq (D.psQ hH hc he hs)
 
+/- English proof (translation)
+Use `D.neZeroN hH` as an intermediate fact. Use `(D.charData hH hc he hs).muPM fun k (hk : k ∣ D.m * q * d) (h : ∀ u : (ZMod (D.m * q * d))ˣ, D.art hH u = 1 → (u : ZMod (D.m * q * d)).val ≡ 1 [MOD k]) => ?_` and prove the remaining obligations. Establish `hq2` using `D7.q4 hH`. Establish `hd2` using `D7.d4 hH`. Establish `c4 : ∀ p : ℕ, p % 4 = 3 → Nat.Coprime 4 p` using `fun p hp => Nat.Coprime.pow_left 2 ((Nat.coprime_two_left).mpr (Nat.odd_iff.mpr (by omega)))`.
+
+Establish `j4 : ∀ p : ℕ, p % 4 = 3 → jacobiSym ((4 : ℕ) : ℤ) p = 1` using `fun p hp => by`. Establish `h2 : Nat.Coprime 2 p` using `(Nat.coprime_two_left).mpr (Nat.odd_iff.mpr (by omega))`. Conclude with `jacobiSym.sq_one' (a := 2) h2`. Establish `n4 : ∀ p : ℕ, p.Prime → p ≠ 3 → ¬ 4 ≡ 1 [MOD p]` using `fun p hp h3 h4 => h3 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_three).mp ((Nat.modEq_iff_dvd' (by norm_num)).mp h4.symm))`. Establish `ex` using `exists_unit_three hc.coprime_mul_right_right hc.coprime_mul_left_right (D7.cop_qd hH)`.
+
+Establish `kq : Nat.Coprime k q`. Use `((Nat.Prime.coprime_iff_not_dvd hH.1).mpr fun hqk => ?_).symm` and prove the remaining obligations. Take `⟨u, h1, h2, h3⟩` from `ex 1 4 1 (Nat.coprime_one_left _) (c4 q hq2) (Nat.coprime_one_left _)`. Establish `h4` using `h u (Prod.ext (Prod.ext (D.art_ps_one hH u h2 (j4 q hq2)) (D.art_ch_one hH u h3 (by simp))) (D.art_snd_one hH u h1))`. Conclude with `n4 q hH.1 hq (h2.symm.trans (h4.of_dvd hqk))`.
+
+Establish `kd : Nat.Coprime k d`. Use `((Nat.Prime.coprime_iff_not_dvd hH.2.1).mpr fun hqk => ?_).symm` and prove the remaining obligations. Take `⟨u, h1, h2, h3⟩` from `ex 1 1 4 (Nat.coprime_one_left _) (Nat.coprime_one_left _) (c4 d hd2)`. Establish `h4` using `h u (Prod.ext (Prod.ext (D.art_ps_one hH u h2 (by simp)) (D.art_ch_one hH u h3 (j4 d hd2))) (D.art_snd_one hH u h1))`. Conclude with `n4 d hH.2.1 (by have := hH.2.2.2.1; omega) (h3.symm.trans (h4.of_dvd hqk))`.
+
+Establish `km : k ∣ D.m` using `kq.dvd_of_dvd_mul_right (kd.dvd_of_dvd_mul_right hk)`. Take `⟨u, h1, h2, h3⟩` from `ex ((-1 : (ZMod D.m)ˣ) : ZMod D.m).val 1 1 (ZMod.val_coe_unit_coprime _) (Nat.coprime_one_left _) (Nat.coprime_one_left _)`. Establish `h4` using `h u (Prod.ext (Prod.ext (D.art_ps_one hH u h2 (by simp)) (D.art_ch_one hH u h3 (by simp))) (by`. Rewrite using `[art_snd, (unitsMap_eq_iff _ u _).mpr h1]`. Conclude with `(D.toA_eq_one_iff _).mpr D.eta_neg_one))`.
+
+Establish `h5` using `(unitsMap_eq_one_iff km (-1)).mpr ((h1.of_dvd km).symm.trans h4)`. Rewrite `h5` using `[D7.unitsMap_neg_one, Units.ext_iff, Units.val_neg, Units.val_one]`. Use `(ZMod.natCast_eq_zero_iff 2 k).mp ?_` and prove the remaining obligations. Use `push_cast`. Take the linear combination `-h5`.
+-/
 theorem muPM (hq : q ≠ 3) : (D.host hH hc he hs).MuPM := by
   have := D.neZeroN hH
   refine (D.charData hH hc he hs).muPM fun k (hk : k ∣ D.m * q * d)
@@ -425,6 +609,13 @@ theorem muPM (hq : q ≠ 3) : (D.host hH hc he hs).MuPM := by
   push_cast
   linear_combination -h5
 
+/- English proof (translation)
+Use `D.neZeroN hH` as an intermediate fact. Introduce `l hl (hlm : l ∣ D.m)`. Take `⟨v, hv, hv1⟩` from `h l hl hlm`. Take `⟨u, h1, h2, h3⟩` from `exists_unit_three hc.coprime_mul_right_right hc.coprime_mul_left_right (D7.cop_qd hH) (v : ZMod D.m).val 1 1 (ZMod.val_coe_unit_coprime v) (Nat.coprime_one_left _) (Nat.coprime_one_left _)`. Use `⟨u, ?_, fun h4 => hv1 ?_⟩` and prove the remaining obligations.
+
+Use `show (u : ZMod (D.m * q * d)).val ≡ 1 [MOD D.m * q * d / l]`. Establish `h5 : D.m * q * d / l = D.m / l * (q * d)` using `by rw [mul_assoc, Nat.div_mul_right_comm hlm]`. Establish `h6 : D.m / l ∣ D.m` using `Nat.div_dvd_of_dvd hlm`. Rewrite using `[h5]`. Conclude with `(Nat.modEq_and_modEq_iff_modEq_mul (hc.coprime_dvd_left h6)).mp ⟨(h1.of_dvd h6).trans hv, (Nat.modEq_and_modEq_iff_modEq_mul (D7.cop_qd hH)).mp ⟨h2, h3⟩⟩`.
+
+Establish `h5 : (D.art hH u).2 = 1` using `congrArg Prod.snd h4`. Rewrite `h5` using `[art_snd, (unitsMap_eq_iff _ u v).mpr h1]`. Conclude with `(D.toA_eq_one_iff v).mp h5`.
+-/
 theorem exact (h : ∀ l : ℕ, l.Prime → l ∣ D.m → ∃ v : (ZMod D.m)ˣ, (v : ZMod D.m).val ≡ 1 [MOD D.m / l] ∧ D.eta v ≠ 1) :
     (D.host hH hc he hs).Exact := by
   have := D.neZeroN hH

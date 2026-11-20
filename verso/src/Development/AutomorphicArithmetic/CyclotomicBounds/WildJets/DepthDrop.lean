@@ -14,6 +14,11 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun h i) j`. Simplify using `only [Matrix.smul_apply] at h1`. Establish `hF : ((c : ↥D.host.F)) ≠ 0` using `Nat.cast_ne_zero.mpr hc`. Rewrite `h1` using `[← Nat.cast_smul_eq_nsmul (↥D.host.F), ← Nat.cast_smul_eq_nsmul (↥D.host.F)]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem mx_eq_of_nsmul_eq_of_ne_zero {D : D7} {m n : ℕ} (c : ℕ) (hc : c ≠ 0) {x y : Mx D m n}
     (h : c • x = c • y) : x = y := by
   ext i j
@@ -25,6 +30,19 @@ private theorem mx_eq_of_nsmul_eq_of_ne_zero {D : D7} {m n : ℕ} (c : ℕ) (hc 
     _ = ((c : ↥D.host.F))⁻¹ • ((c : ↥D.host.F) • y i j) := by rw [h1]
     _ = y i j := inv_smul_smul₀ hF _
 
+/- English proof (translation)
+Introduce `D T L sc G t p d l hl hP k hk hcos`. Take `⟨x₀, hx₀, hkx, hfn⟩` from `hcos`. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hk.ne' l hl.one_lt.ne'`. Establish `hc : ∀ w ∈ d.P, (((l ^ a : ℕ)) : 𝓞 D.host.E) ∉ w.asIdeal`. Introduce `w hw h`.
+
+Rewrite `h` using `[Nat.cast_pow]`. Conclude with `hP w hw (w.isPrime.mem_of_pow_mem _ h)`. Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hk)`. Establish `hhalf : ∀ (c : ℕ) (u : Mx D (G.pT p).rank (G.pS p).rank), IsHalf d.e u → IsHalf d.e (c • u)`. Introduce `c u hu i j`.
+
+Simplify using `only [Matrix.smul_apply, mul_smul_comm, hu i j]`. Take `⟨v, hvL, hvH, hv⟩` from `UpperTheory.WildA.halfUnit p d.P d.e d.e_is (l ^ a) hc _ hkx (hhalf _ _ hx₀)`. Establish `hmx : m • x₀ = v`. Apply `mx_eq_of_nsmul_eq_of_ne_zero (l ^ a) (pow_ne_zero _ hl.ne_zero)` to reduce the goal to its premises. Rewrite using `[hv, smul_smul]`.
+
+Use `⟨m, hm0, hm, x₀, hx₀, by rw [hmx]; exact hvL, ?_⟩` and prove the remaining obligations. Rewrite using `[hfn]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [GlobalTheory.RowTest.halfCoset, Set.mem_setOf_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, huH, rfl⟩`. Use `⟨(l ^ a) • u, AddSubgroup.nsmul_mem _ hu _, hhalf _ _ huH, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm m]`. Introduce and unpack `⟨u, hu, huH, rfl⟩`.
+
+Take `⟨u', hu', hu'H, rfl⟩` from `UpperTheory.WildA.halfUnit p d.P d.e d.e_is (l ^ a) hc u hu huH`. Conclude with `⟨u', hu', hu'H, by rw [smul_smul, mul_comm m]⟩`.
+-/
 theorem UpperTheory.WildA.depthDrop :
     ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} {t : T} {p : GlobalTheory.ChiGrid.Pair T} (d : FinDatum G t p) (l : ℕ), l.Prime → (∀ w ∈ d.P, ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal) →
       ∀ k : ℕ, 0 < k → IsCosetDatum k d → ∃ k' : ℕ, 0 < k' ∧ ¬ l ∣ k' ∧ IsCosetDatum k' d := by

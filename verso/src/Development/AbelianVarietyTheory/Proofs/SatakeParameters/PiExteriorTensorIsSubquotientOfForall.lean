@@ -12,6 +12,21 @@ namespace GlobalTheory
 
 open PiTensorProduct
 
+/- English proof (translation)
+Introduce `α _ _ Γ _ X Y _ _ _ _ ρ ρ' h`. Use `choose S f hf using h`. Set `ι : (piTensor fun a => (S a).toRepresentation).IntertwiningMap (piTensor ρ')` to `{ toLinearMap := PiTensorProduct.map fun a => (S a).toSubmodule.subtype isIntertwining' := fun g => by`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use extensionality with `x`.
+
+Simplify using `[piTensor_tprod]`. Use `rfl }`. Set `π : (piTensor fun a => (S a).toRepresentation).IntertwiningMap (piTensor ρ)` to `{ toLinearMap := PiTensorProduct.map fun a => (f a).toLinearMap isIntertwining' := fun g => by`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use extensionality with `x`.
+
+Simplify using `[piTensor_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `(f a).isIntertwining _ _ (g a) (x a) }`. Establish `hι : Function.Injective ι` using `by choose r hr using fun a => LinearMap.exists_leftInverse_of_injective (S a).toSubmodule.subtype (S a).toSubmodule.ker_subtype`.
+
+Establish `: (PiTensorProduct.map r) ∘ₗ (PiTensorProduct.map fun a => (S a).toSubmodule.subtype) = LinearMap.id`. Rewrite using `[← PiTensorProduct.map_comp]`. Simplify using `only [hr]`. Conclude with `PiTensorProduct.map_id`. Conclude with `Function.LeftInverse.injective (g := PiTensorProduct.map r) fun z => LinearMap.congr_fun this z`.
+
+Establish `hπ : Function.Surjective π` using `by show Function.Surjective (PiTensorProduct.map fun a => (f a).toLinearMap)`. Rewrite using `[← LinearMap.range_eq_top]`. Rewrite using `[eq_top_iff, ← PiTensorProduct.span_tprod_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `choose y hy using fun a => hf a (x a)`.
+
+Conclude with `⟨PiTensorProduct.tprod ℂ y, by show PiTensorProduct.map _ _ = _`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `hy a⟩`.
+
+Conclude with `(IsSubquotient.of_surjective π hπ).trans (IsSubquotient.of_injective ι hι)`.
+-/
 theorem piTensor_isSubquotient_of_forall : ∀ (α : Type) [Fintype α] [DecidableEq α] (Γ : α → Type) [∀ a, Group (Γ a)] (X Y : α → Type) [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (ρ' : ∀ a, Representation ℂ (Γ a) (Y a)), (∀ a, IsSubquotient (ρ a) (ρ' a)) → IsSubquotient (piTensor ρ) (piTensor ρ') := by
   intro α _ _ Γ _ X Y _ _ _ _ ρ ρ' h
   choose S f hf using h

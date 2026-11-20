@@ -9,6 +9,17 @@ namespace Formalism.InvariantFactorPaths.ColumnFamilies
 open Formalism.GradedWeylDivisibility
 open scoped MonomialOrder
 
+/- English proof (translation)
+Establish `key : ∀ k : ℕ, ∀ s : Fin n, s.val = k → ∀ a : Fin r, a.val < k → m (a, s) = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `s _ a ha`.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`. Introduce `s hs a ha`. Establish `hl : k < n`. Use `s.isLt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hI` using `h ⟨k, hl⟩ s (by simp [hs]) a`. Establish `hR : (∑ b : Fin r with b < a, m (b, (⟨k, hl⟩ : Fin n))) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b hb`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Establish `hba : b.val < a.val` using `hb`. Conclude with `ih ⟨k, hl⟩ rfl b (by omega)`. Rewrite `hI` using `[hR, add_zero, Nat.le_zero, Finset.sum_eq_zero_iff]`. Conclude with `hI a (by simp)`.
+
+Introduce `a s has`. Conclude with `key s.val s rfl a has`.
+-/
 theorem qn_interlaced_lowerTri {r n : ℕ} (m : Fin r × Fin n →₀ ℕ) (h : Interlaced m) : LowerTri m := by
   have key : ∀ k : ℕ, ∀ s : Fin n, s.val = k → ∀ a : Fin r, a.val < k → m (a, s) = 0 := by
     intro k
@@ -33,6 +44,35 @@ theorem qn_interlaced_lowerTri {r n : ℕ} (m : Fin r × Fin n →₀ ℕ) (h : 
   intro a s has
   exact key s.val s rfl a has
 
+/- English proof (translation)
+Introduce `r n ν`. Use `haveI := (colLex r n).wellFoundedLT_syn`. Take `⟨b, hbB, hbdeg⟩` from `sSBasis ℤ r n ν`. Establish `hBmem : ∀ i, intQ r n (b i) ∈ dualWeyl ℚ r n ν`. Introduce `i`.
+
+Rewrite using `[← span_map_weightBasis_eq_dualWeyl (K := ℚ) hbB]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨i, by rw [algebraMap_int_eq]; rfl⟩`. It suffices to establish `H : ∀ s : (colLex r n).syn, ∀ Q : MvPolynomial (Fin r × Fin n) ℚ, (colLex r n).toSyn ((colLex r n).degree Q) = s → Q ∈ dualWeyl ℚ r n ν → (∀ e : Fin r × Fin n →₀ ℕ, LowerTri e → ∃ z : ℤ, coeff e Q = z) → ∃ Q' : MvPolynomial (Fin r × Fin n) ℤ, Q = intQ r n Q' by`. Introduce `Q hQ hint`.
+
+Conclude with `H _ Q rfl hQ hint`. Introduce `s`. Proceed by induction on `s using WellFoundedLT.induction with`. Consider the case `ind s ih`. Introduce `Q hs hQ hint`.
+
+Distinguish the cases in `hQ0 : Q = 0`. Conclude with `⟨0, by rw [hQ0, map_zero]⟩`. Use `set m := (colLex r n).degree Q with hm`. Establish `hInt : Interlaced m` using `leadInterlaced ℚ r n ν Q hQ hQ0`. Establish `hLT : LowerTri m` using `qn_interlaced_lowerTri m hInt`.
+
+Establish `hcol : ∀ t : Fin n, ∑ a : Fin r, m (a, t) = ν t`. Establish `hhom : IsWeightedHomogeneous (colW r n) Q ν` using `(mem_weightedHomogeneousSubmodule _ _ _ _).1 (Submodule.mem_inf.1 hQ).1`. Establish `hw : Finsupp.weight (colW r n) m = ν` using `hhom ((colLex r n).leadingCoeff_ne_zero_iff.2 hQ0)`. Introduce `t`. Rewrite using `[← hw]`.
+
+Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype, Fintype.sum_prod_type, colW, Pi.single_apply]`. Set `mi : ssIdx r n ν` to `⟨m, hInt, hcol⟩`. Take `⟨hbd, hblc, -⟩` from `hbdeg mi`. Use `set B := intQ r n (b mi) with hB`. Establish `hBmap : B = map (Int.castRingHom ℚ) (b mi)` using `rfl`.
+
+Establish `hinj : Function.Injective (Int.castRingHom ℚ)` using `Int.cast_injective`. Establish `hBsupp : B.support = (b mi).support`. Rewrite using `[hBmap]`. Conclude with `support_map_of_injective _ hinj`. Establish `hBdeg : (colLex r n).degree B = m`.
+
+Establish `h1 : (colLex r n).degree (b mi) = m` using `hbd`. Rewrite using `[← h1]`. Unfold `MonomialOrder.degree`. Rewrite using `[hBsupp]`. Establish `hBlc : (colLex r n).leadingCoeff B = 1`.
+
+Unfold `MonomialOrder.leadingCoeff`. Rewrite using `[hBdeg, hBmap, coeff_map]`. Establish `h1 : (colLex r n).degree (b mi) = m` using `hbd`. Establish `h2 : (b mi).coeff ((colLex r n).degree (b mi)) = 1` using `hblc`. Rewrite `h2` using `[h1]`.
+
+Rewrite using `[h2, map_one]`. Take `⟨z, hz⟩` from `hint m hLT`. Establish `hlcQ : (colLex r n).leadingCoeff Q = (z : ℚ)` using `hz`. Use `set Q1 := Q - (colLex r n).leadingCoeff Q • B with hQ1`. Establish `hQ1mem : Q1 ∈ dualWeyl ℚ r n ν` using `Submodule.sub_mem _ hQ (Submodule.smul_mem _ _ (hBmem mi))`.
+
+Establish `hQ1int : ∀ e : Fin r × Fin n →₀ ℕ, LowerTri e → ∃ z' : ℤ, coeff e Q1 = z'`. Introduce `e he`. Take `⟨w, hw⟩` from `hint e he`. Use `⟨w - z * (b mi).coeff e, ?_⟩` and prove the remaining obligations. Rewrite using `[hQ1, coeff_sub, coeff_smul, hw, hlcQ, hBmap, coeff_map]`.
+
+Use `push_cast`. Simplify using `[smul_eq_mul]`. Establish `hfinal : ∀ Q1' : MvPolynomial (Fin r × Fin n) ℤ, Q1 = intQ r n Q1' → ∃ Q' : MvPolynomial (Fin r × Fin n) ℤ, Q = intQ r n Q'`. Introduce `Q1' h`. Use `⟨Q1' + z • b mi, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_zsmul, ← h, ← hB, hQ1, hlcQ, Int.cast_smul_eq_zsmul]`. Normalize the expressions using the abelian group laws. Distinguish the cases in `hQ10 : Q1 = 0`. Conclude with `hfinal 0 (by rw [hQ10, map_zero])`. Establish `hlt` using `lcassem_sub_lt (colLex r n) (hBdeg.trans hm) hBlc hQ10`.
+
+Take `⟨Q1', h⟩` from `ih _ (by rw [← hs]; exact hlt) Q1 rfl hQ1mem hQ1int`. Conclude with `hfinal Q1' h`.
+-/
 theorem qn_lowerTriIntegral : LowerTriIntegral := by
   classical
   intro r n ν

@@ -20,17 +20,34 @@ section Aug
 
 variable {R : Type} [CommRing R] {I : Type} [Fintype I] {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `r`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingHom.id_apply, J.π_eq, Algebra.algebraMap_eq_smul_one, ← J.one, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem JetRing.π_comp_algebraMap (J : JetRing R I n) : J.π.comp (algebraMap R J.B) = RingHom.id R := by
   ext r
   simp only [RingHom.coe_comp, Function.comp_apply, RingHom.id_apply, J.π_eq, Algebra.algebraMap_eq_smul_one,
     ← J.one, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul]
   simp
 
+/- English proof (translation)
+Introduce `r` and use `⟨algebraMap R J.B r, by simpa using RingHom.congr_fun J.π_comp_algebraMap r⟩`.
+-/
 theorem JetRing.π_surjective (J : JetRing R I n) : Function.Surjective J.π := fun r =>
   ⟨algebraMap R J.B r, by simpa using RingHom.congr_fun J.π_comp_algebraMap r⟩
 
 end Aug
 
+/- English proof (translation)
+Take `⟨-, -, PB, PR, -⟩` from `P`. Take `⟨C, _, φ, hφ⟩` from `GlobalTheory.FlagTan.exists_isGrpPullback X.A (spMap (algebraMap R J.B))`. Establish `eid : spMap J.π ≫ spMap (algebraMap R J.B) = 𝟙 _`. Rewrite using `[spMap_comp_spMap, J.π_comp_algebraMap]`. Conclude with `Spec.map_id _`.
+
+Establish `w : 𝟙 X.A.left ≫ X.A.hom = (X.A.hom ≫ spMap J.π) ≫ spMap (algebraMap R J.B)`. Rewrite using `[Category.assoc, eid, Category.comp_id, Category.id_comp]`. Establish `e1 : hφ.1.lift _ _ w ≫ φ = 𝟙 _` using `hφ.1.lift_fst _ _ _`. Establish `e2 : hφ.1.lift _ _ w ≫ C.hom = X.A.hom ≫ spMap J.π` using `hφ.1.lift_snd _ _ _`. Use `haveI : IsMonHom (Iso.refl X.A).hom := inferInstanceAs (IsMonHom (𝟙 X.A))`.
+
+Establish `hic : IsGrpPullback X.A C (spMap J.π) (hφ.1.lift _ _ w)` using `hφ.cancel ((isGrpPullback_of_iso (Iso.refl X.A)).congr eid.symm e1.symm) e2`. Establish `hC` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback X.ab hφ`. Establish `gC` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hφ.1 X.dim`. Take `⟨bc, -⟩` from `PB R X.A _ X.ab X.dim J.B C φ hφ`. Establish `rg` using `PR _ C _ hC gC _ J.κ J.nil R J.π J.π_surjective rfl X.A _ hic`.
+
+Establish `e : ∀ z, liftSemi m.pull z = (liftMor J.κ hic).pull (liftSemi (bcMor hφ).pull z)` using `fun z => by`. Proceed by induction on `z with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul r c`.
+
+Rewrite using `[liftSemi_tmul, liftSemi_tmul, map_smul, ← GrpMor.pull_pull (bcMor hφ) (liftMor J.κ hic) m (fun _ => rfl) (by simpa using e1) c]`. Establish `: ⇑(liftSemi m.pull) = (liftMor J.κ hic).pull ∘ liftSemi (bcMor hφ).pull` using `funext e`. Unfold `GrpMor.IsBC`. Rewrite using `[this]`. Conclude with `rg.comp bc`.
+-/
 theorem grpMor_isBC (P : AbelianDeRham) {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
     {R : Type} [CommRing R] {I : Type} [Fintype I] {n : ℕ} (J : JetRing R I n) (X : Obj F 𝔠 (Sp R))
     (m : GrpMor (dp0 R) (𝟙 _) X.A J.κ (spMap J.π) X.A (algebraMap R J.B) (𝟙 _) (Over.Hom.left (𝟙 X.A))) :

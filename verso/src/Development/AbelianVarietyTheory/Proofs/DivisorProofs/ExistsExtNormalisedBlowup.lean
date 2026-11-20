@@ -16,6 +16,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TChart
 
+/- English proof (translation)
+Introduce `g _ φ hφ _ n hn _ F Z z i OZ d S π j _ BD hM hB C G₁ _ y α₁ hC`. Take `⟨hsa, hab, hgen, hmum, hy⟩` from `hC`. Take `⟨J, -, -, hval, hbl, -, -, hji, hpre, -, -⟩` from `hB`. Take `⟨hreg, hchar, -, -, hpar, -⟩` from `Taut.isRegularLocalRing_and_isRelParam g n φ hn C`. Take `⟨hmono, hrk, hcone, hdef, ht⟩` from `Taut.monomial_chart g n φ (by omega) C`.
+
+Use `haveI : IsOpenImmersion i := hM.isThetaCompact.1.2.2.1`. Use `haveI : IsCommMonObj G₁ := hsa.comm`. Use `haveI : IsNoetherianRing C.R := C.compl.1`. Use `haveI : IsIntegrallyClosed C.R := hmum.1.2.1`. Take `⟨a, ha⟩` from `GlobalTheory.MinExt.exists_ext_of_minAt5 g n F Z z i OZ hM C.R G₁ hsa y α₁ hgen C.b hy`.
+
+Establish `hon : IsPolFanOn id φ C.Q.X` using `hφ C.Q.X hrk`. Establish `he : ∀ k, ∃ e : ℕ, (e : ℝ) = d * φ.evalZ ((n : ℤ) • C.δ k)`. Introduce `k`. Establish `hmem : (n : ℤ) • C.δ k ∈ balForms (id : ℤ → ℤ) C.Q.X` using `Submodule.smul_mem _ _ (hcone.mem k)`. Establish `hnn : ∀ w, 0 ≤ ((n : ℤ) • C.δ k) w w` using `fun w => by`.
+
+Simplify using `using mul_nonneg (Int.natCast_nonneg n) (hcone.nonneg k w)`. Take `⟨c, hc⟩` from `hon.integral _ hmem hnn`. Establish `hc0 : 0 ≤ c`. Establish `hne : (n : ℤ) • C.δ k ≠ 0`. Use `fun h => hcone.basis.linearIndependent.ne_zero k (Subtype.ext ?_)` and prove the remaining obligations.
+
+Conclude with `(smul_eq_zero.1 h).resolve_left (by omega)`. Use `hon.pos _ hmem hnn hne` as an intermediate fact. Rewrite `this` using `[hc]`. Conclude with `this.le` after adjusting the coercions. Use `lift c to ℕ using hc0`.
+
+Conclude with `⟨d * c, by rw [hc]; push_cast; rfl⟩`. Use `choose e he using he`. Establish `hJ` using `GlobalTheory.ChartIdeal.idlAlong_eq_span_monomial g n F Z i φ hφ d J hval C.R C.compl.2.1 C.b a C.Q G₁ y α₁ hsa hgen ha hmum C.m C.t C.δ e hpar hab hcone hdef hmono he`. Take `⟨ξ, hξ, -⟩` from `GlobalTheory.NormBlLift.lift_normBl g n F Z S i π j J hbl hji hpre C.R a y ha _ (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (ht k)) hJ`. Use `⟨ξ, ?_⟩` and prove the remaining obligations.
+
+Establish `hπ : (jK C.R ≫ ξ) ≫ π = y ≫ i` using `by rw [Category.assoc, hξ, ha]`. Establish `hr : Set.range (jK C.R ≫ ξ) ⊆ Set.range j`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[← hpre]`. Conclude with `⟨y p, by rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hπ]⟩`.
+
+Establish `hl` using `IsOpenImmersion.lift_fac j (jK C.R ≫ ξ) hr`. Establish `: IsOpenImmersion.lift j (jK C.R ≫ ξ) hr = y`. Rewrite using `[← cancel_mono i, ← hπ, ← hji, ← Category.assoc, hl]`. Rewrite using `[← this, hl]`.
+-/
 theorem Taut.exists_ext_normBl : ∀ g : ℕ, 1 ≤ g → ∀ φ : InvFun ℤ, IsPolFan id g φ → NoSelfInt id g φ → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) (OZ : LB Z) (d : ℕ) (S : Scheme.{0}) (π : S ⟶ Z) (j : F.X ⟶ S) [IsOpenImmersion j] (BD : GlobalTheory.EffCartierData S), MinAt5 F z i OZ → BlowAt F z i φ d π j BD → ∀ (C : Taut (zetaAway n) g n φ) (G₁ : Over (Sp C.R)) [GrpObj G₁] (y : Sp (FractionRing C.R) ⟶ F.X) (α₁ : pullback G₁.hom (jK C.R) ⟶ F.univ.A.left), C.IsFam F G₁ y α₁ → ∃ ξ : Sp C.R ⟶ S, y ≫ j = jK C.R ≫ ξ := by
   intro g _ φ hφ _ n hn _ F Z z i OZ d S π j _ BD hM hB C G₁ _ y α₁ hC
   obtain ⟨hsa, hab, hgen, hmum, hy⟩ := hC

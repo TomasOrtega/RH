@@ -28,6 +28,9 @@ variable (II : IntersectionSystem)
   (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2])
 
 omit II hII in
+/- English proof (translation)
+Conclude with `WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)`.
+-/
 theorem two_le_infty : (2 : WithTop ℕ∞) ≤ ∞ := by
   exact WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)
 

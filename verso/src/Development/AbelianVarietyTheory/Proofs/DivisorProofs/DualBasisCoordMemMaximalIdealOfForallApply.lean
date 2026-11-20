@@ -4,6 +4,11 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O _ _ M _ _ _ _ k lb l hl j`. Use `haveI : Module.Free O M := Module.free_of_flat_of_isLocalRing`. Set `ε` to `Module.Free.chooseBasis O M`. Establish `hsum : l = ∑ i, l (ε i) • ε.dualBasis i`. Use `ε.ext fun a => ?_` and prove the remaining obligations.
+
+Simplify using `[Module.Basis.dualBasis_apply_self, Finset.sum_apply, LinearMap.sum_apply]`. Rewrite using `[hsum, map_sum]`. Simplify using `only [Finsupp.coe_finset_sum, Finset.sum_apply, map_smul, Finsupp.coe_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (hl _)`.
+-/
 theorem dualBasis_coord_mem_maximalIdeal : ∀ (O : Type) [CommRing O] [IsLocalRing O] (M : Type) [AddCommGroup M] [Module O M] [Module.Finite O M] [Module.Projective O M] (k : ℕ) (lb : Module.Basis (Fin k) O (Module.Dual O M)) (l : Module.Dual O M), (∀ w, l w ∈ IsLocalRing.maximalIdeal O) → ∀ j, lb.repr l j ∈ IsLocalRing.maximalIdeal O := by
   intro O _ _ M _ _ _ _ k lb l hl j
   haveI : Module.Free O M := Module.free_of_flat_of_isLocalRing

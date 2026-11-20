@@ -10,6 +10,9 @@ namespace GlobalTheory.NoetherPrimitive
 open Polynomial
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Take `⟨s, hs, h⟩` from `IsLocalization.integerNormalization_spec R⁰ f`. Use `⟨s, nonZeroDivisors.ne_zero hs, IsLocalization.integerNormalization R⁰ f, ?_⟩` and prove the remaining obligations. Rewrite using `[h, ← smul_eq_C_mul, algebraMap_smul]`.
+-/
 theorem exists_map_eq_C_mul {R K : Type*} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] (f : K[X]) :
     ∃ s : R, s ≠ 0 ∧ ∃ g : R[X], g.map (algebraMap R K) = C (algebraMap R K s) * f := by
@@ -17,6 +20,11 @@ theorem exists_map_eq_C_mul {R K : Type*} [CommRing R] [IsDomain R] [Field K] [A
   refine ⟨s, nonZeroDivisors.ne_zero hs, IsLocalization.integerNormalization R⁰ f, ?_⟩
   rw [h, ← smul_eq_C_mul, algebraMap_smul]
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩` from `hp`. Take `⟨s, hs, U, hU⟩` from `exists_map_eq_C_mul (R := R) u`. Take `⟨t, ht, V, hV⟩` from `exists_map_eq_C_mul (R := R) v`. Use `⟨s * t, mul_ne_zero hs ht, Ideal.mem_span_pair.2 ⟨C t * U, C s * V, ?_⟩⟩` and prove the remaining obligations. Apply `Polynomial.map_injective (algebraMap R K) (IsFractionRing.injective R K)` to reduce the goal to its premises.
+
+Rewrite `huv` using `[derivative_map]`. Simplify using `only [Polynomial.map_add, Polynomial.map_mul, map_C, hU, hV, map_mul]`. Take the linear combination `(C (algebraMap R K s) * C (algebraMap R K t)) * huv`.
+-/
 theorem exists_C_mem_span {R K : Type*} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] (p : R[X]) (hp : (p.map (algebraMap R K)).Separable) :
     ∃ q : R, q ≠ 0 ∧ C q ∈ Ideal.span {p, p.derivative} := by
@@ -29,6 +37,11 @@ theorem exists_C_mem_span {R K : Type*} [CommRing R] [IsDomain R] [Field K] [Alg
   simp only [Polynomial.map_add, Polynomial.map_mul, map_C, hU, hV, map_mul]
   linear_combination (C (algebraMap R K s) * C (algebraMap R K t)) * huv
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.CommonDenominatorForFinset.exists_common_denominator`. Consider the case `exact _root_.GlobalTheory.CommonDenominatorForFinset.exists_common_denominator`. Consider the case `(apply _root_.GlobalTheory.CommonDenominatorForFinset.exists_common_denominator <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CommonDenominatorForFinset.exists_common_denominator <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.CommonDenominatorForFinset.exists_common_denominator <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CommonDenominatorForFinset.exists_common_denominator ..)`.
+-/
 theorem exists_common_denominator {R A : Type*} [CommRing R] [IsDomain R] [CommRing A]
     [Algebra R A] [Module.Finite R A] (a : A)
     (h : ∀ b : A, ∃ s : R, s ≠ 0 ∧ ∃ r : R[X], algebraMap R A s * b = aeval a r) :
@@ -41,6 +54,19 @@ theorem exists_common_denominator {R A : Type*} [CommRing R] [IsDomain R] [CommR
   | (intros; apply @_root_.GlobalTheory.CommonDenominatorForFinset.exists_common_denominator <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.CommonDenominatorForFinset.exists_common_denominator ..)
 
+/- English proof (translation)
+Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid A R⁰) L := inferInstance`. Use `haveI : Module.Finite K L := Module.Finite.of_isLocalization R A R⁰`. Take `⟨α, hα⟩` from `Field.exists_primitive_element K L`. Take `⟨⟨a, ⟨_, t, ht, rfl⟩⟩, hat⟩` from `IsLocalization.surj (Algebra.algebraMapSubmonoid A R⁰) α`. Establish `ht' : algebraMap R K t ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).2 (nonZeroDivisors.ne_zero ht)`.
+
+Establish `hat' : α = algebraMap K L (algebraMap R K t)⁻¹ * algebraMap A L a`. Simplify using `only at hat`. Rewrite using `[← hat, ← IsScalarTower.algebraMap_apply R A L, IsScalarTower.algebraMap_apply R K L, mul_left_comm, ← map_mul, inv_mul_cancel₀ ht', map_one, mul_one]`. Establish `hint : IsIntegral R a` using `Algebra.IsIntegral.isIntegral a`. Establish `htop : Algebra.adjoin K {α} = ⊤`.
+
+Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic α), hα, IntermediateField.top_toSubalgebra]`. Take `⟨q₁, hq₁, h₁⟩` from `exists_common_denominator (R := R) a fun b => by`. Establish `hb : algebraMap A L b ∈ Algebra.adjoin K {α}` using `htop ▸ Algebra.mem_top`. Rewrite `hb` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨f, hf⟩` from `hb`.
+
+Take `⟨s, hs, g, hg⟩` from `exists_map_eq_C_mul (R := R) (f.comp (C (algebraMap R K t)⁻¹ * X))`. Use `⟨s, hs, g, IsFractionRing.injective A L ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_algebraMap_apply, ← aeval_map_algebraMap K, hg, map_mul, map_mul, aeval_C, aeval_comp, map_mul, aeval_C, aeval_X, ← hat', ← hf, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Both sides reduce to the same expression. Take `⟨q₂, hq₂, h₂⟩` from `exists_C_mem_span (K := K) (minpoly R a) (by`.
+
+Rewrite using `[← minpoly.isIntegrallyClosed_eq_field_fractions K L hint]`. Conclude with `Algebra.IsSeparable.isSeparable K _)`. Use `⟨a, q₂ * q₁, mul_ne_zero hq₂ hq₁, ?_, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[C_mul]`. Conclude with `Ideal.mul_mem_right _ _ h₂`.
+
+Take `⟨r, hr⟩` from `h₁ b`. Conclude with `⟨C q₂ * r, by rw [map_mul, map_mul, aeval_C, mul_assoc, hr]⟩`.
+-/
 theorem exists_primitive_element_discriminant_multiple (R A K L : Type*) [CommRing R] [IsDomain R] [IsIntegrallyClosed R]
     [CommRing A] [IsDomain A] [Algebra R A] [FaithfulSMul R A] [Module.Finite R A]
     [Field K] [CharZero K] [Algebra R K] [IsFractionRing R K] [Field L] [Algebra A L]
@@ -79,6 +105,9 @@ theorem exists_primitive_element_discriminant_multiple (R A K L : Type*) [CommRi
   · obtain ⟨r, hr⟩ := h₁ b
     exact ⟨C q₂ * r, by rw [map_mul, map_mul, aeval_C, mul_assoc, hr]⟩
 
+/- English proof (translation)
+Use `letI : Algebra (FractionRing R) (FractionRing A) := FractionRing.liftAlgebra R (FractionRing A)`. Conclude with `exists_primitive_element_discriminant_multiple R A (FractionRing R) (FractionRing A)`.
+-/
 theorem exists_primitive (R A : Type*) [CommRing R] [IsDomain R] [IsIntegrallyClosed R]
     [CharZero R] [CommRing A] [IsDomain A] [Algebra R A] [FaithfulSMul R A] [Module.Finite R A] :
     ∃ (a : A) (q : R), q ≠ 0 ∧ C q ∈ Ideal.span {minpoly R a, (minpoly R a).derivative} ∧
@@ -91,6 +120,13 @@ end GlobalTheory.NoetherPrimitive
 open ReciprocityTheory.PTheta Complex Matrix Filter Topology
 open scoped BigOperators Real
 
+/- English proof (translation)
+Introduce `A _ _ _ _`. Take `⟨d, j, hinj, hfin⟩` from `exists_finite_inj_algHom_of_fg ℂ A`. Use `letI : Algebra (MvPolynomial (Fin d) ℂ) A := j.toRingHom.toAlgebra`. Use `haveI : Module.Finite (MvPolynomial (Fin d) ℂ) A := hfin`. Establish `hinj' : Function.Injective (algebraMap (MvPolynomial (Fin d) ℂ) A)` using `hinj`.
+
+Use `haveI : FaithfulSMul (MvPolynomial (Fin d) ℂ) A := (faithfulSMul_iff_algebraMap_injective _ _).mpr hinj'`. Take `⟨a, q, hq, hq₁, hq₂⟩` from `GlobalTheory.NoetherPrimitive.exists_primitive (MvPolynomial (Fin d) ℂ) A`. Establish `hint : IsIntegral (MvPolynomial (Fin d) ℂ) a` using `Algebra.IsIntegral.isIntegral a`. Use `⟨d, j, a, minpoly _ a, q, ?_, hinj, hfin, minpoly.monic hint, minpoly.irreducible hint, fun r => minpoly.isIntegrallyClosed_dvd_iff hint r, hq, hq₁, hq₂⟩` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.CA.ringKrullDim_eq_of_isIntegral_of_injective hinj', MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.noetherNormalization_primitive :
     (∀ (A : Type) [CommRing A] [IsDomain A] [Algebra ℂ A] [Algebra.FiniteType ℂ A], ∃ (d : ℕ) (j : MvPolynomial (Fin d) ℂ →ₐ[ℂ] A) (a : A) (p : Polynomial (MvPolynomial (Fin d) ℂ)) (q : MvPolynomial (Fin d) ℂ), ringKrullDim A = d ∧ Function.Injective j ∧ j.toRingHom.Finite ∧ p.Monic ∧ Irreducible p ∧ (∀ r : Polynomial (MvPolynomial (Fin d) ℂ), r.eval₂ j.toRingHom a = 0 ↔ p ∣ r) ∧ q ≠ 0 ∧ Polynomial.C q ∈ Ideal.span {p, p.derivative} ∧ ∀ b : A, ∃ r : Polynomial (MvPolynomial (Fin d) ℂ), j q * b = r.eval₂ j.toRingHom a) := by
   intro A _ _ _ _

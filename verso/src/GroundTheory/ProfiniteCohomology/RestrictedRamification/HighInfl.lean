@@ -23,10 +23,18 @@ namespace IsIsoModCoprime
 
 variable {ℓ : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x hx => ⟨1, Nat.coprime_one_left ℓ, by rw [one_smul]; exact hf.1 (hx.trans (map_zero f).symm)⟩, fun y => ⟨1, Nat.coprime_one_left ℓ, (hf.2 y).imp fun x hx => by rw [hx, one_smul]⟩⟩`.
+-/
 theorem of_bijective {f : X →+ Y} (hf : Function.Bijective f) : IsIsoModCoprime ℓ f :=
   ⟨fun x hx => ⟨1, Nat.coprime_one_left ℓ, by rw [one_smul]; exact hf.1 (hx.trans (map_zero f).symm)⟩,
     fun y => ⟨1, Nat.coprime_one_left ℓ, (hf.2 y).imp fun x hx => by rw [hx, one_smul]⟩⟩
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_, fun z => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, hmx⟩` from `hg.1 (f x) hx`. Take `⟨m', hm', hm'x⟩` from `hf.1 (m • x) (by rw [map_nsmul, hmx])`. Conclude with `⟨m' * m, Nat.Coprime.mul_left hm' hm, by rw [mul_smul]; exact hm'x⟩`. Take `⟨m, hm, y, hy⟩` from `hg.2 z`.
+
+Take `⟨m', hm', x, hx⟩` from `hf.2 y`. Conclude with `⟨m' * m, Nat.Coprime.mul_left hm' hm, x, by`. Rewrite using `[AddMonoidHom.comp_apply, hx, map_nsmul, hy, ← mul_smul]⟩`.
+-/
 theorem comp {g : Y →+ Z} {f : X →+ Y} (hg : IsIsoModCoprime ℓ g) (hf : IsIsoModCoprime ℓ f) :
     IsIsoModCoprime ℓ (g.comp f) := by
   refine ⟨fun x hx => ?_, fun z => ?_⟩
@@ -38,6 +46,11 @@ theorem comp {g : Y →+ Z} {f : X →+ Y} (hg : IsIsoModCoprime ℓ g) (hf : Is
     exact ⟨m' * m, Nat.Coprime.mul_left hm' hm, x, by
       rw [AddMonoidHom.comp_apply, hx, map_nsmul, hy, ← mul_smul]⟩
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `he x`. Take `⟨m, hm, hmz⟩` from `h.1 z hx`. Conclude with `⟨m, hm, by rw [← map_nsmul, hmz, map_zero]⟩`. Take `⟨m, hm, z, hz⟩` from `h.2 y`.
+
+Conclude with `⟨m, hm, e z, hz⟩`.
+-/
 theorem of_comp_surjective {f : X →+ Y} {e : Z →+ X} (h : IsIsoModCoprime ℓ (f.comp e))
     (he : Function.Surjective e) : IsIsoModCoprime ℓ f := by
   refine ⟨fun x hx => ?_, fun y => ?_⟩
@@ -47,6 +60,9 @@ theorem of_comp_surjective {f : X →+ Y} {e : Z →+ X} (h : IsIsoModCoprime �
   · obtain ⟨m, hm, z, hz⟩ := h.2 y
     exact ⟨m, hm, e z, hz⟩
 
+/- English proof (translation)
+Take `rfl : f = g` from `AddMonoidHom.ext hfg`. Conclude with `h`.
+-/
 theorem congr {f g : X →+ Y} (h : IsIsoModCoprime ℓ f) (hfg : ∀ x, f x = g x) : IsIsoModCoprime ℓ g := by
   obtain rfl : f = g := AddMonoidHom.ext hfg
   exact h
@@ -59,6 +75,9 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨A.ρ g a, Rep.hom_comm_apply f g a⟩`.
+-/
 theorem range_repHom_le_comap {A B : Rep.{u} k G} (f : A ⟶ B) (g : G) :
     LinearMap.range f.hom.toLinearMap ≤ (LinearMap.range f.hom.toLinearMap).comap (B.ρ g) := by
   rintro _ ⟨a, rfl⟩
@@ -68,6 +87,15 @@ section Torsion
 
 variable [CompactSpace G]
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `cohomologyπ_surjective A n x`. Use `set c := cochainOf A (cocycleι A n z) with hc`. Establish `hlc : IsLocallyConstant c` using `(cocycleι A n z : locallyConstantCochains A n).2`. Establish `hfin : (Set.range c).Finite` using `hlc.range_finite`. Use `choose M hMc hMa using hA`.
+
+Use `⟨∏ a ∈ hfin.toFinset, M a, Nat.Coprime.prod_left fun a _ => hMc a, ?_⟩` and prove the remaining obligations. Establish `hz : (∏ a ∈ hfin.toFinset, M a) • z = 0`. Apply `cocycleι_injective` to reduce the goal to its premises. Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero, cochainOf_zero]`.
+
+Use function extensionality and compare the values at `g`. Establish `hmem : c g ∈ hfin.toFinset` using `hfin.mem_toFinset.2 ⟨g, rfl⟩`. Express the relevant statement in the definitionally equal form `(∏ a ∈ hfin.toFinset, M a) • c g = 0`. Take `⟨d, hd⟩` from `Finset.dvd_prod_of_mem M hmem`. Rewrite using `[hd, mul_comm, ← smul_smul, hMa, smul_zero]`.
+
+Rewrite using `[← map_nsmul, hz, map_zero]`.
+-/
 theorem exists_coprime_nsmul_cohomology_of_forall (A : Rep.{u} k G) [IsDiscreteRep A] (ℓ : ℕ)
     (hA : ∀ a : A, ∃ m : ℕ, m.Coprime ℓ ∧ m • a = 0) (n : ℕ) (x : cohomology A n) :
     ∃ m : ℕ, m.Coprime ℓ ∧ m • x = 0 := by
@@ -95,6 +123,11 @@ section ShortExact
 
 variable {S : ShortComplex (Rep.{u} k G)} [IsDiscreteRep S.X₁] [IsDiscreteRep S.X₂] [IsDiscreteRep S.X₃]
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₁ hS i j hij) x hx`. Take `⟨m, hm, hmz⟩` from `h3 i z`. Conclude with `⟨m, hm, by rw [← map_nsmul, hmz, map_zero]⟩`. Take `⟨m, hm, hmy⟩` from `h3 j ((cohomologyMap S.g j).hom y)`.
+
+Take `⟨x, hx⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₂ hS j) (m • y) (by rw [map_nsmul]; exact hmy)`. Conclude with `⟨m, hm, x, hx⟩`.
+-/
 theorem isIsoModCoprime_cohomologyMap_f (hS : S.ShortExact) (ℓ : ℕ)
     (h3 : ∀ i (y : cohomology S.X₃ i), ∃ m : ℕ, m.Coprime ℓ ∧ m • y = 0) (i j : ℕ) (hij : i + 1 = j) :
     IsIsoModCoprime ℓ (cohomologyMap S.f j).hom.toAddMonoidHom := by
@@ -113,6 +146,17 @@ section Injective
 
 variable [CompactSpace G] {X Y : Rep.{u} k G} [IsDiscreteRep X] [IsDiscreteRep Y]
 
+/- English proof (translation)
+Use `set W := LinearMap.range ι.hom.toLinearMap`. Set `S : ShortComplex (Rep.{u} k G)` to `ShortComplex.mk ι (Rep.mkQ Y W (range_repHom_le_comap ι)) (by`. Use extensionality with `x`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨x, rfl⟩)`. Establish `: IsDiscreteRep S.X₁` using `(inferInstance : IsDiscreteRep X)`.
+
+Establish `: IsDiscreteRep S.X₂` using `(inferInstance : IsDiscreteRep Y)`. Establish `: IsDiscreteRep S.X₃` using `isDiscreteRep_quotient Y W (range_repHom_le_comap ι)`. Establish `hS : S.ShortExact` using `{ exact := by`. Rewrite using `[← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} k G) (ModuleCat.{u} k)), ShortComplex.moduleCat_exact_iff]`. Introduce `y hy`.
+
+Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := W) y = 0 at hy`. Take `⟨x, hx⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hy`. Conclude with `⟨x, hx⟩`. Use `mono_f := (Rep.mono_iff_injective _).2 hι`. Use `epi_g := (Rep.epi_iff_surjective _).2 (Submodule.mkQ_surjective _) }`.
+
+Establish `h3 : ∀ i (y : cohomology S.X₃ i), ∃ m : ℕ, m.Coprime ℓ ∧ m • y = 0`. Use `exists_coprime_nsmul_cohomology_of_forall S.X₃ ℓ fun q => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective W q`. Take `⟨m, hm, x, hx⟩` from `hcok y`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := W) (m • y) = 0`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨x, hx⟩`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Conclude with `isIsoModCoprime_cohomologyMap_f hS ℓ h3 i (i + 1) rfl`.
+-/
 theorem isIsoModCoprime_cohomologyMap_of_injective (ι : X ⟶ Y) (hι : Function.Injective ι.hom) (ℓ : ℕ)
     (hcok : ∀ y : Y, ∃ m : ℕ, m.Coprime ℓ ∧ ∃ x, ι.hom x = m • y) {j : ℕ} (hj : 1 ≤ j) :
     IsIsoModCoprime ℓ (cohomologyMap ι j).hom.toAddMonoidHom := by
@@ -169,6 +213,11 @@ instance isDiscreteRep_coindInvQuotShortComplex_X₃ : IsDiscreteRep (coindInvQu
 
 omit [CompactSpace G] in
 
+/- English proof (translation)
+Rewrite using `[← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} k (G ⧸ N)) (ModuleCat.{u} k)), ShortComplex.moduleCat_exact_iff]`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := LinearMap.range (coindInvariants A N).f.hom.toLinearMap) y = 0 at hy`. Take `⟨x, hx⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hy`. Conclude with `⟨x, hx⟩`.
+
+Use `mono_f := (Rep.mono_iff_injective _).2 fun x y h => Subtype.ext (coindEmbedding_injective A (congrArg Subtype.val h))`. Use `epi_g := (Rep.epi_iff_surjective _).2 (Submodule.mkQ_surjective _)`.
+-/
 theorem coindInvQuotShortComplex_shortExact : (coindInvQuotShortComplex A N).ShortExact where
   exact := by
     rw [← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} k (G ⧸ N)) (ModuleCat.{u} k)),
@@ -191,6 +240,13 @@ noncomputable def coindInvQuotToInvariants :
 
 omit [CompactSpace G] in
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `q hq`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ q`. Establish `hx : (coindShortComplex A).g.hom x.1 = 0` using `congrArg Subtype.val hq`. Establish `hrk` using `((coindShortComplex_shortExact A).exact.map (forget₂ (Rep.{u} k G) (ModuleCat k))).moduleCat_range_eq_ker`.
+
+Establish `hx' : x.1 ∈ LinearMap.ker ((coindShortComplex A).map (forget₂ (Rep.{u} k G) (ModuleCat k))).g.hom` using `hx`. Rewrite `hx'` using `[← hrk]`. Take `⟨a, ha⟩` from `hx'`. Establish `ha' : (coindEmbedding A).hom a = x.1` using `ha`. Use `(Submodule.Quotient.mk_eq_zero _).2 ⟨⟨a, fun s => coindEmbedding_injective A ?_⟩, Subtype.ext ha'⟩` and prove the remaining obligations.
+
+Use `(Rep.hom_comm_apply (coindEmbedding A) (s : G) a).trans ?_` and prove the remaining obligations. Rewrite using `[ha']`. Conclude with `x.2 s`.
+-/
 theorem coindInvQuotToInvariants_injective : Function.Injective (coindInvQuotToInvariants A N).hom := by
   rw [injective_iff_map_eq_zero]
   intro q hq
@@ -208,6 +264,11 @@ theorem coindInvQuotToInvariants_injective : Function.Injective (coindInvQuotToI
   rw [ha']
   exact x.2 s
 
+/- English proof (translation)
+Establish `hS` using `shortExact_map_res N (coindShortComplex_shortExact A)`. Set `v : ((coindShortComplex A).map (Rep.resFunctor N.subtype)).X₃.ρ.invariants` to `c`. Take `⟨m, hm, hmv⟩` from `h1 ((δ hS 0 1 rfl).hom ((H0Iso _).inv.hom v))`. Establish `h0 : (δ hS 0 1 rfl).hom ((H0Iso _).inv.hom (m • v)) = 0`. Rewrite using `[map_nsmul, map_nsmul]`.
+
+Conclude with `hmv`. Take `⟨w, hw⟩` from `(δ_H0Iso_inv_eq_zero_iff hS (m • v)).1 h0`. Conclude with `⟨m, hm, Submodule.Quotient.mk w, Subtype.ext (congrArg Subtype.val hw)⟩`.
+-/
 theorem exists_coindInvQuotToInvariants_eq (ℓ : ℕ)
     (h1 : ∀ y : cohomology (Rep.res N.subtype A) 1, ∃ m : ℕ, m.Coprime ℓ ∧ m • y = 0)
     (c : (coindInvariants A N).X₃) :
@@ -232,6 +293,9 @@ noncomputable def coindInvQuotToSelf :
     ext x
     rfl
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun φ => φ.hom x) (δ_comp_cohomologyMapAlong (QuotientGroup.mk' N) (continuous_quotientGroup_mk' N) (coindInvQuotToSelf A N) (coindInvQuotShortComplex_shortExact A N) (coindShortComplex_shortExact A) i j hij)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at h`. Use `h.trans (congrArg (δ (coindShortComplex_shortExact A) i j hij).hom ?_)` and prove the remaining obligations. Conclude with `(cohomologyMapAlong_cohomologyMap (QuotientGroup.mk' N) (continuous_quotientGroup_mk' N) (coindInvQuotToInvariants A N) (Rep.ofHom ((coindCokernel A).ρ.quotientToInvariants_lift N)) x).symm`.
+-/
 theorem cohomologyInfl_δ_coindInvQuot (i j : ℕ) (hij : i + 1 = j)
     (x : cohomology (coindInvQuotShortComplex A N).X₃ i) :
     (cohomologyInfl A N j).hom ((δ (coindInvQuotShortComplex_shortExact A N) i j hij).hom x) =
@@ -247,6 +311,11 @@ theorem cohomologyInfl_δ_coindInvQuot (i j : ℕ) (hij : i + 1 = j)
 
 omit [CompactSpace G] in
 
+/- English proof (translation)
+Use `⟨fun x hx => ⟨1, Nat.coprime_one_left ℓ, ?_⟩, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Conclude with `cohomologyInfl_one_injective A N (hx.trans (map_zero _).symm)`. Take `⟨m, hm, hmy⟩` from `h1 ((cohomologyRes A N 1).hom y)`. Take `⟨x, hx⟩` from `exists_cohomologyInfl_one_eq A N (m • y) (by rw [map_nsmul]; exact hmy)`.
+
+Conclude with `⟨m, hm, x, hx⟩`.
+-/
 theorem isIsoModCoprime_cohomologyInfl_one (ℓ : ℕ)
     (h1 : ∀ y : cohomology (Rep.res N.subtype A) 1, ∃ m : ℕ, m.Coprime ℓ ∧ m • y = 0) :
     IsIsoModCoprime ℓ (cohomologyInfl A N 1).hom.toAddMonoidHom := by
@@ -257,6 +326,11 @@ theorem isIsoModCoprime_cohomologyInfl_one (ℓ : ℕ)
     obtain ⟨x, hx⟩ := exists_cohomologyInfl_one_eq A N (m • y) (by rw [map_nsmul]; exact hmy)
     exact ⟨m, hm, x, hx⟩
 
+/- English proof (translation)
+Establish `hT` using `coindInvQuotShortComplex_shortExact A N`. Establish `hX` using `coindShortComplex_shortExact A`. Establish `hδT` using `isIso_δ_of_isZero hT n (isZero_cohomology_quotientToInvariants_discreteCoind (k := k) A N n) (isZero_cohomology_quotientToInvariants_discreteCoind (k := k) A N (n + 1))`. Establish `hδX` using `isIso_δ_of_isZero hX n (isZero_cohomology_discreteCoind k G A n) (isZero_cohomology_discreteCoind k G A (n + 1))`. Establish `hι` using `isIsoModCoprime_cohomologyMap_of_injective (coindInvQuotToInvariants A N) (coindInvQuotToInvariants_injective A N) ℓ (exists_coindInvQuotToInvariants_eq A N ℓ h1) (j := n + 1) (by omega)`.
+
+Establish `hbij : Function.Bijective (δ hX (n + 1) (n + 1 + 1) rfl).hom` using `⟨(ModuleCat.mono_iff_injective _).1 inferInstance, (ModuleCat.epi_iff_surjective _).1 inferInstance⟩`. Establish `hsurj : Function.Surjective (δ hT (n + 1) (n + 1 + 1) rfl).hom` using `(ModuleCat.epi_iff_surjective _).1 inferInstance`. Establish `hcomp` using `(IsIsoModCoprime.of_bijective (ℓ := ℓ) (f := (δ hX (n + 1) (n + 1 + 1) rfl).hom.toAddMonoidHom) hbij).comp (hC.comp hι)`. Use `IsIsoModCoprime.of_comp_surjective (e := (δ hT (n + 1) (n + 1 + 1) rfl).hom.toAddMonoidHom) (hcomp.congr fun x => ?_) hsurj` and prove the remaining obligations. Conclude with `(cohomologyInfl_δ_coindInvQuot A N (n + 1) (n + 1 + 1) rfl x).symm`.
+-/
 theorem isIsoModCoprime_cohomologyInfl_succ (ℓ n : ℕ)
     (h1 : ∀ y : cohomology (Rep.res N.subtype A) 1, ∃ m : ℕ, m.Coprime ℓ ∧ m • y = 0)
     (hC : IsIsoModCoprime ℓ (cohomologyInfl (coindCokernel A) N (n + 1)).hom.toAddMonoidHom) :
@@ -283,6 +357,13 @@ theorem isIsoModCoprime_cohomologyInfl_succ (ℓ n : ℕ)
 
 variable [TotallyDisconnectedSpace G] {A N}
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ n, r = n + 1` from `⟨r - 1, by omega⟩`. Use `clear hr`. Proceed by induction on `n generalizing A with`. Consider the case `zero => exact isIsoModCoprime_cohomologyInfl_one A N ℓ (hA 1 le_rfl)`. Consider the case `succ n ih`.
+
+Use `isIsoModCoprime_cohomologyInfl_succ A N ℓ n (hA 1 le_rfl) (ih fun i hi y => ?_)` and prove the remaining obligations. Establish `hS` using `shortExact_map_res N (coindShortComplex_shortExact A)`. Take `⟨m, rfl⟩ : ∃ m, i = m + 1` from `⟨i - 1, by omega⟩`. Establish `hδ` using `isIso_δ_of_isZero hS m (isZero_cohomology_res_discreteCoind (k := k) A N hN m) (isZero_cohomology_res_discreteCoind (k := k) A N hN (m + 1))`. Establish `hinj : Function.Injective (δ hS (m + 1) (m + 1 + 1) rfl).hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`.
+
+Set `y' : cohomology ((coindShortComplex A).map (Rep.resFunctor N.subtype)).X₃ (m + 1)` to `y`. Take `⟨c, hc, hcy⟩` from `hA (m + 1 + 1) (by omega) ((δ hS (m + 1) (m + 1 + 1) rfl).hom y')`. Establish `hcy' : c • (δ hS (m + 1) (m + 1 + 1) rfl).hom y' = 0` using `hcy`. Establish `h0 : c • y' = 0` using `hinj ((map_nsmul _ c y').trans (hcy'.trans (map_zero _).symm))`. Conclude with `⟨c, hc, h0⟩`.
+-/
 theorem isIsoModCoprime_cohomologyInfl (hN : IsClosed (N : Set G)) (ℓ : ℕ) {r : ℕ} (hr : 1 ≤ r)
     (hA : ∀ i, 1 ≤ i → ∀ y : cohomology (Rep.res N.subtype A) i, ∃ m : ℕ, m.Coprime ℓ ∧ m • y = 0) :
     IsIsoModCoprime ℓ (cohomologyInfl A N r).hom.toAddMonoidHom := by

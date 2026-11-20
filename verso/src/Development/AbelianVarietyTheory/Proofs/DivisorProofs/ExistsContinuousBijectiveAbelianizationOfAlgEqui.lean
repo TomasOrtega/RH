@@ -7,6 +7,11 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.HeckeGal
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ContinuityFromFixedPoints.continuous_of_forall_exists_fix`. Consider the case `exact _root_.GlobalTheory.ContinuityFromFixedPoints.continuous_of_forall_exists_fix`. Consider the case `(apply _root_.GlobalTheory.ContinuityFromFixedPoints.continuous_of_forall_exists_fix <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ContinuityFromFixedPoints.continuous_of_forall_exists_fix <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ContinuityFromFixedPoints.continuous_of_forall_exists_fix <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ContinuityFromFixedPoints.continuous_of_forall_exists_fix ..)`.
+-/
 theorem continuous_galHom_of_fix {k F k' F' : Type*} [Field k] [Field F] [Algebra k F] [Field k'] [Field F']
     [Algebra k' F'] [Algebra.IsIntegral k F] (φ : (F ≃ₐ[k] F) →* (F' ≃ₐ[k'] F'))
     (h : ∀ y : F', ∃ x : F, ∀ σ : F ≃ₐ[k] F, σ x = x → φ σ y = y) : Continuous φ := by
@@ -18,6 +23,13 @@ theorem continuous_galHom_of_fix {k F k' F' : Type*} [Field k] [Field F] [Algebr
   | (intros; apply @_root_.GlobalTheory.ContinuityFromFixedPoints.continuous_of_forall_exists_fix <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.ContinuityFromFixedPoints.continuous_of_forall_exists_fix ..)
 
+/- English proof (translation)
+Establish `hc : (commutator G).map (φ : G →* H) = commutator H`. Rewrite using `[commutator_def, commutator_def, Subgroup.map_commutator, Subgroup.map_top_of_surjective _ φ.surjective]`. Establish `hmap : (Subgroup.topologicalClosure (commutator G)).map (φ : G →* H) = Subgroup.topologicalClosure (commutator H)`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_map, Subgroup.topologicalClosure_coe, Subgroup.topologicalClosure_coe, ← hc, Subgroup.coe_map]`.
+
+Conclude with `(hφ.homeomorph φ).image_closure _`. Set `ψ` to `QuotientGroup.congr _ _ φ hmap`. Establish `h1 : Continuous ψ` using `(QuotientGroup.isOpenQuotientMap_mk.isQuotientMap.continuous_iff).2 (QuotientGroup.continuous_mk.comp hφ.continuous)`. Establish `hs : Continuous φ.symm` using `(φ.toEquiv.toHomeomorphOfContinuousOpen hφ.continuous hφ.isOpenMap).symm.continuous`. Establish `h2 : Continuous ψ.symm` using `(QuotientGroup.isOpenQuotientMap_mk.isQuotientMap.continuous_iff).2 (QuotientGroup.continuous_mk.comp hs)`.
+
+Conclude with `⟨ψ, (Homeomorph.mk ψ.toEquiv h1 h2).isHomeomorph, fun g => rfl⟩`.
+-/
 theorem exists_topAbelianization_mulEquiv {G H : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (φ : G ≃* H) (hφ : IsHomeomorph φ) :
     ∃ ψ : TopologicalAbelianization G ≃* TopologicalAbelianization H, IsHomeomorph ψ ∧
@@ -40,6 +52,13 @@ theorem exists_topAbelianization_mulEquiv {G H : Type*} [Group G] [TopologicalSp
       (QuotientGroup.continuous_mk.comp hs)
   exact ⟨ψ, (Homeomorph.mk ψ.toEquiv h1 h2).isHomeomorph, fun g => rfl⟩
 
+/- English proof (translation)
+Introduce `K _ _ Ω _ _ e`. Use `haveI hint : Algebra.IsIntegral K Ω := ⟨fun x => (isIntegral_algEquiv e).1 (Algebra.IsIntegral.isIntegral (e x))⟩`. Set `φ : (Ω ≃ₐ[K] Ω) ≃* Field.absoluteGaloisGroup K` to `AlgEquiv.autCongr e`. Establish `h1 : Continuous φ.toMonoidHom` using `continuous_galHom_of_fix φ.toMonoidHom fun y => ⟨e.symm y, fun σ hσ => by show e (σ (e.symm y)) = y`. Rewrite using `[hσ, AlgEquiv.apply_symm_apply]⟩`.
+
+Establish `h2 : Continuous φ.symm.toMonoidHom` using `continuous_galHom_of_fix φ.symm.toMonoidHom fun y => ⟨e y, fun τ hτ => by show e.symm (τ (e y)) = y`. Rewrite using `[hτ, AlgEquiv.symm_apply_apply]⟩`. Establish `hφ : IsHomeomorph φ` using `(Homeomorph.mk φ.toEquiv h1 h2).isHomeomorph`. Take `⟨ψ, hψ, hψg⟩` from `exists_topAbelianization_mulEquiv φ hφ`. Use `⟨ψ.toMonoidHom, hψ.continuous, ψ.bijective, fun σ => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hψg σ`.
+-/
 theorem exists_abMap_of_algEquiv : ∀ {K : Type} [Field K] [NumberField K] {Ω : Type} [Field Ω] [Algebra K Ω]
     (e : Ω ≃ₐ[K] AlgebraicClosure K), ∃ φ : GlobalTheory.HeckeGal.Gab K Ω →* Field.absoluteGaloisGroupAbelianization K,
       Continuous φ ∧ Function.Bijective φ ∧

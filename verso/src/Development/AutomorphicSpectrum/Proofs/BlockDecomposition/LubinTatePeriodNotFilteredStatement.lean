@@ -8,6 +8,9 @@ open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LTPer.exact_degrees_of_product | exact GlobalTheory.CompanionTheory.LTPer.exact_degrees_of_product | (intros; apply GlobalTheory.CompanionTheory.LTPer.exact_degrees_of_product <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lubin_tate_period_not_filtered : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ),
     (∀ (g : GQ l) (hg : g ∈ GK K), (∀ u ∈ GroundTheory.PAdicHodge.unramifiedClosure l, g u = u) →
       Algebra.norm ℚ_[l] ((χ ⟨g, hg⟩ : (↥K.1)ˣ) : ↥K.1) =

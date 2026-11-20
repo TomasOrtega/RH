@@ -11,6 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ A _ h`. Use `haveI : IsProper A.hom := h.proper`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← terminal.comp_from A.hom]`. Use `infer_instance`.
+-/
 theorem abelianScheme_left_isSeparated_of_affine :
     ∀ {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → A.left.IsSeparated := by
   intro R _ A _ h

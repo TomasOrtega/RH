@@ -26,10 +26,16 @@ def conj (T : LocTied l P AI) (K : FinExt l) (j : ℕ) (s : ↥K.1 →ₐ[ℚ_[l
     BK K →+* P.R.BdR :=
   liftB (uj T j) ((algebraMap (Om l) P.R.BdR).comp (s : ↥K.1 →+* Om l)) h
 
+/- English proof (translation)
+The claim follows from `liftB_inK (uj T j) ((algebraMap (Om l) P.R.BdR).comp (s : ↥K.1 →+* Om l)) h c`.
+-/
 theorem conj_inK (T : LocTied l P AI) (K : FinExt l) (j : ℕ) (s : ↥K.1 →ₐ[ℚ_[l]] Om l) (h : Compat T K j s)
     (c : ↥K.1) : conj T K j s h (inK K c) = algebraMap (Om l) P.R.BdR (s c) :=
   liftB_inK (uj T j) ((algebraMap (Om l) P.R.BdR).comp (s : ↥K.1 →+* Om l)) h c
 
+/- English proof (translation)
+The claim follows from `liftB_inC (uj T j) ((algebraMap (Om l) P.R.BdR).comp (s : ↥K.1 →+* Om l)) h a`.
+-/
 theorem conj_inC (T : LocTied l P AI) (K : FinExt l) (j : ℕ) (s : ↥K.1 →ₐ[ℚ_[l]] Om l) (h : Compat T K j s)
     (a : Per.Acris l) : conj T K j s h (toB K (inC K a)) = uj T j a :=
   liftB_inC (uj T j) ((algebraMap (Om l) P.R.BdR).comp (s : ↥K.1 →+* Om l)) h a

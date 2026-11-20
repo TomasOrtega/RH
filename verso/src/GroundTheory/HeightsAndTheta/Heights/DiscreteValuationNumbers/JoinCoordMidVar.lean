@@ -14,6 +14,9 @@ def midVar (ι₂ : K₂ → Type) :
   | ⟨.inl k, i⟩ => ⟨.inl k, i⟩
   | ⟨.inr k, i⟩ => ⟨.inr (.inr k), i⟩
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨k | k, i⟩ := p <;> rfl`.
+-/
 theorem joinCoord_midVar {Ω : Type*} (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) {ι₂ : K₂ → Type}
     (w : (Σ k, ι₂ k) → Ω) (p : Σ k : K ⊕ K', Sum.elim ι ι' k) :
     joinCoord x (joinCoord w z) (midVar ι₂ p) = joinCoord x z p := by

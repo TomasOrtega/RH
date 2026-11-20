@@ -4,6 +4,45 @@ open Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hθJ : θᴴ * J = J * θ`. Use `hQ.isHermitian.eq` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, hJ]`. Then use the resulting hypothesis. Establish `hYX : Y₂ᴴ * J * X₂ = 1`. Use `congrArg conjTranspose hXY` as an intermediate fact.
+
+Simplify `this` using `[conjTranspose_mul, hJ, Matrix.mul_assoc]`. Establish `hinj : Function.Injective X₂.mulVec`. Introduce `a b hab`. Use `congrArg (fun v => (Y₂ᴴ * J).mulVec v) hab` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hYX]`.
+
+Establish `hP : (X₂ᴴ * (J * θ) * X₂).PosDef` using `hQ.conjTranspose_mul_mul_same hinj`. Take `⟨P, hPdef⟩ : ∃ P, P = X₂ᴴ * (J * θ) * X₂` from `⟨_, rfl⟩`. Rewrite `hP`, the goal using `[← hPdef]`. Establish `hdet : IsUnit P.det` using `isUnit_iff_ne_zero.mpr hP.det_pos.ne'`. Establish `hPPi : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hdet`.
+
+Establish `hPiP : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Establish `hPiH : (P⁻¹)ᴴ = P⁻¹` using `by rw [conjTranspose_nonsing_inv, hP.isHermitian.eq]`. Take `⟨Y', hY'⟩ : ∃ Y', Y' = θ * X₂ * P⁻¹` from `⟨_, rfl⟩`. Establish `hXY' : X₂ᴴ * J * Y' = 1`. Rewrite using `[← hPPi, hY', hPdef]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Establish `hY'Y' : Y'ᴴ * J * Y' = 0`. Establish `h1 : ∀ B : Matrix (Fin n) (Fin p) ℂ, θᴴ * (J * (θ * B)) = J * B`. Introduce `B`. Rewrite using `[← Matrix.mul_assoc, hθJ, Matrix.mul_assoc, ← Matrix.mul_assoc θ, hθ, Matrix.one_mul]`.
+
+Establish `h2 : X₂ᴴ * (J * (X₂ * P⁻¹)) = 0`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hXX, Matrix.zero_mul]`. Rewrite using `[hY']`. Simplify using `only [conjTranspose_mul, hPiH, Matrix.mul_assoc, h1, h2, Matrix.mul_zero]`. Take `⟨D, hD⟩ : ∃ D, D = Y' - Y₂` from `⟨_, rfl⟩`.
+
+Establish `hXD : X₂ᴴ * J * D = 0` using `by rw [hD, Matrix.mul_sub, hXY', hXY, sub_self]`. Establish `hDX : Dᴴ * J * X₂ = 0`. Use `congrArg conjTranspose hXD` as an intermediate fact. Simplify `this` using `[conjTranspose_mul, hJ, Matrix.mul_assoc]`. Establish `hkey : Dᴴ * J * D + Dᴴ * J * Y₂ + Y₂ᴴ * J * D = 0`.
+
+Rewrite using `[hD]`. Simplify using `only [conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc] at hY'Y' hYY ⊢`. Rewrite using `[hY'Y', hYY]`. Normalize the expressions using the abelian group laws. Establish `tXX : ∀ {m : Type} (B : Matrix (Fin p) m ℂ), X₂ᴴ * (J * (X₂ * B)) = 0`.
+
+Introduce `m B`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hXX, Matrix.zero_mul]`. Establish `tXD : ∀ {m : Type} (B : Matrix (Fin p) m ℂ), X₂ᴴ * (J * (D * B)) = 0`. Introduce `m B`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hXD, Matrix.zero_mul]`.
+
+Establish `tDX : ∀ {m : Type} (B : Matrix (Fin p) m ℂ), Dᴴ * (J * (X₂ * B)) = 0`. Introduce `m B`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hDX, Matrix.zero_mul]`. Establish `tXY : ∀ {m : Type} (B : Matrix (Fin p) m ℂ), X₂ᴴ * (J * (Y₂ * B)) = B`. Introduce `m B`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hXY, Matrix.one_mul]`. Establish `hXX' : X₂ᴴ * (J * X₂) = 0` using `by rw [← Matrix.mul_assoc, hXX]`. Establish `hXD' : X₂ᴴ * (J * D) = 0` using `by rw [← Matrix.mul_assoc, hXD]`. Establish `hDX' : Dᴴ * (J * X₂) = 0` using `by rw [← Matrix.mul_assoc, hDX]`. Establish `hXY'' : X₂ᴴ * (J * Y₂) = 1` using `by rw [← Matrix.mul_assoc, hXY]`.
+
+Take `⟨E, hE⟩ : ∃ E, E = Dᴴ * J * Y₂` from `⟨_, rfl⟩`. Establish `hE' : Dᴴ * (J * Y₂) = E` using `by rw [hE, Matrix.mul_assoc]`. Take `⟨u, hu⟩ : ∃ u : Matrix (Fin n) (Fin n) ℂ, u = 1 + (D * X₂ᴴ * J - X₂ * Dᴴ * J + X₂ * E * X₂ᴴ * J)` from `⟨_, rfl⟩`. Establish `huJ : uᴴ * J * u = J`. Establish `hexp : uᴴ * J * u = J + J * X₂ * (Dᴴ * J * D + Dᴴ * J * Y₂ + Y₂ᴴ * J * D) * X₂ᴴ * J`.
+
+Rewrite using `[hu, hE]`. Simplify using `only [conjTranspose_add, conjTranspose_sub, conjTranspose_mul, conjTranspose_one, conjTranspose_conjTranspose, hJ, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, Matrix.one_mul, Matrix.mul_one, tXX, tXD, tDX, hXX', hXD', hDX', Matrix.mul_zero, M …`. Normalize the expressions using the abelian group laws. Rewrite using `[hexp, hkey]`. Simplify using the standard rewrite rules.
+
+Establish `huX : u * X₂ = X₂`. Rewrite using `[hu]`. Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.mul_assoc, Matrix.one_mul, hXX', hDX', Matrix.mul_zero, add_zero, sub_zero]`. Establish `huY : u * Y₂ = Y'`. Rewrite using `[hu]`.
+
+Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.mul_assoc, Matrix.one_mul, hXY'', Matrix.mul_one, hE']`. Rewrite using `[hD]`. Normalize the expressions using the abelian group laws. Establish `hdetJ : J.det ≠ 0`. Introduce `h0`.
+
+Use `hQ.det_pos` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul]`. Conclude with `lt_irrefl _ this`. Establish `hudet : IsUnit u.det`. Use `isUnit_iff_ne_zero.mpr fun h0 => hdetJ ?_` and prove the remaining obligations.
+
+Use `congrArg Matrix.det huJ` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Conclude with `this.symm`. Establish `huU : IsUnit u` using `(Matrix.isUnit_iff_isUnit_det u).mpr hudet`. Use `⟨huU.unit, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using huJ`. Simplify using `using huX`. Introduce `v hv`. Establish `hv' : X₂ᴴ *ᵥ (J *ᵥ v) = 0` using `by rw [Matrix.mulVec_mulVec]; exact hv`. Use `⟨-(Dᴴ *ᵥ (J *ᵥ v)), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [IsUnit.unit_spec, hu, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hv', Matrix.mulVec_zero, Matrix.mulVec_neg]`. Normalize the expressions using the abelian group laws. Simplify using `only [IsUnit.unit_spec, huY, hY', Matrix.mul_assoc, hPiP, Matrix.mul_one]`.
+-/
 theorem radical_elt_moving_dual_to_majorant (n p : ℕ) (J θ : Matrix (Fin n) (Fin n) ℂ)
     (hJ : J.conjTranspose = J) (hθ : θ * θ = 1) (hQ : (J * θ).PosDef)
     (X₂ Y₂ : Matrix (Fin n) (Fin p) ℂ) (hXX : X₂.conjTranspose * J * X₂ = 0)

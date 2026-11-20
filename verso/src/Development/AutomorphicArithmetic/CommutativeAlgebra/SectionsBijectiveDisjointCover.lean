@@ -5,6 +5,19 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecSigmaBijectiveSt
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTheory.E.t_E6Cut UpperTheory.Et
 
+/- English proof (translation)
+Introduce `R _ G Y ι V j _ hd hc`. Establish `hop : IsOpenImmersion (Sigma.desc j)` using `isOpenImmersion_sigmaDesc V j (fun a b hab => hd a b hab)`. Establish `htop : (Sigma.desc j).opensRange = ⊤`. Use `top_unique fun y _ => ?_` and prove the remaining obligations. Take `⟨a, z, rfl⟩` from `hc y`.
+
+Use `⟨(Sigma.ι V a) z, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Sigma.ι_desc]`. Establish `hiso : IsIso (Sigma.desc j)` using `isIso_of_isOpenImmersion_of_opensRange_eq_top _ htop`. Establish `hb : Function.Bijective (fun x : Sec G Y => Sec.res (Sigma.desc j) x)`. Establish `h1 : ∀ x : Sec G Y, Sec.res (inv (Sigma.desc j)) (Sec.res (Sigma.desc j) x) = x`.
+
+Introduce `x`. Use `congrArg (fun f => (G.obj.map f.op).hom x) (IsIso.inv_hom_id (Sigma.desc j))` as an intermediate fact. Simplify `this` using `[Sec.res]`. Establish `h2 : ∀ x : Sec G (∐ V), Sec.res (Sigma.desc j) (Sec.res (inv (Sigma.desc j)) x) = x`. Introduce `x`.
+
+Use `congrArg (fun f => (G.obj.map f.op).hom x) (IsIso.hom_inv_id (Sigma.desc j))` as an intermediate fact. Simplify `this` using `[Sec.res]`. Conclude with `Function.bijective_iff_has_inverse.2 ⟨_, h1, h2⟩`. Establish `heq : (fun (x : Sec G Y) (a : ι) => Sec.res (j a) x) = (fun (b : Sec G (∐ V)) (a : ι) => Sec.res (Sigma.ι V a) b) ∘ (fun x : Sec G Y => Sec.res (Sigma.desc j) x)`. Use function extensionality and compare the values at `x a`.
+
+Establish `e : G.obj.map (j a).op = G.obj.map (Sigma.desc j).op ≫ G.obj.map (Sigma.ι V a).op`. Rewrite using `[← Functor.map_comp, ← op_comp, Sigma.ι_desc]`. Use `show (G.obj.map (j a).op).hom x = _`. Rewrite using `[e]`. Both sides reduce to the same expression.
+
+Rewrite using `[heq]`. Conclude with `(GlobalTheory.T.sec_sigma_res_bijective R G V).comp hb`.
+-/
 theorem UpperTheory.sections_bijective_disjoint_cover :
     ∀ (R : Type) [CommRing R] (G : Shv R) {Y : Scheme.{0}} {ι : Type} (V : ι → Scheme.{0}) (j : ∀ a, V a ⟶ Y) [∀ a, IsOpenImmersion (j a)],
       (∀ a b, a ≠ b → Disjoint (Set.range (j a)) (Set.range (j b))) → (∀ y : Y, ∃ a, y ∈ Set.range (j a)) → Function.Bijective fun (x : Sec G Y) (a : ι) => Sec.res (j a) x := by

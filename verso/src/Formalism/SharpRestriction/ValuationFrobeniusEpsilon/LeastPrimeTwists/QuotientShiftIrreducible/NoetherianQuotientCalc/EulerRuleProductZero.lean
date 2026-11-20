@@ -14,6 +14,17 @@ open IsLocalRing Filter
 
 open E7 in
 
+/- English proof (translation)
+Establish `hs : 0 ≤ d ∧ s ∈ X.𝒜 d` using `hV (d, s) List.mem_cons_self`. Establish `hs' : 0 ≤ d' ∧ s' ∈ X.𝒜 d'` using `hV (d', s') (List.mem_cons_of_mem _ List.mem_cons_self)`. Establish `hVt : Valid X.𝒜 ts` using `fun p hp => hV p (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ hp))`. Establish `hss : s * s' ∈ X.𝒜 (d + d')` using `SetLike.mul_mem_graded hs.2 hs'.2`. Establish `hFd` using `(hGr k X F hF).2.1 d`.
+
+Establish `hP14` using `(hGr k X _ hFd).2.2 d' s' hs'.2`. Establish `hP25` using `(hGr k X F hF).2.2 (d + d') (s * s') hss`. Establish `hP36` using `(hGr k X F hF).2.2 d s hs.2`. Establish `g2` using `product_kernel_to_kernel_isGraded X.𝒜 F s s' d d' hF hs'.2`. Establish `g3` using `kernel_to_shift_quotient_isGraded F s s' d`.
+
+Establish `g4` using `quotient_to_product_quotient_isGraded X.𝒜 F s s' d hF hs.2`. Establish `hI2` using `((hGr k X _ hP36.2).1 _ (g2.range_hom hP25.2.internal)).1`. Establish `hI3` using `((hGr k X _ hP14.1).1 _ (g3.range_hom hP36.2.internal)).1`. Establish `hI4` using `((hGr k X _ hP25.1).1 _ (g4.range_hom hP14.1.internal)).1`. Establish `a2 : admitted X.𝒜 ts (F.ann (s * s') (d + d')).Ann` using `admissible_tail_of_cons_mem_ideal X.𝒜 hA (ann_le_sub F _) (mul_mem_annihilator_product_kernel F s s' d d')`.
+
+Establish `a3 : admitted X.𝒜 ts (F.ann s d).Ann` using `admissible_tail_of_cons_mem_ideal X.𝒜 hA (ann_le_sub F _) (mul_mem_annihilator_kernel F s s' d)`. Establish `a4 : admitted X.𝒜 ts ((F.shift d).quot s').Ann` using `admissible_tail_of_cons_mem_ideal X.𝒜 hA (ann_le_quo (F.shift d) _) (mul_mem_annihilator_shift_quotient F s s' d)`. Establish `a5 : admitted X.𝒜 ts (F.quot (s * s')).Ann` using `admissible_tail_of_cons_mem_ideal X.𝒜 hA (ann_le_quo F _) (mul_mem_annihilator_product_quotient F s s')`. Establish `e2` using `hE1 k X ts _ _ _ hVt hP14.2 hP25.2 hI2 (sesOfExact (phi1 F s s' d d') (phi2 F s s' d d') (kernel_inclusion_product_injective F s s' d d') (kernel_inclusion_product_exact F s s' d d') (kernel_inclusion_grading_comap F s s' d d') g2 hP25.2.internal hP36.2.internal) a2`. Establish `e3` using `hE1 k X ts _ _ _ hVt hI2 hP36.2 hI3 (sesOfKer _ (phi3 F s s' d) (ker3 F s s' d d') g3 hP36.2.internal hP14.1.internal) a3`.
+
+Establish `e4` using `hE1 k X ts _ _ _ hVt hI3 hP14.1 hI4 (sesOfKer _ (phi4 F s s' d) (ker4 F s s' d) g4 hP14.1.internal hP25.1.internal) a4`. Establish `e5` using `hE1 k X ts _ _ _ hVt hI4 hP25.1 hP36.1 (ses5 F s s' d) a5`. Use `filter_upwards [e2, e3, e4, e5] with m h2 h3 h4 h5`. Use `show chi ts (F.quot (s * s')) m - chi ts (F.ann (s * s') (d + d')) m = (chi ts (F.quot s) m - chi ts (F.ann s d) m) + (chi ts ((F.shift d).quot s') m - chi ts ((F.shift d).ann s' d') m)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem euler_char_product_eventually_add (hE1 : EulerAdditivityExactSequence) (hGr : RuleGr) {k : ℕ} (X : HidaSetting k)
     (ts : List (Deg k × X.R)) (F : X.Mod) (d d' : Deg k) (s s' : X.R)
     (hV : Valid X.𝒜 ((d, s) :: (d', s') :: ts)) (hF : F.IsGr X.𝒜)
@@ -57,6 +68,11 @@ theorem euler_char_product_eventually_add (hE1 : EulerAdditivityExactSequence) (
       (chi ts ((F.shift d).quot s') m - chi ts ((F.shift d).ann s' d') m)
   linarith
 
+/- English proof (translation)
+Introduce `k X ts F d s s' hV hF hA`. Establish `hA' : admitted X.𝒜 ((0 + d, s * s') :: ts) F.Ann` using `by rwa [zero_add]`. Establish `h` using `euler_char_product_eventually_add (euler_additivity_of_rules ruleGr ruleFin ruleIso) ruleGr X ts F 0 d s s' hV hF hA'`. Rewrite `h` using `[zero_add]`. Use `filter_upwards [h] with m hm`.
+
+Rewrite using `[hm, chi_shift, sub_zero]`.
+-/
 theorem euler_rule_product_zero : EulerAdditivityDegreeZero := by
   intro k X ts F d s s' hV hF hA
   have hA' : admitted X.𝒜 ((0 + d, s * s') :: ts) F.Ann := by rwa [zero_add]

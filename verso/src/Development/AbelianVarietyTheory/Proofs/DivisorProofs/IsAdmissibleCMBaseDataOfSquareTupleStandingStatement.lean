@@ -18,6 +18,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ha
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FunObj.base_isGood_of_standing | exact GlobalTheory.FunObj.base_isGood_of_standing | (intros; apply GlobalTheory.FunObj.base_isGood_of_standing <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isAdmissibleCMBaseData_of_squareTupleStanding : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (W : G.Weil) (t : T),
     SquareStanding G t → ∀ B : Base D.host.F D.host.E, B.ψ = W.ψ →
       (∀ v ∈ B.P, ∃ w ∈ locPl G t, w.under (𝓞 D.host.F) = v) → B.IsGood D.sp.cm.sig := by

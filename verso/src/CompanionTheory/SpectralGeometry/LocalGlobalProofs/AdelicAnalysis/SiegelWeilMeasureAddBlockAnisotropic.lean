@@ -16,6 +16,9 @@ namespace GlobalTheory.CompanionTheory.SW.SwEmpty
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Substitute `hS` using the available equality. Establish `: IsEmpty ((∅ : Set (Fin n → Fin M → E)))` using `by simp`. Unfold `thetaMeas`. Rewrite using `[Measure.sum_of_isEmpty, smul_zero]`.
+-/
 theorem thetaMeas_of_empty (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)) (S : Set (Fin n → Fin M → E))
     (hS : S = ∅) : thetaMeas σ J μ 𝓕 S = 0 := by
@@ -24,6 +27,17 @@ theorem thetaMeas_of_empty (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) 
   unfold thetaMeas
   rw [Measure.sum_of_isEmpty, smul_zero]
 
+/- English proof (translation)
+Establish `hLoc'` using `hLoc`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `hLoc'`. Establish `hH` using `GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM R d b lam hlam`. Establish `hempty : (gramR R σ J ⁻¹' {(hermOf R σ (blockOne (algebraMap F E t) T) hT').1} ∩ {X | IsUnit (gramR R σ J X).det}) = ∅`. Use extensionality with `Y`.
+
+Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hY _`. Establish `h00 : hR R σ J (Y 0) (Y 0) = inclR R (algebraMap F E t)`. Use `congrFun (congrFun hY 0) 0` as an intermediate fact. Simplify `this` using `[gramR, hermOf, blockOne]`.
+
+Set `x : Fin 1 → Fin M → R ⊗[F] E` to `fun _ => Y 0`. Establish `hx : gramR R σ J x = (hermOf R σ T1 hT1).1`. Use function extensionality and compare the values at `a c`. Substitute `hT1e` using the available equality. Conclude with `h00`.
+
+Establish `hu : IsUnit (gramR R σ J x).det`. Rewrite using `[hx]`. Substitute `hT1e` using the available equality. Simplify using `only [hermOf, Matrix.det_fin_one, Matrix.map_apply]`. Conclude with `(IsUnit.mk0 _ ((map_ne_zero _).2 ht)).map (inclR R)`.
+
+Use `(GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM M J hJ R hLoc 1 _ _ m1 (hH.2.1 1 M) (hH.2.2 1) hm1 (hermOf R σ T1 hT1)).2 Set.univ isOpen_univ ⟨x, trivial, hx, hu⟩` as an intermediate fact. Conclude with `this (by rw [h0]; rfl)`. Establish `h1` using `hm.1 (hermOf R σ (blockOne (algebraMap F E t) T) hT')`. Rewrite `h1` using `[hempty, Set.compl_empty]`. Conclude with `Measure.measure_univ_eq_zero.1 h1`.
+-/
 theorem fibre_zero_of_one (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (hLoc : IsLocR R)
@@ -71,6 +85,25 @@ end GlobalTheory.CompanionTheory.SW.SwEmpty
 
 namespace GlobalTheory.CompanionTheory.SW
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ t ht n hn T hT hdet hT' hne`. Introduce `d b laminf lam hinf hv μ 𝓕 hμ h𝓕 minf m hminf hm`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), BorelSpace (Fv F v) := fun _ => ⟨rfl⟩`. Establish `hLinf : IsLocR (Ainf F)` using `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1`.
+
+Establish `hLv : ∀ v : HeightOneSpectrum (𝓞 F), IsLocR (Fv F v)` using `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F`. Establish `haarOf : ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ lam' : Measure R, lam'.IsAddHaarMeasure → (∀ n' M' : ℕ, (coordW R b lam' n' M').IsAddHaarMeasure) ∧ ∀ n' : ℕ, (coordHerm R σ b lam' n').IsAddHaarMeasure`. Introduce `R _ _ _ _ _ hLoc lam' hl`. Take `⟨_, _, _, _, -⟩` from `hLoc`. Conclude with `(GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM R d b lam' hl).2`.
+
+Set `T1 : Matrix (Fin 1) (Fin 1) E` to `fun _ _ => algebraMap F E t`. Establish `hT1 : ∀ a b, σ (T1 b a) = T1 a b` using `fun _ _ => σ.commutes t`. Establish `htE : algebraMap F E t ≠ 0` using `(map_ne_zero _).2 ht`. Establish `hdet1 : T1.det ≠ 0`. Rewrite using `[Matrix.det_fin_one]`.
+
+Conclude with `htE`. Establish `hsw` using `GlobalTheory.T.siegel_weil_measure_rank_one F E σ hCM M J hJ (by omega) T1 hT1 hdet1`. Take `⟨minf1, hminf1⟩` from `GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ (Ainf F) hLinf 1 _ _ ((haarOf _ hLinf laminf hinf.1).1 1 M) ((haarOf _ hLinf laminf hinf.1).2 1)`. Establish `hex : ∀ v : HeightOneSpectrum (𝓞 F), ∃ m' : HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin M → Fv F v ⊗[F] E), IsGramFib (Fv F v) σ J 1 (coordW (Fv F v) b (lam v) 1 M) (coordHerm (Fv F v) σ b (lam v) 1) m'` using `fun v => GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ (Fv F v) (hLv v) 1 _ _ ((haarOf _ (hLv v) (lam v) (hv v).1).1 1 M) ((haarOf _ (hLv v) (lam v) (hv v).1).2 1)`. Use `choose m1 hm1 using hex`.
+
+Establish `hEul` using `hsw d b laminf lam hinf hv μ 𝓕 hμ h𝓕 minf1 m1 hminf1 hm1`. Establish `hS1 : {X : Fin 1 → Fin M → E | gramE σ J X = T1} = ∅`. Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce `hX`.
+
+Conclude with `hne (X 0) (congrFun (congrFun hX 0) 0)`. Establish `hS : {X : Fin (n + 1) → Fin M → E | gramE σ J X = blockOne (algebraMap F E t) T} = ∅`. Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce `hX`.
+
+Apply `hne (X 0)` to reduce the goal to its premises. Simplify `congrFun (congrFun hX 0) 0` using `[gramE, blockOne]`. Establish `hz` using `((GlobalTheory.T.euler_product_measure_zero F E σ hCM d b 1 M _ 1 _ _).1 hEul (SwEmpty.thetaMeas_of_empty σ J μ 𝓕 _ hS1))`. Establish `hvan : minf (hermOf (Ainf F) σ (blockOne (algebraMap F E t) T) hT') = 0 ∨ ∃ v, m v (hermOf (Fv F v) σ (blockOne (algebraMap F E t) T) hT') = 0`. Break down `hz with h | h | ⟨v, h⟩` into its components or cases.
+
+Conclude with `absurd h one_ne_zero`. Conclude with `Or.inl (SwEmpty.fibre_zero_of_one σ hCM J hJ (Ainf F) hLinf b laminf hinf.1 t ht T hT' T1 rfl hT1 minf1 minf hminf1 hminf h)`. Conclude with `Or.inr ⟨v, SwEmpty.fibre_zero_of_one σ hCM J hJ (Fv F v) (hLv v) b (lam v) (hv v).1 t ht T hT' T1 rfl hT1 (m1 v) (m v) (hm1 v) (hm v) h⟩`. Establish `hdetB : (blockOne (algebraMap F E t) T).det ≠ 0`. Rewrite using `[((GlobalTheory.CompanionTheory.SW.BlockAlg.block_alg F E σ hCM n T t).1)]`.
+
+Conclude with `mul_ne_zero htE hdet`. Take `⟨hfin, hsum⟩` from `GlobalTheory.T.euler_product_local_densities_converges F E σ hCM M J hJ (n + 1) (Or.inr (by omega)) (blockOne (algebraMap F E t) T) hT' hdetB d b lam (fun v => hv v) m hm`. Rewrite using `[SwEmpty.thetaMeas_of_empty σ J μ 𝓕 _ hS]`. Conclude with `(GlobalTheory.T.euler_product_measure_zero F E σ hCM d b (n + 1) M 0 1 _ _).2.2 hfin hsum hvan`.
+-/
 theorem swMeas_of_not_represented : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ t : F, t ≠ 0 → ∀ n : ℕ, n + 3 ≤ M → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (hT' : ∀ a b, σ (blockOne (algebraMap F E t) T b a) = blockOne (algebraMap F E t) T a b), (∀ x : Fin M → E, hE σ J x x ≠ algebraMap F E t) → SWMeas σ J (blockOne (algebraMap F E t) T) hT' := by
   intro F E _ _ _ _ _ σ hCM M J hJ t ht n hn T hT hdet hT' hne
   intro d b laminf lam hinf hv μ 𝓕 hμ h𝓕 minf m hminf hm

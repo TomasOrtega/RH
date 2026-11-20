@@ -2,6 +2,19 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.Transpos
 
 namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 
+/- English proof (translation)
+Introduce `X κ hherm hpos hmin`. Distinguish the cases in `h : ∃ x0, κ x0 x0 ≠ 0`. Take `⟨x0, hx0⟩` from `h`. Establish `him : (κ x0 x0).im = 0`. Establish `h1` using `congrArg Complex.im (hherm x0 x0)`.
+
+Simplify using `[Complex.star_def] at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk0 : κ x0 x0 = (((κ x0 x0).re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [him])`. Establish `hr : 0 < (κ x0 x0).re`. Break down `(hpos x0).lt_or_eq with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `(hx0 (by rw [hk0, ← h]; simp)).elim`. Generalize the expression as in `(κ x0 x0).re = r at hk0 hr`. Use `⟨fun x => κ x x0 / (Real.sqrt r : ℂ), fun x y => ?_⟩` and prove the remaining obligations. Use `show κ x y = κ x x0 / (Real.sqrt r : ℂ) * star (κ y x0 / (Real.sqrt r : ℂ))`.
+
+Establish `hs : (Real.sqrt r : ℂ) * (Real.sqrt r : ℂ) = (r : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hr.le]`. Establish `hst : star (κ y x0 / (Real.sqrt r : ℂ)) = κ x0 y / (Real.sqrt r : ℂ)`. Rewrite using `[star_div₀, ← hherm x0 y]`. Use `congr 1`.
+
+Conclude with `Complex.conj_ofReal _`. Rewrite using `[hst, div_mul_div_comm, hs, ← hk0, hmin x x0 x0 y, mul_div_assoc, div_self hx0, mul_one]`. Use `push_neg at h`. Use `⟨fun _ => 0, fun x y => ?_⟩` and prove the remaining obligations. Simplify using `only [zero_mul]`.
+
+Establish `h1` using `hmin x y y x`. Rewrite `h1` using `[h x, zero_mul, hherm y x]`. Establish `e : κ x y * star (κ x y) = (Complex.normSq (κ x y) : ℂ)` using `Complex.mul_conj _`. Rewrite `h1` using `[e]`. Conclude with `Complex.normSq_eq_zero.mp (by exact_mod_cast h1)`.
+-/
 theorem rankOneMinors : RankOneMinors := by
   intro X κ hherm hpos hmin
   by_cases h : ∃ x0, κ x0 x0 ≠ 0

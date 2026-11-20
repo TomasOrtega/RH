@@ -9,6 +9,13 @@ open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil Upp
 section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨u, hu, t, l, hl, ht, hl', rfl⟩` from `GlAx.udl _ (Ideal.pow_le_self (Nat.succ_ne_zero _)) y hy`. Rewrite using `[map_mul, map_mul]`. Use `mul_mem (mul_mem (V.N_le ⟨?_, u, rfl⟩) (V.TH_le (V.Tc_le_TH ⟨?_, _, ht, rfl⟩))) (V.Nm_le ⟨?_, l, hl', rfl⟩)` and prove the remaining obligations. Establish `h` using `(mem_unipB _).1 hu`.
+
+Conclude with `(mem_unipB _).2 ⟨fun i j hij => congrArg Subtype.val (h.1 i j hij), fun i => congrArg Subtype.val (h.2 i)⟩`. Use `⟨fun i => Units.map (algebraMap 𝒪[k] k).toMonoidHom (t i), fun i => (Valuation.integer.integers (valuation k)).one_of_isUnit (t i).isUnit, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `show _ = algebraMap 𝒪[k] k ((diagT _ _ t : Matrix _ _ _) i j)`. Rewrite using `[val_diagT, val_diagT, diagonal_apply, diagonal_apply]`.
+
+Use `split_ifs`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish `h` using `GlAx.mem_low.1 hl`. Conclude with `GlAx.mem_low.2 ⟨fun i j hij => congrArg Subtype.val (h.1 i j hij), fun i => congrArg Subtype.val (h.2 i)⟩`.
+-/
 theorem UpperTheory.V.Z.Sym.Sig.kc_le (V : Lev k) : Kc k n (V.c + 1) ≤ V.J n := by
   rintro _ ⟨y, hy, rfl⟩
   obtain ⟨u, hu, t, l, hl, ht, hl', rfl⟩ := GlAx.udl _ (Ideal.pow_le_self (Nat.succ_ne_zero _)) y hy
@@ -27,6 +34,9 @@ theorem UpperTheory.V.Z.Sym.Sig.kc_le (V : Lev k) : Kc k n (V.c + 1) ≤ V.J n :
   · have h := GlAx.mem_low.1 hl
     exact GlAx.mem_low.2 ⟨fun i j hij => congrArg Subtype.val (h.1 i j hij), fun i => congrArg Subtype.val (h.2 i)⟩
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun r _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_mul' (GlAx.bd_zero.1 (GlAx.mem_KO.1 ha).1 i r) (hM r j)).trans_eq (one_mul _)`.
+-/
 private theorem bd_mul {c : ℤ} {a : GL (Fin n) k} (ha : a ∈ KO k (Fin n)) (M : Matrix (Fin n) (Fin n) k)
     (hM : ∀ i j, valuation k (M i j) ≤ uniformizer k ^ c) (i j : Fin n) : valuation k ((a.val * M) i j) ≤ uniformizer k ^ c := by
   rw [Matrix.mul_apply]
@@ -36,6 +46,37 @@ private theorem bd_mul {c : ℤ} {a : GL (Fin n) k} (ha : a ∈ KO k (Fin n)) (M
 
 end
 
+/- English proof (translation)
+Introduce `k _ _ _ _ V n g`. Rewrite using `[GlAx.unif_spec, ← zpow_natCast]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨GlAx.bd_zero.1 (GlAx.mem_KO.1 (V.J_le_KO hg)).1, ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha, _, ⟨s, hs, rfl⟩, b, hb, rfl⟩` from `(factJ k V n).1 g hg`. Establish `h0 : a * diagT k (Fin n) s ∈ KO k (Fin n)` using `mul_mem ha.2 (V.J_le_KO (V.dg_mem fun i => hs i trivial))`. Establish `h1` using `bd_mul h0 _ (GlAx.mem_Kc.1 hb.2).1`. Establish `h2` using `(mem_unipB _).1 ha.1`. Establish `e : ∀ i j, ((a * diagT k (Fin n) s).val * (b.val - 1)) i j = (a * diagT k (Fin n) s * b).val i j - a.val i j * s j` using `fun i j => by`.
+
+Rewrite using `[Matrix.mul_sub, Matrix.mul_one, Matrix.sub_apply, ← Units.val_mul, Units.val_mul a, val_diagT, mul_diagonal]`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `h1 i j` as an intermediate fact. Rewrite `this` using `[e, h2.1 i j hij, zero_mul, sub_zero]`. Then use the resulting hypothesis. Establish `h3` using `h1 i i`.
+
+Rewrite `h3` using `[e, h2.2, one_mul]`. Establish `h4 : valuation k (s i : k) = 1` using `V.H_le (hs i trivial)`. Generalize the expression as in `(a * diagT k (Fin n) s * b).val i i = x at h3`. Establish `h5 : valuation k (x / s i - 1) ≤ uniformizer k ^ ((V.c + 1 : ℕ) : ℤ)`. Rewrite using `[div_sub_one (s i).ne_zero, map_div₀, h4, div_one]`.
+
+Conclude with `h3`. Establish `h6 : valuation k (x / s i) = 1`. Use `Valuation.map_one_add_of_lt _ (h5.trans_lt (zpow_lt_one₀ GlAx.unif_pos uniformizer_lt_one (by omega)))` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Conclude with `⟨Units.mk0 (x / s i) (fun h => by simp [h] at h6) * s i, mul_mem (V.le (mem_Uc.2 ⟨h6, h5⟩)) (hs i trivial), by simp⟩`.
+
+Introduce and unpack `⟨h1, h2, h3⟩ choose s hs es using h3`. Establish `h4 : ∀ i, valuation k (s i : k) = 1` using `fun i => V.H_le (hs i)`. Set `U : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => if i < j then ⟨g.val i j / s j, by show valuation k _ ≤ 1`. Rewrite using `[map_div₀, h4, div_one]`. Conclude with `h1 i j⟩ else if i = j then 1 else 0`.
+
+Establish `hU : U.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j h => by`. Establish `h' : j < i` using `h`. Simplify using `[U, h'.ne', h'.le.not_gt])]`. Simplify using `[U]`.
+
+Set `u` to `GeneralLinearGroup.map (algebraMap 𝒪[k] k) (GeneralLinearGroup.mk'' U (by rw [hU]; exact isUnit_one))`. Establish `eu : ∀ i j, u.val i j = if i < j then g.val i j / s j else if i = j then 1 else 0` using `fun i j => by show ((U i j : 𝒪[k]) : k) = _`. Simplify using `only [U]`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `hu : u ∈ (glIwa k n).N` using `⟨(mem_unipB _).2 ⟨fun i j h => by simp [eu, h.ne', h.le.not_gt], fun i => by simp [eu]⟩, _, rfl⟩`.
+
+Establish `h5 : u * dg s ∈ V.J n` using `mul_mem (V.N_le hu) (V.dg_mem hs)`. Establish `h6 : ∀ i j, valuation k ((g.val - (u * dg s).val) i j) ≤ uniformizer k ^ ((V.c + 1 : ℕ) : ℤ)` using `fun i j => by`. Rewrite using `[Matrix.sub_apply, Units.val_mul, dg, val_diagT, mul_diagonal, eu]`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Simplify using `[h]`.
+
+Simplify using `[es]`. Simplify `h2 i j h` using `[h.ne', h.le.not_gt]`. Establish `h7 : GlAx.Bd ((V.c + 1 : ℕ) : ℤ) ((u * dg s)⁻¹ * g)` using `fun i j => by`. Use `bd_mul (V.J_le_KO (inv_mem h5)) _ h6 i j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_sub, ← Units.val_mul, ← Units.val_mul, inv_mul_cancel]`. Then use the resulting hypothesis.
+
+Establish `h8 : (u * dg s)⁻¹ * g ∈ KO k (Fin n)`. Generalize the expression as in `(u * dg s)⁻¹ * g = x at h7`. Establish `h9` using `GlAx.bd_zero.1 (h7.mono (by omega))`. Set `X : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => ⟨x.val i j, h9 i j⟩`. Establish `hX : X.map (IsLocalRing.residue 𝒪[k]) = 1`.
+
+Use extensionality with `i j`. Establish `: X i j - (1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j ∈ IsLocalRing.maximalIdeal 𝒪[k]`. Rewrite using `[← pow_one (IsLocalRing.maximalIdeal 𝒪[k]), GlAx.mem_pow]`. Use `h7.mono (show ((1 : ℕ) : ℤ) ≤ _ by omega) i j` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [Matrix.sub_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite `this` using `[← IsLocalRing.residue_eq_zero_iff, map_sub, sub_eq_zero]`. Rewrite using `[map_apply, this]`. Simplify using `only [Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hd : IsUnit X.det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det, RingHom.mapMatrix_apply, hX, det_one]`. Conclude with `one_ne_zero`. Conclude with `⟨GeneralLinearGroup.mk'' X hd, Units.ext rfl⟩`.
+
+Use `mul_mem h5 (kc_le V (mem_Kc_of h8 h7))` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.V.Z.Sym.Sig.memJ : UpperTheory.V.Z.Sym.Sig.MemJ := by
   intro k _ _ _ _ V n g
   rw [GlAx.unif_spec, ← zpow_natCast]

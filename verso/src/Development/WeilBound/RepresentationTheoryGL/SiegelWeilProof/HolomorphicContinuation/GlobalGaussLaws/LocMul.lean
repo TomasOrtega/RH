@@ -12,6 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace PositivityTheory.Rg.Sw.Glob
 
+/- English proof (translation)
+Introduce `hTI D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL y y' f hf`. Use `hTI D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx _ _ fun Ψ hΨ => ?_` and prove the remaining obligations. Establish `hf'` using `hL.1 y' f hf`. Rewrite using `[← hL.2 (y * y') Ψ hΨ f hf, ← hL.2 y Ψ hΨ _ hf', map_mul, map_mul, Module.End.mul_apply]`. Use `congr 2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hL.2 y' Ψ hΨ f hf`.
+-/
 theorem locMul_of : TensInj → LocMul := by
   intro hTI D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL y y' f hf
   refine hTI D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx _ _ fun Ψ hΨ => ?_

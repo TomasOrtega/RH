@@ -10,6 +10,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory.CompanionTheory.HopfC
 
+/- English proof (translation)
+Establish `hsum : GlobalTheory.CompanionTheory.HopfC.Sh F 0 = AlgHom.toLinearMap (GlobalTheory.CompanionTheory.HopfC.bv F (N` using `0 + 1) (p := 1) (q := 0) (GlobalTheory.CompanionTheory.HopfC.sI 0) (Fin.predAboveOrderHom 0)) := by`. Rewrite using `[GlobalTheory.CompanionTheory.HopfC.Sh]`. Use `first`. Consider the case `(rw [Fin.sum_univ_one]; simp)`. Consider the case `simp`.
+
+Consider the case `(ext; simp)`. Rewrite using `[hsum, AlgHom.toLinearMap_apply, GlobalTheory.CompanionTheory.HopfC.cup1_apply, map_mul, GlobalTheory.CompanionTheory.HopfC.bv_pr, GlobalTheory.CompanionTheory.HopfC.bv_pr]`. Use `congr 1`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`.
+
+Consider the case `(refine GlobalTheory.CompanionTheory.HopfC.bv_congr (fun i => ?_) (fun i => ?_) _ <;> fin_cases i <;> first | rfl | decide | exact Subsingleton.elim (α := Fin 1) _ _)`.
+-/
 theorem shuffle_cup1_degree_zero {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
     (u : Cn (box F) 1) (w : Cn (box F) 0) :
     Sh F 0 (cup1 (box F) 0 u w) = bv F OrderHom.id (cst 1 0) u * bv F (cst 0 1) OrderHom.id w := by

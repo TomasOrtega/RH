@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c < i`. Rewrite using `[hP i c hc, zero_mul]`.
+
+Rewrite using `[hQ c j (lt_of_lt_of_le h (not_lt.1 hc)), mul_zero]`.
+-/
 private theorem up_mul {R : Type} [CommRing R] {n : ℕ} {P Q : Matrix (Fin n) (Fin n) R}
     (hP : ∀ i j, j < i → P i j = 0) (hQ : ∀ i j, j < i → Q i j = 0) : ∀ i j, j < i → (P * Q) i j = 0 := by
   intro i j h
@@ -14,6 +19,11 @@ private theorem up_mul {R : Type} [CommRing R] {n : ℕ} {P Q : Matrix (Fin n) (
   · rw [hP i c hc, zero_mul]
   · rw [hQ c j (lt_of_lt_of_le h (not_lt.1 hc)), mul_zero]
 
+/- English proof (translation)
+Establish `e : wi * (r * y * s - y) * w = (wi * r * w) * (wi * y * w) * (wi * s * w) - wi * y * w`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`. Use `noncomm_ring`. Use `_ = _ := by noncomm_ring`.
+
+Introduce `i j h`. Rewrite using `[e, Matrix.sub_apply, up_mul (up_mul hr hy) hs i j h, hy i j h, sub_zero]`.
+-/
 private theorem up_conj {R : Type} [CommRing R] {n : ℕ} {w wi r s y : Matrix (Fin n) (Fin n) R}
     (h2 : w * wi = 1)
     (hr : ∀ i j, j < i → (wi * r * w) i j = 0) (hs : ∀ i j, j < i → (wi * s * w) i j = 0)
@@ -26,9 +36,17 @@ private theorem up_conj {R : Type} [CommRing R] {n : ℕ} {w wi r s y : Matrix (
   intro i j h
   rw [e, Matrix.sub_apply, up_mul (up_mul hr hy) hs i j h, hy i j h, sub_zero]
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul`.
+-/
 private theorem red_mul {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : ℕ) (A B : Matrix (Fin n) (Fin n) O) :
     red m (A * B) = red m A * red m B := Matrix.map_mul
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨m, hm⟩` from `(mem_Bl ρ).1 hz`. Establish `: z = fun g => ρ g m - m` using `funext hm`. Substitute `this` using the available equality. Use `(mem_Zl ρ).2 ⟨(h m).comp (fun y => y - m), fun g g' => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem block_le₂ {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] [Module R M]
     (ρ : Representation R Γ M) (h : LC ρ) : (Bl ρ).toAddSubgroup ≤ (Zl ρ).toAddSubgroup := by
   intro z hz
@@ -39,6 +57,19 @@ private theorem block_le₂ {R Γ M : Type} [CommRing R] [Group Γ] [Topological
   simp only [map_mul, Module.End.mul_apply, map_sub]
   abel
 
+/- English proof (translation)
+Introduce `l _ L G G0 h O _ _ _ _ _ n y m rep v hrep hLC hZ`. Use `haveI : Finite (Om O m) := ((omFacts l O).2 m).1`. Use `haveI : Finite (Mm O n m) := inferInstanceAs (Finite (Fin n → Fin n → Om O m))`. Establish `hpφ : ∀ g, h.p₀ (G.φ v g) = G0.φ v g` using `fun g => Subtype.ext (h.φ v g)`. Establish `hv : ∀ (g : L.Gv v) (Z : Mm O n m), rep (G.φ v g : G.Γ) Z = y.ρ0 m (G0.φ v g) * Z * y.ρ0 m (G0.φ v g)⁻¹` using `fun g Z => by`.
+
+Use `hrep.1 (G.φ v g) Z` as an intermediate fact. Simplify using `only [one_smul, Pt.ρm, map_inv, hpφ] at this`. Conclude with `this`. Establish `hLCv : LC (rep.comp (G.η.ker.subtype.comp (G.φ v)) : Representation O (L.Gv v) _)` using `fun Z => (hLC Z).comp_continuous (continuous_subtype_val.comp (G.φ_cont v))`. Establish `hle` using `block_le₂ _ hLCv`.
+
+Use `⟨sup_le hle fun β hβ => ⟨hβ.1, fun g g' => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(hβ.2.1 g g').trans (congrArg (_ + ·) (hv g (β g')).symm)`. Rewrite using `[← borCard l L G0 O n y m v]`. Use `sumCount O (L.Gv v) _ _ (bor y m v) (Zbor y m v) hZ fun Y hY => ?_` and prove the remaining obligations. Establish `hmem` using `hle (show (fun g => (rep.comp (G.η.ker.subtype.comp (G.φ v)) : Representation O (L.Gv v) _) g Y - Y) ∈ _ from (mem_Bl _).2 ⟨Y, fun _ => rfl⟩)`.
+
+Establish `hw : red m (y.w v : Matrix (Fin n) (Fin n) O) * red m (((y.w v)⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) = 1`. Rewrite using `[← red_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `t : ∀ (g : L.Gv v) i j, j < i → (red m (((y.w v)⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) * y.ρ0 m (G0.φ v g) * red m (y.w v : Matrix (Fin n) (Fin n) O) : Mm O n m) i j = 0` using `fun g i j hij => by`. Use `congrArg (Ideal.Quotient.mk (maximalIdeal O ^ m)) ((y.tri v g).1 i j hij)` as an intermediate fact.
+
+Rewrite `this` using `[map_zero]`. Rewrite using `[Pt.ρ0, ← red_mul, ← red_mul]`. Conclude with `this`. Use `⟨hmem.1, fun g g' => ?_, fun g i j hij => ?_⟩` and prove the remaining obligations. Conclude with `(hmem.2 g g').trans (congrArg (_ + ·) (hv g _))`.
+
+Use `up_conj hw (t g) (by have := t g⁻¹; rwa [map_inv] at this) hY i j hij` as an intermediate fact. Rewrite `this` using `[← hv g Y]`. Conclude with `this`.
+-/
 theorem UpperTheory.V.Th.locSup :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (y : Pt G0.frame O n) (m : ℕ) (rep : Representation O G.Γ (Mm O n m)) (v : L.Vl), IsAd0 h y m rep → LC rep → Finite (Zbor y m v) → ((Bl (rep.comp (G.η.ker.subtype.comp (G.φ v)) : Representation O (L.Gv v) _)).toAddSubgroup ⊔ Zbor y m v ≤ (Zl (rep.comp (G.η.ker.subtype.comp (G.φ v)) : Representation O (L.Gv v) _)).toAddSubgroup) ∧ Finite ↥((Bl (rep.comp (G.η.ker.subtype.comp (G.φ v)) : Representation O (L.Gv v) _)).toAddSubgroup ⊔ Zbor y m v) ∧ Nat.card ↥((Bl (rep.comp (G.η.ker.subtype.comp (G.φ v)) : Representation O (L.Gv v) _)).toAddSubgroup ⊔ Zbor y m v) * Nat.card (ResidueField O) ^ (m * (n + n.choose 2)) ≤ Nat.card (Mm O n m) * Nat.card (Zbor y m v) := by
   intro l _ L G G0 h O _ _ _ _ _ n y m rep v hrep hLC hZ

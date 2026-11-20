@@ -9,12 +9,18 @@ open scoped WithZero TensorProduct
 
 namespace GlobalTheory.CNorm
 
+/- English proof (translation)
+Introduce `x _ _`. Use `⟨algebraMap F E x, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.norm_algebraMap, h, pow_one]`.
+-/
 theorem np_of_finrank_one (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
     (h : Module.finrank F E = 1) : NP F E := by
   intro x _ _
   refine ⟨algebraMap F E x, ?_⟩
   rw [Algebra.norm_algebraMap, h, pow_one]
 
+/- English proof (translation)
+Distinguish the cases in `h2 : p = 2`. Conclude with `GlobalTheory.T.np_of_finrank_two' F E (h2 ▸ h)`. Conclude with `GlobalTheory.T.np_of_odd_prime_degree' p F E hp h2 h`.
+-/
 theorem np_of_finrank_prime (p : ℕ) (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] [IsGalois F E] (hp : p.Prime) (h : Module.finrank F E = p) :
     NP F E := by
@@ -22,6 +28,21 @@ theorem np_of_finrank_prime (p : ℕ) (F E : Type) [Field F] [NumberField F] [Fi
   · exact GlobalTheory.T.np_of_finrank_two' F E (h2 ▸ h)
   · exact GlobalTheory.T.np_of_odd_prime_degree' p F E hp h2 h
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `F E _ _ _ _ _ hn hG hC`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Distinguish the cases in `h1 : n = 1`.
+
+Conclude with `np_of_finrank_one F E (hn.trans h1)`. Take `⟨p, hp, hpn⟩` from `Nat.exists_prime_and_dvd h1`. Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hcard : Nat.card (E ≃ₐ[F] E) = n` using `(IsGalois.card_aut_eq_finrank F E).trans hn`. Take `⟨g, hg⟩` from `exists_prime_orderOf_dvd_card' (G := E ≃ₐ[F] E) p (hcard ▸ hpn)`.
+
+Use `set H : Subgroup (E ≃ₐ[F] E) := Subgroup.zpowers g with hH`. Establish `hHc : Nat.card H = p` using `by rw [hH, Nat.card_zpowers, hg]`. Establish `: H.Normal`. Prove the components needed by the constructor for the conclusion. Introduce `a ha b`.
+
+Establish `hc : b * a = a * b`. Take `⟨s, hs⟩` from `IsCyclic.exists_generator (α := E ≃ₐ[F] E)`. Take `⟨i, rfl⟩` from `hs a`. Take `⟨j, rfl⟩` from `hs b`. Conclude with `(Commute.zpow_zpow_self s j i).eq`.
+
+Rewrite using `[hc, mul_inv_cancel_right]`. Conclude with `ha`. Set `M : IntermediateField F E` to `IntermediateField.fixedField H`. Establish `: NumberField M` using `NumberField.of_module_finite F M`. Establish `hME : Module.finrank M E = p` using `(IntermediateField.finrank_fixedField_eq_card H).trans hHc`.
+
+Establish `: IsGalois M E` using `IsGalois.tower_top_of_isGalois F M E`. Establish `hFM : IsGalois F M` using `IsGalois.of_fixedField_normal_subgroup H`. Establish `hCM : IsCyclic (M ≃ₐ[F] M)` using `isCyclic_of_surjective (AlgEquiv.restrictNormalHom (F := F) (K₁ := E) M) (AlgEquiv.restrictNormalHom_surjective E)`. Establish `hmul : Module.finrank F M * Module.finrank M E = n` using `(Module.finrank_mul_finrank F M E).trans hn`. Establish `hpos : 0 < Module.finrank F M` using `Module.finrank_pos`.
+
+Establish `hlt : Module.finrank F M < n`. Rewrite using `[← hmul, hME]`. Conclude with `lt_mul_of_one_lt_right hpos hp.one_lt`. Conclude with `GlobalTheory.T.hasseNormPrinciple_of_cyclic_tower F M E hC (np_of_finrank_prime p M E hp hME) (ih _ hlt F M rfl hFM hCM)`.
+-/
 theorem hasseNormPrinciple_cyclic_of_finrank (n : ℕ) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E], Module.finrank F E = n → IsGalois F E → IsCyclic (E ≃ₐ[F] E) → NP F E := by
   induction n using Nat.strong_induction_on with
@@ -63,6 +84,9 @@ theorem hasseNormPrinciple_cyclic_of_finrank (n : ℕ) : ∀ (F E : Type) [Field
     exact lt_mul_of_one_lt_right hpos hp.one_lt
   exact GlobalTheory.T.hasseNormPrinciple_of_cyclic_tower F M E hC (np_of_finrank_prime p M E hp hME) (ih _ hlt F M rfl hFM hCM)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ hG hC` and use `hasseNormPrinciple_cyclic_of_finrank _ F E rfl hG hC`.
+-/
 theorem np_cyclic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E], IsGalois F E → IsCyclic (E ≃ₐ[F] E) → NP F E :=
   fun F E _ _ _ _ _ hG hC => hasseNormPrinciple_cyclic_of_finrank _ F E rfl hG hC

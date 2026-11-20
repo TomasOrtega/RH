@@ -16,6 +16,11 @@ def cdProd : ENNReal := ∏ v, (D.s.cdScale V.rank (fr.ε v) : ENNReal)
 def muV (μf : Measure (Formalism.IndefR.Eqv.UI.instV fr).Gf) [SigmaFinite μf] : Measure (GA D V) :=
   cdProd fr • ((Formalism.IndefR.Eqv.UI.instV fr).muA μf).map (Formalism.IndefR.Eqv.UI.brg fr)
 
+/- English proof (translation)
+Take `⟨k1, k2, k3, k4, k5⟩` from `Formalism.IndefR.Eqv.ga_facts D V`. Establish `hμi : (Measure.pi fun v => Formalism.REAL.muG ((Formalism.IndefR.Eqv.UI.instV fr).ε v)).IsHaarMeasure` using `Measure.pi.isHaarMeasure _`. Establish `hμA : ((Formalism.IndefR.Eqv.UI.instV fr).muA μf).IsHaarMeasure` using `Measure.prod.instIsHaarMeasure _ _`. Establish `hmapH : (((Formalism.IndefR.Eqv.UI.instV fr).muA μf).map (Formalism.IndefR.Eqv.UI.brg fr)).IsHaarMeasure` using `(Formalism.IndefR.Eqv.UI.brg fr).toMulEquiv.isHaarMeasure_map _ (Formalism.IndefR.Eqv.UI.brg fr).continuous (Formalism.IndefR.Eqv.UI.brg fr).symm.continuous`. Establish `hc0' : cdProd fr ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => by simpa using hc0 v`.
+
+Establish `hct : cdProd fr ≠ ⊤` using `ENNReal.prod_ne_top fun v _ => ENNReal.coe_ne_top`. Conclude with `Measure.IsHaarMeasure.smul _ hc0' hct`.
+-/
 theorem isHaar_muV (hc0 : ∀ v, D.s.cdScale V.rank (fr.ε v) ≠ 0)
     (μf : Measure (Formalism.IndefR.Eqv.UI.instV fr).Gf) [μf.IsHaarMeasure] [SigmaFinite μf] :
     (muV fr μf).IsHaarMeasure := by
@@ -30,6 +35,25 @@ theorem isHaar_muV (hc0 : ∀ v, D.s.cdScale V.rank (fr.ε v) ≠ 0)
   have hct : cdProd fr ≠ ⊤ := ENNReal.prod_ne_top fun v _ => ENNReal.coe_ne_top
   exact Measure.IsHaarMeasure.smul _ hc0' hct
 
+/- English proof (translation)
+Take `⟨k1, k2, k3, k4, k5⟩` from `Formalism.IndefR.Eqv.ga_facts D V`. Use `⟨isHaar_muV fr hc0 μf, ?_⟩` and prove the remaining obligations. Use `⟨⟨Formalism.IndefR.Eqv.thetaC D, Formalism.IndefR.Eqv.isInfFam_thetaC D⟩, fun θ hθ => ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.IndefR.Eqv.eq_thetaC D hθ]`. Use `⟨⟨fun ρ => ((fr.P (Formalism.L2.Host.tauPl D ρ))⁻¹).submatrix (e (Formalism.L2.Host.tauPl D ρ)) id, fun ρ => ?_⟩, fun A hA => ?_⟩` and prove the remaining obligations.
+
+Use `set v := Formalism.L2.Host.tauPl D ρ with hv`. Establish `h` using `Formalism.IndefR.Eqv.MF.sq_gram (e v).symm (((fr.P v)⁻¹).submatrix (e v) id)`. Rewrite `h` using `[ZsCovInf.signs_eq (e v) (h1 v) (h2 v)]`. Establish `hsub : (((fr.P v)⁻¹).submatrix (e v) id).submatrix (e v).symm id = (fr.P v)⁻¹`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Rewrite `h` using `[hsub]`. Rewrite using `[← h]`. Establish `h'` using `Formalism.IndefR.Eqv.MF.inv_frame (Formalism.IndefR.Eqv.P_isUnit_det fr v) (fr.spec v)`. Rewrite using `[h']`.
+
+Simplify using `only [hv, Formalism.IndefR.Eqv.UI.phiV, Equiv.symm_apply_apply]`. Both sides reduce to the same expression. Introduce `B hB`. Use `set c : ∀ v, Formalism.REAL.UJ (fr.ε v) := fun v => ZsCovInf.cEl fr v (hA ((Formalism.L2.Host.tauPl D).symm v)) (e v) (h1 v) (h2 v) with hcdef`. Set `S' : ∀ v : InfinitePlace D.host.F, Set (Formalism.REAL.UJ (fr.ε v))` to `fun v => (fun g : Formalism.REAL.UJ (fr.ε v) => c v * g * (c v)⁻¹) ⁻¹' (PI.UnitaryGroupMassFormula.CdHaarScale.Main.phi (e v) (h1 v) (h2 v) '' B ((Formalism.L2.Host.tauPl D).symm v))`.
+
+Establish `hpre : (Formalism.IndefR.Eqv.UI.brg fr) ⁻¹' {h : GA D V | (∀ y, y ∈ latHat D.host.F D.host.E (L0c D V) ↔ (finMat D.sp.cm.sig V.gram h).mulVec y ∈ latHat D.host.F D.host.E (L0c D V)) ∧ ∀ ρ, ∃ b ∈ B ρ, UpqT.mat b * A ρ = A ρ * infMat D.sp.cm.sig V.gram (Formalism.IndefR.Eqv.thetaC …`. Use extensionality with `x`. Use `show (_ ∧ _) ↔ (_ ∧ _)`. Use `(and_congr (ZsCovFin.finCond_brg fr hΛ x) Iff.rfl).trans (and_comm.trans (and_congr ?_ Iff.rfl))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h v _`. Conclude with `(ZsCovInf.infCond fr v (hA ((Formalism.L2.Host.tauPl D).symm v)) (e v) (h1 v) (h2 v) x _).1 (h ((Formalism.L2.Host.tauPl D).symm v))`. Introduce `h ρ`. Use `(ZsCovInf.infCond fr (Formalism.L2.Host.tauPl D ρ) (hA ((Formalism.L2.Host.tauPl D).symm (Formalism.L2.Host.tauPl D ρ))) (e _) (h1 _) (h2 _) x _).2 (h (Formalism.L2.Host.tauPl D ρ) (Set.mem_univ _))` as an intermediate fact. Rewrite `this` using `[Equiv.symm_apply_apply]`.
+
+Conclude with `this`. Establish `hmap` using `(Formalism.IndefR.Eqv.UI.brg fr).toHomeomorph.toMeasurableEquiv.map_apply (μ := (Formalism.IndefR.Eqv.UI.instV fr).muA μf) {h : GA D V | (∀ y, y ∈ latHat D.host.F D.host.E (L0c D V) ↔ (finMat D.sp.cm.sig V.gram h).mulVec y ∈ latHat D.host.F D.host.E (L0c D V)) ∧ ∀ ρ, ∃ b ∈ B ρ, U …`. Establish `hmeas : muV fr μf {h : GA D V | (∀ y, y ∈ latHat D.host.F D.host.E (L0c D V) ↔ (finMat D.sp.cm.sig V.gram h).mulVec y ∈ latHat D.host.F D.host.E (L0c D V)) ∧ ∀ ρ, ∃ b ∈ B ρ, UpqT.mat b * A ρ = A ρ * infMat D.sp.cm.sig V.gram (Formalism.IndefR.Eqv.thetaC D ρ) h} = cdProd fr * ((∏ …`. Rewrite using `[muV, Measure.smul_apply, smul_eq_mul]`. Use `congr 1`.
+
+Use `(hmap.trans (congrArg _ hpre)).trans ?_` and prove the remaining obligations. Conclude with `(Measure.prod_prod _ _).trans (congrArg (· * μf (Formalism.IndefR.Eqv.UI.instV fr).Kset) (Measure.pi_pi _ _))`. Rewrite using `[hmeas, hK, mul_one, cdProd, ← Finset.prod_mul_distrib]`. Establish `hv : ∀ v, (D.s.cdScale V.rank (fr.ε v) : ENNReal) * Formalism.REAL.muG (fr.ε v) (S' v) = D.cd.cd P Q (B ((Formalism.L2.Host.tauPl D).symm v))` using `fun v => by`. Rewrite using `[← ZsCovInf.measAt hcd (e v) (h1 v) (h2 v) (c v) _ (hB _), Measure.smul_apply, smul_eq_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isVolMeas_muV (hcd : cdScaleTie D) (hΛ : fr.Λ = Formalism.IndefR.Eqv.UI.Lv D V) {P Q : ℕ}
     (e : ∀ v, Fin P ⊕ Fin Q ≃ Fin V.rank) (h1 : ∀ v i, fr.ε v (e v (Sum.inl i)) = true)
     (h2 : ∀ v j, fr.ε v (e v (Sum.inr j)) = false) (hc0 : ∀ v, D.s.cdScale V.rank (fr.ε v) ≠ 0)

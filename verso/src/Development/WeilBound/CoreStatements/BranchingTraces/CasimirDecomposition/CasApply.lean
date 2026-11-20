@@ -14,6 +14,23 @@ open PI.ZuckTensor (GapAtLeast)
 
 variable {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 
+/- English proof (translation)
+Establish `C` using `S.homCat k r`. Establish `h1 : (1 : ℝ) ≤ (((2 * r + k + 1) ^ 2 + 2 : ℕ) : ℝ)` using `by exact_mod_cast (by omega)`. Establish `hsimp` using `S.schur S.infChar k r ε _ _ T ((shift_inj b μ).comp Subtype.val_injective) hT`. Establish `adj' : ∀ U U' : URep k r, ∃ e : (M (vr k r (!b), U) →ₗ[ℂ] M (one U')) ≃ₗ[ℂ] (M (one U) →ₗ[ℂ] M (vr k r b, U')), ∀ p, IsHom (vr k r (!b), U) (one U') p ↔ IsHom (one U) (vr k r b, U') (e p)`. Consider the cases of `b`.
+
+Conclude with `S.adj k r true`. Conclude with `S.adj k r false`. Establish `occ : ∀ s, ∃ i, IsHom (one (T s)) (vr k r b, U) i ∧ i ≠ 0`. Introduce `s`. Take `⟨T', hT', -, hp⟩` from `injV S Lb (!b) (hT s) (gap_shift hg b s.1) (by linarith)`.
+
+Establish `hs : IsHCParam (shift (!b) (shift b μ s.1) s.1)` using `by rw [shift_shift]; exact hU.1`. Take `⟨p, hp, hp0⟩` from `hp ⟨s.1, hs⟩`. Establish `hd : (T' ⟨s.1, hs⟩).R.IsDS ε μ` using `by simpa only [shift_shift] using hT' ⟨s.1, hs⟩`. Take `⟨f, g, hf, -, hgf, -⟩` from `iso_of S Lb hd hU hg (by linarith)`. Take `⟨e, he⟩` from `adj' (T s) U`.
+
+Use `⟨e (f ∘ₗ p), (he _).1 (C.comp _ _ _ _ _ hp hf), fun h0 => hp0 ?_⟩` and prove the remaining obligations. Establish `h2 : f ∘ₗ p = 0` using `e.map_eq_zero_iff.1 h0`. Combine the equalities or inequalities in the displayed calculation. Use `S.decOfInj _ _ _ C _ _ _ hsimp ?_ (fun s => ?_) occ` and prove the remaining obligations. Take `⟨T', hT', hi, -⟩` from `injV S Lb b hU hg (by linarith)`.
+
+Introduce `x hx`. Use `hi x fun s p hp => ?_` and prove the remaining obligations. Take `⟨f, g, hf, -, hgf, -⟩` from `iso_of S Lb (hT' s) (hT s) (gap_shift hg b s.1) (by linarith)`. Establish `h2` using `hx s _ (C.comp _ _ _ _ _ hp hf)`. Establish `h3` using `LinearMap.congr_fun hgf (p x)`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h2 h3`. Rewrite using `[← h3, h2, map_zero]`. Take `⟨T', hT', hi, -⟩` from `injV S Lb b (hT s) (gap_shift hg b s.1) (by linarith)`. Establish `cB` using `S.casDS S.infChar k r ε _ (T s) hk (hT s)`. Establish `m1 : AtMostOne (N` using `M) IsHom (one U) (vr k r (!b), T s) := by`.
+
+Use `fun hi' ho' => S.multOne k r (!b) (T s) U _ T' _ _ _ (fun F => (cB F).1) (cB (triv k r)).2 (S.casDS S.infChar k r ε _ U hk hU (triv k r)).2 (fun u => (S.casDS S.infChar k r ε _ (T' u) hk (hT' u) (triv k r)).2) (fun u => cas_ne hU.1.1 b s.1 u.1) hi' (hsimp.2.1 s) ⟨_, _, hU⟩ ho'` as an intermediate fact. Consider the cases of `b`. Conclude with `this hi (occ s)`. Conclude with `this hi (occ s)`. Take `⟨e, he⟩` from `S.adj k r b U (T s)`.
+
+Introduce `f g hf hg'`. Take `⟨α, β, hab, h0⟩` from `m1 _ _ ((he f).1 hf) ((he g).1 hg')`. Use `⟨α, β, hab, e.map_eq_zero_iff.1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul, h0]`.
+-/
 theorem decReg (S : Steps) (Lb : Lib t) (hk : 1 ≤ k) (b : Bool) {μ : Fin (2 * r + k + 1) → ℝ} {U : URep k r} {h : ℝ}
     (hU : U.R.IsDS ε μ) (hg : GapAtLeast ε μ h) (ht : t _ ε + (((2 * r + k + 1) ^ 2 + 2 : ℕ) : ℝ) + 1 < h)
     (T : {s // IsHCParam (shift b μ s)} → URep k r) (hT : ∀ s, (T s).R.IsDS ε (shift b μ s.1)) :
@@ -66,10 +83,18 @@ theorem decReg (S : Steps) (Lb : Lib t) (hk : 1 ≤ k) (b : Bool) {μ : Fin (2 *
 def kOp (U : URep k r) : Module.End ℂ (M (vr k r true, U)) :=
   LinearMap.pi fun c => ∑ b, U.dC (Matrix.single c b 1) ∘ₗ LinearMap.proj b
 
+/- English proof (translation)
+Simplify using `[kOp, LinearMap.sum_apply]`.
+-/
 theorem kOp_apply (U : URep k r) (x : M (vr k r true, U)) (c : Fin (2 * r + k + 1)) :
     kOp U x c = ∑ b, U.dC (Matrix.single c b 1) (x b) := by
   simp [kOp, LinearMap.sum_apply]
 
+/- English proof (translation)
+Establish `h : (vr k r true, U).1.dC (Matrix.single a b 1) = -(Matrix.single a b (1 : ℂ))ᵀ` using `(GlobalTheory.T.StandardDifferential k r _).2`. Simplify using `only [L, h, LinearMap.add_apply, Pi.add_apply, dOp, mAct, LinearMap.compLeft_apply, Function.comp_apply, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.proj_apply, sub_eq_add_neg]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single a (fun d _ hd => by simp [Matrix.single_apply, hd.symm]) (by simp)]`. Distinguish the cases in `hc : c = b`.
+
+Simplify using `[hc]`. Simplify using `[Matrix.single_apply, hc, Ne.symm hc]`.
+-/
 theorem L_apply (U : URep k r) (a b : Fin (2 * r + k + 1)) (x : M (vr k r true, U)) (c : Fin (2 * r + k + 1)) :
     L (vr k r true, U) (Matrix.single a b 1) x c = U.dC (Matrix.single a b 1) (x c) - if c = b then x a else 0 := by
   have h : (vr k r true, U).1.dC (Matrix.single a b 1) = -(Matrix.single a b (1 : ℂ))ᵀ := (GlobalTheory.T.StandardDifferential k r _).2
@@ -81,6 +106,11 @@ theorem L_apply (U : URep k r) (a b : Fin (2 * r + k + 1)) (x : M (vr k r true, 
   · simp [hc]
   · simp [Matrix.single_apply, hc, Ne.symm hc]
 
+/- English proof (translation)
+Simplify using `only [cas, casR, dOp, LinearMap.compLeft_apply, Function.comp_apply, LinearMap.sum_apply, Finset.sum_apply, Module.End.mul_apply, L_apply, kOp_apply, map_sub, Finset.sum_sub_distrib, apply_ite (U.dC _), map_zero]`. Establish `e1 : ∑ a, ∑ b, (if c = a then U.dC (Matrix.single a b 1) (x b) else 0) = ∑ b, U.dC (Matrix.single c b 1) (x b)`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules. Establish `e2 : ∑ a : Fin (2 * r + k + 1), ∑ b, (if c = b then U.dC (Matrix.single b a 1) (x a) - (if True then x b else 0) else 0) = ∑ b, U.dC (Matrix.single c b 1) (x b) - ((2 * r + k + 1 : ℕ) : ℂ) • x c`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[e1, e2, two_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cas_apply (U : URep k r) (x : M (vr k r true, U)) (c : Fin (2 * r + k + 1)) :
     cas (vr k r true, U) x c = casR (vr k r true, U) x c - (2 : ℂ) • kOp U x c + ((2 * r + k + 1 : ℕ) : ℂ) • x c := by
   simp only [cas, casR, dOp, LinearMap.compLeft_apply, Function.comp_apply, LinearMap.sum_apply, Finset.sum_apply,
@@ -95,6 +125,13 @@ theorem cas_apply (U : URep k r) (x : M (vr k r true, U)) (c : Fin (2 * r + k + 
   rw [e1, e2, two_smul]
   abel
 
+/- English proof (translation)
+Establish `S` using `zuckerman_ingredients`. Establish `hL` using `S.homLie k r _ _ i (S.okTriv k r) (S.okVr k r true) hi`. Establish `h1 : cas (vr k r true, U) (i y) = i (cas (one T) y)`. Simplify using `only [cas, LinearMap.sum_apply, Module.End.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← LinearMap.comp_apply (L _ (Matrix.single b a 1)) i, ← hL, LinearMap.comp_apply, ← LinearMap.comp_apply (L _ (Matrix.single a b 1)) i, ← hL, LinearMap.comp_apply]`. Rewrite `h1` using `[(S.casDS S.infChar k r ε _ T hk hT (triv k r)).2, casG_shift]`. Use function extensionality and compare the values at `c`. Establish `h2` using `cas_apply U (i y) c`. Rewrite `h2` using `[h1, (S.casDS S.infChar k r ε _ U hk hU (vr k r true)).1]`.
+
+Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, map_smul, Pi.smul_apply, if_true] at h2 ⊢`. Move the coercions through the operations in `at h2 ⊢`. Take the linear combination `(norm := module) (1 / 2 : ℂ) • h2`.
+-/
 theorem kOp_io {μ : Fin (2 * r + k + 1) → ℝ} {U T : URep k r} (hk : 1 ≤ k) (hU : U.R.IsDS ε μ) (s : Fin (2 * r + k + 1))
     (hT : T.R.IsDS ε (shift true μ s)) (i : M (one T) →ₗ[ℂ] M (vr k r true, U)) (hi : IsHom (one T) (vr k r true, U) i)
     (y : M (one T)) : kOp U (i y) = ((μ s : ℂ) + (((2 * r + k + 1 : ℕ) : ℂ) - 1) / 2) • i y := by

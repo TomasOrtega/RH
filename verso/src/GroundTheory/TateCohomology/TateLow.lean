@@ -11,31 +11,52 @@ section Tate
 
 variable {R G : Type u} [CommRing R] [Group G] [Fintype G]
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, Iso.inv_hom_id]`. Both sides reduce to the same expression.
+-/
 private lemma iso_hom_inv_apply {A B : ModuleCat.{u} R} (e : A ≅ B) (x : B) :
     e.hom.hom (e.inv.hom x) = x := by
   rw [← LinearMap.comp_apply, ← ModuleCat.hom_comp, Iso.inv_hom_id]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, Iso.hom_inv_id]`. Both sides reduce to the same expression.
+-/
 private lemma iso_inv_hom_apply {A B : ModuleCat.{u} R} (e : A ≅ B) (x : A) :
     e.inv.hom (e.hom.hom x) = x := by
   rw [← LinearMap.comp_apply, ← ModuleCat.hom_comp, Iso.hom_inv_id]
   rfl
 
+/- English proof (translation)
+Introduce `a b h` and use `by rw [← iso_inv_hom_apply e a, h, iso_inv_hom_apply]`.
+-/
 private lemma iso_hom_injective {A B : ModuleCat.{u} R} (e : A ≅ B) : Function.Injective e.hom.hom :=
   fun a b h => by rw [← iso_inv_hom_apply e a, h, iso_inv_hom_apply]
 
+/- English proof (translation)
+Introduce `a b h` and use `by rw [← iso_hom_inv_apply e a, h, iso_hom_inv_apply]`.
+-/
 private lemma iso_inv_injective {A B : ModuleCat.{u} R} (e : A ≅ B) : Function.Injective e.inv.hom :=
   fun a b h => by rw [← iso_hom_inv_apply e a, h, iso_hom_inv_apply]
 
+/- English proof (translation)
+Simplify using `[Representation.norm, map_sum, Rep.hom_comm_apply]`.
+-/
 lemma repHom_norm_apply {X Y : Rep.{u} R G} (f : X ⟶ Y) (m : X) :
     f.hom (X.ρ.norm m) = Y.ρ.norm (f.hom m) := by
   simp [Representation.norm, map_sum, Rep.hom_comm_apply]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨m, rfl⟩ g`. Conclude with `M.ρ.self_norm_apply g m`.
+-/
 lemma range_norm_le_invariants (M : Rep.{u} R G) :
     LinearMap.range M.ρ.norm ≤ M.ρ.invariants := by
   rintro _ ⟨m, rfl⟩ g
   exact M.ρ.self_norm_apply g m
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨g, m⟩, rfl⟩`. Simplify using the standard rewrite rules.
+-/
 lemma coinvariantsKer_le_ker_norm (M : Rep.{u} R G) :
     Coinvariants.ker M.ρ ≤ LinearMap.ker M.ρ.norm := by
   refine Submodule.span_le.2 ?_
@@ -44,6 +65,11 @@ lemma coinvariantsKer_le_ker_norm (M : Rep.{u} R G) :
 
 omit [Fintype G] in
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨g, m⟩, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap]`. Establish `: f.hom.toLinearMap (X.ρ g m - m) = Y.ρ g (f.hom m) - f.hom m`. Simplify using `[Rep.hom_comm_apply]`.
+
+Rewrite using `[this]`. Conclude with `Coinvariants.sub_mem_ker g _`.
+-/
 lemma coinvariantsKer_le_comap {X Y : Rep.{u} R G} (f : X ⟶ Y) :
     Coinvariants.ker X.ρ ≤ (Coinvariants.ker Y.ρ).comap f.hom.toLinearMap := by
   refine Submodule.span_le.2 ?_
@@ -57,12 +83,18 @@ lemma coinvariantsKer_le_comap {X Y : Rep.{u} R G} (f : X ⟶ Y) :
 noncomputable def normRangeInvariants (M : Rep.{u} R G) : Submodule R M.ρ.invariants :=
   (LinearMap.range M.ρ.norm).comap M.ρ.invariants.subtype
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_normRangeInvariants_iff (M : Rep.{u} R G) (x : M.ρ.invariants) :
     x ∈ normRangeInvariants M ↔ ∃ m, M.ρ.norm m = x := Iff.rfl
 
 noncomputable def augmentationKerNorm (M : Rep.{u} R G) : Submodule R (LinearMap.ker M.ρ.norm) :=
   (Coinvariants.ker M.ρ).comap (LinearMap.ker M.ρ.norm).subtype
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_augmentationKerNorm_iff (M : Rep.{u} R G) (x : LinearMap.ker M.ρ.norm) :
     x ∈ augmentationKerNorm M ↔ (x : M) ∈ Coinvariants.ker M.ρ := Iff.rfl
 
@@ -87,6 +119,9 @@ noncomputable def kerNormMap {X Y : Rep.{u} R G} (f : X ⟶ Y) :
     rw [show f.hom.toLinearMap x = f.hom x from rfl, ← repHom_norm_apply, hx, map_zero])
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma kerNormMap_apply {X Y : Rep.{u} R G} (f : X ⟶ Y) (x : LinearMap.ker X.ρ.norm) :
     (kerNormMap f x : Y) = f.hom x := rfl
 
@@ -104,20 +139,32 @@ noncomputable def tateNegOneFunctor : Rep.{u} R G ⥤ ModuleCat.{u} R where
     rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 lemma tateZeroFunctor_obj (M : Rep.{u} R G) :
     (tateZeroFunctor R G).obj M = ModuleCat.of R (M.ρ.invariants ⧸ normRangeInvariants M) := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 lemma tateZeroFunctor_map_mk {X Y : Rep.{u} R G} (f : X ⟶ Y) (x : X.ρ.invariants) :
     ((tateZeroFunctor R G).map f).hom (Submodule.Quotient.mk x) =
       Submodule.Quotient.mk (((Rep.invariantsFunctor R G).map f).hom x) := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 lemma tateNegOneFunctor_obj (M : Rep.{u} R G) :
     (tateNegOneFunctor R G).obj M =
       ModuleCat.of R (LinearMap.ker M.ρ.norm ⧸ augmentationKerNorm M) := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma tateNegOneFunctor_map_mk {X Y : Rep.{u} R G} (f : X ⟶ Y) (x : LinearMap.ker X.ρ.norm) :
     ((tateNegOneFunctor R G).map f).hom (Submodule.Quotient.mk x) =
       Submodule.Quotient.mk (kerNormMap f x) := rfl
@@ -128,6 +175,9 @@ section TateIsos
 
 variable {R G : Type u} [CommRing R] [Group G] [Fintype G]
 
+/- English proof (translation)
+Introduce and unpack `x ⟨m, hm⟩`. Conclude with `⟨f.hom m, by rw [← repHom_norm_apply, hm]; rfl⟩`.
+-/
 lemma normRangeInvariants_le_comap {X Y : Rep.{u} R G} (f : X ⟶ Y) :
     normRangeInvariants X ≤ (normRangeInvariants Y).comap ((Rep.invariantsFunctor R G).map f).hom := by
   rintro x ⟨m, hm⟩
@@ -137,9 +187,21 @@ noncomputable def tateZeroι (M : Rep.{u} R G) :
     M.ρ.invariants →ₗ[R] ((tateComplex M).sc' (-1) 0 1).X₂ :=
   (cochainsIso₀ M).inv.hom ∘ₗ M.ρ.invariants.subtype
 
+/- English proof (translation)
+The claim follows from `(iso_inv_injective (cochainsIso₀ M)).comp Subtype.val_injective`.
+-/
 lemma tateZeroι_injective (M : Rep.{u} R G) : Function.Injective (tateZeroι M) :=
   (iso_inv_injective (cochainsIso₀ M)).comp Subtype.val_injective
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Establish `e : ((inhomogeneousCochains M).d 0 1).hom ((cochainsIso₀ M).inv.hom x.1) = (cochainsIso₁ M).inv.hom ((d₀₁ M).hom x.1)` using `congr(($(eq_d₀₁_comp_inv M)).hom x.1)`. Establish `hx : (d₀₁ M).hom x.1 = 0`.
+
+Establish `: x.1 ∈ LinearMap.ker (d₀₁ M).hom`. Rewrite using `[d₀₁_ker_eq_invariants]`. Conclude with `x.2`. Conclude with `LinearMap.mem_ker.1 this`. Rewrite using `[LinearMap.mem_ker]`.
+
+Express the relevant statement in the definitionally equal form `((inhomogeneousCochains M).d 0 1).hom ((cochainsIso₀ M).inv.hom x.1) = 0`. Rewrite using `[e, hx, map_zero]`. Introduce `hy`. Establish `hy' : ((inhomogeneousCochains M).d 0 1).hom y = 0` using `LinearMap.mem_ker.1 hy`. Establish `e : (d₀₁ M).hom ((cochainsIso₀ M).hom.hom y) = (cochainsIso₁ M).hom.hom (((inhomogeneousCochains M).d 0 1).hom y)` using `congr(($(comp_d₀₁_eq M)).hom y)`.
+
+Establish `hmem : (cochainsIso₀ M).hom.hom y ∈ M.ρ.invariants`. Rewrite using `[← d₀₁_ker_eq_invariants, LinearMap.mem_ker, e, hy', map_zero]`. Conclude with `⟨⟨_, hmem⟩, iso_inv_hom_apply (cochainsIso₀ M) y⟩`.
+-/
 lemma tateZeroι_range (M : Rep.{u} R G) :
     LinearMap.range (tateZeroι M) = LinearMap.ker ((tateComplex M).sc' (-1) 0 1).g.hom := by
   ext y
@@ -164,6 +226,11 @@ lemma tateZeroι_range (M : Rep.{u} R G) :
       rw [← d₀₁_ker_eq_invariants, LinearMap.mem_ker, e, hy', map_zero]
     exact ⟨⟨_, hmem⟩, iso_inv_hom_apply (cochainsIso₀ M) y⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`. Use `⟨(chainsIso₀ M).inv.hom m, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(cochainsIso₀ M).inv.hom (M.ρ.norm ((chainsIso₀ M).hom.hom ((chainsIso₀ M).inv.hom m))) = (cochainsIso₀ M).inv.hom x.1`. Rewrite using `[iso_hom_inv_apply, hm]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨c, hc⟩`. Use `⟨(chainsIso₀ M).hom.hom c, ?_⟩` and prove the remaining obligations. Establish `hc' : (cochainsIso₀ M).inv.hom (M.ρ.norm ((chainsIso₀ M).hom.hom c)) = (cochainsIso₀ M).inv.hom x.1` using `hc`. Conclude with `iso_inv_injective _ hc'`.
+-/
 lemma tateZero_mem_iff (M : Rep.{u} R G) (x : M.ρ.invariants) :
     x ∈ normRangeInvariants M ↔
       tateZeroι M x ∈ LinearMap.range ((tateComplex M).sc' (-1) 0 1).f.hom := by
@@ -213,6 +280,9 @@ noncomputable def tateCohomologyZeroIso :
     NatIso.ofComponents (fun M => (tateZeroData M).homologyIso)
       (fun {X Y} f => (tateZeroMapData f).homologyMap_comm)
 
+/- English proof (translation)
+The claim follows from `homologyFunctorIso'_moduleLeftHomologyData_apply (tateComplex M) (-1) 0 1 (by simp) (by simp) M.ρ.invariants (tateZeroι M) (tateZeroι_injective M) (tateZeroι_range M) (normRangeInvariants M) (tateZero_mem_iff M) z x hx`.
+-/
 lemma tateCohomologyZeroIso_hom_homologyπ (M : Rep.{u} R G) (z : (tateComplex M).cycles 0)
     (x : M.ρ.invariants) (hx : (cochainsIso₀ M).inv.hom x = ((tateComplex M).iCycles 0).hom z) :
     ((tateCohomologyZeroIso R G).app M).hom.hom (((tateComplex M).homologyπ 0).hom z) =
@@ -221,6 +291,9 @@ lemma tateCohomologyZeroIso_hom_homologyπ (M : Rep.{u} R G) (z : (tateComplex M
     M.ρ.invariants (tateZeroι M) (tateZeroι_injective M) (tateZeroι_range M)
     (normRangeInvariants M) (tateZero_mem_iff M) z x hx
 
+/- English proof (translation)
+Conclude with `(congrArg (fun w => ((tateCohomologyZeroIso R G).app M).inv.hom w) (tateCohomologyZeroIso_hom_homologyπ M z x hx)).symm.trans (iso_inv_hom_apply ((tateCohomologyZeroIso R G).app M) _)`.
+-/
 lemma tateCohomologyZeroIso_inv_mk (M : Rep.{u} R G) (z : (tateComplex M).cycles 0)
     (x : M.ρ.invariants) (hx : (cochainsIso₀ M).inv.hom x = ((tateComplex M).iCycles 0).hom z) :
     ((tateCohomologyZeroIso R G).app M).inv.hom (Submodule.Quotient.mk x) =
@@ -229,6 +302,9 @@ lemma tateCohomologyZeroIso_inv_mk (M : Rep.{u} R G) (z : (tateComplex M).cycles
     (tateCohomologyZeroIso_hom_homologyπ M z x hx)).symm.trans
       (iso_inv_hom_apply ((tateCohomologyZeroIso R G).app M) _)
 
+/- English proof (translation)
+The claim follows from `exists_cycles_of_moduleLeftHomologyData (tateComplex M) (-1) 0 1 (by simp) (by simp) M.ρ.invariants (tateZeroι M) (tateZeroι_injective M) (tateZeroι_range M) (normRangeInvariants M) (tateZero_mem_iff M) x`.
+-/
 lemma exists_tateComplex_cycles_zero (M : Rep.{u} R G) (x : M.ρ.invariants) :
     ∃ z : (tateComplex M).cycles 0,
       ((tateComplex M).iCycles 0).hom z = (cochainsIso₀ M).inv.hom x :=
@@ -236,6 +312,13 @@ lemma exists_tateComplex_cycles_zero (M : Rep.{u} R G) (x : M.ρ.invariants) :
     M.ρ.invariants (tateZeroι M) (tateZeroι_injective M) (tateZeroι_range M)
     (normRangeInvariants M) (tateZero_mem_iff M) x
 
+/- English proof (translation)
+Rewrite using `[((tateCohomologyZeroIso R G).app M).isZero_iff, ModuleCat.isZero_iff_subsingleton]`. Express the relevant statement in the definitionally equal form `Subsingleton (M.ρ.invariants ⧸ normRangeInvariants M) ↔ _`. Rewrite using `[Submodule.Quotient.subsingleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `le_antisymm (range_norm_le_invariants M) (fun x hx => ?_)` and prove the remaining obligations. Establish `: (⟨x, hx⟩ : M.ρ.invariants) ∈ normRangeInvariants M` using `h ▸ Submodule.mem_top`. Conclude with `this`. Introduce `h`. Use `eq_top_iff.2 (fun x _ => ?_)` and prove the remaining obligations.
+
+Use `show x.1 ∈ LinearMap.range M.ρ.norm`. Rewrite using `[h]`. Conclude with `x.2`.
+-/
 theorem isZero_tateCohomology_zero_iff (M : Rep.{u} R G) :
     IsZero (tateCohomology M 0) ↔ LinearMap.range M.ρ.norm = M.ρ.invariants := by
   rw [((tateCohomologyZeroIso R G).app M).isZero_iff, ModuleCat.isZero_iff_subsingleton]
@@ -252,6 +335,11 @@ theorem isZero_tateCohomology_zero_iff (M : Rep.{u} R G) :
     rw [h]
     exact x.2
 
+/- English proof (translation)
+Rewrite using `[isZero_tateCohomology_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Rewrite `hx` using `[← h]`. Conclude with `hx`.
+
+Introduce `h`. Conclude with `le_antisymm (range_norm_le_invariants M) (fun x hx => h x hx)`.
+-/
 theorem isZero_tateCohomology_zero_iff_forall (M : Rep.{u} R G) :
     IsZero (tateCohomology M 0) ↔ ∀ x ∈ M.ρ.invariants, ∃ m, M.ρ.norm m = x := by
   rw [isZero_tateCohomology_zero_iff]
@@ -266,9 +354,19 @@ noncomputable def tateNegOneι (M : Rep.{u} R G) :
     LinearMap.ker M.ρ.norm →ₗ[R] ((tateComplex M).sc' (-2) (-1) 0).X₂ :=
   (chainsIso₀ M).inv.hom ∘ₗ (LinearMap.ker M.ρ.norm).subtype
 
+/- English proof (translation)
+The claim follows from `(iso_inv_injective (chainsIso₀ M)).comp Subtype.val_injective`.
+-/
 lemma tateNegOneι_injective (M : Rep.{u} R G) : Function.Injective (tateNegOneι M) :=
   (iso_inv_injective (chainsIso₀ M)).comp Subtype.val_injective
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `(cochainsIso₀ M).inv.hom (M.ρ.norm ((chainsIso₀ M).hom.hom ((chainsIso₀ M).inv.hom x.1))) = 0`.
+
+Rewrite using `[iso_hom_inv_apply, LinearMap.mem_ker.1 x.2, map_zero]`. Introduce `hy`. Establish `hy' : (cochainsIso₀ M).inv.hom (M.ρ.norm ((chainsIso₀ M).hom.hom y)) = 0` using `LinearMap.mem_ker.1 hy`. Establish `hmem : (chainsIso₀ M).hom.hom y ∈ LinearMap.ker M.ρ.norm`. Rewrite using `[LinearMap.mem_ker]`.
+
+Apply `iso_inv_injective (cochainsIso₀ M)` to reduce the goal to its premises. Rewrite using `[hy', map_zero]`. Conclude with `⟨⟨_, hmem⟩, iso_inv_hom_apply (chainsIso₀ M) y⟩`.
+-/
 lemma tateNegOneι_range (M : Rep.{u} R G) :
     LinearMap.range (tateNegOneι M) = LinearMap.ker ((tateComplex M).sc' (-2) (-1) 0).g.hom := by
   ext y
@@ -287,6 +385,13 @@ lemma tateNegOneι_range (M : Rep.{u} R G) :
       rw [hy', map_zero]
     exact ⟨⟨_, hmem⟩, iso_inv_hom_apply (chainsIso₀ M) y⟩
 
+/- English proof (translation)
+Rewrite using `[mem_augmentationKerNorm_iff, ← range_d₁₀_eq_coinvariantsKer]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Use `⟨(chainsIso₁ M).inv.hom w, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((inhomogeneousChains M).d 1 0).hom ((chainsIso₁ M).inv.hom w) = (chainsIso₀ M).inv.hom x.1`.
+
+Apply `iso_hom_injective (chainsIso₀ M)` to reduce the goal to its premises. Establish `e : (d₁₀ M).hom ((chainsIso₁ M).hom.hom ((chainsIso₁ M).inv.hom w)) = (chainsIso₀ M).hom.hom (((inhomogeneousChains M).d 1 0).hom ((chainsIso₁ M).inv.hom w))` using `congr(($(comp_d₁₀_eq M)).hom ((chainsIso₁ M).inv.hom w))`. Rewrite using `[← e, iso_hom_inv_apply, iso_hom_inv_apply, hw]`. Introduce and unpack `⟨c, hc⟩`. Establish `hc' : ((inhomogeneousChains M).d 1 0).hom c = (chainsIso₀ M).inv.hom x.1` using `hc`.
+
+Use `⟨(chainsIso₁ M).hom.hom c, ?_⟩` and prove the remaining obligations. Establish `e : (d₁₀ M).hom ((chainsIso₁ M).hom.hom c) = (chainsIso₀ M).hom.hom (((inhomogeneousChains M).d 1 0).hom c)` using `congr(($(comp_d₁₀_eq M)).hom c)`. Rewrite using `[e, hc', iso_hom_inv_apply]`.
+-/
 lemma tateNegOne_mem_iff (M : Rep.{u} R G) (x : LinearMap.ker M.ρ.norm) :
     x ∈ augmentationKerNorm M ↔
       tateNegOneι M x ∈ LinearMap.range ((tateComplex M).sc' (-2) (-1) 0).f.hom := by
@@ -342,6 +447,9 @@ noncomputable def tateCohomologyNegOneIso :
     NatIso.ofComponents (fun M => (tateNegOneData M).homologyIso)
       (fun {X Y} f => (tateNegOneMapData f).homologyMap_comm)
 
+/- English proof (translation)
+The claim follows from `homologyFunctorIso'_moduleLeftHomologyData_apply (tateComplex M) (-2) (-1) 0 (by norm_num) (by norm_num) (LinearMap.ker M.ρ.norm) (tateNegOneι M) (tateNegOneι_injective M) (tateNegOneι_range M) (augmentationKerNorm M) (tateNegOne_mem_iff M) z x hx`.
+-/
 lemma tateCohomologyNegOneIso_hom_homologyπ (M : Rep.{u} R G) (z : (tateComplex M).cycles (-1))
     (x : LinearMap.ker M.ρ.norm)
     (hx : (chainsIso₀ M).inv.hom x = ((tateComplex M).iCycles (-1)).hom z) :
@@ -351,6 +459,13 @@ lemma tateCohomologyNegOneIso_hom_homologyπ (M : Rep.{u} R G) (z : (tateComplex
     (by norm_num) (LinearMap.ker M.ρ.norm) (tateNegOneι M) (tateNegOneι_injective M)
     (tateNegOneι_range M) (augmentationKerNorm M) (tateNegOne_mem_iff M) z x hx
 
+/- English proof (translation)
+Rewrite using `[((tateCohomologyNegOneIso R G).app M).isZero_iff, ModuleCat.isZero_iff_subsingleton]`. Express the relevant statement in the definitionally equal form `Subsingleton (LinearMap.ker M.ρ.norm ⧸ augmentationKerNorm M) ↔ _`. Rewrite using `[Submodule.Quotient.subsingleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `le_antisymm (fun x hx => ?_) (coinvariantsKer_le_ker_norm M)` and prove the remaining obligations. Establish `: (⟨x, hx⟩ : LinearMap.ker M.ρ.norm) ∈ augmentationKerNorm M` using `h ▸ Submodule.mem_top`. Conclude with `this`. Introduce `h`. Use `eq_top_iff.2 (fun x _ => ?_)` and prove the remaining obligations.
+
+Use `show x.1 ∈ Coinvariants.ker M.ρ`. Rewrite using `[← h]`. Conclude with `x.2`.
+-/
 theorem isZero_tateCohomology_neg_one_iff (M : Rep.{u} R G) :
     IsZero (tateCohomology M (-1)) ↔ LinearMap.ker M.ρ.norm = Coinvariants.ker M.ρ := by
   rw [((tateCohomologyNegOneIso R G).app M).isZero_iff, ModuleCat.isZero_iff_subsingleton]

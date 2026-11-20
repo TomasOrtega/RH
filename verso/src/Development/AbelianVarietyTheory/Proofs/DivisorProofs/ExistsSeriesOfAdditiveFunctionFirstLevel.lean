@@ -17,6 +17,23 @@ noncomputable section
 
 namespace GlobalTheory.Katz.Chart
 
+/- English proof (translation)
+Introduce `p _ k _ d G c μ hμ b hb`. Take `⟨x, cc, B, -, hcob, hcounit, hB1⟩` from `PDivGroup.exists_of_cobOne_eq_zero (G := G) hb`. Establish `hfun` using `Chart.functions_are_series p k d G c`. Establish `hsq` using `chart_square_presents p k d G c`. Take `⟨Bs, hBs, -⟩` from `hfun.2.2 B.1 B.2`.
+
+Take `⟨κ, hκ, -⟩` from `hsq.2 cc.1 (fun n => (cc.2 n).2)`. Establish `hlaw` using `(LawCoord.main p k d G c).2 μ hμ`. Establish `hcoc : IsCoc μ κ` using `(isCoc_iff_mem_cocycles p k d G c μ hμ κ).2 (by`. Establish `e : (fun n => c.ev₂ n κ) = cc.1` using `funext hκ`. Rewrite using `[e]`.
+
+Conclude with `cc.2)`. Establish `hmap` using `(isMapOf_existsUnique_and p k d d G G c c ((p : ℤ_[p]) • 𝟙 G)).2 (nmul μ p) (GlobalTheory.T.isMapOf_natMultiple_formalGroupLaw p k d G c μ hμ p)`. Establish `hid : cob1 μ Bs = pull2 (nmul μ p) κ`. Take `⟨s, -, hs⟩` from `hsq.2 (fun n => c.ev₂ n (cob1 μ Bs)) (fun n => hfun.2.1 n _)`. Use `(hs _ fun n => rfl).trans (hs _ fun n => ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[(hmap.2 n).2, hκ, (hlaw.2 n Bs).2, hBs]`. Conclude with `(congrArg (fun z : G.cocycles => z.1 n) hcob).symm`. Establish `hB0 : constantCoeff Bs = 0`. Establish `h` using `(counit_dUnit_evA k d (G.A 1) (c.x 1) (c.nil 1) (c.aug 1) Bs).1`. Rewrite using `[← h]`.
+
+Express the relevant statement in the definitionally equal form `Coalgebra.counit (R := k) (c.ev 1 Bs) = 0`. Rewrite using `[hBs 1, hB1, hcounit]`. Establish `hX : ∀ (σ : Type) (i : σ), constantCoeff (X i : MvPowerSeries σ k) = 0` using `fun _ i => constantCoeff_X i`. Establish `hL : ∀ j, constantCoeff (inL (nmul μ p j)) = 0` using `fun j => by`. Unfold `inL`.
+
+Rewrite using `[SubstCalc.constantCoeff_subst_of_zero (fun i => hX _ _), hmap.1 j]`. Establish `hR : ∀ j, constantCoeff (inR (nmul μ p j)) = 0` using `fun j => by`. Unfold `inR`. Rewrite using `[SubstCalc.constantCoeff_subst_of_zero (fun i => hX _ _), hmap.1 j]`. Establish `hκ0 : constantCoeff κ = 0`.
+
+Establish `h1` using `(SubstCalc.powerSeriesEvalTwoGroups_rules_alt k d (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) _ _ hL hR).2.2.2.1 κ`. Establish `h2 : constantCoeff (cob1 μ Bs) = 0`. Unfold `cob1 inL inR`. Rewrite using `[map_sub, map_sub, SubstCalc.constantCoeff_subst_of_zero hlaw.1, SubstCalc.constantCoeff_subst_of_zero (fun i => hX _ _), SubstCalc.constantCoeff_subst_of_zero (fun i => hX _ _), hB0, sub_zero, sub_zero]`. Rewrite using `[← h1, ← h2, hid]`.
+
+Both sides reduce to the same expression. Conclude with `⟨κ, Bs, hcoc, hκ0, hid, (hBs 1).trans hB1⟩`.
+-/
 theorem exists_series_of_cobOne_eq_zero : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [CommRing k] (d : ℕ)
     (G : PDivGroup p k) (c : Katz.Chart G d) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k),
     c.IsLawOf μ → ∀ b : G.A 1, cobOne k (G.A 1) b = 0 →

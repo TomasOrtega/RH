@@ -17,6 +17,21 @@ noncomputable def hPm (σ : K →+* ℂ) (b : Fin k → Fin r → K) : Matrix (F
 
 noncomputable def hns {r : ℕ} (x : Fin r → ℂ) : ℝ := ∑ i, ‖x i‖ ^ 2
 
+/- English proof (translation)
+Set `A : Matrix (Fin r) s K` to `Matrix.of fun l i => v i l`. Establish `hAv : ∀ t : s → K, A *ᵥ t = ∑ i, t i • v i`. Introduce `t`. Use function extensionality and compare the values at `l`. Simplify using `[A, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+
+Establish `hker : LinearMap.ker A.mulVecLin = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `t ht`. Establish `h1 : ∑ i, t i • v i = 0` using `by rw [← hAv]; exact ht`. Use function extensionality and compare the values at `i`.
+
+Conclude with `Fintype.linearIndependent_iff.mp hv t h1 i`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective A.mulVecLin hker`. Establish `hLA : LinearMap.toMatrix' g * A = 1`. Establish `e : LinearMap.toMatrix' A.mulVecLin = A` using `LinearMap.toMatrix'_toLin' A`. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact.
+
+Simplify using `only [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id] at this`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `hLAσ : (LinearMap.toMatrix' g).map σ * A.map σ = 1`. Rewrite using `[← Matrix.map_mul, hLA]`. Conclude with `Matrix.map_one σ (map_zero σ) (map_one σ)`.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `hAc : A.map σ *ᵥ c = 0`. Rewrite using `[← hc]`. Use function extensionality and compare the values at `l`.
+
+Simplify using `[A, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `hc0 : c = 0`. Combine the equalities or inequalities in the displayed calculation. Introduce `i`. Rewrite using `[hc0]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem linearIndependent_map_ringHom_complex' (σ : K →+* ℂ) {s : Type*} [Fintype s] {v : s → Fin r → K}
     (hv : LinearIndependent K v) : LinearIndependent ℂ (fun i => fun l => σ (v i l)) := by
   classical
@@ -53,6 +68,9 @@ private theorem linearIndependent_map_ringHom_complex' (σ : K →+* ℂ) {s : T
   rw [hc0]
   rfl
 
+/- English proof (translation)
+Rewrite using `[linearIndependent_iff_finset_linearIndependent]`. Introduce `s`. Conclude with `linearIndependent_map_ringHom_complex' σ (hv.comp (Subtype.val : s → ι) Subtype.val_injective)`.
+-/
 theorem linearIndependent_map_embedding (σ : K →+* ℂ) {ι : Type*} {v : ι → Fin r → K}
     (hv : LinearIndependent K v) : LinearIndependent ℂ (fun i => fun l => σ (v i l)) := by
   classical
@@ -60,11 +78,21 @@ theorem linearIndependent_map_embedding (σ : K →+* ℂ) {ι : Type*} {v : ι 
   intro s
   exact linearIndependent_map_ringHom_complex' σ (hv.comp (Subtype.val : s → ι) Subtype.val_injective)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `[hBm, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+-/
 theorem embeddingColumns_mulVec (σ : K →+* ℂ) (b : Fin k → Fin r → K) (z : Fin k → ℂ) :
     hBm σ b *ᵥ z = ∑ j, z j • fun l => σ (b j l) := by
   funext l
   simp [hBm, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
+/- English proof (translation)
+Establish `hli` using `linearIndependent_map_embedding σ hb`. Establish `hinj : Function.Injective (hBm σ b).mulVec`. Introduce `x y hxy`. Establish `h1 : ∑ j, (x - y) j • (fun l => σ (b j l)) = 0`. Rewrite using `[← embeddingColumns_mulVec, Matrix.mulVec_sub, hxy, sub_self]`.
+
+Establish `h2` using `Fintype.linearIndependent_iff.mp hli (x - y) h1`. Use function extensionality and compare the values at `j`. Conclude with `sub_eq_zero.mp (h2 j)`. Establish `hker : LinearMap.ker ((hBm σ b)ᴴ * hBm σ b).mulVecLin = ⊥`. Rewrite using `[Matrix.ker_mulVecLin_conjTranspose_mul_self, LinearMap.ker_eq_bot]`.
+
+Conclude with `hinj`. Establish `hinj2 : Function.Injective ((hBm σ b)ᴴ * hBm σ b).mulVec` using `LinearMap.ker_eq_bot.mp hker`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp (Matrix.mulVec_injective_iff_isUnit.mp hinj2)`.
+-/
 theorem isUnit_det_embeddingGram (σ : K →+* ℂ) {b : Fin k → Fin r → K} (hb : LinearIndependent K b) :
     IsUnit ((hBm σ b)ᴴ * hBm σ b).det := by
   have hli := linearIndependent_map_embedding σ hb
@@ -81,6 +109,9 @@ theorem isUnit_det_embeddingGram (σ : K →+* ℂ) {b : Fin k → Fin r → K} 
   have hinj2 : Function.Injective ((hBm σ b)ᴴ * hBm σ b).mulVec := LinearMap.ker_eq_bot.mp hker
   exact (Matrix.isUnit_iff_isUnit_det _).mp (Matrix.mulVec_injective_iff_isUnit.mp hinj2)
 
+/- English proof (translation)
+Establish `hG` using `isUnit_det_embeddingGram σ hb`. Unfold `hPm`. Simplify using `only [Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv _ hG, Matrix.one_mul, sub_self]`.
+-/
 theorem conjTranspose_mul_orthogonalProjector (σ : K →+* ℂ) {b : Fin k → Fin r → K} (hb : LinearIndependent K b) :
     (hBm σ b)ᴴ * hPm σ b = 0 := by
   have hG := isUnit_det_embeddingGram σ hb
@@ -88,6 +119,9 @@ theorem conjTranspose_mul_orthogonalProjector (σ : K →+* ℂ) {b : Fin k → 
   simp only [Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc]
   rw [Matrix.mul_nonsing_inv _ hG, Matrix.one_mul, sub_self]
 
+/- English proof (translation)
+Establish `hG` using `isUnit_det_embeddingGram σ hb`. Unfold `hPm`. Simplify using `only [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul _ hG, Matrix.mul_one, sub_self]`.
+-/
 theorem orthogonalProjector_mul_embeddingColumns (σ : K →+* ℂ) {b : Fin k → Fin r → K} (hb : LinearIndependent K b) :
     hPm σ b * hBm σ b = 0 := by
   have hG := isUnit_det_embeddingGram σ hb
@@ -95,10 +129,16 @@ theorem orthogonalProjector_mul_embeddingColumns (σ : K →+* ℂ) {b : Fin k �
   simp only [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]
   rw [Matrix.nonsing_inv_mul _ hG, Matrix.mul_one, sub_self]
 
+/- English proof (translation)
+Simplify using `only [hPm, Matrix.conjTranspose_sub, Matrix.conjTranspose_one, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_nonsing_inv, Matrix.mul_assoc]`.
+-/
 theorem orthogonalProjector_conjTranspose (σ : K →+* ℂ) (b : Fin k → Fin r → K) : (hPm σ b)ᴴ = hPm σ b := by
   simp only [hPm, Matrix.conjTranspose_sub, Matrix.conjTranspose_one, Matrix.conjTranspose_mul,
     Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_nonsing_inv, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `h` using `conjTranspose_mul_orthogonalProjector σ hb`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]`. Use `_ = hPm σ b := by rw [h, Matrix.mul_zero, sub_zero]`.
+-/
 theorem orthogonalProjector_mul_self (σ : K →+* ℂ) {b : Fin k → Fin r → K} (hb : LinearIndependent K b) :
     hPm σ b * hPm σ b = hPm σ b := by
   have h := conjTranspose_mul_orthogonalProjector σ hb
@@ -108,11 +148,19 @@ theorem orthogonalProjector_mul_self (σ : K →+* ℂ) {b : Fin k → Fin r →
       rw [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]
     _ = hPm σ b := by rw [h, Matrix.mul_zero, sub_zero]
 
+/- English proof (translation)
+Rewrite using `[Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, orthogonalProjector_conjTranspose, orthogonalProjector_mul_embeddingColumns σ hb, Matrix.vecMul_zero, zero_dotProduct]`.
+-/
 theorem orthogonalProjector_orthogonal (σ : K →+* ℂ) {b : Fin k → Fin r → K} (hb : LinearIndependent K b)
     (v : Fin r → ℂ) (y : Fin k → ℂ) : star (hPm σ b *ᵥ v) ⬝ᵥ (hBm σ b *ᵥ y) = 0 := by
   rw [Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, orthogonalProjector_conjTranspose,
     orthogonalProjector_mul_embeddingColumns σ hb, Matrix.vecMul_zero, zero_dotProduct]
 
+/- English proof (translation)
+Unfold `hns`. Establish `h' : ∑ i, (a i * (starRingEnd ℂ) (c i)).re = 0`. Establish `h1 : ∑ i, a i * (starRingEnd ℂ) (c i) = (starRingEnd ℂ) (star a ⬝ᵥ c)`. Simplify using `only [dotProduct, map_sum, map_mul, Pi.star_apply, Complex.star_def, Complex.conj_conj]`. Rewrite using `[← Complex.re_sum, h1, h, map_zero, Complex.zero_re]`.
+
+Simplify using `only [Pi.add_apply, ← Complex.normSq_eq_norm_sq, Complex.normSq_add, Finset.sum_add_distrib, ← Finset.mul_sum, h', mul_zero, add_zero]`.
+-/
 theorem normSqSum_add_of_orthogonal {r : ℕ} (a c : Fin r → ℂ) (h : star a ⬝ᵥ c = 0) :
     hns (a + c) = hns a + hns c := by
   unfold hns
@@ -123,6 +171,15 @@ theorem normSqSum_add_of_orthogonal {r : ℕ} (a c : Fin r → ℂ) (h : star a 
   simp only [Pi.add_apply, ← Complex.normSq_eq_norm_sq, Complex.normSq_add, Finset.sum_add_distrib,
     ← Finset.mul_sum, h', mul_zero, add_zero]
 
+/- English proof (translation)
+Introduce `h0`. Establish `hli` using `linearIndependent_map_embedding σ ((linearIndependent_fin_cons).mpr ⟨hb, hq⟩)`. Establish `hcons : (fun i l => σ ((Fin.cons q b : Fin (k + 1) → Fin r → K) i l)) = (Fin.cons (fun l => σ (q l)) (fun j l => σ (b j l)) : Fin (k + 1) → Fin r → ℂ)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ ?_ i <;> simp`.
+
+Rewrite `hli` using `[hcons, linearIndependent_fin_cons]`. Apply `hli.2` to reduce the goal to its premises. Establish `hv : (fun i => σ (q i)) = (hBm σ b * ((hBm σ b)ᴴ * hBm σ b)⁻¹ * (hBm σ b)ᴴ) *ᵥ fun i => σ (q i)`. Unfold `hPm at h0`. Rewrite `h0` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`.
+
+Conclude with `h0`. Establish `hv2 : (fun i => σ (q i)) = hBm σ b *ᵥ (((hBm σ b)ᴴ * hBm σ b)⁻¹ *ᵥ ((hBm σ b)ᴴ *ᵥ fun i => σ (q i)))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Conclude with `hv`. Rewrite using `[hv2, embeddingColumns_mulVec]`.
+
+Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem orthogonalProjector_mulVec_ne_zero (σ : K →+* ℂ) {b : Fin k → Fin r → K} (hb : LinearIndependent K b)
     {q : Fin r → K} (hq : q ∉ Submodule.span K (Set.range b)) :
     hPm σ b *ᵥ (fun i => σ (q i)) ≠ 0 := by
@@ -146,6 +203,11 @@ theorem orthogonalProjector_mulVec_ne_zero (σ : K →+* ℂ) {b : Fin k → Fin
   rw [hv2, embeddingColumns_mulVec]
   exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).mp hq`. Establish `h1 : (fun i => σ ((∑ j, c j • b j) i)) = hBm σ b *ᵥ fun j => σ (c j)`. Rewrite using `[embeddingColumns_mulVec]`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, map_sum, map_mul]`.
+
+Rewrite using `[h1, Matrix.mulVec_mulVec, orthogonalProjector_mul_embeddingColumns σ hb, Matrix.zero_mulVec]`.
+-/
 theorem orthogonalProjector_mulVec_eq_zero (σ : K →+* ℂ) {b : Fin k → Fin r → K} (hb : LinearIndependent K b)
     {q : Fin r → K} (hq : q ∈ Submodule.span K (Set.range b)) :
     hPm σ b *ᵥ (fun i => σ (q i)) = 0 := by
@@ -162,18 +224,31 @@ section PT
 
 variable {K : Type} [Field K] [NumberField K] {r k : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[ReciprocityTheory.MultiplicativeHeights.gramX, ReciprocityTheory.MultiplicativeHeights.embVec, hBm, Matrix.mul_apply, dotProduct, Matrix.conjTranspose_apply]`.
+-/
 theorem crossGram_eq_embeddingColumns (σ : K →+* ℂ) {m : ℕ} (b : Fin k → Fin r → K) (c : Fin m → Fin r → K) :
     ReciprocityTheory.MultiplicativeHeights.gramX 1 σ b c = (hBm σ b)ᴴ * hBm σ c := by
   ext i j
   simp [ReciprocityTheory.MultiplicativeHeights.gramX, ReciprocityTheory.MultiplicativeHeights.embVec, hBm, Matrix.mul_apply, dotProduct,
     Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[ReciprocityTheory.MultiplicativeHeights.gramC, ReciprocityTheory.MultiplicativeHeights.embVec, hBm, Matrix.mul_apply, dotProduct, Matrix.conjTranspose_apply]`.
+-/
 theorem gramMatrix_eq_embeddingColumns (σ : K →+* ℂ) (b : Fin k → Fin r → K) :
     ReciprocityTheory.MultiplicativeHeights.gramC 1 σ b = (hBm σ b)ᴴ * hBm σ b := by
   ext i j
   simp [ReciprocityTheory.MultiplicativeHeights.gramC, ReciprocityTheory.MultiplicativeHeights.embVec, hBm, Matrix.mul_apply, dotProduct,
     Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Establish `key : ∀ (M : Matrix (Fin r) (Fin r) ℂ) (C : Matrix (Fin r) (Fin m) ℂ) (i j : Fin m), (Cᴴ * M * C) i j = star (fun l => C l i) ⬝ᵥ (M *ᵥ fun l => C l j)`. Introduce `M C i j`. Simplify using `only [Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, Pi.star_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`. Establish `hq : ReciprocityTheory.MultiplicativeHeights.quotGramC 1 σ b c = (hBm σ c)ᴴ * hPm σ b * hBm σ c`.
+
+Unfold `ReciprocityTheory.MultiplicativeHeights.quotGramC`. Rewrite using `[gramMatrix_eq_embeddingColumns, gramMatrix_eq_embeddingColumns, crossGram_eq_embeddingColumns, crossGram_eq_embeddingColumns]`. Unfold `hPm`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[hq, key, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, orthogonalProjector_conjTranspose, orthogonalProjector_mul_self σ hb]`.
+
+Both sides reduce to the same expression.
+-/
 theorem quotientGram_eq_projector (σ : K →+* ℂ) {b : Fin k → Fin r → K} (hb : LinearIndependent K b)
     {m : ℕ} (c : Fin m → Fin r → K) (i j : Fin m) :
     ReciprocityTheory.MultiplicativeHeights.quotGramC 1 σ b c i j =

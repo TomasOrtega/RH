@@ -5,6 +5,21 @@ open GlobalTheory.K5
 
 namespace GlobalTheory.K5
 
+/- English proof (translation)
+Establish `hfac : ∀ x : S, x ≠ 0 → ∃ (n : ℕ) (u : S), IsUnit u ∧ x = π ^ n * u`. Introduce `x hx`. Establish `hex : ∃ n : ℕ, ¬ π ^ (n + 1) ∣ x`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Conclude with `hx (hsep x fun n => (pow_dvd_pow π (Nat.le_succ n)).trans (h n))`. Establish `h1 : π ^ (Nat.find hex) ∣ x`. Break down `h : Nat.find hex with _ | m` into its components or cases. Simplify using the standard rewrite rules. Use `Nat.find_min hex (m := m) (by omega)` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨u, hxu⟩` from `h1`. Use `⟨Nat.find hex, u, hu u ?_, hxu⟩` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩`. Conclude with `Nat.find_spec hex ⟨v, by rw [pow_succ, mul_assoc, ← hv]; exact hxu⟩`.
+
+Establish `: Nontrivial S` using `⟨⟨π ^ 0, 0, hn 0⟩⟩`. Establish `: NoZeroDivisors S` using `⟨fun {x y} hxy => by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Take `⟨a, u, hu', rfl⟩` from `hfac x h.1`.
+
+Take `⟨b, v, hv', rfl⟩` from `hfac y h.2`. Apply `hn (a + b)` to reduce the goal to its premises. Establish `: π ^ (a + b) * (u * v) = 0` using `by rw [← hxy]; ring`. Conclude with `((hu'.mul hv').mul_left_eq_zero).1 this⟩`. Establish `hd : IsDomain S` using `NoZeroDivisors.to_isDomain S`.
+
+Establish `hπ0 : π ≠ 0` using `by simpa using hn 1`. Establish `hprime : Prime π`. Use `⟨hπ0, hnu, fun a b hab => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Conclude with `hnu (isUnit_of_dvd_unit hab ((hu a h.1).mul (hu b h.2)))`. Use `⟨hd, IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨π, hprime.irreducible, fun {x} hx => ?_⟩, hprime.irreducible⟩` and prove the remaining obligations. Take `⟨n, u, hu', rfl⟩` from `hfac x hx`. Conclude with `⟨n, hu'.unit, rfl⟩`.
+-/
 theorem dvr_of_separated {S : Type*} [CommRing S] (π : S) (hn : ∀ n : ℕ, π ^ n ≠ 0)
     (hnu : ¬ IsUnit π) (hu : ∀ x, ¬ π ∣ x → IsUnit x) (hsep : ∀ x, (∀ n : ℕ, π ^ n ∣ x) → x = 0) :
     ∃ _ : IsDomain S, IsDiscreteValuationRing S ∧ Irreducible π := by
@@ -45,6 +60,15 @@ theorem dvr_of_separated {S : Type*} [CommRing S] (π : S) (hn : ∀ n : ℕ, π
   obtain ⟨n, u, hu', rfl⟩ := hfac x hx
   exact ⟨n, hu'.unit, rfl⟩
 
+/- English proof (translation)
+Establish `fg : (Ideal.span {a}).FG` using `Submodule.fg_span_singleton _`. Establish `hc` using `AdicCompletion.isAdicComplete_self (Ideal.span {a}) fg`. Rewrite `hc` using `[Ideal.map_span, Set.image_singleton]`. Establish `hnu : ¬ IsUnit (algebraMap R (AdicCompletion (Ideal.span {a}) R) a)` using `fun h => hmax.ne_top (Ideal.span_singleton_eq_top.2 h)`. Use `isLocalRing_of_isAdicComplete_maximal (Ideal.span {algebraMap R (AdicCompletion (Ideal.span {a}) R) a})` as an intermediate fact.
+
+Use `dvr_of_separated _ (fun n hn => ?_) hnu (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations. Rewrite `hn` using `[← map_pow]`. Establish `h2` using `congrArg (AdicCompletion.evalₐ (Ideal.span {a}) (n + 1)) hn`. Rewrite `h2` using `[AlgHom.commutes, map_zero, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem, Ideal.span_singleton_pow, Ideal.mem_span_singleton, pow_succ]`. Establish `h3 : a ^ n * a ∣ a ^ n * 1` using `by simpa using h2`.
+
+Conclude with `hnu ((isUnit_of_dvd_one ((mul_dvd_mul_iff_left (pow_ne_zero n ha)).1 h3)).map _)`. Assume the negation of the conclusion as `hxu`. Establish `: x ∈ IsLocalRing.maximalIdeal _` using `hxu`. Rewrite `this` using `[← IsLocalRing.eq_maximalIdeal hmax, Ideal.mem_span_singleton]`. Conclude with `hx this`.
+
+Use `hc.toIsHausdorff.haus' x fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `hx n`.
+-/
 theorem adicCompletion_dvr {R : Type*} [CommRing R] [IsDomain R] (a : R) (ha : a ≠ 0)
     (hmax : (Ideal.span {algebraMap R (AdicCompletion (Ideal.span {a}) R) a}).IsMaximal) :
     ∃ _ : IsDomain (AdicCompletion (Ideal.span {a}) R),
@@ -72,6 +96,11 @@ theorem adicCompletion_dvr {R : Type*} [CommRing R] [IsDomain R] (a : R) (ha : a
     rw [SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
     exact hx n
 
+/- English proof (translation)
+Establish `hp : (p : Lau p) ≠ 0`. Establish `h : (p : ℤ_[p]) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Rewrite using `[← map_natCast (HahnSeries.C : ℤ_[p] →+* Lau p)]`. Conclude with `HahnSeries.C_ne_zero h`. Take `⟨e⟩` from `exists_completedLaurent_quot_prime_equiv_laurentFp p`.
+
+Establish `hmax : (Ideal.span {(p : O0 p)}).IsMaximal` using `Ideal.Quotient.maximal_of_isField _ (e.toMulEquiv.isField (Field.toIsField _))`. Use `adicCompletion_dvr (p : Lau p) hp (by rw [map_natCast]; exact hmax)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this`.
+-/
 theorem completed_laurent_isDVR (p : ℕ) [Fact p.Prime] :
     ∃ _ : IsDomain (O0 p), IsDiscreteValuationRing (O0 p) ∧ Irreducible (p : O0 p) := by
   have hp : (p : Lau p) ≠ 0 := by

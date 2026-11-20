@@ -12,6 +12,11 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal UpperTheory.V.Published U
 open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ N V _ _ π s x hd hs hu`. Establish `hmem : ∀ a, x a ∈ Finset.univ.val.map x` using `fun a => Multiset.mem_map_of_mem x (Finset.mem_univ_val a)`. Establish `hx : ∀ a, (x a).IsCusp` using `fun a => hs.isCusp (hmem a)`. Establish `hP : (prodIrr x hd).IsIrreducible` using `GlobalTheory.RgGu.Holds.lUnlinkedIrr_holds k s N (fun a => Segment.single (x a) (hx a)) x hd (fun a b => GlobalTheory.CompanionTheory.BZPair.not_linked_single (hx a) (hx b) (hu _ (hmem b) _ (hmem a)) (hu _ (hmem a) _ (hmem b))) (fun a => (single_spec (hx a)).2.1)`. Establish `h1` using `GlobalTheory.LocGL.SupportPerm.isSubquotient_prodIrr_of_hasSupport UpperTheory.Zero.LLC.Pr.zel UpperTheory.Zero.LLC.Pr.bz k N s ⟨V, π, hs.isSmooth, hs.isIrreducible⟩ x hd hs`.
+
+Use `haveI := GlobalTheory.ReducedFactor.nontrivial_of_irr hs.isIrreducible`. Take `⟨E⟩` from `GlobalTheory.TypeTwo.PowIrrProof.equiv_of_isSubquotient h1 hP`. Conclude with `⟨E.symm⟩`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.unlFull :
     UnlFull := by
   intro k _ _ _ _ _ N V _ _ π s x hd hs hu

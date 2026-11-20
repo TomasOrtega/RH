@@ -21,10 +21,28 @@ namespace GlobalTheory.PsiEvenCoordUnit
 
 open GlobalTheory.PeriodBalance GlobalTheory.PsiTauCoordRel
 
+/- English proof (translation)
+Rewrite using `[mul_right_comm (a * b⁻¹), mul_right_comm a, ← h, mul_right_comm (b * y), mul_right_comm b, mul_inv_cancel, _root_.one_mul, mul_inv_cancel_right]`.
+-/
 theorem alg' {G : Type} [CommGroup G] (a b c x y : G) (h : b * y * c = a * x) : y = a * b⁻¹ * c⁻¹ * x := by
   rw [mul_right_comm (a * b⁻¹), mul_right_comm a, ← h, mul_right_comm (b * y), mul_right_comm b, mul_inv_cancel,
     _root_.one_mul, mul_inv_cancel_right]
 
+/- English proof (translation)
+Introduce `R _ _ _ D hE y x x' hx hx'`. Use `haveI : IsProper D.P.A.hom := D.P.isAb.proper`. Take `⟨ξ⟩ : Nonempty (Spec (CommRingCat.of (FractionRing R)))` from `⟨⟨⊥, Ideal.isPrime_bot⟩⟩`. Take `⟨J, hJ, hJc⟩` from `exists_good_integral ξ D.P.isLB D.P.A.hom`. Set `cU : Rˣ →* ((Spec (CommRingCat.of (FractionRing R))).presheaf.stalk ξ)ˣ` to `Units.map (cst ξ).toMonoidHom`.
+
+Set `kU : (FractionRing R)ˣ →* ((Spec (CommRingCat.of (FractionRing R))).presheaf.stalk ξ)ˣ` to `Units.map (kst ξ).toMonoidHom`. Establish `e` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (hE y) (𝟙 _))`. Rewrite `e` using `[val_pull hJ]`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : Rˣ, val D.sym (𝟙 _ ≫ D.xK y) ξ J = cU w := by`. Establish `: 𝟙 _ ≫ D.xK y = jK R ≫ (D.c y).left` using `by rw [Category.id_comp]; exact xK_eq D y`.
+
+Rewrite using `[this]`. Use `val_int ξ hJc D.sym (D.c y).left fun k => ?_` and prove the remaining obligations. Take `⟨q, hq⟩ : ∃ q : D.P.A ⟶ D.P.A, (![(ι[D.P.A]).left, 𝟙 D.P.A.left] : Fin 2 → _) k = q.left` from `by fin_cases k`. Conclude with `⟨_, rfl⟩`. Conclude with `⟨𝟙 _, rfl⟩`.
+
+Rewrite using `[hq, Category.assoc, Over.w q, Over.w]`. Both sides reduce to the same expression. Take `⟨j, h, i1, rfl⟩` from `hx`. Take `⟨j', h', i1', rfl⟩` from `hx'`. Take `⟨c1, g1⟩` from `val_psi_chart D ξ hJ hJc y j i1 (h trivial)`.
+
+Take `⟨c2, g2⟩` from `val_psi_chart D ξ hJ hJc (-y) j' i1' (h' trivial)`. Establish `e1 : gm (𝟙 _) ξ (LB.wchart D.P.L _ j) ((D.psi y).s j) = kU (genVal (D.psi y) j h)` using `Units.ext (gm_genVal ξ (D.psi y) j h)`. Establish `e2 : gm (𝟙 _) ξ (LB.wchart D.P.L _ j') ((D.psi (-y)).s j') = kU (genVal (D.psi (-y)) j' h')` using `Units.ext (gm_genVal ξ (D.psi (-y)) j' h')`. Establish `f : cU c2 * kU (genVal (D.psi (-y)) j' h') * cU w = cU c1 * kU (genVal (D.psi y) j h)` using `(congrArg₂ (· * ·) (g2.trans (congrArg (cU c2 * ·) e2)) hw).symm.trans (e.trans (g1.trans (congrArg (cU c1 * ·) e1)))`. Use `⟨c1 * c2⁻¹ * w⁻¹, ?_⟩` and prove the remaining obligations.
+
+Establish `k3 : genVal (D.psi (-y)) j' h' = Units.map (algebraMap R (FractionRing R)).toMonoidHom (c1 * c2⁻¹ * w⁻¹) * genVal (D.psi y) j h`. Use `Units.map_injective (f := (kst ξ).toMonoidHom) (kst_injective ξ) ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Express the relevant statement in the definitionally equal form `kU _ = cU (c1 * c2⁻¹ * w⁻¹) * kU _`. Rewrite using `[map_mul, map_mul, map_inv, map_inv]`.
+
+Conclude with `alg' _ _ _ _ _ f`. Conclude with `congrArg Units.val k3`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R), D.PsiEven →
     ∀ (y : D.X) (x x' : (FractionRing R)ˣ), IsPsiCoord D y x → IsPsiCoord D (-y) x' →
       ∃ u : Rˣ, (x' : FractionRing R) = algebraMap R (FractionRing R) u * x := by

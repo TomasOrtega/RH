@@ -13,6 +13,21 @@ namespace GlobalTheory.ThetaLevelP
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hW` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 (hTh.thF_mem i t y)`. Use `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).2 ⟨hW.aut, hW.cusp, fun v k' hk' g => ?_, hW.equiv, hW.cont⟩` and prove the remaining obligations. Take `⟨g0, hl', hc'⟩` from `GlobalTheory.LevelRankR.exists_lift_of_mem_level R i P.conj k' hk'`. Establish `hL` using `(GlobalTheory.StepLifts.lifts_exist R hIs i).1 t`. Establish `hx` using `hL g0`.
+
+Use `clear hL`. Break down `hx with ⟨κ, hl⟩` into its components or cases. Establish `h1` using `GlobalTheory.T.lift_mem_levelOfDatum_flagCharacter R i t P`. Set `g1 : P.H` to `⟨g0.1, g0.2⟩`. Establish `h3` using `h1 g1 κ hl`.
+
+Use `clear h1`. Establish `hf0 : levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) κ ≠ 0` using `Units.ne_zero _`. Establish `hy' : ∀ k ∈ levS (Vc D i) (R.βV i) (RecTie.datVP R i t P), ∀ h, R.extV i t y (h * k) = levChi (Vc D i) (R.βV i) (RecTie.datVP R i t P) k • R.extV i t y h` using `hy`. Establish `e1` using `hy' κ h3.1`. Establish `e2` using `h3.2`.
+
+Use `clear hy' hy h3`. Establish `hnum : (((P.chi g1 : ℂˣ) : ℂ))⁻¹ = (levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) κ)⁻¹ * levChi (Vc D i) (R.βV i) (RecTie.datVP R i t P) κ`. Rewrite using `[e2]`. Clear the denominators using the available nonvanishing facts. Establish `hsh : ∀ h, R.extV i t ((((P.chi g1 : ℂˣ) : ℂ))⁻¹ • y) h = (levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) κ)⁻¹ • R.extV i t y (h * κ)`.
+
+Introduce `h`. Establish `e3 : R.extV i t ((((P.chi g1 : ℂˣ) : ℂ))⁻¹ • y) h = (((P.chi g1 : ℂˣ) : ℂ))⁻¹ • R.extV i t y h` using `congrFun ((R.extV i t).map_smul _ y) h`. Use `e3.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun w => (levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) κ)⁻¹ • w) (e1 h).symm)` and prove the remaining obligations. Use `(congrArg (fun a : ℂ => a • R.extV i t y h) hnum).trans ?_` and prove the remaining obligations.
+
+Conclude with `mul_smul _ _ _`. Establish `key` using `GlobalTheory.T.thetaLift_intertwines_lifts_smoothVectors R hIs hMod hTh i t g0.1 κ k' hl hl' y _ hsh v g`. Establish `hcc : levChi (Wc D i) (R.βW i) (R.datWp i P.conj) k' = (((P.chi g1 : ℂˣ) : ℂ))⁻¹`. Rewrite using `[hc']`. Express the relevant statement in the definitionally equal form `(((P.chi⁻¹) g1 : ℂˣ) : ℂ) = _`.
+
+Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val]`. Establish `e4 : R.thF i t ((((P.chi g1 : ℂˣ) : ℂ))⁻¹ • y) v g = (((P.chi g1 : ℂˣ) : ℂ))⁻¹ * R.thF i t y v g`. Establish `e5` using `congrFun (congrArg (fun T : MMap (R.MW i (sg0 D A)) => T v) ((R.thF i t).map_smul (((P.chi g1 : ℂˣ) : ℂ))⁻¹ y)) g`. Conclude with `e5`. Conclude with `key.symm.trans (e4.trans (congrArg (· * R.thF i t y v g) hcc.symm))`.
+-/
 theorem thF_mem_conj {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (hIs : R.toLevCh.Is A.μ0)
     (hMod : R.IsModels) (hTh : R.IsThP) (i : Fin D.R.m) (t : T) (P : LevelP R.Pg D.R.r ℂ) (y : (R.HV i t).H)
@@ -62,6 +77,9 @@ theorem thF_mem_conj {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hIs hMod hTh hv b i t y hy`. Rewrite using `[GlobalTheory.Proof.LevelCharacterConjugate.liftLevel_fixedEmbedding_eq_conj_rowLevel R F b hv]`. Conclude with `thF_mem_conj R hIs hMod hTh i t (R.levR F b) y hy`.
+-/
 theorem thF_mem_level : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), ∀ F : Face D A, R.toLevCh.Is A.μ0 → R.IsModels → R.IsThP → A.v0 = InfinitePlace.mk D.what₂.embLL → ∀ (b : Bool) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H), R.extV i t y ∈ RecTie.levSubV (Vc D i) (R.cV i).W (levS _ (R.βV i) (RecTie.datVP R i t (R.levR F b))) (levChi _ (R.βV i) (RecTie.datVP R i t (R.levR F b))) → R.thF i t y ∈ Mult R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i (R.levL F b (sg0 D A)))) (levChi _ (R.βW i) (R.datWp i (R.levL F b (sg0 D A)))) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hIs hMod hTh hv b i t y hy
   rw [GlobalTheory.Proof.LevelCharacterConjugate.liftLevel_fixedEmbedding_eq_conj_rowLevel R F b hv]

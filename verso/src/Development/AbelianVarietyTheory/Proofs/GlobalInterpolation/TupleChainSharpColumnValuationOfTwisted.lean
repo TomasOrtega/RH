@@ -9,19 +9,35 @@ namespace GlobalTheory.LvT.TwSharp
 
 variable {D : D7} {u : D.what₂.Word}
 
+/- English proof (translation)
+Establish `h` using `(X.fm.lam_eq j hj τ a).trans (Y.fm.lam_eq j hj τ a).symm`. Conclude with `h` after adjusting the coercions.
+-/
 theorem weight_eq (X Y : Ch D u) (j : ℕ) (hj : j ≤ D.R.m) (τ : D.what₂.Tau) (a : Fin (D.R.N j)) :
     (X.fm.lam j τ).w a = (Y.fm.lam j τ).w a := by
   have h := (X.fm.lam_eq j hj τ a).trans (Y.fm.lam_eq j hj τ a).symm
   exact_mod_cast h
 
+/- English proof (translation)
+Unfold `TauWeight`. Use `Finset.sup_congr rfl fun i hi => Finset.sup_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[weight_eq X Y i (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)) τ a]`.
+-/
 theorem weightSup_eq (X Y : Ch D u) (τ : D.what₂.Tau) : TauWeight X τ = TauWeight Y τ := by
   unfold TauWeight
   refine Finset.sup_congr rfl fun i hi => Finset.sup_congr rfl fun a _ => ?_
   rw [weight_eq X Y i (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)) τ a]
 
+/- English proof (translation)
+Unfold `ETpi Wt`. Simplify using `only [weightSup_eq X Y]`.
+-/
 theorem exponent_eq (X Y : Ch D u) : ETpi X = ETpi Y := by
   unfold ETpi Wt; simp only [weightSup_eq X Y]
 
+/- English proof (translation)
+Introduce `D u Tw μ hT h w hw c n hc hn x hx`. Establish `hw' : OverT (tw Tw u μ) w` using `hw.trans (Tw.A_T u μ).symm`. Establish `hown : ET (own D u) w = EatT D u w` using `rfl`. Establish `hE : ET (tw Tw u μ) w = EatT D u w`. Rewrite using `[← hown]`.
+
+Unfold `ET`. Rewrite using `[exponent_eq (tw Tw u μ) (own D u)]`. Use `show (if (Tw.fm u μ).seenP w = true then _ else _) = _`. Rewrite using `[(hT w hw).1]`. Take `⟨y, hy, e⟩` from `h w hw' c n hc (hE ▸ hn) (Tw.e0 u μ x) ((hT w hw).2 x hx)`.
+
+Use `⟨y, hy, e.trans ?_⟩` and prove the remaining obligations. Use `show _ • (D.chTw u μ).col ((Tw.fm u μ).emb 0 (Tw.e0 u μ x)) = _`. Rewrite using `[Tw.embed_mul_block_embedding]`.
+-/
 theorem tupleChainSharpColumnValuation_of_twisted : ∀ (D : D7) (u : D.what₂.Word) (Tw : TwForms D) (μ : D.what₂.Tup),
     Step0Tie Tw u μ → Conclusion5Sharp (tw Tw u μ) → TupleChainSharpColumnValuation Tw u μ := by
   intro D u Tw μ hT h w hw c n hc hn x hx

@@ -11,6 +11,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.Glob
 
+/- English proof (translation)
+The claim follows from `genA_of unitD pIn (kInInf_of unitD locRedField) (kInFin_of unitD (GenFinLocHf.locFin_of locRedField locRedSplit) glueLevi glueW unitAE)`.
+-/
 theorem genA_hf : GenA :=
   genA_of unitD pIn (kInInf_of unitD locRedField)
     (kInFin_of unitD (GenFinLocHf.locFin_of locRedField locRedSplit) glueLevi glueW unitAE)

@@ -14,6 +14,11 @@ section NormMap
 variable {A B A' B' ι : Type*} [CommRing A] [CommRing B] [Algebra A B] [CommRing A']
   [CommRing B'] [Algebra A' B'] [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Establish `hb : ∀ j, ψ (b j) = b' j` using `fun j ↦ b'.repr.injective <| Finsupp.ext fun i ↦ by`. Rewrite using `[h, b.repr_self, b'.repr_self, Finsupp.single_apply, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Algebra.norm_eq_matrix_det b, Algebra.norm_eq_matrix_det b', RingHom.map_det]`. Use `congr 1`.
+
+Use extensionality with `i j`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, RingHom.mapMatrix_apply, Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul, ← hb, ← map_mul, h]`.
+-/
 theorem norm_map_of_repr (φ : A →+* A') (ψ : B →+* B') (b : Basis ι A B) (b' : Basis ι A' B')
     (h : ∀ y i, b'.repr (ψ y) i = φ (b.repr y i)) (y : B) :
     Algebra.norm A' (ψ y) = φ (Algebra.norm A y) := by
@@ -41,6 +46,9 @@ def adeleTensorAlgEquivLeft : 𝔸[K] ⊗[K] L ≃ₐ[𝔸[K]] 𝔸[L] :=
     change adeleTensorEquiv K L (Algebra.TensorProduct.comm K 𝔸[K] L (a ⊗ₜ 1)) = adeleMap K L a
     rw [Algebra.TensorProduct.comm_tmul, adeleTensorEquiv_tmul, map_one, one_mul]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `adeleTensorEquiv K L (Algebra.TensorProduct.comm K 𝔸[K] L (a ⊗ₜ l)) = _`. Rewrite using `[Algebra.TensorProduct.comm_tmul, adeleTensorEquiv_tmul]`.
+-/
 theorem adeleTensorAlgEquivLeft_tmul (a : 𝔸[K]) (l : L) :
     adeleTensorAlgEquivLeft K L (a ⊗ₜ l) = algebraMap L 𝔸[L] l * adeleMap K L a := by
   change adeleTensorEquiv K L (Algebra.TensorProduct.comm K 𝔸[K] L (a ⊗ₜ l)) = _
@@ -52,11 +60,19 @@ def adeleBasis : Basis ι 𝔸[K] 𝔸[L] :=
   (Algebra.TensorProduct.basis 𝔸[K] b).map (adeleTensorAlgEquivLeft K L).toLinearEquiv
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Rewrite using `[adeleBasis, Basis.map_apply, Algebra.TensorProduct.basis_apply]`. Express the relevant statement in the definitionally equal form `adeleTensorAlgEquivLeft K L (1 ⊗ₜ b i) = _`. Rewrite using `[adeleTensorAlgEquivLeft_tmul, map_one, mul_one]`.
+-/
 theorem adeleBasis_apply (i : ι) : adeleBasis b i = algebraMap L 𝔸[L] (b i) := by
   rw [adeleBasis, Basis.map_apply, Algebra.TensorProduct.basis_apply]
   change adeleTensorAlgEquivLeft K L (1 ⊗ₜ b i) = _
   rw [adeleTensorAlgEquivLeft_tmul, map_one, mul_one]
 
+/- English proof (translation)
+Establish `hy : ∑ j, coord b j y • adeleBasis b j = y` using `by conv_rhs => rw [← adeleTensorEquiv_sum_coord b y]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[adeleTensorEquiv_tmul, adeleBasis_apply, Algebra.smul_def, algebraMap_adeleRing, mul_comm]`. Use `conv_lhs => rw [← hy]`.
+
+Rewrite using `[Basis.repr_sum_self]`.
+-/
 theorem adeleBasis_repr (y : 𝔸[L]) (i : ι) : (adeleBasis b).repr y i = coord b i y := by
   have hy : ∑ j, coord b j y • adeleBasis b j = y := by
     conv_rhs => rw [← adeleTensorEquiv_sum_coord b y]
@@ -68,6 +84,9 @@ theorem adeleBasis_repr (y : 𝔸[L]) (i : ι) : (adeleBasis b).repr y i = coord
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Establish `hl : algebraMap L 𝔸[L] l = ∑ j, algebraMap K 𝔸[K] (b.repr l j) • adeleBasis b j` using `by conv_lhs => rw [← b.sum_repr l]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[adeleBasis_apply, Algebra.smul_def, map_mul, Algebra.smul_def, algebraMap_adeleRing, adeleMap_algebraMap]`. Rewrite using `[hl, Basis.repr_sum_self]`.
+-/
 theorem adeleBasis_repr_algebraMap (l : L) (i : ι) :
     (adeleBasis b).repr (algebraMap L 𝔸[L] l) i = algebraMap K 𝔸[K] (b.repr l i) := by
   classical
@@ -92,9 +111,17 @@ scoped instance : Module.Finite 𝔸[K] 𝔸[L] := .of_basis (adeleBasis (Module
 
 variable (K L) in
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_eq_card_basis (adeleBasis (Module.finBasis K L)), Fintype.card_fin]`.
+-/
 theorem finrank_adeleRing : Module.finrank 𝔸[K] 𝔸[L] = Module.finrank K L := by
   rw [Module.finrank_eq_card_basis (adeleBasis (Module.finBasis K L)), Fintype.card_fin]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis K L`. Establish `h : (Algebra.norm 𝔸[K] : 𝔸[L] → 𝔸[K]) = fun y ↦ (Algebra.leftMulMatrix (adeleBasis b) y).det`. Use function extensionality and compare the values at `fun y ↦ Algebra.norm_eq_matrix_det (adeleBasis b) y`. Rewrite using `[h]`. Use `Continuous.matrix_det (continuous_matrix fun i j ↦ ?_)` and prove the remaining obligations.
+
+Repeatedly rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, adeleBasis_repr]`. Conclude with `(continuous_coord b i).comp (continuous_id.mul continuous_const)`.
+-/
 theorem continuous_norm_adeleRing :
     Continuous (Algebra.norm 𝔸[K] : 𝔸[L] → 𝔸[K]) := by
   let b := Module.finBasis K L
@@ -106,17 +133,26 @@ theorem continuous_norm_adeleRing :
   simp_rw [Algebra.leftMulMatrix_eq_repr_mul, adeleBasis_repr]
   exact (continuous_coord b i).comp (continuous_id.mul continuous_const)
 
+/- English proof (translation)
+Conclude with `norm_map_of_repr (algebraMap K 𝔸[K]) (algebraMap L 𝔸[L]) (Module.finBasis K L) (adeleBasis (Module.finBasis K L)) (fun y i ↦ adeleBasis_repr_algebraMap _ y i) l`.
+-/
 theorem norm_adeleRing_algebraMap (l : L) :
     Algebra.norm 𝔸[K] (algebraMap L 𝔸[L] l) = algebraMap K 𝔸[K] (Algebra.norm K l) := by
   classical
   exact norm_map_of_repr (algebraMap K 𝔸[K]) (algebraMap L 𝔸[L]) (Module.finBasis K L)
     (adeleBasis (Module.finBasis K L)) (fun y i ↦ adeleBasis_repr_algebraMap _ y i) l
 
+/- English proof (translation)
+Rewrite using `[← finrank_adeleRing K L]`. Conclude with `Algebra.norm_algebraMap x`.
+-/
 theorem norm_adeleRing_adeleMap (x : 𝔸[K]) :
     Algebra.norm 𝔸[K] (adeleMap K L x) = x ^ Module.finrank K L := by
   rw [← finrank_adeleRing K L]
   exact Algebra.norm_algebraMap x
 
+/- English proof (translation)
+Establish `h : (adeleTensorEquiv K L).symm (algebraMap L 𝔸[L] l) = l ⊗ₜ 1`. Rewrite using `[AlgEquiv.symm_apply_eq, adeleTensorEquiv_tmul, map_one, mul_one]`. Rewrite using `[adeleRetraction, h]`. Express the relevant statement in the definitionally equal form `TensorProduct.lid K 𝔸[K] (LinearMap.rTensor 𝔸[K] (normalizedTrace K L) (l ⊗ₜ 1)) = _`. Rewrite using `[LinearMap.rTensor_tmul, TensorProduct.lid_tmul, Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem adeleRetraction_algebraMap (l : L) :
     adeleRetraction K L (algebraMap L 𝔸[L] l) = algebraMap K 𝔸[K] (normalizedTrace K L l) := by
   have h : (adeleTensorEquiv K L).symm (algebraMap L 𝔸[L] l) = l ⊗ₜ 1 := by
@@ -137,16 +173,28 @@ def ideleEmbedding : IdeleGroup K →* IdeleGroup L :=
 variable {K L}
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_ideleEmbedding (x : IdeleGroup K) :
     ((ideleEmbedding K L x : IdeleGroup L) : 𝔸[L]) = adeleMap K L x :=
   rfl
 
+/- English proof (translation)
+The claim follows from `fun _ _ h ↦ Units.ext (adeleMap_injective (congrArg Units.val h))`.
+-/
 theorem ideleEmbedding_injective : Function.Injective (ideleEmbedding K L) := fun _ _ h ↦
   Units.ext (adeleMap_injective (congrArg Units.val h))
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map (adeleMap K L).toMonoidHom continuous_adeleMap`.
+-/
 theorem continuous_ideleEmbedding : Continuous (ideleEmbedding K L) :=
   Continuous.units_map (adeleMap K L).toMonoidHom continuous_adeleMap
 
+/- English proof (translation)
+The claim follows from `haveI : T2Space (FiniteAdeleRing (𝓞 L) L) := inferInstanceAs (T2Space (Πʳ w : HeightOneSpectrum (𝓞 L), [w.adicCompletion L, w.adicCompletionIntegers L])) haveI : T2Space (InfiniteAdeleRing L) := inferInstanceAs (T2Space ((w : NumberField.InfinitePlace L) → w.Completion)) haveI : …`.
+-/
 theorem isClosedEmbedding_ideleEmbedding : IsClosedEmbedding (ideleEmbedding K L) :=
   haveI : T2Space (FiniteAdeleRing (𝓞 L) L) := inferInstanceAs (T2Space
     (Πʳ w : HeightOneSpectrum (𝓞 L), [w.adicCompletion L, w.adicCompletionIntegers L]))
@@ -160,6 +208,9 @@ theorem isClosedEmbedding_ideleEmbedding : IsClosedEmbedding (ideleEmbedding K L
   haveI : T2Space 𝔸[K] := inferInstanceAs (T2Space (InfiniteAdeleRing K × FiniteAdeleRing (𝓞 K) K))
   Topology.IsClosedEmbedding.units_map (f := (adeleMap K L).toMonoidHom) isClosedEmbedding_adeleMap
 
+/- English proof (translation)
+The claim follows from `Units.ext (adeleMap_algebraMap (k : K))`.
+-/
 theorem ideleEmbedding_diagonal (k : Kˣ) :
     ideleEmbedding K L (IdeleGroup.diagonal K k) =
       IdeleGroup.diagonal L (Units.map (algebraMap K L).toMonoidHom k) :=
@@ -171,27 +222,45 @@ def ideleNorm : IdeleGroup L →* IdeleGroup K :=
   Units.map (Algebra.norm 𝔸[K] : 𝔸[L] →* 𝔸[K])
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_ideleNorm (x : IdeleGroup L) :
     ((ideleNorm K L x : IdeleGroup K) : 𝔸[K]) = Algebra.norm 𝔸[K] (x : 𝔸[L]) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ continuous_norm_adeleRing`.
+-/
 theorem continuous_ideleNorm : Continuous (ideleNorm K L) :=
   Continuous.units_map _ continuous_norm_adeleRing
 
+/- English proof (translation)
+The claim follows from `Units.ext (norm_adeleRing_algebraMap (l : L))`.
+-/
 theorem ideleNorm_diagonal (l : Lˣ) :
     ideleNorm K L (IdeleGroup.diagonal L l) =
       IdeleGroup.diagonal K (Units.map (Algebra.norm K : L →* K) l) :=
   Units.ext (norm_adeleRing_algebraMap (l : L))
 
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [Units.val_pow_eq_pow_val]; exact norm_adeleRing_adeleMap (x : 𝔸[K]))`.
+-/
 theorem ideleNorm_ideleEmbedding (x : IdeleGroup K) :
     ideleNorm K L (ideleEmbedding K L x) = x ^ Module.finrank K L :=
   Units.ext (by rw [Units.val_pow_eq_pow_val]; exact norm_adeleRing_adeleMap (x : 𝔸[K]))
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨Units.map (algebraMap K L).toMonoidHom k, (ideleEmbedding_diagonal k).symm⟩`.
+-/
 theorem diagonal_range_le_comap_ideleEmbedding :
     (IdeleGroup.diagonal K).range ≤ (IdeleGroup.diagonal L).range.comap (ideleEmbedding K L) := by
   rintro _ ⟨k, rfl⟩
   exact ⟨Units.map (algebraMap K L).toMonoidHom k, (ideleEmbedding_diagonal k).symm⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `⟨Units.map (Algebra.norm K : L →* K) l, (ideleNorm_diagonal l).symm⟩`.
+-/
 theorem diagonal_range_le_comap_ideleNorm :
     (IdeleGroup.diagonal L).range ≤ (IdeleGroup.diagonal K).range.comap (ideleNorm K L) := by
   rintro _ ⟨l, rfl⟩
@@ -208,28 +277,48 @@ def ideleClassNorm : IdeleClassGroup L →* IdeleClassGroup K :=
   QuotientGroup.map _ _ (ideleNorm K L) diagonal_range_le_comap_ideleNorm
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem ideleClassMap_mk (x : IdeleGroup K) :
     ideleClassMap K L (IdeleClassGroup.mk K x) = IdeleClassGroup.mk L (ideleEmbedding K L x) :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ideleClassNorm_mk (x : IdeleGroup L) :
     ideleClassNorm K L (IdeleClassGroup.mk L x) = IdeleClassGroup.mk K (ideleNorm K L x) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `(QuotientGroup.isQuotientMap_mk _).continuous_iff.2 ((IdeleClassGroup.continuous_mk L).comp continuous_ideleEmbedding)`.
+-/
 theorem continuous_ideleClassMap : Continuous (ideleClassMap K L) :=
   (QuotientGroup.isQuotientMap_mk _).continuous_iff.2
     ((IdeleClassGroup.continuous_mk L).comp continuous_ideleEmbedding)
 
+/- English proof (translation)
+The claim follows from `(QuotientGroup.isQuotientMap_mk _).continuous_iff.2 ((IdeleClassGroup.continuous_mk K).comp continuous_ideleNorm)`.
+-/
 theorem continuous_ideleClassNorm : Continuous (ideleClassNorm K L) :=
   (QuotientGroup.isQuotientMap_mk _).continuous_iff.2
     ((IdeleClassGroup.continuous_mk K).comp continuous_ideleNorm)
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K c`. Rewrite using `[ideleClassMap_mk, ideleClassNorm_mk, ideleNorm_ideleEmbedding, map_pow]`.
+-/
 theorem ideleClassNorm_ideleClassMap (c : IdeleClassGroup K) :
     ideleClassNorm K L (ideleClassMap K L c) = c ^ Module.finrank K L := by
   obtain ⟨x, rfl⟩ := IdeleClassGroup.mk_surjective K c
   rw [ideleClassMap_mk, ideleClassNorm_mk, ideleNorm_ideleEmbedding, map_pow]
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `hx`. Establish `hxk : (x : 𝔸[K]) = algebraMap K 𝔸[K] (normalizedTrace K L (l : L))`. Rewrite using `[← adeleRetraction_adeleMap (L := L) (x : 𝔸[K]), ← coe_ideleEmbedding, ← hl, IdeleGroup.coe_diagonal, adeleRetraction_algebraMap]`. Establish `hk : normalizedTrace K L (l : L) ≠ 0`. Introduce `h`.
+
+Rewrite `hxk` using `[h, map_zero]`. Conclude with `x.ne_zero hxk`. Conclude with `⟨Units.mk0 _ hk, Units.ext hxk.symm⟩`.
+-/
 theorem mem_range_diagonal_of_ideleEmbedding {x : IdeleGroup K}
     (hx : ideleEmbedding K L x ∈ (IdeleGroup.diagonal L).range) :
     x ∈ (IdeleGroup.diagonal K).range := by
@@ -243,6 +332,9 @@ theorem mem_range_diagonal_of_ideleEmbedding {x : IdeleGroup K}
     exact x.ne_zero hxk
   exact ⟨Units.mk0 _ hk, Units.ext hxk.symm⟩
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_one _).2 fun c hc ↦ ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K c`. Rewrite `hc` using `[ideleClassMap_mk, ← MonoidHom.mem_ker, IdeleClassGroup.ker_mk]`. Rewrite using `[← MonoidHom.mem_ker, IdeleClassGroup.ker_mk]`. Conclude with `mem_range_diagonal_of_ideleEmbedding hc`.
+-/
 theorem ideleClassMap_injective : Function.Injective (ideleClassMap K L) := by
   refine (injective_iff_map_eq_one _).2 fun c hc ↦ ?_
   obtain ⟨x, rfl⟩ := IdeleClassGroup.mk_surjective K c

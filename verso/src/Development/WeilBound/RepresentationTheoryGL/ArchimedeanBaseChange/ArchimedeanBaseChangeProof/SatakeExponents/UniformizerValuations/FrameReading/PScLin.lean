@@ -16,6 +16,11 @@ namespace PositivityTheory.Rg.BcB.F.Tail.PSc
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv u hu`. Use `hv ⟨u, hu⟩` as an intermediate fact. Simplify using `using this`. Introduce `hv u`.
+
+Simplify using `using hv u u.2`.
+-/
 theorem mem_fixed_iff' {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
     {U : Subgroup G} {v : V} : v ∈ fixed ρ U ↔ ∀ u ∈ U, ρ u v = v := by
   constructor
@@ -25,6 +30,17 @@ theorem mem_fixed_iff' {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {�
   · intro hv u
     simpa using hv u u.2
 
+/- English proof (translation)
+Take `⟨hKo, hKc⟩` from `GlobalTheory.CompanionTheory.TwistOrbit.isOpen_isCompact_pair_integral_points (E := E) a b w`. Use `set S : Subgroup (GLw a w × GLw b w) := K2 a b w ⊓ U with hSdef`. Establish `hSo : IsOpen (S : Set (GLw a w × GLw b w))` using `hKo.inter hUo`. Establish `hidx : S.relIndex (K2 a b w) ≠ 0` using `GlobalTheory.FunObj.relIndex_inf_ne_zero (N := K2 a b w) (O := U) (C := K2 a b w) hUo hKc le_rfl le_rfl`. Establish `hfin` using `GlobalTheory.CompanionTheory.DiagAvg.finite_cosets S hSo u hu`.
+
+Use `set s := hfin.toFinset with hsdef`. Establish `hs : ∀ q, q ∉ s → u q.out = 0` using `fun q hq => by`. Assume the negation of the conclusion as `h0`. Conclude with `hq (hfin.mem_toFinset.2 h0)`. Establish `hGf` using `(mem_fixed_iff'.1 hG)`.
+
+Use `⟨S, s, inf_le_right, inf_le_left, hidx, hs, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Establish `hr : S ≤ rStab (fun m => u m * pairRt a b w m G z)`. Introduce `k hk g`. Use `show u (g * k) * pairRt a b w (g * k) G z = u g * pairRt a b w g G z`.
+
+Rewrite using `[hur g k (Subgroup.mem_inf.1 hk).2, map_mul, Module.End.mul_apply, hGf k (Subgroup.mem_inf.1 hk).2]`. Rewrite using `[actP, GlobalTheory.CompanionTheory.HintLevel.hint_eq_level _ (K2 a b w) S _ inf_le_left hr hidx]`. Rewrite using `[Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`. Use `congr 1`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := s) ?_]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Introduce `q hq`. Assume the negation of the conclusion as `hqs`. Conclude with `hq (by simp [hs q hqs])`.
+-/
 theorem actP_eq_sum (w : Pl E) (U : Subgroup (GLw a w × GLw b w)) (hUo : IsOpen (U : Set (GLw a w × GLw b w)))
     (G : H E a b → ℂ) (hG : G ∈ fixed (pairRt a b w) U) (u : GLw a w × GLw b w → ℂ) (hu : HasCompactSupport u)
     (hur : ∀ g, ∀ k ∈ U, u (g * k) = u g) :
@@ -58,6 +74,13 @@ theorem actP_eq_sum (w : Pl E) (U : Subgroup (GLw a w × GLw b w)) (hUo : IsOpen
     by_contra hqs
     exact hq (by simp [hs q hqs])
 
+/- English proof (translation)
+Take `⟨S, s, hSU, hSK, hidx, hs, hEq⟩` from `actP_eq_sum w U hUo G hG u hu hur`. Establish `hGf` using `(mem_fixed_iff'.1 hG)`. Establish `hr : S ≤ rStab (fun m => u m * lw (τ m (Λ G)))`. Introduce `k hk g`. Use `show u (g * k) * lw (τ (g * k) (Λ G)) = u g * lw (τ g (Λ G))`.
+
+Rewrite using `[hur g k (hSU hk), map_mul, Module.End.mul_apply, ← hΛ k, hGf k (hSU hk)]`. Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.hint_eq_level _ (K2 a b w) S _ hSK hr hidx, hEq, map_smul, map_smul, map_sum, map_sum, smul_eq_mul]`. Use `congr 1`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := s) ?_]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, map_smul, hΛ, smul_eq_mul]`. Introduce `q hq`. Assume the negation of the conclusion as `hqs`. Conclude with `hq (by simp [hs q hqs])`.
+-/
 theorem lw_actP (w : Pl E) (U : Subgroup (GLw a w × GLw b w)) (hUo : IsOpen (U : Set (GLw a w × GLw b w)))
     (G : H E a b → ℂ) (hG : G ∈ fixed (pairRt a b w) U) (u : GLw a w × GLw b w → ℂ) (hu : HasCompactSupport u)
     (hur : ∀ g, ∀ k ∈ U, u (g * k) = u g) {Y : Type} [AddCommGroup Y] [Module ℂ Y]
@@ -80,6 +103,9 @@ theorem lw_actP (w : Pl E) (U : Subgroup (GLw a w × GLw b w)) (hUo : IsOpen (U 
     by_contra hqs
     exact hq (by simp [hs q hqs])
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v₁ v₂`. Simplify using `only [GlobalTheory.SmGL.extTensor_tmul, twRep_apply, TensorProduct.tmul_smul, TensorProduct.smul_tmul', smul_smul, mul_comm]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]`.
+-/
 theorem extTensor_twRep {G₁ G₂ V₁ V₂ : Type} [Group G₁] [Group G₂] [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂]
     [Module ℂ V₂] (ρ₁ : Representation ℂ G₁ V₁) (ρ₂ : Representation ℂ G₂ V₂) (χ₁ : G₁ →* ℂˣ) (χ₂ : G₂ →* ℂˣ)
     (g : G₁ × G₂) (x : V₁ ⊗[ℂ] V₂) :
@@ -92,6 +118,9 @@ theorem extTensor_twRep {G₁ G₂ V₁ V₂ : Type} [Group G₁] [Group G₂] [
       mul_comm]
   | add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]
 
+/- English proof (translation)
+Establish `hb : ∀ x, (μ ^ b).loc w x = μ.loc w x ^ b` using `fun x => rfl`. Establish `ha : ∀ x, (μ ^ a).loc w x = μ.loc w x ^ a` using `fun x => rfl`. Simplify using `[map_mul, map_pow, mul_assoc, hb, ha]`.
+-/
 theorem mu_fac (μ : HChar E) (w : Pl E) (m : GLw a w × GLw b w) :
     ((μ.loc w ((-1) ^ (a * b) * GeneralLinearGroup.det m.1 ^ b * GeneralLinearGroup.det m.2 ^ a) : ℂˣ) : ℂ) =
       ((μ.loc w ((-1) ^ (a * b)) : ℂˣ) : ℂ) *

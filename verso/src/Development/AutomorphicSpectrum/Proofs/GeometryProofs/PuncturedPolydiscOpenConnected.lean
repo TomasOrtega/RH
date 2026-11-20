@@ -13,6 +13,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.PunctShape
 
 def factor (a : ℕ) (ρ : ℝ) (n : ℕ) (i : Fin n) : Set ℂ := {w | ‖w‖ < ρ ∧ (i.val < a → w ≠ 0)}
 
+/- English proof (translation)
+Use extensionality with `z`. Simplify using `only [punct, factor, Set.mem_ofPred_eq, Set.mem_pi, Set.mem_univ, true_implies, mem_ball_zero_iff, pi_norm_lt_iff hρ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i`. Conclude with `⟨h1 i, h2 i⟩`.
+
+Introduce `h`. Conclude with `⟨fun i => (h i).1, fun i => (h i).2⟩`.
+-/
 theorem punct_eq_pi (n a : ℕ) (ρ : ℝ) (hρ : 0 < ρ) :
     punct n a ρ = Set.pi Set.univ (factor a ρ n) := by
   ext z
@@ -24,6 +29,13 @@ theorem punct_eq_pi (n a : ℕ) (ρ : ℝ) (hρ : 0 < ρ) :
   · intro h
     exact ⟨fun i => (h i).1, fun i => (h i).2⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : i.val < a`. Establish `he : factor a ρ n i = Metric.ball 0 ρ ∩ {0}ᶜ`. Use extensionality with `w`. Simplify using `[factor, h]`. Rewrite using `[he]`.
+
+Conclude with `isOpen_ball.inter isOpen_compl_singleton`. Establish `he : factor a ρ n i = Metric.ball 0 ρ`. Use extensionality with `w`. Simplify using `[factor, h]`. Rewrite using `[he]`.
+
+Conclude with `isOpen_ball`.
+-/
 theorem isOpen_factor (n a : ℕ) (ρ : ℝ) (i : Fin n) : IsOpen (factor a ρ n i) := by
   by_cases h : i.val < a
   · have he : factor a ρ n i = Metric.ball 0 ρ ∩ {0}ᶜ := by
@@ -37,6 +49,15 @@ theorem isOpen_factor (n a : ℕ) (ρ : ℝ) (i : Fin n) : IsOpen (factor a ρ n
     rw [he]
     exact isOpen_ball
 
+/- English proof (translation)
+Distinguish the cases in `h : i.val < a`. Establish `he : factor a ρ n i = (fun p : ℝ × ℝ => (p.1 : ℂ) * Complex.exp (p.2 * Complex.I)) '' (Set.Ioo 0 ρ ×ˢ Set.univ)`. Use extensionality with `w`. Simplify using `only [factor, h, true_implies, Set.mem_ofPred_eq, Set.mem_image, Set.mem_prod, Set.mem_Ioo, Set.mem_univ, and_true, Prod.exists]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hw, hw0⟩`. Conclude with `⟨‖w‖, Complex.arg w, ⟨norm_pos_iff.mpr hw0, hw⟩, Complex.norm_mul_exp_arg_mul_I w⟩`. Introduce and unpack `⟨r, θ, ⟨hr0, hrρ⟩, rfl⟩`. Establish `hn : ‖(r : ℂ) * Complex.exp (θ * Complex.I)‖ = r`. Rewrite using `[norm_mul, Complex.norm_exp_ofReal_mul_I, _root_.mul_one, Complex.norm_real, Real.norm_of_nonneg hr0.le]`.
+
+Use `⟨by rw [hn]; exact hrρ, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (Complex.ofReal_ne_zero.mpr hr0.ne') (Complex.exp_ne_zero _)`. Rewrite using `[he]`. Conclude with `((isConnected_Ioo hρ).prod isConnected_univ).image _ (by fun_prop)`. Establish `he : factor a ρ n i = Metric.ball 0 ρ`.
+
+Use extensionality with `w`. Simplify using `[factor, h]`. Rewrite using `[he]`. Conclude with `isConnected_ball hρ`.
+-/
 theorem isConnected_factor (n a : ℕ) (ρ : ℝ) (hρ : 0 < ρ) (i : Fin n) :
     IsConnected (factor a ρ n i) := by
   by_cases h : i.val < a
@@ -62,6 +83,9 @@ theorem isConnected_factor (n a : ℕ) (ρ : ℝ) (hρ : 0 < ρ) (i : Fin n) :
     rw [he]
     exact isConnected_ball hρ
 
+/- English proof (translation)
+Introduce `n a ρ hρ`. Rewrite using `[punct_eq_pi n a ρ hρ]`. Conclude with `⟨isOpen_set_pi Set.finite_univ fun i _ => isOpen_factor n a ρ i, isPreconnected_univ_pi fun i => (isConnected_factor n a ρ hρ i).isPreconnected, Set.univ_pi_nonempty_iff.mpr fun i => (isConnected_factor n a ρ hρ i).nonempty⟩`.
+-/
 theorem punct_open_connected_nonempty : ∀ (n a : ℕ) (ρ : ℝ), 0 < ρ → IsOpen (punct n a ρ) ∧ IsPreconnected (punct n a ρ) ∧ (punct n a ρ).Nonempty := by
   intro n a ρ hρ
   rw [punct_eq_pi n a ρ hρ]

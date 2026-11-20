@@ -16,5 +16,8 @@ open GlobalTheory.AbLaw
 open GlobalTheory.KeyKa
 open GlobalTheory
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exactAt_secCube_of_mul_pull | exact GlobalTheory.exactAt_secCube_of_mul_pull | (intros; apply GlobalTheory.exactAt_secCube_of_mul_pull <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exactAt_sectionCube_of_mul_pullback : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (m : ℕ) (N : LB P.A.left) (I : Type) [LinearOrder I] [Fintype I] (D : I → P.A.left.Opens) (p : ℕ), (m : K) ≠ 0 → N.IsLB → (cubeComplex (secCube P.A.hom (N.pull (Out.mulA P.A m).left) (fun i => (Out.mulA P.A m).left ⁻¹ᵁ D i))).ExactAt p → (cubeComplex (secCube P.A.hom N D)).ExactAt p := by
   first | exact @GlobalTheory.exactAt_secCube_of_mul_pull | exact GlobalTheory.exactAt_secCube_of_mul_pull | (intros; apply GlobalTheory.exactAt_secCube_of_mul_pull <;> assumption)

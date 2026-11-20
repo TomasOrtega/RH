@@ -5,6 +5,11 @@ namespace GroundTheory.Heights₂.Heights
 
 open Filter Topology
 
+/- English proof (translation)
+Establish `below : ∀ x : ℝ, 0 < x → ∀ᶠ y in 𝓝[>] (0 : ℝ), 0 < y ∧ y ≤ x` using `fun x hx => by filter_upwards [self_mem_nhdsWithin, (eventually_lt_nhds hx).filter_mono nhdsWithin_le_nhds] with y hy hyx using ⟨hy, hyx.le⟩`. Establish `keyA : ∀ ε, 0 < ε → ∀ δ, 0 < δ → A δ ≤ T ε δ` using `fun ε hε0 δ hδ0 => le_of_tendsto (hA δ hδ0) (by filter_upwards [below ε hε0] with ε' h' using hε δ hδ0 ε' h'.1 ε h'.2)`. Establish `keyB : ∀ ε, 0 < ε → ∀ δ, 0 < δ → B ε ≤ T ε δ` using `fun ε hε0 δ hδ0 => le_of_tendsto (hB ε hε0) (by filter_upwards [below δ hδ0] with δ' h' using hδ ε hε0 δ' h'.1 δ h'.2)`. Establish `h1 : ∀ ε, 0 < ε → a ≤ B ε` using `fun ε hε0 => le_of_tendsto_of_tendsto ha (hB ε hε0) (by filter_upwards [self_mem_nhdsWithin] with δ hδ using keyA ε hε0 δ hδ)`. Establish `h2 : ∀ δ, 0 < δ → b ≤ A δ` using `fun δ hδ0 => le_of_tendsto_of_tendsto hb (hA δ hδ0) (by filter_upwards [self_mem_nhdsWithin] with ε hε using keyB ε hε δ hδ0)`.
+
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Conclude with `ge_of_tendsto hb (by filter_upwards [self_mem_nhdsWithin] with ε hε using h1 ε hε)`. Conclude with `ge_of_tendsto ha (by filter_upwards [self_mem_nhdsWithin] with δ hδ using h2 δ hδ)`.
+-/
 theorem iterLim_eq_of_monotone {T : ℝ → ℝ → ℝ} {A B : ℝ → ℝ} {a b : ℝ}
     (hε : ∀ δ, 0 < δ → ∀ ε, 0 < ε → ∀ ε', ε ≤ ε' → T ε δ ≤ T ε' δ)
     (hδ : ∀ ε, 0 < ε → ∀ δ, 0 < δ → ∀ δ', δ ≤ δ' → T ε δ ≤ T ε δ')

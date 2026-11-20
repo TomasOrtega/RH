@@ -16,12 +16,18 @@ namespace GlobalTheory.ArchOrth
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map (evInf F w) (AlgHom.id F E)) ((1 : AF F) ⊗ₜ[F] z i) = (1 : w.Completion) ⊗ₜ[F] z i`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+-/
 theorem compInf_adVec {n : ℕ} (w : InfinitePlace F) (z : Fin n → E) (i : Fin n) :
     compInf F E w (GlobalTheory.EisMidHt.adVec F z i) = inclR (F := F) w.Completion (z i) := by
   change (Algebra.TensorProduct.map (evInf F w) (AlgHom.id F E)) ((1 : AF F) ⊗ₜ[F] z i) =
     (1 : w.Completion) ⊗ₜ[F] z i
   rw [Algebra.TensorProduct.map_tmul, map_one]; rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, sigma_sigma hcm]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigR_sigR {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R]
     (x : R ⊗[F] E) : sigR R σ (sigR R σ x) = x := by
   induction x using TensorProduct.induction_on with
@@ -29,10 +35,16 @@ theorem sigR_sigR {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (R : Type) [CommRi
   | tmul r e => simp [sigR, sigma_sigma hcm]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem sigR_inclR (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] (e : E) :
     sigR R σ (inclR (F := F) R e) = inclR (F := F) R (σ e) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, map_sum, map_mul, AlgHom.coe_toRingHom, sigma_sigma hcm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ.1 j i]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hE_swap {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : IsHermND σ J) (x y : Fin n → E) : hE σ J x y = σ (hE σ J y x) := by
   simp only [hE, Formalism.UG.hform, map_sum, map_mul, AlgHom.coe_toRingHom, sigma_sigma hcm]
@@ -40,6 +52,11 @@ theorem hE_swap {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {n : ℕ} {J : Matri
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [hJ.1 j i]; ring
 
+/- English proof (translation)
+Establish `hT' : ∑ i, (B *ᵥ v) i * s ((B *ᵥ u) i) = 0`. Use `congrArg s hT` as an intermediate fact. Simplify `this` using `[map_sum, map_mul, hs, mul_comm]`. Establish `key : ∀ i, (B *ᵥ (v + c • u)) i * s ((B *ᵥ (v + c • u)) i) = (B *ᵥ v) i * s ((B *ᵥ v) i) + c * (s ((B *ᵥ v) i) * (B *ᵥ u) i) + s c * ((B *ᵥ v) i * s ((B *ᵥ u) i)) + c * s c * ((B *ᵥ u) i * s ((B *ᵥ u) i))`. Introduce `i`.
+
+Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[key, Finset.sum_add_distrib, ← Finset.mul_sum, hT, hT']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_expand {A : Type} [CommRing A] (s : A →+* A) (hs : ∀ x, s (s x) = x) {n : ℕ}
     (B : Matrix (Fin n) (Fin n) A) (v u : Fin n → A) (c : A)
     (hT : ∑ i, s ((B *ᵥ v) i) * (B *ᵥ u) i = 0) :
@@ -57,6 +74,11 @@ theorem sum_expand {A : Type} [CommRing A] (s : A →+* A) (hs : ∀ x, s (s x) 
   simp_rw [key, Finset.sum_add_distrib, ← Finset.mul_sum, hT, hT']
   ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Use `conv_lhs => arg 2`. Use extensionality with `x`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cross_eq {A : Type} [CommRing A] (s : A →+* A) {n : ℕ} (B : Matrix (Fin n) (Fin n) A) (v u : Fin n → A) :
     ∑ i, s ((B *ᵥ v) i) * (B *ᵥ u) i = ∑ j, s (v j) * ((Formalism.UG.cT s B * B) *ᵥ u) j := by
   simp only [Matrix.mulVec, dotProduct, Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply,
@@ -68,6 +90,27 @@ theorem cross_eq {A : Type} [CommRing A] (s : A →+* A) {n : ℕ} (B : Matrix (
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y L a hcm hJ hW hA y hy c w`. Use `haveI := hcm.1`. Establish `hr : w.IsReal` using `IsTotallyReal.isReal w`. Establish `hmult : w.mult = 1` using `by simp [InfinitePlace.mult, hr]`. Establish `hs : ∀ x, sigR w.Completion σ (sigR w.Completion σ x) = x` using `sigR_sigR hcm w.Completion`.
+
+Take `⟨c0, hc⟩` from `hA.cartan w`. Rewrite `hc` using `[map_inv]`. Establish `hv : (fun i => compInf F E w (GlobalTheory.EisMidHt.adVec F (y + c • GlobalTheory.EisMidHt.firstColumn X) i)) = (fun i => inclR (F` using `F) w.Completion (y i)) + inclR (F := F) w.Completion c • (fun i => inclR (F := F) w.Completion (X i 0)) := by`. Use function extensionality and compare the values at `i`. Simplify using `[compInf_adVec, GlobalTheory.EisMidHt.firstColumn, map_add, map_mul]`.
+
+Establish `hv1 : (fun i => compInf F E w (GlobalTheory.EisMidHt.adVec F y i)) = fun i => inclR (F` using `F) w.Completion (y i) := by`. Use function extensionality and compare the values at `i`. Conclude with `compInf_adVec w y i`. Establish `hv2 : (fun i => compInf F E w (GlobalTheory.EisMidHt.adVec F (GlobalTheory.EisMidHt.firstColumn X) i)) = fun i => inclR (F` using `F) w.Completion (X i 0) := by`. Use function extensionality and compare the values at `i`.
+
+Conclude with `compInf_adVec w _ i`. Unfold `GlobalTheory.EisMidHt.normInf`. Simplify using `only [hv, hv1, hv2, hmult, pow_one]`. Use `set B : Matrix (Fin n) (Fin n) (w.Completion ⊗[F] E) := ((Formalism.UG.bc (compInf F E w) a)⁻¹ : GL _ _).1 with hB`. Establish `hPu : (Formalism.UG.cT (sigR w.Completion σ) B * B) *ᵥ (fun i => inclR (F` using `F) w.Completion (X i 0)) = fun k => (JR w.Completion J *ᵥ fun j => inclR (F := F) w.Completion (Y j 0)) k * c0 0 := by`.
+
+Use function extensionality and compare the values at `k`. Use `congrFun (congrFun hc k) 0` as an intermediate fact. Rewrite `this` using `[Matrix.mul_diagonal]`. Simplify using `only [JR] at this ⊢`. Use `erw [Matrix.mul_apply (M := J.map _)] at this`.
+
+Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Establish `h0 : hE σ J y (GlobalTheory.EisMidHt.firstColumn Y) = 0` using `by rw [hE_swap hcm hJ, hy, map_zero]`. Establish `hT : ∑ i, sigR w.Completion σ ((B *ᵥ fun i => inclR (F` using `F) w.Completion (y i)) i) * (B *ᵥ fun i => inclR (F := F) w.Completion (X i 0)) i = 0 := by`. Rewrite using `[cross_eq, hPu]`. Establish `: ∑ j, sigR w.Completion σ (inclR (F` using `F) w.Completion (y j)) * ((JR w.Completion J *ᵥ fun j => inclR (F := F) w.Completion (Y j 0)) j * c0 0) = inclR (F := F) w.Completion (hE σ J y (GlobalTheory.EisMidHt.firstColumn Y)) * c0 0 := by`.
+
+Simplify using `only [hE, Formalism.UG.hform, JR, Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum, sigR_inclR, GlobalTheory.EisMidHt.firstColumn, AlgHom.coe_toRingHom]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, h0, map_zero, zero_mul]`. Take `⟨τ⟩` from `nonempty_embOver F (E := E) w`.
+
+Use `haveI : Nontrivial (w.Completion ⊗[F] E) := (RingEquiv.ofBijective (infEmb τ) (infEmb_bijective hcm τ)).toEquiv.nontrivial`. Establish `hsum : ∑ i, Algebra.norm w.Completion ((B *ᵥ ((fun i => inclR (F` using `F) w.Completion (y i)) + inclR (F := F) w.Completion c • (fun i => inclR (F := F) w.Completion (X i 0)))) i) = ∑ i, Algebra.norm w.Completion ((B *ᵥ fun i => inclR (F := F) w.Completion (y i)) i) + Algebra.norm w.Completion (inclR (F := F) w.Completion c) * ∑ i, Algebra.norm w.Co …`. Apply `(algebraMap w.Completion (w.Completion ⊗[F] E)).injective` to reduce the goal to its premises. Simplify using `only [map_add, map_mul, map_sum, GlobalTheory.Doubling.algebraMap_norm_eq hcm]`. Conclude with `sum_expand _ hs B _ _ _ hT`.
+
+Rewrite using `[hsum]`. Use `set φ := InfinitePlace.Completion.ringEquivRealOfIsReal hr`. Establish `hn : ∀ x : w.Completion, ‖x‖ = |φ x|` using `fun x => by`. Rewrite using `[← Real.norm_eq_abs]`. Conclude with `((InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hr).norm_map_of_map_zero (map_zero _) x).symm`.
+
+Establish `hp : ∀ z : Fin n → w.Completion ⊗[F] E, 0 ≤ φ (∑ i, Algebra.norm w.Completion (z i))` using `fun z => by`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_nonneg fun i _ => (GlobalTheory.PoleFactor.norm_completion_tensor_pos hcm w hr _).1`. Establish `hq` using `(GlobalTheory.PoleFactor.norm_completion_tensor_pos hcm w hr (inclR (F := F) w.Completion c)).1`. Rewrite using `[hn, hn, hn, hn, map_add, map_mul, abs_of_nonneg (add_nonneg (hp _) (mul_nonneg hq (hp _))), abs_of_nonneg (hp _), abs_of_nonneg hq, abs_of_nonneg (hp _)]`.
+-/
 theorem archimedean_norm_add_smul_first_column : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))
     (a : GL (Fin n) (AF F ⊗[F] E)), IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y →

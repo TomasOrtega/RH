@@ -17,6 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.StdRead
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StdRead.Move.om_cosetVec | exact GlobalTheory.StdRead.Move.om_cosetVec | (intros; apply GlobalTheory.StdRead.Move.om_cosetVec <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weilAction_integralPoint_cosetVector_eq : ∀ {D : D7}, GlobalTheory.NormSum.Inp D → ∀ {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) {𝔪 : Ideal (𝓞 D.host.E)}, 𝔪 ≠ ⊥ →
   ∀ (o : ℕ) (k : Formalism.MainNotions.StandardLatticesGL3.GA D P.a), k ∈ intG D P.a → ∀ c : ℂ, P.W.Om k 1 P.e0 = c • P.e0 →
   ∀ z : Matrix (Fin P.d) (Fin P.a) D.host.E, IsIntE z → Approx 𝔪 o k z →

@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.EtaleKlt
 
+/- English proof (translation)
+Use `letI := α.toAlgebra`. Use `letI := β.toAlgebra`. Use `letI := ρ.toAlgebra`. Use `haveI : IsScalarTower k A B := IsScalarTower.of_algebraMap_eq' h.symm`. Use `haveI : Algebra.FormallyEtale A B := hρ`.
+
+Conclude with `hω.of_isBaseChange (isBaseChange_exteriorPower (KaehlerDifferential.isBaseChange_of_formallyEtale k A B) D)`.
+-/
 theorem isFreeGen_formMap_of_formallyEtale {k A B : Type*} [CommRing k] [CommRing A] [CommRing B]
     {α : k →+* A} {β : k →+* B} {D : ℕ} {ρ : A →+* B} (hρ : ρ.FormallyEtale) (h : ρ.comp α = β)
     {ω : Forms α D} (hω : IsFreeGen A ω) : IsFreeGen B (TopForm.formMap D ρ h ω) := by
@@ -20,6 +25,19 @@ theorem isFreeGen_formMap_of_formallyEtale {k A B : Type*} [CommRing k] [CommRin
   exact hω.of_isBaseChange (isBaseChange_exteriorPower
     (KaehlerDifferential.isBaseChange_of_formallyEtale k A B) D)
 
+/- English proof (translation)
+Use `set φ := functionFieldMap f with hφ`. Use `set ρ := φ.restrict E.ring E'.ring h with hρdef`. Take `⟨ω, hω, g, hη', hg⟩` from `E.isFormOrd_formOrd hn hη`. Establish `hc : ρ.comp E.const = E'.const`. Use extensionality with `a`.
+
+Conclude with `RingHom.congr_fun (functionFieldMap_comp_constFn p f) a`. Establish `hω' : IsFreeGen E'.ring (TopForm.formMap n ρ hc ω)` using `isFreeGen_formMap_of_formallyEtale hρ hc hω`. Establish `e : φ.comp E.ring.subtype = E'.ring.subtype.comp ρ`. Use extensionality with `x`. Both sides reduce to the same expression.
+
+Establish `hτ : (E'.ring.subtype.comp ρ).comp E.const = Cartier.constFn (f ≫ p)`. Rewrite using `[RingHom.comp_assoc, hc]`. Both sides reduce to the same expression. Establish `key : ratPull p f n (E.toRat n ω) = E'.toRat n (TopForm.formMap n ρ hc ω)`. Establish `k1` using `TopForm.formMap_formMap (D := n) E.ring.subtype φ _ e rfl (functionFieldMap_comp_constFn p f) hτ ω`.
+
+Establish `k2` using `TopForm.formMap_formMap (D := n) ρ E'.ring.subtype _ rfl hc rfl hτ ω`. Conclude with `k1.trans k2.symm`. Establish `hpull : ratPull p f n η = φ (g : W.functionField) • E'.toRat n (TopForm.formMap n ρ hc ω)`. Rewrite using `[hη', map_smulₛₗ, key]`. Establish `hne : ratPull p f n η ≠ 0`.
+
+Rewrite using `[hpull]`. Introduce `h0`. Establish `hinj` using `(E'.isFreeGen_toRat hω').1`. Establish `: φ (g : W.functionField) = 0` using `hinj (by simpa using h0)`. Conclude with `(g.map φ.toMonoidHom).ne_zero this`.
+
+Rewrite using `[← hg]`. Use `DivOver.IsFormOrd.formOrd_eq hne ⟨_, hω', Units.map φ.toMonoidHom g, hpull, hord g⟩` and prove the remaining obligations.
+-/
 theorem formOrd_ratPull (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] (p : W ⟶ Sp ℂ)
     (f : M ⟶ W) [IsDominant f] (n : ℕ) [LocallyOfFiniteType p]
     (hn : topologicalKrullDim W = n) (E : DivOver p) (E' : DivOver (f ≫ p))

@@ -11,5 +11,8 @@ open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid Glob
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal GlobalTheory.FinPl
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RowShape.moves0 | exact GlobalTheory.RowShape.moves0 | (intros; apply GlobalTheory.RowShape.moves0 <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.gridRow_zero_basePoint_carriesLattice : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => ∀ (t : T) (b : Pts ch.G), IsBase t ch.S.B b → GlobalTheory.FinPl.Moves _ (b 0) (ch.G.Λ (.grid D.R.m 0)) (GlobalTheory.RowShape.rowN ch.G 0) fun _ => True := by
   first | exact @GlobalTheory.RowShape.moves0 | exact GlobalTheory.RowShape.moves0 | (intros; apply GlobalTheory.RowShape.moves0 <;> assumption)

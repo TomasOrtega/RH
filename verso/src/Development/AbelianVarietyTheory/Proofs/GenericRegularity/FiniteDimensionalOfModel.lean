@@ -27,6 +27,13 @@ section General
 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨H, hH⟩` from `X.inc_mul u w F g`. Establish `hH0 : H = 0`. Use `hinj _ H fun Z' => ?_` and prove the remaining obligations. Rewrite using `[← hH, map_mul]`.
+
+Distinguish the cases in `hZ : Z' = Z`. Substitute `hZ` using the available equality. Rewrite using `[h0, zero_mul]`. Rewrite using `[hg' Z' hZ, mul_zero]`. Rewrite `hH` using `[hH0, map_zero]`.
+
+Use `hF w g hH` as an intermediate fact. Rewrite `hg` using `[this, map_zero, map_zero]`. Conclude with `hg rfl`.
+-/
 theorem ev_ne_zero_of_nonZeroComp (X : PJ D B P j) {ι : Type} (Ω : ι → Type) [∀ Z, Field (Ω Z)]
     [∀ Z, Algebra B.KO (Ω Z)] (gF : ∀ Z, X.Forms →ₐ[B.KO] Ω Z)
     (hinj : ∀ (w : WeightFamilies.Wt D j) (g : B.Cusp j w), (∀ Z, gF Z (X.inc w g) = 0) → g = 0)
@@ -46,6 +53,9 @@ theorem ev_ne_zero_of_nonZeroComp (X : PJ D B P j) {ι : Type} (Ω : ι → Type
   rw [this, map_zero, map_zero] at hg
   exact hg rfl
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Rewrite `h` using `[nval_zero, nval_of_ne hx]`. Conclude with `EReal.coe_ne_top _ h`.
+-/
 theorem ne_zero_of_nval_eq {T T' : CDVR} {e : ℕ} {x : T.Fr} {x' : T'.Fr} (hx : x ≠ 0)
     (h : nval T.V e x = nval T'.V e x') : x' ≠ 0 := by
   rintro rfl
@@ -54,17 +64,26 @@ theorem ne_zero_of_nval_eq {T T' : CDVR} {e : ℕ} {x : T.Fr} {x' : T'.Fr} (hx :
 
 variable {X : PJ D B P j} {E : PtExt X} {hM : IntAtExt X E} {ka wL wF : WeightFamilies.Wt D j}
 
+/- English proof (translation)
+Establish `: FiniteDimensional (Kp (xplus X E hM) la G.N) (↥C.A' ⧸ C.JA)` using `C.fin`. Conclude with `LinearEquiv.finiteDimensional C.quotEquiv.toLinearEquiv`.
+-/
 theorem finiteDimensional_of_model {G : GlobalFamilyData (xplus X E hM) ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)}
     {g0 : B.Cusp j wF} (C : CurveModel G la g0) :
     FiniteDimensional (Kp (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w) := by
   have : FiniteDimensional (Kp (xplus X E hM) la G.N) (↥C.A' ⧸ C.JA) := C.fin
   exact LinearEquiv.finiteDimensional C.quotEquiv.toLinearEquiv
 
+/- English proof (translation)
+Establish `: IsReduced (↥C.A' ⧸ C.JA)` using `C.red`. Conclude with `isReduced_of_injective C.quotEquiv.symm.toRingHom C.quotEquiv.symm.injective`.
+-/
 theorem isReduced_of_model {G : GlobalFamilyData (xplus X E hM) ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)}
     {g0 : B.Cusp j wF} (C : CurveModel G la g0) : IsReduced (OsK (xplus X E hM) la G.w) := by
   have : IsReduced (↥C.A' ⧸ C.JA) := C.red
   exact isReduced_of_injective C.quotEquiv.symm.toRingHom C.quotEquiv.symm.injective
 
+/- English proof (translation)
+Use `choose y hw hg0 het using hR`. Establish `hcur` using `inCurveSec G la y (fun ζ => (hw ζ).toSecPt) g0 hC hg0`. Use `⟨secQ y (fun ζ => (hw ζ).toSecPt) g0, hcur, ?_, ?_⟩` and prove the remaining obligations. Conclude with `inTieSec D B P j X E hM ka wL wF G la S y (fun ζ => (hw ζ).toSecPt) g0 (fun ζ => depthAtSec_of S hspan hmin hcur.1 hcur.2.1 y (fun ζ => (hw ζ).toSecPt) ζ) (fun hj ζ => het ζ hj) hg0 hcur.2.2`. Conclude with `inLiftSec G la S Gc Prw y (fun ζ => (hw ζ).toSecPt) g0 Tn (liftModelSt_of G la (locRing_of h1 h2) y hw g0 Tn hC hg0)`.
+-/
 theorem data_of_real (G : GlobalFamilyData (xplus X E hM) ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (S : Scal B)
     (g0 : B.Cusp j wF) (hC : Nonempty (CurveModel G la g0)) (hspan : SpanW (xplus X E hM) G.w S)
     (hmin : GenericSectionMinimumIntegral G la) (h1 : ESecSt G la) (h2 : Formalism.L2.Pj.LocStructSt G la)
@@ -90,6 +109,9 @@ variable {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFr
 
 include hT in
 
+/- English proof (translation)
+Introduce `Z`. Take `⟨k, hk, -⟩` from `hB.2 Z`. Take `⟨g, e1, e2⟩` from `hC Z wL (G.w k)`. Use `ev_ne_zero_of_nonZeroComp (recPlus h j hj) (fun Z => Om Z) (fun Z => formsEvR j hG hT Z) (fun w g hg => hV w g fun Z => (formsEvR_inc h j hj hG hT Z w g).symm.trans (hg Z)) hF Z g (fun h0 => hk (e1.symm.trans ((formsEvR_inc h j hj hG hT Z wL g).symm.trans h0))) (fun Z' hZ' => (fo …` as an intermediate fact. Conclude with `fun h0 => this ((formsEvR_inc h j hj hG hT Z u F).trans h0)`.
+-/
 theorem nzAt_of_nonZeroComp (hV : GenValInjSt h j hG) (hC : CompSplitSt h j hG) {ka wL wF : WeightFamilies.Wt D j}
     (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (hB : BigAt h j hj hG G) {u : WeightFamilies.Wt D j}
     (F : (recB h.toLawsCore).Cusp j u) (hF : (recPlus h j hj).NonZeroComp u F) : NZAt hG (F : T.R j) := by
@@ -102,6 +124,9 @@ theorem nzAt_of_nonZeroComp (hV : GenValInjSt h j hG) (hC : CompSplitSt h j hG) 
     (fun Z' hZ' => (formsEvR_inc h j hj hG hT Z' wL g).trans (e2 Z' hZ'))
   exact fun h0 => this ((formsEvR_inc h j hj hG hT Z u F).trans h0)
 
+/- English proof (translation)
+Take `⟨y, Tc, ι, hl, hunr, ev, hu, hv, hdeg, hnz⟩` from `hR ζ`. Take `⟨hw⟩` from `@fromW_of D (recB h.toLawsCore) T.G.P j (recPJ h j hj) (extAll h j hj) (intAtExt_extAll h j hj) ka wL wF G la ζ (‹∀ ζ : PtsG G la, IsDVRAt ζ› ζ) y hU Tc ι hl hunr ev hu hv hdeg`. Conclude with `⟨y, hw, fun w F hF => ne_zero_of_nval_eq (hnz w F hF) ((hv w F).symm.trans (hw.hv w F))⟩`.
+-/
 theorem fromW_ne_zero {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPlus h j hj) ka wL wF)
     (la : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO))
     (hU : IsUnif (OsK (recPlus h j hj) la G.w) (unifO (recPlus h j hj) la G.N)) [∀ ζ : PtsG G la, IsDVRAt ζ]
@@ -116,6 +141,13 @@ theorem fromW_ne_zero {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (
 
 end Inst
 
+/- English proof (translation)
+Introduce `D T h j hj hG hT ka wL wF G S g0 hH hV hC hB hB' hn het Gc Prw Tn`. Establish `key : ∀ la, ∃ Q : LocalPointData G la, Q.InCurve ∧ Q.InTie S ∧ Q.InLiftC S Gc Prw Tn`. Introduce `la`. Establish `hM` using `GlobalTheory.CurveRecord.curveInst D T h j hj hG hT hV hC hB' hG ka wL wF G la S g0 hH.1 hH.2.1 hH.2.2.1 hH.2.2.2`. Take `⟨C⟩` from `id hM`.
+
+Establish `hfd` using `finiteDimensional_of_model (E := extAll h j hj) (hM := intAtExt_extAll h j hj) C`. Establish `hred` using `isReduced_of_model (E := extAll h j hj) (hM := intAtExt_extAll h j hj) C`. Establish `hU : IsUnif (OsK (recPlus h j hj) la G.w) (unifO (recPlus h j hj) la G.N)` using `isUnif_of_ring hfd`. Establish `hD : ∀ ζ : PtsG G la, IsDVRAt ζ` using `isDVRAt_of_ring hfd hred`. Establish `hR` using `GlobalTheory.realPtNZ_of_curveHyp D T h j hj hG hT ka wL wF G S g0 la hH hV hC hB hn hU`.
+
+Use `data_of_real (E := extAll h j hj) (hM := intAtExt_extAll h j hj) G la S g0 hM hH.1 (GlobalTheory.Reg.section_ratios_integral D T h j hj hG hT ka wL wF G S g0 la hH hV hC hB hM) (GlobalTheory.T.curve_section_statement D T h j hj hG hT ka wL wF G S g0 la hH hV hC hB) (GlobalTheory. …` and prove the remaining obligations. Take `⟨y, hw, hnz⟩` from `fromW_ne_zero h j hj hG G la hU hR ζ`. Conclude with `⟨y, hw, hnz wF g0 (nzAt_of_nonZeroComp h j hj hG hT hV hC G hH.2.1 g0 hH.2.2.2), fun hlt => hnz _ G.et (nzAt_of_nonZeroComp h j hj hG hT hV hC G hH.2.1 G.et (het hlt))⟩`. Use `choose Qf h1 h2 h3 using key`. Conclude with `⟨Qf, h1, h2, h3⟩`.
+-/
 theorem exists_primeData : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (hT : GenFromTest (T.Q.Xo j) T.Q.c hG) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore)) (g0 : (recB h.toLawsCore).Cusp j wF), CurveHyp h j hj hG ka wL wF G S g0 → GenValInjSt h j hG → CompSplitSt h j hG → BIRSt h j hj hG G → (∀ (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF), BigAt h j hj hG G → BIRSt h j hj hG G) → 0 < wL.n → (j < D.R.m → (recPlus h j hj).NonZeroComp _ G.et) → ∀ (Gc Prw : ℝ) (Tn : ℕ), ∃ Qf : ∀ la, LocalPointData G la, (∀ la, (Qf la).InCurve) ∧ (∀ la, (Qf la).InTie S) ∧ (∀ la, (Qf la).InLiftC S Gc Prw Tn) := by
   intro D T h j hj hG hT ka wL wF G S g0 hH hV hC hB hB' hn het Gc Prw Tn
   have key : ∀ la, ∃ Q : LocalPointData G la, Q.InCurve ∧ Q.InTie S ∧ Q.InLiftC S Gc Prw Tn := by

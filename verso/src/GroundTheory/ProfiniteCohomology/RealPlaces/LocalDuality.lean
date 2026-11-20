@@ -14,6 +14,9 @@ section Neg
 
 variable {M : Type*} [AddCommGroup M]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem Involution.dualInv_neg (σ : M →+ M) (f : M →+ QZ) : dualInv (-σ) f = -dualInv σ f := by
   ext x
   simp
@@ -32,6 +35,13 @@ variable {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [FiniteDimensional F 
 
 include hG hc in
 
+/- English proof (translation)
+Take `⟨b, hb, rfl⟩` from `(mem_normClasses_iff _ y).1 hy`. Take `⟨z, rfl⟩` from `cohomologyπ_surjective M 2 x`. Take `⟨a, ha, e⟩` from `exists_cohomologyπ_eq_cocycleTwo M hG hc z`. Rewrite using `[e, realDualityPairing_apply]`. Take `⟨ht, hcup⟩` from `cupPairing_cocycleTwo_H0 M hG hc a ha ⟨_, hb⟩`.
+
+Rewrite using `[hcup]`. Use `map_zero (realInv F Ω h2 hN)` and compare the differences between its conclusion and the goal. Rewrite using `[cohomologyπ_cocycleTwo_eq_zero_iff]`. Use `⟨(b : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((((cartierDual F Ω M).ρ.norm b) : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) a) = _`.
+
+Rewrite using `[norm_apply _ hG hc, LinearMap.add_apply, cartierDual_ρ_apply, inv_eq_self hG hc, ha]`.
+-/
 theorem realDualityPairing_two_zero_eq_zero (x : cohomology M 2)
     (y : cohomology (cartierDual F Ω M) 0) (hy : y ∈ normClasses (cartierDual F Ω M)) :
     realDualityPairing F Ω h2 hN M (show 2 + 0 = 2 from rfl) x y = 0 := by
@@ -49,6 +59,13 @@ theorem realDualityPairing_two_zero_eq_zero (x : cohomology M 2)
 
 include hG hc in
 
+/- English proof (translation)
+Take `⟨b, hb, rfl⟩` from `(mem_normClasses_iff _ x).1 hx`. Take `⟨z, rfl⟩` from `cohomologyπ_surjective _ 2 y`. Take `⟨φ, hφ, e⟩` from `exists_cohomologyπ_eq_cocycleTwo _ hG hc z`. Rewrite using `[e, realDualityPairing_apply]`. Take `⟨ht, hcup⟩` from `cupPairing_H0_cocycleTwo M hG hc ⟨_, hb⟩ φ hφ`.
+
+Rewrite using `[hcup]`. Use `map_zero (realInv F Ω h2 hN)` and compare the differences between its conclusion and the goal. Rewrite using `[cohomologyπ_cocycleTwo_eq_zero_iff]`. Use `⟨(φ : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) b, ?_⟩` and prove the remaining obligations. Establish `hφb : (φ : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) (M.ρ c b) = (galUnits.{0} F Ω).ρ c ((φ : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) b)` using `by conv_lhs => rw [← hφ]`.
+
+Rewrite using `[cartierDual_ρ_apply, inv_eq_self hG hc, ← Module.End.mul_apply, ← map_mul, mul_self_eq_one hG hc, map_one, Module.End.one_apply]`. Express the relevant statement in the definitionally equal form `(φ : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) (M.ρ.norm b) = _`. Rewrite using `[norm_apply _ hG hc, map_add, hφb]`.
+-/
 theorem realDualityPairing_zero_two_eq_zero (x : cohomology M 0) (hx : x ∈ normClasses M)
     (y : cohomology (cartierDual F Ω M) 2) :
     realDualityPairing F Ω h2 hN M (show 0 + 2 = 2 from rfl) x y = 0 := by
@@ -95,6 +112,9 @@ def realDualityPairingTwoZero :
     obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ y
     exact DFunLike.congr_fun (map_add (realDualityPairing F Ω h2 hN M (show 2 + 0 = 2 from rfl)) x x') y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem realDualityPairingTwoZero_mk (x : cohomology M 2) (y : cohomology (cartierDual F Ω M) 0) :
     realDualityPairingTwoZero h2 hN hG hc M x (Submodule.Quotient.mk y) =
       realDualityPairing F Ω h2 hN M (show 2 + 0 = 2 from rfl) x y :=
@@ -108,6 +128,9 @@ def realDualityPairingZeroTwo :
       ext y
       exact realDualityPairing_zero_two_eq_zero h2 hN hG hc M x hx y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem realDualityPairingZeroTwo_mk (x : cohomology M 0) (y : cohomology (cartierDual F Ω M) 2) :
     realDualityPairingZeroTwo h2 hN hG hc M (Submodule.Quotient.mk x) y =
       realDualityPairing F Ω h2 hN M (show 0 + 2 = 2 from rfl) x y :=
@@ -131,6 +154,13 @@ variable {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [FiniteDimensional F 
 omit [IsDiscreteRep M] [Finite M] in
 include hneg in
 
+/- English proof (translation)
+Establish `h2φ : 2 • (φ : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) m = 0`. Rewrite using `[← map_nsmul, ← cartierDualToQZ_apply_eq_zero_iff M hMn e, map_nsmul]`. Conclude with `hq`. Establish `ht0 : t = 0 ↔ (φ : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Ω) m = 0`. Break down `htφ with rfl | rfl` into its components or cases.
+
+Both sides reduce to the same expression. Conclude with `neg_eq_zero`. Use `realInv_cocycleTwo h2 hN hG hc hneg t ht ?_ _ hq ?_` and prove the remaining obligations. Break down `htφ with rfl | rfl` into its components or cases. Conclude with `h2φ`.
+
+Rewrite `h2φ`, the goal using `[two_nsmul]`. Rewrite using `[← neg_add, h2φ, neg_zero]`. Rewrite using `[ht0]`. Conclude with `cartierDualToQZ_apply_eq_zero_iff M hMn e φ m`.
+-/
 theorem realInv_cocycleTwo_eq_cartierDualToQZ {n : ℕ} [NeZero n] (hMn : ∀ m : M, n • m = 0)
     (e : galRootsOfUnity.{0} F Ω n ≃+ ZMod n) (φ : cartierDual F Ω M) (m : M)
     (hq : 2 • cartierDualToQZ M hMn e φ m = 0) (t : galUnits.{0} F Ω)
@@ -156,6 +186,17 @@ theorem realInv_cocycleTwo_eq_cartierDualToQZ {n : ℕ} [NeZero n] (hMn : ∀ m 
 
 include hneg hconj hroots in
 
+/- English proof (translation)
+Establish `: NeZero (Nat.card M)` using `⟨Nat.card_pos.ne'⟩`. Establish `hMn : ∀ m : M, Nat.card M • m = 0` using `fun m => card_nsmul_eq_zero'`. Take `⟨e⟩` from `hroots (Nat.card M) Nat.card_pos`. Use `set T := cartierDualEquivQZ M hMn e with hT`. Establish `hact : ∀ φ, T ((cartierDual F Ω M).ρ c φ) = dualInv (act M c) (T φ)` using `fun φ => cartierDualToQZ_act M hMn e (OrderTwo.inv_eq_self hG hc) (fun ζ hζ => hconj ζ ⟨_, Nat.card_pos, hζ⟩) φ`.
+
+Establish `he0 : ∀ f, T.symm (dualInv (act M c) f) = act (cartierDual F Ω M) c (T.symm f)` using `fun f => by`. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[T.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `_ = T ((cartierDual F Ω M).ρ c (T.symm f))`. Rewrite using `[hact, T.apply_symm_apply]`.
+
+Use `⟨h2EquivOfOrderTwo M hG hc, (tateQuotCongr T.symm he0).trans (cohomZeroEquivContinuous (cartierDual F Ω M) hG hc), fun x y => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Take `⟨f, rfl⟩` from `QuotientAddGroup.mk_surjective y`. Rewrite using `[AddEquiv.trans_apply, tateQuotCongr_mk, h2Equiv_mk, h0Equiv_mk, realDualityPairingTwoZero_mk, realDualityPairing_apply, tatePair_mk]`. Take `⟨ht, hcup⟩` from `cupPairing_cocycleTwo_H0 M hG hc (a : M) ((mem_fixedSub_act M).1 a.2) ⟨_, mem_invariants_of_fixed (cartierDual F Ω M) hG ((mem_fixedSub_act _).1 (fixedSubCongr T.symm he0 f).2)⟩`.
+
+Rewrite using `[hcup]`. Establish `hTf : cartierDualToQZ M hMn e (T.symm f) = f` using `T.apply_symm_apply f`. Establish `hq : 2 • cartierDualToQZ M hMn e (T.symm f) a = 0`. Rewrite using `[hTf]`. Conclude with `two_nsmul_fixedPair (act M c) a f`.
+
+Use `(realInv_cocycleTwo_eq_cartierDualToQZ h2 hN hG hc hneg M hMn e (T.symm f) a hq _ (Or.inl rfl) ht).trans ?_` and prove the remaining obligations. Rewrite using `[hTf]`.
+-/
 theorem realDualityPairingTwoZero_eq_tatePair :
     ∃ (e : tateQuot (act M c) ≃+ cohomology M 2)
       (e' : tateQuot (dualInv (act M c)) ≃+ cohomologyTateZero (cartierDual F Ω M)),
@@ -191,6 +232,17 @@ theorem realDualityPairingTwoZero_eq_tatePair :
 
 include hneg hconj hroots in
 
+/- English proof (translation)
+Establish `: NeZero (Nat.card M)` using `⟨Nat.card_pos.ne'⟩`. Establish `hMn : ∀ m : M, Nat.card M • m = 0` using `fun m => card_nsmul_eq_zero'`. Take `⟨e⟩` from `hroots (Nat.card M) Nat.card_pos`. Use `set T := cartierDualEquivQZ M hMn e with hT`. Establish `hact : ∀ φ, T ((cartierDual F Ω M).ρ c φ) = dualInv (act M c) (T φ)` using `fun φ => cartierDualToQZ_act M hMn e (OrderTwo.inv_eq_self hG hc) (fun ζ hζ => hconj ζ ⟨_, Nat.card_pos, hζ⟩) φ`.
+
+Establish `he0 : ∀ f, T.symm (dualInv (act M c) f) = act (cartierDual F Ω M) c (T.symm f)` using `fun f => by`. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[T.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `_ = T ((cartierDual F Ω M).ρ c (T.symm f))`. Rewrite using `[hact, T.apply_symm_apply]`.
+
+Use `⟨cohomZeroEquivContinuous M hG hc, (tateQuotCongr T.symm he0).trans (h2EquivOfOrderTwo (cartierDual F Ω M) hG hc), fun x y => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Take `⟨f, rfl⟩` from `QuotientAddGroup.mk_surjective y`. Rewrite using `[AddEquiv.trans_apply, tateQuotCongr_mk, h2Equiv_mk, h0Equiv_mk, realDualityPairingZeroTwo_mk, realDualityPairing_apply, tatePair_mk]`. Take `⟨ht, hcup⟩` from `cupPairing_H0_cocycleTwo M hG hc ⟨_, mem_invariants_of_fixed M hG ((mem_fixedSub_act M).1 a.2)⟩ ((fixedSubCongr T.symm he0 f : fixedSub _) : cartierDual F Ω M) ((mem_fixedSub_act _).1 (fixedSubCongr T.symm he0 f).2)`.
+
+Rewrite using `[hcup]`. Establish `hTf : cartierDualToQZ M hMn e ((fixedSubCongr T.symm he0 f : fixedSub _) : cartierDual F Ω M) = f` using `T.apply_symm_apply f`. Establish `hq : 2 • cartierDualToQZ M hMn e ((fixedSubCongr T.symm he0 f : fixedSub _) : cartierDual F Ω M) a = 0`. Rewrite using `[hTf]`. Conclude with `two_nsmul_fixedPair (act M c) a f`.
+
+Use `(realInv_cocycleTwo_eq_cartierDualToQZ h2 hN hG hc hneg M hMn e _ a hq _ (Or.inl rfl) ht).trans ?_` and prove the remaining obligations. Rewrite using `[hTf]`.
+-/
 theorem realDualityPairingZeroTwo_eq_tatePair :
     ∃ (e : tateQuot (act M c) ≃+ cohomologyTateZero M)
       (e' : tateQuot (dualInv (act M c)) ≃+ cohomology (cartierDual F Ω M) 2),
@@ -229,6 +281,17 @@ theorem realDualityPairingZeroTwo_eq_tatePair :
 
 include hG hc hneg hconj hroots in
 
+/- English proof (translation)
+Establish `: NeZero (Nat.card M)` using `⟨Nat.card_pos.ne'⟩`. Establish `hMn : ∀ m : M, Nat.card M • m = 0` using `fun m => card_nsmul_eq_zero'`. Take `⟨e⟩` from `hroots (Nat.card M) Nat.card_pos`. Use `set T := cartierDualEquivQZ M hMn e with hT`. Establish `hact : ∀ φ, T ((cartierDual F Ω M).ρ c φ) = dualInv (act M c) (T φ)` using `fun φ => cartierDualToQZ_act M hMn e (OrderTwo.inv_eq_self hG hc) (fun ζ hζ => hconj ζ ⟨_, Nat.card_pos, hζ⟩) φ`.
+
+Establish `he1 : ∀ f, T.symm (dualInv (-act M c) f) = (-act (cartierDual F Ω M) c) (T.symm f)` using `fun f => by`. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[T.apply_symm_apply, AddMonoidHom.neg_apply, map_neg, dualInv_neg]`. Express the relevant statement in the definitionally equal form `_ = -T ((cartierDual F Ω M).ρ c (T.symm f))`. Rewrite using `[hact, T.apply_symm_apply]`.
+
+Use `⟨h1EquivOfOrderTwo M hG hc, (tateQuotCongr T.symm he1).trans (h1EquivOfOrderTwo (cartierDual F Ω M) hG hc), fun x y => ?_⟩` and prove the remaining obligations. Take `⟨α, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Take `⟨f, rfl⟩` from `QuotientAddGroup.mk_surjective y`. Rewrite using `[AddEquiv.trans_apply, tateQuotCongr_mk, h1Equiv_mk, h1Equiv_mk, realDualityPairing_apply, tatePair_mk]`. Use `set β : cartierDual F Ω M := ((fixedSubCongr T.symm he1 f : fixedSub _) : cartierDual F Ω M) with hβdef`.
+
+Take `⟨ht, hcup⟩` from `cupPairing_cocycleOne M hG hc (α : M) ((mem_fixedSub_neg_act M).1 α.2) β ((mem_fixedSub_neg_act _).1 (fixedSubCongr T.symm he1 f).2)`. Rewrite using `[hcup]`. Establish `hTf : cartierDualToQZ M hMn e β = f` using `T.apply_symm_apply f`. Establish `hq : 2 • cartierDualToQZ M hMn e β α = 0`. Rewrite using `[hTf]`.
+
+Conclude with `two_nsmul_fixedPair (-act M c) α f`. Establish `hβ : (cartierDual F Ω M).ρ c β = -β` using `eq_neg_of_add_eq_zero_right ((mem_fixedSub_neg_act _).1 (fixedSubCongr T.symm he1 f).2)`. Use `(realInv_cocycleTwo_eq_cartierDualToQZ h2 hN hG hc hneg M hMn e β α hq _ (Or.inr (by rw [hβ]; rfl)) ht).trans ?_` and prove the remaining obligations. Rewrite using `[hTf]`.
+-/
 theorem realDualityPairing_one_eq_tatePair :
     ∃ (e : tateQuot (-act M c) ≃+ cohomology M 1)
       (e' : tateQuot (dualInv (-act M c)) ≃+ cohomology (cartierDual F Ω M) 1),
@@ -269,6 +332,9 @@ theorem realDualityPairing_one_eq_tatePair :
 
 include hG hc hneg hconj hroots in
 
+/- English proof (translation)
+Take `⟨e, e', h⟩` from `realDualityPairing_one_eq_tatePair h2 hN hG hc hneg hconj hroots M`. Conclude with `bijective_of_pairing_eq _ _ e e' h tatePair_bijective`.
+-/
 theorem realDualityPairing_one_bijective :
     Function.Bijective (realDualityPairing F Ω h2 hN M (show 1 + 1 = 2 from rfl)) := by
   obtain ⟨e, e', h⟩ := realDualityPairing_one_eq_tatePair h2 hN hG hc hneg hconj hroots M
@@ -276,6 +342,9 @@ theorem realDualityPairing_one_bijective :
 
 include hG hc hneg hconj hroots in
 
+/- English proof (translation)
+Take `⟨e, e', h⟩` from `realDualityPairing_one_eq_tatePair h2 hN hG hc hneg hconj hroots M`. Conclude with `bijective_flip_of_pairing_eq _ _ e e' h tatePair_flip_bijective`.
+-/
 theorem realDualityPairing_one_flip_bijective :
     Function.Bijective (realDualityPairing F Ω h2 hN M (show 1 + 1 = 2 from rfl)).flip := by
   obtain ⟨e, e', h⟩ := realDualityPairing_one_eq_tatePair h2 hN hG hc hneg hconj hroots M
@@ -283,6 +352,9 @@ theorem realDualityPairing_one_flip_bijective :
 
 include hneg hconj hroots in
 
+/- English proof (translation)
+Take `⟨e, e', h⟩` from `realDualityPairingTwoZero_eq_tatePair h2 hN hG hc hneg hconj hroots M`. Conclude with `bijective_of_pairing_eq _ _ e e' h tatePair_bijective`.
+-/
 theorem realDualityPairingTwoZero_bijective :
     Function.Bijective (realDualityPairingTwoZero h2 hN hG hc M) := by
   obtain ⟨e, e', h⟩ := realDualityPairingTwoZero_eq_tatePair h2 hN hG hc hneg hconj hroots M
@@ -290,6 +362,9 @@ theorem realDualityPairingTwoZero_bijective :
 
 include hneg hconj hroots in
 
+/- English proof (translation)
+Take `⟨e, e', h⟩` from `realDualityPairingTwoZero_eq_tatePair h2 hN hG hc hneg hconj hroots M`. Conclude with `bijective_flip_of_pairing_eq _ _ e e' h tatePair_flip_bijective`.
+-/
 theorem realDualityPairingTwoZero_flip_bijective :
     Function.Bijective (realDualityPairingTwoZero h2 hN hG hc M).flip := by
   obtain ⟨e, e', h⟩ := realDualityPairingTwoZero_eq_tatePair h2 hN hG hc hneg hconj hroots M
@@ -297,6 +372,9 @@ theorem realDualityPairingTwoZero_flip_bijective :
 
 include hneg hconj hroots in
 
+/- English proof (translation)
+Take `⟨e, e', h⟩` from `realDualityPairingZeroTwo_eq_tatePair h2 hN hG hc hneg hconj hroots M`. Conclude with `bijective_of_pairing_eq _ _ e e' h tatePair_bijective`.
+-/
 theorem realDualityPairingZeroTwo_bijective :
     Function.Bijective (realDualityPairingZeroTwo h2 hN hG hc M) := by
   obtain ⟨e, e', h⟩ := realDualityPairingZeroTwo_eq_tatePair h2 hN hG hc hneg hconj hroots M
@@ -304,6 +382,9 @@ theorem realDualityPairingZeroTwo_bijective :
 
 include hneg hconj hroots in
 
+/- English proof (translation)
+Take `⟨e, e', h⟩` from `realDualityPairingZeroTwo_eq_tatePair h2 hN hG hc hneg hconj hroots M`. Conclude with `bijective_flip_of_pairing_eq _ _ e e' h tatePair_flip_bijective`.
+-/
 theorem realDualityPairingZeroTwo_flip_bijective :
     Function.Bijective (realDualityPairingZeroTwo h2 hN hG hc M).flip := by
   obtain ⟨e, e', h⟩ := realDualityPairingZeroTwo_eq_tatePair h2 hN hG hc hneg hconj hroots M
@@ -341,6 +422,9 @@ variable {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [FiniteDimensional F 
 
 include hneg hconj hroots in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨realDualityPairingZeroTwo_bijective h2 hN hG hc hneg hconj hroots M, realDualityPairingZeroTwo_flip_bijective h2 hN hG hc hneg hconj hroots M⟩, ⟨realDualityPairing_one_bijective h2 hN hG hc hneg hconj hroots M, realDualityPairing_one_flip_bijective h2 hN hG hc hneg hconj hroots …`.
+-/
 theorem real_local_duality_of_orderTwo :
     (Function.Bijective (realDualityPairingZeroTwo h2 hN hG hc M) ∧
       Function.Bijective (realDualityPairingZeroTwo h2 hN hG hc M).flip) ∧

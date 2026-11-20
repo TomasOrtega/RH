@@ -10,6 +10,13 @@ open Formalism.BasicNotions GlobalTheory.Mem GlobalTheory.MemN NumberField IsDed
 open GlobalTheory.Mem.GaloisStage
 open scoped Pointwise
 
+/- English proof (translation)
+Take `⟨e, he, he'⟩` from `exists_transversal c hc hne hn`. Use `⟨e, he, he', fun x => ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (Sum.elim e (fun i => c (e i)) : Fin n ⊕ Fin n → S)`. Introduce and unpack `(i | i) (j | j) h`. Conclude with `congrArg _ (he h)`.
+
+Conclude with `absurd h.symm (he' j i)`. Conclude with `absurd h (he' i j)`. Establish `h' : c (e i) = c (e j)` using `h`. Establish `: e i = e j` using `by rw [← hc (e i), h', hc]`. Conclude with `congrArg _ (he this)`.
+
+Establish `hbij` using `(Fintype.bijective_iff_injective_and_card _).2 ⟨hinj, by simp [hn, two_mul]⟩`. Take `⟨i | i, h⟩` from `hbij.2 x`. Conclude with `⟨i, Or.inl h.symm⟩`. Conclude with `⟨i, Or.inr h.symm⟩`.
+-/
 theorem exists_transversal_cover {S : Type} [Fintype S] (c : S → S) (hc : ∀ x, c (c x) = x)
     (hne : ∀ x, c x ≠ x) {n : ℕ} (hn : Fintype.card S = 2 * n) :
     ∃ e : Fin n → S, Function.Injective e ∧ (∀ i j, c (e i) ≠ e j) ∧ ∀ x, ∃ i, x = e i ∨ x = c (e i) := by
@@ -31,6 +38,13 @@ theorem exists_transversal_cover {S : Type} [Fintype S] (c : S → S) (hc : ∀ 
 
 variable {R : Ranks}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `y`. Use `h (H.conj⁻¹ • y) y (by rw [← Formalism.TwoAdicCyclotomicDecomposition.odd_coe_smul, smul_inv_smul])` as an intermediate fact. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`.
+
+Conclude with `this`. Introduce `h x y hxy`. Establish `hy : y = H.conj • x`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hxy`.
+
+Rewrite using `[← h, hy, Ideal.smul_mem_pointwise_smul_iff]`.
+-/
 theorem isConjPl_iff (H : Host R) (w w' : PlE H) :
     IsConjPl H w w' ↔ H.conj • w.asIdeal = w'.asIdeal := by
   constructor
@@ -45,6 +59,29 @@ theorem isConjPl_iff (H : Host R) (w w' : PlE H) :
       exact hxy
     rw [← h, hy, Ideal.smul_mem_pointwise_smul_iff]
 
+/- English proof (translation)
+Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hG : IsGalois ℚ H.E` using `H.galois`. Use `Formalism.FrobeniusOrbits.SplitK.span_prime p` as an intermediate fact. Establish `: IsGaloisGroup (H.E ≃ₐ[ℚ] H.E) ℤ (𝓞 H.E)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ H.E`. Establish `hp0 : Ideal.span {(p : ℤ)} ≠ ⊥`.
+
+Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions. Take `⟨⟨P, hP1, hP2⟩⟩` from `(inferInstance : Nonempty (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 H.E)))`. Establish `hr : Set.range (fun σ : H.E ≃ₐ[ℚ] H.E => σ • P) = Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 H.E)`. Use extensionality with `Q`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, rfl⟩`. Conclude with `⟨inferInstance, inferInstance⟩`. Introduce and unpack `⟨hQ1, hQ2⟩`. Conclude with `Ideal.exists_smul_eq_of_isGaloisGroup (Ideal.span {(p : ℤ)}) P Q (H.E ≃ₐ[ℚ] H.E)`.
+
+Establish `hinj : Function.Injective (fun σ : H.E ≃ₐ[ℚ] H.E => σ • P)`. Rewrite `hs` using `[GlobalTheory.HostSplit.ncard_placesOver H.E hp, ← hr, ← IsGalois.card_aut_eq_finrank, ← Set.image_univ, ← Set.ncard_univ]`. Conclude with `Set.injOn_univ.1 (Set.injOn_of_ncard_image_eq hs)`. Establish `hcard : Fintype.card (H.E ≃ₐ[ℚ] H.E) = 2 * R.f`. Rewrite using `[← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, H.finrank_cmField, Ranks.f, Ranks.n]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨e, he, he', hcov⟩` from `exists_transversal_cover (fun σ => H.conj * σ) (fun σ => by rw [← mul_assoc, conj_mul_conj, one_mul]) (fun σ h => conj_ne_one H (mul_eq_right.1 h)) hcard`. Use `⟨fun i => ⟨e i • P, inferInstance, Ideal.ne_bot_of_liesOver_of_ne_bot hp0 _⟩, fun i => ?_, fun i j h => he (hinj (congrArg HeightOneSpectrum.asIdeal h)), fun i j h => he' i j (hinj ?_), fun w hw => ?_⟩` and prove the remaining obligations. Establish `h3 : (p : ℤ) ∈ (e i • P).under ℤ`. Rewrite using `[← Ideal.over_def (e i • P) (Ideal.span {(p : ℤ)})]`.
+
+Conclude with `Ideal.mem_span_singleton_self _`. Establish `h4 : algebraMap ℤ (𝓞 H.E) ((p : ℕ) : ℤ) ∈ e i • P` using `h3`. Rewrite `h4` using `[map_natCast]`. Conclude with `h4`. Use `show (H.conj * e i) • P = e j • P`.
+
+Rewrite using `[mul_smul]`. Establish `h'` using `(isConjPl_iff H _ _).1 h`. Simplify using `only at h'`. Conclude with `h'`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`.
+
+Establish `hwp` using `w.isPrime`. Establish `hw' : w.asIdeal ∈ Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 H.E)`. Use `⟨hwp, ⟨hmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Use `show algebraMap ℤ (𝓞 H.E) ((p : ℕ) : ℤ) ∈ w.asIdeal`.
+
+Rewrite using `[map_natCast]`. Conclude with `hw`. Rewrite `hw'` using `[← hr]`. Take `⟨σ, hσ⟩` from `hw'`. Establish `hσ' : σ • P = w.asIdeal` using `hσ`.
+
+Take `⟨i, h | h⟩` from `hcov σ`. Conclude with `⟨i, Or.inl (HeightOneSpectrum.ext (by rw [← hσ', h]))⟩`. Use `⟨i, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[isConjPl_iff]`. Simplify using `only`.
+
+Rewrite using `[← hσ', h, mul_smul]`.
+-/
 theorem exists_places_cover (H : Host R) {p : ℕ} (hp : p.Prime)
     (hs : (placesOver H.E p).ncard = Module.finrank ℚ H.E) :
     ∃ e : Fin R.f → PlE H, (∀ i, e i ∈ placesOver H.E p) ∧ Function.Injective e ∧

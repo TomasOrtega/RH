@@ -19,6 +19,15 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.SeedExists
 
+/- English proof (translation)
+Introduce `l _ K bk τ hτ P AI hstd V _ _ _ _ _ _ _ ρ L _ hcrys d b`. Take `⟨T⟩` from `hstd`. Take `⟨C, hC⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T`. Use `set ρm : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l] := fun g => LinearMap.toMatrix b b (actT L g) with hρm`. Establish `hv0` using `GlobalTheory.T.crystallineLattice_basis_span_invariants l K P AI T V ρ L hcrys d b`.
+
+Take `⟨U, U', hUU', hU⟩` from `GlobalTheory.T.exists_invertible_invariant_periodMatrix_bcris l K P AI T d ρm hv0`. Take `⟨hInvB, hInvdR⟩` from `GlobalTheory.T.periodRingCore_crystalline_deRham_invariants l P AI T C hC`. Take `⟨c₁, c₃, F, F', hFF', hF⟩` from `GlobalTheory.T.exists_frobeniusMatrix_crystallineModule_over_witt l K bk C hInvB d ρm U U' hUU' hU`. Take `⟨N₀, hN₀⟩` from `GlobalTheory.T.bcris_periodMatrix_over_acris l K P AI T C hC bk d ρm U U' hUU' hU c₁ F hF`. Establish `hv2` using `GlobalTheory.T.crysLattice_basis_mem_sum_deRham_filtration l K P AI T V ρ L hcrys d b`.
+
+Take `⟨N, m, k, c, β, hN, hk, hUN, hUc, hβ, hUcβ⟩` from `GlobalTheory.T.exists_bdRPlus_lattice_generators_ddR l K P AI T C hC hInvdR d ρm U U' hUU' hU hv2 N₀`. Establish `hUU'ι : U.map C.ι * U'.map C.ι = 1`. Rewrite using `[← Matrix.map_mul, hUU', Matrix.map_one _ (map_zero _) (map_one _)]`. Take `⟨c₂, X, X', hXX', hnp, hX, hX'⟩` from `GlobalTheory.T.exists_modification_of_filtration_alt l K bk C d (U.map C.ι) (U'.map C.ι) hUU'ι N m k c β hk (fun r s => hUN r s) hUc hβ hUcβ`. Take `⟨Z, Z', hZ⟩` from `hN₀ N hN X X' hX hX'`.
+
+Conclude with `GlobalTheory.T.crystallineLatticeDiscPeriodData_of_acris_periods l K bk C τ hτ d ρm N c₁ c₂ c₃ F F' X X' hFF' hXX' hnp Z Z' hZ`.
+-/
 theorem exists_seed : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ →
     ∀ (P : LocPrime l) (AI : LocAinf l P), IsStd P AI → ∀ (V : Type) [AddCommGroup V] [Module ℚ_[l] V]
     [Module ℤ_[l] V] [IsScalarTower ℤ_[l] ℚ_[l] V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V]

@@ -3,6 +3,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoverRestrictio
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.SortSign
 open CategoryTheory AlgebraicGeometry KaehlerDifferential GlobalTheory GlobalTheory.PD GlobalTheory.CechDR GlobalTheory.HodgeCoh ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.AltCech.cechHEquivCohOn_altPull | exact GlobalTheory.CompanionTheory.AltCech.cechHEquivCohOn_altPull | (intros; apply GlobalTheory.CompanionTheory.AltCech.cechHEquivCohOn_altPull <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cover_restriction_base_change : ∀ {X Y : Scheme.{0}} (g : Y ⟶ X) (ι κ : Type) [LinearOrder ι] [Finite ι] [LinearOrder κ] [Finite κ]
     (R : Type) [CommRing R] [Algebra R Γ(X, ⊤)] (S : Type) [CommRing S] [Algebra S Γ(Y, ⊤)] (σ : R →+* S)
     (hσ : ∀ r, g.appTop (algebraMap R Γ(X, ⊤) r) = algebraMap S Γ(Y, ⊤) (σ r))

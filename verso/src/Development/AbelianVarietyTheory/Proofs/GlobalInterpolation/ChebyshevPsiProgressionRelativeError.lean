@@ -9,6 +9,15 @@ open scoped Classical
 
 namespace GlobalTheory.Lin.PsiRel
 
+/- English proof (translation)
+Establish `hu : IsUnit (b : ZMod M)` using `(ZMod.isUnit_iff_coprime b M).2 hb`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Unfold `psiAP`. Rewrite using `[Finset.sum_filter, Finset.mul_sum, Complex.ofReal_sum]`.
+
+Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Establish `h` using `DirichletCharacter.sum_char_inv_mul_char_eq ℂ hu (n : ZMod M)`. Establish `h2 : ∑ χ : DirichletCharacter ℂ M, χ (b : ZMod M)⁻¹ * (((Λ n : ℝ) : ℂ) * χ (n : ZMod M)) = ((Λ n : ℝ) : ℂ) * ∑ χ : DirichletCharacter ℂ M, χ (b : ZMod M)⁻¹ * χ (n : ZMod M)`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun χ _ => by ring`. Rewrite using `[h2, h]`.
+
+Distinguish the cases in `hn : n ≡ b [MOD M]`. Establish `: (b : ZMod M) = n` using `(ZMod.natCast_eq_natCast_iff _ _ _).2 hn.symm`. Rewrite using `[if_pos hn, if_pos this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `: ¬ (b : ZMod M) = n` using `fun h => hn ((ZMod.natCast_eq_natCast_iff _ _ _).1 h).symm`. Rewrite using `[if_neg hn, if_neg this]`. Simplify using the standard rewrite rules.
+-/
 lemma orth (M : ℕ) [NeZero M] (b : ℕ) (hb : Nat.Coprime b M) (u : ℝ) :
     (((M.totient : ℝ) * psiAP M b u : ℝ) : ℂ) = ∑ χ : DirichletCharacter ℂ M, χ (b : ZMod M)⁻¹ *
       ∑ n ∈ Finset.Icc 1 ⌊u⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod M) := by
@@ -29,6 +38,13 @@ lemma orth (M : ℕ) [NeZero M] (b : ℕ) (hb : Nat.Coprime b M) (u : ℝ) :
   · have : ¬ (b : ZMod M) = n := fun h => hn ((ZMod.natCast_eq_natCast_iff _ _ _).1 h).symm
     rw [if_neg hn, if_neg this]; simp
 
+/- English proof (translation)
+Establish `hs` using `ht.subset hst`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hs, finsum_mem_eq_finite_toFinset_sum _ ht, Finset.mul_sum]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `le_trans (Finset.sum_le_sum (g := fun ρ : ℂ => 2 * u * ((o ρ : ℝ) * u ^ (ρ.re - 1))) ?_) (Finset.sum_le_sum_of_subset_of_nonneg (by simpa using hst) fun ρ _ _ => by positivity)` and prove the remaining obligations. Introduce `ρ hρ`.
+
+Establish `h1` using `h ρ (by simpa using hρ)`. Establish `h2 : 1 / 2 ≤ ‖ρ‖` using `h1.trans (Complex.re_le_norm ρ)`. Rewrite using `[norm_mul, norm_div, Complex.norm_natCast, Complex.norm_cpow_eq_rpow_re_of_pos hu, Real.rpow_sub_one hu.ne']`. Establish `h3 : 0 < u ^ ρ.re` using `Real.rpow_pos_of_pos hu _`. Establish `h4 : u ^ ρ.re / ‖ρ‖ ≤ 2 * u ^ ρ.re`.
+
+Rewrite using `[div_le_iff₀ (by linarith)]; nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma zsum (s t : Set ℂ) (ht : t.Finite) (hst : s ⊆ t) (o : ℂ → ℕ) (u : ℝ) (hu : 0 < u)
     (h : ∀ ρ ∈ s, 1 / 2 ≤ ρ.re) :
     ‖∑ᶠ ρ ∈ s, (o ρ : ℂ) * ((u : ℂ) ^ ρ / ρ)‖ ≤ 2 * u * ∑ᶠ ρ ∈ t, (o ρ : ℝ) * u ^ (ρ.re - 1) := by
@@ -48,6 +64,9 @@ lemma zsum (s t : Set ℂ) (ht : t.Finite) (hst : s ⊆ t) (o : ℂ → ℕ) (u 
   calc (o ρ : ℝ) * (u ^ ρ.re / ‖ρ‖) ≤ (o ρ : ℝ) * (2 * u ^ ρ.re) := by gcongr
     _ = _ := by field_simp
 
+/- English proof (translation)
+The claim follows from `|(M.totient : ℝ) * psiAP M b u - (u - x)| ≤ M * E + ∑ χ, B χ := by have hu : IsUnit (b : ZMod M) := (ZMod.isUnit_iff_coprime b M).2 hb have hui : IsUnit (b : ZMod M)⁻¹ := IsUnit.of_mul_eq_one (b : ZMod M) (ZMod.inv_mul_of_unit _ hu) have h4 : ∑ χ : DirichletCharacter ℂ M, χ (b : …`.
+-/
 lemma combine (M : ℕ) [NeZero M] (b : ℕ) (hb : Nat.Coprime b M) (u E x : ℝ) (hE : 0 ≤ E)
     (Z e : DirichletCharacter ℂ M → ℂ) (B : DirichletCharacter ℂ M → ℝ)
     (h1 : ∀ χ : DirichletCharacter ℂ M, ‖(∑ n ∈ Finset.Icc 1 ⌊u⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod M)) -
@@ -80,6 +99,9 @@ lemma combine (M : ℕ) [NeZero M] (b : ℕ) (hb : Nat.Coprime b M) (u E x : ℝ
     have : (M.totient : ℝ) ≤ M := by exact_mod_cast Nat.totient_le M
     gcongr
 
+/- English proof (translation)
+The claim follows from `|(M.totient : ℝ) * psiAP M b u - (u - θ * (u ^ β / β))| ≤ M * E + 2 * u * ∑ χ : DirichletCharacter ℂ M, (∑ᶠ ρ ∈ zerosBox χ (1 / 2) T ∩ {ρ | ρ.re ≤ 1 - η}, (ord χ ρ : ℝ) * u ^ (ρ.re - 1)) := by have hbu : IsUnit (b : ZMod M) := (ZMod.isUnit_iff_coprime b M).2 hb rw [Finset.mul_sum …`.
+-/
 lemma struct (M : ℕ) [NeZero M] (b : ℕ) (hb : Nat.Coprime b M) (θ : ℤ) (β u T η E : ℝ) (hu : 0 < u) (hE : 0 ≤ E)
     (h1 : ∀ χ : DirichletCharacter ℂ M, (zerosBox χ (1 / 2) T).Finite ∧
       ‖(∑ n ∈ Finset.Icc 1 ⌊u⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod M)) - (if χ = 1 then (u : ℂ) else 0) +
@@ -132,6 +154,19 @@ lemma struct (M : ℕ) [NeZero M] (b : ℕ) (hb : Nat.Coprime b M) (θ : ℤ) (�
         rw [← hθ]; linear_combination (-(χ₁ (b : ZMod M)⁻¹)) * ha + χ₁ (b : ZMod M) * hb'
       rw [hc]; push_cast; rw [Complex.ofReal_cpow hu.le]
 
+/- English proof (translation)
+Use `set x := (1 - β) * V with hx`. Establish `hx0 : 0 < x` using `by positivity`. Establish `hb : 0 < β` using `by linarith`. Establish `e1 : (Real.exp V) ^ β = Real.exp V * Real.exp (-x)`. Rewrite using `[← Real.exp_mul, ← Real.exp_add]`.
+
+Use `congr 1`. Rewrite using `[hx]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : Real.exp (-x) ≤ 1 / (1 + x)`. Rewrite using `[Real.exp_neg, one_div]; exact inv_anti₀ (by linarith) (by linarith [Real.add_one_le_exp x])`.
+
+Establish `e3 : 8 * (1 - β) ≤ x` using `by rw [hx]; nlinarith`. Establish `e4 : Real.exp (-x) / β ≤ 1 - min 1 x / 4`. Rewrite using `[div_le_iff₀ hb]`. Use `e2.trans ?_` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by linarith)]`.
+
+Break down `le_total 1 x with h | h` into its components or cases. Rewrite using `[min_eq_left h]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[min_eq_right h]`. Apply the tactic sequence `have : 0 ≤ (1 - x / 4) * (1 + x) := by apply mul_nonneg <;> linarith`.
+
+Establish `h5 : (1 - x / 4) * (1 + x) * (1 - x / 8) ≤ (1 - x / 4) * (1 + x) * β` using `by gcongr; linarith`. Use polynomial arithmetic with `[mul_nonneg hx0.le (sub_nonneg.2 h), mul_nonneg hx0.le (mul_nonneg hx0.le hx0.le)]`. Establish `hu` using `Real.exp_pos V`. Establish `e5 : 0 < Real.exp (-x) / β` using `by positivity`. Rewrite using `[e1, mul_div_assoc (Real.exp V) (Real.exp (-x))]`.
+
+Establish `: θ * (Real.exp V * (Real.exp (-x) / β)) ≤ 1 * (Real.exp V * (1 - min 1 x / 4))`. Use `(mul_le_mul_of_nonneg_right hθ (by positivity)).trans ?_` and prove the remaining obligations. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma mainLower (θ β V : ℝ) (hθ : θ ≤ 1) (h1 : 7 / 8 ≤ β) (h2 : β < 1) (hV : 8 ≤ V) :
     Real.exp V * min 1 ((1 - β) * V) / 4 ≤ Real.exp V - θ * ((Real.exp V) ^ β / β) := by
   set x := (1 - β) * V with hx
@@ -160,6 +195,41 @@ lemma mainLower (θ β V : ℝ) (hθ : θ ≤ 1) (h1 : 7 / 8 ≤ β) (h2 : β < 
     gcongr
   linarith
 
+/- English proof (translation)
+Use `set R := max (max R₀ 2) (1 / η₀) with hR`. Establish `hR2 : 2 ≤ R` using `(le_max_right _ _).trans (le_max_left _ _)`. Establish `hR0 : R₀ ≤ R` using `(le_max_left _ _).trans (le_max_left _ _)`. Establish `hRη : 1 ≤ η₀ * R`. Establish `: 1 / η₀ ≤ R` using `le_max_right _ _`.
+
+Rewrite `this` using `[div_le_iff₀ hη]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set c₃ := min (min (1 / 4) (c' / 20)) (c' ^ 2 / 4) with hc₃`. Establish `hc3 : 0 < c₃` using `by positivity`. Establish `hc3a : c₃ ≤ 1 / 4` using `(min_le_left _ _).trans (min_le_left _ _)`.
+
+Establish `hc3b : c₃ ≤ c' / 20` using `(min_le_left _ _).trans (min_le_right _ _)`. Establish `hc3c : c₃ ≤ c' ^ 2 / 4` using `min_le_right _ _`. Use `⟨20 * R + 4 * R ^ 2, c₃, 4 * ((3072 * Ce + 2 * Ca) / cw + 2 * Ca * K), by positivity, hc3, by positivity, fun m V w hm hV => ?_⟩` and prove the remaining obligations. Establish `hV1 : 20 * R * m ≤ V` using `by nlinarith [sq_nonneg R]`. Establish `hV2 : 4 * R ^ 2 ≤ V` using `by nlinarith [sq_nonneg R]`.
+
+Establish `hV0 : 0 < V` using `by nlinarith`. Use `set s := √V with hs`. Establish `hs2 : s * s = V` using `Real.mul_self_sqrt hV0.le`. Establish `hsR : 2 * R ≤ s` using `Real.le_sqrt_of_sq_le (by linarith)`. Establish `hL : R * (10 * m + s) ≤ V` using `by nlinarith`.
+
+Establish `hL0 : 0 < 10 * m + s` using `by linarith`. Use `⟨hV0, le_trans (by gcongr) hL, fun hw => ?_⟩` and prove the remaining obligations. Establish `hL2 : 2 * (10 * m + s) ≤ V` using `le_trans (by gcongr) hL`. Establish `hLη : 10 * m + s ≤ η₀ * V`. Use `mul_le_mul_of_nonneg_left hL hη.le` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `set P := Real.exp (-c₃ * V / m) + Real.exp (-√(c₃ * V)) with hP`. Establish `hw0 : 0 < w` using `lt_of_lt_of_le (by positivity) hw`. Establish `hsq : ∀ a : ℝ, 0 ≤ a → c₃ ≤ a ^ 2 → √(c₃ * V) ≤ a * s` using `fun a ha h => by`. Apply `Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩` to reduce the goal to its premises.
+
+Rewrite using `[mul_pow, pow_two s, hs2]`. Use `gcongr`. Establish `p1 : Real.exp (-(s / 2)) ≤ P`. Use `hsq (1 / 2) (by norm_num) (by linarith)` as an intermediate fact. Establish `h : Real.exp (-(s / 2)) ≤ Real.exp (-√(c₃ * V))` using `by gcongr; linarith`.
+
+Combine the linear relations using `[Real.exp_pos (-c₃ * V / m)]`. Establish `p2 : Real.exp (-(c' * (V / (10 * m + s)))) ≤ P`. Break down `le_total s (10 * m) with h | h` into its components or cases. Establish `h1 : V / (20 * m) ≤ V / (10 * m + s)` using `by gcongr; linarith`. Establish `h2 : c₃ * V / m ≤ c' * (V / (20 * m))`.
+
+Establish `: c' * (V / (20 * m)) = c' / 20 * V / m` using `by field_simp`. Rewrite using `[this]`. Use `gcongr`. Establish `h3 : Real.exp (-(c' * (V / (10 * m + s)))) ≤ Real.exp (-c₃ * V / m)`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+
+Use `mul_le_mul_of_nonneg_left h1 hc.le` as an intermediate fact. Rewrite using `[neg_mul, neg_div]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[Real.exp_pos (-√(c₃ * V))]`. Establish `h1 : s / 2 ≤ V / (10 * m + s)`.
+
+Rewrite using `[le_div_iff₀ hL0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2` using `hsq (c' / 2) (by positivity) (by linarith)`. Establish `h3 : Real.exp (-(c' * (V / (10 * m + s)))) ≤ Real.exp (-√(c₃ * V))`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+
+Use `mul_le_mul_of_nonneg_left h1 hc.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[Real.exp_pos (-c₃ * V / m)]`. Establish `hs0 : 0 ≤ s` using `by linarith`. Establish `q1 : (m + V + (8 * m + s)) ^ 2 ≤ 1536 * Real.exp (s / 2)`.
+
+Establish `h1 : (m + V + (8 * m + s)) ^ 2 ≤ (2 * V) ^ 2` using `by gcongr; linarith`. Establish `h2` using `Real.pow_div_factorial_le_exp (s / 2) (by linarith) 4`. Establish `h3 : (s / 2) ^ 4 / ((Nat.factorial 4 : ℕ) : ℝ) = V ^ 2 / 384`. Rewrite using `[← hs2]`. Evaluate the numerical expressions using `[Nat.factorial]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set X := Real.exp (-(3 * m)) with hX`. Establish `q2 : Real.exp m * (Real.exp (-(8 * m + s)) + Real.exp (-(V / 2)) * Real.exp (3 * m)) * Real.exp (s / 2) ≤ 2 * (X * Real.exp (-(s / 2)))`.
+
+Rewrite using `[mul_add, add_mul, hX]`. Simplify using `only [← Real.exp_add]`. Rewrite using `[two_mul]; exact add_le_add (Real.exp_le_exp.2 (by linarith)) (Real.exp_le_exp.2 (by linarith))`. Establish `q3 : Real.exp (-(η₀ * V)) ≤ X * Real.exp (-(s / 2))`. Rewrite using `[hX, ← Real.exp_add]`.
+
+Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `q4 : X * Real.exp (-(s / 2)) ≤ w / cw * P`. Establish `: X ≤ w / cw` using `by rw [le_div_iff₀ hcw]; linarith`. Use `gcongr`.
+
+Establish `q5 : Real.exp m * (Ce * (Real.exp (-(8 * m + s)) + Real.exp (-(V / 2)) * Real.exp (3 * m)) * (m + V + (8 * m + s)) ^ 2) ≤ 3072 * Ce * (w / cw * P)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma realEnd (Ce Ca η₀ c' K cw R₀ : ℝ) (hCe : 0 < Ce) (hCa : 0 < Ca) (hη : 0 < η₀) (hc : 0 < c') (hK : 0 < K)
     (hcw : 0 < cw) :
     ∃ c₂ c₃ C : ℝ, 0 < c₂ ∧ 0 < c₃ ∧ 0 < C ∧ ∀ m V w : ℝ, 1 ≤ m → c₂ * m ≤ V →
@@ -253,6 +323,21 @@ lemma realEnd (Ce Ca η₀ c' K cw R₀ : ℝ) (hCe : 0 < Ce) (hCa : 0 < Ca) (h�
         gcongr; exact q3.trans q4
     _ = _ := by field_simp; ring
 
+/- English proof (translation)
+Use `set d₀ := min 1 (d / Real.exp 1) with hd₀`. Establish `h0 : 0 < d₀` using `by positivity`. Establish `h1 : d₀ ≤ 1` using `min_le_left _ _`. Establish `h2 : d₀ * Real.exp 1 ≤ d`. Establish `: d₀ ≤ d / Real.exp 1` using `min_le_right _ _`.
+
+Rewrite `this` using `[le_div_iff₀ (Real.exp_pos 1)]`. Then use the resulting hypothesis. Establish `he : 1 ≤ Real.exp 1` using `Real.one_le_exp zero_le_one`. Establish `ha : min (c / 2) (d / 4) ≤ c / 2` using `min_le_left _ _`. Establish `hb : min (c / 2) (d / 4) ≤ d / 4` using `min_le_right _ _`. Use `⟨min (c / 2) (d / 4), 1 / d₀, 4 / d, by positivity, ha, by rwa [le_div_iff₀ h0, one_mul], fun δ R hδ hR0 hR => ?_⟩` and prove the remaining obligations.
+
+Break down `le_total d₀ δ with h | h` into its components or cases. Use `⟨c, hc.le, Or.inl rfl, ?_⟩` and prove the remaining obligations. Establish `h3 : 1 ≤ 1 / d₀ * min 1 δ`. Rewrite using `[one_div_mul_eq_div, le_div_iff₀ h0, one_mul]`. Conclude with `le_min h1 h`.
+
+Use `le_trans ?_ (le_mul_of_one_le_left (Real.exp_pos _).le h3)` and prove the remaining obligations. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `hl : 1 ≤ Real.log (d / δ)`. Rewrite using `[Real.le_log_iff_exp_le (by positivity), le_div_iff₀ hδ]; nlinarith`.
+
+Use `⟨d * Real.log (d / δ), by positivity, Or.inr rfl, ?_⟩` and prove the remaining obligations. Establish `h4 : 4 ≤ d * R` using `by rw [div_le_iff₀ hd] at hR; linarith`. Rewrite using `[min_eq_right (h.trans h1)]`. Establish `h5 : Real.exp (-Real.log (d / δ)) ≤ 1 / d₀ * δ`. Rewrite using `[Real.exp_neg, Real.exp_log (by positivity), inv_div, one_div_mul_eq_div]`.
+
+Use `gcongr`. Use the polynomial consequences of the given equalities and inequalities. Use `le_trans ?_ (mul_le_mul_of_nonneg_right h5 (Real.exp_pos _).le)` and prove the remaining obligations. Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+
+Use `mul_le_mul_of_nonneg_right hb hR0` as an intermediate fact. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 h4) (sub_nonneg.2 hl)]`.
+-/
 lemma etaChoice (c d : ℝ) (hc : 0 < c) (hd : 0 < d) :
     ∃ c' K R₁ : ℝ, 0 < c' ∧ c' ≤ c / 2 ∧ 1 ≤ K ∧ ∀ δ R : ℝ, 0 < δ → 0 ≤ R → R₁ ≤ R → ∃ a : ℝ, 0 ≤ a ∧
       (a = c ∨ a = d * Real.log (d / δ)) ∧
@@ -291,6 +376,63 @@ lemma etaChoice (c d : ℝ) (hc : 0 < c) (hd : 0 < d) :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨c₀, hc₀, hX⟩` from `GlobalTheory.T.exceptionalDirichletZero_unique_zeroFreeRegion`. Use `⟨c₀, hc₀, fun c₁ hc₁ hc₁' => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hX⟩` from `hX c₁ hc₁ hc₁'`. Take `⟨d, hd, hD⟩` from `GlobalTheory.T.one_sub_re_ge_of_exceptional_zero_repulsion`. Take `⟨Ce, hCe, hE⟩` from `GlobalTheory.T.explicit_formula_dirichlet_zeros_right_half`.
+
+Take `⟨A, Ca, η₀, hA, hCa, hη₀, hZ⟩` from `GlobalTheory.T.exists_sum_characters_finsum_zeros_rpow_re_sub_one_le`. Take `⟨c', K, R₁, hc', hc'', hK, hη⟩` from `etaChoice c d hc hd`. Take `⟨c₂, c₃, C, hc₂, hc₃, hC, hR⟩` from `realEnd Ce Ca η₀ c' K (min 1 c) (max (max R₁ A) 8) hCe hCa hη₀ hc' (by linarith) (by positivity)`. Use `⟨c₂, c₃, C, hc₂, hc₃, hC, fun M _ b θ β u hM hb hexc hu => ?_⟩` and prove the remaining obligations. Take `⟨hX1, hX2, hX3⟩` from `hX M hM`.
+
+Establish `hM3 : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hM0 : (0 : ℝ) < M` using `by linarith`. Establish `hu0 : 0 < u` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hM0 _) hu`. Take `⟨V, rfl⟩ : ∃ V, u = Real.exp V` from `⟨Real.log u, (Real.exp_log hu0).symm⟩`. Rewrite using `[Real.log_exp]`.
+
+Use `set m := Real.log M with hm`. Establish `hMm : (M : ℝ) = Real.exp m` using `(Real.exp_log hM0).symm`. Establish `hm1 : 1 ≤ m`. Rewrite using `[hm, Real.le_log_iff_exp_le hM0]`. Combine the linear relations using `[Real.exp_one_lt_d9]`.
+
+Establish `hV : c₂ * m ≤ V`. Rewrite `hu` using `[hMm, ← Real.exp_mul, Real.exp_le_exp]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs0 : 0 ≤ √V` using `Real.sqrt_nonneg V`. Establish `hL : max (max R₁ A) 8 * (10 * m + √V) ≤ V` using `(hR m V 1 hm1 hV).2.1`.
+
+Establish `hV0 : 0 < V` using `(hR m V 1 hm1 hV).1`. Establish `hfin` using `fun w => (hR m V w hm1 hV).2.2`. Use `clear hR`. Use `set L := 10 * m + √V with hLd`. Establish `hL1 : 10 ≤ L` using `by linarith`.
+
+Establish `hL0 : 0 < L` using `by linarith`. Establish `hL8 : 8 * L ≤ V` using `le_trans (by gcongr; exact le_max_right _ _) hL`. Establish `hLA : A * L ≤ V` using `le_trans (by gcongr; exact (le_max_right _ _).trans (le_max_left _ _)) hL`. Establish `hLR : R₁ ≤ V / L`. Rewrite using `[le_div_iff₀ hL0]`.
+
+Conclude with `le_trans (by gcongr; exact (le_max_left _ _).trans (le_max_left _ _)) hL`. Use `set T := Real.exp (8 * m + √V) with hT`. Establish `hT2 : 2 ≤ T` using `by linarith [Real.add_one_le_exp (8 * m + √V)]`. Establish `hTu : T ≤ Real.exp V` using `Real.exp_le_exp.2 (by linarith)`. Establish `hTA : ((M : ℝ) * T) ^ A ≤ Real.exp V`.
+
+Rewrite using `[hMm, hT, ← Real.exp_add, ← Real.exp_mul, Real.exp_le_exp]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlog : ∀ ρ : ℂ, |ρ.im| ≤ T → 0 < Real.log (M * (|ρ.im| + 2)) ∧ Real.log (M * (|ρ.im| + 2)) ≤ L`. Introduce `ρ hρ`. Establish `h0` using `abs_nonneg ρ.im`.
+
+Use `⟨Real.log_pos (by nlinarith), ?_⟩` and prove the remaining obligations. Rewrite using `[Real.log_le_iff_le_exp (by positivity)]`. Establish `: Real.exp L = M * (M * T)`. Rewrite using `[hMm, hT, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`.
+
+Rewrite using `[hLd]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `gcongr`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hzf : ∀ (χ : DirichletCharacter ℂ M), ∀ ρ ∈ zerosBox χ (1 / 2) T, (ρ.im = 0 ∧ IsExc c₁ χ ρ.re) ∨ ρ.re ≤ 1 - c / L`. Introduce `χ ρ hρ`. Use `(hX3 χ ρ hρ.2.1 hρ.2.2.2).imp_right fun h => h.trans ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hlog ρ hρ.2.2.1`. Use `gcongr`.
+
+Establish `core : ∀ a w : ℝ, 0 ≤ a → min 1 c * Real.exp (-(3 * m)) ≤ w → Real.exp (-(a * (V / L) / 2)) ≤ K * w * Real.exp (-(c' * (V / L))) → Real.exp V * w / 4 ≤ Real.exp V - θ * (Real.exp V ^ β / β) → ((θ = 0 ∧ ∀ (χ : DirichletCharacter ℂ M), ∀ ρ ∈ zerosBox χ (1 / 2) T, ρ.re ≤ 1 - a / L) …`. Introduce `a w ha hw h1 h2 h3`. Establish `s1` using `struct M b hb θ β (Real.exp V) T (a / L) _ hu0 (by positivity) (fun χ => hE M χ (Real.exp V) T hT2 hTu) h3`. Establish `s2` using `hZ M T (Real.exp V) (a / L) hT2 hTA (by positivity)`. Establish `s3` using `hfin w hw`.
+
+Establish `e1 : Real.log (M * Real.exp V * T) = m + V + (8 * m + √V)`. Rewrite using `[hMm, hT, ← Real.exp_add, ← Real.exp_add, Real.log_exp]`. Establish `e2 : Real.exp V / T = Real.exp V * Real.exp (-(8 * m + √V))`. Rewrite using `[Real.exp_neg, div_eq_mul_inv]`. Establish `e3 : √(Real.exp V) * (M : ℝ) ^ 3 = Real.exp V * (Real.exp (-(V / 2)) * Real.exp (3 * m))`.
+
+Rewrite using `[← Real.exp_half, hMm, ← Real.exp_nat_mul]`. Simplify using `only [← Real.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e4 : Real.exp V ^ (-(a / L) / 2) = Real.exp (-(a * (V / L) / 2))`. Rewrite using `[← Real.exp_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e5 : Real.exp V ^ (-η₀) = Real.exp (-(η₀ * V))`.
+
+Rewrite using `[← Real.exp_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `s1` using `[e1, e2, e3]`. Rewrite `s2` using `[e4, e5]`.
+
+Establish `s4` using `s2.trans (mul_le_mul_of_nonneg_left (add_le_add h1 le_rfl) hCa.le)`. Establish `s5` using `mul_le_mul_of_nonneg_left s4 (show 0 ≤ 2 * Real.exp V by positivity)`. Establish `s6` using `mul_le_mul_of_nonneg_left s3 hu0.le`. Establish `s7` using `mul_le_mul_of_nonneg_left h2 (show 0 ≤ C * (Real.exp (-c₃ * V / m) + Real.exp (-√(c₃ * V))) by positivity)`. Rewrite `s6` using `[← hMm]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx3 : Real.exp (-(3 * m)) ≤ 1` using `Real.exp_le_one_iff.2 (by linarith)`. Establish `hmin1 : min 1 c * Real.exp (-(3 * m)) ≤ 1` using `mul_le_one₀ (min_le_left _ _) (Real.exp_pos _).le hx3`. Establish `hVL : 0 ≤ V / L` using `by positivity`. Break down `hexc with ⟨h0, hno⟩ | ⟨χ₁, hχ₁, hθ⟩` into its components or cases.
+
+Use `core c 1 hc.le hmin1 ?_ ?_ (Or.inl ⟨h0, fun χ ρ hρ => (hzf χ ρ hρ).resolve_left fun h => hno _ _ h.2⟩)` and prove the remaining obligations. Rewrite using `[mul_one]`. Use `le_trans ?_ (le_mul_of_one_le_left (Real.exp_pos _).le hK)` and prove the remaining obligations. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite using `[h0]`. Simplify using `only [Int.cast_zero, zero_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hne, hβ1, hz, ho, hlow⟩` from `hX2 χ₁ β hχ₁`. Establish `hβ2 : β < 1` using `hχ₁.2.2.1`.
+
+Take `⟨a, ha, hor, hexp⟩` from `hη ((1 - β) * L) (V / L) (mul_pos (by linarith) hL0) hVL hLR`. Establish `hθ1 : (θ : ℝ) ≤ 1`. Use `χ₁.norm_le_one (b : ZMod M)` as an intermediate fact. Rewrite `this` using `[hθ, Complex.norm_intCast]`. Conclude with `(le_abs_self _).trans this`.
+
+Use `core a _ ha (le_min hmin1 ?_) hexp ?_ (Or.inr ⟨χ₁, hχ₁.1, hθ, ⟨?_, ?_, ?_, hz⟩, ho, ?_⟩)` and prove the remaining obligations. Establish `h1 : Real.exp (-(3 * m)) = 1 / (M : ℝ) ^ 3`. Rewrite using `[hMm, ← Real.exp_nat_mul, Real.exp_neg, one_div]`. Evaluate the numerical expressions. Establish `h2 : m ≤ M` using `by rw [hMm]; linarith [Real.add_one_le_exp m]`.
+
+Establish `h3 : c / (M : ℝ) ^ 3 ≤ c / ((M : ℝ) ^ 2 * m)`. Rewrite using `[pow_succ (M : ℝ) 2]`. Use `gcongr`. Establish `h4 : min 1 c * (1 / (M : ℝ) ^ 3) ≤ c / (M : ℝ) ^ 3`. Rewrite using `[mul_one_div]`.
+
+Use `gcongr`. Conclude with `min_le_right _ _`. Rewrite using `[h1]`. Use the polynomial consequences of the given equalities and inequalities. Use `le_trans ?_ (mainLower θ β V hθ1 hβ1 hβ2 (by linarith)) gcongr; linarith` and prove the remaining obligations.
+
+Simplify using `only [Complex.ofReal_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `using hβ2`. Simplify using `only [Complex.ofReal_im, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `χ ρ hρ`. Break down `hor with rfl | rfl` into its components or cases. Use `(hzf χ ρ hρ).imp_left fun h => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hX1 χ χ₁ _ _ h.2 hχ₁`. Conclude with `⟨h1, Complex.ext (by simpa using h2) (by simpa using h.1)⟩`.
+
+Distinguish the cases in `h : χ = χ₁ ∧ ρ = β`. Conclude with `Or.inl h`. Use `right`. Use `hD M χ₁ χ β L ρ hne hχ₁.1 hβ2 (by linarith) hz hρ.2.2.2 hρ.1 hρ.2.1 (by tauto) (hlog ρ hρ.2.2.1).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem psiAP_relative : ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ c₁ : ℝ, 0 < c₁ → c₁ ≤ c₀ → ∃ c₂ c₃ C : ℝ, 0 < c₂ ∧ 0 < c₃ ∧ 0 < C ∧ ∀ (M : ℕ) [NeZero M] (b : ℕ) (θ : ℤ) (β u : ℝ), 3 ≤ M → Nat.Coprime b M → ExcData c₁ M b θ β → (M : ℝ) ^ c₂ ≤ u → |(M.totient : ℝ) * psiAP M b u - (u - θ * (u ^ β / β))| ≤ C * (Real.exp (-c₃ * Real.log u / Real.log M) + Real.exp (-Real.sqrt (c₃ * Real.log u))) * (u - θ * (u ^ β / β)) := by
   obtain ⟨c₀, hc₀, hX⟩ := GlobalTheory.T.exceptionalDirichletZero_unique_zeroFreeRegion
   refine ⟨c₀, hc₀, fun c₁ hc₁ hc₁' => ?_⟩

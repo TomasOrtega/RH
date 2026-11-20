@@ -10,6 +10,17 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.HorizTrait
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Z x _`. Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Establish `hβ : IsDedFrac (algebraMap (𝓞 c.F) c.F)` using `⟨⟨inferInstance, inferInstance⟩, inferInstance, (inferInstance : IsFractionRing (𝓞 c.F) c.F)⟩`. Take `⟨T, χ, y, hx, hy⟩` from `GlobalTheory.TorRef.exists_base_trait Z hβ x`.
+
+Set `b : 𝓞 c.F →+* T.V` to `(Spec.preimage (χ ≫ Z.s)).hom`. Set `io : c.F →+* T.Fr` to `(Spec.preimage (y ≫ pullback.snd _ _)).hom`. Establish `hb : spMap b = χ ≫ Z.s` using `by show Spec.map (CommRingCat.ofHom (Spec.preimage (χ ≫ Z.s)).hom) = _`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hio : spMap io = y ≫ pullback.snd _ _` using `by show Spec.map (CommRingCat.ofHom (Spec.preimage (y ≫ pullback.snd _ _)).hom) = _`.
+
+Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hjs : Z.j ≫ Z.s = pullback.snd _ _ ≫ spMap (algebraMap (𝓞 c.F) c.F)` using `by show (Z.jQ ≫ pullback.fst _ _) ≫ Z.s = _`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, Z.jQ_over]`. Use `⟨T, b, io, χ, y, ?_, hb.symm, hio.symm, hy, hx⟩` and prove the remaining obligations. Establish `key : Spec.map (CommRingCat.ofHom b ≫ CommRingCat.ofHom (algebraMap T.V T.Fr)) = Spec.map (CommRingCat.ofHom (algebraMap (𝓞 c.F) c.F) ≫ CommRingCat.ofHom io)`.
+
+Rewrite using `[Spec.map_comp, Spec.map_comp]`. Express the relevant statement in the definitionally equal form `spMap (algebraMap T.V T.Fr) ≫ spMap b = spMap io ≫ spMap (algebraMap (𝓞 c.F) c.F)`. Rewrite using `[hb, hio, Category.assoc]`. Express the relevant statement in the definitionally equal form `jK T.V ≫ χ ≫ Z.s = _`. Rewrite using `[← Category.assoc, ← hy, Category.assoc, hjs]`.
+
+Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective key)`.
+-/
 theorem exists_trait_of_not_mem_abLocus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (x : Z.X), x ∉ abLocus Z.t.G → ∃ (T : CDVR) (b : 𝓞 c.F →+* T.V) (io : c.F →+* T.Fr) (y : Sp T.V ⟶ Z.X) (z : Sp T.Fr ⟶ Xo.XF c), (algebraMap T.V T.Fr).comp b = io.comp (algebraMap (𝓞 c.F) c.F) ∧ y ≫ Z.s = spMap b ∧ z ≫ pullback.snd _ _ = spMap io ∧ z ≫ Z.j = spMap (algebraMap T.V T.Fr) ≫ y ∧ y (closedPoint T.V) = x := by
   intro E _ _ _ H D l Xo c Z x _
   haveI := c.fin

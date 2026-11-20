@@ -24,23 +24,43 @@ def infAd : mixedEmbedding.mixedSpace F →+ AF F :=
 def evIHom : AF F →+* mixedEmbedding.mixedSpace F :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp (fstA F).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evIHom_apply (a : AF F) : evIHom a = evI F a := rfl
 
+/- English proof (translation)
+The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply s`.
+-/
 theorem evI_infAd (s : mixedEmbedding.mixedSpace F) : evI F (infAd s) = s :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply s
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sndA_infAd (s : mixedEmbedding.mixedSpace F) : sndA F (infAd s) = 0 := rfl
 
+/- English proof (translation)
+Use `show evalV F v (sndA F (infAd s)) = 0`. Rewrite using `[sndA_infAd, map_zero]`.
+-/
 theorem evFin_infAd (v : Pl F) (s : mixedEmbedding.mixedSpace F) : evFin F v (infAd s) = 0 := by
   show evalV F v (sndA F (infAd s)) = 0
   rw [sndA_infAd, map_zero]
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (InfiniteAdeleRing.ringEquiv_mixedSpace F t.1) = t.1`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm_apply_apply _`. Conclude with `h.symm`.
+-/
 theorem infAd_evI (t : AF F) (h : sndA F t = 0) : infAd (evI F t) = t := by
   refine Prod.ext ?_ ?_
   · show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (InfiniteAdeleRing.ringEquiv_mixedSpace F t.1) = t.1
     exact (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm_apply_apply _
   · exact h.symm
 
+/- English proof (translation)
+Introduce `u hu`. Establish `h1 : fstA F u = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Rewrite using `[smul_eq_mul]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fstA F (u * infAd s) = 0`.
+
+Rewrite using `[map_mul, h1, zero_mul]`. Express the relevant statement in the definitionally equal form `sndA F (u * infAd s) = 0`. Rewrite using `[map_mul, sndA_infAd, mul_zero]`.
+-/
 theorem at_infAd (s : mixedEmbedding.mixedSpace F) : At (evI F) (infAd s) := by
   intro u hu
   have h1 : fstA F u = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)
@@ -57,12 +77,24 @@ section Aux2
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `(invOf_eq_left_inv ?_).symm` and prove the remaining obligations. Rewrite using `[show (2 : mixedEmbedding.mixedSpace F) = evIHom (2 : AF F) from (map_ofNat _ 2).symm, ← map_mul, invOf_mul_self, map_one]`.
+-/
 theorem evIHom_invOf [Invertible (2 : AF F)] [Invertible (2 : mixedEmbedding.mixedSpace F)] :
     evIHom (⅟(2 : AF F)) = ⅟(2 : mixedEmbedding.mixedSpace F) := by
   refine (invOf_eq_left_inv ?_).symm
   rw [show (2 : mixedEmbedding.mixedSpace F) = evIHom (2 : AF F) from (map_ofNat _ 2).symm, ← map_mul, invOf_mul_self,
     map_one]
 
+/- English proof (translation)
+Establish `e1 : (fun i => evI F ((x + fun i => infAd (a i)) i)) = (fun i => evI F (x i)) + a`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `evIHom (x i + infAd (a i)) = evIHom (x i) + a i`. Rewrite using `[map_add, evIHom_apply (infAd _), evI_infAd]`. Establish `e2 : ∀ v, (fun i => evFin F v ((x + fun i => infAd (a i)) i)) = fun i => evFin F v (x i)` using `fun v => by`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, map_add, evFin_infAd, add_zero]`. Establish `hs : sndA F (x ⬝ᵥ (fun i => infAd (b i)) + ⅟(2 : AF F) * ((fun i => infAd (a i)) ⬝ᵥ fun i => infAd (b i))) = 0`. Simplify using `only [dotProduct, map_add, map_sum, map_mul, sndA_infAd, mul_zero, Finset.sum_const_zero, add_zero]`. Establish `hi : evI F (x ⬝ᵥ (fun i => infAd (b i)) + ⅟(2 : AF F) * ((fun i => infAd (a i)) ⬝ᵥ fun i => infAd (b i))) = (fun i => evI F (x i)) ⬝ᵥ b + ⅟(2 : mixedEmbedding.mixedSpace F) * (a ⬝ᵥ b)`.
+
+Rewrite using `[← evIHom_apply]`. Simplify using `only [dotProduct, map_add, map_sum, map_mul, evIHom_invOf]`. Simplify using `only [evIHom_apply, evI_infAd]`. Establish `e3` using `infAd_evI _ hs`. Rewrite `e3` using `[hi]`.
+
+Simplify using `only [schr, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`. Establish `e2' : (∏ᶠ v, φ v fun i => evFin F v ((x + fun i => infAd (a i)) i)) = ∏ᶠ v, φ v fun i => evFin F v (x i)` using `finprod_congr fun v => by rw [e2 v]`. Rewrite using `[e1, e2', ← e3, AddChar.compAddMonoidHom_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schr_pure [Invertible (2 : AF F)] [Invertible (2 : mixedEmbedding.mixedSpace F)] {κ : Type} [Fintype κ]
     (Ψ : AddChar (AF F) ℂ) (a b : κ → mixedEmbedding.mixedSpace F) (f : SInf F κ)
     (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (x : κ → AF F) :
@@ -93,6 +125,21 @@ theorem schr_pure [Invertible (2 : AF F)] [Invertible (2 : mixedEmbedding.mixedS
 
 open Classical in
 
+/- English proof (translation)
+Use `choose p hp using fun v => Function.ne_iff.mp (h0 v)`. Establish `hS` using `Filter.eventually_cofinite.mp hstd`. Set `T` to `hS.toFinset`. Set `xf : κ → AF F` to `fun i => ∑ w ∈ T, GlobalTheory.LatVac.liftV w (p w i)`. Establish `hxf1 : ∀ i, evI F (xf i) = 0` using `fun i => by`.
+
+Rewrite using `[← evIHom_apply, map_sum]`. Conclude with `Finset.sum_eq_zero fun w _ => (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F))`. Establish `hxf2 : ∀ w i, w ∈ T → evFin F w (xf i) = p w i` using `fun w i hw => by`. Simplify using `only [xf, map_sum]`. Rewrite using `[Finset.sum_eq_single_of_mem w hw]`.
+
+Conclude with `GlobalTheory.LatVac.evFin_liftV w _`. Introduce `x _ hx`. Conclude with `GlobalTheory.AdelicU.evalV_singleFin_ne (Ne.symm hx) _`. Establish `hxf3 : ∀ w i, w ∉ T → evFin F w (xf i) = 0` using `fun w i hw => by`. Simplify using `only [xf, map_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun x hx => GlobalTheory.AdelicU.evalV_singleFin_ne (fun h => hw (by rw [h]; exact hx)) _`. Use `⟨fun i => infAd (y i) + xf i, funext fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← evIHom_apply, map_add, evIHom_apply, evIHom_apply, evI_infAd, hxf1, add_zero]`. Establish `hfin` using `GlobalTheory.PureFactor.mulSupport_finite φ hstd (fun i => infAd (y i) + xf i)`. Rewrite using `[finprod_eq_prod_of_mulSupport_toFinset_subset _ hfin (subset_refl _)]`.
+
+Use `Finset.prod_ne_zero_iff.mpr fun w _ => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ T`. Establish `: (fun i => evFin F w (infAd (y i) + xf i)) = p w` using `funext fun i => by`. Rewrite using `[map_add, evFin_infAd, zero_add, hxf2 w i hw]`. Rewrite using `[this]`.
+
+Simplify using `using hp w`. Establish `: (fun i => evFin F w (infAd (y i) + xf i)) = 0` using `funext fun i => by`. Rewrite using `[map_add, evFin_infAd, zero_add, hxf3 w i hw, Pi.zero_apply]`. Establish `hw' : φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hw (hS.mem_toFinset.mpr h)`. Rewrite using `[this, hw', Set.indicator_of_mem (fun i => by simpa using (w.adicCompletionIntegers F).zero_mem)]`. Conclude with `one_ne_zero`.
+-/
 theorem exists_finprod_ne {κ : Type} [Fintype κ] (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (h0 : ∀ v, φ v ≠ 0)
     (hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
     (y : κ → mixedEmbedding.mixedSpace F) :
@@ -133,6 +180,29 @@ theorem exists_finprod_ne {κ : Type} [Fintype κ] (φ : ∀ v : Pl F, (κ → F
 
 end Aux2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP M₁ hM₁ e hE ei ev hei hev hloc _`. Use `⟨B.ψ.compAddMonoidHom infAd, fun a => ?_, ?_⟩` and prove the remaining obligations. Use `show B.ψ (infAd a) = _`. Rewrite using `[hP.base.std.2.2 _ (at_infAd a), evI_infAd]`. Set `u : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F) → (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)` to `fun w => (fun i => infAd (w.1 i), fun i => infAd (w.2 i))`.
+
+Use `⟨fun w => (fun i => evI F ((M₁.co.e (M.co.e.symm (u w))).1 i), fun i => evI F ((M₁.co.e (M.co.e.symm (u w))).2 i)), fun w f g hg => ?_⟩` and prove the remaining obligations. Establish `hM` using `hP.good`. Establish `hvacM : ∀ v, M.vac v ∈ SB _` using `fun v => (hM.vac v).1`. Establish `hpure : ∀ h : SInf F (Fin n × Fin d), e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure h M.vac) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei h) M₁.vac` using `fun h => by`. Rewrite using `[hloc h M.vac hvacM (Filter.Eventually.of_forall fun _ => rfl)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `(hev v).1`. Establish `hmem : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f M.vac ∈ schA F (Fin n × Fin d)` using `GlobalTheory.TensUniq.pure_mem_schA f M.vac hvacM hM.std`. Establish `key` using `hE.Heisenberg₂ (M.co.e.symm (u w)) _ hmem`.
+
+Establish `h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h1' : incM F (1 : Matrix (Fin d) (Fin d) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite `key` using `[h1, h1', Matrix.one_mul, Matrix.transpose_one, Matrix.mul_one]`. Establish `hL : M.co.rho B.ψ (M.co.e.symm (u w)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f M.vac) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g M.vac`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Darboux.rho, LinearEquiv.apply_symm_apply, u]`. Rewrite using `[schr_pure, Prod.mk.eta, ← hg]`. Both sides reduce to the same expression. Set `c : AF F` to `((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F))`. Establish `hc : ∀ s, c * infAd s = 0` using `fun s => by`.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fstA F (c * infAd s) = 0`. Rewrite using `[map_mul]`. Conclude with `zero_mul _`. Express the relevant statement in the definitionally equal form `sndA F (c * infAd s) = 0`.
+
+Rewrite using `[map_mul, sndA_infAd, mul_zero]`. Establish `hcu : c • u w = 0` using `Prod.ext (funext fun i => hc _) (funext fun i => hc _)`. Establish `hcz : c • M₁.co.e (M.co.e.symm (u w)) = 0`. Rewrite using `[← LinearEquiv.map_smul, ← LinearEquiv.map_smul, hcu, map_zero, map_zero]`. Establish `hsnd : ∀ y : AF F, c * y = 0 → sndA F y = 0` using `fun y hy => by`.
+
+Use `congrArg (sndA F) hy` as an intermediate fact. Establish `h1c : sndA F c = 1` using `rfl`. Rewrite `this` using `[map_mul, map_zero, h1c, one_mul]`. Conclude with `this`. Establish `hz : M₁.co.e (M.co.e.symm (u w)) = u ((fun i => evI F ((M₁.co.e (M.co.e.symm (u w))).1 i)), fun i => evI F ((M₁.co.e (M.co.e.symm (u w))).2 i))`.
+
+Use `Prod.ext (funext fun i => (infAd_evI _ (hsnd _ ?_)).symm) (funext fun i => (infAd_evI _ (hsnd _ ?_)).symm)` and prove the remaining obligations. Conclude with `congrFun (congrArg Prod.fst hcz) i`. Conclude with `congrFun (congrArg Prod.snd hcz) i`. Rewrite `key` using `[hL, hpure, hpure]`. Use function extensionality and compare the values at `y`.
+
+Take `⟨x, hx, hne⟩` from `exists_finprod_ne M₁.vac (fun v => (hM₁.vac v).2.1) hM₁.std y`. Establish `k` using `congrFun key x`. Rewrite `k` using `[Darboux.rho, hz]`. Simplify using `only [u] at k`. Rewrite `k` using `[schr_pure]`.
+
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, hx] at k`. Conclude with `mul_right_cancel₀ hne k`.
+-/
 theorem ei_schr : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' → ∀ M₁ : Model σ X W, M₁.IsGood B.ψ → ∀ e : Fn F n d →ₗ[ℂ] Fn F n d,

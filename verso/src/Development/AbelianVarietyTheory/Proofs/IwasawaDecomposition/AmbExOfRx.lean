@@ -19,6 +19,9 @@ namespace GlobalTheory.AmbCrd
 
 open Formalism.L2.DIV Formalism.L2.Rows
 
+/- English proof (translation)
+Establish `hp` using `GlobalTheory.T.posDef_map_embedding_of_positiveAtPlace H v h`. Rewrite using `[majAt_eq, frm_of_posDef H v hp, (frameOfSpec _ _ hp).2]`. Simplify using `only [hAt, dotProduct, Matrix.mulVec, Matrix.map_apply, Finset.mul_sum, Pi.star_apply, mul_assoc]`.
+-/
 theorem majAt_frm {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] {n : ℕ}
     (H : Matrix (Fin n) (Fin n) K) (v : InfinitePlace K) (h : PosAt H v) (x y : Fin n → K) :
     Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) (frm H) v x y = hAt H v x y := by
@@ -31,6 +34,9 @@ section Level
 variable (D : D7) {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ} (A : FamIn D.what₂.LL G Pl0 T m)
   (P : Subgroup G) (ψ : P →* D.what₂.LLˣ)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use extensionality with `x`. Simplify using `only [Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, rdx_refl]`. Conclude with `⟨fun hx => ⟨x, hx, rfl⟩, fun ⟨y, hy, e⟩ => e ▸ hy⟩`.
+-/
 theorem rNab_rdx {t1 t2 : T} (e : t1 = t2) (h : rDim D A P ψ t2 = rDim D A P ψ t1) :
     rNab D A P ψ t2 = (rNab D A P ψ t1).map ((rdx h).toLinearMap.restrictScalars (𝓞 D.what₂.LL)) := by
   subst e
@@ -38,6 +44,9 @@ theorem rNab_rdx {t1 t2 : T} (e : t1 = t2) (h : rDim D A P ψ t2 = rDim D A P ψ
   simp only [Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, rdx_refl]
   exact ⟨fun hx => ⟨x, hx, rfl⟩, fun ⟨y, hy, e⟩ => e ▸ hy⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `D.tcLL` as an intermediate fact. Rewrite using `[rdx_refl, rdx_refl]`. Conclude with `majAt_frm _ v hp x y`.
+-/
 theorem majAt_rdx {t1 t2 : T} (e : t1 = t2) (h : rDim D A P ψ t2 = rDim D A P ψ t1) (v : InfinitePlace D.what₂.LL)
     (hp : PosAt (rH D A P ψ t1) v) (x y : Fin (rDim D A P ψ t1) → D.what₂.LL) :
     Formalism.HermitianLatticesTheory.majAt (Pi.basisFun D.what₂.LL _) (frm (rH D A P ψ t2)) v (rdx h x) (rdx h y) =
@@ -49,6 +58,13 @@ theorem majAt_rdx {t1 t2 : T} (e : t1 = t2) (h : rDim D A P ψ t2 = rDim D A P �
 
 end Level
 
+/- English proof (translation)
+Use `D.tcLL` as an intermediate fact. Set `Fm : AmbForm D S` to `{ MtH := fun μ => toHLat (frm (rH D A P ψ (tp μ))) (rNab D A P ψ (tp μ)) jAmb := j MtH_good := fun μ _ => ⟨frm_det _, GlobalTheory.T.fg_span_top_of_lattice_compatible_semilinear D.what₂.embLL (S.Mtilde μ) (j μ) _ (hF μ).li (hL μ)⟩ jAmb_basis := fun μ _ => by show LinearIndependen …`. Simplify using `only [Pi.basisFun_apply]`. Conclude with `⟨(hF μ).li, (hF μ).span⟩`. Use `jAmb_lat := fun μ _ x => (hL μ).2 x`.
+
+Use `jAmb_gen := fun μ _ => (hL μ).1`. Use `jAmb_norm := fun μ _ x => GlobalTheory.T.normAt_standardFrame_eq_norm_complexForm D.what₂.embLL D.starLL_cx (j μ) _ _ _ (hF μ) x }`. Set `J : AmbIds D (A.comap f μ0') S Fm P ψ tup` to `⟨fun s _ => rdx (hs s).1⟩`. Use `⟨Fm, J, ⟨fun s _ x => ?_, fun s _ => ?_, fun s _ v hv x y => ?_⟩⟩` and prove the remaining obligations. Use `(hs s).2 _ x fun a a' e => ?_ show x (Fin.cast (hs s).1 a) = x a'` and prove the remaining obligations.
+
+Use `congr 1`. Conclude with `Fin.ext e`. Conclude with `rNab_rdx D A P ψ (hf s) _`. Conclude with `majAt_rdx D A P ψ (hf s) _ v hv x y`.
+-/
 theorem tie_level (D : D7) {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE]
     (S : RowSide D EE) {G : Type} [Group G] [Fintype G] {Pl0 T T' : Type} {m : ℕ} (A : FamIn D.what₂.LL G Pl0 T m)
     (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (tp : D.what₂.Tup → T)
@@ -85,6 +101,15 @@ theorem tie_level (D : D7) {EE : Type} [NormedAddCommGroup EE] [InnerProductSpac
 
 set_option maxHeartbeats 3000000 in
 
+/- English proof (translation)
+Introduce and unpack `⟨Rx, Nx, Sx, Ox⟩ h`. Simplify using `only at h`. Substitute `h` using the available equality. Use `StepW.of_all fun K B f T w _ _ _ => ?_` and prove the remaining obligations. Introduce `Z l`.
+
+Establish `x : RXs l.what₂` using `l.rx`. Establish `hsub : R3.tuOf w.I (R3.usedOf w.I T l.Wt) ⊆ R3.tuOf w.I Set.univ` using `fun τ hτ => by`. Take `⟨a, -, e⟩` from `(R3.mem_tuOf w.I).1 hτ`. Conclude with `(R3.mem_tuOf w.I).2 ⟨a, Set.mem_univ _, e⟩`. Establish `hf : ∀ s, TupF.incl hsub s = tAll w.I (l.what₂.r.Y.tup s)` using `fun s => by`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show s.1 = w.I.tup (l.what₂.r.Y.tup s)`. Establish `e : l.what₂.r.Y.tup s = R3.ixOf w.I _ s` using `l.what₂.r.tup_ix s`. Rewrite using `[e, R3.tup_ixOf]`. Take `⟨a, J, hJ⟩` from `tie_level (w.st Z).toD7 (RowSide.sharp _) (famAll l.what₂) (R3.lev1 w.I) (R3.chr1 w.I) (tAll w.I) x.all.jA _ _ x.all.formsA x.all.latA (TupF.incl hsub) (mu0F _) l.what₂.r.Y.tup hf l.what₂.r.Y.jA x.jA_use`.
+
+Take `⟨a0, J0, hJ0⟩` from `tie_level (w.st Z).toD7 l.p0.s (famAll l.what₂) (R3.lev0 w.I) (R3.chr0 w.I) (tAll w.I) x.all.jA0 _ _ x.all.formsAtBottomLevel x.all.latA0 (TupF.incl hsub) (mu0F _) l.what₂.r.Y.tup hf l.what₂.r.Y.jA0 x.movedReadingSameMaps_baseReading_agrees`. Conclude with `⟨a, a0, ⟨J, hJ⟩, ⟨J0, hJ0⟩⟩`.
+-/
 theorem ambEx_of_rx : ∀ 𝒮 : Slots, 𝒮.Rx = RX → AmbEx 𝒮 := by
   rintro ⟨Rx, Nx, Sx, Ox⟩ h
   dsimp only at h

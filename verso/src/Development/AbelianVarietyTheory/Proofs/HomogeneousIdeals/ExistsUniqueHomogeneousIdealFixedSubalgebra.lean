@@ -14,10 +14,24 @@ noncomputable def fixedSubmodule : Submodule K V := (Representation.ofDistribMul
 
 variable {K G V} in
 @[simp]
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_fixedSubmodule {v : V} : v ∈ fixedSubmodule K G V ↔ ∀ g : G, g • v = v := Iff.rfl
 
 end Fixed
 
+/- English proof (translation)
+Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Prove the components needed by the constructor for the conclusion. Introduce `i`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`.
+
+Establish `hle : (⨆ j, ⨆ (_ : j ≠ i), ((𝒱 j).restrictScalars K).comap f) ≤ ((⨆ j, ⨆ (_ : j ≠ i), 𝒱 j).restrictScalars K).comap f` using `iSup₂_le fun j hj y hy => (le_iSup₂_of_le (f := fun j (_ : j ≠ i) => 𝒱 j) j hj le_rfl) hy`. Use `Submodule.disjoint_def.1 ((DirectSum.Decomposition.isInternal 𝒱).submodule_iSupIndep i) (f x) hx (hle hx')` as an intermediate fact. Conclude with `hf (this.trans (map_zero f).symm)`. Rewrite using `[eq_top_iff]`. Introduce `n _`.
+
+Use `choose c hc using h n`. Establish `: n = ∑ i ∈ (DirectSum.decompose 𝒱 (f n)).support, c i`. Apply `hf` to reduce the goal to its premises. Rewrite using `[map_sum]`. Simplify using `only [hc]`.
+
+Conclude with `(DirectSum.sum_support_decompose 𝒱 (f n)).symm`. Rewrite using `[this]`. Use `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (c i) ∈ 𝒱 i`. Rewrite using `[hc]`.
+
+Conclude with `Subtype.prop _`.
+-/
 theorem isInternal_comap {K L N V ι : Type*} [CommRing K] [Ring L] [Algebra K L] [AddCommGroup N]
     [Module K N] [AddCommGroup V] [Module K V] [Module L V] [IsScalarTower K L V] [DecidableEq ι]
     (𝒱 : ι → Submodule L V) [DirectSum.Decomposition 𝒱] (f : N →ₗ[K] V)
@@ -57,10 +71,22 @@ variable {K L G V : Type*} [Field K] [Field L] [Algebra K L] [Group G] [MulSemir
   [DistribMulAction G V] [SMulDistribClass G L V]
 
 variable (K L G) in
+/- English proof (translation)
+The claim follows from `(IsGaloisGroup.isInvariant (G := G) (A := K) (B := L)).isInvariant x hx`.
+-/
 theorem mem_range_of_forall_smul_eq [IsGaloisGroup G K L] (x : L)
     (hx : ∀ g : G, MulSemiringAction.toRingHom G L g x = x) : x ∈ Set.range (algebraMap K L) :=
   (IsGaloisGroup.isInvariant (G := G) (A := K) (B := L)).isInvariant x hx
 
+/- English proof (translation)
+Use `IsGaloisGroup.commutes (G := G) (A := K) (B := L)` as an intermediate fact. Establish `hF : ∀ (g : G) t, f.liftBaseChange L ((MulSemiringAction.toAlgHom K L g).toLinearMap.rTensor N t) = g • f.liftBaseChange L t`. Introduce `g t`. Proceed by induction on `t with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a n => simp [smul_distrib_smul, h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`. Establish `h1` using `baseChange_rationalPart (fun g : G => MulSemiringAction.toAlgHom K L g) (mem_range_of_forall_smul_eq K L G) (LinearMap.ker (f.liftBaseChange L)) fun g w hw => by`. Rewrite `hw`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hF, hw, smul_zero]`.
+
+Establish `h2 : rationalPart K (LinearMap.ker (f.liftBaseChange L)) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `n hn`. Establish `hn' : f n = 0` using `by simpa using hn`. Conclude with `hf (hn'.trans (map_zero f).symm)`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, ← h1, h2, Submodule.baseChange_bot]`.
+-/
 theorem liftBaseChange_injective_of_fixed [IsGaloisGroup G K L] {N : Type*} [AddCommGroup N]
     [Module K N] (f : N →ₗ[K] V) (hf : Function.Injective f) (h : ∀ (g : G) n, g • f n = f n) :
     Function.Injective (f.liftBaseChange L) := by
@@ -85,6 +111,15 @@ theorem liftBaseChange_injective_of_fixed [IsGaloisGroup G K L] {N : Type*} [Add
 
 variable (L G V) in
 
+/- English proof (translation)
+Use `Fintype.ofFinite G` as an intermediate fact. Rewrite using `[eq_top_iff]`. Introduce `v _`. Assume the negation of the conclusion as `hv`. Take `⟨φ, hφ, hφ0⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hv inferInstance`.
+
+Establish `hli : LinearIndependent L fun g : G => ((MulDistribMulAction.toMonoidHom L g : L →* L) : L → L)` using `(linearIndependent_monoidHom L L).comp (fun g : G => MulDistribMulAction.toMonoidHom L g) fun g g' h => FaithfulSMul.eq_of_smul_eq_smul (α := L) fun a => DFunLike.congr_fun h a`. Establish `h1` using `Fintype.linearIndependent_iff.1 hli (fun g => φ (g • v)) (by`. Use function extensionality and compare the values at `a`. Establish `hfix : ∑ g : G, g • a • v ∈ MulAction.fixedPoints G V` using `fun g' => by`. Rewrite using `[Finset.smul_sum]`.
+
+Simplify using `only [smul_smul g']`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft g') _ _ fun _ => rfl`. Establish `h2 : φ (∑ g : G, g • a • v) = 0`. Rewrite using `[← Submodule.mem_bot L, ← hφ0]`. Conclude with `Submodule.mem_map_of_mem (Submodule.subset_span hfix)`.
+
+Simplify `h2) 1` using `[smul_distrib_smul, mul_comm]`. Rewrite `h1` using `[one_smul]`. Conclude with `hφ h1`.
+-/
 theorem span_fixedPoints_eq_top [Finite G] [FaithfulSMul G L] :
     Submodule.span L (MulAction.fixedPoints G V) = ⊤ := by
   classical
@@ -110,6 +145,11 @@ theorem span_fixedPoints_eq_top [Finite G] [FaithfulSMul G L] :
   rw [one_smul] at h1
   exact hφ h1
 
+/- English proof (translation)
+Use `IsGaloisGroup.faithful (G := G) (A := K) (B := L)` as an intermediate fact. It suffices to establish `hs : Function.Surjective (f.liftBaseChange L) from`. Establish `hb : Function.Bijective (f.liftBaseChange L)` using `⟨liftBaseChange_injective_of_fixed (G := G) f hf fun g n => (h _).1 ⟨n, rfl⟩ g, hs⟩`. Use the proof step `IsBaseChange.of_equiv (LinearEquiv.ofBijective (f.liftBaseChange L) hb) fun n => by simp`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← span_fixedPoints_eq_top L G V, Submodule.span_le]`.
+
+Introduce `v hv`. Take `⟨n, rfl⟩` from `(h v).2 hv`. Conclude with `⟨1 ⊗ₜ n, by simp⟩`.
+-/
 theorem isBaseChange_of_range_eq_fixed [Finite G] [IsGaloisGroup G K L] {N : Type*}
     [AddCommGroup N] [Module K N] (f : N →ₗ[K] V) (hf : Function.Injective f)
     (h : ∀ v, v ∈ LinearMap.range f ↔ ∀ g : G, g • v = v) : IsBaseChange L f := by
@@ -127,6 +167,9 @@ variable [SMulCommClass G K V]
 
 variable (K L G V) in
 
+/- English proof (translation)
+The claim follows from `isBaseChange_of_range_eq_fixed (G := G) _ Subtype.val_injective fun v => by simp`.
+-/
 theorem isBaseChange_fixedSubmodule [Finite G] [IsGaloisGroup G K L] :
     IsBaseChange L (fixedSubmodule K G V).subtype :=
   isBaseChange_of_range_eq_fixed (G := G) _ Subtype.val_injective fun v => by simp
@@ -138,6 +181,9 @@ noncomputable def fixedEquiv [Finite G] [IsGaloisGroup G K L] :
   (isBaseChange_fixedSubmodule K L G V).equiv
 
 @[simp]
+/- English proof (translation)
+The claim follows from `(isBaseChange_fixedSubmodule K L G V).equiv_tmul a v`.
+-/
 theorem fixedEquiv_tmul [Finite G] [IsGaloisGroup G K L] (a : L) (v : fixedSubmodule K G V) :
     fixedEquiv K L G V (a ⊗ₜ v) = a • (v : V) :=
   (isBaseChange_fixedSubmodule K L G V).equiv_tmul a v
@@ -149,12 +195,18 @@ noncomputable def fixedPart (W : Submodule L V) : Submodule K (fixedSubmodule K 
 
 omit [MulSemiringAction G L] [SMulDistribClass G L V] in
 @[simp]
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_fixedPart {W : Submodule L V} {v : fixedSubmodule K G V} :
     v ∈ fixedPart K G W ↔ (v : V) ∈ W := Iff.rfl
 
 omit [MulSemiringAction G L] [SMulDistribClass G L V] [DistribMulAction G V]
   [SMulCommClass G K V] in
 
+/- English proof (translation)
+Rewrite using `[baseChange_eq_span_image, Submodule.map_span, Set.image_image]`. Simplify using the standard rewrite rules.
+-/
 theorem map_equiv_baseChange {N : Type*} [AddCommGroup N] [Module K N] {f : N →ₗ[K] V}
     (hf : IsBaseChange L f) (P : Submodule K N) :
     (P.baseChange L).map hf.equiv.toLinearMap = Submodule.span L (f '' P) := by
@@ -175,6 +227,9 @@ variable {ι : Type*} [DecidableEq ι] (𝒱 : ι → Submodule L V) [DirectSum.
 
 omit [MulSemiringAction G L] [SMulDistribClass G L V] [SMulCommClass G K V] in
 
+/- English proof (translation)
+Use `decompose_addMonoidHom 𝒱 𝒱 (DistribMulAction.toAddMonoidHom V g) (h g) v i` as an intermediate fact. Simplify using `only [DistribMulAction.toAddMonoidHom_apply, hv] at this`. Conclude with `this.symm`.
+-/
 theorem smul_decompose_of_fixed (h : ∀ (g : G) i, ∀ v ∈ 𝒱 i, g • v ∈ 𝒱 i) {v : V}
     (hv : ∀ g : G, g • v = v) (i : ι) (g : G) :
     g • (DirectSum.decompose 𝒱 v i : V) = DirectSum.decompose 𝒱 v i := by
@@ -194,6 +249,9 @@ variable {K L G A : Type*} [Field K] [Field L] [Algebra K L] [Group G] [MulSemir
 
 variable (K L G A) in
 
+/- English proof (translation)
+The claim follows from `isBaseChange_of_range_eq_fixed (G := G) _ Subtype.val_injective fun v => ⟨by rintro ⟨a, rfl⟩; exact a.2, fun h => ⟨⟨v, h⟩, rfl⟩⟩`.
+-/
 theorem isBaseChange_fixedSubalgebra [Finite G] [IsGaloisGroup G K L] :
     IsBaseChange L (FixedPoints.subalgebra K A G).val.toLinearMap :=
   isBaseChange_of_range_eq_fixed (G := G) _ Subtype.val_injective fun v =>
@@ -215,6 +273,9 @@ noncomputable def fixedAlgEquiv [Finite G] [IsGaloisGroup G K L] :
     exact LinearEquiv.bijective _)
 
 @[simp]
+/- English proof (translation)
+Simplify using `[fixedAlgEquiv]`.
+-/
 theorem fixedAlgEquiv_tmul [Finite G] [IsGaloisGroup G K L] (l : L)
     (a : FixedPoints.subalgebra K A G) : fixedAlgEquiv K L G A (l ⊗ₜ a) = l • (a : A) := by
   simp [fixedAlgEquiv]
@@ -230,6 +291,9 @@ def fixedGrading (i : ι) : Submodule K (FixedPoints.subalgebra K A G) :=
 
 omit [MulSemiringAction G L] [SMulDistribClass G L A] in
 @[simp]
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_fixedGrading {i : ι} {a : FixedPoints.subalgebra K A G} :
     a ∈ fixedGrading K G 𝒜 i ↔ (a : A) ∈ 𝒜 i := Iff.rfl
 
@@ -241,6 +305,9 @@ instance fixedGrading_gradedMonoid : SetLike.GradedMonoid (fixedGrading K G 𝒜
   mul_mem _ _ _ _ ha hb := SetLike.mul_mem_graded (A := 𝒜) ha hb
 
 omit [MulSemiringAction G L] [SMulDistribClass G L A] in
+/- English proof (translation)
+The claim follows from `isInternal_comap 𝒜 _ Subtype.val_injective fun n i => ⟨⟨_, smul_decompose_of_fixed 𝒜 h n.2 i⟩, rfl⟩`.
+-/
 theorem isInternal_fixedGrading (h : ∀ (g : G) i, ∀ a ∈ 𝒜 i, g • a ∈ 𝒜 i) :
     DirectSum.IsInternal (fixedGrading K G 𝒜) :=
   isInternal_comap 𝒜 _ Subtype.val_injective fun n i =>

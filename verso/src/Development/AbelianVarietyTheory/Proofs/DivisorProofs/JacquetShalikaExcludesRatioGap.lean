@@ -15,6 +15,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThK
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `GlobalTheory.Published.JacquetShalikaLocalBound.exists_uniformizer (k := k)`. Establish `hq : (1 : ℝ) < resCard k` using `by exact_mod_cast (Finite.one_lt_card : 1 < resCard k)`. Establish `hq0 : (0 : ℝ) < resCard k` using `zero_lt_one.trans hq`. Establish `ha : 0 < ‖(χ ϖ : ℂ)‖` using `norm_pos_iff.2 (Units.ne_zero _)`. Use `⟨-Real.logb (resCard k) ‖(χ ϖ : ℂ)‖, fun u => ?_⟩` and prove the remaining obligations.
+
+Establish `e : χ u = χ ϖ ^ ord k u` using `DFunLike.congr_fun (eq_unrChar h hϖ) u`. Rewrite using `[e, GlobalTheory.LGrp.nabs_eq_zpow, Units.val_zpow_eq_zpow_val, norm_zpow, ← Real.rpow_intCast (resCard k : ℝ), ← Real.rpow_mul hq0.le, Int.cast_neg, neg_mul_neg, mul_comm, Real.rpow_mul hq0.le, Real.rpow_logb hq0 hq.ne' ha, Real.rpow_intCast]`.
+-/
 theorem exists_norm_eq_rpow {χ : kˣ →* ℂˣ} (h : IsUnram χ) : ∃ s : ℝ, ∀ u : kˣ, ‖(χ u : ℂ)‖ = nabs k u ^ s := by
   obtain ⟨ϖ, hϖ⟩ := GlobalTheory.Published.JacquetShalikaLocalBound.exists_uniformizer (k := k)
   have hq : (1 : ℝ) < resCard k := by exact_mod_cast (Finite.one_lt_card : 1 < resCard k)
@@ -26,6 +31,9 @@ theorem exists_norm_eq_rpow {χ : kˣ →* ℂˣ} (h : IsUnram χ) : ∃ s : ℝ
     ← Real.rpow_mul hq0.le, Int.cast_neg, neg_mul_neg, mul_comm, Real.rpow_mul hq0.le,
     Real.rpow_logb hq0 hq.ne' ha, Real.rpow_intCast]
 
+/- English proof (translation)
+Use `⟨χ * absPow k (-(s : ℂ)), fun x hx => ?_, fun u => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, h x hx, isUnram_absPow k _ x hx, one_mul]`. Establish `hp` using `Real.rpow_pos_of_pos (nabs_pos' k u) s`. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, norm_mul, hs, absPow_neg, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, norm_inv, val_absPow_ofReal, Complex.norm_real, Real.norm_of_nonneg hp.le, mul_inv_cancel₀ hp.ne']`. Rewrite using `[mul_assoc, ← absPow_add, neg_add_cancel, absPow_zero, mul_one]`.
+-/
 theorem exists_unitary {χ : kˣ →* ℂˣ} (h : IsUnram χ) {s : ℝ} (hs : ∀ u : kˣ, ‖(χ u : ℂ)‖ = nabs k u ^ s) :
     ∃ ψ : kˣ →* ℂˣ, IsUnram ψ ∧ (∀ u, ‖(ψ u : ℂ)‖ = 1) ∧ χ = ψ * absPow k (s : ℂ) := by
   refine ⟨χ * absPow k (-(s : ℂ)), fun x hx => ?_, fun u => ?_, ?_⟩
@@ -35,6 +43,13 @@ theorem exists_unitary {χ : kˣ →* ℂˣ} (h : IsUnram χ) {s : ℝ} (hs : �
       norm_inv, val_absPow_ofReal, Complex.norm_real, Real.norm_of_nonneg hp.le, mul_inv_cancel₀ hp.ne']
   · rw [mul_assoc, ← absPow_add, neg_add_cancel, absPow_zero, mul_one]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `h`. Set `d : Fin 2 → ℕ` to `![x, x']`. Set `χ : Fin 2 → kˣ →* ℂˣ` to `![χ₁, χ₂]`. Set `σ : ∀ a : Fin 2, Representation ℂ (GL (Fin (d a)) k) ℂ` to `fun a => detRep (Fin (d a)) (χ a)`. Establish `hd : ∑ a, d a = d 0 + d 1` using `Fin.sum_univ_two d`.
+
+Take `⟨φ⟩` from `GlobalTheory.LocGL.nonempty_prod₂_equiv_multiProd hd σ`. Take `⟨ψ⟩` from `(GlobalTheory.SmGL.Placing.parInd_jac_placing k _ _ _ e (stdBlocks d hd) ℂ).1 (ofChar (twoDet x x' χ₁ χ₂))`. Set `L` to `(PiTensorProduct.constantBaseRingEquiv (Fin 2) ℂ).toLinearEquiv`. Set `κ : (piTensor σ).Equiv (ofChar (twoDet x x' χ₁ χ₂))` to `.mk L fun g => by`. Use `PiTensorProduct.ext (MultilinearMap.ext fun y => ?_)` and prove the remaining obligations.
+
+Simplify using `[L, σ, χ, piTensor_tprod, detRep, ofChar_apply, twoDet, Fin.prod_univ_two]`. Conclude with `(mul_mul_mul_comm _ _ _ _).trans rfl`. Set `Φ` to `(ψ.trans (GlobalTheory.LocGL.parIndEquiv (stdBlocks d hd) κ.symm)).trans φ.symm`. Conclude with `he.trans (.of_injective Φ.toIntertwiningMap Φ.toLinearEquiv.injective)`.
+-/
 theorem isSubquotient_prod₂ {x x' : ℕ} {χ₁ χ₂ : kˣ →* ℂˣ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin (x + x')) k) V} (h : IsDetProdConst x x' χ₁ χ₂ π) :
     IsSubquotient π (prod₂ (detRep (Fin x) χ₁) (detRep (Fin x') χ₂)) := by
@@ -59,6 +74,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 open NumberField IsDedekindDomain GlobalTheory.ThK.DetProd GlobalTheory.SmGL GlobalTheory.SplitWeil
 
+/- English proof (translation)
+Introduce `E _ _ _ τ w ρ χ₁ χ₂ hJ _ ⟨f, hf0, hf⟩ h₁ h₂ hP ⟨c, hc, hr⟩`. Take `⟨s, hs⟩` from `exists_norm_eq_rpow h₂`. Establish `hs' : ∀ u, ‖(χ₁ u : ℂ)‖ = nabs _ u ^ (c + s)` using `fun u => by`. Use `hr u` as an intermediate fact. Rewrite `this` using `[norm_div, hs, div_eq_iff (Real.rpow_pos_of_pos (nabs_pos' _ u) s).ne']`.
+
+Rewrite using `[this, Real.rpow_add (nabs_pos' _ u)]`. Establish `hQ` using `isSubquotient_prod₂ (x := 1) (x' := 1) hP`. Take `⟨ψ₁, u₁, n₁, rfl⟩` from `exists_unitary h₁ hs'`. Take `⟨ψ₂, u₂, n₂, rfl⟩` from `exists_unitary h₂ hs`. Use `GlobalTheory.T.unramified_principal_series_irreducible E τ w ψ₁ ψ₂ (c + s) s hJ u₁ u₂ n₁ n₂ (by rwa [add_sub_cancel_right]) _ ρ.ρ hQ ⟨f, fun g => LinearMap.ext fun v => hf g v⟩ fun e => hf0 ?_` and prove the remaining obligations.
+
+Conclude with `congrArg Representation.IntertwiningMap.toLinearMap e`.
+-/
 theorem false_of_ratioGap : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (τ : GlobalTheory.CuspRep.CuspSub E 2)
     (w : HeightOneSpectrum (𝓞 E)) (ρ : GlobalTheory.CuspRep.SmIrr (GL (Fin 2) (w.adicCompletion E)))
     (χ₁ χ₂ : (w.adicCompletion E)ˣ →* ℂˣ), GlobalTheory.Published.JacquetShalikaBound → (GlobalTheory.CuspRep.CG.mk τ).IsUnitary →

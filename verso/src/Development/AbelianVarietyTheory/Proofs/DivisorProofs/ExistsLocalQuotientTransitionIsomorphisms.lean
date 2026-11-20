@@ -15,6 +15,9 @@ section
 variable {S U V : Scheme.{0}} (fU : U ⟶ S) (fV : V ⟶ S) (A : Over S)
   (BU : Over U) (BV : Over V) (qU : (Over.pullback fU).obj A ⟶ BU) (qV : (Over.pullback fV).obj A ⟶ BV)
 
+/- English proof (translation)
+The claim follows from `Over.w qU`.
+-/
 lemma w_left : qU.left ≫ BU.hom = pullback.snd A.hom fU := Over.w qU
 
 noncomputable abbrev src : Scheme.{0} := pullback qU.left (pullback.fst (BU.hom ≫ fU) fV)
@@ -29,19 +32,47 @@ noncomputable def toV : src fU fV A BU qU ⟶ pullback A.hom fV :=
     rw [h1, ← h4, Category.assoc, reassoc_of% h2, h3])
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+-/
 lemma toV_fst : toV fU fV A BU qU ≫ pullback.fst A.hom fV =
     pullback.fst _ _ ≫ pullback.fst A.hom fU := pullback.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 lemma toV_snd : toV fU fV A BU qU ≫ pullback.snd A.hom fV =
     pullback.snd _ _ ≫ pullback.snd _ _ := pullback.lift_snd _ _ _
 
 variable (H : Over S) [GrpObj A] [GrpObj H] (i : H ⟶ A)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 lemma map_left_fst {T : Scheme.{0}} (f : T ⟶ S) {X Y : Over S} (a : X ⟶ Y) :
     ((Over.pullback f).map a).left ≫ pullback.fst Y.hom f = pullback.fst X.hom f ≫ a.left :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Take `⟨yu, hyu_def⟩ : ∃ y, y = u ≫ pullback.fst qU.left (pullback.fst (BU.hom ≫ fU) fV)` from `⟨_, rfl⟩`. Take `⟨yv, hyv_def⟩ : ∃ y, y = v ≫ pullback.fst qU.left (pullback.fst (BU.hom ≫ fU) fV)` from `⟨_, rfl⟩`. Establish `hq : yu ≫ qU.left = yv ≫ qU.left`. Simplify using `only [hyu_def, hyv_def, Category.assoc, pullback.condition, reassoc_of% huv]`. Establish `hs : yu ≫ pullback.snd A.hom fU = yv ≫ pullback.snd A.hom fU`.
+
+Rewrite using `[← w_left fU A BU qU, reassoc_of% hq]`. Set `Tj : Over U` to `Over.mk (yv ≫ pullback.snd A.hom fU)`. Set `yu' : Tj ⟶ (Over.pullback fU).obj A` to `Over.homMk yu hs`. Set `yv' : Tj ⟶ (Over.pullback fU).obj A` to `Over.homMk yv rfl`. Establish `hq' : yu' ≫ qU = yv' ≫ qU` using `Over.OverMorphism.ext hq`.
+
+Set `s` to `hU.lift yu' yv' hq' ≫ fst _ _`. Establish `hyu : yu' = (s ≫ (Over.pullback fU).map i) * yv'`. Establish `h1` using `hU.lift_fst yu' yv' hq'`. Rewrite `h1` using `[comp_mul, hU.lift_snd]`. Rewrite using `[Category.assoc, h1]`.
+
+Establish `e1 : yv ≫ pullback.snd A.hom fU ≫ fU = u ≫ pullback.snd _ _ ≫ pullback.snd (BU.hom ≫ fU) fV ≫ fV`. Rewrite using `[← w_left fU A BU qU, hyv_def]`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% (pullback.condition (f := qU.left) (g := pullback.fst (BU.hom ≫ fU) fV)), pullback.condition, reassoc_of% huv]`. Establish `hsw : s.left ≫ pullback.snd H.hom fU = yv ≫ pullback.snd A.hom fU` using `Over.w s`.
+
+Establish `hc1 : (s.left ≫ pullback.fst H.hom fU) ≫ H.hom = (u ≫ pullback.snd _ _ ≫ pullback.snd (BU.hom ≫ fU) fV) ≫ fV`. Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition, reassoc_of% hsw, e1]`. Set `Tk : Over V` to `Over.mk (u ≫ pullback.snd _ _ ≫ pullback.snd (BU.hom ≫ fU) fV)`. Set `s' : Tk ⟶ (Over.pullback fV).obj H` to `Over.homMk (pullback.lift (s.left ≫ pullback.fst H.hom fU) (u ≫ pullback.snd _ _ ≫ pullback.snd _ _) hc1) (pullback.lift_snd _ _ _)`.
+
+Set `zu : Tk ⟶ (Over.pullback fV).obj A` to `Over.homMk (u ≫ toV fU fV A BU qU) (by simp [Tk])`. Set `zv : Tk ⟶ (Over.pullback fV).obj A` to `Over.homMk (v ≫ toV fU fV A BU qU) (by simp [Tk, reassoc_of% huv])`. Establish `hc0 : (s.left ≫ pullback.fst H.hom fU ≫ i.left) ≫ A.hom = yv ≫ pullback.fst A.hom fU ≫ A.hom`. Rewrite using `[Category.assoc, Category.assoc, Over.w i, pullback.condition, reassoc_of% hsw, pullback.condition]`. Set `x0 : Over.mk (yv ≫ pullback.fst A.hom fU ≫ A.hom) ⟶ A` to `Over.homMk (s.left ≫ pullback.fst H.hom fU ≫ i.left) hc0`.
+
+Set `y0 : Over.mk (yv ≫ pullback.fst A.hom fU ≫ A.hom) ⟶ A` to `Over.homMk (yv ≫ pullback.fst A.hom fU) (Category.assoc _ _ _)`. Establish `mU` using `GlobalTheory.TorusToProper.mul_left_fst fU A (s ≫ (Over.pullback fU).map i) yv' x0 y0 (by rw [Over.comp_left, Category.assoc, map_left_fst]; rfl) rfl`. Establish `mV` using `GlobalTheory.TorusToProper.mul_left_fst fV A (s' ≫ (Over.pullback fV).map i) zv x0 y0 (by rw [Over.comp_left, Category.assoc, map_left_fst]; simp only [x0, s', Over.homMk_left]; rw [pullback.lift_fst_assoc, Category.assoc]) (by simp [y0, zv, hyv_def])`. Establish `key : zu = (s' ≫ (Over.pullback fV).map i) * zv`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[mV, ← mU, ← hyu]`. Simplify using `[zu, yu', hyu_def]`. Conclude with `(Over.w zu).trans (Over.w ((s' ≫ (Over.pullback fV).map i) * zv)).symm`. Establish `hk : zu ≫ qV = zv ≫ qV`.
+
+Rewrite using `[key]`. Use `lift s' zv ≫= hV.w` as an intermediate fact. Simplify `this` using `[comp_mul, ← Category.assoc]`. Use `congrArg CommaMorphism.left hk` as an intermediate fact. Simplify `this` using `[zu, zv]`.
+-/
 lemma toV_comp_eq [Flat qU.left] [Surjective qU.left] [QuasiCompact qU.left]
     (hU : IsPullback ((fst ((Over.pullback fU).obj H) ((Over.pullback fU).obj A) ≫ (Over.pullback fU).map i) *
       snd ((Over.pullback fU).obj H) ((Over.pullback fU).obj A))
@@ -109,6 +140,13 @@ lemma toV_comp_eq [Flat qU.left] [Surjective qU.left] [QuasiCompact qU.left]
   have := congrArg CommaMorphism.left hk
   simpa [zu, zv] using this
 
+/- English proof (translation)
+Establish `hc : ∀ {T : Scheme.{0}} (u v : T ⟶ src fU fV A BU qU), u ≫ pullback.snd _ _ = v ≫ pullback.snd _ _ → u ≫ (toV fU fV A BU qU ≫ qV.left) = v ≫ (toV fU fV A BU qU ≫ qV.left)` using `fun u v huv => toV_comp_eq fU fV A BU BV qU qV H i hU hV u v huv`. Establish `fac` using `EffectiveEpi.fac (pullback.snd qU.left (pullback.fst (BU.hom ≫ fU) fV)) (toV fU fV A BU qU ≫ qV.left) hc`. Use `⟨EffectiveEpi.desc (pullback.snd qU.left (pullback.fst (BU.hom ≫ fU) fV)) (toV fU fV A BU qU ≫ qV.left) hc, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi (pullback.snd qU.left (pullback.fst (BU.hom ≫ fU) fV)), reassoc_of% fac, w_left fV A BV qV, toV_snd]`. Introduce `T y z w h1 h2 h3`.
+
+Establish `hw : w = pullback.lift y w h2.symm ≫ pullback.snd qU.left (pullback.fst (BU.hom ≫ fU) fV)` using `(pullback.lift_snd _ _ _).symm`. Establish `hz : pullback.lift y w h2.symm ≫ toV fU fV A BU qU = z`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, toV_fst, pullback.lift_fst_assoc, h1]`. Rewrite using `[Category.assoc, toV_snd, pullback.lift_snd_assoc, h3]`.
+
+Rewrite using `[hw, Category.assoc, fac, ← Category.assoc, hz]`.
+-/
 theorem exists_trans [Flat qU.left] [Surjective qU.left] [QuasiCompact qU.left]
     (hU : IsPullback ((fst ((Over.pullback fU).obj H) ((Over.pullback fU).obj A) ≫ (Over.pullback fU).map i) *
       snd ((Over.pullback fU).obj H) ((Over.pullback fU).obj A))
@@ -142,6 +180,11 @@ theorem exists_trans [Flat qU.left] [Surjective qU.left] [QuasiCompact qU.left]
 
 end
 
+/- English proof (translation)
+Rewrite using `[← cancel_epi (pullback.snd qU.left (pullback.fst (BU.hom ≫ fU) fV)), Category.comp_id]`. Establish `k1 : pullback.snd qU.left (pullback.fst (BU.hom ≫ fU) fV) ≫ b = toV fU fV A BU qU ≫ qV.left` using `cb _ (pullback.fst _ _) (toV fU fV A BU qU) _ (toV_fst fU fV A BU qU).symm pullback.condition.symm (toV_snd fU fV A BU qU).symm`. Establish `k2` using `cb' _ (toV fU fV A BU qU) (pullback.fst _ _) (pullback.snd qU.left (pullback.fst (BU.hom ≫ fU) fV) ≫ pullback.lift b (pullback.fst _ _ ≫ BU.hom) h₁) (toV_fst fU fV A BU qU) (by rw [Category.assoc, pullback.lift_fst, k1]) (by rw [Category.assoc, pullback.lift_snd, ← Category.assoc …`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, pullback.lift_fst, ← Category.assoc, k2, pullback.condition]`.
+
+Rewrite using `[Category.assoc, Category.assoc, pullback.lift_snd, ← Category.assoc (pullback.lift b _ _), pullback.lift_fst, hb]`.
+-/
 lemma lift_comp_lift {S U V : Scheme.{0}} (fU : U ⟶ S) (fV : V ⟶ S) (A : Over S)
     (BU : Over U) (BV : Over V) (qU : (Over.pullback fU).obj A ⟶ BU) (qV : (Over.pullback fV).obj A ⟶ BV)
     [Flat qU.left] [Surjective qU.left] [QuasiCompact qU.left]
@@ -173,6 +216,11 @@ lemma lift_comp_lift {S U V : Scheme.{0}} (fU : U ⟶ S) (fV : V ⟶ S) (A : Ove
   · rw [Category.assoc, Category.assoc, pullback.lift_snd, ← Category.assoc (pullback.lift b _ _),
       pullback.lift_fst, hb]
 
+/- English proof (translation)
+Establish `h₁ : b ≫ BV.hom ≫ fV = (pullback.fst _ _ ≫ BU.hom) ≫ fU`. Rewrite using `[reassoc_of% hb, Category.assoc]`. Conclude with `pullback.condition.symm`. Establish `h₂ : b' ≫ BU.hom ≫ fU = (pullback.fst _ _ ≫ BV.hom) ≫ fV`. Rewrite using `[reassoc_of% hb', Category.assoc]`.
+
+Conclude with `pullback.condition.symm`. Set `e : pullback (BU.hom ≫ fU) fV ≅ pullback (BV.hom ≫ fV) fU` to `{ hom := pullback.lift b (pullback.fst _ _ ≫ BU.hom) h₁ inv := pullback.lift b' (pullback.fst _ _ ≫ BV.hom) h₂ hom_inv_id := lift_comp_lift fU fV A BU BV qU qV b b' hb cb cb' h₁ h₂ inv_hom_id := lift_comp_lift fV fU A BV BU qV qU b' b hb' cb' cb h₂ h₁ }`. Conclude with `IsPullback.of_iso_pullback ⟨h₁⟩ e (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)`.
+-/
 theorem isPullback_trans {S U V : Scheme.{0}} (fU : U ⟶ S) (fV : V ⟶ S) (A : Over S)
     (BU : Over U) (BV : Over V) (qU : (Over.pullback fU).obj A ⟶ BU) (qV : (Over.pullback fV).obj A ⟶ BV)
     [Flat qU.left] [Surjective qU.left] [QuasiCompact qU.left]
@@ -199,6 +247,13 @@ theorem isPullback_trans {S U V : Scheme.{0}} (fU : U ⟶ S) (fV : V ⟶ S) (A :
       inv_hom_id := lift_comp_lift fV fU A BV BU qV qU b' b hb' cb' cb h₂ h₁ }
   exact IsPullback.of_iso_pullback ⟨h₁⟩ e (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)
 
+/- English proof (translation)
+Introduce `S 𝒰 A H _ _ i B q hf hs hqc hpb`. Establish `key : ∀ j k, ∃ b : pullback ((B j).hom ≫ 𝒰.f j) (𝒰.f k) ⟶ (B k).left, b ≫ (B k).hom = pullback.snd _ _ ∧ ∀ (T : Scheme.{0}) (y : T ⟶ pullback A.hom (𝒰.f j)) (z : T ⟶ pullback A.hom (𝒰.f k)) (w : T ⟶ pullback ((B j).hom ≫ 𝒰.f j) (𝒰.f k)), y ≫ pullback.fst _ _ = z ≫ pullback.fst _ …` using `fun j k => by haveI := hf j; haveI := hs j; haveI := hqc j`. Conclude with `exists_trans (𝒰.f j) (𝒰.f k) A (B j) (B k) (q j) (q k) H i (hpb j) (hpb k)`. Use `choose b hb1 hb3 using key`. Use `⟨b, hb1, fun j k => ?_, hb3⟩` and prove the remaining obligations.
+
+Use `haveI := hf j`. Use `haveI := hs j`. Use `haveI := hqc j`. Use `haveI := hf k`. Use `haveI := hs k`.
+
+Use `haveI := hqc k`. Conclude with `isPullback_trans (𝒰.f j) (𝒰.f k) A (B j) (B k) (q j) (q k) (b j k) (b k j) (hb1 j k) (hb1 k j) (hb3 j k) (hb3 k j)`.
+-/
 theorem exists_transition : ∀ (S : Scheme.{0}) (𝒰 : S.OpenCover.{0}) (A H : Over S) [GrpObj A] [GrpObj H] (i : H ⟶ A)
     (B : ∀ j, Over (𝒰.X j)) (q : ∀ j, (Over.pullback (𝒰.f j)).obj A ⟶ B j),
     (∀ j, Flat (q j).left) → (∀ j, Surjective (q j).left) → (∀ j, QuasiCompact (q j).left) → (∀ j, IsPullback ((fst ((Over.pullback (𝒰.f j)).obj H) ((Over.pullback (𝒰.f j)).obj A) ≫ (Over.pullback (𝒰.f j)).map i) * snd ((Over.pullback (𝒰.f j)).obj H) ((Over.pullback (𝒰.f j)).obj A)) (snd ((Over.pullback (𝒰.f j)).obj H) ((Over.pullback (𝒰.f j)).obj A)) (q j) (q j)) →

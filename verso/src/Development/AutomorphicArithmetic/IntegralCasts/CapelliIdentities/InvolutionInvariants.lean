@@ -36,6 +36,11 @@ noncomputable def UpperTheory.Reformulated.B.InvolutionInvariants.inUJ :
           g)
         (@UpperTheory.Reformulated.B.InvolutionInvariants.Jm n ε)
 
+/- English proof (translation)
+Introduce `n ε g h hg hh`. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.InvolutionInvariants.inUJ ε _ at hg hh ⊢`. Unfold `UpperTheory.Reformulated.B.InvolutionInvariants.inUJ at hg hh ⊢`. Rewrite using `[Units.val_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hg, hh]`.
+-/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux3 :
     ∀ {n : Nat} (ε : Fin n → Bool)
       {g h :
@@ -170,6 +175,9 @@ theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux3 :
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [hg, hh]
 
+/- English proof (translation)
+Introduce `n ε`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux4 :
     ∀ {n : Nat} (ε : Fin n → Bool),
       @Eq (Matrix (Fin n) (Fin n) Complex)
@@ -273,6 +281,11 @@ theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux4 :
   intro n ε
   simp
 
+/- English proof (translation)
+Introduce `n ε g hg`. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.InvolutionInvariants.inUJ ε _ at hg ⊢`. Unfold `UpperTheory.Reformulated.B.InvolutionInvariants.inUJ at hg ⊢`. Establish `h1 : g.val * (g⁻¹).val = 1` using `Units.mul_inv g`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux5 :
     ∀ {n : Nat} (ε : Fin n → Bool)
       {g :
@@ -504,6 +517,9 @@ noncomputable def UpperTheory.Reformulated.B.InvolutionInvariants.UJ :
               (@Matrix.semiring (Fin n) Complex Complex.instSemiring (Fin.fintype n) (instDecidableEqFin n)))))
 attribute [local instance] UpperTheory.Reformulated.B.InvolutionInvariants.instMeasurableSpaceUJ
 
+/- English proof (translation)
+Introduce `n ε`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux8 :
     ∀ {n : Nat} (ε : Fin n → Bool),
       @IsTopologicalGroup (↥(@UpperTheory.Reformulated.B.InvolutionInvariants.UJ n ε))
@@ -567,6 +583,9 @@ theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux8 :
   intro n ε
   infer_instance
 
+/- English proof (translation)
+Introduce `n ε`. Conclude with `⟨rfl⟩`.
+-/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux9 :
     ∀ (n : Nat) (ε : Fin n → Bool),
       @BorelSpace (↥(@UpperTheory.Reformulated.B.InvolutionInvariants.UJ n ε))
@@ -623,6 +642,9 @@ theorem UpperTheory.Reformulated.B.InvolutionInvariants.aux9 :
   intro n ε
   exact ⟨rfl⟩
 
+/- English proof (translation)
+Introduce `n ε`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`. Establish `hc : IsClosed {g : (Matrix (Fin n) (Fin n) ℂ)ˣ | (g.val).conjTranspose * UpperTheory.Reformulated.B.InvolutionInvariants.Jm ε * g.val = UpperTheory.Reformulated.B.InvolutionInvariants.Jm ε}` using `isClosed_eq ((Units.continuous_val.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul Units.continuous_val) continuous_const`. Conclude with `hc.locallyCompactSpace`.
+-/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.laurent_T_neg_one_mul_T_one :
     ∀ (n : Nat) (ε : Fin n → Bool),
       @LocallyCompactSpace (↥(@UpperTheory.Reformulated.B.InvolutionInvariants.UJ n ε))
@@ -791,6 +813,13 @@ noncomputable def UpperTheory.Reformulated.B.InvolutionInvariants.InvInvariant :
         (@UpperTheory.Reformulated.B.InvolutionInvariants.muG n ε)
 
 open MeasureTheory MeasureTheory.Measure in
+/- English proof (translation)
+Use `haveI : (haar : Measure G).IsMulRightInvariant := ⟨h⟩`. Use `haveI : (haar : Measure G).Regular := regular_haarMeasure`. Take `⟨c, hc⟩ : ∃ c : ENNReal, (haar : Measure G).inv = c • haar` from `⟨haarScalarFactor (haar : Measure G).inv haar, isMulLeftInvariant_eq_smul_of_regular (haar : Measure G).inv haar⟩`. Establish `K : TopologicalSpace.PositiveCompacts G` using `Classical.arbitrary _`. Establish `h0 : (haar : Measure G) K ≠ 0` using `(measure_pos_of_nonempty_interior _ K.interior_nonempty).ne'`.
+
+Establish `ht : (haar : Measure G) K ≠ ⊤` using `K.isCompact.measure_lt_top.ne`. Establish `h1 : ∀ s : Set G, (haar : Measure G) s⁻¹ = c * haar s` using `fun s => by`. Rewrite using `[← inv_apply, hc, Measure.smul_apply, smul_eq_mul]`. Establish `h2 : c ^ 2 * (haar : Measure G) K = 1 ^ 2 * (haar : Measure G) K`. Rewrite using `[pow_two, mul_assoc, ← h1, ← h1, inv_inv, one_pow, one_mul]`.
+
+Establish `h3 : c = 1` using `(ENNReal.pow_right_strictMono two_ne_zero).injective ((ENNReal.mul_left_inj h0 ht).1 h2)`. Rewrite `hc` using `[h3, one_smul]`. Conclude with `hc`.
+-/
 private theorem UpperTheory.Reformulated.B.InvolutionInvariants.haar_map_inv {G : Type*} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G]
     (h : ∀ g : G, Measure.map (fun x => x * g) (haar : Measure G) = haar) :
@@ -812,6 +841,9 @@ private theorem UpperTheory.Reformulated.B.InvolutionInvariants.haar_map_inv {G 
   rw [h3, one_smul] at hc
   exact hc
 
+/- English proof (translation)
+Introduce `h n ε`. Use `haveI := UpperTheory.Reformulated.B.InvolutionInvariants.aux8 ε`. Use `haveI := UpperTheory.Reformulated.B.InvolutionInvariants.aux9 n ε`. Use `haveI := UpperTheory.Reformulated.B.InvolutionInvariants.laurent_T_neg_one_mul_T_one n ε`. Conclude with `UpperTheory.Reformulated.B.InvolutionInvariants.haar_map_inv (G := ↥(UpperTheory.Reformulated.B.InvolutionInvariants.UJ ε)) (h n ε)`.
+-/
 theorem UpperTheory.Reformulated.B.InvolutionInvariants.invInvariant_of :
     UpperTheory.Reformulated.B.InvolutionInvariants.Unimodular → UpperTheory.Reformulated.B.InvolutionInvariants.InvInvariant := by
   intro h n ε

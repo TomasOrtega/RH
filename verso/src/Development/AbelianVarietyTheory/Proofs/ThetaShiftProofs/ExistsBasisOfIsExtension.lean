@@ -25,6 +25,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {w : LB.Iso P.toPre.P.L (a.D₀.P.L.pull φ)} {e : a.D₀.X ≃ₗ[𝓞 E] P.toPre.X} (hW : WitData a P oP φ he w e)
   (F : Type) [Field F] [Algebra (FractionRing (PowerSeries k)) F] (hG : GlobalFnsSt) {j : ℕ} (hj : 1 ≤ j)
 
+/- English proof (translation)
+Use `⟨Module.Basis.mk (linearIndependent_of_isExtension hg v.linearIndependent) ?_, fun i => Module.Basis.mk_apply _ _ i⟩` and prove the remaining obligations. Rewrite using `[← hg.span, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : x ∈ Submodule.span K (Set.range v)` using `v.mem_span x`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+
+Conclude with `add_mem hy hz`. Consider the case `smul d y _ hy => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem exists_basis_of_isExtension {K L : Type} [Field K] [Field L] [Algebra K L] {V W : Type} [AddCommGroup V]
     [Module K V] [AddCommGroup W] [Module L W] {g : V →ₛₗ[algebraMap K L] W} (hg : IsExtension g) {I : Type}
     (v : Module.Basis I K V) : ∃ B : Module.Basis I L W, ∀ i, B i = g (v i) := by
@@ -39,6 +46,15 @@ theorem exists_basis_of_isExtension {K L : Type} [Field K] [Field L] [Algebra K 
   | add y z _ _ hy hz => rw [map_add]; exact add_mem hy hz
   | smul d y _ hy => rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Use `Fintype.ofFinite C` as an intermediate fact. Establish `key : ∀ x i, LinearMap.pi p (v x i) = Pi.basis bs ⟨x, i⟩` using `fun x i => by`. Rewrite using `[Pi.basis_apply]`. Use function extensionality and compare the values at `y`. Distinguish the cases in `h : y = x`.
+
+Substitute `h` using the available equality. Rewrite using `[LinearMap.pi_apply, h₁, Pi.single_eq_same]`. Rewrite using `[LinearMap.pi_apply, h₂ x y i h, Pi.single_eq_of_ne h]`. Establish `hb : Function.Bijective (LinearMap.pi p)`. Use `⟨(injective_iff_map_eq_zero _).2 fun m hm => inj m fun x => congrFun hm x, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← (Pi.basis bs).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨⟨x, i⟩, rfl⟩`. Conclude with `⟨v x i, key x i⟩`. Use `⟨(Pi.basis bs).map (LinearEquiv.ofBijective _ hb).symm, fun x i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.map_apply, LinearEquiv.symm_apply_eq]`.
+
+Conclude with `(key x i).symm`.
+-/
 theorem exists_basis_of_components {L : Type} [Field L] {M : Type} [AddCommGroup M] [Module L M] {C : Type}
     [Finite C] {W : C → Type} [∀ x, AddCommGroup (W x)] [∀ x, Module L (W x)] (p : ∀ x, M →ₗ[L] W x)
     (inj : ∀ m, (∀ x, p x m = 0) → m = 0) {Idx : C → Type} (bs : ∀ x, Module.Basis (Idx x) L (W x))
@@ -62,6 +78,11 @@ theorem exists_basis_of_components {L : Type} [Field L] {M : Type} [AddCommGroup
   rw [Module.Basis.map_apply, LinearEquiv.symm_apply_eq]
   exact (key x i).symm
 
+/- English proof (translation)
+Establish `: AddGroup.FG X` using `Module.Finite.iff_addGroup_fg.1 inferInstance`. Use `AddSubgroup.finiteIndex_range_nsmulAddMonoidHom_of_fg X (show j ≠ 0 by omega)` as an intermediate fact. Use `Finite.of_injective (fun x => (QuotientAddGroup.mk (rep x) : X ⧸ (nsmulAddMonoidHom j : X →+ X).range)) fun x y h => ?_` and prove the remaining obligations. Take `⟨mu, hmu⟩` from `QuotientAddGroup.eq.1 h`. Use `(hrep (rep y)).unique ⟨mu, ?_⟩ ⟨0, by rw [smul_zero, add_zero]⟩` and prove the remaining obligations.
+
+Rewrite using `[show j • mu = -rep x + rep y from hmu, add_neg_cancel_left]`.
+-/
 theorem finite_of_reps {X : Type} [AddCommGroup X] [Module.Finite ℤ X] {j : ℕ} (hj : 1 ≤ j) {C : Type}
     (rep : C → X) (hrep : ∀ α, ∃! x, ∃ mu, rep x + j • mu = α) : Finite C := by
   have : AddGroup.FG X := Module.Finite.iff_addGroup_fg.1 inferInstance
@@ -72,6 +93,13 @@ theorem finite_of_reps {X : Type} [AddCommGroup X] [Module.Finite ℤ X] {j : �
   refine (hrep (rep y)).unique ⟨mu, ?_⟩ ⟨0, by rw [smul_zero, add_zero]⟩
   rw [show j • mu = -rep x + rep y from hmu, add_neg_cancel_left]
 
+/- English proof (translation)
+Set `_ : Algebra k F` to `(constF k F).toAlgebra`. Use `finite_of_reps hj rep hrep` as an intermediate fact. Use `choose bs hbs using fun x => exists_basis_of_isExtension (isExtension_pullF hW F j (rep x)) (bas x)`. Use `exists_basis_of_components (fun x => famComp P.toPre F j (e (rep x))) (fun m hm => ?_) bs _ (fun x i => (constFam_self hW F hG hj _ _).trans (hbs x i).symm) (fun x y i h => ?_)` and prove the remaining obligations. Use `fam_ext fun χ i => ?_` and prove the remaining obligations.
+
+Take `⟨x, ⟨mu, hmu⟩, -⟩` from `hrep (e.symm χ)`. Establish `hχ : ∃ nu, e (rep x) + j • nu = χ` using `⟨e mu, by rw [← map_nsmul, ← map_add, hmu, LinearEquiv.apply_symm_apply]⟩`. Conclude with `congrArg (fun q => LB.Sec.f q i) (FamFree.eq_of_eq_add_nsmul hG m 0 hχ (hm x))`. Use `constFam_off hW F hG hj _ _ _ fun mu hmu => h ?_` and prove the remaining obligations. Use `(hrep (rep y)).unique ⟨0, by rw [smul_zero, add_zero]⟩ ⟨e.symm mu, e.injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_nsmul, LinearEquiv.apply_symm_apply, hmu]`.
+-/
 theorem exists_basis_constFam {C : Type} (rep : C → a.D₀.X) (hrep : ∀ α, ∃! x, ∃ mu, rep x + j • mu = α)
     {Idx : C → Type} (bas : ∀ x, Module.Basis (Idx x) k (SecBMod a.D₀ j (rep x))) :
     ∃ B : Module.Basis (Σ x, Idx x) F (Fam P.toPre F j),

@@ -16,6 +16,39 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi 
 
 namespace GlobalTheory.PtDeg
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U x hL Z τ s ρ hρ K _ _ _ y hyZ B t₀ m1 m2 F t ht π ε hπε u u' hu hu' 𝔓 b M b' M' hb hM hb' hM'`. Establish `hε : 0 < ε 𝔓`. Break down `Nat.eq_zero_or_pos (ε 𝔓) with h | h` into its components or cases. Establish `h0` using `hπε 𝔓 0`. Rewrite `h0` using `[h, pow_zero, map_zero, map_zero]`.
+
+Conclude with `absurd h0 zero_ne_one`. Conclude with `h`. Take `⟨T, iK, hFin, hT⟩` from `GlobalTheory.T.exists_completeDVR_completion_integral_iff K 𝔓`. Take `⟨e, he, hv⟩` from `GlobalTheory.T.exists_ramification_completeDVR_valuation_eq_mul K 𝔓 T iK hT`. Use `letI := (iK.comp (algebraMap c.F K)).toAlgebra`.
+
+Set `φ : K →ₐ[c.F] T.Fr` to `{ iK with commutes' := fun _ => rfl }`. Take `⟨yT, hyT⟩` from `GlobalTheory.FlagTan.exists_frMap φ y`. Take `⟨ρV, hρV, G, t', n, n', m1', m2', h1, h2, C, td, y', hlow, hdiag, hchg, hlie, hint⟩` from `GlobalTheory.T.triangular_frameChange_basechange_integral_at_completion E H Dw l Xo c K y B t₀ m1 m2 𝔓 T iK hT yT hyT`. Establish `hbor : FrBor td yT y'` using `((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c T.Fr yT y' y').1 td).2 ⟨C, hlow, hdiag, hchg⟩`. Establish `hover : OverLa (π 𝔓) T.V (iK.comp (algebraMap c.F K)) (e * ε 𝔓)`.
+
+Use `⟨Nat.mul_pos he hε, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hv, vAdd, hπε, vLa]`. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hz' : (π 𝔓).valuation c.F z ≠ 0` using `by simpa using hz`. Rewrite using `[WithZero.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Set `yI : IntFr Xo c T (iK.comp (algebraMap c.F K))` to `⟨y', GlobalTheory.FlagTan.fromTest_of_isLocalRing y', hint⟩`.
+
+Establish `hyTZ : LiesOn Z yT` using `GlobalTheory.FlatLine.liesOn_frMap hyT hyZ`. Establish `hlies : LiesOn Z y'`. Establish `e1 : ptF y' = ptF yT`. Unfold `ptF`. Use `congr 1`.
+
+Conclude with `hchg.1`. Introduce `p`. Rewrite using `[e1]`. Conclude with `hyTZ p`. Establish `hmem : (fun f => nval T.V (e * ε 𝔓) (evI yI f)) ∈ valOn Z (π 𝔓)` using `⟨PtV.mk (π 𝔓) hover yI ⟨hFin, hlies⟩ () trivial, rfl⟩`.
+
+Establish `hval` using `hρ (π 𝔓) _ hmem`. Establish `hev1` using `GlobalTheory.FlagTan.evR_frBor s.sig_mem hbor`. Establish `hev2 : evR Xo c s.sig yT = φ (evR Xo c s.sig y)` using `GlobalTheory.FlagTan.evR_frMap s.sig_mem.1 hyT`. Establish `hS4` using `GlobalTheory.T.flatLineWeight_character_triangular_frameChange E H Dw τ T.Fr td`. Establish `hct` using `GlobalTheory.ConjHostChar.conj_char E H Dw l Xo c τ K t ht`.
+
+Take `⟨hA1, hA2⟩` from `GlobalTheory.T.integralFrame_span_completed_eigenLattice E H Dw l Xo c K y B t₀ m1 m2 F τ.1 t ht u hu 𝔓 T iK hT ρV hρV yT hyT G t' n n' m1' m2' h1 h2 C (td none) y' hchg hlie`. Take `⟨hB1, hB2⟩` from `GlobalTheory.T.integralFrame_span_completed_eigenLattice E H Dw l Xo c K y B t₀ m1 m2 F (conjEmb τ.1) (t.comp (H.bar : 𝓞 E →+* 𝓞 E)) hct u' hu' 𝔓 T iK hT ρV hρV yT hyT G t' n n' m1' m2' h1 h2 C (td none) y' hchg hlie`. Take `⟨-, hCdet, hvC⟩` from `GlobalTheory.T.det_valuations_sum_zero_same_local_lattice K 𝔓 T iK hT F.P₀.g _ _ b hb M u hM (C τ.1) hA1 hA2`. Take `⟨-, -, hvC'⟩` from `GlobalTheory.T.det_valuations_sum_zero_same_local_lattice K 𝔓 T iK hT F.P₀.g _ _ b' hb' M' u' hM' (C (conjEmb τ.1)) hB1 hB2`. Establish `hdet : ∀ σ, (C σ).det = ∏ i, (td (some ⟨σ, i⟩) : T.Fr)` using `fun σ => by`.
+
+Rewrite using `[Matrix.det_of_lowerTriangular (C σ) (fun i j hij => hlow σ i j hij)]`. Conclude with `Finset.prod_congr rfl fun i _ => hdiag σ i`. Establish `hφ : ∀ z, φ z = iK z` using `fun _ => rfl`. Establish `hprod : evR Xo c s.sig y' * (C τ.1).det = (C (conjEmb τ.1)).det * iK (evR Xo c s.sig y)`. Rewrite using `[hev1, hev2, hdet, hdet, hφ, ← hS4]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hval' : nval T.V (e * ε 𝔓) (evR Xo c s.sig y') = (ρ (π 𝔓) : EReal)` using `hval`. Establish `hy'0 : evR Xo c s.sig y' ≠ 0`. Introduce `h0`. Rewrite `hval'` using `[h0, nval_zero]`.
+
+Conclude with `EReal.coe_ne_top _ hval'.symm`. Establish `ha0 : iK (evR Xo c s.sig y) ≠ 0`. Introduce `h0`. Rewrite `hprod` using `[h0, mul_zero]`. Conclude with `mul_ne_zero hy'0 hCdet hprod`.
+
+Establish `hC'0 : (C (conjEmb τ.1)).det ≠ 0`. Introduce `h0`. Rewrite `hprod` using `[h0, zero_mul]`. Conclude with `mul_ne_zero hy'0 hCdet hprod`. Establish `hZ` using `congrArg (vV T.V) hprod`.
+
+Rewrite `hZ` using `[vV_mul hy'0 hCdet, vV_mul hC'0 ha0, hv]`. Rewrite `hvC`, `hvC'` using `[hv]`. Rewrite `hval'` using `[nval_of_ne hy'0, EReal.coe_eq_coe_iff]`. Establish `hvy : (vV T.V (evR Xo c s.sig y') : ℝ) = e * ((vAdd 𝔓 (evR Xo c s.sig y) : ℝ) + (vAdd 𝔓 M.det : ℝ) - (vAdd 𝔓 M'.det : ℝ))`. Establish `: vV T.V (evR Xo c s.sig y') = e * (vAdd 𝔓 (evR Xo c s.sig y) + vAdd 𝔓 M.det - vAdd 𝔓 M'.det)` using `by linarith`.
+
+Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hval', hvy]`. Establish `he' : (e : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`.
+
+Establish `hε' : (ε 𝔓 : ℝ) ≠ 0` using `by exact_mod_cast hε.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem rho_eq_vAdd_at_prime : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), Laws U x → ∀ (Z : Comp Xo c) (τ : Psi H) (s : ArchSec U x Z (flatWt Dw τ)) (ρ : HeightOneSpectrum (𝓞 c.F) → ℝ), (∀ la, ∀ w ∈ valOn Z la, w s.sig = (ρ la : EReal)) → ∀ (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K), LiesOn Z y → ∀ (B : GlobalTheory.CM.PAT H (Sp (𝓞 K))) (t₀ : SAB H (Sp K)) (m1 : SABMap t₀ Xo.univ.t y.x) (m2 : SABMap t₀ B.t (spMap (algebraMap (𝓞 K) K))) (F : GlobalTheory.CM.GenFib B.pol) (t : 𝓞 E →+* 𝓞 K), (∀ a, ((t a : 𝓞 K) : K) = algebraMap c.F K (embK c τ.1 a)) → ∀ (π : HeightOneSpectrum (𝓞 K) → HeightOneSpectrum (𝓞 c.F)) (ε : HeightOneSpectrum (𝓞 K) → ℕ), (∀ 𝔓 (z : c.F), 𝔓.valuation K (algebraMap c.F K z) = (π 𝔓).valuation c.F z ^ ε 𝔓) → ∀ (u : Fin (Dw.mult τ.1) → Fin F.P₀.g → K) (u' : Fin (Dw.mult (conjEmb τ.1)) → Fin F.P₀.g → K), GlobalTheory.PtDeg.FrameCoord y m1 m2 F τ.1 u → GlobalTheory.PtDeg.FrameCoord y m1 m2 F (conjEmb τ.1) u' → ∀ (𝔓 : HeightOneSpectrum (𝓞 K)) (b : Fin (Dw.mult τ.1) → Fin F.P₀.g → K) (M : Matrix (Fin (Dw.mult τ.1)) (Fin (Dw.mult τ.1)) K) (b' : Fin (Dw.mult (conjEmb τ.1)) → Fin F.P₀.g → K) (M' : Matrix (Fin (Dw.mult (conjEmb τ.1))) (Fin (Dw.mult (conjEmb τ.1))) K), GlobalTheory.PtDeg.LocBasis 𝔓 (F.eigLat B.t.act t) b → (∀ i, u i = ∑ j, M i j • b j) → GlobalTheory.PtDeg.LocBasis 𝔓 (F.eigLat B.t.act (t.comp (H.bar : 𝓞 E →+* 𝓞 E))) b' → (∀ i, u' i = ∑ j, M' i j • b' j) → (ε 𝔓 : ℝ) * ρ (π 𝔓) = (vAdd 𝔓 (evR Xo c s.sig y) : ℝ) + (vAdd 𝔓 M.det : ℝ) - (vAdd 𝔓 M'.det : ℝ) := by
   intro E _ _ _ H Dw l Xo c r U x hL Z τ s ρ hρ K _ _ _ y hyZ B t₀ m1 m2 F t ht π ε hπε u u' hu hu' 𝔓 b M b' M' hb hM hb' hM'
   have hε : 0 < ε 𝔓 := by

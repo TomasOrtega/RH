@@ -13,6 +13,11 @@ section Abstract
 
 variable {R : Type} [CommRing R] (c : R →+* R) (𝔬 : Subring R)
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `h (e x) (e y) ∈ 𝔬`. Rewrite using `[he]`. Conclude with `hL.1 x hx y hy`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨a, ha, e'⟩` from `hL.2 x hx`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h (e x) (e x) = _`. Rewrite using `[he, e']`.
+-/
 theorem isEvenInt_map {V : Type} [AddCommGroup V] [Module R V] {h : V → V → R} (e : V ≃ₗ[R] V)
     (he : ∀ x y, h (e x) (e y) = h x y) {L : Submodule 𝔬 V} (hL : IsEvenInt c 𝔬 h L) :
     IsEvenInt c 𝔬 h (L.map (e.toLinearMap.restrictScalars 𝔬)) := by
@@ -27,6 +32,13 @@ theorem isEvenInt_map {V : Type} [AddCommGroup V] [Module R V] {h : V → V → 
     change h (e x) (e x) = _
     rw [he, e']
 
+/- English proof (translation)
+Take `⟨⟨hfg, hsp⟩, hev, hmax⟩` from `hL`. Use `⟨⟨hfg.map _, ?_⟩, isEvenInt_map c 𝔬 e he hev, fun L' hL' hle => ?_⟩` and prove the remaining obligations. Establish `h1 : ((L.map (e.toLinearMap.restrictScalars 𝔬) : Submodule 𝔬 V) : Set V) = e.toLinearMap '' (L : Set V)`. Use extensionality with `z`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, Submodule.span_image, hsp, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `e.surjective`. Establish `hs : ∀ x y, h (e.symm x) (e.symm y) = h x y` using `fun x y => by`. Rewrite using `[← he (e.symm x), e.apply_symm_apply, e.apply_symm_apply]`. Establish `h1` using `isEvenInt_map c 𝔬 e.symm hs hL'`.
+
+Establish `h2 : L ≤ L'.map (e.symm.toLinearMap.restrictScalars 𝔬)` using `fun y hy => ⟨e y, hle ⟨y, hy, rfl⟩, by simp⟩`. Introduce `z hz`. Conclude with `⟨e.symm z, hmax _ h1 h2 ⟨z, hz, rfl⟩, by simp⟩`.
+-/
 theorem isMaxEven_map {V : Type} [AddCommGroup V] [Module R V] {h : V → V → R} (e : V ≃ₗ[R] V)
     (he : ∀ x y, h (e x) (e y) = h x y) {L : Submodule 𝔬 V} (hL : IsMaxEven c 𝔬 h L) :
     IsMaxEven c 𝔬 h (L.map (e.toLinearMap.restrictScalars 𝔬)) := by
@@ -48,16 +60,27 @@ theorem isMaxEven_map {V : Type} [AddCommGroup V] [Module R V] {h : V → V → 
 
 variable {n r : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hform_eq (Jm : Matrix (Fin n) (Fin n) R) (x y : Fin n → R) :
     Formalism.UG.hform c Jm x y = (fun i => c (x i)) ⬝ᵥ (Jm *ᵥ y) := by
   simp only [Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, cT, Formalism.UG.hform, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem cT_mul_apply (Jm : Matrix (Fin n) (Fin n) R) {k l : ℕ} (M : Matrix (Fin n) (Fin k) R)
     (N : Matrix (Fin n) (Fin l) R) (i : Fin k) (j : Fin l) :
     (cT c M * Jm * N) i j = Formalism.UG.hform c Jm (fun a => M a i) (fun a => N a j) := by
   simp only [Matrix.mul_apply, cT, Formalism.UG.hform, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Use `smul_right a x y := by`. Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Use symmetry as in `x y := by`.
+
+Simplify using `only [Formalism.UG.hform, map_sum, map_mul, hc]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isHerm_hform (hc : ∀ a, c (c a) = a) (Jm : Matrix (Fin n) (Fin n) R)
     (hJ : ∀ i j, c (Jm j i) = Jm i j) : IsHerm c (Formalism.UG.hform c Jm) where
   add_right x y z := by
@@ -72,6 +95,17 @@ theorem isHerm_hform (hc : ∀ a, c (c a) = a) (Jm : Matrix (Fin n) (Fin n) R)
     rw [hJ]
     ring
 
+/- English proof (translation)
+Establish `h1 : (fun i => c (x i)) ᵥ* Jm = 0`. Use function extensionality and compare the values at `j`. Establish `h2` using `hx (Pi.single j 1)`. Rewrite `h2` using `[hform_eq, Matrix.dotProduct_mulVec, dotProduct_single, mul_one]`. Conclude with `h2`.
+
+Establish `h2 : (fun i => c (x i)) = 0`. Establish `h3` using `congrArg (fun w => w ᵥ* Jm⁻¹) h1`. Simplify `h3` using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hd]`. Use function extensionality and compare the values at `i`. Establish `h3` using `congrFun h2 i`.
+
+Establish `h4 : c (x i) = 0` using `h3`. Rewrite using `[← hc (x i), h4, map_zero]`. Both sides reduce to the same expression. Use `repr f := by`. Set `w : Fin n → R` to `fun j => f (fun k => if j = k then 1 else 0)`.
+
+Set `u : Fin n → R` to `w ᵥ* Jm⁻¹`. Use `⟨fun i => c (u i), fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hform_eq]`. Establish `h1 : (fun i => c (c (u i))) = u` using `funext fun i => hc _`. Rewrite using `[h1, Matrix.dotProduct_mulVec]`.
+
+Establish `h2 : u ᵥ* Jm = w`. Simplify using `only [u, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hd, Matrix.vecMul_one]`. Rewrite using `[h2, LinearMap.pi_apply_eq_sum_univ f y]`. Simplify using `only [dotProduct, smul_eq_mul, w]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem isPerfect_hform (hc : ∀ a, c (c a) = a) (Jm : Matrix (Fin n) (Fin n) R)
     (hd : IsUnit Jm.det) : IsPerfect (Formalism.UG.hform c Jm) where
   nondeg x hx := by
@@ -101,6 +135,9 @@ theorem isPerfect_hform (hc : ∀ a, c (c a) = a) (Jm : Matrix (Fin n) (Fin n) R
     simp only [dotProduct, smul_eq_mul, w]
     exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `h1 : (fun i => c ((g *ᵥ x) i)) = (fun i => c (x i)) ᵥ* cT c g`. Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, vecMul, dotProduct, cT, map_sum, map_mul, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[hform_eq, hform_eq, h1, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hg]`.
+-/
 theorem hform_mulVec (Jm g : Matrix (Fin n) (Fin n) R) (hg : cT c g * Jm * g = Jm) (x y : Fin n → R) :
     Formalism.UG.hform c Jm (g *ᵥ x) (g *ᵥ y) = Formalism.UG.hform c Jm x y := by
   have h1 : (fun i => c ((g *ᵥ x) i)) = (fun i => c (x i)) ᵥ* cT c g := by
@@ -110,6 +147,11 @@ theorem hform_mulVec (Jm g : Matrix (Fin n) (Fin n) R) (hg : cT c g * Jm * g = J
   rw [hform_eq, hform_eq, h1, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec,
     ← Matrix.mul_assoc, hg]
 
+/- English proof (translation)
+Set `P : GL (Fin n) R` to `⟨LinearMap.toMatrix' p.toLinearMap, LinearMap.toMatrix' p.symm.toLinearMap, by rw [← LinearMap.toMatrix'_comp]; simp, by rw [← LinearMap.toMatrix'_comp]; simp⟩`. Use `⟨P, ?_, fun y => LinearMap.toMatrix'_mulVec _ _⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cT c (LinearMap.toMatrix' p.toLinearMap) * Jm * LinearMap.toMatrix' p.toLinearMap = Jm`. Use extensionality with `i j`. Rewrite using `[cT_mul_apply]`.
+
+Simplify using `only [LinearMap.toMatrix'_apply]`. Establish `h1` using `hp (Pi.single i 1) (Pi.single j 1)`. Use `h1.trans ?_` and prove the remaining obligations. Simplify using `[Formalism.UG.hform, Pi.single_apply]`.
+-/
 theorem exists_mat (Jm : Matrix (Fin n) (Fin n) R) (p : (Fin n → R) ≃ₗ[R] (Fin n → R))
     (hp : ∀ x y, Formalism.UG.hform c Jm (p x) (p y) = Formalism.UG.hform c Jm x y) :
     ∃ P : GL (Fin n) R, P ∈ Formalism.UG.UJ c Jm ∧ ∀ y, (P : Matrix (Fin n) (Fin n) R) *ᵥ y = p y := by
@@ -124,6 +166,15 @@ theorem exists_mat (Jm : Matrix (Fin n) (Fin n) R) (p : (Fin n → R) ≃ₗ[R] 
   refine h1.trans ?_
   simp [Formalism.UG.hform, Pi.single_apply]
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨i, hi, rfl⟩` from `hw`. Use `⟨Pi.single i 1, fun k hk => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Pi.single_eq_of_ne (ne_of_gt (lt_of_le_of_lt hi hk)) _`.
+
+Simplify using `[Pi.single_apply]`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨b₁, h₁, rfl⟩` from `ha`. Take `⟨b₂, h₂, rfl⟩` from `hb`.
+
+Use `⟨b₁ + b₂, fun i hi => by simp [h₁ i hi, h₂ i hi], ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Consider the case `smul t a _ ha`. Take `⟨b, hb, rfl⟩` from `ha`. Use `⟨t • b, fun i hi => by simp [hb i hi], ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]`.
+-/
 theorem exists_coeff {V : Type} [AddCommGroup V] [Module R V] (x : Fin r → V) (j : Fin r) {w : V}
     (hw : w ∈ Submodule.span R (x '' {i | i ≤ j})) :
     ∃ b : Fin r → R, (∀ i, j < i → b i = 0) ∧ w = ∑ i, b i • x i := by
@@ -144,6 +195,9 @@ theorem exists_coeff {V : Type} [AddCommGroup V] [Module R V] (x : Fin r → V) 
     refine ⟨t • b, fun i hi => by simp [hb i hi], ?_⟩
     simp only [Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]
 
+/- English proof (translation)
+Establish `h1 : cT c (M.map f) = (cT s M).map f`. Use extensionality with `i j`. Simplify using `[cT, h]`. Rewrite using `[h1, Matrix.map_mul, Matrix.map_mul]`.
+-/
 theorem cT_mul_map {A B : Type} [CommRing A] [CommRing B] (s : A →+* A) (c : B →+* B) (f : A →+* B)
     (h : ∀ t, c (f t) = f (s t)) {k l : ℕ} (M : Matrix (Fin n) (Fin k) A) (Jm : Matrix (Fin n) (Fin n) A)
     (N : Matrix (Fin n) (Fin l) A) :
@@ -153,6 +207,19 @@ theorem cT_mul_map {A B : Type} [CommRing A] [CommRing B] (s : A →+* A) (c : B
     simp [cT, h]
   rw [h1, Matrix.map_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Establish `hgm : cT c (g : Matrix (Fin n) (Fin n) R) * Jm * (g : Matrix (Fin n) (Fin n) R) = Jm` using `hg`. Set `e : (Fin n → R) ≃ₗ[R] (Fin n → R)` to `Matrix.toLinearEquiv' (g : Matrix (Fin n) (Fin n) R) ⟨((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R), by simp, by simp⟩`. Establish `heIso : ∀ a b, Formalism.UG.hform c Jm (e a) (e b) = Formalism.UG.hform c Jm a b` using `fun a b => hform_mulVec c Jm _ hgm a b`. Set `x : Fin r → Fin n → R` to `fun i a => Xm a i`. Set `y : Fin r → Fin n → R` to `fun i a => Ym a i`.
+
+Establish `hFr : IsFrame (Formalism.UG.hform c Jm) x y` using `⟨fun i j => by rw [← cT_mul_apply, hxx]; rfl, fun i j => by rw [← cT_mul_apply, hyy]; rfl, fun i j => by rw [← cT_mul_apply, hxy, Matrix.one_apply]⟩`. Take `⟨p, ⟨hpi, hpL⟩, hpf⟩` from `hFT _ (Formalism.UG.hform c Jm) (isHerm_hform c hc Jm hJ) (isPerfect_hform c hc Jm hd) r x y hFr Λ (Λ.map (e.toLinearMap.restrictScalars 𝔬)) hΛ (isMaxEven_map c 𝔬 e heIso hΛ)`. Take `⟨P, hP, hPy⟩` from `exists_mat c Jm p hpi`. Use `⟨P, hP, fun w => ?_, ?_⟩` and prove the remaining obligations. Establish `hz : p (((P⁻¹ * g : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) *ᵥ w) = e w`.
+
+Rewrite using `[← hPy, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_left]`. Both sides reduce to the same expression. Rewrite using `[hpL (((P⁻¹ * g : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) *ᵥ w), hz]`. Prove the components needed by the constructor for the conclusion. Introduce `hw`.
+
+Conclude with `⟨w, hw, rfl⟩`. Introduce and unpack `⟨w', hw', h'⟩`. Establish `h2 : w' = w` using `e.injective h'`. Conclude with `h2 ▸ hw'`. Use `choose b hb0 hb using fun j => exists_coeff x j (hpf j)`.
+
+Use `⟨Matrix.of fun i j => b j i, fun i j hij => hb0 j i hij, ?_⟩` and prove the remaining obligations. Use extensionality with `a j`. Establish `h1` using `congrFun (hb j) a`. Rewrite `h1` using `[← hPy]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h1`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `h1.trans (Finset.sum_congr rfl fun i _ => mul_comm _ _)` and prove the remaining obligations.
+-/
 theorem iwasawa_abs (hc : ∀ a, c (c a) = a) (Jm : Matrix (Fin n) (Fin n) R)
     (hJ : ∀ i j, c (Jm j i) = Jm i j) (hd : IsUnit Jm.det) (Xm Ym : Matrix (Fin n) (Fin r) R)
     (hxx : cT c Xm * Jm * Xm = 0) (hyy : cT c Ym * Jm * Ym = 0) (hxy : cT c Xm * Jm * Ym = 1)
@@ -200,6 +267,11 @@ end Abstract
 
 section Place
 
+/- English proof (translation)
+Establish `hs : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hCM.2.2.2, hCM.2.2.2, star_star]`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, hs]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem sigR_sigR {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (K : Type) [CommRing K] [Algebra F K] (t : K ⊗[F] E) :
     sigR K σ (sigR K σ t) = t := by
@@ -214,6 +286,15 @@ theorem sigR_sigR {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
 
 end Place
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y hCM hJ hW v hFT Λ hΛ g`. Establish `hs : ∀ t : E, sigR (Fv F v) σ (inclR (F` using `F) (Fv F v) t) = inclR (F := F) (Fv F v) (σ t) := by`. Introduce `t`. Simplify using `[sigR, inclR]`. Establish `hJm : ∀ i j, sigR (Fv F v) σ (JR (Fv F v) J j i) = JR (Fv F v) J i j`.
+
+Introduce `i j`. Simplify using `only [JR, Matrix.map_apply, hs, hJ.1]`. Establish `hdet : IsUnit (JR (F` using `F) (Fv F v) J).det := by`. Establish `h1 : (JR (F` using `F) (Fv F v) J).det = inclR (F := F) (Fv F v) J.det := (RingHom.map_det _ _).symm`. Rewrite using `[h1]`.
+
+Conclude with `(IsUnit.mk0 _ hJ.2).map _`. Establish `hg : matHom _ σ J g ∈ Formalism.UG.UJ (sigR (Fv F v) σ) (JR (Fv F v) J)` using `Subtype.property _`. Take `⟨P, hP, hk, B, hB, hPB⟩` from `iwasawa_abs (sigR (Fv F v) σ) (intLoc F E v) (sigR_sigR hCM (Fv F v)) (JR (Fv F v) J) hJm hdet (X.map (inclR (F := F) (Fv F v))) (Y.map (inclR (F := F) (Fv F v))) ((cT_mul_map (σ : E →+* E) (sigR (Fv F v) σ) (inclR (F := F) (Fv F v)) hs X J X).trans (by rw [hW.xx]; simp)) ((cT_mu …`. Set `p : GLoc σ J v` to `(⟨P, hP⟩ : HR (Fv F v) σ J)`. Establish `hp : matHom _ σ J p = P` using `rfl`.
+
+Use `⟨p, p⁻¹ * g, ?_, (mul_inv_cancel_left p g).symm, B, hB, hPB⟩` and prove the remaining obligations. Rewrite using `[mem_stabLat]`. Introduce `w`. Rewrite using `[map_mul, map_inv, hp]`. Conclude with `hk w`.
+-/
 theorem iwasawa_loc : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}, IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → ∀ (v : HeightOneSpectrum (𝓞 F)), FlagTransitive (sigR (Fv F v) σ) (intLoc F E v) → ∀ Λ : Submodule (intLoc F E v) (Fin n → Fv F v ⊗[F] E), IsMaxEven (sigR (Fv F v) σ) (intLoc F E v) (hR (Fv F v) σ J) Λ → ∀ g : GLoc σ J v, ∃ p : GLoc σ J v, ∃ k ∈ stabLat σ J Λ, g = p * k ∧ ∃ B : Matrix (Fin r) (Fin r) (Fv F v ⊗[F] E), B.BlockTriangular id ∧ (matHom _ σ J p).1 * X.map (inclR (F := F) (Fv F v)) = X.map (inclR (F := F) (Fv F v)) * B := by
   intro F E _ _ _ _ _ σ n J r X Y hCM hJ hW v hFT Λ hΛ g
   have hs : ∀ t : E, sigR (Fv F v) σ (inclR (F := F) (Fv F v) t) = inclR (F := F) (Fv F v) (σ t) := by

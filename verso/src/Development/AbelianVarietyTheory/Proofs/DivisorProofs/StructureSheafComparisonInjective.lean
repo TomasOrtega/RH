@@ -14,6 +14,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory.CechDR
 
+/- English proof (translation)
+Introduce `R _ X s`. Use `(injective_iff_map_eq_zero _).2 fun c hc ↦ ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Take `⟨g, hg⟩` from `H1.mk_eq_zero.1 hc`. Establish `hg' : ∀ ⦃U V : AffOp X⦄ (a : U ⟶ V), g V - Sec.res s (leOfHom a.unop) (g U) = fv f ((affF s).map a)` using `fun U V a ↦ congrFun (congrFun (congrFun hg U) V) a`.
+
+Establish `ex : ∀ T : TT s, ∃ G : T.obj.B, ∀ p : Pair (pt T), toSec R T.obj.B p.1.1 G = hSec f g T p` using `fun T ↦ GlobalTheory.T.exists_glue_functions_spec_from_pairs T.obj.B (pt T) (hSec f g T) fun p q hpq ↦ GlobalTheory.T.cocycle_local_sections_restrict_compatibly f g hg' T p q hpq`. Use `choose G hG using ex`. Conclude with `H1.mk_eq_zero.2 ⟨G, funext fun T ↦ funext fun T' ↦ funext fun φ ↦ (GlobalTheory.T.cochainValueOnThickeningHom_eq_sub_of_glued f g hg' φ (G T) (G T') (hG T) (hG T')).symm⟩`.
+-/
 theorem cmpO_injective : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R),
     Function.Injective (cmpO s) := by
   intro R _ X s

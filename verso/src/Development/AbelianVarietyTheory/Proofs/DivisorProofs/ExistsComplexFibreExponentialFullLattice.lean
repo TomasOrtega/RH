@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.FibreExp
 
+/- English proof (translation)
+Introduce `X G _ _ g hG hgG y`. Use `letI : GrpObj ((Over.pullback y).obj G) := Functor.grpObjObj`. Establish `hj` using `isGrpPullback_pullback G y`. Establish `hA : IsAbelianScheme ((Over.pullback y).obj G)` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hG hj`. Establish `hgA : SmoothOfRelativeDimension g ((Over.pullback y).obj G).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hj.1 hgG`.
+
+Take `⟨L, ⟨u⟩⟩` from `GlobalTheory.HomDescentQb.exists_holUnif _ g hA hgA`. Take `⟨h1, h2⟩` from `GlobalTheory.UnifTangent.tangent_bijection u hgA`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.LiePull.exists_pushEquiv hj (𝟙_ _) y (Category.id_comp _).symm`. Establish `he` using `GlobalTheory.PointUnif.isExp_push hj u h1 h2 Φ hΦ`. Conclude with `⟨fun z => Φ (u.ex z), u.Λ, he, u.discrete, u.full, fun z => (map_eq_one_iff Φ Φ.injective).trans (u.ker z)⟩`.
+-/
 theorem exists_exp_lattice : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (g : ℕ), IsAbelianScheme G →
     SmoothOfRelativeDimension g G.hom → ∀ y : Sp ℂ ⟶ X, ∃ (e : (Fin g → ℂ) → (Over.mk y ⟶ G))
       (Λ : Submodule ℤ (Fin g → ℂ)), IsExp y e ∧ DiscreteTopology Λ ∧ Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ ∧

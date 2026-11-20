@@ -1,5 +1,28 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `S _ τ hτ n r J g X Y B Xd Yd hJ hXd hYd hXY hg hB hgX`. Establish `star_mul : ∀ {a b c : ℕ} (P : Matrix (Fin a) (Fin b) S) (Q : Matrix (Fin b) (Fin c) S), ((P * Q).map τ).transpose = (Q.map τ).transpose * (P.map τ).transpose`. Introduce `a b c P Q`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Establish `star_star : ∀ {a b : ℕ} (P : Matrix (Fin a) (Fin b) S), (((P.map τ).transpose).map τ).transpose = P`.
+
+Introduce `a b P`. Use extensionality with `i j`. Simplify using `[hτ]`. Establish `star_one : (((1 : Matrix (Fin r) (Fin r) S)).map τ).transpose = 1`. Rewrite using `[Matrix.map_one τ (map_zero τ) (map_one τ), Matrix.transpose_one]`.
+
+Establish `h1 : Yd * X = 1`. Establish `h` using `congrArg (fun M : Matrix (Fin r) (Fin r) S => (M.map τ).transpose) hXY`. Simplify using `only [star_one] at h`. Rewrite `h` using `[star_mul, hXd, star_mul, star_star, hJ, ← Matrix.mul_assoc, ← hYd]`. Conclude with `h`.
+
+Establish `h2 : Yd * g * X = B`. Rewrite using `[Matrix.mul_assoc, hgX, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `hs : (X.map τ).transpose * (g.map τ).transpose = (B.map τ).transpose * (X.map τ).transpose`. Rewrite using `[← star_mul, ← star_mul, hgX]`. Establish `hD : (B.map τ).transpose * (Xd * g) = Xd`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hXd]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (X.map τ).transpose * ((g.map τ).transpose * J * g) := by`. Rewrite using `[← hs]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Xd := by rw [hg, hXd]`. Establish `hC : (B.map τ).transpose * (Xd * g * Y) = 1`. Rewrite using `[← Matrix.mul_assoc, hD, hXY]`. Establish `hC' : (Xd * g * Y) * (B.map τ).transpose = 1` using `mul_eq_one_comm.mp hC`.
+
+Establish `h3 : Xd * g = (Xd * g * Y) * Xd`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hC', Matrix.one_mul]`. Use `_ = (Xd * g * Y) * ((B.map τ).transpose * (Xd * g)) := by rw [Matrix.mul_assoc]`. Use `_ = (Xd * g * Y) * Xd := by rw [hD]`.
+
+Establish `h4 : ((Xd * g * Y).map τ).transpose * B = 1`. Establish `h` using `congrArg (fun M : Matrix (Fin r) (Fin r) S => (M.map τ).transpose) hC`. Simplify using `only [star_one] at h`. Rewrite `h` using `[star_mul, star_star]`. Then use the resulting hypothesis. Use `⟨h1, h2, h3, fun i => ?_⟩` and prove the remaining obligations.
+
+Use `letI : Invertible B := invertibleOfLeftInverse B _ h4`. Establish `hinv : (B⁻¹) = ((Xd * g * Y).map τ).transpose` using `Matrix.inv_eq_left_inv h4`. Establish `htri : (B⁻¹).BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hB`. Establish `h5` using `congrFun (congrFun h4 i) i`. Rewrite `h5` using `[Matrix.mul_apply, Finset.sum_eq_single i]`.
+
+Simplify `h5` using `only [Matrix.transpose_apply, Matrix.map_apply, Matrix.one_apply_eq]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with hlt | hgt` into its components or cases. Establish `: (B⁻¹) i k = 0` using `htri hlt`. Rewrite `this` using `[hinv]`.
+
+Rewrite using `[this, zero_mul]`. Establish `: B k i = 0` using `hB hgt`. Rewrite using `[this, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem UpperTheory.hermitian_block_triangular :
     ∀ {S : Type} [CommRing S] (τ : S →+* S), (∀ x, τ (τ x) = x) → ∀ {n r : ℕ}
         (J g : Matrix (Fin n) (Fin n) S) (X Y : Matrix (Fin n) (Fin r) S)

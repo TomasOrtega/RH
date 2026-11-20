@@ -12,6 +12,11 @@ open scoped ComplexOrder
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.TopWedge
 
+/- English proof (translation)
+Set `b : ∀ τ, Module.Basis (Fin n) Ω (V τ)` to `fun τ => Module.Basis.mk (hli τ) (hspan τ).ge`. Set `φ : ∀ τ, ⋀[Ω]^n (V τ) →ₗ[Ω] Ω` to `fun τ => exteriorPower.alternatingMapLinearEquiv (b τ).det`. Establish `hφ : ∀ τ, φ τ (exteriorPower.ιMulti Ω n (e τ)) = 1` using `fun τ => by`. Establish `hb : (⇑(b τ) : Fin n → V τ) = e τ` using `Module.Basis.coe_mk _ _`. Simplify using `only [φ, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti]`.
+
+Rewrite using `[← hb]`. Conclude with `(b τ).det_self`. Use `⟨PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra Ω Ψ Ω).compLinearMap φ), ?_⟩` and prove the remaining obligations. Rewrite using `[PiTensorProduct.lift.tprod]`. Simplify using `[hφ]`.
+-/
 theorem exists_form_tprod_wedge (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] (V : Ψ → Type)
     [∀ τ, AddCommGroup (V τ)] [∀ τ, Module Ω (V τ)] (n : ℕ) (e : ∀ τ, Fin n → V τ)
     (hli : ∀ τ, LinearIndependent Ω (e τ)) (hspan : ∀ τ, Submodule.span Ω (Set.range (e τ)) = ⊤) :
@@ -29,6 +34,13 @@ theorem exists_form_tprod_wedge (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] 
   rw [PiTensorProduct.lift.tprod]
   simp [hφ]
 
+/- English proof (translation)
+Introduce `Ψ _ Ω _ V _ _ n e e' T a a' hli hspan hT h`. Take `⟨Φ, hΦ⟩` from `exists_form_tprod_wedge Ψ Ω V n e hli hspan`. Establish `hq : ∀ τ, exteriorPower.ιMulti Ω n (e' τ) = (T τ).det • exteriorPower.ιMulti Ω n (e τ)` using `fun τ => by`. Rewrite using `[← GlobalTheory.CompanionTheory.Ar.BigBlock.iotaMulti_comb]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `q`. Conclude with `hT τ q`. Establish `htp : (PiTensorProduct.tprod Ω fun τ => exteriorPower.ιMulti Ω n (e' τ)) = (∏ τ, (T τ).det) • (PiTensorProduct.tprod Ω fun τ => exteriorPower.ιMulti Ω n (e τ))`. Repeatedly rewrite using `[hq]`. Conclude with `MultilinearMap.map_smul_univ _ _ _`.
+
+Establish `h2` using `congrArg Φ h`. Rewrite `h2` using `[htp, map_smul, map_smul, map_smul, hΦ]`. Simplify using `using h2`.
+-/
 theorem eq_mul_prod_det : ∀ (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] (V : Ψ → Type) [∀ τ, AddCommGroup (V τ)] [∀ τ, Module Ω (V τ)] (n : ℕ) (e e' : ∀ τ, Fin n → V τ) (T : ∀ τ, Matrix (Fin n) (Fin n) Ω) (a a' : Ω), (∀ τ, LinearIndependent Ω (e τ)) → (∀ τ, Submodule.span Ω (Set.range (e τ)) = ⊤) → (∀ τ q, e' τ q = ∑ p, T τ p q • e τ p) → a • (PiTensorProduct.tprod Ω fun τ => exteriorPower.ιMulti Ω n (e τ) : PiTensorProduct Ω fun τ => ⋀[Ω]^n (V τ)) = a' • (PiTensorProduct.tprod Ω fun τ => exteriorPower.ιMulti Ω n (e' τ) : PiTensorProduct Ω fun τ => ⋀[Ω]^n (V τ)) → a = a' * ∏ τ, (T τ).det := by
   intro Ψ _ Ω _ V _ _ n e e' T a a' hli hspan hT h
   classical

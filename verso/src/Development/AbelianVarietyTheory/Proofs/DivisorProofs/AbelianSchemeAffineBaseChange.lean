@@ -12,6 +12,9 @@ open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.
 
 namespace GlobalTheory.HodgeSub
 
+/- English proof (translation)
+Introduce `T A _ V V' hV hV' h`. Use `letI := resAlg h`. Take `⟨φ, hφ, hc⟩` from `GlobalTheory.DeRhamSheaf.VB.exists_transition A hV hV' h`. Conclude with `⟨φ, hφ, hc⟩`.
+-/
 theorem exists_proj : ∀ {T : Scheme.{0}} (A : Over T) [GrpObj A] (V V' : T.Opens) (hV : IsAffineOpen V)
     (hV' : IsAffineOpen V') (h : V' ≤ V),
     letI := resAlg h

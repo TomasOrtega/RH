@@ -6,5 +6,8 @@ open Formalism.IndefR.Datum GlobalTheory.Mem.AutSpace GlobalTheory.IndefiniteRow
 open scoped TensorProduct ContDiff Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mem.CuspDeriv.cuspForm_mem_decay | exact GlobalTheory.Mem.CuspDeriv.cuspForm_mem_decay | (intros; apply GlobalTheory.Mem.CuspDeriv.cuspForm_mem_decay <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.smoothCuspForm_mem_unitaryRapidDecayForms : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D), ∀ F, IsCuspForm θ V F → F ∈ Decay θ V := by
   first | exact @GlobalTheory.Mem.CuspDeriv.cuspForm_mem_decay | exact GlobalTheory.Mem.CuspDeriv.cuspForm_mem_decay | (intros; apply GlobalTheory.Mem.CuspDeriv.cuspForm_mem_decay <;> assumption)

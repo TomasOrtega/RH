@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Vert.Model.FlagPair.GrAgree.toFPair_agree | exact GlobalTheory.Vert.Model.FlagPair.GrAgree.toFPair_agree | (intros; apply GlobalTheory.Vert.Model.FlagPair.GrAgree.toFPair_agree <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_pair_morphism_compatibility : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p]
     (Z : GlobalTheory.Vert.Model O) (E E' G G' : Z.X.Modules) (φ : Z.GenIso E E') (χ : Z.GenIso G G')

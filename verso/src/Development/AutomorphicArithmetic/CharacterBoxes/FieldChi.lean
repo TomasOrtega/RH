@@ -7,6 +7,11 @@ import Development.AutomorphicArithmetic.CharacterBoxes.TwistAny
 
 open Formalism.HC Formalism.FrobeniusOrbits UpperTheory.Top HostParam.Seam
 
+/- English proof (translation)
+Establish `hM : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `h1` using `hQ.trans (Nat.lcm_dvd_mul _ _)`. Use `⟨fun l hl h2 h => ?_, (Nat.le_of_dvd (by positivity) h1).trans (le_of_eq (by ring))⟩` and prove the remaining obligations. Establish `h3 : l ∣ M` using `(hl.dvd_mul.1 (h.trans h1)).resolve_left fun h4 => h2 ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).1 (hl.dvd_of_dvd_pow h4))`. Use `Nat.le_of_dvd hM h3` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem conductor_divisor_bounds {M : ℕ} [NeZero M] {Q e b : ℕ} (hQ : Q ∣ Nat.lcm (2 ^ (e + 2)) M) (hb : 4 * M ≤ b) :
     (∀ l : ℕ, l.Prime → l ≠ 2 → l ∣ Q → 4 * l ≤ b) ∧ Q ≤ 4 * M * 2 ^ e := by
   have hM : 0 < M := Nat.pos_of_ne_zero (NeZero.ne M)
@@ -17,6 +22,17 @@ private theorem conductor_divisor_bounds {M : ℕ} [NeZero M] {Q e b : ℕ} (hQ 
   have := Nat.le_of_dvd hM h3
   omega
 
+/- English proof (translation)
+Introduce `ψ`. Take `⟨c, e1, hc1, -, hord⟩` from `ordAny ψ.N (Subgroup.zpowers ψ.χ)`. Use `⟨c, max e1 (max 2 (max (4 * ψ.N) (64 * Nat.card (Subgroup.zpowers ψ.χ)))), hc1, fun e he q d b hH hq3 hcop hb hsplit => ?_⟩` and prove the remaining obligations. Simplify using `only [ge_iff_le, max_le_iff] at he`. Take `⟨he1, he2, heN, heK⟩` from `he`.
+
+Establish `hNpos : 0 < ψ.N` using `Nat.pos_of_ne_zero (NeZero.ne _)`. Establish `hs : ∀ l : ℕ, l.Prime → l ≠ 2 → l ∣ ψ.N → jacobiSym (-(d : ℤ)) l = 1`. Introduce `l hl hl2 hlN`. Use `Nat.le_of_dvd hNpos hlN` as an intermediate fact. Conclude with `hsplit l hl hl2 (by omega)`.
+
+Establish `hQdvd : (AnyGrp.host (Subgroup.zpowers ψ.χ) e hH hcop he2 hs).QS ∣ Nat.lcm (2 ^ (e + 2)) ψ.N` using `EvenGrp.QS_dvd _ e`. Take `⟨hsmall, hQle⟩` from `conductor_divisor_bounds hQdvd hb`. Establish `h2e : 2 ^ e ≤ (AnyGrp.frame (Subgroup.zpowers ψ.χ) e).ord` using `Frame.two_pow_le_ord (AnyGrp.frame (Subgroup.zpowers ψ.χ) e)`. Establish `h4M : 4 * ψ.N ≤ 2 ^ e`. Establish `: e < 2 ^ e` using `Nat.lt_two_pow_self`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hopow : (AnyGrp.frame (Subgroup.zpowers ψ.χ) e).o ^ 64 ≤ 2 ^ (AnyGrp.frame (Subgroup.zpowers ψ.χ) e).e`. Rewrite using `[AnyGrp.o_eq]`. Use `show Nat.card (Subgroup.zpowers ψ.χ) ^ 64 ≤ 2 ^ e`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨AnyGrp.frame (Subgroup.zpowers ψ.χ) e, HostAx.ofRaw (AnyGrp.host (Subgroup.zpowers ψ.χ) e hH hcop he2 hs), rfl, hord e he1, rfl, rfl, AnyGrp.o_eq _ e, ?_, hQdvd, ?_, AnyGrp.keptInXp _ e hH hcop he2 hs, AnyGrp.exceptional_character_condition _ e hH hcop he2 hs, kerChiAny ψ e q d …` and prove the remaining obligations. Conclude with `⟨AnyGrp.psQ _ e hH hcop he2 hs, AnyGrp.exists_sqq _ e hH hcop he2 hs, AnyGrp.exact _ e hH hcop he2 hs, AnyGrp.QS_le _ e h4M, hopow, hq3, hsplit, hsmall⟩`. Conclude with `hQle.trans (Nat.mul_le_mul_left _ h2e)`.
+-/
 theorem UpperTheory.Top.fieldChi :
     ∀ ψ : PChar, ∃ c e0 : ℕ, 1 ≤ c ∧ ∀ e ≥ e0, ∀ q d b : ℕ, HostHyp q d → q ≠ 3 → Nat.Coprime ψ.N (q * d) → 4 * ψ.N ≤ b →
       (∀ p : ℕ, p.Prime → p ≠ 2 → p ≤ b → jacobiSym (-(d : ℤ)) p = 1) →

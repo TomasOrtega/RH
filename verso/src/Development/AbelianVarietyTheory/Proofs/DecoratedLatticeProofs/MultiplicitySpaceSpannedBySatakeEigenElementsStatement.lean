@@ -8,5 +8,8 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.eigSpan_of_parts | exact GlobalTheory.ChainOnto.eigSpan_of_parts | (intros; apply GlobalTheory.ChainOnto.eigSpan_of_parts <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.multiplicity_space_spanned_by_satake_eigen_elements : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, FinDim D → MetEx D → LevFacts D → EigSpan D := by
   first | exact @GlobalTheory.ChainOnto.eigSpan_of_parts | exact GlobalTheory.ChainOnto.eigSpan_of_parts | (intros; apply GlobalTheory.ChainOnto.eigSpan_of_parts <;> assumption)

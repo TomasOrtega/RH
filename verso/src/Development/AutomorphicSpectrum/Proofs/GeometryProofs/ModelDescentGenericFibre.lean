@@ -17,6 +17,17 @@ section Spans
 variable {O O' Ω' C : Type} [CommRing O] [CommRing O'] [Field Ω'] [Field C] [Algebra O Ω'] [Algebra O' C]
   [Algebra Ω' C]
 
+/- English proof (translation)
+Establish `key : ∀ t ∈ RC, ∀ x ∈ spanOver R₁ (h '' S), t • g x ∈ spanOver RC ((fun v => g (h v)) '' S)`. Introduce `t ht x hx`. Unfold `spanOver at hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`.
+
+Take `⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩` from `hx`. Rewrite using `[hg, smul_smul]`. Conclude with `AddSubgroup.subset_closure ⟨_, RC.mul_mem ht (hR a ha), _, ⟨e, he, rfl⟩, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+
+Rewrite using `[map_add, smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx`. Rewrite using `[map_neg, smul_neg]`. Conclude with `neg_mem hx`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, _, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `key t ht x hx`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨t, ht, _, ⟨e, he, rfl⟩, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨t, ht, _, ⟨h e, mem_spanOver_of_mem R₁ ⟨e, he, rfl⟩, rfl⟩, rfl⟩`.
+-/
 theorem span_span {V₀ V₁ V₂ : Type} [AddCommGroup V₁] [Module Ω' V₁] [AddCommGroup V₂] [Module C V₂]
     (R₁ : Subalgebra O Ω') (RC : Subalgebra O' C) (hR : ∀ a ∈ R₁, algebraMap Ω' C a ∈ RC) (g : V₁ →+ V₂)
     (hg : ∀ (a : Ω') (v : V₁), g (a • v) = algebraMap Ω' C a • g v) (h : V₀ → V₁) (S : Set V₀) :
@@ -51,10 +62,16 @@ section Transfer
 variable {O O' Ω : Type} [CommRing O] [CommRing O'] [Field Ω] [Algebra O O'] [Algebra O Ω] [Algebra O' Ω]
   [IsScalarTower O O' Ω] {F : Type} [Zero F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.freeM, h.M_le, h.le_M, h.one_mem, h.free, h.incl, h.stable, h.gam, h.del, h.th⟩`.
+-/
 theorem base_of_restrict (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra O' Ω) (p : ℕ) (w : Ω)
     (h : D.Base (R.restrictScalars O) p w) : D.Base R p w :=
   ⟨h.freeM, h.M_le, h.le_M, h.one_mem, h.free, h.incl, h.stable, h.gam, h.del, h.th⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.le_af, h.im, h.ker, h.dx, h.onto, h.inj⟩`.
+-/
 theorem facts_of_restrict (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra O' Ω) (p : ℕ) (w : Ω) (χ : Sg → F → Ω)
     (φ : Equiv.Perm Sg) (h : D.Facts (R.restrictScalars O) p w χ φ) : D.Facts R p w χ φ :=
   ⟨h.le_af, h.im, h.ker, h.dx, h.onto, h.inj⟩
@@ -68,6 +85,9 @@ variable {O O' Ω Ω' C : Type} [CommRing O] [CommRing O'] [Field Ω] [Field Ω'
   [Algebra Ω' C] [IsScalarTower O O' C] [IsScalarTower Ω Ω' C]
   {F : Type} [Zero F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[bcMap]`.
+-/
 theorem bcMap_smul (ι : Type) (a : Ω') (v : ι → Ω') :
     bcMap Ω' C ι (a • v) = algebraMap Ω' C a • bcMap Ω' C ι v := by
   funext i
@@ -75,10 +95,22 @@ theorem bcMap_smul (ι : Type) (a : Ω') (v : ι → Ω') :
 
 omit [Algebra O' C] [Algebra O C] in
 variable (Ω' C) in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[bcMap, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem bcMap_bcMap (ι : Type) (v : ι → Ω) : bcMap Ω' C ι (bcMap Ω Ω' ι v) = bcMap Ω C ι v := by
   funext i
   simp [bcMap, ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Establish `key1 : ∀ (ι : Type) (L : AddSubgroup (ι → Ω)), spanOver RC (bcMap Ω' C ι '' (spanOver R₁ (bcMap Ω Ω' ι '' (L : Set (ι → Ω))) : Set (ι → Ω'))) = spanOver RC (bcMap Ω C ι '' (L : Set (ι → Ω)))`. Introduce `ι L`. Use `span_span R₁ RC hR (bcMap Ω' C ι).toAddMonoidHom (bcMap_smul ι) (bcMap Ω Ω' ι) (L : Set (ι → Ω))` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `congr 2`.
+
+Use function extensionality and compare the values at `v`. Conclude with `bcMap_bcMap Ω' C ι v`. Establish `key2 : ∀ (ι κ : Type) (L : AddSubgroup ((ι → Ω) × (κ → Ω))), spanOver RC (Prod.map (bcMap Ω' C ι) (bcMap Ω' C κ) '' (spanOver R₁ (Prod.map (bcMap Ω Ω' ι) (bcMap Ω Ω' κ) '' (L : Set ((ι → Ω) × (κ → Ω)))) : Set ((ι → Ω') × (κ → Ω')))) = spanOver RC (Prod.map (bcMap Ω C ι) (bcMap Ω …`. Introduce `ι κ L`. Use `span_span R₁ RC hR ((bcMap Ω' C ι).toAddMonoidHom.prodMap (bcMap Ω' C κ).toAddMonoidHom) (fun a v => Prod.ext (bcMap_smul ι a v.1) (bcMap_smul κ a v.2)) (Prod.map (bcMap Ω Ω' ι) (bcMap Ω Ω' κ)) (L : Set ((ι → Ω) × (κ → Ω)))` as an intermediate fact.
+
+Use `this.trans ?_` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `v`. Conclude with `Prod.ext (bcMap_bcMap Ω' C ι v.1) (bcMap_bcMap Ω' C κ v.2)`. Simplify using `only [LieLatticeData.bc, key1, key2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem bc_bc (D : LieLatticeData Ω F n Sg r s) (R₁ : Subalgebra O Ω') (RC : Subalgebra O' C)
     (hR : ∀ a ∈ R₁, algebraMap Ω' C a ∈ RC) : (D.bc R₁).bc RC = D.bc (RC.restrictScalars O) := by
   have key1 : ∀ (ι : Type) (L : AddSubgroup (ι → Ω)),
@@ -109,6 +141,9 @@ theorem bc_bc (D : LieLatticeData Ω F n Sg r s) (R₁ : Subalgebra O Ω') (RC :
 
 end BC
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[bcMap]`.
+-/
 theorem bcMap_smul' {Ω Ω' : Type} [Field Ω] [Field Ω'] [Algebra Ω Ω'] {ι : Type} (a : Ω) (v : ι → Ω) :
     bcMap Ω Ω' ι (a • v) = algebraMap Ω Ω' a • bcMap Ω Ω' ι v := by
   funext i
@@ -121,12 +156,22 @@ variable {O O' Ω Ω' : Type} [CommRing O] [CommRing O'] [Field Ω] [Field Ω'] 
   {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 omit [∀ k, Fintype (J k)] in
+/- English proof (translation)
+Simplify using `[mseg, map_prod]`.
+-/
 theorem mseg_map (y : (Σ k, J k) → Ω) (c : ∀ k, J k) :
     mseg (fun v => algebraMap Ω Ω' (y v)) c = algebraMap Ω Ω' (mseg y c) := by
   simp [mseg, map_prod]
 
 omit [∀ k, Fintype (J k)] in
 
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem t ht`. Take `⟨j, rfl⟩` from `ht`. Use `Algebra.subset_adjoin ⟨j, ?_⟩` and prove the remaining obligations. Simplify using `only [mseg_map, map_div₀]`.
+
+Consider the case `algebraMap o`. Rewrite using `[← IsScalarTower.algebraMap_apply O Ω Ω', IsScalarTower.algebraMap_apply O O' Ω']`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
+
+Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`.
+-/
 theorem map_mem_chartRing (y : (Σ k, J k) → Ω) (c : ∀ k, J k) {a : Ω} (ha : a ∈ chartRing O (mseg y) c) :
     algebraMap Ω Ω' a ∈ chartRing O' (mseg (fun v => algebraMap Ω Ω' (y v))) c := by
   induction ha using Algebra.adjoin_induction with
@@ -140,6 +185,17 @@ theorem map_mem_chartRing (y : (Σ k, J k) → Ω) (c : ∀ k, J k) {a : Ω} (ha
   | add a b _ _ ha hb => rw [map_add]; exact add_mem ha hb
   | mul a b _ _ ha hb => rw [map_mul]; exact mul_mem ha hb
 
+/- English proof (translation)
+Establish `hu : x s / x t ∈ chartRing O' x t` using `Algebra.subset_adjoin ⟨s, rfl⟩`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem b hb`. Take `⟨j, rfl⟩` from `hb`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+
+Establish `: (x s / x t) ^ 1 * (x j / x s) = x j / x t` using `by field_simp`. Rewrite using `[this]`. Conclude with `Algebra.subset_adjoin ⟨j, rfl⟩`. Consider the case `algebraMap o => exact ⟨0, by simpa using Subalgebra.algebraMap_mem _ o⟩`. Consider the case `add a b _ _ ha hb`.
+
+Take `⟨m, hm⟩` from `ha`. Take `⟨l, hl⟩` from `hb`. Use `⟨m + l, ?_⟩` and prove the remaining obligations. Establish `: (x s / x t) ^ (m + l) * (a + b) = (x s / x t) ^ l * ((x s / x t) ^ m * a) + (x s / x t) ^ m * ((x s / x t) ^ l * b)` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `add_mem (mul_mem (pow_mem hu _) hm) (mul_mem (pow_mem hu _) hl)`. Consider the case `mul a b _ _ ha hb`. Take `⟨m, hm⟩` from `ha`. Take `⟨l, hl⟩` from `hb`. Use `⟨m + l, ?_⟩` and prove the remaining obligations.
+
+Establish `: (x s / x t) ^ (m + l) * (a * b) = ((x s / x t) ^ m * a) * ((x s / x t) ^ l * b)` using `by ring`. Rewrite using `[this]`. Conclude with `mul_mem hm hl`.
+-/
 theorem chart_shift {ι : Type} (x : ι → Ω') {s t : ι} (hs : x s ≠ 0) (ht : x t ≠ 0) {a : Ω'}
     (ha : a ∈ chartRing O' x s) : ∃ m : ℕ, (x s / x t) ^ m * a ∈ chartRing O' x t := by
   have hu : x s / x t ∈ chartRing O' x t := Algebra.subset_adjoin ⟨s, rfl⟩
@@ -167,6 +223,21 @@ theorem chart_shift {ι : Type} (x : ι → Ω') {s t : ι} (hs : x s ≠ 0) (ht
     rw [this]
     exact mul_mem hm hl
 
+/- English proof (translation)
+Use `⟨fun s _ a ha v hv => smul_mem_spanOver _ _ ha hv, fun s t hs ht v hv => ?_⟩` and prove the remaining obligations. Establish `hs0 : mseg y s ≠ 0` using `fun h0 => hs (by rw [mseg_map, h0, map_zero])`. Establish `ht0 : mseg y t ≠ 0` using `fun h0 => ht (by rw [mseg_map, h0, map_zero])`. Establish `hu : mseg (fun v => algebraMap Ω Ω' (y v)) s / mseg (fun v => algebraMap Ω Ω' (y v)) t ∈ chartRing O' (mseg fun v => algebraMap Ω Ω' (y v)) t` using `Algebra.subset_adjoin ⟨s, rfl⟩`. Establish `hue : mseg (fun v => algebraMap Ω Ω' (y v)) s / mseg (fun v => algebraMap Ω Ω' (y v)) t = algebraMap Ω Ω' (mseg y s / mseg y t)`.
+
+Rewrite using `[mseg_map, mseg_map, map_div₀]`. Establish `hv'` using `hv`. Unfold `spanOver at hv'`. Proceed by induction on `hv' using AddSubgroup.closure_induction with`. Consider the case `mem x hx`.
+
+Take `⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩` from `hx`. Take `⟨m, hm⟩` from `chart_shift (O' := O') (mseg fun v => algebraMap Ω Ω' (y v)) hs ht ha`. Take `⟨l, hl⟩` from `hΓ.2 s t hs0 ht0 e he`. Use `⟨m + l, ?_⟩` and prove the remaining obligations. Establish `: (mseg (fun v => algebraMap Ω Ω' (y v)) s / mseg (fun v => algebraMap Ω Ω' (y v)) t) ^ (m + l) • a • h e = ((mseg (fun v => algebraMap Ω Ω' (y v)) s / mseg (fun v => algebraMap Ω Ω' (y v)) t) ^ m * a) • h ((mseg y s / mseg y t) ^ l • e)`.
+
+Rewrite using `[hh, map_pow, ← hue, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `AddSubgroup.subset_closure ⟨_, hm, _, ⟨_, hl, rfl⟩, rfl⟩`.
+
+Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b ha hb iha ihb`. Take `⟨m, hm⟩` from `iha ha`. Take `⟨l, hl⟩` from `ihb hb`. Use `⟨m + l, ?_⟩` and prove the remaining obligations.
+
+Establish `: ∀ u : Ω', u ^ (m + l) • (a + b) = u ^ l • (u ^ m • a) + u ^ m • (u ^ l • b)` using `fun u => by`. Rewrite using `[smul_add, ← mul_smul, ← mul_smul, ← pow_add, ← pow_add, add_comm l m]`. Rewrite using `[this]`. Conclude with `add_mem (smul_mem_spanOver _ _ (pow_mem hu _) hm) (smul_mem_spanOver _ _ (pow_mem hu _) hl)`. Consider the case `neg a ha iha`.
+
+Take `⟨m, hm⟩` from `iha ha`. Conclude with `⟨m, by rw [smul_neg]; exact neg_mem hm⟩`.
+-/
 theorem isLatFamily_span {V V' : Type} [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω' V']
     (y : (Σ k, J k) → Ω) (h : V → V') (hh : ∀ (a : Ω) (v : V), h (a • v) = algebraMap Ω Ω' a • h v)
     {Γ : (∀ k, J k) → AddSubgroup V} (hΓ : IsLatFamily O y Γ) :
@@ -211,6 +282,25 @@ theorem isLatFamily_span {V V' : Type} [AddCommGroup V] [Module Ω V] [AddCommGr
 
 end Family
 
+/- English proof (translation)
+Distinguish the cases in `hm0 : m = 0`. Simplify using `[hm0]`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O'`. Take `⟨e, he⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hp0 hϖ`. Take `⟨f, hf⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hm0 hϖ`.
+
+Take `⟨a, ha⟩` from `he`. Take `⟨b, hb⟩` from `hf`. Establish `he0 : e ≠ 0`. Introduce and unpack `rfl`. Establish `h1 : IsUnit ((p : O') * (a : O'))` using `by rw [ha]; simp`.
+
+Conclude with `hpn (isUnit_of_mul_isUnit_left h1)`. Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`. Establish `hu' : IsUnit m` using `isUnit_of_mul_isUnit_left (by simpa [hb] using b.isUnit : IsUnit (m * (b : O')))`. Conclude with `(IsLocalRing.mem_maximalIdeal m).1 hm hu'`.
+
+Establish `hrel : m ^ e = ((↑(a ^ f) : O') * (↑(b ^ e)⁻¹ : O')) * (p : O') ^ f`. Establish `h1 : (m * (b : O')) ^ e = ((p : O') * (a : O')) ^ f`. Rewrite using `[hb, ha, ← pow_mul, ← pow_mul, mul_comm]`. Rewrite `h1` using `[mul_pow, mul_pow]`. Establish `h2 : m ^ e = ((p : O') ^ f * (a : O') ^ f) * (↑(b ^ e)⁻¹ : O')`.
+
+Rewrite using `[← h1, mul_assoc]`. Establish `: (b : O') ^ e * (↑(b ^ e)⁻¹ : O') = 1`. Rewrite using `[← Units.val_pow_eq_pow_val]`. Conclude with `Units.mul_inv _`. Rewrite using `[this, mul_one]`.
+
+Rewrite using `[h2, Units.val_pow_eq_pow_val]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmap : ∀ x : O', v (algebraMap O' C x) ≤ 1` using `fun x => (hv _).1 (Subalgebra.algebraMap_mem RC x)`. Establish `hvm : v (algebraMap O' C m) < 1`. Assume the negation of the conclusion as `hcon`.
+
+Establish `h1 : 1 ≤ v (algebraMap O' C m)` using `not_lt.1 hcon`. Establish `h2 : 1 ≤ v (algebraMap O' C m) ^ e` using `one_le_pow₀ h1`. Establish `h3 : v (algebraMap O' C m) ^ e ≤ v (p : C) ^ f`. Rewrite using `[← map_pow, ← map_pow, hrel, map_mul, map_mul, map_pow, map_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h4 : v (p : C) ^ f < 1` using `pow_lt_one₀ zero_le' hp hf0`. Conclude with `absurd (h2.trans h3) (not_le.2 h4)`. Introduce `hone`. Establish `h1 : v u * v (algebraMap O' C m) = 1` using `by rw [← map_mul, hone, map_one]`. Establish `h2 : v u ≤ 1` using `(hv _).1 hu`.
+
+Establish `h3 : v u * v (algebraMap O' C m) < 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd h1 h3.ne`.
+-/
 theorem not_unit_of_mem_maximalIdeal {O' C : Type} [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O']
     [Field C] [Algebra O' C] (RC : Subalgebra O' C) (v : Valuation C NNReal) (hv : ∀ c, c ∈ RC ↔ v c ≤ 1)
     {p : ℕ} (hp : v (p : C) < 1) (hp0 : (p : O') ≠ 0) (hpn : ¬ IsUnit (p : O')) {m : O'}
@@ -267,6 +357,15 @@ variable {O O' Ω Ω' : Type} [CommRing O] [CommRing O'] [Field Ω] [Field Ω'] 
   [Algebra Ω Ω'] [Algebra O' Ω'] [Algebra O Ω'] [IsScalarTower O O' Ω'] [IsScalarTower O Ω Ω']
   {F : Type} [Field F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ}
 
+/- English proof (translation)
+Establish `hchar : CharData R p (algebraMap O Ω w) (fun (_ : Sg) (a : F) => if a = 0 then (0 : Ω) else 1)`. Use `⟨hpΩ, Subalgebra.algebraMap_mem _ w, ?_, zero_ne_one, fun τ => ⟨by simp, by simp, fun a => ?_⟩⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hu`. Use `⟨algebraMap O Ω ((↑v⁻¹ : O) * w ^ (p - 2)), Subalgebra.algebraMap_mem _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap O Ω), ← map_mul]`.
+
+Use `congr 1`. Establish `h1 : w ^ (p - 2) * w = w ^ (p - 1)`. Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[mul_assoc, h1, hwu, ← mul_assoc, Units.inv_mul, one_mul]`. Use `show (if a = 0 then (0 : Ω) else 1) ∈ R split_ifs`. Conclude with `zero_mem _`. Conclude with `one_mem _`. Establish `hb'` using `(GlobalTheory.T.lattice_base_change_larger_ring_holds D R p (algebraMap O Ω w) _ hchar hb Ω' (R'.restrictScalars O) hR).2`.
+
+Establish `hw : algebraMap Ω Ω' (algebraMap O Ω w) = algebraMap O' Ω' (algebraMap O O' w)`. Rewrite using `[← IsScalarTower.algebraMap_apply O Ω Ω', ← IsScalarTower.algebraMap_apply O O' Ω']`. Rewrite `hb'` using `[hw]`. Conclude with `base_of_restrict _ _ _ _ hb'`.
+-/
 theorem base_bc (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra O Ω) (R' : Subalgebra O' Ω')
     (hR : ∀ a ∈ R, algebraMap Ω Ω' a ∈ R') {p : ℕ} (hp2 : 2 ≤ p) (hpΩ : (p : Ω) ≠ 0) (w : O) {u : O}
     (hu : IsUnit u) (hwu : w ^ (p - 1) = u * (p : O)) (hb : D.Base R p (algebraMap O Ω w)) :
@@ -292,6 +391,21 @@ theorem base_bc (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra O Ω) (R' : S
   rw [hw] at hb'
   exact base_of_restrict _ _ _ _ hb'
 
+/- English proof (translation)
+Introduce `C _ _ _ _ RC hT`. Take `⟨hcl, ⟨v, hv, hvp⟩, hadic, hmap⟩` from `hT`. Use `letI aOC : Algebra O C := ((algebraMap O' C).comp (algebraMap O O')).toAlgebra`. Use `letI aΩC : Algebra Ω C := ((algebraMap Ω' C).comp (algebraMap Ω Ω')).toAlgebra`. Use `haveI t1 : IsScalarTower O O' C := IsScalarTower.of_algebraMap_eq' rfl`.
+
+Use `haveI t2 : IsScalarTower Ω Ω' C := IsScalarTower.of_algebraMap_eq' rfl`. Establish `hOC : ∀ o : O, algebraMap O C o = algebraMap Ω' C (algebraMap O' Ω' (algebraMap O O' o))` using `fun o => by`. Rewrite using `[← IsScalarTower.algebraMap_apply O' Ω' C]`. Both sides reduce to the same expression. Use `haveI t3 : IsScalarTower O Ω C := IsScalarTower.of_algebraMap_eq fun o => by`.
+
+Rewrite using `[hOC, ← IsScalarTower.algebraMap_apply O O' Ω', IsScalarTower.algebraMap_apply O Ω Ω']`. Both sides reduce to the same expression. Establish `hT0 : IsTestPt p R (RC.restrictScalars O)` using `⟨hcl, ⟨v, hv, hvp⟩, hadic, fun a ha => hmap _ (hR a ha)⟩`. Establish `hfacts` using `H C (RC.restrictScalars O) hT0 (fun τ => (algebraMap O' C).toMonoidWithZeroHom.comp (χ₀ τ)) (by`. Introduce `τ a o ho`.
+
+Establish `hm : χ₀ τ a - algebraMap O O' o ∈ IsLocalRing.maximalIdeal O'`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, hχ₀, RingHom.comp_apply, ← ho, IsLocalRing.ResidueField.map_residue, sub_self]`. Establish `he : (((algebraMap O' C).toMonoidWithZeroHom.comp (χ₀ τ)) a : C) - algebraMap O C o = algebraMap O' C (χ₀ τ a - algebraMap O O' o)`. Rewrite using `[map_sub]`. Both sides reduce to the same expression.
+
+Rewrite using `[he]`. Conclude with `⟨Subalgebra.algebraMap_mem RC _, fun t ht => not_unit_of_mem_maximalIdeal RC v hv hvp hp0' hpn' hm t ht⟩)`. Rewrite using `[bc_bc (O := O) (O' := O') (Ω' := Ω') D (R'.restrictScalars O) RC hmap]`. Use `facts_of_restrict (O := O) (O' := O') (Ω := C) _ RC _ _ _ _ ?_` and prove the remaining obligations. Establish `hw : algebraMap Ω' C (algebraMap O' Ω' (algebraMap O O' w)) = algebraMap O C w` using `(hOC w).symm`.
+
+Establish `hχ : (fun (τ : Sg) (a : F) => algebraMap Ω' C (algebraMap O' Ω' (χ₀ τ a))) = fun τ a => ((algebraMap O' C).toMonoidWithZeroHom.comp (χ₀ τ)) a`. Use function extensionality and compare the values at `τ a`. Rewrite using `[← IsScalarTower.algebraMap_apply O' Ω' C]`. Both sides reduce to the same expression. Rewrite using `[hw, hχ]`.
+
+Conclude with `hfacts`.
+-/
 theorem test_bc [IsLocalRing O] [IsDomain O'] [IsDiscreteValuationRing O'] [IsLocalHom (algebraMap O O')]
     (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra O Ω) (R' : Subalgebra O' Ω')
     (hR : ∀ a ∈ R, algebraMap Ω Ω' a ∈ R') {p : ℕ} (hp0' : (p : O') ≠ 0) (hpn' : ¬ IsUnit (p : O'))
@@ -341,6 +455,19 @@ theorem test_bc [IsLocalRing O] [IsDomain O'] [IsDiscreteValuationRing O'] [IsLo
 
 end Steps
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ _ K _ _ J _ y d hmod hint O' _ _ _ _ _ _ Ω' _ _ _ _ _ _ hinj F _ _ p _ _ ζ hζ n Sg r s w σ φ Df hpre`. Establish `hne : ∀ c, mseg (fun v => algebraMap Ω Ω' (y v)) c ≠ 0 → mseg y c ≠ 0` using `fun c hc h0 => hc (by rw [mseg_map, h0, map_zero])`. Take `⟨hp0, ⟨u, hu, hwu⟩, hpn⟩` from `hpre.char`. Establish `hp2 : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `hpΩ : (p : Ω) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`.
+
+Establish `hp0' : (p : O') ≠ 0`. Introduce `h0`. Establish `h1 : algebraMap Ω Ω' (p : Ω) = 0`. Rewrite using `[map_natCast, ← map_natCast (algebraMap O' Ω'), h0, map_zero]`. Conclude with `hpΩ ((map_eq_zero _).1 h1)`.
+
+Establish `hpn' : ¬ IsUnit (p : O')`. Introduce `h`. Rewrite `h` using `[← map_natCast (algebraMap O O')]`. Conclude with `hpn (isUnit_of_map_unit (algebraMap O O') _ h)`. Establish `hex : ∀ τ, ∃ χ : F →*₀ O', ∀ a, IsLocalRing.residue O' (χ a) = ((IsLocalRing.ResidueField.map (algebraMap O O')).comp (σ τ)) a` using `fun τ => (teichmuller_lift_of_embedding O' F p ζ hζ _).1.exists`.
+
+Use `choose χ₀ hχ₀ using hex`. Use `⟨fun τ a => χ₀ τ a, fun c => (Df c).bc ((chartRing O' (mseg fun v => algebraMap Ω Ω' (y v)) c).restrictScalars O), ⟨?_, ?_, ?_, ?_, ?_⟩, fun c _ τ => ⟨rfl, rfl, rfl, rfl⟩⟩` and prove the remaining obligations. Conclude with `isLatFamily_span y _ (fun a v => bcMap_smul' a v) hpre.famM`. Introduce `τ`. Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `hpre.fam τ`.
+
+Conclude with `⟨isLatFamily_span y _ (fun a v => bcMap_smul' a v) h1, isLatFamily_span y _ (fun a v => bcMap_smul' a v) h2, isLatFamily_span y _ (fun a v => bcMap_smul' a v) h3, isLatFamily_span y _ (fun a v => bcMap_smul' a v) h4, isLatFamily_span y _ (fun a v => Prod.ext (bcMap_smul' a v.1) ( …`. Use `⟨hp0', ⟨algebraMap O O' u, hu.map _, ?_⟩, hpn', zero_ne_one, fun τ => ⟨map_zero _, map_one _⟩⟩` and prove the remaining obligations. Rewrite using `[← map_pow, hwu, map_mul, map_natCast]`. Introduce `c hc`. Conclude with `base_bc (Df c) _ _ (fun a ha => map_mem_chartRing y c ha) hp2 hpΩ w hu hwu (hpre.base c (hne c hc))`.
+
+Introduce `c hc`. Conclude with `test_bc (Df c) _ _ (fun a ha => map_mem_chartRing y c ha) hp0' hpn' σ χ₀ hχ₀ φ w (hpre.test c (hne c hc))`.
+-/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [CharZero Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (d : ℕ), IsModelOver (pointIdeal O y) d → IsIntegrallyClosedIn O Ω → ∀ (O' : Type) [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra O O'] [IsLocalHom (algebraMap O O')] [Algebra.IsAlgebraic O O'] (Ω' : Type) [Field Ω'] [Algebra Ω Ω'] [Algebra O' Ω'] [Algebra O Ω'] [IsScalarTower O O' Ω'] [IsScalarTower O Ω Ω'], Function.Injective (algebraMap O' Ω') → ∀ (F : Type) [Field F] [Fintype F] (p : ℕ) [Fact p.Prime] [CharP F p] (ζ : O'), IsPrimitiveRoot ζ (Fintype.card F - 1) → ∀ (n : ℕ) (Sg : Type) (r s : Sg → ℕ) (w : O) (σ : Sg → F →+* IsLocalRing.ResidueField O) (φ : Equiv.Perm Sg) (Df : (∀ k, J k) → LieLatticeData Ω F n Sg r s), IsPreFamily O y p w σ φ Df → ∃ (χ : Sg → F → O') (Df' : (∀ k, J k) → LieLatticeData Ω' F n Sg r s), IsLatticeFamily O' (fun v => algebraMap Ω Ω' (y v)) p (algebraMap O O' w) χ φ Df' ∧ ∀ c, mseg y c ≠ 0 → ∀ τ, (Df' c).lie τ = spanOver (chartRing O' (mseg (fun v => algebraMap Ω Ω' (y v))) c) (bcMap Ω Ω' _ '' (Df c).lie τ) ∧ (Df' c).W τ = spanOver (chartRing O' (mseg (fun v => algebraMap Ω Ω' (y v))) c) (bcMap Ω Ω' _ '' (Df c).W τ) ∧ (Df' c).om τ = spanOver (chartRing O' (mseg (fun v => algebraMap Ω Ω' (y v))) c) (bcMap Ω Ω' _ '' (Df c).om τ) ∧ (Df' c).omHT τ = spanOver (chartRing O' (mseg (fun v => algebraMap Ω Ω' (y v))) c) (bcMap Ω Ω' _ '' (Df c).omHT τ) := by
   intro O _ _ _ Ω _ _ _ K _ _ J _ y d hmod hint O' _ _ _ _ _ _ Ω' _ _ _ _ _ _ hinj F _ _ p _ _ ζ hζ n Sg r s w σ φ Df hpre
   have hne : ∀ c, mseg (fun v => algebraMap Ω Ω' (y v)) c ≠ 0 → mseg y c ≠ 0 :=

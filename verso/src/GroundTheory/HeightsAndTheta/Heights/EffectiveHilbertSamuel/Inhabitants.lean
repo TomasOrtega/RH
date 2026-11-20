@@ -20,6 +20,9 @@ def flatAtlas (D : ℕ) : FinHolAtlas D (Fin D → ℂ) where
 
 instance (D : ℕ) : Subsingleton (Fin (flatAtlas D).n) := inferInstanceAs (Subsingleton (Fin 1))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem flatAtlas_chart (D : ℕ) (j : Fin (flatAtlas D).n) :
     (flatAtlas D).chart j = OpenPartialHomeomorph.refl _ := rfl
 
@@ -29,12 +32,20 @@ def trivLB {D : ℕ} {U : Type} [TopologicalSpace U] (A : FinHolAtlas D U) : Hol
   ne_zero _ _ _ _ := one_ne_zero
   cocycle _ _ _ _ _ := by simp
 
+/- English proof (translation)
+Establish `h : ((flatAtlas D).chart k ∘ ((flatAtlas D).chart j).symm) = id`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Simplify using `only [jac, h, fderiv_id]`. Conclude with `LinearMap.det_id`.
+-/
 theorem jac_flat {D : ℕ} (j k : Fin (flatAtlas D).n) (x : Fin D → ℂ) : jac (flatAtlas D) j k x = 1 := by
   have h : ((flatAtlas D).chart k ∘ ((flatAtlas D).chart j).symm) = id := by
     funext y; simp
   simp only [jac, h, fderiv_id]
   exact LinearMap.det_id
 
+/- English proof (translation)
+Take `⟨hwh, hwc, hwz⟩` from `hw`. Take `⟨hFh, hFc, hFz⟩` from `hF`. Use `⟨fun j k => ?_, fun j k x hx => ?_, fun j x hx => ?_⟩` and prove the remaining obligations. Conclude with `(hwh j k).mul (hFh j k)`. Simplify using `only [Pi.mul_apply, hwc j k x hx, hFc j k x hx]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `[hwz j x hx]`.
+-/
 theorem mul_mem_topSections {D : ℕ} {U : Type} [TopologicalSpace U] {A : FinHolAtlas D U}
     {L₂ L : HolLineBundle A} {m : ℕ} {w F : Fin A.n → U → ℂ} (hw : w ∈ L.sections 1)
     (hF : F ∈ topSections A L₂ L m) : w * F ∈ topSections A L₂ L (m + 1) := by
@@ -45,6 +56,11 @@ theorem mul_mem_topSections {D : ℕ} {U : Type} [TopologicalSpace U] {A : FinHo
   · simp only [Pi.mul_apply, hwc j k x hx, hFc j k x hx]; ring
   · simp [hwz j x hx]
 
+/- English proof (translation)
+Use `⟨univ, id, 1, isOpen_univ, one_ne_zero, fun i => ?_, fun x _ => by simp, ?_, ?_, fun j => ⟨fun _ => 1, analyticOnNhd_const, by simp, fun y _ h => absurd (mem_univ _) h⟩⟩` and prove the remaining obligations. Introduce `j x _`. Simplify using `only [Function.comp_def, flatAtlas_chart, OpenPartialHomeomorph.refl_symm, OpenPartialHomeomorph.refl_apply, id_eq]`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin D => ℂ) i).analyticAt x`. Establish `hh : (fun p : (univ : Set (Fin D → ℂ)) => id (p : Fin D → ℂ)) = ⇑(Homeomorph.Set.univ (Fin D → ℂ))` using `rfl`.
+
+Rewrite using `[hh]`. Use `IsClosedMap.isCoveringMapOn_of_isLocalHomeomorphOn (Homeomorph.Set.univ (Fin D → ℂ)).isClosedMap (fun y _ => ?_) (Homeomorph.Set.univ (Fin D → ℂ)).isLocalHomeomorph.isLocalHomeomorphOn` and prove the remaining obligations. Conclude with `(Set.finite_singleton y).preimage (Homeomorph.Set.univ (Fin D → ℂ)).injective.injOn`. Introduce `y _`. Conclude with `(Set.finite_singleton y).preimage fun a _ b _ h => Subtype.ext h`.
+-/
 theorem isAlgCover_flat (D : ℕ) : IsAlgCover (flatAtlas D) := by
   refine ⟨univ, id, 1, isOpen_univ, one_ne_zero, fun i => ?_, fun x _ => by simp, ?_, ?_,
     fun j => ⟨fun _ => 1, analyticOnNhd_const, by simp, fun y _ h => absurd (mem_univ _) h⟩⟩
@@ -62,6 +78,9 @@ theorem isAlgCover_flat (D : ℕ) : IsAlgCover (flatAtlas D) := by
   · intro y _
     exact (Set.finite_singleton y).preimage fun a _ b _ h => Subtype.ext h
 
+/- English proof (translation)
+Use `⟨fun j k => ?_, fun j k x _ => by simp [trivLB], fun j x hx => absurd ?_ hx⟩` and prove the remaining obligations. Introduce `y _`. Simplify `hf y (mem_univ _)` using `[Function.comp_def]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_sections_flat {D : ℕ} (f : (Fin D → ℂ) → ℂ) (hf : AnalyticOnNhd ℂ f univ) :
     (fun _ => f : Fin (flatAtlas D).n → (Fin D → ℂ) → ℂ) ∈ (trivLB (flatAtlas D)).sections 1 := by
   refine ⟨fun j k => ?_, fun j k x _ => by simp [trivLB], fun j x hx => absurd ?_ hx⟩
@@ -69,6 +88,9 @@ theorem mem_sections_flat {D : ℕ} (f : (Fin D → ℂ) → ℂ) (hf : Analytic
     simpa [Function.comp_def] using hf y (mem_univ _)
   · simp
 
+/- English proof (translation)
+Use `⟨fun j k => ?_, fun j k x _ => by simp [trivLB, jac_flat], fun j x hx => absurd ?_ hx⟩` and prove the remaining obligations. Introduce `y _`. Simplify `hf y (mem_univ _)` using `[Function.comp_def]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_topSections_flat {D : ℕ} (m : ℕ) (f : (Fin D → ℂ) → ℂ) (hf : AnalyticOnNhd ℂ f univ) :
     (fun _ => f : Fin (flatAtlas D).n → (Fin D → ℂ) → ℂ) ∈
       topSections (flatAtlas D) (trivLB (flatAtlas D)) (trivLB (flatAtlas D)) m := by
@@ -102,10 +124,18 @@ abbrev exEmb : EmbDatum 1 where
 
 def exC : Fin 1 → Fin 2 → ℂ := fun _ => ![0, 1]
 
+/- English proof (translation)
+Simplify using `[lin, exE, exC, Fin.sum_univ_two]`.
+-/
 theorem exS_apply (i : Fin 1) (j : Fin (flatAtlas 1).n) (x : Fin 1 → ℂ) :
     lin exE (exC i) j x = x 0 := by
   simp [lin, exE, exC, Fin.sum_univ_two]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [zeroSet, exS_apply, Set.mem_ofPred_eq, mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Subsingleton.elim i 0]`. Conclude with `h 0`. Introduce `h _`. Simplify using `[h]`.
+-/
 theorem exZero : zeroSet (flatAtlas 1) (fun i => lin exE (exC i)) = {0} := by
   ext x
   simp only [zeroSet, exS_apply, Set.mem_ofPred_eq, mem_singleton_iff]
@@ -113,6 +143,9 @@ theorem exZero : zeroSet (flatAtlas 1) (fun i => lin exE (exC i)) = {0} := by
   · intro h; funext i; rw [Subsingleton.elim i 0]; exact h 0
   · intro h _; simp [h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z i`. Rewrite using `[exS_apply, Subsingleton.elim i 0]`. Simplify using the standard rewrite rules.
+-/
 theorem exSMap (j : Fin (flatAtlas 1).n) :
     (fun (z : Fin 1 → ℂ) (i : Fin 1) => lin exE (exC i) j (((flatAtlas 1).chart j).symm z)) = id := by
   funext z i
@@ -157,6 +190,11 @@ abbrev exZ : ZeroDatum exEmb where
     have : 1 ≤ ‖x 0‖ ^ 2 / ε ^ 2 := by rw [le_div_iff₀ hε2]; linarith
     linarith
 
+/- English proof (translation)
+Establish `h1 : 1 + t ^ 2 + (t ^ 2) ^ 2 / 2 ≤ Real.exp (t ^ 2)` using `Real.quadratic_le_exp_of_nonneg (sq_nonneg t)`. Establish `h4 : (t ^ 2) ^ 2 = t ^ 4` using `by ring`. Establish `h2 : (1 + t) ^ 3 ≤ 8 * (1 + t ^ 4)`. Use polynomial arithmetic with `[sq_nonneg (t - 1), sq_nonneg (t ^ 2 - 1), sq_nonneg t, mul_nonneg ht (sq_nonneg (t - 1)), mul_nonneg ht (sq_nonneg t), mul_nonneg (mul_nonneg ht ht) (sq_nonneg (t - 1))]`. Establish `h3 : (1 + t) ^ 3 ≤ Real.exp (t ^ 2) * 16` using `by nlinarith [sq_nonneg t]`.
+
+Establish `hpos : 0 < (1 + t) ^ 3` using `by positivity`. Rewrite using `[Real.exp_neg, ← div_eq_mul_inv, le_div_iff₀ hpos, inv_mul_le_iff₀ (Real.exp_pos _)]`. Conclude with `h3`.
+-/
 theorem exp_neg_sq_le (t : ℝ) (ht : 0 ≤ t) : Real.exp (-t ^ 2) ≤ 16 * ((1 + t) ^ 3)⁻¹ := by
   have h1 : 1 + t ^ 2 + (t ^ 2) ^ 2 / 2 ≤ Real.exp (t ^ 2) :=
     Real.quadratic_le_exp_of_nonneg (sq_nonneg t)
@@ -169,6 +207,17 @@ theorem exp_neg_sq_le (t : ℝ) (ht : 0 ≤ t) : Real.exp (-t ^ 2) ≤ 16 * ((1 
   rw [Real.exp_neg, ← div_eq_mul_inv, le_div_iff₀ hpos, inv_mul_le_iff₀ (Real.exp_pos _)]
   exact h3
 
+/- English proof (translation)
+Establish `hfin : (Module.finrank ℝ (Fin 1 → ℂ) : ℝ) < 3`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish `hI` using `finite_integral_one_add_norm (E := Fin 1 → ℂ) (μ := volume) hfin`.
+
+Establish `hpt : ∀ y : Fin 1 → ℂ, ENNReal.ofReal (c * Real.exp (-‖y 0‖ ^ 2)) ≤ ENNReal.ofReal (16 * |c|) * ENNReal.ofReal ((1 + ‖y‖) ^ (-(3 : ℝ)))`. Introduce `y`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hy : ‖y‖ ≤ ‖y 0‖`.
+
+Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).mpr fun i => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0]`. Establish `hr : (1 + ‖y‖) ^ (-(3 : ℝ)) = ((1 + ‖y‖) ^ 3)⁻¹`. Rewrite using `[Real.rpow_neg (by positivity)]`. Use `norm_cast`.
+
+Rewrite using `[hr]`. Establish `he` using `exp_neg_sq_le ‖y 0‖ (norm_nonneg _)`. Establish `hmono : ((1 + ‖y 0‖) ^ 3)⁻¹ ≤ ((1 + ‖y‖) ^ 3)⁻¹`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Use `gcongr`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lintegral_gaussian_complex_line_lt_top (c : ℝ) : ∫⁻ y : Fin 1 → ℂ, ENNReal.ofReal (c * Real.exp (-‖y 0‖ ^ 2)) < ⊤ := by
   have hfin : (Module.finrank ℝ (Fin 1 → ℂ) : ℝ) < 3 := by
     rw [Module.finrank_pi_fintype]; simp; norm_num
@@ -201,6 +250,9 @@ theorem lintegral_gaussian_complex_line_lt_top (c : ℝ) : ∫⁻ y : Fin 1 → 
         lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hI
 
+/- English proof (translation)
+The claim follows from `(contDiff_norm_sq ℝ).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 1 => ℂ) 0).contDiff`.
+-/
 theorem contDiff_normSq0 :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : Fin 1 → ℂ => ‖x 0‖ ^ 2) :=
   (contDiff_norm_sq ℝ).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 1 => ℂ) 0).contDiff
@@ -224,6 +276,11 @@ def exV (j : ℕ) : Submodule ℂ (Fin (flatAtlas 1).n → (Fin 1 → ℂ) → �
   if j = 0 then Submodule.span ℂ {exOne}
   else topSections (flatAtlas 1) (trivLB _) (trivLB _) (1 + j)
 
+/- English proof (translation)
+Unfold `exV`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Submodule.span_le, singleton_subset_iff]`. Conclude with `mem_topSections_flat _ (fun _ => 1) analyticOnNhd_const`.
+
+Conclude with `le_rfl`.
+-/
 theorem exV_le (j : ℕ) : exV j ≤ topSections (flatAtlas 1) (trivLB _) (trivLB _) (1 + j) := by
   unfold exV
   split_ifs with h
@@ -232,6 +289,11 @@ theorem exV_le (j : ℕ) : exV j ≤ topSections (flatAtlas 1) (trivLB _) (trivL
     exact mem_topSections_flat _ (fun _ => 1) analyticOnNhd_const
   · exact le_rfl
 
+/- English proof (translation)
+Establish `hmem` using `exV_le 0 hF`. Establish `hF' : F ∈ Submodule.span ℂ {exOne}` using `by simpa [exV] using hF`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hF'`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Simplify using `only [topNormSq, chartIntegral]`.
+
+Use `ENNReal.sum_lt_top.mpr fun j _ => ?_` and prove the remaining obligations. Use `lt_of_le_of_lt (setLIntegral_le_lintegral _ _) ?_` and prove the remaining obligations. Use `lt_of_le_of_lt (le_of_eq (lintegral_congr fun y => ?_)) (lintegral_gaussian_complex_line_lt_top (2 * ‖c‖ ^ 2))` and prove the remaining obligations. Simplify using `[exOne]`.
+-/
 theorem mem_natural_sections_of_degree_zero (F : Fin (flatAtlas 1).n → (Fin 1 → ℂ) → ℂ) (hF : F ∈ exV 0) :
     F ∈ Vnat (flatAtlas 1) (trivLB _) (trivLB _) (fun _ x => ‖x 0‖ ^ 2) (fsWeight exE) 0 := by
   have hmem := exV_le 0 hF
@@ -244,6 +306,9 @@ theorem mem_natural_sections_of_degree_zero (F : Fin (flatAtlas 1).n → (Fin 1 
   refine lt_of_le_of_lt (le_of_eq (lintegral_congr fun y => ?_)) (lintegral_gaussian_complex_line_lt_top (2 * ‖c‖ ^ 2))
   simp [exOne]
 
+/- English proof (translation)
+Simplify using `only [sJac, sJacMap, exSMap, fderiv_id]`. Rewrite using `[ContinuousLinearMap.coe_id, LinearMap.det_id]`.
+-/
 theorem exSJac (c : Fin (flatAtlas 1).n) (x : Fin 1 → ℂ) :
     sJac (flatAtlas 1) (fun i => lin exE (exC i)) c x = 1 := by
   simp only [sJac, sJacMap, exSMap, fderiv_id]
@@ -276,6 +341,13 @@ abbrev exSpace : SpaceDatum exEmb 2 where
     rw [Real.sq_sqrt ENNReal.toReal_nonneg, one_pow, ENNReal.ofReal_one, one_mul]
     exact ENNReal.ofReal_toReal_le
 
+/- English proof (translation)
+Introduce `g`. Use `⟨g 0 • exOne, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show g 0 • exOne ∈ exV 0`. Simplify using `only [exV, ↓reduceIte]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span rfl)`.
+
+Establish `hx' : x ∈ zeroSet (flatAtlas 1) (fun i => lin exE (exC i))` using `hx`. Rewrite `hx'` using `[exZero, mem_singleton_iff]`. Substitute `hx'` using the available equality. Use `show (g 0 • exOne) _ 0 / sJac (flatAtlas 1) (fun i => lin exE (exC i)) _ 0 = g 0`. Rewrite using `[exSJac]`.
+
+Simplify using `[exOne]`.
+-/
 theorem exResOnto : ResOnto exZ exSpace := by
   intro g
   refine ⟨g 0 • exOne, ?_, fun x hx => ?_⟩
@@ -289,12 +361,20 @@ theorem exResOnto : ResOnto exZ exSpace := by
     rw [exSJac]
     simp [exOne]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨exEmb, exZ, exSpace, exResOnto, ⟨0, by change (0 : Fin 1 → ℂ) ∈ zeroSet (flatAtlas 1) (fun i => lin exE (exC i)) rw [exZero]; rfl⟩⟩`.
+-/
 theorem inhabited_at_embedding :
     ∃ (X : EmbDatum 1) (Z : ZeroDatum X) (Y : SpaceDatum X 2), ResOnto Z Y ∧ Z.S.Nonempty :=
   ⟨exEmb, exZ, exSpace, exResOnto, ⟨0, by
     change (0 : Fin 1 → ℂ) ∈ zeroSet (flatAtlas 1) (fun i => lin exE (exC i))
     rw [exZero]; rfl⟩⟩
 
+/- English proof (translation)
+Use `⟨isAlgCover_flat 1, exPhiA.smooth, fun j k x _ => ?_, exPhiA.psh, fun j => ?_, fun j k x _ => by simp [exOne, jac_flat, trivLB], fun j x hx => absurd (by simp) hx, fun j y _ ξ => ?_⟩` and prove the remaining obligations. Simplify using `[exPhiA, trivLB]`. Conclude with `contDiffOn_const`. Establish `h1 : (exOne j ∘ ((flatAtlas 1).chart j).symm) = fun _ => (1 : ℂ)` using `rfl`. Simplify using `only [dbarC]`.
+
+Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+-/
 theorem hormander_hyp :
     IsAlgCover (flatAtlas 1) ∧
     (∀ j, (flatAtlas 1).SmoothOn ((flatAtlas 1).chart j).source (exPhiA.φ j)) ∧

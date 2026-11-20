@@ -22,6 +22,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 open GlobalTheory GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.CM GlobalTheory.FlatDegreeCompare GlobalTheory.LevelRaise
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : ∃ σ : k →+* ℂ, ∀ a, σ (b₀ a) = a := by`. Use `letI : Algebra (KA l) k := b₀.toAlgebra`. Use `haveI : Algebra.IsAlgebraic (KA l) k := Algebra.IsAlgebraic.tower_top (K := ℚ) (KA l)`. Set `τ : k →ₐ[KA l] ℂ` to `IsAlgClosed.lift`. Conclude with `⟨τ, fun a => τ.commutes a⟩`.
+
+Establish `hM : 0 < l₂.M'` using `Nat.lcm_pos (lt_of_lt_of_le (by norm_num) l₂.three_le) l₂.A_pos`. Use `haveI := c₂.fin`. Take `⟨L, _, _, i, j, σ', hi, hj, hrat⟩` from `exists_field o hM σ c₂.F`. Take `⟨t', ⟨m⟩⟩` from `exists_sab (spMap i) o.t`. Set `o'` to `ModelCompare.objOfSABMap o m`.
+
+Set `T : PAT H (Sp L)` to `⟨t', ObjDim.isAbelianScheme o', _, ObjDim.smoothOfRelativeDimension o', ObjDim.sym, o'.ample, o'.ktriv⟩`. Set `j' : KA l₂ →+* L` to `j.comp (IntermediateField.inclusion c₂.le).toRingHom`. Establish `hρ : j' (baseKA l₂).ρ = i (b₀ (baseKA l).ρ)` using `σ'.injective (by`. Rewrite using `[← RingHom.comp_apply σ' i, hi, hσ]`. Conclude with `hj _)`.
+
+Establish `hs : ∀ {k₁ : Type} [Field k₁] (β : L →+* k₁), spMap β ≫ spMap i ≫ spMap b₀ = spMap (β.comp (i.comp b₀))` using `fun β => by`. Rewrite using `[TorsionRat.sp_comp, TorsionRat.sp_comp]`. Take `⟨-, I, -⟩` from `o'.geom ℂ (spMap σ') _ (hs σ')`. Take `⟨o₂, ho₂⟩` from `RationalTorsion.exists_obj abelianSchemeLaws_all.1 E H D l₂ (KA l₂) (baseKA l₂) L j' σ' T I (fun k₁ _ _ β _ => by`. Rewrite using `[hρ]`.
+
+Conclude with `(o'.geom k₁ (spMap β) _ (hs β)).1)`. Use the proof step `(by`. Establish `h1` using `I.ζ_prim 1 one_pos`. Establish `h2` using `(baseKA l₂).ζ_prim`. Rewrite `h2`, the goal using `[hA]`.
+
+Rewrite `h1`, `h2` using `[IsPrimitiveRoot.one_right_iff]`. Rewrite using `[h1, h2, map_one, map_one, Units.val_one])`. Use the proof step `(fun x hx => by`. Take `⟨q, hq, hq'⟩` from `hrat (ObjPull.pushEquiv m.cart (Over.mk (spMap σ')) x) (by rw [← map_pow, hx, map_one])`. Use `⟨Over.homMk (m.cart.1.lift q (𝟙 _) (hq.trans (Category.id_comp _).symm)) (m.cart.1.lift_snd _ _ _), ?_⟩` and prove the remaining obligations.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, ObjPull.toUnit_left', Category.assoc]`. Conclude with `(congrArg (spMap σ' ≫ ·) (m.cart.1.lift_fst _ _ _)).trans hq'`. Rewrite using `[Over.w, Over.w])`.
+
+Use `⟨L, inferInstance, inferInstance, i, j, ?_⟩` and prove the remaining obligations. Rewrite using `[TorsionRat.sp_comp]`. Conclude with `⟨o₂, ho₂ ▸ ⟨m⟩, hρ⟩`.
+-/
 private theorem exists_obj_level {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     (l₂ : Level H) (c₂ : Coeff l₂) {k : Type} [Field k] [NumberField k] (b₀ : KA l →+* k)
     (o : Obj D l (baseKA l) (spMap b₀)) (hA : l₂.A = 1) :
@@ -81,6 +98,11 @@ def Diff {k : Type} [Field k] [NumberField k] (δ : ℝ) (t : SAB H (Sp k)) (τ 
   ∀ r N r' N', IsEigData t τ m r N → IsEigData t τ' m' r' N' →
     (Function.support (r - r')).Finite ∧ EigenvectorLieDegree.adDeg (r - r') (N / N') = δ
 
+/- English proof (translation)
+Take `⟨π, ε, hu⟩` from `exists_isUnder i`. Introduce `r N r' N' h₁ h₂`. Take `⟨f, d⟩` from `h _ _ _ _ (h₁.up hu n) (h₂.up hu n)`. Establish `e : up π ε r - up π ε r' = up π ε (r - r')` using `funext fun 𝔓 => by simp [up, mul_sub]`. Rewrite `f`, `d` using `[e]`.
+
+Establish `g` using `hu.finite_of_up f`. Conclude with `⟨g, (hu.adDeg_up g (N / N')).symm.trans d⟩`.
+-/
 private theorem Diff.down {k k' : Type} [Field k] [NumberField k] [Field k'] [NumberField k'] {i : k →+* k'}
     {t : SAB H (Sp k)} {t' : SAB H (Sp k')} (n : SABMap t' t (spMap i)) {δ : ℝ} {τ τ' : E →+* k} {m m' : ℕ}
     (h : Diff δ t' (i.comp τ) (i.comp τ') m m') : Diff δ t τ τ' m m' := by
@@ -92,9 +114,31 @@ private theorem Diff.down {k k' : Type} [Field k] [NumberField k] [Field k'] [Nu
   have g := hu.finite_of_up f
   exact ⟨g, (hu.adDeg_up g (N / N')).symm.trans d⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by unfold Datum.mult; rw [if_pos τ.2], by unfold Datum.mult; rw [if_neg (conj_not_mem τ)]⟩`.
+-/
 private theorem mult_psi (Dw : Datum H) (τ : Psi H) : Dw.mult τ.1 = Dw.p ∧ Dw.mult (conjEmb τ.1) = Dw.q :=
   ⟨by unfold Datum.mult; rw [if_pos τ.2], by unfold Datum.mult; rw [if_neg (conj_not_mem τ)]⟩
 
+/- English proof (translation)
+Introduce and unpack `r N r' N' ⟨v, hv, hr, hN⟩ ⟨v', hv', hr', hN'⟩`. Use `letI : Algebra c.F K := j.toAlgebra`. Establish `hm` using `GlobalTheory.T.good_reduction_model_everywhere E H Dw l c K j o hL.pos hL.good hL.lev`. Take `⟨f, ⟨hf, ⟨m⟩⟩, -⟩` from `Xo.rep _ _ inferInstance o`. Establish `hx : f ≫ Xo.s = sOf c K` using `hf.trans (spMap_comp_spMap _ _)`.
+
+Establish `hne : τ.1 ≠ conjEmb τ.1` using `fun e => conj_not_mem τ (e ▸ τ.2)`. Take `⟨y, rfl, hy, hy'⟩` from `UpperTheory.tangent_families_distinct_embeddings_independent E H Dw l Xo c K f hx o.t m.toSABMap τ.1 (conjEmb τ.1) hne v v' hv hv'`. Choose the witnesses or unpack the hypotheses as in `⟨Z, hZ⟩ : ∃ Z : Comp Xo c, LiesOn Z y := by`. Set `s₀ : Sp K` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K)`. Establish `hall : ptF y s₀ ∈ ⋃₀ irreducibleComponents (Xo.XF c)`.
+
+Rewrite using `[sUnion_irreducibleComponents]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨W, hW, hq⟩` from `Set.mem_sUnion.1 hall`. Conclude with `⟨⟨W, hW⟩, fun s => Subsingleton.elim (α := PrimeSpectrum K) s₀ s ▸ hq⟩`. Take `⟨⟨s⟩, hdeg⟩` from `hS Z τ`.
+
+Establish `hd : lineDeg s.toFrame.cInf s.toFrame.rho_vw = ((Dw.p : ℝ) - Dw.q) / 2 * om`. Establish `h1` using `hdeg s`. Rewrite `h1` using `[s.deg_eq_toFrame, neg_neg, flatDegVal]`. Conclude with `add_right_cancel h1`. Set `a : ArchSec U x Z (flatWt Dw τ)` to `.ofConst s.toFrame`.
+
+Establish `hρ : ∀ la, ∀ w ∈ valOn Z la, w a.sig = (s.toFrame.rho_vw la : EReal)` using `fun la w hw => (s.toFrame.val_eq hw).trans (by simp)`. Take `⟨π, ε, hu⟩` from `exists_isUnder j`. Establish `hs` using `GlobalTheory.T.flatSection_ne_zero_at_numberField_point E H Dw l Xo c r₀ U x hL Z τ a K y hZ`. Establish `pos : ∀ {m : ℕ} {v : Fin m → (epsR K ⟶ o.t.G)} {σ N}, EigenvectorLieDegree.IsArchSq o.t.G o.t.PP.L v σ N → 0 < N`. Introduce and unpack `m v σ N ⟨_, _, _, _, _, _, _, _, _, -, -, -, h, -⟩`.
+
+Conclude with `h`. Use `o.t.semi.comm` as an intermediate fact. Establish `e₁ : (fun 𝔓 => (vAdd 𝔓 (evR Xo c a.sig y) : ℝ) + (r - r') 𝔓) = up π ε s.toFrame.rho_vw`. Use function extensionality and compare the values at `fun 𝔓 => (UpperTheory.archimedean_section_valuation_bound E H Dw l Xo c r₀ U x hL Z τ a _ hρ K y hZ o.t m.toSABMap v v' hy hy' (Indep.of_eigBasis hv) (Indep.of_eigBasis hv') π ε hu.val 𝔓 (hm 𝔓) _ _ (hr 𝔓) (hr' 𝔓)).symm`. Establish `e₂ : (fun σ : K →+* ℂ => ‖σ (evR Xo c a.sig y)‖ ^ 2 * (N / N') σ) = fun σ => s.toFrame.cInf (σ.comp j) ^ 2`.
+
+Use function extensionality and compare the values at `fun σ => (UpperTheory.archimedean_section_on_component E H Dw l Xo c r₀ U x hL Z τ a K y hZ o.t m.toSABMap v v' hy hy' (fun i => (hv.1 i).1) (fun i => (hv'.1 i).1) σ _ _ (hN σ) (hN' σ)).symm`. Establish `f₃ : (Function.support (r - r')).Finite`. Establish `h1` using `GlobalTheory.FlatRow.finite_up hu s.toFrame.finite_rho`. Rewrite `h1` using `[← e₁]`. Use `(h1.union (finite_vAdd hs)).subset fun 𝔓 h => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at hc`. Conclude with `h (by linarith [hc.1, hc.2])`. Use `⟨f₃, ?_⟩` and prove the remaining obligations. Rewrite using `[← hd, ← GlobalTheory.FlatRow.adDeg_mul (N := N / N') hs f₃ fun σ => div_pos (pos (hN σ)) (pos (hN' σ)), e₁, ← GlobalTheory.FlatRow.adDeg_sq]`.
+
+Conclude with `(congrArg _ e₂).trans (hu.adDeg_up s.toFrame.finite_rho fun σ => s.toFrame.cInf σ ^ 2)`.
+-/
 private theorem diff_laws {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r₀ : ℕ}
     {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r₀} {x om : ℝ} (hL : Laws U x) (hS : FlatDegree U x om) {K : Type} [Field K]
     [NumberField K] (j : c.F →+* K)
@@ -145,10 +189,26 @@ private theorem diff_laws {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : C
   rw [← hd, ← GlobalTheory.FlatRow.adDeg_mul (N := N / N') hs f₃ fun σ => div_pos (pos (hN σ)) (pos (hN' σ)), e₁, ← GlobalTheory.FlatRow.adDeg_sq]
   exact (congrArg _ e₂).trans (hu.adDeg_up s.toFrame.finite_rho fun σ => s.toFrame.cInf σ ^ 2)
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => congrArg j (Subtype.ext (IsCMField.complexEmbedding_complexConj E τ a).symm)`.
+-/
 private theorem embIn_conj {l : Level H} (c : Coeff l) {K : Type} [Field K] (j : c.F →+* K) (τ : E →+* ℂ) :
     EigenvectorLieDegree.embIn c j (conjEmb τ) = (EigenvectorLieDegree.embIn c j τ).comp (IsCMField.complexConj E).toRingEquiv.toRingHom :=
   RingHom.ext fun a => congrArg j (Subtype.ext (IsCMField.complexEmbedding_complexConj E τ a).symm)
 
+/- English proof (translation)
+Take `⟨l₂, hA, hg, -⟩` from `GlobalTheory.exists_level_goodAt_all_primes_and_idx _ H 1 one_pos`. Take `⟨Xo⟩` from `GlobalTheory.Moduli.moduli_scheme_exists _ _ Dw l₂ hpq`. Take `⟨c₀⟩ : Nonempty (Coeff l₂)` from `inferInstance`. Take `⟨-, c₂, -, hc⟩` from `GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ Dw l₂ Xo c₀ hpq`. Take `⟨U, hU⟩` from `GlobalTheory.FlatCore.Model.exists_laws Dw l₂ Xo c₂ hpq hA hg (hc c₂ le_rfl) h1`.
+
+Establish `key : ∀ s, spMap j ≫ spMap (IntermediateField.inclusion c.le).toRingHom = s → ∃ o' : Obj Dw l (baseKA l) s, o'.t = o.t`. Introduce and unpack `_ rfl`. Conclude with `⟨o, rfl⟩`. Take `⟨o', ho⟩` from `key _ (spMap_comp_spMap _ _)`. Take `⟨k', _, _, i, j₂, o₂, ⟨n⟩, hρ⟩` from `exists_obj_level l₂ c₂ _ o' hA`.
+
+Rewrite `n` using `[ho]`. Choose the witnesses or unpack the hypotheses as in `⟨τ₂, hτ₂⟩ : ∃ τ₂, EigenvectorLieDegree.embIn c₂ j₂ τ₂ = i.comp (EigenvectorLieDegree.embIn c j τ.1) := by`. Set `g` to `algebraMap k' (AlgebraicClosure k')`. Use `letI : Algebra c₂.F (AlgebraicClosure k') := (g.comp j₂).toAlgebra`. Take `⟨τ₂, h⟩` from `GlobalTheory.EmbOnto.embAt_surj c₂ (AlgebraicClosure k') (g.comp (i.comp (EigenvectorLieDegree.embIn c j τ.1)))`.
+
+Conclude with `⟨τ₂, RingHom.ext fun a => g.injective (RingHom.congr_fun h a)⟩`. Establish `hψ : τ₂ (H.rt : E) = H.rt0`. Establish `h2` using `RingHom.congr_fun hτ₂ (H.rt : E)`. Establish `h3 : (i.comp (EigenvectorLieDegree.embIn c j τ.1)) (H.rt : E) = j₂ (IntermediateField.inclusion c₂.le (baseKA l₂).ρ)`. Rewrite using `[hρ]`.
+
+Conclude with `congrArg i (congrArg j (Subtype.ext τ.2))`. Conclude with `congrArg Subtype.val (j₂.injective (h2.trans h3))`. Establish `hd` using `diff_laws hU (hS E H hH χ hχ Dw l₂ Xo c₂ _ U _ hU) j₂ o₂ ⟨τ₂, hψ⟩`. Rewrite `hd` using `[(mult_psi Dw ⟨τ₂, hψ⟩).1, (mult_psi Dw ⟨τ₂, hψ⟩).2, embIn_conj]`. Rewrite using `[(mult_psi Dw τ).1, (mult_psi Dw τ).2, embIn_conj]`.
+
+Use `Diff.down n ?_` and prove the remaining obligations. Rewrite using `[← RingHom.comp_assoc, ← hτ₂]`. Conclude with `hd`.
+-/
 theorem diff_all (hS : FlatDegreeSt) (hH : EigenvectorLieDegree.IsHostField H) [NeZero H.d] (χ : DirichletCharacter ℂ H.d)
     (hχ : IsKroneckerChar χ) (h1 : ∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0) {Dw : Datum H} (hpq : 1 ≤ Dw.p + Dw.q)
     {l : Level H} (c : Coeff l) {K : Type} [Field K] [NumberField K] (j : c.F →+* K)

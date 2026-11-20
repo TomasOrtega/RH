@@ -18,6 +18,9 @@ open GlobalTheory.UU
 
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Introduce `h0 h1 h2` and use `GlobalTheory.UU.unif_assembly h1 h2 (GlobalTheory.T.exists_uniformisation_data_before_choice h0 h1) (GlobalTheory.T.exists_degenerationData_functionalEquation_degree_one h1 h2)`.
+-/
 theorem exists_degData_unif : (∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (g n : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → (n : k) ≠ 0 → Nat.card {x : (𝟙_ (Over (Sp k)) ⟶ B) // x ^ n = 1} = n ^ (2 * g)) → Laws → Laws2 → AllSet fun {V} _ _ _ {A} {G} _ _ s => ∃ (D : DegData V (IsLocalRing.maximalIdeal V)) (U : Unif (IsLocalRing.maximalIdeal V) D A G), U.LG = s.P.L ∧ U.gen = s.gen ∧ HEq U.cubG s.P.c :=
   fun h0 h1 h2 => GlobalTheory.UU.unif_assembly h1 h2 (GlobalTheory.T.exists_uniformisation_data_before_choice h0 h1) (GlobalTheory.T.exists_degenerationData_functionalEquation_degree_one h1 h2)
 

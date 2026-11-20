@@ -11,6 +11,9 @@ section SlopeTestRemainingChoices
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
+/- English proof (translation)
+Simplify using `[AlgEquiv.mul_apply]`.
+-/
 private theorem apply_inv_conj (t s : G ℚ Ω) (x : Ω) :
     s ((t⁻¹ : G ℚ Ω) x) = (t⁻¹ : G ℚ Ω) ((t * s * t⁻¹) x) := by
   simp [AlgEquiv.mul_apply]
@@ -23,6 +26,9 @@ private def decompositionInvRingHom (A : ValuationSubring Ω) (t : G ℚ Ω) (ht
   map_zero' := Subtype.ext (map_zero _)
   map_add' _ _ := Subtype.ext (map_add _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem residueInverse_coe (A : ValuationSubring Ω) (t : G ℚ Ω) (ht : t ∈ Dec (F := ℚ) A) (y : R0 A) :
     ((decompositionInvRingHom A t ht y : R0 A) : Ω) = (t⁻¹ : G ℚ Ω) (y : Ω) := rfl
 
@@ -35,6 +41,15 @@ variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime] {A : V
 
 end Frame
 
+/- English proof (translation)
+Establish `hZ : cycZ ℚ Ω l s = 1`. Establish `h` using `congrArg Units.val hs`. Simplify using `[cycBar] at h`. Use `ext1`. Rewrite using `[Units.val_one]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h`. Use `haveI : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => ⟨⟨ζ i, (hζ i).1⟩, rootsOfUnity.isCyclic _ _⟩`. Establish `h1` using `cyclotomicCharacter.spec l (n := m) (MulSemiringAction.toRingAut (G ℚ Ω) Ω s) (ζ m) ((hζ m).1.pow_eq_one)`. Establish `hc : cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G ℚ Ω) Ω s) = 1` using `hZ`.
+
+Rewrite `h1` using `[hc]`. Simplify using `only [Units.val_one, map_one] at h1`. Break down `m with _ | m` into its components or cases. Establish `h0 : ζ 0 = 1` using `by simpa using (hζ 0).1`. Rewrite using `[h0, map_one]`.
+
+Establish `hlt : 1 < l ^ (m + 1)` using `Nat.one_lt_pow (Nat.succ_ne_zero m) (Fact.out : l.Prime).one_lt haveI : Fact (1 < l ^ (m + 1)) := ⟨hlt⟩`. Conclude with `h1.trans (by rw [ZMod.val_one, pow_one])`.
+-/
 private theorem apply_root_eq_of_cycBar_eq_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime] (s : G ℚ Ω)
     (hs : cycBar ℚ Ω l s = 1) (ζ : ℕ → Ω) (hζ : Roots l ζ) (m : ℕ) : s (ζ m) = ζ m := by
   have hZ : cycZ ℚ Ω l s = 1 := by
@@ -57,6 +72,17 @@ private theorem apply_root_eq_of_cycBar_eq_one {Ω : Type} [Field Ω] [Algebra �
     haveI : Fact (1 < l ^ (m + 1)) := ⟨hlt⟩
     exact h1.trans (by rw [ZMod.val_one, pow_one])
 
+/- English proof (translation)
+Establish `hcyc : PowerSeries.map e (GlobalTheory.Col.cyc R l m) = GlobalTheory.Col.cyc R l m`. Unfold `GlobalTheory.Col.cyc`. Rewrite using `[Polynomial.hom_eval₂]`. Establish `: (PowerSeries.map e).comp PowerSeries.C = PowerSeries.C.comp e`. Use extensionality with `x : 1`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, ← Polynomial.eval₂_map, Polynomial.map_cyclotomic]`. Simplify using the standard rewrite rules. Unfold `LC at *`. Rewrite `h`, the goal using `[← map_sub]`.
+
+Rewrite using `[← map_sub]`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 h`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `hb : b * (l : PowerSeries R) ^ n - (f - g) ∈ Ideal.span {GlobalTheory.Col.cyc R l m}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Simplify using `only [map_sub, map_mul, map_pow, map_natCast]`. Conclude with `sub_eq_zero.2 ha`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hb`. Establish `hfg : f - g = b * (l : PowerSeries R) ^ n - c * GlobalTheory.Col.cyc R l m`. Rewrite using `[hc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hz : ev R l m (GlobalTheory.Col.cyc R l m) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Rewrite using `[hfg]`. Use `Ideal.mem_span_singleton'.2 ⟨ev R l m (PowerSeries.map e b), ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, map_mul, map_pow, map_natCast, hcyc, hz, mul_zero, sub_zero]`.
+-/
 private theorem lc_map' {R : Type} [CommRing R] (e : R →+* R) (l m n : ℕ) (f g : PowerSeries R)
     (h : LC l m n f g) : LC l m n (PowerSeries.map e f) (PowerSeries.map e g) := by
   have hcyc : PowerSeries.map e (GlobalTheory.Col.cyc R l m) = GlobalTheory.Col.cyc R l m := by
@@ -86,6 +112,17 @@ private theorem lc_map' {R : Type} [CommRing R] (e : R →+* R) (l m n : ℕ) (f
   refine Ideal.mem_span_singleton'.2 ⟨ev R l m (PowerSeries.map e b), ?_⟩
   simp only [map_sub, map_mul, map_pow, map_natCast, hcyc, hz, mul_zero, sub_zero]
 
+/- English proof (translation)
+Establish `hinv : ∀ g : PowerSeries R, PowerSeries.map (e.symm : R →+* R) (PowerSeries.map (e : R →+* R) g) = g`. Introduce `g`. Use extensionality with `n`. Simplify using the standard rewrite rules. Establish `hd : dd (PowerSeries.map (e : R →+* R) f) = PowerSeries.map (e : R →+* R) (dd f)`.
+
+Unfold `dd`. Rewrite using `[map_mul]`. Use `congr 1`. Simplify using the standard rewrite rules. Use extensionality with `n`.
+
+Simplify using `[PowerSeries.coeff_derivative]`. Establish `hr : Ring.inverse (PowerSeries.map (e : R →+* R) f) = PowerSeries.map (e : R →+* R) (Ring.inverse f)`. Distinguish the cases in `hu : IsUnit f`. Establish `hu' : IsUnit (PowerSeries.map (e : R →+* R) f)` using `hu.map _`. Apply `hu'.mul_left_cancel` to reduce the goal to its premises.
+
+Rewrite using `[Ring.mul_inverse_cancel _ hu', ← map_mul, Ring.mul_inverse_cancel _ hu, map_one]`. Establish `hu' : ¬ IsUnit (PowerSeries.map (e : R →+* R) f)`. Introduce `h`. Apply `hu` to reduce the goal to its premises. Simplify `h.map (PowerSeries.map (e.symm : R →+* R))` using `[hinv]`.
+
+Rewrite using `[Ring.inverse_non_unit _ hu, Ring.inverse_non_unit _ hu', map_zero]`. Unfold `dl`. Rewrite using `[hd, hr, map_mul]`.
+-/
 private theorem dl_map_ringEquiv {R : Type} [CommRing R] (e : R ≃+* R) (f : PowerSeries R) :
     dl (PowerSeries.map (e : R →+* R) f) = PowerSeries.map (e : R →+* R) (dl f) := by
   have hinv : ∀ g : PowerSeries R,
@@ -114,6 +151,13 @@ private theorem dl_map_ringEquiv {R : Type} [CommRing R] (e : R ≃+* R) (f : Po
   unfold dl
   rw [hd, hr, map_mul]
 
+/- English proof (translation)
+Establish `hi : Φ.i0.comp (decompositionInvRingHom A Φ.fr Φ.fr_dec) = (Φ.σ.symm : Φ.R →+* Φ.R).comp Φ.i0`. Use extensionality with `y`. Establish `h` using `Φ.frobenius_compat_inclusion (decompositionInvRingHom A Φ.fr Φ.fr_dec y) y (by`. Rewrite using `[residueInverse_coe]`. Use the proof step `simp)`.
+
+Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingEquiv.coe_toRingHom]`. Rewrite using `[← h, RingEquiv.symm_apply_apply]`. Unfold `Fr.ser`. Rewrite using `[Polynomial.map_map, hi, ← Polynomial.map_map, Polynomial.hom_eval₂]`. Establish `: (PowerSeries.map (Φ.σ.symm : Φ.R →+* Φ.R)).comp PowerSeries.C = PowerSeries.C.comp (Φ.σ.symm : Φ.R →+* Φ.R)`.
+
+Use extensionality with `x : 1`. Simplify using the standard rewrite rules. Rewrite using `[this, ← Polynomial.eval₂_map]`. Simplify using the standard rewrite rules.
+-/
 private theorem fr_ser_map_decompositionInv_eq {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
     {A : ValuationSubring Ω} {j : Ω →+* Qbar l} (Φ : Fr l A j) (P : Polynomial (R0 A)) :
     Φ.ser (P.map (decompositionInvRingHom A Φ.fr Φ.fr_dec)) = PowerSeries.map (Φ.σ.symm : Φ.R →+* Φ.R) (Φ.ser P) := by
@@ -133,6 +177,11 @@ private theorem fr_ser_map_decompositionInv_eq {Ω : Type} [Field Ω] [Algebra �
   rw [this, ← Polynomial.eval₂_map]
   simp
 
+/- English proof (translation)
+Establish `hz' : (t⁻¹ : G ℚ Ω) z = z` using `by conv_lhs => rw [← hz]`. Simplify using `[AlgEquiv.aut_inv]`. Establish `hc : (R0 A).subtype.comp (decompositionInvRingHom A t ht) = ((t⁻¹ : G ℚ Ω) : Ω →+* Ω).comp (R0 A).subtype`. Use extensionality with `y`. Conclude with `residueInverse_coe A t ht y`.
+
+Unfold `pv`. Rewrite using `[Polynomial.eval₂_map, hc]`. Use `conv_lhs => rw [← hz']`. Conclude with `(Polynomial.hom_eval₂ P (R0 A).subtype ((t⁻¹ : G ℚ Ω) : Ω →+* Ω) z).symm`.
+-/
 private theorem dec_frob_of_mem_dec_rat {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSubring Ω) (t : G ℚ Ω)
     (ht : t ∈ Dec (F := ℚ) A) (P : Polynomial (R0 A)) (z : Ω) (hz : t z = z) :
     pv (P.map (decompositionInvRingHom A t ht)) z = (t⁻¹ : G ℚ Ω) (pv P z) := by
@@ -147,6 +196,15 @@ private theorem dec_frob_of_mem_dec_rat {Ω : Type} [Field Ω] [Algebra ℚ Ω] 
   conv_lhs => rw [← hz']
   exact (Polynomial.hom_eval₂ P (R0 A).subtype ((t⁻¹ : G ℚ Ω) : Ω →+* Ω) z).symm
 
+/- English proof (translation)
+Establish `hz' : (t⁻¹ : G ℚ Ω) z = z` using `by conv_lhs => rw [← hz]`. Simplify using `[AlgEquiv.aut_inv]`. Take `⟨hprim, hnr, hu, ho, hK⟩` from `h`. Use `⟨hprim, hnr, fun i => ?_, ho, fun s hs hcyc hsz => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hu i`.
+
+Use `⟨(apply_mem_iff_of_mem_Dec (inv_mem ht) _).2 h1, (map_ne_zero _).2 h2, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv₀]`. Conclude with `(apply_mem_iff_of_mem_Dec (inv_mem ht) _).2 h3`. Establish `hs'` using `conj_mem_Ine ht hs`. Establish `hc' : cycMod ℚ Ω l r (t * s * t⁻¹) = 1`.
+
+Rewrite using `[map_mul, map_mul, hcyc, mul_one, ← map_mul, mul_inv_cancel, map_one]`. Establish `hz2 : (t * s * t⁻¹) z = z`. Simplify using `only [AlgEquiv.mul_apply, hz', hsz, hz]`. Take `⟨k, hk, hcg⟩` from `hK _ hs' hc' hz2`. Use `⟨k, fun i => ?_, hcg⟩` and prove the remaining obligations.
+
+Take `⟨v, hv1, hv2⟩` from `hk i`. Use `⟨(t⁻¹ : G ℚ Ω) v, by rw [← map_pow, hv1], ?_⟩` and prove the remaining obligations. Rewrite using `[apply_inv_conj t s v, hv2, map_mul, map_pow, hz']`.
+-/
 private theorem dec_frob_of_mem_dec_rat_prime {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
     (A : ValuationSubring Ω) (t : G ℚ Ω) (ht : t ∈ Dec (F := ℚ) A) (n r : ℕ) (z : Ω) (hz : t z = z)
     (Z : G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l) {ι : Type} [Fintype ι] (u : ι → Ω) (o : ι → Qbar l)
@@ -172,6 +230,17 @@ private theorem dec_frob_of_mem_dec_rat_prime {Ω : Type} [Field Ω] [Algebra �
     refine ⟨(t⁻¹ : G ℚ Ω) v, by rw [← map_pow, hv1], ?_⟩
     rw [apply_inv_conj t s v, hv2, map_mul, map_pow, hz']
 
+/- English proof (translation)
+Introduce `l _ hl2 Ω _ _ _ A hA j Φ c β ζ hζ Z D a hR hZ i`. Establish `hfix : ∀ m, Φ.fr (ζ m) = ζ m` using `apply_root_eq_of_cycBar_eq_one Φ.fr Φ.fr_cyc ζ hζ`. Set `Z' : Sy Ω l` to `fun r s x => Z r (Φ.fr * s * Φ.fr⁻¹) x`. Establish `hR' : Rep Φ β ζ Z' (fun i => Φ.tw 1 (D i))`. Take `⟨c₁, m₁, hm⟩` from `hR`.
+
+Use `⟨c₁, m₁, fun m hm1 => ?_⟩` and prove the remaining obligations. Take `⟨P, hP, hL⟩` from `hm m hm1`. Use `⟨fun i => (P i).map (decompositionInvRingHom A Φ.fr Φ.fr_dec), ?_, fun i => ?_⟩` and prove the remaining obligations. Unfold `BPres at *`. Establish `h6` using `dec_frob_of_mem_dec_rat_prime A Φ.fr Φ.fr_dec (m - c₁) m (ζ (m - c₁)) (hfix _) (Z m) _ _ hP`.
+
+Use `h6 using 2` and compare the differences between its conclusion and the goal. Conclude with `dec_frob_of_mem_dec_rat A Φ.fr Φ.fr_dec (P _) (ζ m) (hfix m)`. Rewrite using `[fr_ser_map_decompositionInv_eq, dl_map_ringEquiv]`. Establish `h2` using `lc_map' (Φ.σ.symm : Φ.R →+* Φ.R) l m (m - c₁) _ _ (hL i)`. Establish `htw : Φ.tw m (Φ.tw 1 (D i)) = PowerSeries.map (Φ.σ.symm : Φ.R →+* Φ.R) (Φ.tw m (D i))`.
+
+Unfold `Fr.tw`. Use extensionality with `n`. Simplify using `only [PowerSeries.coeff_map, pow_one]`. Rewrite using `[← RingHom.comp_apply, ← RingHom.comp_apply, ← RingHom.mul_def, ← RingHom.mul_def, ← pow_succ, ← pow_succ']`. Rewrite using `[htw]`.
+
+Conclude with `h2`. Establish `hS` using `pRepSmul l hl2 Ω A hA j Φ c β ζ hζ Z D a hR`. Establish `hU` using `pRepUniq l hl2 Ω A hA j Φ c β ζ hζ Z' (fun r s x => (a : Qbar l) * Z r s x) (fun i => Φ.tw 1 (D i)) (Φ.act (β.mat a) D) hR' hS (fun m s hs => hZ m s hs)`. Conclude with `congrFun hU i`.
+-/
 theorem pRepFrob :
     SRepFrob := by
   intro l _ hl2 Ω _ _ _ A hA j Φ c β ζ hζ Z D a hR hZ i

@@ -21,6 +21,23 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.KerExt
 
+/- English proof (translation)
+Introduce `W L _ _ _ _ _ _ G _ A _ φ φ₂ hab hpb hsq P P' hP hP' hPP' h1 h2 hsym hamp m hA T x hx`. Take `⟨H, i, -, -, hflat, hker⟩` from `GlobalTheory.T.finiteFlat_kernel_symmetric_birigidified_bundle W G hab P' hP' h1 h2 hsym hamp`. Take `⟨y, rfl⟩` from `(hker T x).1 hx`. Establish `key : i ^ m = 1` using `by haveI := hab.proper haveI : IsOpenImmersion (spMap (algebraMap W L)) := isOpenImmersion_spMap_of_isDiscreteValuationRing W L haveI : Nonempty (Sp L) := inferInstanceAs (Nonempty (PrimeSpectrum L))`. Use `GrpDense.hom_ext_of_points (spMap (algebraMap W L)) (fun T' t => ?_)` and prove the remaining obligations.
+
+Take `⟨z, hz⟩` from `GrpDense.pushPt_surjective hpb.1 T' (t ≫ i)`. Establish `hzl : z.left ≫ φ = t.left ≫ i.left` using `congrArg (fun q => q.left) hz`. Set `F` to `(lift (snd G H ≫ i) (fst G H)).left`. Take `⟨s, hs⟩ : ∃ s : (P'.pull F).Gen, s.IsGen` from `(hker H i).2 ⟨𝟙 H, Category.id_comp _⟩`. Set `c` to `(lift (snd A T' ≫ z) (fst A T')).left`.
+
+Set `q : Over.mk ((A ⊗ T').hom ≫ spMap (algebraMap W L)) ⟶ H` to `Over.homMk ((snd A T').left ≫ t.left) (by`. Simplify using `only [Over.mk_hom, Category.assoc]`. Rewrite using `[Over.w t]`. Use `show (snd A T').left ≫ T'.hom ≫ _ = _`. Rewrite using `[← Category.assoc, Over.w (snd A T')])`.
+
+Set `Ψ` to `(lift (pushPt hpb.1.w (fst A T')) q).left`. Establish `hΨ1 : Ψ ≫ (fst G H).left = (fst A T').left ≫ φ` using `by rw [← Over.comp_left, lift_fst]; rfl`. Establish `hΨ2 : Ψ ≫ (snd G H).left = (snd A T').left ≫ t.left` using `by rw [← Over.comp_left, lift_snd]; rfl`. Establish `hF1 : F ≫ (fst G G).left = (snd G H).left ≫ i.left` using `by rw [← Over.comp_left, lift_fst, Over.comp_left]`. Establish `hF2 : F ≫ (snd G G).left = (fst G H).left` using `by rw [← Over.comp_left, lift_snd]`.
+
+Establish `hc1 : c ≫ (fst A A).left = (snd A T').left ≫ z.left` using `by rw [← Over.comp_left, lift_fst, Over.comp_left]`. Establish `hc2 : c ≫ (snd A A).left = (fst A T').left` using `by rw [← Over.comp_left, lift_snd]`. Establish `hc : Ψ ≫ F = c ≫ φ₂`. Apply `Over.tensorObj_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Ψ ≫ F) ≫ (fst G G).left = (c ≫ φ₂) ≫ (fst G G).left`.
+
+Rewrite using `[Category.assoc, Category.assoc, hsq.1, hF1, ← Category.assoc, hΨ2, ← Category.assoc, hc1, Category.assoc, Category.assoc, hzl]`. Express the relevant statement in the definitionally equal form `(Ψ ≫ F) ≫ (snd G G).left = (c ≫ φ₂) ≫ (snd G G).left`. Rewrite using `[Category.assoc, Category.assoc, hsq.2, hF2, hΨ1, ← Category.assoc, hc2]`. Establish `e1 : LBIso (P.pull c) (P'.pull (Ψ ≫ F))` using `GenSpread.lbIso_pull_of_lbIso hPP' c hc`. Establish `e2 : LBIso (P'.pull (Ψ ≫ F)) ((P'.pull F).pull Ψ)` using `GenSpread.lbIso_pull_pull hP' Ψ rfl`.
+
+Take `⟨s', hs'⟩` from `RigidTranslate.gen_of_lbIso (pull_isLB (pull_isLB hP' F) Ψ) (pull_isLB hP' _) e2.symm (LB.genPull _ s Ψ) (LB.isGen_genPull _ s hs Ψ)`. Establish `hzk` using `RigidTranslate.gen_of_lbIso (pull_isLB hP' _) (pull_isLB hP c) e1.symm s' hs'`. Establish `hzm : z ^ m = 1` using `hA T' z hzk`. Rewrite using `[MonObj.comp_pow, MonObj.comp_one, ← hz]`. Use `show pushHom hpb T' z ^ m = 1`.
+
+Rewrite using `[← map_pow, hzm, map_one]`. Rewrite using `[← MonObj.comp_pow, key, MonObj.comp_one]`.
+-/
 theorem kernel_killed : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G] (A : Over (Sp L)) [GrpObj A] (φ : A.left ⟶ G.left) (φ₂ : (G2 A).left ⟶ (G2 G).left), IsAbelianScheme G → IsGrpPullback A G (spMap (algebraMap W L)) φ → IsSquare φ φ₂ → ∀ (P : LB (G2 A).left) (P' : LB (G2 G).left), P.IsLB → P'.IsLB → LBIso P (P'.pull φ₂) → (∃ t : (P'.pull (lift (1 : G ⟶ G) (𝟙 G)).left).Gen, t.IsGen) → (∃ t : (P'.pull (lift (𝟙 G) (1 : G ⟶ G)).left).Gen, t.IsGen) → LBIso P' (P'.pull (lift (snd G G) (fst G G)).left) → Out.RelAmple G (P'.pull (lift (𝟙 G) (𝟙 G)).left) → ∀ m : ℕ, (∀ (T : Over (Sp L)) (x : T ⟶ A), (∃ t : (P.pull (lift (snd A T ≫ x) (fst A T)).left).Gen, t.IsGen) → x ^ m = 1) → ∀ (T : Over (Sp W)) (x : T ⟶ G), (∃ t : (P'.pull (lift (snd G T ≫ x) (fst G T)).left).Gen, t.IsGen) → x ^ m = 1 := by
   intro W L _ _ _ _ _ _ G _ A _ φ φ₂ hab hpb hsq P P' hP hP' hPP' h1 h2 hsym hamp m hA T x hx
   obtain ⟨H, i, -, -, hflat, hker⟩ := GlobalTheory.T.finiteFlat_kernel_symmetric_birigidified_bundle W G hab P' hP' h1 h2 hsym hamp

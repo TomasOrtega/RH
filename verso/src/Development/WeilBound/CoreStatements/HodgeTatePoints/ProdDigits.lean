@@ -17,6 +17,9 @@ variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
   {F : Type} [Field F] [Fintype F] [DecidableEq F]
 
 omit [Fintype F] [DecidableEq F] in
+/- English proof (translation)
+Establish `: (fun a => algebraMap R C (r * χ a)) = r • fun a => algebraMap R C (χ a)`. Use function extensionality and compare the values at `a`. Simplify using `[Algebra.smul_def]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 lemma mem_xIdeal (M : Submodule R (F → C)) (χ : MulChar F R) (r : R) :
     r ∈ xIdeal M χ ↔ (fun a => algebraMap R C (r * χ a)) ∈ M := by
   have : (fun a => algebraMap R C (r * χ a)) = r • fun a => algebraMap R C (χ a) := by
@@ -25,12 +28,20 @@ lemma mem_xIdeal (M : Submodule R (F → C)) (χ : MulChar F R) (r : R) :
   rw [this]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `AA.one_mem`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `AA.mul_mem _ _ ih hg`.
+-/
 lemma pow_mem (AA : HopfOrder (C := C) R F) {g : F → C} (hg : g ∈ AA.carrier) (k : ℕ) :
     g ^ k ∈ AA.carrier := by
   induction k with
   | zero => rw [pow_zero]; exact AA.one_mem
   | succ k ih => rw [pow_succ]; exact AA.mul_mem _ _ ih hg
 
+/- English proof (translation)
+Rewrite using `[mem_xIdeal]`. Establish `hmem : (∏ n : Fin f, (fun a => algebraMap R C (c n * (σ ^ p ^ (n : ℕ)) a)) ^ e n) ∈ AA.carrier` using `Finset.prod_induction _ (fun g => g ∈ AA.carrier) (fun a b ha hb => AA.mul_mem a b ha hb) AA.one_mem fun n _ => pow_mem AA ((mem_xIdeal _ _ _).1 (hc n)) _`. Establish `hfun : (fun a => algebraMap R C ((∏ n : Fin f, c n ^ e n) * (σ ^ (∑ n : Fin f, e n * p ^ (n : ℕ))) a)) = ∏ n : Fin f, (fun a => algebraMap R C (c n * (σ ^ p ^ (n : ℕ)) a)) ^ e n`. Use function extensionality and compare the values at `a`. Rewrite using `[Finset.prod_apply, MulChar.pow_apply' _ he, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib, map_prod]`.
+
+Use `Finset.prod_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.pow_apply, MulChar.pow_apply' _ (pow_ne_zero _ hp), ← map_pow (algebraMap R C), mul_pow, ← pow_mul, mul_comm (e n)]`. Rewrite using `[hfun]`. Conclude with `hmem`.
+-/
 lemma mono_mem (AA : HopfOrder (C := C) R F) (σ : MulChar F R) {p f : ℕ} (hp : p ≠ 0)
     (c : ℕ → R) (hc : ∀ n, c n ∈ xIdeal AA.carrier (σ ^ p ^ n)) (e : Fin f → ℕ)
     (he : ∑ n : Fin f, e n * p ^ (n : ℕ) ≠ 0) :
@@ -55,6 +66,11 @@ lemma mono_mem (AA : HopfOrder (C := C) R F) (σ : MulChar F R) {p f : ℕ} (hp 
 
 end
 
+/- English proof (translation)
+Establish `h1 : (∏ d : Fin f → Fin p, if ∑ n : Fin f, (d n : ℕ) * p ^ (n : ℕ) = 0 then 1 else w (∑ n : Fin f, (d n : ℕ) * p ^ (n : ℕ))) = ∏ i : Fin (p ^ f), if (i : ℕ) = 0 then 1 else w i` using `Fintype.prod_equiv finFunctionFinEquiv _ _ fun d => by rw [finFunctionFinEquiv_apply]`. Establish `hq : 0 < p ^ f` using `pow_pos (Nat.pos_of_ne_zero hp) _`. Establish `h2 : Finset.range (p ^ f) = insert 0 (Finset.Icc 1 (p ^ f - 1))`. Use extensionality with `m`. Simplify using `only [Finset.mem_range, Finset.mem_insert, Finset.mem_Icc]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, Fin.prod_univ_eq_prod_range (fun i => if i = 0 then 1 else w i), h2, Finset.prod_insert (by simp), if_pos rfl, one_mul]`. Use `Finset.prod_congr rfl fun m hm => if_neg ?_` and prove the remaining obligations. Use `(Finset.mem_Icc.1 hm).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 lemma prod_digits {p f : ℕ} (hp : p ≠ 0) (w : ℕ → NNReal) :
     (∏ d : Fin f → Fin p, if ∑ n : Fin f, (d n : ℕ) * p ^ (n : ℕ) = 0 then 1
       else w (∑ n : Fin f, (d n : ℕ) * p ^ (n : ℕ))) = ∏ m ∈ Finset.Icc 1 (p ^ f - 1), w m := by
@@ -73,6 +89,21 @@ lemma prod_digits {p f : ℕ} (hp : p ≠ 0) (w : ℕ → NNReal) :
   have := (Finset.mem_Icc.1 hm).1
   omega
 
+/- English proof (translation)
+Introduce `p hpp C _ _ _ v R _ _ hv hvp F _ _ _ _ f hf AA hst σ hσ c hc`. Establish `hp0 : p ≠ 0` using `hpp.out.ne_zero`. Take `⟨AD, hstD, hcol, hfund⟩` from `rank_one_sum p C v R hv hvp F f hf AA hst`. Take `⟨-, -, hpow, -, -⟩` from `GlobalTheory.CompanionTheory.Ar.GR.FundGen.main p C v R hv hvp F f hf σ hσ`. Use `choose g hg0 hg using fun m : ℕ => (eig_rank_one p C v R hv hvp F f hf AA hst (σ ^ m)).1`.
+
+Use `choose gD hgD0 hgD using fun m : ℕ => (eig_rank_one p C v R hv hvp F f hf AD hstD (σ ^ m)).1`. Establish `hx : ∀ n : ℕ, (v (algebraMap R C (c n)) * v (algebraMap R C (gD (p ^ n)))) ^ (p - 1) = v (p : C)` using `fun n => hfund (σ ^ p ^ n) (hpow n) _ _ (hc n) (hgD _)`. Establish `hle : ∀ (BB : HopfOrder (C` using `C) R F) (γ b : ℕ → R), (∀ m, xIdeal BB.carrier (σ ^ m) = Ideal.span {γ m}) → (∀ n, xIdeal BB.carrier (σ ^ p ^ n) = Ideal.span {b n}) → ∀ d : Fin f → Fin p, ∏ n : Fin f, v (algebraMap R C (b n)) ^ (d n : ℕ) ≤ if ∑ n : Fin f, (d n : ℕ) * p ^ (n : ℕ) = 0 then 1 else v (algebraMap R …`. Introduce `BB γ b hγ hb d`. Use `split_ifs with h`.
+
+Conclude with `Finset.prod_le_one' fun n _ => pow_le_one' (hv.map_le_one _) _`. Establish `hm` using `mono_mem BB σ hp0 b (fun n => by rw [hb n]; exact Ideal.mem_span_singleton_self _) (fun n => (d n : ℕ)) h`. Rewrite `hm` using `[hγ, Ideal.mem_span_singleton, hv.dvd_iff_le]`. Simplify `hm` using `only [map_prod, map_pow]`. Use `⟨fun n => ?_, fun d hd => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hx n]`. Conclude with `pow_le_pow_left' (mul_le_of_le_one_right' (hv.map_le_one _)) _`. Establish `hN` using `(PositivityTheory.HtPt.Ri.r_decomp p C v R hv hvp F f hf AA hst σ hσ g hg).2.2`. Establish `hD` using `(PositivityTheory.HtPt.Ri.r_decomp p C v R hv hvp F f hf AD hstD σ hσ gD hgD).2.2`. Establish `hP : v (p : C) ≠ 0`.
+
+Rewrite using `[Ne, map_eq_zero]`. Conclude with `hp0` after adjusting the coercions. Establish `key` using `(count p f hpp.out.two_le (v (p : C)) hP (fun n => v (algebraMap R C (c n))) (fun n => v (algebraMap R C (gD (p ^ (n : ℕ))))) _ _ (fun n => hx n) (hle AA g c hg hc) (hle AD gD (fun n => gD (p ^ n)) hgD fun n => hgD _) (by`. Rewrite using `[Finset.prod_mul_distrib, prod_digits hp0 fun m => v (algebraMap R C (g m)), prod_digits hp0 fun m => v (algebraMap R C (gD m))]`. Conclude with `hcol _ _ hN hD) d).1`.
+
+Establish `hne : ∑ n : Fin f, (d n : ℕ) * p ^ (n : ℕ) ≠ 0`. Take `⟨n, hn⟩` from `hd`. Introduce `h`. Conclude with `mul_ne_zero hn (pow_ne_zero _ hp0) (Finset.sum_eq_zero_iff.1 h n (Finset.mem_univ n))`. Rewrite `key` using `[if_neg hne]`.
+
+Rewrite using `[hg]`. Establish `hval : v (algebraMap R C (∏ n : Fin f, c n ^ (d n : ℕ))) = v (algebraMap R C (g (∑ n : Fin f, (d n : ℕ) * p ^ (n : ℕ))))`. Rewrite using `[key]`. Simplify using `only [map_prod, map_pow]`. Conclude with `le_antisymm (Ideal.span_singleton_le_span_singleton.2 (hv.dvd_of_le hval.ge)) (Ideal.span_singleton_le_span_singleton.2 (hv.dvd_of_le hval.le))`.
+-/
 theorem r_mono : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (AA : HopfOrder (C := C) R F), FStable F AA.carrier → ∀ σ : MulChar F R, IsFund p σ → ∀ c : ℕ → R, (∀ n, xIdeal AA.carrier (σ ^ p ^ n) = Ideal.span {c n}) → (∀ n, v (p : C) ≤ v (algebraMap R C (c n)) ^ (p - 1)) ∧ ∀ d : Fin f → Fin p, (∃ n, (d n : ℕ) ≠ 0) → xIdeal AA.carrier (σ ^ (∑ n : Fin f, (d n : ℕ) * p ^ (n : ℕ))) = Ideal.span {∏ n : Fin f, c n ^ (d n : ℕ)} := by
   intro p hpp C _ _ _ v R _ _ hv hvp F _ _ _ _ f hf AA hst σ hσ c hc
   have hp0 : p ≠ 0 := hpp.out.ne_zero

@@ -24,6 +24,9 @@ def TrivialOfDensityOneAt (L : Type) [Field L] [NumberField L] : Prop :=
 def TrivialOfDensityOne : Prop :=
   ∀ (L : Type) [Field L] [NumberField L], TrivialOfDensityOneAt L
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.unrAt, fun ϖ _ => h ϖ⟩`.
+-/
 theorem valueOneAt_of_trivAt {χ : Ideles L →* ℂˣ} {P : HeightOneSpectrum (𝓞 L)} (h : TrivAt χ P) :
     ValueOneAt χ P := ⟨h.unrAt, fun ϖ _ => h ϖ⟩
 

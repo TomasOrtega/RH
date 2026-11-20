@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComapMaximalIdealEqOrigin
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.AbhHeightOne.closureEtaleAt_of_root_of_uniformiser) | (exact GlobalTheory.AbhHeightOne.closureEtaleAt_of_root_of_uniformiser) | (intros; apply GlobalTheory.AbhHeightOne.closureEtaleAt_of_root_of_uniformiser <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.generic_fibre_base_change_injective : ∀ (A R : Type) [CommRing A] [IsDomain A] [CommRing R] [IsDomain R] [Algebra A R],
     Function.Injective (algebraMap A R) →
     ∀ (A₁ R₁ : Type) [CommRing A₁] [IsDomain A₁] [CommRing R₁] [IsDomain R₁] [Algebra A₁ R₁],

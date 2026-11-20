@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IsIntegralIffNormLeOne
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IsDiscreteValuationRingIntegralClosure
 
+/- English proof (translation)
+Introduce `l _ K _`. Set `f : K →ₐ[ℤ_[l]] PadicAlgCl l` to `K.val.restrictScalars ℤ_[l]`. Establish `hf : Function.Injective f` using `Subtype.val_injective`. Set `e` to `(integralClosure ℤ_[l] K).equivMapOfInjective f hf`. Establish `hd : IsDiscreteValuationRing (integralClosure ℤ_[l] K)` using `UpperTheory.integralClosure_isDVR K`.
+
+Establish `hfin : Module.Finite ℤ_[l] (integralClosure ℤ_[l] K)` using `IsIntegralClosure.finite ℤ_[l] ℚ_[l] K _`. Use `⟨⟨(integralClosure ℤ_[l] K).map f, IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e, Module.Finite.equiv e.toLinearEquiv⟩, fun x hx h1 => ⟨⟨x, hx⟩, ?_, rfl⟩⟩` and prove the remaining obligations. Conclude with `(isIntegral_algHom_iff f hf).1 ((UpperTheory.padicAlgCl_isIntegral_iff_norm_le_one x).2 h1)`.
+-/
 theorem UpperTheory.Reformulated.B.CoefficientsOfField.coef_of_field :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)]
     (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] ↥K],

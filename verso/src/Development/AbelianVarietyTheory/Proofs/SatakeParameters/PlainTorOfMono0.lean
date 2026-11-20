@@ -17,6 +17,15 @@ namespace GlobalTheory.PlainMono
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `⟨⟨Segment.ofFirst ρ hρ 2 two_pos, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Segment.carrier_single, Segment.carrier_single]`. Use extensionality with `z`. Rewrite using `[Segment.mem_carrier]`.
+
+Simplify using `only [Segment.first_ofFirst, Segment.len_ofFirst, Set.mem_union, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩ interval_cases i`. Use `left`. Simplify using the standard rewrite rules.
+
+Use `right`. Simplify using the standard rewrite rules. Introduce and unpack `(rfl | rfl)`. Conclude with `⟨0, by norm_num, by simp⟩`. Conclude with `⟨1, by norm_num, by simp⟩`.
+
+Rewrite using `[Segment.carrier_single, Segment.carrier_single, Set.singleton_subset_iff, Set.mem_singleton_iff]`. Conclude with `hne`. Rewrite using `[Segment.carrier_single, Segment.carrier_single, Set.singleton_subset_iff, Set.mem_singleton_iff]`. Conclude with `fun e => hne e.symm`.
+-/
 theorem linked_single {ρ ρ' : IrrGL k} (hρ : ρ.IsCusp) (hρ' : ρ'.IsCusp) (hne : ρ ≠ ρ.nu 1) (e : ρ' = ρ.nu 1) :
     (Segment.single ρ hρ).Linked (Segment.single ρ' hρ') := by
   subst e
@@ -38,12 +47,18 @@ theorem linked_single {ρ ρ' : IrrGL k} (hρ : ρ.IsCusp) (hρ' : ρ'.IsCusp) (
   · rw [Segment.carrier_single, Segment.carrier_single, Set.singleton_subset_iff, Set.mem_singleton_iff]
     exact fun e => hne e.symm
 
+/- English proof (translation)
+The claim follows from `Segment.ext_first (by simp [Segment.single]) (by simp [Segment.single, h])`.
+-/
 theorem eq_single_of_len {Δ : Segment k} (h : Δ.len = 1) : Δ = Segment.single Δ.first Δ.isCusp_first :=
   Segment.ext_first (by simp [Segment.single]) (by simp [Segment.single, h])
 
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Introduce `e0`. Use `WD.lpTw_one_ne (rc ρ) (by rw [L.dim]; exact hρ.1) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ne_nu_one {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {rc : IrrGL (w.adicCompletion E) → WD h} (L : UpperTheory.Zero.LLC.LawsT a ha rc) {ρ : IrrGL (w.adicCompletion E)}
     (hρ : ρ.IsCusp) : ρ ≠ ρ.nu 1 := by

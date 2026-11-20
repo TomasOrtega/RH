@@ -11,6 +11,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.TNZ
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h a ha ε rc H d X _ _ σ hs hi η hη`. Use `⟨isSmooth_twist hs hη.detChar, isIrreducible_twist hi _, ?_⟩` and prove the remaining obligations. Rewrite using `[← IrrGL.tw_of (hχ := hη), H.twist, H.one]`.
+-/
 theorem step_twistRc : TwistRestrictionProp := by
   intro E Ω _ _ _ _ _ A w h a ha ε rc H d X _ _ σ hs hi η hη
   refine ⟨isSmooth_twist hs hη.detChar, isIrreducible_twist hi _, ?_⟩

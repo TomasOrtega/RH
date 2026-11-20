@@ -16,6 +16,11 @@ namespace GlobalTheory.SpanFrame
 
 open GlobalTheory.AmpleSpan
 
+/- English proof (translation)
+Establish `e : (k ▷ A).left ≫ (snd T A).left = (snd T' A).left` using `by rw [← Over.comp_left, whiskerRight_snd]`. Use `(secScal_const_iff hL e).2 fun i Z r z hz => ?_` and prove the remaining obligations. Establish `hm : r z ∈ LB.wchart L (fun _ : Fin 1 => (snd T' A).left) (fun _ => i)` using `Set.mem_iInter.2 fun _ => hz`. Establish `le` using `chart_le_res A L (k ▷ A) (whiskerRight_snd k A) a (fun _ => i)`. Use `Eq.symm ((congrArg (gs r z _) (H fun _ => i)).trans ?_)` and prove the remaining obligations.
+
+Conclude with `(gs_res r z le hm _).trans (gs_pull r (k ▷ A).left z _ (le (x := r z) hm) _)`.
+-/
 theorem secScal_of_isPullSec {S : Scheme.{0}} (A : Over S) [GrpObj A] {L : LB A.left} (hL : L.IsLB) (a : ℤ)
     {T T' : Over S} (k : T' ⟶ T) {s : LB.Sec (LPow A L a T)} {s' : LB.Sec (LPow A L a T')}
     (H : IsPullSec A L a (k ▷ A) (whiskerRight_snd k A) s s') :
@@ -28,6 +33,11 @@ theorem secScal_of_isPullSec {S : Scheme.{0}} (A : Over S) [GrpObj A] {L : LB A.
   refine Eq.symm ((congrArg (gs r z _) (H fun _ => i)).trans ?_)
   exact (gs_res r z le hm _).trans (gs_pull r (k ▷ A).left z _ (le (x := r z) hm) _)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Apply the tactic sequence `have E := H (fun _ => j) (fun _ => j) (by rintro (a | a) (b | b) _ <;> rfl)`. Establish `hm : ⊤ ≤ x ⁻¹ᵁ (LB.wchart L (fun _ : K' => h ≫ χ) (fun _ => j) ⊓ LB.wchart L (fun _ : K => h ≫ χ) (fun _ => j))` using `fun z hz => ⟨Set.mem_iInter.2 fun _ => hx hz, Set.mem_iInter.2 fun _ => hx hz⟩`. Establish `E'` using `congrArg (valR x _) E`. Rewrite `E'` using `[HolHom.valR_res _ _ _ hm, resTop, map_one, one_mul]`.
+
+Conclude with `(HolHom.valR_comp _ _ _ _).trans (E'.trans (HolHom.valR_res _ _ _ hm))`.
+-/
 theorem valR_of_secScal {X Y Y' : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K'] {ε : K → ℤ}
     {ε' : K' → ℤ} {χ : Y ⟶ X} {χ' : Y' ⟶ X} {h : Y' ⟶ Y} (e : h ≫ χ = χ')
     {s' : LB.Sec (LB.LinComb L (fun _ : K' => χ') ε')} {s : LB.Sec (LB.LinComb L (fun _ : K => χ) ε)}
@@ -43,6 +53,17 @@ theorem valR_of_secScal {X Y Y' : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype 
   rw [HolHom.valR_res _ _ _ hm, resTop, map_one, one_mul] at E'
   exact (HolHom.valR_comp _ _ _ _).trans (E'.trans (HolHom.valR_res _ _ _ hm))
 
+/- English proof (translation)
+Take `⟨m, b₀, hb₀⟩` from `exists_sections_span_affine hS S P N hN U hU`. Take `⟨h₀, e₀, -, -, hE⟩` from `translate_powOver_LPow P.A P.isLB N (U := U) (overRes (T := baseOver S) U) (𝟙 U.toScheme) (by simp)`. Take `⟨E, hE⟩` from `hE (IsIso.id _)`. Use `⟨m + 1, fun i => E.symm (b₀ i), fun X' Y' _ h f' g sq K _ ε φ e hε b' hb' s => ?_⟩` and prove the remaining obligations. Set `T' : Over S` to `Over.mk (g ≫ U.ι)`.
+
+Establish `: IsAffine T'.left` using `‹IsAffine Y'›`. Set `k : T' ⟶ overRes (T` to `baseOver S) U := Over.homMk g (by simp [T'])`. Take `⟨h', e', sq', -, -⟩` from `translate_powOver_LPow P.A P.isLB N (U := U) T' g rfl`. Set `b'' : Fin (m + 1) → LB.Sec (LPow P.A P.L N T')` to `fun i => SecM.toSec P.A (SecAff.pull P.A P.L N k (SecM.ofSec P.A (b₀ i)))`. Establish `hb'' : ∀ i, IsPullSec P.A P.L N (k ▷ P.A) (whiskerRight_snd k P.A) (b₀ i) (b'' i)` using `fun i => (SecAff.isPullSec_iff P.A P.L N _ _ _).2 rfl`.
+
+Establish `hsp` using `hb₀ T' k b'' hb''`. Set `θ` to `sq.isoIsPullback _ _ sq'`. Establish `θ₁ : θ.hom ≫ h' = h` using `sq.isoIsPullback_hom_fst _ _ sq'`. Establish `θ₂ : θ.hom ≫ (fst T' P.A).left = f'` using `sq.isoIsPullback_hom_snd _ _ sq'`. Establish `θ₃ : θ.hom ≫ (snd T' P.A).left = φ` using `by rw [← e', ← Category.assoc, θ₁, e]`.
+
+Take `⟨F, hF⟩` from `exists_equiv_secScal P.isLB (h := θ.hom) (formEq_const (K := Fin 1) (K' := K) (ε := fun _ => (N : ℤ)) (ε' := ε) θ₃ (by simp [hε]))`. Establish `θ₄ : θ.hom ≫ (k ▷ P.A).left ≫ h₀ = h`. Rewrite using `[← cancel_mono (P.A.hom ⁻¹ᵁ U).ι, Category.assoc, Category.assoc, e₀, ← Over.comp_left, whiskerRight_snd, θ₃, e]`. Use `InSpan.secScal P.isLB (h := θ.hom) (f := (fst T' P.A).left) (g := 𝟙 Y') (θ₂.trans (Category.comp_id _).symm) (t := b'') (s := F.symm s) ((inSpan_iff_mem_span P.A b'' _).2 (by rw [hsp]; trivial)) (fun i => ?_) ((hF _ _).2 (F.apply_symm_apply s))` and prove the remaining obligations. Use `(secScal_iff_sval P.isLB).2 fun Z r z J hJ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← SectionScalarValuation.secScal_sval (hb' i) r z hJ, ← SectionScalarValuation.secScal_sval (secScal_of_isPullSec P.A P.isLB N k (hb'' i)) _ z hJ, ← SectionScalarValuation.secScal_sval ((hE _ _).2 (E.apply_symm_apply (b₀ i))) _ z hJ, Category.assoc, Category.assoc, θ₄]`.
+-/
 theorem exists_span_powOver (hS : SecBaseChangeSt) {S : Scheme.{0}} [IsLocallyNoetherian S] (P : PolAV S) {N : ℕ}
     (hN : 1 ≤ N) {U : S.Opens} (hU : IsAffineOpen U) :
     ∃ (m : ℕ) (b : Fin m → LB.Sec (powOver P.A P.L U N)), ∀ (X' Y' : Scheme.{0}) [IsAffine Y']

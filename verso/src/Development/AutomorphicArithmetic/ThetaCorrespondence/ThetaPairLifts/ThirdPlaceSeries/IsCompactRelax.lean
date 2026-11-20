@@ -19,6 +19,19 @@ open GlobalTheory.StepData GlobalTheory.SplitWeil
 noncomputable section
 namespace GlobalTheory.LevProd
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : B.Word} {a : _root_.GlobalTheory.Fam.GeometricFamily W u} {t : W.P.T}
+/- English proof (translation)
+Set `v : Fin J.r → GlobalTheory.FinPl.Pl (I.rec7 l Z)` to `fun i => (J.G i).q.v`. Set `f : Fin J.r → Fin J.r` to `fun i => (Finset.univ.filter (fun i' => v i' = v i)).min' ⟨i, by simp⟩`. Establish `hf : ∀ i, v (f i) = v i` using `fun i => (Finset.mem_filter.1 (Finset.min'_mem (Finset.univ.filter (fun i' => v i' = v i)) ⟨i, by simp⟩)).2`. Establish `hf2 : ∀ i i', v i = v i' → f i = f i'`. Introduce `i i' h`.
+
+Simplify using `only [f, h]`. Set `R` to `{i : Fin J.r // f i = i}`. Set `e : R ≃ Fin (Fintype.card R)` to `Fintype.equivFin R`. Set `ρ : Fin (Fintype.card R) → Fin J.r` to `fun m => (e.symm m).1`. Establish `hinj : Function.Injective fun m => (J.G (ρ m)).q.v`.
+
+Introduce `m m' h`. Establish `h1 : f (ρ m) = f (ρ m')` using `hf2 _ _ h`. Rewrite `h1` using `[(e.symm m).2, (e.symm m').2]`. Conclude with `e.symm.injective (Subtype.ext h1)`. Take `⟨Ψ, hc, hin, -, huniq⟩` from `GlobalTheory.FixLev.exists_section ((I.rec7 l Z).sp.X j) (fun m => (J.G (ρ m)).k) (fun m => (J.G (ρ m)).q) hinj (fun _ => XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (fun m => (J.G (ρ m)).FX j (by have := _root_.GlobalTheory.LevProd.step_index_le_s_alt J (ρ m) hj; omega) …`.
+
+Establish `hP : (GlobalTheory.FinPl.grpAt ((I.rec7 l Z).sp.X j) fun p => ∃ m, p = (J.G (ρ m)).q.v) = GlobalTheory.FinPl.grpAt _ (_root_.GlobalTheory.LevProd.quadraticTwistAtPlace J)`. Use `congr 1`. Use function extensionality and compare the values at `p`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨m, rfl⟩`. Conclude with `⟨ρ m, rfl⟩`. Introduce and unpack `⟨i, rfl⟩`. Establish `hfix : f (f i) = f i` using `hf2 _ _ (hf i)`. Use `⟨e ⟨f i, hfix⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show v i = v (e.symm (e ⟨f i, hfix⟩)).1`. Rewrite using `[e.symm_apply_apply]`. Conclude with `(hf i).symm`. Use `⟨Fintype.card R, ρ, Ψ, hc, fun x => hP.le (hin x), fun g hg => huniq g (hP.ge hg) _ fun m => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.LevIdx.eq_locHom_iff _ _ _ g _).2 rfl`.
+-/
 theorem exists_continuous_section_localHomProduct_twAt (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t) (j : ℕ) (hj : j + 2 ≤ B.R.m) :
     ∃ (n : ℕ) (ρ : Fin n → Fin J.r)
       (Ψ : (∀ m : Fin n, GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (J.G (ρ m)).k) →
@@ -61,6 +74,23 @@ theorem exists_continuous_section_localHomProduct_twAt (J : _root_.GlobalTheory.
       exact (hf i).symm
   refine ⟨Fintype.card R, ρ, Ψ, hc, fun x => hP.le (hin x), fun g hg => huniq g (hP.ge hg) _ fun m => ?_⟩
   exact (GlobalTheory.LevIdx.eq_locHom_iff _ _ _ g _).2 rfl
+/- English proof (translation)
+Establish `hU` using `(GlobalTheory.T.chartLevels_reps_represent_unitaryDoubleCosets I hW.tr.ok hW.tr.pins.some l Z u (W.P.I.tup t) J.Ch₀ J.A hR.is j (by omega) (J.ι j α)).1`. Use `haveI hNn : (GlobalTheory.FinPl.grpAt ((I.rec7 l Z).sp.X j) (_root_.GlobalTheory.LevProd.quadraticTwistAtPlace J)).Normal := by`. Unfold `GlobalTheory.FinPl.grpAt GlobalTheory.FinPl.congGrp`. Use `infer_instance`. Take `⟨n, ρ, Ψ, hc, hin, huniq⟩` from `_root_.GlobalTheory.LevProd.exists_continuous_section_localHomProduct_twAt J j hj`.
+
+Set `Kp : Set ((i : Fin J.r) → GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (J.G i).k)` to `Set.pi Set.univ fun i => (KO (J.G i).k (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) : Set _)`. Establish `hKpc : IsCompact Kp` using `isCompact_univ_pi fun i => SplitFlip.isCompact_KO`. Establish `hKpcl : IsClosed Kp` using `isClosed_set_pi fun i _ => Subgroup.isClosed_of_isOpen _ SplitFlip.isOpen_KO`. Establish `hphi : Continuous (_root_.GlobalTheory.LevProd.localHomProduct J j hj)` using `continuous_pi fun i => GlobalTheory.LevIdx.continuous_locHom _ _ _`. Set `C : Set ((i : Fin J.r) → GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (J.G i).k)` to `(fun p : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j) × ((i : Fin J.r) → GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (J.G i).k) => (_root_.GlobalTheory.LevProd.localHomProduct J j hj p.1)⁻¹ * p.2) '' ((J.A.U j (J.ι j α) : Set _) ×ˢ Kp)`.
+
+Establish `hCc : IsCompact C` using `(hU.cpt.prod hKpc).image ((hphi.comp continuous_fst).inv.mul continuous_snd)`. Set `F : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j) × ((i : Fin J.r) → GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (J.G i).k) → GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)` to `fun p => p.1 * Ψ (fun m => p.2 (ρ m))`. Establish `hF : Continuous F` using `continuous_fst.mul (hc.comp (continuous_pi fun m => (continuous_apply (ρ m)).comp continuous_snd))`. Set `S` to `((J.A.U j (J.ι j α) : Set _) ×ˢ C) ∩ F ⁻¹' (_root_.GlobalTheory.LevProd.localHomProduct J j hj ⁻¹' Kp)`. Establish `hSc : IsCompact S` using `(hU.cpt.prod hCc).inter_right ((hKpcl.preimage hphi).preimage hF)`.
+
+Establish `heq : (_root_.GlobalTheory.LevProd.relaxedLevelSubgroup J j hj α : Set (GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j))) = F '' S`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hg1` using `Subgroup.mem_inf.1 (hg : g ∈ _root_.GlobalTheory.LevProd.relaxedLevelSubgroup J j hj α)`.
+
+Establish `hsup : g ∈ ((J.A.U j (J.ι j α) ⊔ GlobalTheory.FinPl.grpAt _ (_root_.GlobalTheory.LevProd.quadraticTwistAtPlace J) : Subgroup _) : Set _)` using `(Subgroup.mem_inf.1 hg1.1).1`. Establish `hK : _root_.GlobalTheory.LevProd.localHomProduct J j hj g ∈ Kp` using `Subgroup.mem_comap.1 hg1.2`. Rewrite `hsup` using `[Subgroup.mul_normal]`. Take `⟨x, hx, y, hy, rfl⟩` from `hsup`. Establish `hFy : F (x, _root_.GlobalTheory.LevProd.localHomProduct J j hj y) = x * y` using `by show x * Ψ (fun m => _root_.GlobalTheory.LevProd.localHomProduct J j hj y (ρ m)) = x * y`.
+
+Rewrite using `[huniq y hy]`. Use `⟨(x, _root_.GlobalTheory.LevProd.localHomProduct J j hj y), ⟨⟨hx, ⟨(x, _root_.GlobalTheory.LevProd.localHomProduct J j hj (x * y)), ⟨hx, hK⟩, ?_⟩⟩, ?_⟩, hFy⟩` and prove the remaining obligations. Use `show (_root_.GlobalTheory.LevProd.localHomProduct J j hj x)⁻¹ * _root_.GlobalTheory.LevProd.localHomProduct J j hj (x * y) = _root_.GlobalTheory.LevProd.localHomProduct J j hj y`. Rewrite using `[map_mul, inv_mul_cancel_left]`. Use `show _root_.GlobalTheory.LevProd.localHomProduct J j hj (F (x, _root_.GlobalTheory.LevProd.localHomProduct J j hj y)) ∈ Kp`.
+
+Rewrite using `[hFy]`. Conclude with `hK`. Introduce and unpack `⟨⟨x, z⟩, ⟨⟨hx, -⟩, hK⟩, rfl⟩ show F (x, z) ∈ _root_.GlobalTheory.LevProd.relaxedLevelSubgroup J j hj α`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨?_, ?_⟩, Subgroup.mem_comap.2 hK⟩` and prove the remaining obligations. Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_left hx) (Subgroup.mem_sup_right (hin _))`.
+
+Conclude with `Subgroup.mul_mem _ (hU.le hx) (GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ (hin _))`. Rewrite using `[heq]`. Conclude with `hSc.image hF`.
+-/
 theorem isCompact_relax' (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t) (hR : J.Reads) (j : ℕ) (hj : j + 2 ≤ B.R.m) (α : J.Ch j) :
     IsCompact (_root_.GlobalTheory.LevProd.relaxedLevelSubgroup J j hj α : Set (GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j))) := by
   classical
@@ -110,6 +140,11 @@ theorem isCompact_relax' (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) (J
       · exact Subgroup.mul_mem _ (hU.le hx) (GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ (hin _))
   rw [heq]
   exact hSc.image hF
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat j hj`. Unfold `_root_.GlobalTheory.LevProd.upperLevelSubgroup`. Use `split_ifs with h`. Conclude with `_root_.GlobalTheory.LevProd.isCompact_relax' hW _ h.choose_spec.choose_spec.1 j hj _`. Rewrite using `[Subgroup.coe_bot]`.
+
+Conclude with `isCompact_singleton`.
+-/
 theorem isCompact_upperLevelSubgroup : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ j (hj : j + 2 ≤ B.R.m), IsCompact (_root_.GlobalTheory.LevProd.upperLevelSubgroup a j hj : Set (GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j))) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat j hj
   unfold _root_.GlobalTheory.LevProd.upperLevelSubgroup

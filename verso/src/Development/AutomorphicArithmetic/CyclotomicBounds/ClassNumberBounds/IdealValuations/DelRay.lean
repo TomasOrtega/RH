@@ -8,6 +8,9 @@ namespace KStar.IdealValuations
 variable {K : Type*} [Field K] [NumberField K] [IsCMField K]
 
 omit [IsCMField K] in
+/- English proof (translation)
+Rewrite using `[← exists_unit_locAt_iff]`. Establish `hu : IsUnit (algebraMap (𝓞 K) (locAt w.asIdeal) a)` using `IsLocalization.map_units (M := w.asIdeal.primeCompl) (locAt w.asIdeal) ⟨a, ha⟩`. Conclude with `⟨hu.unit, by rw [hα, hu.unit_spec]; rfl⟩`.
+-/
 private theorem delRay_count_eq_zero (w : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) (α : Kˣ)
     (hα : (α : K) = (a : K)) (ha : a ∉ w.asIdeal) :
     FractionalIdeal.count K w
@@ -18,6 +21,21 @@ private theorem delRay_count_eq_zero (w : HeightOneSpectrum (𝓞 K)) (a : 𝓞 
     IsLocalization.map_units (M := w.asIdeal.primeCompl) (locAt w.asIdeal) ⟨a, ha⟩
   exact ⟨hu.unit, by rw [hα, hu.unit_spec]; rfl⟩
 
+/- English proof (translation)
+Establish `hav : a ∉ v.asIdeal`. Introduce `h`. Establish `h0` using `Ideal.Quotient.eq_zero_iff_mem.mpr h`. Rewrite `h0` using `[hr]`. Conclude with `r.ne_zero h0`.
+
+Establish `hac : a ∉ (conjPrime v).asIdeal`. Introduce `h`. Apply `(conjPrime v).isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Simplify using `using (conjPrime v).asIdeal.sub_mem h h1`.
+
+Establish `hmem : toPrincipalIdeal (𝓞 K) K α ∈ primeTo v` using `⟨delRay_count_eq_zero v a α hα hav, delRay_count_eq_zero _ a α hα hac⟩`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Use `set b : 𝓞 K := ringOfIntegersComplexConj K a with hb`. Establish `hb1 : b - 1 ∈ v.asIdeal`. Establish `h2 : ringOfIntegersComplexConj K (a - 1) ∈ v.asIdeal` using `h1`.
+
+Rewrite `h2` using `[map_sub, map_one]`. Then use the resulting hypothesis. Establish `hbq : Ideal.Quotient.mk v.asIdeal b = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk v.asIdeal)]`. Conclude with `Ideal.Quotient.eq.mpr hb1`. Establish `hbv : b ∉ v.asIdeal`.
+
+Introduce `h`. Rewrite `hbq` using `[Ideal.Quotient.eq_zero_iff_mem.mpr h]`. Conclude with `zero_ne_one hbq`. Establish `hbK : (b : K) = complexConj K (α : K)` using `by rw [hα]; rfl`. Establish `hb0 : complexConj K (α : K) ≠ 0` using `by simp`.
+
+Take `⟨u, hu⟩` from `exists_unit_div_conj v (α := α) hmem (one_mem _) (by simp)`. Rewrite using `[(hdel.values hl).1 α hmem u hu]`. Use `congr 1`. Establish `hres : IsResidue v.asIdeal ((α : K) / complexConj K (α : K)) r` using `⟨a, b, hbv, by rw [hbK, div_mul_cancel₀ _ hb0, hα], by rw [hbq, mul_one, hr]⟩`. Take `⟨y, hy, hy2⟩` from `(isResidue_iff _ _ _).mp hres`.
+
+Establish `hyu : y = (u : locAt v.asIdeal)` using `Subtype.ext (hy.trans hu.symm)`. Rewrite `hy2` using `[hyu]`. Conclude with `Units.ext hy2`.
+-/
 theorem IsDel.apply_of_congr {l M : ℕ} (hl : l.Prime) {ι : Type*} [Fintype ι]
     {B : MinusBasis K l ι} {v : HeightOneSpectrum (𝓞 K)}
     {om : (𝓞 K ⧸ v.asIdeal)ˣ →* Multiplicative (ZMod (l ^ M))}
@@ -61,6 +79,17 @@ theorem IsDel.apply_of_congr {l M : ℕ} (hl : l.Prime) {ι : Type*} [Fintype ι
   rw [hyu] at hy2
   exact Units.ext hy2
 
+/- English proof (translation)
+Introduce `t`. Take `⟨r, rfl⟩` from `hom t`. Take `⟨s, hs⟩` from `Ideal.Quotient.mk_surjective (r : 𝓞 K ⧸ v.asIdeal)`. Establish `hco : v.asIdeal ⊔ (conjPrime v).asIdeal = ⊤` using `Ideal.IsMaximal.coprime_of_ne v.isMaximal (conjPrime v).isMaximal (fun h => hv (HeightOneSpectrum.ext h.symm))`. Establish `h1 : (1 : 𝓞 K) ∈ v.asIdeal ⊔ (conjPrime v).asIdeal` using `by rw [hco]; trivial`.
+
+Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.mp h1`. Establish `hr : Ideal.Quotient.mk v.asIdeal (x + s * y) = r`. Rewrite using `[← hs]`. Use `Ideal.Quotient.eq.mpr ?_` and prove the remaining obligations. Establish `e : x + s * y - s = (1 - s) * x` using `by linear_combination s * hxy`.
+
+Rewrite using `[e]`. Conclude with `v.asIdeal.mul_mem_left _ hx`. Establish `ha1 : x + s * y - 1 ∈ (conjPrime v).asIdeal`. Establish `e : x + s * y - 1 = (s - 1) * y` using `by linear_combination hxy`. Rewrite using `[e]`.
+
+Conclude with `(conjPrime v).asIdeal.mul_mem_left _ hy`. Establish `ha0 : ((x + s * y : 𝓞 K) : K) ≠ 0`. Introduce `h`. Rewrite `hr` using `[RingOfIntegers.coe_eq_zero_iff.mp h, map_zero]`. Conclude with `r.ne_zero hr.symm`.
+
+Take `⟨h, hh⟩` from `hdel.apply_of_congr hl (x + s * y) (Units.mk0 _ ha0) rfl r hr ha1`. Conclude with `⟨_, hh⟩`.
+-/
 theorem IsDel.surjective {l M : ℕ} (hl : l.Prime) {ι : Type*} [Fintype ι]
     {B : MinusBasis K l ι} {v : HeightOneSpectrum (𝓞 K)} (hv : conjPrime v ≠ v)
     {om : (𝓞 K ⧸ v.asIdeal)ˣ →* Multiplicative (ZMod (l ^ M))} (hom : Function.Surjective om)

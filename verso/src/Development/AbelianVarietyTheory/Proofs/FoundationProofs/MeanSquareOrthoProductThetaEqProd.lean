@@ -14,15 +14,30 @@ noncomputable def coordLin (D : D7) (T : Tor D) {N N' r : ℕ} (b : Fin r → Ma
   map_add' := fun x y => by simp [coordB, add_mul, Finset.sum_add_distrib]
   map_smul' := fun c x => by simp [coordB, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coordLin_apply (D : D7) (T : Tor D) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E)
     (j : Fin r) (z : VC D N N') : coordLin D T b j z = coordB D T b j z := rfl
 
+/- English proof (translation)
+Rewrite using `[← coordLin_apply, map_sum]`. Simplify using `[coordLin_apply, h1]`.
+-/
 theorem coordB_sum (D : D7) (T : Tor D) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E)
     (h1 : ∀ i j, coordB D T b i (embV D T (b j)) = if i = j then 1 else 0) (u : Fin r → ℂ) (k : Fin r) :
     coordB D T b k (∑ j, u j • embV D T (b j)) = u k := by
   rw [← coordLin_apply, map_sum]
   simp [coordLin_apply, h1]
 
+/- English proof (translation)
+Establish `key : ∀ c : Fin r → ℂ, (∑ τ, ∑ i, ∑ j, z τ i j * (starRingEnd ℂ) ((∑ k, c k • embV D T (b k)) τ i j)) = ∑ k, coordB D T b k z * (starRingEnd ℂ) (c k)`. Introduce `c`. Simplify using `only [coordB, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul, embV]`. Use `symm`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h` using `key fun k => coordB D T b k z`. Rewrite `h` using `[← h2]`. Rewrite using `[h]`. Use `push_cast`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => Complex.mul_conj' _`.
+-/
 theorem parseval (D : D7) (T : Tor D) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E)
     (z : VC D N N') (h2 : z = ∑ j, coordB D T b j z • embV D T (b j)) :
     (∑ τ, ∑ i, ∑ j, z τ i j * (starRingEnd ℂ) (z τ i j)) = ((∑ k, ‖coordB D T b k z‖ ^ 2 : ℝ) : ℂ) := by
@@ -46,6 +61,11 @@ theorem parseval (D : D7) (T : Tor D) {N N' r : ℕ} (b : Fin r → Matrix (Fin 
   push_cast
   exact Finset.sum_congr rfl fun k _ => Complex.mul_conj' _
 
+/- English proof (translation)
+Unfold `U1`. Rewrite using `[norm_mul, Complex.norm_exp, mul_pow, ← Real.exp_nat_mul, mul_assoc, ← Real.exp_add, add_comm z ω]`. Use `congr 2`. Establish `h2 : (2 * (area Λ : ℂ)) = ((2 * area Λ : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[h2, Complex.sub_re, Complex.div_ofReal_re, Complex.div_ofReal_re, Complex.sq_norm, Complex.sq_norm, Complex.normSq_apply, Complex.normSq_apply]`.
+
+Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im, Complex.add_re, Complex.add_im]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaussianWeight_thetaTranslate_normSq (Λ : AddSubgroup ℂ) (g : ℂ → ℂ) (ω z : ℂ) :
     ‖U1 Λ ω g z‖ ^ 2 * Real.exp (-Real.pi * ‖z‖ ^ 2 / area Λ)
       = ‖g (ω + z)‖ ^ 2 * Real.exp (-Real.pi * ‖ω + z‖ ^ 2 / area Λ) := by
@@ -60,6 +80,23 @@ theorem gaussianWeight_thetaTranslate_normSq (Λ : AddSubgroup ℂ) (g : ℂ →
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `D T N N' r b hΛ h1 h2 g _ hg`. Set `eC : VC D N N' ≃ₗ[ℂ] (Fin r → ℂ)` to `{ LinearMap.pi (fun j => coordLin D T b j) with invFun := fun u => ∑ j, u j • embV D T (b j) left_inv := fun z => (h2 z).symm right_inv := fun u => funext fun k => coordB_sum D T b h1 u k }`. Set `e : VC D N N' ≃ₗ[ℝ] (Fin r → ℂ)` to `eC.restrictScalars ℝ`. Establish `he : ∀ z k, e z k = coordB D T b k z` using `fun _ _ => rfl`. Establish `hA : ∀ x, x ∈ LaB D T b ↔ ∀ k, e x k ∈ T.abelian₂`.
+
+Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx k`. Unfold `LaB at hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`.
+
+Consider the case `mem y hy`. Take `⟨w, hw, j, rfl⟩` from `hy`. Rewrite using `[he, ← coordLin_apply, map_smul, coordLin_apply, h1]`. Use `split_ifs`. Simplify using `using hw`.
+
+Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [map_neg]`.
+
+Conclude with `neg_mem hy`. Introduce `hx`. Rewrite using `[h2 x]`. Conclude with `sum_mem fun j _ => AddSubgroup.subset_closure ⟨_, hx j, j, rfl⟩`. Use `haveI i1 : (MeasureTheory.volume : MeasureTheory.Measure (Fin N → ℂ)).IsAddHaarMeasure := MeasureTheory.Measure.pi.isAddHaarMeasure _`.
+
+Use `haveI i2 : (MeasureTheory.volume : MeasureTheory.Measure (Fin N' → Fin N → ℂ)).IsAddHaarMeasure := MeasureTheory.Measure.pi.isAddHaarMeasure _`. Use `haveI i3 : (MeasureTheory.volume : MeasureTheory.Measure (VC D N N')).IsAddHaarMeasure := MeasureTheory.Measure.pi.isAddHaarMeasure _`. Establish `main` using `GlobalTheory.LatticeMean.mean_prod_eq_pow T.abelian₂ hΛ (fun z => ‖g z‖ ^ 2 * Real.exp (-Real.pi * ‖z‖ ^ 2 / area T.abelian₂)) (fun ω hω z => by rw [← gaussianWeight_thetaTranslate_normSq, hg ω hω]) (VC D N N') MeasureTheory.volume r e (LaB D T b) hA`. Unfold `normSq nrm1Sq`. Simplify using `only []`.
+
+Rewrite using `[← main]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[Finset.prod_mul_distrib, ← Real.exp_sum, Hf, parseval D T b z (h2 z), Complex.div_ofReal_re, Complex.ofReal_re, pullB, norm_prod, ← Finset.prod_pow]`. Simplify using `only [he]`.
+
+Use `congr 2`. Rewrite using `[← Finset.sum_div, ← Finset.mul_sum, mul_div_assoc]`.
+-/
 theorem normSq_pullB : ∀ (D : D7) (T : Tor D) (N N' r : ℕ) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E), (∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ T.abelian₂ = AddSubgroup.closure {w₁, w₂}) → (∀ i j, coordB D T b i (embV D T (b j)) = if i = j then 1 else 0) → (∀ z : VC D N N', z = ∑ j, coordB D T b j z • embV D T (b j)) → ∀ g : ℂ → ℂ, Continuous g → (∀ ω ∈ T.abelian₂, ∀ z, ‖U1 T.abelian₂ ω g z‖ = ‖g z‖) → normSq D T (LaB D T b) (pullB D T b g) = nrm1Sq T.abelian₂ g ^ r := by
   intro D T N N' r b hΛ h1 h2 g _ hg
   let eC : VC D N N' ≃ₗ[ℂ] (Fin r → ℂ) :=

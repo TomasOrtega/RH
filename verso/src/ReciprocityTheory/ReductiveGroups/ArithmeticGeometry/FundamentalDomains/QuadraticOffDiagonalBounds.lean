@@ -9,6 +9,11 @@ open scoped ComplexConjugate ComplexOrder
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `h` using `hM.dotProduct_mulVec_nonneg (star v)`. Establish `e : dotProduct (star (star v)) ((Matrix.of M).mulVec (star v)) = ∑ i, ∑ k, M i k * v i * conj (v k)`. Simplify using `only [star_star, dotProduct, Matrix.mulVec, Matrix.of_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.star_apply, ← starRingEnd_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Simplify using `using (Complex.le_def.mp h).1`.
+-/
 theorem quad_nonneg {M : Fin 2 → Fin 2 → ℂ} (hM : (Matrix.of M).PosSemidef) (v : Fin 2 → ℂ) :
     0 ≤ (∑ i, ∑ k, M i k * v i * conj (v k)).re := by
   have h := hM.dotProduct_mulVec_nonneg (star v)
@@ -20,6 +25,13 @@ theorem quad_nonneg {M : Fin 2 → Fin 2 → ℂ} (hM : (Matrix.of M).PosSemidef
   rw [e] at h
   simpa using (Complex.le_def.mp h).1
 
+/- English proof (translation)
+Establish `hid : (∑ i, ∑ k, M i k * (α • v + β • w) i * conj ((α • v + β • w) k)) + (∑ i, ∑ k, M i k * (conj β • v - conj α • w) i * conj ((conj β • v - conj α • w) k)) = (α * conj α + β * conj β) * ((∑ i, ∑ k, M i k * v i * conj (v k)) + (∑ i, ∑ k, M i k * w i * conj (w k)))`. Simplify using `only [Fin.sum_univ_two, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_add, map_sub, map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `quad_nonneg hM (conj β • v - conj α • w)`. Establish `hαβ : α * conj α + β * conj β = ((‖α‖ ^ 2 + ‖β‖ ^ 2 : ℝ) : ℂ)`.
+
+Rewrite using `[Complex.mul_conj, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hre` using `congrArg Complex.re hid`. Rewrite `hre` using `[Complex.add_re, hαβ, Complex.re_ofReal_mul, Complex.add_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem quad_comb {M : Fin 2 → Fin 2 → ℂ} (hM : (Matrix.of M).PosSemidef) (α β : ℂ)
     (v w : Fin 2 → ℂ) :
     (∑ i, ∑ k, M i k * (α • v + β • w) i * conj ((α • v + β • w) k)).re ≤
@@ -41,6 +53,17 @@ theorem quad_comb {M : Fin 2 → Fin 2 → ℂ} (hM : (Matrix.of M).PosSemidef) 
   rw [Complex.add_re, hαβ, Complex.re_ofReal_mul, Complex.add_re] at hre
   linarith
 
+/- English proof (translation)
+Establish `d0` using `quad_nonneg hM ![1, 0]`. Establish `d1` using `quad_nonneg hM ![0, 1]`. Simplify using `[Fin.sum_univ_two] at d0 d1`. Break down `eq_or_ne (M 0 1) 0 with h0 | h0` into its components or cases. Rewrite using `[h0, norm_zero, mul_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn : 0 < ‖M 0 1‖` using `norm_pos_iff.mpr h0`. Establish `hs : M 0 1 * conj (M 0 1) = ((‖M 0 1‖ : ℝ) : ℂ) ^ 2`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.ofReal_pow]`. Establish `h` using `quad_nonneg hM ![conj (M 0 1), -((‖M 0 1‖ : ℝ) : ℂ)]`.
+
+Establish `e : (∑ i, ∑ k, M i k * ![conj (M 0 1), -((‖M 0 1‖ : ℝ) : ℂ)] i * conj (![conj (M 0 1), -((‖M 0 1‖ : ℝ) : ℂ)] k)) = ((‖M 0 1‖ ^ 2 : ℝ) : ℂ) * (M 0 0 + M 1 1) - ((2 * ‖M 0 1‖ ^ 3 : ℝ) : ℂ)`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, map_neg, Complex.conj_conj, Complex.conj_ofReal, h10]`. Use `push_cast`. Take the linear combination `(M 0 0 - 2 * ((‖M 0 1‖ : ℝ) : ℂ)) * hs`. Rewrite `h` using `[e]`.
+
+Establish `h'` using `h`. Simplify using `only [Complex.zero_re, Complex.sub_re, Complex.re_ofReal_mul, Complex.add_re, Complex.ofReal_re] at h'`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hm` using `mul_lt_mul_of_pos_left hlt (pow_pos hn 2)`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem offdiag_le {M : Fin 2 → Fin 2 → ℂ} (hM : (Matrix.of M).PosSemidef)
     (h10 : M 1 0 = conj (M 0 1)) : 2 * ‖M 0 1‖ ≤ (M 0 0).re + (M 1 1).re := by
   have d0 := quad_nonneg hM ![1, 0]
@@ -71,6 +94,9 @@ theorem offdiag_le {M : Fin 2 → Fin 2 → ℂ} (hM : (Matrix.of M).PosSemidef)
 
 variable {r : ℕ} {X : Data E r}
 
+/- English proof (translation)
+Simplify using `only [Data.Hf, hermC, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem Hf_smul_add_smul_right (z : Frame X.Ψ r) (τ : X.Ψ) (u v w : Fin r → ℂ) (a b : ℂ) :
     X.Hf z τ u (a • v + b • w) = conj a * X.Hf z τ u v + conj b * X.Hf z τ u w := by
   simp only [Data.Hf, hermC, Finset.mul_sum, ← Finset.sum_add_distrib]
@@ -78,6 +104,23 @@ private theorem Hf_smul_add_smul_right (z : Frame X.Ψ r) (τ : X.Ψ) (u v w : F
   simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul]
   ring
 
+/- English proof (translation)
+Establish `hc : ∀ u w, conj (X.Hf z τ u w) = X.Hf z τ w u` using `fun u w => UnipotentCoefficientShift.Hf_conj hz τ u w`. Establish `hL : ∀ w, X.Hf z τ e w = a0 * X.Hf z τ f1 w + a1 * X.Hf z τ f2 w`. Introduce `w`. Rewrite using `[← hc w e, he, Hf_smul_add_smul_right, map_add, map_mul, map_mul, Complex.conj_conj, Complex.conj_conj, hc, hc]`. Establish `h2' : a0 * X.Hf z τ f1 f1 + a1 * X.Hf z τ f2 f1 = 0` using `by rw [← hL, h2]`.
+
+Establish `hee : X.Hf z τ e e = conj a0 * X.Hf z τ e f1 + conj a1 * X.Hf z τ e f2`. Use `Hf_smul_add_smul_right z τ e f1 f2 a0 a1` as an intermediate fact. Rewrite `this` using `[← he]`. Then use the resulting hypothesis. Rewrite `hee` using `[h2, mul_zero, zero_add, hL f2, ← hc f2 f1]`. Establish `hA : conj (X.Hf z τ f1 f1) = X.Hf z τ f1 f1` using `hc f1 f1`.
+
+Establish `hD : conj (X.Hf z τ f2 f2) = X.Hf z τ f2 f2` using `hc f2 f2`. Establish `hB : conj a1 * conj (X.Hf z τ f2 f1) = -(conj a0 * X.Hf z τ f1 f1)`. Rewrite using `[← map_mul, show a1 * X.Hf z τ f2 f1 = -(a0 * X.Hf z τ f1 f1) by linear_combination h2', map_neg, map_mul, hA]`. Establish `hee2 : X.Hf z τ e e = -(a0 * conj a0) * X.Hf z τ f1 f1 + (a1 * conj a1) * X.Hf z τ f2 f2`. Rewrite using `[hee]`.
+
+Take the linear combination `a0 * hB`. Establish `hAr : ((X.Hf z τ f1 f1).re : ℂ) = X.Hf z τ f1 f1` using `Complex.conj_eq_iff_re.mp hA`. Establish `hDr : ((X.Hf z τ f2 f2).re : ℂ) = X.Hf z τ f2 f2` using `Complex.conj_eq_iff_re.mp hD`. Establish `hre : (X.Hf z τ e e).re = -(‖a0‖ ^ 2) * (X.Hf z τ f1 f1).re + ‖a1‖ ^ 2 * (X.Hf z τ f2 f2).re`. Rewrite using `[hee2, ← hAr, ← hDr, Complex.mul_conj, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq]`.
+
+Simplify using `only [Complex.add_re, Complex.mul_re, Complex.neg_re, Complex.neg_im, Complex.ofReal_re, Complex.ofReal_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[hre]`. Establish `key : ‖a1‖ ^ 2 * (c * (X.Hf z τ f2 f2).re) = 1 + ‖a0‖ ^ 2`. Take the linear combination `h3 + ‖a0‖ ^ 2 * h1`.
+
+Establish `ha1 : a1 ≠ 0`. Introduce `h0`. Rewrite `key` using `[h0, norm_zero]`. Use polynomial arithmetic with `[sq_nonneg ‖a0‖]`. Establish `hn : 0 < ‖a1‖` using `norm_pos_iff.mpr ha1`.
+
+Establish `hcd : c * (X.Hf z τ f2 f2).re = (1 + ‖a0‖ ^ 2) / ‖a1‖ ^ 2`. Rewrite using `[eq_div_iff (by positivity)]`. Take the linear combination `key`. Use `⟨-a0 * a1⁻¹, a1⁻¹, by ring, inv_mul_cancel₀ ha1, ?_⟩` and prove the remaining obligations. Rewrite using `[hcd, norm_mul, norm_neg, norm_inv]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coord {z : Frame X.Ψ r} (hz : z ∈ X.dom) (τ : X.Ψ) (f1 f2 e : Fin r → ℂ) (a0 a1 : ℂ)
     (c : ℝ) (he : e = a0 • f1 + a1 • f2) (h1 : c * (X.Hf z τ f1 f1).re = 1)
     (h2 : X.Hf z τ e f1 = 0) (h3 : c * (X.Hf z τ e e).re = 1) :

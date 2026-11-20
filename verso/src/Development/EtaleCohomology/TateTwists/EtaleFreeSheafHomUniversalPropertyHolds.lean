@@ -23,16 +23,25 @@ noncomputable def desc (P : PSh) (F : Shv R) (a : ∀ U : Scheme.{0}, P.obj (op 
     erw [ModuleCat.free_map_apply, ModuleCat.freeDesc_apply, ModuleCat.freeDesc_apply]
     exact this.symm
 
+/- English proof (translation)
+The claim follows from `ModuleCat.free_map_apply _ _`.
+-/
 lemma freePresheaf_map_generator {P Q : PSh} (f : P ⟶ Q) (U : Scheme.{0}) (x : P.obj (op U)) :
     (((freeP R).map f).app (op U)).hom (ModuleCat.freeMk (ULift.up x) : ((freeP R).obj P).obj (op U)) =
       (ModuleCat.freeMk (ULift.up (f.app (op U) x)) : ((freeP R).obj Q).obj (op U)) :=
   ModuleCat.free_map_apply _ _
 
+/- English proof (translation)
+The claim follows from `ModuleCat.free_map_apply _ _`.
+-/
 lemma freePresheaf_obj_map_generator (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)) :
     (((freeP R).obj P).map g.op).hom (ModuleCat.freeMk (ULift.up x) : ((freeP R).obj P).obj (op U)) =
       (ModuleCat.freeMk (ULift.up (P.map g.op x)) : ((freeP R).obj P).obj (op V)) :=
   ModuleCat.free_map_apply _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma gen_eq (P : PSh) (F : Shv R) (φ : (free R).obj P ⟶ F) (U : Scheme.{0}) (x : P.obj (op U)) :
     Sec.map φ (freeGen R P U x) =
       ((toSheafify Scheme.etaleTopology ((freeP R).obj P) ≫ φ.hom).app (op U)).hom
@@ -41,6 +50,19 @@ lemma gen_eq (P : PSh) (F : Shv R) (φ : (free R).obj P ⟶ F) (U : Scheme.{0}) 
 end LateralTheory.EtaleFoundations.FreeHomPf
 
 open LateralTheory.EtaleFoundations.FreeHomPf in
+/- English proof (translation)
+Introduce `R _ P F`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Use `⟨⟨sheafifyLift Scheme.etaleTopology (desc R P F a ha) F.property⟩, fun U x => ?_⟩` and prove the remaining obligations. Use `(gen_eq R P F _ U x).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[toSheafify_sheafifyLift]`. Conclude with `ModuleCat.freeDesc_apply _ _`. Introduce `φ ψ h`. Apply `Sheaf.hom_ext` to reduce the goal to its premises. Apply `sheafify_hom_ext Scheme.etaleTopology _ _ F.property` to reduce the goal to its premises.
+
+Use extensionality with `U : 2`. Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce `x`. Use `h U.unop x.down` as an intermediate fact. Rewrite `this` using `[gen_eq, gen_eq]`.
+
+Conclude with `this`. Introduce `V U g x`. Establish `hn` using `(toSheafify Scheme.etaleTopology ((freeP R).obj P)).naturality g.op`. Combine the equalities or inequalities in the displayed calculation. Introduce `Q f U x`.
+
+Establish `hn` using `congrArg (fun η => η.app (op U)) (toSheafify_naturality Scheme.etaleTopology ((freeP R).map f))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [NatTrans.comp_app] at hn`. Rewrite using `[hn]`. Use `_ = ((toSheafify Scheme.etaleTopology ((freeP R).obj Q)).app (op U)).hom ((((freeP R).map f).app (op U)).hom (ModuleCat.freeMk (ULift.up x) : ((freeP R).obj P).obj (op U))) := rfl`.
+
+Use `_ = _ := by rw [freePresheaf_map_generator]; rfl`.
+-/
 theorem LateralTheory.EtaleFoundations.etale_free_sheaf_hom_universal_property_holds : LateralTheory.EtaleFoundations.EtaleFreeSheafUniversalProperty := by
   intro R _ P F
   refine ⟨?_, ?_, ?_, ?_⟩

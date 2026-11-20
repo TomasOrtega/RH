@@ -35,17 +35,26 @@ variable (W : WittDat X)
 def FlagOfWord (u : D.what₂.Word) : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E) :=
   Formalism.L2.SG.Saturated.mapFlag (W.δ u) (W.isom u) (X.Fu u)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Use `show W.δ u ((X.Fu u).e a) = D.sp.hypE a`. Rewrite using `[X.Fu_e u]`. Conclude with `W.e_eq u a`.
+-/
 theorem F0rec_e (u : D.what₂.Word) : (FlagOfWord W u).e = D.sp.hypE := by
   funext a
   show W.δ u ((X.Fu u).e a) = D.sp.hypE a
   rw [X.Fu_e u]
   exact W.e_eq u a
 
+/- English proof (translation)
+Use `show W.δ u (X.Fu u).z = D.zmOf u`. Rewrite using `[X.flagZVector u]`. Conclude with `W.z_eq u`.
+-/
 theorem F0rec_z_eq_zmOf (u : D.what₂.Word) : (FlagOfWord W u).z = D.zmOf u := by
   show W.δ u (X.Fu u).z = D.zmOf u
   rw [X.flagZVector u]
   exact W.z_eq u
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mapL_lf (u : D.what₂.Word) : mapL (W.δ u) (W.isom u) (lf D (X.Fu u)) = lf D (FlagOfWord W u) := rfl
 
 def rowsRec (Y : Formalism.L2.SG.Full.Full X) (u : D.what₂.Word) : Finset (Submodule (𝓞 D.host.E) (VS D).V) :=
@@ -59,24 +68,39 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : �
   (β : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianLatticesTheory.isom S.hT)
 
 include hβ in
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Simplify using `only [Formalism.MainNotions.S.Zhat, Formalism.MainNotions.S.brS, Formalism.L2.SG.Saturated.fvec_mapFlag, Formalism.L2.SG.Saturated.isom_apply hβ]`.
+-/
 theorem zhat_mapFlag (F : FlagG S r T) (F' : FlagG S r T') :
     Formalism.MainNotions.S.Zhat (Formalism.L2.SG.Saturated.mapFlag β hβ F) (Formalism.L2.SG.Saturated.mapFlag β hβ F') = Formalism.MainNotions.S.Zhat F F' := by
   funext a b
   simp only [Formalism.MainNotions.S.Zhat, Formalism.MainNotions.S.brS, Formalism.L2.SG.Saturated.fvec_mapFlag, Formalism.L2.SG.Saturated.isom_apply hβ]
 
 include hβ in
+/- English proof (translation)
+Simplify using `only [Formalism.MainNotions.S.Gflag, Formalism.MainNotions.S.Dl, zhat_mapFlag β hβ]`.
+-/
 theorem gflag_mapFlag (F : FlagG S r T) (F' : FlagG S r T') :
     Formalism.MainNotions.S.Gflag (Formalism.L2.SG.Saturated.mapFlag β hβ F) (Formalism.L2.SG.Saturated.mapFlag β hβ F') = Formalism.MainNotions.S.Gflag F F' := by
   simp only [Formalism.MainNotions.S.Gflag, Formalism.MainNotions.S.Dl, zhat_mapFlag β hβ]
 
 include hβ in
+/- English proof (translation)
+The claim follows from `zhat_mapFlag β hβ F.fl F'.fl`.
+-/
 theorem zhatL_mapL (F : LFlag S r T) (F' : LFlag S r T') :
     ZhatL (mapL β hβ F) (mapL β hβ F') = ZhatL F F' := zhat_mapFlag β hβ F.fl F'.fl
 
 include hβ in
+/- English proof (translation)
+The claim follows from `gflag_mapFlag β hβ F.fl F'.fl`.
+-/
 theorem gval_mapL (F : LFlag S r T) (F' : LFlag S r T') : Gval (mapL β hβ F) (mapL β hβ F') = Gval F F' := gflag_mapFlag β hβ F.fl F'.fl
 
 include hβ in
+/- English proof (translation)
+Unfold `Formalism.L2.SG.FourParts.InSF`. Rewrite using `[Formalism.L2.SG.Pf.Xsp_mapL (β := β) (hβ := hβ)]`. Simplify using `only [Formalism.L2.SG.Pf.Xflag_mapL (β := β) (hβ := hβ)]`. Simplify using `only [Submodule.mem_map_equiv, Formalism.L2.SG.Saturated.mapL, Formalism.L2.SG.Saturated.mapFlag, map_sub, LinearEquiv.symm_apply_apply]`.
+-/
 theorem inSF_mapL (F : LFlag S r T) (F' : LFlag S r T') :
     Formalism.L2.SG.FourParts.InSF (mapL β hβ F) (mapL β hβ F') ↔ Formalism.L2.SG.FourParts.InSF F F' := by
   unfold Formalism.L2.SG.FourParts.InSF
@@ -86,6 +110,15 @@ theorem inSF_mapL (F : LFlag S r T) (F' : LFlag S r T') :
     LinearEquiv.symm_apply_apply]
 
 include hβ in
+/- English proof (translation)
+Unfold `Formalism.L2.SG.FourParts.IsIdF`. Rewrite using `[Formalism.L2.SG.Pf.Xsp_mapL (β := β) (hβ := hβ)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, h1, h2⟩`. Use `⟨β⁻¹ * n * β, (Formalism.L2.SG.Pf.mem_NLam_map (β := β) (hβ := hβ) Λ F n).1 hn, fun a => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `h1 a`. Express the relevant statement in the definitionally equal form `n (β (F.fl.e a)) = β (F'.fl.e a) at h`. Express the relevant statement in the definitionally equal form `β.symm (n (β (F.fl.e a))) = F'.fl.e a`. Rewrite using `[h, LinearEquiv.symm_apply_apply]`. Rewrite `h2` using `[Submodule.mem_map_equiv]`.
+
+Express the relevant statement in the definitionally equal form `β.symm (n (β F.fl.z) - β F'.fl.z) ∈ Xsp F at h2`. Express the relevant statement in the definitionally equal form `β.symm (n (β F.fl.z)) - F'.fl.z ∈ Xsp F`. Rewrite `h2` using `[map_sub, LinearEquiv.symm_apply_apply]`. Then use the resulting hypothesis. Introduce and unpack `⟨n, hn, h1, h2⟩`. Use `⟨β * n * β⁻¹, (Formalism.L2.SG.Pf.conj_mem_NLam (β := β) (hβ := hβ) Λ F n).2 hn, fun a => ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `β (n (β.symm (β (F.fl.e a)))) = β (F'.fl.e a)`. Rewrite using `[LinearEquiv.symm_apply_apply, h1 a]`. Rewrite using `[Submodule.mem_map_equiv]`. Express the relevant statement in the definitionally equal form `β.symm (β (n (β.symm (β F.fl.z))) - β F'.fl.z) ∈ Xsp F`. Rewrite using `[LinearEquiv.symm_apply_apply, ← map_sub, LinearEquiv.symm_apply_apply]` and apply the resulting hypothesis.
+-/
 theorem isIdF_mapL (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFlag S r T') :
     Formalism.L2.SG.FourParts.IsIdF (Formalism.HermitianLatticesTheory.gmap β Λ) (mapL β hβ F) (mapL β hβ F') ↔
       Formalism.L2.SG.FourParts.IsIdF Λ F F' := by
@@ -116,6 +149,11 @@ section Terms
 
 variable {D : D7} {X : HidaSetting D} {Y : Formalism.L2.SG.Full.Full X} {hF : FinX Y}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, hm⟩, hF'⟩`. Establish `key : Q F' = Q (Quot.out t.cls).1` using `congrArg (Quot.lift (fun x : TermDef.Carrier (TermDef.PD D t.lam (lf D (X.Fu u)) u') => Q x.1) (fun x y hxy => propext (hQ x y hxy))) (hm.trans (Quot.out_eq t.cls).symm)`. Conclude with `key.mp hF'`. Introduce `hq`.
+
+Conclude with `⟨(Quot.out t.cls).1, Exists.intro (Quot.out t.cls).2 (Quot.out_eq t.cls), hq⟩`.
+-/
 theorem ex_rep_iff {u u' : D.what₂.Word} (t : RT Y u u')
     (Q : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) → Prop)
     (hQ : ∀ x y : TermDef.Carrier (TermDef.PD D t.lam (lf D (X.Fu u)) u'),
@@ -153,6 +191,15 @@ def LatIso : Prop :=
       (Submodule.IsLattice D.host.E Λ → Submodule.IsLattice D.host.E (Formalism.HermitianLatticesTheory.gmap β Λ)) ∧
       (Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ → Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT (Formalism.HermitianLatticesTheory.gmap β Λ))
 
+/- English proof (translation)
+Take `⟨hg, ⟨hlat, hun, hlift, hfix⟩, hX⟩` from `h`. Take `⟨h1, h2, h3⟩` from `hL β hβ Λ`. Use `⟨h1 hg, ⟨h2 hlat, h3 hun, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(Formalism.L2.SG.Pf.IsLift_mapL (β := β) (hβ := hβ) Λ (lf D F0)).mpr hlift`. Conclude with `(Formalism.L2.SG.Pf.IsFixedConv_mapL (β := β) (hβ := hβ) (gS D) Λ (lf D F0)).mpr hfix`.
+
+Use `show XLam (Formalism.HermitianLatticesTheory.gmap β Λ) (mapL β hβ (lf D F0)) = _`. Rewrite using `[Formalism.L2.SG.Pf.XLam_mapL (β := β) (hβ := hβ) Λ (lf D F0), hX]`. Unfold `Formalism.MainNotions.S.XS Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.map_span]`. Use `congr 1`.
+
+Use extensionality with `y`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y0, ⟨a, x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, x, hx, by simp [Formalism.L2.SG.Saturated.mapFlag]⟩`.
+
+Introduce and unpack `⟨a, x, hx, rfl⟩`. Conclude with `⟨x • F0.e a, ⟨a, x, hx, rfl⟩, by simp [Formalism.L2.SG.Saturated.mapFlag]⟩`.
+-/
 theorem rowLat_map (hL : LatIso D) {T : D.host.E} (β : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hβ : β ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) (F0 : FlagG (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (h : IsRowLat D F0 Λ) : IsRowLat D (Formalism.L2.SG.Saturated.mapFlag β hβ F0) (Formalism.HermitianLatticesTheory.gmap β Λ) := by
@@ -174,15 +221,29 @@ theorem rowLat_map (hL : LatIso D) {T : D.host.E} (β : (VS D).V ≃ₗ[D.host.E
     · rintro ⟨a, x, hx, rfl⟩
       exact ⟨x • F0.e a, ⟨a, x, hx, rfl⟩, by simp [Formalism.L2.SG.Saturated.mapFlag]⟩
 
+/- English proof (translation)
+The claim follows from `(Y.rowsOK u).1 _ (tc hI t).mem`.
+-/
 theorem rowLat_tc {u u' : D.what₂.Word} (t : D.s.Term u u') : IsRowLat D (X.Fu u) (tc hI t).lam := (Y.rowsOK u).1 _ (tc hI t).mem
 
+/- English proof (translation)
+The claim follows from `(rowLat_map hL (W.δ u) (W.isom u) (X.Fu u) _ (rowLat_tc hI t)).2.1`.
+-/
 theorem fixedC (hL : LatIso D) {u u' : D.what₂.Word} (t : D.s.Term u u') :
     FixedHyp D (lamOf W hI t) (lf D (FlagOfWord W u)) := (rowLat_map hL (W.δ u) (W.isom u) (X.Fu u) _ (rowLat_tc hI t)).2.1
 
+/- English proof (translation)
+The claim follows from `(Formalism.L2.SG.Pf.positive_definite_isomorphism D u' (W.δ u) (W.isom u) (tc hI t).lam (lf D (X.Fu u)) (repF (tc hI t))).2 (Quot.out (tc hI t).cls).2`.
+-/
 theorem pdC {u u' : D.what₂.Word} (t : D.s.Term u u') :
     TermDef.PD D (lamOf W hI t) (lf D (FlagOfWord W u)) u' (fl'Of W hI t) := (Formalism.L2.SG.Pf.positive_definite_isomorphism D u' (W.δ u) (W.isom u) (tc hI t).lam (lf D (X.Fu u)) (repF (tc hI t))).2
     (Quot.out (tc hI t).cls).2
 
+/- English proof (translation)
+Rewrite using `[hI.inS t]`. Use `show Formalism.L2.SG.FourParts.termInS (tc hI t) ↔ _`. Unfold `Formalism.L2.SG.FourParts.termInS`. Use `conv_lhs => rw [← Quot.out_eq (tc hI t).cls]`. Use `(Formalism.L2.SG.FourParts.isInS_mk (PI.InSClassConstW.inSFun_all _ _ _) _).trans ?_` and prove the remaining obligations.
+
+Conclude with `(inSF_mapL (W.δ u) (W.isom u) _ _).symm`.
+-/
 theorem inS_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
     D.s.inS t ↔ Formalism.L2.SG.FourParts.InSF (lf D (FlagOfWord W u)) (fl'Of W hI t) := by
   rw [hI.inS t]
@@ -192,6 +253,13 @@ theorem inS_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
   refine (Formalism.L2.SG.FourParts.isInS_mk (PI.InSClassConstW.inSFun_all _ _ _) _).trans ?_
   exact (inSF_mapL (W.δ u) (W.isom u) _ _).symm
 
+/- English proof (translation)
+Rewrite using `[hI.isId t]`. Express the relevant statement in the definitionally equal form `Formalism.L2.SG.FourParts.IsIdT _ _ _ (tc hI t).cls ↔ _`. Use `Iff.trans ?_ (isIdF_mapL (W.δ u) (W.isom u) (tc hI t).lam (lf D (X.Fu u)) (repF (tc hI t))).symm` and prove the remaining obligations. Establish `hrow` using `rowLat_tc hI t`. Unfold `Formalism.L2.SG.FourParts.IsIdT`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, hm⟩, hid⟩`. Establish `h2` using `(ex_rep_iff (tc hI t) _ (Formalism.L2.SG.Closed.TermInSFun_holds D u u' (X.Fu u) _ hrow)).1 ⟨F', ⟨h, hm⟩, Formalism.L2.SG.FourParts.inSF_of_isIdF _ hid⟩`. Conclude with `Formalism.L2.SG.Closed.TermIdIffInS_holds D u u' (X.Fu u) _ hrow (Quot.out (tc hI t).cls) (Formalism.L2.SG.Closed.TermInSRel_holds D u u' (X.Fu u) _ hrow (Quot.out (tc hI t).cls) h2) h2`. Introduce `h`.
+
+Conclude with `⟨_, ⟨(Quot.out (tc hI t).cls).2, Quot.out_eq _⟩, h⟩`.
+-/
 theorem isId_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
     D.s.isId t ↔ Formalism.L2.SG.FourParts.IsIdF (lamOf W hI t) (lf D (FlagOfWord W u)) (fl'Of W hI t) := by
   rw [hI.isId t]
@@ -208,16 +276,27 @@ theorem isId_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
   · intro h
     exact ⟨_, ⟨(Quot.out (tc hI t).cls).2, Quot.out_eq _⟩, h⟩
 
+/- English proof (translation)
+Rewrite using `[hI.Gterm t]`. Both sides reduce to the same expression.
+-/
 theorem gterm_val {u u' : D.what₂.Word} (t : D.s.Term u u') :
     algebraMap D.host.F D.host.E (D.s.Gterm t) = (tc hI t).G := by
   rw [hI.Gterm t]
   rfl
 
+/- English proof (translation)
+Rewrite using `[gterm_val hI t]`. Conclude with `(gval_mapL (W.δ u) (W.isom u) (lf D (X.Fu u)) (repF (tc hI t))).symm`.
+-/
 theorem G_eqC {u u' : D.what₂.Word} (t : D.s.Term u u') :
     algebraMap D.host.F D.host.E (D.s.Gterm t) = Gval (lf D (FlagOfWord W u)) (fl'Of W hI t) := by
   rw [gterm_val hI t]
   exact (gval_mapL (W.δ u) (W.isom u) (lf D (X.Fu u)) (repF (tc hI t))).symm
 
+/- English proof (translation)
+Rewrite using `[hI.relevant t]`. Use `show (tc hI t).relevant ↔ _`. Unfold `TermDef.Term.relevant`. Use `conv_lhs => rw [← Quot.out_eq (tc hI t).cls]`. Use `(TermDef.isRel_mk _ (PI.TermAttrConst.UnitaryGroupMassFormula.relFun_all _ _ _ _) _).trans ?_` and prove the remaining obligations.
+
+Conclude with `(Formalism.L2.SG.Pf.relevant_mapFlag (β := W.δ u) (hβ := W.isom u) _ _ _).symm`.
+-/
 theorem rel_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
     D.s.relevant t ↔ Relevant D.host.F (lf D (FlagOfWord W u)).fl (fl'Of W hI t).fl := by
   rw [hI.relevant t]
@@ -227,6 +306,11 @@ theorem rel_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
   refine (TermDef.isRel_mk _ (PI.TermAttrConst.UnitaryGroupMassFormula.relFun_all _ _ _ _) _).trans ?_
   exact (Formalism.L2.SG.Pf.relevant_mapFlag (β := W.δ u) (hβ := W.isom u) _ _ _).symm
 
+/- English proof (translation)
+Rewrite using `[hI.generic t]`. Use `show (tc hI t).generic ↔ _`. Unfold `TermDef.Term.generic`. Use `conv_lhs => rw [← Quot.out_eq (tc hI t).cls]`. Use `(TermDef.isGen_mk (gS D) ((term_function_const D u u' (X.Fu u) (tc hI t).lam ((Y.rowsOK u).1 _ (tc hI t).mem)).2.2.2.1) _).trans ?_` and prove the remaining obligations.
+
+Conclude with `(Formalism.L2.SG.Pf.generic_isomorphism_holds (gS D) _ _ (W.δ u) (W.isom u) (tc hI t).lam (lf D (X.Fu u)) (repF (tc hI t))).symm`.
+-/
 theorem gen_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
     D.s.generic t ↔ IsGeneric (lamOf W hI t) (gS D) (lf D (FlagOfWord W u)) (fl'Of W hI t) := by
   rw [hI.generic t]
@@ -238,6 +322,11 @@ theorem gen_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
   exact (Formalism.L2.SG.Pf.generic_isomorphism_holds (gS D) _ _ (W.δ u) (W.isom u) (tc hI t).lam (lf D (X.Fu u))
     (repF (tc hI t))).symm
 
+/- English proof (translation)
+Rewrite using `[hI.FeqF t]`. Use `show (tc hI t).FeqF ↔ _`. Unfold `TermDef.Term.FeqF`. Use `conv_lhs => rw [← Quot.out_eq (tc hI t).cls]`. Use `(TermDef.isFeqF_mk (PI.TermAttrConst.UnitaryGroupMassFormula.feqFFun_all _ _ _) _).trans ?_` and prove the remaining obligations.
+
+Conclude with `(Formalism.L2.SG.Pf.flag_equivalence_isomorphism _ _ (W.δ u) (W.isom u) (tc hI t).lam (lf D (X.Fu u)) (repF (tc hI t))).symm`.
+-/
 theorem FeqF_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
     D.s.FeqF t ↔ ∃ n ∈ NLam (lamOf W hI t) (lf D (FlagOfWord W u)),
       ∀ a, n (frame (lf D (FlagOfWord W u)) a) = frame (fl'Of W hI t) a := by
@@ -254,6 +343,9 @@ def IdentityCellVanishes (u u' : D.what₂.Word) : Prop := ∀ t : RT Y u u', Fo
 
 include hI in
 
+/- English proof (translation)
+Apply `(algebraMap D.host.F D.host.E).injective` to reduce the goal to its premises. Rewrite using `[map_zero, gterm_val hI t]`. Conclude with `hId u u' _ ((hI.isId t).1 h)`.
+-/
 theorem id_GC (hId : ∀ u u', IdentityCellVanishes Y u u') {u u' : D.what₂.Word} (t : D.s.Term u u') (h : D.s.isId t) :
     D.s.Gterm t = 0 := by
   apply (algebraMap D.host.F D.host.E).injective
@@ -264,6 +356,9 @@ variable (Y) in
 
 def AtSome (u u' : D.what₂.Word) : Prop := ∀ t : RT Y u u', t.G ≠ 0 → t.relevant → ∃ w, t.atPt w
 
+/- English proof (translation)
+Introduce `x y hxy`. Rewrite using `[PI.TermAttrConst.UnitaryGroupMassFormula.gFun_all t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') x y hxy, PI.TermAttrConst.UnitaryGroupMassFormula.cellFun_all t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') x y hxy w]`.
+-/
 theorem cellQ {u u' : D.what₂.Word} (t : RT Y u u') (w : Formalism.MainNotions.S.Point D.host.E (D.R.rS + 1)) :
     ∀ x y : TermDef.Carrier (TermDef.PD D t.lam (lf D (X.Fu u)) u'),
       TermDef.Rel t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') x y →
@@ -273,6 +368,15 @@ theorem cellQ {u u' : D.what₂.Word} (t : RT Y u u') (w : Formalism.MainNotions
   rw [PI.TermAttrConst.UnitaryGroupMassFormula.gFun_all t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') x y hxy,
     PI.TermAttrConst.UnitaryGroupMassFormula.cellFun_all t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') x y hxy w]
 
+/- English proof (translation)
+Establish `hG' : (tc hI t).G ≠ 0`. Introduce `h0`. Apply `hG` to reduce the goal to its premises. Rewrite using `[hI.Gterm t]`. Conclude with `Subtype.ext h0`.
+
+Establish `hr' : (tc hI t).relevant` using `(hI.relevant t).mp hr`. Take `⟨w, hw⟩` from `hAt u u' (tc hI t) hG' hr'`. Establish `hex : ∃ w, (tc hI t).atPt w ∧ (tc hI t).relevant` using `⟨w, hw, hr'⟩`. Rewrite using `[hI.ptOf t]`. Use `show IsInCell _ (Formalism.L2.SG.PairVal.ptOf (tc hI t))`.
+
+Unfold `Formalism.L2.SG.PairVal.ptOf`. Rewrite using `[dif_pos hex]`. Take `⟨h2, -⟩` from `hex.choose_spec`. Generalize the expression as in `hex.choose = w0 at h2 ⊢`. Unfold `TermDef.Term.atPt at h2`.
+
+Rewrite `h2` using `[← Quot.out_eq (tc hI t).cls]`. Establish `h3` using `((TermDef.atPt_mk (PI.TermAttrConst.UnitaryGroupMassFormula.gFun_all _ _ _) (PI.TermAttrConst.UnitaryGroupMassFormula.cellFun_all _ _ _) _ w0).mp h2).2`. Establish `e : ZhatL (lf D (FlagOfWord W u)) (fl'Of W hI t) = ZhatL (lf D (X.Fu u)) (repF (tc hI t))` using `Formalism.L2.SG.Saturated.zhat_mapL (W.δ u) (W.isom u) (lf D (X.Fu u)) (repF (tc hI t))`. Rewrite using `[e]`. Conclude with `h3`.
+-/
 theorem pt_cellC (hAt : ∀ u u', AtSome Y u u') {u u' : D.what₂.Word} (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0)
     (hr : D.s.relevant t) : IsInCell (ZhatOM (ZhatL (lf D (FlagOfWord W u)) (fl'Of W hI t))) (D.s.ptOf t) := by
   have hG' : (tc hI t).G ≠ 0 := by
@@ -298,11 +402,17 @@ theorem pt_cellC (hAt : ∀ u u', AtSome Y u u') {u u' : D.what₂.Word} (t : D.
   rw [e]
   exact h3
 
+/- English proof (translation)
+Take `⟨⟨s₁, h₁⟩, ⟨s₂, h₂⟩, hrow⟩` from `q.2`. Rewrite using `[← h₁, ← h₂]`. Conclude with `congrArg (fun x => (x.1 : Submodule (𝓞 D.host.E) (VS D).V)) hrow`.
+-/
 theorem rp_lam {u u' : D.what₂.Word} (q : RP Y u u') : q.1.1.lam = q.1.2.lam := by
   obtain ⟨⟨s₁, h₁⟩, ⟨s₂, h₂⟩, hrow⟩ := q.2
   rw [← h₁, ← h₂]
   exact congrArg (fun x => (x.1 : Submodule (𝓞 D.host.E) (VS D).V)) hrow
 
+/- English proof (translation)
+Unfold `lamOf tc`. Rewrite using `[hI.pfst p, hI.psnd p]`. Conclude with `congrArg (Formalism.HermitianLatticesTheory.gmap (W.δ u)) (rp_lam (hI.eP u u' p))`.
+-/
 theorem pLamC {u u' : D.what₂.Word} (p : D.s.Pair u u') : lamOf W hI (D.s.pfst p) = lamOf W hI (D.s.psnd p) := by
   unfold lamOf tc
   rw [hI.pfst p, hI.psnd p]
@@ -341,8 +451,14 @@ def JtOf {u u' : D.what₂.Word} (t : D.s.Term u u') : X.Vpi u' →L[ℂ] X.Vpi 
 
 def wRowOf {u u' : D.what₂.Word} (p : D.s.Pair u u') : ℝ := Formalism.MainNotions.S.wRow D (FlagOfWord W u) (lamOf W hI (D.s.pfst p))
 
+/- English proof (translation)
+The claim follows from `Finset.mem_image_of_mem _ (tc hI t).mem`.
+-/
 theorem lamOf_mem {u u' : D.what₂.Word} (t : D.s.Term u u') : lamOf W hI t ∈ rowsRec W Y u := Finset.mem_image_of_mem _ (tc hI t).mem
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.PairVal.wRow_pos (h := hA u _ (lamOf_mem W hI (D.s.pfst p)))`.
+-/
 theorem wRowOf_pos (hA : ∀ u, Formalism.L2.SG.PairVal.AutFin D (FlagOfWord W u) (rowsRec W Y u)) {u u' : D.what₂.Word}
     (p : D.s.Pair u u') : 0 < wRowOf W hI p := Formalism.L2.SG.PairVal.wRow_pos (h := hA u _ (lamOf_mem W hI (D.s.pfst p)))
 
@@ -424,6 +540,11 @@ variable (Y) in
 
 def massTotOf (u : D.what₂.Word) : ℝ := Formalism.MainNotions.S.Cnt.massRows D (FlagOfWord W u) (rowsRec W Y u)
 
+/- English proof (translation)
+Unfold `massTotOf Formalism.MainNotions.S.Cnt.massRows rowsRec`. Rewrite using `[Finset.sum_image (by`. Introduce `A _ B _ h`. Conclude with `PI.TermAttrConst.UnitaryGroupMassFormula.gmap_injective (W.δ u) h)]`. Use `Finset.sum_congr rfl (fun Λ _ => ?_)` and prove the remaining obligations.
+
+Conclude with `hW (W.δ u) (W.isom u) (X.Fu u) Λ`.
+-/
 theorem massTot_eq (hW : WRowIso D) (u : D.what₂.Word) :
     massTotOf Y W u = Formalism.MainNotions.S.Cnt.massRows D (X.Fu u) (Y.what₂ u) := by
   unfold massTotOf Formalism.MainNotions.S.Cnt.massRows rowsRec
@@ -433,6 +554,11 @@ theorem massTot_eq (hW : WRowIso D) (u : D.what₂.Word) :
   refine Finset.sum_congr rfl (fun Λ _ => ?_)
   exact hW (W.δ u) (W.isom u) (X.Fu u) Λ
 
+/- English proof (translation)
+Rewrite using `[hI.massPair P, massTot_eq W hW u]`. Establish `h1 : Formalism.MainNotions.S.wRow D (FlagOfWord W u) (lamOf W hI (D.s.pfst P)) = Formalism.MainNotions.S.wRow D (X.Fu u) (hI.eP u u' P).1.1.lam`. Unfold `lamOf tc`. Rewrite using `[hI.pfst P]`. Conclude with `hW (W.δ u) (W.isom u) (X.Fu u) _`.
+
+Rewrite using `[h1]`. Both sides reduce to the same expression.
+-/
 theorem massPair_val (hW : WRowIso D) {u u' : D.what₂.Word} (P : D.s.Pair u u') :
     D.s.massPair P = Formalism.MainNotions.S.wRow D (FlagOfWord W u) (lamOf W hI (D.s.pfst P)) / massTotOf Y W u := by
   rw [hI.massPair P, massTot_eq W hW u]
@@ -444,6 +570,15 @@ theorem massPair_val (hW : WRowIso D) {u u' : D.what₂.Word} (P : D.s.Pair u u'
   rw [h1]
   rfl
 
+/- English proof (translation)
+Take `⟨n, hn, m, hm, hfr⟩` from `h`. Establish `hlam : (tc hI γ).lam = (tc hI γ').lam` using `(Formalism.L2.SG.Pf.gmap_inj (W.δ u)).1 hL`. Establish `hz : ∀ t : D.s.Term u u', (fl'Of W hI t).zt = frame (fl'Of W hI t) (Fin.last _)`. Introduce `t`. Rewrite using `[(pdC W hI t).1.2]`.
+
+Simplify using `[frame, FlagG.fvec]`. Establish `hdc : TermDef.DCRel (lamOf W hI γ) (mapL (W.δ u) (W.isom u) (lf D (X.Fu u))) (fl'Of W hI γ) (fl'Of W hI γ')` using `⟨n, hn, m, hm, hfr, by rw [hz γ', hz γ]; exact hfr _⟩`. Establish `hdc'` using `(Formalism.L2.SG.Pf.double_coset_isomorphism _ _ (W.δ u) (W.isom u) _ _ _ _).1 hdc`. Apply `(hI.eT u u').injective` to reduce the goal to its premises. Establish `key : ∀ (a b : RT Y u u'), a.lam = b.lam → TermDef.DCRel a.lam (lf D (X.Fu u)) (Quot.out a.cls).1 (Quot.out b.cls).1 → a = b`.
+
+Introduce and unpack `⟨Λ, hm1, c⟩ ⟨Λ', hm2, c'⟩ h hd`. Simplify using `only at h`. Substitute `h` using the available equality. Establish `: c = c'`. Rewrite using `[← Quot.out_eq c, ← Quot.out_eq c']`.
+
+Conclude with `Quot.sound hd`. Substitute `this` using the available equality. Both sides reduce to the same expression. Conclude with `key (tc hI γ) (tc hI γ') hlam hdc'`.
+-/
 theorem term_injC {u u' : D.what₂.Word} (γ γ' : D.s.Term u u') (hL : lamOf W hI γ = lamOf W hI γ')
     (h : ∃ n ∈ NLam (lamOf W hI γ) (lf D (FlagOfWord W u)), ∃ m ∈ NLam (lamOf W hI γ) (fl'Of W hI γ),
       ∀ b, frame (fl'Of W hI γ') b = n (m (frame (fl'Of W hI γ) b))) : γ = γ' := by
@@ -471,6 +606,15 @@ theorem term_injC {u u' : D.what₂.Word} (γ γ' : D.s.Term u u') (hL : lamOf W
 
 include hI in
 
+/- English proof (translation)
+Introduce `γ hγ`. Rewrite using `[hI.ptOf γ]`. Use `show Formalism.MainNotions.S.LocalSplitGroups.Gpt _ _ (Formalism.L2.SG.PairVal.ptOf (tc hI γ)) = 0`. Unfold `Formalism.L2.SG.PairVal.ptOf`. Rewrite using `[dif_neg]`.
+
+Conclude with `Formalism.L2.SG.PairVal.Gpt_junkPoint_eq_zero D u u'`. Introduce and unpack `⟨w, hw, hrel⟩`. Apply `hγ` to reduce the goal to its premises. Use `⟨?_, (hI.relevant γ).mpr hrel⟩` and prove the remaining obligations. Establish `hG : (tc hI γ).G ≠ 0`.
+
+Unfold `TermDef.Term.atPt at hw`. Rewrite `hw` using `[← Quot.out_eq (tc hI γ).cls]`. Conclude with `((TermDef.atPt_mk (PI.TermAttrConst.UnitaryGroupMassFormula.gFun_all _ _ _) (PI.TermAttrConst.UnitaryGroupMassFormula.cellFun_all _ _ _) _ w).mp hw).1`. Introduce `h0`. Rewrite `h0` using `[hI.Gterm γ]`.
+
+Establish `h1 : (((sOf hF).Gterm (hI.eT u u' γ) : D.host.F) : D.host.E) = (tc hI γ).G` using `rfl`. Rewrite `h1` using `[h0]`. Conclude with `hG (by simpa using h1.symm)`.
+-/
 theorem ptOfConvC (u u' : D.what₂.Word) : Formalism.L2.SG.Pf.AtPt.PtOfConv D u u' := by
   intro γ hγ
   rw [hI.ptOf γ]
@@ -538,9 +682,17 @@ def mvCls {u u' : D.what₂.Word} (Λ : Submodule (𝓞 D.host.E) (VS D).V) :
 def toRec {u u' : D.what₂.Word} (t : RT Y u u') : RTrec W Y u u' :=
   ⟨Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam, Finset.mem_image_of_mem _ t.mem, mvCls W t.lam t.cls⟩
 
+/- English proof (translation)
+The claim follows from `congrArg (mvCls W t.lam) (Quot.out_eq t.cls)`.
+-/
 theorem toRec_mk {u u' : D.what₂.Word} (t : RT Y u u') :
     TermDef.mk _ _ _ (mvCar W t.lam (Quot.out t.cls)) = (toRec W Y t).cls := congrArg (mvCls W t.lam) (Quot.out_eq t.cls)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, hm⟩, hF'⟩`. Establish `hr` using `(hrow ⟨F', h⟩ x).1 (hm.trans hx.symm)`. Conclude with `(hQ ⟨F', h⟩ x hr).1 hF'`. Introduce `hq`.
+
+Conclude with `⟨x.1, Exists.intro x.2 hx, hq⟩`.
+-/
 theorem ex_rep_iff_of {u' : D.what₂.Word} {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T}
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hrow : TermDef.EqIff Λ (lf D F0) (TermDef.PD D Λ (lf D F0) u'))
     (c : TermDef.TermQ Λ (lf D F0) (TermDef.PD D Λ (lf D F0) u')) (x : TermDef.Carrier (TermDef.PD D Λ (lf D F0) u'))
@@ -557,16 +709,28 @@ theorem ex_rep_iff_of {u' : D.what₂.Word} {T : D.host.E} {F0 : FlagG (VS D) D.
 
 variable {W Y}
 
+/- English proof (translation)
+The claim follows from `rowLat_map hL (W.δ u) (W.isom u) (X.Fu u) Λ ((Y.rowsOK u).1 Λ hm)`.
+-/
 theorem rowLat_rec (hL : LatIso D) {u : D.what₂.Word} (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hm : Λ ∈ Y.what₂ u) :
     IsRowLat D (FlagOfWord W u) (Formalism.HermitianLatticesTheory.gmap (W.δ u) Λ) := rowLat_map hL (W.δ u) (W.isom u) (X.Fu u) Λ ((Y.rowsOK u).1 Λ hm)
 
+/- English proof (translation)
+The claim follows from `PI.DCRelEquiv.UnitaryGroupMassFormula.eqIffAll_holds _ _ _ _ _ _ _ _`.
+-/
 theorem eqIff_rec (hL : LatIso D) {u u' : D.what₂.Word} (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hm : Λ ∈ Y.what₂ u) :
     TermDef.EqIff (Formalism.HermitianLatticesTheory.gmap (W.δ u) Λ) (lf D (FlagOfWord W u))
       (TermDef.PD D (Formalism.HermitianLatticesTheory.gmap (W.δ u) Λ) (lf D (FlagOfWord W u)) u') := PI.DCRelEquiv.UnitaryGroupMassFormula.eqIffAll_holds _ _ _ _ _ _ _ _
 
+/- English proof (translation)
+The claim follows from `PI.DCRelEquiv.UnitaryGroupMassFormula.eqIffAll_holds _ _ _ _ _ _ _ _`.
+-/
 theorem eqIff_base {u u' : D.what₂.Word} (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hm : Λ ∈ Y.what₂ u) :
     TermDef.EqIff Λ (lf D (X.Fu u)) (TermDef.PD D Λ (lf D (X.Fu u)) u') := PI.DCRelEquiv.UnitaryGroupMassFormula.eqIffAll_holds _ _ _ _ _ _ _ _
 
+/- English proof (translation)
+Take `⟨fl, zt⟩` from `F`. Establish `h : ∀ x, W.δ u ((W.δ u)⁻¹ x) = x` using `fun x => (W.δ u).apply_symm_apply x`. Simplify using `only [Formalism.L2.SG.Saturated.mapL, Formalism.L2.SG.Saturated.mapFlag, h]`.
+-/
 theorem mapL_mapL_inv {u : D.what₂.Word} {T : D.host.E} (F : LFlag (VS D) D.R.rS T) :
     mapL (W.δ u) (W.isom u) (mapL (W.δ u)⁻¹ (Subgroup.inv_mem _ (W.isom u)) F) = F := by
   obtain ⟨fl, zt⟩ := F
@@ -575,6 +739,13 @@ theorem mapL_mapL_inv {u : D.what₂.Word} {T : D.host.E} (F : LFlag (VS D) D.R.
 
 variable (W Y)
 
+/- English proof (translation)
+Introduce `t₁ t₂ h`. Take `⟨l₁, m₁, c₁⟩` from `t₁`. Take `⟨l₂, m₂, c₂⟩` from `t₂`. Establish `hl : l₁ = l₂` using `PI.TermAttrConst.UnitaryGroupMassFormula.gmap_injective (W.δ u) (congrArg TermDef.Term.lam h)`. Substitute `hl` using the available equality.
+
+Take `⟨x₁, rfl⟩` from `Quot.exists_rep c₁`. Take `⟨x₂, rfl⟩` from `Quot.exists_rep c₂`. Establish `hc : TermDef.mk (Formalism.HermitianLatticesTheory.gmap (W.δ u) l₁) (lf D (FlagOfWord W u)) _ (mvCar W l₁ x₁) = TermDef.mk (Formalism.HermitianLatticesTheory.gmap (W.δ u) l₁) (lf D (FlagOfWord W u)) _ (mvCar W l₁ x₂)` using `by injection h with h1 h2`. Establish `hr` using `(eqIff_rec (W := W) (u' := u') hL _ m₁ _ _).1 hc`. Establish `hd` using `(Formalism.L2.SG.Pf.double_coset_isomorphism _ _ (W.δ u) (W.isom u) _ (lf D (X.Fu u)) x₁.1 x₂.1).1 hr`.
+
+Conclude with `congrArg (TermDef.Term.mk _ m₁) (Quot.sound hd)`.
+-/
 theorem toRec_inj (hL : LatIso D) {u u' : D.what₂.Word} : Function.Injective (toRec W Y (u := u) (u' := u')) := by
   intro t₁ t₂ h
   obtain ⟨l₁, m₁, c₁⟩ := t₁
@@ -590,6 +761,13 @@ theorem toRec_inj (hL : LatIso D) {u u' : D.what₂.Word} : Function.Injective (
   have hd := (Formalism.L2.SG.Pf.double_coset_isomorphism _ _ (W.δ u) (W.isom u) _ (lf D (X.Fu u)) x₁.1 x₂.1).1 hr
   exact congrArg (TermDef.Term.mk _ m₁) (Quot.sound hd)
 
+/- English proof (translation)
+Introduce `s`. Take `⟨lam, mem, cls⟩` from `s`. Take `⟨Λ, hΛ, rfl⟩` from `Finset.mem_image.1 mem`. Take `⟨x, rfl⟩` from `Quot.exists_rep cls`. Establish `hx : TermDef.PD D Λ (lf D (X.Fu u)) u' (mapL (W.δ u)⁻¹ (Subgroup.inv_mem _ (W.isom u)) x.1)`.
+
+Apply `(Formalism.L2.SG.Pf.positive_definite_isomorphism D u' (W.δ u) (W.isom u) Λ (lf D (X.Fu u)) _).1` to reduce the goal to its premises. Rewrite using `[mapL_mapL_inv]`. Conclude with `x.2`. Use `⟨⟨Λ, hΛ, TermDef.mk _ _ _ ⟨_, hx⟩⟩, ?_⟩` and prove the remaining obligations. Establish `hc : mvCar W Λ ⟨_, hx⟩ = x` using `Subtype.ext (mapL_mapL_inv _)`.
+
+Establish `hc' : mvCls W Λ (TermDef.mk _ _ _ ⟨_, hx⟩) = TermDef.mk _ _ _ x` using `congrArg (TermDef.mk _ _ _) hc`. Use `show TermDef.Term.mk (Formalism.HermitianLatticesTheory.gmap (W.δ u) Λ) _ (mvCls W Λ (TermDef.mk _ _ _ ⟨_, hx⟩)) = _`. Rewrite using `[hc']`. Both sides reduce to the same expression.
+-/
 theorem toRec_surj {u u' : D.what₂.Word} : Function.Surjective (toRec W Y (u := u) (u' := u')) := by
   intro s
   obtain ⟨lam, mem, cls⟩ := s
@@ -609,15 +787,26 @@ theorem toRec_surj {u u' : D.what₂.Word} : Function.Surjective (toRec W Y (u :
 def termWitt (hL : LatIso D) (u u' : D.what₂.Word) : RT Y u u' ≃ RTrec W Y u u' :=
   Equiv.ofBijective (toRec W Y) ⟨toRec_inj W Y hL, toRec_surj W Y⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem termWitt_apply (hL : LatIso D) {u u' : D.what₂.Word} (t : RT Y u u') : termWitt W Y hL u u' t = toRec W Y t := rfl
 
 variable {W Y}
 
+/- English proof (translation)
+The claim follows from `(eqIff_rec (W := W) (u' := u') hL t.lam t.mem _ _).1 ((toRec_mk W Y t).trans (Quot.out_eq _).symm)`.
+-/
 theorem toRec_rel (hL : LatIso D) {u u' : D.what₂.Word} (t : RT Y u u') :
     TermDef.Rel (Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam) (lf D (FlagOfWord W u))
       (TermDef.PD D (Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam) (lf D (FlagOfWord W u)) u')
       (mvCar W t.lam (Quot.out t.cls)) (Quot.out (toRec W Y t).cls) := (eqIff_rec (W := W) (u' := u') hL t.lam t.mem _ _).1 ((toRec_mk W Y t).trans (Quot.out_eq _).symm)
 
+/- English proof (translation)
+Establish `h : TermDef.DCRel _ _ _ _` using `toRec_rel (W := W) (Y := Y) hL t`. Establish `e : ∀ l, Formalism.MainNotions.S.Dl (FlagOfWord W u) (Quot.out (toRec W Y t).cls).1.fl l = Formalism.MainNotions.S.Dl (FlagOfWord W u) (mvCar W t.lam (Quot.out t.cls)).1.fl l` using `PI.TermAttrConst.UnitaryGroupMassFormula.dl_eq _ h`. Establish `hx : (toRec W Y t).G = Gval (lf D (FlagOfWord W u)) (mvCar W t.lam (Quot.out t.cls)).1` using `by show Formalism.MainNotions.S.Gflag _ _ = Formalism.MainNotions.S.Gflag _ _`. Simplify using `only [Formalism.MainNotions.S.Gflag, e]`. Rewrite using `[hx]`.
+
+Conclude with `gval_mapL (W.δ u) (W.isom u) (lf D (X.Fu u)) (Quot.out t.cls).1`.
+-/
 theorem toRec_G (hL : LatIso D) {u u' : D.what₂.Word} (t : RT Y u u') : (toRec W Y t).G = t.G := by
   have h : TermDef.DCRel _ _ _ _ := toRec_rel (W := W) (Y := Y) hL t
   have e : ∀ l, Formalism.MainNotions.S.Dl (FlagOfWord W u) (Quot.out (toRec W Y t).cls).1.fl l =
@@ -628,6 +817,11 @@ theorem toRec_G (hL : LatIso D) {u u' : D.what₂.Word} (t : RT Y u u') : (toRec
   rw [hx]
   exact gval_mapL (W.δ u) (W.isom u) (lf D (X.Fu u)) (Quot.out t.cls).1
 
+/- English proof (translation)
+Unfold `TermDef.Term.relevant`. Use `show TermDef.IsRel (Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam) (lf D (FlagOfWord W u)) (TermDef.PD D (Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam) (lf D (FlagOfWord W u)) u') _ (toRec W Y t).cls ↔ _`. Establish `hx : t.cls = TermDef.mk _ _ _ (Quot.out t.cls)` using `(Quot.out_eq t.cls).symm`. Rewrite using `[← toRec_mk W Y t]`. Use `conv_rhs => rw [hx]`.
+
+Use `(TermDef.isRel_mk _ (PI.TermAttrConst.UnitaryGroupMassFormula.relFun_all _ _ _ _) _).trans (Iff.trans ?_ (TermDef.isRel_mk _ (PI.TermAttrConst.UnitaryGroupMassFormula.relFun_all _ _ _ _) _).symm)` and prove the remaining obligations. Conclude with `Formalism.L2.SG.Pf.relevant_mapFlag (β := W.δ u) (hβ := W.isom u) _ _ _`.
+-/
 theorem toRec_relevant (hL : LatIso D) {u u' : D.what₂.Word} (t : RT Y u u') :
     (toRec W Y t).relevant ↔ t.relevant := by
   unfold TermDef.Term.relevant
@@ -640,6 +834,11 @@ theorem toRec_relevant (hL : LatIso D) {u u' : D.what₂.Word} (t : RT Y u u') :
     (Iff.trans ?_ (TermDef.isRel_mk _ (PI.TermAttrConst.UnitaryGroupMassFormula.relFun_all _ _ _ _) _).symm)
   exact Formalism.L2.SG.Pf.relevant_mapFlag (β := W.δ u) (hβ := W.isom u) _ _ _
 
+/- English proof (translation)
+Use `show TermDef.IsGen (Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam) (lf D (FlagOfWord W u)) (TermDef.PD D (Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam) (lf D (FlagOfWord W u)) u') (gS D) (toRec W Y t).cls ↔ TermDef.IsGen t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (l …`. Establish `hx : t.cls = TermDef.mk _ _ _ (Quot.out t.cls)` using `(Quot.out_eq t.cls).symm`. Rewrite using `[← toRec_mk W Y t]`. Use `conv_rhs => rw [hx]`. Use `(TermDef.isGen_mk (gS D) ((term_function_const D u u' (FlagOfWord W u) _ (rowLat_rec hL t.lam t.mem)).2.2.2.1) _).trans (Iff.trans ?_ (TermDef.isGen_mk (gS D) ((term_function_const D u u' (X.Fu u) t.lam ((Y.rowsOK u).1 t.lam t.mem)).2.2.2.1) _).symm)` and prove the remaining obligations.
+
+Use `show IsGeneric (Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam) (gS D) (mapL (W.δ u) (W.isom u) (lf D (X.Fu u))) (mapL (W.δ u) (W.isom u) (Quot.out t.cls).1) ↔ IsGeneric t.lam (gS D) (lf D (X.Fu u)) (Quot.out t.cls).1`. Conclude with `Formalism.L2.SG.Pf.generic_isomorphism_holds (gS D) _ _ (W.δ u) (W.isom u) t.lam (lf D (X.Fu u)) (Quot.out t.cls).1`.
+-/
 theorem toRec_generic (hL : LatIso D) {u u' : D.what₂.Word} (t : RT Y u u') :
     (toRec W Y t).generic ↔ t.generic := by
   show TermDef.IsGen (Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam) (lf D (FlagOfWord W u))
@@ -656,6 +855,11 @@ theorem toRec_generic (hL : LatIso D) {u u' : D.what₂.Word} (t : RT Y u u') :
       (mapL (W.δ u) (W.isom u) (Quot.out t.cls).1) ↔ IsGeneric t.lam (gS D) (lf D (X.Fu u)) (Quot.out t.cls).1
   exact Formalism.L2.SG.Pf.generic_isomorphism_holds (gS D) _ _ (W.δ u) (W.isom u) t.lam (lf D (X.Fu u)) (Quot.out t.cls).1
 
+/- English proof (translation)
+Use `show TermDef.AtPt (Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam) (lf D (FlagOfWord W u)) (TermDef.PD D (Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam) (lf D (FlagOfWord W u)) u') (toRec W Y t).cls w ↔ TermDef.AtPt t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X. …`. Establish `hx : t.cls = TermDef.mk _ _ _ (Quot.out t.cls)` using `(Quot.out_eq t.cls).symm`. Rewrite using `[← toRec_mk W Y t]`. Use `conv_rhs => rw [hx]`. Use `(TermDef.atPt_mk (PI.TermAttrConst.UnitaryGroupMassFormula.gFun_all _ _ _) (PI.TermAttrConst.UnitaryGroupMassFormula.cellFun_all _ _ _) _ _).trans (Iff.trans ?_ (TermDef.atPt_mk (PI.TermAttrConst.UnitaryGroupMassFormula.gFun_all _ _ _) (PI.TermAttrConst.UnitaryGroupMassFormula.ce …` and prove the remaining obligations.
+
+Use `show Gval (mapL (W.δ u) (W.isom u) (lf D (X.Fu u))) (mapL (W.δ u) (W.isom u) (Quot.out t.cls).1) ≠ 0 ∧ IsInCell (ZhatOM (ZhatL (mapL (W.δ u) (W.isom u) (lf D (X.Fu u))) (mapL (W.δ u) (W.isom u) (Quot.out t.cls).1))) w ↔ _`. Rewrite using `[Formalism.L2.SG.Saturated.gval_mapL, Formalism.L2.SG.Saturated.zhat_mapL]`.
+-/
 theorem toRec_atPt (hL : LatIso D) {u u' : D.what₂.Word} (t : RT Y u u') (w : Formalism.MainNotions.S.Point D.host.E (D.R.rS + 1)) :
     (toRec W Y t).atPt w ↔ t.atPt w := by
   show TermDef.AtPt (Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam) (lf D (FlagOfWord W u))
@@ -672,6 +876,9 @@ theorem toRec_atPt (hL : LatIso D) {u u' : D.what₂.Word} (t : RT Y u u') (w : 
         (mapL (W.δ u) (W.isom u) (Quot.out t.cls).1))) w ↔ _
   rw [Formalism.L2.SG.Saturated.gval_mapL, Formalism.L2.SG.Saturated.zhat_mapL]
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.PairVal.ptOf`. Establish `e : (fun w => (toRec W Y t).atPt w ∧ (toRec W Y t).relevant) = (fun w => t.atPt w ∧ t.relevant)`. Use function extensionality and compare the values at `w`. Rewrite using `[toRec_atPt hL, toRec_relevant hL]`. Rewrite using `[e]`.
+-/
 theorem toRec_ptOf (hL : LatIso D) {u u' : D.what₂.Word} (t : RT Y u u') :
     Formalism.L2.SG.PairVal.ptOf (toRec W Y t) = Formalism.L2.SG.PairVal.ptOf t := by
   unfold Formalism.L2.SG.PairVal.ptOf
@@ -680,6 +887,9 @@ theorem toRec_ptOf (hL : LatIso D) {u u' : D.what₂.Word} (t : RT Y u u') :
     rw [toRec_atPt hL, toRec_relevant hL]
   rw [e]
 
+/- English proof (translation)
+Use `show Formalism.MainNotions.S.wRow D (FlagOfWord W u) (Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam) / Formalism.MainNotions.S.Cnt.massRows D (FlagOfWord W u) (rowsRec W Y u) = Formalism.MainNotions.S.wRow D (X.Fu u) t.lam / Formalism.MainNotions.S.Cnt.massRows D (X.Fu u) …`. Rewrite using `[← massTot_eq W hW u]`. Conclude with `congrArg (· / massTotOf Y W u) (hW (W.δ u) (W.isom u) (X.Fu u) t.lam)`.
+-/
 theorem toRec_massTerm (hW : WRowIso D) {u u' : D.what₂.Word} (t : RT Y u u') :
     Formalism.L2.SG.PairVal.massTerm (toRec W Y t) = Formalism.L2.SG.PairVal.massTerm t := by
   show Formalism.MainNotions.S.wRow D (FlagOfWord W u) (Formalism.HermitianLatticesTheory.gmap (W.δ u) t.lam) / Formalism.MainNotions.S.Cnt.massRows D (FlagOfWord W u) (rowsRec W Y u) =
@@ -711,6 +921,17 @@ section IdCell
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
+/- English proof (translation)
+Establish `hs : ∀ x y, starRingEnd E (S.hT x y) = S.hT y x` using `fun x y => by first`. Consider the case `exact S.herm.eq x y`. Consider the case `exact S.herm x y`. Establish `he : ∀ i, S.hT (F.fl.fvec a) (F.fl.e i) = 0`. Introduce `i`.
+
+Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Simplify using `only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last]`. Rewrite using `[← hs, F.fl.z_orth i, map_zero]`. Consider the case `cast j`.
+
+Simplify using `only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc]`. Conclude with `F.fl.e_iso j i`. Establish `hx' : x ∈ Submodule.span E (Set.range F.fl.e)` using `hx`. Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Conclude with `he i`. Consider the case `zero => exact map_zero _`. Consider the case `add y z _ _ hy hz => simp [hy, hz]`.
+
+Consider the case `smul c y _ hy => simp [hy]`.
+-/
 theorem hT_X_zero (F : LFlag S r T) (a : Fin (r + 1)) {x : S.V} (hx : x ∈ Xsp F) : S.hT (F.fl.fvec a) x = 0 := by
   have hs : ∀ x y, starRingEnd E (S.hT x y) = S.hT y x := fun x y => by
     first
@@ -735,6 +956,13 @@ theorem hT_X_zero (F : LFlag S r T) (a : Fin (r + 1)) {x : S.V} (hx : x ∈ Xsp 
   | add y z _ _ hy hz => simp [hy, hz]
   | smul c y _ hy => simp [hy]
 
+/- English proof (translation)
+Take `⟨n, hn, he, -⟩` from `h`. Establish `hmem : F'.fl.e b ∈ Xsp F`. Rewrite using `[← he b]`. Establish `h1 : F.fl.e b ∈ Xflag F (b.1 + 1)` using `Submodule.subset_span ⟨b, by simp, rfl⟩`. Establish `h2` using `hn.2.1 b.1 _ h1`.
+
+Establish `h3 : Xflag F b.1 ≤ Xsp F` using `Submodule.span_mono (Set.image_subset_range _ _)`. Establish `h4 : F.fl.e b ∈ Xsp F` using `Submodule.subset_span ⟨b, rfl⟩`. Establish `h5` using `(Xsp F).add_mem (h3 h2) h4`. Simplify using `using h5`. Establish `hb : F'.fl.fvec b.castSucc = F'.fl.e b` using `by simp [Formalism.MainNotions.S.FlagG.fvec]`.
+
+Use `show Formalism.MainNotions.S.brS S (F'.fl.fvec b.castSucc) (F.fl.fvec a) = 0`. Rewrite using `[hb]`. Conclude with `hT_X_zero F a hmem`.
+-/
 theorem zhat_col_zero (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFlag S r T')
     (h : Formalism.L2.SG.FourParts.IsIdF Λ F F') (a : Fin (r + 1)) (b : Fin r) :
     Formalism.MainNotions.S.Zhat F.fl F'.fl a b.castSucc = 0 := by
@@ -752,6 +980,25 @@ theorem zhat_col_zero (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFla
   rw [hb]
   exact hT_X_zero F a hmem
 
+/- English proof (translation)
+Establish `hz` using `zhat_col_zero Λ F F' h`. Use `show Formalism.MainNotions.S.Gflag F.fl F'.fl = 0`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Take `⟨n, hn, -, hz'⟩` from `h`.
+
+Establish `hX : Xsp F = ⊥` using `by show Submodule.span E (Set.range F.fl.e) = ⊥`. Simplify using `[Set.range_eq_empty]`. Establish `hnz : n F.fl.z = F.fl.z`. Establish `h3` using `hn.2.2 F.fl.z (by simp [Formalism.MainNotions.S.Lat.orth, hX])`. Rewrite `h3` using `[hX, Submodule.mem_bot, sub_eq_zero]`.
+
+Conclude with `h3`. Rewrite `hz'` using `[hX, Submodule.mem_bot, sub_eq_zero, hnz]`. Establish `hT' : T' = T`. Establish `h1` using `F'.fl.z_norm`. Establish `h2` using `F.fl.z_norm`.
+
+Rewrite `h1` using `[← hz', h2]`. Conclude with `(neg_inj.mp h1).symm`. Establish `hf : ∀ {T₀ : E} (G : Formalism.MainNotions.S.FlagG S 0 T₀), G.fvec 0 = G.z` using `fun G => by`. Simplify using `[Formalism.MainNotions.S.FlagG.fvec, Fin.snoc]`. Establish `hZ : Formalism.MainNotions.S.Zhat F.fl F'.fl 0 0 = -T` using `by show Formalism.MainNotions.S.brS S (F'.fl.fvec 0) (F.fl.fvec 0) = -T`.
+
+Rewrite using `[hf, hf, ← hz']`. Conclude with `F.fl.z_norm`. Establish `hD1 : Formalism.MainNotions.S.Dl F.fl F'.fl (0 + 1) = -T`. Unfold `Formalism.MainNotions.S.Dl Formalism.MainNotions.S.leadMinorE`. Rewrite using `[dif_pos le_rfl]`.
+
+Conclude with `(Matrix.det_fin_one _).trans hZ`. Establish `hD0 : Formalism.MainNotions.S.Dl F.fl F'.fl 0 = 1`. Unfold `Formalism.MainNotions.S.Dl Formalism.MainNotions.S.leadMinorE`. Rewrite using `[dif_pos (Nat.zero_le _), Matrix.det_isEmpty]`. Unfold `Formalism.MainNotions.S.Gflag`.
+
+Rewrite using `[hD1, hD0, hT', star_neg, hTs, star_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : ∀ l, (hl : l ≤ r + 1) → r ≤ l → Formalism.MainNotions.S.Dl F.fl F'.fl l = 0`. Introduce `l hl hrl`. Unfold `Formalism.MainNotions.S.Dl Formalism.MainNotions.S.leadMinorE`.
+
+Rewrite using `[dif_pos hl]`. Apply `Matrix.det_eq_zero_of_column_eq_zero (⟨0, by omega⟩ : Fin l)` to reduce the goal to its premises. Introduce `i`. Simplify using `only [Matrix.submatrix_apply]`. Establish `h0` using `hz (Fin.castLE hl i) ⟨0, hr⟩`.
+
+Use `h0 using 2` and compare the differences between its conclusion and the goal. Conclude with `Fin.ext rfl`. Unfold `Formalism.MainNotions.S.Gflag`. Rewrite using `[hD (r + 1) le_rfl (by omega), hD r (by omega) le_rfl]`. Simplify using the standard rewrite rules.
+-/
 theorem gval_of_isIdF (hTs : star T = T) (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFlag S r T')
     (h : Formalism.L2.SG.FourParts.IsIdF Λ F F') : Gval F F' = 0 := by
   have hz := zhat_col_zero Λ F F' h
@@ -808,6 +1055,11 @@ section IdCellD
 
 variable {D : D7} {X : HidaSetting D} {Y : Formalism.L2.SG.Full.Full X}
 
+/- English proof (translation)
+Unfold `IdentityCellVanishes`. Introduce `t ht`. Take `⟨F', ⟨h, hm⟩, hid⟩` from `ht`. Establish `hr : TermDef.Rel t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') ⟨F', h⟩ (Quot.out t.cls)` using `(eqIff_base (u' := u') t.lam t.mem _ _).1 (hm.trans (Quot.out_eq t.cls).symm)`. Establish `h0` using `gval_of_isIdF (star_natCast _) t.lam (lf D (X.Fu u)) F' hid`.
+
+Establish `e : ∀ l, Formalism.MainNotions.S.Dl (X.Fu u) (Quot.out t.cls).1.fl l = Formalism.MainNotions.S.Dl (X.Fu u) F'.fl l` using `PI.TermAttrConst.UnitaryGroupMassFormula.dl_eq _ hr`. Use `Eq.trans ?_ h0` and prove the remaining obligations. Use `show Formalism.MainNotions.S.Gflag (X.Fu u) (Quot.out t.cls).1.fl = Formalism.MainNotions.S.Gflag (X.Fu u) F'.fl`. Unfold `Formalism.MainNotions.S.Gflag`. Rewrite using `[e, e]`.
+-/
 theorem identityCell_vanishes (u u' : D.what₂.Word) : IdentityCellVanishes Y u u' := by
   unfold IdentityCellVanishes
   intro t ht

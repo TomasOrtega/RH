@@ -19,6 +19,15 @@ open MvPowerSeries
 
 variable {C : Type} [Field C]
 
+/- English proof (translation)
+Use extensionality with `m`. Establish `hS : PowerSeries.HasSubst F` using `PowerSeries.HasSubst.of_constantCoeff_zero hF`. Rewrite using `[PowerSeries.coeff_subst hS, finsum_eq_sum_of_support_subset (s := Finset.range (m.degree + 1))]`. Use `show (∑ k ∈ Finset.range (m.degree + 1), coeff m (F ^ k) / (k.factorial : C)) = _`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[PowerSeries.coeff_exp, smul_eq_mul]`. Simplify using `[div_eq_mul_inv, mul_comm]`. Introduce `k hk`. Rewrite `hk` using `[Function.mem_support]`. Assume the negation of the conclusion as `hk'`.
+
+Apply `hk` to reduce the goal to its premises. Establish `h1 : m.degree < k` using `by simpa using hk'`. Establish `h0 : coeff m (F ^ k) = 0`. Apply `MvPowerSeries.coeff_of_lt_order` to reduce the goal to its premises. Use `lt_of_lt_of_le ?_ (MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero k hF)` and prove the remaining obligations.
+
+Conclude with `h1` after adjusting the coercions. Rewrite using `[h0, smul_zero]`.
+-/
 theorem mvExp_eq_subst [CharZero C] {σ : Type} {F : MvPowerSeries σ C} (hF : constantCoeff F = 0) :
     mvExp F = PowerSeries.subst F (PowerSeries.exp C) := by
   classical
@@ -40,14 +49,23 @@ theorem mvExp_eq_subst [CharZero C] {σ : Type} {F : MvPowerSeries σ C} (hF : c
       exact_mod_cast h1
     rw [h0, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[mvExp_eq_subst hF, mvExp_eq_subst hG, mvExp_eq_subst (by rw [map_add, hF, hG, add_zero]), ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_add hF hG]`.
+-/
 theorem mvExp_add [CharZero C] {σ : Type} {F G : MvPowerSeries σ C} (hF : constantCoeff F = 0)
     (hG : constantCoeff G = 0) : mvExp (F + G) = mvExp F * mvExp G := by
   rw [mvExp_eq_subst hF, mvExp_eq_subst hG, mvExp_eq_subst (by rw [map_add, hF, hG, add_zero]),
     ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_add hF hG]
 
+/- English proof (translation)
+Rewrite using `[mvExp_eq_subst (map_zero _), ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_zero]`.
+-/
 theorem mvExp_zero' [CharZero C] {σ : Type} : mvExp (0 : MvPowerSeries σ C) = 1 := by
   rw [mvExp_eq_subst (map_zero _), ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_zero]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [mvExp_zero']`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, mvExp_add (hF a) (by simp [map_sum, hF]), ih]`.
+-/
 theorem mvExp_sum [CharZero C] {σ α : Type} (s : Finset α) {F : α → MvPowerSeries σ C}
     (hF : ∀ i, constantCoeff (F i) = 0) : mvExp (∑ i ∈ s, F i) = ∏ i ∈ s, mvExp (F i) := by
   classical
@@ -56,6 +74,9 @@ theorem mvExp_sum [CharZero C] {σ α : Type} (s : Finset α) {F : α → MvPowe
   | insert a s ha ih =>
     rw [Finset.sum_insert ha, Finset.prod_insert ha, mvExp_add (hF a) (by simp [map_sum, hF]), ih]
 
+/- English proof (translation)
+Establish `hs` using `hasSubst_of_constantCoeff_zero ha`. Establish `e : F = (F - MvPowerSeries.C (constantCoeff F)) + MvPowerSeries.C (constantCoeff F)` using `by ring`. Rewrite using `[e, subst_add hs, map_add, constantCoeff_subst_zero ha (by simp), subst_C]`. Simplify using the standard rewrite rules.
+-/
 theorem cc_subst {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s, constantCoeff (a s) = 0)
     (F : MvPowerSeries σ C) : constantCoeff (subst a F) = constantCoeff F := by
   have hs := hasSubst_of_constantCoeff_zero ha
@@ -63,33 +84,61 @@ theorem cc_subst {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C} (ha 
   rw [e, subst_add hs, map_add, constantCoeff_subst_zero ha (by simp), subst_C]
   simp
 
+/- English proof (translation)
+Rewrite using `[mvExp_eq_subst hF, mvExp_eq_subst (by rw [cc_subst ha, hF]), ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.subst_exp a ha hF]`.
+-/
 theorem subst_mvExp [CharZero C] {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, constantCoeff (a s) = 0) {F : MvPowerSeries σ C} (hF : constantCoeff F = 0) :
     subst a (mvExp F) = mvExp (subst a F) := by
   rw [mvExp_eq_subst hF, mvExp_eq_subst (by rw [cc_subst ha, hF]), ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.subst_exp a ha hF]
 
+/- English proof (translation)
+The claim follows from `(intS_iff_ig V _).2 (ig_subst (fun s => (intS_iff_ig V _).1 (hi s)) ha ((intS_iff_ig V _).1 hF))`.
+-/
 theorem intS_subst {V : VF C} {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, constantCoeff (a s) = 0) (hi : ∀ s, IntS V (a s)) {F : MvPowerSeries σ C} (hF : IntS V F) :
     IntS V (subst a F) :=
   (intS_iff_ig V _).2 (ig_subst (fun s => (intS_iff_ig V _).1 (hi s)) ha ((intS_iff_ig V _).1 hF))
 
+/- English proof (translation)
+The claim follows from `(intS_iff_ig V _).2 (ig_X s)`.
+-/
 theorem intS_X {V : VF C} {σ : Type} (s : σ) : IntS V (X s : MvPowerSeries σ C) :=
   (intS_iff_ig V _).2 (ig_X s)
 
+/- English proof (translation)
+The claim follows from `(intS_iff_ig V _).2 (one_mem _)`.
+-/
 theorem intS_one {V : VF C} {σ : Type} : IntS V (1 : MvPowerSeries σ C) :=
   (intS_iff_ig V _).2 (one_mem _)
 
+/- English proof (translation)
+The claim follows from `(intS_iff_ig V _).2 (zero_mem _)`.
+-/
 theorem intS_zero {V : VF C} {σ : Type} : IntS V (0 : MvPowerSeries σ C) :=
   (intS_iff_ig V _).2 (zero_mem _)
 
+/- English proof (translation)
+The claim follows from `(intS_iff_ig V _).2 (mul_mem ((intS_iff_ig V _).1 hF) ((intS_iff_ig V _).1 hG))`.
+-/
 theorem intS_mul {V : VF C} {σ : Type} {F G : MvPowerSeries σ C} (hF : IntS V F) (hG : IntS V G) :
     IntS V (F * G) :=
   (intS_iff_ig V _).2 (mul_mem ((intS_iff_ig V _).1 hF) ((intS_iff_ig V _).1 hG))
 
+/- English proof (translation)
+The claim follows from `(intS_iff_ig V _).2 (prod_mem fun i _ => (intS_iff_ig V _).1 (hF i))`.
+-/
 theorem intS_prod {V : VF C} {σ α : Type} (s : Finset α) {F : α → MvPowerSeries σ C} (hF : ∀ i, IntS V (F i)) :
     IntS V (∏ i ∈ s, F i) :=
   (intS_iff_ig V _).2 (prod_mem fun i _ => (intS_iff_ig V _).1 (hF i))
 
+/- English proof (translation)
+Take `⟨U, hU⟩` from `RingHom.mem_range.1 ((intS_iff_ig V _).1 hF)`. Establish `hU1 : constantCoeff U = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e` using `congrArg constantCoeff hU`. Rewrite `e` using `[constantCoeff_map, h1]`.
+
+Conclude with `e`. Establish `hinv : U * MvPowerSeries.invOfUnit U 1 = 1` using `MvPowerSeries.mul_invOfUnit U 1 (by simp [hU1])`. Establish `e : G = MvPowerSeries.map (algebraMap (valRing V) C) (MvPowerSeries.invOfUnit U 1)`. Establish `h2` using `congrArg (MvPowerSeries.map (σ := σ) (algebraMap (valRing V) C)) hinv`. Rewrite `h2` using `[map_mul, map_one, hU]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, mul_one]`. Use `_ = _ := by rw [← mul_assoc, mul_comm G F, hFG, one_mul]`. Rewrite using `[e]`. Conclude with `(intS_iff_ig V _).2 (ig_map _)`.
+-/
 theorem intS_of_mul_eq_one {V : VF C} {σ : Type} {F G : MvPowerSeries σ C} (hF : IntS V F)
     (h1 : constantCoeff F = 1) (hFG : F * G = 1) : IntS V G := by
   obtain ⟨U, hU⟩ := RingHom.mem_range.1 ((intS_iff_ig V _).1 hF)
@@ -118,9 +167,15 @@ def logInt [CharZero C] (V : VF C) (σ : Type) : AddSubgroup (MvPowerSeries σ C
     · rw [mvExp_eq_subst hF.1, ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.constantCoeff_exp hF.1]
     · rw [← mvExp_add hF.1 (by rw [map_neg, hF.1, neg_zero]), add_neg_cancel, mvExp_zero']⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_logInt [CharZero C] {V : VF C} {σ : Type} {F : MvPowerSeries σ C} :
     F ∈ logInt V σ ↔ constantCoeff F = 0 ∧ IntS V (mvExp F) := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [cc_subst ha, hF.1], by rw [← subst_mvExp ha hF.1]; exact intS_subst ha hi hF.2⟩`.
+-/
 theorem logInt_subst [CharZero C] {V : VF C} {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, constantCoeff (a s) = 0) (hi : ∀ s, IntS V (a s)) {F : MvPowerSeries σ C}
     (hF : F ∈ logInt V σ) : subst a F ∈ logInt V τ :=

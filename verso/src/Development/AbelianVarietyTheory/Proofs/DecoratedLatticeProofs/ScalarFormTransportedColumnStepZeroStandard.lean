@@ -17,6 +17,9 @@ noncomputable section
 namespace GlobalTheory.AdForm.ZeroCongr
 open Formalism.UG
 
+/- English proof (translation)
+Introduce `γ hγ x x' κ h y y' hy`. Rewrite using `[hchi κ ⟨κ.1, (hU _).1 κ.2⟩ rfl]`. Conclude with `hΨ γ hγ x x' ⟨κ.1, (hU _).1 κ.2⟩ h y y' hy`.
+-/
 theorem adFun_of_same {D : D7} {n : ℕ} {J : Matrix (Fin n) (Fin n) D.host.E} {T f T' f' : ℕ}
     {bad bad' : Set (HeightOneSpectrum (𝓞 D.host.F))}
     (S : StepLevel D.host.F D.host.E (sigD D) J T f bad) (S' : StepLevel D.host.F D.host.E (sigD D) J T' f' bad')
@@ -28,6 +31,15 @@ theorem adFun_of_same {D : D7} {n : ℕ} {J : Matrix (Fin n) (Fin n) D.host.E} {
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨Ψ, hΨ, rfl⟩` from `Submodule.mem_map.1 hφ'`. Establish `hA'` using `(Submodule.mem_inf.1 hΨ).1`. Establish `hA` using `adFun_of_same S S' hU hchi Ψ hA'`. Establish `e : φ = fun c => Ψ (yc c)`. Use function extensionality and compare the values at `c z`.
+
+Take `⟨c', κ, hy, hχ, hφc⟩` from `hrep c`. Rewrite using `[hφc]`. Establish `h1 : IsTr (atInf (embT D) ((1 : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E)) z z` using `fun τ => by show z.1 τ = _ * z.1 τ`. Simplify using `[atInf]`. Apply the tactic sequence `have e3 := hA 1 (Subgroup.one_mem _) (yc c) (yc' c') κ (by rw [map_one, one_mul]; try exact hy) z z h1`.
+
+Use `show Ψ (yc' c') z = Ψ (yc c) z`. Rewrite using `[e3, hχ, Units.val_one, one_mul]`. Substitute `e` using the available equality. Take `⟨⟨x, hx⟩, hu, hv⟩` from `GlobalTheory.AdForm.rdS_val D θ hθ V n hn J hJ T f bad S cl yc hb Ψ hA y g`. Take `⟨-, -, hv'⟩` from `GlobalTheory.AdForm.rdS_val D θ hθ V n hn J hJ T' f' bad' S' cl' yc' hb' Ψ hA' y g`.
+
+Set `z : Frames (gramC J (embT D))` to `⟨fun τ => infM θ V hn g τ * y.1 τ, fun τ => by rw [Matrix.det_mul]; exact (hu τ).mul (y.2 τ)⟩`. Conclude with `(hv x z hx (fun τ => rfl)).trans (hv' x z hx (fun τ => rfl)).symm`.
+-/
 theorem rdS_congr (D : D7) (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (n : ℕ) (hn : V.rank = n)
     (J : Matrix (Fin n) (Fin n) D.host.E) (hJ : J = V.gram.reindex (finCongr hn) (finCongr hn)) {T f T' f' : ℕ}
     {bad bad' : Set (HeightOneSpectrum (𝓞 D.host.F))}
@@ -67,6 +79,17 @@ namespace GlobalTheory.Fam
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z C hC u a Ch A hA β hβ θ hθ ψ₀ hψ y`. Unfold `GlobalTheory.AdForm.TwDat.rd GlobalTheory.AdForm.Chart.rd GlobalTheory.Core.Mi.chart0`. Simplify using `only`. Establish `hfr : ((C.forms u).to0.val0.eY y) = (⟨y.1, y.2⟩ : Frames (gramC (gramN (I.rec7 l Z) 0 (Nat.zero_le _)) (embT (I.rec7 l Z))))` using `Subtype.ext ((hC u).eY 0 (Nat.zero_le _) (Or.inl rfl) y)`. Rewrite using `[hfr]`.
+
+Use function extensionality and compare the values at `g`. Use `GlobalTheory.AdForm.ZeroCongr.rdS_congr (I.rec7 l Z) θ hθ _ _ _ _ ?hJ _ _ _ _ (A.K 0 (Nat.zero_le _) β).y_bij ((C.forms u).to0.cls0.toChart.y_bij) (lamT u 0) _ _ ?hφ ?hU ?hchi ?hrep _ g` and prove the remaining obligations. Use `case hJ => rfl`. Use `case hφ => exact ((C.forms u).to0.val0.Fi ψ₀).1 (((I.rec7 l Z).fm u).Fi_zero ▸ hψ.1)`. Use `case hU => exact GlobalTheory.T.stepZeroChartLevel_standardBasePoint_eq_member I hI hP l Z C hC u a Ch A hA β hβ`.
+
+Use `case hchi => exact GlobalTheory.T.levelZeroChartCharacter_eq_memberChartCharacter_stdBase I hI hP l Z C hC u a Ch A hA β hβ`. Use `case hrep =>`. Introduce `c`. Take `⟨κ, h1, h2⟩` from `GlobalTheory.T.stepZero_representative_differs_by_level I hI hP l Z C hC u a Ch A hA β hβ c`. Use `⟨(I.eCls0 l u a).symm c.1, κ, h1, h2, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `z`. Establish `hz : (C.forms u).to0.val0.eY.symm z = ⟨z.1, z.2⟩`. Apply `(C.forms u).to0.val0.eY.injective` to reduce the goal to its premises. Rewrite using `[Equiv.apply_symm_apply]`. Conclude with `Subtype.ext ((hC u).eY 0 (Nat.zero_le _) (Or.inl rfl) _).symm`.
+
+Rewrite using `[hz]`. Both sides reduce to the same expression.
+-/
 theorem rd_zero_std : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (C : Formalism.L2.Forms.ColsTiedSym (I.rec7 l Z)), I.StdC l Z C → ∀ (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : GlobalTheory.AdForm.TwDat I l Z u a Ch), A.Is → ∀ (β : Ch 0), A.kb 0 β = TC.kStd X u (B.R.N 0) → ∀ θ, IsInfFam θ → ∀ ψ₀ ∈ ((I.rec7 l Z).mem u).A.Mram, ∀ y, A.rd θ 0 (Nat.zero_le _) β ((I.rec7 l Z).e0Tw u a ψ₀) y = (GlobalTheory.Core.Mi.chart0 (C.forms u).to0).rd θ ψ₀ y := by
   intro B X I hI hP l Z C hC u a Ch A hA β hβ θ hθ ψ₀ hψ y
   unfold GlobalTheory.AdForm.TwDat.rd GlobalTheory.AdForm.Chart.rd GlobalTheory.Core.Mi.chart0

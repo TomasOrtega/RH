@@ -15,11 +15,17 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.FieldBaseChange
 
+/- English proof (translation)
+Rewrite using `[Flat.SpecMap_iff]`. Use `letI := i.toAlgebra`. Conclude with `(inferInstance : Module.Flat K₀ K)`.
+-/
 theorem flat_spMap {K₀ K : Type} [Field K₀] [Field K] (i : K₀ →+* K) : Flat (spMap i) := by
   rw [Flat.SpecMap_iff]
   letI := i.toAlgebra
   exact (inferInstance : Module.Flat K₀ K)
 
+/- English proof (translation)
+Establish `: Subsingleton (Sp K₀)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K₀))`. Establish `: Nonempty (Sp K)` using `inferInstanceAs (Nonempty (PrimeSpectrum K))`. Conclude with `⟨fun y => ⟨Classical.arbitrary _, Subsingleton.elim _ _⟩⟩`.
+-/
 theorem surjective_spMap {K₀ K : Type} [Field K₀] [Field K] (i : K₀ →+* K) : Surjective (spMap i) := by
   have : Subsingleton (Sp K₀) := inferInstanceAs (Subsingleton (PrimeSpectrum K₀))
   have : Nonempty (Sp K) := inferInstanceAs (Nonempty (PrimeSpectrum K))
@@ -29,16 +35,27 @@ section General
 
 variable {U S : Scheme.{0}} (j : U ⟶ S)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem pullback_map_left_fst {X Y : Over S} (a : X ⟶ Y) :
     ((Over.pullback j).map a).left ≫ pullback.fst Y.hom j = pullback.fst X.hom j ≫ a.left :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Introduce `f g h` and use `by have : Epi (pullback.fst X.hom j) := Flat.epi_of_flat_of_surjective _ apply Over.OverMorphism.ext rw [← cancel_epi (pullback.fst X.hom j), ← pullback_map_left_fst, ← pullback_map_left_fst, h]`.
+-/
 theorem pullback_map_injective [Flat j] [Surjective j] (X Y : Over S) :
     Function.Injective ((Over.pullback j).map : (X ⟶ Y) → _) := fun f g h => by
   have : Epi (pullback.fst X.hom j) := Flat.epi_of_flat_of_surjective _
   apply Over.OverMorphism.ext
   rw [← cancel_epi (pullback.fst X.hom j), ← pullback_map_left_fst, ← pullback_map_left_fst, h]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Apply `pullback_map_injective j` to reduce the goal to its premises. Establish `h` using `hf.one_hom`. Rewrite `h` using `[Functor.obj.η_def, Functor.obj.η_def, Category.assoc, cancel_epi]`. Rewrite using `[Functor.map_comp, h]`.
+
+Apply `pullback_map_injective j` to reduce the goal to its premises. Establish `h` using `hf.mul_hom`. Rewrite `h` using `[Functor.obj.μ_def, Functor.obj.μ_def, Functor.LaxMonoidal.μ_natural_assoc, Category.assoc, cancel_epi]`. Rewrite using `[Functor.map_comp, Functor.map_comp, h]`.
+-/
 theorem isMonHom_of_pullback [Flat j] [Surjective j] {G H : Over S} [MonObj G] [MonObj H] (f : G ⟶ H)
     (hf : IsMonHom ((Over.pullback j).map f)) : IsMonHom f := by
   constructor
@@ -54,6 +71,13 @@ theorem isMonHom_of_pullback [Flat j] [Surjective j] {G H : Over S} [MonObj G] [
 
 variable {j} in
 
+/- English proof (translation)
+Take `⟨a, ha, ha'⟩` from `grpPullback_iso (isGrpPullback_pullback G j) hG`. Take `⟨b, hb, hb'⟩` from `grpPullback_iso hH (isGrpPullback_pullback H j)`. Establish `e : (Over.pullback j).map f = a.hom ≫ f' ≫ b.hom`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[pullback_map_left_fst, Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hb', ← hf, ← Category.assoc, ha']`. Conclude with `(Over.w _).trans (Over.w _).symm`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `isMonHom_of_pullback j f (by rw [e]; infer_instance)`.
+
+Introduce `h`. Establish `e' : f' = a.inv ≫ (Over.pullback j).map f ≫ b.inv` using `by simp [e]`. Rewrite using `[e']`. Use `infer_instance`.
+-/
 theorem isMonHom_iff_of_isGrpPullback [Flat j] [Surjective j] {G H : Over S} [GrpObj G] [GrpObj H]
     {G' H' : Over U} [GrpObj G'] [GrpObj H'] {φ : G'.left ⟶ G.left} {ψ : H'.left ⟶ H.left}
     (hG : IsGrpPullback G' G j φ) (hH : IsGrpPullback H' H j ψ) (f' : G' ⟶ H') (f : G ⟶ H)
@@ -76,6 +100,11 @@ theorem isMonHom_iff_of_isGrpPullback [Flat j] [Surjective j] {G H : Over S} [Gr
 
 end General
 
+/- English proof (translation)
+Introduce `K₀ K _ _ i`. Use `flat_spMap i` as an intermediate fact. Use `surjective_spMap i` as an intermediate fact. Use `⟨fun X₀ X p₀ p φ h => ?_, fun A₀ B₀ A B _ _ _ _ φ ψ f₀ f hA hB hf => isMonHom_iff_of_isGrpPullback hA hB f f₀ hf⟩` and prove the remaining obligations. Establish `: Flat φ` using `MorphismProperty.of_isPullback (P := @Flat) h.flip ‹_›`.
+
+Establish `: Surjective φ` using `MorphismProperty.of_isPullback (P := @Surjective) h.flip ‹_›`. Establish `: IsAffineHom φ` using `MorphismProperty.of_isPullback (P := @IsAffineHom) h.flip inferInstance`. Conclude with `⟨Flat.epi_of_flat_of_surjective φ, ‹_›, ‹_›, ‹_›, fun U => GlobalTheory.FunDescent.app_injective φ U⟩`.
+-/
 theorem epi_and_isMonHom_iff : ∀ (K₀ K : Type) [Field K₀] [Field K] (i : K₀ →+* K), (∀ (X₀ X : Scheme.{0}) (p₀ : X₀ ⟶ Sp K₀) (p : X ⟶ Sp K) (φ : X ⟶ X₀), IsPullback φ p p₀ (spMap i) → Epi φ ∧ Flat φ ∧ Surjective φ ∧ IsAffineHom φ ∧ ∀ U : X₀.Opens, Function.Injective (φ.app U).hom) ∧ ∀ (A₀ B₀ : Over (Sp K₀)) (A B : Over (Sp K)) [GrpObj A₀] [GrpObj B₀] [GrpObj A] [GrpObj B] (φ : A.left ⟶ A₀.left) (ψ : B.left ⟶ B₀.left) (f₀ : A₀ ⟶ B₀) (f : A ⟶ B), IsGrpPullback A A₀ (spMap i) φ → IsGrpPullback B B₀ (spMap i) ψ → φ ≫ f₀.left = f.left ≫ ψ → (IsMonHom f ↔ IsMonHom f₀) := by
   intro K₀ K _ _ i
   have := flat_spMap i

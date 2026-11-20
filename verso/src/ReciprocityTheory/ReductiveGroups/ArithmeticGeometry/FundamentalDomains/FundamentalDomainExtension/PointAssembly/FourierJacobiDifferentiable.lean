@@ -7,15 +7,30 @@ open ReciprocityTheory.ChartRestriction.G.FD NumberField Complex MeasureTheory
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `r X la P ξ ν hP hξ`. Conclude with `CuspCoefficientFlow.fj_diffOn (X := X) la P hP hξ ν`.
+-/
 theorem fourierJacobi_differentiable {E : Type} [Field E] [NumberField E] [IsCMField E] : FjDiff E := by
   intro r X la P ξ ν hP hξ
   exact CuspCoefficientFlow.fj_diffOn (X := X) la P hP hξ ν
 
+/- English proof (translation)
+Introduce `r X la P ξ ν hP hξ`. Take `⟨-, C, hC⟩` from `hP`. Conclude with `⟨C, fun x hx => FlowCoefficientBounds.fj_bound (X := X) la P C hC hξ ν hx⟩`.
+-/
 theorem fourierJacobi_bounded {E : Type} [Field E] [NumberField E] [IsCMField E] : FjBdd E := by
   intro r X la P ξ ν hP hξ
   obtain ⟨-, C, hC⟩ := hP
   exact ⟨C, fun x hx => FlowCoefficientBounds.fj_bound (X := X) la P C hC hξ ν hx⟩
 
+/- English proof (translation)
+Introduce `r X la P ξ ν hP hξ x hx b hb`. Establish `hflow : ∀ s : X.Ψ → ℝ, X.flow ξ (fun τ => (s τ : ℂ)) (rmul x b) = rmul (X.flow ξ (fun τ => (s τ : ℂ)) x) b`. Introduce `s`. Use function extensionality and compare the values at `τ`. Use `show X.flowMat ξ τ (s τ : ℂ) * (mat x τ * mat b τ) = X.flowMat ξ τ (s τ : ℂ) * mat x τ * mat b τ`.
+
+Rewrite using `[Matrix.mul_assoc]`. Establish `hP' : ∀ s : X.Ψ → ℝ, P (X.flow ξ (fun τ => (s τ : ℂ)) (rmul x b)) * cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * s τ) = bchar la b * (P (X.flow ξ (fun τ => (s τ : ℂ)) x) * cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * s τ))`. Introduce `s`. Rewrite using `[hflow, hP.2.1 _ (FlowCoefficientBounds.flow_real X hξ hx s la).1 b hb, mul_assoc]`. Unfold `Data.fj`.
+
+Use `split_ifs with h1 h2`. Repeatedly rewrite using `[hP']`. Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem fourierJacobi_boundaryEq {E : Type} [Field E] [NumberField E] [IsCMField E] : FjBEq E := by
   intro r X la P ξ ν hP hξ x hx b hb
   classical

@@ -8,6 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsOpenKerOfI
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal
   GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Base
 
+/- English proof (translation)
+Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 K)`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]`.
+-/
 private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
   have : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩
@@ -17,6 +20,11 @@ private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [
   rw [← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal,
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
 
+/- English proof (translation)
+Use `Filter.Tendsto.cofinite_of_finite_preimage_singleton fun v => ?_` and prove the remaining obligations. Establish `h0 : Ideal.map (algebraMap (𝓞 K) (𝓞 K')) v.asIdeal ≠ 0` using `fun h => v.ne_bot ((Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)).1 h)`. Use `(Ideal.finite_factors h0).subset fun w hw => ?_` and prove the remaining obligations. Establish `e : w.under (𝓞 K) = v` using `hw`. Use `show w.asIdeal ∣ _`.
+
+Rewrite using `[Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, ← e]`. Conclude with `le_rfl`.
+-/
 private theorem tendsto_under' {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] :
     Filter.Tendsto (fun w : HeightOneSpectrum (𝓞 K') => w.under (𝓞 K)) Filter.cofinite Filter.cofinite := by
   refine Filter.Tendsto.cofinite_of_finite_preimage_singleton fun v => ?_
@@ -28,10 +36,28 @@ private theorem tendsto_under' {K K' : Type} [Field K] [NumberField K] [Field K'
   rw [Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, ← e]
   exact le_rfl
 
+/- English proof (translation)
+Simplify using `[algSat, Multiset.bind_singleton, Multiset.map_map]`.
+-/
 private theorem algSat_eq (n q : ℕ) (B : Multiset ℂˣ) :
     algSat n q B = B.map fun α : ℂˣ => (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ) := by
   simp [algSat, Multiset.bind_singleton, Multiset.map_map]
 
+/- English proof (translation)
+Introduce `P F Ω _ _ _ _ _ l _ ι n r sat hu hc hatt η m hm hη hη1 hT`. Take `⟨art, ha⟩` from `P.litN.aut.art F Ω`. Take `⟨δ, hδc, hL⟩` from `ha.exists_isLAdicOf ι (isAlgPos_zero_of_orderDvd (χ := η) hm hη)`. Establish `hpow : δ ^ m = 1` using `hL.pow_eq_one ha.quot.surjective hη`. Establish `hE : ∀ v, η.UnrAt v → CharEig ι δ v (η.val v : ℂˣ)` using `fun v hv A hA => ⟨(hL.unr_iff ha (Or.inr rfl) hA).2 hv, fun σ hσ => by`.
+
+Rewrite using `[map_inv, Units.val_inv_eq_inv_val, hL.frob_unr ha (Or.inr rfl) hv hA hσ, inv_inv, RingEquiv.apply_symm_apply]⟩`. Use `⟨δ, ?_, isOpen_ker_of_pow δ hδc hm fun g => DFunLike.congr_fun hpow g, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Use `hη1 (Subtype.ext (MonoidHom.ext fun x => Units.ext ?_))` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `toAb_surjective (art x)`.
+
+Establish `e` using `hL x σ hσ.symm`. Rewrite `e` using `[infPow_zero, lPow_zero, inv_one, mul_one, mul_one, MonoidHom.one_apply, Units.val_one, eq_comm, map_eq_one_iff _ ι.symm.injective]`. Conclude with `e`. Use `isoOfFrob P F Ω l ι n r _ hc (UpperTheory.galoisRep_irreducibility_criterion.2 _ _ n r δ hc hδc) hatt.1 ((UpperTheory.galoisRep_irreducibility_criterion.1 _ (G F Ω) _ n r).2.2 δ hatt.1) ?_ filter_upwards [hatt.2, hT] with v hv hw` and prove the remaining obligations. Take `⟨B, hB, hF⟩` from `hv`.
+
+Take `⟨h1, B', hB', h2⟩` from `hw`. Take `rfl` from `hu v _ _ hB hB'`. Use `⟨_, hF, ?_⟩` and prove the remaining obligations. Establish `h4` using `UpperTheory.frobenius_eigenvalues_twist F Ω l ι n r δ _ _ _ hF (hE v h1)`. Use `h4 using 1` and compare the differences between its conclusion and the goal.
+
+Use `conv_lhs => rw [← h2]`. Simplify using `only [algSat_eq, Multiset.map_map]`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, mul_assoc]`. Introduce `E _ _ _ _ _ hN haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic haveI : Algebra.IsAlgebraic E Ω := Algebra.IsAlgebraic.tower_top (K := F) E haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed F, inferInstance⟩`.
+
+Establish `hw : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, CharEig ι (δ.comp (res F Ω E)) w 1` using `by filter_upwards [hN.2.2, (tendsto_under' (K := F) (K' := E)).eventually hT] with w h1 h2`. Establish `hf` using `normV_under (K := F) w`. Establish `h3` using `(UpperTheory.frobenius_power_compatibility F E Ω l ι w _ hf).2 δ _ (hE _ h2.1)`. Rewrite `h3` using `[← Units.val_pow_eq_pow_val, h1 _ hf, Units.val_one]`. Then use the resulting hypothesis. Establish `key` using `GlobalTheory.Published.ChebotarevDegreeOne.eq_of_frob (F := E) (Ω := Ω) GlobalTheory.Published.chebotarevDegreeOne' (Filter.eventually_cofinite.1 hw) (f := fun s => δ (res F Ω E s)) (f' := fun _ => 1) (hδc.comp (continuous_restrictScalarsHom F E Ω)) continuous_const fun v hv _ A …`.
+
+Establish `h` using `((not_not.1 hv : CharEig _ _ _ _) A hA).2 σ hσ`. Rewrite `h` using `[map_eq_one_iff _ ι.injective, map_inv, Units.val_eq_one, inv_eq_one]`. Conclude with `h`. Conclude with `MonoidHom.ext fun s => congrFun key s`.
+-/
 theorem UpperTheory.V.Sd.selfTwGal :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Sd.SelfTwGal := by
   intro P F Ω _ _ _ _ _ l _ ι n r sat hu hc hatt η m hm hη hη1 hT

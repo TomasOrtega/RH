@@ -20,11 +20,17 @@ open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.Modulus
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[heisOF, symplOHF, symplOF, hOF]`.
+-/
 theorem heisOF_zero (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E)
     (ξ₀ : E) (ψ : AddChar (AF F) ℂ) (f : WOF F E nS nT → ℂ) : heisOF σ JS JT ξ₀ ψ 0 f = f := by
   funext w
   simp [heisOF, symplOHF, symplOF, hOF]
 
+/- English proof (translation)
+Unfold `nrm`. Rewrite using `[Matrix.mul_zero, heisOF_zero, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+-/
 theorem nrm_zero (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E)
     (ξ₀ : E) (ψ : AddChar (AF F) ℂ) (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT))
     (f : WOF F E nS (nT + nT) → ℂ) :
@@ -32,12 +38,18 @@ theorem nrm_zero (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin n
   unfold nrm
   rw [Matrix.mul_zero, heisOF_zero, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Unfold `mfac`. Rewrite using `[← Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _), ← NNReal.coe_mul, ← map_mul, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, map_one, NNReal.coe_one, Real.one_rpow]`.
+-/
 theorem mfac_inv_mul {nT : ℕ} (nS : ℕ) (t : GL (Fin nT) (AF F ⊗[F] E)) :
     mfac F E nS t⁻¹ * mfac F E nS t = 1 := by
   unfold mfac
   rw [← Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _), ← NNReal.coe_mul, ← map_mul, ← map_mul, ← map_mul,
     inv_mul_cancel, map_one, map_one, map_one, NNReal.coe_one, Real.one_rpow]
 
+/- English proof (translation)
+Unfold `mfac`. Use `Real.rpow_pos_of_pos (NNReal.coe_pos.2 (pos_iff_ne_zero.2 fun h0 => ?_)) _` and prove the remaining obligations. Use `map_mul (adeleClass F).modu (Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) (Matrix.GeneralLinearGroup.det t)) (Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) (Matrix.GeneralLinearGroup.det t))⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, map_one, h0, zero_mul]`. Conclude with `one_ne_zero this`.
+-/
 theorem mfac_pos' {nT : ℕ} (nS : ℕ) (t : GL (Fin nT) (AF F ⊗[F] E)) : 0 < mfac F E nS t := by
   unfold mfac
   refine Real.rpow_pos_of_pos (NNReal.coe_pos.2 (pos_iff_ne_zero.2 fun h0 => ?_)) _
@@ -52,6 +64,17 @@ end PositivityTheory.ThKW.NormModulusHeisenberg
 end
 
 open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.ModulusDerivativeNormalisation PositivityTheory.ThKW.NormModulusHeisenberg in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd h t hht f hf`. Take `⟨μW, 𝓕W, κ, hμW, h𝓕W, hκ, hcoef⟩` from `PositivityTheory.ThKW.PhaseFourierInjectivity.coef F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕`. Establish `hωf` using `hωd.om_pres (1, h) f hf`. Take `⟨c1, i1, e1⟩` from `hcoef _ hωf`. Take `⟨c0, i0, e0⟩` from `hcoef f hf`.
+
+Take `⟨cL, iL, eL⟩` from `PositivityTheory.ThKW.PhaseFourierInjectivity.change F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 t _ c0 i0`. Establish `hκ0 : (κ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hκ.ne'`. Establish `key : nrm σ JS JT ξ₀ B.ψ ν 𝓕 (ωd (1, h) f) = fun w => ((mfac F E nS t : ℝ) : ℂ) ^ 2 * nrm σ JS JT ξ₀ B.ψ ν 𝓕 f ((t.1.map (cAF σ))ᵀ * w)`. Use `PositivityTheory.ThKW.PhaseFourierInjectivity.finj F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 _ _ c1 (continuous_const.mul cL) i1 (iL.const_mul _) fun y => ?_` and prove the remaining obligations. Establish `hact : actOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) 1 h (dC (AF F ⊗[F] E) nT * ((t⁻¹).1 * y)) = dC (AF F ⊗[F] E) nT * y`.
+
+Unfold `actOF`. Rewrite using `[inv_one, show mtF σ JS 1 = 1 by unfold mtF; rw [map_one, Units.val_one], Matrix.mul_one, ← Matrix.mul_assoc, hht, Matrix.mul_assoc, ← Matrix.mul_assoc t.1, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Establish `u` using `PositivityTheory.ThKW.PhaseFourierInjectivity.unit_coef F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ χS ωd hωd μW 𝓕W hμW h𝓕W h (dC (AF F ⊗[F] E) nT * ((t⁻¹).1 * y)) f hf`. Rewrite `u` using `[hact, e1 y, e0 ((t⁻¹).1 * y), eL y]`. Establish `u'` using `mul_left_cancel₀ hκ0 u`.
+
+Rewrite using `[u', ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Expand and normalize the polynomial expressions, which then agree. Establish `k0` using `congrFun key 0`.
+
+Rewrite `k0` using `[Matrix.mul_zero, nrm_zero, nrm_zero]`. Establish `k1 : ‖GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC (AF F ⊗[F] E) nT) (ωd (1, h) f)‖ ^ 2 = (mfac F E nS t * ‖GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC (AF F ⊗[F] E) nT) f‖) ^ 2`. Rewrite using `[mul_pow]`. Conclude with `k0` after adjusting the coercions. Conclude with `(pow_left_inj₀ (norm_nonneg _) (mul_nonneg (mfac_pos' nS t).le (norm_nonneg _)) two_ne_zero).1 k1`.
+-/
 theorem PositivityTheory.ThKW.PhaseFourierInjectivity.norm_law : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

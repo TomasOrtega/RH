@@ -20,6 +20,11 @@ open GlobalTheory.Mem.Col2.TC GlobalTheory.Mem.Col2.AdT
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Substitute `hL` using the available equality. Take `⟨c, rfl⟩` from `hR.onto β`. Introduce `κ`. Establish `hF : ChiFin I l Z (K (chOf c)).lev`. Take `⟨n, hn, h⟩` from `hfin (chOf c)`.
+
+Conclude with `⟨n, hn, fun κ _ => h κ⟩`. Take `⟨x, hx, ⟨q, hq⟩, -⟩` from `GlobalTheory.T.exists_levelElement_same_character_near_bad I hOk hP l Z u a i hi bad Ch chOf K k hR c hF κ`. Take `⟨κ', hg, hq', -⟩` from `(hR.lev c x.1 q hq).1 x.2`. Establish `hc` using `hR.chr c x κ' hg (by rw [hq']; exact hq)`. Conclude with `⟨_, by rw [← hx]; exact hc.symm⟩`.
+-/
 theorem chiRatAll_of_reads {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (hP : TC.Pins B X) (l : I.Laws)
     (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 B.host.F)))
     {Ch : Type} (chOf : (I.stp u a i).Cl → Ch)
@@ -44,6 +49,9 @@ theorem chiRatAll_of_reads {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.O
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `K B f T w _ _ _ Z t Wt nch n _ tt hstd u μ hμ j hj β`. Take `⟨k, hR⟩` from `hstd.1.reads u μ hμ (j + 1) (Formalism.MainNotions.G.CmpJ.AgreeLv.one_le j) hj`. Conclude with `chiRatAll_of_reads w.I w.ok w.pins w.l Z u μ (j + 1) hj _ _ _ (hstd.1.lat u μ (j + 1)) (fun β => tt.forms.ch u μ hμ (j + 1) (Formalism.MainNotions.G.CmpJ.AgreeLv.one_le j) hj β) k hR (fun β => tt.forms.chi_fin u μ hμ (j + 1) (Formalism.MainNotions.G.CmpJ.AgreeLv.one_le j) hj β) β`.
+-/
 theorem chiRatAll_twChart : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), K.Over B.toPre → Forced K B T → Pinned K B f T w →
     ∀ (Z : w.Lt) (t : ColumnDataSplitPrimes K w Z) (Wt : Set B.places.Pl) (nch : NChoice (w.D Z)) (n : NchT w Z Wt nch),
     V4.MuIsW (w.st Z) f T Wt w.I.xi →

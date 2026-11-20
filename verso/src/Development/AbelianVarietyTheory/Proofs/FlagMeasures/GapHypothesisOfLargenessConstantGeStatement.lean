@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GapHypothesisOfLarge
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ConstC
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TypeAsm.gapC | exact GlobalTheory.TypeAsm.gapC | (intros; apply GlobalTheory.TypeAsm.gapC <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.gapC_holds : GlobalTheory.TypeAsm.GapC := by
   first | exact @GlobalTheory.TypeAsm.gapC | exact GlobalTheory.TypeAsm.gapC | (intros; apply GlobalTheory.TypeAsm.gapC <;> assumption)

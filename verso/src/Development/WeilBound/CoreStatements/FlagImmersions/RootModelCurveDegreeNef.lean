@@ -9,6 +9,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 
 namespace RootFieldNumerics
 
+/- English proof (translation)
+Use `⟨fun k => geoNum 1 W (fun _ => Pi.single k 1), fun a => ?_⟩` and prove the remaining obligations. Establish `hs : ∀ b : K → ℤ, (Fin.init (fun _ : Fin 1 => b) : Fin 0 → K → ℤ) = fun i => i.elim0` using `fun b => Subsingleton.elim _ _`. Rewrite using `[geoNum.eq_2 (n := 0)]`. Simplify using `only [geoNum.eq_2 (n := 0), hs]`. Use `split_ifs with h`.
+
+Simplify using `[Pi.single_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem geoNum_one_linear_in_degree {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (W : Ideal (MRing ι)) :
     ∃ c : K → ℤ, ∀ a : K → ℤ, geoNum 1 W (fun _ => a) = ∑ k, a k * c k := by
   classical
@@ -21,6 +26,11 @@ theorem geoNum_one_linear_in_degree {K : Type} [Fintype K] {ι : K → Type} [�
   · simp [Pi.single_apply]
   · simp
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `geoNum_one_linear_in_degree (K := K) W`. Rewrite using `[hc]`. Simplify using `only [hc, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem geoNum_linear_combination {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (W : Ideal (MRing ι))
     {J : Type} [Fintype J] (n : J → ℤ) (b : J → K → ℤ) :
     geoNum 1 W (fun _ => ∑ j, n j • b j) = ∑ j, n j * geoNum 1 W (fun _ => b j) := by
@@ -31,6 +41,13 @@ theorem geoNum_linear_combination {K : Type} [Fintype K] {ι : K → Type} [∀ 
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Use `set I : Ideal ℤ := Ideal.comap (C : ℤ →+* MRing ι) W with hI`. Establish `hp : I.IsPrime` using `Ideal.IsPrime.comap _`. Establish `hne : I ≠ ⊥`. Introduce `hb`. Apply `h` to reduce the goal to its premises.
+
+Establish `: Submodule.IsPrincipal.generator I = 0` using `(Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero I).mp hb`. Simplify using `[charOf, ← hI, this]`. Establish `hg` using `Submodule.IsPrincipal.prime_generator_of_isPrime I hne`. Establish `: charOf W = (Submodule.IsPrincipal.generator I).natAbs`. Simplify using `[charOf, ← hI]`.
+
+Rewrite using `[this]`. Conclude with `Int.prime_iff_natAbs_prime.mp hg`.
+-/
 theorem char_prime_of_prime_ideal {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (W : Ideal (MRing ι))
     (hW : W.IsPrime) (h : charOf W ≠ 0) : (charOf W).Prime := by
   classical
@@ -48,6 +65,9 @@ theorem char_prime_of_prime_ideal {K : Type} [Fintype K] {ι : K → Type} [∀ 
   rw [this]
   exact Int.prime_iff_natAbs_prime.mp hg
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `none => rfl`. Consider the case `some r => simp only [RootModel.line, M.x_deg]`.
+-/
 theorem root_line_a_independent {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N) (t : ℝ) (j : Option (Ψ × Fin N)) :
     (M.line t j).a = (M.line 1 j).a := by
   cases j with
@@ -56,6 +76,15 @@ theorem root_line_a_independent {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootMode
 
 end RootFieldNumerics
 
+/- English proof (translation)
+Introduce `Ψ _ N M t lam s q n hn`. Establish `key : ∀ W : Ideal (MRing M.ι), (geoNum 1 W (fun _ => (combLine (M.line t) n).a) : ℝ) = q * M.curveDeg lam s W`. Introduce `W`. Rewrite using `[show (combLine (M.line t) n).a = ∑ j, n j • (M.line t j).a from rfl, geoNum_linear_combination W n (fun j => (M.line t j).a)]`. Use `push_cast`.
+
+Rewrite using `[RootModel.curveDeg, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[root_line_a_independent M t j, hn j]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨key, fun hN W hWp hPW hc hd => ?_⟩` and prove the remaining obligations.
+
+Establish `hpr` using `char_prime_of_prime_ideal W hWp.1 hc`. Establish `h0` using `hN _ hpr W ⟨hWp, hPW, rfl, hd⟩`. Establish `h1 : (0:ℝ) ≤ geoNum 1 W (fun _ => (combLine (M.line t) n).a)`. Rewrite using `[key]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) h0`.
+
+Conclude with `h1` after adjusting the coercions.
+-/
 theorem RootFieldNumerics.curveDeg_eq_and_nefOnFibres_of_coef : ∀ (Ψ : Type) [Fintype Ψ] (N : ℕ) (M : RootModel Ψ N) (t : ℝ) (lam : Wt Ψ N) (s : ℝ) (q : ℕ) (n : Option (Ψ × Fin N) → ℤ), (∀ j, (n j : ℝ) = q * M.coef lam s j) → (∀ W : Ideal (MRing M.ι), (geoNum 1 W (fun _ => (combLine (M.line t) n).a) : ℝ) = q * M.curveDeg lam s W) ∧ (M.NefFib lam s → NefOnFibres M.P (combLine (M.line t) n).a) := by
   intro Ψ _ N M t lam s q n hn
   have key : ∀ W : Ideal (MRing M.ι),

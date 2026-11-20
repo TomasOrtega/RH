@@ -17,6 +17,9 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HasChar
 
 namespace CompanionTheory.RgExh.Fin
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.RgExhFin.finish (GlobalTheory.CompanionTheory.RgStart.startMod : StartMod) (GlobalTheory.CompanionTheory.RgSteps.pathFin : PathFin) (GlobalTheory.CompanionTheory.RgPath.pathExists : PathExists) (GlobalTheory.CompanionTheory.RgPath.pathEndNat : PathEnd …`.
+-/
 theorem exhaustion_finite_length : CompanionTheory.RgExh.Finish :=
   GlobalTheory.CompanionTheory.RgExhFin.finish (GlobalTheory.CompanionTheory.RgStart.startMod : StartMod)
     (GlobalTheory.CompanionTheory.RgSteps.pathFin : PathFin)

@@ -12,6 +12,15 @@ namespace GlobalTheory.ChainModels
 
 open Finset GlobalTheory.SignedHC GlobalTheory.ContragredientPar
 
+/- English proof (translation)
+Establish `hinj : Function.Injective f` using `fun a c h => hf (congrArg Prod.fst h)`. Establish `hcard : (univ.image f).card = n` using `by rw [card_image_of_injective _ hinj, card_univ, hn]`. Establish `hminus : SignedHC.nMinus (univ.image f) = q`. Rewrite using `[SignedHC.nMinus, filter_image, card_image_of_injective _ hinj, hq]`. Establish `hsum` using `nPlus_add_nMinus (univ.image f)`.
+
+Use `goodPar_iff.2 ⟨⟨?_, hcard, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy e`. Take `⟨a, -, rfl⟩` from `mem_image.1 hx`. Take `⟨c, -, rfl⟩` from `mem_image.1 hy`. Rewrite using `[hf e]`.
+
+Introduce `x hx`. Take `⟨s, hs⟩` from `mem_entries.1 hx`. Take `⟨a, -, e⟩` from `mem_image.1 hs`. Establish `e1 : (f a).1 = x` using `congrArg Prod.fst e`. Rewrite using `[← e1]`.
+
+Conclude with `hc a`. Simplify using `only [signature, Prod.mk.injEq]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem goodPar_image {ι : Type} [Fintype ι] {n p q : ℕ} (f : ι → ℚ × Bool) (hf : Function.Injective fun a => (f a).1)
     (hn : Fintype.card ι = n) (hc : ∀ a, ∃ z : ℤ, (f a).1 = ((n : ℚ) - 1) / 2 + z)
     (hq : (univ.filter fun a => (f a).2 = false).card = q) (hpq : p + q = n) : GoodPar n p q (univ.image f) := by
@@ -36,11 +45,17 @@ theorem goodPar_image {ι : Type} [Fintype ι] {n p q : ℕ} (f : ι → ℚ × 
 
 variable {R : Ranks} (P : HCParam R)
 
+/- English proof (translation)
+Establish `h1` using `P.gap_be c`. Establish `h2` using `(b_strictMono P).monotone h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem b_le_e {a c : Fin R.m} (h : a ≤ c) : P.b a + ((R.t : ℚ) + 3) / 2 ≤ P.e c := by
   have h1 := P.gap_be c
   have h2 := (b_strictMono P).monotone h
   linarith
 
+/- English proof (translation)
+Establish `hc : c.1 + 1 < R.m` using `lt_of_le_of_lt (Nat.succ_le_of_lt h) a.2`. Establish `h1` using `P.gap_eb c hc`. Establish `h2 : P.b ⟨c.1 + 1, hc⟩ ≤ P.b a` using `(b_strictMono P).monotone (show c.1 + 1 ≤ a.1 from h)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem e_le_b {a c : Fin R.m} (h : c < a) : P.e c + ((R.t : ℚ) + 3) / 2 ≤ P.b a := by
   have hc : c.1 + 1 < R.m := lt_of_le_of_lt (Nat.succ_le_of_lt h) a.2
   have h1 := P.gap_eb c hc
@@ -52,6 +67,19 @@ def entAt (j : ℕ) (hj : j ≤ R.m) (s : ℚ) : Fin (R.k - 1) ⊕ Fin R.m ⊕ F
   | .inr (.inl i) => (-P.b i + s, decide (i.1 ≤ j ∨ Even (i.1 - j)))
   | .inr (.inr x) => (-P.e (Fin.castLE hj x.1) + ((R.t : ℚ) - 1) / 2 - (x.2 : ℕ) + s, true)
 
+/- English proof (translation)
+Establish `hb : ∀ a : Fin R.t, (0 : ℚ) ≤ (a : ℕ) ∧ ((a : ℕ) : ℚ) + 1 ≤ R.t` using `fun a => ⟨Nat.cast_nonneg _, by exact_mod_cast a.2⟩`. Establish `hvb : ∀ i (c : Fin R.m) (a : Fin R.t), P.v i ≠ -P.e c + ((R.t : ℚ) - 1) / 2 - (a : ℕ)` using `fun i c a h => by`. Use `neg_v_lt_b P i c` as an intermediate fact. Use `b_le_e P (le_refl c)` as an intermediate fact. Use `hb a` as an intermediate fact.
+
+Combine the linear relations using `[this.1]`. Establish `hbb : ∀ (i c : Fin R.m) (a : Fin R.t), -P.b i ≠ -P.e c + ((R.t : ℚ) - 1) / 2 - (a : ℕ)` using `fun i c a h => by`. Use `hb a` as an intermediate fact. Break down `le_or_gt i c with h' | h'` into its components or cases. Combine the linear relations using `[b_le_e P h', this.1]`.
+
+Combine the linear relations using `[e_le_b P h', this.2]`. Establish `hee : ∀ (c c' : Fin R.m) (a a' : Fin R.t), c < c' → -P.e c + ((R.t : ℚ) - 1) / 2 - (a : ℕ) ≠ -P.e c' + ((R.t : ℚ) - 1) / 2 - (a' : ℕ)` using `fun c c' a a' h' h => by`. Combine the linear relations using `[e_le_b P h', b_le_e P (le_refl c'), (hb a).2, (hb a').1]`. Apply the tactic sequence `rintro (a | a | ⟨a, x⟩) (c | c | ⟨c, y⟩) h <;> simp only [entAt, add_left_inj] at h`. Rewrite using `[(v_strictAnti P).injective h]`.
+
+Conclude with `absurd (by linarith) (neg_v_lt_b P a c).ne`. Conclude with `absurd h (hvb _ _ _)`. Conclude with `absurd (by linarith) (neg_v_lt_b P c a).ne`. Rewrite using `[(b_strictMono P).injective (neg_injective h)]`. Conclude with `absurd h (hbb _ _ _)`.
+
+Conclude with `absurd h.symm (hvb _ _ _)`. Conclude with `absurd h.symm (hbb _ _ _)`. Break down `lt_trichotomy a c with h' | rfl | h'` into its components or cases. Conclude with `absurd h (hee _ _ _ _ h')`. Establish `: ((x : ℕ) : ℚ) = (y : ℕ)` using `by linarith`.
+
+Rewrite using `[Fin.ext (Nat.cast_injective this : (x : ℕ) = y)]`. Conclude with `absurd h.symm (hee _ _ _ _ h')`.
+-/
 theorem entAt_inj (j : ℕ) (hj : j ≤ R.m) (s : ℚ) : Function.Injective fun a => (entAt P j hj s a).1 := by
   have hb : ∀ a : Fin R.t, (0 : ℚ) ≤ (a : ℕ) ∧ ((a : ℕ) : ℚ) + 1 ≤ R.t := fun a =>
     ⟨Nat.cast_nonneg _, by exact_mod_cast a.2⟩
@@ -83,6 +111,13 @@ theorem entAt_inj (j : ℕ) (hj : j ≤ R.m) (s : ℚ) : Function.Injective fun 
       rw [Fin.ext (Nat.cast_injective this : (x : ℕ) = y)]
     · exact absurd h.symm (hee _ _ _ _ h')
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[range_add_one, filter_insert]`. Use `split_ifs with h`.
+
+Rewrite using `[ih]`. Rewrite `h` using `[Nat.even_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[card_insert_of_notMem (by simp), ih]`. Rewrite `h` using `[Nat.even_iff]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_minus (j m : ℕ) : ((range m).filter fun i => ¬ (i ≤ j ∨ Even (i - j))).card = (m - j) / 2 := by
   induction m with
   | zero => simp
@@ -96,6 +131,13 @@ theorem card_minus (j m : ℕ) : ((range m).filter fun i => ¬ (i ≤ j ∨ Even
       rw [Nat.even_iff] at h
       omega
 
+/- English proof (translation)
+Rewrite using `[← card_minus j R.m]`. Use `symm`. Use `card_bij (fun i hi => .inr (.inl ⟨i, mem_range.1 (mem_filter.1 hi).1⟩)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Use `mem_filter.2 ⟨mem_univ _, ?_⟩` and prove the remaining obligations.
+
+Simplify `(mem_filter.1 hi).2` using `[entAt]`. Introduce `a _ c _ h`. Simplify using `using h`. Introduce and unpack `(a | a | a) hx`. Simplify using `[entAt] at hx`.
+
+Conclude with `⟨a.1, mem_filter.2 ⟨mem_range.2 a.2, by simpa [entAt] using hx⟩, rfl⟩`. Simplify using `[entAt] at hx`.
+-/
 theorem card_entAt_false (j : ℕ) (hj : j ≤ R.m) (s : ℚ) :
     (univ.filter fun a => (entAt P j hj s a).2 = false).card = (R.m - j) / 2 := by
   rw [← card_minus j R.m]
@@ -111,6 +153,21 @@ theorem card_entAt_false (j : ℕ) (hj : j ≤ R.m) (s : ℚ) :
     · exact ⟨a.1, mem_filter.2 ⟨mem_range.2 a.2, by simpa [entAt] using hx⟩, rfl⟩
     · simp [entAt] at hx
 
+/- English proof (translation)
+Establish `hk` using `R.m_add_three_le_k`. Establish `hm` using `R.two_le_m`. Take `⟨k', hk'⟩` from `R.k_even`. Take `⟨m', hm'⟩` from `R.m_even`. Take `⟨t', ht'⟩` from `R.t_odd`.
+
+Use `goodPar_image _ (entAt_inj P j hj _) ?_ ?_ (card_entAt_false P j hj _) ?_` and prove the remaining obligations. Simplify using `only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin, Ranks.rankY, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hs : ∃ w : ℤ, (if Odd j then -(1 / 2) else 0 : ℚ) = ((R.rankY j : ℚ) - 1) / 2 + w`. Establish `hr : R.r = 2 * (k' + m' - 1) + 1` using `by unfold Ranks.r; omega`.
+
+Unfold `Ranks.rankY`. Rewrite using `[hr, ht']`. Generalize the expression as in `k' + m' - 1 = n`. Break down `Nat.even_or_odd' j with ⟨i, rfl | rfl⟩` into its components or cases. Rewrite using `[if_neg (by simp)]`.
+
+Conclude with `⟨-(n + i * (2 * t' + 1)), by push_cast; ring⟩`. Rewrite using `[if_pos (by simp)]`. Conclude with `⟨-(n + i * (2 * t' + 1) + t' + 1), by push_cast; ring⟩`. Take `⟨w, hw⟩` from `hs`. Rewrite using `[hw]`.
+
+Introduce and unpack `(a | a | ⟨a, x⟩)`. Take `⟨z, hz⟩` from `P.v_int a`. Conclude with `⟨z + w, by simp only [entAt, hz]; push_cast; ring⟩`. Take `⟨z, hz⟩` from `P.b_int a`. Conclude with `⟨-z + w, by simp only [entAt, hz]; push_cast; ring⟩`.
+
+Take `⟨z, hz⟩` from `P.e_int (Fin.castLE hj a)`. Use `⟨-z + t' - (x : ℕ) + w, ?_⟩` and prove the remaining obligations. Establish `ht : (R.t : ℚ) = 2 * t' + 1` using `by exact_mod_cast ht'`. Simplify using `only [entAt, hz, ht]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [sigYD, Ranks.rankY, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem goodPar_entAt (j : ℕ) (hj : j ≤ R.m) :
     GoodPar (R.rankY j) (sigYD R j).1 (sigYD R j).2 (univ.image (entAt P j hj (if Odd j then -(1 / 2) else 0))) := by
   have hk := R.m_add_three_le_k
@@ -145,6 +202,13 @@ theorem goodPar_entAt (j : ℕ) (hj : j ≤ R.m) :
   · simp only [sigYD, Ranks.rankY, Ranks.r]
     omega
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [TPar.Dpar, TPar.block, mem_image, mem_union, mem_biUnion, mem_filter, mem_univ, true_and, mem_range, Sum.exists, Prod.exists, entAt]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro ⟨_, _, (⟨i, e⟩ | ⟨i, e⟩) | ⟨i, hi, _, ⟨a, ha, rfl⟩, e⟩, rfl⟩ <;> obtain ⟨rfl, rfl⟩ := Prod.mk.inj e`. Conclude with `Or.inl ⟨i, rfl⟩`.
+
+Conclude with `Or.inr (Or.inl ⟨i, rfl⟩)`. Conclude with `Or.inr (Or.inr ⟨⟨i.1, hi⟩, ⟨a, ha⟩, rfl⟩)`. Introduce and unpack `(⟨i, rfl⟩ | ⟨i, rfl⟩ | ⟨i, a, rfl⟩)`. Conclude with `⟨_, _, Or.inl (Or.inl ⟨i, rfl⟩), rfl⟩`. Conclude with `⟨_, _, Or.inl (Or.inr ⟨i, rfl⟩), rfl⟩`.
+
+Conclude with `⟨_, _, Or.inr ⟨Fin.castLE hj i, i.2, _, ⟨a.1, a.2, rfl⟩, rfl⟩, rfl⟩`.
+-/
 theorem Dpar_eq (D : D7) (j : ℕ) (hj : j ≤ D.R.m) (τ : D.what₂.Tau) :
     (Ptw D).Dpar j τ = univ.image (entAt (D.hc τ) j hj (if Odd j then -(1 / 2) else 0)) := by
   ext x
@@ -160,11 +224,17 @@ theorem Dpar_eq (D : D7) (j : ℕ) (hj : j ≤ D.R.m) (τ : D.what₂.Tau) :
     · exact ⟨_, _, Or.inl (Or.inr ⟨i, rfl⟩), rfl⟩
     · exact ⟨_, _, Or.inr ⟨Fin.castLE hj i, i.2, _, ⟨a.1, a.2, rfl⟩, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[D.sp.Y_rank j hj, D.Y_sigval j hj, parB, Dpar_eq D j hj]`. Conclude with `GlobalTheory.RealGeo.FrameModels.goodPar_dualPar (goodPar_entAt (D.hc τ) j hj)`.
+-/
 theorem goodPar_parB (D : D7) (j : ℕ) (hj : j ≤ D.R.m) (τ : D.what₂.Tau) :
     GoodPar (D.sp.Y j).rank ((D.sp.Y j).sig (tauE D τ)).1 ((D.sp.Y j).sig (tauE D τ)).2 (parB (Ptw D) j τ) := by
   rw [D.sp.Y_rank j hj, D.Y_sigval j hj, parB, Dpar_eq D j hj]
   exact GlobalTheory.RealGeo.FrameModels.goodPar_dualPar (goodPar_entAt (D.hc τ) j hj)
 
+/- English proof (translation)
+Establish `h` using `goodPar_parB D D.R.m le_rfl τ`. Rewrite `h` using `[D.sp.Y_rank _ le_rfl]`. Rewrite using `[GlobalTheory.ChiGrid.sig_X'_eq_sig_Y, D.sp.X'_rank]`. Conclude with `h`.
+-/
 theorem goodPar_parB_last (D : D7) (τ : D.what₂.Tau) :
     GoodPar D.sp.X'.rank (D.sp.X'.sig (tauE D τ)).1 (D.sp.X'.sig (tauE D τ)).2 (parB (Ptw D) D.R.m τ) := by
   have h := goodPar_parB D D.R.m le_rfl τ
@@ -172,18 +242,34 @@ theorem goodPar_parB_last (D : D7) (τ : D.what₂.Tau) :
   rw [GlobalTheory.ChiGrid.sig_X'_eq_sig_Y, D.sp.X'_rank]
   exact h
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Published.dsExists_of_discreteSeriesExists h D _ _ (D.sp.Y_sig _) (goodPar_parB D _ (min_le_right _ _))`.
+-/
 theorem nonempty_modelY (h : GlobalTheory.Published.DiscreteSeriesExists) (D : D7) (j : ℕ) :
     Nonempty (DSModel (Yc D j) (parB (Ptw D) (min j D.R.m))) :=
   GlobalTheory.Published.dsExists_of_discreteSeriesExists h D _ _ (D.sp.Y_sig _) (goodPar_parB D _ (min_le_right _ _))
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Published.dsExists_of_discreteSeriesExists h D _ _ D.sp.X'_sig (goodPar_parB_last D)`.
+-/
 theorem nonempty_modelX (h : GlobalTheory.Published.DiscreteSeriesExists) (D : D7) :
     Nonempty (DSModel D.sp.X' (parB (Ptw D) D.R.m)) :=
   GlobalTheory.Published.dsExists_of_discreteSeriesExists h D _ _ D.sp.X'_sig (goodPar_parB_last D)
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf (D.eTau τ).1 x)`.
+-/
 theorem labE_embLL (D : D7) (τ : D.what₂.Tau) : labE D.what₂.embLL τ = tauE D τ := by
   ext x
   exact DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf (D.eTau τ).1 x)
 
+/- English proof (translation)
+Establish `h : ∃ τ, labE D.what₂.embLL τ = tauE D ρ ∨ labE D.what₂.embLL τ = (starRingEnd ℂ).comp (tauE D ρ)` using `⟨ρ, Or.inl (labE_embLL D ρ)⟩`. Unfold `lab`. Rewrite using `[dif_pos h]`. Establish `hs` using `h.choose_spec`. Generalize the expression as in `h.choose = τ at hs`.
+
+Break down `hs with hs | hs` into its components or cases. Conclude with `hs`. It suffices to derive a contradiction. Rewrite `hs` using `[labE_embLL]`. Establish `a` using `xi_zero_im_pos D τ`.
+
+Establish `b` using `xi_zero_im_pos D ρ`. Rewrite `a` using `[hs]`. Simplify using `at a`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem labE_lab_embLL (D : D7) (ρ : D.what₂.Tau) : labE D.what₂.embLL (lab D.what₂.embLL ρ) = tauE D ρ := by
   have h : ∃ τ, labE D.what₂.embLL τ = tauE D ρ ∨ labE D.what₂.embLL τ = (starRingEnd ℂ).comp (tauE D ρ) :=
     ⟨ρ, Or.inl (labE_embLL D ρ)⟩
@@ -201,6 +287,9 @@ theorem labE_lab_embLL (D : D7) (ρ : D.what₂.Tau) : labE D.what₂.embLL (lab
     simp at a
     linarith
 
+/- English proof (translation)
+Introduce `h D`. Use `⟨⟨nonempty_modelY h D, nonempty_modelX h D⟩, fun Ks _ _ hK => ?_⟩` and prove the remaining obligations. Take `⟨MW, hMW⟩` from `GlobalTheory.RealGeo.FrameModels.exists_frameKs h D Ks hK`. Conclude with `⟨MW, fun i => hMW.2 i _ (labE_lab_embLL D), hMW⟩`.
+-/
 theorem exists_models : GlobalTheory.Published.DiscreteSeriesExists → ∀ D : D7,
     ((∀ j, Nonempty (DSModel (Yc D j) (parB (Ptw D) (min j D.R.m)))) ∧ Nonempty (DSModel D.sp.X' (parB (Ptw D) D.R.m))) ∧
     ∀ (Ks : Type) [Field Ks] [Algebra Ks D.what₂.LL], (∀ x : D.host.E, ∃ y : Ks, algebraMap Ks D.what₂.LL y = D.embE x) →
@@ -212,6 +301,9 @@ theorem exists_models : GlobalTheory.Published.DiscreteSeriesExists → ∀ D : 
   obtain ⟨MW, hMW⟩ := GlobalTheory.RealGeo.FrameModels.exists_frameKs h D Ks hK
   exact ⟨MW, fun i => hMW.2 i _ (labE_lab_embLL D), hMW⟩
 
+/- English proof (translation)
+Establish `he` using `M.enum τ`. Establish `e : parAt (Wc D i) D.what₂.embLL τ = Formalism.L2.NTheta.holPar _ _ (kapAt (Wc D i) D.what₂.embLL τ)` using `if_pos (labE_lab_embLL D τ)`. Rewrite `he` using `[e]`. Conclude with `(GlobalTheory.HolDict.isEnum_holPar_kapW _ (Formalism.IndefR.FWT.rank_Wc i) (GlobalTheory.RealGeo.FrameModels.sig_add i τ) he a).2`.
+-/
 theorem order_embLL (D : D7) (i : Fin D.R.m) (M : DSModel (Wc D i) (parAt (Wc D i) D.what₂.embLL)) (τ : D.what₂.Tau)
     (a : Fin (Wc D i).rank) : M.ε τ a = decide ((a : ℕ) < ((Wc D i).sig (tauE D τ)).1) := by
   have he := M.enum τ

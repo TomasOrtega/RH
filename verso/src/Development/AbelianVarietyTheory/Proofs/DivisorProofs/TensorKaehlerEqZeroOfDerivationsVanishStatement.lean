@@ -13,5 +13,8 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.tensor_kaehler_eq_zero_of_derivations_vanish | exact GlobalTheory.tensor_kaehler_eq_zero_of_derivations_vanish | (intros; apply GlobalTheory.tensor_kaehler_eq_zero_of_derivations_vanish <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eq_zero_of_liftBaseChange_derivations_eq_zero : ∀ (R B C : Type) [CommRing R] [CommRing B] [CommRing C] [Algebra R B] [Algebra R C], Module.Projective C Ω[C⁄R] → ∀ z : B ⊗[R] Ω[C⁄R], (∀ θ : Ω[C⁄R] →ₗ[R] B ⊗[R] C, (∀ (c : C) (x : Ω[C⁄R]), θ (c • x) = (1 ⊗ₜ c) * θ x) → LinearMap.liftBaseChange B θ z = 0) → z = 0 := by
   first | exact @GlobalTheory.tensor_kaehler_eq_zero_of_derivations_vanish | exact GlobalTheory.tensor_kaehler_eq_zero_of_derivations_vanish | (intros; apply GlobalTheory.tensor_kaehler_eq_zero_of_derivations_vanish <;> assumption)

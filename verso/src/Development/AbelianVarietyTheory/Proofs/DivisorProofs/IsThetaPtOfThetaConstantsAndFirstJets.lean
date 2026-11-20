@@ -21,6 +21,11 @@ namespace GlobalTheory.MBLow.ThetaOfJet
 
 open GlobalTheory.MBLow.JetUniq
 
+/- English proof (translation)
+Establish `e : th = TrSec.thSec x.P x.th`. Use `NormTheta.sec_ext fun j => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩ : ∃ i : x.P.L.ι, j = fun _ => i` from `⟨j 0, funext fun k => congrArg j (Subsingleton.elim _ _)⟩`. Conclude with `(h i (TrSec.chart_le x.P _)).trans (TrSec.projectionPullbackSectionBaseProduct_isInverseImage x.P x.th i (TrSec.chart_le x.P _)).symm`. Substitute `e` using the available equality.
+
+Use `haveI : Subsingleton (Over.mk (𝟙 (Sp K))).left := inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Use `(GenSecFibre.isGenSec_iff_fibres firstFiveLaws.2.1 (Sp K) x.P K (𝟙 _) _).2 fun p => ?_` and prove the remaining obligations. Take `⟨z, -, hz⟩` from `x.th_ne p`. Conclude with `⟨_, Subsingleton.elim _ _, TrSec.nonzero_thSec x.P x.th z hz⟩`.
+-/
 theorem isGenSec_of_polAVSectionInverseImage {K : Type} [Field K] (x : KeyIn K)
     (th : LB.Sec (LPow x.P.A x.P.L ((1 : ℕ) : ℤ) (baseOver (Sp K))))
     (h : IsPolAVSectionInverseImage x.P (baseOver (Sp K)) x.th th) : IsGenSec x.P.A x.P.L 1 th := by
@@ -34,6 +39,9 @@ theorem isGenSec_of_polAVSectionInverseImage {K : Type} [Field K] (x : KeyIn K)
   obtain ⟨z, -, hz⟩ := x.th_ne p
   exact ⟨_, Subsingleton.elim _ _, TrSec.nonzero_thSec x.P x.th z hz⟩
 
+/- English proof (translation)
+Rewrite using `[toProd, ← Over.comp_left, comp_lift, Category.comp_id, ptSecT]`. Use `congr 2`. Use `ext`. Simplify using `using (Over.w z).symm`.
+-/
 theorem ptSecT_left {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] (z : baseOver (Sp R) ⟶ A) :
     (ptSecT A z).left = z.left ≫ toProd A := by
   rw [toProd, ← Over.comp_left, comp_lift, Category.comp_id, ptSecT]
@@ -43,12 +51,40 @@ theorem ptSecT_left {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] (z : ba
 
 open GlobalTheory.MBLow.JetUniq
 
+/- English proof (translation)
+Establish `h : ⊤ ≤ (𝟙 (Sp K)) ⁻¹ᵁ ⊤` using `fun _ _ => trivial`. Rewrite using `[valR, dif_pos h]`. Simplify using `[GlobalTheory.Ex.fnOf, Scheme.Hom.appLE]`. Both sides reduce to the same expression.
+-/
 theorem fnOf_valR_id {K : Type} [Field K] (f : Γ(Sp K, ⊤)) : GlobalTheory.Ex.fnOf (valR (𝟙 (Sp K)) ⊤ f) = f := by
   have h : ⊤ ≤ (𝟙 (Sp K)) ⁻¹ᵁ ⊤ := fun _ _ => trivial
   rw [valR, dif_pos h]
   simp [GlobalTheory.Ex.fnOf, Scheme.Hom.appLE]
   rfl
 
+/- English proof (translation)
+Introduce `K _ x g hg m hm hK I pt ϑ J hJ`. Take `⟨th, hth, U, t, i₀, c, hUT, hi₀, H⟩` from `hJ`. Establish `hLaw : Laws` using `firstFiveLaws.1`. Establish `hL` using `x.P.isLB`. Set `T : Over (Sp K)` to `baseOver (Sp K)`.
+
+Take `⟨α₀, hα₀⟩` from `hLaw.mulPull _ x.P m`. Establish `e₁ : (snd T x.P.A).left ≫ (mulA x.P.A m).left = (snd T x.P.A ^ m).left`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id]`. Take `⟨α₁, hα₁, -⟩` from `exists_gen hL (φ' := ![(snd T x.P.A).left, (snd T x.P.A ^ m).left]) (ε' := ![((m ^ 2 : ℕ) : ℤ), -((1 : ℕ) : ℤ)]) (fun U _ f => by`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `fin_cases i`. Conclude with `congrArg₂ (fun q n => f q ^ n) (Category.comp_id _) (Nat.cast_pow m 2).symm`. Conclude with `congrArg (fun q => f q ^ (-1 : ℤ)) e₁)`. Use the proof step `(LB.pullGen x.P.L ![𝟙 x.P.A.left, (mulA x.P.A m).left] ![(m : ℤ) ^ 2, -1] α₀ (snd T x.P.A).left)`. Use the proof step `(DVR.pullGen_isGen _ _ _ _ hα₀ _)`.
+
+Take `⟨α, hα, hn⟩` from `NormTheta.exists_normalised hL x.rig_gen m _ _ (((m ^ 2 : ℕ) : ℤ) - 1) rfl α₁ hα₁`. Take `⟨s₁, hs₁⟩` from `ThetaPtExist.exists_isTwistPull hL (mulT x.P.A T m) (snd T x.P.A ^ m) (lift_snd _ _) ((m ^ 2 : ℕ) : ℤ) ((1 : ℕ) : ℤ) α hα th`. Use `choose s₂ hs₂ using fun i => ThetaPtExist.exists_isTwistPull hL (translT x.P.A (U i).pt) (translPt x.P.A (U i).pt) (lift_snd _ _) ((m ^ 2 : ℕ) : ℤ) ((m ^ 2 : ℕ) : ℤ) (U i).φ (U i).isGen s₁`. Establish `ht : ∀ i, t i = s₂ i` using `fun i => NormTheta.sec_ext (tr_unique x.P x.rig hm (fun _ => rfl) (hUT i).1 (hUT i).1 (hUT i).2 ⟨α, s₁, hα, hn, hs₁, hs₂ i⟩)`. Set `τ` to `rigT x.P.A x.P.L x.rig T ((m ^ 2 : ℕ) : ℤ)`.
+
+Establish `hτ : τ.IsGen` using `NormTheta.rigT_isGen x.rig_gen _`. Use `choose w hw using fun i => ThetaPtExist.exists_isValueAt hL (s₂ i) 1 τ hτ`. Establish `k₀ : ⊤ ≤ eSec x.P.A ⁻¹ᵁ x.P.L.U i₀` using `fun z hz => hi₀ hz`. Set `r : K` to `valR (𝟙 (Sp K)) ((x.P.L.pull (eSec x.P.A)).U fun _ => i₀) (x.rig.s fun _ => i₀).val`. Establish `hr₀ : r ≠ 0` using `(isUnit_valR (𝟙 (Sp K)) ((x.P.L.pull (eSec x.P.A)).U fun _ => i₀) (fun z hz => Set.mem_iInter.2 fun _ => k₀ hz) _).ne_zero`.
+
+Set `V₁` to `(x.P.L.LinComb (fun _ : Fin 1 => (1 : T ⟶ x.P.A).left) fun _ => ((m ^ 2 : ℕ) : ℤ)).U fun _ => i₀`. Set `q : K` to `valR (𝟙 (Sp K)) V₁ (τ.s fun _ => i₀).val`. Establish `hq₀ : q ≠ 0` using `(isUnit_valR (𝟙 (Sp K)) V₁ (fun z hz => Set.mem_iInter.2 fun _ => k₀ hz) _).ne_zero`. Establish `hp : (ptSecT x.P.A (1 : T ⟶ x.P.A)).left = eSec x.P.A ≫ toProd x.P.A`. Rewrite using `[ptSecT_left, NormTheta.one_left]`.
+
+Conclude with `congrArg (· ≫ toProd x.P.A) (Category.id_comp _)`. Set `j₀ : Fin g` to `⟨0, hg ▸ x.g_pos⟩`. Establish `hval : ∀ i, valR (𝟙 (Sp K)) ⊤ (w i) * q = r ^ (m ^ 2) * ϑ i` using `fun i => by`. Establish `e2` using `GlobalTheory.ZH.TorsReg.valR_valueAt x.P.A x.P.L _ (hw i) (𝟙 (Sp K)) i₀ (by`. Introduce and unpack `_ ⟨z, rfl⟩`.
+
+Conclude with `k₀ trivial)`. Rewrite `e2` using `[Category.id_comp, hp, ← ht i]`. Set `V` to `LB.wchart x.P.L (fun _ : Fin 1 => (snd (baseOver (Sp K)) x.P.A).left) fun _ => i₀`. Establish `e : (valR (epsLift (x.v (Fin.cast hg.symm j₀))) V ((t i).f fun _ => i₀)).fst = r ^ (m ^ 2) * ϑ i`. Use `congrArg TrivSqZeroExt.fst (H i j₀)` as an intermediate fact.
+
+Simplify using `only [TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inr, add_zero] at this`. Conclude with `this`. Rewrite `e` using `[epsLift_eq]`. Use `erw [GlobalTheory.HolHom.valR_comp (A := DualNumber K) (x.v (Fin.cast hg.symm j₀)).left (toProd x.P.A) V] at e`. Rewrite `e` using `[fst_valR (x.basis.1 _) (le_toProd k₀)]`.
+
+Use `erw [← GlobalTheory.HolHom.valR_comp (A := K) (eSec x.P.A) (toProd x.P.A) V] at e`. Conclude with `e2.symm.trans e`. Establish `un : ∀ a : K, a ≠ 0 → IsUnit (fnOf a)` using `fun a ha => (IsUnit.mk0 _ ha).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Establish `hmu : IsUnit (m : Γ(T.left, ⊤))`. Use `un m hK` as an intermediate fact.
+
+Rewrite `this` using `[GlobalTheory.Ex.fnOf, map_natCast]`. Then use the resulting hypothesis. Use `haveI : Subsingleton T.left := inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Use `ThetaSeries.isThetaPt_of_data x.P hm hmu (Nat.cast_pow m 2) th s₁ α τ U s₂ w (un _ (div_ne_zero hq₀ (pow_ne_zero (m ^ 2) hr₀))).unit ⟨isGenSec_of_polAVSectionInverseImage x th hth, hα, hτ, hs₁, fun i => (hUT i).1, hs₂, hw, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, ← fnOf_valR_id (w i), ← map_mul]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(hval i).symm`.
+-/
 theorem isThetaPt_of_thJet : ∀ (K : Type) [Field K] (x : KeyIn K) (g : ℕ) (hg : x.P.g = g) (m : ℕ), Odd m → (m : K) ≠ 0 → ∀ (I : Type) (pt : I → (baseOver (Sp K) ⟶ x.P.A)) (ϑ : I → K) (J : I → Fin g → K), ThJet x hg m pt ϑ J → IsThetaPt x.P m pt fun i => fnOf (ϑ i) := by
   intro K _ x g hg m hm hK I pt ϑ J hJ
   obtain ⟨th, hth, U, t, i₀, c, hUT, hi₀, H⟩ := hJ

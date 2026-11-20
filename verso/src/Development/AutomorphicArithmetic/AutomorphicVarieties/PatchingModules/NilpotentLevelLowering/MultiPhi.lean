@@ -10,6 +10,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 private noncomputable def uP (q n : ℕ) (j : Fin q) : Polynomial (MvPolynomial (Fin q × Fin n) ℤ) :=
   Polynomial.X ^ n + ∑ k : Fin n, Polynomial.C (MvPolynomial.X (j, k)) * Polynomial.X ^ (k : ℕ)
 
+/- English proof (translation)
+Establish `hh : (emb ℤ R j : MvPolynomial (Fin n) ℤ →+* PU R q n) = (MvPolynomial.aeval (fun i : Fin n => (MvPolynomial.X (j, i) : PU R q n))).toRingHom` using `MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) (fun i => by simp [emb])`. Rewrite using `[show emb ℤ R j (MvPolynomial.esymm (Fin n) ℤ (n - k)) = _ from RingHom.congr_fun hh _]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_esymm_eq_multiset_esymm]`. Establish `key` using `Multiset.prod_X_sub_C_coeff (Finset.univ.val.map (fun i : Fin n => (MvPolynomial.X (j, i) : PU R q n))) (k := k) (by simpa using hk)`. Simplify using `only [Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin, Multiset.map_map] at key`.
+
+Rewrite using `[← key]`. Both sides reduce to the same expression.
+-/
 private theorem prod_coeff (R : Type) [CommRing R] (q n : ℕ) (j : Fin q) (k : ℕ) (hk : k ≤ n) :
     (∏ i : Fin n, (Polynomial.X - Polynomial.C (MvPolynomial.X (j, i) : PU R q n))).coeff k =
       (-1) ^ (n - k) * emb ℤ R j (MvPolynomial.esymm (Fin n) ℤ (n - k)) := by
@@ -24,6 +29,21 @@ private theorem prod_coeff (R : Type) [CommRing R] (q n : ℕ) (j : Fin q) (k : 
   rw [← key]
   rfl
 
+/- English proof (translation)
+Set `X : (σ →₀ ℕ) → B →+ M →+ V` to `fun e => { toFun := fun b => { toFun := fun m => act (MvPolynomial.monomial e 1) (inc (b • m)) map_zero' := by simp map_add' := fun x y => by simp [smul_add] } map_zero' := by ext m; simp map_add' := fun x y => by ext m; simp [add_smul] }`. Set `G : MvPolynomial σ B →+ M →+ V` to `(Finsupp.liftAddHom X).comp (AddMonoidAlgebra.coeffAddEquiv (R := B) (M := σ →₀ ℕ)).toAddMonoidHom`. Establish `hG : ∀ e b m, G (MvPolynomial.monomial e b) m = act (MvPolynomial.monomial e 1) (inc (b • m))`. Introduce `e b m`. Use `show (Finsupp.liftAddHom X (Finsupp.single e b)) m = _`.
+
+Rewrite using `[Finsupp.liftAddHom_apply_single]`. Both sides reduce to the same expression. Use `⟨G, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m`. Rewrite using `[← MvPolynomial.C_1, MvPolynomial.C_apply, hG, one_smul, ← MvPolynomial.C_apply, MvPolynomial.C_1, map_one]`.
+
+Both sides reduce to the same expression. Introduce `u h m`. Proceed by induction on `u using MvPolynomial.induction_on' with`. Consider the case `monomial e r`. Proceed by induction on `h using MvPolynomial.induction_on' with`.
+
+Consider the case `monomial e' c`. Establish `h1 : MvPolynomial.monomial (e + e') (1 : R) = MvPolynomial.monomial e 1 * MvPolynomial.monomial e' 1`. Rewrite using `[MvPolynomial.monomial_mul, one_mul]`. Establish `h2 : MvPolynomial.monomial e r = r • MvPolynomial.monomial e (1 : R)`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`.
+
+Rewrite using `[MvPolynomial.map_monomial, MvPolynomial.monomial_mul, hG, hG, mul_smul, hinc]`. Generalize the expression as in `inc (c • m) = v`. Rewrite using `[h1, h2]`. Simplify using `only [map_smul, map_mul, Module.End.mul_apply, LinearMap.smul_apply]`. Consider the case `add p q hp hq`.
+
+Simplify using `only [mul_add, map_add, AddMonoidHom.add_apply, hp, hq]`. Consider the case `add p q hp hq`. Simplify using `only [map_add, add_mul, AddMonoidHom.add_apply, hp, hq, LinearMap.add_apply]`. Introduce `b h m`. Proceed by induction on `h using MvPolynomial.induction_on' with`.
+
+Consider the case `monomial e c`. Rewrite using `[MvPolynomial.C_mul_monomial, hG, hG, mul_comm, mul_smul]`. Consider the case `add p q hp hq`. Simplify using `only [mul_add, map_add, AddMonoidHom.add_apply, hp, hq]`.
+-/
 private theorem exists_mvPolynomial_action_extending_inc (R B M V : Type) [CommRing R] [CommRing B] [AddCommGroup M] [Module B M]
     [AddCommGroup V] [Module R V] (σ : Type) (β : R →+* B) (act : MvPolynomial σ R →ₐ[R] Module.End R V)
     (inc : M →+ V) (hinc : ∀ (t : R) m, inc (β t • m) = t • inc m) :
@@ -73,6 +93,33 @@ private theorem exists_mvPolynomial_action_extending_inc (R B M V : Type) [CommR
     | add p q hp hq =>
       simp only [mul_add, map_add, AddMonoidHom.add_apply, hp, hq]
 
+/- English proof (translation)
+Introduce `R B M V _ _ _ _ _ _ q n β P act inc hmon hdeg hinc hact`. Take `⟨G, h1, hL, hC⟩` from `exists_mvPolynomial_action_extending_inc R B M V (Fin q × Fin n) β act inc hinc`. Establish `hgen : ∀ jk : Fin q × ℕ, ∀ m, G ((∏ i : Fin n, (Polynomial.X - Polynomial.C (MvPolynomial.X (jk.1, i))) - Polynomial.map MvPolynomial.C (P jk.1)).coeff jk.2) m = 0`. Introduce and unpack `⟨j, k⟩ m`. Simplify using `only`.
+
+Establish `hprod : (∏ i : Fin n, (Polynomial.X - Polynomial.C (MvPolynomial.X (j, i) : MvPolynomial (Fin q × Fin n) B))) = (∏ i : Fin n, (Polynomial.X - Polynomial.C (MvPolynomial.X (j, i) : PU R q n))).map (MvPolynomial.map β)`. Simplify using `[Polynomial.map_prod]`. Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_map, hprod, Polynomial.coeff_map]`. Break down `le_or_gt k n with hk | hk` into its components or cases. Rewrite using `[prod_coeff R q n j k hk, map_sub, AddMonoidHom.sub_apply]`.
+
+Establish `e1` using `hL ((-1) ^ (n - k) * emb ℤ R j (MvPolynomial.esymm (Fin n) ℤ (n - k))) 1 m`. Rewrite `e1` using `[mul_one, h1]`. Establish `e2` using `hC ((P j).coeff k) 1 m`. Rewrite `e2` using `[mul_one, h1]`. Rewrite using `[e1, e2, map_mul, map_pow, map_neg, map_one, Module.End.mul_apply, hact j (n - k) (Nat.sub_le n k) m, Nat.sub_sub_self hk]`.
+
+Break down `Nat.even_or_odd (n - k) with hp | hp` into its components or cases. Simplify using `[hp.neg_one_pow]`. Simplify using `[hp.neg_one_pow, neg_smul]`. Establish `hd : (∏ i : Fin n, (Polynomial.X - Polynomial.C (MvPolynomial.X (j, i) : PU R q n))).natDegree ≤ n` using `(Polynomial.natDegree_prod_le _ _).trans ((Finset.sum_le_sum fun i _ => Polynomial.natDegree_X_sub_C_le _).trans (by simp))`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (hd.trans_lt hk), Polynomial.coeff_eq_zero_of_natDegree_lt ((hdeg j).trans_lt hk)]`.
+
+Simplify using the standard rewrite rules. Establish `hI : ∀ x ∈ mSplitIdeal P n, ∀ a m, G (a * x) m = 0`. Introduce `x hx`. Unfold `mSplitIdeal Ideal.span at hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨jk, rfl⟩` from `hx`. Introduce `a m`. Proceed by induction on `a using MvPolynomial.induction_on' with`. Consider the case `monomial e b`.
+
+Establish `hm : MvPolynomial.monomial e b = MvPolynomial.C b * MvPolynomial.map β (MvPolynomial.monomial e 1)`. Rewrite using `[MvPolynomial.map_monomial, map_one, MvPolynomial.C_mul_monomial, mul_one]`. Rewrite using `[hm, mul_assoc, hC, hL, hgen jk (b • m), map_zero]`. Consider the case `add p q hp hq => simp only [add_mul, map_add, AddMonoidHom.add_apply, hp, hq, add_zero]`. Consider the case `zero => intro a m`.
+
+Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro a m`. Simplify using `only [mul_add, map_add, AddMonoidHom.add_apply, hx, hy, add_zero]`. Consider the case `smul c x _ hx => intro a m`. Rewrite using `[smul_eq_mul, ← mul_assoc, hx]`.
+
+Establish `hvan : (mSplitIdeal P n).toAddSubgroup ≤ G.ker`. Introduce `x hx`. Rewrite using `[AddMonoidHom.mem_ker]`. Use extensionality with `m`. Simplify using `using hI x hx 1 m`.
+
+Set `F : MSplitAlg P n →+ M →+ V` to `QuotientAddGroup.lift (mSplitIdeal P n).toAddSubgroup G hvan`. Establish `hF : ∀ f, F (Ideal.Quotient.mk (mSplitIdeal P n) f) = G f` using `fun f => rfl`. Establish `hbal : ∀ (b : B) (x : MSplitAlg P n) (m : M), F (b • x) m = F x (b • m)`. Introduce `b x m`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+
+Rewrite using `[Algebra.smul_def, ← Ideal.Quotient.mk_algebraMap, ← map_mul, hF, hF, MvPolynomial.algebraMap_eq, hC]`. Use `⟨TensorProduct.liftAddHom F hbal, ?_, ?_⟩` and prove the remaining obligations. Introduce `m`. Rewrite using `[TensorProduct.liftAddHom_tmul, ← map_one (Ideal.Quotient.mk (mSplitIdeal P n)), hF, h1]`. Introduce `t z`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x m`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[TensorProduct.smul_tmul', TensorProduct.liftAddHom_tmul, TensorProduct.liftAddHom_tmul, smul_eq_mul, ← map_mul, hF, hF, hL]`.
+
+Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, map_add]`.
+-/
 theorem UpperTheory.V.Pa.Lev.multiPhi :
     ∀ (R B M V : Type) [CommRing R] [CommRing B] [AddCommGroup M] [Module B M] [AddCommGroup V] [Module R V] (q n : ℕ) (β : R →+* B) (P : Fin q → Polynomial B) (act : PU R q n →ₐ[R] Module.End R V) (inc : M →+ V), (∀ j, (P j).Monic) → (∀ j, (P j).natDegree = n) → (∀ (t : R) m, inc (β t • m) = t • inc m) → (∀ j k, k ≤ n → ∀ m, act (emb ℤ R j (MvPolynomial.esymm (Fin n) ℤ k)) (inc m) = inc (((-1) ^ k * (P j).coeff (n - k)) • m)) → ∃ φ : MSplitAlg P n ⊗[B] M →+ V, (∀ m, φ (1 ⊗ₜ m) = inc m) ∧ ∀ (t : PU R q n) z, φ (Ideal.Quotient.mk (mSplitIdeal P n) (MvPolynomial.map β t) • z) = act t (φ z) := by
   intro R B M V _ _ _ _ _ _ q n β P act inc hmon hdeg hinc hact

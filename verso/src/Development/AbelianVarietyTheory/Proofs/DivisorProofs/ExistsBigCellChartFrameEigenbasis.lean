@@ -22,6 +22,9 @@ open scoped Classical
 
 namespace GlobalTheory.LogPole.CellNear
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem vecAt_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (k : TF.X.F.J) {S : Type}
     [CommRing S] {z₁ z₂ : Sp S ⟶ TF.X.YY} (h : z₁ = z₂) (h₁ : ⊤ ≤ z₁ ⁻¹ᵁ TF.X.F.U k) (h₂ : ⊤ ≤ z₂ ⁻¹ᵁ TF.X.F.U k)
@@ -29,6 +32,17 @@ theorem vecAt_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reci
     TF.X.F.vecAt k z₁ h₁ hx₁ σ i = TF.X.F.vecAt k z₂ h₂ hx₂ σ i := by
   subst h; rfl
 
+/- English proof (translation)
+Establish `hU0 : ⊤ ≤ (FlagMod.tau hW₀ ≫ toBase TF Z) ⁻¹ᵁ U.1` using `fun q hq => FlagMod.tau_le hW₀ hW₀U hq`. Establish `hk0 : ⊤ ≤ (FlagMod.tau hW₀ ≫ inc₀ TF.X Z) ⁻¹ᵁ TF.X.F.U k` using `fun q hq => FlagMod.tau_le hW₀ hW₀k hq`. Establish `hx0 : (FlagMod.tau hW₀ ≫ inc₀ TF.X Z) ≫ TF.X.π = FlagMod.tau hW₀ ≫ toBase TF Z` using `Category.assoc _ _ _`. Take `⟨C, hC⟩` from `GlobalTheory.T.frameVector_isCombination_eigenbasis_flagSpace_point E H Dw l Xo c TF Z U n e v hv k _ (FlagMod.tau hW₀) hU0 hk0 hx0`. Use `⟨C, fun σ => GlobalTheory.T.isUnit_det_frame_eigenbasis_block_at_point E H Dw l Xo c TF Z U n e v hv k _ (FlagMod.tau hW₀) hU0 hk0 hx0 σ (C σ) (hC σ), ?_⟩` and prove the remaining obligations.
+
+Introduce `S _ z hz hU hk hx σ i`. Establish `hzφ : spMap (ev z W₀ hz) ≫ FlagMod.tau hW₀ = z` using `FlagMod.spMap_ev z hW₀ hz`. Establish `eb : spMap (ev z W₀ hz) ≫ FlagMod.tau hW₀ ≫ toBase TF Z = z ≫ toBase TF Z`. Rewrite using `[← Category.assoc, hzφ]`. Establish `hb` using `(GlobalTheory.TanBaseChange.tan_comb_baseChange E H TF.Y.X TF.Y.t _ S (ev z W₀ hz) (FlagMod.tau hW₀ ≫ toBase TF Z) (z ≫ toBase TF Z) eb).2 _ (fun j => spMap (dualMap (ev (FlagMod.tau hW₀ ≫ toBase TF Z) U.1 hU0)) ≫ v (e ⟨σ, j⟩)) (C σ i) _ (hC σ i)`.
+
+Establish `e1 : ∀ j, spMap (dualMap (ev (z ≫ toBase TF Z) U.1 hU)) ≫ v j = spMap (dualMap (ev z W₀ hz)) ≫ spMap (dualMap (ev (FlagMod.tau hW₀ ≫ toBase TF Z) U.1 hU0)) ≫ v j`. Introduce `j`. Rewrite using `[← Category.assoc (spMap (dualMap (ev z W₀ hz))), TanBaseChange.spMap_comp_spMap', ← FlagMod.dualMap_comp, ← FlagMod.ev_spMap (ev z W₀ hz) (FlagMod.tau hW₀ ≫ toBase TF Z) U.1 hU0 (FlagMod.le_preimage_comp _ hU0), FlagMod.ev_congr eb U.1 (FlagMod.le_preimage_comp _ hU0) hU]`. Establish `hz' : ⊤ ≤ (spMap (ev z W₀ hz) ≫ FlagMod.tau hW₀ ≫ inc₀ TF.X Z) ⁻¹ᵁ TF.X.F.U k` using `FlagMod.le_preimage_comp _ hk0`. Establish `hx' : (spMap (ev z W₀ hz) ≫ FlagMod.tau hW₀ ≫ inc₀ TF.X Z) ≫ TF.X.π = z ≫ toBase TF Z`.
+
+Rewrite using `[← eb]`. Simplify using `only [toBase, Category.assoc]`. Establish `e2 : (tv (TF.X.F.vecAt k (z ≫ inc₀ TF.X Z) hk hx σ i)).left = spMap (dualMap (ev z W₀ hz)) ≫ (tv (TF.X.F.vecAt k (FlagMod.tau hW₀ ≫ inc₀ TF.X Z) hk0 hx0 σ i)).left`. Rewrite using `[← FlagMod.tanPull_left (ev z W₀ hz) eb, FlagMod.Frames.tanPull_vecAt TF.X.F k (ev z W₀ hz) _ hk0 hz' hx0 hx' eb, vecAt_congr TF k (by rw [← Category.assoc, hzφ]) hz' hk hx' hx]`. Rewrite using `[funext fun j => e1 (e ⟨σ, j⟩), e2]`.
+
+Conclude with `hb`.
+-/
 theorem exists_frameMat {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (Z : Comp Xo c)
     (U : TF.Y.X.affineOpens) {n : ℕ} (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n)
@@ -67,10 +81,16 @@ theorem exists_frameMat {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   rw [funext fun j => e1 (e ⟨σ, j⟩), e2]
   exact hb
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one fun i _ => h i`.
+-/
 theorem isUnit_prod_univ {R ι : Type} [CommRing R] [Fintype ι] (f : ι → R) (h : ∀ i, IsUnit (f i)) :
     IsUnit (∏ i, f i) :=
   Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one fun i _ => h i
 
+/- English proof (translation)
+The claim follows from `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem f (Finset.mem_univ i)) h`.
+-/
 theorem isUnit_of_isUnit_prod_univ {R ι : Type} [CommRing R] [Fintype ι] (f : ι → R) (h : IsUnit (∏ i, f i))
     (i : ι) : IsUnit (f i) :=
   isUnit_of_dvd_unit (Finset.dvd_prod_of_mem f (Finset.mem_univ i)) h
@@ -79,6 +99,27 @@ end GlobalTheory.LogPole.CellNear
 
 open GlobalTheory.LogPole.CellNear in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z U n e v hv y hyU V hyV`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, inc₀ TF.X Z y ∈ TF.X.F.U k := by`. Establish `: inc₀ TF.X Z y ∈ ⨆ k, TF.X.F.U k` using `by rw [TF.X.F.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`. Take `⟨_, ⟨W₀, hW₀, rfl⟩, hyW₀, hW₀le⟩` from `(Y₀ TF.X Z).isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ ((V ⊓ toBase TF Z ⁻¹ᵁ U.1 ⊓ inc₀ TF.X Z ⁻¹ᵁ TF.X.F.U k : (Y₀ TF.X Z).Opens) : Set (Y₀ TF.X Z)) from ⟨⟨hyV, hyU⟩, hk⟩) (V ⊓ toBase TF Z ⁻¹ᵁ U.1 ⊓ inc₀ TF.X Z ⁻¹ᵁ TF.X.F.U k).isOpen`.
+
+Establish `hW₀V : W₀ ≤ V` using `fun q hq => (hW₀le hq).1.1`. Establish `hW₀U : W₀ ≤ toBase TF Z ⁻¹ᵁ U.1` using `fun q hq => (hW₀le hq).1.2`. Establish `hW₀k : W₀ ≤ inc₀ TF.X Z ⁻¹ᵁ TF.X.F.U k` using `fun q hq => (hW₀le hq).2`. Take `⟨C, hCu, hC⟩` from `exists_frameMat TF Z U e v hv k hW₀ hW₀U hW₀k`. Set `g` to `((Y₀ TF.X Z).presheaf.germ W₀ y hyW₀).hom`.
+
+Establish `hperm : ∀ σ : E →+* ℂ, ∃ w : Equiv.Perm (Fin (Dw.mult σ)), ∀ (m : ℕ) (hm : m ≤ Dw.mult σ), IsUnit ((((C σ).map g).submatrix id w).submatrix (Fin.castLE hm) (Fin.castLE hm)).det` using `fun σ => GlobalTheory.exists_perm_isUnit_leading_minors_localRing _ (by`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(hCu σ).map g)`. Use `choose p hp using hperm`. Set `mn : (σ : E →+* ℂ) → Fin (Dw.mult σ + 1) → Γ(Y₀ TF.X Z, W₀)` to `fun σ m => (((C σ).submatrix id (p σ)).submatrix (Fin.castLE (Nat.lt_succ_iff.mp m.2)) (Fin.castLE (Nat.lt_succ_iff.mp m.2))).det`.
+
+Establish `hmap : ∀ {R' : Type} [CommRing R'] (φ : Γ(Y₀ TF.X Z, W₀) →+* R') (σ : E →+* ℂ) (m : Fin (Dw.mult σ + 1)), φ (mn σ m) = ((((C σ).map φ).submatrix id (p σ)).submatrix (Fin.castLE (Nat.lt_succ_iff.mp m.2)) (Fin.castLE (Nat.lt_succ_iff.mp m.2))).det`. Introduce `R' _ φ σ m`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, ← Matrix.submatrix_map, ← Matrix.submatrix_map]`. Set `f` to `∏ σ, ∏ m, mn σ m`. Establish `hyf : y ∈ (Y₀ TF.X Z).basicOpen f`.
+
+Rewrite using `[Scheme.mem_basicOpen _ f y hyW₀]`. Use `show IsUnit (g f)`. Rewrite using `[map_prod]`. Use `isUnit_prod_univ _ fun σ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`.
+
+Use `isUnit_prod_univ _ fun m => ?_` and prove the remaining obligations. Rewrite using `[hmap]`. Conclude with `hp σ m (Nat.lt_succ_iff.mp m.2)`. Establish `hWW₀ : (Y₀ TF.X Z).basicOpen f ≤ W₀` using `(Y₀ TF.X Z).basicOpen_le f`. Establish `hWa : IsAffineOpen ((Y₀ TF.X Z).basicOpen f)` using `hW₀.basicOpen f`.
+
+Establish `hrf : IsUnit (resG (Y₀ TF.X Z) hWW₀ f)` using `(Y₀ TF.X Z).toRingedSpace.isUnit_res_basicOpen f`. Establish `hrm : ∀ σ m, IsUnit (resG (Y₀ TF.X Z) hWW₀ (mn σ m))`. Introduce `σ m`. Rewrite `hrf` using `[map_prod]`. Establish `h1` using `isUnit_of_isUnit_prod_univ _ hrf σ`.
+
+Rewrite `h1` using `[map_prod]`. Conclude with `isUnit_of_isUnit_prod_univ _ h1 m`. Establish `hLU : ∀ σ : E →+* ℂ, ∃ L N : Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) Γ(Y₀ TF.X Z, (Y₀ TF.X Z).basicOpen f), GlobalTheory.ShFam.Cell.IsLowInv L ∧ (∀ i j, j < i → N i j = 0) ∧ (∀ i, N i i = 1) ∧ ((C σ).map (resG (Y₀ TF.X Z) hWW₀)).submatrix id (p σ) = L * N` using `fun σ => GlobalTheory.ShFam.Cell.exists_lowInv_mul_upperUni_of_leadingMinors _ _ fun m hm => by`. Use `hrm σ ⟨m, Nat.lt_succ_of_le hm⟩` as an intermediate fact. Rewrite `this` using `[hmap]`.
+
+Conclude with `this`. Use `choose L N hL hN hNd hLN using hLU`. Use `⟨permE e p, (Y₀ TF.X Z).basicOpen f, k, L, N, isEigBasis_permE p hv, hyf, hWW₀.trans hW₀V, isCell_of_isFrameMat hWa (hWW₀.trans hW₀U) (hWW₀.trans hW₀k) (fun σ => (hL σ).1) (fun σ => (hL σ).2) hN hNd ?_⟩` and prove the remaining obligations. Establish `h1` using `isFrameMat_mono hWW₀ (isFrameMat_permE p hC)`. Establish `e1 : (fun σ => ((C σ).submatrix id (p σ)).map (resG (Y₀ TF.X Z) hWW₀)) = fun σ => L σ * N σ`.
+
+Use function extensionality and compare the values at `fun σ => (Matrix.submatrix_map _ _ _ _).symm.trans (hLN σ)`. Rewrite `h1` using `[e1]`. Conclude with `h1`.
+-/
 theorem GlobalTheory.LogPole.exists_isCell_near : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (U : TF.Y.X.affineOpens) (n : ℕ) (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (v : Fin n → (Sp (DualNumber Γ(TF.Y.X, U.1)) ⟶ TF.Y.t.G.left)), IsEigBasis TF U e v → ∀ (y : Y₀ TF.X Z), toBase TF Z y ∈ U.1 → ∀ (V : (Y₀ TF.X Z).Opens), y ∈ V → ∃ (e' : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (W : (Y₀ TF.X Z).Opens) (k : TF.X.F.J) (L N : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) Γ(Y₀ TF.X Z, W)), IsEigBasis TF U e' v ∧ y ∈ W ∧ W ≤ V ∧ IsCell TF Z U e' v W k L N := by
   intro E _ _ _ H Dw l Xo c TF Z U n e v hv y hyU V hyV
   obtain ⟨k, hk⟩ : ∃ k, inc₀ TF.X Z y ∈ TF.X.F.U k := by

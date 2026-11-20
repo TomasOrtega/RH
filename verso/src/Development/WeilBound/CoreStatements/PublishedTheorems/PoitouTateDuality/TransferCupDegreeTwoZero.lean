@@ -10,6 +10,15 @@ namespace PositivityTheory.Lit1.PTN
 
 attribute [local instance 2000] Rep.hV2
 
+/- English proof (translation)
+Take `⟨e2, he2a, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 Hv R M (rho.comp ev.toMonoidHom) A eA heA`. Take `⟨x2, hx2⟩` from `he2a (restrictCocycles2 rho ev.toMonoidHom hevc z)`. Establish `hm : ∀ σ, (rho'.comp ev.toMonoidHom) σ m.1 = m.1` using `fun σ => (mem_riemannRochSpace_iff_regularAt_everywhere rho' m.1).1 m.2 (ev σ)`. Take `⟨x0, hx0⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.exists_coc B 0 (fun _ => eB m.1) (IsLocallyConstant.const _) (by`. Use `(PositivityTheory.LocalTateOrthogonality.Gcoh.d_comp (rho'.comp ev.toMonoidHom) B eB heB 0 fun _ => m.1).trans ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `s`. Rewrite using `[PositivityTheory.LocalTateOrthogonality.Gcoh.dn_zero, hm (s 0), sub_self]`. Conclude with `map_zero eB)`. Establish `hmB : ∀ σ, B.ρ σ (eB m.1) = eB m.1` using `fun σ => by`. Rewrite using `[← heB]`.
+
+Conclude with `congrArg eB (hm σ)`. Establish `hEz : E (Submodule.Quotient.mk z) = cohomologyπ A 2 x2` using `hE z x2 (fun s => hx2 s)`. Establish `hEm : E' m = cohomologyπ B 0 x0` using `hE' m x0 (fun s => congrFun hx0 s)`. Rewrite using `[hEz, hEm, cupPairing_cohomologyπ]`. Use `hJ (cupCocycleZ2H0 rho rho' rhoP b hb hbe z m) _ (fun s => ?_)` and prove the remaining obligations.
+
+Rewrite using `[cochainOf_cocycleι_cyclesMap_cupCocycles]`. Rewrite using `[show (cochainOf _ (cocycleι _ 0 x0) fun j : Fin 0 => s ⟨2 + j, by omega⟩) = eB m.1 from congrFun hx0 _]`. Rewrite using `[hmB]`. Rewrite using `[show (cochainOf _ (cocycleι _ 2 x2) fun i : Fin 2 => s ⟨i, by omega⟩) = eA (z.1 (ev (s 0), ev (s 1))) from by rw [hx2]; rfl]`. Conclude with `hbμ _ _`.
+-/
 theorem transfer_cup_degree_two_zero {Lv Hv : Type} [Group Lv] [TopologicalSpace Lv] [IsTopologicalGroup Lv]
     [Group Hv] [TopologicalSpace Hv] [IsTopologicalGroup Hv] (ev : Hv ≃* Lv)
     (hevc : Continuous ev.toMonoidHom) {R : Type} [CommRing R] {M M' P : Type}

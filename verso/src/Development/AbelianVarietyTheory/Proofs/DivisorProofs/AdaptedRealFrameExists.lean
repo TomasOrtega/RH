@@ -18,6 +18,9 @@ open GlobalTheory.RealLift Formalism.BasicNotions.TH Matrix
 
 namespace GlobalTheory.AdaptedFrameW
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.hermitian_vector_eigen_decomposition M θ x hM hθ hx hxx`.
+-/
 theorem hyp_pair {n : ℕ} (M θ : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ) (hM : Mᴴ = M) (hθ : IsCartan M θ)
     (hx : x ≠ 0) (hxx : x ⬝ᵥ M *ᵥ star x = 0) :
     ∃ (e f : Fin n → ℂ) (k : ℂ), k ≠ 0 ∧ x = k • (e + f) ∧ θ *ᵥ x = k • (e - f) ∧ θ *ᵥ e = e ∧ θ *ᵥ f = -f ∧
@@ -26,6 +29,9 @@ theorem hyp_pair {n : ℕ} (M θ : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → �
         u ⬝ᵥ M *ᵥ star e = 0 ∧ u ⬝ᵥ M *ᵥ star f = 0 ∧ e ⬝ᵥ M *ᵥ star u = 0 ∧ f ⬝ᵥ M *ᵥ star u = 0 :=
   GlobalTheory.T.hermitian_vector_eigen_decomposition M θ x hM hθ hx hxx
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.hermitian_frame_orthogonal_extension M θ θ₁ ι C₁ e f hn hC₁ hθC₁ hθι hθe hθf hee hff hef hfe horth`.
+-/
 theorem frame_assemble {n n₁ r₁ s₁ : ℕ} (M θ : Matrix (Fin n) (Fin n) ℂ) (θ₁ : Matrix (Fin n₁) (Fin n₁) ℂ)
     (ι : Matrix (Fin n) (Fin n₁) ℂ) (C₁ : Matrix (Fin n₁) (Ix r₁ s₁) ℂ) (e f : Fin n → ℂ)
     (hn : (r₁ + 1) + (s₁ + 1) = n) (hC₁ : IsFrame (ιᵀ * M * ι.map star) C₁) (hθC₁ : θ₁ * C₁ = C₁ * Jm r₁ s₁)
@@ -40,6 +46,9 @@ theorem frame_assemble {n n₁ r₁ s₁ : ℕ} (M θ : Matrix (Fin n) (Fin n) �
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, mulVec, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_sum, map_mul, hcm, Pi.star_apply, star_star, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_map (τ : E →+* ℂ) (hcm : ∀ z, τ (σ z) = star (τ z)) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (a b : Fin n → E) :
     (fun i => τ (a i)) ⬝ᵥ (Complex.I • J.map τ) *ᵥ star (fun i => τ (b i)) = Complex.I * τ (form σ J a b) := by
@@ -55,6 +64,9 @@ namespace GlobalTheory.AdaptedFrameW
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [conjTranspose_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, star_mul', Complex.star_def, Complex.conj_I]`. Rewrite using `[← Complex.star_def, ← hcm, hJ, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_of_skew (τ : E →+* ℂ) (hcm : ∀ z, τ (σ z) = star (τ z)) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) : (Complex.I • J.map τ)ᴴ = Complex.I • J.map τ := by
   ext i j
@@ -63,6 +75,11 @@ theorem herm_of_skew (τ : E →+* ℂ) (hcm : ∀ z, τ (σ z) = star (τ z)) {
   rw [← Complex.star_def, ← hcm, hJ, map_neg]
   ring
 
+/- English proof (translation)
+Rewrite using `[dotProduct_comm, dotProduct_mulVec, ← mulVec_transpose, dotProduct_comm]`. Establish `: (ι.map τ)ᵀ *ᵥ ((Complex.I • J.map τ) *ᵥ star (fun i => τ (b i))) = 0`. Use function extensionality and compare the values at `k`. Establish `h1` using `form_map τ hcm J (ι *ᵥ Pi.single k 1) b`. Rewrite `h1` using `[h, map_zero, mul_zero, mulVec_single_one]`.
+
+Conclude with `h1`. Rewrite using `[this, dotProduct_zero]`.
+-/
 theorem orth_map (τ : E →+* ℂ) (hcm : ∀ z, τ (σ z) = star (τ z)) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (ι : Matrix (Fin n) (Fin n₁) E) (b : Fin n → E) (h : ∀ v, form σ J (ι *ᵥ v) b = 0) (u : Fin n₁ → ℂ) :
     (ι.map τ *ᵥ u) ⬝ᵥ (Complex.I • J.map τ) *ᵥ star (fun i => τ (b i)) = 0 := by
@@ -80,12 +97,36 @@ namespace GlobalTheory.AdaptedFrameW
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `e : (ι.map τ).map star = (ι.map σ).map τ` using `by ext i j; simp [hcm]`. Rewrite using `[e, ← h, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem gram_map (τ : E →+* ℂ) (hcm : ∀ z, τ (σ z) = star (τ z)) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (J₁ : Matrix (Fin n₁) (Fin n₁) E) (ι : Matrix (Fin n) (Fin n₁) E) (h : ιᵀ * J * ι.map σ = J₁) :
     (ι.map τ)ᵀ * (Complex.I • J.map τ) * (ι.map τ).map star = Complex.I • J₁.map τ := by
   have e : (ι.map τ).map star = (ι.map σ).map τ := by ext i j; simp [hcm]
   rw [e, ← h, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d d₁ i₀ i₁ r s r₁ s₁ W W₁ H' hB hW hW₁ hH hr hs`. Substitute `hr hs` using the available equality. Establish `hx0 : H'.x ≠ 0`. Introduce `h0`. Use `hH.xy` as an intermediate fact.
+
+Rewrite `this` using `[h0]`. Simplify using `[form] at this`. Establish `key : ∀ w, ∃ C : Matrix (Fin d) (Ix (r₁ + 1) (s₁ + 1)) ℂ, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) C ∧ W.θ w * C = C * Jm (r₁ + 1) (s₁ + 1) ∧ ((∃ c : ℂ, c ≠ 0 ∧ ∀ i, (B.emb w).1 (H'.x i) = c * (C i (.inl 0) + C i (.inr 0))) ∧ (∃ c₁ c₂ : ℂ, ∀ i, (B.emb w).1 (H'.y i …`. Introduce `w`. Establish `hcm : ∀ z, (B.emb w).1 (σ z) = star ((B.emb w).1 z)` using `fun z => hB.cm.2.2.2 _ z`.
+
+Rewrite using `[GlobalTheory.LeviKInf.incM_map_piInf]`. Use `set τ : E →+* ℂ := (B.emb w).1 with hτ`. Use `set M := Complex.I • W.J.map τ with hMdef`. Use `set x : Fin d → ℂ := fun i => τ (H'.x i) with hxdef`. Use `set y : Fin d → ℂ := fun i => τ (H'.y i) with hydef`.
+
+Establish `hM : Mᴴ = M` using `herm_of_skew τ hcm hW.skew`. Establish `hxne : x ≠ 0`. Introduce `h0`. Apply `hx0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Use `congrFun h0 i` as an intermediate fact. Simplify `this` using `[hxdef]`. Establish `hxx : x ⬝ᵥ M *ᵥ star x = 0`. Rewrite using `[form_map τ hcm W.J H'.x H'.x, hH.xx, map_zero, mul_zero]`. Take `⟨c, hc, hyc⟩` from `(hH.cartan w).2`.
+
+Establish `hθx : W.θ w *ᵥ x = c⁻¹ • y`. Establish `hy' : y = c • (W.θ w *ᵥ x)` using `by rw [hydef, hyc]`. Rewrite using `[hy', smul_smul, inv_mul_cancel₀ hc, one_smul]`. Take `⟨e, f, k, hk, hxk, hθxk, hθe, hθf, hee, hff, hef, hfe, hort⟩` from `hyp_pair M (W.θ w) x hM (hW.cartan w) hxne hxx`. Take `⟨C₁, hC₁, hθC₁⟩` from `GlobalTheory.RealLift.frameEx_holds d₁ r₁ s₁ _ _ (hW₁.sig w) (hW₁.cartan w)`.
+
+Establish `hg` using `gram_map τ hcm W.J W₁.J H'.ι hH.gram`. Establish `hox : ∀ u, (H'.ι.map τ *ᵥ u) ⬝ᵥ M *ᵥ star x = 0` using `orth_map τ hcm W.J H'.ι H'.x (fun v => (hH.orth v).1)`. Establish `hoy : ∀ u, (H'.ι.map τ *ᵥ u) ⬝ᵥ M *ᵥ star y = 0` using `orth_map τ hcm W.J H'.ι H'.y (fun v => (hH.orth v).2)`. Establish `hoθ : ∀ u, (H'.ι.map τ *ᵥ u) ⬝ᵥ M *ᵥ star (W.θ w *ᵥ x) = 0`. Introduce `u`.
+
+Rewrite using `[hθx, star_smul, mulVec_smul, dotProduct_smul, hoy, smul_zero]`. Take `⟨C, hCf, hCθ, hCe, hCf0, hCo⟩` from `frame_assemble M (W.θ w) (W₁.θ w) (H'.ι.map τ) C₁ e f (hW.sig w).1 (by rw [hg]; exact hC₁) hθC₁ (hH.cartan w).1 hθe hθf hee hff hef hfe (fun u => hort _ (hox u) (hoθ u))`. Use `⟨C, hCf, hCθ, ⟨k, hk, fun i => ?_⟩, ⟨c * k, -(c * k), fun i => ?_⟩, hCo⟩` and prove the remaining obligations. Rewrite using `[hCe, hCf0]`. Use `congrFun hxk i` as an intermediate fact.
+
+Simplify `this` using `[hxdef]`. Rewrite using `[hCe, hCf0]`. Establish `h1 : y = c • (W.θ w *ᵥ x)` using `by rw [hθx, smul_smul, mul_inv_cancel₀ hc, one_smul]`. Use `congrFun h1 i` as an intermediate fact. Rewrite `this` using `[hθxk]`.
+
+Simplify using `only [hydef, Pi.smul_apply, Pi.sub_apply, smul_eq_mul] at this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Use `choose C hC using key`. Conclude with `⟨0, 0, C, fun w => (hC w).1, fun w => (hC w).2.1, fun w => (hC w).2.2⟩`.
+-/
 theorem exists_adaptedFrame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d d₁ i₀ i₁ r s r₁ s₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁), B.IsGood σ →
     W.IsSkew σ B r s → W₁.IsSkew σ B r₁ s₁ → H'.IsAdapted σ B W W₁ i₀ i₁ → r = r₁ + 1 → s = s₁ + 1 →

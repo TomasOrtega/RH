@@ -21,6 +21,13 @@ def AbsSum (f : PowerSeries K) (t : K) : Prop := Summable fun n => ‖coeff n f 
 
 def Ev (f : PowerSeries K) (t v : K) : Prop := AbsSum f t ∧ evalPS f t = v
 
+/- English proof (translation)
+Establish `h : ∀ n, coeff n (C a : PowerSeries K) * t ^ n = if n = 0 then a else 0`. Apply the tactic sequence `intro n; rw [coeff_C]; split_ifs with hn <;> simp [hn]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (fun n => ‖coeff n (C a : PowerSeries K) * t ^ n‖) = fun n => if n = 0 then ‖a‖ else 0`. Apply the tactic sequence `funext n; rw [h]; split_ifs <;> simp`.
+
+Unfold `AbsSum`. Rewrite using `[e]`. Conclude with `summable_of_ne_finset_zero (s := {0}) (fun n hn => by simp at hn; simp [hn])`. Unfold `evalPS`. Rewrite using `[tsum_eq_single 0 (fun n hn => by rw [h, if_neg hn])]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ev_C (a t : K) : Ev (C a) t a := by
   have h : ∀ n, coeff n (C a : PowerSeries K) * t ^ n = if n = 0 then a else 0 := by
     intro n; rw [coeff_C]; split_ifs with hn <;> simp [hn]
@@ -33,6 +40,13 @@ theorem ev_C (a t : K) : Ev (C a) t a := by
     rw [tsum_eq_single 0 (fun n hn => by rw [h, if_neg hn])]
     simp
 
+/- English proof (translation)
+Establish `h : ∀ n, coeff n (X : PowerSeries K) * t ^ n = if n = 1 then t else 0`. Apply the tactic sequence `intro n; rw [coeff_X]; split_ifs with hn <;> simp [hn]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (fun n => ‖coeff n (X : PowerSeries K) * t ^ n‖) = fun n => if n = 1 then ‖t‖ else 0`. Apply the tactic sequence `funext n; rw [h]; split_ifs <;> simp`.
+
+Unfold `AbsSum`. Rewrite using `[e]`. Conclude with `summable_of_ne_finset_zero (s := {1}) (fun n hn => by simp at hn; simp [hn])`. Unfold `evalPS`. Rewrite using `[tsum_eq_single 1 (fun n hn => by rw [h, if_neg hn])]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ev_X (t : K) : Ev (X : PowerSeries K) t t := by
   have h : ∀ n, coeff n (X : PowerSeries K) * t ^ n = if n = 1 then t else 0 := by
     intro n; rw [coeff_X]; split_ifs with hn <;> simp [hn]
@@ -47,6 +61,11 @@ theorem ev_X (t : K) : Ev (X : PowerSeries K) t t := by
 
 variable [CompleteSpace K]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(hf.1.add hg.1).of_nonneg_of_le (fun _ => norm_nonneg _) (fun n => ?_)` and prove the remaining obligations. Simplify using `only [map_add, add_mul]`. Conclude with `norm_add_le _ _`. Unfold `evalPS`.
+
+Simplify using `only [map_add, add_mul]`. Rewrite using `[hf.1.of_norm.tsum_add hg.1.of_norm]`. Conclude with `congrArg₂ (· + ·) hf.2 hg.2`.
+-/
 theorem Ev.add {f g : PowerSeries K} {t a b : K} (hf : Ev f t a) (hg : Ev g t b) :
     Ev (f + g) t (a + b) := by
   refine ⟨?_, ?_⟩
@@ -58,6 +77,15 @@ theorem Ev.add {f g : PowerSeries K} {t a b : K} (hf : Ev f t a) (hg : Ev g t b)
     rw [hf.1.of_norm.tsum_add hg.1.of_norm]
     exact congrArg₂ (· + ·) hf.2 hg.2
 
+/- English proof (translation)
+Establish `key : ∀ n, coeff n (f * g) * t ^ n = ∑ kl ∈ Finset.HasAntidiagonal.antidiagonal n, (coeff kl.1 f * t ^ kl.1) * (coeff kl.2 g * t ^ kl.2)`. Introduce `n`. Rewrite using `[coeff_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun kl hkl => ?_` and prove the remaining obligations. Rewrite using `[← Finset.HasAntidiagonal.mem_antidiagonal.mp hkl, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e1 : (fun n => ‖coeff n (f * g) * t ^ n‖) = fun n => ‖∑ kl ∈ Finset.HasAntidiagonal.antidiagonal n, (coeff kl.1 f * t ^ kl.1) * (coeff kl.2 g * t ^ kl.2)‖`. Use function extensionality and compare the values at `fun n => by rw [key n]`. Establish `e2 : (fun n => coeff n (f * g) * t ^ n) = fun n => ∑ kl ∈ Finset.HasAntidiagonal.antidiagonal n, (coeff kl.1 f * t ^ kl.1) * (coeff kl.2 g * t ^ kl.2)`. Use function extensionality and compare the values at `key`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show Summable (fun n => ‖coeff n (f * g) * t ^ n‖)`. Rewrite using `[e1]`. Conclude with `summable_norm_sum_mul_antidiagonal_of_summable_norm (f := fun n => coeff n f * t ^ n) (g := fun n => coeff n g * t ^ n) hf.1 hg.1`. Use `show ∑' n, coeff n (f * g) * t ^ n = a * b`.
+
+Rewrite using `[e2, ← tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm (f := fun n => coeff n f * t ^ n) (g := fun n => coeff n g * t ^ n) hf.1 hg.1]`. Conclude with `congrArg₂ (· * ·) hf.2 hg.2`.
+-/
 theorem Ev.mul {f g : PowerSeries K} {t a b : K} (hf : Ev f t a) (hg : Ev g t b) :
     Ev (f * g) t (a * b) := by
   have key : ∀ n, coeff n (f * g) * t ^ n =
@@ -82,6 +110,11 @@ theorem Ev.mul {f g : PowerSeries K} {t a b : K} (hf : Ev f t a) (hg : Ev g t b)
       (g := fun n => coeff n g * t ^ n) hf.1 hg.1]
     exact congrArg₂ (· * ·) hf.2 hg.2
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `ev_C (1 : K) t`. Rewrite `h` using `[map_one]`. Simplify using `using h`.
+
+Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `ih.mul hf`.
+-/
 theorem Ev.pow {f : PowerSeries K} {t a : K} (hf : Ev f t a) (n : ℕ) : Ev (f ^ n) t (a ^ n) := by
   induction n with
   | zero =>
@@ -92,6 +125,9 @@ theorem Ev.pow {f : PowerSeries K} {t a : K} (hf : Ev f t a) (n : ℕ) : Ev (f ^
     rw [pow_succ, pow_succ]
     exact ih.mul hf
 
+/- English proof (translation)
+Use `(summable_geometric_of_lt_one (norm_nonneg t) ht).of_nonneg_of_le (fun _ => norm_nonneg _) fun n => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_left (pow_nonneg (norm_nonneg _) _) (hf n)`.
+-/
 theorem absSum_of_integral {f : PowerSeries K} (hf : IntegralPS f) {t : K} (ht : ‖t‖ < 1) :
     AbsSum f t := by
   refine (summable_geometric_of_lt_one (norm_nonneg t) ht).of_nonneg_of_le
@@ -105,31 +141,60 @@ section Ultra
 
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`.
+-/
 theorem nle {a b : K} {c : ℝ} (ha : ‖a‖ ≤ c) (hb : ‖b‖ ≤ c) : ‖a + b‖ ≤ c :=
   (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
 
+/- English proof (translation)
+Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (ne_of_gt h), max_eq_left h.le]`.
+-/
 theorem neq {a b : K} (h : ‖b‖ < ‖a‖) : ‖a + b‖ = ‖a‖ := by
   rw [IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (ne_of_gt h), max_eq_left h.le]
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max a b).trans_lt (max_lt ha hb)`.
+-/
 theorem sm {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) : ‖a + b‖ < 1 :=
   (IsUltrametricDist.norm_add_le_max a b).trans_lt (max_lt ha hb)
 
+/- English proof (translation)
+Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) hc) ha`.
+-/
 theorem smm {c a : K} (hc : ‖c‖ ≤ 1) (ha : ‖a‖ < 1) : ‖c * a‖ < 1 := by
   rw [norm_mul]
   exact lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) hc) ha
 
+/- English proof (translation)
+Rewrite using `[mul_comm]`. Conclude with `smm hb.le ha`.
+-/
 theorem smp {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) : ‖a * b‖ < 1 := by
   rw [mul_comm]; exact smm hb.le ha
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, neq (by rw [norm_neg, norm_one]; exact hE), norm_one]`.
+-/
 theorem norm_one_sub {E : K} (hE : ‖E‖ < 1) : ‖1 - E‖ = 1 := by
   rw [sub_eq_add_neg, neq (by rw [norm_neg, norm_one]; exact hE), norm_one]
 
+/- English proof (translation)
+Simplify using `using IsUltrametricDist.norm_natCast_le_one K 2`.
+-/
 theorem norm_two_le : ‖(2 : K)‖ ≤ 1 := by
   simpa using IsUltrametricDist.norm_natCast_le_one K 2
 
+/- English proof (translation)
+Simplify using `using IsUltrametricDist.norm_natCast_le_one K 3`.
+-/
 theorem norm_three_le : ‖(3 : K)‖ ≤ 1 := by
   simpa using IsUltrametricDist.norm_natCast_le_one K 3
 
+/- English proof (translation)
+Unfold `evalPS`. Apply `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (norm_nonneg t)` to reduce the goal to its premises. Introduce `n`. Break down `n with _ | n` into its components or cases. Simplify using `[h0]`.
+
+Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_eval_le [CompleteSpace K] {f : PowerSeries K} (hf : IntegralPS f) (h0 : coeff 0 f = 0)
     {t : K} (ht : ‖t‖ < 1) : ‖evalPS f t‖ ≤ ‖t‖ := by
   unfold evalPS
@@ -143,6 +208,13 @@ theorem norm_eval_le [CompleteSpace K] {f : PowerSeries K} (hf : IntegralPS f) (
             (by positivity) zero_le_one
       _ = ‖t‖ := by simp
 
+/- English proof (translation)
+Set `W' : WeierstrassCurve (unitBall K)` to `⟨⟨W.a₁, hW.1⟩, ⟨W.a₂, hW.2.1⟩, ⟨W.a₃, hW.2.2.1⟩, ⟨W.a₄, hW.2.2.2.1⟩, ⟨W.a₆, hW.2.2.2.2⟩⟩`. Take `⟨v, hv, -⟩` from `wSeriesExistsUnique_holds.{u} (unitBall K) W'`. Establish `hmap : WFixed W (PowerSeries.map (unitBall K).subtype v)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hv.1`.
+
+Establish `: constantCoeff (PowerSeries.map (unitBall K).subtype v) = (unitBall K).subtype (constantCoeff v)`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, ← coeff_zero_eq_constantCoeff_apply, coeff_map]`. Rewrite using `[this, h, map_zero]`. Establish `h` using `congrArg (PowerSeries.map (unitBall K).subtype) hv.2`. Simplify using `only [map_add, map_mul, map_pow, map_X, map_C] at h`.
+
+Conclude with `h`. Establish `he : w = PowerSeries.map (unitBall K).subtype v` using `WeierstrassSeriesLimit.fixed_unique W hw hmap`. Introduce `n`. Rewrite using `[he, coeff_map]`. Conclude with `(coeff n v).2`.
+-/
 theorem integral_w {W : WeierstrassCurve K} {w : PowerSeries K} (hW : IntegralModel W)
     (hw : WFixed W w) : IntegralPS w := by
   let W' : WeierstrassCurve (unitBall K) :=
@@ -165,6 +237,15 @@ theorem integral_w {W : WeierstrassCurve K} {w : PowerSeries K} (hW : IntegralMo
 
 variable [CompleteSpace K]
 
+/- English proof (translation)
+Establish `hI` using `integral_w hW hw`. Establish `hwv : Ev w t (evalPS w t)` using `⟨absSum_of_integral hI ht, rfl⟩`. Establish `hX` using `ev_X (K := K) t`. Establish `hR` using `(((((hX.pow 3).add (((ev_C W.a₁ t).mul hX).mul hwv)).add (((ev_C W.a₂ t).mul (hX.pow 2)).mul hwv)).add ((ev_C W.a₃ t).mul (hwv.pow 2))).add (((ev_C W.a₄ t).mul hX).mul (hwv.pow 2))).add ((ev_C W.a₆ t).mul (hwv.pow 3))`. Establish `weq` using `(congrArg (fun f => evalPS f t) hw.2).trans hR.2`.
+
+Use `⟨weq, ?_⟩` and prove the remaining obligations. Use `set ω := evalPS w t with hω`. Establish `h0 : coeff 0 w = 0` using `by simpa using hw.1`. Establish `hωt : ‖ω‖ ≤ ‖t‖` using `norm_eval_le hI h0 ht`. Establish `hω1 : ‖ω‖ < 1` using `lt_of_le_of_lt hωt ht`.
+
+Use `set E := W.a₁ * t + W.a₂ * t ^ 2 + W.a₃ * ω + W.a₄ * (t * ω) + W.a₆ * ω ^ 2 with hE`. Establish `ht2 : ‖t ^ 2‖ < 1` using `by rw [sq]; exact smp ht ht`. Establish `hE1 : ‖E‖ < 1` using `sm (sm (sm (sm (smm hW.1 ht) (smm hW.2.1 ht2)) (smm hW.2.2.1 hω1)) (smm hW.2.2.2.1 (smp ht hω1))) (smm hW.2.2.2.2 (by rw [sq]; exact smp hω1 hω1))`. Establish `key : ω * (1 - E) = t ^ 3` using `by rw [hE]; linear_combination weq`. Use `congrArg norm key` as an intermediate fact.
+
+Rewrite `this` using `[norm_mul, norm_one_sub hE1, mul_one, norm_pow]`. Conclude with `this`.
+-/
 theorem eval_w {W : WeierstrassCurve K} {w : PowerSeries K} (hW : IntegralModel W)
     (hw : WFixed W w) {t : K} (ht : ‖t‖ < 1) :
     evalPS w t = t ^ 3 + W.a₁ * t * evalPS w t + W.a₂ * t ^ 2 * evalPS w t
@@ -197,6 +278,55 @@ end Ultra
 end FormalGroupPointsParam
 
 open FormalGroupPointsParam in
+/- English proof (translation)
+Introduce `K _ _ _ W w hW hw`. Use `⟨fun t ht0 ht1 => ?_, fun x y hxy hx => ?_⟩` and prove the remaining obligations. Take `⟨weq, hn⟩` from `eval_w hW hw ht1 set ω := evalPS w t with hω`. Establish `hω0 : ω ≠ 0`. Rewrite using `[← norm_pos_iff, hn]`.
+
+Check the signs of the components of the expression. Establish `hω1 : ‖ω‖ < 1`. Rewrite using `[hn]; exact pow_lt_one₀ (norm_nonneg _) ht1 (by norm_num)`. Use `⟨hω0, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Affine.nonsingular_iff']`.
+
+Establish `heq : (-1 / ω) ^ 2 + W.a₁ * (t / ω) * (-1 / ω) + W.a₃ * (-1 / ω) - ((t / ω) ^ 3 + W.a₂ * (t / ω) ^ 2 + W.a₄ * (t / ω) + W.a₆) = 0`. Establish `k : ((-1 / ω) ^ 2 + W.a₁ * (t / ω) * (-1 / ω) + W.a₃ * (-1 / ω) - ((t / ω) ^ 3 + W.a₂ * (t / ω) ^ 2 + W.a₄ * (t / ω) + W.a₆)) * ω ^ 3 = ω - (t ^ 3 + W.a₁ * t * ω + W.a₂ * t ^ 2 * ω + W.a₃ * ω ^ 2 + W.a₄ * t * ω ^ 2 + W.a₆ * ω ^ 3)` using `by field_simp; ring`. Rewrite `k` using `[sub_eq_zero.mpr weq]`. Conclude with `(mul_eq_zero.mp k).resolve_right (pow_ne_zero _ hω0)`. Use `⟨(WeierstrassCurve.Affine.equation_iff' _ _).mpr heq, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Take `⟨hA, hB⟩` from `hc`. Establish `eA : -W.a₁ * ω - 3 * t ^ 2 - 2 * W.a₂ * t * ω - W.a₄ * ω ^ 2 = 0`. Establish `k : -W.a₁ * ω - 3 * t ^ 2 - 2 * W.a₂ * t * ω - W.a₄ * ω ^ 2 = ω ^ 2 * (W.a₁ * (-1 / ω) - (3 * (t / ω) ^ 2 + 2 * W.a₂ * (t / ω) + W.a₄))` using `by field_simp; ring`.
+
+Rewrite using `[k, hA, mul_zero]`. Establish `eB : -2 + W.a₁ * t + W.a₃ * ω = 0`. Establish `k : -2 + W.a₁ * t + W.a₃ * ω = ω * (2 * (-1 / ω) + W.a₁ * (t / ω) + W.a₃)`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+
+Rewrite using `[k, hB, mul_zero]`. Use `set Q := W.a₁ * t + W.a₂ * t ^ 2 + (2 * W.a₃) * ω + (2 * W.a₄) * (t * ω) + (3 * W.a₆) * ω ^ 2 with hQ`. Establish `kQ : ω * (1 - Q) = 0`. Rewrite using `[hQ]`. Take the linear combination `ω * eB - t * eA + 3 * weq`.
+
+Establish `ht2 : ‖t ^ 2‖ < 1` using `by rw [sq]; exact FormalGroupPointsParam.smp ht1 ht1`. Establish `two : ∀ a : K, ‖a‖ ≤ 1 → ‖2 * a‖ ≤ 1` using `fun a ha => by`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ norm_two_le (norm_nonneg _) ha`. Establish `three : ∀ a : K, ‖a‖ ≤ 1 → ‖3 * a‖ ≤ 1` using `fun a ha => by`.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ norm_three_le (norm_nonneg _) ha`. Establish `hQ1 : ‖Q‖ < 1` using `sm (sm (sm (sm (smm hW.1 ht1) (smm hW.2.1 ht2)) (smm (two _ hW.2.2.1) hω1)) (smm (two _ hW.2.2.2.1) (smp ht1 hω1))) (smm (three _ hW.2.2.2.2) (by rw [sq]; exact smp hω1 hω1))`. Establish `h1Q : (1 - Q) ≠ 0` using `fun h => by`. Use `norm_one_sub hQ1` as an intermediate fact.
+
+Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Conclude with `(mul_ne_zero hω0 h1Q) kQ`. Rewrite using `[norm_div, hn, lt_div_iff₀ (by positivity), one_mul]`. Establish `h2 : ‖t‖ ^ 2 < 1` using `pow_lt_one₀ (norm_nonneg _) ht1 (by norm_num)`.
+
+Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Establish `hx0 : x ≠ 0`. Rewrite using `[← norm_pos_iff]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `heq : y ^ 2 + W.a₁ * x * y + W.a₃ * y = x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆` using `(WeierstrassCurve.Affine.equation_iff _ _).mp hxy.1`. Establish `hx1 : (1 : ℝ) ≤ ‖x‖` using `hx.le`. Establish `hxx : ‖x‖ ≤ ‖x‖ ^ 2` using `by nlinarith`. Establish `hx23 : ‖x‖ ^ 2 < ‖x‖ ^ 3`. Establish `: 0 < ‖x‖ ^ 2` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hlow : ‖W.a₂ * x ^ 2 + W.a₄ * x + W.a₆‖ ≤ ‖x‖ ^ 2`. Use `nle (nle ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]; exact mul_le_of_le_one_left (by positivity) hW.2.1`. Rewrite using `[norm_mul]`.
+
+Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hW.2.2.2.1).trans hxx`. Conclude with `hW.2.2.2.2.trans (by nlinarith)`. Establish `hRn : ‖x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆‖ = ‖x‖ ^ 3`. Establish `: x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆ = x ^ 3 + (W.a₂ * x ^ 2 + W.a₄ * x + W.a₆)`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, neq (by rw [norm_pow]; exact lt_of_le_of_lt hlow hx23), norm_pow]`. Establish `hLf : y ^ 2 + W.a₁ * x * y + W.a₃ * y = y * (y + (W.a₁ * x + W.a₃))` using `by ring`. Rewrite `hRn` using `[← heq, hLf, norm_mul]`. Establish `hmid : ‖W.a₁ * x + W.a₃‖ ≤ ‖x‖`. Use `nle ?_ (hW.2.2.1.trans hx1)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) hW.1`. Establish `hyx : ‖x‖ < ‖y‖`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Establish `h1 : ‖y + (W.a₁ * x + W.a₃)‖ ≤ ‖x‖` using `nle hc hmid`. Establish `: ‖y‖ * ‖y + (W.a₁ * x + W.a₃)‖ ≤ ‖x‖ * ‖x‖` using `mul_le_mul hc h1 (norm_nonneg _) (norm_nonneg _)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hY : ‖y‖ ^ 2 = ‖x‖ ^ 3`. Rewrite using `[← hRn, neq (lt_of_le_of_lt hmid hyx), sq]`.
+
+Establish `hy0 : y ≠ 0`. Rewrite using `[← norm_pos_iff]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hxpos : 0 < ‖x‖` using `by linarith`. Establish `hypos : 0 < ‖y‖` using `by linarith`.
+
+Use `set z := -x / y with hz`. Establish `hzn : ‖z‖ = ‖x‖ / ‖y‖` using `by rw [hz, norm_div, norm_neg]`. Establish `hz0 : 0 < ‖z‖` using `by rw [hzn]; positivity`. Establish `hz1 : ‖z‖ < 1` using `by rw [hzn, div_lt_one hypos]; exact hyx`. Use `⟨hz0, hz1, ?_⟩` and prove the remaining obligations.
+
+Take `⟨weq', hn'⟩` from `eval_w hW hw hz1`. Use `set ω' := evalPS w z with hω'`. Use `set ω := -1 / y with hω`. Establish `hωn : ‖ω‖ = ‖z‖ ^ 3`. Rewrite using `[hω, hzn, norm_div, norm_neg, norm_one, div_pow, ← hY]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `weq : ω = z ^ 3 + W.a₁ * z * ω + W.a₂ * z ^ 2 * ω + W.a₃ * ω ^ 2 + W.a₄ * z * ω ^ 2 + W.a₆ * ω ^ 3`. Rewrite using `[hω, hz]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-heq`.
+
+Establish `hω1 : ‖ω‖ < 1` using `by rw [hωn]; exact pow_lt_one₀ (norm_nonneg _) hz1 (by norm_num)`. Establish `hω'1 : ‖ω'‖ < 1` using `by rw [hn']; exact pow_lt_one₀ (norm_nonneg _) hz1 (by norm_num)`. Use `set E := W.a₁ * z + W.a₂ * z ^ 2 + W.a₃ * (ω + ω') + W.a₄ * (z * (ω + ω')) + W.a₆ * (ω ^ 2 + ω * ω' + ω' ^ 2) with hE`. Establish `hz2 : ‖z ^ 2‖ < 1` using `by rw [sq]; exact smp hz1 hz1`. Establish `hs : ‖ω + ω'‖ < 1` using `sm hω1 hω'1`.
+
+Establish `hE1 : ‖E‖ < 1` using `sm (sm (sm (sm (smm hW.1 hz1) (smm hW.2.1 hz2)) (smm hW.2.2.1 hs)) (smm hW.2.2.2.1 (smp hz1 hs))) (smm hW.2.2.2.2 (sm (sm (by rw [sq]; exact smp hω1 hω1) (smp hω1 hω'1)) (by rw [sq]; exact smp hω'1 hω'1)))`. Establish `key : (ω - ω') * (1 - E) = 0`. Rewrite using `[hE]`. Take the linear combination `weq - weq'`. Establish `h1E : (1 - E) ≠ 0` using `fun h => by`.
+
+Use `norm_one_sub hE1` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Establish `hωω : ω = ω'` using `sub_eq_zero.mp ((mul_eq_zero.mp key).resolve_right h1E)`. Rewrite using `[← hωω, hω, hz]`.
+
+Prove the components needed by the constructor for the conclusion. Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts.
+-/
 theorem formal_group_points_param_holds : FormalGroupPointsParametrisation.{u} := by
   intro K _ _ _ W w hW hw
   refine ⟨fun t ht0 ht1 => ?_, fun x y hxy hx => ?_⟩
@@ -328,6 +458,9 @@ theorem formal_group_points_param_holds : FormalGroupPointsParametrisation.{u} :
     · field_simp
     · field_simp
 
+/- English proof (translation)
+The claim follows from `formal_group_points_param_holds`.
+-/
 theorem formal_group_points_param_of (_hU : WSubstUnique.{u}) : FormalGroupPointsParametrisation.{u} := formal_group_points_param_holds
 
 end Formalism.ELL

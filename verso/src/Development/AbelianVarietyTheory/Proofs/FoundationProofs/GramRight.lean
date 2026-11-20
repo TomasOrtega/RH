@@ -15,14 +15,33 @@ def outer (k i r' : ℕ) : Matrix (Fin (2 * (i + r') + k + 1)) (Fin (2 * (i + r'
 
 variable (k i r' : ℕ)
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, incl]`.
+-/
 theorem mul_incl {m : Type} (M : Matrix m (Fin (2 * (i + r') + k + 1)) ℂ) (p : m) (j) :
     (M * incl k i r') p j = M p (levPos k i r' j) := by
   simp [Matrix.mul_apply, incl]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, incl, conjTranspose_apply, apply_ite star]`.
+-/
 theorem inclH_mul {m : Type} (M : Matrix (Fin (2 * (i + r') + k + 1)) m ℂ) (p : m) (j) :
     ((incl k i r')ᴴ * M) j p = M (levPos k i r' j) p := by
   simp [Matrix.mul_apply, incl, conjTranspose_apply, apply_ite star]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `split_ifs with hp`. Rewrite using `[Finset.sum_eq_single ⟨p.val - i, by omega⟩]`. Establish `: p = levPos k i r' ⟨p.val - i, by omega⟩`. Apply `Fin.ext` to reduce the goal to its premises.
+
+Simplify using `only [levPos]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[incl, if_pos this, one_mul]`. Introduce `b _ hb`. Establish `: ¬ p = levPos k i r' b`.
+
+Introduce `h`. Apply `hb` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [levPos] at this ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[incl, if_neg this, zero_mul]`. Simplify using the standard rewrite rules. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`.
+
+Establish `: ¬ p = levPos k i r' b`. Introduce `h`. Apply `hp` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact. Establish `hb` using `b.isLt`.
+
+Simplify using `only [levPos] at this ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[incl, if_neg this, zero_mul]`.
+-/
 theorem incl_mul {m : Type} (M : Matrix (Fin (2 * r' + k + 1)) m ℂ) (p) (q : m) :
     (incl k i r' * M) p q =
       if hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i then M ⟨p.val - i, by omega⟩ q else 0 := by
@@ -48,6 +67,11 @@ theorem incl_mul {m : Type} (M : Matrix (Fin (2 * r' + k + 1)) m ℂ) (p) (q : m
       simp only [levPos] at this ⊢; omega
     rw [incl, if_neg this, zero_mul]
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[mul_incl, inclH_mul]`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Establish `hva : (levPos k i r' a).val = a.val + i` using `rfl`.
+
+Establish `hvb : (levPos k i r' b).val = b.val + i` using `rfl`. Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem gram_inner : (incl k i r')ᴴ * Hpk k (i + r') * incl k i r' = Hpk k r' := by
   ext a b
   rw [mul_incl, inclH_mul]

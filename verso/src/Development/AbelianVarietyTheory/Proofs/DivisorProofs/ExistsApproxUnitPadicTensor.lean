@@ -5,6 +5,13 @@ namespace GlobalTheory.PadicTensorApprox
 
 variable {E : Type} [CommRing E] [Algebra ℚ E] {ℓ : ℕ} [Fact ℓ.Prime]
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ ((1 : ℚ_[ℓ]) ⊗ₜ[ℚ] c : ℚ_[ℓ] ⊗[ℚ] E)` using `map_isIntegral_int (Algebra.TensorProduct.includeRight (R := ℚ) (A := ℚ_[ℓ]) (B := E)) hc`. Establish `h2 : IsIntegral ℤ_[ℓ] ((1 : ℚ_[ℓ]) ⊗ₜ[ℚ] c : ℚ_[ℓ] ⊗[ℚ] E)`. Take `⟨P, hP, hP'⟩` from `h1`. Use `⟨P.map (Int.castRingHom _), hP.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, ← hP']`.
+
+Use `congr 1`. Set `v : ℤ_[ℓ]` to `⟨u, hu⟩`. Establish `h3` using `h2.smul v`. Establish `e : v • ((1 : ℚ_[ℓ]) ⊗ₜ[ℚ] c : ℚ_[ℓ] ⊗[ℚ] E) = u ⊗ₜ[ℚ] c`. Rewrite using `[TensorProduct.smul_tmul']`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `u * 1 = u`. Conclude with `mul_one u`. Rewrite `h3` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem isIntegral_tmul (u : ℚ_[ℓ]) (hu : ‖u‖ ≤ 1) (c : E) (hc : IsIntegral ℤ c) :
     IsIntegral ℤ_[ℓ] (u ⊗ₜ[ℚ] c : ℚ_[ℓ] ⊗[ℚ] E) := by
   have h1 : IsIntegral ℤ ((1 : ℚ_[ℓ]) ⊗ₜ[ℚ] c : ℚ_[ℓ] ⊗[ℚ] E) :=
@@ -23,6 +30,11 @@ theorem isIntegral_tmul (u : ℚ_[ℓ]) (hu : ‖u‖ ≤ 1) (c : E) (hc : IsInt
     exact mul_one u
   rwa [e] at h3
 
+/- English proof (translation)
+Establish `hq : IsAlgebraic ℚ c` using `Algebra.IsAlgebraic.isAlgebraic c`. Establish `hz : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 hq`. Take `⟨m, hm, hi⟩` from `hz.exists_integral_multiple`. Use `⟨((m : ℚ)⁻¹) • a, m • c, hi, ?_⟩` and prove the remaining obligations. Establish `hm' : (m : ℚ) ≠ 0` using `by exact_mod_cast hm`.
+
+Rewrite using `[TensorProduct.smul_tmul, ← Int.cast_smul_eq_zsmul ℚ, smul_smul, inv_mul_cancel₀ hm', one_smul]`.
+-/
 theorem exists_tmul_integral [FiniteDimensional ℚ E] (a : ℚ_[ℓ]) (c : E) :
     ∃ (a' : ℚ_[ℓ]) (c' : E), IsIntegral ℤ c' ∧ (a ⊗ₜ[ℚ] c : ℚ_[ℓ] ⊗[ℚ] E) = a' ⊗ₜ[ℚ] c' := by
   have hq : IsAlgebraic ℚ c := Algebra.IsAlgebraic.isAlgebraic c
@@ -32,12 +44,26 @@ theorem exists_tmul_integral [FiniteDimensional ℚ E] (a : ℚ_[ℓ]) (c : E) :
   have hm' : (m : ℚ) ≠ 0 := by exact_mod_cast hm
   rw [TensorProduct.smul_tmul, ← Int.cast_smul_eq_zsmul ℚ, smul_smul, inv_mul_cancel₀ hm', one_smul]
 
+/- English proof (translation)
+Establish `: (ℓ : ℚ_[ℓ] ⊗[ℚ] E) ^ N = ((ℓ : ℚ_[ℓ]) ^ N) ⊗ₜ[ℚ] (1 : E)`. Rewrite using `[← Nat.cast_pow, ← Nat.cast_pow, Algebra.TensorProduct.natCast_def]`. Rewrite using `[this, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+-/
 theorem pow_mul_tmul (N : ℕ) (a : ℚ_[ℓ]) (c : E) :
     (ℓ : ℚ_[ℓ] ⊗[ℚ] E) ^ N * (a ⊗ₜ[ℚ] c) = ((ℓ : ℚ_[ℓ]) ^ N * a) ⊗ₜ[ℚ] c := by
   have : (ℓ : ℚ_[ℓ] ⊗[ℚ] E) ^ N = ((ℓ : ℚ_[ℓ]) ^ N) ⊗ₜ[ℚ] (1 : E) := by
     rw [← Nat.cast_pow, ← Nat.cast_pow, Algebra.TensorProduct.natCast_def]
   rw [this, Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
+/- English proof (translation)
+Establish `hl : IsIntegral ℤ_[ℓ] (ℓ : ℚ_[ℓ] ⊗[ℚ] E)`. Use `isIntegral_algebraMap (R := ℤ_[ℓ]) (A := ℚ_[ℓ] ⊗[ℚ] E) (x := (ℓ : ℤ_[ℓ]))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by rw [mul_zero]; exact isIntegral_zero⟩`.
+
+Consider the case `add x y hx hy`. Take `⟨M, hM⟩` from `hx`. Take `⟨N, hN⟩` from `hy`. Use `⟨M + N, ?_⟩` and prove the remaining obligations. Use `((hl.pow N).mul hM).add ((hl.pow M).mul hN)` as an intermediate fact.
+
+Establish `e : (ℓ : ℚ_[ℓ] ⊗[ℚ] E) ^ (M + N) * (x + y) = (ℓ : ℚ_[ℓ] ⊗[ℚ] E) ^ N * ((ℓ : ℚ_[ℓ] ⊗[ℚ] E) ^ M * x) + (ℓ : ℚ_[ℓ] ⊗[ℚ] E) ^ M * ((ℓ : ℚ_[ℓ] ⊗[ℚ] E) ^ N * y)` using `by ring`. Rewrite using `[e]` and apply the resulting hypothesis. Consider the case `tmul a c`. Take `⟨a', c', hc, e⟩` from `exists_tmul_integral a c`. Establish `hp : (1 : ℝ) < ℓ` using `by exact_mod_cast (Fact.out : ℓ.Prime).one_lt`.
+
+Take `⟨N, hN⟩` from `pow_unbounded_of_one_lt ‖a'‖ hp`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[e, pow_mul_tmul]`. Use `isIntegral_tmul _ ?_ _ hc` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, Padic.norm_p, inv_pow, inv_mul_le_iff₀ (by positivity), mul_one]`.
+
+Conclude with `hN.le`.
+-/
 theorem exists_pow_mul_isIntegral [FiniteDimensional ℚ E] (x : ℚ_[ℓ] ⊗[ℚ] E) :
     ∃ N : ℕ, IsIntegral ℤ_[ℓ] ((ℓ : ℚ_[ℓ] ⊗[ℚ] E) ^ N * x) := by
   have hl : IsIntegral ℤ_[ℓ] (ℓ : ℚ_[ℓ] ⊗[ℚ] E) := by
@@ -63,6 +89,17 @@ theorem exists_pow_mul_isIntegral [FiniteDimensional ℚ E] (x : ℚ_[ℓ] ⊗[�
     rw [norm_mul, norm_pow, Padic.norm_p, inv_pow, inv_mul_le_iff₀ (by positivity), mul_one]
     exact hN.le
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, isIntegral_zero, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨b, t, ht, e⟩` from `hx`. Take `⟨b', t', ht', e'⟩` from `hy`.
+
+Use `⟨b + b', t + t', ht.add ht', ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_add, e, e']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul a c`. Take `⟨a', c', hc, e⟩` from `exists_tmul_integral a c`.
+
+Establish `hp : (0 : ℝ) < ℓ` using `by exact_mod_cast (Fact.out : ℓ.Prime).pos`. Establish `hl : (ℓ : ℚ_[ℓ]) ≠ 0` using `by exact_mod_cast (Fact.out : ℓ.Prime).ne_zero`. Take `⟨q, hq⟩` from `Padic.rat_dense ℓ a' (ε := ((ℓ : ℝ) ^ N)⁻¹) (by positivity)`. Use `⟨q • c', (((q : ℚ_[ℓ]) - a') / (ℓ : ℚ_[ℓ]) ^ N) ⊗ₜ[ℚ] c', isIntegral_tmul _ ?_ _ hc, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_pow, Padic.norm_p, inv_pow, div_le_one (by positivity), norm_sub_rev]`.
+
+Conclude with `hq.le`. Rewrite using `[e, pow_mul_tmul, ← TensorProduct.add_tmul, ← TensorProduct.smul_tmul]`. Use `congr 1`. Rewrite using `[Rat.smul_one_eq_cast]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_sub_eq_pow_mul [FiniteDimensional ℚ E] (N : ℕ) (x : ℚ_[ℓ] ⊗[ℚ] E) :
     ∃ (b : E) (t : ℚ_[ℓ] ⊗[ℚ] E), IsIntegral ℤ_[ℓ] t ∧
       (1 : ℚ_[ℓ]) ⊗ₜ[ℚ] b = x + (ℓ : ℚ_[ℓ] ⊗[ℚ] E) ^ N * t := by
@@ -88,6 +125,11 @@ theorem exists_sub_eq_pow_mul [FiniteDimensional ℚ E] (N : ℕ) (x : ℚ_[ℓ]
       field_simp
       ring
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_pow_mul_isIntegral ((z⁻¹ : (ℚ_[ℓ] ⊗[ℚ] E)ˣ) : ℚ_[ℓ] ⊗[ℚ] E)`. Take `⟨b, t, ht, e⟩` from `exists_sub_eq_pow_mul (N + 1) (z : ℚ_[ℓ] ⊗[ℚ] E)`. Use `⟨b, _, hN.mul ht, ?_⟩` and prove the remaining obligations. Establish `h` using `z.mul_inv`. Rewrite using `[e]`.
+
+Take the linear combination `(-((ℓ : ℚ_[ℓ] ⊗[ℚ] E) ^ (N + 1) * t)) * h`.
+-/
 theorem exists_approx_unit (E : Type) [CommRing E] [Algebra ℚ E] [FiniteDimensional ℚ E]
     (ℓ : ℕ) [Fact ℓ.Prime] (z : (ℚ_[ℓ] ⊗[ℚ] E)ˣ) :
     ∃ (b : E) (s : ℚ_[ℓ] ⊗[ℚ] E), IsIntegral ℤ_[ℓ] s ∧

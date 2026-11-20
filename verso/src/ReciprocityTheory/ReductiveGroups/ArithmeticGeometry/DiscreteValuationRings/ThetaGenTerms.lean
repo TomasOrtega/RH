@@ -20,6 +20,13 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ideal R} {D :
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Establish `e1 : toW (q ≫ jK R) W r = (q.appLE ⊤ W le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom (algebraMap R (FractionRing R) r))`. Rewrite using `[toW, RingHom.comp_apply]`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (f := q) (g := jK R) ⊤ ⊤ W le_top le_top]`. Rewrite using `[CommRingCat.comp_apply]`. Use `congr 1`.
+
+Use `congrArg (fun φ => φ.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Use `erw [Scheme.Hom.appLE_eq_app]`. Conclude with `this.symm`. Rewrite using `[e1]`.
+
+Conclude with `((isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hr)).map _).map _`.
+-/
 lemma isUnit_toW_of_K {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of (FractionRing R))) (W : Y.Opens) {r : R}
     (hr : r ≠ 0) : IsUnit (toW (q ≫ jK R) W r) := by
   have e1 : toW (q ≫ jK R) W r = (q.appLE ⊤ W le_top).hom
@@ -35,6 +42,15 @@ lemma isUnit_toW_of_K {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of (Fraction
   rw [e1]
   exact ((isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hr)).map _).map _
 
+/- English proof (translation)
+Set `X' : Over Z` to `Over.mk (f ≫ s)`. Set `Y' : Over Z` to `Over.mk s`. Set `U' : Over Z` to `Over.mk (i0 ≫ f ≫ s)`. Set `f' : X' ⟶ Y'` to `Over.homMk f`. Set `g' : X' ⟶ Y'` to `Over.homMk g`.
+
+Set `i0' : U' ⟶ X'` to `Over.homMk i0`. Establish `: IsSeparated Y'.hom` using `‹_›`. Establish `: IsDominant (equalizer.ι f' g').left`. Apply `+allowSynthFailures IsDominant.of_comp (equalizer.lift i0' ?_).left` to reduce the goal to its premises. Rewrite using `[← Over.comp_left, equalizer.lift_ι]` and apply the resulting hypothesis.
+
+Use `ext1`. Conclude with `hU`. Establish `: Surjective (equalizer.ι f' g').left` using `surjective_of_isDominant_of_isClosed_range _ (Scheme.Hom.isClosedEmbedding _).isClosed_range`. Take `⟨z, rfl⟩` from `(equalizer.ι f' g').left.surjective x`. Establish `e` using `congr($(equalizer.condition f' g').left)`.
+
+Rewrite `e` using `[Over.comp_left, Over.comp_left]`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply]`. Conclude with `congrArg (fun φ => φ.base z) e`.
+-/
 lemma base_eq_of_isDominant {X Y Z W : Scheme.{0}} {f g : X ⟶ Y} (s : Y ⟶ Z) [IsSeparated s]
     (h : f ≫ s = g ≫ s) (i0 : W ⟶ X) [IsDominant i0] (hU : i0 ≫ f = i0 ≫ g) (x : X) : f.base x = g.base x := by
   let X' : Over Z := Over.mk (f ≫ s)
@@ -59,6 +75,13 @@ lemma base_eq_of_isDominant {X Y Z W : Scheme.{0}} {f g : X ⟶ Y} (s : Y ⟶ Z)
 section PrB
 
 variable (D) in
+/- English proof (translation)
+Use `flat_B (D := D)` as an intermediate fact. Use `isDominant_jF R` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (jF R)` using `IsSchemeTheoreticallyDominant.of_isDominant _`. Establish `: IsIso (jFK (R` using `R) (FractionRing R)) := by`. Establish `: IsIso (CommRingCat.ofHom (algebraMap (FractionRing R) (FractionRing R)))`.
+
+Rewrite using `[Algebra.algebraMap_self]`. Conclude with `inferInstanceAs (IsIso (𝟙 (CommRingCat.of (FractionRing R))))`. Use `infer_instance`. Establish `: IsSchemeTheoreticallyDominant (TF (R` using `R) (FractionRing R)).hom := inferInstanceAs (IsSchemeTheoreticallyDominant (jFK (R := R) (FractionRing R) ≫ jF R))`. Establish `: QuasiCompact (TF (R` using `R) (FractionRing R)).hom := inferInstanceAs (QuasiCompact (jFK (R := R) (FractionRing R) ≫ jF R))`.
+
+Conclude with `⟨inferInstanceAs (IsSchemeTheoreticallyDominant (pullback.snd _ _)), inferInstanceAs (QuasiCompact (pullback.snd _ _))⟩`.
+-/
 lemma prB_std : IsSchemeTheoreticallyDominant (DegPre.prB D.toPre (FractionRing R)).left ∧
     QuasiCompact (DegPre.prB D.toPre (FractionRing R)).left := by
   have := flat_B (D := D)
@@ -78,6 +101,11 @@ lemma prB_std : IsSchemeTheoreticallyDominant (DegPre.prB D.toPre (FractionRing 
 
 end PrB
 
+/- English proof (translation)
+Rewrite using `[toW, RingHom.comp_apply]`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (f := q) (g := jK R) ⊤ ⊤ W le_top le_top]`. Rewrite using `[CommRingCat.comp_apply]`. Use `congr 1`. Use `congrArg (fun φ => φ.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))` as an intermediate fact.
+
+Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Use `erw [Scheme.Hom.appLE_eq_app]`. Conclude with `this.symm`.
+-/
 lemma toW_of_K {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of (FractionRing R))) (W : Y.Opens) (r : R) :
     toW (q ≫ jK R) W r = (q.appLE ⊤ W le_top).hom
       ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom (algebraMap R (FractionRing R) r)) := by
@@ -90,10 +118,18 @@ lemma toW_of_K {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of (FractionRing R)
   erw [Scheme.Hom.appLE_eq_app]
   exact this.symm
 
+/- English proof (translation)
+Simplify using `[DegPre.BF, TF]`.
+-/
 lemma hBF : (DegPre.BF D.toPre (FractionRing R)).hom =
     (pullback.fst _ _ ≫ jFK (R := R) (FractionRing R)) ≫ jK R := by
   simp [DegPre.BF, TF]
 
+/- English proof (translation)
+Rewrite using `[toW_congr hBF, toW_of_K]`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (f := pullback.fst _ _) (g := jFK (R := R) (FractionRing R)) ⊤ ⊤ W le_top le_top]`. Rewrite using `[CommRingCat.comp_apply]`. Use `congrArg (fun φ => φ.hom (algebraMap R (FractionRing R) a)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap (FractionRing R) (FractionRing R))))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom, Algebra.algebraMap_self, RingHom.id_apply] at this`.
+
+Use `erw [Scheme.Hom.appLE_eq_app, ← this]`. Both sides reduce to the same expression.
+-/
 lemma constBF_alg (a : R) (W : (DegPre.BF D.toPre (FractionRing R)).left.Opens) :
     DegPre.constBF D.toPre (FractionRing R) (algebraMap R (FractionRing R) a) W =
       toW (DegPre.BF D.toPre (FractionRing R)).hom W a := by
@@ -109,6 +145,43 @@ lemma constBF_alg (a : R) (W : (DegPre.BF D.toPre (FractionRing R)).left.Opens) 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hI` using the available equality. Use `choose Q hQ using fun χ => QForm.exists_QVal hϖ D χ`. Establish `hQ' : QForm.IsQ D.toPre ϖ Q` using `hQ`. Establish `hv` using `valOver_vK hϖ`. Take `⟨hstd, hqc⟩` from `prB_std D`.
+
+Establish `hs0 : VGe D (FractionRing R) (vK hϖ) 1 0 (F.s 0) 0`. Use `⟨1, fun _ => 1, fun _ => g 0, fun _ => F.s 0, fun _ => hgF 0, fun _ => by simp, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one, ← map_one (algebraMap R (FractionRing R)), constBF_alg, map_one, _root_.one_mul]`. Introduce `mu hmu`. Establish `hm` using `SectionScalarValuation.fe_move hϖ hQ' hv 1 mu 0 F hs0`.
+
+Establish `e01 : (0 : D.toPre.X) + 1 • mu = mu` using `by simp`. Rewrite `hm` using `[e01]`. Establish `hb0 : QForm.bOf D.toPre Q mu 0 = 0`. Simplify using `[QForm.bOf, QForm.Q_zero hϖ D hQ']`. Establish `hq1 : 1 ≤ Q mu` using `QForm.Q_pos hϖ D hQ' hmu`.
+
+Take `⟨N, a, σ, σF, hσF, hva, hsum⟩` from `hm`. Establish `hab : ∀ i, ∃ b : R, a i = algebraMap R (FractionRing R) (ϖ * b)`. Introduce `i`. Distinguish the cases in `ha : a i = 0`. Conclude with `⟨0, by rw [ha, mul_zero, map_zero]⟩`.
+
+Take `⟨n, hn⟩` from `hasVal_of_ne_zero hϖ ha`. Establish `h1` using `hva i`. Establish `hvn` using `hv _ _ hn`. Rewrite `hvn` using `[Algebra.algebraMap_self, RingHom.id_apply]`. Rewrite `h1` using `[hvn, hb0]`.
+
+Establish `hn1 : 1 ≤ n`. Establish `: ((0 : ℚ) + ((1 * Q mu + 0 : ℤ) : ℚ)) ≤ (n : ℚ)` using `by exact_mod_cast h1`. Rewrite `this` using `[zero_add]`. Establish `: (1 : ℚ) ≤ n` using `le_trans (by exact_mod_cast (by omega : (1 : ℤ) ≤ 1 * Q mu + 0)) this`. Conclude with `this` after adjusting the coercions.
+
+Take `⟨u, hu⟩` from `hn`. Take `⟨d, hd⟩ : ∃ d : ℕ, n = d + 1` from `⟨(n - 1).toNat, by omega⟩`. Use `⟨ϖ ^ d * u, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, hd, zpow_add₀ (by exact (map_ne_zero_iff _ (IsFractionRing.injective R _)).2 hϖ.ne_zero), zpow_natCast, zpow_one]`. Simplify using `only [map_mul, map_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `choose b hb using hab`. Use `flat_B (D := D)` as an intermediate fact. Establish `hdom : IsDominant (DegPre.prB D.toPre (FractionRing R)).left` using `inferInstance`. Establish `key : ∀ j₂ : Fin 4 → D.toPre.P.L.ι, (∀ k k', (DegPre.prB D.toPre (FractionRing R)).left ≫ D.toPre.famφB mu k = (DegPre.prB D.toPre (FractionRing R)).left ≫ D.toPre.famφB mu k' → j₂ k = j₂ k') → (g mu).f j₂ = toW D.toPre.P.A.hom _ ϖ * ∑ i, toW D.toPre.P.A.hom _ (b i) * (σ i).f j₂`.
+
+Introduce `j₂ hcoh`. Establish `hc : LB.Coh D.toPre.P.L (Sum.elim (DegPre.famφ D.toPre (FractionRing R) mu) (fun k => (DegPre.prB D.toPre (FractionRing R)).left ≫ D.toPre.famφB mu k)) (Sum.elim j₂ j₂)`. Introduce `x y hxy`. Apply the tactic sequence `rcases x with k | k <;> rcases y with k' | k' <;>`. Apply the tactic sequence `simp only [Sum.elim_inl, Sum.elim_inr, GC.famφ_eq] at hxy ⊢ <;> exact hcoh k k' hxy`.
+
+Establish `E1` using `hgF mu j₂ j₂ hc`. Establish `E2` using `hsum j₂`. Establish `E3` using `fun i => hσF i j₂ j₂ hc`. Establish `hle : (DegPre.prB D.toPre (FractionRing R)).left ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.famφB mu) j₂ ≤ LB.wchart D.toPre.P.L (DegPre.famφ D.toPre (FractionRing R) mu) j₂ ⊓ LB.wchart D.toPre.P.L (fun k => (DegPre.prB D.toPre (FractionRing R)).left ≫ D.toPre.famφB mu k) j₂`. Introduce `x hx`.
+
+Use `⟨Set.mem_iInter.2 fun k => ?_, Set.mem_iInter.2 fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[GC.famφ_eq]`. Conclude with `Set.mem_iInter.1 hx k`. Conclude with `Set.mem_iInter.1 hx k`. Apply `Scheme.Hom.app_injective (DegPre.prB D.toPre (FractionRing R)).left` to reduce the goal to its premises.
+
+Apply `map_inj_of_le_ge (inf_le_right.trans (wchart_comp_le _ _ j₂)) hle` to reduce the goal to its premises. Use `E1.trans ?_` and prove the remaining obligations. Establish `hw : (DegPre.prB D.toPre (FractionRing R)).left ≫ D.toPre.P.A.hom = (DegPre.BF D.toPre (FractionRing R)).hom` using `Over.w _`. Rewrite using `[show resTop _ (1 : Γ((DegPre.BF D.toPre (FractionRing R)).left, ⊤)) = 1 from map_one _, _root_.one_mul, E2]`. Simplify using `only [map_sum, map_mul, app_toW, toW_congr hw]`.
+
+Use `erw [map_sum, map_mul, map_sum]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `E3i` using `E3 i`. Rewrite `E3i` using `[show resTop _ (1 : Γ((DegPre.BF D.toPre (FractionRing R)).left, ⊤)) = 1 from map_one _, _root_.one_mul]`.
+
+Use `erw [map_mul, map_mul, ← E3i, hb i, constBF_alg, toW_res, toW_res, toW_res, map_mul]`. Rewrite using `[_root_.mul_assoc]`. Both sides reduce to the same expression. Introduce `(j : Fin 4 → D.toPre.P.L.ι)`. Use `set π := pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) 0)`.
+
+Use `TopCat.Presheaf.section_ext (pullback D.toPre.P.A.hom (thick R (maximalIdeal R) 0)).sheaf _ _ 0 fun z hz => ?_` and prove the remaining obligations. Use `choose ch hch using WeightPf.exists_chart D.toPre.P.L D.toPre.P.isLB`. Set `j₂ : Fin 4 → D.toPre.P.L.ι` to `fun k => ch ((D.toPre.famφB mu k).base (π.base z))`. Establish `hcoh : ∀ k k', (DegPre.prB D.toPre (FractionRing R)).left ≫ D.toPre.famφB mu k = (DegPre.prB D.toPre (FractionRing R)).left ≫ D.toPre.famφB mu k' → j₂ k = j₂ k'` using `fun k k' h => congrArg ch (base_eq_of_isDominant D.toPre.P.A.hom ((GC.famφB_over mu k).trans (GC.famφB_over mu k').symm) _ h (π.base z))`. Establish `hK` using `key j₂ hcoh`.
+
+Establish `hV : LB.wchart D.toPre.P.L (D.toPre.famφB mu) j ⊓ LB.wchart D.toPre.P.L (D.toPre.famφB mu) j₂ ≤ LB.wchart D.toPre.P.L (D.toPre.famφB mu) j` using `inf_le_left`. Establish `hzV : z ∈ π ⁻¹ᵁ (LB.wchart D.toPre.P.L (D.toPre.famφB mu) j ⊓ LB.wchart D.toPre.P.L (D.toPre.famφB mu) j₂)` using `⟨hz, Set.mem_iInter.2 fun k => hch _⟩`. Establish `hres : (π.app _) ((D.toPre.P.A.left.presheaf.map (homOfLE hV).op).hom ((g mu).f j)) = 0`. Establish `c` using `(g mu).compat j j₂`. Establish `hm : ϖ ∈ maximalIdeal R ^ (0 + 1)`.
+
+Rewrite using `[zero_add, pow_one]`. Conclude with `hϖ.not_isUnit`. Establish `h2 : (π.app (LB.wchart D.toPre.P.L (D.toPre.famφB mu) j ⊓ LB.wchart D.toPre.P.L (D.toPre.famφB mu) j₂)) ((D.toPre.P.A.left.presheaf.map (homOfLE (inf_le_right : LB.wchart D.toPre.P.L (D.toPre.famφB mu) j ⊓ LB.wchart D.toPre.P.L (D.toPre.famφB mu) j₂ ≤ LB.wchart D.toPre.P.L (D.toP …`. Rewrite using `[hK]`. Use `erw [map_mul, toW_res, map_mul, app_toW_of_mem D.toPre.P.A.hom _ _ hm, zero_mul]`.
+
+Use `erw [c, map_mul, h2]`. Rewrite using `[mul_zero]`. Establish `hz2 : π ⁻¹ᵁ (LB.wchart D.toPre.P.L (D.toPre.famφB mu) j ⊓ LB.wchart D.toPre.P.L (D.toPre.famφB mu) j₂) ≤ π ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.famφB mu) j` using `π.preimage_mono hV`. Use `show (pullback D.toPre.P.A.hom (thick R (maximalIdeal R) 0)).presheaf.germ _ z hz _ = (pullback D.toPre.P.A.hom (thick R (maximalIdeal R) 0)).presheaf.germ _ z hz 0`. Use `erw [← TopCat.Presheaf.germ_res_apply _ (homOfLE hz2) z hzV, app_res π hV, hres, map_zero, map_zero]`.
+-/
 theorem terms_vanish [IsDiscreteValuationRing R] {ϖ : R} (hϖ : Irreducible ϖ) (hI : I = maximalIdeal R)
     (F : Fam D.toPre (FractionRing R) 1) (g : ∀ α, D.toPre.SecB 1 α)
     (hgF : ∀ α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing R) α) (DegPre.famε 1) (F.s α)

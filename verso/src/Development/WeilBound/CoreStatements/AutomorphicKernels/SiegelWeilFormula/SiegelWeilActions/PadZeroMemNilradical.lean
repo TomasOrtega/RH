@@ -18,15 +18,26 @@ variable {d : SD σ} (L : LD d)
 def pad0 (β : Matrix (Fin L.n) (Fin L.n) (AE F E)) : Matrix (Fin d.n) (Fin d.n) (AE F E) :=
   fun i k => if h : (∃ a, L.em a = i) ∧ ∃ c, L.em c = k then β h.1.choose h.2.choose else 0
 
+/- English proof (translation)
+Establish `h : (∃ a', L.em a' = L.em a) ∧ ∃ c', L.em c' = L.em c` using `⟨⟨a, rfl⟩, ⟨c, rfl⟩⟩`. Simplify using `only [pad0, dif_pos h]`. Rewrite using `[L.inj h.1.choose_spec, L.inj h.2.choose_spec]`.
+-/
 theorem pad_zero_embedding_alt (β : Matrix (Fin L.n) (Fin L.n) (AE F E)) (a c : Fin L.n) : pad0 L β (L.em a) (L.em c) = β a c := by
   have h : (∃ a', L.em a' = L.em a) ∧ ∃ c', L.em c' = L.em c := ⟨⟨a, rfl⟩, ⟨c, rfl⟩⟩
   simp only [pad0, dif_pos h]
   rw [L.inj h.1.choose_spec, L.inj h.2.choose_spec]
 
+/- English proof (translation)
+Simplify using `only [pad0, dif_neg h]`.
+-/
 theorem pad_zero_outside_range (β : Matrix (Fin L.n) (Fin L.n) (AE F E)) (i k : Fin d.n)
     (h : ¬ ((∃ a, L.em a = i) ∧ ∃ c, L.em c = k)) : pad0 L β i k = 0 := by
   simp only [pad0, dif_neg h]
 
+/- English proof (translation)
+Distinguish the cases in `h : (∃ a, L.em a = i) ∧ ∃ c, L.em c = k`. Take `⟨⟨a, rfl⟩, ⟨c, rfl⟩⟩` from `h`. Rewrite using `[pad_zero_embedding_alt, pad_zero_embedding_alt]`. Conclude with `h1 a c`. Rewrite using `[pad_zero_outside_range L β i k h, pad_zero_outside_range L β k i (fun h' => h ⟨h'.2, h'.1⟩)]`.
+
+Conclude with `h0`.
+-/
 theorem pad_zero_symm_cases (β : Matrix (Fin L.n) (Fin L.n) (AE F E)) (P : AE F E → AE F E → Prop) (h0 : P 0 0)
     (h1 : ∀ a c, P (β a c) (β c a)) (i k : Fin d.n) : P (pad0 L β i k) (pad0 L β k i) := by
   by_cases h : (∃ a, L.em a = i) ∧ ∃ c, L.em c = k
@@ -36,6 +47,9 @@ theorem pad_zero_symm_cases (β : Matrix (Fin L.n) (Fin L.n) (AE F E)) (P : AE F
   · rw [pad_zero_outside_range L β i k h, pad_zero_outside_range L β k i (fun h' => h ⟨h'.2, h'.1⟩)]
     exact h0
 
+/- English proof (translation)
+Take `⟨⟨ε, hε⟩, -⟩` from `d.ok.frame`. Take `⟨⟨ε', hε'⟩, -⟩` from `L.ok.frame`. Establish `hee : ε = ε'` using `Afc.eps_eq L hε hε'`. Substitute `hee` using the available equality. Conclude with `⟨ε, hε, hε'⟩`.
+-/
 theorem eps_common : ∃ ε : ℤˣ, d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0 ∧
     L.b.1ᵀ * dbl L.Y.J * L.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0 := by
   obtain ⟨⟨ε, hε⟩, -⟩ := d.ok.frame
@@ -44,6 +58,11 @@ theorem eps_common : ∃ ε : ℤˣ, d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matri
   subst hee
   exact ⟨ε, hε, hε'⟩
 
+/- English proof (translation)
+Take `⟨ε, hε, hε'⟩` from `eps_common L`. Rewrite using `[kunf.mem_nA_iff hε]`. Establish `hβ` using `(kunf.mem_nA_iff hε' β.1).1 β.2`. Use extensionality with `i k`. Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply, Matrix.smul_apply, Matrix.map_apply]`.
+
+Use `pad_zero_symm_cases L β.1 (fun u v => v = -((((ε : ℤ) : AE F E)) • cA σ u)) (by simp) (fun a c => ?_) i k` and prove the remaining obligations. Use `congrFun (congrFun hβ a) c` as an intermediate fact. Simplify `this` using `only [Matrix.transpose_apply, Matrix.neg_apply, Matrix.smul_apply, Matrix.map_apply]`.
+-/
 theorem pad_zero_mem_nilradical (β : nA σ L.Y L.b) : pad0 L β.1 ∈ nA σ d.Y d.b := by
   obtain ⟨ε, hε, hε'⟩ := eps_common L
   rw [kunf.mem_nA_iff hε]
@@ -69,12 +88,20 @@ def padN : nA σ L.Y L.b →+ nA σ d.Y d.b where
       simp only [AddSubgroup.coe_add, Matrix.add_apply, pad_zero_embedding_alt]
     · simp only [AddSubgroup.coe_add, Matrix.add_apply, pad_zero_outside_range L _ i k h, add_zero]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a c`. Simplify using `only [prj_val, Matrix.submatrix_apply]`. Conclude with `pad_zero_embedding_alt L β.1 a c`.
+-/
 theorem prj_padN (β : nA σ L.Y L.b) : prj L (padN L β) = β := by
   apply Subtype.ext
   ext a c
   simp only [prj_val, Matrix.submatrix_apply]
   exact pad_zero_embedding_alt L β.1 a c
 
+/- English proof (translation)
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun k => ?_` and prove the remaining obligations. Distinguish the cases in `h : (∃ a, L.em a = i) ∧ ∃ c, L.em c = k`. Take `⟨⟨a, rfl⟩, ⟨c, rfl⟩⟩` from `h`. Simplify using `only [pad_zero_embedding_alt]`.
+
+Conclude with `(continuous_apply c).comp ((continuous_apply a).comp continuous_subtype_val)`. Simplify using `only [pad_zero_outside_range L _ i k h]`. Conclude with `continuous_const`.
+-/
 theorem continuous_padN : Continuous (padN L) := by
   refine Continuous.subtype_mk ?_ _
   refine continuous_pi fun i => continuous_pi fun k => ?_
@@ -85,6 +112,11 @@ theorem continuous_padN : Continuous (padN L) := by
   · simp only [pad_zero_outside_range L _ i k h]
     exact continuous_const
 
+/- English proof (translation)
+Establish `: Countable E` using `(Module.finBasis ℚ E).equivFun.injective.countable`. Establish `: Countable (Matrix (Fin n) (Fin n) E)` using `inferInstanceAs (Countable (Fin n → Fin n → E))`. Use `Function.Injective.countable (f := fun ν : nF σ Y b => Classical.choose (kunf.mem_nF_iff.1 ν.2)) ?_` and prove the remaining obligations. Introduce `ν ν' h`. Establish `h1` using `Classical.choose_spec (kunf.mem_nF_iff.1 ν.2)`.
+
+Establish `h2` using `Classical.choose_spec (kunf.mem_nF_iff.1 ν'.2)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h1, h2]`. Conclude with `congrArg _ h`.
+-/
 theorem countable_nF (n : ℕ) (Y : Spc F E n) (b : GL (Fin n ⊕ Fin n) E) : Countable (nF σ Y b) := by
   have : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable
   have : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))
@@ -96,12 +128,20 @@ theorem countable_nF (n : ℕ) (Y : Spc F E n) (b : GL (Fin n ⊕ Fin n) E) : Co
   rw [h1, h2]
   exact congrArg _ h
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `kunf.mem_nF_iff.1 h`. Use `kunf.mem_nF_iff.2 ⟨T.submatrix L.em L.em, ?_⟩` and prove the remaining obligations. Rewrite using `[prj_val, hT]`. Both sides reduce to the same expression.
+-/
 theorem prj_nF {β : nA σ d.Y d.b} (h : β ∈ nF σ d.Y d.b) : prj L β ∈ nF σ L.Y L.b := by
   obtain ⟨T, hT⟩ := kunf.mem_nF_iff.1 h
   refine kunf.mem_nF_iff.2 ⟨T.submatrix L.em L.em, ?_⟩
   rw [prj_val, hT]
   rfl
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `kunf.mem_nF_iff.1 h`. Use `kunf.mem_nF_iff.2 ⟨Matrix.of fun i k => if h : (∃ a, L.em a = i) ∧ ∃ c, L.em c = k then T h.1.choose h.2.choose else 0, ?_⟩` and prove the remaining obligations. Use extensionality with `i k`. Use `show pad0 L β.1 i k = _`. Distinguish the cases in `h : (∃ a, L.em a = i) ∧ ∃ c, L.em c = k`.
+
+Rewrite using `[pad0, dif_pos h, hT]`. Simplify using `only [incM, Matrix.map_apply, Matrix.of_apply, dif_pos h]`. Rewrite using `[pad0, dif_neg h]`. Simplify using `only [incM, Matrix.map_apply, Matrix.of_apply, dif_neg h, map_zero]`.
+-/
 theorem padN_nF {β : nA σ L.Y L.b} (h : β ∈ nF σ L.Y L.b) : padN L β ∈ nF σ d.Y d.b := by
   obtain ⟨T, hT⟩ := kunf.mem_nF_iff.1 h
   refine kunf.mem_nF_iff.2 ⟨Matrix.of fun i k => if h : (∃ a, L.em a = i) ∧ ∃ c, L.em c = k then
@@ -114,6 +154,9 @@ theorem padN_nF {β : nA σ L.Y L.b} (h : β ∈ nF σ L.Y L.b) : padN L β ∈ 
   · rw [pad0, dif_neg h]
     simp only [incM, Matrix.map_apply, Matrix.of_apply, dif_neg h, map_zero]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.T.adelic_skew_matrices_locally_compact_group F E σ n Y b ε fun β => by`. Rewrite using `[kunf.mem_nA_iff hε, ← sub_eq_zero, sub_neg_eq_add]`. Conclude with `⟨h.2.2.1, h.2.2.2.2.1⟩`.
+-/
 theorem nA_inst (n : ℕ) (Y : Spc F E n) (b : GL (Fin n ⊕ Fin n) E) (ε : ℤˣ)
     (hε : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :
     LocallyCompactSpace (nA σ Y b) ∧ T2Space (nA σ Y b) := by
@@ -121,6 +164,9 @@ theorem nA_inst (n : ℕ) (Y : Spc F E n) (b : GL (Fin n ⊕ Fin n) E) (ε : ℤ
     rw [kunf.mem_nA_iff hε, ← sub_eq_zero, sub_neg_eq_add]
   exact ⟨h.2.2.1, h.2.2.2.2.1⟩
 
+/- English proof (translation)
+Take `⟨ε, hε, hε'⟩` from `eps_common L`. Take `⟨h1, h2⟩` from `nA_inst d.n d.Y d.b ε hε`. Take `⟨h3, h4⟩` from `nA_inst L.n L.Y L.b ε hε'`. Conclude with `GlobalTheory.T.haar_measure_split_exact_sequence (prj L) (padN L) (continuous_prj L) (continuous_padN L) (prj_padN L) (nF σ d.Y d.b) (nF σ L.Y L.b) (countable_nF _ _ _) (countable_nF _ _ _) (fun γ hγ => prj_nF L hγ) (fun γ hγ => padN_nF L hγ) lam lam' hc.2.1 hc'.2.1 𝓖 𝓖' hc.2.2.1 …`.
+-/
 theorem fiber {nb : nA σ d.Y d.b → d.G} {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {nb' : nA σ L.Y L.b → G2 σ L.Y} {lam' : Measure (nA σ L.Y L.b)}
     {𝓖' : Set (nA σ L.Y L.b)} (hc' : CoefData (σ := σ) (Y := L.Y) L.b nb' lam' 𝓖')

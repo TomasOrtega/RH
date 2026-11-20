@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `K _ _`. Use `Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations. Establish `h : (0 : NumberField.InfiniteAdeleRing K) w = 0` using `rfl`. Rewrite using `[h, map_zero, Complex.zero_re, mul_zero]`.
+-/
 theorem UpperTheory.Reformulated.B.Qh34.aux1.{u_1} :
     ∀ (K : Type u_1) [inst : Field K] [inst_1 : NumberField K],
       ∑ x : NumberField.InfinitePlace K,
@@ -12,6 +15,9 @@ theorem UpperTheory.Reformulated.B.Qh34.aux1.{u_1} :
   have h : (0 : NumberField.InfiniteAdeleRing K) w = 0 := rfl
   rw [h, map_zero, Complex.zero_re, mul_zero]
 
+/- English proof (translation)
+Introduce `K _ _ x y`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `h : (x + y) w = x w + y w` using `rfl`. Rewrite using `[h, map_add, Complex.add_re, mul_add]`.
+-/
 theorem UpperTheory.Reformulated.B.Qh34.aux2.{u_1} :
     ∀ (K : Type u_1) [inst : Field K] [inst_1 : NumberField K] (x y : NumberField.InfiniteAdeleRing K),
       ∑ w : NumberField.InfinitePlace K,
@@ -35,6 +41,15 @@ noncomputable def UpperTheory.Reformulated.B.Qh34.infiniteTrace.{u_1} :
             (↑w.mult : ℝ) * ((NumberField.InfinitePlace.Completion.extensionEmbedding w : w.Completion → ℂ) (x w)).re,
         map_zero' := UpperTheory.Reformulated.B.Qh34.aux1 K, map_add' := UpperTheory.Reformulated.B.Qh34.aux2 K : NumberField.InfiniteAdeleRing K →+ ℝ }
 
+/- English proof (translation)
+Introduce `K _ _ k`. Establish `h1 : ((Algebra.trace ℚ K k : ℚ) : ℝ) = ∑ φ : K →+* ℂ, (φ k).re`. Establish `h` using `trace_eq_sum_embeddings ℂ (K := ℚ) (L := K) (x := k)`. Establish `h' : ∑ φ : K →+* ℂ, φ k = ∑ σ : K →ₐ[ℚ] ℂ, σ k` using `Fintype.sum_equiv (RingHom.equivRatAlgHom K ℂ) _ _ (fun _ => rfl)`. Rewrite using `[← Complex.re_sum, h', ← h]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1, ← Finset.sum_fiberwise Finset.univ NumberField.InfinitePlace.mk]`. Express the relevant statement in the definitionally equal form `∑ w : NumberField.InfinitePlace K, (↑w.mult : ℝ) * (NumberField.InfinitePlace.Completion.extensionEmbedding w (algebraMap K (NumberField.InfiniteAdeleRing K) k w)).re = _`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `h2 : NumberField.InfinitePlace.Completion.extensionEmbedding w (algebraMap K (NumberField.InfiniteAdeleRing K) k w) = w.embedding k`.
+
+Simplify using the standard rewrite rules. Establish `h3 : ∀ φ ∈ Finset.univ.filter (fun φ : K →+* ℂ => NumberField.InfinitePlace.mk φ = w), (φ k).re = (w.embedding k).re`. Introduce `φ hφ`. Rewrite using `[← (Finset.mem_filter.1 hφ).2]`. Break down `NumberField.InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases.
+
+Rewrite using `[h]`. Rewrite using `[h, NumberField.ComplexEmbedding.conjugate_coe_eq, Complex.conj_re]`. Rewrite using `[h2, Finset.sum_congr rfl h3, Finset.sum_const, NumberField.InfinitePlace.card_filter_mk_eq, nsmul_eq_mul]`.
+-/
 theorem UpperTheory.Reformulated.B.Qh34.infiniteTrace_algebraMap.{u_1} :
     ∀ (K : Type u_1) [inst : Field K] [inst_1 : NumberField K] (k : K),
       (UpperTheory.Reformulated.B.Qh34.infiniteTrace K : NumberField.InfiniteAdeleRing K → ℝ)

@@ -6,6 +6,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 
 namespace GlobalTheory.CompanionTheory.HeckeExist
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N J _ hJc V _ _ π hπ g`. Take `⟨E, hE1, -, hE3, -, -⟩` from `GlobalTheory.CompanionTheory.CompactAvg.exists_average (GL (Fin N) k) J hJc V π hπ`. Use `⟨((E ∘ₗ π g ∘ₗ (fixed π J).subtype).codRestrict (fixed π J) (fun v => hE1 _)), ?_⟩` and prove the remaining obligations. Introduce `v l hl`. Establish `h` using `LinearMap.congr_fun (hE3 l hl) (π g (v : V))`.
+
+Simplify using `using h.symm`.
+-/
 theorem exists_heckeOp : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], PositivityTheory.Lbc.CH k := by
   intro k _ _ _ _ N J _ hJc V _ _ π hπ g

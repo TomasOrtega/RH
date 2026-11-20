@@ -23,6 +23,9 @@ namespace GlobalTheory.VacUnique
 
 variable {D : D7} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
+/- English proof (translation)
+Establish `e : ψ (symplOH S T (iotaW σ T S z) u) * f (iotaW σ T S z + u) = ε * f (iotaW σ T S z)` using `congrFun hf _`. Rewrite `e` using `[GlobalTheory.T.stdCharacter_halfSymplecticForm_realPoint D θ ψ h.inf hψ S T _ _ (Or.inl (h.real_iota T S z)), piW_of_inf θ hu, LinearMap.map_zero]`. Simplify using `using e`.
+-/
 theorem apply_real_add (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {u : WO S T} (hu : u.map (infPart D) = 0)
     {f : WO S T → ℂ} {ε : ℂ} (hf : heisO ψ S T u f = ε • f) (z : RW T S) :
     f (iotaW σ T S z + u) = ε * f (iotaW σ T S z) := by
@@ -30,6 +33,11 @@ theorem apply_real_add (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {u : WO S T
   rw [GlobalTheory.T.stdCharacter_halfSymplecticForm_realPoint D θ ψ h.inf hψ S T _ _ (Or.inl (h.real_iota T S z)), piW_of_inf θ hu, LinearMap.map_zero] at e
   simpa using e
 
+/- English proof (translation)
+Establish `h0 : (w - iotaW σ T S (piW θ T S w) : WO S T).map (infPart D) = 0`. Establish `hp : piW θ T S (w - iotaW σ T S (piW θ T S w)) = 0`. Rewrite using `[AddMonoidHom.map_sub, h.pi_iota, sub_self]`. Use function extensionality and compare the values at `i j`. Conclude with `ThetaCont.infPart_eq_zero h _ fun τ => congrFun (congrFun (congrFun hp τ) i) j`.
+
+Take `⟨_, ⟨γ, rfl⟩, u, hu, hr⟩` from `h2 _ h0`. Use `⟨γ, piW θ T S w + piW θ T S (w - iotaW σ T S (piW θ T S w) - ratW T S γ - u), u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[AddMonoidHom.map_add, h.iota_pi (x := w - iotaW σ T S (piW θ T S w) - ratW T S γ - u) hr]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_decomp (h : Chart θ σ) {Λ : AddSubgroup (WO S T)}
     (h2 : ∀ γ : WO S T, γ.map (infPart D) = 0 → ∃ ρ ∈ ratL T S, ∃ u ∈ Λ, (γ - ρ - u).map (finPart D) = 0)
     (w : WO S T) : ∃ γ z, ∃ u ∈ Λ, w = ratW T S γ + (iotaW σ T S z + u) := by
@@ -43,6 +51,11 @@ theorem exists_decomp (h : Chart θ σ) {Λ : AddSubgroup (WO S T)}
   rw [AddMonoidHom.map_add, h.iota_pi (x := w - iotaW σ T S (piW θ T S w) - ratW T S γ - u) hr]
   abel
 
+/- English proof (translation)
+Establish `e : iotaW σ T S (z + infRat S T v) = ratW T S v + (iotaW σ T S z + finRat S T (-v))`. Rewrite using `[ratW_eq h, AddMonoidHom.map_add, AddMonoidHom.map_neg]`. Normalize the expressions using the abelian group laws. Establish `e2 : symplOH S T (ratW T S v) (iotaW σ T S z + finRat S T (-v)) = symplOH S T (ratW T S v) (iotaW σ T S z) + symplOH S T (ratW T S v) (finRat S T (-v))`. Unfold `symplOH`.
+
+Rewrite using `[(GlobalTheory.T.symplecticAdelicForm_biadditive_alternating_rational D S T).2.1, mul_add]`. Rewrite using `[e, hf.quasi, apply_real_add h hψ (finRat_inf S T _) he, e2, neg_add, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv ψ (symplOH S T (ratW T S v) (iotaW σ T S z)), GlobalTheory.T.stdCharacter_halfSymplecticForm_realPoint D θ ψ h.inf hψ S T _ _ (Or.inr (h.real_iota T S z)), piW_rat …`. Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 theorem apply_add_infRat (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (v : Matrix (Fin T.rank) (Fin S.rank) D.host.E) {ε : ℂ} (he : heisO ψ S T (finRat S T (-v)) f = ε • f) (z : RW T S) :
     f (iotaW σ T S (z + infRat S T v)) =
@@ -61,6 +74,11 @@ theorem apply_add_infRat (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {f : WO S
   push_cast
   ring_nf
 
+/- English proof (translation)
+Introduce `x y e`. Choose the witnesses or unpack the hypotheses as in `⟨τ⟩ : Nonempty D.what₂.Tau := by`. Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`. Conclude with `⟨((GlobalTheory.CMTypePlaces.places_bijective D).2 w).choose⟩`. Use function extensionality and compare the values at `i j`.
+
+Conclude with `(tauE D τ).injective (congrFun (congrFun (congrFun e τ) i) j)`.
+-/
 theorem infRat_injective (S T : HSp D) : Function.Injective (infRat S T) := by
   intro x y e
   obtain ⟨τ⟩ : Nonempty D.what₂.Tau := by
@@ -69,6 +87,31 @@ theorem infRat_injective (S T : HSp D) : Function.Injective (infRat S T) := by
   funext i j
   exact (tauE D τ).injective (congrFun (congrFun (congrFun e τ) i) j)
 
+/- English proof (translation)
+Introduce `D ψ θ hψ hθ S T sS sT _ _ hS hT ΛS ΛT hΛS hΛT f f' hf hf'`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.self_dual_lattice_pairing_dual D ψ S T ΛS ΛT hψ hΛS hΛT`. Establish `hden` using `GlobalTheory.T.scaled_finite_matrix_mem_lattice D S T ΛS ΛT hΛS.1 hΛT.1`. Establish `hlat` using `hf.2.lat`.
+
+Establish `hlat'` using `hf'.2.lat`. Establish `hinf` using `fun u => latO_inf (u := u) S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True`. Generalize the expression as in `latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True) = Λ at h1 h2 h3 hden hlat hlat' hinf`. Use `choose ε hε1 hε2 using h3 f hlat`. Establish `det : ∀ (g g' : WO S T → ℂ) (c : ℂ), IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → IsLatVac (heisO ψ S T) Λ g → IsLatVac (heisO ψ S T) Λ g' → (∀ z, g' (iotaW σ T S z) = c * g (iotaW σ T S z)) → g' = c • g`.
+
+Introduce `g g' c hg hg' hl hl' hz`. Use function extensionality and compare the values at `w`. Take `⟨γ, z, u, hu, rfl⟩` from `exists_decomp h h2 w`. Rewrite using `[Pi.smul_apply, smul_eq_mul, hg.quasi, hg'.quasi, apply_real_add h hψ (hinf u hu) (hε2 u hu g hl), apply_real_add h hψ (hinf u hu) (hε2 u hu g' hl'), hz]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨⟨p, hp⟩, hn⟩` from `hf.2.norm`. Establish `n1 : nrm2 p.1 p.2 f = 1` using `hn p hp`. Establish `n2 : nrm2 p.1 p.2 f' = 1` using `hf'.2.norm.2 p hp`. Establish `hne : (fun z : RW T S => f (iotaW σ T S z)) ≠ 0`. Introduce `h0`.
+
+Establish `e` using `det f f 0 hf.2.theta hf.2.theta hlat hlat fun z => by rw [zero_mul]; exact congrFun h0 z`. Rewrite `n1` using `[e]`. Simplify using `[nrm2] at n1`. Take `⟨j1, j2, j3, j4⟩` from `GlobalTheory.T.realSymplecticForm_alternating_invariant_definite D S T sS sT hS hT`. Establish `hsp : Submodule.span ℝ (Set.range (infRat S T)) = ⊤`.
+
+Use `span_piW_ratW_eq_top D θ σ h T S` as an intermediate fact. Simplify `this` using `only [piW_ratW hθ]`. Establish `a1` using `GlobalTheory.T.fockVacuum_annihilation_equation_real_coordinates D θ σ h ψ hψ S T sS sT f hf.2.theta hf.2.fock`. Establish `a2` using `GlobalTheory.T.fockVacuum_annihilation_equation_real_coordinates D θ σ h ψ hψ S T sS sT f' hf'.2.theta hf'.2.fock`. Set `c : Matrix (Fin T.rank) (Fin S.rank) D.host.E → ℂ` to `fun v => if hv : finRat S T (-v) ∈ Λ then ψ (-symplOH S T (ratW T S v) (finRat S T (-v))) * ε _ hv else 1`.
+
+Establish `hc : ∀ v, ‖c v‖ = 1` using `fun v => by`. Simplify using `only [c]`. Use `split_ifs with hv`. Rewrite using `[norm_mul, hψ.1.2.1]`. Apply the tactic sequence `rcases hε1 _ hv with e | e <;> rw [e] <;> simp`.
+
+Conclude with `norm_one`. Establish `law : ∀ g : WO S T → ℂ, IsThetaFunO ψ S T g → IsLatVac (heisO ψ S T) Λ g → ∀ v ∈ Λ.comap (finRat S T), ∀ z, g (iotaW σ T S (z + infRat S T v)) = c v * Complex.exp (-(Real.pi * Complex.I) * (omO S T z (infRat S T v) : ℂ)) * g (iotaW σ T S z)`. Introduce `g hg hl v hv z`. Establish `hv' : finRat S T (-v) ∈ Λ` using `(Λ.comap (finRat S T)).neg_mem hv`. Rewrite using `[apply_add_infRat h hψ hg v (hε2 _ hv' g hl) z, ← j2]`.
+
+Simplify using `only [c, dif_pos hv']`. Establish `hli` using `GlobalTheory.T.not_linearIndependent_alt (RW T S) (jO S T sS sT) (omO S T) j1 j2 j3 j4 (Matrix (Fin T.rank) (Fin S.rank) D.host.E) (infRat S T) (infRat_injective S T) hsp (Λ.comap (finRat S T)) (fun x => by`. Take `⟨N, hN, hx⟩` from `hden x`. Conclude with `⟨N, hN, by rwa [AddSubgroup.mem_comap, AddMonoidHom.map_nsmul]⟩)`. Use the proof step `(GlobalTheory.T.rationalPoints_finitePart_selfDual_lattice_iff D S T ψ Λ hψ hinf h1 h2 hden) c hc`.
+
+Use the proof step `![fun z => f (iotaW σ T S z), fun z => f' (iotaW σ T S z)]`. Use the proof step `(fun k => by fin_cases k; exacts [a1.1, a2.1]) (fun k => by fin_cases k; exacts [a1.2, a2.2])`. Use the proof step `(fun k => by fin_cases k; exacts [law f hf.2.theta hlat, law f' hf'.2.theta hlat'])`. Rewrite `hli` using `[LinearIndependent.pair_iff' hne]`. Use `push_neg at hli`.
+
+Take `⟨a, ha⟩` from `hli`. Establish `e` using `det f f' a hf.2.theta hf'.2.theta hlat hlat' fun z => (congrFun ha z).symm`. Use `⟨a, ?_, e⟩` and prove the remaining obligations. Establish `n3 : nrm2 p.1 p.2 (a • f) = ‖a‖ ^ 2 * nrm2 p.1 p.2 f`. Simplify using `only [nrm2, Pi.smul_apply, norm_smul, mul_pow]`.
+
+Conclude with `integral_const_mul _ _`. Rewrite `n2` using `[e, n3, n1, mul_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg a) two_ne_zero).1 n2`.
+-/
 theorem vacUniqueO : ∀ D : D7, VacUniqueO D := by
   classical
   intro D ψ θ hψ hθ S T sS sT _ _ hS hT ΛS ΛT hΛS hΛT f f' hf hf'

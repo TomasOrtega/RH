@@ -9,6 +9,35 @@ namespace GlobalTheory
 
 open MeasureTheory Filter Topology Real
 
+/- English proof (translation)
+Introduce `D U φ ψ V _hU hφ hψ hK hlim`. Use `⟨hφ, fun z w hdisc => ?_⟩` and prove the remaining obligations. Establish `hγc : Continuous (fun ζ : ℂ => z + ζ • w)` using `by fun_prop`. Use `set K := (fun ζ : ℂ => z + ζ • w) '' Metric.closedBall (0 : ℂ) 1 with hKdef`. Establish `hKc : IsCompact K` using `(isCompact_closedBall 0 1).image hγc`.
+
+Establish `hKU : K ⊆ U`. Introduce and unpack `_ ⟨ζ, hζ, rfl⟩`. Conclude with `hdisc ζ (by simpa using hζ)`. Take `⟨N, M, hNM⟩` from `hK K hKc hKU`. Establish `hmemK : ∀ ζ : ℂ, ‖ζ‖ ≤ 1 → z + ζ • w ∈ K` using `fun ζ hζ => ⟨ζ, by simpa using hζ, rfl⟩`.
+
+Establish `hcirc : ∀ θ : ℝ, ‖circleMap (0 : ℂ) 1 θ‖ ≤ 1` using `fun θ => by simp [norm_circleMap_zero]`. Establish `hψn : ∀ n, CircleIntegrable (fun ζ : ℂ => ψ (n + N) (z + ζ • w)) 0 1 ∧ ψ (n + N) z ≤ Real.circleAverage (fun ζ : ℂ => ψ (n + N) (z + ζ • w)) 0 1` using `fun n => (hψ (n + N)).2 z w fun ζ hζ => (hNM (n + N) (by omega)).1 (hmemK ζ hζ)`. Establish `hpi : (0 : ℝ) < 2 * π` using `by positivity`. Use `set μ : Measure ℝ := volume.restrict (Set.Ioc (0 : ℝ) (2 * π)) with hμ`. Use `set F : ℕ → ℝ → ℝ := fun n θ => ψ (n + N) (z + circleMap 0 1 θ • w) with hF`.
+
+Use `set f : ℝ → ℝ := fun θ => φ (z + circleMap 0 1 θ • w) with hf`. Establish `hFint : ∀ n, Integrable (F n) μ` using `fun n => (intervalIntegrable_iff_integrableOn_Ioc_of_le hpi.le).1 (hψn n).1`. Establish `hFle : ∀ n θ, F n θ ≤ M` using `fun n θ => (hNM (n + N) (by omega)).2 _ (hmemK _ (hcirc θ))`. Establish `hFlim : ∀ θ, Tendsto (fun n => F n θ) atTop (𝓝 (f θ))` using `fun θ => (hlim _ (hKU (hmemK _ (hcirc θ)))).comp (tendsto_add_atTop_nat N)`. Establish `hz0 : z ∈ K` using `by simpa using hmemK 0 (by simp)`.
+
+Establish `hzlim : Tendsto (fun n => ψ (n + N) z) atTop (𝓝 (φ z))` using `(hlim z (hKU hz0)).comp (tendsto_add_atTop_nat N)`. Establish `hφzM : φ z ≤ M` using `le_of_tendsto' hzlim fun n => (hNM (n + N) (by omega)).2 z hz0`. Establish `hfmeas : AEStronglyMeasurable f μ` using `aestronglyMeasurable_of_tendsto_ae atTop (fun n => (hFint n).aestronglyMeasurable) (ae_of_all _ hFlim)`. Establish `hμuniv : μ.real Set.univ = 2 * π` using `by show (μ Set.univ).toReal = _`. Rewrite using `[hμ, Measure.restrict_apply_univ, Real.volume_Ioc, ENNReal.toReal_ofReal (by linarith)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsub : ∀ n, 2 * π * ψ (n + N) z ≤ ∫ θ, F n θ ∂μ`. Introduce `n`. Establish `h` using `(hψn n).2`. Rewrite `h` using `[Real.circleAverage_def, intervalIntegral.integral_of_le hpi.le, smul_eq_mul]`.
+
+Use `mul_le_mul_of_nonneg_left h hpi.le` as an intermediate fact. Rewrite `this` using `[← mul_assoc, mul_inv_cancel₀ hpi.ne', one_mul]`. Then use the resulting hypothesis. Establish `hlin : ∀ n, ∫⁻ θ, ENNReal.ofReal (M - F n θ) ∂μ ≤ ENNReal.ofReal (2 * π * M - 2 * π * ψ (n + N) z)`. Introduce `n`. Establish `hi : Integrable (fun θ => M - F n θ) μ` using `(integrable_const M).sub (hFint n)`.
+
+Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hi (ae_of_all _ fun θ => sub_nonneg.2 (hFle n θ))]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[integral_sub (integrable_const M) (hFint n), integral_const, smul_eq_mul, hμuniv]`. Combine the linear relations using `[hsub n]`. Establish `hfatou : ∫⁻ θ, ENNReal.ofReal (M - f θ) ∂μ ≤ ENNReal.ofReal (2 * π * M - 2 * π * φ z)`.
+
+Establish `hlimR : Tendsto (fun n => ENNReal.ofReal (2 * π * M - 2 * π * ψ (n + N) z)) atTop (𝓝 (ENNReal.ofReal (2 * π * M - 2 * π * φ z)))` using `(ENNReal.continuous_ofReal.tendsto _).comp (tendsto_const_nhds.sub (hzlim.const_mul _))`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `θ`. Conclude with `(((ENNReal.continuous_ofReal.tendsto _).comp (tendsto_const_nhds.sub (hFlim θ))).liminf_eq).symm`.
+
+Use `_ ≤ liminf (fun n => ∫⁻ θ, ENNReal.ofReal (M - F n θ) ∂μ) atTop := lintegral_liminf_le' fun n => (ENNReal.measurable_ofReal.comp_aemeasurable ((integrable_const M).sub (hFint n)).aemeasurable)`. Use `_ ≤ liminf (fun n => ENNReal.ofReal (2 * π * M - 2 * π * ψ (n + N) z)) atTop := liminf_le_liminf (Eventually.of_forall hlin)`. Use `_ = _ := hlimR.liminf_eq`. Establish `hfle : ∀ θ, f θ ≤ M` using `fun θ => le_of_tendsto' (hFlim θ) fun n => hFle n θ`. Establish `hgnn : 0 ≤ᵐ[μ] fun θ => M - f θ` using `ae_of_all _ fun θ => sub_nonneg.2 (hfle θ)`.
+
+Establish `hgint : Integrable (fun θ => M - f θ) μ`. Use `⟨aestronglyMeasurable_const.sub hfmeas, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal hgnn]`. Conclude with `lt_of_le_of_lt hfatou ENNReal.ofReal_lt_top`. Establish `hfint : Integrable f μ`.
+
+Use `(integrable_const M).sub hgint` as an intermediate fact. Use `this.congr (ae_of_all _ fun θ => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hgle : ∫ θ, (M - f θ) ∂μ ≤ 2 * π * M - 2 * π * φ z`. Establish `h1` using `ofReal_integral_eq_lintegral_ofReal hgint hgnn`.
+
+Rewrite `hfatou` using `[← h1]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by nlinarith)).1 hfatou`. Establish `hfge : 2 * π * φ z ≤ ∫ θ, f θ ∂μ`. Rewrite `hgle` using `[integral_sub (integrable_const M) hfint, integral_const, smul_eq_mul, hμuniv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨(intervalIntegrable_iff_integrableOn_Ioc_of_le hpi.le).2 hfint, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.circleAverage_def, intervalIntegral.integral_of_le hpi.le, smul_eq_mul]`. Rewrite using `[le_inv_mul_iff₀ hpi]`. Conclude with `hfge`.
+-/
 theorem isPsh_of_tendsto_of_locally_bounded_above :
     ∀ (D : ℕ) (U : Set (Fin D → ℂ)) (φ : (Fin D → ℂ) → ℝ) (ψ : ℕ → (Fin D → ℂ) → ℝ)
       (V : ℕ → Set (Fin D → ℂ)), IsOpen U → UpperSemicontinuousOn φ U →

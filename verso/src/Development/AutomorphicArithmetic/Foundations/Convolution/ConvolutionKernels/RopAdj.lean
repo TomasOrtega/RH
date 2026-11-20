@@ -4,6 +4,9 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory.K
 open scoped InnerProductSpace
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ f`. Use `isInvInvariant_of_isMulRightInvariant μ` as an intermediate fact. Conclude with `((rightRegularRep (Gam K n) μ).adjoint_integrated μ (UnitaryRep.ccToL1 μ f)).trans (congrArg _ (ccToL1_ccStar μ f).symm)`.
+-/
 theorem UpperTheory.ConvolutionTheory.K.ropAdj :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (f : CC K n),
       ContinuousLinearMap.adjoint (Rop μ f) = Rop μ (ccStar f) := by

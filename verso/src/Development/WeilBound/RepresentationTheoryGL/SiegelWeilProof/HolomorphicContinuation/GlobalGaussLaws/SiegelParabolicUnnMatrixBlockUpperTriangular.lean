@@ -19,6 +19,9 @@ def bB (M : Mx D (n + n) (n + n)) : Mx D n n := (M.submatrix finSumFinEquiv finS
 
 def bC (M : Mx D (n + n) (n + n)) : Mx D n n := (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> rfl`.
+-/
 theorem siegelParabolicUnn_matrix_blockUpperTriangular (M : Mx D (n + n) (n + n)) : M = blk4 (bA M) (bB M) (bC M) (blkDm M) := by
   ext i j
   obtain ⟨i, rfl⟩ := finSumFinEquiv.surjective i
@@ -26,10 +29,18 @@ theorem siegelParabolicUnn_matrix_blockUpperTriangular (M : Mx D (n + n) (n + n)
   simp only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply]
   rcases i with i | i <;> rcases j with j | j <;> rfl
 
+/- English proof (translation)
+Establish `h : adj (mat g) * JR (AF D.host.F) (Jst D n) * mat g = JR (AF D.host.F) (Jst D n)` using `g.2`. Rewrite `h` using `[JR_Jst]`. Then use the resulting hypothesis.
+-/
 theorem rel1 (g : G D n) : adj (mat g) * blk4 0 1 (-1) 0 * mat g = blk4 0 1 (-1) 0 := by
   have h : adj (mat g) * JR (AF D.host.F) (Jst D n) * mat g = JR (AF D.host.F) (Jst D n) := g.2
   rwa [JR_Jst] at h
 
+/- English proof (translation)
+Rewrite using `[submatrix_fromBlocks_mul]`. Simplify using `only [mul_one, zero_add, add_zero, mul_neg, mul_zero, neg_zero]`. Rewrite using `[← block_matrix_one (R := AE D) (n := n)]`. Unfold `blk4`. Rewrite using `[show Matrix.fromBlocks (-1 : Mx D n n) 0 0 (-1) = -Matrix.fromBlocks 1 0 0 1 by`.
+
+Rewrite using `[Matrix.fromBlocks_neg]`. Use the proof step `simp, Matrix.submatrix_neg]`. Both sides reduce to the same expression.
+-/
 theorem JJ_sq : (blk4 0 1 (-1) 0 : Mx D (n + n) (n + n)) * blk4 0 1 (-1) 0 = -1 := by
   rw [submatrix_fromBlocks_mul]
   simp only [mul_one, zero_add, add_zero, mul_neg, mul_zero, neg_zero]
@@ -40,6 +51,15 @@ theorem JJ_sq : (blk4 0 1 (-1) 0 : Mx D (n + n) (n + n)) * blk4 0 1 (-1) 0 = -1 
   rfl
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hMN : mat g * mat g⁻¹ = 1`. Rewrite using `[show mat g * mat g⁻¹ = mat (g * g⁻¹) from rfl, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `h1` using `rel1 g`. Establish `hJ : (blk4 0 1 (-1) 0 : Mx D (n + n) (n + n)) * blk4 0 1 (-1) 0 = -1` using `JJ_sq`.
+
+Generalize the expression as in `(blk4 0 1 (-1) 0 : Mx D (n + n) (n + n)) = J at h1 hJ ⊢`. Generalize the expression as in `mat g⁻¹ = N at hMN`. Generalize the expression as in `mat g = M at hMN h1 ⊢`. Establish `h2 : adj M * J = J * N`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : N = -(J * adj M * J)`. Establish `: J * (adj M * J) = J * (J * N)` using `by rw [h2]`. Rewrite `this` using `[← mul_assoc, ← mul_assoc, hJ]`. Rewrite using `[this, neg_mul, one_mul, neg_neg]`. Establish `h4 : M * (J * adj M * J) = -1`.
+
+Establish `: M * N = 1` using `hMN`. Rewrite `this` using `[h3, mul_neg]`. Rewrite using `[← neg_neg (M * (J * adj M * J)), this]`. Establish `h5 : M * J * adj M * J = -1` using `by rw [← h4]; simp only [mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rel2 (g : G D n) : mat g * blk4 0 1 (-1) 0 * adj (mat g) = blk4 0 1 (-1) 0 := by
   have hMN : mat g * mat g⁻¹ = 1 := by
     rw [show mat g * mat g⁻¹ = mat (g * g⁻¹) from rfl, mul_inv_cancel]; rfl
@@ -66,6 +86,15 @@ theorem rel2 (g : G D n) : mat g * blk4 0 1 (-1) 0 * adj (mat g) = blk4 0 1 (-1)
     _ = J := by rw [h5, neg_mul, one_mul, neg_neg]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `h1` using `rel1 g`. Establish `h2` using `rel2 g`. Rewrite `h1`, `h2` using `[siegelParabolicUnn_matrix_blockUpperTriangular (mat g)]`. Generalize the expression as in `bA (mat g) = A at h1 h2 ⊢`. Generalize the expression as in `bB (mat g) = B at h1 h2 ⊢`.
+
+Generalize the expression as in `bC (mat g) = C at h1 h2 ⊢`. Generalize the expression as in `blkDm (mat g) = Dd at h1 h2 ⊢`. Rewrite `h1`, `h2` using `[adelicConjTranspose_blockMatrixTwoByTwoFin, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Simplify using `only [mul_zero, mul_one, add_zero, zero_add, mul_neg, neg_mul] at h1 h2`. Take `⟨-, e12, -, e22⟩` from `blockMatrixTwoByTwoFin_injective h1`.
+
+Take `⟨-, f12, -, f22⟩` from `blockMatrixTwoByTwoFin_injective h2`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(neg_add_eq_zero.1 e22).symm`. Rewrite using `[← e12]`. Normalize the expressions using the abelian group laws.
+
+Conclude with `neg_add_eq_zero.1 f22`. Rewrite using `[← f12]`. Normalize the expressions using the abelian group laws.
+-/
 theorem blockRels (g : G D n) :
     adj (bB (mat g)) * blkDm (mat g) = adj (blkDm (mat g)) * bB (mat g) ∧
     adj (bA (mat g)) * blkDm (mat g) - adj (bC (mat g)) * bB (mat g) = 1 ∧
@@ -95,6 +124,27 @@ namespace PositivityTheory.Rg.Sw.Glob
 open GlobalTheory.StdUnn GlobalTheory.StdUnn.Model GlobalTheory.MixModel
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `D n g hD`. Take `⟨r1, r2, r3, r4⟩` from `GlobalGaussBlockRelations.blockRels g`. Establish `hM` using `GlobalGaussBlockRelations.siegelParabolicUnn_matrix_blockUpperTriangular (mat g)`. Generalize the expression as in `GlobalGaussBlockRelations.bA (mat g) = A at r1 r2 r3 r4 hM`. Generalize the expression as in `GlobalGaussBlockRelations.bB (mat g) = B at r1 r2 r3 r4 hM`.
+
+Generalize the expression as in `GlobalGaussBlockRelations.bC (mat g) = C at r1 r2 r3 r4 hM`. Generalize the expression as in `blkDm (mat g) = Dd at r1 r2 r3 r4 hM hD`. Take `⟨Di, hDi1, hDi2⟩ : ∃ Di : Mx D n n, Dd * Di = 1 ∧ Di * Dd = 1` from `⟨Dd⁻¹, Matrix.mul_nonsing_inv Dd hD, Matrix.nonsing_inv_mul Dd hD⟩`. Establish `hA1 : adj Di * adj Dd = 1` using `by rw [← adj_mul, hDi1, adj_one]`. Establish `hA2 : adj Dd * adj Di = 1` using `by rw [← adj_mul, hDi2, adj_one]`.
+
+Establish `hb : adj (B * Di) = B * Di`. Rewrite using `[adj_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hc : adj (Di * C) = Di * C`. Rewrite using `[adj_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `ha1 : (A - B * Di * C) * adj Dd = 1`. Rewrite using `[sub_mul, mul_assoc (B * Di) C (adj Dd), ← r3, ← mul_assoc (B * Di) Dd (adj C), mul_assoc B Di Dd, hDi2, mul_one, r4]`. Establish `ha2 : adj Dd * (A - B * Di * C) = 1` using `mul_eq_one_comm.mp ha1`. Set `aG : GL (Fin n) (AE D)` to `⟨A - B * Di * C, adj Dd, ha1, ha2⟩`.
+
+Take `⟨m, hm⟩` from `exists_levi aG`. Establish `hm' : mat m = blk4 (A - B * Di * C) 0 0 Dd`. Rewrite using `[hm]`. Use `show blk4 (A - B * Di * C) 0 0 (adj (adj Dd)) = _`. Rewrite using `[adj_adj]`.
+
+Take `⟨u, hu⟩` from `(exists_unip (B * Di)).2 hb`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : G D n, mat v = blk4 1 0 (Di * C) 1 := by`. Use `exists_mat _ (blk4 1 0 (-(Di * C)) 1) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[submatrix_fromBlocks_mul]`. Simplify using `only [Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, add_zero, zero_add, add_neg_cancel]`.
+
+Conclude with `block_matrix_one`. Rewrite using `[submatrix_fromBlocks_mul]`. Simplify using `only [Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, add_zero, zero_add, neg_add_cancel]`. Conclude with `block_matrix_one`. Rewrite using `[adelicConjTranspose_blockMatrixTwoByTwoFin, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul, hc]`.
+
+Simplify using `only [adj_one, adj_zero, Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, add_zero, zero_add, Matrix.mul_neg, neg_add_cancel]`. Establish `hg : g = u * m * v`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show mat g = mat u * mat m * mat v`.
+
+Rewrite using `[hM, hu, hm', hv, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Simplify using `only [one_mul, mul_one, mul_zero, zero_mul, add_zero, zero_add]`. Establish `e1 : B * Di * Dd = B` using `by rw [mul_assoc, hDi2, mul_one]`. Establish `e2 : Dd * (Di * C) = C` using `by rw [← mul_assoc, hDi1, one_mul]`. Rewrite using `[e1, e2, mul_assoc B Di C, sub_add_cancel]`.
+
+Rewrite using `[hg]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.subset_closure (Or.inl ⟨_, hu⟩)) (Subgroup.subset_closure (Or.inr (Or.inl ⟨_, _, hm'⟩)))) (Subgroup.subset_closure (Or.inr (Or.inr ⟨_, hv⟩)))`.
+-/
 theorem unitD : UnitD := by
   intro D n g hD
   obtain ⟨r1, r2, r3, r4⟩ := GlobalGaussBlockRelations.blockRels g

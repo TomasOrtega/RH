@@ -28,6 +28,13 @@ def frobKer {R C : Type} [CommRing R] [Field C] (V : VF C) (f : R →+* C) (hf :
     rw [map_mul, V.v.map_mul]
     exact lt_of_lt_of_le hb (le_add_of_nonneg_left (hf a))
 
+/- English proof (translation)
+Rewrite using `[Ideal.ne_top_iff_one]`. Use `show ¬ 0 < V.v (f 1)`. Rewrite using `[map_one, V.v.map_one]`. Conclude with `lt_irrefl _`. Use the proof step `mem_or_mem' := fun {a b} h => by`.
+
+Establish `h' : 0 < V.v (f (a * b))` using `h`. Rewrite `h'` using `[map_mul, V.v.map_mul]`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Establish `h1 : V.v (f a) ≤ 0` using `not_lt.1 hn.1`.
+
+Establish `h2 : V.v (f b) ≤ 0` using `not_lt.1 hn.2`. Conclude with `absurd (add_nonpos h1 h2) (not_le.2 h')`.
+-/
 theorem frobKer_isPrime {R C : Type} [CommRing R] [Field C] (V : VF C) (f : R →+* C) (hf : ∀ x, V.Ge 0 (f x)) :
     (frobKer V f hf).IsPrime where
   ne_top' := by
@@ -44,6 +51,17 @@ theorem frobKer_isPrime {R C : Type} [CommRing R] [Field C] (V : VF C) (f : R �
     have h2 : V.v (f b) ≤ 0 := not_lt.1 hn.2
     exact absurd (add_nonpos h1 h2) (not_le.2 h')
 
+/- English proof (translation)
+Use `set P := frobKer V f hf with hP`. Use `haveI : P.IsPrime := frobKer_isPrime V f hf`. Establish `hl : ((V.l : ℕ) : 𝓞 E) ∈ P` using `by show 0 < V.v (f _)`. Rewrite using `[map_natCast, V.v_l]`. Conclude with `zero_lt_one`.
+
+Establish `hP0 : P ≠ ⊥`. Introduce `h`. Rewrite `hl` using `[h, Ideal.mem_bot]`. Conclude with `V.l_prime.ne_zero (by exact_mod_cast hl)`. Use `haveI : Finite (𝓞 E ⧸ P) := Ring.HasFiniteQuotients.finiteQuotient hP0`.
+
+Establish `hu : P.under ℤ = Ideal.span {(V.l : ℤ)}`. Establish `hmax : (Ideal.span {(V.l : ℤ)}).IsMaximal` using `((Ideal.span_singleton_prime (by exact_mod_cast V.l_prime.ne_zero)).2 (Nat.prime_iff_prime_int.1 V.l_prime)).isMaximal (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `V.l_prime.ne_zero)` after adjusting the coercions. Use `(hmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_natCast]`. Conclude with `hl`. Take `⟨φ, hφ⟩` from `IsArithFrobAt.exists_of_isInvariant ℤ (E ≃ₐ[ℚ] E) P`. Use `⟨φ, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `hφ x`.
+
+Rewrite `h` using `[hu, Int.card_ideal_quot]`. Establish `h' : V.MM (f (φ • x - x ^ V.l))` using `h`. Rewrite `h'` using `[map_sub, map_pow]`. Then use the resulting hypothesis.
+-/
 theorem exists_frob_of_hom {E C : Type} [Field E] [NumberField E] [IsGalois ℚ E] [Field C] (V : VF C)
     (f : 𝓞 E →+* C) (hf : ∀ x, V.Ge 0 (f x)) :
     ∃ φ : E ≃ₐ[ℚ] E, ∀ x : 𝓞 E, V.MM (f (φ • x) - f x ^ V.l) := by
@@ -73,11 +91,19 @@ theorem exists_frob_of_hom {E C : Type} [Field E] [NumberField E] [IsGalois ℚ 
   have h' : V.MM (f (φ • x - x ^ V.l)) := h
   rwa [map_sub, map_pow] at h'
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `NumberField.ComplexEmbedding.exists_comp_symm_eq_of_comp_eq (k := ℚ) τ₀ τ (Subsingleton.elim _ _)`. Conclude with `⟨σ.symm, hσ.symm⟩`.
+-/
 theorem exists_aut_comp_eq {E : Type} [Field E] [NumberField E] [IsGalois ℚ E] (τ₀ τ : E →+* ℂ) :
     ∃ σ : E ≃ₐ[ℚ] E, τ = τ₀.comp (σ : E →+* E) := by
   obtain ⟨σ, hσ⟩ := NumberField.ComplexEmbedding.exists_comp_symm_eq_of_comp_eq (k := ℚ) τ₀ τ (Subsingleton.elim _ _)
   exact ⟨σ.symm, hσ.symm⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H lv c T io C _ _ V ι hι hG hab`. Take `⟨τ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `key : ∀ (τ : E →+* ℂ) (s : E ≃ₐ[ℚ] E) (x : 𝓞 E), emA3 io ι (τ.comp (s : E →+* E)) x = emA3 io ι τ (s • x)` using `fun τ s x => rfl`. Take `⟨φ, hφ⟩` from `exists_frob_of_hom V (emA3 io ι τ₀) (fun x => GlobalTheory.RowChartCounterexample.em_int_holds τ₀ x hι)`. Use `⟨φ, fun τ x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨σ, rfl⟩` from `exists_aut_comp_eq τ₀ τ`. Rewrite using `[key, key, key, ← mul_smul, hab, mul_smul]`. Conclude with `hφ _`.
+-/
 theorem exists_frob_all_embeddings : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (lv : Level H) (c : Coeff lv) (T : CDVR) (io : c.F →+* T.Fr) (C : Type) [Field C] [CharZero C] (V : VF C) (ι : T.Fr →+* C), EmbOK T V ι → IsGalois ℚ E → (∀ σ σ' : E ≃ₐ[ℚ] E, σ * σ' = σ' * σ) → ∃ φ : E ≃ₐ[ℚ] E, ∀ (τ : E →+* ℂ) (x : 𝓞 E), V.MM (emA3 io ι (τ.comp (φ : E →+* E)) x - emA3 io ι τ x ^ V.l) := by
   intro E _ _ _ H lv c T io C _ _ V ι hι hG hab
   obtain ⟨τ₀⟩ : Nonempty (E →+* ℂ) := inferInstance

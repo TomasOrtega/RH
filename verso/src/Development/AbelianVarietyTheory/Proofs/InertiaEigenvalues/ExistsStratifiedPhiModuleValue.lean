@@ -16,6 +16,15 @@ noncomputable section
 
 namespace GlobalTheory.BSP.EvalEx
 
+/- English proof (translation)
+Introduce `Q _ _ v`. Use `letI : Module B Q := Module.compHom Q g`. Set `v' : M →ₛₗ[f] Q` to `{ toFun := v map_add' := v.map_add map_smul' := fun a x => by`. Express the relevant statement in the definitionally equal form `v (a • x) = g (f a) • v x`. Rewrite using `[v.map_smulₛₗ, hk] }`.
+
+Take `⟨z, hz, hzu⟩` from `hu Q v'`. Set `z' : N →ₛₗ[g] Q` to `{ toFun := z map_add' := z.map_add map_smul' := fun b n => z.map_smul b n }`. Take `⟨y, hy, hyu⟩` from `ht Q z'`. Use `⟨y, fun x => by rw [hw, hy]; exact hz x, fun y' hy' => hyu y' fun n => ?_⟩` and prove the remaining obligations. Set `r : N →ₗ[B] Q` to `{ toFun := fun n => y' (t n) map_add' := fun n n' => by simp only [map_add] map_smul' := fun b n => by`.
+
+Express the relevant statement in the definitionally equal form `y' (t (b • n)) = g b • y' (t n)`. Rewrite using `[t.map_smulₛₗ, y'.map_smul] }`. Use `hzu r fun x => by` as an intermediate fact. Express the relevant statement in the definitionally equal form `y' (t (u x)) = v x`. Rewrite using `[← hw]`.
+
+Conclude with `hy' x`. Conclude with `LinearMap.congr_fun this n`.
+-/
 theorem semiBC_comp {A B C M N P : Type} [CommRing A] [CommRing B] [CommRing C] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] [AddCommGroup P] [Module C P] {f : A →+* B} {g : B →+* C} {k : A →+* C}
     (u : M →ₛₗ[f] N) (t : N →ₛₗ[g] P) (w : M →ₛₗ[k] P) (hk : ∀ a, k a = g (f a)) (hw : ∀ x, w x = t (u x))
@@ -46,11 +55,17 @@ theorem semiBC_comp {A B C M N P : Type} [CommRing A] [CommRing B] [CommRing C] 
     rw [← hw]; exact hy' x
   exact LinearMap.congr_fun this n
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, S.ε_trans]`.
+-/
 theorem ε_mulVec {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d : ℕ} (S : Strat bk d) {B : Obj l ↥(OL K)}
     (f g h : Hom bk.prism B) (v : Fin d → B.A) :
     (S.ε f g).mulVec ((S.ε g h).mulVec v) = (S.ε f h).mulVec v := by
   rw [Matrix.mulVec_mulVec, S.ε_trans]
 
+/- English proof (translation)
+The claim follows from `Hom.ext' rfl`.
+-/
 theorem hom_comp_assoc {l : ℕ} {R : Type} [CommRing R] {X Y Z W : Obj l R} (p : Hom Z W) (q : Hom Y Z)
     (r : Hom X Y) : (p.comp q).comp r = p.comp (q.comp r) := Hom.ext' rfl
 
@@ -58,6 +73,27 @@ end GlobalTheory.BSP.EvalEx
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `l _ K bk d S B`. Take `⟨C, h, ⟨f⟩, hc⟩` from `GlobalTheory.T.exists_prism_cover_receiving_breuilKisin l K bk B`. Take `⟨P, _, _, _, _, u, hu, hcoc⟩` from `GlobalTheory.T.exists_finiteProjective_descent_prismCover l K bk d S B C h f hc`. Establish `hv` using `GlobalTheory.T.stratifiedCoordinates_of_prismCover l K bk d S B C h f hc P u hcoc`. Use `choose vv hvv using hv`.
+
+Establish `po : ∀ (Q : Obj l ↥(OL K)) (a : Hom B Q), ∃ (Q₀ : Obj l ↥(OL K)) (a₀ : Hom C Q₀) (h₀ : Hom Q Q₀), a₀.comp h = h₀.comp a ∧ Cover h₀ ∧ Function.Injective h₀.f`. Introduce `Q a`. Take `⟨Q₀, a₀, h₀, hpo⟩` from `hc.stable.po Q a`. Establish `hc₀` using `(GlobalTheory.T.stable_and_cover_prismHom_of_pushout l _ B C Q Q₀ h a a₀ h₀ hpo).2 hc`. Conclude with `⟨Q₀, a₀, h₀, hpo.comm, hc₀, (GlobalTheory.T.prism_cover_injective_and_descent l _ Q Q₀ h₀ hc₀).1⟩`.
+
+Use `⟨P, inferInstance, inferInstance, ⟨{ fin := inferInstance proj := inferInstance v := fun {Q} a g => vv Q a g bc := ?_ v_ε := ?_ v_nat := ?_ }⟩⟩` and prove the remaining obligations. Introduce `Q a g`. Take `⟨Q₀, a₀, h₀, hcomm, hc₀, -⟩` from `po Q a`. Establish `hf : ∀ y, a₀.f (h.f y) = h₀.f (a.f y)` using `fun y => congrArg (fun φ : Hom B Q₀ => φ.f y) hcomm`. Establish `hE1 : S.ε (h₀.comp g) (a₀.comp f) * S.ε (a₀.comp f) (h₀.comp g) = 1`.
+
+Rewrite using `[S.ε_trans, S.ε_refl]`. Establish `hE2 : S.ε (a₀.comp f) (h₀.comp g) * S.ε (h₀.comp g) (a₀.comp f) = 1`. Rewrite using `[S.ε_trans, S.ε_refl]`. Set `s : (Fin d → Q₀.A) ≃ₗ[Q₀.A] (Fin d → Q₀.A)` to `{ toFun := (S.ε (h₀.comp g) (a₀.comp f)).mulVec invFun := (S.ε (a₀.comp f) (h₀.comp g)).mulVec map_add' := Matrix.mulVec_add _ map_smul' := fun c x => Matrix.mulVec_smul _ c x left_inv := fun x => by`. Express the relevant statement in the definitionally equal form `(S.ε (a₀.comp f) (h₀.comp g)).mulVec ((S.ε (h₀.comp g) (a₀.comp f)).mulVec x) = x`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hE2, Matrix.one_mulVec]`. Use `right_inv := fun x => by`. Express the relevant statement in the definitionally equal form `(S.ε (h₀.comp g) (a₀.comp f)).mulVec ((S.ε (a₀.comp f) (h₀.comp g)).mulVec x) = x`. Rewrite using `[Matrix.mulVec_mulVec, hE1, Matrix.one_mulVec] }`. Set `w0 : P →ₛₗ[h₀.f.comp a.f] (Fin d → Q₀.A)` to `{ toFun := fun x j => a₀.f (u x j) map_add' := fun x y => by funext j; simp only [map_add, Pi.add_apply] map_smul' := fun b x => by`.
+
+Use function extensionality and compare the values at `j`. Simplify using `only [LinearMap.map_smulₛₗ, Pi.smul_apply, smul_eq_mul, map_mul, RingHom.comp_apply, hf] }`. Establish `hw0 : SemiBC w0` using `EvalEx.semiBC_comp u (piMap a₀.f (Fin d)) w0 (fun y => (hf y).symm) (fun x => rfl) hu (semiBC_piMap a₀.f _)`. Conclude with `GlobalTheory.T.semilinear_projective_module_compose l _ Q Q₀ h₀ hc₀ B.A a.f P (Fin d → Q.A) (Fin d → Q₀.A) (vv Q a g) (piMap h₀.f (Fin d)) (s.toLinearMap.comp w0) (fun x => (hvv Q a g Q₀ h₀ a₀ hcomm x).symm) (semiBC_piMap h₀.f _) (hw0.comp_equiv s)`. Introduce `Q a g g' x`.
+
+Take `⟨Q₀, a₀, h₀, hcomm, -, hinj⟩` from `po Q a`. Use function extensionality and compare the values at `i`. Apply `hinj` to reduce the goal to its premises. Establish `e1` using `congrFun (hvv Q a g Q₀ h₀ a₀ hcomm x) i`. Establish `e2` using `hvv Q a g' Q₀ h₀ a₀ hcomm x`.
+
+Rewrite using `[e1, RingHom.map_mulVec, S.ε_nat, show (⇑h₀.f ∘ (vv Q a g') x) = fun i => h₀.f ((vv Q a g') x i) from rfl, e2]`. Conclude with `congrFun (EvalEx.ε_mulVec S (h₀.comp g) (h₀.comp g') (a₀.comp f) _).symm i`. Introduce `Q Q' c a g x i`. Establish `hp` using `po Q' (c.comp a)`. Take `⟨Q₁, a₁, h₁, hcomm, -, hinj⟩` from `hp`.
+
+Apply `hinj` to reduce the goal to its premises. Establish `e1` using `congrFun (hvv Q' (c.comp a) (c.comp g) Q₁ h₁ a₁ hcomm x) i`. Establish `e2` using `congrFun (hvv Q a g Q₁ (h₁.comp c) a₁ (hcomm.trans (EvalEx.hom_comp_assoc h₁ c a).symm) x) i`. Establish `e3 : (h₁.comp c).f ((vv Q a g) x i) = h₁.f (c.f ((vv Q a g) x i))` using `rfl`. Use `e1.trans (Eq.trans ?_ (e3 ▸ e2).symm)` and prove the remaining obligations.
+
+Conclude with `congrArg (fun φ => (S.ε φ (a₁.comp f)).mulVec (fun j => a₁.f (u x j)) i) (EvalEx.hom_comp_assoc h₁ c g).symm`.
+-/
 theorem exists_eval : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (S : Strat bk d)
     (B : Obj l ↥(OL K)), ∃ (N : Type) (_ : AddCommGroup N) (_ : Module B.A N), Nonempty (Eval S B N) := by
   intro l _ K bk d S B

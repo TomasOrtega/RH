@@ -9,20 +9,42 @@ open scoped TensorProduct NNReal ENNReal
 
 namespace GlobalTheory.SWQ
 
+/- English proof (translation)
+Conclude with `(Module.finBasis ℚ F).equivFun.injective.countable`.
+-/
 theorem countable_numberField (F : Type) [Field F] [NumberField F] : Countable F := by
   exact (Module.finBasis ℚ F).equivFun.injective.countable
 
+/- English proof (translation)
+Unfold `Bd`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Bd_comm {F : Type} [Field F] {N : ℕ} (R : Type) [CommRing R] [Algebra F R] (a : Fin N → F)
     (u u' : Fin N → R) : Bd R a u u' = Bd R a u' u := by
   unfold Bd
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Unfold `Bd`. Conclude with `continuous_finsetSum _ fun l _ => continuous_const.mul (continuous_apply l)`.
+-/
 theorem continuous_Bd_left {F : Type} [Field F] [NumberField F] {N : ℕ} (a : Fin N → F)
     (u : Fin N → AF F) : Continuous fun y : Fin N → AF F => Bd (AF F) a u y := by
   unfold Bd
   exact continuous_finsetSum _ fun l _ => continuous_const.mul (continuous_apply l)
 
+/- English proof (translation)
+Establish `hTR : IsTotallyReal F` using `hC.1`. Establish `hψc : Continuous ψ` using `hC.2.1.1`. Establish `hψn : ∀ z, ‖ψ z‖ = 1` using `hC.2.1.2.1`. Establish `: Countable F` using `countable_numberField F`. Establish `: IsFiniteMeasure ((muV N ν).restrict D)` using `⟨by rw [Measure.restrict_apply_univ, h1]; exact ENNReal.one_lt_top⟩`.
+
+Establish `hsum : Summable fun ξ : Fin N → F => ‖G (rat ξ + x)‖` using `(GlobalTheory.T.rapidDecay_adelic_integrable_periodisation_continuous F N hTR G hG).2.1 x`. Establish `hnorm : ∀ (ξ : Fin N → F) (y : Fin N → AF F), ‖ψ (Bd (AF F) a (rat ξ) y) * G (rat ξ + x)‖ = ‖G (rat ξ + x)‖`. Introduce `ξ y`. Rewrite using `[norm_mul, hψn, one_mul]`. Establish `hint : ∀ ξ : Fin N → F, Integrable (fun y => ψ (Bd (AF F) a (rat ξ) y) * G (rat ξ + x)) ((muV N ν).restrict D)`.
+
+Introduce `ξ`. Use `Integrable.mono' (integrable_const ‖G (rat ξ + x)‖) ?_ (ae_of_all _ fun y => (hnorm ξ y).le)` and prove the remaining obligations. Conclude with `((hψc.comp (continuous_Bd_left a (rat ξ))).mul continuous_const).aestronglyMeasurable`. Establish `hsum' : Summable fun ξ : Fin N → F => ∫ y in D, ‖ψ (Bd (AF F) a (rat ξ) y) * G (rat ξ + x)‖ ∂(muV N ν)`. Use `hsum.congr fun ξ => ?_` and prove the remaining obligations.
+
+Repeatedly rewrite using `[hnorm]`. Simplify using `[Measure.real, h1]`. Rewrite using `[← integral_tsum_of_summable_integral_norm hint hsum']`. Rewrite using `[tsum_eq_single 0]`. Establish `hr : (rat (0 : Fin N → F) : Fin N → AF F) = 0`.
+
+Use function extensionality and compare the values at `l`. Simplify using `[rat]`. Simplify using `[hr, Bd, h1, Measure.real]`. Introduce `ξ hξ`. Rewrite using `[integral_mul_const]`.
+
+Repeatedly rewrite using `[Bd_comm (AF F) a (rat ξ)]`. Rewrite using `[GlobalTheory.T.integral_adelicVectors_character_orthogonality F N ψ lam ν a hC D hD h1 ξ hξ, zero_mul]`.
+-/
 theorem integral_twisted_periodise {F : Type} [Field F] [NumberField F] {N : ℕ} {ψ : AddChar (AF F) ℂ}
     {lam : InfinitePlace F → ℝ} {ν : Measure (AF F)} {a : Fin N → F} (hC : Ctx ψ lam ν a)
     (G : (Fin N → AF F) → ℂ) (hG : Decay G) (D : Set (Fin N → AF F))
@@ -63,6 +85,17 @@ theorem integral_twisted_periodise {F : Type} [Field F] [NumberField F] {N : ℕ
     simp_rw [Bd_comm (AF F) a (rat ξ)]
     rw [GlobalTheory.T.integral_adelicVectors_character_orthogonality F N ψ lam ν a hC D hD h1 ξ hξ, zero_mul]
 
+/- English proof (translation)
+Introduce `F _ _ N ψ lam ν a hC G G' hG hG' hth`. Take `⟨D, -, hD, h1⟩` from `(GlobalTheory.SWQ.rat_lattice_fundamentalDomain F N ν hC.2.2.2.1).2.2.2.2`. Use function extensionality and compare the values at `x`. Establish `key : ∀ y : Fin N → AF F, (∑' ξ : Fin N → F, ψ (Bd (AF F) a (rat ξ) y) * G (rat ξ + x)) = ∑' ξ : Fin N → F, ψ (Bd (AF F) a (rat ξ) y) * G' (rat ξ + x)`. Introduce `y`.
+
+Use `set c : AF F := algebraMap F (AF F) (1 / 2) * Bd (AF F) a x y with hc`. Establish `hne : ψ c ≠ 0`. Introduce `h0`. Establish `h` using `hC.2.1.2.1 c`. Rewrite `h` using `[h0, norm_zero]`.
+
+Conclude with `zero_ne_one h`. Establish `e : ∀ H : (Fin N → AF F) → ℂ, th (rho ψ a x y H) = ψ c * ∑' ξ : Fin N → F, ψ (Bd (AF F) a (rat ξ) y) * H (rat ξ + x)`. Introduce `H`. Simplify using `only [th, rho, AddChar.map_add_eq_mul]`. Rewrite using `[← tsum_mul_left]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `ξ`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `hth x y`. Rewrite `h` using `[e, e]`.
+
+Conclude with `mul_left_cancel₀ hne h`. Rewrite using `[← integral_twisted_periodise hC G hG D hD h1 x]`. Repeatedly rewrite using `[key]`. Conclude with `integral_twisted_periodise hC G' hG' D hD h1 x`.
+-/
 theorem eq_of_theta_rho : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) (ψ : AddChar (AF F) ℂ)
     (lam : InfinitePlace F → ℝ) (ν : Measure (AF F)) (a : Fin N → F), Ctx ψ lam ν a →
     ∀ G G' : (Fin N → AF F) → ℂ, Decay G → Decay G' →

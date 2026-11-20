@@ -16,6 +16,25 @@ open FibreFlat FiniteFibreFlat
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Use `wlog hS : ∃ R, S = Spec R generalizing X Y S`. Use `IsZariskiLocalAtTarget.of_openCover (S.affineCover.pullback₁ g) fun i => ?_` and prove the remaining obligations. Set `u` to `S.affineCover.f i`. Establish `sq` using `IsPullback.of_hasPullback f (pullback.fst g u)`. Establish `sq'` using `IsPullback.of_hasPullback g u`.
+
+Use `this (pullback.snd f (pullback.fst g u)) (pullback.snd g u) inferInstance (MorphismProperty.of_isPullback (sq.paste_vert sq') h0) (MorphismProperty.of_isPullback (sq.paste_vert sq') h1) inferInstance (fun k _ t => flatOver_of_comp_base (u := u) ?_) ⟨_, rfl⟩` and prove the remaining obligations. Rewrite using `[← pullback.condition]`. Conclude with `(H k _).target sq`. Take `⟨R, rfl⟩` from `hS`. Use `wlog hA : ∃ A, Y = Spec A generalizing X Y`.
+
+Use `IsZariskiLocalAtTarget.of_openCover Y.affineCover fun i => ?_` and prove the remaining obligations. Establish `sq` using `IsPullback.of_hasPullback f (Y.affineCover.f i)`. Establish `e : pullback.snd f (Y.affineCover.f i) ≫ Y.affineCover.f i ≫ g = pullback.fst f (Y.affineCover.f i) ≫ f ≫ g`. Rewrite using `[← Category.assoc, ← sq.w, Category.assoc]`. Conclude with `this (pullback.snd f (Y.affineCover.f i)) inferInstance (Y.affineCover.f i ≫ g) inferInstance (by rw [e]; infer_instance) (by rw [e]; infer_instance) (fun k _ t => (H k t).target sq) ⟨_, rfl⟩`.
+
+Take `⟨A, rfl⟩` from `hA`. Use `wlog hX : ∃ B, X = Spec B generalizing X`. Use `IsZariskiLocalAtSource.of_openCover X.affineCover fun i => ?_` and prove the remaining obligations. Conclude with `this (X.affineCover.f i ≫ f) inferInstance (by rw [Category.assoc]; infer_instance) (by rw [Category.assoc]; infer_instance) (fun k _ t => (H k t).source _) ⟨_, rfl⟩`. Take `⟨B, rfl⟩` from `hX`.
+
+Take `⟨f, rfl⟩` from `Spec.map_surjective f`. Take `⟨g, rfl⟩` from `Spec.map_surjective g`. Rewrite `h1`, `h0` using `[← Spec.map_comp]`. Rewrite `h1`, the goal using `[Flat.SpecMap_iff]`. Rewrite `h2` using `[HasRingHomProperty.Spec_iff (P := @LocallyQuasiFinite)]`.
+
+Rewrite `hY`, `h0` using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFinitePresentation)]`. Use `letI : Algebra R A := g.hom.toAlgebra`. Use `letI : Algebra A B := f.hom.toAlgebra`. Use `letI : Algebra R B := (g ≫ f).hom.toAlgebra`. Use `haveI : IsScalarTower R A B := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Use `haveI : Module.Flat R B := h1`. Use `haveI : Algebra.QuasiFinite A B := h2`. Use `haveI : Algebra.FinitePresentation R A := hY`. Use `haveI : Algebra.FinitePresentation R B := h0`. Use `haveI : Algebra.FinitePresentation A B := Algebra.FinitePresentation.of_restrict_scalars_finitePresentation R A B`.
+
+Use `GlobalTheory.T.flat_of_quasiFinite_of_flat_fibres' R A B fun k C _ _ _ t h e => ?_` and prove the remaining obligations. Establish `sq` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct A C B)`. Use `H k (Spec.map (CommRingCat.ofHom t)) _ _ _ (Spec.map (CommRingCat.ofHom h)) sq.flip (by` as an intermediate fact. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+
+Use `ext1`. Conclude with `e)`. Rewrite `this` using `[Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.mp this`.
+-/
 theorem flat_of_flatOver_fields {X Y S : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ S)
     (hY : LocallyOfFinitePresentation g) (h0 : LocallyOfFinitePresentation (f ≫ g))
     (h1 : Flat (f ≫ g)) (h2 : LocallyQuasiFinite f)
@@ -76,6 +95,15 @@ theorem flat_of_flatOver_fields {X Y S : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ S)
   rw [Flat.SpecMap_iff] at this
   exact RingHom.flat_algebraMap_iff.mp this
 
+/- English proof (translation)
+Introduce `S G _ _ hG n hn`. Express the relevant statement in the definitionally equal form `Flat (Out.mulA G n).left ∧ LocallyQuasiFinite (Out.mulA G n).left`. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact.
+
+Use `hG.geomConnected` as an intermediate fact. Establish `hm` using `AbLaw.MulN.isMonHom_mulA G n`. Establish `: LocallyOfFiniteType ((Out.mulA G n).left ≫ G.hom)` using `by rw [Over.w]; infer_instance`. Establish `: LocallyOfFiniteType (Out.mulA G n).left` using `locallyOfFiniteType_of_comp _ G.hom`. Establish `: QuasiCompact ((Out.mulA G n).left ≫ G.hom)` using `by rw [Over.w]; infer_instance`.
+
+Establish `: QuasiCompact (Out.mulA G n).left` using `QuasiCompact.of_comp _ G.hom`. Establish `hq : LocallyQuasiFinite (Out.mulA G n).left` using `locallyQuasiFinite_of_finite_geometric_ker _ G G _ hm inferInstance inferInstance fun K _ _ t => by`. Simplify using `only [IntDiv.comp_mulA]`. Conclude with `HomExt.finite_torsion_points hG t (Nat.pos_of_ne_zero hn)`. Use `⟨flat_of_flatOver_fields _ G.hom inferInstance (by rw [Over.w]; infer_instance) (by rw [Over.w]; infer_instance) hq fun k _ t => ?_, hq⟩` and prove the remaining obligations.
+
+Conclude with `flatOver_of_pullback _ _ (IntDiv.flat_fibre G _ k t)`.
+-/
 theorem flat_and_locallyQuasiFinite_pow :
     ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ q : ℕ, q ≠ 0 →
       Flat ((𝟙 G) ^ q : G ⟶ G).left ∧ LocallyQuasiFinite ((𝟙 G) ^ q : G ⟶ G).left := by

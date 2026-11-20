@@ -8,6 +8,11 @@ namespace Formalism.L2.SG.Pf.Cnt
 
 open NumberField Formalism.HermitianLattices.Ext.L3
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hc S L M hL hM p hp huL huM`. Establish `hF : IsFixF E F` using `fun a => by rw [hc.fixed a, RingHom.mem_range, Set.mem_range]`. Take `⟨π, hπ, -, -⟩` from `U0.exists_isUnif hF hp`. Establish `hnd : G4.NondegOn S.hT ⊤`. Introduce `ξ _ hξ0`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hξ0 (S.nondeg.2 ξ fun w => hcon w Submodule.mem_top)`. Take `⟨g, hg, -, hgM⟩` from `G4.sd_main' (WA.isHermSemilocal_locRing hc.cmUnram hp) hπ S.herm two_ne_zero _ ⊤ ⊤ _ _ 1 le_rfl hnd (U0.isSD_loc hL hp.isPrime huL) (U0.isSD_loc hM hp.isPrime huM) (one_mem _) (fun _ => ⟨fun _ => Submodule.mem_top, fun _ => Submodule.mem_top⟩)`. Conclude with `⟨g, hg, U0.gmap_eq_of_iff hgM⟩`.
+-/
 theorem local_unimodular_holds : Formalism.MainNotions.BridgeRowsGenus.LocUnimod := by
   intro F E _ _ _ _ _ _ hc S L M hL hM p hp huL huM
   have hF : IsFixF E F := fun a => by rw [hc.fixed a, RingHom.mem_range, Set.mem_range]

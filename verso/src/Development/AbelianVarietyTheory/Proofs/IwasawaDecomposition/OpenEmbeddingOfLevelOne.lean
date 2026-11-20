@@ -14,6 +14,41 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.DomGrpDescent
 
+/- English proof (translation)
+Introduce `E _ _ _ H D Xo s l hg c Z hA hdom hX`. Take `⟨XK, sK, jK, e, hjK, hsK, he, hje, huniv⟩` from `hX`. Take `⟨W, hW⟩` from `GlobalTheory.ArcBaseFactor.exists_place 2 Nat.prime_two`. Establish `hS : ∀ x : 𝓞 c.F, algebraMap (𝓞 c.F) c.F x ∈ c.V W` using `fun x => GlobalTheory.ArcBaseFactor.ringOfIntegers_mem c.F.val.toRingHom W x`. Set `b : 𝓞 c.F →+* c.V W` to `RingHom.codRestrict (algebraMap (𝓞 c.F) c.F) (c.V W) hS`.
+
+Establish `hb : ∀ x, ((b x : c.V W) : c.F) = (x : c.F)` using `fun x => rfl`. Take `⟨f, t, m₁, m₂, hf, hfj, hfφ⟩` from `hdom 2 W Nat.prime_two hW b hb`. Take `⟨XK₀, sK₀, GK₀, iK₀, jK₀, φK₀, e₀, GQ₀, iQ₀, φ₁₀, φ₂₀, ψ₀, -, -, hK₀, he₀, hje₀, hQ₀, hQK₀, hψ₁₀, hψh₀, hψ₂₀⟩` from `((s.clauses 2 W Nat.prime_two hW).1.1 ⟨l, c, hg 2 Nat.prime_two⟩).2.1 hA`. Establish `hsp : spMap (algebraMap (𝓞 c.F) c.F) = spMap (c.V W).subtype ≫ spMap b`. Establish `e1 : algebraMap (𝓞 c.F) c.F = (c.V W).subtype.comp b` using `RingHom.ext fun x => rfl`.
+
+Rewrite using `[e1]`. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Set `a : pullback Z.s (spMap (algebraMap (𝓞 c.F) c.F)) ⟶ pullback Z.s (spMap b)` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ spMap (c.V W).subtype) (pullback.condition.trans (by rw [Category.assoc, ← hsp]))`.
+
+Establish `ha₁ : a ≫ pullback.fst _ _ = pullback.fst _ _` using `pullback.lift_fst _ _ _`. Establish `ha₂ : a ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap (c.V W).subtype` using `pullback.lift_snd _ _ _`. Set `k : pullback Z.s (spMap (algebraMap (𝓞 c.F) c.F)) ⟶ pullback (s.Y 2 W Nat.prime_two hW ⟨l, c, hg 2 Nat.prime_two⟩).s (spMap (c.V W).subtype)` to `pullback.lift (a ≫ f) (pullback.snd _ _) (by rw [Category.assoc, hf, ha₂])`. Establish `hk₁ : k ≫ pullback.fst _ _ = a ≫ f` using `pullback.lift_fst _ _ _`. Establish `hk₂ : k ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`.
+
+Establish `hjk : Z.jQ ≫ k = (s.Y 2 W Nat.prime_two hW ⟨l, c, hg 2 Nat.prime_two⟩).jQ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hk₁, ← Category.assoc]`. Conclude with `hfj _ (by rw [Category.assoc, ha₁]; rfl)`. Rewrite using `[Category.assoc, hk₂, Z.jQ_over, Model.jQ_over]`.
+
+Establish `hg' : Z.jQ ≫ k ≫ e₀ = pullback.fst _ _ ≫ jK₀` using `by rw [← Category.assoc, hjk, hje₀]`. Establish `hYp : IsProper (s.Y 2 W Nat.prime_two hW ⟨l, c, hg 2 Nat.prime_two⟩).s`. Take `⟨N, i, hi, e'⟩` from `(s.Y 2 W Nat.prime_two hW ⟨l, c, hg 2 Nat.prime_two⟩).proj`. Use `isProper_str (c.V W) N` as an intermediate fact. Rewrite using `[← e']`.
+
+Use `infer_instance`. Establish `hsK₀ : IsSeparated sK₀` using `GlobalTheory.FieldDescentAb.isSeparated_of_isPullback he₀ (GlobalTheory.FieldDescentAb.fpqc_spMap _)`. Use `haveI : XK₀.IsSeparated := ⟨by rw [← terminal.comp_from sK₀]; infer_instance⟩`. Take `⟨h, heh, hjh⟩` from `huniv XK₀ (k ≫ e₀) jK₀ hg'`. Establish `gK` using `isGrpPullback_pullback GK₀ h`.
+
+Set `φK` to `gK.1.lift φK₀ ((Xo l).univ.t.G.hom ≫ jK) (by rw [hK₀.1.w, ← hjh, Category.assoc])`. Establish `a₁ : φK ≫ _ = φK₀` using `gK.1.lift_fst _ _ _`. Establish `a₂ : φK ≫ _ = (Xo l).univ.t.G.hom ≫ jK` using `gK.1.lift_snd _ _ _`. Establish `hKK` using `gK.cancel (by rw [a₁, hjh]; exact hK₀) a₂`. Establish `gA` using `isGrpPullback_pullback t.G a`.
+
+Establish `hQ` using `gA.comp m₁.cart`. Rewrite `hQ` using `[ha₁]`. Set `ψ` to `hQ.1.lift Z.m.φ (Z.oF.t.G.hom ≫ Z.jQ) (by rw [Z.m.cart.1.w, Category.assoc])`. Establish `c₁ : ψ ≫ _ = Z.m.φ` using `hQ.1.lift_fst _ _ _`. Establish `c₂ : ψ ≫ _ = Z.oF.t.G.hom ≫ Z.jQ` using `hQ.1.lift_snd _ _ _`.
+
+Establish `hχw : (pullback.fst t.G.hom a ≫ m₂.φ) ≫ (s.Y 2 W Nat.prime_two hW ⟨l, c, hg 2 Nat.prime_two⟩).t.G.hom = (((Over.pullback a).obj t.G).hom ≫ k) ≫ pullback.fst _ _`. Rewrite using `[Category.assoc, m₂.cart.1.w, Category.assoc, hk₁, ← Category.assoc, pullback.condition, Category.assoc]`. Both sides reduce to the same expression. Set `χ` to `hQ₀.1.lift (pullback.fst t.G.hom a ≫ m₂.φ) (((Over.pullback a).obj t.G).hom ≫ k) hχw`. Establish `hχ₁ : χ ≫ φ₁₀ = pullback.fst t.G.hom a ≫ m₂.φ` using `hQ₀.1.lift_fst _ _ _`.
+
+Establish `hχ₂ : χ ≫ GQ₀.hom = ((Over.pullback a).obj t.G).hom ≫ k` using `hQ₀.1.lift_snd _ _ _`. Establish `nQ : IsGrpPullback ((Over.pullback a).obj t.G) (s.Y 2 W Nat.prime_two hW ⟨l, c, hg 2 Nat.prime_two⟩).t.G (k ≫ pullback.fst _ _) (χ ≫ φ₁₀)`. Rewrite using `[hχ₁, hk₁]`. Conclude with `gA.comp m₂.cart`. Establish `hQQ₀` using `hQ₀.cancel nQ hχ₂`.
+
+Establish `hQK` using `hQQ₀.comp hQK₀`. Set `φ₂` to `gK.1.lift (χ ≫ φ₂₀) (((Over.pullback a).obj t.G).hom ≫ e) (by rw [hQK.1.w, ← heh, Category.assoc])`. Establish `b₁ : φ₂ ≫ _ = χ ≫ φ₂₀` using `gK.1.lift_fst _ _ _`. Establish `b₂ : φ₂ ≫ _ = ((Over.pullback a).obj t.G).hom ≫ e` using `gK.1.lift_snd _ _ _`. Establish `nK : IsGrpPullback ((Over.pullback a).obj t.G) GK₀ (e ≫ h) (φ₂ ≫ pullback.fst GK₀.hom h)`.
+
+Rewrite using `[b₁, heh]`. Conclude with `hQK`. Establish `hQK'` using `gK.cancel nK b₂`. Set `g₂` to `(s.Y 2 W Nat.prime_two hW ⟨l, c, hg 2 Nat.prime_two⟩).m0.toSABMap.cart.1.lift Z.m0.toSABMap.φ Z.oF.t.G.hom Z.m0.toSABMap.cart.1.w`. Establish `d₁ : g₂ ≫ _ = Z.m0.toSABMap.φ` using `IsPullback.lift_fst _ _ _ _`.
+
+Establish `d₂ : g₂ ≫ _ = Z.oF.t.G.hom` using `IsPullback.lift_snd _ _ _ _`. Set `gg` to `m₁.cart.1.lift Z.m.φ (Z.oF.t.G.hom ≫ Z.jQ ≫ a) (by rw [Z.m.cart.1.w, Category.assoc, Category.assoc, ha₁])`. Establish `f₁ : gg ≫ m₁.φ = Z.m.φ` using `m₁.cart.1.lift_fst _ _ _`. Establish `f₂ : gg ≫ t.G.hom = Z.oF.t.G.hom ≫ Z.jQ ≫ a` using `m₁.cart.1.lift_snd _ _ _`. Establish `hd` using `hfφ _ gg (𝟙 _) g₂ (by rw [f₁, Category.id_comp]) (by rw [Category.id_comp, d₁]) (by rw [Category.id_comp, d₂])`.
+
+Establish `hψ : ψ ≫ pullback.fst t.G.hom a = gg`. Apply `m₁.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, c₁, f₁]`. Rewrite using `[Category.assoc, pullback.condition (f := t.G.hom) (g := a), f₂, ← Category.assoc]`. Conclude with `(congrArg (· ≫ a) c₂).trans (Category.assoc _ _ _)`.
+
+Establish `hψχ : ψ ≫ χ = g₂ ≫ ψ₀`. Apply `hQ₀.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hχ₁, ← Category.assoc, hψ, hd, Category.assoc, hψ₁₀]`. Rewrite using `[Category.assoc, hχ₂, ← Category.assoc, c₂, Category.assoc, Category.assoc, hψh₀, hjk, ← Category.assoc, d₂]`. Use `⟨XK, sK, (Over.pullback h).obj GK₀, inferInstance, jK, φK, e, (Over.pullback a).obj t.G, inferInstance, _, φ₂, ψ, hjK, hsK, hKK, he, hje, hQ, hQK', c₁, c₂, ?_⟩` and prove the remaining obligations.
+
+Apply `gK.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, b₁, ← Category.assoc, hψχ, Category.assoc, hψ₂₀, ← Category.assoc, d₁, Category.assoc, a₁]`. Rewrite using `[Category.assoc, b₂, ← Category.assoc, c₂, Category.assoc, hje]`. Simplify using `only [Category.assoc]`. Rewrite using `[a₂, ← Category.assoc Z.m0.toSABMap.φ, Z.m0.toSABMap.cart.1.w, Category.assoc]`.
+-/
 theorem descends_of_dominates_of_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (s : Sys Xo) (l : Level H) (hg : ∀ p : ℕ, p.Prime → l.GoodAt p) (c : Coeff l) (Z : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)), l.A = 1 → DomAll s hg Z → (∃ (XK : Scheme.{0}) (sK : XK ⟶ Sp (KA l)) (jK : (Xo l).X ⟶ XK) (e : pullback Z.s (spMap (algebraMap (𝓞 c.F) c.F)) ⟶ XK), IsOpenImmersion jK ∧ jK ≫ sK = (Xo l).s ∧ IsPullback e (pullback.snd _ _) sK (spMap (IntermediateField.inclusion c.le).toRingHom) ∧ Z.jQ ≫ e = pullback.fst _ _ ≫ jK ∧ ∀ (T : Scheme.{0}) [T.IsSeparated] (g : pullback Z.s (spMap (algebraMap (𝓞 c.F) c.F)) ⟶ T) (g₀ : (Xo l).X ⟶ T), Z.jQ ≫ g = pullback.fst _ _ ≫ g₀ → ∃ h : XK ⟶ T, e ≫ h = g ∧ jK ≫ h = g₀) → Z.Descends := by
   intro E _ _ _ H D Xo s l hg c Z hA hdom hX
   obtain ⟨XK, sK, jK, e, hjK, hsK, he, hje, huniv⟩ := hX

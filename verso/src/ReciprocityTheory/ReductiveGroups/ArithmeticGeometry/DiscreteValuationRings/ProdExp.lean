@@ -20,6 +20,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {j : ℕ}
   {G G' : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
   {LG : LB G.left} {LG' : LB G'.left}
 
+/- English proof (translation)
+Unfold `LB.div boxLB`. Use `le_trans inf_le_right ?_` and prove the remaining obligations. Introduce `x hx`. Use `first`. Consider the case `exact Set.mem_iInter.2 fun _ => hx`.
+
+Consider the case `simpa [LB.wchart] using hx`.
+-/
 lemma boxG_le_b (pG : IsPowGrp G' G j) (jN : Fin j → LG.ι) (jL : LG'.ι) :
     (LB.div (boxLB LG pG.pr) LG').U (jN, jL) ≤ LB.wchart LG' (fun _ : Fin 1 => 𝟙 G'.left) (fun _ => jL) := by
   unfold LB.div boxLB
@@ -29,6 +34,11 @@ lemma boxG_le_b (pG : IsPowGrp G' G j) (jN : Fin j → LG.ι) (jL : LG'.ι) :
     | exact Set.mem_iInter.2 fun _ => hx
     | simpa [LB.wchart] using hx
 
+/- English proof (translation)
+Unfold `LB.div boxLB`. Use `le_trans inf_le_left (le_trans (LB.wchart_le LG _ jN i) ?_)` and prove the remaining obligations. Introduce `x hx`. Use `first`. Consider the case `exact Set.mem_iInter.2 fun _ => hx`.
+
+Consider the case `simpa [LB.wchart] using hx`.
+-/
 lemma boxG_le_c (pG : IsPowGrp G' G j) (jN : Fin j → LG.ι) (jL : LG'.ι) (i : Fin j) :
     (LB.div (boxLB LG pG.pr) LG').U (jN, jL) ≤
       (pG.pr i).left ⁻¹ᵁ LB.wchart LG (fun _ : Fin 1 => 𝟙 G.left) (fun _ => jN i) := by

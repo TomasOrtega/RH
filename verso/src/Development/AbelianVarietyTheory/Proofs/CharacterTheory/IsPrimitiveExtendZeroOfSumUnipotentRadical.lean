@@ -9,6 +9,13 @@ import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsStandardUni
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.CuspGL
 
+/- English proof (translation)
+Take `⟨A', hA⟩` from `A.exists_isCompl`. Take `⟨B', hB⟩` from `B.exists_isCompl`. Establish `h' : Module.finrank F A' = Module.finrank F B'`. Establish `h1` using `Submodule.finrank_add_eq_of_isCompl hA`. Establish `h2` using `Submodule.finrank_add_eq_of_isCompl hB`.
+
+Use linear arithmetic over natural numbers and integers. Set `e1` to `LinearEquiv.ofFinrankEq A B h`. Set `e2` to `LinearEquiv.ofFinrankEq A' B' h'`. Use `⟨(Submodule.prodEquivOfIsCompl A A' hA).symm ≪≫ₗ (e1.prodCongr e2) ≪≫ₗ Submodule.prodEquivOfIsCompl B B' hB, fun x => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, a'⟩, rfl⟩` from `(Submodule.prodEquivOfIsCompl A A' hA).surjective x`.
+
+Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Simplify using `only [LinearEquiv.prodCongr_apply, Submodule.coe_prodEquivOfIsCompl']`. Rewrite using `[B.add_mem_iff_right (e1 a).2, A.add_mem_iff_right a.2, Submodule.mem_left_iff_eq_zero_of_disjoint hB.disjoint, Submodule.mem_left_iff_eq_zero_of_disjoint hA.disjoint]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_linearEquiv_mem_iff_of_finrank_eq {F V : Type} [Field F] [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (A B : Submodule F V) (h : Module.finrank F A = Module.finrank F B) :
     ∃ e : V ≃ₗ[F] V, ∀ x, e x ∈ B ↔ x ∈ A := by
@@ -30,6 +37,19 @@ theorem exists_linearEquiv_mem_iff_of_finrank_eq {F V : Type} [Field F] [AddComm
     Submodule.mem_left_iff_eq_zero_of_disjoint hA.disjoint]
   simp
 
+/- English proof (translation)
+Take `⟨e1, e2, -, -⟩` from `GlobalTheory.T.generalLinearFunctionExtendZeroEnd_properties F d χ`. Distinguish the cases in `hu : IsUnit g`. Establish `hm : IsUnit (LinearMap.toMatrix' g)`. Use `hu.map (LinearMap.toMatrixAlgEquiv' (R := F) (n := Fin d))` as an intermediate fact. Conclude with `this`.
+
+Take `⟨x, hx⟩` from `hm`. Establish `hgx : Matrix.toLin' (x : Matrix (Fin d) (Fin d) F) = g`. Rewrite using `[hx, Matrix.toLin'_toMatrix']`. Establish `: Finite (Module.End F (Fin d → F))` using `Module.finite_of_finite F`. Establish `hb2 : Set.BijOn (fun h : Module.End F (Fin d → F) => g * h) (nilRad A) (nilRad A)`.
+
+Use `((Set.toFinite _).injOn_iff_bijOn_of_mapsTo ?_).1 ?_` and prove the remaining obligations. Introduce `h hh`. Conclude with `⟨fun y => hg _ (hh.1 y), fun y hy => by simp [hh.2 y hy]⟩`. Introduce `a _ b _ hab`. Conclude with `hu.mul_left_cancel hab`.
+
+Establish `h1` using `GlobalTheory.T.character_coset_sum_eq_zero_of_subgroup_sum _ χ hχ H ((finsum_set_coe_eq_finsum_mem (f := χ) (H : Set (GL (Fin d) F))).trans h0) x`. Establish `h2` using `(finsum_set_coe_eq_finsum_mem (f := fun u => χ (x * u)) (H : Set (GL (Fin d) F))).symm.trans h1`. Rewrite using `[← h2]`. Use `symm`. Use `finsum_mem_eq_of_bijOn _ (hb2.comp hb) fun u _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← e1]`. Use `congr 1`. Simplify using `only [Function.comp, Units.val_mul, Matrix.toLin'_mul, hgx, mul_sub, mul_one]`. Rewrite using `[add_sub_cancel]`. Both sides reduce to the same expression.
+
+Use `finsum_mem_of_eqOn_zero fun h hh => ?_` and prove the remaining obligations. Use `e2 _ fun hu' => hu ?_` and prove the remaining obligations. Establish `hc` using `(GlobalTheory.T.charpoly_block_and_invariant_under_stabilizerNilradical F _ A g hg).2 h hh`. Rewrite `hu'`, the goal using `[LinearMap.isUnit_iff_isUnit_det, LinearMap.det_eq_sign_charpoly_coeff]`. Rewrite `hu'` using `[hc]`. Then use the resulting hypothesis.
+-/
 theorem finsum_nilRad_extZero_eq_zero (F : Type) [Field F] [Finite F] (d : ℕ) (χ : GL (Fin d) F → ℂ)
     (hχ : IsChar ℂ ℂ χ) (A : Submodule F (Fin d → F)) (H : Subgroup (GL (Fin d) F))
     (hb : Set.BijOn (fun u : GL (Fin d) F => Matrix.toLin' (u : Matrix (Fin d) (Fin d) F) - 1)
@@ -69,6 +89,19 @@ theorem finsum_nilRad_extZero_eq_zero (F : Type) [Field F] [Finite F] (d : ℕ) 
     rw [LinearMap.isUnit_iff_isUnit_det, LinearMap.det_eq_sign_charpoly_coeff] at hu' ⊢
     rwa [hc] at hu'
 
+/- English proof (translation)
+Introduce `F _ _ d χ hχ hs A hA0 hA1 g hg`. Establish `ha0 : 0 < Module.finrank F A`. Rewrite using `[Nat.pos_iff_ne_zero]`. Conclude with `fun h => hA0 (Submodule.finrank_eq_zero.1 h)`. Establish `ha1 : Module.finrank F A < d`.
+
+Use `Submodule.finrank_lt hA1` as an intermediate fact. Simplify using `using this`. Take `⟨B, H, hB, hH, hb⟩` from `GlobalTheory.T.exists_standardUnipotentRadical_bijOn_nilradical F d _ ha1.le`. Establish `h0` using `hs _ ha0 ha1`. Rewrite `h0` using `[← hH]`.
+
+Take `⟨e, he⟩` from `exists_linearEquiv_mem_iff_of_finrank_eq A B hB.symm`. Establish `hcl` using `(GlobalTheory.T.generalLinearFunctionExtendZeroEnd_properties F d χ).2.2.2 (GlobalTheory.isChar_restrict_conj_one ℂ ℂ _ χ hχ).2.1`. Establish `key` using `finsum_nilRad_extZero_eq_zero F d χ hχ B H hb h0 (e.conj g) (fun x hx => by`. Rewrite using `[LinearEquiv.conj_apply_apply, he]`. Apply `hg` to reduce the goal to its premises.
+
+Rewrite using `[← he]`. Simplify using `using hx)`. Rewrite using `[← key]`. Use `finsum_mem_eq_of_bijOn (fun h => e.conj h) ⟨fun h hh => ⟨fun y => ?_, fun y hy => ?_⟩, e.conj.injective.injOn, fun h hh => ⟨e.symm.conj h, ⟨fun y => ?_, fun y hy => ?_⟩, by ext y; simp [LinearEquiv.conj_apply_apply]⟩⟩ fun h _ => ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.conj_apply_apply, he]`.
+
+Conclude with `hh.1 _`. Rewrite using `[LinearEquiv.conj_apply_apply, hh.2 _ (by rw [← he]; simpa using hy), map_zero]`. Rewrite using `[← he, LinearEquiv.conj_apply_apply]`. Simplify using `using hh.1 _`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_symm, hh.2 _ ((he y).2 hy), map_zero]`.
+
+Rewrite using `[← map_add, hcl]`.
+-/
 theorem isPrimitive_extZero_of_sum_unipotent : ∀ (F : Type) [Field F] [Finite F] (d : ℕ) (χ : GL (Fin d) F → ℂ), IsChar ℂ ℂ χ → (∀ a : ℕ, 0 < a → a < d → ∑ᶠ u ∈ {u : GL (Fin d) F | ∀ i j : Fin d, (u : Matrix (Fin d) (Fin d) F) i j = (if i = j then 1 else 0) ∨ (i.val < a ∧ a ≤ j.val)}, χ u = 0) → IsPrimitive (extZero χ) := by
   intro F _ _ d χ hχ hs A hA0 hA1 g hg
   have ha0 : 0 < Module.finrank F A := by

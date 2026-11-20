@@ -12,6 +12,43 @@ noncomputable section
 
 namespace GlobalTheory.BKLim
 
+/- English proof (translation)
+Introduce `l _ K C ξ a d ρ r b e hR σ z H U u hU hu`. Establish `hσz : ∀ c : ℤ_[l], σ (zOm l c) = zOm l c` using `fun c => by simp [zOm]`. Establish `hθo : ∀ w : Om l, Per.θD l (C.o w) = algebraMap (Om l) ℂ_[l] w` using `fun w => C.o_sec.th w`. Set `S : Set (Om l)` to `Set.range fun t : Fin d × Fin a × Fin a => σ (b t.1 t.2.1 t.2.2)`. Use `haveI : Finite S := (Set.finite_range _).to_subtype`.
+
+Establish `hfd : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] S)` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Set `K' : FinExt l` to `⟨IntermediateField.adjoin ℚ_[l] S, hfd⟩`. Establish `hfix : ∀ g : GQ l, g ∈ GK K' → ∀ i m k, g (σ (b i m k)) = σ (b i m k)`. Introduce `g hg i m k`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ g).1 hg _ (IntermediateField.subset_adjoin _ _ ⟨(i, m, k), rfl⟩)`.
+
+Set `B : Fin a → Matrix (Fin a) (Fin d) ℂ_[l]` to `fun k m i => algebraMap (Om l) ℂ_[l] (σ (b i m k))`. Establish `hVu : IsUnit (H.V.map (Per.θD l))` using `H.unit.map (Per.θD l).mapMatrix`. Establish `col : ∀ k, u * B k * H.V.map (Per.θD l) = B k * U * H.V.map (Per.θD l)`. Introduce `k`. Use extensionality with `m j`.
+
+Set `y : Fin a → Per.BdRp l` to `fun m => ∑ i, C.o (σ (b i m k)) * H.V i j`. Set `x : Fin a → Per.BdR l` to `fun m => ∑ i, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ (b i m k))) * H.Q i j`. Establish `hy : ∀ m, algebraMap (Per.BdRp l) (Per.BdR l) (aDp l ξ) ^ H.q * x m = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l ξ ^ H.p j * y m)`. Introduce `m`. Simplify using `only [x, y, Finset.mul_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hq` using `H.Q_eq i j`. Combine the equalities or inequalities in the displayed calculation. Establish `hx : ∀ g : ↥(GK K), (g : GQ l) ∈ GK K' → ((r g).val.map σ).map ((algebraMap (Per.BdRp l) (Per.BdR l)).comp C.o) *ᵥ (fun i => Per.σD (g : GQ l) (x i)) = x`. Introduce `g hg`.
+
+Use function extensionality and compare the values at `m'`. Establish `hσD : ∀ m, Per.σD (g : GQ l) (x m) = ∑ i, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ (b i m k))) * Per.σD (g : GQ l) (H.Q i j)`. Introduce `m`. Simplify using `only [x, map_sum, map_mul, PrimeEx.sigD_o, hfix _ hg]`. Establish `e1 : ∀ i, ∑ m, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ ((r g).val m' m))) * algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ (b i m k))) = ∑ s, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (zOm l ((ρ g).val s i))) * algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ (b s m' k)))`.
+
+Introduce `i`. Establish `h1` using `congrArg (fun M : Matrix (Fin a) (Fin a) (Om l) => algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ (M m' k)))) (hR.equi g i)`. Simplify `h1` using `[Matrix.mul_apply, Matrix.sum_apply, map_sum, map_mul, hσz]`. Establish `e2 : ∀ s, ∑ i, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (zOm l ((ρ g).val s i))) * Per.σD (g : GQ l) (H.Q i j) = H.Q s j`. Introduce `s`.
+
+Establish `h1` using `congrFun (congrFun (H.inv g g.2) s) j`. Simplify `h1` using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, RingHom.comp_apply, hσD]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum, Finset.sum_mul, mul_assoc]`.
+
+Conclude with `Finset.sum_comm`. Use `_ = ∑ i, (∑ s, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (zOm l ((ρ g).val s i))) * algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ (b s m' k)))) * Per.σD (g : GQ l) (H.Q i j) := by`. Simplify using `only [e1]`. Use `_ = ∑ s, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (σ (b s m' k))) * ∑ i, algebraMap (Per.BdRp l) (Per.BdR l) (C.o (zOm l ((ρ g).val s i))) * Per.σD (g : GQ l) (H.Q i j) := by`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun i _ => by ring`. Use `_ = x m' := by simp only [e2, x]`. Establish `h` using `hu K' (H.p j) H.q x y hx hy`. Establish `hθy : (fun m => Per.θD l (y m)) = fun m => (B k * H.V.map (Per.θD l)) m j`.
+
+Use function extensionality and compare the values at `m'`. Simplify using `only [y, Matrix.mul_apply, Matrix.map_apply]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_mul, hθo]`. Rewrite `h` using `[hθy]`.
+
+Establish `h2` using `congrFun h m`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at h2`. Rewrite using `[Matrix.mul_assoc u, Matrix.mul_assoc (B k), hU, ← Matrix.mul_assoc (B k), Matrix.mul_diagonal, Matrix.mul_apply, h2, mul_comm]`. Establish `comm : ∀ k, u * B k = B k * U`. Introduce `k`.
+
+Establish `hd : IsUnit (H.V.map (Per.θD l)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hVu`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (u * B k), Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Use `_ = B k * U * H.V.map (Per.θD l) * (H.V.map (Per.θD l))⁻¹ := by rw [col k]`. Use `_ = B k * U := by rw [Matrix.mul_assoc (B k * U), Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`.
+
+Establish `key : ∀ x : Fin d → ℂ_[l], u * (∑ i, x i • (b i).map fun w => algebraMap (Om l) ℂ_[l] (σ w)) = ∑ i, (U *ᵥ x) i • (b i).map fun w => algebraMap (Om l) ℂ_[l] (σ w)`. Introduce `x`. Use extensionality with `m k`. Establish `h` using `congrFun (congrArg (· *ᵥ x) (comm k)) m`. Simplify using `only [← Matrix.mulVec_mulVec] at h`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.sum_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Simplify using `only [Matrix.mulVec, dotProduct, B] at h`. Use `(Finset.sum_congr rfl fun x1 _ => ?_).trans (h.trans (Finset.sum_congr rfl fun c _ => ?_))` and prove the remaining obligations. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `mul_comm _ _`. Establish `one : ∑ i, (fun s => algebraMap (Om l) ℂ_[l] (zOm l (e s))) i • (b i).map (fun w => algebraMap (Om l) ℂ_[l] (σ w)) = 1`. Use extensionality with `m k`. Establish `h` using `congrArg (fun M : Matrix (Fin a) (Fin a) (Om l) => algebraMap (Om l) ℂ_[l] (σ (M m k))) hR.one`.
+
+Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, hσz] at h`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Rewrite using `[h]`. Apply the tactic sequence `by_cases hmk : m = k <;> simp [Matrix.one_apply, hmk]`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => simpa using one.symm`. Consider the case `succ n ih => rw [pow_succ', ih, key, Matrix.mulVec_mulVec, ← pow_succ']`.
+-/
 theorem htOp_pow_eq_sum : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (C : Core l) (ξ : Ainf l) (a : ℕ) (d : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (r : ↥(GK K) →* GL (Fin a) (Om l)) (b : Fin d → Matrix (Fin a) (Fin a) (Om l)) (e : Fin d → ℤ_[l]), Reads ρ r b e → ∀ (σ : GQ l) (z : ℂ_[l]) (H : Hodge C ξ (fun g => (ρ g).val.map (zOm l)) K) (U : Matrix (Fin d) (Fin d) (ℂ_[l])) (u : Matrix (Fin a) (Fin a) (ℂ_[l])), U * H.V.map (Per.θD l) = H.V.map (Per.θD l) * Matrix.diagonal (fun i => z ^ ((H.p i : ℤ) - H.q)) → IsHT C ξ (fun g => (r g).val.map σ) z u → ∀ n : ℕ, u ^ n = ∑ i, ((U ^ n) *ᵥ fun s => algebraMap (Om l) ℂ_[l] (zOm l (e s))) i • (b i).map fun x => algebraMap (Om l) ℂ_[l] (σ x) := by
   intro l _ K C ξ a d ρ r b e hR σ z H U u hU hu
   have hσz : ∀ c : ℤ_[l], σ (zOm l c) = zOm l c := fun c => by simp [zOm]

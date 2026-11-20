@@ -13,6 +13,11 @@ section Pos
 
 variable {r k : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨b, hb, hbi⟩`. Conclude with `h (Fin.castSucc b) (Fin.castSucc_lt_castSucc_iff.mpr hb) (by rw [pe_castSucc]; exact hbi.symm)`. Introduce `h a' ha' hi`. Apply `h` to reduce the goal to its premises.
+
+Establish `ha2 : (a' : ℕ) < a.1` using `ha'`. Use `⟨⟨a', by omega⟩, ha2, ?_⟩` and prove the remaining obligations. Rewrite using `[hi, pe_inl_of_lt ha']`.
+-/
 theorem frA_condE (a : Fin r) (i : Formalism.FourierDecayAlt.S3.Idx r k) :
     (∀ a' : Fin (r + 1), a' < Fin.castSucc a → i ≠ pe a') ↔ i ∉ (Sum.inl '' {b : Fin r | b.1 < a.1}) := by
   constructor
@@ -24,6 +29,11 @@ theorem frA_condE (a : Fin r) (i : Formalism.FourierDecayAlt.S3.Idx r k) :
     refine ⟨⟨a', by omega⟩, ha2, ?_⟩
     rw [hi, pe_inl_of_lt ha']
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨b, -, hbi⟩`. Conclude with `h (Fin.castSucc b) (Fin.castSucc_lt_last b) (by rw [pe_castSucc]; exact hbi.symm)`. Introduce `h a' ha' hi`. Apply `h` to reduce the goal to its premises.
+
+Use `⟨⟨a', ha'⟩, trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[hi, pe_inl_of_lt ha']`.
+-/
 theorem frA_condZ (i : Formalism.FourierDecayAlt.S3.Idx r k) :
     (∀ a' : Fin (r + 1), a' < Fin.last r → i ≠ pe a') ↔ i ∉ (Sum.inl '' Set.univ) := by
   constructor
@@ -34,6 +44,11 @@ theorem frA_condZ (i : Formalism.FourierDecayAlt.S3.Idx r k) :
     refine ⟨⟨a', ha'⟩, trivial, ?_⟩
     rw [hi, pe_inl_of_lt ha']
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨b, hb, hbi⟩`. Conclude with `h (Fin.castSucc b) (Fin.castSucc_lt_castSucc_iff.mpr hb) (by rw [pf_castSucc]; exact hbi.symm)`. Introduce `h a' ha' hi`. Apply `h` to reduce the goal to its premises.
+
+Establish `ha2 : (a' : ℕ) < a.1` using `ha'`. Use `⟨⟨a', by omega⟩, ha2, ?_⟩` and prove the remaining obligations. Rewrite using `[hi, pf_of_lt ha']`.
+-/
 theorem frA_condF (a : Fin r) (i : Formalism.FourierDecayAlt.S3.Idx r k) :
     (∀ a' : Fin (r + 1), a' < Fin.castSucc a → i ≠ pf a') ↔
       i ∉ ((fun b : Fin r => (Sum.inr (Sum.inr (Fin.rev b)) : Formalism.FourierDecayAlt.S3.Idx r k)) '' {b : Fin r | b.1 < a.1}) := by
@@ -46,6 +61,11 @@ theorem frA_condF (a : Fin r) (i : Formalism.FourierDecayAlt.S3.Idx r k) :
     refine ⟨⟨a', by omega⟩, ha2, ?_⟩
     rw [hi, pf_of_lt ha']
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨b, -, hbi⟩`. Conclude with `h (Fin.castSucc b) (Fin.castSucc_lt_last b) (by rw [pf_castSucc]; exact hbi.symm)`. Introduce `h a' ha' hi`. Apply `h` to reduce the goal to its premises.
+
+Use `⟨⟨a', ha'⟩, trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[hi, pf_of_lt ha']`.
+-/
 theorem frA_condFZ (i : Formalism.FourierDecayAlt.S3.Idx r k) :
     (∀ a' : Fin (r + 1), a' < Fin.last r → i ≠ pf a') ↔
       i ∉ ((fun b : Fin r => (Sum.inr (Sum.inr (Fin.rev b)) : Formalism.FourierDecayAlt.S3.Idx r k)) '' Set.univ) := by
@@ -63,6 +83,11 @@ section Loc
 
 variable {D : D7} (X : HidaSetting D) (p : TypX X)
 
+/- English proof (translation)
+Establish `: Fact (gOf p).Prime` using `⟨gOf_prime X p⟩`. Rewrite using `[mem_nuG_iff_flags, colFlag_iff', colW_iff, rowFlag_iff', ← map_inv, Fin.forall_fin_succ', Fin.forall_fin_succ']`. Simplify using `only [pe_castSucc, pe_last, pf_castSucc, pf_last]`. Simplify using `only [frA_condE, frA_condZ, frA_condF, frA_condFZ]`. Unfold `EntA`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, hR, hT, hQ, hS⟩`. Conclude with `⟨⟨hP, hR⟩, hT, ⟨hQ, hS⟩⟩`. Introduce and unpack `⟨⟨hP, hR⟩, hT, ⟨hQ, hS⟩⟩`. Conclude with `⟨hP, hR, hT, hQ, hS⟩`.
+-/
 theorem ent_iff_nuG (π : Op X p →+* ZMod (gOf p)) (Y : GL (IdxD D) (Op X p)) :
     EntA X p π Y ↔ glRed π Y ∈ nuG (ZMod (gOf p)) D.R.rS D.R.k := by
   have : Fact (gOf p).Prime := ⟨gOf_prime X p⟩
@@ -79,6 +104,9 @@ theorem ent_iff_nuG (π : Op X p →+* ZMod (gOf p)) (Y : GL (IdxD D) (Op X p)) 
 
 variable (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p) (Q : GL (IdxD D) (FpX X p))
 
+/- English proof (translation)
+Introduce `x _ Y hY` and use `(locCong_iff_ent X p θ Q hθ π hker hS hA x Y hY).trans (ent_iff_nuG X p π Y)`.
+-/
 theorem transA_of (hθ : IsSplitEquiv X p θ) (π : Op X p →+* ZMod (gOf p))
     (hker : RingHom.ker π = Ideal.span {((gOf p : ℕ) : Op X p)}) (hS : SplitA X p θ Q) (hA : AdaptA X p θ Q) :
     TransA X p θ Q π := fun x _ Y hY =>
@@ -88,11 +116,17 @@ def StAdaptA : Prop :=
   ∃ θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p, IsSplitEquiv X p θ ∧
     ∃ Q : GL (IdxD D) (FpX X p), LatBasis X p θ (reindex₂ X p Q) ∧ SplitA X p θ Q ∧ AdaptA X p θ Q
 
+/- English proof (translation)
+Take `⟨θ, hθ, Q, hL, hS, hA⟩` from `h`. Take `⟨π, hπ, hker⟩` from `stResZ_holds X p`. Conclude with `stFrameA_of_trans X hC p ⟨θ, hθ, Q, hL, π, hπ, hker, transA_of X p θ Q hθ π hker hS hA⟩`.
+-/
 theorem stFrameA_of_adapt (hC : LatCoreX) (h : StAdaptA X p) : StFrameA X p := by
   obtain ⟨θ, hθ, Q, hL, hS, hA⟩ := h
   obtain ⟨π, hπ, hker⟩ := stResZ_holds X p
   exact stFrameA_of_trans X hC p ⟨θ, hθ, Q, hL, π, hπ, hker, transA_of X p θ Q hθ π hker hS hA⟩
 
+/- English proof (translation)
+The claim follows from `reduction_image_of_frame X hb p (stFrameA_of_adapt X p hC h)`.
+-/
 theorem reduction_image_of_adapted (hb : AdBridgeIso X.B.I) (hC : LatCoreX) (h : StAdaptA X p) : LevelReductionImage X hb p :=
   reduction_image_of_frame X hb p (stFrameA_of_adapt X p hC h)
 

@@ -9,6 +9,27 @@ namespace GenFrameSpan
 
 open CutKW
 
+/- English proof (translation)
+Introduce `hadm Lt _ _ l _ N0 nu P B hPmem hPc`. Take `⟨T, hTmem, hTfix⟩` from `hP hadm Lt N0 nu`. Establish `ha : ∀ m, ∃ a : ColChoice N0 nu →₀ ℤ, (a.sum fun J k => k • nablaX N0 nu J) = T (MvPolynomial.monomial m 1)` using `fun m => Finsupp.mem_span_range_iff_exists_finsupp.mp (hTmem _)`. Use `choose a ha using ha`. Set `S : MvPolynomial (Lt × ℕ × Fin N0) ℂ_[l] →ₗ[ℂ_[l]] MvPolynomial (Lt × ℕ × Fin N0) ℂ_[l]` to `(MvPolynomial.basisMonomials _ ℂ_[l]).constr ℂ_[l] fun m => MvPolynomial.map (Int.castRingHom ℂ_[l]) (T (MvPolynomial.monomial m 1))`.
+
+Establish `hS1 : ∀ m, S (MvPolynomial.monomial m 1) = MvPolynomial.map (Int.castRingHom ℂ_[l]) (T (MvPolynomial.monomial m 1))`. Introduce `m`. Establish `h` using `(MvPolynomial.basisMonomials _ ℂ_[l]).constr_basis ℂ_[l] (fun m => MvPolynomial.map (Int.castRingHom ℂ_[l]) (T (MvPolynomial.monomial m 1))) m`. Simplify `h` using `[MvPolynomial.coe_basisMonomials]`. Establish `hSφ : ∀ Q : MvPolynomial (Lt × ℕ × Fin N0) ℤ, S (MvPolynomial.map (Int.castRingHom ℂ_[l]) Q) = MvPolynomial.map (Int.castRingHom ℂ_[l]) (T Q)`.
+
+Introduce `Q`. Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial m k`. Establish `hk : MvPolynomial.monomial m k = k • MvPolynomial.monomial m (1 : ℤ)`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`.
+
+Rewrite using `[hk]`. Simplify using `only [map_zsmul]`. Rewrite using `[MvPolynomial.map_monomial, map_one, hS1]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add, map_add]`. Establish `hle : Submodule.span ℂ_[l] (Set.range fun J : ColChoice N0 nu => MvPolynomial.map (Int.castRingHom ℂ_[l]) (nablaX N0 nu J)) ≤ LinearMap.eqLocus S LinearMap.id`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨J, rfl⟩`. Conclude with `(LinearMap.mem_eqLocus).mpr (by rw [hSφ, hTfix]; rfl)`. Establish `hSP : S P = P` using `(LinearMap.mem_eqLocus).mp (hle hPmem)`. Establish `hSexp : S P = ∑ m ∈ P.support, MvPolynomial.coeff m P • MvPolynomial.map (Int.castRingHom ℂ_[l]) (T (MvPolynomial.monomial m 1))` using `by conv_lhs => rw [MvPolynomial.as_sum P]`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← hS1, ← map_smul, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Set `c : ColChoice N0 nu →₀ ℂ_[l]` to `∑ m ∈ P.support, MvPolynomial.coeff m P • Finsupp.mapRange (Int.cast : ℤ → ℂ_[l]) Int.cast_zero (a m)`. Establish `hc : ∀ J, c J = ∑ m ∈ P.support, MvPolynomial.coeff m P * (a m J : ℂ_[l])`.
+
+Introduce `J`. Simplify using `[c, Finsupp.finsetSum_apply]`. Use `⟨c, fun J => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg (Nat.cast_nonneg l) _) fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finsupp.linearCombination_apply]`. Establish `hΦ : ∀ m, Finsupp.linearCombination ℂ_[l] (fun J => MvPolynomial.map (Int.castRingHom ℂ_[l]) (nablaX N0 nu J)) (Finsupp.mapRange (Int.cast : ℤ → ℂ_[l]) Int.cast_zero (a m)) = MvPolynomial.map (Int.castRingHom ℂ_[l]) (T (MvPolynomial.monomial m 1))`. Introduce `m`.
+
+Rewrite using `[← ha, Finsupp.linearCombination_apply, map_finsuppSum]`. Rewrite using `[Finsupp.sum_mapRange_index (by intro; exact zero_smul _ _)]`. Use `Finsupp.sum_congr fun J _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]`. Simplify using `only [c, map_sum, map_smul, hΦ]`.
+
+Rewrite using `[← hSexp, hSP]`.
+-/
 theorem stepSat_of (hP : ProjZ) : StepSat := by
   intro hadm Lt _ _ l _ N0 nu P B hPmem hPc
   obtain ⟨T, hTmem, hTfix⟩ := hP hadm Lt N0 nu

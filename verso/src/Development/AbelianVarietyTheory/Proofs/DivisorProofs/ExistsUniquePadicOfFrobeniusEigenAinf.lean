@@ -11,6 +11,11 @@ open CategoryTheory Opposite Matrix GlobalTheory GlobalTheory.PDivGroup GlobalTh
 
 namespace GlobalTheory.PDivLat
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε a ha`. Establish `h1 : IsPrimitiveRoot (GlobalTheory.Sandwich.root ε).untilt p`. Simplify `hε 1` using `[zeta]`. Use `haveI : IsDomain (PreTilt O p) := PreTilt.isDomain C v O hv p`. Use `haveI : IsDomain (Ainf p O) := GlobalTheory.Sandwich.Model.isDomain_Ainf hv`.
+
+Establish `hμ : Sandwich.mu ε ≠ 0` using `GlobalTheory.Sandwich.Model.mu_ne_zero (hε := h1) hv`. Take `⟨c, hc⟩` from `GlobalTheory.CompanionTheory.Ar.Prism.exists_padic_of_eigen h1 ha`. Establish `hinj : Function.Injective (ofPadic p O)` using `(WittVector.map_injective _ (RingHom.injective _)).comp (WittVector.equiv p).symm.injective`. Conclude with `⟨c, hc, fun c' hc' => hinj (mul_right_cancel₀ hμ (hc'.trans hc.symm))⟩`.
+-/
 theorem existsUnique_padic_of_eigen : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O →

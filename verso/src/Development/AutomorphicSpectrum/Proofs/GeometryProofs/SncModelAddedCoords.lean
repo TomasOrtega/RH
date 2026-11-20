@@ -18,6 +18,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.SncPull
 open GlobalTheory.CompanionTheory.Ar.SncRefine
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `b (rfl | hb)`. Conclude with `Algebra.subset_adjoin (Set.mem_insert _ _)`. Establish `h : Algebra.adjoin ℤ (Set.range fun d => seg y d / seg y c) ≤ (Algebra.adjoin ℚ (insert t (Set.range (bratio y c)))).restrictScalars ℤ` using `Algebra.adjoin_le (by`.
+
+Introduce and unpack `_ ⟨d, rfl⟩`. Conclude with `seg_ratio_mem y c (Algebra.adjoin ℚ (insert t (Set.range (bratio y c)))).toSubring (fun p => Algebra.subset_adjoin (Set.mem_insert_of_mem _ ⟨p, rfl⟩)) d)`. Conclude with `h hb`. Use `Algebra.adjoin_mono (Set.insert_subset_insert ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Take `⟨d, hd⟩` from `exists_seg_ratio y c hc p`. Rewrite using `[hd]`. Conclude with `Algebra.subset_adjoin ⟨d, rfl⟩`.
+-/
 theorem adjoin_insert_eq {K : Type} [Fintype K] {J : K → Type} {Ω : Type} [Field Ω] [CharZero Ω]
     (y : (Σ k, J k) → Ω) (c : (k : K) → J k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (t : Ω) :
     Algebra.adjoin ℚ (insert t ((Algebra.adjoin ℤ (Set.range fun d => seg y d / seg y c) : Subalgebra ℤ Ω) : Set Ω)) =
@@ -38,6 +45,11 @@ theorem adjoin_insert_eq {K : Type} [Fintype K] {J : K → Type} {Ω : Type} [Fi
     rw [hd]
     exact Algebra.subset_adjoin ⟨d, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact Algebra.subset_adjoin (hW x hx)`. Consider the case `algebraMap r`. Establish `: algebraMap Ω₀ Ω (algebraMap ℚ Ω₀ r) = algebraMap ℚ Ω r` using `by simp`. Rewrite using `[this]`.
+
+Conclude with `Subalgebra.algebraMap_mem _ r`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+-/
 theorem map_mem_adjoin {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] [CharZero Ω₀] [CharZero Ω] [Algebra Ω₀ Ω]
     {W : Set Ω₀} {W' : Set Ω} (hW : ∀ w ∈ W, algebraMap Ω₀ Ω w ∈ W') {b : Ω₀} (hb : b ∈ Algebra.adjoin ℚ W) :
     algebraMap Ω₀ Ω b ∈ Algebra.adjoin ℚ W' := by
@@ -50,6 +62,13 @@ theorem map_mem_adjoin {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] [CharZero Ω�
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
+/- English proof (translation)
+Establish `hs : Ideal.span {t | G t} = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨t, ht, hG⟩` from `h M hM.isPrime`. Conclude with `ht (hle (Ideal.subset_span hG))`.
+
+Establish `h1 : (1 : R) ∈ Ideal.span {t | G t}` using `hs ▸ Submodule.mem_top`. Take `⟨c, hc, hsum⟩` from `Submodule.mem_span_set.1 h1`. Set `e` to `c.support.equivFin.symm`. Use `⟨c.support.card, fun l => (e l : R), fun l => c (e l), ?_, fun l => hc (e l).2⟩` and prove the remaining obligations. Rewrite using `[← hsum, Finsupp.sum, ← Finset.sum_coe_sort c.support]`.
+
+Conclude with `Equiv.sum_comp e fun x : c.support => c x • (x : R)`.
+-/
 theorem exists_cover {R : Type} [CommRing R] (G : R → Prop) (h : ∀ P : Ideal R, P.IsPrime → ∃ t, t ∉ P ∧ G t) :
     ∃ (m : ℕ) (f a : Fin m → R), ∑ l, a l * f l = 1 ∧ ∀ l, G (f l) := by
   classical
@@ -65,6 +84,35 @@ theorem exists_cover {R : Type} [CommRing R] (G : R → Prop) (h : ∀ P : Ideal
   rw [← hsum, Finsupp.sum, ← Finset.sum_coe_sort c.support]
   exact Equiv.sum_comp e fun x : c.support => c x • (x : R)
 
+/- English proof (translation)
+Introduce `X X' Ω₀ Ω _ _ _ _ _ ξ ξ' f K _ J _ y N x' e bd I _ u hq hq' tie tie' hd hsm hu hadj hsnc c₁ hc₁`. Set `c : (k : K) → J k` to `fun k => c₁ (Sum.inr k)`. Establish `hc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k h => hc₁ (Sum.inr k) (show algebraMap Ω₀ Ω (y ⟨k, c k⟩) = 0 by rw [h, map_zero])`. Establish `hv : ∀ p, algebraMap Ω₀ Ω (bratio y c p) = bratio (addY y x') c₁ (addV J N p)` using `fun p => map_div₀ _ _ _`. Establish `hxc : seg y c ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`.
+
+Establish `hxc₁ : seg (addY y x') c₁ ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc₁ k`. Establish `hblk : ∀ p, bratio (addY y x') c₁ p ∈ Algebra.adjoin ℤ (Set.range fun d => seg (addY y x') d / seg (addY y x') c₁)` using `fun p => by`. Take `⟨d, hd⟩` from `exists_seg_ratio (addY y x') c₁ hc₁ p`. Rewrite using `[hd]`. Conclude with `Algebra.subset_adjoin ⟨d, rfl⟩`.
+
+Take `⟨φ, hφ, hφs⟩` from `GlobalTheory.T.dominant_smooth_map_coords X X' Ω₀ Ω ξ ξ' f (algebraMap Ω₀ Ω) _ _ (seg y) (seg (addY y x')) hq hq' tie tie' hd hsm c c₁ hxc hxc₁ (fun d => by`. Establish `e1 : seg y d / seg y c = ∏ k, bratio y c ⟨k, d k⟩` using `(Finset.prod_div_distrib _ _).symm`. Rewrite using `[e1, map_prod]`. Use `prod_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hv]`.
+
+Conclude with `hblk _)`. Take `⟨m, f₀, a₀, hf, ha, hsum, H⟩` from `hsnc c hc`. Establish `hfin` using `GlobalTheory.T.kaehler_rank_transcendence_degree Ω₀ Ω I u hu hadj`. Establish `hW : ∀ w ∈ Set.range (bratio y c), algebraMap Ω₀ Ω w ∈ Set.range (bratio (addY y x') c₁)`. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Conclude with `⟨_, (hv p).symm⟩`. Set `R₁` to `Algebra.adjoin ℚ (Set.range (bratio (addY y x') c₁))`. Establish `hfr : ∀ (A : Subalgebra ℤ Ω₀) (S : Subalgebra ℚ Ω₀), (∀ a ∈ A, a ∈ S) → (∀ a : Ω₀, ∃ s ∈ A, ∃ t ∈ A, t ≠ 0 ∧ a = s / t) → IsFractionRing S Ω₀` using `fun A S hAS h => IsFractionRing.of_field _ _ fun z => by`. Take `⟨s, hs, t, ht, -, rfl⟩` from `h z`. Conclude with `⟨⟨s, hAS s hs⟩, ⟨t, hAS t ht⟩, rfl⟩`.
+
+Establish `hfr₁ : ∀ (A : Subalgebra ℤ Ω) (S : Subalgebra ℚ Ω), (∀ a ∈ A, a ∈ S) → (∀ a : Ω, ∃ s ∈ A, ∃ t ∈ A, t ≠ 0 ∧ a = s / t) → IsFractionRing S Ω` using `fun A S hAS h => IsFractionRing.of_field _ _ fun z => by`. Take `⟨s, hs, t, ht, -, rfl⟩` from `h z`. Conclude with `⟨⟨s, hAS s hs⟩, ⟨t, hAS t ht⟩, rfl⟩`. Establish `hloc : ∀ P : Ideal R₁, P.IsPrime → ∃ t : R₁, t ∉ P ∧ ((t : Ω) ≠ 0 → ∀ S' : Subalgebra ℚ Ω, S' = Algebra.adjoin ℚ (insert (t : Ω)⁻¹ (Set.range (bratio (addY y x') c₁))) → Algebra.Smooth ℚ S' ∧ ∃ (z' : Fin (e + Fintype.card I) → S') (n' : ℕ), n' ≤ e + Fintype.card I ∧ LinearIndepen …`. Introduce `P hP`.
+
+Set `fl : Fin m → R₁` to `fun l => ⟨algebraMap Ω₀ Ω (f₀ l), map_mem_adjoin hW (hf l)⟩`. Set `al : Fin m → R₁` to `fun l => ⟨algebraMap Ω₀ Ω (a₀ l), map_mem_adjoin hW (ha l)⟩`. Establish `hone : ∑ l, al l * fl l = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`.
+
+Use `show ∑ l, algebraMap Ω₀ Ω (a₀ l) * algebraMap Ω₀ Ω (f₀ l) = 1`. Simplify using `only [← map_mul]`. Rewrite using `[← map_sum, hsum, map_one]`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, fl l ∉ P := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).2 (hone ▸ Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hcon l)))`. Establish `h0 : f₀ l ≠ 0` using `fun h => hl (by`. Establish `: fl l = 0` using `Subtype.ext (by show algebraMap Ω₀ Ω (f₀ l) = 0; rw [h, map_zero])`. Rewrite using `[this]`.
+
+Conclude with `P.zero_mem)`. Take `⟨hSm, z, n, hn, hli, hspan, hbd⟩` from `H l h0 _ rfl`. Establish `hle₀ : Algebra.adjoin ℚ (Set.range (bratio y c)) ≤ Algebra.adjoin ℚ ((Algebra.adjoin ℤ (Set.range fun d => seg y d / seg y c) : Subalgebra ℤ Ω₀) : Set Ω₀)` using `Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `⟨d, hd⟩` from `exists_seg_ratio y c hc p`.
+
+Rewrite using `[hd]`. Conclude with `Algebra.subset_adjoin (Algebra.subset_adjoin ⟨d, rfl⟩))`. Take `⟨ψ, hψ, hψs⟩` from `GlobalTheory.T.smooth_map_localization_compat Ω₀ Ω _ _ φ hφ hφs (f₀ l) (hle₀ (hf l)) h0 (Algebra.adjoin ℚ (insert (f₀ l)⁻¹ (Set.range (bratio y c)))) (Algebra.adjoin ℚ (insert (algebraMap Ω₀ Ω (f₀ l))⁻¹ (Set.range (bratio (addY y x') c₁)))) (adjoin_insert_eq y c hc _).symm (adjoi …`. Establish `hA₀ : ∀ a ∈ Algebra.adjoin ℤ (Set.range fun d => seg y d / seg y c), a ∈ Algebra.adjoin ℚ (insert (f₀ l)⁻¹ (Set.range (bratio y c)))` using `fun a ha' => by`. Rewrite using `[← adjoin_insert_eq y c hc]`.
+
+Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ ha')`. Establish `hA₁ : ∀ a ∈ Algebra.adjoin ℤ (Set.range fun d => seg (addY y x') d / seg (addY y x') c₁), a ∈ Algebra.adjoin ℚ (insert (algebraMap Ω₀ Ω (f₀ l))⁻¹ (Set.range (bratio (addY y x') c₁)))` using `fun a ha' => by`. Rewrite using `[← adjoin_insert_eq (addY y x') c₁ hc₁]`. Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ ha')`. Take `⟨t, ht, hG⟩` from `GlobalTheory.T.kaehler_rank_localization_bound Ω₀ Ω _ _ (bratio y c) (bratio (addY y x') c₁) (addV J N) hv e _ bd hfin (f₀ l) h0 _ _ rfl rfl ψ hψ hψs (hfr _ _ hA₀ (GlobalTheory.T.fraction_field_coords_generated X Ω₀ ξ _ (seg y) tie c hxc)) (hfr₁ _ _ hA₁ (GlobalTheory.T.fraction_f …`.
+
+Conclude with `⟨t, ht, fun _ => hG⟩`. Take `⟨m', f', a', hs', hG⟩` from `exists_cover _ hloc`. Use `⟨m', fun l => (f' l : Ω), fun l => (a' l : Ω), fun l => (f' l).2, fun l => (a' l).2, ?_, fun l hl S' hS' => ?_⟩` and prove the remaining obligations. Use `congrArg (Subtype.val) hs'` as an intermediate fact. Rewrite `this` using `[AddSubmonoidClass.coe_finset_sum]`.
+
+Conclude with `this`. Take `⟨h1, z', n', h2, h3, h4, h5⟩` from `hG l hl S' hS'`. Conclude with `⟨h1, z', n', h2, h3, h4, h5⟩`.
+-/
 theorem isSncModel_pull : ∀ (X X' : Scheme.{0}) (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [CharZero Ω₀] [CharZero Ω] [Algebra Ω₀ Ω]
     (ξ : Spec (CommRingCat.of Ω₀) ⟶ X) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (f : X' ⟶ X)
     (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω₀) (N : ℕ) (x' : Fin (N + 1) → Ω)

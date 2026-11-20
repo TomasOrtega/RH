@@ -8,6 +8,67 @@ open scoped ENNReal NNReal
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `P H hP hH hHP τ β δ hτ hβ hδc hτP _ hτH hβH μ _ ν _ ρ _ hδ`. Establish `: LocallyCompactSpace H` using `hH.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: LocallyCompactSpace P` using `hP.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology H` using `inferInstanceAs (SecondCountableTopology (H : Set G))`. Establish `: SecondCountableTopology P` using `inferInstanceAs (SecondCountableTopology (P : Set G))`.
+
+Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hUo : IsOpen (interior K)` using `isOpen_interior`. Establish `hU1 : (1 : G) ∈ interior K` using `mem_interior_iff_mem_nhds.2 hK1`. Use `set f : G → ℝ≥0∞ := (interior K).indicator 1 with hf_def`. Establish `hfm : Measurable f` using `measurable_one.indicator hUo.measurableSet`.
+
+Establish `hI : ∫⁻ x : H, f x ∂ν = ν (Subtype.val ⁻¹' interior K)`. Rewrite using `[← lintegral_indicator_one (hUo.preimage continuous_subtype_val).measurableSet]`. Use `congr 1`. Establish `hI0 : ∫⁻ x : H, f x ∂ν ≠ 0`. Rewrite using `[hI]`.
+
+Conclude with `((hUo.preimage continuous_subtype_val).measure_pos ν ⟨1, hU1⟩).ne'`. Establish `hItop : ∫⁻ x : H, f x ∂ν ≠ ∞`. Rewrite using `[hI]`. Conclude with `((measure_mono (Set.preimage_mono interior_subset)).trans_lt (hH.isClosedEmbedding_subtypeVal.isCompact_preimage hK).measure_lt_top).ne`. Establish `hmul : ∀ s t, δ (s * t) = δ s * δ t`.
+
+Introduce `s t`. Establish `e1` using `hδ (s * t) f hfm`. Establish `e2 : ∫⁻ x : H, f (τ s * (τ t * x * (τ t)⁻¹) * (τ s)⁻¹) ∂ν = δ t * ∫⁻ x : H, f (τ s * x * (τ s)⁻¹) ∂ν` using `hδ t (fun z => f (τ s * z * (τ s)⁻¹)) (hfm.comp ((continuous_const.mul continuous_id).mul continuous_const).measurable)`. Establish `e3` using `hδ s f hfm`. Establish `e : ∫⁻ x : H, f (τ (s * t) * x * (τ (s * t))⁻¹) ∂ν = ∫⁻ x : H, f (τ s * (τ t * x * (τ t)⁻¹) * (τ s)⁻¹) ∂ν`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [map_mul, mul_inv_rev, mul_assoc]`. Rewrite `e1` using `[e, e2, e3, ← mul_assoc]`. Establish `h` using `(ENNReal.mul_left_inj hI0 hItop).1 e1`.
+
+Conclude with `(ENNReal.coe_injective (by rw [ENNReal.coe_mul]; exact h)).symm.trans (mul_comm _ _)`. Establish `hone : δ 1 = 1`. Establish `e` using `hδ 1 f hfm`. Simplify using `only [map_one, one_mul, inv_one, mul_one] at e`. Establish `h` using `(ENNReal.mul_left_inj hI0 hItop).1 (e.symm.trans (one_mul _).symm)`.
+
+Conclude with `h` after adjusting the coercions. Establish `hpos : ∀ t, δ t ≠ 0` using `fun t h => by`. Establish `e` using `hmul t t⁻¹`. Rewrite `e` using `[mul_inv_cancel, hone, h, zero_mul]`. Conclude with `one_ne_zero e`.
+
+Set `Φ : T × H → P` to `fun q => ⟨(q.2 : G) * τ q.1, P.mul_mem (hHP q.2.2) (hτP q.1)⟩`. Establish `hΦc : Continuous Φ` using `((continuous_subtype_val.comp continuous_snd).mul (hτ.comp continuous_fst)).subtype_mk _`. Establish `hΦm : Measurable Φ` using `hΦc.measurable`. Establish `hδm : Measurable fun t => (δ t : ℝ≥0∞)` using `(ENNReal.continuous_coe.comp hδc).measurable`. Set `m : Measure P` to `Measure.map Φ ((ρ.withDensity fun t => (δ t : ℝ≥0∞)).prod ν)`.
+
+Establish `hm : ∀ ψ : P → ℝ≥0∞, Measurable ψ → ∫⁻ p, ψ p ∂m = ∫⁻ t, δ t * ∫⁻ x : H, ψ (Φ (t, x)) ∂ν ∂ρ`. Introduce `ψ hψ`. Rewrite using `[lintegral_map hψ hΦm, lintegral_prod (fun z => ψ (Φ z)) (hψ.comp hΦm).aemeasurable, lintegral_withDensity_eq_lintegral_mul _ hδm]`. Both sides reduce to the same expression. Conclude with `(hψ.comp hΦm).lintegral_prod_right'`.
+
+Establish `hinv : ∀ (p₀ : P) (ψ : P → ℝ≥0∞), Measurable ψ → ∫⁻ p, ψ (p₀ * p) ∂m = ∫⁻ p, ψ p ∂m`. Introduce `p₀ ψ hψ`. Rewrite using `[hm (fun p => ψ (p₀ * p)) (hψ.comp (measurable_const_mul p₀)), hm _ hψ]`. Use `set s := β p₀ with hs`. Set `y : H` to `⟨(p₀ : G) * (τ s)⁻¹, hβH p₀⟩`.
+
+Set `ψ' : G → ℝ≥0∞` to `Function.extend Subtype.val ψ 0`. Establish `hψ' : Measurable ψ'` using `(MeasurableEmbedding.subtype_coe hP.measurableSet).measurable_extend hψ measurable_const`. Establish `hψ'e : ∀ p : P, ψ' p = ψ p` using `fun p => Subtype.val_injective.extend_apply ψ 0 p`. Establish `inner : ∀ t, ∫⁻ x : H, ψ (p₀ * Φ (t, x)) ∂ν = δ s * ∫⁻ x : H, ψ (Φ (s * t, x)) ∂ν`. Introduce `t`.
+
+Establish `h1 : ∫⁻ x : H, ψ' ((y : G) * (τ s * x * (τ s)⁻¹) * τ (s * t)) ∂ν = δ s * ∫⁻ x : H, ψ' ((y : G) * x * τ (s * t)) ∂ν` using `hδ s (fun z => ψ' ((y : G) * z * τ (s * t))) (hψ'.comp ((continuous_const.mul continuous_id).mul continuous_const).measurable)`. Establish `h2 : ∫⁻ x : H, ψ' ((y : G) * x * τ (s * t)) ∂ν = ∫⁻ x : H, ψ (Φ (s * t, x)) ∂ν`. Rewrite using `[← lintegral_mul_left_eq_self (μ := ν) (fun x : H => ψ (Φ (s * t, x))) y]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[← hψ'e]`. Both sides reduce to the same expression. Rewrite using `[← h2, ← h1]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[← hψ'e]`. Use `congr 1`. Simplify using `only [Φ, y, Subgroup.coe_mul, map_mul]`. Use `group`. Use `Eq.trans ?_ (lintegral_mul_left_eq_self (μ := ρ) (fun u => (δ u : ℝ≥0∞) * ∫⁻ x : H, ψ (Φ (u, x)) ∂ν) s)` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[inner, hmul, ENNReal.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `: Measure.IsMulLeftInvariant m`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `p₀`. Use extensionality with `S hS`. Rewrite using `[Measure.map_apply (measurable_const_mul p₀) hS, ← lintegral_indicator_one hS, ← lintegral_indicator_one (measurable_const_mul p₀ hS)]`. Conclude with `hinv p₀ _ (measurable_one.indicator hS)`.
+
+Establish `hβΦ : ∀ t (x : H), β (Φ (t, x)) = t`. Introduce `t x`. Establish `h` using `H.mul_mem (H.inv_mem x.2) (hβH (Φ (t, x)))`. Establish `h' : τ (t * (β (Φ (t, x)))⁻¹) ∈ H`. Simplify `h` using `[Φ, map_mul, map_inv, mul_assoc]`.
+
+Conclude with `(mul_inv_eq_one.1 (hτH _ h')).symm`. Set `α : P → H` to `fun p => ⟨(p : G) * (τ (β p))⁻¹, hβH p⟩`. Establish `hα : Continuous α` using `(continuous_subtype_val.mul (hτ.comp hβ).inv).subtype_mk _`. Establish `hαΦ : ∀ t (x : H), α (Φ (t, x)) = x`. Introduce `t x`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [α, hβΦ]`. Simplify using `[Φ]`. Establish `: IsFiniteMeasureOnCompacts m`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `K hK`. Establish `hL : IsCompact (closure K)` using `hK.closure`. Use `(measure_mono subset_closure).trans_lt ?_` and prove the remaining obligations. Establish `hLm : MeasurableSet (closure K)` using `isClosed_closure.measurableSet`. Take `⟨C, hC⟩` from `(hL.image hβ).bddAbove_image hδc.continuousOn`.
+
+Rewrite using `[← lintegral_indicator_one hLm, hm _ (measurable_one.indicator hLm)]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun t => ?_` and prove the remaining obligations. Distinguish the cases in `ht : t ∈ β '' closure K`. Rewrite using `[Set.indicator_of_mem ht] gcongr`.
+
+Conclude with `hC ⟨t, ht, rfl⟩` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : Φ (t, x) ∈ closure K`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (show x ∈ α '' closure K from ⟨Φ (t, x), hx, hαΦ t x⟩)]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx]`. Conclude with `bot_le`. Use `_ ≤ 1 * ν (α '' closure K) := lintegral_indicator_const_le _ _`. Use `_ = ν (α '' closure K) := one_mul _`.
+
+Establish `h0 : ∀ x : H, (closure K).indicator (1 : P → ℝ≥0∞) (Φ (t, x)) = 0` using `fun x => Set.indicator_of_notMem (fun hx => ht ⟨Φ (t, x), hx, hβΦ t x⟩) _`. Simplify using `[h0]`. Use `_ ≤ (C : ℝ≥0∞) * ν (α '' closure K) * ρ (β '' closure K) := lintegral_indicator_const_le _ _`. Use `_ < ∞ := ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.coe_lt_top (hL.image hα).measure_lt_top) (hL.image hβ).measure_lt_top`. Establish `hm0 : m ≠ 0`.
+
+Introduce `h0`. Establish `e` using `hm (fun _ => 1) measurable_const`. Rewrite `e` using `[h0, lintegral_zero_measure]`. Simplify using `only [lintegral_const, one_mul] at e`. Rewrite `e` using `[lintegral_mul_const _ hδm]`.
+
+Establish `hν : ν Set.univ ≠ 0` using `isOpen_univ.measure_ne_zero ν Set.univ_nonempty`. Establish `hρ : ∫⁻ t, (δ t : ℝ≥0∞) ∂ρ ≠ 0`. Rewrite using `[Ne, lintegral_eq_zero_iff hδm]`. Introduce `h`. Establish `hF : ∀ᵐ _t ∂ρ, False` using `h.mono fun t ht => hpos t (by simpa using ht)`.
+
+Rewrite `hF` using `[Filter.eventually_false_iff_eq_bot, ae_eq_bot]`. Conclude with `isOpen_univ.measure_ne_zero ρ Set.univ_nonempty (by rw [hF]; rfl)`. Conclude with `mul_ne_zero hρ hν e.symm`. Establish `hsc` using `Measure.isMulLeftInvariant_eq_smul m μ`. Use `set c₀ := Measure.haarScalarFactor m μ with hc₀`.
+
+Establish `hc0 : c₀ ≠ 0`. Introduce `h`. Apply `hm0` to reduce the goal to its premises. Rewrite using `[hsc, h, zero_smul]`. Use `⟨c₀⁻¹, inv_ne_zero hc0, fun φ hφ => ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∫⁻ p, φ p ∂m = ∫⁻ t, δ t * ∫⁻ x : H, φ (x * τ t) ∂ν ∂ρ` using `hm _ (hφ.comp continuous_subtype_val.measurable)`. Rewrite `key` using `[hsc, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[← key, ENNReal.coe_inv hc0, ← mul_assoc, ENNReal.inv_mul_cancel (by exact_mod_cast hc0) ENNReal.coe_ne_top, one_mul]`.
+-/
 theorem SemidirectHaar.proof (G T : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     [Group T] [TopologicalSpace T] [IsTopologicalGroup T] [LocallyCompactSpace T]

@@ -22,6 +22,19 @@ namespace GlobalTheory.FoldrBoundLinearForms
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `T`. Use `⟨‖T m‖, fun l hl _ => ?_⟩` and prove the remaining obligations. Rewrite using `[List.length_eq_zero_iff.1 hl]`.
+
+Conclude with `le_rfl`. Consider the case `succ n ih`. Introduce `T`. Set `b` to `Module.finBasis ℝ U`. Use `choose B hB using fun j => ih (T ∘ₗ D (b j))`.
+
+Use `⟨∑ j, ‖LinearMap.toContinuousLinearMap (b.coord j)‖ * R * B j, fun l hl hu => ?_⟩` and prove the remaining obligations. Consider the cases of `l with`. Consider the case `nil => simp at hl`. Consider the case `cons u l`. Rewrite using `[List.foldr_cons]`.
+
+Use `set y := l.foldr (fun u x => D u x) m with hy`. Establish `e : T (D u y) = ∑ j, b.repr u j • T (D (b j) y)` using `by conv_lhs => rw [← b.sum_repr u]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[e]`. Establish `hR : 0 ≤ R` using `(norm_nonneg u).trans (hu u List.mem_cons_self)`.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul]`. Establish `h1 : ‖b.repr u j‖ ≤ ‖LinearMap.toContinuousLinearMap (b.coord j)‖ * R`. Use `(LinearMap.toContinuousLinearMap (b.coord j)).le_opNorm u` as an intermediate fact. Conclude with `this.trans (mul_le_mul_of_nonneg_left (hu u List.mem_cons_self) (norm_nonneg _))`.
+
+Establish `h2` using `hB j l (by simpa using hl) (fun v hv => hu v (List.mem_cons_of_mem _ hv))`. Conclude with `mul_le_mul h1 h2 (norm_nonneg _) (mul_nonneg (norm_nonneg _) hR)`.
+-/
 theorem exists_bound_foldr_le {M U : Type*} [AddCommGroup M] [Module ℝ M] [NormedAddCommGroup U] [NormedSpace ℝ U]
     [FiniteDimensional ℝ U] {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (D : U →ₗ[ℝ] M →ₗ[ℝ] M) (m : M)
     (R : ℝ) (n : ℕ) :
@@ -63,6 +76,9 @@ def lForm (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ) (c : κ → mixedE
       map_add' := fun y y' => by rw [add_dotProduct, map_add]
       map_smul' := fun r y => by rw [smul_dotProduct, map_smul]; rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lForm_apply (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ) (c y : κ → mixedEmbedding.mixedSpace F) :
     lForm ℓ c y = ℓ (y ⬝ᵥ c) := rfl
 
@@ -72,6 +88,9 @@ def lOp (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ)
   LineDeriv.lineDerivOpCLM ℂ (SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) v.1 f +
     (2 * Real.pi * Complex.I) • SchwartzMap.smulLeftCLM ℂ (fun x => ((lForm ℓ v.2 x : ℝ) : ℂ)) f
 
+/- English proof (translation)
+Establish `htg : Function.HasTemperateGrowth fun x : κ → mixedEmbedding.mixedSpace F => ((lForm ℓ v.2 x : ℝ) : ℂ)` using `(Complex.ofRealCLM.comp (lForm ℓ v.2)).hasTemperateGrowth`. Simplify using `only [lOp, SchwartzMap.add_apply, SchwartzMap.smul_apply, LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv, SchwartzMap.smulLeftCLM_apply_apply htg, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lOp_apply (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ)
     (v : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F))
     (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (x : κ → mixedEmbedding.mixedSpace F) :
@@ -106,6 +125,23 @@ def lLin (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ) :
 
 variable [Invertible (2 : AdeleRing (𝓞 F) F)]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Simplify using `only [GlobalTheory.WeilM.schr, GlobalTheory.WeilM.pureA, GlobalTheory.WeilL2Words.archPair, Prod.smul_fst, Prod.smul_snd]`. Establish `hfin : (fun i => ((a + GlobalTheory.WeilL2Words.arch F (t • h1)) i).2) = fun i => (a i).2`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(a i).2 + 0 = _`.
+
+Rewrite using `[add_zero]`. Establish `harch : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((a + GlobalTheory.WeilL2Words.arch F (t • h1)) i).1) = GlobalTheory.WeilL2Words.archPart F a + t • h1`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F ((a i).1 + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm ((t • h1) i)) = InfiniteAdeleRing.ringEquiv_mixedSpace F (a i).1 + (t • h1) i`. Rewrite using `[map_add, RingEquiv.apply_symm_apply]`.
+
+Use `set A := a ⬝ᵥ GlobalTheory.WeilL2Words.arch F (t • h2) + ⅟(2 : AdeleRing (𝓞 F) F) * (GlobalTheory.WeilL2Words.arch F (t • h1) ⬝ᵥ GlobalTheory.WeilL2Words.arch F (t • h2)) with hA`. Establish `hev : ∀ w : κ → mixedEmbedding.mixedSpace F, ⇑(GlobalTheory.ThetaSobolevBase.evHom F) ∘ GlobalTheory.WeilL2Words.arch F w = w`. Introduce `w`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (w i)) = w i`.
+
+Rewrite using `[RingEquiv.apply_symm_apply]`. Set `s : AdeleRing (𝓞 F) F →+* FiniteAdeleRing (𝓞 F) F` to `RingHom.snd _ _`. Establish `hsnd : ∀ w : κ → mixedEmbedding.mixedSpace F, ⇑s ∘ GlobalTheory.WeilL2Words.arch F w = 0`. Introduce `w`. Use function extensionality and compare the values at `i`.
+
+Both sides reduce to the same expression. Establish `hA2 : A.2 = 0`. Express the relevant statement in the definitionally equal form `s A = 0`. Rewrite using `[hA, map_add, map_mul, RingHom.map_dotProduct, RingHom.map_dotProduct, hsnd, hsnd, dotProduct_zero, dotProduct_zero, mul_zero, add_zero]`. Establish `hpa : ⇑(GlobalTheory.ThetaSobolevBase.evHom F) ∘ a = GlobalTheory.WeilL2Words.archPart F a` using `rfl`.
+
+Establish `hA1 : GlobalTheory.ThetaSobolevBase.evHom F A = GlobalTheory.WeilL2Words.archPart F a ⬝ᵥ (t • h2) + algebraMap ℝ (mixedEmbedding.mixedSpace F) (1 / 2) * ((t • h1) ⬝ᵥ (t • h2))`. Rewrite using `[hA, map_add, map_mul, RingHom.map_dotProduct, RingHom.map_dotProduct, GlobalTheory.ThetaSobolevBase.evHom_invOf_two, hev, hev, hpa]`. Establish `hAe : A = GlobalTheory.WeilL2Words.arch1 F (GlobalTheory.ThetaSobolevBase.evHom F A)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A.1 = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (InfiniteAdeleRing.ringEquiv_mixedSpace F A.1)`.
+
+Rewrite using `[RingEquiv.symm_apply_apply]`. Rewrite using `[hA2]`. Both sides reduce to the same expression. Establish `hl : ℓ (GlobalTheory.WeilL2Words.archPart F a ⬝ᵥ (t • h2) + algebraMap ℝ (mixedEmbedding.mixedSpace F) (1 / 2) * ((t • h1) ⬝ᵥ (t • h2))) = t * lForm ℓ h2 (GlobalTheory.WeilL2Words.archPart F a) + t ^ 2 * (1 / 2 * ℓ (h1 ⬝ᵥ h2))`. Rewrite using `[← Algebra.smul_def, lForm_apply]`.
+
+Simplify using `only [dotProduct_smul, smul_dotProduct, map_add, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hAe, hℓ, hA1, hfin, harch, hl]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schr_pureA_arch (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ)
     (hℓ : ∀ z, ψ (GlobalTheory.WeilL2Words.arch1 F z) = Complex.exp (2 * Real.pi * Complex.I * ℓ z))
     (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) (t : ℝ)
@@ -162,6 +198,13 @@ theorem schr_pureA_arch (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEm
   rw [hAe, hℓ, hA1, hfin, harch, hl]
   ring
 
+/- English proof (translation)
+Simplify using `only [schr_pureA_arch ψ ℓ hℓ]`. Use `set y := GlobalTheory.WeilL2Words.archPart F a with hy`. Use `set L := lForm ℓ h.2 y with hL`. Use `set c := 1 / 2 * ℓ (h.1 ⬝ᵥ h.2) with hc`. Establish `h0 : HasDerivAt (fun t : ℝ => t * L + t ^ 2 * c) L 0`.
+
+Conclude with `(((hasDerivAt_id (0 : ℝ)).mul_const L).fun_add ((hasDerivAt_pow 2 (0 : ℝ)).mul_const c)).congr_deriv (by simp)`. Establish `h1` using `(h0.ofReal_comp.const_mul (2 * Real.pi * Complex.I)).cexp`. Establish `h2 : HasDerivAt (fun t : ℝ => f (y + t • h.1)) (fderiv ℝ f y h.1) 0` using `(f.differentiableAt (x := y)).hasFDerivAt.hasLineDerivAt _`. Establish `h3` using `(h1.fun_mul h2).mul_const (g (fun i => (a i).2))`. Use `h3.congr_deriv (Eq.symm ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `lOp ℓ h f y * g (fun i => (a i).2) = _`. Rewrite using `[lOp_apply, ← hL]`. Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_schr_pureA_arch (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ)
     (hℓ : ∀ z, ψ (GlobalTheory.WeilL2Words.arch1 F z) = Complex.exp (2 * Real.pi * Complex.I * ℓ z))
     (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F))
@@ -186,6 +229,11 @@ theorem hasDerivAt_schr_pureA_arch (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (�
   simp
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `hd` using `HasDerivAt.fun_sum (u := Finset.univ) fun i _ => hasDerivAt_schr_pureA_arch ψ ℓ hℓ h (f i) (g i) x`. Establish `e : (fun t : ℝ => GlobalTheory.WeilM.schr ψ (GlobalTheory.WeilL2Words.archPair F (t • h)) (GlobalTheory.ThetaSobolevBase.sumPure g f) x) = fun t => ∑ i, GlobalTheory.WeilM.schr ψ (GlobalTheory.WeilL2Words.archPair F (t • h)) (GlobalTheory.WeilM.pureA F (f i) (g i)) x`. Use function extensionality and compare the values at `t`. Simplify using `only [GlobalTheory.WeilM.schr, GlobalTheory.ThetaSobolevBase.sumPure, Finset.sum_apply, Finset.mul_sum]`.
+
+Simplify using `only [GlobalTheory.WeilL2Words.dS]`. Rewrite using `[e, hd.deriv]`. Simplify using `only [GlobalTheory.ThetaSobolevBase.sumPure, Finset.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem dS_sumPure (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ)
     (hℓ : ∀ z, ψ (GlobalTheory.WeilL2Words.arch1 F z) = Complex.exp (2 * Real.pi * Complex.I * ℓ z)) {ι : Type} [Fintype ι]
     (g : ι → (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (f : ι → SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
@@ -203,6 +251,9 @@ theorem dS_sumPure (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEmbeddi
   simp only [GlobalTheory.ThetaSobolevBase.sumPure, Finset.sum_apply]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `ws with`. Consider the case `nil => rfl`. Consider the case `cons h ws ih`. Rewrite using `[GlobalTheory.WeilL2Words.word_cons, ih, dS_sumPure ψ ℓ hℓ]`. Both sides reduce to the same expression.
+-/
 theorem word_sumPure (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ)
     (hℓ : ∀ z, ψ (GlobalTheory.WeilL2Words.arch1 F z) = Complex.exp (2 * Real.pi * Complex.I * ℓ z)) {ι : Type} [Fintype ι]
     (g : ι → (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (f : ι → SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
@@ -217,6 +268,19 @@ theorem word_sumPure (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEmbed
 
 omit [Invertible (2 : AdeleRing (𝓞 F) F)] in
 
+/- English proof (translation)
+Use `haveI hO : OpensMeasurableSpace (κ → mixedEmbedding.mixedSpace F) := inferInstance`. Use `letI : MeasurableSpace (κ → FiniteAdeleRing (𝓞 F) F) := borel _`. Use `haveI : BorelSpace (κ → FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩`. Establish `hpt : ∀ x y, ‖GlobalTheory.ThetaSobolevBase.sumPure g f (GlobalTheory.WeilCont.adeleJoin F x y)‖ₑ ^ 2 ≤ (m : ENNReal) * ∑ i, ‖f i x‖ₑ ^ 2 * ‖g i y‖ₑ ^ 2`. Introduce `x y`.
+
+Establish `e : GlobalTheory.ThetaSobolevBase.sumPure g f (GlobalTheory.WeilCont.adeleJoin F x y) = ∑ i, f i x * g i y`. Simplify using `only [GlobalTheory.ThetaSobolevBase.sumPure, Finset.sum_apply, GlobalTheory.WeilCont.pureA_adeleJoin]`. Rewrite using `[e]`. Establish `hr : ‖∑ i, f i x * g i y‖ ^ 2 ≤ (m : ℝ) * ∑ i, (‖f i x‖ * ‖g i y‖) ^ 2`. Use `(pow_le_pow_left₀ (norm_nonneg _) ((norm_sum_le _ _).trans_eq (Finset.sum_congr rfl fun i _ => norm_mul _ _)) 2).trans ?_` and prove the remaining obligations.
+
+Simplify using `using sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun i => ‖f i x‖ * ‖g i y‖)`. Use `ENNReal.ofReal_le_ofReal hr` as an intermediate fact. Rewrite `this` using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_natCast, ENNReal.ofReal_sum_of_nonneg (fun i _ => by positivity)]`. Use `this.trans_eq ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow (norm_nonneg _), ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm, ofReal_norm_eq_enorm]`. Establish `hfm : ∀ i, Measurable fun x => ‖f i x‖ₑ ^ 2` using `fun i => (f i).continuous.measurable.enorm.pow_const 2`. Establish `hgm : ∀ i, Measurable fun y => ‖g i y‖ₑ ^ 2` using `fun i => (hg i).measurable.enorm.pow_const 2`. Unfold `GlobalTheory.WeilL2Words.l2A`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[lintegral_const_mul _ (Finset.measurable_sum _ fun i _ => (hfm i).mul_const _), lintegral_finset_sum _ fun i _ => (hfm i).mul_const _]`. Repeatedly rewrite using `[lintegral_mul_const _ (hfm _)]`.
+
+Use `_ = _ := by`. Rewrite using `[lintegral_const_mul _ (Finset.measurable_sum _ fun i _ => (hgm i).const_mul _), lintegral_finset_sum _ fun i _ => (hgm i).const_mul _]`. Repeatedly rewrite using `[lintegral_const_mul _ (hgm _)]`.
+-/
 theorem l2A_sumPure_le {m : ℕ} (μ : @Measure (κ → FiniteAdeleRing (𝓞 F) F) (borel _))
     (g : Fin m → (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (hg : ∀ i, Continuous (g i))
     (f : Fin m → SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) :
@@ -263,6 +327,23 @@ end GlobalTheory.FoldrBoundLinearForms
 
 open GlobalTheory.FoldrBoundLinearForms in
 
+/- English proof (translation)
+Introduce `F _ _ _ κ _ ψ hψ Φ hΦ μ hμ n R`. Use `haveI hO : OpensMeasurableSpace (κ → mixedEmbedding.mixedSpace F) := inferInstance`. Use `haveI := GlobalTheory.WeilAdm.HaarSplit.volume_isAddHaar F κ`. Use `haveI : BorelSpace (κ → mixedEmbedding.mixedSpace F) := inferInstance`. Use `haveI : (volume : Measure (κ → mixedEmbedding.mixedSpace F)).HasTemperateGrowth := inferInstance`.
+
+Take `⟨ℓ, -, hℓ⟩` from `hψ`. Take `⟨m, g, f, hg, rfl⟩` from `GlobalTheory.ThetaSobolevBase.exists_sumPure hΦ`. Establish `hgc : ∀ i, Continuous (g i)` using `fun i => (hg i).1.continuous`. Use `letI : MeasurableSpace (κ → FiniteAdeleRing (𝓞 F) F) := borel _`. Use `haveI : BorelSpace (κ → FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩`.
+
+Use `haveI := hμ`. Establish `hG : ∀ i, ∫⁻ y, ‖g i y‖ₑ ^ 2 ∂μ ≠ ⊤`. Introduce `i`. Establish `h` using `((hgc i).memLp_of_hasCompactSupport (p := 2) (μ := μ) (hg i).2).2`. Rewrite `h` using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top (by norm_num) (by norm_num)]`.
+
+Simplify using `using h.ne`. Set `T : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ →ₗ[ℝ] Lp ℂ 2 (volume : Measure (κ → mixedEmbedding.mixedSpace F))` to `{ toFun := fun f => (f.memLp 2 volume).toLp _ map_add' := fun f f' => by`. Rewrite using `[← MemLp.toLp_add]`. Conclude with `MemLp.toLp_congr _ _ (Filter.EventuallyEq.of_eq (by ext x; simp))`. Use the proof step `map_smul' := fun c f => by`.
+
+Rewrite using `[RingHom.id_apply, ← MemLp.toLp_const_smul]`. Conclude with `MemLp.toLp_congr _ _ (Filter.EventuallyEq.of_eq (by ext x; simp)) }`. Use `choose B hB using fun i => exists_bound_foldr_le (lLin ℓ) (f i) R n T`. Use `⟨(m : ENNReal) * ∑ i, ENNReal.ofReal (B i) ^ 2 * ∫⁻ y, ‖g i y‖ₑ ^ 2 ∂μ, ?_, fun ws hl hws => ?_⟩` and prove the remaining obligations. Conclude with `ENNReal.mul_ne_top (ENNReal.natCast_ne_top m) (ENNReal.sum_ne_top.2 fun i _ => ENNReal.mul_ne_top (ENNReal.pow_ne_top ENNReal.ofReal_ne_top) (hG i))`.
+
+Rewrite using `[word_sumPure ψ ℓ hℓ]`. Use `(l2A_sumPure_le μ g hgc _).trans ?_` and prove the remaining obligations. Use `gcongr with i`. Use `set f' := ws.foldr (fun u x => lLin ℓ u x) (f i) with hf'`. Establish `h1` using `hB i ws hl hws`.
+
+Establish `hm` using `f'.memLp 2 (volume : Measure (κ → mixedEmbedding.mixedSpace F))`. Establish `h2 : eLpNorm f' 2 volume ≤ ENNReal.ofReal (B i)`. Establish `h3 : ‖T f'‖ = (eLpNorm f' 2 volume).toReal` using `Lp.norm_toLp _ hm`. Rewrite using `[← ENNReal.ofReal_toReal hm.2.ne, ← h3]`. Conclude with `ENNReal.ofReal_le_ofReal h1`.
+
+Establish `h4 : ∫⁻ x, ‖f' x‖ₑ ^ 2 = eLpNorm f' 2 volume ^ 2`. Use `eLpNorm_nnreal_pow_eq_lintegral (f := (f' : (κ → mixedEmbedding.mixedSpace F) → ℂ)) (μ := volume) (p := 2) (by norm_num)` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[h4]`. Conclude with `pow_le_pow_left' h2 2`.
+-/
 theorem GlobalTheory.WeilL2Words.l2A_word_le : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : AdeleRing (𝓞 F) F)] (κ : Type) [Fintype κ]
     (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ), GlobalTheory.WeilL2Words.IsStdInf F ψ → ∀ Φ ∈ GlobalTheory.WeilM.schA F κ,
     ∀ (μ : @MeasureTheory.Measure (κ → FiniteAdeleRing (𝓞 F) F) (borel _)), @MeasureTheory.Measure.IsAddHaarMeasure _ _ _ (borel _) μ →

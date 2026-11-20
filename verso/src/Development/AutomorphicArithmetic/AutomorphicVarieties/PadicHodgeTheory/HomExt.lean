@@ -5,6 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoRes
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.HV UpperTheory.V.Base IsLocalRing
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing B := IsArtinianRing.of_finite ℚ_[l] B`. Use `haveI : IsNoetherianRing x.range := isNoetherianRing_of_surjective R _ x.rangeRestrict.toRingHom x.rangeRestrict_surjective`. Establish `hfin : ∀ m : MaximalSpectrum B, Module.Finite ℤ_[l] (integralClosure ℤ_[l] (B ⧸ m.asIdeal))` using `fun m => by haveI := m.isMaximal`. Use `letI := Ideal.Quotient.field m.asIdeal`. Conclude with `IsIntegralClosure.finite ℤ_[l] ℚ_[l] (B ⧸ m.asIdeal) _`.
+
+Set `v : x.range →ₐ[ℤ_[l]] B` to `x.range.val.restrictScalars ℤ_[l]`. Establish `hint : ∀ (m : MaximalSpectrum B) (z : x.range), ((Ideal.Quotient.mkₐ ℤ_[l] m.asIdeal).comp v) z ∈ integralClosure ℤ_[l] (B ⧸ m.asIdeal)`. Introduce and unpack `m ⟨_, a, rfl⟩`. Use `haveI := m.isMaximal`. Conclude with `((ptCont (l := l) R (B ⧸ m.asIdeal) ((Ideal.Quotient.mkₐ O m.asIdeal).comp x)).2 ((Ideal.Quotient.maximal_ideal_iff_isField_quotient _).1 m.isMaximal)).1 a`.
+
+Set `g : x.range →ₐ[ℤ_[l]] ∀ m : MaximalSpectrum B, integralClosure ℤ_[l] (B ⧸ m.asIdeal)` to `Pi.algHom _ _ fun m => AlgHom.codRestrict _ _ (hint m)`. Use `haveI : Module.Finite ℤ_[l] g.range := Module.Finite.of_injective g.range.val.toLinearMap Subtype.val_injective`. Use `haveI : Module.Finite ℤ_[l] x.range := by`. Use `Module.finite_of_surjective_of_ker_le_nilradical g.rangeRestrict g.rangeRestrict_surjective ?_ (IsNoetherian.noetherian _)` and prove the remaining obligations. Introduce `z hz`.
+
+Establish `hz' : g z = 0` using `congrArg Subtype.val hz`. Establish `hj : (z : B) ∈ Ideal.jacobson (⊥ : Ideal B)`. Rewrite using `[Ideal.jacobson, Ideal.mem_sInf]`. Introduce and unpack `I ⟨-, hI⟩`. Use `congrArg Subtype.val (congrFun hz' ⟨I, hI⟩)` as an intermediate fact.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this`. Take `⟨n, hn⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := B)`. Use `⟨n, Subtype.ext ?_⟩` and prove the remaining obligations. Use `Ideal.pow_mem_pow hj n` as an intermediate fact. Rewrite `this` using `[hn]`.
+
+Simplify using `using this`. Conclude with `Module.Finite.of_restrictScalars_finite ℤ_[l] O x.range`.
+-/
 private theorem hx_finite {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O]
     {R : Type} [CommRing R] [Algebra O R] [IsCO O R]
@@ -46,6 +59,15 @@ private theorem hx_finite {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDo
     simpa using this
   exact Module.Finite.of_restrictScalars_finite ℤ_[l] O x.range
 
+/- English proof (translation)
+Establish `h1 : (maximalIdeal R).map y ≤ ((maximalIdeal O).map (algebraMap O A)).radical`. Rewrite using `[Ideal.radical_eq_sInf, le_sInf_iff]`. Introduce and unpack `P ⟨hP, hPp⟩`. Establish `hc : (P.comap (algebraMap O A)).IsMaximal`. Rewrite using `[← (maximalIdeal.isMaximal _).eq_of_le (Ideal.IsPrime.ne_top inferInstance) (Ideal.map_le_iff_le_comap.1 hP)]`.
+
+Use `infer_instance`. Use `haveI : P.IsMaximal := Ideal.isMaximal_of_isIntegral_of_isMaximal_comap P hc`. Establish `hi : (y : R →+* A).IsIntegral`. Use `RingHom.IsIntegral.tower_top (algebraMap O R) _ ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_algebraMap]`.
+
+Conclude with `fun a => Algebra.IsIntegral.isIntegral (R := O) a`. Use `eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' (y : R →+* A) hi P)` as an intermediate fact. Rewrite using `[Ideal.map_le_iff_le_comap, ← this]`. Conclude with `le_rfl`. Take `⟨N, hN⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg h1 (Ideal.FG.map (IsNoetherian.noetherian _) _)`.
+
+Use `⟨N, fun a ha => hN ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem y ha`.
+-/
 private theorem hx_pow {O : Type} [CommRing O] [IsLocalRing O] {R : Type} [CommRing R] [Algebra O R] [IsCO O R]
     {A : Type} [CommRing A] [Algebra O A] [Module.Finite O A] (y : R →ₐ[O] A) :
     ∃ N : ℕ, ∀ a ∈ maximalIdeal R ^ N, y a ∈ (maximalIdeal O).map (algebraMap O A) := by
@@ -69,6 +91,19 @@ private theorem hx_pow {O : Type} [CommRing O] [IsLocalRing O] {R : Type} [CommR
   rw [← Ideal.map_pow]
   exact Ideal.mem_map_of_mem y ha
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ _ _ Γ ι _ _ _ _ rbar R _ _ _ ρ hρ B _ _ _ _ _ _ _ f f' h`. Use `choose c hc using IsCO.res_surj (O := O) (R := R)`. Set `S : Set R` to `Set.range fun s : Γ × ι × ι => ρ.hom s.1 s.2.1 s.2.2 - algebraMap O R (c (ρ.hom s.1 s.2.1 s.2.2))`. Establish `hS : S ⊆ maximalIdeal R`. Introduce and unpack `_ ⟨s, rfl⟩`.
+
+Conclude with `hc _`. Establish `hspan` using `co_span O R O (Algebra.ofId O R) S hS fun u u' _ hu => by haveI := (co_res O).2`. Use `hρ _ u u' (Lift.ext (MonoidHom.ext fun g => Matrix.ext fun a b => ?_))` and prove the remaining obligations. Use `hu _ ⟨(g, a, b), rfl⟩` as an intermediate fact. Simplify using `only [map_sub, AlgHom.commutes, sub_left_inj] at this`.
+
+Conclude with `this`. Use `haveI := hx_finite (l := l) f`. Use `haveI := hx_finite (l := l) f'`. Set `A : Subalgebra O B` to `f.range ⊔ f'.range`. Use `haveI : Module.Finite O A := Subalgebra.finite_sup _ _`.
+
+Set `u : R →ₐ[O] A` to `f.codRestrict A fun a => (le_sup_left : f.range ≤ A) ⟨a, rfl⟩`. Set `u' : R →ₐ[O] A` to `f'.codRestrict A fun a => (le_sup_right : f'.range ≤ A) ⟨a, rfl⟩`. Use `haveI : IsHausdorff (maximalIdeal O) A := inferInstance`. Use `haveI : IsHausdorff ((maximalIdeal O).map (algebraMap O A)) A := IsHausdorff.map_algebraMap_iff.2 this`. Take `⟨N, hN⟩` from `hx_pow u`.
+
+Take `⟨N', hN'⟩` from `hx_pow u'`. Establish `key : u = u'`. Use `co_ext O R O A ((maximalIdeal O).map (algebraMap O A)) (Algebra.ofId O R) S hS hspan u u' ⟨N + N', fun x hx => ⟨hN x (Ideal.pow_le_pow_right (Nat.le_add_right _ _) hx), hN' x (Ideal.pow_le_pow_right (Nat.le_add_left _ _) hx)⟩⟩ (Subsingleton.elim _ _) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[map_sub, map_sub, AlgHom.commutes, AlgHom.commutes, sub_left_inj]`.
+
+Conclude with `Subtype.ext (h _ _ _)`. Use extensionality with `a`. Conclude with `congrArg Subtype.val (DFunLike.congr_fun key a)`.
+-/
 theorem UpperTheory.V.Loc.homExt :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] {Γ ι : Type} [Group Γ] [TopologicalSpace Γ] [Fintype ι] [DecidableEq ι] (rbar : Γ →* Matrix ι ι (ResidueField O)) (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (ρ : Lift O rbar R), ρ.Generates → ∀ (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra O B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] O B] [IsScalarTower ℤ_[l] ℚ_[l] B] (f f' : R →ₐ[O] B), (∀ g a b, f (ρ.hom g a b) = f' (ρ.hom g a b)) → f = f' := by
   intro l _ O _ _ _ _ _ _ _ Γ ι _ _ _ _ rbar R _ _ _ ρ hρ B _ _ _ _ _ _ _ f f' h

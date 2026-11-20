@@ -17,6 +17,11 @@ variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensiona
 omit [FiniteDimensional ℝ W] in
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Substitute `h₁ h₂` using the available equality. Rewrite using `[AddSubgroup.relIndex_eq_natAbs_det _ _ h (b₁.restrictScalars ℤ) (b₂.restrictScalars ℤ), Nat.cast_natAbs, Int.cast_abs]`. Use `congr 1`. Rewrite using `[Basis.det_apply, Basis.det_apply, Int.cast_det]`. Reduce the equality to equality of the corresponding arguments.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Basis.toMatrix_apply, Basis.toMatrix_apply]`. Use `b₂.restrictScalars_repr_apply ℤ ⟨b₁.restrictScalars ℤ j, h (Submodule.coe_mem _)⟩ i` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem relIndex_eq_abs_det {ι : Type} [Fintype ι] [DecidableEq ι] (b₁ b₂ : Basis ι ℝ W) {L₁ L₂ : AddSubgroup W}
     (h₁ : (Submodule.span ℤ (Set.range b₁)).toAddSubgroup = L₁)
     (h₂ : (Submodule.span ℤ (Set.range b₂)).toAddSubgroup = L₂) (h : L₁ ≤ L₂) :
@@ -33,6 +38,11 @@ theorem relIndex_eq_abs_det {ι : Type} [Fintype ι] [DecidableEq ι] (b₁ b₂
   refine this.trans ?_
   simp
 
+/- English proof (translation)
+Establish `: DiscreteTopology A.toIntSubmodule` using `hA`. Establish `: IsZLattice ℝ A.toIntSubmodule` using `⟨hsp⟩`. Set `b₀` to `Module.finBasisOfFinrankEq ℤ A.toIntSubmodule (ZLattice.rank ℝ A.toIntSubmodule)`. Use `⟨b₀.ofZLatticeBasis ℝ A.toIntSubmodule, ?_⟩` and prove the remaining obligations. Rewrite using `[Basis.ofZLatticeBasis_span]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_basis_finrank {A : AddSubgroup W} (hA : DiscreteTopology A)
     (hsp : Submodule.span ℝ (A : Set W) = ⊤) :
     ∃ b : Basis (Fin (finrank ℝ W)) ℝ W, (Submodule.span ℤ (Set.range b)).toAddSubgroup = A := by
@@ -43,6 +53,19 @@ theorem exists_basis_finrank {A : AddSubgroup W} (hA : DiscreteTopology A)
   rw [Basis.ofZLatticeBasis_span]
   rfl
 
+/- English proof (translation)
+Establish `hBd : DiscreteTopology B` using `DiscreteTopology.of_subset hA hB`. Establish `hBs : Submodule.span ℝ (B : Set W) = ⊤`. Establish `h1 : (Submodule.span ℝ (B : Set W)).map (f : W →ₗ[ℝ] W) = ⊤`. Rewrite using `[eq_top_iff, ← hsp, Submodule.span_le]`. Introduce `x hxA`.
+
+Take `⟨y, hy, e⟩` from `hx x hxA`. Establish `hm' : (m : ℝ) ≠ 0` using `by exact_mod_cast hm.ne'`. Use `⟨(m : ℝ)⁻¹ • y, Submodule.smul_mem _ _ (Submodule.subset_span hy), ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.coe_coe, map_smul]`. Rewrite using `[← e, ← Nat.cast_smul_eq_nsmul ℝ, smul_smul, inv_mul_cancel₀ hm', one_smul]`.
+
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨y, hy, e⟩` from `(h1.ge (Submodule.mem_top (x := f x)))`. Conclude with `f.injective e ▸ hy`. Take `⟨a, ha⟩` from `exists_basis_finrank hA hsp`.
+
+Take `⟨b, hb⟩` from `exists_basis_finrank hBd hBs`. Establish `hb₁ : (Submodule.span ℤ (Set.range (b.map f))).toAddSubgroup = B.map (f : W →ₗ[ℝ] W).toAddMonoidHom`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `f.surjective y`. Establish `: f x ∈ B.map (f : W →ₗ[ℝ] W).toAddMonoidHom ↔ x ∈ B` using `AddSubgroup.mem_map_iff_mem (f := (f : W →ₗ[ℝ] W).toAddMonoidHom) f.injective`.
+
+Rewrite using `[this, ← hb, Submodule.mem_toAddSubgroup, Submodule.mem_toAddSubgroup, Module.Basis.mem_span_iff_repr_mem, Module.Basis.mem_span_iff_repr_mem]`. Simplify using the standard rewrite rules. Establish `e1` using `relIndex_eq_abs_det b a hb ha hB`. Generalize the expression as in `B.map (f : W →ₗ[ℝ] W).toAddMonoidHom = C at hf hb₁ ⊢`. Establish `e2` using `relIndex_eq_abs_det (b.map f) a hb₁ ha hf`.
+
+Use `⟨fun h0 => ?_, ?_⟩` and prove the remaining obligations. Rewrite `e1` using `[h0, Nat.cast_zero, eq_comm, abs_eq_zero]`. Conclude with `IsUnit.ne_zero (a.isUnit_det b) e1`. Rewrite using `[e2, e1, ← abs_mul, mul_comm, ← a.det_comp (f : W →ₗ[ℝ] W) b, Basis.coe_map]`. Both sides reduce to the same expression.
+-/
 theorem relIndex_map {A B : AddSubgroup W} (hA : DiscreteTopology A)
     (hsp : Submodule.span ℝ (A : Set W) = ⊤) (f : W ≃ₗ[ℝ] W) (hB : B ≤ A)
     (hf : B.map (f : W →ₗ[ℝ] W).toAddMonoidHom ≤ A) {m : ℕ} (hm : 0 < m)
@@ -85,6 +108,17 @@ theorem relIndex_map {A B : AddSubgroup W} (hA : DiscreteTopology A)
 
 end General
 
+/- English proof (translation)
+Use `set g : W →ₗ[ℂ] W := LinearMap.id - (u.symm : W →ₗ[ℂ] W) with hg`. Establish `hgy : ∀ y, g y = y - u.symm y` using `fun y => rfl`. Set `f : W ≃ₗ[ℝ] W` to `(LinearMap.equivOfDetNeZero g hdet).restrictScalars ℝ`. Establish `hfg : (f : W →ₗ[ℝ] W) = g.restrictScalars ℝ` using `by ext1 y; simp [f]`. Establish `hfy : ∀ y, f y = y - u.symm y` using `fun y => congrArg (fun φ => φ y) hfg`.
+
+Establish `hA' : ∀ y, u.symm y ∈ A ↔ y ∈ A₁` using `fun y => by rw [hA, u.apply_symm_apply]`. Establish `hinf : (A₁ ⊓ A).map (f : W →ₗ[ℝ] W).toAddMonoidHom = A.map g.toAddMonoidHom ⊓ A`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hy₁, hy⟩, rfl⟩`.
+
+Use `⟨⟨y, hy, (hfy y).symm⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f y ∈ A`. Rewrite using `[hfy]`. Conclude with `A.sub_mem hy ((hA' y).2 hy₁)`. Introduce and unpack `⟨⟨y, hy, rfl⟩, h2⟩`.
+
+Use `⟨y, ⟨(hA' y).1 ?_, hy⟩, hfy y⟩` and prove the remaining obligations. Establish `h3 : y - u.symm y ∈ A` using `h2`. Simplify using `using A.sub_mem hy h3`. Establish `key` using `relIndex_map (B := A₁ ⊓ A) t₁ s₁ f inf_le_right (hinf.le.trans inf_le_right) hm fun x hxA => by`. Take `⟨y, hy, hy', e⟩` from `hx x hxA`.
+
+Conclude with `⟨y, ⟨(hA' y).1 hy', hy⟩, e.trans (hfy y).symm⟩`. Rewrite `key` using `[hinf, AddSubgroup.inf_relIndex_right, AddSubgroup.inf_relIndex_right, hfg, LinearMap.det_restrictScalars, Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq, abs_of_nonneg (by positivity)]`. Conclude with `key`.
+-/
 theorem relIndex_image_one_sub_complexLinearEquiv {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W]
     {A A₁ : AddSubgroup W} (t₁ : DiscreteTopology A) (s₁ : Submodule.span ℝ (A : Set W) = ⊤)
     (u : W ≃ₗ[ℂ] W) (hA : ∀ x, x ∈ A ↔ u x ∈ A₁)
@@ -121,6 +155,9 @@ theorem relIndex_image_one_sub_complexLinearEquiv {W : Type} [NormedAddCommGroup
     abs_of_nonneg (by positivity)] at key
   exact key
 
+/- English proof (translation)
+Introduce `D cc δ hc N N' A A₁ h₁ _ u _ hA hdet ⟨m, hm, hx⟩`. Take `⟨f₁, s₁, d₁, -⟩` from `klat_facts hc h₁`. Establish `t₁` using `discrete_of_selfDual (isHerm_sesqOf D (tor0 D cc δ) N N') d₁ f₁`. Conclude with `relIndex_image_one_sub_complexLinearEquiv t₁ s₁ u hA hdet hm hx`.
+-/
 theorem relIndex_one_sub : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ) (A A₁ : AddSubgroup (VC D N N')), KLat D (tor0 D cc δ) A → KLat D (tor0 D cc δ) A₁ → ∀ (u : VC D N N' ≃ₗ[ℂ] VC D N N'), (∀ z w, Hf D (tor0 D cc δ) (u z) (u w) = Hf D (tor0 D cc δ) z w) → (∀ x, x ∈ A ↔ u x ∈ A₁) → LinearMap.det (LinearMap.id - (u.symm : VC D N N' →ₗ[ℂ] VC D N N')) ≠ 0 → (∃ m : ℕ, 0 < m ∧ ∀ x ∈ A, ∃ y ∈ A, u.symm y ∈ A ∧ m • x = y - u.symm y) → A₁.relIndex A ≠ 0 ∧ ((((A.map (LinearMap.id - (u.symm : VC D N N' →ₗ[ℂ] VC D N N')).toAddMonoidHom).relIndex A : ℕ) : ℝ)) = (A₁.relIndex A : ℝ) * ‖LinearMap.det (LinearMap.id - (u.symm : VC D N N' →ₗ[ℂ] VC D N N'))‖ ^ 2 := by
   intro D cc δ hc N N' A A₁ h₁ _ u _ hA hdet ⟨m, hm, hx⟩
   obtain ⟨f₁, s₁, d₁, -⟩ := klat_facts hc h₁

@@ -18,11 +18,17 @@ section Comparison₂
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
   {K : Type} [Fintype K] {J : K → Type}
 
+/- English proof (translation)
+Take `⟨c, hchart⟩` from `h.cover (genCpt ξ)`. Conclude with `⟨c, fun k ↦ (Finset.prod_ne_zero_iff.mp hchart.1) k (Finset.mem_univ k)⟩`.
+-/
 theorem exists_chart (y : (Σ k, J k) → Ω) (h : CoordTie ℤ ξ (seg y)) :
     ∃ c : ∀ k, J k, ∀ k, y ⟨k, c k⟩ ≠ 0 := by
   obtain ⟨c, hchart⟩ := h.cover (genCpt ξ)
   exact ⟨c, fun k ↦ (Finset.prod_ne_zero_iff.mp hchart.1) k (Finset.mem_univ k)⟩
 
+/- English proof (translation)
+Establish `hne : seg y c ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ ↦ hc k`. Rewrite using `[eq_top_iff]`. Introduce `a _`. Take `⟨g, hg, u, hu, -, rfl⟩` from `FracChart.exists_eq_div_adjoin X Ω ξ _ (seg y) c h hne a`. Conclude with `div_mem (adjoin_le_ratioField y c hg) (adjoin_le_ratioField y c hu)`.
+-/
 theorem ratioField_eq_top [CharZero Ω] (y : (Σ k, J k) → Ω) (h : CoordTie ℤ ξ (seg y)) (c : ∀ k, J k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) : ratioField y c = ⊤ := by
   have hne : seg y c ≠ 0 := Finset.prod_ne_zero_iff.mpr fun k _ ↦ hc k
@@ -31,6 +37,15 @@ theorem ratioField_eq_top [CharZero Ω] (y : (Σ k, J k) → Ω) (h : CoordTie �
   obtain ⟨g, hg, u, hu, -, rfl⟩ := FracChart.exists_eq_div_adjoin X Ω ξ _ (seg y) c h hne a
   exact div_mem (adjoin_le_ratioField y c hg) (adjoin_le_ratioField y c hu)
 
+/- English proof (translation)
+Establish `hb : blockFnField y = ⊤` using `by rw [← Cmp.ratioField_eq_blockFnField y c hc, htop]`. Establish `htr : Algebra.trdeg ℤ (blockFnField y) = Algebra.trdeg ℤ Ω`. Rewrite using `[hb]`. Conclude with `(IntermediateField.topEquiv (F := ℚ) (E := Ω)).toRingEquiv.toIntAlgEquiv.trdeg_eq`. Rewrite `hdim` using `[Cmp.ringKrullDim_coord y c hc, htr]`.
+
+Establish `h1 : (Algebra.trdeg ℤ Ω + (Fintype.card K : Cardinal)).toENat + 1 = ((d + 1 + Fintype.card K : ℕ) : ℕ∞)` using `WithBot.coe_injective hdim`. Establish `h2 : (Algebra.trdeg ℤ Ω + (Fintype.card K : Cardinal)).toENat = ((d + Fintype.card K : ℕ) : ℕ∞)`. Generalize the expression as in `(Algebra.trdeg ℤ Ω + (Fintype.card K : Cardinal)).toENat = e at h1`. Consider the cases of `e using ENat.recTopCoe with`. Consider the case `top => exact absurd h1 (by rw [top_add]; exact (ENat.coe_ne_top _).symm)`.
+
+Consider the case `coe e`. Establish `h3 : e + 1 = d + 1 + Fintype.card K` using `by exact_mod_cast h1`. Establish `h4 : e = d + Fintype.card K` using `by omega`. Rewrite using `[h4]`. Establish `h5 : Algebra.trdeg ℤ Ω + (Fintype.card K : Cardinal) = ((d + Fintype.card K : ℕ) : Cardinal)` using `Cardinal.toENat_eq_nat.mp h2`.
+
+Rewrite `h5` using `[Nat.cast_add]`. Conclude with `(Cardinal.add_nat_inj _).mp h5`.
+-/
 theorem trdeg_eq_of_ringKrullDim [∀ k, Fintype (J k)] [CharZero Ω] (y : (Σ k, J k) → Ω) (c : ∀ k, J k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (htop : ratioField y c = ⊤) (d : ℕ)
     (hdim : ringKrullDim (MRing J ⧸ mCoordIdeal y) = ((d + 1 + Fintype.card K : ℕ) : WithBot ℕ∞)) :
@@ -58,6 +73,11 @@ theorem trdeg_eq_of_ringKrullDim [∀ k, Fintype (J k)] [CharZero Ω] (y : (Σ k
 
 end Comparison₂
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 bW bO n m φ d _ hT hA`. Take `⟨c₀, hc₀⟩` from `exists_chart 𝔐.ξ x₀ 𝔐.tie`. Take `⟨cb, hcb⟩` from `exists_chart 𝔐.ξ _ hT`. Establish `hd : Algebra.trdeg ℤ Ω = d` using `trdeg_eq_of_ringKrullDim x₀ c₀ hc₀ (ratioField_eq_top 𝔐.ξ x₀ 𝔐.tie c₀ hc₀) d hA.2.2.2`. Take `⟨k₀⟩` from `hA.1`.
+
+Establish `hK : Nonempty (NonPluckerBlocks (blkF (CMType H) D.p D.q K₀))`. Use `⟨⟨.inl k₀, fun r ↦ ?_⟩⟩` and prove the remaining obligations. Unfold `blkF`. Apply the tactic sequence `split <;> simp`. Conclude with `isArithVar_of_ratioField_eq_top _ cb hcb (ratioField_eq_top 𝔐.ξ _ hT cb hcb) d hd`.
+-/
 theorem isArithVar_xb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (K₀ : Type) [Fintype K₀] (J₀ : K₀ → Type) [∀ k, Fintype (J₀ k)] (x₀ : (Σ k, J₀ k) → Ω) (𝔐 : HodgeCpt Y S x₀) (bW : WBases 𝔐) (bO : OmBases 𝔐) (n m : CMType H ⊕ CMType H → ℕ) (φ : ∀ s, Fin (n s) → Module.Dual Ω (EE 𝔐)) (d : ℕ), FormsOK 𝔐 bW bO m φ → CoordTie ℤ 𝔐.ξ (seg (xb (p := D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀)) → IsArithVar (mCoordIdeal x₀) (d + 1) → IsArithVar (mCoordIdeal (xb (p := D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀)) (d + 1) := by
   intro E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 bW bO n m φ d _ hT hA
   obtain ⟨c₀, hc₀⟩ := exists_chart 𝔐.ξ x₀ 𝔐.tie

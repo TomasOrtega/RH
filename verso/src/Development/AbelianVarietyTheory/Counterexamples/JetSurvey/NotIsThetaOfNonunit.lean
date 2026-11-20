@@ -17,6 +17,31 @@ namespace GlobalTheory.ThetaSectionTest
 
 open GlobalTheory.FieldBaseChange GlobalTheory.ConstFam GlobalTheory.IndivisibleSection GlobalTheory.ThetaUnit
 
+/- English proof (translation)
+Take `⟨U, hU, b, hb⟩` from `hS (Spec (CommRingCat.of R)) D.P 1 le_rfl (closedPoint R)`. Take `rfl : U = ⊤` from `eq_top_of_closedPoint_mem U hU`. Set `t : Spec (CommRingCat.of (ResidueField R)) ⟶ (overRes (T` to `baseOver (Spec (CommRingCat.of R))) ⊤).left := spMap (residue R) ≫ (Spec (CommRingCat.of R)).topIso.inv`. Establish `ht : t ≫ (overRes (T` using `baseOver (Spec (CommRingCat.of R))) ⊤).hom = spMap (residue R) := by show (spMap (residue R) ≫ (Spec (CommRingCat.of R)).topIso.inv) ≫ (Scheme.Opens.ι ⊤ ≫ 𝟙 _) = _`. Rewrite using `[Category.comp_id, Category.assoc]`.
+
+Conclude with `(congrArg (spMap (residue R) ≫ ·) (Spec (CommRingCat.of R)).topIso.inv_hom_id).trans (Category.comp_id _)`. Establish `pull : ∀ i, ∃ b' : LB.Sec (LPow D.P.A D.P.L (1 : ℕ) (baseAt t)), IsPullSec D.P.A D.P.L (1 : ℕ) (homAt t ▷ D.P.A) (whiskerRight_snd (homAt t) D.P.A) (b i) b'` using `fun i => by`. Take `⟨s', hs'⟩` from `exists_pull_chart (K := Fin 1) (b i) (homAt t ▷ D.P.A).left (fun _ => (snd (baseAt t) D.P.A).left) (fun _ => congrArg CommaMorphism.left (whiskerRight_snd (homAt t) D.P.A))`. Conclude with `⟨s', fun j => hs' j _⟩`. Use `choose b' hb' using pull`.
+
+Take `⟨hli, -⟩` from `hb _ t b' hb'`. Establish `hq : Unique (Fin (1 ^ D.P.g))` using `by rw [one_pow]; infer_instance`. Establish `hnt : Nontrivial Γ((baseAt t).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of (ResidueField R))).commRingCatIsoToRingEquiv.toEquiv.nontrivial`. Establish `hne` using `hli.ne_zero hq.default`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, (b' hq.default).f j ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne (Subtype.ext (funext h))`. Use `D.P.isAb.smooth` as an intermediate fact. Establish `: IsReduced (baseAt t).left` using `inferInstanceAs (IsReduced (Spec (CommRingCat.of (ResidueField R))))`.
+
+Establish `hr : IsReduced (baseAt t ⊗ D.P.A).left` using `GlobalTheory.isReduced_of_smooth_of_isReduced (pullback.fst (baseAt t).hom D.P.A.hom)`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, y ∈ (baseAt t ⊗ D.P.A).left.basicOpen ((b' hq.default).f j) := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hj ((basicOpen_eq_bot_iff _).1 (eq_bot_iff.2 fun y hy => (h y hy).elim))`.
+
+Set `W` to `overRes (T := baseOver (Spec (CommRingCat.of R))) ⊤`. Set `u : D.P.A ⟶ W` to `Over.homMk (D.P.A.hom ≫ (Spec (CommRingCat.of R)).topIso.inv) (by show (_ ≫ (Spec (CommRingCat.of R)).topIso.inv) ≫ (Scheme.Opens.ι ⊤ ≫ 𝟙 _) = _`. Rewrite using `[Category.comp_id, Category.assoc]`. Conclude with `(congrArg (D.P.A.hom ≫ ·) (Spec (CommRingCat.of R)).topIso.inv_hom_id).trans (Category.comp_id _))`. Establish `hmono : Mono W.hom` using `by show Mono (Scheme.Opens.ι ⊤ ≫ 𝟙 _) infer_instance`.
+
+Establish `hu : snd (baseAt t) D.P.A ≫ lift u (𝟙 D.P.A) = homAt t ▷ D.P.A`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Use `Over.OverMorphism.ext ((cancel_mono W.hom).1 ?_)` and prove the remaining obligations. Rewrite using `[Over.w, Over.w]`. Rewrite using `[Category.assoc, lift_snd, Category.comp_id]`.
+
+Conclude with `(whiskerRight_snd (homAt t) D.P.A).symm`. Take `⟨th, hth⟩` from `exists_pull_val D.P.isLB (b hq.default) (lift u (𝟙 D.P.A)).left (φ' := D.famφB 0) (ε' := DegPre.famε 1) (fun U _ h => by`. Rewrite using `[prod_fam_zero]`. Establish `e : (lift u (𝟙 D.P.A)).left ≫ (snd W D.P.A).left = 𝟙 _` using `congrArg CommaMorphism.left (lift_snd u (𝟙 D.P.A))`. Simplify using `only [Fin.prod_univ_one]`.
+
+Use `erw [e]`. Use the proof step `simp)`. Use `⟨th, (snd (baseAt t) D.P.A).left y, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (snd (baseAt t) D.P.A).left ≫ D.P.A.hom = (fst (baseAt t) D.P.A).left ≫ spMap (residue R)`. Rewrite using `[Over.w, ← ht]`.
+
+Conclude with `(Over.w (fst (baseAt t) D.P.A)).symm`. Use `(congrArg (fun q => q y) e).trans ?_` and prove the remaining obligations. Conclude with `PrimeSpectrum.comap_residue R _`. Take `⟨J, hJ⟩` from `exists_good' D.P.isLB y`. Establish `h₁` using `hth _ (snd (baseAt t) D.P.A).left y J hJ`.
+
+Establish `e : (snd (baseAt t) D.P.A).left ≫ (lift u (𝟙 D.P.A)).left = (homAt t ▷ D.P.A).left` using `congrArg CommaMorphism.left hu`. Rewrite `h₁` using `[e]`. Establish `hm : (homAt t ▷ D.P.A).left y ∈ nonzeroLocus (b hq.default)`. Rewrite `hy` using `[hb' hq.default j, Scheme.basicOpen_res, ← Scheme.preimage_basicOpen]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, hy.2⟩`.
+
+Establish `hu'` using `isUnit_sval (b hq.default) _ y hm hJ`. Rewrite `hu'` using `[← h₁]`. Conclude with `(SectionBaseChange.mem_nonzeroLocus th _).2 ⟨_, hJ.mem _ _, (isUnit_gs_iff _ y _ (hJ.mem _ _) _).1 hu'⟩`.
+-/
 theorem exists_nonzero_closed (hS : SecBaseChangeSt) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     [IsNoetherianRing R] (D : DegPre R) :
     ∃ th : D.SecB 1 0, ∃ x, D.P.A.hom x = closedPoint R ∧ x ∈ nonzeroLocus th := by
@@ -93,6 +118,19 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ideal R} {D :
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
   [IsCommMonObj G]
 
+/- English proof (translation)
+Take `⟨sK, hsK⟩` from `exists_pull_val U.LG.isLB ϑ (pullback.fst G.hom (jK R)) (φ' := fun _ : Fin 1 => pullback.fst G.hom (jK R)) (ε' := fun _ => ((1 : ℕ) : ℤ)) (fun U _ h => by simp only [Category.comp_id])`. Take `⟨E, hE, -⟩` from `(U.expand 1 le_rfl).1 sK`. Take `⟨g, hg, hgE⟩` from `IntegralExpansionLocal.main R I hI D A G U.toUnifPre 1 ϑ sK (SectionScalarValuation.secScal_of_sval U.LG.isLB fun y J hJ => (hsK _ _ y J hJ).symm) E hE`. Take `⟨f, hf, hgen⟩` from `hϑ 0`. Take `⟨th, x, hx, hn⟩` from `exists_nonzero_closed hS D.toPre`.
+
+Take `⟨y, rfl⟩` from `exists_group_pt hI U.toUnifPre 0 x hx`. Take `⟨J, hJ⟩` from `exists_good' D.toPre.P.isLB y`. Take `⟨c, hc, -⟩` from `hgen th`. Establish `hfu : IsUnit (sval (f 0) (pGl U.toUnifPre 0) y J)`. Use `isUnit_sval th _ y hn hJ` as an intermediate fact.
+
+Rewrite `this` using `[sval_of_secIsMul hc _ y hJ]`. Conclude with `isUnit_of_mul_isUnit_right this`. Take `⟨a, ha, -⟩` from `hgen (g 0)`. Set `g' : ∀ α, SecBMod D.toPre 1 α` to `g`. Set `f' : ∀ α, SecBMod D.toPre 1 α` to `f`.
+
+Set `θ : SecOver G.hom (LB.LinComb U.LG.L (K` to `Fin 1) (fun _ => 𝟙 G.left) (fun _ => ((1 : ℕ) : ℤ))) := ϑ`. Establish `hE₀` using `expandsAt_add U.toUnifPre (σ := θ) (f := g') (hg 0) (expandsAt_smul U.toUnifPre (-1 : R) (σ := θ) (f := f') hf)`. Establish `h₁` using `WeightDvd.dvd_on_group U.toUnifPre 0 1 0 _ θ _ ((secIsMul_iff _ _ _ _).2 (by rw [neg_one_smul, add_neg_cancel, zero_smul])) hE₀ 0 y J hJ`. Establish `h₂ : (g' + (-1 : R) • f') 0 = (a - 1) • f' 0`. Rewrite using `[Pi.add_apply, Pi.smul_apply, sub_smul, sub_eq_add_neg, neg_smul, ← (secIsMul_iff _ _ (g' 0) (f' 0)).1 ha]`.
+
+Rewrite `h₁` using `[h₂, GermDiv.cst_zero, zero_dvd_iff, sval_of_secIsMul ((secIsMul_iff _ _ _ _).2 rfl) _ y hJ, hfu.mul_left_eq_zero, cst_sub, cst_one', sub_eq_zero]`. Establish `hgu : IsUnit (sval (g 0) (pGl U.toUnifPre 0) y J)`. Rewrite using `[sval_of_secIsMul ha _ y hJ, h₁, _root_.one_mul]`. Conclude with `hfu`. Establish `h0 : ∃ x, D.toPre.P.A.hom x = closedPoint R ∧ x ∈ nonzeroLocus (g 0)` using `⟨_, hx, (SectionBaseChange.mem_nonzeroLocus _ _).2 ⟨_, hJ.mem _ _, (isUnit_gs_iff _ y _ (hJ.mem _ _) _).1 hgu⟩⟩`.
+
+Use `⟨exists_mem_nonzeroLocus hI U.toUnifPre (hg 0) h0 (LevelOneIdeal.main hG R I D E g hgE), fun σ => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `exists_eq_smul_group hG hI U (σ := θ) (f := g') hg (fun α => (secScal_one_iff D.toPre E α _).1 (hgE α)) (exists_eq_smul hS D.toPre _ h0) σ`. Conclude with `⟨b, (secIsMul_iff _ _ _ _).2 hb⟩`.
+-/
 theorem nonzero_and_spans (hG : GlobalFnsSt) (hS : SecBaseChangeSt) [IsNoetherianRing R] (hI : I ≤ maximalIdeal R)
     (U : Unif I D A G) {ϑ : H0 U.LG.L 1} (hϑ : IsTheta U ϑ) :
     (∃ g, G.hom g = closedPoint R ∧ g ∈ nonzeroLocus ϑ) ∧ ∀ σ : H0 U.LG.L 1, ∃ b : R, SecIsMul G.hom b σ ϑ := by
@@ -131,6 +169,13 @@ theorem nonzero_and_spans (hG : GlobalFnsSt) (hS : SecBaseChangeSt) [IsNoetheria
     (fun α => (secScal_one_iff D.toPre E α _).1 (hgE α)) (exists_eq_smul hS D.toPre _ h0) σ
   exact ⟨b, (secIsMul_iff _ _ _ _).2 hb⟩
 
+/- English proof (translation)
+Take `⟨⟨g, hg, hn⟩, hsp⟩` from `nonzero_and_spans hG hS hI U hϑ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`. Take `⟨J, hJ⟩` from `exists_good' U.LG.isLB g`. Establish `e` using `sval_of_secIsMul hu (𝟙 _) g hJ`.
+
+Establish `hc : IsUnit (cst (𝟙 _ ≫ G.hom) g u.val)` using `IsUnit.of_mul_eq_one (cst (𝟙 _ ≫ G.hom) g u⁻¹.val) (by rw [← cst_mul', u.mul_inv, cst_one'])`. Conclude with `nonzeroOnSpecial_of_mem U σ g hg ((SectionBaseChange.mem_nonzeroLocus σ _).2 ⟨_, hJ.mem _ (𝟙 _), (e ▸ hc.mul (isUnit_sval ϑ (𝟙 _) g hn hJ) : IsUnit (sval σ _ g J))⟩)`. Introduce `h`. Take `⟨b, hb⟩` from `hsp σ`. Take `⟨u, rfl⟩` from `isUnit_of_nonzeroOnSpecial U hb h`.
+
+Conclude with `⟨u, hb⟩`.
+-/
 theorem unit_mul_iff_nonzero (hG : GlobalFnsSt) (hS : SecBaseChangeSt) [IsNoetherianRing R] (hI : I ≤ maximalIdeal R)
     (U : Unif I D A G) {ϑ : H0 U.LG.L 1} (hϑ : IsTheta U ϑ) (σ : H0 U.LG.L 1) :
     (∃ u : Rˣ, SecIsMul G.hom (u : R) σ ϑ) ↔ NonzeroOnSpecial U σ := by
@@ -148,6 +193,15 @@ theorem unit_mul_iff_nonzero (hG : GlobalFnsSt) (hS : SecBaseChangeSt) [IsNoethe
     obtain ⟨u, rfl⟩ := isUnit_of_nonzeroOnSpecial U hb h
     exact ⟨u, hb⟩
 
+/- English proof (translation)
+Establish `h₁ : NonzeroOnSpecial U ϑ` using `(unit_mul_iff_nonzero hG hS hI U hϑ ϑ).1 ⟨1, (secIsMul_iff _ _ _ _).2 (one_smul R _).symm⟩`. Take `⟨-, hsp⟩` from `nonzero_and_spans hG hS hI U hϑ`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨b, hb⟩` from `h ϑ`.
+
+Take `⟨c, hc⟩` from `hsp σ`. Establish `hu` using `isUnit_of_nonzeroOnSpecial U (IntegralExpansion.SecIsMul.comp hb hc) h₁`. Take `⟨u, rfl⟩` from `isUnit_of_mul_isUnit_right hu`. Conclude with `(unit_mul_iff_nonzero hG hS hI U hϑ σ).1 ⟨u, hc⟩`. Introduce `h s`.
+
+Take `⟨u, hu⟩` from `(unit_mul_iff_nonzero hG hS hI U hϑ σ).2 h`. Take `⟨b, hb⟩` from `hsp s`. Use `⟨b * u⁻¹.val, (secIsMul_iff _ _ _ _).2 ?_⟩` and prove the remaining obligations. Use `((secIsMul_iff _ _ _ _).1 hb).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(congrArg _ ((secIsMul_iff _ _ _ _).1 hu)).trans ((smul_smul _ _ _).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[Units.inv_mul_cancel_right]`.
+-/
 theorem spans_iff_nonzero (hG : GlobalFnsSt) (hS : SecBaseChangeSt) [IsNoetherianRing R] (hI : I ≤ maximalIdeal R)
     (U : Unif I D A G) {ϑ : H0 U.LG.L 1} (hϑ : IsTheta U ϑ) (σ : H0 U.LG.L 1) :
     (∀ s : H0 U.LG.L 1, ∃ b : R, SecIsMul G.hom b s σ) ↔ NonzeroOnSpecial U σ := by
@@ -169,6 +223,15 @@ theorem spans_iff_nonzero (hG : GlobalFnsSt) (hS : SecBaseChangeSt) [IsNoetheria
     refine (congrArg _ ((secIsMul_iff _ _ _ _).1 hu)).trans ((smul_smul _ _ _).trans ?_)
     rw [Units.inv_mul_cancel_right]
 
+/- English proof (translation)
+Establish `hG` using `hLaws.globalFns`. Take `⟨th, hth⟩` from `exists_nonzero_closed hLaws.secBaseChange D.toPre`. Take `⟨Φ, hΦ, -⟩` from `FamFree.exists_fam_single (F := FractionRing V) hG D.tau_bimult le_rfl 0 (resF D.toPre (FractionRing V) 1 0 th)`. Establish `h₀` using `(secScal_one_iff D.toPre Φ 0 th).2 hΦ.symm`. Establish `ex : ∀ α, ∃ g : D.toPre.SecB 1 α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε 1) (Φ.s α) (D.toPre.famφB α) (DegPre.famε 1) g (DegPre.prB D.toPre (FractionRing V)).left 1` using `fun α => by`.
+
+Distinguish the cases in `hα : α = 0`. Substitute `hα` using the available equality. Conclude with `⟨th, h₀⟩`. Take `⟨a, -, g, g', -, h₂⟩` from `exists_integral_term hG D Φ th h₀ α hα`. Conclude with `⟨g, h₂⟩`.
+
+Use `choose fam hfam using ex`. Take `rfl : fam 0 = th` from `resF_injective D.toPre (FractionRing V) 1 0 (((secScal_one_iff D.toPre Φ 0 _).1 (hfam 0)).trans hΦ)`. Take `⟨σ, hσ⟩` from `IntegralExpansion.main hLaws V D A G U 1 le_rfl Φ fam hfam`. Take `⟨g, hg, hn⟩` from `exists_mem_nonzeroLocus le_rfl U.toUnifPre (hσ 0) hth (LevelOneIdeal.main hG V _ D Φ fam hfam)`. Establish `h` using `ThetaLocalDomain.main hLaws V _ le_rfl D A G U σ (nonzeroOnSpecial_of_mem U σ g hg hn)`.
+
+Conclude with `⟨σ, h, (nonzero_and_spans hG hLaws.secBaseChange le_rfl U h).2⟩`.
+-/
 theorem exists_isTheta_of_dvr (hLaws : Laws) (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     (D : DegData V (maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V))))
     (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] (U : Unif (maximalIdeal V) D A G) :

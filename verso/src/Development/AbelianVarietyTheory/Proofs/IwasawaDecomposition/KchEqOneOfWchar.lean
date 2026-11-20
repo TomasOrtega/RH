@@ -8,6 +8,9 @@ open scoped Matrix TensorProduct
 
 namespace GlobalTheory.KeyFourth
 
+/- English proof (translation)
+Rewrite using `[kch_eq, mul_inv_eq_one]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [wchar, Fintype.prod_option, Formalism.L2.Pj.ex, pow_zero, pow_one, one_mul, Finset.prod_const_one, mul_one] at h`. Rewrite using `[Units.coe_prod, Units.val_pow_eq_pow_val]`. Conclude with `h`.
+-/
 theorem kch_eq_one_of_wchar {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {S : Type} [CommRing S] (t : Ix Dw → Sˣ)
     (h : wchar (Formalism.L2.Pj.ex Dw (fun _ => 1) 0) t = wchar (Formalism.L2.Pj.ex Dw (fun _ => 0) 2) t) : kch t = 1 := by
@@ -18,6 +21,19 @@ theorem kch_eq_one_of_wchar {E : Type} [Field E] [NumberField E] [IsCMField E] {
   rw [Units.coe_prod, Units.val_pow_eq_pow_val]
   exact h
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ g e F r M un hσ hM hN hun y v v' hv hv'`. Take `⟨k, x, t, ht, rfl⟩` from `hv`. Take `⟨k', x', t', ht', rfl⟩` from `hv'`. Take `⟨-, hmul, hinv, huniq⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (CAt σ)`. Establish `h0 : FrBor (t * t'⁻¹) (un k x) (un k' x')` using `hmul _ _ _ _ _ ht (hinv _ _ _ ht')`.
+
+Take `⟨γ, hγ, b, hb, heq⟩` from `(fibre_unfOf e F M un hun hM (GlobalTheory.FibreFlag.fibTri E H Dw l Xo c σ g e F r M hσ hM hN) k k' x x').1 ⟨_, h0⟩`. Take `⟨rfl, h2⟩` from `Sigma.mk.inj_iff.1 heq`. Establish `h3 : x'.1 = rmul (lact γ x.1) b` using `eq_of_heq h2`. Establish `hxg : lact γ x.1 ∈ (M.X k').dom` using `(hM.domStab k' x.1 x.2).2 γ hγ`. Take `⟨t1, ht1, hw1⟩` from `hun.2.2.1 k' γ hγ x hxg`.
+
+Establish `hxb : rmul (⟨lact γ x.1, hxg⟩ : (M.X k').dom).1 b ∈ (M.X k').dom`. Establish `hx2` using `x'.2`. Rewrite `hx2` using `[h3]`. Conclude with `hx2`. Take `⟨t2, ht2, hw2⟩` from `hun.2.1 k' ⟨lact γ x.1, hxg⟩ b hb hxb`.
+
+Establish `hx' : (⟨rmul (lact γ x.1) b, hxb⟩ : (M.X k').dom) = x'` using `Subtype.ext h3.symm`. Rewrite `ht2` using `[hx']`. Establish `h12 : t * t'⁻¹ = t1 * t2` using `huniq _ _ _ _ h0 (hmul _ _ _ _ _ ht1 ht2)`. Establish `d1 : Formalism.L2.Pj.Dom (fun _ : (E →+* ℂ) × ℕ => 1) 0` using `⟨fun _ => antitone_const, by decide⟩`. Establish `d2 : Formalism.L2.Pj.Dom (fun _ : (E →+* ℂ) × ℕ => 0) 2` using `⟨fun _ => antitone_const, by decide⟩`.
+
+Establish `k1 : kch t1 = 1` using `kch_eq_one_of_wchar t1 ((hw1 _ _ d1).trans (hw1 _ _ d2).symm)`. Establish `hla : Formalism.L2.PjFree.laU (unfOf e F M un) (fun _ => 1) 0 k' = Formalism.L2.PjFree.laU (unfOf e F M un) (fun _ => 0) 2 k'`. Use function extensionality and compare the values at `τ j`. Simplify using `only [Formalism.L2.PjFree.laU]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `k2 : kch t2 = 1` using `kch_eq_one_of_wchar t2 ((hw2 _ _ d1).trans ((congrArg (fun la => bchar la b) hla).trans (hw2 _ _ d2).symm))`. Establish `hk` using `congrArg kch h12`. Rewrite `hk` using `[kch_mul, kch_mul, kch_inv, k1, k2, one_mul, mul_inv_eq_one]`. Rewrite using `[hk]`.
+-/
 theorem rootVal_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => Formalism.L2.PjFree.relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)), Formalism.L2.PjFree.GoodEmb c σ → ModelBase M → NegXi M → FramesOK e F M un → ∀ (y : FrPt Xo c (CAt σ)) (v v' : ℂ), RootVal (unfOf e F M un) y v → RootVal (unfOf e F M un) y v' → v = v' := by
   intro E _ _ _ H Dw l Xo c σ g e F r M un hσ hM hN hun y v v' hv hv'
   obtain ⟨k, x, t, ht, rfl⟩ := hv

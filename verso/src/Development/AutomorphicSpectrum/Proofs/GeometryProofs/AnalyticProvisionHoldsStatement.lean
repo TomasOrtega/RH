@@ -24,5 +24,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Glo
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Link.prov_an | exact GlobalTheory.CompanionTheory.Ar.Link.prov_an | (intros; apply GlobalTheory.CompanionTheory.Ar.Link.prov_an <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.analytic_provision_holds : Prov.An := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Link.prov_an | exact GlobalTheory.CompanionTheory.Ar.Link.prov_an | (intros; apply GlobalTheory.CompanionTheory.Ar.Link.prov_an <;> assumption)

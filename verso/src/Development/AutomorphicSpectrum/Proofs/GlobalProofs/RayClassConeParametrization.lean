@@ -12,6 +12,9 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hw : w.IsReal` using `IsTotallyReal.isReal w`. Use `h (InfinitePlace.embedding_of_isReal hw)` as an intermediate fact. Introduce and unpack `rfl`. Simplify using `at this`.
+-/
 theorem TotPos.ne_zero [IsTotallyReal F] {x : F} (h : TotPos F x) : x ≠ 0 := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
   have hw : w.IsReal := IsTotallyReal.isReal w
@@ -21,6 +24,23 @@ theorem TotPos.ne_zero [IsTotallyReal F] {x : F} (h : TotPos F x) : x ≠ 0 := b
 
 def RayPoint (𝔣 𝔟 : Ideal (𝓞 F)) (ξ : 𝓞 F) : Prop := ξ ∈ 𝔟 ∧ ξ - 1 ∈ 𝔣 ∧ TotPos F (ξ : F)
 
+/- English proof (translation)
+Establish `h0 : 𝔞 ∈ nonZeroDivisors (Ideal (𝓞 F))` using `mem_nonZeroDivisors_of_ne_zero h𝔞.1`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh, hp⟩ : ∃ h : ℕ, 0 < h ∧ (𝔞 ^ h).IsPrincipal := by`. Use `⟨Fintype.card (ClassGroup (𝓞 F)), Fintype.card_pos, ?_⟩` and prove the remaining obligations. Establish `hmem : 𝔞 ^ Fintype.card (ClassGroup (𝓞 F)) ∈ nonZeroDivisors (Ideal (𝓞 F))` using `mem_nonZeroDivisors_of_ne_zero (pow_ne_zero _ h𝔞.1)`. Establish `h1 : ClassGroup.mk0 ⟨𝔞 ^ Fintype.card (ClassGroup (𝓞 F)), hmem⟩ = 1`.
+
+Establish `e : (⟨𝔞 ^ Fintype.card (ClassGroup (𝓞 F)), hmem⟩ : nonZeroDivisors (Ideal (𝓞 F))) = ⟨𝔞, h0⟩ ^ Fintype.card (ClassGroup (𝓞 F))` using `Subtype.ext (by simp)`. Rewrite using `[e, map_pow, pow_card_eq_one]`. Conclude with `(ClassGroup.mk0_eq_one_iff hmem).1 h1`. Take `⟨α, hα⟩` from `hp.principal`. Establish `hα' : 𝔞 ^ h = Ideal.span {α}` using `hα`.
+
+Establish `hne : ∀ n : ℕ, 𝔞 ^ n ≠ ⊥` using `fun n => pow_ne_zero n h𝔞.1`. Establish `hα0 : α ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne h (by rw [hα']; simp)`. Establish `hco : IsCoprime 𝔞 𝔣` using `Ideal.isCoprime_iff_sup_eq.2 h𝔞.2`.
+
+Establish `hsup : Ideal.span {α} ⊔ 𝔣 = ⊤` using `by rw [← hα']; exact Ideal.isCoprime_iff_sup_eq.1 hco.pow_left`. Take `⟨a, b, hb, hab⟩` from `Ideal.mem_span_singleton_sup.1 (hsup ▸ Submodule.mem_top : (1 : 𝓞 F) ∈ Ideal.span {α} ⊔ 𝔣)`. Use `haveI : Finite (𝓞 F ⧸ 𝔣) := Ideal.finiteQuotientOfFreeOfNeBot 𝔣 h𝔣`. Establish `hu : IsUnit (Ideal.Quotient.mk 𝔣 α)`. Use `IsUnit.of_mul_eq_one (Ideal.Quotient.mk 𝔣 a) ?_` and prove the remaining obligations.
+
+Establish `: Ideal.Quotient.mk 𝔣 b = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hb`. Rewrite using `[mul_comm, ← map_mul, ← map_one (Ideal.Quotient.mk 𝔣), ← hab, map_add, this, add_zero]`. Take `⟨u, hu⟩` from `hu`. Use `set e := Nat.card (𝓞 F ⧸ 𝔣)ˣ with he`. Establish `he0 : 0 < e` using `Nat.card_pos`.
+
+Establish `hpow : Ideal.Quotient.mk 𝔣 (α ^ (2 * e)) = 1`. Rewrite using `[map_pow, ← hu, pow_mul', ← Units.val_pow_eq_pow_val, pow_card_eq_one']`. Simplify using the standard rewrite rules. Use `⟨𝔞 ^ (h * (2 * e) - 1), α ^ (2 * e), ⟨hne _, ?_⟩, pow_ne_zero _ hα0, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.isCoprime_iff_sup_eq.1 hco.pow_left`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, hpow, map_one, sub_self]`. Introduce `σ`. Establish `: σ ((α : F)) ≠ 0` using `(map_ne_zero σ).2 (by simpa using hα0)`. Establish `e1 : ((α ^ (2 * e) : 𝓞 F) : F) = (α : F) ^ (2 * e)` using `rfl`. Rewrite using `[e1, map_pow]`.
+
+Conclude with `(even_two_mul e).pow_pos this`. Establish `hpos : 0 < h * (2 * e)` using `by positivity`. Rewrite using `[← pow_succ', Nat.sub_add_cancel hpos, pow_mul, hα', Ideal.span_singleton_pow]`.
+-/
 theorem exists_complement {𝔣 𝔞 : Ideal (𝓞 F)} (h𝔣 : 𝔣 ≠ ⊥) (h𝔞 : CoprimeTo F 𝔣 𝔞) :
     ∃ (𝔟 : Ideal (𝓞 F)) (x₀ : 𝓞 F), CoprimeTo F 𝔣 𝔟 ∧ x₀ ≠ 0 ∧ x₀ - 1 ∈ 𝔣 ∧ TotPos F (x₀ : F) ∧
       𝔞 * 𝔟 = Ideal.span {x₀} := by
@@ -66,6 +86,13 @@ theorem exists_complement {𝔣 𝔞 : Ideal (𝓞 F)} (h𝔣 : 𝔣 ≠ ⊥) (h
   · have hpos : 0 < h * (2 * e) := by positivity
     rw [← pow_succ', Nat.sub_add_cancel hpos, pow_mul, hα', Ideal.span_singleton_pow]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Establish `hξ : ξ ≠ 0` using `fun e => h3.ne_zero (by simp [e])`. Take `⟨I, hI⟩` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 h1)`. Use `⟨I, ⟨⟨?_, ?_⟩, x₀, ξ, hx0, hξ, hx1, h2, fun σ => ⟨hxp σ, h3 σ⟩, ?_⟩, by rw [mul_comm, hI]⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Simplify using `at hI`. Conclude with `hξ hI`. Establish `hle : ξ ∈ I` using `(Ideal.mul_le_right : 𝔟 * I ≤ I) (hI ▸ Ideal.mem_span_singleton_self ξ)`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `: (1 : 𝓞 F) = ξ - (ξ - 1)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left hle) (Ideal.mem_sup_right h2)`. Rewrite using `[← hab, hI]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem RayPoint.exists_ideal [IsTotallyReal F] {𝔣 𝔞 𝔟 : Ideal (𝓞 F)} {x₀ ξ : 𝓞 F} (hx0 : x₀ ≠ 0) (hx1 : x₀ - 1 ∈ 𝔣)
     (hxp : TotPos F (x₀ : F)) (hab : 𝔞 * 𝔟 = Ideal.span {x₀}) (h : RayPoint 𝔣 𝔟 ξ) :
     ∃ I : Ideal (𝓞 F), (CoprimeTo F 𝔣 I ∧ RayRel F 𝔣 I 𝔞) ∧ I * 𝔟 = Ideal.span {ξ} := by
@@ -84,6 +111,13 @@ theorem RayPoint.exists_ideal [IsTotallyReal F] {𝔣 𝔞 𝔟 : Ideal (𝓞 F)
   · rw [← hab, hI]
     ring
 
+/- English proof (translation)
+Take `⟨a, b, ha, hb, ha1, hb1, hp, e⟩` from `hI`. Establish `e1 : Ideal.span {a} * (I * 𝔟) = Ideal.span {b * x₀}`. Rewrite using `[← mul_assoc, e, mul_assoc, hab, Ideal.span_singleton_mul_span_singleton]`. Take `⟨ξ, hξ, hξe⟩` from `Ideal.mem_span_singleton_mul.1 (e1 ▸ Ideal.mem_span_singleton_self (b * x₀))`. Establish `e2 : I * 𝔟 = Ideal.span {ξ}`.
+
+Rewrite using `[← Ideal.span_singleton_mul_right_inj ha, e1, ← hξe, Ideal.span_singleton_mul_span_singleton]`. Use `⟨ξ, ⟨(Ideal.mul_le_right : I * 𝔟 ≤ 𝔟) hξ, ?_, fun σ => ?_⟩, e2⟩` and prove the remaining obligations. Establish `: ξ - 1 = (b * (x₀ - 1) + (b - 1) - (a - 1)) - (a - 1) * (ξ - 1)` using `by linear_combination hξe`. Rewrite using `[this]`. Conclude with `𝔣.sub_mem (𝔣.sub_mem (𝔣.add_mem (𝔣.mul_mem_left _ hx1) hb1) ha1) (𝔣.mul_mem_right _ ha1)`.
+
+Establish `e3 : σ (a : F) * σ (ξ : F) = σ (b : F) * σ (x₀ : F)`. Establish `: (a : F) * (ξ : F) = (b : F) * (x₀ : F)` using `congrArg (fun z : 𝓞 F => (z : F)) hξe`. Establish `h2` using `congrArg σ this`. Rewrite `h2` using `[map_mul, map_mul]`. Then use the resulting hypothesis. Conclude with `(mul_pos_iff_of_pos_left (hp σ).1).1 (e3 ▸ mul_pos (hp σ).2 (hxp σ))`.
+-/
 theorem RayPoint.of_ideal {𝔣 𝔞 𝔟 I : Ideal (𝓞 F)} {x₀ : 𝓞 F} (hx0 : x₀ ≠ 0) (hx1 : x₀ - 1 ∈ 𝔣)
     (hxp : TotPos F (x₀ : F)) (hab : 𝔞 * 𝔟 = Ideal.span {x₀}) (hI : RayRel F 𝔣 I 𝔞) :
     ∃ ξ : 𝓞 F, RayPoint 𝔣 𝔟 ξ ∧ I * 𝔟 = Ideal.span {ξ} := by
@@ -103,6 +137,11 @@ theorem RayPoint.of_ideal {𝔣 𝔞 𝔟 I : Ideal (𝓞 F)} {x₀ : 𝓞 F} (h
       rwa [map_mul, map_mul] at h2
     exact (mul_pos_iff_of_pos_left (hp σ).1).1 (e3 ▸ mul_pos (hp σ).2 (hxp σ))
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `Ideal.span_singleton_eq_span_singleton.1 e`. Use `⟨u, ⟨?_, fun σ => ?_⟩, by rw [← hu, mul_comm]⟩` and prove the remaining obligations. Establish `: (u : 𝓞 F) - 1 = ((ξ' - 1) - (ξ - 1)) - (ξ - 1) * ((u : 𝓞 F) - 1)` using `by linear_combination hu`. Rewrite using `[this]`. Conclude with `𝔣.sub_mem (𝔣.sub_mem h'.2.1 h.2.1) (𝔣.mul_mem_right _ h.2.1)`.
+
+Establish `e3 : σ (ξ : F) * σ (((u : 𝓞 F)) : F) = σ (ξ' : F)`. Rewrite using `[← map_mul]`. Use `congr 1`. Conclude with `congrArg (fun z : 𝓞 F => (z : F)) hu`. Conclude with `(mul_pos_iff_of_pos_left (h.2.2 σ)).1 (e3 ▸ h'.2.2 σ)`.
+-/
 theorem RayPoint.exists_unit [IsTotallyReal F] {𝔣 𝔟 : Ideal (𝓞 F)} {ξ ξ' : 𝓞 F} (h : RayPoint 𝔣 𝔟 ξ) (h' : RayPoint 𝔣 𝔟 ξ')
     (e : Ideal.span {ξ} = Ideal.span {ξ'}) : ∃ u ∈ congUnits 𝔣, ξ' = (u : 𝓞 F) * ξ := by
   obtain ⟨u, hu⟩ := Ideal.span_singleton_eq_span_singleton.1 e
@@ -116,6 +155,11 @@ theorem RayPoint.exists_unit [IsTotallyReal F] {𝔣 𝔟 : Ideal (𝓞 F)} {ξ 
       exact congrArg (fun z : 𝓞 F => (z : F)) hu
     exact (mul_pos_iff_of_pos_left (h.2.2 σ)).1 (e3 ▸ h'.2.2 σ)
 
+/- English proof (translation)
+Use `⟨𝔟.mul_mem_left _ h.1, ?_, fun σ => ?_⟩` and prove the remaining obligations. Establish `: (u : 𝓞 F) * ξ - 1 = (u : 𝓞 F) * (ξ - 1) + ((u : 𝓞 F) - 1)` using `by ring`. Rewrite using `[this]`. Conclude with `𝔣.add_mem (𝔣.mul_mem_left _ h.2.1) hu.1`. Establish `e1 : (((u : 𝓞 F) * ξ : 𝓞 F) : F) = ((u : 𝓞 F) : F) * (ξ : F)` using `rfl`.
+
+Rewrite using `[e1, map_mul]`. Conclude with `mul_pos (hu.2 σ) (h.2.2 σ)`.
+-/
 theorem RayPoint.unit_mul {𝔣 𝔟 : Ideal (𝓞 F)} {ξ : 𝓞 F} (h : RayPoint 𝔣 𝔟 ξ) {u : (𝓞 F)ˣ} (hu : u ∈ congUnits 𝔣) :
     RayPoint 𝔣 𝔟 ((u : 𝓞 F) * ξ) := by
   refine ⟨𝔟.mul_mem_left _ h.1, ?_, fun σ => ?_⟩
@@ -126,6 +170,13 @@ theorem RayPoint.unit_mul {𝔣 𝔟 : Ideal (𝓞 F)} {ξ : 𝓞 F} (h : RayPoi
     rw [e1, map_mul]
     exact mul_pos (hu.2 σ) (h.2.2 σ)
 
+/- English proof (translation)
+Take `⟨y, hy, hi⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic x)).exists_integral_multiple`. Take `⟨z, hz⟩ : ∃ z : 𝓞 F, (z : F) = y • x` from `⟨⟨_, hi⟩, rfl⟩`. Use `⟨y.natAbs * y.natAbs, (y : 𝓞 F) * z, Nat.mul_pos (Int.natAbs_pos.2 hy) (Int.natAbs_pos.2 hy), ?_⟩` and prove the remaining obligations. Establish `e1 : (((y : 𝓞 F) * z : 𝓞 F) : F) = (y : F) * (z : F)` using `by simp [RingOfIntegers.coe_eq_algebraMap]`. Establish `e2 : ((y.natAbs * y.natAbs : ℕ) : F) = (y : F) * (y : F)`.
+
+Use `congrArg (Int.cast : ℤ → F) (Int.natAbs_mul_self' y)` as an intermediate fact. Rewrite `this` using `[Int.cast_mul, Int.cast_mul, Int.cast_natCast]`. Rewrite using `[Nat.cast_mul]`. Conclude with `this`. Rewrite using `[e1, hz, e2, zsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_nat_mul_integer (x : F) : ∃ (D : ℕ) (z : 𝓞 F), 0 < D ∧ (z : F) = (D : F) * x := by
   obtain ⟨y, hy, hi⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic x)).exists_integral_multiple
   obtain ⟨z, hz⟩ : ∃ z : 𝓞 F, (z : F) = y • x := ⟨⟨_, hi⟩, rfl⟩
@@ -139,6 +190,13 @@ theorem exists_nat_mul_integer (x : F) : ∃ (D : ℕ) (z : 𝓞 F), 0 < D ∧ (
   rw [e1, hz, e2, zsmul_eq_mul]
   ring
 
+/- English proof (translation)
+Use `choose D z hD hz using fun c i => exists_nat_mul_integer (v c i)`. Use `set P : ℕ := ∏ c, ∏ i, D c i with hP`. Establish `hP0 : 0 < P` using `Finset.prod_pos fun c _ => Finset.prod_pos fun i _ => hD c i`. Establish `hdvd : ∀ c i, D c i ∣ P` using `fun c i => (Finset.dvd_prod_of_mem _ (Finset.mem_univ i)).trans (Finset.dvd_prod_of_mem (fun c => ∏ i, D c i) (Finset.mem_univ c))`. Use `choose k hk using hdvd`.
+
+Use `set M : ℕ := Ideal.absNorm 𝔪 with hM`. Establish `hM0 : 0 < M` using `Nat.pos_of_ne_zero (by simpa [hM, Ideal.absNorm_eq_zero_iff] using h𝔪)`. Use `⟨M * P, fun c i => (M : 𝓞 F) * ((k c i : 𝓞 F) * z c i), Nat.mul_pos hM0 hP0, fun c i => ⟨𝔪.mul_mem_right _ (Ideal.absNorm_mem 𝔪), ?_⟩⟩` and prove the remaining obligations. Establish `e1 : (((M : 𝓞 F) * ((k c i : 𝓞 F) * z c i) : 𝓞 F) : F) = (M : F) * ((k c i : F) * (z c i : F))`. Simplify using `[RingOfIntegers.coe_eq_algebraMap]`.
+
+Rewrite using `[e1, hz, hk c i]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_scaled {𝔪 : Ideal (𝓞 F)} (h𝔪 : 𝔪 ≠ ⊥) {ι : Type} [Fintype ι] (r : ι → ℕ) (v : ∀ c, Fin (r c) → F) :
     ∃ (N : ℕ) (w : ∀ c, Fin (r c) → 𝓞 F), 0 < N ∧ ∀ c i, w c i ∈ 𝔪 ∧ (w c i : F) = (N : F) * v c i := by
   classical
@@ -157,6 +215,13 @@ theorem exists_scaled {𝔪 : Ideal (𝓞 F)} (h𝔪 : 𝔪 ≠ ⊥) {ι : Type}
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hNq : (0 : ℚ) < N` using `by exact_mod_cast hN`. Establish `hNF : (N : F) ≠ 0` using `by exact_mod_cast hN.ne'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩`. Use `⟨fun i => t i * N, fun i => mul_pos (ht i) hNq, Finset.sum_congr rfl fun i _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hu]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨t, ht, rfl⟩`. Use `⟨fun i => t i / N, fun i => div_pos (ht i) hNq, Finset.sum_congr rfl fun i _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hu]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mem_openCone_scale {r : ℕ} {v : Fin r → F} {N : ℕ} (hN : 0 < N) {u : Fin r → F} (hu : ∀ i, u i = (N : F) * v i) {x : F} :
     x ∈ openCone u ↔ x ∈ openCone v := by
   have hNq : (0 : ℚ) < N := by exact_mod_cast hN
@@ -173,6 +238,11 @@ theorem mem_openCone_scale {r : ℕ} {v : Fin r → F} {N : ℕ} (hN : 0 < N) {u
     push_cast
     field_simp
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `hNq : (N : ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Use `⟨h1, fun c => ?_, fun c i σ => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `(h2 c).units_smul (fun _ => Units.mk0 (N : ℚ) hNq)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Simplify using `[hu, Units.smul_def, Rat.smul_def]`. Rewrite using `[hu, map_mul, map_natCast]`. Conclude with `mul_pos (by exact_mod_cast hN) (h3 c i σ)`. Simplify `h4 x hx` using `only [mem_openCone_scale hN (hu _)]`.
+-/
 theorem IsConeDomain.scale {𝔣 : Ideal (𝓞 F)} {ι : Type} {r : ι → ℕ} {v : ∀ c, Fin (r c) → F} (h : IsConeDomain 𝔣 r v) {N : ℕ} (hN : 0 < N)
     {u : ∀ c, Fin (r c) → F} (hu : ∀ c i, u c i = (N : F) * v c i) : IsConeDomain 𝔣 r u := by
   obtain ⟨h1, h2, h3, h4⟩ := h
@@ -186,6 +256,9 @@ theorem IsConeDomain.scale {𝔣 : Ideal (𝓞 F)} {ι : Type} {r : ι → ℕ} 
     exact mul_pos (by exact_mod_cast hN) (h3 c i σ)
   · simpa only [mem_openCone_scale hN (hu _)] using h4 x hx
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Fintype.linearIndependent_iff.1 h (fun i => t i - s i) (by` as an intermediate fact. Simplify using `only [Rat.smul_def, Rat.cast_sub, sub_mul, Finset.sum_sub_distrib, e, sub_self]) i`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_coef_unique {r : ℕ} {u : Fin r → F} (h : LinearIndependent ℚ u) {t s : Fin r → ℚ}
     (e : ∑ i, (t i : F) * u i = ∑ i, (s i : F) * u i) : t = s := by
   funext i
@@ -193,6 +266,9 @@ theorem sum_coef_unique {r : ℕ} {u : Fin r → F} (h : LinearIndependent ℚ u
     simp only [Rat.smul_def, Rat.cast_sub, sub_mul, Finset.sum_sub_distrib, e, sub_self]) i
   linarith
 
+/- English proof (translation)
+Establish `a : (m : ℚ) < m' + 1` using `by linarith`. Establish `b : (m' : ℚ) < m + 1` using `by linarith`. Establish `a' : m < m' + 1` using `by exact_mod_cast a`. Establish `b' : m' < m + 1` using `by exact_mod_cast b`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem frac_unique {s s' : ℚ} {m m' : ℕ} (h0 : 0 < s) (h1 : s ≤ 1) (h0' : 0 < s') (h1' : s' ≤ 1) (e : s + m = s' + m') : m = m' := by
   have a : (m : ℚ) < m' + 1 := by linarith
   have b : (m' : ℚ) < m + 1 := by linarith
@@ -200,6 +276,11 @@ theorem frac_unique {s s' : ℚ} {m m' : ℕ} (h0 : 0 < s) (h1 : s ≤ 1) (h0' :
   have b' : m' < m + 1 := by exact_mod_cast b
   omega
 
+/- English proof (translation)
+Establish `hc : 0 < ⌈t⌉₊` using `Nat.ceil_pos.2 h`. Use `⟨⌈t⌉₊ - 1, t - ((⌈t⌉₊ - 1 : ℕ) : ℚ), ?_, ?_, by ring⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_sub hc]`. Use `Nat.ceil_lt_add_one h.le` as an intermediate fact. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Nat.cast_sub hc]`. Use `Nat.le_ceil t` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_frac {t : ℚ} (h : 0 < t) : ∃ (m : ℕ) (s : ℚ), 0 < s ∧ s ≤ 1 ∧ t = s + m := by
   have hc : 0 < ⌈t⌉₊ := Nat.ceil_pos.2 h
   refine ⟨⌈t⌉₊ - 1, t - ((⌈t⌉₊ - 1 : ℕ) : ℚ), ?_, ?_, by ring⟩
@@ -212,6 +293,9 @@ theorem exists_frac {t : ℚ} (h : 0 < t) : ∃ (m : ℕ) (s : ℚ), 0 < s ∧ s
     push_cast
     linarith
 
+/- English proof (translation)
+Introduce `σ` and use `by haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩ rw [map_sum] refine Finset.sum_pos (fun i _ => ?_) Finset.univ_nonempty rw [map_mul, map_ratCast] exact mul_pos (by exact_mod_cast ht i) (hu i σ)`.
+-/
 theorem totPos_sum {r : ℕ} (hr : 0 < r) {u : Fin r → F} (hu : ∀ i, TotPos F (u i)) {t : Fin r → ℚ} (ht : ∀ i, 0 < t i) :
     TotPos F (∑ i, (t i : F) * u i) := fun σ => by
   haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩
@@ -223,6 +307,13 @@ theorem totPos_sum {r : ℕ} (hr : 0 < r) {u : Fin r → F} (hu : ∀ i, TotPos 
 def coneBox (𝔣 𝔟 : Ideal (𝓞 F)) {r : ℕ} (w : Fin r → 𝓞 F) : Set (𝓞 F) :=
   {y | RayPoint 𝔣 𝔟 y ∧ ∃ t : Fin r → ℚ, (∀ i, 0 < t i ∧ t i ≤ 1) ∧ (y : F) = ∑ i, (t i : F) * (w i : F)}
 
+/- English proof (translation)
+Establish `hB` using `Embeddings.finite_of_norm_le F ℂ (∑ φ : F →+* ℂ, ∑ i, ‖φ (w i : F)‖)`. Use `Set.Finite.of_finite_image (f := fun y : 𝓞 F => (y : F)) (hB.subset ?_) RingOfIntegers.coe_injective.injOn` and prove the remaining obligations. Introduce and unpack `_ ⟨y, ⟨-, t, ht, e⟩, rfl⟩`. Use `⟨y.isIntegral_coe, fun φ => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖φ (y : F)‖ ≤ ∑ i, ‖φ (w i : F)‖`.
+
+Rewrite using `[e, map_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_ratCast, norm_mul, Complex.norm_ratCast]`. Establish `: |((t i : ℚ) : ℝ)| ≤ 1`. Rewrite using `[abs_of_pos (by exact_mod_cast (ht i).1)]`.
+
+Conclude with `(ht i).2` after adjusting the coercions. Conclude with `mul_le_of_le_one_left (norm_nonneg _) this`. Conclude with `h1.trans (Finset.single_le_sum (f := fun φ : F →+* ℂ => ∑ i, ‖φ (w i : F)‖) (fun φ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ φ))`.
+-/
 theorem coneBox_finite (𝔣 𝔟 : Ideal (𝓞 F)) {r : ℕ} (w : Fin r → 𝓞 F) : (coneBox 𝔣 𝔟 w).Finite := by
   have hB := Embeddings.finite_of_norm_le F ℂ (∑ φ : F →+* ℂ, ∑ i, ‖φ (w i : F)‖)
   refine Set.Finite.of_finite_image (f := fun y : 𝓞 F => (y : F)) (hB.subset ?_) RingOfIntegers.coe_injective.injOn
@@ -239,6 +330,9 @@ theorem coneBox_finite (𝔣 𝔟 : Ideal (𝓞 F)) {r : ℕ} (w : Fin r → �
   exact h1.trans (Finset.single_le_sum (f := fun φ : F →+* ℂ => ∑ i, ‖φ (w i : F)‖)
     (fun φ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ φ))
 
+/- English proof (translation)
+Establish `h1 : ((a + ∑ i, (m i : 𝓞 F) * w i : 𝓞 F) : F) = (a : F) + ∑ i, ((m i : ℚ) : F) * (w i : F)`. Simplify using `[RingOfIntegers.coe_eq_algebraMap]`. Rewrite using `[h1, e, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by push_cast; ring`.
+-/
 theorem coe_add_sum {r : ℕ} (w : Fin r → 𝓞 F) {a : 𝓞 F} {t : Fin r → ℚ} (e : (a : F) = ∑ i, (t i : F) * (w i : F)) (m : Fin r → ℕ) :
     ((a + ∑ i, (m i : 𝓞 F) * w i : 𝓞 F) : F) = ∑ i, ((t i + m i : ℚ) : F) * (w i : F) := by
   have h1 : ((a + ∑ i, (m i : 𝓞 F) * w i : 𝓞 F) : F) = (a : F) + ∑ i, ((m i : ℚ) : F) * (w i : F) := by
@@ -246,6 +340,43 @@ theorem coe_add_sum {r : ℕ} (w : Fin r → 𝓞 F) {a : 𝓞 F} {t : Fin r →
   rw [h1, e, ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun i _ => by push_cast; ring
 
+/- English proof (translation)
+Take `⟨hr, hli, hpos, hun⟩` from `hdom`. Use `haveI : ∀ c, Fintype (coneBox 𝔣 𝔟 (w c)) := fun c => (coneBox_finite 𝔣 𝔟 (w c)).fintype`. Set `J : Type` to `Σ c, coneBox 𝔣 𝔟 (w c)`. Set `r' : J → ℕ` to `fun j => r j.1`. Set `y : J → 𝓞 F` to `fun j => j.2.1`.
+
+Set `v' : ∀ j : J, Fin (r' j) → 𝓞 F` to `fun j => w j.1`. Set `ξ : (Σ j : J, (Fin (r' j) → ℕ)) → 𝓞 F` to `fun p => y p.1 + ∑ i, (p.2 i : 𝓞 F) * v' p.1 i`. Establish `hcoef : ∀ p : (Σ j : J, (Fin (r' j) → ℕ)), ∃ t : Fin (r p.1.1) → ℚ, (∀ i, 0 < t i ∧ t i ≤ 1) ∧ ((ξ p : 𝓞 F) : F) = ∑ i, ((t i + p.2 i : ℚ) : F) * (w p.1.1 i : F)` using `fun p => by`. Take `⟨t, ht, e⟩` from `p.1.2.2.2`. Conclude with `⟨t, ht, coe_add_sum (w p.1.1) e p.2⟩`.
+
+Establish `hcone : ∀ p : (Σ j : J, (Fin (r' j) → ℕ)), ((ξ p : 𝓞 F) : F) ∈ openCone (fun i => (w p.1.1 i : F))` using `fun p => by`. Take `⟨t, ht, e⟩` from `hcoef p`. Conclude with `⟨fun i => t i + p.2 i, fun i => add_pos_of_pos_of_nonneg (ht i).1 (Nat.cast_nonneg _), e⟩`. Establish `hpoint : ∀ p, RayPoint 𝔣 𝔟 (ξ p)` using `fun p => by`. Establish `ha` using `p.1.2.2.1`.
+
+Use `⟨𝔟.add_mem ha.1 (𝔟.sum_mem fun i _ => 𝔟.mul_mem_left _ (hwb _ i)), ?_, ?_⟩` and prove the remaining obligations. Establish `: ξ p - 1 = (y p.1 - 1) + ∑ i, (p.2 i : 𝓞 F) * v' p.1 i`. Express the relevant statement in the definitionally equal form `y p.1 + ∑ i, (p.2 i : 𝓞 F) * v' p.1 i - 1 = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `𝔣.add_mem ha.2.1 (𝔣.sum_mem fun i _ => 𝔣.mul_mem_left _ (hwf _ i))`. Take `⟨t, ht, e⟩` from `hcoef p`. Rewrite using `[e]`. Conclude with `totPos_sum (hr _) (hpos _) fun i => add_pos_of_pos_of_nonneg (ht i).1 (Nat.cast_nonneg _)`. Establish `hI` using `fun p => (hpoint p).exists_ideal hx0 hx1 hxp hab`.
+
+Use `choose f hf hfe using hI`. Set `f' : (Σ j : J, (Fin (r' j) → ℕ)) → {I : Ideal (𝓞 F) // CoprimeTo F 𝔣 I ∧ RayRel F 𝔣 I 𝔞}` to `fun p => ⟨f p, hf p⟩`. Establish `hinj : Function.Injective f'`. Introduce `p p' hpp`. Establish `hs : Ideal.span {ξ p} = Ideal.span {ξ p'}`.
+
+Rewrite using `[← hfe p, ← hfe p']`. Conclude with `congrArg (· * 𝔟) (congrArg Subtype.val hpp)`. Take `⟨u, hu, hue⟩` from `(hpoint p).exists_unit (hpoint p') hs`. Take `⟨q, -, hq⟩` from `hun _ (hpoint p).2.2`. Establish `h1u : (1 : (𝓞 F)ˣ) ∈ congUnits 𝔣` using `⟨by simp, fun σ => by simp⟩`.
+
+Establish `e1` using `hq (⟨1, h1u⟩, p.1.1) (by simpa using hcone p)`. Establish `e2` using `hq (⟨u, hu⟩, p'.1.1) (by`. Use `hcone p'` as an intermediate fact. Rewrite `this` using `[hue]`. Conclude with `this)`.
+
+Establish `e3` using `e1.trans e2.symm`. Establish `hc : p.1.1 = p'.1.1` using `congrArg Prod.snd e3`. Establish `hu1 : u = 1` using `(congrArg (fun z : congUnits 𝔣 × ι => (z.1 : (𝓞 F)ˣ)) e3).symm`. Establish `hξ : ξ p' = ξ p` using `by rw [hue, hu1]; simp`. Take `⟨t, ht, e⟩` from `hcoef p`.
+
+Take `⟨t', ht', e'⟩` from `hcoef p'`. Take `⟨⟨c, a, ha⟩, m⟩` from `p`. Take `⟨⟨c', a', ha'⟩, m'⟩` from `p'`. Take `rfl : c = c'` from `hc`. Rewrite `e'` using `[hξ]`.
+
+Establish `ht2` using `sum_coef_unique (hli c) (e.symm.trans e')`. Establish `hm : m = m'` using `funext fun i => frac_unique (ht i).1 (ht i).2 (ht' i).1 (ht' i).2 (congrFun ht2 i)`. Substitute `hm` using the available equality. Establish `ha2 : a' = a` using `add_right_cancel hξ`. Substitute `ha2` using the available equality.
+
+Both sides reduce to the same expression. Establish `hsurj : Function.Surjective f'`. Introduce and unpack `⟨I, hI1, hI2⟩`. Take `⟨ξ₀, hξ₀, hIe⟩` from `RayPoint.of_ideal hx0 hx1 hxp hab hI2`. Take `⟨⟨⟨u, hu⟩, c⟩, hmem, -⟩` from `hun _ hξ₀.2.2`.
+
+Take `⟨t, ht, e⟩` from `hmem`. Establish `h₁` using `hξ₀.unit_mul hu`. Establish `hspan : Ideal.span {(u : 𝓞 F) * ξ₀} = Ideal.span {ξ₀}` using `Ideal.span_singleton_eq_span_singleton.2 (Associated.symm ⟨u, mul_comm _ _⟩)`. Use `choose m s hs0 hs1 hts using fun i => exists_frac (ht i)`. Use `set S : 𝓞 F := ∑ i, (m i : 𝓞 F) * w c i with hS`.
+
+Establish `hSc : (S : F) = ∑ i, ((m i : ℚ) : F) * (w c i : F)` using `by simp [hS, RingOfIntegers.coe_eq_algebraMap]`. Establish `hSf : S ∈ 𝔣` using `𝔣.sum_mem fun i _ => 𝔣.mul_mem_left _ (hwf c i)`. Establish `hSb : S ∈ 𝔟` using `𝔟.sum_mem fun i _ => 𝔟.mul_mem_left _ (hwb c i)`. Establish `ha_coe : ((((u : 𝓞 F) * ξ₀ - S : 𝓞 F)) : F) = ∑ i, (s i : F) * (w c i : F)`. Establish `h3 : ((((u : 𝓞 F) * ξ₀ - S : 𝓞 F)) : F) = ((u : 𝓞 F) : F) * (ξ₀ : F) - (S : F)`.
+
+Simplify using `[RingOfIntegers.coe_eq_algebraMap]`. Rewrite using `[h3, e, hSc, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hts i]; push_cast; ring`. Establish `ha : RayPoint 𝔣 𝔟 ((u : 𝓞 F) * ξ₀ - S)`. Use `⟨𝔟.sub_mem h₁.1 hSb, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: (u : 𝓞 F) * ξ₀ - S - 1 = ((u : 𝓞 F) * ξ₀ - 1) - S` using `by ring`. Rewrite using `[this]`. Conclude with `𝔣.sub_mem h₁.2.1 hSf`. Rewrite using `[ha_coe]`. Conclude with `totPos_sum (hr c) (hpos c) hs0`.
+
+Set `p : (Σ j : J, (Fin (r' j) → ℕ))` to `⟨⟨c, _, ha, s, fun i => ⟨hs0 i, hs1 i⟩, ha_coe⟩, m⟩`. Establish `hp : ξ p = (u : 𝓞 F) * ξ₀` using `sub_add_cancel _ _`. Use `⟨p, Subtype.ext (mul_right_cancel₀ h𝔟 ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f p * 𝔟 = I * 𝔟`. Rewrite using `[hfe, hp, hspan, hIe]`.
+
+Use `⟨J, inferInstance, r', y, v', h𝔟, fun j => ⟨j.2.2.1.1, j.2.2.1.2.2⟩, fun j i => ⟨hwb _ _, hpos _ _⟩, fun j => ?_, Equiv.ofBijective f' ⟨hinj, hsurj⟩, fun p => hfe p⟩` and prove the remaining obligations. Simplify using `using (hli j.1).fintype_card_le_finrank`.
+-/
 theorem classParam_of_scaled [IsTotallyReal F] {𝔣 𝔞 𝔟 : Ideal (𝓞 F)} {x₀ : 𝓞 F} (h𝔟 : 𝔟 ≠ ⊥) (hx0 : x₀ ≠ 0) (hx1 : x₀ - 1 ∈ 𝔣)
     (hxp : TotPos F (x₀ : F)) (hab : 𝔞 * 𝔟 = Ideal.span {x₀}) {ι : Type} [Fintype ι] {r : ι → ℕ} {w : ∀ c, Fin (r c) → 𝓞 F}
     (hdom : IsConeDomain 𝔣 r (fun c i => (w c i : F))) (hwb : ∀ c i, w c i ∈ 𝔟) (hwf : ∀ c i, w c i ∈ 𝔣) :
@@ -342,6 +473,11 @@ theorem classParam_of_scaled [IsTotallyReal F] {𝔣 𝔞 𝔟 : Ideal (𝓞 F)}
     Equiv.ofBijective f' ⟨hinj, hsurj⟩, fun p => hfe p⟩
   simpa using (hli j.1).fintype_card_le_finrank
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔣 h𝔣 ι _ r v hdom 𝔞 h𝔞`. Take `⟨𝔟, x₀, hb, hx0, hx1, hxp, hab⟩` from `exists_complement h𝔣 h𝔞`. Take `⟨N, w, hN, hw⟩` from `exists_scaled (𝔪 := 𝔟 * 𝔣) (mul_ne_zero hb.1 h𝔣) r v`. Establish `hd` using `hdom.scale hN (u := fun c i => (w c i : F)) (fun c i => (hw c i).2)`. Take `⟨J, a, b, c, d, e⟩` from `classParam_of_scaled hb.1 hx0 hx1 hxp hab hd (fun c i => (Ideal.mul_le_left : 𝔟 * 𝔣 ≤ 𝔟) (hw c i).1) (fun c i => (Ideal.mul_le_right : 𝔟 * 𝔣 ≤ 𝔣) (hw c i).1)`.
+
+Conclude with `⟨𝔟, J, a, b, c, d, e⟩`.
+-/
 theorem exists_classParam : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔣 : Ideal (𝓞 F)), 𝔣 ≠ ⊥ →
     ∀ (ι : Type) [Fintype ι] (r : ι → ℕ) (v : ∀ c, Fin (r c) → F), IsConeDomain 𝔣 r v →
       ∀ 𝔞 : Ideal (𝓞 F), CoprimeTo F 𝔣 𝔞 →

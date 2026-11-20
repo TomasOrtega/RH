@@ -12,6 +12,17 @@ set_option autoImplicit false
 
 namespace GlobalTheory.DiagLoc
 
+/- English proof (translation)
+Introduce `K κ' L _ _ _ _ _ _ _ _ _ σ hK hκ`. Establish `hc : ∀ a : ℂ, algebraMap ℂ L a ∈ loc L σ` using `fun a => by`. Rewrite using `[IsScalarTower.algebraMap_apply ℂ (K ⊗[ℂ] κ') L]`. Conclude with `(toLoc L σ (algebraMap ℂ (K ⊗[ℂ] κ') a)).2`. Use `{ const_mem := hc isLocalRing := inferInstance essFiniteType := ?_ frac := ?_ }` and prove the remaining obligations.
+
+Establish `e : (algebraMap ℂ L).codRestrict (loc L σ) hc = (toLoc L σ).comp (algebraMap ℂ (K ⊗[ℂ] κ'))`. Use extensionality with `a`. Simplify using `only [RingHom.codRestrict_apply, RingHom.comp_apply, coe_toLoc]`. Conclude with `IsScalarTower.algebraMap_apply ℂ (K ⊗[ℂ] κ') L a`. Rewrite using `[e]`.
+
+Use `haveI : Algebra.EssFiniteType K (K ⊗[ℂ] κ') := Algebra.EssFiniteType.baseChange ℂ κ' K`. Use `haveI : Algebra.EssFiniteType ℂ (K ⊗[ℂ] κ') := Algebra.EssFiniteType.comp ℂ K (K ⊗[ℂ] κ')`. Establish `h1 : (algebraMap ℂ (K ⊗[ℂ] κ')).EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 this`. Use `haveI : Algebra.EssFiniteType (K ⊗[ℂ] κ') (loc L σ) := Algebra.EssFiniteType.of_isLocalization (loc L σ) (ker σ).primeCompl`. Establish `h2 : (toLoc L σ).EssFiniteType`.
+
+Rewrite using `[← algebraMap_loc]`. Conclude with `RingHom.essFiniteType_algebraMap.2 this`. Conclude with `RingHom.EssFiniteType.comp h1 h2`. Introduce `f`. Take `⟨a, b, hb, e⟩` from `IsFractionRing.div_surjective (A := K ⊗[ℂ] κ') f`.
+
+Establish `hb0 : algebraMap (K ⊗[ℂ] κ') L b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Use `⟨_, (toLoc L σ a).2, _, (toLoc L σ b).2, hb0, ?_⟩` and prove the remaining obligations. Rewrite using `[coe_toLoc, coe_toLoc, ← e, div_mul_cancel₀ _ hb0]`.
+-/
 theorem isLocModel_loc : ∀ {K κ' L : Type} [Field K] [Field κ'] [Field L] [Algebra ℂ K] [Algebra ℂ κ']
   [Algebra ℂ L] [Algebra (K ⊗[ℂ] κ') L] [IsScalarTower ℂ (K ⊗[ℂ] κ') L]
   [IsFractionRing (K ⊗[ℂ] κ') L] (σ : K →ₐ[ℂ] κ'),

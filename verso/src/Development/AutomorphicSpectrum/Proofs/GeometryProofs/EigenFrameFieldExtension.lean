@@ -18,10 +18,18 @@ section Linear
 variable {O F F' V T : Type} [CommRing O] [Field F] [Field F'] [Algebra F F'] [AddCommGroup V] [Module F V]
   [AddCommGroup T] [Module F' T] [Module F T] [IsScalarTower F F' T]
 
+/- English proof (translation)
+Simplify using `[eigSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]`.
+-/
 theorem mem_eigSp {R E : Type} [CommRing R] [AddCommGroup E] [Module R E] (ρ : O →+* Module.End R E) (σ : O →+* R)
     (u : E) : u ∈ eigSp ρ σ ↔ ∀ a, ρ a u = σ a • u := by
   simp [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]
 
+/- English proof (translation)
+Establish `hs : LinearIndepOn F id (Set.range u)` using `hu.linearIndepOn_id`. Set `b` to `Module.Basis.extend hs`. Set `g : Fin n → (hs.extend (Set.subset_univ _))` to `fun i => ⟨u i, hs.subset_extend _ ⟨i, rfl⟩⟩`. Establish `hg : Function.Injective g` using `fun a c e => hu.injective (congrArg Subtype.val e)`. Establish `e : (fun i => j (u i)) = (hj.basis b) ∘ g`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[IsBaseChange.basis_apply, b, g]`. Rewrite using `[e]`. Conclude with `(hj.basis b).linearIndependent.comp g hg`.
+-/
 theorem linearIndependent_base {j : V →ₗ[F] T} (hj : IsBaseChange F' j) {n : ℕ} {u : Fin n → V}
     (hu : LinearIndependent F u) : LinearIndependent F' fun i => j (u i) := by
   have hs : LinearIndepOn F id (Set.range u) := hu.linearIndepOn_id
@@ -34,6 +42,11 @@ theorem linearIndependent_base {j : V →ₗ[F] T} (hj : IsBaseChange F' j) {n :
   rw [e]
   exact (hj.basis b).linearIndependent.comp g hg
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c w`. Rewrite using `[LinearMap.baseChange_tmul, hj.equiv_tmul, hj.equiv_tmul, map_smul, hact, smul_comm (algebraMap F F' (σ a)) c, ← smul_sub]`. Use `congr 1`.
+
+Simplify using `[algebraMap_smul]`. Consider the case `add y z hy hz`. Simplify using `only [map_add, hy, hz, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem equiv_baseChange {j : V →ₗ[F] T} (hj : IsBaseChange F' j) {ρ : O →+* Module.End F V}
     {ρ' : O →+* Module.End F' T} (σ : O →+* F) (hact : ∀ a e, ρ' a (j e) = j (ρ a e)) (a : O) (y : F' ⊗[F] V) :
     hj.equiv (LinearMap.baseChange F' (ρ a - σ a • LinearMap.id) y) =
@@ -49,6 +62,15 @@ theorem equiv_baseChange {j : V →ₗ[F] T} (hj : IsBaseChange F' j) {ρ : O �
     simp only [map_add, hy, hz, smul_add]
     abel
 
+/- English proof (translation)
+Set `B` to `Module.Basis.ofVectorSpace F F'`. Take `⟨b, hb⟩` from `TensorProduct.eq_repr_basis_left B (hj.equiv.symm t)`. Use `⟨_, B, b, fun k => (mem_eigSp ρ σ _).2 fun a => ?_, ?_⟩` and prove the remaining obligations. Take `⟨A, hA⟩ : ∃ A : V →ₗ[F] V, A = ρ a - σ a • LinearMap.id` from `⟨_, rfl⟩`. Establish `h0 : LinearMap.baseChange F' A (hj.equiv.symm t) = 0`.
+
+Apply `hj.equiv.injective` to reduce the goal to its premises. Rewrite using `[hA, equiv_baseChange hj σ hact, LinearEquiv.apply_symm_apply, map_zero]`. Conclude with `sub_eq_zero.2 ((mem_eigSp ρ' _ t).1 ht a)`. Rewrite `h0` using `[← hb, map_finsuppSum]`. Simplify using `only [LinearMap.baseChange_tmul] at h0`.
+
+Establish `h1 : (b.mapRange A (map_zero A)).sum (fun i n => B i ⊗ₜ[F] n) = 0`. Rewrite using `[Finsupp.sum_mapRange_index (by simp)]`. Conclude with `h0`. Establish `h2` using `TensorProduct.sum_tmul_basis_left_eq_zero B _ h1`. Establish `h3` using `DFunLike.congr_fun h2 k`.
+
+Simplify `h3` using `[hA, sub_eq_zero]`. Rewrite using `[← hj.equiv.apply_symm_apply t, ← hb, map_finsuppSum]`. Simplify using `[hj.equiv_tmul]`.
+-/
 theorem exists_sum_of_mem_eigSp {j : V →ₗ[F] T} (hj : IsBaseChange F' j) {ρ : O →+* Module.End F V}
     {ρ' : O →+* Module.End F' T} (σ : O →+* F) (hact : ∀ a e, ρ' a (j e) = j (ρ a e)) {t : T}
     (ht : t ∈ eigSp ρ' ((algebraMap F F').comp σ)) :
@@ -73,6 +95,15 @@ theorem exists_sum_of_mem_eigSp {j : V →ₗ[F] T} (hj : IsBaseChange F' j) {ρ
   · rw [← hj.equiv.apply_symm_apply t, ← hb, map_finsuppSum]
     simp [hj.equiv_tmul]
 
+/- English proof (translation)
+Use `⟨linearIndependent_base hj hu, le_antisymm (Submodule.span_le.2 ?_) fun t ht => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hi : u i ∈ eigSp ρ σ` using `hs ▸ Submodule.subset_span ⟨i, rfl⟩`. Use `(mem_eigSp ρ' _ _).2 fun a => ?_` and prove the remaining obligations. Rewrite using `[hact, (mem_eigSp ρ σ _).1 hi a, map_smul]`.
+
+Simplify using `[algebraMap_smul]`. Take `⟨J, B, b, hb, rfl⟩` from `exists_sum_of_mem_eigSp hj σ hact ht`. Establish `key : ∀ w ∈ Submodule.span F (Set.range u), j w ∈ Submodule.span F' (Set.range fun i => j (u i))` using `fun w hw => by`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`.
+
+Take `⟨i, rfl⟩` from `hw`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => simp`. Consider the case `add w z _ _ hw hz`. Rewrite using `[map_add]`.
+
+Conclude with `Submodule.add_mem _ hw hz`. Consider the case `smul c w _ hw`. Rewrite using `[map_smul, ← algebraMap_smul F' c]`. Conclude with `Submodule.smul_mem _ _ hw`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (key _ (hs ▸ hb k))`.
+-/
 theorem frame_base {j : V →ₗ[F] T} (hj : IsBaseChange F' j) {ρ : O →+* Module.End F V}
     {ρ' : O →+* Module.End F' T} (σ : O →+* F) (hact : ∀ a e, ρ' a (j e) = j (ρ a e)) {n : ℕ} {u : Fin n → V}
     (hu : LinearIndependent F u) (hs : Submodule.span F (Set.range u) = eigSp ρ σ) :
@@ -102,6 +133,15 @@ theorem frame_base {j : V →ₗ[F] T} (hj : IsBaseChange F' j) {ρ : O →+* Mo
 
 end Linear
 
+/- English proof (translation)
+Take `⟨V, _, _, ⟨M⟩⟩` from `lieModel_exists S G F x`. Take `⟨T, _, _, _, _, M', j, hl, hj⟩` from `GlobalTheory.T.exists_lie_model_base_change S G F F' x V M`. Take `⟨ρ, hρ, -⟩` from `lieModel_exists_unique_act S G F x V M P act.act act.hom act.one act.mul act.add`. Take `⟨ρ', hρ', -⟩` from `lieModel_exists_unique_act S G F' _ T M' P act.act act.hom act.one act.mul act.add`. Establish `hl' : ∀ e, (M'.pt (j e)).left = spMap (dualMap (algebraMap F F')) ≫ (M.pt e).left` using `fun e => by`.
+
+Use `hl e` as an intermediate fact. Simplify `this` using `[LieModel.Lifts]`. Establish `hact : ∀ a e, ρ' a (j e) = j (ρ a e)` using `fun a e => M'.inj (Over.OverMorphism.ext (by`. Rewrite using `[hρ' a (j e), Over.comp_left, hl', hl', hρ a e, Over.comp_left, Category.assoc]))`. Use `choose u hu using fun i => M.onto (v i) (h.1 i).1`.
+
+Take `rfl : (fun k => M.pt (u k)) = v` from `funext hu`. Take `⟨-, hf⟩` from `GlobalTheory.T.lie_model_eigenvectors_action S F G x V M`. Take `⟨hli, hsp⟩` from `((hf P act ρ σ hρ).2 n u).1 h`. Establish `hvv : v' = fun k => M'.pt (j (u k))` using `funext fun k => Over.OverMorphism.ext (by rw [hv k, hl'])`. Rewrite using `[hvv]`.
+
+Conclude with `(((GlobalTheory.T.lie_model_eigenvectors_action S F' G _ T M').2 P act ρ' _ hρ').2 n _).2 (frame_base hj σ hact hli hsp)`.
+-/
 theorem eigFrame_base {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] [Smooth G.hom] {F F' : Type} [Field F]
     [Field F'] [Algebra F F'] (x : Sp F ⟶ S) {P : Type} [CommRing P] (act : OAct P G) (σ : P →+* F) {n : ℕ}
     (v : Fin n → (epsAt x ⟶ G)) (v' : Fin n → (epsAt (spMap (algebraMap F F') ≫ x) ⟶ G))
@@ -124,6 +164,9 @@ theorem eigFrame_base {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] 
   rw [hvv]
   exact (((GlobalTheory.T.lie_model_eigenvectors_action S F' G _ T M').2 P act ρ' _ hρ').2 n _).2 (frame_base hj σ hact hli hsp)
 
+/- English proof (translation)
+Introduce `S G _ _ F _ x _ P _ act σ F' _ f x' hx n v v' hv h`. Use `letI := f.toAlgebra`. Substitute `hx` using the available equality. Conclude with `eigFrame_base x act σ v v' hv h`.
+-/
 theorem isEigFrame_base : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (F : Type) [Field F] (x : Sp F ⟶ S) [Smooth G.hom] (P : Type) [CommRing P] (act : OAct P G) (σ : P →+* F) (F' : Type) [Field F'] (f : F →+* F') (x' : Sp F' ⟶ S), spMap f ≫ x = x' → ∀ (n : ℕ) (v : Fin n → (epsAt x ⟶ G)) (v' : Fin n → (epsAt x' ⟶ G)), (∀ i, (v' i).left = spMap (dualMap f) ≫ (v i).left) → IsEigFrame act x σ v → IsEigFrame act x' (f.comp σ) v' := by
   intro S G _ _ F _ x _ P _ act σ F' _ f x' hx n v v' hv h
   letI := f.toAlgebra

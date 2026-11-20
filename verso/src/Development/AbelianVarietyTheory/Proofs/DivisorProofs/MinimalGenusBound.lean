@@ -27,6 +27,11 @@ section Abstract
 
 variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Use `letI : StarRing K := starRingOfComm`. Take `⟨n, ⟨b, X⟩, h⟩` from `hG`. Establish `e : ∀ x, N σ x = Formalism.HermitianLatticesTheory.normAt b X (InfinitePlace.mk σ) x` using `fun x => by`. Rewrite using `[(h _).2]`. Break down `InfinitePlace.embedding_mk_eq σ with e | e` into its components or cases.
+
+Rewrite using `[e]`. Rewrite using `[e]`. Conclude with `(hc σ x).symm`. Simplify using `only [e]`. Conclude with `PI.Dv.Tr.normAt_sum_le' b X _ s f`.
+-/
 theorem norm_sum_le_of_gram {N : (K →+* ℂ) → V → ℝ} (hG : HasGram N) (hc : ∀ σ x, N ((starRingEnd ℂ).comp σ) x = N σ x)
     {ι : Type} (s : Finset ι) (f : ι → V) (σ : K →+* ℂ) : N σ (∑ i ∈ s, f i) ≤ ∑ i ∈ s, N σ (f i) := by
   letI : StarRing K := starRingOfComm
@@ -39,6 +44,11 @@ theorem norm_sum_le_of_gram {N : (K →+* ℂ) → V → ℝ} (hG : HasGram N) (
   simp only [e]
   exact PI.Dv.Tr.normAt_sum_le' b X _ s f
 
+/- English proof (translation)
+Establish `hn : Nat.card H ≠ 0` using `Nat.card_pos.ne'`. Establish `h1 : ((χ h : Kˣ) : K) ^ Nat.card H = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]`. Use `⟨IsIntegral.of_pow (Nat.pos_of_ne_zero hn) (h1 ▸ isIntegral_one), fun σ => ?_⟩` and prove the remaining obligations. Establish `: ‖σ ((χ h : Kˣ) : K)‖ ^ Nat.card H = 1` using `by rw [← norm_pow, ← map_pow, h1, map_one, norm_one]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 this`.
+-/
 theorem char_val {H : Type} [Group H] [Finite H] (χ : H →* Kˣ) (h : H) :
     IsIntegral ℤ ((χ h : Kˣ) : K) ∧ ∀ σ : K →+* ℂ, ‖σ ((χ h : Kˣ) : K)‖ = 1 := by
   have hn : Nat.card H ≠ 0 := Nat.card_pos.ne'
@@ -50,6 +60,15 @@ theorem char_val {H : Type} [Group H] [Finite H] (χ : H →* Kˣ) (h : H) :
 
 variable [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Use `letI := Fintype.ofFinite H`. Use `⟨_, ?_, GlobalTheory.eigenvector_mem_span_twistedTrace_image H K V st hst χ s hsp⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `⟨⟨Λ.sum_mem fun h _ => ?_, fun g => ?_⟩, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`.
+
+Set `a : 𝓞 K` to `⟨_, (char_val χ h⁻¹).1⟩`. Use `Λ.smul_mem a (hΛ h y (hsΛ hy))` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul K a]`. Then use the resulting hypothesis. Use `beta_reduce`. Rewrite using `[map_sum, Finset.smul_sum, ← Equiv.sum_comp (Equiv.mulRight g) fun h => _ • _ • st h y]`.
+
+Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← hst, smul_smul, Equiv.coe_mulRight, map_mul, mul_inv, ← Units.val_mul, mul_left_comm, mul_inv_cancel, mul_one]`. Use `(norm_sum_le_of_gram hG hc _ _ σ).trans ?_` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card, ← nsmul_eq_mul, ← Finset.card_univ]`. Use `Finset.sum_le_card_nsmul _ _ _ fun h _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hs, hi, ← map_inv, (char_val χ h⁻¹).2, one_mul]`. Conclude with `hB y hy σ`.
+-/
 theorem exists_short_eigen {H : Type} [Group H] [Finite H] (st : H → V →ₗ[K] V)
     (hst : ∀ h h' x, st (h * h') x = st h' (st h x)) (χ : H →* Kˣ) (Λ : Submodule (𝓞 K) V) (hΛ : ∀ h, ∀ x ∈ Λ, st h x ∈ Λ)
     {N : (K →+* ℂ) → V → ℝ} (hG : HasGram N) (hc : ∀ σ x, N ((starRingEnd ℂ).comp σ) x = N σ x)
@@ -85,6 +104,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.HolRead.lastPos_wtA_of_kapIs D p.T p.κ p.fw.laws p.fw.kap i τ.1 τ.2`. Establish `hm : (dat p i).mult τ.1 = (dat p i).p`. Unfold `Datum.mult`. Conclude with `if_pos τ.2`. Rewrite `h` using `[hm]`.
+
+Establish `h2 : wtA (p.κ i) (τ.1, (dat p i).p - 1) ≤ wtA (p.κ i) (τ.1, k)` using `(dom_wtA (p.κ i)).1 τ.1 (show (k : ℕ) ≤ _ by omega)`. Establish `h3` using `h (by omega)`. Unfold `laOf weightOf`. Rewrite using `[if_pos hk]`. Use `beta_reduce`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem half_lt_laOf (τ : Psi p.T.Q.H) (k : Fin ((dat p i).p + (dat p i).q)) (hk : (k : ℕ) < (dat p i).p) :
     (((p.κ i).n / 2 : ℕ) : ℤ) < laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ k := by
   have h := GlobalTheory.HolRead.lastPos_wtA_of_kapIs D p.T p.κ p.fw.laws p.fw.kap i τ.1 τ.2
@@ -99,6 +125,11 @@ theorem half_lt_laOf (τ : Psi p.T.Q.H) (k : Fin ((dat p i).p + (dat p i).q)) (h
   beta_reduce
   omega
 
+/- English proof (translation)
+Establish `hf : 1 ≤ D.R.f` using `by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Establish `hne : Nonempty (Psi p.T.Q.H)` using `(Nat.card_pos_iff.1 (by rw [WtShape.card_psi p]; exact hf)).1`. Take `⟨τ⟩` from `hne`. Establish `h` using `half_lt_laOf p i τ ⟨0, by omega⟩ hp`. Establish `h1 : (1 : ℤ) ≤ laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ ⟨0, by omega⟩` using `by omega`.
+
+Establish `h2 : (1 : ℝ) ≤ laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ ⟨0, by omega⟩` using `by exact_mod_cast h1`. Use `le_trans ?_ (Finset.single_le_sum (f := fun τ => ∑ k, |(laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ k : ℝ)|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.mem_univ τ))` and prove the remaining obligations. Conclude with `(h2.trans (le_abs_self _)).trans (Finset.single_le_sum (f := fun k => |(laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ k : ℝ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ _))`.
+-/
 theorem one_le_kap (hp : 1 ≤ (dat p i).p) : 1 ≤ kap p i := by
   have hf : 1 ≤ D.R.f := by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega
   have hne : Nonempty (Psi p.T.Q.H) := (Nat.card_pos_iff.1 (by rw [WtShape.card_psi p]; exact hf)).1
@@ -111,6 +142,11 @@ theorem one_le_kap (hp : 1 ≤ (dat p i).p) : 1 ≤ kap p i := by
   exact (h2.trans (le_abs_self _)).trans (Finset.single_le_sum (f := fun k => |(laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ k : ℝ)|)
     (fun _ _ => abs_nonneg _) (Finset.mem_univ _))
 
+/- English proof (translation)
+Set `st : S → Y.V (Gk p i) →ₗ[Y.d.c₂.F] Y.V (Gk p i)` to `fun h => (pull Y.d.Xo₂ Y.d.c₂ (h : LevelAut (dat p i) Y.d.l₂)).toLinearMap.restrict (hC h)`. Take `⟨s', h1, h2⟩` from `exists_short_eigen st (fun h h' x => Subtype.ext ((isRightAct_pull (Xo := Y.d.Xo₂) (c := Y.d.c₂) hpq hA).2 h h' x)) χ (latW Y.U (Gk p i)) (fun h x hx => (hk h x _ rfl).1 hx) hG.1 (fun σ f => by rw [normW, normW, petW, petW, GlobalTheory.CompHt.goodOf_conj σ]) (fun σ a x => petW_s …`. Use `⟨s', fun y hy => ?_, fun y hy σ => ((h1 y hy).2 σ).trans ?_, fun x hx => h2 x fun h => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hN]`. Conclude with `(mem_chiLat S Y.U _).2 ⟨(h1 y hy).1.1, fun h => congrArg Subtype.val ((h1 y hy).1.2 h)⟩`.
+
+Establish `hc : (0 : ℝ) < Nat.card S` using `by exact_mod_cast Nat.card_pos`. Rewrite using `[← Real.exp_log hc, ← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 hPP`. Rewrite `hx` using `[hN]`. Conclude with `((mem_chiLat S Y.U _).1 hx).2 h`.
+-/
 theorem gminAt_of_gens (Y : Cov p i) (hpq : 1 ≤ (dat p i).p + (dat p i).q) (hA : Y.d.l₂.A.Coprime Y.d.l₂.M)
     (hC : KeepsCusp Y.U (Gk p i))
     (hk : ∀ (γ : LevelAut (dat p i) Y.d.l₂) (f g : Y.V (Gk p i)), (g : Rul Y.d.Xo₂ Y.d.c₂) = pull Y.d.Xo₂ Y.d.c₂ γ f →
@@ -137,6 +173,11 @@ theorem gminAt_of_gens (Y : Cov p i) (hpq : 1 ≤ (dat p i).p + (dat p i).q) (hA
 
 end Point
 
+/- English proof (translation)
+Establish `h1 : 1 ≤ Z` using `by linarith`. Establish `h2 : Z ^ 3 ≤ Z ^ 12` using `pow_le_pow_right₀ h1 (by norm_num)`. Establish `h3 : (C + 45) * Z ^ 2 ≤ Z ^ 3`. Rewrite using `[pow_succ' Z 2]; exact mul_le_mul_of_nonneg_right hl (by positivity)`. Establish `h4 : (C + 45) * Z ^ 2 * k ≤ PP * k` using `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`.
+
+Establish `h5 : 45 * Z ^ 2 ≤ 45 * Z ^ 2 * k` using `le_mul_of_one_le_right (by positivity) hk`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem num_step {C Z l k PP : ℝ} (hC : 0 ≤ C) (hl : C + 45 ≤ Z) (hk : 1 ≤ k) (hPP : Z ^ 12 ≤ PP) (h : l ≤ 45 * Z ^ 2) :
     l + C * Z ^ 2 * k ≤ PP * k := by
   have h1 : 1 ≤ Z := by linarith
@@ -147,6 +188,17 @@ theorem num_step {C Z l k PP : ℝ} (hC : 0 ≤ C) (hl : C + 45 ≤ Z) (hk : 1 �
   have h5 : 45 * Z ^ 2 ≤ 45 * Z ^ 2 * k := le_mul_of_one_le_right (by positivity) hk
   linarith
 
+/- English proof (translation)
+Introduce `hP hGr hDG hS`. Take `⟨C, hC, hg⟩` from `GlobalTheory.T.even_domain_weight_bound hP`. Use `Closed.imp (((GlobalTheory.T.weight_parameter_strict_antitone hS).and (GlobalTheory.T.size_bounds_for_family hS)).and ((GlobalTheory.T.lattice_level_character_bound hP hGr hDG).and hDG)) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨⟨_, -, h1⟩, _, -, h2⟩, ⟨_, -, h3⟩, _, -, h4⟩`. Take `⟨x1, h5⟩` from `GlobalTheory.family_sizes_eventually_large eps Fm (C + 45)`.
+
+Take `⟨x0, h⟩` from `(h1.and h2).and (h3.and h4)`. Use `⟨0, le_rfl, max x0 x1, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Take `⟨⟨a1, a2⟩, a3, a4⟩` from `h x hx ((le_max_left _ _).trans hle) ι p hp`. Take `⟨b1, b2, b3, -⟩` from `a1 i hi`. Take `⟨c1, c2, c3, c4, c5, c6, -, -, c7, c8, -, c9, c10, -⟩` from `a2 i hi Y hY`.
+
+Take `⟨fr, ψ, -, d1, d2, d3⟩` from `a3 i hi Y hY`. Establish `hL` using `(h5 x ((le_max_right _ _).trans hle) ι).2.2.1`. Establish `hn : 8 * (Fm.D x ι).R.f * (Fm.D x ι).R.r + 4 ≤ (p.κ i).n`. Rewrite using `[WtShape.cols_eq]`. Conclude with `(Fm.parT x hx ι).nV_ge`.
+
+Take `⟨s, e1, e2, e3⟩` from `hg _ p.T c1 _ b1 b2 b3 c2 Y _ _ hY.1 _ c3 c4 c5 c6 le_rfl (wtA (p.κ i)) (p.κ i).n (dom_wtA _) (p.κ i).n_even hn (half_lt_laOf p i) (c9.trans (by linarith))`. Take `⟨k1, k2⟩` from `GlobalTheory.LevelIsometry.keeps_cusp_lattice_norm _ p.T c1 _ b1 b2 b3 c2 Y _ _ hY.1 (Gk p i) ((Int.even_coe_nat _).2 (p.κ i).n_even)`. Use `gminAt_of_gens p i Y (by omega) d1.coprime k1 k2 (a4 i hi Y hY).1 _ _ d2 s e1 e2 _ _ (fun y hy σ => (e3 y hy σ).1) (num_step hC (hL.trans ?_) (one_le_kap p i b1) c10 d3)` and prove the remaining obligations. Establish `f1 : (1 : ℝ) ≤ (Fm.D x ι).R.f` using `by exact_mod_cast (by omega : 1 ≤ (Fm.D x ι).R.f)`. Establish `f2 : (1 : ℝ) ≤ (Fm.D x ι).R.r` using `by exact_mod_cast (by omega : 1 ≤ (Fm.D x ι).R.r)`.
+
+Conclude with `le_mul_of_one_le_left (by linarith) (one_le_mul_of_one_le_of_one_le f1 f2)`.
+-/
 theorem gmin : Hypotheses2 → Gram → DeepGood → Size → Gmin := by
   intro hP hGr hDG hS
   obtain ⟨C, hC, hg⟩ := GlobalTheory.T.even_domain_weight_bound hP

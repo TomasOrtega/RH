@@ -12,6 +12,11 @@ open ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.G ReciprocityTh
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hle : ∀ j : K → L.ι, LB.wchart L (fun k => f ≫ φ k) j ≤ LB.wchart (LB.LinComb L φ ε) (K` using `PUnit) (fun _ => f) (fun _ => j) := fun j _ hy => Set.mem_iInter.2 fun _ => LB.wchart_comp_le L f φ j hy`. Use `⟨⟨fun j => res (hle j) (LB.ts c (fun _ => j))⟩, ?_⟩` and prove the remaining obligations. Use `(LB.isGen_iff L _).2 fun i j => ?_` and prove the remaining obligations. Establish `key` using `congrArg (res (inf_le_inf (hle i) (hle j))) ((LB.isGen_iff (LB.LinComb L φ ε) c).1 hc (fun _ => i) (fun _ => j))`. Establish `e` using `LB.lcg_pull (LB.LinComb L φ ε) f (fun _ => i) (fun _ => j)`.
+
+Rewrite using `[LB.lcg_comp]`. Use `(LB.res_res _ _ _).trans (((LB.res_res _ _ _).symm.trans key).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ ?_)))` and prove the remaining obligations. Conclude with `(congrArg _ e).trans (LB.res_res _ _ _)`. Conclude with `(LB.res_res _ _ _).trans (LB.res_res _ _ _).symm`.
+-/
 theorem exists_isGen_linComb_of_pull {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (f : Z ⟶ Y) (c : LB.Gen ((LB.LinComb L φ ε).pull f))
     (hc : c.IsGen) : ∃ d : LB.Gen (LB.LinComb L (fun k => f ≫ φ k) ε), d.IsGen := by
@@ -29,6 +34,15 @@ theorem exists_isGen_linComb_of_pull {X Y Z : Scheme.{0}} (L : LB X) {K : Type} 
   · exact (congrArg _ e).trans (LB.res_res _ _ _)
   · exact (LB.res_res _ _ _).trans (LB.res_res _ _ _).symm
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `exists_isGen_linComb_of_pull L _ _ _ c hc`. Establish `hr : Set.range (g ▷ A).left ⊆ Set.range ((fst T A).left ⁻¹ᵁ V).ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Express the relevant statement in the definitionally equal form `((g ▷ A).left ≫ (fst T A).left) y ∈ V`.
+
+Rewrite using `[← Over.comp_left, whiskerRight_fst, Over.comp_left]`. Conclude with `hg _`. Establish `hl` using `IsOpenImmersion.lift_fac ((fst T A).left ⁻¹ᵁ V).ι (g ▷ A).left hr`. Establish `h4 : ∃ w : LB.Gen (LB.LinComb L _ _), w.IsGen` using `⟨_, LB.isGen_pullGen L _ _ d hd (IsOpenImmersion.lift ((fst T A).left ⁻¹ᵁ V).ι (g ▷ A).left hr)⟩`. Establish `h3 : (fun k : Fin 2 => IsOpenImmersion.lift ((fst T A).left ⁻¹ᵁ V).ι (g ▷ A).left hr ≫ ((fst T A).left ⁻¹ᵁ V).ι ≫ ![(lift (fst T A ≫ x) (snd T A) ≫ μ[A]).left, (snd T A).left] k) = ![(lift (fst T' A ≫ g ≫ x) (snd T' A) ≫ μ[A]).left, (snd T' A).left]`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[← Category.assoc, hl]`. Use `fin_cases k`. Express the relevant statement in the definitionally equal form `(g ▷ A ≫ lift (fst T A ≫ x) (snd T A) ≫ μ[A]).left = (lift (fst T' A ≫ g ≫ x) (snd T' A) ≫ μ[A]).left`. Rewrite using `[comp_lift_assoc, whiskerRight_fst_assoc, whiskerRight_snd]`.
+
+Express the relevant statement in the definitionally equal form `(g ▷ A ≫ snd T A).left = (snd T' A).left`. Rewrite using `[whiskerRight_snd]`. Rewrite `h4` using `[h3]`. Conclude with `h4`.
+-/
 theorem exists_isGen_translDiff_comp {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left)
     {T T' : Over S} (x : T ⟶ A) (g : T' ⟶ T) (V : T.left.Opens)
     (hg : ∀ q, g.left q ∈ V)
@@ -59,6 +73,15 @@ theorem exists_isGen_translDiff_comp {S : Scheme.{0}} (A : Over S) [GrpObj A] (L
   rw [h3] at h4
   exact h4
 
+/- English proof (translation)
+Introduce `A _ L _ _ H R _ t x hx`. Establish `H' : ∀ (R' : CommRingCat.{0}) (t' : Spec R' ⟶ Sp ℂ) (y : Over.mk t' ⟶ A), (∃ c : LB.Gen (Out.translDiff A L y), c.IsGen) → y = 1`. Introduce `R' t'`. Take `⟨φ, rfl⟩` from `Spec.map_surjective t'`. Set `_ : Algebra ℂ R'` to `φ.hom.toAlgebra`.
+
+Conclude with `H R'`. Express the relevant statement in the definitionally equal form `x = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `Scheme.hom_ext_of_forall _ _ fun p => ?_` and prove the remaining obligations. Take `⟨V, hp, c, hc⟩` from `hx p`.
+
+Take `⟨U, hU, hpU, hUV⟩` from `exists_isAffineOpen_mem_and_subset (U := V) (x := p) hp`. Use `⟨U, hpU, ?_⟩` and prove the remaining obligations. Set `g : Over.mk (hU.fromSpec ≫ t) ⟶ Over.mk t` to `Over.homMk hU.fromSpec rfl`. Establish `h1 : g ≫ x = g ≫ 1`. Rewrite using `[MonObj.comp_one]`.
+
+Conclude with `H' _ _ _ (exists_isGen_translDiff_comp A L x g V (fun q => hUV (hU.range_fromSpec.le ⟨q, rfl⟩)) c hc)`. Establish `h2 : hU.fromSpec ≫ x.left = hU.fromSpec ≫ (1 : Over.mk t ⟶ A).left` using `congrArg (·.left) h1`. Rewrite `h2` using `[IsAffineOpen.fromSpec, Category.assoc, Category.assoc, cancel_epi]`. Conclude with `h2`.
+-/
 theorem kTriv_of_global : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left), IsAbelianScheme A → L.IsLB →
     (∀ (R : Type) [CommRing R] [Algebra ℂ R], ∀ (x : Over.mk (spMap (algebraMap ℂ R)) ⟶ A),
       (∃ c : LB.Gen (Out.translDiff A L x), c.IsGen) → x = 1) → Out.KTriv A L := by

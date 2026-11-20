@@ -12,8 +12,16 @@ open PositivityTheory.RgTw (Mat hb)
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `(hbOrtho n).2 m`.
+-/
 theorem hbM_herm (m : Md n) : (hbM m).IsHermitian := (hbOrtho n).2 m
 
+/- English proof (translation)
+Distinguish the cases in `h : b = c`. Substitute `h` using the available equality. Rewrite using `[single_mul_single_same, one_mul]`. Distinguish the cases in `h' : a = d`. Substitute `h'` using the available equality.
+
+Simplify using `[trace_single_eq_same]`. Simplify using `[Matrix.trace_single_eq_of_ne, h']`. Rewrite using `[single_mul_single_of_ne (h := h)]`. Simplify using `[h]`.
+-/
 private theorem trace_single_mul_single_eq_ite (a b c d : Fin n) :
     (single a b (1 : ℂ) * single c d (1 : ℂ)).trace = if b = c ∧ a = d then 1 else 0 := by
   by_cases h : b = c
@@ -26,6 +34,13 @@ private theorem trace_single_mul_single_eq_ite (a b c d : Fin n) :
   · rw [single_mul_single_of_ne (h := h)]
     simp [h]
 
+/- English proof (translation)
+Take `⟨a, b⟩` from `p`. Take `⟨c, d⟩` from `q`. Establish `hs : ((↑√2 : ℂ))⁻¹ * (↑√2 : ℂ)⁻¹ = (1 / 2 : ℂ)`. Rewrite using `[← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]`. Evaluate the numerical expressions.
+
+Simplify using `only [hb, Prod.mk.injEq]`. Apply the tactic sequence `split_ifs <;> (try simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_add, Matrix.trace_sub, Matrix.trace_smul, trace_single_mul_single_eq_ite, smul_eq_mul]) <;> (try split_ifs) <;> (try simp only [Fin.ext_iff …`. Consider the case `omega`. Consider the case `ring1`. Consider the case `linear_combination 2 * hs`.
+
+Consider the case `linear_combination 2 * hs - 2 * (↑√2 : ℂ)⁻¹ * (↑√2 : ℂ)⁻¹ * Complex.I_sq`.
+-/
 private theorem trace_hb_mul_hb_eq_ite (p q : Fin n × Fin n) : (hb p * hb q).trace = if p = q then 1 else 0 := by
   obtain ⟨a, b⟩ := p
   obtain ⟨c, d⟩ := q
@@ -44,9 +59,17 @@ private theorem trace_hb_mul_hb_eq_ite (p q : Fin n × Fin n) : (hb p * hb q).tr
     | linear_combination 2 * hs
     | linear_combination 2 * hs - 2 * (↑√2 : ℂ)⁻¹ * (↑√2 : ℂ)⁻¹ * Complex.I_sq
 
+/- English proof (translation)
+Simplify using `only [hbM, trace_hb_mul_hb_eq_ite, EmbeddingLike.apply_eq_iff_eq]`.
+-/
 private theorem trace_hbM_mul_hbM_eq_ite (p q : Md n) : (hbM p * hbM q).trace = if p = q then 1 else 0 := by
   simp only [hbM, trace_hb_mul_hb_eq_ite, EmbeddingLike.apply_eq_iff_eq]
 
+/- English proof (translation)
+Rewrite using `[linearIndependent_iff']`. Introduce `s g hg i hi`. Establish `h` using `congrArg (fun X => (X * hbM i).trace) hg`. Simplify using `only [Finset.sum_mul, Matrix.smul_mul, Matrix.trace_sum, Matrix.trace_smul, Matrix.zero_mul, Matrix.trace_zero, smul_eq_mul, trace_hbM_mul_hbM_eq_ite, mul_ite, mul_one, mul_zero] at h`. Rewrite `h` using `[Finset.sum_ite_eq']`.
+
+Simplify `h` using `[hi]`.
+-/
 theorem hbM_li : LinearIndependent ℂ (hbM (n := n)) := by
   rw [linearIndependent_iff']
   intro s g hg i hi
@@ -59,9 +82,15 @@ theorem hbM_li : LinearIndependent ℂ (hbM (n := n)) := by
 def hbB (n : ℕ) [Nonempty (Md n)] : Module.Basis (Md n) ℂ (Mat n) :=
   basisOfLinearIndependentOfCardEqFinrank hbM_li (by simp [Module.finrank_matrix])
 
+/- English proof (translation)
+Rewrite using `[hbB, coe_basisOfLinearIndependentOfCardEqFinrank]`.
+-/
 theorem hbB_apply [Nonempty (Md n)] (m : Md n) : hbB n m = hbM m := by
   rw [hbB, coe_basisOfLinearIndependentOfCardEqFinrank]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← (hbB n).sum_repr X]`. Simplify using `only [Finset.sum_mul, Matrix.smul_mul, Matrix.trace_sum, Matrix.trace_smul, hbB_apply, trace_hbM_mul_hbM_eq_ite, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem hbB_repr [Nonempty (Md n)] (X : Mat n) (m : Md n) : (hbB n).repr X m = (X * hbM m).trace := by
   conv_rhs => rw [← (hbB n).sum_repr X]
   simp only [Finset.sum_mul, Matrix.smul_mul, Matrix.trace_sum, Matrix.trace_smul, hbB_apply, trace_hbM_mul_hbM_eq_ite,
@@ -72,6 +101,11 @@ def phiL (y : Mat n) : Mat n →ₗ[ℂ] Mat n where
   map_add' X X' := by rw [Matrix.mul_add, Matrix.add_mul]
   map_smul' c X := by rw [Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply]
 
+/- English proof (translation)
+Use extensionality with `p q`. Rewrite using `[LinearMap.toMatrix_apply]`. Establish `hH : (y * hbM q * yᴴ).IsHermitian`. Simplify using `only [IsHermitian, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, (hbM_herm q).eq, Matrix.mul_assoc]`. Establish `hr : star (y * hbM q * yᴴ * hbM p).trace = (y * hbM q * yᴴ * hbM p).trace`.
+
+Rewrite using `[← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, hH.eq, (hbM_herm p).eq, Matrix.trace_mul_comm]`. Use `show (((y * hbM q * yᴴ * hbM p).trace.re : ℂ)) = (hbB n).repr (phiL y (hbB n q)) p`. Rewrite using `[hbB_apply, hbB_repr]`. Conclude with `Complex.conj_eq_iff_re.1 hr`.
+-/
 theorem Mt_eq_toMatrix [Nonempty (Md n)] (y : Mat n) : Mt y = LinearMap.toMatrix (hbB n) (hbB n) (phiL y) := by
   ext p q
   rw [LinearMap.toMatrix_apply]
@@ -86,9 +120,17 @@ theorem Mt_eq_toMatrix [Nonempty (Md n)] (y : Mat n) : Mt y = LinearMap.toMatrix
 
 def stdB (n : ℕ) : Module.Basis (Md n) ℂ (Mat n) := (Matrix.stdBasis ℂ (Fin n) (Fin n)).reindex finProdFinEquiv
 
+/- English proof (translation)
+Simplify using `[stdB, Matrix.stdBasis_eq_single]`.
+-/
 theorem stdB_apply (m : Md n) : stdB n m = single (finProdFinEquiv.symm m).1 (finProdFinEquiv.symm m).2 1 := by
   simp [stdB, Matrix.stdBasis_eq_single]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [phiL, LinearMap.coe_mk, AddHom.coe_mk, Matrix.diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul, Pi.star_apply]`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `only [mul_one]`.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+-/
 theorem phiL_single (w : Fin n → ℂ) (i j : Fin n) :
     phiL (diagonal w) (single i j (1 : ℂ)) = (w i * conj (w j)) • single i j (1 : ℂ) := by
   ext a b
@@ -100,10 +142,18 @@ theorem phiL_single (w : Fin n → ℂ) (i j : Fin n) :
     rfl
   · simp
 
+/- English proof (translation)
+Rewrite using `[stdB_apply, phiL_single]`.
+-/
 theorem phiL_stdB (w : Fin n → ℂ) (m : Md n) :
     phiL (diagonal w) (stdB n m) = (w (finProdFinEquiv.symm m).1 * conj (w (finProdFinEquiv.symm m).2)) • stdB n m := by
   rw [stdB_apply, phiL_single]
 
+/- English proof (translation)
+Use extensionality with `p q`. Rewrite using `[LinearMap.toMatrix_apply, phiL_stdB, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply, diagonal_apply]`. Distinguish the cases in `h : q = p`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h, Ne.symm h]`.
+-/
 theorem toMatrix_stdB (w : Fin n → ℂ) : LinearMap.toMatrix (stdB n) (stdB n) (phiL (diagonal w)) =
     diagonal fun m => w (finProdFinEquiv.symm m).1 * conj (w (finProdFinEquiv.symm m).2) := by
   ext p q

@@ -8,6 +8,11 @@ namespace PositivityTheory.Lit1.GEN.X
 
 local notation "ℚ̄" => AlgebraicClosure ℚ
 
+/- English proof (translation)
+Introduce `K S hS ℓ _ hℓS L _ hL hPn hcop hζ hK ιr M _ _ hMl hMP`. Establish `: Finite S` using `hS`. Use `ratio_eq_one_of_altSum hℓS ιr M hMl ?_` and prove the remaining obligations. Establish `: Finite (zmodRepOfTorsion ℓ M hMl)` using `‹Finite M›`. Establish `: Module.Finite (ZMod ℓ) (zmodRepOfTorsion ℓ M hMl)` using `Module.Finite.of_finite`.
+
+Conclude with `altSum hL hℓS hPn hcop hζ hK ιr (zmodRepOfTorsion ℓ M hMl) (fun g m => by`. Use `congrArg (fun f => f m) (hMP g g.2)` as an intermediate fact. Conclude with `this)`.
+-/
 theorem lemmaX : PositivityTheory.Lit1.GEN.GlobalEulerCharCoprime := by
   intro K S hS ℓ _ hℓS L _ hL hPn hcop hζ hK ιr M _ _ hMl hMP
   have : Finite S := hS

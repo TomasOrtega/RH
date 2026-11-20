@@ -12,6 +12,35 @@ open GlobalTheory.FlagTan (dimFlag psiSet TIx HIx VIx IsTanFrame IsDef IsVert KS
 open GlobalTheory.AllWt (exOf)
 open scoped Classical
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y X Z M hKS k W₁ hW₁ hk₁ _ Q₀ hQ₀ ι _ d hd Mx hMx K _ _ ψ hk Q hQ θ m hθ1 hθ2`. Use `haveI := c.fin`. Establish `hinj : ∀ {A B : Type} [CommRing A] [CommRing B] (f g : A →+* B), spMap f = spMap g → f = g`. Introduce `A B _ _ f g h`. Use `Spec.map_injective h` as an intermediate fact.
+
+Conclude with `congrArg CommRingCat.Hom.hom this`. Establish `hid : spMap (RingHom.id c.F) = 𝟙 _` using `Spec.map_id _`. Establish `hjs : ∀ {T : Type} [CommRing T] [Algebra c.F T] (P : FrPt Xo c T), frX P ≫ Y.j ≫ Y.s = spMap (algebraMap c.F T)`. Introduce `T _ _ P`. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc, frX_snd, hid, Category.comp_id]`.
+
+Establish `e1 : frX Q ≫ Y.j = spMap ψ ≫ frX Q₀ ≫ Y.j`. Rewrite using `[hQ.over, hQ₀.over]`. Simplify using `only [Category.assoc]`. Establish `hψα : ψ.comp (algebraMap c.F Γ(M.X, W₁)) = algebraMap c.F K`. Establish `h2` using `congrArg (· ≫ Y.s) e1`.
+
+Simplify using `only [Category.assoc] at h2`. Rewrite `h2` using `[hjs Q, hjs Q₀, spMap_comp']`. Conclude with `(hinj _ _ h2).symm`. Set `ψA : Γ(M.X, W₁) →ₐ[c.F] K` to `⟨ψ, fun r => RingHom.congr_fun hψα r⟩`. Establish `hfrX : frX Q = spMap ψ ≫ frX Q₀`.
+
+Use `xF_ext (Y := Y) (frX_snd Q) ?_ (by rw [e1, Category.assoc])` and prove the remaining obligations. Rewrite using `[Category.assoc, frX_snd, spMap_comp', hψα]`. Establish `hQx : Q.x = spMap ψ ≫ Q₀.x`. Rewrite using `[← frX_fst, hfrX, Category.assoc, frX_fst]`. Establish `hFQ : FrMap ψA Q₀ Q`.
+
+Take `⟨Q', hQ'⟩` from `exists_frMap ψA Q₀`. Establish `hc` using `hQ₀.frMap hQ' (z' := (spMap ψ ≫ tau hW₁) ≫ toFlag M) (by simp only [Category.assoc]) hk`. Rewrite `hQ'` using `[hc.unique hQ]`. Then use the resulting hypothesis. Establish `hdu : ∀ φ : Γ(M.X, W₁) →+* DualNumber K, (∀ s, (φ s).fst = ψ s) → φ.comp (algebraMap c.F Γ(M.X, W₁)) = algebraMap c.F (DualNumber K)`. Introduce `φ hφ`.
+
+Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hφ, ← RingHom.comp_apply, hψα]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl']`. Rewrite using `[GlobalTheory.T.ringHom_numberField_dualNumber_snd_eq_zero c.F (φ.comp (algebraMap c.F _)) a]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl']`.
+
+Set `θA : Γ(M.X, W₁) →ₐ[c.F] DualNumber K` to `⟨θ, fun r => RingHom.congr_fun (hdu θ hθ1) r⟩`. Take `⟨w, hw⟩` from `exists_frMap θA Q₀`. Establish `hwc : X.F.ChartFr k (spMap θ ≫ tau hW₁ ≫ toFlag M) (le_preimage_comp _ hk₁) w` using `hQ₀.frMap hw rfl _`. Establish `hwpt : spMap θ ≫ tau hW₁ ≫ toFlag M = X.ptY w` using `FlagCover.eq_ptY hwc.lies`. Establish `hwx : w.x = spMap θ ≫ Q₀.x`.
+
+Rewrite using `[← frX_fst, ← frX_frMap hw, Category.assoc, frX_fst]`. Establish `hred : (GlobalTheory.FlagTan.red c K).toRingHom.comp θ = ψ` using `RingHom.ext fun s => hθ1 s`. Establish `hdef : IsDef Q w`. Take `⟨Q', hQ'⟩` from `exists_frMap (GlobalTheory.FlagTan.red c K) w`. Establish `hc` using `hwc.frMap hQ' (z' := (spMap ψ ≫ tau hW₁) ≫ toFlag M) (by rw [← Category.assoc, spMap_comp', hred]; simp only [Category.assoc]) hk`.
+
+Use `show FrMap _ w Q`. Rewrite `hQ'` using `[hc.unique hQ]`. Then use the resulting hypothesis. Establish `hθc1 : ∀ a s, (((dualMap ψ).comp (d a)) s).fst = ψ s`. Introduce `a s`. Simplify using `[dualMap, hd]`.
+
+Establish `hTan : ∀ φ : Γ(M.X, W₁) →+* DualNumber K, (∀ s, (φ s).fst = ψ s) → GlobalTheory.FlagTan.IsTanX Q (spMap φ ≫ Q₀.x)`. Introduce `φ hφ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Q₀.x_over]`. Unfold `sOf`.
+
+Rewrite using `[spMap_comp', ← RingHom.comp_assoc, hdu φ hφ]`. Rewrite using `[← Category.assoc, spMap_comp', hQx]`. Establish `: (GlobalTheory.FlagTan.red c K).toRingHom.comp φ = ψ` using `RingHom.ext fun s => hφ s`. Rewrite using `[this]`. Establish `hKSa : ∀ a, GlobalTheory.FlagTan.IsKS (psiSet H) Q (spMap ((dualMap ψ).comp (d a)) ≫ Q₀.x) (ψ ∘ Mx a)`.
+
+Introduce `a`. Use `hMx a K ψA Q hFQ` as an intermediate fact. Rewrite `this` using `[← Category.assoc, spMap_comp']`. Then use the resulting hypothesis. Use `⟨w, hdef, ?_, hwpt⟩` and prove the remaining obligations. Rewrite using `[hwx]`.
+
+Use `GlobalTheory.T.kodaira_spencer_tangent_vectors_lift (hKS K Q) (x := fun a => spMap ((dualMap ψ).comp (d a)) ≫ Q₀.x) (fun a => hTan _ (hθc1 a)) hKSa (hTan θ hθ1) m ?_` and prove the remaining obligations. Introduce `O f h' hc`. Conclude with `GlobalTheory.T.evalRingPoint_dualNumber_snd_linear_derivation Q₀.x ψ (fun a => (dualMap ψ).comp (d a)) θ m hθc1 hθ1 (fun s => by rw [hθ2 s]; simp [dualMap]) O f h' hc`.
+-/
 theorem GlobalTheory.HorFrame.exists_deform_of_comb : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : GlobalTheory.FlagMod.FlagCover Y} {Z : Comp Xo c} (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw)), (∀ (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K), KSIso (psiSet H) y) → ∀ (k : X.F.J) {W₁ : M.X.Opens} (hW₁ : IsAffineOpen W₁) (hk₁ : ⊤ ≤ (tau hW₁ ≫ toFlag M) ⁻¹ᵁ X.F.U k) [Algebra c.F Γ(M.X, W₁)] (Q₀ : FrPt Xo c Γ(M.X, W₁)), X.F.ChartFr k _ hk₁ Q₀ → ∀ {ι : Type} [Fintype ι] (d : ι → (Γ(M.X, W₁) →+* DualNumber Γ(M.X, W₁))), (∀ a s, (d a s).fst = s) → ∀ (Mx : ι → HIx Dw (psiSet H) → Γ(M.X, W₁)), (∀ a (K : Type) [Field K] [Algebra c.F K] (ψ : Γ(M.X, W₁) →ₐ[c.F] K) (y' : FrPt Xo c K), FrMap ψ Q₀ y' → GlobalTheory.FlagTan.IsKS (psiSet H) y' (spMap (dualMap ψ.toRingHom) ≫ spMap (d a) ≫ Q₀.x) (ψ ∘ Mx a)) → ∀ (K : Type) [Field K] [Algebra c.F K] (ψ : Γ(M.X, W₁) →+* K) (hk : ⊤ ≤ ((spMap ψ ≫ tau hW₁) ≫ toFlag M) ⁻¹ᵁ X.F.U k) (Q : FrPt Xo c K), X.F.ChartFr k _ hk Q → ∀ (θ : Γ(M.X, W₁) →+* DualNumber K) (m : ι → K), (∀ s, (θ s).fst = ψ s) → (∀ s, (θ s).snd = ∑ a, m a * ψ (d a s).snd) → ∃ w : FrPt Xo c (DualNumber K), IsDef Q w ∧ GlobalTheory.FlagTan.IsKS (psiSet H) Q w.x (∑ a, m a • (ψ ∘ Mx a)) ∧ spMap θ ≫ tau hW₁ ≫ toFlag M = X.ptY w := by
   intro E _ _ _ H Dw l Xo c Y X Z M hKS k W₁ hW₁ hk₁ _ Q₀ hQ₀ ι _ d hd Mx hMx K _ _ ψ hk Q hQ θ m hθ1 hθ2
   haveI := c.fin

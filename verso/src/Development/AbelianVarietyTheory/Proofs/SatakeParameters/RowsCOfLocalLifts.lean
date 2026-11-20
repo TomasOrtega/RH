@@ -21,6 +21,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RowsCClose
 
+/- English proof (translation)
+Introduce `hL D P J hA hB a1 a8 p1 hi`. Take `⟨p41, _, p42⟩` from `p1`. Take `⟨tl, lt, io, rb⟩` from `GlobalTheory.TieLabAt.main hL D P`. Establish `iface` using `GlobalTheory.AdmIface.main D`. Establish `bc : ∀ i, BCEx D.nd D.naut i` using `iface.1 a1`.
+
+Establish `lift : ∀ i, GlobalTheory.ThetaExh.LiftParam D.nd D.naut i` using `iface.2.2.1 p42`. Establish `isot : Rows.IsotInternal D.what₂` using `iface.2.2.2.2.2.mp a8`. Establish `rho : GlobalDatumResidualRepCondition D` using `GlobalTheory.ParamRep.jointCond_rho D hA.tie0 hA.a2 hB.a4 hA.a5 p41 (GlobalTheory.GoodCuspPoint.main D tl) (GlobalTheory.XiOver.main D P.cf P.C P.tp P.chr P.val hA.tie0 hA.a2 hA.a5)`. Establish `rp : RowRepAtG D` using `GlobalTheory.RowRepOcc.rowRepAtG_of_rowPoint D hA.tie0 hA.a2 hA.a5 p42 rho hA.gsp (GlobalTheory.T.rowPoint_of_conditions hL D P p42 p41)`. Conclude with `{ c4b := GlobalTheory.RowTie.tameGenerator_residual D rb io lt rp rho := rho dz := GlobalTheory.GoodDepthZero.main D hA.tie0 hB.a4 p41 hA.gsp parUp := GlobalTheory.RowTie.parUpRec_of_ties D P.T hB.thetaOne (fun i => (hi i).1) bc (fun i => (hi i).2.1) (fun i => (hi i).2.2) downMem …`.
+-/
 theorem main : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), Join P → GlobalTheory.NRows.RowsA D →
     GlobalTheory.NRows.RowsB D → Formalism.MainNotions.SumRepresentations.adm1 D → Formalism.MainNotions.SumRepresentations.adm8 D → Formalism.MainNotions.SumRepresentations.Conclusion1 D →
     (∀ i, PairLift D.nd D.naut i ∧ SplitBC D.nd D.naut i ∧ RepOfLoc D.nd D.naut i) → GlobalTheory.NRows.RowsC D := by

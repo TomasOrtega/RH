@@ -6,6 +6,11 @@ open CategoryTheory AlgebraicGeometry Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.ConjSeq GlobalTheory.UPel.HT GlobalTheory.UPel.HT.ES UpperTheory.Gal.Ord
 open scoped TensorProduct
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Module.projective_def'.mp (inferInstance : Module.Projective B M)`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `hm` to reduce the goal to its premises. Establish `h0 : s m = 0`.
+
+Use extensionality with `a`. Simplify using `using hall (Finsupp.lapply a ∘ₗ s)`. Use `LinearMap.congr_fun hs m` as an intermediate fact. Simplify `this.symm` using `[h0]`.
+-/
 private theorem exists_functional_ne_zero_projective {B M : Type} [CommRing B] [AddCommGroup M] [Module B M]
     [Module.Projective B M] {m : M} (hm : m ≠ 0) : ∃ l : M →ₗ[B] B, l m ≠ 0 := by
   obtain ⟨s, hs⟩ := Module.projective_def'.mp (inferInstance : Module.Projective B M)
@@ -18,11 +23,25 @@ private theorem exists_functional_ne_zero_projective {B M : Type} [CommRing B] [
   have := LinearMap.congr_fun hs m
   simpa [h0] using this.symm
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.NonvanishingPoint.exists_point_nonvanishing_reduced k B hc`.
+-/
 private theorem exists_point_nonvanishing_reduced (k : Type) [Field k] [IsAlgClosed k] (B : Type) [CommRing B] [Algebra k B]
     [Algebra.FiniteType k B] [IsReduced B] {c : B} (hc : c ≠ 0) :
     ∃ x : B →ₐ[k] k, x c ≠ 0 :=
   _root_.UpperTheory.Reformulated.B.NonvanishingPoint.exists_point_nonvanishing_reduced k B hc
 
+/- English proof (translation)
+Introduce `k _ _ B _ _ _ _ _ r hv`. Assume the negation of the conclusion as `hne`. Take `⟨l, hl⟩` from `exists_functional_ne_zero_projective (B := B) hne`. Take `⟨x, hx⟩` from `exists_point_nonvanishing_reduced k B hl`. Set `d : B →ₗ[k] k` to `x.toLinearMap ∘ₗ (l.restrictScalars k) ∘ₗ (KaehlerDifferential.D k B).toLinearMap`.
+
+Establish `hd : ∀ b, d b = x (l (KaehlerDifferential.D k B b))` using `fun _ => rfl`. Set `f : B →ₗ[k] DualNumber k` to `Algebra.linearMap k (DualNumber k) ∘ₗ x.toLinearMap + TrivSqZeroExt.inrHom k k ∘ₗ d`. Establish `hal : ∀ c : k, algebraMap k (DualNumber k) c = TrivSqZeroExt.inl c` using `fun _ => rfl`. Establish `hfst : ∀ b, TrivSqZeroExt.fst (f b) = x b` using `fun b => by simp [f, hal]`. Establish `hsnd : ∀ b, TrivSqZeroExt.snd (f b) = d b` using `fun b => by simp [f, hal]`.
+
+Set `v : B →ₐ[k] DualNumber k` to `AlgHom.ofLinearMap f (by`. Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Simplify using `[hfst]`. Simplify using `[hsnd, hd])`. Use the proof step `(by`.
+
+Introduce `a b`. Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Simplify using `[hfst]`. Simplify using `[hfst, hsnd, hd, Derivation.leibniz, mul_comm, add_comm])`. Apply `hx` to reduce the goal to its premises.
+
+Use `hv v` as an intermediate fact. Simplify `this` using `[v, hsnd, hd]`.
+-/
 theorem UpperTheory.Gal.Ord.dz1 :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Type) [CommRing B] [Algebra k B] [Algebra.FiniteType k B] [IsReduced B] [Module.Projective B Ω[B⁄k]] (r : B),
       (∀ v : B →ₐ[k] DualNumber k, TrivSqZeroExt.snd (v r) = 0) → KaehlerDifferential.D k B r = 0 := by

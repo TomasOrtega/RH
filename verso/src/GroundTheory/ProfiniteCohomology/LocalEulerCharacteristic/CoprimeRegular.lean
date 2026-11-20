@@ -15,6 +15,9 @@ noncomputable def regularTensorEquiv : MonoidAlgebra k Γ ⊗[k] N ≃ₗ[k] (Γ
     finsuppScalarLeft k N Γ
 
 omit [Group Γ] [Fintype Γ] in
+/- English proof (translation)
+Use extensionality with `γ`. Simplify using `[regularTensorEquiv, finsuppScalarLeft_apply_tmul_apply, MonoidAlgebra.coeffLinearEquiv, MonoidAlgebra.coeff_single, Finsupp.single_apply]`.
+-/
 theorem regularTensorEquiv_single_tmul (g : Γ) (r : k) (n : N) :
     regularTensorEquiv (MonoidAlgebra.single g r ⊗ₜ[k] n) = Finsupp.single g (r • n) := by
   ext γ
@@ -23,6 +26,13 @@ theorem regularTensorEquiv_single_tmul (g : Γ) (r : k) (n : N) :
 
 omit [Fintype Γ] in
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p n`. Proceed by induction on `p using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add p q hp hq`. Rewrite using `[TensorProduct.add_tmul, map_add, map_add, Finsupp.add_apply, hp, hq, map_add, Finsupp.add_apply, map_add]`. Consider the case `single g r`. Rewrite using `[Representation.tprod_apply, TensorProduct.map_tmul, ofMulAction_single, regularTensorEquiv_single_tmul, regularTensorEquiv_single_tmul, Finsupp.single_apply, Finsupp.single_apply, smul_eq_mul]`. Distinguish the cases in `hg : h * g = γ`.
+
+Substitute `hg` using the available equality. Simplify using the standard rewrite rules. Establish `: ¬ g = h⁻¹ * γ` using `fun e => hg (by rw [e, mul_inv_cancel_left])`. Simplify using `[hg, this]`. Consider the case `add x y hx hy => rw [map_add, map_add, Finsupp.add_apply, hx, hy, map_add, Finsupp.add_apply, map_add]`.
+-/
 theorem regularTensorEquiv_tprod_apply (h : Γ) (x : MonoidAlgebra k Γ ⊗[k] N) (γ : Γ) :
     regularTensorEquiv (((leftRegular k Γ).tprod σ) h x) γ =
       σ h (regularTensorEquiv x (h⁻¹ * γ)) := by
@@ -45,6 +55,11 @@ theorem regularTensorEquiv_tprod_apply (h : Γ) (x : MonoidAlgebra k Γ ⊗[k] N
   | add x y hx hy => rw [map_add, map_add, Finsupp.add_apply, hx, hy, map_add, Finsupp.add_apply, map_add]
 
 omit [Fintype Γ] in
+/- English proof (translation)
+Rewrite using `[mem_invariants]`. Prove the components needed by the constructor for the conclusion. Introduce `hx γ conv_lhs => rw [← hx γ]`. Rewrite using `[regularTensorEquiv_tprod_apply, inv_mul_cancel]`. Introduce `hx h`.
+
+Apply `regularTensorEquiv.injective` to reduce the goal to its premises. Use extensionality with `γ`. Rewrite using `[regularTensorEquiv_tprod_apply, hx (h⁻¹ * γ), hx γ, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+-/
 theorem mem_invariants_regular_iff (x : MonoidAlgebra k Γ ⊗[k] N) :
     x ∈ ((leftRegular k Γ).tprod σ).invariants ↔
       ∀ γ, regularTensorEquiv x γ = σ γ (regularTensorEquiv x 1) := by
@@ -63,10 +78,16 @@ noncomputable def regularInvariantOf : N →ₗ[k] MonoidAlgebra k Γ ⊗[k] N :
   regularTensorEquiv.symm.toLinearMap ∘ₗ (Finsupp.linearEquivFunOnFinite k N Γ).symm.toLinearMap ∘ₗ
     LinearMap.pi fun γ => σ γ
 
+/- English proof (translation)
+Simplify using `[regularInvariantOf]`.
+-/
 theorem regularTensorEquiv_regularInvariantOf (n : N) (γ : Γ) :
     regularTensorEquiv (regularInvariantOf σ n) γ = σ γ n := by
   simp [regularInvariantOf]
 
+/- English proof (translation)
+Rewrite using `[mem_invariants_regular_iff]`. Introduce `γ`. Rewrite using `[regularTensorEquiv_regularInvariantOf, regularTensorEquiv_regularInvariantOf, map_one, Module.End.one_apply]`.
+-/
 theorem regularInvariantOf_mem (n : N) :
     regularInvariantOf σ n ∈ ((leftRegular k Γ).tprod σ).invariants := by
   rw [mem_invariants_regular_iff]
@@ -90,6 +111,9 @@ noncomputable def invariantsLeftRegularTensorEquiv :
     simp only
     rw [regularTensorEquiv_regularInvariantOf, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+The claim follows from `(invariantsLeftRegularTensorEquiv σ).finrank_eq`.
+-/
 theorem finrank_invariants_leftRegular_tprod :
     Module.finrank k ((leftRegular k Γ).tprod σ).invariants = Module.finrank k N :=
   (invariantsLeftRegularTensorEquiv σ).finrank_eq
@@ -100,6 +124,9 @@ section Comp
 
 variable {k Γ₁ Γ₂ X : Type*} [CommRing k] [Group Γ₁] [Group Γ₂] [AddCommGroup X] [Module k X]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [mem_invariants]`. Conclude with `⟨fun h γ => by obtain ⟨δ, rfl⟩ := he γ; exact h δ, fun h δ => h (e δ)⟩`.
+-/
 theorem invariants_comp_of_surjective (ρ : Representation k Γ₁ X) (e : Γ₂ →* Γ₁)
     (he : Function.Surjective e) :
     Representation.invariants (ρ.comp e) = ρ.invariants := by

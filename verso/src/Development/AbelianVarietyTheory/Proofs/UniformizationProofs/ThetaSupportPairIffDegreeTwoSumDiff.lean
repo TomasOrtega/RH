@@ -24,6 +24,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 namespace GlobalTheory.UU.SuppRel
 
+/- English proof (translation)
+Set `H : AddSubgroup X` to `(nsmulAddMonoidHom 2 : X →+ X).range`. Establish `hfg : AddGroup.FG X` using `Module.Finite.iff_addGroup_fg.mp inferInstance`. Establish `hH : H.FiniteIndex` using `AddSubgroup.finiteIndex_range_nsmulAddMonoidHom_of_fg X two_ne_zero`. Establish `hfin : Finite (X ⧸ H)` using `AddSubgroup.finite_quotient_of_finiteIndex`. Establish `hcl : ∀ α β : X, (QuotientAddGroup.mk β : X ⧸ H) = QuotientAddGroup.mk α ↔ ∃ mu, β = α + 2 • mu`.
+
+Introduce `α β`. Rewrite using `[eq_comm, QuotientAddGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨mu, h⟩`. Conclude with `⟨mu, by rw [nsmulAddMonoidHom_apply] at h; rw [h]; abel⟩`.
+
+Introduce and unpack `⟨mu, h⟩`. Conclude with `⟨mu, by rw [nsmulAddMonoidHom_apply, h]; abel⟩`. Use `GlobalTheory.tensor_component_ne_zero_iff F X (X ⧸ H) QuotientAddGroup.mk E W ex hsep ?_ ?_ w hfull ?_ _ _ ?_` and prove the remaining obligations. Introduce `c s`. Take `⟨α, rfl⟩` from `QuotientAddGroup.mk_surjective c`.
+
+Take `⟨s', hs'⟩` from `hcut α s`. Conclude with `⟨s', fun β => ⟨fun h => (hs' β).1 ((hcl α β).1 h), fun h => (hs' β).2 fun h' => h ((hcl α β).2 h')⟩⟩`. Introduce `α hα s hs h0`. Conclude with `hinj α hα s (fun β hβ => hs β fun h => hβ ((hcl α β).1 h)) h0`. Introduce `α β h`.
+
+Use `hoff α β ?_` and prove the remaining obligations. Introduce and unpack `⟨x, y, rfl, rfl⟩`. Conclude with `h ((hcl _ _).2 ⟨y, by rw [two_nsmul]; abel⟩)`. Conclude with `(hcl _ _).2 ⟨b, by rw [two_nsmul]; abel⟩`.
+-/
 theorem component_ne_zero_iff_mod_two (F : Type) [Field F] (X : Type) [AddCommGroup X] [Module.Finite ℤ X]
     (E : Type) [AddCommGroup E] [Module F E] (W : X → Type) [∀ a, AddCommGroup (W a)]
     [∀ a, Module F (W a)] (ex : ∀ a, E →ₗ[F] W a)
@@ -61,6 +72,23 @@ theorem component_ne_zero_iff_mod_two (F : Type) [Field F] (X : Type) [AddCommGr
     exact h ((hcl _ _).2 ⟨y, by rw [two_nsmul]; abel⟩)
   · exact (hcl _ _).2 ⟨b, by rw [two_nsmul]; abel⟩
 
+/- English proof (translation)
+Introduce `hL hL2 V _ _ _ hV D A G _ _ U θ f hθ a b`. Take `⟨hG, hB⟩` from `GlobalTheory.UU.PullSec.pullEx V hV D A G U (Kbar V) (𝟙_ _) (toUnit _) 1`. Take `⟨th, hth, -⟩` from `hG θ`. Take `⟨s₀, hs₀, -⟩` from `hB f`. Take `⟨r, n, t, t', s, s', hr, hexp, hA, hAB⟩` from `GlobalTheory.T.additionFormula_algClosure_with_expansions hL hL2 V hV D A G U θ f hθ th s₀ hth hs₀`.
+
+Take `⟨hth0, -, -⟩` from `GlobalTheory.T.expF_of_theta_degree_one hL hL2 V hV D A G U θ f hθ th s₀ hth hs₀`. Take `⟨ex, hex, huniq, hsep, hsupp⟩` from `GlobalTheory.T.exists_linear_fourierJacobi_expansion_family hL hL2 V hV D A G U (Kbar V) 2 (by norm_num)`. Take `⟨hcut, -, hinj⟩` from `GlobalTheory.T.lineBundleSections_torusTorsion_weightSpaces hL hL2 V hV D A G U 2 (by norm_num)`. Take `⟨hon, hoff⟩` from `GlobalTheory.T.additionTensor_abelianPart_ne_zero_iff V D (Kbar V) s₀ r n s s' hr hAB`. Establish `hcV : CharZero V` using `hV.2.2`.
+
+Establish `hchar : CharZero (FractionRing V)` using `charZero_of_injective_algebraMap (IsFractionRing.injective V (FractionRing V))`. Establish `h2 : (2 : Kbar V) ≠ 0` using `two_ne_zero`. Set `u : Fin n → EA A (jFK (R` to `V) (Kbar V)) 2 := fun i => SecMod.mk _ (t i)`. Set `u' : Fin n → EA A (jFK (R` to `V) (Kbar V)) 2 := fun i => SecMod.mk _ (t' i)`. Establish `hfull` using `GlobalTheory.T.additionTensor_full_left_support hL hL2 _ A (Kbar V) (jFK (R := V) (Kbar V)) h2 (SecMod.mk _ th) n u u' hA (fun h => by`.
+
+Take `⟨j, hj⟩` from `hth0`. Conclude with `hj ((SecMod.eq_zero_iff _).1 h j))`. Establish `hmap : ∀ α β : D.X, TensorProduct.map (ex α) (ex β) (∑ i, TensorProduct.tmul (Kbar V) (u i) (u' i)) = ∑ i, TensorProduct.tmul (Kbar V) (SecMod.mk _ (s i α) : WB D (Kbar V) 2 α) (SecMod.mk _ (s' i β) : WB D (Kbar V) 2 β)`. Introduce `α β`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.map_tmul, huniq _ _ (hexp i).1 α, huniq _ _ (hexp i).2 β]`. Both sides reduce to the same expression. Establish `key` using `component_ne_zero_iff_mod_two (Kbar V) D.X (EA A (jFK (R := V) (Kbar V)) 2) (fun α => WB D (Kbar V) 2 α) ex hsep ?_ ?_ _ hfull (fun α β h => (hmap α β).trans (hoff α β h)) a b`. Rewrite using `[hsupp, hsupp, ← key, hmap, hon, GlobalTheory.T.pullbackSectionFamily_ne_zero_iff V D (Kbar V) 1 f s₀ hs₀ a, GlobalTheory.T.pullbackSectionFamily_ne_zero_iff V D (Kbar V) 1 f s₀ hs₀ b]`.
+
+Introduce `α v`. Take `⟨v', p, hp, hβ⟩` from `hcut α _ _ (hex v)`. Use `⟨SecMod.mk _ v', fun β => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Break down `hβ β with h' | h'` into its components or cases. Conclude with `(huniq _ _ hp β).symm.trans h'.2`.
+
+Conclude with `absurd h h'.1`. Break down `hβ β with h' | h'` into its components or cases. Conclude with `absurd h'.1 h`. Use `(SecMod.eq_zero_iff _).2 fun j => ?_` and prove the remaining obligations. Rewrite using `[← huniq _ _ hp β]`.
+
+Conclude with `h'.2 j`. Introduce `α hα v hv h0`. Conclude with `(SecMod.eq_zero_iff _).2 (hinj α ((hsupp α).2 hα) _ _ (hex v) (fun β hβ => (SecMod.eq_zero_iff _).1 (hv β hβ)) ((SecMod.eq_zero_iff _).1 h0))`.
+-/
 theorem supp_rel : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ θ f, U.Theta θ f → ∀ a b : D.X, ((∃ j, (f a).f j ≠ 0) ∧ ∃ j, (f b).f j ≠ 0) ↔ (U.Supp (Kbar V) 2 (a + b) ∧ U.Supp (Kbar V) 2 (a - b))) := by
   intro hL hL2 V _ _ _ hV D A G _ _ U θ f hθ a b
   obtain ⟨hG, hB⟩ := GlobalTheory.UU.PullSec.pullEx V hV D A G U (Kbar V) (𝟙_ _) (toUnit _) 1

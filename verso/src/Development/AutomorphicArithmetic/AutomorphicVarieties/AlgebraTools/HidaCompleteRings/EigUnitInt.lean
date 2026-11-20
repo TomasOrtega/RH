@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HidaC
 
 open UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite TensorProduct
 
+/- English proof (translation)
+Take `⟨p, hp, hT⟩` from `LinearMap.exists_monic_and_aeval_eq_zero O T`. Establish `key : ∀ q : Polynomial O, (Polynomial.aeval T q).baseChange K y = (Polynomial.aeval μ q) • y`. Introduce `q`. Proceed by induction on `q using Polynomial.induction_on with`. Consider the case `C a`.
+
+Rewrite using `[Polynomial.aeval_C, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one, LinearMap.baseChange_smul, LinearMap.baseChange_one, LinearMap.smul_apply, Module.End.one_apply, algebraMap_smul]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, LinearMap.baseChange_add, LinearMap.add_apply, hp, hq, add_smul]`. Consider the case `monomial n a ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul (Polynomial.aeval T), map_mul (Polynomial.aeval μ), Polynomial.aeval_X, Polynomial.aeval_X, LinearMap.baseChange_mul, Module.End.mul_apply, h, map_smul, ih, smul_smul, mul_comm]`.
+
+Establish `h0` using `key p`. Rewrite `h0` using `[hT, LinearMap.baseChange_zero, LinearMap.zero_apply]`. Establish `h1 : Polynomial.aeval μ p = 0` using `(smul_eq_zero.mp h0.symm).resolve_right hy`. Conclude with `⟨p, hp, by rwa [Polynomial.aeval_def] at h1⟩`.
+-/
 private theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.eigenvalue_integral_of_finite
     {O K : Type*} [CommRing O] [Field K] [Algebra O K] {M : Type*} [AddCommGroup M] [Module O M]
     [Module.Finite O M] (T : Module.End O M) (μ : K) (y : K ⊗[O] M) (hy : y ≠ 0)
@@ -27,6 +34,13 @@ private theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.eigenvalue_
   have h1 : Polynomial.aeval μ p = 0 := (smul_eq_zero.mp h0.symm).resolve_right hy
   exact ⟨p, hp, by rwa [Polynomial.aeval_def] at h1⟩
 
+/- English proof (translation)
+Introduce `O K _ _ _ M _ _ _ U V e hVU μ y hy he hU`. Establish `h1 : μ • V.baseChange K y = y`. Establish `h` using `congrArg (fun f : Module.End O M => f.baseChange K y) hVU`. Simplify using `only [LinearMap.baseChange_mul, Module.End.mul_apply] at h`. Rewrite `h` using `[he, hU, map_smul]`. Then use the resulting hypothesis.
+
+Establish `hμ : μ ≠ 0`. Introduce and unpack `rfl`. Rewrite `h1` using `[zero_smul]`. Conclude with `hy h1.symm`. Establish `h2 : V.baseChange K y = μ⁻¹ • y` using `by conv_rhs => rw [← h1]`.
+
+Rewrite using `[smul_smul, inv_mul_cancel₀ hμ, one_smul]`. Conclude with `⟨hμ, UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.eigenvalue_integral_of_finite U μ y hy hU, UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.eigenvalue_integral_of_finite V μ⁻¹ y hy h2⟩`.
+-/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.eigUnitInt :
     ∀ {O K : Type*} [CommRing O] [Field K] [Algebra O K] {M : Type*} [AddCommGroup M] [Module O M] [Module.Finite O M] (U V e : Module.End O M), V * U * e = e → ∀ (μ : K) (y : K ⊗[O] M), y ≠ 0 → e.baseChange K y = y → U.baseChange K y = μ • y → μ ≠ 0 ∧ IsIntegral O μ ∧ IsIntegral O μ⁻¹ := by
   intro O K _ _ _ M _ _ _ U V e hVU μ y hy he hU

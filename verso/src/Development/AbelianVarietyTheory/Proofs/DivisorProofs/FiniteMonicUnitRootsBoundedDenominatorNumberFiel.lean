@@ -6,6 +6,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ n d hd`. Use `set T := {P : E[X] | P.Monic ∧ P.natDegree = n ∧ (∀ τ : E →+* ℂ, ∀ z ∈ (P.map τ).roots, ‖z‖ = 1) ∧ ∀ k, ∃ a : 𝓞 E, (a : E) = d * P.coeff k} with hT`. Use `set B : ℝ := max 1 1 ^ n * (n.choose (n / 2) : ℝ) with hB`. Use `set S : Set E := {x : E | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ (d : ℝ) * B} with hS`. Establish `hSf : S.Finite` using `NumberField.Embeddings.finite_of_norm_le E ℂ ((d : ℝ) * B)`.
+
+Set `F : E[X] → (Fin (n+1) → E)` to `fun P k => (d : E) * P.coeff k`. Establish `hpi : (Set.pi Set.univ (fun _ : Fin (n+1) => S)).Finite` using `Set.Finite.pi (fun _ => hSf)`. Establish `himg : F '' T ⊆ Set.pi Set.univ (fun _ : Fin (n+1) => S)`. Introduce and unpack `_ ⟨P, ⟨hm, hn, hr, hc⟩, rfl⟩ k _`. Take `⟨a, ha⟩` from `hc k`.
+
+Use `⟨?_, fun φ => ?_⟩` and prove the remaining obligations. Use `show IsIntegral ℤ ((d : E) * P.coeff k)`. Rewrite using `[← ha]`. Conclude with `a.isIntegral_coe`. Establish `hbd` using `Polynomial.coeff_bdd_of_roots_le (B := 1) (d := n) φ hm (IsAlgClosed.splits _) hn.le (fun z hz => (hr φ z hz).le) k`.
+
+Rewrite `hbd` using `[Polynomial.coeff_map]`. Use `show ‖φ ((d : E) * P.coeff k)‖ ≤ (d : ℝ) * B`. Rewrite using `[map_mul, map_natCast, norm_mul, Complex.norm_natCast]`. Conclude with `mul_le_mul_of_nonneg_left hbd (Nat.cast_nonneg d)`. Establish `hinj : Set.InjOn F T`.
+
+Introduce and unpack `P ⟨-, hP, -⟩ Q ⟨-, hQ, -⟩ hPQ`. Use extensionality with `k`. Distinguish the cases in `hk : k < n + 1`. Use `congrFun hPQ ⟨k, hk⟩` as an intermediate fact. Simplify using `only [F] at this`.
+
+Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.mpr hd) this`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega), Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)]`. Conclude with `Set.Finite.of_finite_image (hpi.subset himg) hinj`.
+-/
 theorem monic_roots_norm_one_coeff_denom_finite : ∀ (E : Type) [Field E] [NumberField E] (n d : ℕ), d ≠ 0 → {P : E[X] | P.Monic ∧ P.natDegree = n ∧ (∀ τ : E →+* ℂ, ∀ z ∈ (P.map τ).roots, ‖z‖ = 1) ∧ ∀ k, ∃ a : 𝓞 E, (a : E) = d * P.coeff k}.Finite := by
   intro E _ _ n d hd
   set T := {P : E[X] | P.Monic ∧ P.natDegree = n ∧ (∀ τ : E →+* ℂ, ∀ z ∈ (P.map τ).roots, ‖z‖ = 1) ∧ ∀ k, ∃ a : 𝓞 E, (a : E) = d * P.coeff k} with hT

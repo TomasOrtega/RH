@@ -32,13 +32,22 @@ def colJ (u : D.what₂.Word) : D.what₂.Mu u →ₗ[ℂ] HG D :=
 
 def v0 : HG D := WithLp.toLp 2 (0, WithLp.toLp 2 (0, 1))
 
+/- English proof (translation)
+Introduce `h` and use `by have := congrArg (fun x : HG D => x.snd.snd) h exact one_ne_zero this`.
+-/
 theorem v0_ne : v0 D ≠ 0 := fun h => by
   have := congrArg (fun x : HG D => x.snd.snd) h
   exact one_ne_zero this
 
+/- English proof (translation)
+The claim follows from `lp.single_apply_self (E := fun i : (Σ _ : D.what₂.Tup, ℕ) => D.what₂.Mult i.1 i.2) 2 ⟨μ, j⟩ x`.
+-/
 theorem rowQ_rowJ (μ j) (x : D.what₂.Mult μ j) : rowQ D μ j (rowJ D μ j x) = x :=
   lp.single_apply_self (E := fun i : (Σ _ : D.what₂.Tup, ℕ) => D.what₂.Mult i.1 i.2) 2 ⟨μ, j⟩ x
 
+/- English proof (translation)
+Rewrite using `[WithLp.prod_inner_apply]`. Use `show inner ℂ (lp.single (E := fun i : (Σ _ : D.what₂.Tup, ℕ) => D.what₂.Mult i.1 i.2) 2 ⟨μ, j⟩ x) b.fst + inner ℂ (0 : WithLp 2 (HC D × ℂ)) b.snd = _`. Rewrite using `[inner_zero_left, add_zero]`. Conclude with `lp.inner_single_left (G := fun i : (Σ _ : D.what₂.Tup, ℕ) => D.what₂.Mult i.1 i.2) ⟨μ, j⟩ x b.fst`.
+-/
 theorem inner_rowJ (μ j) (x : D.what₂.Mult μ j) (b : HG D) : inner ℂ (rowJ D μ j x) b = inner ℂ x (rowQ D μ j b) := by
   rw [WithLp.prod_inner_apply]
   show inner ℂ (lp.single (E := fun i : (Σ _ : D.what₂.Tup, ℕ) => D.what₂.Mult i.1 i.2) 2 ⟨μ, j⟩ x) b.fst +
@@ -51,6 +60,9 @@ def toTopG {M : Type} [AddCommGroup M] [Module ℂ M] (f : M →ₗ[ℂ] HG D) :
 
 def Zsp : HSp D := posSpace star_isIntegral 0
 
+/- English proof (translation)
+Introduce `e` and use `by rw [e] at h exact lt_irrefl 0 h`.
+-/
 theorem ne_Zsp {V : HSp D} (h : 0 < V.rank) : V ≠ Zsp D := fun e => by
   rw [e] at h
   exact lt_irrefl 0 h
@@ -58,9 +70,15 @@ theorem ne_Zsp {V : HSp D} (h : 0 < V.rank) : V ≠ Zsp D := fun e => by
 def thG (W : HSp D) : (HG D →ₗ[ℂ] HG D) →ₗ[ℂ] (⊤ : Submodule ℂ (HG D)) →ₗ[ℂ] HG D :=
   if W = Zsp D then 0 else LinearMap.lcomp ℂ (HG D) (⊤ : Submodule ℂ (HG D)).subtype
 
+/- English proof (translation)
+Unfold `thG`. Rewrite using `[if_pos rfl]`. Both sides reduce to the same expression.
+-/
 theorem thG_Z (Φ F) : thG D (Zsp D) Φ F = 0 := by
   unfold thG; rw [if_pos rfl]; rfl
 
+/- English proof (translation)
+Unfold `thG`. Rewrite using `[if_neg (ne_Zsp D h)]`. Both sides reduce to the same expression.
+-/
 theorem thG_pos {W : HSp D} (h : 0 < W.rank) (Φ F) : thG D W Φ F = Φ F := by
   unfold thG; rw [if_neg (ne_Zsp D h)]; rfl
 
@@ -152,32 +170,53 @@ def thetaG : ThetaX D where
   adelicDataRowMeasureScale_trivialTuple := fun _ => rfl
   mY_zero := fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `Complex.ofReal_one`.
+-/
 theorem thetaG_mY (μ : D.what₂.Tup) (j : ℕ) : (((thetaG D).mY μ j : ℝ) : ℂ) = 1 := Complex.ofReal_one
 
+/- English proof (translation)
+Rewrite using `[(tow D t).Ys_rank j hj]`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rankY_pos (t j : ℕ) (hj : j ≤ D.R.m) : 0 < ((tow D t).Ys j).rank := by
   rw [(tow D t).Ys_rank j hj]
   have := D.R.two_le_m
   unfold Ranks.r
   omega
 
+/- English proof (translation)
+Rewrite using `[(tow D t).Xs_rank j hj]`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rankX_pos (t j : ℕ) (hj : j ≤ D.R.m) : 0 < ((tow D t).Xs j).rank := by
   rw [(tow D t).Xs_rank j hj]
   have := D.R.m_add_three_le_k
   omega
 
+/- English proof (translation)
+Use `rankY_pos D D.R.t j hj` as an intermediate fact. Rewrite `this` using `[tow_rec]`. Then use the resulting hypothesis.
+-/
 theorem spY_pos (j : ℕ) (hj : j ≤ D.R.m) : 0 < (D.sp.Y j).rank := by
   have := rankY_pos D D.R.t j hj
   rwa [tow_rec] at this
 
+/- English proof (translation)
+Use `rankX_pos D D.R.t j hj` as an intermediate fact. Rewrite `this` using `[tow_rec]`. Then use the resulting hypothesis.
+-/
 theorem spX_pos (j : ℕ) (hj : j ≤ D.R.m) : 0 < (D.sp.X j).rank := by
   have := rankX_pos D D.R.t j hj
   rwa [tow_rec] at this
 
+/- English proof (translation)
+Introduce `μ j _ x y` and use `by unfold ThetaX.petY rw [thetaG_mY, one_mul] exact (inner_rowJ D μ j x (rowJ D μ j y)).trans (by rw [rowQ_rowJ])`.
+-/
 theorem thetaG_row : (thetaG D).TieRowIsom := fun μ j _ x y => by
   unfold ThetaX.petY
   rw [thetaG_mY, one_mul]
   exact (inner_rowJ D μ j x (rowJ D μ j y)).trans (by rw [rowQ_rowJ])
 
+/- English proof (translation)
+Introduce `μ j hj y x` and use `by unfold ThetaX.petY ThetaX.dnY rw [thetaG_mY, thetaG_mY, one_mul, one_smul] show inner ℂ (thG D (D.sp.Y j) ((rowJ D μ j).comp ((D.what₂.io μ j).comp (rowQ D μ (j + 1)))) (toTopG D (rowJ D μ (j + 1)) y)) (rowJ D μ j x) = _ rw [thG_pos D (spY_pos D j hj.le)] show inner ℂ (rowJ D …`.
+-/
 theorem thetaG_io : (thetaG D).TieIo := fun μ j hj y x => by
   unfold ThetaX.petY ThetaX.dnY
   rw [thetaG_mY, thetaG_mY, one_mul, one_smul]
@@ -187,11 +226,20 @@ theorem thetaG_io : (thetaG D).TieIo := fun μ j hj y x => by
   show inner ℂ (rowJ D μ j (D.what₂.io μ j (rowQ D μ (j + 1) (rowJ D μ (j + 1) y)))) (rowJ D μ j x) = _
   rw [rowQ_rowJ, inner_rowJ, rowQ_rowJ]
 
+/- English proof (translation)
+Introduce `_ _ _ _` and use `trivial`.
+-/
 theorem thetaG_rowTyp : Formalism.MainNotions.InnerProductFormulaField.TieRowTyp (thetaG D) := fun _ _ _ _ => trivial
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨fun _ _ _ => trivial, fun _ _ _ _ _ => trivial⟩`.
+-/
 theorem thetaG_typStable : Formalism.MainNotions.ZetaProductPairs.TypStable (thetaG D) := fun _ _ =>
   ⟨fun _ _ _ => trivial, fun _ _ _ _ _ => trivial⟩
 
+/- English proof (translation)
+Introduce `e` and use `h (by have := congrArg (cj V) e rw [cj_cj] at this rw [this] have h0 := cj_smul V 0 (0 : V) simpa using h0)`.
+-/
 theorem cj_ne {V : Type} [AddCommGroup V] [Module ℂ V] {v : V} (h : v ≠ 0) : cj V v ≠ 0 := fun e => h (by
   have := congrArg (cj V) e
   rw [cj_cj] at this
@@ -199,19 +247,31 @@ theorem cj_ne {V : Type} [AddCommGroup V] [Module ℂ V] {v : V} (h : v ≠ 0) :
   have h0 := cj_smul V 0 (0 : V)
   simpa using h0)
 
+/- English proof (translation)
+The claim follows from `inner_self_ne_zero.mpr h`.
+-/
 theorem inner_self_ne {v : HG D} (h : v ≠ 0) : inner ℂ v v ≠ 0 := inner_self_ne_zero.mpr h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ h => h, fun _ _ _ _ h => h⟩`.
+-/
 theorem stableG (V : HSp D) (π : Submodule ℂ (HG D)) : (thetaG D).IsStable V π :=
   ⟨fun _ _ h => h, fun _ _ _ _ h => h⟩
 
 def muOf (P : TPar D) (j : ℕ) : Multiplicative (D.what₂.Tau → ℚ) :=
   Multiplicative.ofAdd fun τ => if h : 1 ≤ j ∧ j ≤ D.R.m then -P.e τ ⟨j - 1, by omega⟩ else 0
 
+/- English proof (translation)
+Introduce `j τ` and use `by show (if h : 1 ≤ j.1 + 1 ∧ j.1 + 1 ≤ D.R.m then -P.e τ ⟨j.1 + 1 - 1, by omega⟩ else 0) = _ rw [dif_pos ⟨Nat.le_add_left _ _, j.2⟩] rfl`.
+-/
 theorem muOf_isMu (P : TPar D) : Formalism.MainNotions.CayleySignature.IsMu (thetaG D) P (muOf D P) := fun j τ => by
   show (if h : 1 ≤ j.1 + 1 ∧ j.1 + 1 ≤ D.R.m then -P.e τ ⟨j.1 + 1 - 1, by omega⟩ else 0) = _
   rw [dif_pos ⟨Nat.le_add_left _ _, j.2⟩]
   rfl
 
+/- English proof (translation)
+Introduce `P _` and use `by refine ⟨muOf D P, fun _ => Submodule.span ℂ {v0 D}, muOf_isMu D P, fun j _ => ⟨⟨stableG D _ _, ?_, ?_⟩, le_top, le_top⟩, fun j hj φ hφ => ?_⟩ · exact (nonzero_span_atom (v0 D) (v0_ne D)).1 · intro π' hle _ rcases eq_or_lt_of_le hle with h | h · exact Or.inr h · exact Or.inl (( …`.
+-/
 theorem thetaFamily_admissible_one : Formalism.MainNotions.CayleySignature.RallisSiegelWeilFormula D (thetaG D) := fun P _ => by
   refine ⟨muOf D P, fun _ => Submodule.span ℂ {v0 D}, muOf_isMu D P, fun j _ => ⟨⟨stableG D _ _, ?_, ?_⟩,
     le_top, le_top⟩, fun j hj φ hφ => ?_⟩
@@ -224,21 +284,35 @@ theorem thetaFamily_admissible_one : Formalism.MainNotions.CayleySignature.Ralli
     rw [Fin.sum_univ_one]
     exact (thG_pos D (rankX_pos D P.t (j + 1) hj) LinearMap.id ⟨φ, trivial⟩).symm
 
+/- English proof (translation)
+Introduce `P _ π hπ _` and use `by obtain ⟨φ, hφ, h0⟩ := (Submodule.ne_bot_iff π).mp hπ.2.1 exact ⟨φ, hφ, ⟨cj (HG D) φ, trivial⟩, trivial, Or.inr ⟨rfl, inner_self_ne D (cj_ne h0)⟩⟩`.
+-/
 theorem thetaFamily_admissible_two : Formalism.MainNotions.CayleySignature.LiftParameterConditions D (thetaG D) := fun P _ π hπ _ => by
   obtain ⟨φ, hφ, h0⟩ := (Submodule.ne_bot_iff π).mp hπ.2.1
   exact ⟨φ, hφ, ⟨cj (HG D) φ, trivial⟩, trivial,
     Or.inr ⟨rfl, inner_self_ne D (cj_ne h0)⟩⟩
 
+/- English proof (translation)
+Break down `h with ⟨_, _, _, h⟩ | ⟨_, h⟩` into its components or cases. Conclude with `h`. Conclude with `h`.
+-/
 theorem perNZ_inner {t j : ℕ} {φ : HG D} {F : (⊤ : Submodule ℂ (HG D))}
     (h : Formalism.MainNotions.CayleySignature.PerNZ (thetaG D) t j φ F) : inner ℂ (cj (HG D) φ) (F : HG D) ≠ 0 := by
   rcases h with ⟨_, _, _, h⟩ | ⟨_, h⟩
   · exact h
   · exact h
 
+/- English proof (translation)
+Establish `h0` using `cj_smul V 0 (0 : V)`. Simplify using `using h0`.
+-/
 theorem cj_zero (V : Type) [AddCommGroup V] [Module ℂ V] : cj V 0 = 0 := by
   have h0 := cj_smul V 0 (0 : V)
   simpa using h0
 
+/- English proof (translation)
+Establish `hF : (F : HG D) ≠ 0` using `fun e => h1 (by rw [e, inner_zero_right])`. Establish `hφ : (φ' : HG D) ≠ 0` using `fun e => h1 (by`. Establish `e' : φ' = 0` using `Subtype.ext e`. Rewrite using `[e', map_zero, cj_zero, inner_zero_left])`. Use `⟨(innerₛₗ ℂ (F : HG D)).smulRight (cj (HG D) (φ' : HG D)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[thG_pos D hW']`. Use `show inner ℂ (cj (HG D) (φ' : HG D)) (inner ℂ (F : HG D) (F : HG D) • cj (HG D) (φ' : HG D)) ≠ 0`. Rewrite using `[inner_smul_right]`. Conclude with `mul_ne_zero (inner_self_ne D hF) (inner_self_ne D (cj_ne hφ))`.
+-/
 theorem key3 (W W' : HSp D) (hW' : 0 < W'.rank) (Φ' : HG D →ₗ[ℂ] HG D) (φ' F : (⊤ : Submodule ℂ (HG D)))
     (h1 : inner ℂ (cj (HG D) (thG D W Φ' φ')) (F : HG D) ≠ 0) :
     ∃ Φ : HG D →ₗ[ℂ] HG D, inner ℂ (cj (HG D) (φ' : HG D)) (thG D W' Φ F) ≠ 0 := by
@@ -252,6 +326,9 @@ theorem key3 (W W' : HSp D) (hW' : 0 < W'.rank) (Φ' : HG D →ₗ[ℂ] HG D) (�
   rw [inner_smul_right]
   exact mul_ne_zero (inner_self_ne D hF) (inner_self_ne D (cj_ne hφ))
 
+/- English proof (translation)
+Introduce `P _ μ _ j hj φ' Φ' _ _ _ F _ hN` and use `by obtain ⟨Φ, hΦ⟩ := key3 D ((tow D P.t).Xs (j + 1)) ((tow D P.t).Ys j) (rankY_pos D P.t j hj.le) Φ' φ' F (perNZ_inner D hN) refine ⟨Φ, trivial, trivial, fun G hG => Or.inl ⟨hj, PUnit.unit, PUnit.unit, ?_⟩⟩ have hG' : (G.1 : HG D) = thG D ((tow D P.t).Ys j) Φ F := hG show inner ℂ …`.
+-/
 theorem thetaFamily_admissible_three : Formalism.MainNotions.CayleySignature.ThetaUnfoldingFreeData D (thetaG D) := fun P _ μ _ j hj φ' Φ' _ _ _ F _ hN => by
   obtain ⟨Φ, hΦ⟩ := key3 D ((tow D P.t).Xs (j + 1)) ((tow D P.t).Ys j) (rankY_pos D P.t j hj.le) Φ' φ' F
     (perNZ_inner D hN)
@@ -261,19 +338,34 @@ theorem thetaFamily_admissible_three : Formalism.MainNotions.CayleySignature.The
   rw [hG']
   exact hΦ
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _` and use `trivial`.
+-/
 theorem thetaFamily_admissible_four : Formalism.MainNotions.CayleySignature.ThetaStablePeriodVanishing D (thetaG D) := fun _ _ _ _ _ _ _ _ _ _ _ _ _ => trivial
 
+/- English proof (translation)
+Introduce `P _ μ _` and use `⟨fun _ _ _ _ _ _ _ => trivial, fun j _ i hi _ Φ F _ => by obtain ⟨i, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0) exact thG_Z D Φ F⟩`.
+-/
 theorem thetaFamily_admissible_five : Formalism.MainNotions.CayleySignature.RealThetaLiftDiscreteSeries D (thetaG D) := fun P _ μ _ =>
   ⟨fun _ _ _ _ _ _ _ => trivial, fun j _ i hi _ Φ F _ => by
     obtain ⟨i, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0)
     exact thG_Z D Φ F⟩
 
+/- English proof (translation)
+Introduce `_ _ _` and use `⟨fun _ _ _ => trivial, fun _ _ _ _ _ => trivial⟩`.
+-/
 theorem thetaFamily_admissible_six : Formalism.MainNotions.CayleySignature.RealConstantNonvanishing D (thetaG D) := fun _ _ _ =>
   ⟨fun _ _ _ => trivial, fun _ _ _ _ _ => trivial⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨thetaFamily_admissible_one D, thetaFamily_admissible_two D, thetaFamily_admissible_three D, thetaFamily_admissible_four D, thetaFamily_admissible_five D, thetaFamily_admissible_six D⟩`.
+-/
 theorem thetaFamily_admissible : Formalism.MainNotions.CayleySignature.AdmS D (thetaG D) :=
   ⟨thetaFamily_admissible_one D, thetaFamily_admissible_two D, thetaFamily_admissible_three D, thetaFamily_admissible_four D, thetaFamily_admissible_five D, thetaFamily_admissible_six D⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨thetaG D, thetaG_row D, thetaG_io D, thetaFamily_admissible D, thetaG_rowTyp D, thetaG_typStable D⟩`.
+-/
 theorem thetaG_exists : ∃ X : ThetaX D, X.TieRowIsom ∧ X.TieIo ∧ Formalism.MainNotions.CayleySignature.AdmS D X ∧
     Formalism.MainNotions.InnerProductFormulaField.TieRowTyp X ∧ Formalism.MainNotions.ZetaProductPairs.TypStable X :=
   ⟨thetaG D, thetaG_row D, thetaG_io D, thetaFamily_admissible D, thetaG_rowTyp D, thetaG_typStable D⟩

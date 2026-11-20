@@ -5,6 +5,15 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Model
 
+/- English proof (translation)
+Introduce `A _ _ _ _ K _ _ _`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Submodule.mem_iInf]`. Introduce `p _`.
+
+Conclude with `⟨1, (Ideal.ne_top_iff_one _).mp p.isPrime.ne_top, by rwa [one_smul]⟩`. Introduce `x hx`. Simplify using `only [Submodule.mem_iInf] at hx`. Express the relevant statement in the definitionally equal form `x ∈ (⊥ : Subalgebra A K)`. Rewrite using `[Algebra.mem_bot]`.
+
+Take `⟨y, hy⟩` from `GroundTheory.Arith.Toric.mem_range_of_forall_height_one (A := A) (K := K) x (fun p hp h1 => by`. Take `⟨s, hs, hsx⟩` from `hx ⟨p, hp⟩ h1`. Express the relevant statement in the definitionally equal form `s • x ∈ (⊥ : Subalgebra A K) at hsx`. Take `⟨a, ha⟩` from `Algebra.mem_bot.mp hsx`. Use `⟨a, s, hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite `ha` using `[Algebra.smul_def]`. Rewrite using `[ha, mul_comm])`. Conclude with `⟨y, hy⟩`.
+-/
 theorem HeightOneIntersection.proof : HeightOneIntersection.Statement := by
   intro A _ _ _ _ K _ _ _
   apply le_antisymm

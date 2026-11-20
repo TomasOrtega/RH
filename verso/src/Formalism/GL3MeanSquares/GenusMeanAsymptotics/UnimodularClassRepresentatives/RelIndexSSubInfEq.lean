@@ -10,6 +10,31 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Establish `hstarF : ∀ f : F, star (algebraMap F K f) = algebraMap F K f` using `fun f => (hF _).mpr ⟨f, rfl⟩`. Establish `hint : ∀ c : 𝓞 F, IsIntegral ℤ (algebraMap F K (algebraMap (𝓞 F) F c))` using `fun c => (isIntegral_algebraMap_iff (algebraMap F K).injective).mpr (NumberField.RingOfIntegers.isIntegral_coe c)`. Establish `hcompat : ∀ x : 𝓞 F, algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) x) = algebraMap F K (algebraMap (𝓞 F) F x)` using `fun x => rfl`. Set `tr : 𝓞 K → K` to `fun θ => algebraMap (𝓞 K) K θ + star (algebraMap (𝓞 K) K θ)`. Use `show ∃ θ : 𝓞 K, tr θ = 1`.
+
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Set `I : Ideal (𝓞 F)` to `{ carrier := {a | ∃ θ : 𝓞 K, tr θ = algebraMap F K (algebraMap (𝓞 F) F a)} add_mem' := by`. Introduce and unpack `a b ⟨θ, hθ⟩ ⟨θ', hθ'⟩`. Use `⟨θ + θ', ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [tr, map_add, star_add] at hθ hθ' ⊢`. Take the linear combination `hθ + hθ'`. Use the proof step `zero_mem' := ⟨0, by simp [tr]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨θ, hθ⟩`.
+
+Use `⟨algebraMap (𝓞 F) (𝓞 K) c * θ, ?_⟩` and prove the remaining obligations. Simplify using `only [tr, smul_eq_mul, map_mul, star_mul', hcompat, hstarF] at hθ ⊢`. Take the linear combination `(algebraMap F K (algebraMap (𝓞 F) F c)) * hθ }`. Establish `hI : (1 : 𝓞 F) ∉ I`. Introduce and unpack `⟨θ, hθ⟩`.
+
+Conclude with `hne θ (by simpa using hθ)`. Take `⟨𝔮, h𝔮, hI𝔮⟩` from `Ideal.exists_le_maximal I ((Ideal.ne_top_iff_one I).mpr hI)`. Establish `hker : RingHom.ker (algebraMap (𝓞 F) (𝓞 K)) ≤ 𝔮`. Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`.
+
+Establish `h1 : algebraMap F K (algebraMap (𝓞 F) F x) = algebraMap F K (algebraMap (𝓞 F) F 0)`. Rewrite using `[← hcompat, hx, map_zero, map_zero, map_zero]`. Establish `h2` using `IsFractionRing.injective (𝓞 F) F ((algebraMap F K).injective h1)`. Rewrite using `[h2]`. Conclude with `𝔮.zero_mem`.
+
+Take `⟨P, hP, hP𝔮⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 K) 𝔮 hker`. Take `⟨a, t, ht, hat⟩` from `hK.2.2 P hP`. Establish `hta : star (algebraMap (𝓞 K) K t) = algebraMap (𝓞 K) K a` using `by rw [ht, star_star]`. Establish `hdfix : star ((algebraMap (𝓞 K) K a - algebraMap (𝓞 K) K t) ^ 2) = (algebraMap (𝓞 K) K a - algebraMap (𝓞 K) K t) ^ 2`. Rewrite using `[star_pow, star_sub, ← ht, hta]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨f, hf⟩` from `(hF _).mp hdfix`. Establish `hfi : IsIntegral ℤ f`. Rewrite using `[← isIntegral_algebraMap_iff (A := F) (B := K) (algebraMap F K).injective, hf]`. Use `NumberField.RingOfIntegers.isIntegral_coe ((a - t) ^ 2)` as an intermediate fact.
+
+Simplify using `using this`. Set `fO : 𝓞 F` to `⟨f, hfi⟩`. Establish `hfI : fO ∈ I`. Use `⟨a * (a - t), ?_⟩` and prove the remaining obligations. Use `show algebraMap (𝓞 K) K (a * (a - t)) + star (algebraMap (𝓞 K) K (a * (a - t))) = algebraMap F K f`.
+
+Rewrite using `[hf]`. Simplify using `only [map_mul, map_sub, star_mul', star_sub, ← ht, hta]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : algebraMap (𝓞 F) (𝓞 K) fO ∈ P`. Rewrite using `[← Ideal.mem_comap, hP𝔮]`.
+
+Conclude with `hI𝔮 hfI`. Establish `heq : algebraMap (𝓞 F) (𝓞 K) fO = (a - t) ^ 2`. Apply `IsFractionRing.injective (𝓞 K) K` to reduce the goal to its premises. Rewrite using `[hcompat]`. Use `show algebraMap F K f = _`.
+
+Rewrite using `[hf]`. Simplify using the standard rewrite rules. Rewrite `hmem` using `[heq]`. Conclude with `hat (hP.isPrime.mem_of_pow_mem 2 hmem)`.
+-/
 private theorem exists_int_add_star_eq_one_of_isCMUnram (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) :
     ∃ θ : 𝓞 K, algebraMap (𝓞 K) K θ + star (algebraMap (𝓞 K) K θ) = 1 := by
   classical
@@ -80,11 +105,23 @@ private theorem exists_int_add_star_eq_one_of_isCMUnram (hK : Formalism.Hermitia
   rw [heq] at hmem
   exact hat (hP.isPrime.mem_of_pow_mem 2 hmem)
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `exists_int_add_star_eq_one_of_isCMUnram hK hF`. Conclude with `⟨algebraMap (𝓞 K) K θ, algebraMap_mem_pK 𝔭 θ, hθ⟩`.
+-/
 theorem exists_theta (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) :
     ∃ θ : K, θ ∈ pK K 𝔭 0 ∧ θ + star θ = 1 := by
   obtain ⟨θ, hθ⟩ := exists_int_add_star_eq_one_of_isCMUnram hK hF
   exact ⟨algebraMap (𝓞 K) K θ, algebraMap_mem_pK 𝔭 θ, hθ⟩
 
+/- English proof (translation)
+Establish `eW : ∀ z : V, W (W⁻¹ z) = z` using `fun z => by`. Rewrite using `[← LinearEquiv.mul_apply, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `eW' : ∀ z : V, W⁻¹ (W z) = z` using `fun z => by`. Rewrite using `[← LinearEquiv.mul_apply, inv_mul_cancel]`.
+
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `hX`. Establish `hX'` using `(Subgroup.mem_inf.mp hX).1.2`. Use `⟨fun x y => ?_, fun x hx y hy => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [AddSubgroupClass.coe_sub, LinearMap.sub_apply, star_sub, IA.star_phi hs]`. Use `hX' (W x) (apply_mem hWB hx) (W y) (apply_mem hWB hy)` as an intermediate fact. Simplify using `only [LinearEquiv.mul_apply, eW'] at this`. Simplify `this` using `only [LinearMap.sub_apply, IA.phi_apply, sub_sub_sub_cancel_right]`. Introduce `hZ`.
+
+Use `Subgroup.mem_inf.mpr ⟨⟨mul_mem hUB (inv_mem hWB), fun x hx y hy => ?_⟩, mul_mem hUA (inv_mem hWA)⟩` and prove the remaining obligations. Use `hZ.2 (W⁻¹ x) (apply_mem (inv_mem hWB) hx) (W⁻¹ y) (apply_mem (inv_mem hWB) hy)` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, IA.phi_apply, sub_sub_sub_cancel_right, eW] at this`. Simplify `this` using `only [LinearEquiv.mul_apply]`.
+-/
 theorem mul_inv_mem_iff {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {A B : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {n : ℕ}
     {U W : V ≃ₗ[K] V} (hUA : U ∈ glSub A) (hUB : U ∈ glSub B) (hWA : W ∈ glSub A) (hWB : W ∈ glSub B) :
     U * W⁻¹ ∈ sSub h B 𝔭 n ⊓ glSub A ↔ IA.phi h U - IA.phi h W ∈ hermL B 𝔭 n := by
@@ -109,6 +146,25 @@ theorem mul_inv_mem_iff {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {A B 
     simp only [LinearMap.sub_apply, IA.phi_apply, sub_sub_sub_cancel_right, eW] at this
     simpa only [LinearEquiv.mul_apply] using this
 
+/- English proof (translation)
+Establish `hsym : ∀ a b : V, star (h a b) = h b a`. Introduce `a b`. Conclude with `hs.eq a b`. Take `⟨θ₀, hθ1⟩` from `exists_int_add_star_eq_one_of_isCMUnram hK hF`. Use `set θ : K := algebraMap (𝓞 K) K θ₀ with hθdef`.
+
+Take `⟨Y0, hY0⟩` from `IA.exists_adj hs (nondegenerate hd) Z`. Use `set Y : V →ₗ[K] V := θ • Y0 with hYdef`. Establish `hhY : ∀ x y, h x (Y y) = θ * Z x y`. Introduce `x y`. Rewrite using `[hYdef, LinearMap.smul_apply, map_smul, hY0, smul_eq_mul]`.
+
+Establish `hYh : ∀ x y, h (Y x) y = star θ * Z x y`. Introduce `x y`. Rewrite using `[← hsym y (Y x), hhY, star_mul', hZ.1 y x]`. Establish `hYA : ∀ x ∈ locF 𝔭 A₀, Y x ∈ extP K 𝔭 ^ (k - e) • locF 𝔭 A₀`. Introduce `x hx`.
+
+Use `he (k - e) (Y x) fun y hy => ?_` and prove the remaining obligations. Rewrite using `[hhY, show k - e + e = k by omega, hθdef, ← Algebra.smul_def]`. Conclude with `(pK K 𝔭 k).smul_mem θ₀ (hZ.2 y hy x hx)`. Establish `hDA : Y ∈ endL (locF 𝔭 A₀) (extP K 𝔭 • locF 𝔭 A₀)` using `fun x hx => Submodule.smul_mono_left (Ideal.pow_le_self (by omega)) (hYA x hx)`. Take `⟨X, hXeq, hXA⟩` from `exists_equiv_of_mem_endL hA₀ h𝔭 hDA`.
+
+Establish `hYB` using `IA.end_scale h𝔭 hr hr' Y (n := 1) (m := k - e) (by omega) hYA`. Establish `hDB : Y ∈ endL (locF 𝔭 B₀) (extP K 𝔭 • locF 𝔭 B₀)` using `fun x hx => by`. Simplify `hYB x hx` using `only [pow_one]`. Take `⟨X', hX'eq, hX'B⟩` from `exists_equiv_of_mem_endL hB₀ h𝔭 hDB`. Establish `hXX : X = X'` using `LinearEquiv.ext fun x => by rw [hXeq, hX'eq]`.
+
+Establish `hphi : ∀ x y, IA.phi h X x y - Z x y = h (Y x) (Y y)`. Introduce `x y`. Rewrite using `[IA.phi_apply, hXeq, hXeq]`. Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[hhY, hYh]`.
+
+Take the linear combination `(Z x y) * hθ1`. Establish `hYY : ∀ x ∈ locF 𝔭 A₀, ∀ y ∈ locF 𝔭 A₀, h (Y x) (Y y) ∈ pK K 𝔭 ((k - e) + (k - e))` using `fun x hx y hy => form_mem_pK hF hA₀i h𝔭 (hYA x hx) (hYA y hy)`. Use `⟨X, Subgroup.mem_inf.mpr ⟨mem_sSub.mpr ⟨hXA, fun x hx y hy => ?_⟩, hXX ▸ hX'B⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : h (X x) (X y) - h x y = Z x y + h (Y x) (Y y)`. Rewrite using `[← IA.phi_apply]`.
+
+Take the linear combination `hphi x y`. Rewrite using `[e1]`. Conclude with `add_mem (hZ.2 x hx y hy) (pK_anti 𝔭 (by omega) (hYY x hx y hy))`. Introduce `x y`. Simplify using `only [LinearMap.sub_apply, star_sub, IA.star_phi hs, hZ.1]`.
+
+Use `IA.sesq_scale hF h𝔭 hr' (IA.phi h X - Z) (n := k + c) (m := (k - e) + (k - e)) (by omega) ?_` and prove the remaining obligations. Introduce `x hx y hy`. Rewrite using `[LinearMap.sub_apply, LinearMap.sub_apply, hphi]`. Conclude with `hYY x hx y hy`.
+-/
 theorem exists_newton (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ : Submodule (𝓞 K) V}
     (hA₀ : Submodule.IsLattice K A₀) (hA₀i : Formalism.HermitianLatticesTheory.IsIntegralLat h A₀) {B₀ : Submodule (𝓞 K) V}
@@ -167,6 +223,33 @@ theorem exists_newton (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF :
     rw [LinearMap.sub_apply, LinearMap.sub_apply, hphi]
     exact hYY x hx y hy
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `exists_smul_le hA₀ hB₀ h𝔭`. Take `⟨r', hr'⟩` from `exists_smul_le hB₀ hA₀ h𝔭`. Take `⟨e, he⟩` from `exists_dual_bound hK hF hs hd hA₀ h𝔭`. Use `⟨2 * r, fun c hc => ⟨c + 2 * e + 2 * r' + r + r' + 1, fun k hk => ?_⟩⟩` and prove the remaining obligations. Establish `hGA : ∀ {X : V ≃ₗ[K] V}, X ∈ sSub h (locF 𝔭 A₀) 𝔭 k ⊓ glSub (locF 𝔭 B₀) → X ∈ glSub (locF 𝔭 A₀) ∧ X ∈ glSub (locF 𝔭 B₀)` using `fun hX => ⟨(mem_sSub.mp (Subgroup.mem_inf.mp hX).1).1, (Subgroup.mem_inf.mp hX).2⟩`.
+
+Establish `hphiA : ∀ {X : V ≃ₗ[K] V}, X ∈ sSub h (locF 𝔭 A₀) 𝔭 k ⊓ glSub (locF 𝔭 B₀) → IA.phi h X ∈ hermL (locF 𝔭 A₀) 𝔭 k`. Introduce `X hX`. Use `⟨fun x y => IA.star_phi hs X x y, fun x hx y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[IA.phi_apply]`. Conclude with `(mem_sSub.mp (Subgroup.mem_inf.mp hX).1).2 x hx y hy`.
+
+Establish `hsesq : sesqL (locF 𝔭 B₀) 𝔭 (k + c) ≤ sesqL (locF 𝔭 A₀) 𝔭 k` using `fun s hs' => IA.sesq_scale hF h𝔭 hr s (n := k) (m := k + c) (by omega) hs'`. Establish `hHG : sSub h (locF 𝔭 B₀) 𝔭 (k + c) ⊓ glSub (locF 𝔭 A₀) ≤ sSub h (locF 𝔭 A₀) 𝔭 k ⊓ glSub (locF 𝔭 B₀)`. Introduce `X hX`. Take `⟨hXB, hXA⟩` from `Subgroup.mem_inf.mp hX`. Take `⟨hXBgl, hXBv⟩` from `mem_sSub.mp hXB`.
+
+Use `Subgroup.mem_inf.mpr ⟨mem_sSub.mpr ⟨hXA, fun x hx y hy => ?_⟩, hXBgl⟩` and prove the remaining obligations. Use `IA.sesq_scale hF h𝔭 hr (IA.phi h X) (n := k) (m := k + c) (by omega) (fun x hx y hy => by rw [IA.phi_apply]; exact hXBv x hx y hy) x hx y hy` as an intermediate fact. Rewrite `this` using `[IA.phi_apply]`. Then use the resulting hypothesis. Use `⟨hHG, hsesq, ?_⟩` and prove the remaining obligations. Use `set G := sSub h (locF 𝔭 A₀) 𝔭 k ⊓ glSub (locF 𝔭 B₀) with hGdef`.
+
+Use `set H := sSub h (locF 𝔭 B₀) 𝔭 (k + c) ⊓ glSub (locF 𝔭 A₀) with hHdef`. Use `set HA := hermL (locF 𝔭 A₀) 𝔭 k with hHAdef`. Use `set HB := hermL (locF 𝔭 B₀) 𝔭 (k + c) with hHBdef`. Establish `key : ∀ X Y : G, (QuotientGroup.mk X : G ⧸ H.subgroupOf G) = QuotientGroup.mk Y ↔ IA.phi h (X : V ≃ₗ[K] V)⁻¹ - IA.phi h (Y : V ≃ₗ[K] V)⁻¹ ∈ HB`. Introduce `X Y`.
+
+Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `hX` using `hGA (inv_mem X.2)`. Establish `hY` using `hGA (inv_mem Y.2)`. Use `mul_inv_mem_iff hs (𝔭 := 𝔭) (n := k + c) hX.1 hX.2 hY.1 hY.2` as an intermediate fact. Rewrite `this` using `[inv_inv]`.
+
+Rewrite using `[← this]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Apply the tactic sequence `try exact Iff.rfl`. Establish `hmk : ∀ X : G, IA.phi h (X : V ≃ₗ[K] V)⁻¹ ∈ HA` using `fun X => hphiA (inv_mem X.2)`. Establish `keyA : ∀ a b : HA, (QuotientAddGroup.mk a : HA ⧸ HB.addSubgroupOf HA) = QuotientAddGroup.mk b ↔ (a : V →ₗ⋆[K] V →ₗ[K] K) - b ∈ HB`.
+
+Introduce `a b`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_add, AddSubgroup.coe_neg]`. Prove the components needed by the constructor for the conclusion. Introduce `hab`. Use `HB.neg_mem hab` as an intermediate fact.
+
+Rewrite `this` using `[neg_add_eq_sub, neg_sub]`. Then use the resulting hypothesis. Introduce `hab`. Use `HB.neg_mem hab` as an intermediate fact. Rewrite `this` using `[neg_sub, sub_eq_neg_add]`. Then use the resulting hypothesis. Set `f : G ⧸ H.subgroupOf G → HA ⧸ HB.addSubgroupOf HA` to `Quotient.lift (fun X : G => (QuotientAddGroup.mk ⟨_, hmk X⟩ : HA ⧸ HB.addSubgroupOf HA)) (fun X Y hXY => (keyA _ _).mpr ((key X Y).mp (Quotient.sound hXY)))`.
+
+Establish `hinj : Function.Injective f`. Introduce `q₁ q₂`. Proceed by induction on `q₁ using QuotientGroup.induction_on with`. Consider the case `H X`. Proceed by induction on `q₂ using QuotientGroup.induction_on with`.
+
+Consider the case `H Y`. Introduce `hXY`. Conclude with `(key X Y).mpr ((keyA _ _).mp hXY)`. Establish `hsurj : Function.Surjective f`. Introduce `q`.
+
+Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H Z`. Take `⟨X, hXG, hXZ⟩` from `exists_newton hK hF hs hd hA₀ hA₀i hB₀ h𝔭 hr hr' he (c := c) (k := k) (by omega) Z.2`. Use `⟨QuotientGroup.mk ⟨X⁻¹, inv_mem hXG⟩, ?_⟩` and prove the remaining obligations. Use `show (QuotientAddGroup.mk ⟨_, hmk ⟨X⁻¹, inv_mem hXG⟩⟩ : HA ⧸ HB.addSubgroupOf HA) = QuotientAddGroup.mk Z`.
+
+Rewrite using `[keyA]`. Simplify `hXZ` using `only [inv_inv]`. Use `show Nat.card (G ⧸ H.subgroupOf G) = Nat.card (HA ⧸ HB.addSubgroupOf HA)`. Conclude with `Nat.card_congr (Equiv.ofBijective f ⟨hinj, hsurj⟩)`.
+-/
 theorem relIndex_sSub_inf_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ : Submodule (𝓞 K) V}
     (hA₀ : Submodule.IsLattice K A₀) (hA₀i : Formalism.HermitianLatticesTheory.IsIntegralLat h A₀) {B₀ : Submodule (𝓞 K) V}

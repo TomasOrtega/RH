@@ -12,6 +12,9 @@ variable (p : ℕ) [Fact p.Prime]
 
 def cyclInf : IntermediateField ℚ_[p] (PadicAlgCl p) := ⨆ n, cycl p n
 
+/- English proof (translation)
+Establish `hdir : Directed (· ≤ ·) (cycl p)` using `(cycl_mono (p := p)).directed_le`. Rewrite using `[← SetLike.mem_coe, cyclInf, IntermediateField.coe_iSup_of_directed hdir, Set.mem_iUnion]`. Both sides reduce to the same expression.
+-/
 theorem mem_cyclInf_iff {x : PadicAlgCl p} : x ∈ cyclInf p ↔ ∃ n, x ∈ cycl p n := by
   have hdir : Directed (· ≤ ·) (cycl p) := (cycl_mono (p := p)).directed_le
   rw [← SetLike.mem_coe, cyclInf, IntermediateField.coe_iSup_of_directed hdir, Set.mem_iUnion]
@@ -20,15 +23,24 @@ theorem mem_cyclInf_iff {x : PadicAlgCl p} : x ∈ cyclInf p ↔ ∃ n, x ∈ cy
 def cyclComplete : Subfield ℂ_[p] :=
   ((cyclInf p).toSubfield.map (algebraMap (PadicAlgCl p) ℂ_[p])).topologicalClosure
 
+/- English proof (translation)
+The claim follows from `Subfield.le_topologicalClosure _ ⟨x, (mem_cyclInf_iff p).2 ⟨n, hx⟩, rfl⟩`.
+-/
 theorem coe_mem_cyclComplete {n : ℕ} {x : PadicAlgCl p} (hx : x ∈ cycl p n) :
     (x : ℂ_[p]) ∈ cyclComplete p :=
   Subfield.le_topologicalClosure _ ⟨x, (mem_cyclInf_iff p).2 ⟨n, hx⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Subfield.isClosed_topologicalClosure _`.
+-/
 theorem isClosed_cyclComplete : IsClosed (cyclComplete p : Set ℂ_[p]) :=
   Subfield.isClosed_topologicalClosure _
 
 instance : CompleteSpace (cyclComplete p) := (isClosed_cyclComplete p).completeSpace_coe
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `‖((p : cyclComplete p) : ℂ_[p])‖ = _`. Rewrite using `[show ((p : cyclComplete p) : ℂ_[p]) = ((p : PadicAlgCl p) : ℂ_[p]) by simp, PadicComplex.norm_extends, norm_natCast_prime]`.
+-/
 theorem norm_natCast_cyclComplete : ‖(p : cyclComplete p)‖ = (p : ℝ)⁻¹ := by
   change ‖((p : cyclComplete p) : ℂ_[p])‖ = _
   rw [show ((p : cyclComplete p) : ℂ_[p]) = ((p : PadicAlgCl p) : ℂ_[p]) by simp,
@@ -96,6 +108,9 @@ def cyclGaloisTiltEquiv :
         algebraicClosure K∞♭ (Tilt ℂ_[p] NormedField.valuation (normInteger ℂ_[p]) normInteger_integers p)) :=
   galoisTiltEquiv K∞ ℂ_[p] p
 
+/- English proof (translation)
+The claim follows from `galoisTiltEquiv_fixes_iff L σ`.
+-/
 theorem cyclGaloisTiltEquiv_fixes_iff (L : IntermediateField K∞ ℂ_[p]) [FiniteDimensional K∞ L]
     (σ : algebraicClosure K∞ ℂ_[p] ≃ₐ[K∞] algebraicClosure K∞ ℂ_[p]) :
     (∀ y : algebraicClosure K∞♭ (Tilt ℂ_[p] NormedField.valuation (normInteger ℂ_[p])

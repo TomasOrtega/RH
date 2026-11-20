@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotie
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSmulOfCommuteHeisenbergLinearModelSchwartzBruhStatement
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.schur_heisenberg_linearModel_fintype | exact GlobalTheory.schur_heisenberg_linearModel_fintype | (intros; apply GlobalTheory.schur_heisenberg_linearModel_fintype <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weil_rep_bijection_schwartz : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     {β : Type} [Fintype β] [DecidableEq β] {Xt : Type} [AddCommGroup Xt] [Module ℂ Xt] (V : Submodule ℂ Xt)
     (ψ0 : AddChar k ℂ), Continuous ψ0 → ψ0 ≠ 1 →

@@ -21,6 +21,13 @@ noncomputable section
 
 namespace GlobalTheory.FlagTransport
 
+/- English proof (translation)
+Take `⟨g', ⟨w, hs⟩, -⟩` from `hB₀ Y π fl`. Take `⟨g'', ⟨w', hs'⟩, -⟩` from `hB Y₀ π₀ fl₀`. Use `⟨g', g'', w, w', ?_, ?_, hs⟩` and prove the remaining obligations. Use `(hB Y π fl).unique ⟨by rw [Category.assoc, w', w], fun a i => ?_⟩ ⟨Category.id_comp π, fun a i => GlobalTheory.T.pullback_id_flag_piece_iso π (E a) _ ((fl a).ι i) _⟩` and prove the remaining obligations. Take `⟨e₁, he₁⟩` from `hs a i`.
+
+Take `⟨e₂, he₂⟩` from `hs' a i`. Conclude with `GlobalTheory.T.flag_piece_pullback_comp_iso π π₀ π (E a) _ _ _ _ _ _ g' g'' w w' _ e₁ he₁ e₂ he₂`. Use `(hB₀ Y₀ π₀ fl₀).unique ⟨by rw [Category.assoc, w, w'], fun a i => ?_⟩ ⟨Category.id_comp π₀, fun a i => GlobalTheory.T.pullback_id_flag_piece_iso π₀ (E a) _ ((fl₀ a).ι i) _⟩` and prove the remaining obligations. Take `⟨e₁, he₁⟩` from `hs' a i`. Take `⟨e₂, he₂⟩` from `hs a i`.
+
+Conclude with `GlobalTheory.T.flag_piece_pullback_comp_iso π₀ π π₀ (E a) _ _ _ _ _ _ g'' g' w' w _ e₁ he₁ e₂ he₂`.
+-/
 theorem exists_iso {B Y₀ Y : Scheme.{0}} (π₀ : Y₀ ⟶ B) (π : Y ⟶ B) {ι : Type} (E : ι → B.Modules) (n : ι → ℕ)
     (fl₀ : ∀ a, Vert.Flag ((Scheme.Modules.pullback π₀).obj (E a)) (n a))
     (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (n a))
@@ -47,6 +54,11 @@ end GlobalTheory.FlagTransport
 
 namespace GlobalTheory.FlagInd
 
+/- English proof (translation)
+Introduce `F _ _ C Yv Bs q ι E n h H A Y₀ _ π₀ fl₀ hB₀ ar₀ n₀ hI Y _ π fl hB arY nY`. Take `⟨G, _, j₀, πG, pb, _, _, φ, φs, hind⟩` from `hI`. Take `⟨g', g'', w, w', h₁, h₂, hs⟩` from `GlobalTheory.FlagTransport.exists_iso π₀ π E n fl₀ fl hB₀ hB`. Establish `pb' : IsPullback (j₀ ≫ g'') (πG ≫ Yv.str) (π ≫ q) (spMap (algebraMap (𝓞 F) F))` using `IsPullback.of_iso pb (Iso.refl _) ⟨g'', g', h₂, h₁⟩ (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp [← w']) (by simp)`. Establish `hf : g' ≫ π₀ ≫ q = π ≫ q` using `by rw [← Category.assoc, w]`.
+
+Use `⟨G, inferInstance, j₀ ≫ g'', πG, pb', inferInstance, inferInstance, φ, φs, fun a i => ?_⟩` and prove the remaining obligations. Establish `t` using `GlobalTheory.T.normal_arith_model_generic_point_map Yv Y₀ Y (π₀ ≫ q) (π ≫ q) ar₀ n₀ arY nY g' hf G j₀ (j₀ ≫ g'') (by rw [Category.assoc, h₂, Category.comp_id]) πG pb pb' φ φs (A a i) _ 1 (hind a i)`. Conclude with `GlobalTheory.T.induced_metric_of_isometric _ _ _ _ 1 t (GlobalTheory.T.flag_pullback_piece_iso_factor q π₀ π (E a) (n a) (h a) (H a) (fl₀ a) (fl a) g' w (hs a) hf i).symm`.
+-/
 theorem flagInduces_transport : ∀ {F : Type} [Field F] [NumberField F] {C : TrueGeo.CxSt F} (Yv : ProjVar.Var F) (Bs : Scheme.{0}) (q : Bs ⟶ Sp (𝓞 F))
     (ι : Type) (E : ι → Bs.Modules) (n : ι → ℕ) (h : ∀ a, VMetric q (E a) (n a)) (H : ∀ a, (h a).IsCInf)
     (A : ∀ a, Fin (n a) → TrueGeo.Adl C Yv) (Y₀ : Scheme.{0}) (_ : IsIntegral Y₀) (π₀ : Y₀ ⟶ Bs)

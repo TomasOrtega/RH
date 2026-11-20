@@ -12,6 +12,19 @@ namespace GlobalTheory.FieldBC
 open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
   Formalism.BasicNotions
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g S _ _ y`. Use `letI := resAlg hle S`. Establish `h : AlgOver c c' hle S` using `fun _ => rfl`. Take `⟨z, hz⟩` from `hL.total g S (y.res hle h)`.
+
+Conclude with `⟨z.ext hle h, hz⟩`. Introduce `g S _ _ y y₁ y₂ h₁ h₂`. Use `letI := resAlg hle S`. Establish `h : AlgOver c c' hle S` using `fun _ => rfl`. Conclude with `hL.func g S (y.res hle h) (y₁.res hle h) (y₂.res hle h) h₁ h₂`.
+
+Introduce `S _ _ y`. Use `letI := resAlg hle S`. Establish `h : AlgOver c c' hle S` using `fun _ => rfl`. Conclude with `hL.one S (y.res hle h)`. Introduce `g g' S _ _ y y₁ y₂ h₁ h₂`.
+
+Use `letI := resAlg hle S`. Establish `h : AlgOver c c' hle S` using `fun _ => rfl`. Conclude with `hL.mul g g' S (y.res hle h) (y₁.res hle h) (y₂.res hle h) h₁ h₂`. Introduce `g S T _ _ _ _ φ y y' z z' h₀ h₁ h₂`. Use `letI := resAlg hle S`.
+
+Use `letI := resAlg hle T`. Establish `hS : AlgOver c c' hle S` using `fun _ => rfl`. Establish `hT : AlgOver c c' hle T` using `fun _ => rfl`. Set `ψ : S →ₐ[c.F] T` to `{ φ.toRingHom with commutes' := fun x => φ.commutes _ }`. Conclude with `hL.nat g S T ψ (y.res hle hS) (y'.res hle hS) (z.res hle hT) (z'.res hle hT) h₀ h₁ h₂`.
+
+Introduce `g S _ _ t y y' z z' h₀ h₁ h₂`. Use `letI := resAlg hle S`. Establish `h : AlgOver c c' hle S` using `fun _ => rfl`. Conclude with `hL.bor g S t (y.res hle h) (y'.res hle h) (z.res hle h) (z'.res hle h) h₀ h₁ h₂`.
+-/
 theorem actLev_of_le {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c c' : Coeff l} (hle : c.F ≤ c'.F) {G : Type} [Group G]
     (lev : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La))
@@ -46,6 +59,9 @@ theorem actLev_of_le {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.
     have h : AlgOver c c' hle S := fun _ => rfl
     exact hL.bor g S t (y.res hle h) (y'.res hle h) (z.res hle h) (z'.res hle h) h₀ h₁ h₂
 
+/- English proof (translation)
+The claim follows from `have hS := GlobalTheory.abelianSchemeLaws_all.1.secBaseChange have hc := fun c => GlobalTheory.Frames.chartCoverF_of_secBaseChange hS D.host.E H Dw l Xo c ⟨actLev_of_le hle lev hL, actBC_of hle lev (evalWD_fr (frChartF_of (hc c))) (evalWD_fr (frChartF_of (hc c'))) hL (actLev_of_l …`.
+-/
 theorem actLev_and_actBC (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c c' : Coeff l) (hle : c.F ≤ c'.F) (G : Type) [Group G]
     (lev : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La))

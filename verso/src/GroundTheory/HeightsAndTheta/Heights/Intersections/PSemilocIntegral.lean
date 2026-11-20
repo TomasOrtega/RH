@@ -10,6 +10,19 @@ namespace GroundTheory.Heights₂.Heights.Inter
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 IndefiniteRowSideFullHecke.Inter
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hP hs hsP hW`. Use `hP'.2.1.1` as an intermediate fact. Use `letI := (locToSemiloc hv P' W).toAlgebra`. Set `f : locRing (imageZ v P') W →+* FractionRing (MRing ι' ⧸ P')` to `(semiLocRing P' (fibreOver v P' W)).subtype.comp (locToSemiloc hv P' W)`. Use `⟨fun b => ?_⟩` and prove the remaining obligations.
+
+Use `RingHom.IsIntegralElem.of_map (g := (semiLocRing P' (fibreOver v P' W)).subtype) Subtype.val_injective ?_` and prove the remaining obligations. Establish `hmem : (b : FractionRing (MRing ι' ⧸ P')) ∈ ⨅ V : {V : ValuationSubring (FractionRing (MRing ι' ⧸ P')) // Set.range f ⊆ V.toSubring}, V.1.toSubring`. Rewrite using `[Subring.mem_iInf]`. Introduce and unpack `⟨V, hV⟩`. Take `⟨y, hy⟩` from `h₁ K' ι' P' hP'.2.1 V`.
+
+Establish `hcase` using `h₂ K ι K' ι' κ v P' n s α W hv hP' hP hs hsP hW V (fun a ha => hV ⟨⟨a, ha⟩, rfl⟩) y hy`. Establish `hle : semiLocRing P' (fibreOver v P' W) ≤ V.toSubring`. Rewrite using `[semiLocRing, Subring.closure_le]`. Introduce and unpack `_ ⟨u, w, a, hw, hwW, hu, hwa, rfl⟩`. Establish `hwy : w ∉ y`.
+
+Break down `hcase with rfl | hy'` into its components or cases. Conclude with `fun h => nonZeroDivisors.ne_zero hw (Ideal.Quotient.eq_zero_iff_mem.mpr h)`. Conclude with `hwW y hy'`. Rewrite using `[SetLike.mem_coe, IsFractionRing.mk'_eq_div]`. Conclude with `(hy.2.2 a u w hu hwa hwy).1`.
+
+Conclude with `hle b.2`. Rewrite `hmem` using `[iInf_valuationSubring_superset, ← RingHom.coe_range, Subring.closure_eq]`. Take `⟨p, hp, hpx⟩` from `(hmem : IsIntegral f.range (b : FractionRing (MRing ι' ⧸ P')))`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic ((Polynomial.mem_lifts p).mpr (Polynomial.map_surjective f.rangeRestrict (fun ⟨_, a, ha⟩ => ⟨a, Subtype.ext ha⟩) p)) hp`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Polynomial.eval₂ (f.range.subtype.comp f.rangeRestrict) (b : FractionRing _) q = 0`. Rewrite using `[← Polynomial.eval₂_map, hq]`. Conclude with `hpx`.
+-/
 theorem SemilocIntegral.proof (h₁ : ValCentreZ.Statement) (h₂ : CentreOverW.Statement) :
     SemilocIntegral.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hP hs hsP hW

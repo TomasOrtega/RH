@@ -15,6 +15,19 @@ def PlaceStep : Prop := ∀ (k K : Type) [Field k] [IsAlgClosed k] [Field K] [Al
   PlaceGood k K A → (∀ B : LocalSubring K, A ≤ B → PlaceGood k K B → B ≤ A) →
     ∀ x : K, x ∈ A.toSubring ∨ x⁻¹ ∈ A.toSubring
 
+/- English proof (translation)
+Introduce `k K _ _ _ _ _`. Take `⟨A, hA, hmax⟩` from `h1 k K`. Establish `hv` using `h2 k K A hA hmax`. Set `T : ValuationSubring K` to `⟨A.toSubring, hv⟩`. Set `σ : k →+* T` to `(algebraMap k K).codRestrict T (fun c => hA.1 c)`.
+
+Use `⟨T, σ, fun x => rfl, ?_⟩` and prove the remaining obligations. Introduce `y`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨c, hc⟩` from `hA.2 a a.2`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [RingHom.comp_apply]`. Apply `Ideal.Quotient.eq.mpr` to reduce the goal to its premises. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨w, hw⟩` from `isUnit_iff_exists_inv.mp hu`.
+
+Establish `hK : ((σ c : K) - (a : K)) * (w : K) = 1`. Use `congrArg (fun z : T => (z : K)) hw` as an intermediate fact. Simplify using `using this`. Break down `hc with h | h` into its components or cases. Establish `: (σ c : K) - (a : K) = 0` using `by rw [h]; simp [σ]`.
+
+Rewrite `hK` using `[this, zero_mul]`. Conclude with `zero_ne_one hK`. Apply `h` to reduce the goal to its premises. Establish `hinv : ((σ c : K) - (a : K))⁻¹ = (w : K)` using `inv_eq_of_mul_eq_one_right hK`. Establish `: ((a : K) - algebraMap k K c)⁻¹ = -(w : K)`.
+
+Rewrite using `[← hinv, ← inv_neg, neg_sub]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `T.neg_mem _ w.2`.
+-/
 theorem PlaceEx_of (h1 : PlaceZorn) (h2 : PlaceStep) : PlaceEx := by
   intro k K _ _ _ _ _
   obtain ⟨A, hA, hmax⟩ := h1 k K

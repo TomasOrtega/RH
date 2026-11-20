@@ -21,6 +21,19 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Take `⟨Br⟩` from `exists_phiBridge W hcase hP9 T hT hO hinj`. Take `⟨-, N, a, ha, b, hb, hN⟩` from `l_pow_mem_levels_q_pow_ideal Br Bq hg`. Take `⟨k, z, hz, hkz⟩` from `hgx`. Establish `hx1 : x ∈ Pp W T i 1`. Take `⟨y, hy, hxy⟩` from `hx`.
+
+Rewrite using `[hxy, one_smul]`. Conclude with `hy`. Establish `hlx : lA W ^ k • x ∈ Pp W T i 1`. Rewrite using `[show lA W ^ k = ((PD.p ^ k : ℕ) : LetA O n) by simp [lA], Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hx1 _`.
+
+Establish `hqPi : qA W ^ Bq ∈ PiPs W`. Apply `Submonoid.pow_mem` to reduce the goal to its premises. Unfold `PiPs`. Conclude with `Submonoid.subset_closure (Set.mem_insert_of_mem _ ⟨0, by simp [ps]⟩)`. Establish `h1 : InFP W T i 1 1 ((1 : LetA O n) • x)`.
+
+Rewrite using `[one_smul]`. Conclude with `hx`. Establish `key : lA W ^ (k + N) • x = qA W ^ Bq • (a • z + b • (lA W ^ k • x))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hN, smul_smul, ← pow_add, Nat.add_comm k N]`.
+
+Use `_ = a • (lA W ^ k • g • x) + b • (qA W ^ Bq • (lA W ^ k • x)) := by`. Rewrite using `[add_smul, mul_smul, mul_smul, smul_comm g (lA W ^ k) x]`. Use `_ = qA W ^ Bq • (a • z + b • (lA W ^ k • x)) := by`. Rewrite using `[hkz, smul_add, smul_comm a, smul_comm b]`. Establish `hmem : a • z + b • (lA W ^ k • x) ∈ Pp W T i 1` using `add_mem (DYB.Pp_smul W T i ha hz) (DYB.Pp_smul W T i hb hlx)`.
+
+Conclude with `hSatP hcase T i 1 (qA W ^ Bq) 1 hT hqPi (one_mem _) x h1 ⟨k + N, by unfold InFP; exact ⟨_, hmem, key⟩⟩`.
+-/
 theorem q_pow_mem_of_generator [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hSatP : Formalism.MainNotions.ArcLiftingSetup.SATPcore W)
     (hO : ∀ x : O, 0 ≤ v (algebraMap O LL x)) (hOv : ∀ x : LL, 0 ≤ v x → ∃ y : O, algebraMap O LL y = x)

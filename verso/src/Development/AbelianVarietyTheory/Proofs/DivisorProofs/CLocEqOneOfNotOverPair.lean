@@ -24,6 +24,11 @@ variable {E : Type} [Field E] [NumberField E] {l : ℕ} [Fact l.Prime]
 
 variable [IsCMField E]
 
+/- English proof (translation)
+Establish `h : cT (conjAd E) ((g.1 : GL (Fin n) (Ad E)) : Matrix (Fin n) (Fin n) (Ad E)) * 1 * ((g.1 : GL (Fin n) (Ad E)) : Matrix (Fin n) (Fin n) (Ad E)) = 1` using `g.2`. Rewrite `h` using `[Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_mul]`. Both sides reduce to the same expression.
+
+Use `_ = 1 := by rw [h]; exact Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem cT_cLoc_conjSrc_mul {n : ℕ} (g : UA E n) (u : HeightOneSpectrum (𝓞 E)) :
     Matrix.transpose (((cLoc (conjSrc (IsCMField.complexConj E).toRingEquiv u) g : GL (Fin n) _) :
         Matrix (Fin n) (Fin n) _).map (conjLoc (IsCMField.complexConj E).toRingEquiv u)) *

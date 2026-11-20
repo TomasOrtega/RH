@@ -14,6 +14,11 @@ variable {B : Type} [CommRing B]
 def IsExpType (f : PowerSeries B) : Prop :=
   ∀ m n, coeff m f * coeff n f = ((m + n).choose m : B) * coeff (m + n) f
 
+/- English proof (translation)
+Introduce `m n`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Simplify using the standard rewrite rules. Establish `h1 : m ≠ 0` using `hm.ne'`. Establish `h2 : m + n ≠ 0` using `by omega`.
+
+Simplify using `[coeff_one, h1, h2]`.
+-/
 theorem isExpType_one : IsExpType (1 : PowerSeries B) := by
   intro m n
   rcases Nat.eq_zero_or_pos m with rfl | hm
@@ -22,6 +27,25 @@ theorem isExpType_one : IsExpType (1 : PowerSeries B) := by
     have h2 : m + n ≠ 0 := by omega
     simp [coeff_one, h1, h2]
 
+/- English proof (translation)
+Introduce `m n`. Simplify using `only [coeff_mul, Finset.sum_mul_sum]`. Establish `hV : ((m + n).choose m : B) * ∑ z ∈ Finset.HasAntidiagonal.antidiagonal (m + n), coeff z.1 f * coeff z.2 g = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal m, ∑ z ∈ Finset.HasAntidiagonal.antidiagonal (m + n), ((z.1.choose x.1 * z.2.choose x.2 : ℕ) : B) * (coeff z.1 f * coeff z.2 g)`. Rewrite using `[Finset.mul_sum, Finset.sum_comm' (t' := Finset.HasAntidiagonal.antidiagonal (m + n)) (s' := fun _ ↦ Finset.HasAntidiagonal.antidiagonal m) (fun _ _ ↦ Iff.rfl)]`. Use `Finset.sum_congr rfl fun z hz ↦ ?_` and prove the remaining obligations.
+
+Rewrite `hz` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[← Finset.sum_mul, ← Nat.cast_sum, ← hz, Nat.add_choose_eq]`. Rewrite using `[hV]`. Use `Finset.sum_congr rfl fun x hx ↦ ?_` and prove the remaining obligations. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+
+Establish `key : ∀ y ∈ Finset.HasAntidiagonal.antidiagonal n, coeff x.1 f * coeff x.2 g * (coeff y.1 f * coeff y.2 g) = (((x.1 + y.1).choose x.1 * (x.2 + y.2).choose x.2 : ℕ) : B) * (coeff (x.1 + y.1) f * coeff (x.2 + y.2) g)`. Introduce `y _`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_bij_ne_zero (fun y _ _ ↦ (x.1 + y.1, x.2 + y.2)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `y hy _`.
+
+Rewrite `hy`, the goal using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Use linear arithmetic over natural numbers and integers. Introduce `y₁ hy₁ _ y₂ hy₂ _ h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext (by omega) (by omega)`.
+
+Introduce `z hz hz0`. Rewrite `hz` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `h1 : x.1 ≤ z.1`. Assume the negation of the conclusion as `h`. Apply `hz0` to reduce the goal to its premises.
+
+Rewrite using `[Nat.choose_eq_zero_of_lt (by omega)]`. Simplify using the standard rewrite rules. Establish `h2 : x.2 ≤ z.2`. Assume the negation of the conclusion as `h`. Apply `hz0` to reduce the goal to its premises.
+
+Rewrite using `[Nat.choose_eq_zero_of_lt (n := z.2) (by omega)]`. Simplify using the standard rewrite rules. Establish `hy : (z.1 - x.1, z.2 - x.2) ∈ Finset.HasAntidiagonal.antidiagonal n`. Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `he : (x.1 + (z.1 - x.1), x.2 + (z.2 - x.2)) = z` using `Prod.ext (by simp; omega) (by simp; omega)`. Use `⟨(z.1 - x.1, z.2 - x.2), hy, ?_, he⟩` and prove the remaining obligations. Rewrite using `[key _ hy, Nat.add_sub_cancel' h1, Nat.add_sub_cancel' h2]`. Conclude with `hz0`. Introduce `y hy _`.
+
+Conclude with `key y hy`.
+-/
 theorem isExpType_mul {f g : PowerSeries B} (hf : IsExpType f) (hg : IsExpType g) :
     IsExpType (f * g) := by
   intro m n
@@ -74,10 +98,18 @@ theorem isExpType_mul {f g : PowerSeries B} (hf : IsExpType f) (hg : IsExpType g
 
 def ser (g : ℕ → B) (a : B) : PowerSeries B := mk fun n ↦ a ^ n * g n
 
+/- English proof (translation)
+Use extensionality with `n`. Apply the tactic sequence `rcases n with _ | n <;> simp [ser, coeff_one, h0]`.
+-/
 theorem ser_zero {g : ℕ → B} (h0 : g 0 = 1) : ser g 0 = 1 := by
   ext n
   rcases n with _ | n <;> simp [ser, coeff_one, h0]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_mul]`. Simplify using `only [ser, coeff_mk]`. Rewrite using `[(Commute.all a b).add_pow', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k hk ↦ ?_` and prove the remaining obligations.
+
+Rewrite `hk` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Use `hm k.1 k.2` as an intermediate fact. Rewrite `this` using `[hk]`. Rewrite using `[show a ^ k.1 * g k.1 * (b ^ k.2 * g k.2) = a ^ k.1 * b ^ k.2 * (g k.1 * g k.2) by ring, this, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ser_add {g : ℕ → B} (hm : ∀ m n, g m * g n = ((m + n).choose m : B) * g (m + n)) (a b : B) :
     ser g (a + b) = ser g a * ser g b := by
   ext n
@@ -91,11 +123,17 @@ theorem ser_add {g : ℕ → B} (hm : ∀ m n, g m * g n = ((m + n).choose m : B
   rw [show a ^ k.1 * g k.1 * (b ^ k.2 * g k.2) = a ^ k.1 * b ^ k.2 * (g k.1 * g k.2) by ring, this, nsmul_eq_mul]
   ring
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[ser, coeff_rescale, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ser_smul {g : ℕ → B} (a b : B) : ser g (a * b) = rescale a (ser g b) := by
   ext n
   simp [ser, coeff_rescale, mul_pow]
   ring
 
+/- English proof (translation)
+Introduce `m n`. Simplify using `only [ser, coeff_mk]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isExpType_ser {g : ℕ → B} (hm : ∀ m n, g m * g n = ((m + n).choose m : B) * g (m + n)) (a : B) :
     IsExpType (ser g a) := by
   intro m n
@@ -103,14 +141,25 @@ theorem isExpType_ser {g : ℕ → B} (hm : ∀ m n, g m * g n = ((m + n).choose
   calc a ^ m * g m * (a ^ n * g n) = a ^ (m + n) * (g m * g n) := by ring
     _ = _ := by rw [hm]; ring
 
+/- English proof (translation)
+Simplify using `[coeff_mul]`.
+-/
 theorem coeff_zero_mul' (p q : PowerSeries B) : coeff 0 (p * q) = coeff 0 p * coeff 0 q := by
   simp [coeff_mul]
 
+/- English proof (translation)
+Rewrite using `[coeff_mul, Finset.Nat.sum_antidiagonal_succ]`. Simplify using `[add_comm]`.
+-/
 theorem coeff_one_mul' (p q : PowerSeries B) :
     coeff 1 (p * q) = coeff 1 p * coeff 0 q + coeff 0 p * coeff 1 q := by
   rw [coeff_mul, Finset.Nat.sum_antidiagonal_succ]
   simp [add_comm]
 
+/- English proof (translation)
+Rewrite using `[coeff_mul]`. Use `Ideal.sum_mem _ fun k hk ↦ ?_` and prove the remaining obligations. Rewrite `hk` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Distinguish the cases in `h : k.1 = 0`. Conclude with `J.mul_mem_left _ (hq _ (by omega))`.
+
+Conclude with `J.mul_mem_right _ (hp _ h)`.
+-/
 theorem coeff_mul_mem {J : Ideal B} {p q : PowerSeries B} (hp : ∀ n, n ≠ 0 → coeff n p ∈ J)
     (hq : ∀ n, n ≠ 0 → coeff n q ∈ J) (n : ℕ) (hn : n ≠ 0) : coeff n (p * q) ∈ J := by
   rw [coeff_mul]
@@ -133,31 +182,58 @@ def gam (n : ℕ) (y : B) : B := by
 
 variable {x g}
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_add_index' (fun _ ↦ zero_mul _) (fun _ _ _ ↦ add_mul _ _ _)`.
+-/
 theorem L_add (c c' : ι →₀ B) : L x (c + c') = L x c + L x c' :=
   Finsupp.sum_add_index' (fun _ ↦ zero_mul _) (fun _ _ _ ↦ add_mul _ _ _)
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_sub_index (fun _ _ _ ↦ sub_mul _ _ _)`.
+-/
 theorem L_sub (c c' : ι →₀ B) : L x (c - c') = L x c - L x c' :=
   Finsupp.sum_sub_index (fun _ _ _ ↦ sub_mul _ _ _)
 
+/- English proof (translation)
+Unfold `L`. Rewrite using `[Finsupp.sum_smul_index (fun _ ↦ zero_mul _), Finsupp.mul_sum]`. Simplify using `only [mul_assoc]`.
+-/
 theorem L_smul (a : B) (c : ι →₀ B) : L x (a • c) = a * L x c := by
   unfold L
   rw [Finsupp.sum_smul_index (fun _ ↦ zero_mul _), Finsupp.mul_sum]
   simp only [mul_assoc]
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_single_index (zero_mul _)`.
+-/
 theorem L_single (i : ι) (a : B) : L x (Finsupp.single i a) = a * x i :=
   Finsupp.sum_single_index (zero_mul _)
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_zero_index`.
+-/
 theorem L_zero : L x (0 : ι →₀ B) = 0 := Finsupp.sum_zero_index
 
+/- English proof (translation)
+The claim follows from `Finsupp.prod_zero_index`.
+-/
 theorem E_zero : E g (0 : ι →₀ B) = 1 := Finsupp.prod_zero_index
 
+/- English proof (translation)
+The claim follows from `Finsupp.prod_add_index' (fun i ↦ ser_zero (h0 i)) (fun i a b ↦ ser_add (hm i) a b)`.
+-/
 theorem E_add (h0 : ∀ i, g i 0 = 1) (hm : ∀ i m n, g i m * g i n = ((m + n).choose m : B) * g i (m + n))
     (c c' : ι →₀ B) : E g (c + c') = E g c * E g c' :=
   Finsupp.prod_add_index' (fun i ↦ ser_zero (h0 i)) (fun i a b ↦ ser_add (hm i) a b)
 
+/- English proof (translation)
+The claim follows from `Finsupp.prod_single_index (ser_zero (h0 i))`.
+-/
 theorem E_single (h0 : ∀ i, g i 0 = 1) (i : ι) (a : B) : E g (Finsupp.single i a) = ser (g i) a :=
   Finsupp.prod_single_index (ser_zero (h0 i))
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction with`. Consider the case `zero => rw [smul_zero, E_zero, map_one]`. Consider the case `single_add i b f _ _ ih`. Rewrite using `[smul_add, Finsupp.smul_single, smul_eq_mul, E_add h0 hm, E_add h0 hm, E_single h0, E_single h0, ih, ser_smul, map_mul]`.
+-/
 theorem E_smul (h0 : ∀ i, g i 0 = 1)
     (hm : ∀ i m n, g i m * g i n = ((m + n).choose m : B) * g i (m + n)) (a : B) (c : ι →₀ B) : E g (a • c) = rescale a (E g c) := by
   induction c using Finsupp.induction with
@@ -166,9 +242,17 @@ theorem E_smul (h0 : ∀ i, g i 0 = 1)
     rw [smul_add, Finsupp.smul_single, smul_eq_mul, E_add h0 hm, E_add h0 hm, E_single h0, E_single h0, ih,
       ser_smul, map_mul]
 
+/- English proof (translation)
+Simplify using `only [Ideal.span, Finsupp.mem_span_range_iff_exists_finsupp, smul_eq_mul, L]`.
+-/
 theorem mem_span_iff {y : B} : y ∈ Ideal.span (Set.range x) ↔ ∃ c, L x c = y := by
   simp only [Ideal.span, Finsupp.mem_span_range_iff_exists_finsupp, smul_eq_mul, L]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction with`. Consider the case `zero`. Rewrite using `[E_zero, L_zero]`. Use `⟨by simp, by simp [coeff_one], fun n hn ↦ by simp [coeff_one, hn], isExpType_one⟩` and prove the remaining obligations. Consider the case `single_add i a f _ _ ih`.
+
+Take `⟨ih0, ih1, ihJ, ihE⟩` from `ih`. Rewrite using `[E_add h0 hm, E_single h0, L_add, L_single]`. Establish `s0 : coeff 0 (ser (g i) a) = 1` using `by simp [ser, h0]`. Establish `s1 : coeff 1 (ser (g i) a) = a * x i` using `by simp [ser, h1]`. Use `⟨by rw [coeff_zero_mul', s0, ih0, one_mul], by rw [coeff_one_mul', s0, s1, ih0, ih1]; ring, coeff_mul_mem (fun n hn ↦ by simp only [ser, coeff_mk]; exact Ideal.mul_mem_left _ _ (hJ i n hn)) ihJ, isExpType_mul (isExpType_ser (hm i) a) ihE⟩` and prove the remaining obligations.
+-/
 theorem E_props (h0 : ∀ i, g i 0 = 1) (h1 : ∀ i, g i 1 = x i)
     (hJ : ∀ i n, n ≠ 0 → g i n ∈ Ideal.span (Set.range x))
     (hm : ∀ i m n, g i m * g i n = ((m + n).choose m : B) * g i (m + n)) (c : ι →₀ B) :
@@ -188,12 +272,18 @@ theorem E_props (h0 : ∀ i, g i 0 = 1) (h1 : ∀ i, g i 1 = x i)
       isExpType_mul (isExpType_ser (hm i) a) ihE⟩
 
 variable (x g) in
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem E_eq (h0 : ∀ i, g i 0 = 1) (hm : ∀ i m n, g i m * g i n = ((m + n).choose m : B) * g i (m + n))
     (hE : ∀ c : ι →₀ B, L x c = 0 → E g c = 1) {c c' : ι →₀ B} (h : L x c = L x c') :
     E g c = E g c' := by
   calc E g c = E g ((c - c') + c') := by rw [sub_add_cancel]
     _ = E g c' := by rw [E_add h0 hm, hE _ (by rw [L_sub, h, sub_self]), one_mul]
 
+/- English proof (translation)
+Establish `h : ∃ c', L x c' = L x c` using `⟨c, rfl⟩`. Unfold `gam`. Rewrite using `[dif_pos h, E_eq x g h0 hm hE h.choose_spec]`.
+-/
 theorem gam_L (h0 : ∀ i, g i 0 = 1) (hm : ∀ i m n, g i m * g i n = ((m + n).choose m : B) * g i (m + n))
     (hE : ∀ c : ι →₀ B, L x c = 0 → E g c = 1) (n : ℕ) (c : ι →₀ B) :
     gam x g n (L x c) = coeff n (E g c) := by
@@ -209,6 +299,23 @@ namespace GlobalTheory.PDA
 
 open Gen in
 
+/- English proof (translation)
+Introduce `B ι _ x g h0 h1 hJ hm hE'`. Establish `hE : ∀ c : ι →₀ B, L x c = 0 → E g c = 1` using `hE'`. Establish `P` using `E_props h0 h1 hJ hm`. Establish `G` using `gam_L h0 hm hE`. Use `⟨gam x g, ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `n y hy`. Unfold `gam`. Rewrite using `[dif_neg fun h ↦ hy (mem_span_iff.2 h)]`. Introduce `y hy`. Take `⟨c, rfl⟩` from `mem_span_iff.1 hy`.
+
+Rewrite using `[G]`. Conclude with `(P c).1`. Introduce `y hy`. Take `⟨c, rfl⟩` from `mem_span_iff.1 hy`. Rewrite using `[G]`.
+
+Conclude with `(P c).2.1`. Introduce `n hn y hy`. Take `⟨c, rfl⟩` from `mem_span_iff.1 hy`. Rewrite using `[G]`. Conclude with `(P c).2.2.1 n hn`.
+
+Introduce `n y hy z hz`. Take `⟨c, rfl⟩` from `mem_span_iff.1 hy`. Take `⟨c', rfl⟩` from `mem_span_iff.1 hz`. Rewrite using `[← L_add, G, E_add h0 hm, coeff_mul]`. Simplify using `only [G]`.
+
+Introduce `n a y hy`. Take `⟨c, rfl⟩` from `mem_span_iff.1 hy`. Rewrite using `[← L_smul, G, G, E_smul h0 hm, coeff_rescale]`. Introduce `m n y hy`. Take `⟨c, rfl⟩` from `mem_span_iff.1 hy`.
+
+Rewrite using `[G, G, G]`. Conclude with `(P c).2.2.2 m n`. Introduce `i n`. Establish `hx : x i = L x (Finsupp.single i 1)` using `by rw [L_single, one_mul]`. Rewrite using `[hx, G, E_single h0]`.
+
+Simplify using `[ser]`.
+-/
 theorem exists_isPreDividedPowers_of_generators₂ : ∀ (B ι : Type) [CommRing B] (x : ι → B) (g : ι → ℕ → B), (∀ i, g i 0 = 1) →
     (∀ i, g i 1 = x i) → (∀ i n, n ≠ 0 → g i n ∈ Ideal.span (Set.range x)) →
     (∀ i m n, g i m * g i n = ((m + n).choose m : B) * g i (m + n)) →

@@ -39,6 +39,9 @@ def comb {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)] {M : LB X}
       simp [add_smul, Finset.sum_add_distrib]⟩, fun c a => by
       simp [mul_smul, Finset.smul_sum]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comb_apply {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)] {M : LB X} {m : ℕ}
     (t : Fin m → M.Sec) (c : Fin m → k) :
     comb t c = ∑ i, algebraMap k Γ(X, ⊤) (c i) • t i := rfl
@@ -56,10 +59,16 @@ def vanishAt {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)] {M : L
     rw [(comb t).map_smulₛₗ] at hx
     exact ha ((nonzeroLocus_secScale _ _).le hx).2
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_vanishAt {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)] {M : LB X}
     {m : ℕ} (t : Fin m → M.Sec) (x : X) (c : Fin m → k) :
     c ∈ vanishAt t x ↔ x ∉ nonzeroLocus (comb t c) := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_vanishAt, not_not, comb_apply, Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same, map_one, one_smul]`. Conclude with `hx`.
+-/
 theorem single_notMem_vanishAt {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)]
     {M : LB X} {m : ℕ} (t : Fin m → M.Sec) {x : X} {i : Fin m} (hx : x ∈ nonzeroLocus (t i)) :
     (Pi.single i 1 : Fin m → k) ∉ vanishAt t x := by

@@ -60,20 +60,34 @@ def Under {D₀ : DegData R I} (U : PreU I D₀.toPre A G) (U₀ : UnifPre I D�
 abbrev withPsi (D : DegPre R) (psi : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => ptK (D.c χ)) (fun _ => -1)))
     (h : ∀ χ, (psi χ).IsGen) : DegPre R := setPsi D psi h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨h₁, h₂, h₃, h₄, h₅, h₆⟩ => ⟨h₁.symm, h₂.symm, h₃.symm, h₄.symm, h₅.symm, h₆.symm⟩, fun h => ⟨h.gen.symm, h.LG.symm, h.cub.symm, h.sym.symm, h.gt.symm, h.w.symm⟩⟩`.
+-/
 theorem Under.iff_match {D₀ : DegData R I} {U : PreU I D₀.toPre A G} {U₀ : UnifPre I D₀ A G} :
     Under U U₀ ↔ GlobalTheory.UU.Match U U₀ :=
   ⟨fun ⟨h₁, h₂, h₃, h₄, h₅, h₆⟩ => ⟨h₁.symm, h₂.symm, h₃.symm, h₄.symm, h₅.symm, h₆.symm⟩,
     fun h => ⟨h.gen.symm, h.LG.symm, h.cub.symm, h.sym.symm, h.gt.symm, h.w.symm⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem withPsi_eq (D : DegPre R) (psi) (h) : withPsi D psi h = setPsi D psi h := rfl
 
 namespace Cmp
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+Simplify using `[spMap]`.
+-/
 theorem spMap_ringHom_id : spMap (RingHom.id R) = 𝟙 _ := by
   simp [spMap]
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Establish `hq : (𝟙 H : H ⟶ H).left ≫ H.hom = H.hom ≫ 𝟙 S` using `by simp`. Establish `e₁ : x₀ = toBase hq x` using `Over.OverMorphism.ext hx`. Establish `e₂ : y₀ = toBase hq y` using `Over.OverMorphism.ext hy`.
+
+Rewrite using `[e₁, e₂, ← toBase_mul_of_isMonHom (𝟙 H) hq]`. Both sides reduce to the same expression.
+-/
 theorem grpPullback_id {S : Scheme.{0}} (H : Over S) [GrpObj H] {f : S ⟶ S} (hf : f = 𝟙 S) :
     IsGrpPullback H H f (𝟙 H.left) := by
   subst hf
@@ -84,11 +98,17 @@ theorem grpPullback_id {S : Scheme.{0}} (H : Over S) [GrpObj H] {f : S ⟶ S} (h
   rw [e₁, e₂, ← toBase_mul_of_isMonHom (𝟙 H) hq]
   rfl
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Conclude with `IsCPMap.id P`.
+-/
 theorem cpMap_id {S : Scheme.{0}} {H : Over S} [GrpObj H] [IsCommMonObj H] (P : CP H) {f : S ⟶ S} (hf : f = 𝟙 S)
     (hw : 𝟙 H.left ≫ H.hom = H.hom ≫ f) : IsCPMap P P f (𝟙 H.left) hw (idIso P.L.L) := by
   subst hf
   exact IsCPMap.id P
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (Ideal.Quotient.mk (I ^ (e + 1)))` using `Ideal.Quotient.mk_surjective`. Establish `: Epi (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ (e + 1))))` using `ConcreteCategory.epi_of_surjective _ hs`. Establish `: Mono (thick R I e)` using `Scheme.Spec.map_mono (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ (e + 1)))).op`. Conclude with `(inferInstance : Mono (pullback.fst G.hom (thick R I e)))`.
+-/
 theorem mono_fstG (I : Ideal R) (e : ℕ) (G : Over (Spec (CommRingCat.of R))) : Mono (fstG I e G).left := by
   have hs : Function.Surjective (Ideal.Quotient.mk (I ^ (e + 1))) := Ideal.Quotient.mk_surjective
   have : Epi (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ (e + 1)))) := ConcreteCategory.epi_of_surjective _ hs
@@ -123,6 +143,9 @@ def refl (U : PreU I D A G) : Cmp (RingHom.id R) U U (𝟙 G.left) where
 
 variable {φ : R →+* V} {U : PreU I D A G} {U' : PreU I' D' A' G'} {F : G'.left ⟶ G.left}
 
+/- English proof (translation)
+Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono C.map_le _`.
+-/
 theorem pow_le (C : Cmp φ U U' F) (e : ℕ) : I ^ (e + 1) ≤ (I' ^ (e + 1)).comap φ := by
   rw [← Ideal.map_le_iff_le_comap, Ideal.map_pow]
   exact Ideal.pow_right_mono C.map_le _
@@ -131,6 +154,9 @@ def baseMap (C : Cmp φ U U' F) (e : ℕ) :
     Spec (CommRingCat.of (V ⧸ I' ^ (e + 1))) ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1))) :=
   spMap (Ideal.quotientMap (I' ^ (e + 1)) φ (C.pow_le e))
 
+/- English proof (translation)
+Simplify using `only [baseMap, thick, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.quotientMap_comp_mk]`.
+-/
 theorem baseMap_thick (C : Cmp φ U U' F) (e : ℕ) : C.baseMap e ≫ thick R I e = thick V I' e ≫ spMap φ := by
   simp only [baseMap, thick, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.quotientMap_comp_mk]
 
@@ -140,33 +166,56 @@ def levMap (C : Cmp φ U U' F) (e : ℕ) : (thickObj V I' e G').left ⟶ (thickO
     rw [C.pb.1.w, C.baseMap_thick]
     exact pullback.condition_assoc (f := G'.hom) (g := thick V I' e) _)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem levMap_fst (C : Cmp φ U U' F) (e : ℕ) : C.levMap e ≫ (fstG I e G).left = (fstG I' e G').left ≫ F :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem levMap_hom (C : Cmp φ U U' F) (e : ℕ) :
     C.levMap e ≫ (thickObj R I e G).hom = (thickObj V I' e G').hom ≫ C.baseMap e :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, C.levMap_fst]`.
+-/
 theorem comp_levMap_fst (C : Cmp φ U U' F) (e : ℕ) {Z : Scheme.{0}} (x' : Z ⟶ (thickObj V I' e G').left) :
     (x' ≫ C.levMap e) ≫ (fstG I e G).left = x' ≫ (fstG I' e G').left ≫ F := by
   rw [Category.assoc, C.levMap_fst]
 
+/- English proof (translation)
+Use `⟨x' ≫ C.levMap e, C.comp_levMap_fst e x', fun y hy => ?_⟩` and prove the remaining obligations. Use `mono_fstG I e G` as an intermediate fact. Conclude with `(cancel_mono (fstG I e G).left).1 (hy.trans (C.comp_levMap_fst e x').symm)`.
+-/
 theorem existsUnique_partner (C : Cmp φ U U' F) (e : ℕ) {Z : Scheme.{0}} (x' : Z ⟶ (thickObj V I' e G').left) :
     ∃! x : Z ⟶ (thickObj R I e G).left, x ≫ (fstG I e G).left = x' ≫ (fstG I' e G').left ≫ F := by
   refine ⟨x' ≫ C.levMap e, C.comp_levMap_fst e x', fun y hy => ?_⟩
   have := mono_fstG I e G
   exact (cancel_mono (fstG I e G).left).1 (hy.trans (C.comp_levMap_fst e x').symm)
 
+/- English proof (translation)
+Establish `h` using `(C.lev e _ (𝟙 _) (C.levMap e) (by rw [Category.id_comp]; exact C.levMap_fst e)).1`. Rewrite `h` using `[Category.id_comp]`. Conclude with `h.symm`.
+-/
 theorem levMap_pG (C : Cmp φ U U' F) (e : ℕ) : C.levMap e ≫ (U.gt e).pG.left = (U'.gt e).pG.left ≫ C.β := by
   have h := (C.lev e _ (𝟙 _) (C.levMap e) (by rw [Category.id_comp]; exact C.levMap_fst e)).1
   rw [Category.id_comp] at h
   exact h.symm
 
+/- English proof (translation)
+The claim follows from `one_left_comp (toBase_mul_pullback G (thick R I e)) T`.
+-/
 theorem one_fstG (I : Ideal R) (e : ℕ) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G]
     (T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) :
     (1 : T ⟶ thickObj R I e G).left ≫ (fstG I e G).left = (T.hom ≫ thick R I e) ≫ eSec G :=
   one_left_comp (toBase_mul_pullback G (thick R I e)) T
 
+/- English proof (translation)
+Use `g.q_hom` as an intermediate fact. Establish `h1 : (1 : T ⟶ thickObj R I e G) ≫ g.q = 1` using `by simp`. Establish `h2` using `congrArg Over.Hom.left h1`. Rewrite `h2` using `[Over.comp_left]`. Use `show (1 : T ⟶ thickObj R I e G).left ≫ ((Over.map (thick R I e)).map g.q ≫ DegPre.prBe I D e).left = _`.
+
+Rewrite using `[Over.comp_left, Over.map_map_left, ← Category.assoc, h2]`. Conclude with `one_fstG I e D.P.A T`.
+-/
 theorem one_pG {e : ℕ} (g : GtCoord I D e G) (T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) :
     (1 : T ⟶ thickObj R I e G).left ≫ g.pG.left = (T.hom ≫ thick R I e) ≫ eSec D.P.A := by
   have := g.q_hom
@@ -177,6 +226,21 @@ theorem one_pG {e : ℕ} (g : GtCoord I D e G) (T : Over (Spec (CommRingCat.of (
   rw [Over.comp_left, Over.map_map_left, ← Category.assoc, h2]
   exact one_fstG I e D.P.A T
 
+/- English proof (translation)
+Take `⟨JG, hJG⟩` from `exists_good_pt U.P.L.isLB z`. Take `⟨JG', hJG'⟩` from `exists_good_pt U'.P.L.isLB z`. Establish `hx'F : (1 : Over.mk r ⟶ thickObj V I' e G').left ≫ (fstG I' e G').left = (r ≫ thick V I' e) ≫ eSec G'` using `one_fstG I' e G' (Over.mk r)`. Establish `hxF : (1 : Over.mk (r ≫ C.baseMap e) ⟶ thickObj R I e G).left ≫ (fstG I e G).left = ((r ≫ thick V I' e) ≫ spMap φ) ≫ eSec G`. Rewrite using `[one_fstG I e G]`.
+
+Simplify using `only [Over.mk_hom, Category.assoc, C.baseMap_thick]`. Establish `h1 : (1 : Over.mk (r ≫ thick V I' e) ⟶ G').left = (r ≫ thick V I' e) ≫ eSec G'` using `one_left G' _`. Establish `hF : (1 : Over.mk r ⟶ thickObj V I' e G').left ≫ (fstG I' e G').left ≫ F = ((r ≫ thick V I' e) ≫ spMap φ) ≫ eSec G`. Rewrite using `[← Category.assoc, hx'F, ← h1]`. Conclude with `one_left_comp C.wL_map.mul (Over.mk (r ≫ thick V I' e))`.
+
+Establish `hx'P : (1 : Over.mk r ⟶ thickObj V I' e G').left ≫ (U'.gt e).pG.left = (r ≫ thick V I' e) ≫ eSec D'.P.A` using `one_pG (U'.gt e) (Over.mk r)`. Establish `hxP : (1 : Over.mk (r ≫ C.baseMap e) ⟶ thickObj R I e G).left ≫ (U.gt e).pG.left = ((r ≫ thick V I' e) ≫ spMap φ) ≫ eSec D.P.A`. Rewrite using `[one_pG (U.gt e)]`. Simplify using `only [Over.mk_hom, Category.assoc, C.baseMap_thick]`. Establish `hxx : (1 : Over.mk (r ≫ C.baseMap e) ⟶ thickObj R I e G).left ≫ (fstG I e G).left = (1 : Over.mk r ⟶ thickObj V I' e G').left ≫ (fstG I' e G').left ≫ F`.
+
+Rewrite using `[hxF, hF]`. Establish `ha` using `(U'.w_vals e (Over.mk r) z JG' J' hJG' hJ' _ (fun _ => rfl)).1`. Establish `hb` using `(U.w_vals e (Over.mk (r ≫ C.baseMap e)) z JG J hJG hJ _ (fun _ => rfl)).1`. Establish `hc` using `(C.wL_map.vals (Over.mk (r ≫ thick V I' e)) z JG' JG hJG' hJG _ (fun _ => rfl)).1`. Establish `hd` using `((C.lev e Z _ _ hxx).2 z J J' hJ hJ').2 (JG ((1 : Over.mk (r ≫ C.baseMap e) ⟶ thickObj R I e G).left ≫ (fstG I e G).left)) (JG' ((1 : Over.mk r ⟶ thickObj V I' e G').left ≫ (fstG I' e G').left)) (hJG _) (hJG' _)`.
+
+Use `beta_reduce at ha hb hc`. Rewrite `ha` using `[hx'P, hx'F]`. Rewrite `hb` using `[hxP, hxF]`. Rewrite `hd` using `[hx'P, hxP, hx'F, hxF]`. Establish `hL` using `one_left_comp C.wL_map.mul (Over.mk (r ≫ thick V I' e))`.
+
+Rewrite `hc` using `[hL, h1]`. Establish `hbt : (r ≫ C.baseMap e) ≫ thick R I e = (r ≫ thick V I' e) ≫ spMap φ`. Simplify using `only [Category.assoc, C.baseMap_thick]`. Simplify using `only [Over.mk_hom] at ha hb hc`. Rewrite `hb` using `[hbt]`.
+
+Rewrite using `[hb, hc, ha, ← _root_.mul_assoc, ← hd, _root_.mul_assoc]`.
+-/
 theorem v_rig_level (C : Cmp φ U U' F) (e : ℕ) {Z : Scheme.{0}} (r : Z ⟶ Spec (CommRingCat.of (V ⧸ I' ^ (e + 1))))
     (z : Z) {J J'} (hJ : Good D.P.L z J) (hJ' : Good D'.P.L z J') :
     val (L := D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig ((r ≫ thick V I' e) ≫ spMap φ) z J =
@@ -225,12 +289,21 @@ theorem v_rig_level (C : Cmp φ U U' F) (e : ℕ) {Z : Scheme.{0}} (r : Z ⟶ Sp
 
 end Cmp
 
+/- English proof (translation)
+The claim follows from `have := Cmp.mono_fstG I e G (cancel_mono (fstG I e G).left).1 (((Cmp.refl U).levMap_fst e).trans (by simp))`.
+-/
 example (U : PreU I D A G) (e : ℕ) : (Cmp.refl U).levMap e = 𝟙 _ :=
   have := Cmp.mono_fstG I e G
   (cancel_mono (fstG I e G).left).1 (((Cmp.refl U).levMap_fst e).trans (by simp))
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun C => hI' ((sup_eq_right.2 C.map_le).symm.trans h)⟩`.
+-/
 example {φ : R →+* V} {U : PreU I D A G} {U' : PreU I' D' A' G'} {F : G'.left ⟶ G.left} (hI' : I' ≠ ⊤)
     (h : I.map φ ⊔ I' = ⊤) : IsEmpty (Cmp φ U U' F) :=
   ⟨fun C => hI' ((sup_eq_right.2 C.map_le).symm.trans h)⟩
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (D : DegPre R) : withPsi D D.psi D.psi_gen = D := rfl
 end GlobalTheory.LN
 end

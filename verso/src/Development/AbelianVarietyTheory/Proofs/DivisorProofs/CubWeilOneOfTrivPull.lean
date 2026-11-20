@@ -13,6 +13,13 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.RaynaudAxis
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [cubN]`. Consider the case `succ n ih`. Establish `e` using `h (a ^ n) a b`. Simplify using `only [cubN, Finset.prod_range_succ, _root_.one_mul] at ih ⊢`.
+
+Rewrite using `[pow_succ, pow_succ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e`. Establish `ih'` using `congrArg Additive.ofMul ih`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow] at e' ih' ⊢`.
+
+Take the linear combination `(norm := abel) e' + ih'`.
+-/
 theorem cubN_mul_pow {A U : Type} [CommGroup A] [CommGroup U] (t : A → U) (θ : A → A → A → U)
     (h : ∀ p q w, θ p q w * t (p * q) * t (p * w) * t (q * w) * t 1 = t (p * q * w) * t p * t q * t w)
     (a b : A) (n : ℕ) :
@@ -29,6 +36,9 @@ theorem cubN_mul_pow {A U : Type} [CommGroup A] [CommGroup U] (t : A → U) (θ 
     simp only [ofMul_mul, ofMul_inv, ofMul_pow] at e' ih' ⊢
     linear_combination (norm := abel) e' + ih'
 
+/- English proof (translation)
+Rewrite using `[cubN_mul_pow t θ h, ha, _root_.one_mul, mul_inv_cancel_right, mul_inv_cancel]`.
+-/
 theorem cubN_of_torsion {A U : Type} [CommGroup A] [CommGroup U] (t : A → U) (θ : A → A → A → U)
     (h : ∀ p q w, θ p q w * t (p * q) * t (p * w) * t (q * w) * t 1 = t (p * q * w) * t p * t q * t w)
     (a b : A) (N : ℕ) (ha : a ^ N = 1) :
@@ -41,6 +51,9 @@ def tV {L : RigLB G} (i : H ⟶ G) (τ : LB.Gen (L.L.pull i.left)) {T : Over S} 
     (J : (T.left ⟶ G.left) → L.L.ι) (x : T ⟶ H) : (T.left.presheaf.stalk z)ˣ :=
   val (L := L.L) (φ := fun _ : PUnit => i.left) (ε := fun _ => 1) τ x.left z J
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression.
+-/
 theorem prod_tt (i : H ⟶ G) {Y : Over S} (p : Y ⟶ H) {U : Type} [CommGroup U] (h : (Y.left ⟶ G.left) → U) :
     ∏ k : PUnit, h ((fun _ : PUnit => p.left ≫ i.left) k) ^ ((fun _ : PUnit => (1 : ℤ)) k) = h (p ≫ i).left := by
   rw [Fintype.prod_unique, zpow_one]; rfl
@@ -50,6 +63,23 @@ end GlobalTheory.RaynaudAxis
 namespace GlobalTheory.RaynaudAxis
 variable {S : Scheme.{0}} {G H : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj H]
 
+/- English proof (translation)
+Use `haveI := hA.comm`. Establish `h3` using `surjective_cube hG hA`. Set `a` to `x3 H 0`. Set `b` to `x3 H 1`. Set `d` to `x3 H 2`.
+
+Set `tt` to `fun p : G3 H ⟶ H => LB.pullGen L.L (fun _ : PUnit => i.left) (fun _ => 1) τ p.left`. Set `cu` to `LB.pullGen L.L (thφ G (x3 G)) thε c.t (lift (a ≫ i) (lift (b ≫ i) (d ≫ i))).left`. Establish `gt : ∀ p, (tt p).IsGen` using `fun p => DVR.pullGen_isGen _ _ _ _ hτ _`. Establish `gc : cu.IsGen` using `DVR.pullGen_isGen _ _ _ _ c.isGen _`. Establish `vt : ∀ {T' : Over S} (σ : T' ⟶ G3 H) {z : T'.left} {J}, Good L.L z J → ∀ p, val (tt p) σ.left z J = tV i τ z J (σ ≫ p)` using `fun σ z J hJ p => val_pull hJ _ _ _`.
+
+Set `t₁` to `LB.mulGen L.L _ _ _ _ (LB.mulGen L.L _ _ _ _ (LB.mulGen L.L _ _ _ _ (LB.mulGen L.L _ _ _ _ cu (tt (a * b))) (tt (a * d))) (tt (b * d))) (tt 1)`. Set `t₂` to `LB.mulGen L.L _ _ _ _ (LB.mulGen L.L _ _ _ _ (LB.mulGen L.L _ _ _ _ (tt (a * b * d)) (tt a)) (tt b)) (tt d)`. Establish `ev : ∀ {T' : Over S} (σ : T' ⟶ G3 H) {z : T'.left} {J}, Good L.L z J → val t₁ σ.left z J = cubV c z J (σ ≫ a ≫ i) (σ ≫ b ≫ i) (σ ≫ d ≫ i) * tV i τ z J (σ ≫ (a * b)) * tV i τ z J (σ ≫ (a * d)) * tV i τ z J (σ ≫ (b * d)) * tV i τ z J (σ ≫ 1) ∧ val t₂ σ.left z J = tV i τ z J (σ ≫ (a …` using `fun σ z J hJ => by`. Prove the components needed by the constructor for the conclusion. Conclude with `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_cub c σ hJ _ _ _) (vt σ hJ _))) (vt σ hJ _))) (vt σ hJ _))) (vt σ hJ _))`.
+
+Conclude with `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (vt σ hJ _) (vt σ hJ _))) (vt σ hJ _))) (vt σ hJ _))`. Set `e : 𝟙_ (Over S) ⟶ G3 H` to `lift 1 (lift 1 1)`. Establish `e₀ : e ≫ a = 1` using `by simp [e, a, x3]`. Establish `e₁ : e ≫ b = 1` using `by simp [e, b, x3]`. Establish `e₂ : e ≫ d = 1` using `by simp [e, d, x3]`.
+
+Set `ρ : T ⟶ G3 H` to `lift x (lift y u)`. Establish `r₀ : ρ ≫ a = x` using `by simp [ρ, a, x3]`. Establish `r₁ : ρ ≫ b = y` using `by simp [ρ, b, x3]`. Establish `r₂ : ρ ≫ d = u` using `by simp [ρ, d, x3]`. Establish `key : val t₁ ρ.left z J = val t₂ ρ.left z J`.
+
+Use `gen_unique' L.isLB (fun V _ k => ?_) (G3 H).hom e.left (Over.w e) h3 (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ gc (gt _)) (gt _)) (gt _)) (gt _)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGe …` and prove the remaining obligations. Use `(DVR.prod_sum₂ (U := V) _ (DVR.prod_sum₂ (U := V) _ (DVR.prod_sum₂ (U := V) _ (prod_tt i (a * b * d) k) (prod_tt i a k)) (prod_tt i b k)) (prod_tt i d k)).trans (Eq.trans ?_ (DVR.prod_sum₂ (U := V) _ (DVR.prod_sum₂ (U := V) _ (DVR.prod_sum₂ (U := V) _ (DVR.prod_sum₂ (U := V) _ (p …` and prove the remaining obligations. Simplify using `only [MonObj.mul_comp, MonObj.one_comp]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws. Use `(ev e hI).1.trans (Eq.trans ?_ (ev e hI).2.symm)` and prove the remaining obligations. Establish `C` using `isCub_cubV c (T := 𝟙_ (Over S)) hI`. Simplify using `only [← Category.assoc, MonObj.comp_mul, MonObj.comp_one, e₀, e₁, e₂, MonObj.one_comp, _root_.mul_one]`. Rewrite using `[C.face, _root_.one_mul]`.
+
+Use `(ev ρ hJ).1.symm.trans (key.trans (ev ρ hJ).2)` as an intermediate fact. Simplify using `only [← Category.assoc, MonObj.comp_mul, MonObj.comp_one, r₀, r₁, r₂] at this`. Conclude with `this`.
+-/
 theorem cub_tV (hG : GlobalFnsSt) (hA : IsAbelianScheme H) (i : H ⟶ G) [IsMonHom i] {L : RigLB G}
     (c : CubicalStr G L) (τ : LB.Gen (L.L.pull i.left)) (hτ : τ.IsGen) (T : Over S) (x y u : T ⟶ H) (z : T.left)
     (J : (T.left ⟶ G.left) → L.L.ι) (hJ : Good L.L z J) :
@@ -116,6 +146,13 @@ end GlobalTheory.RaynaudAxis
 
 namespace GlobalTheory.RaynaudAxis
 
+/- English proof (translation)
+Introduce `S G H _ _ _ i hA hi L c ⟨τ, hτ⟩ N T a b ha hb`. Use `haveI := hA.comm`. Establish `hG : GlobalFnsSt` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Use `⟨by rw [← MonObj.pow_comp, ha, MonObj.one_comp], by rw [← MonObj.pow_comp, hb, MonObj.one_comp], fun z J hJ => ?_⟩` and prove the remaining obligations. Set `θ : (T ⟶ H) → (T ⟶ H) → (T ⟶ H) → (T.left.presheaf.stalk z)ˣ` to `fun p q w => cubV c z J (p ≫ i) (q ≫ i) (w ≫ i)`.
+
+Establish `h` using `cub_tV hG hA i c τ hτ T (z := z) (J := J) (hJ := hJ)`. Establish `tr : ∀ p q : T ⟶ H, cubN (cubV c z J) N 1 (p ≫ i) (q ≫ i) = cubN θ N 1 p q` using `fun p q => Finset.prod_congr rfl fun k _ => by`. Simplify using `only [θ, _root_.one_mul, MonObj.pow_comp]`. Establish `e₁` using `cubN_of_torsion (tV i τ z J) θ (fun p q w => h p q w) a b N ha`. Establish `e₂` using `cubN_of_torsion (tV i τ z J) θ (fun p q w => h p q w) b a N hb`.
+
+Rewrite `e₂` using `[mul_comm b a, mul_right_comm _ (tV i τ z J b)⁻¹]`. Rewrite using `[map_one, _root_.one_mul, tr, tr]`. Conclude with `mul_right_cancel (e₁.trans e₂.symm)`.
+-/
 theorem cubWeil_one_of_triv_pull : ∀ (S : Scheme.{0}) (G H : Over S) [GrpObj G] [IsCommMonObj G] [GrpObj H]
     (i : H ⟶ G), IsAbelianScheme H → IsMonHom i → ∀ (L : RigLB G) (c : CubicalStr G L), Triv (L.L.pull i.left) →
     ∀ (N : ℕ) (T : Over S) (a b : T ⟶ H), a ^ N = 1 → b ^ N = 1 → CubWeil c N (a ≫ i) (b ≫ i) 1 := by

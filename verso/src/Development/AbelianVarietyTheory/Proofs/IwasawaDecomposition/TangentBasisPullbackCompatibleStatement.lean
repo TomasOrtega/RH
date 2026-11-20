@@ -15,6 +15,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.FlagMod GlobalTheory.Reg
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LieFrameField.lieFrame_baseChange | exact GlobalTheory.LieFrameField.lieFrame_baseChange | (intros; apply GlobalTheory.LieFrameField.lieFrame_baseChange <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tangent_basis_pullback_compatible : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K]
     (tK : SAB H (Sp K)), ∃ (d : ℕ) (B : ∀ (S : Type) [CommRing S] (y : Sp S ⟶ Sp K),
       Module.Basis (Fin d) S (ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM y tK.G)),

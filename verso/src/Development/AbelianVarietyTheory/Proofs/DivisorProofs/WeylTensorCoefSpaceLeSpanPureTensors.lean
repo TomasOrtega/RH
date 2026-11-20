@@ -9,6 +9,21 @@ open scoped Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `key : ∀ (s : Finset ι) (f : ι → M), (∀ τ, f τ ∈ Submodule.span K (S τ)) → (∀ τ, τ ∉ s → f τ ∈ S τ) → m f ∈ Submodule.span K {P | ∃ g : ι → M, (∀ τ, g τ ∈ S τ) ∧ P = m g}`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `f _ h`.
+
+Conclude with `Submodule.subset_span ⟨f, fun τ => h τ (Finset.notMem_empty τ), rfl⟩`. Consider the case `insert a s ha ih`. Introduce `f h1 h2`. Establish `hle : Submodule.span K (S a) ≤ (Submodule.span K {P | ∃ g : ι → M, (∀ τ, g τ ∈ S τ) ∧ P = m g}).comap (m.toLinearMap f a)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce `x hx`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, MultilinearMap.toLinearMap_apply]`. Apply `ih` to reduce the goal to its premises. Introduce `τ`. Distinguish the cases in `hτ : τ = a`.
+
+Substitute `hτ` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `Submodule.subset_span hx`. Rewrite using `[Function.update_of_ne hτ]`. Conclude with `h1 τ`.
+
+Introduce `τ hτs`. Distinguish the cases in `hτ : τ = a`. Substitute `hτ` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hx`.
+
+Rewrite using `[Function.update_of_ne hτ]`. Conclude with `h2 τ (by simp [hτ, hτs])`. Establish `h` using `hle (h1 a)`. Rewrite `h` using `[Submodule.mem_comap, MultilinearMap.toLinearMap_apply, Function.update_eq_self]`. Conclude with `h`.
+
+Conclude with `key Finset.univ f hf (fun τ h => absurd (Finset.mem_univ τ) h)`.
+-/
 theorem multilinear_mem_span_of_mem_span {K ι M N : Type} [Field K] [Fintype ι]
     [AddCommGroup M] [Module K M] [AddCommGroup N] [Module K N]
     (m : MultilinearMap K (fun _ : ι => M) N) (S : ι → Set M) (f : ι → M)
@@ -51,6 +66,11 @@ theorem multilinear_mem_span_of_mem_span {K ι M N : Type} [Field K] [Fintype ι
       exact h
   exact key Finset.univ f hf (fun τ h => absurd (Finset.mem_univ τ) h)
 
+/- English proof (translation)
+Set `m : MultilinearMap K (fun _ : ι => MvPolynomial (Fin n × Fin n) K) (MvPolynomial (ι × Fin n × Fin n) K)` to `(MultilinearMap.mkPiAlgebra K ι (MvPolynomial (ι × Fin n × Fin n) K)).compLinearMap (fun τ => (Formalism.GradedWeylDivisibility.blockEmb K τ).toLinearMap)`. Establish `hm : ∀ f, m f = ten f` using `fun f => rfl`. Unfold `VV Formalism.GradedWeylDivisibility.tensorLat`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `P ⟨F, hF, rfl⟩`.
+
+Conclude with `multilinear_mem_span_of_mem_span m S F (fun τ => hS τ (hF τ))`.
+-/
 theorem coefSpace_le_span_pure_tensors (K : Type) [Field K] {ι : Type} [Fintype ι] {n : ℕ}
     (lam : ι → DomWeight n) (S : ι → Set (MvPolynomial (Fin n × Fin n) K))
     (hS : ∀ τ, nablaSq K n (lam τ) ≤ Submodule.span K (S τ)) :

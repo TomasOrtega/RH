@@ -12,6 +12,11 @@ open Function
 
 namespace GlobalTheory.FN
 
+/- English proof (translation)
+Introduce `w`. Use `by_cases! hw : 0 < Complex.im w`. Establish `: 0 < Complex.im (w + h)` using `by simp [hw]`. Simplify using `only [comp_apply, UpperHalfPlane.ofComplex_apply_of_im_pos this, UpperHalfPlane.ofComplex_apply_of_im_pos hw]`. Use `convert! hf ⟨w, hw⟩ using 2`.
+
+Use `ext`. Simplify using `[add_comm]`. Establish `: Complex.im (w + h) ≤ 0` using `by simpa using hw`. Simplify using `[UpperHalfPlane.ofComplex_apply_of_im_nonpos this, UpperHalfPlane.ofComplex_apply_of_im_nonpos hw]`.
+-/
 theorem periodic_comp_ofComplex_of_vadd_real {f : ℍ → ℂ} {h : ℝ}
     (hf : ∀ τ : ℍ, f (h +ᵥ τ) = f τ) :
     Periodic (f ∘ UpperHalfPlane.ofComplex) (h : ℂ) := by
@@ -27,6 +32,9 @@ theorem periodic_comp_ofComplex_of_vadd_real {f : ℍ → ℂ} {h : ℝ}
     simp [UpperHalfPlane.ofComplex_apply_of_im_nonpos this,
       UpperHalfPlane.ofComplex_apply_of_im_nonpos hw]
 
+/- English proof (translation)
+Introduce `N f hN hf hper hbdd`. Use `⟨fun n => PowerSeries.coeff n (UpperHalfPlane.qExpansion (N : ℝ) f), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.QFam.hasQ_coeff_iff_hasQExpansion]`. Conclude with `GlobalTheory.HasQExpansion.of_periodic (by exact_mod_cast hN) (periodic_comp_ofComplex_of_vadd_real hper) hf hbdd`.
+-/
 theorem hasQ_of_periodic_bounded : ∀ (N : ℕ) (f : ℍ → ℂ), 0 < N → MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f → (∀ τ : ℍ, f ((N : ℝ) +ᵥ τ) = f τ) → UpperHalfPlane.IsBoundedAtImInfty f → ∃ a, HasQ N f a := by
   intro N f hN hf hper hbdd
   refine ⟨fun n => PowerSeries.coeff n (UpperHalfPlane.qExpansion (N : ℝ) f), ?_⟩

@@ -25,6 +25,23 @@ section Val
 
 variable {C O : Type} [Field C] [CharZero C] {v : Valuation C ℝ≥0} [CommRing O] [Algebra O C]
 
+/- English proof (translation)
+Use `haveI : CharZero T.Fr := algebraRat.charZero _`. Use `letI : Algebra T.Fr C := k.toAlgebra`. Use `haveI : IsScalarTower ℚ T.Fr C := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Set `b` to `Module.finBasis ℚ K'`. Set `L` to `IntermediateField.adjoin T.Fr (Set.range fun i => s (b i))`.
+
+Use `haveI : FiniteDimensional T.Fr L := IntermediateField.finiteDimensional_adjoin (by`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `((Algebra.IsIntegral.isIntegral (R := ℚ) (b i)).map s.toRatAlgHom).tower_top)`. Establish `hs : ∀ x, s x ∈ L` using `fun x => by`. Rewrite using `[← b.sum_repr x, map_sum]`.
+
+Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, eq_ratCast, map_ratCast]`. Conclude with `mul_mem (SubfieldClass.ratCast_mem L _) (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`. Take `⟨W, _, _, _, _, _, _, _, hc, hfin, hinj, hloc, -, -⟩` from `GlobalTheory.SS.exists_complete_dvr_finite_extension T.V T.Fr L`. Use `haveI : CharZero W := charZero_of_injective_algebraMap hinj`.
+
+Set `T' : CDVR` to `{ V := W }`. Set `ψ : FractionRing W ≃ₐ[W] L` to `FractionRing.algEquiv W L`. Set `iT : T.Fr →+* FractionRing W` to `ψ.symm.toRingEquiv.toRingHom.comp (algebraMap T.Fr L)`. Establish `hφ : ∀ a, iT (algebraMap T.V T.Fr a) = algebraMap W (FractionRing W) (algebraMap T.V W a)`. Introduce `a`.
+
+Establish `h1 : algebraMap T.Fr L (algebraMap T.V T.Fr a) = algebraMap W L (algebraMap T.V W a)` using `(RingHom.congr_fun hc a).symm`. Express the relevant statement in the definitionally equal form `ψ.symm (algebraMap T.Fr L (algebraMap T.V T.Fr a)) = _`. Rewrite using `[h1, AlgEquiv.commutes]`. Take `⟨e, he, hve⟩` from `GlobalTheory.PlaceExtField.exists_index (algebraMap T.V W) iT hφ`. Set `k' : FractionRing W →+* C` to `L.val.toRingHom.comp ψ.toRingEquiv.toRingHom`.
+
+Establish `hk' : ∀ a, k' (iT a) = k a` using `fun a => congrArg L.val (ψ.apply_symm_apply _)`. Set `kW : W →+* C` to `k'.comp (algebraMap W _)`. Establish `hint : ∀ a : W, kW a ∈ (algebraMap O C).range` using `fun a => by`. Take `⟨q, hq, hq0⟩` from `(Algebra.IsIntegral.isIntegral (R := T.V) a)`. Establish `: IsIntegral O (kW a)` using `⟨q.map kO, hq.map _, by`.
+
+Rewrite using `[Polynomial.eval₂_map, show (algebraMap O C).comp kO = kW.comp (algebraMap T.V W) from RingHom.ext fun x => (hk x).trans ((hk' _).symm.trans (congrArg k' (hφ x))), ← Polynomial.hom_eval₂, hq0, map_zero]⟩`. Conclude with `hv.exists_of_le_one (hv.mem_of_integral this)`. Set `j` to `RingEquiv.ofBijective (algebraMap O C).rangeRestrict ⟨fun a b hab => hv.hom_inj (congrArg Subtype.val hab), RingHom.rangeRestrict_surjective _⟩`. Use `⟨T', ψ.symm.toRingEquiv.toRingHom.comp (s.codRestrict L hs), iT, e, algebraMap T.V W, k', j.symm.toRingHom.comp (kW.codRestrict _ hint), he, hve, fun h => ?_, fun a => (hφ a).symm, hk', fun a => congrArg L.val (ψ.apply_symm_apply _), fun a => congrArg Subtype.val (j.apply_symm_ap …` and prove the remaining obligations. Use `haveI : Finite (IsLocalRing.ResidueField T.V) := h`.
+
+Conclude with `Module.finite_of_finite (IsLocalRing.ResidueField T.V) (M := IsLocalRing.ResidueField W)`.
+-/
 theorem exists_cdvr_over (hv : v.Integers O) (T : CDVR) (k : T.Fr →+* C) (kO : T.V →+* O)
     (hk : ∀ a, algebraMap O C (kO a) = k (algebraMap T.V T.Fr a)) {K' : Type} [Field K'] [NumberField K']
     (s : K' →+* C) :
@@ -78,6 +95,11 @@ theorem exists_cdvr_over (hv : v.Integers O) (T : CDVR) (k : T.Fr →+* C) (kO :
 
 variable {K : Type} [Field K] [NumberField K] {la : HeightOneSpectrum (𝓞 K)}
 
+/- English proof (translation)
+Establish `h1` using `ho.2 (q : K)`. Rewrite `h1` using `[map_natCast]`. Establish `he : (0 : ℤ) < e` using `by exact_mod_cast ho.1`. Rewrite using `[h1, mul_pos_iff_of_pos_left he]`. Use `⟨?_, id⟩` and prove the remaining obligations.
+
+Establish `h0 : la.valuation K (q : K) ≠ 0` using `by simpa using hq`. Establish `h2 : la.valuation K (q : K) < 1 ↔ (q : 𝓞 K) ∈ la.asIdeal`. Simplify using `using la.valuation_lt_one_iff_mem (K := K) (q : 𝓞 K)`. Rewrite using `[← h2, ← WithZero.log_lt_log h0 one_ne_zero, vLa]`. Simplify using the standard rewrite rules.
+-/
 theorem natCast_mem_iff {T : CDVR} {io : K →+* T.Fr} {e : ℕ} (ho : OverLa la T.V io e) {q : ℕ} (hq : q ≠ 0) :
     ((q : 𝓞 K) ∈ la.asIdeal ↔ 0 < vV T.V (q : T.Fr)) ∧ (0 < vV T.V (q : T.Fr) → 0 < vLa la (q : K)) := by
   have h1 := ho.2 (q : K)
@@ -93,6 +115,11 @@ theorem natCast_mem_iff {T : CDVR} {io : K →+* T.Fr} {e : ℕ} (ho : OverLa la
 
 omit [CharZero C] in
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hx`. Establish `hx' : (1 : ℝ) < v x` using `by exact_mod_cast not_le.1 hx`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at hx`. Establish `hl : Real.log (v (p : C)) < 0` using `Real.log_neg (by simpa [pos_iff_ne_zero] using h0) (by exact_mod_cast h1)`.
+
+Rewrite `h` using `[val_vw_of_ne la p v hx0, EReal.coe_nonneg]`. Conclude with `h.not_gt (mul_neg_of_pos_of_neg (by exact_mod_cast hp) (div_neg_of_pos_of_neg (Real.log_pos hx') hl))`. Rewrite using `[← val_vw_of_eq_one la p v v.map_one]`. Conclude with `val_vw_anti la h0 h1 (h.trans_eq v.map_one.symm)`.
+-/
 theorem val_vw_nonneg_iff {p : ℕ} (h0 : (p : C) ≠ 0) (h1 : v (p : C) < 1) (hp : 0 < vLa la (p : K)) (x : C) :
     0 ≤ val_vw la p v x ↔ v x ≤ 1 := by
   refine ⟨fun h => ?_, fun h => ?_⟩
@@ -108,6 +135,9 @@ theorem val_vw_nonneg_iff {p : ℕ} (h0 : (p : C) ≠ 0) (h1 : v (p : C) < 1) (h
 
 omit [CharZero C] [NumberField K] in
 
+/- English proof (translation)
+The claim follows from `hv.mem_of_integral (hx.map s.toIntAlgHom).tower_top`.
+-/
 theorem val_le_one_of_isIntegral (hv : v.Integers O) (s : K →+* C) {x : K} (hx : IsIntegral ℤ x) : v (s x) ≤ 1 :=
   hv.mem_of_integral (hx.map s.toIntAlgHom).tower_top
 
@@ -116,6 +146,21 @@ end Val
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c c' : Coeff l} (hle : c.F ≤ c'.F)
 
+/- English proof (translation)
+Take `⟨hk, G, t', m₁, m₂, π, φA, a1, a2, a3, a4, a5, a6⟩` from `h`. Establish `e0 : spMap kO = spMap kO' ≫ spMap φ`. Rewrite using `[spMap_spMap]`. Conclude with `congrArg _ (RingHom.ext fun a => P.integers.hom_inj (by rw [RingHom.comp_apply, h3, h1, h2, hk]))`. Establish `e1 : spMap k = spMap k' ≫ spMap iT`.
+
+Rewrite using `[spMap_spMap]`. Conclude with `congrArg _ (RingHom.ext fun a => (h2 a).symm)`. Establish `e2 : spMap iT ≫ spMap (algebraMap V F) = spMap (algebraMap V' F') ≫ spMap φ`. Rewrite using `[spMap_spMap, spMap_spMap]`. Conclude with `congrArg _ (RingHom.ext fun a => (h1 a).symm)`.
+
+Establish `e3 : spMap k' ≫ spMap (algebraMap V' F') = spMap (algebraMap O C) ≫ spMap kO'`. Rewrite using `[spMap_spMap, spMap_spMap]`. Conclude with `congrArg _ (RingHom.ext fun a => (h3 a).symm)`. Take `⟨G', ⟨m⟩⟩ : ∃ G' : SAB H (Sp V'), Nonempty (SABMap G' G (spMap φ))` from `⟨_, ⟨PullbackSections.sabM Out.CubePf.cubePull (spMap φ) G⟩⟩`. Take `⟨t'', ⟨n⟩⟩ : ∃ t'' : SAB H (Sp F'), Nonempty (SABMap t'' t' (spMap iT))` from `⟨_, ⟨PullbackSections.sabM Out.CubePf.cubePull (spMap iT) t'⟩⟩`.
+
+Take `⟨m₁', b1⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m₁ n`. Choose the witnesses or unpack the hypotheses as in `⟨m₂', b2⟩ : ∃ m₂' : SABMap t'' G (spMap (algebraMap V' F') ≫ spMap φ), m₂'.φ = n.φ ≫ m₂.φ := by`. Rewrite using `[← e2]`. Conclude with `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m₂ n`. Take `⟨m', b3⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m m₂'`.
+
+Take `⟨π', c1, c2⟩ : ∃ j : P.G.left ⟶ G'.G.left, j ≫ m.φ = π ∧ j ≫ G'.G.hom = P.G.hom ≫ spMap kO'` from `⟨m.cart.1.lift _ _ (a1.1.w.trans (by rw [e0, Category.assoc])), m.cart.1.lift_fst _ _ _, m.cart.1.lift_snd _ _ _⟩`. Take `⟨φ', d1, d2⟩ : ∃ j : P.A.A.left ⟶ t''.G.left, j ≫ n.φ = φA ∧ j ≫ t''.G.hom = P.A.A.hom ≫ spMap k'` from `⟨n.cart.1.lift _ _ (a3.1.w.trans (by rw [e1, Category.assoc])), n.cart.1.lift_fst _ _ _, n.cart.1.lift_snd _ _ _⟩`. Use `⟨h3, G', t'', m₁', m', π', φ', m.cart.cancel (a1.congr e0 c1.symm) c2, fun a => m.cart.1.hom_ext ?_ ?_, n.cart.cancel (a3.congr e1 d1.symm) d2, m.cart.1.hom_ext ?_ ?_, ?_, a6⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(_ ≫ π') ≫ m.φ = (π' ≫ _) ≫ m.φ`. Rewrite using `[Category.assoc, Category.assoc, c1, a2, ← c1, Category.assoc]`.
+
+Conclude with `congrArg (π' ≫ ·) (m.act a).symm`. Rewrite using `[Category.assoc, Category.assoc, Over.w, c2, Over.w_assoc]`. Express the relevant statement in the definitionally equal form `(φ' ≫ m'.φ) ≫ m.φ = (_ ≫ π') ≫ m.φ`. Rewrite using `[Category.assoc, Category.assoc, c1, ← b3, b2, ← Category.assoc, d1, a4]`. Establish `w1 : m'.φ ≫ G'.G.hom = _` using `m'.cart.1.w`.
+
+Rewrite using `[Category.assoc, Category.assoc, c2, w1, ← Category.assoc, d2, Category.assoc, e3, ← Category.assoc, ← Category.assoc, P.gen_pull.1.w]`. Rewrite using `[b1, ← Category.assoc, d1, a5]`.
+-/
 theorem pointOver_ext {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O]
     [Algebra O C] [StarRing (𝓞 E)] {P : Point p v O (𝓞 E)} {V F V' F' : Type} [CommRing V] [Field F] [Algebra V F]
     [CommRing V'] [Field F'] [Algebra V' F'] {x₀ : Sp F ⟶ Xo.X} {k : F →+* C} {kO : V →+* O}
@@ -161,6 +206,13 @@ theorem pointOver_ext {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuati
       ← Category.assoc, P.gen_pull.1.w]
   · rw [b1, ← Category.assoc, d1, a5]
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Take `⟨T', io', iT, e₁, φ, k', kO', he, hve, hfin, h1, h2, h3, h4⟩` from `exists_cdvr_over hv T k.toRingHom kO hk (algebraMap c'.F C)`. Establish `hio : ∀ x, io' (incF c c' hle x) = (iT.comp io) x` using `fun x => k'.injective ((h3 _).trans ((hs x).trans ((k.commutes x).symm.trans (h2 _).symm)))`. Take `⟨⟨y₁, -, -, ψ, hψ, hm⟩, -⟩` from `GlobalTheory.PlaceInt.exists_isExt_and_trans E H Dw l Xo c T T' io y₀ iT e₁ he hve`. Use `letI := (iT.comp io).toAlgebra`.
+
+Use `letI := io'.toAlgebra`. Set `y' : IntFr Xo c' T' io'` to `⟨y₁.1.ext hle hio, GlobalTheory.FlagTan.fromTest_of_isLocalRing _, (GlobalTheory.IntCoefExt.integral_res_iff hle T' io' (iT.comp io) hio _).2 y₁.2.2⟩`. Establish `hq : ∀ q : ℕ, 0 < vV T'.V (q : T'.Fr) ↔ 0 < vV T.V (q : T.Fr)` using `fun q => by`. Rewrite using `[← map_natCast iT, hve, mul_pos_iff_of_pos_left (by exact_mod_cast he)]`. Take `⟨N, hN, hp⟩` from `GlobalTheory.IntCoefExt.exists_nat_pos ho`.
+
+Take `⟨la', e', ho'⟩` from `GlobalTheory.IntCoefExt.exists_overLa io' hN ((hq N).2 hp)`. Use `⟨T', io', y', { k' with commutes' := h3 }, kO', la', e', iT, φ, hfin hy, ho', fun q h0 => ?_, h1, h2, h4, hm.1.trans (by rw [hψ]), fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[(natCast_mem_iff ho' h0).1, (natCast_mem_iff ho h0).1, hq]`. Set `k₀ : T'.Fr →ₐ[c.F] C` to `{ k' with commutes' := fun a => (h2 _).trans (k.commutes a) }`. Conclude with `GlobalTheory.SecFieldChange.frMap_ext hle hio hs k₀ _ (fun _ => rfl) (GlobalTheory.FlagTan.frMap_of_comp hm hz fun a => (congrArg k' (DFunLike.congr_fun hψ a)).trans (h2 a))`.
+-/
 theorem exists_intFr_ext {C O : Type} [Field C] [CharZero C] {v : Valuation C ℝ≥0} [CommRing O] [Algebra O C]
     (hv : v.Integers O) [Algebra c.F C] [Algebra c'.F C] (hs : AlgOver c c' hle C) {T : CDVR} {io : c.F →+* T.Fr}
     (y₀ : IntFr Xo c T io) (hy : y₀.IsAlg) (k : letI := io.toAlgebra; T.Fr →ₐ[c.F] C) (kO : T.V →+* O)
@@ -196,6 +248,31 @@ theorem exists_intFr_ext {C O : Type} [Field C] [CharZero C] {v : Valuation C �
 
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic PadicComplexHost.isAdicComplete
 
+/- English proof (translation)
+Introduce `la w hw`. Establish `fin : ∀ (p : ℕ) [Fact p.Prime] [Algebra c.F ℂ_[p]] (y : FrPt Xo c ℂ_[p]), (∀ (s : c'.F →+* ℂ_[p]) (hs : ∀ a, s (incF c c' hle a) = algebraMap c.F ℂ_[p] a), (Valued.v : Valuation ℂ_[p] ℝ≥0) (evAlong hle s hs f' y) ≤ 1) → 0 ≤ val_vw la p (Valued.v : Valuation ℂ_[p] ℝ≥0) (evR Xo c f …`. Introduce `p hp _ y hy`. Establish `hv` using `PadicComplexInt.integers p`. Take `⟨n, s, hs, h⟩` from `hrel ℂ_[p]`.
+
+Rewrite using `[← val_vw_of_eq_one la p (Valued.v : Valuation ℂ_[p] ℝ≥0) (map_one _)]`. Use `val_vw_anti la (Nat.cast_ne_zero.2 hp.out.ne_zero) (lt_one_of_not_isUnit hv Fact.out) ?_` and prove the remaining obligations. Rewrite using `[map_one, h]`. Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `mul_le_one' (val_le_one_of_isIntegral hv (s k) hβ) (hy _ _)`. Establish `pos : ∀ (p : ℕ) [Fact p.Prime] {T' : CDVR} {io' : c'.F →+* T'.Fr} {la' : HeightOneSpectrum (𝓞 c'.F)} {e' : ℕ}, OverLa la' T'.V io' e' → (T'.V →+* 𝓞_ℂ_[p]) → ∀ x : ℂ_[p], 0 ≤ val_vw la' p (Valued.v : Valuation ℂ_[p] ℝ≥0) x → (Valued.v : Valuation ℂ_[p] ℝ≥0) x ≤ 1`. Introduce `p hp T' io' la' e' ho' kO' x`. Use `(val_vw_nonneg_iff (Nat.cast_ne_zero.2 hp.out.ne_zero) (lt_one_of_not_isUnit (PadicComplexInt.integers p) Fact.out) ((natCast_mem_iff ho' hp.out.ne_zero).2 ?_) x).1` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap T'.V T'.Fr)]`.
+
+Conclude with `GlobalTheory.PlaceExtField.vV_pos (Nat.cast_ne_zero.2 hp.out.ne_zero) fun h => (factPadic p).out (by simpa using h.map kO')`. Distinguish the cases in `hS : ∃ p ∈ htPrimes l B, ((p : ℕ) : 𝓞 c.F) ∈ la.asIdeal`. Take `⟨q, hq, hq'⟩` from `hS`. Rewrite `hw` using `[mixVals_of_mem hq hq']`. Take `⟨p, hp, _, T, io, e, y₀, k, y, ho, hy, hH, rfl⟩` from `hw`.
+
+Use `fin p y fun s hs => ?_` and prove the remaining obligations. Use `letI := s.toAlgebra`. Use `letI := H.starRing`. Use `letI := io.toAlgebra`. Take `⟨-, kO, P, ψ, z, hP, hz, g, a, x, c1, c2, c3, c4, c5⟩` from `hH`.
+
+Take `⟨T', io', y₀', k', kO', la', e', iT, φ, b1, b2, b3, b4, b5, b6, b7, b8⟩` from `exists_intFr_ext hle P.integers hs y₀ hy k kO hP.1 ho`. Use `letI := io'.toAlgebra`. Establish `hl : ∀ τ, htLat c' P τ = htLat c P τ` using `fun τ => by`. Establish `: embAt c' ℂ_[p] τ = embAt c ℂ_[p] τ` using `RingHom.ext fun a => hs (embF c τ a)`. Unfold `htLat embInt`.
+
+Rewrite using `[this]`. Establish `hH' : IsHTFrameCp p y₀' k' (y.ext hle hs)` using `⟨GlobalTheory.FlagTan.fromTest_of_isLocalRing _, kO', P, ψ, z.ext hle hs, b7 ▸ pointOver_ext hP iT φ k'.toRingHom kO' b4 b5 b6, b8 z hz, g, a, x, c1, c2, c3, c4, fun τ => (hl τ).symm ▸ c5 τ⟩`. Use `pos p b2 kO' _ (h' la' (fun g => val_vw la' p (Valued.v : Valuation ℂ_[p] ℝ≥0) (evR Xo c' g (y.ext hle hs))) ?_)` and prove the remaining obligations. Rewrite using `[mixVals_of_mem hq ((b3 q hq.1.ne_zero).2 hq')]`. Conclude with `⟨p, hp, _, T', io', e', y₀', k', _, b2, b1, hH', rfl⟩`.
+
+Establish `hw' : w ∈ valSet Xo c (algCls Xo c) la`. Establish `e : (mixVals Xo c B).1 la = valSet Xo c (algCls Xo c) la` using `if_neg hS`. Conclude with `e ▸ hw`. Take `⟨⟨_, T, io, e, ho, y₀, hy, et, het, rfl⟩, rfl⟩` from `hw'`. Take `⟨p, hp, k₀, kO, hk⟩` from `GlobalTheory.CompleteDvrEmbedding.exists_embedding_padicComplexInt T hy`.
+
+Use `letI := io.toAlgebra`. Use `letI : Algebra c.F ℂ_[p] := (k₀.comp io).toAlgebra`. Set `k : T.Fr →ₐ[c.F] ℂ_[p]` to `{ k₀ with commutes' := fun _ => rfl }`. Establish `hv` using `PadicComplexInt.integers p`. Establish `h0 : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`.
+
+Take `⟨z, hz⟩` from `GlobalTheory.FlagTan.exists_frMap k y₀.1`. Use `show 0 ≤ nval T.V e (evR Xo c f y₀.1)`. Rewrite using `[← val_vw_map la hv h0 (factPadic p).out ho k₀ kO hk]`. Use `(fin p z fun s hs => ?_).trans_eq (congrArg _ (GlobalTheory.FlagTan.evR_frMap hf hz))` and prove the remaining obligations. Use `letI := s.toAlgebra`.
+
+Take `⟨T', io', y₀', k', kO', la', e', iT, φ, b1, b2, b3, b4, b5, b6, b7, b8⟩` from `exists_intFr_ext hle hv hs y₀ hy k kO hk ho`. Use `letI := io'.toAlgebra`. Use `pos p b2 kO' _ ?_` and prove the remaining obligations. Establish `e1 : evAlong hle s hs f' z = k'.toRingHom (evR Xo c' f' y₀'.1)` using `GlobalTheory.FlagTan.evR_frMap hf' (b8 z hz)`. Rewrite using `[e1, val_vw_map la' hv h0 (factPadic p).out b2 k'.toRingHom kO' b6]`.
+
+Use `h' la' (fun g => nval T'.V e' (evI y₀' g)) ?_` and prove the remaining obligations. Establish `e2 : (mixVals Xo c' B).1 la' = valSet Xo c' (algCls Xo c') la'` using `if_neg fun ⟨q, hq, hq'⟩ => hS ⟨q, hq, (b3 q hq.1.ne_zero).1 hq'⟩`. Rewrite using `[e2]`. Conclude with `⟨PtV.mk la' b2 y₀' b1 () trivial, rfl⟩`.
+-/
 theorem nonneg_of_comb (B : ℝ) {f : Rul Xo c} {f' : Rul Xo c'} (hf : GlobalTheory.CoefChangeCompare.Natural c f)
     (hf' : GlobalTheory.CoefChangeCompare.Natural c' f') {β : c'.F} (hβ : IsIntegral ℤ β)
     (hrel : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω], ∃ (n : ℕ) (s : Fin n → (c'.F →+* Ω))

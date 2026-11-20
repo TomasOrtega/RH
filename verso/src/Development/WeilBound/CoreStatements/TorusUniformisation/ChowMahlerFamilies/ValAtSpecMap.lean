@@ -17,6 +17,53 @@ section Der
 variable {R RC C N W : Type} [CommRing R] [IsDomain R] [CommRing RC] [IsDomain RC] [Field C] [Algebra R RC]
   [Algebra RC C] [AddCommGroup N] [Finite N] [AddCommGroup W] [Module RC W] [Module R W] [IsScalarTower R RC W]
 
+/- English proof (translation)
+Use `haveI : Fintype N := Fintype.ofFinite N`. Take `⟨d₀, hd₀, hfull⟩` from `hA.full`. Use `haveI : Module.Projective R A := hA.projective`. Set `lam : A →ₗ[R] (N → RC)` to `{ toFun := fun a x => algebraMap R RC (a.1 (Multiplicative.ofAdd x)) map_add' := fun a b => by`. Use function extensionality and compare the values at `x`.
+
+Simplify using the standard rewrite rules. Use the proof step `map_smul' := fun r a => by`. Use function extensionality and compare the values at `x`. Simplify using `[Algebra.smul_def] }`. Set `Λ : RC ⊗[R] A →ₗ[RC] (N → RC)` to `LinearMap.liftBaseChange RC lam`.
+
+Set `D : RC ⊗[R] A →ₗ[RC] W` to `LinearMap.liftBaseChange RC d`. Set `Φ : RC ⊗[R] A →ₗ[RC] (N → C)` to `(LinearMap.pi fun x => (Algebra.linearMap RC C) ∘ₗ LinearMap.proj x) ∘ₗ Λ`. Establish `hΦ : ∀ t x, Φ t x = algebraMap RC C (Λ t x)` using `fun t x => rfl`. Establish `hΛ : ∀ (c : RC) (a : A) (x : N), Λ (c ⊗ₜ a) x = c * algebraMap R RC (a.1 (Multiplicative.ofAdd x))`. Introduce `c a x`.
+
+Simplify using `[Λ, lam, LinearMap.liftBaseChange_tmul]`. Establish `hΛmul : ∀ t t' : RC ⊗[R] A, Λ (t * t') = Λ t * Λ t'`. Introduce `t t'`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul c a`. Proceed by induction on `t' using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c' a'`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, Pi.mul_apply, hΛ, hΛ, hΛ]`. Simplify using `only [Subalgebra.coe_mul, Pi.mul_apply, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add u v hu hv => rw [mul_add, map_add, hu, hv, map_add, mul_add]`. Consider the case `add u v hu hv => rw [add_mul, map_add, hu, hv, map_add, add_mul]`.
+
+Establish `hDmul : ∀ t t' : RC ⊗[R] A, D (t * t') = Λ t 0 • D t' + Λ t' 0 • D t`. Introduce `t t'`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c a`.
+
+Proceed by induction on `t' using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c' a'`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, hΛ, hΛ]`. Simplify using `only [D, LinearMap.liftBaseChange_tmul, ofAdd_zero]`.
+
+Rewrite using `[hd, smul_add, ← algebraMap_smul RC (a.1 1) (d a'), ← algebraMap_smul RC (a'.1 1) (d a)]`. Use `module`. Consider the case `add u v hu hv`. Rewrite using `[mul_add, map_add, hu, hv, map_add, map_add, Pi.add_apply, add_smul, smul_add]`. Normalize the expressions using the abelian group laws.
+
+Consider the case `add u v hu hv`. Rewrite using `[add_mul, map_add, hu, hv, map_add, map_add, Pi.add_apply, add_smul, smul_add]`. Normalize the expressions using the abelian group laws. Establish `hinjΛ : Function.Injective Λ`. Set `e : N → A` to `fun x => ⟨d₀ • (fun y => if Multiplicative.toAdd y = x then (1 : R) else 0), hfull _⟩`.
+
+Set `Ψ : (N → RC) →ₗ[RC] RC ⊗[R] A` to `{ toFun := fun g => ∑ x : N, g x ⊗ₜ e x map_add' := by`. Introduce `g g'`. Simplify using `[TensorProduct.add_tmul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`. Introduce `c g`.
+
+Simplify using `[Finset.smul_sum, TensorProduct.smul_tmul', smul_eq_mul] }`. Establish `hsum : ∀ a : A, ∑ x : N, a.1 (Multiplicative.ofAdd x) • e x = d₀ • a`. Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`.
+
+Simplify using `[e, Finset.sum_apply, mul_ite, Finset.sum_ite_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ t, Ψ (Λ t) = algebraMap R RC d₀ • t`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul c a`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Ψ, LinearMap.coe_mk, AddHom.coe_mk, hΛ]`. Use `_ = ∑ x : N, c ⊗ₜ (a.1 (Multiplicative.ofAdd x) • e x) := by`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def, mul_comm]`. Use `_ = c ⊗ₜ (d₀ • a) := by rw [← TensorProduct.tmul_sum, hsum]`. Use `_ = algebraMap R RC d₀ • (c ⊗ₜ a) := by rw [TensorProduct.tmul_smul, algebraMap_smul]`.
+
+Consider the case `add u v hu hv => rw [map_add, map_add, hu, hv, smul_add]`. Introduce `t t' htt'`. Establish `h0 : algebraMap R RC d₀ • (t - t') = 0`. Rewrite using `[smul_sub, ← key, ← key, htt', sub_self]`. Establish `hne : algebraMap R RC d₀ ≠ 0` using `fun h' => hd₀ (h1 (h'.trans (map_zero _).symm))`.
+
+Conclude with `sub_eq_zero.1 ((Module.IsTorsionFree.isSMulRegular (isRegular_of_ne_zero hne)) (h0.trans (smul_zero _).symm))`. Establish `hinj : Function.Injective Φ`. Introduce `t t' h`. Apply `hinjΛ` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+
+Conclude with `h2 (congrFun h x)`. Establish `hΦ1 : ∀ a : A, Φ (1 ⊗ₜ a) = fun x => φ (a.1 (Multiplicative.ofAdd x))`. Introduce `a`. Use function extensionality and compare the values at `x`. Rewrite using `[hΦ, hΛ, _root_.one_mul, hφ]`.
+
+Establish `hMle : M ≤ LinearMap.range Φ`. Rewrite using `[hM, Submodule.span_le]`. Introduce and unpack `f ⟨g, hg, rfl⟩`. Conclude with `⟨1 ⊗ₜ ⟨g, hg⟩, hΦ1 _⟩`. Establish `hE : ∀ f : M, Φ ((LinearEquiv.ofInjective Φ hinj).symm (Submodule.inclusion hMle f)) = f.1`.
+
+Introduce `f`. Conclude with `congrArg Subtype.val ((LinearEquiv.ofInjective Φ hinj).apply_symm_apply (Submodule.inclusion hMle f))`. Establish `hpre : ∀ (f : M) (t : RC ⊗[R] A), Φ t = f.1 → (LinearEquiv.ofInjective Φ hinj).symm (Submodule.inclusion hMle f) = t`. Introduce `f t ht`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[hE, ht]`. Use `⟨D ∘ₗ (LinearEquiv.ofInjective Φ hinj).symm.toLinearMap ∘ₗ Submodule.inclusion hMle, ?_, ?_⟩` and prove the remaining obligations. Introduce `f g h a b hfg ha hb`. Establish `haf : Λ ((LinearEquiv.ofInjective Φ hinj).symm (Submodule.inclusion hMle f)) 0 = a` using `h2 ((congrFun (hE f) 0).trans ha.symm)`. Establish `hbg : Λ ((LinearEquiv.ofInjective Φ hinj).symm (Submodule.inclusion hMle g)) 0 = b` using `h2 ((congrFun (hE g) 0).trans hb.symm)`.
+
+Use `show D ((LinearEquiv.ofInjective Φ hinj).symm (Submodule.inclusion hMle h)) = a • D ((LinearEquiv.ofInjective Φ hinj).symm (Submodule.inclusion hMle g)) + b • D ((LinearEquiv.ofInjective Φ hinj).symm (Submodule.inclusion hMle f))`. Rewrite using `[hpre h (((LinearEquiv.ofInjective Φ hinj).symm (Submodule.inclusion hMle f)) * ((LinearEquiv.ofInjective Φ hinj).symm (Submodule.inclusion hMle g))) ?_, hDmul, haf, hbg]`. Use function extensionality and compare the values at `x`. Rewrite using `[hΦ, hΛmul, Pi.mul_apply, map_mul, ← hΦ, ← hΦ, hE, hE, hfg, Pi.mul_apply]`. Introduce `a f hf show D ((LinearEquiv.ofInjective Φ hinj).symm (Submodule.inclusion hMle f)) = d a`.
+
+Rewrite using `[hpre f (1 ⊗ₜ a) (by`. Rewrite using `[hΦ1]`. Use function extensionality and compare the values at `x`. Conclude with `(hf x).symm)]`. Simplify using `[D, LinearMap.liftBaseChange_tmul]`.
+-/
 theorem exists_der_ext (h1 : Function.Injective (algebraMap R RC)) (h2 : Function.Injective (algebraMap RC C))
     (φ : R →+* C) (hφ : ∀ r, algebraMap RC C (algebraMap R RC r) = φ r)
     {A : Subalgebra R (Multiplicative N → R)} (hA : IsHopfOrder A) (d : A →ₗ[R] W)
@@ -170,11 +217,23 @@ def cotMap (A : Subalgebra R (T → R)) : A →ₗ[R] omega A :=
         change (a - algebraMap R A (a.1 1)).1 1 = 0
         simp)
 
+/- English proof (translation)
+Unfold `cotMap`. Conclude with `congrArg (augIdeal A).toCotangent (Subtype.ext h.symm)`.
+-/
 theorem cotMap_apply (A : Subalgebra R (T → R)) (a : A) (f : augIdeal A) (h : f.1 = a - algebraMap R A (a.1 1)) :
     cotMap A a = (augIdeal A).toCotangent f := by
   unfold cotMap
   exact congrArg (augIdeal A).toCotangent (Subtype.ext h.symm)
 
+/- English proof (translation)
+Use `set_option synthInstance.maxHeartbeats 400000 in`. Establish `mem : ∀ c : A, c - algebraMap R A (c.1 1) ∈ augIdeal A` using `fun c => by`. Express the relevant statement in the definitionally equal form `(c - algebraMap R A (c.1 1)).1 1 = 0`. Simplify using the standard rewrite rules. Use `set_option synthInstance.maxHeartbeats 400000 in`.
+
+Rewrite using `[cotMap_apply A (a * b) ⟨_, mem (a * b)⟩ rfl, cotMap_apply A a ⟨_, mem a⟩ rfl, cotMap_apply A b ⟨_, mem b⟩ rfl]`. Use `set_option synthInstance.maxHeartbeats 400000 in`. Establish `key : (⟨_, mem (a * b)⟩ : augIdeal A) = ((a - algebraMap R A (a.1 1)) • (⟨_, mem b⟩ : augIdeal A) : augIdeal A) + (algebraMap R A (a.1 1) • (⟨_, mem b⟩ : augIdeal A) : augIdeal A) + (algebraMap R A (b.1 1) • (⟨_, mem a⟩ : augIdeal A) : augIdeal A)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add, Submodule.coe_smul, smul_eq_mul, Subalgebra.coe_mul, Pi.mul_apply, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set_option synthInstance.maxHeartbeats 400000 in`. Establish `z : (augIdeal A).toCotangent ((a - algebraMap R A (a.1 1)) • (⟨_, mem b⟩ : augIdeal A) : augIdeal A) = 0`. Rewrite using `[Ideal.toCotangent_eq_zero, Submodule.coe_smul, smul_eq_mul, pow_two]`. Conclude with `Ideal.mul_mem_mul (mem a) (mem b)`.
+
+Use `set_option synthInstance.maxHeartbeats 400000 in`. Rewrite using `[key, map_add, map_add, z, zero_add, map_smul, map_smul, algebraMap_smul, algebraMap_smul]`.
+-/
 theorem cotMap_mul (A : Subalgebra R (T → R)) (a b : A) :
     cotMap A (a * b) = a.1 1 • cotMap A b + b.1 1 • cotMap A a := by
   set_option synthInstance.maxHeartbeats 400000 in
@@ -202,6 +261,11 @@ theorem cotMap_mul (A : Subalgebra R (T → R)) (a b : A) :
 
 end Cot
 
+/- English proof (translation)
+Unfold `valAt`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (Spec.map (CommRingCat.ofHom ψ)) y ⊤ ⊤ ⊤ le_top le_top]`. Establish `e1 : (Spec.map (CommRingCat.ofHom ψ)).appLE ⊤ ⊤ le_top = (Spec.map (CommRingCat.ofHom ψ)).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Use `congr 1`.
+
+Rewrite using `[e1]`. Establish `e2` using `congrArg (fun φ => φ.hom ((y.appLE ⊤ ⊤ le_top).hom s)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ))`. Conclude with `e2`.
+-/
 theorem valAt_spec_map' {B C : Type} [CommRing B] [CommRing C] {X : Scheme.{0}} (ψ : B →+* C)
     (y : Spec (CommRingCat.of B) ⟶ X) (s : Γ(X, ⊤)) :
     valAt (Spec.map (CommRingCat.ofHom ψ) ≫ y) ⊤ le_top s = ψ (valAt y ⊤ le_top s) := by
@@ -215,6 +279,9 @@ theorem valAt_spec_map' {B C : Type} [CommRing B] [CommRing C] {X : Scheme.{0}} 
     (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ))
   exact e2
 
+/- English proof (translation)
+Unfold `valAt`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+-/
 private theorem valAt_top_lemma {B : Type} [CommRing B] {X : Scheme} (f : Spec (CommRingCat.of B) ⟶ X)
     (h : ⊤ ≤ f ⁻¹ᵁ ⊤) (s : Γ(X, ⊤)) :
     valAt f ⊤ h s = (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom (f.appTop.hom s) := by
@@ -222,6 +289,9 @@ private theorem valAt_top_lemma {B : Type} [CommRing B] {X : Scheme} (f : Spec (
   rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
   rfl
 
+/- English proof (translation)
+Rewrite using `[valAt_top_lemma, valAt_top_lemma, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 private theorem valAt_comp_lemma_2 {B : Type} [CommRing B] {X Y : Scheme} (f : Spec (CommRingCat.of B) ⟶ Y)
     (g : Y ⟶ X) (h : ⊤ ≤ (f ≫ g) ⁻¹ᵁ ⊤) (h' : ⊤ ≤ f ⁻¹ᵁ ⊤) (s : Γ(X, ⊤)) :
     valAt (f ≫ g) ⊤ h s = valAt f ⊤ h' (g.appTop.hom s) := by
@@ -229,6 +299,29 @@ private theorem valAt_comp_lemma_2 {B : Type} [CommRing B] {X Y : Scheme} (f : S
   rfl
 
 open PositivityTheory.HtPt.Htat in
+/- English proof (translation)
+Take `⟨s₂, hs₂, hv₂⟩` from `h`. Establish `hpow : ∀ {Y : Over (Spec (CommRingCat.of R))} (g : Over.mk (Y.hom ≫ x) ⟶ G), g ^ N₁ = 1 → g ^ N₂ = 1`. Introduce `Y g hg`. Take `⟨k, hk⟩` from `hN`. Rewrite using `[hk, pow_mul, hg, one_pow]`.
+
+Take `⟨φ, hφ⟩` from `(h₂.kernel Γ₁.G (Over.homMk i₁ h₁.isOver)).1 (hpow _ ((h₁.kernel Γ₁.G (Over.homMk i₁ h₁.isOver)).2 ⟨𝟙 _, by simp⟩))`. Establish `hφ' : φ.left ≫ i₂ = i₁` using `hφ`. Use `⟨φ.left.appTop.hom s₂, fun t => ?_, fun e => ?_⟩` and prove the remaining obligations. Establish `ht : Γ₁.pt t ≫ φ = Γ₂.pt (α t)` using `h₂.inj (BT.genPt R) _ _ (by`. Rewrite using `[Over.comp_left, Category.assoc, hφ', hα])`.
+
+Establish `h3` using `hs₂ (α t)`. Rewrite `h3` using `[← ht]`. Conclude with `(valAt_comp_lemma_2 (Γ₁.pt t).left φ.left le_top le_top s₂).symm.trans h3`. Take `⟨v₂, hv₂a, hv₂b, hv₂c⟩` from `hv₂ e`. Establish `hle : Ideal.span {(N₂ : R)} ≤ Ideal.span {(N₁ : R)}` using `Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast hN)`.
+
+Establish `hr1 : (dualMap (Ideal.Quotient.mk (Ideal.span {(N₁ : R)}))).comp (algebraMap R (DualNumber R)) = (algebraMap (R ⧸ Ideal.span {(N₁ : R)}) (DualNumber (R ⧸ Ideal.span {(N₁ : R)}))).comp (Ideal.Quotient.mk (Ideal.span {(N₁ : R)}))` using `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]) (by simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl])`. Establish `hr2 : (dualMap (Ideal.Quotient.mk (Ideal.span {(N₁ : R)}))).comp (epsMul (N₁ : R)) = (dualMap (Ideal.Quotient.mk (Ideal.span {(N₁ : R)}))).comp (epsMul 0)` using `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [dualMap, epsMul]) (by`. Simplify using `[dualMap, epsMul]`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {(N₁ : R)})) N₁, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `dvd_mul_right _ _)`.
+
+Establish `hr3 : (dualMap (Ideal.Quotient.factor hle)).comp ((algebraMap (R ⧸ Ideal.span {(N₂ : R)}) (DualNumber (R ⧸ Ideal.span {(N₂ : R)}))).comp (Ideal.Quotient.mk (Ideal.span {(N₂ : R)}))) = (algebraMap (R ⧸ Ideal.span {(N₁ : R)}) (DualNumber (R ⧸ Ideal.span {(N₁ : R)}))).comp (Ideal.Qu …` using `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl, Ideal.Quotient.factor_mk]) (by simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl, Ideal.Quotient.factor_mk])`. Establish `hr4 : (dualMap (Ideal.Quotient.factor hle)).comp (dualMap (Ideal.Quotient.mk (Ideal.span {(N₂ : R)}))) = dualMap (Ideal.Quotient.mk (Ideal.span {(N₁ : R)}))` using `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [dualMap, Ideal.Quotient.factor_mk]) (by simp [dualMap, Ideal.Quotient.factor_mk])`. Set `Y : Over (Spec (CommRingCat.of R))` to `Over.mk (Spec.map (CommRingCat.ofHom ((algebraMap (R ⧸ Ideal.span {(N₁ : R)}) (DualNumber (R ⧸ Ideal.span {(N₁ : R)}))).comp (Ideal.Quotient.mk (Ideal.span {(N₁ : R)})))))`. Set `f : Over.mk (Y.hom ≫ x) ⟶ epsAt x` to `Over.homMk (Spec.map (CommRingCat.ofHom (dualMap (Ideal.Quotient.mk (Ideal.span {(N₁ : R)}))))) (by show _ ≫ Spec.map _ ≫ x = Spec.map _ ≫ x`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hr1])`.
+
+Establish `hpt0 : M.pt 0 = 1`. Establish `h0` using `congrArg (· * (M.pt 0)⁻¹) (M.add 0 0)`. Simplify using `only [add_zero, mul_inv_cancel, mul_inv_cancel_right] at h0`. Conclude with `h0.symm`. Establish `hptn : ∀ n : ℕ, M.pt (n • e) = M.pt e ^ n`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, hpt0, pow_zero]`. Consider the case `succ n ih => rw [succ_nsmul, M.add, ih, pow_succ]`. Establish `hfz : f ≫ M.pt ((N₁ : R) • e) = f ≫ M.pt ((0 : R) • e)`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [f, Over.homMk_left, Over.comp_left, M.smul]`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hr2]`. Establish `hg : (f ≫ M.pt e) ^ N₁ = 1`. Rewrite using `[← comp_pow, ← hptn, ← Nat.cast_smul_eq_nsmul R, hfz, zero_smul, hpt0, comp_one]`.
+
+Take `⟨y, hy⟩` from `(h₁.kernel Y (f ≫ M.pt e)).1 hg`. Establish `hy' : y.left ≫ i₁ = Spec.map (CommRingCat.ofHom (dualMap (Ideal.Quotient.mk (Ideal.span {(N₁ : R)})))) ≫ (M.pt e).left` using `hy`. Set `z : Y ⟶ Γ₂.G` to `Over.homMk (Spec.map (CommRingCat.ofHom (dualMap (Ideal.Quotient.factor hle))) ≫ v₂) (by show _ = Spec.map _`. Rewrite using `[Category.assoc, hv₂a, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hr3])`. Establish `hyz : y ≫ φ = z` using `h₂.inj Y _ _ (by`.
+
+Rewrite using `[Over.comp_left, Category.assoc, hφ', hy']`. Use `show _ = (Spec.map _ ≫ v₂) ≫ i₂`. Rewrite using `[Category.assoc, hv₂b, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hr4])`. Use `⟨y.left, Over.w y, hy', ?_⟩` and prove the remaining obligations. Use `(valAt_comp_lemma_2 y.left φ.left le_top _ s₂).symm.trans ?_` and prove the remaining obligations.
+
+Establish `e2 : y.left ≫ φ.left = Spec.map (CommRingCat.ofHom (dualMap (Ideal.Quotient.factor hle))) ≫ v₂` using `congrArg Over.Hom.left hyz`. Rewrite using `[e2, valAt_spec_map', hv₂c]`. Simplify using `[dualMap, Ideal.Quotient.factor_mk]`.
+-/
 theorem isHT_res {R : Type} [CommRing R] [IsDomain R] {T₁ T₂ : Type} [CommGroup T₁] [Finite T₁] [CommGroup T₂]
     (Γ₁ : QFGroup R T₁) (Γ₂ : QFGroup R T₂) {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
     {x : Spec (CommRingCat.of R) ⟶ S} {N₁ N₂ : ℕ} (hN : N₁ ∣ N₂) {i₁ : Γ₁.G.left ⟶ G.left}
@@ -322,6 +415,15 @@ theorem isHT_res {R : Type} [CommRing R] [IsDomain R] {T₁ T₂ : Type} [CommGr
     rw [e2, valAt_spec_map', hv₂c]
     simp [dualMap, Ideal.Quotient.factor_mk]
 
+/- English proof (translation)
+Apply `Algebra.subset_adjoin` to reduce the goal to its premises. Introduce `t g _`. Use `⟨⊤, trivial, Γ.G.hom.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom ((χ t : Rˣ) : R)) * s, fun h hh => ?_⟩` and prove the remaining obligations. Establish `h1` using `(valAt_top_lemma (Γ.pt h).left hh s).symm.trans (hs h)`. Use `(valAt_top_lemma (Γ.pt h).left hh _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, h1]`. Establish `e1 : (Γ.pt h).left.appTop.hom (Γ.G.hom.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom ((χ t : Rˣ) : R))) = ((Γ.pt h).left ≫ Γ.G.hom).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom ((χ t : Rˣ) : R))`. Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Rewrite using `[e1, Over.w (Γ.pt h)]`.
+
+Establish `n'` using `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom ((χ t : Rˣ) : R))) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))`. Establish `n'' : (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom ((Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom ((χ t : Rˣ) : R))) = algebraMap R (FractionRing R) ((χ t : Rˣ) : R)`. Use `n'.trans ?_` and prove the remaining obligations. Use `show algebraMap R (FractionRing R) ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom ((χ t : Rˣ) : R))) = _`. Rewrite using `[Iso.inv_hom_id_apply]`.
+
+Rewrite using `[show (BT.genPt R).hom = Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R))) from rfl, n'']`. Use `show _ = algebraMap R (FractionRing R) ((χ (t * h) : Rˣ) : R)`. Rewrite using `[map_mul, Units.val_mul, map_mul]`.
+-/
 theorem char_mem {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (Γ : QFGroup R T) (χ : T →* Rˣ)
     (s : Γ(Γ.G.left, ⊤)) (hs : Γ.HasValues s fun t => ((χ t : Rˣ) : R)) :
     (fun t => ((χ t : Rˣ) : R)) ∈ Γ.btOrder ⊤ := by
@@ -358,11 +460,17 @@ def liftSurj {G T H : Type} [Group G] [Group T] [Group H] (π : G →* T) (hπ :
   π.liftOfRightInverse (Function.surjInv hπ) (Function.rightInverse_surjInv hπ)
     ⟨f, fun z hz => (MonoidHom.mem_ker).2 (hf z ((MonoidHom.mem_ker).1 hz))⟩
 
+/- English proof (translation)
+The claim follows from `MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ z`.
+-/
 theorem liftSurj_apply {G T H : Type} [Group G] [Group T] [Group H] (π : G →* T)
     (hπ : Function.Surjective π) (f : G →* H) (hf : ∀ z, π z = 1 → f z = 1) (z : G) :
     liftSurj π hπ f hf (π z) = f z :=
   MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ z
 
+/- English proof (translation)
+Introduce `y`. Use `⟨Multiplicative.ofAdd (fun i => Classical.choose (Ideal.Quotient.mk_surjective (Multiplicative.toAdd y i))), ?_⟩` and prove the remaining obligations. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `Classical.choose_spec (Ideal.Quotient.mk_surjective (Multiplicative.toAdd y i))`.
+-/
 theorem qhom_surj {E : Type} [Field E] [NumberField E] (N n : ℕ) : Function.Surjective (qhom (E := E) N n) := by
   intro y
   refine ⟨Multiplicative.ofAdd (fun i => Classical.choose (Ideal.Quotient.mk_surjective (Multiplicative.toAdd y i))), ?_⟩
@@ -370,6 +478,13 @@ theorem qhom_surj {E : Type} [Field E] [NumberField E] (N n : ℕ) : Function.Su
   funext i
   exact Classical.choose_spec (Ideal.Quotient.mk_surjective (Multiplicative.toAdd y i))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hi : ∀ i, y i ∈ Ideal.span {(n : 𝓞 E)}` using `fun i => by`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `congrFun (congrArg Multiplicative.toAdd h) i`.
+
+Use `choose c hc using fun i => Ideal.mem_span_singleton'.1 (hi i)`. Conclude with `⟨c, funext fun i => by rw [← hc i, Pi.smul_apply, nsmul_eq_mul, mul_comm]⟩`. Introduce and unpack `⟨y', rfl⟩`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Use `show Ideal.Quotient.mk _ ((n • y') i) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Pi.smul_apply, nsmul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 theorem qhom_eq_one {E : Type} [Field E] [NumberField E] (N n : ℕ) (y : Fin N → 𝓞 E) :
     qhom N n (Multiplicative.ofAdd y) = 1 ↔ ∃ y', y = n • y' := by
   constructor
@@ -386,6 +501,9 @@ theorem qhom_eq_one {E : Type} [Field E] [NumberField E] (N n : ℕ) (y : Fin N 
     rw [Ideal.Quotient.eq_zero_iff_mem, Pi.smul_apply, nsmul_eq_mul]
     exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+Use `⟨liftSurj (qhom N p) (qhom_surj _ _) ((qhom N (p ^ m)).comp (AddMonoidHom.toMultiplicative (nsmulAddMonoidHom (p ^ (m - 1))))) fun z hz => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨z', hz'⟩` from `(qhom_eq_one N p (Multiplicative.toAdd z)).1 hz`. Use `(qhom_eq_one N (p ^ m) (p ^ (m - 1) • Multiplicative.toAdd z)).2 ⟨z', ?_⟩` and prove the remaining obligations. Rewrite using `[hz', smul_smul, ← pow_succ, Nat.sub_add_cancel hm]`. Conclude with `liftSurj_apply (qhom N p) _ _ _ (Multiplicative.ofAdd x)`.
+-/
 theorem exists_alpha {E : Type} [Field E] [NumberField E] (N p m : ℕ) (hm : 1 ≤ m) :
     ∃ α : TorsT E N p →* TorsT E N (p ^ m), ∀ x, α (qmk p x) = qmk (p ^ m) (p ^ (m - 1) • x) := by
   refine ⟨liftSurj (qhom N p) (qhom_surj _ _) ((qhom N (p ^ m)).comp
@@ -395,12 +513,18 @@ theorem exists_alpha {E : Type} [Field E] [NumberField E] (N p m : ℕ) (hm : 1 
     rw [hz', smul_smul, ← pow_succ, Nat.sub_add_cancel hm]
   · exact liftSurj_apply (qhom N p) _ _ _ (Multiplicative.ofAdd x)
 
+/- English proof (translation)
+Rewrite using `[ZMod.val_add]`. Use `conv_rhs => rw [← pow_add]`. Use `conv_rhs => rw [← Nat.mod_add_div (a.val + b.val) n, pow_add, pow_mul, hζ, one_pow, _root_.mul_one]`.
+-/
 theorem pow_val_add {U : Type} [Monoid U] {n : ℕ} [NeZero n] {ζ : U} (hζ : ζ ^ n = 1) (a b : ZMod n) :
     ζ ^ (a + b).val = ζ ^ a.val * ζ ^ b.val := by
   rw [ZMod.val_add]
   conv_rhs => rw [← pow_add]
   conv_rhs => rw [← Nat.mod_add_div (a.val + b.val) n, pow_add, pow_mul, hζ, one_pow, _root_.mul_one]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[succ_nsmul, pow_val_add hζ, ih, pow_succ, (Commute.pow_left (Commute.refl ζ) k).mul_pow]`.
+-/
 theorem pow_val_nsmul {U : Type} [Monoid U] {n : ℕ} [NeZero n] {ζ : U} (hζ : ζ ^ n = 1) (k : ℕ) (a : ZMod n) :
     ζ ^ (k • a).val = (ζ ^ k) ^ a.val := by
   induction k with
@@ -408,6 +532,23 @@ theorem pow_val_nsmul {U : Type} [Monoid U] {n : ℕ} [NeZero n] {ζ : U} (hζ :
   | succ k ih =>
     rw [succ_nsmul, pow_val_add hζ, ih, pow_succ, (Commute.pow_left (Commute.refl ζ) k).mul_pow]
 
+/- English proof (translation)
+Establish `hζn : ζ ^ n = 1`. Take `⟨k, hk⟩` from `hn`. Rewrite using `[hk, pow_mul, hζ, one_pow]`. Establish `kk : ∀ a : ZMod n, ζ ^ (p • a).val = 1` using `fun a => by`. Rewrite using `[pow_val_nsmul hζn, hζ, one_pow]`.
+
+Set `inner : (Fin N → 𝓞 E) → (Multiplicative (Fin N → 𝓞 E) →* U)` to `fun x => { toFun := fun x' => ζ ^ (e x (Multiplicative.toAdd x')).val map_one' := by simp map_mul' := fun a b => by`. Simplify using `only [toAdd_mul, map_add]`. Conclude with `pow_val_add hζn _ _ }`. Establish `hin : ∀ x z, qhom N p z = 1 → inner x z = 1` using `fun x z hz => by`. Take `⟨y', hy'⟩` from `(qhom_eq_one N p (Multiplicative.toAdd z)).1 hz`.
+
+Use `show ζ ^ (e x (Multiplicative.toAdd z)).val = 1`. Rewrite using `[hy', map_nsmul]`. Conclude with `kk _`. Set `g : (Fin N → 𝓞 E) → (TorsT E N p →* U)` to `fun x => liftSurj (qhom N p) (qhom_surj N p) (inner x) (hin x)`. Establish `hg : ∀ x (z : Multiplicative (Fin N → 𝓞 E)), g x (qhom N p z) = ζ ^ (e x (Multiplicative.toAdd z)).val` using `fun x z => liftSurj_apply _ _ _ _ z`.
+
+Set `outer : Multiplicative (Fin N → 𝓞 E) →* (TorsT E N p →* U)` to `{ toFun := fun x => g (Multiplicative.toAdd x) map_one' := by`. Use `MonoidHom.ext fun t => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `qhom_surj N p t`. Rewrite using `[MonoidHom.one_apply, hg]`. Simplify using the standard rewrite rules.
+
+Use the proof step `map_mul' := fun a b => by`. Use `MonoidHom.ext fun t => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `qhom_surj N p t`. Rewrite using `[MonoidHom.mul_apply, hg, hg, hg, toAdd_mul, map_add, AddMonoidHom.add_apply]`. Conclude with `pow_val_add hζn _ _ }`.
+
+Use `⟨liftSurj (qhom N p) (qhom_surj N p) outer ?_, fun x x' => ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨y', hy'⟩` from `(qhom_eq_one N p (Multiplicative.toAdd z)).1 hz`. Use `MonoidHom.ext fun t => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `qhom_surj N p t`.
+
+Use `show g (Multiplicative.toAdd z) (qhom N p w) = 1`. Rewrite using `[hg, hy', map_nsmul]`. Conclude with `kk _`. Use `show liftSurj _ _ outer _ (qhom N p (Multiplicative.ofAdd x)) (qhom N p (Multiplicative.ofAdd x')) = _`. Rewrite using `[liftSurj_apply]`.
+
+Use `show g x (qhom N p (Multiplicative.ofAdd x')) = _`. Rewrite using `[hg]`. Both sides reduce to the same expression.
+-/
 theorem exists_bichar {E : Type} [Field E] [NumberField E] (N p n : ℕ) [NeZero n] (hn : p ∣ n) {U : Type} [CommGroup U]
     (ζ : U) (hζ : ζ ^ p = 1) (e : (Fin N → 𝓞 E) →+ (Fin N → 𝓞 E) →+ ZMod n) :
     ∃ β : TorsT E N p →* TorsT E N p →* U, ∀ x x', β (qmk p x) (qmk p x') = ζ ^ (e x x').val := by

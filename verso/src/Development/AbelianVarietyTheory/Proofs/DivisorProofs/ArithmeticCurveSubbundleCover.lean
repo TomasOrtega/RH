@@ -19,6 +19,9 @@ open GlobalTheory.Twist (resM resM_resM resM_self resM_smul app_resM germ_resM)
 
 namespace GlobalTheory.CorankOne
 
+/- English proof (translation)
+Rewrite using `[fnMap_fnOf j hη h (e h'), ← fnOf_resG e h']`. Both sides reduce to the same expression.
+-/
 theorem fnMap_fnOf_appLE {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (j : Y ⟶ X)
     (hη : j (genericPoint Y) ⤳ genericPoint X) {U : X.Opens} {V : Y.Opens} (e : V ≤ j ⁻¹ᵁ U)
     (h : genericPoint X ∈ U) (h' : genericPoint Y ∈ V) (s : Γ(X, U)) :
@@ -26,6 +29,29 @@ theorem fnMap_fnOf_appLE {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (j : Y
   rw [fnMap_fnOf j hη h (e h'), ← fnOf_resG e h']
   rfl
 
+/- English proof (translation)
+Use `h.isNoetherian` as an intermediate fact. Establish `: Nonempty U` using `⟨⟨_, hU⟩⟩`. Establish `hP : IsProjOver (PSpace.str k N)` using `⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩`. Establish `: IsProper (PSpace.str k N)` using `CommonModel.isProper_of_isProjOver hP`. Establish `: IsDominant U.ι` using `⟨(dense_iff_closure_eq.2 (genericPoint_spec X)).mono (Set.singleton_subset_iff.2 ⟨_, genericPoint_eq_of_isOpenImmersion U.ι⟩)⟩`.
+
+Establish `w` using `(ProjSpace.ofCoords_str p U i₀ r).symm`. Choose the witnesses or unpack the hypotheses as in `⟨Y, ρ, q, c, _, _, _, _, hc₁, hc₂, hproj⟩ : ∃ (Y : Scheme.{0}) (ρ : Y ⟶ X) (q : Y ⟶ PSpace k N) (c : U.toScheme ⟶ Y) (_ : IsIntegral Y) (_ : IsOpenImmersion c) (_ : IsProper ρ) (_ : Surjective ρ), c ≫ ρ = U.ι ∧ c ≫ q = ProjSpace.ofCoords p U i₀ r ∧ IsProjOver (ρ ≫ p) := by`. Use `⟨graphClosure p _ U.ι _ w, graphClosure.fst _ _ _ _ _, graphClosure.snd _ _ _ _ _, graphClosure.incl _ _ _ _ _, inferInstance, inferInstance, inferInstance, inferInstance, graphClosure.incl_fst _ _ _ _ _, graphClosure.incl_snd _ _ _ _ _, ?_⟩` and prove the remaining obligations. Take `⟨M, j, _, hj⟩` from `ProjSpace.isProjOver_pullback h.isProjOver hP`. Conclude with `⟨M, graphClosure.ι _ _ _ _ w ≫ j, inferInstance, by`.
+
+Rewrite using `[Category.assoc, hj, ← graphClosure.ι_fst, Category.assoc]⟩`. Establish `hcη : c (genericPoint U) = genericPoint Y` using `genericPoint_eq_of_isOpenImmersion c`. Establish `hη : ρ (genericPoint Y) = genericPoint X`. Rewrite using `[← hcη, ← Scheme.Hom.comp_apply, hc₁]`. Conclude with `genericPoint_eq_of_isOpenImmersion U.ι`.
+
+Establish `hdeg : ρ.residueDegree (genericPoint Y) ≠ 0`. Establish `e` using `CurveDegreesCompare.residueDegree_comp c ρ (genericPoint U)`. Rewrite `e` using `[hc₁, CurveDegreesCompare.residueDegree_of_isOpenImmersion, hcη]`. Conclude with `left_ne_zero_of_mul_eq_one e.symm`. Establish `hch : CharZero Γ(Y, ⊤)`.
+
+Use `h.charZero` as an intermediate fact. Use `charZero_of_injective_ringHom (f := (ρ.appLE ⊤ ⊤ le_rfl).hom) fun a b e => ?_` and prove the remaining obligations. Apply `fnOf_injective ⊤ trivial` to reduce the goal to its premises. Apply `(fnMap ρ (specializes_of_eq hη)).injective` to reduce the goal to its premises. Rewrite using `[fnMap_fnOf_appLE ρ _ (U := ⊤) (V := ⊤) le_rfl trivial trivial, fnMap_fnOf_appLE ρ _ (U := ⊤) (V := ⊤) le_rfl trivial trivial, e]`.
+
+Use `⟨Y, ρ, inferInstance, hη, ⟨h.1, h.2, inferInstance, hproj, (flat_int_iff_charZero _).2 hch, le_antisymm ((ProperCover.dim_le_of_residueDegree_pos ρ hη (Nat.pos_of_ne_zero hdeg)).trans h.dim_eq.le) (h.dim_eq.ge.trans (PosBaseChange.dim_le_of_isClosedMap ρ.isClosedMap ρ.surjective) …` and prove the remaining obligations. Establish `h₁ : ⊤ ≤ (c ≫ q) ⁻¹ᵁ ProjSpace.chart k N i₀` using `hc₂ ▸ ProjSpace.ofCoords_preimage_top p U i₀ r`. Establish `hV : genericPoint Y ∈ q ⁻¹ᵁ ProjSpace.chart k N i₀` using `hcη ▸ h₁ (Set.mem_univ (genericPoint U))`. Establish `key (j) : fnOf _ hV (ProjSpace.pullRatio q _ i₀ le_rfl j) = fnMap ρ (specializes_of_eq hη) (fnOf U hU (r j))`. Establish `h₂ : ⊤ ≤ c ⁻¹ᵁ ρ ⁻¹ᵁ U`.
+
+Rewrite using `[← Scheme.Hom.comp_preimage, hc₁]`. Conclude with `U.ι_preimage_self.ge`. Establish `h₃ : ⊤ ≤ c ⁻¹ᵁ q ⁻¹ᵁ ProjSpace.chart k N i₀` using `h₁`. Establish `hU' : genericPoint Y ∈ ρ ⁻¹ᵁ U` using `show ρ _ ∈ U from hη ▸ hU`. Apply `(fnMap c (specializes_of_eq hcη)).injective` to reduce the goal to its premises.
+
+Rewrite using `[fnMap_fnOf_appLE ρ _ le_rfl hU hU', fnMap_fnOf_appLE c _ (V := ⊤) h₃ hV trivial, fnMap_fnOf_appLE c _ (V := ⊤) h₂ hU' trivial, ProjSpace.appLE_pullRatio, ProjSpace.appLE_appLE]`. Use `congr 1`. Establish `e₁ : c ≫ q = 𝟙 _ ≫ ProjSpace.ofCoords p U i₀ r` using `by rw [hc₂, Category.id_comp]`. Establish `e₂ : c ≫ ρ = 𝟙 _ ≫ U.ι` using `by rw [hc₁, Category.id_comp]`. Rewrite using `[ProjSpace.pullRatio_of_eq e₁ _ (e₁ ▸ h₁), ProjSpace.appLE_of_eq e₂ _ _ _ (e₂ ▸ h₂)]`.
+
+Conclude with `ProjSpace.pullRatio_comp_ofCoords p U i₀ hr _ _ _ _ j`. Take `⟨a, ha⟩` from `ProjSpace.exists_mem_chart k N (q y)`. Establish `hy : y ∈ q ⁻¹ᵁ ProjSpace.chart k N a` using `ha`. Establish `hW` using `memInf hV (gen_mem hy)`. Establish `mul (i j l : Fin (N + 1)) (hi : _ ≤ q ⁻¹ᵁ ProjSpace.chart k N i) (hj : _ ≤ q ⁻¹ᵁ ProjSpace.chart k N j)` using `congrArg (fnOf _ hW) (ProjSpace.pullRatio_mul_pullRatio (φ := q) (hi := hi) (hj := hj) (k := l))`.
+
+Use `⟨a, fun h0 => ?_, fun j => ⟨_, regAt_fnOf hy (gen_mem hy) (ProjSpace.pullRatio q _ a le_rfl j), ?_⟩⟩` and prove the remaining obligations. Establish `e` using `mul i₀ a i₀ inf_le_left inf_le_right`. Rewrite `e` using `[ProjSpace.pullRatio_self, map_one, map_mul, ← ProjSpace.resG_pullRatio (hi := le_rfl) inf_le_left, fnOf_resG, key, h0, map_zero, zero_mul]`. Conclude with `zero_ne_one e`. Establish `e` using `mul i₀ a j inf_le_left inf_le_right`.
+
+Rewrite `e` using `[map_mul, ← ProjSpace.resG_pullRatio (hi := le_rfl) inf_le_left, ← ProjSpace.resG_pullRatio (hi := le_rfl) inf_le_right, ← ProjSpace.resG_pullRatio (hi := le_rfl) inf_le_left, fnOf_resG, fnOf_resG, fnOf_resG, key, key]`. Rewrite using `[mul_comm, e]`.
+-/
 theorem exists_modification_sections {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
     (h : IsArithVar p D) {U : X.Opens} (hU : genericPoint X ∈ U) {N : ℕ} (r : Fin (N + 1) → Γ(X, U))
     (i₀ : Fin (N + 1)) (hr : r i₀ = 1) :
@@ -100,6 +126,19 @@ theorem exists_modification_sections {k : Type} [CommRing k] {X : Scheme.{0}} [I
       ← ProjSpace.resG_pullRatio (hi := le_rfl) inf_le_left, fnOf_resG, fnOf_resG, fnOf_resG, key, key] at e
     rw [mul_comm, e]
 
+/- English proof (translation)
+Use `Fintype.ofFinite A` as an intermediate fact. Use `choose σ₀ hσ₀ using hw`. Establish `: Nonempty (A → ι)` using `⟨σ₀⟩`. Choose the witnesses or unpack the hypotheses as in `⟨N, ⟨ε⟩⟩ : ∃ N, Nonempty (Fin (N + 1) ≃ (A → ι)) := by`. Take `⟨N, hN⟩` from `Nat.exists_eq_succ_of_ne_zero (Nat.card_pos (α := A → ι)).ne'`.
+
+Conclude with `⟨N, ⟨(Finite.equivFinOfCardEq hN).symm⟩⟩`. Set `P : (A → ι) → X.functionField` to `fun σ => ∏ α, w α (σ α)`. Establish `hP₀ : P σ₀ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun α _ => hσ₀ α`. Take `⟨U, hU, hr⟩` from `InvertIdeal.exists_common_open (x := genericPoint X) fun i => regAt_genericPoint (P (ε i) / P σ₀)`. Use `choose r hr using hr`.
+
+Take `⟨Y, ρ, _, hη, h₁, h₂, h₃⟩` from `exists_modification_sections h hU r (ε.symm σ₀) (fnOf_injective U hU (by rw [map_one]; refine (hr _).trans ?_; rw [ε.apply_symm_apply, div_self hP₀]))`. Use `⟨Y, ρ, inferInstance, hη, h₁, h₂, fun y α => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hb⟩` from `h₃ y`. Establish `hr' (i) : fnOf U hU (r i) = P (ε i) / P σ₀` using `hr i`. Rewrite `ha` using `[hr']`.
+
+Establish `hPa : P (ε a) ≠ 0` using `left_ne_zero_of_mul (div_eq_mul_inv (P (ε a)) _ ▸ ha)`. Use `⟨ε a α, Finset.prod_ne_zero_iff.1 hPa α (Finset.mem_univ _), fun j => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, e⟩` from `hb (ε.symm (Function.update (ε a) α j))`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Establish `e₁ : P (ε a) = w α (ε a α) * ∏ β ∈ Finset.univ.erase α, w β (ε a β)` using `(Finset.mul_prod_erase _ (fun β => w β (ε a β)) (Finset.mem_univ α)).symm`.
+
+Establish `e₂ : P (Function.update (ε a) α j) = w α j * ∏ β ∈ Finset.univ.erase α, w β (ε a β)`. Use `(Finset.mul_prod_erase _ (fun β => w β (Function.update (ε a) α j β)) (Finset.mem_univ α)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[Function.update_self]`. Conclude with `congrArg _ (Finset.prod_congr rfl fun β hβ => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hβ)])`. Rewrite `ha` using `[e₁, mul_div_assoc]`.
+
+Rewrite `e` using `[hr', hr', ε.apply_symm_apply, e₁, e₂, mul_div_assoc, mul_div_assoc, map_mul, map_mul, ← mul_assoc]`. Conclude with `mul_right_cancel₀ ((map_ne_zero _).2 (right_ne_zero_of_mul ha)) e`.
+-/
 theorem exists_modification {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
     (h : IsArithVar p D) {A ι : Type} [Finite A] [Finite ι] (w : A → ι → X.functionField)
     (hw : ∀ α, ∃ i, w α i ≠ 0) :
@@ -139,6 +178,19 @@ theorem exists_modification {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral
   rw [hr', hr', ε.apply_symm_apply, e₁, e₂, mul_div_assoc, mul_div_assoc, map_mul, map_mul, ← mul_assoc] at e
   exact mul_right_cancel₀ ((map_ne_zero _).2 (right_ne_zero_of_mul ha)) e
 
+/- English proof (translation)
+Introduce `y`. Take `⟨U, hy, e, i, he, hi, hg⟩` from `H y`. Use `choose g hg hg' using hg`. Take `⟨W, hW, c⟩` from `InvertIdeal.exists_common_open hg`. Use `choose c hc using c`.
+
+Set `N` to `Sub.ofGeneric (LinearMap.ker φ)`. Set `π` to `cokernel.π N.incl`. Use `⟨U ⊓ W, fun _ => π.app _ (resM F inf_le_left (e i)), ⟨hy, hW⟩, isFrame_of_forall_exists fun V hV x hx => ?_⟩` and prove the remaining obligations. Take `⟨T, hT, hxT, hle⟩` from `QCoh.exists_affine_mem_le x hx`. Establish `hTU : T ≤ U` using `(hle.trans hV).trans inf_le_left`.
+
+Establish `hTW : T ≤ W` using `(hle.trans hV).trans inf_le_right`. Establish `lc (a : Fin 1 → Γ(Y, T)) : Fintype.linearCombination Γ(Y, T) (fun _ : Fin 1 => resM (cokernel N.incl) (hle.trans hV) (π.app _ (resM F inf_le_left (e i)))) a = π.app T (a 0 • resM F hTU (e i))`. Rewrite using `[Fintype.linearCombination_apply, Fin.sum_univ_one, ← app_resM, resM_resM, Scheme.Modules.Hom.app_smul]`. Establish `val (a : Γ(Y, T)) (j : ι) : φ (F.presheaf.germ T _ (gen_mem hxT) (a • resM F hTU (e j))) = fnOf T (gen_mem hxT) a * φ (F.presheaf.germ U _ (gen_mem hy) (e j))`. Rewrite using `[QCoh.germ_smul, germ_resM]`.
+
+Conclude with `φ.map_smul _ _`. Use `⟨T, hle, hxT, (injective_iff_map_eq_zero _).2 fun a ha => ?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[lc, N.cokernel_π_app_eq_zero_iff]`. Establish `h0` using `(val _ _).symm.trans (ha (gen_mem hxT))`. Use function extensionality and compare the values at `l`.
+
+Take `rfl : l = 0` from `Subsingleton.elim _ _`. Conclude with `fnOf_injective T (gen_mem hxT) (((mul_eq_zero.1 h0).resolve_right hi).trans (map_zero _).symm)`. Take `⟨t, rfl⟩` from `QCoh.surjective_app_of_epi π hT s`. Take `⟨a, rfl⟩` from `(he T hTU).2 t`. Use `⟨fun _ => ∑ j, a j * resG Y hTW (c j), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[lc, ← sub_eq_zero, ← map_sub, N.cokernel_π_app_eq_zero_iff]`. Introduce `hη`. Rewrite using `[LinearMap.mem_ker, map_sub, map_sub, val, Fintype.linearCombination_apply, map_sum, map_sum, map_sum, Finset.sum_mul, sub_eq_zero]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[val, map_mul, fnOf_resG, hc, mul_assoc, hg']`.
+-/
 theorem isVB_cokernel_ofGeneric {Y : Scheme.{0}} [IsIntegral Y] {F : Y.Modules} [F.IsQuasicoherent] {ι : Type}
     [Fintype ι] (φ : genStalk F →ₗ[Y.functionField] Y.functionField)
     (H : ∀ y : Y, ∃ (U : Y.Opens) (hy : y ∈ U) (e : ι → Γ(F, U)) (i : ι), IsFrame e ∧
@@ -181,6 +233,13 @@ theorem isVB_cokernel_ofGeneric {Y : Scheme.{0}} [IsIntegral Y] {F : Y.Modules} 
     refine Finset.sum_congr rfl fun j _ => ?_
     rw [val, map_mul, fnOf_resG, hc, mul_assoc, hg']
 
+/- English proof (translation)
+Establish `hT` using `memInf hU hV`. Establish `hT' : genericPoint Y ∈ ρ ⁻¹ᵁ (U ⊓ V)` using `⟨hU', hV'⟩`. Take `⟨a, ha⟩` from `(he (U ⊓ V) inf_le_left).2 (resM E inf_le_right s)`. Rewrite `ha` using `[Fintype.linearCombination_apply]`. Establish `e₁ : E.presheaf.germ V _ hV s = ∑ j, X.presheaf.germ _ _ hT (a j) • he.stalkBasis _ hU j`.
+
+Rewrite using `[← germ_resM (inf_le_right : U ⊓ V ≤ V) hT, ← ha]`. Simplify using `only [map_sum, QCoh.germ_smul, germ_resM, IsFrame.stalkBasis_apply]`. Establish `pr {T : X.Opens} (h : U ⊓ V ≤ T) (t : Γ(E, T)) : QCoh.pullbackSections ρ E (le_refl (ρ ⁻¹ᵁ (U ⊓ V))) (resM E h t) = resM _ (ρ.preimage_mono h) (QCoh.pullbackSections ρ E (le_refl (ρ ⁻¹ᵁ T)) t)` using `(QCoh.pullbackSections_res ρ E _ h t).trans (QCoh.res_pullbackSections ρ E _ _ t).symm`. Establish `e₂ : ((Scheme.Modules.pullback ρ).obj E).presheaf.germ _ _ hV' (QCoh.pullbackSections ρ E (le_refl (ρ ⁻¹ᵁ V)) s) = ∑ j, Y.presheaf.germ _ _ hT' (ρ.appLE _ _ le_rfl (a j)) • (he.pullback ρ).stalkBasis _ hU' j`. Rewrite using `[← germ_resM (ρ.preimage_mono (inf_le_right : U ⊓ V ≤ V)) hT', ← pr inf_le_right, ← ha, map_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[QCoh.pullbackSections_smul, QCoh.germ_smul, pr, germ_resM, IsFrame.stalkBasis_apply]`. Rewrite using `[e₁, e₂, Module.Basis.coord_apply, Module.Basis.coord_apply, Module.Basis.repr_sum_self, Module.Basis.repr_sum_self]`. Conclude with `(fnMap_fnOf_appLE ρ _ le_rfl hT hT' (a i)).symm`.
+-/
 theorem coord_pullback {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (ρ : Y ⟶ X)
     (hη : ρ (genericPoint Y) = genericPoint X) {E : X.Modules} [E.IsQuasicoherent] {ι : Type} [Fintype ι]
     {U : X.Opens} (hU : genericPoint X ∈ U) (hU' : genericPoint Y ∈ ρ ⁻¹ᵁ U) {e : ι → Γ(E, U)} (he : IsFrame e)
@@ -210,6 +269,19 @@ theorem coord_pullback {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (ρ : Y 
     Module.Basis.repr_sum_self]
   exact (fnMap_fnOf_appLE ρ _ le_rfl hT hT' (a i)).symm
 
+/- English proof (translation)
+Use `h.isIntegral` as an intermediate fact. Use `h.isNoetherian` as an intermediate fact. Use `hE.isQuasicoherent` as an intermediate fact. Use `choose U e hx he using id hE`. Take `⟨T, hT⟩` from `exists_finset_iSup_eq_top U hx`.
+
+Set `φ` to `((he _).stalkBasis _ (hx (genericPoint X))).coord 0`. Establish `hφ : φ ≠ 0` using `fun h0 => by`. Use `LinearMap.congr_fun h0 ((he _).stalkBasis _ (hx (genericPoint X)) 0)` as an intermediate fact. Rewrite `this` using `[Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_eq_same]`. Conclude with `one_ne_zero this`.
+
+Take `⟨Y, ρ, _, hη, h₁, h₂, h₃⟩` from `exists_modification h (fun (α : T) j => φ (E.presheaf.germ _ _ (gen_mem (hx α)) (e α j))) fun α => by by_contra! H`. Conclude with `hφ (((he α).stalkBasis _ (gen_mem (hx α))).ext fun j => by`. Rewrite using `[IsFrame.stalkBasis_apply]`. Conclude with `H j)`. Establish `hF` using `hE.pullback ρ`.
+
+Use `hF.isQuasicoherent` as an intermediate fact. Establish `hU' : genericPoint Y ∈ ρ ⁻¹ᵁ U (genericPoint X)` using `show ρ _ ∈ U _ from hη ▸ hx _`. Set `ψ` to `(((he _).pullback ρ).stalkBasis _ hU').coord 0`. Establish `hQ` using `isVB_cokernel_ofGeneric (F := (Scheme.Modules.pullback ρ).obj E) ψ fun y => by`. Take `⟨α, hα⟩` from `Opens.mem_iSup.1 (hT.ge (Set.mem_univ (ρ y)))`.
+
+Take `⟨i, hi, hj⟩` from `h₃ y α`. Establish `hy : y ∈ ρ ⁻¹ᵁ U α` using `hα`. Establish `c (j)` using `coord_pullback ρ hη (hx _) hU' (he _) 0 (gen_mem (hx α)) (gen_mem hy) (e α j)`. Use `⟨_, hy, _, i, (he α).pullback ρ, fun h0 => hi ?_, fun j => ?_⟩` and prove the remaining obligations. Conclude with `(map_eq_zero _).1 ((c i).symm.trans h0)`.
+
+Take `⟨g, hg, e⟩` from `hj j`. Conclude with `⟨g, hg, ((congrArg (g * ·) (c i)).trans e).trans (c j).symm⟩`. Establish `hS : (ShortComplex.mk _ (cokernel.π (Sub.ofGeneric (LinearMap.ker ψ)).incl) (cokernel.condition _)).ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`. Conclude with `⟨Y, ρ, _, (Sub.ofGeneric (LinearMap.ker ψ)).incl, h₁, ⟨hη, h₂⟩, ⟨inferInstance, 1, hQ⟩, isVB_X₁_of_shortExact Y _ r 1 hS hF hQ⟩`.
+-/
 theorem exists_modification_subbundle {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ}
     {E : X.Modules} {r : ℕ} (h : IsArithVar p D) (hE : IsVB E (r + 1)) :
     ∃ (Y : Scheme.{0}) (ρ : Y ⟶ X) (K : Y.Modules) (i : K ⟶ (Scheme.Modules.pullback ρ).obj E),
@@ -248,6 +320,9 @@ theorem exists_modification_subbundle {k : Type} [CommRing k] {X : Scheme.{0}} {
   exact ⟨Y, ρ, _, (Sub.ofGeneric (LinearMap.ker ψ)).incl, h₁, ⟨hη, h₂⟩, ⟨inferInstance, 1, hQ⟩,
     isVB_X₁_of_shortExact Y _ r 1 hS hF hQ⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ h hE` and use `exists_modification_subbundle h hE`.
+-/
 theorem exists_modification_subbundle_surface : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     (E : X.Modules) (r : ℕ), IsArithVar p 1 → IsVB E (r + 1) → ∃ (Y : Scheme.{0}) (ρ : Y ⟶ X) (K : Y.Modules)
       (i : K ⟶ (Scheme.Modules.pullback ρ).obj E), IsArithVar (ρ ≫ p) 1 ∧ (∀ [IsIntegral Y] [IsIntegral X],

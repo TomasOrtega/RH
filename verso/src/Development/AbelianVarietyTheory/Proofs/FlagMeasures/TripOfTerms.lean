@@ -16,6 +16,23 @@ variable {K V W : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] 
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
   {H : HermSpace K V} {r : ℕ}
 
+/- English proof (translation)
+Establish `hg0 : (g : K) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hdiv : ∀ x : ↥(Λ ⊓ rs (𝓞 K) F.X), IsIntegral ℤ ((g : K)⁻¹ * H.B x l)`. Introduce and unpack `⟨x, hxΛ, hxS⟩`. Take `⟨x', -, h1, h2⟩` from `h (Fin.last r) 0 x hxΛ (by`. Rewrite using `[zero_smul, sub_zero]`.
+
+Conclude with `hxS)`. Take `⟨n, hn, hxn⟩` from `(mem_smulLat g Λ _).1 h2`. Rewrite `h1` using `[zero_smul, sub_zero]`. Establish `a1` using `hp x' h1`. Establish `a5 : H.B (x' - x) l = g * H.B n l` using `by rw [hxn]; simp`.
+
+Take `⟨c, hc⟩` from `integral_of_unimod hU hn hl`. Establish `: (g : K)⁻¹ * H.B x l = ((-c : 𝓞 K) : K)`. Rewrite using `[inv_mul_eq_iff_eq_mul₀ hg0]`. Express the relevant statement in the definitionally equal form `_ = (g : K) * (-(c : K))`. Rewrite using `[hc]`.
+
+Simplify using `only [map_sub, LinearMap.sub_apply] at a5`. Take the linear combination `a1 - a5`. Use `show IsIntegral ℤ ((g : K)⁻¹ * H.B x l)`. Rewrite using `[this]`. Conclude with `(-c).isIntegral_coe`.
+
+Set `φ : ↥(Λ ⊓ rs (𝓞 K) F.X) →ₗ[𝓞 K] 𝓞 K` to `{ toFun := fun x => ⟨(g : K)⁻¹ * H.B x l, hdiv x⟩ map_add' := fun a b => by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show (g : K)⁻¹ * H.B ((a : V) + b) l = (g : K)⁻¹ * H.B a l + (g : K)⁻¹ * H.B b l`. Simplify using `[mul_add]`. Use the proof step `map_smul' := fun a b => by`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show (g : K)⁻¹ * H.B (a • (b : V)) l = algebraMap (𝓞 K) K a * ((g : K)⁻¹ * H.B b l)`. Rewrite using `[← algebraMap_smul K a, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Use `ring }`. Take `⟨m, hm, hφ⟩` from `GlobalTheory.UnimodQuot.exists_lattice_rep H hU F.X φ`.
+
+Use `⟨m, hm, (mem_perp_iff H _ _).2 fun u hu => orth_symm ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `GlobalTheory.UnimodQuot.exists_smul_mem ((isLatMod_top_bot_iff Λ).1 hU.1) u`. Establish `hs0 : algebraMap (𝓞 K) K s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Establish `hs' : algebraMap (𝓞 K) K s • u ∈ Λ` using `by rw [algebraMap_smul]; exact hs`. Establish `e : H.B (algebraMap (𝓞 K) K s • u) m = (g : K)⁻¹ * H.B (algebraMap (𝓞 K) K s • u) l` using `hφ ⟨_, hs', F.X.smul_mem _ hu⟩`.
+
+Rewrite `e` using `[eq_inv_mul_iff_mul_eq₀ hg0]`. Apply `mul_left_cancel₀ hs0` to reduce the goal to its premises. Simplify using `only [map_sub, map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, map_natCast, smul_eq_mul] at e ⊢`. Take the linear combination `-e`.
+-/
 theorem perp_lift [FiniteDimensional K V] {F G : FlagD H r} {Λ : Submodule (𝓞 K) V} {g : ℕ} (hg : 1 ≤ g)
     (hU : IsUnimod H Λ) (h : IsAdm G F Λ (g : 𝓞 K)) {l : V} (hl : l ∈ Λ) (hp : ∀ x ∈ G.X, H.B x l = 0) :
     ∃ m ∈ Λ, l - (g : K) • m ∈ perp H F.X := by
@@ -63,6 +80,11 @@ theorem perp_lift [FiniteDimensional K V] {F G : FlagD H r} {Λ : Submodule (�
   linear_combination -e
 
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Establish `: G.X = F.X.map (γ : V →ₗ[K] V)`. Unfold `FlagD.X FlagD.Xa`. Rewrite using `[Submodule.map_span, Set.image_image]`. Simplify using `only [hγ]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, Submodule.mem_map_equiv]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_X_iff {F G : FlagD H r} {γ : V ≃ₗ[K] V} (hγ : ∀ a, G.e a = γ (F.e a)) (x : V) :
     γ x ∈ G.X ↔ x ∈ F.X := by
   have : G.X = F.X.map (γ : V →ₗ[K] V) := by
@@ -74,6 +96,9 @@ theorem mem_X_iff {F G : FlagD H r} {γ : V ≃ₗ[K] V} (hγ : ∀ a, G.e a = �
   simp
 
 omit [NumberField K] [StarRing K] in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩`. Establish `: y = x` using `γ.injective e`. Conclude with `this ▸ hy`. Conclude with `fun h => ⟨x, h, rfl⟩`.
+-/
 theorem mem_smul_iff (γ : V ≃ₗ[K] V) (Λ : Submodule (𝓞 K) V) (x : V) : γ x ∈ γ • Λ ↔ x ∈ Λ := by
   constructor
   · rintro ⟨y, hy, e⟩
@@ -83,6 +108,25 @@ theorem mem_smul_iff (γ : V ≃ₗ[K] V) (Λ : Submodule (𝓞 K) V) (x : V) : 
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Take `⟨y, hy, hy1, hy2⟩` from `hh w`. Establish `hy' : ∀ u ∈ V0 F G, H.B y u = 0` using `(mem_perp_iff H _ _).1 hy`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Establish `hm' : (e (h w), e v) ∈ iotaGraph F G (γ • Λ') (g : 𝓞 K) ⊔ (rs (𝓞 K) F.X).prod (rs (𝓞 K) F.X)` using `hm`.
+
+Take `⟨⟨a, b⟩, hab, ⟨s, t⟩, ⟨hs, ht⟩, hst⟩` from `Submodule.mem_sup.1 hm'`. Take `⟨e1, e2⟩` from `Prod.mk.inj hst`. Establish `hs : s ∈ F.X` using `hs`. Establish `ht : t ∈ F.X` using `ht`. Take `⟨ha, -, l, hl, m, hm, h1, h2⟩` from `(mem_iota F G _ g a b).1 hab`.
+
+Establish `ha'` using `((mem_perp_lattice_flag_iff G F _ a).1 ha).1`. Rewrite `ha'` using `[jointSpan_comm]`. Establish `k1 : y - a ∈ G.X`. Use `hI _ ?_ fun u hu => by simp [hy' u hu, ha' u hu]` and prove the remaining obligations. Use `F.X.add_mem hy1 hs` as an intermediate fact.
+
+Rewrite `this` using `[← e1]`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `⟨γ.symm l, by rw [← mem_smul_iff γ]; simpa using hl, m, hm, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mem_X_iff hγ, map_sub, LinearEquiv.apply_symm_apply]`.
+
+Use `G.X.sub_mem (G.X.add_mem k1 h1) hy2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Rewrite using `[LinearEquiv.apply_symm_apply, ← e2]`. Use `F.X.add_mem h2 ht` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨x, hx, m, hm, h1, h2⟩`. Establish `hx'` using `(mem_smul_iff γ Λ' x).2 hx`. Take `⟨s, hs, hb⟩` from `hlift (e v) ((he.2 _).2 (Submodule.mem_sup_left ⟨v, rfl⟩))`.
+
+Establish `k1 : y - γ x ∈ G.X`. Use `G.X.add_mem hy2 ((mem_X_iff hγ _).2 h1)` as an intermediate fact. Rewrite `this` using `[map_sub]`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+
+Establish `k2 : e v - s - (γ x + (g : K) • m) ∈ F.X`. Use `F.X.sub_mem h2 hs` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `show (e (h w), e v) ∈ iotaGraph F G (γ • Λ') (g : 𝓞 K) ⊔ (rs (𝓞 K) F.X).prod (rs (𝓞 K) F.X)`.
+
+Use `Submodule.mem_sup.2 ⟨(y, e v - s), (mem_iota F G _ g _ _).2 ⟨?_, ?_, γ x, hx', m, hm, k1, k2⟩, (-(y - e (h w)), s), ⟨F.X.neg_mem hy1, hs⟩, by simp⟩` and prove the remaining obligations. Conclude with `(mem_perp_lattice_flag_iff G F _ _).2 ⟨by rw [jointSpan_comm]; exact hy', _, hx', k1⟩`. Conclude with `(mem_perp_lattice_flag_iff F G _ _).2 ⟨fun u hu => orth_symm (hb u hu), _, Submodule.add_mem _ hx' (gsmul_mem g hm), k2⟩`.
+-/
 theorem mem_graph {F G : FlagD H r} {HW : HermSpace K W} {e : W →ₗ[K] V} (he : IsEmb F HW e)
     (hI : ∀ v ∈ F.X, (∀ w ∈ V0 F G, H.B v w = 0) → v ∈ G.X)
     (hlift : ∀ w : V, (∀ a : Fin (r + 1), H.B (F.e a) w = 0) → ∃ x ∈ F.X, ∀ v ∈ V0 F G, H.B v (w - x) = 0)
@@ -131,6 +175,13 @@ theorem mem_graph {F G : FlagD H r} {HW : HermSpace K W} {e : W →ₗ[K] V} (he
     · exact (mem_perp_lattice_flag_iff F G _ _).2 ⟨fun u hu => orth_symm (hb u hu), _,
         Submodule.add_mem _ hx' (gsmul_mem g hm), k2⟩
 
+/- English proof (translation)
+Take `⟨-, h, h'⟩` from `hN`. Apply the tactic sequence `obtain ⟨-, -, -, h1, -, -, -, hl, -⟩ := (GlobalTheory.DegCnt.NF.geometry K V H hK r N).1`. Rewrite `h1`, `hl` using `[sitesCommonSpace_v0_eq_Vp h h']`. Rewrite `hl` using `[x_eq h]`. Use `⟨fun v hv hw => ?_, fun w hw => hl w fun a => ?_⟩` and prove the remaining obligations.
+
+Use `((h1 v (isotropicSpan_le_jointSpan_left F G hv)).1 hw).2` as an intermediate fact. Rewrite `this` using `[x_eq h']`. Then use the resulting hypothesis. Establish `k : N.F.e a - F.e a ∈ F.X` using `xa_mono F (Nat.le_of_lt_succ a.2) (h a)`. Use `orth_of_mem_X F (fun b => hw b.castSucc) k` as an intermediate fact. Rewrite `this` using `[map_sub, LinearMap.sub_apply, hw a, sub_zero]`.
+
+Conclude with `this`.
+-/
 theorem geom [FiniteDimensional K V] (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {F G : FlagD H r} {𝔡 : Ideal (𝓞 K)} {N : NF H r}
     (hN : Adapt F G 𝔡 N) :
     (∀ v ∈ F.X, (∀ w ∈ V0 F G, H.B v w = 0) → v ∈ G.X) ∧
@@ -152,6 +203,35 @@ end GlobalTheory.DegAsm.TermPair
 namespace GlobalTheory.DegAsm
 open GlobalTheory.ModIdent TermPair
 
+/- English proof (translation)
+Introduce `K V W _ _ _ _ _ _ _ _ _ _ _ _ _ H HW e hK r F G G' 𝔡 N N' g Λ Λ' γ γ' h h' hg he hN hN' hT hT' hγ hγ' hE hΛ hΛ' hh hh' hβ`. Take `⟨k, hk, -, hku, hkl⟩` from `GlobalTheory.T.exists_definiteSpace_isometry_of_adapted_pair K V W H HW e hK r F G 𝔡 N γ he hN hγ fun a => (hE a).1`. Take `⟨k', hk', -, hku', hkl'⟩` from `GlobalTheory.T.exists_definiteSpace_isometry_of_adapted_pair K V W H HW e hK r F G' 𝔡 N' γ' he hN' hγ' fun a => (hE a).2`. Take `rfl` from `hku h hh`. Take `rfl` from `hku' h' hh'`.
+
+Establish `d1` using `hkl g Λ'`. Establish `d2` using `hkl' g Λ'`. Rewrite `d1` using `[hΛ]`. Rewrite `d2` using `[hΛ']`. Take `⟨⟨hU, hF, hG⟩, hA⟩` from `((adapt_invariants K V H hK r F G 𝔡 N hN).2.2.2.2.2.2.2.2 g Λ).1.1 hT`.
+
+Establish `hA' : IsAdm G F Λ (g : 𝓞 K)`. Use `isAdm_symm (fun a => ?_) hA` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun b => ?_) a` and prove the remaining obligations. Rewrite using `[hF.2, hG.2]`. Rewrite using `[hF.1, hG.1]`.
+
+Establish `key : ∀ w : W, ∀ x ∈ Λ', e w - x ∈ F.X → ∃ n ∈ Λ, γ' x - γ x - (g : K) • n ∈ F.X`. Introduce `w x hx hw`. Establish `hxΛ : γ x ∈ Λ` using `hΛ ▸ (mem_smul_iff γ Λ' x).2 hx`. Establish `hp : ∀ u ∈ G.X, H.B u (γ x) = 0`. Introduce `u hu`.
+
+Take `⟨u, rfl⟩` from `γ.surjective u`. Rewrite `hu` using `[mem_X_iff fun a => (hE a).1]`. Rewrite using `[(mem_isomGrp H γ).1 hγ]`. Establish `a1` using `X_iso F hu hw`. Establish `a2` using `orth_of_mem_X F (fun b => (he.2 (e w)).2 (Submodule.mem_sup_left ⟨w, rfl⟩) b.castSucc) hu`.
+
+Rewrite `a1` using `[map_sub, a2]`. Simplify using `using a1`. Take `⟨m, hm, hmp⟩` from `perp_lift hg hU hA' hxΛ hp`. Take `⟨s, hs, t, ⟨-, ht⟩, hst⟩` from `Submodule.mem_sup.1 (hβ _ ⟨Λ.sub_mem hxΛ (gsmul_mem g hm), hmp⟩)`. Take `⟨n, hn, rfl⟩` from `(mem_smulLat g Λ s).1 hs`.
+
+Establish `hm' : γ' (γ.symm m) ∈ Λ`. Rewrite using `[← hΛ', mem_smul_iff, ← mem_smul_iff γ, hΛ]`. Simplify using `using hm`. Use `⟨n + γ' (γ.symm m) - m, Λ.sub_mem (Λ.add_mem hn hm') hm, ?_⟩` and prove the remaining obligations. Establish `ht : t ∈ F.X` using `ht`.
+
+Use `ht using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_sub, map_smul, LinearEquiv.symm_apply_apply] at hst`. Rewrite using `[smul_sub, smul_add, eq_sub_of_add_eq' hst]`. Normalize the expressions using the abelian group laws. Use `⟨(GlobalTheory.T.embeddedDatum_of_term_definiteSpace K V W H HW e hK r F G 𝔡 N g Λ hg he hN hT).1, (GlobalTheory.T.embeddedDatum_of_term_definiteSpace K V W H HW e hK r F G' 𝔡 N' g Λ hg he hN' hT').1, mul_mem hk (inv_mem hk'), ?_, fun y v => ?_⟩` and prove the remaining obligations.
+
+Use `show imLat (h * h'⁻¹) (datOf F G' e g Λ).1 = (datOf F G e g Λ).1`. Rewrite using `[d1, d2]`. Unfold `imLat`. Rewrite using `[Formalism.HermitianLatticesTheory.genusBasic_gmap_mul, Formalism.HermitianLatticesTheory.genusBasic_gmap_inv]`. Take `⟨w, rfl⟩` from `h'.surjective y`.
+
+Establish `e1` using `mem_graph he (geom hK hN).1 (geom hK hN).2 (fun a => (hE a).1) hh g Λ' w v`. Establish `e2` using `mem_graph he (geom hK hN').1 (geom hK hN').2 (fun a => (hE a).2) hh' g Λ' w v`. Rewrite `e1` using `[hΛ]`. Rewrite `e2` using `[hΛ']`. Establish `e3 : (h * h'⁻¹) (h' w) = h w` using `by simp`.
+
+Use `show (h' w, v) ∈ (datOf F G' e g Λ).2 ↔ ((h * h'⁻¹) (h' w), v) ∈ (datOf F G e g Λ).2`. Rewrite using `[e3, e1, e2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, m, hm, h1, h2⟩`. Take `⟨n, hn, h3⟩` from `key w x hx h1`.
+
+Use `⟨x, hx, m + n, Λ.add_mem hm hn, h1, ?_⟩` and prove the remaining obligations. Use `F.X.add_mem h2 h3` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_add]`. Normalize the expressions using the abelian group laws.
+
+Introduce and unpack `⟨x, hx, m, hm, h1, h2⟩`. Take `⟨n, hn, h3⟩` from `key w x hx h1`. Use `⟨x, hx, m - n, Λ.sub_mem hm hn, h1, ?_⟩` and prove the remaining obligations. Use `F.X.sub_mem h2 h3` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem trip_of_terms : ∀ (K V W : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [FiniteDimensional K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W] (H : HermSpace K V) (HW : HermSpace K W) (e : W →ₗ[K] V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), ∀ (F G G' : FlagD H r) (𝔡 : Ideal (𝓞 K)) (N N' : NF H r) (g : ℕ) (Λ Λ' : Submodule (𝓞 K) V) (γ γ' : V ≃ₗ[K] V) (h h' : W ≃ₗ[K] W), 1 ≤ g → IsEmb F HW e → Adapt F G 𝔡 N → Adapt F G' 𝔡 N' → N.IsTerm g Λ → N'.IsTerm g Λ → γ ∈ isomGrp H → γ' ∈ isomGrp H → (∀ a, G.e a = γ (F.e a) ∧ G'.e a = γ' (F.e a)) → γ • Λ' = Λ → γ' • Λ' = Λ → IsH F G e γ h → IsH F G' e γ' h' → (∀ x ∈ Λ ⊓ rs (𝓞 K) (perp H F.X), γ' (γ.symm x) - x ∈ smulLat (g : 𝓞 K) Λ ⊔ (Λ ⊓ rs (𝓞 K) F.X)) → (datOf F G e g Λ, datOf F G' e g Λ, h * h'⁻¹) ∈ Trip HW g (lat0 F e Λ) r (N.gI g Λ) (N'.gI g Λ) := by
   intro K V W _ _ _ _ _ _ _ _ _ _ _ _ _ H HW e hK r F G G' 𝔡 N N' g Λ Λ' γ γ' h h' hg he hN hN' hT hT' hγ hγ' hE
     hΛ hΛ' hh hh' hβ

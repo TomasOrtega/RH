@@ -13,6 +13,9 @@ def StepB : Prop :=
   ∀ (E : Type) [Field E] (k : ℕ) (γ : Matrix (Fin k) (Fin k) E), IsIntegral ℤ γ →
     ∀ i, IsIntegral ℤ (γ.charpoly.coeff i)
 
+/- English proof (translation)
+Introduce `E _ _ k γ N hN h i`. Conclude with `hb E k γ (ha E k γ N hN h) i`.
+-/
 theorem powBddInt_of (ha : StepA) (hb : StepB) : PI.PowBddInt := by
   intro E _ _ k γ N hN h i
   exact hb E k γ (ha E k γ N hN h) i

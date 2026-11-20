@@ -23,6 +23,23 @@ def levBOfSit {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {K : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `local_theorem_of_cyclotomic_lift D.loc id (fun l _ K LL h => (HW l).W K 1 LL h.2.2) (fun l _ K LL h _ h5 hz => ?_) (Formalism.MainNotions.UnusedSlot80.base_change_every_theory D.loc)` and prove the remaining obligations. Establish `: FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Set `_ : Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)` to `Fintype.ofFinite _`. Use `crystalline_lifting_second_form (brHyp2_of_rec (D.loc l) h h5 _ ((HW l).W_s K 1 LL h.2.2) (hP5 l K 1 LL h.2.2) (hP6 l K 1 LL h.2.2) (hP9 l K 1 LL h.2.2) (hPr2a l K 1 LL h.2.2) (h3.1 l K 1 LL h.2.2) (h4 l K 1 LL h.2.2) (h7 l K LL h h5).1 (h9a l K LL h h5) (h10 l K LL h h5) (h14 l …` and prove the remaining obligations. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`.
+
+Take `⟨e, he⟩` from `hUG l K LL h h5`. Use `⟨e, he, UpperTheory.Prune.bkExt_holds D HW F h9 hFont l K LL h h5 e he, fun hR => ?_⟩` and prove the remaining obligations. Establish `hV` using `valRing_rec (D.loc l) LL`. Establish `hpl` using `(D.loc l).PD_p K`. Establish `: IsDiscreteValuationRing ↥(OL LL)` using `Formalism.BasicNotions.Examples₂.LB.OL_dvr LL`.
+
+Establish `: IsFractionRing ↥(OL LL) ↥LL.1` using `Formalism.BasicNotions.Examples₂.LB.OL_frac LL`. Establish `hpm : ((((D.loc l).PD K).p : ℕ) : ↥(OL LL)) ∈ maximalIdeal ↥(OL LL)` using `(mem_maximalIdeal _).2 (not_isUnit_p ((HW l).W K 1 LL h.2.2) hV)`. Establish `hpm' : ((l : ℕ) : ↥(OL LL)) ∈ maximalIdeal ↥(OL LL)`. Establish `h'` using `hpm`. Rewrite `h'` using `[hpl]`. Then use the resulting hypothesis.
+
+Establish `hp0 : ((l : ℕ) : ↥(OL LL)) ≠ 0`. Introduce `h0`. Establish `h0'` using `congrArg (algebraMap ↥(OL LL) ↥LL.1) h0`. Rewrite `h0'` using `[map_natCast, map_zero]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h0'`.
+
+Establish `: IsAdicComplete (maximalIdeal ↥(OL LL)) ↥(OL LL)` using `Formalism.MainNotions.N.Ln03.Pf.complMax_holds ↥(OL LL) l hpm' hp0 (complete_OL LL)`. Take `⟨uZ, huZ, hutie⟩` from `Formalism.MainNotions.N.Ln03.Pf.uTieRec_holds D HW l K LL h h5`. Establish `hrich : ∃ ζ : ↥LL.1, IsPrimitiveRoot ζ (((D.loc l).PD K).p ^ finrank ℚ_[l] ↥(K0 K))`. Take `⟨ζ, hζ⟩` from `hz`. Conclude with `⟨ζ, by rw [hpl]; exact hζ⟩`.
+
+Establish `h5' : 5 ≤ ((D.loc l).PD K).p` using `by rw [hpl]; exact h5`. Use `realised2_pf (K := ↥K.1) (W := (HW l).W K 1 LL h.2.2) (levBOfSit ((Cm l).C K 1 LL h.2.2)) hR e uZ (ιZrec (D.loc l) K LL) ?_ ?_ ?_ ?_ ?_ ?_ ((HW l).W_s K 1 LL h.2.2) (hP4 l K 1 LL h.2.2) ?_ ?_ (hP3 l K 1 LL h.2.2) (hP9 l K 1 LL h.2.2) (hP5 l K 1 LL h.2.2) ?_ ?_ ?_ hV (unram_of_cas …` and prove the remaining obligations. Conclude with `((Cm l).C K 1 LL h.2.2).tie.levN_eq`. Conclude with `((Cm l).C K 1 LL h.2.2).tie.cmp_eq`. Conclude with `((Cm l).C K 1 LL h.2.2).tie.levB_φ`.
+
+Conclude with `((Cm l).C K 1 LL h.2.2).tie.levB_Γ`. Conclude with `((Cm l).C K 1 LL h.2.2).tie.lev_Γ`. Conclude with `((Cm l).C K 1 LL h.2.2).tie.lev_φ`. Conclude with `(h7 l K LL h h5).2`. Conclude with `h8 l K LL h h5`.
+
+Conclude with `hLem3 l K 1 LL h.2.2`. Conclude with `hDdR l K LL h`. Conclude with `(h14 l K LL).1`. Conclude with `Formalism.MainNotions.LiftingTheory.gen_one_crys _`.
+-/
 theorem local_theorem_of_inputs (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (C : ℝ)
     (hP3 : Formalism.MainNotions.DeltaInvariantLattices.P3 D HW F Cm) (hP4 : Formalism.MainNotions.DeltaInvariantLattices.P4 D HW F Cm) (hP5 : Formalism.MainNotions.DeltaInvariantLattices.P5 D HW F)
@@ -84,6 +101,11 @@ theorem local_theorem_of_inputs (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.lo
   · exact (h14 l K LL).1
   · exact Formalism.MainNotions.LiftingTheory.gen_one_crys _
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos h with rfl | hh` into its components or cases. Simplify using the standard rewrite rules. Apply `Real.logb_nonneg` to reduce the goal to its premises. Establish `: (11 : ℝ) ≤ p` using `by exact_mod_cast hp`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `hh` after adjusting the coercions.
+-/
 theorem logb_nat_nonneg_sk (p h : ℕ) (hp : 11 ≤ p) : 0 ≤ Real.logb p (h : ℝ) := by
   rcases Nat.eq_zero_or_pos h with rfl | hh
   · simp
@@ -92,6 +114,13 @@ theorem logb_nat_nonneg_sk (p h : ℕ) (hp : 11 ≤ p) : 0 ≤ Real.logb p (h : 
       linarith
     · exact_mod_cast hh
 
+/- English proof (translation)
+Introduce `l _ K LL n _ emb`. Establish `H'` using `H l K LL n emb`. Introduce `hL h11 T₁ T₂ F hG h1 h2 hF r b w S η j typ sz hr hj hn hJ hT hb hC`. Take `⟨mm, k, e1, e2, e3⟩` from `H' hL h11 T₁ T₂ F hG h1 h2 hF r b w S η j typ sz hr hj hn hJ hT (le_trans (by gcongr) hb) hC`. Use `⟨mm, k, e1, e2, le_trans e3 ?_⟩` and prove the remaining obligations.
+
+Establish `hp : (11 : ℝ) ≤ ((D.loc l).PD K).p` using `by exact_mod_cast h11`. Use `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right h ?_) ?_) ?_) ?_` and prove the remaining obligations. Check the signs of the components of the expression. Check the signs of the components of the expression. Use `logb_nat_nonneg_sk ((D.loc l).PD K).p (hCor b w S η sz) h11` as an intermediate fact.
+
+Establish `h3 : (0 : ℝ) ≤ (((D.loc l).PD K).p : ℝ) - 1` using `by linarith`. Check the signs of the components of the expression. Check the signs of the components of the expression.
+-/
 theorem corollary_monotone_in_constant (D : D7) (C C' : ℝ) (h : C ≤ C') (H : Conclusion2 D C) : Conclusion2 D C' := by
   intro l _ K LL n _ emb
   have H' := H l K LL n emb
@@ -109,6 +138,11 @@ theorem corollary_monotone_in_constant (D : D7) (C C' : ℝ) (h : C ≤ C') (H :
     positivity
   · positivity
 
+/- English proof (translation)
+Take `⟨C', h1', h'⟩` from `corollary_of_Theorem_E`. Use `⟨max C' (4 * 800), fun D HW F Cm C hP3 hP4 hP5 hP6 hP9 hPr2a hLem3 h3 h4 h7 h8 h9a h10 h12 h14 hDdR h9 hFont hUG => ?_⟩` and prove the remaining obligations. Establish `hp1` using `local_theorem_of_inputs D HW F Cm C hP3 hP4 hP5 hP6 hP9 hPr2a hLem3 h3 h4 h7 h8 h9a h10 h14 hDdR h9 hFont hUG`. Use `⟨hp1, fun C₂ h2 => ?_⟩` and prove the remaining obligations. Use `corollary_monotone_in_constant D _ C₂ h2 ?_` and prove the remaining obligations.
+
+Use `h' D 800 (by norm_num) hp1 h12 ?_` and prove the remaining obligations. Introduce `l _ K LL n _ emb T₁ T₂ F h1 h2 hF i A hA' τ hτ a ha`. Conclude with `hA' τ hτ a ((h14 l K LL).1 T₁ T₂ F h1 h2 hF τ a ha)`.
+-/
 theorem corollary_local_exists_constant : ∃ C₀ : ℝ, ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (C : ℝ),
     Formalism.MainNotions.DeltaInvariantLattices.P3 D HW F Cm → Formalism.MainNotions.DeltaInvariantLattices.P4 D HW F Cm → Formalism.MainNotions.DeltaInvariantLattices.P5 D HW F →

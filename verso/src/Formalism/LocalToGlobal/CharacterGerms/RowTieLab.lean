@@ -13,6 +13,37 @@ namespace Formalism.L2.FormalSeriesBounds
 open Formalism.IncomingBounds Formalism.L2.Pj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 
+/- English proof (translation)
+Take `⟨p, hpm, hp⟩` from `hx`. Establish `hZ : ∀ z : ℤ, V.Ge 0 (algebraMap ℤ C z)`. Introduce `z`. Rewrite using `[eq_intCast]`. Use `Int.induction_on z ?_ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Int.cast_zero]`. Conclude with `VF.Ge.zero 0`. Introduce `i ih`. Rewrite using `[Int.cast_add, Int.cast_one]`. Conclude with `VF.Ge.add ih VF.Ge.one`.
+
+Introduce `i ih`. Rewrite using `[Int.cast_sub, Int.cast_one, sub_eq_add_neg]`. Conclude with `VF.Ge.add ih (VF.Ge.neg VF.Ge.one)`. Assume the negation of the conclusion as `hneg`. Establish `hlt : V.v x < ((0 : ℝ) : WithTop ℝ)` using `not_le.mp hneg`.
+
+Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.mp (ne_top_of_lt hlt)`. Establish `hr0 : r < 0`. Rewrite `hlt` using `[← hr]`. Conclude with `WithTop.coe_lt_coe.mp hlt`. Establish `hx0 : x ≠ 0`.
+
+Introduce `h0`. Rewrite `hr` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.coe_ne_top hr`. Use `set yv := x⁻¹ with hyv`. Establish `hy0 : yv ≠ 0` using `inv_ne_zero hx0`.
+
+Take `⟨s, hs⟩` from `WithTop.ne_top_iff_exists.mp (fun h => hy0 ((AddValuation.top_iff V.v).mp h))`. Establish `hrs : r + s = 0`. Establish `h1 : V.v (x * yv) = 0` using `by rw [hyv, mul_inv_cancel₀ hx0, AddValuation.map_one]`. Rewrite `h1` using `[AddValuation.map_mul, ← hr, ← hs]`. Conclude with `h1` after adjusting the coercions.
+
+Establish `hy : V.Ge (-r) yv`. Unfold `VF.Ge`. Rewrite using `[← hs]`. Conclude with `WithTop.coe_le_coe.mpr (by linarith)`. Establish `hy0' : V.Ge 0 yv`.
+
+Unfold `VF.Ge`. Rewrite using `[← hs]`. Conclude with `WithTop.coe_le_coe.mpr (by linarith)`. Establish `hpow : ∀ k : ℕ, V.Ge 0 (yv ^ k)`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `VF.Ge.one`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `VF.Ge.mul_int ih hy0'`.
+
+Rewrite `hp` using `[hpm.as_sum]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finset_sum, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow] at hp`. Use `set n := p.natDegree`. Establish `hsum : 1 + ∑ i ∈ Finset.range n, algebraMap ℤ C (p.coeff i) * yv ^ (n - i) = 0`. Establish `h2` using `congrArg (· * yv ^ n) hp`.
+
+Simplify using `only [add_mul, Finset.sum_mul, zero_mul] at h2`. Rewrite using `[← h2]`. Use `congr 1`. Rewrite using `[← mul_pow, hyv, mul_inv_cancel₀ hx0, one_pow]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hi' : i ≤ n` using `le_of_lt (Finset.mem_range.mp hi)`. Use `conv_rhs => rw [show n = (n - i) + i from (Nat.sub_add_cancel hi').symm]`. Rewrite using `[pow_add, mul_assoc, mul_left_comm (x ^ i), ← mul_pow, hyv, mul_inv_cancel₀ hx0, one_pow, mul_one]`. Establish `hS : V.Ge (-r) (∑ i ∈ Finset.range n, algebraMap ℤ C (p.coeff i) * yv ^ (n - i))`. Use `Finset.sum_induction _ (fun z => V.Ge (-r) z) (fun _ _ ha hb => VF.Ge.add ha hb) (VF.Ge.zero _) ?_` and prove the remaining obligations.
+
+Introduce `i hi`. Establish `hi' : n - i = (n - i - 1) + 1`. Use `Finset.mem_range.mp hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hi', pow_succ, ← mul_assoc]`.
+
+Conclude with `VF.Ge.mul_int (VF.Ge.mul_int (hZ _) (hpow _)) hy`. Establish `h1 : (1 : C) = -∑ i ∈ Finset.range n, algebraMap ℤ C (p.coeff i) * yv ^ (n - i)` using `eq_neg_of_add_eq_zero_left hsum`. Establish `hS'` using `VF.Ge.neg hS`. Rewrite `hS'` using `[← h1]`. Unfold `VF.Ge at hS'`.
+
+Rewrite `hS'` using `[AddValuation.map_one]`. Establish `: (-r : ℝ) ≤ 0` using `by exact_mod_cast hS'`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ge_of_isIntegral {C : Type} [Field C] (V : VF C) {x : C} (hx : IsIntegral ℤ x) : V.Ge 0 x := by
   obtain ⟨p, hpm, hp⟩ := hx
   have hZ : ∀ z : ℤ, V.Ge 0 (algebraMap ℤ C z) := by
@@ -92,9 +123,15 @@ variable {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 variable {C : Type} [Field C] [CharZero C] {V : VF C}
 variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io}
 
+/- English proof (translation)
+Conclude with `ge_of_isIntegral V ((Algebra.IsIntegral.isIntegral (R := ℤ) x).map (emA3 io ι τ).toIntAlgHom)`.
+-/
 theorem embedding_integral (ι : T.Fr →+* C) (τ : E →+* ℂ) (x : 𝓞 E) : V.Ge 0 (emA3 io ι τ x) := by
   exact ge_of_isIntegral V ((Algebra.IsIntegral.isIntegral (R := ℤ) x).map (emA3 io ι τ).toIntAlgHom)
 
+/- English proof (translation)
+Unfold `embK`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[embF]`. Rewrite using `[hstar]`. Rewrite using `[show (algebraMap (𝓞 E) E) (H.bar x) = ((H.bar x : 𝓞 E) : E) from rfl, H.bar_eq x, IsCMField.complexEmbedding_complexConj]`.
+-/
 theorem embK_conj (hstar : ∀ a : 𝓞 E, star a = H.bar a) (τ : E →+* ℂ) (x : 𝓞 E) :
     embK c (ComplexEmbedding.conjugate τ) x = embK c τ (star x) := by
   unfold embK
@@ -104,10 +141,16 @@ theorem embK_conj (hstar : ∀ a : 𝓞 E, star a = H.bar a) (τ : E →+* ℂ) 
   rw [show (algebraMap (𝓞 E) E) (H.bar x) = ((H.bar x : 𝓞 E) : E) from rfl, H.bar_eq x,
     IsCMField.complexEmbedding_complexConj]
 
+/- English proof (translation)
+Simplify using `only [emA3, RingHom.coe_comp, Function.comp_apply, embK_conj hstar]`.
+-/
 theorem embedding_conjugate (hstar : ∀ a : 𝓞 E, star a = H.bar a) (ι : T.Fr →+* C) (τ : E →+* ℂ) (x : 𝓞 E) :
     emA3 io ι (ComplexEmbedding.conjugate τ) x = emA3 io ι τ (star x) := by
   simp only [emA3, RingHom.coe_comp, Function.comp_apply, embK_conj hstar]
 
+/- English proof (translation)
+Take `⟨⟨-, -, -, -, -, -, hu⟩, -⟩` from `C3.gen`. Rewrite using `[show chartUnitVectors C3 ℓ i = _ from hu ℓ i]`. Conclude with `embIntSt_holds T C V ι hι _`.
+-/
 theorem a3uvec_int (C3 : IntChart T io y) {ι : T.Fr →+* C} (hι : EmbOK T V ι) (ℓ : Lt1 Dw) (i : Fin (chD C3.ch)) :
     V.Ge 0 (ι (chartUnitVectors C3 ℓ i)) := by
   obtain ⟨⟨-, -, -, -, -, -, hu⟩, -⟩ := C3.gen

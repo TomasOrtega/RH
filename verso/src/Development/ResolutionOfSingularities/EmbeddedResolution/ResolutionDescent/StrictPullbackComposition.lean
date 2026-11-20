@@ -12,11 +12,25 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.support_comap]`. Conclude with `Iff.rfl`.
+-/
 private theorem mem_support_comap {A B : Scheme.{u}} (f : A ⟶ B) (I : B.IdealSheafData)
     (x : ↥A) : x ∈ (I.comap f).support ↔ f.base x ∈ I.support := by
   rw [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
   exact Iff.rfl
 
+/- English proof (translation)
+Take `⟨q, hq1, hq2⟩ : ∃ q : Limits.pullback (c ≫ u) g ⟶ Limits.pullback u g, q ≫ Limits.pullback.fst u g = Limits.pullback.fst (c ≫ u) g ≫ c ∧ q ≫ Limits.pullback.snd u g = Limits.pullback.snd (c ≫ u) g` from `⟨Limits.pullback.lift (Limits.pullback.fst (c ≫ u) g ≫ c) (Limits.pullback.snd (c ≫ u) g) (by rw [Category.assoc]; exact Limits.pullback.condition), Limits.pullback.lift_fst _ _ _, Limits.pullback.lift_snd _ _ _⟩`. Establish `hA : IsPullback (Limits.pullback.fst (c ≫ u) g) q c (Limits.pullback.fst u g)`. Use `IsPullback.of_bot ?_ hq1.symm (IsPullback.of_hasPullback u g)` and prove the remaining obligations. Rewrite using `[hq2]`. Conclude with `IsPullback.of_hasPullback (c ≫ u) g`.
+
+Establish `hqs : AlgebraicGeometry.Surjective q`. Rewrite using `[← hA.isoPullback_hom_snd]`. Use `infer_instance`. Establish `hbase : ∀ x : ↥(Limits.pullback (c ≫ u) g), (Limits.pullback.snd (c ≫ u) g).base x = (Limits.pullback.snd u g).base (q.base x)`. Introduce `x`.
+
+Rewrite using `[← hq2]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Rewrite `hx` using `[mem_support_comap]`.
+
+Use `⟨q.base x, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_support_comap, ← hbase x]`. Conclude with `hx`. Introduce and unpack `⟨y, hy⟩`. Rewrite `hy` using `[mem_support_comap]`.
+
+Take `⟨x, hx⟩` from `hqs.surj y`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_support_comap, hbase x, hx]`. Conclude with `hy`.
+-/
 private theorem support_comap_pullback_snd_nonempty_iff {W V Y T : Scheme.{u}} (u : V ⟶ Y) (c : W ⟶ V)
     [AlgebraicGeometry.Surjective c] (g : T ⟶ Y) (I : T.IdealSheafData) :
     (∃ x, x ∈ (I.comap (Limits.pullback.snd (c ≫ u) g)).support) ↔
@@ -57,6 +71,27 @@ private theorem support_comap_pullback_snd_nonempty_iff {W V Y T : Scheme.{u}} (
 
 namespace IsPullbackBlowupSequence
 
+/- English proof (translation)
+Unfold `FunctorialResolution.EmbeddedResolution.IsPullbackBlowupSequence at h ⊢`. Unfold `FunctorialResolution.EmbeddedResolution.IsStrictPullbackBlowupSeq at hc`. Take `⟨r, e, hr1, hr2, hr3, hr4, hefst, hestep, hecenter⟩` from `h`. Take `⟨hlen, σ, hzero, hstep, hcenter⟩` from `hc`. Establish `hle : ∀ i : ℕ, i ≤ t.length → i ≤ s'.length`.
+
+Introduce `i hi`. Use linear arithmetic over natural numbers and integers. Establish `hsq : ∀ (i : ℕ) (hi : i ≤ t.length), IsPullback (σ i hi) (t.projectionToBase i) (s'.projectionToBase i) c` using `isPullback_projectionToBase_of_isPullback_blowupMorphism c t s' t.length σ hzero hstep`. Establish `hpaste : ∀ (i : ℕ) (hi : i ≤ t.length), IsPullback (t.projectionToBase i) (σ i hi ≫ (e i (hle i hi)).hom ≫ Limits.pullback.snd u (s.projectionToBase (r i))) (c ≫ u) (s.projectionToBase (r i))`. Introduce `i hi`.
+
+Establish `hcomm : s'.projectionToBase i ≫ u = ((e i (hle i hi)).hom ≫ Limits.pullback.snd u (s.projectionToBase (r i))) ≫ s.projectionToBase (r i)`. Rewrite using `[← hefst i (hle i hi), Category.assoc, Category.assoc, Limits.pullback.condition]`. Conclude with `(hsq i hi).flip.paste_vert (IsPullback.of_iso_pullback ⟨hcomm⟩ (e i (hle i hi)) (hefst i (hle i hi)) rfl)`. Establish `hFfst : ∀ (i : ℕ) (hi : i ≤ t.length), ((hpaste i hi).isoPullback).hom ≫ Limits.pullback.fst (c ≫ u) (s.projectionToBase (r i)) = t.projectionToBase i` using `fun i hi => (hpaste i hi).isoPullback_hom_fst`. Establish `hFsnd : ∀ (i : ℕ) (hi : i ≤ t.length), ((hpaste i hi).isoPullback).hom ≫ Limits.pullback.snd (c ≫ u) (s.projectionToBase (r i)) = σ i hi ≫ (e i (hle i hi)).hom ≫ Limits.pullback.snd u (s.projectionToBase (r i))` using `fun i hi => (hpaste i hi).isoPullback_hom_snd`.
+
+Establish `hFsnd' : ∀ (i : ℕ) (hi : i ≤ t.length) {Z : Scheme.{u}} (k : s.schemeAt (r i) ⟶ Z), ((hpaste i hi).isoPullback).hom ≫ Limits.pullback.snd (c ≫ u) (s.projectionToBase (r i)) ≫ k = σ i hi ≫ (e i (hle i hi)).hom ≫ Limits.pullback.snd u (s.projectionToBase (r i)) ≫ k`. Introduce `i hi Z k`. Rewrite using `[← Category.assoc, hFsnd, Category.assoc, Category.assoc]`. Establish `hc1 : ∀ i < t.length, r i < s.length`. Introduce `i hi`.
+
+Conclude with `hr1 i (by omega)`. Establish `hc2 : ∀ (i j : ℕ), j ≤ t.length → i < j → r i < r j`. Introduce `i j hj hij`. Conclude with `hr2 i j (by omega) hij`. Establish `hc3 : r t.length = s.length`.
+
+Rewrite using `[hlen]`. Conclude with `hr3`. Establish `hc4 : ∀ i < s.length, (∃ x, x ∈ ((s.center i).comap (Limits.pullback.snd (c ≫ u) (s.projectionToBase i))).support) ↔ ∃ j < t.length, r j = i`. Introduce `i hi`. Use `(support_comap_pullback_snd_nonempty_iff u c (s.projectionToBase i) (s.center i)).trans ?_` and prove the remaining obligations.
+
+Use `(hr4 i hi).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, hji⟩`. Conclude with `⟨j, by omega, hji⟩`. Introduce and unpack `⟨j, hj, hji⟩`.
+
+Conclude with `⟨j, by omega, hji⟩`. Establish `hc6 : ∀ (i : ℕ) (hi : i < t.length) (hrr : r i ≤ r (i + 1)), t.transitionMapSucc i ≫ ((hpaste i (Nat.le_of_lt hi)).isoPullback).hom = ((hpaste (i + 1) hi).isoPullback).hom ≫ s.pullbackTransitionMap (c ≫ u) hrr`. Introduce `i hi hrr`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, SequenceOfBlowups.pullbackTransitionMap_fst, hFfst]`.
+
+Rewrite using `[t.blowupMorphism_eq_transitionMap]`. Conclude with `t.transitionMap_comp_projectionToBase _`. Simplify using `only [Category.assoc, SequenceOfBlowups.pullbackTransitionMap_snd, hFsnd, hFsnd']`. Rewrite using `[← Category.assoc, ← (hstep i hi).w, Category.assoc, ← Category.assoc (s'.transitionMapSucc i), hestep i (by omega) hrr, Category.assoc, SequenceOfBlowups.pullbackTransitionMap_snd]`. Establish `hc7 : ∀ (i : ℕ) (hi : i < t.length), t.center i = (s.center (r i)).comap (((hpaste i (Nat.le_of_lt hi)).isoPullback).hom ≫ Limits.pullback.snd (c ≫ u) (s.projectionToBase (r i)))`.
+
+Introduce `i hi`. Rewrite using `[hcenter i hi, hecenter i (by omega), hFsnd, ← Scheme.IdealSheafData.comap_comp]`. Conclude with `⟨r, fun i hi => (hpaste i hi).isoPullback, hc1, hc2, hc3, hc4, hFfst, hc6, hc7⟩`.
+-/
 theorem comp_isStrictPullbackSequenceOfBlowups {W V Y : Scheme.{u}} {u : V ⟶ Y} {c : W ⟶ V}
     [AlgebraicGeometry.Surjective c]
     {s : SequenceOfBlowups Y} {s' : SequenceOfBlowups V} {t : SequenceOfBlowups W}

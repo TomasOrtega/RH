@@ -32,6 +32,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TriStep
 
+/- English proof (translation)
+Use `⟨hf.cont.add hg.cont, ?_, fun γ u v => ?_, fun γ u v => ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n L L' hL hL' hLf hL'f u v`. Conclude with `(hf.smooth n L L' hL hL' hLf hL'f u v).add (hg.smooth n L L' hL hL' hLf hL'f u v)`. Simplify using `only [Pi.add_apply]`. Rewrite using `[hf.quasiL, hg.quasiL]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.add_apply]`. Rewrite using `[hf.quasiR, hg.quasiR]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨U, hU, hUf⟩` from `hf.levL`.
+
+Take `⟨V, hV, hVf⟩` from `hg.levL`. Use `⟨U ⊓ V, hU.inter hV, fun a ha ha' v => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Establish `h1` using `congrFun (hUf a ha.1 ha' v) u`. Establish `h2` using `congrFun (hVf a ha.2 ha' v) u`.
+
+Simplify using `only [heisO, Pi.add_apply] at h1 h2 ⊢`. Rewrite using `[mul_add, h1, h2]`. Take `⟨U, hU, hUf⟩` from `hf.levR`. Take `⟨V, hV, hVf⟩` from `hg.levR`. Use `⟨U ⊓ V, hU.inter hV, fun a ha ha' u => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `v`. Establish `h1` using `congrFun (hUf a ha.1 ha' u) v`. Establish `h2` using `congrFun (hVf a ha.2 ha' u) v`. Simplify using `only [heisO, Pi.add_apply] at h1 h2 ⊢`. Rewrite using `[mul_add, h1, h2]`.
+-/
 theorem isBiTheta_add' {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {f g : WO A S → WO S A' → ℂ}
     (hf : IsBiTheta ψ A S A' f) (hg : IsBiTheta ψ A S A' g) : IsBiTheta ψ A S A' (f + g) := by
   refine ⟨hf.cont.add hg.cont, ?_, fun γ u v => ?_, fun γ u v => ?_, ?_, ?_⟩
@@ -56,6 +67,11 @@ theorem isBiTheta_add' {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D
     simp only [heisO, Pi.add_apply] at h1 h2 ⊢
     rw [mul_add, h1, h2]
 
+/- English proof (translation)
+Use `⟨?_, fun n L L' _ _ _ _ u v => ?_, fun γ u v => by simp, fun γ u v => by simp, ⟨⊤, by rw [AddSubgroup.coe_top]; exact isOpen_univ, fun a _ _ v => ?_⟩, ⟨⊤, by rw [AddSubgroup.coe_top]; exact isOpen_univ, fun a _ _ u => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Pi.zero_apply]`. Conclude with `continuous_const`. Simplify using `only [Pi.zero_apply]`. Conclude with `contDiff_const`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[heisO]`. Use function extensionality and compare the values at `x`. Simplify using `[heisO]`.
+-/
 theorem isBiTheta_zero' {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} : IsBiTheta ψ A S A' 0 := by
   refine ⟨?_, fun n L L' _ _ _ _ u v => ?_, fun γ u v => by simp, fun γ u v => by simp,
     ⟨⊤, by rw [AddSubgroup.coe_top]; exact isOpen_univ, fun a _ _ v => ?_⟩,
@@ -65,6 +81,17 @@ theorem isBiTheta_zero' {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp 
   · funext x; simp [heisO]
   · funext x; simp [heisO]
 
+/- English proof (translation)
+Establish `hmem : Ξ ∈ Submodule.span ℂ (Set.range fun q : SB X × SB Y => GlobalTheory.LocFlat.CFac.prodSB q.1 q.2)`. Rewrite using `[GlobalTheory.T.span_schwartzBruhatProduct_eq_top X Y]`. Discharge the goal by the elementary cases of `trivial`. Establish `key : ∀ c : ℂ, IsBiTheta ψ A S A' (Λ (c • Ξ))`. Proceed by induction on `hmem using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨q, rfl⟩` from `hx`. Introduce `c`. Establish `e : c • GlobalTheory.LocFlat.CFac.prodSB q.1 q.2 = GlobalTheory.LocFlat.CFac.prodSB (c • q.1) q.2`. Express the relevant statement in the definitionally equal form `c • GlobalTheory.LocFlat.CFac.prodSBBil X Y q.1 q.2 = GlobalTheory.LocFlat.CFac.prodSBBil X Y (c • q.1) q.2`.
+
+Rewrite using `[map_smul, LinearMap.smul_apply]`. Rewrite using `[e]`. Conclude with `h _ _`. Consider the case `zero => intro c`. Rewrite using `[smul_zero, map_zero]`.
+
+Conclude with `isBiTheta_zero'`. Consider the case `add x y _ _ hx hy => intro c`. Rewrite using `[smul_add, map_add]`. Conclude with `isBiTheta_add' (hx c) (hy c)`. Consider the case `smul a x _ hx => intro c`.
+
+Rewrite using `[smul_smul]`. Conclude with `hx _`. Simplify using `using key 1`.
+-/
 theorem isBiTheta_of_prod {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [T2Space X] [LocallyCompactSpace X] [TotallyDisconnectedSpace X] [T2Space Y] [LocallyCompactSpace Y]
     [TotallyDisconnectedSpace Y] (Λ : SB (X × Y) →ₗ[ℂ] (WO A S → WO S A' → ℂ))
@@ -85,6 +112,25 @@ theorem isBiTheta_of_prod {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HS
     | smul a x _ hx => intro c; rw [smul_smul]; exact hx _
   simpa using key 1
 
+/- English proof (translation)
+Introduce `D ψ hstd σ S Q c₁ c₂ hc₁ hc₂ T₁ T₂ hT₁ hT₂ φ hφ`. Establish `hBF` using `GlobalTheory.T.flatMap_besselToFourierJacobi_localModel D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) (GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D) (GlobalTheory.T.weilDatum_localModel_formula D)`. Establish `hFB` using `GlobalTheory.T.flatMap_fourierJacobiToBessel_localModel D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) (GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D) (GlobalTheory.T.weilDatum_localModel_formula D)`. Establish `hCL` using `GlobalTheory.T.lineContraction_splitPlace_localModel D GlobalTheory.LocFlat.contrFactor`. Establish `hν : Q.ν.IsAddHaarMeasure` using `Q.unitVol.1`.
+
+Take `⟨C₀, hC₀⟩` from `GlobalTheory.LocMod.GValProof.core_of_bes (ofSplit Q.q) S.B Q.F.s Q.F.F₀ Q.F.G₀ Q.F.bes`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.LocMod.GValProof.core_of_bes (ofSplit Q.q) S.B' (Q.F.s * (ofSplit Q.q).xi) Q.F.F₂ Q.F.G₂ Q.F.bes'`. Establish `hjac : (ofSplit Q.q).IsJacFrame S.J Q.F.s (-(ofSplit Q.q).xi ^ 2 * (ofSplit Q.q).hz S.B') Q.F.F₁ Q.F.G₁`. Rewrite using `[← GlobalTheory.LocMod.GValProof.hz_link (ofSplit Q.q) S.B S.B' S.l]`. Conclude with `Q.F.jac`.
+
+Take `⟨U₁, hU₁, hU₁e⟩` from `hBF Q.k (ofSplit Q.q) Q.ν hν ψ Q.ψk Q.char (σ + 1) S.B S.J S.s₁ Q.F.s Q.F.s_ne _ _ (Q.c + 1 + 1) Q.F.F₀ C₀ Q.F.G₀ Q.F.F₁ Q.F.G₁ hC₀ Q.F.bes Q.F.jac T₁ hT₁`. Take `⟨U₂, hU₂, hU₂e⟩` from `hFB Q.k (ofSplit Q.q) Q.ν hν ψ Q.ψk Q.char σ S.J S.B' S.s₂ Q.F.s Q.F.s_ne _ _ (Q.c + 1) Q.F.F₁ Q.F.G₁ Q.F.F₂ C₂ Q.F.G₂ hjac hC₂ Q.F.bes' T₂ hT₂`. Take `⟨Λ, hΛ, hΛe⟩` from `hCL Q.k (ofSplit Q.q) Q.ν hν ψ hstd Q.ψk Q.char (σ + 1) σ S.B S.B' S.l S.J.W₀ S.vL Q.F.s Q.F.s_ne _ _ _ Q.F.F₀ C₀ Q.F.F₁ Q.F.F₂ C₂ hC₀ hC₂ U₁ U₂ hU₁ hU₂`. Establish `hψkc : Continuous Q.ψk`. Take `⟨-, hψk, -, -, -⟩` from `GlobalTheory.T.weilCharacter_splitPlace_exists_continuous_nontrivial D Q.k (ofSplit Q.q) ψ hstd`.
+
+Conclude with `(hψk Q.ψk Q.char).1`. Establish `hΛθ : ∀ Ξ, IsBiTheta ψ S.B.A S.J.W₀ S.B'.A (Λ Ξ)` using `by haveI := GlobalTheory.SplitWeil.t2Space Q.k haveI : NonarchimedeanAddGroup Q.k := ⟨fun V hV => by`. Take `⟨s, hs⟩` from `GlobalTheory.SplitWeil.exists_cball_subset hV`. Conclude with `⟨⟨⟨⟨⟨GlobalTheory.SplitWeil.cball s, GlobalTheory.SplitWeil.add_mem_cball⟩, by simp [GlobalTheory.SplitWeil.cball]⟩, GlobalTheory.SplitWeil.neg_mem_cball⟩, GlobalTheory.SplitWeil.isOpen_cball s⟩, hs⟩⟩`. Use `haveI : TotallyDisconnectedSpace Q.k := inferInstance`.
+
+Use `haveI : ∀ n n' : Type, T2Space (Matrix n n' Q.k) := fun n n' => inferInstanceAs (T2Space (n → n' → Q.k))`. Use `haveI : ∀ n n' : Type, TotallyDisconnectedSpace (Matrix n n' Q.k) := fun n n' => inferInstanceAs (TotallyDisconnectedSpace (n → n' → Q.k))`. Use `haveI : LocallyCompactSpace (Matrix Q.n₁ Q.n₀ Q.k) := inferInstanceAs (LocallyCompactSpace (Q.n₁ → Q.n₀ → Q.k))`. Use `haveI : LocallyCompactSpace (Matrix Q.n₂ Q.n₁ Q.k) := inferInstanceAs (LocallyCompactSpace (Q.n₂ → Q.n₁ → Q.k))`. Use `isBiTheta_of_prod Λ fun Ξ₁ Ξ₂ => ?_` and prove the remaining obligations.
+
+Take `⟨φ₀, φ₀', hφ₀⟩` from `GlobalTheory.ContractionLocal.exists_normPair Q.ψk Q.ν hψkc hν Q.n₁`. Take `⟨Ξ', h1, h2⟩` from `hΛe (GlobalTheory.ContractionLocal.colTens φ₀ Ξ₁) (GlobalTheory.ContractionLocal.rowTens φ₀' Ξ₂)`. Establish `e : Ξ' = GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂` using `Subtype.ext (funext fun q => by rw [h1, GlobalTheory.ContractionLocal.contr_tens, hφ₀, mul_one]; rfl)`. Rewrite using `[← e, ← h2]`. Conclude with `(GlobalTheory.T.besselThetaContraction_extendByZero_vacuum_smooth D ψ hstd _ _ S.B S.B' S.l S.J.W₀ S.vL _ _ (hU₁.theta _) (hU₂.theta _)).1`.
+
+Establish `hθ : ∀ Ξ, IsBiTheta ψ S.B.A S.J.W₀ S.B'.A (biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ Ξ))` using `fun Ξ => GlobalTheory.T.isJointlySmoothBiTheta_twoVarCombination D ψ hstd _ _ _ _ (hΛθ Ξ) c₁ c₂`. Take `⟨T, hT⟩` from `GlobalTheory.T.doubleThetaLiftValue_bilinear D ψ hstd σ S Q c₁ c₂ hc₁ hc₂ φ hφ Λ hΛ hΛθ`. Establish `key : ∀ Ξ₁ Ξ₂ (f : GlobalTheory.TriStep.space Q), (GlobalTheory.LocFlat.CFac.prodSBBil _ _).compr₂ T Ξ₁ Ξ₂ f = GlobalTheory.TriStep.valK S Q c₁ c₂ φ Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂) f.1` using `fun Ξ₁ Ξ₂ f => hT _ f`. Use `⟨GlobalTheory.TriStep.space Q, GlobalTheory.TriStep.rep Q, (GlobalTheory.LocFlat.CFac.prodSBBil _ _).compr₂ T, GlobalTheory.TriStep.smooth Q, fun y f => rfl, GlobalTheory.T.mem_space_of_typed_automorphic D ψ σ S Q, ⟨fun Ψ₁ => ⟨fun Ψ₂ g hg v => ?_, fun g Ψ Ψ' v h => ?_⟩, fun g Ψ₁ …` and prove the remaining obligations. Rewrite using `[key, key]`.
+
+Conclude with `GlobalTheory.T.doubleLiftValue_equivariant_symmetricUnipotent D ψ hstd σ S Q c₁ c₂ hc₁ hc₂ φ hφ Λ hΛ _ g hg v.1 v.2`. Rewrite using `[key, key]`. Conclude with `GlobalTheory.T.local_bimodel_translation D ψ hstd σ S Q c₁ c₂ hc₁ hc₂ φ hφ Λ hΛ g Ψ₁ Ψ Ψ' h (hθ _) v.1 v.2`. Use `ext1 f`. Rewrite using `[key, key]`.
+
+Conclude with `GlobalTheory.T.doubleThetaLiftValue_invariant_middleGL D ψ hstd σ S Q c₁ c₂ hc₁ hc₂ φ hφ Λ hΛ g Ψ₁ Ψ₁' Ψ₂ Ψ₂' h₁ h₂ (hθ _) f.1 f.2`. Rewrite using `[key]`. Conclude with `GlobalTheory.TriStep.valK_comb D ψ hstd σ S Q c₁ c₂ hc₁ hc₂ φ hφ Λ hΛ T₁ T₂ hT₁ hT₂ U₁ U₂ hU₁e hU₂e hΛe Ξ₁ Ξ₂ d₁ d₂ h₁ h₂ O₁ O₂ hO₁ hO₂ f.1 f.2`.
+-/
 theorem tri : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (σ : ℕ) (S : Dbl2 ψ σ) (Q : QStep S) c₁ c₂, Q.Away c₁ → Q.Away c₂ → ∀ T₁ T₂, (ofSplit Q.q).IsModel ψ Q.F.G₀ Q.F.G₁ T₁ → (ofSplit Q.q).IsModel ψ Q.F.G₁ Q.F.G₂ T₂ → ∀ φ, IsContAut S.B.A φ → ∃ (A : Submodule ℂ (GA D S.B'.V → ℂ)) (τ : Representation ℂ (GL (Q.n₂ ⊕ Fin (Q.c + 1)) Q.k) A) (T : SB (Matrix Q.n₁ Q.n₀ Q.k) →ₗ[ℂ] SB (Matrix Q.n₂ Q.n₁ Q.k) →ₗ[ℂ] A →ₗ[ℂ] ℂ), IsSmoothRep τ ∧ (∀ y (f : A), (τ y f).1 = rTrans (Q.gl₂ y) f.1) ∧ (∀ f, IsContAut S.B'.V f → Q.Typed f → f ∈ A) ∧ TriPos Q.ψk Q.μ₁ Q.μ₂ (σ + 1) τ T ∧ (∀ Φ₁ Φ₂ (f : A), HasTensorVal (fun Ψ Φ₀ => app (T Ψ) (opEFJ Q.ψk Q.ν (σ + 1) Φ₀.1 Φ₂.1) f) (fl Q.ψk Q.ν Q.μ₁ (σ + 1) Φ₁.1) (S.val c₁ c₂ (T₁ Φ₁) (T₂ Φ₂) φ f.1 1 1 1)) ∧ ∀ (Ξ₁ : SB (Matrix Q.n₁ Q.n₀ Q.k)) (Ξ₂ : SB (Matrix Q.n₂ Q.n₁ Q.k)) d₁ d₂, (ofSplit Q.q).IsCombAt ψ Q.F.F₀ Q.F.F₁ d₁ Ξ₁.1 → (ofSplit Q.q).IsCombAt ψ Q.F.F₁ Q.F.F₂ d₂ Ξ₂.1 → ∀ O₁ O₂, IsOne O₁ → IsOne O₂ → ∀ f : A, T Ξ₁ Ξ₂ f = S.val (aconv [c₁, d₁]) (aconv [c₂, d₂]) (T₁ O₁) (T₂ O₂) φ f.1 1 1 1 := by
   intro D ψ hstd σ S Q c₁ c₂ hc₁ hc₂ T₁ T₂ hT₁ hT₂ φ hφ
   have hBF := GlobalTheory.T.flatMap_besselToFourierJacobi_localModel D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) (GlobalTheory.T.flatMapsSatisfyFlatLaws_finitePlaces D) (GlobalTheory.T.weilDatum_localModel_formula D)

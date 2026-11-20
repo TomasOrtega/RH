@@ -7,5 +7,8 @@ open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AdjVecLocal.thetaVecLocal | exact GlobalTheory.AdjVecLocal.thetaVecLocal | (intros; apply GlobalTheory.AdjVecLocal.thetaVecLocal <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.definiteThetaLift_localVector : ∀ D : D7, ThetaVecLocal D := by
   first | exact @GlobalTheory.AdjVecLocal.thetaVecLocal | exact GlobalTheory.AdjVecLocal.thetaVecLocal | (intros; apply GlobalTheory.AdjVecLocal.thetaVecLocal <;> assumption)

@@ -42,6 +42,17 @@ def sumChars {X X' : Type*} [AddCommGroup X] [AddCommGroup X'] (c : Fin 8 → (X
   map_zero' := by simp
   map_add' x y := by simp [Finset.sum_add_distrib]
 
+/- English proof (translation)
+Introduce `R _ _ _ hR hdvr G _ _ hG D A U G' _ _ hG' D' A' U' W hW pr hpr huniv hL`. Use `haveI := hdvr`. Use `haveI := U.gen_hom`. Use `haveI := U'.gen_hom`. Establish `hpG : ∀ v, ∃ F : G' ⟶ G, IsMonHom F ∧ (Over.pullback (jK R)).map F = U'.gen.hom ≫ pr v ≫ U.gen.inv`.
+
+Introduce `v`. Use `haveI := hpr v`. Take `⟨F, ⟨hF, hF'⟩, -⟩` from `GlobalTheory.semiAbelian_hom_extends_uniquely_dvr R (FractionRing R) G' G hG' hG (U'.gen.hom ≫ pr v ≫ U.gen.inv) inferInstance`. Conclude with `⟨F, hF, hF'⟩`. Use `choose pG hpGm hpGg using hpG`.
+
+Establish `hgen : ∀ v, (Over.pullback (jK R)).map (pG v) ≫ U.gen.hom = U'.gen.hom ≫ pr v`. Introduce `v`. Rewrite using `[hpGg v]`. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Use `choose c hc using fun v => GlobalTheory.Poinc.HomTor.exists_torMatch R hR G hG D A U G' hG' D' A' U' (pG v) (hpGm v)`.
+
+Establish `hbij` using `(characters_eighthPower_elementaryMatrices R hR hdvr G hG D A U G' hG' D' A' U' W hW pr hpr huniv hL pG hpGm hgen c hc).1`. Set `Φ` to `AddEquiv.ofBijective (sumChars c) hbij`. Set `Sm` to `matAddEquiv (M := D.toPre.X) (W + W.transpose) hW.2`. Use `⟨pG, c, Φ.symm.trans Sm.symm, hpGm, hgen, hc, fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : Sm ((Φ.symm.trans Sm.symm) y) = Φ.symm y` using `by simp`.
+
+Establish `h2 : Φ (Φ.symm y) = y` using `Φ.apply_symm_apply y`. Rewrite `h2` using `[← h1]`. Conclude with `h2`.
+-/
 theorem e8data : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → IsDiscreteValuationRing R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (D' : DegData R (maximalIdeal R)) (A' : PolAV (Sp (FractionRing R))) (U' : Unif (maximalIdeal R) D' A' G') (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (pr : Fin 8 → (A'.A ⟶ A.A)), (∀ a, IsMonHom (pr a)) → (∀ (T' : Over (Sp (FractionRing R))) (y : Fin 8 → (T' ⟶ A.A)), ∃! z : T' ⟶ A'.A, ∀ a, z ≫ pr a = y a) → LBIso A'.L (LB.LinComb (abelian₂ A.A A.L) (K := Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2)) → ∃ (pG : Fin 8 → (G' ⟶ G)) (c : Fin 8 → (D.toPre.X →+ D'.toPre.X)) (e : D'.toPre.X ≃+ (Fin 8 → D.toPre.X)), (∀ v, IsMonHom (pG v)) ∧ (∀ v, (Over.pullback (jK R)).map (pG v) ≫ U.gen.hom = U'.gen.hom ≫ pr v) ∧ (∀ v, TorMatch U U' (RingHom.id R) (pG v).left (c v)) ∧ ∀ y, ∑ v, c v (∑ u, (W + W.transpose) v u • e y u) = y := by
   intro R _ _ _ hR hdvr G _ _ hG D A U G' _ _ hG' D' A' U' W hW pr hpr huniv hL
   haveI := hdvr

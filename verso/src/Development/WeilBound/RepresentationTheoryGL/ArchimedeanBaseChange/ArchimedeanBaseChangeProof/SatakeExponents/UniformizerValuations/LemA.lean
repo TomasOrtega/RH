@@ -3,6 +3,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.Rg.BcB.F.Inert
 
+/- English proof (translation)
+The claim follows from `satUniq`.
+-/
 theorem lem_b : SatUniq := satUniq
 
 end PositivityTheory.Rg.BcB.F.Inert

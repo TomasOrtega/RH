@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Chamber
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {k : ℕ} (𝔞 : Submodule ℝ (A0 k)) (Q : Finset (SV k)) :
     (volume : Measure (aMQ 𝔞 Q)) = (stdOrthonormalBasis ℝ (aMQ 𝔞 Q)).toBasis.addHaar := rfl
 
@@ -65,6 +68,9 @@ def LabesseWaldspurger : Prop :=
     ∀ (μ : Measure (GA D V)) [μ.IsHaarMeasure],
       KernelConvergence Φ (levelAll D.sp.cm.sig V.gram L a) μ ∧ WeightedOrbital Φ (levelAll D.sp.cm.sig V.gram L a) μ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨wittIndex_plane D, exists_isGood _⟩`.
+-/
 example (D : D7) : wittIndex (CuspDecay.Model.plane D) = 1 ∧
     ∃ (Φ : WittFrame (CuspDecay.Model.plane D)) (L : _) (a : _), Φ.IsGood D.sp.cm L a :=
   ⟨wittIndex_plane D, exists_isGood _⟩

@@ -13,16 +13,25 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem hR_eq (x y : Fin M → R ⊗[F] E) :
     hR R σ J x y = ((fun i => sigR R σ (x i)) ⬝ᵥ (JR R J *ᵥ y)) := by
   simp only [hR, Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+-/
 theorem sigR_mulVec (G : Matrix (Fin M) (Fin M) (R ⊗[F] E)) (x : Fin M → R ⊗[F] E) :
     (fun i => sigR R σ ((G *ᵥ x) i)) = (G.map (sigR R σ)) *ᵥ (fun i => sigR R σ (x i)) := by
   funext i
   simp [Matrix.mulVec, dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Establish `hg : ((HA.mat R σ J g : Matrix (Fin M) (Fin M) (R ⊗[F] E)).map (sigR R σ))ᵀ * JR R J * (HA.mat R σ J g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = JR R J` using `g.2`. Rewrite using `[hR_eq, hR_eq, sigR_mulVec, ← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hg]`.
+-/
 theorem hR_smul (g : HA R σ J) (x y : Fin M → R ⊗[F] E) :
     hR R σ J ((HA.mat R σ J g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) *ᵥ x)
       ((HA.mat R σ J g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) *ᵥ y) = hR R σ J x y := by
@@ -30,11 +39,17 @@ theorem hR_smul (g : HA R σ J) (x y : Fin M → R ⊗[F] E) :
       (HA.mat R σ J g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = JR R J := g.2
   rw [hR_eq, hR_eq, sigR_mulVec, ← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hg]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Conclude with `hR_smul R σ J g (Y a) (Y b)`.
+-/
 theorem gramR_smul {m : ℕ} (g : HA R σ J) (Y : Fin m → Fin M → R ⊗[F] E) :
     gramR R σ J (g • Y) = gramR R σ J Y := by
   funext a b
   exact hR_smul R σ J g (Y a) (Y b)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Simplify using `[gramR, gramE, hR, hE, Formalism.UG.hform, ratTup, JR, inclR, sigR, map_sum, map_mul]`.
+-/
 theorem gramR_ratTup {m : ℕ} (Y : Fin m → Fin M → E) :
     gramR R σ J (ratTup R Y) = (gramE σ J Y).map (inclR R) := by
   funext a b
@@ -48,6 +63,15 @@ def hLin (x : Fin M → R ⊗[F] E) : (Fin M → R ⊗[F] E) →ₗ[R ⊗[F] E] 
     simp only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `h1 : (gramR R σ J X).mulVec g = 0`. Use function extensionality and compare the values at `a`. Establish `e` using `map_sum (hLin R σ J (X a)) (fun b => g b • X b) Finset.univ`.
+
+Rewrite `e` using `[hg, map_zero]`. Simplify using `only [map_smul, smul_eq_mul] at e`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`. Rewrite using `[e]`. Conclude with `Finset.sum_congr rfl fun b _ => by simp only [hLin, LinearMap.coe_mk, gramR]; exact mul_comm _ _`.
+
+Establish `h2 : g = 0`. Use `congrArg (fun v => (gramR R σ J X)⁻¹.mulVec v) h1` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ h, Matrix.one_mulVec, Matrix.mulVec_zero] at this`. Conclude with `this`. Introduce `a`.
+
+Rewrite using `[h2]`. Both sides reduce to the same expression.
+-/
 theorem linIndep_of_isUnit_det {n : ℕ} (X : Fin n → Fin M → R ⊗[F] E) (h : IsUnit (gramR R σ J X).det) :
     LinearIndependent (R ⊗[F] E) X := by
   rw [Fintype.linearIndependent_iff]
@@ -67,6 +91,11 @@ theorem linIndep_of_isUnit_det {n : ℕ} (X : Fin n → Fin M → R ⊗[F] E) (h
     exact this
   intro a; rw [h2]; rfl
 
+/- English proof (translation)
+Establish `h : ∀ x : R ⊗[F] E, sigR R σ x = (σ.toLinearMap.baseChange R) x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR]`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `: (sigR R σ : R ⊗[F] E → R ⊗[F] E) = (σ.toLinearMap.baseChange R)` using `funext h`. Rewrite using `[this]`. Conclude with `IsModuleTopology.continuous_of_linearMap _`.
+-/
 theorem continuous_sigRP [FiniteDimensional F E] [TopologicalSpace R] [IsTopologicalRing R] :
     Continuous (sigR R σ) := by
   have h : ∀ x : R ⊗[F] E, sigR R σ x = (σ.toLinearMap.baseChange R) x := by
@@ -79,6 +108,9 @@ theorem continuous_sigRP [FiniteDimensional F E] [TopologicalSpace R] [IsTopolog
   rw [this]
   exact IsModuleTopology.continuous_of_linearMap _
 
+/- English proof (translation)
+Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Use `show Continuous fun Y : Fin m → Fin M → R ⊗[F] E => ∑ i, ∑ j, sigR R σ (Y a i) * JR R J i j * Y b j`. Conclude with `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => (((continuous_sigRP R σ).comp ((continuous_apply i).comp (continuous_apply a))).mul continuous_const).mul ((continuous_apply j).comp (continuous_apply b))`.
+-/
 theorem continuous_gramRP [FiniteDimensional F E] [TopologicalSpace R] [IsTopologicalRing R] {m : ℕ} :
     Continuous (gramR R σ J : (Fin m → Fin M → R ⊗[F] E) → Matrix (Fin m) (Fin m) (R ⊗[F] E)) := by
   refine continuous_pi fun a => continuous_pi fun b => ?_
@@ -93,6 +125,13 @@ def DetNZ : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ :
     PushHyp X u' ψ hT μinf νinf fibInf →
     (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).det ≠ 0
 
+/- English proof (translation)
+Establish `e : gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (orbM X u' g) = ((TI X u' hT : HermR _ _ _) : Matrix _ _ _)`. Rewrite using `[orbM, gramR_smul, gramR_ratTup]`. Both sides reduce to the same expression. Use `⟨e, ?_⟩` and prove the remaining obligations. Apply `linIndep_of_isUnit_det (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J` to reduce the goal to its premises.
+
+Rewrite using `[e]`. Establish `e2` using `RingHom.map_det (inclR (F := X.B.I.F) (E := X.B.I.E) (Ainf X.B.I.F)) (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')))`. Rewrite `e2` using `[RingHom.mapMatrix_apply]`. Use `show IsUnit ((gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).map (inclR (Ainf X.B.I.F))).det`. Rewrite using `[← e2]`.
+
+Conclude with `(isUnit_iff_ne_zero.2 hd).map _`.
+-/
 theorem orbM_mem {D : D7} (X : HidaSetting D) (u' : D.what₂.Word)
     (hT : ∀ i j, X.B.I.cm.sig (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')) j i) =
       gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')) i j)
@@ -112,6 +151,9 @@ theorem orbM_mem {D : D7} (X : HidaSetting D) (u' : D.what₂.Word)
   rw [← e2]
   exact (isUnit_iff_ne_zero.2 hd).map _
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Conclude with `(isClosed_singleton.preimage (continuous_gramRP (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)).measurableSet.inter (isOpen_IndI X).measurableSet`.
+-/
 theorem measurableSet_FbI {D : D7} (X : HidaSetting D) (u' : D.what₂.Word)
     (hT : ∀ i j, X.B.I.cm.sig (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')) j i) =
       gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')) i j) : MeasurableSet (FbI X u' hT) := by
@@ -119,6 +161,11 @@ theorem measurableSet_FbI {D : D7} (X : HidaSetting D) (u' : D.what₂.Word)
   exact (isClosed_singleton.preimage (continuous_gramRP (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)).measurableSet.inter
     (isOpen_IndI X).measurableSet
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP`. Rewrite using `[Measure.map_apply (measurable_orbM X u') (measurableSet_FbI X u' hT).compl]`. Establish `: orbM X u' ⁻¹' (FbI X u' hT)ᶜ = ∅`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_compl_iff, Set.mem_empty_iff_false, iff_false, not_not]`.
+
+Conclude with `orbM_mem X u' hT (hD X u' ψ hT μinf νinf fibInf hP) g`. Rewrite using `[this, measure_empty]`.
+-/
 theorem pushSupp_of (hD : DetNZ) : ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ) hT μinf νinf fibInf,
     PushHyp X u' ψ hT μinf νinf fibInf →
     X.measG.μGinf.map (orbM X u') (FbI X u' hT)ᶜ = 0 := by
@@ -134,6 +181,9 @@ def PushLFin : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (�
     PushHyp X u' ψ hT μinf νinf fibInf →
     LFI X (X.measG.μGinf.map (orbM X u'))
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP`. Conclude with `⟨pushSupp_of hD X u' ψ hT μinf νinf fibInf hP, hL X u' ψ hT μinf νinf fibInf hP⟩`.
+-/
 theorem lfPush_of (hD : DetNZ) (hL : PushLFin) : LFPush := by
   intro D X u' ψ hT μinf νinf fibInf hP
   exact ⟨pushSupp_of hD X u' ψ hT μinf νinf fibInf hP, hL X u' ψ hT μinf νinf fibInf hP⟩

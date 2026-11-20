@@ -8,6 +8,9 @@ namespace GroundTheory.Heights₂.Heights
 
 open ReciprocityTheory.ChartRestriction.G.Geo
 
+/- English proof (translation)
+Introduce `K _ _ i T _ _ b hb II hi hII`. Rewrite using `[hBC K i T b hb II hi hII]`. Take `⟨m, rfl⟩ : ∃ m, i = m + 1` from `⟨i - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel, hGL m II hII]`.
+-/
 theorem DualTopStandard.proof (hBC : DualStdBaseChange.Statement) (hGL : GrassLinesProj.Statement) :
     DualTopStandard.Statement := by
   intro K _ _ i T _ _ b hb II hi hII

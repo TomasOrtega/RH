@@ -22,6 +22,37 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.MomProdGap
 
+/- English proof (translation)
+Introduce `hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R lb dg hS l hl ν hν hNz`. Establish `hSG` using `(GlobalTheory.T.families_have_largeGap_of_numericalHypotheses.2 k r Wp lam u b bv ga h q0 z π μW μN μG νq R lb dg).1 hS`. Take `⟨hG, -, -, -⟩` from `hH`. Establish `hKS : PI.KFinSmooth`. Unfold `BranchingSupport.HypsG BranchingSupport.InputsG at hG`.
+
+Conclude with `hG.1.2.2.1`. Take `⟨hN, hFam, hSd, hSF⟩` from `hS`. Establish `hk : 1 ≤ k`. Unfold `BranchingSupport.Num at hN`. Conclude with `hN.1`.
+
+Establish `hz : Formalism.QuantumDeterminants.inWb k r z`. Unfold `BranchingSupport.SideG at hSd`. Conclude with `hSd.1`. Establish `hT : 0 < Formalism.QuantumDeterminants.Tz k r z`. Unfold `BranchingSupport.SideG at hSd`.
+
+Conclude with `hSd.2.1`. Establish `hν0 : n1 ν ≤ q0` using `le_trans (Nat.le_add_right _ _) hν`. Establish `hDS : ∀ ν' : Fin (2 * r + k + 1) → ℤ, n1 ν' ≤ q0 → (R ν').IsDS (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν' a : ℝ))`. Introduce `ν' h'`. Unfold `BranchingSupport.IsFam at hFam`.
+
+Conclude with `hFam ν' h'`. Establish `hDG : ∀ ν' : Fin (2 * r + k + 1) → ℤ, n1 ν' ≤ q0 → (R ν').IsDG (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν' a : ℝ))`. Introduce `ν' h'`. Establish `h2` using `hSG`. Unfold `BranchingSupport.SetupG BranchingSupport.IsFamG at h2`.
+
+Conclude with `h2.2.1 ν' h'`. Take `⟨Q, hQ⟩` from `(GlobalTheory.CayleyChoice.cayley_exists_and_any k r).1 hk`. Establish `hQu : IsUnit Q`. Unfold `PI.UpqRep.IsCayleyU at hQ`. Conclude with `⟨⟨Q, star Q, Matrix.mem_unitaryGroup_iff.mp hQ.2, Matrix.mem_unitaryGroup_iff'.mp hQ.2⟩, rfl⟩`.
+
+Establish `hEx : ∀ ν' : Fin (2 * r + k + 1) → ℤ, ∃ E' : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ (R ν').smSub, n1 ν' ≤ q0 → (R ν').IsE Q E' ∧ Formalism.REAL.GlRel E'`. Introduce `ν'`. Distinguish the cases in `h' : n1 ν' ≤ q0`. Take `⟨E', h1, h2⟩` from `GlobalTheory.T.smoothVectors_discreteSeries_glModule hKS k r _ _ (R ν') (hDS ν' h') Q hQu`. Conclude with `⟨E', fun _ => ⟨h1, h2⟩⟩`.
+
+Conclude with `⟨fun _ _ => 0, fun h'' => absurd h'' h'⟩`. Use `choose E hE using hEx`. Take `⟨w, hw1, -, hKH, hfin⟩` from `GlobalTheory.T.exists_lowest_kFinite_vector_discreteSeries hKS k r _ _ (R ν) (hDS ν hν0) Q (E ν) hQ (hE ν hν0).1`. Establish `hMod` using `Gp91.GlobalTheory.isMod_smooth_of_isDS hG k r _ _ (R ν) hk (hDG ν hν0) Q (E ν) hQ (hE ν hν0).1`. Establish `hLev : BranchingSupport.Lev (PI.BesselPeriodGGP.eps48 k r) (E ν) (fun a => lam a + (ν a : ℝ)) 0 w`.
+
+Unfold `BranchingSupport.IsMod at hMod`. Conclude with `GlobalTheory.lev_zero_of_kHighest _ _ _ _ _ _ hMod.1 hMod.2.1 hKH hfin`. Establish `hq4 : ∀ q ≤ (r + 1) ^ 2, 0 + 2 * q ≤ 4 * (2 * r + k + 1) ^ 2`. Introduce `q hq`. Establish `h1 : (r + 1) ^ 2 ≤ (2 * r + k + 1) ^ 2` using `Nat.pow_le_pow_left (by omega) 2`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hA : ∀ q ≤ (r + 1) ^ 2, ∫⁻ x, ENNReal.ofReal (lenA k r z (Matrix.of x) 0 ^ (2 * q) * (dg ν * ‖lb ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)) ∂νq ≤ ENNReal.ofReal (((2 * r + k + 1 : ℝ) ^ 2 * (Formalism.QuantumDeterminants.Tz k r z * b ^ 4) * (6 * bv) ^ (2 * (2 * r + 2))) ^ q)`. Introduce `q hq`. Establish `h1` using `Gp91.GlobalTheory.Moment.moment_first_length hG k r Wp lam u b bv ga h q0 z π μW μN μG νq R lb dg Q E hSG hQ (fun ν' h' => hE ν' h') q ν (le_trans (Nat.add_le_add_left hq _) hν) 0 (hq4 q hq) w hLev`. Rewrite `h1` using `[hw1, one_pow, mul_one]`. Then use the resulting hypothesis.
+
+Establish `hRr : ∀ a : Fin r, ∀ q ≤ (r + 1) ^ 2, ∫⁻ x, ENNReal.ofReal ((lenA k r z (Matrix.of x) a.succ / lenA k r z (Matrix.of x) a.castSucc) ^ (2 * q) * (dg ν * ‖lb ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)) ∂νq ≤ ENNReal.ofReal ((b ^ 2) ^ (2 * q))`. Introduce `a q hq`. Establish `h1` using `Gp91.GlobalTheory.RatioMoment.ratio_moment hG k r Wp lam u b bv ga h q0 z π μW μN μG νq R lb dg Q E hSG hQ (fun ν' h' => hE ν' h') ν hν0 0 q (hq4 q hq) a w hLev`. Rewrite `h1` using `[hw1, one_pow, mul_one]`. Then use the resulting hypothesis. Establish `hdg : 0 < dg ν` using `(hSF ν hν0).2.1`.
+
+Establish `hmass : ∫⁻ x, ENNReal.ofReal (dg ν * ‖lb ν ((R ν).σ (Matrix.of x) w)‖ ^ 2) ∂νq = 1`. Establish `h1` using `((Gp91.GlobalTheory.MomMass.mom_mass hG k r Wp lam u b bv ga h q0 z π μW μN μG νq R lb dg hSG ν hν0).2 hNz).2 (w : (R ν).H) w.2`. Simplify using `only [one_mul] at h1`. Rewrite using `[h1]`. Establish `h2 : ‖(w : (R ν).H)‖ = 1` using `hw1`.
+
+Rewrite using `[h2, one_pow, ENNReal.ofReal_one]`. Take `⟨hae, -, hlenM, hbesM⟩` from `GlobalTheory.T.quotientMeasure_ae_mem_and_measurable_besselModel hKS k r _ _ (R ν) Wp z π u μW μN μG νq (hDS ν hν0) hSd`. Take `⟨hIsBes, -⟩` from `(hSF ν hν0).1`. Establish `hPhM : AEMeasurable (fun x : Formalism.QuantumDeterminants.Mt k r => dg ν * ‖lb ν ((R ν).σ (Matrix.of x) w)‖ ^ 2) νq` using `((hbesM (lb ν) hIsBes (w : (R ν).H) w.2).norm.aemeasurable.pow_const 2).const_mul (dg ν)`. Establish `hpos : ∀ a, ∀ᵐ x ∂νq, 0 < lenA k r z (Matrix.of x) a` using `fun a => hae.mono fun x hx => (GlobalTheory.TensLen.lengths k r z hz hT (Matrix.of x) hx).2.2.1 a`.
+
+Establish `hnf` using `(GlobalTheory.NumFam.num_fam k r lam u b bv ga h q0 hN).1`. Establish `hb1 : 1 ≤ b`. Establish `h1` using `hnf.2.2.1`. Establish `h2 : (0 : ℝ) ≤ 2 * r + k` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hbv : 0 ≤ bv` using `by linarith [hnf.2.1]`. Establish `hA0 : 0 ≤ ((2 * r + k + 1 : ℝ) ^ 2 * (Formalism.QuantumDeterminants.Tz k r z * b ^ 4) * (6 * bv) ^ (2 * (2 * r + 2)))` using `mul_nonneg (mul_nonneg (sq_nonneg _) (mul_nonneg hT.le (by positivity))) (pow_nonneg (by linarith) _)`. Establish `key` using `GlobalTheory.T.initial_lengths_product_moment_le (Formalism.QuantumDeterminants.Mt k r) νq r l hl (fun a x => lenA k r z (Matrix.of x) a) (fun x => dg ν * ‖lb ν ((R ν).σ (Matrix.of x) w)‖ ^ 2) ((2 * r + k + 1 : ℝ) ^ 2 * (Formalism.QuantumDeterminants.Tz k r z * b ^ 4) * (6 * bv) …`. Use `⟨(w : (R ν).H), w.2, hw1, le_trans key (ENNReal.ofReal_le_ofReal ?_)⟩` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (mul_nonneg hA0 (by positivity)) (GlobalTheory.T.numericalFamily_productBound_constant_le k r lam u b bv ga h q0 _ hN hT) l`.
+-/
 theorem product_moment_first_gap : GlobalTheory.GapIn.Hyp → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)) (R : (Fin (2 * r + k + 1) → ℤ) → Rep k r) (lb : ∀ ν, (R ν).H → Wp) (dg : (Fin (2 * r + k + 1) → ℤ) → ℝ), Setup lam u b bv ga h q0 z π μW μN μG νq R lb dg → ∀ (l : ℕ) (hl : l ≤ r + 1) ν, n1 ν + (r + 1) ^ 2 ≤ q0 → NzOn (R ν) (lb ν) → ∃ w ∈ (R ν).sm, ‖w‖ = 1 ∧ ∫⁻ x, ENNReal.ofReal ((∏ a : Fin l, lenA k r z (Matrix.of x) (Fin.castLE hl a) ^ 2) * (dg ν * ‖lb ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)) ∂νq ≤ ENNReal.ofReal (Hsq r (Formalism.QuantumDeterminants.Tz k r z) b ^ l) := by
   intro hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R lb dg hS l hl ν hν hNz
   have hSG := (GlobalTheory.T.families_have_largeGap_of_numericalHypotheses.2 k r Wp lam u b bv ga h q0 z π μW μN μG νq R lb dg).1 hS

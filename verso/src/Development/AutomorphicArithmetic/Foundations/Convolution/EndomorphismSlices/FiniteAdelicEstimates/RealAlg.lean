@@ -21,6 +21,11 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 
 attribute [local instance] borelG borelF borelA borelH
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i x`. Simplify using `only [PositivityTheory.Rg.BcB.E.conv, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem conv_smul' {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} {ι : Type} [Fintype ι]
     (μ : Measure (H E a b)) (Φ : Matrix ι ι (H E a b → ℂ)) (c : ℂ) (f : ι → H E a b → ℂ) :
     PositivityTheory.Rg.BcB.E.conv μ Φ (c • f) = c • PositivityTheory.Rg.BcB.E.conv μ Φ f := by
@@ -33,6 +38,31 @@ private theorem conv_smul' {E : Type} [Field E] [NumberField E] [IsCMField E] {a
   ring
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `E _ _ _ B Q _ Γ _ t v 𝔄 a₀ g s hok hK hT hs hs0`. Set `gg : Γ → BGen B` to `fun x => Sum.inr (t x)`. Set `X : B.Hb →L[ℂ] B.Hb` to `(t a₀).op`. Establish `hmem : ∀ y : 𝔄.B, 𝔄.F y ∈ StarAlgebra.adjoin ℂ (Rd.gOps gg ∪ {X})`. Establish `hle : StarAlgebra.adjoin ℂ (Set.range 𝔄.ι) ≤ (StarAlgebra.adjoin ℂ (Rd.gOps gg ∪ {X})).comap 𝔄.F`.
+
+Use `StarAlgebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `show 𝔄.F (𝔄.ι x) ∈ StarAlgebra.adjoin ℂ (Rd.gOps gg ∪ {X})`. Rewrite using `[𝔄.hF]`. Conclude with `StarAlgebra.subset_adjoin ℂ _ (Or.inl ⟨x, rfl⟩)`.
+
+Introduce `y`. Establish `hy : y ∈ StarAlgebra.adjoin ℂ (Set.range 𝔄.ι)`. Rewrite using `[𝔄.top]`. Conclude with `StarSubalgebra.mem_top`. Conclude with `hle hy`.
+
+Establish `hΦ : ∀ y : 𝔄.B, ∃ Φ : Matrix B.I B.I (H E B.a B.b → ℂ), IsTestM Φ ∧ IsROp B.D Φ (𝔄.F y * (t a₀).op)` using `fun y => Rd.phiEx BlockFiniteConvolution.blkOp₀ BlockFiniteConvolution.blkWord₀ blkSum adjWords gg X (t a₀) (t a₀) (fun x => hok x) (hok a₀) rfl (hok a₀) ⟨𝔄.F y, hmem y⟩`. Use `choose Φ hΦt hΦr using hΦ`. Establish `hop : ∀ y : 𝔄.B, ∃ T : B.Hb →L[ℂ] B.Hb, IsROp B.D (Φ y) T ∧ (∀ w : Q, T (Q.subtypeL w) = Q.subtypeL (𝔄.R (y * 𝔄.ι a₀) w)) ∧ ∀ u, (∀ w : Q, inner ℂ (Q.subtypeL w) u = 0) → ∀ w : Q, inner ℂ (Q.subtypeL w) (T u) = 0`. Introduce `y`. Establish `hTy : 𝔄.F y * (t a₀).op = 𝔄.F (y * 𝔄.ι a₀)` using `by rw [map_mul, 𝔄.hF]`.
+
+Use `⟨_, hΦr y, fun w => ?_, fun u hu w => ?_⟩` and prove the remaining obligations. Rewrite using `[hTy]`. Conclude with `(𝔄.hR _ w).symm`. Rewrite using `[hTy]`. Establish `h1 : (ContinuousLinearMap.adjoint (𝔄.F (y * 𝔄.ι a₀))) (w : B.Hb) = Q.subtypeL (𝔄.R (star (y * 𝔄.ι a₀)) w)`.
+
+Rewrite using `[← ContinuousLinearMap.star_eq_adjoint, ← map_star]`. Conclude with `(𝔄.hR _ w).symm`. Establish `h2` using `hu (𝔄.R (star (y * 𝔄.ι a₀)) w)`. Rewrite `h2` using `[← h1, ContinuousLinearMap.adjoint_inner_left]`. Conclude with `h2`.
+
+Establish `hC : ({1} ∪ Set.range 𝔄.ι : Set 𝔄.B).Countable` using `(Set.countable_singleton _).union (Set.countable_range _)`. Take `⟨M, sk, f, hlim, hk⟩` from `PositivityTheory.Rg.BcB.E2.orthogonal_keeping_holds E B.a B.b B.D B.I Q Q.subtypeL (fun w => rfl) 𝔄.B 𝔄.R s (𝔄.ι a₀) ({1} ∪ Set.range 𝔄.ι) Φ g hs hs0 hC (Or.inl rfl) hΦt hop (fun j w => (Submodule.mem_orthogonal _ _).1 (hT.1 j) w w.2) hT.2`. Use `⟨fun k x => sk k (𝔄.ι x), f, fun x => hlim _ (Or.inr ⟨x, rfl⟩), fun k => ?_⟩` and prove the remaining obligations. Take `⟨h0, hc, hne, hL, hW, hconv, horth⟩` from `hk k`. Establish `hO` using `fun x => BlockFiniteConvolution.blkOp₀ E B (t x) (t a₀) (hok x) (hok a₀)`.
+
+Establish `ha : PositivityTheory.Rg.BcB.E.conv B.D.μ (t a₀).Φ (f k) = sk k (𝔄.ι a₀) • f k`. Establish `h1` using `hconv 1 (Or.inl rfl)`. Rewrite `h1` using `[one_mul]`. Rewrite using `[← h1]`. Use `PositivityTheory.Rg.BcB.E2.conv_eq_of_isROp B.D (hO a₀).1 (hΦt 1) ?_ (hΦr 1) hc hL` and prove the remaining obligations.
+
+Rewrite using `[map_one, one_mul]`. Conclude with `(hO a₀).2.1`. Establish `hx : ∀ x, PositivityTheory.Rg.BcB.E.conv B.D.μ (t x).Φ (f k) = sk k (𝔄.ι x) • f k`. Introduce `x`. Establish `h1` using `hconv (𝔄.ι x) (Or.inr ⟨x, rfl⟩)`.
+
+Establish `hok'` using `(hO x).2.2.1`. Establish `hm` using `BlockFiniteConvolution.blkOp₀ E B _ _ hok' hok'`. Establish `h2 : PositivityTheory.Rg.BcB.E.conv B.D.μ ((t x).mul (t a₀)).Φ (f k) = PositivityTheory.Rg.BcB.E.conv B.D.μ (Φ (𝔄.ι x)) (f k)`. Use `PositivityTheory.Rg.BcB.E2.conv_eq_of_isROp B.D hm.1 (hΦt _) ?_ (hΦr _) hc hL` and prove the remaining obligations. Rewrite using `[𝔄.hF, ← (hO x).2.2.2.1]`.
+
+Conclude with `hm.2.1`. Establish `h3` using `(UpperTheory.Zero.ConvolutionTheory.EB.convMul E B (f k) hc).1 (t x) (t a₀) (hok x) (hok a₀)`. Rewrite `h3` using `[ha, conv_smul', h2, h1, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Conclude with `⟨h0, ⟨hc, hne, hL, ⟨M, hW⟩, hx⟩, horth⟩`.
+-/
 theorem realAlg : RealAlg := by
   intro E _ _ _ B Q _ Γ _ t v 𝔄 a₀ g s hok hK hT hs hs0
   let gg : Γ → BGen B := fun x => Sum.inr (t x)

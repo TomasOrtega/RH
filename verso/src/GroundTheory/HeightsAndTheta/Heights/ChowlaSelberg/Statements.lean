@@ -20,6 +20,9 @@ def latticeG₃ (Λ : Submodule ℤ ℂ) : ℂ := 140 * eisensteinSum Λ 6
 
 def latticeDiscr (Λ : Submodule ℤ ℂ) : ℂ := latticeG₂ Λ ^ 3 - 27 * latticeG₃ Λ ^ 2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem latticeDiscr_lattice (L : PeriodPair) : latticeDiscr L.lattice = discr L := rfl
 
 def latticeArea (Λ : Submodule ℤ ℂ) : ℝ := ZLattice.covolume Λ
@@ -73,6 +76,9 @@ variable {K : Type} [Field K] [NumberField K]
 
 def classRep (C : ClassGroup (𝓞 K)) : (Ideal (𝓞 K))⁰ := (ClassGroup.mk0_surjective C).choose
 
+/- English proof (translation)
+The claim follows from `(ClassGroup.mk0_surjective C).choose_spec`.
+-/
 theorem mk0_classGroupRep (C : ClassGroup (𝓞 K)) : ClassGroup.mk0 (classRep C) = C :=
   (ClassGroup.mk0_surjective C).choose_spec
 

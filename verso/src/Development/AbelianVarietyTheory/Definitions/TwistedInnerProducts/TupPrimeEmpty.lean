@@ -42,6 +42,9 @@ def OneMapOverL (ph : ℂ) (i : Fin D.R.m) : Prop :=
     O'.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O'.s0) ∧
       O'.OneMapOf (κ i) (v₀ i (sg0 D A)) (T.cE ((i : ℕ) + 1) O'.s0) ph
 
+/- English proof (translation)
+The claim follows from `h.imp fun _ h => ⟨h.1, h.2.1⟩`.
+-/
 theorem OneMapOverL.pins {ph : ℂ} {i : Fin D.R.m} (h : OneMapOverL T R κ v₀ ph i) : PinsOverL T R κ v₀ i :=
   h.imp fun _ h => ⟨h.1, h.2.1⟩
 

@@ -19,18 +19,30 @@ open FlagBundleSectionForms (chartPow chartMono liftNat)
 variable {F : Type} [Field F] {Ω : Type} [Field Ω] [Algebra F Ω]
   {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
 
+/- English proof (translation)
+Simplify using `[chartPow, zpow_add₀ (hY _), Finset.prod_mul_distrib]`.
+-/
 theorem chartPow_add {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hY : ∀ k, y ⟨k, c k⟩ ≠ 0) (d d' : K → ℤ) :
     chartPow y c (d + d') = chartPow y c d * chartPow y c d' := by
   simp [chartPow, zpow_add₀ (hY _), Finset.prod_mul_distrib]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hY k)`.
+-/
 theorem chartPow_ne_zero {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hY : ∀ k, y ⟨k, c k⟩ ≠ 0) (d : K → ℤ) :
     chartPow y c d ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hY k)
 
+/- English proof (translation)
+Simplify using `[chartPow]`.
+-/
 theorem chartPow_natCast (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (α : K → ℕ) :
     chartPow y c (fun k => (α k : ℤ)) = ∏ k, y ⟨k, c k⟩ ^ α k := by
   simp [chartPow]
 
+/- English proof (translation)
+Simplify using `[segreVec, chartPow, Finset.prod_pow]`.
+-/
 theorem segreVec_pow (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (n : ℕ) :
     segreVec y c ^ n = chartPow y c (fun _ => (n : ℤ)) := by
   simp [segreVec, chartPow, Finset.prod_pow]
@@ -39,6 +51,45 @@ section Dual
 
 variable {N : ℕ} {E : Type} [AddCommGroup E] [Module Ω E]
 
+/- English proof (translation)
+Establish `hY : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.1 hc) k (Finset.mem_univ _)`. Establish `hp : ∀ j, chartPow y c (b j) ≠ 0` using `fun j => chartPow_ne_zero hY _`. Establish `hgr : ∀ (j : Fin N) (s : Ω), (∃ v ∈ B.lat c, (∀ m, j < m → w.repr v m = 0) ∧ w.repr v j = s) ↔ ∃ r ∈ chartRing F (segreVec y) c, s = r * chartPow y c (b j)` using `fun j s => by`. Establish `h` using `hfl.graded c hc j`. Rewrite `h` using `[Set.ext_iff]`.
+
+Conclude with `h s`. Establish `he : ∀ j : Fin N, ∃ v ∈ B.lat c, (∀ m, j < m → w.repr v m = 0) ∧ w.repr v j = chartPow y c (b j)` using `fun j => (hgr j _).2 ⟨1, one_mem _, (one_mul _).symm⟩`. Use `choose e heL heT heD using he`. Establish `hx : ∀ j : Fin N, e j - chartPow y c (b j) • w j ∈ Submodule.span Ω (w '' {m | (m : ℕ) < j})`. Introduce `j`.
+
+Rewrite using `[w.mem_span_image]`. Introduce `m hm`. Simplify using `only [Finset.mem_coe, Finsupp.mem_support_iff] at hm`. Simplify using `only [Set.mem_setOf_eq]`. Assume the negation of the conclusion as `hjm`.
+
+Use `push_neg at hjm`. Apply `hm` to reduce the goal to its premises. Break down `hjm.lt_or_eq with h | h` into its components or cases. Establish `hne : j ≠ m` using `fun h' => (ne_of_lt h) (congrArg Fin.val h')`. Simplify using `[heT j m h, Finsupp.single_apply, hne]`.
+
+Establish `: m = j` using `Fin.ext h.symm`. Substitute `this` using the available equality. Simplify using `[heD]`. Establish `hspan : ∀ m ≤ N, Submodule.span Ω (e '' {j | (j : ℕ) < m}) = Submodule.span Ω (w '' {j | (j : ℕ) < m})`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `hm`.
+
+Establish `hS : {j : Fin N | (j : ℕ) < m + 1} = insert (⟨m, hm⟩ : Fin N) {j : Fin N | (j : ℕ) < m}`. Use extensionality with `j`. Simplify using `only [Set.mem_setOf_eq, Set.mem_insert_iff, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hS, Set.image_insert_eq, Set.image_insert_eq, Submodule.span_insert, Submodule.span_insert, ih (by omega)]`.
+
+Establish `hxm` using `hx ⟨m, hm⟩`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Use `Submodule.add_mem_sup (Submodule.smul_mem _ (chartPow y c (b ⟨m, hm⟩)) (Submodule.mem_span_singleton_self (w ⟨m, hm⟩))) hxm` as an intermediate fact.
+
+Simplify using `using this`. Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Use `Submodule.smul_mem _ (chartPow y c (b ⟨m, hm⟩))⁻¹ (Submodule.sub_mem_sup (Submodule.mem_span_singleton_self (e ⟨m, hm⟩)) hxm)` as an intermediate fact. Simplify `this` using `[smul_smul, inv_mul_cancel₀ (hp _)]`.
+
+Establish `htop : ⊤ ≤ Submodule.span Ω (Set.range e)`. Establish `h` using `hspan N le_rfl`. Establish `hu : {j : Fin N | (j : ℕ) < N} = Set.univ` using `Set.eq_univ_of_forall fun j => j.isLt`. Rewrite `h` using `[hu, Set.image_univ, Set.image_univ, w.span_eq]`. Rewrite using `[h]`.
+
+Establish `hli : LinearIndependent Ω e` using `linearIndependent_of_top_le_span_of_card_eq_finrank htop (by rw [Module.finrank_eq_card_basis w])`. Set `eb` to `Module.Basis.mk hli htop`. Establish `heb : ⇑eb = e` using `funext (Module.Basis.mk_apply hli htop)`. Establish `hvan : ∀ x ∈ Submodule.span Ω (w '' {j : Fin N | (j : ℕ) < i}), eb.repr x i = 0`. Introduce `x hx'`.
+
+Rewrite `hx'` using `[← hspan i i.isLt.le, ← heb, eb.mem_span_image]`. Assume the negation of the conclusion as `h`. Conclude with `lt_irrefl (i : ℕ) (hx' (Finsupp.mem_support_iff.2 h))`. Establish `hself : ∀ j m, eb.repr (e j) m = Finsupp.single j 1 m` using `fun j m => by`. Rewrite using `[← heb, eb.repr_self]`.
+
+Establish `hint : ∀ m ≤ N, ∀ v ∈ B.lat c, (∀ j : Fin N, m ≤ (j : ℕ) → w.repr v j = 0) → ∀ j, eb.repr v j ∈ chartRing F (segreVec y) c`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `_ v _ hv j`.
+
+Establish `: v = 0` using `w.repr.injective (by ext j; simp [hv j (Nat.zero_le _)])`. Simplify using `[this]`. Consider the case `succ m ih`. Introduce `hm v hvL hv j`. Take `⟨r, hr, hrv⟩` from `(hgr ⟨m, hm⟩ (w.repr v ⟨m, hm⟩)).1 ⟨v, hvL, fun j hj => hv j hj, rfl⟩`.
+
+Establish `hv' : v - r • e ⟨m, hm⟩ ∈ B.lat c` using `sub_mem hvL (B.stable c r hr _ (heL _))`. Establish `h'` using `ih (by omega) _ hv' (by`. Introduce `j hj`. Break down `hj.lt_or_eq with h | h` into its components or cases. Simplify using `[hv j h, heT ⟨m, hm⟩ j h]`.
+
+Establish `: j = ⟨m, hm⟩` using `Fin.ext h.symm`. Substitute `this` using the available equality. Simplify using `[heD, hrv])`. Establish `hsplit : eb.repr v j = eb.repr (v - r • e ⟨m, hm⟩) j + r * eb.repr (e ⟨m, hm⟩) j`. Rewrite using `[map_sub, map_smul, Finsupp.sub_apply, Finsupp.smul_apply, smul_eq_mul, sub_add_cancel]`.
+
+Rewrite using `[hsplit, hself]`. Use `add_mem (h' j) (mul_mem hr ?_)` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `zero_mem _`. Use `⟨eb.coord i, fun v hv => ?_, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Conclude with `hint N le_rfl v hv (fun j hj => absurd j.isLt (by omega)) i`. Conclude with `hvan _ (Submodule.subset_span ⟨j, hj, rfl⟩)`. Establish `hw : w i = (chartPow y c (b i))⁻¹ • (e i - (e i - chartPow y c (b i) • w i))`.
+
+Rewrite using `[sub_sub_cancel, smul_smul, inv_mul_cancel₀ (hp i), one_smul]`. Rewrite using `[Module.Basis.coord_apply, hw, map_smul, map_sub, Finsupp.smul_apply, Finsupp.sub_apply, hself, hvan _ (hx i)]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_flag_dual (y : (Σ k, ι k) → Ω) (B : ChartBundle F (segreVec y) N E)
     (w : Module.Basis (Fin N) Ω E) (b : Fin N → K → ℤ) (hfl : IsFlagFrame y B w b)
     (c : ∀ k, ι k) (hc : segreVec y c ≠ 0) (i : Fin N) :
@@ -155,6 +206,11 @@ section Forms
 
 variable {M N : ℕ} {E : Type} [AddCommGroup E] [Module Ω E] {Φ : Type} [Field Φ] [Algebra Ω Φ]
 
+/- English proof (translation)
+Establish `h` using `IsWeightedHomogeneous.prod (R := F) Finset.univ (fun k => X (⟨some k, c k⟩ : Σ o, bundleIdx ι M o) ^ α k) (fun k => α k • blockWeight (bundleIdx ι M) ⟨some k, c k⟩) (fun k _ => (isWeightedHomogeneous_X F _ _).pow (α k))`. Establish `hw : liftNat α = ∑ k, α k • blockWeight (bundleIdx ι M) ⟨some k, c k⟩`. Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `none => simp [liftNat, blockWeight, Finset.sum_apply, Pi.single_apply]`.
+
+Consider the case `some k => simp [liftNat, blockWeight, Finset.sum_apply, Pi.single_apply]`. Rewrite using `[IsMultiHomog, chartMono, hw]`. Conclude with `h`.
+-/
 theorem chartMono_homog (M : ℕ) (c : ∀ k, ι k) (α : K → ℕ) :
     IsMultiHomog (chartMono (F := F) M c α) (liftNat α) := by
   have h := IsWeightedHomogeneous.prod (R := F) Finset.univ
@@ -169,16 +225,25 @@ theorem chartMono_homog (M : ℕ) (c : ∀ k, ι k) (α : K → ℕ) :
   rw [IsMultiHomog, chartMono, hw]
   exact h
 
+/- English proof (translation)
+Simplify using `[chartMono, eval₂_prod, eval₂_pow, eval₂_X, projCoord, map_prod]`.
+-/
 theorem eval_chartMono (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E) (φ : Fin M → Module.Dual Ω E)
     (t : Fin N → Φ) (c : ∀ k, ι k) (α : K → ℕ) :
     eval₂ ((algebraMap Ω Φ).comp (algebraMap F Ω)) (projCoord y w φ t) (chartMono M c α) =
       algebraMap Ω Φ (∏ k, y ⟨k, c k⟩ ^ α k) := by
   simp [chartMono, eval₂_prod, eval₂_pow, eval₂_X, projCoord, map_prod]
 
+/- English proof (translation)
+Simplify using `[chartMono, ← Finset.prod_mul_distrib, pow_add]`.
+-/
 theorem chartMono_mul (c : ∀ k, ι k) (α α' : K → ℕ) :
     chartMono (F := F) M c α * chartMono M c α' = chartMono M c (α + α') := by
   simp [chartMono, ← Finset.prod_mul_distrib, pow_add]
 
+/- English proof (translation)
+Rewrite using `[chartMono, ← Finset.prod_pow, ← Finset.prod_pow]`. Use `Finset.prod_dvd_prod_of_dvd _ _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Use `pow_dvd_pow _ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem chartMono_pow_dvd (c : ∀ k, ι k) (δ : K → ℕ) (D : ℕ) :
     chartMono (F := F) M c δ ^ D ∣
       (∏ k, (X ⟨some k, c k⟩ : MRing (bundleIdx ι M) F)) ^ (D * ∑ k, δ k) := by
@@ -190,6 +255,23 @@ theorem chartMono_pow_dvd (c : ∀ k, ι k) (δ : K → ℕ) (D : ℕ) :
     _ ≤ D * ∑ k, δ k := Nat.mul_le_mul_left D (Finset.single_le_sum (fun _ _ => Nat.zero_le _)
         (Finset.mem_univ k))
 
+/- English proof (translation)
+Establish `hlift : ∀ n n' : ℕ, liftNat (K` using `K) (fun _ => n + n') = liftNat (fun _ => n) + liftNat (fun _ => n') := by`. Apply the tactic sequence `intro n n'; funext o; cases o <;> simp [liftNat]`. Establish `hQ : ∀ n : ℕ, eval₂ ((algebraMap Ω Φ).comp (algebraMap F Ω)) (projCoord y w φ t) (chartMono M c (fun _ => n)) = algebraMap Ω Φ (segreVec y c ^ n)`. Introduce `n`. Rewrite using `[eval_chartMono, segreVec, Finset.prod_pow]`.
+
+Proceed by induction on `hu using Algebra.adjoin_induction with`. Consider the case `mem z hz`. Take `⟨j, rfl⟩` from `hz`. Use `⟨1, chartMono M j (fun _ => 1), chartMono_homog M j _, ?_⟩` and prove the remaining obligations. Rewrite using `[eval_chartMono, pow_one, div_mul_cancel₀ _ hc]`.
+
+Simplify using `[segreVec]`. Consider the case `algebraMap r`. Use `⟨0, C r, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have h0 : liftNat (K := K) (fun _ => 0) = 0 := by funext o; cases o <;> rfl`. Rewrite using `[h0]`.
+
+Conclude with `isWeightedHomogeneous_C _ _`. Simplify using the standard rewrite rules. Consider the case `add z z' _ _ hz hz'`. Take `⟨n, U, hU, hUe⟩` from `hz`. Take `⟨n', U', hU', hUe'⟩` from `hz'`.
+
+Use `⟨n + n', U * chartMono M c (fun _ => n') + U' * chartMono M c (fun _ => n), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlift]`. Use `(hU.mul (chartMono_homog M c _)).add ?_` and prove the remaining obligations. Rewrite using `[add_comm]`. Conclude with `hU'.mul (chartMono_homog M c _)`.
+
+Rewrite using `[eval₂_add, eval₂_mul, eval₂_mul, hUe, hUe', hQ, hQ, ← map_mul, ← map_mul, ← map_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul z z' _ _ hz hz'`. Take `⟨n, U, hU, hUe⟩` from `hz`.
+
+Take `⟨n', U', hU', hUe'⟩` from `hz'`. Use `⟨n + n', U * U', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlift]`. Conclude with `hU.mul hU'`. Rewrite using `[eval₂_mul, hUe, hUe', ← map_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chartRing_forms (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     (φ : Fin M → Module.Dual Ω E) (t : Fin N → Φ) (c : ∀ k, ι k) (hc : segreVec y c ≠ 0) {u : Ω}
     (hu : u ∈ chartRing F (segreVec y) c) :
@@ -235,6 +317,13 @@ theorem chartRing_forms (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E
       congr 1
       ring
 
+/- English proof (translation)
+Establish `h` using `fun l => chartRing_forms (M := M) y w φ t c hc (hu l)`. Use `choose n U hU hUe using h`. Use `⟨∑ l, n l, fun l => U l * chartMono M c (fun _ => ∑ l, n l - n l), fun l => ?_, fun l => ?_⟩` and prove the remaining obligations. Establish `hle : n l ≤ ∑ l, n l` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ l)`. Establish `hd : liftNat (K` using `K) (fun _ => ∑ l, n l) = liftNat (fun _ => n l) + liftNat (fun _ => ∑ l, n l - n l) := by`.
+
+Apply the tactic sequence `funext o; cases o <;> simp [liftNat]; omega`. Rewrite using `[hd]`. Conclude with `(hU l).mul (chartMono_homog M c _)`. Establish `hle : n l ≤ ∑ l, n l` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ l)`. Rewrite using `[eval₂_mul, hUe, eval_chartMono, ← map_mul]`.
+
+Use `congr 1`. Rewrite using `[Finset.prod_pow, mul_assoc, ← segreVec, ← pow_add, Nat.add_sub_cancel' hle]`.
+-/
 theorem chartRing_forms_fin (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     (φ : Fin M → Module.Dual Ω E) (t : Fin N → Φ) (c : ∀ k, ι k) (hc : segreVec y c ≠ 0) {L : ℕ}
     {u : Fin L → Ω} (hu : ∀ l, u l ∈ chartRing F (segreVec y) c) :
@@ -255,6 +344,11 @@ theorem chartRing_forms_fin (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) 
     congr 1
     rw [Finset.prod_pow, mul_assoc, ← segreVec, ← pow_add, Nat.add_sub_cancel' hle]
 
+/- English proof (translation)
+Establish `h : (MvPolynomial.eval (fun _ : Option K => (1 : Φ))).comp (eval₂Hom (C.comp ((algebraMap Ω Φ).comp (algebraMap F Ω))) (fun p => C (projCoord y w φ t p) * X p.1)) = eval₂Hom ((algebraMap Ω Φ).comp (algebraMap F Ω)) (projCoord y w φ t)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules. Introduce `p`.
+
+Simplify using the standard rewrite rules. Rewrite `hf` using `[projIdeal, RingHom.mem_ker]`. Rewrite using `[← coe_eval₂Hom, ← h, RingHom.comp_apply, hf, map_zero]`.
+-/
 theorem eval_eq_zero_of_mem_projIdeal (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     (φ : Fin M → Module.Dual Ω E) (t : Fin N → Φ) {f : MRing (bundleIdx ι M) F}
     (hf : f ∈ projIdeal F y w φ t) :
@@ -275,6 +369,13 @@ section New
 
 variable {M N : ℕ} {E : Type} [AddCommGroup E] [Module Ω E] {Φ : Type} [Field Φ] [Algebra Ω Φ]
 
+/- English proof (translation)
+Rewrite using `[ProjIdealFormValue.proof F Ω K ι y N E w M φ Φ t d _ (weightedHomogeneousComponent_isWeightedHomogeneous _ _)]`. Rewrite `hq` using `[projIdeal, RingHom.mem_ker, coe_eval₂Hom]`. Establish `hc` using `congrArg (coeff (Finsupp.equivFunOnFinite.symm d)) hq`. Rewrite `hc` using `[← q.support_sum_monomial_coeff, eval₂_sum, coeff_sum, coeff_zero]`. Rewrite using `[weightedHomogeneousComponent_apply, eval₂_sum, Finset.sum_filter]`.
+
+Use `(Finset.sum_congr rfl fun m _ => ?_).trans hc` and prove the remaining obligations. Rewrite using `[ProjIdealFormValue.eval₂_monomial_cone, coeff_C_mul, coeff_monomial, mul_ite, mul_one, mul_zero]`. Establish `hiff : Finsupp.mapDomain Sigma.fst m = Finsupp.equivFunOnFinite.symm d ↔ Finsupp.weight (blockWeight (bundleIdx ι M)) m = d`. Rewrite using `[Finsupp.ext_iff, funext_iff]`. Conclude with `forall_congr' fun o => by rw [ProjIdealFormValue.weight_blockWeight_apply]; rfl`.
+
+Simplify using `only [hiff]`.
+-/
 theorem component_mem_projIdeal (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     (φ : Fin M → Module.Dual Ω E) (t : Fin N → Φ) {q : MRing (bundleIdx ι M) F}
     (hq : q ∈ projIdeal F y w φ t) (d : Option K → ℕ) :
@@ -294,6 +395,15 @@ theorem component_mem_projIdeal (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin
     exact forall_congr' fun o => by rw [ProjIdealFormValue.weight_blockWeight_apply]; rfl
   simp only [hiff]
 
+/- English proof (translation)
+Set `G : (Σ o, bundleIdx ι M o) → MvPolynomial (Fin N) Ω` to `fun p => match p with`. Consider the case `⟨none, l⟩ => ∑ j : Fin N, (if (j : ℕ) < i then X j else 0) * C (φ l (w j))`. Consider the case `⟨some k, p⟩ => C (y ⟨k, p⟩)`. Establish `key : ∀ τ : Fin N → Φ, eval₂ ((algebraMap Ω Φ).comp (algebraMap F Ω)) (projCoord y w φ (truncCoord τ i)) q = aeval τ (eval₂ (C.comp (algebraMap F Ω)) G q)`. Introduce `τ`.
+
+Establish `h` using `eval₂_comp_left (aeval τ : MvPolynomial (Fin N) Ω →ₐ[Ω] Φ).toRingHom (C.comp (algebraMap F Ω)) G q`. Rewrite `h` using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[h]`. Use `congr 1`. Use extensionality with `r`.
+
+Simplify using the standard rewrite rules. Use function extensionality and compare the values at `p`. Break down `p with ⟨_ | k, p⟩` into its components or cases. Simplify using `[G, projCoord, truncCoord, map_sum, apply_ite]`. Simplify using `[G, projCoord]`.
+
+Establish `h0 : eval₂ (C.comp (algebraMap F Ω)) G q = 0` using `ht (by rw [map_zero, ← key t]; exact eval_eq_zero_of_mem_projIdeal y w φ _ hq)`. Rewrite using `[key τ, h0, map_zero]`.
+-/
 theorem eval_trunc_eq_zero (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     (φ : Fin M → Module.Dual Ω E) {t : Fin N → Φ} (ht : AlgebraicIndependent Ω t) (i : ℕ)
     {q : MRing (bundleIdx ι M) F} (hq : q ∈ projIdeal F y w φ (truncCoord t i)) (τ : Fin N → Φ) :
@@ -325,6 +435,17 @@ theorem eval_trunc_eq_zero (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) �
 def substDeg (e d : Option K → ℕ) : Option K → ℕ :=
   fun o => Option.elim o 0 (fun k => d (some k)) + d none * e o
 
+/- English proof (translation)
+Apply the tactic sequence `let Λ : (Option K → ℕ) →+ (Option K → ℕ) := { toFun := substDeg e map_zero' := by funext o; cases o <;> simp [substDeg] map_add' := fun d d' => by funext o; cases o <;> simp [substDeg] <;> ring }`. Establish `hg : ∀ v, IsWeightedHomogeneous (blockWeight (bundleIdx ι M)) (g v) (Λ (blockWeight _ v))`. Introduce and unpack `⟨_ | k, p⟩`. Establish `: Λ (blockWeight (bundleIdx ι M) ⟨none, p⟩) = e`. Apply the tactic sequence `funext o; cases o <;> simp [Λ, substDeg, blockWeight]`.
+
+Rewrite using `[this]`. Conclude with `hn p`. Establish `: Λ (blockWeight (bundleIdx ι M) ⟨some k, p⟩) = blockWeight (bundleIdx ι M) ⟨some k, p⟩`. Apply the tactic sequence `funext o; cases o <;> simp [Λ, substDeg, blockWeight, Pi.single_apply]`. Rewrite using `[this, show g ⟨some k, p⟩ = X ⟨some k, p⟩ from hs k p]`.
+
+Conclude with `isWeightedHomogeneous_X F _ _`. Rewrite using `[← q.support_sum_monomial_coeff, map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun m hm => ?_` and prove the remaining obligations. Establish `hmd : Finsupp.weight (blockWeight (bundleIdx ι M)) m = d` using `hq (mem_support_iff.mp hm)`. Rewrite using `[bind₁_monomial]`.
+
+Use `(isWeightedHomogeneous_C (blockWeight (bundleIdx ι M)) (coeff m q)).mul (IsWeightedHomogeneous.prod m.support (fun v => g v ^ m v) (fun v => m v • Λ (blockWeight _ v)) (fun v _ => (hg v).pow (m v)))` as an intermediate fact. Rewrite `this` using `[zero_add]`. Establish `hΛ : substDeg e d = ∑ v ∈ m.support, m v • Λ (blockWeight (bundleIdx ι M) v)` using `by show Λ d = _`. Rewrite using `[← hmd, Finsupp.weight_apply, Finsupp.sum, map_sum]`. Simplify using `only [map_nsmul]`.
+
+Rewrite using `[hΛ]`. Conclude with `this`.
+-/
 theorem bind₁_isMultiHomog (g : (Σ o, bundleIdx ι M o) → MRing (bundleIdx ι M) F) (e : Option K → ℕ)
     (hs : ∀ k (p : ι k), g ⟨some k, p⟩ = X ⟨some k, p⟩) (hn : ∀ l, IsMultiHomog (g ⟨none, l⟩) e)
     {q : MRing (bundleIdx ι M) F} {d : Option K → ℕ} (hq : IsMultiHomog q d) :
@@ -358,6 +479,13 @@ theorem bind₁_isMultiHomog (g : (Σ o, bundleIdx ι M o) → MRing (bundleIdx 
   rw [hΛ]
   exact this
 
+/- English proof (translation)
+Use `conv_lhs => rw [← q.support_sum_monomial_coeff]`. Use `conv_rhs => rw [← q.support_sum_monomial_coeff]`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hmd : Finsupp.weight (blockWeight (bundleIdx ι M)) m = d` using `hq (mem_support_iff.mp hm)`.
+
+Establish `hs : ∑ v ∈ m.support, blockWeight (bundleIdx ι M) v none * m v = d none`. Rewrite using `[← hmd, Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`. Rewrite using `[bind₁_monomial, monomial_eq, Finsupp.prod]`.
+
+Simplify using `only [mul_pow, Finset.prod_mul_distrib, ← pow_mul]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bind₁_scale (u : MRing (bundleIdx ι M) F) {q : MRing (bundleIdx ι M) F} {d : Option K → ℕ}
     (hq : IsMultiHomog q d) :
     bind₁ (fun v => u ^ blockWeight (bundleIdx ι M) v none * X v) q = u ^ d none * q := by
@@ -375,6 +503,11 @@ theorem bind₁_scale (u : MRing (bundleIdx ι M) F) {q : MRing (bundleIdx ι M)
   rw [Finset.prod_pow_eq_pow_sum, hs]
   ring
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C r => simp`. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, add_sub_add_comm]`. Conclude with `I.add_mem hp hq`.
+
+Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, bind₁_X_right, bind₁_X_right, show bind₁ g' p * g' v - bind₁ g p * g v = (bind₁ g' p - bind₁ g p) * g' v + bind₁ g p * (g' v - g v) by ring]`. Conclude with `I.add_mem (I.mul_mem_right _ hp) (I.mul_mem_left _ (h v))`.
+-/
 theorem bind₁_sub_mem {σ R : Type*} [CommRing R] (I : Ideal (MvPolynomial σ R)) (g g' : σ → MvPolynomial σ R)
     (h : ∀ v, g' v - g v ∈ I) (q : MvPolynomial σ R) : bind₁ g' q - bind₁ g q ∈ I := by
   induction q using MvPolynomial.induction_on with
@@ -388,6 +521,9 @@ theorem bind₁_sub_mem {σ R : Type*} [CommRing R] (I : Ideal (MvPolynomial σ 
         (bind₁ g' p - bind₁ g p) * g' v + bind₁ g p * (g' v - g v) by ring]
     exact I.add_mem (I.mul_mem_right _ hp) (I.mul_mem_left _ (h v))
 
+/- English proof (translation)
+The claim follows from `(mem_weightedHomogeneousSubmodule F _ _ _).mp (Submodule.sub_mem _ ((mem_weightedHomogeneousSubmodule F _ _ _).mpr hf) ((mem_weightedHomogeneousSubmodule F _ _ _).mpr hg))`.
+-/
 theorem isMultiHomog_sub {f g : MRing (bundleIdx ι M) F} {d : Option K → ℕ} (hf : IsMultiHomog f d)
     (hg : IsMultiHomog g d) : IsMultiHomog (f - g) d :=
   (mem_weightedHomogeneousSubmodule F _ _ _).mp (Submodule.sub_mem _
@@ -399,6 +535,35 @@ section SectionForm
 
 variable {M N : ℕ} {E : Type} [AddCommGroup E] [Module Ω E] {Φ : Type} [Field Φ] [Algebra Ω Φ]
 
+/- English proof (translation)
+Establish `hY : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.1 hsc) k (Finset.mem_univ _)`. Take `⟨ψ, hψint, hψlow, hψi⟩` from `exists_flag_dual y B w b hfl c hsc i`. Take `⟨u, hu, hψ⟩` from `hφ.generate c hsc ψ hψint`. Establish `hstar : t i * algebraMap Ω Φ (chartPow y c (b i))⁻¹ = ∑ l, algebraMap Ω Φ (u l * chartPow y c (-a)) * projCoord y w φ (truncCoord t ((i : ℕ) + 1)) ⟨none, l⟩`. Establish `h1 : ∑ j, truncCoord t ((i : ℕ) + 1) j * algebraMap Ω Φ (ψ (w j)) = t i * algebraMap Ω Φ (chartPow y c (b i))⁻¹`.
+
+Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[truncCoord, hψi]`. Introduce `j _ hji`. Break down `lt_or_gt_of_ne hji with h | h` into its components or cases. Simplify using `[hψlow j h]`.
+
+Establish `: ¬ (j : ℕ) < (i : ℕ) + 1`. Establish `: (i : ℕ) < j` using `h`. Use linear arithmetic over natural numbers and integers. Simplify using `[truncCoord, this]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← h1, hψ]`. Simplify using `only [projCoord, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [chartPow, Pi.neg_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨n, U, hUh, hUe⟩` from `chartRing_forms_fin (M := M) y w φ (truncCoord t ((i : ℕ) + 1)) c hsc hu`. Set `α : K → ℕ` to `fun k => (|a k| + |b i k| - a k).toNat`. Set `β : K → ℕ` to `fun k => (|a k| + |b i k| + n - b i k).toNat`. Establish `hid : segreVec y c ^ n * ∏ k, y ⟨k, c k⟩ ^ α k = (∏ k, y ⟨k, c k⟩ ^ β k) * chartPow y c (b i) * chartPow y c (-a)`.
+
+Rewrite using `[segreVec_pow, ← chartPow_natCast, ← chartPow_natCast, ← chartPow_add hY, ← chartPow_add hY, ← chartPow_add hY]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `h1` using `le_abs_self (a k)`. Establish `h2` using `neg_abs_le (a k)`.
+
+Establish `h3` using `le_abs_self (b i k)`. Establish `h4` using `neg_abs_le (b i k)`. Simplify using `only [Pi.add_apply, Pi.neg_apply, α, β]`. Use linear arithmetic over natural numbers and integers. Set `f : MRing (bundleIdx ι M) F` to `∑ l, U l * chartMono M c α * X ⟨none, l⟩`.
+
+Establish `hg : eval₂ ((algebraMap Ω Φ).comp (algebraMap F Ω)) (projCoord y w φ (truncCoord t ((i : ℕ) + 1))) (chartMono M c β) = algebraMap Ω Φ (∏ k, y ⟨k, c k⟩ ^ β k)` using `eval_chartMono y w φ _ c β`. Establish `hf : eval₂ ((algebraMap Ω Φ).comp (algebraMap F Ω)) (projCoord y w φ (truncCoord t ((i : ℕ) + 1))) f = t i * eval₂ ((algebraMap Ω Φ).comp (algebraMap F Ω)) (projCoord y w φ (truncCoord t ((i : ℕ) + 1))) (chartMono M c β)`. Rewrite using `[hg]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [f, eval₂_sum, eval₂_mul, eval₂_X, hUe, eval_chartMono]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `hl : algebraMap Ω Φ (u l * segreVec y c ^ n) * algebraMap Ω Φ (∏ k, y ⟨k, c k⟩ ^ α k) = algebraMap Ω Φ (u l * chartPow y c (-a)) * algebraMap Ω Φ ((∏ k, y ⟨k, c k⟩ ^ β k) * chartPow y c (b i))`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Rewrite using `[mul_assoc, hid]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_comm _ (projCoord _ _ _ _ _), mul_assoc, hl]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = t i * algebraMap Ω Φ (chartPow y c (b i))⁻¹ * algebraMap Ω Φ ((∏ k, y ⟨k, c k⟩ ^ β k) * chartPow y c (b i)) := by`. Rewrite using `[hstar, Finset.sum_mul]`.
+
+Use `_ = t i * algebraMap Ω Φ (∏ k, y ⟨k, c k⟩ ^ β k) := by`. Establish `hp : algebraMap Ω Φ (chartPow y c (b i)) ≠ 0` using `(map_ne_zero _).2 (chartPow_ne_zero hY _)`. Rewrite using `[map_inv₀, map_mul]`. Clear the denominators using the available nonvanishing facts. Use `⟨fun o => Option.elim o 1 (fun k => n + α k), β, f, ?_, ?_, hf⟩` and prove the remaining obligations.
+
+Use `IsWeightedHomogeneous.sum _ _ _ fun l _ => ?_` and prove the remaining obligations. Establish `h` using `((hUh l).mul (chartMono_homog (F := F) M c α)).mul (isWeightedHomogeneous_X F (blockWeight (bundleIdx ι M)) ⟨none, l⟩)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `o`. Apply the tactic sequence `cases o <;> simp [liftNat, blockWeight]`.
+
+Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `none => simp [liftNat, zetaDeg, liftDeg]`. Consider the case `some k`. Establish `h1` using `le_abs_self (a k)`.
+
+Establish `h2` using `neg_abs_le (a k)`. Establish `h3` using `le_abs_self (b i k)`. Establish `h4` using `neg_abs_le (b i k)`. Simplify using `only [liftNat, zetaDeg, liftDeg, Option.elim, Pi.add_apply, Pi.sub_apply, α, β]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_section_form (y : (Σ k, ι k) → Ω) (B : ChartBundle F (segreVec y) N E)
     (w : Module.Basis (Fin N) Ω E) (b : Fin N → K → ℤ) (hfl : IsFlagFrame y B w b) (a : K → ℤ)
     (φ : Fin M → Module.Dual Ω E) (hφ : IsTwistedDualGens y B a φ) (t : Fin N → Φ) (i : Fin N)

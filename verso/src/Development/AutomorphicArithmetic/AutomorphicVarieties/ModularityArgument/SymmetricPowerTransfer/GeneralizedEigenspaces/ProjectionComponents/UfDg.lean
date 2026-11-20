@@ -14,6 +14,9 @@ private def dg {Γ k : Type} [Group Γ] [Field k] (χ : Γ →* kˣ) : Γ →* G
   map_mul' g h := by
     ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Establish `h0 : (χ g : k) ≠ 0` using `(χ g).ne_zero`. Simplify using `only [Ga.uf, Ga.tr, dg, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.trace_fin_two, Matrix.det_fin_two]`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem uf_dg {Γ k : Type} [Group Γ] [Field k] (χ : Γ →* kˣ) (g : Γ) : Ga.uf (dg χ g) = (χ g : k) + (χ g : k)⁻¹ := by
   have h0 : (χ g : k) ≠ 0 := (χ g).ne_zero
   simp only [Ga.uf, Ga.tr, dg, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.GeneralLinearGroup.mkOfDetNeZero,
@@ -22,6 +25,35 @@ private theorem uf_dg {Γ k : Type} [Group Γ] [Field k] (χ : Γ →* kˣ) (g :
   field_simp
   ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨g0, hg0⟩ : ∃ g0, ξ g0 ≠ 1 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `hne (MonoidHom.ext hall)`.
+
+Take `⟨huf, hep, hbad⟩` from `Ga.badClosed L Ω l r hc`. Use `set U : Set (G L Ω) := (fun g => g0⁻¹ * g) ⁻¹' (ξ.ker : Set (G L Ω)) with hU`. Establish `hUo : IsOpen U` using `hξ.preimage (continuous_const.mul continuous_id)`. Establish `hg0U : g0 ∈ U` using `by show g0⁻¹ * g0 ∈ ξ.ker`. Rewrite using `[inv_mul_cancel]`.
+
+Conclude with `ξ.ker.one_mem`. Establish `hUξ : ∀ g ∈ U, ξ g = ξ g0`. Introduce `g hg`. Establish `h1 : ξ (g0⁻¹ * g) = 1` using `MonoidHom.mem_ker.mp hg`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`.
+
+Conclude with `h1.symm`. Distinguish the cases in `hcase : (U ∩ (Ga.Bad r)ᶜ).Nonempty`. Apply `Ga.noKappa l (G L Ω) r r h4 (U ∩ (Ga.Bad r)ᶜ) (hUo.inter hbad.isOpen_compl) hcase` to reduce the goal to its premises. Introduce `g hg`. Establish `h1` using `h g hg.2`.
+
+Rewrite `h1` using `[hUξ g hg.1]`. Establish `h2 : Ga.uf (r g) + 1 = 0`. Establish `h3 : ((ξ g0 : Qbar l) - 1) * (Ga.uf (r g) + 1) = 0`. Rewrite using `[sub_mul, h1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Break down `mul_eq_zero.mp h3 with h4 | h4` into its components or cases. Conclude with `absurd (Units.val_eq_one.mp (sub_eq_zero.mp h4)) hg0`. Conclude with `h4`. Establish `h5 : Ga.uf (r g) = -1` using `by linear_combination h2`. Rewrite using `[h5]`.
+
+Evaluate the numerical expressions. Establish `hsub : U ⊆ Ga.Bad r`. Introduce `g hg`. Assume the negation of the conclusion as `hgb`. Conclude with `hcase ⟨g, hg, hgb⟩`.
+
+Use `set B : ℤ → Set (G L Ω) := fun m => {g | Ga.uf (r g) ^ 2 - 2 = Ga.ep l (g ^ m) + Ga.ep l (g ^ (-m))} with hB`. Establish `hBc : ∀ m, IsClosed (B m)` using `fun m => isClosed_eq ((huf.pow 2).sub continuous_const) ((hep.comp (continuous_zpow m)).add (hep.comp (continuous_zpow (-m))))`. Establish `hepz : ∀ g : G L Ω, ∀ m : ℤ, Ga.ep l (g ^ m) = Ga.ep l g ^ m`. Introduce `g m`. Simplify using `only [Ga.ep, map_zpow, Units.val_zpow_eq_zpow_val]`.
+
+Establish `hBad : Ga.Bad r ⊆ ⋃ m ∈ Finset.Icc (-2 : ℤ) 2, B m`. Introduce `g hg`. Take `⟨m, hm, he⟩` from `hg`. Simplify using `only [Set.mem_iUnion, Finset.mem_Icc]`. Use `⟨m, ⟨(abs_le.mp hm).1, (abs_le.mp hm).2⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show _ = _`. Rewrite using `[hepz, hepz]`. Conclude with `he`. Establish `claim : ∀ (s : Finset ℤ) (W : Set (G L Ω)), IsOpen W → W.Nonempty → W ⊆ ⋃ m ∈ s, B m → ∃ m, ∃ V : Set (G L Ω), IsOpen V ∧ V.Nonempty ∧ V ⊆ B m`. Introduce `s`.
+
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `W _ hW hsW`. Take `⟨w, hw⟩` from `hW`. Simplify using `using hsW hw`. Introduce `a s _ ih W hWo hW hsW`.
+
+Distinguish the cases in `hd : (W ∩ (B a)ᶜ).Nonempty`. Use `ih _ (hWo.inter (hBc a).isOpen_compl) hd ?_` and prove the remaining obligations. Introduce `g hg`. Establish `h6` using `hsW hg.1`. Simplify using `only [Finset.set_biUnion_insert, Set.mem_union] at h6`.
+
+Conclude with `h6.resolve_left hg.2`. Use `⟨a, W, hWo, hW, fun g hg => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hga`. Conclude with `hd ⟨g, hg, hga⟩`. Take `⟨m, V, hVo, hVn, hVB⟩` from `claim _ U hUo ⟨g0, hg0U⟩ (hsub.trans hBad)`.
+
+Apply `Ga.noKappa l (G L Ω) r (dg ((cycBar L Ω l) ^ m)) h4 V hVo hVn` to reduce the goal to its premises. Introduce `g hg`. Establish `h7 : Ga.uf (r g) ^ 2 - 2 = Ga.ep l (g ^ m) + Ga.ep l (g ^ (-m))` using `hVB hg`. Rewrite using `[uf_dg, h7, hepz, hepz]`. Simplify using `[Ga.ep, zpow_neg]`.
+-/
 theorem xiOne (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime]
     (r : G L Ω →* GL (Fin 2) (Qbar l)) (hc : Continuous r) (h4 : IrrOpen (Ga.sym4 r)) (ξ : G L Ω →* (Qbar l)ˣ)
     (hξ : IsOpen (ξ.ker : Set (G L Ω))) (h : ∀ g ∉ Ga.Bad r, (ξ g : Qbar l) * (Ga.uf (r g) + 1) = Ga.uf (r g) + 1) : ξ = 1 := by

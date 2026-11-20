@@ -20,22 +20,56 @@ variable {h n n' n'' : ℕ} {B B' B'' : Type} [CommRing B] [CommRing B'] [CommRi
   {S S' S'' : Scheme.{0}} {s : S ⟶ Sp B} {s' : S' ⟶ Sp B'} {s'' : S'' ⟶ Sp B''} {c : SiegPre h n ζ s}
   {c' : SiegPre h n' ζ' s'} {c'' : SiegPre h n'' ζ'' s''} {f : S' ⟶ S} {f' : S'' ⟶ S'} {d d' d'' : ℕ}
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n'' B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f' d d' d'' h₁).1).1 h₂`.
+-/
 theorem sRel_trans (h₁ : SRel c' c d' d f) (h₂ : SRel c'' c' d'' d' f') : SRel c'' c d'' d (f' ≫ f) :=
   ((GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n'' B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f' d d' d'' h₁).1).1 h₂
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n'' B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f' d d' d'' h₁).1).2 h₂`.
+-/
 theorem sRel_cancel (h₁ : SRel c' c d' d f) (h₂ : SRel c'' c d'' d (f' ≫ f)) : SRel c'' c' d'' d' f' :=
   ((GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n'' B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f' d d' d'' h₁).1).2 h₂
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n' B B' B' ζ ζ' ζ' S S' S' s s' s' c c' c' f (𝟙 _) d d' d' h₁).2.1 hc`.
+-/
 theorem sRel_principal (h₁ : SRel c' c d' d f) (hc : c.Principal) : c'.Principal :=
   (GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n' B B' B' ζ ζ' ζ' S S' S' s s' s' c c' c' f (𝟙 _) d d' d' h₁).2.1 hc
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n' B B' B' ζ ζ' ζ' S S' S' s s' s' c c' c' f (𝟙 _) d d' d' h₁).2.2 e`.
+-/
 theorem sRel_scale (h₁ : SRel c' c d' d f) (e : ℕ) : SRel c' c (d' * e) (d * e) f :=
   (GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n' B B' B' ζ ζ' ζ' S S' S' s s' s' c c' c' f (𝟙 _) d d' d' h₁).2.2 e
 
 end
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem spMap_id_eq (o : Type) [CommRing o] : spMap (RingHom.id o) = 𝟙 _ := Spec.map_id _
 
+/- English proof (translation)
+Introduce `h n N o _ _ b hn hN hnN ⟨F⟩`. Use `set ζ : o := (b.ζ : o) ^ (N / n)`. Take `⟨c₀, h₀₁, h₀₂⟩` from `(GlobalTheory.T.siegelPre_pullback_principal_ringChange h n o o ζ ζ (RingHom.id o) F.X F.X (F.s ≫ spMap (RingHom.id o)) F.s (𝟙 _) rfl (by simp)).2.2 F.univ`. Establish `r₀₁ : SRel F.univ c₀ 1 1 (𝟙 _)` using `(sRel_one_one_iff _ _ _).2 h₀₁`. Establish `r₀₂ : SRel c₀ F.univ 1 1 (𝟙 _)` using `(sRel_one_one_iff _ _ _).2 h₀₂`.
+
+Establish `p₀ : c₀.Principal` using `sRel_principal r₀₂ F.princ`. Take `⟨S₁, π, C, hfin, het, hsurj, hlow, huniv⟩` from `GlobalTheory.T.exists_finite_etale_deeper_level_siegel_cover h n N o o ζ b (RingHom.id o) F.X F.s c₀ hn hN hnN rfl p₀`. Establish `hN0 : N ≠ 0` using `hN.pos.ne'`. Establish `pC : C.Principal` using `sRel_principal hlow p₀`. Use `⟨{ X := S₁ s := π ≫ F.s smooth := by haveI := F.smooth` and prove the remaining obligations.
+
+Use `smoothOfRelativeDimension_comp 0 (h * (h + 1) / 2) π F.s` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Use `qproj := GlobalTheory.T.isQProjOver_comp_of_isFinite_noetherianBase o _ _ π F.s hfin F.qproj`. Use `univ := C`. Use `princ := pC`.
+
+Use `rep := ?_`. Use `inj := ?_ }⟩`. Introduce `T s' c hred hdense hp`. Take `⟨cl, hcl1, hcl2⟩` from `GlobalTheory.T.exists_siegelObject_lowered_level h n N o o ζ (b.ζ : o) (RingHom.id o) T s' c hN0 b.unit hnN rfl`. Establish `pl : cl.Principal` using `sRel_principal hcl2 hp`.
+
+Take `⟨f, hf, hfp⟩` from `F.rep T (s' ≫ spMap (RingHom.id o)) cl hred (by rw [spMap_id_eq, Category.comp_id]; exact hdense) pl`. Rewrite `hf` using `[spMap_id_eq, Category.comp_id]`. Substitute `hf` using the available equality. Establish `r1 : SRel c F.univ (N / n) 1 (𝟙 _ ≫ f)` using `sRel_trans ((sRel_one_one_iff _ _ _).2 hfp) hcl1`. Establish `r2 : SRel c c₀ (N / n) 1 ((𝟙 _ ≫ f) ≫ 𝟙 _)` using `sRel_trans r₀₁ r1`.
+
+Take `⟨t₁, ⟨ht₁, hC⟩, -⟩` from `huniv T f c (by simpa using r2)`. Conclude with `⟨t₁, by rw [← Category.assoc, ht₁], hC⟩`. Introduce `R _ _ x y s' c hxy hx hy`. Establish `rx : SRel c C 1 1 x` using `(sRel_one_one_iff _ _ _).2 hx`. Establish `ry : SRel c C 1 1 y` using `(sRel_one_one_iff _ _ _).2 hy`.
+
+Establish `kx : SRel c c₀ (N / n) 1 (x ≫ π)` using `sRel_trans hlow (by simpa using sRel_scale rx (N / n))`. Establish `ky : SRel c c₀ (N / n) 1 (y ≫ π)` using `sRel_trans hlow (by simpa using sRel_scale ry (N / n))`. Take `⟨cx, hcx⟩` from `(GlobalTheory.T.siegelPre_pullback_principal_ringChange h n o o ζ ζ (RingHom.id o) F.X (Sp R) (F.s ≫ spMap (RingHom.id o)) ((x ≫ π) ≫ F.s) (x ≫ π) rfl (by simp)).1 c₀`. Establish `e1 : SRel cx c₀ 1 1 (x ≫ π)` using `(sRel_one_one_iff _ _ _).2 hcx`. Establish `e2 : SRel cx c 1 (N / n) (𝟙 _)` using `sRel_cancel (f' := 𝟙 _) kx (by simpa using e1)`.
+
+Establish `e3 : SRel cx c₀ 1 1 (𝟙 _ ≫ y ≫ π)` using `sRel_trans ky e2`. Establish `fx : SiegPB cx F.univ (x ≫ π)` using `(sRel_one_one_iff _ _ _).1 (by simpa using sRel_trans r₀₂ e1)`. Establish `fy : SiegPB cx F.univ (y ≫ π)` using `(sRel_one_one_iff _ _ _).1 (by simpa using sRel_trans r₀₂ e3)`. Establish `hπ : x ≫ π = y ≫ π` using `F.inj R (x ≫ π) (y ≫ π) _ cx (by simpa using hxy) fx fy`. Take `⟨Cx, hCx⟩` from `(GlobalTheory.T.siegelPre_pullback_principal_ringChange h N o o (b.ζ : o) (b.ζ : o) (RingHom.id o) S₁ (Sp R) (π ≫ F.s) ((x ≫ π) ≫ F.s) x rfl (by rw [spMap_id_eq]; simp)).1 C`.
+
+Establish `g1 : SRel Cx C 1 1 x` using `(sRel_one_one_iff _ _ _).2 hCx`. Establish `g2 : SRel Cx c₀ (N / n) 1 (x ≫ π)` using `sRel_trans hlow (by simpa using sRel_scale g1 (N / n))`. Establish `g3 : SRel Cx c 1 1 (𝟙 _)` using `sRel_cancel (f' := 𝟙 _) rx (by simpa using g1)`. Establish `g4 : SiegPB Cx C y` using `(sRel_one_one_iff _ _ _).1 (by simpa using sRel_trans ry g3)`. Conclude with `(huniv (Sp R) (x ≫ π) Cx g2).unique ⟨rfl, hCx⟩ ⟨hπ.symm, g4⟩`.
+-/
 theorem sFam_of_dvd : ∀ (h n N : ℕ) (o : Type) [CommRing o] [IsNoetherianRing o] (b : TBase o N), 3 ≤ n → Odd N → n ∣ N →
     Nonempty (SFam h n ((b.ζ : o) ^ (N / n))) → Nonempty (SFam h N (b.ζ : o)) := by
   intro h n N o _ _ b hn hN hnN ⟨F⟩

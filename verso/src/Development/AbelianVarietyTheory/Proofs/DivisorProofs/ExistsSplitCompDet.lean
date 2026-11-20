@@ -17,6 +17,27 @@ noncomputable section
 
 namespace GlobalTheory.FunObj.NormUniq.SplitDet
 
+/- English proof (translation)
+Introduce `D N 𝔪 k hk hc hs`. Establish `hint` using `(mem_intG k).1 hk`. Establish `huO : ((Matrix.GeneralLinearGroup.det (k : GL (Fin N) (AE D)) : (AE D)ˣ) : AE D) ∈ OhE D` using `VacMove.det_int D _ hint`. Establish `hn` using `VacMove.det_norm D k`. Establish `hm1 : ((Matrix.GeneralLinearGroup.det (k : GL (Fin N) (AE D)) : (AE D)ˣ) : AE D) - 1 ∈ hatId D 𝔪`.
+
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `GlobalTheory.FunObj.StdDatum.DetCong.det_sub_one_mem_hatId_of _ (fun i j => (hint i j).1) hc`. Establish `hz : ∀ q : ℕ, q.Prime → InertQ D q → ZeroAt D q (((Matrix.GeneralLinearGroup.det (k : GL (Fin N) (AE D)) : (AE D)ˣ) : AE D) - 1)` using `fun q hq hi => GlobalTheory.VacuumScalar.zeroAt_det hq (hs q hq hi)`. Use `set U := Matrix.GeneralLinearGroup.det (k : GL (Fin N) (AE D)) with hU`. Use `set u : AE D := (U : AE D) with hu`.
+
+Establish `hm2 : u - 1 ∈ hatId D (D.host.conj • 𝔪)`. Establish `e : u - 1 = -(u * sgA D (u - 1))`. Rewrite using `[map_sub, map_one, mul_sub, hn]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `neg_mem (GlobalTheory.FunObj.StdDatum.mul_mem_hatId huO (GlobalTheory.FunObj.StdDatum.DetCong.sgA_mem_hatId hm1))`. Take `⟨ε, hε, h1, h2, h3⟩` from `VacMove.exists_half_idem D`. Establish `h1' : sgA D ε * sgA D ε = sgA D ε` using `by rw [← map_mul, h1]`. Establish `hεε : sgA D (sgA D ε) = ε` using `VacMove.sgA_sgA D ε`. Use `set η := sgA D ε with hη`.
+
+Use `set v := sgA D u with hv`. Establish `hx : ((1 - η) + η * u) * ((1 - η) + η * v) = 1`. Take the linear combination `(1 - u - v + u * v) * h1' + η * hn`. Set `x : (AE D)ˣ` to `⟨_, _, hx, by rw [mul_comm, hx]⟩`. Establish `hxv : (x : AE D) = (1 - η) + η * u` using `rfl`.
+
+Establish `hx1 : (x : AE D) - 1 = η * (u - 1)` using `by rw [hxv]; ring`. Establish `hηO : η ∈ OhE D` using `VacMove.sgA_mem D hε`. Establish `h0 : (1 - u) * (1 - (ε + η)) = 0`. Use `GlobalTheory.VacuumScalar.eq_zero_of_zeroAt _ fun q hq => ?_` and prove the remaining obligations. Distinguish the cases in `hi : InertQ D q`.
+
+Use `VacMove.zeroAt_mul D hq (hz q hq hi) (-(1 - (ε + η))) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `VacMove.zeroAt_mul D hq ((h3 q hq).2 hi) (1 - u) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `⟨x, ⟨?_, ?_⟩, fun q hq hi => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hxv]`. Conclude with `add_mem (sub_mem (one_mem _) hηO) (mul_mem hηO huO)`. Express the relevant statement in the definitionally equal form `(1 - η) + η * v ∈ OhE D`. Conclude with `add_mem (sub_mem (one_mem _) hηO) (mul_mem hηO (VacMove.sgA_mem D huO))`. Use `VacMove.zeroAt_mul D hq ((h3 q hq).1 hi) (η * (u - 1)) using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[hx1]`. Take the linear combination `(-(u - 1)) * h2 + (-(u - 1)) * h1'`. Use `ext`. Express the relevant statement in the definitionally equal form `(1 - η) + η * u = u * sgA D ((1 - η) + η * u)`. Rewrite using `[map_add, map_mul, map_sub, map_one, hεε]`.
+
+Take the linear combination `h0 - ε * hn`. Rewrite using `[hx1]`. Conclude with `GlobalTheory.FunObj.StdDatum.mul_mem_hatId hηO hm1`. Rewrite using `[hx1]`. Conclude with `GlobalTheory.FunObj.StdDatum.mul_mem_hatId hηO hm2`.
+-/
 theorem exists_splitComp_det : ∀ {D : D7} {N : ℕ} {𝔪 : Ideal (𝓞 D.host.E)} {k : GA D N}, k ∈ intG D N → CongOne D 𝔪 k →
     SuppSplit D (k : GL (Fin N) (AE D)) → ∃ x : (AE D)ˣ, IntU D x ∧
       (∀ q : ℕ, q.Prime → InertQ D q → ZeroAt D q ((x : AE D) - 1)) ∧

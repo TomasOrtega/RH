@@ -6,6 +6,11 @@ namespace GlobalTheory.PoincSmooth
 
 open scoped ContDiff
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨j, hj⟩` from `A.cover y`. Establish `h1 : ContinuousAt (g ∘ (A.chart j).symm) (A.chart j y)`. Use `(hg j (A.chart j y) ⟨(A.chart j).map_source hj, ?_⟩).continuousAt` and prove the remaining obligations. Simplify using `[(A.chart j).left_inv hj, hy]`.
+
+Establish `h2 : ContinuousAt ((g ∘ (A.chart j).symm) ∘ (A.chart j)) y` using `h1.comp ((A.chart j).continuousAt hj)`. Use `(h2.congr ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [(A.chart j).eventually_left_inverse hj] with z hz`. Simplify using `[Function.comp, hz]`.
+-/
 theorem continuousOn_of_holoOn {d : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas d X)
     {U : Set X} {g : X → ℂ} (hg : A.HoloOn U g) : ContinuousOn g U := by
   intro y hy
@@ -19,6 +24,21 @@ theorem continuousOn_of_holoOn {d : ℕ} {X : Type} [TopologicalSpace X] (A : Fi
   filter_upwards [(A.chart j).eventually_left_inverse hj] with z hz
   simp [Function.comp, hz]
 
+/- English proof (translation)
+Introduce `d X _ A m α Λ σ c hα hΛ hn x hx`. Establish `hx' : ∀ i, σ i x x ≠ 0` using `fun i h => hx ⟨i, h⟩`. Use `set O : Set X := α.U x ∩ ⋂ i, ((Λ i).U x ∩ σ i x ⁻¹' {0}ᶜ) with hOdef`. Establish `hO : IsOpen O`. Use `(α.isOpen_U x).inter (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations.
+
+Conclude with `(continuousOn_of_holoOn A ((hΛ i).2.1 x)).isOpen_inter_preimage ((Λ i).isOpen_U x) isOpen_compl_singleton`. Establish `hxO : x ∈ O` using `⟨α.mem_U x, Set.mem_iInter.2 fun i => ⟨(Λ i).mem_U x, hx' i⟩⟩`. Use `⟨O, hO, hxO, fun y hy => ⟨hy.1, Set.mem_univ _⟩, fun j => ?_⟩` and prove the remaining obligations. Use `set s := (A.chart j).symm with hs`. Use `set T := (A.chart j).target ∩ s ⁻¹' O with hT`.
+
+Establish `hU : ∀ w ∈ T, ∀ i, s w ∈ (Λ i).U x` using `fun w hw i => (Set.mem_iInter.1 hw.2.2 i).1`. Establish `hnz : ∀ w ∈ T, ∀ i, σ i x (s w) ≠ 0` using `fun w hw i => (Set.mem_iInter.1 hw.2.2 i).2`. Establish `hσs : ∀ i, ContDiffOn ℝ ∞ (σ i x ∘ s) T` using `fun i => ((((hΛ i).2.1 x j).contDiffOn (n := ∞) ((A.chart j).isOpen_inter_preimage_symm ((Λ i).isOpen_U x)).uniqueDiffOn).restrict_scalars ℝ).mono (fun w hw => ⟨hw.1, hU w hw i⟩)`. Establish `hφ : ∀ i, ContDiffOn ℝ ∞ ((Λ i).φ x ∘ s) T` using `fun i => ((hΛ i).1.1 x j).mono (fun w hw => ⟨hw.1, hU w hw i⟩)`. Establish `hαs : ContDiffOn ℝ ∞ (α.φ x ∘ s) T` using `(hα.1 x j).mono (fun w hw => ⟨hw.1, hw.2.1⟩)`.
+
+Set `v : Fin m → (Fin d → ℂ) → ℝ` to `fun i w => ‖σ i x (s w)‖ * Real.exp (-(Λ i).φ x (s w))`. Establish `hv : ∀ i, ContDiffOn ℝ ∞ (v i) T` using `fun i => (ContDiffOn.norm ℝ (hσs i) (fun w hw => hnz w hw i)).mul (hφ i).neg.exp`. Establish `hglue : ∀ w ∈ T, ∀ i, normSec (Λ i) (σ i) (s w) = v i w` using `fun w hw i => (hΛ i).2.2 (s w) x (s w) ⟨(Λ i).mem_U _, hU w hw i⟩`. Establish `hvpos : ∀ w ∈ T, ∀ i, 0 < v i w` using `fun w hw i => mul_pos (norm_pos_iff.2 (hnz w hw i)) (Real.exp_pos _)`. Establish `hlogv : ∀ i, ContDiffOn ℝ ∞ (fun w => Real.log (v i w)) T` using `fun i => (hv i).log (fun w hw => (hvpos w hw i).ne')`.
+
+Establish `hrpos : ∀ w ∈ T, ∀ i, 0 < Real.exp 1 - 2 * Real.log (v i w)`. Introduce `w hw i`. Establish `h1 : Real.log (v i w) ≤ 0` using `Real.log_nonpos (hvpos w hw i).le (hglue w hw i ▸ hn i (s w))`. Establish `h2` using `Real.exp_pos 1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hr : ∀ i, ContDiffOn ℝ ∞ (fun w => Real.log (Real.exp 1 - 2 * Real.log (v i w))) T` using `fun i => (contDiffOn_const.sub (contDiffOn_const.mul (hlogv i))).log (fun w hw => (hrpos w hw i).ne')`. Establish `hsum : ContDiffOn ℝ ∞ (fun w => ∑ i ∈ Finset.univ, Real.log (Real.exp 1 - 2 * Real.log (v i w))) T` using `ContDiffOn.sum fun i _ => hr i`. Establish `hg : ContDiffOn ℝ ∞ (fun w => α.φ x (s w) + -c * (∑ i ∈ Finset.univ, Real.log (Real.exp 1 - 2 * Real.log (v i w))) / 2) T` using `hαs.add ((contDiffOn_const.mul hsum).div_const 2)`. Use `hg.congr fun w hw => ?_` and prove the remaining obligations. Use `show α.φ x (s w) + pFun Λ σ c (s w) / 2 = _`.
+
+Simplify using `only [pFun, rFun]`. Use `congr 3`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 3`. Conclude with `congrArg Real.log (hglue w hw i)`.
+-/
 theorem smoothOn_nhd_off_boundary : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas d X) (m : ℕ)
     (α : LocPot X) (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ), IsPotential A α →
     (∀ i, IsPotential A (Λ i) ∧ IsSection A (Λ i) (σ i)) → (∀ i y, normSec (Λ i) (σ i) y ≤ 1) →

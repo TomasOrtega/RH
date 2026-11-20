@@ -2,6 +2,35 @@ import Development.AutomorphicArithmetic.CharacterBoxes.TwistForm
 
 open Formalism.HC UpperTheory.Top
 
+/- English proof (translation)
+Introduce `ψ eps c heps heps52 hc hV hP`. Take `⟨e, he⟩` from `exists_pageN eps heps`. Take `⟨J, hJ, X0, hX0⟩` from `hV eps heps heps52 e he`. Establish `hN : 0 < ψ.N` using `Nat.pos_of_ne_zero (NeZero.ne _)`. Take `⟨Y1, hY1⟩` from `hP ψ.N hN eps J heps heps52 hJ`.
+
+Establish `ha : 0 < 2 + 8 * eps` using `by linarith`. Establish `hc0 : 0 ≤ c` using `by linarith`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk1, hka⟩ : ∃ k : ℝ, 1 ≤ k ∧ k ^ (2 + 8 * eps) = c := by`. Use `⟨c ^ (1 / (2 + 8 * eps)), Real.one_le_rpow hc (one_div_nonneg.2 ha.le), ?_⟩` and prove the remaining obligations. Rewrite using `[one_div, Real.rpow_inv_rpow hc0 ha.ne']`.
+
+Establish `hk0 : 0 ≤ k` using `by linarith`. Use `⟨J, hJ, fun y => ?_⟩` and prove the remaining obligations. Establish `hJ0 : J ≠ 0` using `ne_of_gt (by linarith)`. Establish `hJi : 0 ≤ 1 / J` using `one_div_nonneg.2 (by linarith)`. Take `⟨M, hM1, hMy, hMY1, hMk3, hMk400⟩ : ∃ M : ℝ, 1 ≤ M ∧ y ≤ M ∧ Y1 ≤ M ∧ k ^ (3 : ℝ) ≤ M ∧ k ^ (400 : ℝ) ≤ M` from `⟨max 1 (max y (max Y1 (max (k ^ (3 : ℝ)) (k ^ (400 : ℝ))))), by simp, by simp, by simp, by simp, by simp⟩`.
+
+Take `⟨X, hXX0, hXM⟩ : ∃ X : ℝ, X0 ≤ X ∧ M ^ J ≤ X` from `⟨max X0 (M ^ J), le_max_left _ _, le_max_right _ _⟩`. Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hX1 : 1 ≤ X` using `(Real.one_le_rpow hM1 (by linarith)).trans hXM`. Establish `hX0' : 0 ≤ X` using `by linarith`. Establish `hY0M : M ≤ X ^ (1 / J)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hXJ : (X ^ (1 / J)) ^ J = X` using `by rw [one_div, Real.rpow_inv_rpow hX0' hJ0]`. Take `⟨q, d, hpg⟩` from `hY1 (X ^ (1 / J)) (hMY1.trans hY0M)`. Take `⟨W, hW0, hW2, hWV⟩` from `hX0 X hXX0 q d hpg.pair`. Establish `hWM : M ≤ W` using `hY0M.trans hW0`.
+
+Establish `hW1 : 1 ≤ W` using `hM1.trans hWM`. Establish `hWnn : 0 ≤ W` using `by linarith`. Establish `hk3 : k ^ (3 : ℝ) ≤ W` using `hMk3.trans hWM`. Establish `hlem : (k * W) ^ ((3 : ℝ) / 2) ≤ W ^ (2 : ℝ)`. Establish `h1 : (k * W) ^ ((3 : ℝ) / 2) = ((k * W) ^ (3 : ℝ)) ^ ((1 : ℝ) / 2)`.
+
+Rewrite using `[← Real.rpow_mul (mul_nonneg hk0 hWnn)]`. Evaluate the numerical expressions. Establish `h2 : W ^ (2 : ℝ) = (W ^ (4 : ℝ)) ^ ((1 : ℝ) / 2)`. Rewrite using `[← Real.rpow_mul hWnn]`. Evaluate the numerical expressions.
+
+Rewrite using `[h1, h2]`. Apply `Real.rpow_le_rpow (Real.rpow_nonneg (mul_nonneg hk0 hWnn) _) _ (by norm_num)` to reduce the goal to its premises. Rewrite using `[Real.mul_rpow hk0 hWnn, show (4 : ℝ) = 1 + 3 by norm_num, Real.rpow_add (by linarith : 0 < W), Real.rpow_one]`. Conclude with `mul_le_mul_of_nonneg_right hk3 (Real.rpow_nonneg hWnn _)`. Use `⟨k * W, hMy.trans (hWM.trans (le_mul_of_one_le_left hWnn hk1)), fun x hZx hxZ => ?_⟩` and prove the remaining obligations.
+
+Establish `hkpos : 0 < k` using `by linarith`. Establish `hxW2 : x ≤ W ^ (2 : ℝ)` using `hxZ.trans hlem`. Establish `hxX : x ≤ X` using `hxW2.trans hW2`. Establish `hx1 : W ≤ x` using `(le_mul_of_one_le_left hWnn hk1).trans hZx`. Establish `hx0 : 0 ≤ x` using `by linarith`.
+
+Take `⟨x', rfl⟩ : ∃ x', x = k * x'` from `⟨x / k, by field_simp⟩`. Establish `hWx' : W ≤ x'` using `le_of_mul_le_mul_left hZx hkpos`. Establish `hx'0 : 0 ≤ x'` using `hWnn.trans hWx'`. Establish `hx'1 : 1 ≤ x'` using `hW1.trans hWx'`. Establish `hx'x : x' ≤ k * x'` using `le_mul_of_one_le_left hx'0 hk1`.
+
+Establish `hpage : x' ^ (2 + 8 * eps) ≤ 2 ^ (e x') ∧ 2 ^ (e x') ≤ 2 * x' ^ (2 + 8 * eps)` using `he x' hx'1`. Establish `hpow : (k * x') ^ (2 + 8 * eps) = c * x' ^ (2 + 8 * eps)` using `by rw [Real.mul_rpow hk0 hx'0, hka]`. Use `⟨X ^ (1 / J), q, d, e x', ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Real.rpow_le_rpow hx0 hxX hJi`. Conclude with `hW0.trans hx1`.
+
+Conclude with `hpg.mono (by rw [hXJ]; exact hxX)`. Rewrite using `[hpow]`. Conclude with `mul_le_mul_of_nonneg_left hpage.1 hc0`. Rewrite using `[hpow]`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `E _ _ hE`. Establish `hv` using `hWV x' hWx' (hx'x.trans hxW2) E hE`. Use `hv.mono ?_ ?_` and prove the remaining obligations. Apply `Nat.floor_mono` to reduce the goal to its premises. Rewrite using `[Real.mul_rpow hk0 hx'0, show (401 : ℝ) = 1 + 400 by norm_num, Real.rpow_add (by linarith : 0 < x'), Real.rpow_one]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (hMk400.trans (hWM.trans hWx')) (Real.rpow_nonneg hx'0 _)`. Conclude with `Real.sqrt_le_sqrt (Real.exp_le_exp.2 (Real.rpow_le_rpow hx'0 hx'x heps.le))`.
+-/
 theorem UpperTheory.Top.winPairs :
     ∀ (ψ : PChar) (eps c : ℝ), 0 < eps → eps < 1 / 52 → 1 ≤ c → VWinAt ψ 401 → PairEx →
       ∃ J : ℝ, 1 ≤ J ∧ ∀ y : ℝ, ∃ Z : ℝ, y ≤ Z ∧ ∀ x : ℝ, Z ≤ x → x ≤ Z ^ ((3 : ℝ) / 2) →

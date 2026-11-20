@@ -47,6 +47,9 @@ def evalF {ι : Type} (w : ι → A.Pt → Ev n) (P : MvPolynomial ι ℝ) : A.F
 
 def wInt [MeasurableSpace M] (g : M → ℝ) (α : A.Fld) : ℝ := ∫ y, g y ∂A.part α 1 - ∫ y, g y ∂A.part α (-1)
 
+/- English proof (translation)
+Simplify using `[wInt, HolAtlas.integral]`.
+-/
 theorem wInt_one [MeasurableSpace M] (α : A.Fld) : wInt A (fun _ => 1) α = A.integral α := by
   simp [wInt, HolAtlas.integral]
 
@@ -57,12 +60,18 @@ variable {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {p' : Y ⟶
 abbrev lineSC {E : X.Modules} (fl : Vert.Flag E 2) : ShortComplex X.Modules :=
   .mk (fl.ι 1) (Limits.cokernel.π _) (Limits.cokernel.condition _)
 
+/- English proof (translation)
+The claim follows from `{ exact := ShortComplex.exact_cokernel _ }`.
+-/
 theorem lineSC_shortExact {E : X.Modules} (fl : Vert.Flag E 2) : (lineSC fl).ShortExact :=
   { exact := ShortComplex.exact_cokernel _ }
 
 def frameAt {E : X.Modules} (fl : Vert.Flag E 2) {σ : k →+* ℂ} (y : CxPts p σ) : VBExt.AdaptedChart (lineSC fl) 1 1 :=
   (Met.exists_adapted (r := 1) (s := 1) (lineSC_shortExact fl) (fl.isVB 1) (fl.isVB_cokernel 1) y).choose
 
+/- English proof (translation)
+The claim follows from `(Met.exists_adapted (r := 1) (s := 1) (lineSC_shortExact fl) (fl.isVB 1) (fl.isVB_cokernel 1) y).choose_spec`.
+-/
 theorem mem_frameAt {E : X.Modules} (fl : Vert.Flag E 2) {σ : k →+* ℂ} (y : CxPts p σ) :
     y ∈ ptsIn p σ (frameAt fl y).U :=
   (Met.exists_adapted (r := 1) (s := 1) (lineSC_shortExact fl) (fl.isVB 1) (fl.isVB_cokernel 1) y).choose_spec

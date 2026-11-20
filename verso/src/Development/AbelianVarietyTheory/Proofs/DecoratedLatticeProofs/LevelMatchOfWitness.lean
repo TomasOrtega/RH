@@ -9,6 +9,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `hL p K q c b hw`. Take `⟨sP, sS, -, -, e⟩` from `hw.s`. Rewrite using `[e]`. Conclude with `⟨sP.pin, sP.lev⟩`.
+-/
 theorem idE_levelMatch_of_bwit : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
     (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b →
       GlobalTheory.Core.Mi.IdE b.S.X ∧ ∀ u, Formalism.L2.SG.ColDict.LevelMatch b.S.X (b.S.tr u) b.S.Y.hK := by

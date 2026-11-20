@@ -460,19 +460,34 @@ structure ArithmeticGeometryHyps : Prop where
   discreteSeriesExists₂ : GlobalTheory.Mem.Vol.DiscreteSeriesExist
   fdeg₂ : GlobalTheory.Mem.Vol.FormalDegreeFormula₂
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.GalOfCusp.localGlobalAboveL_of_potSemistable_of_purity h.localGlobalAboveLPst h.regularAlgebraicPurity`.
+-/
 theorem ArithmeticGeometryHyps.localGlobalAboveL_of_hypotheses (h : ArithmeticGeometryHyps) : GlobalTheory.GalOfCusp.LocalGlobalAboveL :=
   GlobalTheory.GalOfCusp.localGlobalAboveL_of_potSemistable_of_purity h.localGlobalAboveLPst h.regularAlgebraicPurity
 
+/- English proof (translation)
+Introduce `k _ _ _ _` and use `⟨h.geometricLemmaFiltration k, hc h.bernsteinZelevinskyFiniteness k⟩`.
+-/
 theorem ArithmeticGeometryHyps.geometricLemma_of_cells (h : ArithmeticGeometryHyps)
     (hc : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
       [IsNonarchimedeanLocalField k], GlobalTheory.SmGL.CellSemisimplification k) : GlobalTheory.Published.GeometricLemma :=
   fun k _ _ _ _ => ⟨h.geometricLemmaFiltration k, hc h.bernsteinZelevinskyFiniteness k⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.geometricLemma_of_filtration h.bernsteinZelevinskyFiniteness h.geometricLemmaFiltration`.
+-/
 theorem ArithmeticGeometryHyps.geometricLemma (h : ArithmeticGeometryHyps) : GlobalTheory.Published.GeometricLemma :=
   GlobalTheory.geometricLemma_of_filtration h.bernsteinZelevinskyFiniteness h.geometricLemmaFiltration
 
+/- English proof (translation)
+The claim follows from `h.chebotarevOpenNormal`.
+-/
 example (h : ArithmeticGeometryHyps) : GlobalTheory.TwSys.Cheb := h.chebotarevOpenNormal
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.formalDegreeCompactDual, h.discreteSeriesUpqExists⟩`.
+-/
 example (h : ArithmeticGeometryHyps) : GlobalTheory.Mem.Vol.FormalDegreeFormula₂ ∧ GlobalTheory.Mem.Vol.DiscreteSeriesExist :=
   ⟨h.formalDegreeCompactDual, h.discreteSeriesUpqExists⟩
 

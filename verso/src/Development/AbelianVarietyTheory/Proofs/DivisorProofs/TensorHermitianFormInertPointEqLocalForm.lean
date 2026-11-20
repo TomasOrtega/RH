@@ -7,6 +7,11 @@ namespace GlobalTheory.InertTens
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `(Finset.sum_congr rfl fun k _ => Finset.sum_comm).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quadruple_sum_eq_trace_transpose_mul {L : Type} [CommRing L] {m n : ℕ} (P : Matrix (Fin m) (Fin n) L) (J : Matrix (Fin m) (Fin m) L)
     (K : Matrix (Fin n) (Fin n) L) (Q : Matrix (Fin m) (Fin n) L) :
     ∑ i, ∑ j, ∑ k, ∑ l, P i j * J i k * K j l * Q k l = (Pᵀ * J * Q * Kᵀ).trace := by
@@ -19,6 +24,13 @@ theorem quadruple_sum_eq_trace_transpose_mul {L : Type} [CommRing L] {m n : ℕ}
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Establish `e1 : (A * yᵀ * Bmᵀ).map σL = A.map σL * (y.map σL)ᵀ * (Bm.map σL)ᵀ`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Matrix.transpose_map]`. Establish `e2 : (Bm.map σL)ᵀ * Kᵀ * Bm = δ • 1`. Use `congrArg Matrix.transpose hB` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`.
+
+Rewrite using `[e1]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose]`. Establish `e3 : Bm * (x * Aᵀ) * J * (A.map σL * (y.map σL)ᵀ * (Bm.map σL)ᵀ) * Kᵀ = Bm * (x * (Aᵀ * J * A.map σL) * (y.map σL)ᵀ * ((Bm.map σL)ᵀ * Kᵀ))`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e3, hA, Matrix.trace_mul_comm, Matrix.mul_one]`.
+
+Establish `e4 : x * (y.map σL)ᵀ * ((Bm.map σL)ᵀ * Kᵀ) * Bm = x * (y.map σL)ᵀ * ((Bm.map σL)ᵀ * Kᵀ * Bm)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e4, e2, Matrix.mul_smul, Matrix.mul_one, Matrix.trace_smul, smul_eq_mul, Matrix.trace_mul_comm]`.
+-/
 theorem trace_orth {L : Type} [Field L] (σL : L →+* L) {m n : ℕ} (J : Matrix (Fin m) (Fin m) L) (K : Matrix (Fin n) (Fin n) L)
     (A : Matrix (Fin m) (Fin m) L) (Bm : Matrix (Fin n) (Fin n) L) (δ : L)
     (hA : Aᵀ * J * A.map σL = 1) (hB : Bmᵀ * K * Bm.map σL = δ • 1) (x y : Matrix (Fin n) (Fin m) L) :
@@ -38,6 +50,9 @@ theorem trace_orth {L : Type} [Field L] (σL : L →+* L) {m n : ℕ} (J : Matri
     simp only [Matrix.mul_assoc]
   rw [e4, e2, Matrix.mul_smul, Matrix.mul_one, Matrix.trace_smul, smul_eq_mul, Matrix.trace_mul_comm]
 
+/- English proof (translation)
+Establish `hr : ∀ (a : E) (z : w.adicCompletion E), ptAt hw h z * inclR (F` using `F) (AF F) a = ptAt hw h (z * algebraMap E (w.adicCompletion E) a) := by`. Introduce `a z`. Rewrite using `[mul_comm, inclR_mul_ptAt, mul_comm]`. Simplify using `only [hTens, incM, kap_apply, Matrix.map_apply, cA_ptAt hw h σ hc, hr, ← map_mul, map_sum]`.
+-/
 theorem hTens_kap (σ : E →ₐ[F] E) {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w)
     (h : w.under (𝓞 F) = v) {σL : w.adicCompletion E →+* w.adicCompletion E} (hc : IsConjAt σ h σL)
     {m n : ℕ} (JA : Matrix (Fin m) (Fin m) E) (JB : Matrix (Fin n) (Fin n) E)
@@ -56,6 +71,9 @@ end GlobalTheory.InertTens
 
 namespace GlobalTheory.InertTens
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ v w hw h σL hc m n JA JB A Bm δ hA hB x y`. Rewrite using `[hTens_kap σ hw h hc, quadruple_sum_eq_trace_transpose_mul, trace_orth σL _ _ A Bm δ hA hB x y]`. Use `congr 1`. Simplify using `[GlobalTheory.Hk3.locH]`.
+-/
 theorem hTens_kap_eq_locH : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (v : Pl F)
     (w : HeightOneSpectrum (𝓞 E)) (hw : Formalism.UG.IsInertAt F E v w) (h : w.under (𝓞 F) = v)
     (σL : w.adicCompletion E →+* w.adicCompletion E), IsConjAt σ h σL →

@@ -23,13 +23,28 @@ variable {R : Type} [CommRing R] [Algebra R C]
 
 abbrev toC {n : ℕ} (f : PS R n dd) : PS C n dd := MvPowerSeries.map (algebraMap R C) f
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[MapFB.mpt, pt]`.
+-/
 theorem mpt_pt {n : ℕ} (j : Fin n) : MapFB.mpt (algebraMap R C) (pt R dd j) = pt C dd j := by
   funext i
   simp [MapFB.mpt, pt]
 
+/- English proof (translation)
+Simplify using `[pt]`.
+-/
 theorem cc_pt {n : ℕ} (j : Fin n) (i : Fin dd) : MvPowerSeries.constantCoeff (pt R dd j i) = 0 := by
   simp [pt]
 
+/- English proof (translation)
+Use `⟨fun μ => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `hR _`. Rewrite using `[MvPowerSeries.constantCoeff_map, hu.1, map_one]`. Establish `h` using `congrArg (MvPowerSeries.map (algebraMap R C)) hu.2`.
+
+Establish `hadd : ∀ i, MvPowerSeries.constantCoeff (addOf FR (pt R (n` using `2) dd 0) (pt R (n := 2) dd 1) i) = 0 := by`. Introduce `i`. Use `MapFB.cc_ev _ ?_ _ (hF0 i)` and prove the remaining obligations. Introduce `j i'`. Apply the tactic sequence `fin_cases j <;> simp [pt]`.
+
+Rewrite `h` using `[map_mul, MapFB.map_ev1 _ _ hadd, MapFB.map_ev1 _ _ (cc_pt 0), MapFB.map_ev1 _ _ (cc_pt 1), mpt_pt, mpt_pt]`. Establish `e : MapFB.mpt (algebraMap R C) (addOf FR (pt R (n` using `2) dd 0) (pt R (n := 2) dd 1)) = addOf Y.B.G.F (pt C (n := 2) dd 0) (pt C (n := 2) dd 1) := by`. Use function extensionality and compare the values at `i`. Use `show MvPowerSeries.map (algebraMap R C) (ev ![pt R (n := 2) dd 0, pt R (n := 2) dd 1] (FR i)) = _`. Rewrite using `[MapFB.map_ev2 _ _ _ (cc_pt 0) (cc_pt 1), mpt_pt, mpt_pt]`.
+
+Use `show _ = ev ![pt C (n := 2) dd 0, pt C (n := 2) dd 1] (Y.B.G.F i)`. Rewrite using `[hF i]`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem isChar_of_isCh (Y : FBChart C V OE dd) (hR : ∀ x : R, V.Ge 0 (algebraMap R C x))
     (FR : Fin dd → PS R 2 dd) (hF : ∀ i, Y.B.G.F i = toC (FR i))
     (hF0 : ∀ i, MvPowerSeries.constantCoeff (FR i) = 0) {u : PS R 1 dd} (hu : IsCh FR u) :
@@ -54,6 +69,9 @@ theorem isChar_of_isCh (Y : FBChart C V OE dd) (hR : ∀ x : R, V.Ge 0 (algebraM
     rw [e] at h
     exact h
 
+/- English proof (translation)
+Unfold `dlogC dl`. Rewrite using `[MvPowerSeries.coeff_map]`.
+-/
 theorem dlogC_toC (u : PS R 1 dd) (i : Fin dd) : dlogC (toC u) i = algebraMap R C (dl u i) := by
   unfold dlogC dl
   rw [MvPowerSeries.coeff_map]
@@ -62,6 +80,9 @@ end Series
 
 section Len
 
+/- English proof (translation)
+Unfold `S4.lenCoker`. Use `Finset.le_inf fun g _ => ?_` and prove the remaining obligations. Conclude with `Finset.inf_le (f := fun g : Fin m → Fin h' => v (B.submatrix id g).det) (Finset.mem_univ (f ∘ g))`.
+-/
 theorem lenCoker_mono {R : Type} [CommRing R] (v : AddValuation R (WithTop ℝ)) {m h h' : ℕ}
     (B : Matrix (Fin m) (Fin h') R) (f : Fin h → Fin h') :
     S4.lenCoker v B ≤ S4.lenCoker v (B.submatrix id f) := by
@@ -71,6 +92,15 @@ theorem lenCoker_mono {R : Type} [CommRing R] (v : AddValuation R (WithTop ℝ))
 
 variable {C : Type} [Field C] {V : VF C} {vm : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C] {dd : ℕ}
 
+/- English proof (translation)
+Use `set α : Matrix (Fin s) (Fin N) R := Matrix.of fun c k => res W (dl (u k)) c with hα`. Establish `hr : LinearMap.range α.mulVecLin = Submodule.span R (Set.range fun k => res W (dl (u k)))`. Rewrite using `[Matrix.range_mulVecLin]`. Both sides reduce to the same expression. Rewrite `hx` using `[← hr]`.
+
+Establish `hSr : (vm (V.l : C) : ℝ) ^ S ≤ (x : ℝ)` using `by exact_mod_cast hS`. Establish `hpos : 0 < (x : ℝ)` using `lt_of_lt_of_le (Real.rpow_pos_of_pos h0 S) hSr`. Establish `e` using `lenCoker_eq_logb hT hv h0 h1 α hx hpos`. Establish `e2 : (Matrix.of fun c k => ∑ i, dlogC (toC (C` using `C) (u k)) i * algebraMap R C (W c i)) = Matrix.of fun c k => algebraMap R C (α c k) := by`. Use extensionality with `c k`.
+
+Simplify using `only [Matrix.of_apply, hα, res, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[e2, e]`. Use `WithTop.coe_le_coe.mpr ?_` and prove the remaining obligations. Establish `h2 : Real.logb (vm (V.l : C) : ℝ) x ≤ Real.logb (vm (V.l : C) : ℝ) ((vm (V.l : C) : ℝ) ^ S)` using `(Real.logb_le_logb_of_base_lt_one h0 h1 hpos (Real.rpow_pos_of_pos h0 S)).mpr hSr`.
+
+Rewrite `h2` using `[Real.logb_rpow h0 (ne_of_lt h1)]`. Then use the resulting hypothesis.
+-/
 theorem lenCoker_le_of_hasLen (hT : ValTie V vm) (hv : vm.Integers R) (h0 : 0 < (vm (V.l : C) : ℝ))
     (h1 : (vm (V.l : C) : ℝ) < 1) {s N : ℕ} (W : Fin s → Fin dd → R) (u : Fin N → PS R 1 dd) {x : NNReal}
     (hx : ReciprocityTheory.PGsh.Up.HasLen vm R
@@ -101,6 +131,11 @@ end Len
 
 section Sum
 
+/- English proof (translation)
+Rewrite using `[S4.frobSum_alt hl j' 0 (n + j) big halt q (fun b hb => by rw [hqb b hb]; rfl) hqs a ha]`. Establish `h1` using `S4.one_div_eq_gam_add_rho hl`. Establish `hg : gam l = S4.gam l` using `rfl`. Establish `hdiv : (j' : ℝ) / ((l : ℝ) - 1) = j' * (S4.gam l + S4.rho l)` using `by rw [← h1]; ring`. Unfold `upB`.
+
+Rewrite using `[hg, hdiv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frobSum_conj_alt {d : ℕ} {l : ℕ} (hl : 1 < l) (n j j' : ℕ) (big : ZMod d → Prop)
     (halt : ∀ b, big (b + 1) ↔ ¬ big b) (q : ZMod d → ℕ)
     (hqb : ∀ b, big b → q b = j') (hqs : ∀ b, ¬ big b → q b = n + j) (a : ZMod d) (ha : big a) :
@@ -114,6 +149,9 @@ theorem frobSum_conj_alt {d : ℕ} {l : ℕ} (hl : 1 < l) (n j j' : ℕ) (big : 
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[S4.frobSum_const hl j' q hq a]`. Unfold `upB`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frobSum_conj_all {d : ℕ} {l : ℕ} (hl : 1 < l) (n j j' : ℕ) (q : ZMod d → ℕ) (hq : ∀ b, q b = j')
     (a : ZMod d) : S4.frobSum l q a = upB l (n + j) j' 0 := by
   rw [S4.frobSum_const hl j' q hq a]
@@ -136,6 +174,21 @@ def AFBound (Y : FBChart C V OE dd) (p : PairData Y d I) (vm : Valuation C NNRea
     (∀ c i, algebraMap R C (W c i) = p.u g (e c) i) ∧ HasAF vm FR W xs ∧
       vm (V.l : C) ^ (S4.frobSum V.l (rk p (1 - g)) a) ≤ xs
 
+/- English proof (translation)
+Establish `hR : ∀ x : R, V.Ge 0 (algebraMap R C x)` using `fun x => vA_nonneg hT hv h0 h1 x`. Establish `hl1 : 1 < V.l` using `V.l_prime.one_lt`. Establish `key : ∀ g a, ∃ (N : ℕ) (u : Fin N → PS C 1 dd), (∀ k, Y.IsChar (u k)) ∧ (p.big g a → ∃ e : Fin (pT (fun g => RawChart.cart (Hc g)) g a) ≃ {x : I g // (RawChart.cart (Hc g)).ty (Sum.inl x) = a}, S4.lenCoker V.v (Matrix.of fun c k => p.yOf g (u k) (e c)) ≤ ((S4.frobSum V.l (rk p (1 …`. Introduce `g a`. Distinguish the cases in `hb : p.big g a`.
+
+Take `⟨s, e, W, xs, hW, ⟨N, u, hu, hx⟩, hS⟩` from `h g a hb`. Establish `hs : s = pT (fun g => RawChart.cart (Hc g)) g a`. Use `Fintype.card_congr e` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, Fintype.card_subtype]`. Conclude with `this`.
+
+Substitute `hs` using the available equality. Use `⟨N, fun k => toC (u k), fun k => isChar_of_isCh Y hR FR hF hF0 (hu k), fun _ => ⟨e, ?_⟩⟩` and prove the remaining obligations. Use `lenCoker_le_of_hasLen hT hv h0 h1 W u hx hS` as an intermediate fact. Simplify using `only [hW] at this`. Conclude with `this`.
+
+Conclude with `⟨0, fun k => k.elim0, fun k => k.elim0, fun hb' => absurd hb' hb⟩`. Use `choose N u hu he using key`. Set `eq : ∀ g, (Σ a : ZMod d, Fin (N g a)) ≃ Fin (Fintype.card (Σ a : ZMod d, Fin (N g a)))` to `fun g => Fintype.equivFin _`. Use `⟨fun g => Fintype.card (Σ a : ZMod d, Fin (N g a)), fun g i => u g ((eq g).symm i).1 ((eq g).symm i).2, fun g i => hu g _ _, fun g a hb => ?_⟩` and prove the remaining obligations. Take `⟨e, hle⟩` from `he g a hb`.
+
+Establish `hle' : S4.lenCoker V.v (Matrix.of fun c i => p.yOf g (u g ((eq g).symm i).1 ((eq g).symm i).2) (e c)) ≤ ((S4.frobSum V.l (rk p (1 - g)) a : ℝ) : WithTop ℝ)`. Use `le_trans (lenCoker_mono V.v _ (fun k : Fin (N g a) => eq g ⟨a, k⟩)) ?_` and prove the remaining obligations. Establish `e3 : (Matrix.of fun c i => p.yOf g (u g ((eq g).symm i).1 ((eq g).symm i).2) (e c)).submatrix id (fun k : Fin (N g a) => eq g ⟨a, k⟩) = Matrix.of fun c k => p.yOf g (u g a k) (e c)`. Use extensionality with `c k`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, id]`.
+
+Rewrite using `[Equiv.symm_apply_apply]`. Rewrite using `[e3]`. Conclude with `hle`. Establish `hc1 : ∀ b, p.big g b → rk p (1 - g) b = p.j'` using `fun b hb' => hr.rk_small (1 - g) b (fun hh => (hr.big_compl g b).mp hh hb')`. Establish `hc2 : ∀ b, ¬ p.big g b → rk p (1 - g) b = p.n + p.j` using `fun b hb' => hr.rk_big (1 - g) b ((hr.big_compl g b).mpr hb')`.
+
+Use `⟨e, fun hA => ?_, fun hB => ?_⟩` and prove the remaining obligations. Rewrite using `[← frobSum_conj_alt hl1 p.n p.j p.j' (p.big g) (alt_step p.big hr.big_compl hA g) (rk p (1 - g)) hc1 hc2 a hb]`. Conclude with `hle'`. Rewrite using `[← frobSum_conj_all hl1 p.n p.j p.j' (rk p (1 - g)) (fun b => hc1 b (hB b)) a]`. Conclude with `hle'`.
+-/
 theorem upChar_of_afBound (Y : FBChart C V OE dd) (p : PairData Y d I) (hr : (Y.raw p).RankHyp)
     (Hc : ∀ g, (Y.raw p).CartHyp V g) (vm : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C]
     (hT : ValTie V vm) (hv : vm.Integers R) (h0 : 0 < (vm (V.l : C) : ℝ)) (h1 : (vm (V.l : C) : ℝ) < 1)

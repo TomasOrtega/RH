@@ -23,6 +23,27 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.CoverPoints
 
+/- English proof (translation)
+Introduce `X _ F hF hc`. Establish `hcl : ∀ G : Set X, G ⊆ F → IsClosed G` using `fun G hG => by`. Establish `h` using `(hF.subset hG).isClosed_biUnion (fun x hx => hc x (hG hx))`. Simplify using `using h`. Establish `hW : ∀ x : F, ∃ W : X.Opens, IsAffineOpen W ∧ x.1 ∈ W ∧ ∀ y ∈ F, y ∈ W → y = x.1`.
+
+Introduce `x`. Establish `hx : x.1 ∈ (F \ {x.1})ᶜ` using `fun h => h.2 rfl`. Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWo⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hx (hcl _ Set.diff_subset).isOpen_compl`. Use `⟨W, hW, hxW, fun y hy hyW => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hWo hyW ⟨hy, hne⟩`. Use `choose W hWa hWx hWF using hW`. Establish `hC : IsCompact ((⨆ x, W x : X.Opens) : Set X)ᶜ` using `(⨆ x, W x : X.Opens).isOpen.isClosed_compl.isCompact`. Take `⟨s, hs⟩` from `hC.elim_finite_subcover (fun U : {U : X.Opens // IsAffineOpen U ∧ ∀ x ∈ F, x ∉ U} => (U.1 : Set X)) (fun U => U.1.isOpen) (by`. Introduce `y hy`.
+
+Establish `hy' : y ∈ Fᶜ` using `fun h => hy (by`. Conclude with `(TopologicalSpace.Opens.mem_iSup.2 ⟨⟨y, h⟩, hWx ⟨y, h⟩⟩ : y ∈ (⨆ x, W x : X.Opens)))`. Take `⟨_, ⟨U, hU, rfl⟩, hyU, hUo⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hy' (hcl F subset_rfl).isOpen_compl`. Conclude with `Set.mem_iUnion.2 ⟨⟨U, hU, fun x hx hxU => hUo hxU hx⟩, hyU⟩)`. Use `haveI : Fintype F := hF.fintype`.
+
+Set `V' : Option (F ⊕ s) → X.Opens` to `fun a => match a with`. Consider the case `none => ⊥`. Consider the case `some (Sum.inl x) => W x`. Consider the case `some (Sum.inr U) => U.1.1`. Establish `hV'a : ∀ a, IsAffineOpen (V' a)`.
+
+Introduce and unpack `(_ | x | U)`. Conclude with `isAffineOpen_bot X`. Conclude with `hWa x`. Conclude with `U.1.2.1`. Establish `hV'F : ∀ x (hx : x ∈ F) a, x ∈ V' a → a = some (Sum.inl ⟨x, hx⟩)`.
+
+Introduce and unpack `x hx (_ | y | U) h`. Conclude with `absurd h (by simp [V'])`. Establish `: x = y.1` using `hWF y x hx h`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+
+Conclude with `absurd h (U.1.2.2 x hx)`. Set `e : Option (F ⊕ s) ≃ Fin (Fintype.card (F ⊕ s) + 1)` to `Fintype.equivFinOfCardEq Fintype.card_option`. Use `⟨Fintype.card (F ⊕ s), fun j => V' (e.symm j), fun j => hV'a _, ?_, ?_⟩` and prove the remaining obligations. Use `top_le_iff.1 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ (⨆ x, W x : X.Opens)`.
+
+Take `⟨x, hx⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Conclude with `⟨e (some (Sum.inl x)), by simpa [V'] using hx⟩`. Take `⟨U, hU, hyU⟩` from `Set.mem_iUnion₂.1 (hs hy)`. Conclude with `⟨e (some (Sum.inr ⟨U, hU⟩)), by simpa [V'] using hyU⟩`. Introduce `x hx i j hi hj`.
+
+Conclude with `e.symm.injective ((hV'F x hx _ hi).trans (hV'F x hx _ hj).symm)`.
+-/
 theorem exists_affine_cover_finite_closed_points : ∀ (X : Scheme.{0}) [CompactSpace X] (F : Set X) (hF : F.Finite) (hc : ∀ x ∈ F, IsClosed ({x} : Set X)), ∃ (r : ℕ) (V : Fin (r + 1) → X.Opens), (∀ j, IsAffineOpen (V j)) ∧ ⨆ j, V j = ⊤ ∧
       ∀ x ∈ F, ∀ i j, x ∈ V i → x ∈ V j → i = j := by
   intro X _ F hF hc

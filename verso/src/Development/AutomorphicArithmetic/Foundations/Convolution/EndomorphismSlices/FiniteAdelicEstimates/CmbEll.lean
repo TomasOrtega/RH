@@ -6,5 +6,8 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.EndomorphismSli
 import Development.AutomorphicArithmetic.Foundations.Convolution.EndomorphismSlices.FiniteAdelicEstimates.EntEmpty
 
 open UpperTheory.Zero.ConvolutionTheory.EB in
+/- English proof (translation)
+The claim follows from `cmbEll_of cmbTest seenFam positionTest lefL ffAlg`.
+-/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.cmbEll :
     UpperTheory.Zero.ConvolutionTheory.EB.CmbEll := cmbEll_of cmbTest seenFam positionTest lefL ffAlg

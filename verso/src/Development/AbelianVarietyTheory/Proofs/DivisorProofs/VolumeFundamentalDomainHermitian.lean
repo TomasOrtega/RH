@@ -6,6 +6,15 @@ open scoped ComplexOrder
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `g Λ _ Hm Ef Fd hspan hP hE hbij hFd`. Establish `hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm z z).re`. Introduce `z hz`. Establish `h` using `hP.dotProduct_mulVec_pos (x := star z) (by simpa using hz)`. Rewrite `h` using `[star_star]`.
+
+Conclude with `(Complex.pos_iff.1 h).1`. Establish `h` using `volume_mul_det_eq_one_of_unimodular g Λ hspan Hm Ef Fd hP.isHermitian hpos hE hbij hFd`. Establish `hne : volume Fd ≠ ⊤`. Introduce `ht`. Rewrite `h` using `[ht]`.
+
+Simplify using `at h`. Establish `hd : Hm.det.re ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0]`. Simplify using `at h`.
+
+Rewrite using `[← ENNReal.ofReal_toReal hne, eq_div_of_mul_eq hd h]`.
+-/
 theorem volume_fundamentalDomain_eq_inv_det_of_unimodular :
     ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ] (Hm : Matrix (Fin g) (Fin g) ℂ)
       (Ef : LinearMap.BilinForm ℤ Λ) (Fd : Set (Fin g → ℂ)),

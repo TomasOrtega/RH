@@ -16,19 +16,33 @@ namespace GlobalTheory.MixAdd
 
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} [IsIntegral Y] {q : Y ⟶ Sp k}
 
+/- English proof (translation)
+Simplify using `only [HermLB.archInt, h.chernInt_eq]`.
+-/
 theorem archInt_congr {A B : HermLB q} (h : A.Isometric B) (M : HermLB q) (e : ℕ) {r : M.B.ι → Y.functionFieldˣ}
     (hr : IsRatSec M.B r) : A.archInt M e hr = B.archInt M e hr := by
   simp only [HermLB.archInt, h.chernInt_eq]
 
+/- English proof (translation)
+Simplify using `only [lin, Int.cast_sum, Int.cast_mul, map_sum, map_mul, Finset.sum_mul, smul_eq_C_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem lin_comb {ι κ : Type} [Fintype ι] [Fintype κ] (m : κ → ι → ℤ) (n : κ → ℤ) :
     (lin fun i => ((∑ j, n j * m j i : ℤ) : ℝ)) = ∑ j, (n j : ℝ) • lin fun i => (m j i : ℝ) := by
   simp only [lin, Int.cast_sum, Int.cast_mul, map_sum, map_mul, Finset.sum_mul, smul_eq_C_mul, Finset.mul_sum, mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [lin, Pi.add_apply, Int.cast_add, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem lin_add {ι : Type} [Fintype ι] (m n : ι → ℤ) :
     (lin fun i => (((m + n) i : ℤ) : ℝ)) = (lin fun i => (m i : ℝ)) + lin fun i => (n i : ℝ) := by
   simp only [lin, Pi.add_apply, Int.cast_add, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Establish `h₁ : (fun n => (comb L n).archInt M e hr) = fun n : Fin e → ℤ => Ψ ((∑ a, (n a : ℝ) • lin fun i => (m a i : ℝ)) ^ e)`. Use function extensionality and compare the values at `n`. Rewrite using `[← lin_comb, hΨ]`. Conclude with `(archInt_congr ((isometric_comb_comb F m n).trans (isometric_comb_congr h n)) M e hr).symm`. Rewrite using `[mixArch, h₁, FibreProj.pol_pow _ Ψ (Fintype.card_fin e), mul_div_cancel_left₀]`.
+
+Conclude with `Nat.cast_ne_zero.2 e.factorial_ne_zero`.
+-/
 theorem mixArch_eq {ι : Type} [Fintype ι] {e : ℕ} (F : ι → HermLB q) (M : HermLB q) {r : M.B.ι → Y.functionFieldˣ}
     (hr : IsRatSec M.B r) (Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ)
     (hΨ : ∀ n : ι → ℤ, Ψ (lin (fun i => (n i : ℝ)) ^ e) = (comb F n).archInt M e hr)
@@ -42,6 +56,15 @@ theorem mixArch_eq {ι : Type} [Fintype ι] {e : ℕ} (F : ι → HermLB q) (M :
   rw [mixArch, h₁, FibreProj.pol_pow _ Ψ (Fintype.card_fin e), mul_div_cancel_left₀]
   exact Nat.cast_ne_zero.2 e.factorial_ne_zero
 
+/- English proof (translation)
+Introduce `hI k _ Y _ q hq M r hr`. Use `⟨fun e he A B L => ?_, fun e he N => ?_⟩` and prove the remaining obligations. Set `F : Bool ⊕ Fin e → HermLB q` to `Sum.elim (fun b => cond b A B) L`. Take `⟨Ψ, hΨ⟩` from `GlobalTheory.T.exists_linear_functional_arch_integral_chern_power k Y q hq (e + 1) _ F M r hr fun n => GlobalTheory.T.archIntegrable_of_projArithAmbient hI k Y q hq (e + 1) he M _ r hr`. Set `u : Bool ⊕ Fin e → Bool ⊕ Fin e → ℤ` to `fun j => Pi.single j 1`.
+
+Establish `key (C : HermLB q) (c : Bool ⊕ Fin e → ℤ) (hc : (comb F c).Isometric C) : mixArch (Fin.cons C L : Fin (e + 1) → HermLB q) M hr = Ψ ((lin fun i => (c i : ℝ)) * ∏ a : Fin e, lin fun i => (u (Sum.inr a) i : ℝ))`. Rewrite using `[mixArch_eq F M hr Ψ hΨ (Fin.cons C L) (Fin.cons c fun a => u (Sum.inr a)) (fun a => by`. Consider the cases of `a using Fin.cases with`. Consider the case `zero => exact hc`. Consider the case `succ a => exact isometric_comb_single F (Sum.inr a)), Fin.prod_univ_succ]`.
+
+Both sides reduce to the same expression. Establish `hA : (comb F (u (Sum.inl true))).Isometric A` using `isometric_comb_single F (Sum.inl true)`. Establish `hB : (comb F (u (Sum.inl false))).Isometric B` using `isometric_comb_single F (Sum.inl false)`. Rewrite using `[key A _ hA, key B _ hB, key _ _ ((isometric_comb_add F _ _).trans (hA.tens hB)), lin_add, add_mul, map_add]`. Set `F : Unit → HermLB q` to `fun _ => N`.
+
+Take `⟨Ψ, hΨ⟩` from `GlobalTheory.T.exists_linear_functional_arch_integral_chern_power k Y q hq e _ F M r hr fun n => GlobalTheory.T.archIntegrable_of_projArithAmbient hI k Y q hq e he M _ r hr`. Establish `hN : (comb F (Pi.single () 1)).Isometric N` using `isometric_comb_single F ()`. Rewrite using `[mixArch_eq F M hr Ψ hΨ _ (fun _ => Pi.single () 1) fun _ => hN, Finset.prod_const, Finset.card_univ, Fintype.card_fin, hΨ]`. Conclude with `archInt_congr hN M e hr`.
+-/
 theorem mixArch_add_diag : ArchInteg → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k),
     IsAmb q → ∀ (M : HermLB q) (r : M.B.ι → Y.functionFieldˣ) (hr : IsRatSec M.B r),
     (∀ e : ℕ, topologicalKrullDim Y = (e + 1 + 1 : ℕ) → ∀ (A B : HermLB q) (L : Fin e → HermLB q),

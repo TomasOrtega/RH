@@ -17,6 +17,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UU
 variable {S : Scheme.{0}} {X : Type} [AddCommGroup X]
 
+/- English proof (translation)
+Set `e` to `Module.Free.chooseBasis ℤ X`. Use `choose W hW v hv using fun k => Q.loc b (e k)`. Establish `ho : IsOpen (⋂ k, (W k : Set Q.B.left))` using `isOpen_iInter_of_finite fun k => (W k).isOpen`. Take `⟨V, hV, hbV, hle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Q.B.left.isBasis_affineOpens (show b ∈ (⟨_, ho⟩ : Q.B.left.Opens) from Set.mem_iInter.2 hW)`. Establish `hk : ∀ k, Q.q.left ⁻¹ᵁ V ≤ Q.q.left ⁻¹ᵁ W k` using `fun k => Q.q.left.preimage_mono fun x hx => Set.mem_iInter.1 (hle hx) k`.
+
+Set `w : _ → Γ(G.left, Q.q.left ⁻¹ᵁ V)ˣ` to `fun k => Units.map (G.left.presheaf.map (homOfLE (hk k)).op).hom.toMonoidHom (v k)`. Set `l : X →ₗ[ℤ] Additive Γ(G.left, Q.q.left ⁻¹ᵁ V)ˣ` to `e.constr ℤ fun k => Additive.ofMul (w k)`. Set `H : AddSubgroup X` to `{ carrier := {χ | IsWt Q.i _ (Additive.toMul (l χ)).val χ} zero_mem' := by show IsWt Q.i _ (Additive.toMul (l 0)).val 0`. Rewrite using `[map_zero]`. Conclude with `isWt_one`.
+
+Use the proof step `add_mem' := fun {a c} ha hc => by show IsWt Q.i _ (Additive.toMul (l (a + c))).val (a + c)`. Rewrite using `[map_add]`. Conclude with `IsWt.mul ha hc`. Use the proof step `neg_mem' := fun {a} ha => by show IsWt Q.i _ (Additive.toMul (l (-a))).val (-a)`. Rewrite using `[map_neg]`.
+
+Conclude with `IsWt.inv ha }`. Establish `hH : Submodule.span ℤ (Set.range e) ≤ H.toIntSubmodule`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `show IsWt Q.i _ (Additive.toMul (l (e k))).val (e k)`.
+
+Rewrite using `[Module.Basis.constr_basis]`. Conclude with `(hv k).res (hk k)`. Use `⟨V, hV, hbV, AddMonoidHom.toMultiplicativeLeft l.toAddMonoidHom, fun χ => ?_⟩` and prove the remaining obligations. Conclude with `hH (e.mem_span χ)`.
+-/
 theorem TQ.exists_affine_weight_units [Module.Free ℤ X] [Module.Finite ℤ X] {G : Over S} [GrpObj G] (Q : TQ G X)
     (b : Q.B.left) : ∃ V : Q.B.left.Opens, IsAffineOpen V ∧ b ∈ V ∧
       ∃ u : Multiplicative X →* Γ(G.left, Q.q.left ⁻¹ᵁ V)ˣ, ∀ χ : X, IsWt Q.i _ (u (Multiplicative.ofAdd χ)).val χ := by
@@ -50,6 +61,13 @@ theorem TQ.exists_affine_weight_units [Module.Free ℤ X] [Module.Finite ℤ X] 
   refine ⟨V, hV, hbV, AddMonoidHom.toMultiplicativeLeft l.toAddMonoidHom, fun χ => ?_⟩
   exact hH (e.mem_span χ)
 
+/- English proof (translation)
+Take `⟨V, hV, hb, u, hu⟩` from `Q.exists_affine_weight_units b`. Use `Q.q_affine` as an intermediate fact. Take `⟨hU, hbij⟩` from `isAffineOpen_and_bijective_of_weight_units S X G Q.B Q.q Q.i Q.q_hom Q.i_hom Q.q_flat Q.q_surj inferInstance Q.isKernel V hV u hu`. Set `φ` to `RingEquiv.ofBijective _ hbij`. Set `ε : AddMonoidAlgebra Γ(Q.B.left, V) X →+* Γ(Q.B.left, V)` to `(AddMonoidAlgebra.lift Γ(Q.B.left, V) Γ(Q.B.left, V) X 1).toRingHom`.
+
+Set `r : Γ(G.left, Q.q.left ⁻¹ᵁ V) ⟶ Γ(Q.B.left, V)` to `CommRingCat.ofHom (ε.comp φ.symm.toRingHom)`. Establish `hr : Q.q.left.appLE V _ le_rfl ≫ r = 𝟙 _`. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Use extensionality with `a`. Establish `h : φ (AddMonoidAlgebra.single 0 a) = (Q.q.left.app V).hom a` using `(AddMonoidAlgebra.liftNC_single _ _ 0 a).trans ((congrArg (_ * ·) (((Units.coeHom _).comp u).map_one)).trans (_root_.mul_one _))`.
+
+Express the relevant statement in the definitionally equal form `ε (φ.symm ((Q.q.left.app V).hom a)) = a`. Rewrite using `[← h, RingEquiv.symm_apply_apply]`. Simplify using `[ε]`. Use `⟨V, hV, hb, Spec.map r ≫ hU.fromSpec, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec Q.q.left hV hU le_rfl, ← Category.assoc, ← Spec.map_comp, hr, Spec.map_id, Category.id_comp]`.
+-/
 theorem TQ.exists_local_section [Module.Free ℤ X] [Module.Finite ℤ X] {G : Over S} [GrpObj G] (Q : TQ G X)
     (b : Q.B.left) : ∃ (V : Q.B.left.Opens) (hV : IsAffineOpen V), b ∈ V ∧
       ∃ s : Spec Γ(Q.B.left, V) ⟶ G.left, s ≫ Q.q.left = hV.fromSpec := by
@@ -74,6 +92,13 @@ theorem TQ.exists_local_section [Module.Free ℤ X] [Module.Finite ℤ X] {G : O
   rw [Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec Q.q.left hV hU le_rfl, ← Category.assoc,
     ← Spec.map_comp, hr, Spec.map_id, Category.id_comp]
 
+/- English proof (translation)
+Set `b' : Spec (CommRingCat.of A) ⟶ Q.B.left` to `b.left`. Take `⟨V, hV, hb, s, hs⟩` from `Q.exists_local_section (b' (IsLocalRing.closedPoint A))`. Establish `hr : Set.range b' ⊆ Set.range hV.fromSpec`. Rewrite using `[hV.range_fromSpec]`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Conclude with `(Scheme.preimage_eq_top_of_closedPoint_mem (R := .of A) b' hb).ge (Set.mem_univ y)`. Establish `h : (IsOpenImmersion.lift hV.fromSpec b' hr ≫ s) ≫ Q.q.left = b'`. Rewrite using `[Category.assoc, hs, IsOpenImmersion.lift_fac]`. Use `⟨Over.homMk (IsOpenImmersion.lift hV.fromSpec b' hr ≫ s) ?_, Over.OverMorphism.ext h⟩` and prove the remaining obligations. Rewrite using `[← Over.w Q.q, ← Category.assoc]`.
+
+Conclude with `(congrArg (· ≫ Q.B.hom) h).trans (Over.w b)`.
+-/
 theorem TQ.exists_lift [Module.Free ℤ X] [Module.Finite ℤ X] {G : Over S} [GrpObj G] (Q : TQ G X)
     {A : Type} [CommRing A] [IsLocalRing A] {p : Spec (CommRingCat.of A) ⟶ S} (b : Over.mk p ⟶ Q.B) :
     ∃ g : Over.mk p ⟶ G, g ≫ Q.q = b := by
@@ -89,6 +114,13 @@ theorem TQ.exists_lift [Module.Free ℤ X] [Module.Finite ℤ X] {G : Over S} [G
   rw [← Over.w Q.q, ← Category.assoc]
   exact (congrArg (· ≫ Q.B.hom) h).trans (Over.w b)
 
+/- English proof (translation)
+Set `e` to `Module.Free.chooseBasis ℤ X`. Set `E` to `splitTorusPointsEquiv S X Z`. Use `choose r hr using h`. Set `l : X →ₗ[ℤ] Additive Γ(Z.left, ⊤)ˣ` to `e.constr ℤ fun k => Additive.ofMul (r (chV t (e k)))`. Set `m : X →ₗ[ℤ] Additive Γ(Z.left, ⊤)ˣ` to `(MonoidHom.toAdditiveRight (E t)).toIntLinearMap`.
+
+Establish `hl : N • l = m` using `e.ext fun k => by`. Rewrite using `[LinearMap.smul_apply, Module.Basis.constr_basis]`. Conclude with `congrArg Additive.ofMul (hr _)`. Use `⟨E.symm (AddMonoidHom.toMultiplicativeLeft l.toAddMonoidHom), E.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, MulEquiv.apply_symm_apply]`.
+
+Conclude with `MonoidHom.ext fun χ => congrArg Additive.toMul (LinearMap.congr_fun hl (Multiplicative.toAdd χ))`.
+-/
 theorem exists_pow_eq_splitTorus [Module.Free ℤ X] {Z : Over S} {N : ℕ}
     (h : ∀ a : Γ(Z.left, ⊤)ˣ, ∃ r, r ^ N = a) (t : Z ⟶ splitTorus S X) : ∃ t' : Z ⟶ splitTorus S X, t' ^ N = t := by
   let e := Module.Free.chooseBasis ℤ X
@@ -103,6 +135,15 @@ theorem exists_pow_eq_splitTorus [Module.Free ℤ X] {Z : Over S} {N : ℕ}
   rw [map_pow, MulEquiv.apply_symm_apply]
   exact MonoidHom.ext fun χ => congrArg Additive.toMul (LinearMap.congr_fun hl (Multiplicative.toAdd χ))
 
+/- English proof (translation)
+Introduce `S X _ _ _ G _ _ Q A _ _ p`. Use `⟨Q.exists_lift, fun N hN b hb => ?_⟩` and prove the remaining obligations. Use `Q.q_hom` as an intermediate fact. Use `Q.i_hom` as an intermediate fact. Take `⟨g, rfl⟩` from `Q.exists_lift b`.
+
+Establish `h₁ : (g ^ N) ≫ Q.q = toUnit _ ≫ η[Q.B]` using `by rw [MonObj.pow_comp, hb, Hom.one_def]`. Set `e : Aˣ ≃* Γ(Spec (CommRingCat.of A), ⊤)ˣ` to `Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of A)).symm.commRingCatIsoToRingEquiv.toMulEquiv`. Take `⟨t, ht⟩` from `exists_pow_eq_splitTorus (Z := Over.mk p) (N := N) (fun a => by`. Take `⟨r, hr⟩` from `hN (e.symm a)`. Conclude with `⟨e r, (map_pow e r N).symm.trans ((congrArg e hr).trans (e.apply_symm_apply a))⟩)`.
+
+Use the proof step `(Q.isKernel.lift _ _ h₁)`. Establish `h₂ : (t ≫ Q.i) ^ N = g ^ N` using `by rw [← MonObj.pow_comp, ht, IsPullback.lift_fst]`. Establish `h₃ : (t ≫ Q.i) ≫ Q.q = 1`. Rewrite using `[Category.assoc, Q.isKernel.w, ← Category.assoc, Hom.one_def, toUnit_unique (t ≫ toUnit _) (toUnit _)]`. Use `⟨(t ≫ Q.i)⁻¹ * g, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_pow, inv_pow, h₂, inv_mul_cancel]`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, h₃, inv_one, _root_.one_mul]`.
+-/
 theorem torusQuotient_points_lift :
     ∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (G : Over S) [GrpObj G]
       [IsCommMonObj G] (Q : TQ G X) (A : Type) [CommRing A] [IsLocalRing A] (p : Spec (CommRingCat.of A) ⟶ S),

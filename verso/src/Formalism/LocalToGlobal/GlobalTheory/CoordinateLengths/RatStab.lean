@@ -10,6 +10,11 @@ namespace Formalism.L2.GlobalTheoryTheory.LemB
 
 open Formalism.BasicNotions Formalism.MainNotions.product_first_zeroth_parts Formalism.L2.Forms NumberField MvPolynomial Formalism.L2.GlobalTheoryTheory.LocalLatticeBases
 
+/- English proof (translation)
+Introduce `P hP`. Proceed by induction on `hP using AddSubgroup.closure_induction with`. Consider the case `mem p hp`. Take `⟨r, f, hf, rfl⟩` from `hp`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, fun τ => Formalism.L2.G.Model.sw_weyl_map (Int.castRingHom ℂ) le_rfl _ _ (hf τ), rfl⟩)`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `neg x _ hx => exact neg_mem hx`.
+-/
 theorem ratInC_holds (D : D7) (u : D.what₂.Word) : RatInC D u := by
   intro P hP
   induction hP using AddSubgroup.closure_induction with
@@ -28,6 +33,11 @@ section Diag
 variable (D : D7) {N : ℕ} (ν : Fin N → ℕ) (hν : Antitone ν)
 include hν
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `RingHom.mem_range.1 ht`. Establish `hp : (D.what₂.embLL x)⁻¹ ∈ ratO D` using `⟨x⁻¹, map_inv₀ _ _⟩`. Establish `h` using `bwA_span_diag (ratO D) le_rfl ν hν j.pos j (D.what₂.embLL x)⁻¹ hp (inv_ne_zero ht0) q hq`. Rewrite `h` using `[inv_inv]`. Establish `e : Formalism.GradedWeylDivisibility.rowAct ℂ (Matrix.diagonal (Function.update 1 j (D.what₂.embLL x))) q = (⟨D.what₂.embLL x ^ ν ⟨0, j.pos⟩, pow_mem ht _⟩ : ratO D) • ((D.what₂.embLL x)⁻¹ ^ ν ⟨0, j.pos⟩ • Formalism.GradedWeylDivisibility.rowAct ℂ (Matrix.diagonal (Function.updat …` using `by show _ = (D.what₂.embLL x ^ ν ⟨0, j.pos⟩ : ℂ) • ((D.what₂.embLL x)⁻¹ ^ ν ⟨0, j.pos⟩ • Formalism.GradedWeylDivisibility.rowAct ℂ (Matrix.diagonal (Function.update 1 j (D.what₂.embLL x))) q)`.
+
+Rewrite using `[smul_smul, ← mul_pow, mul_inv_cancel₀ ht0, one_pow, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ h`.
+-/
 theorem rat_diag_step (j : Fin N) (t : ℂ) (ht : t ∈ ratO D) (ht0 : t ≠ 0) (q : MvPolynomial (Fin N × Fin N) ℂ)
     (hq : q ∈ bwA_span (ratO D) le_rfl ν) :
     Formalism.GradedWeylDivisibility.rowAct ℂ (Matrix.diagonal (Function.update 1 j t)) q ∈ bwA_span (ratO D) le_rfl ν := by
@@ -44,6 +54,17 @@ theorem rat_diag_step (j : Fin N) (t : ℂ) (ht : t ∈ ratO D) (ht0 : t ≠ 0) 
   rw [e]
   exact Submodule.smul_mem _ _ h
 
+/- English proof (translation)
+Establish `key : ∀ S : Finset (Fin N), ∀ q, q ∈ bwA_span (ratO D) le_rfl ν → Formalism.GradedWeylDivisibility.rowAct ℂ (Matrix.diagonal fun j => if j ∈ S then e j else 1) q ∈ bwA_span (ratO D) le_rfl ν`. Introduce `S`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `q hq`. Establish `h1 : (Matrix.diagonal fun j : Fin N => if j ∈ (∅ : Finset (Fin N)) then e j else 1) = 1`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1, bwA_rowAct_one]`. Conclude with `hq`. Introduce `i S hi ih q hq`. Establish `h2 : (Matrix.diagonal fun j : Fin N => if j ∈ insert i S then e j else 1) = Matrix.diagonal (Function.update 1 i (e i)) * Matrix.diagonal fun j => if j ∈ S then e j else 1`.
+
+Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Simplify using `[hi]`. Simplify using `[hj, Function.update_of_ne hj]`. Rewrite using `[h2, Formalism.UG.P.wact_rowAct_mul, AlgHom.comp_apply]`. Conclude with `ih _ (rat_diag_step D ν hν i (e i) (he i) (he0 i) q hq)`. Establish `h3 : (Matrix.diagonal fun j : Fin N => if j ∈ (Finset.univ : Finset (Fin N)) then e j else 1) = Matrix.diagonal e`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← h3]`. Conclude with `key Finset.univ q hq`.
+-/
 theorem rat_diag (e : Fin N → ℂ) (he : ∀ j, e j ∈ ratO D) (he0 : ∀ j, e j ≠ 0) (q : MvPolynomial (Fin N × Fin N) ℂ)
     (hq : q ∈ bwA_span (ratO D) le_rfl ν) :
     Formalism.GradedWeylDivisibility.rowAct ℂ (Matrix.diagonal e) q ∈ bwA_span (ratO D) le_rfl ν := by
@@ -74,6 +95,9 @@ theorem rat_diag (e : Fin N → ℂ) (he : ∀ j, e j ∈ ratO D) (he0 : ∀ j, 
   rw [← h3]
   exact key Finset.univ q hq
 
+/- English proof (translation)
+Establish `e1` using `Formalism.GradedWeylDivisibility.rowActMul ℂ N N K₂ (K₁ * Matrix.diagonal e)`. Establish `e2` using `Formalism.GradedWeylDivisibility.rowActMul ℂ N N (Matrix.diagonal e) K₁`. Rewrite using `[← e1, AlgHom.comp_apply, ← e2, AlgHom.comp_apply]`. Conclude with `bwA_span_closure (ratO D) le_rfl ν K₂ h₂ _ (rat_diag D ν hν e he he0 _ (bwA_span_closure (ratO D) le_rfl ν K₁ h₁ q hq))`.
+-/
 theorem rat_sandwich (K₁ K₂ : Matrix (Fin N) (Fin N) ℂ)
     (h₁ : K₁ ∈ Submonoid.closure {g : Matrix (Fin N) (Fin N) ℂ | ∃ (a b : Fin N) (c : ℂ), c ∈ ratO D ∧ g = 1 + Matrix.single b a c})
     (h₂ : K₂ ∈ Submonoid.closure {g : Matrix (Fin N) (Fin N) ℂ | ∃ (a b : Fin N) (c : ℂ), c ∈ ratO D ∧ g = 1 + Matrix.single b a c})
@@ -86,6 +110,17 @@ theorem rat_sandwich (K₁ K₂ : Matrix (Fin N) (Fin N) ℂ)
   exact bwA_span_closure (ratO D) le_rfl ν K₂ h₂ _
     (rat_diag D ν hν e he he0 _ (bwA_span_closure (ratO D) le_rfl ν K₁ h₁ q hq))
 
+/- English proof (translation)
+Take `⟨L, L', d, hMd⟩` from `Matrix.Pivot.exists_list_transvec_mul_diagonal_mul_list_transvec M`. Establish `hdetL : ∀ L : List (Matrix.TransvectionStruct (Fin N) D.what₂.LL), (L.map Matrix.TransvectionStruct.toMatrix).prod.det = 1`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => simp`.
+
+Consider the case `cons t L ih => rw [List.map_cons, List.prod_cons, Matrix.det_mul, ih, Matrix.TransvectionStruct.det, one_mul]`. Establish `hd : ∀ j, d j ≠ 0`. Establish `h` using `congrArg Matrix.det hMd`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, hdetL, hdetL, Matrix.det_diagonal, one_mul, mul_one]`. Introduce `j hj`.
+
+Conclude with `hM (h.trans (Finset.prod_eq_zero (Finset.mem_univ j) hj))`. Establish `hcl : ∀ L : List (Matrix.TransvectionStruct (Fin N) D.what₂.LL), (L.map Matrix.TransvectionStruct.toMatrix).prod.map D.what₂.embLL ∈ Submonoid.closure {g : Matrix (Fin N) (Fin N) ℂ | ∃ (a b : Fin N) (c : ℂ), c ∈ ratO D ∧ g = 1 + Matrix.single b a c}`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`.
+
+Rewrite using `[List.map_nil, List.prod_nil, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Submonoid.one_mem _`. Consider the case `cons t L ih`. Rewrite using `[List.map_cons, List.prod_cons, Matrix.map_mul]`. Use `Submonoid.mul_mem _ (Submonoid.subset_closure ⟨t.j, t.i, D.what₂.embLL t.c, ⟨t.c, rfl⟩, ?_⟩) ih` and prove the remaining obligations.
+
+Use extensionality with `a b`. Simplify using `only [Matrix.TransvectionStruct.toMatrix, Matrix.transvection, Matrix.map_apply, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`. Rewrite using `[hMd, Matrix.map_mul, Matrix.map_mul, Matrix.diagonal_map (map_zero _)]`. Conclude with `rat_sandwich D ν hν _ _ (hcl L) (hcl L') _ (fun j => ⟨d j, rfl⟩) (fun j => (map_ne_zero D.what₂.embLL).2 (hd j)) q hq`.
+-/
 theorem rat_rowAct_mem (M : Matrix (Fin N) (Fin N) D.what₂.LL) (hM : M.det ≠ 0) (q : MvPolynomial (Fin N × Fin N) ℂ)
     (hq : q ∈ bwA_span (ratO D) le_rfl ν) :
     Formalism.GradedWeylDivisibility.rowAct ℂ (M.map D.what₂.embLL) q ∈ bwA_span (ratO D) le_rfl ν := by
@@ -123,6 +158,25 @@ theorem rat_rowAct_mem (M : Matrix (Fin N) (Fin N) D.what₂.LL) (hM : M.det ≠
 
 end Diag
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `g _ h2 r choose f hf hg using fun τ => h2 τ (by simp)`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Conclude with `⟨r, f, hf, by rw [show g = fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ) from funext hg]⟩`. Introduce `τv s hτv ih g h1 h2`.
+
+Establish `key : ∀ q ∈ bwA_span (ratO D) le_rfl (lam τv).natW, ∀ r : D.what₂.LL, D.what₂.embLL r • Formalism.L2.Forms.ten (Function.update g τv q) ∈ RatSpan D lam`. Introduce `q hq`. Proceed by induction on `hq using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f0, hf0, rfl⟩` from `hx`.
+
+Apply `ih` to reduce the goal to its premises. Introduce `τ hτ`. Establish `hne : τ ≠ τv` using `fun h => hτv (h ▸ hτ)`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `h1 τ (Finset.mem_insert_of_mem hτ)`.
+
+Introduce `τ hτ`. Distinguish the cases in `h : τ = τv`. Substitute `h` using the available equality. Conclude with `⟨f0, hf0, by rw [Function.update_self]⟩`. Rewrite using `[Function.update_of_ne h]`.
+
+Conclude with `h2 τ (by simp [Finset.mem_insert, h, hτ])`. Consider the case `zero`. Introduce `r`. Rewrite using `[bwA_ten_update]`. Simplify using the standard rewrite rules.
+
+Consider the case `add x y _ _ hx hy`. Introduce `r`. Establish `e : Formalism.L2.Forms.ten (Function.update g τv (x + y)) = Formalism.L2.Forms.ten (Function.update g τv x) + Formalism.L2.Forms.ten (Function.update g τv y)`. Rewrite using `[bwA_ten_update, bwA_ten_update, bwA_ten_update, map_add, add_mul]`. Rewrite using `[e, smul_add]`.
+
+Conclude with `add_mem (hx r) (hy r)`. Consider the case `smul o x _ hx`. Introduce `r`. Take `⟨r', ho⟩` from `RingHom.mem_range.1 o.2`. Establish `e : Formalism.L2.Forms.ten (Function.update g τv (o • x)) = (o : ℂ) • Formalism.L2.Forms.ten (Function.update g τv x)`.
+
+Rewrite using `[bwA_ten_update, bwA_ten_update]`. Use `show MvPolynomial.rename _ ((o : ℂ) • x) * _ = _`. Rewrite using `[map_smul, smul_mul_assoc]`. Rewrite using `[e, smul_smul, ← ho, ← map_mul]`. Conclude with `hx (r * r')`.
+
+Introduce `r`. Use `key (g τv) (h1 τv (Finset.mem_insert_self _ _)) r` as an intermediate fact. Rewrite `this` using `[Function.update_eq_self]`. Then use the resulting hypothesis.
+-/
 theorem rat_ten (D : D7) {N : ℕ} (lam : D.what₂.Tau → DomWeight N) (s : Finset D.what₂.Tau) :
     ∀ (g : D.what₂.Tau → MvPolynomial (Fin N × Fin N) ℂ),
       (∀ τ ∈ s, g τ ∈ bwA_span (ratO D) le_rfl (lam τ).natW) →
@@ -175,6 +229,21 @@ theorem rat_ten (D : D7) {N : ℕ} (lam : D.what₂.Tau → DomWeight N) (s : Fi
     have := key (g τv) (h1 τv (Finset.mem_insert_self _ _)) r
     rwa [Function.update_eq_self] at this
 
+/- English proof (translation)
+Introduce `γ P hP`. Set `o : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ` to `fun τ => atInf (embT D) ((γ τ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ`. Set `M : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL` to `fun τ => ((γ τ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E).map (fun a => D.embE (D.host.sigmaOf (D.eTau τ : D.R.GG) a))`. Establish `hoM : ∀ τ, o τ = (M τ).map D.what₂.embLL` using `fun τ => by`. Use extensionality with `a b`.
+
+Conclude with `bwA_embT_eq D τ _`. Establish `hMdet : ∀ τ, (M τ).det ≠ 0`. Introduce `τ h`. Establish `hu` using `Formalism.MainNotions.Ext.Lw.isUnit_atInf (embT D) (γ τ) τ`. Apply `hu.ne_zero` to reduce the goal to its premises.
+
+Use `show (o τ).det = 0`. Rewrite using `[hoM τ, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h, map_zero]`. Establish `hc : (∏ τ, (o τ).det ^ shiftOf (lamT u 0) τ) = D.what₂.embLL (∏ τ, (M τ).det ^ shiftOf (lamT u 0) τ)`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zpow₀, RingHom.map_det, RingHom.mapMatrix_apply, hoM τ]`. Use `show MvPolynomial.C (∏ τ, (o τ).det ^ shiftOf (lamT u 0) τ) * subP o P ∈ RatSpan D ((D.fm u).lam 0)`. Rewrite using `[hc, MvPolynomial.C_mul']`. Proceed by induction on `hP using AddSubgroup.closure_induction with`. Consider the case `mem p hp`.
+
+Take `⟨r, f, hf, rfl⟩` from `hp`. Rewrite using `[map_smul, substitution_tensor, smul_smul, ← map_mul]`. Apply `rat_ten D _ Finset.univ` to reduce the goal to its premises. Introduce `τ _`. Rewrite using `[hoM τ]`.
+
+Conclude with `rat_rowAct_mem D _ (dominant_natWeight_antitone _) (M τ) (hMdet τ) _ (Submodule.subset_span ⟨f τ, hf τ, rfl⟩)`. Introduce `τ hτ`. Conclude with `absurd (Finset.mem_univ τ) hτ`. Consider the case `zero => rw [map_zero, smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add, smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg, smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem ratGL_holds (D : D7) (u : D.what₂.Word) : RatGL D u := by
   classical
   intro γ P hP

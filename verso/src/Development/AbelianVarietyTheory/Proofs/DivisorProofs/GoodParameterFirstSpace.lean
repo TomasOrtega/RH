@@ -12,6 +12,11 @@ namespace GlobalTheory.ContragredientPar
 
 open Finset GlobalTheory.SignedHC
 
+/- English proof (translation)
+Establish `hs : ∀ (a : ℕ) (h : a + 1 < R.k - 1), P.v ⟨a + 1, h⟩ < P.v ⟨a, by omega⟩` using `fun a h => (P.u_gt_v ⟨a + 1, h⟩).trans (P.v_gt_u ⟨a, by omega⟩)`. Establish `hA : ∀ (d a : ℕ) (h : a + d + 1 < R.k - 1), P.v ⟨a + d + 1, h⟩ < P.v ⟨a, by omega⟩`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => exact hs`.
+
+Consider the case `succ d ih => intro a h; exact (hs (a + d + 1) h).trans (ih a (by omega))`. Introduce and unpack `⟨a, ha⟩ ⟨c, hc⟩ hac`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt (show a < c from hac)`. Conclude with `hA d a hc`.
+-/
 theorem v_strictAnti {R : Ranks} (P : HCParam R) : StrictAnti P.v := by
   have hs : ∀ (a : ℕ) (h : a + 1 < R.k - 1), P.v ⟨a + 1, h⟩ < P.v ⟨a, by omega⟩ :=
     fun a h => (P.u_gt_v ⟨a + 1, h⟩).trans (P.v_gt_u ⟨a, by omega⟩)
@@ -24,6 +29,13 @@ theorem v_strictAnti {R : Ranks} (P : HCParam R) : StrictAnti P.v := by
   obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_lt (show a < c from hac)
   exact hA d a hc
 
+/- English proof (translation)
+Establish `hs : ∀ (a : ℕ) (h : a + 1 < R.m), P.b ⟨a, by omega⟩ < P.b ⟨a + 1, h⟩` using `fun a h => by`. Establish `h1` using `P.gap_be ⟨a, by omega⟩`. Establish `h2` using `P.gap_eb ⟨a, by omega⟩ h`. Establish `h3 : (0 : ℚ) ≤ R.t` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hA : ∀ (d a : ℕ) (h : a + d + 1 < R.m), P.b ⟨a, by omega⟩ < P.b ⟨a + d + 1, h⟩`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => exact hs`. Consider the case `succ d ih => intro a h; exact (ih a (by omega)).trans (hs (a + d + 1) h)`.
+
+Introduce and unpack `⟨a, ha⟩ ⟨c, hc⟩ hac`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt (show a < c from hac)`. Conclude with `hA d a hc`.
+-/
 theorem b_strictMono {R : Ranks} (P : HCParam R) : StrictMono P.b := by
   have hs : ∀ (a : ℕ) (h : a + 1 < R.m), P.b ⟨a, by omega⟩ < P.b ⟨a + 1, h⟩ := fun a h => by
     have h1 := P.gap_be ⟨a, by omega⟩
@@ -39,6 +51,11 @@ theorem b_strictMono {R : Ranks} (P : HCParam R) : StrictMono P.b := by
   obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_lt (show a < c from hac)
   exact hA d a hc
 
+/- English proof (translation)
+Establish `hk` using `R.m_add_three_le_k`. Establish `hm` using `R.two_le_m`. Establish `h1` using `P.u_last_gt (by omega) (by omega)`. Establish `h2` using `P.v_gt_u ⟨R.k - 2, by omega⟩`. Establish `h3 : P.v ⟨R.k - 2, by omega⟩ ≤ P.v i` using `(v_strictAnti P).antitone (show i.1 ≤ R.k - 2 by have := i.2; omega)`.
+
+Establish `h4 : P.b ⟨0, by omega⟩ ≤ P.b j` using `(b_strictMono P).monotone (show 0 ≤ j.1 from Nat.zero_le _)`. Establish `h5 : (⟨R.k - 2 + 1, by omega⟩ : Fin R.k) = ⟨R.k - 1, by omega⟩` using `Fin.ext (by simp only; omega)`. Simplify using `only [h5] at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem neg_v_lt_b {R : Ranks} (P : HCParam R) (i : Fin (R.k - 1)) (j : Fin R.m) : -P.v i < P.b j := by
   have hk := R.m_add_three_le_k
   have hm := R.two_le_m

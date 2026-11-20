@@ -7,6 +7,11 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris ReciprocityTheory.Cha
 
 namespace GlobalTheory.CompanionTheory.Cone
 
+/- English proof (translation)
+Introduce `K _ X V W h _ B hB d m D κ`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨b, bs, rfl⟩`. Establish `hm : ∀ c : Γ(X, W), rs h c ∈ B` using `fun c => by`. Establish `: rs h c ∈ (B : Set Γ(X, V))` using `hB ▸ Set.mem_range_self c`.
+
+Conclude with `this`. Conclude with `AddSubgroup.subset_closure ⟨⟨rs h b, hm b⟩, fun l => ⟨rs h (bs l), hm (bs l)⟩, rfl⟩`.
+-/
 theorem jacSpan_le_jacS : ∀ {K : Type} [Field K] {X : Scheme.{0}} {V W : X.Opens} (h : V ≤ W) [Algebra K Γ(X, V)]
     (B : Subalgebra K Γ(X, V)), (B : Set Γ(X, V)) = Set.range (rs h) →
     ∀ {d m : ℕ} (D : Fin d → Derivation K Γ(X, V) Γ(X, V)) (κ : Fin m → Fin d),

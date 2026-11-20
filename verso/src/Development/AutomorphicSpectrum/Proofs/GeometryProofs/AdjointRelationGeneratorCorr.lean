@@ -20,6 +20,9 @@ section Alg
 
 variable {S : Type} [CommRing S] {d : ℕ}
 
+/- English proof (translation)
+Establish `e : (ψ ∘ fun p : Fin 1 × Fin d => ((![i] : Fin 1 → Fin 2) p.1, p.2)) = 0`. Use function extensionality and compare the values at `p`. Take `⟨k, l⟩` from `p`. Simplify using `using h l`. Rewrite using `[psIn, MvPolynomial.aeval_rename, e, MvPolynomial.aeval_zero, FBIdPh.cc_psTrunc, hf, map_zero]`.
+-/
 theorem aeval_psIn_zero (m : ℕ) (i : Fin 2) (ψ : Fin 2 × Fin d → MvPolynomial (Fin 1 × Fin d) S)
     (h : ∀ l, ψ (i, l) = 0) (f : PS S 1 d) (hf : MvPowerSeries.constantCoeff f = 0) :
     MvPolynomial.aeval ψ (psIn d m ![i] f) = 0 := by
@@ -29,6 +32,11 @@ theorem aeval_psIn_zero (m : ℕ) (i : Fin 2) (ψ : Fin 2 × Fin d → MvPolynom
     simpa using h l
   rw [psIn, MvPolynomial.aeval_rename, e, MvPolynomial.aeval_zero, FBIdPh.cc_psTrunc, hf, map_zero]
 
+/- English proof (translation)
+Establish `e : (ψ ∘ fun p : Fin 1 × Fin d => ((![i] : Fin 1 → Fin 2) p.1, p.2)) = MvPolynomial.X`. Use function extensionality and compare the values at `p`. Take `⟨k, l⟩` from `p`. Establish `hk : k = 0` using `Subsingleton.elim _ _`. Substitute `hk` using the available equality.
+
+Simplify using `using h l`. Rewrite using `[psIn, MvPolynomial.aeval_rename, e, MvPolynomial.aeval_X_left_apply]`.
+-/
 theorem aeval_psIn_X (m : ℕ) (i : Fin 2) (ψ : Fin 2 × Fin d → MvPolynomial (Fin 1 × Fin d) S)
     (h : ∀ l, ψ (i, l) = MvPolynomial.X ((0 : Fin 1), l)) (f : PS S 1 d) :
     MvPolynomial.aeval ψ (psIn d m ![i] f) = psTrunc m f := by
@@ -45,6 +53,9 @@ abbrev axP (d : ℕ) (S : Type) [CommRing S] (b : Bool) : Fin 2 × Fin d → MvP
     else ![fun j => MvPolynomial.X ((0 : Fin 1), j), fun _ => 0] :
       Fin 2 → Fin d → MvPolynomial (Fin 1 × Fin d) S) p.1 p.2
 
+/- English proof (translation)
+Take `⟨k, j⟩` from `p`. Apply the tactic sequence `cases b <;> fin_cases k <;> simp [axP]`.
+-/
 theorem constantCoeff₂ (b : Bool) (p : Fin 2 × Fin d) : MvPolynomial.constantCoeff (axP d S b p) = 0 := by
   obtain ⟨k, j⟩ := p
   cases b <;> fin_cases k <;> simp [axP]
@@ -60,6 +71,9 @@ abbrev sndP (f : Fin d → PS S 1 d) (m : ℕ) : Fin 2 × Fin d → MvPolynomial
 abbrev actJ (f : Fin d → PS S 1 d) (m : ℕ) : Jet S (Fin 1 × Fin d) m →ₐ[S] Jet S (Fin 1 × Fin d) m :=
   jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (f p.2)
 
+/- English proof (translation)
+Take `⟨k, j⟩` from `p`. Use `fin_cases k`. Simplify `(FBIdPh.cc_psIn d m ![0] (f j)).trans (hf j)` using `[fstP]`. Simplify using `[fstP]`.
+-/
 theorem fstP_cc (f : Fin d → PS S 1 d) (hf : ∀ j, MvPowerSeries.constantCoeff (f j) = 0) (m : ℕ)
     (p : Fin 2 × Fin d) : MvPolynomial.constantCoeff (fstP f m p) = 0 := by
   obtain ⟨k, j⟩ := p
@@ -67,6 +81,9 @@ theorem fstP_cc (f : Fin d → PS S 1 d) (hf : ∀ j, MvPowerSeries.constantCoef
   · simpa [fstP] using (FBIdPh.cc_psIn d m ![0] (f j)).trans (hf j)
   · simp [fstP]
 
+/- English proof (translation)
+Take `⟨k, j⟩` from `p`. Use `fin_cases k`. Simplify using `[sndP]`. Simplify `(FBIdPh.cc_psIn d m ![1] (f j)).trans (hf j)` using `[sndP]`.
+-/
 theorem sndP_cc (f : Fin d → PS S 1 d) (hf : ∀ j, MvPowerSeries.constantCoeff (f j) = 0) (m : ℕ)
     (p : Fin 2 × Fin d) : MvPolynomial.constantCoeff (sndP f m p) = 0 := by
   obtain ⟨k, j⟩ := p
@@ -74,10 +91,18 @@ theorem sndP_cc (f : Fin d → PS S 1 d) (hf : ∀ j, MvPowerSeries.constantCoef
   · simp [sndP]
   · simpa [sndP] using (FBIdPh.cc_psIn d m ![1] (f j)).trans (hf j)
 
+/- English proof (translation)
+The claim follows from `(FBIdPh.cc_psTrunc m _).trans (hf _)`.
+-/
 theorem trunc_cc (f : Fin d → PS S 1 d) (hf : ∀ j, MvPowerSeries.constantCoeff (f j) = 0) (m : ℕ)
     (p : Fin 1 × Fin d) : MvPolynomial.constantCoeff (psTrunc m (f p.2)) = 0 :=
   (FBIdPh.cc_psTrunc m _).trans (hf _)
 
+/- English proof (translation)
+Use `(FBIdPh.jetSubstP_comp m (fstP f m) (axP d S true) (fstP_cc f hf m) (constantCoeff₂ true)).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨k, j⟩` from `p`. Use `fin_cases k`.
+
+Conclude with `aeval_psIn_zero m 0 _ (fun _ => rfl) _ (hf j)`. Simplify using `[fstP, axP]`.
+-/
 theorem ax_fst_true (f : Fin d → PS S 1 d) (hf : ∀ j, MvPowerSeries.constantCoeff (f j) = 0) (m : ℕ) :
     (axJ (S := S) d m true).comp (jetSubstP m (fstP f m)) = axJ d m true := by
   refine (FBIdPh.jetSubstP_comp m (fstP f m) (axP d S true) (fstP_cc f hf m) (constantCoeff₂ true)).trans ?_
@@ -88,6 +113,11 @@ theorem ax_fst_true (f : Fin d → PS S 1 d) (hf : ∀ j, MvPowerSeries.constant
   · exact aeval_psIn_zero m 0 _ (fun _ => rfl) _ (hf j)
   · simp [fstP, axP]
 
+/- English proof (translation)
+Use `(FBIdPh.jetSubstP_comp m (sndP f m) (axP d S true) (sndP_cc f hf m) (constantCoeff₂ true)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (FBIdPh.jetSubstP_comp m (axP d S true) _ (constantCoeff₂ true) (trunc_cc f hf m)).symm` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨k, j⟩` from `p`.
+
+Use `fin_cases k`. Simplify using `[sndP, axP]`. Use `(aeval_psIn_X m 1 _ (fun _ => rfl) _).trans ?_` and prove the remaining obligations. Simplify using `[axP]`.
+-/
 theorem ax_snd_true (f : Fin d → PS S 1 d) (hf : ∀ j, MvPowerSeries.constantCoeff (f j) = 0) (m : ℕ) :
     (axJ (S := S) d m true).comp (jetSubstP m (sndP f m)) = (actJ f m).comp (axJ d m true) := by
   refine (FBIdPh.jetSubstP_comp m (sndP f m) (axP d S true) (sndP_cc f hf m) (constantCoeff₂ true)).trans ?_
@@ -100,6 +130,11 @@ theorem ax_snd_true (f : Fin d → PS S 1 d) (hf : ∀ j, MvPowerSeries.constant
   · refine (aeval_psIn_X m 1 _ (fun _ => rfl) _).trans ?_
     simp [axP]
 
+/- English proof (translation)
+Use `(FBIdPh.jetSubstP_comp m (fstP f m) (axP d S false) (fstP_cc f hf m) (constantCoeff₂ false)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (FBIdPh.jetSubstP_comp m (axP d S false) _ (constantCoeff₂ false) (trunc_cc f hf m)).symm` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨k, j⟩` from `p`.
+
+Use `fin_cases k`. Use `(aeval_psIn_X m 0 _ (fun _ => rfl) _).trans ?_` and prove the remaining obligations. Simplify using `[axP]`. Simplify using `[fstP, axP]`.
+-/
 theorem ax_fst_false (f : Fin d → PS S 1 d) (hf : ∀ j, MvPowerSeries.constantCoeff (f j) = 0) (m : ℕ) :
     (axJ (S := S) d m false).comp (jetSubstP m (fstP f m)) = (actJ f m).comp (axJ d m false) := by
   refine (FBIdPh.jetSubstP_comp m (fstP f m) (axP d S false) (fstP_cc f hf m) (constantCoeff₂ false)).trans ?_
@@ -112,6 +147,11 @@ theorem ax_fst_false (f : Fin d → PS S 1 d) (hf : ∀ j, MvPowerSeries.constan
     simp [axP]
   · simp [fstP, axP]
 
+/- English proof (translation)
+Use `(FBIdPh.jetSubstP_comp m (sndP f m) (axP d S false) (sndP_cc f hf m) (constantCoeff₂ false)).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨k, j⟩` from `p`. Use `fin_cases k`.
+
+Simplify using `[sndP, axP]`. Conclude with `aeval_psIn_zero m 1 _ (fun _ => rfl) _ (hf j)`.
+-/
 theorem ax_snd_false (f : Fin d → PS S 1 d) (hf : ∀ j, MvPowerSeries.constantCoeff (f j) = 0) (m : ℕ) :
     (axJ (S := S) d m false).comp (jetSubstP m (sndP f m)) = axJ d m false := by
   refine (FBIdPh.jetSubstP_comp m (sndP f m) (axP d S false) (sndP_cc f hf m) (constantCoeff₂ false)).trans ?_
@@ -122,6 +162,11 @@ theorem ax_snd_false (f : Fin d → PS S 1 d) (hf : ∀ j, MvPowerSeries.constan
   · simp [sndP, axP]
   · exact aeval_psIn_zero m 1 _ (fun _ => rfl) _ (hf j)
 
+/- English proof (translation)
+Use `jet_hom_ext fun p => ?_` and prove the remaining obligations. Take `⟨k, j⟩` from `p`. Establish `h0 : (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S) (Ideal.Quotient.mk _ (MvPolynomial.X (k, j))) = 0`. Simplify using `[jetAug, liftJet]`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, h0, map_zero, jetCopy, jetMap_mk, MvPolynomial.aeval_X, axJ_X]`.
+
+Simplify using `[axV, hi]`.
+-/
 theorem ax_copy_zero (m : ℕ) (b : Bool) (i : Fin 2) (hi : (i = 1) ≠ b) :
     (axJ (S := S) d m b).comp (jetCopy d m i) =
       (Algebra.ofId S (Jet S (Fin 1 × Fin d) m)).comp jetAug := by
@@ -132,6 +177,11 @@ theorem ax_copy_zero (m : ℕ) (b : Bool) (i : Fin 2) (hi : (i = 1) ≠ b) :
   rw [AlgHom.comp_apply, AlgHom.comp_apply, h0, map_zero, jetCopy, jetMap_mk, MvPolynomial.aeval_X, axJ_X]
   simp [axV, hi]
 
+/- English proof (translation)
+Use `jet_hom_ext fun p => ?_` and prove the remaining obligations. Take `⟨k, j⟩` from `p`. Establish `hk : k = 0` using `Subsingleton.elim _ _`. Substitute `hk` using the available equality. Rewrite using `[AlgHom.comp_apply, jetCopy, jetMap_mk, MvPolynomial.aeval_X, axJ_X, AlgHom.id_apply]`.
+
+Simplify using `[axV, hi]`.
+-/
 theorem ax_copy_id (m : ℕ) (b : Bool) (i : Fin 2) (hi : (i = 1) = b) :
     (axJ (S := S) d m b).comp (jetCopy d m i) = AlgHom.id S _ := by
   refine jet_hom_ext fun p => ?_
@@ -148,15 +198,30 @@ section Frame
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
   {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G)
 
+/- English proof (translation)
+Rewrite using `[jptG, ← Category.assoc, homAt_comp, ax_copy_zero m b i hi, ← homAt_comp, Category.assoc, hz m]`. Conclude with `MonObj.comp_one _`.
+-/
 theorem pt_killed (hz : ∀ m, homAt x0 (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S) ≫ x m = 1) (m : ℕ) (b : Bool)
     (i : Fin 2) (hi : (i = 1) ≠ b) : homAt x0 (axJ (S := S) d m b) ≫ jptG t x0 d x m i = 1 := by
   rw [jptG, ← Category.assoc, homAt_comp, ax_copy_zero m b i hi, ← homAt_comp, Category.assoc, hz m]
   exact MonObj.comp_one _
 
+/- English proof (translation)
+Rewrite using `[jptG, ← Category.assoc, homAt_comp, ax_copy_id m b i hi, homAt_id, Category.id_comp]`.
+-/
 theorem pt_kept (m : ℕ) (b : Bool) (i : Fin 2) (hi : (i = 1) = b) :
     homAt x0 (axJ (S := S) d m b) ≫ jptG t x0 d x m i = x m := by
   rw [jptG, ← Category.assoc, homAt_comp, ax_copy_id m b i hi, homAt_id, Category.id_comp]
 
+/- English proof (translation)
+Take `⟨u, hu, hc⟩` from `hrel m`. Establish `hA : LB.Gen.Corr t.PP.L _ _ _ _ (LB.pullGen t.PP.L (cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)]) (cε 2) (e m) (homAt x0 (axJ (S` using `S) d m b)).left) (LB.oneGen t.PP.L) := by`. Consider the cases of `b`. Conclude with `(hax m).2`. Conclude with `(hax m).1`.
+
+Establish `hv : ∀ r : (jOG x0 d m 1).left ⟶ (jOG x0 d m 1).left, val (e m) (r ≫ (homAt x0 (axJ (S` using `S) d m b)).left) y J = 1 := fun r => (val_pull hJ _ _ _).symm.trans ((val_corr hJ hA r).trans (val_one _))`. Establish `E` using `val_corr hJ hc (homAt x0 (axJ (S := S) d m b)).left`. Rewrite `E` using `[val_mul hJ, val_pull hJ, GermB.val_scale t _ _ _ _ _ y J hJ]`. Establish `p₁ : val (peG t x0 d x e m ![fun j => psIn d m ![0] (act a j), fun j => MvPolynomial.X ((1 : Fin 2), j)]) (homAt x0 (axJ (S` using `S) d m b)).left y J = 1 := (val_pull hJ _ _ _).trans ((congrArg (fun r => val (e m) r y J) h₁).trans (hv r₁))`. Establish `p₂ : val (peG t x0 d x e m ![fun j => MvPolynomial.X ((0 : Fin 2), j), fun j => psIn d m ![1] (act (H.bar a) j)]) (homAt x0 (axJ (S` using `S) d m b)).left y J = 1 := (val_pull hJ _ _ _).trans ((congrArg (fun r => val (e m) r y J) h₂).trans (hv r₂))`.
+
+Establish `hU : Units.map ((axJ (S` using `S) d m b : _ →ₐ[S] _) : Jet S (Fin 2 × Fin d) m →* Jet S (Fin 1 × Fin d) m) u = 1 := Units.ext (by`. Rewrite using `[Units.coe_map, hu]`. Conclude with `(psJet_ev_ax d m (ad a) b).symm.trans ((congrArg (psJet m) hb).trans (psJet_one m)))`. Establish `p₃ : gm (homAt x0 (axJ (S` using `S) d m b)).left y ⊤ (unitΓ u) = 1 := by`. Rewrite using `[FrRatio.gm_map, hU, unitΓ_one, map_one]`.
+
+Rewrite `E` using `[p₁, p₂, p₃, _root_.mul_one, _root_.mul_one]`. Conclude with `E`.
+-/
 theorem val_axis (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S) (ad : 𝓞 E → MvPowerSeries (Fin 2 × Fin d) S)
     (e : ∀ m, FrTyG t x0 d x m) (hax : FrAxes t x0 d x e) (a : 𝓞 E) (wL : FrGauge.AdTy t a)
     (hrel : FrGauge.AdRel t x0 d x act ad e a wL) (m : ℕ) (b : Bool)
@@ -196,6 +261,9 @@ theorem val_axis (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S) (
   rw [p₁, p₂, p₃, _root_.mul_one, _root_.mul_one] at E
   exact E
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, comp_lift, pt_killed t x0 d x hz m true 0 (by simp), pt_kept t x0 d x m true 1 (by simp)]`.
+-/
 theorem lift_true (hz : ∀ m, homAt x0 (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S) ≫ x m = 1) (m : ℕ) :
     (homAt x0 (axJ (S := S) d m true)).left ≫
         (lift (jptG t x0 d x m (0 : Fin 2)) (jptG t x0 d x m (1 : Fin 2))).left =
@@ -203,6 +271,9 @@ theorem lift_true (hz : ∀ m, homAt x0 (jetAug : Jet S (Fin 1 × Fin d) m →�
   rw [← Over.comp_left, comp_lift, pt_killed t x0 d x hz m true 0 (by simp),
     pt_kept t x0 d x m true 1 (by simp)]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, comp_lift, pt_kept t x0 d x m false 0 (by simp), pt_killed t x0 d x hz m false 1 (by simp)]`.
+-/
 theorem lift_false (hz : ∀ m, homAt x0 (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S) ≫ x m = 1) (m : ℕ) :
     (homAt x0 (axJ (S := S) d m false)).left ≫
         (lift (jptG t x0 d x m (0 : Fin 2)) (jptG t x0 d x m (1 : Fin 2))).left =
@@ -212,6 +283,13 @@ theorem lift_false (hz : ∀ m, homAt x0 (jetAug : Jet S (Fin 1 × Fin d) m →�
 
 end Frame
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ _ X t S _ x d g a wL _ hrel m`. Establish `hL` using `t.PP.isLB`. Establish `hc : ∀ c j, MvPowerSeries.constantCoeff (g.B.A.act c j) = 0` using `g.B.A.const`. Use `⟨corr_of_val hL fun y J hJ => ?_, corr_of_val hL fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[val_pull hJ, val_one, Category.id_comp, ← lift_true t x d g.x g.chart.zero m]`.
+
+Use `val_axis t x d g.x g.B.A.act g.B.ad g.e g.axes a wL hrel m true (g.B.adjoint_zero_fst a) (𝟙 _) (homAt x (actJ (g.B.A.act (H.bar a)) m)).left ?_ ?_ y J hJ` and prove the remaining obligations. Rewrite using `[← Over.comp_left, homAt_comp, ax_fst_true _ (hc a) m, Category.id_comp]`. Rewrite using `[← Over.comp_left, homAt_comp, ax_snd_true _ (hc _) m, ← homAt_comp, Over.comp_left]`. Rewrite using `[val_pull hJ, val_one, Category.id_comp, ← lift_false t x d g.x g.chart.zero m]`. Use `val_axis t x d g.x g.B.A.act g.B.ad g.e g.axes a wL hrel m false (g.B.adjoint_zero_snd a) (homAt x (actJ (g.B.A.act a) m)).left (𝟙 _) ?_ ?_ y J hJ` and prove the remaining obligations.
+
+Rewrite using `[← Over.comp_left, homAt_comp, ax_fst_false _ (hc _) m, ← homAt_comp, Over.comp_left]`. Rewrite using `[← Over.comp_left, homAt_comp, ax_snd_false _ (hc _) m, Category.id_comp]`.
+-/
 theorem adAxes : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)],
     (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X : Scheme.{0}) (t : SAB H X) (S : Type) [CommRing S] (x : Sp S ⟶ X) (d : ℕ)
     (g : GermAt t x d) (a : 𝓞 E) (wL : FrGauge.AdTy t a), wL.IsGen →

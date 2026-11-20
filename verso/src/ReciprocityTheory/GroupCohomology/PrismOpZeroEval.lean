@@ -12,6 +12,13 @@ section Comb
 
 variable {V X Y : Type u} [AddCommGroup V]
 
+/- English proof (translation)
+Unfold `hd`. Rewrite using `[Fin.sum_univ_succ]`. Establish `h0 : ((-1 : ℤ) ^ ((0 : Fin (n + 3)) : ℕ) • F fun j => x (Fin.succAbove 0 j)) = F (Fin.tail x)`. Rewrite using `[Fin.val_zero, pow_zero, one_smul]`. Both sides reduce to the same expression.
+
+Establish `h1 : ∀ i : Fin (n + 2), ((-1 : ℤ) ^ (i.succ : ℕ) • F fun j => x (i.succ.succAbove j)) = -((-1 : ℤ) ^ (i : ℕ) • F (Fin.cons (x 0) fun j => Fin.tail x (i.succAbove j)))`. Introduce `i`. Rewrite using `[Fin.val_succ, pow_succ, mul_neg_one, neg_smul]`. Use `congr 3`. Use function extensionality and compare the values at `j`.
+
+Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[Fin.succ_succAbove_succ, Fin.tail]`. Rewrite using `[h0, Finset.sum_congr rfl fun i _ => h1 i, Finset.sum_neg_distrib, sub_eq_add_neg]`.
+-/
 theorem hd_succ' (n : ℕ) (F : (Fin (n + 2) → X) → V) (x : Fin (n + 3) → X) :
     hd (n + 1) F x = F (Fin.tail x) - hd n (fun y => F (Fin.cons (x 0) y)) (Fin.tail x) := by
   unfold hd
@@ -29,6 +36,11 @@ theorem hd_succ' (n : ℕ) (F : (Fin (n + 2) → X) → V) (x : Fin (n + 3) → 
     · simp [Fin.succ_succAbove_succ, Fin.tail]
   rw [h0, Finset.sum_congr rfl fun i _ => h1 i, Finset.sum_neg_distrib, sub_eq_add_neg]
 
+/- English proof (translation)
+Unfold `hd`. Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [Fin.val_zero, pow_zero, one_smul, Fin.val_one, pow_one, neg_smul, sub_eq_add_neg]`. Use `congr 2`. Use `show F _ = F _`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Establish `hj : j = 0` using `Subsingleton.elim (α := Fin 1) _ _`. Substitute `hj` using the available equality. Both sides reduce to the same expression.
+-/
 theorem hd_zero' (F : (Fin 1 → X) → V) (x : Fin 2 → X) :
     hd 0 F x = F (Fin.tail x) - F (fun _ => x 0) := by
   unfold hd
@@ -41,13 +53,22 @@ theorem hd_zero' (F : (Fin 1 → X) → V) (x : Fin 2 → X) :
   have hj : j = 0 := Subsingleton.elim (α := Fin 1) _ _
   subst hj; rfl
 
+/- English proof (translation)
+Simplify using `[hd, smul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem hd_sub' (n : ℕ) (F G : (Fin (n + 1) → X) → V) (x : Fin (n + 2) → X) :
     hd n (fun y => F y - G y) x = hd n F x - hd n G x := by
   simp [hd, smul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `[hd]`.
+-/
 theorem hd_zero_fun (n : ℕ) (x : Fin (n + 2) → X) : hd n (fun _ : Fin (n + 1) → X => (0 : V)) x = 0 := by
   simp [hd]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hd_comp' (n : ℕ) (F : (Fin (n + 1) → Y) → V) (c : X → Y) (x : Fin (n + 2) → X) :
     hd n (fun y => F fun i => c (y i)) x = hd n F (fun i => c (x i)) := rfl
 
@@ -56,13 +77,24 @@ noncomputable def prismOp (a b : X → Y) : (n : ℕ) → ((Fin (n + 2) → Y) �
   | n + 1, F, x => F (Fin.cons (a (x 0)) fun j => b (x j)) -
       prismOp a b n (fun y => F (Fin.cons (a (x 0)) y)) (Fin.tail x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prismOp_zero (a b : X → Y) (F : (Fin 2 → Y) → V) (x : Fin 1 → X) :
     prismOp a b 0 F x = F (Fin.cons (a (x 0)) fun j => b (x j)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prismOp_succ (a b : X → Y) (n : ℕ) (F : (Fin (n + 3) → Y) → V) (x : Fin (n + 2) → X) :
     prismOp a b (n + 1) F x = F (Fin.cons (a (x 0)) fun j => b (x j)) -
       prismOp a b n (fun y => F (Fin.cons (a (x 0)) y)) (Fin.tail x) := rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro F G x`. Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `F G x`.
+
+Rewrite using `[prismOp_succ, prismOp_succ, prismOp_succ, ih]`. Normalize the expressions using the abelian group laws.
+-/
 theorem prismOp_sub (a b : X → Y) (n : ℕ) : ∀ (F G : (Fin (n + 2) → Y) → V) (x : Fin (n + 1) → X),
     prismOp a b n (fun y => F y - G y) x = prismOp a b n F x - prismOp a b n G x := by
   induction n with
@@ -72,21 +104,33 @@ theorem prismOp_sub (a b : X → Y) (n : ℕ) : ∀ (F G : (Fin (n + 2) → Y) �
     rw [prismOp_succ, prismOp_succ, prismOp_succ, ih]
     abel
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ n ih => intro x`. Rewrite using `[prismOp_succ, ih, sub_zero]`.
+-/
 theorem prismOp_zero_fun (a b : X → Y) (n : ℕ) : ∀ (x : Fin (n + 1) → X),
     prismOp a b n (fun _ => (0 : V)) x = 0 := by
   induction n with
   | zero => intro x; rfl
   | succ n ih => intro x; rw [prismOp_succ, ih, sub_zero]
 
+/- English proof (translation)
+Apply the tactic sequence `funext j; refine Fin.cases ?_ (fun j => ?_) j <;> simp`.
+-/
 theorem cons_map (b : X → Y) {n : ℕ} (x0 : X) (y : Fin n → X) :
     (fun j => b (Fin.cons (α := fun _ => X) x0 y j)) = Fin.cons (b x0) fun j => b (y j) := by
   funext j; refine Fin.cases ?_ (fun j => ?_) j <;> simp
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Fin.cons_self_tail x]`. Conclude with `cons_map b _ _`.
+-/
 theorem map_eq_cons (b : X → Y) {n : ℕ} (x : Fin (n + 1) → X) :
     (fun j => b (x j)) = Fin.cons (b (x 0)) fun j => b (Fin.tail x j) := by
   conv_lhs => rw [← Fin.cons_self_tail x]
   exact cons_map b _ _
 
+/- English proof (translation)
+Rewrite using `[prismOp_zero, hd_zero', Fin.tail_cons, Fin.cons_zero]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`.
+-/
 theorem prismOp_hd_zero (a b : X → Y) (F : (Fin 1 → Y) → V) (x : Fin 1 → X) :
     prismOp a b 0 (hd 0 F) x = F (fun i => b (x i)) - F (fun i => a (x i)) := by
   rw [prismOp_zero, hd_zero', Fin.tail_cons, Fin.cons_zero]
@@ -98,10 +142,18 @@ section Key
 
 variable {V X Y : Type u} [AddCommGroup V]
 
+/- English proof (translation)
+Rewrite using `[hd_zero']`. Apply the tactic sequence `congr 2 <;> funext j <;> fin_cases j <;> rfl`.
+-/
 theorem hd_zero_eval (G : (Fin 1 → X) → V) (x : Fin 2 → X) : hd 0 G x = G ![x 1] - G ![x 0] := by
   rw [hd_zero']
   congr 2 <;> funext j <;> fin_cases j <;> rfl
 
+/- English proof (translation)
+Unfold `hd`. Rewrite using `[Fin.sum_univ_three]`. Apply the tactic sequence `have e0 : (fun j => z (Fin.succAbove (0 : Fin 3) j)) = ![z 1, z 2] := by funext j; fin_cases j <;> rfl`. Apply the tactic sequence `have e1 : (fun j => z (Fin.succAbove (1 : Fin 3) j)) = ![z 0, z 2] := by funext j; fin_cases j <;> rfl`. Apply the tactic sequence `have e2 : (fun j => z (Fin.succAbove (2 : Fin 3) j)) = ![z 0, z 1] := by funext j; fin_cases j <;> rfl`.
+
+Rewrite using `[e0, e1, e2]`. Simplify using `only [Fin.val_zero, Fin.val_one, Fin.val_two, pow_zero, pow_one, one_smul, neg_smul]`. Evaluate the numerical expressions. Normalize the expressions using the abelian group laws.
+-/
 theorem hd_one_eval (F : (Fin 2 → X) → V) (z : Fin 3 → X) :
     hd 1 F z = F ![z 1, z 2] - F ![z 0, z 2] + F ![z 0, z 1] := by
   unfold hd
@@ -114,15 +166,36 @@ theorem hd_one_eval (F : (Fin 2 → X) → V) (z : Fin 3 → X) :
   norm_num
   abel
 
+/- English proof (translation)
+Apply the tactic sequence `rw [prismOp_zero]; congr 1; funext j; fin_cases j <;> rfl`.
+-/
 theorem prismOp_zero_eval (a b : X → Y) (F : (Fin 2 → Y) → V) (x : Fin 1 → X) :
     prismOp a b 0 F x = F ![a (x 0), b (x 0)] := by
   rw [prismOp_zero]; congr 1; funext j; fin_cases j <;> rfl
 
+/- English proof (translation)
+Rewrite using `[prismOp_succ, prismOp_zero]`. Apply the tactic sequence `congr 2 <;> funext j <;> fin_cases j <;> rfl`.
+-/
 theorem prismOp_one_eval (a b : X → Y) (K : (Fin 3 → Y) → V) (x : Fin 2 → X) :
     prismOp a b 1 K x = K ![a (x 0), b (x 0), b (x 1)] - K ![a (x 0), a (x 1), b (x 1)] := by
   rw [prismOp_succ, prismOp_zero]
   congr 2 <;> funext j <;> fin_cases j <;> rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `F x`. Rewrite using `[hd_zero_eval, prismOp_zero_eval, prismOp_zero_eval, prismOp_one_eval, hd_one_eval, hd_one_eval]`. Apply the tactic sequence `have eb : (fun i => b (x i)) = ![b (x 0), b (x 1)] := by funext j; fin_cases j <;> rfl`.
+
+Apply the tactic sequence `have ea : (fun i => a (x i)) = ![a (x 0), a (x 1)] := by funext j; fin_cases j <;> rfl`. Rewrite using `[eb, ea]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]`. Normalize the expressions using the abelian group laws. Consider the case `succ k ih`.
+
+Introduce `F x`. Set `G : (Fin (k + 2) → Y) → V` to `fun z => F (Fin.cons (a (x 0)) z)`. Establish `sA : hd (k + 1) (prismOp a b (k + 1) F) x = prismOp a b (k + 1) F (Fin.tail x) - hd k (fun y => prismOp a b (k + 1) F (Fin.cons (x 0) y)) (Fin.tail x)` using `hd_succ' _ _ _`. Establish `sBC : hd k (fun y => prismOp a b (k + 1) F (Fin.cons (x 0) y)) (Fin.tail x) = hd k (fun z => G (Fin.cons (b (x 0)) z)) (fun j => b (Fin.tail x j)) - hd k (prismOp a b k G) (Fin.tail x)`. Rewrite using `[← hd_comp' k (fun z => G (Fin.cons (b (x 0)) z)) b (Fin.tail x), ← hd_sub']`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[prismOp_succ, Fin.cons_zero, Fin.tail_cons, cons_map]`. Establish `sE : prismOp a b (k + 2) (hd (k + 2) F) x = hd (k + 2) F (Fin.cons (a (x 0)) fun j => b (x j)) - prismOp a b (k + 1) (fun z => hd (k + 2) F (Fin.cons (a (x 0)) z)) (Fin.tail x)` using `prismOp_succ _ _ _ _ _`. Establish `hbx : (fun j => b (x j)) = Fin.cons (b (x 0)) fun j => b (Fin.tail x j)` using `map_eq_cons b x`.
+
+Establish `sF1 : hd (k + 2) F (Fin.cons (a (x 0)) fun j => b (x j)) = F (fun j => b (x j)) - hd (k + 1) G (fun j => b (x j))`. Rewrite using `[hd_succ', Fin.cons_zero, Fin.tail_cons]`. Establish `sF2 : hd (k + 1) G (fun j => b (x j)) = G (fun j => b (Fin.tail x j)) - hd k (fun z => G (Fin.cons (b (x 0)) z)) (fun j => b (Fin.tail x j))`. Rewrite using `[hbx, hd_succ', Fin.cons_zero, Fin.tail_cons]`. Establish `sG : (fun z => hd (k + 2) F (Fin.cons (a (x 0)) z)) = fun z => F z - hd (k + 1) G z`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[hd_succ', Fin.cons_zero, Fin.tail_cons]`. Establish `hax : F (fun i => a (x i)) = G (fun i => a (Fin.tail x i))` using `by show F _ = F _; rw [map_eq_cons a x]`. Establish `e : G (fun i => a (Fin.tail x i)) = G (fun i => b (Fin.tail x i)) - (hd k (prismOp a b k G) (Fin.tail x) + prismOp a b (k + 1) (hd (k + 1) G) (Fin.tail x))`. Rewrite using `[ih G (Fin.tail x)]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[sA, sBC, sE, sF1, sF2, sG, prismOp_sub, hax, e]`. Normalize the expressions using the abelian group laws.
+-/
 theorem prismOp_key (a b : X → Y) (n : ℕ) : ∀ (F : (Fin (n + 2) → Y) → V) (x : Fin (n + 2) → X),
     hd n (prismOp a b n F) x + prismOp a b (n + 1) (hd (n + 1) F) x =
       F (fun i => b (x i)) - F (fun i => a (x i)) := by
@@ -173,10 +246,20 @@ section Top
 
 variable {V X Y : Type u} [AddCommGroup V]
 
+/- English proof (translation)
+The claim follows from `hf.finCons hg`.
+-/
 theorem cont_cons' {S Y : Type*} [TopologicalSpace S] [TopologicalSpace Y] {m : ℕ} (f : S → Y)
     (g : S → Fin m → Y) (hf : Continuous f) (hg : Continuous g) :
     Continuous fun s => (Fin.cons (f s) (g s) : Fin (m + 1) → Y) := hf.finCons hg
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `S _ Φ hΦ v hv`. Simplify using `only [prismOp_zero]`. Use `hΦ.comp (continuous_id.prodMk ?_)` and prove the remaining obligations.
+
+Conclude with `cont_cons' _ (fun s j => b (v s j)) (ha.comp ((continuous_apply 0).comp hv)) (continuous_pi fun j => hb.comp ((continuous_apply j).comp hv))`. Consider the case `succ k ih`. Introduce `S _ Φ hΦ v hv`. Simplify using `only [prismOp_succ]`. Use `Continuous.sub ?_ ?_` and prove the remaining obligations.
+
+Use `hΦ.comp (continuous_id.prodMk ?_)` and prove the remaining obligations. Conclude with `cont_cons' _ (fun s j => b (v s j)) (ha.comp ((continuous_apply 0).comp hv)) (continuous_pi fun j => hb.comp ((continuous_apply j).comp hv))`. Use `ih (fun s y => Φ s (Fin.cons (a (v s 0)) y)) ?_ (fun s => Fin.tail (v s)) (continuous_pi fun j => (continuous_apply _).comp hv)` and prove the remaining obligations. Use `hΦ.comp (continuous_fst.prodMk ?_)` and prove the remaining obligations. Conclude with `cont_cons' (fun p : S × (Fin (k + 2) → Y) => a (v p.1 0)) (fun p => p.2) (ha.comp ((continuous_apply 0).comp (hv.comp continuous_fst))) continuous_snd`.
+-/
 theorem prismOp_cont [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace V] [IsTopologicalAddGroup V]
     (a b : X → Y) (ha : Continuous a) (hb : Continuous b) (n : ℕ) :
     ∀ {S : Type u} [TopologicalSpace S] (Φ : S → (Fin (n + 2) → Y) → V),
@@ -202,6 +285,15 @@ theorem prismOp_cont [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace
       exact cont_cons' (fun p : S × (Fin (k + 2) → Y) => a (v p.1 0)) (fun p => p.2)
         (ha.comp ((continuous_apply 0).comp (hv.comp continuous_fst))) continuous_snd
 
+/- English proof (translation)
+Establish `hc : ∀ {m : ℕ} (y0 : Y) (y : Fin m → Y), (Fin.cons (g • y0) fun j => g • y j : Fin (m + 1) → Y) = fun i => g • (Fin.cons y0 y : Fin (m + 1) → Y) i`. Apply the tactic sequence `intro m y0 y; funext i; refine Fin.cases ?_ (fun j => ?_) i <;> simp`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `F F' hF x`.
+
+Simplify using `only [prismOp_zero, ha, hb]`. Rewrite using `[hc, hF]`. Consider the case `succ k ih`. Introduce `F F' hF x`. Rewrite using `[prismOp_succ, prismOp_succ, map_sub]`.
+
+Use `congr 1`. Simplify using `only [ha, hb]`. Rewrite using `[hc, hF]`. Use `ih _ _ (fun y => ?_) (Fin.tail x)` and prove the remaining obligations. Simplify using `only [ha]`.
+
+Rewrite using `[hc, hF]`.
+-/
 theorem prismOp_equiv {G : Type u} [SMul G X] [SMul G Y] (a b : X → Y)
     (ha : ∀ (g : G) x, a (g • x) = g • a x) (hb : ∀ (g : G) x, b (g • x) = g • b x)
     (g : G) (ρ : V →+ V) (n : ℕ) : ∀ (F F' : (Fin (n + 2) → Y) → V),
@@ -240,6 +332,29 @@ noncomputable def pullH (M : TRep R G) {X Y : Type u} [TopologicalSpace X] [MulA
 end Main
 
 open Cx in
+/- English proof (translation)
+Introduce `R _ G _ _ _ M X Y _ _ _ _ A B eA eB hA hB`. Use `⟨fun a ha hga => ?_, fun a b φ ψ ha hb hga hgb hφ hψ n => ?_⟩` and prove the remaining obligations. Use `⟨⟨fun n => (eA n).symm.toLinearMap ∘ₗ pullH M a ha hga n ∘ₗ (eB n).toLinearMap, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `n F`. Apply `(eA (n + 1)).injective` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show (eA (n + 1) ((eA (n + 1)).symm (pullH M a ha hga (n + 1) (eB (n + 1) (B.d n F))))).1 x = (eA (n + 1) (A.d n ((eA n).symm (pullH M a ha hga n (eB n F))))).1 x`. Rewrite using `[LinearEquiv.apply_symm_apply, hA, LinearEquiv.apply_symm_apply]`. Use `show (eB (n + 1) (B.d n F)).1 (fun i => a (x i)) = hd n (fun y => (eB n F).1 fun i => a (y i)) x`.
+
+Rewrite using `[hB]`. Both sides reduce to the same expression. Introduce `n F x show (eA n ((eA n).symm (pullH M a ha hga n (eB n F)))).1 x = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+
+Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce and unpack `⟨F, hF⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply, Hom.H, Submodule.mapQ_apply]`. Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap]`.
+
+Use `show φ.f n F - ψ.f n F ∈ A.B n`. Establish `hF0 : B.d n F = 0` using `hF`. Establish `hF' : hd n (eB n F).1 = 0`. Establish `h1` using `hB n F`. Rewrite `h1` using `[hF0, map_zero]`.
+
+Conclude with `h1.symm`. Consider the cases of `n with`. Consider the case `zero`. Establish `h : φ.f 0 F = ψ.f 0 F`. Apply `(eA 0).injective` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[hφ, hψ]`. Establish `h2` using `prismOp_hd_zero a b (eB 0 F).1 x`. Rewrite `h2` using `[hF']`.
+
+Establish `h0 : prismOp a b 0 (0 : (Fin 2 → Y) → M.V) x = 0` using `rfl`. Conclude with `(sub_eq_zero.mp (h2.symm.trans h0)).symm`. Rewrite using `[h, sub_self]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ n`.
+
+Set `F'` to `(eB (n + 1) F).1`. Establish `hc : Continuous F'` using `(eB (n + 1) F).2.1`. Set `H : hcoch M X n` to `⟨prismOp a b n F', prismOp_cont a b ha hb n (fun _ => F') (hc.comp continuous_snd) id continuous_id, fun g x => prismOp_equiv a b hga hgb g (M.rho g).toAddMonoidHom n F' F' (fun y => (eB (n + 1) F).2.2 g y) x⟩`. Establish `hdH : A.d n ((eA n).symm H) = ψ.f (n + 1) F - φ.f (n + 1) F`. Apply `(eA (n + 1)).injective` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[hA, LinearEquiv.apply_symm_apply, map_sub, Submodule.coe_sub, Pi.sub_apply, hφ, hψ]`. Establish `h2` using `prismOp_key a b n F' x`. Establish `h0 : prismOp a b (n + 1) (0 : (Fin (n + 3) → Y) → M.V) x = 0` using `prismOp_zero_fun a b (n + 1) x`.
+
+Rewrite `h2` using `[hF', h0, add_zero]`. Conclude with `h2`. Use `show φ.f (n + 1) F - ψ.f (n + 1) F ∈ LinearMap.range (A.d n)`. Conclude with `⟨-(eA n).symm H, by rw [map_neg, hdH, neg_sub]⟩`.
+-/
 theorem prism_holds : PrismStatement.{u} := by
   intro R _ G _ _ _ M X Y _ _ _ _ A B eA eB hA hB
   refine ⟨fun a ha hga => ?_, fun a b φ ψ ha hb hga hgb hφ hψ n => ?_⟩

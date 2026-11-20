@@ -8,6 +8,15 @@ open Polynomial
 
 namespace GlobalTheory.SkNoFactor
 
+/- English proof (translation)
+Establish `hi : IsIntegral L y` using `⟨p, hm, by rwa [← aeval_def]⟩`. Establish `hdvd : minpoly L y ∣ p` using `minpoly.dvd L y hy`. Establish `hle : p.natDegree ≤ (minpoly L y).natDegree`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+
+Establish `hsum` using `aeval_eq_sum_range' hlt y`. Rewrite `hsum` using `[minpoly.aeval, ← Fin.sum_univ_eq_sum_range (fun i => (minpoly L y).coeff i • y ^ i)]`. Establish `hc` using `hind (fun i => (minpoly L y).coeff i) hsum.symm`. Apply `minpoly.ne_zero hi` to reduce the goal to its premises. Use extensionality with `i`.
+
+Rewrite using `[coeff_zero]`. Distinguish the cases in `h : i < p.natDegree`. Conclude with `congrFun hc ⟨i, h⟩`. Conclude with `coeff_eq_zero_of_natDegree_lt (by omega)`. Use `eq_leadingCoeff_mul_of_monic_of_dvd_of_natDegree_le (minpoly.monic hi) hdvd hle` as an intermediate fact.
+
+Rewrite using `[this, hm.leadingCoeff, C_1, one_mul]`.
+-/
 theorem minpoly_eq_of_aeval_of_linearIndependent {L A : Type} [Field L] [Ring A] [Algebra L A]
     (p : L[X]) (y : A) (hm : p.Monic) (hy : aeval y p = 0)
     (hind : ∀ c : Fin p.natDegree → L, ∑ j, c j • y ^ (j : ℕ) = 0 → c = 0) : minpoly L y = p := by
@@ -28,6 +37,11 @@ theorem minpoly_eq_of_aeval_of_linearIndependent {L A : Type} [Field L] [Ring A]
   have := eq_leadingCoeff_mul_of_monic_of_dvd_of_natDegree_le (minpoly.monic hi) hdvd hle
   rw [this, hm.leadingCoeff, C_1, one_mul]
 
+/- English proof (translation)
+Use `set z : K ⊗[F] B := (1 : K) ⊗ₜ[F] y with hz`. Establish `hzi : IsIntegral K z` using `IsIntegral.of_finite K z`. Establish `hyi : IsIntegral F y` using `IsIntegral.of_finite F y`. Establish `hzr : z = Algebra.TensorProduct.includeRight y` using `rfl`. Establish `hdvd : minpoly K z ∣ (minpoly F y).map (algebraMap F K)`.
+
+Apply `minpoly.dvd` to reduce the goal to its premises. Rewrite using `[aeval_map_algebraMap, hzr, aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `hge` using `GlobalTheory.CentSep.natDegree_minpoly_le_baseChange K y hzi`. Use `eq_leadingCoeff_mul_of_monic_of_dvd_of_natDegree_le (minpoly.monic hzi) hdvd (by rw [natDegree_map]; exact hge)` as an intermediate fact. Rewrite using `[this, ((minpoly.monic hyi).map _).leadingCoeff, C_1, one_mul]`.
+-/
 theorem minpoly_one_tmul {F B : Type} [Field F] [Ring B] [Algebra F B] [FiniteDimensional F B]
     (K : Type) [Field K] [Algebra F K] (y : B) :
     minpoly K ((1 : K) ⊗ₜ[F] y) = (minpoly F y).map (algebraMap F K) := by
@@ -43,6 +57,25 @@ theorem minpoly_one_tmul {F B : Type} [Field F] [Ring B] [Algebra F B] [FiniteDi
     (by rw [natDegree_map]; exact hge)
   rw [this, ((minpoly.monic hyi).map _).leadingCoeff, C_1, one_mul]
 
+/- English proof (translation)
+Introduce `S F B _ _ _ _ _ _ _ _ _ _ _ _ n hn x₀ x hsep hdeg hP hind`. Take `⟨ι, _, L, _, _, _, Φ, ψ, hΦ1, hΦ2⟩` from `GlobalTheory.T.tensor_rat_algebra_decomp_factorwise S F B`. Establish `hcomp : ∀ i, ∃ u : (L i ⊗[F] B)ˣ, (u : L i ⊗[F] B) * ((1 : L i) ⊗ₜ[F] x₀) = Φ x i * u`. Introduce `i`. Use `haveI : Infinite (L i) := Infinite.of_injective (Nat.cast : ℕ → L i) Nat.cast_injective`.
+
+Establish `hn' : Module.finrank (L i) (L i ⊗[F] B) = n ^ 2` using `by rw [Module.finrank_baseChange, hn]`. Establish `h0 : minpoly (L i) ((1 : L i) ⊗ₜ[F] x₀) = (minpoly F x₀).map (algebraMap F (L i))` using `minpoly_one_tmul (L i) x₀`. Establish `hmonic : ((minpoly F x₀).map (algebraMap F (L i))).Monic` using `(minpoly.monic (IsIntegral.of_finite F x₀)).map _`. Establish `hdegm : ((minpoly F x₀).map (algebraMap F (L i))).natDegree = n` using `by rw [natDegree_map, hdeg]`. Establish `hcoef : ∀ c : F, Φ ((1 : S) ⊗ₜ[ℚ] algebraMap F B c) i = algebraMap (L i) (L i ⊗[F] B) (algebraMap F (L i) c)`.
+
+Introduce `c`. Rewrite using `[hΦ1]`. Simplify using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← Algebra.TensorProduct.one_def]`. Establish `hy : aeval (Φ x i) ((minpoly F x₀).map (algebraMap F (L i))) = 0`. Use `congrArg (fun w => Φ w i) hP` as an intermediate fact.
+
+Simplify using `only [map_sum, map_mul, map_pow, map_zero, Finset.sum_apply, Pi.mul_apply, Pi.pow_apply, Pi.zero_apply, hcoef] at this`. Rewrite using `[aeval_eq_sum_range' (n := n + 1) (by rw [hdegm]; omega), ← this]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_map, Algebra.smul_def]`. Establish `hli : ∀ c : Fin ((minpoly F x₀).map (algebraMap F (L i))).natDegree → L i, ∑ j, c j • Φ x i ^ (j : ℕ) = 0 → c = 0`.
+
+Rewrite using `[hdegm]`. Introduce `c hc`. Establish `hz` using `hind (fun j => ψ.symm (Pi.single i (c j))) (by`. Apply `Φ.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [map_sum, map_mul, map_pow, Finset.sum_apply, Pi.mul_apply, Pi.pow_apply, hΦ2, RingEquiv.apply_symm_apply, Pi.zero_apply]`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify `hc` using `[Pi.single_eq_same, Algebra.smul_def]`.
+
+Simplify using `[Pi.single_eq_of_ne hk])`. Use function extensionality and compare the values at `j`. Use `congrArg (fun w => ψ (w j) i) hz` as an intermediate fact. Simplify using `using this`. Establish `hmin : minpoly (L i) (Φ x i) = minpoly (L i) ((1 : L i) ⊗ₜ[F] x₀)`.
+
+Rewrite using `[h0]`. Conclude with `minpoly_eq_of_aeval_of_linearIndependent _ _ hmonic hy hli`. Conclude with `GlobalTheory.LKInv.exists_unit_conj_of_minpoly_eq (L i) (L i ⊗[F] B) n hn' _ _ (by rw [h0]; exact hsep.map) (by rw [h0, hdegm]) hmin`. Use `choose u hu using hcomp`. Set `v : ((i : ι) → L i ⊗[F] B)ˣ` to `MulEquiv.piUnits.symm u`.
+
+Use `⟨Units.map Φ.symm.toMonoidHom v, ?_⟩` and prove the remaining obligations. Apply `Φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul]`. Use function extensionality and compare the values at `i`. Simplify using `[v, hΦ1, hu i]`.
+-/
 theorem exists_unit_conj_baseChange : ∀ (S F B : Type) [Field S] [CharZero S] [Field F] [Algebra ℚ F]
     [FiniteDimensional ℚ F] [Ring B]
     [Algebra F B] [Algebra ℚ B] [IsScalarTower ℚ F B] [Algebra.IsCentral F B] [IsSimpleRing B]

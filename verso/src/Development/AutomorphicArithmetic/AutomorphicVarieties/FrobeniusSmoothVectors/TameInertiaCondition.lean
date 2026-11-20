@@ -10,6 +10,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Establish `hm` using `(maximalIdeal D)`. Establish `key : ∀ N : ℕ, ψ g - 1 ∈ (maximalIdeal D) ^ N`. Introduce `N`. Use `set I := (maximalIdeal D) ^ N with hIdef`. Set `f : G →* (D ⧸ I)ˣ` to `(powMonoidHom q).comp ((Units.map (Ideal.Quotient.mk I : D →+* D ⧸ I).toMonoidHom).comp ψ.toHomUnits)`.
+
+Establish `hfv : ∀ x, ((f x : (D ⧸ I)ˣ) : D ⧸ I) = Ideal.Quotient.mk I (ψ x ^ q)`. Introduce `x`. Simplify using `[f]`. Establish `hlc : IsLocallyConstant (fun x => ((f x : (D ⧸ I)ˣ) : D ⧸ I))`. Establish `h0 : IsLocallyConstant (fun x => (Ideal.Quotient.mk I (ψ x)) ^ q)` using `(hc N).comp (fun y => y ^ q)`.
+
+Use `h0 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Rewrite using `[hfv, map_pow]`. Establish `hlcf : IsLocallyConstant f` using `IsLocallyConstant.desc _ _ hlc Units.val_injective`. Establish `hfin : Finite f.range`.
+
+Establish `h` using `hlcf.range_finite`. Rewrite `h` using `[← MonoidHom.coe_range]`. Conclude with `h.to_subtype`. Establish `hmem : ∀ x : D, x - 1 ∈ maximalIdeal D → Ideal.Quotient.mk I (x ^ (l ^ N)) = 1`. Introduce `x hx`.
+
+Rewrite using `[← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq]`. Establish `hch : (x - 1) ^ (l ^ N) = x ^ (l ^ N) - 1`. Rewrite using `[sub_pow_char_pow, one_pow]`. Rewrite using `[← hch]`. Conclude with `Ideal.pow_le_pow_right (Nat.lt_pow_self hl.out.one_lt).le (Ideal.pow_mem_pow hx _)`.
+
+Establish `hP : IsPGroup l f.range`. Introduce and unpack `⟨x, ⟨y, rfl⟩⟩`. Use `⟨N, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Simplify using `only [SubmonoidClass.coe_pow, Units.val_pow_eq_pow_val, OneMemClass.coe_one, Units.val_one]`. Rewrite using `[hfv, ← map_pow]`. Conclude with `hmem _ (h1 y)`. Establish `hopen : IsOpen (f.rangeRestrict.ker : Set G)`. Rewrite using `[MonoidHom.ker_rangeRestrict]`.
+
+Conclude with `hlcf.isOpen_fiber 1`. Establish `hχ` using `H f.range hP f.rangeRestrict hopen (fun a => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [MonoidHom.coe_rangeRestrict, OneMemClass.coe_one, Units.val_one]`.
+
+Rewrite using `[hfv, hu, one_pow, map_one])`. Establish `hq1 : Ideal.Quotient.mk I (ψ g) ^ q = 1`. Establish `h2` using `congrArg (fun z : f.range => ((z : (D ⧸ I)ˣ) : D ⧸ I)) hχ`. Simplify using `only [MonoidHom.coe_rangeRestrict, OneMemClass.coe_one, Units.val_one] at h2`. Rewrite `h2` using `[hfv, map_pow]`.
+
+Conclude with `h2`. Establish `hl1 : Ideal.Quotient.mk I (ψ g) ^ (l ^ N) = 1`. Rewrite using `[← map_pow]`. Conclude with `hmem _ hg`. Establish `hgcd` using `pow_gcd_eq_one.2 ⟨hq1, hl1⟩`.
+
+Rewrite `hgcd` using `[Nat.Coprime.pow_right N hq, pow_one, ← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq]`. Conclude with `hgcd`. Establish `hbot` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal D) (maximalIdeal.isMaximal D).ne_top`. Establish `hmem : ψ g - 1 ∈ ⨅ i, (maximalIdeal D) ^ i` using `Ideal.mem_iInf.2 key`. Rewrite `hmem` using `[hbot, Ideal.mem_bot, sub_eq_zero]`.
+
+Conclude with `hmem`.
+-/
 private theorem char_triv {l : ℕ} [hl : Fact l.Prime] {D : Type} [CommRing D] [IsLocalRing D] [IsNoetherianRing D]
     [CharP D l] {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G] (ψ : G →* D)
     (hc : AdicCont (maximalIdeal D) ψ) (q : ℕ) (hq : q.Coprime l) (h1 : ∀ g, ψ g ^ q - 1 ∈ maximalIdeal D)
@@ -80,6 +105,11 @@ section
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   [IsCoef l O] {F : UpperTheory.V.Fr.Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨-, hbar, -⟩` from `S.lift`. Establish `h2` using `hbar.2 v i g`. Simplify using `only [NRep.map, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, MonoidHom.coe_coe, RingHom.id_apply] at h2`. Use `show ((S.ψB v i g ^ q - 1 : S.B) : S.R) ∈ maximalIdeal S.R`. Rewrite using `[← res_eq_zero_iff O S.R]`.
+
+Simplify using `only [Subalgebra.coe_sub, Subalgebra.coe_pow, Subalgebra.coe_one, map_sub, map_pow, map_one]`. Express the relevant statement in the definitionally equal form `(res O S.R) (S.ρ.ψ v i g : S.R) ^ q - 1 = 0`. Establish `h3 : (res O S.R) (S.ρ.ψ v i g : S.R) = ((F.Ψ (F.loc v g) ^ w n i : (ResidueField O)ˣ) : ResidueField O)` using `h2`. Rewrite using `[h3, ← Units.val_pow_eq_pow_val, ← zpow_natCast, ← _root_.zpow_mul, mul_comm, _root_.zpow_mul, zpow_natCast, h, _root_.one_zpow, Units.val_one, sub_self]`.
+-/
 private theorem psi_pow (S : Space O F n) (v : F.V) (i : Fin n) (g : F.Gv v) (q : ℕ)
     (h : F.Ψ (F.loc v g) ^ q = 1) : S.ψB v i g ^ q - 1 ∈ S.mB := by
   obtain ⟨-, hbar, -⟩ := S.lift
@@ -94,15 +124,28 @@ private theorem psi_pow (S : Space O F n) (v : F.V) (i : Fin n) (g : F.Gv v) (q 
   rw [h3, ← Units.val_pow_eq_pow_val, ← zpow_natCast, ← _root_.zpow_mul, mul_comm, _root_.zpow_mul, zpow_natCast, h,
     _root_.one_zpow, Units.val_one, sub_self]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Space.ψB]`.
+-/
 private theorem space_psiB_apply_one (S : Space O F n) (v : F.V) (i : Fin n) : S.ψB v i 1 = 1 := by
   apply Subtype.ext
   simp [Space.ψB]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Space.ψB]`.
+-/
 private theorem space_psiB_apply_mul (S : Space O F n) (v : F.V) (i : Fin n) (g h : F.Gv v) :
     S.ψB v i (g * h) = S.ψB v i g * S.ψB v i h := by
   apply Subtype.ext
   simp [Space.ψB]
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Use `letI : Fintype (ResidueField O) := Fintype.ofFinite _`. Take `⟨m, -, hm⟩` from `FiniteField.card (ResidueField O) l`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_units, hm]`. Apply `Nat.Coprime.symm` to reduce the goal to its premises.
+
+Rewrite using `[Nat.Prime.coprime_iff_not_dvd hl]`. Introduce `hd`. Establish `hpos : 0 < l ^ (m : ℕ)` using `pow_pos hl.pos _`. Establish `h2 : l ∣ l ^ (m : ℕ)` using `dvd_pow_self l (PNat.ne_zero m)`. Establish `h3 : l ∣ l ^ (m : ℕ) - (l ^ (m : ℕ) - 1)` using `Nat.dvd_sub h2 hd`.
+
+Rewrite `h3` using `[Nat.sub_sub_self hpos]`. Conclude with `hl.one_lt.ne' (Nat.dvd_one.1 h3)`.
+-/
 private theorem natCard_units_residueField_coprime : (Nat.card (ResidueField O)ˣ).Coprime l := by
   classical
   have hl : l.Prime := Fact.out
@@ -118,6 +161,27 @@ private theorem natCard_units_residueField_coprime : (Nat.card (ResidueField O)�
   rw [Nat.sub_sub_self hpos] at h3
   exact hl.one_lt.ne' (Nat.dvd_one.1 h3)
 
+/- English proof (translation)
+Take `⟨hco, hmax⟩` from `co_B hF hn S`. Use `haveI := hco`. Use `haveI : Q.IsPrime := hQ`. Use `haveI : Nontrivial (S.B ⧸ Q) := Ideal.Quotient.nontrivial_iff.mpr hQ.ne_top`. Use `haveI : IsLocalRing (S.B ⧸ Q) := IsLocalRing.of_surjective' (Ideal.Quotient.mk Q) Ideal.Quotient.mk_surjective`.
+
+Use `haveI : IsLocalHom (Ideal.Quotient.mk Q) := Function.Surjective.isLocalHom (Ideal.Quotient.mk Q) Ideal.Quotient.mk_surjective`. Set `f0 : ResidueField O →+* S.B ⧸ Q` to `Ideal.Quotient.lift (maximalIdeal O) ((Ideal.Quotient.mk Q).comp (algebraMap O S.B)) (fun a ha => by`. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hO (Ideal.mem_map_of_mem _ ha))`. Use `haveI : CharP (S.B ⧸ Q) l := charP_of_injective_ringHom f0.injective l`.
+
+Establish `hmapm : ∀ x ∈ S.mB, Ideal.Quotient.mk Q x ∈ maximalIdeal (S.B ⧸ Q)`. Introduce `x hx`. Rewrite `hx` using `[← hmax]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 fun hu => (IsLocalRing.mem_maximalIdeal x).1 hx (isUnit_of_map_unit _ x hu)`. Apply `sup_le hO` to reduce the goal to its premises.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `x ⟨v, i, g, hgI, hgΨ, rfl⟩`. Set `ψQ : F.Gv v →* S.B ⧸ Q` to `{ toFun := fun g => Ideal.Quotient.mk Q (S.ψB v i g) map_one' := by simp [space_psiB_apply_one] map_mul' := fun a b => by simp [space_psiB_apply_mul] }`. Establish `hcont : AdicCont (maximalIdeal (S.B ⧸ Q)) ψQ`. Introduce `N`.
+
+Establish `hN` using `(cont_u hF hn S).2.2.1 v i N`. Establish `hle : ∀ a ∈ S.mB ^ N, ((Ideal.Quotient.mk (maximalIdeal (S.B ⧸ Q) ^ N)).comp (Ideal.Quotient.mk Q)) a = 0`. Introduce `a ha`. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Establish `: Ideal.map (Ideal.Quotient.mk Q) (S.mB ^ N) ≤ maximalIdeal (S.B ⧸ Q) ^ N`.
+
+Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 hmapm) N`. Conclude with `this (Ideal.mem_map_of_mem _ ha)`. Establish `h2` using `hN.comp (Ideal.Quotient.lift (S.mB ^ N) _ hle)`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, Ideal.Quotient.lift_mk, RingHom.comp_apply]`. Both sides reduce to the same expression. Establish `key` using `char_triv ψQ hcont (Nat.card (ResidueField O)ˣ) natCard_units_residueField_coprime (fun g => by`. Use `psi_pow S v i g _ (pow_card_eq_one')` as an intermediate fact.
+
+Establish `h2` using `hmapm _ this`. Simplify `h2)` using `[ψQ]`. Use the proof step `(u v) (fun a => by show Ideal.Quotient.mk Q (S.ψB v i (u v a)) = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk Q), Ideal.Quotient.eq]`. Conclude with `hu v i a) g`.
+
+Use the proof step `(by`. Use `psi_pow S v i g 1 (by rw [pow_one, hgΨ])` as an intermediate fact. Establish `h2` using `hmapm _ this`. Simplify `h2)` using `[ψQ]`. Use the proof step `(fun A _ _ hA χ ho hχ => H v A hA χ ho hχ g hgI)`.
+
+Use `show S.ψB v i g - 1 ∈ Q`. Rewrite using `[← Ideal.Quotient.eq, map_one]`. Conclude with `key`.
+-/
 private theorem lam_le (hF : F.Ok C₀) (hn : n = 2 ∨ n = 3) (S : Space O F n) (u : ∀ v, Fin (F.dv v) → F.Gv v)
     (H : ∀ v (A : Type) [CommGroup A] [Finite A], IsPGroup l A → ∀ χ : F.Gv v →* A,
       IsOpen (χ.ker : Set (F.Gv v)) → (∀ a, χ (u v a) = 1) → ∀ g ∈ F.Iv v, χ g = 1)
@@ -180,6 +244,33 @@ private theorem lam_le (hF : F.Ok C₀) (hn : n = 2 ∨ n = 3) (S : Space O F n)
   rw [← Ideal.Quotient.eq, map_one]
   exact key
 
+/- English proof (translation)
+Take `⟨hco, hmax⟩` from `co_B hF hn S`. Use `haveI := hco`. Use `choose u a₀ hu1 hu2 hgen using hF.gen`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Set `ι` to `Unit ⊕ Unit ⊕ {x : Σ w, Fin n × Fin (F.dv w) // ¬(x.1 = v ∧ x.2.1 = j)}`.
+
+Set `t : ι → S.B` to `fun z => match z with`. Consider the case `Sum.inl _ => algebraMap O S.B ϖ`. Consider the case `Sum.inr (Sum.inl _) => S.ψB v j (u v (a₀ v)) - 1`. Consider the case `Sum.inr (Sum.inr x) => S.ψB x.1.1 x.1.2.1 (u x.1.1 x.1.2.2) - 1`. Establish `hψm : ∀ w i' a, S.ψB w i' (u w a) - 1 ∈ maximalIdeal S.B`.
+
+Introduce `w i' a`. Rewrite using `[hmax]`. Use `psi_pow S w i' (u w a) 1 (by rw [pow_one]; exact (hu1 w a).2)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Establish `ht : ∀ z, t z ∈ maximalIdeal S.B`.
+
+Introduce and unpack `(_ | _ | x)`. Conclude with `map_nonunit (algebraMap O S.B) ϖ ((IsLocalRing.mem_maximalIdeal ϖ).2 hϖ.not_isUnit)`. Conclude with `hψm _ _ _`. Conclude with `hψm _ _ _`. Establish `hcut` using `krull_dim_quotient_bound p (maximalIdeal S.B) t ht (by`.
+
+Introduce `P hP hpP htP`. Establish `hO : (maximalIdeal O).map (algebraMap O S.B) ≤ P`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `htP (Sum.inl ())`. Establish `hu : ∀ w i' a, S.ψB w i' (u w a) - 1 ∈ P`.
+
+Introduce `w i' a`. Distinguish the cases in `hx : w = v ∧ i' = j`. Take `⟨rfl, rfl⟩` from `hx`. Distinguish the cases in `ha : a = a₀ w`. Substitute `ha` using the available equality.
+
+Conclude with `htP (Sum.inr (Sum.inl ()))`. Establish `h1 : S.ψB w i (u w a) - 1 ∈ P` using `htP (Sum.inr (Sum.inr ⟨⟨w, i, a⟩, fun h => hij h.2⟩))`. Establish `h2 : S.ψB w i (u w a) - S.ψB w i' (u w a) ∈ P` using `hpP (hc _ (hu2 w a ha))`. Use `P.sub_mem h1 h2` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+
+Conclude with `htP (Sum.inr (Sum.inr ⟨⟨w, i', a⟩, hx⟩))`. Establish `hlam` using `lam_le hF hn S u hgen P hP hO hu`. Rewrite using `[hmax]`. Combine the equalities or inequalities in the displayed calculation. Establish `hfield : ringKrullDim (S.B ⧸ maximalIdeal S.B) = 0` using `ringKrullDim_eq_zero_of_isField ((Ideal.Quotient.maximal_ideal_iff_isField_quotient _).1 (maximalIdeal.isMaximal _))`.
+
+Rewrite `hcut` using `[hfield, zero_add]`. Use `⟨Fintype.card ι, hcut, ?_⟩` and prove the remaining obligations. Set `e : ι ⊕ Fin (F.dv v) → Unit ⊕ Unit ⊕ (Σ w, Fin n × Fin (F.dv w))` to `fun z => match z with`. Consider the case `Sum.inl (Sum.inl _) => Sum.inl ()`. Consider the case `Sum.inl (Sum.inr (Sum.inl _)) => Sum.inr (Sum.inl ())`.
+
+Consider the case `Sum.inl (Sum.inr (Sum.inr x)) => Sum.inr (Sum.inr x.1)`. Consider the case `Sum.inr a => Sum.inr (Sum.inr ⟨v, j, a⟩)`. Establish `he : Function.Injective e`. Apply the tactic sequence `rintro ((_ | _ | x) | a) ((_ | _ | y) | b) h <;> simp only [e, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq] at h`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression. Rewrite using `[Subtype.ext h]`. Conclude with `absurd ⟨congrArg Sigma.fst h, congrArg (fun s : (Σ w, Fin n × Fin (F.dv w)) => s.2.1) h⟩ x.2`. Conclude with `absurd ⟨(congrArg Sigma.fst h).symm, (congrArg (fun s : (Σ w, Fin n × Fin (F.dv w)) => s.2.1) h).symm⟩ y.2`. Rewrite `h` using `[Sigma.mk.inj_iff]`.
+
+Use `h.2` as an intermediate fact. Simplify using `at this`. Rewrite using `[this]`. Establish `hc2` using `Fintype.card_le_of_injective e he`. Simplify using `only [Fintype.card_sum, Fintype.card_unit, Fintype.card_sigma, Fintype.card_prod, Fintype.card_fin] at hc2`.
+
+Rewrite `hc2` using `[← Finset.mul_sum]`. Unfold `Frame.d`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem dim_B (hF : F.Ok C₀) (hn : n = 2 ∨ n = 3) (S : Space O F n) (I : Ideal S.B) (hI : S.FinLam I)
     (v : F.V) (i j : Fin n) (hij : i ≠ j) (p : Ideal S.B) (hp : I ≤ p)
     (hc : ∀ g ∈ F.Nv v, S.ψB v i g - S.ψB v j g ∈ p) :
@@ -254,6 +345,15 @@ private theorem dim_B (hF : F.Ok C₀) (hn : n = 2 ∨ n = 3) (S : Space O F n) 
 
 end
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ F C₀ n hF hn S x L I hI v i j hij P hP hoff hIP hcoin`. Use `haveI := hP`. Establish `hrho` using `loc_rho hF hn S x L`. Establish `hiff` using `hrho.2.2.1 P`. Establish `hη : (L.im P).IsPrime` using `Ideal.comap_isPrime _ P`.
+
+Establish `hoffS : S.u.OffTri (L.im P)` using `⟨fun h => hoff.1 (hiff.1.2 h), fun h => hoff.2 (hiff.2.1.2 h)⟩`. Establish `hfib` using `fibre hF hn S (L.im P) hη hoffS`. Establish `hdim` using `(loc_dim hF hn S x L).1 P hP 1 (by simpa using hfib)`. Establish `hc : ∀ g ∈ F.Nv v, S.ψB v i g - S.ψB v j g ∈ L.π P`. Introduce `g hg`.
+
+Establish `h` using `hcoin g hg`. Use `show L.ι (S.inc (S.ψB v i g - S.ψB v j g)) ∈ P`. Rewrite using `[map_sub, map_sub]`. Conclude with `h`. Take `⟨m, hm1, hm2⟩` from `dim_B hF hn S I hI v i j hij (L.π P) hIP hc`.
+
+Establish `key : ringKrullDim (L.R ⧸ P) + F.dv v ≤ ((m + 1 + F.dv v : ℕ) : WithBot ℕ∞)`. Combine the equalities or inequalities in the displayed calculation. Use `⟨key.trans ?_, fun _ => key.trans ?_⟩` and prove the remaining obligations. Conclude with `(by omega)` after adjusting the coercions. Conclude with `(by omega)` after adjusting the coercions.
+-/
 theorem UpperTheory.V.Fr.l52 :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ (x : Ideal S.A) (L : S.Loc x), ∀ I : Ideal S.B, S.FinLam I → ∀ v i j, i ≠ j → ∀ P : Ideal L.R, P.IsPrime → L.ρ.OffTri P → I ≤ L.π P → L.ρ.Coin P v i j → ringKrullDim (L.R ⧸ P) + F.dv v ≤ (n * F.d + 6 : ℕ) ∧ ((maximalIdeal O).map (algebraMap O L.R) ≤ P → ringKrullDim (L.R ⧸ P) + F.dv v ≤ (n * F.d + 5 : ℕ)) := by
   intro l _ O _ _ _ _ F C₀ n hF hn S x L I hI v i j hij P hP hoff hIP hcoin

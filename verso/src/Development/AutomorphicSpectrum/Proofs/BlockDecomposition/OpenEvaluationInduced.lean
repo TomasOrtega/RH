@@ -22,10 +22,22 @@ namespace GlobalTheory.CompanionTheory.BZPhiPG.MemO
 section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨continuous_id, continuous_id⟩`.
+-/
 theorem castM_cont {a b : ℕ} (e : a = b) : Continuous (castM k e) ∧ Continuous (castM k e).symm := by
   subst e
   exact ⟨continuous_id, continuous_id⟩
 
+/- English proof (translation)
+Use `hC.induction_on (p := fun S => ∃ N : Set (Mir k ((i + 1) + t)), IsCompact N ∧ ∀ c ∈ S, ∃ h ∈ HPG k (i + 1) (t + 1), ∃ (d : Fin (t + 1) → k), ∃ m ∈ N, c = h * dEmb k i t d * wEl k i t * sEmb k ((i + 1) + t) m) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `⟨∅, isCompact_empty, by simp⟩`. Introduce and unpack `s t' hst ⟨N, hN, h⟩`. Conclude with `⟨N, hN, fun c hc => h c (hst hc)⟩`. Introduce and unpack `s t' ⟨N, hN, h⟩ ⟨N', hN', h'⟩`.
+
+Use `⟨N ∪ N', hN.union hN', ?_⟩` and prove the remaining obligations. Introduce and unpack `c (hc | hc)`. Take `⟨a, ha, d, m, hm, e⟩` from `h c hc`. Conclude with `⟨a, ha, d, m, Or.inl hm, e⟩`. Take `⟨a, ha, d, m, hm, e⟩` from `h' c hc`.
+
+Conclude with `⟨a, ha, d, m, Or.inr hm, e⟩`. Introduce `x hx`. Take `⟨V, hV, μ, hμ, hs⟩` from `GlobalTheory.T.exists_continuous_local_section_of_not_mem_Cl k i t x (hCl x hx)`. Take `⟨V', hV', hcl, hsub⟩` from `exists_mem_nhds_isClosed_subset hV`. Use `⟨C ∩ V', Filter.inter_mem self_mem_nhdsWithin (mem_nhdsWithin_of_mem_nhds hV'), μ '' (C ∩ V'), ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hC.inter_right hcl).image_of_continuousOn (hμ.mono (fun y hy => hsub hy.2))`. Introduce `c hc`. Take `⟨a, ha, d, e⟩` from `hs c (hsub hc.2)`. Conclude with `⟨a, ha, d, μ c, ⟨c, hc, rfl⟩, e⟩`.
+-/
 theorem exists_compact_cell (i t : ℕ) (C : Set (Mir k ((i + 1) + t + 1))) (hC : IsCompact C) (hCl : ∀ c ∈ C, c ∉ Cl k i t) :
     ∃ N : Set (Mir k ((i + 1) + t)), IsCompact N ∧ ∀ c ∈ C, ∃ h ∈ HPG k (i + 1) (t + 1), ∃ (d : Fin (t + 1) → k), ∃ m ∈ N,
       c = h * dEmb k i t d * wEl k i t * sEmb k ((i + 1) + t) m := by
@@ -54,12 +66,18 @@ end
 section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (Fin n → k) := borel _`. Use `haveI : BorelSpace (Fin n → k) := ⟨rfl⟩`. Unfold `muD`. Use `infer_instance`.
+-/
 theorem muD_fin (n : ℕ) : @MeasureTheory.IsFiniteMeasureOnCompacts (Fin n → k) (borel _) _ (muD k n) := by
   letI : MeasurableSpace (Fin n → k) := borel _
   haveI : BorelSpace (Fin n → k) := ⟨rfl⟩
   unfold muD
   infer_instance
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (Fin n → k) := borel _`. Use `haveI : BorelSpace (Fin n → k) := ⟨rfl⟩`. Use `haveI := muD_fin (k := k) n`. Conclude with `GlobalTheory.CompanionTheory.Rodier.SmIntEl.smInt_linear _ T l c`.
+-/
 theorem smInt_lin {n : ℕ} {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     (T : W →ₗ[ℂ] W') {F : (Fin n → k) → W} (l : IsLocallyConstant F) (c : HasCompactSupport F) :
     @GlobalTheory.CompanionTheory.Rodier.smInt _ _ (borel _) _ _ (muD k n) (T ∘ F) = T (@GlobalTheory.CompanionTheory.Rodier.smInt _ _ (borel _) _ _ (muD k n) F) := by
@@ -68,6 +86,11 @@ theorem smInt_lin {n : ℕ} {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCo
   haveI := muD_fin (k := k) n
   exact GlobalTheory.CompanionTheory.Rodier.SmIntEl.smInt_linear _ T l c
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.Rodier.smInt`. Use `finsum_eq_zero_of_forall_eq_zero fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v = 0`. Rewrite using `[hv, smul_zero]`. Establish `: (fun _ : Fin n → k => (0 : W)) ⁻¹' {v} = ∅`.
+
+Use extensionality with `x`. Simplify using `[Ne.symm hv]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem smInt_zero' {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] :
     @GlobalTheory.CompanionTheory.Rodier.smInt _ _ (borel _) _ _ (muD k n) (fun _ => (0 : W)) = 0 := by
   unfold GlobalTheory.CompanionTheory.Rodier.smInt
@@ -82,6 +105,25 @@ theorem smInt_zero' {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] :
 
 variable {i t : ℕ}
 
+/- English proof (translation)
+Take `⟨hη, hproj⟩` from `GlobalTheory.T.weyl_conj_parabolic_proj k i t h`. Use `set a' := (pgProj k i (t + 1) h).1 with ha'`. Use `set w' := (pgProj k i (t + 1) h).2 with hw'`. Use `set y := wEl k i t * sEmb k ((i + 1) + t) (castM k (by omega) m) with hy`. Use `set η := wEl k i t * sEmb k ((i + 1) + t) (castM k (by omega) (h : Mir k (i + (t + 1)))) * (wEl k i t)⁻¹ with hηd`.
+
+Establish `e1 : wEl k i t * sEmb k ((i + 1) + t) (castM k (by omega) ((h : Mir k (i + (t + 1))) * m)) = η * y`. Rewrite using `[map_mul, map_mul, hηd, hy]`. Use `group`. Set `Tm : (phiN ψ τ).V ⊗[ℂ] σ.V →ₗ[ℂ] (phiN ψ τ).V ⊗[ℂ] σ.V` to `extTensor (mtw (phiN ψ τ) (((t + 1 : ℕ) : ℝ) / 2)).ρ (σ.tw (-((i + 1 : ℕ) : ℝ) / 2)).ρ (a', w')`. Set `sc : ℂ` to `((dpowM i (1 / 2) a' : ℂˣ) : ℂ) * ((dpow (t + 1) (-1 / 2) w' : ℂˣ) : ℂ)`.
+
+Set `G : (Fin (t + 1) → k) → (phiN ψ τ).V ⊗[ℂ] σ.V` to `fun d => qO τ σ ψ (evX f (dEmb k i t d * y))`. Establish `hpt : ∀ d, qO τ σ ψ (evX f (dEmb k i t d * (η * y))) = (sc • Tm) (G ((w'⁻¹ : GL (Fin (t + 1)) k).1.mulVec d))`. Introduce `d`. Take `⟨c, u, hc, hu, he⟩` from `GlobalTheory.T.unipotent_factorization_character_trivial k ψ i t h d`. Establish `e2 : dEmb k i t d * (η * y) = ((⟨η, hη⟩ : HPG k (i + 1) (t + 1)) : Mir k ((i + 1) + (t + 1))) * ((c : Mir k ((i + 1) + (t + 1))) * (dEmb k i t ((w'⁻¹ : GL (Fin (t + 1)) k).1.mulVec d) * y))`.
+
+Establish `he' : dEmb k i t d * η = η * (c : Mir k ((i + 1) + (t + 1))) * dEmb k i t ((w'⁻¹ : GL (Fin (t + 1)) k).1.mulVec d)` using `he`. Combine the equalities or inequalities in the displayed calculation. Establish `e3 : ∀ (hh : HPG k (i + 1) (t + 1)) (x : Mir k ((i + 1) + (t + 1))), evX f ((hh : Mir k ((i + 1) + (t + 1))) * x) = sigX τ σ hh (evX f x)` using `fun hh x => (f : smoothPart (ind (HPG k (i + 1) (t + 1)) (sigX τ σ))).1.2 hh x`. Rewrite using `[e2, e3, e3]`. Establish `e4 : ∀ (hh : HPG k (i + 1) (t + 1)) (v), sigX τ σ hh v = extTensor (mtw τ (((t + 1 : ℕ) : ℝ) / 2)).ρ (σ.tw (-((i + 1 + 1 : ℕ) : ℝ) / 2)).ρ (pgProj k (i + 1) (t + 1) hh) v` using `fun _ _ => rfl`.
+
+Rewrite using `[e4, hproj, GlobalTheory.T.twisted_coinvariant_levi_action, e4, hc, GlobalTheory.T.coinvariant_unipotent_character_trivial k i t ψ τ σ u hu]`. Both sides reduce to the same expression. Establish `hl` using `GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ f y`. Establish `hl2` using `GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ f (η * y)`. Establish `hG : IsLocallyConstant G` using `hl.1.comp (qO τ σ ψ)`.
+
+Establish `hGc : HasCompactSupport G` using `hl.2.comp_left (map_zero (qO τ σ ψ))`. Establish `key : qO τ σ ψ (intO f (η * y)) = ((dpow (t + 1) 1 w' : ℂˣ) : ℂ) • (sc • Tm) (qO τ σ ψ (intO f y))`. Establish `s1 : qO τ σ ψ (intO f (η * y)) = @GlobalTheory.CompanionTheory.Rodier.smInt _ _ (borel _) _ _ (muD k (t + 1)) (fun d => ((sc • Tm) ∘ G) ((w'⁻¹ : GL (Fin (t + 1)) k).1.mulVec d))`. Unfold `intO`. Rewrite using `[← smInt_lin (qO τ σ ψ) hl2.1 hl2.2]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `d`. Conclude with `hpt d`. Establish `s2 : qO τ σ ψ (intO f y) = @GlobalTheory.CompanionTheory.Rodier.smInt _ _ (borel _) _ _ (muD k (t + 1)) G`. Unfold `intO`.
+
+Rewrite using `[← smInt_lin (qO τ σ ψ) hl.1 hl.2]`. Both sides reduce to the same expression. Rewrite using `[s1, GlobalTheory.T.integral_mulVec_change_modulus k (t + 1) _ w' ((sc • Tm) ∘ G) (hG.comp _) (hGc.comp_left (map_zero _)), smInt_lin (sc • Tm) hG hGc, s2]`. Establish `e5 : sigO τ σ ψ h = Tm` using `rfl`. Unfold `eO`.
+
+Rewrite using `[e1, ← hy, key, e5, map_smul, map_mul]`. Establish `h6 : ((dpowM (i + (t + 1)) (-1 / 2) (h : Mir k (i + (t + 1))) : ℂˣ) : ℂ) * ((dpow (t + 1) 1 w' : ℂˣ) : ℂ) * sc = 1` using `GlobalTheory.T.modulus_characters_product_one k i t h`. Rewrite using `[LinearMap.smul_apply, smul_smul, smul_smul, Units.val_mul]`. Use `congr 1`. Take the linear combination `((dpowM (i + (t + 1)) (-1 / 2) m : ℂˣ) : ℂ) * h6`.
+-/
 theorem eO_equiv (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (f : XS τ σ)
     (h : HPG k i (t + 1)) (m : Mir k (i + (t + 1))) :
     eO ψ f ((h : Mir k (i + (t + 1))) * m) = sigO τ σ ψ h (eO ψ f m) := by
@@ -142,6 +184,19 @@ theorem eO_equiv (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t +
   congr 1
   linear_combination ((dpowM (i + (t + 1)) (-1 / 2) m : ℂˣ) : ℂ) * h6
 
+/- English proof (translation)
+Establish `ee : i + (t + 1) = (i + 1) + t` using `by omega`. Take `⟨C, hC, hCl, hsupp⟩` from `GlobalTheory.T.support_compact_mod_parabolic_off_closed k i t τ σ f hf`. Take `⟨N, hN, hcell⟩` from `exists_compact_cell i t C hC hCl`. Use `⟨(castM k ee).symm '' N, hN.image (castM_cont ee).2, fun g hg => ?_⟩` and prove the remaining obligations. Use `set y := wEl k i t * sEmb k ((i + 1) + t) (castM k ee g) with hy`.
+
+Establish `hne : intO f y ≠ 0` using `fun h0 => hg (by`. Unfold `eO`. Rewrite using `[show wEl k i t * sEmb k ((i + 1) + t) (castM k (by omega) g) = y from rfl, h0, map_zero, smul_zero])`. Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : ∃ d, evX f (dEmb k i t d * y) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Apply `hne` to reduce the goal to its premises. Unfold `intO`. Rewrite using `[show (fun d => evX f (dEmb k i t d * y)) = fun _ => 0 from funext hcon]`. Conclude with `smInt_zero'`.
+
+Take `⟨h1, hh1, c, hc, e1⟩` from `hsupp _ hd`. Take `⟨h2, hh2, d2, m2, hm2, e2⟩` from `hcell c hc`. Establish `e3 : dEmb k i t d * wEl k i t * sEmb k ((i + 1) + t) (castM k ee g * m2⁻¹) = (h1 * h2) * dEmb k i t d2 * wEl k i t`. Establish `e4 : dEmb k i t d * wEl k i t * sEmb k ((i + 1) + t) (castM k ee g) = h1 * (h2 * dEmb k i t d2 * wEl k i t * sEmb k ((i + 1) + t) m2)`. Rewrite using `[← e2, ← e1, hy, mul_assoc]`.
+
+Rewrite using `[map_mul, map_inv, ← mul_assoc, e4]`. Use `group`. Take `⟨h', hh', e5⟩` from `GlobalTheory.T.open_cell_double_coset_uniqueness k i t _ d d2 (h1 * h2) (mul_mem hh1 hh2) e3`. Use `⟨h', hh', (castM k ee).symm m2, ⟨m2, hm2, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `(castM k ee).injective` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, MulEquiv.apply_symm_apply, e5]`. Use `group`.
+-/
 theorem eO_supp (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (f : XS τ σ)
     (hf : ∀ x ∈ Cl k i t, evX f x = 0) :
     ∃ C : Set (Mir k (i + (t + 1))), IsCompact C ∧
@@ -176,6 +231,13 @@ theorem eO_supp (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 
   rw [map_mul, MulEquiv.apply_symm_apply, e5]
   group
 
+/- English proof (translation)
+Set `F : indSpace (HPG k i (t + 1)) (sigO τ σ ψ)` to `⟨eO ψ f, fun h g => eO_equiv ψ τ σ f h g⟩`. Establish `hF : F ∈ smoothPart (ind (HPG k i (t + 1)) (sigO τ σ ψ))` using `by show IsOpen {g | ind (HPG k i (t + 1)) (sigO τ σ ψ) g F = F}`. Use `GlobalTheory.T.isOpen_right_invariance_orbit_coefficient k i t ψ τ σ f using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h m`. Conclude with `congrFun (congrArg Subtype.val h) m`. Introduce `h`. Conclude with `Subtype.ext (funext h)`.
+
+Take `⟨C, hC, hs⟩` from `eO_supp ψ τ σ f hf`. Conclude with `⟨⟨⟨F, hF⟩, C, hC, hs⟩, rfl⟩`.
+-/
 theorem memOAlt (i t : ℕ) (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (f : XS τ σ)
     (hf : ∀ x ∈ Cl k i t, evX f x = 0) :
     ∃ y : cIndSpace (HPG k i (t + 1)) (sigO τ σ ψ), (y : smoothPart (ind (HPG k i (t + 1)) (sigO τ σ ψ))).1.1 = eO ψ f := by
@@ -194,6 +256,9 @@ theorem memOAlt (i t : ℕ) (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : 
   exact ⟨⟨⟨F, hF⟩, C, hC, hs⟩, rfl⟩
 end
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t ψ _ τ σ _ _ f hf`. Conclude with `memOAlt i t ψ τ σ f hf`.
+-/
 theorem eO_mem : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (f : XS τ σ) (hf : ∀ x ∈ Cl k i t, evX f x = 0),
   ∃ y : cIndSpace (HPG k i (t + 1)) (sigO τ σ ψ), (y : smoothPart (ind (HPG k i (t + 1)) (sigO τ σ ψ))).1.1 = eO ψ f := by
   intro k _ _ _ _ i t ψ _ τ σ _ _ f hf

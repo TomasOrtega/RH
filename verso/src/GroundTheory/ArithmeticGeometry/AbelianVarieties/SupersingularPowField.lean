@@ -18,6 +18,9 @@ variable {E E'} [E.IsElliptic] [E'.IsElliptic]
 
 omit [DecidableEq F] [E.IsElliptic] [E'.IsElliptic] in
 
+/- English proof (translation)
+Take `⟨Q, ⟨x, y, h, rfl, -⟩, -⟩` from `φ`. Both sides reduce to the same expression.
+-/
 theorem Isogeny.val_eq_some_x_y (φ : Isogeny E E') : φ.1 = Point.some φ.x φ.y φ.nonsingular := by
   obtain ⟨Q, ⟨x, y, h, rfl, -⟩, -⟩ := φ
   rfl

@@ -17,6 +17,19 @@ noncomputable section
 
 namespace GlobalTheory.TrIdem
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ μ _ H ho hK W _ _ ρ hρ x hx`. Establish `hf : IsLocallyConstant ((H : Set G).indicator (1 : G → ℂ))`. Use `(IsLocallyConstant.iff_exists_open _).2 fun g => ?_` and prove the remaining obligations. Distinguish the cases in `hg : g ∈ (H : Set G)`. Conclude with `⟨H, ho, hg, fun y hy => by simp [Set.indicator_of_mem hy, Set.indicator_of_mem hg]⟩`.
+
+Conclude with `⟨(H : Set G)ᶜ, (H.isClosed_of_isOpen ho).isOpen_compl, hg, fun y hy => by`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hg]⟩`. Establish `hc : HasCompactSupport ((H : Set G).indicator (1 : G → ℂ))` using `HasCompactSupport.intro hK fun y hy => Set.indicator_of_notMem hy _`. Establish `h0 : (μ.real H : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero, Ne, measureReal_eq_zero_iff hK.measure_lt_top.ne]`.
+
+Conclude with `(ho.measure_pos μ ⟨1, one_mem H⟩).ne'`. Establish `hf' : IsLocallyConstant (normInd μ (H : Set G))`. Unfold `normInd`. Conclude with `hf.comp ((μ.real H : ℂ)⁻¹ • ·)`. Establish `hc' : HasCompactSupport (normInd μ (H : Set G))`.
+
+Unfold `normInd`. Conclude with `hc.comp_left (g := ((μ.real H : ℂ)⁻¹ • ·)) (smul_zero _)`. Use `eq_of_forall_dual fun l => ?_` and prove the remaining obligations. Establish `h1 : (fun g => normInd μ (H : Set G) g • l (ρ g x)) = (H : Set G).indicator fun _ => (μ.real H : ℂ)⁻¹ * l x`. Use extensionality with `g`.
+
+Distinguish the cases in `hg : g ∈ (H : Set G)`. Establish `: ρ g x = x` using `hx g hg`. Simplify using `[normInd, Set.indicator_of_mem hg, this]`. Simplify using `[normInd, Set.indicator_of_notMem hg]`. Rewrite using `[hρ.map_smoothOp hf' hc', h1, integral_indicator_const _ ho.measurableSet]`.
+
+Rewrite using `[Complex.real_smul, ← mul_assoc, mul_inv_cancel₀ h0, one_mul]`.
+-/
 theorem smoothOp_normInd_of_fixed : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (H : Subgroup G), IsOpen (H : Set G) → IsCompact (H : Set G) → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G W), GlobalTheory.PRep.IsSmooth ρ → ∀ x : W, (∀ h ∈ H, ρ h x = x) → smoothOp ρ μ (normInd μ (H : Set G)) x = x := by
   intro G _ _ _ _ _ _ μ _ H ho hK W _ _ ρ hρ x hx
   have hf : IsLocallyConstant ((H : Set G).indicator (1 : G → ℂ)) := by

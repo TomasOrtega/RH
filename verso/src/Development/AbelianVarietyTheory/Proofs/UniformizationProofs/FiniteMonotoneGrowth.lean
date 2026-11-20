@@ -22,14 +22,23 @@ namespace GlobalTheory.VeryAmpleGrowth
 
 variable {K : Type} [Field K] {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of K))
 
+/- English proof (translation)
+Rewrite using `[SecOnR.topEquiv_f, SecOnR.topEquiv_f, SecOnR.topEquiv_f, SecOnR.coord_add, map_add]`.
+-/
 theorem top_add {M : LB X} (a b : SecOnR f M ⊤) (k : M.ι) :
     (SecOnR.topEquiv f M (a + b)).f k = (SecOnR.topEquiv f M a).f k + (SecOnR.topEquiv f M b).f k := by
   rw [SecOnR.topEquiv_f, SecOnR.topEquiv_f, SecOnR.topEquiv_f, SecOnR.coord_add, map_add]
 
+/- English proof (translation)
+Rewrite using `[SecOnR.topEquiv_f, SecOnR.topEquiv_f, SecOnR.coord_base_smul, map_mul, rs_cst]`.
+-/
 theorem top_smul {M : LB X} (c : K) (a : SecOnR f M ⊤) (k : M.ι) :
     (SecOnR.topEquiv f M (c • a)).f k = cst f (M.U k) c * (SecOnR.topEquiv f M a).f k := by
   rw [SecOnR.topEquiv_f, SecOnR.topEquiv_f, SecOnR.coord_base_smul, map_mul, rs_cst]
 
+/- English proof (translation)
+The claim follows from `(SecOnR.topEquiv f M).injective (by generalize SecOnR.topEquiv f M a = x at h ⊢ generalize SecOnR.topEquiv f M b = y at h ⊢ obtain ⟨x, hx⟩ := x obtain ⟨y, hy⟩ := y obtain rfl : x = y := funext h rfl)`.
+-/
 theorem top_ext {M : LB X} {a b : SecOnR f M ⊤}
     (h : ∀ k, (SecOnR.topEquiv f M a).f k = (SecOnR.topEquiv f M b).f k) : a = b :=
   (SecOnR.topEquiv f M).injective (by
@@ -40,6 +49,9 @@ theorem top_ext {M : LB X} {a b : SecOnR f M ⊤}
     obtain rfl : x = y := funext h
     rfl)
 
+/- English proof (translation)
+Rewrite using `[SecOnR.topEquiv_f, SecOnR.coord_zero, map_zero]`.
+-/
 theorem top_zero {M : LB X} (k : M.ι) : (SecOnR.topEquiv f M 0).f k = 0 := by
   rw [SecOnR.topEquiv_f, SecOnR.coord_zero, map_zero]
 
@@ -53,6 +65,9 @@ def linTop {M : LB X} {V : Type} [AddCommGroup V] [Module K V] (φ : V → LB.Se
   map_smul' c a := top_ext f fun k => by
     simp only [top_smul, LinearEquiv.apply_symm_apply, hsmul, RingHom.id_apply]
 
+/- English proof (translation)
+The claim follows from `(SecOnR.topEquiv f M).apply_symm_apply _`.
+-/
 theorem top_linTop {M : LB X} {V : Type} [AddCommGroup V] [Module K V] (φ : V → LB.Sec M) (hadd hsmul)
     (a : V) : SecOnR.topEquiv f M (linTop f φ hadd hsmul a) = φ a :=
   (SecOnR.topEquiv f M).apply_symm_apply _
@@ -79,10 +94,20 @@ def mulLin {H : LB X} (s : LB.Sec H) (t : ℕ) :
     (fun c a k => (congrArg (fun y : Γ(X, H.U k) => s.f k * y) (top_smul f c a k)).trans
       (mul_left_comm _ _ _))
 
+/- English proof (translation)
+The claim follows from `top_linTop f _ _ _ a`.
+-/
 theorem top_mulLin {H : LB X} (s : LB.Sec H) (t : ℕ) (a : SecOnR f (pw H t) ⊤) :
     SecOnR.topEquiv f (pw H (t + 1 : ℕ)) (mulLin f s t a) = mulPw s t (SecOnR.topEquiv f (pw H t) a) :=
   top_linTop f _ _ _ a
 
+/- English proof (translation)
+Take `⟨k₀, hk₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Set `W : X.Opens` to `X.basicOpen (s.f k₀)`. Establish `hWU : W ≤ H.U k₀` using `X.basicOpen_le _`. Use `haveI : Nonempty W := ⟨⟨x, hk₀⟩⟩`. Establish `hu : IsUnit (rs X hWU (s.f k₀))` using `X.toRingedSpace.isUnit_res_basicOpen _`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `a ha`. Establish `h : s.f k₀ * (show Γ(X, H.U k₀) from (SecOnR.topEquiv f (pw H t) a).f k₀) = 0`. Establish `e` using `top_mulLin f s t a`. Rewrite `e` using `[ha]`.
+
+Conclude with `(congrArg (fun σ : LB.Sec (pw H (t + 1 : ℕ)) => σ.f k₀) e).symm.trans (top_zero f (M := pw H (t + 1 : ℕ)) k₀)`. Establish `h'` using `congrArg (rs X hWU) h`. Rewrite `h'` using `[map_mul, map_zero, hu.mul_right_eq_zero]`. Conclude with `top_ext f fun k => (SecGrowth.sec_eq_zero (M := pw H t) (SecOnR.topEquiv f _ a) (k₀ := k₀) hWU h' k).trans (top_zero f k).symm`.
+-/
 theorem mulLin_injective [IsIntegral X] {H : LB X} (s : LB.Sec H) {x : X} (hx : x ∈ nonzeroLocus s) (t : ℕ) :
     Function.Injective (mulLin f s t) := by
   obtain ⟨k₀, hk₀⟩ := TopologicalSpace.Opens.mem_iSup.1 hx
@@ -103,6 +128,11 @@ theorem mulLin_injective [IsIntegral X] {H : LB X} (s : LB.Sec H) {x : X} (hx : 
     (SecGrowth.sec_eq_zero (M := pw H t) (SecOnR.topEquiv f _ a) (k₀ := k₀) hWU h' k).trans
       (top_zero f k).symm
 
+/- English proof (translation)
+Use `haveI : Module.Finite K (MvPolynomial.homogeneousSubmodule (Fin (m + 1)) K t) := Submodule.finiteDimensional_of_le (S₂ := MvPolynomial.restrictTotalDegree (Fin (m + 1)) K t) fun F hF => (MvPolynomial.mem_restrictTotalDegree _ _ _).2 (MvPolynomial.IsHomogeneous.totalDegree_le hF)`. Use `Module.Finite.of_surjective (linTop f (V := MvPolynomial.homogeneousSubmodule (Fin (m + 1)) K t) (fun F => SecGrowth.polySec f s F.2) (fun a b k => map_add (MvPolynomial.eval₂Hom (cst f (H.U k)) (fun j => (s j).f k)) a.1 b.1) (fun c a k => ?_)) fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.eval₂Hom (cst f (H.U k)) (fun j => (s j).f k) (c • a.1) = cst f (H.U k) c * MvPolynomial.eval₂Hom (cst f (H.U k)) (fun j => (s j).f k) a.1`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.eval₂Hom_C]`. Take `⟨F, hF, hFa⟩` from `h (SecOnR.topEquiv f _ a)`.
+
+Use `⟨⟨F, hF⟩, top_ext f fun k => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun σ : LB.Sec (pw H t) => σ.f k) (top_linTop f _ _ _ _)).trans (hFa k).symm`.
+-/
 theorem finite_of_polynomial {H : LB X} {m : ℕ} (s : Fin (m + 1) → LB.Sec H) (t : ℕ)
     (h : ∀ σ : LB.Sec (pw H t), ∃ F : MvPolynomial (Fin (m + 1)) K, F.IsHomogeneous t ∧
       ∀ k : H.ι, σ.f k = MvPolynomial.eval₂Hom (cst f (H.U k)) (fun j => (s j).f k) F) :
@@ -123,6 +153,15 @@ theorem finite_of_polynomial {H : LB X} {m : ℕ} (s : Fin (m + 1) → LB.Sec H)
     refine ⟨⟨F, hF⟩, top_ext f fun k => ?_⟩
     exact (congrArg (fun σ : LB.Sec (pw H t) => σ.f k) (top_linTop f _ _ _ _)).trans (hFa k).symm
 
+/- English proof (translation)
+Introduce `K _ X _ f g hf H n s hH hs`. Take `⟨t₀, ht₀⟩` from `GlobalTheory.T.exists_homogeneousForm_eq_highPowerSection K X f H n s hH hs`. Take `⟨x⟩ : Nonempty X` from `inferInstance`. Establish `hx : x ∈ ⨆ i, nonzeroLocus (s i)` using `by rw [hs.1]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`.
+
+Establish `hinj` using `mulLin_injective f (s i) hi`. Establish `hfin : ∀ t : ℕ, Module.Finite K (SecOnR f (pw H t) ⊤)` using `fun t => by`. Establish `h : ∀ d t : ℕ, t₀ ≤ t + d → Module.Finite K (SecOnR f (pw H t) ⊤)`. Introduce `d`. Proceed by induction on `d with`.
+
+Consider the case `zero => exact fun t ht => finite_of_polynomial f s t (ht₀ t ht)`. Consider the case `succ d ih`. Introduce `t ht`. Use `haveI := ih (t + 1) (by omega)`. Conclude with `Module.Finite.of_injective _ (hinj t)`.
+
+Conclude with `h t₀ t (Nat.le_add_left _ _)`. Use `⟨hfin, fun t t' h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `monotone_nat_of_le_succ (f := fun t : ℕ => Module.finrank K (SecOnR f (pw H t) ⊤)) (fun t => LinearMap.finrank_le_finrank_of_injective (hinj t)) h`. Conclude with `SecGrowth.growth_of_veryAmpleBy f s hs g t₀ ht₀ (fun B _ _ _ r => finrank_totalDegree_image_growth K B _ _ r) (trdeg_eq_of_smoothOfRelativeDimension K X f g hf) (fun t => SecOnR f (pw H t) ⊤) (fun t => SecOnR.topEquiv f _) (fun t a b k => top_add f a b k) (fun t c a k => top_smul …`.
+-/
 theorem finite_monotone_growth : ∀ (K : Type) [Field K] (X : Scheme.{0}) [IsIntegral X] (f : X ⟶ Spec (CommRingCat.of K)) (g : ℕ), SmoothOfRelativeDimension g f → ∀ (H : LB X) (n : ℕ) (s : Fin (n + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → (∀ t : ℕ, Module.Finite K (SecOnR f (pw H t) ⊤)) ∧ (∀ t t' : ℕ, t ≤ t' → Module.finrank K (SecOnR (f) (pw H t) ⊤) ≤ Module.finrank K (SecOnR (f) (pw H t') ⊤)) ∧ ∃ c C : ℕ, 1 ≤ c ∧ ∀ t : ℕ, 1 ≤ t → t ^ g ≤ c * Module.finrank K (SecOnR (f) (pw H t) ⊤) ∧ Module.finrank K (SecOnR (f) (pw H t) ⊤) ≤ C * t ^ g := by
   intro K _ X _ f g hf H n s hH hs
   obtain ⟨t₀, ht₀⟩ := GlobalTheory.T.exists_homogeneousForm_eq_highPowerSection K X f H n s hH hs

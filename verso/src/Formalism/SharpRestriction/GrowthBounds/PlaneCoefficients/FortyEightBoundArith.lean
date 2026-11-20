@@ -11,6 +11,11 @@ open Formalism.MainNotions.G.WittFrameLocaliserOrders Formalism.MainNotions.G.sy
 
 namespace Ar
 
+/- English proof (translation)
+Establish `e1 : a / Pg ≤ Bo / PL`. Rewrite using `[div_le_div_iff₀ hPg hPL]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h3 hBo, mul_le_mul_of_nonneg_right h2 hPL.le]`. Establish `e2 : Bo / PL ≤ Bo / (48 * Yk)` using `div_le_div_of_nonneg_left hBo (by positivity) h4`. Establish `e3 : Bo / (48 * Yk) = (Bo / Yk) / 48`.
+
+Clear the denominators using the available nonvanishing facts. Establish `e4 : 3 * a / Pg = 3 * (a / Pg)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem arith1 (dw a Bo Yk Pg PL PD sl : ℝ) (hPg : 0 < Pg) (hPL : 0 < PL) (hYk : 0 < Yk) (hBo : 0 ≤ Bo)
     (ha : 0 ≤ a) (h1 : dw ≤ 3 * a / Pg) (h2 : a ≤ Bo * PD) (h3 : PD * PL ≤ Pg) (h4 : 48 * Yk ≤ PL)
     (h5 : Bo / Yk ≤ 2 * sl) : dw ≤ 1 / 8 * sl := by
@@ -23,6 +28,11 @@ theorem arith1 (dw a Bo Yk Pg PL PD sl : ℝ) (hPg : 0 < Pg) (hPL : 0 < PL) (hYk
   have e4 : 3 * a / Pg = 3 * (a / Pg) := by ring
   linarith
 
+/- English proof (translation)
+Establish `hr2 : 1 ≤ r ^ 2` using `by nlinarith`. Establish `hQ4 : 1 ≤ Q ^ 4` using `one_le_pow₀ hQ`. Establish `hce : 1 ≤ cS + e` using `by linarith`. Establish `hf : 1 ≤ C * k * r ^ 2 * N * Q ^ 4 * (cS + e)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h0 : 0 ≤ Y * k ^ 2 * Q` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem size_le_monomial_product (C k r N Q cS e Y : ℝ) (hC : 1 ≤ C) (hk : 1 ≤ k) (hr : 1 ≤ r) (hN : 1 ≤ N) (hQ : 1 ≤ Q)
     (hcS : 1 ≤ cS) (he : 0 ≤ e) (hY : 0 ≤ Y) : Y * k ^ 2 * Q ≤ C * k ^ 3 * r ^ 2 * N * Q ^ 5 * (cS + e) * Y := by
   have hr2 : 1 ≤ r ^ 2 := by nlinarith
@@ -36,6 +46,9 @@ theorem size_le_monomial_product (C k r N Q cS e Y : ℝ) (hC : 1 ≤ C) (hk : 1
     _ ≤ Y * k ^ 2 * Q * (C * k * r ^ 2 * N * Q ^ 4 * (cS + e)) := mul_le_mul_of_nonneg_left hf h0
     _ = _ := by ring
 
+/- English proof (translation)
+Establish `h1 : 256 * k ^ 2 * Y ^ 2 ≤ 256 * k ^ 2 * N * Y ^ 2`. Use polynomial arithmetic with `[mul_nonneg (by positivity : (0:ℝ) ≤ 256 * k ^ 2 * Y ^ 2) (by linarith : (0:ℝ) ≤ N - 1)]`. Establish `h2 : 48 * (Y * k ^ 2) ≤ 256 * k ^ 2 * Y ^ 2`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg (sq_nonneg k) (by linarith : (0:ℝ) ≤ Y)) (by linarith : (0:ℝ) ≤ 256 * Y - 48)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem forty_eight_bound_arith (Y k N P : ℝ) (hY : 2 ≤ Y) (hk : 1 ≤ k) (hN : 1 ≤ N) (h : 256 * k ^ 2 * N * Y ^ 2 ≤ P) :
     48 * (Y * k ^ 2) ≤ P := by
   have h1 : 256 * k ^ 2 * Y ^ 2 ≤ 256 * k ^ 2 * N * Y ^ 2 := by
@@ -48,6 +61,63 @@ end Ar
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk F nb B hD`. Take `⟨_, H, hF, _⟩` from `hD`. Establish `hB` using `hyps_basic hC H`. Take `⟨h1, h2, h3, h4, h5, h6, _, _, h9, _, h11, h12⟩` from `H`. Take `⟨hTT, hV, hG, _⟩` from `hF`.
+
+Establish `hr1 : 1 ≤ r` using `by omega`. Establish `ha0 : (0 : ℝ) ≤ a` using `by linarith [hB.two_le_a]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Establish `hJ1 : F.J = 1` using `by have := hV.1; omega`.
+
+Establish `e` using `hV.2.1 0 (r - 1)`. Rewrite `e` using `[hJ1]`. Simplify using `only [Nat.cast_one, zero_add] at e`. Establish `g` using `hG 1`. Simplify using `only [sub_self] at g`.
+
+Establish `m0` using `frame_row_monotone F L₁ _ hV 0 (r - 1) (by omega)`. Establish `h3G` using `h3.2.2.2`. Use linear arithmetic over natural numbers and integers. Introduce `E' l hl ga hga J _ Dt hS dPl dNo rho hb hlow jj mm hmm`. Take `⟨t1, t2, _, t5, _, _⟩` from `hS`.
+
+Take `⟨s, hs⟩` from `seg_shift hV t1 (jj - 1)`. Rewrite `hs` using `[sub_add_cancel jj 1]`. Establish `hp0 : (0 : ℝ) < (p : ℝ)` using `by exact_mod_cast (by omega : 0 < p)`. Establish `hp1 : (1 : ℝ) ≤ (p : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ p)`. Establish `hp3 : (3 : ℝ) ≤ (p : ℝ)` using `by exact_mod_cast (by omega : 3 ≤ p)`.
+
+Use `set q : ℝ := (p : ℝ)⁻¹ with hq`. Establish `hq0 : 0 ≤ q` using `by positivity`. Establish `hq13 : q ≤ 1 / 3`. Rewrite using `[hq, inv_eq_one_div]`. Conclude with `one_div_le_one_div_of_le (by norm_num) hp3`.
+
+Establish `hq1 : q < 1` using `by linarith`. Use `set g : ℕ := (F.fr (segZ jj) (r - 1) - F.fr (segZ jj - 1) (r - 1)).toNat with hg`. Set `t : Fin r → ℕ` to `fun m' => (F.fr (segZ jj - 1) (r - 1) - F.fr (segZ jj - 1) (r - 1 - m'.val)).toNat`. Establish `ht : Function.Injective t`. Introduce `u v huv`.
+
+Establish `huv' : (F.fr (segZ jj - 1) (r - 1) - F.fr (segZ jj - 1) (r - 1 - u.val)).toNat = (F.fr (segZ jj - 1) (r - 1) - F.fr (segZ jj - 1) (r - 1 - v.val)).toNat` using `huv`. Establish `l1` using `frame_entry_le_last F L₁ _ hV (segZ jj - 1) (r - 1 - u.val) (by omega)`. Establish `l2` using `frame_entry_le_last F L₁ _ hV (segZ jj - 1) (r - 1 - v.val) (by omega)`. Establish `hu` using `u.isLt`. Establish `hv` using `v.isLt`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Break down `lt_trichotomy u.val v.val with c | c | c` into its components or cases. Use `frame_entries_strictMono F L₁ _ hV (segZ jj - 1) (r - 1 - v.val) (r - 1 - u.val) (by omega) (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `c`.
+
+Use `frame_entries_strictMono F L₁ _ hV (segZ jj - 1) (r - 1 - u.val) (r - 1 - v.val) (by omega) (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hterm : ∀ m' : Fin r, ((dPl ⟨jj - 1, Sum.inr m'⟩ - multideg (plMon F p hk Dt.nL (l.mapDomain (castV hk) + ga)) ⟨jj - 1, Sum.inr m'⟩ : ℕ) : ℝ) / (Dt.P (jj - 1) m' : ℝ) ≤ 2 * a * q ^ g * q ^ t m'`. Introduce `m'`. Establish `hd` using `Ar.deg_le F p hk Dt.nL hV hr1 t2 (G2d F (flatDeg lam0) E') l hl ga hga dPl dNo rho hb hlow ⟨jj - 1, Sum.inr m'⟩`.
+
+Establish `htop` using `(posTL_seg F hV hr1 t2 (⟨jj - 1, Sum.inr m'⟩ : TL J Dt.nL r)).2.2`. Establish `hG2 : G2d F (flatDeg lam0) E' (posOf n' (posTL F (⟨jj - 1, Sum.inr m'⟩ : TL J Dt.nL r))) ≤ flatDeg lam0 (posOf n' (posTL F (⟨jj - 1, Sum.inr m'⟩ : TL J Dt.nL r)))`. Unfold `G2d`. Rewrite using `[if_pos htop]`. Conclude with `Nat.sub_le _ _`.
+
+Establish `hfd` using `(flatDeg_bounds (by have := hB.m_ge; omega) ha0 h5 _ (hTT ▸ htop)).2`. Establish `s1` using `hs (r - 1)`. Establish `s2` using `hs (r - 1 - m'.val)`. Establish `hlowP : lowP F p (⟨jj - 1, Sum.inr m'⟩ : TL J Dt.nL r) = p ^ t m'` using `by show p ^ (F.fr (segZ (jj - 1)) (r - 1) - F.fr (segZ (jj - 1)) (r - 1 - m'.val)).toNat = p ^ (F.fr (segZ jj - 1) (r - 1) - F.fr (segZ jj - 1) (r - 1 - m'.val)).toNat`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hP : Dt.P (jj - 1) m' = p ^ g`. Unfold `SignedChainData.P`. Rewrite using `[t5, hg]`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `hd` using `[hlowP]`. Use `set nn : ℕ := dPl ⟨jj - 1, Sum.inr m'⟩ - multideg (plMon F p hk Dt.nL (l.mapDomain (castV hk) + ga)) ⟨jj - 1, Sum.inr m'⟩ with hnn`. Establish `h3' : ((p ^ t m' * nn : ℕ) : ℝ) ≤ 2 * a` using `le_trans (by exact_mod_cast le_trans hd hG2) hfd`. Move the coercions through the operations in `at h3'`.
+
+Establish `hpt : (0 : ℝ) < (p : ℝ) ^ t m'` using `by positivity`. Establish `hn : (nn : ℝ) ≤ 2 * a * q ^ t m'`. Rewrite using `[hq, inv_pow, ← div_eq_mul_inv, le_div_iff₀ hpt]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hP]`.
+
+Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Establish `hinv : (1 - q)⁻¹ ≤ 3 / 2`. Rewrite using `[inv_le_comm₀ (by linarith) (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hA : 0 ≤ 2 * a * q ^ g` using `by positivity`. Establish `hsum : dwB F hk Dt dPl (l.mapDomain (castV hk) + ga) jj ≤ 3 * a / (p : ℝ) ^ g`. Unfold `dwB`. Combine the equalities or inequalities in the displayed calculation. Establish `hi0 : r - 1 - mm.val < r` using `by omega`.
+
+Establish `ex0 : posU F (Dt.nL jj) (segZ jj) (Dt.nL jj + (r - 1 - mm.val)) = F.fr (segZ jj) (r - 1 - mm.val)` using `posU_fr' (Fr := F) _ _ _`. Unfold `slU`. Rewrite using `[ex0]`. Establish `hx` using `posU_mem' hV hr1 (segZ jj) ((F.LLset (segZ jj)).card + (r - 1 - mm.val)) (by omega)`. Rewrite `hx` using `[posU_fr]`.
+
+Establish `hfar` using `Ar.oldest_far hV hr1 (segZ jj) (r - 1 - mm.val) hi0`. Establish `hy` using `oldest_mem_segment_letters F L₁ _ hV hr1 (segZ jj) _ hx.1 hx.2`. Unfold `Frames.letters at hy`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at hy`. Use `set y : ℤ := F.oldest (segZ jj) (F.fr (segZ jj) (r - 1 - mm.val)) with hydef`.
+
+Use `set Dd : ℕ := F.dist (segZ jj) y with hDd`. Establish `hDd' : Dd = (F.fr (segZ jj) (r - 1) - y).toNat` using `rfl`. Establish `hdeg` using `(flatDeg_bounds (by have := hB.m_ge; omega) ha0 h5 _ (hTT ▸ hy.2)).1`. Establish `hPD : (0 : ℝ) < (p : ℝ) ^ Dd` using `by positivity`. Establish `hBoe : Bo p F (flatDeg lam0) (segZ jj) (F.fr (segZ jj) (r - 1 - mm.val)) = (flatDeg lam0 (posOf n' y) : ℝ) / (p : ℝ) ^ Dd` using `rfl`.
+
+Use `set Bv : ℝ := Bo p F (flatDeg lam0) (segZ jj) (F.fr (segZ jj) (r - 1 - mm.val)) with hBv`. Establish `hBo0 : 0 ≤ Bv` using `by rw [hBoe]; positivity`. Establish `hBoa : a ≤ Bv * (p : ℝ) ^ Dd` using `by rw [hBoe, div_mul_cancel₀ _ hPD.ne']; exact hdeg`. Establish `hpow : (p : ℝ) ^ Dd * (p : ℝ) ^ (L₁ + 1) ≤ (p : ℝ) ^ g`. Rewrite using `[← pow_add]`.
+
+Apply `pow_le_pow_right₀ hp1` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Establish `hkk : ((r + K : ℕ) : ℝ) = ((m + 1 : ℕ) : ℝ)` using `by rw [hk]`. Establish `hk1 : (1 : ℝ) ≤ ((m + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ m + 1)`. Establish `hrr : (1 : ℝ) ≤ (r : ℝ)` using `by exact_mod_cast hr1`.
+
+Establish `hNN : (1 : ℝ) ≤ (TT.card : ℝ)` using `by exact_mod_cast hB.N_pos`. Establish `hY2` using `hB.two_le_Y`. Establish `hY0 : (0 : ℝ) < Y` using `by linarith`. Establish `hden : 0 < Y * ((r + K : ℕ) : ℝ) ^ 2` using `by rw [hkk]; positivity`. Establish `hQ1 : (1 : ℝ) ≤ (p : ℝ) ^ goodG' r de h x` using `one_le_pow₀ hp1`.
+
+Establish `hQ0 : (0 : ℝ) < (p : ℝ) ^ goodG' r de h x` using `by linarith`. Establish `hcS : (1 : ℝ) ≤ (cStar : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ cStar)`. Establish `hsz` using `le_trans (Ar.size_le_monomial_product C ((m + 1 : ℕ) : ℝ) r TT.card ((p : ℝ) ^ goodG' r de h x) cStar ((r : ℝ) * TT.card * c0 + 2 * r * n' * cpp) Y hC hk1 hrr hNN hQ1 hcS (by positivity) hY0.le) h12`. Establish `hDG : Dd ≤ goodG' r de h x`. Establish `g1` using `hG (segZ jj)`.
+
+Establish `g2` using `frame_row_monotone F L₁ _ hV (segZ jj - 1) (r - 1) (by omega)`. Use linear arithmetic over natural numbers and integers. Establish `hX1 : (1 : ℝ) ≤ Bv / (Y * ((r + K : ℕ) : ℝ) ^ 2)`. Rewrite using `[le_div_iff₀ hden, one_mul, hkk]`. Establish `c1 : (p : ℝ) ^ Dd ≤ (p : ℝ) ^ goodG' r de h x` using `pow_le_pow_right₀ hp1 hDG`.
+
+Establish `c2 : Bv * (p : ℝ) ^ Dd ≤ Bv * (p : ℝ) ^ goodG' r de h x` using `mul_le_mul_of_nonneg_left c1 hBo0`. Conclude with `le_of_mul_le_mul_right (by linarith) hQ0`. Establish `f1 : (1 : ℤ) ≤ sl p F (flatDeg lam0) Y (r + K) (segZ jj) (F.fr (segZ jj) (r - 1 - mm.val))`. Unfold `sl`. Conclude with `Int.le_floor.2 (by rw [Int.cast_one]; exact hX1)`.
+
+Establish `f2 : Bv / (Y * ((r + K : ℕ) : ℝ) ^ 2) < (sl p F (flatDeg lam0) Y (r + K) (segZ jj) (F.fr (segZ jj) (r - 1 - mm.val)) : ℝ) + 1` using `Int.lt_floor_add_one _`. Establish `f1' : (1 : ℝ) ≤ (sl p F (flatDeg lam0) Y (r + K) (segZ jj) (F.fr (segZ jj) (r - 1 - mm.val)) : ℝ)`. Conclude with `f1` after adjusting the coercions. Establish `h48 : 48 * (Y * ((r + K : ℕ) : ℝ) ^ 2) ≤ (p : ℝ) ^ (L₁ + 1)`. Rewrite using `[hkk]`.
+
+Establish `z1 : (p : ℝ) ^ ((L₁ : ℤ) - 1) ≤ (p : ℝ) ^ ((L₁ + 1 : ℕ) : ℤ)` using `zpow_le_zpow_right₀ hp1 (by push_cast; omega)`. Rewrite `z1` using `[zpow_natCast]`. Conclude with `Ar.forty_eight_bound_arith Y _ _ _ hY2 hk1 hNN (le_trans h9 z1)`. Conclude with `Ar.arith1 _ a Bv _ ((p : ℝ) ^ g) ((p : ℝ) ^ (L₁ + 1)) ((p : ℝ) ^ Dd) _ (by positivity) (by positivity) hden hBo0 ha0 hsum hBoa hpow h48 (by linarith)`.
+-/
 theorem arithCondition_of_one_le (C CLa : ℝ) (hC : 1 ≤ C) : RestArithStep C CLa := by
   intro p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk
     F nb B hD
@@ -213,6 +283,9 @@ theorem arithCondition_of_one_le (C CLa : ℝ) (hC : 1 ≤ C) : RestArithStep C 
   exact Ar.arith1 _ a Bv _ ((p : ℝ) ^ g) ((p : ℝ) ^ (L₁ + 1)) ((p : ℝ) ^ Dd) _ (by positivity) (by positivity) hden hBo0
     ha0 hsum hBoa hpow h48 (by linarith)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun C hC CLa => arithCondition_of_one_le C CLa hC⟩`.
+-/
 theorem restArith_all : ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → ∀ CLa : ℝ, RestArithStep C CLa := ⟨1, one_pos, fun C hC CLa => arithCondition_of_one_le C CLa hC⟩
 
 end Formalism.MainNotions.PairMembershipBlocks

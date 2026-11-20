@@ -13,6 +13,19 @@ namespace GlobalTheory.UPel.HT.ES
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Introduce `p _ D R _ b N c Y _ s o B _ _ ψ ψ' hp hc hB hq P' hP' hiso _`. Take `⟨e, rfl⟩` from `hc`. Establish `hu : IsUnit (((p ^ e : ℕ)) : Γ(Y, ⊤))`. Establish `h` using `hp.map (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)`. Rewrite `h` using `[map_natCast]`.
+
+Rewrite using `[Nat.cast_pow]`. Conclude with `h.pow e`. Establish `hq' : IsQuasiInv (p ^ e) ψ' ψ` using `⟨hq.2.1, hq.1, hq.2.2.2, hq.2.2.1⟩`. Establish `hfin` using `(isFinite_etale_surjective_of_isQuasiInv Y B o.A (p ^ e) ψ' ψ hB o.ab hu hq').1`. Use `hB.proper` as an intermediate fact.
+
+Use `o.ab.proper` as an intermediate fact. Establish `hL` using `hP'.1`. Establish `hD` using `pull_isLB o.isLB (lift (𝟙 o.A) (𝟙 o.A)).left`. Establish `a₁` using `GlobalTheory.RootDiagAmple.relAmple_pull_of_isFinite ψ' hD o.ample`. Use `GlobalTheory.RootDiagAmple.relAmple_of_relAmple_pow (pull_isLB hL _) (pull_isLB hD _) (d := p ^ e) (Nat.one_le_pow e p ((Fact.out : p.Prime).pos)) ?_ a₁` and prove the remaining obligations.
+
+Establish `hpow : (Hecke.lbPow P' (p ^ e)).IsLB` using `LB.isLB_linComb hL _ _`. Establish `ec` using `(cls_eq_iff (pull_isLB o.isLB _) hpow).2 hiso`. Establish `ep : cls _ hpow = (p ^ e) • cls P' hL`. Use `(cls_linComb hL (K := Fin (p ^ e)) (fun _ => 𝟙 _) (fun _ => 1) hpow).trans ?_` and prove the remaining obligations. Simplify using `[pull_id]`.
+
+Rewrite using `[cls_pull hL, cls_pull hD, cls_pull o.isLB, ← pull_comp]`. Establish `m : ψ'.left ≫ (lift (𝟙 o.A) (𝟙 o.A)).left = (lift (𝟙 B) (𝟙 B)).left ≫ Hecke.sq2 ψ'`. Rewrite using `[Hecke.sq2, ← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`.
+
+Rewrite using `[m, pull_comp, ← cls_pull o.isLB _ (pull_isLB o.isLB _), ec, ep, map_nsmul]`.
+-/
 theorem relAmple_diag_root_pull : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (c : ℕ) (Y : Scheme.{0}) [IsLocallyNoetherian Y] (s : Y ⟶ Sp R) (o : Obj b N s) (B : Over Y) [GrpObj B] [IsCommMonObj B] (ψ : o.A ⟶ B) (ψ' : B ⟶ o.A), IsUnit ((p : ℕ) : R) → (∃ e : ℕ, c = p ^ e) → IsAbelianScheme B → IsQuasiInv c ψ ψ' → ∀ P' : LB (G2 B).left, IsAxesTriv B P' → LBIso (o.P.pull (Hecke.sq2 ψ')) (Hecke.lbPow P' c) → LBIso (Hecke.lbPow o.P c) (P'.pull (Hecke.sq2 ψ)) → Out.RelAmple B (P'.pull (lift (𝟙 B) (𝟙 B)).left) := by
   intro p _ D R _ b N c Y _ s o B _ _ ψ ψ' hp hc hB hq P' hP' hiso _
   obtain ⟨e, rfl⟩ := hc

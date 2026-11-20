@@ -4,6 +4,13 @@ namespace PositivityTheory.SiegelWeilFormula.OswLocFin
 
 open MeasureTheory
 
+/- English proof (translation)
+Establish `hm : Measurable e` using `he.measurable`. Establish `: (μ.map e).IsAddHaarMeasure` using `e.isAddHaarMeasure_map μ he he'`. Take `⟨c, hcμ⟩ : ∃ c : NNReal, μ.map e = c • μ` from `⟨_, Measure.isAddLeftInvariant_eq_smul (μ.map e) μ⟩`. Establish `hBm : MeasurableSet B` using `hB.isClosed.measurableSet`. Establish `hval : μ.map e B = μ B` using `by rw [Measure.map_apply hm hBm, heB]`.
+
+Establish `hpos : μ B ≠ 0` using `(Measure.measure_pos_of_nonempty_interior μ hB').ne'`. Establish `hfin : μ B ≠ ⊤` using `hB.measure_lt_top.ne`. Establish `hc : c = 1`. Establish `h1` using `congrArg (fun ν : Measure G => ν B) hcμ`. Simplify using `only [Measure.smul_apply, hval, ENNReal.smul_def, smul_eq_mul] at h1`.
+
+Establish `h2 : (c : ENNReal) * μ B = 1 * μ B` using `by rw [one_mul]; exact h1.symm`. Establish `h3 : (c : ENNReal) = 1` using `(ENNReal.mul_left_inj hpos hfin).1 h2`. Conclude with `h3` after adjusting the coercions. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[hcμ, hc, one_smul]`.
+-/
 theorem measurePreserving_of_addEquiv {G : Type*} [AddCommGroup G] [TopologicalSpace G]
     [IsTopologicalAddGroup G] [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] (μ : MeasureTheory.Measure G) [μ.IsAddHaarMeasure]

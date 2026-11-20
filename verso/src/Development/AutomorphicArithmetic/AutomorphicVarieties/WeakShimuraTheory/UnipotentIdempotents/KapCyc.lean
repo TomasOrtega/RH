@@ -2,11 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Ws.Lk
 
+/- English proof (translation)
+Take the linear combination `(norm := module) (2 * k * n : ℤ) • hx + (k * m * (2 * q + r + 4) : ℤ) • hω - (k * m * n * (2 * q + r + 4) : ℤ) • hγ + (m * n * r : ℤ) • hβ`.
+-/
 private theorem torsion_combination_smul_eq_zero {M : Type} [AddCommGroup M] (x γ β ε ω : M) (m n k q r : ℕ) (j : ℤ)
     (hx : m • x = 0) (hω : n • ω = 0) (hγ : 2 • γ + ω = ε) (hβ : k • (2 • β + (-(2 * j + 1)) • ε) = 0) :
     (2 * k * m * n) • (x + (2 * q + r + 4) • (-γ) + r • β + (-(r * j - q - 2 : ℤ)) • ε) = 0 := by
   linear_combination (norm := module) (2 * k * n : ℤ) • hx + (k * m * (2 * q + r + 4) : ℤ) • hω - (k * m * n * (2 * q + r + 4) : ℤ) • hγ + (m * n * r : ℤ) • hβ
 
+/- English proof (translation)
+Establish `h` using `torsion_combination_smul_eq_zero (M := Additive M) (Additive.ofMul x) (Additive.ofMul γ) (Additive.ofMul β) (Additive.ofMul ε) (Additive.ofMul ω) m n k q r j (by rw [← ofMul_pow, hx, ofMul_one]) (by rw [← ofMul_pow, hω, ofMul_one]) (by rw [← ofMul_pow, ← ofMul_mul, hγ]) (by rw [← …`. Use `apply_fun Additive.toMul at h`. Simplify `h` using `[toMul_nsmul, toMul_zsmul, toMul_add, toMul_neg, mul_pow, inv_pow]`.
+-/
 private theorem mul_aux {M : Type} [CommGroup M] (x γ β ε ω : M) (m n k q r : ℕ) (j : ℤ)
     (hx : x ^ m = 1) (hω : ω ^ n = 1) (hγ : γ ^ 2 * ω = ε) (hβ : (β ^ 2 * ε ^ (-(2 * j + 1))) ^ k = 1) :
     (x * γ⁻¹ ^ (2 * q + r + 4) * β ^ r * ε ^ (-(r * j - q - 2 : ℤ))) ^ (2 * k * m * n) = 1 := by
@@ -18,6 +24,17 @@ private theorem mul_aux {M : Type} [CommGroup M] (x γ β ε ω : M) (m n k q r 
   apply_fun Additive.toMul at h
   simpa [toMul_nsmul, toMul_zsmul, toMul_add, toMul_neg, mul_pow, inv_pow] using h
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T P hG A hA`. Take `⟨b, k, hk, hb, hcyc⟩` from `P.cyc A hA`. Take `⟨j, rfl⟩` from `hb`. Take `⟨m, hm, hm1⟩` from `P.κ₀_ord`. Establish `hl : l.Prime` using `Fact.out`.
+
+Establish `hm0 : 0 < m`. Break down `Nat.eq_zero_or_pos m with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `absurd (Nat.coprime_zero_right l |>.1 hm) hl.one_lt.ne'`. Conclude with `h`.
+
+Establish `hn0 : 0 < l - 1` using `Nat.sub_pos_of_lt hl.one_lt`. Use `⟨((D.e % 2 : ℕ) : ℤ) * j - ((D.e / 2 : ℕ) : ℤ) - 2, 2 * j + 1, 2 * k * m * (l - 1), by positivity, ⟨j, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Establish `hω : (toQ D.om (resQ T.L g)) ^ (l - 1) = 1`. Rewrite using `[show toQ D.om (resQ T.L g) = Units.map (algebraMap c.O (PadicAlgCl l) : c.O →* PadicAlgCl l) (D.om (resQ T.L g)) from rfl, ← map_pow, ← MonoidHom.pow_apply, hG.om_pow, MonoidHom.one_apply, map_one]`.
+
+Establish `hγ : P.γ (resQ T.L g) ^ 2 * toQ D.om (resQ T.L g) = cycBar T.L Ω l g` using `P.γ_sq _`. Establish `hβ : (P.β (resLe (K_le T) g) ^ 2 * cycBar T.L Ω l g ^ (-(2 * j + 1))) ^ k = 1` using `hcyc _ hg`. Establish `hx : P.κ₀ (resLe (K_le T) g) ^ m = 1`. Rewrite using `[← MonoidHom.pow_apply, hm1, MonoidHom.one_apply]`. Establish `hκ : P.κ g = P.κ₀ (resLe (K_le T) g) * (P.γ (resQ T.L g))⁻¹ ^ (D.e + 4) * P.β (resLe (K_le T) g) ^ (D.e % 2)` using `rfl`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[hκ, show D.e + 4 = 2 * (D.e / 2) + D.e % 2 + 4 by omega]`. Conclude with `mul_aux _ _ _ _ _ m (l - 1) k (D.e / 2) (D.e % 2) j hx hω hγ hβ`. Use `show (P.β (resLe (K_le T) g) ^ 2 * cycBar T.L Ω l g ^ (-(2 * j + 1))) ^ (2 * k * m * (l - 1)) = 1`. Rewrite using `[show 2 * k * m * (l - 1) = k * (2 * m * (l - 1)) by ring, pow_mul, hβ, one_pow]`.
+-/
 theorem UpperTheory.V.Ws.Lk.kapCyc :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} (P : Pre T), D.Good → ∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → ∃ (a b : ℤ) (k : ℕ), 0 < k ∧ Odd b ∧ ∀ g ∈ Ine (F := T.L) A, (P.κ g * cycBar T.L Ω l g ^ (-a)) ^ k = 1 ∧ (P.βL g ^ 2 * cycBar T.L Ω l g ^ (-b)) ^ k = 1 := by
   intro Ω _ _ _ l _ c D T P hG A hA

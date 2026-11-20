@@ -14,6 +14,13 @@ open scoped Classical
 
 namespace UpperTheory.Gal.CertificateRingHomMap
 
+/- English proof (translation)
+Use `⟨hfin.toFinset.image Quotient.out, ?_⟩` and prove the remaining obligations. Introduce `V _ _ ρ x`. Rewrite using `[Finset.sum_image (fun a _ b _ e => Quotient.out_injective e)]`. Establish `hsupp : (Function.support fun q : G ⧸ K => h q.out • ρ q.out x) ⊆ hfin.toFinset`. Introduce `q hq`.
+
+Simplify using `only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]`. Introduce `h0`. Conclude with `hq (by simp [h0])`. Establish `hsum : heckeVec ρ K h x = ∑ q ∈ hfin.toFinset, h q.out • ρ q.out x` using `finsum_eq_sum_of_support_subset _ hsupp`. Rewrite using `[hsum]`.
+
+Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[h01 _ ((Set.Finite.mem_toFinset hfin).1 hq), one_smul]`.
+-/
 private theorem hecke_eq_sum {G : Type} [Group G] (K : Subgroup G) (h : G → ℂ) (h01 : ∀ g, h g ≠ 0 → h g = 1)
     (hfin : {q : G ⧸ K | h q.out ≠ 0}.Finite) : ∃ R : Finset G,
       ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (x : V),
@@ -32,6 +39,9 @@ private theorem hecke_eq_sum {G : Type} [Group G] (K : Subgroup G) (h : G → �
   refine Finset.sum_congr rfl fun q hq => ?_
   rw [h01 _ ((Set.Finite.mem_toFinset hfin).1 hq), one_smul]
 
+/- English proof (translation)
+Unfold `Tj at hg ⊢`. Conclude with `Set.indicator_of_mem (Set.mem_of_indicator_ne_zero hg) _`.
+-/
 private theorem tj_one {L : Type} [Field L] {n : ℕ} {O : Subring L} {ϖ : L} {j : ℕ} (g : GL (Fin n) L)
     (hg : Tj ℂ n O ϖ j g ≠ 0) : Tj ℂ n O ϖ j g = 1 := by
   unfold Tj at hg ⊢
@@ -39,6 +49,21 @@ private theorem tj_one {L : Type} [Field L] {n : ℕ} {O : Subring L} {ϖ : L} {
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hloc : ∀ y ∈ KGL w n, loc hw y ∈ lev S Kw` using `fun y hy => (hM E n S Kw w hw hcS y).2 hS hy`. Set `ρ : Representation ℂ (GLw n w) (GUf E n → V)` to `(rightReg ℂ (GUf E n) V).comp (loc hw)`. Establish `hρ : ∀ y (f : GUf E n → V) g, ρ y f g = f (g * loc hw y)` using `fun _ _ _ => rfl`. Establish `hfix : Φ ∈ fixed ρ (KGL w n)` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => by`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[hρ]`. Conclude with `hΦ.2 _ (hloc k hk) g`. Establish `hΨ` using `GlobalTheory.LFun.SatCompare.heckeVec_mem_fixed (Formalism.UG.Final.GLintComm E w n) hh hfix`. Rewrite `hΨ` using `[hR]`. Establish `hΨ'` using `GlobalTheory.LGrp.mem_fixed.1 hΨ`.
+
+Establish `hev : ∀ g, (∑ y ∈ R, ρ y Φ) g = ∑ y ∈ R, Φ (g * loc hw y)` using `fun g => by`. Rewrite using `[Finset.sum_apply]`. Both sides reduce to the same expression. Use `⟨fun γ g => ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, mul_assoc]`.
+
+Conclude with `Finset.sum_congr rfl fun y _ => hΦ.1 γ _`. Establish `hx : comp w k ∈ KGL w n` using `(mem_lev.1 hk).2.2 w hS hcS set x := comp w k with hxdef set k' := (loc hw x)⁻¹ * k with hk'def`. Establish `hk'm : k' ∈ lev S Kw` using `(lev S Kw).mul_mem ((lev S Kw).inv_mem (hloc x hx)) hk`. Establish `hk'1 : comp w k' = 1`. Rewrite using `[hk'def, map_mul, map_inv, comp_loc, ← hxdef, inv_mul_cancel]`.
+
+Establish `hcomm` using `(hC E n w hw).1 k' hk'1`. Establish `hkk : k = loc hw x * k'` using `by rw [hk'def, mul_inv_cancel_left]`. Establish `e1 : ∀ y, Φ (g * k * loc hw y) = Φ (g * loc hw x * loc hw y)` using `fun y => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hkk, mul_assoc g, mul_assoc _ k', hcomm y]`.
+
+Simplify using `only [mul_assoc]`. Use `_ = _ := hΦ.2 _ hk'm _`. Establish `e2` using `congrFun (hΨ' x hx) g`. Rewrite `e2` using `[hρ, hev, hev]`. Use `show ∑ y ∈ R, Φ (g * k * loc hw y) = ∑ y ∈ R, Φ (g * loc hw y)`.
+
+Rewrite using `[← e2]`. Conclude with `Finset.sum_congr rfl fun y _ => e1 y`.
+-/
 private theorem sum_mem_forms (hC : LocComm) (hM : LocMem) {w : Plc E} (hw : IsSplitAt w) {h : GLw n w → ℂ}
     (hh : h ∈ Formalism.UG.Hecke ℂ (KGL w n)) {R : Finset (GLw n w)}
     (hR : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GLw n w) V) (v : V),
@@ -81,6 +106,9 @@ private theorem sum_mem_forms (hC : LocComm) (hM : LocMem) {w : Plc E} (hw : IsS
     rw [← e2]
     exact Finset.sum_congr rfl fun y _ => e1 y
 
+/- English proof (translation)
+Introduce `E _ _ _ n w hw ϖ hϖ i`. Establish `hh` using `GlobalTheory.LFun.Tj_mem_hecke (n := n) hϖ i`. Take `⟨R, hR⟩` from `hecke_eq_sum (KGL w n) (Tj ℂ n (Ov E w) ϖ i) (fun g hg => tj_one g hg) (Formalism.UG.P.finite_support_cosets (Formalism.UG.Final.GLintComm E w n) hh.2)`. Conclude with `⟨R, hR, fun S Kw hS hcS V _ _ ξ Φ hΦ => sum_mem_forms hC hM hw hh hR hS hcS hΦ⟩`.
+-/
 theorem pHeckePres_of (hC : LocComm) (hM : LocMem) : HeckePres := by
   intro E _ _ _ n w hw ϖ hϖ i
   have hh := GlobalTheory.LFun.Tj_mem_hecke (n := n) hϖ i

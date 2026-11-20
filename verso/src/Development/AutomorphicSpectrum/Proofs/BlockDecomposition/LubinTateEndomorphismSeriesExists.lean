@@ -9,6 +9,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GlobalTheory.CompanionTheory.LTPer
 
+/- English proof (translation)
+Substitute `hF'` using the available equality. Establish `h2` using `congrArg (MvPowerSeries.map h) hs`. Rewrite `h2` using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero hG), PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero hF)]`. Conclude with `h2`.
+-/
 theorem map_subst_comm {A B : Type} [CommRing A] [CommRing B] (h : A →+* B) {F G : PowerSeries A}
     {F' : PowerSeries B} (hF' : PowerSeries.map h F = F')
     (hF : PowerSeries.constantCoeff F = 0) (hG : PowerSeries.constantCoeff G = 0)
@@ -22,6 +25,17 @@ theorem map_subst_comm {A B : Type} [CommRing A] [CommRing B] (h : A →+* B) {F
 
 open GlobalTheory.CompanionTheory.LTHodge.CharEx GroundTheory.LocalField GroundTheory.LocalField.FormalGroup ValuativeRel in
 
+/- English proof (translation)
+Introduce `l _ K π hπ a`. Establish `: FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Set `e : ↥(OL K) ≃+* 𝒪[↥K.1]` to `intEquiv K`. Set `es : 𝒪[↥K.1] →+* ↥(OL K)` to `(e.symm : 𝒪[↥K.1] →+* ↥(OL K))`. Establish `hp : Irreducible (e π)` using `(MulEquiv.irreducible_iff e).mpr hπ`.
+
+Establish `hf` using `isLubinTateSeries_ltPoly (e π)`. Establish `hm` using `map_ltSeries K hp`. Establish `hes : (intEquiv K).symm (e π) = π` using `e.symm_apply_apply π`. Rewrite `hm` using `[hes]`. Establish `hF : PowerSeries.map es (ltPoly (e π) : PowerSeries 𝒪[↥K.1]) = ltSeries π`.
+
+Rewrite using `[← hm]`. Use `PowerSeries.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_map, PowerSeries.coeff_map]`. Conclude with `e.symm_apply_apply _`. Establish `hF0 : PowerSeries.constantCoeff (ltPoly (e π) : PowerSeries 𝒪[↥K.1]) = 0` using `hf.constantCoeff_eq_zero`.
+
+Set `h` to `lubinTateHom hp hf hf (e a)`. Establish `h0 : PowerSeries.constantCoeff h.toPowerSeries = 0` using `h.constantCoeff_eq_zero`. Establish `h1 : PowerSeries.coeff 1 h.toPowerSeries = e a` using `coeff_one_lubinTateHom hp hf hf (e a)`. Establish `hs` using `subst_lubinTateHom hp hf hf (e a)`. Use `⟨PowerSeries.map es h.toPowerSeries, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, h0, map_zero]`. Rewrite using `[PowerSeries.coeff_map, h1]`. Conclude with `e.symm_apply_apply a`. Conclude with `map_subst_comm es hF hF0 h0 hs`.
+-/
 theorem exists_series_comm : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)), Irreducible π → ∀ a : ↥(OL K),
     ∃ φ : PowerSeries ↥(OL K), PowerSeries.constantCoeff φ = 0 ∧ PowerSeries.coeff 1 φ = a ∧
       PowerSeries.subst φ (ltSeries π) = PowerSeries.subst (ltSeries π) φ := by

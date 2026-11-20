@@ -10,6 +10,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.LieGeometryGrowth.PfPtPos
 open UpperTheory.V.Lit.Geo
 
+/- English proof (translation)
+The claim follows from `Pf.pairFacts_of_steps Pf.bddInt Pf.csBdd Pf.levInv Pf.ptInv Pf.adjInt Pf.ptD Pf.rapidBdd Pf.zeroInt Pf.ptPos`.
+-/
 theorem UpperTheory.V.Lit.Geo.pairFacts :
     PairFacts :=
   Pf.pairFacts_of_steps Pf.bddInt Pf.csBdd Pf.levInv Pf.ptInv Pf.adjInt Pf.ptD Pf.rapidBdd Pf.zeroInt Pf.ptPos

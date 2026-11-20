@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaDvrPs
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Use extensionality with `z`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec 1 z)`. Establish `hz : z = y * (l : ℤ_[l]) + (z.appr 1 : ℤ_[l])`. Rewrite `hy` using `[pow_one]`. Rewrite using `[hy]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz]`. Simplify using `[hl]`.
+-/
 private theorem padic_hom_unique {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] (hl : (l : R) = 0)
     (f g : ℤ_[l] →+* R) : f = g := by
   ext z
@@ -11,6 +16,9 @@ private theorem padic_hom_unique {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R
   rw [hz]
   simp [hl]
 
+/- English proof (translation)
+Introduce `N` and use `by have hle : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap f := by refine le_trans (Ideal.pow_right_mono (fun y hy => ?_) N) (Ideal.le_comap_pow _ N) exact map_nonunit f y hy exact (ha N).comp (Ideal.quotientMap _ f hle)`.
+-/
 private theorem adic_push {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R'] (f : R →+* R')
     [IsLocalHom f] {Γ : Type} [TopologicalSpace Γ] {a : Γ → R}
     (ha : AdicCont (maximalIdeal R) a) : AdicCont (maximalIdeal R') fun g => f (a g) := fun N => by
@@ -19,6 +27,27 @@ private theorem adic_push {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R
     exact map_nonunit f y hy
   exact (ha N).comp (Ideal.quotientMap _ f hle)
 
+/- English proof (translation)
+Establish `hmap : ∀ M ∈ Submodule.span (PowerSeries K) S, M.map j ∈ Submodule.span (PowerSeries K') ((fun M => M.map j) '' S)`. Introduce `M hM`. Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem M hM => exact Submodule.subset_span ⟨M, hM, rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add M N _ _ h1 h2 => rw [Matrix.map_add _ (map_add j)]`. Conclude with `add_mem h1 h2`. Consider the case `smul c M _ h1`. Establish `: (c • M).map j = j c • M.map j` using `by ext1 p q; simp`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ h1`. Establish `hX : j PowerSeries.X ≠ 0` using `fun e => PowerSeries.X_ne_zero (hj (e.trans (map_zero j).symm))`. Take `⟨m, hm⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hX (PowerSeries.X_irreducible (R := K'))`. Take `⟨u, hu⟩` from `hm.dvd`. Introduce `Z hZ`.
+
+Establish `key : ∀ p q : Fin n, ∃ s : ℕ, (PowerSeries.X : PowerSeries K') ^ s • Matrix.single p q (Z p q) ∈ Submodule.span (PowerSeries K') ((fun M => M.map j) '' S)`. Introduce `p q`. Distinguish the cases in `hpq : ((p : ℕ) < a) ↔ ((q : ℕ) < a)`. Establish `hE : Matrix.single p q (1 : PowerSeries K) ∈ Ev (PowerSeries K) (PowerSeries K) n a`. Introduce `p' q'`.
+
+Use `⟨fun _ => trivial, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot, Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `e hpq`. Take `⟨s, hs⟩` from `h _ hE`.
+
+Use `⟨m * s, ?_⟩` and prove the remaining obligations. Establish `: (PowerSeries.X : PowerSeries K') ^ (m * s) • Matrix.single p q (Z p q) = (u ^ s * Z p q) • ((PowerSeries.X : PowerSeries K) ^ s • Matrix.single p q (1 : PowerSeries K)).map j` using `by ext1 p' q'`. Rewrite using `[pow_mul, hu]`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.single_apply, smul_eq_mul]`. Use `split_ifs`.
+
+Simplify using `only [mul_one, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (hmap _ hs)`.
+
+Establish `: Z p q = 0` using `(Submodule.mem_bot _).1 ((hZ p q).2 hpq)`. Conclude with `⟨0, by simp [this]⟩`. Use `choose s hs using key`. Use `⟨∑ p, ∑ q, s p q, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.matrix_eq_sum_single Z, Finset.smul_sum]`.
+
+Use `Submodule.sum_mem _ fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun q _ => ?_` and prove the remaining obligations. Establish `hle : s p q ≤ ∑ p, ∑ q, s p q` using `le_trans (Finset.single_le_sum (f := fun q => s p q) (fun _ _ => Nat.zero_le _) (Finset.mem_univ q)) (Finset.single_le_sum (f := fun p => ∑ q, s p q) (fun _ _ => Nat.zero_le _) (Finset.mem_univ p))`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le' hle`.
+
+Rewrite using `[hd, pow_add, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hs p q)`.
+-/
 private theorem span_push {K K' : Type} [Field K] [Field K'] {n a : ℕ} (j : PowerSeries K →+* PowerSeries K')
     (hj : Function.Injective j) (S : Set (Matrix (Fin n) (Fin n) (PowerSeries K)))
     (h : ∀ Z ∈ Ev (PowerSeries K) (PowerSeries K) n a, ∃ s : ℕ,
@@ -76,6 +105,9 @@ private theorem span_push {K K' : Type} [Field K] [Field K'] {n a : ℕ} (j : Po
   rw [hd, pow_add, mul_smul]
   exact Submodule.smul_mem _ _ (hs p q)
 
+/- English proof (translation)
+Use extensionality with `g`. Conclude with `hf (congrArg Units.val (DFunLike.congr_fun h g))`.
+-/
 private theorem pushCh_inj {H A B : Type} [Group H] [CommRing A] [CommRing B] {f : A →+* B}
     (hf : Function.Injective f) {χ χ' : H →* Aˣ} (h : pushCh f χ = pushCh f χ') : χ = χ' := by
   ext g
@@ -139,6 +171,15 @@ private noncomputable def pushNP {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : �
     ext g
     simp
 
+/- English proof (translation)
+Introduce `l _ F n x A' _ _ _ hA j₀ hinj hloc hfin`. Use `haveI := hA.complete`. Use `haveI := hA.finite`. Use `haveI := hA.char`. Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible A'`.
+
+Take `⟨e, -, -⟩` from `UpperTheory.V.AlgebraTools.powerSeries_equiv_of_complete_dvr A' l t ht`. Use `letI : Algebra ℤ_[l] (ResidueField A') := ((residue A').comp (j₀.comp (algebraMap ℤ_[l] x.A))).toAlgebra`. Set `j : x.A →+* PowerSeries (ResidueField A')` to `(e.symm : A' →+* _).comp j₀`. Establish `hj : Function.Injective j` using `e.symm.injective.comp hinj`. Use `haveI hl : IsLocalHom j := ⟨fun a ha => hloc.1 a (by simpa using ha.map e)⟩`.
+
+Establish `hjf : j.Finite` using `RingHom.Finite.comp (RingHom.Finite.of_surjective _ e.symm.surjective) hfin`. Establish `h0 : (l : PowerSeries (ResidueField A')) = 0` using `e.injective (by simp)`. Establish `he : pushCh j (F.eps ℤ_[l] x.A) = F.eps ℤ_[l] (PowerSeries (ResidueField A'))`. Use `padic_hom_unique h0 (j.comp ((algebraMap ℤ_[l] x.A).comp (algebraMap ℤ_[l] ℤ_[l]))) ((algebraMap ℤ_[l] _).comp (algebraMap ℤ_[l] ℤ_[l]))` as an intermediate fact. Unfold `GFrame.eps`.
+
+Rewrite using `[← this]`. Both sides reduce to the same expression. Conclude with `⟨pushNP x (ResidueField A') j hj he, j, e, ⟨⟨hj, hl, hjf, rfl, rfl, fun _ _ => rfl⟩, fun _ => rfl, rfl⟩, fun a => e.apply_symm_apply _, rfl⟩`.
+-/
 theorem UpperTheory.V.Pa.Det.extEx :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n) (A' : Type) [CommRing A'] [IsDomain A'] [IsDiscreteValuationRing A'] [IsEqDVR l A'] (j₀ : x.A →+* A'), Function.Injective j₀ → IsLocalHom j₀ → j₀.Finite → ∃ (x' : NP F n) (j : x.A →+* x'.A) (e : x'.A ≃+* A'), x.Ext2 x' j ∧ (∀ a, e (j a) = j₀ a) ∧ Nat.card x'.K = Nat.card (ResidueField A') := by
   intro l _ F n x A' _ _ _ hA j₀ hinj hloc hfin

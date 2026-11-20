@@ -44,6 +44,9 @@ def Sys.prod (S T : Sys.{u} J) : Sys.{u} J where
   ι_ρ f y := Prod.ext (S.ι_ρ f y.1) (T.ι_ρ f y.2)
   ρ_comp f g y := Prod.ext (S.ρ_comp f g y.1) (T.ρ_comp f g y.2)
 
+/- English proof (translation)
+Introduce and unpack `⟨a, b⟩`. Take `⟨j, y, rfl⟩` from `hS a`. Take `⟨k, z, rfl⟩` from `hT b`. Conclude with `⟨IsFiltered.max j k, (S.ρ (IsFiltered.leftToMax j k) y, T.ρ (IsFiltered.rightToMax j k) z), Prod.ext (S.ι_ρ _ y) (T.ι_ρ _ z)⟩`.
+-/
 theorem Sys.prod_surj [IsFiltered J] {S T : Sys.{u} J} (hS : S.Surj) (hT : T.Surj) : (S.prod T).Surj := by
   rintro ⟨a, b⟩
   obtain ⟨j, y, rfl⟩ := hS a
@@ -51,6 +54,11 @@ theorem Sys.prod_surj [IsFiltered J] {S T : Sys.{u} J} (hS : S.Surj) (hT : T.Sur
   exact ⟨IsFiltered.max j k, (S.ρ (IsFiltered.leftToMax j k) y, T.ρ (IsFiltered.rightToMax j k) z),
     Prod.ext (S.ι_ρ _ y) (T.ι_ρ _ z)⟩
 
+/- English proof (translation)
+Introduce and unpack `j ⟨y, z⟩ h`. Establish `h1 : S.ι j y = 0` using `congrArg Prod.fst h`. Establish `h2 : T.ι j z = 0` using `congrArg Prod.snd h`. Take `⟨k, f, hk⟩` from `hS j y h1`. Take `⟨l, g, hl⟩` from `hT k (T.ρ f z) (by rw [T.ι_ρ, h2])`.
+
+Use `⟨l, f ≫ g, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S.ρ (f ≫ g) y = 0`. Rewrite using `[S.ρ_comp, hk, map_zero]`. Express the relevant statement in the definitionally equal form `T.ρ (f ≫ g) z = 0`. Rewrite using `[T.ρ_comp, hl]`.
+-/
 theorem Sys.prod_inj {S T : Sys.{u} J} (hS : S.Inj) (hT : T.Inj) : (S.prod T).Inj := by
   rintro j ⟨y, z⟩ h
   have h1 : S.ι j y = 0 := congrArg Prod.fst h
@@ -79,6 +87,21 @@ def Sys.Hom.diff {S T T' : Sys.{u} J} (α : S.Hom T') (β : T.Hom T') : (S.prod 
     change α.b (S.ι j y.1) - β.b (T.ι j y.2) = T'.ι j (α.a _ y.1 - β.a _ y.2)
     rw [α.b_ι, β.b_ι, map_sub]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x`. Take `⟨j, y₄, hy₄⟩` from `s₄ (h₃.b x)`. Establish `h5 : S₅.ι j (h₄.a j y₄) = 0`. Rewrite using `[← h₄.b_ι, hy₄]`.
+
+Conclude with `e₄.apply_apply_eq_zero x`. Take `⟨k, f, hk⟩` from `i₅ j _ h5`. Rewrite `hk` using `[← h₄.a_ρ]`. Take `⟨y₃, hy₃⟩` from `(c₄ k _).1 hk`. Establish `h6 : h₃.b (x - S₃.ι k y₃) = 0`.
+
+Rewrite using `[map_sub, h₃.b_ι, hy₃, S₄.ι_ρ, hy₄, sub_self]`. Take `⟨w, hw⟩` from `(e₃ _).1 h6`. Take `⟨j₂, w₂, rfl⟩` from `s₂ w`. Use `⟨IsFiltered.max k j₂, S₃.ρ (IsFiltered.leftToMax k j₂) y₃ + h₂.a _ (S₂.ρ (IsFiltered.rightToMax k j₂) w₂), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, S₃.ι_ρ, ← h₂.b_ι, S₂.ι_ρ, hw]`.
+
+Normalize the expressions using the abelian group laws. Introduce `j y hy`. Establish `h4 : S₄.ι j (h₃.a j y) = 0` using `by rw [← h₃.b_ι, hy, map_zero]`. Take `⟨k, f, hk⟩` from `i₄ j _ h4`. Rewrite `hk` using `[← h₃.a_ρ]`.
+
+Take `⟨w, hw⟩` from `(c₃ k _).1 hk`. Establish `h2 : h₂.b (S₂.ι k w) = 0` using `by rw [h₂.b_ι, hw, S₃.ι_ρ, hy]`. Take `⟨z, hz⟩` from `(e₂ _).1 h2`. Take `⟨j₁, z₁, rfl⟩` from `s₁ z`. Establish `h3 : S₂.ι (IsFiltered.max k j₁) (S₂.ρ (IsFiltered.leftToMax k j₁) w - h₁.a _ (S₁.ρ (IsFiltered.rightToMax k j₁) z₁)) = 0`.
+
+Rewrite using `[map_sub, S₂.ι_ρ, ← h₁.b_ι, S₁.ι_ρ, hz, sub_self]`. Take `⟨m, g, hm⟩` from `i₂ _ _ h3`. Use `⟨m, f ≫ IsFiltered.leftToMax k j₁ ≫ g, ?_⟩` and prove the remaining obligations. Rewrite using `[S₃.ρ_comp, S₃.ρ_comp, ← hw, ← h₂.a_ρ, ← h₂.a_ρ]`. Rewrite `hm` using `[map_sub, sub_eq_zero]`.
+
+Rewrite using `[hm, ← h₁.a_ρ]`. Conclude with `(c₂ m).apply_apply_eq_zero _`.
+-/
 theorem Sys.five [IsFiltered J] {S₁ S₂ S₃ S₄ S₅ : Sys.{u} J} (h₁ : S₁.Hom S₂) (h₂ : S₂.Hom S₃) (h₃ : S₃.Hom S₄)
     (h₄ : S₄.Hom S₅) (c₂ : ∀ j, Function.Exact (h₁.a j) (h₂.a j)) (c₃ : ∀ j, Function.Exact (h₂.a j) (h₃.a j))
     (c₄ : ∀ j, Function.Exact (h₃.a j) (h₄.a j)) (e₂ : Function.Exact h₁.b h₂.b) (e₃ : Function.Exact h₂.b h₃.b)
@@ -125,16 +148,34 @@ structure Sq {X : Scheme.{0}} (U V W P : X.Opens) : Prop where
 section Sq
 variable {X : Scheme.{0}} {U V W P : X.Opens}
 
+/- English proof (translation)
+The claim follows from `c.hW ▸ le_sup_left`.
+-/
 theorem Sq.uw (c : Sq U V W P) : U ≤ W := c.hW ▸ le_sup_left
+/- English proof (translation)
+The claim follows from `c.hW ▸ le_sup_right`.
+-/
 theorem Sq.vw (c : Sq U V W P) : V ≤ W := c.hW ▸ le_sup_right
+/- English proof (translation)
+The claim follows from `c.hP ▸ inf_le_left`.
+-/
 theorem Sq.pu (c : Sq U V W P) : P ≤ U := c.hP ▸ inf_le_left
+/- English proof (translation)
+The claim follows from `c.hP ▸ inf_le_right`.
+-/
 theorem Sq.pv (c : Sq U V W P) : P ≤ V := c.hP ▸ inf_le_right
 
+/- English proof (translation)
+Take `⟨rfl, rfl⟩` from `c`. Conclude with `⟨Thom.HtpyMVPf.mono_sch _, Thom.HtpyMVPf.mono_sch _, fun _ => UpperTheory.etale_purity_free_cover R X U V⟩`.
+-/
 theorem Sq.cover (c : Sq U V W P) (R : Type) [CommRing R] :
     Cover2 R (sch.map (X.homOfLE c.uw)) (sch.map (X.homOfLE c.vw)) := by
   obtain ⟨rfl, rfl⟩ := c
   exact ⟨Thom.HtpyMVPf.mono_sch _, Thom.HtpyMVPf.mono_sch _, fun _ => UpperTheory.etale_purity_free_cover R X U V⟩
 
+/- English proof (translation)
+Take `⟨rfl, rfl⟩` from `c`. Use `Thom.HtpyMVPf.sch_pres` as an intermediate fact. Conclude with `(isPullback_opens_inf_le (X := X) (le_sup_left : U ≤ U ⊔ V) (le_sup_right : V ≤ U ⊔ V)).map sch`.
+-/
 theorem Sq.pb (c : Sq U V W P) : IsPullback (sch.map (X.homOfLE c.pu)) (sch.map (X.homOfLE c.pv))
     (sch.map (X.homOfLE c.uw)) (sch.map (X.homOfLE c.vw)) := by
   obtain ⟨rfl, rfl⟩ := c
@@ -154,14 +195,25 @@ def rPair (q : ℕ) (i n : ℤ) {X : Scheme.{0}} {U V W P : X.Opens} (c : Sq U V
     Ht q (sch.obj W) n i →+ Ht q (sch.obj U) n i × Ht q (sch.obj V) n i :=
   (res q i n c.uw).prod (res q i n c.vw)
 
+/- English proof (translation)
+Rewrite using `[← pull_comp, e.inv_hom_id, pull_id]`.
+-/
 private theorem pull_hom_inv (R : Type) [CommRing R] (F : Shv R) {A B : Spc} (e : A ≅ B) (n : ℤ) (x : H R B F n) :
     pull R e.inv F n (pull R e.hom F n x) = x := by
   rw [← pull_comp, e.inv_hom_id, pull_id]
 
+/- English proof (translation)
+Rewrite using `[← pull_comp, e.hom_inv_id, pull_id]`.
+-/
 private theorem pull_inv_hom (R : Type) [CommRing R] (F : Shv R) {A B : Spc} (e : A ≅ B) (n : ℤ) (x : H R A F n) :
     pull R e.hom F n (pull R e.inv F n x) = x := by
   rw [← pull_comp, e.hom_inv_id, pull_id]
 
+/- English proof (translation)
+Establish `h : sch.map (X.homOfLE c.pu) = c.pb.isoPullback.hom ≫ pullback.fst _ _` using `c.pb.isoPullback_hom_fst.symm`. Establish `h2 : pull _ (sch.map (X.homOfLE c.pu)) (tw q i) n a = pull _ c.pb.isoPullback.hom (tw q i) n (pull _ (pullback.fst _ _) (tw q i) n a)`. Rewrite using `[← pull_comp]`. Conclude with `congrArg (fun m => pull _ m (tw q i) n a) h`. Express the relevant statement in the definitionally equal form `pull _ c.pb.isoPullback.inv (tw q i) n (pull _ (sch.map (X.homOfLE c.pu)) (tw q i) n a) = _`.
+
+Rewrite using `[h2, pull_hom_inv]`.
+-/
 private theorem res_fst (q : ℕ) (i n : ℤ) {X : Scheme.{0}} {U V W P : X.Opens} (c : Sq U V W P) (a : Ht q (sch.obj U) n i) :
     pull _ c.pb.isoPullback.inv (tw q i) n (res q i n c.pu a) = pull _ (pullback.fst _ _) (tw q i) n a := by
   have h : sch.map (X.homOfLE c.pu) = c.pb.isoPullback.hom ≫ pullback.fst _ _ := c.pb.isoPullback_hom_fst.symm
@@ -171,6 +223,11 @@ private theorem res_fst (q : ℕ) (i n : ℤ) {X : Scheme.{0}} {U V W P : X.Open
   change pull _ c.pb.isoPullback.inv (tw q i) n (pull _ (sch.map (X.homOfLE c.pu)) (tw q i) n a) = _
   rw [h2, pull_hom_inv]
 
+/- English proof (translation)
+Establish `h : sch.map (X.homOfLE c.pv) = c.pb.isoPullback.hom ≫ pullback.snd _ _` using `c.pb.isoPullback_hom_snd.symm`. Establish `h2 : pull _ (sch.map (X.homOfLE c.pv)) (tw q i) n a = pull _ c.pb.isoPullback.hom (tw q i) n (pull _ (pullback.snd _ _) (tw q i) n a)`. Rewrite using `[← pull_comp]`. Conclude with `congrArg (fun m => pull _ m (tw q i) n a) h`. Express the relevant statement in the definitionally equal form `pull _ c.pb.isoPullback.inv (tw q i) n (pull _ (sch.map (X.homOfLE c.pv)) (tw q i) n a) = _`.
+
+Rewrite using `[h2, pull_hom_inv]`.
+-/
 private theorem res_snd (q : ℕ) (i n : ℤ) {X : Scheme.{0}} {U V W P : X.Opens} (c : Sq U V W P) (a : Ht q (sch.obj V) n i) :
     pull _ c.pb.isoPullback.inv (tw q i) n (res q i n c.pv a) = pull _ (pullback.snd _ _) (tw q i) n a := by
   have h : sch.map (X.homOfLE c.pv) = c.pb.isoPullback.hom ≫ pullback.snd _ _ := c.pb.isoPullback_hom_snd.symm
@@ -180,6 +237,9 @@ private theorem res_snd (q : ℕ) (i n : ℤ) {X : Scheme.{0}} {U V W P : X.Open
   change pull _ c.pb.isoPullback.inv (tw q i) n (pull _ (sch.map (X.homOfLE c.pv)) (tw q i) n a) = _
   rw [h2, pull_hom_inv]
 
+/- English proof (translation)
+Introduce `x y h` and use `by rw [← pull_inv_hom _ _ e n x, h, pull_inv_hom]`.
+-/
 private theorem pull_inv_inj (q : ℕ) (i n : ℤ) {A B : Spc} (e : A ≅ B) :
     Function.Injective (pull _ e.inv (tw q i) n) := fun x y h => by
   rw [← pull_inv_hom _ _ e n x, h, pull_inv_hom]
@@ -187,6 +247,11 @@ private theorem pull_inv_inj (q : ℕ) (i n : ℤ) {A B : Spc} (e : A ≅ B) :
 section ex
 variable {q : ℕ} {i n : ℤ} {X : Scheme.{0}} {U V W P : X.Opens} (c : Sq U V W P)
 
+/- English proof (translation)
+Introduce `y`. Use `(E2 (pull _ c.pb.isoPullback.inv (tw q i) n y)).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, b, h⟩`. Use `⟨(a, b), pull_inv_inj q i n c.pb.isoPullback ?_⟩` and prove the remaining obligations. Establish `: rDiff q i n c (a, b) = res q i n c.pu a - res q i n c.pv b` using `rfl`.
+
+Rewrite using `[this, map_sub, res_fst q i n c, res_snd q i n c, h]`. Introduce and unpack `⟨⟨a, b⟩, rfl⟩`. Use `⟨a, b, ?_⟩` and prove the remaining obligations. Establish `: rDiff q i n c (a, b) = res q i n c.pu a - res q i n c.pv b` using `rfl`. Rewrite using `[this, map_sub, res_fst q i n c, res_snd q i n c]`.
+-/
 private theorem ex1 {G : Type 1} [AddCommGroup G]
     (Dd : H (ZMod q) (pullback (sch.map (X.homOfLE c.uw)) (sch.map (X.homOfLE c.vw))) (tw q i) n →+ G)
     (E2 : ∀ z, Dd z = 0 ↔ ∃ a b, z = pull _ (pullback.fst _ _) (tw q i) n a - pull _ (pullback.snd _ _) (tw q i) n b) :
@@ -202,6 +267,11 @@ private theorem ex1 {G : Type 1} [AddCommGroup G]
     have : rDiff q i n c (a, b) = res q i n c.pu a - res q i n c.pv b := rfl
     rw [this, map_sub, res_fst q i n c, res_snd q i n c]
 
+/- English proof (translation)
+Introduce `x`. Use `Iff.trans Prod.mk_eq_zero ((E3 x).trans ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Use `⟨pull _ c.pb.isoPullback.hom (tw q i) n y, ?_⟩` and prove the remaining obligations. Conclude with `congrArg Dd (pull_hom_inv _ _ c.pb.isoPullback n y)`.
+
+Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+-/
 private theorem ex2
     (Dd : H (ZMod q) (pullback (sch.map (X.homOfLE c.uw)) (sch.map (X.homOfLE c.vw))) (tw q i) n →+
       Ht q (sch.obj W) (n + 1) i)
@@ -216,6 +286,13 @@ private theorem ex2
   · rintro ⟨y, rfl⟩
     exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨a, b⟩`. Establish `h0 : rDiff q i n c (a, b) = 0 ↔ pull _ (pullback.fst (sch.map (X.homOfLE c.uw)) (sch.map (X.homOfLE c.vw))) (tw q i) n a = pull _ (pullback.snd (sch.map (X.homOfLE c.uw)) (sch.map (X.homOfLE c.vw))) (tw q i) n b`. Rewrite using `[← res_fst q i n c, ← res_snd q i n c]`. Establish `: rDiff q i n c (a, b) = res q i n c.pu a - res q i n c.pv b` using `rfl`. Rewrite using `[this, sub_eq_zero]`.
+
+Conclude with `⟨fun h => congrArg _ h, fun h => pull_inv_inj q i n c.pb.isoPullback h⟩`. Use `h0.trans ((E1 a b).trans ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨x, h1, h2⟩`. Conclude with `⟨x, Prod.ext h1 h2⟩`. Introduce and unpack `⟨x, h⟩`.
+
+Conclude with `⟨x, congrArg Prod.fst h, congrArg Prod.snd h⟩`.
+-/
 private theorem ex3
     (E1 : ∀ a b, pull _ (pullback.fst (sch.map (X.homOfLE c.uw)) (sch.map (X.homOfLE c.vw))) (tw q i) n a =
         pull _ (pullback.snd (sch.map (X.homOfLE c.uw)) (sch.map (X.homOfLE c.vw))) (tw q i) n b ↔
@@ -237,6 +314,11 @@ private theorem ex3
 
 end ex
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, IsPullback.isoPullback_hom_fst_assoc, Category.assoc, IsPullback.isoPullback_hom_fst, ← sch.map_comp, ← sch.map_comp]`. Use `congr 1`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, pullback.lift_snd, IsPullback.isoPullback_hom_snd_assoc, Category.assoc, IsPullback.isoPullback_hom_snd, ← sch.map_comp, ← sch.map_comp]`.
+
+Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 private theorem pb_sq {X' X : Scheme.{0}} (f : X' ⟶ X) {U' V' W' P' : X'.Opens} {U V W P : X.Opens}
     (c' : Sq U' V' W' P') (c : Sq U V W P) (hU : U' ≤ f ⁻¹ᵁ U) (hV : V' ≤ f ⁻¹ᵁ V) (hW : W' ≤ f ⁻¹ᵁ W)
     (hP : P' ≤ f ⁻¹ᵁ P)
@@ -253,6 +335,9 @@ private theorem pb_sq {X' X : Scheme.{0}} (f : X' ⟶ X) {U' V' W' P' : X'.Opens
     congr 1
     simp
 
+/- English proof (translation)
+Apply `pull_inv_inj q i n e'.symm` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `pull _ e'.hom _ _ _ = pull _ e'.hom _ _ (pull _ e'.inv _ _ _)`. Rewrite using `[pull_inv_hom, ← pull_comp, hs, pull_comp, pull_inv_hom]`.
+-/
 private theorem nat_pull (q : ℕ) (i n : ℤ) {A A' B B' : Spc} (e : A ≅ B) (e' : A' ≅ B') (m : B' ⟶ B) (r : A' ⟶ A)
     (hs : e'.hom ≫ m = r ≫ e.hom) (x : Ht q A n i) :
     pull _ m (tw q i) n (pull _ e.inv (tw q i) n x) = pull _ e'.inv (tw q i) n (pull _ r (tw q i) n x) := by
@@ -260,6 +345,15 @@ private theorem nat_pull (q : ℕ) (i n : ℤ) {A A' B B' : Spc} (e : A ≅ B) (
   change pull _ e'.hom _ _ _ = pull _ e'.hom _ _ (pull _ e'.inv _ _ _)
   rw [pull_inv_hom, ← pull_comp, hs, pull_comp, pull_inv_hom]
 
+/- English proof (translation)
+Take `⟨D, hex, hnat⟩` from `GlobalTheory.EtC.mayerVietoris (ZMod q) (tw q i)`. Use `⟨fun {X U V W P} c n => (D (sch.map (X.homOfLE c.uw)) (sch.map (X.homOfLE c.vw)) (c.cover _) n).comp (pull _ c.pb.isoPullback.inv (tw q i) n), ?_, ?_⟩` and prove the remaining obligations. Introduce `X U V W P c n`. Take `⟨E1, E2, E3⟩` from `hex (sch.map (X.homOfLE c.uw)) (sch.map (X.homOfLE c.vw)) (c.cover _) n`. Conclude with `⟨ex1 c _ E2, ex2 c _ E3, ex3 c E1⟩`.
+
+Introduce `X' X f U' V' W' P' U V W P c' c hU hV hW hP n x`. Establish `eu : sch.map (X'.homOfLE c'.uw) ≫ sch.map (f.resLE W W' hW) = sch.map (f.resLE U U' hU) ≫ sch.map (X.homOfLE c.uw)`. Rewrite using `[← sch.map_comp, ← sch.map_comp]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Establish `ev : sch.map (X'.homOfLE c'.vw) ≫ sch.map (f.resLE W W' hW) = sch.map (f.resLE V V' hV) ≫ sch.map (X.homOfLE c.vw)`. Rewrite using `[← sch.map_comp, ← sch.map_comp]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `(hnat _ _ _ _ _ _ _ eu ev (c'.cover _) (c.cover _) n _).trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg (D _ _ _ n) (nat_pull q i n _ _ _ _ (pb_sq f c' c hU hV hW hP eu ev) x)`.
+-/
 theorem mv (q : ℕ) (i : ℤ) : ∃ d : ∀ {X : Scheme.{0}} {U V W P : X.Opens}, Sq U V W P → ∀ n : ℤ,
     Ht q (sch.obj P) n i →+ Ht q (sch.obj W) (n + 1) i,
     (∀ {X : Scheme.{0}} {U V W P : X.Opens} (c : Sq U V W P) (n : ℤ),
@@ -291,6 +385,9 @@ variable {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {J : Type} [Sma
   (D : J ⥤ CommRingCat.{0}) (s : (Functor.const J).obj (CommRingCat.of A) ⟶ D)
   (t : D ⟶ (Functor.const J).obj (CommRingCat.of B))
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[← Ideal.map_map]`. Conclude with `(off_map c _).le`.
+-/
 private theorem off_le_map {R S : Type} [CommRing R] [CommRing S] (K : Ideal A) (a : A →+* R) (b : A →+* S)
     (c : R →+* S) (e : c.comp a = b) :
     off S (K.map b) ≤ Spec.map (CommRingCat.ofHom c) ⁻¹ᵁ off R (K.map a) := by
@@ -298,16 +395,25 @@ private theorem off_le_map {R S : Type} [CommRing R] [CommRing S] (K : Ideal A) 
   rw [← Ideal.map_map]
   exact (off_map c _).le
 
+/- English proof (translation)
+The claim follows from `off_le_map K _ _ (D.map f).hom (by have h : s.app j ≫ D.map f = s.app k := by simpa using (s.naturality f).symm exact congrArg CommRingCat.Hom.hom h)`.
+-/
 private theorem offD (K : Ideal A) {j k : J} (f : j ⟶ k) : off (D.obj k) (K.map (s.app k).hom) ≤
     Spec.map (D.map f) ⁻¹ᵁ off (D.obj j) (K.map (s.app j).hom) :=
   off_le_map K _ _ (D.map f).hom (by
     have h : s.app j ≫ D.map f = s.app k := by simpa using (s.naturality f).symm
     exact congrArg CommRingCat.Hom.hom h)
 
+/- English proof (translation)
+The claim follows from `off_le_map K _ _ (t.app j).hom (congrArg CommRingCat.Hom.hom (he j))`.
+-/
 private theorem offT (he : ∀ j, s.app j ≫ t.app j = CommRingCat.ofHom φ) (K : Ideal A) (j : J) :
     off B (K.map φ) ≤ Spec.map (t.app j) ⁻¹ᵁ off (D.obj j) (K.map (s.app j).hom) :=
   off_le_map K _ _ (t.app j).hom (congrArg CommRingCat.Hom.hom (he j))
 
+/- English proof (translation)
+Rewrite using `[opnMap_tri a b e U'' U' U h h1 h2]`. Conclude with `pull_left_comp q (opnMap a U'' U' h1) (opnMap b U' U h2) n i y`.
+-/
 private theorem pull_tri (q : ℕ) (i n : ℤ) {X'' X' X : Scheme.{0}} {g : X'' ⟶ X} (a : X'' ⟶ X') (b : X' ⟶ X) (e : g = a ≫ b)
     {U'' : X''.Opens} {U' : X'.Opens} {U : X.Opens} (h : U'' ≤ g ⁻¹ᵁ U) (h1 : U'' ≤ a ⁻¹ᵁ U') (h2 : U' ≤ b ⁻¹ᵁ U)
     (y : Ht q (sch.obj U) n i) :
@@ -332,6 +438,11 @@ def sysOf (q : ℕ) (i m : ℤ) (he : ∀ j, s.app j ≫ t.app j = CommRingCat.o
       rw [← Spec.map_comp, ← Functor.map_comp]
     exact pull_tri q i m _ _ e (offD D s K (f ≫ g)) (offD D s K g) (offD D s K f) y
 
+/- English proof (translation)
+Establish `e : sch.map (X'.homOfLE h1) ≫ sch.map (f.resLE W W' a) = sch.map (f.resLE U U' b) ≫ sch.map (X.homOfLE h2)`. Rewrite using `[← sch.map_comp, ← sch.map_comp]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `h` using `congrArg (fun m => pull _ m (tw q i) n y) e`.
+
+Simplify using `only [pull_comp] at h`. Conclude with `h`.
+-/
 private theorem res_nat (q : ℕ) (i n : ℤ) {X' X : Scheme.{0}} (f : X' ⟶ X) {U' W' : X'.Opens} {U W : X.Opens}
     (h1 : U' ≤ W') (h2 : U ≤ W) (a : W' ≤ f ⁻¹ᵁ W) (b : U' ≤ f ⁻¹ᵁ U) (y : Ht q (sch.obj W) n i) :
     res q i n h1 (pull _ (opnMap f W' W a).left (tw q i) n y) =
@@ -350,6 +461,13 @@ def resHom (q : ℕ) (i m : ℤ) (he : ∀ j, s.app j ≫ t.app j = CommRingCat.
   a_ρ f y := res_nat q i m _ _ _ _ _ y
   b_ι j y := res_nat q i m _ _ _ _ _ y
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun x => ?_, fun j y hy => ?_⟩` and prove the remaining obligations. Take `⟨j, _, y, e⟩` from `h1 x`. Conclude with `⟨j, y, e⟩`.
+
+Take `⟨k, f, _, e⟩` from `h2 j (offT φ D s t he K j) y hy`. Conclude with `⟨k, f, e⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun x => ?_, fun j h y hy => ?_⟩` and prove the remaining obligations. Take `⟨j, y, e⟩` from `h1 x`.
+
+Conclude with `⟨j, offT φ D s t he K j, y, e⟩`. Take `⟨k, f, e⟩` from `h2 j y hy`. Conclude with `⟨k, f, offD D s K f, e⟩`.
+-/
 theorem cont_iff (q : ℕ) (i m : ℤ) (he : ∀ j, s.app j ≫ t.app j = CommRingCat.ofHom φ) (K : Ideal A) :
     HtOffCont q φ K D s t m i ↔ (sysOf φ D s t q i m he K).Surj ∧ (sysOf φ D s t q i m he K).Inj := by
   constructor
@@ -391,6 +509,11 @@ def dHom (q : ℕ) (i m : ℤ) (he : ∀ j, s.app j ≫ t.app j = CommRingCat.of
   b_ι j y := (nat (Spec.map (t.app j)) (hsq _ _) (hsq _ _) (offT φ D s t he KU j) (offT φ D s t he KV j)
     (offT φ D s t he KW j) (offT φ D s t he KP j) m y).symm
 
+/- English proof (translation)
+Take `⟨d, hex, hnat⟩` from `mv q i`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Establish `u` using `fun m => (cont_iff φ D s t q i m he KU).1 (hU m)`. Establish `v` using `fun m => (cont_iff φ D s t q i m he KV).1 (hV m)`. Establish `p` using `fun m => (cont_iff φ D s t q i m he KP).1 (hP m)`.
+
+Establish `hpu : ∀ (R : Type) [CommRing R] (ψ : A →+* R), off R (KP.map ψ) ≤ off R (KU.map ψ)` using `fun R _ ψ => (hsq R ψ).pu`. Establish `hpv : ∀ (R : Type) [CommRing R] (ψ : A →+* R), off R (KP.map ψ) ≤ off R (KV.map ψ)` using `fun R _ ψ => (hsq R ψ).pv`. Establish `huw : ∀ (R : Type) [CommRing R] (ψ : A →+* R), off R (KU.map ψ) ≤ off R (KW.map ψ)` using `fun R _ ψ => (hsq R ψ).uw`. Establish `hvw : ∀ (R : Type) [CommRing R] (ψ : A →+* R), off R (KV.map ψ) ≤ off R (KW.map ψ)` using `fun R _ ψ => (hsq R ψ).vw`. Use `(cont_iff φ D s t q i (m + 1) he KW).2 (Sys.five ((resHom φ D s t q i m he KP KU hpu).diff (resHom φ D s t q i m he KP KV hpv)) (dHom φ D s t q i m he KU KV KW KP hsq d hnat) ((resHom φ D s t q i (m + 1) he KU KW huw).pair (resHom φ D s t q i (m + 1) he KV KW hvw)) ((resHom φ D s …` and prove the remaining obligations.
+-/
 theorem step [IsFiltered J] (q : ℕ) (i : ℤ) (he : ∀ j, s.app j ≫ t.app j = CommRingCat.ofHom φ)
     (KU KV KW KP : Ideal A)
     (hsq : ∀ (R : Type) [CommRing R] (ψ : A →+* R),
@@ -416,9 +539,17 @@ theorem step [IsFiltered J] (q : ℕ) (i : ℤ) (he : ∀ j, s.app j ≫ t.app j
     (Sys.prod_surj (u m).1 (v m).1) (p m).1 (p m).2 (Sys.prod_surj (u (m + 1)).1 (v (m + 1)).1)
     (Sys.prod_inj (u (m + 1)).2 (v (m + 1)).2) (p (m + 1)).2)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_off {R : Type} [CommRing R] (K : Ideal R) (p : Spec (CommRingCat.of R)) :
     p ∈ off R K ↔ ¬ K ≤ (p : PrimeSpectrum R).asIdeal := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `p`. Express the relevant statement in the definitionally equal form `p ∈ off A _ ↔ p ∈ off A _ ∧ p ∈ off A _`. Simplify using `only [mem_off, Ideal.span_le, Set.range_subset_iff, Ideal.span_singleton_le_iff_mem, SetLike.mem_coe]`. Establish `hp` using `(p : PrimeSpectrum A).isPrime`. Distinguish the cases in `hf : f ∈ (p : PrimeSpectrum A).asIdeal`.
+
+Simplify using `[hf, Ideal.mul_mem_left]`. Simplify using `[hf, hp.mul_mem_iff_mem_or_mem]`.
+-/
 private theorem off_inf {r : ℕ} (y : Fin r → A) (f : A) :
     off A (Ideal.span (Set.range fun k => y k * f)) = off A (Ideal.span (Set.range y)) ⊓ off A (Ideal.span {f}) := by
   ext p
@@ -429,6 +560,9 @@ private theorem off_inf {r : ℕ} (y : Fin r → A) (f : A) :
   · simp [hf, Ideal.mul_mem_left]
   · simp [hf, hp.mul_mem_iff_mem_or_mem]
 
+/- English proof (translation)
+Rewrite using `[off_map, off_map, off_map, off_map, off_inf]`. Use `⟨?_, rfl⟩` and prove the remaining obligations. Rewrite using `[range_fin_succ x, off_span_union]`. Both sides reduce to the same expression.
+-/
 private theorem sq_of {r : ℕ} (x : Fin (r + 1) → A) (R : Type) [CommRing R] (ψ : A →+* R) :
     Sq (off R ((Ideal.span (Set.range fun k : Fin r => x k.castSucc)).map ψ))
       (off R ((Ideal.span {x (Fin.last r)}).map ψ)) (off R ((Ideal.span (Set.range x)).map ψ))
@@ -442,6 +576,9 @@ end final
 
 end UpperTheory.Cb.OffDiagonalContinuation
 
+/- English proof (translation)
+Introduce `_ _ hb a1 a4 b1 _ _ _ r ih q A B _ _ φ x hq J _ _ D s t hc he n i`. Conclude with `UpperTheory.Cb.OffDiagonalContinuation.step φ D s t q i he _ _ _ _ (UpperTheory.Cb.OffDiagonalContinuation.sq_of x) (fun m => ih q φ _ hq J D s t hc he m i) (fun m => hb a1 a4 b1 q φ _ hq J D s t hc he m i) (fun m => ih q φ (fun k => x k.castSucc * x (Fin.last r)) hq J D s t hc h …`.
+-/
 theorem UpperTheory.Cb.off_diagonal_continuation_inductive :
     LateralTheory.CohomologicalPurity.LeafBd → LateralTheory.CohomologicalPurity.LeafExc → LateralTheory.CohomologicalPurity.OffContBasic → LateralTheory.CohomologicalPurity.OffContStep := by
   intro _ _ hb a1 a4 b1 _ _ _ r ih q A B _ _ φ x hq J _ _ D s t hc he n i

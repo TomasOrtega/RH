@@ -11,6 +11,11 @@ universe u
 
 variable {C : Type u} [Category.{0} C] (K : Cx C)
 
+/- English proof (translation)
+Use `⟨fun x _ h => ?_, fun y hy => ⟨y, hy, ?_⟩, fun x y _ h => ⟨y, ?_⟩, fun y hy => ⟨y, 0, hy, ?_⟩, fun x y _ h => ⟨y, ?_⟩, fun y hy => ⟨y, 0, hy, ?_⟩⟩` and prove the remaining obligations. Rewrite `h` using `[K.M0.map_id]`. Then use the resulting hypothesis. Conclude with `K.M0.map_id T y`. Rewrite `h` using `[K.M1.map_id]`. Conclude with `h.symm`.
+
+Rewrite using `[K.M1.map_id, map_zero, add_zero]`. Rewrite `h` using `[K.M2.map_id]`. Conclude with `h.symm`. Rewrite using `[K.M2.map_id, map_zero, add_zero]`.
+-/
 theorem qAt_ident (T : C) : K.QAt (𝟙 T) := by
   refine ⟨fun x _ h => ?_, fun y hy => ⟨y, hy, ?_⟩, fun x y _ h => ⟨y, ?_⟩, fun y hy => ⟨y, 0, hy, ?_⟩,
     fun x y _ h => ⟨y, ?_⟩, fun y hy => ⟨y, 0, hy, ?_⟩⟩
@@ -21,6 +26,17 @@ theorem qAt_ident (T : C) : K.QAt (𝟙 T) := by
   · rw [K.M2.map_id] at h; exact h.symm
   · rw [K.M2.map_id, map_zero, add_zero]
 
+/- English proof (translation)
+Use `⟨fun x hx h => ?_, fun y hy => ?_, fun x y hx h => ?_, fun y hy => ?_, fun x y hx h => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[K.M0.map_comp]`. Conclude with `ha.inj0 x hx (hb.inj0 _ (by rw [K.diffZero_natural, hx, map_zero]) h)`. Take `⟨x', hx', rfl⟩` from `hb.surj0 y hy`. Take `⟨x, hx, rfl⟩` from `ha.surj0 x' hx'`.
+
+Conclude with `⟨x, hx, K.M0.map_comp a b x⟩`. Rewrite `h` using `[K.M1.map_comp]`. Take `⟨w', hw'⟩` from `hb.inj1 _ y (by rw [K.diffOne_natural, hx, map_zero]) h`. Conclude with `ha.inj1 x w' hx hw'.symm`. Take `⟨x', w', hx', rfl⟩` from `hb.surj1 y hy`.
+
+Take `⟨x, w, hx, rfl⟩` from `ha.surj1 x' hx'`. Use `⟨x, K.M0.map b w + w', hx, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, K.M1.map_comp, K.diffZero_natural]`. Normalize the expressions using the abelian group laws. Rewrite `h` using `[K.M2.map_comp]`.
+
+Take `⟨w', hw'⟩` from `hb.inj2 _ y (by rw [K.diffTwo_natural, hx, map_zero]) h`. Conclude with `ha.inj2 x w' hx hw'.symm`. Take `⟨x', w', hx', rfl⟩` from `hb.surj2 y hy`. Take `⟨x, w, hx, rfl⟩` from `ha.surj2 x' hx'`. Use `⟨x, K.M1.map b w + w', hx, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_add, K.M2.map_comp, K.diffOne_natural]`. Normalize the expressions using the abelian group laws.
+-/
 theorem qAt_comp {T T' T'' : C} (a : T ⟶ T') (b : T' ⟶ T'') (ha : K.QAt a) (hb : K.QAt b) :
     K.QAt (a ≫ b) := by
   refine ⟨fun x hx h => ?_, fun y hy => ?_, fun x y hx h => ?_, fun y hy => ?_,
@@ -47,6 +63,17 @@ theorem qAt_comp {T T' T'' : C} (a : T ⟶ T') (b : T' ⟶ T'') (ha : K.QAt a) (
     simp only [map_add, K.M2.map_comp, K.diffOne_natural]
     abel
 
+/- English proof (translation)
+Establish `e0 : ∀ y, K.M0.map c (K.M0.map b y) = y` using `fun y => by`. Rewrite using `[← K.M0.map_comp, hbc, K.M0.map_id]`. Establish `e1 : ∀ y, K.M1.map c (K.M1.map b y) = y` using `fun y => by`. Rewrite using `[← K.M1.map_comp, hbc, K.M1.map_id]`. Establish `e2 : ∀ y, K.M2.map c (K.M2.map b y) = y` using `fun y => by`.
+
+Rewrite using `[← K.M2.map_comp, hbc, K.M2.map_id]`. Use `⟨fun x hx hax => ?_, fun y hy => ?_, fun x y hx hxy => ?_, fun y hy => ?_, fun x y hx hxy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `h.inj0 x hx (by rw [K.M0.map_comp, hax, map_zero])`. Take `⟨x, hx, hxy⟩` from `h.surj0 (K.M0.map b y) (by rw [K.diffZero_natural, hy, map_zero])`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hxy` using `[K.M0.map_comp]`. Simplify `congrArg (K.M0.map c) hxy` using `only [e0]`. Conclude with `h.inj1 x (K.M0.map b y) hx (by rw [K.M1.map_comp, hxy, K.diffZero_natural])`. Take `⟨x, w, hx, hw⟩` from `h.surj1 (K.M1.map b y) (by rw [K.diffOne_natural, hy, map_zero])`. Use `⟨x, K.M0.map c w, hx, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (K.M1.map c) hw` as an intermediate fact. Rewrite `this` using `[map_add, K.M1.map_comp, e1, e1, ← K.diffZero_natural]`. Conclude with `this`. Conclude with `h.inj2 x (K.M1.map b y) hx (by rw [K.M2.map_comp, hxy, K.diffOne_natural])`. Take `⟨x, w, hx, hw⟩` from `h.surj2 (K.M2.map b y) (by rw [K.diffTwo_natural, hy, map_zero])`.
+
+Use `⟨x, K.M1.map c w, hx, ?_⟩` and prove the remaining obligations. Use `congrArg (K.M2.map c) hw` as an intermediate fact. Rewrite `this` using `[map_add, K.M2.map_comp, e2, e2, ← K.diffOne_natural]`. Conclude with `this`.
+-/
 theorem qAt_of_comp_retract {T T' T'' : C} (a : T ⟶ T') (b : T' ⟶ T'') (c : T'' ⟶ T')
     (hbc : b ≫ c = 𝟙 T') (h : K.QAt (a ≫ b)) : K.QAt a := by
   have e0 : ∀ y, K.M0.map c (K.M0.map b y) = y := fun y => by
@@ -75,9 +102,15 @@ theorem qAt_of_comp_retract {T T' T'' : C} (a : T ⟶ T') (b : T' ⟶ T'') (c : 
     rw [map_add, K.M2.map_comp, e2, e2, ← K.diffOne_natural] at this
     exact this
 
+/- English proof (translation)
+The claim follows from `qAt_of_comp_retract K a (inv a) a (IsIso.inv_hom_id a) (by rw [IsIso.hom_inv_id]; exact qAt_ident K T)`.
+-/
 theorem qAt_of_isIso {T T' : C} (a : T ⟶ T') [IsIso a] : K.QAt a :=
   qAt_of_comp_retract K a (inv a) a (IsIso.inv_hom_id a) (by rw [IsIso.hom_inv_id]; exact qAt_ident K T)
 
+/- English proof (translation)
+Introduce `_ _ K` and use `⟨fun _ _ a _ => qAt_of_isIso K a, fun _ _ _ a b => qAt_comp K a b, fun _ _ _ a b c => qAt_of_comp_retract K a b c⟩`.
+-/
 theorem qAt_formal : ∀ (C : Type 1) [Category.{0} C] (K : Cx C),
     (∀ (T T' : C) (a : T ⟶ T') [IsIso a], K.QAt a) ∧
     (∀ (T T' T'' : C) (a : T ⟶ T') (b : T' ⟶ T''), K.QAt a → K.QAt b → K.QAt (a ≫ b)) ∧

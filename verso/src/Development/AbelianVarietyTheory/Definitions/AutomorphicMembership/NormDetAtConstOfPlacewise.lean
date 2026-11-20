@@ -25,6 +25,9 @@ def carry {F : Type} [Field F] (f g : F →+* Qb) : Qb →+* Qb :=
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (a : κ.c.F) : ((inclQb κ.c a : Qb) : ℂ) = a := rfl
 
 def ioAt (p : ℕ) [Fact p.Prime] (y : Pt s) : Qb →+* ℂ_[p] := (iotaP p).comp (carry y.fK (inclQb κ.c))

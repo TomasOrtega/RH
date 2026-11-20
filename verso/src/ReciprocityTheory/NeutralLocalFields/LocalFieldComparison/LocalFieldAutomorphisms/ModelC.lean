@@ -11,6 +11,17 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
 
 attribute [local instance] locRel
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `key : ∀ m, ‖∑ i ∈ Finset.range (m + 1), P.coeff i * x ^ i‖ ≤ ‖x‖ ^ m`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => simpa using hc 0`. Consider the case `succ m ih`. Rewrite using `[Finset.sum_range_succ]`. Use `(norm_add_le_max_padic _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `ih.trans (pow_le_pow_right₀ hlt.le (Nat.le_succ m))`.
+
+Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `he` using `P.eval_eq_sum_range (x := x)`. Rewrite `he` using `[hx]`. Break down `Nat.eq_zero_or_pos P.natDegree with h0 | hpos` into its components or cases.
+
+Rewrite `he` using `[h0]`. Simplify using `[hP.coeff_natDegree ▸ (show P.coeff 0 = P.coeff P.natDegree by rw [h0])] at he`. Take `⟨m, hm⟩ : ∃ m, P.natDegree = m + 1` from `⟨P.natDegree - 1, by omega⟩`. Rewrite `he` using `[hm, Finset.sum_range_succ, ← hm, hP.coeff_natDegree, one_mul, hm]`. Establish `e2 : x ^ (m + 1) = -∑ i ∈ Finset.range (m + 1), P.coeff i * x ^ i`.
+
+Take the linear combination `-he`. Use `key m` as an intermediate fact. Rewrite `this` using `[← norm_neg, ← e2, norm_pow]`. Establish `h3 : ‖x‖ ^ m < ‖x‖ ^ (m + 1)` using `pow_lt_pow_right₀ hlt (Nat.lt_succ_self m)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_le_one_of_monic_root (P : Polynomial (PadicAlgCl p)) (hP : P.Monic) (hc : ∀ i, ‖P.coeff i‖ ≤ 1)
     {x : PadicAlgCl p} (hx : P.eval x = 0) : ‖x‖ ≤ 1 := by
   by_contra hlt
@@ -40,6 +51,9 @@ theorem norm_le_one_of_monic_root (P : Polynomial (PadicAlgCl p)) (hP : P.Monic)
     have h3 : ‖x‖ ^ m < ‖x‖ ^ (m + 1) := pow_lt_pow_right₀ hlt (Nat.lt_succ_self m)
     linarith
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (ι : Ω →+* PadicAlgCl p) : algebraMap 𝒪[Kloc F ι] (AlgebraicClosure (Kloc F ι)) =
     (algebraMap (Kloc F ι) (AlgebraicClosure (Kloc F ι))).comp (algebraMap 𝒪[Kloc F ι] (Kloc F ι)) := rfl
 

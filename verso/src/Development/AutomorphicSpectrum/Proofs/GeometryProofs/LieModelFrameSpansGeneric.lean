@@ -15,6 +15,13 @@ namespace GlobalTheory.CompanionTheory.Ar.FlagFib
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Establish `hφ : Spec.map (CommRingCat.ofHom (algebraMap A K)) ≫ x = spMap (algebraMap A K) ≫ x` using `rfl`. Establish `hsm : ∀ (a : A) (t : V), a • t = algebraMap A K a • t` using `fun a t => by`. Rewrite using `[algebraMap_smul]`. Establish `ex : ∀ e, ∃ t, MV.pt t = LieTangent.epsBase (algebraMap A K) hφ ≫ M₀.pt e` using `fun e => MV.onto _ (LieTangent.isTanAt_base _ hφ (M₀.tan e))`. Use `choose f hf using ex`.
+
+Set `j : E₀ →ₗ[A] V` to `{ toFun := f map_add' := fun a b => MV.inj (by rw [MV.add, hf, hf, hf, M₀.add, comp_mul]) map_smul' := fun c e => MV.inj (by`. Rewrite using `[RingHom.id_apply, hsm, LieModel.pt_smul, hf, hf, LieModel.pt_smul, ← Category.assoc, LieTangent.base_scale, Category.assoc]) }`. Establish `hl : ∀ e, M₀.Lifts (algebraMap A K) (𝟙 G.left) e (MV.pt (j e))` using `fun e => by`. Express the relevant statement in the definitionally equal form `(MV.pt (f e)).left ≫ 𝟙 G.left = _`. Rewrite using `[hf, Category.comp_id]`.
+
+Both sides reduce to the same expression. Establish `hbc : IsBaseChange K j` using `GlobalTheory.T.lie_model_isBaseChange X G A K x E₀ V M₀ MV j hl`. Take `⟨hfin, hproj⟩` from `GlobalTheory.T.lie_model_finite_projective X G A x E₀ M₀`. Use `haveI : Module.Free A E₀ := Module.free_of_flat_of_isLocalRing`. Rewrite using `[← LinearEquiv.finrank_eq hbc.equiv, Module.finrank_baseChange]`.
+-/
 theorem finrank_lieModel_of_algebra (X : Scheme.{0}) (G : Over X) [GrpObj G] [Smooth G.hom] (A : Type) [CommRing A]
     [IsLocalRing A] (x : Sp A ⟶ X) (E₀ : Type) [AddCommGroup E₀] [Module A E₀] (M₀ : LieModel G x E₀) (K : Type)
     [Field K] [Algebra A K] (V : Type) [AddCommGroup V] [Module K V] [Module A V] [IsScalarTower A K V]
@@ -40,6 +47,11 @@ theorem finrank_lieModel_of_algebra (X : Scheme.{0}) (G : Over X) [GrpObj G] [Sm
   haveI : Module.Free A E₀ := Module.free_of_flat_of_isLocalRing
   rw [← LinearEquiv.finrank_eq hbc.equiv, Module.finrank_baseChange]
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Use `letI : Algebra A K := c.toAlgebra`. Use `letI mR : Module A V := Module.compHom V c`. Use `haveI tower : IsScalarTower A K V := ⟨fun a b t => by`. Rewrite using `[Algebra.smul_def, mul_smul]`.
+
+Use the proof step `rfl⟩`. Conclude with `finrank_lieModel_of_algebra X G A x E₀ M₀ K V MV`.
+-/
 theorem finrank_lieModel_eq (X : Scheme.{0}) (G : Over X) [GrpObj G] [Smooth G.hom] (A : Type) [CommRing A]
     [IsLocalRing A] (x : Sp A ⟶ X) (E₀ : Type) [AddCommGroup E₀] [Module A E₀] (M₀ : LieModel G x E₀) (K : Type)
     [Field K] (c : A →+* K) (y : Sp K ⟶ X) (hy : Spec.map (CommRingCat.ofHom c) ≫ x = y) (V : Type) [AddCommGroup V]
@@ -52,6 +64,9 @@ theorem finrank_lieModel_eq (X : Scheme.{0}) (G : Over X) [GrpObj G] [Smooth G.h
     rfl⟩
   exact finrank_lieModel_of_algebra X G A x E₀ M₀ K V MV
 
+/- English proof (translation)
+Substitute `hz` using the available equality. Establish `hd : dualMap (algebraMap L L) = RingHom.id _` using `RingHom.ext fun a => TrivSqZeroExt.ext (LieTangent.dualMap_fst _ a) (LieTangent.dualMap_snd _ a)`. Conclude with `⟨TL, fun t => by rw [hd, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp], fun _ _ h => h⟩`.
+-/
 theorem lieModel_transport {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G] {ξ : Sp Ω ⟶ X} {Li : Type}
     [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) {L : Type} [Field L] {z z' : Sp L ⟶ X} (hz : z' = z)
     {T : Type} [AddCommGroup T] [Module L T] (TL : LieModel G z T) :
@@ -63,6 +78,29 @@ theorem lieModel_transport {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} 
     TrivSqZeroExt.ext (LieTangent.dualMap_fst _ a) (LieTangent.dualMap_snd _ a)
   exact ⟨TL, fun t => by rw [hd, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp], fun _ _ h => h⟩
 
+/- English proof (translation)
+Introduce `X G _ _ _ Ω _ ξ Li _ _ M L _ zL T _ _ TL h Ix _ f hξ hli hsp hlat`. Establish `ex : ∀ i, ∃ w, M.ValAt zL (f i) (TL.pt w)` using `fun i => by`. Establish `hm : f i ∈ M.lat ⟨centre zL, h⟩`. Rewrite using `[hlat]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+
+Take `⟨v, hv⟩` from `(M.exists_valAt_iff zL (f i)).2 ⟨h, hm⟩`. Take `⟨t, rfl⟩` from `TL.onto v hv.isTanAt`. Conclude with `⟨t, hv⟩`. Use `choose w hw using ex`. Establish `key : ∀ (A : Set Ix) (e : Li), e ∈ Submodule.span (regAt ξ ⟨centre zL, h⟩) (f '' A) → ∃ u ∈ Submodule.span L (w '' A), M.ValAt zL e (TL.pt u)`.
+
+Introduce `A e he`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem e he`. Take `⟨i, hi, rfl⟩` from `he`. Conclude with `⟨w i, Submodule.subset_span ⟨i, hi, rfl⟩, hw i⟩`.
+
+Consider the case `zero => exact ⟨0, zero_mem _, by rw [TL.pt_zero]; exact M.valAt_zero h⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨u, hu, hv⟩` from `ha`. Take `⟨u', hu', hv'⟩` from `hb`. Conclude with `⟨u + u', add_mem hu hu', by rw [TL.add]; exact hv.add hv'⟩`.
+
+Consider the case `smul c a _ ha`. Take `⟨u, hu, hv⟩` from `ha`. Take `⟨_, s, rfl⟩` from `c`. Use `⟨(Scheme.stalkClosedPointTo zL).hom s • u, Submodule.smul_mem _ _ hu, ?_⟩` and prove the remaining obligations. Rewrite using `[TL.pt_smul]`.
+
+Conclude with `hv.smul h s`. Establish `hz : Spec.map (CommRingCat.ofHom (algebraMap L L)) ≫ zL = zL`. Establish `e : CommRingCat.ofHom (algebraMap L L) = 𝟙 (CommRingCat.of L)` using `rfl`. Rewrite using `[e, Spec.map_id, Category.id_comp]`. Take `⟨MC, h1, h2⟩` from `lieModel_transport M hz TL`.
+
+Establish `hc : genPt ξ ⤳ centre (Spec.map (CommRingCat.ofHom (algebraMap L L)) ≫ zL)` using `(congrArg centre hz).symm ▸ h`. Establish `hspan : ⊤ ≤ Submodule.span L (Set.range w)`. Introduce `t _`. Establish `ht : t ∈ M.fibAt M.lat zL MC` using `(GlobalTheory.T.lie_lattice_eval_fraction_field X G Ω ξ Li M L zL L T MC hξ inferInstance h hc t).2 ⟨TL.pt t, TL.tan t, h1 t⟩`. Use `(Submodule.span_le.2 ?_ : M.fibAt M.lat zL MC ≤ _) ht` and prove the remaining obligations.
+
+Introduce and unpack `w' ⟨h', e, he, hv⟩`. Establish `he' : e ∈ Submodule.span (regAt ξ ⟨centre zL, h⟩) (f '' Set.univ)`. Rewrite using `[Set.image_univ, ← hlat]`. Conclude with `he`. Take `⟨u, hu, hv'⟩` from `key _ _ he'`.
+
+Use `TL.inj ((h2 _ _ hv).unique hξ hv')` as an intermediate fact. Rewrite using `[this]`. Rewrite `hu` using `[Set.image_univ]`. Then use the resulting hypothesis. Take `⟨E₀, _, _, ⟨M₀⟩⟩` from `lieModel_exists X G (X.presheaf.stalk (centre zL)) (X.fromSpecStalk (centre zL))`. Establish `c1` using `finrank_lieModel_eq X G _ _ E₀ M₀ Ω (genMap ξ ⟨centre zL, h⟩) ξ (LieTangent.spec_genMap ξ ⟨centre zL, h⟩) Li M`.
+
+Establish `c2` using `finrank_lieModel_eq X G _ _ E₀ M₀ L (Scheme.stalkClosedPointTo zL).hom zL (LieTangent.spec_centre zL) T TL`. Establish `card : Fintype.card Ix = Module.finrank L T`. Rewrite using `[c2, ← c1, Module.finrank_eq_card_basis (Module.Basis.mk hli hsp.ge)]`. Use `⟨w, hw, linearIndependent_of_top_le_span_of_card_eq_finrank hspan card, top_le_iff.1 hspan, ?_⟩` and prove the remaining obligations. Introduce `A e u he hv`.
+
+Take `⟨u', hu', hv'⟩` from `key A e he`. Rewrite using `[TL.inj (hv.unique hξ hv')]`. Conclude with `hu'`.
+-/
 theorem lieModel_valFrame : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (L : Type) [Field L] (zL : Sp L ⟶ X) (T : Type) [AddCommGroup T] [Module L T] (TL : LieModel G zL T) (h : genPt ξ ⤳ centre zL) (Ix : Type) [Fintype Ix] (f : Ix → Li), IsCptGen ξ → LinearIndependent Ω f → Submodule.span Ω (Set.range f) = ⊤ → M.lat ⟨centre zL, h⟩ = Submodule.span (regAt ξ ⟨centre zL, h⟩) (Set.range f) → ∃ w : Ix → T, (∀ i, M.ValAt zL (f i) (TL.pt (w i))) ∧ LinearIndependent L w ∧ Submodule.span L (Set.range w) = ⊤ ∧ ∀ (A : Set Ix) (e : Li) (u : T), e ∈ Submodule.span (regAt ξ ⟨centre zL, h⟩) (f '' A) → M.ValAt zL e (TL.pt u) → u ∈ Submodule.span L (w '' A) := by
   intro X G _ _ _ Ω _ ξ Li _ _ M L _ zL T _ _ TL h Ix _ f hξ hli hsp hlat
   have ex : ∀ i, ∃ w, M.ValAt zL (f i) (TL.pt w) := fun i => by

@@ -41,6 +41,9 @@ structure SameCar {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
 
 end Re
 
+/- English proof (translation)
+Simplify using `[Ranks.N]`.
+-/
 theorem rank_eq_first_level (R : Ranks) : R.k = R.N 0 := by
   simp [Ranks.N]
 
@@ -108,10 +111,16 @@ def ColumnsExtraCompatible {D : D7} {C : ColsTied D} (Fu : ColsFull C) {L : Size
     (ex : Extra D L hT Gi Gl K Y cX) : Prop :=
   Formalism.L2.Herm.ExtraTied Fu.full ex
 
+/- English proof (translation)
+Rewrite using `[C.gl_const u D.u₀]`. Conclude with `C.chi`.
+-/
 theorem ColsTied.chi_all {D : D7} (C : ColsTied D) (u : D.what₂.Word) : CharacterCompatible (C.forms u).gl D.R.m := by
   rw [C.gl_const u D.u₀]
   exact C.chi
 
+/- English proof (translation)
+The claim follows from `(T.glev i hi).chi_unit x`.
+-/
 theorem FormsTied.chi_unit {D : D7} {u : D.what₂.Word} (T : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m)
     (x : (T.cls i hi).lev.U) : ‖(((T.cls i hi).lev.chi x : ℂˣ) : ℂ)‖ = 1 :=
   (T.glev i hi).chi_unit x

@@ -10,6 +10,9 @@ open GlobalTheory.Mem.R3.LiftBrg
 
 namespace GlobalTheory.SplitEtaIdem
 
+/- English proof (translation)
+Introduce `D Pb Ut`. Apply `GlobalTheory.MovedIdem.exists_isIdemAt` to reduce the goal to its premises. Rewrite using `[Formalism.L2.Col.conjIdeal_asIdeal, Formalism.L2.Col.conjPrime_conjPrime]`. Introduce `h`. Conclude with `Ut.hπP (h ▸ Ut.hπ)`.
+-/
 theorem exists_isIdemAt_conjP : ∀ {D : D7} (Pb : Formalism.L2.DIV.Pl D.host.E) (Ut : Formalism.L2.Col.MhlUnif Pb),
     ∃ e : Formalism.L2.Theta.AE D, Formalism.L2.NTheta.IsIdemAt e (Formalism.L2.Col.conjPrime₂ Pb) := by
   intro D Pb Ut

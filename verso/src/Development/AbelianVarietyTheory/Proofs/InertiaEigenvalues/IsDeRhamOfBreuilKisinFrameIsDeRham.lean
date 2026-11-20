@@ -13,6 +13,17 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BKLim
 
+/- English proof (translation)
+Introduce `l _ K bk τ hτ P AI T N d ρ F hF`. Take `⟨Y, Y', hY, -⟩` from `GlobalTheory.T.breuilKisinPreframe_bounded_poles l K bk τ hτ N d (fun g => (ρ g).val) F.toPre`. Take `⟨C⟩` from `GlobalTheory.MemLoc.nonempty_core l`. Take `⟨B, Q, -, hQ, -, -, hinv⟩` from `GlobalTheory.T.exists_invariant_basis_deRham_breuilKisin l K bk τ hτ C N d (fun g => (ρ g).val) F Y hF hY`. Establish `hQ' : IsUnit (T.eD.symm.mapMatrix Q)` using `hQ.map T.eD.symm.mapMatrix`.
+
+Use `GlobalTheory.PMon.isDR_of_periodMatrix l P (Fin d) K (Fin d → ℚ_[l]) (Pi.basisFun ℚ_[l] (Fin d)) (qRep ρ) hQ'.unit ?_` and prove the remaining obligations. Introduce `g`. Establish `hg` using `hinv g`. Simplify using `only [IsUnit.unit_spec]`. Use extensionality with `i j`.
+
+Apply `T.eD.injective` to reduce the goal to its premises. Establish `hij` using `congrFun (congrFun hg i) j`. Rewrite using `[LinearMap.toMatrix_eq_toMatrix']`. Simplify using `only [qRep, Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul, RingEquiv.mapMatrix_apply] at hij ⊢`. Simplify using `only [MonoidHom.comp_apply, MonoidHom.coe_coe, Units.coeHom_apply, RingHom.mapMatrix_apply, AlgEquiv.coe_toAlgHom, Matrix.toLinAlgEquiv'_apply, LinearMap.toMatrix'_toLin', Matrix.map_apply, T.actD, RingEquiv.apply_symm_apply] at ⊢`.
+
+Rewrite using `[← hij]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `e : LinearMap.toMatrix' (Matrix.toLinAlgEquiv' ((algebraMap ℤ_[l] ℚ_[l]).mapMatrix (ρ g : Matrix (Fin d) (Fin d) ℤ_[l]))) = (algebraMap ℤ_[l] ℚ_[l]).mapMatrix (ρ g : Matrix (Fin d) (Fin d) ℤ_[l])` using `LinearMap.toMatrix'_toLin' _`. Use `erw [e]`.
+
+Conclude with `T.zD ((ρ g : Matrix (Fin d) (Fin d) ℤ_[l]) i x)`.
+-/
 theorem isDR_of_frame_isDR : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (N : ℕ) (d : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (F : Frame bk N d fun g => (ρ g).val), F.IsDR → Formalism.MainNotions.N.IsDR (P.PD K) (qRep ρ) := by
   intro l _ K bk τ hτ P AI T N d ρ F hF
   obtain ⟨Y, Y', hY, -⟩ := GlobalTheory.T.breuilKisinPreframe_bounded_poles l K bk τ hτ N d (fun g => (ρ g).val) F.toPre

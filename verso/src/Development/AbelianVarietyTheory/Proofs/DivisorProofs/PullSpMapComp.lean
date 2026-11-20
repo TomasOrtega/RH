@@ -11,34 +11,57 @@ def laurentMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) : LaurentP
 
 namespace GmPhiNat
 
+/- English proof (translation)
+Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AddMonoidAlgebra.mapRingHom ℤ f (LaurentPolynomial.C a) = LaurentPolynomial.C (f a)`. Rewrite using `[← LaurentPolynomial.single_eq_C, AddMonoidAlgebra.mapRingHom_single]`. Both sides reduce to the same expression.
+-/
 theorem laurentMap_C {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     (laurentMap f).comp (LaurentPolynomial.C : A →+* LaurentPolynomial A) = (LaurentPolynomial.C : B →+* LaurentPolynomial B).comp f := by
   refine RingHom.ext fun a => ?_
   change AddMonoidAlgebra.mapRingHom ℤ f (LaurentPolynomial.C a) = LaurentPolynomial.C (f a)
   rw [← LaurentPolynomial.single_eq_C, AddMonoidAlgebra.mapRingHom_single]; rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `AddMonoidAlgebra.mapRingHom ℤ f (AddMonoidAlgebra.single n (1 : A)) = AddMonoidAlgebra.single n (1 : B)`. Rewrite using `[AddMonoidAlgebra.mapRingHom_single, map_one]`.
+-/
 theorem laurentMap_T {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (n : ℤ) :
     laurentMap f (LaurentPolynomial.T n) = LaurentPolynomial.T n := by
   change AddMonoidAlgebra.mapRingHom ℤ f (AddMonoidAlgebra.single n (1 : A)) = AddMonoidAlgebra.single n (1 : B)
   rw [AddMonoidAlgebra.mapRingHom_single, map_one]
 
+/- English proof (translation)
+The claim follows from `AddMonoidAlgebra.mapRingHom_comp _ _`.
+-/
 theorem laurentMap_comp {A B D : Type} [CommRing A] [CommRing B] [CommRing D] (f : A →+* B) (g : B →+* D) :
     laurentMap (g.comp f) = (laurentMap g).comp (laurentMap f) :=
   AddMonoidAlgebra.mapRingHom_comp _ _
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Functor.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {A B D : Type} [CommRing A] [CommRing B] [CommRing D] (f : A →+* B) (g : B →+* D) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, ← Functor.map_comp, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[spMap_comp, pull_comp]`.
+-/
 theorem pull_spMap_comp (q : ℕ) {A B D : Type} [CommRing A] [CommRing B] [CommRing D] (f : A →+* B) (g : B →+* D) (n i : ℤ)
     (x : Ht q (sp A) n i) : pull _ (spMap (g.comp f)) _ n x = pull _ (spMap g) _ n (pull _ (spMap f) _ n x) := by
   rw [spMap_comp, pull_comp]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+-/
 theorem pull_cast (q : ℕ) {E E' : Spc} (f : E ⟶ E') {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E' n i) :
     pull _ f (tw q i') n' (Ht.cast hn hi x) = Ht.cast hn hi (pull _ f (tw q i) n x) := by
   subst hn; subst hi; rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `h` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (laurentMap f))`. Establish `h2` using `congrArg (fun φ => φ.hom (LaurentPolynomial.T 1)) h`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h2`. Simplify using `only [laurentVar, laurentVarUnit, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`.
+
+Rewrite using `[← h2, laurentMap_T]`.
+-/
 theorem laurentVar_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     Units.map (Spec.map (CommRingCat.ofHom (laurentMap f))).appTop.hom.toMonoidHom (laurentVar A) = laurentVar B := by
   apply Units.ext
@@ -48,6 +71,9 @@ theorem laurentVar_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
   simp only [laurentVar, laurentVarUnit, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]
   rw [← h2, laurentMap_T]
 
+/- English proof (translation)
+Establish `h` using `(hq.map (LaurentPolynomial.C : A →+* LaurentPolynomial A)).map (Scheme.ΓSpecIso (CommRingCat.of (LaurentPolynomial A))).inv.hom`. Simplify using `using h`.
+-/
 theorem isUnit_gamma (q : ℕ) (A : Type) [CommRing A] (hq : IsUnit (q : A)) :
     IsUnit (q : Γ(Spec (CommRingCat.of (LaurentPolynomial A)), ⊤)) := by
   have h := (hq.map (LaurentPolynomial.C : A →+* LaurentPolynomial A)).map
@@ -58,6 +84,9 @@ end GmPhiNat
 
 open GmPhiNat in
 
+/- English proof (translation)
+Take `⟨hcup, -, -, hkum⟩` from `h6 q`. Simplify using `only [gmPhi, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[pull_cast, hcup, ← pull_spMap_comp, ← pull_spMap_comp, laurentMap_C]`. Use `congr 2`. Rewrite using `[spMap, hkum _ _ (isUnit_gamma q A hq), laurentVar_map]`.
+-/
 theorem gmPhi_nat (h6 : DivisorNaturality) (q : ℕ) [NeZero q] {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (hq : IsUnit (q : A))
     (i : ℤ) (a : Ht q (sp A) 0 (i - 1)) :
     pull _ (spMap (laurentMap f)) _ 1 (gmPhi q A i a) = gmPhi q B i (pull _ (spMap f) _ 0 a) := by

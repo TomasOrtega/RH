@@ -5,12 +5,44 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `h.isCompact.isBounded.exists_norm_le`. Use `⟨|R|, abs_nonneg _, fun t ht => image_eq_zero_of_notMem_tsupport fun hm => ?_⟩` and prove the remaining obligations. Conclude with `absurd ((hR t hm).trans (le_abs_self R)) (not_le.2 ht)`.
+-/
 private theorem ker_bd {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     {κ : ℝ → V →L[ℂ] W} (h : HasCompactSupport κ) : ∃ R : ℝ, 0 ≤ R ∧ ∀ t, R < |t| → κ t = 0 := by
   obtain ⟨R, hR⟩ := h.isCompact.isBounded.exists_norm_le
   refine ⟨|R|, abs_nonneg _, fun t ht => image_eq_zero_of_notMem_tsupport fun hm => ?_⟩
   exact absurd ((hR t hm).trans (le_abs_self R)) (not_le.2 ht)
 
+/- English proof (translation)
+Introduce `V _ _ _ _ β hk`. Take `⟨R, hR0, hR⟩` from `ker_bd hk.2`. Establish `hk1 : Integrable β` using `hk.1.integrable_of_hasCompactSupport hk.2`. Take `⟨B, hB⟩` from `hk.1.bounded_above_of_compact_support hk.2`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`.
+
+Set `c : (V →L[ℂ] V) →L[ℂ] (L V →L[ℂ] L V)` to `LinearMap.mkContinuous { toFun := fun A => A.compLpL 2 volume map_add' := fun A B => ContinuousLinearMap.add_compLpL A B map_smul' := fun a A => ContinuousLinearMap.smul_compLpL a A } 1 fun A => by`. Rewrite using `[one_mul]`. Conclude with `ContinuousLinearMap.norm_compLpL_le A`. Use `⟨(2 * B) ^ 2 * (R * Real.exp R), fun u => ?_⟩` and prove the remaining obligations. Use `set d : ℝ → ℝ := fun t => ‖sh V t u - u‖ with hd`.
+
+Establish `dc : Continuous d` using `(((shF V).cont u).sub continuous_const).norm`. Establish `dn : ∀ t, d (-t) = d t` using `fun t => by show ‖(shF V).U (-t) u - u‖ = ‖(shF V).U t u - u‖`. Rewrite using `[← (shF V).norm t, map_sub, ← (shF V).add, add_neg_cancel, (shF V).zero, norm_sub_rev]`. Establish `d2 : ∀ t, d t ≤ 2 * ‖u‖` using `fun t => (norm_sub_le _ _).trans_eq (by`. Rewrite using `[show ‖sh V t u‖ = ‖u‖ from (shF V).norm t u]`.
+
+Use the proof step `ring)`. Establish `i2 : Integrable fun t => c (β t) u` using `(c.integrable_comp hk1).apply_continuousLinearMap u`. Establish `e1 : (symb β 0).compLpL 2 volume u = ∫ t, c (β t) u`. Rewrite using `[symb]`. Simplify using `only [zero_mul, Complex.exp_zero, one_smul]`.
+
+Rewrite using `[← ContinuousLinearMap.integral_apply (c.integrable_comp hk1), c.integral_comp_comm hk1]`. Both sides reduce to the same expression. Establish `e2 : ‖conv β u - (symb β 0).compLpL 2 volume u‖ ≤ 2 * B * ∫ t in (-R)..0, d t`. Rewrite using `[(convSpec β hk u).2.2, e1, ← integral_sub (convSpec β hk u).2.1 i2]`. Establish `hb : Integrable ((Icc (-R) R).indicator fun t => B * d t)` using `(integrable_indicator_iff measurableSet_Icc).2 ((dc.const_mul B).integrableOn_Icc)`.
+
+Use `(norm_integral_le_of_norm_le hb (Eventually.of_forall fun t => ?_)).trans_eq ?_` and prove the remaining obligations. Distinguish the cases in `h : t ∈ Icc (-R) R`. Rewrite using `[indicator_of_mem h] show ‖c (β t) (sh V t u) - c (β t) u‖ ≤ _`. Rewrite using `[← map_sub]`. Use `(ContinuousLinearMap.le_opNorm _ _).trans ?_` and prove the remaining obligations.
+
+Use `gcongr`. Conclude with `(ContinuousLinearMap.norm_compLpL_le _).trans (hB t)`. Rewrite using `[indicator_of_notMem h] show ‖c (β t) (sh V t u) - c (β t) u‖ ≤ _`. Rewrite using `[hR t (not_le.1 fun h' => h (abs_le.1 h')), map_zero]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[integral_indicator measurableSet_Icc, integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le (by linarith), intervalIntegral.integral_const_mul, ← intervalIntegral.integral_add_adjacent_intervals (dc.intervalIntegrable (-R) 0) (dc.intervalIntegrable 0 R)]`. Establish `: ∫ t in (0 : ℝ)..R, d t = ∫ t in (-R)..0, d t`. Rewrite using `[← neg_zero, ← intervalIntegral.integral_comp_neg, neg_zero]`. Simplify using `only [dn]`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e3 : (∫ t in (-R)..0, d t) ^ 2 ≤ R * ∫ t in (-R)..0, d t ^ 2` using `by set m := ∫ t in (-R)..0, d t with hm`. Break down `hR0.eq_or_lt with rfl | hp` into its components or cases. Simplify using `[hm]`. Establish `h0 : 0 ≤ ∫ t in (-R)..0, (R * d t - m) ^ 2` using `intervalIntegral.integral_nonneg (by linarith) fun _ _ => sq_nonneg _`.
+
+Establish `h1 : ∫ t in (-R)..0, (R * d t - m) ^ 2 = R ^ 2 * (∫ t in (-R)..0, d t ^ 2) - 2 * R * m * m + R * m ^ 2`. Establish `: ∀ t, (R * d t - m) ^ 2 = R ^ 2 * d t ^ 2 - 2 * R * m * d t + m ^ 2` using `fun t => by ring`. Simplify using `only [this]`. Rewrite using `[intervalIntegral.integral_add, intervalIntegral.integral_sub, intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul, intervalIntegral.integral_const]`. Simplify using `[hm]`.
+
+Apply the tactic sequence `all_goals exact Continuous.intervalIntegrable (by fun_prop) _ _`. Rewrite `h0` using `[h1]`. Use the polynomial consequences of the given equalities and inequalities. Establish `iw : IntegrableOn (fun t => Real.exp t * d t ^ 2) (Iic 0)`. Use `((integrableOn_exp_Iic 0).mul_const ((2 * ‖u‖) ^ 2)).mono' (by fun_prop) (Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Use `gcongr`. Conclude with `d2 t`. Establish `e4 : ∫ t in (-R)..0, d t ^ 2 ≤ Real.exp R * ∫ t in Iic (0 : ℝ), Real.exp t * d t ^ 2`. Rewrite using `[intervalIntegral.integral_of_le (by linarith), ← integral_const_mul]`.
+
+Use `(setIntegral_mono_on (g := fun t => Real.exp R * (Real.exp t * d t ^ 2)) (dc.pow 2).integrableOn_Ioc (Continuous.integrableOn_Ioc (by fun_prop)) measurableSet_Ioc fun t ht => ?_).trans (setIntegral_mono_set (iw.const_mul _) (Eventually.of_forall fun t => by positivity) Ioc_subset …` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← Real.exp_add]`. Conclude with `le_mul_of_one_le_left (sq_nonneg _) (Real.one_le_exp (by linarith [ht.1]))`. Combine the equalities or inequalities in the displayed calculation. Conclude with `e3.trans (by gcongr)`.
+
+Use `_ = _ := by ring`.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.convNear :
     ∀ {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] (β : ℝ → V →L[ℂ] V), Ker β → ∃ C : ℝ, ∀ u : L V,
       ‖conv β u - (symb β 0).compLpL 2 volume u‖ ^ 2 ≤ C * ∫ t in Iic (0 : ℝ), Real.exp t * ‖sh V t u - u‖ ^ 2 := by

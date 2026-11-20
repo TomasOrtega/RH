@@ -17,6 +17,11 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor F
 open AlgebraicGeometry CategoryTheory Limits
 open ReciprocityTheory.ChartRestriction.G GlobalTheory.IndefiniteRowSideFullHecke.HeckeIsogenyKernels GlobalTheory.HeckeCompare GlobalTheory.HeckeCount
 
+/- English proof (translation)
+Establish `hs : IsSplitPrimeOff l q P` using `(splitPrime_iff l q P).2 (GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.isHeckePrime_iff.1 hP)`. Establish `: CharZero Ω` using `charZero_of_injective_ringHom (Spec.preimage (z.x ≫ Xo.s)).hom.injective`. Take `⟨o, ⟨m⟩⟩` from `exists_fibre_obj Xo z.x z.x rfl`. Take `⟨eT⟩` from `nonempty_transfer_equiv Xo.univ m P q i`. Take `⟨eL⟩` from `nonempty_datum_equiv GlobalTheory.firstFiveLaws.1 o hs i`.
+
+Conclude with `⟨eT.symm.trans ((heckeKerEquivDatum GlobalTheory.firstFiveLaws.1 o hs i).trans eL)⟩`.
+-/
 theorem nonempty_hkKer_equiv {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l)
     (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (P : Ideal (𝓞 E)) (q i : ℕ) (hP : GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.IsHeckePrime l P q)
@@ -35,6 +40,17 @@ namespace GlobalTheory.HeckeTermIdent
 
 open NumberField
 
+/- English proof (translation)
+Take `⟨hOff, hp, hpP, hM, -⟩` from `hS`. Use `GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.isHeckePrime_iff.2 ⟨P.isMaximal, ?_, hp, hpP, hM⟩` and prove the remaining obligations. Set `b : 𝓞 D.host.E ≃+* 𝓞 D.host.E` to `Formalism.L2.Pj.barE D`. Establish `hb : ∀ a : 𝓞 D.host.E, T.Q.H.bar a = b a` using `fun a => GlobalTheory.IndefiniteRowSideFullHecke.HalfDepthValuations.bar_eq_barE T.Q a`. Establish `hmap : P.asIdeal.map (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = P.asIdeal.map (b : 𝓞 D.host.E →+* 𝓞 D.host.E)`.
+
+Use `congr 1`. Conclude with `RingHom.ext hb`. Establish `hconj : Formalism.HermitianLatticesTheory.conjIdeal (K` using `D.host.E) P.asIdeal = P.asIdeal.map (b : 𝓞 D.host.E →+* 𝓞 D.host.E) := by`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Formalism.HermitianLatticesTheory.conjIdeal, Ideal.span_le]`.
+
+Introduce and unpack `r ⟨s, hs, e⟩`. Establish `: r = b s`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Conclude with `e.trans rfl`. Rewrite using `[this]`.
+
+Conclude with `Ideal.mem_map_of_mem _ hs`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `s hs`. Conclude with `Ideal.subset_span ⟨s, hs, rfl⟩`. Establish `hmax : (P.asIdeal.map (b : 𝓞 D.host.E →+* 𝓞 D.host.E)).IsMaximal` using `Ideal.map_isMaximal_of_equiv b`.
+
+Establish `hne : P.asIdeal ≠ P.asIdeal.map (b : 𝓞 D.host.E →+* 𝓞 D.host.E)`. Introduce `e`. Conclude with `hOff.1 (hconj.trans e.symm)`. Rewrite using `[hmap]`. Conclude with `P.isMaximal.coprime_of_ne hmax hne`.
+-/
 theorem isHeckePrime_of_setting {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type}
     {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F}
     {i : Fin D.R.m} {P : Formalism.L2.DIV.Pl D.host.E} {p k : ℕ} {α : GA D (Wc D i)} {Rc : Finset (GA D (Wc D i))}
@@ -70,6 +86,9 @@ namespace GlobalTheory.HeckeTermIdent
 
 open NumberField
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (IsAlgClosed ℂ) ∃ e : hkKer (Xo := T.Q.Xo ((i : ℕ) + 1)) P.asIdeal p k (CAt σ) ((T.U ((i : ℕ) + 1) σ).un (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.dictW T i σ hV h).1 ⟨(GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaVal …`.
+-/
 theorem heckeKernelCoset : ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.HeckePointLaws → GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.SplitLinearModel D → GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.VacFixed D →
     ∀ (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
     (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A)

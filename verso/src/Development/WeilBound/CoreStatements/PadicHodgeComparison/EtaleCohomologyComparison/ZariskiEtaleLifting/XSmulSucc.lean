@@ -61,12 +61,24 @@ def sh (T : C) : Module.End ℤ (Φ.Pr T) :=
 
 instance (T : C) : Module ℤ[X] (Φ.Pr T) := Module.compHom _ (aeval (Φ.sh T)).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_def (T : C) (p : ℤ[X]) (x : Φ.Pr T) : p • x = aeval (Φ.sh T) p x := rfl
 
+/- English proof (translation)
+Rewrite using `[smul_def, aeval_X]`.
+-/
 theorem X_smul (T : C) (x : Φ.Pr T) : (X : ℤ[X]) • x = Φ.sh T x := by rw [smul_def, aeval_X]
 
+/- English proof (translation)
+Rewrite using `[X_smul]`. Both sides reduce to the same expression.
+-/
 theorem X_smul_zero (T : C) (x : Φ.Pr T) : ((X : ℤ[X]) • x) 0 = 0 := by rw [X_smul]; rfl
 
+/- English proof (translation)
+Rewrite using `[X_smul]`. Both sides reduce to the same expression.
+-/
 theorem X_smul_succ (T : C) (x : Φ.Pr T) (r : ℕ) : (((X : ℤ[X]) • x) (r + 1)).1 = Φ.μ • (x r).1 := by rw [X_smul]; rfl
 
 def lin {M : Type w} {N : Type w'} [AddCommGroup M] [AddCommGroup N] [Module ℤ[X] M] [Module ℤ[X] N] (f : M →+ N)
@@ -90,6 +102,9 @@ def prMap {T T' : C} (φ : T ⟶ T') : Φ.Pr T →ₗ[ℤ[X]] Φ.Pr T' :=
     · exact Subtype.ext (map_zero _)
     · exact Subtype.ext (map_smul _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prMap_apply {T T' : C} (φ : T ⟶ T') (x : Φ.Pr T) (r : ℕ) : (Φ.prMap φ x r).1 = (F.map φ).hom (x r).1 := rfl
 
 def rees : C ⥤ ModuleCat.{w} ℤ[X] where
@@ -107,8 +122,14 @@ def comap (G : C' ⥤ C) : Flt (G ⋙ F) where
   μ := Φ.μ
   mul r T := Φ.mul r (G.obj T)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comap_rees (G : C' ⥤ C) : (Φ.comap G).rees = G ⋙ Φ.rees := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comap_fn (G : C' ⥤ C) (r : ℕ) : ((Φ.comap G).S r).fn = G ⋙ (Φ.S r).fn := rfl
 
 def FAcyc {T T' : C} (i : T ⟶ T') (g : T' ⟶ T') : Prop :=

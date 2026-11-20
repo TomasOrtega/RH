@@ -10,6 +10,11 @@ namespace GlobalTheory.MajorantOrthFrame
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_filter]`. Use `Finset.sum_bij (fun a _ => Fin.castLE h a) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a _`. Simplify using the standard rewrite rules. Introduce `a _ b _ hab`.
+
+Conclude with `Fin.castLE_injective h hab`. Introduce `b hb`. Conclude with `⟨⟨b, by simpa using hb⟩, Finset.mem_univ _, rfl⟩`. Introduce `a _`. Both sides reduce to the same expression.
+-/
 lemma sum_castLE_eq {p r : ℕ} (h : p ≤ r) (f : Fin r → ℝ) :
     ∑ a : Fin p, f (Fin.castLE h a) = ∑ a : Fin r, if (a : ℕ) < p then f a else 0 := by
   rw [← Finset.sum_filter]
@@ -27,6 +32,25 @@ open NumberField MeasureTheory Topology in
 open scoped ComplexOrder ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Introduce `r X x hx`. Use `⟨_root_.GlobalTheory.UnitaryFrames.det_ne_zero_of_isOrth X hx, fun τ v => ?_⟩` and prove the remaining obligations. Establish `hdet : (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ).det ≠ 0` using `_root_.GlobalTheory.UnitaryFrames.det_ne_zero_of_isOrth X hx τ`. Establish `hG : _root_.ReciprocityTheory.ChartRestriction.G.FD.gram (↑τ) X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ) = Matrix.diagonal fun a : Fin r ↦ ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 ↑a : ℝ) : ℂ)` using `hx τ`. Use `set P := _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ with hP`.
+
+Use `set c := P⁻¹ *ᵥ v with hc`. Establish `hv : v = P *ᵥ c`. Rewrite using `[hc, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hdet), Matrix.one_mulVec]`. Establish `hcol : ∀ a, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC (↑τ) X.Gm v (_root_.ReciprocityTheory.ChartRestriction.G.FD.col P a) = c a * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 ↑a : ℝ) : ℂ)`. Introduce `a`.
+
+Establish `hcolumn : _root_.ReciprocityTheory.ChartRestriction.G.FD.col P a = P *ᵥ Pi.single a 1`. Use extensionality with `i`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.mulVec_single_one]`. Rewrite using `[hcolumn, hv, _root_.GlobalTheory.UnitaryFrames.hermC_mulVec, hG]`. Simplify using `[dotProduct, Matrix.mulVec_diagonal, Pi.single_apply]`.
+
+Establish `hvv : _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC (↑τ) X.Gm v v = ∑ a, c a * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 ↑a : ℝ) : ℂ) * star (c a)` using `by conv_lhs => rw [hv]`. Rewrite using `[_root_.GlobalTheory.UnitaryFrames.hermC_mulVec, hG]`. Simplify using `[dotProduct, Matrix.mulVec_diagonal, mul_assoc]`. Establish `hgp : X.gramPos x τ = 1`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.gramPos`.
+
+Rewrite using `[← hP, hG]`. Use extensionality with `a b`. Simplify using `[Matrix.one_apply, Matrix.diagonal_apply, _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn]`. Establish `hp : X.p0 ≤ r` using `X.p0_le`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.maj _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.posPart`.
+
+Rewrite using `[hgp, hvv]`. Simplify using `only [← hP, inv_one, Matrix.one_apply, hcol]`. Simplify using `[Finset.sum_ite_eq, _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn]`. Establish `key : ∀ f : Fin r → ℝ, ∑ b : Fin X.p0, f (Fin.castLE hp b) = ∑ a : Fin r, if (a : ℕ) < X.p0 then f a else 0`. Introduce `f`.
+
+Establish `hmap` using `Finset.sum_map Finset.univ (Fin.castLEEmb hp) f`. Simplify using `only [Fin.castLEEmb_apply] at hmap`. Rewrite using `[← Finset.sum_filter, ← hmap]`. Use `congr 1`. Use extensionality with `a`.
+
+Simplify using `only [Finset.mem_map, Finset.mem_univ, true_and, Finset.mem_filter, Fin.castLEEmb_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Conclude with `b.isLt`. Introduce `h`.
+
+Conclude with `⟨⟨a, h⟩, rfl⟩`. Rewrite using `[key fun a => (c a).re * (c a).re + (c a).im * (c a).im, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem _root_.GlobalTheory.MajorantOrthFrame.maj_eq_sum_norm_sq_of_isOrth :
     (∀ (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r), _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x →
       (∀ τ : X.Ψ, (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ).det ≠ 0) ∧ ∀ (τ : X.Ψ) (v : Fin r → ℂ),

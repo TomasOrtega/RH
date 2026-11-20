@@ -15,6 +15,11 @@ section Hilbert
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Establish `: ENNReal.HolderTriple 2 2 1` using `⟨by rw [ENNReal.inv_two_add_inv_two, inv_one]⟩`. Establish `h` using `eLpNorm_le_eLpNorm_mul_eLpNorm'_of_norm (p := 2) (q := 2) (r := 1) (μ := ν) (Lp.aestronglyMeasurable f) (Lp.aestronglyMeasurable g) (fun u v : ℂ => ⟪u, v⟫_ℂ) 1 (Filter.Eventually.of_forall fun x => by simpa using norm_inner_le_norm (𝕜 := ℂ) (f x) (g x))`. Establish `e : ‖(L2.integrable_inner f g).toL1 (fun x => ⟪f x, g x⟫_ℂ)‖ = (eLpNorm (fun x => ⟪f x, g x⟫_ℂ) 1 ν).toReal`. Simplify using `[Integrable.toL1, Lp.norm_toLp]`. Rewrite using `[e, Lp.norm_def f, Lp.norm_def g, ← ENNReal.toReal_mul]`.
+
+Use `ENNReal.toReal_mono (ENNReal.mul_ne_top (Lp.eLpNorm_ne_top f) (Lp.eLpNorm_ne_top g)) ?_` and prove the remaining obligations. Simplify using `using h`.
+-/
 private lemma norm_toL1_inner_le_mul_norm {X : Type*} [MeasurableSpace X] {ν : Measure X} (f g : Lp ℂ 2 ν) :
     ‖(L2.integrable_inner f g).toL1 (fun x => ⟪f x, g x⟫_ℂ)‖ ≤ ‖f‖ * ‖g‖ := by
   have : ENNReal.HolderTriple 2 2 1 := ⟨by rw [ENNReal.inv_two_add_inv_two, inv_one]⟩
@@ -28,6 +33,19 @@ private lemma norm_toL1_inner_le_mul_norm {X : Type*} [MeasurableSpace X] {ν : 
   refine ENNReal.toReal_mono (ENNReal.mul_ne_top (Lp.eLpNorm_ne_top f) (Lp.eLpNorm_ne_top g)) ?_
   simpa using h
 
+/- English proof (translation)
+Use `set e := stdBasis H`. Establish `hsum` using `(isTraceClass_iff_abs e).1 h`. Establish `hA0 : 0 ≤ CFC.abs T` using `CFC.abs_nonneg T`. Use `set A := CFC.abs T with hA`. Use `set S := CFC.sqrt A with hS`.
+
+Establish `hSS : S * S = A` using `CFC.sqrt_mul_sqrt_self A hA0`. Establish `hSsa : IsSelfAdjoint S` using `(CFC.sqrt_nonneg A).isSelfAdjoint`. Establish `hAeq : A = CFC.sqrt (adjoint T ∘L T)`. Simplify using `only [hA, CFC.abs, ContinuousLinearMap.star_eq_adjoint]`. Both sides reduce to the same expression.
+
+Establish `hnorm : ∀ x, ‖T x‖ ≤ ‖A x‖`. Introduce `x`. Rewrite using `[hAeq, norm_sqrt_apply]`. Take `⟨U, hU⟩` from `exists_comp_eq_of_norm_le hnorm`. Establish `hSx : ∀ x, ‖S x‖ ^ 2 = RCLike.re ⟪x, A x⟫_ℂ`.
+
+Introduce `x`. Rewrite using `[← hSS]`. Express the relevant statement in the definitionally equal form `‖S x‖ ^ 2 = RCLike.re ⟪x, S (S x)⟫_ℂ`. Rewrite using `[← @inner_self_eq_norm_sq ℂ, ← adjoint_inner_right, hSsa.adjoint_eq]`. Establish `hSHS : IsHilbertSchmidt S`.
+
+Rewrite using `[isHilbertSchmidt_iff e]`. Use `(hsum.mapL Complex.reCLM).congr (fun i => ?_)` and prove the remaining obligations. Rewrite using `[hSx]`. Both sides reduce to the same expression. Use `⟨U ∘L S, S, hSHS.comp_left U, hSHS, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hU, ← hSS]`. Both sides reduce to the same expression.
+-/
 theorem exists_comp_of_isTraceClass {T : H →L[ℂ] H} (h : IsTraceClass T) :
     ∃ B C : H →L[ℂ] H, IsHilbertSchmidt B ∧ IsHilbertSchmidt C ∧ T = B ∘L C := by
   set e := stdBasis H
@@ -55,6 +73,17 @@ theorem exists_comp_of_isTraceClass {T : H →L[ℂ] H} (h : IsTraceClass T) :
   refine ⟨U ∘L S, S, hSHS.comp_left U, hSHS, ?_⟩
   rw [← hU, ← hSS]; rfl
 
+/- English proof (translation)
+Take `⟨B, C, hB, hC, rfl⟩` from `exists_comp_of_isTraceClass h`. Use `set e := stdBasis H`. Establish `hB2 : Summable fun j => ‖B (e j)‖ ^ 2` using `(isHilbertSchmidt_iff e).1 hB`. Establish `hC2 : Summable fun j => ‖adjoint C (e j)‖ ^ 2` using `(isHilbertSchmidt_iff e).1 hC.adjoint`. Use `⟨fun j => B (e j), fun j => adjoint C (e j), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `Summable.of_nonneg_of_le (fun j => by positivity) (fun j => ?_) (hC2.add hB2)` and prove the remaining obligations. Use polynomial arithmetic with `[sq_nonneg (‖adjoint C (e j)‖ - ‖B (e j)‖), norm_nonneg (adjoint C (e j)), norm_nonneg (B (e j))]`. Introduce `ψ φ`. Establish `h1` using `e.hasSum_inner_mul_inner (adjoint B ψ) (C φ)`. Establish `h2 : ⟪ψ, (B ∘L C) φ⟫_ℂ = ⟪adjoint B ψ, C φ⟫_ℂ` using `by rw [adjoint_inner_left]; rfl`.
+
+Establish `h3 : (fun j => ⟪ψ, B (e j)⟫_ℂ * ⟪adjoint C (e j), φ⟫_ℂ) = fun i => ⟪adjoint B ψ, e i⟫_ℂ * ⟪e i, C φ⟫_ℂ`. Use function extensionality and compare the values at `j`. Rewrite using `[adjoint_inner_left, adjoint_inner_left]`. Use `show HasSum (fun j => ⟪ψ, B (e j)⟫_ℂ * ⟪adjoint C (e j), φ⟫_ℂ) _`. Rewrite using `[h3, h2]`.
+
+Conclude with `h1`. Establish `h1` using `hasSum_trace_comp e hC hB`. Rewrite `h1` using `[← trace_comp_comm hB hC]`. Establish `h3 : (fun j => ⟪adjoint C (e j), B (e j)⟫_ℂ) = fun i => ⟪e i, (C ∘L B) (e i)⟫_ℂ`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[adjoint_inner_left]`. Both sides reduce to the same expression. Use `show HasSum (fun j => ⟪adjoint C (e j), B (e j)⟫_ℂ) _`. Rewrite using `[h3]`. Conclude with `h1`.
+-/
 theorem exists_rankOne_expansion {T : H →L[ℂ] H} (h : IsTraceClass T) :
     ∃ a b : stdIndex H → H, Summable (fun j => ‖b j‖ * ‖a j‖) ∧
       (∀ ψ φ, HasSum (fun j => ⟪ψ, a j⟫_ℂ * ⟪b j, φ⟫_ℂ) ⟪ψ, T φ⟫_ℂ) ∧
@@ -87,10 +116,26 @@ def projSum {n : ℕ} (v : Fin n → H) (c : Fin n → ℝ) : H →L[ℂ] H :=
 
 omit [CompleteSpace H] in
 
+/- English proof (translation)
+Simplify using `[projSum, InnerProductSpace.rankOne_apply]`.
+-/
 theorem inner_projSum {n : ℕ} (v : Fin n → H) (c : Fin n → ℝ) (b a : H) :
     ⟪b, projSum v c a⟫_ℂ = ∑ i, (c i : ℂ)⁻¹ * (⟪v i, a⟫_ℂ * ⟪b, v i⟫_ℂ) := by
   simp [projSum, InnerProductSpace.rankOne_apply]
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun a => ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Establish `hv : ∀ i, ⟪v i, projSum v c a⟫_ℂ = ((c i : ℂ)⁻¹ * (c i : ℂ)) * ⟪v i, a⟫_ℂ`. Introduce `i`. Rewrite using `[inner_projSum, Finset.sum_eq_single i]`.
+
+Rewrite using `[h i]`. Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hji`. Rewrite using `[h' i j (Ne.symm hji)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using the standard rewrite rules. Establish `hPP : ⟪projSum v c a, projSum v c a⟫_ℂ = ⟪a, projSum v c a⟫_ℂ`. Rewrite using `[inner_projSum v c (projSum v c a) a, inner_projSum v c a a]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← inner_conj_symm (projSum v c a) (v i), hv i, ← inner_conj_symm a (v i)]`.
+
+Simplify using `only [map_mul, map_inv₀, Complex.conj_ofReal]`. Distinguish the cases in `hc : (c i : ℂ) = 0`. Simplify using `[hc]`. Rewrite using `[inv_mul_cancel₀ hc, one_mul]`. Establish `h0 : ⟪a - projSum v c a, projSum v c a⟫_ℂ = 0`.
+
+Rewrite using `[inner_sub_left, hPP, sub_self]`. Establish `hn` using `norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero (a - projSum v c a) (projSum v c a) h0`. Rewrite `hn` using `[sub_add_cancel]`. Establish `hle : ‖projSum v c a‖ * ‖projSum v c a‖ ≤ ‖a‖ * ‖a‖`. Rewrite using `[hn]`.
+
+Use polynomial arithmetic with `[mul_self_nonneg ‖a - projSum v c a‖]`. Conclude with `(mul_self_le_mul_self_iff (norm_nonneg _) (norm_nonneg _)).2 hle`.
+-/
 theorem norm_projSum_le {n : ℕ} {v : Fin n → H} {c : Fin n → ℝ} (h : ∀ i, ⟪v i, v i⟫_ℂ = c i)
     (h' : ∀ i j, i ≠ j → ⟪v i, v j⟫_ℂ = 0) : ‖projSum v c‖ ≤ 1 := by
   refine ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun a => ?_
@@ -122,6 +167,15 @@ theorem norm_projSum_le {n : ℕ} {v : Fin n → H} {c : Fin n → ℝ} (h : ∀
 
 omit [CompleteSpace H] in
 
+/- English proof (translation)
+Establish `hb : ∀ m (y : H), ‖P m y‖ ≤ ‖y‖` using `fun m y => ((P m).le_of_opNorm_le (hP m) y).trans_eq (one_mul _)`. Establish `hlip1 : ∀ a' : H, UniformEquicontinuous (fun m (x : H) => ⟪x, P m a'⟫_ℂ)`. Introduce `a'`. Use `LipschitzWith.uniformEquicontinuous _ ‖a'‖₊ fun m => LipschitzWith.of_dist_le_mul fun x y => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm, dist_eq_norm, ← inner_sub_left]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hlip2 : ∀ b' : H, UniformEquicontinuous (fun m (y : H) => ⟪b', P m y⟫_ℂ)`. Introduce `b'`. Use `LipschitzWith.uniformEquicontinuous _ ‖b'‖₊ fun m => LipschitzWith.of_dist_le_mul fun x y => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm, dist_eq_norm, ← inner_sub_right, ← map_sub]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `step1 : ∀ a' ∈ S, ∀ b' : H, Tendsto (fun m => ⟪b', P m a'⟫_ℂ) atTop (𝓝 (q b' a'))`. Introduce `a' ha' b'`. Establish `hf : Continuous fun x => q x a'` using `hq.comp (Continuous.prodMk_left a')`. Establish `hcl` using `(hlip1 a').equicontinuous.isClosed_setOfPred_tendsto (l := atTop) hf`.
+
+Conclude with `hcl.closure_subset_iff.2 (fun x hx => h x hx a' ha') (hS b')`. Establish `hf : Continuous fun y => q b y` using `hq.comp (Continuous.prodMk_right b)`. Establish `hcl` using `(hlip2 b).equicontinuous.isClosed_setOfPred_tendsto (l := atTop) hf`. Conclude with `hcl.closure_subset_iff.2 (fun y hy => step1 y hy b) (hS a)`.
+-/
 theorem tendsto_inner_of_dense {P : ℕ → (H →L[ℂ] H)} (hP : ∀ m, ‖P m‖ ≤ 1) {S : Set H} (hS : Dense S)
     {q : H → H → ℂ} (hq : Continuous (Function.uncurry q))
     (h : ∀ b ∈ S, ∀ a ∈ S, Tendsto (fun m => ⟪b, P m a⟫_ℂ) atTop (𝓝 (q b a))) (b a : H) :
@@ -157,6 +211,15 @@ section Measure
 
 variable {X : Type*} [MeasurableSpace X] {ν : Measure X}
 
+/- English proof (translation)
+Establish `hI : ∀ j, Integrable (fun x => ⟪b j x, a j x⟫_ℂ) ν` using `fun j => L2.integrable_inner (b j) (a j)`. Establish `hs : Summable fun j => (hI j).toL1 (fun x => ⟪b j x, a j x⟫_ℂ)` using `Summable.of_norm_bounded h (fun j => norm_toL1_inner_le_mul_norm (b j) (a j))`. Use `⟨⇑(∑' j, (hI j).toL1 (fun x => ⟪b j x, a j x⟫_ℂ)), L1.integrable_coeFn _, fun E => ?_⟩` and prove the remaining obligations. Set `g : (X →₁[ν] ℂ) →+ ℂ` to `{ toFun := fun f => ∫ x in E, f x ∂ν map_zero' := by`. Rewrite using `[integral_congr_ae (Lp.coeFn_zero ℂ 1 ν).restrict]`.
+
+Simplify using the standard rewrite rules. Use the proof step `map_add' := fun f f' => by`. Rewrite using `[integral_congr_ae (Lp.coeFn_add f f').restrict]`. Conclude with `integral_add (L1.integrable_coeFn f).integrableOn (L1.integrable_coeFn f').integrableOn }`. Establish `hg : Continuous g` using `continuous_setIntegral E`.
+
+Use `hs.hasSum.map g hg` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, g, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Conclude with `integral_congr_ae ((Integrable.coeFn_toL1 (hI j)).restrict).symm`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_diagonal {ι : Type*} {a b : ι → Lp ℂ 2 ν} (h : Summable fun j => ‖b j‖ * ‖a j‖) :
     ∃ d : X → ℂ, Integrable d ν ∧ ∀ E, HasSum (fun j => ∫ x in E, ⟪b j x, a j x⟫_ℂ ∂ν) (∫ x in E, d x ∂ν) := by
   have hI : ∀ j, Integrable (fun x => ⟪b j x, a j x⟫_ℂ) ν := fun j => L2.integrable_inner (b j) (a j)
@@ -181,6 +244,17 @@ theorem exists_diagonal {ι : Type*} {a b : ι → Lp ℂ 2 ν} (h : Summable fu
 
 variable [IsFiniteMeasure ν]
 
+/- English proof (translation)
+Establish `hfin : ν A < ⊤` using `measure_lt_top ν A`. Establish `hsec : ∀ x, StronglyMeasurable (fun y => F x y)` using `fun x => hF.comp_measurable measurable_prodMk_left`. Establish `hdiagm : StronglyMeasurable (fun x => F x x)` using `hF.comp_measurable (measurable_id.prodMk measurable_id)`. Establish `hgm : StronglyMeasurable (fun x => ∫ y in A, F x y ∂ν)` using `StronglyMeasurable.integral_prod_right (f := F) hF`. Break down `(measureReal_nonneg : 0 ≤ ν.real A).eq_or_lt with h0 | hpos` into its components or cases.
+
+Establish `hA0 : ν A = 0` using `(measureReal_eq_zero_iff).1 h0.symm`. Establish `hr : ν.restrict A = 0` using `Measure.restrict_eq_zero.mpr hA0`. Simplify using `[hr, ← h0]`. Establish `hsecI : ∀ x ∈ A, IntegrableOn (fun y => F x y) A ν` using `fun x hx => Measure.integrableOn_of_bounded hfin.ne (hsec x).aestronglyMeasurable (M := M) ((ae_restrict_iff' hA).2 (Filter.Eventually.of_forall fun y hy => hM x hx y hy))`. Establish `hdiagI : IntegrableOn (fun x => F x x) A ν` using `Measure.integrableOn_of_bounded hfin.ne hdiagm.aestronglyMeasurable (M := M) ((ae_restrict_iff' hA).2 (Filter.Eventually.of_forall fun x hx => hM x hx x hx))`.
+
+Establish `hgI : IntegrableOn (fun x => ∫ y in A, F x y ∂ν) A ν` using `Measure.integrableOn_of_bounded hfin.ne hgm.aestronglyMeasurable (M := M * ν.real A) ((ae_restrict_iff' hA).2 (Filter.Eventually.of_forall fun x hx => norm_setIntegral_le_of_norm_le_const hfin (fun y hy => hM x hx y hy)))`. Establish `hc0 : ((ν.real A : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hpos.ne'`. Establish `e1 : ((ν.real A : ℝ) : ℂ)⁻¹ * ∫ x in A, ∫ y in A, F x y ∂ν ∂ν = ∫ x in A, ((ν.real A : ℝ) : ℂ)⁻¹ * ∫ y in A, F x y ∂ν ∂ν` using `(integral_const_mul _ _).symm`. Establish `key : ((ν.real A : ℝ) : ℂ)⁻¹ * ∫ x in A, ∫ y in A, F x y ∂ν ∂ν - ∫ x in A, F x x ∂ν = ∫ x in A, ((ν.real A : ℝ) : ℂ)⁻¹ * ∫ y in A, (F x y - F x x) ∂ν ∂ν`. Rewrite using `[e1, ← integral_sub (hgI.const_mul _) hdiagI]`.
+
+Use `setIntegral_congr_fun hA (fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[integral_sub (hsecI x hx) (integrableOn_const hfin.ne), setIntegral_const, Complex.real_smul, mul_sub, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul]`. Rewrite using `[key]`. Establish `hb : ∀ x ∈ A, ‖((ν.real A : ℝ) : ℂ)⁻¹ * ∫ y in A, (F x y - F x x) ∂ν‖ ≤ ε`. Introduce `x hx`.
+
+Rewrite using `[norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hpos.le, inv_mul_le_iff₀ hpos]`. Use `norm_setIntegral_le_of_norm_le_const hfin (fun y hy => hε x hx y hy)` as an intermediate fact. Combine the linear relations using `[mul_comm ε (ν.real A)]`. Conclude with `norm_setIntegral_le_of_norm_le_const hfin hb`.
+-/
 theorem norm_mean_sub_le {F : X → X → ℂ} (hF : StronglyMeasurable (Function.uncurry F)) {A : Set X}
     (hA : MeasurableSet A) {M ε : ℝ} (hM : ∀ x ∈ A, ∀ y ∈ A, ‖F x y‖ ≤ M)
     (hε : ∀ x ∈ A, ∀ y ∈ A, ‖F x y - F x x‖ ≤ ε) :
@@ -227,6 +301,21 @@ variable {Y : Type*} [PseudoMetricSpace Y] [MeasurableSpace Y] [BorelSpace Y] {s
 
 omit [IsFiniteMeasure ν] in
 
+/- English proof (translation)
+Take `⟨t, -, ht⟩` from `hΩ.elim_nhds_subcover (fun y => Metric.ball y (δ / 2)) (fun y _ => Metric.ball_mem_nhds y (half_pos hδ))`. Set `L` to `t.toList`. Set `B : Fin L.length → Set X` to `fun i => E ∩ s ⁻¹' Metric.ball (L.get i) (δ / 2)`. Establish `hB : ∀ i, MeasurableSet (B i)` using `fun i => hE.inter (hs Metric.isOpen_ball.measurableSet)`. Use `⟨L.length, fun i => B i \ ⋃ j ∈ Set.Iio i, B j, fun i => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hB i).diff (MeasurableSet.biUnion (Set.to_countable _) fun j _ => hB j)`. Introduce `i j hij`. Simplify using `only [Function.onFun]`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `Set.disjoint_left.2 fun x hx hy => hy.2 (Set.mem_biUnion (Set.mem_Iio.2 h) hx.1)`.
+
+Conclude with `Set.disjoint_left.2 fun x hx hy => hx.2 (Set.mem_biUnion (Set.mem_Iio.2 h) hy.1)`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Conclude with `Set.iUnion_subset fun i x hx => hx.1.1`. Introduce `x hx`. Establish `hx' : ∃ i, x ∈ B i`.
+
+Take `⟨y, hyt, hy⟩` from `Set.mem_iUnion₂.1 (ht (hEΩ hx))`. Take `⟨i, hi⟩` from `List.mem_iff_get.1 (Finset.mem_toList.2 hyt)`. Use `⟨i, hx, ?_⟩` and prove the remaining obligations. Use `show s x ∈ Metric.ball (L.get i) (δ / 2)`. Rewrite using `[hi]`.
+
+Conclude with `hy`. Take `⟨i, hi⟩` from `hx'`. Set `S : Set (Fin L.length)` to `{i | x ∈ B i}`. Establish `hne : S.Nonempty` using `⟨i, hi⟩`. Use `Set.mem_iUnion.2 ⟨wellFounded_lt.min S hne, wellFounded_lt.min_mem S hne, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_iUnion]`. Introduce and unpack `⟨j, hj, hxj⟩`. Conclude with `wellFounded_lt.not_lt_min S hxj hj`. Introduce `i x hx y hy`. Establish `h1 : s x ∈ Metric.ball (L.get i) (δ / 2)` using `hx.1.2`.
+
+Establish `h2 : s y ∈ Metric.ball (L.get i) (δ / 2)` using `hy.1.2`. Rewrite `h1`, `h2` using `[Metric.mem_ball]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_partition (hs : Measurable s) {Ω : Set Y} (hΩ : IsCompact Ω) {E : Set X} (hE : MeasurableSet E)
     (hEΩ : E ⊆ s ⁻¹' Ω) {δ : ℝ} (hδ : 0 < δ) :
     ∃ (n : ℕ) (A : Fin n → Set X), (∀ i, MeasurableSet (A i)) ∧ Pairwise (Function.onFun Disjoint A) ∧
@@ -268,6 +357,15 @@ theorem exists_partition (hs : Measurable s) {Ω : Set Y} (hΩ : IsCompact Ω) {
       _ < δ / 2 + δ / 2 := add_lt_add h1 h2
       _ = δ := by ring
 
+/- English proof (translation)
+Introduce `a`. Use `(mem_closure_iff_nhds_basis Metric.nhds_basis_closedEBall).2 fun ε hε => ?_` and prove the remaining obligations. Establish `hFs : Function.extend s (a : X → ℂ) 0 ∘ s = (a : X → ℂ)` using `Function.extend_comp hs.injective _ _`. Establish `hF : MemLp (Function.extend s (a : X → ℂ) 0) 2 (ν.map s)`. Rewrite using `[hs.memLp_map_measure_iff, hFs]`.
+
+Conclude with `Lp.memLp a`. Take `⟨g, hg, g_mem⟩` from `hF.exists_boundedContinuous_eLpNorm_sub_le ENNReal.ofNat_ne_top hε.ne'`. Establish `g_mem' : MemLp (fun x => g (s x)) 2 ν` using `(hs.memLp_map_measure_iff).1 g_mem`. Use `⟨g_mem'.toLp _, ⟨g, g.continuous, MemLp.coeFn_toLp g_mem'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_closedEBall', ← Lp.toLp_coeFn a (Lp.memLp a), Lp.edist_toLp_toLp]`.
+
+Rewrite `hg` using `[hs.eLpNorm_map_measure]`. Use `hg using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Establish `h1` using `congr_fun hFs x`. Simplify using `only [Function.comp_apply] at h1`.
+
+Simplify using `[h1]`.
+-/
 theorem dense_continuous (hs : MeasurableEmbedding s) :
     Dense {a : Lp ℂ 2 ν | ∃ g : Y → ℂ, Continuous g ∧ a =ᵐ[ν] fun x => g (s x)} := by
   intro a
@@ -289,6 +387,23 @@ theorem dense_continuous (hs : MeasurableEmbedding s) :
 
 variable [SecondCountableTopology Y]
 
+/- English proof (translation)
+Establish `hP : ∀ m : ℕ, ∃ (n : ℕ) (A : Fin n → Set X), (∀ i, MeasurableSet (A i)) ∧ Pairwise (Function.onFun Disjoint A) ∧ ⋃ i, A i = E ∧ ∀ i, ∀ x ∈ A i, ∀ y ∈ A i, dist (s x) (s y) < 1 / ((m : ℝ) + 1)` using `fun m => exists_partition hs hΩ hE hEΩ (by positivity)`. Use `choose n A hAm hAd hAU hAδ using hP`. Use `⟨n, A, hAm, hAd, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hΩ2 : IsCompact (Ω ×ˢ Ω)` using `hΩ.prod hΩ`. Take `⟨M, hM⟩` from `hΩ2.exists_bound_of_continuousOn hk.continuousOn`.
+
+Establish `huc` using `Metric.uniformContinuousOn_iff.1 (hΩ2.uniformContinuousOn_of_continuous hk.continuousOn)`. Establish `hkm : Measurable k` using `hk.measurable`. Establish `hFm : StronglyMeasurable (Function.uncurry fun x y => k (s x, s y))` using `(hkm.comp (hs.prodMap hs)).stronglyMeasurable`. Establish `hdm : Measurable fun x => k (s x, s x)` using `hkm.comp (hs.prodMk hs)`. Establish `hsub : ∀ m i, ∀ x ∈ A m i, s x ∈ Ω` using `fun m i x hx => by`.
+
+Establish `: x ∈ E` using `by rw [← hAU m]; exact Set.mem_iUnion.2 ⟨i, hx⟩`. Conclude with `hEΩ this`. Establish `hint : ∀ m i, IntegrableOn (fun x => k (s x, s x)) (A m i) ν` using `fun m i => (integrable_const M).mono' hdm.aestronglyMeasurable (ae_restrict_of_forall_mem (hAm m i) fun x hx => hM _ ⟨hsub m i x hx, hsub m i x hx⟩)`. Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`.
+
+Establish `hV : 0 ≤ ν.real E` using `measureReal_nonneg`. Take `⟨δ, hδ, hδk⟩` from `huc (ε / (ν.real E + 1)) (by positivity)`. Take `⟨N, hN⟩` from `exists_nat_one_div_lt hδ`. Use `⟨N, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hsmall : 1 / ((m : ℝ) + 1) < δ` using `lt_of_le_of_lt (Nat.one_div_le_one_div hm) hN`.
+
+Establish `hE' : ∫ x in E, k (s x, s x) ∂ν = ∑ i, ∫ x in A m i, k (s x, s x) ∂ν` using `by conv_lhs => rw [← hAU m]`. Conclude with `integral_iUnion_fintype (hAm m) (hAd m) (hint m)`. Establish `hVE : ν.real E = ∑ i, ν.real (A m i)`. Rewrite using `[← hAU m]`. Conclude with `measureReal_iUnion_fintype (hAd m) (hAm m) (fun i => measure_ne_top _ _)`.
+
+Rewrite using `[dist_eq_norm, hE', ← Finset.sum_sub_distrib]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `norm_mean_sub_le (ν := ν) (F := fun x y => k (s x, s y)) hFm (hAm m i) (M := M) (fun x hx y hy => hM _ ⟨hsub m i x hx, hsub m i y hy⟩) (fun x hx y hy => ?_)` and prove the remaining obligations. Establish `hd : dist (s x, s y) (s x, s x) < δ`.
+
+Rewrite using `[Prod.dist_eq, dist_self]`. Conclude with `max_lt hδ (lt_trans (hAδ m i y hy x hx) hsmall)`. Use `hδk (s x, s y) ⟨hsub m i x hx, hsub m i y hy⟩ (s x, s x) ⟨hsub m i x hx, hsub m i x hx⟩ hd` as an intermediate fact. Rewrite `this` using `[dist_eq_norm]`. Conclude with `this.le`.
+
+Use `_ = ε / (ν.real E + 1) * ν.real E := by rw [← Finset.mul_sum, ← hVE]`. Use `_ < ε := by`. Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_partitions (hs : Measurable s) {Ω : Set Y} (hΩ : IsCompact Ω) {E : Set X} (hE : MeasurableSet E)
     (hEΩ : E ⊆ s ⁻¹' Ω) :
     ∃ (n : ℕ → ℕ) (A : ∀ m, Fin (n m) → Set X), (∀ m i, MeasurableSet (A m i)) ∧
@@ -345,6 +460,35 @@ theorem exists_partitions (hs : Measurable s) {Ω : Set Y} (hΩ : IsCompact Ω) 
       rw [div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]
       nlinarith
 
+/- English proof (translation)
+Establish `core1 : ∀ {A : Set X} (hA : MeasurableSet A) (v : Lp ℂ 2 ν), v = indicatorConstLp 2 hA (measure_ne_top ν A) (1 : ℂ) → ⟪v, T v⟫_ℂ = ∫ x in A, ∫ y in A, k (s x, s y) ∂ν ∂ν`. Introduce `A hA v hv`. Substitute `hv` using the available equality. Rewrite using `[L2.inner_indicatorConstLp_one]`. Use `integral_congr_ae (ae_restrict_of_ae ((hT (indicatorConstLp 2 hA (measure_ne_top ν A) (1 : ℂ))).mono fun x hx => ?_))` and prove the remaining obligations.
+
+Rewrite using `[hx]`. Simplify using `only`. Rewrite using `[← integral_indicator hA]`. Use `integral_congr_ae ((indicatorConstLp_coeFn (p := 2) (hs := hA) (hμs := measure_ne_top ν A) (c := (1 : ℂ))).mono fun y hy => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[hy]`. Apply the tactic sequence `by_cases hy' : y ∈ A <;> simp [hy']`. Establish `core2 : ∀ {A B : Set X} (hA : MeasurableSet A) (hB : MeasurableSet B) (v w : Lp ℂ 2 ν), v = indicatorConstLp 2 hA (measure_ne_top ν A) (1 : ℂ) → w = indicatorConstLp 2 hB (measure_ne_top ν B) (1 : ℂ) → ⟪v, w⟫_ℂ = (ν.real (B ∩ A) : ℂ)`. Introduce `A B hA hB v w hv hw`. Substitute `hv hw` using the available equality.
+
+Rewrite using `[L2.inner_indicatorConstLp_one, setIntegral_indicatorConstLp hA]`. Simplify using the standard rewrite rules. Establish `core3 : ∀ {A : Set X} (hA : MeasurableSet A) {g h : Y → ℂ} {β α : Lp ℂ 2 ν}, (β =ᵐ[ν] fun x => g (s x)) → (α =ᵐ[ν] fun x => h (s x)) → ∀ v : Lp ℂ 2 ν, v = indicatorConstLp 2 hA (measure_ne_top ν A) (1 : ℂ) → ⟪v, α⟫_ℂ * ⟪β, v⟫_ℂ = ∫ x in A, ∫ y in A, starRingEnd ℂ (g (s x)) * h (s …`. Introduce `A hA g h β α hβ hα v hv`. Substitute `hv` using the available equality.
+
+Rewrite using `[← inner_conj_symm β, L2.inner_indicatorConstLp_one, L2.inner_indicatorConstLp_one, integral_congr_ae (ae_restrict_of_ae hα), integral_congr_ae (ae_restrict_of_ae hβ), ← integral_conj]`. Repeatedly rewrite using `[integral_const_mul]`. Rewrite using `[integral_mul_const]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨n, A, hAm, hAd, hlim⟩` from `exists_partitions (ν := ν) hs.measurable hΩ hE hEΩ`.
+
+Take `⟨v, hv⟩ : ∃ v : ∀ m, Fin (n m) → Lp ℂ 2 ν, ∀ m i, v m i = indicatorConstLp 2 (hAm m i) (measure_ne_top ν _) (1 : ℂ)` from `⟨_, fun _ _ => rfl⟩`. Establish `hvv : ∀ m i, ⟪v m i, v m i⟫_ℂ = ((fun i => ν.real (A m i)) i : ℂ)`. Introduce `m i`. Rewrite using `[core2 (hAm m i) (hAm m i) _ _ (hv m i) (hv m i), Set.inter_self]`. Establish `hvo : ∀ m i j, i ≠ j → ⟪v m i, v m j⟫_ℂ = 0`.
+
+Introduce `m i j hij`. Rewrite using `[core2 (hAm m i) (hAm m j) _ _ (hv m i) (hv m j), ((hAd m hij).symm).inter_eq]`. Simplify using the standard rewrite rules. Establish `hP : ∀ m, ‖projSum (v m) (fun i => ν.real (A m i))‖ ≤ 1` using `fun m => norm_projSum_le (hvv m) (hvo m)`. Establish `h1 : Tendsto (fun m => ∑ i, ((ν.real (A m i) : ℝ) : ℂ)⁻¹ * ⟪v m i, T (v m i)⟫_ℂ) atTop (𝓝 (∫ x in E, k (s x, s x) ∂ν))`.
+
+Use `(hlim k hk).congr fun m => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[core1 (hAm m i) _ (hv m i)]`. Establish `h2 : ∀ m, ∑ i, ((ν.real (A m i) : ℝ) : ℂ)⁻¹ * ⟪v m i, T (v m i)⟫_ℂ = ∑' j, ⟪b j, projSum (v m) (fun i => ν.real (A m i)) (a j)⟫_ℂ`. Introduce `m`. Establish `hs' : HasSum (fun j => ∑ i, ((ν.real (A m i) : ℝ) : ℂ)⁻¹ * (⟪v m i, a j⟫_ℂ * ⟪b j, v m i⟫_ℂ)) (∑ i, ((ν.real (A m i) : ℝ) : ℂ)⁻¹ * ⟪v m i, T (v m i)⟫_ℂ)` using `hasSum_sum fun i _ => (hab (v m i) (v m i)).mul_left _`.
+
+Rewrite using `[← hs'.tsum_eq]`. Repeatedly rewrite using `[inner_projSum]`. Establish `hq : Continuous (Function.uncurry fun (β α : Lp ℂ 2 ν) => ∫ x in E, ⟪β x, α x⟫_ℂ ∂ν)`. Establish `heq : (Function.uncurry fun (β α : Lp ℂ 2 ν) => ∫ x in E, ⟪β x, α x⟫_ℂ ∂ν) = fun p : Lp ℂ 2 ν × Lp ℂ 2 ν => ⟪LpToLpRestrictCLM X ℂ ℂ ν 2 E p.1, LpToLpRestrictCLM X ℂ ℂ ν 2 E p.2⟫_ℂ`. Use function extensionality and compare the values at `p`.
+
+Simplify using `only [Function.uncurry]`. Rewrite using `[L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [LpToLpRestrictCLM_coeFn ℂ E p.1, LpToLpRestrictCLM_coeFn ℂ E p.2] with x hx1 hx2`. Rewrite using `[hx1, hx2]`.
+
+Rewrite using `[heq]`. Conclude with `((LpToLpRestrictCLM X ℂ ℂ ν 2 E).continuous.comp continuous_fst).inner ((LpToLpRestrictCLM X ℂ ℂ ν 2 E).continuous.comp continuous_snd)`. Establish `hS : ∀ β ∈ {a : Lp ℂ 2 ν | ∃ g : Y → ℂ, Continuous g ∧ a =ᵐ[ν] fun x => g (s x)}, ∀ α ∈ {a : Lp ℂ 2 ν | ∃ g : Y → ℂ, Continuous g ∧ a =ᵐ[ν] fun x => g (s x)}, Tendsto (fun m => ⟪β, projSum (v m) (fun i => ν.real (A m i)) α⟫_ℂ) atTop (𝓝 (∫ x in E, ⟪β x, α x⟫_ℂ ∂ν))`. Introduce and unpack `β ⟨g, hg, hβ⟩ α ⟨h, hh, hα⟩`. Establish `hk' : Continuous fun p : Y × Y => starRingEnd ℂ (g p.1) * h p.2` using `(Complex.continuous_conj.comp (hg.comp continuous_fst)).mul (hh.comp continuous_snd)`.
+
+Establish `hE' : ∫ x in E, ⟪β x, α x⟫_ℂ ∂ν = ∫ x in E, starRingEnd ℂ (g (s x)) * h (s x) ∂ν`. Use `integral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hβ, hα] with x hx1 hx2`. Rewrite using `[hx1, hx2]`. Simplify using `[mul_comm]`.
+
+Rewrite using `[hE']`. Use `(hlim _ hk').congr fun m => ?_` and prove the remaining obligations. Rewrite using `[inner_projSum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[core3 (hAm m i) hβ hα _ (hv m i)]`.
+
+Establish `h3 : Tendsto (fun m => ∑' j, ⟪b j, projSum (v m) (fun i => ν.real (A m i)) (a j)⟫_ℂ) atTop (𝓝 (∑' j, ∫ x in E, ⟪b j x, a j x⟫_ℂ ∂ν))`. Use `tendsto_tsum_of_dominated_convergence h (fun j => tendsto_inner_of_dense hP (dense_continuous hs) hq hS (b j) (a j)) (Filter.Eventually.of_forall fun m j => ?_)` and prove the remaining obligations. Use `(norm_inner_le_norm _ _).trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations. Conclude with `((projSum (v m) _).le_opNorm _).trans (mul_le_of_le_one_left (norm_nonneg _) (hP m))`. Conclude with `tendsto_nhds_unique (h3.congr fun m => (h2 m).symm) h1`.
+-/
 theorem tsum_setIntegral_eq (hs : MeasurableEmbedding s) {T : Lp ℂ 2 ν →L[ℂ] Lp ℂ 2 ν} {k : Y × Y → ℂ}
     (hk : Continuous k) (hT : ∀ φ : Lp ℂ 2 ν, T φ =ᵐ[ν] fun x => ∫ y, k (s x, s y) * φ y ∂ν)
     {ι : Type*} {a b : ι → Lp ℂ 2 ν} (h : Summable fun j => ‖b j‖ * ‖a j‖)
@@ -451,6 +595,19 @@ theorem tsum_setIntegral_eq (hs : MeasurableEmbedding s) {T : Lp ℂ 2 ν →L[�
     exact ((projSum (v m) _).le_opNorm _).trans (mul_le_of_le_one_left (norm_nonneg _) (hP m))
   exact tendsto_nhds_unique (h3.congr fun m => (h2 m).symm) h1
 
+/- English proof (translation)
+Take `⟨a, b, hsum, hab, htrace⟩` from `exists_rankOne_expansion htr`. Take `⟨d, hd, hE⟩` from `exists_diagonal (ν := ν) hsum`. Establish `hkm : Measurable (fun x => k (s x, s x))` using `hk.measurable.comp (hs.measurable.prodMk hs.measurable)`. Establish `hΩc : ∀ n, IsCompact (closure (compactCovering Y n))` using `fun n => (isCompact_compactCovering Y n).closure`. Establish `hEn : ∀ n, MeasurableSet (s ⁻¹' closure (compactCovering Y n))` using `fun n => isClosed_closure.measurableSet.preimage hs.measurable`.
+
+Establish `hcover : ⋃ n, s ⁻¹' closure (compactCovering Y n) = Set.univ`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_univ, iff_true, Set.mem_preimage]`. Take `⟨n, hn⟩` from `exists_mem_compactCovering (s x)`. Conclude with `⟨n, subset_closure hn⟩`.
+
+Establish `hint : ∀ n (A : Set X), MeasurableSet A → A ⊆ s ⁻¹' closure (compactCovering Y n) → ∫ x in A, d x ∂ν = ∫ x in A, k (s x, s x) ∂ν`. Introduce `n A hA hAE`. Rewrite using `[← (hE A).tsum_eq]`. Conclude with `tsum_setIntegral_eq hs hk hT hsum hab (hΩc n) hA hAE`. Establish `hae : ∀ n, d =ᵐ[ν.restrict (s ⁻¹' closure (compactCovering Y n))] fun x => k (s x, s x)`.
+
+Introduce `n`. Take `⟨M, hM⟩` from `((hΩc n).prod (hΩc n)).exists_bound_of_continuousOn hk.continuousOn`. Establish `hkdint : Integrable (fun x => k (s x, s x)) (ν.restrict (s ⁻¹' closure (compactCovering Y n)))` using `Measure.integrableOn_of_bounded (M := M) (measure_ne_top _ _) hkm.aestronglyMeasurable ((ae_restrict_iff' (hEn n)).2 (Filter.Eventually.of_forall fun x hx => hM _ ⟨hx, hx⟩))`. Use `ae_eq_of_forall_setIntegral_eq_of_sigmaFinite (fun A _ _ => hd.restrict.integrableOn) (fun A _ _ => hkdint.integrableOn) ?_` and prove the remaining obligations. Introduce `A hA _`.
+
+Rewrite using `[Measure.restrict_restrict hA]`. Conclude with `hint n (A ∩ _) (hA.inter (hEn n)) Set.inter_subset_right`. Establish `hae' : d =ᵐ[ν] fun x => k (s x, s x)`. Establish `h` using `(ae_restrict_iUnion_iff (μ := ν) (fun n => s ⁻¹' closure (compactCovering Y n)) (fun x => d x = k (s x, s x))).2 hae`. Rewrite `h` using `[hcover, Measure.restrict_univ]`. Then use the resulting hypothesis.
+
+Use `⟨hd.congr hae', ?_⟩` and prove the remaining obligations. Establish `h2` using `hE Set.univ`. Simplify using `only [Measure.restrict_univ] at h2`. Rewrite using `[← htrace.tsum_eq, ← integral_congr_ae hae', ← h2.tsum_eq]`. Both sides reduce to the same expression.
+-/
 theorem trace_eq_integral_diagonal [SigmaCompactSpace Y] (hs : MeasurableEmbedding s)
     {T : Lp ℂ 2 ν →L[ℂ] Lp ℂ 2 ν} (htr : IsTraceClass T) {k : Y × Y → ℂ}
     (hk : Continuous k) (hT : ∀ φ : Lp ℂ 2 ν, T φ =ᵐ[ν] fun x => ∫ y, k (s x, s y) * φ y ∂ν) :
@@ -497,6 +654,17 @@ theorem trace_eq_integral_diagonal [SigmaCompactSpace Y] (hs : MeasurableEmbeddi
 
 end Measure
 
+/- English proof (translation)
+Set `_ : PseudoMetricSpace G` to `TopologicalSpace.pseudoMetrizableSpacePseudoMetric G`. Establish `hint : Integrable f μ` using `hf.integrable_of_hasCompactSupport hc`. Establish `hkq : ∀ p q : Quot Γ, kernelQ Γ f p q = kernel Γ f (sec Γ p) (sec Γ q)`. Introduce `p q`. Establish `e1 : mk Γ p.out = mk Γ (sec Γ p)` using `by rw [mk_sec]; exact Quotient.out_eq p`.
+
+Establish `e2 : mk Γ q.out = mk Γ (sec Γ q)` using `by rw [mk_sec]; exact Quotient.out_eq q`. Combine the equalities or inequalities in the displayed calculation. Establish `hT : ∀ φ : Lp ℂ 2 (quotMeasure Γ μ), Rop Γ μ f φ =ᵐ[quotMeasure Γ μ] fun x => ∫ y, (fun p : G × G => kernel Γ f p.1 p.2) (sec Γ x, sec Γ y) * φ y ∂(quotMeasure Γ μ)`. Introduce `φ`. Use `ae_quotMeasure_iff.2 ?_` and prove the remaining obligations.
+
+Establish `h1` using `(GlobalTheory.AutomorphicL2Pointwise.lift_Rop_eq_convR G Γ μ f hint φ).2`. Use `filter_upwards [h1] with g hg`. Establish `h2` using `(GlobalTheory.AutomorphicL2KernelIntegral.convR_eq_integral_kernelQ G Γ μ f hf hc φ g).2`. Express the relevant statement in the definitionally equal form `Rop Γ μ f φ (mk Γ g) = convR μ f (lift Γ φ) g at hg`. Rewrite using `[hg, h2]`.
+
+Use `integral_congr_ae (.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hkq]`. Take `⟨hI, htrace⟩` from `trace_eq_integral_diagonal (ν := quotMeasure Γ μ) measurableEmbedding_sec htr (GlobalTheory.AutomorphicL2KernelContinuous.continuous_kernel hf hc) hT`. Establish `hfun : (fun x => kernelQ Γ f x x) = fun x => kernel Γ f (sec Γ x) (sec Γ x)` using `funext fun x => hkq x x`.
+
+Unfold `TraceIsDiagonal`. Use `⟨htr, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `hI`. Rewrite using `[htrace, hfun]`.
+-/
 theorem traceIsDiagonal_Rop {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [LocallyCompactSpace G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
     {Γ : Subgroup G} [DiscreteTopology Γ] {μ : Measure G} [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
@@ -535,6 +703,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta GlobalT
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hint : Integrable f μ` using `hf.integrable_of_hasCompactSupport hc`. Use `ext1 F`. Simplify using `only [ContinuousLinearMap.comp_apply, Submodule.subtypeL_apply]`. Rewrite using `[coe_RcuspOp V μ hint]`. Establish `hperp : F - ((L2cusp V μ).orthogonalProjection F : DividedPowerChartLift V μ) ∈ (L2cusp V μ)ᗮ`.
+
+Conclude with `Submodule.sub_starProjection_mem_orthogonal (K := L2cusp V μ) F`. Establish `hz : RopG V μ f (F - ((L2cusp V μ).orthogonalProjection F : DividedPowerChartLift V μ)) = 0`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `G`. Rewrite using `[inner_zero_right]`.
+
+Express the relevant statement in the definitionally equal form `⟪G, Rop (GQ V) μ f _⟫_ℂ = 0`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_left, adjoint_Rop hf hc]`. Conclude with `Submodule.inner_right_of_mem_orthogonal (h G) hperp`. Rewrite `hz` using `[map_sub, sub_eq_zero]`. Conclude with `hz`.
+-/
 theorem RopG_eq_comp {D : D7} {V : HSp D} {μ : Measure (GA D V)} [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
     {f : GA D V → ℂ} (hf : Continuous f) (hc : HasCompactSupport f) (h : MapsIntoCusp V μ (starFn f)) :
     RopG V μ f = (L2cusp V μ).subtypeL ∘L RcuspOp V μ f ∘L (L2cusp V μ).orthogonalProjection := by

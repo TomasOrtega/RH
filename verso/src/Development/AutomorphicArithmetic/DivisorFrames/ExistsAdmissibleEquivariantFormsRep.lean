@@ -7,6 +7,11 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightEqOfFi
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteUnitaryClassSetFiniteStatement
 open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC Formalism.UG Formalism.BasicNotions GlobalTheory.DefU
 
+/- English proof (translation)
+Establish `h1 : IsLocallyConstant fun k : H => ρ k w`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨(fun y => x⁻¹ * y) ⁻¹' {k : H | ρ k w = w}, hw.preimage (by fun_prop), by simp, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h2 : ρ (x⁻¹ * y) w = w` using `hy`.
+
+Use `conv_rhs => rw [← h2]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Conclude with `(h1.comp_continuous (continuous_subtype_val (p := fun x => x ∈ K))).range_finite`.
+-/
 private theorem orbit_finite {H V : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [AddCommGroup V]
     [Module ℂ V] (ρ : Representation ℂ H V) (K : Subgroup H) (hK : IsCompact (K : Set H)) (w : V)
     (hw : IsOpen {k : H | ρ k w = w}) : (Set.range fun k : K => ρ k w).Finite := by
@@ -41,9 +46,15 @@ private noncomputable def eqRep (ρ : Representation ℂ (infU E n) S) : Represe
   map_mul' a b := LinearMap.ext fun f => Subtype.ext (LinearMap.ext fun v => funext fun g =>
     congrArg (f.1 v) (mul_assoc g a b).symm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem eqRep_apply (ρ : Representation ℂ (infU E n) S) (k : finU E n) (f : eqForms ρ) (v : S) :
     (eqRep ρ k f).1 v = RU E n k (f.1 v) := rfl
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ S`. Use `isOpen_iInter_of_finite fun i => (f.2.1 (b i)).level using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Rewrite using `[Set.mem_iInter]`. Conclude with `⟨fun h i => LinearMap.congr_fun (congrArg Subtype.val h) (b i), fun h => Subtype.ext (b.ext h)⟩`.
+-/
 private theorem eqRep_open [FiniteDimensional ℂ S] (ρ : Representation ℂ (infU E n) S) (f : eqForms ρ) :
     IsOpen {k : finU E n | eqRep ρ k f = f} := by
   let b := Module.finBasis ℂ S
@@ -52,6 +63,15 @@ private theorem eqRep_open [FiniteDimensional ℂ S] (ρ : Representation ℂ (i
   rw [Set.mem_iInter]
   exact ⟨fun h i => LinearMap.congr_fun (congrArg Subtype.val h) (b i), fun h => Subtype.ext (b.ext h)⟩
 
+/- English proof (translation)
+Take `⟨K0, hK0o, hK0c⟩` from `UpperTheory.exists_isOpen_isCompact_subgroup_finiteAdelicUnitary E n`. Set `St : Subgroup (finU E n)` to `{ carrier := {k | eqRep ρ k f = f} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Establish `ha' : eqRep ρ a f = f` using `ha`. Establish `hb' : eqRep ρ b f = f` using `hb`. Express the relevant statement in the definitionally equal form `eqRep ρ (a * b) f = f`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, hb', ha']`. Use the proof step `inv_mem' := fun {a} ha => by`. Establish `ha' : eqRep ρ a f = f` using `ha`. Express the relevant statement in the definitionally equal form `eqRep ρ a⁻¹ f = f`. Use `conv_lhs => rw [← ha']`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `ho : IsOpen ((K0 ⊓ St : Subgroup (finU E n)) : Set (finU E n))` using `hK0o.inter (eqRep_open ρ f)`. Establish `hc : IsCompact ((K0 ⊓ St : Subgroup (finU E n)) : Set (finU E n))` using `hK0c.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) fun x hx => hx.1`. Use `⟨K0 ⊓ St, fun k hk => hk.2, ?_, fun w => orbit_finite _ _ hc w (eqRep_open ρ w)⟩` and prove the remaining obligations. Use `UpperTheory.finiteDimensional_automorphicForms_unitary_of_type_level E n S (fun x => ρ x) (K0 ⊓ St) ho ((GlobalTheory.PRep.fixed (eqRep ρ) (K0 ⊓ St)).map (eqForms ρ).subtype) (by` as an intermediate fact.
+
+Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `⟨fun v γ hγ x => (g.2.1 v).left γ hγ x, g.2.2, fun k hk v => ?_⟩` and prove the remaining obligations. Establish `h1 : eqRep ρ k g = g` using `by simpa using hg ⟨k, hk⟩`. Conclude with `LinearMap.congr_fun (congrArg Subtype.val h1) v)`. Conclude with `(Submodule.equivMapOfInjective _ (eqForms ρ).injective_subtype _).symm.finiteDimensional`.
+-/
 private theorem eqRep_adm [FiniteDimensional ℂ S] (ρ : Representation ℂ (infU E n) S) (f : eqForms ρ) :
     ∃ K : Subgroup (finU E n), (∀ k ∈ K, eqRep ρ k f = f) ∧ FiniteDimensional ℂ (GlobalTheory.PRep.fixed (eqRep ρ) K) ∧
       ∀ w, (Set.range fun k : K => eqRep ρ k w).Finite := by
@@ -83,6 +103,31 @@ private theorem eqRep_adm [FiniteDimensional ℂ S] (ρ : Representation ℂ (in
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ n S _ _ _ ρ hsp B hpos hinv f hf0 hfa hfe`. Set `b` to `Module.finBasis ℂ S`. Set `ev : S → (eqForms ρ →ₗ[ℂ] (UA E n → ℂ))` to `fun v => LinearMap.applyₗ v ∘ₗ (eqForms ρ).subtype`. Set `B' : eqForms ρ →ₗ⋆[ℂ] eqForms ρ →ₗ[ℂ] ℂ` to `∑ i, (B.compl₂ (ev (b i))).comp (ev (b i))`. Establish `hB' : ∀ u v, B' u v = ∑ i, B (u.1 (b i)) (v.1 (b i))` using `fun u v => by`.
+
+Simplify using `only [B', LinearMap.sum_apply]`. Both sides reduce to the same expression. Establish `hdef : ∀ v, B' v v = 0 → v = 0` using `fun v hv => by`. Establish `hnn : ∀ i, 0 ≤ (B (v.1 (b i)) (v.1 (b i))).re` using `fun i => by`. Distinguish the cases in `h : v.1 (b i) = 0`.
+
+Simplify using `[h]`. Conclude with `(hpos _ (v.2.1 _) h).le`. Establish `h1 : ∑ i, (B (v.1 (b i)) (v.1 (b i))).re = 0`. Rewrite using `[← Complex.re_sum, ← hB', hv, Complex.zero_re]`. Use `Subtype.ext (b.ext fun i => ?_)` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Conclude with `(hpos _ (v.2.1 _) h).ne' ((Finset.sum_eq_zero_iff_of_nonneg fun i _ => hnn i).1 h1 i (Finset.mem_univ i))`. Establish `hinv' : ∀ g u v, B' (eqRep ρ g u) (eqRep ρ g v) = B' u v` using `fun g u v => by`. Rewrite using `[hB', hB']`. Conclude with `Finset.sum_congr rfl fun i _ => hinv g g.2 _ _ (u.2.1 _) (v.2.1 _)`.
+
+Take `⟨U, hU, hirr, f', hf'U, hf'0, hsum⟩` from `UpperTheory.exists_irreducible_subrep_hecke_eigen_of_invariant_form (finU E n) (eqForms ρ) (eqRep ρ) B' hdef hinv' (eqRep_adm ρ) ⟨f, hfa, hfe⟩ (fun h => hf0 (congrArg Subtype.val h))`. Set `j : U →ₗ[ℂ] S →ₗ[ℂ] (UA E n → ℂ)` to `(eqForms ρ).subtype ∘ₗ U.subtype`. Establish `hj : ∀ (p : U) (x : infU E n) v, j p (ρ x v) = RU E n x.1 (j p v)` using `fun p x v => p.1.2.2 x v`. Establish `hf1 : f'.1 ≠ 0` using `fun h => hf'0 (Subtype.ext h)`. Establish `hmem : ∀ v, f'.1 v ∈ Pairs.img j` using `fun v => Pairs.apply_mem_img j ⟨f', hf'U⟩ v`.
+
+Use `⟨Pairs.img j, ⟨fun φ hφ => ?_, fun x φ hφ => ?_, fun h => hf1 (LinearMap.ext fun v => ?_), fun N hle hN => ?_⟩, f'.1, hf1, hmem, f'.2.2, fun κ s y c hy h v => ?_⟩` and prove the remaining obligations. Establish `h1 : Pairs.img j ≤ autU E n` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨p, v, rfl⟩`. Conclude with `p.1.2.1 v)`. Conclude with `h1 hφ`.
+
+Use `Pairs.stable_of (fun a => ?_) (fun k => ?_) x φ hφ` and prove the remaining obligations. Establish `h1 : Pairs.img j ≤ (Pairs.img j).comap (RU E n a.1)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨p, v, rfl⟩`. Express the relevant statement in the definitionally equal form `RU E n a.1 _ ∈ Pairs.img j`. Rewrite using `[← hj]`.
+
+Conclude with `Pairs.apply_mem_img _ _ _)`. Conclude with `fun φ hφ => h1 hφ`. Establish `h1 : Pairs.img j ≤ (Pairs.img j).comap (RU E n k.1)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨p, v, rfl⟩`. Conclude with `Pairs.apply_mem_img j ⟨eqRep ρ k p.1, hU k _ p.2⟩ v)`.
+
+Conclude with `fun φ hφ => h1 hφ`. Use `hmem v` as an intermediate fact. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `this`. Use `Pairs.eq_bot_or_eq_img hsp (R := fun x => RU E n x.1) hj (Q := fun k : finU E n => (eqRep ρ k).restrict (hU k)) (T := fun k => RU E n k.1) (fun _ _ _ => rfl) (fun P hP => ?_) hle (fun x => hN x.1) (fun k => hN k.1)` and prove the remaining obligations.
+
+Break down `hirr (P.map U.subtype) (Submodule.map_subtype_le U P) (by` into its components or cases. Introduce and unpack `g _ ⟨p, hp, rfl⟩`. Conclude with `⟨_, hP g p hp, rfl⟩) with h | h`. Use `left`. Conclude with `Submodule.map_injective_of_injective U.injective_subtype (h.trans (Submodule.map_bot _).symm)`.
+
+Use `right`. Conclude with `Submodule.map_injective_of_injective U.injective_subtype (h.trans (Submodule.map_subtype_top _).symm)`. Set `y' : κ → finU E n` to `fun i => if h : y i ∈ finU E n then ⟨y i, h⟩ else 1`. Establish `hy' : ∀ (g : eqForms ρ) v, (∑ i ∈ s, eqRep ρ (y' i) g).1 v = ∑ i ∈ s, RU E n (y i) (g.1 v)` using `fun g v => by`. Rewrite using `[Submodule.coe_sum, LinearMap.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[eqRep_apply]`. Simplify using `only [y', dif_pos (hy i hi)]`. Establish `h2` using `hsum κ s y' c (Subtype.ext (LinearMap.ext fun v => (hy' _ v).trans (h v)))`. Conclude with `(hy' f' v).symm.trans (LinearMap.congr_fun (congrArg Subtype.val h2) v)`.
+-/
 theorem UpperTheory.exists_admissible_equivariantFormsRep :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Type) [AddCommGroup S] [Module ℂ S] [FiniteDimensional ℂ S] (ρ : Representation ℂ (infU E n) S),
         Submodule.span ℂ (Set.range ρ) = ⊤ → ∀ (B : (UA E n → ℂ) →ₗ⋆[ℂ] (UA E n → ℂ) →ₗ[ℂ] ℂ), (∀ φ, IsAutFormU φ → φ ≠ 0 → 0 < (B φ φ).re) →

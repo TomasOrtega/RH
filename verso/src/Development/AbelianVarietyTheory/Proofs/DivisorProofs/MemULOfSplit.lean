@@ -19,12 +19,29 @@ namespace GlobalTheory.BCT.CtLevel
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Rewrite using `[UL, if_pos hw]`. Conclude with `Subgroup.mem_top x`.
+-/
 theorem mem_UL_of_split {n : ℕ} {w : Pl E} (hw : IsSplitAt w) (x : GLw n w) : x ∈ UL n w := by
   rw [UL, if_pos hw]; exact Subgroup.mem_top x
 
+/- English proof (translation)
+Simplify using `[toSub, hg]`.
+-/
 theorem toSub_eq {G : Type} [Group G] (H : Subgroup G) (g : G) (hg : g ∈ H) : toSub H g = ⟨g, hg⟩ := by
   simp [toSub, hg]
 
+/- English proof (translation)
+Establish `hab` using `GlobalTheory.T.absHalf_blockDet_integralGL_invariant E a b w m k hk1 hk2`. Prove the components needed by the constructor for the conclusion. Unfold `ct`. Rewrite using `[hab.1]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `X`. Use `congr 1`. Use function extensionality and compare the values at `κ`. Rewrite using `[(GlobalTheory.T.blockUpperTimesUnipotent_mul_blockDiagonal E a b n h w m k _).1]`. Establish `e : (κ : GLw n w)⁻¹ * (dgM h w k * blk h w m (Multiplicative.toAdd X)) * κ = ((κ : GLw n w)⁻¹ * dgM h w k * κ) * ((κ : GLw n w)⁻¹ * blk h w m (Multiplicative.toAdd X) * κ)` using `by group`.
+
+Rewrite using `[e, (hF _ (hNn _ κ.2 _ hkN) _).1]`. Unfold `ct`. Establish `e : (fun X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) => avg fun κ : GlobalTheory.LFun.KGL w n => F ((κ : GLw n w)⁻¹ * blk h w (m * k) (Multiplicative.toAdd X) * κ)) = fun X => avg fun κ : GlobalTheory.LFun.KGL w n => F ((κ : GLw n w)⁻¹ * blk h w m (Multiplica …`. Use function extensionality and compare the values at `X`. Use `congr 1`.
+
+Use function extensionality and compare the values at `κ`. Rewrite using `[(GlobalTheory.T.blockUpperTimesUnipotent_mul_blockDiagonal E a b n h w m k _).2]`. Establish `e : (κ : GLw n w)⁻¹ * (blk h w m (k.1.val * Multiplicative.toAdd X * (k.2⁻¹).val) * dgM h w k) * κ = ((κ : GLw n w)⁻¹ * blk h w m (k.1.val * Multiplicative.toAdd X * (k.2⁻¹).val) * κ) * ((κ : GLw n w)⁻¹ * dgM h w k * κ)` using `by group`. Rewrite using `[e, (hF _ (hNn _ κ.2 _ hkN) _).2]`. Both sides reduce to the same expression.
+
+Establish `hh` using `GlobalTheory.T.haarIntegralNormalized_integralMatrices_twoSidedMul E a b w (fun Y => avg fun κ : GlobalTheory.LFun.KGL w n => F ((κ : GLw n w)⁻¹ * blk h w m (Multiplicative.toAdd Y) * κ)) k.1 k.2⁻¹ hk1 (inv_mem hk2)`. Rewrite using `[hab.2, e, hh]`.
+-/
 theorem ct_inv {a b n : ℕ} (h : a + b = n) (w : Pl E) (N : Subgroup (GLw n w)) (F : GLw n w → ℂ)
     (hNn : ∀ k ∈ GlobalTheory.LFun.KGL w n, ∀ x ∈ N, k⁻¹ * x * k ∈ N)
     (hF : ∀ y ∈ N, ∀ x, F (y * x) = F x ∧ F (x * y) = F x)
@@ -60,6 +77,17 @@ theorem ct_inv {a b n : ℕ} (h : a + b = n) (w : Pl E) (N : Subgroup (GLw n w))
       F ((κ : GLw n w)⁻¹ * blk h w m (Multiplicative.toAdd Y) * κ)) k.1 k.2⁻¹ hk1 (inv_mem hk2)
     rw [hab.2, e, hh]
 
+/- English proof (translation)
+Take `⟨⟨⟨hk1, hkN1⟩, hkμ1⟩, ⟨⟨hk2, hkN2⟩, hkμ2⟩⟩` from `hk`. Establish `hkN : dgM h w k ∈ N`. Apply the tactic sequence `have e : k = (k.1, 1) * (1, k.2) := by ext <;> simp`. Rewrite using `[e, map_mul]`. Conclude with `N.mul_mem hkN1 hkN2`.
+
+Establish `hF : ∀ y ∈ N, ∀ x, (fun y => f (toSub (UL n w) y)) (y * x) = (fun y => f (toSub (UL n w) y)) x ∧ (fun y => f (toSub (UL n w) y)) (x * y) = (fun y => f (toSub (UL n w) y)) x`. Introduce `y hy x`. Take `⟨y', hy', rfl⟩` from `hNK hy`. Establish `e1 : toSub (UL n w) ((UL n w).subtype y' * x) = y' * toSub (UL n w) x`. Rewrite using `[toSub_eq _ _ (mem_UL_of_split hw _), toSub_eq _ _ (mem_UL_of_split hw x)]`.
+
+Both sides reduce to the same expression. Establish `e2 : toSub (UL n w) (x * (UL n w).subtype y') = toSub (UL n w) x * y'`. Rewrite using `[toSub_eq _ _ (mem_UL_of_split hw _), toSub_eq _ _ (mem_UL_of_split hw x)]`. Both sides reduce to the same expression. Conclude with `⟨by simp only; rw [e1]; exact (hf.2 y' hy' _).1, by simp only; rw [e2]; exact (hf.2 y' hy' _).2⟩`.
+
+Establish `hc` using `ct_inv h w N (fun y => f (toSub (UL n w) y)) hNn hF k hk1 hk2 hkN m`. Establish `hμ1 : μ (GeneralLinearGroup.det k.1) = 1` using `hkμ1`. Establish `hμ2 : μ (GeneralLinearGroup.det k.2) = 1` using `hkμ2`. Unfold `ctMu`. Rewrite using `[hc.1, hc.2]`.
+
+Simplify using `only [Prod.fst_mul, Prod.snd_mul, map_mul, mul_pow, map_pow, hμ1, hμ2, one_pow, mul_one, one_mul]`. Apply the tactic sequence `constructor <;> trivial`.
+-/
 theorem ctMu_inv {a b n : ℕ} (h : a + b = n) (w : Pl E) (hw : IsSplitAt w) (N : Subgroup (GLw n w))
     (K' : Subgroup (UL n w)) (μ : (w.adicCompletion E)ˣ →* ℂˣ) (f : UL n w → ℂ) (hf : IsHecke K' f)
     (hNK : N ≤ K'.map (UL n w).subtype) (hNn : ∀ k ∈ GlobalTheory.LFun.KGL w n, ∀ x ∈ N, k⁻¹ * x * k ∈ N)
@@ -87,6 +115,11 @@ theorem ctMu_inv {a b n : ℕ} (h : a + b = n) (w : Pl E) (hw : IsSplitAt w) (N 
   simp only [Prod.fst_mul, Prod.snd_mul, map_mul, mul_pow, map_pow, hμ1, hμ2, one_pow, mul_one, one_mul]
   constructor <;> trivial
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n a ha w hw μ hμ K' hK'`. Take `⟨N, hNo, hNK, hNn, hNf⟩` from `GlobalTheory.T.exists_open_conjStable_subgroup_of_splitLevel E n w K' hw hK'`. Establish `hlev` using `GlobalTheory.T.isLevel_blockLevels_splitPlace E a (n - a) n (Nat.add_sub_cancel' ha) w N μ hw hNo hμ`. Use `⟨lev₁ (Nat.add_sub_cancel' ha) w N μ, lev₂ (Nat.add_sub_cancel' ha) w N μ, hlev.1, hlev.2, ?_, fun f hf => ⟨⟨GlobalTheory.T.hasCompactSupport_twistedConstantTermSplitPlace E a (n - a) n _ w μ f hw hf.1, fun k hk m => ctMu_inv _ w hw N K' μ f hf hNK hNn k hk m⟩, GlobalTheory.T.twi …` and prove the remaining obligations. Introduce and unpack `⟨hK'e, hμ1⟩`.
+
+Rewrite using `[hNf hK'e]`. Conclude with `GlobalTheory.T.blockLevels_eq_integralGL_of_unramified E a (n - a) n _ w μ hμ1`.
+-/
 theorem ctMu_hecke : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n a : ℕ) (ha : a ≤ n) (w : Pl E), IsSplitAt w → ∀ (μ : (w.adicCompletion E)ˣ →* ℂˣ), IsOpen {x | μ x = 1} → ∀ K' : Subgroup (UL n w), IsLevel (MonoidHom.id _) (KL n w) K' → ∃ (K₁ : Subgroup (GLw a w)) (K₂ : Subgroup (GLw (n - a) w)), IsLevel (thL a w) (GlobalTheory.LFun.KGL w a) K₁ ∧ IsLevel (thL (n - a) w) (GlobalTheory.LFun.KGL w (n - a)) K₂ ∧ ((K' = KL n w ∧ ∀ u ∈ (GlobalTheory.LFun.KGL w 1), μ (GeneralLinearGroup.det u) = 1) → K₁ = GlobalTheory.LFun.KGL w a ∧ K₂ = GlobalTheory.LFun.KGL w (n - a)) ∧ ∀ f, IsHecke K' f → IsHecke (K₁.prod K₂) (ctMu (Nat.add_sub_cancel' ha) w μ f) ∧ ((∀ y, f y ≠ 0 → y.1.val.charpoly.Separable) → RegAt2 a (n - a) w (ctMu (Nat.add_sub_cancel' ha) w μ f)) := by
   intro E _ _ _ _ n a ha w hw μ hμ K' hK'
   obtain ⟨N, hNo, hNK, hNn, hNf⟩ := GlobalTheory.T.exists_open_conjStable_subgroup_of_splitLevel E n w K' hw hK'

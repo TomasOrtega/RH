@@ -11,6 +11,13 @@ open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.SepRows.RowRapidPf
+/- English proof (translation)
+Introduce `hP hT D hq hs T L μ0 hL sc hc G W M hM M₀ hM₀ t ht w`. Establish `ht' : t ∈ MultT W.θ M₀ ∅ 1` using `multT_le_empty W.θ M₀ _ _ ht`. Establish `key : ∀ ρ Φ n (h : n ≤ D.R.m), PathConv W M (rowPath T 0 n) (rowFam 0 n fun i => W.datum ρ Φ (Fin.castLE h i)) (t w) ∧ RapidDec (G.V (.grid n 0)) (part W M ρ Φ (t w) n h)`. Introduce `ρ Φ n h`. Take `⟨S, MB, -, -, vec, hv⟩` from `hT D hq hs T L μ0 hL sc hc G W M hM M₀ hM₀ n h`.
+
+Take `⟨F', hF', hF⟩` from `hv t ht' Φ`. Take `⟨hcv, heq⟩` from `hF ρ w`. Use `⟨hcv, ?_⟩` and prove the remaining obligations. Rewrite using `[heq]`. Conclude with `(GlobalTheory.ChainOnto.MultRapid.multT_apply_rapidDec hP.cuspRapidDecay D _ S MB W.θ W.θ_is ∅ 1 F' hF' (vec ρ w)).2.2`.
+
+Conclude with `⟨fun ρ Φ n h => (key ρ Φ n h).2, fun ρ Φ => (key ρ Φ D.R.m le_rfl).1⟩`.
+-/
 theorem separating_family_rapid_decay : _root_.GlobalTheory.FunPr.ThetaLocalInputs → RowTower → RowRapid := by
   intro hP hT D hq hs T L μ0 hL sc hc G W M hM M₀ hM₀ t ht w
   have ht' : t ∈ MultT W.θ M₀ ∅ 1 := multT_le_empty W.θ M₀ _ _ ht
@@ -36,6 +43,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SepRows.RowRapidPf.separating_family_rapid_decay | exact _root_.GlobalTheory.SepRows.RowRapidPf.separating_family_rapid_decay | (intros; apply _root_.GlobalTheory.SepRows.RowRapidPf.separating_family_rapid_decay <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rapid_decay_of_separating_family : _root_.GlobalTheory.FunPr.ThetaLocalInputs → RowTower → RowRapid := by
   first | exact @_root_.GlobalTheory.SepRows.RowRapidPf.separating_family_rapid_decay | exact _root_.GlobalTheory.SepRows.RowRapidPf.separating_family_rapid_decay | (intros; apply _root_.GlobalTheory.SepRows.RowRapidPf.separating_family_rapid_decay <;> assumption)
 end

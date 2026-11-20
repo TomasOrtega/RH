@@ -7,6 +7,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial GlobalTheory.Et
 
 namespace GlobalTheory.EtC.GmStep
 
+/- English proof (translation)
+Introduce `q _ A _ hA hq A' _ _ hfin k s i hs`. Take `⟨e0, -, -, -⟩` from `GlobalTheory.T.laurentCechNerve_level_spec_tensorPower A A' k`. Use `haveI : Subsingleton (Ht q (sp (PiTensorProduct A (fun _ : Fin (k + 1) => A'))) s i) := GlobalTheory.T.finite_strictlyHenselian_tateTwist_acyclic q A hA hq _ inferInstance s i hs`. Set `f : sp (PiTensorProduct A (fun _ : Fin (k + 1) => A')) ⟶ disc.obj ((cech (baseHom A A')).obj (op ⦋k⦌))` to `disc.map e0.hom`. Set `g : disc.obj ((cech (baseHom A A')).obj (op ⦋k⦌)) ⟶ sp (PiTensorProduct A (fun _ : Fin (k + 1) => A'))` to `disc.map e0.inv`.
+
+Establish `hgf : g ≫ f = 𝟙 _`. Conclude with `(disc.mapIso e0).inv_hom_id`. Establish `hinj : Function.Injective (pull (ZMod q) f (tw q i) s)`. Introduce `x y hxy`. Use `congrArg (pull (ZMod q) g (tw q i) s) hxy` as an intermediate fact.
+
+Rewrite `this` using `[← pull_comp, ← pull_comp, hgf, pull_id, pull_id]`. Then use the resulting hypothesis. Conclude with `hinj.subsingleton`.
+-/
 theorem cech_level_acyc : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A], SH A → IsUnit (q : A) → ∀ (A' : Type) [CommRing A'] [Algebra A A'],
   Module.Finite A A' → ∀ (k : ℕ) (s i : ℤ), 0 < s → Subsingleton (Ht q (disc.obj ((cech (baseHom A A')).obj (op ⦋k⦌))) s i) := by
   intro q _ A _ hA hq A' _ _ hfin k s i hs

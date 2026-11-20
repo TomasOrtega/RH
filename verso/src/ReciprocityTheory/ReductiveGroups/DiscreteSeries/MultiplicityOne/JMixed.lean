@@ -10,6 +10,49 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2 ConjugateNormInequalities MixedNormBounds
 
+/- English proof (translation)
+Take `⟨hB2, -, -, -, hUWb, -⟩` from `h`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, hInt, hLow, -, -, -, hCG, -⟩` from `hB2`. Introduce `k r Wp _ _ _ D X hD hSq γ hγ haM C hC u hu`. Establish `hG` using `hCG k r`. Establish `hEG : embWb k r γ ∈ GV k r`.
+
+Establish `hmem : embWb k r γ ∈ UWb k r` using `by rw [(hUWb k r).1]; exact ⟨γ, hγ.1, rfl⟩`. Conclude with `hmem.1`. Establish `hE` using `hG.unit _ hEG`. Take `⟨d, hd⟩` from `stSchurG k r Wp D X hD hSq`. Take `⟨C₁, hC₁⟩` from `hu`.
+
+Establish `hn1 : (1 : ℝ) ≤ nR k r` using `by simp only [nR]; exact_mod_cast Nat.succ_le_succ (Nat.zero_le _)`. Establish `ha0 : 0 ≤ X.a` using `le_trans (by simp only [aM]; positivity) haM`. Use `set b := AG k r + 1 with hb`. Establish `hb0 : 0 ≤ b` using `by simp only [hb, AG]; positivity`. Establish `hab : b ≤ X.a`.
+
+Use `le_trans ?_ haM` and prove the remaining obligations. Simplify using `only [hb, AG, aM]`. Use polynomial arithmetic with `[mul_le_mul hn1 hn1 zero_le_one (by linarith), sq_nonneg (nR k r)]`. Establish `hCw : C X.w ≠ 0`. Introduce `h0`.
+
+Establish `h1` using `C.norm_map X.w`. Rewrite `h1` using `[h0, norm_zero, X.w_norm]`. Conclude with `zero_ne_one h1`. Take `⟨g₂, hg₂, hc₀⟩` from `exists_inner_ne X hG (C X.w) hCw`. Establish `hg2i : g₂⁻¹ ∈ GV k r` using `hG.inv_mem _ hg₂`.
+
+Use `set K : ℝ := (gN (embWb k r γ) * gN (embWb k r γ)⁻¹) ^ 2 with hK`. Establish `hK0 : 0 < K`. Establish `h1` using `hLow k r _ hEG`. Establish `h2` using `hLow k r _ (hG.inv_mem _ hEG)`. Establish `: 1 ≤ gN (embWb k r γ) * gN (embWb k r γ)⁻¹` using `by nlinarith`.
+
+Simplify using `only [hK]`. Check the signs of the components of the expression. Use `set c : ℝ := max (gN (Hpk k r) ^ 2) 1 with hc`. Establish `hc0 : 0 < c` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Use `set Lc : ℝ := c * gN g₂⁻¹ with hLc`.
+
+Establish `hL0 : 0 < Lc` using `mul_pos hc0 (by linarith [hLow k r _ hg2i])`. Use `set K₁ : ℝ := max C₁ 0 * K ^ X.a with hK₁`. Use `set K₂ : ℝ := max X.Cw 0 * Lc ^ X.a with hK₂`. Establish `hK₁0 : 0 ≤ K₁` using `mul_nonneg (le_max_right _ _) (Real.rpow_nonneg hK0.le _)`. Establish `hK₂0 : 0 ≤ K₂` using `mul_nonneg (le_max_right _ _) (Real.rpow_nonneg hL0.le _)`.
+
+Establish `f1 : ∀ y ∈ GV k r, ‖⟪C X.w, X.σ y (C u)⟫_ℂ‖ ≤ K₁ * gN y ^ (-X.a)`. Introduce `y hy`. Establish `hgb` using `InvGrp.gbar_mem_GV hG hEG y hy`. Establish `e : ⟪C X.w, X.σ y (C u)⟫_ℂ = ⟪X.σ (gbar k r γ y) u, X.w⟫_ℂ`. Rewrite using `[← hC y hy X.w u, inner_sig_left X hG hgb]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, norm_inner_symm]`. Establish `hb1 : ‖⟪X.w, X.σ (gbar k r γ y) u⟫_ℂ‖ ≤ C₁ * gN (gbar k r γ y) ^ (-X.a)` using `hC₁ _ hgb`. Establish `hy1` using `hLow k r y hy`. Establish `hrb` using `rpow_bound (by linarith) hK0 ha0 (gN_le_gbar hE y)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `f2 : ∀ g ∈ GV k r, ‖⟪X.σ g₂ X.w, X.σ g X.w⟫_ℂ‖ ≤ K₂ * gN g ^ (-X.a)`. Introduce `g hg`. Establish `hm` using `hG.mul_mem _ hg2i _ hg`. Establish `e : ⟪X.σ g₂ X.w, X.σ g X.w⟫_ℂ = ⟪X.w, X.σ (g₂⁻¹ * g) X.w⟫_ℂ`.
+
+Rewrite using `[inner_sig_left X hG hg₂, X.rep.1.2 _ hg2i _ hg]`. Both sides reduce to the same expression. Rewrite using `[e]`. Establish `hb1` using `X.dec _ hm`. Establish `hle : gN g ≤ Lc * gN (g₂⁻¹ * g)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hrb` using `rpow_bound (by linarith [hLow k r g hg]) hL0 ha0 hle`. Combine the equalities or inequalities in the displayed calculation. Use `set c₀ : ℂ := ⟪C X.w, X.σ g₂ X.w⟫_ℂ with hc₀def`. Use `set I : ℝ≥0∞ := ∫⁻ g : Mt k r, ENNReal.ofReal (gN (Matrix.of g) ^ (-b)) ∂D.μG with hI`.
+
+Establish `hIfin : I < ∞` using `hInt k r D.μG b D.haarG (AB_le_AG k r)`. Use `⟨d / ‖c₀‖ * (K₁ * K₂ * c⁻¹ ^ (-(X.a - b)) * I.toReal), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hexp : -(X.a - AG k r - 1) = -(X.a - b)` using `by rw [hb]; ring`. Rewrite using `[hexp]`. Establish `hX1 : 1 ≤ gN x` using `hLow k r x hx`.
+
+Establish `hd0 : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.1.ne'`. Take `⟨-, hEq⟩` from `hd.2 (X.σ x (C u)) (C X.w) X.w (X.σ g₂ X.w)`. Establish `hmc : mc X (C u) X.w x = (d : ℂ) / c₀ * ∫ g : Mt k r, mc X (X.σ x (C u)) (C X.w) (Matrix.of g) * star (mc X X.w (X.σ g₂ X.w) (Matrix.of g)) ∂D.μG`. Rewrite using `[hEq]`. Simplify using `only [mc, ← hc₀def]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hae : ∀ᵐ g ∂D.μG, Matrix.of g ∈ GV k r`. Rewrite using `[ae_iff]`. Conclude with `measure_mono_null (fun g hg => hg) D.haarG.conc`. Establish `hpt : ∀ᵐ g ∂D.μG, ENNReal.ofReal ‖mc X (X.σ x (C u)) (C X.w) (Matrix.of g) * star (mc X X.w (X.σ g₂ X.w) (Matrix.of g))‖ ≤ ENNReal.ofReal (K₁ * K₂ * (gN x * c⁻¹) ^ (-(X.a - b))) * ENNReal.ofReal (gN (Matrix.of g) ^ (-b))` using `by filter_upwards [hae] with g hg`.
+
+Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Use `set G : Mat k r := Matrix.of g`. Establish `hGx : G * x ∈ GV k r` using `hG.mul_mem _ hg _ hx`. Establish `hA` using `hLow k r _ hGx`.
+
+Establish `hB` using `hLow k r _ hg`. Establish `e1 : mc X (X.σ x (C u)) (C X.w) G = ⟪C X.w, X.σ (G * x) (C u)⟫_ℂ`. Unfold `mc`. Rewrite using `[X.rep.1.2 G hg x hx]`. Both sides reduce to the same expression.
+
+Establish `hXle : gN x ≤ c * (gN G * gN (G * x))` using `(gN_le_mul hg x).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (mul_nonneg (gN_nonneg _) (gN_nonneg _)))`. Establish `key` using `real_key hA hB (by linarith) hc0 hb0 hab hXle`. Rewrite using `[e1, norm_mul, norm_star]`. Combine the equalities or inequalities in the displayed calculation. Establish `hnorm : ‖∫ g : Mt k r, mc X (X.σ x (C u)) (C X.w) (Matrix.of g) * star (mc X X.w (X.σ g₂ X.w) (Matrix.of g)) ∂D.μG‖ ≤ (ENNReal.ofReal (K₁ * K₂ * (gN x * c⁻¹) ^ (-(X.a - b))) * I).toReal` using `(norm_integral_le_lintegral_norm _).trans (ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hIfin.ne) ((lintegral_mono_ae hpt).trans_eq (lintegral_const_mul' _ _ ENNReal.ofReal_ne_top)))`.
+
+Rewrite `hnorm` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]`. Establish `hc₀n : 0 < ‖c₀‖` using `norm_pos_iff.2 hc₀`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmc, norm_mul, norm_div, Complex.norm_real, Real.norm_of_nonneg hd.1.le]`. Use `_ ≤ d / ‖c₀‖ * (K₁ * K₂ * (gN x * c⁻¹) ^ (-(X.a - b)) * I.toReal) := mul_le_mul_of_nonneg_left hnorm (div_nonneg hd.1.le hc₀n.le)`.
+
+Use `_ = d / ‖c₀‖ * (K₁ * K₂ * c⁻¹ ^ (-(X.a - b)) * I.toReal) * gN x ^ (-(X.a - b)) := by`. Rewrite using `[Real.mul_rpow (gN_nonneg x) (inv_nonneg.2 hc0.le)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem stMixed (h : UnitaryGroupStructuralFacts) : StMixed := by
   obtain ⟨hB2, -, -, -, hUWb, -⟩ := h
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, hInt, hLow, -, -, -, hCG, -⟩ := hB2

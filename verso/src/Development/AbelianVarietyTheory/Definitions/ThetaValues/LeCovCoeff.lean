@@ -28,6 +28,9 @@ def covCoeff (hle : c.F ≤ c'.F) {n : ℕ} (d : DeltaDat Xo c n) : Coeff d.l₂
   zeta_mem := (d.hF.le.trans hle) d.c₂.zeta_mem
   le := d.c₂.le.trans (d.hF.le.trans hle)
 
+/- English proof (translation)
+The claim follows from `d.hF.le.trans hle`.
+-/
 theorem le_covCoeff (hle : c.F ≤ c'.F) {n : ℕ} (d : DeltaDat Xo c n) : d.c₂.F ≤ (covCoeff hle d).F :=
   d.hF.le.trans hle
 

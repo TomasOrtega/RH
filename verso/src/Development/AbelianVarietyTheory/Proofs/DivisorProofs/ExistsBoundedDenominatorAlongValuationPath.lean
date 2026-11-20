@@ -10,6 +10,23 @@ open scoped CategoryTheory.Obj RatFunc
 
 namespace GlobalTheory.Nef
 
+/- English proof (translation)
+Introduce `k E _ _ _ p u Y ζ U h f`. Take `⟨hcomp, -, hres, hloc, -⟩` from `GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk`. Distinguish the cases in `hU : ⊤ ≤ ζ ⁻¹ᵁ U`. Use `⟨1, evAt ζ hU f, by simp, fun _ => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, _root_.one_mul, hcomp (PowerSeries p.O) (PowerSeries E) Y (sc p u) ζ U hU h f]`.
+
+Take `⟨_, ⟨U₀, hU₀, rfl⟩, hy0, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (ζ (IsLocalRing.closedPoint (PowerSeries p.O)))) isOpen_univ`. Establish `hζ0 : ⊤ ≤ ζ ⁻¹ᵁ U₀` using `(hloc _ _ _ _).2 hy0`. Establish `hη0 : ⊤ ≤ (spMap (sc p u) ≫ ζ) ⁻¹ᵁ U₀` using `fun x _ => hζ0 (Set.mem_univ ((spMap (sc p u)) x))`. Establish `hyU` using `(hloc _ _ _ _).1 h`. Establish `hyU₀` using `(hloc _ _ _ _).1 hη0`.
+
+Take `⟨t, htU, hyt⟩` from `hU₀.exists_basicOpen_le (V := U) ⟨_, hyU⟩ hyU₀`. Establish `hηt : ⊤ ≤ (spMap (sc p u) ≫ ζ) ⁻¹ᵁ Y.basicOpen t` using `(hloc _ _ _ _).2 hyt`. Use `haveI := hU₀.isLocalization_basicOpen t`. Take `⟨⟨a, ⟨_, n, rfl⟩⟩, hmk⟩` from `IsLocalization.mk'_surjective (Submonoid.powers t) (Y.presheaf.map (homOfLE htU).op f)`. Establish `hspec` using `IsLocalization.mk'_spec Γ(Y, Y.basicOpen t) a (⟨t ^ n, n, rfl⟩ : Submonoid.powers t)`.
+
+Simplify using `only at hmk`. Rewrite `hspec` using `[hmk]`. Establish `hle : Y.basicOpen t ≤ U₀` using `Y.basicOpen_le t`. Establish `key : evAt (spMap (sc p u) ≫ ζ) hηt (Y.presheaf.map (homOfLE htU).op f) * evAt (spMap (sc p u) ≫ ζ) hηt (Y.presheaf.map (homOfLE hle).op (t ^ n)) = evAt (spMap (sc p u) ≫ ζ) hηt (Y.presheaf.map (homOfLE hle).op a)`. Rewrite using `[← map_mul]`.
+
+Conclude with `congrArg _ hspec`. Establish `h1` using `hres _ _ _ _ _ htU h hηt f`. Establish `h2` using `hres _ _ _ _ _ hle hη0 hηt (t ^ n)`. Establish `h3` using `hres _ _ _ _ _ hle hη0 hηt a`. Establish `hu : IsUnit (evAt (spMap (sc p u) ≫ ζ) hηt (Y.presheaf.map (homOfLE hle).op t))` using `(Y.toRingedSpace.isUnit_res_basicOpen t).map _`.
+
+Use `⟨evAt ζ hζ0 (t ^ n), evAt ζ hζ0 a, ?_, fun h' => absurd h' hU, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `hu' : IsUnit (sc p u (evAt ζ hζ0 (t ^ n)))`. Rewrite using `[← hcomp (PowerSeries p.O) (PowerSeries E) Y (sc p u) ζ U₀ hζ0 hη0, ← h2, map_pow, map_pow]`. Conclude with `hu.pow n`.
+
+Rewrite `hu'` using `[PowerSeries.isUnit_iff_constantCoeff]`. Apply `hu'.ne_zero` to reduce the goal to its premises. Rewrite using `[sc, RingHom.comp_apply, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_rescale, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, h0]`. Simplify using the standard rewrite rules. Rewrite using `[← hcomp (PowerSeries p.O) (PowerSeries E) Y (sc p u) ζ U₀ hζ0 hη0, ← hcomp (PowerSeries p.O) (PowerSeries E) Y (sc p u) ζ U₀ hζ0 hη0, ← h1, ← h2, ← h3, ← key]`.
+
+Conclude with `mul_comm _ _`.
+-/
 theorem den_along_path : ∀ (k E : Type) [Field k] [Field E] [Algebra k E] (p : Place k E) (u : E) (Y : Scheme.{0}) (ζ : Sp (PowerSeries p.O) ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ (spMap (sc p u) ≫ ζ) ⁻¹ᵁ U) (f : Γ(Y, U)), ∃ e ψ : PowerSeries p.O, PowerSeries.constantCoeff e ≠ 0 ∧ (⊤ ≤ ζ ⁻¹ᵁ U → e = 1) ∧ sc p u e * evAt (spMap (sc p u) ≫ ζ) h f = sc p u ψ := by
   intro k E _ _ _ p u Y ζ U h f
   obtain ⟨hcomp, -, hres, hloc, -⟩ := GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk

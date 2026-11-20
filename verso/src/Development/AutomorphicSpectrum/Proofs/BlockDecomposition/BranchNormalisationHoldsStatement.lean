@@ -10,5 +10,8 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRegBallMass
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRegLelongMono
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSmallSetBallCover
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BranchNorm.branchNormalisation | exact GlobalTheory.CompanionTheory.BranchNorm.branchNormalisation | (intros; apply GlobalTheory.CompanionTheory.BranchNorm.branchNormalisation <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.branch_normalisation_holds : GroundTheory.Heights₂.Heights.BranchNormalisation.Statement := by
   first | exact @GlobalTheory.CompanionTheory.BranchNorm.branchNormalisation | exact GlobalTheory.CompanionTheory.BranchNorm.branchNormalisation | (intros; apply GlobalTheory.CompanionTheory.BranchNorm.branchNormalisation <;> assumption)

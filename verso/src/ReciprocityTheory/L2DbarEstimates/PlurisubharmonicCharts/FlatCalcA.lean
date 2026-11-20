@@ -7,6 +7,13 @@ open scoped ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hu : u = ∑ a, ((u a).re • bas n a + (u a).im • (Complex.I • bas n a))`. Use extensionality with `b`. Simplify using `[bas, EuclideanSpace.single_apply, Finset.sum_add_distrib, Complex.real_smul, Pi.single_apply, mul_ite, mul_one, mul_zero]`. Use `conv_lhs => rw [hu]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul, Complex.real_smul, Complex.real_smul]`. Establish `h1 : u a = ((u a).re : ℂ) + ((u a).im : ℂ) * Complex.I` using `(Complex.re_add_im _).symm`. Establish `h2 : (starRingEnd ℂ) (u a) = ((u a).re : ℂ) - ((u a).im : ℂ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+
+Take the linear combination `(-(D (bas n a) - Complex.I * D (Complex.I • bas n a)) / 2) * h1 + (-(D (bas n a) + Complex.I * D (Complex.I • bas n a)) / 2) * h2 + (((u a).im : ℂ) * D (Complex.I • bas n a)) * Complex.I_mul_I`.
+-/
 theorem fc_clm_decomp (n : ℕ) (D : V n →L[ℝ] ℂ) (u : V n) :
     D u = ∑ a, ((D (bas n a) - Complex.I * D (Complex.I • bas n a)) / 2 * u a +
       (D (bas n a) + Complex.I * D (Complex.I • bas n a)) / 2 * (starRingEnd ℂ) (u a)) := by
@@ -25,6 +32,9 @@ theorem fc_clm_decomp (n : ℕ) (D : V n →L[ℝ] ℂ) (u : V n) :
     (-(D (bas n a) + Complex.I * D (Complex.I • bas n a)) / 2) * h2 +
     (((u a).im : ℂ) * D (Complex.I • bas n a)) * Complex.I_mul_I
 
+/- English proof (translation)
+Unfold `wdb`. Rewrite using `[hp.fderiv_restrictScalars ℝ]`. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', map_smul, smul_eq_mul]`. Take the linear combination `(fderiv ℂ p v (bas n j) / 2) * Complex.I_mul_I`.
+-/
 theorem fc_wdb_holo (n : ℕ) (p : V n → ℂ) (v : V n) (hp : DifferentiableAt ℂ p v) (j : Fin n) :
     wdb n j p v = 0 := by
   unfold wdb
@@ -32,6 +42,11 @@ theorem fc_wdb_holo (n : ℕ) (p : V n → ℂ) (v : V n) (hp : DifferentiableAt
   simp only [ContinuousLinearMap.coe_restrictScalars', map_smul, smul_eq_mul]
   linear_combination (fderiv ℂ p v (bas n j) / 2) * Complex.I_mul_I
 
+/- English proof (translation)
+Unfold `wd`. Establish `e : (fun y => ∑ a ∈ s, f a y) = ∑ a ∈ s, f a`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Rewrite using `[e, fderiv_sum hf]`.
+
+Simplify using `only [ContinuousLinearMap.sum_apply]`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div]`.
+-/
 theorem fc_wd_sum (n : ℕ) (j : Fin n) {ι : Type*} (s : Finset ι) (f : ι → V n → ℂ) (v : V n)
     (hf : ∀ a ∈ s, DifferentiableAt ℝ (f a) v) :
     wd n j (fun y => ∑ a ∈ s, f a y) v = ∑ a ∈ s, wd n j (f a) v := by
@@ -43,6 +58,11 @@ theorem fc_wd_sum (n : ℕ) (j : Fin n) {ι : Type*} (s : Finset ι) (f : ι →
   simp only [ContinuousLinearMap.sum_apply]
   rw [Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div]
 
+/- English proof (translation)
+Unfold `leviV`. Establish `hk : ∀ k, wdb n k g₁ =ᶠ[𝓝 v] wdb n k g₂` using `fun k => h.eventuallyEq_nhds.mono fun y hy => by`. Unfold `wdb`. Rewrite using `[hy.fderiv_eq (𝕜 := ℝ)]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Unfold `wd`. Rewrite using `[(hk k).fderiv_eq (𝕜 := ℝ)]`.
+-/
 theorem fc_leviV_congr (n : ℕ) (g₁ g₂ : V n → ℂ) (v : V n) (h : g₁ =ᶠ[𝓝 v] g₂)
     (ξ : Fin n → ℂ) : leviV n g₁ v ξ = leviV n g₂ v ξ := by
   unfold leviV

@@ -9,6 +9,9 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Fc
 open PositivityTheory.RgTw (Mat G)
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SobComplete.sob_complete | exact GlobalTheory.CompanionTheory.SobComplete.sob_complete | (intros; apply GlobalTheory.CompanionTheory.SobComplete.sob_complete <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.sobolev_space_complete : ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (V : Type)
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V], SobG →
     ∀ a : ℕ → Mat n → V, (∀ k, Sob μ (a k)) → (∀ w, CauchySeq fun k => cls μ (Rw w (a k))) →

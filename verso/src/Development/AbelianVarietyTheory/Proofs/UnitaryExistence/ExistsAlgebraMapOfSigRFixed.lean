@@ -15,6 +15,15 @@ open GlobalTheory.Member
 
 namespace GlobalTheory.Member
 
+/- English proof (translation)
+Establish `hT : ∀ z : R ⊗[F] E, ∃ t : R, z + sigR R σ z = t ⊗ₜ 1`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul a x`.
+
+Take `⟨t, ht⟩` from `htr x`. Use `⟨t • a, ?_⟩` and prove the remaining obligations. Establish `h : sigR R σ (a ⊗ₜ x) = a ⊗ₜ σ x` using `by simp [sigR]`. Rewrite using `[h, ← TensorProduct.tmul_add, ← ht, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Consider the case `add x y hx hy`.
+
+Take `⟨t, ht⟩` from `hx`. Take `⟨t', ht'⟩` from `hy`. Use `⟨t + t', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, TensorProduct.add_tmul, ← ht, ← ht']`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨t, ht⟩` from `hT z`. Use `⟨(2 : F)⁻¹ • t, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, ← TensorProduct.smul_tmul', ← ht, hz, ← two_smul F z, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]`.
+-/
 theorem exists_algebraMap_of_sigR_fixed {F E : Type} [Field F] [CharZero F] [Field E] [Algebra F E]
     (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E)
     (htr : ∀ x : E, ∃ t : F, algebraMap F E t = x + σ x) (z : R ⊗[F] E) (hz : sigR R σ z = z) :
@@ -38,6 +47,11 @@ theorem exists_algebraMap_of_sigR_fixed {F E : Type} [Field F] [CharZero F] [Fie
   rw [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply,
     ← TensorProduct.smul_tmul', ← ht, hz, ← two_smul F z, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]
 
+/- English proof (translation)
+Establish `hz' : sigR R σ ((z⁻¹ : (R ⊗[F] E)ˣ) : R ⊗[F] E) = (z⁻¹ : (R ⊗[F] E)ˣ)`. Apply `z.isUnit.mul_left_cancel` to reduce the goal to its premises. Use `conv_lhs => rw [← hz, ← map_mul]`. Simplify using the standard rewrite rules. Take `⟨a, ha⟩` from `exists_algebraMap_of_sigR_fixed R σ htr _ hz`.
+
+Take `⟨b, hb⟩` from `exists_algebraMap_of_sigR_fixed R σ htr _ hz'`. Establish `hinj : Function.Injective (algebraMap R (R ⊗[F] E))` using `Algebra.TensorProduct.includeLeft_injective (S := F) (algebraMap F E).injective`. Establish `hab : a * b = 1` using `hinj (by rw [map_mul, ha, hb, map_one]; simp)`. Conclude with `⟨⟨a, b, hab, by rw [mul_comm, hab]⟩, Units.ext ha⟩`.
+-/
 theorem exists_unit_of_sigR_fixed {F E : Type} [Field F] [CharZero F] [Field E] [Algebra F E]
     (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E)
     (htr : ∀ x : E, ∃ t : F, algebraMap F E t = x + σ x) (z : (R ⊗[F] E)ˣ)
@@ -54,6 +68,11 @@ theorem exists_unit_of_sigR_fixed {F E : Type} [Field F] [CharZero F] [Field E] 
   have hab : a * b = 1 := hinj (by rw [map_mul, ha, hb, map_one]; simp)
   exact ⟨⟨a, b, hab, by rw [mul_comm, hab]⟩, Units.ext ha⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : 1 + u = 0`. Take `⟨y, hy⟩` from `hne`. Use `⟨Units.mk0 (y - σ y) (sub_ne_zero.2 hy.symm), ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mk0, map_sub, hσ]`. Take the linear combination `(y - σ y) * h`.
+
+Use `⟨Units.mk0 (1 + u) h, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mk0, map_add, map_one]`. Take the linear combination `- hu`.
+-/
 theorem exists_root_of_norm_one {E : Type} [Field E] (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x)
     (hne : ∃ y, σ y ≠ y) (u : E) (hu : σ u * u = 1) : ∃ x : Eˣ, (x : E) = u * σ x := by
   by_cases h : 1 + u = 0
@@ -65,6 +84,9 @@ theorem exists_root_of_norm_one {E : Type} [Field E] (σ : E →+* E) (hσ : ∀
     rw [Units.val_mk0, map_add, map_one]
     linear_combination - hu
 
+/- English proof (translation)
+Unfold `IsDetRoot at *`. Rewrite using `[Units.val_mul, (matHom V).map_mul, Units.val_mul, Matrix.det_mul, RingHom.map_mul]`. Use `conv_lhs => rw [hx, hx']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isDetRoot_mul {D : D7} (V : HSp D) (g g' : GA D V) (x x' : (AE D)ˣ) (hx : IsDetRoot V g x)
     (hx' : IsDetRoot V g' x') : IsDetRoot V (g * g') (x * x') := by
   unfold IsDetRoot at *
@@ -72,6 +94,23 @@ theorem isDetRoot_mul {D : D7} (V : HSp D) (g g' : GA D V) (x x' : (AE D)ˣ) (hx
   conv_lhs => rw [hx, hx']
   ring
 
+/- English proof (translation)
+Introduce `D V`. Establish `hσ : ∀ x, D.sp.cm.sig (D.sp.cm.sig x) = x` using `fun x => star_star x`. Use `⟨GlobalTheory.RecDict.exists_isDetRoot D V, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g x x' hx hx'`. Establish `htr : ∀ x : D.host.E, ∃ t : D.host.F, algebraMap _ _ t = x + D.sp.cm.sig x`.
+
+Introduce `x`. Apply `(D.sp.cm.fixed _).1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `D.sp.cm.sig _ = _`. Rewrite using `[map_add, hσ, add_comm]`. Unfold `IsDetRoot at hx hx'`.
+
+Take `⟨a, ha⟩` from `exists_unit_of_sigR_fixed (AF D.host.F) D.sp.cm.sig htr (x⁻¹ * x') (by`. Apply `(x.isUnit.map (sigR (AF D.host.F) D.sp.cm.sig)).mul_left_cancel` to reduce the goal to its premises. Apply `x.isUnit.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← map_mul, ← Units.val_mul, mul_inv_cancel_left, mul_left_comm, ← Units.val_mul, mul_inv_cancel_left]`. Take the linear combination `(sigR (AF D.host.F) D.sp.cm.sig (x' : AE D)) * hx - (sigR (AF D.host.F) D.sp.cm.sig (x : AE D)) * hx')`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Unfold `idF`. Rewrite using `[ha, mul_inv_cancel_left]`. Introduce `γ hγ`. Take `⟨γ', -, hγ'⟩` from `hγ`.
+
+Establish `hdet : (Formalism.L2.Theta.mt V γ).det = incA D (γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E).det`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Conclude with `congrArg Units.val hγ'.symm`. Establish `hc : ∀ y, cA D (incA D y) = incA D (D.sp.cm.sig y)`.
+
+Introduce `y`. Simplify using `[cA, sigR, inclR]`. Establish `hinj : Function.Injective (incA D)` using `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective _ _)`. Establish `hu` using `det_conj_mul V γ`. Rewrite `hu` using `[hdet, hc, ← map_mul, ← map_one (incA D)]`.
+
+Take `⟨x, hx⟩` from `exists_root_of_norm_one (D.sp.cm.sig : D.host.E →+* D.host.E) hσ (GlobalTheory.RecDict.cmData_sig_ne_id D.sp.cm) _ (hinj hu)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `key : incA D (x : D.host.E) = (Formalism.L2.Theta.mt V γ).det * cA D (incA D (x : D.host.E))`. Rewrite using `[hdet, hc, ← map_mul]`. Conclude with `congrArg _ hx`.
+
+Unfold `IsDetRoot`. Rewrite using `[Units.coe_map]`. Conclude with `key`. Conclude with `isDetRoot_mul V`.
+-/
 theorem isDetRoot_laws : ∀ (D : D7) (V : HSp D), (∀ g : GA D V, ∃ x, IsDetRoot V g x) ∧ (∀ g x x', IsDetRoot V g x → IsDetRoot V g x' → ∃ a, x' = x * idF D a) ∧ (∀ γ ∈ GQ V, ∃ x : D.host.Eˣ, IsDetRoot V γ (Units.map (incA D).toMonoidHom x)) ∧ ∀ g g' x x', IsDetRoot V g x → IsDetRoot V g' x' → IsDetRoot V (g * g') (x * x') := by
   intro D V
   have hσ : ∀ x, D.sp.cm.sig (D.sp.cm.sig x) = x := fun x => star_star x

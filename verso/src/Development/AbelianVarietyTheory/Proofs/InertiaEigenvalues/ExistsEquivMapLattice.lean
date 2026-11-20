@@ -12,6 +12,17 @@ namespace GlobalTheory.TwistChoice
 
 section Semilinear
 
+/- English proof (translation)
+Establish `key : ∀ {V : Type} [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V] (C : Submodule O V) [C.IsLattice K], ∃ c : Module.Basis (Fin (Module.finrank K V)) K V, Submodule.span O (Set.range c) = C`. Introduce `V _ _ _ _ C _`. Set `c₀` to `Module.finBasis O C`. Set `c₁` to `c₀.extendOfIsLattice K`. Establish `hn : Module.finrank K V = Module.finrank O C`.
+
+Rewrite using `[Module.finrank_eq_card_basis c₁, Fintype.card_fin]`. Use `⟨c₁.reindex (finCongr hn.symm), ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.range_reindex]`. Establish `h1 : Set.range c₁ = C.subtype '' Set.range c₀`. Rewrite using `[← Set.range_comp]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `c₀.extendOfIsLattice_apply K i`. Rewrite using `[h1, ← Submodule.map_span, c₀.span_eq, Submodule.map_top, Submodule.range_subtype]`. Take `⟨a, ha⟩` from `key A`.
+
+Take `⟨b, hb⟩` from `key B`. Use `⟨a.equiv b (finCongr h), ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, ← hb, Submodule.map_span, ← Set.range_comp, ← (finCongr h).surjective.range_comp b]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_equiv_map_lattice {O K U U' : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] [AddCommGroup U] [Module K U] [Module O U] [IsScalarTower O K U]
     [AddCommGroup U'] [Module K U'] [Module O U'] [IsScalarTower O K U']
@@ -41,6 +52,23 @@ theorem exists_equiv_map_lattice {O K U U' : Type} [CommRing O] [IsDomain O] [Is
   funext i
   simp
 
+/- English proof (translation)
+Set `b₀` to `Module.finBasis L V`. Set `f₀ : V →ₛₗ[e] (Fin (Module.finrank L V) → K)` to `{ toFun := fun x i => e (b₀.repr x i) map_add' := fun x y => by funext i; simp map_smul' := fun c x => by funext i; simp }`. Establish `hf₀ : ∀ T : Set V, Submodule.span L T = ⊤ → Submodule.span K (f₀ '' T) = ⊤`. Introduce `T hT`. Establish `h1 : ∀ x, f₀ x ∈ Submodule.span K (f₀ '' T)` using `fun x => by`.
+
+Establish `hx : x ∈ Submodule.span L T` using `hT ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hy`. Rewrite using `[eq_top_iff, ← (Pi.basisFun K (Fin (Module.finrank L V))).span_eq, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Establish `h2 : Pi.basisFun K (Fin (Module.finrank L V)) i = f₀ (b₀ i)`. Use function extensionality and compare the values at `j`. Use `show _ = e (b₀.repr (b₀ i) j)`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij, Ne.symm hij]`. Rewrite using `[h2]`. Conclude with `h1 _`.
+
+Set `A : Submodule O (Fin (Module.finrank L V) → K)` to `Submodule.span O (f₀ '' S)`. Use `haveI : A.IsLattice K := ⟨Submodule.fg_span (hS.image _), by rw [Submodule.span_span_of_tower, hf₀ S hspan]⟩`. Take `⟨g, hg⟩` from `exists_equiv_map_lattice (K := K) A B (by rw [← h]; simp)`. Use `⟨g.toLinearMap.comp f₀, fun ι b => ?_, ?_⟩` and prove the remaining obligations. Use `haveI : Finite ι := Module.Finite.finite_basis b haveI := Fintype.ofFinite ι`.
+
+Establish `h1 : Submodule.span K (Set.range fun i => (g.toLinearMap.comp f₀) (b i)) = ⊤`. Establish `h2 : (Set.range fun i => (g.toLinearMap.comp f₀) (b i)) = g.toLinearMap '' (f₀ '' Set.range b)`. Rewrite using `[← Set.range_comp, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h2, ← Submodule.map_span, hf₀ _ b.span_eq, Submodule.map_top]`.
+
+Conclude with `g.range`. Conclude with `⟨linearIndependent_of_top_le_span_of_card_eq_finrank h1.ge (by rw [← h, Module.finrank_eq_card_basis b]), h1⟩`. Rewrite using `[← hg, Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression.
+-/
 theorem exists_semilinear {L V O K U : Type} [Field L] [AddCommGroup V] [Module L V] [Module.Finite L V]
     [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [Field K] [Algebra O K] [IsFractionRing O K]
     [AddCommGroup U] [Module K U] [Module O U] [IsScalarTower O K U] (e : L →+* K)
@@ -91,6 +119,19 @@ theorem exists_semilinear {L V O K U : Type} [Field L] [AddCommGroup V] [Module 
   · rw [← hg, Submodule.map_span, Set.image_image]
     rfl
 
+/- English proof (translation)
+Use `haveI : Finite ι := hb.1.finite`. Use `haveI := Fintype.ofFinite ι`. Set `B : Module.Basis ι ℂ M` to `Module.Basis.mk hb.1 hb.2.ge`. Establish `hB : ∀ i, B i = j (b i)` using `fun i => by simp [B]`. Establish `key : ∀ l : V →ₗ[L] L, ∃ l' : M →ₗ[ℂ] ℂ, ∀ x, l' (j x) = σ (l x)` using `fun l => by`.
+
+Use `⟨B.constr ℂ fun i => σ (l (b i)), fun x => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr x]`. Use `conv_rhs => rw [← b.sum_repr x]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, ← hB, Module.Basis.constr_basis, smul_eq_mul, map_mul, RingHom.id_apply]`. Establish `hinj : Function.Injective j` using `fun x y hxy => by`.
+
+Use `b.ext_elem fun i => σ.injective ?_` and prove the remaining obligations. Take `⟨l', hl'⟩` from `key (b.coord i)`. Establish `h1` using `hl' x`. Rewrite `h1` using `[hxy, hl' y]`. Conclude with `h1.symm`.
+
+Use `⟨Module.Finite.of_basis b, T.finite_toSet.preimage hinj.injOn, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨l, hl0, hl⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Take `⟨l', hl'⟩` from `key l`. Establish `h1 : l' = 0`.
+
+Rewrite using `[← LinearMap.ker_eq_top, eq_top_iff, ← hT, Submodule.span_le]`. Introduce `y hy`. Take `⟨x, rfl⟩` from `hsub y hy`. Establish `hx : l x = 0` using `hl (Submodule.subset_span hy)`. Use `show l' (j x) = 0`.
+
+Rewrite using `[hl', hx, map_zero]`. Use `hl0 (LinearMap.ext fun x => σ.injective ?_)` and prove the remaining obligations. Rewrite using `[← hl', h1]`. Simplify using the standard rewrite rules.
+-/
 theorem form_gen {L V M ι : Type} [Field L] [AddCommGroup V] [Module L V] [AddCommGroup M] [Module ℂ M]
     [FiniteDimensional ℂ M] {σ : L →+* ℂ} (j : V →ₛₗ[σ] M) (b : Module.Basis ι L V)
     (hb : LinearIndependent ℂ (fun i => j (b i)) ∧ Submodule.span ℂ (Set.range fun i => j (b i)) = ⊤)
@@ -126,6 +167,17 @@ theorem form_gen {L V M ι : Type} [Field L] [AddCommGroup V] [Module L V] [AddC
   rw [← hl', h1]
   simp
 
+/- English proof (translation)
+Use `haveI : FaithfulSMul A B := (faithfulSMul_iff_algebraMap_injective A B).2 hinj`. Use `letI : Algebra (FractionRing A) (FractionRing B) := FractionRing.liftAlgebra A (FractionRing B)`. Use `haveI : IsScalarTower A (FractionRing A) (FractionRing B) := FractionRing.isScalarTower_liftAlgebra A (FractionRing B)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← (TensorProduct.AlgebraTensorModule.cancelBaseChange A (FractionRing A) (FractionRing B) (FractionRing B) V).finrank_eq, Module.finrank_baseChange, (NChoice.fracEquiv A V).finrank_eq]`.
+
+Take `⟨T, rfl⟩` from `hfg`. Rewrite using `[← Submodule.map_coe, ← Submodule.span_image, Submodule.span_span_of_tower]`. Conclude with `Submodule.fg_span (T.finite_toSet.image _)`. Rewrite using `[Submodule.span_span_of_tower, eq_top_iff]`. Introduce and unpack `x -`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add y z hy hz => exact Submodule.add_mem _ hy hz`. Consider the case `tmul a v`. Take `⟨d, hd⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors A) (FractionRing A) (Λ : Set V) v (hspan ▸ Submodule.mem_top)`.
+
+Rewrite `hd` using `[Submodule.span_eq]`. Establish `hd0 : algebraMap A (FractionRing B) d ≠ 0` using `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective A (FractionRing B))).2 (nonZeroDivisors.coe_ne_zero d)`. Establish `h1 : a ⊗ₜ[A] v = (a * (algebraMap A (FractionRing B) d)⁻¹) • ((1 : FractionRing B) ⊗ₜ[A] ((d : A) • v))`. Rewrite using `[← TensorProduct.smul_tmul, TensorProduct.smul_tmul', Algebra.smul_def (d : A), mul_one, smul_eq_mul, mul_assoc, inv_mul_cancel₀ hd0, mul_one]`. Rewrite using `[h1]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hd, rfl⟩)`.
+-/
 theorem baseChange_lattice {A B V : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] [Algebra A B]
     (hinj : Function.Injective (algebraMap A B)) [AddCommGroup V] [Module (FractionRing A) V] [Module A V]
     [IsScalarTower A (FractionRing A) V] (Λ : Submodule A V) (hfg : Λ.FG)
@@ -165,10 +217,20 @@ section Series
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
   (Y : NExp D.R D.host D.what₂ D.LL0 N X) (E : IntegralHeckeForms.ExpDat Y)
 
+/- English proof (translation)
+Use `⟨by simp, by simp, by rw [MonoidHom.ker_one, Subgroup.coe_top]; exact isOpen_univ, fun g g' _ => by simp, fun g => Subgroup.one_mem _, fun v A _ => by simp, fun v _ A _ σ _ => rfl⟩` and prove the remaining obligations.
+-/
 theorem twOK_one (i : X.Tw) (k : ℕ) : IntegralHeckeForms.TwOK i k ∅ (1 : G D.host.E N.Om →* (X.Ok i k)ˣ) := by
   refine ⟨by simp, by simp, by rw [MonoidHom.ker_one, Subgroup.coe_top]; exact isOpen_univ, fun g g' _ => by simp, fun g => Subgroup.one_mem _, fun v A _ => by simp,
     fun v _ A _ σ _ => rfl⟩
 
+/- English proof (translation)
+Establish `h1` using `h i hi j hj b 0 ∅ 1 (twOK_one i 0) _ subset_rfl`. Use `haveI := X.Ok_fin i 0`. Use `haveI : FaithfulSMul (X.O i) (X.Ok i 0) := (faithfulSMul_iff_algebraMap_injective _ _).2 (X.Ok_inj i 0)`. Use `haveI : Module.FaithfullyFlat (X.O i) (X.Ok i 0) := Module.FaithfullyFlat.of_flat_of_isLocalHom`. Establish `h2 : (((Y.MtLat i j b 0 ∅ 1).map (Y.thP i j b 0 ∅ 1)).restrictScalars (X.O i)).FG` using `((Y.MtLat_fg i j b 0 ∅ 1).map _).restrictScalars`.
+
+Set `m` to `TensorProduct.mk (X.O i) (X.Ok i 0) (Y.Fm i j b) 1`. Use `Submodule.fg_of_fg_map_injective m (Module.FaithfullyFlat.tensorProduct_mk_injective _) (h2.of_le ?_)` and prove the remaining obligations. Rewrite using `[IntegralHeckeForms.Th, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨a, ha, rfl⟩, rfl⟩`. Use `h1 (Submodule.subset_span (Set.mem_iUnion₂.2 ⟨a, ha, ?_⟩))` and prove the remaining obligations.
+
+Rewrite using `[Y.thPsi_one]`. Both sides reduce to the same expression.
+-/
 theorem th_fg (h : IntegralHeckeForms.admT4 Y E) (i : X.Tw) (hi : X.NonzeroIndexPlace i) (j : ℕ) (hj : j ∈ Finset.Icc 1 D.R.m) (b : Bool) :
     (IntegralHeckeForms.Th Y i j b (IntegralHeckeForms.SgJ Y E i j b)).FG := by
   have h1 := h i hi j hj b 0 ∅ 1 (twOK_one i 0) _ subset_rfl
@@ -185,6 +247,15 @@ theorem th_fg (h : IntegralHeckeForms.admT4 Y E) (i : X.Tw) (hi : X.NonzeroIndex
   rw [Y.thPsi_one]
   rfl
 
+/- English proof (translation)
+Establish `hr : Submodule.span (X.O i) (Set.range fun a : Sg => IntegralHeckeForms.AO Y i j b (Y.th i j b a)) = (IntegralHeckeForms.Th Y i j b Sg).map (IntegralHeckeForms.AO Y i j b)`. Rewrite using `[IntegralHeckeForms.Th, Submodule.map_span, Set.image_image, Set.image_eq_range]`. Take `⟨S, h1, h2⟩` from `exists_subbasis (X.O i) (Y.Fm i j b) Sg (fun a => IntegralHeckeForms.AO Y i j b (Y.th i j b a)) (fun c w hc hw => by`. Rewrite `hw` using `[← algebraMap_smul (FractionRing (X.O i)) c w, smul_eq_zero]`. Conclude with `hw.resolve_left ((map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 hc))`.
+
+Use the proof step `(hr ▸ h.map _)`. Use `⟨S.map (Function.Embedding.subtype _), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Take `⟨a', -, rfl⟩` from `Finset.mem_map.1 ha`. Conclude with `a'.2`.
+
+Set `e : S ≃ (S.map (Function.Embedding.subtype (· ∈ Sg)) : Finset _)` to `Equiv.ofBijective (fun a => ⟨a.1.1, Finset.mem_map.2 ⟨a.1, a.2, rfl⟩⟩) ⟨fun a a' h => Subtype.ext (Subtype.ext (Subtype.mk.inj h)), fun ⟨y, hy⟩ => by`. Take `⟨a, ha, rfl⟩` from `Finset.mem_map.1 hy`. Conclude with `⟨⟨a, ha⟩, rfl⟩⟩`. Conclude with `(linearIndependent_equiv e).1 h1`. Rewrite using `[← hr, ← h2, Finset.coe_map, Set.image_image]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_basisOf (i : X.Tw) (j : ℕ) (b : Bool) (Sg : Set (Y.Dat i j b)) (h : (IntegralHeckeForms.Th Y i j b Sg).FG) :
     ∃ S : Finset (Y.Dat i j b), IntegralHeckeForms.BasisOf Y i j b Sg S := by
   classical

@@ -14,11 +14,17 @@ variable {k Γ X Y : Type*} [CommRing k] [Monoid Γ] [AddCommGroup X] [Module k 
   [AddCommGroup Y] [Module k Y] {ρ : Representation k Γ X} {σ : Representation k Γ Y}
   {φ : X →ₗ[k] Y}
 
+/- English proof (translation)
+Introduce `x hx` and use `by simp only [Submodule.mem_comap, LinearMap.mem_ker] at hx ⊢ rw [hφ.isIntertwining, hx, map_zero]`.
+-/
 theorem ker_le_comap_of_isIntertwiningMap (hφ : ρ.IsIntertwiningMap σ φ) (γ : Γ) :
     LinearMap.ker φ ≤ (LinearMap.ker φ).comap (ρ γ) := fun x hx => by
   simp only [Submodule.mem_comap, LinearMap.mem_ker] at hx ⊢
   rw [hφ.isIntertwining, hx, map_zero]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨ρ γ x, hφ.isIntertwining γ x⟩`.
+-/
 theorem range_le_comap_of_isIntertwiningMap (hφ : ρ.IsIntertwiningMap σ φ) (γ : Γ) :
     LinearMap.range φ ≤ (LinearMap.range φ).comap (σ γ) := by
   rintro _ ⟨x, rfl⟩
@@ -26,6 +32,9 @@ theorem range_le_comap_of_isIntertwiningMap (hφ : ρ.IsIntertwiningMap σ φ) (
 
 end Intertwining
 
+/- English proof (translation)
+Use `(AddMonoidHom.finite_iff_finite_ker_range g).2 ⟨?_, inferInstance⟩` and prove the remaining obligations. Establish `hs : (g.ker : Set Y) ⊆ Set.range f` using `fun y hy => (hfg y).1 hy`. Conclude with `((Set.finite_range f).subset hs).to_subtype`.
+-/
 theorem finite_of_exact {X Y Z : Type*} [AddCommGroup X] [AddCommGroup Y] [AddCommGroup Z]
     (f : X →+ Y) (g : Y →+ Z) (hfg : Function.Exact f g) [Finite X] [Finite Z] : Finite Y := by
   refine (AddMonoidHom.finite_iff_finite_ker_range g).2 ⟨?_, inferInstance⟩
@@ -41,6 +50,9 @@ section Basic
 variable {X Y : Type u} [AddCommGroup X] [Module (ZMod l) X] [Finite X]
   [AddCommGroup Y] [Module (ZMod l) Y] [Finite Y]
 
+/- English proof (translation)
+Establish `h` using `d.additive ρ ρ ρ 0 0 ⟨fun _ _ => Subsingleton.elim _ _⟩ ⟨fun _ _ => Subsingleton.elim _ _⟩ (fun _ _ _ => Subsingleton.elim _ _) (fun _ => ⟨fun _ => ⟨0, Subsingleton.elim _ _⟩, fun _ => Subsingleton.elim _ _⟩) (fun _ => ⟨0, Subsingleton.elim _ _⟩)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem toFun_eq_zero_of_subsingleton [Subsingleton X] (ρ : Representation (ZMod l) Γ X) :
     d.toFun X ρ = 0 := by
   have h := d.additive ρ ρ ρ 0 0 ⟨fun _ _ => Subsingleton.elim _ _⟩
@@ -49,6 +61,9 @@ theorem toFun_eq_zero_of_subsingleton [Subsingleton X] (ρ : Representation (ZMo
     (fun _ => ⟨0, Subsingleton.elim _ _⟩)
   omega
 
+/- English proof (translation)
+Establish `h` using `d.additive ρ σ (Representation.trivial (ZMod l) Γ PUnit.{u + 1}) e.toLinearMap 0 ⟨he⟩ ⟨fun _ _ => Subsingleton.elim _ _⟩ e.injective (fun y => ⟨fun _ => ⟨e.symm y, by simp⟩, fun _ => Subsingleton.elim _ _⟩) (fun _ => ⟨0, Subsingleton.elim _ _⟩)`. Rewrite using `[h, d.toFun_eq_zero_of_subsingleton (X := PUnit.{u + 1}), add_zero]`.
+-/
 theorem toFun_congr (ρ : Representation (ZMod l) Γ X) (σ : Representation (ZMod l) Γ Y)
     (e : X ≃ₗ[ZMod l] Y) (he : ∀ γ x, e (ρ γ x) = σ γ (e x)) :
     d.toFun X ρ = d.toFun Y σ := by
@@ -58,6 +73,9 @@ theorem toFun_congr (ρ : Representation (ZMod l) Γ X) (σ : Representation (ZM
     (fun _ => ⟨0, Subsingleton.elim _ _⟩)
   rw [h, d.toFun_eq_zero_of_subsingleton (X := PUnit.{u + 1}), add_zero]
 
+/- English proof (translation)
+The claim follows from `d.additive _ ρ _ (LinearMap.ker φ).subtype φ.rangeRestrict ⟨fun _ _ => rfl⟩ ⟨fun γ x => Subtype.ext (hφ.isIntertwining γ x)⟩ (Submodule.injective_subtype _) (fun y => by rw [← LinearMap.exact_subtype_ker_map φ y, Subtype.ext_iff] rfl) (LinearMap.surjective_rangeRestrict φ)`.
+-/
 theorem toFun_eq_ker_add_range (ρ : Representation (ZMod l) Γ X)
     (σ : Representation (ZMod l) Γ Y) (φ : X →ₗ[ZMod l] Y) (hφ : ρ.IsIntertwiningMap σ φ) :
     d.toFun X ρ = d.toFun (LinearMap.ker φ)
@@ -71,12 +89,18 @@ theorem toFun_eq_ker_add_range (ρ : Representation (ZMod l) Γ X)
       rfl)
     (LinearMap.surjective_rangeRestrict φ)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem toFun_subrep_congr (ρ : Representation (ZMod l) Γ X) {p q : Submodule (ZMod l) X}
     (h : p = q) (hp : ∀ γ, p ≤ p.comap (ρ γ)) (hq : ∀ γ, q ≤ q.comap (ρ γ)) :
     d.toFun p (ρ.subrepresentation p hp) = d.toFun q (ρ.subrepresentation q hq) := by
   subst h
   rfl
 
+/- English proof (translation)
+Establish `: Subsingleton (LinearMap.ker φ)` using `⟨fun a b => Subtype.ext (hinj (by rw [LinearMap.mem_ker.1 a.2, LinearMap.mem_ker.1 b.2]))⟩`. Rewrite using `[d.toFun_eq_ker_add_range ρ σ φ hφ, d.toFun_eq_zero_of_subsingleton (X := LinearMap.ker φ), zero_add]`.
+-/
 theorem toFun_range_of_injective (ρ : Representation (ZMod l) Γ X)
     (σ : Representation (ZMod l) Γ Y) (φ : X →ₗ[ZMod l] Y) (hφ : ρ.IsIntertwiningMap σ φ)
     (hinj : Function.Injective φ) :
@@ -89,6 +113,9 @@ theorem toFun_range_of_injective (ρ : Representation (ZMod l) Γ X)
 
 omit [Finite X] in
 
+/- English proof (translation)
+The claim follows from `d.toFun_congr _ _ (LinearEquiv.ofTop _ (LinearMap.range_eq_top.2 hs)) (fun _ _ => rfl)`.
+-/
 theorem toFun_range_of_surjective (ρ : Representation (ZMod l) Γ X)
     (σ : Representation (ZMod l) Γ Y) (φ : X →ₗ[ZMod l] Y) (hφ : ρ.IsIntertwiningMap σ φ)
     (hs : Function.Surjective φ) :
@@ -98,6 +125,11 @@ theorem toFun_range_of_surjective (ρ : Representation (ZMod l) Γ X)
 
 end Basic
 
+/- English proof (translation)
+Establish `a₂` using `d.toFun_eq_ker_add_range τ₂ τ₃ φ₂ i₂`. Establish `a₃` using `d.toFun_eq_ker_add_range τ₃ κ₁ φ₃ i₃`. Establish `a₄` using `d.toFun_eq_ker_add_range κ₁ κ₂ φ₄ i₄`. Establish `a₅` using `d.toFun_eq_ker_add_range κ₂ κ₃ φ₅ i₅`. Establish `k₂` using `(d.toFun_subrep_congr τ₂ (LinearMap.exact_iff.1 e₁₂) (ker_le_comap_of_isIntertwiningMap i₂) (range_le_comap_of_isIntertwiningMap i₁)).trans (d.toFun_range_of_injective τ₁ τ₂ φ₁ i₁ h₁)`.
+
+Establish `k₃` using `d.toFun_subrep_congr τ₃ (LinearMap.exact_iff.1 e₂₃) (ker_le_comap_of_isIntertwiningMap i₃) (range_le_comap_of_isIntertwiningMap i₂)`. Establish `k₄` using `d.toFun_subrep_congr κ₁ (LinearMap.exact_iff.1 e₃₄) (ker_le_comap_of_isIntertwiningMap i₄) (range_le_comap_of_isIntertwiningMap i₃)`. Establish `k₅` using `d.toFun_subrep_congr κ₂ (LinearMap.exact_iff.1 e₄₅) (ker_le_comap_of_isIntertwiningMap i₅) (range_le_comap_of_isIntertwiningMap i₄)`. Establish `r₅` using `d.toFun_range_of_surjective κ₂ κ₃ φ₅ i₅ h₅`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem alternating_sum_six {T₁ T₂ T₃ Q₁ Q₂ Q₃ : Type u}
     [AddCommGroup T₁] [Module (ZMod l) T₁] [Finite T₁]
     [AddCommGroup T₂] [Module (ZMod l) T₂] [Finite T₂]
@@ -149,6 +181,9 @@ def torsNMap (f : A →+ B) : TorsN A n →ₗ[ZMod n] TorsN B n :=
       simp [← map_nsmul, hx])).toAddMonoidHom.toZModLinearMap n
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_torsNMap_apply (f : A →+ B) (x : TorsN A n) :
     ((torsNMap n f x : TorsN B n) : B) = f x :=
   rfl
@@ -159,10 +194,16 @@ def modNMap (f : A →+ B) : ModN A n →ₗ[ZMod n] ModN B n :=
     exact ⟨f x, by simp⟩)).toAddMonoidHom.toZModLinearMap n
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem modNMap_mk (f : A →+ B) (x : A) :
     modNMap n f (Submodule.Quotient.mk x) = Submodule.Quotient.mk (f x) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem modN_mk_eq_zero_iff (x : A) :
     (Submodule.Quotient.mk x : ModN A n) = 0 ↔ ∃ y : A, n • y = x := by
   rw [Submodule.Quotient.mk_eq_zero]
@@ -179,6 +220,9 @@ variable {f h}
 variable (hfh : Function.Exact f h)
 include hh hfh
 
+/- English proof (translation)
+Use `⟨Function.surjInv hh (c : C), Function.invFun f (n • Function.surjInv hh (c : C)), Function.surjInv_eq hh _, Function.invFun_eq ?_⟩` and prove the remaining obligations. Use `(hfh _).1 ?_` and prove the remaining obligations. Rewrite using `[map_nsmul, Function.surjInv_eq hh]`. Conclude with `(mem_ker_lsmul_iff n (c : C)).1 c.2`.
+-/
 theorem exists_lift (c : TorsN C n) : ∃ b a, h b = c ∧ f a = n • b := by
   refine ⟨Function.surjInv hh (c : C), Function.invFun f (n • Function.surjInv hh (c : C)),
     Function.surjInv_eq hh _, Function.invFun_eq ?_⟩
@@ -189,6 +233,11 @@ theorem exists_lift (c : TorsN C n) : ∃ b a, h b = c ∧ f a = n • b := by
 variable (hf : Function.Injective f)
 include hf
 
+/- English proof (translation)
+Establish `h₀ : f (Function.invFun f (n • Function.surjInv hh (c : C))) = n • Function.surjInv hh (c : C)` using `Function.invFun_eq (by`. Use `(hfh _).1 ?_` and prove the remaining obligations. Rewrite using `[map_nsmul, Function.surjInv_eq hh]`. Conclude with `(mem_ker_lsmul_iff n (c : C)).1 c.2)`. Take `⟨a₁, ha₁⟩` from `(hfh (b - Function.surjInv hh (c : C))).1 (by`.
+
+Rewrite using `[map_sub, hb, Function.surjInv_eq hh, sub_self])`. Establish `key : a - Function.invFun f (n • Function.surjInv hh (c : C)) = n • a₁` using `hf (by`. Rewrite using `[map_sub, ha, h₀, map_nsmul, ha₁, smul_sub])`. Rewrite using `[connectingFun, Submodule.Quotient.eq]`. Conclude with `⟨-a₁, by simp [← key]⟩`.
+-/
 theorem connectingFun_spec (c : TorsN C n) (b : B) (a : A) (hb : h b = c) (ha : f a = n • b) :
     connectingFun f h hh c = Submodule.Quotient.mk a := by
   have h₀ : f (Function.invFun f (n • Function.surjInv hh (c : C))) =
@@ -204,10 +253,16 @@ theorem connectingFun_spec (c : TorsN C n) (b : B) (a : A) (hb : h b = c) (ha : 
   rw [connectingFun, Submodule.Quotient.eq]
   exact ⟨-a₁, by simp [← key]⟩
 
+/- English proof (translation)
+Rewrite using `[connectingFun_spec hh hfh hf 0 0 0 (by simp) (by simp)]`. Both sides reduce to the same expression.
+-/
 theorem connectingFun_zero : connectingFun f h hh (0 : TorsN C n) = 0 := by
   rw [connectingFun_spec hh hfh hf 0 0 0 (by simp) (by simp)]
   rfl
 
+/- English proof (translation)
+Take `⟨b, a, hb, ha⟩` from `exists_lift hh hfh c`. Take `⟨b', a', hb', ha'⟩` from `exists_lift hh hfh c'`. Rewrite using `[connectingFun_spec hh hfh hf c b a hb ha, connectingFun_spec hh hfh hf c' b' a' hb' ha', connectingFun_spec hh hfh hf (c + c') (b + b') (a + a') (by simp [hb, hb']) (by simp [ha, ha', smul_add])]`. Both sides reduce to the same expression.
+-/
 theorem connectingFun_add (c c' : TorsN C n) :
     connectingFun f h hh (c + c') = connectingFun f h hh c + connectingFun f h hh c' := by
   obtain ⟨b, a, hb, ha⟩ := exists_lift hh hfh c
@@ -223,20 +278,34 @@ noncomputable def connecting : TorsN C n →ₗ[ZMod n] ModN A n :=
       map_zero' := connectingFun_zero hh hfh hf
       map_add' := connectingFun_add hh hfh hf }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem connecting_apply (c : TorsN C n) : connecting hh hfh hf c = connectingFun f h hh c :=
   rfl
 
+/- English proof (translation)
+The claim follows from `connectingFun_spec hh hfh hf c b a hb ha`.
+-/
 theorem connecting_spec (c : TorsN C n) (b : B) (a : A) (hb : h b = c) (ha : f a = n • b) :
     connecting hh hfh hf c = Submodule.Quotient.mk a :=
   connectingFun_spec hh hfh hf c b a hb ha
 
 omit hh hfh in
 
+/- English proof (translation)
+Introduce `_ _ hxy` and use `Subtype.ext (hf (congrArg Subtype.val hxy))`.
+-/
 theorem torsNMap_injective : Function.Injective (torsNMap n f) := fun _ _ hxy =>
   Subtype.ext (hf (congrArg Subtype.val hxy))
 
 omit hh in
 
+/- English proof (translation)
+Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨a, ha⟩` from `(hfh (y : B)).1 (congrArg Subtype.val hy)`. Use `⟨⟨a, (mem_ker_lsmul_iff n a).2 (hf ?_)⟩, Subtype.ext ha⟩` and prove the remaining obligations.
+
+Rewrite using `[map_nsmul, ha, map_zero]`. Conclude with `(mem_ker_lsmul_iff n (y : B)).1 y.2`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `Subtype.ext ((hfh _).2 ⟨x, rfl⟩)`.
+-/
 theorem exact_torsNMap_torsNMap : Function.Exact (torsNMap n f) (torsNMap n h) := by
   intro y
   constructor
@@ -248,6 +317,13 @@ theorem exact_torsNMap_torsNMap : Function.Exact (torsNMap n f) (torsNMap n h) :
   · rintro ⟨x, rfl⟩
     exact Subtype.ext ((hfh _).2 ⟨x, rfl⟩)
 
+/- English proof (translation)
+Introduce `c`. Take `⟨b, a, hb, ha⟩` from `exists_lift hh hfh c`. Rewrite using `[connecting_spec hh hfh hf c b a hb ha, modN_mk_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a₁, ha₁⟩`.
+
+Establish `hb₁ : n • (b - f a₁) = 0` using `by rw [smul_sub, ← ha, ← map_nsmul, ha₁, sub_self]`. Use `⟨⟨b - f a₁, (mem_ker_lsmul_iff n _).2 hb₁⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[hb, (hfh _).2 ⟨a₁, rfl⟩]`. Introduce and unpack `⟨t, rfl⟩`. Establish `h₀` using `connecting_spec hh hfh hf (torsNMap n h t) t 0 rfl (by rw [map_zero, (mem_ker_lsmul_iff n (t : B)).1 t.2])`.
+
+Rewrite `h₀` using `[connecting_spec hh hfh hf _ b a hb ha, Submodule.Quotient.eq, sub_zero]`. Simplify `h₀` using `[eq_comm]`.
+-/
 theorem exact_torsNMap_connecting : Function.Exact (torsNMap n h) (connecting hh hfh hf) := by
   intro c
   obtain ⟨b, a, hb, ha⟩ := exists_lift hh hfh c
@@ -263,6 +339,15 @@ theorem exact_torsNMap_connecting : Function.Exact (torsNMap n h) (connecting hh
     rw [connecting_spec hh hfh hf _ b a hb ha, Submodule.Quotient.eq, sub_zero] at h₀
     simpa [eq_comm] using h₀
 
+/- English proof (translation)
+Introduce `q`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[modNMap_mk, modN_mk_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`.
+
+Establish `hc : h b ∈ LinearMap.ker (LinearMap.lsmul ℤ C (n : ℤ))`. Rewrite using `[mem_ker_lsmul_iff, ← map_nsmul, hb]`. Conclude with `(hfh _).2 ⟨a, rfl⟩`. Conclude with `⟨⟨h b, hc⟩, connecting_spec hh hfh hf _ b a rfl hb.symm⟩`. Introduce and unpack `⟨c, hc⟩`.
+
+Take `⟨b, a', hb, ha'⟩` from `exists_lift hh hfh c`. Rewrite `hc` using `[connecting_spec hh hfh hf c b a' hb ha', Submodule.Quotient.eq]`. Take `⟨y, hy⟩` from `hc`. Use `⟨b - f y, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.lsmul_apply, natCast_zsmul] at hy`.
+
+Rewrite using `[smul_sub, ← ha', ← map_nsmul, ← map_sub, hy, sub_sub_cancel]`.
+-/
 theorem exact_connecting_modNMap : Function.Exact (connecting hh hfh hf) (modNMap n f) := by
   intro q
   obtain ⟨a, rfl⟩ := Submodule.Quotient.mk_surjective _ q
@@ -283,6 +368,15 @@ theorem exact_connecting_modNMap : Function.Exact (connecting hh hfh hf) (modNMa
 
 omit hf in
 
+/- English proof (translation)
+Introduce `q`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[modNMap_mk, modN_mk_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`.
+
+Take `⟨b', rfl⟩` from `hh c`. Take `⟨a, ha⟩` from `(hfh (b - n • b')).1 (by rw [map_sub, map_nsmul, hc, sub_self])`. Use `⟨Submodule.Quotient.mk a, ?_⟩` and prove the remaining obligations. Rewrite using `[modNMap_mk, ha, Submodule.Quotient.eq]`. Conclude with `⟨-b', by simp⟩`.
+
+Introduce and unpack `⟨q', hq'⟩`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q'`. Rewrite `hq'` using `[modNMap_mk, Submodule.Quotient.eq]`. Take `⟨y, hy⟩` from `hq'`. Simplify using `only [LinearMap.lsmul_apply, natCast_zsmul] at hy`.
+
+Use `⟨-h y, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg, ← map_nsmul, hy, map_sub, (hfh _).2 ⟨a, rfl⟩, zero_sub, neg_neg]`.
+-/
 theorem exact_modNMap_modNMap : Function.Exact (modNMap n f) (modNMap n h) := by
   intro q
   obtain ⟨b, rfl⟩ := Submodule.Quotient.mk_surjective _ q
@@ -304,6 +398,9 @@ theorem exact_modNMap_modNMap : Function.Exact (modNMap n f) (modNMap n h) := by
 
 omit hfh hf in
 
+/- English proof (translation)
+Introduce `q`. Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨b, rfl⟩` from `hh c`. Conclude with `⟨Submodule.Quotient.mk b, rfl⟩`.
+-/
 theorem modNMap_surjective : Function.Surjective (modNMap n h) := by
   intro q
   obtain ⟨c, rfl⟩ := Submodule.Quotient.mk_surjective _ q
@@ -319,16 +416,25 @@ section Equivariant
 variable {Γ : Type*} [Group Γ] {A B C : Type*} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C]
   [DistribMulAction Γ A] [DistribMulAction Γ B] [DistribMulAction Γ C] (n : ℕ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun γ x => Subtype.ext (hfγ γ x)⟩`.
+-/
 theorem isIntertwiningMap_torsNMap {f : A →+ B} (hfγ : ∀ (γ : Γ) (a : A), f (γ • a) = γ • f a) :
     (torsNRep Γ A n).IsIntertwiningMap (torsNRep Γ B n) (torsNMap n f) :=
   ⟨fun γ x => Subtype.ext (hfγ γ x)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun γ x => by obtain ⟨a, rfl⟩ := Submodule.Quotient.mk_surjective _ x exact congrArg Submodule.Quotient.mk (hfγ γ a)⟩`.
+-/
 theorem isIntertwiningMap_modNMap {f : A →+ B} (hfγ : ∀ (γ : Γ) (a : A), f (γ • a) = γ • f a) :
     (modNRep Γ A n).IsIntertwiningMap (modNRep Γ B n) (modNMap n f) :=
   ⟨fun γ x => by
     obtain ⟨a, rfl⟩ := Submodule.Quotient.mk_surjective _ x
     exact congrArg Submodule.Quotient.mk (hfγ γ a)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun γ c => by obtain ⟨b, a, hb, ha⟩ := exists_lift hh hfh c rw [connecting_spec hh hfh hf c b a hb ha, connecting_spec hh hfh hf _ (γ • b) (γ • a) (by rw [hhγ, hb]; rfl) (by rw [hfγ, ha, smul_comm])] rfl⟩`.
+-/
 theorem isIntertwiningMap_connecting {n : ℕ} {f : A →+ B} {h : B →+ C}
     (hh : Function.Surjective h) (hfh : Function.Exact f h) (hf : Function.Injective f)
     (hfγ : ∀ (γ : Γ) (a : A), f (γ • a) = γ • f a) (hhγ : ∀ (γ : Γ) (b : B), h (γ • b) = γ • h b) :
@@ -347,20 +453,32 @@ section Finiteness
 variable {A B C : Type*} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] {n : ℕ}
   {f : A →+ B} {h : B →+ C}
 
+/- English proof (translation)
+The claim follows from `finite_of_exact (torsNMap n f).toAddMonoidHom (torsNMap n h).toAddMonoidHom (exact_torsNMap_torsNMap hfh hf)`.
+-/
 theorem finite_torsN_of_exact (hfh : Function.Exact f h) (hf : Function.Injective f)
     [Finite (TorsN A n)] [Finite (TorsN C n)] : Finite (TorsN B n) :=
   finite_of_exact (torsNMap n f).toAddMonoidHom (torsNMap n h).toAddMonoidHom
     (exact_torsNMap_torsNMap hfh hf)
 
+/- English proof (translation)
+The claim follows from `finite_of_exact (modNMap n f).toAddMonoidHom (modNMap n h).toAddMonoidHom (exact_modNMap_modNMap hh hfh)`.
+-/
 theorem finite_modN_of_exact (hh : Function.Surjective h) (hfh : Function.Exact f h)
     [Finite (ModN A n)] [Finite (ModN C n)] : Finite (ModN B n) :=
   finite_of_exact (modNMap n f).toAddMonoidHom (modNMap n h).toAddMonoidHom
     (exact_modNMap_modNMap hh hfh)
 
+/- English proof (translation)
+The claim follows from `Finite.of_injective _ (torsNMap_injective hf)`.
+-/
 theorem finite_torsN_of_injective (hf : Function.Injective f) [Finite (TorsN B n)] :
     Finite (TorsN A n) :=
   Finite.of_injective _ (torsNMap_injective hf)
 
+/- English proof (translation)
+The claim follows from `Finite.of_surjective _ (modNMap_surjective hh)`.
+-/
 theorem finite_modN_of_surjective (hh : Function.Surjective h) [Finite (ModN B n)] :
     Finite (ModN C n) :=
   Finite.of_surjective _ (modNMap_surjective hh)
@@ -397,6 +515,9 @@ namespace AdditiveFunction
 
 variable {l : ℕ} {Γ : Type v} [Group Γ] (d : AdditiveFunction.{u} l Γ)
 
+/- English proof (translation)
+Use `finite_torsN_of_exact (n := l) hfh hf` as an intermediate fact. Use `finite_modN_of_exact (n := l) hh hfh` as an intermediate fact. Rewrite using `[d.g_eq A, d.g_eq B, d.g_eq C]`. Use `d.alternating_sum_six (torsNRep Γ A l) (torsNRep Γ B l) (torsNRep Γ C l) (modNRep Γ A l) (modNRep Γ B l) (modNRep Γ C l) (torsNMap l f) (torsNMap l h) (connecting hh hfh hf) (modNMap l f) (modNMap l h) (isIntertwiningMap_torsNMap l hfγ) (isIntertwiningMap_torsNMap l hhγ) (isInter …` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem g_add {A B C : Type u} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C]
     [DistribMulAction Γ A] [DistribMulAction Γ B] [DistribMulAction Γ C] (f : A →+ B)
     (h : B →+ C) (hfγ : ∀ (γ : Γ) (a : A), f (γ • a) = γ • f a)

@@ -8,6 +8,13 @@ open Formalism.REAL (qdet GlRel IsHW)
 
 namespace GlobalTheory.TypeGlModule
 
+/- English proof (translation)
+Introduce `V _ _ _ n r z π u β L B hz hT hty hL hu hB`. Take `⟨hnt, hrep, hcont, hunit, hirr, hcap⟩` from `hty`. Establish `hR : IsRepW (n + 1) r z π` using `⟨hrep, hcont⟩`. Take `⟨hgl, hq⟩` from `Formalism.FourierDecayAlt.P.frame_general_linear V (n + 1) r (n + 1) z π B hR hB`. Use `⟨?_, fun a b x y => Formalism.FourierDecayAlt.P5.Kfp.EB_adj hrep hcont hunit hB a b x y⟩` and prove the remaining obligations.
+
+Use `⟨hgl, ⟨hnt, fun S hS => hirr S (Formalism.FourierDecayAlt.P.lie_stabilizer V (n + 1) r z π B hz hT hR hB S hS)⟩, hL, ?_⟩` and prove the remaining obligations. Introduce `w v`. Rewrite using `[← hq w v, hcap B hB w v, Formalism.FourierDecayAlt.P.FrameExtension.prod_Icc_fin]`. Use `congr 1`. Unfold `cpol shf`.
+
+Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← hu j]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hyp_and_adj :
     ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (n r : ℕ)
       (z : (Fin (2 * r + (n + 1) + 1) → ℂ)) (π : Mx (n + 1) r → (V →L[ℂ] V)) (u : ℕ → ℝ) (β : ℂ)

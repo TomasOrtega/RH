@@ -18,6 +18,15 @@ open GlobalTheory.WeilTieCheck GlobalTheory.FockCompare
 
 variable {D : D7}
 
+/- English proof (translation)
+Set `q : G →+ AF D.host.F` to `(AddMonoidHom.inr (Ainf D.host.F) (Af D.host.F)).comp ((AddMonoidHom.snd (Ainf D.host.F) (Af D.host.F)).comp φ)`. Set `K : AddSubgroup G` to `{ carrier := {w | ψ (q w) = 1} zero_mem' := by show ψ _ = 1`. Rewrite using `[map_zero, ψ.map_zero_eq_one]`. Use the proof step `add_mem' := fun {a b} ha hb => by`. Establish `ha' : ψ _ = 1` using `ha`.
+
+Establish `hb' : ψ _ = 1` using `hb`. Use `show ψ _ = 1`. Rewrite using `[map_add, AddChar.map_add_eq_mul, ha', hb', one_mul]`. Use the proof step `neg_mem' := fun {a} ha => by`. Establish `ha' : ψ _ = 1` using `ha`.
+
+Use `show ψ _ = 1`. Use `AddChar.map_add_eq_mul ψ (q a) (q (-a))` as an intermediate fact. Rewrite `this` using `[← map_add, add_neg_cancel, map_zero, ψ.map_zero_eq_one, ha', one_mul]`. Conclude with `this.symm }`. Use `⟨K, K.isOpen_of_mem_nhds (g := 0) ?_, fun w hw h0 => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Continuous fun w : G => (φ w).2` using `continuous_snd.comp hφ`. Conclude with `h1.continuousAt.preimage_mem_nhds (x := 0) (t := {a | ψ (pairA D.host.F 0 a) = 1}) (by rw [map_zero]; exact GlobalTheory.FinTranslate.ker_mem_nhds hc hn)`. Establish `h4 : φ w = q w` using `Prod.ext h0 rfl`. Rewrite using `[h4]`. Conclude with `hw`.
+-/
 theorem exists_open_ker {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     {ψ : AddChar (AF D.host.F) ℂ} (hc : Continuous ψ) (hn : ∀ x, ‖ψ x‖ = 1) (φ : G →+ AF D.host.F)
     (hφ : Continuous φ) :
@@ -48,6 +57,19 @@ theorem exists_open_ker {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopo
     rw [h4]
     exact hw
 
+/- English proof (translation)
+Use `haveI : IsTopologicalAddGroup (AE D) := IsTopologicalRing.to_topologicalAddGroup`. Use `haveI : IsTopologicalAddGroup (WA V W) := Pi.topologicalAddGroup`. Establish `hc : Continuous ψ` using `hψ.1.1`. Set `φ₁ : WA V W →+ AF D.host.F` to `AddMonoidHom.mk' (fun w => symplH V W w u) fun a b => symplH_add_left V W a b u`. Set `φ₂ : WA V W →+ AF D.host.F` to `AddMonoidHom.mk' (fun w => symplH V W u w) fun a b => symplH_add_right V W u a b`.
+
+Establish `c₁ : Continuous φ₁` using `ThetaCont.continuous_symplH V W continuous_id continuous_const`. Establish `c₂ : Continuous φ₂` using `ThetaCont.continuous_symplH V W continuous_const continuous_id`. Use `⟨heis_quasi ψ V W u f hf.quasi, ?_, (hc.comp c₁).mul (hf.cont.comp (continuous_id.add continuous_const)), fun k L hL hLf w => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hUf⟩` from `hf.level`. Take `⟨K₁, hK₁, h₁⟩` from `exists_open_ker hc hψ.1.2.1 φ₁ c₁`.
+
+Take `⟨K₂, hK₂, h₂⟩` from `exists_open_ker hc hψ.1.2.1 φ₂ c₂`. Use `⟨U ⊓ (K₁ ⊓ K₂), hU.inter (hK₁.inter hK₂), fun w hw hw' => ?_⟩` and prove the remaining obligations. Establish `e₁ : ψ (symplH V W w u) = 1` using `h₁ w hw.2.1 (by show fstA D.host.F (_ * sympl V W w u) = 0`. Rewrite using `[map_mul, (sympl_parts D V W w u).2 (Or.inl hw'), mul_zero])`. Establish `e₂ : ψ (symplH V W u w) = 1` using `h₂ w hw.2.2 (by show fstA D.host.F (_ * sympl V W u w) = 0`.
+
+Rewrite using `[map_mul, (sympl_parts D V W u w).2 (Or.inr hw'), mul_zero])`. Use `conv_rhs => rw [← hUf w hw.1 hw']`. Rewrite using `[heis_heis, heis_heis, e₁, e₂, add_comm]`. Take `⟨lam, hl, hlam⟩` from `GlobalTheory.WeilVacMove.exists_log hψ`. Set `χ : (Fin k → ℝ) →+ ℂ` to `lam.comp (φ₁.comp L)`.
+
+Establish `hχ : ContDiff ℝ ∞ χ` using `GlobalTheory.WeilVacMove.contDiff_additive χ (hl.comp (c₁.comp hL))`. Establish `: (fun t => Heisenberg₂ ψ V W u f (w + L t)) = fun t => ψ (symplH V W w u) * Complex.exp (χ t) * f (w + u + L t)`. Use function extensionality and compare the values at `t`. Establish `e : ψ (symplH V W (L t) u) = Complex.exp (χ t)` using `hlam _ (by show sndA D.host.F (_ * sympl V W (L t) u) = 0`. Rewrite using `[map_mul, (sympl_parts D V W (L t) u).1 (Or.inl (hLf t)), mul_zero])`.
+
+Rewrite using `[Heisenberg₂, symplH_add_left, AddChar.map_add_eq_mul, e, add_right_comm]`. Rewrite using `[this]`. Conclude with `(contDiff_const.mul hχ.cexp).mul (hf.smooth k L hL hLf (w + u))`.
+-/
 theorem isThetaFun_heis {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {f : WA V W → ℂ}
     (hf : IsThetaFun ψ V W f) (u : WA V W) : IsThetaFun ψ V W (Heisenberg₂ ψ V W u f) := by
   haveI : IsTopologicalAddGroup (AE D) := IsTopologicalRing.to_topologicalAddGroup
@@ -84,6 +106,9 @@ theorem isThetaFun_heis {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (
     rw [this]
     exact (contDiff_const.mul hχ.cexp).mul (hf.smooth k L hL hLf (w + u))
 
+/- English proof (translation)
+Introduce `D ψ hψ V W f`. Use `⟨⟨fun h => ?_, fun h => Submodule.subset_span h⟩, fun hf u => isThetaFun_heis hψ hf u, fun hne hf => isThetaFun_transpose ψ V W hne f hf⟩` and prove the remaining obligations. Take `⟨M, hM⟩` from `exists_thetaSubmodule D ψ V W`. Conclude with `(hM f).1 (Submodule.span_le.2 (fun g hg => (hM g).2 hg) h)`.
+-/
 theorem thetaFun_closed : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V W : HSp D) (f : WA V W → ℂ), (f ∈ ThS ψ V W ↔ IsThetaFun ψ V W f) ∧ (IsThetaFun ψ V W f → ∀ w₀, IsThetaFun ψ V W (Heisenberg₂ ψ V W w₀ f)) ∧ (V.rank ≠ W.rank → IsThetaFun ψ V W f → IsThetaFun ψ W V (fun x => f x.transpose)) := by
   intro D ψ hψ V W f
   refine ⟨⟨fun h => ?_, fun h => Submodule.subset_span h⟩, fun hf u => isThetaFun_heis hψ hf u,

@@ -26,11 +26,19 @@ def FarTermsBound : Prop :=
         (∏ v, d v) * (B.e 1).re * latFactor B.I x *
           (2 * (B.I.f : ℝ) * 3 ^ B.I.f * Real.exp (-(h * ep ^ 2 / 16)))
 
+/- English proof (translation)
+Simplify using `only [farSet, IsNear, Set.mem_setOf_eq, hγ, true_and, not_and_or, not_not, not_forall, not_le, ne_eq, not_true, false_or]`.
+-/
 example (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (ep : ℝ) (x γ : B.I.GA) (hγ : γ ∈ B.I.GFset) :
     γ ∈ farSet B d ep x ↔
       (phe B d (x⁻¹ * γ * x) = 0 ∨ ∃ v, ep < dHS (uMat ((x⁻¹ * γ * x).1 v))) := by
   simp only [farSet, IsNear, Set.mem_setOf_eq, hγ, true_and, not_and_or, not_not, not_forall, not_le, ne_eq, not_true, false_or]
 
+/- English proof (translation)
+Use `⟨10000, 1 / 16, by norm_num, ?_, ?_, by norm_num, by norm_num, by norm_num⟩` and prove the remaining obligations. Establish `h1 : Real.sqrt (2 * ((1 : ℕ) : ℝ)) ≤ 16` using `Real.sqrt_le_iff.mpr ⟨by norm_num, by norm_num⟩`. Establish `h2 : 0 < Real.sqrt (2 * ((1 : ℕ) : ℝ))` using `Real.sqrt_pos.mpr (by norm_num)`. Conclude with `one_div_le_one_div_of_le h2 h1`. Use `Real.log_two_gt_d9` as an intermediate fact.
+
+Evaluate the numerical expressions using `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 example : ∃ h ep : ℝ, 0 < ep ∧ ep ≤ 1 / Real.sqrt (2 * ((1 : ℕ) : ℝ)) ∧
     2 * ((2 : ℕ) : ℝ) ^ 2 * ep ≤ Real.log 2 ∧ 64 * ((2 : ℕ) : ℝ) ^ 2 ≤ h * ep ∧ 1 ≤ h * ep ^ 2 / 16 ∧
     8 * ((2 : ℕ) : ℝ) * ((1 : ℕ) : ℝ) < h := by

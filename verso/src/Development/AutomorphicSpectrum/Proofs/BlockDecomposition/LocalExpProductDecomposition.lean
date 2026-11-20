@@ -10,6 +10,17 @@ section Banach
 
 variable {A : Type*} [NormedRing A] [NormedAlgebra ℝ A] [FiniteDimensional ℝ A]
 
+/- English proof (translation)
+Set `f : (𝔨 × 𝔟) →ₗ[ℝ] E` to `𝔨.subtype.coprod 𝔟.subtype`. Establish `hr : LinearMap.range f = 𝔨 ⊔ 𝔟`. Simplify using `[f, LinearMap.range_coprod]`. Take `⟨s, hs⟩` from `f.rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict f)`. Take `⟨P, hP⟩` from `(LinearMap.range f).subtype.exists_leftInverse_of_injective (by simp)`.
+
+Establish `hsum : ∀ Z, ((s (P Z)).1 : E) + ((s (P Z)).2 : E) = (P Z : E)`. Introduce `Z`. Establish `h2` using `LinearMap.congr_fun hs (P Z)`. Establish `h3` using `congrArg Subtype.val h2`. Simplify `h3` using `[f]`.
+
+Use `⟨𝔨.subtype ∘ₗ LinearMap.fst ℝ 𝔨 𝔟 ∘ₗ s ∘ₗ P, 𝔟.subtype ∘ₗ LinearMap.snd ℝ 𝔨 𝔟 ∘ₗ s ∘ₗ P, fun Z => (s (P Z)).1.2, fun Z => (s (P Z)).2.2, fun Z hZ => ?_⟩` and prove the remaining obligations. Establish `hid : ∀ W (hW : W ∈ LinearMap.range f), P W = ⟨W, hW⟩` using `fun W hW => LinearMap.congr_fun hP ⟨W, hW⟩`. Establish `hval : Z - ((s (P Z)).1 : E) - ((s (P Z)).2 : E) = Z - (P Z : E)`. Rewrite using `[sub_sub, hsum]`. Express the relevant statement in the definitionally equal form `Z - ((s (P Z)).1 : E) - ((s (P Z)).2 : E) = 0`.
+
+Express the relevant statement in the definitionally equal form `Z - ((s (P Z)).1 : E) - ((s (P Z)).2 : E) ∈ 𝔨 ⊔ 𝔟 at hZ`. Rewrite `hZ`, the goal using `[hval]`. Rewrite `hZ` using `[← hr]`. Establish `h1` using `hid _ hZ`. Establish `h2 : P (Z - (P Z : E)) = P Z - P (P Z : E)` using `map_sub _ _ _`.
+
+Establish `h3 : P (P Z : E) = P Z` using `hid _ (P Z).2`. Rewrite `h2` using `[h3, sub_self]`. Establish `h4` using `congrArg Subtype.val (h1.symm.trans h2)`. Simplify using `using h4`.
+-/
 theorem exists_proj_sup {E : Type*} [AddCommGroup E] [Module ℝ E] (𝔨 𝔟 : Submodule ℝ E) :
     ∃ p q : E →ₗ[ℝ] E, (∀ Z, p Z ∈ 𝔨) ∧ (∀ Z, q Z ∈ 𝔟) ∧
       ∀ Z, Z - p Z - q Z ∈ 𝔨 ⊔ 𝔟 → Z - p Z - q Z = 0 := by
@@ -40,6 +51,27 @@ theorem exists_proj_sup {E : Type*} [AddCommGroup E] [Module ℝ E] (𝔨 𝔟 :
   have h4 := congrArg Subtype.val (h1.symm.trans h2)
   simpa using h4
 
+/- English proof (translation)
+Use `haveI : CompleteSpace A := FiniteDimensional.complete ℝ A`. Use `letI : NormedAlgebra ℚ A := NormedAlgebra.restrictScalars ℚ ℝ A`. Take `⟨p₀, q₀, hpk, hqb, hr0⟩` from `exists_proj_sup 𝔨 𝔟`. Set `p : A →L[ℝ] A` to `LinearMap.toContinuousLinearMap p₀`. Set `q : A →L[ℝ] A` to `LinearMap.toContinuousLinearMap q₀`.
+
+Set `r : A →L[ℝ] A` to `ContinuousLinearMap.id ℝ A - p - q`. Establish `hr : ∀ Z, r Z = Z - p Z - q Z` using `fun Z => rfl`. Set `Φ : A → A` to `fun Z => NormedSpace.exp (p Z) * NormedSpace.exp (q Z) * NormedSpace.exp (r Z)`. Establish `hE : HasStrictFDerivAt (NormedSpace.exp : A → A) (1 : A →L[ℝ] A) 0` using `hasStrictFDerivAt_exp_zero`. Establish `hEl : ∀ l : A →L[ℝ] A, HasStrictFDerivAt (fun Z => NormedSpace.exp (l Z)) l (0 : A)`.
+
+Introduce `l`. Establish `h2 : HasStrictFDerivAt (NormedSpace.exp : A → A) (1 : A →L[ℝ] A) (l 0)`. Simplify using `using hE`. Conclude with `(h2.comp (0 : A) l.hasStrictFDerivAt).congr_fderiv (ContinuousLinearMap.ext fun _ => rfl)`. Establish `hΦ : HasStrictFDerivAt Φ ((ContinuousLinearEquiv.refl ℝ A : A ≃L[ℝ] A) : A →L[ℝ] A) 0`.
+
+Establish `h2 : HasStrictFDerivAt Φ _ 0` using `((hEl p).mul' (hEl q)).mul' (hEl r)`. Use `h2.congr_fderiv (ContinuousLinearMap.ext fun Z => ?_)` and prove the remaining obligations. Simplify using `[hr]`. Normalize the expressions using the abelian group laws. Establish `hΦ0 : Φ 0 = 1` using `by simp [Φ]`.
+
+Establish `hmap` using `hΦ.map_nhds_eq_of_equiv`. Establish `hW' : r ⁻¹' V ∈ 𝓝 (0 : A)`. Use `r.continuous.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Simplify using `using hV`. Establish `himg : Φ '' (r ⁻¹' V) ∈ 𝓝 (1 : A)`.
+
+Rewrite using `[← hΦ0, ← hmap]`. Conclude with `image_mem_map hW'`. Establish `hneg : ∀ X ∈ 𝔤, NormedSpace.exp (-X) ∈ G`. Introduce `X hX`. Simplify using `using (h𝔤 X).1 hX (-1)`.
+
+Establish `hcancel : ∀ X : A, NormedSpace.exp (-X) * NormedSpace.exp X = 1`. Introduce `X`. Rewrite using `[← NormedSpace.exp_add_of_commute (Commute.neg_left (Commute.refl X)), neg_add_cancel, NormedSpace.exp_zero]`. Use `filter_upwards [himg]`. Introduce and unpack `g ⟨Z, hZ, rfl⟩ hgG`.
+
+Establish `hpg : p Z ∈ 𝔤` using `hk (hpk Z)`. Establish `hqg : q Z ∈ 𝔤` using `hb (hqb Z)`. Establish `hrG : NormedSpace.exp (r Z) ∈ G`. Establish `h2` using `hmul _ (hneg _ hqg) _ (hmul _ (hneg _ hpg) _ hgG)`. Establish `h3 : NormedSpace.exp (-(q Z)) * (NormedSpace.exp (-(p Z)) * Φ Z) = NormedSpace.exp (r Z)`.
+
+Simplify using `only [Φ]`. Rewrite using `[← mul_assoc (NormedSpace.exp (-(p Z))), ← mul_assoc (NormedSpace.exp (-(p Z))), hcancel, one_mul, ← mul_assoc, hcancel, one_mul]`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Establish `hr𝔤 : r Z ∈ 𝔨 ⊔ 𝔟` using `hg (hVG _ hZ hrG)`. Establish `hrz : r Z = 0` using `hr0 Z hr𝔤`.
+
+Use `⟨p Z, hpk Z, q Z, hqb Z, ?_⟩` and prove the remaining obligations. Simplify using `[Φ, hrz]`.
+-/
 theorem eventually_exp_mul_exp {G : Set A} (hmul : ∀ g ∈ G, ∀ h ∈ G, g * h ∈ G)
     {𝔤 𝔨 𝔟 : Submodule ℝ A} (h𝔤 : ∀ X, X ∈ 𝔤 ↔ ∀ t : ℝ, NormedSpace.exp (t • X) ∈ G)
     {V : Set A} (hV : V ∈ 𝓝 (0 : A)) (hVG : ∀ X ∈ V, NormedSpace.exp X ∈ G → X ∈ 𝔤)
@@ -99,6 +131,11 @@ theorem eventually_exp_mul_exp {G : Set A} (hmul : ∀ g ∈ G, ∀ h ∈ G, g *
 
 end Banach
 
+/- English proof (translation)
+Take `⟨V, hV, hVG⟩` from `hV`. Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.instL2OpNormedRing`. Use `letI : NormedSpace ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.instL2OpNormedSpace`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.instL2OpNormedAlgebra`. Use `letI : NormedAlgebra ℝ (Matrix (Fin n) (Fin n) ℂ) := { (inferInstance : Algebra ℝ (Matrix (Fin n) (Fin n) ℂ)) with norm_smul_le := fun t X => by`.
+
+Establish `: t • X = (t : ℂ) • X` using `by ext a b; simp`. Rewrite using `[this, norm_smul]`. Simplify using `}`. Conclude with `eventually_exp_mul_exp hG.mul_mem h𝔤 hV hVG hk hb hg`.
+-/
 theorem eventually_exp_mul_exp_of_isLinRed {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)}
     (hG : GlobalTheory.LinRed.IsLinRed G) (𝔤 𝔨 𝔟 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ))
     (h𝔤 : ∀ X, X ∈ 𝔤 ↔ ∀ t : ℝ, NormedSpace.exp (t • X) ∈ G)

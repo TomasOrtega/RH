@@ -7,6 +7,13 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : (fun i => (n i : ℝ)) = ∑ i, n i • (Pi.single i 1 : Fin g → ℝ)`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[h1]`. Establish `h2 : ∀ s : Finset (Fin g), Function.Periodic A (∑ i ∈ s, n i • (Pi.single i 1 : Fin g → ℝ))` using `fun s => by`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro y`. Simplify using the standard rewrite rules. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+
+Conclude with `(Function.Periodic.zsmul (hA a) (n a)).add_period ih`. Conclude with `h2 _ x`.
+-/
 theorem apply_add_intCast_of_periodic_single {g : ℕ} {β : Type*} {A : (Fin g → ℝ) → β}
     (hA : ∀ (i : Fin g) x, A (x + Pi.single i 1) = A x) (n : Fin g → ℤ) (x : Fin g → ℝ) :
     A (x + fun i => (n i : ℝ)) = A x := by
@@ -23,6 +30,25 @@ theorem apply_add_intCast_of_periodic_single {g : ℕ} {β : Type*} {A : (Fin g 
       exact (Function.Periodic.zsmul (hA a) (n a)).add_period ih
   exact h2 _ x
 
+/- English proof (translation)
+Use `set p : (Fin g → ℝ) → UnitAddTorus (Fin g) := fun x i ↦ (x i : UnitAddCircle) with hp`. Establish `hq : IsOpenQuotientMap p` using `IsOpenQuotientMap.piMap fun _ ↦ QuotientAddGroup.isOpenQuotientMap_mk`. Use `set f₀ : UnitAddTorus (Fin g) → ℂ := fun z ↦ A (Function.surjInv hq.surjective z) with hf₀`. Establish `hfp : ∀ x, f₀ (p x) = A x` using `fun x ↦ by set x' := Function.surjInv hq.surjective (p x)`. Establish `h1 : p x' = p x` using `Function.surjInv_eq _ _`.
+
+Establish `h2 : ∀ i, ∃ n : ℤ, (n : ℝ) = x' i - x i` using `fun i ↦ by`. Establish `h3 : ((x' i - x i : ℝ) : UnitAddCircle) = 0`. Rewrite using `[AddCircle.coe_sub, sub_eq_zero]`. Conclude with `congrFun h1 i`. Take `⟨n, hn⟩` from `(AddCircle.coe_eq_zero_iff _).1 h3`.
+
+Conclude with `⟨n, by simpa using hn⟩`. Use `choose n hn using h2`. Rewrite using `[← apply_add_intCast_of_periodic_single hA n x]`. Express the relevant statement in the definitionally equal form `A x' = _`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[hn]`. Set `f : C(UnitAddTorus (Fin g), ℂ)` to `⟨f₀, hq.isQuotientMap.continuous_iff.2 <| by`. Rewrite using `[show f₀ ∘ p = A from funext hfp]`. Conclude with `hc⟩`.
+
+Establish `hchar : ∀ n x, UnitAddTorus.mFourier (-n) (p x) = cexp (-(2 * Real.pi * I) * ∑ i, (n i : ℂ) * (x i : ℂ))` using `fun n x ↦ by`. Simplify using `only [UnitAddTorus.mFourier, ContinuousMap.coe_mk, hp, fourier_coe_apply, ← Complex.exp_sum]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.neg_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hcoeff : ∀ n, UnitAddTorus.mFourierCoeff f n = 0` using `fun n ↦ by`. Rewrite using `[UnitAddTorus.mFourierCoeff_eq_integral f n 0, ← h n]`.
+
+Simplify using `only [Pi.zero_apply, zero_add]`. Establish `h2 : {x : Fin g → ℝ | ∀ i, x i ∈ Set.Ioc (0 : ℝ) 1} = Set.pi Set.univ fun i ↦ Set.Ioc ((0 : Fin g → ℝ) i) ((1 : Fin g → ℝ) i)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h2, MeasureTheory.setIntegral_congr_set (μ := MeasureTheory.volume) MeasureTheory.Measure.univ_pi_Ioc_ae_eq_Icc]`.
+
+Use `MeasureTheory.integral_congr_ae (.of_forall fun x ↦ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `UnitAddTorus.mFourier (-n) (p x) • f₀ (p x) = _`. Simplify using `only [hchar, hfp, smul_eq_mul, mul_comm]`. Establish `hsum` using `UnitAddTorus.hasSum_mFourier_series_apply_of_summable (f := f) (by rw [funext hcoeff]; exact summable_zero) (p y)`. Express the relevant statement in the definitionally equal form `HasSum _ (f₀ (p _)) at hsum`.
+
+Simplify using `only [hcoeff, zero_smul, hfp] at hsum`. Conclude with `hsum.unique hasSum_zero`.
+-/
 theorem eq_zero_of_cube_fourierCoeff_eq_zero {g : ℕ} {A : (Fin g → ℝ) → ℂ} (hc : Continuous A)
     (hA : ∀ (i : Fin g) x, A (x + Pi.single i 1) = A x)
     (h : ∀ m : Fin g → ℤ, (∫ x in Set.Icc (0 : Fin g → ℝ) 1,
@@ -76,6 +102,15 @@ theorem eq_zero_of_cube_fourierCoeff_eq_zero {g : ℕ} {A : (Fin g → ℝ) → 
   simp only [hcoeff, zero_smul, hfp] at hsum
   exact hsum.unique hasSum_zero
 
+/- English proof (translation)
+Introduce `H g f hf hper h0`. Use function extensionality and compare the values at `w`. Establish `hc` using `hf.continuous`. Use `eq_zero_of_cube_fourierCoeff_eq_zero (A := fun x => f ((fun i => (x i : ℂ)) + w)) (by fun_prop) (fun i x => by` as an intermediate fact. Rewrite using `[← hper i ((fun i => (x i : ℂ)) + w)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `[hj])`. Use the proof step `(fun m => by rw [H g f hf hper m w, h0 m, mul_zero]) 0`. Establish `h1 : (fun i => (((0 : Fin g → ℝ) i : ℝ) : ℂ)) + w = w`. Use function extensionality and compare the values at `j`.
+
+Simplify using the standard rewrite rules. Rewrite `this` using `[h1]`. Conclude with `this`.
+-/
 theorem entire_periodic_eq_zero_of_fourierCoeff_eq_zero :
     (∀ (g : ℕ) (f : (Fin g → ℂ) → ℂ), Differentiable ℂ f → (∀ (i : Fin g) z, f (z + Pi.single i 1) = f z) → ∀ (m : Fin g → ℤ) (w : Fin g → ℂ), (∫ x in Set.Icc (0 : Fin g → ℝ) 1, f ((fun i => (x i : ℂ)) + w) * cexp (-(2 * Real.pi * I) * ∑ i, (m i : ℂ) * (x i : ℂ))) = cexp (2 * Real.pi * I * ∑ i, (m i : ℂ) * w i) * (∫ x in Set.Icc (0 : Fin g → ℝ) 1, f (fun i => (x i : ℂ)) * cexp (-(2 * Real.pi * I) * ∑ i, (m i : ℂ) * (x i : ℂ)))) → (∀ (g : ℕ) (f : (Fin g → ℂ) → ℂ), Differentiable ℂ f → (∀ (i : Fin g) z, f (z + Pi.single i 1) = f z) → (∀ m : Fin g → ℤ, (∫ x in Set.Icc (0 : Fin g → ℝ) 1, f (fun i => (x i : ℂ)) * cexp (-(2 * Real.pi * I) * ∑ i, (m i : ℂ) * (x i : ℂ))) = 0) → f = 0) := by
   intro H g f hf hper h0

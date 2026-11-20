@@ -14,6 +14,25 @@ noncomputable section
 
 namespace GlobalTheory.LevelSpread
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hR₁`. Set `B` to `Module.finBasis Ω₁ Ω₂`. Set `T : Set Ω₂` to `(algebraMap Ω₁ Ω₂) '' (s : Set Ω₁) ∪ Set.range B`. Set `R : Subalgebra o₂ Ω₂` to `Algebra.adjoin o₂ T`. Establish `hT : T.Finite` using `(s.finite_toSet.image _).union (Set.finite_range _)`.
+
+Establish `mem : ∀ a ∈ R₁, algebraMap Ω₁ Ω₂ a ∈ R`. Introduce `a ha`. Rewrite `ha` using `[← hs]`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact Algebra.subset_adjoin (Or.inl ⟨x, hx, rfl⟩)`.
+
+Consider the case `algebraMap r`. Use `congrArg (fun f => f r) hκ` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[← this]`. Conclude with `R.algebraMap_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`. Set `h : R₁ →+* R` to `((algebraMap Ω₁ Ω₂).comp R₁.val.toRingHom).codRestrict R (fun a => mem a a.2)`.
+
+Use `⟨R, h, Subalgebra.fg_def.2 ⟨T, hT, rfl⟩, ?_, fun a => rfl⟩` and prove the remaining obligations. Set `D : Ω₂ → Prop` to `fun x => ∃ a ∈ R, ∃ b ∈ R, x = a / b`. Establish `Dmem : ∀ x ∈ R, D x` using `fun x hx => ⟨x, hx, 1, R.one_mem, (div_one x).symm⟩`. Establish `Dadd : ∀ x y, D x → D y → D (x + y)`. Introduce and unpack `_ _ ⟨a, ha, b, hb, rfl⟩ ⟨c, hc, d, hd, rfl⟩`.
+
+Distinguish the cases in `hb0 : b = 0`. Conclude with `⟨c, hc, d, hd, by simp [hb0]⟩`. Distinguish the cases in `hd0 : d = 0`. Conclude with `⟨a, ha, b, hb, by simp [hd0]⟩`. Conclude with `⟨a * d + b * c, add_mem (mul_mem ha hd) (mul_mem hb hc), b * d, mul_mem hb hd, div_add_div _ _ hb0 hd0⟩`.
+
+Establish `Dmul : ∀ x y, D x → D y → D (x * y)`. Introduce and unpack `_ _ ⟨a, ha, b, hb, rfl⟩ ⟨c, hc, d, hd, rfl⟩`. Conclude with `⟨a * c, mul_mem ha hc, b * d, mul_mem hb hd, div_mul_div_comm _ _ _ _⟩`. Establish `Dbase : ∀ c : Ω₁, D (algebraMap Ω₁ Ω₂ c)`. Introduce `c`.
+
+Take `⟨a, ha, b, hb, rfl⟩` from `hfr c`. Conclude with `⟨_, mem a ha, _, mem b hb, map_div₀ _ _ _⟩`. Introduce `x`. Rewrite using `[← B.sum_repr x]`. Use `Finset.sum_induction _ D Dadd (Dmem 0 R.zero_mem) fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def]`. Conclude with `Dmul _ _ (Dbase _) (Dmem _ (Algebra.subset_adjoin (Or.inr ⟨i, rfl⟩)))`.
+-/
 theorem exists_ring {o₁ Ω₁ : Type} [CommRing o₁] [Field Ω₁] [Algebra o₁ Ω₁] (R₁ : Subalgebra o₁ Ω₁)
     {o₂ Ω₂ : Type} [CommRing o₂] [Field Ω₂] [Algebra o₂ Ω₂] [Algebra Ω₁ Ω₂] (κ : o₁ →+* o₂)
     (hR₁ : R₁.FG) (hfr : ∀ x : Ω₁, ∃ a ∈ R₁, ∃ b ∈ R₁, x = a / b) [FiniteDimensional Ω₁ Ω₂]
@@ -60,6 +79,9 @@ theorem exists_ring {o₁ Ω₁ : Type} [CommRing o₁] [Field Ω₁] [Algebra o
   rw [Algebra.smul_def]
   exact Dmul _ _ (Dbase _) (Dmem _ (Algebra.subset_adjoin (Or.inr ⟨i, rfl⟩)))
 
+/- English proof (translation)
+Establish `e : spMap b ≫ spMap g = spMap a` using `by rw [← hg, ← Spec.map_comp]; rfl`. Set `φ' : Q.A.left ⟶ (StrictPull.polPull P (spMap g)).A.left` to `pullback.lift φ (Q.A.hom ≫ spMap b) (by rw [hQ.1.w, Category.assoc, e])`. Establish `h1 : φ' ≫ pullback.fst P.A.hom (spMap g) = φ` using `pullback.lift_fst _ _ _`. Use `⟨φ', h1, pullback.lift_snd _ _ _, IsGrpPullback.cancel (isGrpPullback_pullback P.A (spMap g)) (hQ.congr e.symm h1.symm) (pullback.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Conclude with `LBIso.trans Q.isLB (pull_isLB P.isLB _) (pull_isLB (StrictPull.polPull P (spMap g)).isLB _) eQ (GenSpread.lbIso_pull_pull P.isLB φ' h1.symm)`.
+-/
 theorem step {Ω : Type} [Field Ω] {A B : Type} [CommRing A] [CommRing B] (a : A →+* Ω) (b : B →+* Ω)
     (g : A →+* B) (hg : b.comp g = a) (Q : PolAV (Sp Ω)) (P : PolAV (Sp A)) (φ : Q.A.left ⟶ P.A.left)
     (hQ : IsGrpPullback Q.A P.A (spMap a) φ) (eQ : LBIso Q.L (P.L.pull φ)) :
@@ -76,6 +98,9 @@ theorem step {Ω : Type} [Field Ω] {A B : Type} [CommRing A] [CommRing B] (a : 
   exact LBIso.trans Q.isLB (pull_isLB P.isLB _) (pull_isLB (StrictPull.polPull P (spMap g)).isLB _) eQ
     (GenSpread.lbIso_pull_pull P.isLB φ' h1.symm)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(isGrpPullback_pullback P.A f).comp hP, LBIso.trans (pull_isLB P.isLB _) (pull_isLB (pull_isLB P₁.isLB ψ) _) (pull_isLB P₁.isLB _) (GenSpread.lbIso_pullback eP _) (GenSpread.lbIso_pull_pull P₁.isLB _ rfl).symm⟩`.
+-/
 theorem stepBase {S₁ S : Scheme.{0}} (P₁ : PolAV S₁) (P : PolAV S) (t : S ⟶ S₁) (ψ : P.A.left ⟶ P₁.A.left)
     (hP : IsGrpPullback P.A P₁.A t ψ) (eP : LBIso P.L (P₁.L.pull ψ)) {S' : Scheme.{0}} (f : S' ⟶ S) :
     IsGrpPullback (StrictPull.polPull P f).A P₁.A (f ≫ t) (pullback.fst P.A.hom f ≫ ψ) ∧
@@ -84,6 +109,9 @@ theorem stepBase {S₁ S : Scheme.{0}} (P₁ : PolAV S₁) (P : PolAV S) (t : S 
     LBIso.trans (pull_isLB P.isLB _) (pull_isLB (pull_isLB P₁.isLB ψ) _) (pull_isLB P₁.isLB _)
       (GenSpread.lbIso_pullback eP _) (GenSpread.lbIso_pull_pull P₁.isLB _ rfl).symm⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `H`.
+-/
 theorem indep_cast {S : Scheme.{0}} {A : Over S} [GrpObj A] {T : Over S} {n m K : ℕ} (h : n = m)
     (y : Fin m → (T ⟶ A))
     (H : ∀ c c' : Fin m → Fin K, linComb y (fun i => (c i : ℕ)) = linComb y (fun i => (c' i : ℕ)) → c = c') :
@@ -91,6 +119,35 @@ theorem indep_cast {S : Scheme.{0}} {A : Over S} [GrpObj A] {T : Over S} {n m K 
       linComb (fun i => y (Fin.cast h i)) (fun i => (c' i : ℕ)) → c = c' := by
   subst h; exact H
 
+/- English proof (translation)
+Introduce `o₁ Ω₁ _ _ _ R₁ P₁ o₂ Ω₂ _ _ _ hB _ κ Q φ K ze hR₁ hfr hfd hκ hK hg hQ eQ hlev`. Take `⟨lev⟩` from `hlev`. Use `hB.ded` as an intermediate fact. Take `⟨R₀, h₀, hR₀, hfr₀, hh₀⟩` from `exists_ring R₁ κ hR₁ hfr hκ`. Set `a₁ : R₁ →+* Ω₂` to `(algebraMap Ω₁ Ω₂).comp R₁.val.toRingHom`.
+
+Establish `c₀ : (algebraMap R₀ Ω₂).comp h₀ = a₁` using `RingHom.ext hh₀`. Set `P₀` to `StrictPull.polPull P₁ (spMap h₀)`. Take `⟨φ₀, -, -, hQ₀, eQ₀⟩` from `step a₁ (algebraMap R₀ Ω₂) h₀ c₀ Q P₁ φ hQ eQ`. Establish `hP₀ : IsGrpPullback P₀.A P₁.A (spMap h₀) (pullback.fst P₁.A.hom (spMap h₀))` using `isGrpPullback_pullback P₁.A _`. Establish `eP₀ : LBIso P₀.L (P₁.L.pull (pullback.fst P₁.A.hom (spMap h₀)))` using `lbIso_refl P₀.isLB`.
+
+Use `GenSpread.isFractionRing_of_forall_div hfr₀` as an intermediate fact. Use `GenSpread.isNoetherianRing_of_fg hR₀` as an intermediate fact. Use `P₀.isAb.smooth` as an intermediate fact. Use `P₀.isAb.proper` as an intermediate fact. Use `choose b hb Hpt using fun i => GenSpread.exists_hom (𝟙 (Sp R₀)) P₀.A.hom (φ := spMap (algebraMap R₀ Ω₂)) (p₀ := 𝟙 (Sp Ω₂)) (IsPullback.of_vert_isIso ⟨by simp⟩) ((lev.pt i).left ≫ φ₀) (by rw [Category.assoc, hQ₀.1.w, Over.w_assoc]; simp)`.
+
+Take `⟨R₂, g₂, le₂, hR₂, c₂, u₂, -, -, -⟩` from `GenSpread.exists_shrink hR₀ b hb hQ₀.1`. Set `P₂` to `StrictPull.polPull P₀ (spMap g₂)`. Take `⟨φ₂, hφ₂, w₂, hQ₂, eQ₂⟩` from `step (algebraMap R₀ Ω₂) (algebraMap R₂ Ω₂) g₂ c₂ Q P₀ φ₀ hQ₀ eQ₀`. Take `⟨hP₂, eP₂⟩` from `stepBase P₁ P₀ _ _ hP₀ eP₀ (spMap g₂)`. Establish `es₂ : spMap (algebraMap R₂ Ω₂) ≫ spMap g₂ = spMap (algebraMap R₀ Ω₂)`.
+
+Rewrite using `[← c₂, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `pts : ∀ i, ∃ y : baseOver (Sp R₂) ⟶ P₂.A, (lev.pt i).left ≫ φ₂ = spMap (algebraMap R₂ Ω₂) ≫ y.left`. Introduce `i`. Take `⟨u, hu, hu'⟩` from `Hpt i R₂ g₂ (u₂ i) (Sp R₂) (spMap g₂) (𝟙 _) (by simp)`.
+
+Establish `q₂` using `IsPullback.of_hasPullback P₀.A.hom (spMap g₂)`. Use `⟨Over.homMk (q₂.lift u (𝟙 _) (by simpa using hu)) (q₂.lift_snd _ _ _), q₂.hom_ext ?_ ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((lev.pt i).left ≫ ·) hφ₂).trans ((hu' _ es₂).symm.trans ((congrArg (spMap (algebraMap R₂ Ω₂) ≫ ·) (q₂.lift_fst _ _ _)).symm.trans (Category.assoc _ _ _).symm)))`. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((lev.pt i).left ≫ ·) w₂).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ spMap (algebraMap R₂ Ω₂)) (Over.w (lev.pt i))).trans ((Category.id_comp _).trans ((Category.comp_id _).symm.trans ((congrArg (spMap (algebraMap R₂ Ω₂) ≫ ·) ( …`. Use `choose y hy using pts`.
+
+Establish `hfr₂ : ∀ x : Ω₂, ∃ a ∈ R₂, ∃ b ∈ R₂, x = a / b` using `fun x => by`. Take `⟨a, ha, b, hb, e⟩` from `hfr₀ x`. Conclude with `⟨a, le₂ ha, b, le₂ hb, e⟩`. Use `GenSpread.isFractionRing_of_forall_div hfr₂` as an intermediate fact. Use `GenSpread.isNoetherianRing_of_fg hR₂` as an intermediate fact.
+
+Use `P₂.isAb.proper` as an intermediate fact. Take `⟨d, hd, Hi⟩` from `GlobalTheory.T.exists_pointIndependence_spread_to_geometricFibres R₂ Ω₂ P₂.A Q.A φ₂ inferInstance hQ₂ _ K y lev.pt hy fun c c' h => by`. Use `lev.indep (AlgebraicClosure Ω₂) (spMap (algebraMap Ω₂ _)) c c' ?_` and prove the remaining obligations. Rewrite using `[← GenSpread.comp_linComb, ← GenSpread.comp_linComb, h]`. Take `⟨R₃, g₃, le₃, hR₃, c₃, u₃, -, -, -⟩` from `GenSpread.exists_shrink hR₂ (fun _ : PUnit => d) (fun _ => hd) hQ₂.1`.
+
+Set `P₃` to `StrictPull.polPull P₂ (spMap g₃)`. Take `⟨φ₃, hφ₃, w₃, hQ₃, eQ₃⟩` from `step (algebraMap R₂ Ω₂) (algebraMap R₃ Ω₂) g₃ c₃ Q P₂ φ₂ hQ₂ eQ₂`. Take `⟨hP₃, eP₃⟩` from `stepBase P₁ P₂ _ _ hP₂ eP₂ (spMap g₃)`. Establish `es₃ : spMap (algebraMap R₃ Ω₂) ≫ spMap g₃ = spMap (algebraMap R₂ Ω₂)`. Rewrite using `[← c₃, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Establish `q₃` using `IsPullback.of_hasPullback P₂.A.hom (spMap g₃)`. Set `y' : Fin (2 * Q.g) → (baseOver (Sp R₃) ⟶ P₃.A)` to `fun i => Over.homMk (q₃.lift (spMap g₃ ≫ (y i).left) (𝟙 _) (by simp)) (q₃.lift_snd _ _ _)`. Establish `hy' : ∀ i, (y' i).left ≫ pullback.fst P₂.A.hom (spMap g₃) = spMap g₃ ≫ (y i).left` using `fun i => q₃.lift_fst _ _ _`. Establish `hy₃ : ∀ i, (lev.pt i).left ≫ φ₃ = spMap (algebraMap R₃ Ω₂) ≫ (y' i).left`.
+
+Introduce `i`. Use `q₃.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((lev.pt i).left ≫ ·) hφ₃).trans ((hy i).trans ((by rw [reassoc_of% es₃] : spMap (algebraMap R₂ Ω₂) ≫ (y i).left = spMap (algebraMap R₃ Ω₂) ≫ spMap g₃ ≫ (y i).left).trans ((congrArg (spMap (algebraMap R₃ Ω₂) ≫ ·) (hy' i)).symm.trans (Catego …`. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((lev.pt i).left ≫ ·) w₃).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ spMap (algebraMap R₃ Ω₂)) (Over.w (lev.pt i))).trans ((Category.id_comp _).trans ((Category.comp_id _).symm.trans ((congrArg (spMap (algebraMap R₃ Ω₂) ≫ ·) ( …`. Establish `Hi₃` using `Hi R₃ g₃ (u₃ ⟨⟩) P₃.A (pullback.fst _ _) y' (isGrpPullback_pullback P₂.A (spMap g₃)) hy'`.
+
+Establish `hfr₃ : ∀ x : Ω₂, ∃ a ∈ R₃, ∃ b ∈ R₃, x = a / b` using `fun x => by`. Take `⟨a, ha, b, hb, e⟩` from `hfr₂ x`. Conclude with `⟨a, le₃ ha, b, le₃ hb, e⟩`. Use `GenSpread.isFractionRing_of_forall_div hfr₃` as an intermediate fact. Use `GenSpread.isNoetherianRing_of_fg hR₃` as an intermediate fact.
+
+Establish `hgg : 2 * P₃.g = 2 * Q.g` using `congrArg (2 * ·) hg.symm`. Take `⟨lev', -⟩` from `GlobalTheory.T.isLevelStructure_of_generic_of_fibrewise_indep abelianSchemeLaws_all.1 R₃ Ω₂ P₃ Q φ₃ hQ₃ eQ₃ hg.symm K (Units.map (algebraMap o₂ R₃ : o₂ →* R₃) ze) (Units.map (algebraMap o₂ Ω₂ : o₂ →* Ω₂) ze) (by simpa using hK.map (algebraMap o₂ R₃)) rfl lev (fun i => y' (Fin.cas …`. Establish `hh : ∀ a, (((g₃.comp (g₂.comp h₀)) a : R₃) : Ω₂) = algebraMap Ω₁ Ω₂ a` using `fun a => (RingHom.congr_fun c₃ _).trans ((RingHom.congr_fun c₂ _).trans (hh₀ a))`. Establish `hsp : spMap g₃ ≫ spMap g₂ ≫ spMap h₀ = spMap (g₃.comp (g₂.comp h₀))`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Conclude with `⟨R₃, g₃.comp (g₂.comp h₀), P₃, _, hR₃, hfr₃, hh, rfl, hP₃.congr hsp rfl, eP₃, ⟨lev'⟩⟩`.
+-/
 theorem level_spreads : ∀ {o₁ Ω₁ : Type} [CommRing o₁] [Field Ω₁] [Algebra o₁ Ω₁] (R₁ : Subalgebra o₁ Ω₁) (P₁ : PolAV (Sp R₁)) {o₂ Ω₂ : Type} [CommRing o₂] [Field Ω₂] [Algebra o₂ Ω₂] [ArithBase o₂ Ω₂] [Algebra Ω₁ Ω₂] (κ : o₁ →+* o₂) (Q : PolAV (Sp Ω₂)) (φ : Q.A.left ⟶ P₁.A.left) (K : ℕ) (ze : o₂ˣ), R₁.FG → (∀ x : Ω₁, ∃ a ∈ R₁, ∃ b ∈ R₁, x = a / b) → FiniteDimensional Ω₁ Ω₂ → (algebraMap o₂ Ω₂).comp κ = (algebraMap Ω₁ Ω₂).comp (algebraMap o₁ Ω₁) → IsUnit (K : o₂) → Q.g = P₁.g → IsGrpPullback Q.A P₁.A (spMap ((algebraMap Ω₁ Ω₂).comp R₁.val.toRingHom)) φ → LBIso Q.L (P₁.L.pull φ) → Nonempty (Out.Level Q K (unitOn (Units.map (algebraMap o₂ Ω₂ : o₂ →* Ω₂) ze))) → ∃ (R : Subalgebra o₂ Ω₂) (h : R₁ →+* R) (P : PolAV (Sp R)) (ψ : P.A.left ⟶ P₁.A.left), R.FG ∧ (∀ x : Ω₂, ∃ a ∈ R, ∃ b ∈ R, x = a / b) ∧ (∀ a, ((h a : R) : Ω₂) = algebraMap Ω₁ Ω₂ a) ∧ P.g = P₁.g ∧ IsGrpPullback P.A P₁.A (spMap h) ψ ∧ LBIso P.L (P₁.L.pull ψ) ∧ Nonempty (Out.Level P K (unitOn ((Units.map (algebraMap o₂ R : o₂ →* R)) ze))) := by
   intro o₁ Ω₁ _ _ _ R₁ P₁ o₂ Ω₂ _ _ _ hB _ κ Q φ K ze hR₁ hfr hfd hκ hK hg hQ eQ hlev
   obtain ⟨lev⟩ := hlev

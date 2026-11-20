@@ -23,6 +23,13 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial (Module.End F N) with hs | hn` into its components or cases. Conclude with `⟨1, ⟨1, Nat.one_pos, one_pow _⟩, Subsingleton.elim _ _⟩`. Establish `hζ : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `h` using `[zero_smul, zero_pow (by omega)]`.
+
+Conclude with `zero_ne_one h`. Establish `e : ξ • Φ = (ξ / ζ) • (ζ • Φ)` using `by rw [smul_smul, div_mul_cancel₀ _ hζ]`. Use `⟨ξ / ζ, ⟨M * M', by positivity, ?_⟩, e⟩` and prove the remaining obligations. Establish `a : (ξ • Φ) ^ (M * M') = 1` using `by rw [mul_comm M M', pow_mul, h', one_pow]`. Rewrite `a` using `[e, smul_pow, pow_mul (ζ • Φ), h, one_pow]`.
+
+Establish `b : ((ξ / ζ) ^ (M * M') - 1) • (1 : Module.End F N) = 0` using `by rw [sub_smul, a, one_smul, sub_self]`. Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 b).resolve_right one_ne_zero)`.
+-/
 theorem exists_rootOfUnity_smul_of_pow_eq_one {F N : Type} [Field F] [AddCommGroup N] [Module F N]
     (Φ : Module.End F N) (ζ ξ : F) {M M' : ℕ} (hM : 1 ≤ M) (hM' : 1 ≤ M')
     (h : (ζ • Φ) ^ M = 1) (h' : (ξ • Φ) ^ M' = 1) :
@@ -40,6 +47,15 @@ theorem exists_rootOfUnity_smul_of_pow_eq_one {F N : Type} [Field F] [AddCommGro
   have b : ((ξ / ζ) ^ (M * M') - 1) • (1 : Module.End F N) = 0 := by rw [sub_smul, a, one_smul, sub_self]
   exact sub_eq_zero.1 ((smul_eq_zero.1 b).resolve_right one_ne_zero)
 
+/- English proof (translation)
+Introduce `V _ _ _ _ ϖ _ D F _ _ k hk p w w' ζ ζ' hw hw' h h'`. Establish `hG : GlobalFnsSt` using `GlobalTheory.firstFiveLaws.1.globalFns`. Take `⟨Φ, hΦ⟩` from `phiFun_of_globalFns hG V _ D F k hk p w hw`. Take `⟨Φ', hΦ'⟩` from `phiFun_of_globalFns hG V _ D F k hk p w' hw'`. Take `⟨c, hc⟩` from `ThetaFinOrd.exists_scalar hG p w' w hw' hw Φ' Φ (fun s => (hΦ' _ _).2 rfl) (fun s => (hΦ _ _).2 rfl)`.
+
+Take `⟨M, hM, hU⟩` from `(ThetaFinOrd.finOrd_iff p w ζ Φ hΦ).1 h`. Take `⟨M', hM', hW⟩` from `(ThetaFinOrd.finOrd_iff p w' ζ' Φ' hΦ').1 h'`. Rewrite `hW` using `[hc, smul_smul]`. Take `⟨u, hu, e⟩` from `exists_rootOfUnity_smul_of_pow_eq_one (F := F) (N := Fam D.toPre F k) Φ ζ (ζ' * c) hM hM' hU hW`. Use `⟨u, hu, fun s t₀ t t₀' t' a b a' b' => ?_⟩` and prove the remaining obligations.
+
+Rewrite `a` using `[hΦ]`. Rewrite `a'` using `[hΦ']`. Rewrite `b`, `b'`, the goal using `[DVR.isSmul_iff]`. Establish `f` using `LinearMap.congr_fun e s`. Simplify using `only [LinearMap.smul_apply] at f`.
+
+Rewrite using `[b', a', b, a, hc, LinearMap.smul_apply, smul_smul, f]`.
+-/
 theorem finOrd_ratio_rootOfUnity : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (maximalIdeal V)) (F : Type) [Field F] [Algebra (FractionRing V) F] (k : ℕ), 1 ≤ k → ∀ (p : QkPt D.toPre F k) (w w' : LB.Gen (LB.LinComb D.toPre.P.L (DegPre.lineφ D.toPre F p.g.b) (DegPre.lineε k))) (ζ ζ' : F), w.IsGen → w'.IsGen → FinOrd D F k p w ζ → FinOrd D F k p w' ζ' → ∃ u : F, (∃ m : ℕ, 0 < m ∧ u ^ m = 1) ∧ ∀ s t₀ t t₀' t' : Fam D.toPre F k, PhiRel D.toPre F k p w s t₀ → Fam.IsSmul D.toPre F ζ t₀ t → PhiRel D.toPre F k p w' s t₀' → Fam.IsSmul D.toPre F ζ' t₀' t' → Fam.IsSmul D.toPre F u t t' := by
   intro V _ _ _ _ ϖ _ D F _ _ k hk p w w' ζ ζ' hw hw' h h'
   have hG : GlobalFnsSt := GlobalTheory.firstFiveLaws.1.globalFns

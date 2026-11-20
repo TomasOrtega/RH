@@ -8,12 +8,18 @@ noncomputable section
 
 namespace GlobalTheory.SphJet.ModRel
 
+/- English proof (translation)
+Proceed by induction on `l₁ with`. Consider the case `nil => simp [ew]`. Consider the case `cons p w ih => simp only [List.cons_append, ew, ih, mul_assoc]`.
+-/
 theorem ew_append {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V)
     (l₁ l₂ : List (Fin n × Fin n)) : ew E (l₁ ++ l₂) = ew E l₁ * ew E l₂ := by
   induction l₁ with
   | nil => simp [ew]
   | cons p w ih => simp only [List.cons_append, ew, ih, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[theta_map_word_sum_apply]`. Use `Fintype.sum_equiv (Equiv.funUnique (Fin 1) (Fin n × Fin n)) _ _ fun α => ?_` and prove the remaining obligations. Simplify using `[ew, arr1, arrTo]`.
+-/
 theorem thetaA_one_onePositionArrayOfIsometry {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (j : W →ₗᵢ[ℂ] V)
     (G : Fin n × Fin n → W) : thetaA E 1 (arr1 j G) = ∑ p : Fin n × Fin n, E p.1 p.2 (j (G p)) := by
@@ -21,6 +27,13 @@ theorem thetaA_one_onePositionArrayOfIsometry {V W : Type} [NormedAddCommGroup V
   refine Fintype.sum_equiv (Equiv.funUnique (Fin 1) (Fin n × Fin n)) _ _ fun α => ?_
   simp [ew, arr1, arrTo]
 
+/- English proof (translation)
+Take `⟨-, hθ⟩` from `(arrModule V n ε E 1).1 hg`. Apply `isotypic_part_le_of_forall` to reduce the goal to its premises. Introduce `y hy μ hμ hyh`. Apply `compact_span_le_of_stable` to reduce the goal to its premises. Introduce `c d _ x hx`.
+
+Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hθ, hx, map_zero]`. Rewrite using `[LinearMap.mem_ker]`. Take `⟨a, b, hba, hne, rfl⟩` from `hμ`. Establish `hμeq : Λ + root a b = Λ - root b a`.
+
+Rewrite using `[root_swap' a b, sub_eq_add_neg]`. Use `h0 b a hba (Ne.symm hne) _ ⟨fun c => ?_, fun c d hcd hcomp => ?_⟩` and prove the remaining obligations. Rewrite using `[← hθ, hyh.1 c, map_smul, hμeq]`. Rewrite using `[← hθ, hyh.2 c d hcd hcomp, map_zero]`.
+-/
 theorem theta_vminus {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ} {ε : Fin n → Bool}
     {E : Fin n → Fin n → Module.End ℂ V} {Λ : Fin n → ℝ} {u : V} (hg : GlRel E)
     (h0 : ∀ a b : Fin n, a < b → ε a ≠ ε b → ∀ x : V, KHighest ε E (Λ - root a b) x → x = 0) :
@@ -40,6 +53,15 @@ theorem theta_vminus {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     · rw [← hθ, hyh.1 c, map_smul, hμeq]
     · rw [← hθ, hyh.2 c d hcd hcomp, map_zero]
 
+/- English proof (translation)
+Take `⟨hg, hu, -, -, -⟩` from `hL`. Use `⟨fun l₁ l₂ a b c d => ?_, fun l a b _ y x x' hx => ?_, fun l a b hab y y' x hy => ?_, fun l G hG y => ?_⟩` and prove the remaining obligations. Establish `key : ew E (l₁ ++ (a, b) :: (c, d) :: l₂) - ew E (l₁ ++ (c, d) :: (a, b) :: l₂) = (if b = c then ew E (l₁ ++ (a, d) :: l₂) else 0) - (if d = a then ew E (l₁ ++ (c, b) :: l₂) else 0)`. Establish `h` using `hg a b c d`. Simplify using `only [ew_append, ew]`.
+
+Rewrite using `[← mul_sub, ← mul_assoc (E a b), ← mul_assoc (E c d), ← sub_mul, h]`. Apply the tactic sequence `split_ifs <;> simp [mul_sub, sub_mul]`. Use extensionality with `y x`. Establish `h2` using `congrArg (fun T : Module.End ℂ V => ⟪j y, T (j x)⟫_ℂ) key`. Apply the tactic sequence `split_ifs at h2 ⊢ <;>`.
+
+Simplify `h2` using `[modJet_apply, inner_sub_right]`. Simplify using `only [modJet_apply, ew_append, ew, hx, mul_one, Module.End.mul_apply]`. Simplify using `only [modJet_apply, ew, hy, Module.End.mul_apply]`. Rewrite using `[isUnitary_kUnit ε E hu b a hab.symm]`. Establish `h` using `theta_vminus hg h0 hG`.
+
+Rewrite `h` using `[LinearMap.mem_ker, thetaA_one_onePositionArrayOfIsometry]`. Simplify using `only [modJet_apply, ew_append, ew, mul_one, Module.End.mul_apply]`. Rewrite using `[← inner_sum, ← map_sum, h, map_zero, inner_zero_right]`.
+-/
 theorem modJet_jetRel (V W : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (Λ : Fin n → ℝ)
     (u : V) (j : W →ₗᵢ[ℂ] V) (hL : LowData ε E Λ u j)

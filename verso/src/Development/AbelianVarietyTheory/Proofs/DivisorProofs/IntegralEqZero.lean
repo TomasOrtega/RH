@@ -30,11 +30,17 @@ def Sq (F : H → ℂ) : Prop :=
 variable {μ Γ 𝓕}
 
 omit [IsTopologicalGroup H] [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] in
+/- English proof (translation)
+The claim follows from `integrableOn_star_mul μ 𝓕 F F' h.1 h'.1 h.2.2 h'.2.2`.
+-/
 theorem Sq.int {F F' : H → ℂ} (h : Sq μ Γ 𝓕 F) (h' : Sq μ Γ 𝓕 F') :
     IntegrableOn (fun g => star (F g) * F' g) 𝓕 μ :=
   integrableOn_star_mul μ 𝓕 F F' h.1 h'.1 h.2.2 h'.2.2
 
 omit [IsTopologicalGroup H] [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] in
+/- English proof (translation)
+Use `⟨h.1.add h'.1, fun γ hγ g => by simp only [h.2.1 γ hγ, h'.2.1 γ hγ], ?_⟩` and prove the remaining obligations. Use `((h.int h).add (h.int h')).add ((h'.int h).add (h'.int h'))` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, star_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Sq.add {F F' : H → ℂ} (h : Sq μ Γ 𝓕 F) (h' : Sq μ Γ 𝓕 F') : Sq μ Γ 𝓕 (fun g => F g + F' g) := by
   refine ⟨h.1.add h'.1, fun γ hγ g => by simp only [h.2.1 γ hγ, h'.2.1 γ hγ], ?_⟩
   have := ((h.int h).add (h.int h')).add ((h'.int h).add (h'.int h'))
@@ -42,11 +48,17 @@ theorem Sq.add {F F' : H → ℂ} (h : Sq μ Γ 𝓕 F) (h' : Sq μ Γ 𝓕 F') 
   simp only [Pi.add_apply, star_add]
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.comp (continuous_mul_right y), fun γ hγ g => by simp only [mul_assoc, h.2.1 γ hγ], integrableOn_mul_right μ Γ 𝓕 h𝓕 (fun h => star (F h) * F h) (fun γ hγ g => by simp only [h.2.1 γ hγ]) y h.2.2⟩`.
+-/
 theorem Sq.transl (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) {F : H → ℂ} (h : Sq μ Γ 𝓕 F) (y : H) :
     Sq μ Γ 𝓕 (fun g => F (g * y)) :=
   ⟨h.1.comp (continuous_mul_right y), fun γ hγ g => by simp only [mul_assoc, h.2.1 γ hγ],
     integrableOn_mul_right μ Γ 𝓕 h𝓕 (fun h => star (F h) * F h) (fun γ hγ g => by simp only [h.2.1 γ hγ]) y h.2.2⟩
 
+/- English proof (translation)
+Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty => exact ⟨by simpa using continuous_const, by simp, by simp⟩`. Consider the case `insert a A ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h.transl h𝓕 a).add ih`.
+-/
 theorem Sq.sum (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) {F : H → ℂ} (h : Sq μ Γ 𝓕 F) (A : Finset H) :
     Sq μ Γ 𝓕 (fun g => ∑ a ∈ A, F (g * a)) := by
   classical
@@ -56,6 +68,15 @@ theorem Sq.sum (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) {F : H → ℂ} (h : Sq 
     simp only [Finset.sum_insert ha]
     exact (h.transl h𝓕 a).add ih
 
+/- English proof (translation)
+Use `⟨fun a ha => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k₁, k₂, e⟩` from `hA.1 a ha`. Conclude with `⟨⟨k₁, k₁.2.1⟩, ⟨k₂, k₂.2.1⟩, e⟩`. Introduce and unpack `g ⟨k₁, k₂, rfl⟩`. Take `⟨a, ha, b, hb, haL, e, hc⟩` from `hs k₁ k₁.2`.
+
+Establish `e2 : (k₁ : H) * x * k₂ = a * x * (b * k₂)`. Rewrite using `[e, mul_assoc a b x, (hc x hx).eq]`. Simplify using `only [mul_assoc]`. Take `⟨r, ⟨hr, hr2⟩, hu⟩` from `hA.2 (a * x) ⟨⟨a, ha, haL⟩, 1, by simp⟩`. Rewrite using `[e2]`.
+
+Use `⟨r, ⟨hr, ?_⟩, fun r' hr' => hu r' ⟨hr'.1, ?_, ?_⟩⟩` and prove the remaining obligations. Use `J.mul_mem hr2.1 (J.mul_mem hb k₂.2)` as an intermediate fact. Simplify `this` using `only [mul_assoc]`. Use `J.mul_mem hr'.2 (J.inv_mem (J.mul_mem hb k₂.2))` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Conclude with `L.mul_mem (L.inv_mem (hL r' hr'.1)) (L.mul_mem haL hx)`.
+-/
 theorem isDC_of_local {H : Type} [Group H] (J L : Subgroup H) (x : H) (A : Finset H) (hx : x ∈ L)
     (hs : ∀ k ∈ J, ∃ k₁ ∈ J, ∃ k₂ ∈ J, k₁ ∈ L ∧ k = k₁ * k₂ ∧ ∀ l ∈ L, Commute k₂ l)
     (hL : ∀ a ∈ A, a ∈ L) (hA : IsDC (J ⊓ L) x A) : IsDC J x A := by

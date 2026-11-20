@@ -12,6 +12,11 @@ namespace GlobalTheory.HSAmp
 
 variable {K : Type} [Field K] {D : ℕ}
 
+/- English proof (translation)
+Use `le_antisymm (Subring.closure_le.2 ?_) (Subring.closure_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `only [div_self h0]`. Conclude with `Subring.one_mem _`.
+
+Conclude with `Subring.subset_closure ⟨i, rfl⟩`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨j.succ, rfl⟩`.
+-/
 theorem ratR_zero_eq_closure (x : Fin (D + 1) → K) (h0 : x 0 ≠ 0) :
     ratR x 0 = Subring.closure (Set.range fun j : Fin D => x j.succ / x 0) := by
   refine le_antisymm (Subring.closure_le.2 ?_) (Subring.closure_mono ?_)
@@ -22,10 +27,18 @@ theorem ratR_zero_eq_closure (x : Fin (D + 1) → K) (h0 : x 0 ≠ 0) :
   · rintro _ ⟨j, rfl⟩
     exact ⟨j.succ, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[ratR_zero_eq_closure x h0]`. Conclude with `Subring.closure_le.2 fun _ h => Subfield.subset_closure h`.
+-/
 theorem ratR_zero_le_ratF (x : Fin (D + 1) → K) (h0 : x 0 ≠ 0) : ratR x 0 ≤ (ratF x).toSubring := by
   rw [ratR_zero_eq_closure x h0]
   exact Subring.closure_le.2 fun _ h => Subfield.subset_closure h
 
+/- English proof (translation)
+Establish `hS : (Algebra.adjoin ℤ (Set.range fun j : Fin D => x j.succ / x 0)).toSubring = ratR x 0`. Rewrite using `[Algebra.adjoin_int, ratR_zero_eq_closure x h0]`. Both sides reduce to the same expression. Use `⟨hind.aevalEquiv.toRingEquiv.trans (RingEquiv.subringCongr hS), fun j => ?_⟩` and prove the remaining obligations. Use `hind.algebraMap_aevalEquiv (X j)` as an intermediate fact.
+
+Rewrite `this` using `[aeval_X]`. Conclude with `this`.
+-/
 theorem exists_ringEquiv_ratR (x : Fin (D + 1) → K) (h0 : x 0 ≠ 0)
     (hind : AlgebraicIndependent ℤ (fun j : Fin D => x j.succ / x 0)) :
     ∃ e : MvPolynomial (Fin D) ℤ ≃+* ratR x 0, ∀ j, (e (X j) : K) = x j.succ / x 0 := by
@@ -42,6 +55,39 @@ namespace GlobalTheory.HSAmp
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `K _ _ D x hx hind hfin B hB hint w T htr z M hz0 hM`. Establish `h0` using `hx 0`. Establish `hAF` using `ratR_zero_le_ratF x h0`. Establish `memA : ∀ l, x l / x 0 ∈ ratR x 0` using `fun l => Subring.subset_closure ⟨l, rfl⟩`. Establish `hAB : ratR x 0 ≤ B` using `Subring.closure_le.2 (by rintro _ ⟨l, rfl⟩; exact hB l)`.
+
+Use `letI : Algebra (ratR x 0) (ratF x) := (Subring.inclusion hAF).toAlgebra`. Use `letI : Algebra (ratR x 0) B := (Subring.inclusion hAB).toAlgebra`. Use `haveI : IsScalarTower (ratR x 0) (ratF x) K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower (ratR x 0) B K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Take `⟨e, he⟩` from `exists_ringEquiv_ratR x h0 hind`.
+
+Use `haveI : UniqueFactorizationMonoid (ratR x 0) := e.toMulEquiv.uniqueFactorizationMonoid inferInstance`. Establish `hinjF : Function.Injective (algebraMap (ratR x 0) (ratF x))` using `Subring.inclusion_injective hAF`. Establish `hinjB : Function.Injective (algebraMap (ratR x 0) B)` using `Subring.inclusion_injective hAB`. Use `haveI : FaithfulSMul (ratR x 0) (ratF x) := (faithfulSMul_iff_algebraMap_injective _ _).2 hinjF`. Use `haveI : IsFractionRing (ratR x 0) (ratF x) := by`.
+
+Use `IsFractionRing.of_field _ _ fun y => ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, hab⟩` from `Subfield.mem_closure_iff.1 y.2`. Rewrite `ha`, `hb` using `[← ratR_zero_eq_closure x h0]`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, Subtype.ext (by rw [Subfield.coe_div]; exact hab.symm)⟩`. Establish `hwint : IsIntegral (ratR x 0) (w : K)` using `hint w w.2`.
+
+Establish `hmin : minpoly (ratF x) (w : K) = (minpoly (ratR x 0) (w : K)).map (algebraMap (ratR x 0) (ratF x))` using `minpoly.isIntegrallyClosed_eq_field_fractions' (ratF x) hwint`. Establish `hminB : minpoly (ratR x 0) w = minpoly (ratR x 0) (w : K)` using `(minpoly.algHom_eq (IsScalarTower.toAlgHom (ratR x 0) B K) Subtype.val_injective w).symm`. Use `haveI : Algebra.IsIntegral (ratR x 0) B := ⟨fun b => (isIntegral_algHom_iff (IsScalarTower.toAlgHom (ratR x 0) B K) Subtype.val_injective).1 (hint b b.2)⟩`. Use `set p := minpoly (ratR x 0) (w : K) with hp`. Establish `hpm : p.Monic` using `minpoly.monic hwint`.
+
+Take `⟨m, htr', hmdeg⟩ : ∃ m : ℕ, Algebra.trace (ratF x) K (w : K) = m * -(minpoly (ratF x) (w : K)).nextCoeff ∧ m * (minpoly (ratF x) (w : K)).natDegree = Module.finrank (ratF x) K` from `⟨_, trace_eq_finrank_mul_minpoly_nextCoeff (ratF x) (w : K), by`. Rewrite using `[← IntermediateField.adjoin.finrank (IsIntegral.of_finite (ratF x) (w : K)), mul_comm, Module.finrank_mul_finrank]⟩`. Rewrite `hmdeg` using `[hmin, hpm.natDegree_map]`. Use `set c : ratR x 0 := m * -p.nextCoeff with hc`. Establish `hcF : Algebra.trace (ratF x) K (w : K) = algebraMap (ratR x 0) (ratF x) c`.
+
+Rewrite using `[htr', hmin, Polynomial.nextCoeff_map hinjF, hc, map_mul, map_neg, map_natCast]`. Rewrite `htr` using `[hcF]`. Set `a : Fin (D + 1) → ratR x 0` to `fun l => ⟨x l / x 0, memA l⟩`. Establish `hcT : c = aeval a T`. Apply `Subtype.val_injective` to reduce the goal to its premises.
+
+Use `htr.trans ?_` and prove the remaining obligations. Use `AlgHom.congr_fun (MvPolynomial.comp_aeval a (ratR x 0).subtype.toIntAlgHom) T` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this`. Conclude with `this.symm`. Set `ψ : ratR x 0 →+* ℂ` to `(MvPolynomial.eval₂Hom (Int.castRingHom ℂ) fun j : Fin D => z j.succ).comp e.symm.toRingHom`.
+
+Establish `hψ : ∀ l, ψ (a l) = z l`. Introduce `l`. Use `Fin.cases ?_ (fun j => ?_) l` and prove the remaining obligations. Establish `: a 0 = 1` using `Subtype.ext (div_self h0)`. Rewrite using `[this, map_one, hz0]`.
+
+Establish `: a j.succ = e (X j)` using `Subtype.ext (he j).symm`. Rewrite using `[this]`. Use `show MvPolynomial.eval₂Hom (Int.castRingHom ℂ) (fun j : Fin D => z j.succ) (e.symm (e (X j))) = _`. Rewrite using `[RingEquiv.symm_apply_apply, eval₂Hom_X']`. Establish `hψc : ψ c = aeval z T`.
+
+Rewrite using `[hcT]`. Use `AlgHom.congr_fun (MvPolynomial.comp_aeval a ψ.toIntAlgHom) T` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[show (fun i => ψ.toIntAlgHom (a i)) = z from funext fun l => hψ l]`.
+
+Use `set q := p.map ψ with hq`. Establish `hqm : q.Monic` using `hpm.map ψ`. Establish `hsum : q.nextCoeff = -q.roots.sum` using `(IsAlgClosed.splits q).nextCoeff_eq_neg_sum_roots_of_monic hqm`. Establish `hqn : q.nextCoeff = ψ p.nextCoeff` using `Polynomial.nextCoeff_map_of_leadingCoeff_ne_zero ψ (by rw [hpm.leadingCoeff, map_one]; exact one_ne_zero)`. Establish `hcard : q.roots.card = p.natDegree`.
+
+Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, hpm.natDegree_map]`. Establish `hroots : ∀ r ∈ q.roots, ‖r‖ ≤ M`. Introduce `r hr`. Establish `hr' : ((minpoly (ratR x 0) w).map ψ).IsRoot r`. Rewrite using `[hminB]`.
+
+Conclude with `(Polynomial.mem_roots hqm.ne_zero).1 hr`. Take `⟨φ, hφ, hφw⟩` from `(GlobalTheory.isRoot_map_minpoly_iff_exists_ringHom (ratR x 0) B hinjB w ψ r).1 hr'`. Rewrite using `[← hφw]`. Use `hM φ fun l => ?_` and prove the remaining obligations. Rewrite using `[← hψ l, ← hφ]`.
+
+Both sides reduce to the same expression. Establish `hval : aeval z T = (m : ℂ) * q.roots.sum`. Rewrite using `[← hψc, hc, map_mul, map_neg, map_natCast, ← hqn, hsum, neg_neg]`. Rewrite using `[hval, norm_mul, Complex.norm_natCast, ← hmdeg, Nat.cast_mul, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations.
+
+Use `(norm_multiset_sum_le _).trans ?_` and prove the remaining obligations. Use `(Multiset.sum_le_card_nsmul _ M fun y hy => ?_).trans ?_` and prove the remaining obligations. Take `⟨r, hr, rfl⟩` from `Multiset.mem_map.1 hy`. Conclude with `hroots r hr`. Rewrite using `[Multiset.card_map, hcard, nsmul_eq_mul]`.
+-/
 theorem norm_aeval_trace_le : ∀ (K : Type) [Field K] [CharZero K] (D : ℕ) (x : Fin (D + 1) → K), (∀ j, x j ≠ 0) →
     AlgebraicIndependent ℤ (fun j : Fin D => x j.succ / x 0) → FiniteDimensional (ratF x) K →
     ∀ (B : Subring K) (hB : ∀ l, x l / x 0 ∈ B), (∀ b ∈ B, IsIntegral (ratR x 0) b) →

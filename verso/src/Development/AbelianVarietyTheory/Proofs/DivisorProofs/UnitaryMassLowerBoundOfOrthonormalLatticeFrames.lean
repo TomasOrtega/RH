@@ -17,6 +17,17 @@ namespace GlobalTheory.LowRow.StdMass
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `key : ∀ y ∈ V.L0, ∃ a : 𝓞 D.host.E, (a : D.host.E) = V.frame.repr y k`. Introduce `y hy`. Rewrite `hy` using `[hL]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨j, rfl⟩` from `hy`. Distinguish the cases in `h : j = k`. Conclude with `⟨1, by simp [h]⟩`. Conclude with `⟨0, by simp [Finsupp.single_apply, h]⟩`. Consider the case `zero => exact ⟨0, by simp⟩`.
+
+Consider the case `add y z _ _ hy hz`. Take `⟨a, ha⟩` from `hy`. Take `⟨b, hb⟩` from `hz`. Conclude with `⟨a + b, by simp [ha, hb]⟩`. Consider the case `smul r y _ hy`.
+
+Take `⟨a, ha⟩` from `hy`. Use `⟨r * a, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.host.E r y, map_smul]`. Simplify using `[ha, Algebra.smul_def]`. Establish `hx' : ∑ i, x i • V.frame i ∈ V.L0` using `hx`.
+
+Take `⟨a, ha⟩` from `key _ hx'`. Establish `e : V.frame.repr (∑ i, x i • V.frame i) k = x k`. Rewrite using `[← Module.Basis.equivFun_symm_apply, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[← e, ← ha]`. Conclude with `RingOfIntegers.isIntegral_coe a`.
+-/
 theorem coord_isIntegral (V : HSp D) (hL : V.L0 = Submodule.span (𝓞 D.host.E) (Set.range V.frame))
     {x : Fin V.rank → D.host.E} (hx : x ∈ L0c D V) (k : Fin V.rank) : IsIntegral ℤ (x k) := by
   have key : ∀ y ∈ V.L0, ∃ a : 𝓞 D.host.E, (a : D.host.E) = V.frame.repr y k := by
@@ -45,6 +56,21 @@ theorem coord_isIntegral (V : HSp D) (hL : V.L0 = Submodule.span (𝓞 D.host.E)
   rw [← e, ← ha]
   exact RingOfIntegers.isIntegral_coe a
 
+/- English proof (translation)
+Set `f` to `V.frame.equivFun.toLinearMap`. Set `L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)` to `V.L0.map (f.restrictScalars (𝓞 D.host.E))`. Establish `hL : (L : Set (Fin V.rank → D.host.E)) = L0c D V`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Express the relevant statement in the definitionally equal form `∑ i, V.frame.equivFun x i • V.frame i ∈ V.L0`. Rewrite using `[V.frame.sum_equivFun]` and apply the resulting hypothesis. Introduce `hw`. Use `⟨V.frame.equivFun.symm w, ?_, V.frame.equivFun.apply_symm_apply w⟩` and prove the remaining obligations.
+
+Rewrite using `[Module.Basis.equivFun_symm_apply]`. Conclude with `hw`. Establish `hsp : Submodule.span D.host.E (L : Set (Fin V.rank → D.host.E)) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `w _`.
+
+Take `⟨x, rfl⟩` from `V.frame.equivFun.surjective w`. Establish `hx : x ∈ Submodule.span D.host.E (V.L0 : Set V.V)`. Rewrite using `[V.standardTuple_isLattice.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Use `Submodule.mem_map_of_mem (f := f) hx` as an intermediate fact.
+
+Rewrite `this` using `[Submodule.map_span]`. Conclude with `this`. Establish `hr` using `(GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank L (V.standardTuple_isLattice.fg.map _) hsp).1 v`. Rewrite using `[← hL]`. Use `hr.1 ?_` and prove the remaining obligations.
+
+Establish `hle : latHat D.host.F D.host.E (L0c D V) ≤ GlobalTheory.AdLat.hat D.host.F (L : Set (Fin V.rank → D.host.E))`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, x, hx, rfl⟩`. Rewrite `hx` using `[← hL]`. Conclude with `AddSubgroup.subset_closure ⟨a, fun w => ha w, x, hx, rfl⟩`.
+
+Conclude with `hle h`.
+-/
 theorem mem_lattice_of_rational_mem_completion (V : HSp D) (v : Fin V.rank → D.host.E)
     (h : (fun k => (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] v k) ∈ latHat D.host.F D.host.E (L0c D V)) : v ∈ L0c D V := by
   let f := V.frame.equivFun.toLinearMap
@@ -78,6 +104,25 @@ theorem mem_lattice_of_rational_mem_completion (V : HSp D) (v : Fin V.rank → D
     exact AddSubgroup.subset_closure ⟨a, fun w => ha w, x, hx, rfl⟩
   exact hle h
 
+/- English proof (translation)
+Take `⟨hSf, hSc⟩` from `GlobalTheory.T.integral_unitary_matrices_finite_card_le D V.rank`. Establish `hx : ∀ x : Formalism.UG.stabAt (GlobalTheory.Mass.ratIn (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram) (GlobalTheory.Mass.Levels.latStab V) 1, ∃ u : GL (Fin V.rank) D.host.E, u ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V. …` using `fun x => by`. Take `⟨u, hu, e⟩` from `Subgroup.mem_map.1 x.1.2`. Conclude with `⟨u, hu, e⟩`. Use `choose u hu hue using hx`.
+
+Establish `hunit : ∀ x, (u x : Matrix (Fin V.rank) (Fin V.rank) D.host.E)ᴴ * (u x : Matrix (Fin V.rank) (Fin V.rank) D.host.E) = 1` using `fun x => by`. Establish `h` using `hu x`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ (u x : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * V.gram * (u x : Matrix (Fin V.rank) (Fin V.rank) D.host.E) = V.gram at h`. Rewrite `h` using `[hg, Matrix.mul_one]`. Use `h using 2` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `a b`. Both sides reduce to the same expression. Establish `hint : ∀ x a b, IsIntegral ℤ ((u x : Matrix (Fin V.rank) (Fin V.rank) D.host.E) a b)` using `fun x a b => by`. Establish `hK : x.1.1 ∈ GlobalTheory.Mass.Levels.latStab V`. Use `x.2` as an intermediate fact.
+
+Simplify `this` using `[Formalism.UG.stabAt]`. Establish `hej : (Pi.single b 1 : Fin V.rank → D.host.E) ∈ L0c D V` using `by show ∑ i, (Pi.single b (1 : D.host.E) : Fin V.rank → D.host.E) i • V.frame i ∈ V.L0`. Rewrite using `[Finset.sum_eq_single b (fun c _ hc => by simp [hc]) (by simp), hL]`. Rewrite using `[Pi.single_eq_same, one_smul]`. Conclude with `Submodule.subset_span ⟨b, rfl⟩`.
+
+Establish `hy : (fun k => (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] (Pi.single b (1 : D.host.E) : Fin V.rank → D.host.E) k) ∈ latHat D.host.F D.host.E (L0c D V)` using `AddSubgroup.subset_closure ⟨1, fun w => by rw [map_one]; exact one_mem _, _, hej, rfl⟩`. Establish `h2` using `((GlobalTheory.Mass.Levels.mem_latStab V x.1.1).1 hK _).1 hy`. Establish `e : (HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram x.1.1).1 *ᵥ (fun k => (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] (Pi.single b (1 : D.host.E) : Fin V.rank → D.host.E) k) = fun k => …`. Rewrite using `[← hue x]`. Use function extensionality and compare the values at `k`.
+
+Express the relevant statement in the definitionally equal form `((u x : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F)) *ᵥ ((inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F)) ∘ (Pi.single b 1))) k = (inclR (Formalism.MainNotions.GlobalT …`. Rewrite using `[← RingHom.map_mulVec]`. Simplify using `[Matrix.mulVec_single_one]`. Rewrite `h2` using `[e]`. Conclude with `coord_isIntegral V hL (mem_lattice_of_rational_mem_completion V _ h2) a`.
+
+Set `f : Formalism.UG.stabAt (GlobalTheory.Mass.ratIn (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram) (GlobalTheory.Mass.Levels.latStab V) 1 → {g : Matrix (Fin V.rank) (Fin V.rank) D.host.E | gᴴ * g = 1 ∧ ∀ a b, IsIntegral ℤ (g a b)}` to `fun x => ⟨(u x : Matrix (Fin V.rank) (Fin V.rank) D.host.E), hunit x, hint x⟩`. Establish `hf : Function.Injective f`. Introduce `x y hxy`. Establish `h1 : (u x : Matrix (Fin V.rank) (Fin V.rank) D.host.E) = u y` using `congrArg Subtype.val hxy`. Establish `h2 : u x = u y` using `Units.ext h1`.
+
+Establish `h3 : HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram x.1.1 = HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram y.1.1`. Rewrite using `[← hue x, ← hue y, h2]`. Establish `h4 : x.1.1 = y.1.1` using `Subtype.ext h3`. Conclude with `Subtype.ext (Subtype.ext h4)`. Use `haveI := hSf.to_subtype`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_stab_le (V : HSp D) (hg : V.gram = 1)
     (hL : V.L0 = Submodule.span (𝓞 D.host.E) (Set.range V.frame)) :
     Nat.card (Formalism.UG.stabAt (GlobalTheory.Mass.ratIn (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram)
@@ -145,6 +190,17 @@ theorem card_stab_le (V : HSp D) (hg : V.gram = 1)
         Nat.card_coe_set_eq _
     _ ≤ _ := hSc
 
+/- English proof (translation)
+Introduce `D hS i _`. Take `⟨h1, h2⟩` from `hS i`. Establish `hg : (Vc D i).gram = 1` using `Matrix.ext fun a b => by`. Rewrite using `[Matrix.one_apply]`. Conclude with `h1 a b`.
+
+Establish `hpd : ∀ τ, (gramAt D (Vc D i) τ).PosDef` using `fun τ => by`. Establish `e : gramAt D (Vc D i) τ = 1` using `Matrix.ext fun a b => by`. Simplify using `[gramAt, hg, Matrix.one_apply]`. Rewrite using `[e]`. Conclude with `Matrix.PosDef.one`.
+
+Establish `hK` using `GlobalTheory.Mass.Levels.latStab_compact_open (Vc D i)`. Establish `hfc` using `GlobalTheory.Mass.finiteClasses_unitary (GlobalTheory.DefiniteQuotient.cmExt D) (GlobalTheory.DefiniteQuotient.gram_hermND (Vc D i)) (GlobalTheory.DefiniteQuotient.isTotDef_of_posDef (Vc D i) hpd) hK.1 hK.2`. Establish `hle` using `hfc.inv_card_le 1`. Establish `hpos` using `hfc.stabOrder_pos (DoubleCoset.mk _ _ 1)`. Rewrite `hpos` using `[GlobalTheory.Mass.stabOrder_mk]`.
+
+Establish `hc` using `card_stab_le (Vc D i) hg h2`. Establish `hr : (Vc D i).rank = D.R.nV` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Unfold `GlobalTheory.Mass.unitaryMass`. Use `le_trans ?_ hle` and prove the remaining obligations. Rewrite using `[one_div, ← hr]`.
+
+Conclude with `inv_anti₀ (by exact_mod_cast hpos) (by exact_mod_cast hc)`.
+-/
 theorem massLower_of_stdV : ∀ D : D7, StdV D → MassLower D := by
   intro D hS i _
   obtain ⟨h1, h2⟩ := hS i

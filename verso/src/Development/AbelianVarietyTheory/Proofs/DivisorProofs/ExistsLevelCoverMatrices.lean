@@ -27,6 +27,29 @@ namespace GlobalTheory.SiegLevCover
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `g n ℓ j F hg hn hodd hℓ hℓn hj`. Establish `hn0 : n ≠ 0` using `by omega`. Establish `hd0 : (ℓ ^ j) ^ 2 ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ hℓ.ne_zero)`. Establish `hN0 : n * (ℓ ^ j) ^ 2 ≠ 0` using `Nat.mul_ne_zero hn0 hd0`. Establish `hnN : n ∣ n * (ℓ ^ j) ^ 2` using `dvd_mul_right n _`.
+
+Establish `hNn : n * (ℓ ^ j) ^ 2 / n = (ℓ ^ j) ^ 2` using `Nat.mul_div_cancel_left _ (Nat.pos_of_ne_zero hn0)`. Establish `hℓodd : Odd ℓ` using `Odd.of_dvd_nat hodd hℓn`. Establish `hNodd : Odd (n * (ℓ ^ j) ^ 2)` using `hodd.mul (hℓodd.pow.pow)`. Establish `hN3 : 3 ≤ n * (ℓ ^ j) ^ 2` using `le_trans hn (Nat.le_mul_of_pos_right n (Nat.pos_of_ne_zero hd0))`. Establish `hpow : ∃ a, n * (ℓ ^ j) ^ 2 ∣ n ^ a` using `⟨2 * j + 1, by`.
+
+Rewrite using `[pow_succ' n (2 * j)]`. Use `mul_dvd_mul_left n ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm j 2]`. Conclude with `pow_dvd_pow_of_dvd hℓn _⟩`. Take `⟨κ, hinj, hζ, hfes⟩` from `GlobalTheory.SiegelTor.exists_inclusion_cycAway n (n * (ℓ ^ j) ^ 2) hN0 hnN`.
+
+Take `⟨hfin, het, hsurj⟩` from `hfes hpow`. Take `⟨F'⟩` from `GlobalTheory.SiegelTor.exists_sFam_cycAway g (n * (ℓ ^ j) ^ 2) hg hN3 hNodd`. Take `⟨Q⟩` from `GlobalTheory.SiegLev.nonempty_sQuot g n _ F' κ hn hNodd hnN hζ hfin het`. Set `Fq : SFam g n (zetaAway n)` to `{ X := Q.X s := Q.s smooth := Q.smooth qproj := Q.qproj univ := Q.univ princ := Q.princ rep := fun S s' c hred hdense hpr => GlobalTheory.quotFam_represents g n _ F' κ Q hn hNodd hnN hinj hζ hfin het hsurj S s' c hred hdense hpr inj := fun R _ _ x y s' c hs h₁ h₂ => GlobalTheory. …`. Take `⟨e, he, hpb⟩` from `SFam.exists_iso Fq F`.
+
+Take `⟨Ga, _, _, ρ, ν, h1, hmul, hν1, hνmul, hbase, hrel, hfree, htrans⟩` from `GlobalTheory.SiegAct.siegel_group_action g n _ F' κ hn hNodd hnN hζ`. Rewrite `hζ`, `hrel`, `htrans` using `[hNn]`. Establish `hlow : SRel F'.univ Q.univ ((ℓ ^ j) ^ 2) 1 Q.π`. Use `Q.low` as an intermediate fact. Rewrite `this` using `[hNn]`. Then use the resulting hypothesis.
+
+Set `q : F'.X ⟶ F.X` to `Q.π ≫ e.hom`. Establish `hqs : q ≫ F.s = F'.s ≫ spMap κ` using `by show (Q.π ≫ e.hom) ≫ F.s = _`. Rewrite using `[Category.assoc, he]`. Conclude with `Q.base`. Establish `hq : SRel F'.univ F.univ ((ℓ ^ j) ^ 2) 1 q` using `sRel_comp ((sRel_one_one_iff Q.univ F.univ e.hom).2 hpb) hlow`.
+
+Use `haveI := Q.fin`. Use `haveI := Q.etale`. Use `haveI := Q.onto`. Establish `hinv : ∀ a, ρ a ≫ q = q`. Introduce `a`.
+
+Take `⟨c, hc⟩` from `(GlobalTheory.siegPre_pullback g n (cycAway n) (zetaAway n) F.X F'.X F.s (q ≫ F.s) q F.univ rfl).1`. Establish `m1 : SRel c F'.univ 1 ((ℓ ^ j) ^ 2) (𝟙 F'.X)` using `SiegLevCalc.sRel_cancel (f' := 𝟙 F'.X) hq (by rw [Category.id_comp]; exact (sRel_one_one_iff _ _ _).2 hc)`. Establish `m2 : SRel F'.univ F.univ ((ℓ ^ j) ^ 2) 1 (ρ a ≫ q)` using `sRel_comp hq ⟨ν a, hrel a⟩`. Establish `m3` using `sRel_comp m2 m1`. Rewrite `m3` using `[Category.id_comp, sRel_one_one_iff]`.
+
+Use `SFam.hom_ext F c _ _ ?_ m3 hc` and prove the remaining obligations. Rewrite using `[Category.assoc, hqs]`. Conclude with `hbase a`. Use `⟨κ, F', q, ⟨hinj, hζ, hfin, het, hsurj⟩, ⟨hqs, inferInstance, inferInstance, inferInstance, hq⟩, Ga, inferInstance, inferInstance, ρ, ν, h1, hmul, hν1, hνmul, hrel, hinv, ?_⟩` and prove the remaining obligations. Introduce `K _ _ x y hxy`.
+
+Take `⟨c, hc⟩` from `(GlobalTheory.siegPre_pullback g n (cycAway n) (zetaAway n) F.X (Sp K) F.s ((x ≫ q) ≫ F.s) (x ≫ q) F.univ rfl).1`. Establish `mx : SRel c F'.univ 1 ((ℓ ^ j) ^ 2) x` using `SiegLevCalc.sRel_cancel hq ((sRel_one_one_iff _ _ _).2 hc)`. Establish `my : SRel c F'.univ 1 ((ℓ ^ j) ^ 2) y` using `SiegLevCalc.sRel_cancel hq (by rw [← hxy]; exact (sRel_one_one_iff _ _ _).2 hc)`. Establish `hs : x ≫ F'.s ≫ spMap κ = y ≫ F'.s ≫ spMap κ`. Rewrite using `[← hqs, ← Category.assoc, hxy, Category.assoc]`.
+
+Take `⟨a, ha⟩` from `htrans K x y _ c hs mx my`. Use `⟨a, ha, fun b hb => ?_⟩` and prove the remaining obligations. Establish `hy : y ≫ ρ (a⁻¹ * b) = y`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(inv_mul_eq_one.1 (hfree K y _ hy)).symm`.
+-/
 theorem exists_levelCover : ∀ (g n ℓ j : ℕ) (F : SFam g n (zetaAway n)), 1 ≤ g → 3 ≤ n → Odd n → ℓ.Prime → ℓ ∣ n →
     1 ≤ j →
     ∃ (κ : cycAway n →+* cycAway (n * (ℓ ^ j) ^ 2)) (F' : SFam g (n * (ℓ ^ j) ^ 2) (zetaAway (n * (ℓ ^ j) ^ 2)))

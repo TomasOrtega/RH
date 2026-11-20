@@ -7,6 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.GalOfCusp Matrix IsLocalRing
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
+/- English proof (translation)
+Introduce `H hH`. Establish `hc : Continuous (QuotientGroup.mk' M)` using `QuotientGroup.continuous_mk`. Use `haveI := h (H.comap (QuotientGroup.mk' M)) (hH.preimage hc)`. Set `π : H.comap (QuotientGroup.mk' M) →* H` to `(QuotientGroup.mk' M).subgroupComap H`. Establish `hπ : Continuous π` using `(hc.comp continuous_subtype_val).subtype_mk _`.
+
+Establish `hs : Function.Surjective π` using `MonoidHom.subgroupComap_surjective_of_surjective _ _ (QuotientGroup.mk'_surjective M)`. Use `Finite.of_injective (β := {φ : H.comap (QuotientGroup.mk' M) →* Multiplicative (ZMod l) // IsOpen (φ.ker : Set (H.comap (QuotientGroup.mk' M)))}) (fun φ => ⟨φ.1.comp π, φ.2.preimage hπ⟩) ?_` and prove the remaining obligations. Introduce `φ φ' e`. Conclude with `Subtype.ext ((MonoidHom.cancel_right hs).1 (congrArg Subtype.val e))`.
+-/
 private theorem phiCond_quot {Γ : Type} [Group Γ] [TopologicalSpace Γ] (l : ℕ) (M : Subgroup Γ) [M.Normal]
     (h : PhiCond Γ l) : PhiCond (Γ ⧸ M) l := by
   intro H hH
@@ -21,6 +26,13 @@ private theorem phiCond_quot {Γ : Type} [Group Γ] [TopologicalSpace Γ] (l : �
   intro φ φ' e
   exact Subtype.ext ((MonoidHom.cancel_right hs).1 (congrArg Subtype.val e))
 
+/- English proof (translation)
+Use `haveI : IsAdicComplete (maximalIdeal O) O := (dvrFacts l O).2.2.2.1`. Use `haveI : IsLocalHom (algebraMap ℤ_[l] O) := (dvrFacts l O).2.2.1`. Use `haveI : Finite (ResidueField O) := by haveI : Finite (ResidueField ℤ_[l]) := Finite.of_equiv _ (PadicInt.residueField (p := l)).symm.toEquiv`. Conclude with `Module.finite_of_finite (ResidueField ℤ_[l])`. Use `haveI : CharP (ResidueField O) l := by`.
+
+Use `(CharP.charP_iff_prime_eq_zero hl.out).2 ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (residue O), residue_eq_zero_iff, ← map_natCast (algebraMap ℤ_[l] O)]`. Use `map_nonunit _ _ ?_` and prove the remaining obligations. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`.
+
+Use `haveI : IsGalois ℚ_[l] (Om l) := IsAlgClosure.isGalois _ _`. Use `haveI : (Subgroup.normalClosure (∅ : Set (GQ l))).topologicalClosure.Normal := Subgroup.is_normal_topologicalClosure _`. Take `⟨U⟩` from `exists_univ l η Ψ hη hΨ ∅ (fun g hg => hg.elim) _ rfl (phiCond_quot l _ fun H hH => Loc.phiCond hP l l H hH)`. Use `⟨{ R := U.R, r := U.r, rep := fun R' _ _ _ => ⟨fun _ => trivial, fun r' _ => ?_⟩ }⟩` and prove the remaining obligations. Conclude with `(U.rep R').2 r' fun g hg => hg.elim`.
+-/
 private theorem exists_univ_loc (hP : Loc.LocalPublishedTheorems) (l : ℕ) [hl : Fact l.Prime] (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (η : GQ l →* ℤˣ) (Ψ : GQ l →* Oˣ)
     (hη : IsLocallyConstant η) (hΨ : IsLocallyConstant (barChar O Ψ)) : Nonempty (Univ (GCond.noCondition O η Ψ)) := by
@@ -43,6 +55,9 @@ private theorem exists_univ_loc (hP : Loc.LocalPublishedTheorems) (l : ℕ) [hl 
   refine ⟨{ R := U.R, r := U.r, rep := fun R' _ _ _ => ⟨fun _ => trivial, fun r' _ => ?_⟩ }⟩
   exact (U.rep R').2 r' fun g hg => hg.elim
 
+/- English proof (translation)
+Introduce `hC Ω _ _ _ K _ _ _ l hl c N _ e ψ D`. Take `⟨-, -, -, hη, hΨ, -⟩` from `dat_facts D`. Conclude with `exists_univ_loc hC.loc l c.O _ _ (hη.comp_continuous D.ι_cont) (hΨ.comp_continuous D.ι_cont)`.
+-/
 theorem UpperTheory.V.U3.exists_uLoc :
     CohInp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]
       {l : ℕ} [Fact l.Prime] {c : Coef l} {N : ℕ} [NeZero N] {e : ℕ} {ψ : DirichletCharacter c.O N} (D : Dat Ω K c e ψ), Nonempty D.ULoc := by

@@ -35,6 +35,15 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T1 : Type}
   {κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)} {v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec}
   (fw : FWTie T0 Rl.toRealDat κ v₀)
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `ρ.rc.exists_sym z`. Establish `hopen : IsOpen ((Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker : Set (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om))`. Establish `e : (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker = (D.ntw.delta i).ker`. Use extensionality with `g`. Apply the tactic sequence `cases b <;> simp [Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, MonoidHom.mem_ker]`.
+
+Rewrite using `[e]`. Conclude with `D.ntw.delta_open i`. Establish `: Finite (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om ⧸ (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker)` using `Subgroup.quotient_finite_of_isOpen _ hopen`. Establish `hfi : (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker.FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`. Establish `hn : (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker.index ≠ 0` using `Subgroup.FiniteIndex.index_ne_zero`.
+
+Establish `hpow : Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i) σ ^ (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker.index = 1`. Rewrite using `[← map_pow]`. Conclude with `MonoidHom.mem_ker.1 (Subgroup.pow_index_mem _ σ)`. Use `⟨algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (algebraMap (D.ntw.O0 i) (D.ntw.O i) ((Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i) σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i)), ?_, _, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[hρ.delta i j b]`.
+
+Conclude with `(GlobalTheory.SeriesTie.charOf_eq ρ.rc ((ρ.eO i b).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i))) hopen hσ hn hpow).symm`. Rewrite using `[← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, hpow, Units.val_one, map_one, map_one]`.
+-/
 theorem exists_delta_root {ρ : GlobalTheory.SeriesTie.Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
     (z : (Formalism.L2.Theta.AE D)ˣ) : ∃ a : FractionRing (D.ntw.O i),
       ρ.e i b a = (((ρ.B i j b).de.chi z : Circle) : ℂ) ∧ ∃ n : ℕ, n ≠ 0 ∧ a ^ n = 1 := by
@@ -62,6 +71,15 @@ section Side
 
 variable {i : D.ntw.Tw} (iC : FractionRing (D.ntw.O i) →+* ℂ_[D.ntw.l i]) (b : Bool) (j : Fin D.R.m)
 
+/- English proof (translation)
+Establish `hrel` using `hfg (PAt (embC YS iC b)) z`. Establish `hL : GlobalTheory.Reg.EvLaws (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c` using `(GlobalTheory.Reg.evLaws_genFr_nonempty_comp _ _ _ _ _ _).1`. Establish `hfun` using `GlobalTheory.HeckePointLaw.heckePointLaws.2.2.1 _ _ _ _ (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c P.asIdeal (charAt P) k hP`. Establish `hterm : ∀ C, hkTerm (fun S _ _ => FrPt (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c S) (fun φ y z => FrMap φ y z) (fun Ω _ _ _ y => hkKer (Xo` using `T0.Q.Xo ((j : ℕ) + 1)) P.asIdeal (charAt P) k Ω y) (fun Ω _ _ _ y C z => hkRelFr P.asIdeal (charAt P) k (GlobalTheory.ThetaTrace.hkTr (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c (charAt P)) Ω y C z) f z C = valC (quot C) f := by`. Introduce `C`.
+
+Establish `hex : ∃ w, hkRelFr P.asIdeal (charAt P) k (GlobalTheory.ThetaTrace.hkTr (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c (charAt P)) (PAt (embC YS iC b)) z C w` using `⟨quot C, hq C⟩`. Unfold `hkTerm`. Rewrite using `[dif_pos hex]`. Establish `hm` using `hfun (PAt (embC YS iC b)) z C _ _ hex.choose_spec (hq C)`. Conclude with `(GlobalTheory.Reg.PChartModel.evR_map hL hf.1 (AlgHom.id _ _) hm).symm`.
+
+Express the relevant statement in the definitionally equal form `toCp _ (evR (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c g z) = _`. Unfold `evR`. Rewrite using `[hrel, map_mul, toCp_algebraMap]`. Use `congr 1`. Unfold `hkVal`.
+
+Conclude with `finsum_congr hterm`.
+-/
 theorem valC_geoHecke {P : PlE D.host} {k : ℕ} (hP : GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.IsHeckePrime T0.Q.l P.asIdeal (charAt P))
     (s : T0.Q.c.F) {f g : T0.R ((j : ℕ) + 1)} (hf : f ∈ sec (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c (wtA (κ j)) (κ j).n)
     (hfg : GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.GeoHecke T0 ((j : ℕ) + 1) P.asIdeal (charAt P) k s f g)

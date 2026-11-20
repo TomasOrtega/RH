@@ -32,6 +32,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UntwistedReprese
 
 namespace UpperTheory.V.Z.Kato.Joint
 
+/- English proof (translation)
+Establish `hK : NewformPartOfTowerModule` using `fun {Ω} _ _ _ ε X => GlobalTheory.T.heckeProjector_newform_galoisImage ε X`. Establish `hR : AdmRho` using `GlobalTheory.T.untwisted_representation_ordinary_triangular_shape`. Conclude with `admissibleFunctional_of_projection hA hK hR jEx rhoFrob unif LocFacts₂ finP coefUb thLin thOp chiStab thP lamEig2 chiQuad aqBd`.
+-/
 theorem kato_global_admissibility_of_admissible (hA : AdmTop) : AdmFR := by
   have hK : NewformPartOfTowerModule := fun {Ω} _ _ _ ε X => GlobalTheory.T.heckeProjector_newform_galoisImage ε X
   have hR : AdmRho := GlobalTheory.T.untwisted_representation_ordinary_triangular_shape

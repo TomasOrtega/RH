@@ -38,6 +38,19 @@ def finAlg (K : Type) [Group K] [TopologicalSpace K] : StarSubalgebra ℂ C(K, �
     rw [ContinuousMap.star_apply, h, star_sum]
     exact Finset.sum_congr rfl fun i _ => by rw [star_mul', ContinuousMap.star_apply]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `hint : ∀ α : C(K, ℂ), Integrable (fun κ => α κ * g κ) μ` using `fun α => (BoundedContinuousFunction.mkOfCompact (α * g)).integrable μ`. Set `Λ : C(K, ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun α => ∫ κ, α κ * g κ ∂μ map_add' := fun a b => by`. Rewrite using `[← integral_add (hint a) (hint b)]`.
+
+Simplify using `only [ContinuousMap.add_apply, add_mul]`. Use the proof step `map_smul' := fun c a => by`. Rewrite using `[RingHom.id_apply, smul_eq_mul, ← integral_const_mul]`. Simplify using `only [ContinuousMap.smul_apply, smul_eq_mul, mul_assoc] }`. Establish `hΛ : ∀ α, ‖Λ α‖ ≤ (‖g‖ * μ.real Set.univ) * ‖α‖` using `fun α => by`.
+
+Use `(norm_integral_le_of_norm_le_const (C := ‖α‖ * ‖g‖) (Filter.Eventually.of_forall fun κ => ?_)).trans (le_of_eq (by ring))` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (α.norm_coe_le_norm κ) (g.norm_coe_le_norm κ) (norm_nonneg _) (norm_nonneg _)`. Establish `hcl : IsClosed {α : C(K, ℂ) | Λ.mkContinuous _ hΛ α = 0}` using `isClosed_eq (Λ.mkContinuous _ hΛ).continuous continuous_const`. Establish `htop` using `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints (finAlg K) hsep`.
+
+Establish `hmem : star g ∈ closure ((finAlg K : StarSubalgebra ℂ C(K, ℂ)) : Set C(K, ℂ))`. Establish `: star g ∈ (finAlg K).topologicalClosure` using `by rw [htop]; trivial`. Conclude with `this`. Establish `h0 : ∫ κ, (star g) κ * g κ ∂μ = 0` using `hcl.closure_subset_iff.2 (fun α hα => hn α hα) hmem`. Establish `e : ∀ κ, (star g) κ * g κ = ((‖g κ‖ ^ 2 : ℝ) : ℂ)` using `fun κ => by`.
+
+Rewrite using `[ContinuousMap.star_apply, Complex.star_def, mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Simplify using `only [e] at h0`. Rewrite `h0` using `[integral_complex_ofReal]`. Establish `h1 : ∫ κ, ‖g κ‖ ^ 2 ∂μ = 0` using `by exact_mod_cast h0`. Establish `hc : Continuous fun κ => ‖g κ‖ ^ 2` using `g.continuous.norm.pow 2`.
+
+Establish `hi : Integrable (fun κ => ‖g κ‖ ^ 2) μ` using `(BoundedContinuousFunction.mkOfCompact (⟨_, hc⟩ : C(K, ℝ))).integrable μ`. Establish `h2` using `(integral_eq_zero_iff_of_nonneg (fun κ => sq_nonneg _) hi).1 h1`. Establish `h3` using `congrFun ((hc.ae_eq_iff_eq μ continuous_const).1 h2) 1`. Conclude with `hg (norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 h3))`.
+-/
 theorem exists_pairing [CompactSpace K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [IsFiniteMeasure μ]
     [μ.IsOpenPosMeasure] (hsep : (finAlg K).SeparatesPoints) (g : C(K, ℂ)) (hg : g 1 ≠ 0) :
     ∃ α : C(K, ℂ), Fin2 α ∧ ∫ κ, α κ * g κ ∂μ ≠ 0 := by
@@ -82,6 +95,11 @@ variable {k r : ℕ}
 
 def KK (k r : ℕ) : Set (Mat k r) := GV k r ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set _)
 
+/- English proof (translation)
+Establish `h1 : IsClosed {x : Mt k r | (Matrix.of x : Mat k r)ᴴ * Matrix.of x = 1}` using `isClosed_eq ((continuous_id.matrix_conjTranspose).matrix_mul continuous_id) continuous_const`. Establish `e : {x : Mt k r | (Matrix.of x : Mat k r) ∈ KK k r} = {y : Mt k r | (Matrix.of y : Mat k r) ∈ GV k r} ∩ {x : Mt k r | (Matrix.of x : Mat k r)ᴴ * Matrix.of x = 1}`. Use extensionality with `x`. Conclude with `and_congr_right fun _ => Matrix.mem_unitaryGroup_iff'`. Rewrite using `[e]`.
+
+Conclude with `(SquareIntegrabilityOnOrbit.closed_GV h).inter h1`.
+-/
 theorem kk_closed (h : UnitaryGroupStructuralFacts) : IsClosed {x : Mt k r | (Matrix.of x : Mat k r) ∈ KK k r} := by
   have h1 : IsClosed {x : Mt k r | (Matrix.of x : Mat k r)ᴴ * Matrix.of x = 1} :=
     isClosed_eq ((continuous_id.matrix_conjTranspose).matrix_mul continuous_id) continuous_const
@@ -92,6 +110,9 @@ theorem kk_closed (h : UnitaryGroupStructuralFacts) : IsClosed {x : Mt k r | (Ma
   rw [e]
   exact (SquareIntegrabilityOnOrbit.closed_GV h).inter h1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨SquareIntegrabilityOnOrbit.gv_one', one_mem _⟩ mul_mem a ha b hb := ⟨gv_mul ha.1 hb.1, mul_mem ha.2 hb.2⟩ inv_mem a ha := by refine ⟨gv_inv ha.1, ?_⟩ have p1 : aᴴ * a = 1 := Matrix.mem_unitaryGroup_iff'.1 ha.2 rw [Matrix.inv_eq_left_inv p1] refine Matrix.mem_unitaryGroup_iff.2 ? …`.
+-/
 theorem kk_sub (h : UnitaryGroupStructuralFacts) : IsClosedSubgroup (KK k r) where
   one_mem := ⟨SquareIntegrabilityOnOrbit.gv_one', one_mem _⟩
   mul_mem a ha b hb := ⟨gv_mul ha.1 hb.1, mul_mem ha.2 hb.2⟩
@@ -105,6 +126,9 @@ theorem kk_sub (h : UnitaryGroupStructuralFacts) : IsClosedSubgroup (KK k r) whe
   unit a ha := Matrix.isUnit_det_of_left_inverse (gv_inv_mul ha.1)
   closed := kk_closed h
 
+/- English proof (translation)
+Use `Metric.isCompact_of_isClosed_isBounded (kk_closed h) ?_` and prove the remaining obligations. Use `(Metric.isBounded_closedBall (x := (0 : Mt k r)) (r := 1)).subset fun x hx => ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff]`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => (pi_norm_le_iff_of_nonneg zero_le_one).2 fun j => ?_` and prove the remaining obligations. Conclude with `entry_norm_bound_of_unitary hx.2 i j`.
+-/
 theorem kk_compact (h : UnitaryGroupStructuralFacts) : IsCompact {x : Mt k r | (Matrix.of x : Mat k r) ∈ KK k r} := by
   refine Metric.isCompact_of_isClosed_isBounded (kk_closed h) ?_
   refine (Metric.isBounded_closedBall (x := (0 : Mt k r)) (r := 1)).subset fun x hx => ?_

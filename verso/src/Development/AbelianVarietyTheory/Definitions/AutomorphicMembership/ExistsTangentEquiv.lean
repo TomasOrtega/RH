@@ -27,8 +27,16 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
 
 def affPt (hT : IsAffineOpen T) : Sp Γ(X, T) ⟶ X := hT.fromSpec
 
+/- English proof (translation)
+The claim follows from `hT.fromSpec_preimage_self.ge`.
+-/
 theorem le_preimage_affPt (hT : IsAffineOpen T) : ⊤ ≤ affPt hT ⁻¹ᵁ T := hT.fromSpec_preimage_self.ge
 
+/- English proof (translation)
+Establish `h` using `valMap_specMap_fromSpec hT (C := Γ(X, T)) (𝟙 _) (le_preimage_specMap_fromSpec hT _)`. Establish `e : Spec.map (𝟙 (CommRingCat.of Γ(X, T))) ≫ hT.fromSpec = affPt hT`. Rewrite using `[Spec.map_id]`. Conclude with `Category.id_comp _`. Rewrite using `[← e]`.
+
+Conclude with `(valR_eq _ _ (le_preimage_specMap_fromSpec hT (C := Γ(X, T)) (𝟙 _)) a).trans congr(($h).hom a)`.
+-/
 theorem valR_affPt (hT : IsAffineOpen T) (a : Γ(X, T)) : valR (affPt hT) T a = a := by
   have h := valMap_specMap_fromSpec hT (C := Γ(X, T)) (𝟙 _) (le_preimage_specMap_fromSpec hT _)
   have e : Spec.map (𝟙 (CommRingCat.of Γ(X, T))) ≫ hT.fromSpec = affPt hT := by
@@ -37,6 +45,9 @@ theorem valR_affPt (hT : IsAffineOpen T) (a : Γ(X, T)) : valR (affPt hT) T a = 
   rw [← e]
   exact (valR_eq _ _ (le_preimage_specMap_fromSpec hT (C := Γ(X, T)) (𝟙 _)) a).trans congr(($h).hom a)
 
+/- English proof (translation)
+The claim follows from `hT.map_fromSpec hT' _`.
+-/
 theorem spMap_affPt (hT : IsAffineOpen T) (hT' : IsAffineOpen T') (h : T' ≤ T) :
     spMap (resG X h) ≫ affPt hT = affPt hT' := hT.map_fromSpec hT' _
 
@@ -44,6 +55,11 @@ def CoordOpen (T : X.Opens) : Prop :=
   IsAffineOpen T ∧ ∃ (W : t.G.left.Opens) (h : T ≤ unitSec t.G ⁻¹ᵁ W) (n : ℕ) (f : Fin n → Γ(t.G.left, W)),
     VB.IsFrame fun b => dUnit t.G h (f b)
 
+/- English proof (translation)
+Use `t.semi` as an intermediate fact. Use `t.semi.smooth` as an intermediate fact. Take `⟨U, n, s, hU, hs⟩` from `exists_isFrame_omega t.G x`. Take `⟨T, W, hT, hle, c⟩` from `Conormal.exists_isChart (sec_hom η[t.G]) (V := V ⊓ U) ⟨hx, hU⟩`. Use `choose f hf using fun b => c.d_surjective (sec_hom η[t.G]) (resM (omega t.G) (hle.trans inf_le_right) (s b))`.
+
+Conclude with `⟨T, ⟨c.affine_base, W, c.le, n, f, (funext hf :) ▸ hs.res (hle.trans inf_le_right)⟩, hT, hle.trans inf_le_left⟩`.
+-/
 theorem exists_coordOpen {V : X.Opens} {x : X} (hx : x ∈ V) : ∃ T, CoordOpen t T ∧ x ∈ T ∧ T ≤ V := by
   have := t.semi
   have := t.semi.smooth
@@ -54,10 +70,18 @@ theorem exists_coordOpen {V : X.Opens} {x : X} (hx : x ∈ V) : ∃ T, CoordOpen
 
 variable {t}
 
+/- English proof (translation)
+Take `⟨-, W, hW, n, f, hf⟩` from `h`. Conclude with `⟨hT', W, e.trans hW, n, f, by simpa only [resM_dUnit] using hf.res e⟩`.
+-/
 theorem CoordOpen.mono (h : CoordOpen t T) (hT' : IsAffineOpen T') (e : T' ≤ T) : CoordOpen t T' := by
   obtain ⟨-, W, hW, n, f, hf⟩ := h
   exact ⟨hT', W, e.trans hW, n, f, by simpa only [resM_dUnit] using hf.res e⟩
 
+/- English proof (translation)
+Establish `hv' : ⊤ ≤ v ⁻¹ᵁ W` using `fun z _ => by`. Take `⟨s, rfl⟩` from `surjective_sec_epsZero z`. Establish `h₁ : s ∈ (x ≫ unitSec t.G) ⁻¹ᵁ W` using `hW (h trivial)`. Rewrite `h₁` using `[← epsZero_comp_of_isTanAtG t hv]`. Conclude with `h₁`.
+
+Conclude with `⟨hv', (tanEv_dUnit t hv h hW hv' f).trans (congrArg TrivSqZeroExt.snd (valR_eq v W hv' f).symm)⟩`.
+-/
 theorem tanEv_dUnit_eq {R : Type} [CommRing R] {x : Sp R ⟶ X} {v : Sp (DualNumber R) ⟶ t.G.left} (hv : IsTanAtG t x v)
     (h : ⊤ ≤ x ⁻¹ᵁ T) {W : t.G.left.Opens} (hW : T ≤ unitSec t.G ⁻¹ᵁ W) (f : Γ(t.G.left, W)) :
     ⊤ ≤ v ⁻¹ᵁ W ∧ tanEv t hv h (dUnit t.G hW f) = (valR v W f).snd := by
@@ -71,6 +95,11 @@ theorem tanEv_dUnit_eq {R : Type} [CommRing R] {x : Sp R ⟶ X} {v : Sp (DualNum
 def IsSecOf (hT : IsAffineOpen T) (v : TanM (affPt hT) t.G) (l : Γ(Lie t.G, T)) : Prop :=
   ∀ s : Γ(omega t.G, T), dualApp l le_rfl s = tanEv t (isTan_tv v) (le_preimage_affPt hT) s
 
+/- English proof (translation)
+Take `⟨hT, W, hW, n, f, hf⟩` from `h`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.LocM.TanPair.exists_tanM_equiv E H X t _ (affPt hT) T (le_preimage_affPt hT) n _ hf`. Use `⟨Φ ≪≫ₗ (hf.dual.basis le_rfl).equivFun.symm, fun v s => ?_⟩` and prove the remaining obligations. Set `ev : Γ(omega t.G, T) →ₗ[Γ(X, T)] Γ(X, T)` to `{ toFun := tanEv t (isTan_tv v) (le_preimage_affPt hT) map_add' := tanEv_add t _ _ map_smul' := fun a s => (tanEv_smul t _ _ a s).trans (congrArg (· * _) ((valR_eq _ _ (le_preimage_affPt hT) a).symm.trans (valR_affPt hT a))) }`. Use `LinearMap.congr_fun (g := ev) ((hf.basis le_rfl).ext fun b => ?_) s` and prove the remaining obligations.
+
+Rewrite using `[IsFrame.basis_apply, ← hf.dual_basis_repr le_rfl, resM_self, LinearEquiv.trans_apply, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply, hΦ]`. Both sides reduce to the same expression.
+-/
 theorem CoordOpen.exists_equiv (h : CoordOpen t T) :
     ∃ Θ : TanM (affPt h.1) t.G ≃ₗ[Γ(X, T)] Γ(Lie t.G, T), ∀ v, IsSecOf h.1 v (Θ v) := by
   obtain ⟨hT, W, hW, n, f, hf⟩ := h
@@ -86,6 +115,9 @@ theorem CoordOpen.exists_equiv (h : CoordOpen t T) :
     LinearEquiv.apply_symm_apply, hΦ]
   rfl
 
+/- English proof (translation)
+Take `⟨hT, W, hW, n, f, hf⟩` from `h`. Use `hf.dual_ext e fun b => ?_` and prove the remaining obligations. Take `⟨h₁, h₂⟩` from `tanEv_dUnit_eq (isTan_tv v) (le_preimage_affPt hT) hW (f b)`. Rewrite using `[hl', dualApp_res, dualApp_resM l le_rfl e, hl, h₂, resM_dUnit, (tanEv_dUnit_eq _ _ _ _).2, hv, valR_spMap_comp _ _ _ h₁]`. Simplify using `[Formalism.L2.Pj.dualMap]`.
+-/
 theorem IsSecOf.eq_resM (h : CoordOpen t T) {hT' : IsAffineOpen T'} (e : T' ≤ T) {v : TanM (affPt h.1) t.G}
     {v' : TanM (affPt hT') t.G} {l : Γ(Lie t.G, T)} {l' : Γ(Lie t.G, T')} (hl : IsSecOf h.1 v l) (hl' : IsSecOf hT' v' l')
     (hv : (tv v').left = spMap (dualMap (resG X e)) ≫ (tv v).left) : l' = resM _ e l := by
@@ -96,6 +128,11 @@ theorem IsSecOf.eq_resM (h : CoordOpen t T) {hT' : IsAffineOpen T'} (e : T' ≤ 
     valR_spMap_comp _ _ _ h₁]
   simp [Formalism.L2.Pj.dualMap]
 
+/- English proof (translation)
+Use `choose Θ hΘ using fun T (h : CoordOpen t' T) => h.exists_equiv`. Use `⟨fun T h x hx => (pushE m _ hx).symm ≪≫ₗ Θ T h, fun T h x hx T' h' x' hx' e u u' hu => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `(pushE m _ hx).surjective u`. Take `rfl : pushE m _ hx' (tanOf (isTan_map _ (spMap_affPt h.1 h'.1 e) (isTan_tv v))) = u'` from `tan_ext (by rw [hu, left_pushE, left_pushE, left_tanOf, Category.assoc])`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`.
+
+Conclude with `(hΘ T h v).eq_resM h e (hΘ T' h' _) rfl`.
+-/
 theorem exists_tangent_equiv {C : Scheme.{0}} {t' : SAB H C} {g : C ⟶ X} (m : SABMap t' t g) :
     ∃ Ψ : ∀ (T : C.Opens) (h : CoordOpen t' T) (x : Sp Γ(C, T) ⟶ X), affPt h.1 ≫ g = x →
       (TanM x t.G ≃ₗ[Γ(C, T)] Γ(Lie t'.G, T)),
@@ -116,6 +153,13 @@ section Inhabitants
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
+/- English proof (translation)
+Use `SharedLaws.isProper_toroidalModel_structureMap Z` as an intermediate fact. Use `Z.flat` as an intermediate fact. Take `⟨z⟩` from `SharedLaws.nonempty_model h1 Z`. Establish `: Surjective Z.s` using `⟨fun y => by`. Establish `h₀ : IsLocalRing.closedPoint (Z.i.c.V W) ∈ Set.range Z.s` using `(IsLocalRing.specializes_closedPoint (Z.s z)).mem_closed Z.s.isClosedMap.isClosed_range ⟨z, rfl⟩`.
+
+Conclude with `(Flat.generalizingMap Z.s).stableUnderGeneralization_range (IsLocalRing.specializes_closedPoint y) h₀⟩`. Set `f` to `pullback.snd Z.s (spMap φ)`. Establish `: CompactSpace ↥(pullback Z.s (spMap φ))` using `QuasiCompact.compactSpace_of_compactSpace f`. Establish `: Nonempty ↥(pullback Z.s (spMap φ))` using `f.surjective.nonempty`. Take `⟨y, -, hy⟩` from `isClosed_univ.exists_closed_singleton (X := ↥(pullback Z.s (spMap φ))) Set.univ_nonempty`.
+
+Conclude with `⟨pointOfClosedPoint f y hy ≫ pullback.fst _ _, by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]⟩`.
+-/
 theorem Mdl.exists_point (h1 : 1 ≤ Dw.p + Dw.q) (Z : Mdl Y i₀) {k : Type} [Field k] [IsAlgClosed k]
     (φ : Z.i.c.V W →+* k) : ∃ x : Sp k ⟶ Z.X, x ≫ Z.s = spMap φ := by
   have := SharedLaws.isProper_toroidalModel_structureMap Z
@@ -167,6 +211,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
   {Z : Mdl Y i₀}
 
+/- English proof (translation)
+Establish `e : spMap (ψ.comp (valMap x _ h).hom) ≫ q.aff.fromSpec = x'`. Rewrite using `[← hx, ← spMap_comp_spMap, Category.assoc, spMap_valMap]`. Rewrite using `[q.vec_eq _ e, IntChart.vec, left_tanOf, left_tanOf, Vecs.bc, Vecs.bc, dual_comp]`.
+-/
 theorem IntChart.left_vec_map (q : IntChart Z) {R R' : Type} [CommRing R] [CommRing R'] (ψ : R →+* R') {x : Sp R ⟶ Z.X}
     {x' : Sp R' ⟶ Z.X} (hx : spMap ψ ≫ x = x') (h : ⊤ ≤ x ⁻¹ᵁ q.U) (h' : ⊤ ≤ x' ⁻¹ᵁ q.U) (σ : E →+* ℂ)
     (a : Fin (Dw.mult σ)) : (tv (q.vec x' h' σ a)).left = spMap (dualMap ψ) ≫ (tv (q.vec x h σ a)).left := by
@@ -174,6 +221,11 @@ theorem IntChart.left_vec_map (q : IntChart Z) {R R' : Type} [CommRing R] [CommR
     rw [← hx, ← spMap_comp_spMap, Category.assoc, spMap_valMap]
   rw [q.vec_eq _ e, IntChart.vec, left_tanOf, left_tanOf, Vecs.bc, Vecs.bc, dual_comp]
 
+/- English proof (translation)
+Take `⟨n, v, e, he, hv, hb⟩` from `q.int.1 σ`. Establish `hx : spMap (valMap x _ h).hom ≫ q.aff.fromSpec ≫ Z.π = x ≫ Z.π` using `by rw [← Category.assoc, spMap_valMap]`. Establish `hv'` using `fun i => isTan_map _ hx (hv i)`. Establish `key (u : TanM (x ≫ Z.π) (Y Z.i).t.G) : ∃! cf : Fin n → R, ∑ i, cf i • tanOf (hv' i) = u`. Simplify `basis_map _ hx hv hb _ (isTan_tv u)` using `only [comb_iff hv' _ (isTan_tv u), eq_comm (b := ∑ _, _), show tanOf (isTan_tv u) = u from tan_ext rfl]`.
+
+Use `⟨n, e, .mk (v := fun i => tanOf (hv' i)) (Fintype.linearIndependent_iffₛ.2 fun f g hfg => congrFun ((key _).unique hfg rfl)) fun u _ => (Submodule.mem_span_range_iff_exists_fun R).2 (key u).exists, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.mk_apply]`. Conclude with `tan_ext (by rw [IntChart.vec, left_tanOf, left_tanOf, he a]; rfl)`.
+-/
 theorem IntChart.exists_basis (q : IntChart Z) {R : Type} [CommRing R] (x : Sp R ⟶ Z.X) (h : ⊤ ≤ x ⁻¹ᵁ q.U)
     (σ : E →+* ℂ) : ∃ (n : ℕ) (e : Fin (Dw.mult σ) ↪ Fin n) (b : Module.Basis (Fin n) R (TanM (x ≫ Z.π) (Y Z.i).t.G)),
       ∀ a, b (e a) = q.vec x h σ a := by
@@ -193,6 +245,9 @@ namespace Curve
 
 variable {k : Type} [Field k] (c : Curve k Z.X) (hZ : HasDR Z)
 
+/- English proof (translation)
+Use `c.isProjCurve.isProperCurve.isProper` as an intermediate fact. Establish `: IsSeparated (terminal.from c.C)`. Rewrite using `[← terminal.comp_from (strHom k c.C)]`. Use `infer_instance`. Conclude with `hT.inf hT'`.
+-/
 theorem isAffineOpen_inf {T T' : c.C.Opens} (hT : IsAffineOpen T) (hT' : IsAffineOpen T') : IsAffineOpen (T ⊓ T') := by
   have := c.isProjCurve.isProperCurve.isProper
   have : IsSeparated (terminal.from c.C) := by
@@ -200,6 +255,21 @@ theorem isAffineOpen_inf {T T' : c.C.Opens} (hT : IsAffineOpen T) (hT' : IsAffin
     infer_instance
   exact hT.inf hT'
 
+/- English proof (translation)
+Take `⟨Ψ, hΨ⟩` from `exists_tangent_equiv c.tMap`. Take `⟨g, hg⟩` from `c.exists_isVB_lie`. Use `hg.isQuasicoherent` as an intermediate fact. Set `J` to `{q : c.C.Opens × IntChart Z // CoordOpen c.t q.1 ∧ q.1 ≤ c.f ⁻¹ᵁ q.2.U}`. Establish `hin {T : c.C.Opens} (hT : IsAffineOpen T) {U : Z.X.Opens} (h : T ≤ c.f ⁻¹ᵁ U) : ⊤ ≤ (affPt hT ≫ c.f) ⁻¹ᵁ U` using `fun z hz => h (le_preimage_affPt hT hz)`.
+
+Establish `hc : ⨆ j : J, j.1.1 = ⊤` using `top_unique fun x _ => by`. Take `⟨q, hq⟩` from `hZ.exists_intChart (c.f x)`. Take `⟨T, hT, hx, hle⟩` from `exists_coordOpen c.t (V := c.f ⁻¹ᵁ q.U) hq`. Conclude with `Opens.mem_iSup.2 ⟨⟨(T, q), hT, hle⟩, hx⟩`. Use `choose κ _ e b hP hbe using fun j : J => hb j.1.2 _ (affPt j.2.1.1 ≫ c.f) (hin _ j.2.2)`.
+
+Set `B (j : J)` to `(b j).map (Ψ _ j.2.1 _ (Category.assoc _ _ _).symm)`. Establish `hB (j : J) : VB.IsFrame (B j)` using `Summand.isFrame_of_affine_basis j.2.1.1 _`. Establish `hres (j : J) {T : c.C.Opens} (hT : CoordOpen c.t T) (h : T ≤ j.1.1) (a : α) : resM c.lie h (B j (e j a)) = Ψ T hT _ (Category.assoc _ _ _).symm (j.1.2.vec _ (hin hT.1 (h.trans j.2.2)) (σ a) (ix a))`. Rewrite using `[Module.Basis.map_apply, hbe]`. Conclude with `(hΨ _ _ _ _ _ _ _ _ h _ _ (j.1.2.left_vec_map _ (by rw [← Category.assoc, spMap_affPt]) _ _ _ _)).symm`.
+
+Take `⟨G, i, hi, hd, hs⟩` from `GlobalTheory.TriangularFrames.exists_isCohSub_deg_eq_sum k c.C c.isProjCurve c.lie J _ hc κ (fun j => B j) hB α rk e (fun a => (grLB hZ (-oneAt Dw (σ a) (ix a))).pull c.f) (fun a => LB.isLB_pull (isLB_grLB hZ _) _) (fun _ j _ => j.1.2) (fun a j => j.2.2.trans (GlobalTheory.LB.pul …`. Establish `hT` using `j.2.1.mono (c.isAffineOpen_inf j.2.1.1 j'.2.1.1) inf_le_left`. Establish `h` using `hin hT.1 (inf_le_left.trans j.2.2)`. Establish `h'` using `hin hT.1 (inf_le_right.trans j'.2.2)`. Take `⟨cf, h₁, h₂, h₃⟩` from `ht j.1.2 j'.1.2 _ _ h h' a`.
+
+Use `⟨cf, h₁.trans (.symm ?_), h₂, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.LB.resG_pull_g (L := grLB hZ _) c.f _ _ _).trans ((valR_affPt hT.1 _).symm.trans ((valR_appLE _ _ _ (le_preimage_affPt hT.1) _).trans ?_))` and prove the remaining obligations. Conclude with `(congrArg _ (IntChart.tr_neg_oneAt j.1.2 j'.1.2 hZ _ _)).trans (valR_res _ _ (le_preimage_inf h h') _)`. Simplify using `only [hres _ hT, h₃, map_sum, map_smul]) S hS`. Use `⟨G, i, hi, hd, fun hp hS => ?_⟩` and prove the remaining obligations.
+
+Use `hi.mono` as an intermediate fact. Use `Twist.isIso_of_cover i hc fun j V hV => ⟨QCoh.injective_app_of_mono i V, fun x => (hs j V hV x).2 ?_⟩` and prove the remaining obligations. Use `Submodule.span_mono ?_ ((isFrame_iff.1 (hB j) V hV).2 Submodule.mem_top)` and prove the remaining obligations. Introduce and unpack `_ ⟨m, rfl⟩`. Take `⟨a, rfl⟩` from `hP j hp m`.
+
+Conclude with `⟨a, by simp [hS], rfl⟩`.
+-/
 theorem exists_subsheaf {α : Type} [Fintype α] (rk : α → ℕ) (σ : α → (E →+* ℂ)) (ix : ∀ a, Fin (Dw.mult (σ a))) (P : Prop)
     (hb : ∀ (q : IntChart Z) (R : Type) [CommRing R] (x : Sp R ⟶ Z.X) (h : ⊤ ≤ x ⁻¹ᵁ q.U),
       ∃ (κ : Type) (_ : Fintype κ) (e : α ↪ κ) (b : Module.Basis κ R (TanM (x ≫ Z.π) (Y Z.i).t.G)),
@@ -248,11 +318,19 @@ theorem exists_subsheaf {α : Type} [Fintype α] (rk : α → ℕ) (σ : α → 
   obtain ⟨a, rfl⟩ := hP j hp m
   exact ⟨a, by simp [hS], rfl⟩
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `c.exists_isVB_lie`. Take `⟨P, hP⟩` from `exists_isMaxSubDeg_iff.2 (GlobalTheory.VB.bddAbove_subDegs_of_isVB k c.C c.isProjCurve _ g hg)`. Rewrite using `[c.Pm_eq hP]` and apply the resulting hypothesis.
+-/
 theorem isMaxSubDeg_Pm : IsMaxSubDeg k c.lie c.Pm := by
   obtain ⟨g, hg⟩ := c.exists_isVB_lie
   obtain ⟨P, hP⟩ := exists_isMaxSubDeg_iff.2 (GlobalTheory.VB.bddAbove_subDegs_of_isVB k c.C c.isProjCurve _ g hg)
   rwa [c.Pm_eq hP]
 
+/- English proof (translation)
+Take `⟨G, i, hi, hd, -⟩` from `c.exists_subsheaf hZ (α := Fin (Dw.mult σ)) Fin.val (fun _ => σ) id False (fun q R _ x h => have ⟨_, e, b, hb⟩ := q.exists_basis x h σ; ⟨_, inferInstance, e, b, False.elim, hb⟩) (fun q q' R _ x h h' a => ⟨_, rfl, fun b hb hab => by`. Rewrite using `[q'.chg_eq_zero q hZ σ (lt_of_le_of_ne hab hb.symm), valR_zero_fn], q'.vec_eq_sum q hZ x h' h σ a⟩)`. Use the proof step `(Finset.univ.filter fun a => a.val < n) (by simp only [Finset.mem_filter, Finset.mem_univ, true_and]; omega)`. Use `⟨G, i, hi, hd.trans ?_⟩` and prove the remaining obligations. Use `Finset.sum_bij_ne_zero (fun a _ _ => a.val) (fun a ha _ => by simpa using ha) (fun _ _ _ _ _ _ => Fin.ext) (fun m hm h0 => ?_) fun _ _ _ => rfl` and prove the remaining obligations.
+
+Establish `: m < Dw.mult σ` using `lt_of_not_ge fun h => h0 (c.degStep_eq_zero hZ h)`. Conclude with `⟨⟨m, this⟩, by simpa using hm, h0, rfl⟩`.
+-/
 theorem sum_degStep_mem (σ : E →+* ℂ) (n : ℕ) : ∑ m ∈ Finset.range n, c.degStep hZ σ m ∈ subDegs k c.lie := by
   obtain ⟨G, i, hi, hd, -⟩ := c.exists_subsheaf hZ (α := Fin (Dw.mult σ)) Fin.val (fun _ => σ) id False
     (fun q R _ x h => have ⟨_, e, b, hb⟩ := q.exists_basis x h σ; ⟨_, inferInstance, e, b, False.elim, hb⟩)
@@ -265,9 +343,21 @@ theorem sum_degStep_mem (σ : E →+* ℂ) (n : ℕ) : ∑ m ∈ Finset.range n,
   have : m < Dw.mult σ := lt_of_not_ge fun h => h0 (c.degStep_eq_zero hZ h)
   exact ⟨⟨m, this⟩, by simpa using hm, h0, rfl⟩
 
+/- English proof (translation)
+The claim follows from `c.isMaxSubDeg_Pm.2 (c.sum_degStep_mem hZ σ n)`.
+-/
 theorem sum_degStep_le (σ : E →+* ℂ) (n : ℕ) : ∑ m ∈ Finset.range n, c.degStep hZ σ m ≤ c.Pm :=
   c.isMaxSubDeg_Pm.2 (c.sum_degStep_mem hZ σ n)
 
+/- English proof (translation)
+Take `⟨G, i, -, hd, hi⟩` from `c.exists_subsheaf hZ (α := Σ σ : E →+* ℂ, Fin (Dw.mult σ)) (fun a => a.2.val) Sigma.fst Sigma.snd True (fun q R _ x h => by`. Take `⟨b, hb⟩` from `GlobalTheory.TotalFrame.exists_basis_of_intFrame E H Dw Xo p W hp hW hu Y i₀ Z q.U q.aff q.w q.int R _ x (spMap_valMap q.aff x h)`. Conclude with `⟨_, inferInstance, .refl _, b, fun _ => Function.surjective_id, fun a => tan_ext (hb a.1 a.2)⟩)`. Use the proof step `(fun q q' R _ x h h' ⟨σ, a⟩ => by`. Use `⟨fun b => (Pi.single σ (fun b => valR x _ (q'.chg q hZ σ a b)) : ∀ σ, Fin (Dw.mult σ) → R) b.1 b.2, by simp, fun ⟨σ', b⟩ hb hab => ?_, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `e : σ' = σ`. Substitute `e` using the available equality. Simplify using `only [Pi.single_eq_same]`. Rewrite using `[q'.chg_eq_zero q hZ σ' (lt_of_le_of_ne hab fun e : a = b => hb (e ▸ rfl)), valR_zero_fn]`. Simplify using `[e]`.
+
+Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single σ (fun σ' _ e => by simp [e]) (by simp)]`. Simplify `q'.vec_eq_sum q hZ x h' h σ a)` using `only [Pi.single_eq_same]`. Use the proof step `Finset.univ (by simp)`. Use `hi trivial rfl` as an intermediate fact. Rewrite using `[← deg_congr k (asIso i), hd, Fintype.sum_sigma]`.
+
+Conclude with `Finset.sum_congr rfl fun σ _ => Fin.sum_univ_eq_sum_range (c.degStep hZ σ) _`.
+-/
 theorem deg_lie (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (hu : ¬ p ∣ (discr E).natAbs) :
     deg k c.lie = ∑ σ, ∑ m ∈ Finset.range (Dw.mult σ), c.degStep hZ σ m := by
   classical
@@ -301,6 +391,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.ModuliIn
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ}
 
+/- English proof (translation)
+Use `Fintype.ofEquiv _ D.eTau` as an intermediate fact. Establish `e (τ : PsiT D) : embOf D τ = D.host.emb τ` using `by rw [embOf, DV.tauEmb, Equiv.apply_symm_apply]`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_add_distrib]`. Use `(Fintype.sum_bijective _ (GlobalTheory.Mem.BaseEx.sum_emb_bijective D.host) _ _ ?_).symm.trans (Fintype.sum_sum_type (Sum.elim (fun τ => F (embOf D τ)) fun τ => F (conjEmb (embOf D τ))))` and prove the remaining obligations. Introduce and unpack `(τ | τ)`.
+
+Conclude with `congrArg F (e τ)`. Conclude with `congrArg (fun σ => F (conjEmb σ)) (e τ)`.
+-/
 theorem sum_emb_eq (D : D7) (F : (D.host.E →+* ℂ) → ℤ) :
     ∑ σ, F σ = ∑ᶠ τ : PsiT D, (F (embOf D τ) + F (conjEmb (embOf D τ))) := by
   have := Fintype.ofEquiv _ D.eTau
@@ -316,16 +411,25 @@ namespace At
 
 variable (ct : At S κ p) {k : Type} [Field k] (c : Curve k ct.YY.X)
 
+/- English proof (translation)
+Rewrite using `[mult_embOf]`. Conclude with `ct.sum_degPiece_head c τ le_rfl`.
+-/
 theorem degLie_false (τ : PsiT D) : ct.degLie c τ false =
     ∑ m ∈ Finset.range (S.Dw.mult (embOf D τ)), c.degStep ct.hasDR (embOf D τ) m := by
   rw [mult_embOf]
   exact ct.sum_degPiece_head c τ le_rfl
 
+/- English proof (translation)
+Rewrite using `[mult_conj_embOf]`. Conclude with `ct.sum_degPiece_tail c τ le_rfl`.
+-/
 theorem degLie_true (τ : PsiT D) : ct.degLie c τ true =
     ∑ m ∈ Finset.range (S.Dw.mult (conjEmb (embOf D τ))), c.degStep ct.hasDR (conjEmb (embOf D τ)) m := by
   rw [mult_conj_embOf]
   exact ct.sum_degPiece_tail c τ le_rfl
 
+/- English proof (translation)
+Simplify using `only [degLie_false, degLie_true]`. Rewrite using `[Curve.eDeg, c.deg_lie ct.hasDR ct.hp ct.hW hu, sum_emb_eq]`.
+-/
 theorem eDeg_eq (hu : DV.UnramE D p) : c.eDeg = -∑ᶠ τ, (ct.degLie c τ false + ct.degLie c τ true) := by
   simp only [degLie_false, degLie_true]
   rw [Curve.eDeg, c.deg_lie ct.hasDR ct.hp ct.hW hu, sum_emb_eq]
@@ -351,8 +455,16 @@ def crdTrue (ct : At S κ p) : CrDSt ct where
   Pm_head c τ _ _ h := (ct.sum_degPiece_head c τ h).trans_le (c.sum_degStep_le _ _ _)
   Pm_tail c τ _ h _ := (ct.sum_degPiece_tail c τ h).trans_le (c.sum_degStep_le _ _ _)
 
+/- English proof (translation)
+Introduce `c` and use `by simp [At.degWt]`.
+-/
 example (ct : At S κ p) : (crdTrue ct).nefQ 0 := fun c => by simp [At.degWt]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `c.sum_degStep_mem ct.hasDR (embOf D τ) 1` as an intermediate fact. Rewrite `this` using `[← ct.sum_degPiece_head c τ hj, Finset.Icc_self, Finset.sum_singleton]`. Then use the resulting hypothesis. Use `(ct.degWt_intCast c _ (isGrLB_grLB ct.hasDR _)).trans ?_` and prove the remaining obligations. Rewrite using `[← c.degGr_eq ct.hasDR (isGrLB_grLB ct.hasDR _)]`.
+
+Express the relevant statement in the definitionally equal form `_ = -((c.degGr ct.hasDR (-_) : ℤ) : ℝ)`. Simplify using the standard rewrite rules.
+-/
 example (ct : At S κ p) (c : ct.Crv) (τ : PsiT D) (hj : 1 ≤ j) :
     (crdTrue ct).degGrD c τ 1 ∈ subDegs ct.Fbar c.lie ∧
       (crdTrue ct).degLdR c (fun τ' i => At.indWt τ 1 τ' i) = -((crdTrue ct).degGrD c τ 1 : ℝ) := by
@@ -364,6 +476,9 @@ example (ct : At S κ p) (c : ct.Crv) (τ : PsiT D) (hj : 1 ≤ j) :
     change _ = -((c.degGr ct.hasDR (-_) : ℤ) : ℝ)
     simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ct.nonempty_crv, ct.nonempty_crvQ⟩`.
+-/
 example (ct : At S κ p) : Nonempty (crdTrue ct).Crv ∧ Nonempty (crdTrue ct).CrvQ := ⟨ct.nonempty_crv, ct.nonempty_crvQ⟩
 
 end Place

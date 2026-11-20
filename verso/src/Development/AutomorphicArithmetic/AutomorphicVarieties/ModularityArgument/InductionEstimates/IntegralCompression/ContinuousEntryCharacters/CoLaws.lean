@@ -12,6 +12,11 @@ section SlopeTestRemainingChoices
 
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Establish `hm : Measurable e.symm` using `e.symm.continuous.measurable`. Establish `hE : MeasurePreserving e.symm (Measure.pi fun _ : ι => ν) (Measure.map e.symm (Measure.pi fun _ : ι => ν))` using `⟨hm, rfl⟩`. Use `⟨Measure.isProbabilityMeasure_map hm.aemeasurable, fun k => ?_, fun k => ?_⟩` and prove the remaining obligations. Use `hE.of_semiconj (measurePreserving_pi _ _ fun i => hl (e k i)) (fun x => ?_) (continuous_mul_left k).measurable` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.symm (e k * x) = _`.
+
+Rewrite using `[map_mul, e.symm_apply_apply]`. Use `hE.of_semiconj (measurePreserving_pi _ _ fun i => hr (e k i)) (fun x => ?_) (continuous_mul_right k).measurable` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.symm (x * e k) = _`. Rewrite using `[map_mul, e.symm_apply_apply]`.
+-/
 private theorem haar {n : ℕ} {U : Type} [Group U] [TopologicalSpace U] [SecondCountableTopology U] [MeasurableSpace U] [BorelSpace U]
     (e : archCompact K n ≃ₜ* (ι → U)) (ν : Measure U) [IsProbabilityMeasure ν] (hl : ∀ k, MeasurePreserving (k * ·) ν ν)
     (hr : ∀ k, MeasurePreserving (· * k) ν ν) : IsHaarK (Measure.map e.symm (Measure.pi fun _ : ι => ν)) := by
@@ -25,33 +30,59 @@ private theorem haar {n : ℕ} {U : Type} [Group U] [TopologicalSpace U] [Second
     change e.symm (x * e k) = _
     rw [map_mul, e.symm_apply_apply]
 
+/- English proof (translation)
+Rewrite using `[arc1, ← retract_infEmb]`. Conclude with `congrArg Subtype.val (retractOne_coe (⟨_, maxCompact_le_normOneGL k.2⟩ : normOneGL K n))`.
+-/
 private theorem coe_arc {n : ℕ} (k : archCompact K n) :
     ((arc1 k : G1 K n) : AdelicGLn.AdelicGL K n) = infEmb K n (k : archGroup K n) := by
   rw [arc1, ← retract_infEmb]
   exact congrArg Subtype.val (retractOne_coe (⟨_, maxCompact_le_normOneGL k.2⟩ : normOneGL K n))
 
+/- English proof (translation)
+Rewrite using `[zt, ← map_one (centralSection K 2)]`. Conclude with `congrArg _ (Subtype.ext Real.exp_zero)`.
+-/
 private theorem zt0 : zt K 0 = 1 := by
   rw [zt, ← map_one (centralSection K 2)]
   exact congrArg _ (Subtype.ext Real.exp_zero)
 
+/- English proof (translation)
+Rewrite using `[← AdelicGLn.prodEquiv_apply_fst, prodEquiv_infEmb]`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace K).apply_symm_apply _`.
+-/
 private theorem inf_fst {n : ℕ} (x : archGroup K n) (a b : Fin n) :
     InfiniteAdeleRing.ringEquiv_mixedSpace K (infEmb K n x a b).1 =
       (show Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace K) from (x.1 : ArchMatrix K n)) a b := by
   rw [← AdelicGLn.prodEquiv_apply_fst, prodEquiv_infEmb]
   exact (InfiniteAdeleRing.ringEquiv_mixedSpace K).apply_symm_apply _
 
+/- English proof (translation)
+Rewrite using `[← AdelicGLn.prodEquiv_apply_snd, prodEquiv_infEmb]`. Both sides reduce to the same expression.
+-/
 private theorem inf_snd {n : ℕ} (x : archGroup K n) (a b : Fin n) :
     (infEmb K n x a b).2 = (1 : Matrix (Fin n) (Fin n) (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)) a b := by
   rw [← AdelicGLn.prodEquiv_apply_snd, prodEquiv_infEmb]
   rfl
 
 omit [Fintype ι] in
+/- English proof (translation)
+Rewrite using `[inf_fst, ← C.Ψ_val, ← C.Φ_val, ContinuousMulEquiv.apply_symm_apply]`.
+-/
 private theorem ent (C : Co K ι) {n : ℕ} (x : ι → unitaryGroup (Fin n) ℂ) (i : ι) (a b : Fin n) :
     C.c (InfiniteAdeleRing.ringEquiv_mixedSpace K (infEmb K n ((C.Φ n).symm x : archCompact K n) a b).1) i =
       (x i : Matrix (Fin n) (Fin n) ℂ) a b := by
   rw [inf_fst, ← C.Ψ_val, ← C.Φ_val, ContinuousMulEquiv.apply_symm_apply]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[(blkLaws (K := K)).1, neg_zero, zt0, mul_one, mul_one, coe_arc, coe_arc, coe_arc]`. Use extensionality with `r s`. Take `⟨r, rfl⟩` from `(finSumFinEquiv (m := 2) (n := 2)).surjective r`. Take `⟨s, rfl⟩` from `(finSumFinEquiv (m := 2) (n := 2)).surjective s`.
+
+Use `Prod.ext ((InfiniteAdeleRing.ringEquiv_mixedSpace K).injective (C.c.injective (funext fun i => ?_))) ?_` and prove the remaining obligations. Rewrite using `[ent, u4.1]`. Simplify using `only [blk, reindex_apply, submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Conclude with `ent C a i r s`.
+
+Express the relevant statement in the definitionally equal form `C.c (InfiniteAdeleRing.ringEquiv_mixedSpace K 0) i = 0`. Rewrite using `[map_zero, map_zero]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `C.c (InfiniteAdeleRing.ringEquiv_mixedSpace K 0) i = 0`. Rewrite using `[map_zero, map_zero]`.
+
+Both sides reduce to the same expression. Conclude with `ent C b i r s`. Rewrite using `[inf_snd, ← Matrix.submatrix_apply (1 : Matrix _ _ _) finSumFinEquiv finSumFinEquiv, Matrix.submatrix_one_equiv, ← Matrix.fromBlocks_one]`. Simplify using `only [blk, reindex_apply, submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`.
+
+Conclude with `inf_snd _ r s`. Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `inf_snd _ r s`.
+-/
 private theorem blkA (C : Co K ι) (a b : ι → U2) :
     lv (arc1 ((C.Φ 2).symm a)) (arc1 ((C.Φ 2).symm b)) 0 = arc1 ((C.Φ (2 + 2)).symm fun i => bd (a i) (b i)) := by
   apply Subtype.ext
@@ -78,9 +109,25 @@ private theorem blkA (C : Co K ι) (a b : ι → U2) :
     · rfl
     · exact inf_snd _ r s
 
+/- English proof (translation)
+The claim follows from `(MultiplicityOne.finProj_mul_archProj_comm h g).symm`.
+-/
 private theorem cmm {n : ℕ} (g : archGroup K n) (h : FA K n) : Commute (archP K n g) (fin1 h) :=
   (MultiplicityOne.finProj_mul_archProj_comm h g).symm
 
+/- English proof (translation)
+Establish `hk' : (k : AdelicGLn.AdelicGL K n) ∈ Reduction.maxCompact` using `hk`. Establish `e` using `infEmb_infPart_mul_finEmb_finPart (k : AdelicGLn.AdelicGL K n)`. Establish `hf : finEmb K n (finPart K n k) ∈ Reduction.maxCompact`. Use `⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `: infAt w (finEmb K n (finPart K n k)) = 1`.
+
+Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(finEmb K n (finPart K n k) a b).1 w = _`. Rewrite using `[← AdelicGLn.prodEquiv_apply_fst, prodEquiv_finEmb]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using `[h]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `one_mem _`. Establish `: finAt v (finEmb K n (finPart K n k)) = finAt v (k : AdelicGLn.AdelicGL K n)`. Conclude with `Units.ext (Matrix.ext fun a b => rfl)`. Rewrite using `[this]`. Conclude with `hk'.2 v`.
+
+Use `⟨⟨infPart K n k, ?_⟩, finPart K n k, (AdelicGLn.mem_integralFiniteGL_iff_forall K n).2 fun v => ?_, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `infEmb K n (infPart K n k) ∈ Reduction.maxCompact`. Rewrite using `[eq_mul_inv_of_mul_eq e]`. Conclude with `mul_mem hk' (inv_mem hf)`. Establish `: (AdelicGLn.finiteRestrictedEquiv K n (finPart K n k) v : GL (Fin n) (v.adicCompletion K)) = finAt v (k : AdelicGLn.AdelicGL K n)`.
+
+Conclude with `Units.ext (Matrix.ext fun a b => rfl)`. Rewrite using `[this]`. Conclude with `hk'.2 v`. Rewrite using `[Subgroup.coe_mul, coe_arc, fin1, MultiplicityOne.finProj_of_mem (maxCompact_le_normOneGL hf)]`. Conclude with `e.symm`.
+-/
 private theorem dec (n : ℕ) (k : G1 K n) (hk : k ∈ KG K n) :
     ∃ (a : archCompact K n) (h : FA K n), h ∈ AdelicGLn.integralFiniteGL K n ∧ k = arc1 a * fin1 h := by
   have hk' : (k : AdelicGLn.AdelicGL K n) ∈ Reduction.maxCompact := hk
@@ -112,16 +159,28 @@ private theorem dec (n : ℕ) (k : G1 K n) (hk : k ∈ KG K n) :
 private noncomputable def GG (C : Co K ι) : (ι → GL (Fin 2) ℂ) →* G1 K 2 := (archP K 2).comp (C.Ψ 2).symm.toMonoidHom
 
 omit [Fintype ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem gl_eq (C : Co K ι) (i : ι) (a : GL (Fin 2) ℂ) : C.gl i a = GG C (Pi.mulSingle i a) := rfl
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `congrArg (archP K 2) ((C.Ψ 2).symm_apply_apply g).symm`.
+-/
 private theorem GG_eq (C : Co K ι) (g : archGroup K 2) : archP K 2 g = GG C (C.Ψ 2 g) :=
   congrArg (archP K 2) ((C.Ψ 2).symm_apply_apply g).symm
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `cmm _ h`.
+-/
 private theorem GG_cmm (C : Co K ι) (x : ι → GL (Fin 2) ℂ) (h : FA K 2) : Commute (GG C x) (fin1 h) := cmm _ h
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `continuous_pi fun j => by by_cases h : j = i · subst h; simpa using continuous_id' · simpa [h] using continuous_const`.
+-/
 private theorem ms_cont (i : ι) : Continuous fun m : GL (Fin 2) ℂ => (Pi.mulSingle i m : ι → GL (Fin 2) ℂ) :=
   continuous_pi fun j => by
     by_cases h : j = i
@@ -129,6 +188,15 @@ private theorem ms_cont (i : ι) : Continuous fun m : GL (Fin 2) ℂ => (Pi.mulS
     · simpa [h] using continuous_const
 
 omit [Fintype ι] in
+/- English proof (translation)
+Take `⟨A, u, rfl⟩` from `MultiplicityOne.exists_archProj_mul_finProj g`. Take `⟨x, hx⟩ : ∃ x, archProj K 2 A = GG C x` from `⟨_, GG_eq C ⟨A, Subgroup.mem_top _⟩⟩`. Use `⟨x i, GG C (Function.update x i 1) * fin1 u, ?_, fun b => Commute.mul_left ?_ ?_⟩` and prove the remaining obligations. Establish `: Pi.mulSingle i (x i) * Function.update x i 1 = x`. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[gl_eq, ← mul_assoc, ← map_mul, this, hx]`.
+
+Rewrite using `[gl_eq]`. Use `Commute.map ?_ (GG C)` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[gl_eq]`. Conclude with `(GG_cmm C _ u).symm`.
+-/
 private theorem spl (C : Co K ι) (i : ι) (g : G1 K 2) : ∃ a h, g = C.gl i a * h ∧ ∀ b, Commute h (C.gl i b) := by
   obtain ⟨A, u, rfl⟩ := MultiplicityOne.exists_archProj_mul_finProj g
   obtain ⟨x, hx⟩ : ∃ x, archProj K 2 A = GG C x := ⟨_, GG_eq C ⟨A, Subgroup.mem_top _⟩⟩
@@ -149,6 +217,13 @@ private theorem spl (C : Co K ι) (i : ι) (g : G1 K 2) : ∃ a h, g = C.gl i a 
     exact (GG_cmm C _ u).symm
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use `⟨C.Ψ 2 g, fun l hl hm => ?_⟩` and prove the remaining obligations. Rewrite using `[GG_eq C]`. Generalize the expression as in `C.Ψ 2 g = x`. Establish `: (l.map fun i => (Pi.mulSingle i (x i) : ι → GL (Fin 2) ℂ)).prod = x`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[Pi.list_prod_apply, List.map_map, List.prod_map_eq_pow_single j, List.count_eq_one_of_mem hl (hm j)]`. Simplify using the standard rewrite rules. Introduce `i hi _`. Simplify using `[hi.symm]`. Use `conv_lhs => rw [← this, map_list_prod, List.map_map]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem lst (C : Co K ι) (g : archGroup K 2) :
     ∃ a : ι → GL (Fin 2) ℂ, ∀ l : List ι, l.Nodup → (∀ i, i ∈ l) → archP K 2 g = (l.map fun i => C.gl i (a i)).prod := by
   refine ⟨C.Ψ 2 g, fun l hl hm => ?_⟩
@@ -164,6 +239,11 @@ private theorem lst (C : Co K ι) (g : archGroup K 2) :
   rfl
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use `congrArg (archP K 2) ((C.Ψ 2).injective (funext fun j => Units.ext ?_))` and prove the remaining obligations. Rewrite using `[← C.Φ_val, ContinuousMulEquiv.apply_symm_apply, ContinuousMulEquiv.apply_symm_apply]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h]`.
+-/
 private theorem un_eq (C : Co K ι) (i : ι) (m : U2) : C.un i m = C.gl i (kC m) := by
   refine congrArg (archP K 2) ((C.Ψ 2).injective (funext fun j => Units.ext ?_))
   rw [← C.Φ_val, ContinuousMulEquiv.apply_symm_apply, ContinuousMulEquiv.apply_symm_apply]
@@ -173,6 +253,11 @@ private theorem un_eq (C : Co K ι) (i : ι) (m : U2) : C.un i m = C.gl i (kC m)
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `K _ _ _ ι _ C`. Use `⟨haar _ _ (measurePreserving_mul_left μK) (measurePreserving_mul_right μK), fun μ hμ => ?_, un_eq C, fun i => ?_, fun i a b => ?_, fun i j hij a b => ?_, fun i a h => cmm _ h, spl C, lst C, blkA C, fun n k h => cmm _ h, dec⟩` and prove the remaining obligations. Use `haveI := hμ.prob`. Conclude with `haar _ μ hμ.left hμ.right`. Conclude with `continuous_archP.comp ((C.Ψ 2).symm.continuous.comp (ms_cont i))`.
+
+Rewrite using `[gl_eq, gl_eq, gl_eq, Pi.mulSingle_mul, map_mul]`. Rewrite using `[gl_eq, gl_eq]`. Conclude with `(Pi.mulSingle_commute (f := fun _ => GL (Fin 2) ℂ) hij a b).map (GG C)`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coLaws :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (ι : Type) [Fintype ι] (C : Co K ι), IsHaarK C.κ₂ ∧ (∀ μ, Haar4 μ → IsHaarK (C.κ₄ μ)) ∧ (∀ i m, C.un i m = C.gl i (kC m)) ∧ (∀ i, Continuous (C.gl i)) ∧
       (∀ i a b, C.gl i (a * b) = C.gl i a * C.gl i b) ∧ (∀ i j, i ≠ j → ∀ a b, Commute (C.gl i a) (C.gl j b)) ∧

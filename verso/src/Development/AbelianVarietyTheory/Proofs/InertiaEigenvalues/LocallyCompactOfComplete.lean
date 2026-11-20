@@ -8,8 +8,26 @@ namespace GlobalTheory.UnitLemma.Bridge
 def fixedField {E : Type} [Field E] (c : E ≃+* E) : Subfield E :=
   RingHom.eqLocusField (c : E →+* E) (RingHom.id E)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_fixedField {E : Type} [Field E] (c : E ≃+* E) (x : E) : x ∈ fixedField c ↔ c x = x := Iff.rfl
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hne`. Use `set d := y - c y with hd`. Establish `hd0 : d ≠ 0` using `sub_ne_zero.2 hy.symm`. Establish `hcd : c d = -d` using `by rw [hd, map_sub, hc]; ring`. Set `f : (fixedField c × fixedField c) →ₗ[fixedField c] E` to `{ toFun := fun p => (p.1 : E) + (p.2 : E) * d map_add' := by intro p q; simp; ring map_smul' := by`.
+
+Introduce `a p`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, smul_eq_mul, RingHom.id_apply, Subfield.coe_mul]`. Express the relevant statement in the definitionally equal form `_ = (a : E) * _`. Use `ring }`. Establish `hinj : Function.Injective f`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨a, b⟩ h`. Establish `h1 : (a : E) + (b : E) * d = 0` using `h`. Establish `h2` using `congrArg c h1`. Rewrite `h2` using `[map_add, map_mul, (mem_fixedField c _).1 a.2, (mem_fixedField c _).1 b.2, hcd, map_zero]`.
+
+Establish `ha : (a : E) = 0` using `by linear_combination (h1 + h2) / 2`. Establish `hb : (b : E) * d = 0` using `by linear_combination (h1 - h2) / 2`. Establish `hb' : (b : E) = 0` using `(mul_eq_zero.1 hb).resolve_right hd0`. Conclude with `Prod.ext (Subtype.ext ha) (Subtype.ext hb')`. Establish `hsurj : Function.Surjective f`.
+
+Introduce `z`. Use `⟨(⟨(z + c z) / 2, ?_⟩, ⟨(z - c z) / (2 * d), ?_⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[mem_fixedField, map_div₀, map_add, hc, map_ofNat, add_comm]`. Rewrite using `[mem_fixedField, map_div₀, map_sub, hc, map_mul, map_ofNat, hcd]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `(z + c z) / 2 + (z - c z) / (2 * d) * d = z`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← (LinearEquiv.ofBijective f ⟨hinj, hsurj⟩).finrank_eq]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem finrank_fixedField {E : Type} [Field E] [CharZero E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x)
     (hne : ∃ y, c y ≠ y) : Module.finrank (fixedField c) E = 2 := by
   obtain ⟨y, hy⟩ := hne
@@ -47,6 +65,13 @@ theorem finrank_fixedField {E : Type} [Field E] [CharZero E] (c : E ≃+* E) (hc
   rw [← (LinearEquiv.ofBijective f ⟨hinj, hsurj⟩).finrank_eq]
   simp
 
+/- English proof (translation)
+Use `letI nF : NontriviallyNormedField (fixedField c) := { (inferInstance : NormedField (fixedField c)) with non_trivial := by`. Take `⟨y, hy⟩` from `NontriviallyNormedField.non_trivial (α := E)`. Take `⟨x, hx, hxy⟩` from `hu y`. Conclude with `⟨⟨x, hx⟩, by change 1 < ‖x‖; rwa [← hxy]⟩ }`. Use `letI nA : NormedAlgebra (fixedField c) E := { (inferInstance : Algebra (fixedField c) E) with norm_smul_le := fun a y => norm_mul_le (a : E) y }`.
+
+Use `letI st : StarRing E := { star := c star_involutive := hc star_mul := fun a b => by rw [map_mul, mul_comm] star_add := fun a b => map_add c a b }`. Establish `hcont : Continuous c` using `(AddMonoidHomClass.isometry_of_norm c hn).continuous`. Establish `hcl : IsClosed (fixedField c : Set E)` using `isClosed_eq hcont continuous_id`. Use `⟨fixedField c, nF, nA, st, ?_, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `{ charZero := inferInstance ultraF := inferInstance ultraE := inferInstance lcF := hcl.locallyCompactSpace lcE := inferInstance finrank_eq := finrank_fixedField c hc hne star_fix := fun x => x.2 star_ne := hne norm_star := hn unram := fun y => by`.
+
+Take `⟨x, hx, hxy⟩` from `hu y`. Conclude with `⟨⟨x, hx⟩, hxy⟩ }`.
+-/
 theorem unram_of_involution {E : Type} [nE : NontriviallyNormedField E] [CharZero E] [IsUltrametricDist E]
     [LocallyCompactSpace E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (hne : ∃ y, c y ≠ y)
     (hn : ∀ y, ‖c y‖ = ‖y‖) (hu : ∀ y : E, ∃ x, c x = x ∧ ‖y‖ = ‖x‖) :
@@ -83,6 +108,31 @@ theorem unram_of_involution {E : Type} [nE : NontriviallyNormedField E] [CharZer
         obtain ⟨x, hx, hxy⟩ := hu y
         exact ⟨⟨x, hx⟩, hxy⟩ }
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hπ0 : algebraMap O E π ≠ 0` using `fun h => hπ.ne_zero (hinj (by rw [h, map_zero]))`. Establish `hpos : 0 < ‖algebraMap O E π‖` using `norm_pos_iff.2 hπ0`. Establish `hlt : ‖algebraMap O E π‖ < 1`. Assume the negation of the conclusion as `h`.
+
+Establish `: ‖(algebraMap O E π)⁻¹‖ ≤ 1`. Rewrite using `[norm_inv]`. Conclude with `inv_le_one_of_one_le₀ (not_lt.1 h)`. Take `⟨z, hz⟩` from `(hball _).1 this`. Apply `hπ.not_isUnit` to reduce the goal to its premises.
+
+Use `IsUnit.of_mul_eq_one z (hinj ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hz, map_one, mul_inv_cancel₀ hπ0]`. Establish `hmem : ∀ (n : ℕ) (x : O), x ∈ IsLocalRing.maximalIdeal O ^ n ↔ ‖algebraMap O E x‖ ≤ ‖algebraMap O E π‖ ^ n`. Introduce `n x`. Rewrite using `[hπ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[map_mul, map_pow, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_left (by positivity) ((hball _).2 ⟨a, rfl⟩)`. Introduce `h`.
+
+Establish `: ‖algebraMap O E x / algebraMap O E π ^ n‖ ≤ 1`. Rewrite using `[norm_div, norm_pow]; exact div_le_one_of_le₀ h (by positivity)`. Take `⟨z, hz⟩` from `(hball _).1 this`. Use `⟨z, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hz, div_mul_cancel₀ _ (pow_ne_zero _ hπ0)]`.
+
+Use `letI : MetricSpace O := MetricSpace.induced (algebraMap O E) hinj inferInstance`. Establish `hdist : ∀ a b : O, dist a b = ‖algebraMap O E (a - b)‖`. Introduce `a b`. Rewrite using `[map_sub, ← dist_eq_norm]`. Both sides reduce to the same expression.
+
+Establish `hcomp : CompleteSpace O`. Use `Metric.complete_of_convergent_controlled_sequences (fun N => ‖algebraMap O E π‖ ^ N) (fun n => by positivity) fun u hu => ?_` and prove the remaining obligations. Take `⟨L, hL⟩` from `IsPrecomplete.prec (I := IsLocalRing.maximalIdeal O) (M := O) inferInstance (f := u) (by`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, hmem, ← hdist]`.
+
+Conclude with `(hu m m n le_rfl hmn).le)`. Use `⟨L, tendsto_iff_dist_tendsto_zero.2 (squeeze_zero (fun _ => dist_nonneg) (fun n => ?_) (tendsto_pow_atTop_nhds_zero_of_lt_one hpos.le hlt))⟩` and prove the remaining obligations. Use `hL n` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, hmem, ← hdist]`. Then use the resulting hypothesis. Establish `htb : TotallyBounded (Set.univ : Set O)`.
+
+Use `Metric.totallyBounded_iff.2 fun ε hε => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε hlt`. Use `haveI : Finite (O ⧸ IsLocalRing.maximalIdeal O) := ‹Finite (IsLocalRing.ResidueField O)›`. Use `haveI : Finite (O ⧸ IsLocalRing.maximalIdeal O ^ n) := Ideal.finite_quotient_pow (IsNoetherian.noetherian _) n`. Use `⟨Set.range (Quotient.out : O ⧸ IsLocalRing.maximalIdeal O ^ n → O), Set.finite_range _, fun x _ => ?_⟩` and prove the remaining obligations.
+
+Use `Set.mem_biUnion (Set.mem_range_self (Ideal.Quotient.mk _ x)) ?_` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, hdist]`. Use `lt_of_le_of_lt ((hmem n _).1 ?_) hn` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `(Ideal.Quotient.mk_out _).symm`.
+
+Establish `hcpt : IsCompact (Set.univ : Set O)` using `isCompact_iff_totallyBounded_isComplete.2 ⟨htb, complete_univ⟩`. Establish `hcont : Continuous (algebraMap O E)` using `continuous_induced_dom`. Use `(hcpt.image hcont).locallyCompactSpace_of_mem_nhds_of_addGroup (x := 0) ?_` and prove the remaining obligations. Use `Filter.mem_of_superset (Metric.closedBall_mem_nhds 0 one_pos) fun y hy => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `(hball y).1 (by simpa using hy)`.
+
+Conclude with `⟨z, trivial, hz⟩`.
+-/
 theorem locallyCompact_of_complete {O E : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Finite (IsLocalRing.ResidueField O)]
     [NormedField E] [Algebra O E] (hinj : Function.Injective (algebraMap O E))
@@ -148,6 +198,21 @@ theorem locallyCompact_of_complete {O E : Type} [CommRing O] [IsDomain O] [IsDis
 
 open WithZero in
 
+/- English proof (translation)
+Establish `hle2 : ∀ a b : E, b ≠ 0 → v a ≤ v b → v (c a) ≤ v (c b)`. Introduce `a b hb h`. Establish `hb' : c b ≠ 0` using `by simpa using hb`. Establish `h1` using `hle (a / b) (by rw [map_div₀]; exact div_le_one_of_le₀ h zero_le')`. Rewrite `h1` using `[map_div₀, map_div₀, div_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff v).2 hb'))]`.
+
+Conclude with `h1`. Establish `hπ0 : π ≠ 0`. Introduce `h`. Rewrite `hπ` using `[h, map_zero]`. Conclude with `exp_ne_zero hπ.symm`.
+
+Establish `hcπ0 : c π ≠ 0` using `by simpa using hπ0`. Establish `h1 : v (c π) ≤ v π`. Establish `: v (c π) < 1`. Assume the negation of the conclusion as `h`. Use `hle2 1 (c π) hcπ0 (by rw [map_one]; exact not_lt.1 h)` as an intermediate fact.
+
+Rewrite `this` using `[map_one, map_one, hc, hπ, ← exp_zero, exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hπ]`. Rewrite `this` using `[← exp_log ((Valuation.ne_zero_iff v).2 hcπ0), ← exp_zero, exp_lt_exp]`. Rewrite using `[← exp_log ((Valuation.ne_zero_iff v).2 hcπ0), exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h2 : v (c π) = v π`. Use `hle2 _ _ hπ0 h1` as an intermediate fact. Rewrite `this` using `[hc]`. Conclude with `le_antisymm h1 this`.
+
+Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Establish `h3 : v y = v (π ^ (-log (v y)))`. Rewrite using `[map_zpow₀, hπ, ← exp_zsmul]`. Simplify using `[exp_log ((Valuation.ne_zero_iff v).2 hy)]`.
+
+Establish `h4 : v (c (π ^ (-log (v y)))) = v (π ^ (-log (v y)))`. Rewrite using `[map_zpow₀, map_zpow₀, map_zpow₀, h2]`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Conclude with `(hle2 _ _ (zpow_ne_zero _ hπ0) h3.le).trans (h4.trans h3.symm).le`. Conclude with `(h4.trans h3.symm).symm.le.trans (hle2 _ _ hy h3.ge)`.
+-/
 theorem val_conj {E : Type} [Field E] (v : Valuation E (WithZero (Multiplicative ℤ))) (π : E)
     (hπ : v π = exp (-1)) (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (hle : ∀ y, v y ≤ 1 → v (c y) ≤ 1) (y : E) :
     v (c y) = v y := by
@@ -187,6 +252,15 @@ theorem val_conj {E : Type} [Field E] (v : Valuation E (WithZero (Multiplicative
 
 open WithZero in
 
+/- English proof (translation)
+Establish `key : ∃ ϖ, c ϖ = ϖ ∧ v ϖ = v π`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h1 : v (π + c π) < v π` using `lt_of_le_of_ne (v.map_add_le le_rfl (hv π).le) (h _ (by rw [map_add, hc, add_comm]))`. Establish `h0 : v (a * π) ≤ v π` using `by rw [map_mul]; exact mul_le_of_le_one_left' ha`.
+
+Establish `h2 : v (a * π + c (a * π)) < v π` using `lt_of_le_of_ne (v.map_add_le h0 ((hv _).le.trans h0)) (h _ (by rw [map_add, hc, add_comm]))`. Establish `h3 : v (c a * (π + c π)) < v π`. Rewrite using `[map_mul, hv]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ha) h1`. Establish `h4` using `v.map_sub_lt h2 h3`.
+
+Rewrite `h4` using `[show a * π + c (a * π) - c a * (π + c π) = (a - c a) * π by rw [map_mul]; ring, map_mul, hd, one_mul]`. Conclude with `lt_irrefl _ h4`. Take `⟨ϖ, h1, h2⟩` from `key`. Distinguish the cases in `hy : y = 0`. Conclude with `⟨0, map_zero _, by rw [hy]⟩`.
+
+Use `⟨ϖ ^ (-log (v y)), by rw [map_zpow₀, h1], ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow₀, h2, hπ, ← exp_zsmul]`. Simplify using `[exp_log ((Valuation.ne_zero_iff v).2 hy)]`.
+-/
 theorem exists_fixed_val {E : Type} [Field E] (v : Valuation E (WithZero (Multiplicative ℤ))) (π : E)
     (hπ : v π = exp (-1)) (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (hv : ∀ y, v (c y) = v y)
     (a : E) (ha : v a ≤ 1) (hd : v (a - c a) = 1) (y : E) : ∃ x, c x = x ∧ v y = v x := by
@@ -223,10 +297,16 @@ noncomputable def absOfVal {E : Type} [Field E] (v : Valuation E (WithZero (Mult
     · exact (NNReal.coe_le_coe.2 (hm h)).trans (le_add_of_nonneg_right (NNReal.coe_nonneg _))
     · exact (NNReal.coe_le_coe.2 (hm h)).trans (le_add_of_nonneg_left (NNReal.coe_nonneg _))
 
+/- English proof (translation)
+The claim follows from `NNReal.coe_le_coe.trans (WithZeroMulInt.toNNReal_strictMono (e := 2) one_lt_two).le_iff_le`.
+-/
 theorem absOfVal_le_iff {E : Type} [Field E] (v : Valuation E (WithZero (Multiplicative ℤ))) (x y : E) :
     absOfVal v x ≤ absOfVal v y ↔ v x ≤ v y :=
   NNReal.coe_le_coe.trans (WithZeroMulInt.toNNReal_strictMono (e := 2) one_lt_two).le_iff_le
 
+/- English proof (translation)
+The claim follows from `le_antisymm ((absOfVal_le_iff v _ _).2 h.le) ((absOfVal_le_iff v _ _).2 h.ge)`.
+-/
 theorem absOfVal_congr {E : Type} [Field E] (v : Valuation E (WithZero (Multiplicative ℤ))) {x y : E}
     (h : v x = v y) : absOfVal v x = absOfVal v y :=
   le_antisymm ((absOfVal_le_iff v _ _).2 h.le) ((absOfVal_le_iff v _ _).2 h.ge)
@@ -236,6 +316,23 @@ end GlobalTheory.UnitLemma.Bridge
 namespace GlobalTheory.UnitLemma
 open Bridge
 
+/- English proof (translation)
+Introduce `K`. Set `v` to `(IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E`. Take `⟨π, hπ⟩` from `(IsDiscreteValuationRing.maximalIdeal K.O).valuation_exists_uniformizer K.E`. Establish `hint : ∀ y : K.E, v y ≤ 1 ↔ y ∈ (algebraMap K.O K.E).range`. Introduce `y`.
+
+Use `⟨fun h => IsDiscreteValuationRing.exists_lift_of_le_one h, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, rfl⟩`. Conclude with `(IsDiscreteValuationRing.maximalIdeal K.O).valuation_le_one a`. Establish `hle : ∀ y, v y ≤ 1 → v (K.c y) ≤ 1`. Introduce `y hy`.
+
+Take `⟨a, rfl⟩` from `(hint y).1 hy`. Take `⟨b, hb⟩` from `K.c_int a`. Conclude with `(hint _).2 ⟨b, hb.symm⟩`. Establish `hv` using `val_conj v π hπ K.c K.c_c hle`. Take `⟨a, b, hab, hm⟩` from `K.c_res`.
+
+Establish `hd : v (algebraMap K.O K.E a - K.c (algebraMap K.O K.E a)) = 1`. Rewrite using `[hab, ← map_sub]`. Use `le_antisymm ((hint _).2 ⟨_, rfl⟩) (not_lt.1 fun h => hm ?_)` and prove the remaining obligations. Conclude with `((IsDiscreteValuationRing.maximalIdeal K.O).valuation_lt_one_iff_mem _).1 h`. Establish `hu` using `exists_fixed_val v π hπ K.c K.c_c hv _ ((hint _).2 ⟨a, rfl⟩) hd`.
+
+Establish `hne : ∃ y, K.c y ≠ y`. Use `⟨algebraMap K.O K.E a, fun h => ?_⟩` and prove the remaining obligations. Rewrite `hd` using `[h, sub_self, map_zero]`. Conclude with `zero_ne_one hd`. Establish `hball : ∀ y : K.E, absOfVal v y ≤ 1 ↔ y ∈ (algebraMap K.O K.E).range`.
+
+Introduce `y`. Rewrite using `[← hint, ← (absOfVal v).map_one, absOfVal_le_iff, map_one]`. Use `letI nE : NontriviallyNormedField K.E := { (absOfVal v).toNormedField with non_trivial := by`. Use `⟨π⁻¹, not_le.1 fun h => ?_⟩` and prove the remaining obligations. Establish `h1 : absOfVal v π⁻¹ ≤ 1` using `h`.
+
+Rewrite `h1` using `[hball, ← hint, map_inv₀]`. Rewrite `h1` using `[show v π = WithZero.exp (-1) from hπ, ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use `omega }`. Use `haveI : IsUltrametricDist K.E := IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm fun x y => by`. Express the relevant statement in the definitionally equal form `absOfVal v (x + y) ≤ max (absOfVal v x) (absOfVal v y)`.
+
+Rewrite using `[le_max_iff, absOfVal_le_iff, absOfVal_le_iff, ← le_max_iff]`. Conclude with `v.map_add x y`. Use `haveI : LocallyCompactSpace K.E := locallyCompact_of_complete (O := K.O) (IsFractionRing.injective K.O K.E) hball`. Take `⟨F, nF, nA, st, h1, h2⟩` from `unram_of_involution (nE := nE) K.c K.c_c hne (fun y => absOfVal_congr v (hv y)) (fun y => (hu y).imp fun x hx => ⟨hx.1, absOfVal_congr v hx.2⟩)`. Conclude with `⟨F, nF, nE, rfl, nA, st, h1, h2, hball⟩`.
+-/
 theorem UQ.exists_unram : ∀ K : UQ, ∃ (F : Type) (_ : NontriviallyNormedField F) (nE : NontriviallyNormedField K.E) (hE : nE.toField = K.fE) (_ : @NormedAlgebra F K.E _ nE.toNormedField.toNormedCommRing.toSeminormedCommRing.toSeminormedRing) (st : @StarRing K.E nE.toNormedField.toNormedCommRing.toRing.toNonAssocRing.toNonUnitalNonAssocRing.toNonUnitalNonAssocSemiring), @GlobalTheory.JR.Unram F K.E _ nE _ st ∧ (∀ y, st.star y = K.c y) ∧ ∀ y : K.E, nE.norm y ≤ 1 ↔ y ∈ (algebraMap K.O K.E).range := by
   intro K
   let v := (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E

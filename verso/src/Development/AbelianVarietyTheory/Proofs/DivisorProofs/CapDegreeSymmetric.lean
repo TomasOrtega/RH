@@ -13,6 +13,9 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 
 namespace GlobalTheory.VertComm
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ B _ E E' a`. Conclude with `GlobalTheory.Vert.Check.capDeg_symm (Z := B) p E E' a`.
+-/
 theorem capDeg_vp_comm : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (E E' : B.VDivQ) (a : PicSym B.X), B.capDeg_vp p E (B.cDQ E' * a) = B.capDeg_vp p E' (B.cDQ E * a) := by
   intro O _ _ _ p _ _ _ B _ E E' a
   exact GlobalTheory.Vert.Check.capDeg_symm (Z := B) p E E' a

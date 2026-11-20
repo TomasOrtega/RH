@@ -9,6 +9,9 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory.Mem GlobalTheory.Mem.R3 GlobalTheory.Mem.Col2
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mem.R3.RowStdGrp.ptE_equiv | exact GlobalTheory.Mem.R3.RowStdGrp.ptE_equiv | (intros; apply GlobalTheory.Mem.R3.RowStdGrp.ptE_equiv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_equiv_rowStage_unitary_standard_adelic : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px), I.Ok →
     ∃ e : Formalism.L2.Col.UAd X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ≃* Bridge.Gf X.toD7.sp.X',
       ∀ x, RowAd.ptE X (e x) = x.1 := by

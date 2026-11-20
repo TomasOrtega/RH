@@ -25,6 +25,11 @@ noncomputable def hm {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [
 section
 variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 
+/- English proof (translation)
+Rewrite using `[rhoH_apply, hm, Matrix.fromBlocks_mulVec]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Function.comp_def, LinearEquiv.sumArrowLequivProdArrow, Equiv.sumArrowEquivProdArrow]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Function.comp_def, LinearEquiv.sumArrowLequivProdArrow, Equiv.sumArrowEquivProdArrow, Matrix.neg_mulVec, sub_eq_neg_add]`.
+-/
 theorem rhoH_eqv (B : Germ.FB R d O) (a : O) (v : (Fin d ⊕ Fin d) → R) :
     rhoH B a (eqv R d v) = eqv R d ((hm B a).mulVec v) := by
   rw [rhoH_apply, hm, Matrix.fromBlocks_mulVec]
@@ -35,19 +40,33 @@ theorem rhoH_eqv (B : Germ.FB R d O) (a : O) (v : (Fin d ⊕ Fin d) → R) :
     simp [Function.comp_def, LinearEquiv.sumArrowLequivProdArrow, Equiv.sumArrowEquivProdArrow,
       Matrix.neg_mulVec, sub_eq_neg_add]
 
+/- English proof (translation)
+Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `(eqv R d).surjective y`. Rewrite using `[rhoH_eqv, LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply, Matrix.toLin'_apply]`.
+-/
 theorem conj_eq (B : Germ.FB R d O) (a : O) :
     (eqv R d).conj (Matrix.toLin' (hm B a)) = rhoH B a := by
   refine LinearMap.ext fun y => ?_
   obtain ⟨v, rfl⟩ := (eqv R d).surjective y
   rw [rhoH_eqv, LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply, Matrix.toLin'_apply]
 
+/- English proof (translation)
+Rewrite using `[← conj_eq, LinearEquiv.charpoly_conj, Matrix.charpoly_toLin']`.
+-/
 theorem charpoly_eq [Nontrivial R] (B : Germ.FB R d O) (a : O) : (rhoH B a).charpoly = (hm B a).charpoly := by
   rw [← conj_eq, LinearEquiv.charpoly_conj, Matrix.charpoly_toLin']
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [hm, rho, lin, bil, h.act, h.ad, MvPowerSeries.coeff_map]`.
+-/
 theorem hm_map {R₂ : Type} [CommRing R₂] {f : R →+* R₂} {B : Germ.FB R d O} {B₂ : Germ.FB R₂ d O}
     (h : IsMapOf f B B₂) (a : O) : hm B₂ a = (hm B a).map f := by
   ext (i | i) (j | j) <;> simp [hm, rho, lin, bil, h.act, h.ad, MvPowerSeries.coeff_map]
 
+/- English proof (translation)
+Take `⟨ρH, hρ⟩` from `(GlobalTheory.T.formal_hermitian_action_pairing R d O B).1`. Establish `key : ∀ a, hm B a = LinearMap.toMatrix' ((eqv R d).symm.conj (ρH a))` using `fun a => by`. Rewrite using `[hρ, ← conj_eq, LinearEquiv.conj_symm_conj, LinearMap.toMatrix'_toLin']`. Use `⟨⟨⟨⟨hm B, ?_⟩, fun a b => ?_⟩, ?_, fun a b => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[key, map_one, Module.End.one_eq_id, LinearEquiv.conj_id, LinearMap.toMatrix'_id]`.
+
+Simplify using `only [key]`. Rewrite using `[map_mul, Module.End.mul_eq_comp, LinearEquiv.conj_comp, LinearMap.toMatrix'_comp]`. Simplify using `only [key, map_zero]`. Simplify using `only [key, map_add]`.
+-/
 theorem exists_hom (B : Germ.FB R d O) :
     ∃ ρ : O →+* Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) R, ∀ a, ρ a = hm B a := by
   obtain ⟨ρH, hρ⟩ := (GlobalTheory.T.formal_hermitian_action_pairing R d O B).1
@@ -65,6 +84,13 @@ end
 section
 variable {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)] {R : Type} [CommRing R] {d : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ x : Fin r → (Fin d ⊕ Fin d) → R, (LinearIndependent R (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => rhoH B (RingOfIntegers.basis E q.2) (eqv R d (x q.1))) ∧ Submodule.span R (Set.range fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => rhoH B (RingOfIntege …`. Introduce `x`. Establish `e : (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => rhoH B (RingOfIntegers.basis E q.2) (eqv R d (x q.1))) = (eqv R d).toLinearMap ∘ (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => (hm B (RingOfIntegers.basis E q.2)).mulVec (x q.1))`. Use function extensionality and compare the values at `q`. Conclude with `rhoH_eqv _ _ _`.
+
+Rewrite using `[e, LinearMap.linearIndependent_iff _ (eqv R d).ker, Set.range_comp, ← Submodule.map_span, Submodule.map_eq_top_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Take `⟨y, rfl⟩ : ∃ y : Fin r → (Fin d ⊕ Fin d) → R, (fun i => eqv R d (y i)) = x` from `⟨fun i => (eqv R d).symm (x i), funext fun i => (eqv R d).apply_symm_apply _⟩`. Conclude with `⟨y, (key y).1 hx⟩`.
+
+Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨fun i => eqv R d (x i), (key x).2 hx⟩`.
+-/
 theorem hfree_iff (B : Germ.FB R d (𝓞 E)) (r : ℕ) : HFree B r ↔ ∃ x : Fin r → (Fin d ⊕ Fin d) → R,
     LinearIndependent R (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) =>
       (hm B (RingOfIntegers.basis E q.2)).mulVec (x q.1)) ∧
@@ -96,12 +122,18 @@ theorem hfree_iff (B : Germ.FB R d (𝓞 E)) (r : ℕ) : HFree B r ↔ ∃ x : F
   · rintro ⟨x, hx⟩
     exact ⟨fun i => eqv R d (x i), (key x).2 hx⟩
 
+/- English proof (translation)
+Introduce `a`. Rewrite using `[charpoly_eq, hm_map h, Matrix.charpoly_map, ← charpoly_eq, hB a, Polynomial.map_pow, Polynomial.map_map, Subsingleton.elim (f.comp (Int.castRingHom R)) (Int.castRingHom R₂)]`.
+-/
 theorem hchar_map [Nontrivial R] {R₂ : Type} [CommRing R₂] [Nontrivial R₂] {f : R →+* R₂} {B : Germ.FB R d (𝓞 E)}
     {B₂ : Germ.FB R₂ d (𝓞 E)} (h : IsMapOf f B B₂) {r : ℕ} (hB : HChar B r) : HChar B₂ r := by
   intro a
   rw [charpoly_eq, hm_map h, Matrix.charpoly_map, ← charpoly_eq, hB a, Polynomial.map_pow, Polynomial.map_map,
     Subsingleton.elim (f.comp (Int.castRingHom R)) (Int.castRingHom R₂)]
 
+/- English proof (translation)
+Introduce `a`. Apply `Polynomial.map_injective f hf` to reduce the goal to its premises. Rewrite using `[charpoly_eq, ← Matrix.charpoly_map, ← hm_map h, ← charpoly_eq, hB a, Polynomial.map_pow, Polynomial.map_map, Subsingleton.elim (f.comp (Int.castRingHom R)) (Int.castRingHom R₂)]`.
+-/
 theorem hchar_of_map [Nontrivial R] {R₂ : Type} [CommRing R₂] [Nontrivial R₂] {f : R →+* R₂}
     (hf : Function.Injective f) {B : Germ.FB R d (𝓞 E)}
     {B₂ : Germ.FB R₂ d (𝓞 E)} (h : IsMapOf f B B₂) {r : ℕ} (hB : HChar B₂ r) : HChar B r := by
@@ -110,6 +142,11 @@ theorem hchar_of_map [Nontrivial R] {R₂ : Type} [CommRing R₂] [Nontrivial R�
   rw [charpoly_eq, ← Matrix.charpoly_map, ← hm_map h, ← charpoly_eq, hB a, Polynomial.map_pow, Polynomial.map_map,
     Subsingleton.elim (f.comp (Int.castRingHom R)) (Int.castRingHom R₂)]
 
+/- English proof (translation)
+Introduce `a`. Take `⟨-, -, hb, -, hc, -⟩` from `GlobalTheory.T.formal_isomorphism_transport R d (𝓞 E) B B₂ φ ψ lam h`. Establish `e : (LinearEquiv.ofBijective (transH φ ψ lam) hb).conj (rhoH B₂ a) = rhoH B a`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `(LinearEquiv.ofBijective (transH φ ψ lam) hb).surjective y`.
+
+Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`. Conclude with `(LinearMap.congr_fun (hc a) v).symm`. Rewrite using `[← hB a, ← e, LinearEquiv.charpoly_conj]`.
+-/
 theorem hchar_iso [Nontrivial R] {B B₂ : Germ.FB R d (𝓞 E)} {φ ψ : Germ.Pt R 1 d} {lam : Germ.PS R 2 d}
     (h : GlobalTheory.CompanionTheory.Ar.Conj.IsIso B B₂ φ ψ lam) {r : ℕ} (hB : HChar B r) : HChar B₂ r := by
   intro a
@@ -121,6 +158,9 @@ theorem hchar_iso [Nontrivial R] {B B₂ : Germ.FB R d (𝓞 E)} {φ ψ : Germ.P
     exact (LinearMap.congr_fun (hc a) v).symm
   rw [← hB a, ← e, LinearEquiv.charpoly_conj]
 
+/- English proof (translation)
+Take `⟨ρ, hρ⟩` from `exists_hom B`. Use `GlobalTheory.T.representation_basis_linear_independent E R k f (Fin d ⊕ Fin d) r ρ` as an intermediate fact. Simplify using `only [hρ, ← hm_map h] at this`. Conclude with `(hfree_iff B r).2 (this ((hfree_iff B₂ r).1 hB))`.
+-/
 theorem hfree_of_map [IsLocalRing R] {k : Type} [Field k] {f : R →+* k} [IsLocalHom f] {B : Germ.FB R d (𝓞 E)}
     {B₂ : Germ.FB k d (𝓞 E)} (h : IsMapOf f B B₂) {r : ℕ} (hB : HFree B₂ r) : HFree B r := by
   obtain ⟨ρ, hρ⟩ := exists_hom B
@@ -128,6 +168,11 @@ theorem hfree_of_map [IsLocalRing R] {k : Type} [Field k] {f : R →+* k} [IsLoc
   simp only [hρ, ← hm_map h] at this
   exact (hfree_iff B r).2 (this ((hfree_iff B₂ r).1 hB))
 
+/- English proof (translation)
+Take `⟨ρ, hρ⟩` from `exists_hom B`. Establish `h1` using `GlobalTheory.T.representation_basis_linear_independent E R k f (Fin d ⊕ Fin d) r ρ`. Set `ρk : 𝓞 E →+* Module.End k ((Fin d ⊕ Fin d) → k)` to `((Matrix.toLinAlgEquiv' (R := k) (n := Fin d ⊕ Fin d)).toRingEquiv.toRingHom.comp f.mapMatrix).comp ρ`. Establish `hk : ∀ a, ρk a = Matrix.toLin' ((ρ a).map f)` using `fun a => rfl`. Establish `h2` using `GlobalTheory.T.characteristic_polynomial_free_generators E k ((Fin d ⊕ Fin d) → k) r ρk (fun a => by`.
+
+Rewrite using `[hk, Matrix.charpoly_toLin', Matrix.charpoly_map, hρ, ← charpoly_eq, hB a, Polynomial.map_pow, Polynomial.map_map, Subsingleton.elim (f.comp (Int.castRingHom R)) (Int.castRingHom k)])`. Simplify using `only [hk, Matrix.toLin'_apply] at h2`. Establish `h3` using `h1 h2`. Simplify using `only [hρ] at h3`. Conclude with `(hfree_iff B r).2 h3`.
+-/
 theorem hfree_char0 [IsLocalRing R] {k : Type} [Field k] [CharZero k] (f : R →+* k) [IsLocalHom f]
     {B : Germ.FB R d (𝓞 E)} {r : ℕ} (hB : HChar B r) : HFree B r := by
   obtain ⟨ρ, hρ⟩ := exists_hom B
@@ -145,6 +190,17 @@ theorem hfree_char0 [IsLocalRing R] {k : Type} [Field k] [CharZero k] (f : R →
 
 end
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `CharP.exists (IsLocalRing.ResidueField (X.presheaf.stalk z))`. Break down `CharP.char_is_prime_or_zero (IsLocalRing.ResidueField (X.presheaf.stalk z)) p with hpp | rfl` into its components or cases. Establish `h0 : (p : IsLocalRing.ResidueField (X.presheaf.stalk z)) = 0` using `CharP.cast_eq_zero _ p`. Take `⟨k, _, _, x, rfl, hx⟩` from `hF p hpp h0`. Set `f : X.presheaf.stalk (x (IsLocalRing.closedPoint k)) →+* k` to `(Scheme.stalkClosedPointTo x).hom`.
+
+Establish `: IsLocalHom f` using `inferInstanceAs (IsLocalHom (Scheme.stalkClosedPointTo x).hom)`. Establish `hpk : (p : k) = 0`. Assume the negation of the conclusion as `hne`. Establish `hu : IsUnit (f p)` using `by rw [map_natCast]; exact Ne.isUnit hne`. Establish `hu'` using `(isUnit_of_map_unit f _ hu).map (IsLocalRing.residue _)`.
+
+Rewrite `hu'` using `[map_natCast, h0]`. Conclude with `not_isUnit_zero hu'`. Establish `: Fact p.Prime` using `⟨hpp⟩`. Establish `: CharP k p` using `(CharP.charP_iff_prime_eq_zero hpp).2 hpk`. Take `⟨g₂, hm₂, -⟩` from `GlobalTheory.T.formal_germ_base_change E H hs X t _ k f _ d g`.
+
+Establish `e : spMap f ≫ X.fromSpecStalk (x (IsLocalRing.closedPoint k)) = x` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk x`. Establish `hx' : GeomPF t (spMap f ≫ X.fromSpecStalk (x (IsLocalRing.closedPoint k)))`. Rewrite using `[e]`. Conclude with `hx`. Conclude with `hfree_of_map hm₂ (GlobalTheory.T.height_char_free_geometric E H hs X t hP k p _ hx' d r g₂ (hchar_map hm₂ hc))`.
+
+Use `CharP.charP_to_charZero (IsLocalRing.ResidueField (X.presheaf.stalk z))` as an intermediate fact. Conclude with `hfree_char0 (IsLocalRing.residue (X.presheaf.stalk z)) hc`.
+-/
 theorem at_point (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)]
     (hs : ∀ a : 𝓞 E, star a = H.bar a) (X : Scheme.{0}) (t : SAB H X) (d r : ℕ) (hP : PowFns t) (z : X)
     (g : GermAt t (S := X.presheaf.stalk z) (X.fromSpecStalk z) d) (hc : HChar g.B r)
@@ -175,6 +231,9 @@ theorem at_point (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
 end PositivityTheory.Xgn.HodgeFreeStalk
 
 open PositivityTheory.Xgn.HodgeFreeStalk in
+/- English proof (translation)
+Introduce `E _ _ _ H _ hs X t Ω _ _ ξ d r M S hP hξ hc hF q`. Conclude with `at_point E H hs X t d r hP q.1 (S.g q) (hchar_of_map (hξ.inj q) (S.mapK q) (hchar_iso (S.iso q) hc)) (hF q)`.
+-/
 theorem PositivityTheory.Xgn.hodge_free_every_stalk : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X : Scheme.{0}) (t : SAB H X) (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Sp Ω ⟶ X) (d r : ℕ) (M : LieModel t.G ξ (Fin d → Ω)) (S : GermSys t ξ M), PowFns t → IsCptGen ξ → HChar S.g₀.B r → (∀ (q : Cpt ξ) (p : ℕ), p.Prime → (p : X.residueField q.1) = 0 → FibPF t q.1) → ∀ q : Cpt ξ, HFree (S.g q).B r := by
   intro E _ _ _ H _ hs X t Ω _ _ ξ d r M S hP hξ hc hF q
   exact at_point E H hs X t d r hP q.1 (S.g q)

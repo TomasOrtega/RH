@@ -8,6 +8,9 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.C6
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.DensityAveraging.nzMin`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nonzero_minor_count_le {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     (D : B.RealPlaceData k r Wp Wq) (γ : B.Mat k r) : Formalism.FourierDecayAlt.DensityAveraging.nzMin D γ ≤ r + 2 := by
@@ -15,6 +18,17 @@ theorem nonzero_minor_count_le {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp
   calc _ ≤ (Finset.univ : Finset (Fin (r + 2))).card := Finset.card_filter_le _ _
     _ = r + 2 := by simp
 
+/- English proof (translation)
+Introduce and unpack `⟨C0, hB⟩ ⟨C1, hJ⟩ ⟨C2, hT⟩`. Use `⟨max C0 (max C1 C2), ?_⟩` and prove the remaining obligations. Introduce `k r Wp Wq _ _ _ _ _ _ D A ε mm F' γ O hr hε hA hmm hF hsupp hbig hrel hG`. Establish `H : Formalism.FourierDecayAlt.DensityAveraging.DensHyp (max C0 (max C1 C2)) D A ε mm F'` using `⟨hr, hε, hA, hmm, hF, hsupp, hbig⟩`. Establish `h0 : C0 ≤ max C0 (max C1 C2)` using `le_max_left _ _`.
+
+Establish `h1 : C1 ≤ max C0 (max C1 C2)` using `le_trans (le_max_left _ _) (le_max_right _ _)`. Establish `h2 : C2 ≤ max C0 (max C1 C2)` using `le_trans (le_max_right _ _) (le_max_right _ _)`. Establish `key : ∀ n : ℕ, ∀ γ : B.Mat k r, r + 2 - Formalism.FourierDecayAlt.DensityAveraging.nzMin D γ = n → IsRelevant D γ → 0 < Gf k r D.z D.z' γ → Formalism.FourierDecayAlt.DensityAveraging.VanAt D F' γ`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+
+Consider the case `_ n ih`. Introduce `γ hn hrelγ hGγ`. Establish `hMore : Formalism.FourierDecayAlt.DensityAveraging.MoreBlocks D F' γ`. Introduce `γ' hrel' hG' hlt`. Establish `hle` using `nonzero_minor_count_le D γ'`.
+
+Conclude with `ih (r + 2 - Formalism.FourierDecayAlt.DensityAveraging.nzMin D γ') (by omega) γ' rfl hrel' hG'`. Distinguish the cases in `hbc : γ ∈ bigPos D`. Conclude with `hB _ h0 k r Wp Wq D A ε mm F' γ H hbc hrelγ`. Establish `hz : ∃ l : Fin (r + 2), Dmin k r D.z D.z' γ l = 0`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hbc ⟨hrelγ.1, hGγ, fun l _ hl => hne ⟨l, hl⟩⟩`. Distinguish the cases in `hcj : Formalism.FourierDecayAlt.DensityAveraging.CaseJ D γ`. Conclude with `hJ _ h1 k r Wp Wq D A ε mm F' γ H hrelγ hGγ hcj hMore`. Conclude with `hT _ h2 k r Wp Wq D A ε mm F' γ H hrelγ hGγ ⟨hz, hcj⟩ hMore`. Conclude with `key _ γ rfl hrel hG O`.
+-/
 theorem density_lemma_of_reductions : Formalism.FourierDecayAlt.DensityAveraging.LemmaDensOfSteps := by
   rintro ⟨C0, hB⟩ ⟨C1, hJ⟩ ⟨C2, hT⟩
   refine ⟨max C0 (max C1 C2), ?_⟩

@@ -27,20 +27,40 @@ section Minf
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S} {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `{ h with lev := h' }`.
+-/
 theorem isMultMap_relevel {J J' : Set (GA D V)} {χ χ' : GA D V → ℂ} {T : MMap M} (h : IsMultMap θ M J χ T)
     (h' : ∀ v, ∀ k ∈ J', ∀ g, T v (g * k) = χ' k * T v g) : IsMultMap θ M J' χ' T :=
   { h with lev := h' }
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `hab`. Introduce and unpack `_ ⟨κ, hκ, rfl⟩`. Conclude with `⟨κ, Formalism.L2.NG.Cong.of_mul_left D.host.E n hκ, rfl⟩`.
+-/
 theorem levN_anti (P : principalLevelFrame.RowPsi V n) {a b : ℕ} (hab : a ∣ b) : principalLevelFrame.levN P b ⊆ principalLevelFrame.levN P a := by
   obtain ⟨c, rfl⟩ := hab
   rintro _ ⟨κ, hκ, rfl⟩
   exact ⟨κ, Formalism.L2.NG.Cong.of_mul_left D.host.E n hκ, rfl⟩
 
+/- English proof (translation)
+Rewrite `hT`, the goal using `[GlobalTheory.MultMem.mem_mult_iff]`. Conclude with `isMultMap_relevel hT fun v k hk g => hT.lev v k (levN_anti P hab hk) g`.
+-/
 theorem mult_levN_mono (P : principalLevelFrame.RowPsi V n) {a b : ℕ} (hab : a ∣ b) {T : MMap M}
     (hT : T ∈ Mult θ M (principalLevelFrame.levN P a) (fun _ => 1)) : T ∈ Mult θ M (principalLevelFrame.levN P b) (fun _ => 1) := by
   rw [GlobalTheory.MultMem.mem_mult_iff] at hT ⊢
   exact isMultMap_relevel hT fun v k hk g => hT.lev v k (levN_anti P hab hk) g
 
+/- English proof (translation)
+Unfold `principalLevelFrame.Minf`. Establish `hdir : Directed (· ≤ ·) (fun N : ℕ => Mult θ M (principalLevelFrame.levN P (N + 1)) (fun _ => 1))`. Introduce `a b`. Use `⟨(a + 1) * (b + 1) - 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `T hT`.
+
+Establish `e : (a + 1) * (b + 1) - 1 + 1 = (a + 1) * (b + 1)` using `Nat.sub_add_cancel (Nat.mul_pos (Nat.succ_pos a) (Nat.succ_pos b))`. Use `show T ∈ Mult θ M (principalLevelFrame.levN P ((a + 1) * (b + 1) - 1 + 1)) (fun _ => 1)`. Rewrite using `[e]`. Conclude with `mult_levN_mono P (Dvd.intro _ rfl) hT`. Introduce `T hT`.
+
+Establish `e : (a + 1) * (b + 1) - 1 + 1 = (a + 1) * (b + 1)` using `Nat.sub_add_cancel (Nat.mul_pos (Nat.succ_pos a) (Nat.succ_pos b))`. Use `show T ∈ Mult θ M (principalLevelFrame.levN P ((a + 1) * (b + 1) - 1 + 1)) (fun _ => 1)`. Rewrite using `[e]`. Conclude with `mult_levN_mono P (Dvd.intro_left _ rfl) hT`. Rewrite using `[Submodule.mem_iSup_of_directed _ hdir]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨N, hN⟩`. Conclude with `⟨N + 1, Nat.succ_pos N, hN⟩`. Introduce and unpack `⟨N, hN, hT⟩`. Use `⟨N - 1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.sub_add_cancel hN]`. Conclude with `hT`.
+-/
 theorem mem_Minf_iff (P : principalLevelFrame.RowPsi V n) (T : MMap M) :
     T ∈ principalLevelFrame.Minf θ P M ↔ ∃ N : ℕ, 0 < N ∧ T ∈ Mult θ M (principalLevelFrame.levN P N) (fun _ => 1) := by
   unfold principalLevelFrame.Minf
@@ -66,10 +86,18 @@ theorem mem_Minf_iff (P : principalLevelFrame.RowPsi V n) (T : MMap M) :
     rw [Nat.sub_add_cancel hN]
     exact hT
 
+/- English proof (translation)
+The claim follows from `(mem_Minf_iff P T).2 ⟨N, hN, hT⟩`.
+-/
 theorem mem_Minf_of (P : principalLevelFrame.RowPsi V n) {N : ℕ} (hN : 0 < N) {T : MMap M}
     (hT : T ∈ Mult θ M (principalLevelFrame.levN P N) (fun _ => 1)) : T ∈ principalLevelFrame.Minf θ P M :=
   (mem_Minf_iff P T).2 ⟨N, hN, hT⟩
 
+/- English proof (translation)
+Take `⟨N, hN, hT⟩` from `(mem_Minf_iff P T).1 hT`. Use `⟨N, hN, fun κ hκ => ?_⟩` and prove the remaining obligations. Rewrite `hT` using `[GlobalTheory.MultMem.mem_mult_iff]`. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[principalLevelFrame.actM_apply, hT.lev v _ ⟨κ, hκ, rfl⟩ g, one_mul]`.
+-/
 theorem minf_smooth (P : principalLevelFrame.RowPsi V n) {T : MMap M} (hT : T ∈ principalLevelFrame.Minf θ P M) :
     ∃ N : ℕ, 0 < N ∧ ∀ κ, Formalism.L2.NG.Cong D.host.E n N κ → principalLevelFrame.actM P M κ T = T := by
   obtain ⟨N, hN, hT⟩ := (mem_Minf_iff P T).1 hT
@@ -80,12 +108,20 @@ theorem minf_smooth (P : principalLevelFrame.RowPsi V n) {T : MMap M} (hT : T �
   funext g
   rw [principalLevelFrame.actM_apply, hT.lev v _ ⟨κ, hκ, rfl⟩ g, one_mul]
 
+/- English proof (translation)
+Take `⟨N, -, hT⟩` from `(mem_Minf_iff P T).1 hT`. Rewrite `hT`, the goal using `[GlobalTheory.MultMem.mem_mult_iff]`. Conclude with `isMultMap_relevel hT hl`.
+-/
 theorem mult_of_minf (P : principalLevelFrame.RowPsi V n) {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M}
     (hT : T ∈ principalLevelFrame.Minf θ P M) (hl : ∀ v, ∀ k ∈ J, ∀ g, T v (g * k) = χ k * T v g) : T ∈ Mult θ M J χ := by
   obtain ⟨N, -, hT⟩ := (mem_Minf_iff P T).1 hT
   rw [GlobalTheory.MultMem.mem_mult_iff] at hT ⊢
   exact isMultMap_relevel hT hl
 
+/- English proof (translation)
+Take `⟨N, hN, hT⟩` from `(mem_Minf_iff P T).1 hT`. Take `⟨N', hN', hN'c⟩` from `hc h N hN`. Rewrite `hT` using `[GlobalTheory.MultMem.mem_mult_iff]`. Use `mem_Minf_of P hN' ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.MultMem.mem_mult_iff]`.
+
+Use `GlobalTheory.MultTranslate.isMultMap_rTr (J' := principalLevelFrame.levN P N') (χ' := fun _ => 1) (P.into h) (fun k hk => by` as an intermediate fact. Take `⟨κ, hκ, rfl⟩` from `hk`. Use `⟨⟨h⁻¹ * κ * h, hN'c κ hκ, by simp [map_mul, map_inv]⟩, rfl⟩) hT` and prove the remaining obligations. Conclude with `this`.
+-/
 theorem minf_stable (P : principalLevelFrame.RowPsi V n) (hc : principalLevelFrame.CongConj D.host.E n) (h : Formalism.AUTREP.GAf D.host.E n)
     {T : MMap M} (hT : T ∈ principalLevelFrame.Minf θ P M) : principalLevelFrame.actM P M h T ∈ principalLevelFrame.Minf θ P M := by
   obtain ⟨N, hN, hT⟩ := (mem_Minf_iff P T).1 hT
@@ -108,12 +144,18 @@ section Forms
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨a, ha, hx⟩` from `(mem_Minf_iff P x).1 hx`. Take `⟨b, hb, hy⟩` from `(mem_Minf_iff P y).1 hy`. Conclude with `⟨a * b, Nat.mul_pos ha hb, mult_levN_mono P (Dvd.intro _ rfl) hx, mult_levN_mono P (Dvd.intro_left _ rfl) hy⟩`.
+-/
 theorem exists_common (P : principalLevelFrame.RowPsi V n) {x y : MMap M} (hx : x ∈ principalLevelFrame.Minf θ P M) (hy : y ∈ principalLevelFrame.Minf θ P M) :
     ∃ N : ℕ, 0 < N ∧ x ∈ Mult θ M (principalLevelFrame.levN P N) (fun _ => 1) ∧ y ∈ Mult θ M (principalLevelFrame.levN P N) (fun _ => 1) := by
   obtain ⟨a, ha, hx⟩ := (mem_Minf_iff P x).1 hx
   obtain ⟨b, hb, hy⟩ := (mem_Minf_iff P y).1 hy
   exact ⟨a * b, Nat.mul_pos ha hb, mult_levN_mono P (Dvd.intro _ rfl) hx, mult_levN_mono P (Dvd.intro_left _ rfl) hy⟩
 
+/- English proof (translation)
+Take `⟨a, ha, hx, hy⟩` from `exists_common P hx hy`. Take `⟨b, hb, hz⟩` from `(mem_Minf_iff P z).1 hz`. Conclude with `⟨a * b, Nat.mul_pos ha hb, mult_levN_mono P (Dvd.intro _ rfl) hx, mult_levN_mono P (Dvd.intro _ rfl) hy, mult_levN_mono P (Dvd.intro_left _ rfl) hz⟩`.
+-/
 theorem exists_common3 (P : principalLevelFrame.RowPsi V n) {x y z : MMap M} (hx : x ∈ principalLevelFrame.Minf θ P M)
     (hy : y ∈ principalLevelFrame.Minf θ P M) (hz : z ∈ principalLevelFrame.Minf θ P M) :
     ∃ N : ℕ, 0 < N ∧ x ∈ Mult θ M (principalLevelFrame.levN P N) (fun _ => 1) ∧ y ∈ Mult θ M (principalLevelFrame.levN P N) (fun _ => 1) ∧
@@ -125,6 +167,11 @@ theorem exists_common3 (P : principalLevelFrame.RowPsi V n) {x y z : MMap M} (hx
 
 variable (μ : Measure (GA D V)) (𝓕 : Set (GA D V))
 
+/- English proof (translation)
+Establish `key` using `fun N : ℕ => GlobalTheory.SchurConst.ipM_posDef D θ V S M (principalLevelFrame.levN P N) (fun _ => 1) μ 𝓕 hθ hμ h𝓕 (hS V hV S θ M _ _ μ 𝓕) (GlobalTheory.GardingVec.sm_ne_bot D V S M)`. Use `⟨fun x hx y hy z hz c => ?_, fun x hx y hy => ?_, fun x hx hx0 => ?_⟩` and prove the remaining obligations. Take `⟨N, -, hx, hy, hz⟩` from `exists_common3 P hx hy hz`. Conclude with `((key N).1 x hx y hy z hz c).1`. Take `⟨N, -, hx, hy⟩` from `exists_common P hx hy`.
+
+Conclude with `((key N).1 y hy x hx 0 (Submodule.zero_mem _) 0).2`. Take `⟨N, -, hx⟩` from `(mem_Minf_iff P x).1 hx`. Conclude with `(key N).2 x hx hx0`.
+-/
 theorem minf_sesq (P : principalLevelFrame.RowPsi V n) (hS : SchurAll D) (hV : V.SigOK) (hθ : IsInfFam θ) (hμ : μ.IsHaarMeasure)
     (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ) :
     (∀ x ∈ principalLevelFrame.Minf θ P M, ∀ y ∈ principalLevelFrame.Minf θ P M, ∀ z ∈ principalLevelFrame.Minf θ P M, ∀ c : ℂ,
@@ -141,6 +188,13 @@ theorem minf_sesq (P : principalLevelFrame.RowPsi V n) (hS : SchurAll D) (hV : V
   · obtain ⟨N, -, hx⟩ := (mem_Minf_iff P x).1 hx
     exact (key N).2 x hx hx0
 
+/- English proof (translation)
+Establish `hfd : FiniteDimensional ℂ (Mult θ M (principalLevelFrame.levN P N) (fun _ => 1))`. Take `⟨U, hUo, hUk⟩` from `hU N hN`. Conclude with `hH V hV S θ M _ _ hθ ⟨U, hUo, fun k hk hkf => ⟨hUk k hk hkf, rfl⟩⟩`. Establish `hle : Submodule.span ℂ {x | x ∈ principalLevelFrame.Minf θ P M ∧ ∀ κ, Formalism.L2.NG.Cong D.host.E n N κ → principalLevelFrame.actM P M κ x = x} ≤ Mult θ M (principalLevelFrame.levN P N) (fun _ => 1)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨hx, hfix⟩`. Use `mult_of_minf P hx fun v k hk g => ?_` and prove the remaining obligations. Take `⟨κ, hκ, rfl⟩` from `hk`. Use `congrFun (congrArg (fun T : MMap M => T v) (hfix κ hκ)) g` as an intermediate fact. Rewrite `this` using `[principalLevelFrame.actM_apply]`.
+
+Rewrite using `[this, one_mul]`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem minf_adm (P : principalLevelFrame.RowPsi V n) (hH : HCAll D) (hV : V.SigOK) (hθ : IsInfFam θ)
     (hU : ∀ N : ℕ, 0 < N → ∃ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) ∧ ∀ k ∈ U, k ∈ GfC V → k ∈ principalLevelFrame.levN P N)
     (N : ℕ) (hN : 0 < N) :
@@ -166,10 +220,18 @@ section Isot
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {A : Type} [AddCommGroup A] [Module ℂ A]
 
+/- English proof (translation)
+The claim follows from `iSup₂_le fun _ h => h.2`.
+-/
 theorem isotIn_le {D : D7} (ρ : Formalism.AUTREP.GAf D.host.E n →* Module.End ℂ A) (C : Submodule ℂ A)
     (π : Formalism.L2.NG.FinTyp D.host.E n) : principalLevelFrame.isotIn (D := D) ρ C π ≤ C :=
   iSup₂_le fun _ h => h.2
 
+/- English proof (translation)
+Establish `: principalLevelFrame.isotIn (D` using `D) ρ C π ≤ (principalLevelFrame.isotIn (D := D) ρ C π).comap (ρ h) := by`. Use `iSup₂_le fun Φ hΦ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`. Use `show ρ h (Φ f) ∈ principalLevelFrame.isotIn (D := D) ρ C π`. Rewrite using `[← hΦ.1 h f]`.
+
+Conclude with `(le_iSup₂ (f := fun (Φ : π.S →ₗ[ℂ] A) (_ : principalLevelFrame.IsEqvA ρ π Φ ∧ LinearMap.range Φ ≤ C) => LinearMap.range Φ) Φ hΦ) (LinearMap.mem_range_self Φ _)`. Conclude with `this hx`.
+-/
 theorem isotIn_stable {D : D7} (ρ : Formalism.AUTREP.GAf D.host.E n →* Module.End ℂ A) (C : Submodule ℂ A)
     (π : Formalism.L2.NG.FinTyp D.host.E n) (h : Formalism.AUTREP.GAf D.host.E n) {x : A}
     (hx : x ∈ principalLevelFrame.isotIn (D := D) ρ C π) : ρ h x ∈ principalLevelFrame.isotIn (D := D) ρ C π := by
@@ -188,12 +250,18 @@ end GlobalTheory.FinTypesRows
 
 namespace GlobalTheory.FinTypesRows
 
+/- English proof (translation)
+Take `⟨N', hN', h⟩` from `GlobalTheory.T.principal_congruence_level_contained D V n P hF hP N hN`. Conclude with `⟨GlobalTheory.HolDict.PrincLev.congGroup V N', GlobalTheory.HolDict.PrincLev.isOpen_congGroup V hN', fun k hk hkf => h k hkf hk⟩`.
+-/
 theorem levN_open {D : D7} {V : HSp D} {n : ℕ} (P : principalLevelFrame.RowPsi V n) {hF : D.host.F = maximalRealSubfield D.host.E}
     (hP : StdFrame hF P) (N : ℕ) (hN : 0 < N) :
     ∃ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) ∧ ∀ k ∈ U, k ∈ GfC V → k ∈ principalLevelFrame.levN P N := by
   obtain ⟨N', hN', h⟩ := GlobalTheory.T.principal_congruence_level_contained D V n P hF hP N hN
   exact ⟨GlobalTheory.HolDict.PrincLev.congGroup V N', GlobalTheory.HolDict.PrincLev.isOpen_congGroup V hN', fun k hk hkf => h k hkf hk⟩
 
+/- English proof (translation)
+Take `⟨N, hN, h⟩` from `GlobalTheory.T.exists_lattice_congruence_in_level_character_one D V β L`. Take `⟨N', hN', h'⟩` from `GlobalTheory.T.exists_congruence_level_maps_into_lattice_congruence D V n P hF hP N hN`. Conclude with `⟨N', hN', fun κ hκ => h _ (P.into κ) (h' κ hκ)⟩`.
+-/
 theorem levOK_levS {D : D7} {V : HSp D} {n : ℕ} (P : principalLevelFrame.RowPsi V n) {hF : D.host.F = maximalRealSubfield D.host.E}
     (hP : StdFrame hF P) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) :
     principalLevelFrame.LevOK P (levS V β L) (levChi V β L) := by
@@ -205,6 +273,37 @@ end GlobalTheory.FinTypesRows
 
 namespace GlobalTheory.FinTypesRows
 
+/- English proof (translation)
+Introduce `D V S θ M P hF β L e μ 𝓕 hI hV hθ hStd hμ h𝓕 he`. Establish `hc : principalLevelFrame.CongConj D.host.E D.R.r` using `GlobalTheory.T.unitary_congruence_conj_contains_congruence D.host.E D.R.r`. Take `⟨hsesq, hherm, hpos⟩` from `minf_sesq (θ := θ) (M := M) μ 𝓕 P hI.schur hV hθ hμ h𝓕`. Establish `hstab : ∀ h, ∀ x ∈ principalLevelFrame.Minf θ P M, principalLevelFrame.actM P M h x ∈ principalLevelFrame.Minf θ P M` using `fun h x hx => minf_stable P hc h hx`. Establish `hinv` using `GlobalTheory.T.schur_pairing_invariant_under_standard_group D V S θ M D.R.r P μ 𝓕 hI.schur hV hθ hμ h𝓕`.
+
+Establish `hadm` using `minf_adm (M := M) P hI.hc hV hθ (levN_open P hStd)`. Establish `hsm : ∀ x ∈ principalLevelFrame.Minf θ P M, ∃ N : ℕ, 0 < N ∧ ∀ κ, Formalism.L2.NG.Cong D.host.E D.R.r N κ → principalLevelFrame.actM P M κ x = x` using `fun x hx => minf_smooth P hx`. Establish `horth` using `GlobalTheory.IsotOrth.isotIn_orthogonal D D.R.r (MMap M) (principalLevelFrame.actM P M) (principalLevelFrame.Minf θ P M) (ipM M μ 𝓕) hsesq hherm hpos hstab hinv hadm`. Use `⟨le_antisymm (iSup_le fun π => inf_le_left) ?_, fun π π' hne x hx y hy => horth π π' hne x hx.2 y hy.2⟩` and prove the remaining obligations. Introduce `T hT`.
+
+Establish `hTm` using `(mem_goodPart θ M (levS V β L) (levChi V β L) e T).1 hT`. Take `⟨N0, hN0, h0⟩` from `levOK_levS P hStd β L`. Establish `hTC : T ∈ principalLevelFrame.Minf θ P M`. Use `mem_Minf_of P hN0 ?_` and prove the remaining obligations. Establish `hl` using `principalLevelFrame.mult_lev hTm.1`.
+
+Rewrite using `[GlobalTheory.MultMem.mem_mult_iff]`. Rewrite `hTm` using `[GlobalTheory.MultMem.mem_mult_iff]`. Conclude with `isMultMap_relevel hTm.1 fun v k hk g => by`. Take `⟨κ, hκ, rfl⟩` from `hk`. Rewrite using `[hl v _ (h0 κ hκ).1 g, (h0 κ hκ).2]`.
+
+Set `O : Option (levS V β L) → MMap M →ₗ[ℂ] MMap M` to `fun i => match i with`. Consider the case `none => postOn M e - LinearMap.id`. Consider the case `some k => postOn M (principalLevelFrame.rtA k.1) - levChi V β L k.1 • LinearMap.id`. Establish `hJf : ∀ k ∈ levS V β L, k ∈ GfC V` using `fun k hk => hk.1`. Establish `hrt : ∀ π, ∀ k ∈ GfC V, ∀ x ∈ principalLevelFrame.isotIn (principalLevelFrame.actM P M) (principalLevelFrame.Minf θ P M) π, postOn M (principalLevelFrame.rtA k) x ∈ principalLevelFrame.isotIn (principalLevelFrame.actM P M) (principalLevelFrame.Minf θ P M) π`.
+
+Introduce `π k hk x hx`. Take `⟨h, rfl⟩` from `P.onto k hk`. Conclude with `isotIn_stable _ _ π h hx`. Take `⟨s, c, hs, rfl⟩` from `he`. Establish `hpres : ∀ i π, ∀ x ∈ principalLevelFrame.isotIn (principalLevelFrame.actM P M) (principalLevelFrame.Minf θ P M) π, O i x ∈ principalLevelFrame.isotIn (principalLevelFrame.actM P M) (principalLevelFrame.Minf θ P M) π`.
+
+Introduce `i π x hx`. Break down `i with _ | k` into its components or cases. Use `show postOn M (∑ g ∈ s, c g • principalLevelFrame.rtA g) x - x ∈ _`. Use `Submodule.sub_mem _ ?_ hx` and prove the remaining obligations. Establish `: postOn M (∑ g ∈ s, c g • principalLevelFrame.rtA g) x = ∑ g ∈ s, c g • postOn M (principalLevelFrame.rtA g) x`.
+
+Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[postOn_apply, LinearMap.sum_apply]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun g hg => Submodule.smul_mem _ _ (hrt π g (hs g hg) x hx)`.
+
+Use `show postOn M (principalLevelFrame.rtA k.1) x - levChi V β L k.1 • x ∈ _`. Conclude with `Submodule.sub_mem _ (hrt π k.1 (hJf k.1 k.2) x hx) (Submodule.smul_mem _ _ hx)`. Establish `hTO : ∀ i, O i T = 0`. Introduce `i`. Break down `i with _ | k` into its components or cases.
+
+Use `show postOn M (∑ g ∈ s, c g • principalLevelFrame.rtA g) T - T = 0`. Rewrite using `[sub_eq_zero]`. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `v`. Conclude with `hTm.2 v`.
+
+Use `show postOn M (principalLevelFrame.rtA k.1) T - levChi V β L k.1 • T = 0`. Rewrite using `[sub_eq_zero]`. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use function extensionality and compare the values at `g`.
+
+Conclude with `principalLevelFrame.mult_lev hTm.1 v k.1 k.2 g`. Establish `hspan` using `GlobalTheory.T.smooth_admissible_unitary_mem_sup_isotypic_parts D D.R.r (MMap M) (principalLevelFrame.actM P M) (principalLevelFrame.Minf θ P M) (ipM M μ 𝓕) hsesq hherm hpos hstab hinv hadm hsm T hTC`. Establish `hdec` using `GlobalTheory.T.kernel_vector_sum_of_isotypic_pieces D D.R.r (MMap M) (principalLevelFrame.actM P M) (principalLevelFrame.Minf θ P M) (ipM M μ 𝓕) hsesq hherm hpos horth (Option (levS V β L)) O hpres T hspan hTO`. Establish `hle : (⨆ π : Formalism.L2.NG.FinTyp D.host.E D.R.r, (principalLevelFrame.isotIn (principalLevelFrame.actM P M) (principalLevelFrame.Minf θ P M) π ⊓ ⨅ i, LinearMap.ker (O i))) ≤ ⨆ π, principalLevelFrame.isotL θ P M (levS V β L) (levChi V β L) (∑ g ∈ s, c g • principalLevelFrame.rt …`. Use `iSup_mono fun π => ?_` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨hy, hyO⟩`. Use `⟨?_, hy⟩` and prove the remaining obligations. Establish `hyO' : ∀ i, O i y = 0` using `fun i => (Submodule.mem_iInf _).1 hyO i`. Establish `hyC` using `isotIn_le _ _ π hy`. Express the relevant statement in the definitionally equal form `y ∈ goodPart θ M (levS V β L) (levChi V β L) (∑ g ∈ s, c g • principalLevelFrame.rtA g)`.
+
+Rewrite using `[mem_goodPart]`. Use `⟨mult_of_minf P hyC fun v k hk g => ?_, fun v => ?_⟩` and prove the remaining obligations. Use `congrFun (congrArg (fun T : MMap M => T v) (sub_eq_zero.1 (hyO' (some ⟨k, hk⟩)))) g` as an intermediate fact. Conclude with `this`. Use `congrArg (fun T : MMap M => T v) (sub_eq_zero.1 (hyO' none))` as an intermediate fact.
+
+Conclude with `this`. Conclude with `hle hdec`.
+-/
 theorem isotL_span_orth : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (θ : InfFam D) (M : DSModel V S) (P : principalLevelFrame.RowPsi V D.R.r) (hF : D.host.F = maximalRealSubfield D.host.E) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (e : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), Inputs D → V.SigOK → IsInfFam θ → StdFrame hF P → μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ → (∃ (s : Finset (GA D V)) (c : GA D V → ℂ), (∀ g ∈ s, g ∈ GfC V) ∧ e = ∑ g ∈ s, c g • principalLevelFrame.rtA g) → (⨆ π, principalLevelFrame.isotL θ P M (levS V β L) (levChi V β L) e π) = goodPart θ M (levS V β L) (levChi V β L) e ∧ ∀ π π', ¬ π.Iso π' → ∀ x ∈ principalLevelFrame.isotL θ P M (levS V β L) (levChi V β L) e π, ∀ y ∈ principalLevelFrame.isotL θ P M (levS V β L) (levChi V β L) e π', ipM M μ 𝓕 x y = 0 := by
   intro D V S θ M P hF β L e μ 𝓕 hI hV hθ hStd hμ h𝓕 he
   have hc : principalLevelFrame.CongConj D.host.E D.R.r := GlobalTheory.T.unitary_congruence_conj_contains_congruence D.host.E D.R.r

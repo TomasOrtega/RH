@@ -10,6 +10,11 @@ open scoped BigOperators Real
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Unfold `thetaChar theta thetaTerm eC`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Establish `h : ((fun i => (n i : ℂ)) + ofRealVec a) = shiftVec a n` using `rfl`. Rewrite using `[h]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaChar_ofRealVec_eq_theta {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) :
     thetaChar τ (ofRealVec a) (ofRealVec b) = fun z => theta a b z τ := by
   funext z
@@ -20,6 +25,11 @@ theorem thetaChar_ofRealVec_eq_theta {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ)
   congr 1
   ring
 
+/- English proof (translation)
+Use `⟨fun i => (a i).re, fun i => ?_, funext fun i => ?_⟩` and prove the remaining obligations. Break down `ha i with h | h` into its components or cases. Use `left`. Simplify using `[h]`. Use `right`.
+
+Simplify using `[h]`. Apply the tactic sequence `rcases ha i with h | h <;> simp [ofRealVec, h]`.
+-/
 theorem exists_ofRealVec_of_half {g : ℕ} (a : Fin g → ℂ) (ha : ∀ i, a i = 0 ∨ a i = 1 / 2) :
     ∃ a' : Fin g → ℝ, (∀ i, a' i = 0 ∨ a' i = 1 / 2) ∧ a = ofRealVec a' := by
   refine ⟨fun i => (a i).re, fun i => ?_, funext fun i => ?_⟩
@@ -28,6 +38,19 @@ theorem exists_ofRealVec_of_half {g : ℕ} (a : Fin g → ℂ) (ha : ∀ i, a i 
     · right; simp [h]
   · rcases ha i with h | h <;> simp [ofRealVec, h]
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 g τ a₀ b₀ hs hp ha₀ hb₀`. Establish `hτ : τ ∈ SiegelH (Fin g)` using `⟨hs, hp⟩`. Take `⟨a, ha, rfl⟩` from `exists_ofRealVec_of_half a₀ ha₀`. Take `⟨b, hb, rfl⟩` from `exists_ofRealVec_of_half b₀ hb₀`. Take `⟨N, hN, hE, hgen⟩` from `h1 g τ hτ`.
+
+Take `⟨X, ex, D, hX⟩` from `h2 g τ hτ N hN`. Establish `hq` using `h3 g τ hτ N hN hgen X ex D hX`. Take `⟨inst, hc, hadd⟩` from `h4 g τ hτ N hN X ex D hX hq`. Take `⟨hab, hsm⟩` from `h5 g τ hτ N hN X ex D hX hq hc`. Take `⟨L, u, hL, hu⟩` from `h6 g τ hτ N hN X ex D hX hq hE hadd a b ha hb`.
+
+Take `⟨hr, hsy, th, hth⟩` from `h7 g τ hτ N hN X ex D hX hq hE hadd a b ha hb L u hL hu`. Establish `ham` using `h8 g τ hτ N hN X ex D hX hq hE hadd a b ha hb L u hL hu`. Establish `hk` using `h9 g τ hτ N hN X ex D hX hq hE hadd a b ha hb L u hL hu hab hsm`. Establish `hend` using `h10 g τ hτ N hN X ex D hX hq hadd`. Take `⟨hex, hΛ, -⟩` from `hu`.
+
+Use `⟨{ A := X, isAb := hab, g := g, smoothDim := hsm, L := L, isLB := hL, rigid := hr, sym := hsy, ample := ham, ktriv := hk }, u, th, rfl, fun z => ?_, ?_, fun F hF => ?_⟩` and prove the remaining obligations. Use `(hΛ z).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨n, n', rfl⟩`. Conclude with `⟨n', n, add_comm _ _⟩`. Introduce and unpack `⟨m, n, rfl⟩`.
+
+Conclude with `⟨n, m, add_comm _ _⟩`. Rewrite using `[thetaChar_ofRealVec_eq_theta]`. Conclude with `hth`. Take `⟨f, hf, hfz⟩` from `hend F fun l hl => (hΛ _).1 (hF l ((hΛ _).2 hl))`. Use `⟨f, hf, fun z => ?_⟩` and prove the remaining obligations.
+
+Substitute `hex` using the available equality. Conclude with `hfz z`.
+-/
 theorem polarisedTorus_algebraic_of_parts :
     (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∃ N : ℕ, 3 ≤ N ∧ Even N ∧ (∀ (d
         : ℕ) (f : (Fin g → ℂ) → ℂ), (Differentiable ℂ f ∧ ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ

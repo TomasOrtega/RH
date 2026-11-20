@@ -7,6 +7,11 @@ namespace GlobalTheory.CompanionTheory.Ar.FlagBun.CoordGen
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.FlagBun
 
+/- English proof (translation)
+Establish `h : (A * C) = fun i => ∑ j, A i j • C j`. Use extensionality with `i k`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations.
+
+Use `(Matrix.detRowAlternating (n := m) (R := R)).toMultilinearMap.map_smul_univ (fun i => A i (f i)) (fun i => C (f i))` as an intermediate fact. Conclude with `this.trans (by rw [smul_eq_mul]; rfl)`.
+-/
 theorem det_mul_eq_sum {R : Type*} [CommRing R] {m p : Type*} [Fintype m] [DecidableEq m] [Fintype p]
     [DecidableEq p] (A : Matrix m p R) (C : Matrix p m R) :
     (A * C).det = ∑ f : m → p, (∏ i, A i (f i)) * (C.submatrix f id).det := by
@@ -22,6 +27,9 @@ theorem det_mul_eq_sum {R : Type*} [CommRing R] {m p : Type*} [Fintype m] [Decid
           (fun i => A i (f i)) (fun i => C (f i))
         exact this.trans (by rw [smul_eq_mul]; rfl)
 
+/- English proof (translation)
+Proceed by induction on `hg using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact ht a ha`. Consider the case `algebraMap n => simpa using intCast_mem L n`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`.
+-/
 theorem adjoin_int_mem {K : Type*} [Field K] (L : Subfield K) {t : Set K} (ht : ∀ a ∈ t, a ∈ L) {g : K}
     (hg : g ∈ Algebra.adjoin ℤ t) : g ∈ L := by
   induction hg using Algebra.adjoin_induction with
@@ -30,6 +38,13 @@ theorem adjoin_int_mem {K : Type*} [Field K] (L : Subfield K) {t : Set K} (ht : 
   | add a b _ _ ha hb => exact add_mem ha hb
   | mul a b _ _ ha hb => exact mul_mem ha hb
 
+/- English proof (translation)
+Take `⟨y, hy, z, hz, rfl⟩` from `Subfield.mem_closure_iff.1 ha`. Establish `key : ∀ w ∈ Subring.closure t, w ∈ Algebra.adjoin ℤ t`. Introduce `w hw`. Proceed by induction on `hw using Subring.closure_induction with`. Consider the case `mem a ha => exact Algebra.subset_adjoin ha`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `one => exact one_mem _`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `neg a _ ha => exact neg_mem ha`. Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`.
+
+Distinguish the cases in `h0 : z = 0`. Conclude with `⟨0, zero_mem _, 1, one_mem _, one_ne_zero, by simp [h0]⟩`. Conclude with `⟨y, key y hy, z, key z hz, h0, rfl⟩`.
+-/
 theorem exists_div_of_mem_closure {K : Type*} [Field K] [Algebra ℤ K] {t : Set K} {a : K} (ha : a ∈ Subfield.closure t) :
     ∃ g ∈ Algebra.adjoin ℤ t, ∃ h ∈ Algebra.adjoin ℤ t, h ≠ 0 ∧ a = g / h := by
   obtain ⟨y, hy, z, hz, rfl⟩ := Subfield.mem_closure_iff.1 ha
@@ -48,13 +63,28 @@ theorem exists_div_of_mem_closure {K : Type*} [Field K] [Algebra ℤ K] {t : Set
 
 variable {Ω : Type} [Field Ω] {S : Type} {r : S → ℕ}
 
+/- English proof (translation)
+Establish `h1 : ¬ k < l` using `not_lt.2 h.le`. Simplify using `[genU, h1, h.ne]`.
+-/
 theorem genU_of_lt (s : S) {l k : Fin (r s)} (h : l < k) : genU Ω r s l k = 0 := by
   have h1 : ¬ k < l := not_lt.2 h.le
   simp [genU, h1, h.ne]
 
+/- English proof (translation)
+Simplify using `[genU]`.
+-/
 theorem genU_self (s : S) (k : Fin (r s)) : genU Ω r s k k = 1 := by
   simp [genU]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_lowerTriangular]`. Rewrite using `[Fin.prod_univ_castSucc]`. Establish `h1 : ∀ i : Fin (k : ℕ), (genU Ω r s).submatrix (fun i : Fin ((k : ℕ) + 1) => if (i : ℕ) = k then l else Fin.castLE k.2 i) (Fin.castLE k.2) i.castSucc i.castSucc = 1`. Introduce `i`. Establish `: ((i.castSucc : Fin ((k : ℕ) + 1)) : ℕ) ≠ k` using `by simpa using i.2.ne`.
+
+Simplify using `only [Matrix.submatrix_apply, if_neg this]`. Conclude with `genU_self s _`. Simplify using `only [h1, Finset.prod_const_one, one_mul, Matrix.submatrix_apply, Fin.val_last, if_true]`. Use `congr 1`. Introduce `i j hij`.
+
+Establish `hij' : i < j` using `hij`. Establish `hi : (i : ℕ) ≠ k`. Use `j.2` as an intermediate fact. Establish `: (i : ℕ) < j` using `hij'`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [Matrix.submatrix_apply, if_neg hi]`. Conclude with `genU_of_lt s (show Fin.castLE k.2 i < Fin.castLE k.2 j from hij')`.
+-/
 theorem det_genU_rows (s : S) (k l : Fin (r s)) (hkl : k ≤ l) :
     ((genU Ω r s).submatrix
       (fun i : Fin ((k : ℕ) + 1) => if (i : ℕ) = k then l else Fin.castLE k.2 i) (Fin.castLE k.2)).det
@@ -81,6 +111,9 @@ theorem det_genU_rows (s : S) (k l : Fin (r s)) (hkl : k ≤ l) :
 
 variable {E : Type} [AddCommGroup E] [Module Ω E] {n : S → ℕ}
 
+/- English proof (translation)
+Establish `h : Matrix.of (fun j l => algebraMap Ω (GenField Ω r) (φ s j (c s l))) = (Matrix.of (fun j l => φ s j (c s l))).map (algebraMap Ω (GenField Ω r))`. Use extensionality with `j l`. Simplify using the standard rewrite rules. Rewrite using `[flagMat, h, ← Matrix.mul_assoc, ← Matrix.map_mul, hB]`. Simplify using the standard rewrite rules.
+-/
 theorem map_mul_flagMat (φ : ∀ s, Fin (n s) → Module.Dual Ω E) (c : ∀ s, Fin (r s) → E) (s : S)
     (B : Matrix (Fin (r s)) (Fin (n s)) Ω)
     (hB : B * Matrix.of (fun j l => φ s j (c s l)) = 1) :
@@ -92,6 +125,11 @@ theorem map_mul_flagMat (φ : ∀ s, Fin (n s) → Module.Dual Ω E) (c : ∀ s,
   rw [flagMat, h, ← Matrix.mul_assoc, ← Matrix.map_mul, hB]
   simp
 
+/- English proof (translation)
+Establish `h : (genU Ω r s).submatrix R (Fin.castLE hd) = ((B.map (algebraMap Ω (GenField Ω r))).submatrix R id) * ((flagMat φ c s).submatrix id (Fin.castLE hd))`. Rewrite using `[← map_mul_flagMat φ c s B hB]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[h, det_mul_eq_sum]`.
+
+Simplify using `[Matrix.submatrix_submatrix]`.
+-/
 theorem det_genU_submatrix (φ : ∀ s, Fin (n s) → Module.Dual Ω E) (c : ∀ s, Fin (r s) → E) (s : S)
     (B : Matrix (Fin (r s)) (Fin (n s)) Ω)
     (hB : B * Matrix.of (fun j l => φ s j (c s l)) = 1) {d : ℕ} (hd : d ≤ r s)
@@ -109,6 +147,9 @@ theorem det_genU_submatrix (φ : ∀ s, Fin (n s) → Module.Dual Ω E) (c : ∀
   rw [h, det_mul_eq_sum]
   simp [Matrix.submatrix_submatrix]
 
+/- English proof (translation)
+Establish `hP : (∏ q' ∈ Finset.univ.erase q, D q' (ρ q')) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun q _ => hρ q`. Rewrite using `[mul_div_mul_left _ _ ha, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ q), ← Finset.mul_prod_erase Finset.univ (fun q' => D q' (ρ q')) (Finset.mem_univ q), Function.update_self, Finset.prod_congr rfl (g := fun q' => D q' (ρ q')) (fun q' hq' => by rw [Function.update_of_ …`. Conclude with `mul_div_mul_right _ _ hP`.
+-/
 theorem ratio_update {Q : Type*} [Fintype Q] [DecidableEq Q] {T : Q → Type*} {K : Type*} [Field K]
     (D : ∀ q, T q → K) (ρ : ∀ q, T q) (hρ : ∀ q, D q (ρ q) ≠ 0) (q : Q) (f : T q) (a : K) (ha : a ≠ 0) :
     (a * ∏ q', D q' (Function.update ρ q f q')) / (a * ∏ q', D q' (ρ q')) = D q f / D q (ρ q) := by
@@ -120,6 +161,9 @@ theorem ratio_update {Q : Type*} [Fintype Q] [DecidableEq Q] {T : Q → Type*} {
       (fun q' hq' => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hq')])]
   exact mul_div_mul_right _ _ hP
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Establish `h1` using `det_genU_submatrix φ c s B hB k.2 (fun i : Fin ((k : ℕ) + 1) => if (i : ℕ) = k then k else Fin.castLE k.2 i)`. Rewrite `h1` using `[det_genU_rows s k k le_rfl, genU_self, Finset.sum_eq_zero (fun f _ => by rw [hall f, mul_zero])]`. Conclude with `one_ne_zero h1`.
+-/
 theorem exists_minor_ne_zero (φ : ∀ s, Fin (n s) → Module.Dual Ω E) (c : ∀ s, Fin (r s) → E) (s : S)
     (B : Matrix (Fin (r s)) (Fin (n s)) Ω)
     (hB : B * Matrix.of (fun j l => φ s j (c s l)) = 1) (k : Fin (r s)) :
@@ -131,6 +175,13 @@ theorem exists_minor_ne_zero (φ : ∀ s, Fin (n s) → Module.Dual Ω E) (c : �
   rw [det_genU_rows s k k le_rfl, genU_self, Finset.sum_eq_zero (fun f _ => by rw [hall f, mul_zero])] at h1
   exact one_ne_zero h1
 
+/- English proof (translation)
+Establish `hrows : ∀ R : Fin ((k : ℕ) + 1) → Fin (r s), ((genU Ω r s).submatrix R (Fin.castLE k.2)).det / ((flagMat φ c s).submatrix ρ (Fin.castLE k.2)).det ∈ L`. Introduce `R`. Rewrite using `[det_genU_submatrix φ c s B hB k.2 R, Finset.sum_div]`. Use `sum_mem fun f _ => ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc]`.
+
+Conclude with `mul_mem (prod_mem fun i _ => hbase _) (hminor f)`. Establish `h1` using `hrows (fun i : Fin ((k : ℕ) + 1) => if (i : ℕ) = k then l else Fin.castLE k.2 i)`. Rewrite `h1` using `[det_genU_rows s k l hkl]`. Establish `h0` using `hrows (fun i : Fin ((k : ℕ) + 1) => if (i : ℕ) = k then k else Fin.castLE k.2 i)`. Rewrite `h0` using `[det_genU_rows s k k le_rfl, genU_self]`.
+
+Use `div_mem h1 h0` as an intermediate fact. Rewrite `this` using `[div_div_div_cancel_right₀ hρ, div_one]`. Then use the resulting hypothesis.
+-/
 theorem genU_mem (L : Subfield (GenField Ω r)) (hbase : ∀ b : Ω, algebraMap Ω (GenField Ω r) b ∈ L)
     (φ : ∀ s, Fin (n s) → Module.Dual Ω E) (c : ∀ s, Fin (r s) → E) (s : S)
     (B : Matrix (Fin (r s)) (Fin (n s)) Ω)
@@ -154,6 +205,15 @@ theorem genU_mem (L : Subfield (GenField Ω r)) (hbase : ∀ b : Ω, algebraMap 
   have := div_mem h1 h0
   rwa [div_div_div_cancel_right₀ hρ, div_one] at this
 
+/- English proof (translation)
+Establish `hpoly : ∀ p : MvPolynomial (GenIx r) Ω, algebraMap (MvPolynomial (GenIx r) Ω) (GenField Ω r) p ∈ L`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C b`. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`.
+
+Conclude with `hbase b`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul]`.
+
+Use `mul_mem hp ?_` and prove the remaining obligations. Take `⟨s, ⟨⟨l, k⟩, h⟩⟩` from `i`. Apply the tactic sequence `have := hentry s k l (le_of_lt h)`. Rewrite `this` using `[genU, dif_pos h]`. Then use the resulting hypothesis. Take `⟨p, q, -, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial (GenIx r) Ω) a`.
+
+Conclude with `div_mem (hpoly p) (hpoly q)`.
+-/
 theorem mem_of_genU_mem (L : Subfield (GenField Ω r)) (hbase : ∀ b : Ω, algebraMap Ω (GenField Ω r) b ∈ L)
     (hentry : ∀ (s : S) (k l : Fin (r s)), k ≤ l → genU Ω r s l k ∈ L) (a : GenField Ω r) : a ∈ L := by
   have hpoly : ∀ p : MvPolynomial (GenIx r) Ω,
@@ -173,6 +233,9 @@ theorem mem_of_genU_mem (L : Subfield (GenField Ω r)) (hbase : ∀ b : Ω, alge
   obtain ⟨p, q, -, rfl⟩ := IsFractionRing.div_surjective (A := MvPolynomial (GenIx r) Ω) a
   exact div_mem (hpoly p) (hpoly q)
 
+/- English proof (translation)
+Establish `hgen' : ∀ b ∈ (Set.range fun j => x j / x c₀), b ∈ L.comap (algebraMap Ω (GenField Ω r))`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hgen j`. Take `⟨g, hg, h, hh, -, rfl⟩` from `hΩ b`. Conclude with `div_mem (adjoin_int_mem _ hgen' hg) (adjoin_int_mem _ hgen' hh)`.
+-/
 theorem base_mem (L : Subfield (GenField Ω r)) {κ : Type} (x : κ → Ω) (c₀ : κ)
     (hΩ : ∀ a : Ω, ∃ g ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c₀),
       ∃ h ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c₀), h ≠ 0 ∧ a = g / h)
@@ -184,6 +247,13 @@ theorem base_mem (L : Subfield (GenField Ω r)) {κ : Type} (x : κ → Ω) (c�
   obtain ⟨g, hg, h, hh, -, rfl⟩ := hΩ b
   exact div_mem (adjoin_int_mem _ hgen' hg) (adjoin_int_mem _ hgen' hh)
 
+/- English proof (translation)
+Establish `hxK : algebraMap Ω (GenField Ω r) (x c₀) ≠ 0` using `(map_ne_zero (algebraMap Ω (GenField Ω r))).2 hx0`. Establish `hP : (∏ q : (Σ s, Fin (r s)), ((flagMat φ c q.1).submatrix (ρ q) (Fin.castLE q.2.2)).det) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun q _ => hρ q`. Establish `hbase : ∀ b : Ω, algebraMap Ω (GenField Ω r) b ∈ L`. Use `base_mem L x c₀ hΩ fun j => ?_` and prove the remaining obligations. Establish `h` using `hratio (j, ρ)`.
+
+Establish `e : flagCoord κ x φ c (j, ρ) / flagCoord κ x φ c (c₀, ρ) = algebraMap Ω (GenField Ω r) (x j / x c₀)`. Rewrite using `[map_div₀]`. Conclude with `mul_div_mul_right _ _ hP`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hminor : ∀ (q : Σ s, Fin (r s)) (f : Fin ((q.2 : ℕ) + 1) → Fin (n q.1)), ((flagMat φ c q.1).submatrix f (Fin.castLE q.2.2)).det / ((flagMat φ c q.1).submatrix (ρ q) (Fin.castLE q.2.2)).det ∈ L`.
+
+Introduce `q f`. Establish `h` using `hratio (c₀, Function.update ρ q f)`. Establish `e` using `ratio_update (fun (q : Σ s, Fin (r s)) (g : Fin ((q.2 : ℕ) + 1) → Fin (n q.1)) => ((flagMat φ c q.1).submatrix g (Fin.castLE q.2.2)).det) ρ hρ q f _ hxK`. Conclude with `e ▸ h`. Conclude with `mem_of_genU_mem L hbase (fun s k l hkl => genU_mem L hbase φ c s (B s) (hB s) k l hkl (ρ ⟨s, k⟩) (hρ ⟨s, k⟩) (hminor ⟨s, k⟩)) a`.
+-/
 theorem mem_of_ratio_mem [Fintype S] (κ : Type) (x : κ → Ω) (φ : ∀ s, Fin (n s) → Module.Dual Ω E)
     (c : ∀ s, Fin (r s) → E) (c₀ : κ) (hx0 : x c₀ ≠ 0)
     (hΩ : ∀ a : Ω, ∃ g ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c₀),
@@ -219,6 +289,11 @@ theorem mem_of_ratio_mem [Fintype S] (κ : Type) (x : κ → Ω) (φ : ∀ s, Fi
   exact mem_of_genU_mem L hbase (fun s k l hkl => genU_mem L hbase φ c s (B s) (hB s) k l hkl (ρ ⟨s, k⟩)
     (hρ ⟨s, k⟩) (hminor ⟨s, k⟩)) a
 
+/- English proof (translation)
+Use `choose B hB using hB`. Establish `hne : ∀ q : (Σ s, Fin (r s)), ∃ f : Fin ((q.2 : ℕ) + 1) → Fin (n q.1), ((flagMat φ c q.1).submatrix f (Fin.castLE q.2.2)).det ≠ 0` using `fun q => exists_minor_ne_zero φ c q.1 (B q.1) (hB q.1) q.2`. Use `choose ρ hρ using hne`. Establish `hF0 : flagCoord κ x φ c (c₀, ρ) ≠ 0` using `mul_ne_zero ((map_ne_zero (algebraMap Ω (GenField Ω r))).2 hx0) (Finset.prod_ne_zero_iff.2 fun q _ => hρ q)`. Use `⟨(c₀, ρ), hF0, fun a => ?_⟩` and prove the remaining obligations.
+
+Apply `exists_div_of_mem_closure` to reduce the goal to its premises. Conclude with `mem_of_ratio_mem κ x φ c c₀ hx0 hΩ B hB ρ hρ (Subfield.closure _) (fun j => Subfield.subset_closure (Set.mem_range_self j)) a`.
+-/
 theorem flagCoord_generate (Ω : Type) [Field Ω] (E : Type) [AddCommGroup E] [Module Ω E] (S : Type) [Fintype S]
     (r n : S → ℕ) (κ : Type) (x : κ → Ω) (φ : ∀ s, Fin (n s) → Module.Dual Ω E) (c : ∀ s, Fin (r s) → E) (c₀ : κ)
     (hx0 : x c₀ ≠ 0)

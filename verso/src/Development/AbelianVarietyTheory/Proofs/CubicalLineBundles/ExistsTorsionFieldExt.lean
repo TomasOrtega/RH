@@ -9,6 +9,21 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hL S _ P k k' _ _ _ _ _ j t`. Set `h : Over.mk (spMap j ≫ t) ⟶ Over.mk t` to `Over.homMk (spMap j) rfl`. Set `r : (Over.mk t ⟶ P.A) →* (Over.mk (spMap j ≫ t) ⟶ P.A)` to `{ toFun := fun x => h ≫ x, map_one' := comp_one _, map_mul' := fun x y => comp_mul _ _ _ }`. Establish `hr : Function.Injective r`. Use `letI := j.toAlgebra`.
+
+Use `haveI : Flat (spMap j) := by`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `(inferInstance : Module.Flat k k')`. Use `haveI : Surjective (spMap j) := ⟨fun p => ⟨(⊥ : PrimeSpectrum k'), Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩`. Use `haveI : Epi h.left := Flat.epi_of_flat_of_surjective (spMap j)`.
+
+Use `haveI : Epi h := Over.epi_of_epi_left _`. Conclude with `fun x y e => (cancel_epi h).1 e`. Establish `hu : ∀ c : kˣ, Units.map h.left.appTop.hom.toMonoidHom (unitOn c) = unitOn (Units.map j.toMonoidHom c)` using `fun c => Units.ext (congrArg (fun q => q.hom (c : k)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom j))).symm`. Establish `up : ∀ (n : ℕ) x y (c : kˣ), Out.WeilIs P.A P.L n x y (unitOn c) → Out.WeilIs P.A P.L n (r x) (r y) (unitOn (Units.map j.toMonoidHom c))` using `fun n x y c H => hu c ▸ CommPairing.weilIs_pull hL.globalFns P.isAb P.isLB h H`. Use `⟨r, fun _ => rfl, hr, fun n y hn hy => ?_, fun n x y c _ hx hy => ⟨up n x y c, fun H => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hk : (n : k) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `hk' : (n : k') ≠ 0` using `by rw [← map_natCast j]; exact (map_ne_zero j).2 hk`. Establish `c₁` using `(hL.mulN S P n hn).2.2.2.2 k t hk`. Establish `c₂` using `(hL.mulN S P n hn).2.2.2.2 k' (spMap j ≫ t) hk'`. Set `f : {x : Over.mk t ⟶ P.A // x ^ n = 1} → {x : Over.mk (spMap j ≫ t) ⟶ P.A // x ^ n = 1}` to `fun x => ⟨r x.1, by rw [← map_pow, x.2, map_one]⟩`.
+
+Establish `hf : Function.Injective f` using `fun a b e => Subtype.ext (hr (congrArg Subtype.val e))`. Use `haveI : Finite {x : Over.mk (spMap j ≫ t) ⟶ P.A // x ^ n = 1} := Nat.finite_of_card_ne_zero (by rw [c₂]; positivity)`. Take `⟨x, hx⟩` from `(hf.bijective_of_nat_card_le (by rw [c₁, c₂])).2 ⟨y, hy⟩`. Conclude with `⟨x.1, congrArg Subtype.val hx⟩`. Take `⟨d, hd, -⟩` from `(hL.weil S P n (Over.mk t)).1 x y hx hy`.
+
+Set `u : kˣ` to `Units.map (Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom.toMonoidHom d`. Establish `e : unitOn u = d` using `Units.ext (CommRingCat.inv_hom_apply (Scheme.ΓSpecIso (CommRingCat.of k)) d.val)`. Rewrite `hd` using `[← e]`. Establish `e₁` using `((hL.weil S P n (Over.mk (spMap j ≫ t))).1 (r x) (r y) (by rw [← map_pow, hx, map_one]) (by rw [← map_pow, hy, map_one])).unique (up n x y u hd) H`. Establish `e₂ : u = c` using `Units.ext (j.injective ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of k')).inv).1 (congrArg Units.val e₁)))`.
+
+Conclude with `e₂ ▸ hd`.
+-/
 theorem exists_torsion_fieldExt : Out.Laws → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : Out.PolAV S) (k k' : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field k'] [IsAlgClosed k'] (j : k →+* k') (t : Sp k ⟶ S), ∃ r : (Over.mk t ⟶ P.A) →* (Over.mk (spMap j ≫ t) ⟶ P.A), (∀ x, (r x).left = spMap j ≫ x.left) ∧ Function.Injective r ∧ (∀ (n : ℕ) y, 0 < n → y ^ n = 1 → ∃ x, r x = y) ∧ ∀ (n : ℕ) x y (c : kˣ), 0 < n → x ^ n = 1 → y ^ n = 1 → (Out.WeilIs P.A P.L n x y (unitOn c) ↔ Out.WeilIs P.A P.L n (r x) (r y) (unitOn (Units.map j.toMonoidHom c))) := by
   intro hL S _ P k k' _ _ _ _ _ j t
   let h : Over.mk (spMap j ≫ t) ⟶ Over.mk t := Over.homMk (spMap j) rfl

@@ -6,6 +6,9 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 open MeasureTheory ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions GlobalTheory.LogResInt GlobalTheory.SNCComp
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SNCRankDrop.mInt_eq_zero_of_rankDropAlong | exact GlobalTheory.SNCRankDrop.mInt_eq_zero_of_rankDropAlong | (intros; apply GlobalTheory.SNCRankDrop.mInt_eq_zero_of_rankDropAlong <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.snc_atlas_rank_drop_potential : ∀ (d n : ℕ) (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y] (A : FinHolAtlas d X)
     (B : FinHolAtlas (n + 1) Y) (μ : Y → X) (hμ : HoloMap B A μ) (q r : ℕ) (L : Fin q → LocPot X)
     (t : Fin q → X → X → ℂ) (W : Fin r → Set Y) (e : Fin q → Fin r → ℕ) (k : Fin r)

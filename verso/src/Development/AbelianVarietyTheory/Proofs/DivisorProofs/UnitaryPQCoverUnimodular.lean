@@ -6,6 +6,9 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p q T` and use `⟨(GlobalTheory.HolDS.haar_unimodular p q T).1, (GlobalTheory.HolDS.haar_unimodular p q T).2, GlobalTheory.HolDS.instLocallyCompact T, GlobalTheory.HolDS.instSecondCountable T, GlobalTheory.HolDS.t2Space_cuspAdeles T⟩`.
+-/
 theorem coverUnitary_unimodular :
     ∀ (p q : ℕ) (T : GrpData p q), T.haar.IsMulRightInvariant ∧ T.haar.IsInvInvariant ∧
       LocallyCompactSpace T.G ∧ SecondCountableTopology T.G ∧ T2Space T.G :=

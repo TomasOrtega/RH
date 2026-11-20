@@ -15,6 +15,9 @@ namespace GlobalTheory.CompanionTheory.ColumnSplitting.JnM
 
 variable {D : D7} {a b r t n : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `ext i (k | k) <;> simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+-/
 theorem fromCols_mul_shear {R : Type} [Ring R] (w : Matrix (Fin a) (Fin r) R) (v : Matrix (Fin a) (Fin t) R)
     (y : Matrix (Fin r) (Fin t) R) :
     (Matrix.fromCols w v : Matrix (Fin a) (Fin r ⊕ Fin t) R) *
@@ -22,6 +25,9 @@ theorem fromCols_mul_shear {R : Type} [Ring R] (w : Matrix (Fin a) (Fin r) R) (v
       Matrix.fromCols w (w * y + v) := by
   ext i (k | k) <;> simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [jn, mm, Matrix.submatrix_apply, id, Matrix.mul_apply]`. Apply the tactic sequence `rcases h : (finSumFinEquiv.trans (finCongr hn)).symm j with k | k <;>`. Simplify using `[Matrix.mul_apply]`.
+-/
 theorem mm_jn (hn : r + t = n) (A : Mx D b a) (x : Mx D a r) (v : Mx D a t) :
     mm A (jn hn x v) = jn hn (mm A x) (mm A v) := by
   ext i j
@@ -29,18 +35,27 @@ theorem mm_jn (hn : r + t = n) (A : Mx D b a) (x : Mx D a r) (v : Mx D a t) :
   rcases h : (finSumFinEquiv.trans (finCongr hn)).symm j with k | k <;>
     simp [Matrix.mul_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [jn, Matrix.add_apply, Matrix.submatrix_apply, id]`. Apply the tactic sequence `rcases h : (finSumFinEquiv.trans (finCongr hn)).symm j with k | k <;> simp`.
+-/
 theorem jn_add (hn : r + t = n) (x x' : Mx D a r) (v v' : Mx D a t) :
     jn hn x v + jn hn x' v' = jn hn (x + x') (v + v') := by
   ext i j
   simp only [jn, Matrix.add_apply, Matrix.submatrix_apply, id]
   rcases h : (finSumFinEquiv.trans (finCongr hn)).symm j with k | k <;> simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨s, rfl⟩` from `(finSumFinEquiv.trans (finCongr hn)).surjective j`. Apply the tactic sequence `rcases s with k | k <;> simp [jn, c1, c2]`.
+-/
 theorem jn_c {W : HSp D} (hn : W.rank + t = n) (U : Mx D a n) :
     jn hn (c1 hn U) (c2 hn U) = U := by
   ext i j
   obtain ⟨s, rfl⟩ := (finSumFinEquiv.trans (finCongr hn)).surjective j
   rcases s with k | k <;> simp [jn, c1, c2]
 
+/- English proof (translation)
+Rewrite using `[Matrix.submatrix_mul_equiv, fromCols_mul_shear]`.
+-/
 theorem shear_gen {R : Type} [Ring R] (hn : r + t = n) (w : Matrix (Fin a) (Fin r) R)
     (v : Matrix (Fin a) (Fin t) R) (y : Matrix (Fin r) (Fin t) R) :
     ((Matrix.fromCols w v).submatrix id (finSumFinEquiv.trans (finCongr hn)).symm : Matrix (Fin a) (Fin n) R) *
@@ -49,6 +64,9 @@ theorem shear_gen {R : Type} [Ring R] (hn : r + t = n) (w : Matrix (Fin a) (Fin 
       (Matrix.fromCols w (w * y + v)).submatrix id (finSumFinEquiv.trans (finCongr hn)).symm := by
   rw [Matrix.submatrix_mul_equiv, fromCols_mul_shear]
 
+/- English proof (translation)
+The claim follows from `shear_gen hn w v y`.
+-/
 theorem jn_bl (hn : r + t = n) (w : Mx D a r) (v : Mx D a t) (y : Mx D r t) :
     mm (jn hn w v) (bl hn 1 y 0 1) = jn hn w (mm w y + v) :=
   shear_gen hn w v y
@@ -57,6 +75,11 @@ end GlobalTheory.CompanionTheory.ColumnSplitting.JnM
 
 namespace GlobalTheory.CompanionTheory.ColumnSplitting
 
+/- English proof (translation)
+Introduce `D n t B W d hn x₀ g p`. Take `⟨h, U, y⟩` from `p`. Establish `hX : XU d hn x₀ h U = jn hn (mm d.jX (c1 hn U) + mm d.j0 (ww W x₀ h)) (mm d.jX (c2 hn U))`. Unfold `XU`. Use `conv_lhs => rw [← JnM.jn_c (W := W) hn U]`.
+
+Establish `h0 : mm d.j0 (0 : Mx D W.rank t) = 0` using `Matrix.mul_zero _`. Rewrite using `[JnM.mm_jn, JnM.mm_jn, JnM.jn_add, h0, add_zero]`. Simplify using `only [hX, JnM.jn_bl, JnM.mm_jn]`. Both sides reduce to the same expression.
+-/
 theorem jnPi_holds : JnPi := by
   intro D n t B W d hn x₀ g p
   obtain ⟨h, U, y⟩ := p

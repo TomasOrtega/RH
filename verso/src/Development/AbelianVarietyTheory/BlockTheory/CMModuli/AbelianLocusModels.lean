@@ -11,11 +11,17 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 def IsIntegersOf (V C : Type) [CommRing V] [NormedField C] [Algebra V C] : Prop :=
   Function.Injective (algebraMap V C) ∧ ∀ x : C, (∃ a : V, algebraMap V C a = x) ↔ ‖x‖ ≤ 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Subtype.val_injective, fun x => ⟨fun ⟨a, ha⟩ => ha ▸ a.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩⟩`.
+-/
 example (p : ℕ) [Fact p.Prime] : IsIntegersOf ℤ_[p] ℚ_[p] :=
   ⟨Subtype.val_injective, fun x => ⟨fun ⟨a, ha⟩ => ha ▸ a.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩⟩
 
 def primeToPart (p n : ℕ) : ℕ := n / p ^ n.factorization p
 
+/- English proof (translation)
+Establish `h : (45 : ℕ).factorization 3 = 2`. Rewrite using `[show (45 : ℕ) = 3 ^ 2 * 5 by norm_num, Nat.factorization_mul (by norm_num) (by norm_num), Nat.Prime.factorization_pow (by norm_num), Nat.Prime.factorization (by norm_num)]`. Simplify using the standard rewrite rules. Rewrite using `[primeToPart, h]`. Evaluate the numerical expressions.
+-/
 example : primeToPart 3 45 = 5 := by
   have h : (45 : ℕ).factorization 3 = 2 := by
     rw [show (45 : ℕ) = 3 ^ 2 * 5 by norm_num, Nat.factorization_mul (by norm_num) (by norm_num),

@@ -30,28 +30,49 @@ variable {a b c : ℤ → K} {ρ : ℝ}
 
 section Basic
 
+/- English proof (translation)
+The claim follows from `h.bddAbove_range_of_cofinite`.
+-/
 theorem ConvergesAt.bddAbove (h : ConvergesAt a ρ) :
     BddAbove (Set.range fun n : ℤ => ‖a n‖ * ρ ^ n) :=
   h.bddAbove_range_of_cofinite
 
+/- English proof (translation)
+The claim follows from `le_ciSup h.bddAbove n`.
+-/
 theorem ConvergesAt.le_gaussNorm (h : ConvergesAt a ρ) (n : ℤ) :
     ‖a n‖ * ρ ^ n ≤ gaussNorm a ρ :=
   le_ciSup h.bddAbove n
 
+/- English proof (translation)
+The claim follows from `ciSup_le h`.
+-/
 theorem gaussNorm_le {C : ℝ} (h : ∀ n, ‖a n‖ * ρ ^ n ≤ C) : gaussNorm a ρ ≤ C :=
   ciSup_le h
 
+/- English proof (translation)
+The claim follows from `Real.iSup_nonneg fun n => by positivity`.
+-/
 theorem gaussNorm_nonneg (hρ : 0 < ρ) : 0 ≤ gaussNorm a ρ :=
   Real.iSup_nonneg fun n => by positivity
 
+/- English proof (translation)
+Use `Filter.eventually_cofinite.1 (h.eventually (gt_mem_nhds hε))` as an intermediate fact. Simplify `this` using `only [not_lt]`.
+-/
 theorem ConvergesAt.finite_le (h : ConvergesAt a ρ) {ε : ℝ} (hε : 0 < ε) :
     {n | ε ≤ ‖a n‖ * ρ ^ n}.Finite := by
   have := Filter.eventually_cofinite.1 (h.eventually (gt_mem_nhds hε))
   simpa only [not_lt] using this
 
+/- English proof (translation)
+Simplify using `[ConvergesAt]`.
+-/
 theorem convergesAt_zero : ConvergesAt (0 : ℤ → K) ρ := by
   simp [ConvergesAt]
 
+/- English proof (translation)
+Use `squeeze_zero (fun n => by positivity) (fun n => ?_) (by simpa using Tendsto.add ha hb)` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Rewrite using `[← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_add_le _ _) (by positivity)`.
+-/
 theorem ConvergesAt.add (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ) :
     ConvergesAt (a + b) ρ := by
   refine squeeze_zero (fun n => by positivity) (fun n => ?_) (by simpa using Tendsto.add ha hb)
@@ -59,16 +80,32 @@ theorem ConvergesAt.add (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt
   rw [← add_mul]
   exact mul_le_mul_of_nonneg_right (norm_add_le _ _) (by positivity)
 
+/- English proof (translation)
+Simplify `ha` using `[ConvergesAt]`.
+-/
 theorem ConvergesAt.neg (ha : ConvergesAt a ρ) : ConvergesAt (-a) ρ := by
   simpa [ConvergesAt] using ha
 
+/- English proof (translation)
+Simplify `ha.add hρ hb.neg` using `[sub_eq_add_neg]`.
+-/
 theorem ConvergesAt.sub (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ) :
     ConvergesAt (a - b) ρ := by
   simpa [sub_eq_add_neg] using ha.add hρ hb.neg
 
+/- English proof (translation)
+Simplify `ha.const_mul ‖k‖` using `[ConvergesAt, norm_mul, mul_assoc]`.
+-/
 theorem ConvergesAt.smul (k : K) (ha : ConvergesAt a ρ) : ConvergesAt (k • a) ρ := by
   simpa [ConvergesAt, norm_mul, mul_assoc] using ha.const_mul ‖k‖
 
+/- English proof (translation)
+Establish `hρ : 0 < ρ` using `hρ₁.trans_le h1`. Use `squeeze_zero (fun n => by positivity) (fun n => ?_) (by simpa using Tendsto.add h₁ h₂)` and prove the remaining obligations. Rewrite using `[← mul_add]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Break down `le_total 0 n with hn | hn` into its components or cases.
+
+Use `zpow_le_zpow_left₀ hn hρ.le h2` as an intermediate fact. Establish `: 0 ≤ ρ₁ ^ n` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : ρ ^ n ≤ ρ₁ ^ n`. Rewrite using `[show ρ ^ n = (ρ ^ (-n))⁻¹ by rw [zpow_neg, inv_inv], show ρ₁ ^ n = (ρ₁ ^ (-n))⁻¹ by rw [zpow_neg, inv_inv]]`.
+
+Conclude with `inv_anti₀ (by positivity) (zpow_le_zpow_left₀ (neg_nonneg.2 hn) hρ₁.le h1)`. Establish `hρ₂ : 0 < ρ₂` using `by linarith`. Establish `: 0 ≤ ρ₂ ^ n` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ConvergesAt.of_le_of_le {ρ₁ ρ₂ : ℝ} (h₁ : ConvergesAt a ρ₁) (h₂ : ConvergesAt a ρ₂)
     (hρ₁ : 0 < ρ₁) (h1 : ρ₁ ≤ ρ) (h2 : ρ ≤ ρ₂) : ConvergesAt a ρ := by
   have hρ : 0 < ρ := hρ₁.trans_le h1
@@ -91,16 +128,27 @@ end Basic
 
 section Product
 
+/- English proof (translation)
+Rewrite using `[norm_mul, eq_div_iff (zpow_ne_zero _ hρ)]`. Establish `: ρ ^ n = ρ ^ i * ρ ^ (n - i)` using `by rw [← zpow_add₀ hρ]; congr 1; ring`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_mul_term (hρ : ρ ≠ 0) (n i : ℤ) :
     ‖a i * b (n - i)‖ = (‖a i‖ * ρ ^ i) * (‖b (n - i)‖ * ρ ^ (n - i)) / ρ ^ n := by
   rw [norm_mul, eq_div_iff (zpow_ne_zero _ hρ)]
   have : ρ ^ n = ρ ^ i * ρ ^ (n - i) := by rw [← zpow_add₀ hρ]; congr 1; ring
   rw [this]; ring
 
+/- English proof (translation)
+The claim follows from `tendsto_mul_cofinite_nhds_zero ha hb`.
+-/
 theorem tendsto_weight_prod (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ) :
     Tendsto (fun p : ℤ × ℤ => (‖a p.1‖ * ρ ^ p.1) * (‖b p.2‖ * ρ ^ p.2)) cofinite (𝓝 0) :=
   tendsto_mul_cofinite_nhds_zero ha hb
 
+/- English proof (translation)
+Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `hinj : Function.Injective (fun i : ℤ => (i, n - i))` using `fun i j h => (Prod.ext_iff.1 h).1`. Use `((tendsto_weight_prod ha hb).comp hinj.tendsto_cofinite).div_const (ρ ^ n)` as an intermediate fact. Rewrite `this` using `[zero_div]`. Use `this.congr fun i => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp, norm_mul_term (a := a) (b := b) hρ.ne' n i]`.
+-/
 theorem ConvergesAt.tendsto_term (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ)
     (n : ℤ) : Tendsto (fun i => a i * b (n - i)) cofinite (𝓝 0) := by
   rw [tendsto_zero_iff_norm_tendsto_zero]
@@ -110,10 +158,16 @@ theorem ConvergesAt.tendsto_term (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : Co
   refine this.congr fun i => ?_
   simp only [Function.comp, norm_mul_term (a := a) (b := b) hρ.ne' n i]
 
+/- English proof (translation)
+The claim follows from `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero (ha.tendsto_term hρ hb n)`.
+-/
 theorem ConvergesAt.summable_term [CompleteSpace K] (hρ : 0 < ρ) (ha : ConvergesAt a ρ)
     (hb : ConvergesAt b ρ) (n : ℤ) : Summable (fun i => a i * b (n - i)) :=
   NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero (ha.tendsto_term hρ hb n)
 
+/- English proof (translation)
+Establish `hρn : 0 < ρ ^ n` using `zpow_pos hρ n`. Rewrite using `[← le_div_iff₀ hρn]`. Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (div_nonneg hC hρn.le) fun i => ?_` and prove the remaining obligations. Rewrite using `[norm_mul_term hρ.ne' n i]`. Conclude with `div_le_div_of_nonneg_right (h i) hρn.le`.
+-/
 theorem norm_cmul_mul_zpow_le (hρ : 0 < ρ) {n : ℤ} {C : ℝ} (hC : 0 ≤ C)
     (h : ∀ i, (‖a i‖ * ρ ^ i) * (‖b (n - i)‖ * ρ ^ (n - i)) ≤ C) :
     ‖cmul a b n‖ * ρ ^ n ≤ C := by
@@ -123,6 +177,13 @@ theorem norm_cmul_mul_zpow_le (hρ : 0 < ρ) {n : ℤ} {C : ℝ} (hC : 0 ≤ C)
   rw [norm_mul_term hρ.ne' n i]
   exact div_le_div_of_nonneg_right (h i) hρn.le
 
+/- English proof (translation)
+Establish `hw` using `tendsto_weight_prod ha hb`. Use `tendsto_order.2 ⟨fun x hx => Eventually.of_forall fun n => lt_of_lt_of_le hx (by positivity), fun ε hε => ?_⟩` and prove the remaining obligations. Establish `hS : {p : ℤ × ℤ | ε / 2 ≤ (‖a p.1‖ * ρ ^ p.1) * (‖b p.2‖ * ρ ^ p.2)}.Finite`. Use `Filter.eventually_cofinite.1 (hw.eventually (gt_mem_nhds (half_pos hε)))` as an intermediate fact. Simplify `this` using `only [not_lt]`.
+
+Use `Filter.eventually_cofinite.2 ((hS.image fun p => p.1 + p.2).subset fun n hn => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_lt] at hn`. Assume the negation of the conclusion as `hcon`. Establish `: ‖Laurent.cmul a b n‖ * ρ ^ n ≤ ε / 2` using `norm_cmul_mul_zpow_le hρ (by positivity) fun i => by`. Assume the negation of the conclusion as `h'`.
+
+Conclude with `hcon ⟨(i, n - i), (not_le.1 h').le, by simp⟩`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ConvergesAt.cmul (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ) :
     ConvergesAt (cmul a b) ρ := by
   have hw := tendsto_weight_prod ha hb
@@ -141,50 +202,97 @@ theorem ConvergesAt.cmul (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesA
 
 variable [CompleteSpace K]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Unfold `cmul`. Rewrite using `[← (Equiv.subLeft n).tsum_eq (fun i => a i * b (n - i))]`. Simplify using `[Equiv.subLeft_apply, mul_comm]`.
+-/
 theorem cmul_comm (a b : ℤ → K) : cmul a b = cmul b a := by
   funext n
   unfold cmul
   rw [← (Equiv.subLeft n).tsum_eq (fun i => a i * b (n - i))]
   simp [Equiv.subLeft_apply, mul_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Unfold `cmul`. Rewrite using `[tsum_eq_single n fun i hi => by simp [Pi.single_apply, sub_eq_zero, Ne.symm hi]]`. Simplify using the standard rewrite rules.
+-/
 theorem cmul_single_zero_one (a : ℤ → K) : cmul a (Pi.single 0 1) = a := by
   funext n
   unfold cmul
   rw [tsum_eq_single n fun i hi => by simp [Pi.single_apply, sub_eq_zero, Ne.symm hi]]
   simp
 
+/- English proof (translation)
+Rewrite using `[cmul_comm, cmul_single_zero_one]`.
+-/
 theorem single_zero_one_cmul (a : ℤ → K) : cmul (Pi.single 0 1) a = a := by
   rw [cmul_comm, cmul_single_zero_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Simplify using `only [cmul, Pi.add_apply, mul_add]`. Conclude with `(ha.summable_term hρ hb n).tsum_add (ha.summable_term hρ hc n)`.
+-/
 theorem cmul_add (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ)
     (hc : ConvergesAt c ρ) : cmul a (b + c) = cmul a b + cmul a c := by
   funext n
   simp only [cmul, Pi.add_apply, mul_add]
   exact (ha.summable_term hρ hb n).tsum_add (ha.summable_term hρ hc n)
 
+/- English proof (translation)
+Rewrite using `[cmul_comm, cmul_add hρ hc ha hb, cmul_comm c, cmul_comm c]`.
+-/
 theorem add_cmul (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ)
     (hc : ConvergesAt c ρ) : cmul (a + b) c = cmul a c + cmul b c := by
   rw [cmul_comm, cmul_add hρ hc ha hb, cmul_comm c, cmul_comm c]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Simplify using `[cmul]`.
+-/
 theorem cmul_zero (a : ℤ → K) : cmul a 0 = 0 := by
   funext n; simp [cmul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Simplify using `[cmul]`.
+-/
 theorem zero_cmul (a : ℤ → K) : cmul 0 a = 0 := by
   funext n; simp [cmul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Simplify using `only [cmul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cmul_smul (k : K) (a b : ℤ → K) : cmul a (k • b) = k • cmul a b := by
   funext n
   simp only [cmul, Pi.smul_apply, smul_eq_mul]
   rw [← tsum_mul_left]
   congr 1; funext i; ring
 
+/- English proof (translation)
+Rewrite using `[cmul_comm, cmul_smul, cmul_comm]`.
+-/
 theorem smul_cmul (k : K) (a b : ℤ → K) : cmul (k • a) b = k • cmul a b := by
   rw [cmul_comm, cmul_smul, cmul_comm]
 
+/- English proof (translation)
+Use `cmul_smul (-1 : K) a b` as an intermediate fact. Simplify using `using this`.
+-/
 theorem cmul_neg (a b : ℤ → K) : cmul a (-b) = -cmul a b := by
   have := cmul_smul (-1 : K) a b
   simpa using this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Simplify using `only [cmul]`. Establish `h1 : ∀ j, (∑' i, a i * b (j - i)) * c (n - j) = ∑' i, a i * b (j - i) * c (n - j)` using `fun j => tsum_mul_right.symm`. Establish `h2 : ∀ i, a i * ∑' k, b k * c (n - i - k) = ∑' j, a i * b (j - i) * c (n - j)`. Introduce `i`.
+
+Rewrite using `[← tsum_mul_left, ← (Equiv.subRight i).tsum_eq (fun k => a i * (b k * c (n - i - k)))]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Equiv.subRight_apply]`. Rewrite using `[show n - i - (j - i) = n - j by ring, mul_assoc]`.
+
+Repeatedly rewrite using `[h1, h2]`. Establish `hsum : Summable (Function.uncurry fun i j => a i * b (j - i) * c (n - j))`. Use `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero ?_` and prove the remaining obligations. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `h3` using `tendsto_mul_cofinite_nhds_zero ha (tendsto_weight_prod hb hc)`.
+
+Establish `hinj : Function.Injective (fun p : ℤ × ℤ => (p.1, (p.2 - p.1, n - p.2)))`. Introduce `p q h`. Simplify using `only [Prod.mk.injEq] at h`. Apply the tactic sequence `ext <;> omega`. Use `(h3.comp hinj.tendsto_cofinite).div_const (ρ ^ n)` as an intermediate fact.
+
+Rewrite `this` using `[zero_div]`. Use `this.congr fun ⟨i, j⟩ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, Function.uncurry_apply_pair, norm_mul]`. Establish `hρ'` using `hρ.ne'`. Establish `: ρ ^ n = ρ ^ i * ρ ^ (j - i) * ρ ^ (n - j)`.
+
+Rewrite using `[← zpow_add₀ hρ', ← zpow_add₀ hρ']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+
+Conclude with `hsum.tsum_comm`.
+-/
 theorem cmul_assoc (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ)
     (hc : ConvergesAt c ρ) : cmul (cmul a b) c = cmul a (cmul b c) := by
   funext n
@@ -221,6 +329,13 @@ end Product
 
 section Dominant
 
+/- English proof (translation)
+Establish `hS : {i | M / 2 ≤ ‖f i‖}.Finite`. Use `Filter.eventually_cofinite.1 ((tendsto_zero_iff_norm_tendsto_zero.1 hf).eventually (gt_mem_nhds (half_pos hM)))` as an intermediate fact. Simplify `this` using `only [not_lt]`. Use `set s := insert (M / 2) (hS.toFinset.image fun i => ‖f i‖)`. Establish `hs : s.Nonempty` using `Finset.insert_nonempty _ _`.
+
+Establish `hlt : s.max' hs < M` using `(Finset.max'_lt_iff s hs).2 fun y hy => by`. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `h i`.
+
+Use `lt_of_le_of_lt (IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg ?_ fun i => ?_) hlt` and prove the remaining obligations. Conclude with `(by linarith : (0:ℝ) ≤ M / 2).trans (s.le_max' _ (Finset.mem_insert_self _ _))`. Distinguish the cases in `hi : M / 2 ≤ ‖f i‖`. Conclude with `s.le_max' _ (Finset.mem_insert_of_mem (Finset.mem_image.2 ⟨i, by simpa [Set.Finite.mem_toFinset] using hi, rfl⟩))`. Conclude with `(not_le.1 hi).le.trans (s.le_max' _ (Finset.mem_insert_self _ _))`.
+-/
 theorem norm_tsum_lt {ι : Type*} {f : ι → K} (hf : Tendsto f cofinite (𝓝 0)) {M : ℝ}
     (hM : 0 < M) (h : ∀ i, ‖f i‖ < M) : ‖∑' i, f i‖ < M := by
   classical
@@ -241,6 +356,13 @@ theorem norm_tsum_lt {ι : Type*} {f : ι → K} (hf : Tendsto f cofinite (𝓝 
         (Finset.mem_image.2 ⟨i, by simpa [Set.Finite.mem_toFinset] using hi, rfl⟩))
     · exact (not_le.1 hi).le.trans (s.le_max' _ (Finset.mem_insert_self _ _))
 
+/- English proof (translation)
+Establish `hg : Tendsto (fun i => if i = i₀ then 0 else f i) cofinite (𝓝 0)`. Use `hf.congr' ?_` and prove the remaining obligations. Use `filter_upwards [(Set.finite_singleton i₀).compl_mem_cofinite] with i hi`. Simplify using `[show i ≠ i₀ from hi]`. Establish `hsum : Summable (Function.update f i₀ 0)` using `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero (by convert hg using 1; funext i; simp [Function.update_apply])`.
+
+Rewrite using `[hsum.tsum_eq_add_tsum_ite' i₀]`. Establish `hlt : ‖∑' i, (if i = i₀ then 0 else f i)‖ < ‖f i₀‖` using `norm_tsum_lt hg (norm_pos_iff.2 h0) fun i => by`. Distinguish the cases in `hi : i = i₀`. Simplify using `[hi, h0]`. Simplify `h i hi` using `[hi]`.
+
+Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hlt.ne', max_eq_left hlt.le]`.
+-/
 theorem norm_tsum_eq_of_dominant [CompleteSpace K] {ι : Type*} {f : ι → K}
     (hf : Tendsto f cofinite (𝓝 0)) (i₀ : ι) (h0 : f i₀ ≠ 0)
     (h : ∀ i, i ≠ i₀ → ‖f i‖ < ‖f i₀‖) : ‖∑' i, f i‖ = ‖f i₀‖ := by
@@ -265,6 +387,11 @@ section Attained
 variable (hρ : 0 < ρ) (h : ConvergesAt a ρ) (ha : a ≠ 0)
 include hρ h ha
 
+/- English proof (translation)
+Take `⟨n0, hn0⟩` from `Function.ne_iff.1 ha`. Establish `hε : 0 < ‖a n0‖ * ρ ^ n0` using `by have := norm_pos_iff.2 hn0; positivity`. Use `set S := (h.finite_le hε).toFinset`. Establish `hn0S : n0 ∈ S` using `by simp [S]`. Take `⟨m, hmS, hm⟩` from `S.exists_max_image (fun n => ‖a n‖ * ρ ^ n) ⟨n0, hn0S⟩`.
+
+Use `⟨m, le_antisymm (h.le_gaussNorm m) (gaussNorm_le fun n => ?_)⟩` and prove the remaining obligations. Distinguish the cases in `hn : n ∈ S`. Conclude with `hm n hn`. Simplify using `only [S, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_le] at hn`. Conclude with `hn.le.trans (hm n0 hn0S)`.
+-/
 theorem ConvergesAt.exists_eq_gaussNorm : ∃ n, ‖a n‖ * ρ ^ n = gaussNorm a ρ := by
   obtain ⟨n0, hn0⟩ := Function.ne_iff.1 ha
   have hε : 0 < ‖a n0‖ * ρ ^ n0 := by have := norm_pos_iff.2 hn0; positivity
@@ -277,40 +404,73 @@ theorem ConvergesAt.exists_eq_gaussNorm : ∃ n, ‖a n‖ * ρ ^ n = gaussNorm 
   · simp only [S, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_le] at hn
     exact hn.le.trans (hm n0 hn0S)
 
+/- English proof (translation)
+Take `⟨n0, hn0⟩` from `Function.ne_iff.1 ha`. Use `norm_pos_iff.2 hn0` as an intermediate fact. Conclude with `lt_of_lt_of_le (by positivity) (h.le_gaussNorm n0)`.
+-/
 theorem gaussNorm_pos : 0 < gaussNorm a ρ := by
   obtain ⟨n0, hn0⟩ := Function.ne_iff.1 ha
   have := norm_pos_iff.2 hn0
   exact lt_of_lt_of_le (by positivity) (h.le_gaussNorm n0)
 
+/- English proof (translation)
+The claim follows from `(h.finite_le (gaussNorm_pos hρ h ha)).subset fun n hn => le_of_eq (Eq.symm hn)`.
+-/
 theorem domSet_finite : (domSet a ρ).Finite :=
   (h.finite_le (gaussNorm_pos hρ h ha)).subset fun n hn => le_of_eq (Eq.symm hn)
 
+/- English proof (translation)
+The claim follows from `h.exists_eq_gaussNorm hρ ha`.
+-/
 theorem domSet_nonempty : (domSet a ρ).Nonempty :=
   h.exists_eq_gaussNorm hρ ha
 
+/- English proof (translation)
+The claim follows from `Int.csInf_mem (domSet_nonempty hρ h ha) (domSet_finite hρ h ha).bddBelow`.
+-/
 theorem lowIndex_mem : lowIndex a ρ ∈ domSet a ρ :=
   Int.csInf_mem (domSet_nonempty hρ h ha) (domSet_finite hρ h ha).bddBelow
 
+/- English proof (translation)
+The claim follows from `Int.csSup_mem (domSet_nonempty hρ h ha) (domSet_finite hρ h ha).bddAbove`.
+-/
 theorem highIndex_mem : highIndex a ρ ∈ domSet a ρ :=
   Int.csSup_mem (domSet_nonempty hρ h ha) (domSet_finite hρ h ha).bddAbove
 
+/- English proof (translation)
+The claim follows from `csInf_le (domSet_finite hρ h ha).bddBelow hn`.
+-/
 theorem lowIndex_le {n : ℤ} (hn : n ∈ domSet a ρ) : lowIndex a ρ ≤ n :=
   csInf_le (domSet_finite hρ h ha).bddBelow hn
 
+/- English proof (translation)
+The claim follows from `le_csSup (domSet_finite hρ h ha).bddAbove hn`.
+-/
 theorem le_highIndex {n : ℤ} (hn : n ∈ domSet a ρ) : n ≤ highIndex a ρ :=
   le_csSup (domSet_finite hρ h ha).bddAbove hn
 
+/- English proof (translation)
+The claim follows from `lowIndex_le hρ h ha (highIndex_mem hρ h ha)`.
+-/
 theorem lowIndex_le_highIndex : lowIndex a ρ ≤ highIndex a ρ :=
   lowIndex_le hρ h ha (highIndex_mem hρ h ha)
 
+/- English proof (translation)
+The claim follows from `lt_of_le_of_ne (h.le_gaussNorm n) fun heq => absurd (lowIndex_le hρ h ha heq) (not_le.2 hn)`.
+-/
 theorem weight_lt_of_lt_lowIndex {n : ℤ} (hn : n < lowIndex a ρ) :
     ‖a n‖ * ρ ^ n < gaussNorm a ρ :=
   lt_of_le_of_ne (h.le_gaussNorm n) fun heq => absurd (lowIndex_le hρ h ha heq) (not_le.2 hn)
 
+/- English proof (translation)
+The claim follows from `lt_of_le_of_ne (h.le_gaussNorm n) fun heq => absurd (le_highIndex hρ h ha heq) (not_le.2 hn)`.
+-/
 theorem weight_lt_of_highIndex_lt {n : ℤ} (hn : highIndex a ρ < n) :
     ‖a n‖ * ρ ^ n < gaussNorm a ρ :=
   lt_of_le_of_ne (h.le_gaussNorm n) fun heq => absurd (le_highIndex hρ h ha heq) (not_le.2 hn)
 
+/- English proof (translation)
+Introduce `h0`. Use `gaussNorm_pos hρ h ha` as an intermediate fact. Simplify using `only [domSet, Set.mem_setOf_eq, h0, norm_zero, zero_mul] at hn`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ne_zero_of_mem_domSet {n : ℤ} (hn : n ∈ domSet a ρ) : a n ≠ 0 := by
   intro h0
   have := gaussNorm_pos hρ h ha
@@ -323,11 +483,17 @@ section Multiplicative
 
 variable [CompleteSpace K]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the calculation `calc x * y ≤ x * Y := mul_le_mul_of_nonneg_left hy hx0 _ < X * Y := mul_lt_mul_of_pos_right hx hY`.
+-/
 private theorem prod_lt_left {x y X Y : ℝ} (hx0 : 0 ≤ x) (hx : x < X) (hy : y ≤ Y) (hY : 0 < Y) :
     x * y < X * Y :=
   calc x * y ≤ x * Y := mul_le_mul_of_nonneg_left hy hx0
     _ < X * Y := mul_lt_mul_of_pos_right hx hY
 
+/- English proof (translation)
+Rewrite using `[mul_comm x, mul_comm X]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem prod_lt_right {x y X Y : ℝ} (hx0 : 0 ≤ x) (hx : x ≤ X) (hX : 0 < X) (hy0 : 0 ≤ y)
     (hy : y < Y) :
     x * y < X * Y := by
@@ -335,6 +501,9 @@ private theorem prod_lt_right {x y X Y : ℝ} (hx0 : 0 ≤ x) (hx : x ≤ X) (hX
   calc y * x ≤ y * X := mul_le_mul_of_nonneg_left hx (by linarith [hy0])
     _ < Y * X := mul_lt_mul_of_pos_right hy hX
 
+/- English proof (translation)
+Establish `hρn : 0 < ρ ^ n` using `zpow_pos hρ n`. Rewrite using `[← lt_div_iff₀ hρn]`. Use `norm_tsum_lt (ha.tendsto_term hρ hb n) (div_pos hM hρn) fun i => ?_` and prove the remaining obligations. Rewrite using `[norm_mul_term hρ.ne' n i]`. Conclude with `div_lt_div_of_pos_right (hlt i) hρn`.
+-/
 theorem cmul_weight_lt (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ) {n : ℤ}
     {M : ℝ} (hM : 0 < M) (hlt : ∀ i, (‖a i‖ * ρ ^ i) * (‖b (n - i)‖ * ρ ^ (n - i)) < M) :
     ‖cmul a b n‖ * ρ ^ n < M := by
@@ -344,6 +513,13 @@ theorem cmul_weight_lt (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt 
   rw [norm_mul_term hρ.ne' n i]
   exact div_lt_div_of_pos_right (hlt i) hρn
 
+/- English proof (translation)
+Establish `hρn : 0 < ρ ^ n` using `zpow_pos hρ n`. Rewrite using `[← eq_div_iff hρn.ne']`. Establish `h0 : a i₀ * b (n - i₀) ≠ 0`. Introduce `h0`. Use `norm_mul_term (a := a) (b := b) hρ.ne' n i₀` as an intermediate fact.
+
+Rewrite `this` using `[h0, norm_zero, heq]`. Conclude with `(div_pos hM hρn).ne' this.symm`. Unfold `cmul`. Rewrite using `[norm_tsum_eq_of_dominant (ha.tendsto_term hρ hb n) i₀ h0 fun i hi => ?_, norm_mul_term hρ.ne' n i₀, heq]`. Rewrite using `[norm_mul_term hρ.ne' n i, norm_mul_term hρ.ne' n i₀, heq]`.
+
+Conclude with `div_lt_div_of_pos_right (hlt i hi) hρn`.
+-/
 theorem cmul_weight_eq (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ) {n i₀ : ℤ}
     {M : ℝ} (hM : 0 < M) (heq : (‖a i₀‖ * ρ ^ i₀) * (‖b (n - i₀)‖ * ρ ^ (n - i₀)) = M)
     (hlt : ∀ i, i ≠ i₀ → (‖a i‖ * ρ ^ i) * (‖b (n - i)‖ * ρ ^ (n - i)) < M) :
@@ -364,6 +540,13 @@ theorem cmul_weight_eq (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt 
 variable (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ) (ha0 : a ≠ 0) (hb0 : b ≠ 0)
 include hρ ha hb ha0 hb0
 
+/- English proof (translation)
+Establish `hA` using `gaussNorm_pos hρ ha ha0`. Establish `hB` using `gaussNorm_pos hρ hb hb0`. Establish `hM` using `mul_pos hA hB`. Use `set i₀ := lowIndex a ρ`. Use `set j₀ := lowIndex b ρ`.
+
+Establish `wa : ∀ i, 0 ≤ ‖a i‖ * ρ ^ i` using `fun i => by positivity`. Establish `wb : ∀ i, 0 ≤ ‖b i‖ * ρ ^ i` using `fun i => by positivity`. Use `⟨cmul_weight_eq (i₀ := i₀) hρ ha hb hM ?_ fun i hi => ?_, fun n hn => cmul_weight_lt hρ ha hb hM fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[show i₀ + j₀ - i₀ = j₀ by ring, show ‖a i₀‖ * ρ ^ i₀ = gaussNorm a ρ from lowIndex_mem hρ ha ha0, show ‖b j₀‖ * ρ ^ j₀ = gaussNorm b ρ from lowIndex_mem hρ hb hb0]`. Break down `lt_or_gt_of_ne hi with hi | hi` into its components or cases.
+
+Conclude with `prod_lt_left (wa _) (weight_lt_of_lt_lowIndex hρ ha ha0 hi) (hb.le_gaussNorm _) hB`. Conclude with `prod_lt_right (wa _) (ha.le_gaussNorm _) hA (wb _) (weight_lt_of_lt_lowIndex hρ hb hb0 (by omega))`. Break down `lt_or_ge i i₀ with hi | hi` into its components or cases. Conclude with `prod_lt_left (wa _) (weight_lt_of_lt_lowIndex hρ ha ha0 hi) (hb.le_gaussNorm _) hB`. Conclude with `prod_lt_right (wa _) (ha.le_gaussNorm _) hA (wb _) (weight_lt_of_lt_lowIndex hρ hb hb0 (by omega))`.
+-/
 private theorem low_facts :
     ‖cmul a b (lowIndex a ρ + lowIndex b ρ)‖ * ρ ^ (lowIndex a ρ + lowIndex b ρ) =
       gaussNorm a ρ * gaussNorm b ρ ∧
@@ -389,6 +572,13 @@ private theorem low_facts :
     · exact prod_lt_right (wa _) (ha.le_gaussNorm _) hA (wb _)
         (weight_lt_of_lt_lowIndex hρ hb hb0 (by omega))
 
+/- English proof (translation)
+Establish `hA` using `gaussNorm_pos hρ ha ha0`. Establish `hB` using `gaussNorm_pos hρ hb hb0`. Establish `hM` using `mul_pos hA hB`. Use `set i₀ := highIndex a ρ`. Use `set j₀ := highIndex b ρ`.
+
+Establish `wa : ∀ i, 0 ≤ ‖a i‖ * ρ ^ i` using `fun i => by positivity`. Establish `wb : ∀ i, 0 ≤ ‖b i‖ * ρ ^ i` using `fun i => by positivity`. Use `⟨cmul_weight_eq (i₀ := i₀) hρ ha hb hM ?_ fun i hi => ?_, fun n hn => cmul_weight_lt hρ ha hb hM fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[show i₀ + j₀ - i₀ = j₀ by ring, show ‖a i₀‖ * ρ ^ i₀ = gaussNorm a ρ from highIndex_mem hρ ha ha0, show ‖b j₀‖ * ρ ^ j₀ = gaussNorm b ρ from highIndex_mem hρ hb hb0]`. Break down `lt_or_gt_of_ne hi with hi | hi` into its components or cases.
+
+Conclude with `prod_lt_right (wa _) (ha.le_gaussNorm _) hA (wb _) (weight_lt_of_highIndex_lt hρ hb hb0 (by omega))`. Conclude with `prod_lt_left (wa _) (weight_lt_of_highIndex_lt hρ ha ha0 hi) (hb.le_gaussNorm _) hB`. Break down `lt_or_ge i₀ i with hi | hi` into its components or cases. Conclude with `prod_lt_left (wa _) (weight_lt_of_highIndex_lt hρ ha ha0 hi) (hb.le_gaussNorm _) hB`. Conclude with `prod_lt_right (wa _) (ha.le_gaussNorm _) hA (wb _) (weight_lt_of_highIndex_lt hρ hb hb0 (by omega))`.
+-/
 private theorem high_facts :
     ‖cmul a b (highIndex a ρ + highIndex b ρ)‖ * ρ ^ (highIndex a ρ + highIndex b ρ) =
       gaussNorm a ρ * gaussNorm b ρ ∧
@@ -415,6 +605,9 @@ private theorem high_facts :
     · exact prod_lt_right (wa _) (ha.le_gaussNorm _) hA (wb _)
         (weight_lt_of_highIndex_lt hρ hb hb0 (by omega))
 
+/- English proof (translation)
+Use `le_antisymm (gaussNorm_le fun n => norm_cmul_mul_zpow_le hρ (mul_nonneg (gaussNorm_nonneg hρ) (gaussNorm_nonneg hρ)) fun i => mul_le_mul (ha.le_gaussNorm i) (hb.le_gaussNorm _) (by positivity) (gaussNorm_nonneg hρ)) ?_` and prove the remaining obligations. Rewrite using `[← (low_facts hρ ha hb ha0 hb0).1]`. Conclude with `(ha.cmul hρ hb).le_gaussNorm _`.
+-/
 theorem gaussNorm_cmul : gaussNorm (cmul a b) ρ = gaussNorm a ρ * gaussNorm b ρ := by
   refine le_antisymm (gaussNorm_le fun n => norm_cmul_mul_zpow_le hρ
     (mul_nonneg (gaussNorm_nonneg hρ) (gaussNorm_nonneg hρ)) fun i =>
@@ -422,6 +615,11 @@ theorem gaussNorm_cmul : gaussNorm (cmul a b) ρ = gaussNorm a ρ * gaussNorm b 
   rw [← (low_facts hρ ha hb ha0 hb0).1]
   exact (ha.cmul hρ hb).le_gaussNorm _
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `(low_facts hρ ha hb ha0 hb0).1`. Rewrite `h1` using `[h0]`. Use `mul_pos (gaussNorm_pos hρ ha ha0) (gaussNorm_pos hρ hb hb0)` as an intermediate fact. Simplify using `only [Pi.zero_apply, norm_zero, zero_mul] at h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cmul_ne_zero : cmul a b ≠ 0 := by
   intro h0
   have h1 := (low_facts hρ ha hb ha0 hb0).1
@@ -430,6 +628,11 @@ theorem cmul_ne_zero : cmul a b ≠ 0 := by
   simp only [Pi.zero_apply, norm_zero, zero_mul] at h1
   linarith
 
+/- English proof (translation)
+Establish `hc` using `ha.cmul hρ hb`. Establish `hc0` using `cmul_ne_zero hρ ha hb ha0 hb0`. Establish `hmem : lowIndex a ρ + lowIndex b ρ ∈ domSet (cmul a b) ρ`. Simplify using `only [domSet, Set.mem_setOf_eq, gaussNorm_cmul hρ ha hb ha0 hb0]`. Conclude with `(low_facts hρ ha hb ha0 hb0).1`.
+
+Use `le_antisymm (lowIndex_le hρ hc hc0 hmem) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Establish `h1` using `(low_facts hρ ha hb ha0 hb0).2 _ hlt`. Establish `h2` using `lowIndex_mem hρ hc hc0`. Simplify using `only [domSet, Set.mem_setOf_eq, gaussNorm_cmul hρ ha hb ha0 hb0] at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lowIndex_cmul : lowIndex (cmul a b) ρ = lowIndex a ρ + lowIndex b ρ := by
   have hc := ha.cmul hρ hb
   have hc0 := cmul_ne_zero hρ ha hb ha0 hb0
@@ -442,6 +645,11 @@ theorem lowIndex_cmul : lowIndex (cmul a b) ρ = lowIndex a ρ + lowIndex b ρ :
   simp only [domSet, Set.mem_setOf_eq, gaussNorm_cmul hρ ha hb ha0 hb0] at h2
   linarith
 
+/- English proof (translation)
+Establish `hc` using `ha.cmul hρ hb`. Establish `hc0` using `cmul_ne_zero hρ ha hb ha0 hb0`. Establish `hmem : highIndex a ρ + highIndex b ρ ∈ domSet (cmul a b) ρ`. Simplify using `only [domSet, Set.mem_setOf_eq, gaussNorm_cmul hρ ha hb ha0 hb0]`. Conclude with `(high_facts hρ ha hb ha0 hb0).1`.
+
+Use `le_antisymm (not_lt.1 fun hlt => ?_) (le_highIndex hρ hc hc0 hmem)` and prove the remaining obligations. Establish `h1` using `(high_facts hρ ha hb ha0 hb0).2 _ hlt`. Establish `h2` using `highIndex_mem hρ hc hc0`. Simplify using `only [domSet, Set.mem_setOf_eq, gaussNorm_cmul hρ ha hb ha0 hb0] at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem highIndex_cmul : highIndex (cmul a b) ρ = highIndex a ρ + highIndex b ρ := by
   have hc := ha.cmul hρ hb
   have hc0 := cmul_ne_zero hρ ha hb ha0 hb0
@@ -456,6 +664,15 @@ theorem highIndex_cmul : highIndex (cmul a b) ρ = highIndex a ρ + highIndex b 
 
 end Multiplicative
 
+/- English proof (translation)
+Establish `hρ' : 0 < ρ'` using `hρ.trans hρρ'`. Assume the negation of the conclusion as `hlt`. Take `⟨k, hk⟩ : ∃ k : ℕ, n = m + (k + 1 : ℕ)` from `⟨(n - m - 1).toNat, by omega⟩`. Establish `hA : 0 < ‖a n‖` using `norm_pos_iff.2 (ne_zero_of_mem_domSet hρ h ha hn)`. Establish `hB : 0 < ‖a m‖` using `norm_pos_iff.2 (ne_zero_of_mem_domSet hρ' h' ha hm)`.
+
+Establish `e1 : ‖a m‖ * ρ ^ m ≤ ‖a n‖ * ρ ^ n` using `by rw [hn]; exact h.le_gaussNorm m`. Establish `e2 : ‖a n‖ * ρ' ^ n ≤ ‖a m‖ * ρ' ^ m` using `by rw [hm]; exact h'.le_gaussNorm n`. Rewrite `e1` using `[show ρ ^ n = ρ ^ m * ρ ^ (k + 1) by rw [hk, zpow_add₀ hρ.ne', zpow_natCast]]`. Rewrite `e2` using `[show ρ' ^ n = ρ' ^ m * ρ' ^ (k + 1) by rw [hk, zpow_add₀ hρ'.ne', zpow_natCast]]`. Establish `hm1 : 0 < ρ ^ m` using `zpow_pos hρ m`.
+
+Establish `hm2 : 0 < ρ' ^ m` using `zpow_pos hρ' m`. Establish `f1 : ‖a m‖ ≤ ‖a n‖ * ρ ^ (k + 1)`. Establish `: ‖a m‖ * ρ ^ m ≤ (‖a n‖ * ρ ^ (k + 1)) * ρ ^ m` using `by linarith`. Conclude with `le_of_mul_le_mul_right this hm1`. Establish `f2 : ‖a n‖ * ρ' ^ (k + 1) ≤ ‖a m‖`.
+
+Establish `: (‖a n‖ * ρ' ^ (k + 1)) * ρ' ^ m ≤ ‖a m‖ * ρ' ^ m` using `by linarith`. Conclude with `le_of_mul_le_mul_right this hm2`. Establish `f3 : ρ ^ (k + 1) < ρ' ^ (k + 1)` using `pow_lt_pow_left₀ hρρ' hρ.le (by omega)`. Establish `: ‖a n‖ * ρ ^ (k + 1) < ‖a n‖ * ρ' ^ (k + 1)` using `mul_lt_mul_of_pos_left f3 hA`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem le_of_mem_domSet {ρ' : ℝ} (hρ : 0 < ρ) (hρρ' : ρ < ρ') (h : ConvergesAt a ρ)
     (h' : ConvergesAt a ρ') (ha : a ≠ 0) {n m : ℤ} (hn : n ∈ domSet a ρ)
     (hm : m ∈ domSet a ρ') : n ≤ m := by
@@ -480,6 +697,9 @@ theorem le_of_mem_domSet {ρ' : ℝ} (hρ : 0 < ρ) (hρρ' : ρ < ρ') (h : Con
   have : ‖a n‖ * ρ ^ (k + 1) < ‖a n‖ * ρ' ^ (k + 1) := mul_lt_mul_of_pos_left f3 hA
   linarith
 
+/- English proof (translation)
+The claim follows from `le_of_mem_domSet hρ hρρ' h h' ha (highIndex_mem hρ h ha) (lowIndex_mem (hρ.trans hρρ') h' ha)`.
+-/
 theorem highIndex_le_lowIndex {ρ' : ℝ} (hρ : 0 < ρ) (hρρ' : ρ < ρ') (h : ConvergesAt a ρ)
     (h' : ConvergesAt a ρ') (ha : a ≠ 0) : highIndex a ρ ≤ lowIndex a ρ' :=
   le_of_mem_domSet hρ hρρ' h h' ha (highIndex_mem hρ h ha)

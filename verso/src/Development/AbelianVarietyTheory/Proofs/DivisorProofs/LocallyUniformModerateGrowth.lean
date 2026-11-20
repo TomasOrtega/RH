@@ -10,6 +10,9 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.WeakHolFamily
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J H s₀ U hU hH hμ`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 (interior_mem_nhds.2 hU)`. Establish `hD : Metric.closedBall s₀ (ε / 2) ⊆ interior U` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Take `⟨-, N, C, hC⟩` from `word_holomorphic_and_uniform F E σ n J H (interior U) (Metric.closedBall s₀ (ε / 2)) isOpen_interior (isCompact_closedBall s₀ (ε / 2)) hD (fun s hs => hH s (interior_subset hs)) (fun μ hm => (hμ μ hm).mono interior_subset) [] (by simp)`. Conclude with `⟨Metric.closedBall s₀ (ε / 2), Metric.closedBall_mem_nhds s₀ (by linarith), C, N, fun s hs g => by simpa using hC s hs g⟩`.
+-/
 theorem locally_uniform_moderate_growth :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (H : ℂ → GAd σ J → ℂ) (s₀ : ℂ) (U : Set ℂ), U ∈ 𝓝 s₀ →

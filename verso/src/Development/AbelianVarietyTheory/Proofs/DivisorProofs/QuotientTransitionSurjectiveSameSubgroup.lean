@@ -6,6 +6,19 @@ open scoped TensorProduct
 
 namespace GlobalTheory.QuotTransition
 
+/- English proof (translation)
+Introduce `O _ A₁ _ _ _ _ _ A₂ _ _ _ _ _ B₁ _ _ _ _ _ B₂ _ _ _ _ _ π j₁ j₂ r ρ hρ hsq hker`. Set `j₁' : B₁ →ₗ[O] A₁` to `(j₁ : B₁ →ₐ[O] A₁).toLinearMap`. Set `r' : B₂ →ₗ[O] B₁` to `(r : B₂ →ₐ[O] B₁).toLinearMap`. Establish `hcomp : j₁' ∘ₗ r' = ((π.comp j₂ : B₂ →ₐc[O] A₁) : B₂ →ₐ[O] A₁).toLinearMap`. Use extensionality with `b`.
+
+Conclude with `hsq b`. Establish `hs : Function.Surjective r'`. Use `GlobalTheory.surjective_of_fibre_rank O B₂ B₁ r' fun q => ?_` and prove the remaining obligations. Establish `hinj : Function.Injective (j₁'.baseChange q.asIdeal.ResidueField)`. Apply `Function.LeftInverse.injective (g := ρ.baseChange q.asIdeal.ResidueField)` to reduce the goal to its premises.
+
+Introduce `x`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp]`. Establish `hid : ρ ∘ₗ j₁' = LinearMap.id` using `LinearMap.ext hρ`. Rewrite using `[hid, LinearMap.baseChange_id, LinearMap.id_apply]`. Establish `h1 : fibreRank (j₁' ∘ₗ r') q = fibreRank r' q`.
+
+Rewrite using `[fibreRank, fibreRank, LinearMap.baseChange_comp, LinearMap.range_comp]`. Conclude with `(Submodule.equivMapOfInjective _ hinj _).finrank_eq.symm`. Establish `h2 : fibreRank j₁' q = fibreDim B₁ q` using `LinearMap.finrank_range_of_inj hinj`. Establish `h3` using `fibreDim_eq_ker_mul_range (π.comp j₂) q`. Establish `h4` using `fibreDim_eq_ker_mul_range j₁ q`.
+
+Rewrite `h3` using `[kerIdeal_comp, ← hker, ← hcomp]`. Establish `h5 : fibreDim (A₁ ⧸ kerIdeal j₁) q ≠ 0` using `fun h0 => fibreDim_ne_zero (A := A₁) q (by rw [h4, h0, zero_mul])`. Establish `h6 : fibreRank (j₁' ∘ₗ r') q = fibreRank j₁' q` using `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero h5) (h3.symm.trans h4)`. Establish `h7 : fibreRank r' q = fibreDim B₁ q` using `by rw [← h1, h6, h2]`. Conclude with `h7`.
+
+Conclude with `hs`.
+-/
 theorem transition_surjective : ∀ (O : Type) [CommRing O] (A₁ : Type) [CommRing A₁] [HopfAlgebra O A₁] [IsCocomm O A₁] [Module.Finite O A₁] [Module.Projective O A₁] (A₂ : Type) [CommRing A₂] [HopfAlgebra O A₂] [IsCocomm O A₂] [Module.Finite O A₂] [Module.Projective O A₂] (B₁ : Type) [CommRing B₁] [HopfAlgebra O B₁] [IsCocomm O B₁] [Module.Finite O B₁] [Module.Projective O B₁] (B₂ : Type) [CommRing B₂] [HopfAlgebra O B₂] [IsCocomm O B₂] [Module.Finite O B₂] [Module.Projective O B₂] (π : A₂ →ₐc[O] A₁) (j₁ : B₁ →ₐc[O] A₁) (j₂ : B₂ →ₐc[O] A₂) (r : B₂ →ₐc[O] B₁) (ρ : A₁ →ₗ[O] B₁), (∀ b, ρ (j₁ b) = b) → (∀ b, j₁ (r b) = π (j₂ b)) → kerIdeal j₁ = Ideal.map (π : A₂ →ₐ[O] A₁) (kerIdeal j₂) → Function.Surjective r := by
   intro O _ A₁ _ _ _ _ _ A₂ _ _ _ _ _ B₁ _ _ _ _ _ B₂ _ _ _ _ _ π j₁ j₂ r ρ hρ hsq hker
   let j₁' : B₁ →ₗ[O] A₁ := (j₁ : B₁ →ₐ[O] A₁).toLinearMap

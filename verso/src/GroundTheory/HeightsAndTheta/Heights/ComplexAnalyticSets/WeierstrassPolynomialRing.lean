@@ -10,6 +10,13 @@ open Topology Filter Polynomial
 
 noncomputable section
 
+/- English proof (translation)
+Use `⟨hne, fun hu => hω.not_isUnit (isUnit_of_dvd_one (hdvd 1 (by rw [map_one]; exact hu.dvd))), ?_⟩` and prove the remaining obligations. Introduce `g h hgh`. Take `⟨Q₁, p₁, rfl⟩` from `hsurj g`. Take `⟨Q₂, p₂, rfl⟩` from `hsurj h`. Establish `h12 : Ψ ω ∣ Ψ (p₁ * p₂)`.
+
+Establish `e : Ψ (p₁ * p₂) = (Ψ ω * Q₁ + Ψ p₁) * (Ψ ω * Q₂ + Ψ p₂) - Ψ ω * (Q₁ * (Ψ ω * Q₂ + Ψ p₂) + Ψ p₁ * Q₂)` using `by rw [map_mul]; ring`. Rewrite using `[e]`. Conclude with `dvd_sub hgh (dvd_mul_right _ _)`. Break down `hω.dvd_or_dvd (hdvd _ h12) with h1 | h1` into its components or cases. Conclude with `Or.inl (dvd_add (dvd_mul_right _ _) (map_dvd Ψ h1))`.
+
+Conclude with `Or.inr (dvd_add (dvd_mul_right _ _) (map_dvd Ψ h1))`.
+-/
 theorem prime_map_of_prime {R S : Type*} [CommRing R] [CommRing S] (Ψ : R →+* S) {ω : R} (hω : Prime ω)
     (hne : Ψ ω ≠ 0) (hsurj : ∀ g : S, ∃ (Q : S) (p : R), g = Ψ ω * Q + Ψ p)
     (hdvd : ∀ p : R, Ψ ω ∣ Ψ p → ω ∣ p) : Prime (Ψ ω) := by
@@ -51,10 +58,18 @@ def weierstrassPoly {σ : Type} [Fintype σ] {d : ℕ} (c : Fin d → (σ → �
     (holGerms (0 : σ → ℂ))[X] :=
   X ^ d + finPoly (fun j => mkGerm (c j) (hc j))
 
+/- English proof (translation)
+The claim follows from `monic_X_pow_add (degree_sum_fin_lt _)`.
+-/
 theorem weierstrassPoly_monic {σ : Type} [Fintype σ] {d : ℕ} (c : Fin d → (σ → ℂ) → ℂ)
     (hc : ∀ j, AnalyticAt ℂ (c j) 0) : (weierstrassPoly c hc).Monic :=
   monic_X_pow_add (degree_sum_fin_lt _)
 
+/- English proof (translation)
+Establish `hι : ∀ j, ((germLift σ (mkGerm (a j) (ha j)) : holGerms (0 : Option σ → ℂ)) : Germ (𝓝 (0 : Option σ → ℂ)) ℂ) = ↑(a j ∘ lastProj σ)` using `fun j => germPull_coe _ _ _ (mkGerm (a j) (ha j)) (a j) rfl`. Simplify using `only [finPoly, polyToGerm, map_sum, map_mul, map_pow, coe_eval₂RingHom, eval₂_C, eval₂_X]`. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`. Simplify using `only [Subring.coe_mul, Subring.coe_pow, hι]`. Express the relevant statement in the definitionally equal form `∑ j : Fin d, Germ.coeRingHom _ (a j ∘ lastProj σ) * Germ.coeRingHom _ (fun x : Option σ → ℂ => x none) ^ (j : ℕ) = Germ.coeRingHom _ _`.
+
+Simplify using `only [← map_mul, ← map_pow, ← map_sum]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply, lastProj]`.
+-/
 theorem polyToGerm_finPoly {σ : Type} [Fintype σ] {d : ℕ} (a : Fin d → (σ → ℂ) → ℂ)
     (ha : ∀ j, AnalyticAt ℂ (a j) 0) :
     ((polyToGerm σ (finPoly fun j => mkGerm (a j) (ha j)) : holGerms (0 : Option σ → ℂ)) :
@@ -73,6 +88,11 @@ theorem polyToGerm_finPoly {σ : Type} [Fintype σ] {d : ℕ} (a : Fin d → (σ
   funext x
   simp [Finset.sum_apply, lastProj]
 
+/- English proof (translation)
+Rewrite using `[weierstrassPoly, map_add, Subring.coe_add, polyToGerm_finPoly, map_pow, Subring.coe_pow]`. Establish `hX : ((polyToGerm σ X : holGerms (0 : Option σ → ℂ)) : Germ (𝓝 (0 : Option σ → ℂ)) ℂ) = ↑(fun x : Option σ → ℂ => x none)`. Simplify using `only [polyToGerm, coe_eval₂RingHom, eval₂_X]`. Both sides reduce to the same expression. Rewrite using `[hX]`.
+
+Express the relevant statement in the definitionally equal form `Germ.coeRingHom _ (fun x : Option σ → ℂ => x none) ^ d + Germ.coeRingHom _ _ = Germ.coeRingHom _ _`. Rewrite using `[← map_pow, ← map_add]`. Both sides reduce to the same expression.
+-/
 theorem polyToGerm_weierstrassPoly {σ : Type} [Fintype σ] {d : ℕ} (c : Fin d → (σ → ℂ) → ℂ)
     (hc : ∀ j, AnalyticAt ℂ (c j) 0) :
     ((polyToGerm σ (weierstrassPoly c hc) : holGerms (0 : Option σ → ℂ)) : Germ (𝓝 (0 : Option σ → ℂ)) ℂ) =
@@ -86,6 +106,11 @@ theorem polyToGerm_weierstrassPoly {σ : Type} [Fintype σ] {d : ℕ} (c : Fin d
   rw [← map_pow, ← map_add]
   rfl
 
+/- English proof (translation)
+Establish `h1 : (germValue (0 : Option σ → ℂ)).comp (germLift σ) = germValue 0`. Use extensionality with `φ`. Take `⟨f, -, hf⟩` from `φ.2`. Use `show Germ.value ((germLift σ φ : holGerms (0 : Option σ → ℂ)) : Germ (𝓝 (0 : Option σ → ℂ)) ℂ) = Germ.value (φ : Germ (𝓝 (0 : σ → ℂ)) ℂ)`. Rewrite using `[germLift, germPull_coe _ _ _ φ f hf, ← hf]`.
+
+Simplify using `[lastProj]`. Both sides reduce to the same expression. Rewrite using `[eval_map, polyToGerm, coe_eval₂RingHom, hom_eval₂, h1]`. Both sides reduce to the same expression.
+-/
 theorem germValue_polyToGerm {σ : Type} [Fintype σ] (p : (holGerms (0 : σ → ℂ))[X]) :
     germValue 0 (polyToGerm σ p) = (p.map (germValue 0)).eval 0 := by
   have h1 : (germValue (0 : Option σ → ℂ)).comp (germLift σ) = germValue 0 := by
@@ -99,6 +124,21 @@ theorem germValue_polyToGerm {σ : Type} [Fintype σ] (p : (holGerms (0 : σ →
   rw [eval_map, polyToGerm, coe_eval₂RingHom, hom_eval₂, h1]
   rfl
 
+/- English proof (translation)
+Establish `hm` using `weierstrassPoly_monic c hc`. Establish `hdeg : (weierstrassPoly c hc).natDegree = d`. Rewrite using `[weierstrassPoly, finPoly, natDegree_add_eq_left_of_degree_lt (by rw [degree_X_pow]; exact degree_sum_fin_lt _), natDegree_X_pow]`. Rewrite using `[← modByMonic_eq_zero_iff_dvd hm]`. Establish `hrdeg : (p %ₘ weierstrassPoly c hc).degree < d`.
+
+Use `degree_modByMonic_lt p hm` as an intermediate fact. Rewrite `this` using `[degree_eq_natDegree hm.ne_zero, hdeg]`. Then use the resulting hypothesis. Use `choose a ha hae using fun j : Fin d => ((p %ₘ weierstrassPoly c hc).coeff j).2`. Establish `hcoeff : ∀ j : Fin d, (p %ₘ weierstrassPoly c hc).coeff j = mkGerm (a j) (ha j)` using `fun j => Subtype.ext (hae j).symm`. Establish `hr : p %ₘ weierstrassPoly c hc = finPoly fun j => mkGerm (a j) (ha j)` using `by conv_lhs => rw [← sum_C_mul_X_pow_eq (p %ₘ weierstrassPoly c hc)]`.
+
+Rewrite using `[← sum_fin (fun n b => C b * X ^ n) (by simp) hrdeg, finPoly]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hcoeff j]`. Take `⟨Q, hQ⟩` from `h`. Establish `himg : polyToGerm σ (p %ₘ weierstrassPoly c hc) = polyToGerm σ (weierstrassPoly c hc) * (Q - polyToGerm σ (p /ₘ weierstrassPoly c hc))`. Establish `e` using `congrArg (polyToGerm σ) (modByMonic_add_div p (weierstrassPoly c hc))`.
+
+Rewrite `e` using `[map_add, map_mul]`. Rewrite using `[mul_sub, ← hQ, ← e]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨m, hmA, hmQ⟩` from `(Q - polyToGerm σ (p /ₘ weierstrassPoly c hc)).2`. Establish `hgerm` using `congrArg (fun φ : holGerms (0 : Option σ → ℂ) => (φ : Germ (𝓝 (0 : Option σ → ℂ)) ℂ)) himg`.
+
+Simplify using `only [Subring.coe_mul] at hgerm`. Rewrite `hgerm` using `[hr, polyToGerm_finPoly, polyToGerm_weierstrassPoly, ← hmQ]`. Establish `hev : ∀ᶠ x in 𝓝 (0 : Option σ → ℂ), ∑ j : Fin d, a j (fun i => x (some i)) * x none ^ (j : ℕ) = m x * weierstrassPolynomial c x`. Use `Germ.coe_eq.1 (hgerm.trans (Germ.coe_mul _ _).symm)` as an intermediate fact. Use `filter_upwards [this] with x hx`.
+
+Rewrite using `[hx]`. Conclude with `mul_comm _ _`. Establish `hzero` using `weierstrass_remainder_eq_zero c (fun j => (hc j).continuousAt) hc0 a m hmA hev`. Rewrite using `[hr]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Establish `: mkGerm (a j) (ha j) = 0` using `Subtype.ext (Germ.coe_eq.2 (hzero j))`. Use `show C (mkGerm (a j) (ha j)) * X ^ (j : ℕ) = 0`. Rewrite using `[this, C_0, zero_mul]`.
+-/
 theorem weierstrassPoly_dvd_of_polyToGerm_dvd {σ : Type} [Fintype σ] {d : ℕ} (c : Fin d → (σ → ℂ) → ℂ)
     (hc : ∀ j, AnalyticAt ℂ (c j) 0) (hc0 : ∀ j, c j 0 = 0) (p : (holGerms (0 : σ → ℂ))[X])
     (h : polyToGerm σ (weierstrassPoly c hc) ∣ polyToGerm σ p) : weierstrassPoly c hc ∣ p := by
@@ -140,6 +180,27 @@ theorem weierstrassPoly_dvd_of_polyToGerm_dvd {σ : Type} [Fintype σ] {d : ℕ}
   show C (mkGerm (a j) (ha j)) * X ^ (j : ℕ) = 0
   rw [this, C_0, zero_mul]
 
+/- English proof (translation)
+Establish `hm` using `weierstrassPoly_monic c hc`. Use `⟨fun hu => hirr.not_isUnit (hu.map _), fun a b hab => ?_⟩` and prove the remaining obligations. Establish `hlc : a.leadingCoeff * b.leadingCoeff = 1`. Rewrite using `[← leadingCoeff_mul, ← hab]`. Conclude with `hm`.
+
+Take `⟨u, hu⟩ : IsUnit a.leadingCoeff` from `IsUnit.of_mul_eq_one _ hlc`. Establish `ha' : (a * C (↑u⁻¹ : holGerms (0 : σ → ℂ))).Monic`. Rewrite using `[Monic, leadingCoeff_mul, leadingCoeff_C, ← hu, Units.mul_inv]`. Establish `hb' : (b * C (u : holGerms (0 : σ → ℂ))).Monic`. Rewrite using `[Monic, leadingCoeff_mul, leadingCoeff_C, hu, mul_comm, hlc]`.
+
+Establish `hab' : weierstrassPoly c hc = (a * C (↑u⁻¹ : holGerms (0 : σ → ℂ))) * (b * C (u : holGerms (0 : σ → ℂ)))`. Rewrite using `[hab, show (a * C (↑u⁻¹ : holGerms (0 : σ → ℂ))) * (b * C (u : holGerms (0 : σ → ℂ))) = a * b * C ((↑u⁻¹ : holGerms (0 : σ → ℂ)) * u) by rw [C_mul]; ring, Units.inv_mul, C_1, mul_one]`. Establish `hmap : (weierstrassPoly c hc).map (germValue 0) = X ^ d`. Simplify using `only [weierstrassPoly, finPoly, Polynomial.map_add, Polynomial.map_pow, map_X, Polynomial.map_sum, Polynomial.map_mul, map_C]`. Establish `: ∀ j, germValue 0 (mkGerm (c j) (hc j)) = 0` using `fun j => hc0 j`.
+
+Simplify using `[this]`. Establish `key : ∀ (a' b' : (holGerms (0 : σ → ℂ))[X]), a'.Monic → b'.Monic → weierstrassPoly c hc = a' * b' → IsUnit (polyToGerm σ a') → a' = 1`. Introduce `a' b' ha'm hb'm he hunit`. Establish `hdvdX : a'.map (germValue 0) ∣ X ^ d` using `⟨b'.map (germValue 0), by rw [← Polynomial.map_mul, ← he, hmap]⟩`. Take `⟨k, -, hassoc⟩` from `(dvd_prime_pow prime_X d).1 hdvdX`.
+
+Establish `hka : a'.map (germValue 0) = X ^ k` using `eq_of_monic_of_associated (ha'm.map _) (monic_X_pow k) hassoc`. Establish `hv` using `(hunit.map (germValue 0)).ne_zero`. Rewrite `hv` using `[germValue_polyToGerm, hka, eval_pow, eval_X]`. Establish `hk0 : k = 0`. Assume the negation of the conclusion as `hk0`.
+
+Conclude with `hv (zero_pow hk0)`. Establish `hdeg0 : a'.natDegree = 0`. Rewrite using `[← ha'm.natDegree_map (germValue 0), hka, hk0, pow_zero, natDegree_one]`. Conclude with `ha'm.natDegree_eq_zero.1 hdeg0`. Rewrite `hirr` using `[hab', map_mul]`.
+
+Break down `hirr.isUnit_or_isUnit rfl with h1 | h1` into its components or cases. Use `left`. Establish `e` using `key _ _ ha' hb' hab' h1`. Establish `: a = C (u : holGerms (0 : σ → ℂ))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_assoc, ← C_mul, Units.inv_mul, C_1, mul_one]`. Use `_ = C (u : holGerms (0 : σ → ℂ)) := by rw [e, one_mul]`. Rewrite using `[this]`. Conclude with `isUnit_C.2 u.isUnit`. Use `right`.
+
+Establish `e` using `key _ _ hb' ha' (by rw [hab', mul_comm]) h1`. Establish `: b = C (↑u⁻¹ : holGerms (0 : σ → ℂ))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← C_mul, Units.mul_inv, C_1, mul_one]`. Use `_ = C (↑u⁻¹ : holGerms (0 : σ → ℂ)) := by rw [e, one_mul]`.
+
+Rewrite using `[this]`. Conclude with `isUnit_C.2 u⁻¹.isUnit`.
+-/
 theorem weierstrassPoly_irreducible {σ : Type} [Fintype σ] {d : ℕ} (c : Fin d → (σ → ℂ) → ℂ)
     (hc : ∀ j, AnalyticAt ℂ (c j) 0) (hc0 : ∀ j, c j 0 = 0)
     (hirr : Irreducible (polyToGerm σ (weierstrassPoly c hc))) : Irreducible (weierstrassPoly c hc) := by

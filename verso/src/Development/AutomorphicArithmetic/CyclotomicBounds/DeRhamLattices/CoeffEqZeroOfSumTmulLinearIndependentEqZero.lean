@@ -2,6 +2,13 @@ import Mathlib
 
 open TensorProduct
 
+/- English proof (translation)
+Introduce `K V C ι _ _ _ _ _ _ v hv c hsum i`. Take `⟨f, hf⟩` from `LinearMap.exists_extend ((Module.Basis.span hv).coord i)`. Establish `hfv : ∀ j, f (v j) = if j = i then 1 else 0`. Introduce `j`. Establish `h1 : f (v j) = (Module.Basis.span hv).coord i ⟨v j, Submodule.subset_span ⟨j, rfl⟩⟩`.
+
+Rewrite using `[← hf]`. Both sides reduce to the same expression. Rewrite using `[h1, ← Module.Basis.span_apply hv j, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Establish `h2` using `congrArg (⇑((TensorProduct.lid K C).toLinearMap ∘ₗ TensorProduct.map f LinearMap.id)) hsum`. Simplify using `only [map_sum, LinearMap.comp_apply, TensorProduct.map_tmul, LinearMap.id_apply, LinearEquiv.coe_coe, TensorProduct.lid_tmul, hfv, map_zero] at h2`.
+
+Simplify using `using h2`.
+-/
 theorem _root_.UpperTheory.KN.coeff_eq_zero_of_sum_tmul_linearIndependent_eq_zero :
     ∀ (K V C ι : Type) [Field K] [AddCommGroup V] [Module K V] [AddCommGroup C] [Module K C] [Fintype ι] (v : ι → V), LinearIndependent K v → ∀ c : ι → C, ∑ i, v i ⊗ₜ[K] c i = 0 → ∀ i, c i = 0 := by
   intro K V C ι _ _ _ _ _ _ v hv c hsum i

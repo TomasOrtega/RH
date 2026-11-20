@@ -16,6 +16,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `i1` as an intermediate fact. Use `i2` as an intermediate fact. Use `i3` as an intermediate fact. Use `i4` as an intermediate fact.
+
+Use `i5` as an intermediate fact. Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`. Establish `: Countable (ratL T S)` using `countable_of_Lindelof_of_discrete`. Take `⟨μ, 𝓕, hμ, h𝓕, h1⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WO S T) (ratL T S) K hK hKc).1`. Establish `hF : IsThetaFunO ψ S T (om (g, h) f)` using `hom.om_pres _ _ hf`.
+
+Establish `hd : IsThetaFunO ψ S T (dLine ψ S T L f)` using `theta_dLine hθ hψ hL hf`. Establish `hd' : IsThetaFunO ψ S T (dLine ψ S T L' (om (g, h) f))` using `theta_dLine hθ hψ hL' hF`. Establish `hδ : IsThetaFunO ψ S T (om (g, h) (dLine ψ S T L f) - dLine ψ S T L' (om (g, h) f))` using `theta_sub (hom.om_pres _ _ hd) hd'`. Take `⟨C₁, hC₁⟩` from `quotient_bound hθ hψ hL hf`. Take `⟨C₂, hC₂⟩` from `quotient_bound hθ hψ hL' hF`.
+
+Establish `hν : (μ.restrict 𝓕) Set.univ = 1` using `by rw [Measure.restrict_apply_univ]; exact h1`. Establish `h0 : ∫⁻ w, ‖(om (g, h) (dLine ψ S T L f) - dLine ψ S T L' (om (g, h) f)) w‖ₑ ^ 2 ∂(μ.restrict 𝓕) = 0`. Use `lintegral_eq_zero_of_approx (μ.restrict 𝓕) hν _ C₁ C₂ fun t ht => ?_` and prove the remaining obligations. Establish `hq : IsThetaFunO ψ S T ((t : ℂ)⁻¹ • (heisO ψ S T (L t) f - f))` using `theta_smul _ (theta_sub (theta_heisO_real hθ hψ (hL.2 t) hf) hf)`. Establish `hom_q : om (g, h) ((t : ℂ)⁻¹ • (heisO ψ S T (L t) f - f)) = (t : ℂ)⁻¹ • (heisO ψ S T (L' t) (om (g, h) f) - om (g, h) f)`.
+
+Rewrite using `[map_smul, map_sub, hom.om_heis g h (L t) f hf, ← hLL t]`. Use `⟨om (g, h) (dLine ψ S T L f - (t : ℂ)⁻¹ • (heisO ψ S T (L t) f - f)), dLine ψ S T L' (om (g, h) f) - om (g, h) ((t : ℂ)⁻¹ • (heisO ψ S T (L t) f - f)), dLine ψ S T L f - (t : ℂ)⁻¹ • (heisO ψ S T (L t) f - f), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Conclude with `hom.om_unit μ 𝓕 hμ h𝓕 _ _ (theta_sub hd hq)`.
+
+Introduce `w`. Rewrite using `[Pi.sub_apply, norm_sub_rev, ← Pi.sub_apply]`. Conclude with `hC₁ t ht w`. Introduce `w`. Rewrite using `[hom_q, Pi.sub_apply, norm_sub_rev, ← Pi.sub_apply]`.
+
+Conclude with `hC₂ t ht w`. Conclude with `sub_eq_zero.mp (eq_zero_of_lintegral_eq_zero (ratL T S) μ 𝓕 h𝓕 _ hδ.cont (theta_norm_periodic hψ hδ) h0)`.
+-/
 theorem om_dLine (hom : IsWeak ψ S T om) (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (g : GA D S) (h : GA D T)
     {L L' : ℝ →+ WO S T} (hL : IsRealDir T S L) (hL' : IsRealDir T S L') (hLL : ∀ t, L' t = actO S T g h (L t))
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -55,6 +70,9 @@ theorem om_dLine (hom : IsWeak ψ S T om) (hψ : IsStdChar D ψ (-1)) (hθ : IsI
   exact sub_eq_zero.mp
     (eq_zero_of_lintegral_eq_zero (ratL T S) μ 𝓕 h𝓕 _ hδ.cont (theta_norm_periodic hψ hδ) h0)
 
+/- English proof (translation)
+Rewrite using `[dRho_eq_dLine, dRho_eq_dLine]`. Conclude with `GlobalTheory.Ker.WeakMove.om_dLine hom hψ hθ g h (isRealDir_lineAt hθ τ z) (isRealDir_lineAt hθ τ _) (fun t => lineAt_move hθ g h τ z t) hf`.
+-/
 theorem om_dRho (hom : IsWeak ψ S T om) (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (g : GA D S) (h : GA D T)
     (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     om (g, h) (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f) =
@@ -63,6 +81,9 @@ theorem om_dRho (hom : IsWeak ψ S T om) (hψ : IsStdChar D ψ (-1)) (hθ : IsIn
   exact GlobalTheory.Ker.WeakMove.om_dLine hom hψ hθ g h (isRealDir_lineAt hθ τ z) (isRealDir_lineAt hθ τ _)
     (fun t => lineAt_move hθ g h τ z t) hf
 
+/- English proof (translation)
+Establish `h1 : compAt C.θ τ (mt T g) * compAt C.θ τ (mt T g⁻¹) = 1` using `compAt_mt_mul_inv τ g`. Establish `h2 : (compAt C.θ τ (mt T g))⁻¹ * compAt C.θ τ (mt T g) = 1`. Conclude with `Matrix.nonsing_inv_mul _ (Matrix.isUnit_det_of_right_inverse h1)`. Simplify using `only [Ctx.sB, Ctx.mvB, Matrix.mul_inv_rev, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+-/
 theorem sB_mvB (C : Ctx S T) (g : GA D T) (B : C.Bas) (τ : D.what₂.Tau) :
     C.sB (C.mvB g B) τ * compAt C.θ τ (mt T g) = compAt C.θ τ (mt T g) * C.sB B τ := by
   have h1 : compAt C.θ τ (mt T g) * compAt C.θ τ (mt T g⁻¹) = 1 := compAt_mt_mul_inv τ g
@@ -70,6 +91,13 @@ theorem sB_mvB (C : Ctx S T) (g : GA D T) (B : C.Bas) (τ : D.what₂.Tau) :
     exact Matrix.nonsing_inv_mul _ (Matrix.isUnit_det_of_right_inverse h1)
   simp only [Ctx.sB, Ctx.mvB, Matrix.mul_inv_rev, Matrix.mul_assoc, h2, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `τ z`. Establish `hM : compAt C.θ τ (mt T g) * compAt C.θ τ (mt T g⁻¹) = 1` using `compAt_mt_mul_inv τ g`. Establish `hG : compAt C.θ τ (mt S h) * compAt C.θ τ (mt S h⁻¹) = 1` using `compAt_mt_mul_inv τ h`. Choose the witnesses or unpack the hypotheses as in `⟨z₀, rfl⟩ : ∃ z₀ : Matrix (Fin T.rank) (Fin S.rank) ℂ, z = compAt C.θ τ (mt T g) * z₀ * compAt C.θ τ (mt S h⁻¹) := by`. Use `⟨compAt C.θ τ (mt T g⁻¹) * z * compAt C.θ τ (mt S h), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mul_assoc, hG, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, hM, Matrix.one_mul]`. Establish `key` using `hB τ z₀`. Establish `hc : cplxO 1 (C.sB (C.mvB g B) τ) (compAt C.θ τ (mt T g) * z₀ * compAt C.θ τ (mt S h⁻¹)) = compAt C.θ τ (mt T g) * cplxO 1 (C.sB B τ) z₀ * compAt C.θ τ (mt S h⁻¹)` using `cplxO_move hG (by rw [Matrix.one_mul, Matrix.mul_one]) (sB_mvB C g B τ) z₀`. Unfold `annih at key ⊢`.
+
+Rewrite using `[hc, ← GlobalTheory.Ker.WeakMove.om_dRho hom C.std C.inf h g τ z₀ hf, ← GlobalTheory.Ker.WeakMove.om_dRho hom C.std C.inf h g τ _ hf, ← map_smul, ← map_add, key, map_zero]`.
+-/
 theorem isFock_om (C : Ctx S T) (hom : IsWeak C.ψ S T om) (h : GA D S) (g : GA D T) {f : WO S T → ℂ} (hf : C.IsTh f)
     (B : C.Bas) (hB : C.IsFock B f) : C.IsFock (C.mvB g B) (om (h, g) f) := by
   intro τ z
@@ -87,6 +115,13 @@ theorem isFock_om (C : Ctx S T) (hom : IsWeak C.ψ S T om) (h : GA D S) (g : GA 
   rw [hc, ← GlobalTheory.Ker.WeakMove.om_dRho hom C.std C.inf h g τ z₀ hf,
     ← GlobalTheory.Ker.WeakMove.om_dRho hom C.std C.inf h g τ _ hf, ← map_smul, ← map_add, key, map_zero]
 
+/- English proof (translation)
+Unfold `Ctx.fvec pureTensorO`. Use `(pureTensorL_intertwine (IsThetaFunO C.ψ S T) theta_zero (fun a b ha hb => theta_add ha hb) (fun c a ha => theta_smul c ha) _ _ (om (h, g)) ?_ f hf Q).2` and prove the remaining obligations. Introduce `k f' hf'`. Establish `hG : compAt C.θ k.1 (mt S h) * compAt C.θ k.1 (mt S h⁻¹) = 1` using `compAt_mt_mul_inv k.1 h`. Establish `hu : unitMap (compAt C.θ k.1 (mt S h)) (C.mvB g B k.1) k.2.1 k.2.2 = compAt C.θ k.1 (mt T g) * unitMap 1 (B k.1) k.2.1 k.2.2 * compAt C.θ k.1 (mt S h⁻¹)`.
+
+Use `unitMap_move (B := 1) (B' := B k.1) (H := compAt C.θ k.1 (mt T g)) hG k.2.1 k.2.2` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Establish `hc : ∀ z, cplxO 1 (C.sB (C.mvB g B) k.1) (compAt C.θ k.1 (mt T g) * z * compAt C.θ k.1 (mt S h⁻¹)) = compAt C.θ k.1 (mt T g) * cplxO 1 (C.sB B k.1) z * compAt C.θ k.1 (mt S h⁻¹)` using `fun z => cplxO_move hG (by rw [Matrix.one_mul, Matrix.mul_one]) (sB_mvB C g B k.1) z`. Unfold `aPlusAll aPlus crea`. Use `beta_reduce`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `theta_smul _ (theta_sub (theta_dRho C.inf C.std _ _ hf') (theta_smul _ (theta_dRho C.inf C.std _ _ hf')))`. Simplify using `only [map_smul, map_sub]`. Rewrite using `[GlobalTheory.Ker.WeakMove.om_dRho hom C.std C.inf h g _ _ hf', GlobalTheory.Ker.WeakMove.om_dRho hom C.std C.inf h g _ _ hf', hu]`. Conclude with `congrArg _ (congrArg _ (congrArg _ (congrArg (fun z => Formalism.IndefR.Datum.dRho (heisO C.ψ S T) C.θ k.1 z (om (h, g) f')) (hc _).symm)))`.
+-/
 theorem om_fvec (C : Ctx S T) (hom : IsWeak C.ψ S T om) (h : GA D S) (g : GA D T) {f : WO S T → ℂ} (hf : C.IsTh f)
     (B : C.Bas) (Q : MvPolynomial (FVar D T.rank S.rank) ℂ) :
     om (h, g) (C.fvec B f Q) = pureTensorO C.ψ C.θ S T (fun _ => 1) (C.sB (C.mvB g B))
@@ -124,6 +159,9 @@ open ReciprocityTheory.ChartRestriction.G.I2 (polyDeriv)
 open scoped TensorProduct ComplexConjugate Real Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D S T C om hom h g f hf`. Conclude with `⟨fun τ z => GlobalTheory.Ker.WeakMove.om_dRho hom C.std C.inf h g τ z hf, fun B _ => ⟨fun hB => isFock_om C hom h g hf B hB, fun Q => om_fvec C hom h g hf B Q⟩⟩`.
+-/
 theorem om_move : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ), IsWeak C.ψ S T om → ∀ (h : GA D S) (g : GA D T) f, C.IsTh f → (∀ (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ), om (h, g) (dRho (heisO C.ψ S T) C.θ τ z f) = dRho (heisO C.ψ S T) C.θ τ (compAt C.θ τ (mt T g) * z * compAt C.θ τ (mt S h⁻¹)) (om (h, g) f)) ∧ ∀ B, C.IsB B → (C.IsFock B f → C.IsFock (C.mvB g B) (om (h, g) f)) ∧ ∀ Q : MvPolynomial (FVar D T.rank S.rank) ℂ, om (h, g) (C.fvec B f Q) = pureTensorO C.ψ C.θ S T (fun _ => 1) (C.sB (C.mvB g B)) (fun τ => compAt C.θ τ (mt S h)) (C.mvB g B) (om (h, g) f) Q := by
   intro D S T C om hom h g f hf
   exact ⟨fun τ z => GlobalTheory.Ker.WeakMove.om_dRho hom C.std C.inf h g τ z hf,

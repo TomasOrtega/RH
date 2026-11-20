@@ -57,18 +57,32 @@ def SpehBaseChange : Prop :=
     ∀ n : ℕ, 1 ≤ n → ∀ π : Submodule ℂ (UA E n → ℂ), IsAutRepU π →
       ∃ (c : ℕ) (a d : Fin c → ℕ) (P : ∀ i, CG E (a i)) (h : ∑ i, a i * d i = n), IsSpehBaseChange π P d h
 
+/- English proof (translation)
+Simplify `Multiset.bind_singleton A id` using `[infString]`.
+-/
 theorem infString_one (A : Multiset ℂ) : infString 1 A = A := by
   simpa [infString] using Multiset.bind_singleton A id
 
+/- English proof (translation)
+Simplify using `[satString, Multiset.bind_singleton]`.
+-/
 theorem satString_one (q : ℕ) (B : Multiset ℂˣ) : satString q 1 B = B.map Units.val := by
   simp [satString, Multiset.bind_singleton]
 
+/- English proof (translation)
+Rewrite using `[infString, Multiset.singleton_bind, Fin.univ_val_map, List.ofFn_eq_map, ← Multiset.coe_range, Multiset.map_coe, ← List.map_coe_finRange_eq_range, List.map_map]`. Simplify using `[Function.comp_def]`.
+-/
 theorem infString_zero (n : ℕ) :
     infString n {0} = Finset.univ.val.map fun k : Fin n => ((n : ℂ) - 1) / 2 - (k : ℕ) := by
   rw [infString, Multiset.singleton_bind, Fin.univ_val_map, List.ofFn_eq_map, ← Multiset.coe_range, Multiset.map_coe,
     ← List.map_coe_finRange_eq_range, List.map_map]
   simp [Function.comp_def]
 
+/- English proof (translation)
+Establish `h1 : (((q ^ 2 : ℕ) : ℂ)) ^ ((2 : ℂ)⁻¹) = q`. Use `Complex.natCast_cpow_natCast_mul q 2 ((2 : ℂ)⁻¹)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Rewrite using `[← this]`. Simplify using the standard rewrite rules.
+
+Establish `e1 : (((2 : ℕ) : ℂ) - 1) / 2 - ((0 : ℕ) : ℂ) = (2 : ℂ)⁻¹` using `by norm_num`. Establish `e2 : (((2 : ℕ) : ℂ) - 1) / 2 - ((1 : ℕ) : ℂ) = -(2 : ℂ)⁻¹` using `by norm_num`. Establish `r : Multiset.range 2 = 0 ::ₘ {1}` using `by decide`. Rewrite using `[satString, Multiset.singleton_bind, r, Multiset.map_cons, Multiset.map_singleton, e1, e2, Complex.cpow_neg, h1]`. Simplify using `[GlobalTheory.LGrp.bcParam]`.
+-/
 theorem satString_two (q : ℕ) (hq : (q : ℂ) ≠ 0) :
     satString (q ^ 2) 2 {1} = (GlobalTheory.LGrp.bcParam 2 fun _ => Units.mk0 (q : ℂ) hq).map Units.val := by
   have h1 : (((q ^ 2 : ℕ) : ℂ)) ^ ((2 : ℂ)⁻¹) = q := by
@@ -81,6 +95,9 @@ theorem satString_two (q : ℕ) (hq : (q : ℂ) ≠ 0) :
   rw [satString, Multiset.singleton_bind, r, Multiset.map_cons, Multiset.map_singleton, e1, e2, Complex.cpow_neg, h1]
   simp [GlobalTheory.LGrp.bcParam]
 
+/- English proof (translation)
+Use `⟨fun _ => {1}, fun _ => ?_, fun s ϖ q _ _ β _ => ?_⟩` and prove the remaining obligations. Conclude with `CG.hasSat_ofChar (χ := 1) (w := w) fun _ _ => rfl`. Simplify using `[satString_one, GlobalTheory.LGrp.bcParam]`.
+-/
 theorem isSatStringAt_one (π : Submodule ℂ (UA E 1 → ℂ)) (w : HeightOneSpectrum (𝓞 E)) :
     IsSatStringAt π (a := fun _ : Fin 1 => 1) (fun _ => CG.ofChar 1) (fun _ => 1) w := by
   refine ⟨fun _ => {1}, fun _ => ?_, fun s ϖ q _ _ β _ => ?_⟩
@@ -89,6 +106,11 @@ theorem isSatStringAt_one (π : Submodule ℂ (UA E 1 → ℂ)) (w : HeightOneSp
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 
+/- English proof (translation)
+Use `⟨fun _ => le_rfl, fun _ => le_rfl, fun _ _ _ => Subsingleton.elim _ _, fun _ => CG.isUnitary_ofChar fun _ => by simp, fun _ => ?_, fun w _ => ⟨fun _ => SmIrr.triv _, fun _ => SmIrr.triv _, fun _ => ?_, fun _ => ?_, ?_⟩, fun w _ _ => isSatStringAt_one _ w, fun τ => ⟨fun _ => {0}, …` and prove the remaining obligations. Rewrite using `[CG.ofChar, CuspSub.twist_one]`. Conclude with `(cuspSub_iff (CuspSub.triv E (le_refl 1))).1.1 isCsdGL_const`. Establish `h : (CuspSub.triv E (le_refl 1)).IsLocComp w (SmIrr.triv _)` using `⟨LinearMap.toSpanSingleton ℂ _ ⟨oneFn E 1, Submodule.mem_span_singleton_self _⟩, fun h => oneFn_ne_zero ((one_smul ℂ _).symm.trans (congrArg Subtype.val (LinearMap.congr_fun h (1 : ℂ)))), fun _ _ => rfl⟩`. Rewrite using `[CG.ofChar, CuspSub.twist_one]`.
+
+Conclude with `h`. Take `⟨hd, hc⟩` from `GlobalTheory.LocGL.isSpeh_one (GlobalTheory.LocGL.IrrGL.of (SmIrr.triv (GL (Fin 1) (w.adicCompletion E))).ρ (SmIrr.triv _).smooth (SmIrr.triv _).irred)`. Conclude with `⟨hd, hc.of_equiv (GlobalTheory.LocGL.IrrGL.equivOf _ _ _).symm (.refl _)⟩`. Take `⟨φ⟩` from `nonempty_equiv_locProd_triv (Fin.sum_univ_one fun _ => 1) w`. Conclude with `isCompAlong_const _ _ φ`.
+-/
 theorem isSpehBaseChange_const_one :
     IsSpehBaseChange (Submodule.span ℂ {(fun _ => 1 : UA E 1 → ℂ)}) (a := fun _ : Fin 1 => 1) (fun _ => CG.ofChar 1)
       (fun _ => 1) (by simp) := by

@@ -20,6 +20,11 @@ open CategoryTheory.Limits TopologicalSpace
 
 namespace GlobalTheory.Mean4O.CoverDom
 
+/- English proof (translation)
+Establish `: GlobalTheory.IsNormalScheme V.X` using `GlobalTheory.IsNormalScheme.of_pred V.normal`. Establish `: Flat (spMap (algebraMap (𝓞 F) F))` using `flat_specMap_localization (nonZeroDivisors (𝓞 F)) F`. Establish `: IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (R := 𝓞 F) (S := F) (nonZeroDivisors (𝓞 F))`. Establish `: Flat V.j` using `MorphismProperty.of_isPullback V.pb.flip ‹_›`. Establish `: IsPreimmersion V.j` using `MorphismProperty.of_isPullback V.pb.flip ‹_›`.
+
+Establish `: ∀ x, IsIso (V.j.stalkMap x)` using `fun x => isIso_stalkMap_of_flat_of_surjectiveOnStalks V.j x`. Conclude with `GlobalTheory.IsNormalScheme.of_isIso_stalkMap V.j`.
+-/
 theorem isNormalScheme_G {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y) : GlobalTheory.IsNormalScheme V.G := by
   have : GlobalTheory.IsNormalScheme V.X := GlobalTheory.IsNormalScheme.of_pred V.normal
   have : Flat (spMap (algebraMap (𝓞 F) F)) := flat_specMap_localization (nonZeroDivisors (𝓞 F)) F
@@ -30,6 +35,31 @@ theorem isNormalScheme_G {F : Type} [Field F] [NumberField F] {Y : Var F} (V : C
   have : ∀ x, IsIso (V.j.stalkMap x) := fun x => isIso_stalkMap_of_flat_of_surjectiveOnStalks V.j x
   exact GlobalTheory.IsNormalScheme.of_isIso_stalkMap V.j
 
+/- English proof (translation)
+Establish `H₀` using `V.pb`. Use `M.ar.isIntegral` as an intermediate fact. Use `V.ar.isLocallyNoetherian` as an intermediate fact. Establish `: IsProper V.p` using `CommonModel.isProper_of_isProjOver V.ar.isProjOver`. Establish `: IsProper M.p` using `CommonModel.isProper_of_isProjOver M.ar.isProjOver`.
+
+Set `r` to `pullback.fst V.p M.p`. Establish `hc : V.j ≫ V.p = (V.π ≫ M.j) ≫ M.p`. Rewrite using `[V.pb.w, Category.assoc, Category.assoc, M.pb.w]`. Set `h : V.G ⟶ pullback V.p M.p` to `pullback.lift V.j (V.π ≫ M.j) hc`. Establish `hr : h ≫ r = V.j` using `pullback.lift_fst _ _ _`.
+
+Establish `hr' : h ≫ pullback.snd V.p M.p = V.π ≫ M.j` using `pullback.lift_snd _ _ _`. Establish `hW : IsProjOver (r ≫ V.p)` using `GlobalTheory.ProjSpace.isProjOver_pullback V.ar.isProjOver M.ar.isProjOver`. Establish `w : h ≫ r ≫ V.p = (V.π ≫ Y.str) ≫ spMap (algebraMap (𝓞 F) F)`. Rewrite using `[← Category.assoc, hr, H₀.w]`. Establish `hb` using `IsPullback.of_hasPullback (r ≫ V.p) (spMap (algebraMap (𝓞 F) F))`.
+
+Set `f' : V.G ⟶ pullback (r ≫ V.p) (spMap (algebraMap (𝓞 F) F))` to `pullback.lift h (V.π ≫ Y.str) w`. Set `ρ : pullback (r ≫ V.p) (spMap (algebraMap (𝓞 F) F)) ⟶ V.G` to `H₀.lift (pullback.fst _ _ ≫ r) (pullback.snd _ _) (by rw [Category.assoc]; exact hb.w)`. Establish `hρ : ρ ≫ V.π ≫ Y.str = pullback.snd _ _` using `H₀.lift_snd _ _ _`. Establish `hfρ : f' ≫ ρ = 𝟙 V.G`. Apply `H₀.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, H₀.lift_fst, pullback.lift_fst_assoc, hr, Category.id_comp]`. Rewrite using `[Category.assoc, hρ, pullback.lift_snd, Category.id_comp]`. Establish `: IsSeparated (ρ ≫ V.π ≫ Y.str)` using `by rw [hρ]; infer_instance`. Establish `: IsSeparated ρ` using `IsSeparated.of_comp ρ (V.π ≫ Y.str)`. Establish `: IsClosedImmersion (f' ≫ ρ)` using `by rw [hfρ]; infer_instance`.
+
+Establish `: IsClosedImmersion f'` using `IsClosedImmersion.of_comp f' ρ`. Establish `hh : h = f' ≫ 𝟙 _ ≫ pullback.fst _ _` using `by rw [Category.id_comp, pullback.lift_fst]`. Establish `: IsAffineHom (pullback.fst (r ≫ V.p) (spMap (algebraMap (𝓞 F) F)))` using `MorphismProperty.of_isPullback hb.flip (isAffineHom_of_isAffine _)`. Establish `: IsAffineHom h` using `by rw [hh]; infer_instance`. Establish `hpb` using `GlobalTheory.isPullback_toNormalization_of_isLocalization (nonZeroDivisors (𝓞 F)) hb f' (𝟙 _) h hh`.
+
+Rewrite `hpb` using `[Category.id_comp]`. Establish `hfin : IsFinite h.fromNormalization` using `GlobalTheory.isFinite_fromNormalization_of_over_fractionRing (o := .of (𝓞 F)) h (r ≫ V.p) F (V.π ≫ Y.str) w`. Establish `: GlobalTheory.IsNormalScheme V.G` using `isNormalScheme_G V`. Establish `: GlobalTheory.IsNormalScheme h.normalization` using `GlobalTheory.IsNormalScheme.normalization_of_isIntegral h`. Establish `hint : IsIntegral h.normalization` using `inferInstance`.
+
+Establish `: Flat (spMap (algebraMap (𝓞 F) F))` using `flat_specMap_localization (nonZeroDivisors (𝓞 F)) F`. Establish `: IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (R := 𝓞 F) (S := F) (nonZeroDivisors (𝓞 F))`. Establish `: Flat V.j` using `MorphismProperty.of_isPullback V.pb.flip ‹_›`. Establish `: IsPreimmersion V.j` using `MorphismProperty.of_isPullback V.pb.flip ‹_›`. Establish `e₁ : h.toNormalization ≫ h.fromNormalization ≫ r = V.j`.
+
+Rewrite using `[← Category.assoc, Scheme.Hom.toNormalization_fromNormalization, hr]`. Establish `e₂ : h.toNormalization ≫ h.fromNormalization ≫ pullback.snd V.p M.p = V.π ≫ M.j`. Rewrite using `[← Category.assoc, Scheme.Hom.toNormalization_fromNormalization, hr']`. Establish `hU` using `ModelDom.exists_isIso_restrict h.toNormalization (h.fromNormalization ≫ r) V.j e₁`. Establish `hdim : topologicalKrullDim h.normalization = (Y.dim + 1 : ℕ)`.
+
+Take `⟨U, hne, _⟩` from `hU`. Take `⟨_, _⟩` from `birational_of_isIso_morphismRestrict (h.fromNormalization ≫ r) U hne.to_subtype`. Use `surjective_of_isDominant_of_isClosed_range (h.fromNormalization ≫ r) (h.fromNormalization ≫ r).isClosedMap.isClosed_range` as an intermediate fact. Rewrite using `[← V.ar.dim_eq]`. Conclude with `(ModelDom.dim_le_of_birational (h.fromNormalization ≫ r)).antisymm (PosBaseChange.dim_le_of_isClosedMap (h.fromNormalization ≫ r).isClosedMap (h.fromNormalization ≫ r).surjective)`.
+
+Establish `hfl : Flat (h.fromNormalization ≫ r ≫ V.p)` using `GlobalTheory.flat_fromNormalization_comp h F (r ≫ V.p) (V.π ≫ Y.str) w`. Establish `hfZ : Flat (spMap (Int.castRingHom (𝓞 F)))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.mpr (inferInstance : Module.Flat ℤ (𝓞 F))`. Establish `hpb'` using `hpb.paste_vert hb`.
+
+Rewrite `hpb'` using `[pullback.lift_snd]`. Set `V' : Cover Y` to `{ X := h.normalization p := h.fromNormalization ≫ r ≫ V.p ar := ⟨V.ar.isDomain, V.ar.finite, hint, GlobalTheory.isProjOver_comp_of_finite _ _ _ _ _ hfin hW, inferInstance, hdim⟩ normal := GlobalTheory.IsNormalScheme.pred _ G := V.G j := h.toNormalization π := V.π pb := hpb' φ := …`. Use `⟨V', h.fromNormalization ≫ r, 𝟙 V.G, h.fromNormalization ≫ pullback.snd V.p M.p, Category.assoc _ _ _, ?_, e₁.trans (Category.id_comp _).symm, Category.id_comp _, rfl, e₂⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(h.fromNormalization ≫ pullback.snd V.p M.p) ≫ M.p = h.fromNormalization ≫ r ≫ V.p`. Rewrite using `[Category.assoc, ← pullback.condition]`.
+-/
 theorem exists_cover_dominating (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y)
     (M : TrueGeo.Model Y) : ∃ (V' : Cover Y) (a : V'.X ⟶ V.X) (g : V'.G ⟶ V.G) (b : V'.X ⟶ M.X),
       a ≫ V.p = V'.p ∧ b ≫ M.p = V'.p ∧ V'.j ≫ a = g ≫ V.j ∧ g ≫ V.π = V'.π ∧

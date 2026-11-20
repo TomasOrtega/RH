@@ -11,6 +11,25 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Establish `h0 : red 0 = 1`. Establish `h` using `hadd 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (a := red 0) (by rw [_root_.mul_one]; exact h.symm)`. Set `f : H →+ Additive G` to `{ toFun := fun x => Additive.ofMul (red x) map_zero' := by rw [h0]; rfl map_add' := fun a b => by rw [hadd]; rfl }`.
+
+Establish `hmem : ∀ x, x ∈ f.ker ↔ red x = 1`. Introduce `x`. Rewrite using `[AddMonoidHom.mem_ker]`. Conclude with `ofMul_eq_zero`. Set `K : Submodule k H` to `{ carrier := f.ker add_mem' := fun ha hb => f.ker.add_mem ha hb zero_mem' := f.ker.zero_mem smul_mem' := fun c x hx => (hmem _).2 (hsm c x ((hmem x).1 hx)) }`.
+
+Establish `hkey : ∀ a a', red a = red a' ↔ a - a' ∈ K`. Introduce `a a'`. Establish `e : red a = red (a - a') * red a'` using `by rw [← hadd, sub_add_cancel]`. Express the relevant statement in the definitionally equal form `_ ↔ a - a' ∈ f.ker`. Rewrite using `[hmem, e]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `mul_right_cancel (b := red a') (by rw [_root_.one_mul]; exact h)`. Introduce `h`. Rewrite using `[h, _root_.one_mul]`.
+
+Use `⟨K, ?_, hkey⟩` and prove the remaining obligations. Establish `e1 : Nat.card H = Nat.card (H ⧸ f.ker) * Nat.card f.ker`. Rewrite using `[← Nat.card_prod]`. Conclude with `Nat.card_congr AddSubgroup.addGroupEquivQuotientProdAddSubgroup`. Establish `e2 : Nat.card (H ⧸ f.ker) = Nat.card {g // P g}`.
+
+Use `Nat.card_congr ((QuotientAddGroup.quotientKerEquivRange f).toEquiv.trans (Equiv.subtypeEquiv Additive.toMul (fun x => ?_)))` and prove the remaining obligations. Rewrite using `[AddMonoidHom.mem_range, hP]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, rfl⟩`.
+
+Introduce and unpack `⟨y, hy⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Additive.ofMul (red y) = x`. Rewrite using `[hy]`. Both sides reduce to the same expression.
+
+Establish `e3 : Nat.card f.ker = Nat.card K` using `Nat.card_congr (Equiv.subtypeEquivRight (fun _ => Iff.rfl))`. Establish `e4 : Nat.card K = Nat.card k ^ Module.finrank k K` using `Module.natCard_eq_pow_finrank`. Establish `e5 : Nat.card H = Nat.card k ^ n`. Rewrite using `[← hrank]`. Conclude with `Module.natCard_eq_pow_finrank`.
+
+Establish `hk2 : 2 ≤ Nat.card k` using `Finite.one_lt_card`. Rewrite `e1` using `[e5, e2, hcard, e3, e4, ← pow_add]`. Use `Nat.pow_right_injective hk2 e1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem line_of_red {k H G : Type} [Field k] [Finite k] [AddCommGroup H] [Module k H] [Module.Finite k H]
     [Group G] (red : H → G) (hadd : ∀ a b, red (a + b) = red a * red b)
     (hsm : ∀ (c : k) h, red h = 1 → red (c • h) = 1) (n : ℕ) (hn : 1 ≤ n) (hrank : Module.finrank k H = n)
@@ -70,6 +89,33 @@ private theorem line_of_red {k H G : Type} [Field k] [Finite k] [AddCommGroup H]
   have := Nat.pow_right_injective hk2 e1
   omega
 
+/- English proof (translation)
+Introduce `hrk hlift p _ D O _ _ _ _ f b N r w _ hstd M V _ _ _ _ _ hp x hord W`. Use `letI := W.grp`. Use `letI := W.md`. Take `⟨hfin, hrank⟩` from `hrk p D O f b N r w hstd M V hp x W`. Establish `hnorm` using `hstd.norm`.
+
+Establish `hpf : p ^ f ≠ 0` using `pow_ne_zero _ (Fact.out : Nat.Prime p).ne_zero`. Establish `hcardk : Nat.card (𝓞 D.F ⧸ w) = p ^ f`. Rewrite using `[← hnorm, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 D.F ⧸ w) := Nat.finite_of_card_ne_zero (by rw [hcardk]; exact hpf)`. Establish `hw : w ≠ ⊥`.
+
+Introduce and unpack `rfl`. Rewrite `hnorm` using `[Ideal.absNorm_bot]`. Conclude with `hpf hnorm.symm`. Set `jv : Over.mk (resPt V ≫ x) ⟶ Over.mk x` to `Over.homMk (resPt V) rfl`. Establish `hjv : ∀ g : Over.mk x ⟶ M.univ.A, (jv ≫ g).left = resPt V ≫ g.left` using `fun g => rfl`.
+
+Set `red : W.H → (Over.mk (resPt V ≫ x) ⟶ M.univ.A)` to `fun h => jv ≫ W.pt h`. Establish `hadd : ∀ a b, red (a + b) = red a * red b`. Introduce `a b`. Simplify using `only [red, W.add, MonObj.comp_mul]`. Establish `hsm : ∀ (c : 𝓞 D.F ⧸ w) h, red h = 1 → red (c • h) = 1`.
+
+Introduce `c h hh`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Use `haveI := M.univ.act.hom ((algebraMap (𝓞 D.F) D.O) a)`. Simplify using `only [red] at hh ⊢`. Rewrite using `[W.smul, ← Category.assoc, hh, MonObj.one_comp]`.
+
+Establish `hkill : ∀ {T T' : Over M.X} (e : T' ⟶ T) (g : T ⟶ M.univ.A), KilledBy M.univ w g → KilledBy M.univ w (e ≫ g)`. Introduce `T T' e g hg a ha`. Rewrite using `[Category.assoc, hg a ha, MonObj.comp_one]`. Take `⟨K, _, i, _, _, hisog, hsub⟩` from `GlobalTheory.T.exists_finiteFlat_torsion_harrisTaylor_abelian p D O b N M.X M.s M.univ w hw`. Establish `hP : ∀ g, KilledBy M.univ w g ↔ ∃ h, red h = g`.
+
+Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨y, hy⟩` from `(hsub _ g).2 ((WTors.killedBy_iff_map M.univ w g).2 hg)`. Establish `e2 : (toUnit K).left = K.hom` using `by simpa using Over.w (toUnit K)`.
+
+Establish `hy0 : y.left ≫ (toUnit K).left = resPt V ≫ x`. Rewrite using `[e2]`. Conclude with `Over.w y`. Take `⟨g', hg'1, hg'2⟩` from `hlift M.X K.left (toUnit K).left hisog.fin hisog.flat V x y.left hy0`. Set `yv : Over.mk x ⟶ K` to `Over.homMk g' (by`.
+
+Rewrite using `[← e2]`. Conclude with `hg'1)`. Establish `hL : KilledBy M.univ w (yv ≫ i)` using `(WTors.killedBy_iff_map M.univ w _).1 ((hsub _ _).1 ⟨yv, rfl⟩)`. Take `⟨h, hh⟩` from `(W.range _).2 hL`. Use `⟨h, ?_⟩` and prove the remaining obligations.
+
+Establish `hjvy : jv ≫ yv = y`. Use `ext`. Conclude with `hg'2`. Simplify using `only [red, hh, ← Category.assoc, hjvy, hy]`. Introduce and unpack `⟨h, rfl⟩`.
+
+Conclude with `hkill jv _ ((W.range _).1 ⟨h, rfl⟩)`. Establish `hcard : Nat.card {g : Over.mk (resPt V ≫ x) ⟶ M.univ.A // KilledBy M.univ w g} = Nat.card (𝓞 D.F ⧸ w) ^ (D.n - 1)`. Use `hord.2.2.2` as an intermediate fact. Rewrite `this` using `[hstd.m1, _root_.one_mul]`. Rewrite using `[this, hcardk, hnorm]`.
+
+Take `⟨C, hC1, hC2⟩` from `line_of_red red hadd hsm D.n D.n_pos hrank _ hP hcard`. Use `⟨C, hC1, fun a a' => ?_⟩` and prove the remaining obligations. Rewrite using `[← hC2]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `ext`. Conclude with `h`. Introduce `h`. Use `congrArg CommaMorphism.left h` as an intermediate fact. Conclude with `this`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.lineC_of :
     RankN → LiftFF → LineC := by
   intro hrk hlift p _ D O _ _ _ _ f b N r w _ hstd M V _ _ _ _ _ hp x hord W

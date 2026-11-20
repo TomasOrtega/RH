@@ -23,6 +23,29 @@ namespace GlobalTheory.Poinc.PullLab
 
 open GlobalTheory.Poinc.DeepLab
 
+/- English proof (translation)
+Introduce `o₁ Ω₁ o₂ Ω₂ _ _ _ _ _ _ S₁ S₂ ρ₁ ρ₂ om φ d hpb hd`. Set `K` to `AlgebraicClosure Ω₂`. Set `x₀ : Sp K ⟶ Sp S₂.R` to `spMap (algebraMap Ω₂ K) ≫ spMap S₂.R.val.toRingHom`. Set `U : Over.mk ((baseOver (Sp S₂.R)).hom ≫ spMap om) ⟶ baseOver (Sp S₁.R)` to `Over.homMk (spMap om) (by simp)`. Set `V₂ : Over.mk x₀ ⟶ baseOver (Sp S₂.R)` to `Over.homMk x₀ (by simp)`.
+
+Set `p₁ : Multiplicative S₁.Gam →* (baseOver (Sp S₁.R) ⟶ ρ₁.P.A)` to `MonoidHom.mk' (fun a => ρ₁.pt (Multiplicative.toAdd a)) fun a b => ρ₁.pt_add _ _`. Set `p₂ : Multiplicative S₂.Gam →* (baseOver (Sp S₂.R) ⟶ ρ₂.P.A)` to `MonoidHom.mk' (fun a => ρ₂.pt (Multiplicative.toAdd a)) fun a b => ρ₂.pt_add _ _`. Establish `hbij : Function.Bijective (pushHom hpb (baseOver (Sp S₂.R)))` using `⟨pushHom_injective hpb _, pushHom_surjective hpb _⟩`. Set `e` to `MulEquiv.ofBijective (pushHom hpb (baseOver (Sp S₂.R))) hbij`. Set `σ : Multiplicative S₁.Gam →* (baseOver (Sp S₂.R) ⟶ ρ₂.P.A)` to `e.symm.toMonoidHom.comp ((preHom U).comp p₁)`.
+
+Establish `hσ : ∀ a, pushHom hpb _ (σ a) = U ≫ ρ₁.pt (Multiplicative.toAdd a)` using `fun a => e.apply_symm_apply (U ≫ ρ₁.pt (Multiplicative.toAdd a))`. Establish `hσl : ∀ a, (σ a).left ≫ φ = spMap om ≫ (ρ₁.pt (Multiplicative.toAdd a)).left` using `fun a => congrArg (fun q => q.left) (hσ a)`. Establish `hσL : ∀ a : S₁.Gam, σ (Multiplicative.ofAdd a) ^ (S₂.r * S₂.N) = 1`. Introduce `a`. Rewrite using `[hd, pow_mul, map_pow_self, one_pow]`.
+
+Establish `uniq : ∀ z : baseOver (Sp S₂.R) ⟶ ρ₂.P.A, z ^ (S₂.r * S₂.N) = 1 → ∃! b : S₂.Gam, p₂ (Multiplicative.ofAdd b) = z`. Introduce `z hz`. Take `⟨b, hb⟩` from `GlobalTheory.torsionSection_eq_labelled_of_isDomain S₂.R ρ₂.P (S₂.r * S₂.N) S₂.Gam ρ₂.pt (fun K _ _ x z hz => (ρ₂.pt_bij K x z hz).exists) z hz`. Use `⟨b, hb, fun b' hb' => ?_⟩` and prove the remaining obligations. Establish `h2 : (V₂ ≫ z) ^ (S₂.r * S₂.N) = 1`.
+
+Establish `h3` using `congrArg (preHom V₂) hz`. Rewrite `h3` using `[map_pow, map_one]`. Then use the resulting hypothesis. Conclude with `(ρ₂.pt_bij K x₀ (V₂ ≫ z) h2).unique (congrArg (V₂ ≫ ·) hb') (congrArg (V₂ ≫ ·) hb)`. Take `⟨lam, hlam⟩` from `exists_lab _ p₂ σ uniq hσL`. Establish `hpt : ∀ a, (ρ₂.pt (lam a)).left ≫ φ = spMap om ≫ (ρ₁.pt a).left` using `fun a => by`.
+
+Establish `h4` using `hσl (Multiplicative.ofAdd a)`. Rewrite `h4` using `[← hlam a]`. Conclude with `h4`. Use `⟨lam, hpt, fun a' => ?_⟩` and prove the remaining obligations. Use `set y := d • a' with hy`.
+
+Establish `hyL : p₂ (Multiplicative.ofAdd y) ^ (S₁.r * S₁.N) = 1`. Rewrite using `[← map_pow, ← ofAdd_nsmul, hy, smul_smul, ← hd, nsmul_self_eq_zero, ofAdd_zero, map_one]`. Set `T₀ : Over (Sp S₂.R)` to `Over.mk x₀`. Set `V₁ : Over.mk (x₀ ≫ spMap om) ⟶ baseOver (Sp S₁.R)` to `Over.homMk (x₀ ≫ spMap om) (by simp)`. Set `z₁ : Over.mk (x₀ ≫ spMap om) ⟶ ρ₁.P.A` to `pushHom hpb T₀ (V₂ ≫ ρ₂.pt y)`.
+
+Establish `hz₁ : z₁ ^ (S₁.r * S₁.N) = 1`. Establish `h0 : (V₂ ≫ ρ₂.pt y) ^ (S₁.r * S₁.N) = 1`. Establish `h3` using `congrArg (preHom V₂) hyL`. Rewrite `h3` using `[map_pow, map_one]`. Then use the resulting hypothesis. Use `show (pushHom hpb T₀) _ ^ _ = 1`.
+
+Rewrite using `[← map_pow, h0, map_one]`. Take `⟨a, ha, -⟩` from `ρ₁.pt_bij K (x₀ ≫ spMap om) z₁ hz₁`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hpush : pushHom hpb T₀ (V₂ ≫ ρ₂.pt (lam a)) = V₁ ≫ ρ₁.pt a`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Use `show (V₂ ≫ ρ₂.pt (lam a)).left ≫ φ = (V₁ ≫ ρ₁.pt a).left`. Simplify using `only [Over.comp_left, Category.assoc, V₂, V₁, Over.homMk_left]`. Rewrite using `[hpt]`. Establish `h1 : V₂ ≫ ρ₂.pt (lam a) = V₂ ≫ ρ₂.pt y` using `pushHom_injective hpb T₀ (hpush.trans ha)`. Establish `h2 : (V₂ ≫ ρ₂.pt y) ^ (S₂.r * S₂.N) = 1`.
+
+Establish `h3` using `congrArg (preHom V₂) (map_pow_self _ p₂ y)`. Rewrite `h3` using `[map_pow, map_one]`. Then use the resulting hypothesis. Conclude with `(ρ₂.pt_bij K x₀ _ h2).unique h1 rfl`.
+-/
 theorem exists_lab_of_isGrpPullback : ∀ {o₁ Ω₁ o₂ Ω₂ : Type} [CommRing o₁] [Field Ω₁] [Algebra o₁ Ω₁] [CommRing o₂] [Field Ω₂] [Algebra o₂ Ω₂] (S₁ : ThetaSys o₁ Ω₁) (S₂ : ThetaSys o₂ Ω₂) (ρ₁ : S₁.Real) (ρ₂ : S₂.Real) (om : S₁.R →+* S₂.R) (φ : ρ₂.P.A.left ⟶ ρ₁.P.A.left) (d : ℕ), IsGrpPullback ρ₂.P.A ρ₁.P.A (spMap om) φ → S₂.r * S₂.N = S₁.r * S₁.N * d → ∃ lam : S₁.Gam →+ S₂.Gam, (∀ a, (ρ₂.pt (lam a)).left ≫ φ = spMap om ≫ (ρ₁.pt a).left) ∧ ∀ a', ∃ a, lam a = d • a' := by
   intro o₁ Ω₁ o₂ Ω₂ _ _ _ _ _ _ S₁ S₂ ρ₁ ρ₂ om φ d hpb hd
   let K := AlgebraicClosure Ω₂

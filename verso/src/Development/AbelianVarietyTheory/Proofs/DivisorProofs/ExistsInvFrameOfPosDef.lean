@@ -8,6 +8,11 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.ColRows
 
+/- English proof (translation)
+Use `open scoped MatrixOrder in`. Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hA.posSemidef.nonneg`. Establish `hdet : IsUnit A.det` using `(Matrix.isUnit_iff_isUnit_det A).mp hA.isUnit`. Establish `hBdet : IsUnit B.det`. Rewrite `hdet` using `[hB, Matrix.det_mul]`.
+
+Conclude with `isUnit_of_mul_isUnit_right hdet`. Use `⟨B⁻¹, Matrix.isUnit_nonsing_inv_det B hBdet, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.nonsing_inv_nonsing_inv B hBdet, hB, Matrix.star_eq_conjTranspose]`.
+-/
 theorem exists_inv_frame_of_posDef {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ) (hA : A.PosDef) :
     ∃ X : Matrix n n ℂ, IsUnit X.det ∧ (X⁻¹).conjTranspose * X⁻¹ = A := by
   open scoped MatrixOrder in
@@ -19,6 +24,9 @@ theorem exists_inv_frame_of_posDef {n : Type} [Fintype n] [DecidableEq n] (A : M
   refine ⟨B⁻¹, Matrix.isUnit_nonsing_inv_det B hBdet, ?_⟩
   rw [Matrix.nonsing_inv_nonsing_inv B hBdet, hB, Matrix.star_eq_conjTranspose]
 
+/- English proof (translation)
+Use `choose X hX using fun v => exists_inv_frame_of_posDef _ (h v)`. Conclude with `⟨X, hX⟩`.
+-/
 theorem exists_isFrames (K : Type) [Field K] [NumberField K] [StarRing K] (Bs : DefBase K) (Df : DefSide Bs)
     (h : ∀ v : InfinitePlace K, ((Df.HV Bs.μ0).map v.embedding).PosDef) : ∃ X0, IsFrames Df X0 := by
   choose X hX using fun v => exists_inv_frame_of_posDef _ (h v)

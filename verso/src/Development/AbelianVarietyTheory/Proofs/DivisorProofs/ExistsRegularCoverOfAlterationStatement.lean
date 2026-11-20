@@ -7,5 +7,8 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RegCoverExists.nonempty_regCover | exact GlobalTheory.RegCoverExists.nonempty_regCover | (intros; apply GlobalTheory.RegCoverExists.nonempty_regCover <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_regular_cover_of_alteration : RegularAlteration → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (q : Y ⟶ Sp k) [IsIntegral Y], IsArithVar q 1 → Nonempty (RegCover q) := by
   first | exact @GlobalTheory.RegCoverExists.nonempty_regCover | exact GlobalTheory.RegCoverExists.nonempty_regCover | (intros; apply GlobalTheory.RegCoverExists.nonempty_regCover <;> assumption)

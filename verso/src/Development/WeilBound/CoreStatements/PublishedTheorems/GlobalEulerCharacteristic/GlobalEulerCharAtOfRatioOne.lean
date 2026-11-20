@@ -7,6 +7,9 @@ open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheo
 
 namespace PositivityTheory.Lit1.GEN
 
+/- English proof (translation)
+The claim follows from `W_dictfwd_a.globalEulerCharAt_of_ratioOne S rhoS h`.
+-/
 theorem globalEulerCharAt_of_ratioOne {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {r : ℕ} {M : Type} [AddCommGroup M]
     [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]

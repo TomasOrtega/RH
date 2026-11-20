@@ -10,6 +10,13 @@ attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 open scoped Classical in
 
+/- English proof (translation)
+Establish `e : I = Ideal.span {g | ∃ f ∈ I, ∃ b, g = weightedHomogeneousComponent (blockWeight ι) b f}`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]`. Conclude with `Ideal.sum_mem _ fun b _ => Ideal.subset_span ⟨f, hf, b, rfl⟩`.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `g ⟨f, hf, b, rfl⟩`. Conclude with `hI f hf b`. Rewrite using `[e]`. Use `Ideal.homogeneous_span _ _ fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨f, -, b, rfl⟩` from `hx`. Conclude with `⟨b, weightedHomogeneousComponent_isWeightedHomogeneous b f⟩`.
+-/
 theorem isHomogeneous_of_isMultiHomogIdeal' {K : Type*} [DecidableEq K] {ι : K → Type*}
     {R : Type*} [CommRing R] {I : Ideal (MRing ι R)} (hI : IsMultiHomogIdeal I) :
     I.IsHomogeneous (weightedHomogeneousSubmodule R (blockWeight ι)) := by
@@ -29,6 +36,11 @@ theorem isHomogeneous_of_isMultiHomogIdeal' {K : Type*} [DecidableEq K] {ι : K 
   obtain ⟨f, -, b, rfl⟩ := hx
   exact ⟨b, weightedHomogeneousComponent_isWeightedHomogeneous b f⟩
 
+/- English proof (translation)
+Introduce `R _ K _ ι I x e hI hx`. Establish `h1` using `isHomogeneous_of_isMultiHomogIdeal' hI`. Establish `h2 : (Ideal.span {x}).IsHomogeneous (weightedHomogeneousSubmodule R (blockWeight ι))` using `Ideal.homogeneous_span _ _ (by`. Introduce and unpack `y rfl`. Conclude with `⟨e, hx⟩)`.
+
+Establish `h` using `h1.sup h2`. Introduce `f hf b`. Conclude with `weightedHomogeneousComponent_mem_of_mem R (blockWeight ι) h hf b`.
+-/
 theorem SupSpanMultiHomog.proof : SupSpanMultiHomog.Statement := by
   classical
   intro R _ K _ ι I x e hI hx

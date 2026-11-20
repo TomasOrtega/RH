@@ -10,6 +10,9 @@ def force (x : Nat) (f : Nat → Bool) : Bool :=
   | 0 => f 0
   | k + 1 => f (k + 1)
 
+/- English proof (translation)
+Apply the tactic sequence `cases x <;> rfl`.
+-/
 theorem force_eq (x : Nat) (f : Nat → Bool) : force x f = f x := by
   cases x <;> rfl
 
@@ -21,6 +24,9 @@ def loop (B : Nat) : Nat → Nat → Nat → Nat → Bool
       tst n (c + 1) && loop B k (n + 1) (c + 1) (if n ≤ B then Q * n else Q)
     else tst n c && loop B k (n + 1) c Q
 
+/- English proof (translation)
+Use `decide +kernel`.
+-/
 theorem loop_run : loop 362 131070 2 0 1 = true := by decide +kernel
 
 end PI.PC

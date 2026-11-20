@@ -3,6 +3,39 @@ import Formalism.SatakeDualWeyl.Statement
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O _ G _ Γ K B Q _ _ _ _ ρ π hπ _hker hfin f hf`. Establish `hlift : ∀ s : G, ∃ y : B, π y = f s ∧ ∀ (h : Γ) (hk : s⁻¹ * (h : G) * s ∈ K), ρ ⟨_, hk⟩ y = y`. Introduce `s`. Take `⟨hF, hu⟩` from `hfin s`. Use `haveI : Fintype {γ : Γ // s⁻¹ * (γ : G) * s ∈ K} := Fintype.ofFinite _`.
+
+Take `⟨y0, hy0⟩` from `hπ (f s)`. Take `⟨u, hu'⟩` from `hu`. Set `kk : {γ : Γ // s⁻¹ * (γ : G) * s ∈ K} → K` to `fun h => ⟨_, h.2⟩`. Use `⟨(↑u⁻¹ : O) • ∑ h, ρ (kk h) y0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_sum]`.
+
+Establish `hval : ∀ h, π (ρ (kk h) y0) = f s`. Introduce `h`. Establish `e` using `hf h.1 s (kk h)⁻¹ y0 hy0.symm`. Rewrite `e` using `[inv_inv]`. Rewrite using `[← e]`.
+
+Use `congr 1`. Simplify using `only [kk, Subgroup.coe_inv]`. Use `group`. Repeatedly rewrite using `[hval, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul O, smul_smul, ← Nat.card_eq_fintype_card, ← hu', Units.inv_mul, one_smul]`.
+
+Introduce `h hk`. Rewrite using `[map_smul, map_sum]`. Use `congr 1`. Establish `hmul : ∀ x : {γ : Γ // s⁻¹ * (γ : G) * s ∈ K}, s⁻¹ * ((h * x.1 : Γ) : G) * s ∈ K`. Introduce `x`.
+
+Establish `: s⁻¹ * ((h * x.1 : Γ) : G) * s = (s⁻¹ * (h : G) * s) * (s⁻¹ * (x.1 : G) * s)` using `by push_cast; group`. Rewrite using `[this]`. Conclude with `K.mul_mem hk x.2`. Establish `hinvm : ∀ x : {γ : Γ // s⁻¹ * (γ : G) * s ∈ K}, s⁻¹ * ((h⁻¹ * x.1 : Γ) : G) * s ∈ K`. Introduce `x`.
+
+Establish `: s⁻¹ * ((h⁻¹ * x.1 : Γ) : G) * s = (s⁻¹ * (h : G) * s)⁻¹ * (s⁻¹ * (x.1 : G) * s)` using `by push_cast; group`. Rewrite using `[this]`. Conclude with `K.mul_mem (K.inv_mem hk) x.2`. Set `e : {γ : Γ // s⁻¹ * (γ : G) * s ∈ K} ≃ {γ : Γ // s⁻¹ * (γ : G) * s ∈ K}` to `{ toFun := fun x => ⟨h * x.1, hmul x⟩ invFun := fun x => ⟨h⁻¹ * x.1, hinvm x⟩ left_inv := fun x => Subtype.ext (by simp) right_inv := fun x => Subtype.ext (by simp) }`. Use `Fintype.sum_equiv e _ _ (fun x => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [kk, e, Equiv.coe_fn_mk, Subgroup.coe_mul]`. Use `push_cast`.
+
+Use `group`. Use `choose y hy hinv using hlift`. Establish `hwd : ∀ (s : G) (γ γ' : Γ) (κ κ' : K), (γ : G) * s * κ = γ' * s * κ' → ρ κ⁻¹ (y s) = ρ κ'⁻¹ (y s)`. Introduce `s γ γ' κ κ' e`. Establish `hk : s⁻¹ * ((γ'⁻¹ * γ : Γ) : G) * s = ((κ' * κ⁻¹ : K) : G)`.
+
+Establish `h1 : (γ : G) * s = γ' * s * κ' * κ⁻¹`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : s⁻¹ * ((γ'⁻¹ * γ : Γ) : G) * s ∈ K` using `hk ▸ (κ' * κ⁻¹).2`. Establish `hfix` using `hinv s (γ'⁻¹ * γ) hmem`.
+
+Establish `heq : (⟨_, hmem⟩ : K) = κ' * κ⁻¹` using `Subtype.ext hk`. Rewrite `hfix` using `[heq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel_left]`. Use `_ = ρ κ'⁻¹ (y s) := by rw [hfix]`.
+
+Establish `hrep : ∃ rep : G → G, (∀ (γ : Γ) (g : G) (κ : K), rep ((γ : G) * g * κ) = rep g) ∧ ∀ g : G, ∃ (γ : Γ) (κ : K), g = (γ : G) * rep g * κ`. Use `⟨fun g => (DoubleCoset.mk Γ K g).out, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ g κ`. Establish `: DoubleCoset.mk Γ K ((γ : G) * g * κ) = DoubleCoset.mk Γ K g` using `(DoubleCoset.eq Γ K _ _).2 ⟨(γ : G)⁻¹, Γ.inv_mem γ.2, (κ : G)⁻¹, K.inv_mem κ.2, by group⟩`. Simplify using `only [this]`.
+
+Introduce `g`. Take `⟨h, k, hh, hk, e⟩` from `DoubleCoset.mk_out_eq_mul Γ K g`. Use `⟨⟨h, hh⟩⁻¹, ⟨k, hk⟩⁻¹, ?_⟩` and prove the remaining obligations. Simplify using `only [e, Subgroup.coe_inv]`. Use `group`.
+
+Take `⟨rep, hrep1, hrep2⟩` from `hrep`. Use `choose γg κg hg using hrep2`. Use `⟨fun g => ρ (κg g)⁻¹ (y (rep g)), ?_, ?_⟩` and prove the remaining obligations. Introduce `γ g κ show ρ (κg ((γ : G) * g * κ))⁻¹ (y (rep ((γ : G) * g * κ))) = ρ κ⁻¹ (ρ (κg g)⁻¹ (y (rep g)))`. Establish `e1` using `hg ((γ : G) * g * κ)`.
+
+Rewrite `e1`, the goal using `[hrep1]`. Establish `e2` using `hg g`. Establish `key : ((γ * γg g : Γ) : G) * rep g * ((κg g * κ : K) : G) = (γg ((γ : G) * g * κ) : G) * rep g * (κg ((γ : G) * g * κ) : G)`. Rewrite using `[← e1]`. Use `conv_rhs => rw [e2]`.
+
+Use `push_cast`. Use `group`. Rewrite using `[← hwd (rep g) _ _ _ _ key, ← Module.End.mul_apply, ← map_mul, mul_inv_rev]`. Introduce `g`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lift_forms_of_card_isUnit : ∀ (O : Type) [CommRing O] (G : Type) [Group G] (Γ K : Subgroup G)
     (B Q : Type) [AddCommGroup B] [Module O B] [AddCommGroup Q] [Module O Q]
     (ρ : Representation O K B) (π : B →ₗ[O] Q), Function.Surjective π →

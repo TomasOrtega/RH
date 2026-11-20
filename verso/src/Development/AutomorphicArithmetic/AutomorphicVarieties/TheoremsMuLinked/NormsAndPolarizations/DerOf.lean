@@ -2,6 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.N
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.DGmap
 open IsLocalRing Matrix NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th UpperTheory.V.Th.Nm GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Introduce `l _ n F O _ _ _ r B _ p D ψ hp`. Take `⟨f, ⟨hD, hψ⟩, -⟩` from `B.univ (DualNumber O) p`. Use `⟨(TrivSqZeroExt.fstHom O O O).comp f, (TrivSqZeroExt.sndHom O O).comp f.toLinearMap, ?_, ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Express the relevant statement in the definitionally equal form `(f (a * b)).snd = (f a).fst • (f b).snd + (f b).fst • (f a).snd`.
+
+Rewrite using `[map_mul, DualNumber.snd_mul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hp.1, ← hD, (UpperTheory.V.CA.d_gmap B.u.D).2.1]`. Both sides reduce to the same expression. Introduce `v i`.
+
+Rewrite using `[← hp.2 v i, ← hψ v i]`. Both sides reduce to the same expression. Introduce `g`. Establish `h` using `((UpperTheory.V.CA.d_gmap B.u.D).2.2.1 (f : B.B →+* DualNumber O) (MonoidAlgebra.single g 1)).2 1`. Rewrite `h` using `[hD, MonoidAlgebra.mapRingHom_single, map_one]`.
+
+Express the relevant statement in the definitionally equal form `(f (B.u.D.lam 1 (MonoidAlgebra.single g 1))).snd = (p.D.lam 1 (MonoidAlgebra.single g 1)).snd`. Rewrite using `[h]`. Both sides reduce to the same expression. Introduce `v i g`. Rewrite using `[← hψ v i]`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Th.Nm.derOf :
     ∀ {l : ℕ} [Fact l.Prime] {n : ℕ} (F : GFrame l) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (r : Resid F O n) (B : UniversalOrdinaryDeterminantRing r) [IsCO O (DualNumber O)] (p : Pair r (DualNumber O)) (D : GDet n O F.G₀) (ψ : ∀ v, Fin n → F.Gv v →* Oˣ), p.Maps (TrivSqZeroExt.fstHom O O O : DualNumber O →+* O) D ψ → ∃ (x : B.B →ₐ[O] O) (δ : B.B →ₗ[O] O), IsDer x δ ∧ B.u.Maps x.toRingHom D ψ ∧ (∀ g, δ (B.u.D.tr (MonoidAlgebra.single g 1)) = (p.D.tr (MonoidAlgebra.single g 1)).snd) ∧ ∀ v i g, δ (B.u.ψ v i g : B.Bˣ) = ((p.ψ v i g : (DualNumber O)ˣ) : DualNumber O).snd := by
   intro l _ n F O _ _ _ r B _ p D ψ hp

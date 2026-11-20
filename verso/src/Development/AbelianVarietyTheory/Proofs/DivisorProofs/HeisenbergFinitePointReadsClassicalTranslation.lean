@@ -17,6 +17,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.NormExact
 
+/- English proof (translation)
+Introduce `D ψ θ S T a d hS hT cc δ r hs G f hf z`. Substitute `hS hT` using the available equality. Establish `hc` using `hs.crv`. Establish `hr` using `hs.scale`. Establish `hr0 : r ≠ 0` using `IsScale.ne_zero hc.1.1 hr`.
+
+Rewrite `hf`, the goal using `[reads_iff hc hr]`. Use `⟨GlobalTheory.TwistFactorCompare.isTheta_heisO hs.std hf.1 _, fun w hw => ?_⟩` and prove the remaining obligations. Use `set X : VC D S.rank T.rank := fun τ i j => embT D τ (r⁻¹ * z i j) with hXdef`. Establish `hX : (fun τ a b => -(((GlobalTheory.FockPos.frAt (1 : GL (Fin T.rank) D.host.E) τ)⁻¹ * Matrix.of (GlobalTheory.VacUnique.infRat S T (Matrix.of fun i j => -(r⁻¹ * z i j)) τ) * GlobalTheory.FockPos.frAt (1 : GL (Fin S.rank) D.host.E) τ) a b)) = X`. Use function extensionality and compare the values at `τ a b`.
+
+Establish `e : ∀ n, GlobalTheory.FockPos.frAt (D` using `D) (1 : GL (Fin n) D.host.E) τ = 1 := fun n => Matrix.map_one _ (map_zero _) (map_one _)`. Simplify using `only [e, inv_one, Matrix.one_mul, Matrix.mul_one]`. Use `show -(embT D τ (-(r⁻¹ * z a b))) = embT D τ (r⁻¹ * z a b)`. Rewrite using `[map_neg, neg_neg]`. Establish `h` using `GlobalTheory.MovedTrans.heisO_finRat_real ψ θ S T 1 1 (by simp [Formalism.UG.cT_one, hs.gS]) (by simp [Formalism.UG.cT_one, hs.gT]) hs.std hs.inf f hf.1 (fun Z => G fun τ i j => δ * embT D τ r * Z τ i j) hf.2 (Matrix.of fun i j => -(r⁻¹ * z i j)) _ hX.symm w hw`.
+
+Establish `e1 : finPt (rfl : S.rank = S.rank) (rfl : T.rank = T.rank) r z = GlobalTheory.VacUnique.finRat S T (Matrix.of fun i j => -(r⁻¹ * z i j))` using `rfl`. Establish `hpt : pt D (tor0 D cc δ) δ z = fun τ i j => δ * embT D τ r * X τ i j`. Use function extensionality and compare the values at `τ i j`. Use `show δ * embT D τ (z i j) = δ * embT D τ r * embT D τ (r⁻¹ * z i j)`. Rewrite using `[mul_assoc, ← map_mul, ← mul_assoc, mul_inv_cancel₀ hr0, one_mul]`.
+
+Rewrite using `[e1, h, hpt]`. Simplify using `only [U]`. Rewrite using `[Hf_scale hc hr, Hf_scale hc hr]`. Establish `hY : ((fun τ i j => δ * embT D τ r * GlobalTheory.FockPos.zCo θ 1 1 w τ i j) + fun τ i j => δ * embT D τ r * X τ i j) = fun τ i j => δ * embT D τ r * (GlobalTheory.FockPos.zCo θ 1 1 w + X) τ i j`. Use function extensionality and compare the values at `τ i j`.
+
+Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hY]`.
+-/
 theorem heisO_finPt_reads : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →
   ∀ G f, Reads ψ θ hS hT cc δ r G f → ∀ z : Matrix (Fin d) (Fin a) D.host.E,

@@ -17,6 +17,9 @@ section Unit
 variable {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
   {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+Establish `hb' : b.val ≠ (GBasic.sig k r p).val` using `fun h => hb (Fin.ext h)`. Unfold `GBasic.sig at hb'`. Unfold `Hpk`. Apply the tactic sequence `split_ifs at hb' ⊢ <;> (try simp only [Fin.ext_iff, Fin.val_mk, ne_eq] at *) <;> omega`.
+-/
 private theorem Hpk_apply_eq_zero_of_ne_sig (p b : Fin (2 * r + k + 1)) (hb : b ≠ GBasic.sig k r p) :
     Hpk k r p b = 0 := by
   have hb' : b.val ≠ (GBasic.sig k r p).val := fun h => hb (Fin.ext h)
@@ -24,12 +27,28 @@ private theorem Hpk_apply_eq_zero_of_ne_sig (p b : Fin (2 * r + k + 1)) (hb : b 
   unfold Hpk
   split_ifs at hb' ⊢ <;> (try simp only [Fin.ext_iff, Fin.val_mk, ne_eq] at *) <;> omega
 
+/- English proof (translation)
+Establish `hp` using `p.isLt`. Unfold `Hpk GBasic.sig`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff, Fin.val_mk, ne_eq] at *) <;> first | omega | (simp only [and_true] at *; omega) | norm_num`.
+-/
 private theorem Hpk_apply_sig_ne_zero (p : Fin (2 * r + k + 1)) : Hpk k r p (GBasic.sig k r p) ≠ 0 := by
   have hp := p.isLt
   unfold Hpk GBasic.sig
   split_ifs <;> (try simp only [Fin.ext_iff, Fin.val_mk, ne_eq] at *) <;>
     first | omega | (simp only [and_true] at *; omega) | norm_num
 
+/- English proof (translation)
+Establish `hU0 : hᴴ * Hpk k r * h = Hpk k r` using `hU`. Establish `hcol : ∀ a, h a p = if a = p then 1 else 0`. Introduce `a`. Use `congrFun hp a` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, bvec, Pi.single_apply]`.
+
+Establish `key : (hᴴ * Hpk k r * h) p j = Hpk k r p (GBasic.sig k r p) * h (GBasic.sig k r p) j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (GBasic.sig k r p)]`. Use `congr 1`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single p]`. Simplify using `[hcol]`.
+
+Introduce `a _ ha`. Simplify using `[hcol, ha]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single p]`.
+
+Simplify using `[Hpk_apply_eq_zero_of_ne_sig p b hb]`. Introduce `a _ ha`. Simplify using `[hcol, ha]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Establish `e : Hpk k r p (GBasic.sig k r p) * h (GBasic.sig k r p) j = Hpk k r p j`. Rewrite using `[← key, hU0]`. Distinguish the cases in `hj : j = GBasic.sig k r p`. Substitute `hj` using the available equality. Rewrite using `[if_pos rfl]`.
+
+Establish `e1 : Hpk k r p (GBasic.sig k r p) * h (GBasic.sig k r p) (GBasic.sig k r p) = Hpk k r p (GBasic.sig k r p) * 1` using `by rw [mul_one]; exact e`. Conclude with `mul_left_cancel₀ (Hpk_apply_sig_ne_zero p) e1`. Rewrite using `[if_neg hj]`. Rewrite `e` using `[Hpk_apply_eq_zero_of_ne_sig p j hj]`. Conclude with `(mul_eq_zero.mp e).resolve_left (Hpk_apply_sig_ne_zero p)`.
+-/
 theorem fix_row {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hU : h ∈ UH (Hpk k r))
     {p : Fin (2 * r + k + 1)} (hp : h *ᵥ bvec p = bvec p) (j : Fin (2 * r + k + 1)) :
     h (GBasic.sig k r p) j = if j = GBasic.sig k r p then 1 else 0 := by
@@ -65,12 +84,28 @@ theorem fix_row {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hU
     rw [Hpk_apply_eq_zero_of_ne_sig p j hj] at e
     exact (mul_eq_zero.mp e).resolve_left (Hpk_apply_sig_ne_zero p)
 
+/- English proof (translation)
+Unfold `GBasic.sig`. Establish `hn : ¬ ((wI k r (Fin.last k)).val < r ∨ r + k < (wI k r (Fin.last k)).val)`. Simplify using `[wI]`. Rewrite using `[if_neg hn]`.
+-/
 theorem wI_last_eq : wI k r (Fin.last k) = GBasic.sig k r (wI k r (Fin.last k)) := by
   unfold GBasic.sig
   have hn : ¬ ((wI k r (Fin.last k)).val < r ∨ r + k < (wI k r (Fin.last k)).val) := by
     simp [wI]
   rw [if_neg hn]
 
+/- English proof (translation)
+Unfold `zBv at hh`. Take `⟨hU, hfix, hz⟩` from `hh`. Establish `hb` using `b.isLt`. Establish `key : ∃ p, h *ᵥ bvec p = bvec p ∧ GBasic.sig k r p = t`. Distinguish the cases in `h1 : t.val < r`.
+
+Use `⟨esI k r ⟨t.val, h1⟩, (hfix _).2, ?_⟩` and prove the remaining obligations. Use `ext`. Unfold `GBasic.sig`. Apply the tactic sequence `split_ifs with hc <;> simp only [esI, Fin.val_mk] at hc ⊢ <;> omega`. Distinguish the cases in `h2 : r + k < t.val`.
+
+Establish `ht2` using `t.isLt`. Use `⟨eI k r ⟨2 * r + k - t.val, by omega⟩, (hfix _).1, ?_⟩` and prove the remaining obligations. Use `ext`. Unfold `GBasic.sig`. Apply the tactic sequence `split_ifs with hc <;> simp only [eI, Fin.val_mk] at hc ⊢ <;> omega`.
+
+Establish `h3 : t = wI k r (Fin.last k)`. Use `ext`. Simplify using `only [wI, Fin.val_last]`. Assume the negation of the conclusion as `hne`. Conclude with `ht ⟨t.val - r, by omega⟩ (by ext; simp only [wI]; omega)`.
+
+Use `⟨wI k r (Fin.last k), ?_, ?_⟩` and prove the remaining obligations. Establish `hs : ((√T : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (Real.sqrt_pos.mpr hT).ne'`. Rewrite `hz` using `[Matrix.mulVec_smul]`. Conclude with `smul_right_injective (Fin (2 * r + k + 1) → ℂ) hs hz`. Rewrite using `[h3]`.
+
+Conclude with `wI_last_eq.symm`. Take `⟨p, hp, rfl⟩` from `key`. Rewrite using `[fix_row hU hp, if_neg (fun hq => ht b hq.symm)]`.
+-/
 theorem UW_colW {T : ℝ} (hT : 0 < T) {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r (zBv k r T)) (b : Fin k) (t : Fin (2 * r + k + 1))
     (ht : ∀ a : Fin k, t ≠ wI k r ⟨a.val, by omega⟩) : h t (wI k r ⟨b.val, by omega⟩) = 0 := by
@@ -109,6 +144,9 @@ section Unit2
 variable {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
   {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+Unfold `hJ Formalism.REAL.Jm`. Simplify using `only [dotProduct, Matrix.mulVec_diagonal, Pi.star_apply, star_sum, star_mul', star_star]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp only [star_one, star_neg] <;> ring`.
+-/
 private theorem hJ_eq_star_hJ_swap {n : ℕ} (ε1 : Fin n → Bool) (x y : Fin n → ℂ) :
     hJ ε1 x y = star (hJ ε1 y x) := by
   unfold hJ Formalism.REAL.Jm
@@ -116,17 +154,28 @@ private theorem hJ_eq_star_hJ_swap {n : ℕ} (ε1 : Fin n → Bool) (x y : Fin n
   refine Finset.sum_congr rfl fun i _ => ?_
   split_ifs <;> simp only [star_one, star_neg] <;> ring
 
+/- English proof (translation)
+Unfold `hJ`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, Qm, Matrix.of_apply, Pi.star_apply]`.
+-/
 private theorem conjTranspose_Qm_mulVec_Jm_apply_eq_hJ_colQ (y : Fin (2 * r + k + 1) → ℂ) (t : Fin (2 * r + k + 1)) :
     ((Qm e f wf z0)ᴴ *ᵥ (Formalism.REAL.Jm ε *ᵥ y)) t = hJ ε (colQ e f wf z0 t) y := by
   unfold hJ
   simp only [Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, Qm, Matrix.of_apply, Pi.star_apply]
 
+/- English proof (translation)
+Unfold `Hpk`. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (exfalso; omega) | norm_num`.
+-/
 private theorem Hpk_apply_middle_right_eq_ite (t' t : Fin (2 * r + k + 1)) (h1 : r ≤ t.val) (h2 : t.val < r + k) :
     Hpk k r t' t = if t' = t then 1 else 0 := by
   unfold Hpk
   simp only [Fin.ext_iff]
   split_ifs <;> first | rfl | omega | (exfalso; omega) | norm_num
 
+/- English proof (translation)
+Establish `hq : Qm e f wf z0 *ᵥ c = ∑ t, c t • colQ e f wf z0 t`. Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, Qm, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_comm]`. Rewrite using `[hq]`. Unfold `hJ`.
+
+Rewrite using `[Matrix.mulVec_sum, dotProduct_sum]`. Simplify using `only [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 private theorem hJ_Qm_mulVec_eq_sum (x c : Fin (2 * r + k + 1) → ℂ) :
     hJ ε x (Qm e f wf z0 *ᵥ c) = ∑ t, c t * hJ ε x (colQ e f wf z0 t) := by
   have hq : Qm e f wf z0 *ᵥ c = ∑ t, c t • colQ e f wf z0 t := by
@@ -138,6 +187,19 @@ private theorem hJ_Qm_mulVec_eq_sum (x c : Fin (2 * r + k + 1) → ℂ) :
   rw [Matrix.mulVec_sum, dotProduct_sum]
   simp only [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Take `⟨hee, hff, hef, hez, hfz, hzz, hww, hew, hfw, hzw⟩` from `hF`. Establish `hcol : ∀ t (c : Fin k), hJ ε (colQ e f wf z0 t) (wf c) = if t = wI k r ⟨c.val, by omega⟩ then 1 else 0`. Introduce `t c`. Establish `ht` using `t.isLt`. Establish `hc` using `c.isLt`.
+
+Establish `hw : (wI k r ⟨c.val, by omega⟩).val = r + c.val` using `rfl`. Unfold `colQ`. Apply the tactic sequence `split_ifs <;> simp only [hew, hfw, hzw, hww, Fin.ext_iff, wI, Fin.val_mk] <;> (try split_ifs) <;> first | rfl | omega | (exfalso; omega)`. Establish `v1 : (Qm e f wf z0)ᴴ *ᵥ (Formalism.REAL.Jm ε *ᵥ wf b) = bvec (wI k r ⟨b.val, by omega⟩)`. Use extensionality with `t`.
+
+Rewrite using `[conjTranspose_Qm_mulVec_Jm_apply_eq_hJ_colQ, hcol]`. Simplify using `only [bvec, Pi.single_apply]`. Establish `v2 : Hpk k r *ᵥ bvec (wI k r ⟨b.val, by omega⟩) = bvec (wI k r ⟨b.val, by omega⟩)`. Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, bvec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Conclude with `Hpk_apply_middle_right_eq_ite i _ (by simp only [wI]; omega) (by simp only [wI]; omega)`. Establish `v3 : h *ᵥ bvec (wI k r ⟨b.val, by omega⟩) = fun t => h t (wI k r ⟨b.val, by omega⟩)`. Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, bvec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Unfold `Qi`.
+
+Simplify using `only [← Matrix.mulVec_mulVec]`. Rewrite using `[v1, v2, v3, hJ_Qm_mulVec_eq_sum]`. Rewrite using `[Finset.sum_eq_single (wI k r ⟨a.val, by omega⟩)]`. Rewrite using `[hJ_eq_star_hJ_swap, hcol, if_pos rfl, star_one, mul_one]`. Introduce `t _ ht`.
+
+Rewrite using `[hJ_eq_star_hJ_swap, hcol, if_neg ht, star_zero, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem piB_entry (hF : IsFrameJ ε e f wf z0) (h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (a b : Fin k) :
     hJ ε (wf a) ((Qm e f wf z0 * h * Qi ε e f wf z0) *ᵥ wf b) = h (wI k r ⟨a.val, by omega⟩) (wI k r ⟨b.val, by omega⟩) := by
   obtain ⟨hee, hff, hef, hez, hfz, hzz, hww, hew, hfw, hzw⟩ := hF
@@ -172,16 +234,47 @@ theorem piB_entry (hF : IsFrameJ ε e f wf z0) (h : Matrix (Fin (2 * r + k + 1))
     rw [hJ_eq_star_hJ_swap, hcol, if_neg ht, star_zero, mul_zero]
   · simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[Formalism.REAL.Jm, allPos, Matrix.diagonal, Matrix.one_apply]`.
+-/
 theorem Jm_allPos : Formalism.REAL.Jm (allPos k) = 1 := by
   ext a b
   simp [Formalism.REAL.Jm, allPos, Matrix.diagonal, Matrix.one_apply]
 
+/- English proof (translation)
+Unfold `Hpk`. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (exfalso; omega) | norm_num`.
+-/
 private theorem Hpk_apply_middle_left_eq_ite (t t' : Fin (2 * r + k + 1)) (h1 : r ≤ t.val) (h2 : t.val < r + k) :
     Hpk k r t t' = if t' = t then 1 else 0 := by
   unfold Hpk
   simp only [Fin.ext_iff]
   split_ifs <;> first | rfl | omega | (exfalso; omega) | norm_num
 
+/- English proof (translation)
+Establish `hM : (fun a b => hJ ε (wf a) ((Qm e f wf z0 * h * Qi ε e f wf z0) *ᵥ wf b)) = (fun a b => h (wI k r ⟨a.val, by omega⟩) (wI k r ⟨b.val, by omega⟩) : Matrix (Fin k) (Fin k) ℂ)`. Use function extensionality and compare the values at `a b`. Apply the tactic sequence `exact piB_entry hF h a b`. Rewrite using `[hM]`. Use `show Formalism.REAL.inUJ _ _`.
+
+Unfold `Formalism.REAL.inUJ`. Rewrite using `[Jm_allPos, Matrix.mul_one]`. Establish `hU0 : hᴴ * Hpk k r * h = Hpk k r` using `hh.1`. Establish `hz : ∀ (c : Fin k) (t : Fin (2 * r + k + 1)), ¬ (r ≤ t.val ∧ t.val < r + k) → h t (wI k r ⟨c.val, by omega⟩) = 0`. Introduce `c t ht`.
+
+Apply `UW_colW hT hh c t` to reduce the goal to its premises. Introduce `a hta`. Apply `ht` to reduce the goal to its premises. Use `congrArg Fin.val hta` as an intermediate fact. Simplify using `only [wI] at this`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hrow : ∀ (c : Fin k) (t' : Fin (2 * r + k + 1)), (hᴴ * Hpk k r) (wI k r ⟨c.val, by omega⟩) t' = star (h t' (wI k r ⟨c.val, by omega⟩))`. Introduce `c t'`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single t']`. Simplify using `only [Matrix.conjTranspose_apply]`.
+
+Distinguish the cases in `hw : r ≤ t'.val ∧ t'.val < r + k`. Rewrite using `[Hpk_apply_middle_left_eq_ite t' t' hw.1 hw.2, if_pos rfl, mul_one]`. Rewrite using `[hz c t' hw]`. Simplify using the standard rewrite rules. Introduce `t _ hne`.
+
+Simplify using `only [Matrix.conjTranspose_apply]`. Distinguish the cases in `hw : r ≤ t.val ∧ t.val < r + k`. Rewrite using `[Hpk_apply_middle_left_eq_ite t t' hw.1 hw.2, if_neg (Ne.symm hne), mul_zero]`. Rewrite using `[hz c t hw]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Use extensionality with `a b`. Establish `e` using `congrFun (congrFun hU0 (wI k r ⟨a.val, by omega⟩)) (wI k r ⟨b.val, by omega⟩)`. Rewrite `e` using `[Matrix.mul_apply]`. Simplify using `only [hrow] at e`.
+
+Rewrite `e` using `[Hpk_apply_middle_left_eq_ite (wI k r ⟨a.val, by omega⟩) (wI k r ⟨b.val, by omega⟩) (by simp only [wI]; omega) (by simp only [wI]; omega)]`. Establish `hinj : Function.Injective (fun c : Fin k => wI k r ⟨c.val, by omega⟩)`. Introduce `c c' hcc`. Use `congrArg Fin.val hcc` as an intermediate fact. Simplify using `only [wI] at this`.
+
+Conclude with `Fin.ext (by omega)`. Establish `hzero : ∀ x ∉ Set.range (fun c : Fin k => wI k r ⟨c.val, by omega⟩), star (h x (wI k r ⟨a.val, by omega⟩)) * h x (wI k r ⟨b.val, by omega⟩) = 0`. Introduce `x hx`. Establish `hw : ¬ (r ≤ x.val ∧ x.val < r + k)`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `hx ⟨⟨x.val - r, by omega⟩, Fin.ext (by simp only [wI]; omega)⟩`. Rewrite using `[hz a x hw]`. Simplify using the standard rewrite rules. Establish `hsum` using `Fintype.sum_of_injective _ hinj _ _ hzero (fun c => rfl)`. Establish `hab : (a = b) ↔ (wI k r ⟨b.val, by omega⟩ = wI k r ⟨a.val, by omega⟩)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Both sides reduce to the same expression. Introduce `hh'`. Use `congrArg Fin.val hh'` as an intermediate fact.
+
+Simplify using `only [wI] at this`. Conclude with `Fin.ext (by omega)`. Express the relevant statement in the definitionally equal form `∑ c : Fin k, star (h (wI k r ⟨c.val, by omega⟩) (wI k r ⟨a.val, by omega⟩)) * h (wI k r ⟨c.val, by omega⟩) (wI k r ⟨b.val, by omega⟩) = (if a = b then 1 else 0)`. Rewrite using `[if_congr hab rfl rfl]`. Conclude with `hsum.trans e`.
+-/
 theorem piB_mat_unitary (hF : IsFrameJ ε e f wf z0) {T : ℝ} (hT : 0 < T)
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r (zBv k r T)) :
     (fun a b => hJ ε (wf a) ((Qm e f wf z0 * h * Qi ε e f wf z0) *ᵥ wf b)) ∈ UJset (allPos k) := by
@@ -252,6 +345,9 @@ theorem piB_mat_unitary (hF : IsFrameJ ε e f wf z0) {T : ℝ} (hT : 0 < T)
   rw [if_congr hab rfl rfl]
   exact hsum.trans e
 
+/- English proof (translation)
+Unfold `piB`. Conclude with `hπ.2.2.1.2.1 _ (piB_mat_unitary hF hT hh) x`.
+-/
 theorem piB_norm (hF : IsFrameJ ε e f wf z0) {T : ℝ} (hT : 0 < T) {u : Fin k → ℝ}
     {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {πl : Matrix (Fin k) (Fin k) ℂ → (V →L[ℂ] V)}
     (hπ : IsHCTypeU k u πl) {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
@@ -259,6 +355,9 @@ theorem piB_norm (hF : IsFrameJ ε e f wf z0) {T : ℝ} (hT : 0 < T) {u : Fin k 
   unfold piB
   exact hπ.2.2.1.2.1 _ (piB_mat_unitary hF hT hh) x
 
+/- English proof (translation)
+Conclude with `Formalism.L2.SG.Pf.psiR_norm ε gg e f z g`.
+-/
 theorem psiR_norm {n r' : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r' → Fin n → ℂ) (z : Fin n → ℂ)
     (g : Matrix (Fin n) (Fin n) ℂ) : ‖psiR ε gg e f z g‖ = 1 := by
   exact Formalism.L2.SG.Pf.psiR_norm ε gg e f z g
@@ -269,6 +368,9 @@ section Inv
 variable {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
   {wf : Fin k → Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+Unfold `HNset at hs`. Take `⟨h, hh, m, hm, hhm⟩` from `hs`. Rewrite using `[hW s y h hh m hm hhm, norm_smul, psiR_norm, one_mul]`. Conclude with `piB_norm hF hT hπ hh (W y)`.
+-/
 theorem loc_norm_inv {T : ℝ} (hT : 0 < T) {z : Fin (2 * r + k + 1) → ℂ} (hF : IsFrameJ ε e f wf (z0v T z))
     {gg : ℕ} {u : Fin k → ℝ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {πl : Matrix (Fin k) (Fin k) ℂ → (V →L[ℂ] V)} (hπ : IsHCTypeU k u πl) {W : Formalism.REAL.UJ ε → V}
@@ -288,12 +390,20 @@ section Assembly
 open Formalism.L2.SG.SplitPrimeNormLemmas Formalism.L2.SG.ConcreteSettingExists
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `R.m_even`. Establish `h2` using `R.two_le_m`. Use `show 2 * (R.m / 2 - 1) + 2 = R.m`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mEqR (R : Ranks) : 2 * R.rS + 2 = R.m := by
   obtain ⟨j, hj⟩ := R.m_even
   have h2 := R.two_le_m
   show 2 * (R.m / 2 - 1) + 2 = R.m
   omega
 
+/- English proof (translation)
+Establish `hm` using `mEqR R`. Establish `hk` using `R.m_add_three_le_k`. Establish `hi` using `i.isLt`. Unfold `lamS lam48`. Simplify using `only [Fin.coe_cast]`.
+
+Apply the tactic sequence `split_ifs with h1 h2 <;> first | rfl | (exfalso; omega)`.
+-/
 theorem lam_matchR (R : Ranks) (P : HCParam R) (i : Fin (2 * R.rS + R.k + 1)) (hr : 2 * R.rS + R.k + 1 = R.r) :
     lamS R P (Fin.cast hr i) =
       lam48 R.k R.rS (fun i => (P.v i : ℝ)) (fun j => (P.b (Fin.cast (mEqR R) j) : ℝ)) i := by
@@ -304,6 +414,13 @@ theorem lam_matchR (R : Ranks) (P : HCParam R) (i : Fin (2 * R.rS + R.k + 1)) (h
   simp only [Fin.coe_cast]
   split_ifs with h1 h2 <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Use `⟨fun i => ⟨?_, ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Use `Q.u_gt_v i` as an intermediate fact. Rewrite `this` using `[hv]`. Simplify using `only`. Conclude with `this` after adjusting the coercions.
+
+Use `Q.v_gt_u i` as an intermediate fact. Rewrite `this` using `[hv]`. Simplify using `only`. Conclude with `this` after adjusting the coercions. Establish `h2` using `R.two_le_m`.
+
+Use `Q.u_last_gt h (by omega)` as an intermediate fact. Rewrite `this` using `[hb]`. Simplify using `only [Fin.cast_mk]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem interlace_of (R : Ranks) (P Q : HCParam R) (hv : Q.v = P.v) (hb : Q.b = P.b) :
     InterlacingCondition R.k R.rS (fun i => (Q.u i : ℝ)) (fun i => (P.v i : ℝ)) (fun j => (P.b (Fin.cast (mEqR R) j) : ℝ)) := by
   refine ⟨fun i => ⟨?_, ?_⟩, fun h => ?_⟩
@@ -321,6 +438,13 @@ theorem interlace_of (R : Ranks) (P Q : HCParam R) (hv : Q.v = P.v) (hb : Q.b = 
     simp only [Fin.cast_mk]
     exact_mod_cast this
 
+/- English proof (translation)
+Introduce `i s`. Use `choose gv hgv using P.v_int`. Use `choose gb hgb using P.b_int`. Take `⟨a, ha⟩` from `Q.u_half i`. Unfold `lam48`.
+
+Simplify using `only`. Use `split_ifs with h`. Use `⟨a - gv ⟨s.val, h⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, hgv]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨a + gb (Fin.cast (mEqR R) ⟨s.val - (R.k - 1), by have := s.isLt; omega⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [ha, hgb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem halfInt_of (R : Ranks) (P Q : HCParam R) :
     HalfIntegralDifference R.k R.rS (fun i => (Q.u i : ℝ)) (fun i => (P.v i : ℝ)) (fun j => (P.b (Fin.cast (mEqR R) j) : ℝ)) := by
   intro i s

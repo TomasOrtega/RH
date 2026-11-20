@@ -10,6 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `e : X.hom = inv (pullback.fst X.hom (𝟙 S)) ≫ pullback.snd X.hom (𝟙 S)`. Rewrite using `[IsIso.eq_inv_comp, pullback.condition, Category.comp_id]`. Rewrite using `[e]`. Use `smoothOfRelativeDimension_comp (n := 0) (m := g) (inv (pullback.fst X.hom (𝟙 S))) (pullback.snd X.hom (𝟙 S))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem smoothOfRelDim_of_pullback_snd_identity {S : Scheme.{0}} (X : Over S) (g : ℕ)
     (h : SmoothOfRelativeDimension g (pullback.snd X.hom (𝟙 S))) : SmoothOfRelativeDimension g X.hom := by
   have e : X.hom = inv (pullback.fst X.hom (𝟙 S)) ≫ pullback.snd X.hom (𝟙 S) := by
@@ -18,6 +21,9 @@ theorem smoothOfRelDim_of_pullback_snd_identity {S : Scheme.{0}} (X : Over S) (g
   have := smoothOfRelativeDimension_comp (n := 0) (m := g) (inv (pullback.fst X.hom (𝟙 S))) (pullback.snd X.hom (𝟙 S))
   simpa using this
 
+/- English proof (translation)
+Establish `e : pullback.snd X.hom (𝟙 S) = pullback.fst X.hom (𝟙 S) ≫ X.hom`. Rewrite using `[pullback.condition, Category.comp_id]`. Rewrite using `[e]`. Use `smoothOfRelativeDimension_comp (n := 0) (m := g) (pullback.fst X.hom (𝟙 S)) X.hom` as an intermediate fact. Simplify using `using this`.
+-/
 theorem smoothOfRelDim_pullback_snd_identity {S : Scheme.{0}} (X : Over S) (g : ℕ)
     (h : SmoothOfRelativeDimension g X.hom) : SmoothOfRelativeDimension g (pullback.snd X.hom (𝟙 S)) := by
   have e : pullback.snd X.hom (𝟙 S) = pullback.fst X.hom (𝟙 S) ≫ X.hom := by
@@ -26,6 +32,9 @@ theorem smoothOfRelDim_pullback_snd_identity {S : Scheme.{0}} (X : Over S) (g : 
   have := smoothOfRelativeDimension_comp (n := 0) (m := g) (pullback.fst X.hom (𝟙 S)) X.hom
   simpa using this
 
+/- English proof (translation)
+Introduce `S A _ hA`. Take `⟨B, _, P, hB, hdim, hdual⟩` from `GlobalTheory.T.exists_dual_abelianScheme_poincare S A hA`. Use `⟨B, inferInstance, P, hB, fun g hg => ?_, hdual, GlobalTheory.T.isDualAbelianSchemePoincare_swap S A B P hA hB hdim hdual⟩` and prove the remaining obligations. Conclude with `smoothOfRelDim_of_pullback_snd_identity B g (hdim g S (𝟙 S) (smoothOfRelDim_pullback_snd_identity A g hg))`.
+-/
 theorem dualAbelianScheme : GlobalTheory.Published.DualAbelianScheme := by
   intro S A _ hA
   obtain ⟨B, _, P, hB, hdim, hdual⟩ := GlobalTheory.T.exists_dual_abelianScheme_poincare S A hA

@@ -7,6 +7,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Twist.Periodize
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI : DiscreteTopology (ratMx D m n) := i5`. Use `haveI : Countable (ratMx D m n) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Set `e : Matrix (Fin m) (Fin n) D.host.E ≃ ratMx D m n` to `Equiv.ofBijective (fun a => ⟨a.map (incA D), a, rfl⟩) ⟨fun a b h => Matrix.map_injective GlobalTheory.MixModel.incA_injective (congrArg Subtype.val h), fun γ => by obtain ⟨a, ha⟩ := γ.2; exact ⟨a, Subtype.ext ha⟩⟩`.
+
+Establish `he : ∀ a, ((e a : ratMx D m n) : Mx D m n) = a.map (incA D)` using `fun _ => rfl`. Establish `hm : ∀ γ : ratMx D m n, AEStronglyMeasurable (fun y => c (y + γ)) (μ.restrict 𝓕)`. Introduce `γ`. Use `hc.1.comp_quasiMeasurePreserving (measurePreserving_add_right μ (γ : Mx D m n)).quasiMeasurePreserving` as an intermediate fact. Conclude with `this.restrict`.
+
+Establish `hl : ∑' γ : ratMx D m n, ∫⁻ y in 𝓕, ‖c (y + γ)‖ₑ ∂μ = ∫⁻ y, ‖c y‖ₑ ∂μ`. Rewrite using `[hF.lintegral_eq_tsum'' (fun y => ‖c y‖ₑ)]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Simplify using `only [AddSubgroup.vadd_def, vadd_eq_add, add_comm (γ : Mx D m n)]`. Establish `hfin : ∑' γ : ratMx D m n, ∫⁻ y in 𝓕, ‖c (y + γ)‖ₑ ∂μ ≠ ⊤`.
+
+Rewrite using `[hl]`. Conclude with `hc.2.ne`. Establish `hae : ∀ᵐ y ∂(μ.restrict 𝓕), Summable fun γ : ratMx D m n => ‖c (y + γ)‖`. Establish `h1 : ∫⁻ y in 𝓕, ∑' γ : ratMx D m n, ‖c (y + γ)‖ₑ ∂μ ≠ ⊤`. Rewrite using `[lintegral_tsum fun γ => (hm γ).enorm]`.
+
+Conclude with `hfin`. Establish `h2 : AEMeasurable (fun y => ∑' γ : ratMx D m n, ‖c (y + γ)‖ₑ) (μ.restrict 𝓕)` using `AEMeasurable.ennreal_tsum fun γ => (hm γ).enorm`. Use `filter_upwards [ae_lt_top' h2 h1] with y hy`. Establish `: ∑' γ : ratMx D m n, (‖c (y + γ)‖₊ : ENNReal) ≠ ⊤`. Simplify `hy.ne` using `only [enorm_eq_nnnorm]`.
+
+Conclude with `(NNReal.summable_coe.2 (ENNReal.tsum_coe_ne_top_iff_summable.1 this)).congr fun _ => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hae] with y hy`. Conclude with `(e.summable_iff.2 hy).congr fun a => by rw [Function.comp_apply, he]`. Establish `h3 : ∫ y in 𝓕, ∑' γ : ratMx D m n, c (y + γ) ∂μ = ∑' γ : ratMx D m n, ∫ y in 𝓕, c (y + γ) ∂μ` using `integral_tsum hm hfin`.
+
+Establish `h4 : ∫ y, c y ∂μ = ∑' γ : ratMx D m n, ∫ y in 𝓕, c (y + γ) ∂μ`. Rewrite using `[hF.integral_eq_tsum' c hc, ← (Equiv.neg (ratMx D m n)).tsum_eq]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.neg_apply, neg_neg, AddSubgroup.vadd_def, vadd_eq_add, add_comm (γ : Mx D m n)]`. Rewrite using `[h4, ← h3]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[← e.tsum_eq]`. Both sides reduce to the same expression.
+-/
 theorem integral_eq_setIntegral_tsum (D : D7) (m n : ℕ) (μ : Measure (Mx D m n)) (𝓕 : Set (Mx D m n))
     (hμ : μ.IsAddHaarMeasure) (hF : IsAddFundamentalDomain (ratMx D m n) 𝓕 μ) (c : Mx D m n → ℂ)
     (hc : Integrable c μ) :

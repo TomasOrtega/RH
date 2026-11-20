@@ -13,6 +13,15 @@ open scoped InnerProductSpace ContDiff
 
 namespace GlobalTheory.DeepCover
 
+/- English proof (translation)
+Establish `hspan : Submodule.span I.E (R : Set (Fin I.n → I.E)) ≤ Submodule.span I.E (perpIn I x R : Set (Fin I.n → I.E))` using `Submodule.span_mono h`. Establish `h1 : ∀ s ∈ R, ∀ y ∈ Submodule.span I.E (R : Set (Fin I.n → I.E)), Formalism.UG.hform (starRingEnd I.E) I.J s y = 0` using `fun s hs y hy => GlobalTheory.FlagIso.hform_span I x R (hspan hy) hs`. Establish `h2 : ∀ y ∈ Submodule.span I.E (R : Set (Fin I.n → I.E)), ∀ z ∈ Submodule.span I.E (R : Set (Fin I.n → I.E)), Formalism.UG.hform (starRingEnd I.E) I.J y z = 0`. Introduce `y hy z hz`. Establish `hker : Submodule.span I.E (R : Set (Fin I.n → I.E)) ≤ LinearMap.ker (GlobalTheory.FlagIso.hR I.J y)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce `s hs`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, GlobalTheory.FlagIso.hR_apply, ← GlobalTheory.FlagIso.hform_star I.J I.J_herm s y, h1 s hs y hy, star_zero]`. Establish `hz'` using `hker hz`. Rewrite `hz'` using `[LinearMap.mem_ker, GlobalTheory.FlagIso.hR_apply]`. Then use the resulting hypothesis.
+
+Use `⟨?_, h2⟩` and prove the remaining obligations. Introduce `hbot`. Apply `h0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `r hr`.
+
+Establish `hr' : r ∈ Submodule.span I.E (R : Set (Fin I.n → I.E))` using `Submodule.subset_span hr`. Rewrite `hr'` using `[hbot]`. Conclude with `(Submodule.mem_bot _).2 ((Submodule.mem_bot _).1 hr')`.
+-/
 theorem isIsot_span (I : AutInst) (x : I.GA) (R : Submodule (𝓞 I.E) (Fin I.n → I.E)) (h0 : R ≠ ⊥)
     (h : R ≤ perpIn I x R) : I.IsIsot (Submodule.span I.E (R : Set (Fin I.n → I.E))) := by
   have hspan : Submodule.span I.E (R : Set (Fin I.n → I.E)) ≤
@@ -44,6 +53,43 @@ theorem isIsot_span (I : AutInst) (x : I.GA) (R : Submodule (𝓞 I.E) (Fin I.n 
   rw [hbot] at hr'
   exact (Submodule.mem_bot _).2 ((Submodule.mem_bot _).1 hr')
 
+/- English proof (translation)
+Introduce `I x g q hg hn hq hlt`. Take `⟨⟨a, S, τ, hF⟩, -, hspec⟩` from `GlobalTheory.PointFlag.flag_spec I x`. Take `⟨hpieces, hzero⟩` from `hspec a S τ hF`. Take `⟨ha0, hτ0⟩` from `hzero hn`. Establish `ha : 0 < a`.
+
+Break down `Nat.eq_zero_or_pos a with h | h` into its components or cases. Conclude with `absurd (ha0.1 h) (not_le.2 hlt)`. Conclude with `h`. Take `⟨hall, -, -, hstep⟩` from `GlobalTheory.T.smallSizeCanonicalFlag_pieces_properties I x a S τ hF`. Take `⟨-, -, hSlast, hτmono, hτ, -⟩` from `hF`.
+
+Take `⟨τ', hτ'⟩ : ∃ f : ℕ → ℝ, f = fun i => if h : i < a then τ ⟨i, h⟩ else 1 / 2` from `⟨_, rfl⟩`. Establish `hτ'lt : ∀ i (h : i < a), τ' i = τ ⟨i, h⟩`. Introduce `i h`. Rewrite using `[hτ']`. Conclude with `dif_pos h`.
+
+Establish `hτ'ge : ∀ i, a ≤ i → τ' i = 1 / 2`. Introduce `i h`. Rewrite using `[hτ']`. Conclude with `dif_neg (not_lt.2 h)`. Establish `hpos : ∀ i ≤ a, 0 < τ' i`.
+
+Introduce `i _`. Break down `lt_or_ge i a with h | h` into its components or cases. Rewrite using `[hτ'lt i h]`. Conclude with `(hτ ⟨i, h⟩).1`. Rewrite using `[hτ'ge i h]`.
+
+Evaluate the numerical expressions. Establish `hinc : ∀ i < a, τ' i < τ' (i + 1)`. Introduce `i hi`. Rewrite using `[hτ'lt i hi]`. Break down `lt_or_ge (i + 1) a with h | h` into its components or cases.
+
+Rewrite using `[hτ'lt (i + 1) h]`. Conclude with `hτmono (Fin.mk_lt_mk.2 (Nat.lt_succ_self i))`. Rewrite using `[hτ'ge (i + 1) h]`. Conclude with `(hτ ⟨i, hi⟩).2.1`. Establish `hlast : τ' a = 1 / 2` using `hτ'ge a le_rfl`.
+
+Establish `hrk : ∀ i (hi : i ≤ a), i ≤ rkK (S ⟨i, Nat.lt_succ_of_le hi⟩)`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`. Conclude with `Nat.zero_le _`.
+
+Consider the case `succ k ih`. Introduce `hk`. Establish `h1` using `ih (Nat.le_of_succ_le hk)`. Establish `h2 : rkK (S (Fin.castSucc ⟨k, hk⟩)) < rkK (S (Fin.succ ⟨k, hk⟩))` using `((hpieces ⟨k, hk⟩).2.1)`. Conclude with `Nat.succ_le_of_lt (lt_of_le_of_lt h1 h2)`.
+
+Take `⟨-, hrkR, -⟩` from `GlobalTheory.FlagIso.flag_isotropic I x`. Establish `haq : a ≤ q`. Take `⟨v⟩` from `(inferInstance : Nonempty (InfinitePlace I.F))`. Establish `h1 : a ≤ rkK (S (Fin.last a))` using `hrk a le_rfl`. Rewrite `h1` using `[hSlast]`.
+
+Conclude with `h1.trans ((hrkR v).trans (hq v))`. Take `⟨b, hb, hratio, hsq⟩` from `GlobalTheory.exists_consecutive_ratio_le_rpow a q τ' ha haq hpos hinc hlast`. Rewrite `hratio`, `hsq` using `[hτ'lt 0 ha, hτ0 ha, hτ'lt b hb]`. Establish `hi_pos : 0 < τ ⟨b, hb⟩` using `(hτ ⟨b, hb⟩).1`. Establish `hlo_pos : 0 < τ' (b + 1)` using `hpos (b + 1) hb`.
+
+Take `⟨-, -, -, hne, hlarge, hgeL⟩` from `hstep ⟨b, hb⟩`. Establish `hRperp : S (Fin.succ ⟨b, hb⟩) ≤ perpIn I x (S (Fin.succ ⟨b, hb⟩))` using `le_trans (hall _).2.2.1 (hall _).2.2.2.1`. Establish `hsat : IsSat (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)) (lamX I x) (S (Fin.succ ⟨b, hb⟩))` using `(hall _).1`. Establish `hlo : ∀ N, S (Fin.succ ⟨b, hb⟩) < N → N ≤ lamX I x → τ' (b + 1) ≤ sizeQ (bas I) (frm I x) N (S (Fin.succ ⟨b, hb⟩))`. Rewrite using `[hτ']`.
+
+Conclude with `hgeL`. Use `⟨Submodule.span I.E (S (Fin.succ ⟨b, hb⟩) : Set (Fin I.n → I.E)), isIsot_span I x _ hne hRperp, ?_⟩` and prove the remaining obligations. Introduce `ν hν`. Take `⟨γ, ⟨hγF, -⟩, hk, A, Z, hAZ, heq, hbound, hst⟩` from `GlobalTheory.T.small_fundamental_set_real_unipotent I x g (S (Fin.succ ⟨b, hb⟩)) (τ' (b + 1)) (τ ⟨b, hb⟩) ((2 * least I x) ^ ((1 : ℝ) / q)) hg hsat hne hRperp hi_pos hlarge hlo ((div_le_iff₀ hlo_pos).1 hratio) hsq ν hν`. Take `⟨m, -, hm⟩` from `hst 1 1`.
+
+Establish `hm' : ∀ v, uMat (m v) * uMat (x.1 v) = uMat (x.1 v) * NormedSpace.exp (A v) * NormedSpace.exp (Z v)`. Introduce `v`. Simplify `hm v` using `only [Complex.ofReal_one, one_smul]`. Take `⟨-, -, -, -, -, -, hKg⟩` from `GlobalTheory.CongTop.adelic_topology I`. Take `⟨-, ⟨K, hK⟩, -⟩` from `hKg g hg`.
+
+Establish `hkinv : ((x⁻¹ * γ * x).2)⁻¹ ∈ I.Kg g`. Rewrite `hk`, the goal using `[← hK]`. Conclude with `K.inv_mem hk`. Use `⟨γ, hγF, ((x⁻¹ * γ * x).2)⁻¹, hkinv, ((m * x.1 : I.Ginf), x.2), ?_, ?_⟩` and prove the remaining obligations. Use `⟨rfl, A, Z, hAZ, hbound, fun v => ?_, hst⟩ show uMat (m v) * uMat (x.1 v) = _` and prove the remaining obligations.
+
+Conclude with `hm' v`. Establish `key : ∀ v, uMat (ν v) * uMat (x.1 v) = uMat (γ.1 v) * (uMat (m v) * uMat (x.1 v))`. Introduce `v`. Rewrite using `[heq v, hm' v]`. Simplify using `only [mul_assoc]`.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show ν * x.1 = γ.1 * (m * x.1) * 1`. Rewrite using `[mul_one]`. Use function extensionality and compare the values at `v`. Conclude with `Subtype.ext (Units.ext (key v))`.
+
+Use `show 1 * x.2 = γ.2 * x.2 * ((x⁻¹ * γ * x).2)⁻¹`. Simplify using `only [Prod.snd_mul, Prod.snd_inv]`. Use `group`.
+-/
 theorem unipotent_orbit_cover : ∀ (I : AutInst) (x : I.GA) (g q : ℕ), 1 ≤ g → 1 ≤ I.n → (∀ v, rkR (I.ε v) ≤ q) → least I x < 1 / 2 → ∃ W : Submodule I.E (Fin I.n → I.E), I.IsIsot W ∧ ∀ ν : I.Ginf, ((ν, 1) : I.GA) ∈ I.NA W → ∃ γ ∈ I.GFset, ∃ k ∈ I.Kg g, ∃ y ∈ omega I x W ((I.n : ℝ) ^ 2 * Real.sqrt I.f * g * I.rd * (2 * least I x) ^ ((1 : ℝ) / q) / 4), ((ν, 1) : I.GA) * x = γ * y * (1, k) := by
   intro I x g q hg hn hq hlt
 

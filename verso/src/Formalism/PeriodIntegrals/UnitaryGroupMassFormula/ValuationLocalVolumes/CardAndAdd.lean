@@ -11,6 +11,9 @@ section gen
 
 variable {K : Type} [CommRing K] (σ : K →+* K) {M : ℕ} (J : Matrix (Fin M) (Fin M) K)
 
+/- English proof (translation)
+Distinguish the cases in `h : i = p`. Conclude with `Or.inl h`. Use `right`. Conclude with `(Fin.eq_self_or_eq_succAbove p i).resolve_left h`.
+-/
 private theorem eq_or_exists_succAbove {n : ℕ} (p i : Fin (n + 1)) :
     i = p ∨ ∃ j, i = p.succAbove j := by
   by_cases h : i = p
@@ -18,6 +21,19 @@ private theorem eq_or_exists_succAbove {n : ℕ} (p i : Fin (n + 1)) :
   · right
     exact (Fin.eq_self_or_eq_succAbove p i).resolve_left h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hh : ∀ i j, PI.VolStabSW.ffH σ J (X i) (X j) = T i j + Matrix.single i₀ i₀ t i j` using `fun i j => congrFun (congrFun h i) j`. Use `⟨?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `j k show PI.VolStabSW.ffH σ J (X (i₀.succAbove j)) (X (i₀.succAbove k)) = T (i₀.succAbove j) (i₀.succAbove k)`.
+
+Establish `hne : i₀.succAbove j ≠ i₀` using `Fin.succAbove_ne i₀ j`. Rewrite using `[hh]`. Simplify using `[hne.symm]`. Establish `hne : i₀.succAbove j ≠ i₀` using `Fin.succAbove_ne i₀ j`. Rewrite using `[hh, hc]`.
+
+Simplify using `[hne.symm]`. Rewrite using `[hh, hr]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨h1, h2, h3⟩`. Use extensionality with `i j`.
+
+Use `show PI.VolStabSW.ffH σ J (X i) (X j) = T i j + Matrix.single i₀ i₀ t i j`. Apply the tactic sequence `rcases eq_or_exists_succAbove i₀ i with hi | ⟨i', hi⟩ <;>`. Apply the tactic sequence `rcases eq_or_exists_succAbove i₀ j with hj | ⟨j', hj⟩ <;> rw [hi, hj]`. Rewrite using `[h3, hr]`. Simplify using the standard rewrite rules.
+
+Establish `hne : i₀.succAbove j' ≠ i₀` using `Fin.succAbove_ne i₀ j'`. Rewrite using `[ffH_herm σ J hσ hJ (X (i₀.succAbove j')) (X i₀), h2 j', map_zero, hr]`. Simplify using `[hne.symm]`. Establish `hne : i₀.succAbove i' ≠ i₀` using `Fin.succAbove_ne i₀ i'`. Rewrite using `[h2 i', hc]`.
+
+Simplify using `[hne.symm]`. Establish `hne : i₀.succAbove i' ≠ i₀` using `Fin.succAbove_ne i₀ i'`. Rewrite using `[show PI.VolStabSW.ffH σ J (X (i₀.succAbove i')) (X (i₀.succAbove j')) = T (i₀.succAbove i') (i₀.succAbove j') from congrFun (congrFun h1 i') j']`. Simplify using `[hne.symm]`.
+-/
 theorem gram_split (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) {a' : ℕ}
     (T : Matrix (Fin (a' + 1)) (Fin (a' + 1)) K) (i₀ : Fin (a' + 1)) (hr : ∀ j, T i₀ j = 0)
     (hc : ∀ j, T j i₀ = 0) (t : K) (X : Fin (a' + 1) → Fin M → K) :
@@ -58,6 +74,13 @@ theorem gram_split (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i 
           T (i₀.succAbove i') (i₀.succAbove j') from congrFun (congrFun h1 i') j']
       simp [hne.symm]
 
+/- English proof (translation)
+Establish `key` using `fun X => gram_split σ J hσ hJ T i₀ hr hc t X`. Apply `Nat.card_congr` to reduce the goal to its premises. Use `{ toFun := fun X => ⟨⟨fun j => X.1 (i₀.succAbove j), ((key X.1).1 X.2.1).1⟩, ⟨X.1 i₀, ((key X.1).1 X.2.1).2.1, ((key X.1).1 X.2.1).2.2, X.2.2⟩⟩ invFun := fun p => ⟨Fin.insertNth (α := fun _ => Fin M → K) i₀ p.2.1 p.1.1, (key _).2 ⟨by simpa [Fin.insertNth_apply_succAbove] using p. …` and prove the remaining obligations. Introduce `X`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases eq_or_exists_succAbove i₀ i with hi | ⟨j, hi⟩ <;> rw [hi]`. Simplify using `[Fin.insertNth_apply_same]`. Simplify using `[Fin.insertNth_apply_succAbove]`. Introduce and unpack `⟨⟨Y, hY⟩, ⟨x, hx⟩⟩`.
+
+Apply `Sigma.subtype_ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Simplify using `[Fin.insertNth_apply_succAbove]`. Simplify using `[Fin.insertNth_apply_same]`.
+-/
 theorem card_split [Finite K] (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) {a' : ℕ}
     (T : Matrix (Fin (a' + 1)) (Fin (a' + 1)) K) (i₀ : Fin (a' + 1)) (hr : ∀ j, T i₀ j = 0)
     (hc : ∀ j, T j i₀ = 0) (t : K) (R : (Fin M → K) → Prop) :
@@ -90,6 +113,19 @@ theorem card_split [Finite K] (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J 
       simp [Fin.insertNth_apply_succAbove]
     · simp [Fin.insertNth_apply_same]
 
+/- English proof (translation)
+Set `f : (Fin M → K) →+ (Fin a' → K)` to `AddMonoidHom.mk' (fun x j => PI.VolStabSW.ffH σ J (Y j) x) (fun x y => by`. Use function extensionality and compare the values at `j`. Conclude with `ffH_add_right σ J (Y j) x y)`. Establish `hsurj : Function.Surjective f`. Introduce `v`.
+
+Use `⟨∑ l, (T0⁻¹ *ᵥ v) l • Y l, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `show PI.VolStabSW.ffH σ J (Y j) (∑ l, (T0⁻¹ *ᵥ v) l • Y l) = v j`. Rewrite using `[ffH_sum_right σ J Finset.univ]`. Establish `hT : ∀ l, PI.VolStabSW.ffH σ J (Y j) (Y l) = T0 j l` using `fun l => congrFun (congrFun hY j) l`.
+
+Repeatedly rewrite using `[hT]`. Establish `hinv : T0 *ᵥ (T0⁻¹ *ᵥ v) = v`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv T0 hu, Matrix.one_mulVec]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Conclude with `Finset.sum_congr rfl (fun l _ => mul_comm _ _)`. Use `_ = v j := by rw [hinv]`. Establish `hker : Nat.card {x : Fin M → K // ∀ j, PI.VolStabSW.ffH σ J (Y j) x = 0} = Nat.card f.ker`. Apply `Nat.card_congr` to reduce the goal to its premises. Conclude with `Equiv.subtypeEquivRight (fun x => by`.
+
+Rewrite using `[AddMonoidHom.mem_ker]`. Conclude with `⟨fun h => by ext j; exact h j, fun h j => congrFun h j⟩)`. Establish `hidx : f.ker.index = Nat.card (Fin a' → K)`. Conclude with `Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective f hsurj).toEquiv`. Establish `hpow : ∀ n : ℕ, Nat.card (Fin n → K) = Nat.card K ^ n`.
+
+Introduce `n`. Rewrite using `[Nat.card_fun, Nat.card_fin]`. Rewrite using `[hker, ← hpow a', ← hidx, AddSubgroup.card_mul_index, hpow M]`.
+-/
 theorem card_perp [Finite K] {a' : ℕ} (T0 : Matrix (Fin a') (Fin a') K) (hu : IsUnit T0.det)
     (Y : Fin a' → Fin M → K) (hY : ffGram σ J Y = T0) :
     Nat.card {x : Fin M → K // ∀ j, ffH σ J (Y j) x = 0} * Nat.card K ^ a' = Nat.card K ^ M := by
@@ -124,6 +160,9 @@ theorem card_perp [Finite K] {a' : ℕ} (T0 : Matrix (Fin a') (Fin a') K) (hu : 
     rw [Nat.card_fun, Nat.card_fin]
   rw [hker, ← hpow a', ← hidx, AddSubgroup.card_mul_index, hpow M]
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_sum]`. Conclude with `Nat.card_congr (((Equiv.subtypeSubtypeEquivSubtypeInter G Q).symm.sumCongr (Equiv.subtypeSubtypeEquivSubtypeInter G (fun x => ¬ Q x)).symm).trans (Equiv.sumCompl (fun y : {x // G x} => Q y.1)))`.
+-/
 theorem card_and_add {α : Type} [Finite α] (G Q : α → Prop) :
     Nat.card {x // G x ∧ Q x} + Nat.card {x // G x ∧ ¬ Q x} = Nat.card {x // G x} := by
   classical

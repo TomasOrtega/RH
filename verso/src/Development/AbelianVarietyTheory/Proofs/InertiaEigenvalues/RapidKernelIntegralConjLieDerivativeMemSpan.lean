@@ -24,11 +24,19 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+The claim follows from `(norm_le_pi_norm (toL A i) j).trans (norm_le_pi_norm (toL A) i)`.
+-/
 theorem norm_entry_le (A : Matrix (Fin a) (Fin a) (Cinf E)) (i j : Fin a) : ‖A i j‖ ≤ ‖toL A‖ :=
   (norm_le_pi_norm (toL A i) j).trans (norm_le_pi_norm (toL A) i)
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => (pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(A * B) i j‖ ≤ _`. Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ (‖toL A‖ * ‖toL B‖) fun k _ => ?_).trans ?_)` and prove the remaining obligations. Conclude with `(norm_mul_le _ _).trans (mul_le_mul (norm_entry_le A i k) (norm_entry_le B k j) (norm_nonneg _) (norm_nonneg _))`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem norm_toL_mul_le (A B : Matrix (Fin a) (Fin a) (Cinf E)) : ‖toL (A * B)‖ ≤ a * (‖toL A‖ * ‖toL B‖) := by
   refine (pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => (pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_
   change ‖(A * B) i j‖ ≤ _
@@ -39,6 +47,9 @@ theorem norm_toL_mul_le (A B : Matrix (Fin a) (Fin a) (Cinf E)) : ‖toL (A * B)
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `e : (fun x => f (φ x)) = (invSet E a).restrict f ∘ fun x => (⟨φ x, hφ' x⟩ : invSet E a)` using `rfl`. Rewrite using `[e]`. Conclude with `hf.restrict.measurable.comp (hφ.subtype_mk)`.
+-/
 theorem measurable_comp_of_continuousOn {X : Type} [MeasurableSpace X] {f : Lie E a → ℂ}
     (hf : ContinuousOn f (invSet E a)) {φ : X → Lie E a} (hφ : Measurable φ) (hφ' : ∀ x, φ x ∈ invSet E a) :
     Measurable fun x => f (φ x) := by
@@ -48,6 +59,15 @@ theorem measurable_comp_of_continuousOn {X : Type} [MeasurableSpace X] {f : Lie 
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `key : ∀ y : GL (Fin a) (Cinf E), ((y⁻¹ : GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E)) = (fun w => ((y : Matrix (Fin a) (Fin a) (Cinf E)).det w)⁻¹) • (y : Matrix (Fin a) (Fin a) (Cinf E)).adjugate`. Introduce `y`. Use `Units.inv_eq_of_mul_eq_one_left ?_` and prove the remaining obligations. Establish `hu : IsUnit (y : Matrix (Fin a) (Fin a) (Cinf E)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 y.isUnit`. Establish `h1 : (fun w => ((y : Matrix (Fin a) (Fin a) (Cinf E)).det w)⁻¹) * (y : Matrix (Fin a) (Fin a) (Cinf E)).det = 1`.
+
+Use function extensionality and compare the values at `w`. Establish `hw : (y : Matrix (Fin a) (Fin a) (Cinf E)).det w ≠ 0` using `((Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) w).isUnit_map hu).ne_zero`. Conclude with `inv_mul_cancel₀ hw`. Rewrite using `[Matrix.smul_mul, Matrix.adjugate_mul, smul_smul, h1, one_smul]`. Establish `e : (fun x => toL ((γ x)⁻¹).val) = fun x => toL ((fun w => ((γ x : Matrix (Fin a) (Fin a) (Cinf E)).det w)⁻¹) • (γ x : Matrix (Fin a) (Fin a) (Cinf E)).adjugate)` using `funext fun x => congrArg toL (key (γ x))`.
+
+Rewrite using `[e]`. Establish `hdet : Measurable fun x => (γ x : Matrix (Fin a) (Fin a) (Cinf E)).det` using `(contDiff_det (E := E) (a := a)).continuous.measurable.comp hγ`. Establish `hadjc : Continuous fun m : Lie E a => (toL (Matrix.of m).adjugate : Lie E a)` using `Continuous.matrix_adjugate continuous_id`. Establish `hadj : Measurable fun x => toL (γ x : Matrix (Fin a) (Fin a) (Cinf E)).adjugate` using `hadjc.measurable.comp hγ`. Establish `hc : Measurable fun x => (fun w => ((γ x : Matrix (Fin a) (Fin a) (Cinf E)).det w)⁻¹ : Cinf E)` using `measurable_pi_lambda _ fun w => ((measurable_pi_apply w).comp hdet).inv`.
+
+Conclude with `(continuous_smul (M := Cinf E) (X := Lie E a)).measurable.comp (hc.prodMk hadj)`.
+-/
 theorem measurable_inv {X : Type} [MeasurableSpace X] {γ : X → GL (Fin a) (Cinf E)}
     (hγ : Measurable fun x => toL (γ x).val) : Measurable fun x => toL ((γ x)⁻¹).val := by
   have key : ∀ y : GL (Fin a) (Cinf E), ((y⁻¹ : GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E)) =
@@ -80,6 +100,11 @@ namespace GlobalTheory.MSpanDecay.RapidLie
 
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
+/- English proof (translation)
+Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => measurable_pi_lambda _ fun w => ?_` and prove the remaining obligations. Establish `e : (fun x => toL (Matrix.of (A x) * Matrix.of (B x)) i j w) = fun x => ∑ k, A x i k w * B x k j w`. Use function extensionality and compare the values at `x`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`. Rewrite using `[e]`.
+
+Conclude with `Finset.measurable_sum _ fun k _ => ((measurable_pi_apply w).comp ((measurable_pi_apply k).comp ((measurable_pi_apply i).comp hA))).mul ((measurable_pi_apply w).comp ((measurable_pi_apply j).comp ((measurable_pi_apply k).comp hB)))`.
+-/
 theorem measurable_mul {X : Type} [MeasurableSpace X] {A B : X → Lie E a} (hA : Measurable A) (hB : Measurable B) :
     Measurable fun x => toL (Matrix.of (A x) * Matrix.of (B x)) := by
   refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => measurable_pi_lambda _ fun w => ?_
@@ -90,6 +115,9 @@ theorem measurable_mul {X : Type} [MeasurableSpace X] {A B : X → Lie E a} (hA 
     ((measurable_pi_apply w).comp ((measurable_pi_apply k).comp ((measurable_pi_apply i).comp hA))).mul
       ((measurable_pi_apply w).comp ((measurable_pi_apply j).comp ((measurable_pi_apply k).comp hB)))
 
+/- English proof (translation)
+The claim follows from `measurable_mul (measurable_mul (measurable_inv hγ) measurable_const) hγ`.
+-/
 theorem measurable_conj {X : Type} [MeasurableSpace X] {γ : X → GL (Fin a) (Cinf E)}
     (hγ : Measurable fun x => toL (γ x).val) (Y : Lie E a) :
     Measurable fun x => toL (((γ x)⁻¹).val * Matrix.of Y * (γ x).val) :=
@@ -103,6 +131,11 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `h1 : ‖toL y.val‖ ≤ height y` using `by unfold height; linarith [norm_nonneg (toL (y⁻¹).val)]`. Establish `h2 : ‖toL (y⁻¹).val‖ ≤ height y` using `by unfold height; linarith [norm_nonneg (toL y.val)]`. Establish `h3 : ‖toL ((y⁻¹).val * Matrix.of Y)‖ ≤ a * (‖toL (y⁻¹).val‖ * ‖Y‖)` using `norm_toL_mul_le _ _`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : ‖toL ((y⁻¹).val * Matrix.of Y)‖ ≤ a * (height y * ‖Y‖)` using `h3.trans (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right h2 (norm_nonneg _)) (Nat.cast_nonneg a))`.
+
+Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul h4 h1 (norm_nonneg _) ((norm_nonneg _).trans h4)) (Nat.cast_nonneg a)`. Use `_ = a * a * ‖Y‖ * height y ^ 2 := by ring`.
+-/
 theorem norm_conj_le (y : GL (Fin a) (Cinf E)) (Y : Lie E a) :
     ‖toL ((y⁻¹).val * Matrix.of Y * y.val)‖ ≤ a * a * ‖Y‖ * height y ^ 2 := by
   have h1 : ‖toL y.val‖ ≤ height y := by unfold height; linarith [norm_nonneg (toL (y⁻¹).val)]
@@ -116,6 +149,9 @@ theorem norm_conj_le (y : GL (Fin a) (Cinf E)) (Y : Lie E a) :
         exact mul_le_mul_of_nonneg_left (mul_le_mul h4 h1 (norm_nonneg _) ((norm_nonneg _).trans h4)) (Nat.cast_nonneg a)
     _ = a * a * ‖Y‖ * height y ^ 2 := by ring
 
+/- English proof (translation)
+Unfold `lieD`. Use `conv_lhs => rw [← b.sum_repr W]`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, Complex.real_smul]`.
+-/
 theorem lieD_eq_sum {ι : Type} [Fintype ι] (b : Module.Basis ι ℝ (Lie E a)) (W : Lie E a) (G : GA E a → ℂ)
     (g : GA E a) : lieD W G g = ∑ j, ((b.repr W j : ℝ) : ℂ) * lieD (b j) G g := by
   unfold lieD
@@ -123,6 +159,9 @@ theorem lieD_eq_sum {ι : Type} [Fintype ι] (b : Module.Basis ι ℝ (Lie E a))
   rw [map_sum]
   simp only [map_smul, Complex.real_smul]
 
+/- English proof (translation)
+Establish `e : (fun x => height (γ x)) = fun x => 1 + ‖toL (γ x).val‖ + ‖toL ((γ x)⁻¹).val‖` using `rfl`. Rewrite using `[e]`. Conclude with `(measurable_const.add hγ.norm).add (measurable_inv hγ).norm`.
+-/
 theorem measurable_height {X : Type} [MeasurableSpace X] {γ : X → GL (Fin a) (Cinf E)}
     (hγ : Measurable fun x => toL (γ x).val) : Measurable fun x => height (γ x) := by
   have e : (fun x => height (γ x)) = fun x => 1 + ‖toL (γ x).val‖ + ‖toL ((γ x)⁻¹).val‖ := rfl
@@ -135,6 +174,29 @@ namespace GlobalTheory.MSpanDecay
 
 open RapidLie in
 
+/- English proof (translation)
+Introduce `E _ _ _ a G X _ ν _ k γ Y hk hG`. Take `⟨hkm, hγm, hint⟩` from `hk`. Establish `hγ : Measurable fun x => toL (γ x).val` using `hγm`. Set `b` to `Module.finBasis ℝ (Lie E a)`. Set `L : Fin (Module.finrank ℝ (Lie E a)) → Lie E a →L[ℝ] ℝ` to `fun j => LinearMap.toContinuousLinearMap (b.coord j)`.
+
+Set `W : X → Lie E a` to `fun x => toL (((γ x)⁻¹).val * Matrix.of Y * (γ x).val)`. Set `c : Fin (Module.finrank ℝ (Lie E a)) → X → ℂ` to `fun j x => ((L j (W x) : ℝ) : ℂ)`. Establish `hW : Measurable W` using `measurable_conj hγ Y`. Establish `hc : ∀ j, Measurable (c j)` using `fun j => Complex.measurable_ofReal.comp ((L j).continuous.measurable.comp hW)`. Use `set D : Fin (Module.finrank ℝ (Lie E a)) → ℝ := fun j => ‖L j‖ * (a * a * ‖Y‖) with hD`.
+
+Establish `hD0 : ∀ j, 0 ≤ D j` using `fun j => by positivity`. Establish `hcb : ∀ j x, ‖c j x‖ ≤ D j * height (γ x) ^ 2`. Introduce `j x`. Establish `h` using `(L j).le_opNorm (W x)`. Rewrite using `[Complex.norm_real]`.
+
+Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[hD, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (norm_conj_le (γ x) Y) (norm_nonneg _)`. Establish `hG' : ∀ j, Good (lieD (b j) G)` using `fun j => hG.derivative _`. Establish `hrap : ∀ j, GlobalTheory.JSW.IsRapidInf ν (fun x => k x * c j x) γ`.
+
+Introduce `j`. Use `⟨hkm.mul (hc j), hγm, fun N => ?_⟩` and prove the remaining obligations. Use `Integrable.mono' ((hint (N + 2)).const_mul (D j)) (((hkm.mul (hc j)).norm.mul ((measurable_height hγ).pow_const N)).aestronglyMeasurable) (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Establish `h1` using `one_le_height (γ x)`. Establish `hp : 0 ≤ height (γ x) ^ N` using `by positivity`.
+
+Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity), norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmeasG : ∀ j g, Measurable fun x => lieD (b j) G (g * infGL E a (γ x))`. Introduce `j g`. Establish `e : (fun x => lieD (b j) G (g * infGL E a (γ x))) = fun x => chart (lieD (b j) G) g (toL (γ x).val)`.
+
+Use function extensionality and compare the values at `fun x => (chart_val _ g (γ x)).symm`. Rewrite using `[e]`. Conclude with `measurable_comp_of_continuousOn (((hG' j).mem_Sm g).continuousOn) hγ fun x => val_mem_invSet (γ x)`. Establish `hintj : ∀ j g, Integrable (fun x => k x * c j x * lieD (b j) G (g * infGL E a (γ x))) ν`. Introduce `j g`.
+
+Take `⟨C, N, hCN⟩` from `(hG' j).growth g`. Use `Integrable.mono' ((hint (N + 2)).const_mul (D j * |C|)) (((hkm.mul (hc j)).mul (hmeasG j g)).aestronglyMeasurable) (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Establish `h1` using `one_le_height (γ x)`. Establish `hp : 0 ≤ height (γ x) ^ N` using `by positivity`. Establish `hg : ‖lieD (b j) G (g * infGL E a (γ x))‖ ≤ |C| * height (γ x) ^ N` using `(hCN (γ x)).trans (mul_le_mul_of_nonneg_right (le_abs_self C) hp)`.
+
+Rewrite using `[norm_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hcb j x`. Use `_ = D j * |C| * (‖k x‖ * height (γ x) ^ (N + 2)) := by ring`. Establish `e : (fun g : GA E a => ∫ x, k x * lieD (toL (((γ x)⁻¹).val * Matrix.of Y * (γ x).val)) G (g * infGL E a (γ x)) ∂ν) = ∑ j, fun g : GA E a => ∫ x, k x * c j x * lieD (b j) G (g * infGL E a (γ x)) ∂ν`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply, ← integral_finset_sum _ fun j _ => hintj j g]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[lieD_eq_sum b, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `(mul_assoc (k x) (c j x) _).symm`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.subset_span ⟨X, inferInstance, ν, inferInstance, _, γ, _, hrap j, hG' j, rfl⟩`.
+-/
 theorem integral_lieD_conj_mem_kSpan : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (G : GA E a → ℂ) (X : Type) [MeasurableSpace X] (ν : Measure X) [SFinite ν] (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)) (Y : Lie E a), GlobalTheory.JSW.IsRapidInf ν k γ → GlobalTheory.MSpanDecay.Good G → (fun g : GA E a => ∫ x, k x * lieD (toL (((γ x)⁻¹).val * Matrix.of Y * (γ x).val)) G (g * infGL E a (γ x)) ∂ν) ∈ GlobalTheory.MSpanDecay.kSpan E a := by
   intro E _ _ _ a G X _ ν _ k γ Y hk hG
   obtain ⟨hkm, hγm, hint⟩ := hk

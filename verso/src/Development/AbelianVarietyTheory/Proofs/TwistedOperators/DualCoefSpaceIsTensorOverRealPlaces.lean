@@ -18,6 +18,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CoefTensorProof
 
+/- English proof (translation)
+Introduce `D V θ c hθ hc`. Use `haveI : Nontrivial c.W := hc.2.2.2.1`. Use `haveI : Nontrivial (Module.Dual ℂ c.W) := by`. Apply `Module.nontrivial_of_finrank_pos (R := ℂ)` to reduce the goal to its premises. Rewrite using `[Subspace.dual_finrank_eq]`.
+
+Conclude with `Module.finrank_pos`. Set `a : ∀ τ : D.what₂.Tau, Formalism.QuantumDeterminants.UH (gramAt D V τ) → Module.End ℂ (Module.Dual ℂ c.W)` to `fun τ g => (c.ρ (atTau θ V τ g.1)⁻¹).dualMap`. Establish `ha : ∀ τ (g : Formalism.QuantumDeterminants.UH (gramAt D V τ)) f, a τ g f = f ∘ₗ c.ρ (atTau θ V τ g.1)⁻¹` using `fun _ _ _ => rfl`. Establish `hcomm : ∀ τ τ', τ ≠ τ' → ∀ g h, a τ g * a τ' h = a τ' h * a τ g`. Introduce `τ τ' hne g h`.
+
+Establish `hc'` using `GlobalTheory.PointAtPlaceComm.atTau_comm D θ hθ V τ τ' hne g.1 g.2 h.1 h.2`. Use extensionality with `f w`. Simplify using `only [Module.End.mul_apply, ha, LinearMap.comp_apply]`. Rewrite using `[← Module.End.mul_apply (c.ρ _), ← map_mul, ← Module.End.mul_apply (c.ρ _), ← map_mul, ← mul_inv_rev, ← mul_inv_rev, hc']`. Establish `hirrD : ∀ N : Submodule ℂ (Module.Dual ℂ c.W), (∀ τ g, ∀ x ∈ N, a τ g x ∈ N) → N = ⊥ ∨ N = ⊤` using `fun N hN => GlobalTheory.T.dual_irreducible_coefficientSpace_realPlaces D V θ c hθ hc N fun τ g hg f hf => hN τ ⟨g, hg⟩ f hf`.
+
+Take `⟨X, i1, i2, i3, b, m, e, hinj, hint, hirr, heq⟩` from `GlobalTheory.T.exists_tensorDecomposition_commutingFamilies D.what₂.Tau (Module.Dual ℂ c.W) _ a hcomm hirrD`. Establish `hone : ∀ τ, atTau θ V τ 1 = 1` using `fun τ => GlobalTheory.PointAtPlaceHom.atTau_one hθ V τ`. Set `π : ∀ τ, Matrix (Fin V.rank) (Fin V.rank) ℂ → Module.End ℂ (X τ)` to `fun τ g => if hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) then b τ ⟨g, hg⟩ else 1`. Establish `hπ : ∀ τ g (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)), π τ g = b τ ⟨g, hg⟩` using `fun τ g hg => dif_pos hg`. Use `⟨X, i1, i2, i3, π, e, fun τ => ⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hπ τ 1 (GlobalTheory.PointAtPlaceHom.one_mem_UH _)]`. Use extensionality with `x`. Apply `hinj τ` to reduce the goal to its premises. Rewrite using `[hint, ha]`. Use `show m τ x ∘ₗ c.ρ (atTau θ V τ 1)⁻¹ = m τ x`.
+
+Rewrite using `[hone, inv_one, map_one]`. Both sides reduce to the same expression. Introduce `g hg h hh`. Rewrite using `[hπ τ _ (GlobalTheory.PointAtPlaceHom.mul_mem_UH hg hh), hπ τ g hg, hπ τ h hh]`. Use extensionality with `x`.
+
+Apply `hinj τ` to reduce the goal to its premises. Rewrite using `[Module.End.mul_apply, hint, hint, hint]`. Use extensionality with `w`. Simplify using `only [ha, LinearMap.comp_apply]`. Rewrite using `[GlobalTheory.PointAtPlaceHom.atTau_mul hθ V τ hg hh, mul_inv_rev, map_mul, Module.End.mul_apply]`.
+
+Introduce `w l`. Take `⟨r, hr⟩` from `LinearMap.exists_leftInverse_of_injective (m τ) (LinearMap.ker_eq_bot.2 (hinj τ))`. Take `⟨v, hv⟩ : ∃ v : c.W, ∀ φ : Module.Dual ℂ c.W, (l ∘ₗ r) φ = φ v` from `⟨(Module.evalEquiv ℂ c.W).symm (l ∘ₗ r), fun φ => by conv_lhs => rw [← (Module.evalEquiv ℂ c.W).apply_symm_apply (l ∘ₗ r)] rfl⟩`. Use `(GlobalTheory.T.contragredient_matrix_coefficient_continuousOn_unitary D V θ c hθ hc τ (m τ w) v).congr fun g hg => ?_` and prove the remaining obligations. Use `show l (π τ g w) = _`.
+
+Rewrite using `[hπ τ g hg]`. Establish `: l (b τ ⟨g, hg⟩ w) = (l ∘ₗ r) (m τ (b τ ⟨g, hg⟩ w))`. Rewrite using `[LinearMap.comp_apply, ← LinearMap.comp_apply r, hr, LinearMap.id_apply]`. Rewrite using `[this, hv, hint, ha, LinearMap.comp_apply]`. Introduce `U hU`.
+
+Conclude with `hirr τ U fun g x hx => by rw [← hπ τ g.1 g.2]; exact hU g.1 g.2 x hx`. Introduce `τ g hg x y hy hy'`. Establish `: y = Function.update x τ (b τ ⟨g, hg⟩ (x τ))`. Use function extensionality and compare the values at `τ'`. Distinguish the cases in `h : τ' = τ`.
+
+Substitute `h` using the available equality. Rewrite using `[Function.update_self, hy, hπ _ g hg]`. Rewrite using `[Function.update_of_ne h, hy' τ' h]`. Rewrite using `[this, heq]`. Both sides reduce to the same expression.
+-/
 theorem coefTensor : CoefTensor := by
   intro D V θ c hθ hc
   classical

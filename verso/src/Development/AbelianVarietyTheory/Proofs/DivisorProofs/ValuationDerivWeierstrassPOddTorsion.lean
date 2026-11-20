@@ -10,6 +10,9 @@ open scoped IntermediateField BigOperators Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `i hi`. Use `le_antisymm (hle i hi) ?_` and prove the remaining obligations. Rewrite `hprod` using `[← Finset.mul_prod_erase s f hi]`. Establish `h2 : ∏ j ∈ s.erase i, f j ≤ 1` using `Finset.prod_le_one' (fun j hj => hle j (Finset.mem_of_mem_erase hj))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finset_prod_eq_one_of_le_one_eq_one {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] {ι : Type*}
     [DecidableEq ι] (s : Finset ι) (f : ι → Γ) (hle : ∀ i ∈ s, f i ≤ 1)
     (hprod : ∏ i ∈ s, f i = 1) : ∀ i ∈ s, f i = 1 := by
@@ -21,6 +24,29 @@ theorem finset_prod_eq_one_of_le_one_eq_one {Γ : Type*} [LinearOrderedCommGroup
   calc (1 : Γ) = f i * ∏ j ∈ s.erase i, f j := hprod.symm
     _ ≤ f i := mul_le_of_le_one_right' h2
 
+/- English proof (translation)
+Introduce `L β u V N hβ hβim hu hN hodd z hz hNz`. Establish `hN0 : (N : ℂ) ≠ 0`. Establish `: N ≠ 0` using `by rintro rfl; exact absurd hodd (by decide)`. Conclude with `this` after adjusting the coercions. Establish `hstab : MulStable L (N : ℂ)`.
+
+Introduce `ω hω`. Use `L.lattice.smul_mem (N : ℤ) hω` as an intermediate fact. Simplify `this` using `[zsmul_eq_mul]`. Establish `hΔ` using `latticeCurve_Δ_ne_zero L`. Establish `hvΔ : V.valuation (latticeCurve L).Δ ≠ 0`.
+
+Simplify using `using hΔ`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Apply `hvΔ` to reduce the goal to its premises. Rewrite using `[← hu]`.
+
+Simplify using the standard rewrite rules. Establish `hvu : V.valuation u ≠ 0` using `by simpa using hu0`. Take `⟨S, hS⟩` from `kerRepsExist L (N : ℂ) hN0 hstab`. Establish `hcard` using `kerRepsCard L (N : ℂ) S hN0 hstab hS`. Establish `hcardN : S.card + 1 = N * N`.
+
+Establish `: ((S.card + 1 : ℕ) : ℝ) = ((N * N : ℕ) : ℝ)` using `by push_cast; rw [hcard]; simp [Complex.normSq_apply]`. Conclude with `this` after adjusting the coercions. Establish `heven : Even S.card`. Establish `hodd2 : Odd (N * N)` using `hodd.mul hodd`. Rewrite `hodd2` using `[← hcardN]`.
+
+Take `⟨k, hk⟩` from `hodd2`. Conclude with `⟨k, by omega⟩`. Establish `hpf` using `GlobalTheory.T.prod_derivWeierstrassP_kerReps_pow_four_mul' L (N : ℂ) S hN0 hstab hS heven`. Establish `hmem : ∀ t ∈ S, V.valuation (L.derivWeierstrassP t / u ^ 3) ≤ 1`. Introduce `t ht`.
+
+Rewrite using `[ValuationSubring.valuation_le_one_iff]`. Conclude with `(GlobalTheory.T.torsion_weierstrassP_mem_valuationSubring L β u V N hβ hβim hu hN t t (hS.1 t ht).2 (hS.1 t ht).2 (hS.1 t ht).1 (hS.1 t ht).1).1`. Establish `hprod : ∏ t ∈ S, V.valuation (L.derivWeierstrassP t / u ^ 3) ^ 4 = 1`. Establish `hv` using `congrArg V.valuation hpf`. Simplify using `only [map_mul, map_pow, map_prod, hN, one_pow, mul_one] at hv`.
+
+Simplify using `only [map_div₀, map_pow, div_pow, Finset.prod_div_distrib, Finset.prod_pow, Finset.prod_const, ← pow_mul]`. Rewrite using `[hv, ← hu, ← pow_mul, div_eq_one_iff_eq (pow_ne_zero _ hvu)]`. Put the polynomial expressions in normal form. Establish `hall` using `finset_prod_eq_one_of_le_one_eq_one S _ (fun t ht => pow_le_one' (hmem t ht) 4) hprod`. Take `⟨t, ht, hzt⟩` from `hS.2.2 z (by simpa [mul_comm] using hNz) hz`.
+
+Establish `hper : L.derivWeierstrassP z = L.derivWeierstrassP t`. Use `L.derivWeierstrassP_add_coe t ⟨z - t, hzt⟩` as an intermediate fact. Simplify using `using this`. Establish `h1 : V.valuation (L.derivWeierstrassP t / u ^ 3) = 1`. Establish `h4` using `hall t ht`.
+
+Assume the negation of the conclusion as `hne`. Establish `hlt : V.valuation (L.derivWeierstrassP t / u ^ 3) < 1` using `lt_of_le_of_ne (hmem t ht) hne`. Conclude with `absurd h4 (ne_of_lt (pow_lt_one' hlt (by norm_num)))`. Rewrite using `[hper]`. Rewrite `h1` using `[map_div₀, map_pow, div_eq_one_iff_eq (pow_ne_zero _ hvu)]`.
+
+Conclude with `h1`.
+-/
 theorem valuation_derivWeierstrassP_torsion_odd :
     ∀ (L : PeriodPair) (β u : ℂ) (V : ValuationSubring ℂ) (N : ℕ), MulStable L β → β.im ≠ 0 →
       V.valuation u ^ 12 = V.valuation (latticeCurve L).Δ → V.valuation (N : ℂ) = 1 → Odd N →

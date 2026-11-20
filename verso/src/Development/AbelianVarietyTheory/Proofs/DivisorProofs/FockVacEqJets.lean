@@ -20,6 +20,9 @@ namespace GlobalTheory.FunObj
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨δ, hδ⟩` from `IsAlgClosed.exists_pow_nat_eq (Formalism.MainNotions.TaylorLogMetric.discr (Formalism.MainNotions.TaylorLogMetric.lamOf D D.host.ccK 1)) (n := 12) (by norm_num)`. Use `⟨δ, ⟨Formalism.MainNotions.GlobalTheoryTheory.jnt_ccK_curve D, hδ⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨L, hL⟩` from `GlobalTheory.CurveLattice.exists_periodPair_one D D.host.ccK_ne_bot`. Conclude with `GlobalTheory.CurveLattice.discr_ne_zero _ L hL (by rw [← hδ]; simp)`.
+-/
 theorem exists_delta (D : D7) : ∃ δ : ℂ, Formalism.MainNotions.StandardLatticesGL3.Crv D D.host.ccK δ ∧ δ ≠ 0 := by
   obtain ⟨δ, hδ⟩ := IsAlgClosed.exists_pow_nat_eq (Formalism.MainNotions.TaylorLogMetric.discr (Formalism.MainNotions.TaylorLogMetric.lamOf D D.host.ccK 1)) (n := 12) (by norm_num)
   refine ⟨δ, ⟨Formalism.MainNotions.GlobalTheoryTheory.jnt_ccK_curve D, hδ⟩, ?_⟩
@@ -27,11 +30,19 @@ theorem exists_delta (D : D7) : ∃ δ : ℂ, Formalism.MainNotions.StandardLatt
   obtain ⟨L, hL⟩ := GlobalTheory.CurveLattice.exists_periodPair_one D D.host.ccK_ne_bot
   exact GlobalTheory.CurveLattice.discr_ne_zero _ L hL (by rw [← hδ]; simp)
 
+/- English proof (translation)
+Use `div_ne_zero hδ (Complex.ofReal_ne_zero.2 (Real.sqrt_ne_zero'.2 ?_))` and prove the remaining obligations. Establish `: 0 < ‖tauE D τ D.host.xi0‖` using `norm_pos_iff.2 ((_root_.map_ne_zero _).2 cmHost_imaginaryGenerator_ne_zero)`. Check the signs of the components of the expression.
+-/
 theorem period_ne_zero {D : D7} {δ : ℂ} (hδ : δ ≠ 0) (τ : D.what₂.Tau) : period δ τ ≠ 0 := by
   refine div_ne_zero hδ (Complex.ofReal_ne_zero.2 (Real.sqrt_ne_zero'.2 ?_))
   have : 0 < ‖tauE D τ D.host.xi0‖ := norm_pos_iff.2 ((_root_.map_ne_zero _).2 cmHost_imaginaryGenerator_ne_zero)
   positivity
 
+/- English proof (translation)
+Establish `key : (columnBlock L k).sp.rank = D.R.r + k * D.R.t`. Break down `hk.eq_or_lt with rfl | hk` into its components or cases. Rewrite using `[colY_m]`. Conclude with `D.sp.X'_rank`. Rewrite using `[colY_lt L hk]`.
+
+Conclude with `(D.sp.Y_rank _ (min_le_right _ _)).trans (by rw [min_eq_left hk.le]; rfl)`. Conclude with `key`.
+-/
 theorem rank_grid_zero {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : ChiGrid.GridData L sc) (k : ℕ) (hk : k ≤ D.R.m) :
     (G.V (.grid 0 k)).rank = D.R.r + k * D.R.t := by
   have key : (columnBlock L k).sp.rank = D.R.r + k * D.R.t := by
@@ -41,9 +52,23 @@ theorem rank_grid_zero {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : Ch
       exact (D.sp.Y_rank _ (min_le_right _ _)).trans (by rw [min_eq_left hk.le]; rfl)
   exact key
 
+/- English proof (translation)
+The claim follows from `(G.isV h h0).rank`.
+-/
 theorem rank_node {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : ChiGrid.GridData L sc) {X : Node}
     (h : X.InRange D.R.m) (h0 : ∀ j, X ≠ .grid 0 j) : (G.V X).rank = X.rank D := (G.isV h h0).rank
 
+/- English proof (translation)
+Introduce `D T L sc G p hp`. Consider the cases of `p with`. Consider the case `chi i j`. Take `⟨hi, rfl⟩` from `hp`. Establish `h1 : (G.pS (.chi i D.R.m)).rank = rankV D (i + 1) D.R.m` using `rank_node G (X := .grid (i + 1) D.R.m) ⟨hi, le_rfl⟩ (fun j h => by cases h)`.
+
+Establish `h2 : (G.pT (.chi i D.R.m)).rank = rankV D i D.R.m`. Break down `i with _ | i` into its components or cases. Use `show (G.V (.grid 0 D.R.m)).rank = _`. Rewrite using `[rank_grid_zero G _ le_rfl]`. Simplify using `[rankV]`.
+
+Conclude with `rank_node G (X := .grid (i + 1) D.R.m) ⟨by omega, le_rfl⟩ (fun j h => by cases h)`. Rewrite using `[h1, h2]`. Establish `hs : Odd (sLen D)` using `odd_sLen D`. Establish `e : rankV D (i + 1) D.R.m = rankV D i D.R.m + sLen D` using `by simp only [rankV]; ring`. Distinguish the cases in `he : Even (rankV D i D.R.m)`.
+
+Conclude with `he.mul_left _`. Use `Even.mul_right ?_ _` and prove the remaining obligations. Rewrite using `[e, Nat.even_add]`. Conclude with `⟨fun h => absurd h he, fun h => absurd h (Nat.not_even_iff_odd.2 hs)⟩`. Consider the case `mu t i j => exact absurd hp id`.
+
+Consider the case `core i => exact absurd hp id`. Consider the case `top t j`. Establish `h1 : (G.pS (.top t j)).rank = rankX D j` using `rank_node G (X := .top j) (show j ≤ D.R.m by simp only [DefPair] at hp; omega) (fun j h => by cases h)`. Rewrite using `[h1]`. Conclude with `(even_rankX D j).mul_right _`.
+-/
 theorem even_rank_mul : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : ChiGrid.GridData L sc) (p : Pair T),
     DefPair D.R.m p → Even ((G.pS p).rank * (G.pT p).rank) := by
   intro D T L sc G p hp
@@ -73,6 +98,11 @@ theorem even_rank_mul : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G
     rw [h1]
     exact (even_rankX D j).mul_right _
 
+/- English proof (translation)
+Introduce `D T L sc G W U N δ t0 hc hδ ht0 p hp e0 he0 f hf`. Consider the cases of `p with`. Consider the case `chi i j`. Take `⟨hi, rfl⟩` from `hp`. Conclude with `GlobalTheory.T.fockJets_origin_oppositeSignVacuum_conjPeriod W N δ t0 hc hδ ht0 i hi e0 he0 f hf`.
+
+Consider the case `mu t i j => exact absurd hp id`. Consider the case `core i => exact absurd hp id`. Consider the case `top t j => exact GlobalTheory.T.fockJet_vacuum_eq_const_mul_periodScaledJet W N δ t0 hc hδ ht0 t j hp e0 he0 f hf`.
+-/
 theorem fock_vac_eq_jets : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : ChiGrid.GridData L sc} (W : G.Weil)
     {U : Set T} (N : Std G U) (δ t0 : ℂ), Formalism.MainNotions.StandardLatticesGL3.Crv D D.host.ccK δ → δ ≠ 0 →
     Formalism.MainNotions.GL3Theta.IsTwoTorsionPointUnkilled D (Formalism.MainNotions.TaylorLogMetric.lamOf D D.host.ccK δ) t0 → ∀ p : Pair T, DefPair D.R.m p →
@@ -94,6 +124,17 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : ChiGrid.GridData
 
 open Classical in
 
+/- English proof (translation)
+Introduce `μ0 _ U N`. Establish `hodd` using `GlobalTheory.Vacuum.exists_vacuum D`. Take `⟨δ, hc, hδ⟩` from `exists_delta D`. Take `⟨t0, ht0⟩` from `(GlobalTheory.TwoTorsionPt.exists_point D D.host.ccK δ hc).1`. Set `e0 : ∀ p : Pair T, Formalism.MainNotions.TaylorLogMetric.VC D (G.pS p).rank (G.pT p).rank → ℂ` to `fun p => if h : Even ((G.pS p).rank * (G.pT p).rank) then Classical.choose (hodd D.host.ccK δ hc t0 ht0 _ _ h) else 0`.
+
+Establish `e0_is : ∀ p, DefPair D.R.m p → Formalism.MainNotions.StandardLatticesGL3.oddE0 D D.host.ccK δ t0 _ _ (e0 p)` using `fun p hp => by`. Establish `h` using `even_rank_mul G p hp`. Simplify using `only [e0, dif_pos h]`. Conclude with `(Classical.choose_spec (hodd D.host.ccK δ hc t0 ht0 _ _ h)).1`. Set `vac : ∀ p : Pair T, WO (G.pS p) (G.pT p) → ℂ` to `fun p => if h : ∃ f, IsVacO W.ψ W.θ _ _ (G.cartS W.cart p) (G.onT W.cart p) (N.latS p : Set _) (N.latT p : Set _) f then Classical.choose h else 0`.
+
+Establish `vac_is : ∀ p, DefPair D.R.m p → IsVacO W.ψ W.θ _ _ (G.cartS W.cart p) (G.onT W.cart p) (N.latS p : Set _) (N.latT p : Set _) (vac p)` using `fun p hp => by`. Establish `h` using `GlobalTheory.T.exists_unitVacuum_standardLattices_definitePair W N p hp`. Simplify using `only [vac, dif_pos h]`. Conclude with `Classical.choose_spec h`. Set `c0 : Pair T → ℂˣ` to `fun p => if h : ∃ c : ℂˣ, ∀ k : FVar D (G.pT p).rank (G.pS p).rank →₀ ℕ, fockIn W N.frC p (vac p) (monomial k 1) 0 = c * opp p ((k.prod fun v n => period δ v.1 ^ n) * Formalism.MainNotions.GL3Theta.applyAt0 D (monomial k 1) (e0 p)) then Classical.choose h else 1`.
+
+Establish `kernelNorm_constant_spec : ∀ p, DefPair D.R.m p → ∀ k : FVar D (G.pT p).rank (G.pS p).rank →₀ ℕ, fockIn W N.frC p (vac p) (monomial k 1) 0 = c0 p * opp p ((k.prod fun v n => period δ v.1 ^ n) * Formalism.MainNotions.GL3Theta.applyAt0 D (monomial k 1) (e0 p))`. Introduce `p hp k`. Establish `h` using `fock_vac_eq_jets W N δ t0 hc hδ ht0 p hp (e0 p) (e0_is p hp) (vac p) (vac_is p hp)`. Simplify using `only [c0, dif_pos h]`. Conclude with `Classical.choose_spec h k`.
+
+Conclude with `⟨⟨δ, hc, t0, ht0, e0, e0_is, vac, vac_is, c0, kernelNorm_constant_spec, fun t t' j => ⟨rfl, rfl, rfl⟩⟩⟩`.
+-/
 theorem normal_nonempty : ∀ μ0, L.Is μ0 → ∀ (U : Set T) (N : Std G U), Nonempty (Normal W N) := by
   intro μ0 _ U N
   have hodd := GlobalTheory.Vacuum.exists_vacuum D
@@ -127,6 +168,11 @@ theorem normal_nonempty : ∀ μ0, L.Is μ0 → ∀ (U : Set T) (N : Std G U), N
     exact Classical.choose_spec h k
   exact ⟨⟨δ, hc, t0, ht0, e0, e0_is, vac, vac_is, c0, kernelNorm_constant_spec, fun t t' j => ⟨rfl, rfl, rfl⟩⟩⟩
 
+/- English proof (translation)
+Use `GlobalTheory.FunObj.period_ne_zero ?_ τ` and prove the remaining obligations. Introduce and unpack `h`. Take `⟨L, hL⟩` from `GlobalTheory.CurveLattice.exists_periodPair_one D D.host.ccK_ne_bot`. Establish `e : Z.δ ^ 12 = Formalism.MainNotions.TaylorLogMetric.discr (Formalism.MainNotions.TaylorLogMetric.lamOf D D.host.ccK 1)` using `Z.crv.2`. Rewrite `e` using `[h]`.
+
+Conclude with `GlobalTheory.CurveLattice.discr_ne_zero _ L hL (by rw [← e]; simp)`.
+-/
 theorem Normal.period_ne_zero {U : Set T} {N : Std G U} (Z : Normal W N) (τ : D.what₂.Tau) : period Z.δ τ ≠ 0 := by
   refine GlobalTheory.FunObj.period_ne_zero ?_ τ
   rintro h

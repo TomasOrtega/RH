@@ -15,6 +15,11 @@ namespace PositivityTheory.Xgn.A_forms_exist
 variable {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω] {K : Type} [Fintype K] [DecidableEq K]
   {ι : K → Type}
 
+/- English proof (translation)
+Establish `h` using `IsWeightedHomogeneous.prod (Finset.univ : Finset K) (fun k => (X ⟨k, t k⟩ : MRing ι O) ^ e k) (fun k => e k • blockWeight ι ⟨k, t k⟩) (w := blockWeight ι) (fun k _ => (isWeightedHomogeneous_X O (blockWeight ι) ⟨k, t k⟩).pow (e k))`. Establish `he : ∑ k, e k • blockWeight ι ⟨k, t k⟩ = e`. Use extensionality with `k'`. Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`. Rewrite `h` using `[he]`.
+
+Use `⟨F * ∏ k, (X ⟨k, t k⟩ : MRing ι O) ^ e k, IsWeightedHomogeneous.mul hF h, ?_⟩` and prove the remaining obligations. Simplify using `[map_prod]`.
+-/
 theorem shift (x : (Σ k, ι k) → Ω) (t : ∀ k, ι k) (e : K → ℕ) {F : MRing ι O} {d : K → ℕ}
     (hF : IsMultiHomog F d) :
     ∃ G : MRing ι O, IsMultiHomog G (d + e) ∧ aeval x G = aeval x F * ∏ k, x ⟨k, t k⟩ ^ e k := by
@@ -46,6 +51,13 @@ def fracs (O : Type) [CommRing O] [Algebra O Ω] (x : (Σ k, ι k) → Ω) (s : 
     ring
   algebraMap_mem' r := ⟨0, C r, isWeightedHomogeneous_C _ _, by simp⟩
 
+/- English proof (translation)
+Unfold `chartRing`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `⟨fun _ => 1, ∏ k, (X ⟨k, j k⟩ : MRing ι O), ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `IsWeightedHomogeneous.prod (Finset.univ : Finset K) (fun k => (X ⟨k, j k⟩ : MRing ι O)) (fun k => blockWeight ι ⟨k, j k⟩) (w := blockWeight ι) (fun k _ => isWeightedHomogeneous_X O (blockWeight ι) ⟨k, j k⟩)`.
+
+Establish `he : ∑ k, blockWeight ι ⟨k, j k⟩ = fun _ => 1`. Use extensionality with `k'`. Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`. Rewrite `h` using `[he]`. Conclude with `h`.
+
+Simplify using `only [map_prod, aeval_X, pow_one]`. Establish `hm : ∏ k, x ⟨k, s k⟩ = mseg x s` using `rfl`. Rewrite using `[hm, div_mul_cancel₀ _ hs]`. Apply the tactic sequence `try rfl`.
+-/
 theorem chartRing_le_fracs (x : (Σ k, ι k) → Ω) (s : ∀ k, ι k) (hs : mseg x s ≠ 0) :
     chartRing O (mseg x) s ≤ fracs O x s := by
   unfold chartRing

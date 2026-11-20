@@ -18,6 +18,11 @@ abbrev overAffine {X Z : Scheme.{0}} (φ : Z ⟶ X) {V : X.Opens} (hV : IsAffine
 
 attribute [local instance] algebraOfOver
 
+/- English proof (translation)
+Use `letI := overAffine φ hV`. Establish `s1 : algebraMap Γ(X, V) Γ((φ ⁻¹ᵁ V).toScheme, ⊤) b = (φ ∣_ V).appTop (V.topIso.inv b)`. Express the relevant statement in the definitionally equal form `(φ ∣_ V ≫ hV.isoSpec.hom).appTop ((Scheme.ΓSpecIso (.of Γ(X, V))).inv b) = _`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.comp_apply, IsAffineOpen.isoSpec_hom_appTop, CommRingCat.comp_apply]`. Use `erw [Iso.inv_hom_id_apply]`.
+
+Rewrite using `[s1]`. Use `erw [morphismRestrict_appTop, Scheme.Opens.topIso_inv, CommRingCat.comp_apply]`. Use `(RelSerre.app_eqToHom_apply φ (Scheme.Opens.ι_image_top V) _ _ b).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 lemma algebraMap_overAffine {X Z : Scheme.{0}} (φ : Z ⟶ X) {V : X.Opens} (hV : IsAffineOpen V)
     (b : Γ(X, V)) :
     letI := overAffine φ hV
@@ -52,6 +57,9 @@ def zerothCohomologyToSections {X Z : Scheme.{0}} (φ : Z ⟶ X) {V : X.Opens} (
       refine (congrArg (· • _) (algebraMap_overAffine φ hV b)).trans ?_
       exact (smul_pushforward φ M b _).symm }
 
+/- English proof (translation)
+Use `letI := overAffine φ hV`. Conclude with `((ConcreteCategory.bijective_of_isIso (M.presheaf.map (eqToHom (Scheme.Opens.ι_image_top (φ ⁻¹ᵁ V)).symm).op)).comp (Sheaf.H.equiv₀ (modulesAb (M.restrict (φ ⁻¹ᵁ V).ι)) isTerminalTop).bijective).2`.
+-/
 lemma zeroth_cohomology_to_sections_surjective {X Z : Scheme.{0}} (φ : Z ⟶ X) {V : X.Opens} (hV : IsAffineOpen V)
     (M : Z.Modules) : Function.Surjective (zerothCohomologyToSections φ hV M) := by
   letI := overAffine φ hV
@@ -59,6 +67,11 @@ lemma zeroth_cohomology_to_sections_surjective {X Z : Scheme.{0}} (φ : Z ⟶ X)
     (eqToHom (Scheme.Opens.ι_image_top (φ ⁻¹ᵁ V)).symm).op)).comp
     (Sheaf.H.equiv₀ (modulesAb (M.restrict (φ ⁻¹ᵁ V).ι)) isTerminalTop).bijective).2
 
+/- English proof (translation)
+Use `haveI := hG.1`. Use `⟨isQuasicoherent_pushforward_of_qcqs φ G, fun V hV => ?_⟩` and prove the remaining obligations. Use `letI := overAffine φ hV`. Use `haveI : IsNoetherianRing Γ(X, V) := IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Use `haveI : IsProper ((φ ⁻¹ᵁ V).toScheme ↘ Spec (.of Γ(X, V))) := by`.
+
+Express the relevant statement in the definitionally equal form `IsProper (φ ∣_ V ≫ hV.isoSpec.hom)`. Use `infer_instance`. Establish `hfin` using `finite_H_of_isProper (A := Γ(X, V)) (G.restrict (φ ⁻¹ᵁ V).ι) (hG.restrict _) 0`. Conclude with `Module.Finite.of_surjective (zerothCohomologyToSections φ hV G) (zeroth_cohomology_to_sections_surjective φ hV G)`.
+-/
 theorem isCoherent_pushforward_of_isProper {X Z : Scheme.{0}} [IsLocallyNoetherian X] (φ : Z ⟶ X)
     (hφ : IsProper φ) {G : Z.Modules} (hG : IsCoherent G) :
     IsCoherent ((Scheme.Modules.pushforward φ).obj G) := by

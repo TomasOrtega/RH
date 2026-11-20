@@ -20,6 +20,9 @@ noncomputable section
 
 namespace GlobalTheory.FactorTau
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show _ ≫ (fst C C).left = _ ≫ (fst C C).left`. Rewrite using `[Category.assoc, hδ.1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst, Over.comp_left, Over.comp_left, Category.assoc, hu, ← Category.assoc β₂, hβ.1, Category.assoc]`. Use `show _ ≫ (snd C C).left = _ ≫ (snd C C).left`. Rewrite using `[Category.assoc, hδ.2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd, Over.comp_left, Over.comp_left, Category.assoc, hv, ← Category.assoc β₂, hβ.2, Category.assoc]`.
+-/
 theorem lift_square {S S' : Scheme.{0}} {B C : Over S} {B₁ C₁ : Over S'} {β : B₁.left ⟶ B.left} {δ : C₁.left ⟶ C.left}
     {β₂ : (G2 B₁).left ⟶ (G2 B).left} {δ₂ : (G2 C₁).left ⟶ (G2 C).left} (hβ : IsSquare β β₂) (hδ : IsSquare δ δ₂)
     {u v : B ⟶ C} {u₁ v₁ : B₁ ⟶ C₁} (hu : u₁.left ≫ δ = β ≫ u.left) (hv : v₁.left ≫ δ = β ≫ v.left) :
@@ -35,6 +38,11 @@ theorem lift_square {S S' : Scheme.{0}} {B C : Over S} {B₁ C₁ : Over S'} {β
       ← Over.comp_left, lift_snd, Over.comp_left, Over.comp_left, Category.assoc, hv, ← Category.assoc β₂,
       hβ.2, Category.assoc]
 
+/- English proof (translation)
+Establish `hT : (toUnit T).left = T.hom` using `(Category.comp_id _).symm.trans (Over.w (toUnit T))`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show _ ≫ (fst B B).left = _ ≫ (fst B B).left`. Rewrite using `[Category.assoc, hβ.1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst, Over.comp_left, Category.assoc, ha, hT, Category.assoc]`. Use `show _ ≫ (snd B B).left = _ ≫ (snd B B).left`.
+
+Rewrite using `[Category.assoc, hβ.2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd, Over.comp_left, Category.assoc, hb, hT, Category.assoc]`.
+-/
 theorem pair_square {S S' : Scheme.{0}} {f : S' ⟶ S} {B : Over S} {B₁ T : Over S'} {β : B₁.left ⟶ B.left}
     {β₂ : (G2 B₁).left ⟶ (G2 B).left} (hβ : IsSquare β β₂) {a b : 𝟙_ (Over S) ⟶ B} {a₁ b₁ : 𝟙_ (Over S') ⟶ B₁}
     (ha : a₁.left ≫ β = f ≫ a.left) (hb : b₁.left ≫ β = f ≫ b.left) :
@@ -50,6 +58,19 @@ theorem pair_square {S S' : Scheme.{0}} {f : S' ⟶ S} {B : Over S} {B₁ T : Ov
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `R V _ _ _ _ θ Q D₀ F D₁ hD _ o₁ hx ho Q' ex hQ`. Take `⟨β, β₂, wP, gβ, sβ, hwP, hc, hτ⟩` from `hQ`. Use `⟨β, gβ, hc, fun inc xi hi hxi hcx => ?_⟩` and prove the remaining obligations. Use `letI := D₀.P.isAb.comm`. Use `letI := D₁.P.isAb.comm`.
+
+Take `⟨w₁₂, hw₁₂, v₁₂⟩` from `GlobalTheory.T.mumfordBundleIso_comp_values_mul _ _ _ Q'.B Q.B D₀.P.A Q'.M.L Q.M.L D₀.P.L Q'.M.isLB Q.M.isLB D₀.P.isLB β₂ _ _ rfl F.w F.w_gen wP hwP`. Take `⟨δ₂, w₀, sδ, hw₀, v₀⟩` from `GlobalTheory.T.exists_periods_pulled_degeneration_data R V θ D₀ D₁ hD`. Establish `hf : (inc ≫ o₁.onB.act F.f).left ≫ GlobalTheory.PsiEvenPull.proj hD = β ≫ (F.inc ≫ F.o.onB.act F.f).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, ho, ← Category.assoc, hi, Category.assoc]`. Take `⟨w, hw, vw⟩` from `GlobalTheory.T.mumfordBundleIso_cancel_values_mul _ _ _ Q'.B D₁.P.A D₀.P.A Q'.M.L D₁.P.L D₀.P.L Q'.M.isLB D₁.P.isLB D₀.P.isLB _ δ₂ _ (lift_square sβ sδ hi hf) w₀ hw₀ w₁₂ hw₁₂`.
+
+Use `⟨w, hw, fun a b z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Take `⟨J₀, hJ₀⟩` from `DegPull.exists_good' D₀.P.isLB z`. Take `⟨JQ, hJQ⟩` from `DegPull.exists_good' Q.M.isLB z`. Take `⟨u, x, y, k, k', hu, hy, hk, hk', t₀, t₁⟩` from `hτ a b`. Establish `e₁` using `t₁ z JQ J' hJQ hJ'`.
+
+Establish `e₂` using `GlobalTheory.T.idempotent_factor_periods_at_generating_point R V θ Q D₀ F hD.W hD.psiW hD.g hD.g_comm (ex a) (ex b) u x y k k' hu hy hk hk' t₀ z J₀ JQ hJ₀ hJQ`. Establish `e₃` using `v₁₂ _ (lift (toUnit (TK V) ≫ Q'.c a) (toUnit (TK V) ≫ Q'.c b)).left z J' JQ J₀ hJ' hJQ hJ₀`. Establish `e₄` using `vw _ (lift (toUnit (TK V) ≫ Q'.c a) (toUnit (TK V) ≫ Q'.c b)).left z J' J J₀ hJ' hJ hJ₀`. Establish `e₅` using `v₀ (xi a) (F.f • xi b) z J₀ J hJ₀ hJ`. Establish `hP` using `pair_square (T := TK V) sβ (hc a) (hc b)`.
+
+Establish `hq : (lift (toUnit (TK V) ≫ Q'.c a) (toUnit (TK V) ≫ Q'.c b)).left ≫ (lift (fst Q'.B Q'.B ≫ inc) (snd Q'.B Q'.B ≫ inc ≫ o₁.onB.act F.f) : G2 Q'.B ⟶ G2 D₁.P.A).left = (lift (toUnit (TK V) ≫ D₁.c (xi a)) (toUnit (TK V) ≫ D₁.c (F.f • xi b))).left`. Rewrite using `[← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc, o₁.c_lin, hcx, hcx]`. Simplify using `only [Category.assoc]`. Rewrite `e₃` using `[hP]`. Rewrite `e₄` using `[hq]`.
+
+Rewrite `e₅` using `[hx, hxi, hxi]`. Rewrite using `[e₁, e₅, mul_left_comm, ← _root_.mul_assoc (lamVal w _ z J J'), ← e₄, e₃, _root_.mul_assoc]`. Conclude with `congrArg _ e₂`.
+-/
 theorem factor_tau_pull : ∀ (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (θ : R →+* V) (Q : Data R) (D₀ : DegPre R) (F : PFactor Q D₀) (D₁ : DegPre V) (hD : IsPullDeg θ D₀ D₁) [Module F.O D₁.X] (o₁ : D₁.OAct F.O), (∀ (a : F.O) (y : D₁.X), hD.xe (a • y) = a • hD.xe y) → (∀ a, (o₁.onB.act a).left ≫ GlobalTheory.PsiEvenPull.proj hD = GlobalTheory.PsiEvenPull.proj hD ≫ (F.o.onB.act a).left) → ∀ (Q' : Data V) (ex : Q'.X ≃+ Q.X), PullData Q θ Q' ex → ∃ β : Q'.B.left ⟶ Q.B.left, IsGrpPullback Q'.B Q.B (spMap θ) β ∧ (∀ a, (Q'.c a).left ≫ β = spMap θ ≫ (Q.c (ex a)).left) ∧ ∀ (inc : Q'.B ⟶ D₁.P.A) (xi : Q'.X →+ D₁.X), inc.left ≫ GlobalTheory.PsiEvenPull.proj hD = β ≫ F.inc.left → (∀ y, hD.xe (xi y) = F.xi (ex y)) → (∀ y, D₁.c (xi y) = Q'.c y ≫ inc) → ∃ w : LB.Iso (abelian₂ Q'.B Q'.M.L) ((abelian₂ D₁.P.A D₁.P.L).pull (lift (fst Q'.B Q'.B ≫ inc) (snd Q'.B Q'.B ≫ inc ≫ o₁.onB.act F.f) : G2 Q'.B ⟶ G2 D₁.P.A).left), w.IsGen ∧ ∀ a b z J J', Good D₁.P.L z J → Good Q'.M.L z J' → val (Q'.tau a b) (𝟙 _) z J' = lamVal w (lift (toUnit (TK V) ≫ Q'.c a) (toUnit (TK V) ≫ Q'.c b)).left z J J' * val (D₁.tau (xi a) (F.f • xi b)) (𝟙 _) z J := by
   intro R V _ _ _ _ θ Q D₀ F D₁ hD _ o₁ hx ho Q' ex hQ
   obtain ⟨β, β₂, wP, gβ, sβ, hwP, hc, hτ⟩ := hQ

@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.Z.Desc.V0
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, f y ≠ g y := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `h (MonoidHom.ext hne)`. Establish `ha : ((f y)⁻¹ * g y : ℂˣ) ≠ 1`.
+
+Introduce `h1`. Conclude with `hy (inv_mul_eq_one.mp h1)`. Establish `ha' : ((((f y)⁻¹ * g y : ℂˣ)) : ℂ) ≠ 1`. Introduce `h1`. Conclude with `ha (Units.val_eq_one.mp h1)`.
+
+Establish `key : ∑ x, (((f x)⁻¹ : ℂˣ) : ℂ) * ((g x : ℂˣ) : ℂ) = ((((f y)⁻¹ * g y : ℂˣ)) : ℂ) * ∑ x, (((f x)⁻¹ : ℂˣ) : ℂ) * ((g x : ℂˣ) : ℂ)`. Rewrite using `[Finset.mul_sum, ← Equiv.sum_comp (Equiv.mulLeft y)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, map_mul, _root_.mul_inv_rev, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : (((((f y)⁻¹ * g y : ℂˣ)) : ℂ) - 1) * ∑ x, (((f x)⁻¹ : ℂˣ) : ℂ) * ((g x : ℂˣ) : ℂ) = 0`. Take the linear combination `-key`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h3) ha'`. Conclude with `h3`.
+-/
 private theorem chi_orth {Q : Type} [Group Q] [Fintype Q] (f g : Q →* ℂˣ) (h : f ≠ g) :
     ∑ x, (((f x)⁻¹ : ℂˣ) : ℂ) * ((g x : ℂˣ) : ℂ) = 0 := by
   obtain ⟨y, hy⟩ : ∃ y, f y ≠ g y := by
@@ -26,6 +35,19 @@ private theorem chi_orth {Q : Type} [Group Q] [Fintype Q] (f g : Q →* ℂˣ) (
   · exact absurd (sub_eq_zero.mp h3) ha'
   · exact h3
 
+/- English proof (translation)
+Establish `hQ : ∀ t s : I, ∑ x, (((χ t x)⁻¹ : ℂˣ) : ℂ) * ((χ s x : ℂˣ) : ℂ) = if t = s then (Fintype.card Q : ℂ) else 0`. Introduce `t s`. Use `split_ifs with hts`. Substitute `hts` using the available equality. Simplify using the standard rewrite rules.
+
+Conclude with `chi_orth _ _ (fun e => hts (hχ e))`. Establish `term : ∀ (x : Q) (t s : I), (((χ t x)⁻¹ : ℂˣ) : ℂ) * (((χ s (x⁻¹ * w))⁻¹ : ℂˣ) : ℂ) = (((χ s w)⁻¹ : ℂˣ) : ℂ) * ((((χ t x)⁻¹ : ℂˣ) : ℂ) * ((χ s x : ℂˣ) : ℂ))`. Introduce `x t s`. Simplify using `only [map_mul, map_inv, _root_.mul_inv_rev, inv_inv, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Apply `Int.cast_injective (α := ℂ)` to reduce the goal to its premises. Simplify using `only [Int.cast_sum, Int.cast_mul, Int.cast_natCast, hc]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => term x t s`. Use `_ = ∑ t, ∑ s, ∑ x, (((χ s w)⁻¹ : ℂˣ) : ℂ) * ((((χ t x)⁻¹ : ℂˣ) : ℂ) * ((χ s x : ℂˣ) : ℂ)) := Finset.sum_comm.trans (Finset.sum_congr rfl fun t _ => Finset.sum_comm)`. Use `_ = ∑ t, ∑ s, (((χ s w)⁻¹ : ℂˣ) : ℂ) * (if t = s then (Fintype.card Q : ℂ) else 0) := by`.
+
+Simplify using `only [← Finset.mul_sum, hQ]`. Use `_ = (Fintype.card Q : ℂ) * ∑ t, (((χ t w)⁻¹ : ℂˣ) : ℂ) := by`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem c_conv {Q I : Type} [Group Q] [Fintype Q] [Fintype I]
     (χ : I → Q →* ℂˣ) (hχ : Function.Injective χ) (c : Q → ℤ)
     (hc : ∀ x, (c x : ℂ) = ∑ t, (((χ t x)⁻¹ : ℂˣ) : ℂ)) (w : Q) :
@@ -62,6 +84,9 @@ private theorem c_conv {Q I : Type} [Group Q] [Fintype Q] [Fintype I]
         simp only [mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
         ring
 
+/- English proof (translation)
+Use `show (∑ x, Finsupp.single (g x) (c x)).sum (fun h n => n • ρ h) = _`. Rewrite using `[← Finsupp.sum_finset_sum_index (fun a => zero_smul ℤ (ρ a)) (fun a m n => add_smul m n (ρ a))]`. Conclude with `Finset.sum_congr rfl fun x _ => Finsupp.sum_single_index (zero_smul ℤ (ρ (g x)))`.
+-/
 private theorem opE_sum {G R W Q : Type} [Group G] [CommRing R] [AddCommGroup W] [Module R W]
     [Fintype Q] (ρ : Representation R G W) (g : Q → G) (c : Q → ℤ) :
     opE ρ (∑ x, Finsupp.single (g x) (c x)) = ∑ x, c x • ρ (g x) := by
@@ -69,6 +94,19 @@ private theorem opE_sum {G R W Q : Type} [Group G] [CommRing R] [AddCommGroup W]
   rw [← Finsupp.sum_finset_sum_index (fun a => zero_smul ℤ (ρ a)) (fun a m n => add_smul m n (ρ a))]
   exact Finset.sum_congr rfl fun x _ => Finsupp.sum_single_index (zero_smul ℤ (ρ (g x)))
 
+/- English proof (translation)
+Introduce `G Q A I _ _ _ _ _ K ι π s hs hker _ χ hχ c hc R W _ _ _ ρ v hv`. Establish `hv' : ∀ u ∈ K, ρ u v = v` using `hv`. Establish `hT : ∀ y x, ρ (ι (s y)) (ρ (ι (s x)) v) = ρ (ι (s (y * x))) v`. Introduce `y x`. Establish `hk : ι ((s (y * x))⁻¹ * (s y * s x)) ∈ K`.
+
+Rewrite using `[← hker]`. Simplify using `[map_mul, map_inv, hs]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, Module.End.mul_apply]`. Use `_ = ρ (ι (s (y * x) * ((s (y * x))⁻¹ * (s y * s x)))) v := by rw [mul_inv_cancel_left]`.
+
+Use `_ = ρ (ι (s (y * x))) v := by`. Rewrite using `[map_mul ι, map_mul ρ, Module.End.mul_apply, hv' _ hk]`. Establish `hE : opE ρ (∑ x, Finsupp.single (ι (s x)) (c x)) = ∑ x, c x • ρ (ι (s x))` using `opE_sum ρ (fun x => ι (s x)) c`. Rewrite using `[hE]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_zsmul, Finset.smul_sum, smul_smul, hT]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft b⁻¹)]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, mul_inv_cancel_left]`.
+
+Rewrite using `[mul_comm (c (b⁻¹ * z))]`. Use `_ = ∑ z, (∑ b, c b * c (b⁻¹ * z)) • ρ (ι (s z)) v := by`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_smul]`. Use `_ = ∑ z, Fintype.card Q • c z • ρ (ι (s z)) v := by`.
+
+Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[c_conv χ hχ c hc z, mul_smul, natCast_zsmul]`.
+-/
 theorem UpperTheory.mem_fixed_of_character_sum_projection :
     ∀ {G Q A I : Type} [Group G] [Group Q] [Fintype Q] [Group A] [Fintype I]
         (K : Subgroup G) (ι : A →* G) (π : A →* Q) (s : Q → A), (∀ x, π (s x) = x) →

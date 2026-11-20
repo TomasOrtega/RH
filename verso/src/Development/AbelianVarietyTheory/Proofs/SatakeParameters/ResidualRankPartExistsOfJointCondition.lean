@@ -5,6 +5,11 @@ open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Fo
 
 namespace GlobalTheory.StringRepresentationDecomposition
 
+/- English proof (translation)
+Introduce `D hrho i hHG`. Take `⟨x, hx⟩` from `hHG`. Establish `hx'` using `hx`. Take `⟨-, Sig, hSig, hgood⟩` from `hx'`. Take `⟨ρ₀, ξ, -, -, hρx⟩` from `hrho i x hx Sig hSig hgood`.
+
+Conclude with `⟨_, isRhoBar_of_isRhoOf D i x _ hρx⟩`.
+-/
 theorem rbEx_of_jointCond_rho : ∀ D : D7, GlobalDatumResidualRepCondition D → RbEx D := by
   intro D hrho i hHG
   obtain ⟨x, hx⟩ := hHG

@@ -15,6 +15,19 @@ namespace GlobalTheory.Mum
 
 open CubeCarried
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Take `⟨s, hs⟩` from `exists_sec_of_gen L W t`. Establish `inj : ∀ z : W.toScheme, Function.Injective (W.ι.stalkMap z).hom` using `fun z => (ConcreteCategory.bijective_of_isIso (W.ι.stalkMap z)).1`. Establish `v : ∀ (z : W.toScheme) (k : L.ι), W.ι z ∈ L.U k → (W.ι.stalkMap z).hom (gs (𝟙 X) (W.ι z) (W ⊓ L.U k) (s k)) = (gm (𝟙 _) z ((L.pull W.ι).U (fun _ => k)) (t.s (fun _ => k))).val` using `fun z k hk => by`. Rewrite using `[← gs_eq_map_gs W.ι z _ (show W.ι z ∈ W ⊓ L.U k from ⟨z.2, hk⟩), ← hs _ (𝟙 _) z k hk, Category.id_comp]`.
+
+Use `⟨s, fun z k k' hz hk hk' => ?_, fun z k hz hk => ?_, fun f w hf H z j k hz hfz hk hj => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩ : ∃ z' : W.toScheme, W.ι z' = z` from `⟨⟨z, hz⟩, rfl⟩`. Apply `inj z` to reduce the goal to its premises. Rewrite using `[map_mul, v z k hk, v z k' hk', ← gm_val_map W.ι z (L.U k ⊓ L.U k') ⟨hk, hk'⟩, ← Units.val_mul]`. Use `congr 1`.
+
+Use `(gen_trans ht (𝟙 _) z (j := fun _ => k) (j' := fun _ => k') (mem_pull.2 hk) (mem_pull.2 hk')).trans ?_` and prove the remaining obligations. Rewrite using `[trF, Fintype.prod_unique, zpow_one, Category.id_comp]`. Both sides reduce to the same expression. Take `⟨z, rfl⟩ : ∃ z' : W.toScheme, W.ι z' = z` from `⟨⟨z, hz⟩, rfl⟩`. Use `(isUnit_map_iff (W.ι.stalkMap z).hom _).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[v z k hk]`. Conclude with `Units.isUnit _`. Take `⟨z, rfl⟩ : ∃ z' : W.toScheme, W.ι z' = z` from `⟨⟨z, hz⟩, rfl⟩`. Apply `inj z` to reduce the goal to its premises. Establish `hr : f.resLE W W hf ≫ W.ι = (𝟙 _ ≫ W.ι) ≫ f` using `by simp`.
+
+Establish `hj' : W.ι (f.resLE W W hf z) ∈ L.U j`. Rewrite using `[← Scheme.Hom.comp_apply, hr]`. Conclude with `hj`. Establish `e` using `congrArg Units.val (H _ (𝟙 _) (f.resLE W W hf) z j k hr hj' hk)`. Rewrite `e` using `[← hs _ _ z j hj', hr, Category.id_comp, Units.val_mul]`.
+
+Rewrite using `[map_mul, v z k hk, ← CubeCarried.gs_comp W.ι f z (W ⊓ L.U j) ⟨hfz, hj⟩, e]`. Conclude with `congrArg₂ (· * ·) (gm_val_map W.ι z ((L.pull f).U (fun _ => j) ⊓ L.U k) ⟨mem_pull.2 hj, hk⟩ _) rfl`.
+-/
 theorem exists_secOver_of_gen {X : Scheme.{0}} (L : LB X) (W : X.Opens) (g : W.toScheme ⟶ X) (hg : g = W.ι)
     (t : LB.Gen (L.pull g)) (ht : t.IsGen) :
     ∃ s : ∀ k, Γ(X, W ⊓ L.U k), IsSecOver L W s ∧
@@ -57,6 +70,33 @@ theorem exists_secOver_of_gen {X : Scheme.{0}} (L : LB X) (W : X.Opens) (g : W.t
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `R _ _ _ hB R' _ _ _ ρ hF hG D D' hD A' G' _ _ hS' U' a G _ _ β hS hβ hact y hy`. Take `⟨θ, hθ, O, hO, hnz⟩` from `GlobalTheory.T.exists_carried_section_nonzero_near_closedFibre R hB R' ρ hF hG D D' hD A' G' hS' U' a G β hS hβ hact`. Use `hB.1.1` as an intermediate fact. Establish `hfin : IsFinite (spMap ρ)` using `(IsFinite.SpecMap_iff _).2 hF.2.2`. Establish `hβf : IsFinite β` using `MorphismProperty.of_isPullback (P := @IsFinite) hβ.1.flip hfin`.
+
+Set `O' : G.left.Opens` to `⟨farSet β θ, isOpen_farSet β β.isClosedMap θ⟩`. Establish `hO' : ∃ g ∈ O', G.hom g = closedPoint R`. Take `⟨g, hg, hgc⟩` from `hO`. Use `⟨g, fun g' hg' => ?_, hgc⟩` and prove the remaining obligations. Substitute `hg'` using the available equality.
+
+Conclude with `hnz g' hg hgc`. Take `⟨p, q, c, h⟩` from `OffClosed.exists_ten R hB.1.2.2.2 G hS O' hO' y hy`. Set `V : G.left.Opens` to `⟨⋂ f ∈ {f | f ∈ cubeTen (𝟙 G) p q c}, ((f.left ⁻¹ᵁ O' : G.left.Opens) : Set G.left), (List.finite_toSet _).isOpen_biInter fun f _ => (f.left ⁻¹ᵁ O').isOpen⟩`. Establish `hyV : y ∈ V` using `Set.mem_iInter₂.2 h`. Use `⟨V, hyV, ?_⟩` and prove the remaining obligations.
+
+Take `⟨hl, hm⟩` from `grpPullback_points_lift_mul_inv _ _ (spMap ρ) G G' β hβ G' G β hβ.1.w`. Take `⟨a', ha⟩` from `hl p`. Take `⟨b', hb⟩` from `hl q`. Take `⟨c', hc⟩` from `hl c`. Establish `h1 : (𝟙 G' : G' ⟶ G').left ≫ β = β ≫ (𝟙 G : G ⟶ G).left` using `by simp`.
+
+Establish `mul` using `fun u v u' v' hu hv => (hm u v u' v' hu hv).1`. Establish `inv` using `fun u u' hu => (hm u u u' u' hu hu).2`. Establish `hten : ∀ f' ∈ cubeTen (𝟙 G') a' b' c', ∃ f ∈ cubeTen (𝟙 G) p q c, f'.left ≫ β = β ≫ f.left`. Introduce `f' hf`. Simplify using `only [cubeTen, List.mem_cons, List.not_mem_nil, or_false] at hf`.
+
+Break down `hf with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases. Conclude with `⟨_, by simp [cubeTen], mul _ _ _ _ h1 ha⟩`. Conclude with `⟨_, by simp [cubeTen], mul _ _ _ _ h1 (inv _ _ ha)⟩`. Conclude with `⟨_, by simp [cubeTen], ha⟩`. Conclude with `⟨_, by simp [cubeTen], inv _ _ ha⟩`.
+
+Conclude with `⟨_, by simp [cubeTen], mul _ _ _ _ h1 hb⟩`. Conclude with `⟨_, by simp [cubeTen], mul _ _ _ _ h1 hc⟩`. Conclude with `⟨_, by simp [cubeTen], mul _ _ _ _ h1 (inv _ _ (mul _ _ _ _ hb hc))⟩`. Conclude with `⟨_, by simp [cubeTen], hb⟩`. Conclude with `⟨_, by simp [cubeTen], hc⟩`.
+
+Conclude with `⟨_, by simp [cubeTen], inv _ _ (mul _ _ _ _ hb hc)⟩`. Use `choose hd bc hbc hP hov using a.unif`. Set `F : Gal ρ → (G'.left ⟶ G'.left)` to `fun σ => (bc σ).hom.left ≫ pullback.fst G'.hom (specOf (Gal.hom σ))`. Establish `hFa : ∀ σ, F σ = a.act σ` using `hbc`. Establish `hFc : ∀ σ, IsGrpPullback G' G' (spMap (Gal.hom σ)) (F σ)` using `fun σ => (hFa σ).symm ▸ a.cart σ`.
+
+Establish `hFβ : ∀ σ, F σ ≫ β = β` using `fun σ => by rw [hFa, hact]`. Set `w : ∀ σ, LB.Iso U'.LG.L (U'.LG.L.pull (F σ))` to `fun σ => Classical.choose (hP σ).lg`. Establish `hw : ∀ σ, (w σ).IsGen` using `fun σ => (Classical.choose_spec (hP σ).lg).1`. Establish `hrig : ∀ σ, PMaps (w σ) (K` using `PUnit) (fun _ => eSec G') (fun _ => eSec G') (fun _ => 1) U'.LG.rig U'.LG.rig (spMap (Gal.hom σ)) := fun σ => by`. Take `⟨he, hr, -⟩` from `(Classical.choose_spec (hP σ).lg).2`.
+
+Conclude with `(maps_iff (w σ) _ (fun _ => eSec G') _ U'.LG.rig U'.LG.rig (spMap (Gal.hom σ)) _ (rigPull_le (F σ) (spMap (Gal.hom σ)) he U'.LG.L) (fun _ => rfl)).1 hr`. Establish `comm : ∀ (u : G ⟶ G) (u' : G' ⟶ G'), u'.left ≫ β = β ≫ u.left → ∀ σ, u'.left ≫ F σ = F σ ≫ u'.left`. Introduce `u u' hu σ`. Establish `e₁` using `hFβ σ`. Establish `e₂` using `(hFc σ).1.w`.
+
+Generalize the expression as in `F σ = f at e₁ e₂ ⊢`. Apply `hβ.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, e₁, Category.assoc, hu, ← Category.assoc, e₁]`. Rewrite using `[Category.assoc, Category.assoc, Over.w, e₂, ← Category.assoc, Over.w]`. Take `⟨t, ht, hcar⟩` from `exists_gen_carried U'.cubG hFc w hrig (fun σ => pmaps_cub R' _ D' A' G' U'.toUnifPre (hFc σ) (w σ) (hw σ)) θ (fun σ => hθ σ (hd σ) (bc σ) (hbc σ) (hP σ) (hov σ)) G' F (fun σ => (hFc σ).1.w) (𝟙 G') a' b' c' (comm _ _ h1) (comm _ _ ha) (comm _ _ hb) (comm _ _ hc) (β ⁻¹ᵁ V) (by`.
+
+Introduce `f' hf' g hg`. Take `⟨f, hf, e⟩` from `hten f' hf'`. Establish `h2 : f.left (β g) ∈ farSet β θ` using `Set.mem_iInter₂.1 hg f hf`. Use `h2 (f'.left g) ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, e, Scheme.Hom.comp_apply])`.
+
+Take `⟨s, hs, hu, hcs⟩` from `exists_secOver_of_gen U'.LG.L (β ⁻¹ᵁ V) _ (by simp) t ht`. Use `⟨s, hs, fun z k hz hk => hu z k (show β z ∈ V from hz ▸ hyV) hk, fun σ => ⟨hd σ, bc σ, hbc σ, hP σ, hov σ, hcs (F σ) (w σ) (fun z hz => ?_) (hcar σ)⟩⟩` and prove the remaining obligations. Use `show (F σ ≫ β) z ∈ V`. Rewrite using `[hFβ]`. Conclude with `hz`.
+-/
 theorem exists_carried_sec_off_closed : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hB : Base R) (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R') (hF : FinExt ρ) (hG : IsGal ρ) (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'] (hS' : IsSemiAbelian G') (U' : Unif (maximalIdeal R') D' A' G') (a : GalAct ρ hD U') (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left) (hS : IsSemiAbelian G) (hβ : IsGrpPullback G' G (spMap ρ) β) (hact : ∀ σ, a.act σ ≫ β = β), ∀ y : G.left, G.hom y ≠ closedPoint R → ∃ V : G.left.Opens, y ∈ V ∧ ∃ s : ∀ k : U'.LG.L.ι, Γ(G'.left, β ⁻¹ᵁ V ⊓ U'.LG.L.U k), IsSecOver U'.LG.L (β ⁻¹ᵁ V) s ∧ (∀ (z : G'.left) (k : U'.LG.L.ι), β z = y → z ∈ U'.LG.L.U k → IsUnit (gs (𝟙 G'.left) z (β ⁻¹ᵁ V ⊓ U'.LG.L.U k) (s k))) ∧ ∀ σ : Gal ρ, ∃ (h : IsPullDeg (Gal.hom σ) D'.toPre D'.toPre) (bc : G' ≅ (Over.pullback (specOf (Gal.hom σ))).obj G'), bc.hom.left ≫ pullback.fst G'.hom (specOf (Gal.hom σ)) = a.act σ ∧ ∃ hP : IsPullUnif (Gal.hom σ) h bc U' U', PullOver hD h ∧ SecCarriedOver U'.LG.L (β ⁻¹ᵁ V) s _ (Classical.choose hP.lg) := by
   intro R _ _ _ hB R' _ _ _ ρ hF hG D D' hD A' G' _ _ hS' U' a G _ _ β hS hβ hact y hy
   obtain ⟨θ, hθ, O, hO, hnz⟩ := GlobalTheory.T.exists_carried_section_nonzero_near_closedFibre R hB R' ρ hF hG D D' hD A' G' hS' U' a G β hS hβ hact

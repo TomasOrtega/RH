@@ -23,6 +23,11 @@ def fvMeW (w : HeightOneSpectrum (𝓞 X.F)) (P : Pr.vT u) (hov : IsOver w P.1) 
     fMod hc n (Pr.vT u) w ≃+ (𝓞 X.E ⧸ P.1.asIdeal) :=
   fvMeL hc n w (basePi_of_ok hX hPr u) P.2 hov ((basePi_of_ok hX hPr u).over_unique hc P.2 hov) _ _ (fv_unit hPr u c₀ P)
 
+/- English proof (translation)
+Establish `e : (((bc (prV (E` using `X.E) w) y)⁻¹ : GL (Fin n) (X.E ⊗[X.F] w.adicCompletion X.F)).1 *ᵥ fun a => inclE (F := X.F) (w.adicCompletion X.F) (z a)) = t.1 := by`. Rewrite using `[← ht, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `h1` using `fv_tieL hc n w (basePi_of_ok hX hPr u) Pr.vGs c₀ (sepElt_of_ok hPr u) y hyU d hd P hov (tieInv_spec hPr u P) z hzL (by rw [e]; exact t.2)`. Rewrite using `[h1]`. Use `show _ = (c₀ P).1 * Ideal.Quotient.mk P.1.asIdeal (tieInv hPr u P) * rll_psi hc n w (basePi_of_ok hX hPr u) P.1 t`.
+
+Use `congr 2`. Conclude with `Subtype.ext e`.
+-/
 theorem fv_tieW (w : HeightOneSpectrum (𝓞 X.F)) (P : Pr.vT u) (hov : IsOver w P.1)
     (y : GL (Fin n) (X.E ⊗[X.F] Formalism.L2.Herm.Af X.F)) (hyU : y ∈ UAd hc n) (d : DecoSet X.E n (Pr.vT u) Pr.vGs)
     (hd : decoOfD n (Pr.vT u) Pr.vGs c₀ y = d) (z : Sp X.E n) (hzL : z ∈ d.1.Lsh) (t : baseDualV hc n (Pr.vT u) w)
@@ -50,6 +55,11 @@ def levPack_fMe (H : HCrd Pr n fun c => (s c).1.L) (w : HeightOneSpectrum (𝓞 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨n', hn, J, rfl, f, rfl, bad, rfl, lat, hlat⟩` from `H`. Substitute `hn` using the available equality. Take `rfl : lat = fun c => (s c).1.L` from `funext fun c => (hlat c).trans (Formalism.L2.Forms.reL_rfl _)`. Use `fv_tieW hc hX hPr u c₀ w P hov _ (ptOfD hc _ (Pr.vT u) Pr.vGs c₀ (s c)).2 (s c) (decoOfD_ptOfD hc _ (Pr.vT u) Pr.vGs hS c₀ (s c)) z hzL t ?_` and prove the remaining obligations. Use `ht.trans ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `b`. Rewrite using `[Formalism.L2.Forms.reV_rfl]`.
+-/
 theorem levPack_fv (H : HCrd Pr n fun c => (s c).1.L) (w : HeightOneSpectrum (𝓞 X.F)) (hw : (Pr.T u : 𝓞 X.F) ∈ w.asIdeal)
     (P : Pr.vT u) (hov : IsOver w P.1) (c : DecoCl n (Pr.vT u) Pr.vGs Λ.grp) (z : Sp X.E n) (hzL : z ∈ (s c).1.Lsh)
     (t : latS (F := X.F) (w.adicCompletion X.F) (intV X.E w)
@@ -71,6 +81,9 @@ theorem levPack_fv (H : HCrd Pr n fun c => (s c).1.L) (w : HeightOneSpectrum (�
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `(tie_fv hc hPr σ₀ u s Q P c z).trans (levPack_fv hc hX hPr σ₀ u Λ c₀ s hS hs hK H w hw P hov c z.1 ((tie_Ld_eq hc σ₀ u s Q c).le z.2) t ht)`.
+-/
 theorem levPack_fvQ (H : HCrd Pr n fun c => (s c).1.L) (Q : StepCrd Pr σ₀ n fun c => (s c).1.L)
     (w : HeightOneSpectrum (𝓞 X.F)) (hw : (Pr.T u : 𝓞 X.F) ∈ w.asIdeal)
     (P : Pr.vT u) (hov : IsOver w P.1) (c : DecoCl n (Pr.vT u) Pr.vGs Λ.grp)
@@ -93,6 +106,9 @@ section Rec
 variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurj d) (hK : LocalLevelIsKOneEverywhere d)
   (S : GSplit (Pr := d.Pr) d.sp.cm) (hI : IwAll d S) (O : AtTOwed a hS hH)
 
+/- English proof (translation)
+Establish `e : (tieEV d.sp.cm d.hX d.hPr u ((tieEV d.sp.cm d.hX d.hPr u).symm ⟨w, h⟩)).1 = w` using `congrArg Subtype.val ((tieEV d.sp.cm d.hX d.hPr u).apply_symm_apply ⟨w, h⟩)`. Establish `h1` using `tieEV_over d.sp.cm d.hX d.hPr u ((tieEV d.sp.cm d.hX d.hPr u).symm ⟨w, h⟩)`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem thf_over (u : d.what₂.Word) (w : HeightOneSpectrum (𝓞 d.X.F)) (h : (d.Pr.T u : 𝓞 d.X.F) ∈ w.asIdeal) :
     IsOver w ((tieEV d.sp.cm d.hX d.hPr u).symm ⟨w, h⟩).1 := by
   have e : (tieEV d.sp.cm d.hX d.hPr u ((tieEV d.sp.cm d.hX d.hPr u).symm ⟨w, h⟩)).1 = w :=
@@ -100,6 +116,9 @@ theorem thf_over (u : d.what₂.Word) (w : HeightOneSpectrum (𝓞 d.X.F)) (h : 
   have h1 := tieEV_over d.sp.cm d.hX d.hPr u ((tieEV d.sp.cm d.hX d.hPr u).symm ⟨w, h⟩)
   rwa [e] at h1
 
+/- English proof (translation)
+The claim follows from `hxPr_eq (atTTied a hH u) (fun i hi => levelAgreement a hS hH u i hi) i hi v c z`.
+-/
 theorem thf_pr (u : d.what₂.Word) (i : ℕ) (hi : i ≤ d.R.m) (v : d.Pr.vT u) (c : StCl (Pr := d.Pr) d.W d.lev u i)
     (z : ↥(CH.Ld (d.colRec a) u i c)) :
     (hermAtT a hS hH O u).pr i v c z = (levelAgreement a hS hH u i hi).pr v c (hxLd (D := d.colRec a) i hi c z) :=

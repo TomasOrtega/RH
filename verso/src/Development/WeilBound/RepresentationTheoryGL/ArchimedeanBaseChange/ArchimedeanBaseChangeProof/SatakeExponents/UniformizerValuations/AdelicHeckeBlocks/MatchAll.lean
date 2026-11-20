@@ -17,38 +17,89 @@ namespace PositivityTheory.Rg.BcB.F.MatchAll
 
 open PositivityTheory.Rg.Bc.ArchbcB.B PositivityTheory.Rg.BcN.F2.LocOpPf
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.constant_term_multiplicative`.
+-/
 theorem ctMul : MT.CtMul := GlobalTheory.T.constant_term_multiplicative
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finite_unitary_multiplication`.
+-/
 theorem fuMul : MT.FUMul := GlobalTheory.T.finite_unitary_multiplication
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.double_coset_multiplication`.
+-/
 theorem dcosMul : MT.DcosMul := GlobalTheory.T.double_coset_multiplication
 
+/- English proof (translation)
+The claim follows from `archimedean_base_change_fourth`.
+-/
 theorem hM4 : M4 := archimedean_base_change_fourth
 
+/- English proof (translation)
+The claim follows from `m1`.
+-/
 theorem hM1 : M1 := m1
 
+/- English proof (translation)
+The claim follows from `TorusMatching.match_torus_of_twisted_matching h4`.
+-/
 theorem matchT_of (h4 : M4) : MT.MatchT := TorusMatching.match_torus_of_twisted_matching h4
 
+/- English proof (translation)
+The claim follows from `matchT_of archimedean_base_change_fourth`.
+-/
 theorem matchT : MT.MatchT := matchT_of archimedean_base_change_fourth
 
+/- English proof (translation)
+The claim follows from `MB.matchUnitIOf h1`.
+-/
 theorem matchUnitI_of (h1 : M1) : MB.MatchUnitI := MB.matchUnitIOf h1
 
+/- English proof (translation)
+The claim follows from `matchUnitI_of m1`.
+-/
 theorem matchUnitI : MB.MatchUnitI := matchUnitI_of m1
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.matching_split_of h3 ctMul`.
+-/
 theorem matchSplit (h3 : M3) : MT.MatchSplit := GlobalTheory.T.matching_split_of h3 ctMul
 
+/- English proof (translation)
+The claim follows from `MLM.matchLMIdOf idemAlg BlockFiniteConvolution.locOk₀`.
+-/
 theorem matchLMId : MLM.MatchLMId := MLM.matchLMIdOf idemAlg BlockFiniteConvolution.locOk₀
 
+/- English proof (translation)
+The claim follows from `MLM.macInvOf locOp3 idemAlg`.
+-/
 theorem macInv : MLM.MacInv := MLM.macInvOf locOp3 idemAlg
 
+/- English proof (translation)
+The claim follows from `MLM.generator_pow_split_places_of_idempotent idemAlg`.
+-/
 theorem generator_pow_split_places : MLM.SplitPlaceGeneratorPowers := MLM.generator_pow_split_places_of_idempotent idemAlg
 
+/- English proof (translation)
+The claim follows from `MLM.matchLMWordOf (matchSplit h3) ctMul sphComm idemAlg`.
+-/
 theorem matchLMWord (h3 : M3) : MLM.MatchLMWord := MLM.matchLMWordOf (matchSplit h3) ctMul sphComm idemAlg
 
+/- English proof (translation)
+The claim follows from `MLM.matchLMWordSOf (matchSplit h3) ctMul MLM.ctStar sphComm idemAlg`.
+-/
 theorem matchLMWordS (h3 : M3) : MLM.MatchLMWordS := MLM.matchLMWordSOf (matchSplit h3) ctMul MLM.ctStar sphComm idemAlg
 
+/- English proof (translation)
+The claim follows from `MLM.matchLMUnitOf (matchUnitI_of h1) (matchSplit h3) idemAlg`.
+-/
 theorem matchLMUnit (h1 : M1) (h3 : M3) : MLM.MatchLMUnit := MLM.matchLMUnitOf (matchUnitI_of h1) (matchSplit h3) idemAlg
 
+/- English proof (translation)
+The claim follows from `MLM.matchLMB3Of_pf (matchT_of h4) (MS.match_split_place_of_powers h3 (MS.split_place_powers_of_local_ops locOp3)) (MB.matchBadSOf h3 MB.lponeIdem) (MB.matchBadIOf2 h2 MB.lponeIdem) MB.fixIdem idemAlg`.
+-/
 theorem matchLMB2 (h2 : M2) (h3 : M3) (h4 : M4) : MLM.MatchLMB2 :=
   MLM.matchLMB3Of_pf (matchT_of h4) (MS.match_split_place_of_powers h3 (MS.split_place_powers_of_local_ops locOp3)) (MB.matchBadSOf h3 MB.lponeIdem)
     (MB.matchBadIOf2 h2 MB.lponeIdem) MB.fixIdem idemAlg

@@ -8,6 +8,15 @@ open GroundTheory.PAdicHodge
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `iota_bounded l n`. Use `⟨N, fun x => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hN (Cmp6.cA l x)`. Use `⟨Reformulated.AutPerF.Ainf.map l (Cmp6.e l).symm.toRingHom a, ?_⟩` and prove the remaining obligations. Establish `hsymm : ∀ z : Formalism.Per6.BdRp l, (Cmp6.cP l).symm z = Reformulated.AutPerF.BdRPlus.map l (Cmp6.e l).symm.toRingHom z`.
+
+Introduce `z`. Rewrite using `[RingEquiv.symm_apply_eq]`. Use `show z = Reformulated.AutPerF.BdRPlus.map l (Cmp6.e l).toRingHom (Reformulated.AutPerF.BdRPlus.map l (Cmp6.e l).symm.toRingHom z)`. Use `erw [Reformulated.AutPerF.BdRPlus.map_map, RingEquiv.toRingHom_comp_symm_toRingHom, Reformulated.AutPerF.BdRPlus.map_id]`. Use `show Reformulated.AutPerF.BdRPlus.eval l (Cmp6.OC l) n (((l : ℕ) : Reformulated.AutPerF.BdRPlus l (Cmp6.OC l)) ^ N * (Cmp6.cP l).symm (iotaP l (Cmp6.cA l x))) = _`.
+
+Use `erw [hsymm]`. Rewrite using `[← map_natCast (Reformulated.AutPerF.BdRPlus.map l (Cmp6.e l).symm.toRingHom) l, ← map_pow]`. Establish `hm` using `map_mul (Reformulated.AutPerF.BdRPlus.map l (Cmp6.e l).symm.toRingHom) (((l : ℕ) : Reformulated.AutPerF.BdRPlus l (NC l)) ^ N) (iotaF l (Cmp6.cA l x))`. Use `erw [← hm, Reformulated.AutPerF.BdRPlus.eval_map]`. Use `erw [ha]`.
+
+Rewrite using `[Ideal.quotientMap_mk, Reformulated.AutPerF.AinfInv.map_algebraMap]`.
+-/
 theorem jOC_bounded (n : ℕ) : ∃ N : ℕ, ∀ x : Reformulated.AutPerF.Acris l (Cmp6.OC l), ∃ a : Reformulated.AutPerF.Ainf l (Cmp6.OC l),
     Reformulated.AutPerF.BdRPlus.eval l (Cmp6.OC l) n (((l : ℕ) : Reformulated.AutPerF.BdRPlus l (Cmp6.OC l)) ^ N * jOC l x) =
       Ideal.Quotient.mk _ (algebraMap (Reformulated.AutPerF.Ainf l (Cmp6.OC l)) (Reformulated.AutPerF.AinfInv l (Cmp6.OC l)) a) := by

@@ -8,6 +8,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 open scoped Formalism.Per
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CobColumn.coboundary_tmul_of_column | exact GlobalTheory.CobColumn.coboundary_tmul_of_column | (intros; apply GlobalTheory.CobColumn.coboundary_tmul_of_column <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.coboundary_tmul_of_column_deRham : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (ι : Type) [Fintype ι] [DecidableEq ι]
     (ρ₀ : ↥(GK K) →* GL ι ℚ_[l]) (c₀ : ↥(GK K) → ι → ℚ_[l]) (β : ι → P.R.BdR),
     (∀ g : ↥(GK K), (fun x => algebraMap ℚ_[l] P.R.BdR (c₀ g x)) =

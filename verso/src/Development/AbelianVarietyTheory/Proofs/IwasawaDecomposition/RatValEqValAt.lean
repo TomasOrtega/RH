@@ -16,6 +16,11 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 
 namespace GlobalTheory.TrueGeo.HtModel
 
+/- English proof (translation)
+Distinguish the cases in `h : RegAt (under y) f`. Take `⟨U, hU, a, rfl⟩` from `h.exists_fnOf`. Establish `hy : y ∈ CxPts.ptsIn q σ U` using `CxPts.mem_ptsIn.2 hU`. Rewrite using `[ratVal_fnOf hy, OfModel.valAt_fnOf y.1 hU hy, CxPts.ev_eq hy]`. Both sides reduce to the same expression.
+
+Rewrite using `[ratVal, dif_neg h, valAt, dif_neg h]`.
+-/
 theorem ratVal_eq_valAt {k : Type} [CommRing k] {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp k} {σ : k →+* ℂ}
     (f : Z.functionField) (y : CxPts q σ) : ratVal f y = valAt y.1 f := by
   by_cases h : RegAt (under y) f
@@ -25,6 +30,11 @@ theorem ratVal_eq_valAt {k : Type} [CommRing k] {Z : Scheme.{0}} [IsIntegral Z] 
     rfl
   · rw [ratVal, dif_neg h, valAt, dif_neg h]
 
+/- English proof (translation)
+Use `⟨fun σ τ h => ?_, fun σ => ?_⟩` and prove the remaining obligations. Conclude with `IsFractionRing.ringHom_ext (A := 𝓞 F) fun a => RingHom.congr_fun h a`. Establish `hσ : Function.Injective σ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) (I := RingHom.ker σ) (eq_bot_iff.2 fun n hn => ?_)` and prove the remaining obligations.
+
+Rewrite `hn` using `[Ideal.mem_comap, RingHom.mem_ker, eq_intCast, map_intCast]`. Conclude with `Int.cast_eq_zero.1 hn`. Use `⟨IsFractionRing.lift (A := 𝓞 F) (K := F) hσ, RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]`.
+-/
 theorem bijective_comp (F : Type) [Field F] [NumberField F] :
     Function.Bijective fun σ : F →+* ℂ => σ.comp (algebraMap (𝓞 F) F) := by
   refine ⟨fun σ τ h => ?_, fun σ => ?_⟩
@@ -39,6 +49,41 @@ theorem bijective_comp (F : Type) [Field F] [NumberField F] :
 
 open Classical in
 
+/- English proof (translation)
+Introduce `F _ _ C Y A M L k ⟨_, r, hr, hinf, hfin⟩ x a hx ⟨h, H, ha⟩`. Take `⟨Z, i, _, _, hi⟩` from `exists_isClosedImmersion_genericPoint (M.j x)`. Use `M.ar.isNoetherian_sub i` as an intermediate fact. Take `⟨hc, hd⟩` from `GlobalTheory.T.closed_point_algebraic F Y M x hx`. Establish `hri : Set.range i = closure {M.j x}`.
+
+Establish `h₁` using `(genericPoint_spec Z).image i.continuous`. Rewrite `h₁` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq, hi]`. Conclude with `h₁.def.symm`. Rewrite `hd` using `[topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hri]`. Rewrite `hc` using `[← hi]`.
+
+Establish `hc' : CharZero (Z.residueField (genericPoint Z))` using `charZero_of_injective_ringHom (i.residueFieldMap (genericPoint Z)).hom.injective`. Establish `hcΓ : CharZero Γ(Z, ⊤)` using `(Z.Γevaluation (genericPoint Z)).hom.charZero`. Establish `hZ : IsArithVar (i ≫ M.p) 0` using `M.ar.of_isClosedImmersion i hcΓ hd`. Establish `: IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F))`. Establish `: IsPreimmersion M.j` using `MorphismProperty.of_isPullback M.pb.flip this`.
+
+Establish `he : A.D.IsEqn x (eqn A.D x)` using `(A.D.exists_isEqn x).choose_spec`. Establish `hu (c) (hc : x ∈ (L.B.pull M.j).U c) : UnitAt x (((eqn A.D x)⁻¹ ^ (k : ℕ) * r c : Y.Fnˣ) : Y.Fn)`. Use `(he.nsmul k).iff_unitAt.1 (hr.isEqn c x hc)` as an intermediate fact. Rewrite `this` using `[div_eq_inv_mul, ← Units.val_inv_eq_inv_val, ← Units.val_mul, ← inv_pow]`. Then use the resulting hypothesis. Take `⟨s, hs, hval⟩` from `GlobalTheory.T.rational_section_extension M.X Y.X Z M.j i x hi L.B L.isLB r hr.isRatSec _ hu`.
+
+Establish `hdeg` using `H.point Z i hcΓ hd s hs`. Establish `hne` using `(ExtConj.main F).1`. Take `⟨E, hE⟩` from `GlobalTheory.T.generic_points_equiv_fibre F Y M x Z i hZ hi (AlgebraicClosure F) (algebraMap F _)`. Establish `h₁` using `GlobalTheory.T.local_equations_height_sum F Z (i ≫ M.p) hZ ((L.restr i).div hs) (fun v => (hne v).some) (fun v y => (k : ℕ) * A.lg v (hne v).some (E y).1) (fun v y yt hyt => by`. Take `⟨c, hc⟩` from `exists_chart L.isLB (i (yt (IsLocalRing.closedPoint _)))`.
+
+Establish `hU : ⊤ ≤ (yt ≫ i) ⁻¹ᵁ L.B.U c` using `(Scheme.preimage_eq_top_of_closedPoint_mem (yt ≫ i) hc).ge`. Establish `e₁ : spMap (hne v).some.O.subtype ≫ yt ≫ i = (E y).1.1 ≫ M.j`. Rewrite using `[← Category.assoc, hyt, (hE y).1]`. Use `⟨s fun _ => c, (presents_divOfRatSec _ hs).isEqn _ _ (Set.mem_iInter.2 fun _ => hc), ?_⟩` and prove the remaining obligations. Establish `hxc : M.j x ∈ L.B.U c`.
+
+Use `Set.mem_iInter.1 (OfModel.le_chart M L.B _ (E y).1 (yt ≫ i) e₁ (i := fun _ => c) hU (x := IsLocalRing.closedPoint _) trivial) PUnit.unit` as an intermediate fact. Rewrite using `[← (E y).2]`. Conclude with `this`. Rewrite using `[hfin v _ (E y).1 (yt ≫ i) (fun _ => c) e₁ hU, hval _ _ _ c (hE y).1 (E y).2 (hE y).2 hxc, (E y).2]`. Use the proof step `simp)`.
+
+Establish `h₂ (v) : ∑ᶠ y, ((k : ℕ) : ℝ) * A.lg v (hne v).some (E y).1 = (k : ℕ) * if h : Nonempty (Ext v) then ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), A.lg v h.some y else 0`. Rewrite using `[dif_pos (hne v), ← mul_finsum, ← finsum_subtype_eq_finsum_cond]`. Conclude with `congrArg _ (finsum_comp_equiv E (f := fun y => A.lg v (hne v).some y.1))`. Use `replace h₁ := h₁.trans (congrArg (- ·) (finsum_congr h₂))`. Establish `h₃ (σ : F →+* ℂ) : ∑ᶠ y : CxPts (i ≫ M.p) (σ.comp (algebraMap (𝓞 F) F)), logNorm ((L.restr i).φ _) s y = (k : ℕ) * ∑ᶠ (z : Pts Y σ) (_ : under z = x), (Real.log (C.pn Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D x)⁻¹ : Y.Fnˣ)) z) / 2 - (A.n : ℕ) * A.ci (InfinitePlace.mk σ))`.
+
+Take `⟨E, hE⟩` from `GlobalTheory.T.generic_points_equiv_fibre F Y M x Z i hZ hi ℂ σ`. Rewrite using `[← finsum_subtype_eq_finsum_cond, mul_finsum]`. Use `finsum_eq_of_bijective E E.bijective fun y => ?_` and prove the remaining obligations. Establish `hp` using `CxPts.mem_ptsIn.1 (CxPts.mem_pick ((L.restr i).φ (σ.comp (algebraMap (𝓞 F) F))).isLB y)`. Unfold `logNorm`.
+
+Generalize the expression as in `CxPts.pick ((L.restr i).φ (σ.comp (algebraMap (𝓞 F) F))).isLB y = c at hp ⊢`. Establish `hxc : M.j x ∈ L.B.U (c PUnit.unit)`. Use `Set.mem_iInter.1 hp PUnit.unit` as an intermediate fact. Rewrite using `[← hi, ← (hE y).2]`. Conclude with `this`.
+
+Establish `hx' : under (E y).1 = x` using `(E y).2`. Establish `hxc' : x ∈ (L.B.pull M.j).U c` using `Set.mem_iInter.2 fun _ => hxc`. Establish `hg : A.D.GeneratesAt (under (E y).1) ((eqn A.D x)⁻¹ : Y.Fnˣ)`. Rewrite using `[hx', Units.val_inv_eq_inv_val]`. Conclude with `CartierDiv.isEqn_iff_generatesAt_inv.1 he`.
+
+Establish `hreg : ((k : ℕ) • A.D).RegularAt (under (E y).1) ((((eqn A.D x)⁻¹ : Y.Fnˣ) : Y.Fn) ^ (k : ℕ))`. Rewrite using `[hx', ← Units.val_pow_eq_pow_val, inv_pow, Units.val_inv_eq_inv_val]`. Conclude with `(CartierDiv.isEqn_iff_generatesAt_inv.1 (he.nsmul k)).regularAt`. Establish `e₁` using `hinf σ (E y).1 (Points.PtsOver.map i rfl _ y) c _ (hE y).1.symm (hx'.symm ▸ hxc') hreg`. Rewrite `e₁` using `[C.pn_mPow _ _ _ _ _ _ _ hg, ← Units.val_pow_eq_pow_val, ← Units.val_mul]`.
+
+Establish `h0 : ‖ratVal (((eqn A.D x)⁻¹ ^ (k : ℕ) * r c : Y.Fnˣ) : Y.Fn) (E y).1‖ ≠ 0` using `norm_ne_zero_iff.2 (ratVal_ne_zero (by rw [hx']; exact hu c hxc'))`. Establish `e₂` using `congrArg Real.log e₁`. Establish `h0' : C.pn Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D x)⁻¹ : Y.Fnˣ)) (E y).1 ^ (k : ℕ) ≠ 0` using `right_ne_zero_of_mul (e₁.trans_ne (mul_ne_zero (pow_ne_zero _ h0) (Real.exp_ne_zero _)))`. Rewrite `e₂` using `[Real.log_mul (Real.exp_ne_zero _) h0', Real.log_mul (pow_ne_zero _ h0) (Real.exp_ne_zero _), Real.log_exp, Real.log_exp, Real.log_pow, Real.log_pow, ratVal_eq_valAt]`. Establish `e₃` using `hval ℂ _ _ (c PUnit.unit) (hE y).1 (E y).2 (hE y).2 hxc`.
+
+Establish `e₄` using `(L.φ _).pull_φ i rfl c y`. Rewrite using `[ratVal_eq_valAt]`. Use `(congrArg₂ (fun a b => Real.log ‖a‖ - b / 2) e₃ e₄).trans ?_` and prove the remaining obligations. Move the coercions through the operations in `at e₂`. Express the relevant statement in the definitionally equal form `Real.log ‖valAt (E y).1.1 (((eqn A.D x)⁻¹ ^ (k : ℕ) * r c : Y.Fnˣ) : Y.Fn)‖ - _ = _`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `HermLB.curveDeg at hdeg`. Rewrite `hdeg` using `[h₁, ← finsum_eq_of_bijective _ (bijective_comp F) fun σ => (h₃ σ).symm, hi, ha, GlobalTheory.T.residue_embeddings_card F Y M x hx, ← mul_finsum, ← mul_finsum, finsum_eq_sum_of_fintype (α := F →+* ℂ)]`. Take `⟨_, _⟩` from `ExtConj.pts Y x hx`.
+
+Establish `hN : (Nat.card {y : AlgPt Y // below y.1 = x} : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `hF : (Module.finrank ℚ F : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `hk : ((k : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 k.ne_zero`. Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 A.n.ne_zero`. Rewrite using `[Adl.ht, div_eq_div_iff (by positivity) (by positivity)]`.
+
+Rewrite `hdeg` using `[Nat.cast_mul]`. Take the linear combination `(-((A.n : ℕ) : ℝ)) * hdeg`.
+-/
 theorem ht_eq : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (M : TrueGeo.Model Y) (L : HermLB M.p) (k : ℕ+), A.Induced M L k 0 → ∀ (x : Y.X) (a : ℝ), IsClosed ({x} : Set Y.X) → ArInt.IsPtHt L (M.j x) a → A.ht x = a / (((k : ℕ) : ℝ) * (A.n : ℕ)) := by
   intro F _ _ C Y A M L k ⟨_, r, hr, hinf, hfin⟩ x a hx ⟨h, H, ha⟩
   obtain ⟨Z, i, _, _, hi⟩ := exists_isClosedImmersion_genericPoint (M.j x)

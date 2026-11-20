@@ -18,6 +18,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def rc [IsTotallyReal F] (v : InfinitePlace F) : v.Completion ≃+* ℝ :=
   InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `(InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal _) _).symm`.
+-/
 theorem compF_eq [IsTotallyReal F] (τ : E →+* ℂ) (w : InfinitePlace F) (h : plF (F := F) τ = w) (a : Ainf F) :
     compF (F := F) τ a = (rc w (a w) : ℝ) := by
   subst h
@@ -28,11 +31,17 @@ def rho [IsTotallyReal F] : (InfinitePlace F → ℝ) →+ Ainf F where
   map_zero' := funext fun v => map_zero (rc v).symm
   map_add' _ _ := funext fun v => map_add (rc v).symm _ _
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun v => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal v)).symm.continuous.comp (continuous_apply v)`.
+-/
 theorem continuous_rho [IsTotallyReal F] : Continuous (rho (F := F)) :=
   continuous_pi fun v =>
     (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal v)).symm.continuous.comp
       (continuous_apply v)
 
+/- English proof (translation)
+The claim follows from `(rc w).apply_symm_apply _`.
+-/
 theorem rc_rho [IsTotallyReal F] (x : InfinitePlace F → ℝ) (w : InfinitePlace F) : rc w (rho x w) = x w :=
   (rc w).apply_symm_apply _
 
@@ -44,6 +53,11 @@ def embA (e : E) : Ainf F →+ AEF F E where
     congr 1
     exact Prod.ext rfl (add_zero _).symm
 
+/- English proof (translation)
+Use `haveI := isModuleTopology_AE F E`. Establish `h1 : Continuous fun a : Ainf F => pairA F a 0` using `Continuous.prodMk continuous_id continuous_const`. Establish `h2 : Continuous fun a : AF F => a • ((1 : AF F) ⊗ₜ[F] e : AEF F E)` using `continuous_smul.comp (continuous_id.prodMk continuous_const)`. Use `(h2.comp h1).congr fun a => ?_` and prove the remaining obligations. Use `show pairA F a 0 • ((1 : AF F) ⊗ₜ[F] e : AEF F E) = pairA F a 0 ⊗ₜ[F] e`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+-/
 theorem continuous_embA (e : E) : Continuous (embA (F := F) e) := by
   haveI := isModuleTopology_AE F E
   have h1 : Continuous fun a : Ainf F => pairA F a 0 :=
@@ -54,11 +68,22 @@ theorem continuous_embA (e : E) : Continuous (embA (F := F) e) := by
   show pairA F a 0 • ((1 : AF F) ⊗ₜ[F] e : AEF F E) = pairA F a 0 ⊗ₜ[F] e
   rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
+/- English proof (translation)
+The claim follows from `TensorProduct.zero_tmul _ e`.
+-/
 theorem finPart_embA (e : E) (a : Ainf F) : finPartF F E (embA e a) = 0 :=
   TensorProduct.zero_tmul _ e
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infPart_embA (e : E) (a : Ainf F) : infPartF F E (embA e a) = a ⊗ₜ[F] e := rfl
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul m x`. Take `⟨u, v, rfl⟩` from `h x`. Conclude with `⟨u • m, v • m, by simp only [TensorProduct.tmul_add, TensorProduct.smul_tmul]⟩`.
+
+Consider the case `add a b ha hb`. Take `⟨a₀, a₁, rfl⟩` from `ha`. Take `⟨b₀, b₁, rfl⟩` from `hb`. Conclude with `⟨a₀ + b₀, a₁ + b₁, by simp only [TensorProduct.add_tmul]; abel⟩`.
+-/
 theorem tensor_span {M : Type} [AddCommGroup M] [Module F M] (δ : E)
     (h : ∀ x : E, ∃ u v : F, u • (1 : E) + v • δ = x) (a : M ⊗[F] E) :
     ∃ a₀ a₁ : M, a = a₀ ⊗ₜ[F] (1 : E) + a₁ ⊗ₜ[F] δ := by
@@ -72,6 +97,21 @@ theorem tensor_span {M : Type} [AddCommGroup M] [Module F M] (δ : E)
     obtain ⟨b₀, b₁, rfl⟩ := hb
     exact ⟨a₀ + b₀, a₁ + b₁, by simp only [TensorProduct.add_tmul]; abel⟩
 
+/- English proof (translation)
+Take `⟨-, hc, h2, hσ⟩` from `h`. Take `⟨τ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hn : ¬ ComplexEmbedding.IsReal τ₀` using `IsTotallyComplex.complexEmbedding_not_isReal τ₀`. Establish `: ∃ δ : E, σ δ ≠ δ`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Apply `hn` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`.
+
+Use `hσ τ₀ x` as an intermediate fact. Rewrite `this` using `[hcon]`. Conclude with `this.symm`. Take `⟨δ, hδ⟩` from `this`. Use `⟨δ, fun τ hτ => hδ (τ.injective ?_), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hσ]`. Conclude with `Complex.conj_eq_iff_im.2 hτ`. Establish `hli : LinearIndependent F ![(1 : E), δ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+
+Establish `h3` using `congrArg σ hst`. Rewrite `h3` using `[map_add, Algebra.smul_def, Algebra.smul_def, map_mul, map_mul, σ.commutes, σ.commutes, map_one, map_zero, ← Algebra.smul_def, ← Algebra.smul_def]`. Establish `h4 : t • (σ δ - δ) = 0`. Rewrite using `[smul_sub, eq_neg_of_add_eq_zero_right h3, eq_neg_of_add_eq_zero_right hst, sub_self]`. Establish `ht : t = 0` using `(smul_eq_zero.1 h4).resolve_right (sub_ne_zero.2 hδ)`.
+
+Rewrite `hst` using `[ht, zero_smul, add_zero]`. Conclude with `⟨(smul_eq_zero.1 hst).resolve_right one_ne_zero, ht⟩`. Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank (by rw [h2]; rfl)`. Introduce `x`. Establish `hx : x ∈ Submodule.span F (Set.range ![(1 : E), δ])` using `hsp ▸ Submodule.mem_top`.
+
+Rewrite `hx` using `[Matrix.range_cons, Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union, Submodule.mem_span_pair]`. Conclude with `hx`.
+-/
 theorem exists_gen {σ : E →ₐ[F] E} (h : IsCMExt F E σ) :
     ∃ δ : E, (∀ τ : E →+* ℂ, (τ δ).im ≠ 0) ∧ ∀ x : E, ∃ u v : F, u • (1 : E) + v • δ = x := by
   obtain ⟨-, hc, h2, hσ⟩ := h
@@ -119,6 +159,23 @@ def sndC {I : Type} (c : I → ℂ) : (I → ℂ) →+ (I → ℝ) where
   map_zero' := by funext i; simp
   map_add' x y := by funext i; simp only [Pi.add_apply, Complex.add_im]; ring
 
+/- English proof (translation)
+Use `haveI : IsTotallyReal F := h.1`. Take `⟨δ, hδ, hsp⟩` from `exists_gen h`. Establish `hθ' : ∀ w (a : Ainf F) (x : E), θ w (a ⊗ₜ[F] x) = (rc w (a w) : ℝ) * tau w x`. Introduce `w a x`. Rewrite using `[isInfEmb_unique (tau w) (hθ w) (projAt_isInfEmb (tau w)), projAt_tmul, compF_eq _ w (htau w)]`.
+
+Set `c : InfinitePlace F → ℂ` to `fun w => tau w δ`. Set `ι : (InfinitePlace F → ℂ) →+ AEF F E` to `(embA 1).comp (rho.comp (fstC c)) + (embA δ).comp (rho.comp (sndC c))`. Establish `hι : ∀ z, ι z = embA 1 (rho (fstC c z)) + embA δ (rho (sndC c z))` using `fun _ => rfl`. Use `⟨ι, ?_, fun z => ?_, fun z w => ?_, fun a hf hi => ?_⟩` and prove the remaining obligations. Establish `c2 : ∀ w, Continuous fun z : InfinitePlace F → ℂ => (z w).im / (c w).im` using `fun w => (Complex.continuous_im.comp (continuous_apply w)).div_const _`.
+
+Establish `c1 : Continuous (fstC c)` using `continuous_pi fun w => (Complex.continuous_re.comp (continuous_apply w)).sub ((c2 w).mul continuous_const)`. Establish `c3 : Continuous (sndC c)` using `continuous_pi c2`. Conclude with `((continuous_embA _).comp (continuous_rho.comp c1)).add ((continuous_embA _).comp (continuous_rho.comp c3))`. Rewrite using `[hι, RingHom.map_add, finPart_embA, finPart_embA, add_zero]`. Rewrite using `[hι, RingHom.map_add, infPart_embA, infPart_embA, RingHom.map_add, hθ', hθ', rc_rho, rc_rho, map_one, mul_one]`.
+
+Establish `h0 : (c w).im ≠ 0` using `hδ _`. Use `show (((z w).re - (z w).im / (c w).im * (c w).re : ℝ) : ℂ) + (((z w).im / (c w).im : ℝ) : ℂ) * c w = z w`. Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[Complex.add_re, Complex.ofReal_re, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Complex.add_im, Complex.ofReal_im, Complex.im_ofReal_mul, zero_add, div_mul_cancel₀ _ h0]`. Take `⟨b₀, b₁, hb⟩` from `tensor_span δ hsp (infPartF F E a)`. Establish `key : ∀ w, rc w (b₀ w) = 0 ∧ rc w (b₁ w) = 0`. Introduce `w`. Establish `e` using `hi w`.
+
+Rewrite `e` using `[hb, RingHom.map_add, hθ', hθ', map_one, mul_one]`. Establish `e1` using `congrArg Complex.re e`. Establish `e2` using `congrArg Complex.im e`. Rewrite `e2` using `[Complex.add_im, Complex.ofReal_im, Complex.im_ofReal_mul, zero_add, Complex.zero_im]`. Establish `e3` using `(mul_eq_zero.1 e2).resolve_right (hδ _)`.
+
+Rewrite `e1` using `[Complex.add_re, Complex.ofReal_re, Complex.re_ofReal_mul, e3, zero_mul, add_zero, Complex.zero_re]`. Conclude with `⟨e1, e3⟩`. Establish `z0 : b₀ = 0` using `funext fun w => (rc w).map_eq_zero_iff.1 (key w).1`. Establish `z1 : b₁ = 0` using `funext fun w => (rc w).map_eq_zero_iff.1 (key w).2`. Rewrite `hb` using `[z0, z1, TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]`.
+
+Establish `hp : pairE (infPartF F E a) (finPartF F E a) = a` using `pairE_eta a`. Rewrite using `[← hp, hb, hf]`. Simplify using `[pairE]`.
+-/
 theorem exists_chart_of_cm {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (tau : InfinitePlace F → (E →+* ℂ))
     (htau : ∀ w, plF (F := F) (tau w) = w) (θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)) (hθ : IsInfFamF tau θ) :
     ∃ ι : (InfinitePlace F → ℂ) →+ AEF F E, IsChartF θ ι := by
@@ -163,6 +220,9 @@ theorem exists_chart_of_cm {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (tau : Infi
     rw [← hp, hb, hf]
     simp [pairE]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB θ hθ`. Use `exists_chart_of_cm hB.cm (fun w => (B.emb w).1) (fun w => ?_) θ hθ` and prove the remaining obligations. Use `show InfinitePlace.mk ((B.emb w).1.comp (algebraMap F E)) = w`. Rewrite using `[(B.emb w).2, InfinitePlace.mk_embedding]`.
+-/
 theorem exists_chartF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ),
       IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ → ∃ ι : (InfinitePlace F → ℂ) →+ AEF F E, IsChartF θ ι := by

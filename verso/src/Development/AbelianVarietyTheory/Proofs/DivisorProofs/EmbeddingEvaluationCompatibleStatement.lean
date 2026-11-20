@@ -13,6 +13,9 @@ open GlobalTheory.Doubling (absE)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EvLocPart.locPart_inv_heis | exact GlobalTheory.EvLocPart.locPart_inv_heis | (intros; apply GlobalTheory.EvLocPart.locPart_inv_heis <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.embedding_evaluation_compatible : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
     (M : Model σ X W) (M₁ : Model σ X₁ W₁) (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E)

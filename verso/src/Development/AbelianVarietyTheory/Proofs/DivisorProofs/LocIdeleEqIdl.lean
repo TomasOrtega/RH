@@ -32,15 +32,27 @@ def frameGL {v : Pl F} (t : E →ₐ[F] Fv F v) {N m : ℕ} (H : Plane E N m) (h
 def locY {v : Pl F} (t : E →ₐ[F] Fv F v) : ((splitPrime t).adicCompletion E)ˣ →* (Fv F v)ˣ :=
   Units.map (GlobalTheory.LFun.SplitTie.complEquiv t (splitPrime_under t)).symm.toMonoidHom
 
+/- English proof (translation)
+Simplify using `[frameEquiv, Fin.fin_one_eq_zero i]`.
+-/
 theorem frameEquiv_inl {N m : ℕ} (hr : N = m + 2) (i : Fin 1) : ((frameEquiv hr (.inl i)) : ℕ) = 0 := by
   simp [frameEquiv, Fin.fin_one_eq_zero i]
 
+/- English proof (translation)
+Simplify using `[frameEquiv]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem frameEquiv_mid {N m : ℕ} (hr : N = m + 2) (j : Fin m) : ((frameEquiv hr (.inr (.inl j))) : ℕ) = j + 1 := by
   simp [frameEquiv]; omega
 
+/- English proof (translation)
+Simplify using `[frameEquiv, Fin.fin_one_eq_zero i]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem frameEquiv_inr {N m : ℕ} (hr : N = m + 2) (i : Fin 1) : ((frameEquiv hr (.inr (.inr i))) : ℕ) = m + 1 := by
   simp [frameEquiv, Fin.fin_one_eq_zero i]; omega
 
+/- English proof (translation)
+Rewrite using `[frameGL, dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem frameGL_val {v : Pl F} (t : E →ₐ[F] Fv F v) {N m : ℕ} (H : Plane E N m) (hr : N = m + 2)
     (h : IsUnit (frameMat t H hr)) : ((frameGL t H hr : GL (Fin N) (Fv F v)) : Matrix (Fin N) (Fin N) (Fv F v)) =
       frameMat t H hr := by
@@ -51,11 +63,17 @@ end GlobalTheory.LineFrame
 namespace GlobalTheory.LineFrame
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.LFun.SplitTie.complEquiv t (splitPrime_under t)).apply_symm_apply (x : (splitPrime t).adicCompletion E)`.
+-/
 theorem complMap_locY {v : Pl F} (t : E →ₐ[F] Fv F v) (x : ((splitPrime t).adicCompletion E)ˣ) :
     Units.map (GlobalTheory.LFun.complMap (splitPrime_under t)).toMonoidHom (locY t x) = x := by
   refine Units.ext ?_
   exact (GlobalTheory.LFun.SplitTie.complEquiv t (splitPrime_under t)).apply_symm_apply (x : (splitPrime t).adicCompletion E)
 
+/- English proof (translation)
+Establish `e` using `GlobalTheory.ChrLocal.eq_locIdele_splitPrime h t (GlobalTheory.JacGeom.idl h t (locY t x, 1)) (GlobalTheory.JacGeom.at_idl h t _ _) (by rw [GlobalTheory.JacGeom.piW_comp_idl]; rfl)`. Establish `hp : Units.map (piW t).toMonoidHom (GlobalTheory.JacGeom.idl h t (locY t x, 1)) = locY t x` using `Units.ext (GlobalTheory.JacGeom.piW_idl h t _ _)`. Rewrite using `[e, hp, complMap_locY]`.
+-/
 theorem locIdele_eq_idl {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Pl F} (t : E →ₐ[F] Fv F v)
     (x : ((splitPrime t).adicCompletion E)ˣ) : locIdele F (splitPrime t) x = GlobalTheory.JacGeom.idl h t (locY t x, 1) := by
   have e := GlobalTheory.ChrLocal.eq_locIdele_splitPrime h t (GlobalTheory.JacGeom.idl h t (locY t x, 1)) (GlobalTheory.JacGeom.at_idl h t _ _)
@@ -64,6 +82,13 @@ theorem locIdele_eq_idl {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Pl F} (t 
     Units.ext (GlobalTheory.JacGeom.piW_idl h t _ _)
   rw [e, hp, complMap_locY]
 
+/- English proof (translation)
+Establish `hc : (chrW χ t (locY t x) : ℂ) = (χ (locIdele F (splitPrime t) x) : ℂ)`. Express the relevant statement in the definitionally equal form `((Circle.toUnits (χ (locIdele F (splitPrime t) (Units.map _ (locY t x))))) : ℂ) = _`. Rewrite using `[complMap_locY]`. Both sides reduce to the same expression. Establish `ha : (absE F E (locIdele F (splitPrime t) x) : ℝ) = GlobalTheory.SplitWeil.nabs (Fv F v) (locY t x)`.
+
+Rewrite using `[locIdele_eq_idl h t x, GlobalTheory.JacGeom.absE_idl]`. Simplify using `[GlobalTheory.SplitWeil.nabs]`. Rewrite using `[hc]`. Express the relevant statement in the definitionally equal form `(χ _ : ℂ) * (((absE F E _ : ℝ) ^ s : ℝ) : ℂ) = _`. Rewrite using `[ha]`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = ((GlobalTheory.SplitWeil.nabs (Fv F v) (locY t x) : ℝ) : ℂ) ^ (s : ℂ)`. Rewrite using `[Complex.ofReal_cpow (by simp [GlobalTheory.SplitWeil.nabs])]`.
+-/
 theorem twAbs_locIdele {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (χ : Chr F E) (s : ℝ) {v : Pl F} (t : E →ₐ[F] Fv F v)
     (x : ((splitPrime t).adicCompletion E)ˣ) :
     ((GlobalTheory.CtTyp.twAbs χ s (locIdele F (splitPrime t) x) : ℂˣ) : ℂ) =

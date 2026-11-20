@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.SchASpan
 
+/- English proof (translation)
+Introduce `F _ _ κ _ Φ hΦ`. Use `(Submodule.span_le.2 ?_) hΦ` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Set `L : ((κ → Af F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)` to `{ toFun := fun g => pureA F f g map_add' := fun a b => by funext x; simp only [pureA, Pi.add_apply, mul_add] map_smul' := fun c a => by`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [pureA, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Use `ring }`. Establish `h : L g ∈ Submodule.map L (Submodule.span ℂ _)` using `Submodule.mem_map_of_mem (GlobalTheory.SBSpan.mem_span_restrictedProd F κ g hg)`. Rewrite `h` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨p, ⟨φ, hφ1, hφ2, rfl⟩, rfl⟩`. Conclude with `⟨f, φ, ⟨hφ1, hφ2⟩, rfl⟩`.
+-/
 theorem mem_span_pure : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∀ Φ ∈ schA F κ,
     Φ ∈ Submodule.span ℂ {Ψ : (κ → AF F) → ℂ | ∃ (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ),
       GlobalTheory.RatWeilOp.IsFam φ ∧ Ψ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ} := by

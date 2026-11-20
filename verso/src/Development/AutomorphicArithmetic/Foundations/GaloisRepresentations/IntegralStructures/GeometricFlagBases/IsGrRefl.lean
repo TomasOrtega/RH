@@ -18,6 +18,9 @@ def FEt {Y X : Scheme.{0}} (f : Y ⟶ X) (d : ℕ) : Prop :=
   IsFinite f ∧ Etale f ∧ ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Spec (CommRingCat.of K) ⟶ X),
     Nat.card {y : Spec (CommRingCat.of K) ⟶ Y // y ≫ f = x} = d
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, fun K _ _ x => by have : Unique {y : Spec (CommRingCat.of K) ⟶ X // y ≫ 𝟙 X = x} := ⟨⟨⟨x, Category.comp_id x⟩⟩, fun a => Subtype.ext ((Category.comp_id a.1).symm.trans a.2)⟩ exact Nat.card_unique⟩`.
+-/
 theorem fEt_id (X : Scheme.{0}) : FEt (𝟙 X) 1 :=
   ⟨inferInstance, inferInstance, fun K _ _ x => by
     have : Unique {y : Spec (CommRingCat.of K) ⟶ X // y ≫ 𝟙 X = x} :=
@@ -54,6 +57,9 @@ variable (l : ℕ) [Fact l.Prime] (H : HTower k) (Ω : Type) [Field Ω] [Algebra
 def piece (θ : H.Γ → L) : Submodule L (L ⊗[ℚ_[l]] Htot l (sch.obj (H.geomZ Ω))) :=
   ⨅ g, Module.End.eigenspace ((hop l H Ω g).baseChange L) (θ g)
 
+/- English proof (translation)
+The claim follows from `iInf_mono fun _ => Module.End.eigenspace_le_maxGenEigenspace`.
+-/
 theorem piece_le (θ : H.Γ → L) : piece l H Ω L θ ≤ GlobalTheory.GalV.V l H Ω L id θ :=
   iInf_mono fun _ => Module.End.eigenspace_le_maxGenEigenspace
 
@@ -67,6 +73,9 @@ def IsGr {Γ L : Type} [Group Γ] [Field L] {d : ℕ} (ρ₀ ρ : Γ →* GL (Fi
   ∃ c : Fin d → ℕ, ∀ g, (ρ₀ g : Matrix (Fin d) (Fin d) L).BlockTriangular c ∧
     ∀ i j, (ρ g : Matrix (Fin d) (Fin d) L) i j = if c i = c j then (ρ₀ g : Matrix (Fin d) (Fin d) L) i j else 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 0, fun _ => ⟨fun _ _ h => absurd h (lt_irrefl _), fun _ _ => by simp⟩⟩`.
+-/
 theorem isGr_refl {Γ L : Type} [Group Γ] [Field L] {d : ℕ} (ρ : Γ →* GL (Fin d) L) : IsGr ρ ρ :=
   ⟨fun _ => 0, fun _ => ⟨fun _ _ h => absurd h (lt_irrefl _), fun _ _ => by simp⟩⟩
 
@@ -102,6 +111,9 @@ variable {H : HTower k} {θ : H.Γ → L} {O : Type} [CommRing O] [Algebra O k]
 
 def Cover.Onto (C : Cover H θ O) : Prop := Surjective (pullback.lift C.π H.q C.ov)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨C.finπ, C.etπ, h, C.one, C.mul, C.spl⟩`.
+-/
 theorem Cover.isGalois (C : Cover H θ O) (h : C.Onto) : IsGalois (pullback.lift C.π H.q C.ov) C.Δ C.a :=
   ⟨C.finπ, C.etπ, h, C.one, C.mul, C.spl⟩
 

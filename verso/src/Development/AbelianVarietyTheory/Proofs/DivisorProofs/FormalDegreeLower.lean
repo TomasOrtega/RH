@@ -51,11 +51,17 @@ def rowsP (D : D7) (j : ℕ) (τ : D.what₂.Tau) (i : Fin (D.R.sigW j).1) : ℕ
 def rowsM (D : D7) (j : ℕ) (τ : D.what₂.Tau) (i : Fin (D.R.sigW j).2) : ℕ :=
   ⌊DV.aMinusQ D j τ ((D.R.sigW j).2 - 1 - i)⌋₊
 
+/- English proof (translation)
+Use `R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sig_add (R : Ranks) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ R.m) : (R.sigW j).1 + (R.sigW j).2 = R.r := by
   have := R.m_add_three_le_k
   simp only [Ranks.sigW, Ranks.r]
   omega
 
+/- English proof (translation)
+Use `R.rank_add_five_le` as an intermediate fact. Rewrite using `[sig_add R h1 h2]`. Simplify using `only [Ranks.nV]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sig_lt (R : Ranks) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ R.m) : (R.sigW j).1 + (R.sigW j).2 < R.nV := by
   have := R.rank_add_five_le
   rw [sig_add R h1 h2]

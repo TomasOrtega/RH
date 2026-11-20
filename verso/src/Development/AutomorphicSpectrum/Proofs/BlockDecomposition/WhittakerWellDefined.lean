@@ -8,6 +8,9 @@ namespace GlobalTheory.CompanionTheory.WhittakerTorus
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Establish `hne : (h : F) ≠ 0` using `h.ne_zero`. Establish `hemb : MeasurableEmbedding (fun x : F => (h : F) * x)` using `(Homeomorph.mulLeft₀ (h : F) hne).measurableEmbedding`. Establish `h1 : ∫ t, G t ∂(Measure.map (fun x : F => (h : F) * x) ν) = ∫ y, G ((h : F) * y) ∂ν` using `hemb.integral_map G`. Rewrite using `[← h1, map_mul_left_eq_smul ν hne, integral_smul_nnreal_measure]`. Simplify using `[NNReal.smul_def]`.
+-/
 theorem integral_comp_unit_mul (ν : Measure F) [ν.IsAddHaarMeasure] (h : Fˣ) (G : F → ℂ) :
     ∫ y, G ((h : F) * y) ∂ν = ((modulus (h : F) : ℝ) : ℂ)⁻¹ * ∫ t, G t ∂ν := by
   have hne : (h : F) ≠ 0 := h.ne_zero
@@ -18,18 +21,34 @@ theorem integral_comp_unit_mul (ν : Measure F) [ν.IsAddHaarMeasure] (h : Fˣ) 
   rw [← h1, map_mul_left_eq_smul ν hne, integral_smul_nnreal_measure]
   simp [NNReal.smul_def]
 
+/- English proof (translation)
+Simplify using `[mp]`.
+-/
 theorem mp_one (h : Fˣ) : mp h 1 = ((modulus (h : F) : ℝ) : ℂ) := by
   simp [mp]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[dg2, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`.
+-/
 theorem det_diagonal_two (a : Fˣ) : GeneralLinearGroup.det (dg2 a (1 : Fˣ)) = a := by
   ext
   simp [dg2, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]
 
+/- English proof (translation)
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [dg2, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+-/
 theorem vecMul_diagonal_bottom_row (a : Fˣ) (u v : F) :
     ![u, v] ᵥ* ((dg2 a (1 : Fˣ) : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = ![u * a, v] := by
   ext i
   fin_cases i <;> simp [dg2, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
+/- English proof (translation)
+Establish `hne : (h : F) ≠ 0` using `h.ne_zero`. Establish `hm : ((modulus (h : F) : ℝ) : ℂ) ≠ 0`. Use `modulus_ne_zero hne` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `e1 : ∀ x : F, pt f g (![(h : F), h * x] ᵥ* ((dg2 a (1 : Fˣ) : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F)) * (ψ (-x) : ℂ) = f ((h : F) * a) * ((fun t : F => g t * (ψ (t * (-((h⁻¹ : Fˣ) : F))) : ℂ)) ((h : F) * x))`.
+
+Introduce `x`. Establish `e2 : ((h : F) * x) * (-((h⁻¹ : Fˣ) : F)) = -x`. Rewrite using `[Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [vecMul_diagonal_bottom_row, pt, e2]`.
+
+Simplify using `[mul_assoc]`. Establish `e3` using `integral_comp_unit_mul (selfDualMeasure ψ) h (fun t : F => g t * (ψ (t * (-((h⁻¹ : Fˣ) : F))) : ℂ))`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall e1), integral_const_mul, e3, mp_one]`. Unfold `localFourier`. Rewrite using `[mul_left_comm, mul_inv_cancel_left₀ hm]`.
+-/
 theorem inner_pt (ψ : AddChar F Circle) (f g : F → ℂ) (a h : Fˣ) :
     mp h 1 * ∫ x, pt f g (![(h : F), h * x] ᵥ* ((dg2 a (1 : Fˣ) : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F)) *
         (ψ (-x) : ℂ) ∂selfDualMeasure ψ =
@@ -53,6 +72,11 @@ theorem inner_pt (ψ : AddChar F Circle) (f g : F → ℂ) (a h : Fˣ) :
   unfold localFourier
   rw [mul_left_comm, mul_inv_cancel_left₀ hm]
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ _ μ₁ μ₂ _ _ f _ g _ a`. Unfold `W2`. Rewrite using `[det_diagonal_two]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
+
+Use `inner_pt ψ f g a h` as an intermediate fact. Simplify using `only [mul_assoc] at this ⊢`. Rewrite using `[this]`.
+-/
 theorem swd : SWd := by
   intro F _ _ _ _ _ _ ψ _ μ₁ μ₂ _ _ f _ g _ a
   unfold W2

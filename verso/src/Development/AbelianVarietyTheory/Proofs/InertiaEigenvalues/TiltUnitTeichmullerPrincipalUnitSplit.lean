@@ -14,45 +14,85 @@ variable {l : ℕ} [Fact l.Prime]
 
 def nrm (y : Per.Fl l) : ℝ := ‖((y.untilt : Per.OC l) : ℂ_[l])‖
 
+/- English proof (translation)
+Simplify using `only [nrm, map_mul]`. Use `push_cast`. Conclude with `norm_mul _ _`.
+-/
 lemma nrm_mul (y z : Per.Fl l) : nrm (y * z) = nrm y * nrm z := by
   simp only [nrm, map_mul]
   push_cast
   exact norm_mul _ _
 
+/- English proof (translation)
+Simplify using `[nrm]`.
+-/
 lemma nrm_one : nrm (1 : Per.Fl l) = 1 := by
   simp [nrm]
 
+/- English proof (translation)
+Simplify using `only [nrm, map_pow]`. Use `push_cast`. Conclude with `norm_pow _ _`.
+-/
 lemma nrm_pow (y : Per.Fl l) (n : ℕ) : nrm (y ^ n) = nrm y ^ n := by
   simp only [nrm, map_pow]
   push_cast
   exact norm_pow _ _
 
+/- English proof (translation)
+The claim follows from `norm_nonneg _`.
+-/
 lemma nrm_nonneg (y : Per.Fl l) : 0 ≤ nrm y := norm_nonneg _
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.RingBasics.mem_OC _).1 (y.untilt).2`.
+-/
 lemma nrm_le_one (y : Per.Fl l) : nrm y ≤ 1 := (GlobalTheory.RingBasics.mem_OC _).1 (y.untilt).2
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.TiltAbs.untilt_ultrametric_definite l y z).1`.
+-/
 lemma nrm_add (y z : Per.Fl l) : nrm (y + z) ≤ max (nrm y) (nrm z) :=
   (GlobalTheory.TiltAbs.untilt_ultrametric_definite l y z).1
 
+/- English proof (translation)
+Use `(GlobalTheory.TiltAbs.untilt_ultrametric_definite l y y).2 ?_` and prove the remaining obligations. Establish `: ((y.untilt : Per.OC l) : ℂ_[l]) = 0` using `norm_eq_zero.1 h`. Conclude with `Subtype.ext this`.
+-/
 lemma eq_zero_of_nrm (y : Per.Fl l) (h : nrm y = 0) : y = 0 := by
   refine (GlobalTheory.TiltAbs.untilt_ultrametric_definite l y y).2 ?_
   have : ((y.untilt : Per.OC l) : ℂ_[l]) = 0 := norm_eq_zero.1 h
   exact Subtype.ext this
 
+/- English proof (translation)
+Establish `h : nrm (-1 : Per.Fl l) ^ 2 = 1`. Rewrite using `[← nrm_pow]`. Simplify using `[nrm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (nrm_nonneg _) (by norm_num)).1 h`.
+-/
 lemma nrm_neg_one : nrm (-1 : Per.Fl l) = 1 := by
   have h : nrm (-1 : Per.Fl l) ^ 2 = 1 := by
     rw [← nrm_pow]; simp [nrm_one]
   exact (pow_eq_one_iff_of_nonneg (nrm_nonneg _) (by norm_num)).1 h
 
+/- English proof (translation)
+Rewrite using `[neg_eq_neg_one_mul, nrm_mul, nrm_neg_one, one_mul]`.
+-/
 lemma nrm_neg (y : Per.Fl l) : nrm (-y) = nrm y := by
   rw [neg_eq_neg_one_mul, nrm_mul, nrm_neg_one, one_mul]
 
+/- English proof (translation)
+Establish `: a - c = (a - b) + (b - c)` using `by ring`. Rewrite using `[this]`. Conclude with `nrm_add _ _`.
+-/
 lemma nrm_sub_tri (a b c : Per.Fl l) : nrm (a - c) ≤ max (nrm (a - b)) (nrm (b - c)) := by
   have : a - c = (a - b) + (b - c) := by ring
   rw [this]; exact nrm_add _ _
 
+/- English proof (translation)
+The claim follows from `norm_pos_iff.2 GlobalTheory.RingBasics.p_ne_zero`.
+-/
 lemma norm_l_pos : 0 < ‖((l : ℕ) : ℂ_[l])‖ := norm_pos_iff.2 GlobalTheory.RingBasics.p_ne_zero
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `GlobalTheory.TiltAbs.untilt_add (y - z) z`. Rewrite `ht` using `[sub_add_cancel]`. Establish `h : (((y - z).untilt : Per.OC l) : ℂ_[l]) = (((y.untilt : Per.OC l) : ℂ_[l]) - ((z.untilt : Per.OC l) : ℂ_[l])) + (-((l : ℕ) : ℂ_[l]) * ((t : Per.OC l) : ℂ_[l]))`. Rewrite using `[ht]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `nrm`. Rewrite using `[h]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max le_rfl ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_neg]`.
+
+Conclude with `mul_le_of_le_one_right (norm_nonneg _) (GlobalTheory.TiltAbs.norm_le_one t)`.
+-/
 lemma nrm_sub_le (y z : Per.Fl l) :
     nrm (y - z) ≤ max ‖((y.untilt : Per.OC l) : ℂ_[l]) - ((z.untilt : Per.OC l) : ℂ_[l])‖
       ‖((l : ℕ) : ℂ_[l])‖ := by
@@ -68,6 +108,11 @@ lemma nrm_sub_le (y z : Per.Fl l) :
   rw [norm_mul, norm_neg]
   exact mul_le_of_le_one_right (norm_nonneg _) (GlobalTheory.TiltAbs.norm_le_one t)
 
+/- English proof (translation)
+Establish `hs0 : 0 < s` using `lt_of_le_of_lt hr hrs`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hc0 ((div_lt_one hs0).2 hrs)`. Take `⟨k, hk1, hk2⟩` from `exists_nat_pow_near_of_lt_one (pow_pos hs0 n) (pow_le_one₀ hs0.le hs) hc0 hc1`. Use `⟨n, k + 1, ?_, hk1⟩` and prove the remaining obligations. Rewrite `hn` using `[div_pow, div_lt_iff₀ (pow_pos hs0 n)]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma exists_pow_between_pt {r s c : ℝ} (hr : 0 ≤ r) (hrs : r < s) (hs : s ≤ 1) (hc0 : 0 < c)
     (hc1 : c < 1) : ∃ n k : ℕ, r ^ n < c ^ k ∧ c ^ k < s ^ n := by
   have hs0 : 0 < s := lt_of_le_of_lt hr hrs
@@ -79,6 +124,13 @@ private lemma exists_pow_between_pt {r s c : ℝ} (hr : 0 ≤ r) (hrs : r < s) (
     _ ≤ c * c ^ k := mul_le_mul_of_nonneg_left hk2 hc0.le
     _ = c ^ (k + 1) := by ring
 
+/- English proof (translation)
+Establish `hd : ∃ t : Per.OC l, a = b * t`. Distinguish the cases in `hb : (b : ℂ_[l]) = 0`. Rewrite `h` using `[hb, norm_zero]`. Establish `ha : (a : ℂ_[l]) = 0` using `norm_le_zero_iff.1 h`. Conclude with `⟨0, by rw [mul_zero]; exact Subtype.ext ha⟩`.
+
+Use `⟨⟨(a : ℂ_[l]) / (b : ℂ_[l]), (GlobalTheory.RingBasics.mem_OC _).2 ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)`. Use `push_cast`. Rewrite using `[mul_div_cancel₀ _ hb]`.
+
+Take `⟨t, rfl⟩` from `hd`. Rewrite using `[map_mul]`. Use `push_cast`. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (GlobalTheory.TiltAbs.norm_le_one _)`.
+-/
 private lemma norm_map_mono_pt (f : Per.OC l →+* Per.OC l) (a b : Per.OC l)
     (h : ‖(a : ℂ_[l])‖ ≤ ‖(b : ℂ_[l])‖) : ‖((f a : Per.OC l) : ℂ_[l])‖ ≤ ‖((f b : Per.OC l) : ℂ_[l])‖ := by
   have hd : ∃ t : Per.OC l, a = b * t := by
@@ -96,6 +148,13 @@ private lemma norm_map_mono_pt (f : Per.OC l →+* Per.OC l) (a b : Per.OC l)
   rw [norm_mul]
   exact mul_le_of_le_one_right (norm_nonneg _) (GlobalTheory.TiltAbs.norm_le_one _)
 
+/- English proof (translation)
+Establish `hlt` using `GlobalTheory.TiltAbs.norm_l_lt (l := l)`. Establish `e (z : Per.OC l) (n : ℕ) : ‖((z ^ n : Per.OC l) : ℂ_[l])‖ = ‖(z : ℂ_[l])‖ ^ n` using `by push_cast; exact norm_pow _ _`. Establish `el : ‖((((l : ℕ) : Per.OC l)) : ℂ_[l])‖ = ‖((l : ℕ) : ℂ_[l])‖` using `by push_cast; rfl`. Break down `lt_trichotomy ‖((f y : Per.OC l) : ℂ_[l])‖ ‖(y : ℂ_[l])‖ with h | h | h` into its components or cases. Take `⟨n, k, h1, h2⟩` from `exists_pow_between_pt (norm_nonneg _) h (GlobalTheory.TiltAbs.norm_le_one y) (norm_l_pos (l := l)) hlt`.
+
+Establish `h3` using `norm_map_mono_pt f (((l : ℕ) : Per.OC l) ^ k) (y ^ n) (by rw [e, e, el]; exact h2.le)`. Rewrite `h3` using `[map_pow, map_pow, map_natCast, e, e, el]`. Conclude with `absurd h1 (not_lt.2 h3)`. Conclude with `h`. Take `⟨n, k, h1, h2⟩` from `exists_pow_between_pt (norm_nonneg _) h (GlobalTheory.TiltAbs.norm_le_one (f y)) (norm_l_pos (l := l)) hlt`.
+
+Establish `h3` using `norm_map_mono_pt f (y ^ n) (((l : ℕ) : Per.OC l) ^ k) (by rw [e, e, el]; exact h1.le)`. Rewrite `h3` using `[map_pow, map_pow, map_natCast, e, e, el]`. Conclude with `absurd h2 (not_lt.2 h3)`.
+-/
 private lemma norm_map_pt (f : Per.OC l →+* Per.OC l) (y : Per.OC l) :
     ‖((f y : Per.OC l) : ℂ_[l])‖ = ‖(y : ℂ_[l])‖ := by
   have hlt := GlobalTheory.TiltAbs.norm_l_lt (l := l)
@@ -116,6 +175,9 @@ private lemma norm_map_pt (f : Per.OC l →+* Per.OC l) (y : Per.OC l) :
     rw [map_pow, map_pow, map_natCast, e, e, el] at h3
     exact absurd h2 (not_lt.2 h3)
 
+/- English proof (translation)
+Unfold `nrm`. Rewrite using `[GlobalTheory.RingBasics.untilt_σF]`. Conclude with `norm_map_pt (Per.σO g) _`.
+-/
 lemma nrm_σF (g : Per.Gq l) (y : Per.Fl l) : nrm (Per.σF g y) = nrm y := by
   unfold nrm
   rw [GlobalTheory.RingBasics.untilt_σF]
@@ -126,12 +188,20 @@ end GlobalTheory.LogU.TeichSplit
 namespace GlobalTheory.LogU.TeichSplit
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hx.exists_right_inv`. Establish `h` using `congrArg nrm hy`. Rewrite `h` using `[nrm_mul, nrm_one]`. Use polynomial arithmetic with `[nrm_le_one x, nrm_le_one y, nrm_nonneg x, nrm_nonneg y]`.
+-/
 lemma nrm_eq_one_of_isUnit {x : Per.Fl l} (hx : IsUnit x) : nrm x = 1 := by
   obtain ⟨y, hy⟩ := hx.exists_right_inv
   have h := congrArg nrm hy
   rw [nrm_mul, nrm_one] at h
   nlinarith [nrm_le_one x, nrm_le_one y, nrm_nonneg x, nrm_nonneg y]
 
+/- English proof (translation)
+Use `eq_zero_of_nrm d ?_` and prove the remaining obligations. Establish `h1 : nrm d ^ q = nrm d` using `by rw [← nrm_pow, hd]`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < nrm d` using `lt_of_le_of_ne (nrm_nonneg d) (Ne.symm hne)`. Establish `h2 : nrm d ^ (q - 1) = 1`.
+
+Establish `: nrm d ^ (q - 1) * nrm d = 1 * nrm d`. Rewrite using `[← pow_succ, Nat.sub_add_cancel (by omega), h1, one_mul]`. Conclude with `mul_right_cancel₀ hpos.ne' this`. Use `(pow_eq_one_iff_of_nonneg (nrm_nonneg d) (by omega)).1 h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma eq_zero_of_pow_eq_self {d : Per.Fl l} {q : ℕ} (hq : 2 ≤ q) (hd : d ^ q = d) (h : nrm d < 1) :
     d = 0 := by
   refine eq_zero_of_nrm d ?_
@@ -145,6 +215,11 @@ lemma eq_zero_of_pow_eq_self {d : Per.Fl l} {q : ℕ} (hq : 2 ≤ q) (hd : d ^ q
   have := (pow_eq_one_iff_of_nonneg (nrm_nonneg d) (by omega)).1 h2
   linarith
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `GlobalTheory.TiltAbs.untilt_add (y - 1) 1`. Rewrite `ht` using `[sub_add_cancel, map_one]`. Establish `hmem : (y - 1).untilt ∈ (Ideal.span {((l : ℕ) : Per.OC l)}) ^ 1`. Rewrite using `[GlobalTheory.RingBasics.mem_span_pow_OC, pow_one]`. Conclude with `h`.
+
+Rewrite `hmem` using `[pow_one, Ideal.mem_span_singleton']`. Take `⟨s, hs⟩` from `hmem`. Use `⟨s + t, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_one, WittVector.fontaineTheta_teichmuller, ht, ← hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma inJ_of_nrm {y : Per.Fl l} (h : nrm (y - 1) ≤ ‖((l : ℕ) : ℂ_[l])‖) : InJ (Per.tm y - 1) := by
   obtain ⟨t, ht⟩ := GlobalTheory.TiltAbs.untilt_add (y - 1) 1
   rw [sub_add_cancel, map_one] at ht
@@ -160,6 +235,37 @@ end GlobalTheory.LogU.TeichSplit
 
 open GlobalTheory.LogU.TeichSplit in
 
+/- English proof (translation)
+Introduce `l _ x hx`. Establish `hl : l.Prime` using `Fact.out`. Establish `hlt` using `GlobalTheory.TiltAbs.norm_l_lt (l := l)`. Establish `hN1 : nrm x = 1` using `nrm_eq_one_of_isUnit hx`. Take `⟨α, hα⟩` from `UniformSpace.Completion.denseRange_coe.exists_dist_lt (((x.untilt : Per.OC l) : ℂ_[l])) one_pos`.
+
+Rewrite `hα` using `[dist_eq_norm]`. Establish `hαn : ‖α‖ = 1`. Rewrite using `[← PadicComplex.norm_extends]`. Establish `hx1 : ‖((x.untilt : Per.OC l) : ℂ_[l])‖ = 1` using `hN1`. Establish `a1 : ‖((α : PadicAlgCl l) : ℂ_[l])‖ ≤ 1`.
+
+Use `IsUltrametricDist.norm_add_le_max (((x.untilt : Per.OC l) : ℂ_[l])) (((α : PadicAlgCl l) : ℂ_[l]) - ((x.untilt : Per.OC l) : ℂ_[l]))` as an intermediate fact. Rewrite `this` using `[add_sub_cancel, norm_sub_rev]`. Conclude with `this.trans (max_le hx1.le hα.le)`. Establish `a2` using `IsUltrametricDist.norm_add_le_max (((α : PadicAlgCl l) : ℂ_[l])) (((x.untilt : Per.OC l) : ℂ_[l]) - ((α : PadicAlgCl l) : ℂ_[l]))`. Rewrite `a2` using `[add_sub_cancel, hx1]`.
+
+Use `le_antisymm a1 ?_` and prove the remaining obligations. Break down `le_max_iff.1 a2 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (not_le.2 hα)`. Take `⟨ζ, m, hm, hζ, hαζ⟩` from `ReciprocityTheory.DiscreteGroups.LocalClassField.exists_teichmuller_bar α hαn`.
+
+Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero (by rintro rfl; exact hm (dvd_zero l))`. Take `⟨ω, hωm, hωζ⟩` from `GlobalTheory.MemLoc.exists_tilt_root_of_unity l ζ m hm0 hm hζ`. Establish `hxω : nrm (x - ω) < 1`. Use `lt_of_le_of_lt (nrm_sub_le x ω) (max_lt ?_ hlt)` and prove the remaining obligations. Rewrite using `[hωζ]`.
+
+Establish `e1 : ((x.untilt : Per.OC l) : ℂ_[l]) - ((ζ : Om l) : ℂ_[l]) = (((x.untilt : Per.OC l) : ℂ_[l]) - ((α : PadicAlgCl l) : ℂ_[l])) + (((α - ζ : PadicAlgCl l)) : ℂ_[l])`. Rewrite using `[UniformSpace.Completion.coe_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt hα ?_)` and prove the remaining obligations.
+
+Rewrite using `[PadicComplex.norm_extends]`. Conclude with `hαζ`. Use `set x₁ := x * ω ^ (m - 1) with hx₁`. Establish `hωω : ω * ω ^ (m - 1) = 1`. Rewrite using `[← pow_succ', Nat.sub_add_cancel hm0, hωm]`.
+
+Establish `hx1 : nrm (x₁ - 1) < 1`. Establish `: x₁ - 1 = ω ^ (m - 1) * (x - ω)`. Rewrite using `[hx₁, ← hωω]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, nrm_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (norm_l_pos (l := l)) hx1`. Use `⟨ω, x₁, k, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hx₁, ← mul_assoc, mul_comm ω x, mul_assoc, hωω, mul_one]`. Use `inJ_of_nrm ?_` and prove the remaining obligations.
+
+Establish `e2 : x₁ ^ l ^ k - 1 = (x₁ - 1) ^ l ^ k`. Rewrite using `[sub_pow_char_pow, one_pow]`. Rewrite using `[e2, nrm_pow]`. Use `le_trans (pow_le_pow_of_le_one (nrm_nonneg _) (nrm_le_one _) (Nat.lt_pow_self hl.one_lt).le) hk.le` and prove the remaining obligations. Introduce `g e he hgx`.
+
+Establish `f0 : 0 < Nat.totient m` using `Nat.totient_pos.2 hm0`. Establish `hcop : Nat.Coprime l m` using `(Nat.Prime.coprime_iff_not_dvd hl).2 hm`. Establish `hmod : l ^ Nat.totient m ≡ 1 [MOD m]` using `Nat.ModEq.pow_totient hcop`. Establish `hq1 : 1 ≤ l ^ Nat.totient m` using `Nat.one_le_pow _ _ hl.pos`. Take `⟨c, hc⟩` from `(Nat.modEq_iff_dvd' hq1).1 hmod.symm`.
+
+Establish `hωq : ω ^ l ^ Nat.totient m = ω`. Rewrite using `[← Nat.sub_add_cancel hq1, pow_succ, hc, pow_mul, hωm, one_pow, one_mul]`. Establish `hq2 : 2 ≤ l ^ Nat.totient m` using `le_trans hl.two_le (Nat.le_self_pow f0.ne' l)`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_pow_eq_self hq2 ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[sub_pow_char_pow, ← map_pow, hωq]`. Establish `he1 : nrm (e - 1) < 1`. Use `lt_of_le_of_lt (nrm_sub_le e 1) (max_lt ?_ hlt)` and prove the remaining obligations. Rewrite using `[he, map_one, sub_self, norm_zero]`. Conclude with `zero_lt_one`.
+
+Establish `h1 : nrm (Per.σF g ω - Per.σF g x) < 1`. Rewrite using `[← map_sub, nrm_σF, ← neg_sub, nrm_neg]`. Conclude with `hxω`. Establish `h2 : nrm (Per.σF g x - x) < 1`. Establish `: Per.σF g x - x = x * (e - 1)` using `by rw [hgx]; ring`.
+
+Rewrite using `[this, nrm_mul, hN1, one_mul]`. Conclude with `he1`. Use `lt_of_le_of_lt (nrm_sub_tri _ (Per.σF g x) _) (max_lt h1 ?_)` and prove the remaining obligations. Conclude with `lt_of_le_of_lt (nrm_sub_tri _ x _) (max_lt h2 hxω)`.
+-/
 theorem GlobalTheory.LogU.teich_split : ∀ (l : ℕ) [Fact l.Prime] (x : Per.Fl l), IsUnit x → ∃ (ω x₁ : Per.Fl l) (N : ℕ), x = ω * x₁ ∧ GlobalTheory.LogU.InJ (Per.tm (x₁ ^ (l ^ N)) - 1) ∧ ∀ (g : Per.Gq l) (e : Per.Fl l), e.untilt = 1 → Per.σF g x = x * e → Per.σF g ω = ω := by
   intro l _ x hx
   have hl : l.Prime := Fact.out
@@ -242,4 +348,7 @@ theorem GlobalTheory.LogU.teich_split : ∀ (l : ℕ) [Fact l.Prime] (x : Per.Fl
       refine lt_of_le_of_lt (nrm_sub_tri _ (Per.σF g x) _) (max_lt h1 ?_)
       exact lt_of_le_of_lt (nrm_sub_tri _ x _) (max_lt h2 hxω)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LogU.teich_split`.
+-/
 example : ∀ (l : ℕ) [Fact l.Prime] (x : Per.Fl l), IsUnit x → ∃ (ω x₁ : Per.Fl l) (N : ℕ), x = ω * x₁ ∧ GlobalTheory.LogU.InJ (Per.tm (x₁ ^ (l ^ N)) - 1) ∧ ∀ (g : Per.Gq l) (e : Per.Fl l), e.untilt = 1 → Per.σF g x = x * e → Per.σF g ω = ω := GlobalTheory.LogU.teich_split

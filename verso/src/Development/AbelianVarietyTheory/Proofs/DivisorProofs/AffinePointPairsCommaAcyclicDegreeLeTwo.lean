@@ -29,6 +29,9 @@ variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ CommAl
 
 include hQ bij h0 in
 
+/- English proof (translation)
+Introduce `x hx`. Use `(bij T (hQ T (𝟙 T))).1 ?_` and prove the remaining obligations. Rewrite using `[hx _ _ h0, map_zero]`.
+-/
 theorem sep_of_retract : Sep F P := by
   intro x hx
   refine (bij T (hQ T (𝟙 T))).1 ?_
@@ -36,6 +39,9 @@ theorem sep_of_retract : Sep F P := by
 
 include hp bij h0 in
 
+/- English proof (translation)
+Introduce `s hs`. Take `⟨x, hx⟩` from `(bij T (hQ T (𝟙 T))).2 (s _ (θ T (hQ T (𝟙 T))))`. Use `⟨x, fun S u hu ↦ (bij S (hQ S u)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← mp_comp, ← hp, mp_comp, hx, ← hs _ _ _ _ h0, hp, hs _ _ _ _ hu]`.
+-/
 theorem glue_of_retract : Glue F P := by
   intro s hs
   obtain ⟨x, hx⟩ := (bij T (hQ T (𝟙 T))).2 (s _ (θ T (hQ T (𝟙 T))))
@@ -44,6 +50,13 @@ theorem glue_of_retract : Glue F P := by
 
 include hp hθ hpm bij h0 in
 
+/- English proof (translation)
+Introduce `a ha`. Establish `e : ∀ S (h : Q S) y, mp F (θ S h) (Function.surjInv (bij S h).2 y) = y` using `fun S h y ↦ Function.surjInv_eq (bij S h).2 y`. Use `⟨fun S u ↦ Function.surjInv (bij S (hQ S u)).2 (a _ _ (θ T (hQ T (𝟙 T))) (p S u) - a _ _ u (θ S (hQ S u))), fun S S' u ψ hu ↦ ?_⟩` and prove the remaining obligations. Use `(bij S' (hQ S' (u ≫ ψ))).1 ?_` and prove the remaining obligations. Rewrite using `[map_sub, e, ← mp_comp, ← hθ S S' (hQ S u) (hQ S' (u ≫ ψ)) ψ, mp_comp, e]`.
+
+Establish `k1` using `ha _ _ _ _ (p S u) (m S S' _ (hQ S' (u ≫ ψ)) ψ) h0`. Establish `k2` using `ha _ _ _ u ψ (θ S' (hQ S' (u ≫ ψ))) hu`. Establish `k3` using `ha _ _ _ u (θ S (hQ S u)) (m S S' _ (hQ S' (u ≫ ψ)) ψ) hu`. Rewrite `k1` using `[hpm, hp]`. Rewrite `k3` using `[hθ]`.
+
+Simplify using `only [map_sub]`. Take the linear combination `k1 - k3 + k2`.
+-/
 theorem cocycleOne_vanishing_of_natural_additive_retract : Van1 F P := by
   intro a ha
   have e : ∀ S (h : Q S) y, mp F (θ S h) (Function.surjInv (bij S h).2 y) = y :=
@@ -62,6 +75,13 @@ theorem cocycleOne_vanishing_of_natural_additive_retract : Van1 F P := by
 
 include hp hθ hpm hmm bij h0 in
 
+/- English proof (translation)
+Introduce `z hz`. Establish `e : ∀ S (h : Q S) y, mp F (θ S h) (Function.surjInv (bij S h).2 y) = y` using `fun S h y ↦ Function.surjInv_eq (bij S h).2 y`. Use `⟨fun S S' u ψ ↦ Function.surjInv (bij S' (hQ S' (u ≫ ψ))).2 (z _ _ _ u ψ (θ S' (hQ S' (u ≫ ψ))) - z _ _ _ u (θ S (hQ S u)) (m S S' _ (hQ S' (u ≫ ψ)) ψ) + z _ _ _ (θ T (hQ T (𝟙 T))) (p S u) (m S S' _ (hQ S' (u ≫ ψ)) ψ)), fun S S' S'' u ψ χ hu ↦ ?_⟩` and prove the remaining obligations. Use `(bij S'' (hQ S'' (u ≫ ψ ≫ χ))).1 ?_` and prove the remaining obligations. Rewrite using `[map_add, map_sub, e, e, ← mp_comp, ← hθ S' S'' (hQ S' (u ≫ ψ)) (hQ S'' (u ≫ ψ ≫ χ)) χ, mp_comp, e]`.
+
+Establish `c1` using `hz _ _ _ _ _ (p S u) (m S S' _ (hQ S' (u ≫ ψ)) ψ) (m S' S'' _ (hQ S'' (u ≫ ψ ≫ χ)) χ) h0`. Establish `c2` using `hz _ _ _ _ u (θ S (hQ S u)) (m S S' _ (hQ S' (u ≫ ψ)) ψ) (m S' S'' _ (hQ S'' (u ≫ ψ ≫ χ)) χ) hu`. Establish `c3` using `hz _ _ _ _ u ψ (θ S' (hQ S' (u ≫ ψ))) (m S' S'' _ (hQ S'' (u ≫ ψ ≫ χ)) χ) hu`. Establish `c4` using `hz _ _ _ _ u ψ χ (θ S'' (hQ S'' (u ≫ ψ ≫ χ))) hu`. Rewrite `c1` using `[hpm, hmm, hp]`.
+
+Rewrite `c2` using `[hθ, hmm]`. Rewrite `c3` using `[hθ]`. Simplify using `only [map_add, map_sub]`. Take the linear combination `c3 - c4 - c2 + c1`.
+-/
 theorem cocycleTwo_vanishing_of_natural_additive_retract : Van2 F P := by
   intro z hz
   have e : ∀ S (h : Q S) y, mp F (θ S h) (Function.surjInv (bij S h).2 y) = y :=
@@ -97,6 +117,9 @@ open KaehlerDifferential DividedPowers ReciprocityTheory.ChartRestriction.G.Geo.
 variable {R : Type} [CommRing R] {I : Ideal R} {κ : DividedPowers I} {X : Scheme.{0}} {t : X ⟶ Sp R}
   {Y : Scheme.{0}} {i : X ⟶ Y}
 
+/- English proof (translation)
+Introduce `z _`. Rewrite using `[← u.hom.1.pt, Category.assoc, Scheme.Hom.comp_preimage]`. Conclude with `hV trivial`.
+-/
 theorem le_preimage_of_hom {T S : (IsSm κ t i).FullSubcategory} (u : T ⟶ S) {V : Y.Opens}
     (hV : ⊤ ≤ (T.obj.T.x ≫ i) ⁻¹ᵁ V) : ⊤ ≤ (S.obj.T.x ≫ i) ⁻¹ᵁ V := by
   intro z _
@@ -111,6 +134,9 @@ def cutPr (hY : ∀ U V : Y.Opens, IsAffineOpen U → IsAffineOpen V → IsAffin
     · exact hY _ _ hU V.2
     · rw [hU, top_inf_eq]; exact V.2), fun z _ ↦ ⟨S.obj.mem trivial, h trivial⟩⟩, ⟨V, h⟩⟩
 
+/- English proof (translation)
+Break down `S.obj.hU with hU | hU` into its components or cases. Conclude with `hY _ _ hU V.2`. Express the relevant statement in the definitionally equal form `IsAffineOpen (S.obj.U ⊓ V.1)`. Rewrite using `[hU, top_inf_eq]`. Conclude with `V.2`.
+-/
 theorem cutPr_aff (hY : ∀ U V : Y.Opens, IsAffineOpen U → IsAffineOpen V → IsAffineOpen (U ⊓ V))
     (V : Y.affineOpens) (S : (IsSm κ t i).FullSubcategory) (h : ⊤ ≤ (S.obj.T.x ≫ i) ⁻¹ᵁ V.1) :
     IsAffineOpen (cutPr hY V S h).obj.U := by
@@ -123,10 +149,20 @@ def prHom {S S' : (IsSm κ t i).FullSubcategory} (φ : S.obj.T ⟶ S'.obj.T) (h 
     S ⟶ S' :=
   ObjectProperty.homMk ⟨φ, h⟩
 
+/- English proof (translation)
+The claim follows from `ObjectProperty.hom_ext _ (Subtype.ext h)`.
+-/
 theorem prHom_ext {S S' : (IsSm κ t i).FullSubcategory} {f g : S ⟶ S'} (h : f.hom.1 = g.hom.1) :
     f = g :=
   ObjectProperty.hom_ext _ (Subtype.ext h)
 
+/- English proof (translation)
+Take `⟨V, hV⟩` from `T.property`. Establish `hQ : ∀ S (u : T ⟶ S), ⊤ ≤ (S.obj.T.x ≫ i) ⁻¹ᵁ V.1` using `fun S u ↦ le_preimage_of_hom u hV`. Set `θ : ∀ (S : (IsSm κ t i).FullSubcategory) (h : ⊤ ≤ (S.obj.T.x ≫ i) ⁻¹ᵁ V.1), S ⟶ cutPr hY V S h` to `fun S h ↦ prHom (𝟙 S.obj.T) inf_le_left`. Set `p : ∀ S (u : T ⟶ S), cutPr hY V T (hQ T (𝟙 T)) ⟶ cutPr hY V S (hQ S u)` to `fun S u ↦ prHom u.hom.1 (inf_le_inf_right _ u.hom.2)`. Set `m : ∀ (S S' : (IsSm κ t i).FullSubcategory) (h : ⊤ ≤ (S.obj.T.x ≫ i) ⁻¹ᵁ V.1) (h' : ⊤ ≤ (S'.obj.T.x ≫ i) ⁻¹ᵁ V.1), (S ⟶ S') → (cutPr hY V S h ⟶ cutPr hY V S' h')` to `fun S S' h h' ψ ↦ prHom ψ.hom.1 (inf_le_inf_right _ ψ.hom.2)`.
+
+Establish `hp : ∀ S u, θ T (hQ T (𝟙 T)) ≫ p S u = u ≫ θ S (hQ S u)` using `fun S u ↦ prHom_ext ((Category.id_comp _).trans (Category.comp_id _).symm)`. Establish `hθ : ∀ S S' h h' (ψ : S ⟶ S'), θ S h ≫ m S S' h h' ψ = ψ ≫ θ S' h'` using `fun S S' h h' ψ ↦ prHom_ext ((Category.id_comp _).trans (Category.comp_id _).symm)`. Establish `hpm : ∀ S S' u (ψ : S ⟶ S'), p S u ≫ m S S' _ _ ψ = p S' (u ≫ ψ)` using `fun S S' u ψ ↦ prHom_ext rfl`. Establish `hmm : ∀ S S' S'' h h' h'' (ψ : S ⟶ S') (χ : S' ⟶ S''), m S S' h h' ψ ≫ m S' S'' h' h'' χ = m S S'' h h'' (ψ ≫ χ)` using `fun S S' S'' h h' h'' ψ χ ↦ prHom_ext rfl`. Establish `bij : ∀ S h, Function.Bijective (mp ((IsSm κ t i).ι ⋙ Pr.fgt κ t i ⋙ O κ t) (θ S h))` using `fun S h ↦ ⟨fun a b hab ↦ hab, fun y ↦ ⟨y, rfl⟩⟩`.
+
+Establish `h0` using `cutPr_aff hY V T (hQ T (𝟙 T))`. Conclude with `⟨sep_of_retract _ _ _ hQ _ θ bij h0, glue_of_retract _ _ _ hQ _ θ p hp bij h0, cocycleOne_vanishing_of_natural_additive_retract _ _ _ hQ _ θ p m hp hθ hpm bij h0, cocycleTwo_vanishing_of_natural_additive_retract _ _ _ hQ _ θ p m hp hθ hpm hmm bij h0⟩`.
+-/
 theorem isSm_acyclic (hY : ∀ U V : Y.Opens, IsAffineOpen U → IsAffineOpen V → IsAffineOpen (U ⊓ V))
     (T : (IsSm κ t i).FullSubcategory) :
     Desc.Sep ((IsSm κ t i).ι ⋙ Pr.fgt κ t i ⋙ O κ t) (fun S (_ : T ⟶ S) ↦ IsAffineOpen S.obj.U) ∧
@@ -157,6 +193,9 @@ theorem isSm_acyclic (hY : ∀ U V : Y.Opens, IsAffineOpen U → IsAffineOpen V 
     cocycleOne_vanishing_of_natural_additive_retract _ _ _ hQ _ θ p m hp hθ hpm bij h0,
     cocycleTwo_vanishing_of_natural_additive_retract _ _ _ hQ _ θ p m hp hθ hpm hmm bij h0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ _ hY T ↦ ⟨(isSm_acyclic hY T).1, (isSm_acyclic hY T).2.1, (isSm_acyclic hY T).2.2.1⟩, fun _ _ _ _ _ _ _ _ hY T ↦ (isSm_acyclic hY T).2.2.2⟩`.
+-/
 theorem isSm_acyclic_two : (∀ (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPowers I)
     (X : Scheme.{0}) (t : X ⟶ Sp R) (Y : Scheme.{0}) (i : X ⟶ Y),
     (∀ U V : Y.Opens, IsAffineOpen U → IsAffineOpen V → IsAffineOpen (U ⊓ V)) →

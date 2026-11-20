@@ -7,6 +7,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.RayPrimeOfNorm
 
+/- English proof (translation)
+Introduce `D i jE hp ⟨π, hK, hnorm, hm⟩`. Use `letI : Algebra D.host.E Qb := jE.toAlgebra`. Use `haveI : IsScalarTower ℚ D.host.E Qb := IsScalarTower.of_algebraMap_eq fun x => RingHom.congr_fun (Subsingleton.elim (algebraMap ℚ Qb) (jE.comp (algebraMap ℚ D.host.E))) x`. Set `σ : Qb →ₐ[ℚ] Qb` to `(D.host.conj : D.host.E →ₐ[ℚ] D.host.E).liftNormal Qb`. Establish `hσ : ∀ x : D.host.E, σ (jE x) = jE (D.host.conj x)` using `fun x => AlgHom.liftNormal_commutes (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) Qb x`.
+
+Use `⟨hp, jE (π : D.host.E), (IntermediateField.mem_map _).2 ⟨_, hK, rfl⟩, ?_, ?_, σ, ?_⟩` and prove the remaining obligations. Conclude with `(RingOfIntegers.isIntegral_coe π).map jE.toIntAlgHom`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 hm`. Distinguish the cases in `hm0 : (((D.host.QS * D.host.q * D.host.d : ℕ)) : Qb) = 0`. Rewrite using `[hm0, div_zero]`.
+
+Conclude with `isIntegral_zero`. Establish `e : (jE (π : D.host.E) - 1) / (((D.host.QS * D.host.q * D.host.d : ℕ)) : Qb) = jE (y : D.host.E)`. Rewrite using `[div_eq_iff hm0]`. Establish `e1` using `congrArg (fun z : 𝓞 D.host.E => jE (algebraMap (𝓞 D.host.E) D.host.E z)) hy`. Simplify using `only [map_mul, map_sub, map_one, map_natCast] at e1`.
+
+Move the coercions through the operations in `at e1 ⊢`. Conclude with `e1.symm`. Rewrite using `[e]`. Conclude with `(RingOfIntegers.isIntegral_coe y).map jE.toIntAlgHom`. Rewrite using `[hσ, ← map_mul, hnorm, map_natCast]`.
+-/
 theorem isRayPrime_of_norm_eq : ∀ (D : D7) (i : Fin 2) (jE : D.host.E →+* Qb), (D.host.g i).Prime → (∃ π : 𝓞 D.host.E, (π : D.host.E) ∈ D.host.K ∧ (π : D.host.E) * D.host.conj (π : D.host.E) = (D.host.g i : D.host.E) ∧ (π - 1) ∈ Ideal.span {((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E)}) → IsRayPrime (GlobalTheory.HeightCounting.KQbar D jE) (D.host.QS * D.host.q * D.host.d) (D.host.g i) := by
   intro D i jE hp ⟨π, hK, hnorm, hm⟩
   letI : Algebra D.host.E Qb := jE.toAlgebra

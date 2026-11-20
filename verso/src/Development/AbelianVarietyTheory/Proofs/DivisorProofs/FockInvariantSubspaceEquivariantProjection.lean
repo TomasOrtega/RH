@@ -13,6 +13,13 @@ namespace GlobalTheory.FockProj
 variable {σ : Type} [DecidableEq σ] {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {ι : MvPolynomial σ ℂ →ₗ[ℂ] H}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_homogeneousComponent g]`. Rewrite using `[map_sum, inner_sum]`. Distinguish the cases in `hn : n ∈ Finset.range (g.totalDegree + 1)`. Rewrite using `[Finset.sum_eq_single_of_mem n hn]`. Introduce `m _ hmn`.
+
+Conclude with `GlobalTheory.FockAdj.inner_eq_zero_of_isHomogeneous hι (Ne.symm hmn) hh (homogeneousComponent_isHomogeneous m g)`. Establish `hlt : g.totalDegree < n` using `by simp at hn; omega`. Rewrite using `[homogeneousComponent_eq_zero n g hlt, map_zero, inner_zero_right]`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Establish `: m ≠ n` using `by simp at hm; omega`.
+
+Conclude with `GlobalTheory.FockAdj.inner_eq_zero_of_isHomogeneous hι (Ne.symm this) hh (homogeneousComponent_isHomogeneous m g)`.
+-/
 theorem inner_homog_eq (hι : IsFockIP ι) {n : ℕ} {h : MvPolynomial σ ℂ} (hh : h.IsHomogeneous n)
     (g : MvPolynomial σ ℂ) :
     inner ℂ (ι h) (ι g) = inner ℂ (ι h) (ι (homogeneousComponent n g)) := by
@@ -30,6 +37,17 @@ theorem inner_homog_eq (hι : IsFockIP ι) {n : ℕ} {h : MvPolynomial σ ℂ} (
     exact GlobalTheory.FockAdj.inner_eq_zero_of_isHomogeneous hι (Ne.symm this) hh
       (homogeneousComponent_isHomogeneous m g)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hxC`. Establish `h0 : inner ℂ (ι x) (ι x) = 0` using `(Submodule.mem_orthogonal _ _).1 (Submodule.mem_comap.1 hxC) (ι x) (Submodule.mem_map_of_mem hx)`. Rewrite `h0` using `[inner_self_eq_zero]`.
+
+Conclude with `hinj (by rw [h0, map_zero])`. Rewrite using `[codisjoint_iff, Submodule.eq_top_iff']`. Introduce `f`. Rewrite using `[← sum_homogeneousComponent f]`. Use `Submodule.sum_mem _ fun n _ => ?_` and prove the remaining obligations.
+
+Use `set h := homogeneousComponent n f`. Establish `hh : h.IsHomogeneous n` using `homogeneousComponent_isHomogeneous n f`. Set `Wn : Submodule ℂ (MvPolynomial σ ℂ)` to `W ⊓ homogeneousSubmodule σ ℂ n`. Use `haveI : FiniteDimensional ℂ (homogeneousSubmodule σ ℂ n) := Module.Finite.iff_fg.2 (homogeneousSubmodule_fg σ ℂ n)`. Use `haveI : FiniteDimensional ℂ Wn := Submodule.finiteDimensional_of_le inf_le_right`.
+
+Set `K : Submodule ℂ H` to `Wn.map ι`. Use `haveI : FiniteDimensional ℂ K := inferInstance`. Take `⟨w, hwWn, hwk⟩` from `Submodule.mem_map.1 (K.starProjection_apply_mem (ι h))`. Establish `hwn : w.IsHomogeneous n` using `(mem_homogeneousSubmodule n w).1 hwWn.2`. Use `Submodule.mem_sup.2 ⟨w, hwWn.1, h - w, ?_, add_sub_cancel _ _⟩` and prove the remaining obligations.
+
+Rewrite using `[Submodule.mem_comap, Submodule.mem_orthogonal]`. Introduce and unpack `v ⟨w', hw', rfl⟩`. Rewrite using `[inner_eq_zero_symm, inner_homog_eq hι (hh.sub hwn), map_sub, hwk]`. Use `Submodule.starProjection_inner_eq_zero (K := K) _ _ ?_` and prove the remaining obligations. Conclude with `Submodule.mem_map_of_mem ⟨hW w' hw' n, homogeneousComponent_mem n w'⟩`.
+-/
 theorem isCompl_orth [Finite σ] (hι : IsFockIP ι) (hinj : Function.Injective ι)
     (W : Submodule ℂ (MvPolynomial σ ℂ)) (hW : ∀ f ∈ W, ∀ n, homogeneousComponent n f ∈ W) :
     IsCompl W ((W.map ι)ᗮ.comap ι) := by
@@ -61,6 +79,17 @@ theorem isCompl_orth [Finite σ] (hι : IsFockIP ι) (hinj : Function.Injective 
     refine Submodule.starProjection_inner_eq_zero (K := K) _ _ ?_
     exact Submodule.mem_map_of_mem ⟨hW w' hw' n, homogeneousComponent_mem n w'⟩
 
+/- English proof (translation)
+Introduce `p q r s W hst hgr`. Take `⟨ι, hι, hinj⟩` from `GlobalTheory.FischerParts.exists_fockIP (Ln p q r s)`. Use `set C : Submodule ℂ (Pol p q r s) := (W.map ι)ᗮ.comap ι with hCdef`. Establish `hc : IsCompl W C` using `isCompl_orth hι hinj W hgr`. Establish `hCst : ∀ Z, ∀ u ∈ C, fockAct1 p q r s Z u ∈ C`.
+
+Introduce `Z u hu`. Rewrite `hu`, the goal using `[hCdef, Submodule.mem_comap, Submodule.mem_orthogonal]`. Introduce and unpack `v ⟨w, hw, rfl⟩`. Rewrite using `[inner_eq_zero_symm, (GlobalTheory.FockAdj.fock_adjoints p q r s _ ι hι).2.1 Z u w, inner_eq_zero_symm]`. Conclude with `hu _ (Submodule.mem_map_of_mem (hst _ w hw))`.
+
+Set `π : Pol p q r s →ₗ[ℂ] Pol p q r s` to `W.subtype ∘ₗ W.linearProjOfIsCompl C hc`. Establish `hmem : ∀ f, π f ∈ W` using `fun f => (W.linearProjOfIsCompl C hc f).2`. Establish `hπW : ∀ f ∈ W, π f = f` using `fun f hf => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hc ⟨f, hf⟩)`. Establish `hπC : ∀ u ∈ C, π u = 0` using `fun u hu => by`. Establish `h0` using `(Submodule.linearProjOfIsCompl_apply_eq_zero_iff hc).2 hu`.
+
+Conclude with `(congrArg Subtype.val h0).trans rfl`. Establish `hsub : ∀ f, f - π f ∈ C` using `fun f => by`. Establish `key : W.linearProjOfIsCompl C hc (π f) = W.linearProjOfIsCompl C hc f` using `Submodule.linearProjOfIsCompl_apply_left hc (W.linearProjOfIsCompl C hc f)`. Establish `h1` using `(W.linearProjOfIsCompl C hc).map_sub f (π f)`. Rewrite `h1` using `[key, sub_self]`.
+
+Conclude with `(Submodule.linearProjOfIsCompl_apply_eq_zero_iff hc).1 h1`. Use `⟨π, hmem, hπW, fun Z f => ?_⟩` and prove the remaining obligations. Establish `hf : f = π f + (f - π f)` using `(add_sub_cancel _ _).symm`. Use `conv_lhs => rw [hf]`. Rewrite using `[map_add, map_add, hπW _ (hst Z _ (hmem f)), hπC _ (hCst Z _ (hsub f)), add_zero]`.
+-/
 theorem exists_equivariant_proj : ∀ (p q r s : ℕ) (W : Submodule ℂ (Pol p q r s)),
     (∀ Z, ∀ f ∈ W, fockAct1 p q r s Z f ∈ W) → (∀ f ∈ W, ∀ n, homogeneousComponent n f ∈ W) →
     ∃ π : Pol p q r s →ₗ[ℂ] Pol p q r s, (∀ f, π f ∈ W) ∧ (∀ f ∈ W, π f = f) ∧

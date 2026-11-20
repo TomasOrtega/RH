@@ -24,6 +24,47 @@ noncomputable section
 
 namespace GlobalTheory.TrScale
 
+/- English proof (translation)
+Set `b : Fin (wittIndex V) × Bool → V.V` to `fun a => if a.2 then Φ.e a.1 else Φ.f a.1`. Set `σ : D.host.E →+* D.host.E` to `D.sp.cm.sig`. Set `d : Fin (wittIndex V) × Bool → D.host.E` to `fun a => if u a.1 = 0 then 1 else if (u a.1 = 1 ↔ a.2 = true) then 2 else 2⁻¹`. Establish `h2 : (2 : D.host.E) ≠ 0` using `two_ne_zero`. Establish `hσ2 : σ 2 = 2` using `map_ofNat σ 2`.
+
+Establish `hσd : ∀ i s, σ (d (i, s)) * d (i, !s) = 1` using `fun i s => by`. Simplify using `only [d]`. Apply the tactic sequence `split_ifs <;> cases s <;> simp_all [map_inv₀, hσ2, h2]`. Set `S : Matrix (Fin (wittIndex V) × Bool) (Fin (wittIndex V) × Bool) D.host.E` to `(1 : Matrix _ _ D.host.E).submatrix id ((Equiv.refl _).prodCongr Equiv.boolNot)`. Establish `fe : ∀ i j, V.hT (Φ.f i) (Φ.e j) = if i = j then 1 else 0` using `fun i j => (Φ.ef j i).trans (by simp only [eq_comm])`.
+
+Establish `ef : ∀ i j, V.hT (Φ.e i) (Φ.f j) = if i = j then 1 else 0` using `fun i j => by`. Apply the tactic sequence `rw [← V.herm.eq, fe]; by_cases h : i = j <;> simp [h, eq_comm]`. Establish `ee : ∀ i j, V.hT (Φ.e i) (Φ.e j) = 0` using `fun i j => Φ.ee j i`. Establish `ff : ∀ i j, V.hT (Φ.f i) (Φ.f j) = 0` using `fun i j => Φ.ff j i`. Establish `hB : cT σ (cols V b) * V.gram * cols V b = S`.
+
+Rewrite using `[gram_cols]`. Apply the tactic sequence `ext ⟨i, _ | _⟩ ⟨j, _ | _⟩ <;> simp [b, S, ee, ff, ef, fe, Matrix.one_apply]`. Establish `hSS : S * S = 1`. Use `(Matrix.mul_submatrix_one (Equiv.refl _) _ S).trans ?_` and prove the remaining obligations. Use extensionality with `⟨i, s⟩ ⟨j, t⟩`.
+
+Simplify using `[S, Matrix.one_apply]`. Establish `hS : cT σ S = S`. Apply the tactic sequence `ext ⟨i, _ | _⟩ ⟨j, _ | _⟩ <;> simp [cT, S, Matrix.one_apply, eq_comm, apply_ite σ]`. Set `P : Matrix (Fin (wittIndex V) × Bool) (Fin (wittIndex V) × Bool) D.host.E` to `diagonal d`. Establish `hP : cT σ P * S * P = S`.
+
+Establish `hc : cT σ P = diagonal fun a => σ (d a)`. Apply the tactic sequence `ext a c; by_cases h : a = c <;> simp [cT, P, diagonal_apply, h, eq_comm]`. Rewrite using `[hc]`. Use extensionality with `⟨i, s⟩ ⟨j, t⟩`. Simplify using `only [P, Matrix.mul_diagonal, Matrix.diagonal_mul, S, submatrix_apply, Matrix.one_apply, id, Equiv.prodCongr_apply, Equiv.coe_refl, Prod.map, Prod.mk.injEq, Equiv.boolNot_apply]`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Apply the tactic sequence `cases s <;> cases t <;> simp only [true_and, and_true, Bool.not_true, Bool.not_false, Bool.false_eq_true, Bool.true_eq_false, if_true, if_false, and_self, mul_one, mul_zero, zero_mul, and_false, ite_true, ite_false, Prod.mk.injEq]`. Apply the tactic sequence `all_goals first | exact hσd i _ | exact congrArg _ (hσd i _) | skip`. Simplify using `[hij]`.
+
+Take `⟨Q, hQ⟩ : ∃ Q, Q = S * (cT σ (cols V b) * V.gram)` from `⟨_, rfl⟩`. Establish `hQB : Q * cols V b = 1` using `by rw [hQ, Matrix.mul_assoc, hB, hSS]`. Establish `h1 : cT σ (cols V b) * V.gram = S * Q` using `by rw [hQ, ← Matrix.mul_assoc S S, hSS, Matrix.one_mul]`. Establish `h2' : V.gram * cols V b = cT σ Q * S`. Use `congrArg (cT σ) h1` as an intermediate fact.
+
+Rewrite `this` using `[cT_mul, cT_mul, AutFunCompare.cT_cT', IndefiniteRowSideFullHecke.AdelicUnitaryGroups.cT_gram, hS]`. Then use the resulting hypothesis. Establish `hw` using `unitary_extension σ h1 h2' hQB hP`. Establish `hi : V.gram⁻¹ * (cT σ (1 + cols V b * (P - 1) * Q) * V.gram) * (1 + cols V b * (P - 1) * Q) = 1`. Rewrite using `[Matrix.mul_assoc, hw, Matrix.nonsing_inv_mul _ (IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V)]`. Set `w : GF V` to `⟨⟨_, _, mul_eq_one_comm.1 hi, hi⟩, hw⟩`.
+
+Establish `act : ∀ {p : Type} (x y : p → V.V), (1 + cols V b * (P - 1) * Q) * cols V x = cols V y → ∀ a, GlobalTheory.Cusp.ratAct D.sp.cm V w (x a) = y a` using `fun x y h a => by`. Use `V.frame.repr.injective (DFunLike.coe_injective ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.Cusp.ratAct, Matrix.repr_toLin]`. Conclude with `funext fun i => congrFun (congrFun h i) a`. Establish `hwb : ∀ a, GlobalTheory.Cusp.ratAct D.sp.cm V w (b a) = d a • b a` using `act b (fun a => d a • b a) (by`.
+
+Rewrite using `[Matrix.add_mul, Matrix.mul_assoc, hQB, Matrix.mul_one, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one, add_sub_cancel]`. Use extensionality with `r a`. Simplify using `[cols, P, Matrix.mul_diagonal, mul_comm])`. Use `⟨w, fun x hx => ?_, fun x hx => ?_, fun z hz1 hz2 => ?_⟩` and prove the remaining obligations. Use `(Submodule.span_le (p := LinearMap.eqLocus (GlobalTheory.Cusp.ratAct D.sp.cm V w) ((2 : D.host.E) • LinearMap.id))).2 ?_ hx` and prove the remaining obligations.
+
+Apply the tactic sequence `rintro _ (⟨i, hi, rfl⟩ | ⟨i, hi, rfl⟩) <;> simp only [Set.mem_setOf_eq] at hi`. Use `hwb (i, true)` as an intermediate fact. Simplify using `only [b, d, hi] at this`. Simplify `this` using `[LinearMap.mem_eqLocus]`. Use `hwb (i, false)` as an intermediate fact.
+
+Simplify using `only [b, d, hi] at this`. Simplify `this` using `[LinearMap.mem_eqLocus]`. Use `(Submodule.span_le (p := LinearMap.eqLocus (GlobalTheory.Cusp.ratAct D.sp.cm V w) ((2 : D.host.E)⁻¹ • LinearMap.id))).2 ?_ hx` and prove the remaining obligations. Apply the tactic sequence `rintro _ (⟨i, hi, rfl⟩ | ⟨i, hi, rfl⟩) <;> simp only [Set.mem_setOf_eq, Pi.neg_apply, neg_eq_iff_eq_neg] at hi`. Use `hwb (i, true)` as an intermediate fact.
+
+Simplify using `only [b, d, hi] at this`. Simplify `this` using `[LinearMap.mem_eqLocus]`. Use `hwb (i, false)` as an intermediate fact. Simplify using `only [b, d, hi] at this`. Simplify `this` using `[LinearMap.mem_eqLocus]`.
+
+Establish `hz : ∀ a, u a.1 ≠ 0 → V.hT (b a) z = 0`. Introduce and unpack `⟨i, s⟩ h`. Establish `hm1 : ∀ x, x ∈ Φ.sub u ∨ x ∈ Φ.sub (-u) → V.hT x z = 0` using `fun x hx => hx.elim (hz1 x) (hz2 x)`. Apply `hm1` to reduce the goal to its premises. Apply the tactic sequence `rcases (show u i = 1 ∨ u i = -1 by generalize u i = t at h; revert t; decide) with h' | h' <;> cases s <;>`.
+
+Simplify using `only [b, if_true, if_false, Bool.false_eq_true]`. Conclude with `.inr (by rw [WittFrame.sub]; exact Submodule.subset_span (.inr ⟨i, by simp [h'], rfl⟩))`. Conclude with `.inl (by rw [WittFrame.sub]; exact Submodule.subset_span (.inl ⟨i, h', rfl⟩))`. Conclude with `.inl (by rw [WittFrame.sub]; exact Submodule.subset_span (.inr ⟨i, h', rfl⟩))`. Conclude with `.inr (by rw [WittFrame.sub]; exact Submodule.subset_span (.inl ⟨i, by simp [h'], rfl⟩))`.
+
+Establish `hY : Q * cols V (fun _ : Unit => z) = S * of fun a (_ : Unit) => V.hT (b a) z`. Rewrite using `[hQ, Matrix.mul_assoc, gram_cols]`. Establish `hSY : S * of (fun a (_ : Unit) => V.hT (b a) z) = of fun (a : Fin (wittIndex V) × Bool) (_ : Unit) => V.hT (b (a.1, !a.2)) z`. Simplify using `only [S]`. Rewrite using `[Matrix.one_submatrix_mul]`.
+
+Use extensionality with `⟨i, s⟩ c`. Both sides reduce to the same expression. Establish `hZ : (P - 1) * of (fun (a : Fin (wittIndex V) × Bool) (_ : Unit) => V.hT (b (a.1, !a.2)) z) = 0`. Use extensionality with `⟨i, s⟩ c`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.sub_apply, show P = diagonal d from rfl, Matrix.diagonal_mul, of_apply, Matrix.zero_apply]`.
+
+Distinguish the cases in `hu : u i = 0`. Simplify using `[d, hu]`. Rewrite using `[hz (i, !s) hu]`. Simplify using the standard rewrite rules. Establish `key : (1 + cols V b * (P - 1) * Q) * cols V (fun _ : Unit => z) = cols V (fun _ : Unit => z)`.
+
+Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_assoc, hY, hSY, hZ, Matrix.mul_zero, add_zero]`. Conclude with `act (fun _ : Unit => z) (fun _ => z) key ()`.
+-/
 theorem exists_scale (D : D7) (V : HSp D) (Φ : WittFrame V) (u : SV (wittIndex V)) : ∃ g : GF V, (∀ x ∈ Φ.sub u, GlobalTheory.Cusp.ratAct D.sp.cm V g x = (2 : D.host.E) • x) ∧ (∀ x ∈ Φ.sub (-u), GlobalTheory.Cusp.ratAct D.sp.cm V g x = (2 : D.host.E)⁻¹ • x) ∧ ∀ z, (∀ x ∈ Φ.sub u, V.hT x z = 0) → (∀ x ∈ Φ.sub (-u), V.hT x z = 0) → GlobalTheory.Cusp.ratAct D.sp.cm V g z = z := by
   let b : Fin (wittIndex V) × Bool → V.V := fun a => if a.2 then Φ.e a.1 else Φ.f a.1
   let σ : D.host.E →+* D.host.E := D.sp.cm.sig

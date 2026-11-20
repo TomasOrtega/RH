@@ -9,5 +9,8 @@ open AlgebraicGeometry CategoryTheory
 open scoped Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Rec.FinRd.absT_facts | exact GlobalTheory.CompanionTheory.Ar.Rec.FinRd.absT_facts | (intros; apply GlobalTheory.CompanionTheory.Ar.Rec.FinRd.absT_facts <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_residue_absolute_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) (c : Coeff l) (p : ℕ) [Fact p.Prime] (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (e : ℕ), 0 < e → 0 < ramOverZ la → (∀ x y : T.Fr, FinRd.absT p la T e (x * y) = FinRd.absT p la T e x * FinRd.absT p la T e y) ∧ FinRd.absT p la T e 1 = 1 ∧ (∀ x : T.Fr, x ≠ 0 → 0 < FinRd.absT p la T e x) ∧ ∀ x : T.Fr, FinRd.absT p la T e x ≤ 1 ↔ x ∈ (algebraMap T.V T.Fr).range := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Rec.FinRd.absT_facts | exact GlobalTheory.CompanionTheory.Ar.Rec.FinRd.absT_facts | (intros; apply GlobalTheory.CompanionTheory.Ar.Rec.FinRd.absT_facts <;> assumption)

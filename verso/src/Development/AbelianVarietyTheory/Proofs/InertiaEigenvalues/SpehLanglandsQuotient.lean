@@ -6,15 +6,30 @@ noncomputable section
 
 namespace GlobalTheory.LocGL
 
+/- English proof (translation)
+The claim follows from `(h.tw (absPow k c) (isSmoothChar_absPow c)).of_equiv (δ.twEquiv _ _)`.
+-/
 theorem IsLSeg.nu_rep {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {δ : IrrGL k} {Δ : Segment k} (h : IsLSeg Δ δ.rep) (c : ℂ) : IsLSeg (Δ.nu c) (δ.nu c).rep :=
   (h.tw (absPow k c) (isSmoothChar_absPow c)).of_equiv (δ.twEquiv _ _)
 
+/- English proof (translation)
+Take `⟨hd, h'⟩` from `h.tw (absPow k s) (isSmoothChar_absPow s)`. Conclude with `⟨hd, h'.of_equiv (x.twEquiv _ _) (.refl _)⟩`.
+-/
 theorem IsSpeh.nu_rep {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {δ x : IrrGL k} {m : ℕ} (h : IsSpeh δ m x.rep) (s : ℂ) : IsSpeh (δ.nu s) m (x.nu s).rep := by
   obtain ⟨hd, h'⟩ := h.tw (absPow k s) (isSmoothChar_absPow s)
   exact ⟨hd, h'.of_equiv (x.twEquiv _ _) (.refl _)⟩
 
+/- English proof (translation)
+Introduce `δ x Δ m hL hU hS s`. Take `⟨hd, hc⟩` from `hS.nu_rep (s : ℂ)`. Use `set c : Fin m → ℝ := fun i => s + ((m : ℝ) - 1) / 2 - (i : ℕ) with hcdef`. Establish `hy : ∀ i, spehFactor (δ.nu s) m i = δ.nu (c i : ℂ)` using `fun i => by`. Simplify using `only [spehFactor, IrrGL.nu_nu, hcdef]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨m, spehFactor (δ.nu s) m, hd, ⟨fun i => Δ.nu (c i : ℂ), ⟨?_, ?_⟩, ?_⟩, hc⟩` and prove the remaining obligations. Rewrite using `[Fin.univ_val_map]`.
+
+Introduce `i j hij hp`. Establish `h1` using `hP δ δ Δ Δ hL hU hL hU (c i) (c j) hp`. Establish `h2 : ((i : ℕ) : ℝ) < (j : ℕ)` using `by exact_mod_cast hij`. Simplify using `only [hcdef] at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `i`. Rewrite using `[hy i]`. Conclude with `hL.nu_rep _`.
+-/
 theorem isL_speh_nu (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hP : ∀ (δ δ' : IrrGL k) (Δ Δ' : Segment k), IsLSeg Δ δ.rep → IsUnitarisable δ.rep → IsLSeg Δ' δ'.rep →
       IsUnitarisable δ'.rep → ∀ x y : ℝ, (Δ.nu x).Precedes (Δ'.nu y) → x + 1 ≤ y) :

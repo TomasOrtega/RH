@@ -22,6 +22,9 @@ def tupCoord : TupV W n M ≃L[ℝ] (W → Fin n → Fin M → ℂ) :=
       left_inv := fun _ => rfl
       right_inv := fun _ => rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tupCoord_apply (x : TupV W n M) (w : W) (a : Fin n) (p : Fin M) :
     tupCoord x w a p = x (w, p) a := rfl
 
@@ -34,6 +37,9 @@ def diagOp (b : W → Matrix (Fin n) (Fin n) ℂ) : TupV W n M →ₗ[ℂ] TupV 
     ext k : 2
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem diagOp_apply (b : W → Matrix (Fin n) (Fin n) ℂ) (y : TupV W n M) (k : W × Fin M) :
     diagOp b y k = Matrix.toEuclideanLin (b k.1).transpose (y k) := rfl
 
@@ -47,6 +53,9 @@ def mixOp (J : W → Matrix (Fin M) (Fin M) ℂ) : TupV W n M →ₗ[ℂ] TupV W
     simp [Finset.smul_sum, smul_smul, mul_comm, mul_left_comm]
     exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mixOp_apply (J : W → Matrix (Fin M) (Fin M) ℂ) (z : TupV W n M) (k : W × Fin M) :
     mixOp J z k = (2 : ℂ) • ∑ j, J k.1 k.2 j • z (k.1, j) := rfl
 
@@ -54,6 +63,9 @@ def polarOp (J : W → Matrix (Fin M) (Fin M) ℂ) (b : W → Matrix (Fin n) (Fi
     TupV W n M →ₗ[ℝ] TupV W n M :=
   ((mixOp J).comp (diagOp b)).restrictScalars ℝ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem polarOp_apply (J : W → Matrix (Fin M) (Fin M) ℂ) (b : W → Matrix (Fin n) (Fin n) ℂ)
     (y : TupV W n M) : polarOp J b y = mixOp J (diagOp b y) := rfl
 

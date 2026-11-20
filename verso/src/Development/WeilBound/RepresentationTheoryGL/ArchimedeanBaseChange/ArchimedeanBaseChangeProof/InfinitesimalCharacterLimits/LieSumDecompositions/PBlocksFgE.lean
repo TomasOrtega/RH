@@ -11,6 +11,11 @@ set_option linter.unusedSectionVars false
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r s : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨∅, by simp, by simp⟩`. Consider the case `insert a S ha ih`. Take `⟨F, hF, hQ⟩` from `ih fun b hb => h b (Finset.mem_insert_of_mem hb)`. Take `⟨F', hF', hQ'⟩` from `h a (Finset.mem_insert_self a S)`.
+
+Use `⟨F ∪ F', by rw [Finset.coe_union]; exact Set.union_subset hF hF', fun b hb => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hb with rfl | hb` into its components or cases. Conclude with `hmono _ _ _ Finset.subset_union_right hQ'`. Conclude with `hmono _ _ _ Finset.subset_union_left (hQ b hb)`.
+-/
 theorem collect {α β : Type} (S : Finset α) (X : Set β) (Q : α → Finset β → Prop)
     (hmono : ∀ a (F F' : Finset β), F ⊆ F' → Q a F → Q a F')
     (h : ∀ a ∈ S, ∃ F : Finset β, (↑F : Set β) ⊆ X ∧ Q a F) :
@@ -26,6 +31,11 @@ theorem collect {α β : Type} (S : Finset α) (X : Set β) (Q : α → Finset �
     · exact hmono _ _ _ Finset.subset_union_right hQ'
     · exact hmono _ _ _ Finset.subset_union_left (hQ b hb)
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `1 - (1 : Matrix (Fin N) (Fin N) (Af E)).map (sFin E) + (1 + nilM x).map (sFin E) = 1 + nilM _`. Rewrite using `[Matrix.map_add _ (map_add (sFin E))]`. Establish `: (nilM x).map (sFin E) = nilM (r` using `k) (fun p => sFin E (x p)) := by`. Use extensionality with `i j`.
+
+Simplify using `only [nilM, Matrix.map_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+-/
 theorem finGL_unip' {N k : ℕ} (x : BlockIx N k → Af E) :
     finGL E N (unip x) = unip (fun p => sFin E (x p)) := by
   apply Units.ext
@@ -37,6 +47,9 @@ theorem finGL_unip' {N k : ℕ} (x : BlockIx N k → Af E) :
     split_ifs <;> simp
   rw [this]; abel
 
+/- English proof (translation)
+Take `⟨Tf, hTf⟩` from `IwaAd.exists_finset_cover E (r + s) L hL`. Use `⟨Tf, fun g => ?_⟩` and prove the remaining obligations. Take `⟨x, m, c, hc, rfl⟩` from `IwaFin.exists_unip_lev_integral E r s g`. Take `⟨t, ht, l, hl, rfl⟩` from `hTf c hc`. Conclude with `⟨x, m.1, m.2, t, l, ht, hl, by rw [← mul_assoc]⟩`.
+-/
 theorem cover (L : Subgroup (GL (Fin (r + s)) (Af E))) (hL : IsOpen (L : Set (GL (Fin (r + s)) (Af E)))) :
     ∃ Tf : Finset (GL (Fin (r + s)) (Af E)), ∀ g : GL (Fin (r + s)) (Af E),
       ∃ (x : BlockIx (r + s) r → Af E) (a : GL (Fin r) (Af E)) (b : GL (Fin s) (Af E)) (t l : GL (Fin (r + s)) (Af E)),
@@ -47,6 +60,11 @@ theorem cover (L : Subgroup (GL (Fin (r + s)) (Af E))) (hL : IsOpen (L : Set (GL
   obtain ⟨t, ht, l, hl, rfl⟩ := hTf c hc
   exact ⟨x, m.1, m.2, t, l, ht, hl, by rw [← mul_assoc]⟩
 
+/- English proof (translation)
+Establish `hP : finGL E (r + s) (unip x * lev (Af E) r s (a, b)) = unip (fun p => sFin E (x p)) * lev (Ad E) r s (finGL E r a, finGL E s b)`. Rewrite using `[map_mul, finGL_unip', Slice1.lev_finGL]`. Rewrite using `[← hP, BlockDerivatives.yp, BlockDerivatives.yp]`. Establish `e : finGL E (r + s) (unip x * lev (Af E) r s (a, b) * t * l) = finGL E (r + s) (unip x * lev (Af E) r s (a, b)) * finGL E (r + s) t * finGL E (r + s) l`. Rewrite using `[map_mul, map_mul]`.
+
+Rewrite using `[e]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (infGL E (r + s) (Unitary.toUnits k)) (finGL E (r + s) (unip x * lev (Af E) r s (a, b))), infGL_comm, mul_assoc]`.
+-/
 theorem yp_decomp (k : Kinf E (r + s)) (x : BlockIx (r + s) r → Af E) (a : GL (Fin r) (Af E))
     (b : GL (Fin s) (Af E)) (t l : GL (Fin (r + s)) (Af E)) :
     BlockDerivatives.yp k (unip x * lev (Af E) r s (a, b) * t * l) =
@@ -63,9 +81,17 @@ theorem yp_decomp (k : Kinf E (r + s)) (x : BlockIx (r + s) r → Af E) (a : GL 
   rw [← mul_assoc (infGL E (r + s) (Unitary.toUnits k)) (finGL E (r + s) (unip x * lev (Af E) r s (a, b))),
     infGL_comm, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[BlockDerivatives.yp]`.
+-/
 theorem yp_one_fin {a : ℕ} (h : GL (Fin a) (Af E)) : BlockDerivatives.yp (1 : Kinf E a) h = finGL E a h := by
   simp [BlockDerivatives.yp]
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `InducedTensorMap.lev_mul_unip m (fun p => sFin E (x p))`. Use `⟨v, ?_⟩` and prove the remaining obligations. Establish `e : lev (Ad E) r s (m.1 * finGL E r a, m.2 * finGL E s b) = lev (Ad E) r s m * lev (Ad E) r s (finGL E r a, finGL E s b)`. Rewrite using `[← map_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (lev (Ad E) r s m) (unip _), hv]`. Simplify using `only [mul_assoc]`.
+-/
 theorem grp_step (m : GA E r × GA E s) (x : BlockIx (r + s) r → Af E) (a : GL (Fin r) (Af E)) (b : GL (Fin s) (Af E))
     (y : GA E (r + s)) (z : GA E (r + s)) :
     ∃ v : BlockIx (r + s) r → Ad E, lev (Ad E) r s m * (unip (fun p => sFin E (x p)) *
@@ -81,6 +107,11 @@ theorem grp_step (m : GA E r × GA E s) (x : BlockIx (r + s) r → Af E) (a : GL
   rw [← mul_assoc (lev (Ad E) r s m) (unip _), hv]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun m₁ => ?_)` and prove the remaining obligations. Establish `L : (sl0 m₂ (rt E (r + s) (BlockDerivatives.yp k (unip x * lev (Af E) r s (a, b) * t * l)) F)).1 m₁ = F.1 (lev (Ad E) r s (m₁, m₂) * BlockDerivatives.yp k (unip x * lev (Af E) r s (a, b) * t * l))`. Rewrite using `[left_slice_apply, rt_apply]`. Establish `R : (act (.fin a) (sl0 (m₂ * finGL E s b) (rt E (r + s) (BlockDerivatives.yp k t) F))).1 m₁ = F.1 (lev (Ad E) r s (m₁ * finGL E r a, m₂ * finGL E s b) * BlockDerivatives.yp k t)`. Rewrite using `[act_fin_eq, rt_apply, yp_one_fin, left_slice_apply, rt_apply]`.
+
+Rewrite using `[L, R, yp_decomp]`. Take `⟨v, hv⟩` from `grp_step (m₁, m₂) x a b (BlockDerivatives.yp k t) (finGL E (r + s) l)`. Rewrite using `[hv, hl, hu]`.
+-/
 theorem slice_decomp_left (F : Sm E (r + s)) (hu : ∀ (x : BlockIx (r + s) r → Ad E) g, F.1 (unip x * g) = F.1 g)
     (l : GL (Fin (r + s)) (Af E)) (hl : ∀ y, F.1 (y * finGL E (r + s) l) = F.1 y) (k : Kinf E (r + s))
     (x : BlockIx (r + s) r → Af E) (a : GL (Fin r) (Af E)) (b : GL (Fin s) (Af E)) (t : GL (Fin (r + s)) (Af E))
@@ -98,6 +129,11 @@ theorem slice_decomp_left (F : Sm E (r + s)) (hu : ∀ (x : BlockIx (r + s) r �
   obtain ⟨v, hv⟩ := grp_step (m₁, m₂) x a b (BlockDerivatives.yp k t) (finGL E (r + s) l)
   rw [hv, hl, hu]
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun m₂ => ?_)` and prove the remaining obligations. Establish `L : (sl1 m₁ (rt E (r + s) (BlockDerivatives.yp k (unip x * lev (Af E) r s (a, b) * t * l)) F)).1 m₂ = F.1 (lev (Ad E) r s (m₁, m₂) * BlockDerivatives.yp k (unip x * lev (Af E) r s (a, b) * t * l))`. Rewrite using `[right_slice_apply, rt_apply]`. Establish `R : (act (.fin b) (sl1 (m₁ * finGL E r a) (rt E (r + s) (BlockDerivatives.yp k t) F))).1 m₂ = F.1 (lev (Ad E) r s (m₁ * finGL E r a, m₂ * finGL E s b) * BlockDerivatives.yp k t)`. Rewrite using `[act_fin_eq, rt_apply, yp_one_fin, right_slice_apply, rt_apply]`.
+
+Rewrite using `[L, R, yp_decomp]`. Take `⟨v, hv⟩` from `grp_step (m₁, m₂) x a b (BlockDerivatives.yp k t) (finGL E (r + s) l)`. Rewrite using `[hv, hl, hu]`.
+-/
 theorem slice_decomp_right (F : Sm E (r + s)) (hu : ∀ (x : BlockIx (r + s) r → Ad E) g, F.1 (unip x * g) = F.1 g)
     (l : GL (Fin (r + s)) (Af E)) (hl : ∀ y, F.1 (y * finGL E (r + s) l) = F.1 y) (k : Kinf E (r + s))
     (x : BlockIx (r + s) r → Af E) (a : GL (Fin r) (Af E)) (b : GL (Fin s) (Af E)) (t : GL (Fin (r + s)) (Af E))

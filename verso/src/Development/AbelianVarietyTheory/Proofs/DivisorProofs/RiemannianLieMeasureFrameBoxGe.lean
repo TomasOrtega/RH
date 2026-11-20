@@ -9,6 +9,19 @@ namespace GlobalTheory.CovTop.VolUp
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `hl : ∀ (c : ℂ) v w, hermC τ G (c • v) w = c * hermC τ G v w`. Introduce `c v w`. Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Establish `hr : ∀ (c : ℂ) v w, hermC τ G v (c • w) = starRingEnd ℂ c * hermC τ G v w`.
+
+Introduce `c v w`. Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Establish `hA : ∀ u w, hermC τ G (M *ᵥ u) w = 0`. Introduce `u w`.
+
+Establish `e1` using `h1 u w`. Establish `e2` using `h2 u w`. Rewrite `e2` using `[smul_mulVec, smul_mulVec, hl, hr, Complex.conj_I]`. Establish `: Complex.I * (2 * hermC τ G (M *ᵥ u) w) = 0` using `by linear_combination e2 + Complex.I * e1`. Simplify `this` using `[Complex.I_ne_zero]`.
+
+Establish `hGt : (G.map τ).det ≠ 0`. Establish `e` using `RingHom.map_det τ G`. Rewrite `e` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← e]`. Conclude with `(map_ne_zero τ).2 hG`.
+
+Establish `hv : ∀ u, M *ᵥ u = 0`. Introduce `u`. Use `Matrix.eq_zero_of_vecMul_eq_zero hGt ?_` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Use `hA u (Pi.single b 1)` as an intermediate fact.
+
+Simplify `this` using `[hermC, Matrix.vecMul, dotProduct, Pi.single_apply]`. Use extensionality with `i j`. Use `congrFun (hv (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single]`.
+-/
 theorem eq_zero_of_skew_of_I_smul_skew {τ : E →+* ℂ} {G : Matrix (Fin r) (Fin r) E} (hG : G.det ≠ 0)
     (M : Matrix (Fin r) (Fin r) ℂ)
     (h1 : ∀ u w, hermC τ G (M *ᵥ u) w + hermC τ G u (M *ᵥ w) = 0)
@@ -43,6 +56,45 @@ theorem eq_zero_of_skew_of_I_smul_skew {τ : E →+* ℂ} {G : Matrix (Fin r) (F
   have := congrFun (hv (Pi.single j 1)) i
   simpa [Matrix.mulVec_single] using this
 
+/- English proof (translation)
+Use `set W := (realLie Ψ G).comap (fromFrame x) with hW`. Establish `key1 : ∀ τ (A : Matrix (Fin r) (Fin r) ℂ), (mat x τ)⁻¹ * (mat x τ * A * (mat x τ)⁻¹) * mat x τ = A` using `fun τ A => by`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_right _ _ (hx τ).isUnit, Matrix.nonsing_inv_mul_cancel_left _ _ (hx τ).isUnit]`. Establish `hsm : ∀ (c : ℂ) (V : EuclideanSpace ℂ (Ψ × Fin r × Fin r)), fromFrame x (c • V) = c • fromFrame x V`. Introduce `c V`.
+
+Use function extensionality and compare the values at `τ`. Establish `e : Matrix.of (fun a b => (c • V) (τ, a, b)) = c • Matrix.of (fun a b => V (τ, a, b))` using `rfl`. Use `show (mat x τ * Matrix.of (fun a b => (c • V) (τ, a, b)) * (mat x τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ) = c • (mat x τ * Matrix.of (fun a b => V (τ, a, b)) * (mat x τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ)`. Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hIW : ∀ V, V ∈ W → Complex.I • V ∈ W → V = 0`.
+
+Introduce `V h1 h2`. Establish `h1' : fromFrame x V ∈ realLie Ψ G` using `h1`. Establish `h2' : fromFrame x (Complex.I • V) ∈ realLie Ψ G` using `h2`. Rewrite `h2'` using `[hsm]`. Establish `hM : ∀ τ, Matrix.of (fromFrame x V τ) = 0` using `fun τ => eq_zero_of_skew_of_I_smul_skew hG _ (h1' τ).2 (h2' τ).2`.
+
+Use `PiLp.ext fun p => ?_` and prove the remaining obligations. Take `⟨τ, a, b⟩` from `p`. Establish `e : (mat x τ * Matrix.of (fun a b => V (τ, a, b)) * (mat x τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ) = 0` using `hM τ`. Use `key1 τ (Matrix.of (fun a b => V (τ, a, b)))` as an intermediate fact. Rewrite `this` using `[e, Matrix.mul_zero, Matrix.zero_mul]`.
+
+Use `congrFun (congrFun this a) b` as an intermediate fact. Simplify using `using this.symm`. Set `L : (W × W) →ₗ[ℝ] EuclideanSpace ℂ (Ψ × Fin r × Fin r)` to `{ toFun := fun p => (p.1 : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) + Complex.I • (p.2 : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) map_add' := by`. Introduce `p q`. Simplify using `only [Prod.fst_add, Prod.snd_add, Submodule.coe_add, smul_add]`.
+
+Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := by`. Introduce `c p`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Submodule.coe_smul, RingHom.id_apply, smul_add]`. Rewrite using `[smul_comm] }`.
+
+Establish `hLinj : Function.Injective L`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `p hp`. Establish `hp' : (p.1 : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) + Complex.I • (p.2 : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) = 0` using `hp`. Establish `e1 : (p.1 : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) = Complex.I • ((-p.2 : W) : EuclideanSpace ℂ (Ψ × Fin r × Fin r))`.
+
+Rewrite using `[Submodule.coe_neg, smul_neg]`. Conclude with `eq_neg_of_add_eq_zero_left hp'`. Establish `h3 : Complex.I • ((-p.2 : W) : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) ∈ W` using `e1 ▸ p.1.2`. Establish `h4` using `hIW _ (-p.2).2 h3`. Establish `h5 : p.2 = 0`.
+
+Establish `: -p.2 = 0` using `Subtype.ext h4`. Simplify using `using this`. Establish `h6 : p.1 = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[e1, h4, smul_zero]`.
+
+Both sides reduce to the same expression. Conclude with `Prod.ext h6 h5`. Set `tr : EuclideanSpace ℂ (Ψ × Fin r × Fin r) →ₗ[ℝ] (Ψ → ℂ)` to `{ toFun := fun Y τ => ∑ a, Y (τ, a, a) map_add' := by`. Introduce `Y Z`. Use function extensionality and compare the values at `τ`.
+
+Simplify using `[Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`. Introduce `c Y`. Use function extensionality and compare the values at `τ`. Simplify using `[Finset.smul_sum] }`.
+
+Establish `htrW : ∀ Y ∈ W, tr Y = 0`. Introduce `Y hY`. Establish `hY' : fromFrame x Y ∈ realLie Ψ G` using `hY`. Use function extensionality and compare the values at `τ`. Establish `ht` using `(hY' τ).1`.
+
+Establish `e : Matrix.of (fromFrame x Y τ) = mat x τ * Matrix.of (fun a b => Y (τ, a, b)) * (mat x τ)⁻¹` using `rfl`. Rewrite `ht` using `[e, Matrix.trace_mul_cycle, Matrix.nonsing_inv_mul _ (hx τ).isUnit, Matrix.one_mul]`. Use `show ∑ a, Y (τ, a, a) = (0 : Ψ → ℂ) τ`. Simplify `ht` using `[Matrix.trace]`. Establish `hrange : L.range ≤ LinearMap.ker tr`.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Establish `e : L p = (p.1 : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) + Complex.I • (p.2 : EuclideanSpace ℂ (Ψ × Fin r × Fin r))` using `rfl`. Rewrite using `[e, map_add]`. Establish `h2 : tr (Complex.I • (p.2 : EuclideanSpace ℂ (Ψ × Fin r × Fin r))) = Complex.I • tr p.2`.
+
+Use function extensionality and compare the values at `τ`. Simplify using `[tr, Finset.mul_sum]`. Rewrite using `[h2, htrW _ p.1.2, htrW _ p.2.2, smul_zero, add_zero]`. Establish `hsurj : LinearMap.range tr = ⊤`. Rewrite using `[LinearMap.range_eq_top]`.
+
+Introduce `c`. Use `⟨WithLp.toLp 2 (fun p : Ψ × Fin r × Fin r => if p.2.1 = ⟨0, hr⟩ ∧ p.2.2 = ⟨0, hr⟩ then c p.1 else 0), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Simplify using `[tr]`. Establish `hdimE : Module.finrank ℝ (EuclideanSpace ℂ (Ψ × Fin r × Fin r)) = 2 * (Ψ.card * (r * r))`.
+
+Rewrite using `[(WithLp.linearEquiv 2 ℝ (Ψ × Fin r × Fin r → ℂ)).finrank_eq, Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex, Fintype.card_prod, Fintype.card_coe, mul_comm]`. Establish `hdimP : Module.finrank ℝ (Ψ → ℂ) = 2 * Ψ.card`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex, Fintype.card_coe, mul_comm]`.
+
+Establish `h1` using `LinearMap.finrank_range_add_finrank_ker tr`. Rewrite `h1` using `[hsurj, finrank_top, hdimE, hdimP]`. Establish `h2` using `Submodule.finrank_mono hrange`. Rewrite `h2` using `[LinearMap.finrank_range_of_inj hLinj, Module.finrank_prod]`. Establish `h3 : Ψ.card * (r ^ 2 - 1) = Ψ.card * (r * r) - Ψ.card`.
+
+Rewrite using `[Nat.mul_sub_one, sq]`. Rewrite using `[h3]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_comap_realLie_le (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r)
     (hr : 1 ≤ r) (hG : G.det ≠ 0) (hx : ∀ τ, (mat x τ).det ≠ 0) :
     Module.finrank ℝ ((realLie Ψ G).comap (fromFrame x)) ≤ Ψ.card * (r ^ 2 - 1) := by
@@ -147,6 +199,27 @@ end GlobalTheory.CovTop.VolUp
 
 namespace GlobalTheory.CovTop.VolUp
 
+/- English proof (translation)
+Introduce `E _ _ _ r Ψ G x hr hG hx ε hε hε1`. Use `set W := (realLie Ψ G).comap (fromFrame x) with hW`. Unfold `riemLie`. Establish `hf : Measurable (fun Y : W => fromFrame x Y.1)` using `((fromFrame x).comp W.subtype).continuous_of_finiteDimensional.measurable`. Use `le_trans ?_ (Measure.le_map_apply hf.aemeasurable _)` and prove the remaining obligations.
+
+Rewrite using `[OrthonormalBasis.addHaar_eq_volume]`. Establish `hdim` using `finrank_comap_realLie_le Ψ G x hr hG hx`. Use `set N := Module.finrank ℝ W with hN`. Take `⟨b⟩ : Nonempty (OrthonormalBasis (Fin N) ℝ W)` from `⟨stdOrthonormalBasis ℝ W⟩`. Establish `key1 : ∀ τ (A : Matrix (Fin r) (Fin r) ℂ), (mat x τ)⁻¹ * (mat x τ * A * (mat x τ)⁻¹) * mat x τ = A` using `fun τ A => by`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_right _ _ (hx τ).isUnit, Matrix.nonsing_inv_mul_cancel_left _ _ (hx τ).isUnit]`. Use `set η : ℝ := ε / ((Ψ.card : ℝ) * (r : ℝ) ^ 2) with hη`. Establish `hη0 : 0 ≤ η` using `by positivity`. Establish `hcr : (N : ℝ) ≤ (Ψ.card : ℝ) * (r : ℝ) ^ 2`. Establish `: N ≤ Ψ.card * r ^ 2` using `hdim.trans (Nat.mul_le_mul_left _ (Nat.sub_le _ _))`.
+
+Conclude with `this` after adjusting the coercions. Establish `hη1 : η ≤ 1`. Break down `Nat.eq_zero_or_pos Ψ.card with h0 | h0` into its components or cases. Simplify using `[hη, h0]`. Establish `: (1 : ℝ) ≤ (Ψ.card : ℝ) * (r : ℝ) ^ 2`.
+
+Establish `: 1 ≤ Ψ.card * r ^ 2` using `Nat.one_le_iff_ne_zero.2 (by positivity)`. Conclude with `this` after adjusting the coercions. Conclude with `div_le_one_of_le₀ (hε1.trans this) (by positivity)`. Establish `hNη : (N : ℝ) * η ≤ ε`. Combine the equalities or inequalities in the displayed calculation.
+
+Break down `eq_or_ne ((Ψ.card : ℝ) * (r : ℝ) ^ 2) 0 with h0 | h0` into its components or cases. Rewrite using `[h0, zero_mul]`. Conclude with `hε.le`. Rewrite using `[hη, mul_div_cancel₀ _ h0]`. Set `C : Set (Fin N → ℝ)` to `Set.univ.pi fun _ => Set.Ioo (-(η / 2)) (η / 2)`.
+
+Establish `hmp : MeasurePreserving (fun Y : W => (b.repr Y).ofLp) volume volume` using `(PiLp.volume_preserving_ofLp _).comp b.measurePreserving_repr`. Establish `hC : volume ((fun Y : W => (b.repr Y).ofLp) ⁻¹' C) = ENNReal.ofReal η ^ N`. Rewrite using `[hmp.measure_preimage (MeasurableSet.univ_pi fun _ => measurableSet_Ioo).nullMeasurableSet, Real.volume_pi_Ioo]`. Simplify using `[Finset.prod_const]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `measure_mono fun Y hY => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, C, Set.mem_pi, Set.mem_univ, Set.mem_Ioo, true_implies] at hY`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq]`. Introduce `τ a c`. Establish `e : Matrix.of (fromFrame x Y.1 τ) = mat x τ * Matrix.of (fun a b => Y.1 (τ, a, b)) * (mat x τ)⁻¹` using `rfl`.
+
+Rewrite using `[e, key1]`. Establish `h1 : ‖(Y.1 : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) (τ, a, c)‖ ≤ ‖Y‖` using `PiLp.norm_apply_le _ _`. Establish `h2 : ‖Y‖ ≤ ∑ i, |(b.repr Y).ofLp i|`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_smul, b.orthonormal.1 i, mul_one, Real.norm_eq_abs]`. Establish `h3 : ∑ i, |(b.repr Y).ofLp i| ≤ (N : ℝ) * (η / 2)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.of_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem riemLie_frameBox_ge : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r), 1 ≤ r → G.det ≠ 0 → (∀ τ, (mat x τ).det ≠ 0) → ∀ ε : ℝ, 0 < ε → ε ≤ 1 → ENNReal.ofReal ((ε / ((Ψ.card : ℝ) * (r : ℝ) ^ 2)) ^ (Ψ.card * (r ^ 2 - 1))) ≤ riemLie Ψ G x {X | ∀ τ a b, ‖((mat x τ)⁻¹ * Matrix.of (X τ) * mat x τ) a b‖ < ε} := by
   intro E _ _ _ r Ψ G x hr hG hx ε hε hε1
   set W := (realLie Ψ G).comap (fromFrame x) with hW

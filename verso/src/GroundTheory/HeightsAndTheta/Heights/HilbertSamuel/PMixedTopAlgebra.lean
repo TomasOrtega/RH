@@ -7,6 +7,11 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 open Filter Polynomial
 
+/- English proof (translation)
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hid : i ≤ d` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Establish `hpow : Q ^ d = Q ^ (d - i) * Q ^ i` using `by rw [← pow_add, Nat.sub_add_cancel hid]`. Rewrite using `[hpow, div_pow]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem MixedTopAlgebra.clear_den (d : ℕ) (m : ℕ → ℝ) (Q x : ℝ) (hQ : Q ≠ 0) :
     Q ^ d * ∑ i ∈ Finset.range (d + 1), (d.choose i : ℝ) * m i * (x / Q) ^ i =
       ∑ i ∈ Finset.range (d + 1), (d.choose i : ℝ) * Q ^ (d - i) * x ^ i * m i := by
@@ -17,6 +22,13 @@ theorem MixedTopAlgebra.clear_den (d : ℕ) (m : ℕ → ℝ) (Q x : ℝ) (hQ : 
   rw [hpow, div_pow]
   field_simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_range_succ, Nat.choose_self, Nat.sub_self, pow_zero, Finset.mul_sum]`. Simplify using `only [Nat.cast_one, one_mul, mul_one]`. Use `add_le_add (Finset.sum_le_sum fun i hi => ?_) le_rfl` and prove the remaining obligations. Establish `hid : i < d` using `Finset.mem_range.mp hi`. Establish `hpow : Q * Q ^ (d - 1 - i) = Q ^ (d - i)`.
+
+Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Break down `Nat.eq_zero_or_pos i with rfl | hi0` into its components or cases.
+
+Simplify using the standard rewrite rules. Establish `hmi : 0 ≤ m i` using `hm i hi0 hid.le`. Establish `hc : ((d - 1).choose i : ℝ) ≤ (d.choose i : ℝ)`. Conclude with `Nat.choose_le_choose i (Nat.sub_le d 1)` after adjusting the coercions. Use `gcongr`.
+-/
 theorem MixedTopAlgebra.sum_ge (d : ℕ) (m : ℕ → ℝ) (hm : ∀ i, 1 ≤ i → i ≤ d → 0 ≤ m i)
     (Q x : ℝ) (hQ : 0 ≤ Q) (hx : 0 ≤ x) :
     Q * ∑ i ∈ Finset.range d, ((d - 1).choose i : ℝ) * Q ^ (d - 1 - i) * x ^ i * m i
@@ -39,6 +51,33 @@ theorem MixedTopAlgebra.sum_ge (d : ℕ) (m : ℕ → ℝ) (hm : ∀ i, 1 ≤ i 
           exact_mod_cast Nat.choose_le_choose i (Nat.sub_le d 1)
         gcongr
 
+/- English proof (translation)
+Introduce `d m hd hm hmd hST`. Use `set P : Polynomial ℝ := ∑ i ∈ Finset.range (d + 1), C ((d.choose i : ℝ) * m i) * X ^ i with hPdef`. Establish `heval : ∀ t : ℝ, P.eval t = ∑ i ∈ Finset.range (d + 1), (d.choose i : ℝ) * m i * t ^ i`. Introduce `t`. Simplify using `[P, eval_finsetSum]`.
+
+Establish `h0 : P.eval 0 = m 0`. Rewrite using `[heval, Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[zero_pow hi]`.
+
+Introduce `h`. Simplify using `at h`. Rewrite using `[← h0]`. Use `hP d P (m d) hmd ?_ ?_` and prove the remaining obligations. Introduce `t ht hPt`.
+
+Take `⟨p, hp⟩ : ∃ p : ℕ, (p : ℤ) = t.num` from `⟨t.num.toNat, Int.toNat_of_nonneg (Rat.num_nonneg.mpr ht.le)⟩`. Establish `hp1 : 1 ≤ p`. Establish `: 0 < t.num` using `Rat.num_pos.mpr ht`. Use linear arithmetic over natural numbers and integers. Establish `hq0 : (0 : ℝ) < (t.den : ℝ)` using `by exact_mod_cast t.den_pos`.
+
+Establish `htq : (t : ℝ) = (p : ℝ) / (t.den : ℝ)`. Rewrite using `[Rat.cast_def, ← hp]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hS` using `MixedTopAlgebra.clear_den d m (t.den : ℝ) (p : ℝ) hq0.ne'`.
+
+Rewrite `hS` using `[← htq, ← heval]`. Establish `hSpos : 0 < ∑ i ∈ Finset.range (d + 1), (d.choose i : ℝ) * (t.den : ℝ) ^ (d - i) * (p : ℝ) ^ i * m i`. Rewrite using `[← hS]`. Check the signs of the components of the expression. Establish `hT` using `hST t.den p t.den_pos hp1 hSpos`.
+
+Establish `hge` using `MixedTopAlgebra.sum_ge d m hm (t.den : ℝ) (p : ℝ) hq0.le (by positivity)`. Establish `hqd : (0 : ℝ) < (t.den : ℝ) ^ d` using `by positivity`. Establish `hmt : (t.den : ℝ) ^ d * (m d * (t : ℝ) ^ d) = (p : ℝ) ^ d * m d`. Rewrite using `[htq, div_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Use `le_of_mul_le_mul_left ?_ hqd` and prove the remaining obligations. Rewrite using `[hmt, hS]`. Use polynomial arithmetic with `[mul_nonneg hq0.le hT]`. Establish `hlow : ∀ t : ℝ, 0 ≤ t → m 0 + m d * t ^ d ≤ P.eval t`. Introduce `t ht`.
+
+Establish `hsub : ({0, d} : Finset ℕ) ⊆ Finset.range (d + 1)`. Introduce `i hi`. Simplify using `at hi`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[heval]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_pair (by omega)]; simp`. Use `_ ≤ _ := Finset.sum_le_sum_of_subset_of_nonneg hsub fun i hi hi' => by`. Establish `h1 : 1 ≤ i` using `by simp at hi'; omega`.
+
+Use `hm i h1 (by simp at hi; omega)` as an intermediate fact. Check the signs of the components of the expression. Use `filter_upwards [eventually_ge_atTop (max 1 ((|m 0| + 1) / m d))] with t ht`. Establish `ht1 : 1 ≤ t` using `le_of_max_le_left ht`. Establish `ht2 : (|m 0| + 1) / m d ≤ t` using `le_of_max_le_right ht`.
+
+Establish `htd : t ≤ t ^ d`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : |m 0| + 1 ≤ m d * t` using `by rw [div_le_iff₀ hmd] at ht2; linarith`. Establish `h4 : m d * t ≤ m d * t ^ d` using `mul_le_mul_of_nonneg_left htd hmd.le`. Establish `h5` using `hlow t (by linarith)`.
+
+Combine the linear relations using `[neg_abs_le (m 0)]`.
+-/
 theorem MixedTopAlgebra.proof (hP : PolyNonnegAtZero.Statement) : MixedTopAlgebra.Statement := by
   intro d m hd hm hmd hST
   set P : Polynomial ℝ := ∑ i ∈ Finset.range (d + 1), C ((d.choose i : ℝ) * m i) * X ^ i with hPdef

@@ -5,5 +5,8 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SizeAt
 import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.InfClassAt
 open GlobalTheory.BigTop GlobalTheory.BigTop.Fun GlobalTheory.SumSize
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.QuotientNormCoisometry.ipa_tie | exact GlobalTheory.QuotientNormCoisometry.ipa_tie | (intros; apply GlobalTheory.QuotientNormCoisometry.ipa_tie <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.infinite_part_identity : Bundle → SetAt → InfK → IPa @Comparison₂ := by
   first | exact @GlobalTheory.QuotientNormCoisometry.ipa_tie | exact GlobalTheory.QuotientNormCoisometry.ipa_tie | (intros; apply GlobalTheory.QuotientNormCoisometry.ipa_tie <;> assumption)

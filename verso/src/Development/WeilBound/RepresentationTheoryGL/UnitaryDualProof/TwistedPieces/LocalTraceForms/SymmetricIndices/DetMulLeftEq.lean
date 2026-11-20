@@ -11,6 +11,21 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Desc.SLF
 
 variable {k : Type} [Field k] {n : ℕ}
 
+/- English proof (translation)
+Set `A` to `Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))`. Establish `memA : ∀ x : Matrix (Fin n) (Fin n) k, x ∈ A ↔ x ∈ Bz Z`. Introduce `x`. Conclude with `Subalgebra.mem_centralizer_iff k`. Set `φ : A →ₗ[k] Module.Dual k A` to `(LinearMap.mul k A).compr₂ (τ ∘ₗ A.val.toLinearMap)`.
+
+Establish `hφ : ∀ x y : A, φ x y = τ ((x : Matrix (Fin n) (Fin n) k) * y)` using `fun x y => rfl`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `hnd x ((memA x).1 x.2) ?_` and prove the remaining obligations. Introduce `y hy`. Use `LinearMap.congr_fun hx ⟨y, (memA y).2 hy⟩` as an intermediate fact. Rewrite `this` using `[hφ]`. Simplify using `using this`.
+
+Set `e : A ≃ₗ[k] Module.Dual k A` to `LinearMap.linearEquivOfInjective φ hinj (Subspace.dual_finrank_eq).symm`. Establish `he : ∀ x, e x = φ x` using `fun x => rfl`. Set `D` to `(LinearMap.mulRight k a).dualMap`. Establish `hD : D = (LinearMap.mulRight k a).dualMap` using `rfl`. Establish `key : ∀ x, e (a * x) = D (e x)`.
+
+Introduce `x`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Rewrite using `[hD, LinearMap.dualMap_apply, he, he, hφ, hφ]`. Simplify using `only [LinearMap.mulRight_apply, Subalgebra.coe_mul]`.
+
+Use `hsym a ((memA a).1 a.2) ((x : Matrix (Fin n) (Fin n) k) * y) ((memA _).1 (A.mul_mem x.2 y.2))` as an intermediate fact. Rewrite using `[Matrix.mul_assoc (a : Matrix (Fin n) (Fin n) k), this, Matrix.mul_assoc]`. Establish `hconj : LinearMap.mulLeft k a = (e.symm : Module.Dual k A →ₗ[k] A) ∘ₗ D ∘ₗ (e : A →ₗ[k] Module.Dual k A)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+
+Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.mulLeft_apply]`. Rewrite using `[← key, LinearEquiv.symm_apply_apply]`. Establish `h2` using `LinearMap.det_conj D e.symm`. Rewrite `h2` using `[LinearEquiv.symm_symm]`. Rewrite using `[hconj, h2, hD, LinearMap.det_dualMap]`.
+-/
 theorem det_mulLeft_eq (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (τ : Matrix (Fin n) (Fin n) k →ₗ[k] k)
     (hsym : ∀ x ∈ Bz Z, ∀ y ∈ Bz Z, τ (x * y) = τ (y * x))
     (hnd : ∀ x ∈ Bz Z, (∀ y ∈ Bz Z, τ (x * y) = 0) → x = 0)
@@ -54,6 +69,15 @@ theorem det_mulLeft_eq (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (τ : Matri
   rw [LinearEquiv.symm_symm] at h2
   rw [hconj, h2, hD, LinearMap.det_dualMap]
 
+/- English proof (translation)
+Set `A` to `Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))`. Establish `hu : (h : Matrix (Fin n) (Fin n) k) ∈ A` using `(Subalgebra.mem_centralizer_iff k).2 hh`. Establish `hv : ((h⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) ∈ A`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `a ha`.
+
+Conclude with `(Commute.units_inv_right (hh a ha)).eq`. Set `u : A` to `⟨h, hu⟩`. Set `v : A` to `⟨((h⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k), hv⟩`. Establish `hc : conjB Z h hh = LinearMap.mulLeft k u ∘ₗ LinearMap.mulRight k v`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (h : Matrix (Fin n) (Fin n) k) * x * ((h⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = _`. Simplify using `[u, v, Matrix.mul_assoc]`. Establish `huv : u * v = 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[u, v]`. Rewrite using `[hc, LinearMap.det_comp, ← det_mulLeft_eq Z τ hsym hnd v, ← LinearMap.det_comp, ← LinearMap.mulLeft_mul, huv, LinearMap.mulLeft_one, LinearMap.det_id]`.
+-/
 theorem det_conjB (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (τ : Matrix (Fin n) (Fin n) k →ₗ[k] k)
     (hsym : ∀ x ∈ Bz Z, ∀ y ∈ Bz Z, τ (x * y) = τ (y * x))
     (hnd : ∀ x ∈ Bz Z, (∀ y ∈ Bz Z, τ (x * y) = 0) → x = 0)

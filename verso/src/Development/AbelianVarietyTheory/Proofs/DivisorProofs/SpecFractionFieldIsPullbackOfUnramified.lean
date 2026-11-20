@@ -9,6 +9,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R K W K' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hmax`. Establish `hRK' : Function.Injective (algebraMap R K')`. Rewrite using `[IsScalarTower.algebraMap_eq R K K']`. Conclude with `(algebraMap K K').injective.comp (IsFractionRing.injective R K)`. Establish `hRW : Function.Injective (algebraMap R W)`.
+
+Rewrite `hRK'` using `[IsScalarTower.algebraMap_eq R W K']`. Conclude with `Function.Injective.of_comp hRK'`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Establish `hϖW : Irreducible (algebraMap R W ϖ)`. Rewrite using `[IsDiscreteValuationRing.irreducible_iff_uniformizer, ← hmax, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.map_span, Set.image_singleton]`.
+
+Establish `hloc : IsLocalization (Algebra.algebraMapSubmonoid W (nonZeroDivisors R)) K'`. Rewrite using `[IsLocalization.iff_of_le_of_exists_dvd (M := Algebra.algebraMapSubmonoid W (nonZeroDivisors R)) (S := K') (nonZeroDivisors W)]`. Use `infer_instance`. Introduce and unpack `_ ⟨r, hr, rfl⟩`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations.
+
+Introduce `h0`. Conclude with `nonZeroDivisors.ne_zero hr (hRW (by rw [h0, map_zero]))`. Introduce `w hw`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero hw) hϖW`. Use `⟨algebraMap R W (ϖ ^ n), ⟨ϖ ^ n, mem_nonZeroDivisors_of_ne_zero (pow_ne_zero _ hϖ.ne_zero), rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use `⟨(↑u⁻¹ : W), ?_⟩` and prove the remaining obligations. Rewrite using `[hu, map_pow, _root_.mul_comm (u : W), _root_.mul_assoc, Units.mul_inv, _root_.mul_one]`. Establish `hpo : Algebra.IsPushout R W K K'` using `(Algebra.isLocalization_iff_isPushout (nonZeroDivisors R) K).mp hloc`. Conclude with `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_iff_isPushout.mpr hpo)`.
+-/
 theorem spec_fraction_field_isPullback_of_unramified : ∀ (R K W K' : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field K'] [Algebra W K'] [IsFractionRing W K'] [Algebra R W] [Algebra K K'] [Algebra R K'] [IsScalarTower R W K'] [IsScalarTower R K K'], (maximalIdeal R).map (algebraMap R W) = maximalIdeal W → IsPullback (spMap (algebraMap W K')) (spMap (algebraMap K K')) (spMap (algebraMap R W)) (spMap (algebraMap R K)) := by
   intro R K W K' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hmax
 

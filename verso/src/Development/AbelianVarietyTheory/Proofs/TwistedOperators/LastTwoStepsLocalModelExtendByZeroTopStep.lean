@@ -20,6 +20,37 @@ noncomputable section
 
 namespace GlobalTheory.LastStepExt0
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch hChr hArr hJac t w hw p hp β M hM φ v f hvf j hj h₃ h₄`. It suffices to establish `key : ∀ (n : ℕ) (hn : j + 1 + 1 = n) (hnm : n ≤ D.R.m) (h₃' : (locGrid ch.G t w).rank (D.R.m, j + 1 + 1) = (locGrid ch.G t w).rank (D.R.m, n)), ∃ T₂ : SB (Matrix (Fin ((locGrid ch.G t w).rank (D.R.m, n))) (Fin (topRank (locGrid ch.G t w) (j + 1))) (Kw w)) →ₗ[ℂ] (WO (ch.G.V (.top …`. Conclude with `key D.R.m (by omega) le_rfl h₃`. Introduce `n hn hnm h₃'`. Substitute `hn` using the available equality.
+
+Establish `hj1 : j + 1 < D.R.m` using `by omega`. Establish `hc : topRank (locGrid ch.G t w) (j + 1) + 0 = (locGrid ch.G t w).rank (D.R.m, j + 1)` using `by omega`. Establish `hloc : ∀ i (hi : i ≤ D.R.m), D.R.m ≤ i + 1 → p.IsLoc (frRow ch.S.B t w i hi) 1 ((epsV ch.G t w * (repsAt ch.G t w).elt β) (D.R.m, i))`. Introduce `i hi hmi`. Rewrite using `[Pi.mul_apply, epsV_eq_one t w hmi, elt_eq_one t w β hmi, mul_one]`.
+
+Use `⟨fun a b => by simp [Formalism.L2.Theta.mt], ?_⟩` and prove the remaining obligations. Establish `: Formalism.L2.Theta.mt (ch.G.V (.grid D.R.m i)) 1 = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[this, Matrix.map_one p.π (map_zero _) (map_one _)]`. Simplify using `[(frRow ch.S.B t w i hi).βγ]`. Take `⟨Tm, hTm, hOne, Φ, hΦ, hTΦ⟩` from `hArr t w hw p hp φ (j + 1) hj1 (v ⟨j + 1, hj1⟩) (f ⟨j + 1, hj1⟩) (hvf ⟨j + 1, hj1⟩) (epsV ch.G t w) ((repsAt ch.G t w).elt β) (fun X => epsV_mem t w X) 1 1 1 1 (hloc (j + 1) hj1.le (by omega)) (hloc (j + 1 + 1) hj1 (by omega)) (Fin (topRank (locGrid ch.G t w) (j + 1)) ⊕ Fin 0) (F …`.
+
+Establish `hJ` using `hJac t w hw p hp M hM j 0 hj (GlobalTheory.Unf.Inhab.nonempty_volN (besDecAt ch.G j 0 hj)).some 1 (Or.inl ⟨rfl, rfl⟩) 0 hc`. Establish `hFT : (mvFr p (1 : GA D (ch.G.V (.grid D.R.m (j + 1 + 1)))) (frRow ch.S.B t w (j + 1 + 1) hj1) (epsV ch.G t w (D.R.m, j + 1 + 1)) (Equiv.refl _)).β = (frRow ch.S.B t w (j + 1 + 1) hj1).β`. Simplify using `only [mvFr]`. Rewrite using `[epsV_eq_one t w (by omega)]`. Establish `: Formalism.L2.Theta.mt (ch.G.V (.grid D.R.m (j + 1 + 1))) 1 = 1` using `by simp [Formalism.L2.Theta.mt]`.
+
+Rewrite using `[this, Matrix.map_one p.π (map_zero _) (map_one _)]`. Simplify using the standard rewrite rules. Take `⟨Tm', hTm', hTT⟩` from `Place.exists_isModel_chg D (Kw w) p _ _ _ _ (mvFr p 1 (frRow ch.S.B t w (j + 1) hj1.le) (epsV ch.G t w (D.R.m, j + 1)) (frame hc)) (mvFr p 1 (frRow ch.S.B t w (j + 1 + 1) hj1) (epsV ch.G t w (D.R.m, j + 1 + 1)) (Equiv.refl _)) _ _ (mvFr p 1 (frRow ch.S.B t w (j + 1) hj1.le) (epsV …`. Establish `hTT' : ∀ Ψ, Tm' Ψ = Tm Ψ` using `fun Ψ => hTT Ψ Ψ fun x => by`. Rewrite using `[hFT, Frame.γβ, Frame.γβ, Matrix.one_mul, Matrix.mul_one]`.
+
+Take `⟨T₂, hT₂, hval⟩` from `RankZeroSrc.localModel_rankZeroWitt_source_isModel D (Kw w) p ch.W.ψ ch.W.ψ_std (jacAt ch.G hM (j + 1) 0 (by omega)) _ _ _ _ (frTop ch.S.toGridChoice t w (j + 1) (by omega)) _ hJ _ (frRow ch.S.B t w (j + 1 + 1) hj1) Tm' hTm'`. Use `haveI := GlobalTheory.FinPl.Comm.t2Space_matrix_of_isNonarchimedeanLocalField (k := Kw w) (n := Fin ((locGrid ch.G t w).rank (D.R.m, j + 1 + 1))) (n' := Fin (topRank (locGrid ch.G t w) (j + 1)) ⊕ Fin 0)`. Use `haveI := GlobalTheory.FinPl.Comm.t2Space_matrix_of_isNonarchimedeanLocalField (k := Kw w) (n := Fin ((locGrid ch.G t w).rank (D.R.m, j + 1 + 1))) (n' := Fin (topRank (locGrid ch.G t w) (j + 1)))`. Establish `hc1 : Continuous fun x : Matrix (Fin ((locGrid ch.G t w).rank (D.R.m, j + 1 + 1))) (Fin (topRank (locGrid ch.G t w) (j + 1)) ⊕ Fin 0) (Kw w) => x.toCols₁` using `continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inl j)).comp (continuous_apply i)`. Establish `hc2 : Continuous fun x : Matrix (Fin ((locGrid ch.G t w).rank (D.R.m, j + 1 + 1))) (Fin (topRank (locGrid ch.G t w) (j + 1))) (Kw w) => (fromCols x 0 : Matrix _ (Fin (topRank (locGrid ch.G t w) (j + 1)) ⊕ Fin 0) (Kw w))` using `continuous_pi fun i => continuous_pi fun j => by`.
+
+Break down `j with j | j` into its components or cases. Conclude with `(continuous_apply j).comp (continuous_apply i)`. Conclude with `j.elim0`. Use `⟨T₂, hT₂, fun O hO => ?_, ?_⟩` and prove the remaining obligations. Set `O' : SB (Matrix (Fin ((locGrid ch.G t w).rank (D.R.m, j + 1 + 1))) (Fin (topRank (locGrid ch.G t w) (j + 1)) ⊕ Fin 0) (Kw w))` to `⟨fun x => O.1 x.toCols₁, GlobalTheory.FinPl.Comm.comp_mem_SB O.2 hc1 hc2 RankZeroSrc.fromCols_toCols₁⟩`.
+
+Establish `hO' : IsOne O'`. Use function extensionality and compare the values at `x`. Use `show O.1 x.toCols₁ = _`. Rewrite using `[hO]`. Distinguish the cases in `h2 : ∀ r q, x r q ∈ 𝒪[Kw w]`.
+
+Rewrite using `[Set.indicator_of_mem (s := {x : Matrix _ _ (Kw w) | ∀ r q, x r q ∈ 𝒪[Kw w]}) (a := x.toCols₁) (fun r q => h2 r (Sum.inl q)), Set.indicator_of_mem (s := {x : Matrix _ _ (Kw w) | ∀ r q, x r q ∈ 𝒪[Kw w]}) h2]`. Rewrite using `[Set.indicator_of_notMem (s := {x : Matrix _ _ (Kw w) | ∀ r q, x r q ∈ 𝒪[Kw w]}) h2, Set.indicator_of_notMem (a := x.toCols₁)]`. Introduce `h1`. Apply `h2` to reduce the goal to its premises. Introduce `r q`.
+
+Break down `q with q | q` into its components or cases. Use `exacts [h1 r q, q.elim0]`. Use function extensionality and compare the values at `x`. Use `(hval O O' (fun y => by simp [O', Matrix.toCols₁_fromCols]) x).trans ?_` and prove the remaining obligations. Use `(congrFun (hTT' O') _).trans ?_` and prove the remaining obligations.
+
+Use `(congrFun (hOne O' hO') _).trans ?_` and prove the remaining obligations. Simplify using `only [show ((1 : GA D (ch.G.V (.grid D.R.m (j + 1)))), (1 : GA D (ch.G.V (.grid D.R.m (j + 1 + 1))))) = 1 from rfl, map_one, Module.End.one_apply]`. Both sides reduce to the same expression. Set `Φ₂ : SB (Matrix (Fin ((locGrid ch.G t w).rank (D.R.m, j + 1 + 1))) (Fin (topRank (locGrid ch.G t w) (j + 1))) (Kw w))` to `⟨fun x => Φ.1 (fromCols x 0), GlobalTheory.FinPl.Comm.comp_mem_SB Φ.2 hc2 hc1 fun x => Matrix.toCols₁_fromCols x 0⟩`. Establish `hs : ∀ b, (frame hc).symm b = Sum.inl (Fin.cast h₄ b)` using `fun b => by`.
+
+Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`. Both sides reduce to the same expression. Use `⟨Φ₂, fun z => ?_, ?_⟩` and prove the remaining obligations. Use `show Φ.1 (fromCols z 0) = _`.
+
+Rewrite using `[hΦ]`. Use `congr 2`. Use extensionality with `a b`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply, hs, Matrix.fromCols_apply_inl]`. Both sides reduce to the same expression.
+
+Use function extensionality and compare the values at `x`. Use `(hval Φ₂ Φ (fun _ => rfl) x).trans ?_` and prove the remaining obligations. Use `(congrFun (hTT' Φ) _).trans ?_` and prove the remaining obligations. Use `(congrFun hTΦ _).trans ?_` and prove the remaining obligations. Simplify using `only [mul_one, show ((1 : GA D (ch.G.V (.grid D.R.m (j + 1)))), (1 : GA D (ch.G.V (.grid D.R.m (j + 1 + 1))))) = 1 from rfl, map_one, Module.End.one_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem model_last : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (hChr : ChrP ch) (hArr : ArrP ch) (hJac : JacP ch)
     (t : T) (w : Pl D.host.E) (hw : w ∈ locPl ch.G t) (p : Place D (Kw w)) (hp : IsPlc w p)
     (β : Cosets (G := locGrid ch.G t w) one_le_sLen (givenLevel ch.G t w))

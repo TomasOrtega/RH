@@ -28,6 +28,11 @@ def mulLb (k r : ℕ) : Mat k r →L[ℝ] Mat k r →L[ℝ] Mat k r :=
       map_add' := fun X Y => by ext g : 1; simp [Matrix.add_mul]
       map_smul' := fun c X => by ext g : 1; simp }
 
+/- English proof (translation)
+Consider the cases of `b`. Use `first`. Consider the case `rfl`. Consider the case `simp [vf, mulLb, mulRb, mulL, mulR]`. Use `first`.
+
+Consider the case `rfl`. Consider the case `simp [vf, mulLb, mulRb, mulL, mulR]`.
+-/
 theorem vf_eq_b (b : Bool) (X g : Mat k r) :
     vf b X g = (if b then -(mulLb k r X g) else mulRb k r X g) := by
   cases b
@@ -38,6 +43,11 @@ theorem vf_eq_b (b : Bool) (X g : Mat k r) :
     | rfl
     | simp [vf, mulLb, mulRb, mulL, mulR]
 
+/- English proof (translation)
+Consider the cases of `b`. Establish `h` using `((mulRb k r).contDiff.comp hX).clm_apply hg first`. Consider the case `exact h.congr fun q => by rw [vf_eq_b]; rfl`. Consider the case `(convert h using 1; funext q; rw [vf_eq_b]; rfl)`. Establish `h` using `(((mulLb k r).contDiff.comp hX).clm_apply hg).neg first`.
+
+Consider the case `exact h.congr fun q => by rw [vf_eq_b]; rfl`. Consider the case `(convert h using 1; funext q; rw [vf_eq_b]; rfl)`.
+-/
 theorem vf_contDiff {P : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P] (b : Bool) {X g : P → Mat k r}
     (hX : ContDiff ℝ ∞ X) (hg : ContDiff ℝ ∞ g) : ContDiff ℝ ∞ (fun q => vf b (X q) (g q)) := by
   cases b
@@ -55,12 +65,22 @@ def Phi (F' : Mat k r → E) : (j : ℕ) → (Fin j → Bool) → (Fin j → Mat
   | j + 1, bs, q => fderiv ℝ (fun g => Phi F' j (fun i => bs i.succ) ((fun i => q.1 i.succ), g)) q.2
       (vf (bs 0) (q.1 0) q.2)
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [← WithTop.coe_one, ← WithTop.coe_add, top_add])`. Consider the case `simp`. Consider the case `exact le_of_eq (by norm_cast)`.
+-/
 theorem top_add_one_le : (∞ : WithTop ℕ∞) + 1 ≤ ∞ := by
   first
   | (rw [← WithTop.coe_one, ← WithTop.coe_add, top_add])
   | simp
   | exact le_of_eq (by norm_cast)
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `bs q hq`. Conclude with `(hF.contDiffAt (hU.mem_nhds hq)).comp q contDiffAt_snd`.
+
+Consider the case `succ j ih`. Introduce `bs q hq`. Establish `hsh : ContDiff ℝ ∞ (fun p : ((Fin (j + 1) → Mat k r) × Mat k r) × Mat k r => ((fun i : Fin j => p.1.1 i.succ), p.2))` using `(contDiff_pi.2 fun (i : Fin j) => (contDiff_apply ℝ (Mat k r) i.succ).comp (contDiff_fst.comp contDiff_fst)).prodMk contDiff_snd`. Establish `h1 : ContDiffAt ℝ ∞ (Function.uncurry fun (p : (Fin (j + 1) → Mat k r) × Mat k r) (g : Mat k r) => Phi F' j (fun i => bs i.succ) ((fun i => p.1 i.succ), g)) (q, q.2)` using `(ih (fun i => bs i.succ) ((fun i => q.1 i.succ), q.2) hq).comp (q, q.2) hsh.contDiffAt`. Establish `h2` using `ContDiffAt.fderiv h1 contDiffAt_snd top_add_one_le`.
+
+Establish `h3 : ContDiff ℝ ∞ (fun p : (Fin (j + 1) → Mat k r) × Mat k r => vf (bs 0) (p.1 0) p.2)` using `vf_contDiff (bs 0) ((contDiff_apply ℝ (Mat k r) 0).comp contDiff_fst) contDiff_snd`. Conclude with `h2.clm_apply h3.contDiffAt`.
+-/
 theorem phi_contDiffAt (F' : Mat k r → E) {U : Set (Mat k r)} (hU : IsOpen U) (hF : ContDiffOn ℝ ∞ F' U) :
     ∀ (j : ℕ) (bs : Fin j → Bool) (q : (Fin j → Mat k r) × Mat k r), q.2 ∈ U → ContDiffAt ℝ ∞ (Phi F' j bs) q := by
   intro j
@@ -92,6 +112,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro bs Xs _ x hx hxG`. Conclude with `hff x hx hxG`. Consider the case `succ j ih`.
+
+Introduce `bs Xs hXs x hx hxG`. Rewrite using `[List.ofFn_succ, W_cons]`. Establish `hd : DifferentiableAt ℝ (fun g => Phi F' j (fun i => bs i.succ) ((fun i => Xs i.succ), g)) x` using `((phi_contDiffAt F' hU hF j _ ((fun i => Xs i.succ), x) hx).comp x (contDiffAt_const.prodMk contDiffAt_id)).differentiableAt (by simp)`. Conclude with `(hasDerivAt_ext (bs 0) hU hx hxG hd (fun h hh hhG => ih _ _ (fun i => hXs i.succ) h hh hhG) (hXs 0)).deriv`.
+-/
 theorem W_eq_phi {F F' : Mat k r → E} {U : Set (Mat k r)} (hU : IsOpen U) (hF : ContDiffOn ℝ ∞ F' U)
     (hff : ∀ x ∈ U, x ∈ GV k r → F x = F' x) :
     ∀ (j : ℕ) (bs : Fin j → Bool) (Xs : Fin j → Mat k r), (∀ i, inLie k r (Xs i)) →
@@ -108,6 +133,13 @@ theorem W_eq_phi {F F' : Mat k r → E} {U : Set (Mat k r)} (hU : IsOpen U) (hF 
     exact (hasDerivAt_ext (bs 0) hU hx hxG hd (fun h hh hhG => ih _ _ (fun i => hXs i.succ) h hh hhG)
       (hXs 0)).deriv
 
+/- English proof (translation)
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro _ x hx hxG`. Conclude with `h x hx hxG`. Consider the case `cons a w ih`.
+
+Introduce `hw x hx hxG`. Rewrite using `[W_cons]`. Establish `hw' : AllLie w` using `fun y hy => hw y (List.mem_cons_of_mem _ hy)`. Establish `hc` using `(cv_hasDerivAt a.1 a.2 x).continuousAt`. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 0, cv a.1 a.2 t x ∈ V` using `hc.preimage_mem_nhds (by rw [cv_zero]; exact hV.mem_nhds hx)`.
+
+Establish `he : (fun t : ℝ => W w F (cv a.1 a.2 t x)) =ᶠ[𝓝 0] fun _ => (0 : E)` using `by filter_upwards [hmem] with t ht`. Conclude with `ih hw' _ ht (cv_mem (hw a List.mem_cons_self) hxG t)`. Use `show deriv (fun t : ℝ => W w F (cv a.1 a.2 t x)) 0 = 0`. Rewrite using `[he.deriv_eq, deriv_const]`.
+-/
 theorem W_local_zero {F : Mat k r → E} {V : Set (Mat k r)} (hV : IsOpen V) (h : ∀ x ∈ V, x ∈ GV k r → F x = 0) :
     ∀ (w : List (Bool × Mat k r)), AllLie w → ∀ x ∈ V, x ∈ GV k r → W w F x = 0 := by
   intro w
@@ -128,12 +160,25 @@ theorem W_local_zero {F : Mat k r → E} {V : Set (Mat k r)} (hV : IsOpen V) (h 
 
 def Box (k r : ℕ) : Set (Mat k r) := Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall (0 : ℂ) 1
 
+/- English proof (translation)
+Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`.
+-/
 theorem box_compact : IsCompact (Box k r) := by
   exact isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1
 
+/- English proof (translation)
+Conclude with `fun i _ j _ => mem_closedBall_zero_iff.mpr (h i j)`.
+-/
 theorem mem_box {X : Mat k r} (h : ∀ i j, ‖X i j‖ ≤ 1) : X ∈ Box k r := by
   exact fun i _ j _ => mem_closedBall_zero_iff.mpr (h i j)
 
+/- English proof (translation)
+Take `⟨U, F', hU, hgU, hc, hff⟩` from `hF g₀ hg₀`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hU g₀ hgU`. Establish `hsub : Metric.closedBall g₀ (ε / 2) ⊆ U` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Establish `hc' : ContDiffOn ℝ ∞ F' U` using `by exact_mod_cast hc`. Establish `hb : ∀ (j : ℕ) (bs : Fin j → Bool), ∃ c : ℝ, ∀ q ∈ (Set.pi Set.univ fun _ : Fin j => Box k r) ×ˢ Metric.closedBall g₀ (ε / 2), ‖Phi F' j bs q‖ ≤ c`.
+
+Introduce `j bs`. Establish `hK : IsCompact ((Set.pi Set.univ fun _ : Fin j => Box k r) ×ˢ Metric.closedBall g₀ (ε / 2))` using `(isCompact_univ_pi fun _ => box_compact).prod (isCompact_closedBall g₀ _)`. Conclude with `hK.exists_bound_of_continuousOn fun q hq => (phi_contDiffAt F' hU hc' j bs q (hsub hq.2)).continuousAt.continuousWithinAt`. Use `choose c hcb using hb`. Use `⟨Metric.closedBall g₀ (ε / 2), Metric.closedBall_mem_nhds g₀ (by linarith), ∑ j : Fin (m + 1), ∑ bs : Fin j → Bool, |c j bs|, by positivity, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx hxG j hj bs Xs hL hB`. Rewrite using `[W_eq_phi hU hc' hff j bs Xs hL x (hsub hx) hxG]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem local_bound {F : Mat k r → E} (hF : CkOn ⊤ (GV k r) F) (m : ℕ) {g₀ : Mat k r} (hg₀ : g₀ ∈ GV k r) :
     ∃ V ∈ 𝓝 g₀, ∃ c : ℝ, 0 ≤ c ∧ ∀ x ∈ V, x ∈ GV k r → ∀ (j : ℕ), j ≤ m → ∀ (bs : Fin j → Bool)
       (Xs : Fin j → Mat k r), (∀ i, inLie k r (Xs i)) → (∀ i, Xs i ∈ Box k r) →
@@ -172,6 +217,23 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `k r E _ _ F C hF hC hCF A m`. Establish `hCG : IsCompact (C ∩ GV k r)` using `hC.inter_right B5.GV_closed`. Establish `hloc : ∀ g₀ ∈ C ∩ GV k r, ∃ V, V ∈ 𝓝 g₀ ∧ ∃ c : ℝ, 0 ≤ c ∧ ∀ x ∈ V, x ∈ GV k r → ∀ (j : ℕ), j ≤ m → ∀ (bs : Fin j → Bool) (Xs : Fin j → Mat k r), (∀ i, inLie k r (Xs i)) → (∀ i, Xs i ∈ Box k r) → ‖W (List.ofFn fun i => (bs i, Xs i)) F x‖ ≤ c` using `fun g₀ hg₀ => by`. Take `⟨V, hV, c, hc0, hc⟩` from `local_bound hF m hg₀.2`. Conclude with `⟨V, hV, c, hc0, hc⟩`.
+
+Use `choose! V hV c hc0 hc using hloc`. Take `⟨t, htC, hcov⟩` from `hCG.elim_nhds_subcover V hV`. Establish `hcW : ∀ g ∈ C ∩ GV k r, ∀ (j : ℕ), j ≤ m → ∀ (bs : Fin j → Bool) (Xs : Fin j → Mat k r), (∀ i, inLie k r (Xs i)) → (∀ i, Xs i ∈ Box k r) → ‖W (List.ofFn fun i => (bs i, Xs i)) F g‖ ≤ ∑ x ∈ t, c x`. Introduce `g hg j hj bs Xs hL hB`. Take `⟨x, hxt, hgx⟩` from `Set.mem_iUnion₂.1 (hcov hg)`.
+
+Conclude with `(hc x (htC x hxt) g hgx hg.2 j hj bs Xs hL hB).trans (Finset.single_le_sum (fun y hy => hc0 y (htC y hy)) hxt)`. Take `⟨cg, hcg⟩` from `hCG.exists_bound_of_continuousOn (f := fun g : Mat k r => gN g ^ A) fun g hg => ((B6.gN_continuous.continuousAt).rpow_const (Or.inl (B6.gN_pos hg.2).ne')).continuousWithinAt`. Establish `hsum0 : 0 ≤ ∑ x ∈ t, c x` using `Finset.sum_nonneg fun y hy => hc0 y (htC y hy)`. Use `⟨|cg| * ∑ x ∈ t, c x, B5.ckOn_mono le_top hF, ?_⟩` and prove the remaining obligations. Introduce `u v hu hv hl g hg`.
+
+Rewrite using `[dLR_eq]`. Establish `hmemlr : ∀ y ∈ lr u v, unitLie k r y.2`. Introduce `y hy`. Simplify using `only [lr, List.mem_append, List.mem_map] at hy`. Break down `hy with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases.
+
+Conclude with `hu X hX`. Conclude with `hv X hX`. Distinguish the cases in `hgC : g ∈ C`. Establish `hw : lr u v = List.ofFn fun i : Fin (lr u v).length => ((lr u v)[i].1, (lr u v)[i].2)`. Simplify using the standard rewrite rules.
+
+Establish `hlen : (lr u v).length ≤ m` using `by simp [lr]; omega`. Establish `hb` using `hcW g ⟨hgC, hg⟩ _ hlen (fun i => (lr u v)[i].1) (fun i => (lr u v)[i].2) (fun i => (hmemlr _ (List.getElem_mem _)).1) (fun i => mem_box (hmemlr _ (List.getElem_mem _)).2)`. Rewrite `hb` using `[← hw]`. Establish `hg1 : gN g ^ A ≤ |cg|`. Use `hcg g ⟨hgC, hg⟩` as an intermediate fact.
+
+Rewrite `this` using `[Real.norm_eq_abs]`. Conclude with `(le_abs_self _).trans (this.trans (le_abs_self _))`. Conclude with `mul_le_mul hg1 hb (norm_nonneg _) (abs_nonneg _)`. Establish `h0` using `W_local_zero hC.isClosed.isOpen_compl (fun x hx _ => hCF x hx) (lr u v) (fun y hy => (hmemlr y hy).1) g hgC hg`. Rewrite using `[h0, norm_zero, mul_zero]`.
+
+Check the signs of the components of the expression.
+-/
 theorem compact_support_finite_class : Formalism.FourierDecayAlt.P.JFxG.CptInCC := by
   intro k r E _ _ F C hF hC hCF A m
   have hCG : IsCompact (C ∩ GV k r) := hC.inter_right B5.GV_closed
@@ -218,6 +280,9 @@ theorem compact_support_finite_class : Formalism.FourierDecayAlt.P.JFxG.CptInCC 
     rw [h0, norm_zero, mul_zero]
     positivity
 
+/- English proof (translation)
+Introduce `hE hJ hA hB`. Conclude with `radial_adjoint_of_parts hE (theta_conj_of_parts hJ compact_support_finite_class hA) hB`.
+-/
 theorem jf_radAdj_of_parts : Formalism.FourierDecayAlt.P.JFxG.Exhaust → Formalism.FourierDecayAlt.JF.JDom → Formalism.FourierDecayAlt.P.JFxG.JThetaAdjC →
     Formalism.FourierDecayAlt.P.JFxG.BetaAdjC → Formalism.FourierDecayAlt.JF.RadAdj := by
   intro hE hJ hA hB

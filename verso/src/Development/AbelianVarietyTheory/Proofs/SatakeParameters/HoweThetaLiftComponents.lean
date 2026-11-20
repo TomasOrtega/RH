@@ -9,6 +9,15 @@ namespace GlobalTheory.Proof.HoweThetaLiftComponents
 
 open Formalism.BasicNotions Formalism.MainNotions.N GlobalTheory.ThetaExh
 
+/- English proof (translation)
+Establish `hsup : U p ⊔ (⨆ k ∈ {k | k ≠ p}, U k) = ⊤`. Rewrite using `[eq_top_iff, ← htop]`. Use `iSup_le fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = p`. Substitute `hk` using the available equality.
+
+Conclude with `le_sup_left`. Conclude with `le_sup_of_le_right (le_iSup₂_of_le (f := fun k (_ : k ∈ {k | k ≠ p}) => U k) k hk le_rfl)`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 (hsup.symm ▸ Submodule.mem_top : x ∈ U p ⊔ (⨆ k ∈ {k | k ≠ p}, U k))`. Establish `hle : (⨆ k ∈ {k | k ≠ p}, U k) ≤ (ℂ ∙ v)ᗮ`. Use `iSup₂_le fun k hk y hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_left]`. Establish `hv' : v = x - u` using `by rw [← huv]; abel`. Rewrite using `[hv', inner_sub_right, hx k hk y hy, (horth k hk).inner_eq hy hu, sub_zero]`. Establish `h0 : inner ℂ v v = 0` using `Submodule.mem_orthogonal_singleton_iff_inner_left.1 (hle hv)`. Rewrite `h0` using `[inner_self_eq_zero]`.
+
+Rewrite using `[← huv, h0, add_zero]`. Conclude with `hu`.
+-/
 theorem mem_of_orthogonal_others {V ι : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (U : ι → Submodule ℂ V) (htop : ⨆ k, U k = ⊤) (p : ι) (horth : ∀ k, k ≠ p → U k ⟂ U p)
     (x : V) (hx : ∀ k, k ≠ p → ∀ y ∈ U k, inner ℂ y x = 0) : x ∈ U p := by
@@ -29,6 +38,9 @@ theorem mem_of_orthogonal_others {V ι : Type*} [NormedAddCommGroup V] [InnerPro
   rw [← huv, h0, add_zero]
   exact hu
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hle : (⨆ k, U k) ≤ (ℂ ∙ x)ᗮ` using `iSup_le fun k y hy => Submodule.mem_orthogonal_singleton_iff_inner_left.2 (h k y hy)`. Rewrite `hle` using `[htop]`. Conclude with `hx (inner_self_eq_zero.1 (Submodule.mem_orthogonal_singleton_iff_inner_left.1 (hle (Submodule.mem_top : x ∈ ⊤))))`.
+-/
 theorem exists_inner_ne_zero {V ι : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (U : ι → Submodule ℂ V) (htop : ⨆ k, U k = ⊤) (x : V) (hx : x ≠ 0) :
     ∃ k, ∃ y ∈ U k, inner ℂ y x ≠ 0 := by
@@ -40,6 +52,11 @@ theorem exists_inner_ne_zero {V ι : Type*} [NormedAddCommGroup V] [InnerProduct
   exact hx (inner_self_eq_zero.1
     (Submodule.mem_orthogonal_singleton_iff_inner_left.1 (hle (Submodule.mem_top : x ∈ ⊤))))
 
+/- English proof (translation)
+Introduce `R H what₂ N A hpos hhowe horth`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.ThetaLiftUniqueness.eachRowHasThetaLift_iff]`. Introduce and unpack `i σ ⟨f, hf, hf0⟩`. Establish `hθ : what₂.thetaT (N.mu i) (N.j i) f ≠ 0` using `fun h => hf0 (hpos.eq_zero i σ f hf h)`. Take `⟨P, F, hF, hFf⟩` from `exists_inner_ne_zero (A.typeV i) (A.typeV_top i) _ hθ`.
+
+Use `⟨P, ⟨f, hf, hθ⟩, fun g hg => ?_⟩` and prove the remaining obligations. Use `mem_of_orthogonal_others (A.typeV i) (A.typeV_top i) P (fun k hk => horth i k P hk) _ fun k hk y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hk (hhowe i σ k P ⟨g, hg, y, hy, hne⟩ ⟨f, hf, F, hF, hFf⟩)`.
+-/
 theorem eachRowHasThetaLift_of_howe :
     ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N),
       GlobalTheory.IndefiniteRowSideFullHecke.ThetaGramMatrix.ThetaGramPositiveScalar N A → (∀ i, HoweUp N A i) →

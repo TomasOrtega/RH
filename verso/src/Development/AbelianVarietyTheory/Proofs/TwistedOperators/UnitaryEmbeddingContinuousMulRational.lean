@@ -20,15 +20,26 @@ section Gen
 
 variable {R : Type} [CommRing R] {n r : ℕ} (P : Matrix (Fin n) (Fin r) R) (Q : Matrix (Fin r) (Fin n) R)
 
+/- English proof (translation)
+Rewrite using `[ex, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, hQP, Matrix.mul_one, Matrix.mul_sub, Matrix.mul_one, add_sub_cancel]`.
+-/
 theorem ex_mul_P (hQP : Q * P = 1) (h : Matrix (Fin r) (Fin r) R) : ex P Q h * P = P * h := by
   rw [ex, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, hQP, Matrix.mul_one, Matrix.mul_sub, Matrix.mul_one,
     add_sub_cancel]
 
+/- English proof (translation)
+Establish `e : Q * (1 - P * Q) = 0`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hQP, Matrix.one_mul, sub_self]`. Rewrite using `[ex, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc (P * (h - 1)), e, Matrix.mul_zero, add_zero]`.
+-/
 theorem ex_mul_N (hQP : Q * P = 1) (h : Matrix (Fin r) (Fin r) R) : ex P Q h * (1 - P * Q) = 1 - P * Q := by
   have e : Q * (1 - P * Q) = 0 := by
     rw [Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hQP, Matrix.one_mul, sub_self]
   rw [ex, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc (P * (h - 1)), e, Matrix.mul_zero, add_zero]
 
+/- English proof (translation)
+Establish `e3 : P * (a - 1) * Q * (P * (b - 1) * Q) = P * ((a - 1) * (b - 1)) * Q`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Q P, hQP, Matrix.one_mul]`. Establish `e4 : a * b - 1 = (a - 1) + (b - 1) + (a - 1) * (b - 1)` using `by noncomm_ring`. Rewrite using `[ex, ex, ex, Matrix.add_mul, Matrix.one_mul, Matrix.mul_add, Matrix.mul_one, e3, e4]`.
+
+Simplify using `only [Matrix.mul_add, Matrix.add_mul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem ex_mul (hQP : Q * P = 1) (a b : Matrix (Fin r) (Fin r) R) : ex P Q (a * b) = ex P Q a * ex P Q b := by
   have e3 : P * (a - 1) * Q * (P * (b - 1) * Q) = P * ((a - 1) * (b - 1)) * Q := by
     simp only [Matrix.mul_assoc]
@@ -38,8 +49,14 @@ theorem ex_mul (hQP : Q * P = 1) (a b : Matrix (Fin r) (Fin r) R) : ex P Q (a * 
   simp only [Matrix.mul_add, Matrix.add_mul]
   abel
 
+/- English proof (translation)
+Simplify using `[ex]`.
+-/
 theorem ex_one : ex P Q 1 = 1 := by simp [ex]
 
+/- English proof (translation)
+Simplify using `only [ex, Matrix.map_add _ (map_add φ), Matrix.map_mul, Matrix.map_sub _ (map_sub φ), Matrix.map_one _ (map_zero φ) (map_one φ)]`.
+-/
 theorem ex_map {R' : Type} [CommRing R'] (φ : R →+* R') (h : Matrix (Fin r) (Fin r) R) :
     (ex P Q h).map φ = ex (P.map φ) (Q.map φ) (h.map φ) := by
   simp only [ex, Matrix.map_add _ (map_add φ), Matrix.map_mul, Matrix.map_sub _ (map_sub φ),
@@ -52,14 +69,27 @@ variable {D : D7} {A B : HSp D} {c : ℕ} {ε : D.host.E}
 def qM (d : HermitianOrthogonalExtensionData A B c ε) : Matrix (Fin A.rank) (Fin B.rank) D.host.E :=
   A.gram⁻¹ * (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat B A d.ι) * B.gram)
 
+/- English proof (translation)
+Rewrite using `[qM, Matrix.mul_assoc, GlobalTheory.AutFunCounterexample.gram_pull B A d.ι d.isom, Matrix.nonsing_inv_mul _ (GlobalTheory.AutFunCounterexample.gram_det_ne A).isUnit]`.
+-/
 theorem qM_mul (d : HermitianOrthogonalExtensionData A B c ε) : qM d * frameMat B A d.ι = 1 := by
   rw [qM, Matrix.mul_assoc, GlobalTheory.AutFunCounterexample.gram_pull B A d.ι d.isom,
     Matrix.nonsing_inv_mul _ (GlobalTheory.AutFunCounterexample.gram_det_ne A).isUnit]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, qM_mul, Matrix.map_one _ (map_zero φ) (map_one φ)]`.
+-/
 theorem qM_mul_map {R : Type} [CommRing R] (φ : D.host.E →+* R) (d : HermitianOrthogonalExtensionData A B c ε) :
     (qM d).map φ * (frameMat B A d.ι).map φ = 1 := by
   rw [← Matrix.map_mul, qM_mul, Matrix.map_one _ (map_zero φ) (map_one φ)]
 
+/- English proof (translation)
+Establish `hr` using `(embRel_iff d h _).2 rfl`. Use `set P := frameMat B A d.ι`. Use `set C := Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) P * B.gram`. Establish `hG : C * P = A.gram` using `GlobalTheory.AutFunCounterexample.gram_pull B A d.ι d.isom`. Use `set N : Matrix (Fin B.rank) (Fin B.rank) D.host.E := 1 - P * qM d with hN`.
+
+Establish `hC : C * N = 0`. Rewrite using `[hN, qM, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hG, Matrix.mul_nonsing_inv _ (GlobalTheory.AutFunCounterexample.gram_det_ne A).isUnit, Matrix.one_mul, sub_self]`. Establish `h1 : (matHom B (stabilizerEmbedding d h)).1 * N.map (incA D) = N.map (incA D)`. Use extensionality with `i j`. Conclude with `congr_fun (hr.2 (fun k => N k j) (by funext k; exact congr_fun (congr_fun hC k) j)) i`.
+
+Establish `hNm : N.map (incA D) = (1 : Matrix (Fin B.rank) (Fin B.rank) (AF D.host.F ⊗[D.host.F] D.host.E)) - HMul.hMul (P.map (incA D)) ((qM d).map (incA D))`. Rewrite using `[hN, Matrix.map_sub _ (map_sub _), Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `GlobalTheory.AutFunCounterexample.split_gen (incA D) P (qM d) _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[h1, hNm, ex_mul_N _ _ (qM_mul_map _ d)]`. Rewrite using `[hr.1, ex_mul_P _ _ (qM_mul_map _ d)]`.
+-/
 theorem unitaryEmbedding_matrix_formula (d : HermitianOrthogonalExtensionData A B c ε) (h : GA D A) :
     (matHom B (stabilizerEmbedding d h)).1 = ex ((frameMat B A d.ι).map (incA D)) ((qM d).map (incA D)) (matHom A h).1 := by
   have hr := (embRel_iff d h _).2 rfl
@@ -80,11 +110,23 @@ theorem unitaryEmbedding_matrix_formula (d : HermitianOrthogonalExtensionData A 
   · rw [h1, hNm, ex_mul_N _ _ (qM_mul_map _ d)]
   · rw [hr.1, ex_mul_P _ _ (qM_mul_map _ d)]
 
+/- English proof (translation)
+Apply `GlobalTheory.AutFunCounterexample.GA_ext` to reduce the goal to its premises. Rewrite using `[map_mul, Units.val_mul, unitaryEmbedding_matrix_formula, unitaryEmbedding_matrix_formula, unitaryEmbedding_matrix_formula, map_mul, Units.val_mul, ex_mul _ _ (qM_mul_map _ d)]`.
+-/
 theorem unitaryEmbedding_mul (d : HermitianOrthogonalExtensionData A B c ε) (g h : GA D A) : stabilizerEmbedding d (g * h) = stabilizerEmbedding d g * stabilizerEmbedding d h := by
   apply GlobalTheory.AutFunCounterexample.GA_ext
   rw [map_mul, Units.val_mul, unitaryEmbedding_matrix_formula, unitaryEmbedding_matrix_formula, unitaryEmbedding_matrix_formula, map_mul, Units.val_mul,
     ex_mul _ _ (qM_mul_map _ d)]
 
+/- English proof (translation)
+Take `⟨γE, hγE, e⟩` from `Subgroup.mem_subgroupOf.1 hγ`. Establish `q2 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat B A d.ι) * B.gram = A.gram * qM d`. Rewrite using `[qM, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (GlobalTheory.AutFunCounterexample.gram_det_ne A).isUnit, Matrix.one_mul]`. Use `set P := frameMat B A d.ι`. Use `set Q := qM d`.
+
+Establish `q3 : Q * P = 1` using `qM_mul d`. Establish `q1 : B.gram * P = Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Q * A.gram`. Use `congrArg (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E)) q2` as an intermediate fact. Rewrite `this` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, GlobalTheory.AutFunCounterexample.gram_herm, GlobalTheory.AutFunCounterexample.cT_cT, GlobalTheory.AutFunCounterexample.gram_herm]`. Then use the resulting hypothesis. Set `γ' : GL (Fin B.rank) D.host.E` to `⟨ex P Q γE, ex P Q (γE⁻¹ : GL (Fin A.rank) D.host.E), by rw [← ex_mul _ _ q3, Units.mul_inv, ex_one], by rw [← ex_mul _ _ q3, Units.inv_mul, ex_one]⟩`.
+
+Establish `hu : γ' ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) B.gram` using `GlobalTheory.AutFunCounterexample.ext_unitary _ B.gram A.gram P Q q1 q2 q3 _ hγE`. Use `Subgroup.mem_subgroupOf.2 ⟨γ', hu, Units.ext ?_⟩` and prove the remaining obligations. Establish `hA : (matHom A γ).1 = (γE : Matrix (Fin A.rank) (Fin A.rank) D.host.E).map (incA D)`. Conclude with `(congrArg Units.val e).symm`. Use `show (ex P Q γE).map (incA D) = (matHom B (stabilizerEmbedding d γ)).1`.
+
+Rewrite using `[unitaryEmbedding_matrix_formula, hA, ex_map]`.
+-/
 theorem unitaryEmbedding_rational (d : HermitianOrthogonalExtensionData A B c ε) (γ : GA D A) (hγ : γ ∈ GQ A) : stabilizerEmbedding d γ ∈ GQ B := by
   obtain ⟨γE, hγE, e⟩ := Subgroup.mem_subgroupOf.1 hγ
   have q2 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat B A d.ι) * B.gram = A.gram * qM d := by
@@ -108,6 +150,11 @@ theorem unitaryEmbedding_rational (d : HermitianOrthogonalExtensionData A B c ε
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `haveI : IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E) := IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Establish `hf : ∀ {f : GA D A → Matrix (Fin A.rank) (Fin A.rank) (AF D.host.F ⊗[D.host.F] D.host.E)}, Continuous f → Continuous fun h => ex ((frameMat B A d.ι).map (incA D)) ((qM d).map (incA D)) (f h)` using `fun hc => continuous_const.add ((continuous_const.matrix_mul (hc.sub continuous_const)).matrix_mul continuous_const)`. Establish `hv : Continuous fun h : GA D A => (matHom A h).1` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hi : Continuous fun h : GA D A => (matHom A h⁻¹).1` using `Units.continuous_coe_inv.comp continuous_subtype_val`. Set `φ : GA D A →* GA D B` to `MonoidHom.mk' (stabilizerEmbedding d) (unitaryEmbedding_mul d)`.
+
+Establish `hc : Continuous fun h => matHom B (stabilizerEmbedding d h)`. Use `Units.continuous_iff.2 ⟨(hf hv).congr fun h => (unitaryEmbedding_matrix_formula d h).symm, (hf hi).congr fun h => ?_⟩` and prove the remaining obligations. Establish `e : (stabilizerEmbedding d h)⁻¹ = stabilizerEmbedding d h⁻¹` using `(map_inv φ h).symm`. Rewrite using `[← map_inv (matHom B), e, unitaryEmbedding_matrix_formula]`. Conclude with `Continuous.subtype_mk (p := fun g => g ∈ HR (AF D.host.F) D.sp.cm.sig B.gram) hc fun h => (stabilizerEmbedding d h).2`.
+-/
 theorem continuous_unitaryEmbedding (d : HermitianOrthogonalExtensionData A B c ε) : Continuous (stabilizerEmbedding d) := by
   haveI : IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E) :=
     IsModuleTopology.isTopologicalRing (AF D.host.F) _
@@ -125,6 +172,9 @@ theorem continuous_unitaryEmbedding (d : HermitianOrthogonalExtensionData A B c 
     rw [← map_inv (matHom B), e, unitaryEmbedding_matrix_formula]
   exact Continuous.subtype_mk (p := fun g => g ∈ HR (AF D.host.F) D.sp.cm.sig B.gram) hc fun h => (stabilizerEmbedding d h).2
 
+/- English proof (translation)
+Introduce `d` and use `⟨continuous_unitaryEmbedding d, unitaryEmbedding_mul d, unitaryEmbedding_rational d⟩`.
+-/
 theorem unitaryEmbedding_continuous_hom_rational : ∀ {D : D7} {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε), Continuous (stabilizerEmbedding d) ∧
     (∀ g h, stabilizerEmbedding d (g * h) = stabilizerEmbedding d g * stabilizerEmbedding d h) ∧ ∀ γ ∈ GQ A, stabilizerEmbedding d γ ∈ GQ B :=
   fun d => ⟨continuous_unitaryEmbedding d, unitaryEmbedding_mul d, unitaryEmbedding_rational d⟩

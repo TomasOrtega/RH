@@ -16,6 +16,17 @@ section Lin
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Set `φ : (Fin M → E) →ₗ[E] E` to `{ toFun := fun y => hE σ J x y map_add' := fun y z => by`. Simplify using `only [hE, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun c y => by`. Simplify using `only [hE, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring }` and prove the remaining obligations.
+
+Establish `hle : LinearMap.range B.mulVecLin ≤ LinearMap.ker φ`. Rewrite using `[Matrix.range_mulVecLin, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hB j`. Establish `hinj : Function.Injective B.mulVecLin` using `fun z w h => by`.
+
+Use `congrArg (N *ᵥ ·) h` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hN]`. Establish `h1 : Module.finrank E (LinearMap.range B.mulVecLin) = M'`. Rewrite using `[LinearMap.finrank_range_of_inj hinj]`. Simplify using the standard rewrite rules.
+
+Establish `hlt : LinearMap.ker φ < ⊤` using `lt_top_iff_ne_top.2 fun h => hx (by`. Establish `: x ∈ LinearMap.ker φ` using `h ▸ Submodule.mem_top`. Conclude with `this)`. Establish `h2` using `Submodule.finrank_lt_finrank_of_lt hlt`. Rewrite `h2` using `[finrank_top, Module.finrank_fin_fun]`.
+
+Establish `heq` using `Submodule.eq_of_le_of_finrank_le hle (by omega)`. Use `⟨fun z => hle ⟨z, rfl⟩, fun y hy => ?_⟩` and prove the remaining obligations. Establish `: y ∈ LinearMap.range B.mulVecLin` using `heq ▸ hy`. Take `⟨z, rfl⟩` from `this`. Simplify using `[Matrix.mulVec_mulVec, hN]`.
+-/
 theorem exists_mulVec_eq (σ : E →ₐ[F] E) {M M' : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (B : Matrix (Fin M) (Fin M') E) (N : Matrix (Fin M') (Fin M) E) (hN : N * B = 1) (x : Fin M → E)
     (hM : M' + 1 = M) (hB : ∀ j, hE σ J x (fun i => B i j) = 0) (hx : hE σ J x x ≠ 0) :
@@ -47,6 +58,9 @@ theorem exists_mulVec_eq (σ : E →ₐ[F] E) {M M' : ℕ} (J : Matrix (Fin M) (
   obtain ⟨z, rfl⟩ := this
   simp [Matrix.mulVec_mulVec, hN]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, inclR, TensorProduct.tmul_sum]`.
+-/
 theorem map_mulVec_tmul (R : Type) [CommRing R] [Algebra F R] {m n : ℕ} (C : Matrix (Fin m) (Fin n) E)
     (a : R) (z : Fin n → E) :
     C.map (inclR (F := F) R) *ᵥ (fun i => a ⊗ₜ[F] z i) = fun i => a ⊗ₜ[F] (C *ᵥ z) i := by
@@ -55,6 +69,11 @@ theorem map_mulVec_tmul (R : Type) [CommRing R] [Algebra F R] {m n : ℕ} (C : M
 
 variable [NumberField F]
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, z, hz, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, _, h z hz, map_mulVec_tmul _ C a z⟩`. Consider the case `zero => rw [Matrix.mulVec_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [Matrix.mulVec_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hy`.
+-/
 theorem mulVec_mem_latHat {m n : ℕ} (C : Matrix (Fin m) (Fin n) E) {S : Set (Fin n → E)}
     {T : Set (Fin m → E)} (h : ∀ z ∈ S, C *ᵥ z ∈ T) {y : Fin n → Af F ⊗[F] E} (hy : y ∈ latHat F E S) :
     C.map (inclR (F := F) (Af F)) *ᵥ y ∈ latHat F E T := by
@@ -66,6 +85,11 @@ theorem mulVec_mem_latHat {m n : ℕ} (C : Matrix (Fin m) (Fin n) E) {S : Set (F
   | add y z _ _ hy hz => rw [Matrix.mulVec_add]; exact add_mem hy hz
   | neg y _ hy => rw [Matrix.mulVec_neg]; exact neg_mem hy
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, z, hz, rfl⟩` from `hy`. Rewrite using `[map_mulVec_tmul, h z hz]`. Consider the case `zero => rw [Matrix.mulVec_zero]`.
+
+Consider the case `add y z _ _ hy hz => rw [Matrix.mulVec_add, hy, hz]`. Consider the case `neg y _ hy => rw [Matrix.mulVec_neg, hy]`.
+-/
 theorem mulVec_eq_of_mem_latHat {n : ℕ} (C : Matrix (Fin n) (Fin n) E) {S : Set (Fin n → E)}
     (h : ∀ z ∈ S, C *ᵥ z = z) {y : Fin n → Af F ⊗[F] E} (hy : y ∈ latHat F E S) :
     C.map (inclR (F := F) (Af F)) *ᵥ y = y := by
@@ -77,6 +101,19 @@ theorem mulVec_eq_of_mem_latHat {n : ℕ} (C : Matrix (Fin n) (Fin n) E) {S : Se
   | add y z _ _ hy hz => rw [Matrix.mulVec_add, hy, hz]
   | neg y _ hy => rw [Matrix.mulVec_neg, hy]
 
+/- English proof (translation)
+Use `set Bf := B.map (inclR (F := F) (Af F)) with hBf`. Use `set Nf := N.map (inclR (F := F) (Af F)) with hNf`. Establish `hNB : Nf * Bf = 1`. Rewrite using `[hBf, hNf, ← Matrix.map_mul, hN, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hBm : ∀ z ∈ latHat F E L', Bf *ᵥ z ∈ latHat F E P` using `fun z hz => mulVec_mem_latHat B (fun w hw => (h1 w).1 hw) hz`.
+
+Establish `hNm : ∀ y ∈ latHat F E P, Nf *ᵥ y ∈ latHat F E L'` using `fun y hy => mulVec_mem_latHat N (fun w hw => (h1 _).2 (by rw [h2 w hw]; exact hw)) hy`. Establish `hBN : ∀ y ∈ latHat F E P, Bf *ᵥ (Nf *ᵥ y) = y` using `fun y hy => by`. Rewrite using `[Matrix.mulVec_mulVec, hBf, hNf, ← Matrix.map_mul]`. Conclude with `mulVec_eq_of_mem_latHat _ (fun w hw => by rw [← Matrix.mulVec_mulVec]; exact h2 w hw) hy`. Establish `hiff : ∀ z, z ∈ latHat F E L' ↔ Bf *ᵥ z ∈ latHat F E P` using `fun z => ⟨hBm z, fun hz => by simpa [Matrix.mulVec_mulVec, hNB] using hNm _ hz⟩`.
+
+Establish `hcomm : ∀ z, a *ᵥ (Bf *ᵥ z) = Bf *ᵥ (a' *ᵥ z)` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hr]`. Use `⟨fun h z => ?_, fun h y => ⟨fun hy => ?_, fun hy => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hiff, hiff, ← hcomm]`. Conclude with `h _`.
+
+Rewrite using `[← hBN y hy, hcomm]`. Conclude with `hBm _ ((h _).1 (hNm y hy))`. Establish `e1 : a' *ᵥ (b' *ᵥ (Nf *ᵥ (a *ᵥ y))) = Nf *ᵥ (a *ᵥ y)`. Rewrite using `[Matrix.mulVec_mulVec, hb', Matrix.one_mulVec]`. Establish `e2 : y = Bf *ᵥ (b' *ᵥ (Nf *ᵥ (a *ᵥ y)))`.
+
+Use `congrArg (b *ᵥ ·) (hcomm (b' *ᵥ (Nf *ᵥ (a *ᵥ y))))` as an intermediate fact. Simplify using `only [e1, hBN _ hy] at this`. Rewrite `this` using `[Matrix.mulVec_mulVec _ b a, Matrix.mulVec_mulVec _ b a, hb, Matrix.one_mulVec, Matrix.one_mulVec]`. Conclude with `this.symm`. Rewrite using `[e2]`.
+
+Conclude with `hBm _ ((h _).2 (by rw [e1]; exact hNm _ hy))`.
+-/
 theorem stabHat_iff {M M' : ℕ} (B : Matrix (Fin M) (Fin M') E) (N : Matrix (Fin M') (Fin M) E)
     (hN : N * B = 1) {P : Set (Fin M → E)} {L' : Set (Fin M' → E)} (h1 : ∀ z, z ∈ L' ↔ B *ᵥ z ∈ P)
     (h2 : ∀ y ∈ P, B *ᵥ (N *ᵥ y) = y) (a b : Matrix (Fin M) (Fin M) (Af F ⊗[F] E))
@@ -123,6 +160,9 @@ def finPt (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (g : HA 
     rw [hg, GlobalTheory.UnitarySplit.map_JR] at this
     exact this.symm⟩ : HR (Af F) σ J)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[inclR]`.
+-/
 theorem map_snd_incl {m n : ℕ} (C : Matrix (Fin m) (Fin n) E) :
     (C.map (inclR (F := F) (AF F))).map (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom =
       C.map (inclR (F := F) (Af F)) := by
@@ -131,6 +171,19 @@ theorem map_snd_incl {m n : ℕ} (C : Matrix (Fin m) (Fin n) E) :
 
 end Lin
 
+/- English proof (translation)
+Introduce `H F E _ _ _ _ _ σ hCM hu M M' J J' B x hM hJ hJ' hBJ hB hx L L' hL β hβ hxL hq hL' g g' hg hr`. Set `p` to `(Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom`. Establish `hN : (J'⁻¹ * (Formalism.UG.cT (σ : E →+* E) B * J)) * B = 1`. Rewrite using `[Matrix.mul_assoc, hBJ, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hJ'.2)]`. Take `⟨k1, k2⟩` from `exists_mulVec_eq σ J B _ hN (x 0) hM hB hx`.
+
+Establish `h3` using `(H F E σ hCM hu M J hJ L hL β hβ (x 0) hxL hq).2.2`. Establish `hgf : finPt σ J g ∈ Hstab (Af F) σ J (fun _ => x 0)`. Establish `e : (HA.mat (AF F) σ J g).1 *ᵥ (fun i => inclR (AF F) (x 0 i)) = fun i => inclR (AF F) (x 0 i)` using `congrFun (MulAction.mem_stabilizer_iff.1 hg) 0`. Establish `e' : (p ∘ fun i => inclR (AF F) (x 0 i)) = fun i => inclR (Af F) (x 0 i)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[p, inclR]`. Use `MulAction.mem_stabilizer_iff.2 (funext fun _ => funext fun i => ?_)` and prove the remaining obligations. Use `RingHom.map_mulVec p (HA.mat (AF F) σ J g).1 (fun i => inclR (AF F) (x 0 i)) i` as an intermediate fact. Rewrite `this` using `[e, e']`. Conclude with `this.symm.trans (congrFun e' i)`.
+
+Establish `h4 : StabHat F (L : Set (Fin M → E)) (finMat σ J g) ↔ StabHat F (perpIn σ J L (x 0)) (finMat σ J g)`. Use `SetLike.ext_iff.1 h3 (finPt σ J g)` as an intermediate fact. Rewrite `this` using `[Subgroup.mem_inf, Subgroup.mem_inf, and_iff_left hgf, and_iff_left hgf]`. Conclude with `this`. Use `h4.trans (stabHat_iff (P := perpIn σ J L (x 0)) B _ hN (fun z => (hL' z).trans ⟨fun h => ⟨h, k1 z⟩, fun h => h.1⟩) (fun y hy => k2 y hy.2) _ (finMat σ J g⁻¹) _ (finMat σ J' g'⁻¹) ?_ ?_ ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.finMat_mul, inv_mul_cancel, Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.finMat_one]`. Rewrite using `[← Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.finMat_mul, mul_inv_cancel, Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.finMat_one]`. Establish `: ((HA.mat (AF F) σ J g).1 * B.map (inclR (AF F))).map p = (B.map (inclR (AF F)) * (HA.mat (AF F) σ J' g').1).map p` using `congrArg (fun X => Matrix.map X p) hr`. Use `(Matrix.map_mul (f := p)).symm.trans (this.trans (Matrix.map_mul (f := p)))` as an intermediate fact. Rewrite `this` using `[map_snd_incl]`.
+
+Conclude with `this`.
+-/
 theorem stab_iff_of_frameRel : StabTransitive → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → UnramifiedAtFinite F E → ∀ (M M' : ℕ) (J : Matrix (Fin M) (Fin M) E) (J' : Matrix (Fin M') (Fin M') E) (B : Matrix (Fin M) (Fin M') E) (x : Fin 1 → Fin M → E), M' + 1 = M → IsHermND σ J → IsHermND σ J' → Formalism.UG.cT (σ : E →+* E) B * J * B = J' → (∀ j, hE σ J (x 0) (fun i => B i j) = 0) → hE σ J (x 0) (x 0) ≠ 0 → ∀ (L : Submodule (𝓞 E) (Fin M → E)) (L' : Set (Fin M' → E)), IsSelfDualLat σ J L → ∀ β : F, (β = 1 ∨ β = -1) → x 0 ∈ L → hE σ J (x 0) (x 0) = algebraMap F E β → (∀ y, y ∈ L' ↔ B *ᵥ y ∈ L) → ∀ (g : HA (AF F) σ J) (g' : HA (AF F) σ J'), g ∈ Hstab (AF F) σ J x → FrameRel J J' B g g' → (g ∈ stab σ J (L : Set (Fin M → E)) ↔ g' ∈ stab σ J' L') := by
   intro H F E _ _ _ _ _ σ hCM hu M M' J J' B x hM hJ hJ' hBJ hB hx L L' hL β hβ hxL hq hL' g g' hg hr
   let p := (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom

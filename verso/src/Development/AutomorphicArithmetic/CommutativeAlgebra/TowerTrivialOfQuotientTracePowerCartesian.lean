@@ -9,6 +9,19 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheory.UPel.HT.EtLev GlobalTheory.LKTrip GlobalTheory.LKGeo
 open UpperTheory.Gal.Int.Geo
 
+/- English proof (translation)
+Establish `hQ : IsPullback (pullback.fst (h ≫ s) g) (pullback.snd (h ≫ s) g) (h ≫ s) g` using `IsPullback.of_hasPullback _ _`. Establish `hu0 : (pullback.fst (h ≫ s) g ≫ h) ≫ s = pullback.snd (h ≫ s) g ≫ g`. Rewrite using `[Category.assoc]`. Conclude with `pullback.condition`. Set `u : pullback (h ≫ s) g ⟶ Mη` to `hp.lift (pullback.fst _ _ ≫ h) (pullback.snd _ _) hu0`.
+
+Establish `hu1 : u ≫ f₁ = pullback.fst _ _ ≫ h` using `hp.lift_fst _ _ _`. Establish `hu2 : u ≫ f₂ = pullback.snd _ _` using `hp.lift_snd _ _ _`. Establish `A : IsPullback u (pullback.fst (h ≫ s) g) f₁ h` using `IsPullback.of_right (h₁₂ := f₂) (v₁₃ := g) (h₂₂ := s) (by rw [hu2]; exact hQ.flip) hu1 hp.flip`. Establish `hφ : φ ≫ h ≫ s = (w ≫ j ≫ f₂) ≫ g`. Rewrite using `[← Category.assoc, hc.w]`.
+
+Simplify using `only [Category.assoc, hp.w]`. Set `l : W ⟶ pullback (h ≫ s) g` to `pullback.lift φ (w ≫ j ≫ f₂) hφ`. Establish `hl1 : l ≫ pullback.fst _ _ = φ` using `pullback.lift_fst _ _ _`. Establish `hl2 : l ≫ pullback.snd _ _ = w ≫ j ≫ f₂` using `pullback.lift_snd _ _ _`. Establish `hlu : l ≫ u = w ≫ j`.
+
+Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hu1, ← Category.assoc, hl1, hc.w, Category.assoc]`. Rewrite using `[Category.assoc, hu2, hl2, Category.assoc]`. Establish `B1 : IsPullback l w u j` using `IsPullback.of_right (h₁₂ := pullback.fst _ _) (v₁₃ := h) (h₂₂ := f₁) (by rw [hl1]; exact hc) hlu A.flip`. Establish `o1 : IsOpenImmersion l` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) B1.flip inferInstance`.
+
+Establish `o2 : IsClosedImmersion l` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) B1.flip inferInstance`. Establish `hE : pullback.lift ρ t e = ε.hom ≫ l`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, Category.assoc, hl1, hρ]`. Rewrite using `[pullback.lift_snd, Category.assoc, hl2, ht]`.
+
+Rewrite using `[hE]`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 private lemma pullback_lift_clopen_immersion {W X Mη M P B B' Z : Scheme.{0}} (j : X ⟶ Mη) (f₁ : Mη ⟶ M) (f₂ : Mη ⟶ B') (s : M ⟶ B)
     (g : B' ⟶ B) (hp : IsPullback f₁ f₂ s g) (h : P ⟶ M) (w : W ⟶ X) (φ : W ⟶ P)
     (hc : IsPullback φ w h (j ≫ f₁)) (ε : Z ≅ W) (ρ : Z ⟶ P) (hρ : ρ = ε.hom ≫ φ) (t : Z ⟶ B')
@@ -44,11 +57,39 @@ private lemma pullback_lift_clopen_immersion {W X Mη M P B B' Z : Scheme.{0}} (
   rw [hE]
   exact ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Substitute `hφ` using the available equality. Both sides reduce to the same expression.
+-/
 private lemma powMap_congr {S' S₁ : Scheme.{0}} {A' : Over S'} {A : Over S₁} {f f' : S' ⟶ S₁} {φ φ' : A'.left ⟶ A.left}
     (hf : f = f') (hφ : φ = φ') (h : φ ≫ A.hom = A'.hom ≫ f) (h' : φ' ≫ A.hom = A'.hom ≫ f') (m : ℕ) :
     GlobalTheory.KS.powMap f φ h m = GlobalTheory.KS.powMap f' φ' h' m := by
   subst hf; subst hφ; rfl
 
+/- English proof (translation)
+Introduce `hM hQO hQC hQI hQU hTE hTU hPC p _ D G L E _ _ gb w q _ r 𝔴 𝔫 S k T N c a hNum C`. Use `haveI : IsNoetherianRing (Ow w) := inferInstance`. Set `N₀' : Lv p` to `⟨S.N₀, S.std.three, S.cop⟩`. Set `β : Ow w →+* E` to `algebraMap (Ow w) E`. Take `⟨j₀, hop, hcl, hj, φA, φ₂, hcart, hsq, hact, ⟨hpol⟩, heta⟩` from `hM.cmp q (datAt S.atq S.sp) (Ow w) S.b E β gb S.mat.1 S.mat.2 S.N₀ S.std.three S.std.cop S.M (T.M N₀')`.
+
+Set `f₀ : (T.M N₀').X ⟶ S.M.X` to `j₀ ≫ pullback.fst _ _`. Set `n₀ : QMap (D` to `datAt S.atq S.sp) (gb := gb) (T.M N₀').univ S.M.univ f₀ 1 := { φ := φA, φ₂ := φ₂, cart := hcart, sq := hsq, act := hact, pol := hpol, eta := fun y => by rw [one_smul]; exact heta y }`. Set `pw` to `GlobalTheory.KS.powMap f₀ n₀.φ n₀.cart.1.w k`. Establish `pc` using `hPC _ _ _ (T.M N₀').univ.A S.M.univ.A S.M.univ.A f₀ (𝟙 _) n₀.φ (𝟙 _) n₀.cart.1.w (by simp) k`. Establish `hs : f₀ ≫ S.M.s = (T.M N₀').s ≫ spMap β`.
+
+Simplify using `only [f₀, Category.assoc]`. Rewrite using `[pullback.condition, ← Category.assoc, hj]`. Establish `hq : T.X.q (T.lev N₀') = (T.e N₀').hom ≫ (GlobalTheory.KS.pow (T.M N₀').univ.A k).hom ≫ j₀ ≫ pullback.snd _ _`. Rewrite using `[hj, T.e_q]`. Establish `e : ((T.e N₀').hom ≫ pw) ≫ (GlobalTheory.KS.pow S.M.univ.A k).hom ≫ S.M.s = T.X.q _ ≫ gen (Ow w) E`.
+
+Rewrite using `[← T.e_q N₀']`. Simplify using `only [Category.assoc]`. Rewrite using `[← Category.assoc pw, pc.2.1]`. Simplify using `only [Category.assoc]`. Rewrite using `[hs]`.
+
+Use `⟨(T.e N₀').hom ≫ pw, e, ?_⟩` and prove the remaining obligations. Use `haveI := hop`. Use `haveI := hcl`. Take `⟨h1, h2⟩` from `pullback_lift_clopen_immersion j₀ (pullback.fst _ _) (pullback.snd _ _) S.M.s (spMap β) (IsPullback.of_hasPullback _ _) (GlobalTheory.KS.pow S.M.univ.A k).hom (GlobalTheory.KS.pow (T.M N₀').univ.A k).hom pw (pc.1 n₀.cart.1) (T.e N₀') _ rfl _ hq e`. Use `⟨h1, h2, fun x y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨π, o, ψ, φ, hw, hπs, htrans, htr⟩` from `T.tr_eq N N₀' 1 x y`. Take `⟨hiso, hlb⟩` from `hTU p D G L E gb 1 _ _ N N₀' (T.M N).univ o ψ htrans (one_mem _)`. Establish `heta' : ∀ y' : D.La, (T.M N).univ.eta (c • y') ≫ ψ = o.eta (1 • y')` using `fun y' => hTE p D G L E gb 1 _ _ N N₀' (T.M N).univ o ψ htrans S.N₀ c 1 hNum.1 (_root_.mul_one _).symm y' y' ⟨0, zero_mem _, by simp⟩`. Take `⟨n₁, hn₁⟩` from `(hQC q (datAt S.atq S.sp) (Ow w) E S.b gb S.N₀ S.N₀ 1 _ _ _ (T.M N₀').s S.M.s S.M.s (T.M N₀').univ S.M.univ S.M.univ f₀ (𝟙 _)).2.2.2 _ (T.M N).s o π φ n₀`. Take `⟨n₂, hn₂⟩` from `hQI q (datAt S.atq S.sp) (Ow w) E S.b gb S.N₀ N.1 S.N₀ 1 c _ _ (T.M N).s S.M.s (T.M N).univ o S.M.univ (π ≫ f₀) ψ hiso htrans.1 htrans.2.1 hlb heta' n₁`.
+
+Take `⟨n₃, hn₃⟩` from `(hQC q (datAt S.atq S.sp) (Ow w) E S.b gb N.1 S.N₀ c _ _ _ (T.M N).s S.Y.s S.M.s (T.M N).univ S.Y.univ S.M.univ C.j S.π).1 C.m S.mπ`. Take `⟨o₀, ⟨n₄⟩⟩` from `hQO q (datAt S.atq S.sp) (Ow w) E S.b gb β S.mat N.1 S.N₀ c hNum.1 (by have := N.2.1; omega) S.std.cop _ (T.M N).s (T.M N).univ`. Take `⟨f', -, huniq⟩` from `S.M.rep _ ((T.M N).s ≫ spMap β) o₀`. Establish `key : ∀ (g : (T.M N).X ⟶ S.M.X), QMap (D` using `datAt S.atq S.sp) (gb := gb) (T.M N).univ S.M.univ g c → g ≫ S.M.s = (T.M N).s ≫ spMap β → g = f' := by`. Introduce `g n hg`.
+
+Establish `n' : QMap (D` using `datAt S.atq S.sp) (gb := gb) (T.M N).univ S.M.univ (𝟙 _ ≫ g) c := by`. Rewrite using `[Category.id_comp]`. Conclude with `n`. Take `⟨m, -⟩` from `(hQC q (datAt S.atq S.sp) (Ow w) E S.b gb N.1 S.N₀ c _ _ _ (T.M N).s _ S.M.s (T.M N).univ o₀ S.M.univ (𝟙 _) g).2.2.1 inferInstance n₄ n'`. Conclude with `huniq g ⟨hg, ⟨m⟩⟩`.
+
+Establish `hf : C.j ≫ S.π = π ≫ f₀`. Rewrite using `[key _ n₃ ?_, key _ n₂ ?_]`. Rewrite using `[Category.assoc, hs, ← Category.assoc, hπs]`. Rewrite using `[Category.assoc, S.ov, C.ov]`. Establish `cast : ∀ {f f' : (T.M N).X ⟶ S.M.X} (_ : f = f') (n : QMap (D` using `datAt S.atq S.sp) (gb := gb) (T.M N).univ S.M.univ f c), ∃ n' : QMap (D := datAt S.atq S.sp) (gb := gb) (T.M N).univ S.M.univ f' c, n'.φ = n.φ := by`.
+
+Introduce `f f' hff n`. Substitute `hff` using the available equality. Conclude with `⟨n, rfl⟩`. Take `⟨n₅, hn₅⟩` from `cast hf n₃`. Establish `hφ : C.m.φ ≫ S.mπ.φ = (ψ.left ≫ φ.φ) ≫ n₀.φ`.
+
+Rewrite using `[← hn₃, ← hn₅, hQU q (datAt S.atq S.sp) (Ow w) E S.b gb N.1 S.N₀ c S.std.three S.std.cop _ _ (T.M N).s S.M.s (T.M N).univ S.M.univ (π ≫ f₀) n₅ n₂, hn₂, hn₁, Category.assoc]`. Establish `hv1 : ((ψ.left ≫ φ.φ) ≫ n₀.φ) ≫ S.M.univ.A.hom = (T.M N).univ.A.hom ≫ π ≫ f₀`. Rewrite using `[Category.assoc, n₀.cart.1.w, ← Category.assoc, hw, Category.assoc]`. Establish `hv2 : (C.m.φ ≫ S.mπ.φ) ≫ S.M.univ.A.hom = (T.M N).univ.A.hom ≫ C.j ≫ S.π`. Rewrite using `[Category.assoc, S.mπ.cart.1.w, ← Category.assoc, C.m.cart.1.w, Category.assoc]`.
+
+Establish `c1` using `(hPC _ _ _ (T.M N).univ.A (T.M N₀').univ.A S.M.univ.A π f₀ (ψ.left ≫ φ.φ) n₀.φ hw n₀.cart.1.w k).2.2 hv1`. Establish `c2` using `(hPC _ _ _ (T.M N).univ.A S.Y.univ.A S.M.univ.A C.j S.π C.m.φ S.mπ.φ C.m.cart.1.w S.mπ.cart.1.w k).2.2 hv2`. Express the relevant statement in the definitionally equal form `T.X.tr (T.lev N) (T.lev N₀') 1 x y ≫ (T.e N₀').hom ≫ pw = ((T.e N).hom ≫ GlobalTheory.KS.powMap C.j C.m.φ C.m.cart.1.w k) ≫ GlobalTheory.KS.powMap S.π S.mπ.φ S.mπ.cart.1.w k`. Rewrite using `[← Category.assoc, htr, Category.assoc, Category.assoc, c1, c2]`. Conclude with `congrArg _ (powMap_congr hf.symm hφ.symm hv1 hv2 k)`.
+-/
 theorem UpperTheory.tower_trivial_of_quotient_trace_powerCartesian :
     MIn → QObj → QComp → QIso → QUniq → TrEta → TrUnit → PowCart → PiZero := by
   intro hM hQO hQC hQI hQU hTE hTU hPC p _ D G L E _ _ gb w q _ r 𝔴 𝔫 S k T N c a hNum C

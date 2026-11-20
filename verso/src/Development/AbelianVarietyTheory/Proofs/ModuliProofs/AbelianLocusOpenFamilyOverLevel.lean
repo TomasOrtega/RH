@@ -45,29 +45,47 @@ namespace GlobalTheory.AbelianLocusNormalisation
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull f t`. Conclude with `⟨_, ⟨m⟩⟩`.
+-/
 theorem exists_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) : ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by
   obtain ⟨_, _, _, _, _, m, -⟩ := sabPull Out.CubePf.cubePull f t
   exact ⟨_, ⟨m⟩⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `ObjMaps.exists_sab_comp m m'`.
+-/
 theorem exists_comp {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S}
     {g : S'' ⟶ S'} (m' : SABMap t'' t' g) (m : SABMap t' t f) {h : S'' ⟶ S} (e : g ≫ f = h) :
     ∃ n : SABMap t'' t h, n.φ = m'.φ ≫ m.φ := by
   subst e
   exact ObjMaps.exists_sab_comp m m'
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `ObjMaps.exists_sab_cancel m n`.
+-/
 theorem exists_cancel {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S}
     {h : S'' ⟶ S} (m : SABMap t' t f) (n : SABMap t'' t h) {g : S'' ⟶ S'} (e : g ≫ f = h) :
     ∃ m' : SABMap t'' t' g, n.φ = m'.φ ≫ m.φ := by
   subst e
   exact ObjMaps.exists_sab_cancel m n
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 h`.
+-/
 theorem isProper_pull {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f)
     (h : IsProper t.G.hom) : IsProper t'.G.hom :=
   MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, t.semi.smooth, h, t.semi.geomConnected⟩`.
+-/
 theorem isAbelianScheme_of_isProper {S : Scheme.{0}} (t : SAB H S) (h : IsProper t.G.hom) : IsAbelianScheme t.G :=
   ⟨inferInstance, t.semi.smooth, h, t.semi.geomConnected⟩
 
+/- English proof (translation)
+Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `(pol_pull S S' t.G t'.G f m.φ t.PP.L t'.PP.L t.PP.isLB t'.PP.isLB (isAbelianScheme_of_isProper t h) m.cart ⟨w, hw⟩).2`.
+-/
 theorem pol_of_map {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f)
     (h : IsProper t.G.hom) : (Out.RelAmple t.G t.PP.L → Out.RelAmple t'.G t'.PP.L) ∧
       (Out.KTriv t.G t.PP.L → Out.KTriv t'.G t'.PP.L) := by
@@ -75,18 +93,41 @@ theorem pol_of_map {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶
   exact (pol_pull S S' t.G t'.G f m.φ t.PP.L t'.PP.L t.PP.isLB t'.PP.isLB (isAbelianScheme_of_isProper t h) m.cart
     ⟨w, hw⟩).2
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨_, _⟩ := h (f x) let e := (asIso (f.stalkMap x)).commRingCatIsoToRingEquiv exact ⟨e.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e⟩`.
+-/
 theorem isNormalScheme_of_open {X Y : Scheme.{0}} (f : Y ⟶ X) [IsOpenImmersion f] (h : Geo.Tor.IsNormalScheme X) :
     Geo.Tor.IsNormalScheme Y := fun x => by
   obtain ⟨_, _⟩ := h (f x)
   let e := (asIso (f.stalkMap x)).commRingCatIsoToRingEquiv
   exact ⟨e.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e⟩
 
+/- English proof (translation)
+Establish `: ∀ x : X, _root_.IsReduced (X.presheaf.stalk x)` using `fun x => by`. Take `⟨_, _⟩` from `h x`. Use `infer_instance`. Conclude with `isReduced_of_isReduced_stalk X`.
+-/
 theorem isReduced_of_normal {X : Scheme.{0}} (h : Geo.Tor.IsNormalScheme X) : IsReduced X := by
   have : ∀ x : X, _root_.IsReduced (X.presheaf.stalk x) := fun x => by
     obtain ⟨_, _⟩ := h x
     infer_instance
   exact isReduced_of_isReduced_stalk X
 
+/- English proof (translation)
+Take `⟨ξ, hξ, hs⟩` from `exists_mem_genericPoints_specializes p`. Establish `hξj` using `genericPoints_subset_range_of_isDominant j hξ`. Distinguish the cases in `hne : ξ = p`. Conclude with `⟨W, j, tW, ν, lW, hne ▸ hξj, hl, o⟩`. Take `⟨V, _, _, -, f, hf₀, hf₁⟩` from `exists_complete_discreteValuationRing_of_specializes hs hne`.
+
+Set `K` to `FractionRing V`. Set `g : Sp K ⟶ Sp V` to `spMap (algebraMap V K)`. Establish `hr : Set.range (g ≫ f) ⊆ Set.range j`. Introduce and unpack `_ ⟨q, rfl⟩`. Establish `: g q = (⊥ : PrimeSpectrum V)`.
+
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show Ideal.comap (algebraMap V K) q.asIdeal = ⊥`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum K) q ⊥]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective V K)`. Rewrite using `[Scheme.Hom.comp_apply, this, hf₀]`.
+
+Conclude with `hξj`. Set `x : Sp K ⟶ W` to `IsOpenImmersion.lift j (g ≫ f) hr`. Establish `hx : x ≫ j = g ≫ f` using `IsOpenImmersion.lift_fac _ _ _`. Take `⟨tV, ⟨νV⟩⟩` from `exists_pull (S' := Sp V) f t`. Take `⟨tK, ⟨νK⟩⟩` from `exists_pull g tV`.
+
+Take `⟨κ, hκ⟩` from `exists_comp νK νV rfl`. Take `⟨κ', hκ'⟩` from `exists_cancel ν κ hx`. Set `lV` to `fun a => ObjPull.secPull νV.cart (lv a)`. Set `lK` to `fun a => ObjPull.secPull κ'.cart (lW a)`. Establish `oK : FullObj D (x ≫ j ≫ s) tK lK` using `(GlobalTheory.T.fullLevelObject_pullback_exists_and_full E H D n N W _ (j ≫ s) tW lW x).2 tK κ' lK (fun a => ObjPull.secPull_left _ _) o`.
+
+Establish `hpV` using `isProper_pull νV hp`. Take `⟨am, kt⟩` from `GlobalTheory.T.relAmple_principal_of_genericFibre_dvr hE h1 h2 E H V K tV tK νK hpV oK.ample oK.ktriv`. Use `⟨Sp V, f, tV, νV, lV, ⟨_, hf₁⟩, fun a => ObjPull.secPull_left _ _, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.fullObject_of_genericFibre_dvr h1 h2 E H D n N V K (f ≫ s) tV lV tK νK lK hN hpV am kt (fun a c => ?_) (fun a => ?_) (fun a => ?_) ?_` and prove the remaining obligations. Simplify using `only [lV, add, map_mul]`.
+
+Simplify using `only [lV, ker, map_one]`. Apply `νV.cart.1.hom_ext` to reduce the goal to its premises. Establish `e₁ : (lK a).left ≫ κ'.φ = x ≫ (lW a).left` using `ObjPull.secPull_left _ _`. Establish `e₂ : (lV a).left ≫ νV.φ = f ≫ (lv a).left` using `ObjPull.secPull_left _ _`. Express the relevant statement in the definitionally equal form `((lK a).left ≫ νK.φ) ≫ νV.φ = (g ≫ (lV a).left) ≫ νV.φ`.
+
+Rewrite using `[Category.assoc, ← hκ, hκ', ← Category.assoc, e₁, Category.assoc, hl, ← Category.assoc, hx, Category.assoc, Category.assoc, e₂]`. Rewrite using `[Category.assoc, νK.cart.1.w, ← Category.assoc, Over.w (lK a), Category.assoc, Over.w (lV a)]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Rewrite `oK` using `[← Category.assoc, hx, Category.assoc]`. Then use the resulting hypothesis.
+-/
 theorem exists_full_through (hE : GlobalTheory.LN.HomExtSt) (h1 : Out.Laws) (h2 : Out.Laws2) {D : Datum H} {n N : ℕ}
     (hN : 0 < N) {S W : Scheme.{0}} [IsLocallyNoetherian S] (s : S ⟶ Sp (RZ H n N)) (t : SAB H S)
     (lv : D.La → (𝟙_ (Over S) ⟶ t.G)) (hp : IsProper t.G.hom) (add : ∀ a c, lv (a + c) = lv a * lv c)
@@ -138,6 +179,13 @@ theorem exists_full_through (hE : GlobalTheory.LN.HomExtSt) (h1 : Out.Laws) (h2 
       exact (Category.id_comp _).trans (Category.comp_id _).symm
   · rwa [← Category.assoc, hx, Category.assoc] at oK
 
+/- English proof (translation)
+Establish `hu' : IsUnit (N : Γ(S, ⊤))`. Simplify using `using hu.map (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of (RZ H n N))).inv.hom)`. Take `⟨lv, add, ker, hl⟩` from `GlobalTheory.T.torsionLevel_extends_from_dense_open_normal D.La N S W j t.G tW.G ν.φ lW hS ‹_› ‹_› hp hu' ν.cart o.add o.ker`. Establish `th` using `exists_full_through hE h1 h2 hN s t lv hp add ker j tW ν lW hl o`. Establish `am : Out.RelAmple t.G t.PP.L` using `GlobalTheory.T.relAmple_of_polarised_at_every_point E H S t hp (fun A _ y B φ h => GlobalTheory.T.isProjOver_baseChange_of_proper_quasiProjective _ A S s t.G y B φ hp hq h) fun p => by`.
+
+Take `⟨S', f, t', ν', _, a, -, b⟩` from `th p`. Conclude with `⟨S', f, t', ν', a, b.ample, b.ktriv⟩`. Establish `kt : Out.KTriv t.G t.PP.L` using `GlobalTheory.T.kernelTrivial_of_every_point_covered h1 E H S t hp am fun p => by`. Take `⟨S', f, t', ν', _, a, -, b⟩` from `th p`. Conclude with `⟨S', f, t', ν', a, b.ktriv⟩`.
+
+Conclude with `⟨lv, GlobalTheory.T.fullLevelObject_of_covering_pullbacks h1 E H D n N S s t lv hN hp am kt add ker th, hl⟩`.
+-/
 theorem exists_full (hE : GlobalTheory.LN.HomExtSt) (h1 : Out.Laws) (h2 : Out.Laws2) {D : Datum H} {n N : ℕ}
     (hN : 0 < N) (hu : IsUnit (N : RZ H n N)) {S W : Scheme.{0}} [IsLocallyNoetherian S]
     (hS : Geo.Tor.IsNormalScheme S) (s : S ⟶ Sp (RZ H n N)) (t : SAB H S) (hp : IsProper t.G.hom)
@@ -157,18 +205,35 @@ theorem exists_full (hE : GlobalTheory.LN.HomExtSt) (h1 : Out.Laws) (h2 : Out.La
     exact ⟨S', f, t', ν', a, b.ktriv⟩
   exact ⟨lv, GlobalTheory.T.fullLevelObject_of_covering_pullbacks h1 E H D n N S s t lv hN hp am kt add ker th, hl⟩
 
+/- English proof (translation)
+Take `⟨N, i, hi, rfl⟩` from `h`. Use `isProper_str R N` as an intermediate fact. Use `infer_instance`.
+-/
 theorem isProper_of_isProjOver {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R} (h : IsProjOver s) :
     IsProper s := by
   obtain ⟨N, i, hi, rfl⟩ := h
   have := isProper_str R N
   infer_instance
 
+/- English proof (translation)
+Take `⟨N, i, hi, -, rfl⟩` from `h`. Use `isProper_str R N` as an intermediate fact. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem separated_finiteType_of_isQProjOver {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R}
     (h : IsQProjOver s) : IsSeparated s ∧ LocallyOfFiniteType s := by
   obtain ⟨N, i, hi, -, rfl⟩ := h
   have := isProper_str R N
   exact ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Use `isProper_of_isProjOver hZ` as an intermediate fact. Take `⟨_, _⟩` from `separated_finiteType_of_isQProjOver hM`. Establish `: IsLocallyNoetherian M` using `LocallyOfFiniteType.isLocallyNoetherian sM`. Establish `: IsLocallyNoetherian Z` using `LocallyOfFiniteType.isLocallyNoetherian sZ`. Use `GlobalTheory.T.isProper_of_completeDVR_lift_generic R _ M u sM ‹_› ?_ fun V K _ _ _ _ _ _ _ x y _ hxy => ?_` and prove the remaining obligations.
+
+Take `⟨N, i, hi, e⟩` from `hZ`. Conclude with `⟨N, U.ι ≫ i, inferInstance, inferInstance, by rw [hu, Category.assoc, e]⟩`. Take `⟨z, hz, -⟩` from `valuative_lift_of_isProper sZ (x ≫ U.ι) (y ≫ sM) (by rw [Category.assoc, ← hu, reassoc_of% hxy])`. Take `⟨tz, ⟨mz⟩⟩` from `exists_pull z t`. Take `⟨ty, ⟨my⟩⟩` from `exists_pull y tM`.
+
+Take `⟨tx, ⟨mx⟩⟩` from `exists_pull x tU`. Take `⟨a, -⟩` from `exists_comp mx mU rfl`. Take `⟨b, -⟩` from `exists_comp mx mM rfl`. Take `⟨a', -⟩` from `exists_cancel mz a hz`. Take `⟨b', -⟩` from `exists_cancel my b hxy.symm`.
+
+Establish `hA : IsAbelianScheme tz.G` using `isAbelianScheme_of_common_generic_fibre ty.G tz.G (isAbelianScheme_of_isProper ty (isProper_pull my hp)) tz.semi (fun f hf => by`. Take `⟨F, hF, -⟩` from `hE V K ty.G tz.G ty.semi tz.semi f hf`. Conclude with `⟨F, hF.2⟩) tx.G b'.cart a'.cart`. Use `hA.proper` as an intermediate fact. Establish `hr : Set.range z ⊆ Set.range U.ι`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(range_subset_abLocus_of_isProper t.semi mz.cart.1).trans hU`. Conclude with `⟨IsOpenImmersion.lift U.ι z hr, by rw [← cancel_mono U.ι, Category.assoc, IsOpenImmersion.lift_fac, hz]⟩`.
+-/
 theorem isProper_of_abLocus (hE : GlobalTheory.LN.HomExtSt) {R : Type} [CommRing R] [IsNoetherianRing R] {Z M : Scheme.{0}}
     {sZ : Z ⟶ Sp R} {sM : M ⟶ Sp R} (hZ : IsProjOver sZ) (hM : IsQProjOver sM) {t : SAB H Z} {tM : SAB H M}
     (hp : IsProper tM.G.hom) {U : Z.Opens} (hU : abLocus t.G ⊆ U) {u : U.toScheme ⟶ M} (hu : u ≫ sM = U.ι ≫ sZ)
@@ -199,6 +264,13 @@ theorem isProper_of_abLocus (hE : GlobalTheory.LN.HomExtSt) {R : Type} [CommRing
     exact (range_subset_abLocus_of_isProper t.semi mz.cart.1).trans hU
   exact ⟨IsOpenImmersion.lift U.ι z hr, by rw [← cancel_mono U.ι, Category.assoc, IsOpenImmersion.lift_fac, hz]⟩
 
+/- English proof (translation)
+Set `l : X ⟶ pullback sV sZ` to `pullback.lift u g h`. Establish `e₁ : l ≫ pullback.fst sV sZ = u` using `pullback.lift_fst _ _ _`. Establish `e₂ : l ≫ pullback.snd sV sZ = g` using `pullback.lift_snd _ _ _`. Establish `: IsProper (l ≫ pullback.fst sV sZ)` using `by rwa [e₁]`. Establish `: IsProper l` using `IsProper.of_comp l (pullback.fst sV sZ)`.
+
+Establish `: IsImmersion (l ≫ pullback.snd sV sZ)` using `by rwa [e₂]`. Establish `: IsImmersion l` using `IsImmersion.of_comp l (pullback.snd sV sZ)`. Establish `: IsClosedImmersion l` using `IsClosedImmersion.of_isPreimmersion l l.isClosedMap.isClosed_range`. Establish `: IsAffineHom sV` using `inferInstance`. Establish `: IsAffineHom (pullback.snd sV sZ)` using `isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback sV sZ) ‹_›`.
+
+Rewrite using `[← e₂]`. Use `infer_instance`.
+-/
 theorem isAffineHom_of_isProper {R : Type} [CommRing R] {X Z V : Scheme.{0}} [IsAffine V] (g : X ⟶ Z) [IsImmersion g]
     (u : X ⟶ V) [IsProper u] (sZ : Z ⟶ Sp R) [IsSeparated sZ] (sV : V ⟶ Sp R) (h : u ≫ sV = g ≫ sZ) :
     IsAffineHom g := by
@@ -216,6 +288,13 @@ theorem isAffineHom_of_isProper {R : Type} [CommRing R] {X Z V : Scheme.{0}} [Is
   rw [← e₂]
   infer_instance
 
+/- English proof (translation)
+It suffices to establish `h : ∀ V : M.affineOpens, IsFinite (u ∣_ V.1) by`. Use `IsFinite.iff_isProper_and_isAffineHom.2 ⟨‹_›, ⟨fun V hV => ?_⟩⟩` and prove the remaining obligations. Use `h ⟨V, hV⟩` as an intermediate fact. Establish `: IsAffine V.toScheme` using `hV`. Conclude with `isAffine_of_isAffineHom (u ∣_ V)`.
+
+Introduce `V`. Establish `: IsAffine V.1.toScheme` using `V.2`. Establish `ha` using `isAffineHom_of_isProper ((u ⁻¹ᵁ V.1).ι ≫ U.ι) (u ∣_ V.1) sZ (V.1.ι ≫ sM) (by rw [morphismRestrict_ι_assoc, hu, Category.assoc])`. Take `⟨t', ⟨m'⟩⟩` from `exists_pull (u ⁻¹ᵁ V.1).ι tU`. Take `⟨tV, ⟨mV⟩⟩` from `exists_pull V.1.ι tM`.
+
+Take `⟨a, -⟩` from `exists_comp m' mU rfl`. Take `⟨b, -⟩` from `exists_comp m' mM rfl`. Take `⟨b', -⟩` from `exists_cancel mV b (morphismRestrict_ι u V.1)`. Take `⟨A', -⟩` from `GlobalTheory.T.ampleDeterminantFrames_pullback_of_isAffineHom E H Z _ t t' _ a N A ha`. Conclude with `GlobalTheory.T.isFinite_of_ampleDeterminantFrames_pullback h1 h2 E H _ _ (((u ⁻¹ᵁ V.1).ι ≫ U.ι) ≫ z) t' tV (u ∣_ V.1) b' N A' hN (isNormalScheme_of_open ((u ⁻¹ᵁ V.1).ι ≫ U.ι) hn) inferInstance (isProper_pull b hp) ((pol_of_map b hp).1 am) ((pol_of_map b hp).2 kt) inferInstance`.
+-/
 theorem isFinite_of_isProper (h1 : Out.Laws) (h2 : Out.Laws2) {R : Type} [CommRing R] {Z M : Scheme.{0}}
     [IsLocallyNoetherian Z] (sZ : Z ⟶ Sp R) [IsSeparated sZ] (sM : M ⟶ Sp R) (z : Z ⟶ Sp ℤ) [Flat z]
     (hn : Geo.Tor.IsNormalScheme Z) {t : SAB H Z} {tM : SAB H M} (hp : IsProper tM.G.hom)
@@ -241,6 +320,17 @@ theorem isFinite_of_isProper (h1 : Out.Laws) (h2 : Out.Laws2) {R : Type} [CommRi
     (isNormalScheme_of_open ((u ⁻¹ᵁ V.1).ι ≫ U.ι) hn) inferInstance (isProper_pull b hp) ((pol_of_map b hp).1 am)
     ((pol_of_map b hp).2 kt) inferInstance
 
+/- English proof (translation)
+Establish `hr : Set.range j ⊆ Set.range (u ⁻¹ᵁ W).ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Use `show u (j w) ∈ W`. Rewrite using `[← Scheme.Hom.comp_apply, h]`.
+
+Conclude with `w.2`. Use `⟨?_, j.denseRange.mono (hr.trans (Scheme.Opens.range_ι _).le)⟩` and prove the remaining obligations. Set `σ` to `IsOpenImmersion.lift (u ⁻¹ᵁ W).ι j hr`. Establish `hσ : σ ≫ (u ⁻¹ᵁ W).ι = j` using `IsOpenImmersion.lift_fac _ _ _`. Establish `h₁ : σ ≫ u ∣_ W = 𝟙 _`.
+
+Rewrite using `[← cancel_mono W.ι, Category.assoc, morphismRestrict_ι, reassoc_of% hσ, h, Category.id_comp]`. Establish `: IsDominant σ`. Prove the components needed by the constructor for the conclusion. Establish `hd` using `Dense.preimage j.denseRange (u ⁻¹ᵁ W).ι.isOpenEmbedding.isOpenMap`. Use `hd.mono ?_` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨x, hx⟩`. Use `⟨x, (u ⁻¹ᵁ W).ι.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, ← hσ]`. Both sides reduce to the same expression. Use `⟨σ, ?_, h₁⟩` and prove the remaining obligations.
+
+Use `ext_of_isDominant_of_isSeparated (u ∣_ W) ?_ σ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, h₁, Category.comp_id, Category.id_comp]`. Rewrite using `[reassoc_of% h₁, Category.comp_id]`.
+-/
 theorem isIso_restrict_of_section {U M : Scheme.{0}} [IsReduced U] (u : U ⟶ M) [IsSeparated u] (W : M.Opens)
     (j : W.toScheme ⟶ U) [IsDominant j] (h : j ≫ u = W.ι) :
     IsIso (u ∣_ W) ∧ Dense ((u ⁻¹ᵁ W : U.Opens) : Set U) := by
@@ -267,6 +357,13 @@ theorem isIso_restrict_of_section {U M : Scheme.{0}} [IsReduced U] (u : U ⟶ M)
   · rw [Category.assoc, h₁, Category.comp_id, Category.id_comp]
   · rw [reassoc_of% h₁, Category.comp_id]
 
+/- English proof (translation)
+Establish `hb : IsPreimmersion (spMap (algebraMap O (FractionRing O)))` using `IsPreimmersion.of_isLocalization (R := CommRingCat.of O) (S := FractionRing O) (nonZeroDivisors O)`. Establish `hbf : Flat (spMap (algebraMap O (FractionRing O)))`. Rewrite using `[Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat _ (nonZeroDivisors O))`. Establish `h1 : IsPreimmersion (pullback.fst s (spMap (algebraMap O (FractionRing O))))` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip hb`.
+
+Establish `hx' : x ∈ Set.range (pullback.fst s (spMap (algebraMap O (FractionRing O))))`. Rewrite using `[Scheme.Pullback.range_fst]`. Use `⟨(⊥ : PrimeSpectrum (FractionRing O)), PrimeSpectrum.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Conclude with `Ideal.comap_bot_of_injective (algebraMap O (FractionRing O)) (IsFractionRing.injective O _)`.
+
+Take `⟨y, rfl⟩` from `hx'`. Take `⟨_, _⟩` from `(isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ _ h).2.1 y`. Use `isIso_stalkMap_of_flat_of_surjectiveOnStalks (pullback.fst s (spMap (algebraMap O (FractionRing O)))) y` as an intermediate fact. Set `e` to `(asIso ((pullback.fst s (spMap (algebraMap O (FractionRing O)))).stalkMap y)).commRingCatIsoToRingEquiv`. Conclude with `⟨e.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e.symm⟩`.
+-/
 theorem normal_stalk_of_generic {O : Type} [CommRing O] [IsDomain O] {M : Scheme.{0}} (s : M ⟶ Sp O)
     (h : Smooth (pullback.snd s (spMap (algebraMap O (FractionRing O))))) (x : M) (hx : (s x).asIdeal = ⊥) :
     IsDomain (M.presheaf.stalk x) ∧ IsIntegrallyClosed (M.presheaf.stalk x) := by
@@ -288,6 +385,13 @@ theorem normal_stalk_of_generic {O : Type} [CommRing O] [IsDomain O] {M : Scheme
   let e := (asIso ((pullback.fst s (spMap (algebraMap O (FractionRing O)))).stalkMap y)).commRingCatIsoToRingEquiv
   exact ⟨e.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e.symm⟩
 
+/- English proof (translation)
+Set `W : M.Opens` to `⨆ V : {V : M.Opens // IsIso (u ∣_ V)}, V.1`. Use `⟨W, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Take `⟨V, a, b⟩` from `h x hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨V, b⟩, a⟩`. Use `IsZariskiLocalAtTarget.of_iSup_eq_top (P := MorphismProperty.isomorphisms Scheme) (fun V : {V : M.Opens // IsIso (u ∣_ V)} => W.ι ⁻¹ᵁ V.1) ?_ fun V => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.preimage_iSup]`. Conclude with `W.ι_preimage_self`. Establish `e : W.ι ''ᵁ (W.ι ⁻¹ᵁ V.1) = V.1`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_eq_right.2 (le_iSup (fun V : {V : M.Opens // IsIso (u ∣_ V)} => V.1) V)`.
+
+Use `((MorphismProperty.isomorphisms Scheme).arrow_mk_iso_iff (morphismRestrictRestrict u W (W.ι ⁻¹ᵁ V.1))).2 ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `V.2`.
+-/
 theorem exists_isIso_restrict {U M : Scheme.{0}} (u : U ⟶ M) (T : M → Prop)
     (h : ∀ x, T x → ∃ V : M.Opens, x ∈ V ∧ IsIso (u ∣_ V)) : ∃ W : M.Opens, (∀ x, T x → x ∈ W) ∧ IsIso (u ∣_ W) := by
   let W : M.Opens := ⨆ V : {V : M.Opens // IsIso (u ∣_ V)}, V.1
@@ -306,6 +410,37 @@ theorem exists_isIso_restrict {U M : Scheme.{0}} (u : U ⟶ M) (T : M → Prop)
     rw [e]
     exact V.2
 
+/- English proof (translation)
+Introduce `hE h1 h2 E _ _ _ H D n N MM sM tM lev m C U hn ⟨e, he⟩ hm F hU`. Use `BaseRing.finiteType_RZ H n N` as an intermediate fact. Establish `: IsNoetherianRing (RZ H n N)` using `Algebra.FiniteType.isNoetherianRing ℤ _`. Establish `hn₀ : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne_zero`. Establish `hun : IsUnit (n : RZ H n N)` using `IsUnit.of_mul_eq_one ⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr (Or.inl rfl))⟩ (Subtype.ext (by simp [hn₀]))`.
+
+Establish `huN : IsUnit (N : RZ H n N)` using `by simpa only [he, Nat.cast_pow] using hun.pow e`. Establish `hN : 0 < N` using `he ▸ pow_pos hn.pos e`. Use `isProper_of_isProjOver C.proj` as an intermediate fact. Take `⟨_, _⟩` from `separated_finiteType_of_isQProjOver F.qproj`. Establish `: IsLocallyNoetherian MM` using `LocallyOfFiniteType.isLocallyNoetherian sM`.
+
+Establish `: IsLocallyNoetherian C.Z` using `LocallyOfFiniteType.isLocallyNoetherian C.s`. Use `C.flat` as an intermediate fact. Use `F.flat` as an intermediate fact. Use `F.red` as an intermediate fact. Use `C.j_open` as an intermediate fact.
+
+Use `C.j_dom` as an intermediate fact. Establish `hnU` using `isNormalScheme_of_open U.ι C.normal`. Use `isReduced_of_normal hnU` as an intermediate fact. Take `⟨tU, ⟨mU⟩⟩` from `exists_pull U.ι C.t`. Establish `hpU : IsProper tU.G.hom`.
+
+Take `⟨U', hU', hP⟩` from `C.good.1`. Take `rfl : U' = U` from `TopologicalSpace.Opens.ext (hU'.trans hU.symm)`. Establish `i` using `mU.cart.1.isoIsPullback_hom_snd _ _ (isPullback_morphismRestrict C.t.G.hom U').flip`. Rewrite using `[← i]`. Use `infer_instance`.
+
+Establish `hqU : IsQProjOver (tU.G.hom ≫ U.ι ≫ C.s)`. Take `⟨k, i, _, _, hi⟩` from `C.qproj`. Establish `: IsOpenImmersion mU.φ` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) mU.cart.1.flip inferInstance`. Establish `: QuasiCompact mU.φ` using `MorphismProperty.of_isPullback (P := @QuasiCompact) mU.cart.1.flip inferInstance`. Conclude with `⟨k, mU.φ ≫ i, inferInstance, inferInstance, by rw [Category.assoc, hi, mU.cart.1.w_assoc]⟩`.
+
+Establish `hpW` using `isProper_pull C.m₁ F.obj.proper`. Establish `hr : Set.range C.j ⊆ Set.range U.ι`. Rewrite using `[Scheme.Opens.range_ι, hU]`. Conclude with `range_subset_abLocus_of_isProper C.t.semi C.m₂.cart.1`. Set `j : C.W.toScheme ⟶ U.toScheme` to `IsOpenImmersion.lift U.ι C.j hr`.
+
+Establish `hj : j ≫ U.ι = C.j` using `IsOpenImmersion.lift_fac _ _ _`. Establish `: IsOpenImmersion (j ≫ U.ι)` using `by rwa [hj]`. Establish `: IsOpenImmersion j` using `IsOpenImmersion.of_comp j U.ι`. Establish `: IsDominant j`. Prove the components needed by the constructor for the conclusion.
+
+Establish `hd` using `Dense.preimage C.j.denseRange U.ι.isOpenEmbedding.isOpenMap`. Use `hd.mono ?_` and prove the remaining obligations. Introduce and unpack `y ⟨x, hx⟩`. Use `⟨x, U.ι.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, ← hj]`.
+
+Both sides reduce to the same expression. Take `⟨ν, -⟩` from `exists_cancel mU C.m₂ hj`. Set `lW` to `fun a => ObjPull.secPull C.m₁.cart (lev a)`. Establish `hlW : ∀ a, (lW a).left ≫ C.m₁.φ = C.W.ι ≫ (lev a).left` using `fun a => ObjPull.secPull_left _ _`. Establish `oW : FullObj D (C.W.ι ≫ sM) C.tW lW` using `(GlobalTheory.T.fullLevelObject_pullback_exists_and_full E H D n N MM _ sM tM lev C.W.ι).2 C.tW C.m₁ lW hlW F.obj`.
+
+Establish `hjs : j ≫ U.ι ≫ C.s = C.W.ι ≫ sM` using `by rw [reassoc_of% hj, C.j_over]`. Take `⟨lv, o, hl⟩` from `exists_full hE h1 h2 hN huN hnU (U.ι ≫ C.s) tU hpU hqU j C.tW ν lW (by rwa [hjs])`. Take `⟨u, ⟨hu, mM, hM⟩, -⟩` from `F.rep _ (U.ι ≫ C.s) tU lv inferInstance inferInstance inferInstance o`. Establish `hju : j ≫ u = C.W.ι`. Take `⟨k, hk⟩` from `exists_comp ν mM rfl`.
+
+Use `(F.rep _ (C.W.ι ≫ sM) C.tW lW inferInstance inferInstance inferInstance oW).unique ⟨by rw [Category.assoc, hu, hjs], k, fun a => ?_⟩ ⟨rfl, C.m₁, hlW⟩` and prove the remaining obligations. Rewrite using `[hk, ← Category.assoc, hl, Category.assoc, hM, Category.assoc]`. Use `isProper_of_abLocus hE C.proj F.qproj F.obj.proper hU.ge hu mU mM` as an intermediate fact. Establish `: Flat (spMap (algebraMap ℤ (RZ H n N)))`. Rewrite using `[Flat.SpecMap_iff]`.
+
+Conclude with `RingHom.flat_algebraMap_iff.mpr inferInstance`. Establish `hf : IsFinite u` using `isFinite_of_isProper h1 h2 C.s sM (C.s ≫ spMap (algebraMap ℤ (RZ H n N))) C.normal F.obj.proper F.obj.ample F.obj.ktriv (pow_pos hm 2) C.amp hu mU mM`. Take `⟨hi, hd⟩` from `isIso_restrict_of_section u C.W j hju`. Use `⟨u, tU, mU, mM, hu, hf, ⟨?_⟩, exists_isIso_restrict u _ fun x hx => ?_, fun j' hj' => ?_⟩` and prove the remaining obligations. Establish `hd' : Dense (Set.range u)` using `C.dense.mono fun w hw => ⟨j ⟨w, hw⟩, congrArg (fun f => f (⟨w, hw⟩ : C.W.toScheme)) hju⟩`.
+
+Rewrite using `[← Set.range_eq_univ, ← u.isClosedMap.isClosed_range.closure_eq]`. Conclude with `hd'.closure_eq`. Take `⟨a, b⟩` from `normal_stalk_of_generic sM F.gen x hx`. Conclude with `GlobalTheory.T.isIso_near_normal_point_of_finite_birational _ MM u C.W hf inferInstance hi C.dense hd x a b`. Take `rfl : j' = j` from `by rw [← cancel_mono U.ι, hj, hj']`.
+
+Conclude with `hju`.
+-/
 theorem exists_finite_map : GlobalTheory.LN.HomExtSt → Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (n N : ℕ) (MM : Scheme.{0}) (sM : MM ⟶ Sp (RZ H n N)) (tM : SAB H MM) (lev : D.La → (𝟙_ (Over MM) ⟶ tM.G)) (m : ℕ) (C : ZOn sM tM m) (U : C.Z.Opens), n.Prime → (∃ j, N = n ^ j) → 0 < m → FamCore D sM tM lev → (U : Set C.Z) = abLocus C.t.G → ∃ (u : U.toScheme ⟶ MM) (tU : SAB H U.toScheme) (mU : SABMap tU C.t U.ι) (mM : SABMap tU tM u), u ≫ sM = U.ι ≫ C.s ∧ IsFinite u ∧ Surjective u ∧ (∃ W : MM.Opens, (∀ x : MM, (sM x).asIdeal = ⊥ → x ∈ W) ∧ IsIso (u ∣_ W)) ∧ ∀ j' : C.W.toScheme ⟶ U.toScheme, j' ≫ U.ι = C.j → j' ≫ u = C.W.ι := by
   intro hE h1 h2 E _ _ _ H D n N MM sM tM lev m C U hn ⟨e, he⟩ hm F hU
   have := BaseRing.finiteType_RZ H n N

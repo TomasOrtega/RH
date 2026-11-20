@@ -9,6 +9,17 @@ noncomputable section
 
 namespace GlobalTheory.CatCoh.CoefMap
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Take `⟨f, rfl⟩` from `H1.mk_surjective F c`. Rewrite `hc` using `[CoefMap.pullCohomologyOne_class, H1.mk_eq_zero]`. Take `⟨g₀, hg⟩` from `hc`.
+
+Set `g : ∀ t, F.obj (G.obj t)` to `fun t ↦ g₀ t`. Establish `hg' : ∀ t t' (a : t ⟶ t'), g t' - mp F (G.map a) (g t) = f.1 _ _ (G.map a)` using `fun t t' a ↦ congrFun (congrFun (congrFun hg t) t') a`. Establish `h1 : ∀ T : C, ∃ x : F.obj T, ∀ t (u : T ⟶ G.obj t), mp F u x = g t - f.1 T _ u`. Introduce `T`. Use `hglue T (fun t u ↦ g t - f.1 T _ u) fun t t' u a ↦ ?_` and prove the remaining obligations.
+
+Establish `k1` using `Z1.comp f u (G.map a)`. Establish `k2` using `hg' t t' a`. Simplify using `only [map_sub]`. Take the linear combination `k2 - k1`. Use `choose x hx using h1`.
+
+Use `H1.mk_eq_zero.2 ⟨x, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`. Rewrite using `[amitsur_d0_apply]`. Use `(sub_eq_zero.1 (hsep T' _ fun t u ↦ ?_)).symm` and prove the remaining obligations. Establish `k1` using `Z1.comp f φ u`.
+
+Establish `k2` using `hx T' t u`. Establish `k3` using `hx T t (φ ≫ u)`. Rewrite `k3` using `[mp_comp]`. Simplify using `only [map_sub]`. Take the linear combination `k3 - k2 - k1`.
+-/
 theorem restrict_pull1_injective_of_sep_glue {R : Type} [CommRing R] {C : Type} [Category.{0} C]
     {C' : Type} [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C)
     (hsep : ∀ (T : C) (x : F.obj T), (∀ t (u : T ⟶ G.obj t), mp F u x = 0) → x = 0)

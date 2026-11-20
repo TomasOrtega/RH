@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PrincipalIde
 
 namespace GlobalTheory.Published
 
+/- English proof (translation)
+Introduce `h` and use `⟨h.heckeLAdicCharacter, h.principalIdealSt⟩`.
+-/
 theorem GlobalArtinReciprocity.heckeLAdicCharacter_and_principalIdealSt :
     GlobalArtinReciprocity → HeckeLAdicCharacter ∧ PrincipalIdealSt :=
   fun h => ⟨h.heckeLAdicCharacter, h.principalIdealSt⟩

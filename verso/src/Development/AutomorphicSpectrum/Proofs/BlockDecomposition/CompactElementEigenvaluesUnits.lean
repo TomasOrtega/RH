@@ -8,6 +8,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompanionTheory.DiagBd
 
+/- English proof (translation)
+Use `set φ : H → w.adicCompletion E := fun x => ((p⁻¹ * x.1 * p : GLw n w) : Matrix (Fin n) (Fin n) _) i i with hφdef`. Establish `hφ : Continuous φ`. Establish `h1 : Continuous fun x : H => (p⁻¹ * x.1 * p : GLw n w)` using `(continuous_const.mul continuous_subtype_val).mul continuous_const`. Establish `h2 : Continuous fun x : H => ((p⁻¹ * x.1 * p : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E))` using `Units.continuous_val.comp h1`. Conclude with `(continuous_apply i).comp ((continuous_apply i).comp h2)`.
+
+Establish `hpow : ∀ m : ℤ, φ (g ^ m) = ((s i ^ m : (w.adicCompletion E)ˣ) : w.adicCompletion E)`. Introduce `m`. Establish `h1 : p⁻¹ * ((g ^ m : H) : GLw n w) * p = GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) (s ^ m)`. Rewrite using `[Subgroup.coe_zpow, hg, map_zpow]`. Rewrite using `[show p * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) s * p⁻¹ = MulAut.conj p (GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) s) from rfl, ← map_zpow]`.
+
+Simplify using `[MulAut.conj_apply, mul_assoc]`. Simplify using `only [hφdef, h1, GlobalTheory.SmGL.val_diagT, Matrix.diagonal_apply_eq, Pi.pow_apply]`. Take `⟨R, hR⟩` from `(hc.image hφ).isBounded.exists_norm_le`. Establish `hb : ∀ m : ℤ, ‖((s i ^ m : (w.adicCompletion E)ˣ) : w.adicCompletion E)‖ ≤ R`. Introduce `m`.
+
+Rewrite using `[← hpow m]`. Conclude with `hR _ ⟨g ^ m, subset_closure (Subgroup.zpow_mem_zpowers g m), rfl⟩`. Establish `hne : (s i : w.adicCompletion E) ≠ 0` using `(s i).ne_zero`. Establish `hpos : 0 < ‖(s i : w.adicCompletion E)‖` using `norm_pos_iff.mpr hne`. Establish `hnorm : ‖(s i : w.adicCompletion E)‖ = 1`.
+
+Break down `lt_trichotomy ‖(s i : w.adicCompletion E)‖ 1 with h | h | h` into its components or cases. It suffices to derive a contradiction. Establish `h' : 1 < ‖(s i : w.adicCompletion E)‖⁻¹` using `(one_lt_inv₀ hpos).mpr h`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt R h'`. Use `hb (-(k : ℤ))` as an intermediate fact.
+
+Rewrite `this` using `[Units.val_zpow_eq_zpow_val, norm_zpow, _root_.zpow_neg, zpow_natCast, ← inv_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h`. It suffices to derive a contradiction. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt R h`.
+
+Use `hb (k : ℤ)` as an intermediate fact. Rewrite `this` using `[Units.val_zpow_eq_zpow_val, norm_zpow, zpow_natCast]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_antisymm (Valued.toNormedField.norm_le_one_iff.1 hnorm.le) (not_lt.1 fun h => ?_)` and prove the remaining obligations. Conclude with `absurd (Valued.toNormedField.norm_lt_one_iff.2 h) (by rw [hnorm]; exact lt_irrefl _)`.
+-/
 theorem valued_eq_one_of_isCompact_closure_zpowers (E : Type) [Field E] [NumberField E] [IsCMField E]
     (w : Pl E) (n : ℕ) (H : Subgroup (GLw n w)) (g : H) (p : GLw n w)
     (s : Fin n → (w.adicCompletion E)ˣ) (hg : g.1 = p * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) s * p⁻¹)

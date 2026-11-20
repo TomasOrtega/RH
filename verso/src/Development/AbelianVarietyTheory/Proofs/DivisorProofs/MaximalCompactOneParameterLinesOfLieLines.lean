@@ -12,16 +12,27 @@ namespace GlobalTheory.RealLift.KLineProof
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[piInf, compInf, infEmb]`. Use `left`. Both sides reduce to the same expression.
+-/
 theorem piInf_tmul {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) (e : E) :
     piInf τ (a ⊗ₜ[F] e) = InfinitePlace.Completion.extensionEmbedding w (evInf F w a) * τ.1 e := by
   simp [piInf, compInf, infEmb]
   left; rfl
 
+/- English proof (translation)
+Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw x]`. Conclude with `Complex.conj_ofReal _`.
+-/
 theorem ext_star {w : InfinitePlace F} (hw : w.IsReal) (x : w.Completion) :
     star (InfinitePlace.Completion.extensionEmbedding w x) = InfinitePlace.Completion.extensionEmbedding w x := by
   rw [← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw x]
   exact Complex.conj_ofReal _
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Establish `h1 : cA σ (a ⊗ₜ[F] e) = a ⊗ₜ[F] σ e` using `by simp [cA]`. Rewrite using `[h1, piInf_tmul, piInf_tmul, star_mul', ext_star (hCM.1.isReal w), hCM.2.2.2]`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, star_add]`.
+-/
 theorem piInf_cA {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (x : AE F E) :
     piInf τ (cA σ x) = star (piInf τ x) := by
   induction x using TensorProduct.induction_on with
@@ -31,6 +42,13 @@ theorem piInf_cA {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {w : InfinitePlace 
     rw [h1, piInf_tmul, piInf_tmul, star_mul', ext_star (hCM.1.isReal w), hCM.2.2.2]
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, star_add]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hr : ComplexEmbedding.IsReal (τ w).1`. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+
+Use extensionality with `x`. Use `hCM.2.2.2 (τ w).1 x` as an intermediate fact. Rewrite `this` using `[h x]`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, starRingEnd_apply]`. Conclude with `this.symm`.
+
+Use `haveI := hCM.2.1`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk (τ w).1))) (InfinitePlace.isReal_mk_iff.2 hr)`.
+-/
 theorem exists_moved {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     ∃ e : E, σ e ≠ e := by
   by_contra h
@@ -47,6 +65,33 @@ theorem exists_moved {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : ∀ w : I
   exact (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk (τ w).1)))
     (InfinitePlace.isReal_mk_iff.2 hr)
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_moved hCM τ`. Establish `hli : LinearIndependent F ![(1 : E), e]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Distinguish the cases in `ht : t = 0`.
+
+Substitute `ht` using the available equality. Simplify using `at hst`. Conclude with `⟨hst, rfl⟩`. It suffices to derive a contradiction. Apply `he` to reduce the goal to its premises.
+
+Establish `: e = algebraMap F E (-s / t)`. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `ht' : algebraMap F E t ≠ 0` using `by simpa using ht`. Rewrite using `[map_div₀, map_neg, eq_div_iff ht']`. Take the linear combination `hst`.
+
+Rewrite using `[this, AlgHom.commutes]`. Establish `hcard : Fintype.card (Fin 2) = Module.finrank F E` using `by rw [Fintype.card_fin, hCM.2.2.1]`. Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli hcard`. Establish `hb0 : b 0 = 1` using `by simp [b]`. Establish `hb1 : b 1 = e` using `by simp [b]`.
+
+Set `B` to `Algebra.TensorProduct.basis (AF F) b`. Use `set c := B.repr d with hc_def`. Establish `hd_eq : d = c 0 ⊗ₜ[F] (1 : E) + c 1 ⊗ₜ[F] e` using `by conv_lhs => rw [← B.sum_repr d]`. Simplify using `[Fin.sum_univ_two, B, Algebra.TensorProduct.basis_apply, hb0, hb1, TensorProduct.smul_tmul', c]`. Establish `hfin : ∀ i, (c i).2 = 0`.
+
+Introduce `i`. Set `u : AF F` to `((0 : InfiniteAdeleRing F), (1 : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F))`. Establish `hu : evI F u = 0` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`. Conclude with `map_zero _`. Establish `h1` using `congrArg (fun z => B.repr z i) (hd u hu)`.
+
+Simplify using `only [map_smul, map_zero, Finsupp.smul_apply, Finsupp.coe_zero, Pi.zero_apply, smul_eq_mul] at h1`. Establish `h2` using `congrArg Prod.snd h1`. Establish `h3 : (u * c i).2 = (c i).2` using `by show (1 : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F) * (c i).2 = (c i).2`. Conclude with `one_mul _`. Conclude with `h3.symm.trans h2`.
+
+Establish `hinf : ∀ w, evInf F w (c 0) = 0 ∧ evInf F w (c 1) = 0`. Introduce `w`. Establish `hw` using `h0 w`. Rewrite `hw` using `[hd_eq, map_add, piInf_tmul, piInf_tmul, map_one, mul_one]`. Use `set r0 := InfinitePlace.Completion.extensionEmbedding w (evInf F w (c 0)) with hr0_def`.
+
+Use `set r1 := InfinitePlace.Completion.extensionEmbedding w (evInf F w (c 1)) with hr1_def`. Establish `hr0 : star r0 = r0` using `ext_star (hCM.1.isReal w) _`. Establish `hr1 : star r1 = r1` using `ext_star (hCM.1.isReal w) _`. Establish `hw'` using `congrArg star hw`. Rewrite `hw'` using `[star_add, star_mul', hr0, hr1, ← hCM.2.2.2, star_zero]`.
+
+Establish `hsub : r1 * ((τ w).1 e - (τ w).1 (σ e)) = 0` using `by linear_combination hw - hw'`. Establish `hne : (τ w).1 e - (τ w).1 (σ e) ≠ 0` using `sub_ne_zero.2 (fun h => he ((τ w).1.injective h).symm)`. Establish `h1 : r1 = 0` using `(mul_eq_zero.1 hsub).resolve_right hne`. Establish `h0' : r0 = 0` using `by rw [h1, zero_mul, add_zero] at hw; exact hw`. Conclude with `⟨(InfinitePlace.Completion.extensionEmbedding w).injective (h0'.trans (map_zero _).symm), (InfinitePlace.Completion.extensionEmbedding w).injective (h1.trans (map_zero _).symm)⟩`.
+
+Establish `hc : ∀ i, c i = 0`. Introduce `i`. Establish `hi : ∀ w, evInf F w (c i) = 0`. Introduce `w`. Use `fin_cases i`.
+
+Conclude with `(hinf w).1`. Conclude with `(hinf w).2`. Apply `Prod.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Conclude with `hi w`.
+
+Conclude with `hfin i`. Rewrite using `[hd_eq, hc 0, hc 1]`. Simplify using the standard rewrite rules.
+-/
 theorem eq_zero_of_piInf {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (d : AE F E)
     (hd : At (evI F) d) (h0 : ∀ w, piInf (τ w) d = 0) : d = 0 := by
   obtain ⟨e, he⟩ := exists_moved hCM τ
@@ -117,17 +162,31 @@ theorem eq_zero_of_piInf {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : ∀ w
   rw [hd_eq, hc 0, hc 1]
   simp
 
+/- English proof (translation)
+Simplify using `[Jm, Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]`.
+-/
 theorem Jm_mul_Jm (R S : ℕ) : Jm R S * Jm R S = 1 := by
   simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Apply the tactic sequence `ext a b; rcases a with i | i <;> rcases b with j | j <;>`. Apply the tactic sequence `simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks, Matrix.one_apply] <;> split_ifs <;> simp`.
+-/
 theorem Jm_map_star (R S : ℕ) : (Jm R S).map star = Jm R S := by
   ext a b; rcases a with i | i <;> rcases b with j | j <;>
     simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks, Matrix.one_apply] <;> split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext a b; rcases a with i | i <;> rcases b with j | j <;>`. Apply the tactic sequence `simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks, Matrix.one_apply, Matrix.conjTranspose_apply] <;> split_ifs <;> simp_all [eq_comm]`.
+-/
 theorem Jm_conjTranspose (R S : ℕ) : (Jm R S)ᴴ = Jm R S := by
   ext a b; rcases a with i | i <;> rcases b with j | j <;>
     simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks, Matrix.one_apply, Matrix.conjTranspose_apply] <;> split_ifs <;> simp_all [eq_comm]
 
+/- English proof (translation)
+Use `congrArg (fun Z => Z.map (starRingEnd ℂ)) h` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Use extensionality with `i j`. Establish `h2` using `congrFun (congrFun this i) j`. Simplify using `only [Matrix.map_apply, Matrix.map_map] at h2`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.mul_apply]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem star_mul_one {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] (X : Matrix m n ℂ) (Y : Matrix n m ℂ)
     (h : X * Y.map star = 1) : X.map star * Y = 1 := by
   have := congrArg (fun Z => Z.map (starRingEnd ℂ)) h
@@ -139,6 +198,11 @@ theorem star_mul_one {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] (X : M
   · simp [Matrix.mul_apply]
   · simp [Matrix.one_apply]
 
+/- English proof (translation)
+Take `⟨h1, A', hA⟩` from `h`. Use `⟨A', hA, ?_⟩` and prove the remaining obligations. Establish `e1 : (Jm R S * Cᵀ * M) * C.map star = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Cᵀ, h1, Jm_mul_Jm]`. Establish `e2 : (Jm R S * Cᵀ * M).map star * C = 1` using `star_mul_one _ _ e1`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem frame_inv {β : Type} [Fintype β] [DecidableEq β] {R S : ℕ} {M : Matrix β β ℂ} {C : Matrix β (Ix R S) ℂ}
     (h : GlobalTheory.RealLift.IsFrame M C) : ∃ A' : Matrix (Ix R S) β ℂ, C * A' = 1 ∧ A' * C = 1 := by
   obtain ⟨h1, A', hA⟩ := h
@@ -150,10 +214,32 @@ theorem frame_inv {β : Type} [Fintype β] [DecidableEq β] {R S : ℕ} {M : Mat
     _ = (Jm R S * Cᵀ * M).map star * (C * A') * C := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hA, Matrix.mul_one, e2]
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := starRingEnd ℂ)`.
+-/
 theorem map_star_mul {m n o : Type} [Fintype n] (X : Matrix m n ℂ) (Y : Matrix n o ℂ) :
     (X * Y).map star = X.map star * Y.map star :=
   Matrix.map_mul (f := starRingEnd ℂ)
 
+/- English proof (translation)
+Use `set g : Mat R S := A' * kw * C with hg`. Establish `t1 : A'ᵀ * Cᵀ = 1` using `by rw [← Matrix.transpose_mul, hCA, Matrix.transpose_one]`. Establish `t2 : C.map star * A'.map star = 1`. Rewrite using `[← map_star_mul, hCA]`. Conclude with `Matrix.map_one _ (star_zero _) (star_one _)`.
+
+Establish `hJ : gᵀ * Jm R S * g.map star = Jm R S`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h1]`. Simplify using `only [hg, Matrix.transpose_mul, map_star_mul, Matrix.mul_assoc]`. Use `_ = Cᵀ * (b • Jw) * C.map star := by`.
+
+Rewrite using `[t1, t2, Matrix.one_mul, Matrix.mul_one, Matrix.mul_smul, Matrix.smul_mul, hk]`. Use `_ = Jm R S := h1`. Establish `hJ' : Jm R S = A' * θ * C` using `by rw [Matrix.mul_assoc, hθ, ← Matrix.mul_assoc, hAC, Matrix.one_mul]`. Establish `hcomm : Commute g (Jm R S)`. Establish `e1 : g * Jm R S = A' * (kw * θ) * C`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e2 : Jm R S * g = A' * (θ * kw) * C`. Combine the equalities or inequalities in the displayed calculation. Use `show g * Jm R S = Jm R S * g`. Rewrite using `[e1, e2, hkθ.eq]`.
+
+Establish `hJ2 : gᴴ * Jm R S * g = Jm R S`. Use `congrArg (fun Z => Z.map star) hJ` as an intermediate fact. Simplify using `only [map_star_mul, Jm_map_star] at this`. Establish `e : (g.map star).map star = g` using `by ext i j; simp`. Rewrite `this` using `[e]`.
+
+Conclude with `this`. Establish `hunit : star g * g = 1`. Rewrite using `[Matrix.star_eq_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Establish `hu : g ∈ unitary (Mat R S)` using `Matrix.mem_unitaryGroup_iff'.2 hunit`.
+
+Take `⟨H, hH, -, hexp, hcomH⟩` from `GlobalTheory.CartanInt.UnitLog.exists_log g hu`. Establish `hstar : Commute (star g) (Jm R S)`. Use `hcomm.star_star` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose (Jm R S), Jm_conjTranspose]`. Then use the resulting hypothesis. Establish `hKC : Commute H (Jm R S)` using `hcomH _ hcomm hstar`.
+
+Use `⟨Complex.I • H, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (Complex.I • H)ᴴ * Jm R S + Jm R S * (Complex.I • H) = 0`. Rewrite using `[Matrix.conjTranspose_smul, hH, Matrix.smul_mul, Matrix.mul_smul, hKC.eq]`. Simplify using `[Complex.conj_I]`. Conclude with `(GlobalTheory.CartanInt.UnitLog.isKC_iff_commute _).2 (hKC.smul_left Complex.I)`.
+
+Rewrite using `[← hexp, hg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hCA, Matrix.one_mul]`.
+-/
 theorem exists_gen_at {β : Type} [Fintype β] [DecidableEq β] {R S : ℕ} (C : Matrix β (Ix R S) ℂ)
     (A' : Matrix (Ix R S) β ℂ) (hCA : C * A' = 1) (hAC : A' * C = 1) (Jw : Matrix β β ℂ) (b : ℂ)
     (h1 : Cᵀ * (b • Jw) * C.map star = Jm R S) (kw θ : Matrix β β ℂ) (hk : kwᵀ * Jw * kw.map star = Jw)
@@ -205,6 +291,9 @@ theorem exists_gen_at {β : Type} [Fintype β] [DecidableEq β] {R S : ℕ} (C :
   · exact (GlobalTheory.CartanInt.UnitLog.isKC_iff_commute _).2 (hKC.smul_left Complex.I)
   · rw [← hexp, hg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hCA, Matrix.one_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[piInf_cA hCM]`.
+-/
 theorem map_cA_map {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {β : Type} {w : InfinitePlace F} (τ : EmbOver E w)
     (K : Matrix β β (AE F E)) : (K.map (cA σ)).map (piInf τ) = (K.map (piInf τ)).map star := by
   ext i j; simp [piInf_cA hCM]
@@ -215,6 +304,21 @@ namespace GlobalTheory.RealLift
 
 open GlobalTheory.RealLift.KLineProof
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ β _ _ R S τ J b C θ hCM hfr hθ k hk hkθ`. Establish `hu : (k.1 : Matrix β β (AE F E))ᵀ * J * (k.1 : Matrix β β (AE F E)).map (cA σ) = J` using `k.2`. Establish `hloc : ∀ w, ∃ Y : Mat R S, Y ∈ upq R S ∧ IsKC Y ∧ C w * NormedSpace.exp Y = (k.1 : Matrix β β (AE F E)).map (piInf (τ w)) * C w`. Introduce `w`. Take `⟨A', hCA, hAC⟩` from `frame_inv (hfr w)`.
+
+Use `exists_gen_at (C w) A' hCA hAC (J.map (piInf (τ w))) b (hfr w).1 _ (θ w) ?_ (hθ w) (hkθ w)` and prove the remaining obligations. Use `congrArg (fun X => X.map (piInf (τ w))) hu` as an intermediate fact. Simplify using `only [Matrix.map_mul, map_cA_map hCM, Matrix.transpose_map] at this`. Conclude with `this`. Use `choose Y hY using hloc`.
+
+Take `⟨γ, hγ, hgen⟩` from `hL F E σ β R S τ J b C hCM hfr Y (fun w => (hY w).1)`. Use `⟨γ, hγ, Y, hgen, fun w => (hY w).2.1, ?_⟩` and prove the remaining obligations. Establish `hw : ∀ w, ((γ (Multiplicative.ofAdd 1)).1 : Matrix β β (AE F E)).map (piInf (τ w)) = (k.1 : Matrix β β (AE F E)).map (piInf (τ w))`. Introduce `w`. Take `⟨A', hCA, -⟩` from `frame_inv (hfr w)`.
+
+Establish `h1` using `hgen 1 w`. Rewrite `h1` using `[one_smul, (hY w).2.2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, hCA, Matrix.mul_one]`. Use `_ = _ := by rw [h1, Matrix.mul_assoc, hCA, Matrix.mul_one]`.
+
+Establish `hA1` using `hγ.2 (Multiplicative.ofAdd 1)`. Establish `hmat : ((γ (Multiplicative.ofAdd 1)).1 : Matrix β β (AE F E)) = k.1`. Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_piInf hCM τ _ ?_ ?_` and prove the remaining obligations.
+
+Introduce `u hu0`. Establish `e1` using `congrFun (congrFun (hA1 u hu0) i) j`. Establish `e2` using `congrFun (congrFun (hk u hu0) i) j`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.zero_apply, smul_sub] at e1 e2 ⊢`. Rewrite using `[← sub_sub_sub_cancel_right _ _ (u • (1 : Matrix β β (AE F E)) i j), e1, e2, sub_zero]`.
+
+Introduce `w`. Use `congrFun (congrFun (hw w) i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Rewrite using `[map_sub, this, sub_self]`. Conclude with `Subtype.ext (Units.ext hmat)`.
+-/
 theorem kLine_of_lineEx (hL : LineEx) : KLine := by
   intro F E _ _ _ _ _ σ β _ _ R S τ J b C θ hCM hfr hθ k hk hkθ
   have hu : (k.1 : Matrix β β (AE F E))ᵀ * J * (k.1 : Matrix β β (AE F E)).map (cA σ) = J := k.2

@@ -20,6 +20,17 @@ open GlobalTheory.BcEigen
 
 namespace GlobalTheory.BcEigen
 
+/- English proof (translation)
+Introduce `h2 hH hR D O hc hf A T H hr R hR2`. Take `⟨M, Φ, Ψ, κ, hΦ, hΨ, hread⟩` from `GlobalTheory.T.arithmetic_functional_graded_line_bundles h2 hH hR D O hc hf A T H hr R hR2`. Rewrite using `[(hread _).1, (hread _).2]`. Establish `hj : O.Y.j ≤ O.Y.N` using `O.Y.j_lt.le`. Take `⟨e1, e2, e3⟩` from `GlobalTheory.T.relabel_root_power_sum_and_signs D.what₂.Tau O.Y.N O.Y.j hj`.
+
+Take `⟨e4, e5⟩` from `GlobalTheory.T.relabel_fibre_point_vandermonde_product D.what₂.Tau O.Y.N O.Y.j hj`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `haveI := (M c).int`. Use `haveI := (M c).V.int`.
+
+Simplify using `only [curveCl, map_mul, map_sub, map_pow, e1, e2, e3, e4, e5]`. Rewrite using `[← mul_assoc]`. Use `(GlobalTheory.T.flag_bundle_family_pullback_product h2 hH hR _ (M c).B (M c).V.X (M c).q (M c).V.p _ _ (M c).ar (M c).V.ar (M c).π (M c).w _ (M c).E (rkB D.what₂.Tau O.Y.N O.Y.j) (M c).h (M c).H (M c).fl (M c).univ (Φ c) (Ψ c) (hΦ c) (hΨ c) lamSign _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Eq.trans ?_ (map_sum (Ψ c) _ _).symm` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[show ∀ (g : ℝ) (x y z : MvPolynomial (Σ a : D.what₂.Tau × Bool, Fin (rkB D.what₂.Tau O.Y.N O.Y.j a)) ℝ), C g * x * (y * z) = g • (x * y * z) from fun g x y z => by rw [smul_eq_C_mul]; ring]`. Use `Eq.trans ?_ ((Ψ c).map_smul _ _).symm` and prove the remaining obligations. Rewrite using `[smul_eq_mul, ← neg_mul]`.
+
+Use `congr 1`. Break down `a with ⟨τ, _ | _⟩` into its components or cases. Simplify using `only [cond_false, rkB]`. Rewrite using `[Nat.cast_sub hj]`. Simplify using `[rkB]`.
+-/
 theorem bcFlag_eq_chern : Hypotheses2 → HypothesesH → RegularAlteration → OnObj fun D O _ _ _ _ => ∀ R : ℝ, 2 ≤ R → O.Y.arDeg ∅ R ((∑ τ, (pSum τ 2 : Pol D.what₂.Tau O.Y.N)) * (lamA D.what₂.Tau O.Y.N O.Y.j ^ (dimGr D.what₂.Tau O.Y.N O.Y.j - 1) * (fibPt D.what₂.Tau O.Y.N O.Y.j - vdmCl D.what₂.Tau O.Y.N O.Y.j))) = O.Y.chern (invForm O.Y.j (fun _ => -(((O.Y.j : ℝ) - 1) / O.Y.j)) (fun _ => -(((O.Y.N : ℝ) - O.Y.j - 1) / ((O.Y.N : ℝ) - O.Y.j))) * curveCl D.what₂.Tau O.Y.N O.Y.j) := by
   intro h2 hH hR D O hc hf A T H hr R hR2
   obtain ⟨M, Φ, Ψ, κ, hΦ, hΨ, hread⟩ := GlobalTheory.T.arithmetic_functional_graded_line_bundles h2 hH hR D O hc hf A T H hr R hR2

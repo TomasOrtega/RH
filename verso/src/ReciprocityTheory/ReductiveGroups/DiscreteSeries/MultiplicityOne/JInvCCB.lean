@@ -13,6 +13,9 @@ section Alg
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `h : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX`. Use `show ((t : ℂ) • X)ᴴ * Hpk k r + Hpk k r * ((t : ℂ) • X) = 0`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul]`. Establish `hs : star (t : ℂ) = (t : ℂ)` using `Complex.conj_ofReal t`. Rewrite using `[hs, ← smul_add, h, smul_zero]`.
+-/
 lemma lie_rsmul (t : ℝ) {X : Mat k r} (hX : inLie k r X) : inLie k r ((t : ℂ) • X) := by
   have h : Xᴴ * Hpk k r + Hpk k r * X = 0 := hX
   show ((t : ℂ) • X)ᴴ * Hpk k r + Hpk k r * ((t : ℂ) • X) = 0
@@ -20,19 +23,33 @@ lemma lie_rsmul (t : ℝ) {X : Mat k r} (hX : inLie k r X) : inLie k r ((t : ℂ
   have hs : star (t : ℂ) = (t : ℂ) := Complex.conj_ofReal t
   rw [hs, ← smul_add, h, smul_zero]
 
+/- English proof (translation)
+Establish `h : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX`. Use `show (-X)ᴴ * Hpk k r + Hpk k r * (-X) = 0`. Rewrite using `[Matrix.conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, ← neg_add, h, neg_zero]`.
+-/
 lemma lie_neg {X : Mat k r} (hX : inLie k r X) : inLie k r (-X) := by
   have h : Xᴴ * Hpk k r + Hpk k r * X = 0 := hX
   show (-X)ᴴ * Hpk k r + Hpk k r * (-X) = 0
   rw [Matrix.conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, ← neg_add, h, neg_zero]
 
+/- English proof (translation)
+Establish `h : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma Hpk_conjTranspose_Hpk_mul_eq_one_of_mem_GV {g : Mat k r} (hg : g ∈ GV k r) : Hpk k r * gᴴ * Hpk k r * g = 1 := by
   have h : gᴴ * Hpk k r * g = Hpk k r := hg
   calc Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [h, hpk_sq]
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (Hpk_conjTranspose_Hpk_mul_eq_one_of_mem_GV hg)`.
+-/
 private lemma inv_eq_Hpk_conjTranspose_Hpk_of_mem_GV {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r :=
   Matrix.inv_eq_left_inv (Hpk_conjTranspose_Hpk_mul_eq_one_of_mem_GV hg)
 
+/- English proof (translation)
+Establish `h : Yᴴ * Hpk k r + Hpk k r * Y = 0` using `hY`. Establish `h1 : Yᴴ * Hpk k r = -(Hpk k r * Y)` using `eq_neg_of_add_eq_zero_left h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`.
+
+Use `_ = -(Y * Hpk k r) := by rw [hpk_sq, Matrix.one_mul]`.
+-/
 private lemma Hpk_mul_conjTranspose_eq_neg_mul_Hpk_of_inLie {Y : Mat k r} (hY : inLie k r Y) : Hpk k r * Yᴴ = -(Y * Hpk k r) := by
   have h : Yᴴ * Hpk k r + Hpk k r * Y = 0 := hY
   have h1 : Yᴴ * Hpk k r = -(Hpk k r * Y) := eq_neg_of_add_eq_zero_left h
@@ -42,6 +59,11 @@ private lemma Hpk_mul_conjTranspose_eq_neg_mul_Hpk_of_inLie {Y : Mat k r} (hY : 
       rw [h1]; simp only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]
     _ = -(Y * Hpk k r) := by rw [hpk_sq, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `key : ∀ Z : Mat k r, Hpk k r * (Yᴴ * Z) = -(Y * (Hpk k r * Z))`. Introduce `Z`. Rewrite using `[← Matrix.mul_assoc, Hpk_mul_conjTranspose_eq_neg_mul_Hpk_of_inLie hY, Matrix.neg_mul, Matrix.mul_assoc]`. Use `show (P * Y * P⁻¹)ᴴ * Hpk k r + Hpk k r * (P * Y * P⁻¹) = 0`. Rewrite using `[inv_eq_Hpk_conjTranspose_Hpk_of_mem_GV hP]`.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hpk_conjT, Matrix.mul_assoc]`. Rewrite using `[key]`. Simplify using `only [Matrix.mul_neg, neg_add_cancel]`.
+-/
 lemma lie_conj {P Y : Mat k r} (hP : P ∈ GV k r) (hY : inLie k r Y) : inLie k r (P * Y * P⁻¹) := by
   have key : ∀ Z : Mat k r, Hpk k r * (Yᴴ * Z) = -(Y * (Hpk k r * Z)) := by
     intro Z
@@ -52,11 +74,21 @@ lemma lie_conj {P Y : Mat k r} (hP : P ∈ GV k r) (hY : inLie k r Y) : inLie k 
   rw [key]
   simp only [Matrix.mul_neg, neg_add_cancel]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Hpk]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private lemma Hpk_map_conj_eq : (Hpk k r).map (starRingEnd ℂ) = Hpk k r := by
   ext i j
   simp only [Matrix.map_apply, Hpk]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `h : Yᴴ * Hpk k r + Hpk k r * Y = 0` using `hY`. Use `show (Y.map (starRingEnd ℂ))ᴴ * Hpk k r + Hpk k r * Y.map (starRingEnd ℂ) = 0`. Establish `e1 : (Y.map (starRingEnd ℂ))ᴴ = (Yᴴ).map (starRingEnd ℂ)`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`.
+
+Rewrite using `[e1]`. Use `conv_lhs => rw [← Hpk_map_conj_eq (k := k) (r := r)]`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul]`. Use extensionality with `i j`. Establish `hij : (Yᴴ * Hpk k r) i j + (Hpk k r * Y) i j = 0`.
+
+Rewrite using `[← Matrix.add_apply, h, Matrix.zero_apply]`. Simplify using `only [Matrix.add_apply, Matrix.map_apply, Matrix.zero_apply, ← map_add, hij, map_zero]`.
+-/
 lemma lie_map_conj {Y : Mat k r} (hY : inLie k r Y) : inLie k r (Y.map (starRingEnd ℂ)) := by
   have h : Yᴴ * Hpk k r + Hpk k r * Y = 0 := hY
   show (Y.map (starRingEnd ℂ))ᴴ * Hpk k r + Hpk k r * Y.map (starRingEnd ℂ) = 0
@@ -71,11 +103,17 @@ lemma lie_map_conj {Y : Mat k r} (hY : inLie k r Y) : inLie k r (Y.map (starRing
     rw [← Matrix.add_apply, h, Matrix.zero_apply]
   simp only [Matrix.add_apply, Matrix.map_apply, Matrix.zero_apply, ← map_add, hij, map_zero]
 
+/- English proof (translation)
+Rewrite using `[← inv_eq_Hpk_conjTranspose_Hpk_of_mem_GV hg]`. Conclude with `Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse (Hpk_conjTranspose_Hpk_mul_eq_one_of_mem_GV hg))`.
+-/
 private lemma mul_Hpk_conjTranspose_Hpk_eq_one_of_mem_GV {g : Mat k r} (hg : g ∈ GV k r) : g * (Hpk k r * gᴴ * Hpk k r) = 1 :=
   by
   rw [← inv_eq_Hpk_conjTranspose_Hpk_of_mem_GV hg]
   exact Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse (Hpk_conjTranspose_Hpk_mul_eq_one_of_mem_GV hg))
 
+/- English proof (translation)
+Rewrite using `[inv_eq_Hpk_conjTranspose_Hpk_of_mem_GV hg]`. Use `show (Hpk k r * gᴴ * Hpk k r)ᴴ * Hpk k r * (Hpk k r * gᴴ * Hpk k r) = Hpk k r`. Establish `h1` using `mul_Hpk_conjTranspose_Hpk_eq_one_of_mem_GV hg`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hpk_conjT, Matrix.mul_assoc] at h1 ⊢`. Rewrite using `[← Matrix.mul_assoc (Hpk k r) (Hpk k r), hpk_sq, Matrix.one_mul, h1, Matrix.mul_one]`.
+-/
 private lemma inv_mem_GV' {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ ∈ GV k r := by
   rw [inv_eq_Hpk_conjTranspose_Hpk_of_mem_GV hg]
   show (Hpk k r * gᴴ * Hpk k r)ᴴ * Hpk k r * (Hpk k r * gᴴ * Hpk k r) = Hpk k r
@@ -83,6 +121,9 @@ private lemma inv_mem_GV' {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ ∈ GV k r 
   simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hpk_conjT, Matrix.mul_assoc] at h1 ⊢
   rw [← Matrix.mul_assoc (Hpk k r) (Hpk k r), hpk_sq, Matrix.one_mul, h1, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `e1 : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `e2 : hᴴ * Hpk k r * h = Hpk k r` using `hh`. Use `show (g * h)ᴴ * Hpk k r * (g * h) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma mul_mem_GV_multiplicity_one {g h : Mat k r} (hg : g ∈ GV k r) (hh : h ∈ GV k r) : g * h ∈ GV k r := by
   have e1 : gᴴ * Hpk k r * g = Hpk k r := hg
   have e2 : hᴴ * Hpk k r * h = Hpk k r := hh
@@ -91,6 +132,11 @@ private lemma mul_mem_GV_multiplicity_one {g h : Mat k r} (hg : g ∈ GV k r) (h
   calc hᴴ * gᴴ * Hpk k r * (g * h) = hᴴ * (gᴴ * Hpk k r * g) * h := by simp only [Matrix.mul_assoc]
     _ = Hpk k r := by rw [e1, e2]
 
+/- English proof (translation)
+Establish `e1 : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Use `show (g.map (starRingEnd ℂ))ᴴ * Hpk k r * g.map (starRingEnd ℂ) = Hpk k r`. Establish `e2 : (g.map (starRingEnd ℂ))ᴴ = (gᴴ).map (starRingEnd ℂ)`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`.
+
+Rewrite using `[e2]`. Use `conv_lhs => rw [← Hpk_map_conj_eq (k := k) (r := r)]`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, e1, Hpk_map_conj_eq]`.
+-/
 private lemma map_conj_mem_GV {g : Mat k r} (hg : g ∈ GV k r) : g.map (starRingEnd ℂ) ∈ GV k r := by
   have e1 : gᴴ * Hpk k r * g = Hpk k r := hg
   show (g.map (starRingEnd ℂ))ᴴ * Hpk k r * g.map (starRingEnd ℂ) = Hpk k r
@@ -101,6 +147,11 @@ private lemma map_conj_mem_GV {g : Mat k r} (hg : g ∈ GV k r) : g.map (starRin
   conv_lhs => rw [← Hpk_map_conj_eq (k := k) (r := r)]
   rw [← Matrix.map_mul, ← Matrix.map_mul, e1, Hpk_map_conj_eq]
 
+/- English proof (translation)
+Establish `h : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX`. Establish `hXH : Xᴴ = Hpk k r * (-X) * (Hpk k r)⁻¹`. Rewrite using `[Matrix.inv_eq_left_inv hpk_sq]`. Establish `h1 : Xᴴ * Hpk k r = -(Hpk k r * X)` using `eq_neg_of_add_eq_zero_left h`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hU : IsUnit (Hpk k r)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_left_inverse hpk_sq)`. Establish `hc : NormedSpace.exp (-X) * NormedSpace.exp X = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl X)), neg_add_cancel, NormedSpace.exp_zero]`. Use `show (NormedSpace.exp X)ᴴ * Hpk k r * NormedSpace.exp X = Hpk k r`. Rewrite using `[← Matrix.exp_conjTranspose, hXH, Matrix.exp_conj _ _ hU, Matrix.inv_eq_left_inv hpk_sq, Matrix.mul_assoc (Hpk k r * NormedSpace.exp (-X)) (Hpk k r) (Hpk k r), hpk_sq, Matrix.mul_one, Matrix.mul_assoc, hc, Matrix.mul_one]`.
+-/
 lemma exp_mem {X : Mat k r} (hX : inLie k r X) : NormedSpace.exp X ∈ GV k r := by
   have h : Xᴴ * Hpk k r + Hpk k r * X = 0 := hX
   have hXH : Xᴴ = Hpk k r * (-X) * (Hpk k r)⁻¹ := by
@@ -122,33 +173,57 @@ section gbar
 
 variable {γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hE : IsUnit (embWb k r γ).det)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private lemma conj_map_add (A B : Mat k r) :
     (A + B).map (starRingEnd ℂ) = A.map (starRingEnd ℂ) + B.map (starRingEnd ℂ) := by
   ext i j
   simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private lemma conj_map_real_smul (t : ℝ) (A : Mat k r) :
     ((t : ℂ) • A).map (starRingEnd ℂ) = (t : ℂ) • A.map (starRingEnd ℂ) := by
   ext i j
   simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private lemma conj_map_neg (A : Mat k r) : (-A).map (starRingEnd ℂ) = -A.map (starRingEnd ℂ) := by
   ext i j
   simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private lemma conj_map_conj_map (A : Mat k r) : (A.map (starRingEnd ℂ)).map (starRingEnd ℂ) = A := by
   ext i j
   simp
 
+/- English proof (translation)
+Simplify using `only [gbar, Matrix.mul_add, Matrix.add_mul, conj_map_add]`.
+-/
 lemma gbar_add (A B : Mat k r) : gbar k r γ (A + B) = gbar k r γ A + gbar k r γ B := by
   simp only [gbar, Matrix.mul_add, Matrix.add_mul, conj_map_add]
 
+/- English proof (translation)
+Simplify using `only [gbar, Matrix.mul_smul, Matrix.smul_mul, conj_map_real_smul]`.
+-/
 lemma gbar_rsmul (t : ℝ) (A : Mat k r) : gbar k r γ ((t : ℂ) • A) = (t : ℂ) • gbar k r γ A := by
   simp only [gbar, Matrix.mul_smul, Matrix.smul_mul, conj_map_real_smul]
 
+/- English proof (translation)
+Simplify using `only [gbar, Matrix.mul_neg, Matrix.neg_mul, conj_map_neg]`.
+-/
 lemma gbar_neg (A : Mat k r) : gbar k r γ (-A) = -gbar k r γ A := by
   simp only [gbar, Matrix.mul_neg, Matrix.neg_mul, conj_map_neg]
 
+/- English proof (translation)
+Establish `h : ∀ B : Mat k r, B.map (starRingEnd ℂ) = (Bᴴ)ᵀ` using `fun B => by ext i j; simp`. Rewrite using `[h, h, Matrix.exp_transpose, Matrix.exp_conjTranspose]`.
+-/
 lemma exp_map_conj (A : Mat k r) :
     NormedSpace.exp (A.map (starRingEnd ℂ)) = (NormedSpace.exp A).map (starRingEnd ℂ) := by
   have h : ∀ B : Mat k r, B.map (starRingEnd ℂ) = (Bᴴ)ᵀ := fun B => by ext i j; simp
@@ -156,6 +231,9 @@ lemma exp_map_conj (A : Mat k r) :
 
 include hE
 
+/- English proof (translation)
+Simplify using `only [gbar]`. Rewrite using `[show (embWb k r γ)⁻¹ * (g * h) * embWb k r γ = ((embWb k r γ)⁻¹ * g * embWb k r γ) * ((embWb k r γ)⁻¹ * h * embWb k r γ) by`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left, hE], Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left, hE]`.
+-/
 lemma gbar_mul (g h : Mat k r) : gbar k r γ (g * h) = gbar k r γ g * gbar k r γ h := by
   simp only [gbar]
   rw [show (embWb k r γ)⁻¹ * (g * h) * embWb k r γ =
@@ -163,33 +241,60 @@ lemma gbar_mul (g h : Mat k r) : gbar k r γ (g * h) = gbar k r γ g * gbar k r 
     simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left, hE], Matrix.map_mul]
   simp only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left, hE]
 
+/- English proof (translation)
+Simplify using `only [gbar, Matrix.mul_one, Matrix.nonsing_inv_mul _ hE]`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, Matrix.mul_nonsing_inv _ hE]`.
+-/
 lemma gbar_one : gbar k r γ 1 = 1 := by
   simp only [gbar, Matrix.mul_one, Matrix.nonsing_inv_mul _ hE]
   rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, Matrix.mul_nonsing_inv _ hE]
 
+/- English proof (translation)
+Simplify using `only [gbar, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left, Matrix.mul_nonsing_inv_cancel_left, Matrix.nonsing_inv_mul, Matrix.mul_nonsing_inv, Matrix.mul_one, hE, conj_map_conj_map]`.
+-/
 lemma gbar_gbar (g : Mat k r) : gbar k r γ (gbar k r γ g) = g := by
   simp only [gbar, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left, Matrix.mul_nonsing_inv_cancel_left,
     Matrix.nonsing_inv_mul, Matrix.mul_nonsing_inv, Matrix.mul_one, hE, conj_map_conj_map]
 
+/- English proof (translation)
+Rewrite using `[← gbar_mul hE, Matrix.mul_nonsing_inv _ hx, gbar_one hE]`.
+-/
 lemma gbar_mul_inv {x : Mat k r} (hx : IsUnit x.det) : gbar k r γ x * gbar k r γ x⁻¹ = 1 := by
   rw [← gbar_mul hE, Matrix.mul_nonsing_inv _ hx, gbar_one hE]
 
+/- English proof (translation)
+The claim follows from `(Matrix.inv_eq_right_inv (gbar_mul_inv hE hx)).symm`.
+-/
 lemma gbar_inv {x : Mat k r} (hx : IsUnit x.det) : gbar k r γ x⁻¹ = (gbar k r γ x)⁻¹ := (Matrix.inv_eq_right_inv (gbar_mul_inv hE hx)).symm
 
+/- English proof (translation)
+The claim follows from `Matrix.isUnit_det_of_right_inverse (gbar_mul_inv hE hx)`.
+-/
 lemma gbar_unit {x : Mat k r} (hx : IsUnit x.det) : IsUnit (gbar k r γ x).det := Matrix.isUnit_det_of_right_inverse (gbar_mul_inv hE hx)
 
+/- English proof (translation)
+Simplify using `only [th, gbar_mul hE, Matrix.mul_inv_rev]`.
+-/
 lemma th_mul (g h : Mat k r) : th k r γ (g * h) = th k r γ h * th k r γ g := by
   simp only [th, gbar_mul hE, Matrix.mul_inv_rev]
 
+/- English proof (translation)
+Simplify using `only [th]`. Rewrite using `[gbar_inv hE (gbar_unit hE hg), gbar_gbar hE, Matrix.nonsing_inv_nonsing_inv _ hg]`.
+-/
 lemma th_th {g : Mat k r} (hg : IsUnit g.det) : th k r γ (th k r γ g) = g := by
   simp only [th]
   rw [gbar_inv hE (gbar_unit hE hg), gbar_gbar hE, Matrix.nonsing_inv_nonsing_inv _ hg]
 
+/- English proof (translation)
+Establish `hU : IsUnit (embWb k r γ)` using `(Matrix.isUnit_iff_isUnit_det _).mpr hE`. Simplify using `only [gbar]`. Rewrite using `[← Matrix.exp_conj' _ A hU, ← exp_map_conj, Matrix.exp_conj _ _ hU]`.
+-/
 lemma gbar_exp (A : Mat k r) : gbar k r γ (NormedSpace.exp A) = NormedSpace.exp (gbar k r γ A) := by
   have hU : IsUnit (embWb k r γ) := (Matrix.isUnit_iff_isUnit_det _).mpr hE
   simp only [gbar]
   rw [← Matrix.exp_conj' _ A hU, ← exp_map_conj, Matrix.exp_conj _ _ hU]
 
+/- English proof (translation)
+Simplify using `only [th]`. Rewrite using `[gbar_exp hE, Matrix.exp_neg]`.
+-/
 lemma th_exp (A : Mat k r) : th k r γ (NormedSpace.exp A) = NormedSpace.exp (-(gbar k r γ A)) := by
   simp only [th]
   rw [gbar_exp hE, Matrix.exp_neg]
@@ -197,6 +302,9 @@ lemma th_exp (A : Mat k r) : th k r γ (NormedSpace.exp A) = NormedSpace.exp (-(
 variable (hEG : embWb k r γ ∈ GV k r)
 include hEG
 
+/- English proof (translation)
+Establish `hEi : (embWb k r γ)⁻¹ ∈ GV k r` using `inv_mem_GV' hEG`. Establish `h1 : inLie k r ((embWb k r γ)⁻¹ * X * embWb k r γ)`. Establish `h2` using `lie_conj hEi hX`. Rewrite `h2` using `[Matrix.nonsing_inv_nonsing_inv _ hE]`. Then use the resulting hypothesis. Conclude with `lie_conj hEG (lie_map_conj h1)`.
+-/
 lemma lie_gbar {X : Mat k r} (hX : inLie k r X) : inLie k r (gbar k r γ X) := by
   have hEi : (embWb k r γ)⁻¹ ∈ GV k r := inv_mem_GV' hEG
   have h1 : inLie k r ((embWb k r γ)⁻¹ * X * embWb k r γ) := by
@@ -204,11 +312,20 @@ lemma lie_gbar {X : Mat k r} (hX : inLie k r X) : inLie k r (gbar k r γ X) := b
     rwa [Matrix.nonsing_inv_nonsing_inv _ hE] at h2
   exact lie_conj hEG (lie_map_conj h1)
 
+/- English proof (translation)
+The claim follows from `mul_mem_GV_multiplicity_one (mul_mem_GV_multiplicity_one hEG (map_conj_mem_GV (mul_mem_GV_multiplicity_one (mul_mem_GV_multiplicity_one (inv_mem_GV' hEG) hg) hEG))) (inv_mem_GV' hEG)`.
+-/
 lemma gbar_mem {g : Mat k r} (hg : g ∈ GV k r) : gbar k r γ g ∈ GV k r := mul_mem_GV_multiplicity_one (mul_mem_GV_multiplicity_one hEG (map_conj_mem_GV (mul_mem_GV_multiplicity_one (mul_mem_GV_multiplicity_one (inv_mem_GV' hEG) hg) hEG)))
     (inv_mem_GV' hEG)
 
+/- English proof (translation)
+The claim follows from `inv_mem_GV' (gbar_mem hE hEG hg)`.
+-/
 lemma th_mem {g : Mat k r} (hg : g ∈ GV k r) : th k r γ g ∈ GV k r := inv_mem_GV' (gbar_mem hE hEG hg)
 
+/- English proof (translation)
+The claim follows from `inv_eq_Hpk_conjTranspose_Hpk_of_mem_GV (gbar_mem hE hEG hg)`.
+-/
 lemma th_eq {g : Mat k r} (hg : g ∈ GV k r) : th k r γ g = Hpk k r * (gbar k r γ g)ᴴ * Hpk k r := inv_eq_Hpk_conjTranspose_Hpk_of_mem_GV (gbar_mem hE hEG hg)
 
 end gbar
@@ -223,6 +340,9 @@ section Linfty
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra Matrix.linftyOpNormedSpace
 
+/- English proof (translation)
+Establish `h` using `(hasDerivAt_exp_smul_const (𝕂 := ℂ) X ((0 : ℝ) : ℂ))`. Establish `h2` using `h.scomp (x := (0:ℝ)) Complex.ofRealCLM.hasDerivAt`. Conclude with `h2.congr_deriv (by simp)`.
+-/
 lemma hasDerivAt_exp_linfty {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0 := by
   have h := (hasDerivAt_exp_smul_const (𝕂 := ℂ) X ((0 : ℝ) : ℂ))
@@ -231,6 +351,9 @@ lemma hasDerivAt_exp_linfty {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
 
 end Linfty
 
+/- English proof (translation)
+Set `_` to `Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)`. Set `_` to `Matrix.linftyOpNormedAlgebra (R := ℂ) (n := Fin n) (α := ℂ)`. Set `_` to `Matrix.linftyOpNormedSpace (R := ℝ) (m := Fin n) (n := Fin n) (α := ℂ)`. Conclude with `(hasDerivAt_exp_linfty X).tendsto_slope`.
+-/
 lemma slope_exp {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
     Tendsto (slope (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) 0) (𝓝[≠] 0) (𝓝 X) := by
   let _ := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)
@@ -238,6 +361,9 @@ lemma slope_exp {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
   let _ := Matrix.linftyOpNormedSpace (R := ℝ) (m := Fin n) (n := Fin n) (α := ℂ)
   exact (hasDerivAt_exp_linfty X).tendsto_slope
 
+/- English proof (translation)
+Establish `hm : Continuous (fun M : Matrix (Fin n) (Fin n) ℂ => g * M)` using `continuous_const.mul continuous_id`. Use `((hm.tendsto X).comp (slope_exp X)).congr' ?_` and prove the remaining obligations. Use `filter_upwards with t`. Simplify using `only [Function.comp_apply, slope_def_module, Matrix.mul_sub, Matrix.mul_smul]`.
+-/
 lemma slope_curveR {n : ℕ} (g X : Matrix (Fin n) (Fin n) ℂ) :
     Tendsto (slope (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) 0) (𝓝[≠] 0) (𝓝 (g * X)) := by
   have hm : Continuous (fun M : Matrix (Fin n) (Fin n) ℂ => g * M) := continuous_const.mul continuous_id
@@ -245,6 +371,9 @@ lemma slope_curveR {n : ℕ} (g X : Matrix (Fin n) (Fin n) ℂ) :
   filter_upwards with t
   simp only [Function.comp_apply, slope_def_module, Matrix.mul_sub, Matrix.mul_smul]
 
+/- English proof (translation)
+Establish `h` using `(slope_exp (-X)).mul_const g`. Rewrite `h` using `[Matrix.neg_mul]`. Use `h.congr (fun t => ?_)` and prove the remaining obligations. Simplify using `only [slope_def_module, Matrix.sub_mul, Matrix.smul_mul, smul_neg]`.
+-/
 lemma slope_curveL {n : ℕ} (g X : Matrix (Fin n) (Fin n) ℂ) :
     Tendsto (slope (fun t : ℝ => NormedSpace.exp (-((t : ℂ) • X)) * g) 0) (𝓝[≠] 0) (𝓝 (-(X * g))) := by
   have h := (slope_exp (-X)).mul_const g
@@ -256,9 +385,15 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+The claim follows from `hasDerivAt_iff_tendsto_slope.mpr (slope_curveR g X)`.
+-/
 lemma hasDerivAt_curveR (g X : Mat k r) :
     HasDerivAt (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) (g * X) 0 := hasDerivAt_iff_tendsto_slope.mpr (slope_curveR g X)
 
+/- English proof (translation)
+The claim follows from `hasDerivAt_iff_tendsto_slope.mpr (slope_curveL g X)`.
+-/
 lemma hasDerivAt_curveL (g X : Mat k r) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp (-((t : ℂ) • X)) * g) (-(X * g)) 0 := hasDerivAt_iff_tendsto_slope.mpr (slope_curveL g X)
 
@@ -266,14 +401,23 @@ def mulR (X : Mat k r) : Mat k r →L[ℝ] Mat k r := LinearMap.toContinuousLine
 
 def mulL (X : Mat k r) : Mat k r →L[ℝ] Mat k r := LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ X)
 
+/- English proof (translation)
+Establish `h1 : inLie k r (-((t : ℂ) • X))` using `lie_neg (lie_rsmul t hX)`. Conclude with `mul_mem_GV_multiplicity_one (exp_mem h1) hg`.
+-/
 lemma expL_mem {X : Mat k r} (hX : inLie k r X) (t : ℝ) {g : Mat k r} (hg : g ∈ GV k r) :
     NormedSpace.exp (-((t : ℂ) • X)) * g ∈ GV k r := by
   have h1 : inLie k r (-((t : ℂ) • X)) := lie_neg (lie_rsmul t hX)
   exact mul_mem_GV_multiplicity_one (exp_mem h1) hg
 
+/- English proof (translation)
+The claim follows from `mul_mem_GV_multiplicity_one hg (exp_mem (lie_rsmul t hX))`.
+-/
 lemma expR_mem {X : Mat k r} (hX : inLie k r X) (t : ℝ) {g : Mat k r} (hg : g ∈ GV k r) :
     g * NormedSpace.exp ((t : ℂ) • X) ∈ GV k r := mul_mem_GV_multiplicity_one hg (exp_mem (lie_rsmul t hX))
 
+/- English proof (translation)
+Use `show deriv (fun t : ℝ => f₁ (NormedSpace.exp (-((t : ℂ) • X)) * g)) 0 = deriv (fun t : ℝ => f₂ (NormedSpace.exp (-((t : ℂ) • X)) * g)) 0`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `h _ (expL_mem hX t hg)`.
+-/
 lemma LdV_congr {f₁ f₂ : Mat k r → ℂ} (h : ∀ g ∈ GV k r, f₁ g = f₂ g) {X : Mat k r} (hX : inLie k r X)
     {g : Mat k r} (hg : g ∈ GV k r) : LdV X f₁ g = LdV X f₂ g := by
   show deriv (fun t : ℝ => f₁ (NormedSpace.exp (-((t : ℂ) • X)) * g)) 0 =
@@ -282,6 +426,9 @@ lemma LdV_congr {f₁ f₂ : Mat k r → ℂ} (h : ∀ g ∈ GV k r, f₁ g = f�
   funext t
   exact h _ (expL_mem hX t hg)
 
+/- English proof (translation)
+Use `show deriv (fun t : ℝ => f₁ (g * NormedSpace.exp ((t : ℂ) • X))) 0 = deriv (fun t : ℝ => f₂ (g * NormedSpace.exp ((t : ℂ) • X))) 0`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `h _ (expR_mem hX t hg)`.
+-/
 lemma RdV_congr {f₁ f₂ : Mat k r → ℂ} (h : ∀ g ∈ GV k r, f₁ g = f₂ g) {X : Mat k r} (hX : inLie k r X)
     {g : Mat k r} (hg : g ∈ GV k r) : RdV X f₁ g = RdV X f₂ g := by
   show deriv (fun t : ℝ => f₁ (g * NormedSpace.exp ((t : ℂ) • X))) 0 =
@@ -290,6 +437,13 @@ lemma RdV_congr {f₁ f₂ : Mat k r → ℂ} (h : ∀ g ∈ GV k r, f₁ g = f�
   funext t
   exact h _ (expR_mem hX t hg)
 
+/- English proof (translation)
+Establish `hc` using `hasDerivAt_curveL g X`. Establish `hc0 : NormedSpace.exp (-(((0 : ℝ) : ℂ) • X)) * g = g` using `by simp`. Establish `hd' : DifferentiableAt ℝ f' (NormedSpace.exp (-(((0 : ℝ) : ℂ) • X)) * g)` using `by rw [hc0]; exact hd`. Establish `hcomp` using `hd'.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hc`. Establish `hev : (fun t : ℝ => f (NormedSpace.exp (-((t : ℂ) • X)) * g)) =ᶠ[𝓝 0] (f' ∘ fun t : ℝ => NormedSpace.exp (-((t : ℂ) • X)) * g)`.
+
+Establish `hU' : ∀ᶠ (t : ℝ) in 𝓝 (0 : ℝ), NormedSpace.exp (-((t : ℂ) • X)) * g ∈ U` using `hc.continuousAt.preimage_mem_nhds (by`. Simplify using `only [Complex.ofReal_zero, zero_smul, neg_zero, NormedSpace.exp_zero, Matrix.one_mul]`. Conclude with `hU.mem_nhds hgU)`. Use `filter_upwards [hU'] with t ht`. Conclude with `hff _ ht (expL_mem hX t hg)`.
+
+Use `show deriv (fun t : ℝ => f (NormedSpace.exp (-((t : ℂ) • X)) * g)) 0 = _`. Rewrite using `[hev.deriv_eq, hcomp.deriv, hc0]`. Both sides reduce to the same expression.
+-/
 lemma LdV_eq {f f' : Mat k r → ℂ} {U : Set (Mat k r)} (hU : IsOpen U) {g : Mat k r} (hgU : g ∈ U)
     (hg : g ∈ GV k r) (hd : DifferentiableAt ℝ f' g) (hff : ∀ h ∈ U, h ∈ GV k r → f h = f' h)
     {X : Mat k r} (hX : inLie k r X) : LdV X f g = fderiv ℝ f' g (-(X * g)) := by
@@ -309,6 +463,13 @@ lemma LdV_eq {f f' : Mat k r → ℂ} {U : Set (Mat k r)} (hU : IsOpen U) {g : M
   rw [hev.deriv_eq, hcomp.deriv, hc0]
   rfl
 
+/- English proof (translation)
+Establish `hc` using `hasDerivAt_curveR g X`. Establish `hc0 : g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) = g` using `by simp`. Establish `hd' : DifferentiableAt ℝ f' (g * NormedSpace.exp (((0 : ℝ) : ℂ) • X))` using `by rw [hc0]; exact hd`. Establish `hcomp` using `hd'.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hc`. Establish `hev : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[𝓝 0] (f' ∘ fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X))`.
+
+Establish `hU' : ∀ᶠ (t : ℝ) in 𝓝 (0 : ℝ), g * NormedSpace.exp ((t : ℂ) • X) ∈ U` using `hc.continuousAt.preimage_mem_nhds (by`. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, Matrix.mul_one]`. Conclude with `hU.mem_nhds hgU)`. Use `filter_upwards [hU'] with t ht`. Conclude with `hff _ ht (expR_mem hX t hg)`.
+
+Use `show deriv (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) 0 = _`. Rewrite using `[hev.deriv_eq, hcomp.deriv, hc0]`. Both sides reduce to the same expression.
+-/
 lemma RdV_eq {f f' : Mat k r → ℂ} {U : Set (Mat k r)} (hU : IsOpen U) {g : Mat k r} (hgU : g ∈ U)
     (hg : g ∈ GV k r) (hd : DifferentiableAt ℝ f' g) (hff : ∀ h ∈ U, h ∈ GV k r → f h = f' h)
     {X : Mat k r} (hX : inLie k r X) : RdV X f g = fderiv ℝ f' g (g * X) := by
@@ -328,18 +489,32 @@ lemma RdV_eq {f f' : Mat k r → ℂ} {U : Set (Mat k r)} (hU : IsOpen U) {g : M
   rw [hev.deriv_eq, hcomp.deriv, hc0]
   rfl
 
+/- English proof (translation)
+Use `norm_cast`.
+-/
 lemma cast_succ_le (m : ℕ) : ((m : ℕ∞) : WithTop ℕ∞) + 1 ≤ (((m + 1 : ℕ) : ℕ∞) : WithTop ℕ∞) := by
   norm_cast
 
+/- English proof (translation)
+Conclude with `Nat.succ_ne_zero m` after adjusting the coercions.
+-/
 lemma one_le_cast_succ (m : ℕ) : (((m + 1 : ℕ) : ℕ∞) : WithTop ℕ∞) ≠ 0 := by
   exact_mod_cast Nat.succ_ne_zero m
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hc, hff⟩` from `hf g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hc.of_le (by exact_mod_cast h), hff⟩`.
+-/
 lemma CkOn_mono {m m' : ℕ} (h : m' ≤ m) {f : Mat k r → ℂ} (hf : CkOn (m : ℕ∞) (GV k r) f) :
     CkOn (m' : ℕ∞) (GV k r) f := by
   intro g₀ hg₀
   obtain ⟨U, f', hU, hgU, hc, hff⟩ := hf g₀ hg₀
   exact ⟨U, f', hU, hgU, hc.of_le (by exact_mod_cast h), hff⟩
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f', hU, h0, hc, he⟩` from `hf g₀ hg₀`. Use `⟨U, fun h => fderiv ℝ f' h (-(mulL X h)), hU, h0, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hc.fderiv_of_isOpen hU (cast_succ_le m)`. Establish `h2 : ContDiffOn ℝ ((m : ℕ∞) : WithTop ℕ∞) (fun h : Mat k r => -(mulL X h)) U` using `(mulL X).contDiff.neg.contDiffOn`.
+
+Conclude with `h1.clm_apply h2`. Introduce `h hh hG`. Conclude with `LdV_eq hU hh hG ((hc.differentiableOn (one_le_cast_succ m)).differentiableAt (hU.mem_nhds hh)) he hX`.
+-/
 lemma CkOn_LdV {m : ℕ} {f : Mat k r → ℂ} (hf : CkOn ((m + 1 : ℕ) : ℕ∞) (GV k r) f) {X : Mat k r}
     (hX : inLie k r X) : CkOn (m : ℕ∞) (GV k r) (LdV X f) := by
   intro g₀ hg₀
@@ -352,6 +527,11 @@ lemma CkOn_LdV {m : ℕ} {f : Mat k r → ℂ} (hf : CkOn ((m + 1 : ℕ) : ℕ�
   · intro h hh hG
     exact LdV_eq hU hh hG ((hc.differentiableOn (one_le_cast_succ m)).differentiableAt (hU.mem_nhds hh)) he hX
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f', hU, h0, hc, he⟩` from `hf g₀ hg₀`. Use `⟨U, fun h => fderiv ℝ f' h (mulR X h), hU, h0, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hc.fderiv_of_isOpen hU (cast_succ_le m)`. Establish `h2 : ContDiffOn ℝ ((m : ℕ∞) : WithTop ℕ∞) (fun h : Mat k r => mulR X h) U` using `(mulR X).contDiff.contDiffOn`.
+
+Conclude with `h1.clm_apply h2`. Introduce `h hh hG`. Conclude with `RdV_eq hU hh hG ((hc.differentiableOn (one_le_cast_succ m)).differentiableAt (hU.mem_nhds hh)) he hX`.
+-/
 lemma CkOn_RdV {m : ℕ} {f : Mat k r → ℂ} (hf : CkOn ((m + 1 : ℕ) : ℕ∞) (GV k r) f) {X : Mat k r}
     (hX : inLie k r X) : CkOn (m : ℕ∞) (GV k r) (RdV X f) := by
   intro g₀ hg₀
@@ -364,6 +544,17 @@ lemma CkOn_RdV {m : ℕ} {f : Mat k r → ℂ} (hf : CkOn ((m + 1 : ℕ) : ℕ�
   · intro h hh hG
     exact RdV_eq hU hh hG ((hc.differentiableOn (one_le_cast_succ m)).differentiableAt (hU.mem_nhds hh)) he hX
 
+/- English proof (translation)
+Take `⟨U, f', hU, h0, hc, he⟩` from `hf g hg`. Establish `hd1 : ∀ h ∈ U, DifferentiableAt ℝ f' h` using `fun h hh => (hc.differentiableOn (by norm_num)).differentiableAt (hU.mem_nhds hh)`. Establish `hc1` using `hc.fderiv_of_isOpen (m := 1) hU (by norm_num)`. Establish `hd2 : DifferentiableAt ℝ (fderiv ℝ f') g` using `(hc1.differentiableOn (by norm_num)).differentiableAt (hU.mem_nhds h0)`. Establish `eφ : ∀ h ∈ U, h ∈ GV k r → RdV Y f h = (fun h => fderiv ℝ f' h (h * Y)) h` using `fun h hh hG => RdV_eq hU hh hG (hd1 h hh) he hY`.
+
+Establish `eψ : ∀ h ∈ U, h ∈ GV k r → LdV X f h = (fun h => fderiv ℝ f' h (-(X * h))) h` using `fun h hh hG => LdV_eq hU hh hG (hd1 h hh) he hX`. Establish `Dφ : DifferentiableAt ℝ (fun h => fderiv ℝ f' h (h * Y)) g` using `(hd2.hasFDerivAt.clm_apply (mulR Y).hasFDerivAt).differentiableAt`. Establish `Dψ : DifferentiableAt ℝ (fun h => fderiv ℝ f' h (-(X * h))) g` using `(hd2.hasFDerivAt.clm_apply (mulL X).hasFDerivAt.neg).differentiableAt`. Establish `hdφ : ∀ W, fderiv ℝ (fun h => fderiv ℝ f' h (h * Y)) g W = fderiv ℝ (fderiv ℝ f') g W (g * Y) + fderiv ℝ f' g (W * Y)`. Introduce `W`.
+
+Establish `H` using `(hd2.hasFDerivAt.clm_apply (mulR Y).hasFDerivAt).fderiv`. Use `erw [H]`. Conclude with `add_comm _ _`. Establish `hdψ : ∀ W, fderiv ℝ (fun h => fderiv ℝ f' h (-(X * h))) g W = fderiv ℝ (fderiv ℝ f') g W (-(X * g)) + fderiv ℝ f' g (-(X * W))`. Introduce `W`.
+
+Establish `H` using `(hd2.hasFDerivAt.clm_apply (mulL X).hasFDerivAt.neg).fderiv`. Use `erw [H]`. Conclude with `add_comm _ _`. Establish `hs : IsSymmSndFDerivAt ℝ f' g` using `(hc.contDiffAt (hU.mem_nhds h0)).isSymmSndFDerivAt (by rw [minSmoothness_of_isRCLikeNormedField]; norm_num)`. Rewrite using `[LdV_eq hU h0 hg Dφ eφ hX, RdV_eq hU h0 hg Dψ eψ hY, hdφ, hdψ, show -(X * g) * Y = -(X * (g * Y)) by rw [Matrix.neg_mul, Matrix.mul_assoc]]`.
+
+Use `erw [hs (-(X * g)) (g * Y)]`. Conclude with `rfl`.
+-/
 lemma LR_comm {f : Mat k r → ℂ} (hf : CkOn ((2 : ℕ) : ℕ∞) (GV k r) f) {X Y : Mat k r} (hX : inLie k r X)
     (hY : inLie k r Y) {g : Mat k r} (hg : g ∈ GV k r) : LdV X (RdV Y f) g = RdV Y (LdV X f) g := by
   obtain ⟨U, f', hU, h0, hc, he⟩ := hf g hg

@@ -7,6 +7,11 @@ open scoped Pointwise
 
 namespace GlobalTheory.ValuationOfMemIff
 
+/- English proof (translation)
+Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Establish `hσy : σ y ≠ 0` using `by simpa using hy`. Establish `key : ∀ a b : Ω, b ≠ 0 → (A.valuation a ≤ A.valuation b ↔ a / b ∈ A)`.
+
+Introduce `a b hb`. Rewrite using `[← A.valuation_le_one_iff, map_div₀, div_le_one₀ (by simpa [pos_iff_ne_zero] using hb)]`. Rewrite using `[key _ _ hσy, key _ _ hy, ← map_div₀, h]`.
+-/
 theorem le_iff_of_mem_iff {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     (A : ValuationSubring Ω) (σ : Ω ≃ₐ[E] Ω) (h : ∀ x, σ x ∈ A ↔ x ∈ A) (x y : Ω) :
     A.valuation (σ x) ≤ A.valuation (σ y) ↔ A.valuation x ≤ A.valuation y := by
@@ -20,6 +25,11 @@ theorem le_iff_of_mem_iff {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
         div_le_one₀ (by simpa [pos_iff_ne_zero] using hb)]
     rw [key _ _ hσy, key _ _ hy, ← map_div₀, h]
 
+/- English proof (translation)
+Introduce `hinj`. Establish `hsub : Set.range (fun k : ℕ => (σ ^ k) t) ⊆ (minpoly E t).rootSet Ω`. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[Polynomial.mem_rootSet]`. Use `⟨minpoly.ne_zero ht, ?_⟩` and prove the remaining obligations.
+
+Use `Polynomial.aeval_algHom_apply ((σ ^ k : Ω ≃ₐ[E] Ω) : Ω →ₐ[E] Ω) t (minpoly E t)` as an intermediate fact. Simplify `this` using `[minpoly.aeval]`. Conclude with `Set.infinite_range_of_injective hinj (((minpoly E t).rootSet_finite Ω).subset hsub)`.
+-/
 theorem not_injective_pow {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     (σ : Ω ≃ₐ[E] Ω) (t : Ω) (ht : IsIntegral E t) :
     ¬ Function.Injective (fun k : ℕ => (σ ^ k) t) := by
@@ -33,6 +43,21 @@ theorem not_injective_pow {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     simpa [minpoly.aeval] using this
   exact Set.infinite_range_of_injective hinj (((minpoly E t).rootSet_finite Ω).subset hsub)
 
+/- English proof (translation)
+Establish `hsucc : ∀ k : ℕ, (σ ^ (k + 1)) t = σ ((σ ^ k) t)` using `fun k => by`. Rewrite using `[pow_succ', AlgEquiv.mul_apply]`. Establish `hlt : ∀ x y : Ω, A.valuation (σ x) < A.valuation (σ y) ↔ A.valuation x < A.valuation y`. Introduce `x y`. Rewrite using `[lt_iff_not_ge, lt_iff_not_ge, le_iff_of_mem_iff A σ h]`.
+
+Establish `hinj : ∀ w : ℕ → _, (StrictMono w ∨ StrictAnti w) → (∀ k, w k = A.valuation ((σ ^ k) t)) → False`. Introduce `w hw hwk`. Apply `not_injective_pow σ t ht` to reduce the goal to its premises. Introduce `a b hab`. Establish `: w a = w b` using `by rw [hwk, hwk]; exact congrArg A.valuation hab`.
+
+Break down `hw with hw | hw` into its components or cases. Conclude with `hw.injective this`. Conclude with `hw.injective this`. Break down `lt_trichotomy (A.valuation (σ t)) (A.valuation t) with hc | hc | hc` into its components or cases. It suffices to derive a contradiction.
+
+Use `hinj (fun k => A.valuation ((σ ^ k) t)) (Or.inr (strictAnti_nat_of_succ_lt ?_)) fun _ => rfl` and prove the remaining obligations. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hc`. Consider the case `succ k ih`.
+
+Rewrite using `[hsucc (k + 1), hsucc k]`. Rewrite `ih` using `[hsucc k]`. Conclude with `(hlt _ _).2 ih`. Conclude with `hc`. It suffices to derive a contradiction.
+
+Use `hinj (fun k => A.valuation ((σ ^ k) t)) (Or.inl (strictMono_nat_of_lt_succ ?_)) fun _ => rfl` and prove the remaining obligations. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hc`. Consider the case `succ k ih`.
+
+Rewrite using `[hsucc (k + 1), hsucc k]`. Rewrite `ih` using `[hsucc k]`. Conclude with `(hlt _ _).2 ih`.
+-/
 theorem valuation_eq_of_mem_iff {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     (A : ValuationSubring Ω) (σ : Ω ≃ₐ[E] Ω) (h : ∀ x, σ x ∈ A ↔ x ∈ A) (t : Ω)
     (ht : IsIntegral E t) : A.valuation (σ t) = A.valuation t := by
@@ -72,6 +97,9 @@ theorem valuation_eq_of_mem_iff {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω
       rw [hsucc k] at ih
       exact (hlt _ _).2 ih
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A σ hσ t`. Establish `halg : Algebra.IsAlgebraic E Ω` using `IsAlgClosure.isAlgebraic`. Conclude with `valuation_eq_of_mem_iff A σ (ReciprocityTheory.Gal.apply_mem_iff_of_mem_Dec hσ) t (Algebra.IsIntegral.isIntegral t)`.
+-/
 theorem valuation_apply_eq : ∀ (E Ω : Type) [inst : Field E] [NumberField E] [inst_2 : Field Ω] [inst_3 : Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (σ : Formalism.ConjugateSelfDual.G E Ω), Membership.mem (ReciprocityTheory.Gal.Dec A) σ → ∀ (t : Ω), Eq ((ValuationSubring.valuation A) (σ t)) ((ValuationSubring.valuation A) t) := by
   intro E Ω _ _ _ _ _ A σ hσ t
   have halg : Algebra.IsAlgebraic E Ω := IsAlgClosure.isAlgebraic

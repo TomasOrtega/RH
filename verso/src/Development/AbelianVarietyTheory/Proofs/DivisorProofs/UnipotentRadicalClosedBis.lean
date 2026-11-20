@@ -24,9 +24,15 @@ def IsUnipMat {b : ℕ} (x : Fin (b + 2) → A) (ι : Matrix (Fin (b + 2)) (Fin 
     (X : Matrix (Fin (b + 2)) (Fin (b + 2)) A) : Prop :=
   X *ᵥ x = x ∧ ∀ z, ∃ a : A, X *ᵥ (ι *ᵥ z) = ι *ᵥ z + a • x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, fun _ => ⟨0, by simp⟩⟩`.
+-/
 theorem isUnipMat_one {b : ℕ} (x : Fin (b + 2) → A) (ι : Matrix (Fin (b + 2)) (Fin b) A) : IsUnipMat x ι 1 :=
   ⟨by simp, fun _ => ⟨0, by simp⟩⟩
 
+/- English proof (translation)
+Use `⟨by rw [← mulVec_mulVec, hY.1, hX.1], fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hY.2 z`. Take `⟨a', ha'⟩` from `hX.2 z`. Conclude with `⟨a' + a, by rw [← mulVec_mulVec, ha, mulVec_add, ha', mulVec_smul, hX.1, add_smul, add_assoc]⟩`.
+-/
 theorem IsUnipMat.mul {b : ℕ} {x : Fin (b + 2) → A} {ι : Matrix (Fin (b + 2)) (Fin b) A} {X Y : Matrix (Fin (b + 2)) (Fin (b + 2)) A}
     (hX : IsUnipMat x ι X) (hY : IsUnipMat x ι Y) : IsUnipMat x ι (X * Y) := by
   refine ⟨by rw [← mulVec_mulVec, hY.1, hX.1], fun z => ?_⟩
@@ -34,6 +40,11 @@ theorem IsUnipMat.mul {b : ℕ} {x : Fin (b + 2) → A} {ι : Matrix (Fin (b + 2
   obtain ⟨a', ha'⟩ := hX.2 z
   exact ⟨a' + a, by rw [← mulVec_mulVec, ha, mulVec_add, ha', mulVec_smul, hX.1, add_smul, add_assoc]⟩
 
+/- English proof (translation)
+Establish `hx : Y *ᵥ x = x` using `by conv_lhs => rw [← hX.1]`. Rewrite using `[mulVec_mulVec, hYX, one_mulVec]`. Use `⟨hx, fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hX.2 z`. Use `⟨-a, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Y *ᵥ (X *ᵥ (ι *ᵥ z)) = ι *ᵥ z` using `by rw [mulVec_mulVec, hYX, one_mulVec]`. Establish `h2 : Y *ᵥ (X *ᵥ (ι *ᵥ z)) = Y *ᵥ (ι *ᵥ z) + a • x` using `by rw [ha, mulVec_add, mulVec_smul, hx]`. Rewrite using `[neg_smul, ← sub_eq_add_neg, eq_sub_iff_add_eq, ← h2, h1]`.
+-/
 theorem IsUnipMat.inv {b : ℕ} {x : Fin (b + 2) → A} {ι : Matrix (Fin (b + 2)) (Fin b) A} {X Y : Matrix (Fin (b + 2)) (Fin (b + 2)) A}
     (hX : IsUnipMat x ι X) (hYX : Y * X = 1) : IsUnipMat x ι Y := by
   have hx : Y *ᵥ x = x := by
@@ -74,56 +85,98 @@ def leviM (x y : Fin (b + 2) → A) (ι : Matrix (Fin (b + 2)) (Fin b) A) (Q : M
     (G : Matrix (Fin b) (Fin b) A) (t s : A) : Matrix (Fin (b + 2)) (Fin (b + 2)) A :=
   frame x y ι * blk G t s * Q
 
+/- English proof (translation)
+The claim follows from `(Matrix.mul_eq_one_comm_of_equiv finSumFinEquiv).1 hQP`.
+-/
 theorem frame_mul_Q (hQP : Q * frame x y ι = 1) : frame x y ι * Q = 1 :=
   (Matrix.mul_eq_one_comm_of_equiv finSumFinEquiv).1 hQP
 
+/- English proof (translation)
+Rewrite using `[mulVec_single_one]`. Use extensionality with `i`. Simplify using `[frame, cols2]`.
+-/
 theorem frame_alt : frame x y ι *ᵥ Pi.single (Sum.inr 0) 1 = x := by
   rw [mulVec_single_one]; ext i; simp [frame, cols2]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[frame, mulVec, dotProduct, Fintype.sum_sum_type]`.
+-/
 theorem frame_ι (z : Fin b → A) : frame x y ι *ᵥ Sum.elim z 0 = ι *ᵥ z := by
   ext i; simp [frame, mulVec, dotProduct, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← frame_alt (x := x) (y := y) (ι := ι)]`. Rewrite using `[mulVec_mulVec, hQP, one_mulVec]`.
+-/
 theorem frame_inverse_mulVec_x (hQP : Q * frame x y ι = 1) : Q *ᵥ x = Pi.single (Sum.inr 0) 1 := by
   conv_lhs => rw [← frame_alt (x := x) (y := y) (ι := ι)]
   rw [mulVec_mulVec, hQP, one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[← frame_ι (x := x) (y := y) z, mulVec_mulVec, hQP, one_mulVec]`.
+-/
 theorem Q_ι (hQP : Q * frame x y ι = 1) (z : Fin b → A) : Q *ᵥ (ι *ᵥ z) = Sum.elim z 0 := by
   rw [← frame_ι (x := x) (y := y) z, mulVec_mulVec, hQP, one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[mulVec_single_one]`. Use extensionality with `(i | i)`. Simplify using `[blk]`. Apply the tactic sequence `fin_cases i <;> simp [blk, diagonal]`.
+-/
 theorem block_matrix_mulVec_basis (G : Matrix (Fin b) (Fin b) A) (t s : A) :
     blk G t s *ᵥ Pi.single (Sum.inr 0) 1 = t • Pi.single (Sum.inr 0) 1 := by
   rw [mulVec_single_one]; ext (i | i)
   · simp [blk]
   · fin_cases i <;> simp [blk, diagonal]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) <;> simp [blk, mulVec, dotProduct, Fintype.sum_sum_type, fromBlocks]`.
+-/
 theorem blk_ι (G : Matrix (Fin b) (Fin b) A) (t s : A) (z : Fin b → A) :
     blk G t s *ᵥ Sum.elim z 0 = Sum.elim (G *ᵥ z) 0 := by
   ext (i | i) <;> simp [blk, mulVec, dotProduct, Fintype.sum_sum_type, fromBlocks]
 
+/- English proof (translation)
+Rewrite using `[leviM, ← mulVec_mulVec, ← mulVec_mulVec, frame_inverse_mulVec_x hQP, block_matrix_mulVec_basis, mulVec_smul, frame_alt]`.
+-/
 theorem leviM_mulVec_x (hQP : Q * frame x y ι = 1) (G : Matrix (Fin b) (Fin b) A) (t s : A) :
     leviM x y ι Q G t s *ᵥ x = t • x := by
   rw [leviM, ← mulVec_mulVec, ← mulVec_mulVec, frame_inverse_mulVec_x hQP, block_matrix_mulVec_basis, mulVec_smul, frame_alt]
 
+/- English proof (translation)
+Rewrite using `[leviM, ← mulVec_mulVec, ← mulVec_mulVec, Q_ι hQP, blk_ι, frame_ι]`.
+-/
 theorem leviM_ι (hQP : Q * frame x y ι = 1) (G : Matrix (Fin b) (Fin b) A) (t s : A) (z : Fin b → A) :
     leviM x y ι Q G t s *ᵥ (ι *ᵥ z) = ι *ᵥ (G *ᵥ z) := by
   rw [leviM, ← mulVec_mulVec, ← mulVec_mulVec, Q_ι hQP, blk_ι, frame_ι]
 
+/- English proof (translation)
+Rewrite using `[mulVec_mulVec, mulVec_mulVec, mulVec_single_one]`. Both sides reduce to the same expression.
+-/
 theorem gam_apply (X : Matrix (Fin (b + 2)) (Fin (b + 2)) A) (i j : Fin b) :
     gam Q ι X i j = (Q *ᵥ (X *ᵥ (ι *ᵥ Pi.single j 1))) (Sum.inl i) := by
   rw [mulVec_mulVec, mulVec_mulVec, mulVec_single_one]; rfl
 
+/- English proof (translation)
+Rewrite using `[mulVec_add, mulVec_smul, frame_inverse_mulVec_x hQP]`.
+-/
 theorem Q_line (hQP : Q * frame x y ι = 1) (v : Fin (b + 2) → A) (a : A) :
     Q *ᵥ (v + a • x) = Q *ᵥ v + a • Pi.single (Sum.inr 0) 1 := by
   rw [mulVec_add, mulVec_smul, frame_inverse_mulVec_x hQP]
 
+/- English proof (translation)
+Rewrite using `[tau, ← mulVec_mulVec, leviM_mulVec_x hQP, mulVec_smul, hN.1, mulVec_smul, frame_inverse_mulVec_x hQP]`. Simplify using the standard rewrite rules.
+-/
 theorem tau_mul_leviM (hQP : Q * frame x y ι = 1) {N : Matrix (Fin (b + 2)) (Fin (b + 2)) A} (hN : IsUnipMat x ι N)
     (G : Matrix (Fin b) (Fin b) A) (t s : A) : tau Q x (N * leviM x y ι Q G t s) = t := by
   rw [tau, ← mulVec_mulVec, leviM_mulVec_x hQP, mulVec_smul, hN.1, mulVec_smul, frame_inverse_mulVec_x hQP]; simp
 
+/- English proof (translation)
+Rewrite using `[tau, ← mulVec_mulVec, hN.1, leviM_mulVec_x hQP, mulVec_smul, frame_inverse_mulVec_x hQP]`. Simplify using the standard rewrite rules.
+-/
 theorem tau_leviM_mul (hQP : Q * frame x y ι = 1) {N : Matrix (Fin (b + 2)) (Fin (b + 2)) A} (hN : IsUnipMat x ι N)
     (G : Matrix (Fin b) (Fin b) A) (t s : A) : tau Q x (leviM x y ι Q G t s * N) = t := by
   rw [tau, ← mulVec_mulVec, hN.1, leviM_mulVec_x hQP, mulVec_smul, frame_inverse_mulVec_x hQP]; simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨a, ha⟩` from `hN.2 (G *ᵥ Pi.single j 1)`. Rewrite using `[gam_apply, ← mulVec_mulVec, leviM_ι hQP, ha, Q_line hQP, Q_ι hQP]`. Simplify using `[mulVec_single_one]`.
+-/
 theorem gam_mul_leviM (hQP : Q * frame x y ι = 1) {N : Matrix (Fin (b + 2)) (Fin (b + 2)) A} (hN : IsUnipMat x ι N)
     (G : Matrix (Fin b) (Fin b) A) (t s : A) : gam Q ι (N * leviM x y ι Q G t s) = G := by
   ext i j
@@ -131,6 +184,9 @@ theorem gam_mul_leviM (hQP : Q * frame x y ι = 1) {N : Matrix (Fin (b + 2)) (Fi
   rw [gam_apply, ← mulVec_mulVec, leviM_ι hQP, ha, Q_line hQP, Q_ι hQP]
   simp [mulVec_single_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨a, ha⟩` from `hN.2 (Pi.single j 1)`. Rewrite using `[gam_apply, ← mulVec_mulVec, ha, mulVec_add, mulVec_smul, leviM_ι hQP, leviM_mulVec_x hQP, smul_smul, Q_line hQP, Q_ι hQP]`. Simplify using `[mulVec_single_one]`.
+-/
 theorem gam_leviM_mul (hQP : Q * frame x y ι = 1) {N : Matrix (Fin (b + 2)) (Fin (b + 2)) A} (hN : IsUnipMat x ι N)
     (G : Matrix (Fin b) (Fin b) A) (t s : A) : gam Q ι (leviM x y ι Q G t s * N) = G := by
   ext i j
@@ -138,6 +194,11 @@ theorem gam_leviM_mul (hQP : Q * frame x y ι = 1) {N : Matrix (Fin (b + 2)) (Fi
   rw [gam_apply, ← mulVec_mulVec, ha, mulVec_add, mulVec_smul, leviM_ι hQP, leviM_mulVec_x hQP, smul_smul, Q_line hQP, Q_ι hQP]
   simp [mulVec_single_one]
 
+/- English proof (translation)
+Establish `hb : blk G t s * blk G' t' s' = 1`. Simplify using `only [blk, fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, diagonal_mul_diagonal, hG]`. Rewrite using `[← fromBlocks_one]`. Use `congr 1`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [diagonal, ht, hs]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [leviM, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hQP, Matrix.mul_one, hb, Matrix.mul_one, frame_mul_Q hQP]`.
+-/
 theorem leviM_mul_leviM (hQP : Q * frame x y ι = 1) {G G' : Matrix (Fin b) (Fin b) A} {t t' s s' : A}
     (hG : G * G' = 1) (ht : t * t' = 1) (hs : s * s' = 1) : leviM x y ι Q G t s * leviM x y ι Q G' t' s' = 1 := by
   have hb : blk G t s * blk G' t' s' = 1 := by
@@ -150,6 +211,13 @@ theorem leviM_mul_leviM (hQP : Q * frame x y ι = 1) {G G' : Matrix (Fin b) (Fin
         simp only [leviM, Matrix.mul_assoc]
     _ = 1 := by rw [hQP, Matrix.mul_one, hb, Matrix.mul_one, frame_mul_Q hQP]
 
+/- English proof (translation)
+Establish `h : M * frame x y ι = frame x y ι * blk G t s`. Simplify using `only [frame, blk, mul_fromCols, fromCols_mul_fromBlocks, Matrix.mul_zero, add_zero, zero_add, hι]`. Use `congr 1`. Use extensionality with `i k`. Use `fin_cases k`.
+
+Use `congrFun hx i` as an intermediate fact. Simplify using `only [mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `[cols2, Matrix.mul_apply, diagonal, Fin.sum_univ_two]`. Rewrite using `[this, mul_comm]`. Use `congrFun hy i` as an intermediate fact.
+
+Simplify using `only [mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `[cols2, Matrix.mul_apply, diagonal, Fin.sum_univ_two]`. Rewrite using `[this, mul_comm]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_leviM (hQP : Q * frame x y ι = 1) {M : Matrix (Fin (b + 2)) (Fin (b + 2)) A} {G : Matrix (Fin b) (Fin b) A}
     {t s : A} (hx : M *ᵥ x = t • x) (hy : M *ᵥ y = s • y) (hι : M * ι = ι * G) : M = leviM x y ι Q G t s := by
   have h : M * frame x y ι = frame x y ι * blk G t s := by
@@ -177,6 +245,11 @@ open Matrix GlobalTheory.LeviElem Topology
 variable {R0 A : Type} [CommRing R0] [CommRing A] [Algebra R0 A] [TopologicalSpace A] [IsTopologicalRing A]
   {b : ℕ} {x y : Fin (b + 2) → A} {ι : Matrix (Fin (b + 2)) (Fin b) A} {Q : Matrix (Fin b ⊕ Fin 2) (Fin (b + 2)) A}
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `only [blk, fromBlocks_apply₁₁]`. Conclude with `(continuous_apply j).comp ((continuous_apply i).comp hG)`. Simplify using `[blk]`.
+
+Conclude with `continuous_const`. Simplify using `[blk]`. Conclude with `continuous_const`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [blk, diagonal] <;> first | exact continuous_const | assumption`.
+-/
 theorem continuous_blk {X : Type} [TopologicalSpace X] {G : X → Matrix (Fin b) (Fin b) A} {t s : X → A}
     (hG : Continuous G) (ht : Continuous t) (hs : Continuous s) : Continuous fun p => blk (G p) (t p) (s p) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -186,6 +259,9 @@ theorem continuous_blk {X : Type} [TopologicalSpace X] {G : X → Matrix (Fin b)
   · simp [blk]; exact continuous_const
   · fin_cases i <;> fin_cases j <;> simp [blk, diagonal] <;> first | exact continuous_const | assumption
 
+/- English proof (translation)
+The claim follows from `(continuous_const.matrix_mul (continuous_blk hG ht hs)).matrix_mul continuous_const`.
+-/
 theorem continuous_leviM {X : Type} [TopologicalSpace X] {G : X → Matrix (Fin b) (Fin b) A} {t s : X → A}
     (hG : Continuous G) (ht : Continuous t) (hs : Continuous s) :
     Continuous fun p => leviM x y ι Q (G p) (t p) (s p) :=
@@ -193,6 +269,13 @@ theorem continuous_leviM {X : Type} [TopologicalSpace X] {G : X → Matrix (Fin 
 
 variable [T2Space A]
 
+/- English proof (translation)
+Establish `: {v : Fin (b + 2) → A | ∃ a : A, v = a • x} = {v | v = (Q *ᵥ v) (Sum.inr 0) • x}`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Use `show a • x = (Q *ᵥ (a • x)) (Sum.inr 0) • x`.
+
+Rewrite using `[mulVec_smul, frame_inverse_mulVec_x hQP]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `⟨_, h⟩`. Rewrite using `[this]`.
+
+Conclude with `isClosed_eq continuous_id (((continuous_apply _).comp (continuous_const.matrix_mulVec continuous_id)).smul continuous_const)`.
+-/
 theorem isClosed_line (hQP : Q * frame x y ι = 1) : IsClosed {v : Fin (b + 2) → A | ∃ a : A, v = a • x} := by
   have : {v : Fin (b + 2) → A | ∃ a : A, v = a • x} = {v | v = (Q *ᵥ v) (Sum.inr 0) • x} := by
     ext v; constructor
@@ -202,6 +285,13 @@ theorem isClosed_line (hQP : Q * frame x y ι = 1) : IsClosed {v : Fin (b + 2) �
   exact isClosed_eq continuous_id
     (((continuous_apply _).comp (continuous_const.matrix_mulVec continuous_id)).smul continuous_const)
 
+/- English proof (translation)
+Establish `h1 : IsClosed {X : Matrix (Fin (b + 2)) (Fin (b + 2)) A | X *ᵥ x = x}` using `isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const`. Establish `h2 : ∀ z : Fin b → A, IsClosed {X : Matrix (Fin (b + 2)) (Fin (b + 2)) A | ∃ a : A, X *ᵥ (ι *ᵥ z) = ι *ᵥ z + a • x}`. Introduce `z`. Establish `: {X : Matrix (Fin (b + 2)) (Fin (b + 2)) A | ∃ a : A, X *ᵥ (ι *ᵥ z) = ι *ᵥ z + a • x} = (fun X => X *ᵥ (ι *ᵥ z) - ι *ᵥ z) ⁻¹' {v | ∃ a : A, v = a • x}`. Use extensionality with `X`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, sub_eq_iff_eq_add']`. Rewrite using `[this]`. Conclude with `(isClosed_line hQP).preimage ((continuous_id.matrix_mulVec continuous_const).sub continuous_const)`. Establish `: {X : Matrix (Fin (b + 2)) (Fin (b + 2)) A | IsUnipMat x ι X} = {X | X *ᵥ x = x} ∩ ⋂ z, {X | ∃ a : A, X *ᵥ (ι *ᵥ z) = ι *ᵥ z + a • x}`. Use extensionality with `X`.
+
+Simplify using `[IsUnipMat]`. Rewrite using `[this]`. Conclude with `h1.inter (isClosed_iInter h2)`.
+-/
 theorem isClosed_unipMat (hQP : Q * frame x y ι = 1) :
     IsClosed {X : Matrix (Fin (b + 2)) (Fin (b + 2)) A | IsUnipMat x ι X} := by
   have h1 : IsClosed {X : Matrix (Fin (b + 2)) (Fin (b + 2)) A | X *ᵥ x = x} :=
@@ -228,14 +318,25 @@ open Matrix GlobalTheory.LeviElem Topology
 variable {R0 A : Type} [CommRing R0] [CommRing A] [Algebra R0 A] [TopologicalSpace A] [IsTopologicalRing A] [T2Space A]
   {b : ℕ} {x y : Fin (b + 2) → A} {ι : Matrix (Fin (b + 2)) (Fin b) A} {Q : Matrix (Fin b ⊕ Fin 2) (Fin (b + 2)) A}
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_mat (c : A →ₐ[R0] A) {n : ℕ} (J : Matrix (Fin n) (Fin n) A) :
     Continuous fun g : UG c J => (g.1 : Matrix (Fin n) (Fin n) A) :=
   Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+The claim follows from `Units.continuous_coe_inv.comp continuous_subtype_val`.
+-/
 theorem continuous_matInv (c : A →ₐ[R0] A) {n : ℕ} (J : Matrix (Fin n) (Fin n) A) :
     Continuous fun g : UG c J => ((g⁻¹).1 : Matrix (Fin n) (Fin n) A) :=
   Units.continuous_coe_inv.comp continuous_subtype_val
 
+/- English proof (translation)
+Establish `h1 : (m l g₀).1.1 = leviM x y ι Q g₀.1.1 l.1 (c (l⁻¹).1)` using `eq_leviM hQP (hm l g₀).1 (hm l g₀).2.1 (hm l g₀).2.2`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `show (((m l g₀).1)⁻¹ : GL (Fin (b + 2)) A).1 = _`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[h1]`.
+
+Use `leviM_mul_leviM hQP (Units.mul_inv g₀.1) (Units.mul_inv l) ?_` and prove the remaining obligations. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+-/
 theorem mat_levi_inv (c : A →ₐ[R0] A) (J : Matrix (Fin (b + 2)) (Fin (b + 2)) A) (J₁ : Matrix (Fin b) (Fin b) A)
     (hQP : Q * frame x y ι = 1) (m : Aˣ → UG c J₁ → UG c J)
     (hm : ∀ l g₀, (m l g₀).1.1 *ᵥ x = l.1 • x ∧ (m l g₀).1.1 *ᵥ y = c (l⁻¹).1 • y ∧ (m l g₀).1.1 * ι = ι * g₀.1.1)
@@ -251,6 +352,13 @@ theorem mat_levi_inv (c : A →ₐ[R0] A) (J : Matrix (Fin (b + 2)) (Fin (b + 2)
   refine leviM_mul_leviM hQP (Units.mul_inv g₀.1) (Units.mul_inv l) ?_
   rw [← map_mul, Units.inv_mul, map_one]
 
+/- English proof (translation)
+Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Establish `: (Units.val ∘ fun p : Aˣ × UG c J₁ => (m p.1 p.2).1) = fun p => leviM x y ι Q p.2.1.1 p.1.1 (c (p.1⁻¹).1)`. Use function extensionality and compare the values at `p`. Conclude with `(mat_levi_inv c J J₁ hQP m hm p.1 p.2).1`. Rewrite using `[this]`.
+
+Conclude with `continuous_leviM ((continuous_mat c J₁).comp continuous_snd) (Units.continuous_val.comp continuous_fst) (hc.comp (Units.continuous_coe_inv.comp continuous_fst))`. Establish `: (fun p : Aˣ × UG c J₁ => (((m p.1 p.2).1)⁻¹ : GL (Fin (b + 2)) A).1) = fun p => leviM x y ι Q (p.2⁻¹).1.1 (p.1⁻¹).1 (c p.1.1)`. Use function extensionality and compare the values at `p`. Conclude with `(mat_levi_inv c J J₁ hQP m hm p.1 p.2).2`. Rewrite using `[this]`.
+
+Conclude with `continuous_leviM ((continuous_matInv c J₁).comp continuous_snd) (Units.continuous_coe_inv.comp continuous_fst) (hc.comp (Units.continuous_val.comp continuous_fst))`.
+-/
 theorem continuous_levi (c : A →ₐ[R0] A) (hc : Continuous c) (J : Matrix (Fin (b + 2)) (Fin (b + 2)) A)
     (J₁ : Matrix (Fin b) (Fin b) A) (hQP : Q * frame x y ι = 1) (m : Aˣ → UG c J₁ → UG c J)
     (hm : ∀ l g₀, (m l g₀).1.1 *ᵥ x = l.1 • x ∧ (m l g₀).1.1 *ᵥ y = c (l⁻¹).1 • y ∧ (m l g₀).1.1 * ι = ι * g₀.1.1) :
@@ -278,11 +386,43 @@ open Matrix GlobalTheory.LeviElem Topology
 variable {R0 A : Type} [CommRing R0] [CommRing A] [Algebra R0 A] [TopologicalSpace A] [IsTopologicalRing A] [T2Space A]
   {b : ℕ} {x y : Fin (b + 2) → A} {ι : Matrix (Fin (b + 2)) (Fin b) A} {Q : Matrix (Fin b ⊕ Fin 2) (Fin (b + 2)) A}
 
+/- English proof (translation)
+Establish `h` using `(continuous_const (y := Q)).matrix_mul hf |>.matrix_mul (continuous_const (y := ι))`. Conclude with `continuous_pi fun i => continuous_pi fun j => (continuous_apply j).comp ((continuous_apply (Sum.inl i)).comp h)`.
+-/
 theorem continuous_gam {X : Type} [TopologicalSpace X] {f : X → Matrix (Fin (b + 2)) (Fin (b + 2)) A}
     (hf : Continuous f) : Continuous fun p => gam Q ι (f p) := by
   have h := (continuous_const (y := Q)).matrix_mul hf |>.matrix_mul (continuous_const (y := ι))
   exact continuous_pi fun i => continuous_pi fun j => (continuous_apply j).comp ((continuous_apply (Sum.inl i)).comp h)
 
+/- English proof (translation)
+Establish `hmat` using `continuous_mat c J`. Establish `hmatI` using `continuous_matInv c J`. Establish `hmc` using `continuous_levi c hc J J₁ hQP m hm`. Use `⟨(isClosed_unipMat hQP).preimage hmat, ?_⟩` and prove the remaining obligations. Use `set Rg : Set (UG c J) := {g | tau Q x g.1.1 * tau Q x (g⁻¹).1.1 = 1 ∧ gam Q ι g.1.1 * gam Q ι (g⁻¹).1.1 = 1 ∧ (gam Q ι g.1.1)ᵀ * J₁ * (gam Q ι g.1.1).map c = J₁ ∧ IsUnipMat x ι (g.1.1 * leviM x y ι Q (gam Q ι (g⁻¹).1.1) (tau Q x (g⁻¹).1.1) (c (tau Q x g.1.1)))} with hRg`.
+
+Establish `hτ : Continuous fun g : UG c J => tau Q x g.1.1` using `(continuous_apply _).comp (continuous_const.matrix_mulVec (hmat.matrix_mulVec continuous_const))`. Establish `hτI : Continuous fun g : UG c J => tau Q x (g⁻¹).1.1` using `(continuous_apply _).comp (continuous_const.matrix_mulVec (hmatI.matrix_mulVec continuous_const))`. Establish `hγ : Continuous fun g : UG c J => gam Q ι g.1.1` using `continuous_gam hmat`. Establish `hγI : Continuous fun g : UG c J => gam Q ι (g⁻¹).1.1` using `continuous_gam hmatI`. Establish `hclosed : IsClosed Rg`.
+
+Use `(isClosed_eq (hτ.mul hτI) continuous_const).inter ((isClosed_eq (hγ.matrix_mul hγI) continuous_const).inter ((isClosed_eq ((hγ.matrix_transpose.matrix_mul continuous_const).matrix_mul (hγ.matrix_map hc)) continuous_const).inter ((isClosed_unipMat hQP).preimage (hmat.matrix_mul (c …` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨lf, hlfc, hlf⟩ : ∃ lf : Rg → Aˣ, Continuous lf ∧ ∀ g, (lf g).1 = tau Q x g.1.1.1 ∧ ((lf g)⁻¹).1 = tau Q x (g.1⁻¹).1.1 := by`. Use `⟨fun g => ⟨tau Q x g.1.1.1, tau Q x (g.1⁻¹).1.1, g.2.1, by rw [mul_comm]; exact g.2.1⟩, Units.continuous_iff.2 ⟨hτ.comp continuous_subtype_val, hτI.comp continuous_subtype_val⟩, fun g => ⟨rfl, rfl⟩⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨gf, hgfc, hgf⟩ : ∃ gf : Rg → UG c J₁, Continuous gf ∧ ∀ g, (gf g).1.1 = gam Q ι g.1.1.1 ∧ ((gf g)⁻¹).1.1 = gam Q ι (g.1⁻¹).1.1 := by`. Set `u : Rg → GL (Fin b) A` to `fun g => ⟨gam Q ι g.1.1.1, gam Q ι (g.1⁻¹).1.1, g.2.2.1, (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).1 g.2.2.1⟩`.
+
+Establish `hu : Continuous u` using `Units.continuous_iff.2 ⟨hγ.comp continuous_subtype_val, hγI.comp continuous_subtype_val⟩`. Conclude with `⟨fun g => ⟨u g, g.2.2.2.1⟩, hu.subtype_mk _, fun g => ⟨rfl, rfl⟩⟩`. Establish `hn : ∀ g : Rg, g.1 * (m (lf g) (gf g))⁻¹ ∈ unipSub c J x ι`. Introduce `g`. Use `show IsUnipMat x ι (g.1.1.1 * ((m (lf g) (gf g))⁻¹).1.1)`.
+
+Rewrite using `[(mat_levi_inv c J J₁ hQP m hm _ _).2, (hlf g).1, (hlf g).2, (hgf g).2]`. Conclude with `g.2.2.2.2`. Establish `hrange : Set.range (fun p : unipSub c J x ι × (Aˣ × UG c J₁) => (p.1 : UG c J) * m p.2.1 p.2.2) = Rg`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨n, l, g₀⟩, rfl⟩`. Establish `hN : IsUnipMat x ι n.1.1.1` using `n.2`. Establish `hNI : IsUnipMat x ι ((n⁻¹ : unipSub c J x ι) : UG c J).1.1` using `(n⁻¹).2`. Take `⟨h1, h2⟩` from `mat_levi_inv c J J₁ hQP m hm l g₀`. Establish `e1 : ((n : UG c J) * m l g₀).1.1 = n.1.1.1 * (m l g₀).1.1` using `rfl`.
+
+Establish `e2 : (((n : UG c J) * m l g₀)⁻¹).1.1 = ((m l g₀)⁻¹).1.1 * ((n⁻¹ : unipSub c J x ι) : UG c J).1.1`. Rewrite using `[_root_.mul_inv_rev]`. Both sides reduce to the same expression. Establish `t1 : tau Q x ((n : UG c J) * m l g₀).1.1 = l.1` using `by rw [e1, h1, tau_mul_leviM hQP hN]`. Establish `t2 : tau Q x (((n : UG c J) * m l g₀)⁻¹).1.1 = (l⁻¹).1` using `by rw [e2, h2, tau_leviM_mul hQP hNI]`.
+
+Establish `g1 : gam Q ι ((n : UG c J) * m l g₀).1.1 = g₀.1.1` using `by rw [e1, h1, gam_mul_leviM hQP hN]`. Establish `g2 : gam Q ι (((n : UG c J) * m l g₀)⁻¹).1.1 = (g₀⁻¹).1.1` using `by rw [e2, h2, gam_leviM_mul hQP hNI]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[t1, t2, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite using `[g1, g2]`.
+
+Conclude with `Units.mul_inv g₀.1`. Rewrite using `[g1]`. Conclude with `g₀.2`. Rewrite using `[t1, t2, g2, e1, h1, Matrix.mul_assoc, leviM_mul_leviM (G' := (g₀⁻¹).1.1) hQP (Units.mul_inv g₀.1) (Units.mul_inv l) (by rw [← map_mul, Units.inv_mul, map_one]), Matrix.mul_one]`. Conclude with `hN`.
+
+Introduce `hg`. Conclude with `⟨(⟨g * (m (lf ⟨g, hg⟩) (gf ⟨g, hg⟩))⁻¹, hn ⟨g, hg⟩⟩, lf ⟨g, hg⟩, gf ⟨g, hg⟩), inv_mul_cancel_right _ _⟩`. Establish `hsub : ∀ p : unipSub c J x ι × (Aˣ × UG c J₁), (p.1 : UG c J) * m p.2.1 p.2.2 ∈ Rg` using `fun p => hrange ▸ Set.mem_range_self p`. Establish `hφc : Continuous fun p : unipSub c J x ι × (Aˣ × UG c J₁) => (p.1 : UG c J) * m p.2.1 p.2.2` using `(continuous_subtype_val.comp continuous_fst).mul (hmc.comp continuous_snd)`. Use `set φ' : unipSub c J x ι × (Aˣ × UG c J₁) → Rg := fun p => ⟨(p.1 : UG c J) * m p.2.1 p.2.2, hsub p⟩ with hφ'`.
+
+Use `set R : Rg → unipSub c J x ι × (Aˣ × UG c J₁) := fun g => (⟨g.1 * (m (lf g) (gf g))⁻¹, hn g⟩, lf g, gf g) with hR`. Establish `hRc : Continuous R` using `(Continuous.subtype_mk (continuous_subtype_val.mul (hmc.comp (hlfc.prodMk hgfc)).inv) _).prodMk (hlfc.prodMk hgfc)`. Establish `hleft : Function.LeftInverse R φ'`. Introduce and unpack `⟨n, l, g₀⟩`. Establish `hN : IsUnipMat x ι n.1.1.1` using `n.2`.
+
+Take `⟨h1, -⟩` from `mat_levi_inv c J J₁ hQP m hm l g₀`. Establish `el : lf (φ' (n, l, g₀)) = l` using `by ext; rw [(hlf _).1]; show tau Q x (n.1.1.1 * (m l g₀).1.1) = l.1; rw [h1, tau_mul_leviM hQP hN]`. Establish `eg : gf (φ' (n, l, g₀)) = g₀`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[(hgf _).1]`. Use `show gam Q ι (n.1.1.1 * (m l g₀).1.1) = g₀.1.1`. Rewrite using `[h1, gam_mul_leviM hQP hN]`. Simplify using `only [hR, el, eg]`. Use `Prod.ext (Subtype.ext ?_) rfl` and prove the remaining obligations.
+
+Use `show (n : UG c J) * m l g₀ * (m l g₀)⁻¹ = n`. Conclude with `mul_inv_cancel_right _ _`. Establish `hemb : IsEmbedding φ'` using `hleft.isEmbedding hRc (Continuous.subtype_mk hφc _)`. Conclude with `IsClosedEmbedding.mk (IsEmbedding.subtypeVal.comp hemb) (hrange ▸ hclosed)`.
+-/
 theorem closedEmb (c : A →ₐ[R0] A) (hc : Continuous c) (J : Matrix (Fin (b + 2)) (Fin (b + 2)) A)
     (J₁ : Matrix (Fin b) (Fin b) A) (hQP : Q * frame x y ι = 1) (m : Aˣ → UG c J₁ → UG c J)
     (hm : ∀ l g₀, (m l g₀).1.1 *ᵥ x = l.1 • x ∧ (m l g₀).1.1 *ᵥ y = c (l⁻¹).1 • y ∧ (m l g₀).1.1 * ι = ι * g₀.1.1) :
@@ -379,6 +519,23 @@ namespace GlobalTheory.IwEmb
 
 open Matrix GlobalTheory.LeviElem Topology
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC hB hG hG₁ m hm`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hσ : ∀ z, σ (σ z) = z` using `fun z => (B.emb w).1.injective (by rw [hB.cm.2.2.2, hB.cm.2.2.2, star_star])`. Establish `hdet : G₁.V.J.det ≠ 0`. Establish `h` using `det_ne_of_sig _ (hG₁.hV.sig w)`.
+
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `: (G₁.V.J.map (B.emb w).1).det = (B.emb w).1 G₁.V.J.det` using `(RingHom.map_det (B.emb w).1 _).symm`. Rewrite using `[this, h0, map_zero]`. Use `set P := fromCols H.ι (cols2 H.x H.y) with hP`.
+
+Establish `hK : Pᵀ * G.V.J * P.map σ = fromBlocks G₁.V.J 0 0 swap2` using `gram_block σ hσ B hG.hV.herm hC.hH`. Use `set K : Matrix (Fin b ⊕ Fin 2) (Fin b ⊕ Fin 2) E := fromBlocks G₁.V.J 0 0 swap2 with hKdef`. Establish `hKdet : IsUnit Kᵀ.det`. Rewrite using `[det_transpose, hKdef, det_fromBlocks_zero₂₁]`. Simplify using `[swap2, det_fin_two, hdet]`.
+
+Use `set Q := (Kᵀ)⁻¹ * ((P.map σ)ᵀ * G.V.Jᵀ) with hQ`. Establish `hQP : Q * P = 1`. Establish `: (P.map σ)ᵀ * G.V.Jᵀ * P = Kᵀ`. Rewrite using `[← hK]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+
+Rewrite using `[hQ, Matrix.mul_assoc, this, nonsing_inv_mul _ hKdet]`. Use `set f : E →+* AE F E := inclR (F := F) (E := E) (AF F) with hf`. Establish `hPf : P.map f = frame (incV F H.x) (incV F H.y) (incM F H.ι)`. Use extensionality with `i (j | j)`. Both sides reduce to the same expression.
+
+Apply the tactic sequence `fin_cases j <;> rfl`. Establish `hQP' : Q.map f * frame (incV F H.x) (incV F H.y) (incM F H.ι) = 1`. Rewrite using `[← hPf, ← Matrix.map_mul, hQP, Matrix.map_one _ (map_zero f) (map_one f)]`. Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+
+Use `haveI : T2Space (AE F E) := by`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Conclude with `e.isEmbedding.t2Space`. Establish `hc : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (R := AF F) (cA σ).toLinearMap`. Establish `hU : unip σ G.V H = unipSub (cA σ) (incM F G.V.J) (incV F H.x) (incM F H.ι)` using `Subgroup.closure_eq (unipSub (cA σ) (incM F G.V.J) (incV F H.x) (incM F H.ι))`.
+
+Rewrite using `[hU]`. Conclude with `closedEmb (cA σ) hc (incM F G.V.J) (incM F G₁.V.J) hQP' m hm`.
+-/
 theorem unip_closedEmbedding : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →
     ∀ m : (AE F E)ˣ → UA σ G₁.V.J → UA σ G.V.J, (∀ l g₀, IsLevi H l g₀ (m l g₀)) →

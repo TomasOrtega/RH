@@ -15,12 +15,32 @@ namespace PositivityTheory.SiegelWeilFormula.Khead
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨p, t, hp, k, hk, rfl⟩` from `h.iwa x`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, h.mul hp, h.val p t hp k hk]`.
+-/
 theorem hgt_mul_right {n : ℕ} {Y : Spc F E n} {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} (h : IsHgt K a) (x c : G2 σ Y) :
     ∃ k ∈ K, a (x * c) = a x * a (k * c) := by
   obtain ⟨p, t, hp, k, hk, rfl⟩ := h.iwa x
   refine ⟨k, hk, ?_⟩
   rw [mul_assoc, h.mul hp, h.val p t hp k hk]
 
+/- English proof (translation)
+Take `⟨r', s', hY⟩` from `hS`. Establish `hKc : IsCompact (d.K : Set d.G)` using `GlobalTheory.T.isCompact_standard_maximal F E σ d.B d.n d.Y r' s' d.ok.good d.ok.hn hY d.b d.K d.a d.ok.frame d.ok.stdK d.ok.hgt`. Take `⟨hac, hpos⟩` from `GlobalTheory.T.height_function_continuous_pos' F E σ d.B d.n d.Y r' s' d.ok.good d.ok.hn hY d.b d.K d.a d.ok.frame d.ok.stdK d.ok.hgt`. Take `⟨C0, hC0⟩` from `GlobalTheory.T.flat_section_growth_bound d.K d.a hKc d.ok.hgt hpos d.χ s₁ f hf`. Take `⟨σ₀, hσ⟩` from `GlobalTheory.T.eisenstein_series_convergent F E σ d.B d.n d.Y r' s' d.ok.good d.ok.hn hY d.b d.K d.a d.ok.frame d.ok.stdK d.ok.hgt`.
+
+Use `⟨σ₀ - (d.n : ℝ) / 2, fun z hz C hC => ?_⟩` and prove the remaining obligations. Use `set σ' : ℝ := z.re + (d.n : ℝ) / 2 with hσ'`. Establish `h1 : σ₀ < σ'` using `by linarith`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: IsTopologicalGroup d.G` using `Subgroup.instIsTopologicalGroupSubtypeMem _`.
+
+Establish `hKC : IsCompact ((d.K : Set d.G) * C)` using `hKc.mul hC`. Take `⟨M, hM⟩` from `hKC.exists_bound_of_continuousOn hac.continuousOn`. Take `⟨M', hM'⟩` from `hKC.exists_bound_of_continuousOn (hac.inv₀ fun y => (hpos y).ne').continuousOn`. Establish `hr : ∀ x, ∀ c ∈ C, d.a (x * c) ^ σ' ≤ (|M| ^ σ' + (|M'|⁻¹) ^ σ') * d.a x ^ σ'`. Introduce `x c hc`.
+
+Take `⟨k, hk, e⟩` from `hgt_mul_right d.ok.hgt x c`. Establish `hkc : k * c ∈ (d.K : Set d.G) * C` using `Set.mul_mem_mul hk hc`. Establish `r0` using `hpos (k * c)`. Establish `rM : d.a (k * c) ≤ |M|` using `(Real.le_norm_self _).trans ((hM _ hkc).trans (le_abs_self M))`. Establish `hm` using `hM' _ hkc`.
+
+Rewrite `hm` using `[Pi.inv_apply, norm_inv, Real.norm_of_nonneg r0.le]`. Establish `hM'pos : 0 < |M'|` using `lt_of_lt_of_le (inv_pos.2 r0) (hm.trans (le_abs_self _))`. Establish `rm : |M'|⁻¹ ≤ d.a (k * c)` using `(inv_le_comm₀ hM'pos r0).2 (hm.trans (le_abs_self _))`. Establish `hb : d.a (k * c) ^ σ' ≤ |M| ^ σ' + (|M'|⁻¹) ^ σ'`. Break down `le_total 0 σ' with hs | hs` into its components or cases.
+
+Conclude with `(Real.rpow_le_rpow r0.le rM hs).trans (le_add_of_nonneg_right (Real.rpow_nonneg (inv_nonneg.2 (abs_nonneg _)) _))`. Conclude with `(Real.rpow_le_rpow_of_nonpos (inv_pos.2 hM'pos) rm hs).trans (le_add_of_nonneg_left (Real.rpow_nonneg (abs_nonneg _) _))`. Rewrite using `[e, Real.mul_rpow (hpos x).le r0.le, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right hb (Real.rpow_nonneg (hpos x).le _)`. Take `⟨_, _, hsum⟩` from `hσ σ' h1`.
+
+Use `⟨fun q => |C0| * (|M| ^ σ' + (|M'|⁻¹) ^ σ') * d.a ((Quotient.out q).1 * 1) ^ σ', (hsum 1).1.mul_left _, fun g hg q => ?_⟩` and prove the remaining obligations. Establish `hΦ : (fun x => ((d.Ht x : ℝ) : ℂ) ^ (z - s₁) * f x) = flat d.a f s₁ z` using `funext fun y => by`. Simplify using `only [SD.Ht, flat]`. Rewrite using `[Real.coe_toNNReal _ (hpos y).le]`. Rewrite using `[hΦ]`.
+
+Use `show ‖flat d.a f s₁ z ((Quotient.out q).1 * g)‖ ≤ _`. Simplify using `only [mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem majorant (d : SD σ) (hS : d.Strong) {s₁ : ℂ} {f : d.G → ℂ} (hf : IsSec d.K d.χ s₁ f) :
     ∃ t : ℝ, ∀ z : ℂ, t < z.re → ∀ C : Set d.G, IsCompact C →
       ∃ u : GlobalTheory.Eis.Cosets (par2 σ d.Y) (rat2 σ d.Y) → ℝ, Summable u ∧

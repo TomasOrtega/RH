@@ -14,6 +14,9 @@ variable {k G ι U W : Type} [Field k] [Group G] [Fintype ι] {V : ι → Type}
   [∀ i, AddCommGroup (V i)] [∀ i, Module k (V i)] [AddCommGroup U] [Module k U]
   [AddCommGroup W] [Module k W]
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.of_injective ({ toFun := fun f => f.toLinearMap map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl } : τ.IntertwiningMap σ →ₗ[k] (U →ₗ[k] W)) (IntertwiningMap.toLinearMap_injective τ σ)`.
+-/
 theorem finite_intertwiningMap [FiniteDimensional k U] [FiniteDimensional k W]
     (τ : Representation k G U) (σ : Representation k G W) :
     FiniteDimensional k (τ.IntertwiningMap σ) :=
@@ -23,6 +26,17 @@ theorem finite_intertwiningMap [FiniteDimensional k U] [FiniteDimensional k W]
        map_smul' := fun _ _ => rfl } : τ.IntertwiningMap σ →ₗ[k] (U →ₗ[k] W))
     (IntertwiningMap.toLinearMap_injective τ σ)
 
+/- English proof (translation)
+Use `⟨⟨{ toFun := fun f i => (p i).comp f map_add' := fun f g => ?_ map_smul' := fun c f => ?_ invFun := fun f => ∑ i, (j i).comp (f i) left_inv := fun f => ?_ right_inv := fun f => ?_ }⟩, ⟨{ toFun := fun f i => f.comp (j i) map_add' := fun f g => rfl map_smul' := fun c f => rfl invFu …` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `DFunLike.ext _ _ fun u => map_add (p i) (f u) (g u)`. Use function extensionality and compare the values at `i`. Conclude with `DFunLike.ext _ _ fun u => map_smul (p i) c (f u)`.
+
+Use `DFunLike.ext _ _ fun u => ?_` and prove the remaining obligations. Rewrite using `[IntertwiningMap.sum_apply]`. Conclude with `hsum (f u)`. Use function extensionality and compare the values at `i`. Use `DFunLike.ext _ _ fun u => ?_` and prove the remaining obligations.
+
+Rewrite using `[IntertwiningMap.comp_apply, IntertwiningMap.sum_apply, map_sum]`. Simplify using `only [IntertwiningMap.comp_apply]`. Rewrite using `[Finset.sum_eq_single i (fun i' _ h => hoff i i' h _) (by simp)]`. Conclude with `hdiag i _`. Use `DFunLike.ext _ _ fun w => ?_` and prove the remaining obligations.
+
+Rewrite using `[IntertwiningMap.sum_apply]`. Simplify using `only [IntertwiningMap.comp_apply]`. Rewrite using `[← map_sum, hsum]`. Use function extensionality and compare the values at `i`. Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[IntertwiningMap.comp_apply, IntertwiningMap.sum_apply]`. Simplify using `only [IntertwiningMap.comp_apply]`. Rewrite using `[Finset.sum_eq_single i (fun i' _ h => by rw [hoff i' i h.symm, map_zero]) (by simp), hdiag]`.
+-/
 theorem equivs_of_biproduct (ρ : ∀ i, Representation k G (V i)) (τ : Representation k G U)
     (σ : Representation k G W) (p : ∀ i, σ.IntertwiningMap (ρ i))
     (j : ∀ i, (ρ i).IntertwiningMap σ) (hsum : ∀ w, ∑ i, j i (p i w) = w)
@@ -65,6 +79,17 @@ theorem equivs_of_biproduct (ρ : ∀ i, Representation k G (V i)) (τ : Represe
     simp only [IntertwiningMap.comp_apply]
     rw [Finset.sum_eq_single i (fun i' _ h => by rw [hoff i' i h.symm, map_zero]) (by simp), hdiag]
 
+/- English proof (translation)
+Introduce `k G ι U W _ _ _ V _ _ _ _ _ _ _ _ ρ τ σ ⟨e⟩`. Set `p₀ : ∀ i, (Representation.directSum ρ).IntertwiningMap (ρ i)` to `fun i => { toLinearMap := DirectSum.component k ι V i isIntertwining' := fun g => by`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `rfl }`. Set `j₀ : ∀ i, (ρ i).IntertwiningMap (Representation.directSum ρ)` to `fun i => { toLinearMap := DirectSum.lof k ι V i isIntertwining' := fun g => by`.
+
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[Representation.directSum] }`. Establish `hse : ∀ x, e.symm.toIntertwiningMap (e.toIntertwiningMap x) = x` using `fun x => e.toLinearEquiv.symm_apply_apply x`. Establish `hes : ∀ x, e.toIntertwiningMap (e.symm.toIntertwiningMap x) = x` using `fun x => e.toLinearEquiv.apply_symm_apply x`. Take `⟨⟨a⟩, ⟨b⟩⟩` from `equivs_of_biproduct ρ τ σ (fun i => (p₀ i).comp e.symm.toIntertwiningMap) (fun i => e.toIntertwiningMap.comp (j₀ i)) (fun w => by`.
+
+Simplify using `only [IntertwiningMap.comp_apply]`. Rewrite using `[← map_sum]`. Establish `: ∀ x : ⨁ i, V i, ∑ i, j₀ i (p₀ i x) = x` using `fun x => DirectSum.sum_univ_of x`. Rewrite using `[this, hes])`. Use the proof step `(fun i x => by`.
+
+Simplify using `only [IntertwiningMap.comp_apply]`. Rewrite using `[hse]`. Conclude with `DirectSum.component.lof_self k i x)`. Use the proof step `(fun i i' h x => by`. Simplify using `only [IntertwiningMap.comp_apply]`.
+
+Rewrite using `[hse]`. Conclude with `DirectSum.of_eq_of_ne i' i x h.symm)`. Use `fun i => finite_intertwiningMap τ (ρ i)` as an intermediate fact. Use `fun i => finite_intertwiningMap (ρ i) τ` as an intermediate fact. Conclude with `⟨a.finrank_eq.trans (Module.finrank_pi_fintype k), b.finrank_eq.trans (Module.finrank_pi_fintype k)⟩`.
+-/
 theorem finrank_intertwiningMap_directSum :
     ∀ (k G ι U W : Type) [Field k] [Group G] [Fintype ι] (V : ι → Type) [∀ i, AddCommGroup (V i)] [∀ i, Module k (V i)] [∀ i, FiniteDimensional k (V i)] [AddCommGroup U] [Module k U] [FiniteDimensional k U] [AddCommGroup W] [Module k W] (ρ : ∀ i, Representation k G (V i)) (τ : Representation k G U) (σ : Representation k G W), Nonempty ((Representation.directSum ρ).Equiv σ) → Module.finrank k (τ.IntertwiningMap σ) = ∑ i, Module.finrank k (τ.IntertwiningMap (ρ i)) ∧ Module.finrank k (σ.IntertwiningMap τ) = ∑ i, Module.finrank k ((ρ i).IntertwiningMap τ) := by
   intro k G ι U W _ _ _ V _ _ _ _ _ _ _ _ ρ τ σ ⟨e⟩

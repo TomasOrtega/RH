@@ -13,6 +13,11 @@ section General
 variable {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ}
   {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left}
 
+/- English proof (translation)
+Take `⟨y⟩ : Nonempty (Sp ℂ)` from `inferInstanceAs (Nonempty (PrimeSpectrum ℂ))`. Establish `: x y ∈ ⨆ i, L.U i` using `by rw [hL.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Use `⟨i, fun w _ => ?_⟩` and prove the remaining obligations. Rewrite using `[show w = y from Subsingleton.elim (α := PrimeSpectrum ℂ) _ _]`.
+
+Conclude with `hi`.
+-/
 theorem exists_chart (hL : L.IsLB) (x : Sp ℂ ⟶ A.left) : ∃ i, ⊤ ≤ x ⁻¹ᵁ L.U i := by
   obtain ⟨y⟩ : Nonempty (Sp ℂ) := inferInstanceAs (Nonempty (PrimeSpectrum ℂ))
   have : x y ∈ ⨆ i, L.U i := by rw [hL.cover]; trivial
@@ -21,6 +26,13 @@ theorem exists_chart (hL : L.IsLB) (x : Sp ℂ ⟶ A.left) : ∃ i, ⊤ ≤ x �
   rw [show w = y from Subsingleton.elim (α := PrimeSpectrum ℂ) _ _]
   exact hi
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `exists_chart hL (u.ex z).left`. Establish `hl : u.ex (τ *ᵥ ofIntVec k + ofIntVec k') = 1` using `(u.ker _).2 ((hΛ _).2 ⟨k', k, add_comm _ _⟩)`. Establish `he : u.ex (z + τ *ᵥ ofIntVec k + ofIntVec k') = u.ex z`. Rewrite using `[add_assoc, u.ex_add, hl, _root_.mul_one]`. Establish `hi' : ⊤ ≤ (u.ex z).left ⁻¹ᵁ (lbPow L n).U (fun _ => i)` using `fun w hw => Set.mem_iInter.2 fun _ => hi hw`.
+
+Establish `h1` using `hθ (fun _ => i) z hi'`. Establish `h2` using `hθ (fun _ => i) (z + τ *ᵥ ofIntVec k + ofIntVec k') (by rw [he]; exact hi')`. Rewrite `h2` using `[he, h1]`. Establish `hf` using `frame_eq_autFactor_mul u th hs ha hb hΛ hth k k' i z hi h0`. Establish `hne` using `u.fr_ne i (z + τ *ᵥ ofIntVec k + ofIntVec k') (by rw [he]; exact hi)`.
+
+Rewrite `h2` using `[hf, mul_pow]`. Apply `mul_right_cancel₀ (pow_ne_zero n hne)` to reduce the goal to its premises. Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem law_forced (hL : L.IsLB) (u : HolUnif A L g) (th : L.Sec)
     (hs : τ.IsSymm) (ha : ∀ i, a i = 0 ∨ a i = 1 / 2) (hb : ∀ i, b i = 0 ∨ b i = 1 / 2)
     (hΛ : ∀ z, z ∈ u.Λ ↔ ∃ m n : Fin g → ℤ, z = (fun i => (m i : ℂ)) + τ.mulVec (fun i => (n i : ℂ)))
@@ -43,6 +55,9 @@ theorem law_forced (hL : L.IsLB) (u : HolUnif A L g) (th : L.Sec)
   apply mul_right_cancel₀ (pow_ne_zero n hne)
   rw [← h2]; ring
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `Function.ne_iff.1 (thetaChar_level hs hp ha hb).1`. Take `⟨i, hi⟩` from `exists_chart hL (u.ex z).left`. Conclude with `⟨i, z, by rw [hth i z hi]; exact mul_ne_zero hz (u.fr_ne i z hi)⟩`.
+-/
 theorem section_ne_zero (hL : L.IsLB) (u : HolUnif A L g) (th : L.Sec)
     (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef)
     (ha : ∀ i, a i = 0 ∨ a i = 1 / 2) (hb : ∀ i, b i = 0 ∨ b i = 1 / 2)
@@ -54,6 +69,11 @@ theorem section_ne_zero (hL : L.IsLB) (u : HolUnif A L g) (th : L.Sec)
 
 end General
 
+/- English proof (translation)
+Introduce `h`. Set `φ : (Fin 1 → ℂ) →ₗ[ℝ] ℝ` to `Complex.imLm ∘ₗ LinearMap.proj 0`. Establish `hle : Submodule.span ℝ (u.Λ : Set (Fin 1 → ℂ)) ≤ LinearMap.ker φ`. Use `Submodule.span_le.2 fun z hz => ?_` and prove the remaining obligations. Take `⟨m, n, rfl⟩` from `(h z).1 hz`.
+
+Simplify using `[φ]`. Rewrite `hle` using `[u.full]`. Use `hle (show (fun _ => Complex.I : Fin 1 → ℂ) ∈ ⊤ from trivial)` as an intermediate fact. Simplify using `[φ] at this`.
+-/
 theorem no_unif_of_zero_matrix {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (u : HolUnif A L 1) :
     ¬ ∀ z, z ∈ u.Λ ↔ ∃ m n : Fin 1 → ℤ,
       z = (fun i => (m i : ℂ)) + (0 : Matrix (Fin 1) (Fin 1) ℂ).mulVec (fun i => (n i : ℂ)) := by
@@ -67,6 +87,33 @@ theorem no_unif_of_zero_matrix {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (u
   have := hle (show (fun _ => Complex.I : Fin 1 → ℂ) ∈ ⊤ from trivial)
   simp [φ] at this
 
+/- English proof (translation)
+Establish `hs : (!![Complex.I] : Matrix (Fin 1) (Fin 1) ℂ).IsSymm`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Both sides reduce to the same expression.
+
+Establish `hp : ((!![Complex.I] : Matrix (Fin 1) (Fin 1) ℂ).map Complex.im).PosDef`. Use `(Matrix.PosDef.one : (1 : Matrix (Fin 1) (Fin 1) ℝ).PosDef) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using the standard rewrite rules. Establish `ha : ∀ i : Fin 1, (fun _ => 1 / 2 : Fin 1 → ℂ) i = 0 ∨ (fun _ => 1 / 2 : Fin 1 → ℂ) i = 1 / 2` using `fun _ => Or.inr rfl`. Take `⟨P, u, th, hg, hΛ, -, hth, -, -, hF⟩` from `H 1 _ _ _ hs hp ha ha`. Establish `mem : ∀ z : Fin 1 → ℂ, z ∈ u.Λ ↔ ∃ m n : ℤ, z 0 = m + Complex.I * n`. Introduce `z`.
+
+Rewrite using `[hΛ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨m 0, n 0, by simp [Matrix.mulVec, dotProduct]⟩`. Introduce and unpack `⟨m, n, h⟩`.
+
+Use `⟨fun _ => m, fun _ => n, funext fun i => ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Simplify `h` using `[Matrix.mulVec, dotProduct]`. Take `⟨f, hf, hfz⟩` from `hF (Complex.I • LinearMap.id) (by`. Introduce `l hl`.
+
+Take `⟨m, n, h⟩` from `(mem l).1 hl`. Use `(mem _).2 ⟨-n, m, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, Pi.smul_apply, smul_eq_mul, h]`. Use `push_cast`. Take the linear combination `(n : ℂ) * Complex.I_mul_I)`.
+
+Establish `h0 : u.ex 0 = 1` using `(u.ker 0).2 u.Λ.zero_mem`. Establish `half : ∀ m : ℤ, (m : ℝ) ≠ 1 / 2` using `fun m h => by`. Establish `: (2 * m : ℝ) = 1` using `by linarith`. Establish `: (2 * m : ℤ) = 1` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨P, th, f, hg, hf, ?_, ⟨u.ex fun _ => 1 / 2, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `h1` using `hfz fun _ => 1 / 2`. Rewrite `h1` using `[Category.comp_id]`. Establish `h2 : u.ex ((Complex.I • LinearMap.id : (Fin 1 → ℂ) →ₗ[ℂ] (Fin 1 → ℂ)) (fun _ => 1 / 2) + fun _ => 1 / 2) = 1`.
+
+Rewrite using `[u.ex_add, h1, ← u.ex_add, u.ker, mem]`. Conclude with `⟨1, 0, by simp; norm_num⟩`. Rewrite `h2` using `[u.ker, mem]`. Take `⟨m, n, h⟩` from `h2`. Use `congrArg Complex.re h` as an intermediate fact.
+
+Simplify using `at this`. Conclude with `half m (by linarith)`. Introduce `h`. Rewrite `h` using `[u.ker, mem]`. Take `⟨m, n, h⟩` from `h`.
+
+Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`. Conclude with `half m (by linarith)`. Rewrite using `[← u.ex_add, u.ker, mem]`. Conclude with `⟨1, 0, by simp; norm_num⟩`.
+
+Take `⟨i, z, h⟩` from `section_ne_zero P.isLB u th hs hp ha ha hth`. Conclude with `⟨i, _, h⟩`. Introduce `x`. Take `⟨z, rfl⟩` from `u.ex_onto x`. Rewrite using `[← Category.assoc, ← hfz, ← hfz, ← u.ex_add, ← h0]`.
+
+Use `congr 1`. Simplify using `[smul_smul]`.
+-/
 theorem square_lattice (H : TorusAlgebraic) :
     ∃ (P : Out.PolAV (Sp ℂ)) (th : P.L.Sec) (f : P.A ⟶ P.A), P.g = 1 ∧ IsMonHom f ∧ f ≠ 𝟙 _ ∧
       (∃ x : 𝟙_ (Over (Sp ℂ)) ⟶ P.A, x ≠ 1 ∧ x * x = 1) ∧

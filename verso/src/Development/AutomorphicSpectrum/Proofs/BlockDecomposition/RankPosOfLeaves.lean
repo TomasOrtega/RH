@@ -37,6 +37,11 @@ def ap₁ (A : Sm E a →ₗ[ℂ] Sm E a) (F : H E a b → ℂ) : H E a b → �
 
 def ap₂ (B : Sm E b →ₗ[ℂ] Sm E b) (F : H E a b → ℂ) : H E a b → ℂ := fun x => (B (sl₂ F x.1)).1 x.2
 
+/- English proof (translation)
+Introduce `N t`. Proceed by induction on `t with`. Consider the case `leaf V z`. Introduce `h`. Break down `h with h | h` into its components or cases.
+
+Conclude with `Or.inl h`. Conclude with `Or.inr ⟨h.1, h.2.1⟩`. Consider the case `node t₁ t₂ i₁ i₂ => exact fun h => ⟨i₁ h.1, i₂ h.2⟩`.
+-/
 theorem good_disc : ∀ {N : ℕ} {t : Tr E N}, t.Good → t.Disc := by
   intro N t
   induction t with
@@ -47,6 +52,11 @@ theorem good_disc : ∀ {N : ℕ} {t : Tr E N}, t.Good → t.Disc := by
     · exact Or.inr ⟨h.1, h.2.1⟩
   | node t₁ t₂ i₁ i₂ => exact fun h => ⟨i₁ h.1, i₂ h.2⟩
 
+/- English proof (translation)
+Introduce `N t`. Proceed by induction on `t with`. Consider the case `leaf V z`. Introduce `h`. Break down `h with ⟨-, rfl, -⟩ | h` into its components or cases.
+
+Conclude with `fun _ _ _ => trivial`. Conclude with `h.2.stable`. Consider the case `node t₁ t₂ i₁ i₂ => exact fun h => ⟨i₁ h.1, i₂ h.2⟩`.
+-/
 theorem disc_stable : ∀ {N : ℕ} {t : Tr E N}, t.Disc → t.AllLeaves fun _ V => IsStable V := by
   intro N t
   induction t with
@@ -57,6 +67,9 @@ theorem disc_stable : ∀ {N : ℕ} {t : Tr E N}, t.Disc → t.AllLeaves fun _ V
     · exact h.2.stable
   | node t₁ t₂ i₁ i₂ => exact fun h => ⟨i₁ h.1, i₂ h.2⟩
 
+/- English proof (translation)
+Introduce `N t`. Proceed by induction on `t with`. Consider the case `leaf V z => exact fun h => h.1`. Consider the case `node t₁ t₂ i₁ i₂ => exact fun h => Nat.add_pos_left (i₁ h.1) _`.
+-/
 theorem rank_pos_of_leaves {Q : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop} : ∀ {N : ℕ} {t : Tr E N},
     t.AllLeaves (fun M V => 0 < M ∧ Q M V) → 0 < N := by
   intro N t
@@ -64,6 +77,9 @@ theorem rank_pos_of_leaves {Q : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop} : 
   | leaf V z => exact fun h => h.1
   | node t₁ t₂ i₁ i₂ => exact fun h => Nat.add_pos_left (i₁ h.1) _
 
+/- English proof (translation)
+Introduce `N t`. Proceed by induction on `t with`. Consider the case `leaf V z => exact fun _ => trivial`. Consider the case `node t₁ t₂ i₁ i₂ => exact fun h => ⟨rank_pos_of_leaves h.1, rank_pos_of_leaves h.2, i₁ h.1, i₂ h.2⟩`.
+-/
 theorem red_of_leaves {Q : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop} : ∀ {N : ℕ} {t : Tr E N},
     t.AllLeaves (fun M V => 0 < M ∧ Q M V) → Red t := by
   intro N t

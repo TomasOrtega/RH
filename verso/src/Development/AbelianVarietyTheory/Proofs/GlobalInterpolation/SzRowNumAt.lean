@@ -11,6 +11,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Use `szRow_and_imp.2 _ _ (szRow_and_imp.1 _ _ (szRow_and_imp.1 _ _ explicitConstants_parameterConditions_large szRow_blockLengthParams) (szRow_and_imp.1 _ _ szRow_sizesAt szRow_band_lambda_primes)) ?_` and prove the remaining obligations. Introduce and unpack `C cD ch D L hC hV ⟨⟨h5, hT⟩, hS, hrho, hLa, hg, hp, hp', hTT, hCode⟩ hA`. Take `⟨P, hPK, hPW⟩` from `h5 hA`. Take `⟨T, hTK, hTe⟩` from `hT P hPW`. Establish `hCt : C.Ct = 401` using `hC.1.2.2.2.2.2.2.2.2.2`.
+
+Take `⟨hn, hm, hk, -⟩` from `hV.ranks`. Take `⟨-, -, -, -, -, hLw, hcc, -⟩` from `hV.host`. Use `⟨⟨{ params := P params_K := hPK CnW_eq := hPW parT := T parT_K := hTK eP_eq := hTe sizes := hS rho_le := hrho CGam_eq := hV.CGam_eq Cc_eq := hV.Cc_eq Ct_eq := hV.Ct_eq secondConstant_eq := hV.secondConstant_eq LaG_ge := hLa bT_le := hV.bT_le ccK_top := hcc g_le := hg pde_lt := ⟨h …` and prove the remaining obligations. Rewrite using `[hLw, hCt]`. Unfold `Lwv`.
+
+Evaluate the numerical expressions. Use function extensionality and compare the values at `i`. Rewrite using `[hV.hc.1 τ i, hV.hc.1 τ' i]`.
+-/
 theorem szRow_numAt :
     SzRow (fun C D L => HostArith D.host → Nonempty (NumAt C L) ∧ ChTT_at L ∧ ChCode_at L 3 C.P.CF) := by
   refine szRow_and_imp.2 _ _ (szRow_and_imp.1 _ _ (szRow_and_imp.1 _ _ explicitConstants_parameterConditions_large szRow_blockLengthParams)

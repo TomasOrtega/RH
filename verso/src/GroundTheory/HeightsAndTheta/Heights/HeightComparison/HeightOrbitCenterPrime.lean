@@ -10,6 +10,9 @@ def OrbitCenterPrime.Statement : Prop :=
   ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (n : ι → ℕ) (x : Cone n (AlgebraicClosure ℚ)),
     BlockNonzero x → ∀ v : FinitePlace (coordField x), (orbitCenter x v).IsPrime
 
+/- English proof (translation)
+The claim follows from `samplePoint_blockNonzero`.
+-/
 example : BlockNonzero samplePoint := samplePoint_blockNonzero
 
 end GroundTheory.Heights₂.Heights

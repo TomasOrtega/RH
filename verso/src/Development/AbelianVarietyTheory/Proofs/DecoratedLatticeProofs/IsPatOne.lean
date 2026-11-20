@@ -8,8 +8,14 @@ def FreePos (ρ κ i j : ℕ) : Prop :=
 def IsPat {K : Type} [CommRing K] {r : ℕ} (ρ κ : ℕ) (g : GL (Fin r) K) : Prop :=
   ∀ i j : Fin r, ¬ FreePos ρ κ i.val j.val → g.val i j = (1 : Matrix (Fin r) (Fin r) K) i j
 
+/- English proof (translation)
+Introduce `_ _ _` and use `rfl`.
+-/
 theorem isPat_one {K : Type} [CommRing K] {r : ℕ} (ρ κ : ℕ) : IsPat ρ κ (1 : GL (Fin r) K) := fun _ _ _ => rfl
 
+/- English proof (translation)
+Unfold `FreePos`. Use linear arithmetic over natural numbers and integers.
+-/
 example : FreePos 1 1 1 0 ∧ ¬ FreePos 1 1 0 2 := by unfold FreePos; omega
 
 end GlobalTheory.SymRes

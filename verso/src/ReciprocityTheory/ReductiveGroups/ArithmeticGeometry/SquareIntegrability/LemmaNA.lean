@@ -10,30 +10,54 @@ section Herm
 
 variable {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Simplify using `[Hf, add_mul, Finset.sum_add_distrib]`.
+-/
 lemma nA_Hf_add_left (u v w : EuclideanSpace ℂ ι) : Hf (u + v) w = Hf u w + Hf v w := by
   simp [Hf, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[Hf, mul_add, Finset.sum_add_distrib]`.
+-/
 lemma nA_Hf_add_right (u v w : EuclideanSpace ℂ ι) : Hf u (v + w) = Hf u v + Hf u w := by
   simp [Hf, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[Hf, sub_mul, Finset.sum_sub_distrib]`.
+-/
 lemma nA_Hf_sub_left (u v w : EuclideanSpace ℂ ι) : Hf (u - v) w = Hf u w - Hf v w := by
   simp [Hf, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `[Hf, mul_sub, Finset.sum_sub_distrib]`.
+-/
 lemma nA_Hf_sub_right (u v w : EuclideanSpace ℂ ι) : Hf u (v - w) = Hf u v - Hf u w := by
   simp [Hf, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `[Hf, Finset.mul_sum, mul_assoc]`.
+-/
 lemma nA_Hf_smul_left (c : ℂ) (v w : EuclideanSpace ℂ ι) : Hf (c • v) w = c * Hf v w := by
   simp [Hf, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [Hf, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma nA_Hf_smul_right (c : ℂ) (v w : EuclideanSpace ℂ ι) :
     Hf v (c • w) = (starRingEnd ℂ) c * Hf v w := by
   simp only [Hf, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   simp [map_mul]; ring
 
+/- English proof (translation)
+Simplify using `[Hf, map_sum, mul_comm]`.
+-/
 lemma nA_Hf_conj (v w : EuclideanSpace ℂ ι) : (starRingEnd ℂ) (Hf v w) = Hf w v := by
   simp [Hf, map_sum, mul_comm]
 
+/- English proof (translation)
+Establish `h` using `nA_Hf_conj v v`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma nA_Hf_self_im (v : EuclideanSpace ℂ ι) : (Hf v v).im = 0 := by
   have h := nA_Hf_conj v v
   have := congrArg Complex.im h
@@ -42,42 +66,75 @@ lemma nA_Hf_self_im (v : EuclideanSpace ℂ ι) : (Hf v v).im = 0 := by
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[HC, nA_Hf_add_left, Finset.sum_add_distrib]`.
+-/
 lemma nA_HC_add_left (u v w : Fin n → EuclideanSpace ℂ ι) : HC (u + v) w = HC u w + HC v w := by
   simp [HC, nA_Hf_add_left, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[HC, nA_Hf_add_right, Finset.sum_add_distrib]`.
+-/
 lemma nA_HC_add_right (u v w : Fin n → EuclideanSpace ℂ ι) : HC u (v + w) = HC u v + HC u w := by
   simp [HC, nA_Hf_add_right, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[HC, nA_Hf_sub_left, Finset.sum_sub_distrib]`.
+-/
 lemma nA_HC_sub_left (u v w : Fin n → EuclideanSpace ℂ ι) : HC (u - v) w = HC u w - HC v w := by
   simp [HC, nA_Hf_sub_left, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `[HC, nA_Hf_sub_right, Finset.sum_sub_distrib]`.
+-/
 lemma nA_HC_sub_right (u v w : Fin n → EuclideanSpace ℂ ι) : HC u (v - w) = HC u v - HC u w := by
   simp [HC, nA_Hf_sub_right, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `[HC, map_sum, nA_Hf_conj]`.
+-/
 lemma nA_HC_conj (v w : Fin n → EuclideanSpace ℂ ι) : (starRingEnd ℂ) (HC v w) = HC w v := by
   simp [HC, map_sum, nA_Hf_conj]
 
+/- English proof (translation)
+Simplify using `[HC, Complex.im_sum, nA_Hf_self_im]`.
+-/
 lemma nA_HC_self_im (v : Fin n → EuclideanSpace ℂ ι) : (HC v v).im = 0 := by
   simp [HC, Complex.im_sum, nA_Hf_self_im]
 
+/- English proof (translation)
+Rewrite using `[← nA_HC_conj v w, Complex.conj_re]`.
+-/
 lemma nA_HC_re_symm (v w : Fin n → EuclideanSpace ℂ ι) : (HC w v).re = (HC v w).re := by
   rw [← nA_HC_conj v w, Complex.conj_re]
 
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp [nA_HC_self_im]`.
+-/
 lemma nA_HC_self_ofReal (v : Fin n → EuclideanSpace ℂ ι) : HC v v = ((HC v v).re : ℂ) := by
   apply Complex.ext <;> simp [nA_HC_self_im]
 
+/- English proof (translation)
+Rewrite using `[nA_HC_sub_left, nA_HC_sub_right, nA_HC_sub_right, Complex.sub_re, Complex.sub_re, Complex.sub_re, nA_HC_re_symm v a]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma nA_HC_sub_sub_re (v a : Fin n → EuclideanSpace ℂ ι) :
     (HC (v - a) (v - a)).re = (HC v v).re - 2 * (HC v a).re + (HC a a).re := by
   rw [nA_HC_sub_left, nA_HC_sub_right, nA_HC_sub_right, Complex.sub_re, Complex.sub_re,
     Complex.sub_re, nA_HC_re_symm v a]
   ring
 
+/- English proof (translation)
+Rewrite using `[nA_HC_add_left, nA_HC_add_right, nA_HC_add_right, Complex.add_re, Complex.add_re, Complex.add_re, nA_HC_re_symm v a]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma nA_HC_add_add_re (v a : Fin n → EuclideanSpace ℂ ι) :
     (HC (v + a) (v + a)).re = (HC v v).re + 2 * (HC v a).re + (HC a a).re := by
   rw [nA_HC_add_left, nA_HC_add_right, nA_HC_add_right, Complex.add_re, Complex.add_re,
     Complex.add_re, nA_HC_re_symm v a]
   ring
 
+/- English proof (translation)
+Rewrite using `[← Complex.exp_conj, ← Complex.exp_add, Complex.add_conj, Complex.ofReal_exp]`.
+-/
 lemma nA_exp_mul_conj (z : ℂ) : cexp z * (starRingEnd ℂ) (cexp z) = ((Real.exp (2 * z.re) : ℝ) : ℂ) := by
   rw [← Complex.exp_conj, ← Complex.exp_add, Complex.add_conj, Complex.ofReal_exp]
 
@@ -87,16 +144,27 @@ section PTAlg
 
 variable {E : Type} [Field E] [NumberField E] (X : PT E)
 
+/- English proof (translation)
+Simplify using `[Complex.mul_re, Complex.sub_re]`.
+-/
 lemma nA_re_U (q : ℕ) {n : ℕ} (v a : Fin n → Vsp X.dim) :
     ((q : ℂ) * Real.pi * HC v a - q * Real.pi * HC a a / 2).re =
       q * Real.pi * (HC v a).re - q * Real.pi * (HC a a).re / 2 := by
   simp [Complex.mul_re, Complex.sub_re]
 
+/- English proof (translation)
+Simplify using `[Complex.mul_re, Complex.add_re]`.
+-/
 lemma nA_re_S (q : ℕ) {n : ℕ} (v a : Fin n → Vsp X.dim) :
     ((q : ℂ) * Real.pi * HC v a + q * Real.pi * HC a a / 2).re =
       q * Real.pi * (HC v a).re + q * Real.pi * (HC a a).re / 2 := by
   simp [Complex.mul_re, Complex.add_re]
 
+/- English proof (translation)
+Unfold `PT.U`. Use `set z : ℂ := (q : ℂ) * Real.pi * HC v a - q * Real.pi * HC a a / 2 with hz`. Establish `hre : 2 * z.re + (-(q * Real.pi) * (HC v v).re) = -(q * Real.pi) * (HC (v - a) (v - a)).re`. Rewrite using `[hz, nA_re_U, nA_HC_sub_sub_re]`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[nA_exp_mul_conj, ← hre, Real.exp_add, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma nA_ip_U (q : ℕ) {n : ℕ} (a : Fin n → Vsp X.dim) (F G : (Fin n → Vsp X.dim) → ℂ)
     (v : Fin n → Vsp X.dim) :
     X.U q a F v * (starRingEnd ℂ) (X.U q a G v) * ((Real.exp (-(q * Real.pi) * (HC v v).re) : ℝ) : ℂ) =
@@ -113,6 +181,11 @@ lemma nA_ip_U (q : ℕ) {n : ℕ} (a : Fin n → Vsp X.dim) (F G : (Fin n → Vs
     _ = _ := by
       rw [nA_exp_mul_conj, ← hre, Real.exp_add, Complex.ofReal_mul]; ring
 
+/- English proof (translation)
+Unfold `PT.ptN2 PT.U`. Use `set z : ℂ := (q : ℂ) * Real.pi * HC v a - q * Real.pi * HC a a / 2 with hz`. Establish `hre : 2 * z.re + (-(q * Real.pi) * (HC v v).re) = -(q * Real.pi) * (HC (v - a) (v - a)).re`. Rewrite using `[hz, nA_re_U, nA_HC_sub_sub_re]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[norm_mul, Complex.norm_exp, mul_pow, ← hre, Real.exp_add, sq (Real.exp z.re), ← Real.exp_add]`. Put the polynomial expressions in normal form.
+-/
 lemma pointwiseNormSq_translate (q : ℕ) {n : ℕ} (a : Fin n → Vsp X.dim) (F : (Fin n → Vsp X.dim) → ℂ)
     (v : Fin n → Vsp X.dim) : X.ptN2 q (X.U q a F) v = X.ptN2 q F (v - a) := by
   unfold PT.ptN2 PT.U
@@ -122,24 +195,43 @@ lemma pointwiseNormSq_translate (q : ℕ) {n : ℕ} (a : Fin n → Vsp X.dim) (F
   rw [norm_mul, Complex.norm_exp, mul_pow, ← hre, Real.exp_add, sq (Real.exp z.re), ← Real.exp_add]
   ring_nf
 
+/- English proof (translation)
+Apply the tactic sequence `rcases X.eps_pm x hx with h | h <;> simp [h]`.
+-/
 lemma nA_eps_sq {x : Vsp X.dim} (hx : x ∈ X.L) : ((X.eps x : ℂ)) ^ 2 = 1 := by
   rcases X.eps_pm x hx with h | h <;> simp [h]
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_eq_one fun k _ => nA_eps_sq X (hγ k)`.
+-/
 lemma nA_epsprod_sq {n : ℕ} {γ : Fin n → Vsp X.dim} (hγ : ∀ k, γ k ∈ X.L) :
     (∏ k, (X.eps (γ k) : ℂ)) ^ 2 = 1 := by
   rw [← Finset.prod_pow]
   exact Finset.prod_eq_one fun k _ => nA_eps_sq X (hγ k)
 
+/- English proof (translation)
+Rewrite using `[map_prod]`. Simplify using the standard rewrite rules.
+-/
 lemma nA_epsprod_conj {n : ℕ} (γ : Fin n → Vsp X.dim) :
     (starRingEnd ℂ) (∏ k, (X.eps (γ k) : ℂ)) = ∏ k, (X.eps (γ k) : ℂ) := by
   rw [map_prod]; simp
 
+/- English proof (translation)
+Rewrite using `[norm_prod]`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases X.eps_pm (γ k) (hγ k) with h | h <;> simp [h]`.
+-/
 lemma nA_epsprod_norm {n : ℕ} {γ : Fin n → Vsp X.dim} (hγ : ∀ k, γ k ∈ X.L) :
     ‖∏ k, (X.eps (γ k) : ℂ)‖ = 1 := by
   rw [norm_prod]
   refine Finset.prod_eq_one fun k _ => ?_
   rcases X.eps_pm (γ k) (hγ k) with h | h <;> simp [h]
 
+/- English proof (translation)
+Rewrite using `[hF.2 γ hγ v, hG.2 γ hγ v]`. Use `set e : ℂ := ∏ k, (X.eps (γ k) : ℂ) with he`. Use `set z : ℂ := (q : ℂ) * Real.pi * HC v γ + q * Real.pi * HC γ γ / 2 with hz`. Establish `hre : 2 * z.re + (-(q * Real.pi) * (HC (v + γ) (v + γ)).re) = -(q * Real.pi) * (HC v v).re`. Rewrite using `[hz, nA_re_S, nA_HC_add_add_re]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hee : e ^ q * (starRingEnd ℂ) (e ^ q) = 1`. Rewrite using `[map_pow, he, nA_epsprod_conj X, ← mul_pow, ← sq, nA_epsprod_sq X hγ, one_pow]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Rewrite using `[hee, nA_exp_mul_conj, ← hre, Real.exp_add, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma nA_ip_periodic {q n : ℕ} {F G : (Fin n → Vsp X.dim) → ℂ} (hF : F ∈ X.Sec q n) (hG : G ∈ X.Sec q n)
     {γ : Fin n → Vsp X.dim} (hγ : ∀ k, γ k ∈ X.L) (v : Fin n → Vsp X.dim) :
     F (v + γ) * (starRingEnd ℂ) (G (v + γ)) *
@@ -161,6 +253,11 @@ lemma nA_ip_periodic {q n : ℕ} {F G : (Fin n → Vsp X.dim) → ℂ} (hF : F �
     _ = _ := by
       rw [hee, nA_exp_mul_conj, ← hre, Real.exp_add, Complex.ofReal_mul]; ring
 
+/- English proof (translation)
+Unfold `PT.ptN2`. Rewrite using `[hF.2 γ hγ v]`. Use `set z : ℂ := (q : ℂ) * Real.pi * HC v γ + q * Real.pi * HC γ γ / 2 with hz`. Establish `hre : 2 * z.re + (-(q * Real.pi) * (HC (v + γ) (v + γ)).re) = -(q * Real.pi) * (HC v v).re`. Rewrite using `[hz, nA_re_S, nA_HC_add_add_re]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[norm_mul, norm_mul, norm_pow, nA_epsprod_norm X hγ, one_pow, one_mul, Complex.norm_exp, mul_pow, ← hre, Real.exp_add, sq (Real.exp z.re), ← Real.exp_add]`. Put the polynomial expressions in normal form.
+-/
 lemma pointwiseNormSq_add_period {q n : ℕ} {F : (Fin n → Vsp X.dim) → ℂ} (hF : F ∈ X.Sec q n)
     {γ : Fin n → Vsp X.dim} (hγ : ∀ k, γ k ∈ X.L) (v : Fin n → Vsp X.dim) :
     X.ptN2 q F (v + γ) = X.ptN2 q F v := by
@@ -179,6 +276,11 @@ section PTSec
 
 variable {E : Type} [Field E] [NumberField E] (X : PT E)
 
+/- English proof (translation)
+Use `choose m hm using fun k => X.integral (γ k) ((q : ℂ) • b k) (hγ k) (hb k)`. Use `⟨∑ k, m k, ?_⟩` and prove the remaining obligations. Rewrite using `[HC, Complex.im_sum, Finset.mul_sum, Int.cast_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hm k, nA_Hf_smul_right]`.
+
+Simplify using `[Complex.mul_im]`.
+-/
 lemma nA_int_im {q n : ℕ} {γ b : Fin n → Vsp X.dim} (hγ : ∀ k, γ k ∈ X.L)
     (hb : ∀ k, (q : ℂ) • b k ∈ X.L) : ∃ m : ℤ, (q : ℝ) * (HC γ b).im = m := by
   choose m hm using fun k => X.integral (γ k) ((q : ℂ) • b k) (hγ k) (hb k)
@@ -188,6 +290,11 @@ lemma nA_int_im {q n : ℕ} {γ b : Fin n → Vsp X.dim} (hγ : ∀ k, γ k ∈ 
   rw [← hm k, nA_Hf_smul_right]
   simp [Complex.mul_im]
 
+/- English proof (translation)
+Rewrite using `[← nA_HC_conj γ b, Complex.sub_conj]`. Establish `: (q : ℂ) * Real.pi * (((2 * (HC γ b).im : ℝ) : ℂ) * I) = (m : ℂ) * (2 * Real.pi * I)`. Establish `hm' : ((q : ℝ) : ℂ) * (((HC γ b).im : ℝ) : ℂ) = (m : ℂ)`. Rewrite using `[← Complex.ofReal_mul, hm]`. Simplify using the standard rewrite rules.
+
+Move the coercions through the operations in `at hm' ⊢`. Take the linear combination `(2 * Real.pi * I) * hm'`. Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I]`.
+-/
 lemma nA_exp_antisymm_eq_one {n : ℕ} (q : ℕ) (γ b : Fin n → Vsp X.dim) (m : ℤ)
     (hm : (q : ℝ) * (HC γ b).im = m) :
     cexp ((q : ℂ) * Real.pi * (HC γ b - HC b γ)) = 1 := by
@@ -199,6 +306,17 @@ lemma nA_exp_antisymm_eq_one {n : ℕ} (q : ℕ) (γ b : Fin n → Vsp X.dim) (m
     linear_combination (2 * Real.pi * I) * hm'
   rw [this, Complex.exp_int_mul_two_pi_mul_I]
 
+/- English proof (translation)
+Use `⟨?_, fun γ hγ v => ?_⟩` and prove the remaining obligations. Unfold `PT.U`. Establish `h1 : Differentiable ℂ (fun v : Fin n → Vsp X.dim => F (v - b))` using `hF.1.comp (differentiable_id.sub_const b)`. Establish `h2 : Differentiable ℂ (fun v : Fin n → Vsp X.dim => (q : ℂ) * Real.pi * HC v b - q * Real.pi * HC b b / 2)`. Unfold `HC Hf`.
+
+Use `fun_prop`. Conclude with `(h2.cexp).mul h1`. Unfold `PT.U`. Establish `e1 : v + γ - b = (v - b) + γ` using `by abel`. Rewrite using `[e1, hF.2 γ hγ (v - b)]`.
+
+Take `⟨m, hm⟩` from `nA_int_im X hγ hb`. Establish `h1` using `nA_exp_antisymm_eq_one X q γ b m hm`. Establish `hsplit : (q : ℂ) * Real.pi * HC (v + γ) b - q * Real.pi * HC b b / 2 + ((q : ℂ) * Real.pi * HC (v - b) γ + q * Real.pi * HC γ γ / 2) = ((q : ℂ) * Real.pi * HC v γ + q * Real.pi * HC γ γ / 2) + ((q : ℂ) * Real.pi * HC v b - q * Real.pi * HC b b / 2) + (q : ℂ) * Real.pi * (HC γ b - …`. Rewrite using `[nA_HC_add_left, nA_HC_sub_left]`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Rewrite using `[hsplit, Complex.exp_add, Complex.exp_add, h1]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma nA_U_mem {q n : ℕ} {F : (Fin n → Vsp X.dim) → ℂ} (hF : F ∈ X.Sec q n)
     {b : Fin n → Vsp X.dim} (hb : ∀ k, (q : ℂ) • b k ∈ X.L) : X.U q b F ∈ X.Sec q n := by
   refine ⟨?_, fun γ hγ v => ?_⟩
@@ -231,12 +349,26 @@ lemma nA_U_mem {q n : ℕ} {F : (Fin n → Vsp X.dim) → ℂ} (hF : F ∈ X.Sec
       _ = _ := by
           rw [hsplit, Complex.exp_add, Complex.exp_add, h1]; ring
 
+/- English proof (translation)
+Establish `hc : Differentiable ℂ (fun w : Vsp X.dim => π w)` using `(LinearMap.toContinuousLinearMap π).differentiable`. Conclude with `differentiable_pi.mpr fun _ => hc.comp (differentiable_apply k)`.
+-/
 lemma nA_pi_diff {q n : ℕ} {π : Vsp X.dim →ₗ[ℂ] Vsp X.dim} (k : Fin n) :
     Differentiable ℂ (fun v : Fin n → Vsp X.dim => fun _ : Fin 1 => π (v k)) := by
   have hc : Differentiable ℂ (fun w : Vsp X.dim => π w) :=
     (LinearMap.toContinuousLinearMap π).differentiable
   exact differentiable_pi.mpr fun _ => hc.comp (differentiable_apply k)
 
+/- English proof (translation)
+Use `⟨?_, fun γ hγ v => ?_⟩` and prove the remaining obligations. Unfold `s0`. Establish `hk : ∀ k : Fin n, Differentiable ℂ (fun v : Fin n → Vsp X.dim => s fun _ => π (v k))` using `fun k => hs.1.comp (nA_pi_diff X (q := q) k)`. Establish `hp : ∀ t : Finset (Fin n), Differentiable ℂ (fun v : Fin n → Vsp X.dim => ∏ k ∈ t, s fun _ => π (v k))`. Introduce `t`.
+
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a t ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(hk a).mul ih`.
+
+Conclude with `hp Finset.univ`. Establish `key : ∀ k, s (fun _ => π ((v + γ) k)) = (X.eps (γ k) : ℂ) ^ q * cexp ((q : ℂ) * Real.pi * Hf (v k) (γ k) + q * Real.pi * Hf (γ k) (γ k) / 2) * s (fun _ => π (v k))`. Introduce `k`. Establish `h` using `hs.2 (fun _ => π (γ k)) (fun _ => hπ.2.1 _ (hγ k)) (fun _ => π (v k))`. Establish `e1 : (fun _ : Fin 1 => π ((v + γ) k)) = (fun _ => π (v k)) + (fun _ => π (γ k))` using `by funext; simp [map_add]`.
+
+Rewrite using `[e1, h]`. Simplify using `only [HC, Finset.univ_unique, Finset.sum_singleton, Finset.prod_singleton, hπ.2.2.1, hπ.2.2.2 _ (hγ k), pow_one]`. Use `push_cast`. Put the polynomial expressions in normal form. Unfold `s0`.
+
+Repeatedly rewrite using `[key]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_pow, ← Complex.exp_sum]`. Use `congr 3`. Simplify using `only [HC, Finset.mul_sum, Finset.sum_add_distrib, Finset.sum_div]`.
+-/
 lemma pullbackSection_mem_thetaSpace {q n : ℕ} {π : Vsp X.dim →ₗ[ℂ] Vsp X.dim} (hπ : IsPi X q π)
     {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1) : s0 X (n := n) π s ∈ X.Sec q n := by
   refine ⟨?_, fun γ hγ v => ?_⟩
@@ -270,6 +402,19 @@ lemma pullbackSection_mem_thetaSpace {q n : ℕ} {π : Vsp X.dim →ₗ[ℂ] Vsp
     congr 3
     simp only [HC, Finset.mul_sum, Finset.sum_add_distrib, Finset.sum_div]
 
+/- English proof (translation)
+Establish `key : ∀ j, s (fun _ => π ((v - k) j)) = (X.eps (π (k j)) : ℂ) * cexp (-((q : ℂ) * Real.pi * Hf ((v - k) j) (k j) + q * Real.pi * Hf (k j) (k j) / 2)) * s (fun _ => π (v j))`. Introduce `j`. Establish `h` using `hs.2 (fun _ => π (k j)) (fun _ => hk j) (fun _ => π ((v - k) j))`. Establish `e1 : (fun _ : Fin 1 => π ((v - k) j)) + (fun _ => π (k j)) = (fun _ => π (v j))` using `by funext; simp [← map_add]`. Rewrite `h` using `[e1]`.
+
+Simplify using `only [HC, Finset.univ_unique, Finset.sum_singleton, Finset.prod_singleton, hπ.2.2.1, pow_one] at h`. Rewrite using `[h]`. Establish `he : (X.eps (π (k j)) : ℂ) * X.eps (π (k j)) = 1`. Rewrite using `[← sq]`. Conclude with `nA_eps_sq X (hk j)`.
+
+Use `set A : ℂ := (q : ℂ) * Real.pi * Hf ((v - k) j) (k j) + q * Real.pi * Hf (k j) (k j) / 2`. Establish `hA : ((1 : ℕ) : ℂ) * Real.pi * ((q : ℂ) * Hf ((v - k) j) (k j)) + ((1 : ℕ) : ℂ) * Real.pi * ((q : ℂ) * Hf (k j) (k j)) / 2 = A` using `by push_cast; ring`. Rewrite using `[hA]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[he, ← Complex.exp_add, neg_add_cancel, Complex.exp_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by ring`. Unfold `PT.U s0`. Repeatedly rewrite using `[key]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, ← Complex.exp_sum]`.
+
+Establish `hz : (q : ℂ) * Real.pi * HC v k - q * Real.pi * HC k k / 2 + ∑ j, -((q : ℂ) * Real.pi * Hf ((v - k) j) (k j) + q * Real.pi * Hf (k j) (k j) / 2) = 0`. Establish `: ∑ j, -((q : ℂ) * Real.pi * Hf ((v - k) j) (k j) + q * Real.pi * Hf (k j) (k j) / 2) = -((q : ℂ) * Real.pi * HC (v - k) k + q * Real.pi * HC k k / 2)`. Simplify using `only [HC, Finset.mul_sum, Finset.sum_div, ← Finset.sum_add_distrib, ← Finset.sum_neg_distrib]`. Rewrite using `[this, nA_HC_sub_left]`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma translate_pullbackSection {q n : ℕ} {π : Vsp X.dim →ₗ[ℂ] Vsp X.dim} (hπ : IsPi X q π)
     {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1) {k : Fin n → Vsp X.dim}
     (hk : ∀ j, π (k j) ∈ X.L) (v : Fin n → Vsp X.dim) :
@@ -316,6 +461,9 @@ lemma translate_pullbackSection {q n : ℕ} {π : Vsp X.dim →ₗ[ℂ] Vsp X.di
           ∏ j, s fun _ => π (v j) := by rw [Complex.exp_add]; ring
     _ = _ := by rw [hz, Complex.exp_zero, mul_one]
 
+/- English proof (translation)
+Unfold `PT.U`. Rewrite using `[sub_right_comm v k b, nA_HC_sub_left, nA_HC_sub_left]`. Simplify using `only [← mul_assoc, ← Complex.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma nA_U_comm (q : ℕ) {n : ℕ} (k b : Fin n → Vsp X.dim) (F : (Fin n → Vsp X.dim) → ℂ)
     (v : Fin n → Vsp X.dim) :
     X.U q k (X.U q b F) v = cexp ((q : ℂ) * Real.pi * (HC b k - HC k b)) * X.U q b (X.U q k F) v := by
@@ -325,6 +473,9 @@ lemma nA_U_comm (q : ℕ) {n : ℕ} (k b : Fin n → Vsp X.dim) (F : (Fin n → 
   congr 2
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Unfold `PT.U`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma nA_U_smul (q : ℕ) {n : ℕ} (a : Fin n → Vsp X.dim) (c : ℂ) (F : (Fin n → Vsp X.dim) → ℂ) :
     X.U q a (fun v => c * F v) = fun v => c * X.U q a F v := by
   funext v; unfold PT.U; ring

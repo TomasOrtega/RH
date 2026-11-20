@@ -13,6 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Distinguish the cases in `h2 : (2 : K) = 0`. Use `⟨3, Nat.prime_three, ?_⟩` and prove the remaining obligations. Introduce `h3`. Establish `: (1 : K) = 0`. Establish `e : (1 : K) = (3 : ℕ) - (2 : K)` using `by push_cast; ring`.
+
+Rewrite using `[e, h3, h2, sub_zero]`. Conclude with `one_ne_zero this`. Conclude with `⟨2, Nat.prime_two, by exact_mod_cast h2⟩`.
+-/
 theorem exists_prime_natCast_ne_zero_of_field (K : Type) [Field K] : ∃ l : ℕ, l.Prime ∧ (l : K) ≠ 0 := by
   by_cases h2 : (2 : K) = 0
   · refine ⟨3, Nat.prime_three, ?_⟩
@@ -26,8 +31,22 @@ theorem exists_prime_natCast_ne_zero_of_field (K : Type) [Field K] : ∃ l : ℕ
 noncomputable def vendRing {K : Type} [Field K] (l : ℕ) [Fact l.Prime] (A : AbVar K) : End A →+* Module.End ℚ_[l] (Vl l A) :=
   (Module.End.baseChangeHom ℤ_[l] ℚ_[l] (Tl l A)).toRingHom.comp (tend l A)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem vendRing_apply {K : Type} [Field K] (l : ℕ) [Fact l.Prime] (A : AbVar K) (f : End A) : vendRing l A f = vmap l f := rfl
 
+/- English proof (translation)
+Take `⟨P, hPm, hPd, hPe⟩` from `GlobalTheory.T.exists_monic_rat_charPoly_abelianVariety K A f`. Take `⟨l, hl, hlK⟩` from `exists_prime_natCast_ne_zero_of_field K`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Use `haveI : Module.Finite ℚ_[l] (Vl l A) := (tl_free_finrank K l hlK A).2.2.2.1`. Establish `hcp` using `GlobalTheory.T.abelianVariety_degreePolynomial_map_eq_charpoly_rationalTate K l hlK A f P hPm hPd hPe`.
+
+Use `haveI : Module.Finite ℤ (End A) := (GlobalTheory.T.hom_finite_free_finrank_le_four_mul_dim K A A).1`. Take `⟨Q, hQm, hQ⟩` from `(Algebra.IsIntegral.isIntegral f : IsIntegral ℤ f)`. Establish `hQV : Polynomial.aeval (vmap l (A` using `A) (B := A) f) Q = 0 := by`. Establish `h` using `congrArg (vendRing l A) hQ`. Rewrite `h` using `[Polynomial.hom_eval₂, map_zero, Subsingleton.elim ((vendRing l A).comp (algebraMap ℤ (End A))) (algebraMap ℤ _)]`.
+
+Rewrite using `[Polynomial.aeval_def, ← vendRing_apply]`. Conclude with `h`. Take `⟨P₀, hP₀⟩` from `GlobalTheory.T.integral_charpoly_of_monic_integral_annihilator ℚ_[l] (Vl l A) (vmap l (A := A) (B := A) f) P Q hQm hQV hcp`. Establish `hinj : Function.Injective (algebraMap ℤ ℚ)` using `(algebraMap ℤ ℚ).injective_int`. Use `⟨P₀, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hPm`. Rewrite `h` using `[← hP₀]`. Rewrite `h` using `[Polynomial.Monic, Polynomial.leadingCoeff_map_of_injective hinj]`. Conclude with `hinj (by simpa using h)`. Rewrite using `[← Polynomial.natDegree_map_eq_of_injective hinj, hP₀, hPd]`.
+
+Introduce `n`. Establish `h` using `hPe n`. Rewrite `h` using `[← hP₀, Polynomial.eval_map, show (n : ℚ) = algebraMap ℤ ℚ n by simp, Polynomial.eval₂_hom]`. Rewrite `h` using `[eq_intCast]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem exists_isCharpoly {K : Type} [Field K] (A : AbVar K) (f : End A) : ∃ P, IsCharpoly f P := by
   obtain ⟨P, hPm, hPd, hPe⟩ := GlobalTheory.T.exists_monic_rat_charPoly_abelianVariety K A f
   obtain ⟨l, hl, hlK⟩ := exists_prime_natCast_ne_zero_of_field K
@@ -57,6 +76,11 @@ theorem exists_isCharpoly {K : Type} [Field K] (A : AbVar K) (f : End A) : ∃ P
     rw [eq_intCast] at h
     exact_mod_cast h
 
+/- English proof (translation)
+Establish `hex` using `exists_isCharpoly A f`. Establish `hc : IsCharpoly f (charpoly f)` using `by classical`. Rewrite using `[charpoly, dif_pos hex]`. Conclude with `hex.choose_spec`. Use `⟨hc, fun P hP => Polynomial.funext fun n => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hP.2.2 n, hc.2.2 n]`.
+-/
 theorem isCharpoly_charpoly_unique (K : Type) [Field K] (A : AbVar K) (f : End A) :
     IsCharpoly f (charpoly f) ∧ ∀ P, IsCharpoly f P → P = charpoly f := by
   have hex := exists_isCharpoly A f
@@ -67,6 +91,9 @@ theorem isCharpoly_charpoly_unique (K : Type) [Field K] (A : AbVar K) (f : End A
   refine ⟨hc, fun P hP => Polynomial.funext fun n => ?_⟩
   rw [hP.2.2 n, hc.2.2 n]
 
+/- English proof (translation)
+Introduce `K _ A f` and use `isCharpoly_charpoly_unique K A f`.
+-/
 theorem charpoly_spec : ∀ (K : Type) [Field K] (A : AbVar K) (f : End A),
     IsCharpoly f (charpoly f) ∧ ∀ P, IsCharpoly f P → P = charpoly f :=
   fun K _ A f => isCharpoly_charpoly_unique K A f

@@ -12,6 +12,11 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Crystal
 
 namespace GlobalTheory.CompanionTheory.GlobRel
 
+/- English proof (translation)
+Establish `key : ∀ a : K.H n, ψ.mapH n (φ.mapH n a) = a`. Introduce `a`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (ψ.mapZ n (φ.mapZ n z)) = Submodule.Quotient.mk z`. Use `congr 1`.
+
+Conclude with `Subtype.ext (h n z.1)`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← key a, ← key b, Subsingleton.elim (φ.mapH n a) (φ.mapH n b)]`.
+-/
 theorem subsingleton_H_of_retract {R : Type} [CommRing R] {K L : Cx R}
     (φ : Cx.Hom K L (RingHom.id R)) (ψ : Cx.Hom L K (RingHom.id R))
     (h : ∀ n x, ψ.f n (φ.f n x) = x) (n : ℕ) (hL : Subsingleton (L.H n)) : Subsingleton (K.H n) := by
@@ -24,6 +29,9 @@ theorem subsingleton_H_of_retract {R : Type} [CommRing R] {K L : Cx R}
   refine ⟨fun a b => ?_⟩
   rw [← key a, ← key b, Subsingleton.elim (φ.mapH n a) (φ.mapH n b)]
 
+/- English proof (translation)
+Set `G : B.FullSubcategory ⥤ P.FullSubcategory` to `P.lift (A.lift B.ι fun T => hBA _ T.property) fun T => (hP _).2 T.property`. Set `G' : P.FullSubcategory ⥤ B.FullSubcategory` to `B.lift (P.ι ⋙ A.ι) fun T => (hP _).1 T.property`. Set `m : CH.Mor (P.ι ⋙ A.ι ⋙ F) (B.ι ⋙ F) (RingHom.id R)` to `⟨G, fun _ => LinearMap.id, fun _ _ => rfl⟩`. Set `m' : CH.Mor (B.ι ⋙ F) (P.ι ⋙ A.ι ⋙ F) (RingHom.id R)` to `⟨G', fun _ => LinearMap.id, fun _ _ => rfl⟩`. Conclude with `subsingleton_H_of_retract m.hom m'.hom (fun n x => funext fun s => rfl) j hB`.
+-/
 theorem subsingleton_HU_iter {R : Type} [CommRing R] {C : Type 1} [Category.{0} C]
     (F : C ⥤ ModuleCat.{0} R) (A B : ObjectProperty C) (P : ObjectProperty A.FullSubcategory)
     (hBA : ∀ T, B T → A T) (hP : ∀ T : A.FullSubcategory, P T ↔ B T.obj) (j : ℕ)
@@ -36,6 +44,11 @@ theorem subsingleton_HU_iter {R : Type} [CommRing R] {C : Type 1} [Category.{0} 
   let m' : CH.Mor (B.ι ⋙ F) (P.ι ⋙ A.ι ⋙ F) (RingHom.id R) := ⟨G', fun _ => LinearMap.id, fun _ _ => rfl⟩
   exact subsingleton_H_of_retract m.hom m'.hom (fun n x => funext fun s => rfl) j hB
 
+/- English proof (translation)
+Introduce `R _ C _ F ι _ W hW s`. Set `U' : ι → ObjectProperty (ObjectProperty.FullSubcategory fun T : C => ∃ α, W α T)` to `fun α T => W α T.obj`. Establish `hU : ∀ α, Cosieve (U' α)` using `fun α T T' f h => hW α f.hom h T'.property`. Establish `hc : ∀ T, ∃ α, U' α T` using `fun T => T.property`. Establish `tr : ∀ S : Finset ι, S.Nonempty → ∀ j, Subsingleton (HU F (capS W S) j) → Subsingleton (HU ((ObjectProperty.ι fun T : C => ∃ α, W α T) ⋙ F) (capS U' S) j)`.
+
+Introduce `S hS j h`. Take `⟨a, ha⟩` from `hS`. Conclude with `subsingleton_HU_iter F _ (capS W S) (capS U' S) (fun T hT => ⟨a, hT a ha⟩) (fun T => Iff.rfl) j h`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.cech_vanishing_from_cover ((ObjectProperty.ι fun T : C => ∃ α, W α T) ⋙ F) U' hU hc s`. Conclude with `⟨fun h j hj => h1 (fun S hS j hj => tr S hS j (h S hS j hj)) j hj, fun h j => h2 (fun S hS j => tr S hS j (h S hS j)) j, fun h j hj => h3 (fun S hS j hj => tr S hS j (h S hS j hj)) j hj⟩`.
+-/
 theorem glob_van_rel : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) {ι : Type} [Fintype ι]
     (W : ι → ObjectProperty C) (hW : ∀ α ⦃T T' : C⦄, (T ⟶ T') → W α T → (∃ β, W β T') → W α T') (s : ℕ),
     ((∀ S : Finset ι, S.Nonempty → ∀ j < s, Subsingleton (HU F (capS W S) j)) →

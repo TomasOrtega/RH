@@ -9,6 +9,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.LabSplit
 
+/- English proof (translation)
+Establish `hd : 1 ≤ d` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne d)`. Set `S : Setoid P` to `{ r := fun z z' => ∃ s, pos z s = z' iseqv := { refl := fun z => ⟨0, h0 z⟩`. Use symmetry as in `:= by`. Introduce and unpack `z _ ⟨s, rfl⟩`. Use `⟨(d - 1) * s, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hadd]`. Use `conv_rhs => rw [← h0 z]`. Rewrite using `[hfree]`. Establish `: s + (d - 1) * s = d * s`. Take `⟨e, rfl⟩` from `Nat.exists_eq_add_of_le hd`.
+
+Simplify using `only [Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(Nat.modEq_zero_iff_dvd).2 (dvd_mul_right _ _)`. Use `trans := by`.
+
+Introduce and unpack `z _ _ ⟨s, rfl⟩ ⟨t, rfl⟩`. Conclude with `⟨s + t, (hadd z s t).symm⟩ } }`. Use `⟨Finset.univ.filter fun z => (Quotient.mk S z).out = z, fun z' => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩ : ∃ s, pos (Quotient.mk S z').out s = z'` from `Quotient.mk_out (s := S) z'`. Establish `hmod : ((s : ZMod d)).val ≡ s [MOD d]`.
+
+Rewrite using `[ZMod.val_natCast]`. Conclude with `Nat.mod_modEq s d`. Use `⟨((Quotient.mk S z').out, (s : ZMod d)), ⟨by simp, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `((hfree _ _ _).2 hmod).trans hs`. Introduce and unpack `⟨z, t⟩ ⟨hz, ht⟩`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hz ht`. Establish `h1 : Quotient.mk S z = Quotient.mk S z'` using `Quotient.sound ⟨_, ht⟩`. Establish `h2 : z = (Quotient.mk S z').out` using `by rw [← h1, hz]`. Use `Prod.ext h2 ?_` and prove the remaining obligations. Rewrite `ht` using `[h2, ← hs]`.
+
+Establish `h3 : pos (Quotient.mk S z').out t.val = pos (Quotient.mk S z').out s`. Rewrite `ht`, the goal using `[hs]`. Conclude with `ht`. Establish `h4` using `(ZMod.natCast_eq_natCast_iff _ _ _).2 ((hfree _ _ _).1 h3)`. Simplify using `using h4`.
+-/
 theorem exists_reps {P : Type} [Fintype P] (d : ℕ) [NeZero d] (pos : P → ℕ → P) (h0 : ∀ z, pos z 0 = z)
     (hadd : ∀ z s t, pos (pos z s) t = pos z (s + t)) (hfree : ∀ z s t, pos z s = pos z t ↔ s ≡ t [MOD d]) :
     ∃ Z : Finset P, ∀ z', ∃! p : P × ZMod d, p.1 ∈ Z ∧ pos p.1 p.2.val = z' := by
@@ -50,10 +65,28 @@ theorem exists_reps {P : Type} [Fintype P] (d : ℕ) [NeZero d] (pos : P → ℕ
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
 
+/- English proof (translation)
+Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact. Simplify using `using this`.
+-/
 theorem rt_sq_field : (H.rt : E) ^ 2 = -(H.d : E) := by
   have := congrArg (algebraMap (𝓞 E) E) H.rt_sq
   simpa using this
 
+/- English proof (translation)
+Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `h1 : τ (H.rt : E) ^ 2 = H.rt0 ^ 2`. Rewrite using `[H.sqrt_neg_disc_sq, ← map_pow, rt_sq_field]`. Simplify using the standard rewrite rules. Establish `h2 : starRingEnd ℂ H.rt0 = -H.rt0`.
+
+Establish `h` using `H.sqrt_neg_disc_sq`. Establish `hre` using `congrArg Complex.re h`. Establish `him` using `congrArg Complex.im h`. Simplify using `[pow_two] at hre him`. Establish `: H.rt0.re = 0`.
+
+Assume the negation of the conclusion as `hne`. Establish `: H.rt0.im = 0`. Establish `: H.rt0.re * H.rt0.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left hne`. Rewrite `hre` using `[this]`.
+
+Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [this]`. Establish `h0 : -H.rt0 ≠ H.rt0`. Introduce `h`. Establish `h3 : H.rt0 = 0` using `by linear_combination -h / 2`.
+
+Establish `h4` using `H.sqrt_neg_disc_sq`. Rewrite `h4` using `[h3]`. Establish `: (H.d : ℂ) = 0` using `by linear_combination h4`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast this)`. Unfold `InPsi`.
+
+Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. Rewrite using `[h, h2]`. Simplify using `[h0]`. Rewrite using `[h, map_neg, h2]`.
+
+Simplify using `[h0]`.
+-/
 theorem inPsi_conj_iff (τ : E →+* ℂ) : InPsi H (ComplexEmbedding.conjugate τ) ↔ ¬ InPsi H τ := by
   have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
   have h1 : τ (H.rt : E) ^ 2 = H.rt0 ^ 2 := by
@@ -84,6 +117,27 @@ theorem inPsi_conj_iff (τ : E →+* ℂ) : InPsi H (ComplexEmbedding.conjugate 
   · rw [h, h2]; simp [h0]
   · rw [h, map_neg, h2]; simp [h0]
 
+/- English proof (translation)
+Use `haveI : Fact V.l.Prime := ⟨V.l_prime⟩`. Rewrite `hj` using `[← jacobiSym.legendreSym.to_jacobiSym]`. Establish `hp` using `legendreSym.eq_pow V.l (-(d : ℤ))`. Rewrite `hp` using `[hj]`. Establish `hdv : (V.l : ℤ) ∣ (-(d : ℤ)) ^ (V.l / 2) - 1`.
+
+Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at hp ⊢`. Rewrite using `[← hp, sub_self]`. Take `⟨k, hk⟩` from `hdv`. Establish `hnd : ¬ (V.l : ℤ) ∣ -(d : ℤ)`.
+
+Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd, ← legendreSym.eq_zero_iff, hj]`. Conclude with `one_ne_zero`. Establish `hpr : Prime (V.l : ℤ)` using `Nat.prime_iff_prime_int.1 V.l_prime`. Establish `hn2 : ¬ (V.l : ℤ) ∣ (2 : ℤ)`. Introduce `h`.
+
+Establish `: V.l ∣ 2` using `by exact_mod_cast h`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq V.l_prime Nat.prime_two).1 this)`. Establish `hv2` using `GlobalTheory.EmbSep.v_intCast_eq_zero V hn2`. Establish `hvd` using `GlobalTheory.EmbSep.v_intCast_eq_zero V hnd`. Establish `hodd : V.l = 2 * (V.l / 2) + 1`.
+
+Use `V.l_prime.eq_two_or_odd.resolve_left h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hkC : (-(d : C)) ^ (V.l / 2) = 1 + (V.l : C) * (k : C)`. Use `congrArg (Int.cast : ℤ → C) hk` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Take the linear combination `this`. Establish `hpow : r ^ V.l = r + (V.l : C) * ((k : C) * r)` using `by conv_lhs => rw [hodd, pow_succ, pow_mul, hr, hkC]`. Expand and normalize the polynomial expressions, which then agree. Establish `hk0 : V.Ge 0 (k : C)`. Break down `Int.eq_nat_or_neg k with ⟨n, rfl | rfl⟩` into its components or cases.
+
+Simplify using `using VF.ge_natCast (V := V) n`. Simplify using `using (VF.ge_natCast (V := V) n).neg`. Introduce `hM`. Establish `h1 : 0 < V.v ((V.l : C) * ((k : C) * r))`. Rewrite using `[V.v.map_mul, V.v_l]`.
+
+Conclude with `lt_of_lt_of_le zero_lt_one (le_add_of_nonneg_right (hk0.mul_int hi))`. Establish `h3` using `V.v.map_lt_add hM h1`. Establish `h4 : -r - r ^ V.l + (V.l : C) * ((k : C) * r) = -(((2 : ℤ) : C) * r)`. Rewrite using `[hpow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[h4, V.v.map_neg, V.v.map_mul, hv2, zero_add]`. Establish `h5 : ((-(d : ℤ) : ℤ) : C) = r * r` using `by push_cast; rw [← hr]; ring`. Rewrite `hvd` using `[h5, V.v.map_mul]`. Establish `h6 : 0 < V.v r + V.v r` using `lt_of_lt_of_le h3 (le_add_of_nonneg_right h3.le)`.
+
+Rewrite `h6` using `[hvd]`. Conclude with `lt_irrefl _ h6`.
+-/
 theorem not_MM_neg_sub_pow {C : Type} [Field C] (V : VF C) (d : ℕ) (r : C) (hr : r ^ 2 = -(d : C)) (hi : V.Ge 0 r)
     (h2 : V.l ≠ 2) (hj : jacobiSym (-(d : ℤ)) V.l = 1) : ¬ V.MM (-r - r ^ V.l) := by
   haveI : Fact V.l.Prime := ⟨V.l_prime⟩
@@ -133,6 +187,49 @@ theorem not_MM_neg_sub_pow {C : Type} [Field C] (V : VF C) (d : ℕ) (r : C) (hr
   rw [hvd] at h6
   exact lt_irrefl _ h6
 
+/- English proof (translation)
+Introduce `E _ _ _ H lv c N pl hP la T io C _ _ V ι hE hl _ hcls j`. Take `⟨φ, hφ⟩` from `GlobalTheory.RowAt.exists_frob_all_embeddings E H lv c T io C V ι hE hP.galois hP.comm`. Use `haveI : Inhabited (RPl N.R) := ⟨(false, 0)⟩`. Establish `h2 : V.l ≠ 2`. Introduce `h`.
+
+Unfold `NumDatum.cls primeClass at hcls`. Rewrite `hcls` using `[if_pos (show V.l ∈ N.H.small from h ▸ Nat.mem_primeFactors.2 ⟨Nat.prime_two, N.H.two_dvd_QS, N.H.QS_pos.ne'⟩)]`. Conclude with `absurd hcls (by decide)`. Establish `hj : jacobiSym (-(H.d : ℤ)) V.l = 1`. Rewrite using `[hP.d_eq]`.
+
+Assume the negation of the conclusion as `h`. Unfold `NumDatum.cls primeClass at hcls`. Use `split_ifs at hcls`. Establish `hfix : φ (H.rt : E) = H.rt`. Establish `h1 : (φ (H.rt : E)) ^ 2 = (H.rt : E) ^ 2`.
+
+Rewrite using `[← map_pow, rt_sq_field]`. Simplify using the standard rewrite rules. Use `(sq_eq_sq_iff_eq_or_eq_neg.1 h1).resolve_right fun h => ?_` and prove the remaining obligations. Set `τ : E →+* ℂ` to `pl default`. Establish `h3 : emA3 io ι (τ.comp (φ : E →+* E)) H.rt = -emA3 io ι τ H.rt`.
+
+Establish `: embK c (τ.comp (φ : E →+* E)) H.rt = -embK c τ H.rt`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[embK_coe]`. Use `push_cast`. Rewrite using `[embK_coe]`.
+
+Simplify using `[h]`. Simplify using `only [emA3, RingHom.comp_apply, this, map_neg]`. Establish `h4` using `hφ τ H.rt`. Rewrite `h4` using `[h3]`. Use `not_MM_neg_sub_pow V H.d _ ?_ ?_ h2 hj h4` and prove the remaining obligations.
+
+Rewrite using `[← map_pow, H.rt_sq]`. Simplify using the standard rewrite rules. Conclude with `ge_of_isIntegral V (map_isIntegral_int (emA3 io ι τ) (Algebra.IsIntegral.isIntegral H.rt))`. Establish `hfixs : ∀ s : ℕ, (φ ^ s) (H.rt : E) = H.rt`. Introduce `s`.
+
+Proceed by induction on `s with`. Consider the case `zero => rfl`. Consider the case `succ s ih => rw [pow_succ, AlgEquiv.mul_apply, hfix, ih]`. Establish `hex : ∀ (z : RPl N.R) (s : ℕ), ∃ z', pl z' = (pl z).comp ((φ ^ s : E ≃ₐ[ℚ] E) : E →+* E)`. Introduce `z s`.
+
+Use `(hP.psi _).1 ?_` and prove the remaining obligations. Establish `: InPsi H (pl z)` using `(hP.psi _).2 ⟨z, rfl⟩`. Unfold `InPsi at this ⊢`. Express the relevant statement in the definitionally equal form `pl z ((φ ^ s) (H.rt : E)) = H.rt0`. Rewrite using `[hfixs]`.
+
+Conclude with `this`. Use `choose pos hpos using hex`. Use `haveI : NeZero (orderOf φ) := ⟨(orderOf_pos φ).ne'⟩`. Establish `h0 : ∀ z, pos z 0 = z` using `fun z => hP.inj (by rw [hpos]; ext x; simp)`. Establish `hadd : ∀ z s t, pos (pos z s) t = pos z (s + t)` using `fun z s t => hP.inj (by rw [hpos, hpos, hpos]; ext x; simp [pow_add])`.
+
+Establish `hfree : ∀ z s t, pos z s = pos z t ↔ s ≡ t [MOD orderOf φ]`. Introduce `z s t`. Rewrite using `[← pow_eq_pow_iff_modEq, ← hP.inj.eq_iff, hpos, hpos]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use extensionality with `x`. Conclude with `(pl z).injective (RingHom.congr_fun h x)`. Introduce `h`. Rewrite using `[h]`. Take `⟨Z, hZ⟩` from `exists_reps (orderOf φ) pos h0 hadd hfree`.
+
+Establish `hin : ∀ z, InPsi H (pl z)` using `fun z => (hP.psi _).2 ⟨z, rfl⟩`. Establish `hnc : ∀ z z', pl z ≠ ComplexEmbedding.conjugate (pl z')` using `fun z z' h => (inPsi_conj_iff H _).1 (h ▸ hin z) (hin z')`. Establish `huniq : ∀ (z z' : Z) (s s' : ZMod (orderOf φ)), pl (pos z s.val) = pl (pos z' s'.val) → z = z' ∧ s = s'`. Introduce `z z' s s' h`. Use `(hZ (pos z' s'.val)).unique (y₁ := (z.1, s)) (y₂ := (z'.1, s')) ⟨z.2, hP.inj h⟩ ⟨z'.2, rfl⟩` as an intermediate fact.
+
+Conclude with `⟨Subtype.ext (congrArg Prod.fst this), congrArg Prod.snd this⟩`. Use `⟨orderOf φ, inferInstance, pos, Z, hZ, ?_, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨p, hp, -⟩` from `hZ default`. Conclude with `⟨p.1, hp.1⟩`. Introduce and unpack `⟨z, g, s⟩ ⟨z', g', s'⟩ h`.
+
+Simplify using `only [tauSp] at h`. Use `split_ifs at h with hg hg' hg'`. Take `⟨rfl, rfl⟩` from `huniq _ _ _ _ h`. Rewrite using `[hg, hg']`. Conclude with `absurd h (hnc _ _)`.
+
+Conclude with `absurd h.symm (hnc _ _)`. Take `⟨rfl, rfl⟩` from `huniq _ _ _ _ (star_injective h)`. Establish `: g = g'` using `by omega`. Rewrite using `[this]`. Introduce `τ`.
+
+Distinguish the cases in `hτ : InPsi H τ`. Take `⟨z', rfl⟩` from `(hP.psi _).1 hτ`. Take `⟨p, hp, -⟩` from `hZ z'`. Conclude with `⟨(⟨p.1, hp.1⟩, 0, p.2), by simp [tauSp, hp.2]⟩`. Take `⟨z', hz'⟩` from `(hP.psi _).1 ((inPsi_conj_iff H τ).2 hτ)`.
+
+Take `⟨p, hp, -⟩` from `hZ z'`. Use `⟨(⟨p.1, hp.1⟩, 1, p.2), ?_⟩` and prove the remaining obligations. Simplify using `only [tauSp, hp.2, hz', one_ne_zero, if_false]`. Conclude with `star_star τ`. Introduce `z g s x`.
+
+Establish `h1 : pos z (s + 1).val = pos z (s.val + 1)`. Rewrite using `[hfree, ← ZMod.natCast_eq_natCast_iff]`. Simplify using the standard rewrite rules. Establish `h3 : pl (pos z (s + 1).val) = (pl (pos z s.val)).comp (φ : E →+* E)`. Rewrite using `[h1, hpos, hpos]`.
+
+Use extensionality with `y`. Simplify using `[pow_succ]`. Establish `h4 : tauSp (d` using `orderOf φ) N pl pos z g (s + 1) = (tauSp (d := orderOf φ) N pl pos z g s).comp (φ : E →+* E) := by`. Unfold `tauSp`. Use `split_ifs`.
+
+Conclude with `h3`. Rewrite using `[h3]`. Both sides reduce to the same expression. Rewrite using `[h4]`. Conclude with `hφ _ x`.
+-/
 theorem labelling_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (lv : Level H) (c : Coeff lv) (N : NumDatum) (pl : RPl N.R → (E →+* ℂ)), PlaceTie N c pl → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (C : Type) [Field C] [CharZero C] (V : VF C) (ι : T.Fr →+* C), EmbOK T V ι → V.l = resCharOf la → (∀ x ∈ la.asIdeal, V.MM (ι (io ((x : 𝓞 c.F) : c.F)))) → N.cls V.l = PrimeClass.splitK → ∀ j : ℕ, ∃ (d : ℕ) (_ : NeZero d) (pos : RPl N.R → ℕ → RPl N.R) (Z : Finset (RPl N.R)), RF.IsReps (parAt N j d pos) Z ∧ Z.Nonempty ∧ Function.Bijective (fun x : Z × Fin 2 × ZMod d => tauSp N pl pos x.1.1 x.2.1 x.2.2) ∧ ∀ z g, FrobOrd V io ι (tauSp (d := d) N pl pos z g) := by
   intro E _ _ _ H lv c N pl hP la T io C _ _ V ι hE hl _ hcls j
   obtain ⟨φ, hφ⟩ := GlobalTheory.RowAt.exists_frob_all_embeddings E H lv c T io C V ι hE hP.galois hP.comm

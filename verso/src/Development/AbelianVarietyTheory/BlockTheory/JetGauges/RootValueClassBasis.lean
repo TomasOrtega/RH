@@ -16,12 +16,21 @@ def IsRanks [IsCMField E] (r : ℕ) (rk : (E ≃ₐ[ℚ] E) → ℕ) : Prop :=
 
 def Psi (rk : (E ≃ₐ[ℚ] E) → ℕ) (γ : E) : E := ∏ σ : E ≃ₐ[ℚ] E, σ γ ^ rk σ
 
+/- English proof (translation)
+Simplify using `[Psi]`.
+-/
 theorem Psi_one (rk : (E ≃ₐ[ℚ] E) → ℕ) : Psi rk (1 : E) = 1 := by
   simp [Psi]
 
+/- English proof (translation)
+Simplify using `only [Psi, map_mul, mul_pow, Finset.prod_mul_distrib]`.
+-/
 theorem Psi_mul (rk : (E ≃ₐ[ℚ] E) → ℕ) (x y : E) : Psi rk (x * y) = Psi rk x * Psi rk y := by
   simp only [Psi, map_mul, mul_pow, Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Use `Finset.prod_ne_zero_iff.mpr fun σ _ => pow_ne_zero _ ?_` and prove the remaining obligations. Conclude with `(map_ne_zero σ).mpr hx`.
+-/
 theorem Psi_ne_zero (rk : (E ≃ₐ[ℚ] E) → ℕ) {x : E} (hx : x ≠ 0) : Psi rk x ≠ 0 := by
   refine Finset.prod_ne_zero_iff.mpr fun σ _ => pow_ne_zero _ ?_
   exact (map_ne_zero σ).mpr hx
@@ -42,6 +51,9 @@ structure ClassBasis where
 
 def ClassBasis.h (B : ClassBasis E) (i : Fin B.k) : ℕ := orderOf (ClassGroup.mk E (B.c i))
 
+/- English proof (translation)
+Unfold `ClassBasis.h`. Conclude with `orderOf_pos _`.
+-/
 theorem ClassBasis.h_pos (B : ClassBasis E) (i : Fin B.k) : 0 < B.h i := by
   unfold ClassBasis.h
   exact orderOf_pos _
@@ -53,6 +65,9 @@ structure Roots (rk : (E ≃ₐ[ℚ] E) → ℕ) (B : ClassBasis E) (Ω : Type) 
 
 variable {rk : (E ≃ₐ[ℚ] E) → ℕ} {B : ClassBasis E} {Ω : Type} [Field Ω] [Algebra E Ω]
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `R.pow_eq i`. Rewrite `h1` using `[h0, zero_pow (B.h_pos i).ne']`. Conclude with `Psi_ne_zero rk (B.γ i).ne_zero ((map_eq_zero (algebraMap E Ω)).mp h1.symm)`.
+-/
 theorem Roots.ψ_ne_zero (R : Roots rk B Ω) (i : Fin B.k) : R.ψ i ≠ 0 := by
   intro h0
   have h1 := R.pow_eq i
@@ -67,18 +82,27 @@ def Roots.IsValue (R : Roots rk B Ω) (𝔫 : (Ideal (𝓞 E))⁰) (b : Ω) : Pr
     FractionalIdeal.mk0 E 𝔫 = toPrincipalIdeal (𝓞 E) E γ * ∏ i, B.c i ^ a i ∧
       b = algebraMap E Ω (Psi rk (γ : E)) * ∏ i, R.ψ i ^ a i
 
+/- English proof (translation)
+Take `⟨γ, a, -, rfl⟩` from `h`. Use `mul_mem (IntermediateField.algebraMap_mem _ _) (prod_mem fun i _ => zpow_mem ?_ _)` and prove the remaining obligations. Conclude with `IntermediateField.subset_adjoin E _ (Set.mem_range_self i)`.
+-/
 theorem Roots.IsValue.mem {R : Roots rk B Ω} {𝔫 : (Ideal (𝓞 E))⁰} {b : Ω}
     (h : R.IsValue 𝔫 b) : b ∈ R.field := by
   obtain ⟨γ, a, -, rfl⟩ := h
   refine mul_mem (IntermediateField.algebraMap_mem _ _) (prod_mem fun i _ => zpow_mem ?_ _)
   exact IntermediateField.subset_adjoin E _ (Set.mem_range_self i)
 
+/- English proof (translation)
+Take `⟨γ, a, -, rfl⟩` from `h`. Use `mul_ne_zero ((map_ne_zero _).mpr (Psi_ne_zero rk γ.ne_zero)) ?_` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => zpow_ne_zero _ (R.ψ_ne_zero i)`.
+-/
 theorem Roots.IsValue.ne_zero {R : Roots rk B Ω} {𝔫 : (Ideal (𝓞 E))⁰} {b : Ω}
     (h : R.IsValue 𝔫 b) : b ≠ 0 := by
   obtain ⟨γ, a, -, rfl⟩ := h
   refine mul_ne_zero ((map_ne_zero _).mpr (Psi_ne_zero rk γ.ne_zero)) ?_
   exact Finset.prod_ne_zero_iff.mpr fun i _ => zpow_ne_zero _ (R.ψ_ne_zero i)
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨1, 0, ?_, ?_⟩ <;> simp [Psi_one]`.
+-/
 theorem Roots.isValue_one (R : Roots rk B Ω) : R.IsValue 1 1 := by
   refine ⟨1, 0, ?_, ?_⟩ <;> simp [Psi_one]
 
@@ -137,6 +161,11 @@ def BetaProperties (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] [IsCMFi
 
 section Exist
 
+/- English proof (translation)
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_prod, MulEquiv.apply_symm_apply]`. Simplify using `only [map_zpow, MulEquiv.apply_symm_apply, ← Pi.mulSingle_zpow]`. Use `(Finset.univ_prod_mulSingle (fun j => Multiplicative.ofAdd (1 : ZMod (n j)) ^ b j)).trans (funext fun j => ?_)` and prove the remaining obligations. Rewrite using `[← ofAdd_zsmul]`.
+
+Simplify using the standard rewrite rules.
+-/
 private lemma prod_mulSingle_zpow_eq_symm {ι : Type} [Fintype ι] [DecidableEq ι] {G : Type} [CommGroup G]
     {n : ι → ℕ} (e : G ≃* ((i : ι) → Multiplicative (ZMod (n i)))) (b : ι → ℤ) :
     ∏ j, e.symm (Pi.mulSingle j (Multiplicative.ofAdd 1)) ^ b j =
@@ -149,6 +178,17 @@ private lemma prod_mulSingle_zpow_eq_symm {ι : Type} [Fintype ι] [DecidableEq 
   rw [← ofAdd_zsmul]
   simp
 
+/- English proof (translation)
+Take `⟨ι, _, n, -, ⟨e⟩⟩` from `CommGroup.equiv_prod_multiplicative_zmod_of_finite G`. Use `set q := Fintype.equivFin ι`. Establish `key : ∀ a : Fin (Fintype.card ι) → ℤ, ∏ i, e.symm (Pi.mulSingle (q.symm i) (Multiplicative.ofAdd 1)) ^ a i = e.symm (fun j => Multiplicative.ofAdd (a (q j) : ZMod (n j)))`. Introduce `a`. Rewrite using `[← prod_mulSingle_zpow_eq_symm e (fun j => a (q j))]`.
+
+Conclude with `Fintype.prod_equiv q.symm _ _ (fun i => by simp)`. Use `⟨Fintype.card ι, fun i => e.symm (Pi.mulSingle (q.symm i) (Multiplicative.ofAdd 1)), ?_, ?_⟩` and prove the remaining obligations. Introduce `x choose b hb using fun j => ZMod.intCast_surjective (Multiplicative.toAdd (e x j))`. Use `⟨fun i => b (q.symm i), ?_⟩` and prove the remaining obligations. Rewrite using `[key]`.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[MulEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `j`. Simplify using `[hb]`. Introduce `a ha i`.
+
+Rewrite `ha` using `[key]`. Establish `h0 : ∀ j, (a (q j) : ZMod (n j)) = 0`. Introduce `j`. Establish `h1` using `congrFun (e.symm.injective (ha.trans (map_one e.symm).symm)) j`. Simplify using `using h1`.
+
+Establish `h2` using `h0 (q.symm i)`. Simplify using `only [Equiv.apply_symm_apply] at h2`. Rewrite using `[← map_zpow, ← Pi.mulSingle_zpow, ← ofAdd_zsmul]`. Simplify using `[h2]`.
+-/
 theorem exists_basis (G : Type) [CommGroup G] [Finite G] :
     ∃ (k : ℕ) (g : Fin k → G), (∀ x, ∃ a : Fin k → ℤ, x = ∏ i, g i ^ a i) ∧
       ∀ a : Fin k → ℤ, ∏ i, g i ^ a i = 1 → ∀ i, g i ^ a i = 1 := by
@@ -184,6 +224,13 @@ theorem exists_basis (G : Type) [CommGroup G] [Finite G] :
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `(ClassGroup.mk_eq_one_iff.mp h).principal`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Apply `I.ne_zero` to reduce the goal to its premises. Apply `FractionalIdeal.coeToSubmodule_injective` to reduce the goal to its premises.
+
+Simplify using `only`. Rewrite using `[hx]`. Simplify using the standard rewrite rules. Use `⟨Units.mk0 x hx0, ?_⟩` and prove the remaining obligations. Use `symm`.
+
+Rewrite using `[toPrincipalIdeal_eq_iff]`. Apply `FractionalIdeal.coeToSubmodule_injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[FractionalIdeal.coe_spanSingleton, hx]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_gen {I : (FractionalIdeal (𝓞 E)⁰ E)ˣ} (h : ClassGroup.mk E I = 1) :
     ∃ γ : Eˣ, I = toPrincipalIdeal (𝓞 E) E γ := by
   obtain ⟨x, hx⟩ := (ClassGroup.mk_eq_one_iff.mp h).principal
@@ -219,6 +266,9 @@ instance (rk : (E ≃ₐ[ℚ] E) → ℕ) (B : ClassBasis E) (Ω : Type) [Field 
 
 variable {rk : (E ≃ₐ[ℚ] E) → ℕ} {B : ClassBasis E} {Ω : Type} [Field Ω] [Algebra E Ω]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `B.span (ClassGroup.mk E (FractionalIdeal.mk0 E 𝔫))`. Take `⟨γ, hγ⟩` from `exists_gen (I := FractionalIdeal.mk0 E 𝔫 * (∏ i, B.c i ^ a i)⁻¹) (by`. Rewrite using `[map_mul, map_inv, ha, map_prod]`. Simplify using `only [map_zpow, mul_inv_cancel])`. Conclude with `⟨_, γ, a, by rw [← hγ, inv_mul_cancel_right], rfl⟩`.
+-/
 theorem Roots.exists_isValue (R : Roots rk B Ω) (𝔫 : (Ideal (𝓞 E))⁰) : ∃ b, R.IsValue 𝔫 b := by
   obtain ⟨a, ha⟩ := B.span (ClassGroup.mk E (FractionalIdeal.mk0 E 𝔫))
   obtain ⟨γ, hγ⟩ := exists_gen (I := FractionalIdeal.mk0 E 𝔫 * (∏ i, B.c i ^ a i)⁻¹) (by
@@ -236,6 +286,9 @@ instance (R : Roots rk B Ω) : Nonempty (BetaChoice R) := by
   choose b hb h1 using this
   exact ⟨⟨fun 𝔫 => ⟨b 𝔫, (hb 𝔫).mem⟩, hb, Subtype.ext (h1 1 rfl)⟩⟩
 
+/- English proof (translation)
+Introduce `_` and use `by ring`.
+-/
 example [IsCMField E] (n : ℕ) : IsRanks (E := E) (2 * n) (fun _ => n) := fun _ => by ring
 
 end Exist

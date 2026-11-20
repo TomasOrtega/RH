@@ -10,6 +10,11 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Automorphic.
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 open scoped ComplexConjugate
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' c, e]`. Conclude with `QuotientGroup.eq.2 (by simpa [mul_assoc] using J.inv_mem hb)`.
+
+Introduce and unpack `⟨k, hk, rfl⟩`. Take `⟨j, hj⟩` from `QuotientGroup.mk_out_eq_mul J (k * y)`. Conclude with `⟨k, hk, j, j.2, hj⟩`.
+-/
 private theorem out_mem_iff {G : Type*} [Group G] (J : Subgroup G) (y : G) (c : G ⧸ J) :
     c.out ∈ {g : G | ∃ a ∈ J, ∃ b ∈ J, g = a * y * b} ↔ c ∈ {c : G ⧸ J | ∃ k ∈ J, c = QuotientGroup.mk (k * y)} := by
   constructor
@@ -21,6 +26,11 @@ private theorem out_mem_iff {G : Type*} [Group G] (J : Subgroup G) (y : G) (c : 
     obtain ⟨j, hj⟩ := QuotientGroup.mk_out_eq_mul J (k * y)
     exact ⟨k, hk, j, j.2, hj⟩
 
+/- English proof (translation)
+Establish `hDc : IsCompact {g : G | ∃ a ∈ J, ∃ b ∈ J, g = a * y * b}`. Establish `: {g : G | ∃ a ∈ J, ∃ b ∈ J, g = a * y * b} = (fun p : G × G => p.1 * y * p.2) '' ((J : Set G) ×ˢ (J : Set G))`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, Set.mem_prod, SetLike.mem_coe, Prod.exists]`. Conclude with `⟨fun ⟨a, ha, b, hb, e⟩ => ⟨a, b, ⟨ha, hb⟩, e.symm⟩, fun ⟨a, b, ⟨ha, hb⟩, e⟩ => ⟨a, ha, b, hb, e.symm⟩⟩`.
+
+Rewrite using `[this]`. Conclude with `(hc.prod hc).image (by fun_prop)`. Conclude with `HasCompactSupport.intro hDc fun x hx => Set.indicator_of_notMem hx _`.
+-/
 private theorem dc_support {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (J : Subgroup G) (y : G)
     (hc : IsCompact (J : Set G)) :
     HasCompactSupport ({g : G | ∃ a ∈ J, ∃ b ∈ J, g = a * y * b}.indicator (1 : G → ℂ)) := by
@@ -34,6 +44,13 @@ private theorem dc_support {G : Type*} [Group G] [TopologicalSpace G] [IsTopolog
     exact (hc.prod hc).image (by fun_prop)
   exact HasCompactSupport.intro hDc fun x hx => Set.indicator_of_notMem hx _
 
+/- English proof (translation)
+Establish `hmem : ∀ k ∈ J, ∀ x, x * k ∈ {g : G | ∃ a ∈ J, ∃ b ∈ J, g = a * y * b} ↔ x ∈ {g : G | ∃ a ∈ J, ∃ b ∈ J, g = a * y * b}`. Introduce `k hk x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Conclude with `⟨a, ha, b * k⁻¹, J.mul_mem hb (J.inv_mem hk), by rw [← mul_assoc, ← e]; simp⟩`.
+
+Introduce and unpack `⟨a, ha, b, hb, e⟩`. Conclude with `⟨a, ha, b * k, J.mul_mem hb hk, by rw [e]; simp [mul_assoc]⟩`. Introduce `k hk x`. Distinguish the cases in `hx : x ∈ {g : G | ∃ a ∈ J, ∃ b ∈ J, g = a * y * b}`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem ((hmem k hk x).2 hx)]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem fun q => hx ((hmem k hk x).1 q)]`.
+-/
 private theorem dc_inv {G : Type*} [Group G] (J : Subgroup G) (y : G) :
     ∀ k ∈ J, ∀ x, {g : G | ∃ a ∈ J, ∃ b ∈ J, g = a * y * b}.indicator (1 : G → ℂ) (x * k) =
       {g : G | ∃ a ∈ J, ∃ b ∈ J, g = a * y * b}.indicator 1 x := by
@@ -50,6 +67,11 @@ private theorem dc_inv {G : Type*} [Group G] (J : Subgroup G) (y : G) :
   · rw [Set.indicator_of_mem hx, Set.indicator_of_mem ((hmem k hk x).2 hx)]; rfl
   · rw [Set.indicator_of_notMem hx, Set.indicator_of_notMem fun q => hx ((hmem k hk x).1 q)]
 
+/- English proof (translation)
+Rewrite using `[finsum_mem_def]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hcC : c ∈ {c : G ⧸ J | ∃ k ∈ J, c = QuotientGroup.mk (k * y)}`. Rewrite using `[Set.indicator_of_mem hcC, Set.indicator_of_mem ((out_mem_iff J y c).2 hcC)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Set.indicator_of_notMem hcC, Set.indicator_of_notMem fun q => hcC ((out_mem_iff J y c).1 q)]`. Simplify using the standard rewrite rules.
+-/
 private theorem dc_sum {G E : Type*} [Group G] [AddCommMonoid E] [Module ℂ E] (J : Subgroup G) (y : G) (ρ : G → E) :
     (∑ᶠ c : G ⧸ J, {g : G | ∃ a ∈ J, ∃ b ∈ J, g = a * y * b}.indicator (1 : G → ℂ) c.out • ρ c.out) =
       ∑ᶠ c ∈ {c : G ⧸ J | ∃ k ∈ J, c = QuotientGroup.mk (k * y)}, ρ c.out := by
@@ -61,6 +83,11 @@ private theorem dc_sum {G E : Type*} [Group G] [AddCommMonoid E] [Module ℂ E] 
   · rw [Set.indicator_of_notMem hcC, Set.indicator_of_notMem fun q => hcC ((out_mem_iff J y c).1 q)]
     simp
 
+/- English proof (translation)
+Introduce `K _ _ n hn μ _ m _ w J y ho hc r hr e₀ e₁ h0 h1`. Take `⟨hfix, heq⟩` from `UpperTheory.ConvolutionTheory.GM.stepFin K n hn μ m w J ho _ (dc_support J y hc) (dc_inv J y) r hr e₀ e₁ h0 h1`. Use `ContinuousLinearMap.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[heq, dc_sum J y (rhoL μ w)]`. Establish `hp : prj (fixL μ w J) (Ofin μ m e₀ u) = Ofin μ m e₀ u` using `(UpperTheory.ConvolutionTheory.Tf.commPrj K n μ (J.map (AdelicGLn.localEmbedding w))).2.2.2.1 _ (hfix u)`.
+
+Simplify using `only [Hop, ContinuousLinearMap.comp_apply, hp]`.
+-/
 theorem UpperTheory.Ofin_doubleCoset_indicator_eq_Hop :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure]
       (w : Pl K) (J : Subgroup (GL (Fin n) (w.adicCompletion K))) (y : GL (Fin n) (w.adicCompletion K)),

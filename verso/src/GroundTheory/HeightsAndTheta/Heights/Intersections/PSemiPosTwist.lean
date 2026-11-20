@@ -21,6 +21,9 @@ section Blocks
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Establish `h : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+-/
 theorem isOpen_noZeroBlock : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   have h : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0} := by
     ext z
@@ -36,19 +39,31 @@ def blk (k : K) : ((Σ k, ι k) → ℂ) →L[ℂ] (ι k → ℂ) :=
 def F (k : K) (y : (Σ k, ι k) → ℂ) : ℝ :=
   Real.log ((fsMetric (ι k)).ρ (fun i => y ⟨k, i⟩))
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `hz k`. Conclude with `fun h0 => hi (congrFun h0 i)`.
+-/
 theorem blk_ne {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K) :
     (fun i => z ⟨k, i⟩ : ι k → ℂ) ≠ 0 := by
   obtain ⟨i, hi⟩ := hz k
   exact fun h0 => hi (congrFun h0 i)
 
+/- English proof (translation)
+The claim follows from `(fsMetric (ι k)).pos _ (blk_ne hz k)`.
+-/
 theorem rho_pos {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K) :
     0 < (fsMetric (ι k)).ρ (fun i => z ⟨k, i⟩) :=
   (fsMetric (ι k)).pos _ (blk_ne hz k)
 
+/- English proof (translation)
+Simplify using `[fsMetric, EuclideanSpace.norm_eq]`.
+-/
 theorem rho_eq (k : K) (y : (Σ k, ι k) → ℂ) :
     (fsMetric (ι k)).ρ (fun i => y ⟨k, i⟩) = Real.sqrt (∑ i, ‖y ⟨k, i⟩‖ ^ 2) := by
   simp [fsMetric, EuclideanSpace.norm_eq]
 
+/- English proof (translation)
+Establish `hφ` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adens_contDiffAt_logρ_id (GroundTheory.Heights₂.Heights.HilbertSamuel.ProjLine.isSmoothMetric_fs (J := ι k)) (blk_ne hz k)`. Establish `hFk : F k = (fun u => Real.log ((fsMetric (ι k)).ρ u)) ∘ blk (ι` using `ι) k := rfl`. Rewrite using `[hFk]`. Conclude with `hφ.comp z ((blk (ι := ι) k).restrictScalars ℝ).contDiff.contDiffAt`.
+-/
 theorem contDiffAt_F {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K) :
     ContDiffAt ℝ 2 (F k) z := by
   have hφ := ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adens_contDiffAt_logρ_id
@@ -57,6 +72,9 @@ theorem contDiffAt_F {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩
   rw [hFk]
   exact hφ.comp z ((blk (ι := ι) k).restrictScalars ℝ).contDiff.contDiffAt
 
+/- English proof (translation)
+Establish `hφ` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adens_contDiffAt_logρ_id (GroundTheory.Heights₂.Heights.HilbertSamuel.ProjLine.isSmoothMetric_fs (J := ι k)) (blk_ne hz k)`. Establish `hFk : F k = (fun u => Real.log ((fsMetric (ι k)).ρ u)) ∘ blk (ι` using `ι) k := rfl`. Rewrite using `[hFk, ReciprocityTheory.AnForm.levi_comp w ((blk (ι := ι) k).analyticAt z) hφ]`. Conclude with `GroundTheory.Heights₂.Heights.HilbertSamuel.ProjLine.leviForm_log_fs_nonneg (blk_ne hz k) _`.
+-/
 theorem levi_F_nonneg {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K)
     (w : (Σ k, ι k) → ℂ) : 0 ≤ ReciprocityTheory.AnForm.levi (F k) z w := by
   have hφ := ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adens_contDiffAt_logρ_id
@@ -71,6 +89,11 @@ section Levi
 
 variable {J : Type} [Fintype J]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hg`. Consider the case `insert a s ha ih`. Establish `heq : (fun y => g y + ∑ k ∈ insert a s, c k * f k y) = fun y => (fun y' => g y' + ∑ k ∈ s, c k * f k y') y + c a * f a y`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[Finset.sum_insert ha]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq, ReciprocityTheory.AnForm.levi_add_smul (c a) ih.1 (hf a) w, ih.2, Finset.sum_insert ha]`. Conclude with `⟨ih.1.add (contDiffAt_const.mul (hf a)), by ring⟩`.
+-/
 theorem levi_add_sum {K : Type} {z : J → ℂ} (g : (J → ℂ) → ℝ) (f : K → (J → ℂ) → ℝ) (c : K → ℝ)
     (hg : ContDiffAt ℝ 2 g z) (hf : ∀ k, ContDiffAt ℝ 2 (f k) z) (w : J → ℂ) (s : Finset K) :
     ContDiffAt ℝ 2 (fun y => g y + ∑ k ∈ s, c k * f k y) z ∧
@@ -88,9 +111,21 @@ theorem levi_add_sum {K : Type} {z : J → ℂ} (g : (J → ℂ) → ℝ) (f : K
     rw [heq, ReciprocityTheory.AnForm.levi_add_smul (c a) ih.1 (hf a) w, ih.2, Finset.sum_insert ha]
     exact ⟨ih.1.add (contDiffAt_const.mul (hf a)), by ring⟩
 
+/- English proof (translation)
+Simplify using `[ReciprocityTheory.AnForm.levi]`.
+-/
 theorem levi_zero_fun (z w : J → ℂ) : ReciprocityTheory.AnForm.levi (fun _ : J → ℂ => (0 : ℝ)) z w = 0 := by
   simp [ReciprocityTheory.AnForm.levi]
 
+/- English proof (translation)
+Establish `h1 : ReciprocityTheory.AnForm.levi (fun w : Fin 1 → ℂ => φ (z + w 0 • v)) (fun _ => 0) (Pi.single 0 1) = Δ (fun t : ℂ => φ (z + t • v)) 0 / 4` using `ReciprocityTheory.AnForm.A.leviOne (fun t : ℂ => φ (z + t • v)) 0`. Use `set L : (Fin 1 → ℂ) →L[ℂ] (J → ℂ) := (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).smulRight v with hL`. Establish `hτ : AnalyticAt ℂ (fun w => z + L w) (fun _ => 0)` using `analyticAt_const.add (L.analyticAt _)`. Establish `hτ0 : z + L (fun _ => (0 : ℂ)) = z`. Simplify using `[hL]`.
+
+Establish `hcomp : (fun w : Fin 1 → ℂ => φ (z + w 0 • v)) = φ ∘ fun w => z + L w`. Use function extensionality and compare the values at `w`. Simplify using `[hL]`. Establish `hD : fderiv ℂ (fun w => z + L w) (fun _ => 0) (Pi.single 0 1) = v`. Rewrite using `[((L.hasFDerivAt).const_add z).fderiv]`.
+
+Simplify using `[hL]`. Establish `hφ' : ContDiffAt ℝ 2 φ (z + L (fun _ => 0))`. Rewrite using `[hτ0]`. Conclude with `hφ`. Rewrite `h1` using `[hcomp, ReciprocityTheory.AnForm.levi_comp _ hτ hφ', hτ0, hD]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem laplacian_line_eq_levi {φ : (J → ℂ) → ℝ} {z : J → ℂ} (hφ : ContDiffAt ℝ 2 φ z) (v : J → ℂ) :
     Δ (fun t : ℂ => φ (z + t • v)) 0 = 4 * ReciprocityTheory.AnForm.levi φ z v := by
   have h1 : ReciprocityTheory.AnForm.levi (fun w : Fin 1 → ℂ => φ (z + w 0 • v)) (fun _ => 0) (Pi.single 0 1) =
@@ -120,6 +155,35 @@ end SemipositiveTwist
 
 open SemipositiveTwist in
 
+/- English proof (translation)
+Introduce `K _ ι _ M hM`. Establish `hUo` using `isOpen_noZeroBlock (ι := ι)`. Use `set u : ((Σ k, ι k) → ℂ) → ℝ := fun y => Real.log (M.h y) + ∑ k, (-(M.a k : ℝ)) * F k y with hu`. Establish `hlogM : ∀ z : (Σ k, ι k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → ContDiffAt ℝ 2 (fun y => Real.log (M.h y)) z` using `fun z hz => ((hM.contDiffAt (hUo.mem_nhds hz)).of_le (WithTop.coe_le_coe.2 le_top)).log (M.pos z hz).ne'`. Establish `hu2 : ∀ z : (Σ k, ι k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → ContDiffAt ℝ 2 u z` using `fun z hz => (levi_add_sum _ F (fun k => -(M.a k : ℝ)) (hlogM z hz) (contDiffAt_F hz) 0 Finset.univ).1`.
+
+Establish `hinv : ∀ (c : K → ℂ) (z : (Σ k, ι k) → ℂ), (∀ k, c k ≠ 0) → (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → u (fun p => c p.1 * z p) = u z`. Introduce `c z hc hz`. Establish `hcn : ∀ k, ‖c k‖ ≠ 0` using `fun k => norm_ne_zero_iff.mpr (hc k)`. Establish `hF : ∀ k, F k (fun p => c p.1 * z p) = Real.log ‖c k‖ + F k z`. Introduce `k`.
+
+Use `show Real.log ((fsMetric (ι k)).ρ (c k • fun i => z ⟨k, i⟩)) = Real.log ‖c k‖ + Real.log ((fsMetric (ι k)).ρ (fun i => z ⟨k, i⟩))`. Rewrite using `[(fsMetric (ι k)).smul, Real.log_mul (hcn k) (rho_pos hz k).ne']`. Establish `hh : Real.log (M.h (fun p => c p.1 * z p)) = ∑ k, (M.a k : ℝ) * Real.log ‖c k‖ + Real.log (M.h z)`. Rewrite using `[M.smul c z hc, Real.log_mul (Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hcn k)) (M.pos z hz).ne', Real.log_prod (fun k _ => zpow_ne_zero _ (hcn k))]`. Simplify using `only [Real.log_zpow]`.
+
+Rewrite using `[hu]`. Use `show Real.log (M.h (fun p => c p.1 * z p)) + ∑ k, (-(M.a k : ℝ)) * F k (fun p => c p.1 * z p) = Real.log (M.h z) + ∑ k, (-(M.a k : ℝ)) * F k z`. Rewrite using `[hh]`. Simplify using `only [hF, mul_add, Finset.sum_add_distrib, neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨C, hC⟩` from `hB K ι u (fun z hz => (hu2 z hz).contDiffWithinAt) hinv`. Establish `hΦ : ∀ z : (Σ k, ι k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → ∀ w, leviForm (fun y => ∑ k, Real.log ((fsMetric (ι k)).ρ (fun i => y ⟨k, i⟩))) z w = ∑ k, ReciprocityTheory.AnForm.levi (F k) z w`. Introduce `z hz w`. Establish `h` using `(levi_add_sum (fun _ => (0 : ℝ)) F (fun _ => 1) contDiffAt_const (contDiffAt_F hz) w Finset.univ).2`. Simplify using `only [zero_add, one_mul, levi_zero_fun] at h`.
+
+Conclude with `h`. Use `set N : ℕ := ⌈|C| + ∑ k, |(M.a k : ℝ)|⌉₊ with hN`. Establish `hNk : ∀ k, C ≤ (M.a k : ℝ) + N`. Introduce `k`. Establish `h1 : |C| + ∑ k, |(M.a k : ℝ)| ≤ N` using `Nat.le_ceil _`.
+
+Establish `h2 : |(M.a k : ℝ)| ≤ ∑ k, |(M.a k : ℝ)|` using `Finset.single_le_sum (f := fun k => |(M.a k : ℝ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ k)`. Establish `h3` using `le_abs_self C`. Establish `h4` using `neg_abs_le (M.a k : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set T : HermLine ι := HermLine.sqMetric (fun _ => N) with hT`.
+
+Establish `hlogT : ∀ y : (Σ k, ι k) → ℂ, (∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) → Real.log (T.h y) = ∑ k, (N : ℝ) * F k y`. Introduce `y hy`. Establish `h : T.h y = ∏ k, (fsMetric (ι k)).ρ (fun i => y ⟨k, i⟩) ^ N`. Simplify using `only [hT, HermLine.sqMetric, rho_eq]`. Rewrite using `[h, Real.log_prod (fun k _ => pow_ne_zero _ (rho_pos hy k).ne')]`.
+
+Simplify using `only [Real.log_pow, F]`. Use `⟨T, isSmoothHerm_sqMetric _, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz v`. Establish `hs` using `levi_add_sum (fun _ => (0 : ℝ)) F (fun _ => (N : ℝ)) contDiffAt_const (contDiffAt_F hz) v Finset.univ`. Use `beta_reduce at hs`.
+
+Establish `hev : (fun y => Real.log (T.h y)) =ᶠ[𝓝 z] fun y => 0 + ∑ k, (N : ℝ) * F k y` using `by filter_upwards [hUo.mem_nhds hz] with y hy`. Rewrite using `[hlogT y hy, zero_add]`. Rewrite using `[laplacian_line_eq_levi (hs.1.congr_of_eventuallyEq hev) v, ReciprocityTheory.AnForm.levi_congr hev v, hs.2, levi_zero_fun, zero_add]`. Conclude with `mul_nonneg (by norm_num) (Finset.sum_nonneg fun k _ => mul_nonneg (Nat.cast_nonneg _) (levi_F_nonneg hz k v))`. Introduce `z hz v`.
+
+Establish `hs` using `levi_add_sum u F (fun k => (M.a k : ℝ) + N) (hu2 z hz) (contDiffAt_F hz) v Finset.univ`. Use `beta_reduce at hs`. Establish `hev : (fun y => Real.log ((M.tensor T).h y)) =ᶠ[𝓝 z] fun y => u y + ∑ k, ((M.a k : ℝ) + N) * F k y` using `by filter_upwards [hUo.mem_nhds hz] with y hy show Real.log (M.h y * T.h y) = _`. Rewrite using `[Real.log_mul (M.pos y hy).ne' (T.pos y hy).ne', hlogT y hy, hu]`. Simplify using `only [add_mul, neg_mul, Finset.sum_add_distrib, Finset.sum_neg_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[laplacian_line_eq_levi (hs.1.congr_of_eventuallyEq hev) v, ReciprocityTheory.AnForm.levi_congr hev v, hs.2]`. Establish `hC' : |ReciprocityTheory.AnForm.levi u z v| ≤ C * ∑ k, ReciprocityTheory.AnForm.levi (F k) z v`. Rewrite using `[← hΦ z hz v]`. Conclude with `hC z hz v`.
+
+Establish `hsum : 0 ≤ ∑ k, ((M.a k : ℝ) + N - C) * ReciprocityTheory.AnForm.levi (F k) z v` using `Finset.sum_nonneg fun k _ => mul_nonneg (by linarith [hNk k]) (levi_F_nonneg hz k v)`. Establish `hexp : ∑ k, ((M.a k : ℝ) + N) * ReciprocityTheory.AnForm.levi (F k) z v = ∑ k, ((M.a k : ℝ) + N - C) * ReciprocityTheory.AnForm.levi (F k) z v + C * ∑ k, ReciprocityTheory.AnForm.levi (F k) z v`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `h5` using `neg_abs_le (ReciprocityTheory.AnForm.levi u z v)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem SemiPosTwist.proof (hB : TorusInvLevi.Statement) : SemiPosTwist.Statement := by
   intro K _ ι _ M hM
   classical

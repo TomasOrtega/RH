@@ -10,6 +10,27 @@ open scoped TensorProduct
 
 namespace GlobalTheory.PlaneNorm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm K _ _ M J hM hJ hiso x y hx hy`. Establish `hinj : Function.Injective (inclR (F` using `F) K : E →+* K ⊗[F] E) := Algebra.TensorProduct.includeRight_injective (algebraMap F K).injective`. Establish `hne : ∀ z : Fin M → E, hE σ J z z ≠ 0 → ((fun i => inclR K (z i)) : Fin M → K ⊗[F] E) ≠ 0`. Introduce `z hz h0`. Apply `hz` to reduce the goal to its premises.
+
+Establish `hz0 : z = 0` using `funext fun i => hinj (by simpa using congrFun h0 i)`. Substitute `hz0` using the available equality. Simplify using `[hE, Formalism.UG.hform]`. Break down `GlobalTheory.T.tensorCM_isField_or_norm_surjective F E σ hcm K with hfld | hspl` into its components or cases. Conclude with `GlobalTheory.T.exists_unitNorm_gramDet_pair_fieldCase F E σ hcm K M J hJ hfld hiso _ _ (hne x hx) (hne y hy)`.
+
+Take `⟨w, hxw, hwy⟩` from `GlobalTheory.T.exists_common_hermitianGramDetTwoVectors_ne F E σ hcm M J hM hJ x y hx hy`. Establish `hs : ∀ e : E, sigR K σ (inclR K e) = inclR K (σ e)` using `fun e => rfl`. Establish `hRE : ∀ a b : Fin M → E, hR K σ J (fun i => inclR K (a i)) (fun i => inclR K (b i)) = inclR K (hE σ J a b)`. Introduce `a b`. Simplify using `only [hR, hE, Formalism.UG.hform, map_sum, map_mul, hs, JR, Matrix.map_apply, RingHom.coe_coe]`.
+
+Establish `hG : ∀ a b : Fin M → E, gram2R K σ J (fun i => inclR K (a i)) (fun i => inclR K (b i)) = inclR K (gram2E σ J a b)`. Introduce `a b`. Simplify using `only [gram2R, gram2E, hRE, map_sub, map_mul]`. Establish `hsym : ∀ a b : Fin M → E, σ (hE σ J a b) = hE σ J b a`. Introduce `a b`.
+
+Simplify using `only [hE, Formalism.UG.hform, map_sum, map_mul, RingHom.coe_coe, GlobalTheory.HermLineZeros.conj_invol hcm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ.1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hfix : ∀ a b : Fin M → E, σ (gram2E σ J a b) = gram2E σ J a b`. Introduce `a b`. Simplify using `only [gram2E, map_sub, map_mul, hsym]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ a b : Fin M → E, gram2E σ J a b ≠ 0 → IsUnitNorm K σ (-(gram2R K σ J (fun i => inclR K (a i)) (fun i => inclR K (b i))))`.
+
+Introduce `a b hab`. Take `⟨g, hg⟩` from `GlobalTheory.HermLineZeros.exists_of_fixed hcm _ (hfix a b)`. Establish `hg0 : g ≠ 0` using `by rintro rfl; exact hab (by rw [← hg, map_zero])`. Establish `hk : algebraMap F K (-g) ≠ 0`. Rewrite using `[map_neg, neg_ne_zero, ne_eq, map_eq_zero_iff _ (algebraMap F K).injective]`.
+
+Conclude with `hg0`. Take `⟨t, ht⟩` from `hspl _ hk`. Establish `hval : -(gram2R K σ J (fun i => inclR K (a i)) (fun i => inclR K (b i))) = algebraMap K (K ⊗[F] E) (algebraMap F K (-g))`. Rewrite using `[hG, ← hg, map_neg, map_neg]`. Use `congr 1`.
+
+Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : E →ₐ[F] K ⊗[F] E).commutes g`. Establish `hu : IsUnit (t * sigR K σ t)`. Rewrite using `[ht]`. Conclude with `(IsUnit.mk0 _ hk).map _`.
+
+Conclude with `⟨t, isUnit_of_mul_isUnit_left hu, by rw [ht, hval]⟩`. Conclude with `⟨fun i => inclR K (w i), key x w hxw, key w y hwy⟩`.
+-/
 theorem exists_local_unitNorm_vector : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (K : Type) [Field K] [Algebra F K] (M : ℕ) (J : Matrix (Fin M) (Fin M) E), 2 ≤ M → IsHermND σ J → (∃ u : Fin M → K ⊗[F] E, u ≠ 0 ∧ hR K σ J u u = 0) → ∀ x y : Fin M → E, hE σ J x x ≠ 0 → hE σ J y y ≠ 0 → ∃ w : Fin M → K ⊗[F] E, IsUnitNorm K σ (-(gram2R K σ J (fun i => inclR K (x i)) w)) ∧ IsUnitNorm K σ (-(gram2R K σ J w (fun i => inclR K (y i)))) := by
   intro F E _ _ _ _ _ σ hcm K _ _ M J hM hJ hiso x y hx hy
   have hinj : Function.Injective (inclR (F := F) K : E →+* K ⊗[F] E) := Algebra.TensorProduct.includeRight_injective (algebraMap F K).injective

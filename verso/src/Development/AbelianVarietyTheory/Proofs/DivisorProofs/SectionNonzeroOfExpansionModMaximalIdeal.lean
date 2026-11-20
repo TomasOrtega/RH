@@ -12,11 +12,19 @@ namespace GlobalTheory.Mum.ExpandNonzero
 
 open ReciprocityTheory.ChartRestriction.G.Semi
 
+/- English proof (translation)
+Use `show y ∈ ⋂ k, (φ k).base ⁻¹' (L.U (j k) : Set X) ↔ _`. Conclude with `Set.mem_iInter`.
+-/
 theorem mem_wchart {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X))
     (j : K → L.ι) (y : Y) : y ∈ LB.wchart L φ j ↔ ∀ k, (φ k).base y ∈ L.U (j k) := by
   show y ∈ ⋂ k, (φ k).base ⁻¹' (L.U (j k) : Set X) ↔ _
   exact Set.mem_iInter
 
+/- English proof (translation)
+Establish `hxj : x ∈ L.U j` using `X.basicOpen_le _ hx`. Establish `h` using `congrArg X.basicOpen (s.compat i j)`. Simplify using `only [Scheme.basicOpen_res, Scheme.basicOpen_mul, Scheme.basicOpen_of_isUnit _ (L.g i j).isUnit] at h`. Establish `hm : x ∈ (L.U i ⊓ L.U j) ⊓ ((L.U i ⊓ L.U j) ⊓ X.basicOpen (s.f j))` using `⟨⟨hi, hxj⟩, ⟨hi, hxj⟩, hx⟩`. Rewrite `hm` using `[← h]`.
+
+Conclude with `hm.2`.
+-/
 theorem sec_mem_basicOpen {X : Scheme.{0}} {L : LB X} (s : LB.Sec L) (i j : L.ι) {x : X}
     (hx : x ∈ X.basicOpen (s.f j)) (hi : x ∈ L.U i) : x ∈ X.basicOpen (s.f i) := by
   have hxj : x ∈ L.U j := X.basicOpen_le _ hx
@@ -28,6 +36,25 @@ theorem sec_mem_basicOpen {X : Scheme.{0}} {L : LB X} (s : LB.Sec L) (i j : L.ι
   rw [← h] at hm
   exact hm.2
 
+/- English proof (translation)
+Introduce `R _ _ _ D A G _ _ U k s f hexp hzero y hy`. Take `⟨j, hj⟩` from `hy`. Take `⟨S, hS, hE⟩` from `hexp`. Establish `hcovM : ∀ ψ : (thickObj R (maximalIdeal R) 0 G).left ⟶ D.toPre.P.A.left, ∃ i, ψ.base y ∈ D.toPre.P.L.U i` using `fun ψ => by`. Establish `: ψ.base y ∈ ⨆ i, D.toPre.P.L.U i` using `by rw [D.toPre.P.isLB.cover]; trivial`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`. Choose the witnesses or unpack the hypotheses as in `⟨iL, hiL⟩ : ∃ i, (fstG (maximalIdeal R) 0 G).left.base y ∈ U.LG.L.U i := by`. Establish `: (fstG (maximalIdeal R) 0 G).left.base y ∈ ⨆ i, U.LG.L.U i`. Rewrite using `[U.LG.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`. Set `idx : ((thickObj R (maximalIdeal R) 0 G).left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι` to `fun ψ => (hcovM ψ).choose`. Establish `hidx : ∀ ψ, ψ.base y ∈ D.toPre.P.L.U (idx ψ)` using `fun ψ => (hcovM ψ).choose_spec`. Use `⟨fun _ => iL, ?_⟩` and prove the remaining obligations. Establish `h0S : (0 : D.toPre.X) ∈ S`.
+
+Assume the negation of the conclusion as `h`. Establish `h'` using `hS 0 h j`. Rewrite `hj` using `[h', Scheme.basicOpen_zero]`. Conclude with `hj`. Establish `key` using `hE (fun _ => idx (U.gt 0).pG.left, fun _ => iL) (fun _ => iL) (fun α i => idx ((U.gt 0).pG.left ≫ D.toPre.famφB α i)) (fun α i => idx (D.toPre.Oφ (U.gt 0).pG α i)) rfl (by`.
+
+Introduce `a b hab`. Apply the tactic sequence `rcases a with _ | (a | a) <;> rcases b with _ | (b | b) <;> exact congrArg idx hab)`. Establish `hyW : y ∈ U.expW 0 (fun _ => idx (U.gt 0).pG.left, fun _ => iL) (fun _ => iL) S (fun α i => idx ((U.gt 0).pG.left ≫ D.toPre.famφB α i)) (fun α i => idx (D.toPre.Oφ (U.gt 0).pG α i))`. Use `⟨⟨⟨?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(mem_wchart _ _ _ y).2 fun _ => hidx _`.
+
+Conclude with `(mem_wchart _ _ _ y).2 fun _ => hiL`. Use `show (fstG (maximalIdeal R) 0 G).left.base y ∈ LB.wchart _ _ _`. Conclude with `(mem_wchart _ _ _ _).2 fun _ => hiL`. Use `Finset.inf_induction (p := fun V : (thickObj R (maximalIdeal R) 0 G).left.Opens => y ∈ V) (show y ∈ (⊤ : (thickObj R (maximalIdeal R) 0 G).left.Opens) from trivial) (fun a ha b hb => TopologicalSpace.Opens.mem_inf.2 ⟨ha, hb⟩) fun α _ => TopologicalSpace.Opens.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show (U.gt 0).pG.left.base y ∈ LB.wchart _ _ _`.
+
+Conclude with `(mem_wchart _ _ _ _).2 fun i => hidx ((U.gt 0).pG.left ≫ D.toPre.famφB α i)`. Conclude with `(mem_wchart _ _ _ y).2 fun i => hidx _`. Establish `hf0 : y ∈ (thickObj R (maximalIdeal R) 0 G).left.basicOpen (((U.gt 0).pG.left.app _).hom ((f 0).f (fun i => idx ((U.gt 0).pG.left ≫ D.toPre.famφB 0 i))))`. Rewrite `hj`, the goal using `[← Scheme.preimage_basicOpen]`. Conclude with `sec_mem_basicOpen (f 0) _ j hj ((mem_wchart _ _ _ _).2 fun i => hidx ((U.gt 0).pG.left ≫ D.toPre.famφB 0 i))`.
+
+Rewrite using `[Finset.sum_eq_single ⟨0, h0S⟩ (fun b _ hb => by`. Establish `hb' : b.1 ≠ 0` using `fun h => hb (Subtype.ext h)`. Use `mul_eq_zero_of_left ?_ _` and prove the remaining obligations. Conclude with `(congrArg _ (hzero b.1 hb' _)).trans (map_zero _))`. Use the proof step `(fun h => absurd (Finset.mem_attach _ _) h)] at key`.
+
+Establish `hL` using `(congrArg (fun a => y ∈ (thickObj R (maximalIdeal R) 0 G).left.basicOpen a) key).mpr (by`. Simplify using `only [Scheme.basicOpen_mul, Scheme.basicOpen_of_isUnit _ (Units.isUnit _), Scheme.basicOpen_res, TopologicalSpace.Opens.mem_inf]`. Conclude with `⟨⟨hyW, hf0⟩, hyW⟩)`. Simplify using `only [Scheme.basicOpen_mul, Scheme.basicOpen_of_isUnit _ ((Units.isUnit _).pow k), Scheme.basicOpen_res, TopologicalSpace.Opens.mem_inf] at hL`. Conclude with `hL.2.2`.
+-/
 theorem nonzero_of_expandsAt_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G]
       [IsCommMonObj G] (U : UnifPre (maximalIdeal R) D A G) (k : ℕ) (s : H0 U.LG.L k)

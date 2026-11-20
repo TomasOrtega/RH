@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.FinSupp
 
+/- English proof (translation)
+Introduce `v`. Take `⟨b, hb, e⟩` from `hT v`. Establish `ha : algebraMap F (Fv F v) (a : F) ∈ v.adicCompletionIntegers F` using `HeightOneSpectrum.coe_mem_adicCompletionIntegers v a`. Use `⟨algebraMap F (Fv F v) (a : F) * b, mul_mem ha hb, ?_⟩` and prove the remaining obligations. Establish `e1 : evFin F v (GlobalTheory.FinSupp.finPart F (algebraMap F (AF F) ((m : F) * (a : F)))) = evFin F v (algebraMap F (AF F) ((m : F) * (a : F)))` using `rfl`.
+
+Rewrite using `[map_mul, e1, AlgHom.commutes, map_mul, map_natCast]`. Simplify using `only [map_mul, map_natCast] at e`. Rewrite using `[mul_comm ((m : Fv F v)) _, mul_assoc, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finDiv_finPart_mul {F : Type} [Field F] [NumberField F] {N m : ℕ} {T : AF F} (hT : GlobalTheory.FinSupp.FinDiv F N ((m : AF F) * T))
     (a : 𝓞 F) : GlobalTheory.FinSupp.FinDiv F N (GlobalTheory.FinSupp.finPart F (algebraMap F (AF F) ((m : F) * (a : F))) * T) := by
   intro v
@@ -27,10 +32,40 @@ theorem finDiv_finPart_mul {F : Type} [Field F] [NumberField F] {N m : ℕ} {T :
   rw [mul_comm ((m : Fv F v)) _, mul_assoc, e]
   ring
 
+/- English proof (translation)
+The claim follows from `Prod.ext (zero_mul _) rfl`.
+-/
 theorem finPart_mul {F : Type} [Field F] [NumberField F] (x y : AF F) :
     GlobalTheory.FinSupp.finPart F x * y = GlobalTheory.FinSupp.finPart F (x * y) :=
   Prod.ext (zero_mul _) rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ`. Establish `S` using `hP.weil.isUSplitting`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Take `⟨N, hN1, hinv⟩` from `GlobalTheory.T.adelicSchwartz_fixed_by_small_heisenberg_lattice F (Fin n × Fin d) B.ψ hstd.1 Φ hΦ`. Take `⟨C, k, hC⟩` from `GlobalTheory.T.exists_scale_movedHeisenbergLattice_polynomial_heights F E n d (Fin n × Fin d) M.co.e N hN1`.
+
+Take `⟨D, hD1, hD⟩` from `GlobalTheory.T.exists_bounded_denominator_standardChar_trivial F`. Use `⟨D * C, k, fun g h => ?_⟩` and prove the remaining obligations. Take `⟨m, hm1, hmC, hmT⟩` from `hC g.1 h.1`. Use `⟨D * m, Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega)), ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+
+Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hmC (by positivity)`. Introduce `ξ hξ i`. Establish `key : ∀ a : 𝓞 F, B.ψ (GlobalTheory.FinSupp.finPart F (algebraMap F (AF F) ((a : F) * ((m : F) * ξ i)))) = 1`. Introduce `a`.
+
+Use `set c : AF F := GlobalTheory.FinSupp.finPart F (algebraMap F (AF F) ((m : F) * (a : F))) with hc`. Use `set y : Fin n × Fin d → AF F := c • Pi.single i 1 with hy`. Use `set w' := M.co.e.symm (0, y) with hw'`. Use `set p : UA σ X.J × UA σ W.J := (g, h) with hp`. Use `set w := actAB (cA σ) p⁻¹ w' with hw`.
+
+Establish `hwe : M.co.e w = c • M.co.e ((((g.1)⁻¹ : GL (Fin n) (AF F ⊗[F] E)) : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) * M.co.e.symm (0, Pi.single i 1) * (((h.1⁻¹ : GL (Fin d) (AF F ⊗[F] E)) : Matrix (Fin d) (Fin d) (AF F ⊗[F] E)))ᵀ)`. Rewrite using `[hw, hw', hy, hp]`. Rewrite using `[show ((0 : Fin n × Fin d → AF F), c • Pi.single i (1 : AF F)) = c • ((0 : Fin n × Fin d → AF F), Pi.single i (1 : AF F)) by simp]`. Rewrite using `[LinearEquiv.map_smul, ← LinearEquiv.map_smul M.co.e]`. Use `congr 1`.
+
+Simplify using `only [actAB, Prod.inv_mk, Subgroup.coe_inv]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Establish `hrho : M.co.rho B.ψ w Φ = Φ`. Unfold `Darboux.rho`. Apply `hinv` to reduce the goal to its premises.
+
+Introduce `l`. Rewrite using `[hwe]`. Take `⟨h1, h2⟩` from `hmT i l`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (c * _).1 = 0`.
+
+Conclude with `zero_mul _`. Rewrite using `[Prod.smul_fst, Pi.smul_apply, smul_eq_mul]`. Conclude with `finDiv_finPart_mul h1 a`. Use `show (c * _).1 = 0`. Conclude with `zero_mul _`.
+
+Rewrite using `[Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`. Conclude with `finDiv_finPart_mul h2 a`. Establish `himpl` using `S.impl p w Φ hΦ`. Rewrite `himpl` using `[hrho]`. Establish `hact : actAB (cA σ) p w = w'`.
+
+Rewrite using `[hw]`. Simplify using `only [actAB, Prod.fst_inv, Prod.snd_inv, Subgroup.coe_inv, hp]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.transpose_one, Matrix.mul_one]`. Rewrite `himpl` using `[hact]`. Establish `hx` using `congrFun himpl (fun j => algebraMap F (AF F) (ξ j))`.
+
+Simplify using `only [Darboux.rho, hw', LinearEquiv.apply_symm_apply, schr, zero_dotProduct, mul_zero, add_zero] at hx`. Establish `h1 : B.ψ ((fun j => algebraMap F (AF F) (ξ j)) ⬝ᵥ y) = 1`. Establish `hne : om p Φ (fun j => algebraMap F (AF F) (ξ j)) ≠ 0` using `hξ`. Conclude with `(mul_eq_right₀ hne).1 hx.symm`. Rewrite `h1` using `[hy, dotProduct_smul, dotProduct_single, smul_eq_mul, mul_one, hc, finPart_mul, ← map_mul]`.
+
+Use `h1 using 3` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `hD B.ψ hstd _ key` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_common_denominator : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ Φ ∈ schA F (Fin n × Fin d), ∃ (C : ℝ) (k : ℕ), ∀ g h, ∃ m : ℕ, 1 ≤ m ∧ (m : ℝ) ≤ C * ((ht g : ℝ) * ht h) ^ k ∧
     ∀ ξ : Fin n × Fin d → F, om (g, h) Φ (fun i => algebraMap F (AF F) (ξ i)) ≠ 0 → ∀ i, IsIntegral ℤ ((m : F) * ξ i) := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ

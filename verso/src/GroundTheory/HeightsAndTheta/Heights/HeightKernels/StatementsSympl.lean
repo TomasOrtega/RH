@@ -155,6 +155,9 @@ def SymplDetBound.Statement : Prop :=
     G ∈ symplecticGroup (Fin n) ℝ → G.PosDef →
     ∃ P ∈ symplecticGroup (Fin n) ℤ, (symplGram P G).toBlocks₁₁.det ≤ (2 * (n : ℝ)) ^ n
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Submonoid.one_mem _, Matrix.PosDef.one, by simp, Submonoid.one_mem _⟩`.
+-/
 example (n : ℕ) :
     (1 : Matrix (Fin (n + 1) ⊕ Fin (n + 1)) (Fin (n + 1) ⊕ Fin (n + 1)) ℝ) ∈
         symplecticGroup (Fin (n + 1)) ℝ ∧
@@ -164,6 +167,9 @@ example (n : ℕ) :
         symplecticGroup (Fin (n + 1)) ℤ :=
   ⟨Submonoid.one_mem _, Matrix.PosDef.one, by simp, Submonoid.one_mem _⟩
 
+/- English proof (translation)
+Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun h (Sum.inr 0)) (Sum.inr 0)` as an intermediate fact. Simplify using `[siegelGram] at this`. Simplify using `[siegelGram]`.
+-/
 example : siegelGram (1 : Matrix (Fin 1) (Fin 1) ℝ) 1 ≠ 1 ∧
     siegelGram (1 : Matrix (Fin 1) (Fin 1) ℝ) 1 (Sum.inl 0) (Sum.inl 0) ≠ 0 := by
   refine ⟨fun h => ?_, ?_⟩
@@ -171,17 +177,33 @@ example : siegelGram (1 : Matrix (Fin 1) (Fin 1) ℝ) 1 ≠ 1 ∧
     simp [siegelGram] at this
   · simp [siegelGram]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by norm_num, by norm_num, Submonoid.one_mem _⟩`.
+-/
 example (n : ℕ) : (1 : ℤ) * 1 - 0 * 0 = 1 ∧ (2 : ℤ) * 1 - 1 * 1 = 1 ∧
     (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℤ) ∈ symplecticGroup (Fin n) ℤ :=
   ⟨by norm_num, by norm_num, Submonoid.one_mem _⟩
 
+/- English proof (translation)
+Evaluate the numerical expressions.
+-/
 example : (-1 : ℤ) * 2 + 1 * 3 = 1 := by norm_num
 
+/- English proof (translation)
+Use `⟨by simp, by simp, fun _ => by norm_num, by norm_num, Matrix.PosDef.one, by simp⟩` and prove the remaining obligations.
+-/
 example : (1 : Matrix (Fin 2) (Fin 2) ℝ).det ≠ 0 ∧ |(1 : Matrix (Fin 2) (Fin 2) ℝ).det| = 1 ∧
     (∀ i : Fin 2, (0 : ℝ) < (fun _ => 2) i) ∧ (1 : ℝ) < ∏ _i : Fin 2, (2 : ℝ) ∧
     (1 : Matrix (Fin 2) (Fin 2) ℝ).PosDef ∧ (1 : Matrix (Fin 2) (Fin 2) ℝ).det = 1 := by
   refine ⟨by simp, by simp, fun _ => by norm_num, by norm_num, Matrix.PosDef.one, by simp⟩
 
+/- English proof (translation)
+Use `⟨by simp, fun h => by simpa using congrFun h 0, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Establish `h0 : u 0 ≠ 0`. Introduce `h`. Apply `hu` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `h`. Establish `h1 : (1 : ℝ) ≤ |(u 0 : ℝ)|` using `by exact_mod_cast Int.one_le_abs h0`. Establish `h2 : (1 : ℝ) ≤ (u 0 : ℝ) * (u 0 : ℝ)`.
+
+Use polynomial arithmetic with `[abs_mul_abs_self (u 0 : ℝ), abs_nonneg (u 0 : ℝ)]`. Simplify `h2` using `[qf, intVec, dotProduct]`.
+-/
 example : (fun _ : Fin 1 => (1 : ℤ)) = (1 : ℤ) • (fun _ : Fin 1 => (1 : ℤ)) ∧
     (fun _ : Fin 1 => (1 : ℤ)) ≠ 0 ∧
     ∀ u : Fin 1 → ℤ, u ≠ 0 →

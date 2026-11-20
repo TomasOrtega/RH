@@ -20,11 +20,21 @@ def ev (w : Vw d) (z : ℂ) (u : Vw d) : ℂ :=
 
 def bv (w : Vw d) (z : ℂ) (u : Vw d) : ℂ := star (Complex.exp (ev w z u))
 
+/- English proof (translation)
+Rewrite using `[norm_add_sq_real, inner_smul_right, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, real_inner_comm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_add_smul_sq (w u : Vw d) (x : ℝ) :
     ‖u + x • w‖ ^ 2 = ‖u‖ ^ 2 + 2 * x * ⟪w, u⟫_ℝ + x ^ 2 * ‖w‖ ^ 2 := by
   rw [norm_add_sq_real, inner_smul_right, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, real_inner_comm]
   ring
 
+/- English proof (translation)
+Unfold `vline`. Rewrite using `[T_rho_sum' hH hΩ, psi_sp R hW, psi_tw R hW, hTΩ]`. Simplify using `only [vac]`. Rewrite using `[gau_eq, arc_add, arc_realAd, fin_add_of R (fin_realAd_smul hW z.re)]`. Simplify using `only [bv, ev]`.
+
+Rewrite using `[show star (Complex.exp _) = Complex.exp (conj _) from (Complex.exp_conj _).symm, Complex.ofReal_exp, ← mul_assoc, ← mul_assoc, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 2`. Rewrite using `[inner_add_right, inner_smul_right, real_inner_self_eq_norm_sq, norm_add_smul_sq]`. Simplify using `only [map_add, map_sub, map_mul, map_ofNat, Complex.conj_I, Complex.conj_ofReal]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem T_vline (hH : THeis) (R : RD d) {g : Yf d → ℂ} {Ω : d.Fn} (hΩ : Ω ∈ d.sch) (hTΩ : d.T Ω = vac R g)
     {W : Mx F E d.m d.n} (hW : finOne F • W = 0) (z : ℂ) (X : Mx F E d.m d.n) :
     d.T (d.dd.rho d.B.ψ (vline R W z) Ω) X = bv (arc R W) z (arc R X) * g (fin d X) := by
@@ -41,11 +51,19 @@ theorem T_vline (hH : THeis) (R : RD d) {g : Yf d → ℂ} {Ω : d.Fn} (hΩ : Ω
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `bv ev`. Use `continuous_star.comp (Complex.continuous_exp.comp ?_)` and prove the remaining obligations. Use `fun_prop`.
+-/
 theorem continuous_bv (w : Vw d) (z : ℂ) : Continuous (bv w z) := by
   unfold bv ev
   refine continuous_star.comp (Complex.continuous_exp.comp ?_)
   fun_prop
 
+/- English proof (translation)
+Unfold `bv`. Rewrite using `[norm_star, Complex.norm_exp]`. Apply `Real.exp_le_one_iff.2` to reduce the goal to its premises. Establish `h : ‖u‖ ^ 2 + 2 * z.re * ⟪w, u⟫_ℝ + z.re ^ 2 * ‖w‖ ^ 2 ≥ 0`. Rewrite using `[← norm_add_smul_sq]`.
+
+Check the signs of the components of the expression. Simplify using `only [ev, Complex.sub_re, Complex.add_re, Complex.mul_re, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im, Complex.re_ofNat, Complex.im_ofNat, Complex.add_im, Complex.mul_im]`. Use polynomial arithmetic with `[Real.pi_pos]`.
+-/
 theorem norm_bv_le (w : Vw d) (z : ℂ) (u : Vw d) : ‖bv w z u‖ ≤ 1 := by
   unfold bv
   rw [norm_star, Complex.norm_exp]

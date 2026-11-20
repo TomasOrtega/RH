@@ -75,9 +75,17 @@ section Checks
 
 variable {K : Type} [Field K] {N n : ℕ} (hN : N = n + 1) (G' : Matrix (Fin n) (Fin n) K) (g : K)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => mul_nonneg (mul_self_nonneg _) (Nat.cast_nonneg _)`.
+-/
 theorem fockB_self_nonneg {σ : Type} (f : MvPolynomial σ ℝ) : 0 ≤ fockB f f :=
   Finset.sum_nonneg fun _ _ => mul_nonneg (mul_self_nonneg _) (Nat.cast_nonneg _)
 
+/- English proof (translation)
+Establish `hk : 0 ≤ Br.kapBr ℝ hN lam sg` using `div_nonneg (fockB_self_nonneg _) (fockB_self_nonneg _)`. Establish `h1 : (T ^ (-((Br.nBr lam sg : ℤ) : ℝ) / 2)) ^ 2 = T ^ (-Br.nBr lam sg)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hT.le, ← Real.rpow_intCast]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[factor, mul_pow, mul_pow, h1, sq_abs, Real.sq_sqrt hk, mul_assoc]`.
+-/
 theorem factor_sq (lam : DomWeight N) (sg : DomWeight n) {T : ℝ} (hT : 0 < T) :
     factor hN lam sg T ^ 2 =
       T ^ (-Br.nBr lam sg) * (((Br.cBr hN lam sg : ℤ) : ℝ) ^ 2 * Br.kapBr ℝ hN lam sg) := by
@@ -89,6 +97,11 @@ theorem factor_sq (lam : DomWeight N) (sg : DomWeight n) {T : ℝ} (hT : 0 < T) 
     ring
   rw [factor, mul_pow, mul_pow, h1, sq_abs, Real.sq_sqrt hk, mul_assoc]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `Br.Interlace`. Evaluate the decidable proposition. Unfold `Br.SameShift`. Evaluate the decidable proposition.
+
+Evaluate the decidable proposition. Evaluate the decidable proposition.
+-/
 example : Br.Interlace (by rfl : 3 = 2 + 1) ⟨![3, 1, 0], by decide⟩ ⟨![2, 0], by decide⟩ ∧
     Br.SameShift (⟨![3, 1, 0], by decide⟩ : DomWeight 3) (⟨![2, 0], by decide⟩ : DomWeight 2) ∧
     Br.nBr (⟨![3, 1, 0], by decide⟩ : DomWeight 3) (⟨![2, 0], by decide⟩ : DomWeight 2) = 2 ∧

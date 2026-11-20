@@ -18,6 +18,9 @@ namespace GlobalTheory.FlagBaseChange
 
 variable {P Y B T T' : Scheme.{0}}
 
+/- English proof (translation)
+Establish `e` using `NatTrans.congr_app (Scheme.Modules.pseudofunctor_associativity f g h) M`. Simplify using `only [NatTrans.comp_app, Functor.whiskerRight_app, Functor.associator_hom_app, Functor.whiskerLeft_app, Category.id_comp, eqToHom_app] at e`. Rewrite using `[← e]`. Simplify using `only [← Category.assoc, ← Functor.map_comp, Iso.hom_inv_id_app, Iso.hom_inv_id_app_assoc]`. Simplify using the standard rewrite rules.
+-/
 theorem pullbackComp_assoc_app (f : T' ⟶ P) (g : P ⟶ Y) (h : Y ⟶ B) (M : B.Modules) :
     (Scheme.Modules.pullbackComp f g).hom.app ((Scheme.Modules.pullback h).obj M) ≫
       (Scheme.Modules.pullbackComp (f ≫ g) h).hom.app M =
@@ -30,10 +33,16 @@ theorem pullbackComp_assoc_app (f : T' ⟶ P) (g : P ⟶ Y) (h : Y ⟶ B) (M : B
   simp only [← Category.assoc, ← Functor.map_comp, Iso.hom_inv_id_app, Iso.hom_inv_id_app_assoc]
   simp
 
+/- English proof (translation)
+Substitute `H` using the available equality. Simplify using `[Scheme.Modules.pullbackCongr]`.
+-/
 theorem pullbackCongr_hom_app {f f' : P ⟶ B} (H : f = f') (M : B.Modules) :
     (Scheme.Modules.pullbackCongr H).hom.app M = eqToHom (by rw [H]) := by
   subst H; simp [Scheme.Modules.pullbackCongr]
 
+/- English proof (translation)
+Substitute `H` using the available equality. Simplify using `[Scheme.Modules.pullbackCongr]`.
+-/
 theorem pullbackComp_congr_app (v : T' ⟶ P) {k k' : P ⟶ B} (H : k = k') (M : B.Modules) :
     (Scheme.Modules.pullback v).map ((Scheme.Modules.pullbackCongr H).hom.app M) ≫
       (Scheme.Modules.pullbackComp v k').hom.app M =
@@ -46,6 +55,9 @@ def baseIso (f₁ : P ⟶ Y) (p : Y ⟶ B) (f₂ : P ⟶ T) (q : T ⟶ B) (cond 
   (Scheme.Modules.pullbackComp f₁ p).app M ≪≫ (Scheme.Modules.pullbackCongr cond).app M ≪≫
     ((Scheme.Modules.pullbackComp f₂ q).app M).symm
 
+/- English proof (translation)
+Rewrite using `[pullbackComp_assoc_app, ← Category.assoc ((Scheme.Modules.pullbackComp v f₁).hom.app _), pullbackComp_assoc_app]`. Simplify using `only [baseIso, Iso.trans_hom, Iso.app_hom, Iso.symm_hom, Iso.app_inv, Functor.map_comp, Category.assoc]`. Rewrite using `[← Functor.map_comp_assoc (Scheme.Modules.pullback v) ((Scheme.Modules.pullbackComp f₂ q).inv.app M), Iso.inv_hom_id_app, CategoryTheory.Functor.map_id, Category.id_comp, ← Category.assoc ((Scheme.Modules.pullback v).map ((Scheme.Modules.pullbackCongr cond).hom.app M)), pullbackC …`. Simplify using the standard rewrite rules.
+-/
 theorem baseIso_coherence (f₁ : P ⟶ Y) (p : Y ⟶ B) (f₂ : P ⟶ T) (q : T ⟶ B) (cond : f₁ ≫ p = f₂ ≫ q)
     (v : T' ⟶ P) (w : (v ≫ f₁) ≫ p = (v ≫ f₂) ≫ q) (M : B.Modules) :
     (Scheme.Modules.pullback v).map (baseIso f₁ p f₂ q cond M).hom ≫
@@ -67,6 +79,17 @@ def sqFlag (f₁ : P ⟶ Y) (p : Y ⟶ B) (f₂ : P ⟶ T) (q : T ⟶ B) (cond :
     Vert.Flag ((Scheme.Modules.pullback f₂).obj ((Scheme.Modules.pullback q).obj M)) n :=
   (fl.pull f₁).ofIso (baseIso f₁ p f₂ q cond M)
 
+/- English proof (translation)
+Substitute `hv` using the available equality. Establish `coh` using `baseIso_coherence f₁ p f₂ q cond v w M`. Establish `nat` using `(Scheme.Modules.pullbackComp v f₁).hom.naturality (fl.ι i)`. Simplify using `only [Functor.comp_map] at nat`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨e, he⟩`. Use `⟨((Scheme.Modules.pullbackComp v f₁).app _).symm ≪≫ e, ?_⟩` and prove the remaining obligations. Use `erw [Iso.trans_hom]`. Simplify using `only [Vert.Flag.ofIso, sqFlag, Vert.Flag.pull, Iso.symm_hom, Iso.app_inv, Iso.app_hom, Category.assoc] at he ⊢`. Rewrite using `[reassoc_of% he, pullbackCongr_hom_app (f := v ≫ f₂)]`.
+
+Simplify using `only [eqToHom_refl, Category.id_comp, Functor.map_comp, Category.assoc]`. Rewrite using `[coh, reassoc_of% nat, Iso.inv_hom_id_app_assoc]`. Introduce and unpack `⟨e, he⟩`. Use `⟨(Scheme.Modules.pullbackComp v f₁).app _ ≪≫ e, ?_⟩` and prove the remaining obligations. Use `erw [Iso.trans_hom]`.
+
+Simplify using `only [Vert.Flag.ofIso, sqFlag, Vert.Flag.pull, Iso.app_hom, Category.assoc] at he ⊢`. Rewrite using `[← cancel_mono ((Scheme.Modules.pullbackComp (v ≫ f₂) q).hom.app M)]`. Simplify using `only [Category.assoc]`. Rewrite using `[he, pullbackCongr_hom_app (f := v ≫ f₂)]`. Simplify using `only [eqToHom_refl, Category.id_comp, Functor.map_comp, Category.assoc]`.
+
+Rewrite using `[coh, reassoc_of% nat]`.
+-/
 theorem sqFlag_iff (f₁ : P ⟶ Y) (p : Y ⟶ B) (f₂ : P ⟶ T) (q : T ⟶ B) (cond : f₁ ≫ p = f₂ ≫ q)
     {M : B.Modules} {n : ℕ} (fl : Vert.Flag ((Scheme.Modules.pullback p).obj M) n)
     (v : T' ⟶ P) (h : T' ⟶ T) (hv : v ≫ f₂ = h) (w : (v ≫ f₁) ≫ p = h ≫ q)
@@ -102,6 +125,15 @@ theorem sqFlag_iff (f₁ : P ⟶ Y) (p : Y ⟶ B) (f₂ : P ⟶ T) (q : T ⟶ B)
     simp only [eqToHom_refl, Category.id_comp, Functor.map_comp, Category.assoc]
     rw [coh, reassoc_of% nat]
 
+/- English proof (translation)
+Introduce `B Y T π g ι _ E r fl hfl`. Use `⟨fun a => sqFlag (pullback.fst π g) π (pullback.snd π g) g pullback.condition (fl a), ?_⟩` and prove the remaining obligations. Introduce `T' h fl''`. Take `⟨u, ⟨wu, hu⟩, huniq⟩` from `hfl T' (h ≫ g) (fun a => (fl'' a).ofIso ((Scheme.Modules.pullbackComp h g).app (E a)))`. Establish `hfst` using `pullback.lift_fst u h wu`.
+
+Use `⟨pullback.lift u h wu, ⟨pullback.lift_snd _ _ _, fun a i => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[sqFlag_iff _ _ _ _ _ (fl a) _ h (pullback.lift_snd _ _ _) (by rw [hfst]; exact wu)]`. Establish `key : ∀ (u' : T' ⟶ Y) (e : u' = u) (w' : u' ≫ π = h ≫ g), ∃ e : (Scheme.Modules.pullback u').obj ((fl a).F i) ≅ ((fl'' a).ofIso ((Scheme.Modules.pullbackComp h g).app (E a))).F i, e.hom ≫ ((fl'' a).ofIso ((Scheme.Modules.pullbackComp h g).app (E a))).ι i = (Scheme.Modules.pullbac …`. Introduce `u' e w'`. Substitute `e` using the available equality.
+
+Conclude with `hu a i`. Conclude with `key _ hfst _`. Introduce and unpack `v ⟨hv, hprop⟩`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst]`.
+
+Establish `w : (v ≫ pullback.fst π g) ≫ π = h ≫ g`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hv]`. Conclude with `huniq _ ⟨w, fun a i => (sqFlag_iff _ _ _ _ pullback.condition (fl a) v h hv w (fl'' a) i).1 (hprop a i)⟩`. Rewrite using `[pullback.lift_snd]`. Conclude with `hv`.
+-/
 theorem isFlagBundle_pullback_snd : ∀ (B Y T : Scheme.{0}) (π : Y ⟶ B) (g : T ⟶ B) (ι : Type) [Fintype ι]
     (E : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)),
     IsFlagBundle π E r fl → ∃ fl' : ∀ a, Vert.Flag ((Scheme.Modules.pullback (pullback.snd π g)).obj

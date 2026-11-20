@@ -20,6 +20,9 @@ namespace CasG
 
 variable {E E' : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E'] [NormedSpace ℂ E']
 
+/- English proof (translation)
+Unfold `Lhol`. Establish `h1 : (fun w => L (G w)) = L ∘ G` using `rfl`. Rewrite using `[h1]`. Establish `h2` using `(L.hasFDerivAt.comp z hG.hasFDerivAt).fderiv`. Conclude with `congrArg (fun A : Matrix (Fin n) (Fin n) ℂ →L[ℂ] E' => A (X * z)) h2`.
+-/
 lemma lhol_clm (L : E →L[ℂ] E') (X : Matrix (Fin n) (Fin n) ℂ) {G : Matrix (Fin n) (Fin n) ℂ → E}
     {z : Matrix (Fin n) (Fin n) ℂ} (hG : DifferentiableAt ℂ G z) :
     Lhol X (fun w => L (G w)) z = L (Lhol X G z) := by
@@ -29,6 +32,11 @@ lemma lhol_clm (L : E →L[ℂ] E') (X : Matrix (Fin n) (Fin n) ℂ) {G : Matrix
   have h2 := (L.hasFDerivAt.comp z hG.hasFDerivAt).fderiv
   exact congrArg (fun A : Matrix (Fin n) (Fin n) ℂ →L[ℂ] E' => A (X * z)) h2
 
+/- English proof (translation)
+Unfold `Lhol`. Distinguish the cases in `hG : DifferentiableAt ℂ G z`. Establish `h2` using `hG.hasFDerivAt.neg.fderiv`. Conclude with `congrArg (fun A : Matrix (Fin n) (Fin n) ℂ →L[ℂ] E => A (X * z)) h2`. Establish `h3 : ¬ DifferentiableAt ℂ (fun w => -G w) z` using `fun h => hG (differentiableAt_neg_iff.1 h)`.
+
+Simplify using `[fderiv_zero_of_not_differentiableAt hG, fderiv_zero_of_not_differentiableAt h3]`.
+-/
 lemma lhol_neg (X : Matrix (Fin n) (Fin n) ℂ) (G : Matrix (Fin n) (Fin n) ℂ → E)
     (z : Matrix (Fin n) (Fin n) ℂ) : Lhol X (fun w => -G w) z = -Lhol X G z := by
   unfold Lhol
@@ -38,11 +46,17 @@ lemma lhol_neg (X : Matrix (Fin n) (Fin n) ℂ) (G : Matrix (Fin n) (Fin n) ℂ 
   · have h3 : ¬ DifferentiableAt ℂ (fun w => -G w) z := fun h => hG (differentiableAt_neg_iff.1 h)
     simp [fderiv_zero_of_not_differentiableAt hG, fderiv_zero_of_not_differentiableAt h3]
 
+/- English proof (translation)
+Unfold `Lhol`. Rewrite using `[h.fderiv_eq]`.
+-/
 lemma lhol_congr (X : Matrix (Fin n) (Fin n) ℂ) {G G' : Matrix (Fin n) (Fin n) ℂ → E}
     {z : Matrix (Fin n) (Fin n) ℂ} (h : G =ᶠ[nhds z] G') : Lhol X G z = Lhol X G' z := by
   unfold Lhol
   rw [h.fderiv_eq]
 
+/- English proof (translation)
+Use `filter_upwards [hV.mem_nhds hz] with w hw`. Conclude with `lhol_clm L X (hG.differentiableAt (hV.mem_nhds hw))`.
+-/
 lemma lhol_clm_eventually (L : E →L[ℂ] E') (X : Matrix (Fin n) (Fin n) ℂ)
     {G : Matrix (Fin n) (Fin n) ℂ → E} {V : Set (Matrix (Fin n) (Fin n) ℂ)} (hV : IsOpen V)
     (hG : DifferentiableOn ℂ G V) {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ V) :
@@ -54,6 +68,9 @@ end CasG
 
 variable {ε : Fin n → Bool} {lam : Fin n → ℝ}
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, hUo, hpU, hd, -, -⟩` from `casL_psM T μ lam hμ`. Take `⟨W, k₀, hWo, hgW, hWU, hloc⟩` from `psiM_local T μ hμ U hUo hpU hg₀`. Use `⟨W, fun g => ContinuousLinearMap.mul ℂ (T.V →L[ℂ] T.V) (T.op k₀) (psM T μ (g⁻¹ * toMK k₀)), hWo, hgW, ?_, fun g hg hgu => by rw [hloc g hg hgu]; rfl⟩` and prove the remaining obligations. Conclude with `contDiffOn_of_local hUo ((ContinuousLinearMap.mul ℂ (T.V →L[ℂ] T.V) (T.op k₀)).differentiable.comp_differentiableOn hd) hWo hWU`.
+-/
 theorem psiM_smooth (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : IsMu lam μ) :
     SmoothOnGV ε (PsiM T μ) := by
   intro g₀ hg₀
@@ -64,6 +81,11 @@ theorem psiM_smooth (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : IsM
   exact contDiffOn_of_local hUo
     ((ContinuousLinearMap.mul ℂ (T.V →L[ℂ] T.V) (T.op k₀)).differentiable.comp_differentiableOn hd) hWo hWU
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hg₀U, hF, hEq⟩` from `psiM_smooth T μ hμ g₀ hg₀`. Establish `hFc : ContinuousAt F g₀` using `hF.continuousOn.continuousAt (hU.mem_nhds hg₀U)`. Use `(hFc.continuousWithinAt (s := {g | inUJ ε g})).congr_of_eventuallyEq ?_ (hEq g₀ hg₀U hg₀)` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds (hU.mem_nhds hg₀U), self_mem_nhdsWithin] with g hgU hgJ`.
+
+Conclude with `hEq g hgU hgJ`.
+-/
 theorem psiM_continuousOn (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : IsMu lam μ) :
     ContinuousOn (PsiM T μ) {g | inUJ ε g} := by
   intro g₀ hg₀
@@ -73,6 +95,15 @@ theorem psiM_continuousOn (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ
   filter_upwards [nhdsWithin_le_nhds (hU.mem_nhds hg₀U), self_mem_nhdsWithin] with g hgU hgJ
   exact hEq g hgU hgJ
 
+/- English proof (translation)
+Take `⟨U, hUo, hpU, hd, hdL, hcas⟩` from `casL_psM T μ lam hμ`. Take `⟨W, k₀, hWo, hgW, hWU, hloc⟩` from `psiM_local T μ hμ U hUo hpU hg`. Use `set Lk := ContinuousLinearMap.mul ℂ (T.V →L[ℂ] T.V) (T.op k₀) with hLk`. Establish `hf : ∀ g' ∈ W, inUJ ε g' → PsiM T μ g' = (Lk ∘ psM T μ) (g'⁻¹ * toMK k₀)` using `fun g' hg' hgu' => by rw [hloc g' hg' hgu']; rfl`. Establish `hd0 : DifferentiableOn ℂ (Lk ∘ psM T μ) U` using `Lk.differentiable.comp_differentiableOn hd`.
+
+Establish `hinner : ∀ a b : Fin n, ∀ g' ∈ W, inUJ ε g' → EabV ε b a (PsiM T μ) g' = (fun z => -(Lk (Lhol (Matrix.single b a 1) (psM T μ) z))) (g'⁻¹ * toMK k₀)`. Introduce `a b g' hg' hgu'`. Rewrite using `[eabV_of_local ε hUo hd0 hWo hWU hf b a hg' hgu']`. Establish `hz` using `(hWU g' hg').2`. Rewrite using `[show (⇑Lk ∘ psM T μ) = fun w => Lk (psM T μ w) from rfl, CasG.lhol_clm Lk (Matrix.single b a 1) (G := psM T μ) (hd.differentiableAt (hUo.mem_nhds hz))]`.
+
+Establish `hdi : ∀ a b : Fin n, DifferentiableOn ℂ (fun z => -(Lk (Lhol (Matrix.single b a 1) (psM T μ) z))) U` using `fun a b => (Lk.differentiable.comp_differentiableOn (hdL _)).neg`. Establish `hm` using `(hWU g hgW).2`. Establish `hterm : ∀ a b : Fin n, EabV ε a b (EabV ε b a (PsiM T μ)) g = Lk (Lhol (Matrix.single a b 1) (Lhol (Matrix.single b a 1) (psM T μ)) (g⁻¹ * toMK k₀))`. Introduce `a b`. Rewrite using `[eabV_of_local ε hUo (hdi a b) hWo hWU (hinner a b) a b hgW hg, CasG.lhol_neg, neg_neg, CasG.lhol_clm Lk (Matrix.single a b 1) (G := Lhol (Matrix.single b a 1) (psM T μ)) ((hdL _).differentiableAt (hUo.mem_nhds hm))]`.
+
+Unfold `casimirV`. Simplify using `only [hterm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcas _ hm, map_smul, hf g hgW hg]`. Both sides reduce to the same expression.
+-/
 theorem psiM_casimir (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : IsMu lam μ) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : inUJ ε g) : casimirV ε (PsiM T μ) g = ((casVal lam : ℝ) : ℂ) • PsiM T μ g := by
   obtain ⟨U, hUo, hpU, hd, hdL, hcas⟩ := casL_psM T μ lam hμ

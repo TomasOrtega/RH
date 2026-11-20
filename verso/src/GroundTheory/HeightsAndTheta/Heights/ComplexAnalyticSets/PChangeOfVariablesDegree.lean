@@ -11,6 +11,11 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 namespace ChangeOfVariablesDegree
 
+/- English proof (translation)
+Establish `: (fun x => (fderiv ℝ φ x).det) = fun x => detCML (entriesCLM (fderiv ℝ φ x))`. Use function extensionality and compare the values at `x`. Rewrite using `[det_fderiv_eq_det_jacobian]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `detCML.cont.comp (entriesCLM.continuous.comp (hφ.continuous_fderiv (by simp)))`.
+-/
 theorem continuous_det_fderiv {n : ℕ} (φ : (Fin n → ℝ) → Fin n → ℝ) (hφ : ContDiff ℝ ∞ φ) :
     Continuous fun x => (fderiv ℝ φ x).det := by
   have : (fun x => (fderiv ℝ φ x).det) = fun x => detCML (entriesCLM (fderiv ℝ φ x)) := by
@@ -18,6 +23,11 @@ theorem continuous_det_fderiv {n : ℕ} (φ : (Fin n → ℝ) → Fin n → ℝ)
   rw [this]
   exact detCML.cont.comp (entriesCLM.continuous.comp (hφ.continuous_fderiv (by simp)))
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `hgc.isCompact.isBounded.subset_closedBall 0`. Use `HasCompactSupport.intro (isCompact_closedBall (0 : Fin n → ℝ) (r + ‖y₀‖ + C)) fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h1` using `hr (subset_tsupport _ hne)`. Rewrite `h1` using `[mem_closedBall_zero_iff]`.
+
+Apply `hx` to reduce the goal to its premises. Rewrite using `[mem_closedBall_zero_iff]`. Establish `h2 : ‖x‖ ≤ ‖φ x - y₀‖ + ‖y₀‖ + ‖φ x - x‖`. Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[hC x]`.
+-/
 theorem hasCompactSupport_comp_sub {n : ℕ} (φ : (Fin n → ℝ) → Fin n → ℝ) (C : ℝ)
     (hC : ∀ x, ‖φ x - x‖ ≤ C) (g : (Fin n → ℝ) → ℝ) (hgc : HasCompactSupport g)
     (y₀ : Fin n → ℝ) : HasCompactSupport fun x => g (φ x - y₀) := by
@@ -35,6 +45,9 @@ theorem hasCompactSupport_comp_sub {n : ℕ} (φ : (Fin n → ℝ) → Fin n →
       _ ≤ ‖φ x - y₀‖ + ‖y₀‖ + ‖φ x - x‖ := by gcongr; exact norm_add_le _ _
   linarith [hC x]
 
+/- English proof (translation)
+Establish `hv : v = ∑ k, v k • (Pi.single k 1 : Fin n → ℝ)`. Use extensionality with `m`. Simplify using `[Pi.single_apply]`. Use `conv_lhs => rw [hv]`. Simplify using `[map_sum, map_smul]`.
+-/
 theorem clm_apply_eq_sum {n : ℕ} (T : (Fin n → ℝ) →L[ℝ] ℝ) (v : Fin n → ℝ) :
     T v = ∑ k, v k * T (Pi.single k 1) := by
   have hv : v = ∑ k, v k • (Pi.single k 1 : Fin n → ℝ) := by
@@ -44,6 +57,23 @@ theorem clm_apply_eq_sum {n : ℕ} (T : (Fin n → ℝ) →L[ℝ] ℝ) (v : Fin 
 
 variable {m : ℕ}
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `(hφ.continuous.sub continuous_id).bounded_above_of_compact_support hu`. Use `set H : (Fin (m + 1) → ℝ) → Fin (m + 1) → ℝ := fun x => Function.update (φ x) 0 (g (φ x)) with hH`. Establish `hH0 : (fun x => H x 0) = fun x => g (φ x)`. Use function extensionality and compare the values at `x`. Simplify using `[hH]`.
+
+Establish `hHk : ∀ k, k ≠ 0 → (fun x => H x k) = fun x => φ x k`. Introduce `k hk`. Use function extensionality and compare the values at `x`. Simplify using `[hH, hk]`. Establish `hHs : ContDiff ℝ ∞ H`.
+
+Use `contDiff_pi.2 fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality. Rewrite using `[hH0]`. Conclude with `hg.comp hφ`.
+
+Rewrite using `[hHk k hk]`. Conclude with `(contDiff_apply ℝ ℝ k).comp hφ`. Establish `hHc : HasCompactSupport fun x => H x 0`. Rewrite using `[hH0]`. Simplify using `using hasCompactSupport_comp_sub φ C hC g hgc 0`.
+
+Establish `hdet : ∀ x, (fderiv ℝ H x).det = fderiv ℝ g (φ x) (Pi.single 0 1) * (fderiv ℝ φ x).det`. Introduce `x`. Establish `hφd : DifferentiableAt ℝ φ x` using `(hφ.differentiable (by simp)) x`. Establish `hgd : DifferentiableAt ℝ g (φ x)` using `(hg.differentiable (by simp)) (φ x)`. Use `set c : Fin (m + 1) → ℝ := fun k => fderiv ℝ g (φ x) (Pi.single k 1) with hc`.
+
+Establish `hJ : Matrix.of (jacobian H x) = (Matrix.of (jacobian φ x)).updateRow 0 (∑ k, c k • (Matrix.of (jacobian φ x)) k)`. Use extensionality with `r l`. Rewrite using `[Matrix.of_apply, jacobian_eq_fderiv_apply H x ((hHs.differentiable (by simp)) x)]`. Distinguish the cases in `hr : r = 0`. Substitute `hr` using the available equality.
+
+Rewrite using `[hH0, Matrix.updateRow_self]`. Establish `: fderiv ℝ (fun y => g (φ y)) x = (fderiv ℝ g (φ x)).comp (fderiv ℝ φ x)` using `fderiv_comp x hgd hφd`. Rewrite using `[this, ContinuousLinearMap.comp_apply, clm_apply_eq_sum]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.of_apply, hc]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[jacobian, mul_comm]`. Rewrite using `[hHk r hr, Matrix.updateRow_ne hr, Matrix.of_apply, jacobian_eq_fderiv_apply φ x hφd]`. Rewrite using `[det_fderiv_eq_det_jacobian, hJ, Matrix.det_updateRow_sum, det_fderiv_eq_det_jacobian, smul_eq_mul]`. Repeatedly rewrite using `[← hdet]`. Conclude with `integral_det_fderiv_eq_zero H hHs 0 hHc`.
+-/
 theorem integral_fderiv_comp_mul_det_eq_zero (φ : (Fin (m + 1) → ℝ) → Fin (m + 1) → ℝ)
     (hφ : ContDiff ℝ ∞ φ) (hu : HasCompactSupport fun x => φ x - x)
     (g : (Fin (m + 1) → ℝ) → ℝ) (hg : ContDiff ℝ ∞ g) (hgc : HasCompactSupport g) :
@@ -89,6 +119,31 @@ theorem integral_fderiv_comp_mul_det_eq_zero (φ : (Fin (m + 1) → ℝ) → Fin
   simp_rw [← hdet]
   exact integral_det_fderiv_eq_zero H hHs 0 hHc
 
+/- English proof (translation)
+Use `set e : Fin (m + 1) → ℝ := Pi.single 0 1 with he`. Take `⟨C, hC⟩` from `(hφ.continuous.sub continuous_id).bounded_above_of_compact_support hu`. Establish `hC' : ∀ x, ‖φ x - x‖ ≤ C` using `hC`. Take `⟨r, hr⟩` from `hfc.isCompact.isBounded.subset_closedBall 0`. Take `⟨Cf, hCf⟩` from `((hf.continuous_fderiv (by simp)).clm_apply (continuous_const (y := e))).bounded_above_of_compact_support (hfc.fderiv_apply (𝕜 := ℝ) e)`.
+
+Establish `hdc` using `continuous_det_fderiv φ hφ`. Use `set Φ : ℝ → ℝ := fun s => ∫ x, f (φ x - s • e) * (fderiv ℝ φ x).det with hΦ`. Establish `hderiv : ∀ s₀, HasDerivAt Φ 0 s₀`. Introduce `s₀`. Use `set R := r + C + (|s₀| + 1) * ‖e‖ with hR`.
+
+Use `set F' : ℝ → (Fin (m + 1) → ℝ) → ℝ := fun s x => -(fderiv ℝ f (φ x - s • e) e) * (fderiv ℝ φ x).det with hF'`. Establish `hbound : ∀ᵐ x ∂(volume : Measure (Fin (m + 1) → ℝ)), ∀ s ∈ ball s₀ 1, ‖F' s x‖ ≤ (closedBall (0 : Fin (m + 1) → ℝ) R).indicator (fun x => Cf * |(fderiv ℝ φ x).det|) x`. Use `Filter.Eventually.of_forall fun x s hs => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ closedBall (0 : Fin (m + 1) → ℝ) R`. Rewrite using `[Set.indicator_of_mem hx]`.
+
+Simplify using `only [hF', norm_mul, norm_neg, Real.norm_eq_abs]`. Conclude with `mul_le_mul_of_nonneg_right (by simpa [Real.norm_eq_abs] using hCf (φ x - s • e)) (abs_nonneg _)`. Rewrite using `[Set.indicator_of_notMem hx]`. Establish `hnot : φ x - s • e ∉ tsupport f`. Introduce `hmem`.
+
+Establish `h1` using `hr hmem`. Rewrite `h1` using `[mem_closedBall_zero_iff]`. Apply `hx` to reduce the goal to its premises. Rewrite using `[mem_closedBall_zero_iff]`. Establish `hs' : |s| ≤ |s₀| + 1`.
+
+Rewrite `hs` using `[mem_ball, Real.dist_eq]`. Use `abs_sub_abs_le_abs_sub s s₀` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hse : ‖s • e‖ ≤ (|s₀| + 1) * ‖e‖`. Rewrite using `[norm_smul, Real.norm_eq_abs]`.
+
+Conclude with `mul_le_mul_of_nonneg_right hs' (norm_nonneg _)`. Establish `h2 : ‖x‖ ≤ ‖φ x - s • e‖ + ‖s • e‖ + ‖φ x - x‖`. Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[hC' x]`. Establish `h0 : fderiv ℝ f (φ x - s • e) = 0` using `image_eq_zero_of_notMem_tsupport fun h => hnot (tsupport_fderiv_subset ℝ h)`.
+
+Simplify using `[hF', h0]`. Establish `hdiff : ∀ᵐ x ∂(volume : Measure (Fin (m + 1) → ℝ)), ∀ s ∈ ball s₀ 1, HasDerivAt (fun s => f (φ x - s • e) * (fderiv ℝ φ x).det) (F' s x) s`. Use `Filter.Eventually.of_forall fun x s _ => ?_` and prove the remaining obligations. Establish `hl : HasDerivAt (fun s : ℝ => φ x - s • e) (-e) s`. Simplify using `using ((hasDerivAt_id s).smul_const e).const_sub (φ x)`.
+
+Use `(((hf.differentiable (by simp)) (φ x - s • e)).hasFDerivAt.comp_hasDerivAt s hl).mul_const ((fderiv ℝ φ x).det)` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [hF', map_neg, neg_mul]`. Establish `hcF : ∀ s : ℝ, Continuous fun x => f (φ x - s • e) * (fderiv ℝ φ x).det` using `fun s => (hf.continuous.comp (hφ.continuous.sub continuous_const)).mul hdc`. Establish `hcF' : Continuous (F' s₀)` using `(((hf.continuous_fderiv (by simp)).comp (hφ.continuous.sub continuous_const)).clm_apply continuous_const).neg.mul hdc`.
+
+Establish `hcB : Continuous fun x => Cf * |(fderiv ℝ φ x).det|` using `continuous_const.mul hdc.abs`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := volume) (F := fun s x => f (φ x - s • e) * (fderiv ℝ φ x).det) (F' := F') (x₀ := s₀) (bound := (closedBall (0 : Fin (m + 1) → ℝ) R).indicator fun x => Cf * |(fderiv ℝ φ x).det|) (ball_mem_nhds s₀ one_pos) (Filter.Eventually.o …`. Establish `h0 : ∫ x, F' s₀ x = 0`. Simplify using `only [hF', neg_mul, integral_neg]`. Establish `hg` using `integral_fderiv_comp_mul_det_eq_zero φ hφ hu (fun y => f (y - s₀ • e)) (hf.comp (contDiff_id.sub contDiff_const)) (hfc.comp_homeomorph (Homeomorph.subRight (s₀ • e)))`.
+
+Simplify using `only [fderiv_comp_sub] at hg`. Rewrite using `[hg, neg_zero]`. Rewrite using `[← h0]`. Conclude with `key.2`. Establish `hΦd : Differentiable ℝ Φ` using `fun s => (hderiv s).differentiableAt`.
+
+Use `is_const_of_deriv_eq_zero hΦd (fun s => (hderiv s).deriv) s 0` as an intermediate fact. Simplify `this` using `[hΦ]`.
+-/
 theorem integral_comp_sub_mul_det_eq (φ : (Fin (m + 1) → ℝ) → Fin (m + 1) → ℝ)
     (hφ : ContDiff ℝ ∞ φ) (hu : HasCompactSupport fun x => φ x - x)
     (f : (Fin (m + 1) → ℝ) → ℝ) (hf : ContDiff ℝ ∞ f) (hfc : HasCompactSupport f) (s : ℝ) :
@@ -181,6 +236,25 @@ theorem integral_comp_sub_mul_det_eq (φ : (Fin (m + 1) → ℝ) → Fin (m + 1)
 
 end ChangeOfVariablesDegree
 
+/- English proof (translation)
+Introduce `n φ hφ hu f hf hfc`. Consider the cases of `n with`. Consider the case `zero`. Establish `hid : φ = id` using `funext fun x => Subsingleton.elim _ _`. Substitute `hid` using the available equality.
+
+Simplify using `only [fderiv_id, id_eq, ContinuousLinearMap.det, ContinuousLinearMap.coe_id, LinearMap.det_id, mul_one]`. Consider the case `succ m => set e : Fin (m + 1) → ℝ := Pi.single 0 1 with he`. Take `⟨C, hC⟩` from `(hφ.continuous.sub continuous_id).bounded_above_of_compact_support hu`. Establish `hC' : ∀ x, ‖φ x - x‖ ≤ C` using `hC`. Take `⟨r, hr⟩` from `hfc.isCompact.isBounded.subset_closedBall 0`.
+
+Take `⟨ru, hru⟩` from `hu.isCompact.isBounded.subset_closedBall 0`. Establish `he1 : ‖e‖ = 1` using `by simp [he, Pi.norm_single]`. Use `set R := |r| + |ru| + |C| + 1 with hR`. Establish `hpt : ∀ x, f (φ x - R • e) * (fderiv ℝ φ x).det = f (x - R • e)`. Introduce `x`.
+
+Establish `hRe : ‖R • e‖ = R`. Rewrite using `[norm_smul, he1, mul_one, Real.norm_eq_abs, abs_of_pos (by positivity)]`. Distinguish the cases in `hx : x ∈ tsupport fun x => φ x - x`. Establish `hx'` using `hru hx`. Rewrite `hx'` using `[mem_closedBall_zero_iff]`.
+
+Establish `hf1 : f (φ x - R • e) = 0`. Use `image_eq_zero_of_notMem_tsupport fun hmem => ?_` and prove the remaining obligations. Establish `h1` using `hr hmem`. Rewrite `h1` using `[mem_closedBall_zero_iff]`. Establish `h2 : ‖R • e‖ ≤ ‖φ x - R • e‖ + ‖φ x - x‖ + ‖x‖`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[hRe]`. Combine the linear relations using `[hC' x, le_abs_self r, le_abs_self ru, le_abs_self C]`. Establish `hf2 : f (x - R • e) = 0`. Use `image_eq_zero_of_notMem_tsupport fun hmem => ?_` and prove the remaining obligations.
+
+Establish `h1` using `hr hmem`. Rewrite `h1` using `[mem_closedBall_zero_iff]`. Establish `h2 : ‖R • e‖ ≤ ‖x - R • e‖ + ‖x‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[hRe]`.
+
+Use `abs_nonneg C` as an intermediate fact. Combine the linear relations using `[le_abs_self r, le_abs_self ru]`. Rewrite using `[hf1, hf2, zero_mul]`. Rewrite `hx` using `[notMem_tsupport_iff_eventuallyEq]`. Establish `hev : φ =ᶠ[nhds x] id` using `hx.mono fun y hy => by simpa [sub_eq_zero] using hy`.
+
+Establish `hfd : fderiv ℝ φ x = ContinuousLinearMap.id ℝ _`. Rewrite using `[hev.fderiv_eq, fderiv_id]`. Establish `hφx : φ x = x` using `hev.self_of_nhds`. Rewrite using `[hfd, hφx, ContinuousLinearMap.det, ContinuousLinearMap.coe_id, LinearMap.det_id, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ChangeOfVariablesDegree.proof : ChangeOfVariablesDegree.Statement := by
   intro n φ hφ hu f hf hfc
   cases n with

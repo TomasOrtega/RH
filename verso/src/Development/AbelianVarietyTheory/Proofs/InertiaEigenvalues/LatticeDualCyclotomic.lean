@@ -11,6 +11,21 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hT l _ P K LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' m hdual S hBS hSZ c hc hann`. Take `⟨β, hβ0, hβB, -⟩` from `GlobalTheory.T.integral_tate_pairing_lattice_dual hT l P K LL O hO L1 hL1 A A' LA LA' m hdual`. Use `haveI : Module.Finite O (LatticeCohomology LA) := GlobalTheory.T.finite_H1_period_datum hT l P K LL O hO A LA`. Set `e : (LL ⧸ L1.T) ≃ₗ[O] (LL ⧸ LinearMap.range (Algebra.linearMap O LL))` to `Submodule.quotEquivOfEq _ _ hL1`. Set `β₁ : ↥(latticeCocycles LA) →ₗ[O] ↥(divisibleCocycles LA') →ₗ[O] (LL ⧸ LinearMap.range (Algebra.linearMap O LL))` to `β.compr₂ e.toLinearMap`.
+
+Establish `hβ₁ : ∀ d c, β₁ d c = 0 ↔ β d c = 0` using `fun d c => by`. Simplify using `only [β₁, LinearMap.compr₂_apply, LinearEquiv.coe_coe]`. Conclude with `e.map_eq_zero_iff`. Establish `hker : (latticeCoboundaries LA).comap (latticeCocycles LA).subtype ≤ LinearMap.ker β₁`. Introduce `d hd`.
+
+Rewrite using `[LinearMap.mem_ker]`. Use extensionality with `c`. Conclude with `(hβ₁ d c).2 (hβB d c hd)`. Set `β₂ : LatticeCohomology LA →ₗ[O] ↥(divisibleCocycles LA') →ₗ[O] (LL ⧸ LinearMap.range (Algebra.linearMap O LL))` to `((latticeCoboundaries LA).comap (latticeCocycles LA).subtype).liftQ β₁ hker`. Establish `hβ₂ : ∀ d c, β₂ (Submodule.Quotient.mk d) c = β₁ d c` using `fun d c => rfl`.
+
+Establish `key` using `GlobalTheory.T.mem_of_forall_annihilator_annihilator_fieldModIntegers l LL O hO (LatticeCohomology LA) ↥(divisibleCocycles LA') β₂ (S.comap (divisibleCocycles LA').subtype) ?_ ⟨c, hc⟩ ?_`. Conclude with `key`. Introduce `c' hc' show c'.1 ∈ S`. Apply `hBS` to reduce the goal to its premises. Apply `GlobalTheory.T.lattice_dual_pairing_cyclotomic hT l P K LL O hO L1 hL1 A A' LA LA' m hdual c'.1 c'.2` to reduce the goal to its premises.
+
+Introduce `d hd`. Establish `h` using `hc' (Submodule.Quotient.mk ⟨d, hd⟩)`. Rewrite `h` using `[hβ₂, hβ₁]`. Conclude with `(hβ0 ⟨d, hd⟩ c').1 h`. Introduce `d hd`.
+
+Proceed by induction on `d using Submodule.Quotient.induction_on with`. Consider the case `_ d0`. Rewrite using `[hβ₂, hβ₁]`. Apply `(hβ0 d0 ⟨c, hc⟩).2` to reduce the goal to its premises. Apply `hann d0.1 d0.2` to reduce the goal to its premises.
+
+Introduce `s hs`. Establish `h` using `hd ⟨s, hSZ hs⟩ hs`. Rewrite `h` using `[hβ₂, hβ₁]`. Conclude with `(hβ0 d0 ⟨s, hSZ hs⟩).1 h`.
+-/
 theorem tate_double_annihilator : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l), ∀ (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ L1 : Lattice (O := O) (charRep (cycLL (P.PD K) LL)), L1.T = LinearMap.range (Algebra.linearMap O LL) → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDualLat1 (P.PD K) LA LA' m → ∀ S : Submodule O (↥(GK K) → A'.V ⧸ LA'.T), BD LA' ≤ S → S ≤ divisibleCocycles LA' → ∀ c ∈ divisibleCocycles LA', (∀ d ∈ latticeCocycles LA, (∀ s ∈ S, CobO (P.PD K) L1 (cupLD LA' m d s)) → CobO (P.PD K) L1 (cupLD LA' m d c)) → c ∈ S := by
   intro hT l _ P K LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' m hdual S hBS hSZ c hc hann
   obtain ⟨β, hβ0, hβB, -⟩ := GlobalTheory.T.integral_tate_pairing_lattice_dual hT l P K LL O hO L1 hL1 A A' LA LA' m hdual

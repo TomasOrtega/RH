@@ -20,21 +20,42 @@ open Formalism.FourierDecayAlt GlobalTheory.IndefiniteRowSideFullHecke
 open GlobalTheory.IndefiniteRowSideFullHecke.SideNormalisedGap (Mat decExp decConst dimV dimN thrG thrS thrSS propExp DecGap Size Thresholds muS mulP IsSide
   IsSideNormalised KFinDecay wordSeminorm DecKFin DecSmooth)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem aOf_eq (r : ℕ) (h : ℝ) : ThreeDimData.aOf r h = decExp r h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem AG_eq (k r : ℕ) : ThreeDimData.AG k r = thrG k r := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dN_eq (k r : ℕ) : ThreeDimData.dN k r = dimN k r := rfl
 
+/- English proof (translation)
+Unfold `ThreeDimData.AS thrS dimV`. Rewrite using `[dN_eq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem AS_eq (k r : ℕ) : ThreeDimData.AS k r = thrS k r := by
   unfold ThreeDimData.AS thrS dimV
   rw [dN_eq]; push_cast; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Mexp_eq (r : ℕ) : ThreeDimData.Mexp r = propExp r := rfl
 
+/- English proof (translation)
+Unfold `dimV`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dimV_eq (k r : ℕ) : ((2 * r + k + 1 : ℕ) : ℝ) = dimV k r := by
   unfold dimV; push_cast; ring
 
+/- English proof (translation)
+Use `GapSizeCheck.decay_range k r h hh` as an intermediate fact. Unfold `DecGap`. Establish `hr : (0 : ℝ) < (r : ℝ) + 1` using `by positivity`. Rewrite using `[← dimV_eq, show (3 : ℝ) / 2 = 1 + 1 / 2 by norm_num, Real.rpow_add hr, Real.rpow_one, ← Real.sqrt_eq_rpow]`. Conclude with `this`.
+-/
 theorem decGap_of_cube (k r : ℕ) (h : ℝ) (hh : 120 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 ≤ h) : DecGap k r h := by
   have := GapSizeCheck.decay_range k r h hh
   unfold DecGap
@@ -42,6 +63,11 @@ theorem decGap_of_cube (k r : ℕ) (h : ℝ) (hh : 120 * ((2 * r + k + 1 : ℕ) 
   rw [← dimV_eq, show (3 : ℝ) / 2 = 1 + 1 / 2 by norm_num, Real.rpow_add hr, Real.rpow_one, ← Real.sqrt_eq_rpow]
   exact this
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `GapSizeCheck.thresholds k r h hg`. Rewrite `h1` using `[aOf_eq, AG_eq]`. Rewrite `h2` using `[aOf_eq, AS_eq]`. Rewrite `h3` using `[aOf_eq, AS_eq, AG_eq, Mexp_eq]`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`.
+
+Establish `hk : (1 : ℝ) ≤ k` using `by exact_mod_cast hg.1`. Establish `hG : 4 ≤ thrG k r` using `by unfold thrG; nlinarith [mul_nonneg hr hr]`. Apply the tactic sequence `refine ⟨decGap_of_cube k r h hg.2.1, ⟨?_, ?_, ?_, ?_⟩, ⟨?_, ?_, ?_, ?_⟩⟩ <;> (try unfold thrSS) <;> linarith`.
+-/
 theorem thresholds_of_gapOK (k r : ℕ) (h : ℝ) (hg : ThreeDimData.GapOK k r h) :
     DecGap k r h ∧ Thresholds k r (decExp r h) ∧ Thresholds k r (decExp r h - 1) := by
   obtain ⟨h1, h2, h3⟩ := GapSizeCheck.thresholds k r h hg
@@ -53,6 +79,11 @@ theorem thresholds_of_gapOK (k r : ℕ) (h : ℝ) (hg : ThreeDimData.GapOK k r h
   have hG : 4 ≤ thrG k r := by unfold thrG; nlinarith [mul_nonneg hr hr]
   refine ⟨decGap_of_cube k r h hg.2.1, ⟨?_, ?_, ?_, ?_⟩, ⟨?_, ?_, ?_, ?_⟩⟩ <;> (try unfold thrSS) <;> linarith
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_5 h_6; revert k r μG μS ν h_5 h_6 hS hq; exact @_root_.GlobalTheory.QuotientMeasureSigmaFinite.sigmaFinite_of_isQuotMeas)`. Consider the case `exact @_root_.GlobalTheory.QuotientMeasureSigmaFinite.sigmaFinite_of_isQuotMeas`. Consider the case `exact _root_.GlobalTheory.QuotientMeasureSigmaFinite.sigmaFinite_of_isQuotMeas`. Consider the case `(apply _root_.GlobalTheory.QuotientMeasureSigmaFinite.sigmaFinite_of_isQuotMeas <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.QuotientMeasureSigmaFinite.sigmaFinite_of_isQuotMeas <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.QuotientMeasureSigmaFinite.sigmaFinite_of_isQuotMeas <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.QuotientMeasureSigmaFinite.sigmaFinite_of_isQuotMeas ..)`.
+-/
 theorem sigmaFinite_of_isQuotMeas {k r : ℕ} {μG μS ν : Measure (Mt k r)} [SigmaFinite μG] [SFinite μS]
     (hS : μS ≠ 0) (hq : IsQuotMeas μG μS ν) : SigmaFinite ν := by
   first
@@ -64,6 +95,9 @@ theorem sigmaFinite_of_isQuotMeas {k r : ℕ} {μG μS ν : Measure (Mt k r)} [S
   | (intros; apply @_root_.GlobalTheory.QuotientMeasureSigmaFinite.sigmaFinite_of_isQuotMeas <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.QuotientMeasureSigmaFinite.sigmaFinite_of_isQuotMeas ..)
 
+/- English proof (translation)
+Rewrite `*` using `[← Measure.measure_univ_ne_zero]`. Unfold `muS`. Rewrite using `[Measure.map_apply SideNormalisedGap.measurable_mulP MeasurableSet.univ, Set.preimage_univ, ← Set.univ_prod_univ, Measure.prod_prod]`. Conclude with `mul_ne_zero hW hN`.
+-/
 theorem muS_ne_zero {k r : ℕ} {μW μN : Measure (Mt k r)} [SFinite μN] (hW : μW ≠ 0) (hN : μN ≠ 0) :
     muS μW μN ≠ 0 := by
   rw [← Measure.measure_univ_ne_zero] at *

@@ -21,6 +21,29 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.TrueReading
 open GlobalTheory.WeilDeligne GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Use `haveI := GlobalTheory.CuspRep.host_isCMField D.host`. Establish `HR` using `_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 s.w)`. Establish `hlaws : _root_.UpperTheory.One.M.RecLawsH (_root_.GlobalTheory.NPin.weilDeligneOfLocalIrrep hL D s.w)` using `HR.recLaws`. Establish `hrow : ∀ σ, ∃ τ : Irr (s.w.adicCompletion D.host.E) D.R.r, D.what₂.isot (D.nd.j i) σ ≠ ⊥ → IsLocS (P.rep σ).S s τ.toIrrRep`. Introduce `σ`.
+
+Distinguish the cases in `hσ : D.what₂.isot (D.nd.j i) σ ≠ ⊥`. Take `⟨τ, hτ⟩` from `GlobalTheory.T.isotypic_row_local_split_exists D P.rep (D.nd.j i) (hR i).some σ hσ s`. Conclude with `⟨Irr.ofIrrRep τ, fun _ => hτ⟩`. Conclude with `⟨default, fun h => absurd h hσ⟩`. Use `choose row hrow using hrow`.
+
+Establish `hrep : ∀ Q : D.naut.AV i, ∃ τ : Irr (s.w.adicCompletion D.host.E) (D.R.r + D.R.t), IsLocS (n` using `D.R.nV) (P.H.av.S i Q) s τ.toIrrRep := by`. Introduce `Q`. Take `⟨τ, hτ, -⟩` from `GlobalTheory.T.splitPlaceLocalComponent_exists_unique_class D.host.E D.R.nV (P.H.av.rep i Q) s`. Conclude with `⟨Irr.ofIrrRep τ, hτ⟩`. Use `choose rep hrep using hrep`.
+
+Establish `hjr` using `D.nd.j_range i`. Set `j0 : Fin D.R.m` to `⟨D.nd.j i - 1, by omega⟩`. Establish `hj0 : j0.1 + 1 = D.nd.j i` using `by simp only [j0]; omega`. Establish `hmuC` using `P.chr.muC i j0 hj0`. Take `⟨μ, hμ, -, hμu⟩` from `GlobalTheory.T.heckeChar_localComponent_exists_unique_unitary D.host.E (P.tp.tup (D.nd.mu i) j0) s.w`.
+
+Establish `hμU : GlobalTheory.SmGL.IsUnitaryChar μ` using `hμu (hmuC ▸ (P.chr.e1 (D.naut.muC i)).2)`. Establish `hμP : IsComp (P.chr.e1 (D.naut.muC i)).1 s.w μ` using `hmuC ▸ hμ`. Establish `eμ` using `_root_.GlobalTheory.T.T_e_locG_eq_rcAt_ofDet hAF hL D P (D.naut.muC i) s.w μ hμP`. Take `⟨η, hη, -, -⟩` from `GlobalTheory.T.heckeChar_localComponent_exists_unique_unitary D.host.E P.cf.eta⁻¹ s.w`. Establish `hηP : IsComp (P.chr.e1 D.naut.etaTinv).1 s.w η` using `P.chr.etaTinv ▸ hη`.
+
+Establish `eη` using `_root_.GlobalTheory.T.T_e_locG_eq_rcAt_ofDet hAF hL D P D.naut.etaTinv s.w η hηP`. Establish `hun : GlobalTheory.SplitWeil.IsUnram η`. Use `(hlaws.sph 1 (Irr.ofDet 1 η hηP.1)).1 (by rw [← eη]; exact (P.T.unr s.w _).1 (D.naut.etaTinv_def s.w).1)` as an intermediate fact. Introduce `x hx`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 this`.
+
+Establish `hI : (fun _ : Fin 1 => x) ∈ torusO (s.w.adicCompletion D.host.E) (Fin 1)` using `fun _ => hx`. Establish `h2` using `hv ⟨_, iwahori_le_KO _ _ (diagT_mem_iwahori hI)⟩`. Establish `h3 : Matrix.GeneralLinearGroup.det (diagT (s.w.adicCompletion D.host.E) (Fin 1) fun _ => x) = x` using `by ext; simp [val_diagT]`. Establish `h4 : (η x : ℂ) * (show ℂ from v) = (show ℂ from v)`. Establish `h5 : detRep (Fin 1) η (diagT (s.w.adicCompletion D.host.E) (Fin 1) fun _ => x) v = (show ℂ from v)`.
+
+Conclude with `h2.trans (by simp)`. Establish `h6` using `(ofChar_apply (detChar (Fin 1) η) (diagT (s.w.adicCompletion D.host.E) (Fin 1) fun _ => x) (show ℂ from v)).symm.trans h5`. Rewrite `h6` using `[detChar_apply, h3]`. Conclude with `h6`. Use `ext`.
+
+Conclude with `(mul_eq_right₀ hv0).1 h4`. Use `⟨⟨_root_.GlobalTheory.NPin.weilDeligneOfLocalIrrep hL D s.w, row, rep, μ, η⁻¹, ⟨hμ.1, hμU⟩, ⟨hηP.1.inv, fun x hx => by simp [hun x hx]⟩, fun σ hσ => (P.row i).1 σ s _ (hrow σ hσ), fun Q => ?_, fun c hc => ?_, fun c hc => ?_⟩, rfl, hrow, hrep, fun j hj => ?_, ⟨hη.1.inv, fun x => ? …` and prove the remaining obligations. Rewrite using `[D.nbc.embAV_loc, P.H.emb]`. Conclude with `P.au _ _ _ _ s _ (hrep Q)`. Rewrite using `[eμ]`.
+
+Conclude with `(_root_.UpperTheory.One.M.RecLawsH.isoMp hlaws 1 c (Irr.ofDet 1 μ hμP.1) hc).symm`. Rewrite `hc` using `[inv_inv]`. Rewrite using `[eη]`. Conclude with `(_root_.UpperTheory.One.M.RecLawsH.isoMp hlaws 1 c (Irr.ofDet 1 η hηP.1) hc).symm`. Establish `: j = j0` using `Fin.ext (by simp only [j0]; omega)`.
+
+Substitute `this` using the available equality. Conclude with `hμ`. Rewrite using `[MonoidHom.inv_apply, hη.2 x]`. Conclude with `inv_inv _`.
+-/
 theorem readAt_exists_m_alt (hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7)
     (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (hR : ∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) (i : D.nd.Loc)
     (s : SplitPlace D.host.E) :

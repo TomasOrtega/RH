@@ -8,6 +8,9 @@ import Formalism.BehrendSets.BehrendVariance.Select
 namespace Formalism.BehrendSets.Final
 open Formalism.BehrendSets
 
+/- English proof (translation)
+The claim follows from `Formalism.BehrendSets.select`.
+-/
 theorem select : Select := Formalism.BehrendSets.select
 
 end Formalism.BehrendSets.Final

@@ -3,6 +3,17 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Introduce `hC hL hP B _ ϖ hϖ hv ι _ I I' _ _ _ _ N hI hI' u u' hS`. Set `J : (I ≃ I') → Ideal B` to `fun σ => { carrier := {b | ∀ i k, ϖ ∣ b * (u i k - u' (σ i) k)} add_mem' := by`. Introduce `a b ha hb i k`. Rewrite using `[add_mul]`. Conclude with `dvd_add (ha i k) (hb i k)`.
+
+Use the proof step `zero_mem' := by`. Introduce `i k`. Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`. Introduce `c b hb i k`.
+
+Rewrite using `[smul_eq_mul, mul_assoc]`. Conclude with `Dvd.dvd.mul_left (hb i k) c }`. Establish `hJ : ∀ σ b, b ∈ J σ ↔ ∀ i k, ϖ ∣ b * (u i k - u' (σ i) k)` using `fun _ _ => Iff.rfl`. Take `⟨e, he, hmem⟩` from `hC B (I ≃ I') J (by`. Introduce `𝔪 h𝔪`.
+
+Set `D : Finset B` to `(Finset.univ : Finset (I × I' × ι)).image fun p => u p.1 p.2.2 - u' p.2.1 p.2.2`. Establish `hD : ∀ i i' k, u i k - u' i' k ∈ D` using `fun i i' k => Finset.mem_image.2 ⟨(i, i', k), Finset.mem_univ _, rfl⟩`. Take `⟨e, hid, hnot, h1, h2⟩` from `hL B ϖ hv 𝔪 h𝔪.isPrime D ((N + 1) ^ N)`. Take `⟨σ, hσ⟩` from `hP B ϖ hϖ ι I I' N hI hI' u u' hS e hid (fun i i' k m hm => h1 _ (hD i i' k) m hm) (fun i i' k k' h => h2 _ (hD i i' k) _ (hD i i' k') h)`. Conclude with `⟨σ, e, (hJ σ e).2 hσ, hid, hnot⟩)`.
+
+Conclude with `⟨e, he, fun σ i k => (hJ σ (e σ)).1 (hmem σ) i k⟩`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.matchVal_of :
     IdemCover → ValLocal → MatchPart → MatchingVal := by
   intro hC hL hP B _ ϖ hϖ hv ι _ I I' _ _ _ _ N hI hI' u u' hS

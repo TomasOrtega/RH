@@ -13,6 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.USep
 open GlobalTheory.Poinc.ThetaOne GlobalTheory.Poinc.Sep GlobalTheory.UT GlobalTheory.FieldBaseChange
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.USep.EvG.ev_values | exact GlobalTheory.USep.EvG.ev_values | (intros; apply GlobalTheory.USep.EvG.ev_values <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_expression_values_at_descended_point : ∀ (N₁ : ℕ), 2 ≤ N₁ → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ →
     (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) → ∀ (D : DegPre V₁) (X C : Type) [AddCommGroup X] (e : X ≃+ D.X)
     (τ₀ : GlobalTheory.UChart.Gens D) (θ : SecOver D.P.A.hom (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))),

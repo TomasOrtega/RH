@@ -33,6 +33,19 @@ end Lin
 
 open GlobalTheory.WeilDeligne Polynomial in
 
+/- English proof (translation)
+Establish `e` using `hx.wdOf_eq hl`. Take `⟨t, ht', φ, hφ, N, a, hN, -, -⟩` from `id hx`. Establish `hxu : x.unr` using `e ▸ (hN.unr_wdOf_iff hl ht' ι).2 hu`. Establish `hc` using `hN.charPol_wdOf (h := h) hl ht' ι (frob h)⁻¹`. Rewrite `hc` using `[e]`.
+
+Establish `hr : (x.charPol (frob h)⁻¹).IsRoot b`. Rewrite using `[hc]`. Conclude with `hb`. Establish `hm : b ≠ 0 ∧ b⁻¹ ∈ x.eig (frob h)`. Take `⟨m, a, rfl⟩` from `WD.exists_rep x`.
+
+Rewrite `hr` using `[WD.charPol_mk, ← Module.End.hasEigenvalue_iff_isRoot_charpoly]`. Take `⟨v, hv⟩` from `hr.exists_hasEigenvector`. Establish `h1 : v = b • a.ρ (frob h) v`. Rewrite using `[← map_smul, ← hv.apply_eq_smul, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression.
+
+Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Conclude with `hv.2 (by simpa using h1)`. Use `⟨hb0, ?_⟩` and prove the remaining obligations. Rewrite using `[WD.eig_mk, mem_roots (LinearMap.charpoly_monic _).ne_zero, ← Module.End.hasEigenvalue_iff_isRoot_charpoly]`.
+
+Use `Module.End.hasEigenvalue_of_hasEigenvector (x := v) ⟨Module.End.mem_eigenspace_iff.2 ?_, hv.2⟩` and prove the remaining obligations. Use `conv_rhs => rw [h1]`. Rewrite using `[smul_smul, inv_mul_cancel₀ hb0, one_smul]`. Establish `h1` using `(WD.tempered_unr _ ((WD.unr_tw x s).2 hxu)).1 ht (b⁻¹ * ((normV w : ℕ) : ℂ) ^ ((s : ℝ) : ℂ)) (by`. Rewrite using `[WD.frobEig_tw x s hxu]`.
+
+Conclude with `Multiset.mem_map_of_mem _ hm.2)`. Rewrite `h1` using `[norm_mul, norm_inv, Complex.norm_natCast_cpow_of_pos (zero_lt_one.trans (GlobalTheory.WeilDeligne.one_lt_normV w)), Complex.ofReal_re, inv_mul_eq_one₀ (norm_ne_zero_iff.2 hm.1)]`. Conclude with `h1`.
+-/
 private theorem norm_root {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} {r : G F Ω →* GL (Fin n) (Qbar l)}
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F)} {h : IsPlaceOver A w} (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal)

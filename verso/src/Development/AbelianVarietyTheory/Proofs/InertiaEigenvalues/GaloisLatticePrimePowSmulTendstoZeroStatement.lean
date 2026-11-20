@@ -8,5 +8,8 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExpo
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TContNbhd.main | exact GlobalTheory.TContNbhd.main | (intros; apply GlobalTheory.TContNbhd.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.galoisLattice_prime_pow_smul_tendsto_zero : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (U : Set T.V), U ∈ nhds (0 : T.V) → ∃ m : ℕ, ∀ x ∈ T.L.T, ((l : ↥LL.1) ^ m) • x ∈ U := by
   first | exact @GlobalTheory.TContNbhd.main | exact GlobalTheory.TContNbhd.main | (intros; apply GlobalTheory.TContNbhd.main <;> assumption)

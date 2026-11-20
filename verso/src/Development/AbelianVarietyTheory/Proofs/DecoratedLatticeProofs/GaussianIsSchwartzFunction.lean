@@ -15,6 +15,11 @@ open scoped Nat
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/- English proof (translation)
+Break down `j with _ | n` into its components or cases. Rewrite using `[norm_iteratedFDeriv_zero]`. Simplify using the standard rewrite rules. Rewrite using `[← norm_iteratedFDeriv_fderiv, show fderiv ℝ (id : E → E) = fun _ => ContinuousLinearMap.id ℝ E from funext fun _ => fderiv_id]`. Break down `n with _ | n` into its components or cases.
+
+Rewrite using `[norm_iteratedFDeriv_zero]`. Conclude with `(ContinuousLinearMap.norm_id_le).trans (by linarith [norm_nonneg x])`. Rewrite using `[iteratedFDeriv_const_of_ne (Nat.succ_ne_zero n)]`. Simplify using `only [Pi.zero_apply, norm_zero]`. Check the signs of the components of the expression.
+-/
 theorem norm_iteratedFDeriv_id_le_one_add (j : ℕ) (x : E) :
     ‖iteratedFDeriv ℝ j (id : E → E) x‖ ≤ 1 + ‖x‖ := by
   rcases j with _ | n
@@ -28,6 +33,13 @@ theorem norm_iteratedFDeriv_id_le_one_add (j : ℕ) (x : E) :
       simp only [Pi.zero_apply, norm_zero]
       positivity
 
+/- English proof (translation)
+Establish `h` using `B.norm_iteratedFDeriv_le_of_bilinear (f := id) (g := id) (N := (n : WithTop ℕ∞)) contDiff_id contDiff_id x le_rfl`. Simplify using `only [id] at h`. Use `h.trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, sq]`. Use `gcongr`. Conclude with `norm_iteratedFDeriv_id_le_one_add i x`. Conclude with `norm_iteratedFDeriv_id_le_one_add (n - i) x`. Use `_ = 2 ^ n * (1 + ‖x‖) ^ 2 := by`.
+
+Rewrite using `[← Finset.sum_mul]`. Use `congr 1`. Conclude with `Nat.sum_range_choose n` after adjusting the coercions.
+-/
 theorem norm_iteratedFDeriv_diag_le (B : E →L[ℝ] E →L[ℝ] ℝ) (n : ℕ) (x : E) :
     ‖iteratedFDeriv ℝ n (fun y => B y y) x‖ ≤ ‖B‖ * (2 ^ n * (1 + ‖x‖) ^ 2) := by
   have h := B.norm_iteratedFDeriv_le_of_bilinear (f := id) (g := id) (N := (n : WithTop ℕ∞))
@@ -47,6 +59,9 @@ theorem norm_iteratedFDeriv_diag_le (B : E →L[ℝ] E →L[ℝ] ℝ) (n : ℕ) 
         congr 1
         exact_mod_cast Nat.sum_range_choose n
 
+/- English proof (translation)
+Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv]`. Establish `h` using `congrFun (iteratedDeriv_exp_const_mul i 1) y`. Simplify using `only [one_mul, one_pow] at h`. Rewrite `h` using `[show (fun s => Real.exp s) = Real.exp from rfl]`. Rewrite using `[h, Real.norm_eq_abs, abs_of_pos (Real.exp_pos y)]`.
+-/
 theorem norm_iteratedFDeriv_rexp (i : ℕ) (y : ℝ) : ‖iteratedFDeriv ℝ i Real.exp y‖ = Real.exp y := by
   rw [norm_iteratedFDeriv_eq_norm_iteratedDeriv]
   have h := congrFun (iteratedDeriv_exp_const_mul i 1) y
@@ -54,6 +69,11 @@ theorem norm_iteratedFDeriv_rexp (i : ℕ) (y : ℝ) : ‖iteratedFDeriv ℝ i R
   rw [show (fun s => Real.exp s) = Real.exp from rfl] at h
   rw [h, Real.norm_eq_abs, abs_of_pos (Real.exp_pos y)]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded`. Consider the case `exact _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded`. Consider the case `(apply _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded ..)`.
+-/
 theorem exists_bound_poly_mul_exp (c : ℝ) (hc : 0 < c) (N : ℕ) :
     ∃ C, ∀ r : ℝ, 0 ≤ r → (1 + r) ^ N * Real.exp (-(c * r ^ 2)) ≤ C := by
   first
@@ -64,6 +84,17 @@ theorem exists_bound_poly_mul_exp (c : ℝ) (hc : 0 < c) (N : ℕ) :
   | (intros; apply @_root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.PolynomialGaussianBounded.poly_mul_gaussian_bounded ..)
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial E with hE | hE` into its components or cases. Use `⟨1, one_pos, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim x 0]`. Simplify using the standard rewrite rules. Establish `hcont : Continuous fun y : E => B y y` using `(B.continuous.clm_apply continuous_id)`.
+
+Take `⟨x0, hx0, hmax⟩` from `(isCompact_sphere (0 : E) 1).exists_isMaxOn (NormedSpace.sphere_nonempty.2 zero_le_one) hcont.continuousOn`. Establish `hx0n : ‖x0‖ = 1` using `by simpa using hx0`. Establish `hx0ne : x0 ≠ 0` using `by intro h; rw [h, norm_zero] at hx0n; exact zero_ne_one hx0n`. Use `⟨-(B x0 x0), by linarith [hB x0 hx0ne], fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`.
+
+Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `hxn : 0 < ‖x‖` using `norm_pos_iff.2 hx set u : E := ‖x‖⁻¹ • x with hu`. Establish `hun : u ∈ Metric.sphere (0 : E) 1`. Rewrite using `[mem_sphere_zero_iff_norm, hu, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hxn.ne']`.
+
+Establish `hxu : x = ‖x‖ • u` using `by rw [hu, smul_smul, mul_inv_cancel₀ hxn.ne', one_smul]`. Establish `h1 : B u u ≤ B x0 x0` using `hmax hun`. Establish `h2 : B x x = ‖x‖ ^ 2 * B u u` using `by conv_lhs => rw [hxu]`. Simplify using `only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h2]`. Use polynomial arithmetic with `[sq_nonneg ‖x‖]`.
+-/
 theorem exists_coercive [FiniteDimensional ℝ E] (B : E →L[ℝ] E →L[ℝ] ℝ) (hB : ∀ x, x ≠ 0 → B x x < 0) :
     ∃ c > 0, ∀ x, B x x ≤ -(c * ‖x‖ ^ 2) := by
   rcases subsingleton_or_nontrivial E with hE | hE
@@ -89,6 +120,17 @@ theorem exists_coercive [FiniteDimensional ℝ E] (B : E →L[ℝ] E →L[ℝ] �
       rw [h2]
       nlinarith [sq_nonneg ‖x‖]
 
+/- English proof (translation)
+Take `⟨c, hc, hBc⟩` from `exists_coercive B hB`. Establish `hq : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y : E => B y y)` using `B.contDiff.clm_apply contDiff_id`. Establish `hg : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (Real.exp ∘ fun y : E => B y y)` using `Real.contDiff_exp.comp hq`. Use `⟨⟨Complex.ofRealLI ∘ (Real.exp ∘ fun y : E => B y y), Complex.ofRealLI.toContinuousLinearMap.contDiff.comp hg, ?_⟩, fun x => rfl⟩` and prove the remaining obligations. Introduce `k n`.
+
+Take `⟨C, hC⟩` from `exists_bound_poly_mul_exp c hc (k + 2 * n)`. Use `⟨n ! * (2 * (‖B‖ + 1)) ^ n * C, fun x => ?_⟩` and prove the remaining obligations. Establish `hn : ((n : ℕ∞) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `by exact_mod_cast le_top`. Rewrite using `[LinearIsometry.norm_iteratedFDeriv_comp_left _ hg.contDiffAt hn]`. Establish `hfb` using `norm_iteratedFDeriv_comp_le (g := Real.exp) (f := fun y : E => B y y) Real.contDiff_exp hq hn x (C := Real.exp (B x x)) (D := 2 * (‖B‖ + 1) * (1 + ‖x‖) ^ 2) (fun i _ => (norm_iteratedFDeriv_rexp i _).le) (fun i hi _ => by`.
+
+Establish `hB0` using `norm_nonneg B`. Establish `hx0` using `norm_nonneg x`. Establish `a1 : ‖B‖ ≤ (‖B‖ + 1) ^ i` using `le_trans (by linarith) (le_self_pow₀ (by linarith) (by omega))`. Establish `a2 : (1 + ‖x‖) ^ 2 ≤ ((1 + ‖x‖) ^ 2) ^ i` using `le_self_pow₀ (by nlinarith) (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hx0` using `norm_nonneg x`. Establish `hB0` using `norm_nonneg B`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hfb.trans (by gcongr; exact hBc x)`.
+
+Use `_ = n ! * (2 * (‖B‖ + 1)) ^ n * ((1 + ‖x‖) ^ (k + 2 * n) * Real.exp (-(c * ‖x‖ ^ 2))) := by`. Rewrite using `[show (2 * (‖B‖ + 1) * (1 + ‖x‖) ^ 2) ^ n = (2 * (‖B‖ + 1)) ^ n * (1 + ‖x‖) ^ (2 * n) by`. Rewrite using `[mul_pow, pow_mul], pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ n ! * (2 * (‖B‖ + 1)) ^ n * C := by gcongr; exact hC ‖x‖ hx0`.
+-/
 theorem exists_schwartz_exp_diag [FiniteDimensional ℝ E] (B : E →L[ℝ] E →L[ℝ] ℝ)
     (hB : ∀ x, x ≠ 0 → B x x < 0) :
     ∃ f : SchwartzMap E ℂ, ∀ x, f x = ((Real.exp (B x x) : ℝ) : ℂ) := by
@@ -171,9 +213,15 @@ def trFormC (w : ι → ℝ) (M : ι → Matrix (Fin m) (Fin m) ℂ) :
   LinearMap.toContinuousLinearMap
     ((LinearMap.toContinuousLinearMap : ((ι → Fin m → Fin n → ℂ) →ₗ[ℝ] ℝ) ≃ₗ[ℝ] _).toLinearMap ∘ₗ trFormL w M)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trFormC_apply (w : ι → ℝ) (M : ι → Matrix (Fin m) (Fin m) ℂ) (x y : ι → Fin m → Fin n → ℂ) :
     trFormC w M x y = trForm w M x y := rfl
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trace_conjTranspose_mul_mul (M : Matrix (Fin m) (Fin m) ℂ) (Z : Matrix (Fin m) (Fin n) ℂ) :
     Matrix.trace (Zᴴ * M * Z) = ∑ j, star (fun a => Z a j) ⬝ᵥ (M *ᵥ fun a => Z a j) := by
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, dotProduct,
@@ -183,12 +231,20 @@ theorem trace_conjTranspose_mul_mul (M : Matrix (Fin m) (Fin m) ℂ) (Z : Matrix
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[trace_conjTranspose_mul_mul, Complex.re_sum]`. Conclude with `Finset.sum_nonneg fun j _ => by`. Simplify using `using (Complex.le_def.1 (hM.posSemidef.dotProduct_mulVec_nonneg (fun a => Z a j))).1`.
+-/
 theorem re_trace_nonneg {M : Matrix (Fin m) (Fin m) ℂ} (hM : M.PosDef) (Z : Matrix (Fin m) (Fin n) ℂ) :
     0 ≤ (Matrix.trace (Zᴴ * M * Z)).re := by
   rw [trace_conjTranspose_mul_mul, Complex.re_sum]
   exact Finset.sum_nonneg fun j _ => by
     simpa using (Complex.le_def.1 (hM.posSemidef.dotProduct_mulVec_nonneg (fun a => Z a j))).1
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, (fun a => Z a j) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hZ` to reduce the goal to its premises. Use extensionality with `a j`.
+
+Conclude with `congrFun (h j) a`. Rewrite using `[trace_conjTranspose_mul_mul, Complex.re_sum]`. Use `Finset.sum_pos' (fun j _ => ?_) ⟨j, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `using (Complex.le_def.1 (hM.posSemidef.dotProduct_mulVec_nonneg (fun a => Z a j))).1`. Simplify using `using (Complex.lt_def.1 (hM.dotProduct_mulVec_pos hj)).1`.
+-/
 theorem re_trace_pos {M : Matrix (Fin m) (Fin m) ℂ} (hM : M.PosDef) {Z : Matrix (Fin m) (Fin n) ℂ} (hZ : Z ≠ 0) :
     0 < (Matrix.trace (Zᴴ * M * Z)).re := by
   obtain ⟨j, hj⟩ : ∃ j, (fun a => Z a j) ≠ 0 := by
@@ -202,6 +258,11 @@ theorem re_trace_pos {M : Matrix (Fin m) (Fin m) ℂ} (hM : M.PosDef) {Z : Matri
   · simpa using (Complex.le_def.1 (hM.posSemidef.dotProduct_mulVec_nonneg (fun a => Z a j))).1
   · simpa using (Complex.lt_def.1 (hM.dotProduct_mulVec_pos hj)).1
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `Function.ne_iff.1 hx`. Establish `hpos : 0 < ∑ i, w i * (Matrix.trace ((Matrix.of (x i))ᴴ * M i * Matrix.of (x i))).re`. Use `Finset.sum_pos' (fun k _ => mul_nonneg (hw k).le (re_trace_nonneg (hM k) _)) ⟨i, Finset.mem_univ _, mul_pos (hw i) (re_trace_pos (hM i) ?_)⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hi h`.
+
+Unfold `trForm`. Use `Real.pi_pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem trForm_self_neg (w : ι → ℝ) (hw : ∀ i, 0 < w i) (M : ι → Matrix (Fin m) (Fin m) ℂ)
     (hM : ∀ i, (M i).PosDef) (x : ι → Fin m → Fin n → ℂ) (hx : x ≠ 0) : trForm w M x x < 0 := by
   obtain ⟨i, hi⟩ := Function.ne_iff.1 hx
@@ -214,6 +275,9 @@ theorem trForm_self_neg (w : ι → ℝ) (hw : ∀ i, 0 < w i) (M : ι → Matri
   have := Real.pi_pos
   nlinarith
 
+/- English proof (translation)
+Apply `Complex.conj_eq_iff_re.mp` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `star (Matrix.trace _) = _`. Rewrite using `[← Matrix.trace_conjTranspose]`. Use `congr 1`. Simplify using `[Matrix.conjTranspose_mul, hM.eq, Matrix.mul_assoc]`.
+-/
 theorem trace_conjTranspose_mul_mul_real {M : Matrix (Fin m) (Fin m) ℂ} (hM : M.IsHermitian)
     (Z : Matrix (Fin m) (Fin n) ℂ) :
     (((Matrix.trace (Zᴴ * M * Z)).re : ℝ) : ℂ) = Matrix.trace (Zᴴ * M * Z) := by
@@ -225,6 +289,13 @@ theorem trace_conjTranspose_mul_mul_real {M : Matrix (Fin m) (Fin m) ℂ} (hM : 
 
 end TraceForm
 
+/- English proof (translation)
+Introduce `D n V l hl s hs`. Establish `hM : ∀ τ, (gramAt D V τ * s τ).PosDef` using `fun τ => (hs τ).2.2`. Take `⟨f, hf⟩` from `exists_schwartz_exp_diag (trFormC (n := n) (fun τ => |l τ|) (fun τ => gramAt D V τ * s τ)) (fun x hx => by`. Rewrite using `[trFormC_apply]`. Conclude with `trForm_self_neg _ (fun τ => abs_pos.2 (hl τ)) _ hM x hx)`.
+
+Use `⟨f, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hf, trFormC_apply, Complex.ofReal_exp, gauss]`. Use `congr 1`. Simplify using `only [trForm]`. Use `push_cast`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[trace_conjTranspose_mul_mul_real (hM τ).1]`.
+-/
 theorem exists_schwartz_gauss : ∀ (D : D7) (n : ℕ) (V : HSp D) (l : D.what₂.Tau → ℝ), (∀ τ, l τ ≠ 0) →
     ∀ s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ, IsCartanInv (gramAt D V τ) (s τ)) →
     ∃ f : SchwartzMap (D.what₂.Tau → Fin V.rank → Fin n → ℂ) ℂ, ∀ z, f z = gauss V l s (fun τ => Matrix.of (z τ)) := by

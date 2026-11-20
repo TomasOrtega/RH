@@ -7,6 +7,15 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 
 namespace GlobalTheory.FormalAlg
 
+/- English proof (translation)
+Introduce `R _ I X Z φ p hci z hz`. Establish `hmem : ∀ x : X, φ x = z → x ∈ Set.range ((baseIdeal p I).comap φ).subschemeι`. Introduce `x hx`. Rewrite using `[Scheme.IdealSheafData.range_subschemeι, GlobalTheory.T.baseIdealSheafOfIdeal_comap_specMap_support.1 R Z X p φ I]`. Use `show x ∈ (baseIdeal (φ ≫ p) I).support`.
+
+Use `(GlobalTheory.T.baseIdealSheafOfIdeal_comap_specMap_support.2.2 R X (φ ≫ p) I x).mpr ?_` and prove the remaining obligations. Establish `e : (φ ≫ p) x = p (φ x)` using `by simp`. Rewrite using `[e, hx]`. Conclude with `hz`. Introduce `x hx x' hx'`.
+
+Take `⟨y, rfl⟩` from `hmem x hx`. Take `⟨y', rfl⟩` from `hmem x' hx'`. Establish `hinj` using `(((baseIdeal p I).comap φ).subschemeι ≫ φ).isClosedEmbedding.injective`. Establish `: y = y'` using `hinj (by`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hx hx'`.
+
+Establish `e : ∀ w, (((baseIdeal p I).comap φ).subschemeι ≫ φ) w = φ (((baseIdeal p I).comap φ).subschemeι w)` using `fun w => by simp`. Rewrite using `[e, e, hx, hx'])`. Rewrite using `[this]`.
+-/
 theorem fibre_subsingleton_of_isClosedImmersion_restrict :
     ∀ (R : Type) [CommRing R] (I : Ideal R) (X Z : Scheme.{0}) (φ : X ⟶ Z)
       (p : Z ⟶ Spec (CommRingCat.of R)),

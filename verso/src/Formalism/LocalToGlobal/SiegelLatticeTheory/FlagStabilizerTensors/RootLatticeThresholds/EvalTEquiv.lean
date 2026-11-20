@@ -18,6 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
 
+/- English proof (translation)
+Take `⟨gg, rfl⟩` from `Formalism.IndefR.Eqv.KerDiag.gt_of_uh τ M hg`. Conclude with `Formalism.IndefR.SchurOrthogonalityAlt.sm_stable M τ gg hw`.
+-/
 theorem sm_stable_uh (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) {w : M.H τ} (hw : w ∈ M.sm τ) : M.rep τ g w ∈ M.sm τ := by
   obtain ⟨gg, rfl⟩ := Formalism.IndefR.Eqv.KerDiag.gt_of_uh τ M hg
@@ -34,12 +37,40 @@ def translS (a : GA D V) (s : Finset D.what₂.Tau) (v : M.Vec) : M.Vec := fun �
 
 def transl (a : GA D V) (v : M.Vec) : M.Vec := translS M a Finset.univ v
 
+/- English proof (translation)
+Simplify using `[transl, translS]`.
+-/
 theorem transl_apply (a : GA D V) (v : M.Vec) (τ : D.what₂.Tau) :
     (transl M a v τ : M.H τ) = M.rep τ (comp a τ) (v τ) := by
   simp [transl, translS]
 
 variable {M}
 
+/- English proof (translation)
+Take `rfl` from `Formalism.IndefR.Eqv.eq_thetaC D hθ`. Use `set gs : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ := fun τ => comp a τ with hgsd`. Establish `hgs : Formalism.IndefR.Eqv.IsUnitFam D V gs` using `Formalism.IndefR.Eqv.infMat_unitary' D V a`. Establish `hu : ∀ s : Finset D.what₂.Tau, Formalism.IndefR.Eqv.IsUnitFam D V (fun τ => if τ ∈ s then gs τ else 1)`. Introduce `s τ`.
+
+Distinguish the cases in `hτ : τ ∈ s`. Simplify using `only [hτ, if_true]`. Conclude with `hgs τ`. Simplify using `only [hτ, if_false]`. Simplify using the standard rewrite rules.
+
+Establish `key : ∀ s : Finset D.what₂.Tau, ∀ y, T v (y * Formalism.IndefR.Eqv.famH D V _ (hu s)) = T (translS M a s v) y`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `y`.
+
+Establish `e : Formalism.IndefR.Eqv.famH D V _ (hu ∅) = 1`. Apply `Formalism.IndefR.Eqv.matA_inj D V` to reduce the goal to its premises. Rewrite using `[Formalism.IndefR.Eqv.matA_famH, Formalism.IndefR.Eqv.matA_one]`. Use `Formalism.IndefR.Eqv.famM_one D V using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`.
+
+Simplify using the standard rewrite rules. Establish `e2 : translS M a ∅ v = v`. Use function extensionality and compare the values at `τ`. Simplify using `[translS]`. Rewrite using `[e, mul_one, e2]`.
+
+Consider the case `insert τ0 s hτ0 ih`. Introduce `y`. Establish `e : Formalism.IndefR.Eqv.famH D V _ (hu (insert τ0 s)) = Formalism.IndefR.Eqv.atH D V τ0 (gs τ0) (hgs τ0) * Formalism.IndefR.Eqv.famH D V _ (hu s)`. Apply `Formalism.IndefR.Eqv.matA_inj D V` to reduce the goal to its premises. Rewrite using `[Formalism.IndefR.Eqv.matA_famH, Formalism.IndefR.Eqv.matA_mul, Formalism.IndefR.Eqv.matA_atH, Formalism.IndefR.Eqv.matA_famH]`.
+
+Apply `Formalism.IndefR.Eqv.mat_ext D` to reduce the goal to its premises. Introduce `τ`. Rewrite using `[Matrix.map_mul, Formalism.IndefR.Eqv.psi_famM, Formalism.IndefR.Eqv.psi_atM, Formalism.IndefR.Eqv.psi_famM]`. Distinguish the cases in `h : τ = τ0`. Substitute `h` using the available equality.
+
+Simplify using `[hτ0]`. Simplify using `[h]`. Rewrite using `[Matrix.map_mul, Formalism.IndefR.Eqv.fin_famM, Formalism.IndefR.Eqv.fin_atM, Formalism.IndefR.Eqv.fin_famM, Matrix.one_mul]`. Rewrite using `[e, ← mul_assoc, ih]`. Establish `hw : M.rep τ0 (gs τ0) ((translS M a s v τ0 : M.H τ0)) ∈ M.sm τ0` using `sm_stable_uh M τ0 (hgs τ0) (translS M a s v τ0).2`.
+
+Establish `hq` using `hT.equiv τ0 (gs τ0) (hgs τ0) (translS M a s v) ⟨_, hw⟩ rfl`. Establish `hq'` using `congrFun hq y`. Simplify using `only [rTr] at hq'`. Rewrite `hq'` using `[Formalism.IndefR.Eqv.atTau_eq D V τ0 (gs τ0) (hgs τ0)]`. Rewrite using `[← hq']`.
+
+Use `congrFun (congrArg T ?_) y` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Distinguish the cases in `h : τ = τ0`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[translS, hτ0, hgsd]`. Rewrite using `[Function.update_of_ne h]`. Simplify using `[translS, h]`. Establish `e : a = Formalism.IndefR.Eqv.famH D V _ (hu Finset.univ)` using `Formalism.IndefR.Eqv.famH_unique D V _ (hu Finset.univ) a ha (fun τ => by simp [gs])`.
+
+Use `conv_lhs => rw [e]`. Conclude with `key Finset.univ y`.
+-/
 theorem equiv_ginf {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} (hθ : IsInfFam θ) {T : MMap M}
     (hT : Formalism.IndefR.AutomorphicEvaluation.EqCont θ M T) {a : GA D V} (ha : a ∈ GinfC V) (v : M.Vec) (y : GA D V) :
     T v (y * a) = T (transl M a v) y := by

@@ -18,6 +18,9 @@ variable {O S : Type*} [CommRing O] [IsDomain O] [CommRing S]
 noncomputable def proj (φ : O →+* S) (ω : O) (q : ℕ) (z : S) (k : ℕ) : S :=
   ∑ i ∈ Finset.range q, (z * φ ω ^ k) ^ i
 
+/- English proof (translation)
+Establish `h` using `geom_sum_mul u q`. Rewrite `h` using `[hu, sub_self]`. Conclude with `(mul_eq_zero.1 h).resolve_right (sub_ne_zero.2 hne)`.
+-/
 theorem geom_eq_zero {u : O} {q : ℕ} (hu : u ^ q = 1) (hne : u ≠ 1) :
     ∑ i ∈ Finset.range q, u ^ i = 0 := by
   have h := geom_sum_mul u q
@@ -26,10 +29,18 @@ theorem geom_eq_zero {u : O} {q : ℕ} (hu : u ^ q = 1) (hne : u ≠ 1) :
 
 variable (φ : O →+* S) {ζ ω : O} {q : ℕ} {z : S}
 
+/- English proof (translation)
+Establish `h` using `congrArg (· ^ q) hω`. Simplify `h` using `[mul_pow, hq]`.
+-/
 theorem pow_inv_eq_one (hq : ζ ^ q = 1) (hω : ζ * ω = 1) : ω ^ q = 1 := by
   have h := congrArg (· ^ q) hω
   simpa [mul_pow, hq] using h
 
+/- English proof (translation)
+Establish `hw : (z * φ ω ^ k) ^ q = 1`. Rewrite using `[mul_pow, hz, one_mul, ← pow_mul, mul_comm k q, pow_mul, ← map_pow, pow_inv_eq_one hq hω, map_one, one_pow]`. Establish `h1 : proj φ ω q z k * (z * φ ω ^ k - 1) = 0`. Rewrite using `[proj, geom_sum_mul, hw, sub_self]`. Establish `h3 : φ ζ ^ k * φ ω ^ k = 1`.
+
+Rewrite using `[← mul_pow, ← map_mul, hω, map_one, one_pow]`. Establish `h2 : z - φ ζ ^ k = φ ζ ^ k * (z * φ ω ^ k - 1)`. Take the linear combination `(-z) * h3`. Rewrite using `[h2, mul_left_comm, h1, mul_zero]`.
+-/
 theorem proj_mul_sub (hq : ζ ^ q = 1) (hω : ζ * ω = 1) (hz : z ^ q = 1) (k : ℕ) :
     proj φ ω q z k * (z - φ ζ ^ k) = 0 := by
   have hw : (z * φ ω ^ k) ^ q = 1 := by
@@ -43,6 +54,13 @@ theorem proj_mul_sub (hq : ζ ^ q = 1) (hω : ζ * ω = 1) (hz : z ^ q = 1) (k :
     linear_combination (-z) * h3
   rw [h2, mul_left_comm, h1, mul_zero]
 
+/- English proof (translation)
+Establish `hzk : z * proj φ ω q z k = φ ζ ^ k * proj φ ω q z k`. Use `proj_mul_sub φ hq hω hz k` as an intermediate fact. Take the linear combination `this`. Establish `step : ∀ i : ℕ, (z * φ ω ^ j) ^ i * proj φ ω q z k = φ ((ζ ^ k * ω ^ j) ^ i) * proj φ ω q z k`. Introduce `i`.
+
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Establish `e : φ ((ζ ^ k * ω ^ j) ^ (i + 1)) = φ ((ζ ^ k * ω ^ j) ^ i) * (φ ζ ^ k * φ ω ^ j)`. Simplify using `[pow_succ]`.
+
+Rewrite using `[pow_succ, e]`. Take the linear combination `(z * φ ω ^ j) * ih + φ ((ζ ^ k * ω ^ j) ^ i) * φ ω ^ j * hzk`. Rewrite using `[map_sum, Finset.sum_mul]`. Use `conv_lhs => rw [proj, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => step i`.
+-/
 theorem proj_mul_proj (hq : ζ ^ q = 1) (hω : ζ * ω = 1) (hz : z ^ q = 1) (j k : ℕ) :
     proj φ ω q z j * proj φ ω q z k =
       φ (∑ i ∈ Finset.range q, (ζ ^ k * ω ^ j) ^ i) * proj φ ω q z k := by
@@ -64,11 +82,19 @@ theorem proj_mul_proj (hq : ζ ^ q = 1) (hω : ζ * ω = 1) (hz : z ^ q = 1) (j 
   conv_lhs => rw [proj, Finset.sum_mul]
   exact Finset.sum_congr rfl fun i _ => step i
 
+/- English proof (translation)
+Rewrite using `[proj_mul_proj φ hq hω hz, ← mul_pow, hω]`. Simplify using the standard rewrite rules.
+-/
 theorem proj_self (hq : ζ ^ q = 1) (hω : ζ * ω = 1) (hz : z ^ q = 1) (k : ℕ) :
     proj φ ω q z k * proj φ ω q z k = (q : S) * proj φ ω q z k := by
   rw [proj_mul_proj φ hq hω hz, ← mul_pow, hω]
   simp
 
+/- English proof (translation)
+Establish `hq1` using `hq.pow_eq_one`. Establish `hu : (ζ ^ k * ω ^ j) ^ q = 1`. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul, mul_comm k q, mul_comm j q, pow_mul, pow_mul, hq1, pow_inv_eq_one hq1 hω, one_pow, one_pow, one_mul]`. Establish `hne : ζ ^ k * ω ^ j ≠ 1`. Introduce `h`.
+
+Establish `h3 : ζ ^ j * ω ^ j = 1` using `by rw [← mul_pow, hω, one_pow]`. Establish `: ζ ^ j = ζ ^ k` using `by linear_combination (-ζ ^ j) * h + ζ ^ k * h3`. Conclude with `hjk (hq.pow_inj hj hk this)`. Rewrite using `[proj_mul_proj φ hq1 hω hz, geom_eq_zero hu hne, map_zero, zero_mul]`.
+-/
 theorem proj_orth (hq : IsPrimitiveRoot ζ q) (hω : ζ * ω = 1) (hz : z ^ q = 1) {j k : ℕ}
     (hj : j < q) (hk : k < q) (hjk : j ≠ k) :
     proj φ ω q z j * proj φ ω q z k = 0 := by
@@ -83,6 +109,15 @@ theorem proj_orth (hq : IsPrimitiveRoot ζ q) (hω : ζ * ω = 1) (hz : z ^ q = 
     exact hjk (hq.pow_inj hj hk this)
   rw [proj_mul_proj φ hq1 hω hz, geom_eq_zero hu hne, map_zero, zero_mul]
 
+/- English proof (translation)
+Establish `hq1` using `hq.pow_eq_one`. Establish `hω1` using `pow_inv_eq_one hq1 hω`. Establish `e : ∀ k, proj φ ω q z k = ∑ i ∈ Finset.range q, z ^ i * φ ((ω ^ i) ^ k)`. Introduce `k`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_pow, map_pow, map_pow, ← pow_mul, ← pow_mul, mul_comm k i]`. Repeatedly rewrite using `[e]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.mul_sum, ← map_sum]`. Rewrite using `[Finset.sum_eq_single_of_mem 0 (Finset.mem_range.2 hq0)]`.
+
+Simplify using the standard rewrite rules. Introduce `i hi hi0`. Establish `hi'` using `Finset.mem_range.1 hi`. Establish `hu : (ω ^ i) ^ q = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hω1, one_pow]`. Establish `hne : ω ^ i ≠ 1`.
+
+Introduce `h`. Establish `h3 : ζ ^ i * ω ^ i = 1` using `by rw [← mul_pow, hω, one_pow]`. Rewrite `h3` using `[h, mul_one]`. Conclude with `hi0 (Nat.eq_zero_of_dvd_of_lt (hq.dvd_of_pow_eq_one i h3) hi' |>.symm ▸ rfl)`. Rewrite using `[geom_eq_zero hu hne, map_zero, mul_zero]`.
+-/
 theorem sum_proj (hq : IsPrimitiveRoot ζ q) (hq0 : 0 < q) (hω : ζ * ω = 1) :
     ∑ k ∈ Finset.range q, proj φ ω q z k = (q : S) := by
   have hq1 := hq.pow_eq_one
@@ -108,6 +143,13 @@ theorem sum_proj (hq : IsPrimitiveRoot ζ q) (hq0 : 0 < q) (hω : ζ * ω = 1) :
 
 end Fourier
 
+/- English proof (translation)
+Use `Finset.sum_nbij' (fun c => c.val) (fun k => (k : ZMod q)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `c _`. Conclude with `Finset.mem_range.2 (ZMod.val_lt c)`. Introduce `k _`. Conclude with `Finset.mem_univ _`.
+
+Introduce `c _`. Simplify using the standard rewrite rules. Introduce `k hk`. Conclude with `ZMod.val_cast_of_lt (Finset.mem_range.1 hk)`. Introduce `c _`.
+
+Both sides reduce to the same expression.
+-/
 theorem sum_zmod_val {M : Type*} [AddCommMonoid M] (q : ℕ) [NeZero q] (f : ℕ → M) :
     ∑ c : ZMod q, f c.val = ∑ k ∈ Finset.range q, f k := by
   refine Finset.sum_nbij' (fun c => c.val) (fun k => (k : ZMod q)) ?_ ?_ ?_ ?_ ?_
@@ -117,6 +159,17 @@ theorem sum_zmod_val {M : Type*} [AddCommMonoid M] (q : ℕ) [NeZero q] (f : ℕ
   · intro k hk; exact ZMod.val_cast_of_lt (Finset.mem_range.1 hk)
   · intro c _; rfl
 
+/- English proof (translation)
+Set `L` to `Localization.Away ϖ`. Set `v : L` to `IsLocalization.Away.invSelf ϖ`. Establish `hv : algebraMap S L ϖ * v = 1` using `IsLocalization.Away.mul_invSelf ϖ`. Establish `hvn : algebraMap S L ϖ ^ n * v ^ n = 1` using `by rw [← mul_pow, hv, one_pow]`. Establish `hinj : Function.Injective (algebraMap S L)` using `IsLocalization.injective _ (M := Submonoid.powers ϖ) (Submonoid.powers_le.2 h0)`.
+
+Establish `htt : algebraMap S L t * algebraMap S L t = algebraMap S L ϖ ^ n * algebraMap S L t`. Rewrite using `[← map_mul, ht, map_mul, map_pow]`. Use `set x : L := algebraMap S L t * v ^ n with hx`. Establish `hxx : x * x = x`. Rewrite using `[hx]`.
+
+Take the linear combination `v ^ n * v ^ n * htt + algebraMap S L t * v ^ n * hvn`. Establish `hint : IsIntegral S x`. Use `⟨Polynomial.X ^ 2 - Polynomial.X, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.monic_X_pow_sub (Polynomial.degree_X_le.trans_lt (by norm_num))`. Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_pow, Polynomial.eval₂_X]`.
+
+Take the linear combination `hxx`. Take `⟨y, hy⟩` from `GlobalTheory.CompanionTheory.ValIntClosed.exists_eq_of_isIntegral ϖ h0 hV x hint`. Use `⟨y, hinj ?_, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hy, hx]`. Take the linear combination `algebraMap S L t * hvn`.
+
+Rewrite using `[map_mul, hy, hxx]`.
+-/
 theorem exists_idem {S : Type} [CommRing S] (ϖ : S) (h0 : ϖ ∈ nonZeroDivisors S) (hV : R.Val ϖ)
     (n : ℕ) (t : S) (ht : t * t = ϖ ^ n * t) : ∃ y, ϖ ^ n * y = t ∧ y * y = y := by
   let L := Localization.Away ϖ
@@ -146,6 +199,15 @@ section Teich
 
 variable {l : ℕ} [Fact l.Prime] (A : PAlg l)
 
+/- English proof (translation)
+Establish `ha' : a * a = a` using `ha`. Establish `hb' : b * b = b` using `hb`. Use `set d := a - b with hd`. Establish `hd3 : d * d * d = d`. Rewrite using `[hd]`.
+
+Take the linear combination `(a + 1 - 3 * b) * ha' + (3 * a - b - 1) * hb'`. Establish `hmem : d ∈ Ideal.span {(l : A.W)}`. Rewrite using `[A.mem_span_l_iff, hd, ← WittVector.constantCoeff_apply, map_sub, sub_eq_zero]`. Conclude with `h`. Establish `hall : ∀ k : ℕ, d ∈ Ideal.span {(l : A.W)} ^ k`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[← hd3, pow_succ]`.
+
+Conclude with `Ideal.mul_mem_mul (Ideal.mul_mem_left _ _ ih) hmem`. Establish `h0 : d = 0` using `IsHausdorff.haus (A.completeW.toIsHausdorff) d fun k => by`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `hall k`. Conclude with `sub_eq_zero.1 h0`.
+-/
 theorem eq_of_idem {a b : A.W} (ha : IsIdempotentElem a) (hb : IsIdempotentElem b)
     (h : a.coeff 0 = b.coeff 0) : a = b := by
   have ha' : a * a = a := ha
@@ -169,6 +231,11 @@ theorem eq_of_idem {a b : A.W} (ha : IsIdempotentElem a) (hb : IsIdempotentElem 
     exact hall k
   exact sub_eq_zero.1 h0
 
+/- English proof (translation)
+Establish `ho : OrthogonalIdempotents fun i => WittVector.teichmuller l (e i)` using `⟨fun i => by show _ * _ = _`. Rewrite using `[← map_mul, he.idem i |>.eq],`. Use `fun i j hij => by show _ * _ = _`. Rewrite using `[← map_mul, he.ortho hij, WittVector.teichmuller_zero]⟩`. Use `eq_of_idem A ?_ (ho.isIdempotentElem_sum) ?_` and prove the remaining obligations.
+
+Use `he.isIdempotentElem_sum (s := Finset.univ) show _ * _ = _` as an intermediate fact. Rewrite using `[← map_mul, this.eq]`. Rewrite using `[WittVector.teichmuller_coeff_zero, ← WittVector.constantCoeff_apply, map_sum]`. Simplify using `[WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`.
+-/
 theorem teich_sum {ι : Type*} [Fintype ι] {e : ι → A.A} (he : OrthogonalIdempotents e) :
     WittVector.teichmuller l (∑ i, e i) = ∑ i, WittVector.teichmuller l (e i) := by
   have ho : OrthogonalIdempotents fun i => WittVector.teichmuller l (e i) :=
@@ -185,10 +252,16 @@ theorem teich_sum {ι : Type*} [Fintype ι] {e : ι → A.A} (he : OrthogonalIde
   · rw [WittVector.teichmuller_coeff_zero, ← WittVector.constantCoeff_apply, map_sum]
     simp [WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]
 
+/- English proof (translation)
+Use `show A.th (WittVector.teichmuller l 0) = 0`. Rewrite using `[WittVector.teichmuller_zero, map_zero]`.
+-/
 theorem sharp_zero : A.sharp 0 = 0 := by
   show A.th (WittVector.teichmuller l 0) = 0
   rw [WittVector.teichmuller_zero, map_zero]
 
+/- English proof (translation)
+Use `show A.th (WittVector.teichmuller l _) = ∑ i, A.th (WittVector.teichmuller l _)`. Rewrite using `[teich_sum A he, map_sum]`.
+-/
 theorem sharp_sum {ι : Type*} [Fintype ι] {e : ι → A.A} (he : OrthogonalIdempotents e) :
     A.sharp (∑ i, e i) = ∑ i, A.sharp (e i) := by
   show A.th (WittVector.teichmuller l _) = ∑ i, A.th (WittVector.teichmuller l _)
@@ -196,6 +269,27 @@ theorem sharp_sum {ι : Type*} [Fintype ι] {e : ι → A.A} (he : OrthogonalIde
 
 end Teich
 
+/- English proof (translation)
+Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hl : (l : A.U) ∈ nonZeroDivisors A.U` using `(GlobalTheory.CompanionTheory.UntiltRegular.untilt_regular A).1`. Establish `hq0 : 0 < l ^ n` using `Nat.pos_of_ne_zero (NeZero.ne _)`. Establish `hq1 : ζ ^ l ^ n = 1` using `hζ.pow_eq_one`. Take `⟨ω, hω⟩ : ∃ ω : OC l, ζ * ω = 1` from `⟨ζ ^ (l ^ n - 1), by`.
+
+Rewrite using `[← pow_succ', Nat.sub_add_cancel hq0, hq1]⟩`. Establish `hc : ∀ x : A.U, (l : A.U) ^ n * x = 0 → x = 0` using `fun x h => mem_nonZeroDivisors_iff_left.1 (pow_mem hl n) x h`. Establish `hcast : ((l ^ n : ℕ) : A.U) = (l : A.U) ^ n` using `by push_cast; rfl`. Use `set P := proj A.oC ω (l ^ n) z with hP`. Establish `hself : ∀ k, P k * P k = (l : A.U) ^ n * P k` using `fun k => by`.
+
+Rewrite using `[hP, proj_self A.oC hq1 hω hz k, hcast]`. Use `choose y hy1 hy2 using fun k => exists_idem (l : A.U) hl hV n (P k) (hself k)`. Establish `hyo : ∀ {j k : ℕ}, j < l ^ n → k < l ^ n → j ≠ k → y j * y k = 0`. Introduce `j k hj hk hjk`. Apply `hc` to reduce the goal to its premises.
+
+Apply `hc` to reduce the goal to its premises. Use `proj_orth A.oC hζ hω hz hj hk hjk` as an intermediate fact. Rewrite `this` using `[← hP, ← hy1 j, ← hy1 k]`. Take the linear combination `this`. Establish `hys : ∑ k ∈ Finset.range (l ^ n), y k = 1`.
+
+Establish `h` using `sum_proj (z := z) A.oC hζ hq0 hω`. Rewrite `h` using `[← hP, hcast]`. Rewrite using `[← sub_eq_zero]`. Apply `hc` to reduce the goal to its premises. Establish `h' : ∑ k ∈ Finset.range (l ^ n), (l : A.U) ^ n * y k = ∑ k ∈ Finset.range (l ^ n), P k` using `Finset.sum_congr rfl fun k _ => hy1 k`.
+
+Rewrite using `[mul_sub, Finset.mul_sum, mul_one, h', h, sub_self]`. Establish `hyz : ∀ k, y k * (z - A.oC ζ ^ k) = 0`. Introduce `k`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← mul_assoc, hy1]`.
+
+Conclude with `proj_mul_sub A.oC hq1 hω hz k`. Use `choose e he using fun k => GlobalTheory.T.existsUnique_idempotent_lift_tilt A (y k) (hy2 k)`. Establish `hzero : ∀ a : A.A, IsIdempotentElem a → A.sharp a = 0 → a = 0` using `fun a ha hs => (GlobalTheory.T.existsUnique_idempotent_lift_tilt A 0 (IsIdempotentElem.zero)).unique ⟨ha, hs⟩ ⟨IsIdempotentElem.zero, sharp_zero A⟩`. Establish `hO : OrthogonalIdempotents fun c : ZMod (l ^ n) => e c.val`. Use `⟨fun c => (he _).1.1, fun c d hcd => ?_⟩` and prove the remaining obligations.
+
+Use `hzero _ ((he _).1.1.mul (he _).1.1) ?_` and prove the remaining obligations. Rewrite using `[map_mul, (he _).1.2, (he _).1.2]`. Conclude with `hyo (ZMod.val_lt c) (ZMod.val_lt d) fun h => hcd (ZMod.val_injective _ h)`. Use `⟨fun c => e c.val, ⟨hO, ?_⟩, fun c => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.T.existsUnique_idempotent_lift_tilt A 1 IsIdempotentElem.one).unique ⟨hO.isIdempotentElem_sum, ?_⟩ ⟨IsIdempotentElem.one, map_one _⟩` and prove the remaining obligations.
+
+Rewrite using `[sharp_sum A hO]`. Repeatedly rewrite using `[fun c : ZMod (l ^ n) => (he c.val).1.2]`. Rewrite using `[sum_zmod_val (l ^ n) y, hys]`. Use `show A.sharp (e c.val) * _ = 0`. Rewrite using `[(he _).1.2]`.
+
+Conclude with `hyz _`.
+-/
 theorem exists_idempotents_of_root_of_unity {l : ℕ} [Fact l.Prime] (A : PAlg l)
     (hV : R.Val (l : A.U)) (n : ℕ) (ζ : OC l) (hζ : IsPrimitiveRoot ζ (l ^ n)) (z : A.U)
     (hz : z ^ l ^ n = 1) :

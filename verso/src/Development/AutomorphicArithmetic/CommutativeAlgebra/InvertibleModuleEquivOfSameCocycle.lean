@@ -3,6 +3,9 @@ open CategoryTheory TensorProduct UpperTheory.PicD
 
 namespace UpperTheory.PicD
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [smul_add, mul_add, hx, hy]`. Consider the case `tmul a b => simp [smul_tmul', Algebra.TensorProduct.tmul_mul_tmul]`.
+-/
 private theorem smul_eq_tmul_mul {A C : Type} [CommRing A] [CommRing C] [Algebra A C] (c : C) (x : C ⊗[A] C) :
     c • x = (c ⊗ₜ[A] (1 : C)) * x := by
   induction x using TensorProduct.induction_on with
@@ -10,6 +13,19 @@ private theorem smul_eq_tmul_mul {A C : Type} [CommRing A] [CommRing C] [Algebra
   | add x y hx hy => simp only [smul_add, mul_add, hx, hy]
   | tmul a b => simp [smul_tmul', Algebra.TensorProduct.tmul_mul_tmul]
 
+/- English proof (translation)
+Establish `hψ : ∀ m, LinearMap.liftBaseChange C t ((1 : C) ⊗ₜ[A] m) = t m` using `fun m => by simp`. Use `⟨fun a b hab => ?_, ?_⟩` and prove the remaining obligations. Apply `Module.FaithfullyFlat.tensorProduct_mk_injective (A := A) (B := C) M` to reduce the goal to its premises. Apply `bij.1` to reduce the goal to its premises. Simplify `hab` using `[hψ]`.
+
+Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩`. Conclude with `GlobalTheory.FlatDescent.mem_invariants.2 (ht m)`. Introduce `hb`.
+
+Establish `hb' : b • g = (1 : C) ⊗ₜ[A] b` using `GlobalTheory.FlatDescent.mem_invariants.1 hb`. Take `⟨s, rfl⟩` from `bij.2 b`. Establish `hinj : Function.Injective (((LinearMap.liftBaseChange C t).restrictScalars A).lTensor C)` using `Module.Flat.lTensor_preserves_injective_linearMap _ bij.1`. Establish `hcan : ∀ x : C ⊗[A] M, ((LinearMap.liftBaseChange C t).restrictScalars A).lTensor C (GlobalTheory.FlatDescent.canonical C M x) = (LinearMap.liftBaseChange C t x) • g`. Introduce `x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_smul]`. Consider the case `tmul c m`. Establish `h1 : c ⊗ₜ[A] t m = c • ((1 : C) ⊗ₜ[A] t m)` using `by simp [smul_tmul']`.
+
+Simplify using `[h1, ← ht m, mul_smul]`. Establish `hs : GlobalTheory.FlatDescent.canonical C M s = (1 : C) ⊗ₜ[A] s`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hcan, hb']`. Simplify using the standard rewrite rules.
+
+Establish `hd : GlobalTheory.FlatDescent.amitsurDiff C M s = 0`. Simplify using `[GlobalTheory.FlatDescent.amitsurDiff, hs]`. Take `⟨m, rfl⟩` from `((GlobalTheory.FlatDescent.amitsur_exact (A := A) C M).2 s).1 hd`. Conclude with `⟨m, by simp⟩`.
+-/
 private theorem injective_and_range {A C M : Type} [CommRing A] [CommRing C] [Algebra A C]
     [Module.FaithfullyFlat A C] [AddCommGroup M] [Module A M]
     (g : C ⊗[A] C) (t : M →ₗ[A] C) (ht : ∀ m, t m • g = (1 : C) ⊗ₜ[A] t m)
@@ -51,6 +67,21 @@ private theorem injective_and_range {A C M : Type} [CommRing A] [CommRing C] [Al
 
 end UpperTheory.PicD
 
+/- English proof (translation)
+Introduce `P A _ z M M' _ _ _ _ h h'`. Take `⟨C, iC, iA, hff, het, w, g, t, w', g', t', T, T'⟩` from `UpperTheory.exists_etale_trivialization_of_two_invertibleModuleTorsors P A z z M M' h h'`. Establish `hd : P.dd C (w' - w) = 0` using `by rw [map_sub, T.dw, T'.dw, sub_self]`. Take `⟨u, hu⟩` from `(P.dd_eq_zero _).1 hd`. Establish `hg : g' * Units.map (i1 A C).toRingHom.toMonoidHom u = g * Units.map (i2 A C).toRingHom.toMonoidHom u`.
+
+Apply `P.un_injective` to reduce the goal to its premises. Rewrite using `[P.un_mul, P.un_mul, ← P.mapDegZero_ofUnit, ← P.mapDegZero_ofUnit, hu, T.hg, T'.hg, map_sub, map_sub]`. Normalize the expressions using the abelian group laws. Establish `hg' : (g' : C ⊗[A] C) * ((u : C) ⊗ₜ[A] (1 : C)) = (g : C ⊗[A] C) * ((1 : C) ⊗ₜ[A] (u : C))`. Simplify using `using congrArg Units.val hg`.
+
+Set `t₁ : M →ₗ[A] C` to `LinearMap.mulLeft A (u : C) ∘ₗ t`. Establish `ht₁ : ∀ m, t₁ m • (g' : C ⊗[A] C) = (1 : C) ⊗ₜ[A] t₁ m`. Introduce `m`. Establish `h1` using `T.ht m`. Rewrite `h1`, the goal using `[smul_eq_tmul_mul]`.
+
+Establish `h2 : ((u : C) * t m) ⊗ₜ[A] (1 : C) = ((u : C) ⊗ₜ[A] (1 : C)) * (t m ⊗ₜ[A] (1 : C))`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Establish `h3 : (1 : C) ⊗ₜ[A] ((u : C) * t m) = ((1 : C) ⊗ₜ[A] t m) * ((1 : C) ⊗ₜ[A] (u : C))`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, mul_comm]`. Simplify using `only [t₁, LinearMap.comp_apply, LinearMap.mulLeft_apply]`.
+
+Rewrite using `[h2, h3, ← h1]`. Take the linear combination `(t m ⊗ₜ[A] (1 : C)) * hg'`. Establish `hψ : ∀ x : C ⊗[A] M, LinearMap.liftBaseChange C t₁ x = (u : C) * LinearMap.liftBaseChange C t x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, mul_add]`. Consider the case `tmul c m => simp [t₁, mul_left_comm]`. Establish `hbij : Function.Bijective (LinearMap.liftBaseChange C t₁)`. Establish `: (LinearMap.liftBaseChange C t₁ : C ⊗[A] M → C) = (fun x => (u : C) * x) ∘ (LinearMap.liftBaseChange C t)` using `funext hψ`.
+
+Rewrite using `[this]`. Conclude with `(Units.mulLeft_bijective u).comp T.bij`. Take `⟨i₁, r₁⟩` from `injective_and_range (g' : C ⊗[A] C) t₁ ht₁ hbij`. Take `⟨i₂, r₂⟩` from `injective_and_range (g' : C ⊗[A] C) t' T'.ht T'.bij`. Conclude with `⟨LinearEquiv.ofInjective t₁ i₁ ≪≫ₗ LinearEquiv.ofEq _ _ (r₁.trans r₂.symm) ≪≫ₗ (LinearEquiv.ofInjective t' i₂).symm⟩`.
+-/
 theorem UpperTheory.invertibleModule_equiv_of_same_cocycle :
     ∀ (P : Data) (A : Type) [CommRing A] (z : P.S1.obj (CommRingCat.of A)) (M M' : Type) [AddCommGroup M] [Module A M]
         [AddCommGroup M'] [Module A M'], P.Rel z M → P.Rel z M' → Nonempty (M ≃ₗ[A] M') := by

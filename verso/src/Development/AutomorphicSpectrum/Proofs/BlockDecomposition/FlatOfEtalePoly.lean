@@ -15,6 +15,11 @@ namespace GlobalTheory.CompanionTheory.FlatChartP
 
 open GlobalTheory.CompanionTheory.ChartAlg
 
+/- English proof (translation)
+Establish `h1 : (MvPolynomial.eval₂Hom i t : MvPolynomial (Fin d) R →+* D).Flat` using `(RingHom.Etale.iff_flat_and_formallyUnramified.mp h).1`. Establish `h2 : (algebraMap R (MvPolynomial (Fin d) R)).Flat` using `RingHom.flat_algebraMap_iff.2 inferInstance`. Establish `e : i = (MvPolynomial.eval₂Hom i t).comp (algebraMap R (MvPolynomial (Fin d) R))`. Use extensionality with `x`. Simplify using `[MvPolynomial.algebraMap_eq]`.
+
+Rewrite using `[e]`. Conclude with `RingHom.Flat.comp h2 h1`.
+-/
 theorem flat_of_etale_poly {R D : Type} [CommRing R] [CommRing D] (i : R →+* D) {d : ℕ} (t : Fin d → D)
     (h : (MvPolynomial.eval₂Hom i t : MvPolynomial (Fin d) R →+* D).Etale) : i.Flat := by
   have h1 : (MvPolynomial.eval₂Hom i t : MvPolynomial (Fin d) R →+* D).Flat :=
@@ -26,6 +31,25 @@ theorem flat_of_etale_poly {R D : Type} [CommRing R] [CommRing D] (i : R →+* D
   rw [e]
   exact RingHom.Flat.comp h2 h1
 
+/- English proof (translation)
+Set `e' : Γ(X, V) →+* B` to `GlobalTheory.Cris.evalAt y'.1.2 V hy'`. Set `ψ' : R ⧸ I →+* B` to `y'.1.1`. Establish `hcomp : ∀ o x, Ideal.Quotient.mk I x = κ o → e' (strV q V o) = (ψ'.comp (Ideal.Quotient.mk I)) x`. Introduce `o x hx`. Rewrite using `[RingHom.comp_apply, hx]`.
+
+Conclude with `evalAt_base q κ ψ' y'.1.2 y'.2 hy' o`. Establish `hkill : ∀ x ∈ I, (ψ'.comp (Ideal.Quotient.mk I)) x = 0` using `fun x hx => by`. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero]`. Take `⟨f, ⟨hf1, hf2⟩, hu⟩` from `L.univ B (ψ'.comp (Ideal.Quotient.mk I)) e' hkill hcomp`. Establish `hJ : ∀ a ∈ I.map L.i, f a = 0`.
+
+Establish `: I.map L.i ≤ RingHom.ker f`. Use `Ideal.map_le_iff_le_comap.2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← RingHom.comp_apply, hf1]`. Conclude with `hkill x hx`. Conclude with `fun a ha => this ha`.
+
+Set `φ : L.D ⧸ I.map L.i →+* B` to `Ideal.Quotient.lift _ f hJ`. Establish `hφj : φ.comp L.j = e'`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `Ideal.Quotient.mk_surjective (L.j r)`. Rewrite using `[RingHom.comp_apply, ← hz, Ideal.Quotient.lift_mk]`.
+
+Conclude with `hf2 r z hz`. Use `⟨φ, ?_, fun φ₂ h => ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective z`.
+
+Express the relevant statement in the definitionally equal form `φ (y.1.1 (Ideal.Quotient.mk I r)) = ψ' (Ideal.Quotient.mk I r)`. Rewrite using `[h1, Ideal.Quotient.lift_mk]`. Conclude with `RingHom.congr_fun hf1 r`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom φ) ≫ y.1.2 = y'.1.2`. Rewrite using `[h2, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hφj]`.
+
+Conclude with `eq_specMap hV _ hy'`. Establish `a : φ₂.comp y.1.1 = ψ'` using `congrArg (fun z => z.1.1) h`. Establish `b : Spec.map (CommRingCat.ofHom φ₂) ≫ y.1.2 = y'.1.2` using `congrArg (fun z => z.1.2) h`. Establish `e : e' = φ₂.comp L.j`. Use `evalAt_specMap hV (φ₂.comp L.j) y'.1.2 ?_ hy'` and prove the remaining obligations.
+
+Rewrite using `[← b, h2, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hf : φ₂.comp (Ideal.Quotient.mk _) = f`. Use `hu _ ⟨?_, fun r z hz => ?_⟩` and prove the remaining obligations. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Rewrite using `[← a, RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply, h1]`.
+
+Rewrite using `[RingHom.comp_apply, hz, e]`. Both sides reduce to the same expression. Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[hf]`. Conclude with `(Ideal.Quotient.lift_mk _ f hJ).symm`.
+-/
 theorem rep_lift {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {X : Scheme.{0}}
     {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} {V : X.Opens} {d : ℕ} (hV : IsAffineOpen V)
     {T : Fin d → Γ(X, V)} (L : CrystallineSemistableComparison.B.Lift (strV q V) T R I κ) (y : PtOver X q κ (L.D ⧸ I.map L.i))
@@ -79,6 +103,17 @@ theorem rep_lift {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {X : Schem
     rw [hf]
     exact (Ideal.Quotient.lift_mk _ f hJ).symm
 
+/- English proof (translation)
+Introduce `O R _ _ I γ p hp hn X q κ V d c`. Take `⟨L⟩` from `GlobalTheory.CompanionTheory.EtaleLift.nonempty_lift (strV q V) c.t I κ c.etale`. Establish `hF : L.i.Flat` using `flat_of_etale_poly L.i L.t L.et`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ⟩ : ∃ δ : DividedPowers (I.map L.i), IsDPMorphism γ δ L.i := by`. Use `letI : Algebra R L.D := L.i.toAlgebra`.
+
+Use `haveI : Module.Flat R L.D := hF`. Conclude with `GlobalTheory.CompanionTheory.JLiftDP.dpFlat R L.D I γ`. Set `ψ : R ⧸ I →+* L.D ⧸ I.map L.i` to `Ideal.quotientMap _ L.i Ideal.le_comap_map`. Establish `hψ : ∀ r, ψ (Ideal.Quotient.mk I r) = Ideal.Quotient.mk _ (L.i r)` using `fun r => rfl`. Establish `hκ : L.j.comp (strV q V) = ψ.comp κ`.
+
+Use `RingHom.ext fun o => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `Ideal.Quotient.mk_surjective (κ o)`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, L.hj o x hx, ← hx, hψ]`. Set `y : PtOver X q κ (L.D ⧸ I.map L.i)` to `⟨(ψ, Spec.map (CommRingCat.ofHom L.j) ≫ c.affine.fromSpec), by`. Express the relevant statement in the definitionally equal form `(Spec.map (CommRingCat.ofHom L.j) ≫ c.affine.fromSpec) ≫ q = _`.
+
+Rewrite using `[Category.assoc, fromSpec_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hκ]⟩`. Set `T : Thick (nlFun γ p X q κ)` to `mkT L.D L.i (I.map L.i) δ ⟨fun _ => by simpa using hn.map L.i, fun h => absurd h hp⟩ hδ y hψ`. Establish `hin : InU V T` using `top_le_specMap c.affine L.j`. Use `⟨⟨T, L.t, L.et, rfl, hin, fun B y' hy' => rep_lift c.affine L y hψ rfl B y' hy'⟩, hF, fun i => ?_⟩` and prove the remaining obligations. Establish `e : ev T hin = L.j` using `evalAt_specMap c.affine L.j _ rfl hin`.
+
+Express the relevant statement in the definitionally equal form `ev T hin (c.t i) = _`. Rewrite using `[e]`. Conclude with `L.hT i`.
+-/
 theorem exists_flat_chart : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ : DividedPowers I) (p : ℕ) (hp : p ≠ 0)
     (hn : IsNilpotent (p : R)) {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (κ : O →+* R ⧸ I) {V : X.Opens} {d : ℕ}
     (c : Coord q V d), ∃ c' : Chart γ p q κ V d, FlatT c'.D ∧ ∀ i, ev c'.D c'.inV (c.t i) = Ideal.Quotient.mk _ (c'.t i) := by

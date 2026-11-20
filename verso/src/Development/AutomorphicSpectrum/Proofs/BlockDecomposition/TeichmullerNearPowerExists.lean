@@ -7,6 +7,9 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.LTPer.TopNil
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `GroundTheory.PAdicHodge.IsPerfectoidField.surjective_fontaineTheta (K := ℂ_[l]) l ⟨y, GroundTheory.PAdicHodge.mem_normInteger.2 hy⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h` using `GroundTheory.PAdicHodge.IsPerfectoidField.thetaBDeRhamPlusField_wittToBDeRhamPlus (K := ℂ_[l]) l a`. Rewrite `h` using `[ha]`. Conclude with `h`.
+-/
 theorem exists_thB_wB {l : ℕ} [Fact l.Prime] (y : ℂ_[l]) (hy : ‖y‖ ≤ 1) :
     ∃ a, thB l (wB l a) = y := by
   obtain ⟨a, ha⟩ := GroundTheory.PAdicHodge.IsPerfectoidField.surjective_fontaineTheta (K := ℂ_[l]) l
@@ -17,6 +20,13 @@ theorem exists_thB_wB {l : ℕ} [Fact l.Prime] (y : ℂ_[l]) (hy : ‖y‖ ≤ 1
   rw [ha] at h
   exact h
 
+/- English proof (translation)
+Use `set c : ℂ_[l] := thB l (tch l x) with hc`. Establish `hpos : 0 < ‖thB l ϖ‖` using `norm_pos_iff.2 hϖ`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hpos hx`. Use `⟨N + 1, Nat.succ_pos N, ?_⟩` and prove the remaining obligations. Establish `hle : ‖c‖ ^ (N + 1) ≤ ‖thB l ϖ‖`.
+
+Rewrite using `[pow_succ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hy : ‖c ^ (N + 1) / thB l ϖ‖ ≤ 1`. Rewrite using `[norm_div, norm_pow, div_le_one hpos]`. Conclude with `hle`.
+
+Take `⟨a, ha⟩` from `exists_thB_wB _ hy`. Use `⟨wB l a, hS a, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, FB, pow_one, RingHom.mem_ker, map_sub, map_pow, map_mul, ha, ← hc]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+-/
 theorem near_tch_pow {l : ℕ} [Fact l.Prime] (S : Subring (Formalism.Per6.BdRp l)) (hS : ∀ a, wB l a ∈ S)
     (ϖ : Formalism.Per6.BdRp l) (hϖ : thB l ϖ ≠ 0) (x : Tl l) (hx : ‖thB l (tch l x)‖ < 1) :
     ∃ M : ℕ, 0 < M ∧ Near S ϖ (FB l 1) 1 (tch l x ^ M) := by
@@ -39,6 +49,9 @@ theorem near_tch_pow {l : ℕ} [Fact l.Prime] (S : Subring (Formalism.Per6.BdRp 
   field_simp
   simp
 
+/- English proof (translation)
+Introduce `S hS ϖ hϖ x hx` and use `near_tch_pow S hS ϖ hϖ x hx`.
+-/
 theorem main : ∀ {l : ℕ} [Fact l.Prime] (S : Subring (Formalism.Per6.BdRp l)), (∀ a, wB l a ∈ S) →
     ∀ (ϖ : Formalism.Per6.BdRp l), thB l ϖ ≠ 0 → ∀ x : Tl l, ‖thB l (tch l x)‖ < 1 →
       ∃ M : ℕ, 0 < M ∧ Near S ϖ (FB l 1) 1 (tch l x ^ M) :=

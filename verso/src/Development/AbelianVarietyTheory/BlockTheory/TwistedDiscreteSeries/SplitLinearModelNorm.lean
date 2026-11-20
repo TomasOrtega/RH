@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 def absV (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (y : (Fv F v)ˣ) : ℝ :=
   ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ (WithZero.log (Valued.v (y : Fv F v)))
 
+/- English proof (translation)
+Unfold `absV`. Use `zpow_pos ?_ _` and prove the remaining obligations. Establish `: Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`.
+
+Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions.
+-/
 theorem absV_pos (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (y : (Fv F v)ˣ) :
     0 < absV F v y := by
   unfold absV
@@ -30,6 +35,15 @@ def normFin (D : D7) : (AE D)ˣ →* (Af D.host.F)ˣ :=
 
 def absFin (D : D7) (x : (AE D)ˣ) : ℝ := ∏ᶠ v, absV D.host.F v (normV D v x)
 
+/- English proof (translation)
+Establish `h1` using `((normFin D x : Af D.host.F)).2`. Establish `h2` using `(((normFin D x)⁻¹ : (Af D.host.F)ˣ) : Af D.host.F).2`. Establish `h` using `h1.and h2`. Rewrite `h` using `[Filter.eventually_cofinite]`. Use `h.subset fun v hv => ?_` and prove the remaining obligations.
+
+Introduce `hh`. Apply `hv` to reduce the goal to its premises. Establish `e1 : ((normV D v x : (Fv D.host.F v)ˣ) : Fv D.host.F v) = (normFin D x : Af D.host.F).1 v` using `rfl`. Establish `e2 : (((normV D v x)⁻¹ : (Fv D.host.F v)ˣ) : Fv D.host.F v) = (((normFin D x)⁻¹ : (Af D.host.F)ˣ) : Af D.host.F).1 v` using `rfl`. Establish `a1 : Valued.v ((normV D v x : (Fv D.host.F v)ˣ) : Fv D.host.F v) ≤ 1` using `by rw [e1]; exact hh.1`.
+
+Establish `a2 : Valued.v (((normV D v x)⁻¹ : (Fv D.host.F v)ˣ) : Fv D.host.F v) ≤ 1` using `by rw [e2]; exact hh.2`. Establish `hne : Valued.v ((normV D v x : (Fv D.host.F v)ˣ) : Fv D.host.F v) ≠ 0`. Simplify using the standard rewrite rules. Rewrite `a2` using `[Units.val_inv_eq_inv_val, map_inv₀, inv_le_one₀ (zero_lt_iff.mpr hne)]`. Establish `: Valued.v ((normV D v x : (Fv D.host.F v)ˣ) : Fv D.host.F v) = 1` using `le_antisymm a1 a2`.
+
+Simplify using `[absV, this]`.
+-/
 theorem absFin_finite (D : D7) (x : (AE D)ˣ) :
     (Function.mulSupport fun v => absV D.host.F v (normV D v x)).Finite := by
   have h1 := ((normFin D x : Af D.host.F)).2
@@ -50,9 +64,15 @@ theorem absFin_finite (D : D7) (x : (AE D)ˣ) :
   have : Valued.v ((normV D v x : (Fv D.host.F v)ˣ) : Fv D.host.F v) = 1 := le_antisymm a1 a2
   simp [absV, this]
 
+/- English proof (translation)
+The claim follows from `finprod_induction (fun r : ℝ => 0 < r) one_pos (fun _ _ => mul_pos) fun v => absV_pos _ v _`.
+-/
 theorem absFin_pos (D : D7) (x : (AE D)ˣ) : 0 < absFin D x :=
   finprod_induction (fun r : ℝ => 0 < r) one_pos (fun _ _ => mul_pos) fun v => absV_pos _ v _
 
+/- English proof (translation)
+Simplify using `[absFin, absV]`.
+-/
 example (D : D7) : absFin D 1 = 1 := by simp [absFin, absV]
 
 variable {D : D7}
@@ -60,12 +80,18 @@ variable {D : D7}
 def subst (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) : WO S T :=
   HMul.hMul (HMul.hMul (mt T h⁻¹) (x : Matrix (Fin T.rank) (Fin S.rank) (AE D))) (mt S g)
 
+/- English proof (translation)
+Simplify using `[subst, actO]`.
+-/
 example (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) : subst S T g h x = actO S T g⁻¹ h⁻¹ x := by
   simp [subst, actO]
 
 def modFac (S T : HSp D) (x y : (AE D)ˣ) : ℝ :=
   absFin D x ^ ((T.rank : ℝ) / 2) * absFin D y ^ (-(S.rank : ℝ) / 2)
 
+/- English proof (translation)
+The claim follows from `mul_pos (Real.rpow_pos_of_pos (absFin_pos D x) _) (Real.rpow_pos_of_pos (absFin_pos D y) _)`.
+-/
 theorem modFac_pos (S T : HSp D) (x y : (AE D)ˣ) : 0 < modFac S T x y :=
   mul_pos (Real.rpow_pos_of_pos (absFin_pos D x) _) (Real.rpow_pos_of_pos (absFin_pos D y) _)
 

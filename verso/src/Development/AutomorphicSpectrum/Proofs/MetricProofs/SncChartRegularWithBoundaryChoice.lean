@@ -13,6 +13,19 @@ open MvPolynomial ReciprocityTheory.AnForm.R
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Establish `hgen : ∀ g ∈ Par.chPrime I t r, ∃ u : MvPolynomial (Fin m) ℂ, eval t u ≠ 0 ∧ ∀ w : Fin m → ℂ, (∀ h ∈ I, eval w h = 0) → eval w u ≠ 0 → eval w r = 0 → eval w g = 0`. Introduce `g hg`. Establish `hg' : algebraMap _ (locRing I t) g ∈ Ideal.span {algebraMap _ (locRing I t) r}` using `hg`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 hg'`. Take `⟨c, b, hb, hcb⟩` from `exists_mk_locRing I t a`.
+
+Establish `h0 : algebraMap _ (locRing I t) (b * g - c * r) = 0`. Rewrite using `[map_sub, map_mul, map_mul, ← ha, ← hcb]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨s, hs, hsI⟩` from `IrreducibleComponentPreimages.exists_mul_mem_of_algebraMap_locRing_eq_zero I t h0`. Use `⟨s * b, ?_, fun w hw hsb hr => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hs hb`. Establish `h1` using `hw _ hsI`. Rewrite `hsb` using `[map_mul]`. Rewrite `h1` using `[map_mul, map_sub, map_mul, map_mul, hr, mul_zero, sub_zero, ← mul_assoc]`.
+
+Conclude with `(mul_eq_zero.1 h1).resolve_left hsb`. Take `⟨S, hS⟩ : (Par.chPrime I t r).FG` from `IsNoetherian.noetherian _`. Establish `hSm : ∀ g ∈ S, g ∈ Par.chPrime I t r` using `fun g hg => hS ▸ Ideal.subset_span hg`. Use `choose! u hu hu' using fun g (hg : g ∈ S) => hgen g (hSm g hg)`. Use `⟨∏ g ∈ S, u g, ?_, fun w hw hs hr g hg => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 hu`. Rewrite `hs` using `[map_prod]`. Establish `hle : Par.chPrime I t r ≤ RingHom.ker (eval w)`. Rewrite using `[← hS, Ideal.span_le]`.
+
+Introduce `f hf`. Conclude with `hu' f hf w hw (Finset.prod_ne_zero_iff.1 hs f hf) hr`. Conclude with `hle hg`.
+-/
 theorem exists_den_chPrime {m : ℕ} (I : Ideal (MvPolynomial (Fin m) ℂ)) (t : Fin m → ℂ)
     (r : MvPolynomial (Fin m) ℂ) :
     ∃ s : MvPolynomial (Fin m) ℂ, eval t s ≠ 0 ∧ ∀ w : Fin m → ℂ, (∀ h ∈ I, eval w h = 0) →
@@ -48,6 +61,11 @@ theorem exists_den_chPrime {m : ℕ} (I : Ideal (MvPolynomial (Fin m) ℂ)) (t :
       exact hu' f hf w hw (Finset.prod_ne_zero_iff.1 hs f hf) hr
     exact hle hg
 
+/- English proof (translation)
+Establish `hiff` using `mem_conePts_iff_chartIdeal hQ p (rep x) hx`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `renPt_zero _ _ (hiff.1 ⟨(rep_mem x).1, h⟩)`. Introduce `h`.
+
+Establish `h2 : rep x ∈ conePts Q` using `hiff.2 fun f hf => by`. Rewrite using `[← eval_renC]`. Conclude with `h _ (Ideal.mem_map_of_mem _ hf)`. Conclude with `h2.2`.
+-/
 theorem zero_iff {P Q : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hQ : IsMultiHomogIdeal Q)
     (p : (k : K) → ι k) (x : Pts P) (hx : x ∈ src P p) :
     (∀ f ∈ Q, eval (rep x) f = 0) ↔ ∀ h ∈ ideal Q p, eval (coord P p x) h = 0 := by
@@ -61,6 +79,9 @@ theorem zero_iff {P Q : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hQ : IsMultiHomo
       exact h _ (Ideal.mem_map_of_mem _ hf)
     exact h2.2
 
+/- English proof (translation)
+The claim follows from `continuousOn_iff_continuous_domRestrict.2 (Top.isEmbedding_coord p).continuous`.
+-/
 theorem continuousOn_coord {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (p : (k : K) → ι k) :
     ContinuousOn (coord P p) (src P p) :=
   continuousOn_iff_continuous_domRestrict.2 (Top.isEmbedding_coord p).continuous
@@ -69,6 +90,23 @@ end GlobalTheory.CompanionTheory.Ar.Cmp.SncRes.NearComp
 
 open MvPolynomial ReciprocityTheory.AnForm.R GlobalTheory.CompanionTheory.Ar.Cmp
 
+/- English proof (translation)
+Introduce `K _ ι _ P D e p x r Jf σ hP hD hx _ _ _ _ _ hch hout`. Establish `hQ : ∀ k, IsMultiHomogIdeal (SncRes.compIdeal P D k)` using `fun k => MinHom.isMultiHomogIdeal_of_mem_minimalPrimes_sup K ι P D hP hD _ (SncRes.compIdeal_mem D k)`. Use `choose s hst hsw using fun l => SncRes.NearComp.exists_den_chPrime (SncRes.ideal P p) (SncRes.coord P p x) (r l)`. Establish `hg : ∀ k, ∃ g, eval (SncRes.coord P p x) g ≠ 0 ∧ ((∃ l, σ l = some k) ∨ g ∈ SncRes.ideal (SncRes.compIdeal P D k) p)`. Introduce `k`.
+
+Distinguish the cases in `hk : ∃ l, σ l = some k`. Conclude with `⟨1, by simp, Or.inl hk⟩`. Establish `hnz : ¬ ∀ g ∈ SncRes.compIdeal P D k, eval (SncRes.rep x) g = 0` using `fun h => by`. Take `⟨l, -, hl⟩` from `hout k h`. Conclude with `hk ⟨l, hl⟩`.
+
+Establish `hn : ¬ ∀ h ∈ SncRes.ideal (SncRes.compIdeal P D k) p, eval (SncRes.coord P p x) h = 0` using `fun h => hnz ((SncRes.NearComp.zero_iff (hQ k) p x hx).2 h)`. Use `push Not at hn`. Take `⟨g, hg, hgt⟩` from `hn`. Conclude with `⟨g, hgt, Or.inr hg⟩`. Use `choose g hgt hgk using hg`.
+
+Set `F` to `(∏ l, s l) * ∏ k, g k`. Establish `hFw : ∀ w, eval w F ≠ 0 ↔ (∀ l, eval w (s l) ≠ 0) ∧ ∀ k, eval w (g k) ≠ 0`. Introduce `w`. Simplify using `only [F, map_mul, map_prod, ne_eq, mul_eq_zero, not_or, Finset.prod_eq_zero_iff, Finset.mem_univ, true_and, not_exists]`. Use `⟨SncRes.src P p ∩ SncRes.coord P p ⁻¹' {w | eval w F ≠ 0}, ?_, ⟨hx, (hFw _).2 ⟨hst, hgt⟩⟩, Set.inter_subset_left, fun k => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(SncRes.NearComp.continuousOn_coord p).isOpen_inter_preimage (SncRes.Top.isOpen_alt_bis p) (isOpen_ne_fun (MvPolynomial.continuous_eval F) continuous_const)`. Use extensionality with `x'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hc, ho⟩`. Use `⟨ho, ?_⟩` and prove the remaining obligations.
+
+Establish `hz` using `(SncRes.NearComp.zero_iff (hQ k) p x' ho.1).1 hc`. Break down `hgk k with ⟨l, hl⟩ | hk` into its components or cases. Use `⟨l, hl, hz _ ?_⟩` and prove the remaining obligations. Rewrite using `[hch l k hl]`. Conclude with `Ideal.mem_comap.2 (Ideal.subset_span rfl)`.
+
+Conclude with `absurd (hz _ hk) (((hFw _).1 ho.2).2 k)`. Introduce and unpack `⟨ho, l, hl, hr⟩`. Use `⟨?_, ho⟩` and prove the remaining obligations. Use `(SncRes.NearComp.zero_iff (hQ k) p x' ho.1).2 ?_` and prove the remaining obligations. Rewrite using `[hch l k hl]`.
+
+Conclude with `hsw l _ ((SncRes.NearComp.zero_iff hP p x' ho.1).1 (SncRes.rep_mem x').2) (((hFw _).1 ho.2).1 l) hr`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Cmp.SncRes.NearComp.comp_eq_near : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (e : ℕ) (p : (k : K) → ι k) (x : SncRes.Pts P) (r : Fin e → MvPolynomial (Fin (Fintype.card (Σ k, ι k))) ℂ) (Jf : Finset (Fin e)) (σ : Fin e → Option (Fin (SncRes.rc P D))), IsMultiHomogIdeal P → IsMultiHomogIdeal D → x ∈ SncRes.src P p → (∀ h ∈ (SncRes.ideal P p), eval (SncRes.coord P p x) h = 0) → IsRegularLocalRing (locRing (SncRes.ideal P p) (SncRes.coord P p x)) → ringKrullDim (locRing (SncRes.ideal P p) (SncRes.coord P p x)) = e → Ideal.span (Set.range fun l => algebraMap _ (locRing (SncRes.ideal P p) (SncRes.coord P p x)) (r l)) = Ideal.map (algebraMap _ (locRing (SncRes.ideal P p) (SncRes.coord P p x))) (ptIdeal (SncRes.coord P p x)) → (∀ l, σ l = none ↔ l ∉ Jf) → (∀ l k, σ l = some k → SncRes.ideal (SncRes.compIdeal P D k) p = SncRes.Par.chPrime (SncRes.ideal P p) (SncRes.coord P p x) (r l)) → (∀ k, (∀ g ∈ SncRes.compIdeal P D k, eval (SncRes.rep x) g = 0) → ∃ l ∈ Jf, σ l = some k) → ∃ O : Set (SncRes.Pts P), IsOpen O ∧ x ∈ O ∧ O ⊆ SncRes.src P p ∧ ∀ k, SncRes.comp P D k ∩ O = {x' ∈ O | ∃ l, σ l = some k ∧ eval (SncRes.coord P p x') (r l) = 0} := by
   intro K _ ι _ P D e p x r Jf σ hP hD hx _ _ _ _ _ hch hout
   classical

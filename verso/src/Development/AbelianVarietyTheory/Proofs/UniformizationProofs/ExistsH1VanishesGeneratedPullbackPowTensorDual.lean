@@ -17,6 +17,13 @@ noncomputable section
 namespace GlobalTheory.TwistPair
 variable {X W W₁ : Scheme.{0}}
 
+/- English proof (translation)
+Introduce `I V d hV hc φ hφ`. Establish `e : ∀ (a b : I) {U : X.Opens} (h₁ : U ≤ M.U (d a) ⊓ M.U (d b)), rs X h₁ (M.g (d a) (d b)).val = rs X (h₁.trans (inf_le_inf (le _) (le _))) (N.g (c (d a)) (c (d b))).val` using `fun a b U h₁ => by`. Rewrite using `[hg]`. Conclude with `rs_rs _ _ _`. Take `⟨ψ, hψ⟩` from `h I V (fun a => c (d a)) (fun a => (hV a).trans (le _)) hc φ (fun a b b' => by`.
+
+Use `hφ a b b'` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this)`. Use `⟨ψ, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `hψ a b`.
+-/
 theorem firstCohomologyVanishes_of_refines {M N : LB X} (c : M.ι → N.ι) (le : ∀ k, M.U k ≤ N.U (c k))
     (hg : ∀ k l, M.g k l = res (inf_le_inf (le k) (le l)) (N.g (c k) (c l))) (h : FirstCohomologyVanishes N) :
     FirstCohomologyVanishes M := by
@@ -45,6 +52,13 @@ def secRefine {M N : LB X} (c : M.ι → N.ι) (le : ∀ k, M.U k ≤ N.U (c k))
     refine (rs_rs _ _ _).trans (((rs_rs _ _ _).symm.trans h).trans ?_)
     exact congrArg₂ (· * ·) rfl ((rs_rs _ _ _).trans (rs_rs _ _ _).symm)
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 hx`. Take `⟨k, hk⟩` from `exists_chart hM x`. Use `Opens.mem_iSup.2 ⟨k, ?_⟩` and prove the remaining obligations. Establish `h₁ : x ∈ X.basicOpen (rs X (inf_le_left : N.U i ⊓ N.U (c k) ≤ N.U i) (s.f i))`.
+
+Use `Scheme.basicOpen_res X (s.f i) (homOfLE (inf_le_left : N.U i ⊓ N.U (c k) ≤ N.U i)).op` as an intermediate fact. Conclude with `this.ge ⟨⟨X.basicOpen_le _ hi, le k hk⟩, hi⟩`. Establish `h₂ : x ∈ X.basicOpen (rs X (inf_le_right : N.U i ⊓ N.U (c k) ≤ N.U (c k)) (s.f (c k)))`. Use `(congrArg X.basicOpen (s.compat i (c k))).le h₁` as an intermediate fact. Rewrite `this` using `[Scheme.basicOpen_mul]`.
+
+Conclude with `this.2`. Establish `h₃` using `(Scheme.basicOpen_res X (s.f (c k)) (homOfLE (inf_le_right : N.U i ⊓ N.U (c k) ≤ N.U (c k))).op).le h₂`. Conclude with `(Scheme.basicOpen_res X (s.f (c k)) (homOfLE (le k)).op).ge ⟨hk, h₃.2⟩`.
+-/
 theorem nonzeroLocus_le_secRefine {M N : LB X} (c : M.ι → N.ι) (le : ∀ k, M.U k ≤ N.U (c k))
     (hg : ∀ k l, M.g k l = res (inf_le_inf (le k) (le l)) (N.g (c k) (c l))) (hM : M.IsLB)
     (s : LB.Sec N) : nonzeroLocus s ≤ nonzeroLocus (secRefine c le hg s) := by
@@ -63,6 +77,11 @@ theorem nonzeroLocus_le_secRefine {M N : LB X} (c : M.ι → N.ι) (le : ∀ k, 
     (homOfLE (inf_le_right : N.U i ⊓ N.U (c k) ≤ N.U (c k))).op).le h₂
   exact (Scheme.basicOpen_res X (s.f (c k)) (homOfLE (le k)).op).ge ⟨hk, h₃.2⟩
 
+/- English proof (translation)
+Establish `m : ∀ (e : W ⟶ X) (k : H.ι), e y ∈ H.U k → (𝟙 W : W ⟶ W) y ∈ LB.wchart H (K` using `PUnit) (fun _ => e) (fun _ => k) := fun e k h => Set.mem_iInter.2 fun _ => h`. Use `(gm_div (pw (H.pull a) (-t)) (LB.LinComb H (K := PUnit) (fun _ => b) (fun _ => -1)) (𝟙 W) y (fun _ => j, fun _ => i) (fun _ => j', fun _ => i') ⟨⟨m b j hj, m a i hi⟩, m b j' hj', m a i' hi'⟩).trans ?_` and prove the remaining obligations. Establish `e₁` using `gm_linComb H (K := PUnit) (fun _ => b) (fun _ => -1) (𝟙 W) y (fun _ => j) (fun _ => j') (m b j hj) (m b j' hj')`. Establish `e₂` using `gm_pull_g H a (𝟙 W) y (fun _ => i) (fun _ => i') (m a i hi) (m a i' hi')`. Rewrite `e₁` using `[Fintype.prod_unique, Category.id_comp]`.
+
+Rewrite `e₂` using `[Category.id_comp]`. Use `(congrArg₂ (fun u v => u * v⁻¹) e₁ ((map_zpow _ _ _).trans (congrArg (· ^ (-t)) e₂))).trans ?_` and prove the remaining obligations. Simplify using `only [zpow_neg, inv_inv]`. Conclude with `mul_comm _ _`.
+-/
 theorem gm_tw (H : LB X) (a b : W ⟶ X) (t : ℤ) (y : W) (i j i' j' : H.ι)
     (hi : a y ∈ H.U i) (hj : b y ∈ H.U j) (hi' : a y ∈ H.U i') (hj' : b y ∈ H.U j') :
     gm (𝟙 W) y _ ((tw (LB.LinComb H (K := PUnit) (fun _ => b) (fun _ => -1)) (H.pull a) t).g
@@ -81,12 +100,26 @@ theorem gm_tw (H : LB X) (a b : W ⟶ X) (t : ℤ) (y : W) (i j i' j' : H.ι)
   simp only [zpow_neg, inv_inv]
   exact mul_comm _ _
 
+/- English proof (translation)
+The claim follows from `(gm_linComb H ![a, b] ![t, -1] σ y j j' hj hj').trans (Fin.prod_univ_two _)`.
+-/
 theorem gm_pair (H : LB X) (a b : W₁ ⟶ X) (t : ℤ) (σ : W ⟶ W₁) (y : W) (j j' : Fin 2 → H.ι)
     (hj : σ y ∈ LB.wchart H ![a, b] j) (hj' : σ y ∈ LB.wchart H ![a, b] j') :
     gm σ y _ ((LB.LinComb H (K := Fin 2) ![a, b] ![t, -1]).g j j') =
       gm (σ ≫ a) y _ (H.g (j 0) (j' 0)) ^ t * gm (σ ≫ b) y _ (H.g (j 1) (j' 1)) ^ (-1 : ℤ) :=
   (gm_linComb H ![a, b] ![t, -1] σ y j j' hj hj').trans (Fin.prod_univ_two _)
 
+/- English proof (translation)
+Introduce `S _ _ W X f H a b n s hH hs`. Establish `hM : (LB.LinComb H (K` using `PUnit) (fun _ => b) (fun _ => -1)).IsLB := LB.isLB_linComb hH _ _`. Establish `hA : (H.pull a).IsLB` using `LB.isLB_pull hH a`. Take `⟨t₁, h₁⟩` from `GlobalTheory.T.serre_vanishing_very_ample.1 S W f _ n s hA hs _ hM`. Take `⟨t₂, h₂⟩` from `GlobalTheory.TwistGen.twist_generated S W f _ n s hA hs _ hM`.
+
+Use `⟨max t₁ t₂, fun t ht => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `W₁ σ a₁ b₁ rfl rfl`. Establish `le : ∀ J : PUnit → Fin 2 → H.ι, ((LB.LinComb H (K` using `Fin 2) ![a₁, b₁] ![t, -1]).pull σ).U J ≤ (tw (LB.LinComb H (K := PUnit) (fun _ => σ ≫ b₁) (fun _ => -1)) (H.pull (σ ≫ a₁)) t).U (fun _ => J PUnit.unit 1, fun _ => J PUnit.unit 0) := fun J y hy => ⟨Set.mem_iInter.2 fun _ => Set.mem_iInter.1 (mem_pull.1 hy) 1, Set.mem_iInter.2 fun …`. Use `firstCohomologyVanishes_of_refines (M := (LB.LinComb H (K := Fin 2) ![a₁, b₁] ![t, -1]).pull σ) _ le (fun J J' => unit_ext fun y hy => ?_) (h₁ t (le_of_max_le_left ht))` and prove the remaining obligations. Establish `p` using `mem_pull.1 hy.1`.
+
+Establish `p'` using `mem_pull.1 hy.2`. Use `(gm_pull_g _ σ (𝟙 W) y J J' hy.1 hy.2).trans (Eq.trans ?_ (gm_res (𝟙 W) y _ hy _).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `(gm_pair H a₁ b₁ t σ y _ _ p p').trans (gm_tw H (σ ≫ a₁) (σ ≫ b₁) t y _ _ _ _ (Set.mem_iInter.1 p 0) (Set.mem_iInter.1 p 1) (Set.mem_iInter.1 p' 0) (Set.mem_iInter.1 p' 1)).symm`. Take `⟨m, u, hu⟩` from `h₂ t (le_of_max_le_right ht)`.
+
+Establish `le : ∀ J : Fin 2 → H.ι, (LB.LinComb H (K` using `Fin 2) ![a, b] ![t, -1]).U J ≤ (tw (LB.LinComb H (K := PUnit) (fun _ => b) (fun _ => -1)) (H.pull a) t).U (fun _ => J 1, fun _ => J 0) := fun J y hy => ⟨Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy 1, Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy 0⟩`. Establish `hg : ∀ J J' : Fin 2 → H.ι, (LB.LinComb H (K` using `Fin 2) ![a, b] ![t, -1]).g J J' = res (inf_le_inf (le J) (le J')) ((tw (LB.LinComb H (K := PUnit) (fun _ => b) (fun _ => -1)) (H.pull a) t).g (fun _ => J 1, fun _ => J 0) (fun _ => J' 1, fun _ => J' 0)) := fun J J' => unit_ext fun y hy => by`. Use `(gm_pair H a b t (𝟙 W) y _ _ hy.1 hy.2).trans (Eq.trans ?_ (gm_res (𝟙 W) y _ hy _).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.id_comp]`. Conclude with `(gm_tw H a b t y _ _ _ _ (Set.mem_iInter.1 hy.1 0) (Set.mem_iInter.1 hy.1 1) (Set.mem_iInter.1 hy.2 0) (Set.mem_iInter.1 hy.2 1)).symm`.
+
+Use `⟨m, fun i => secRefine (M := LB.LinComb H (K := Fin 2) ![a, b] ![t, -1]) _ le hg (u i), top_unique ?_⟩` and prove the remaining obligations. Rewrite using `[← hu]`. Conclude with `iSup_mono fun i => nonzeroLocus_le_secRefine _ le hg (LB.isLB_linComb hH _ _) (u i)`.
+-/
 theorem twist_pair : ∀ (S : Type) [CommRing S] [IsNoetherianRing S] (W X : Scheme.{0}) (f : W ⟶ Spec (CommRingCat.of S)) (H : LB X) (a b : W ⟶ X) (n : ℕ) (s : Fin (n + 1) → LB.Sec (H.pull a)), H.IsLB → VeryAmpleBy f (H.pull a) s → ∃ t₀ : ℤ, ∀ t, t₀ ≤ t → (∀ (W₁ : Scheme.{0}) (σ : W ⟶ W₁) (a₁ b₁ : W₁ ⟶ X), σ ≫ a₁ = a → σ ≫ b₁ = b → FirstCohomologyVanishes ((LB.LinComb H (K := Fin 2) ![a₁, b₁] ![t, -1]).pull σ)) ∧ ∃ (m : ℕ) (u : Fin (m + 1) → LB.Sec (LB.LinComb H (K := Fin 2) ![a, b] ![t, -1])), ⨆ i, nonzeroLocus (u i) = ⊤ := by
   intro S _ _ W X f H a b n s hH hs
   have hM : (LB.LinComb H (K := PUnit) (fun _ => b) (fun _ => -1)).IsLB := LB.isLB_linComb hH _ _

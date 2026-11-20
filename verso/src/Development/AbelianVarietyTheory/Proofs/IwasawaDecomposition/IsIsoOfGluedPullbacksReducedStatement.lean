@@ -11,6 +11,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.TorRef
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SchGlue.exists_glue_of_dense | exact GlobalTheory.SchGlue.exists_glue_of_dense | (intros; apply GlobalTheory.SchGlue.exists_glue_of_dense <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isIso_of_glued_pullbacks_reduced : ∀ {S X₀ : Scheme.{0}} {I : Type} (V X : I → Scheme.{0}) (κ : ∀ i, V i ⟶ S) (g : ∀ i, X i ⟶ V i)
     (B : I → I → Scheme.{0}) (a : ∀ i k, B i k ⟶ X i) (b : ∀ i k, B i k ⟶ X k) (j : ∀ i, X₀ ⟶ X i)
     (jB : ∀ i k, X₀ ⟶ B i k), (∀ i, IsOpenImmersion (κ i)) →

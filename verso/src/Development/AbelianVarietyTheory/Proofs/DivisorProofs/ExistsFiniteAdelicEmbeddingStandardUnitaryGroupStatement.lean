@@ -16,6 +16,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral (IsDefinit
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinEmbStd.exists_finEmb | exact GlobalTheory.FinEmbStd.exists_finEmb | (intros; apply GlobalTheory.FinEmbStd.exists_finEmb <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_finiteAdelicEmbedding_standardUnitaryGroup : ∀ {D : D7} (V : HSp D) (n : ℕ), V.gram = 1 → V.rank = n → ∃ ι : Formalism.MainNotions.StandardLatticesGL3.GA D n →* GA D V,
   (∀ x, IsFinPt V (ι x) x) ∧ Function.Injective ι ∧ ι.range = GfC V ∧
     ∀ x, (∃ γ ∈ GQ V, finHom V γ = finHom V (ι x)) ↔ x ∈ ratG D n := by

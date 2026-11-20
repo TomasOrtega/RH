@@ -37,6 +37,9 @@ def vPsiAt (D : DegPre R) {C : Type} [NormedField C] (f : R →+* C) (p : ℕ) (
 def betaAt (D : DegPre R) {C : Type} [NormedField C] (f : R →+* C) (p : ℕ) (a b : D.X) : ℝ :=
   vPsiAt D f p (a + b) - vPsiAt D f p a - vPsiAt D f p b
 
+/- English proof (translation)
+Unfold `betaAt`. Rewrite using `[add_comm a b]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem betaAt_symm (D : DegPre R) {C : Type} [NormedField C] (f : R →+* C) (p : ℕ) (a b : D.X) :
     betaAt D f p a b = betaAt D f p b a := by
   unfold betaAt

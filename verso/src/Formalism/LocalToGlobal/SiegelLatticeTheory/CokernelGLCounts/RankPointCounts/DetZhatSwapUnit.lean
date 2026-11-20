@@ -15,27 +15,48 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Set.Sum.elim_range, Set.Sum.elim_range, Set.union_comm]`.
+-/
 theorem U_swap (f f' : Fin (r + 1) → V) :
     Submodule.span E (Set.range (Sum.elim f' f)) = Submodule.span E (Set.range (Sum.elim f f')) := by
   rw [Set.Sum.elim_range, Set.Sum.elim_range, Set.union_comm]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [HermSp.Zhat, Matrix.transpose_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Conclude with `H.h_herm _ _`.
+-/
 theorem Zhat_swap (f f' : Fin (r + 1) → V) :
     H.Zhat f' f = ((M.L.cj.toRingEquiv.toRingHom).mapMatrix (H.Zhat f f'))ᵀ := by
   ext a b
   simp only [HermSp.Zhat, Matrix.transpose_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]
   exact H.h_herm _ _
 
+/- English proof (translation)
+Unfold `HermSp.om' HermSp.om`. Rewrite using `[Zhat_swap, ← Matrix.adjugate_transpose, ← RingHom.map_adjugate]`. Simplify using `only [Matrix.transpose_apply, RingHom.mapMatrix_apply, Matrix.map_apply]`. Both sides reduce to the same expression.
+-/
 theorem om'_swap (f f' : Fin (r + 1) → V) : H.om' f' f = H.om f f' := by
   unfold HermSp.om' HermSp.om
   rw [Zhat_swap, ← Matrix.adjugate_transpose, ← RingHom.map_adjugate]
   simp only [Matrix.transpose_apply, RingHom.mapMatrix_apply, Matrix.map_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Zhat_swap, Matrix.det_transpose, ← RingHom.map_det]`. Conclude with `h.map _`.
+-/
 theorem det_Zhat_swap_unit (f f' : Fin (r + 1) → V) (h : IsUnit (H.Zhat f f').det) :
     IsUnit (H.Zhat f' f).det := by
   rw [Zhat_swap, Matrix.det_transpose, ← RingHom.map_det]
   exact h.map _
 
+/- English proof (translation)
+Introduce `u hu hup`. Take `⟨x, hx, β, γ, hxe⟩` from `decomp_U_perpX H hF₁ hZ₁ hu hup`. Set `zP₁ : ↥(H.perp (H.X g₁))` to `⟨g₁ (Fin.last r), z_mem_perpX H hF₁⟩`. Set `oP₁ : ↥(H.perp (H.X g₁))` to `⟨H.om' g₁ g₁', om'_mem_perpX H _ _⟩`. Set `zP₂ : ↥(H.perp (H.X g₂))` to `⟨g₂ (Fin.last r), z_mem_perpX H hF₂⟩`.
+
+Set `oP₂ : ↥(H.perp (H.X g₂))` to `⟨H.om' g₂ g₂', om'_mem_perpX H _ _⟩`. Establish `h1 : H.mkW g₁ ⟨u, hup⟩ = H.mkW g₁ (β • zP₁ + γ • oP₁)`. Apply `mkW_eq_of_sub_mem` to reduce the goal to its premises. Use `show u - (β • g₁ (Fin.last r) + γ • H.om' g₁ g₁') ∈ H.X g₁`. Rewrite using `[hxe]`.
+
+Use `hx using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `⟨((β • zP₂ + (γ * κ) • oP₂ : ↥(H.perp (H.X g₂))) : V), ?_, (β • zP₂ + (γ * κ) • oP₂).2, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inl (Fin.last r), rfl⟩)) (Submodule.smul_mem _ _ (om'_mem_U H g₂ g₂'))`. Rewrite using `[h1]`.
+
+Simplify using `only [map_add, map_smul]`. Rewrite using `[show χ (H.mkW g₁ zP₁) = H.mkW g₂ zP₂ from hz, show χ (H.mkW g₁ oP₁) = κ • H.mkW g₂ oP₂ from ho, smul_smul]`. Use `show _ = H.mkW g₂ (β • zP₂ + (γ * κ) • oP₂)`. Rewrite using `[map_add, map_smul, map_smul]`.
+-/
 theorem cond_second_of_iso (g₁ g₁' g₂ g₂' : Fin (r + 1) → V) (T₁ T₂ : F) (hF₁ : Formalism.MainNotions.ThinScalesBound.FrameK H g₁ T₁)
     (hF₂ : Formalism.MainNotions.ThinScalesBound.FrameK H g₂ T₂) (hZ₁ : IsUnit (H.Zhat g₁ g₁').det) (χ : H.Wb g₁ ≃ₗ[E] H.Wb g₂) (κ : E)
     (hz : χ (H.mkW g₁ ⟨g₁ (Fin.last r), z_mem_perpX H hF₁⟩) = H.mkW g₂ ⟨g₂ (Fin.last r), z_mem_perpX H hF₂⟩)

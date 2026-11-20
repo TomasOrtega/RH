@@ -17,6 +17,9 @@ noncomputable section
 
 namespace NefPlusAmpleDegree
 
+/- English proof (translation)
+Establish `: W.IsPrime` using `hW.2.1.1`. Establish `hEq` using `CurvePointsFinite.mCoordIdeal_genericPt W hW.2.1.2.1`. Establish `hV : IsArithVar (mCoordIdeal (CurvePointsFinite.genericPt W)) (d + 1)` using `by rw [hEq]; exact hW`. Establish `h` using `hA K ι _ (CurvePointsFinite.genericPt W) d 1 hV fun _ => le_rfl`. Rewrite `h` using `[hEq]`. Then use the resulting hypothesis.
+-/
 theorem genDeg_one_pos (hA : GenDegAmple.Statement) {K : Type} [Fintype K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {W : Ideal (MRing ι)} {d : ℕ} (hW : IsArithVar W (d + 1)) :
     0 < genDeg W d 1 := by
@@ -28,6 +31,13 @@ theorem genDeg_one_pos (hA : GenDegAmple.Statement) {K : Type} [Fintype K] {ι :
 
 open Classical in
 
+/- English proof (translation)
+Introduce `W hW hle`. Take `⟨hWar, hWmap⟩` from `NefAmpleGeneric.isArithVar_comap_of_isProjVarF hW`. Establish `hPW : P ≤ W.comap (MvPolynomial.map (Int.castRingHom ℚ))` using `Ideal.map_le_iff_le_comap.mp hle`. Establish `h` using `hb _ hWar hPW`. Rewrite `h` using `[genDeg, hWmap]`.
+
+Establish `hL : (fun _ : Fin 1 => b) = ![b]`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression. Rewrite `h` using `[hL]`.
+
+Conclude with `h`.
+-/
 theorem nefOnF_of_nefOnGenericDeg {K : Type} [Fintype K] [Nonempty K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P : Ideal (MRing ι)} {b : K → ℤ} (hb : NefOnGenericDeg P b) :
     KH.NefOnF (fun V _ L => NumbersDVR.intNum ℚ V L) (P.map (MvPolynomial.map (Int.castRingHom ℚ))) b := by
@@ -45,6 +55,19 @@ theorem nefOnF_of_nefOnGenericDeg {K : Type} [Fintype K] [Nonempty K] {ι : K �
 
 end NefPlusAmpleDegree
 
+/- English proof (translation)
+Introduce `K _ ι _ P D a hP hnef q`. Establish `: Nonempty K` using `hP.1`. Use `set Q := P.map (MvPolynomial.map (Int.castRingHom ℚ)) with hQ`. Take `⟨hprime, hdimq⟩` from `ShiftDegreePolynomial.genericFibre hP`. Establish `hd : FieldNumbers.relDim Q = D`.
+
+Rewrite using `[FieldNumbers.relDim_of_ringKrullDim_eq _ _ hdimq]`. Simplify using `only [Nat.cast_add, add_sub_cancel_right]`. Both sides reduce to the same expression. Set `f : (Fin D → K → ℤ) → ℤ` to `fun bs => NumbersDVR.intNum ℚ Q bs`. Establish `hadd : ∀ (bs : Fin D → K → ℤ) (j : Fin D) (x y : K → ℤ), f (Function.update bs j (x + y)) = f (Function.update bs j x) + f (Function.update bs j y)` using `fun bs j x y => FieldNumbers.IntNumAdd.full ℚ K ι Q hprime.multiHomog hprime.relevant D hd bs j x y`.
+
+Set `I : IFamily ℚ ι` to `fun V _ L => NumbersDVR.intNum ℚ V L`. Establish `hI : IsFieldIntersection I` using `NumbersDVR.IntNumIsFieldIntersection.full ℚ K ι`. Establish `hPV : IsProjVarF Q D` using `isProjVarF_map_of_isArithVar hP`. Establish `hnefA : KH.NefOnF I Q a` using `NefPlusAmpleDegree.nefOnF_of_nefOnGenericDeg hnef`. Establish `hnefH : KH.NefOnF I Q 1` using `NefPlusAmpleDegree.nefOnF_of_nefOnGenericDeg fun W hW _ => (NefPlusAmpleDegree.genDeg_one_pos hA hW).le`.
+
+Establish `hterm : ∀ s : Finset (Fin D), 0 ≤ f (s.piecewise (fun _ => a) (fun _ => 1))`. Introduce `s`. Use `hK ℚ K ι I Q D _ hI hPV fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ s`. Simplify `hnefA` using `[Finset.piecewise, hi]`.
+
+Simplify `hnefH` using `[Finset.piecewise, hi]`. Establish `hg : genDeg P D ((q : ℤ) • a + 1) = f (fun _ => (q : ℤ) • a + 1)` using `rfl`. Rewrite using `[hg, ShiftDegreePolynomial.expand f hadd (q : ℤ) a 1]`. Use `Finset.sum_pos' (fun s _ => mul_nonneg (pow_nonneg (Int.natCast_nonneg q) _) (hterm s)) ⟨∅, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.card_empty, pow_zero, one_mul, Finset.piecewise_empty]`.
+
+Conclude with `NefPlusAmpleDegree.genDeg_one_pos hA hP`.
+-/
 theorem NefPlusAmpleDegree.proof (hK : KH.KleimanNefFStatement) (hA : GenDegAmple.Statement) :
     NefPlusAmpleDegree.Statement := by
   classical

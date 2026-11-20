@@ -6,6 +6,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory.HilbAff
 
+/- English proof (translation)
+Introduce `A B C _ _ _ _ _ J r v hli hsp`. Set `bas : Module.Basis (Fin r) C ((C ⊗[A] B) ⧸ J)` to `Module.Basis.mk hli hsp.ge`. Use `haveI : Module.Free C ((C ⊗[A] B) ⧸ J) := Module.Free.of_basis bas`. Use `haveI : Module.Finite C ((C ⊗[A] B) ⧸ J) := Module.Finite.of_basis bas`. Establish `hsurj : Function.Surjective ((Ideal.Quotient.mk J).comp (Algebra.TensorProduct.comm A B C).toRingHom)` using `(Ideal.Quotient.mk_surjective).comp (Algebra.TensorProduct.comm A B C).surjective`.
+
+Use `haveI : IsClosedImmersion (Spec.map (CommRingCat.ofHom ((Ideal.Quotient.mk J).comp (Algebra.TensorProduct.comm A B C).toRingHom))) := IsClosedImmersion.spec_of_surjective _ hsurj`. Establish `hsnd : (Spec.map (CommRingCat.ofHom ((Ideal.Quotient.mk J).comp (Algebra.TensorProduct.comm A B C).toRingHom)) ≫ (pullbackSpecIso A B C).inv) ≫ pullback.snd _ _ = Spec.map (CommRingCat.ofHom (algebraMap C ((C ⊗[A] B) ⧸ J)))`. Rewrite using `[Category.assoc, pullbackSpecIso_inv_snd, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `good_ker A B r _ _ ?_ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hsnd]`. Conclude with `(IsFinite.SpecMap_iff _).mpr (RingHom.finite_algebraMap.mpr inferInstance)`. Rewrite using `[hsnd]`. Conclude with `Flat.SpecMap_iff.mpr (RingHom.flat_algebraMap_iff.mpr inferInstance)`. Introduce `y`.
+
+Rewrite using `[hsnd]`. Use `(Scheme.Hom.finrank_SpecMap_algebraMap C ((C ⊗[A] B) ⧸ J) y).trans ?_` and prove the remaining obligations. Use `haveI : Nontrivial C := by`. Set `p : PrimeSpectrum C` to `y`. Use `⟨⟨0, 1, fun h => p.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← h]`. Conclude with `p.asIdeal.zero_mem`. Rewrite using `[Module.rankAtStalk_eq_finrank_of_free, Module.finrank_eq_card_basis bas, Fintype.card_fin]`. Both sides reduce to the same expression.
+-/
 theorem good_xI : ∀ (A B C : Type) [CommRing A] [CommRing B] [Algebra A B] [CommRing C] [Algebra A C] (J : Ideal (C ⊗[A] B)) {r : ℕ} (v : Fin r → B), LinearIndependent C (fun k => Ideal.Quotient.mk J ((1 : C) ⊗ₜ[A] v k)) → Submodule.span C (Set.range (fun k => Ideal.Quotient.mk J ((1 : C) ⊗ₜ[A] v k))) = ⊤ → GlobalTheory.HilbAff.Good A B r (Spec.map (CommRingCat.ofHom (algebraMap A C))) (GlobalTheory.HilbAff.xI A B C J) := by
   intro A B C _ _ _ _ _ J r v hli hsp
   let bas : Module.Basis (Fin r) C ((C ⊗[A] B) ⧸ J) := Module.Basis.mk hli hsp.ge

@@ -7,6 +7,9 @@ namespace GlobalTheory.SubstCoeff
 
 variable {σ : Type}
 
+/- English proof (translation)
+Simplify using `only [coeff_mul]`. Conclude with `continuous_finset_sum _ fun x _ => (hF _).mul (hG _)`.
+-/
 theorem continuous_coeff_mul {Y : Type} [TopologicalSpace Y] (F G : Y → MvPolynomial σ ℂ)
     (hF : ∀ m, Continuous fun y => coeff m (F y)) (hG : ∀ m, Continuous fun y => coeff m (G y)) (m : σ →₀ ℕ) :
     Continuous fun y => coeff m (F y * G y) := by
@@ -14,6 +17,11 @@ theorem continuous_coeff_mul {Y : Type} [TopologicalSpace Y] (F G : Y → MvPoly
   simp only [coeff_mul]
   exact continuous_finset_sum _ fun x _ => (hF _).mul (hG _)
 
+/- English proof (translation)
+Proceed by induction on `e generalizing m with`. Consider the case `zero => classical`. Simplify using `only [pow_zero, coeff_one]`. Conclude with `continuous_const`. Consider the case `succ e ih`.
+
+Simplify using `only [pow_succ]`. Conclude with `continuous_coeff_mul _ _ ih hF m`.
+-/
 theorem continuous_coeff_pow {Y : Type} [TopologicalSpace Y] (F : Y → MvPolynomial σ ℂ)
     (hF : ∀ m, Continuous fun y => coeff m (F y)) (e : ℕ) (m : σ →₀ ℕ) :
     Continuous fun y => coeff m (F y ^ e) := by
@@ -26,6 +34,11 @@ theorem continuous_coeff_pow {Y : Type} [TopologicalSpace Y] (F : Y → MvPolyno
     simp only [pow_succ]
     exact continuous_coeff_mul _ _ ih hF m
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on generalizing m with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, coeff_one]`. Conclude with `continuous_const`. Consider the case `insert a s ha ih`.
+
+Simplify using `only [Finset.prod_insert ha]`. Conclude with `continuous_coeff_mul _ _ (hf a (Finset.mem_insert_self a s)) (fun m' => ih (fun q hq => hf q (Finset.mem_insert_of_mem hq)) m') m`.
+-/
 theorem continuous_coeff_prod {Y κ : Type} [TopologicalSpace Y] (s : Finset κ) (f : κ → Y → MvPolynomial σ ℂ)
     (hf : ∀ q ∈ s, ∀ m, Continuous fun y => coeff m (f q y)) (m : σ →₀ ℕ) :
     Continuous fun y => coeff m (∏ q ∈ s, f q y) := by
@@ -39,10 +52,16 @@ theorem continuous_coeff_prod {Y κ : Type} [TopologicalSpace Y] (s : Finset κ)
     exact continuous_coeff_mul _ _ (hf a (Finset.mem_insert_self a s))
       (fun m' => ih (fun q hq => hf q (Finset.mem_insert_of_mem hq)) m') m
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (IsAlgebraic ℚ) (fun _ _ ha hb => ha.add hb) isAlgebraic_zero hf`.
+-/
 theorem isAlgebraic_sum {κ : Type} (s : Finset κ) (f : κ → ℂ) (hf : ∀ q ∈ s, IsAlgebraic ℚ (f q)) :
     IsAlgebraic ℚ (∑ q ∈ s, f q) :=
   Finset.sum_induction f (IsAlgebraic ℚ) (fun _ _ ha hb => ha.add hb) isAlgebraic_zero hf
 
+/- English proof (translation)
+Rewrite using `[coeff_mul]`. Conclude with `isAlgebraic_sum _ _ fun x _ => (hP _).mul (hQ _)`.
+-/
 theorem isAlgebraic_coeff_mul (P Q : MvPolynomial σ ℂ)
     (hP : ∀ m, IsAlgebraic ℚ (coeff m P)) (hQ : ∀ m, IsAlgebraic ℚ (coeff m Q)) (m : σ →₀ ℕ) :
     IsAlgebraic ℚ (coeff m (P * Q)) := by
@@ -50,6 +69,9 @@ theorem isAlgebraic_coeff_mul (P Q : MvPolynomial σ ℂ)
   rw [coeff_mul]
   exact isAlgebraic_sum _ _ fun x _ => (hP _).mul (hQ _)
 
+/- English proof (translation)
+Rewrite using `[coeff_one]`. Use `split_ifs`. Conclude with `isAlgebraic_one`. Conclude with `isAlgebraic_zero`.
+-/
 theorem isAlgebraic_coeff_one (m : σ →₀ ℕ) : IsAlgebraic ℚ (coeff m (1 : MvPolynomial σ ℂ)) := by
   classical
   rw [coeff_one]
@@ -57,6 +79,9 @@ theorem isAlgebraic_coeff_one (m : σ →₀ ℕ) : IsAlgebraic ℚ (coeff m (1 
   · exact isAlgebraic_one
   · exact isAlgebraic_zero
 
+/- English proof (translation)
+Proceed by induction on `e generalizing m with`. Consider the case `zero => simpa only [pow_zero] using isAlgebraic_coeff_one m`. Consider the case `succ e ih`. Rewrite using `[pow_succ]`. Conclude with `isAlgebraic_coeff_mul _ _ ih hP m`.
+-/
 theorem isAlgebraic_coeff_pow (P : MvPolynomial σ ℂ)
     (hP : ∀ m, IsAlgebraic ℚ (coeff m P)) (e : ℕ) (m : σ →₀ ℕ) :
     IsAlgebraic ℚ (coeff m (P ^ e)) := by
@@ -66,6 +91,9 @@ theorem isAlgebraic_coeff_pow (P : MvPolynomial σ ℂ)
     rw [pow_succ]
     exact isAlgebraic_coeff_mul _ _ ih hP m
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction f (fun P => ∀ m, IsAlgebraic ℚ (coeff m P)) (fun _ _ ha hb => isAlgebraic_coeff_mul _ _ ha hb) isAlgebraic_coeff_one hf m`.
+-/
 theorem isAlgebraic_coeff_prod {κ : Type} (s : Finset κ) (f : κ → MvPolynomial σ ℂ)
     (hf : ∀ q ∈ s, ∀ m, IsAlgebraic ℚ (coeff m (f q))) (m : σ →₀ ℕ) :
     IsAlgebraic ℚ (coeff m (∏ q ∈ s, f q)) :=
@@ -74,12 +102,18 @@ theorem isAlgebraic_coeff_prod {κ : Type} (s : Finset κ) (f : κ → MvPolynom
 
 variable {ι : Type} {N n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[monomial_eq, map_mul, C_1, map_one, one_mul, Finsupp.prod, map_prod]`. Simplify using `only [map_pow]`.
+-/
 theorem substF_monomial_one (h : ι → Matrix (Fin N) (Fin N) ℂ) (g : ι → Matrix (Fin n) (Fin n) ℂ)
     (k : ι × Fin N × Fin n →₀ ℕ) :
     GlobalTheory.CompactHowe.substF h g (monomial k 1) = ∏ q ∈ k.support, (GlobalTheory.CompactHowe.substF h g (X q)) ^ k q := by
   rw [monomial_eq, map_mul, C_1, map_one, one_mul, Finsupp.prod, map_prod]
   simp only [map_pow]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.CompactHowe.substF_X, coeff_sum, coeff_C_mul]`. Use `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => ?_` and prove the remaining obligations. Use `Continuous.mul (Continuous.mul ?_ ?_) continuous_const` and prove the remaining obligations. Conclude with `((continuous_apply q.1).comp continuous_fst).matrix_elem a q.2.1`. Conclude with `((continuous_apply q.1).comp continuous_snd).matrix_elem b q.2.2`.
+-/
 theorem continuous_coeff_substF_X (q : ι × Fin N × Fin n) (m : ι × Fin N × Fin n →₀ ℕ) :
     Continuous fun p : (ι → Matrix (Fin N) (Fin N) ℂ) × (ι → Matrix (Fin n) (Fin n) ℂ) =>
       coeff m (GlobalTheory.CompactHowe.substF p.1 p.2 (X q)) := by
@@ -89,6 +123,11 @@ theorem continuous_coeff_substF_X (q : ι × Fin N × Fin n) (m : ι × Fin N ×
   · exact ((continuous_apply q.1).comp continuous_fst).matrix_elem a q.2.1
   · exact ((continuous_apply q.1).comp continuous_snd).matrix_elem b q.2.2
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.CompactHowe.substF_X, coeff_sum, coeff_C_mul]`. Use `isAlgebraic_sum _ _ fun a _ => isAlgebraic_sum _ _ fun b _ => ?_` and prove the remaining obligations. Use `((hh _ _ _).mul (hg _ _ _)).mul ?_` and prove the remaining obligations. Rewrite using `[coeff_X']`. Use `split_ifs`.
+
+Conclude with `isAlgebraic_one`. Conclude with `isAlgebraic_zero`.
+-/
 theorem isAlgebraic_coeff_substF_X (h : ι → Matrix (Fin N) (Fin N) ℂ) (g : ι → Matrix (Fin n) (Fin n) ℂ)
     (hh : ∀ i a b, IsAlgebraic ℚ (h i a b)) (hg : ∀ i a b, IsAlgebraic ℚ (g i a b))
     (q : ι × Fin N × Fin n) (m : ι × Fin N × Fin n →₀ ℕ) :
@@ -102,6 +141,11 @@ theorem isAlgebraic_coeff_substF_X (h : ι → Matrix (Fin N) (Fin N) ℂ) (g : 
   · exact isAlgebraic_one
   · exact isAlgebraic_zero
 
+/- English proof (translation)
+Introduce `ι N n k k'`. Use `⟨?_, fun h g hh hg => ?_⟩` and prove the remaining obligations. Simplify using `only [substF_monomial_one]`. Conclude with `continuous_coeff_prod _ _ (fun q _ m => continuous_coeff_pow _ (continuous_coeff_substF_X q) _ m) k'`. Rewrite using `[substF_monomial_one]`.
+
+Conclude with `isAlgebraic_coeff_prod _ _ (fun q _ m => isAlgebraic_coeff_pow _ (isAlgebraic_coeff_substF_X h g hh hg q) _ m) k'`.
+-/
 theorem coeff_substF_monomial_continuous_algebraic :
     ∀ {ι : Type} {N n : ℕ} (k k' : ι × Fin N × Fin n →₀ ℕ), Continuous (fun p : (ι → Matrix (Fin N) (Fin N) ℂ) × (ι → Matrix (Fin n) (Fin n) ℂ) => MvPolynomial.coeff k' (GlobalTheory.CompactHowe.substF p.1 p.2 (MvPolynomial.monomial k 1))) ∧ ∀ (h : ι → Matrix (Fin N) (Fin N) ℂ) (g : ι → Matrix (Fin n) (Fin n) ℂ), (∀ i a b, IsAlgebraic ℚ (h i a b)) → (∀ i a b, IsAlgebraic ℚ (g i a b)) → IsAlgebraic ℚ (MvPolynomial.coeff k' (GlobalTheory.CompactHowe.substF h g (MvPolynomial.monomial k 1))) := by
   intro ι N n k k'

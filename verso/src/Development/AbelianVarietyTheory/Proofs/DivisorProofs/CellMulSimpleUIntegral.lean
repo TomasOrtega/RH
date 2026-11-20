@@ -11,6 +11,11 @@ variable {L : Type} [Field L] {n : ℕ}
 
 local notation "M" x:max => ((x : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)
 
+/- English proof (translation)
+Establish `hi : Function.Injective fun A : Matrix (Fin n) (Fin n) O => A.map O.subtype` using `Matrix.map_injective Subtype.val_injective`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨fun i j => (y.1 i j).2, fun i j => ((y⁻¹).1 i j).2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, hi ?_, hi ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.mul_inv`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.inv_mul`.
+-/
 theorem mem_GLint_iff_entries (O : Subring L) (g : GL (Fin n) L) :
     g ∈ GLint (Fin n) O ↔ (∀ i j, (M g) i j ∈ O) ∧ ∀ i j, (M g⁻¹) i j ∈ O := by
   have hi : Function.Injective fun A : Matrix (Fin n) (Fin n) O => A.map O.subtype :=
@@ -25,6 +30,13 @@ theorem mem_GLint_iff_entries (O : Subring L) (g : GL (Fin n) L) :
     · simp only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
       exact g.inv_mul
 
+/- English proof (translation)
+Rewrite `hg` using `[mem_unipB]`. Establish `hdet : (M g).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => hg.1 i j hij)]`. Simplify using `[hg.2]`. Use `(mem_GLint_iff_entries O g).2 ⟨h, ?_⟩` and prove the remaining obligations.
+
+Use `set A : Matrix (Fin n) (Fin n) O := Matrix.of fun i j => ⟨_, h i j⟩`. Establish `hA : (M g) = O.subtype.mapMatrix A` using `by ext i j; rfl`. Establish `hinv : (M g⁻¹) = (M g).adjugate`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, hdet, Ring.inverse_one, one_smul]`. Introduce `i j`.
+
+Rewrite using `[hinv, hA, ← RingHom.map_adjugate]`. Conclude with `(A.adjugate i j).2`.
+-/
 theorem unip_mem_GLint (O : Subring L) (g : GL (Fin n) L) (hg : g ∈ unipB L (Fin n))
     (h : ∀ i j, (M g) i j ∈ O) : g ∈ GLint (Fin n) O := by
   rw [mem_unipB] at hg
@@ -40,6 +52,41 @@ theorem unip_mem_GLint (O : Subring L) (g : GL (Fin n) L) (hg : g ∈ unipB L (F
   rw [hinv, hA, ← RingHom.map_adjugate]
   exact (A.adjugate i j).2
 
+/- English proof (translation)
+Use `set v := x' * u₂ * x'⁻¹ with hv`. Take `⟨hu₁B, hu₁c⟩` from `(mem_cell_iff hx u₁).1 hu₁`. Take `⟨hu₂B, hu₂c⟩` from `(mem_cell_iff hy u₂).1 hu₂`. Rewrite `hu₁B`, `hu₂B` using `[mem_unipB]`. Establish `hvE : ∀ P Q, (M v) P Q = (M x') P (w'⁻¹ P) * (M u₂) (w'⁻¹ P) (w'⁻¹ Q) * (M x'⁻¹) (w'⁻¹ Q) Q`.
+
+Introduce `P Q`. Establish `h` using `weylRep_conj_apply (weylRep_inv hx) u₂ P Q`. Rewrite `h` using `[inv_inv]`. Conclude with `h`. Establish `hsupp : ∀ P Q, P ≠ Q → (M v) P Q ≠ 0 → w'⁻¹ P < w'⁻¹ Q ∧ s⁻¹ (w'⁻¹ Q) < s⁻¹ (w'⁻¹ P)`.
+
+Introduce `P Q hPQ hne`. Establish `hu : (M u₂) (w'⁻¹ P) (w'⁻¹ Q) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hvE, h0, mul_zero, zero_mul]`.
+
+Establish `hab : w'⁻¹ P ≠ w'⁻¹ Q` using `fun e => hPQ (w'⁻¹.injective e)`. Establish `hlt : w'⁻¹ P < w'⁻¹ Q`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (hu₂B.1 _ _ h) hu`.
+
+Use `⟨hlt, ?_⟩` and prove the remaining obligations. Break down `lt_or_gt_of_ne (fun e : s⁻¹ (w'⁻¹ P) = s⁻¹ (w'⁻¹ Q) => hab (s⁻¹.injective e)) with h | h` into its components or cases. Conclude with `absurd (hu₂c _ _ hlt h) hu`. Conclude with `h`. Establish `hdiag : ∀ P, (M v) P P = 1`.
+
+Introduce `P`. Rewrite using `[hvE, hu₂B.2, mul_one]`. Use `weylRep_mul_inv_diag hx (w'⁻¹ P)` as an intermediate fact. Simplify using `using this`. Establish `hvB : v ∈ unipB L (Fin n)`.
+
+Rewrite using `[mem_unipB]`. Use `⟨fun P Q hQP => ?_, hdiag⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨h1, h2⟩` from `hsupp P Q hQP.ne' hne`. Use `H1 _ _ h1 h2` as an intermediate fact.
+
+Simplify using `at this`. Conclude with `lt_asymm this hQP`. Take `⟨hgE, -⟩` from `(mem_GLint_iff_entries O _).1 hg`. Establish `hgv : ∀ P Q, P ≠ Q → (M v) P Q ≠ 0 → (M (v * u₁)) P Q = (M v) P Q`. Introduce `P Q hPQ hne`.
+
+Take `⟨hab, hs⟩` from `hsupp P Q hPQ hne`. Establish `hPQlt : P < Q` using `by simpa using H1 _ _ hab hs`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single Q, hu₁B.2, mul_one]`. Introduce `l _ hlQ`. Distinguish the cases in `hlP : l = P`.
+
+Rewrite using `[hlP, hu₁c _ _ hPQlt hab, mul_zero]`. Distinguish the cases in `h1 : (M v) P l = 0`. Rewrite using `[h1, zero_mul]`. Distinguish the cases in `h2 : (M u₁) l Q = 0`. Rewrite using `[h2, mul_zero]`.
+
+It suffices to derive a contradiction. Take `⟨hac, hsc⟩` from `hsupp P l (Ne.symm hlP) h1`. Establish `hlQlt : l < Q`. Break down `lt_or_gt_of_ne hlQ with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd (hu₁B.1 _ _ h) h2`. Establish `hbc : w'⁻¹ Q < w'⁻¹ l`. Break down `lt_or_gt_of_ne (fun e : w'⁻¹ l = w'⁻¹ Q => hlQ (w'⁻¹.injective e)) with h | h` into its components or cases. Conclude with `absurd (hu₁c _ _ hlQlt h) h2`. Conclude with `h`.
+
+Use `H2 _ _ _ hab hs hac hsc hbc` as an intermediate fact. Simplify using `at this`. Conclude with `lt_asymm this hlQlt`. Simplify using the standard rewrite rules. Establish `hvO : ∀ P Q, (M v) P Q ∈ O`.
+
+Introduce `P Q`. Distinguish the cases in `hPQ : P = Q`. Rewrite using `[hPQ, hdiag]`. Conclude with `O.one_mem`. Distinguish the cases in `hne : (M v) P Q = 0`.
+
+Rewrite using `[hne]`. Conclude with `O.zero_mem`. Rewrite using `[← hgv P Q hPQ hne]`. Conclude with `hgE P Q`. Establish `hvK : v ∈ GLint (Fin n) O` using `unip_mem_GLint O v hvB hvO`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : u₁ = v⁻¹ * (v * u₁)` using `by group`. Rewrite using `[e]`. Conclude with `mul_mem (inv_mem hvK) hg`. Establish `e : u₂ = x'⁻¹ * v * x'` using `by rw [hv]; group`.
+
+Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (inv_mem hxO) hvK) hxO`.
+-/
 theorem cell_conj_mul_integral (O : Subring L) {w' s : Equiv.Perm (Fin n)} {x' y : GL (Fin n) L}
     (hxO : x' ∈ GLint (Fin n) O) (hx : IsWeylRep w' x') (hy : IsWeylRep s y)
     (H1 : ∀ a b, a < b → s⁻¹ b < s⁻¹ a → w' a < w' b)
@@ -126,6 +173,9 @@ section Comb
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `simpleU partnerU at h`. Simplify using `only [hk, if_true, dif_pos, mul_inv_rev, Equiv.swap_inv, Equiv.Perm.mul_apply, Equiv.swap_apply_def] at h`. Rewrite `hab` using `[Fin.lt_def]`. Apply the tactic sequence `split_ifs at h <;> simp only [Fin.lt_def, Fin.ext_iff, Fin.val_rev, Fin.coe_castLE] at * <;> omega`.
+-/
 theorem simpleU_pair_inversion (k : Fin (n / 2)) (hk : k.val + 1 < n / 2) (a b : Fin n) (hab : a < b)
     (h : (simpleU k)⁻¹ b < (simpleU k)⁻¹ a) :
     (a.val = k.val ∧ b.val = k.val + 1) ∨ (a.val = n - 2 - k.val ∧ b.val = n - 1 - k.val) := by
@@ -134,6 +184,9 @@ theorem simpleU_pair_inversion (k : Fin (n / 2)) (hk : k.val + 1 < n / 2) (a b :
   rw [Fin.lt_def] at hab
   split_ifs at h <;> simp only [Fin.lt_def, Fin.ext_iff, Fin.val_rev, Fin.coe_castLE] at * <;> omega
 
+/- English proof (translation)
+Establish `hk'` using `k.isLt`. Unfold `simpleU at h`. Simplify using `only [hk, if_false, Equiv.swap_inv, Equiv.swap_apply_def] at h`. Rewrite `hab` using `[Fin.lt_def]`. Apply the tactic sequence `split_ifs at h <;> simp only [Fin.lt_def, Fin.ext_iff, Fin.val_rev, Fin.coe_castLE] at * <;> omega`.
+-/
 theorem simpleU_last_inversion (k : Fin (n / 2)) (hk : ¬ k.val + 1 < n / 2) (a b : Fin n) (hab : a < b)
     (h : (simpleU k)⁻¹ b < (simpleU k)⁻¹ a) :
     (a.val = k.val ∧ b.val = n - 1 - k.val) ∨ (a.val = k.val ∧ 2 * b.val + 1 = n) ∨
@@ -150,6 +203,27 @@ section Hyps
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hkl` using `k.isLt`. Establish `hval : ∀ i : Fin n, (w' i.rev).val = n - 1 - (w' i).val` using `fun i => by`. Rewrite using `[hw, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hk : k.val + 1 < n / 2`.
+
+Establish `hP : partnerU k = lo (⟨k.val + 1, hk⟩ : Fin (n / 2))` using `by unfold partnerU; rw [dif_pos hk]`. Establish `hPv : (partnerU k).val = k.val + 1` using `by rw [hP]; rfl`. Use `⟨fun a b hab h => ?_, fun a b c hab h hac h' hbc => ?_⟩` and prove the remaining obligations. Break down `simpleU_pair_inversion k hk a b hab h with ⟨ha, hb⟩ | ⟨ha, hb⟩` into its components or cases. Rewrite using `[show a = lo k from Fin.ext (by simp [ha]), show b = partnerU k from Fin.ext (by rw [hPv]; omega)]`.
+
+Conclude with `hlt`. Rewrite using `[show a = (partnerU k).rev from Fin.ext (by rw [Fin.val_rev, hPv]; omega), show b = (lo k).rev from Fin.ext (by rw [Fin.val_rev]; simp; omega), hw, hw]`. Conclude with `Fin.rev_lt_rev.2 hlt`. It suffices to derive a contradiction. Establish `h1` using `simpleU_pair_inversion k hk a b hab h`.
+
+Establish `h2` using `simpleU_pair_inversion k hk a c hac h'`. Rewrite `hbc` using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Establish `hP : partnerU k = (lo k).rev` using `by unfold partnerU; rw [dif_neg hk]`. Rewrite `hlt` using `[hP, hw, Fin.lt_def, Fin.val_rev]`.
+
+Establish `hA : ∀ a : Fin n, a.val = k.val → (w' a).val = (w' (lo k)).val` using `fun a ha => by`. Rewrite using `[show a = lo k from Fin.ext (by simp [ha])]`. Establish `hB : ∀ b : Fin n, b.val = n - 1 - k.val → (w' b).val = n - 1 - (w' (lo k)).val` using `fun b hb => by`. Rewrite using `[show b = (lo k).rev from Fin.ext (by rw [Fin.val_rev]; simp; omega), hval]`. Establish `hC : ∀ b : Fin n, 2 * b.val + 1 = n → 2 * (w' b).val + 1 = n` using `fun b hb => by`.
+
+Establish `e : b.rev = b` using `Fin.ext (by rw [Fin.val_rev]; omega)`. Use `hval b` as an intermediate fact. Rewrite `this` using `[e]`. Use `(w' b).isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨fun a b hab h => ?_, fun a b c hab h hac h' hbc => ?_⟩` and prove the remaining obligations. Rewrite `hab`, the goal using `[Fin.lt_def]`. Break down `simpleU_last_inversion k hk a b hab h with ⟨ha, hb⟩ | ⟨ha, hb⟩ | ⟨ha, hb⟩` into its components or cases. Use `hA a ha` as an intermediate fact. Use `hB b hb` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `hA a ha` as an intermediate fact. Use `hC b hb` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hC a ha` as an intermediate fact.
+
+Use `hB b hb` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1` using `simpleU_last_inversion k hk a b hab h`. Establish `h2` using `simpleU_last_inversion k hk a c hac h'`. Rewrite `hab`, `hac`, `hbc`, the goal using `[Fin.lt_def]`.
+
+Apply the tactic sequence `rcases h1 with ⟨h1a, h1b⟩ | ⟨h1a, h1b⟩ | ⟨h1a, h1b⟩ <;>`. Apply the tactic sequence `rcases h2 with ⟨h2a, h2b⟩ | ⟨h2a, h2b⟩ | ⟨h2a, h2b⟩ <;>`. Use `first`. Consider the case `omega`. Consider the case `(have := hC b h1b; have := hB c h2b; omega)`.
+-/
 theorem simpleU_hyps (k : Fin (n / 2)) (w' : Equiv.Perm (Fin n)) (hw : ∀ i : Fin n, w' i.rev = (w' i).rev)
     (hlt : w' (lo k) < w' (partnerU k)) :
     (∀ a b, a < b → (simpleU k)⁻¹ b < (simpleU k)⁻¹ a → w' a < w' b) ∧
@@ -202,6 +276,9 @@ theorem simpleU_hyps (k : Fin (n / 2)) (w' : Equiv.Perm (Fin n)) (hw : ∀ i : F
 
 end Hyps
 
+/- English proof (translation)
+Introduce `L _ _ n w' k hw hlt x' y hxO hx hy u₁ hu₁ u₂ hu₂ hg`. Take `⟨H1, H2⟩` from `simpleU_hyps k w' hw hlt`. Conclude with `cell_conj_mul_integral (intL L) hxO hx hy H1 H2 hu₁ hu₂ hg`.
+-/
 theorem cell_mul_simpleU_integral : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (n : ℕ)
     (w' : Equiv.Perm (Fin n)) (k : Fin (n / 2)),
     (∀ i : Fin n, w' i.rev = (w' i).rev) → w' (lo k) < w' (partnerU k) → ∀ (x' y : GL (Fin n) L),

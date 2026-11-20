@@ -10,6 +10,15 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 
 variable {N : ℕ}
 
+/- English proof (translation)
+Establish `hε' : 0 < 1 - ε` using `by linarith`. Prove the components needed by the constructor for the conclusion. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hV]`. Establish `k1 : V * a * ((1 - ε) * e) ≤ V * a * i` using `mul_le_mul_of_nonneg_left h3 (mul_nonneg hV.le ha)`. Establish `k2 : (1 + ε) * (b * e) = (1 - ε) * (1 + η) * (b * e)` using `by rw [hkey]`.
+
+Establish `k3 : (1 - ε) * e * (a * V) ≤ (1 - ε) * e * ((1 + η) * b)`. Combine the linear relations using `[k1, h1, k2]`. Conclude with `le_of_mul_le_mul_left k3 (mul_pos hε' he)`. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ hV]`. Establish `k1 : V * a * i ≤ V * a * ((1 + ε) * e)` using `mul_le_mul_of_nonneg_left h4 (mul_nonneg hV.le ha)`.
+
+Establish `k2 : (1 + ε) * (1 - η) * (b * e) = (1 - ε) * (1 + η) * (1 - η) * (b * e)`. Rewrite using `[hkey]`. Establish `k3 : 0 ≤ (1 - ε) * η ^ 2 * (b * e)` using `mul_nonneg (mul_nonneg hε'.le (sq_nonneg η)) (mul_nonneg hb he.le)`. Establish `k4 : (1 + ε) * e * ((1 - η) * b) ≤ (1 + ε) * e * (a * V)`. Combine the linear relations using `[k1, h2, k2, k3]`.
+
+Conclude with `le_of_mul_le_mul_left k4 (mul_pos (by linarith) he)`.
+-/
 theorem volU_real {V η ε a b e i : ℝ} (hV : 0 < V) (he : 0 < e) (ha : 0 ≤ a) (hb : 0 ≤ b)
     (hε0 : 0 < ε) (hε1 : ε < 1) (hη : 0 < η) (hkey : (1 - ε) * (1 + η) = 1 + ε)
     (h1 : V * (i * a) ≤ (1 + ε) * (b * e)) (h2 : (1 - ε) * (b * e) ≤ V * (i * a))
@@ -37,6 +46,17 @@ theorem volU_real {V η ε a b e i : ℝ} (hV : 0 < V) (he : 0 < e) (ha : 0 ≤ 
 
 def volUSet (B : Set (UCo N)) : Set (UNgrp N) := {k | ∃ x ∈ B, toM k = NormedSpace.exp (skMat x)}
 
+/- English proof (translation)
+Use `set F : UCo N → (Fin N → Fin N → ℂ) := fun x => Matrix.of.symm (NormedSpace.exp (skMat x)) with hF`. Use `set G : UNgrp N → (Fin N → Fin N → ℂ) := fun k => Matrix.of.symm (toM k) with hG`. Establish `hS : volUSet B = G ⁻¹' (F '' B)`. Use extensionality with `k`. Simplify using `only [volUSet, Set.mem_preimage, Set.mem_image, hF, hG]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hk⟩`. Conclude with `⟨x, hx, by rw [hk]⟩`. Introduce and unpack `⟨x, hx, hk⟩`. Conclude with `⟨x, hx, (Matrix.of.symm.injective hk).symm⟩`.
+
+Establish `hGc : Continuous G` using `continuous_toM _`. Establish `hexp : Continuous (fun X : Matrix (Fin N) (Fin N) ℂ => NormedSpace.exp X)`. Set `_ : NormedRing (Matrix (Fin N) (Fin N) ℂ)` to `Matrix.linftyOpNormedRing`. Set `_ : NormedAlgebra ℚ (Matrix (Fin N) (Fin N) ℂ)` to `Matrix.linftyOpNormedAlgebra`. Conclude with `@NormedSpace.exp_continuous (Matrix (Fin N) (Fin N) ℂ) _ _ (inferInstanceAs (CompleteSpace (Fin N → Fin N → ℂ)))`.
+
+Establish `hFc : Continuous F` using `hexp.comp volU_continuous_skMat`. Rewrite using `[hS]`. Use `hGc.measurable ?_` and prove the remaining obligations. Use `MeasurableSet.image_of_continuousOn_injOn hB hFc.continuousOn ?_` and prove the remaining obligations. Introduce `x hx y hy hxy`.
+
+Conclude with `hinj (hBs hx) (hBs hy) (Matrix.of.symm.injective hxy)`.
+-/
 theorem volUSet_measurable {δ : ℝ}
     (hinj : Set.InjOn (fun x : UCo N => NormedSpace.exp (skMat x)) (Metric.ball 0 δ))
     {B : Set (UCo N)} (hB : MeasurableSet B) (hBs : B ⊆ Metric.ball 0 δ) :
@@ -64,6 +84,17 @@ theorem volUSet_measurable {δ : ℝ}
   intro x hx y hy hxy
   exact hinj (hBs hx) (hBs hy) (Matrix.of.symm.injective hxy)
 
+/- English proof (translation)
+Use extensionality with `Z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, t⟩, ⟨hx, ht⟩, rfl⟩`. Establish `hmem : NormedSpace.exp (skMat x) ∈ Set.range (fun g : UNgrp N => toM g)`. Rewrite using `[range_toM]`.
+
+Conclude with `volU_exp_inUJ x`. Take `⟨k, hk⟩` from `hmem`. Establish `hk' : toM k = NormedSpace.exp (skMat x)` using `hk`. Use `⟨(k, t + volUOne N), ⟨⟨x, hx, hk'⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show dist (t + volUOne N) (volUOne N) < ρ`.
+
+Rewrite using `[dist_eq_norm, add_sub_cancel_right, ← dist_zero_right]`. Conclude with `ht`. Simplify using `only [qrMap, chartWR, volU_upMat_add, hk']`. Introduce and unpack `⟨⟨k, t⟩, ⟨⟨x, hx, hk⟩, ht⟩, rfl⟩`. Use `⟨(x, t - volUOne N), ⟨hx, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show dist (t - volUOne N) 0 < ρ`. Rewrite using `[dist_zero_right, ← dist_eq_norm]`. Conclude with `ht`. Establish `ht' : upMat t = 1 + upMat (t - volUOne N)`. Rewrite using `[← volU_upMat_add, sub_add_cancel]`.
+
+Establish `hk' : toM k = NormedSpace.exp (skMat x)` using `hk`. Simplify using `only [qrMap, chartWR, ht']`. Rewrite using `[hk']`.
+-/
 theorem volU_image_eq (B : Set (UCo N)) (ρ : ℝ) :
     chartWR '' (B ×ˢ Metric.ball 0 ρ) = qrMap '' (volUSet B ×ˢ Metric.ball (volUOne N) ρ) := by
   ext Z

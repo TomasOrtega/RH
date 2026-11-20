@@ -11,6 +11,13 @@ variable {p n' : ℕ} [hp : Fact p.Prime] {W Qq O Kf : Type} [CommRing W] [IsDom
   [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O}
 
+/- English proof (translation)
+Take `⟨hS, hirr, hcard, hsq⟩` from `settingStd p n' hD.five_le hD.two_le hD.even`. Use `⟨?_, hirr, hcard, hsq⟩` and prove the remaining obligations. Conclude with `{ prime := hD.prime, five_le := hD.five_le, two_le := hD.two_le, even := hD.even, frac_alt := hD.frac_alt, frac_O := hS.frac_O, p_unif := hD.p_unif, res_card := hD.res_card, eq_sum_herm_smul_frame_of_inW := hD.eq_sum_herm_smul_frame_of_inW, frob := hD.frob, period := hD.period, ι …`. Establish `h1` using `hS.ι_comp (eW.symm x)`. Establish `h2` using `heq (eW.symm x)`.
+
+Simplify using `only [RingEquiv.apply_symm_apply] at h2`. Simplify using `only [RingHom.comp_apply, RingEquiv.coe_toRingHom]`. Rewrite using `[← h2, RingEquiv.symm_apply_apply, h1],`. Use `finite := hS.finite.comp (RingHom.Finite.of_surjective _ eW.symm.surjective),`. Use `complete_O := hS.complete_O,`.
+
+Use `w_sq := hS.w_sq }`.
+-/
 theorem settingStd_iso (hD : HidaSetting p n' W Qq O Kf ι σ j w) (eW : WQ p n' ≃+* W) (eQ : QQ p n' ≃+* Qq)
     (heq : ∀ x, eQ (algebraMap (WQ p n') (QQ p n') x) = algebraMap W Qq (eW x)) :
     UnramifiedQuadraticSetting p n' W Qq (OO p n') (KO p n') ((iota p n').comp (eQ.symm : Qq →+* QQ p n')) σ
@@ -31,6 +38,11 @@ theorem settingStd_iso (hD : HidaSetting p n' W Qq O Kf ι σ j w) (eW : WQ p n'
       complete_O := hS.complete_O,
       w_sq := hS.w_sq }
 
+/- English proof (translation)
+Use `⟨OO p n', KO p n', inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, (iota p n').comp (eQ.symm : Qq →+* QQ p n'), (jO p n').comp (eW.symm : W →+* WQ p n'), wU p n', X.φ, X.φK, X.comm, X.fin, settingStd_iso hD eW eQ heq, ?_, ?_, hw⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [RingHom.comp_apply, RingEquiv.coe_toRingHom]`. Rewrite using `[← hι, RingEquiv.apply_symm_apply]`. Use extensionality with `x`.
+
+Simplify using `only [RingHom.comp_apply, RingEquiv.coe_toRingHom]`. Rewrite using `[← hj, RingEquiv.apply_symm_apply]`.
+-/
 theorem stdSub_of_iso (hD : HidaSetting p n' W Qq O Kf ι σ j w) (eW : WQ p n' ≃+* W) (eQ : QQ p n' ≃+* Qq)
     (heq : ∀ x, eQ (algebraMap (WQ p n') (QQ p n') x) = algebraMap W Qq (eW x))
     (X : ExtOf (OO p n') (KO p n') O Kf)

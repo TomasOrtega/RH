@@ -9,6 +9,11 @@ open scoped Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Distinguish the cases in `hd : 0 < B.degree`. It suffices to derive a contradiction. Establish `h1` using `B.tendsto_norm_atTop hd (tendsto_norm_atTop_iff_cobounded.mpr hu)`. Establish `h2` using `h.norm`. Conclude with `h1.not_tendsto (disjoint_nhds_atTop _).symm h2`.
+
+Rewrite `h`, the goal using `[eq_C_of_degree_le_zero (not_lt.mp hd)]`. Simplify using `only [eval_C] at h`. Rewrite using `[tendsto_nhds_unique tendsto_const_nhds h, C_0]`.
+-/
 private lemma eq_zero_of_tendsto_eval_cobounded {B : ℂ[X]} {l : Filter ℂ} [l.NeBot] {u : ℂ → ℂ}
     (hu : Tendsto u l (Bornology.cobounded ℂ))
     (h : Tendsto (fun z ↦ B.eval (u z)) l (𝓝 0)) : B = 0 := by
@@ -21,6 +26,11 @@ private lemma eq_zero_of_tendsto_eval_cobounded {B : ℂ[X]} {l : Filter ℂ} [l
     simp only [eval_C] at h
     rw [tendsto_nhds_unique tendsto_const_nhds h, C_0]
 
+/- English proof (translation)
+Take `⟨A₁, rfl⟩` from `dvd_iff_isRoot.mpr ha`. Establish `hb₁ : A₁.eval b = 0` using `by simpa [sub_eq_zero, hab] using hb`. Take `⟨A₂, rfl⟩` from `dvd_iff_isRoot.mpr hb₁`. Establish `hc₂ : A₂.eval c = 0` using `by simpa [sub_eq_zero, hac, hbc] using hc`. Take `⟨B, rfl⟩` from `dvd_iff_isRoot.mpr hc₂`.
+
+Conclude with `⟨B, rfl⟩`.
+-/
 private lemma exists_eq_mul_of_three_roots {A : ℂ[X]} {a b c : ℂ} (hab : b ≠ a) (hac : c ≠ a)
     (hbc : c ≠ b) (ha : A.eval a = 0) (hb : A.eval b = 0) (hc : A.eval c = 0) :
     ∃ B : ℂ[X], A = (X - C a) * ((X - C b) * ((X - C c) * B)) := by
@@ -31,6 +41,37 @@ private lemma exists_eq_mul_of_three_roots {A : ℂ[X]} {a b c : ℂ} (hab : b �
   obtain ⟨B, rfl⟩ := dvd_iff_isRoot.mpr hc₂
   exact ⟨B, rfl⟩
 
+/- English proof (translation)
+Introduce `L f hd hp ho ht`. Set `g : ℂ → ℂ` to `fun z ↦ if z ∈ L.lattice then 0 else f z ^ 2`. Establish `hgd : ∀ z ∉ L.lattice, DifferentiableAt ℂ g z` using `fun z hz ↦ by`. Use `((hd z hz).pow 2).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [eventually_notMem_periodLattice L hz] with w hw`.
+
+Simplify using `[g, hw]`. Establish `hgp : ∀ z, ∀ l ∈ L.lattice, g (z + l) = g z` using `fun z l hl ↦ by`. Distinguish the cases in `hz : z ∈ L.lattice`. Simplify using `[g, hz, add_mem hz hl]`. Simplify using `[g, hz, L.lattice.add_mem_iff_left hl, hp z l hz hl]`.
+
+Establish `hge : ∀ z, g (-z) = g z` using `fun z ↦ by`. Distinguish the cases in `hz : z ∈ L.lattice`. Simplify using `[g, hz]`. Simplify using `[g, hz, ho z hz]`. Establish `hgt : Tendsto (fun z : ℂ ↦ z ^ 6 * g z) (𝓝[≠] 0) (𝓝 0)`.
+
+Establish `h1` using `ht.pow 2`. Rewrite `h1` using `[zero_pow two_ne_zero]`. Use `h1.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ne_notMem_periodLattice L 0] with w hw`. Simplify using `only [g, hw, if_false]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hgm : MeromorphicAt g 0`. Use `⟨6, Complex.analyticAt_of_differentiable_on_punctured_nhds_of_continuousAt ?_ ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_ne_notMem_periodLattice L 0] with w hw`. Use `hgd w hw` as an intermediate fact.
+
+Use `fun_prop`. Rewrite using `[continuousAt_iff_punctured_nhds]`. Simplify using `using hgt`. Take `⟨A, hA⟩` from `exists_eq_polynomial_weierstrassP L hgm hgd hgp hge`. Establish `hhalf : ∀ z ∉ L.lattice, z + z ∈ L.lattice → A.eval (℘[L] z) = 0` using `fun z hz h2 ↦ by`.
+
+Establish `h1` using `hp (-z) (z + z) (by simpa using hz) h2`. Rewrite `h1` using `[ho z hz, show -z + (z + z) = z by ring, CharZero.eq_neg_self_iff]`. Rewrite using `[← hA z hz]`. Simplify using `[g, h1]`. Establish `key : ∀ a b : ℚ, (a * L.ω₁ + b * L.ω₂ : ℂ) ∈ L.lattice ↔ a.den = 1 ∧ b.den = 1` using `fun a b ↦ L.mul_ω₁_add_mul_ω₂_mem_lattice`.
+
+Set `p : ℚ → ℚ → ℂ` to `fun a b ↦ a * L.ω₁ + b * L.ω₂`. Establish `padd : ∀ a b c d, p a b + p c d = p (a + c) (b + d)` using `fun a b c d ↦ by`. Simplify using `only [p]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `psub : ∀ a b c d, p a b - p c d = p (a - c) (b - d)` using `fun a b c d ↦ by`. Simplify using `only [p]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `pm : ∀ a b, p a b ∈ L.lattice ↔ a.den = 1 ∧ b.den = 1` using `key`.
+
+Establish `n1 : p (1 / 2) 0 ∉ L.lattice` using `by rw [pm]; norm_num`. Establish `n2 : p 0 (1 / 2) ∉ L.lattice` using `by rw [pm]; norm_num`. Establish `n3 : p (1 / 2) (1 / 2) ∉ L.lattice` using `by rw [pm]; norm_num`. Take `⟨B, hB⟩` from `exists_eq_mul_of_three_roots (A := A) (a := ℘[L] (p (1 / 2) 0)) (b := ℘[L] (p 0 (1 / 2))) (c := ℘[L] (p (1 / 2) (1 / 2))) (by rw [Ne, weierstrassP_eq_iff L n2 n1, padd, psub, pm, pm]; norm_num) (by rw [Ne, weierstrassP_eq_iff L n3 n1, padd, psub, pm, pm]; norm_num) (by rw [Ne, we …`. Use `set a := ℘[L] (p (1 / 2) 0)`.
+
+Use `set b := ℘[L] (p 0 (1 / 2))`. Use `set c := ℘[L] (p (1 / 2) (1 / 2))`. Set `w : ℂ → ℂ` to `fun z ↦ z ^ 2 * L.weierstrassPExcept 0 z + 1`. Establish `hw : AnalyticAt ℂ w 0` using `by fun_prop`. Establish `hw' : ∀ z ≠ 0, w z = z ^ 2 * ℘[L] z` using `fun z hz ↦ by`.
+
+Simplify `(L.ite_eq_one_sub_sq_mul_weierstrassP 0 (zero_mem _) z).symm` using `[hz, w]`. Set `q : ℂ → ℂ` to `fun z ↦ (w z - z ^ 2 * a) * ((w z - z ^ 2 * b) * (w z - z ^ 2 * c))`. Establish `hq : ContinuousAt q 0`. Use `hw.continuousAt` as an intermediate fact. Use `fun_prop`.
+
+Establish `hq0 : q 0 = 1` using `by simp [q, w]`. Establish `hq1 : Tendsto q (𝓝[≠] 0) (𝓝 1)` using `hq0 ▸ hq.tendsto.mono_left nhdsWithin_le_nhds`. Establish `hB0 : B = 0`. Use `eq_zero_of_tendsto_eval_cobounded (tendsto_weierstrassP_cobounded L (zero_mem _)) ?_` and prove the remaining obligations. Establish `h1` using `hgt.div hq1 one_ne_zero`.
+
+Rewrite `h1` using `[zero_div]`. Use `h1.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ne_notMem_periodLattice L 0, self_mem_nhdsWithin, hq1.eventually_ne one_ne_zero] with z hz hz0 hqz`. Rewrite using `[Pi.div_apply, div_eq_iff hqz, hA z hz, hB]`. Simplify using `only [q, hw' z hz0, eval_mul, eval_sub, eval_X, eval_C]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `z hz`. Establish `h1` using `hA z hz`. Rewrite `h1` using `[hB, hB0]`. Simplify `h1` using `[g, hz]`.
+-/
 theorem eq_zero_of_odd_elliptic_of_tendsto : ∀ (L : PeriodPair) (f : ℂ → ℂ), (∀ z, z ∉ L.lattice → DifferentiableAt ℂ f z) → (∀ z l, z ∉ L.lattice → l ∈ L.lattice → f (z + l) = f z) → (∀ z, z ∉ L.lattice → f (-z) = -f z) → Filter.Tendsto (fun z : ℂ => z ^ 3 * f z) (𝓝[≠] 0) (𝓝 0) → ∀ z, z ∉ L.lattice → f z = 0 := by
   classical
   intro L f hd hp ho ht

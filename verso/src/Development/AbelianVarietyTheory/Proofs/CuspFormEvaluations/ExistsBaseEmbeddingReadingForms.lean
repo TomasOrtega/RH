@@ -45,10 +45,16 @@ def sumParts (R M : Type) [CommRing R] [AddCommMonoid M] :
     AddMonoidAlgebra R M →+* R :=
   (AddMonoidAlgebra.lift R R M 1).toRingHom
 
+/- English proof (translation)
+Simplify using `[sumParts]`.
+-/
 theorem sumParts_single (R M : Type) [CommRing R] [AddCommMonoid M] (m : M) (f : R) :
     sumParts R M (AddMonoidAlgebra.single m f) = f := by
   simp [sumParts]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul R a x, ← algebraMap_smul R a (sumParts R M x)]`. Conclude with `map_smul (AddMonoidAlgebra.lift R R M 1) _ _`.
+-/
 theorem sumParts_smul (K R M : Type) [Field K] [CommRing R] [Algebra K R] [AddCommMonoid M] (a : K)
     (x : AddMonoidAlgebra R M) : sumParts R M (a • x) = a • sumParts R M x := by
   rw [← algebraMap_smul R a x, ← algebraMap_smul R a (sumParts R M x)]
@@ -56,6 +62,21 @@ theorem sumParts_smul (K R M : Type) [Field K] [CommRing R] [Algebra K R] [AddCo
 
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Introduce `D T h j hj n`. Establish `hT` using `h.unTest j hj T.σ₀ T.good_σ₀`. Establish `hU : IsUnf (T.U j T.σ₀)` using `h.unf j hj T.σ₀ T.good_σ₀`. Set `ev : AddMonoidAlgebra (T.R j) (Deg D j) →+* (DomPt T j → ℂ)` to `(rulEv (T.U j T.σ₀) hT).comp (sumParts (T.R j) (Deg D j))`. Establish `hev : ∀ (u : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j u) (y : DomPt T j), ev (incG deg (cutR T.C j) u F) y = rdR h j F y.1 y.2.1`.
+
+Introduce `u F y`. Use `show rulEv (T.U j T.σ₀) hT (sumParts (T.R j) (Deg D j) (AddMonoidAlgebra.single (deg u) F.1)) y = _`. Rewrite using `[sumParts_single]`. Both sides reduce to the same expression. Establish `hsm : ∀ (a : T.Q.c.F) (F : AddMonoidAlgebra (T.R j) (Deg D j)), ev (a • F) = T.σ₀ a • ev F`.
+
+Introduce `a F`. Use function extensionality and compare the values at `y`. Use `show rdU (T.U j T.σ₀) (sumParts (T.R j) (Deg D j) (a • F)) y.1 y.2.1 = T.σ₀ a • rdU (T.U j T.σ₀) (sumParts (T.R j) (Deg D j) F) y.1 y.2.1`. Rewrite using `[sumParts_smul, map_smulₛₗ]`. Both sides reduce to the same expression.
+
+Establish `hind : ∀ (u : WeightFamilies.Wt D j) (m : ℕ) (F : Fin m → cutR T.C j u), LinearIndependent T.Q.c.F F → LinearIndependent ℂ fun i => ev (incG deg (cutR T.C j) u (F i))`. Introduce `u m F hF`. Establish `hb` using `hF.map' (cutR T.C j u).subtype (Submodule.ker_subtype _)`. Establish `hs : ∀ i, (F i).1 ∈ sec (T.Q.Xo j) T.Q.c (wtA u) u.n` using `fun i => cusp_le_sec (T.Q.Xo j) T.Q.c (T.U j) (wtA u) u.n (cutR_le T.C j u (F i).2)`. Establish `hli : LinearIndependent ℂ (fun i => rdU (T.U j T.σ₀) (F i).1)` using `(GlobalTheory.reading_linearIndependent_and_injective GlobalTheory.abelianSchemeLaws_all.1.secBaseChange _ _ _ _ _ _ T.σ₀ _ (Formalism.L2.PjFree.Unf.ofPj (T.U j T.σ₀)) ((Formalism.L2.PjFree.isUnf_ofPj _).2 hU) (wtA u) u.n).1 m (fun i => (F i).1) hs hb`.
+
+Rewrite `hli`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Use `hli g ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+
+Distinguish the cases in `hx : x ∈ ((T.U j T.σ₀).X k).dom`. Establish `h1` using `congrFun hg ⟨k, ⟨x, hx⟩⟩`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h1`. Rewrite using `[← h1]`. Conclude with `Finset.sum_congr rfl fun i _ => congrArg (fun z => g i * z) (hev u (F i) ⟨k, ⟨x, hx⟩⟩).symm`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `: rdU (T.U j T.σ₀) (F i).1 k x = 0` using `dif_neg hx`. Rewrite using `[this, mul_zero]`. Conclude with `⟨⟨DomPt T j, T.σ₀, ev, hsm, hind⟩, Equiv.refl _, fun _ => rfl, hev⟩`.
+-/
 theorem exists_isRdgU : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (n : SecNorm (recB h.toLawsCore)), ∃ (R : Rdg (recPlusN h j hj n)) (e : R.Y ≃ DomPt T j), IsRdgU h j hj n R e := by
   intro D T h j hj n
   have hT := h.unTest j hj T.σ₀ T.good_σ₀

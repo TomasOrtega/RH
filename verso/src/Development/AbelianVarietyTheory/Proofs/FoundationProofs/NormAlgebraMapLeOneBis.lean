@@ -4,6 +4,9 @@ namespace GlobalTheory.AlgebraMapNormLeOne
 
 open Polynomial
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Use `_ = ‖algebraMap ℤ_[l] ℚ_[l] a‖ := PadicAlgCl.norm_extends l _`. Use `_ ≤ 1 := PadicInt.norm_le_one a`.
+-/
 theorem norm_algebraMap_le_one (l : ℕ) [Fact (Nat.Prime l)] (a : ℤ_[l]) :
     ‖algebraMap ℤ_[l] (PadicAlgCl l) a‖ ≤ 1 := by
   calc ‖algebraMap ℤ_[l] (PadicAlgCl l) a‖
@@ -12,6 +15,11 @@ theorem norm_algebraMap_le_one (l : ℕ) [Fact (Nat.Prime l)] (a : ℤ_[l]) :
     _ = ‖algebraMap ℤ_[l] ℚ_[l] a‖ := PadicAlgCl.norm_extends l _
     _ ≤ 1 := PadicInt.norm_le_one a
 
+/- English proof (translation)
+Set `v : Valuation (PadicAlgCl l) NNReal` to `Valued.v`. Establish `hle : ∀ y : PadicAlgCl l, v y ≤ 1 ↔ ‖y‖ ≤ 1`. Introduce `y`. Rewrite using `[← NNReal.coe_le_coe, PadicAlgCl.valuation_coe, NNReal.coe_one]`. Set `f : ℤ_[l] →+* v.integer` to `(algebraMap ℤ_[l] (PadicAlgCl l)).codRestrict v.integer fun a => (hle _).mpr (norm_algebraMap_le_one l a)`.
+
+Set `_ : Algebra ℤ_[l] v.integer` to `f.toAlgebra`. Establish `: IsScalarTower ℤ_[l] v.integer (PadicAlgCl l)` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hxO : IsIntegral v.integer x` using `hx.tower_top`. Conclude with `(hle x).mp ((Valuation.Integers.isIntegral_iff_v_le_one (Valuation.integer.integers v)).mp hxO)`.
+-/
 theorem norm_le_one_of_isIntegral (l : ℕ) [inst : Fact (Nat.Prime l)] (x : PadicAlgCl l)
     (hx : IsIntegral ℤ_[l] x) : ‖x‖ ≤ (1 : ℝ) := by
   let v : Valuation (PadicAlgCl l) NNReal := Valued.v

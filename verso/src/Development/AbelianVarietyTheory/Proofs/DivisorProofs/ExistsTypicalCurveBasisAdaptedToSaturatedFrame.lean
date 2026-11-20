@@ -9,6 +9,17 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.FGDepth
 
+/- English proof (translation)
+Set `E : Fin i ⊕ {e // e ∉ Set.range r} ≃ Fin d` to `(Equiv.sumCongr (Equiv.ofInjective r hr) (Equiv.refl _)).trans (Equiv.sumCompl (fun e => e ∈ Set.range r))`. Establish `hEl : ∀ a, E (Sum.inl a) = r a` using `fun a => rfl`. Establish `hEr : ∀ e, E (Sum.inr e) = e.1` using `fun e => rfl`. Rewrite using `[← Matrix.det_submatrix_equiv_self E M, ← Matrix.fromBlocks_toBlocks (M.submatrix E E)]`. Establish `h21 : (M.submatrix E E).toBlocks₂₁ = 0`.
+
+Use extensionality with `e b`. Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, Matrix.zero_apply, hEl, hEr]`. Rewrite using `[hM e.1 e.2, if_neg]`. Introduce and unpack `h`. Conclude with `e.2 ⟨b, h⟩`.
+
+Establish `h22 : (M.submatrix E E).toBlocks₂₂ = 1`. Use extensionality with `e e'`. Simplify using `only [Matrix.toBlocks₂₂, Matrix.of_apply, Matrix.submatrix_apply, hEr, Matrix.one_apply]`. Rewrite using `[hM e.1 e.2]`. Distinguish the cases in `hee : e = e'`.
+
+Substitute `hee` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h => hee (Subtype.ext h).symm), if_neg hee]`. Establish `h11 : (M.submatrix E E).toBlocks₁₁ = M.submatrix r r`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply, hEl]`. Rewrite using `[h21, Matrix.det_fromBlocks_zero₂₁, h22, Matrix.det_one, mul_one, h11]`.
+-/
 theorem det_eq_det_minor_of_unit_rows {K : Type} [CommRing K] {i d : ℕ} (r : Fin i → Fin d)
     (hr : Function.Injective r) (M : Matrix (Fin d) (Fin d) K)
     (hM : ∀ e, e ∉ Set.range r → ∀ c, M e c = if c = e then 1 else 0) :
@@ -42,6 +53,39 @@ end GlobalTheory.FGDepth
 
 namespace GlobalTheory.FGDepth
 
+/- English proof (translation)
+Introduce `C _ _ _ v p hp hv d h hh ty G hmu τ j i hj u hu hut`. Take `⟨hPT2, -⟩` from `GlobalTheory.T.typicalCurveEigenspace_and_basisExists`. Use `choose η hηc hηt hηtan using fun a : Fin i => hPT2 C v p hp hv d h hh ty G hmu τ (u a) (hu.1 a) (hut a)`. Establish `hspan : Module.finrank C (Submodule.span C (Set.range fun a => (LinearMap.id : (Fin d → C) →ₗ[C] (Fin d → C)) (G.lc p (η a) 1))) ≤ j`. Set `W` to `Submodule.span C (Set.range fun e : {e : Fin d // ty e = τ + 1} => (Pi.single e.1 (1 : C) : Fin d → C))`.
+
+Establish `hle : Submodule.span C (Set.range fun a => (LinearMap.id : (Fin d → C) →ₗ[C] (Fin d → C)) (G.lc p (η a) 1)) ≤ W`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `show G.lc p (η a) 1 ∈ W`. Rewrite using `[← Finset.univ_sum_single (G.lc p (η a) 1)]`.
+
+Use `Submodule.sum_mem _ fun e _ => ?_` and prove the remaining obligations. Distinguish the cases in `he : ty e = τ + 1`. Establish `: (Pi.single e (G.lc p (η a) 1 e) : Fin d → C) = G.lc p (η a) 1 e • (Pi.single e (1 : C) : Fin d → C)`. Use extensionality with `c`. Simplify using `[Pi.single_apply]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨e, he⟩, rfl⟩)`. Rewrite using `[(hηt a).2 1 e (by simpa using he), Pi.single_zero]`. Conclude with `Submodule.zero_mem _`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨x, hxi, hxd, hxt, hxty, hxl⟩` from `GlobalTheory.T.root_extraction_lemma_sheaf C v p hp hv d h i ty τ G η (fun a => hηc a) (fun a => hηt a) 1 j le_rfl (Fin d → C) LinearMap.id hspan`. Use `set γ' : Fin i → Fin d → PowerSeries C := fun w => G.sumF fun u => rescaleCurve (x w u) (η u) with hγ'`. Establish `hγ'c : ∀ w, IsCurve v (γ' w)` using `fun w => (pt6' C v p hp hv d i G η (x w) (fun a => hηc a) (fun a => hxi w a)).1`. Take `⟨r0, hr0⟩` from `hu.2`. Use `set U : Matrix (Fin i) (Fin i) C := Matrix.of fun a b => u a (r0 b) with hU`.
+
+Establish `hUne : U.det ≠ 0`. Introduce `h0`. Rewrite `hr0` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_zero hr0`. Establish `hinj : Function.Injective r0`.
+
+Introduce `b1 b2 heq`. Assume the negation of the conclusion as `hne`. Conclude with `hUne (Matrix.det_zero_of_column_eq hne (fun a => by simp [hU, heq]))`. Establish `hty0 : ∀ b, ty (r0 b) = τ`. Introduce `b`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hUne (Matrix.det_eq_zero_of_column_eq_zero b (fun a => by simp [hU, hut a _ hne]))`. Use `choose ζ hζc hζt hζtan using fun e : Fin d => hPT2 C v p hp hv d h hh ty G hmu (ty e) (Pi.single e 1) (fun c => by`. Unfold `IsIntV`. Distinguish the cases in `hc : c = e`.
+
+Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hc])`. Use the proof step `(fun c hc => by`. Establish `: c ≠ e` using `fun h' => hc (h' ▸ rfl)`.
+
+Simplify using `[Pi.single_apply, this])`. Set `γ : Fin d → Fin d → PowerSeries C` to `fun e => if hm : e ∈ Set.range r0 then γ' ((Equiv.ofInjective r0 hinj).symm ⟨e, hm⟩) else ζ e`. Establish `hγr : ∀ a, γ (r0 a) = γ' a`. Introduce `a`. Simplify using `only [γ, dif_pos (Set.mem_range_self a)]`.
+
+Rewrite using `[Equiv.ofInjective_symm_apply]`. Establish `hγn : ∀ e, e ∉ Set.range r0 → γ e = ζ e` using `fun e he => by simp only [γ, dif_neg he]`. Establish `htan : ∀ a, tangent (γ (r0 a)) = ∑ a', x a a' • u a'`. Introduce `a`. Rewrite using `[hγr, hxt a]`.
+
+Simplify using `only [hηtan]`. Use `⟨γ, ⟨r0, hinj⟩, x, ⟨fun e => ?_, fun e => ?_, ?_⟩, hxi, hxd, htan, fun a ha => ?_⟩` and prove the remaining obligations. Distinguish the cases in `he : e ∈ Set.range r0`. Take `⟨b, rfl⟩` from `he`. Rewrite using `[hγr]`.
+
+Conclude with `hγ'c b`. Rewrite using `[hγn e he]`. Conclude with `hζc e`. Distinguish the cases in `he : e ∈ Set.range r0`. Take `⟨b, rfl⟩` from `he`.
+
+Rewrite using `[hγr, hty0]`. Conclude with `hxty b`. Rewrite using `[hγn e he]`. Conclude with `hζt e`. Rewrite using `[det_eq_det_minor_of_unit_rows r0 hinj]`.
+
+Establish `hsub : (Matrix.of fun a b => tangent (γ a) b).submatrix r0 r0 = x * U`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, htan, Matrix.mul_apply, hU, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hsub, Matrix.det_mul, AddValuation.map_mul, hxd, hr0, add_zero]`. Introduce `e he c`.
+
+Simplify using `only [Matrix.of_apply, hγn e he, hζtan, Pi.single_apply]`. Use `show G.lc p (γ (r0 a)) 1 = 0`. Rewrite using `[hγr]`. Simplify using `using hxl a ha`.
+-/
 theorem exists_basis_adapted_frame : ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : AddValuation C (WithTop ℝ)) (p : ℕ), p.Prime → v (p : C) = 1 → ∀ (d h : ℕ), 0 < h →
     ∀ (ty : Fin d → ZMod h) (G : LogFGL v d), MuAction G p h ty → ∀ (τ : ZMod h) (j i : ℕ),

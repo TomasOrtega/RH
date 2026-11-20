@@ -10,9 +10,15 @@ open UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTh
 
 namespace UpperTheory.V.Z.Win.Birth
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem mkCsdW {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ} [IsCMField F]
     {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)} (h : UpperTheory.GalN.V.AutCsd0 ι r) (_ : Continuous r → WitA ι r) : IsAutCsd ι r := h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, u⟩`.
+-/
 theorem mkCsdW' {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ} [IsCMField F]
     {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)} (h : UpperTheory.GalN.V.AutCsd0 ι r) (u : Continuous r → WitA ι r) : IsAutCsdA ι r := ⟨h, u⟩
 

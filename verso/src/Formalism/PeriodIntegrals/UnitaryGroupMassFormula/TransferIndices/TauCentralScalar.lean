@@ -15,23 +15,43 @@ def theta (M : Module.End K (T.W s)) : MonoidAlgebra K G :=
   ∑ y : G, (((Module.finrank K (T.W s) : ℕ) : K) / ((Fintype.card G : ℕ) : K) *
     LinearMap.trace K (T.W s) (T.tau s y⁻¹ * M)) • MonoidAlgebra.of K G y
 
+/- English proof (translation)
+Simplify using `[theta, eS]`.
+-/
 theorem theta_one : theta T s 1 = eS T s := by simp [theta, eS]
 
+/- English proof (translation)
+Simplify using `[theta, mul_add, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem theta_add (M N : Module.End K (T.W s)) : theta T s (M + N) = theta T s M + theta T s N := by
   simp [theta, mul_add, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [theta, Finset.smul_sum, smul_smul, mul_smul_comm, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Put the polynomial expressions in normal form.
+-/
 theorem theta_smul (c : K) (M : Module.End K (T.W s)) : theta T s (c • M) = c • theta T s M := by
   simp only [theta, Finset.smul_sum, smul_smul, mul_smul_comm, map_smul, smul_eq_mul]
   refine Finset.sum_congr rfl fun y _ => ?_
   ring_nf
 
+/- English proof (translation)
+Simplify using `[theta]`.
+-/
 theorem theta_zero : theta T s 0 = 0 := by simp [theta]
 
+/- English proof (translation)
+Simplify using `only [theta, LinearMap.trace_mul_comm K (T.tau s _) M]`.
+-/
 theorem theta_eq' (M : Module.End K (T.W s)) : theta T s M =
     ∑ y : G, (((Module.finrank K (T.W s) : ℕ) : K) / ((Fintype.card G : ℕ) : K) *
       LinearMap.trace K (T.W s) (M * T.tau s y⁻¹)) • MonoidAlgebra.of K G y := by
   simp only [theta, LinearMap.trace_mul_comm K (T.tau s _) M]
 
+/- English proof (translation)
+Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp [theta_zero]`. Consider the case `add x y hx hy => rw [add_mul, hx, hy, map_add, theta_add]`. Consider the case `single g r`. Rewrite using `[Representation.asAlgebraHom_single, theta_smul, eS, Finset.mul_sum, theta, Finset.smul_sum]`.
+
+Use `Fintype.sum_equiv (Equiv.mulLeft g) _ _ (fun x => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, mul_smul_comm, MonoidAlgebra.of_apply, MonoidAlgebra.single_mul_single, mul_one, smul_smul]`. Rewrite using `[← map_mul, mul_inv_rev, inv_mul_cancel_right, MonoidAlgebra.smul_single', MonoidAlgebra.smul_single', mul_one]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_eS (z : MonoidAlgebra K G) : z * eS T s = theta T s ((T.tau s).asAlgebraHom z) := by
   induction z using MonoidAlgebra.induction_linear with
   | zero => simp [theta_zero]
@@ -45,6 +65,13 @@ theorem mul_eS (z : MonoidAlgebra K G) : z * eS T s = theta T s ((T.tau s).asAlg
     congr 1
     ring
 
+/- English proof (translation)
+Rewrite using `[theta_eq']`. Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Rewrite using `[mul_add, hx, hy, map_add]`.
+
+Simplify using `only [add_mul, map_add, mul_add, add_smul, Finset.sum_add_distrib]`. Consider the case `single g r`. Rewrite using `[Representation.asAlgebraHom_single, eS, Finset.sum_mul]`. Use `Fintype.sum_equiv (Equiv.mulRight g) _ _ (fun x => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, smul_mul_assoc, MonoidAlgebra.of_apply, MonoidAlgebra.single_mul_single, one_mul, smul_smul, smul_mul_assoc, mul_smul_comm, LinearMap.map_smul, smul_eq_mul]`.
+
+Rewrite using `[← map_mul, mul_inv_rev, mul_inv_cancel_left, MonoidAlgebra.smul_single', MonoidAlgebra.smul_single', mul_one]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eS_mul (z : MonoidAlgebra K G) : eS T s * z = theta T s ((T.tau s).asAlgebraHom z) := by
   rw [theta_eq']
   induction z using MonoidAlgebra.induction_linear with
@@ -61,13 +88,24 @@ theorem eS_mul (z : MonoidAlgebra K G) : eS T s * z = theta T s ((T.tau s).asAlg
     congr 1
     ring
 
+/- English proof (translation)
+Rewrite using `[eS_mul, mul_eS]`.
+-/
 theorem eS_central (z : MonoidAlgebra K G) : eS T s * z = z * eS T s := by
   rw [eS_mul, mul_eS]
 
+/- English proof (translation)
+Rewrite using `[mul_eS, mul_eS, hz]`.
+-/
 theorem mul_eS_eq (z z' : MonoidAlgebra K G)
     (hz : (T.tau s).asAlgebraHom z = (T.tau s).asAlgebraHom z') : z * eS T s = z' * eS T s := by
   rw [mul_eS, mul_eS, hz]
 
+/- English proof (translation)
+Establish `hmem : (T.tau s).asAlgebraHom c ∈ Subalgebra.center K (Module.End K (T.W s))`. Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `M`. Take `⟨z, rfl⟩` from `T.irr s M`. Rewrite using `[← map_mul, ← map_mul, hc z]`.
+
+Rewrite `hmem` using `[Algebra.IsCentral.center_eq_bot, Algebra.mem_bot]`. Take `⟨μ, hμ⟩` from `hmem`. Conclude with `⟨μ, by rw [← hμ, Algebra.algebraMap_eq_smul_one]⟩`.
+-/
 theorem tau_central_scalar (c : MonoidAlgebra K G) (hc : ∀ z, c * z = z * c) :
     ∃ μ : K, (T.tau s).asAlgebraHom c = μ • 1 := by
   have hmem : (T.tau s).asAlgebraHom c ∈ Subalgebra.center K (Module.End K (T.W s)) := by
@@ -79,6 +117,21 @@ theorem tau_central_scalar (c : MonoidAlgebra K G) (hc : ∀ z, c * z = z * c) :
   obtain ⟨μ, hμ⟩ := hmem
   exact ⟨μ, by rw [← hμ, Algebra.algebraMap_eq_smul_one]⟩
 
+/- English proof (translation)
+Take `⟨μ, hμ⟩` from `tau_central_scalar T s (eS T s) (eS_central T s)`. Use `set d := Module.finrank K (T.W s) with hd`. Establish `hd0 : (d : K) ≠ 0`. Establish `: 0 < d` using `Module.finrank_pos`. Conclude with `this.ne'` after adjusting the coercions.
+
+Establish `hG0 : ((Fintype.card G : ℕ) : K) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Use `set Ξ : Module.End K (Module.End K (T.W s)) := ∑ y : G, (((d : K) / ((Fintype.card G : ℕ) : K)) • ((LinearMap.trace K (T.W s)) ∘ₗ LinearMap.mulLeft K (T.tau s y⁻¹))).smulRight (T.tau s y) with hΞ`. Establish `hΞapp : ∀ M, Ξ M = (T.tau s).asAlgebraHom (theta T s M)`. Introduce `M`. Rewrite using `[hΞ, theta, map_sum, LinearMap.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Representation.asAlgebraHom_of, LinearMap.smulRight_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, smul_eq_mul]`. Establish `hΞμ : Ξ = μ • LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `M`.
+
+Take `⟨z, rfl⟩` from `T.irr s M`. Rewrite using `[hΞapp, ← mul_eS, map_mul, hμ]`. Simplify using the standard rewrite rules. Establish `htr` using `congrArg (LinearMap.trace K _) hΞμ`. Rewrite `htr` using `[hΞ, map_sum, map_smul, LinearMap.trace_id, Module.finrank_linearMap]`.
+
+Simplify using `only [LinearMap.trace_smulRight, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, ← map_mul, inv_mul_cancel, map_one, LinearMap.trace_one, smul_eq_mul, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at htr`. Establish `: μ = 1`. Rewrite `htr` using `[← hd]`. Move the coercions through the operations in `at htr`. Clear denominators, using `at htr` for the nonvanishing conditions.
+
+Use `first`. Consider the case `exact htr.symm`. Consider the case `exact htr`. Consider the case `(have h2 : (d : K) * d ≠ 0 := mul_ne_zero hd0 hd0`. Apply `mul_right_cancel₀ h2` to reduce the goal to its premises.
+
+Take the linear combination `-htr)`. Rewrite using `[hμ, this, one_smul]`.
+-/
 theorem tau_eS [CharZero K] : (T.tau s).asAlgebraHom (eS T s) = 1 := by
   obtain ⟨μ, hμ⟩ := tau_central_scalar T s (eS T s) (eS_central T s)
   set d := Module.finrank K (T.W s) with hd
@@ -118,6 +171,9 @@ theorem tau_eS [CharZero K] : (T.tau s).asAlgebraHom (eS T s) = 1 := by
        linear_combination -htr)
   rw [hμ, this, one_smul]
 
+/- English proof (translation)
+Rewrite using `[mul_eS, tau_eS, theta_one]`.
+-/
 theorem eS_idem [CharZero K] : eS T s * eS T s = eS T s := by
   rw [mul_eS, tau_eS, theta_one]
 

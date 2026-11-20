@@ -13,11 +13,17 @@ set_option linter.unusedVariables false
 
 namespace GlobalTheory.PerQ.RowIntModel
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_mtildeL_iff {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
   (P : LevFam X.E X.K R.r Pr.vGs) (z : MtildeV W Ch sel mu P) :
   z ∈ MtildeL W Ch sel mu P ↔ ∀ d : RowPt Pr R sel mu, z.1 d ∈ nabAt X.emb W.sgTrue d.1.N := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨z.1 (toRow sel mu ((stepX Ch sel mu P).rep c).1.1), toRow_N sel mu ((stepX Ch sel mu P).rep c).1.1 ▸ (mem_mtildeL_iff W Ch sel mu P z).1 hz (toRow sel mu ((stepX Ch sel mu P).rep c).1.1), rfl⟩`.
+-/
 theorem mtildeL_rep_mem {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
   (P : LevFam X.E X.K R.r Pr.vGs) (z : MtildeV W Ch sel mu P) (hz : z ∈ MtildeL W Ch sel mu P) (c : (stepX Ch sel mu P).Cl) :
@@ -29,6 +35,9 @@ def rowEmbAt {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (u : B.Word
   (z : MtildeV (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps) : (I.per l u a).Mt :=
   GlobalTheory.PeriodOnStep.rowEmb (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps (I := I.chIn u a) (I.perIn u a).b0 (I.perIn u a).til (I.perIn u a).ext (I.perIn u a).tz (I.perIn u a).H hd B.embLL z
 
+/- English proof (translation)
+Introduce `c`. Take `⟨y, hy, e⟩` from `mtildeL_rep_mem (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps z hz c`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem rowVal_rowEmbAt {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (u : B.Word) (a : I.ι)
   (hd : Disjoint (B.primes X).vGs (QE I.sel (I.tup a : Chr B.fields.F B.fields.E B.fields.K)))
   (z : MtildeV (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps) (hz : z ∈ MtildeL (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps) : GlobalTheory.PerQ.RowVal I l u a (rowEmbAt I l u a hd z) := by
@@ -41,6 +50,11 @@ theorem rowVal_rowEmbAt {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) 
 open GlobalTheory.PerQ
 variable {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws)
 
+/- English proof (translation)
+Introduce `c`. Take `⟨y, hy, e⟩` from `h c`. Take `⟨y', hy', e'⟩` from `h' c`. Use `⟨y + y', add_mem hy hy', ?_⟩` and prove the remaining obligations. Use `(map_add ((I.perIn u a).rd B.fields.emb B.embLL) G G' ▸ (?_ : ((I.perIn u a).rd B.fields.emb B.embLL G + (I.perIn u a).rd B.fields.emb B.embLL G') c = _))` and prove the remaining obligations.
+
+Conclude with `(congrArg₂ (· + ·) e e').trans (map_add _ _ _).symm`.
+-/
 theorem rowVal_add (u a) (G G' : (I.per l u a).Mt) (h : RowVal I l u a G) (h' : RowVal I l u a G') : RowVal I l u a (G + G') := by
   intro c
   obtain ⟨y, hy, e⟩ := h c
@@ -49,6 +63,11 @@ theorem rowVal_add (u a) (G G' : (I.per l u a).Mt) (h : RowVal I l u a G) (h' : 
   refine (map_add ((I.perIn u a).rd B.fields.emb B.embLL) G G' ▸ (?_ : ((I.perIn u a).rd B.fields.emb B.embLL G + (I.perIn u a).rd B.fields.emb B.embLL G') c = _))
   exact (congrArg₂ (· + ·) e e').trans (map_add _ _ _).symm
 
+/- English proof (translation)
+Introduce `c`. Take `⟨y, hy, e⟩` from `h c`. Use `⟨(⟨B.OtoLL o, B.O_int o⟩ : 𝓞 B.fields.K) • y, Submodule.smul_mem _ _ hy, ?_⟩` and prove the remaining obligations. Use `(map_smul ((I.perIn u a).rd B.fields.emb B.embLL) _ G ▸ (?_ : ((B.embLL.comp B.OtoLL) o • (I.perIn u a).rd B.fields.emb B.embLL G) c = _))` and prove the remaining obligations. Use `(congrArg ((B.embLL.comp B.OtoLL) o • ·) e).trans ?_` and prove the remaining obligations.
+
+Conclude with `(LinearMap.map_smulₛₗ (mapS B.embLL) (B.OtoLL o) y.1).symm`.
+-/
 theorem rowVal_smul (u a) (o : B.O) (G : (I.per l u a).Mt) (h : RowVal I l u a G) : RowVal I l u a ((B.embLL.comp B.OtoLL) o • G) := by
   intro c
   obtain ⟨y, hy, e⟩ := h c
@@ -69,6 +88,9 @@ def rowsRestOfSpanning (W : RowsRest B (I.cols l)) (s : ∀ a, Finset (W.Amb a))
     perCol_base_eq_PtilCol := fun u φ F => dif_pos rfl
     perCol_tie := fun u μ h φ F => dif_neg h }
 
+/- English proof (translation)
+Introduce and unpack `F ⟨c, rfl⟩`. Rewrite using `[map_sum]`. Use `Finset.sum_induction _ (RowVal I l B.u₀ a) (rowVal_add I l _ _) (rowVal_zero I l _ _) fun v hv => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `rowVal_smul I l _ _ _ _ (h v hv)`.
+-/
 theorem rowVal_of_mem_carrier (W : RowsRest B (I.cols l)) (a) (L : Rows.OLat B.O (B.embLL.comp B.OtoLL) (W.Amb a))
    (h : ∀ v ∈ L.gen, RowVal I l B.u₀ a ((W.eMtTw B.u₀ a).symm v)) : ∀ F ∈ L.carrier, RowVal I l B.u₀ a ((W.eMtTw B.u₀ a).symm F) := by
   rintro F ⟨c, rfl⟩
@@ -79,6 +101,17 @@ theorem rowVal_of_mem_carrier (W : RowsRest B (I.cols l)) (a) (L : Rows.OLat B.O
 
 open GlobalTheory.Mem.Col2.TrueColsTest in
 
+/- English proof (translation)
+Take `⟨Z0⟩` from `later l hB`. Take `⟨Del, letter, hD, hinj, gap, hu⟩` from `hB`. Set `W0` to `RowsRestModel.model (fits l) 1 1 1`. Establish `key : ∀ a, ∃ s : Finset (W0.Amb a), Submodule.span ℂ (s : Set (W0.Amb a)) = ⊤ ∧ ∀ v ∈ s, RowVal I l B.u₀ a ((W0.eMtTw B.u₀ a).symm v)`. Introduce `a`.
+
+Establish `h1 : Submodule.span ℂ {v : W0.Amb a | RowVal I l B.u₀ a ((W0.eMtTw B.u₀ a).symm v)} = ⊤`. Establish `h0 : Submodule.span ℂ {G : ((I.cols l).PTw B.u₀ a).Mt | RowVal I l B.u₀ a G} = ⊤` using `hspan a`. Use `congrArg (Submodule.map (W0.eMtTw B.u₀ a).toLinearMap) h0` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_top, LinearEquiv.range]`. Use `eq_top_iff.2 (this.ge.trans (Submodule.span_mono ?_))` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨G, hG, rfl⟩`. Use `show RowVal I l B.u₀ a ((W0.eMtTw B.u₀ a).symm (W0.eMtTw B.u₀ a G))`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `hG`. Take `⟨s, hs1, hs2⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 (h1 ▸ Module.Finite.fg_top)`.
+
+Conclude with `⟨s, (hs2.symm.trans h1), fun v hv => hs1 hv⟩`. Use `choose s hs hv using key`. Set `W` to `rowsRestOfSpanning I l W0 s hs`. Take `⟨L⟩` from `locStage_inhabited`. Take `⟨N, -⟩` from `GaloisStage.exists_nStage_adapt B _ W L`.
+
+Take `⟨V, -⟩` from `DivInhab.exists_divStage B _ (GaloisStage.adapt W)`. Take `⟨S⟩` from `SStageInhab.nonempty_sStage B _ (GaloisStage.adapt W) Del hD gap letter hinj hu (fun u x _ y _ => ipC_herm l u x y) (fun u x hx h => ipC_pos l u x hx h) (show 1 ≤ 2 * 1 by omega)`. Take `⟨G⟩` from `GJInhab.nonempty_stage B (I.cols l)`. Conclude with `⟨⟨GaloisStage.adapt W, V, S, N, G⟩, fun u F hF => rowVal_of_mem_carrier I l W0 (I.cols l).mu0 ⟨s _, hs _⟩ (hv _) F hF, fun u a F hF => rowVal_of_mem_carrier I l W0 (show (I.cols l).Tup from a) ⟨s _, hs _⟩ (hv _) F hF⟩`.
+-/
 theorem exists_rowInt_of_span (hB : StagesInhab.HasLetters B.toPre)
    (hspan : ∀ a, Submodule.span ℂ {G : (I.per l B.u₀ a).Mt | RowVal I l B.u₀ a G} = ⊤) : ∃ Z, RowInt I l Z := by
   obtain ⟨Z0⟩ := later l hB
@@ -115,12 +148,23 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (til : ∀ b, (stepX Ch sel mu P).D b → (I.S R.m).D b0) (ext : ∀ b, (stepX Ch sel mu P).G b →* (I.S R.m).G b0)
   (tz : X.E) (hd : Disjoint Pr.vGs (QE sel (mu : Chr X.F X.E X.K))) (σ : X.K →+* ℂ)
 
+/- English proof (translation)
+The claim follows from `(MtildeH_good W Ch hX sel mu P).2.2`.
+-/
 theorem span_mtildeL (hX : X.Ok) : Submodule.span X.K (MtildeL W Ch sel mu P : Set (MtildeV W Ch sel mu P)) = ⊤ := (MtildeH_good W Ch hX sel mu P).2.2
 
+/- English proof (translation)
+The claim follows from `toCForm_span_of_span σ W.sgTrue _ _ hX (φ := fun z : MtildeL W Ch sel mu P => z.1) (eq_top_iff.2 ((span_mtildeL W Ch sel mu P hX).ge.trans (Submodule.span_mono fun z hz => ⟨⟨z, hz⟩, rfl⟩)))`.
+-/
 theorem span_toMtP (hX : X.Ok) : Submodule.span ℂ (Set.range fun z : MtildeL W Ch sel mu P => toMtP W Ch sel mu P σ z.1) = ⊤ :=
     toCForm_span_of_span σ W.sgTrue _ _ hX (φ := fun z : MtildeL W Ch sel mu P => z.1) (eq_top_iff.2 ((span_mtildeL W Ch sel mu P hX).ge.trans (Submodule.span_mono fun z hz => ⟨⟨z, hz⟩, rfl⟩)))
 include hd in
 
+/- English proof (translation)
+Establish `hl : FrLaw σ W.sgTrue (rowTyG Ch P) (levQX R sel mu) ⊤ fun p : XPt Pr R sel mu => F.1 () (trivPt X _ _ _ _ p)`. Introduce `p`. Use `⟨(F.2 () _).1, fun g hg => ?_⟩` and prove the remaining obligations. Use `show F.1 () (trivPt X _ _ _ _ (g • p)) = _`. Rewrite using `[← stepX_smul_trivPt]`.
+
+Conclude with `(F.2 () (trivPt X _ _ _ _ p)).2 g hg`. Take `⟨G, hG, e⟩` from `hl.exists_form σ W.sgTrue (isSubLev_top _ _) hd`. Conclude with `⟨⟨G, hG⟩, fun b p => ((e p.1.1).trans (congrArg (F.1 ()) ((trivPt X _ ∅ Pr.vGs (QE sel (mu : Chr X.F X.E X.K))).apply_symm_apply p))).symm⟩`.
+-/
 theorem exists_form_of_mt (F : (perOn W Ch sel mu P b0 til ext tz (fun _ => ⊤)).Mt X.emb σ) : ∃ G : MtP W Ch sel mu P σ, ∀ b d, F.1 b d = G.1 (toRow sel mu d.1.1) := by
   have hl : FrLaw σ W.sgTrue (rowTyG Ch P) (levQX R sel mu) ⊤ fun p : XPt Pr R sel mu => F.1 () (trivPt X _ _ _ _ p) := by
     intro p
@@ -131,6 +175,13 @@ theorem exists_form_of_mt (F : (perOn W Ch sel mu P b0 til ext tz (fun _ => ⊤)
   obtain ⟨G, hG, e⟩ := hl.exists_form σ W.sgTrue (isSubLev_top _ _) hd
   exact ⟨⟨G, hG⟩, fun b p => ((e p.1.1).trans (congrArg (F.1 ()) ((trivPt X _ ∅ Pr.vGs (QE sel (mu : Chr X.F X.E X.K))).apply_symm_apply p))).symm⟩
 
+/- English proof (translation)
+Establish `hG' : G' ∈ Submodule.span ℂ (Set.range fun z : MtildeL W Ch sel mu P => toMtP W Ch sel mu P σ z.1)`. Rewrite using `[span_toMtP W Ch sel mu P σ hX]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hG' using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨z, rfl⟩ := hx`.
+
+Conclude with `⟨_, hT z.1 z.2, fun _ _ => rfl⟩`. Consider the case `zero => exact ⟨0, zero_mem _, fun _ _ => rfl⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, ea⟩` from `hx`. Take `⟨b, hb, eb⟩` from `hy`.
+
+Conclude with `⟨a + b, add_mem ha hb, fun c d => congrArg₂ (· + ·) (ea c d) (eb c d)⟩`. Consider the case `smul r x _ hx`. Take `⟨a, ha, ea⟩` from `hx`. Conclude with `⟨r • a, Submodule.smul_mem _ _ ha, fun c d => congrArg (r • ·) (ea c d)⟩`.
+-/
 theorem exists_mem_of_form (hX : X.Ok) (T : Submodule ℂ ((perOn W Ch sel mu P b0 til ext tz (fun _ => ⊤)).Mt X.emb σ))
   (hT : ∀ z ∈ MtildeL W Ch sel mu P, rowEmb W Ch sel mu P b0 til ext tz (fun _ => ⊤) hd σ z ∈ T) (G' : MtP W Ch sel mu P σ) : ∃ F' ∈ T, ∀ b d, F'.1 b d = G'.1 (toRow sel mu d.1.1) := by
     have hG' : G' ∈ Submodule.span ℂ (Set.range fun z : MtildeL W Ch sel mu P => toMtP W Ch sel mu P σ z.1) := by
@@ -145,6 +196,9 @@ theorem exists_mem_of_form (hX : X.Ok) (T : Submodule ℂ ((perOn W Ch sel mu P 
       obtain ⟨a, ha, ea⟩ := hx
       exact ⟨r • a, Submodule.smul_mem _ _ ha, fun c d => congrArg (r • ·) (ea c d)⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.eq_top_iff'.2 fun F => (exists_form_of_mt W Ch sel mu P b0 til ext tz hd σ F).elim fun G e => (exists_mem_of_form W Ch sel mu P b0 til ext tz hd σ hX T hT G).elim fun F' h => (congrArg (· ∈ T) (Subtype.ext (funext fun b => funext fun p => (h.2 b p).trans (e b p).symm) : …`.
+-/
 theorem eq_top_of_rowEmb_mem (hX : X.Ok) (T : Submodule ℂ ((perOn W Ch sel mu P b0 til ext tz (fun _ => ⊤)).Mt X.emb σ))
   (hT : ∀ z ∈ MtildeL W Ch sel mu P, rowEmb W Ch sel mu P b0 til ext tz (fun _ => ⊤) hd σ z ∈ T) : T = ⊤ :=
   Submodule.eq_top_iff'.2 fun F => (exists_form_of_mt W Ch sel mu P b0 til ext tz hd σ F).elim fun G e =>
@@ -152,10 +206,16 @@ theorem eq_top_of_rowEmb_mem (hX : X.Ok) (T : Submodule ℂ ((perOn W Ch sel mu 
       (congrArg (· ∈ T) (Subtype.ext (funext fun b => funext fun p => (h.2 b p).trans (e b p).symm) : F' = F)).mp h.1
 end G
 
+/- English proof (translation)
+The claim follows from `eq_top_of_rowEmb_mem (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps (I := I.chIn u a) (I.perIn u a).b0 (I.perIn u a).til (I.perIn u a).ext (I.perIn u a).tz hd B.embLL hX (Submodule.span ℂ {G : (I.per l u a).Mt | RowVal I l u a G}) fun z hz => (Submodule.subset_span (rowVal_ro …`.
+-/
 theorem span_rowVal (a) (hd : Disjoint (B.primes X).vGs (QE I.sel (I.tup a : Chr B.fields.F B.fields.E B.fields.K))) (hX : B.fields.Ok) (u) :
     Submodule.span ℂ {G : (I.per l u a).Mt | RowVal I l u a G} = ⊤ :=
     eq_top_of_rowEmb_mem (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps (I := I.chIn u a) (I.perIn u a).b0 (I.perIn u a).til (I.perIn u a).ext (I.perIn u a).tz hd B.embLL hX (Submodule.span ℂ {G : (I.per l u a).Mt | RowVal I l u a G}) fun z hz => (Submodule.subset_span (rowVal_rowEmbAt I l u a hd z hz) : rowEmbAt I l u a hd z ∈ Submodule.span ℂ {G : (I.per l u a).Mt | RowVal I l u a G})
 
+/- English proof (translation)
+Take `⟨B, X, I, hL, h, hP, hs⟩` from `TrueColsTest.exists_ok_pins`. Take `⟨Z, hZ⟩` from `exists_rowInt_of_span I (TrueColsTest.laws h) hL fun a => span_rowVal I _ a (Finset.disjoint_of_subset_right (ColIn.Q_subset_SQ I a) (GlobalTheory.Mem.LevTwist.levOk_twists B X I h).2.1) (base_fields_primes_ok B X).1 _`. Conclude with `⟨B, X, I, _, Z, h, hs, hZ⟩`.
+-/
 theorem exists_trueCols_rowInt : ∃ (B : Base) (X : PreX B.toPre) (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)), I.Ok ∧ I.muStar ≠ I.mu0 ∧ RowInt I l Z := by
   obtain ⟨B, X, I, hL, h, hP, hs⟩ := TrueColsTest.exists_ok_pins
   obtain ⟨Z, hZ⟩ := exists_rowInt_of_span I (TrueColsTest.laws h) hL fun a => span_rowVal I _ a

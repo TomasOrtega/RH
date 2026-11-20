@@ -218,9 +218,15 @@ def exampleChainParams : ChainParams where
   height_ge_first_cubic_bound := by norm_num
   height_ge_second_cubic_bound := by norm_num
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : exampleChainParams.Nm = 22 ∧ exampleChainParams.NF = 40 := by
   decide
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : exampleChainParams.h0 <
     4 * (exampleChainParams.NF : ℤ) ^ 3 + 2 * exampleChainParams.t + 6 := by
   decide

@@ -10,6 +10,9 @@ import Development.AbelianVarietyTheory.BlockTheory.AdelicCMFields.UnitaryHeckeC
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal
   GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Base
 
+/- English proof (translation)
+Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 K)`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]`.
+-/
 private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
   have : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩
@@ -19,6 +22,11 @@ private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [
   rw [← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal,
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
 
+/- English proof (translation)
+Establish `e : ∀ (q : ℕ) (B : Multiset ℂˣ), algSat n q B = B.map fun α : ℂˣ => (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ)` using `fun q B => by`. Simplify using `only [algSat, Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]`. Simplify using `only [e, Multiset.map_map, Function.comp_def]`. Use `Multiset.map_congr rfl fun α _ => ?_` and prove the remaining obligations. Establish `h : (((q ^ f : ℕ) : ℝ)) ^ (((n : ℝ) - 1) / 2) = ((q : ℝ) ^ (((n : ℝ) - 1) / 2)) ^ f`.
+
+Rewrite using `[Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg q), ← Real.rpow_mul (Nat.cast_nonneg q), mul_comm]`. Rewrite using `[h, mul_pow, Units.val_pow_eq_pow_val, Complex.ofReal_pow]`.
+-/
 private theorem algSat_pow (n q f : ℕ) (B : Multiset ℂˣ) :
     algSat n (q ^ f) (B.map (· ^ f)) = (algSat n q B).map (· ^ f) := by
   have e : ∀ (q : ℕ) (B : Multiset ℂˣ),
@@ -32,6 +40,17 @@ private theorem algSat_pow (n q f : ℕ) (B : Multiset ℂˣ) :
   rw [h, mul_pow, Units.val_pow_eq_pow_val, Complex.ofReal_pow]
 
 open UpperTheory.V.Sd in
+/- English proof (translation)
+Introduce `F E Ω _ _ _ _ _ _ _ _ _ _ _ _ _ l _ ι hp n hn r hr ⟨π, hreg, hatt⟩ hirr`. Use `haveI : IsAlgClosure F Ω := ⟨IsAlgClosure.isAlgClosed E, Algebra.IsAlgebraic.trans F E Ω⟩`. Establish `key : (∃ η : HChar F, IsNormChar E η ∧ SelfTw (CG.mk π).HasSat η) ∨ ∃ P : CuspSub E n, (∀ τ m, π.HasInfChar (τ.comp (algebraMap F E)) m → P.HasInfChar τ m) ∧ WeakBC (CG.mk π).HasSat (CG.mk P).HasSat`. Break down `(cyc F E hp inferInstance n hn).1 _ _ (Or.inl ⟨inferInstance, π, rfl, rfl⟩) (fun τ => ⟨_, ParLaws.hasInfChar_infChar (CG.mk π) τ, hreg τ⟩) with h1 | ⟨sat', inf', hc, hw, hi⟩` into its components or cases. Conclude with `Or.inl h1`.
+
+Break down `hc with ⟨_, P, rfl, rfl⟩ | ⟨hR, -⟩` into its components or cases. Conclude with `Or.inr ⟨P, hi, hw⟩`. Take `⟨v⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Conclude with `absurd (hR.isReal v) (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex v))`. Break down `key with ⟨η, hη, hT⟩ | ⟨P, hinf, hbc⟩` into its components or cases.
+
+Take `⟨δ, hδ1, -, hiso, hres⟩` from `UpperTheory.V.Sd.selfTwGal hA F Ω l ι n r (CG.mk π).HasSat (fun _ _ _ h h' => h.unique h') hr hatt η _ hp.pos hη.2.1 hη.1 hT`. Conclude with `(hδ1 (UpperTheory.schur_twist_holds _ _ _ n r _ δ hirr (hres E hη) hiso)).elim`. Use `⟨P, (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_, (UpperTheory.galoisRep_irreducibility_criterion.1 _ Unit _ n _).2.1 hirr, ?_⟩` and prove the remaining obligations. Establish `h` using `hreg (τ.comp (algebraMap F E))`. Establish `hm : π.HasInfChar (τ.comp (algebraMap F E)) ((CG.mk π).infChar (τ.comp (algebraMap F E)))` using `ParLaws.hasInfChar_infChar (CG.mk π) _`.
+
+Rewrite using `[CG.HasInfChar.infChar_eq (π := CG.mk P) (hinf τ _ hm)]`. Conclude with `h`. Use `filter_upwards [hbc, (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under F E).eventually hatt.2] with w h1 h2`. Take `⟨B, hB, hPw⟩` from `h1 _ (normV_under (K := F) w)`. Take `⟨B', hB', hF⟩` from `h2`.
+
+Take `rfl` from `hB.unique hB'`. Use `⟨_, hPw, ?_⟩` and prove the remaining obligations. Establish `h3` using `(UpperTheory.frobenius_power_compatibility F E Ω l ι w _ (normV_under (K := F) w)).1 n r _ hF`. Rewrite `h3` using `[← algSat_pow, ← normV_under]`. Conclude with `h3`.
+-/
 theorem UpperTheory.V.Z.Bc.upCyc_of (hA : UpperTheory.V.Af.Hypotheses₂) (cyc : UpperTheory.V.Z.Bc.CycC) : UpperTheory.V.Sd.UpCyc := by
   intro F E Ω _ _ _ _ _ _ _ _ _ _ _ _ _ l _ ι hp n hn r hr ⟨π, hreg, hatt⟩ hirr
   haveI : IsAlgClosure F Ω := ⟨IsAlgClosure.isAlgClosed E, Algebra.IsAlgebraic.trans F E Ω⟩

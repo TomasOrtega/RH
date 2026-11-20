@@ -15,23 +15,49 @@ namespace GlobalTheory.ThK.SqIntCont
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, hSB, hev, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hM.std).mono fun v hv => hv.1.trans hv.2)`.
+-/
 theorem polData_le_schA {B : Base F E} {M : Model σ X W} (hM : M.IsGood B.ψ) :
     PolData B M ≤ schA F (Fin n × Fin d) := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨f, -, φ, hSB, hev, rfl⟩
   exact GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hM.std).mono fun v hv => hv.1.trans hv.2)
 
+/- English proof (translation)
+Simplify using `only [theta, thetaSum, map_add, Pi.add_apply]`. Conclude with `(summable_of_mem_schA F (hpres _ _ hΦ)).tsum_add (summable_of_mem_schA F (hpres _ _ hΨ))`.
+-/
 theorem theta_add (om : Rep σ X W) (hpres : ∀ p, ∀ Φ ∈ schA F (Fin n × Fin d), om p Φ ∈ schA F (Fin n × Fin d))
     {Φ Ψ : (Fin n × Fin d → AF F) → ℂ} (hΦ : Φ ∈ schA F _) (hΨ : Ψ ∈ schA F _) (g : UA σ X.J) (h : UA σ W.J) :
     theta om (Φ + Ψ) g h = theta om Φ g h + theta om Ψ g h := by
   simp only [theta, thetaSum, map_add, Pi.add_apply]
   exact (summable_of_mem_schA F (hpres _ _ hΦ)).tsum_add (summable_of_mem_schA F (hpres _ _ hΨ))
 
+/- English proof (translation)
+Simplify using `only [theta, thetaSum, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`.
+-/
 theorem theta_smul (om : Rep σ X W) (z : ℂ) (Φ : (Fin n × Fin d → AF F) → ℂ) (g : UA σ X.J) (h : UA σ W.J) :
     theta om (z • Φ) g h = z * theta om Φ g h := by
   simp only [theta, thetaSum, map_smul, Pi.smul_apply, smul_eq_mul]
   exact tsum_mul_left
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `h0`. Set `L0 : schA F (Fin n × Fin d) →ₗ[ℂ] ℂ` to `{ toFun := fun Ψ => M.I om Ψ.1 h0 map_add' := fun Ψ Ψ' => by`. Simplify using `only [Submodule.coe_add, Model.I]`. Rewrite using `[← integral_add (hconv _ Ψ.2 h0) (hconv _ Ψ'.2 h0)]`.
+
+Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun g => theta_add om hpres Ψ.2 Ψ'.2 g h0)`. Use the proof step `map_smul' := fun z Ψ => by`. Simplify using `only [Submodule.coe_smul, Model.I, RingHom.id_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun g => theta_smul om z _ g h0) }`.
+
+Take `⟨L, hL⟩` from `LinearMap.exists_extend L0`. Establish `hLe : ∀ Ψ (hΨ : Ψ ∈ schA F (Fin n × Fin d)), L Ψ = M.I om Ψ h0` using `fun Ψ hΨ => by`. Use `congrArg (fun T => T ⟨Ψ, hΨ⟩) hL` as an intermediate fact. Simplify `this` using `[L0]`. Establish `hadm : L ∈ (adeleClass F).adm (Fin n × Fin d)`.
+
+Introduce `φ hφ`. Establish `hm : ∀ f : SInf F (Fin n × Fin d), pureA F f φ ∈ schA F (Fin n × Fin d)` using `fun f => Submodule.subset_span ⟨f, φ, hφ, rfl⟩`. Use `⟨{ toFun := fun f => L (pureA F f φ), map_add' := ?_, map_smul' := ?_, cont := ?_ }, fun f => rfl⟩` and prove the remaining obligations. Introduce `f f'`. Rewrite using `[← map_add]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[pureA, add_mul]`. Introduce `z f`. Rewrite using `[RingHom.id_apply, ← map_smul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[pureA, mul_assoc]`. Conclude with `(hreal φ hφ h0).congr fun f => (hLe _ (hm f)).symm`. Establish `key : ∀ h, M.I om Φ h = L (om (1, h0⁻¹ * h) Φ)` using `fun h => by`.
+
+Rewrite using `[hLe _ (hpres _ _ hΦ)]`. Simplify using `only [Model.I, theta]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e : om (g, h) = om (g, h0) * om (1, h0⁻¹ * h)`. Rewrite using `[← map_mul]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [e, Module.End.mul_apply]`. Establish `hc : Continuous fun h : UA σ W.J => L (om (1, h0⁻¹ * h) Φ)` using `(hcont L hadm Φ hΦ).comp (continuous_const.prodMk (continuous_const.mul continuous_id))`. Conclude with `(hc.congr fun h => (key h).symm).continuousAt`.
+-/
 theorem continuous_I (M : Model σ X W) (om : Rep σ X W) (hcont : IsContOn (adeleClass F) om)
     (hpres : ∀ p, ∀ Φ ∈ schA F (Fin n × Fin d), om p Φ ∈ schA F (Fin n × Fin d))
     (hconv : ∀ Φ ∈ schA F (Fin n × Fin d), M.Conv om Φ)
@@ -87,6 +113,11 @@ namespace GlobalTheory.ThK.SquareIntegrability
 
 open GlobalTheory.ThK.SqIntCont
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc _ Φ hΦ`. Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hW` using `GlobalTheory.T.weil_convergence_of_kernel hKP F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hP (Or.inl (GlobalTheory.ThK.Check.conv_range hT.geo))`. Establish `hS : Φ ∈ schA F (Fin a × Fin (a + a'))` using `polData_le_schA hT.geo.hM hΦ`. Establish `hcI : Continuous (G.M.I om Φ)` using `continuous_I G.M om hT.weil.2.2 (IsUWeilPair.isUSplitting hT.weil).pres (fun Ψ hΨ => (hW.1 Ψ hΨ).1) hW.2 hS`.
+
+Use `hcI.comp ?_` and prove the remaining obligations. Conclude with `continuous_subtype_val.subtype_mk _`.
+-/
 theorem continuous_I_toGAd : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

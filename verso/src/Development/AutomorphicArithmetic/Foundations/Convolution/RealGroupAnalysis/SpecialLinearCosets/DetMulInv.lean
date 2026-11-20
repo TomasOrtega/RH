@@ -13,9 +13,15 @@ section SlopeTestRemainingChoices
 
 variable {F : Type} [Field F] [NumberField F] {v : P F}
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_mul, Units.inv_mul, Matrix.det_one]`.
+-/
 private lemma det_inv_mul (y : GLv v) : ((y⁻¹).val).det * (y.val).det = 1 := by
   rw [← Matrix.det_mul, Units.inv_mul, Matrix.det_one]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_mul, Units.mul_inv, Matrix.det_one]`.
+-/
 private lemma det_mul_inv (y : GLv v) : (y.val).det * ((y⁻¹).val).det = 1 := by
   rw [← Matrix.det_mul, Units.mul_inv, Matrix.det_one]
 
@@ -64,10 +70,18 @@ private noncomputable def cj (w : GLv v) : SL v →* SL v where
       _ = ((w⁻¹).val * m.1 * w.val) * ((w⁻¹).val * n.1 * w.val) := by
           rw [← hw]; simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hb.1.comp_continuous e.continuous, hb.2.comp_homeomorph e⟩`.
+-/
 private lemma sb_comp {X : Type} [TopologicalSpace X] (e : X ≃ₜ X) {b : X → ℂ} (hb : b ∈ SB X) :
     b ∘ e ∈ SB X :=
   ⟨hb.1.comp_continuous e.continuous, hb.2.comp_homeomorph e⟩
 
+/- English proof (translation)
+Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun x => ?_, HasCompactSupport.intro hUc fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (U : Set G)`. Conclude with `⟨U, hUo, hx, fun y hy => by`. Simplify using `only [ind]`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]⟩`.
+
+Conclude with `⟨(U : Set G)ᶜ, (U.isClosed_of_isOpen hUo).isOpen_compl, hx, fun y hy => by`. Simplify using `only [ind]`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`.
+-/
 private lemma ind_mem {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     {U : Subgroup G} (hUo : IsOpen (U : Set G)) (hUc : IsCompact (U : Set G)) : ind U ∈ SB G := by
   refine ⟨(IsLocallyConstant.iff_exists_open _).2 fun x => ?_,
@@ -78,6 +92,25 @@ private lemma ind_mem {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGr
   · exact ⟨(U : Set G)ᶜ, (U.isClosed_of_isOpen hUo).isOpen_compl, hx, fun y hy => by
       simp only [ind]; rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩
 
+/- English proof (translation)
+Establish `hdi : (d⁻¹).val * d.val = 1` using `Units.inv_mul d`. Establish `hwi : w.val * (w⁻¹).val = 1` using `Units.mul_inv w`. Set `g' : SL v` to `⟨w.val * (d⁻¹).val, by rw [Matrix.det_mul, e, det_mul_inv]⟩`. Establish `hg' : Matrix.SpecialLinearGroup.toGL g' * d = w`. Apply `Units.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `w.val * (d⁻¹).val * d.val = w.val`. Rewrite using `[Matrix.mul_assoc, hdi, Matrix.mul_one]`. Set `Uc : Subgroup (SL v)` to `U.comap (cj w)`. Establish `hUco : IsOpen (Uc : Set (SL v))` using `hUo.preimage (tw w w rfl).continuous`. Establish `hU0 : ind U ∈ SB (SL v)` using `ha0 ▸ a0.2`.
+
+Set `a1 : SB (SL v)` to `⟨ind U ∘ (tw w w rfl), sb_comp _ hU0⟩`. Establish `h1 : a1.1 = ind Uc`. Use function extensionality and compare the values at `m`. Express the relevant statement in the definitionally equal form `ind U (tw w w rfl m) = ind Uc m`. Unfold `ind`.
+
+Distinguish the cases in `h : tw w w rfl m ∈ U`. Rewrite using `[Set.indicator_of_mem (show _ ∈ (U : Set (SL v)) from h), Set.indicator_of_mem (show m ∈ (Uc : Set (SL v)) from h)]`. Rewrite using `[Set.indicator_of_notMem (show _ ∉ (U : Set (SL v)) from h), Set.indicator_of_notMem (show m ∉ (Uc : Set (SL v)) from h)]`. Establish `h2 : β (ρ (Matrix.SpecialLinearGroup.toGL g') (ρ d f)) a1 = β (ρ d f) b` using `hβ g' (ρ d f) b a1 fun m => by`. Rewrite using `[hb]`.
+
+Express the relevant statement in the definitionally equal form `ind U (tw w w rfl m) = ind U (tw w d e (m * g'))`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(w⁻¹).val * m.1 * w.val = (w⁻¹).val * (m.1 * (w.val * (d⁻¹).val)) * d.val`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[hdi, Matrix.mul_one]`. Establish `h3 : ρ (Matrix.SpecialLinearGroup.toGL g') (ρ d f) = ρ w f`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hg']`. Establish `h4 : ∀ u ∈ Uc, ρ (Matrix.SpecialLinearGroup.toGL u) (ρ w f) = ρ w f`. Introduce `u hu`.
+
+Establish `hw : Matrix.SpecialLinearGroup.toGL u * w = w * Matrix.SpecialLinearGroup.toGL (tw w w rfl u)`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `u.1 * w.val = w.val * ((w⁻¹).val * u.1 * w.val)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hwi, Matrix.one_mul]`. Establish `h5 : ρ (Matrix.SpecialLinearGroup.toGL (tw w w rfl u)) f = f` using `hfix _ hu`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hw, map_mul, Module.End.mul_apply]`. Use `_ = ρ w f := by rw [h5]`. Establish `h6 : I a1 = I a0` using `hI.conj w a0 a1 fun m m' h => by`. Establish `: m' = tw w w rfl m` using `Subtype.ext h`.
+
+Rewrite using `[this, ha0]`. Both sides reduce to the same expression. Rewrite using `[← h2, h3, hΛ (ρ w f) Uc a1 hUco h1 h4, h6]`.
+-/
 private lemma one_term {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GLv v) V)
     (β : V →ₗ[ℂ] SB (SL v) →ₗ[ℂ] ℂ)
     (hβ : ∀ (g : SL v) f (a a' : SB (SL v)), (∀ m, a'.1 m = a.1 (m * g)) →
@@ -141,6 +174,25 @@ private lemma one_term {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Represen
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F _ _ v V _ _ ρ hsm β hβ f a aa haa`. Take `⟨I, hI⟩` from `UpperTheory.ConvolutionTheory.R2.I.invI F v`. Take `⟨Λ, hΛ⟩` from `UpperTheory.ConvolutionTheory.R2.I.lamEx F v V ρ hsm I hI β hβ`. Establish `hN : (Matrix.SpecialLinearGroup.toGL : SL v → GLv v) ⁻¹' {g | ρ g f = f} ∈ 𝓝 (1 : SL v)` using `((hsm f).preimage Matrix.SpecialLinearGroup.continuous_toGL).mem_nhds (by simp)`. Take `⟨U, s, c, hUo, hUc, hUN, hsum⟩` from `UpperTheory.ConvolutionTheory.R2.I.cosetSpan (SL v) (UpperTheory.ConvolutionTheory.R2.I.lgrp F v).1 a.1 a.2 _ hN`.
+
+Set `a0 : SB (SL v)` to `⟨ind U, ind_mem hUo hUc⟩`. Establish `hfix : ∀ u ∈ U, ρ (Matrix.SpecialLinearGroup.toGL u) f = f` using `fun u hu => hUN hu`. Establish `hdet0 : ∀ x : GLv v, (x.val).det = ((dd x).val).det`. Introduce `x`. Express the relevant statement in the definitionally equal form `_ = (!![(((1 : (Kv v)ˣ)) : Kv v), 0; 0, ((Matrix.GeneralLinearGroup.det x : (Kv v)ˣ) : Kv v)]).det`.
+
+Simplify using `[Matrix.det_fin_two_of]`. Establish `hdet : ∀ (x : GLv v) (g : SL v), ((x * Matrix.SpecialLinearGroup.toGL g).val).det = ((dd x).val).det`. Introduce `x g`. Rewrite using `[← hdet0 x, Units.val_mul, Matrix.det_mul]`. Establish `: ((Matrix.SpecialLinearGroup.toGL g).val).det = 1` using `g.2`.
+
+Rewrite using `[this, mul_one]`. Establish `hval : ∀ x, β (ρ (dd x) f) (aa x) = ∑ g ∈ s, (c g * I a0) * Λ (ρ x (ρ (Matrix.SpecialLinearGroup.toGL g) f))`. Introduce `x`. Set `B : SL v → SB (SL v)` to `fun g => ⟨ind U ∘ tw (x * Matrix.SpecialLinearGroup.toGL g) (dd x) (hdet x g), sb_comp _ a0.2⟩`. Establish `hs : aa x = ∑ g ∈ s, c g • B g`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Rewrite using `[haa x m (tw x (dd x) (hdet0 x) m) rfl, hsum]`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `ind U _ = ind U (tw (x * Matrix.SpecialLinearGroup.toGL g) (dd x) (hdet x g) m)`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hinv : ((x * Matrix.SpecialLinearGroup.toGL g)⁻¹).val = (g⁻¹).1 * (x⁻¹).val`.
+
+Rewrite using `[_root_.mul_inv_rev, ← map_inv, Units.val_mul]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(g⁻¹).1 * ((x⁻¹).val * m.1 * (dd x).val) = ((x * Matrix.SpecialLinearGroup.toGL g)⁻¹).val * m.1 * (dd x).val`. Rewrite using `[hinv]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[hs, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, one_term ρ β hβ I hI Λ hΛ U hUo a0 rfl f hfix (x * Matrix.SpecialLinearGroup.toGL g) (dd x) (hdet x g) (B g) (fun m => rfl), map_mul, Module.End.mul_apply, mul_assoc]`. Establish `hfun : (fun x => β (ρ (dd x) f) (aa x)) = ∑ g ∈ s, (c g * I a0) • (fun x => Λ (ρ x (ρ (Matrix.SpecialLinearGroup.toGL g) f)))`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[hval x]`. Simplify using `[Finset.sum_apply]`. Rewrite using `[hfun]`. Conclude with `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Λ, _, rfl⟩)`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.I.absS :
     ∀ (F : Type) [Field F] [NumberField F] (v : P F) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GLv v) V), (∀ f, IsOpen {g | ρ g f = f}) →
       ∀ β : V →ₗ[ℂ] SB (SL v) →ₗ[ℂ] ℂ,

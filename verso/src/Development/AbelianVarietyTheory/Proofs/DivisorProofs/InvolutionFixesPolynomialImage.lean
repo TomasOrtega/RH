@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.NormHasseFixed
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Rewrite using `[map_add, Polynomial.map_add, map_add, ← hp, ← hq]`. Use extensionality with `i j`. Simplify using `[cT]`.
+
+Consider the case `monomial k a`. Rewrite using `[Polynomial.map_monomial, aeval_monomial, aeval_monomial, ← Algebra.smul_def, ← Algebra.smul_def]`. Unfold `cT`. Rewrite using `[Matrix.map_smul' _ _ _ (fun x y => map_mul σ x y), Matrix.map_pow, Matrix.transpose_smul, Matrix.transpose_pow]`.
+-/
 theorem cT_aeval {K : Type} [Field K] (σ : K →+* K) {n : ℕ} (A : Matrix (Fin n) (Fin n) K) (p : K[X]) :
     cT σ (aeval A p) = aeval (cT σ A) (p.map σ) := by
   induction p using Polynomial.induction_on' with
@@ -20,6 +25,11 @@ theorem cT_aeval {K : Type} [Field K] (σ : K →+* K) {n : ℕ} (A : Matrix (Fi
     unfold cT
     rw [Matrix.map_smul' _ _ _ (fun x y => map_mul σ x y), Matrix.map_pow, Matrix.transpose_smul, Matrix.transpose_pow]
 
+/- English proof (translation)
+Establish `hpow : ∀ k : ℕ, (N ^ k) *ᵥ v = μ ^ k • v`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', ← Matrix.mulVec_mulVec, ih, Matrix.mulVec_smul, hv, smul_smul, pow_succ]`.
+
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, Matrix.add_mulVec, hp, hq, add_smul]`. Consider the case `monomial k a`. Rewrite using `[aeval_monomial, aeval_monomial, ← Algebra.smul_def, ← Algebra.smul_def, Matrix.smul_mulVec, hpow, smul_assoc]`.
+-/
 theorem aeval_mulVec {K L : Type} [Field K] [Field L] [Algebra K L] {n : ℕ} (N : Matrix (Fin n) (Fin n) L)
     (μ : L) (v : Fin n → L) (hv : N *ᵥ v = μ • v) (p : K[X]) : (aeval N p) *ᵥ v = aeval μ p • v := by
   have hpow : ∀ k : ℕ, (N ^ k) *ᵥ v = μ ^ k • v := by
@@ -33,6 +43,19 @@ theorem aeval_mulVec {K L : Type} [Field K] [Field L] [Algebra K L] {n : ℕ} (N
     rw [aeval_monomial, aeval_monomial, ← Algebra.smul_def, ← Algebra.smul_def, Matrix.smul_mulVec, hpow,
       smul_assoc]
 
+/- English proof (translation)
+Establish `hU' : cT σ γ.val = (γ⁻¹).val`. Establish `h` using `congrArg (· * (γ⁻¹).val) hγ`. Simplify `h` using `[Matrix.mul_assoc]`. Rewrite `hroot` using `[aeval_def, ← eval_map, ← Matrix.charpoly_map, Matrix.eval_charpoly]`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hroot`.
+
+Establish `hAv : (γ.val.map (algebraMap E L)) *ᵥ v = α • v`. Rewrite `hv` using `[Matrix.sub_mulVec, sub_eq_zero]`. Rewrite using `[← hv]`. Use extensionality with `i`. Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal]`.
+
+Establish `hBA : ((γ⁻¹).val.map (algebraMap E L)) * (γ.val.map (algebraMap E L)) = 1`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hBv : ((γ⁻¹).val.map (algebraMap E L)) *ᵥ v = α⁻¹ • v`. Establish `h : ((γ⁻¹).val.map (algebraMap E L)) *ᵥ ((γ.val.map (algebraMap E L)) *ᵥ v) = v`. Rewrite using `[Matrix.mulVec_mulVec, hBA, Matrix.one_mulVec]`.
+
+Rewrite `h` using `[hAv, Matrix.mulVec_smul]`. Use `conv_rhs => rw [← h, smul_smul, inv_mul_cancel₀ hα0, one_smul]`. Establish `hmap : ∀ (M : Matrix (Fin n) (Fin n) E) (p : E[X]), (aeval M p).map (algebraMap E L) = aeval (M.map (algebraMap E L)) p`. Introduce `M p`. Establish `h` using `aeval_algHom_apply (AlgHom.mapMatrix (Algebra.ofId E L)) M p`.
+
+Establish `e : (⇑(Algebra.ofId E L) : E → L) = algebraMap E L` using `rfl`. Simplify `h.symm` using `[AlgHom.mapMatrix_apply, e]`. Establish `h1 : (cT σ (aeval γ.val m)).map (algebraMap E L) *ᵥ v = (aeval γ.val m).map (algebraMap E L) *ᵥ v`. Rewrite using `[hm]`. Rewrite `h1` using `[cT_aeval, hU', hmap, hmap, aeval_mulVec _ _ v hBv, aeval_mulVec _ _ v hAv]`.
+
+Conclude with `smul_left_injective L hv0 h1`.
+-/
 theorem aeval_inv_map_eq {E : Type} [Field E] (σ : E →+* E) {n : ℕ} (γ : GL (Fin n) E)
     (hγ : cT σ γ.val * 1 * γ.val = 1) (m : E[X]) (hm : cT σ (aeval γ.val m) = aeval γ.val m)
     {L : Type} [Field L] [Algebra E L] (α : L) (hα0 : α ≠ 0) (hroot : aeval α γ.val.charpoly = 0) :
@@ -67,6 +90,13 @@ theorem aeval_inv_map_eq {E : Type} [Field E] (σ : E →+* E) {n : ℕ} (γ : G
 
 open GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField in
 
+/- English proof (translation)
+Introduce `E _ _ _ n γ hγ _ m hm r Q hQ`. Establish `hγ' : cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ.val * 1 * γ.val = 1` using `hγ`. Establish `hroot : aeval (AdjoinRoot.root Q.1) γ.val.charpoly = 0`. Take `⟨c, hc⟩` from `hQ`. Rewrite using `[hc, map_mul, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self, zero_mul]`.
+
+Establish `h` using `aeval_inv_map_eq (IsCMField.complexConj E).toRingEquiv.toRingHom γ hγ' m hm (AdjoinRoot.root Q.1) (root_ne_zero Q) hroot`. Rewrite `h` using `[aeval_def, eval₂_map, AdjoinRoot.aeval_eq]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `show AdjoinRoot.lift ((AdjoinRoot.of Q.1).comp (IsCMField.complexConj E : E →+* E)) (AdjoinRoot.root Q.1)⁻¹ (eval₂_conj_inv_root Q) (AdjoinRoot.mk Q.1 m) = _`. Rewrite using `[AdjoinRoot.lift_mk]`.
+
+Both sides reduce to the same expression.
+-/
 theorem invol_mk_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (γ : GL (Fin n) E), γ ∈ UE E n → γ.val.charpoly ∈ Ell E n → ∀ m : E[X], cT (IsCMField.complexConj E).toRingEquiv.toRingHom (aeval γ.val m) = aeval γ.val m → ∀ (r : ℕ) (Q : GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.SelfRecip E r), Q.1 ∣ γ.val.charpoly → GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.invol Q (AdjoinRoot.mk Q.1 m : GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.Fld Q) = (AdjoinRoot.mk Q.1 m : GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.Fld Q) := by
   intro E _ _ _ n γ hγ _ m hm r Q hQ
   have hγ' : cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ.val * 1 * γ.val = 1 := hγ

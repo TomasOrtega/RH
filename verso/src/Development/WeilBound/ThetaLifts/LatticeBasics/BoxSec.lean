@@ -16,6 +16,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 variable {A : Spc F E m} {Y : Spc F E n} {B : Base F E}
 
+/- English proof (translation)
+Take `⟨N, _, h0, h1, h2⟩` from `hΦ`. Take `⟨c1, c2⟩` from `sec_cont_law h (h0 h1)`. Use `⟨c1, c2, Submodule.finiteDimensional_of_le (S₂ := N.map (LinearMap.pi fun x => l ∘ₗ om x)) (Submodule.span_le.2 ?_)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, h2 k.1 k.2 Φ h1, funext fun x => by simp [map_mul]⟩`.
+-/
 theorem isSec_of {dd} {χ : Chr F E} {om S l} (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ ⊕ κ) B.ψ dd χ om S l)
     {K : Subgroup (G2 σ Y)} {Φ} (hΦ : Φ ∈ kfin om K) : IsSec K χ (((m : ℂ) - n) / 2) fun x => l (om x Φ) := by
   obtain ⟨N, _, h0, h1, h2⟩ := hΦ
@@ -24,6 +27,17 @@ theorem isSec_of {dd} {χ : Chr F E} {om S l} (h : IsDbl (σ := σ) (A := A) (Y 
   rintro _ ⟨k, rfl⟩
   exact ⟨_, h2 k.1 k.2 Φ h1, funext fun x => by simp [map_mul]⟩
 
+/- English proof (translation)
+Proceed by induction on `h1 using Submodule.span_induction with`. Consider the case `mem Φ₁ m1`. Take `⟨f, hf, φ, a1, a2, rfl⟩` from `m1`. Proceed by induction on `h2 using Submodule.span_induction with`. Consider the case `mem Φ₂ m2`.
+
+Take `⟨f', hf', φ', b1, b2, rfl⟩` from `m2`. Conclude with `h _ (pf_mem ⟨a1, (a2.and hM.std).mono fun v hv => hv.1.trans hv.2⟩) _ (pf_mem ⟨b1, (b2.and hM.std).mono fun v hv => hv.1.trans hv.2⟩) f hf f' hf'`. Consider the case `zero => convert N.zero_mem`. Use function extensionality and compare the values at `z`. Simplify using `[boxFun]`.
+
+Consider the case `add _ _ _ _ i j => convert N.add_mem i j`. Use function extensionality and compare the values at `z`. Simplify using `[boxFun, mul_add]`. Consider the case `smul c _ _ i => convert N.smul_mem (star c) i`. Use function extensionality and compare the values at `z`.
+
+Simplify using `[boxFun, mul_left_comm]`. Consider the case `zero => convert N.zero_mem`. Use function extensionality and compare the values at `z`. Simplify using `[boxFun]`. Consider the case `add _ _ _ _ i j => convert N.add_mem i j`.
+
+Use function extensionality and compare the values at `z`. Simplify using `[boxFun, add_mul]`. Consider the case `smul c _ _ i => convert N.smul_mem c i`. Use function extensionality and compare the values at `z`. Simplify using `[boxFun, mul_assoc]`.
+-/
 theorem polData_kfin {a d : ℕ} {X : Spc F E a} {W : Spc F E d} {M : Model σ X W} (hM : M.IsGood B.ψ)
     {N : Submodule ℂ (((Fin a × Fin d) ⊕ (Fin a × Fin d) → AF F) → ℂ)}
     (h : ∀ g₁ ∈ SB _, ∀ g₂ ∈ SB _, ∀ f₁ ∈ M.Pol B.ψ B.emb, ∀ f₂ ∈ M.Pol B.ψ B.emb,
@@ -44,6 +58,9 @@ theorem polData_kfin {a d : ℕ} {X : Spc F E a} {W : Spc F E d} {M : Model σ X
   | add _ _ _ _ i j => convert N.add_mem i j; funext z; simp [boxFun, add_mul]
   | smul c _ _ i => convert N.smul_mem c i; funext z; simp [boxFun, mul_assoc]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B m n A Y M r s r' s' hB _ _ _ _ hY hM χ _ _ dd om S l hd h K a hK _ Φ₁ h1 Φ₂ h2`. Use `isSec_of h (polData_kfin hM (fun g₁ s1 g₂ s2 f₁ p1 f₂ p2 => box_kfin hL hB hK (hC F E σ B n Y r' s' hB (.inr hY) K hK) h.weil.2.1.toIsSplitting hd (fun N n1 n2 => (sInf_le (a := N) ⟨fun f ⟨ε, hε⟩ => n1 ε f fun u u' hu hu' e => ?_, fun u hu f hf f₁ e => ?_⟩ : M.Pol B.ψ B.emb ≤ N)) …` and prove the remaining obligations. Conclude with `hε u u' hu hu' e _ _ (actsD_dop M hB.std hu f) (actsD_dop M hB.std hu' f)`. Rewrite using `[actsD_unique' M hB.std hu e]`. Conclude with `n2 u hu f hf`.
+-/
 theorem _root_.GlobalTheory.ThK.Dbl.boxSec_of (hL : FinLevel) (hC : Stab2Cpt) : BoxSec := by
   intro F E _ _ _ _ _ σ B m n A Y M r s r' s' hB _ _ _ _ hY hM χ _ _ dd om S l hd h K a hK _ Φ₁ h1 Φ₂ h2
   refine isSec_of h (polData_kfin hM (fun g₁ s1 g₂ s2 f₁ p1 f₂ p2 => box_kfin hL hB hK (hC F E σ B n Y r' s' hB (.inr hY) K hK)
@@ -52,6 +69,11 @@ theorem _root_.GlobalTheory.ThK.Dbl.boxSec_of (hL : FinLevel) (hC : Stab2Cpt) : 
   · exact hε u u' hu hu' e _ _ (actsD_dop M hB.std hu f) (actsD_dop M hB.std hu' f)
   · rw [actsD_unique' M hB.std hu e]; exact n2 u hu f hf
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M r s r' s' hB _ _ hX _ _ hM χ _ _ dd om S l ⟨d', ht, hd⟩ h K a hK _ Φ₁ h1 Φ₂ h2`. Establish `tr : ∀ {p q : ℕ} {u : Matrix (Fin p) (Fin q) (AE F E)}, At (evI F) u → At (evI F) uᵀ` using `fun hu c hc => by`. Rewrite using `[← Matrix.transpose_smul, hu c hc, Matrix.transpose_zero]`. Use `isSec_of h (polData_kfin hM (fun g₁ s1 g₂ s2 f₁ p1 f₂ p2 => box_kfin hL hB hK (hC F E σ B n X r s hB (.inl hX) K hK) h.weil.2.1.toIsSplitting hd (fun N n1 n2 => (sInf_le (a := N) ⟨fun f ⟨ε, hε⟩ => n1 ε f fun u u' hu hu' e => ?_, fun u hu f hf f₁ e => ?_⟩ : M.Pol B.ψ B.emb ≤ N)) s …` and prove the remaining obligations. Rewrite using `[← u.transpose_transpose, ← u'.transpose_transpose, ht, ht]`.
+
+Use `hε uᵀ u'ᵀ (tr hu) (tr hu') (fun w => ?_) _ _ (actsD_dop M hB.std (tr hu) f) (actsD_dop M hB.std (tr hu') f)` and prove the remaining obligations. Rewrite using `[Matrix.transpose_map, Matrix.transpose_map, e w, Matrix.transpose_smul, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[actsD_unique' M hB.std hu e]`. Use `n2 uᵀ (tr hu) f hf` as an intermediate fact. Rewrite `this` using `[ht]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.ThK.Dbl.boxSecX_of (hL : FinLevel) (hC : Stab2Cpt) : BoxSecX := by
   intro F E _ _ _ _ _ σ B n d X W M r s r' s' hB _ _ hX _ _ hM χ _ _ dd om S l ⟨d', ht, hd⟩ h K a hK _ Φ₁ h1 Φ₂ h2
   have tr : ∀ {p q : ℕ} {u : Matrix (Fin p) (Fin q) (AE F E)}, At (evI F) u → At (evI F) uᵀ := fun hu c hc => by

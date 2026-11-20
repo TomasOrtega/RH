@@ -15,6 +15,13 @@ section Mat
 
 variable {r : ℕ}
 
+/- English proof (translation)
+Establish `h : ∀ a b, (Yᵀ * diagonal (fun a => (s a : ℂ)) * Y.map (starRingEnd ℂ)) a b = ∑ k, Y k a * s k * conj (Y k b)`. Introduce `a b`. Rewrite using `[Matrix.mul_apply]`. Simplify using `[Matrix.mul_diagonal]`. Use `push_cast`.
+
+Simplify using `only [dotProduct, mulVec, submatrix_apply, h, Pi.star_apply, Complex.star_def, ← Complex.mul_conj', map_sum, map_mul, Complex.conj_conj, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => by ring` and prove the remaining obligations.
+-/
 theorem quad_eq {p : ℕ} (e : Fin p → Fin r) (s : Fin r → ℝ) (Y : Matrix (Fin r) (Fin r) ℂ)
     (v : Fin p → ℂ) :
     star v ⬝ᵥ ((Yᵀ * diagonal (fun a => (s a : ℂ)) * Y.map (starRingEnd ℂ)).submatrix e e *ᵥ v) =
@@ -33,6 +40,11 @@ theorem quad_eq {p : ℕ} (e : Fin p → Fin r) (s : Fin r → ℝ) (Y : Matrix 
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => by ring
 
+/- English proof (translation)
+Establish `h : Yᵀ = (Y.map (starRingEnd ℂ))ᴴ`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Use `isHermitian_conjTranspose_mul_mul _ ?_` and prove the remaining obligations.
+
+Rewrite using `[isHermitian_diagonal_iff]`. Introduce `i`. Simplify using `[IsSelfAdjoint]`.
+-/
 theorem signed_isHermitian (s : Fin r → ℝ) (Y : Matrix (Fin r) (Fin r) ℂ) :
     (Yᵀ * diagonal (fun a => (s a : ℂ)) * Y.map (starRingEnd ℂ)).IsHermitian := by
   have h : Yᵀ = (Y.map (starRingEnd ℂ))ᴴ := by
@@ -43,6 +55,15 @@ theorem signed_isHermitian (s : Fin r → ℝ) (Y : Matrix (Fin r) (Fin r) ℂ) 
   intro i
   simp [IsSelfAdjoint]
 
+/- English proof (translation)
+Use `Matrix.PosDef.of_dotProduct_mulVec_pos ((signed_isHermitian _ _).submatrix e) fun v hv => ?_` and prove the remaining obligations. Establish `h` using `hY.dotProduct_mulVec_pos hv`. Rewrite `h`, the goal using `[quad_eq]`. Rewrite `h`, the goal using `[Complex.zero_lt_real]`. Use `(mul_pos (pow_pos hρ 2) h).trans_le ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Establish `e1 : ∑ a, (diagonal t * Y) k (e a) * conj (v a) = t k * ∑ a, Y k (e a) * conj (v a)`. Simplify using `[Matrix.diagonal_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[e1, norm_mul, mul_pow]`.
+
+Use `set w := ‖∑ a, Y k (e a) * conj (v a)‖ ^ 2`. Establish `hw : 0 ≤ w` using `by positivity`. Unfold `sgn`. Use `split_ifs with hk`. Establish `: ρ ^ 2 ≤ ‖t k‖ ^ 2` using `by gcongr; exact h1 k hk`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `: ‖t k‖ ^ 2 ≤ ρ ^ 2` using `by gcongr; exact h2 k (not_lt.1 hk)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem posDef_contract {p : ℕ} (e : Fin p → Fin r) (p0 : ℕ) (Y : Matrix (Fin r) (Fin r) ℂ)
     (t : Fin r → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (h1 : ∀ a : Fin r, (a : ℕ) < p0 → ρ ≤ ‖t a‖)
     (h2 : ∀ a : Fin r, p0 ≤ (a : ℕ) → ‖t a‖ ≤ ρ)
@@ -69,6 +90,19 @@ theorem posDef_contract {p : ℕ} (e : Fin p → Fin r) (p0 : ℕ) (Y : Matrix (
   · have : ‖t k‖ ^ 2 ≤ ρ ^ 2 := by gcongr; exact h2 k (not_lt.1 hk)
     nlinarith
 
+/- English proof (translation)
+Establish `key : ∀ c : Fin r, ∃ u : Fin r → ℂ, u c = 1 ∧ (∀ a, c < a → u a = 0) ∧ ∀ a, a < c → (Y *ᵥ u) a = 0`. Introduce `c`. Establish `hc : (c : ℕ) ≤ r` using `c.isLt.le`. Use `set A := Y.submatrix (Fin.castLE hc) (Fin.castLE hc) with hA`. Establish `hdet : IsUnit A.det` using `isUnit_iff_ne_zero.2 (hY c.castSucc)`.
+
+Use `set w : Fin c → ℂ := A⁻¹ *ᵥ fun a => -Y (Fin.castLE hc a) c with hw`. Establish `hAw : A *ᵥ w = fun a => -Y (Fin.castLE hc a) c`. Rewrite using `[hw, mulVec_mulVec, mul_nonsing_inv _ hdet, one_mulVec]`. Establish `hne : ∀ (j : Fin c) (a : Fin r), c ≤ a → a ≠ Fin.castLE hc j`. Introduce `j a ha h`.
+
+Use `j.isLt` as an intermediate fact. Establish `h' : (a : ℕ) = j` using `by rw [h]; rfl`. Establish `: (c : ℕ) ≤ a` using `ha`. Use linear arithmetic over natural numbers and integers. Use `⟨Pi.single c 1 + ∑ j : Fin c, w j • Pi.single (Fin.castLE hc j) 1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[Finset.sum_apply, Pi.single_eq_of_ne (hne _ c le_rfl)]`. Introduce `a ha`. Simplify using `[Finset.sum_apply, Pi.single_eq_of_ne (hne _ a ha.le), Pi.single_eq_of_ne ha.ne']`. Introduce `a ha`. Establish `h` using `congrFun hAw ⟨a, ha⟩`.
+
+Rewrite using `[mulVec_add, mulVec_sum]`. Simplify using `only [mulVec_smul, mulVec_single_one, Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.col_apply]`. Simplify using `only [mulVec, dotProduct, hA, submatrix_apply] at h`. Establish `e : Fin.castLE hc ⟨a, ha⟩ = a` using `rfl`. Rewrite `h` using `[e]`.
+
+Rewrite using `[Finset.sum_congr rfl fun j _ => mul_comm (w j) _, h]`. Expand and normalize the polynomial expressions, which then agree. Use `choose u h1 h2 h3 using key`. Conclude with `⟨Matrix.of fun a c => u c a, h1, fun a c h => h2 c a h, fun a c h => h3 c a h⟩`.
+-/
 theorem exists_lower (Y : Matrix (Fin r) (Fin r) ℂ) (hY : ∀ i, lminor Y i ≠ 0) :
     ∃ B : Matrix (Fin r) (Fin r) ℂ, (∀ a, B a a = 1) ∧ (∀ a c, c < a → B a c = 0) ∧
       ∀ a c, a < c → (Y * B) a c = 0 := by
@@ -104,6 +138,11 @@ theorem exists_lower (Y : Matrix (Fin r) (Fin r) ℂ) (hY : ∀ i, lminor Y i �
   choose u h1 h2 h3 using key
   exact ⟨Matrix.of fun a c => u c a, h1, fun a c h => h2 c a h, fun a c h => h3 c a h⟩
 
+/- English proof (translation)
+Establish `hi` using `Nat.le_of_lt_succ i.isLt`. Use `(Polynomial.finite_setOf_isRoot (Matrix.charpoly_monic (-(Y.submatrix (Fin.castLE hi) (Fin.castLE hi)))).ne_zero).subset ?_` and prove the remaining obligations. Introduce `s hs`. Simplify using `only [Set.mem_setOf_eq, Polynomial.IsRoot.def, Matrix.eval_charpoly] at hs ⊢`. Rewrite using `[← hs, lminor]`.
+
+Use `congr 1`. Use extensionality with `a b`. Simplify using `only [submatrix_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, Matrix.sub_apply, scalar_apply, Matrix.diagonal_apply, Matrix.neg_apply, sub_neg_eq_add, smul_eq_mul, mul_ite, mul_one, mul_zero, (Fin.castLE_injective hi).eq_iff]`. Conclude with `add_comm _ _`.
+-/
 theorem finite_lminor (Y : Matrix (Fin r) (Fin r) ℂ) (i : Fin (r + 1)) :
     {s : ℂ | lminor (Y + s • (1 : Matrix (Fin r) (Fin r) ℂ)) i = 0}.Finite := by
   have hi := Nat.le_of_lt_succ i.isLt
@@ -125,6 +164,9 @@ section Frames
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Rewrite using `[← hx₀ τ, ← FrameDegreeData.gram_mul]`. Both sides reduce to the same expression.
+-/
 theorem gramPos_rmul {x₀ : Frame X.Ψ r}
     (hx₀ : ∀ τ : X.Ψ, gram τ.1 X.Gm (mat x₀ τ) =
       Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ))
@@ -134,6 +176,11 @@ theorem gramPos_rmul {x₀ : Frame X.Ψ r}
   rw [← hx₀ τ, ← FrameDegreeData.gram_mul]
   rfl
 
+/- English proof (translation)
+Use `ReciprocityTheory.ChartRestriction.G.AR.Up.ExF.mem_dom_of_gramPos X fun τ => ⟨?_, ?_⟩` and prove the remaining obligations. Establish `h : (mat x₀ τ * mat y τ).det ≠ 0` using `(hy τ).1`. Express the relevant statement in the definitionally equal form `(mat x₀ τ * (diagonal t * mat y τ)).det ≠ 0`. Rewrite `h` using `[det_mul]`. Rewrite using `[det_mul, det_mul, det_diagonal]`.
+
+Conclude with `mul_ne_zero (left_ne_zero_of_mul h) (mul_ne_zero (Finset.prod_ne_zero_iff.2 fun a _ => ht a) (right_ne_zero_of_mul h))`. Establish `h` using `X.gramPos_posDef hy τ`. Rewrite `h` using `[gramPos_rmul X hx₀]`. Conclude with `(gramPos_rmul X hx₀ _ τ).symm ▸ posDef_contract _ _ _ t hρ h1 h2 h`.
+-/
 theorem contract_mem_dom {x₀ : Frame X.Ψ r}
     (hx₀ : ∀ τ : X.Ψ, gram τ.1 X.Gm (mat x₀ τ) =
       Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ))
@@ -152,6 +199,9 @@ theorem contract_mem_dom {x₀ : Frame X.Ψ r}
     rw [gramPos_rmul X hx₀] at h
     exact (gramPos_rmul X hx₀ _ τ).symm ▸ posDef_contract _ _ _ t hρ h1 h2 h
 
+/- English proof (translation)
+Introduce `τ`. Use `⟨?_, fun a c h => diagonal_apply_ne _ h.ne'⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(diagonal (d τ)).det ≠ 0`. Rewrite using `[det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => hd τ a`.
+-/
 theorem diagonal_mem_bor (d : X.Ψ → Fin r → ℂ) (hd : ∀ τ a, d τ a ≠ 0) :
     (fun τ => (diagonal (d τ) : Matrix (Fin r) (Fin r) ℂ)) ∈ Bor X.Ψ r := by
   intro τ
@@ -160,6 +210,37 @@ theorem diagonal_mem_bor (d : X.Ψ → Fin r → ℂ) (hd : ∀ τ a, d τ a ≠
   rw [det_diagonal]
   exact Finset.prod_ne_zero_iff.2 fun a _ => hd τ a
 
+/- English proof (translation)
+Use `set F : ℂ → Frame X.Ψ r := fun ζ => rmul x₀ fun τ a c => ζ ^ ((a : ℕ) - c) * L τ a c with hF`. Establish `hFd : Differentiable ℂ F`. Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun c => ?_` and prove the remaining obligations. Simplify using `only [hF, rmul, mat, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+
+Establish `hdiag : ∀ τ a, L τ a a ≠ 0`. Introduce `τ a`. Establish `h : (mat x₀ τ * mat L τ).det ≠ 0` using `(hLd τ).1`. Rewrite `h` using `[det_mul]`. Establish `h'` using `right_ne_zero_of_mul h`.
+
+Rewrite `h'` using `[det_of_lowerTriangular (mat L τ) (fun a c hac => hL τ a c (by simpa using hac))]`. Conclude with `Finset.prod_ne_zero_iff.1 h' a (Finset.mem_univ _)`. Establish `hF0 : F 0 = rmul x₀ fun τ => (diagonal fun a => L τ a a : Matrix (Fin r) (Fin r) ℂ)`. Simplify using `only [hF]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `τ a c`. Break down `lt_trichotomy a c with h | rfl | h` into its components or cases. Rewrite using `[hL τ a c h, mul_zero, diagonal_apply_ne _ h.ne]`. Simplify using the standard rewrite rules. Rewrite using `[zero_pow (Nat.sub_ne_zero_of_lt h), zero_mul, diagonal_apply_ne _ h.ne']`.
+
+Establish `hb0` using `diagonal_mem_bor X _ hdiag`. Establish `hFne : ∀ ζ : ℂ, ζ ≠ 0 → F ζ = rmul (rmul x₀ fun τ => (diagonal (fun a : Fin r => ζ ^ (a : ℕ)) * mat L τ : Matrix (Fin r) (Fin r) ℂ)) (fun _ => (diagonal fun a : Fin r => (ζ ^ (a : ℕ))⁻¹ : Matrix (Fin r) (Fin r) ℂ))`. Introduce `ζ hζ`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `mat x₀ τ * Matrix.of (fun a c : Fin r => ζ ^ ((a : ℕ) - c) * L τ a c) = mat x₀ τ * (diagonal (fun a : Fin r => ζ ^ (a : ℕ)) * mat L τ) * diagonal fun a : Fin r => (ζ ^ (a : ℕ))⁻¹`.
+
+Rewrite using `[Matrix.mul_assoc]`. Use `congr 1`. Use extensionality with `a c`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, mat, Matrix.of_apply]`. Break down `lt_or_ge a c with h | h` into its components or cases.
+
+Simplify using `[hL τ a c h]`. Rewrite using `[pow_sub₀ _ hζ h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbζ : ∀ ζ : ℂ, ζ ≠ 0 → (fun _ : X.Ψ => (diagonal fun a : Fin r => (ζ ^ (a : ℕ))⁻¹ : Matrix (Fin r) (Fin r) ℂ)) ∈ Bor X.Ψ r` using `fun ζ hζ => diagonal_mem_bor X (fun _ a => (ζ ^ (a : ℕ))⁻¹) fun _ a => inv_ne_zero (pow_ne_zero _ hζ)`. Establish `hctr : ∀ ζ : ℂ, ζ ≠ 0 → ‖ζ‖ ≤ 1 → (rmul x₀ fun τ => (diagonal (fun a : Fin r => ζ ^ (a : ℕ)) * mat L τ : Matrix (Fin r) (Fin r) ℂ)) ∈ X.dom`.
+
+Introduce `ζ hζ hζ1`. Use `contract_mem_dom X hx₀ hLd _ (fun a => pow_ne_zero _ hζ) (ρ := ‖ζ‖ ^ X.p0) (pow_pos (norm_pos_iff.2 hζ) _) (fun a ha => ?_) (fun a ha => ?_)` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_pow_of_le_one (norm_nonneg _) hζ1 ha.le`. Rewrite using `[norm_pow]`.
+
+Conclude with `pow_le_pow_of_le_one (norm_nonneg _) hζ1 ha`. Establish `hFmem : ∀ ζ ∈ Metric.closedBall (0 : ℂ) 1, F ζ ∈ X.dom`. Introduce `ζ hζ`. Break down `eq_or_ne ζ 0 with rfl | h` into its components or cases. Rewrite using `[hF0]`.
+
+Conclude with `OrthogonalFrameDomain.rmul_mem_dom X hx₀' hb0`. Rewrite using `[hFne ζ h]`. Conclude with `OrthogonalFrameDomain.rmul_mem_dom X (hctr ζ h (mem_closedBall_zero_iff.1 hζ)) (hbζ ζ h)`. Establish `hg : DiffContOnCl ℂ (m ∘ F) (Metric.ball 0 1)`. Use `DifferentiableOn.diffContOnCl ?_` and prove the remaining obligations.
+
+Rewrite using `[closure_ball _ one_ne_zero]`. Conclude with `hm.comp hFd.differentiableOn hFmem`. Establish `hsph : Set.EqOn (m ∘ F) (fun _ => m (rmul x₀ L)) (frontier (Metric.ball (0 : ℂ) 1))`. Introduce `ζ hζ`. Rewrite `hζ` using `[frontier_ball _ one_ne_zero, mem_sphere_zero_iff_norm]`.
+
+Establish `hζ0 : ζ ≠ 0` using `norm_ne_zero_iff.1 (by rw [hζ]; exact one_ne_zero)`. Establish `h1` using `hT (fun _ a => ζ ^ (a : ℕ)) (fun _ a => by rw [norm_pow, hζ, one_pow]) _ hLd`. Establish `e : X.lmulC (fun τ => mat x₀ τ * Matrix.diagonal (fun a : Fin r => ζ ^ (a : ℕ)) * (mat x₀ τ)⁻¹) (rmul x₀ L) = rmul x₀ fun τ => (diagonal (fun a : Fin r => ζ ^ (a : ℕ)) * mat L τ : Matrix (Fin r) (Fin r) ℂ)`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `mat x₀ τ * Matrix.diagonal (fun a : Fin r => ζ ^ (a : ℕ)) * (mat x₀ τ)⁻¹ * (mat x₀ τ * mat L τ) = mat x₀ τ * (diagonal (fun a : Fin r => ζ ^ (a : ℕ)) * mat L τ)`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ (isUnit_iff_ne_zero.2 (hx₀' τ).1), Matrix.mul_assoc]`. Rewrite `h1` using `[e]`. Express the relevant statement in the definitionally equal form `m (F ζ) = m (rmul x₀ L)`. Rewrite using `[hFne ζ hζ0, hB _ (hctr ζ hζ0 hζ.le) _ (hbζ ζ hζ0), h1, ← mul_assoc]`. Express the relevant statement in the definitionally equal form `(∏ τ, ∏ a : Fin r, diagonal (fun a : Fin r => (ζ ^ (a : ℕ))⁻¹) a a ^ la τ a) * _ * _ = _`.
+
+Rewrite using `[← Finset.prod_mul_distrib, Finset.prod_eq_one, one_mul]`. Introduce `τ _`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[diagonal_apply_eq, ← mul_zpow, inv_mul_cancel₀ (pow_ne_zero _ hζ0), _root_.one_zpow]`.
+
+Establish `key` using `Complex.eqOn_of_eqOn_frontier Metric.isBounded_ball hg diffContOnCl_const hsph (Metric.mem_ball_self one_pos)`. Express the relevant statement in the definitionally equal form `m (F 0) = m (rmul x₀ L) at key`. Rewrite using `[← key, hF0, hB _ hx₀' _ hb0, h0, mul_zero]`.
+-/
 theorem eq_zero_lower (la : Wt X.Ψ r) (x₀ : Frame X.Ψ r)
     (hx₀ : ∀ τ : X.Ψ, gram τ.1 X.Gm (mat x₀ τ) =
       Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ))
@@ -261,6 +342,21 @@ end LowestWeight
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `hcell : ∀ y : Frame X.Ψ r, rmul x₀ y ∈ X.dom → (∀ τ i, lminor (mat y τ) i ≠ 0) → m (rmul x₀ y) = 0`. Introduce `y hy hmin`. Use `choose B hB1 hB2 hB3 using fun τ => LowestWeight.exists_lower (mat y τ) (hmin τ)`. Establish `hBb : (fun τ => B τ : Frame X.Ψ r) ∈ Bor X.Ψ r`. Introduce `τ`.
+
+Use `⟨?_, hB2 τ⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(B τ).det ≠ 0`. Rewrite using `[Matrix.det_of_isUpperTriangular (fun a c h => hB2 τ a c h)]`. Simplify using `[hB1]`. Establish `e : rmul (rmul x₀ y) (fun τ => B τ) = rmul x₀ (fun τ => (mat y τ * B τ : Matrix (Fin r) (Fin r) ℂ))`.
+
+Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_assoc (mat x₀ τ) (mat y τ) (B τ)`. Establish `h1` using `hB _ hy _ hBb`. Establish `h2` using `OrthogonalFrameDomain.rmul_mem_dom X hy hBb`. Rewrite `h1`, `h2` using `[e]`.
+
+Rewrite `h1` using `[LowestWeight.eq_zero_lower X la x₀ hx₀ hx₀' m hm hB hT h0 hB3 h2]`. Simplify `h1.symm` using `[bchar, hB1]`. Introduce `x hx`. Use `set y : X.Ψ → Matrix (Fin r) (Fin r) ℂ := fun τ => (mat x₀ τ)⁻¹ * mat x τ with hy`. Establish `e : ∀ s : ℂ, x + s • x₀ = rmul x₀ fun τ => (y τ + s • (1 : Matrix (Fin r) (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)`.
+
+Introduce `s`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `mat x τ + s • mat x₀ τ = mat x₀ τ * ((mat x₀ τ)⁻¹ * mat x τ + s • 1)`. Rewrite using `[Matrix.mul_add, Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.2 (hx₀' τ).1), Matrix.mul_smul, Matrix.mul_one]`. Establish `hlim : Tendsto (fun s : ℂ => x + s • x₀) (𝓝[≠] 0) (𝓝 x)` using `(Continuous.tendsto' (by fun_prop) _ _ (by simp)).mono_left nhdsWithin_le_nhds`.
+
+Establish `hn : X.dom ∈ 𝓝 x` using `(FourierCoefficientDomain.isOpen_dom X).mem_nhds hx`. Establish `hgood : ∀ᶠ s : ℂ in 𝓝[≠] 0, ∀ τ i, lminor (y τ + s • (1 : Matrix (Fin r) (Fin r) ℂ)) i ≠ 0`. Simplify using `only [eventually_all]`. Introduce `τ i`. Conclude with `nhdsNE_le_cofinite _ (LowestWeight.finite_lminor (y τ) i).eventually_cofinite_notMem`.
+
+Establish `hz : ∀ᶠ s : ℂ in 𝓝[≠] 0, m (x + s • x₀) = 0` using `by filter_upwards [hgood, hlim.eventually hn] with s hs hsd`. Rewrite `hsd`, the goal using `[e s]`. Conclude with `hcell _ hsd hs`. Conclude with `tendsto_nhds_unique ((hm.differentiableAt hn).continuousAt.tendsto.comp hlim) (tendsto_const_nhds.congr' (hz.mono fun s hs => hs.symm))`.
+-/
 theorem lowest_weight_function_unique {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (x₀ : Frame X.Ψ r)
     (hx₀ : ∀ τ : X.Ψ, gram τ.1 X.Gm (mat x₀ τ) = Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) (hx₀' : x₀ ∈ X.dom)
     (m : Frame X.Ψ r → ℂ) (hm : DifferentiableOn ℂ m X.dom) (hB : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, m (rmul x b) = bchar la b * m x)
@@ -312,6 +408,11 @@ theorem lowest_weight_function_unique {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) 
   exact tendsto_nhds_unique ((hm.differentiableAt hn).continuousAt.tendsto.comp hlim)
     (tendsto_const_nhds.congr' (hz.mono fun s hs => hs.symm))
 
+/- English proof (translation)
+Introduce `x hx`. Use `sub_eq_zero.1 (lowest_weight_function_unique X la x₀ hx₀ hx₀' (fun x => m x * m' x₀ - m' x * m x₀) ((hm.mul_const _).sub (hm'.mul_const _)) (fun x hx b hb => ?_) (fun t ht x hx => ?_) (by ring) x hx)` and prove the remaining obligations. Rewrite using `[hB x hx b hb, hB' x hx b hb]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hT t ht x hx, hT' t ht x hx]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lowest_weight_function_mul_eq {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (x₀ : Frame X.Ψ r)
     (hx₀ : ∀ τ : X.Ψ, gram τ.1 X.Gm (mat x₀ τ) =
       Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) (hx₀' : x₀ ∈ X.dom)

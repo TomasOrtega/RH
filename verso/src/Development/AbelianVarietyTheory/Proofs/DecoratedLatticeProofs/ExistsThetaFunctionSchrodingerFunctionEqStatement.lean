@@ -13,5 +13,8 @@ open GlobalTheory.Core.Rk.IP GlobalTheory.Core.Rk.SWLaw
 open GlobalTheory.Core.Rk.SW
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SchwOnto.schw_onto | exact GlobalTheory.SchwOnto.schw_onto | (intros; apply GlobalTheory.SchwOnto.schw_onto <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_thetaFunction_schrodingerFunction_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A B : HSp D) (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ φ : Mx D B.rank A.rank → ℂ, GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ → ∃ f, IsThetaFunO ψ (dblSp A) B f ∧ sch ψ A B ν 𝓨 f = φ := by
   first | exact @GlobalTheory.SchwOnto.schw_onto | exact GlobalTheory.SchwOnto.schw_onto | (intros; apply GlobalTheory.SchwOnto.schw_onto <;> assumption)

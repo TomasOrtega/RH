@@ -15,6 +15,35 @@ private def blk (k : Type) [Field k] {d : ℕ} (c : Fin d → ℕ) (i : ℕ) : S
   add_mem' ha hb j h := by simp [ha j h, hb j h]
   smul_mem' r v hv j h := by simp [hv j h]
 
+/- English proof (translation)
+Introduce `_ hSS Γ k _ _ d ρ₀ ρ c hJH hρ`. Take `⟨hinv, hmax⟩` from `hJH`. Establish `key : ∀ (g : Γ) (i : ℕ) (u : Fin d → k), u ∈ blk k c i → ∀ a, (↑(ρ g) : Matrix (Fin d) (Fin d) k).mulVec u a = if c a = i then (↑(ρ₀ g) : Matrix (Fin d) (Fin d) k).mulVec u a else 0`. Introduce `g i u hu a`. Simplify using `only [Matrix.mulVec, dotProduct, hρ]`.
+
+Use `split_ifs with h`. Use `Finset.sum_congr rfl fun b _ => ?_ split_ifs with h'` and prove the remaining obligations. Both sides reduce to the same expression. Simplify using `[hu b (by omega)]`. Use `Finset.sum_eq_zero fun b _ => ?_ split_ifs with h'` and prove the remaining obligations.
+
+Simplify using `[hu b (by omega)]`. Simplify using the standard rewrite rules. Establish `hblk : ∀ i, IsInv ρ (blk k c i)`. Introduce `i g u hu j hj`. Rewrite using `[key g i u hu j, if_neg hj]`.
+
+Establish `hsup : ⨆ i, blk k c i = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Rewrite using `[← Finset.univ_sum_single v]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+
+Use `Submodule.mem_iSup_of_mem (c j) ?_` and prove the remaining obligations. Introduce `a ha`. Rewrite using `[Pi.single_eq_of_ne]`. Introduce and unpack `rfl`. Conclude with `ha rfl`.
+
+Use `hSS Γ k d ρ (fun i => blk k c i) hblk ?_ hsup` and prove the remaining obligations. Introduce `i U hU hUle`. Establish `hlow : low k c i ≤ low k c (i + 1)` using `fun v hv j hj => hv j (by omega)`. Establish `hblkle : blk k c i ≤ low k c (i + 1)` using `fun v hv j hj => hv j (by omega)`. Establish `hdisj : ∀ v, v ∈ blk k c i → v ∈ low k c i → v = 0`.
+
+Introduce `v h1 h2`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : c j = i`. Conclude with `h2 j h.ge`. Conclude with `h1 j h`.
+
+Establish `hU'inv : IsInv ρ₀ (low k c i ⊔ U)`. Introduce `g v hv`. Take `⟨w, hw, u, hu, rfl⟩` from `Submodule.mem_sup.mp hv`. Rewrite using `[Matrix.mulVec_add]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left (hinv i g w hw)) ?_` and prove the remaining obligations.
+
+Establish `huB` using `hUle hu`. Rewrite using `[← sub_add_cancel ((↑(ρ₀ g) : Matrix (Fin d) (Fin d) k).mulVec u) ((↑(ρ g) : Matrix (Fin d) (Fin d) k).mulVec u)]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left ?_) (Submodule.mem_sup_right (hU g u hu))` and prove the remaining obligations. Introduce `a ha`. Rewrite using `[Pi.sub_apply, key g i u huB a]`.
+
+Use `split_ifs with h`. Conclude with `sub_self _`. Rewrite using `[hinv (i + 1) g u (hblkle huB) a (by omega), sub_zero]`. Break down `hmax i _ hU'inv le_sup_left (sup_le hlow (hUle.trans hblkle)) with h | h` into its components or cases. Use `left`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Rewrite using `[Submodule.mem_bot]`. Establish `hv' : v ∈ low k c i`. Rewrite using `[← h]`.
+
+Conclude with `Submodule.mem_sup_right hv`. Conclude with `hdisj v (hUle hv) hv'`. Use `right`. Apply `le_antisymm hUle` to reduce the goal to its premises. Introduce `v hv`.
+
+Establish `hv' : v ∈ low k c i ⊔ U`. Rewrite using `[h]`. Conclude with `hblkle hv`. Take `⟨w, hw, u, hu, rfl⟩` from `Submodule.mem_sup.mp hv'`. Establish `hwB : w ∈ blk k c i`.
+
+Use `Submodule.sub_mem _ hv (hUle hu)` as an intermediate fact. Simplify using `using this`. Rewrite using `[hdisj w hwB hw, zero_add]`. Conclude with `hu`.
+-/
 theorem grSS_of :
     GrHom → SSOfSum → GrSS := by
   intro _ hSS Γ k _ _ d ρ₀ ρ c hJH hρ

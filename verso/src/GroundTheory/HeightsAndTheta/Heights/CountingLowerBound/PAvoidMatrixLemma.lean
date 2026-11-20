@@ -6,6 +6,15 @@ namespace GroundTheory.Heights₂.Heights.LowerBound
 
 open Real
 
+/- English proof (translation)
+Introduce `a c N x ha hc hN hx`. Establish `hs : 0 < c + 2 * a * N` using `by positivity`. Establish `ht : 0 < c + N * x` using `by positivity`. Establish `hlog : log (c + N * x) - log (c + 2 * a * N) ≤ (N * (x - 2 * a)) / (c + 2 * a * N)`. Rewrite using `[← Real.log_div ht.ne' hs.ne']`.
+
+Establish `h1` using `Real.log_le_sub_one_of_pos (div_pos ht hs)`. Establish `h2 : (c + N * x) / (c + 2 * a * N) - 1 = (N * (x - 2 * a)) / (c + 2 * a * N)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hbound : a * ((N * (x - 2 * a)) / (c + 2 * a * N)) ≤ x / 2`. Break down `le_or_gt x (2 * a) with hxa | hxa` into its components or cases. Establish `: N * (x - 2 * a) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos hN.le (by linarith)`. Establish `: (N * (x - 2 * a)) / (c + 2 * a * N) ≤ 0` using `div_nonpos_of_nonpos_of_nonneg this hs.le`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite using `[← mul_div_assoc, div_le_iff₀ hs]`. Establish `hpos : 0 < x - 2 * a` using `by linarith`. Use polynomial arithmetic with `[mul_pos hc hpos, mul_pos (mul_pos ha hN) hpos]`. Use `mul_le_mul_of_nonneg_left hlog ha.le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem AvoidMatrixLemma.proof : AvoidMatrixLemma.Statement := by
   intro a c N x ha hc hN hx
   have hs : 0 < c + 2 * a * N := by positivity

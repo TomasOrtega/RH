@@ -12,6 +12,33 @@ open GlobalTheory.CompanionTheory.LTPer.Tilt
 
 namespace GlobalTheory.CompanionTheory.LTPer.Tilt.Normz
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, q = k + 2` from `⟨q - 2, by omega⟩`. Establish `hmax : ∀ x y : F, ‖x + y‖ ≤ max ‖x‖ ‖y‖` using `fun x y => IsUltrametricDist.norm_add_le_max x y`. Establish `hp0 : 0 ≤ ‖p‖` using `norm_nonneg p`. Establish `hlt : ∀ n, ‖w n‖ < 1`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => simp [h0]`. Consider the case `succ n ih`. Assume the negation of the conclusion as `hge`. Rewrite `hge` using `[not_lt]`.
+
+Establish `hapos : 0 < ‖w (n + 1)‖` using `lt_of_lt_of_le one_pos hge`. Establish `hq1 : ‖w (n + 1)‖ ≤ ‖w (n + 1)‖ ^ (k + 2)`. Combine the equalities or inequalities in the displayed calculation. Establish `key : w (n + 1) ^ (k + 2) = w n + -(p * w (n + 1))` using `by linear_combination hr n`. Establish `h2 : ‖w (n + 1) ^ (k + 2)‖ ≤ max ‖w n‖ ‖-(p * w (n + 1))‖`.
+
+Rewrite using `[key]`. Conclude with `hmax _ _`. Rewrite `h2` using `[norm_pow, norm_neg, norm_mul]`. Establish `h3 : ‖p‖ * ‖w (n + 1)‖ < ‖w (n + 1)‖ ^ (k + 2)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h4 : ‖w n‖ < ‖w (n + 1)‖ ^ (k + 2)` using `lt_of_lt_of_le ih (le_trans hge hq1)`. Conclude with `absurd h2 (not_le.mpr (max_lt h4 h3))`. Establish `hrec1 : w 1 ^ (k + 2) + p * w 1 = 0`. Use `hr 0` as an intermediate fact. Rewrite `this` using `[h0]`.
+
+Conclude with `this`. Establish `hpw : w 1 ^ (k + 1) = -p`. Establish `e : w 1 * (w 1 ^ (k + 1) + p) = 0` using `by linear_combination hrec1`. Break down `mul_eq_zero.mp e with h | h` into its components or cases. Conclude with `absurd h h1`.
+
+Take the linear combination `h`. Establish `hnorm1 : ‖w 1‖ ^ (k + 1) = ‖p‖` using `by rw [← norm_pow, hpw, norm_neg]`. Establish `hp_pos : 0 < ‖p‖`. Rewrite using `[← hnorm1]`. Conclude with `pow_pos (norm_pos_iff.mpr h1) _`.
+
+Establish `hw1 : ‖p‖ ≤ ‖w 1‖`. Rewrite using `[← hnorm1]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsmall : ∀ a : F, ‖a‖ ≤ ‖p‖ → ‖a ^ (k + 2) + p * a‖ ≤ ‖p‖ ^ 2`. Introduce `a ha`.
+
+Establish `ha0 : 0 ≤ ‖a‖` using `norm_nonneg a`. Use `le_trans (hmax _ _) (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, sq]`.
+
+Conclude with `mul_le_mul_of_nonneg_left ha hp0`. Establish `hstep : ∀ n, ‖p‖ ≤ ‖w n‖ → ‖p‖ < ‖w (n + 1)‖`. Introduce `n hn`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt]`.
+
+Establish `hb` using `hsmall (w (n + 1)) hc`. Rewrite `hb` using `[hr n]`. Establish `hp2 : ‖p‖ ^ 2 < ‖p‖`. Rewrite using `[sq]`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hge : ∀ n, ‖p‖ ≤ ‖w (n + 1)‖`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact hw1`.
+
+Consider the case `succ n ih => exact (hstep _ ih).le`. Use `⟨hlt, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩ : ∃ m, n = m + 2` from `⟨n - 2, by omega⟩`. Conclude with `hstep (m + 1) (hge m)`.
+-/
 theorem norm_bounds_of_rec {F : Type*} [NormedField F] [IsUltrametricDist F] (w : ℕ → F) (p : F)
     (q : ℕ) (hq : 2 ≤ q) (hp : ‖p‖ < 1) (h0 : w 0 = 0) (h1 : w 1 ≠ 0)
     (hr : ∀ n, w (n + 1) ^ q + p * w (n + 1) = w n) :
@@ -86,6 +113,13 @@ theorem norm_bounds_of_rec {F : Type*} [NormedField F] [IsUltrametricDist F] (w 
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 2 := ⟨n - 2, by omega⟩
   exact hstep (m + 1) (hge m)
 
+/- English proof (translation)
+Introduce `l _ K χ π z hz hq hp`. Take `⟨_, h0, h1, hr, _⟩` from `hz`. Establish `e : GlobalTheory.CompanionTheory.LTPer.Tilt.omC (((π : ↥K.1) : Om l)) = GlobalTheory.CompanionTheory.LTPer.Tilt.oc K π`. Rewrite using `[GlobalTheory.CompanionTheory.LTPer.Tilt.omC_apply, GlobalTheory.CompanionTheory.LTPer.Tilt.oc_apply]`. Use `norm_bounds_of_rec (fun n => GlobalTheory.CompanionTheory.LTPer.Tilt.omC (z n)) (GlobalTheory.CompanionTheory.LTPer.Tilt.oc K π) (qOf π) hq hp (by simp [h0]) ?_ ?_` and prove the remaining obligations.
+
+Use `show GlobalTheory.CompanionTheory.LTPer.Tilt.omC (z 1) ≠ 0`. Introduce `h`. Establish `hn` using `congrArg norm h`. Rewrite `hn` using `[GlobalTheory.CompanionTheory.LTPer.Tilt.norm_omC, norm_zero]`. Conclude with `h1 (norm_eq_zero.mp hn)`.
+
+Introduce `n show GlobalTheory.CompanionTheory.LTPer.Tilt.omC (z (n + 1)) ^ qOf π + GlobalTheory.CompanionTheory.LTPer.Tilt.oc K π * GlobalTheory.CompanionTheory.LTPer.Tilt.omC (z (n + 1)) = GlobalTheory.CompanionTheory.LTPer.Tilt.omC (z n)`. Establish `hr' : z (n + 1) ^ qOf π + ((π : ↥K.1) : Om l) * z (n + 1) = z n` using `hr n`. Rewrite using `[← e, ← map_pow, ← map_mul, ← map_add, hr']`.
+-/
 theorem norm_z_bounds : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ) (π : ↥(OL K)) (z : ℕ → Om l),
     LTData K χ π z → 2 ≤ qOf π → ‖oc K π‖ < 1 →
     (∀ n, ‖omC (z n)‖ < 1) ∧ ∀ n, 2 ≤ n → ‖oc K π‖ < ‖omC (z n)‖ := by

@@ -9,12 +9,60 @@ variable {K V : Type} [Field K] [AddCommGroup V] [Module K V]
 def chainVec (f : V →ₗ[K] V) {ι : Type} (e : ι → ℕ) (v : ι → V) : (Σ a, Fin (e a)) → V :=
   fun p => (f ^ (p.2 : ℕ)) (v p.1)
 
+/- English proof (translation)
+Proceed by induction on `k generalizing x with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, hg]`.
+-/
 theorem pow_coe_of_restrict {W : Submodule K V} (f : V →ₗ[K] V) (g : W →ₗ[K] W)
     (hg : ∀ x, (g x : V) = f x) (k : ℕ) (x : W) : (((g ^ k) x : W) : V) = (f ^ k) x := by
   induction k generalizing x with
   | zero => simp
   | succ k ih => rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, hg]
 
+/- English proof (translation)
+Establish `hu : ∀ b, ∃ u, f u = (w b : V)` using `fun b => (w b).2`. Use `choose u hu using hu`. Establish `hstep : ∀ (b : ι') (j : ℕ), (f ^ (j + 1)) (u b) = (f ^ j) (w b : V)`. Introduce `b j`. Rewrite using `[pow_succ, Module.End.mul_apply, hu]`.
+
+Use `set N := LinearMap.ker f with hN`. Set `t : ι' → V` to `fun b => (f ^ e' b) (u b)`. Establish `htN : ∀ b, t b ∈ N`. Introduce `b`. Establish `h1 : f (t b) = (f ^ (e' b + 1)) (u b)`.
+
+Simplify using `only [t]`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Rewrite using `[hN, LinearMap.mem_ker, h1, hstep, ← pow_coe_of_restrict f g hg, h0]`. Both sides reduce to the same expression. Establish `hLV : LinearIndependent K (fun p => ((chainVec g e' w p : LinearMap.range f) : V))` using `hli.map' (LinearMap.range f).subtype (Submodule.ker_subtype _)`.
+
+Set `idx : ι' → Σ b, Fin (e' b)` to `fun b => ⟨b, ⟨e' b - 1, by have := he' b; omega⟩⟩`. Establish `hidx : Function.Injective idx` using `fun a b h => congrArg Sigma.fst h`. Establish `ht : LinearIndependent K t`. Establish `h2` using `hLV.comp idx hidx`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `b`. Simplify using `only [t, Function.comp, idx, chainVec]`. Rewrite using `[pow_coe_of_restrict f g hg, ← hstep]`. Use `congr 2`. Use `he' b` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Set `tN : ι' → N` to `fun b => ⟨t b, htN b⟩`. Establish `htNli : LinearIndependent K tN` using `LinearIndependent.of_comp N.subtype ht`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl (span K (Set.range tN))`. Set `bC` to `Module.finBasis K C`.
+
+Set `z : Fin (finrank K C) → V` to `fun c => ((bC c : C) : N)`. Establish `hz : ∀ c, f (z c) = 0` using `fun c => ((bC c : C) : N).2`. Set `e : ι' ⊕ Fin (finrank K C) → ℕ` to `Sum.elim (fun b => e' b + 1) (fun _ => 1)`. Set `v : ι' ⊕ Fin (finrank K C) → V` to `Sum.elim u z`. Set `T` to `span K (Set.range (chainVec f e v))`.
+
+Establish `hTu : ∀ (b : ι') (j : ℕ), j ≤ e' b → (f ^ j) (u b) ∈ T`. Introduce `b j hj`. Conclude with `subset_span ⟨⟨Sum.inl b, ⟨j, Nat.lt_succ_of_le hj⟩⟩, rfl⟩`. Establish `hTz : ∀ c, z c ∈ T`. Introduce `c`.
+
+Conclude with `subset_span ⟨⟨Sum.inr c, ⟨0, Nat.one_pos⟩⟩, by simp [chainVec, v]⟩`. Establish `hkerS : map N.subtype (span K (Set.range tN)) ≤ T`. Use `(Submodule.map_span_le _ _ _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `hTu b _ le_rfl`.
+
+Establish `hkerC : map (N.subtype ∘ₗ C.subtype) ⊤ ≤ T`. Rewrite using `[← bC.span_eq]`. Use `(Submodule.map_span_le _ _ _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `hTz c`.
+
+Establish `hker : N ≤ T`. Introduce `x hx`. Establish `hx' : (⟨x, hx⟩ : N) ∈ span K (Set.range tN) ⊔ C` using `by rw [hC.sup_eq_top]; trivial`. Take `⟨s, hs, c, hc, hsc⟩` from `Submodule.mem_sup.1 hx'`. Establish `hxe : x = (s : V) + (c : V)`.
+
+Use `congrArg Subtype.val hsc` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[hxe]`. Conclude with `T.add_mem (hkerS ⟨s, hs, rfl⟩) (hkerC ⟨⟨c, hc⟩, trivial, rfl⟩)`. Establish `hrange : ∀ y : LinearMap.range f, ∃ x ∈ T, f x = y`.
+
+Establish `h3 : map (LinearMap.range f).subtype (span K (Set.range (chainVec g e' w))) ≤ map f T`. Use `(Submodule.map_span_le _ _ _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨b, j⟩, rfl⟩`. Use `⟨(f ^ (j : ℕ)) (u b), hTu b _ j.2.le, ?_⟩` and prove the remaining obligations. Simplify using `only [chainVec, Submodule.subtype_apply]`.
+
+Rewrite using `[pow_coe_of_restrict f g hg, ← hstep, pow_succ']`. Both sides reduce to the same expression. Introduce `y`. Establish `hy : (y : V) ∈ map (LinearMap.range f).subtype (span K (Set.range (chainVec g e' w)))`. Rewrite using `[hsp]`.
+
+Conclude with `⟨y, trivial, rfl⟩`. Take `⟨x, hx, hxy⟩` from `h3 hy`. Conclude with `⟨x, hx, hxy⟩`. Establish `hTtop : T = ⊤`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations.
+
+Take `⟨x', hx', hxx⟩` from `hrange ⟨f x, x, rfl⟩`. Establish `hk : x - x' ∈ N`. Rewrite using `[hN, LinearMap.mem_ker, map_sub, hxx]`. Simplify using the standard rewrite rules. Use `T.add_mem (hker hk) hx'` as an intermediate fact.
+
+Simplify using `using this`. Establish `hcard₁ : finrank K (LinearMap.range f) = ∑ b, e' b`. Establish `h4` using `finrank_span_eq_card hli`. Rewrite `h4` using `[hsp, finrank_top]`. Rewrite using `[h4, Fintype.card_sigma]`.
+
+Simplify using the standard rewrite rules. Establish `hcard₂ : finrank K N = Fintype.card ι' + finrank K C`. Establish `h5` using `Submodule.finrank_add_eq_of_isCompl hC`. Rewrite `h5` using `[finrank_span_eq_card htNli]`. Conclude with `h5.symm`.
+
+Establish `hcard : Fintype.card (Σ a, Fin (e a)) = finrank K V`. Establish `h6` using `LinearMap.finrank_range_add_finrank_ker f`. Rewrite using `[Fintype.card_sigma, ← h6, hcard₁, ← hN, hcard₂]`. Simplify using `[e, Fintype.sum_sum_type, Finset.sum_add_distrib]`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨ι' ⊕ Fin (finrank K C), inferInstance, e, v, ?_, ?_, ?_, hTtop⟩` and prove the remaining obligations. Introduce and unpack `(b | c)`. Conclude with `Nat.succ_pos _`. Conclude with `Nat.one_pos`. Introduce and unpack `(b | c)`.
+
+Express the relevant statement in the definitionally equal form `(f ^ (e' b + 1)) (u b) = 0`. Rewrite using `[hstep, ← pow_coe_of_restrict f g hg, h0]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(f ^ 1) (z c) = 0`. Simplify using `using hz c`.
+
+Conclude with `linearIndependent_of_top_le_span_of_card_eq_finrank hTtop.ge hcard`.
+-/
 theorem exists_chains_of_range [FiniteDimensional K V] (f : V →ₗ[K] V)
     (g : LinearMap.range f →ₗ[K] LinearMap.range f) (hg : ∀ x, (g x : V) = f x)
     {ι' : Type} [Fintype ι'] (e' : ι' → ℕ) (he' : ∀ b, 0 < e' b) (w : ι' → LinearMap.range f)
@@ -132,6 +180,19 @@ theorem exists_chains_of_range [FiniteDimensional K V] (f : V →ₗ[K] V)
       simpa using hz c
   · exact linearIndependent_of_top_le_span_of_card_eq_finrank hTtop.ge hcard
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `V _ _ _ f hn hf`. Distinguish the cases in `hV : Subsingleton V`.
+
+Use `⟨Empty, inferInstance, fun _ => 0, fun _ => 0, fun a => a.elim, fun a => a.elim, ?_, Subsingleton.elim _ _⟩` and prove the remaining obligations. Conclude with `linearIndependent_empty_type`. Establish `hnt : Nontrivial V` using `not_subsingleton_iff_nontrivial.1 hV`. Take `⟨m, hm⟩` from `hf`. Establish `hlt : finrank K (LinearMap.range f) < n`.
+
+Rewrite using `[← hn]`. Use `Submodule.finrank_lt ?_` and prove the remaining obligations. Introduce `htop`. Establish `hsurj : Function.Surjective f` using `LinearMap.range_eq_top.1 htop`. Establish `hs : Function.Surjective (f ^ m)`.
+
+Rewrite using `[Module.End.coe_pow]`. Conclude with `hsurj.iterate m`. Rewrite `hs` using `[hm]`. Take `⟨x, hx⟩` from `exists_ne (0 : V)`. Take `⟨y, hy⟩` from `hs x`.
+
+Conclude with `hx (by simpa using hy.symm)`. Set `g : LinearMap.range f →ₗ[K] LinearMap.range f` to `f.restrict (fun x _ => LinearMap.mem_range_self f x)`. Establish `hg : ∀ x, (g x : V) = f x` using `fun x => rfl`. Establish `hgn : IsNilpotent g`. Use `⟨m, LinearMap.ext fun x => Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_coe_of_restrict f g hg, hm]`. Both sides reduce to the same expression. Take `⟨ι', _, e', w, he', h0, hli, hsp⟩` from `ih _ hlt (LinearMap.range f) g rfl hgn`. Conclude with `exists_chains_of_range f g hg e' he' w h0 hli hsp`.
+-/
 theorem exists_chains : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (f : V →ₗ[K] V), finrank K V = n → IsNilpotent f →
     ∃ (ι : Type) (_ : Fintype ι) (e : ι → ℕ) (v : ι → V), (∀ a, 0 < e a) ∧
@@ -169,6 +230,9 @@ theorem exists_chains : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module K V] [
       obtain ⟨ι', _, e', w, he', h0, hli, hsp⟩ := ih _ hlt (LinearMap.range f) g rfl hgn
       exact exists_chains_of_range f g hg e' he' w h0 hli hsp
 
+/- English proof (translation)
+The claim follows from `exists_chains _ V f rfl hf`.
+-/
 theorem exists_chain_basis {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (f : V →ₗ[K] V) (hf : IsNilpotent f) :
     ∃ (ι : Type) (_ : Fintype ι) (e : ι → ℕ) (v : ι → V), (∀ a, 0 < e a) ∧

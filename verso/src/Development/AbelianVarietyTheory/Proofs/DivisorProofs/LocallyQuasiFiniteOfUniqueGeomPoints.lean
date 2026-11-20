@@ -4,6 +4,9 @@ open CategoryTheory AlgebraicGeometry
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X T f hf h`. Use `locallyQuasiFinite_of_finite_geometric_points f fun Ω _ _ t ↦ ?_` and prove the remaining obligations. Take `⟨x₀, -, hx₀⟩` from `h Ω t`. Use `haveI : Subsingleton {x : Spec (.of Ω) ⟶ X // x ≫ f = t} := ⟨fun a b ↦ Subtype.ext ((hx₀ a.1 a.2).trans (hx₀ b.1 b.2).symm)⟩`. Use `infer_instance`.
+-/
 theorem locallyQuasiFinite_of_bijective_geometric_points :
     ∀ (X T : Scheme.{0}) (f : X ⟶ T), LocallyOfFiniteType f →
       (∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (t : Spec (.of Ω) ⟶ T),

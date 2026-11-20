@@ -13,6 +13,25 @@ namespace GlobalTheory.CompanionTheory.JSSmooth
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   {n : ℕ}
 
+/- English proof (translation)
+Use `choose y hy hgy using hg`. Establish `hone : ∀ i j, (1 : Matrix (Fin n) (Fin n) F) i j ∈ 𝒪[F]`. Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `hent : ∀ i j, g i j - (1 : Matrix (Fin n) (Fin n) F) i j = (uniformizer F : F) ^ (c + 1) * y i j` using `fun i j => by`. Rewrite using `[← hgy i j, Matrix.sub_apply]`. Establish `hint : ∀ i j, g i j ∈ 𝒪[F]` using `fun i j => by`.
+
+Establish `h1 : g i j = (uniformizer F : F) ^ (c + 1) * y i j + (1 : Matrix (Fin n) (Fin n) F) i j` using `by rw [← hent i j, sub_add_cancel]`. Rewrite using `[h1]`. Conclude with `add_mem (mul_mem (pow_mem (uniformizer F).2 _) (hy i j)) (hone i j)`. Set `A : Matrix (Fin n) (Fin n) 𝒪[F]` to `Matrix.of fun i j => ⟨g i j, hint i j⟩`. Establish `hres : (IsLocalRing.residue 𝒪[F]).mapMatrix A = 1`.
+
+Use extensionality with `i j`. Establish `hmem : A i j - (1 : Matrix (Fin n) (Fin n) 𝒪[F]) i j ∈ IsLocalRing.maximalIdeal 𝒪[F]`. Establish `h1 : A i j - (1 : Matrix (Fin n) (Fin n) 𝒪[F]) i j = uniformizer F * (uniformizer F ^ c * ⟨y i j, hy i j⟩)`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h2 : (((1 : Matrix (Fin n) (Fin n) 𝒪[F]) i j : 𝒪[F]) : F) = (1 : Matrix (Fin n) (Fin n) F) i j`.
+
+Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [AddSubgroupClass.coe_sub, h2, MulMemClass.coe_mul, SubmonoidClass.coe_pow]`. Express the relevant statement in the definitionally equal form `g i j - _ = _`. Rewrite using `[hent i j]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Conclude with `Ideal.mul_mem_right _ _ ((IsLocalRing.mem_maximalIdeal _).2 (irreducible_uniformizer F).not_isUnit)`. Establish `h3` using `(IsLocalRing.residue_eq_zero_iff _).2 hmem`. Rewrite `h3` using `[map_sub, sub_eq_zero]`.
+
+Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, h3, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hdet : IsUnit A.det`. Establish `h1 : IsLocalRing.residue 𝒪[F] A.det = 1`. Rewrite using `[RingHom.map_det, hres, Matrix.det_one]`.
+
+Assume the negation of the conclusion as `h`. Establish `h2` using `(IsLocalRing.residue_eq_zero_iff _).2 ((IsLocalRing.mem_maximalIdeal _).2 h)`. Rewrite `h1` using `[h2]`. Conclude with `zero_ne_one h1`. Rewrite using `[mem_congruenceSubgroup_iff]`.
+
+Use `⟨⟨Matrix.GeneralLinearGroup.mk'' A hdet, Units.ext rfl⟩, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hent i j, map_mul, map_pow]`. Conclude with `mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).1 (hy i j))`.
+-/
 theorem mem_congruenceSubgroup_of_div {c : ℕ} {g : GL (Fin n) F}
     (hg : Div (c + 1) ((g : Matrix (Fin n) (Fin n) F) - 1)) :
     g ∈ congruenceSubgroup F n (c + 1) := by
@@ -64,6 +83,9 @@ theorem mem_congruenceSubgroup_of_div {c : ℕ} {g : GL (Fin n) F}
   rw [hent i j, map_mul, map_pow]
   exact mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).1 (hy i j))
 
+/- English proof (translation)
+Introduce `u` and use `by have h1 : {g : GL (Fin n) F | ρ g u = u} ∈ 𝓝 (1 : GL (Fin n) F) := (h u).mem_nhds (by simp) obtain ⟨m, -, hm⟩ := (hasBasis_nhds_one F n).mem_iff.1 h1 exact ⟨m, fun g hg => hm (congruenceSubgroup_antitone F n (Nat.le_succ m) (mem_congruenceSubgroup_of_div hg))⟩`.
+-/
 theorem smooth_of_isSmooth {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin n) F) V) (h : GlobalTheory.PRep.IsSmooth ρ) : Smooth ρ := fun u => by
   have h1 : {g : GL (Fin n) F | ρ g u = u} ∈ 𝓝 (1 : GL (Fin n) F) :=
@@ -72,6 +94,9 @@ theorem smooth_of_isSmooth {V : Type} [AddCommGroup V] [Module ℂ V]
   exact ⟨m, fun g hg => hm (congruenceSubgroup_antitone F n (Nat.le_succ m)
     (mem_congruenceSubgroup_of_div hg))⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ π w` and use `smooth_of_isSmooth _ (π.isSmooth_locRep w)`.
+-/
 theorem g3 : G3 := fun _ _ _ _ _ π w => smooth_of_isSmooth _ (π.isSmooth_locRep w)
 
 end GlobalTheory.CompanionTheory.JSSmooth

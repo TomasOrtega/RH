@@ -12,11 +12,17 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.TwistConcentration
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 omit [IsCMField E] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det (unip x)) = 1`. Rewrite using `[det_unip, map_one]`.
+-/
 theorem chiDet_unip {a r : ℕ} (χ : Formalism.L2.Host.HChar E) (x : BlockIx a r → Ad E) : chiDet a χ (unip x) = 1 := by
   change (χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det (unip x)) = 1
   rw [det_unip, map_one]
 
 omit [IsCMField E] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det (lev (Ad E) r s m)) = (χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det m.1) * (χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det m.2)`. Rewrite using `[← map_mul]`. Use `congr 1`. Conclude with `det_emb₂ _ _ m`.
+-/
 theorem chiDet_lev {r s : ℕ} (χ : Formalism.L2.Host.HChar E) (m : GA E r × GA E s) :
     chiDet (r + s) χ (lev (Ad E) r s m) = chiDet r χ m.1 * chiDet s χ m.2 := by
   change (χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det (lev (Ad E) r s m)) =
@@ -27,6 +33,9 @@ theorem chiDet_lev {r s : ℕ} (χ : Formalism.L2.Host.HChar E) (m : GA E r × G
   exact det_emb₂ _ _ m
 
 omit [IsCMField E] in
+/- English proof (translation)
+Establish `h : Matrix.GeneralLinearGroup.det g = 1`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_isEmpty]`. Express the relevant statement in the definitionally equal form `(χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det g) = 1`. Rewrite using `[h, map_one]`.
+-/
 theorem chiDet_zero (χ : Formalism.L2.Host.HChar E) (g : GA E 0) : chiDet 0 χ g = 1 := by
   have h : Matrix.GeneralLinearGroup.det g = 1 := by
     ext
@@ -34,12 +43,18 @@ theorem chiDet_zero (χ : Formalism.L2.Host.HChar E) (g : GA E 0) : chiDet 0 χ 
   change (χ : GlobalTheory.Mem.Chr.Ideles E →* ℂˣ) (Matrix.GeneralLinearGroup.det g) = 1
   rw [h, map_one]
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[mulChi_apply, mulChi_apply, mulChi_apply, ExponentTwist.chiDet_absC_val, ExponentTwist.chiDet_absC_val, ExponentTwist.chiDet_absC_val, mul_assoc, ← Complex.exp_add, add_mul]`.
+-/
 theorem mulChi_mulChi {n : ℕ} (a b : ℂ) (φ : Sm E n) :
     mulChi n (Model.absC E b) (mulChi n (Model.absC E a) φ) = mulChi n (Model.absC E (a + b)) φ := by
   refine Subtype.ext (funext fun g => ?_)
   rw [mulChi_apply, mulChi_apply, mulChi_apply, ExponentTwist.chiDet_absC_val, ExponentTwist.chiDet_absC_val,
     ExponentTwist.chiDet_absC_val, mul_assoc, ← Complex.exp_add, add_mul]
 
+/- English proof (translation)
+Unfold `tw`. Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `φ : 1`. Conclude with `mulChi_mulChi a b φ`.
+-/
 theorem tw_tw {n : ℕ} (V : Submodule ℂ (Sm E n)) (a b : ℂ) : tw (tw V a) b = tw V (a + b) := by
   unfold tw
   rw [← Submodule.map_comp]
@@ -47,6 +62,11 @@ theorem tw_tw {n : ℕ} (V : Submodule ℂ (Sm E n)) (a b : ℂ) : tw (tw V a) b
   ext φ : 1
   exact mulChi_mulChi a b φ
 
+/- English proof (translation)
+Establish `h : (mulChi 0 (Model.absC E z)).toLinearMap = LinearMap.id`. Use extensionality with `φ : 1`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, mulChi_apply, chiDet_zero, Units.val_one, mul_one]`. Both sides reduce to the same expression.
+
+Unfold `tw`. Rewrite using `[h, Submodule.map_id]`.
+-/
 theorem tw_zero_dim (V : Submodule ℂ (Sm E 0)) (z : ℂ) : tw V z = V := by
   have h : (mulChi 0 (Model.absC E z)).toLinearMap = LinearMap.id := by
     ext φ : 1
@@ -56,6 +76,11 @@ theorem tw_zero_dim (V : Submodule ℂ (Sm E 0)) (z : ℂ) : tw V z = V := by
   unfold tw
   rw [h, Submodule.map_id]
 
+/- English proof (translation)
+Establish `h : (mulChi n (Model.absC E 0)).toLinearMap = LinearMap.id`. Use extensionality with `φ : 1`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, mulChi_apply, ExponentTwist.chiDet_absC_val, zero_mul, Complex.exp_zero, mul_one]`. Both sides reduce to the same expression.
+
+Unfold `tw`. Rewrite using `[h, Submodule.map_id]`.
+-/
 theorem tw_zero' {n : ℕ} (V : Submodule ℂ (Sm E n)) : tw V 0 = V := by
   have h : (mulChi n (Model.absC E 0)).toLinearMap = LinearMap.id := by
     ext φ : 1
@@ -67,6 +92,15 @@ theorem tw_zero' {n : ℕ} (V : Submodule ℂ (Sm E n)) : tw V 0 = V := by
 
 variable {r s : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨φ₁, h₁, φ₂, h₂, rfl⟩` from `hF`. Use `Submodule.subset_span ⟨mulChi r (Model.absC E z) φ₁, ⟨φ₁, h₁, rfl⟩, mulChi s (Model.absC E z) φ₂, ⟨φ₂, h₂, rfl⟩, funext fun m => ?_⟩` and prove the remaining obligations. Simplify using `only [mulChi_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Use `zero_mem (tens2 (tw W₁ z) (tw W₂ z)) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules.
+
+Consider the case `add F G _ _ hF hG`. Use `add_mem hF hG using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `[add_mul]`. Consider the case `smul c F _ hF`.
+
+Use `Submodule.smul_mem _ c hF using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `[mul_assoc]`.
+-/
 theorem tensor_span_mul_det_character {W₁ : Submodule ℂ (Sm E r)} {W₂ : Submodule ℂ (Sm E s)} (z : ℂ) {F : GA E r × GA E s → ℂ}
     (hF : F ∈ tens2 W₁ W₂) :
     (fun m => F m * (((chiDet r (Model.absC E z) m.1 : ℂˣ) : ℂ) * ((chiDet s (Model.absC E z) m.2 : ℂˣ) : ℂ))) ∈
@@ -91,6 +125,11 @@ theorem tensor_span_mul_det_character {W₁ : Submodule ℂ (Sm E r)} {W₂ : Su
     funext m
     simp [mul_assoc]
 
+/- English proof (translation)
+Use `⟨fun x g => ?_, fun k g => ?_⟩` and prove the remaining obligations. Rewrite using `[mulChi_apply, mulChi_apply, hφ.1 x g, map_mul, chiDet_unip, one_mul]`. Use `set y := infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) g`. Establish `h1` using `Submodule.smul_mem _ ((chiDet (r + s) (Model.absC E z) y : ℂˣ) : ℂ) (tensor_span_mul_det_character z (hφ.2 k g))`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `m`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mulChi_apply, map_mul, chiDet_lev, Units.val_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem memInd2_tw {W₁ : Submodule ℂ (Sm E r)} {W₂ : Submodule ℂ (Sm E s)} (z : ℂ) {φ : Sm E (r + s)}
     (hφ : MemInd2 W₁ W₂ φ) : MemInd2 (tw W₁ z) (tw W₂ z) (mulChi (r + s) (Model.absC E z) φ) := by
   refine ⟨fun x g => ?_, fun k g => ?_⟩
@@ -103,6 +142,11 @@ theorem memInd2_tw {W₁ : Submodule ℂ (Sm E r)} {W₂ : Submodule ℂ (Sm E s
     rw [mulChi_apply, map_mul, chiDet_lev, Units.val_mul, Units.val_mul]
     ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hK⟩`. Use `⟨mulChi (r + s) (Model.absC E (-z)) ψ, ⟨?_, Trees.mulChi_mem_finVec _ hK⟩, ParabolicProjection.mulChi_absC_neg' _ z ψ⟩` and prove the remaining obligations. Establish `h2` using `memInd2_tw (-z) h`. Rewrite `h2` using `[tw_tw, tw_tw, add_neg_cancel, tw_zero', tw_zero']`. Then use the resulting hypothesis.
+
+Introduce and unpack `⟨φ, ⟨hφ, hK⟩, rfl⟩`. Conclude with `⟨memInd2_tw z hφ, Trees.mulChi_mem_finVec _ hK⟩`.
+-/
 theorem memInd2_tw_iff {W₁ : Submodule ℂ (Sm E r)} {W₂ : Submodule ℂ (Sm E s)} (z : ℂ) (ψ : Sm E (r + s)) :
     (MemInd2 (tw W₁ z) (tw W₂ z) ψ ∧ ψ ∈ GlobalTheory.DiscSpec.finVec (cptRep E (r + s))) ↔
       ∃ φ, (MemInd2 W₁ W₂ φ ∧ φ ∈ GlobalTheory.DiscSpec.finVec (cptRep E (r + s))) ∧ mulChi (r + s) (Model.absC E z) φ = ψ := by
@@ -114,6 +158,9 @@ theorem memInd2_tw_iff {W₁ : Submodule ℂ (Sm E r)} {W₂ : Submodule ℂ (Sm
   · rintro ⟨φ, ⟨hφ, hK⟩, rfl⟩
     exact ⟨memInd2_tw z hφ, Trees.mulChi_mem_finVec _ hK⟩
 
+/- English proof (translation)
+Rewrite using `[show tw (Submodule.span ℂ {φ | MemInd2 W₁ W₂ φ ∧ φ ∈ GlobalTheory.DiscSpec.finVec (cptRep E (r + s))}) z = (Submodule.span ℂ {φ | MemInd2 W₁ W₂ φ ∧ φ ∈ GlobalTheory.DiscSpec.finVec (cptRep E (r + s))}).map (mulChi (r + s) (Model.absC E z)).toLinearMap from rfl, Submodule.map_spa …`. Use `congr 1`. Use extensionality with `ψ`. Conclude with `memInd2_tw_iff z ψ`.
+-/
 theorem span_memInd2_tw (W₁ : Submodule ℂ (Sm E r)) (W₂ : Submodule ℂ (Sm E s)) (z : ℂ) :
     Submodule.span ℂ {φ | MemInd2 (tw W₁ z) (tw W₂ z) φ ∧ φ ∈ GlobalTheory.DiscSpec.finVec (cptRep E (r + s))} =
       tw (Submodule.span ℂ {φ | MemInd2 W₁ W₂ φ ∧ φ ∈ GlobalTheory.DiscSpec.finVec (cptRep E (r + s))}) z := by
@@ -129,6 +176,11 @@ def twT (z : ℂ) : {N : ℕ} → Tr E N → Tr E N
   | M, .leaf V w => .leaf V (if M = 0 then w else w + z)
   | _, .node t₁ t₂ => .node (twT z t₁) (twT z t₂)
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `@leaf M V w`. Distinguish the cases in `hM : M = 0`. Substitute `hM` using the available equality. Simplify using `only [twT, Tr.space, tw_zero_dim]`.
+
+Simplify using `only [twT, if_neg hM, Tr.space]`. Rewrite using `[tw_tw]`. Consider the case `@node r s t₁ t₂ ih₁ ih₂`. Simplify using `only [twT, Tr.space]`. Rewrite using `[ih₁, ih₂, tw_tw, tw_tw, add_comm z, add_comm z, ← tw_tw _ _ z, ← tw_tw _ _ z, span_memInd2_tw]`.
+-/
 theorem space_twT (z : ℂ) {N : ℕ} (t : Tr E N) : (twT z t).space = tw t.space z := by
   induction t with
   | @leaf M V w =>
@@ -141,6 +193,11 @@ theorem space_twT (z : ℂ) {N : ℕ} (t : Tr E N) : (twT z t).space = tw t.spac
     simp only [twT, Tr.space]
     rw [ih₁, ih₂, tw_tw, tw_tw, add_comm z, add_comm z, ← tw_tw _ _ z, ← tw_tw _ _ z, span_memInd2_tw]
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `@leaf M V w`. Break down `ht with ⟨hM, hV, hw⟩ | ⟨hM, hV, hw⟩` into its components or cases. Substitute `hM` using the available equality. Simplify using `only [twT]`.
+
+Conclude with `Or.inl ⟨rfl, hV, hw⟩`. Simplify using `only [twT, if_neg hM.ne']`. Conclude with `Or.inr ⟨hM, hV, by rw [Complex.add_re, hw, hz, add_zero]⟩`. Consider the case `@node r s t₁ t₂ ih₁ ih₂`. Conclude with `⟨ih₁ ht.1, ih₂ ht.2⟩`.
+-/
 theorem good_twT {z : ℂ} (hz : z.re = 0) {N : ℕ} (t : Tr E N) (ht : t.Good) : (twT z t).Good := by
   induction t with
   | @leaf M V w =>
@@ -153,6 +210,9 @@ theorem good_twT {z : ℂ} (hz : z.re = 0) {N : ℕ} (t : Tr E N) (ht : t.Good) 
   | @node r s t₁ t₂ ih₁ ih₂ =>
     exact ⟨ih₁ ht.1, ih₂ ht.2⟩
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `@leaf M V w => exact ht`. Consider the case `@node r s t₁ t₂ ih₁ ih₂ => exact ⟨ih₁ ht.1, ih₂ ht.2⟩`.
+-/
 theorem pos_twT (z : ℂ) {N : ℕ} (t : Tr E N) (ht : t.AllLeaves (fun M _ => 0 < M)) :
     (twT z t).AllLeaves (fun M _ => 0 < M) := by
   induction t with
@@ -164,6 +224,11 @@ end PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.TwistConcentration
 namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz
 
 open TwistConcentration in
+/- English proof (translation)
+Introduce `E _ _ _ N U z hz hU φ _ hc`. Take `⟨t, T, ht, hpos, hTe, hTm, hT0⟩` from `hc`. Use `⟨twT z t, ParabolicProjection.twMap N z T, good_twT hz t ht, pos_twT z t hpos, ParabolicProjection.twMap_equiv hU.1 hTe, fun ψ hψ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[space_twT]`. Conclude with `ParabolicProjection.twMap_mem hTm ψ hψ`.
+
+Rewrite using `[ParabolicProjection.twMap_apply, ParabolicProjection.mulChi_absC_neg]`. Conclude with `(LinearEquiv.map_ne_zero_iff _).2 hT0`.
+-/
 theorem twConc_holds : TwConc := by
   intro E _ _ _ N U z hz hU φ _ hc
   obtain ⟨t, T, ht, hpos, hTe, hTm, hT0⟩ := hc

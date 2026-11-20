@@ -9,6 +9,17 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm Recipro
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
+/- English proof (translation)
+Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X`. Take `⟨C, C', hC⟩` from `CuspWeightIntegrable.uFn_bound X`. Use `letI : MeasurableSpace X.M.Xc := borel X.M.Xc`. Use `haveI : BorelSpace X.M.Xc := ⟨rfl⟩`. Use `⟨fun x => 2 * CuspWeightIntegrable.uFn X x, 2 * max C C', ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `((CuspWeightIntegrable.measurable_uFn X).const_mul 2).indicator X.S.R.isOpen_Yo.measurableSet`. Introduce `x hx`. Establish `h1` using `hC x hx`. Establish `hl` using `Real.log_nonneg (X.S.R.one_le_r x hx)`. Establish `h2 : C' * Real.log (X.S.R.r x) ≤ max C C' * Real.log (X.S.R.r x)` using `mul_le_mul_of_nonneg_right (le_max_right _ _) hl`.
+
+Establish `h3 : C ≤ max C C'` using `le_max_left _ _`. Rewrite using `[abs_mul, abs_two]`. Use the polynomial consequences of the given equalities and inequalities. Introduce `z hz hy`. Establish `hzB : z ∉ D.Bd`.
+
+Introduce `hB`. Take `⟨z0, ⟨hz0X, hz0m⟩, hp⟩` from `X.S.Yo_sub _ hy`. Take `⟨c, hc, rfl⟩` from `(X.M.fibre z hz z0 hz0m).1 hp.symm`. Conclude with `hz0X.2 (D.bd_torus z hB c hc)`. Use `CuspWeightIntegrable.cuspWeight_eq X hz hzB hy` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cuspWeight_descends :
     ∀ (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (K : Type) [Fintype K] (ι : K → Type)
       [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (E : Ψ → Type) [∀ τ, AddCommGroup (E τ)]

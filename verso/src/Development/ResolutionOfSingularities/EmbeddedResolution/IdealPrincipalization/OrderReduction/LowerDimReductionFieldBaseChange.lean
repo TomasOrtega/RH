@@ -51,12 +51,18 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Proceed by induction on `Ls with`. Consider the case `nil => simp`. Consider the case `cons a L ih => simp [AlgebraicGeometry.Scheme.IdealSheafData.comap_mul, ih]`.
+-/
 private theorem list_prod_map_comap {X Y : Scheme.{u}} (q : X ⟶ Y) (Ls : List Y.IdealSheafData) :
     (Ls.map (fun A => A.comap q)).prod = Ls.prod.comap q := by
   induction Ls with
   | nil => simp
   | cons a L ih => simp [AlgebraicGeometry.Scheme.IdealSheafData.comap_mul, ih]
 
+/- English proof (translation)
+Rewrite using `[List.map_map]`. Use `List.map_congr_left fun A _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 private theorem list_map_comap_comp {X Y Z : Scheme.{u}} (g : X ⟶ Y) (h : Y ⟶ Z)
     (l : List Z.IdealSheafData) :
     (l.map (fun A => A.comap h)).map (fun A => A.comap g) = l.map (fun A => A.comap (g ≫ h)) := by
@@ -64,6 +70,9 @@ private theorem list_map_comap_comp {X Y Z : Scheme.{u}} (g : X ⟶ Y) (h : Y �
   refine List.map_congr_left fun A _ => ?_
   simp
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using `using hp`.
+-/
 private theorem isPullback_projectionToBase_of_index_eq {X Y Z : Scheme.{u}} (b : SequenceOfBlowups X) {i j : ℕ}
     (h : i = j) {σ : Z ⟶ b.schemeAt i} {v : Z ⟶ Y} {g : Y ⟶ X}
     (hp : IsPullback σ v (b.projectionToBase i) g) :
@@ -71,6 +80,9 @@ private theorem isPullback_projectionToBase_of_index_eq {X Y Z : Scheme.{u}} (b 
   subst h
   simpa using hp
 
+/- English proof (translation)
+Substitute `hE` using the available equality. Substitute `hB` using the available equality. Rewrite using `[List.map_append, List.map_drop]`.
+-/
 private theorem append_drop_eq_map_comap {X Y : Scheme.{u}} (g : Y ⟶ X)
     (Es Bs : List X.IdealSheafData) (Et Bt : List Y.IdealSheafData) (keep : ℕ)
     (hE : Et = Es.map (fun A => A.comap g)) (hB : Bt = Bs.map (fun A => A.comap g)) :
@@ -79,6 +91,9 @@ private theorem append_drop_eq_map_comap {X Y : Scheme.{u}} (g : Y ⟶ X)
   subst hB
   rw [List.map_append, List.map_drop]
 
+/- English proof (translation)
+Substitute `hI` using the available equality. Substitute `hm` using the available equality. Substitute `hE` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem markedIdealWithBoundary_mk_eq_of_eq {k : Type u} [Field k] {X : Scheme.{u}}
     (q : X ⟶ Spec (CommRingCat.of k)) {I I' : X.IdealSheafData} {m m' : ℕ}
     {E E' : List X.IdealSheafData} (hI : I = I') (hm : m = m') (hE : E = E') :
@@ -88,32 +103,50 @@ private theorem markedIdealWithBoundary_mk_eq_of_eq {k : Type u} [Field k] {X : 
   subst hE
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hd`.
+-/
 private theorem isStrictPullback_of_morphism_eq {X' X : Scheme.{u}} {g g' : X' ⟶ X} (h : g = g')
     {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (hd : IsStrictPullbackBlowupSeq g t s) :
     IsStrictPullbackBlowupSeq g' t s := by
   subst h
   exact hd
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hv`.
+-/
 private theorem isAdmissible_of_eq {T T' : MarkedIdealWithBoundary.{u}} (h : T = T') (hv : T'.IsAdmissible) :
     T.IsAdmissible := by
   subst h
   exact hv
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hp`.
+-/
 private theorem pred_dim_of_eq (P : ℕ → Prop) {T T' : MarkedIdealWithBoundary.{u}} (h : T = T')
     (hp : P T'.krullDimSucc) : P T.krullDimSucc := by
   subst h
   exact hp
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `ho`.
+-/
 private theorem isOrderBoundedByMult_of_eq {T T' : MarkedIdealWithBoundary.{u}} (h : T = T')
     (ho : T'.IsOrderBoundedByMult) : T.IsOrderBoundedByMult := by
   subst h
   exact ho
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hj`.
+-/
 private theorem lt_boundary_length_of_eq {T T' : MarkedIdealWithBoundary.{u}} (h : T = T') {j : ℕ}
     (hj : j < T'.boundary.length) : j < T.boundary.length := by
   subst h
   exact hj
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hd`.
+-/
 private theorem isBalanced_of_eq {T T' : MarkedIdealWithBoundary.{u}} (h : T = T')
     (hft : AlgebraicGeometry.LocallyOfFiniteType T.structMap)
     (hft' : AlgebraicGeometry.LocallyOfFiniteType T'.structMap)
@@ -121,6 +154,9 @@ private theorem isBalanced_of_eq {T T' : MarkedIdealWithBoundary.{u}} (h : T = T
   subst h
   exact hd
 
+/- English proof (translation)
+Substitute `h` using the available equality. Consider the cases of `hφ`. Conclude with `hd`.
+-/
 private theorem isStrictPullback_of_markedIdealWithBoundary_eq (A : PrincipalizationAssignment.{u})
     {T T' : MarkedIdealWithBoundary.{u}} (h : T = T')
     {X : Scheme.{u}} {B : SequenceOfBlowups X} {φ : T.scheme ⟶ X} {φ' : T'.scheme ⟶ X} (hφ : HEq φ φ')
@@ -137,6 +173,9 @@ private def castStrictPullbackBlowupSeq {X' X : Scheme.{u}} {g : X' ⟶ X}
   subst hs
   exact D
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Substitute `ha'` using the available equality. Conclude with `H`.
+-/
 private theorem isStrictPullback_of_markedBlowupSequenceData_eq {k k' : Type u} [Field k] [Field k']
     {X X' : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {p' : X' ⟶ Spec (CommRingCat.of k')}
@@ -160,6 +199,9 @@ def DerivIdealSheafIterateCommBaseChange : Prop :=
       ∀ (r : ℕ) (I : X.IdealSheafData),
         derivIdealSheafIterate L pY r (I.comap q) = (derivIdealSheafIterate k pX r I).comap q
 
+/- English proof (translation)
+Rewrite using `[balancedTunedSheaf_eq, balancedTunedSheaf_eq, tunedSheaf_eq_iSup, tunedSheaf_eq_iSup, Scheme.IdealSheafData.comap_iSup]`. Use `iSup_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[← list_prod_map_comap q, List.map_map]`. Use `congrArg List.prod (List.map_congr_left fun r _ => ?_)` and prove the remaining obligations. Simplify using `[Function.comp_apply, hderiv k L f X Y pX pY q hq r I, AlgebraicGeometry.Scheme.IdealSheafData.comap_pow]`.
+-/
 theorem balancedTunedSheaf_comap_of_isPullback (hderiv : DerivIdealSheafIterateCommBaseChange.{u})
     (k L : Type u) [Field k] [Field L] [CharZero k] [CharZero L] (f : k →+* L)
     {X Y : Scheme.{u}} (pX : X ⟶ Spec (CommRingCat.of k)) (pY : Y ⟶ Spec (CommRingCat.of L))
@@ -177,6 +219,9 @@ theorem balancedTunedSheaf_comap_of_isPullback (hderiv : DerivIdealSheafIterateC
 
 namespace MarkedBlowupSequenceData
 
+/- English proof (translation)
+The claim follows from `FunctorialResolution.EmbeddedResolution.isStrictPullbackBlowupSeq_append (g := g) s.toBlowupSequenceData u.toBlowupSequenceData s'.toBlowupSequenceData u'.toBlowupSequenceData D D'`.
+-/
 theorem isStrictPullbackBlowupSeq_append_of_field {k k' : Type u} [Field k] [Field k']
     {X X' : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)} {p' : X' ⟶ Spec (CommRingCat.of k')}
     {I : X.IdealSheafData} {I' : X'.IdealSheafData} {m m' : ℕ}
@@ -203,6 +248,9 @@ variable (S : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L] (f : S.base �
   (t : MarkedBlowupSequenceData (S.baseChange L f).structMap (S.baseChange L f).ideal
       (S.baseChange L f).mult (S.baseChange L f).boundary)
 
+/- English proof (translation)
+Establish `h : t.toMarkedSequenceOfBlowups.length = s.toMarkedSequenceOfBlowups.length` using `D.length_eq`. Rewrite `h` using `[MarkedBlowupSequenceData.toMarkedSequence_length, MarkedBlowupSequenceData.toMarkedSequence_length]`. Conclude with `h`.
+-/
 theorem length_eq_of_strictPullbackBlowupSeq
     (D : StrictPullbackBlowupSeq (pullback.fst S.structMap (specMapOfFieldHom S.base L f))
       t.toMarkedSequenceOfBlowups.toSequenceOfBlowups s.toMarkedSequenceOfBlowups.toSequenceOfBlowups) :
@@ -217,6 +265,9 @@ noncomputable def baseChangeMapAtLength
     t.obj t.length ⟶ s.obj s.length :=
   D.lastMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseChangeMapAtLength_eq_lastMap
     (D : StrictPullbackBlowupSeq (pullback.fst S.structMap (specMapOfFieldHom S.base L f))
       t.toMarkedSequenceOfBlowups.toSequenceOfBlowups s.toMarkedSequenceOfBlowups.toSequenceOfBlowups) :
@@ -228,6 +279,39 @@ theorem baseChangeMapAtLength_eq_lastMap
     (Ls : List (s.obj s.length).IdealSheafData) : List (t.obj t.length).IdealSheafData :=
   Ls.map (fun A => A.comap (baseChangeMapAtLength S L f s t D))
 
+/- English proof (translation)
+Establish `hlen : t.length = s.length` using `length_eq_of_strictPullbackBlowupSeq S L f s t D`. Establish `hm' : 1 ≤ (S.baseChange L f).mult` using `hm`. Establish `hbe : comapBoundaryBaseChange S L f s t D extra = extra.map (fun A => A.comap D.lastMap)` using `rfl`. Take `⟨hmk1, heq1, -⟩` from `LowerDimReductionPullback.appendLowerDimReduction_eq_append hstar hinv T P A Bp j hspec (fun S' _ i => A i S') (fun _ _ _ => rfl) S hV hm hO s extra keep hftS hdim hP hVc hj hsep`. Take `⟨hmk2, heq2, -⟩` from `LowerDimReductionPullback.appendLowerDimReduction_eq_append hstar hinv T' P A Bp j hspec (fun S' _ i => A i S') (fun _ _ _ => rfl) (S.baseChange L f) hV' hm' hO' t (comapBoundaryBaseChange S L f s t D extra) keep hftT hdim' hP' hVc' hj' hsep'`.
+
+Establish `hcz : CharZero S.base` using `hV.charZero`. Establish `hsmA : AlgebraicGeometry.Smooth ((s.proj s.length ≫ S.structMap : s.obj s.length ⟶ Spec (CommRingCat.of S.base)))` using `hVc.smooth`. Establish `hsmB : AlgebraicGeometry.Smooth ((t.proj t.length ≫ (S.baseChange L f).structMap : t.obj t.length ⟶ Spec (CommRingCat.of L)))` using `hVc'.smooth`. Establish `hftA : AlgebraicGeometry.LocallyOfFiniteType ((s.proj s.length ≫ S.structMap : s.obj s.length ⟶ Spec (CommRingCat.of S.base)))` using `hftS`. Establish `hftB : AlgebraicGeometry.LocallyOfFiniteType ((t.proj t.length ≫ (S.baseChange L f).structMap : t.obj t.length ⟶ Spec (CommRingCat.of L)))` using `hftT`.
+
+Establish `hbase : IsPullback (D.comp t.length le_rfl) (t.toMarkedSequenceOfBlowups.toSequenceOfBlowups.projectionToBase t.length) (s.toMarkedSequenceOfBlowups.toSequenceOfBlowups.projectionToBase t.length) (pullback.fst S.structMap (specMapOfFieldHom S.base L f))` using `isPullback_projectionToBase_of_isPullback_blowupMorphism (pullback.fst S.structMap (specMapOfFieldHom S.base L f)) t.toMarkedSequenceOfBlowups.toSequenceOfBlowups s.toMarkedSequenceOfBlowups.toSequenceOfBlowups t.length D.comp D.comp_zero D.pullback t.length le_rfl`. Establish `hbase2` using `isPullback_projectionToBase_of_index_eq s.toMarkedSequenceOfBlowups.toSequenceOfBlowups hlen hbase`. Establish `hbase3` using `hbase2.paste_vert (IsPullback.of_hasPullback S.structMap (specMapOfFieldHom S.base L f))`. Establish `e1 : t.toMarkedSequenceOfBlowups.toSequenceOfBlowups.projectionToBase t.length = t.proj t.length` using `MarkedBlowupSequenceData.toMarkedSequence_projectionToBase t t.length`. Establish `e2 : s.toMarkedSequenceOfBlowups.toSequenceOfBlowups.projectionToBase s.length = s.proj s.length` using `MarkedBlowupSequenceData.toMarkedSequence_projectionToBase s s.length`.
+
+Establish `hsq : IsPullback D.lastMap (t.proj t.length ≫ (S.baseChange L f).structMap) (s.proj s.length ≫ S.structMap) (specMapOfFieldHom S.base L f)`. Rewrite using `[← e1, ← e2]`. Conclude with `hbase3`. Establish `hsq1 : IsPullback D.lastMap (t.proj t.length ≫ (S.baseChange L f).structMap) (MaxContactCoverData.derivedTriple S s hftS extra keep).structMap (specMapOfFieldHom (MaxContactCoverData.derivedTriple S s hftS extra keep).base L f)` using `hsq`. Take `⟨ι, hfst, hsnd⟩ : ∃ e : t.obj t.length ≅ pullback (MaxContactCoverData.derivedTriple S s hftS extra keep).structMap (specMapOfFieldHom (MaxContactCoverData.derivedTriple S s hftS extra keep).base L f), (e.hom ≫ pullback.fst (MaxContactCoverData.derivedTriple S s hftS extra keep). …` from `⟨hsq1.isoPullback, hsq1.isoPullback_hom_fst, hsq1.isoPullback_hom_snd⟩`.
+
+Establish `hisoι : IsIso ι.hom` using `inferInstance`. Establish `hsmι : AlgebraicGeometry.Smooth ι.hom` using `inferInstance`. Establish `hsurjι : AlgebraicGeometry.Surjective ι.hom` using `inferInstance`. Establish `hdiv` using `(MarkedBlowupSequenceData.isMarked_toBlowupSequenceData s).divisible`. Establish `hpi` using `MarkedBlowupSequenceData.ideal_eq_comap_controlledTransform (d := s.toBlowupSequenceData) (I := S.ideal) (m := S.mult) (E := S.boundary) (g := pullback.fst S.structMap (specMapOfFieldHom S.base L f)) t D hdiv t.length le_rfl`.
+
+Establish `hpb` using `MarkedBlowupSequenceData.boundary_eq_comap_strictPullbackComparisonMap (d := s.toBlowupSequenceData) (I := S.ideal) (m := S.mult) (E := S.boundary) (g := pullback.fst S.structMap (specMapOfFieldHom S.base L f)) t D hNs hNt t.length le_rfl`. Establish `hpm : MarkedBlowupSequenceData.strictPullbackComparisonMap (q` using `(S.baseChange L f).structMap) (g := pullback.fst S.structMap (specMapOfFieldHom S.base L f)) (I := S.ideal) (m := S.mult) (E := S.boundary) (d := s.toBlowupSequenceData) t D t.length le_rfl ≫ eqToHom (congrArg (fun n => s.obj n) hlen) = D.lastMap := rfl`. Establish `hIdealLast : t.ideal t.length = (s.ideal s.length).comap D.lastMap`. Use `hpi.trans ?_` and prove the remaining obligations. Rewrite using `[MarkedBlowupSequenceData.toBlowupSequenceData_controlledTransform_eq s t.length (le_of_eq hlen), MarkedBlowupSequenceData.ideal_congr_index s hlen, ← Scheme.IdealSheafData.comap_comp]`.
+
+Conclude with `congrArg (fun q => (s.ideal s.length).comap q) hpm`. Establish `hBoundaryLast : t.boundary t.length = (s.boundary s.length).map (fun A => A.comap D.lastMap)`. Use `hpb.trans ?_` and prove the remaining obligations. Rewrite using `[MarkedBlowupSequenceData.toBlowupSequenceData_boundary_eq_boundary_of_le s t.length (le_of_eq hlen), MarkedBlowupSequenceData.boundary_congr_index s hlen, List.map_map]`. Use `List.map_congr_left fun A _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, ← Scheme.IdealSheafData.comap_comp]`. Conclude with `congrArg (fun q => A.comap q) hpm`. Establish `htuned` using `balancedTunedSheaf_comap_of_isPullback hderiv S.base L f (s.proj s.length ≫ S.structMap) (t.proj t.length ≫ (S.baseChange L f).structMap) D.lastMap hsq (s.ideal s.length) S.mult`. Establish `hid : (MaxContactCoverData.derivedTriple (S.baseChange L f) t hftT (comapBoundaryBaseChange S L f s t D extra) keep).ideal = ((MaxContactCoverData.derivedTriple S s hftS extra keep).baseChange L f).ideal.comap ι.hom`. Establish `hA : ((MaxContactCoverData.derivedTriple S s hftS extra keep).baseChange L f).ideal.comap ι.hom = (LowerDimReductionPullback.tunedIdealAtLength S s hftS).comap D.lastMap`.
+
+Use `Eq.trans (congrArg (fun I => I.comap ι.hom) (MarkedIdealWithBoundary.baseChange_ideal (MaxContactCoverData.derivedTriple S s hftS extra keep) L f)) ?_` and prove the remaining obligations. Use `Eq.trans (Scheme.IdealSheafData.comap_comp _ _ _).symm ?_` and prove the remaining obligations. Use `Eq.trans (congrArg (fun m => (MaxContactCoverData.derivedTriple S s hftS extra keep).ideal.comap m) hfst) ?_` and prove the remaining obligations. Conclude with `congrArg (fun I => I.comap D.lastMap) (LowerDimReductionPullback.ideal_derivedTriple S s hftS extra keep)`. Establish `hB : (MaxContactCoverData.derivedTriple (S.baseChange L f) t hftT (comapBoundaryBaseChange S L f s t D extra) keep).ideal = (LowerDimReductionPullback.tunedIdealAtLength S s hftS).comap D.lastMap`.
+
+Rewrite using `[LowerDimReductionPullback.ideal_derivedTriple (S.baseChange L f) t hftT (comapBoundaryBaseChange S L f s t D extra) keep, LowerDimReductionPullback.tunedIdealAtLength_eq_balancedTunedSheaf (S.baseChange L f) t hftT, LowerDimReductionPullback.tunedIdealAtLength_eq_balancedTunedSh …`. Conclude with `htuned`. Conclude with `hB.trans hA.symm`. Establish `hbd : (MaxContactCoverData.derivedTriple (S.baseChange L f) t hftT (comapBoundaryBaseChange S L f s t D extra) keep).boundary = (((MaxContactCoverData.derivedTriple S s hftS extra keep).baseChange L f).boundary).map (fun Dv => Dv.comap ι.hom)`. Establish `r1 : (((MaxContactCoverData.derivedTriple S s hftS extra keep).baseChange L f).boundary).map (fun Dv => Dv.comap ι.hom) = (extra ++ (s.boundary s.length).drop keep).map (fun A => A.comap D.lastMap)`.
+
+Use `Eq.trans (congrArg (fun l => l.map (fun Dv => Dv.comap ι.hom)) (MarkedIdealWithBoundary.baseChange_boundary (MaxContactCoverData.derivedTriple S s hftS extra keep) L f)) ?_` and prove the remaining obligations. Use `Eq.trans (list_map_comap_comp ι.hom (pullback.fst (MaxContactCoverData.derivedTriple S s hftS extra keep).structMap (specMapOfFieldHom (MaxContactCoverData.derivedTriple S s hftS extra keep).base L f)) (MaxContactCoverData.derivedTriple S s hftS extra keep).boundary) ?_` and prove the remaining obligations. Use `Eq.trans (congrArg (fun m => (MaxContactCoverData.derivedTriple S s hftS extra keep).boundary.map (fun A => A.comap m)) hfst) ?_` and prove the remaining obligations. Conclude with `congrArg (fun l => l.map (fun A => A.comap D.lastMap)) (MaxContactCoverData.derivedTriple_boundary S s hftS extra keep)`. Establish `r2 : (MaxContactCoverData.derivedTriple (S.baseChange L f) t hftT (comapBoundaryBaseChange S L f s t D extra) keep).boundary = (extra ++ (s.boundary s.length).drop keep).map (fun A => A.comap D.lastMap)`.
+
+Use `Eq.trans (MaxContactCoverData.derivedTriple_boundary (S.baseChange L f) t hftT (comapBoundaryBaseChange S L f s t D extra) keep) ?_` and prove the remaining obligations. Conclude with `append_drop_eq_map_comap D.lastMap extra (s.boundary s.length) (comapBoundaryBaseChange S L f s t D extra) (t.boundary t.length) keep hbe hBoundaryLast`. Conclude with `r2.trans r1.symm`. Establish `hTriple : ((MaxContactCoverData.derivedTriple S s hftS extra keep).baseChange L f).pullbackAlong (t.obj t.length) (MaxContactCoverData.derivedTriple (S.baseChange L f) t hftT (comapBoundaryBaseChange S L f s t D extra) keep).structMap ι.hom = MaxContactCoverData.derivedTriple (S. …` using `markedIdealWithBoundary_mk_eq_of_eq _ hid.symm rfl hbd.symm`. Establish `hft1 : AlgebraicGeometry.LocallyOfFiniteType (MaxContactCoverData.derivedTriple S s hftS extra keep).structMap` using `hVc.locallyOfFiniteType`.
+
+Establish `hO1 : (MaxContactCoverData.derivedTriple S s hftS extra keep).IsOrderBoundedByMult` using `LowerDimReductionPullback.isOrderBoundedByMult_derivedTriple hstar S hV hm hO s hftS extra keep hVc`. Establish `hD1 : (MaxContactCoverData.derivedTriple S s hftS extra keep).IsBalanced hft1` using `LowerDimReductionPullback.isBalanced_derivedTriple hstar S hV hm hO s hftS extra keep hVc`. Establish `hj1 : j < (MaxContactCoverData.derivedTriple S s hftS extra keep).boundary.length` using `lt_of_lt_of_eq hj (congrArg List.length (MaxContactCoverData.derivedTriple_boundary S s hftS extra keep)).symm`. Establish `hO1b : ((MaxContactCoverData.derivedTriple S s hftS extra keep).baseChange L f).IsOrderBoundedByMult` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff _).mpr hOb`. Establish `hlenb : ((MaxContactCoverData.derivedTriple S s hftS extra keep).baseChange L f).boundary.length = (MaxContactCoverData.derivedTriple S s hftS extra keep).boundary.length` using `(congrArg List.length (MarkedIdealWithBoundary.baseChange_boundary (MaxContactCoverData.derivedTriple S s hftS extra keep) L f)).trans (List.length_map _)`.
+
+Establish `hj1b : j < ((MaxContactCoverData.derivedTriple S s hftS extra keep).baseChange L f).boundary.length` using `lt_of_lt_of_eq hj1 hlenb.symm`. Establish `hbc` using `hspec.isStrictPullbackBlowupSeq_baseChange (MaxContactCoverData.derivedTriple S s hftS extra keep) hVc hP hO1 hD1 hj1 L f hVb hPb hO1b (hDb hVb.locallyOfFiniteType) hj1b`. Establish `hO2 : (MaxContactCoverData.derivedTriple (S.baseChange L f) t hftT (comapBoundaryBaseChange S L f s t D extra) keep).IsOrderBoundedByMult` using `LowerDimReductionPullback.isOrderBoundedByMult_derivedTriple hstar (S.baseChange L f) hV' hm' hO' t hftT (comapBoundaryBaseChange S L f s t D extra) keep hVc'`. Establish `hD2b : (MaxContactCoverData.derivedTriple (S.baseChange L f) t hftT (comapBoundaryBaseChange S L f s t D extra) keep).IsBalanced hVc'.locallyOfFiniteType` using `LowerDimReductionPullback.isBalanced_derivedTriple hstar (S.baseChange L f) hV' hm' hO' t hftT (comapBoundaryBaseChange S L f s t D extra) keep hVc'`. Establish `hj2 : j < (MaxContactCoverData.derivedTriple (S.baseChange L f) t hftT (comapBoundaryBaseChange S L f s t D extra) keep).boundary.length` using `lt_of_lt_of_eq hj' (congrArg List.length (MaxContactCoverData.derivedTriple_boundary (S.baseChange L f) t hftT (comapBoundaryBaseChange S L f s t D extra) keep)).symm`.
+
+Establish `hStrictPullback` using `@IsBoundaryDivisorReduction.isStrictPullbackBlowupSeq_of_smooth_surjective P j (A j) Bp hspec ((MaxContactCoverData.derivedTriple S s hftS extra keep).baseChange L f) hVb hPb hO1b (hDb hVb.locallyOfFiniteType) hj1b (t.obj t.length) (MaxContactCoverData.derivedTriple (S.baseChange …`. Establish `hsmT : IsStrictPullbackBlowupSeq ι.hom (A j (MaxContactCoverData.derivedTriple (S.baseChange L f) t hftT (comapBoundaryBaseChange S L f s t D extra) keep)).toSequenceOfBlowups (A j ((MaxContactCoverData.derivedTriple S s hftS extra keep).baseChange L f)).toSequenceOfBlowups` using `isStrictPullback_of_markedIdealWithBoundary_eq (A j) hTriple (HEq.refl ι.hom) hStrictPullback`. Establish `hcomp` using `isStrictPullback_of_morphism_eq hfst (hsmT.comp hbc)`. Establish `hD'0` using `(hcomp.of_isomorphic_pullback (BlowupSequenceData.ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic _).symm).of_isomorphic_base (BlowupSequenceData.ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic _).symm`. Establish `hE1` using `BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups (A j (MaxContactCoverData.derivedTriple S s hftS extra keep)).toSequenceOfBlowups) (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult (s.boundary s.length) hmk1`.
+
+Establish `hE2` using `BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups (A j (MaxContactCoverData.derivedTriple (S.baseChange L f) t hftT (comapBoundaryBaseChange S L f s t D extra) keep)).toSequenceOfBlowups) (t.proj t.length ≫ (S.baseChange L f …`. Establish `hD2` using `castStrictPullbackBlowupSeq hE2.symm hE1.symm hD'0.toStrictPullbackBlowupSeq`. Establish `main` using `isStrictPullback_of_markedBlowupSequenceData_eq heq1.symm heq2.symm (MarkedBlowupSequenceData.isStrictPullbackBlowupSeq_append_of_field (pullback.fst S.structMap (specMapOfFieldHom S.base L f)) s _ t _ hinv D hD2)`. Conclude with `⟨main.toStrictPullbackBlowupSeq⟩`.
+-/
 theorem nonempty_strictPullbackSeq_appendLowerDimReduction_baseChange
     (D : StrictPullbackBlowupSeq (pullback.fst S.structMap (specMapOfFieldHom S.base L f))
       t.toMarkedSequenceOfBlowups.toSequenceOfBlowups s.toMarkedSequenceOfBlowups.toSequenceOfBlowups)

@@ -7,6 +7,11 @@ noncomputable section
 
 namespace Formalism.DivisionValues
 
+/- English proof (translation)
+Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ a`. Establish `hq : (algebraMap ℚ ℂ) (Algebra.norm ℚ a) = ((Algebra.norm ℚ a : ℚ) : ℂ)` using `eq_ratCast _ _`. Establish `hprod : ((Algebra.norm ℚ a : ℚ) : ℂ) = ∏ σ : K →+* ℂ, σ a`. Rewrite using `[← hq, h]`. Conclude with `Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ).symm _ _ (fun _ => rfl)`.
+
+Establish `hn : |((Algebra.norm ℚ a : ℚ) : ℝ)| = ∏ σ : K →+* ℂ, ‖σ a‖`. Rewrite using `[← norm_prod, ← hprod]`. Simplify using the standard rewrite rules. Rewrite using `[hn, Real.log_prod (fun σ _ => by simpa using ha)]`.
+-/
 theorem sum_log_embeddings_eq (K : Type) [Field K] [NumberField K] (a : K) (ha : a ≠ 0) :
     ∑ σ : K →+* ℂ, Real.log ‖σ a‖ = Real.log |((Algebra.norm ℚ a : ℚ) : ℝ)| := by
   have h := Algebra.norm_eq_prod_embeddings ℚ ℂ a
@@ -19,6 +24,13 @@ theorem sum_log_embeddings_eq (K : Type) [Field K] [NumberField K] (a : K) (ha :
     simp
   rw [hn, Real.log_prod (fun σ _ => by simpa using ha)]
 
+/- English proof (translation)
+Establish `h` using `NumberField.InfinitePlace.prod_eq_abs_norm a`. Establish `hm : ∀ w : InfinitePlace K, w.mult = 2` using `fun w => by`. Rewrite using `[InfinitePlace.mult, if_neg (InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex w))]`. Establish `hpos : ∀ w : InfinitePlace K, w a ≠ 0` using `fun w => by`. Rewrite using `[← InfinitePlace.norm_embedding_eq]`.
+
+Simplify using `using ha`. Rewrite using `[← Rat.cast_abs, ← h, Real.log_prod (fun w _ => pow_ne_zero _ (hpos w)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hm, Real.log_pow, InfinitePlace.norm_embedding_eq]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_abs_norm_eq_two_sum (K : Type) [Field K] [NumberField K] [IsTotallyComplex K]
     (a : K) (ha : a ≠ 0) :
     Real.log |((Algebra.norm ℚ a : ℚ) : ℝ)| =
@@ -36,6 +48,27 @@ theorem log_abs_norm_eq_two_sum (K : Type) [Field K] [NumberField K] [IsTotallyC
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `K _ _ _ _ a ha`. Use `set I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K := FractionalIdeal.spanSingleton _ a with hIdef`. Establish `hI : I ≠ 0`. Rewrite using `[hIdef, Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`. Conclude with `ha`.
+
+Establish `hfin : {w : HeightOneSpectrum (𝓞 K) | FractionalIdeal.count K w I ≠ 0}.Finite` using `Filter.eventually_cofinite.mp (FractionalIdeal.finite_factors I)`. Establish `hvw : ∀ w : HeightOneSpectrum (𝓞 K), vw w a = FractionalIdeal.count K w I` using `fun w => rfl`. Establish `hsupp : (Function.support fun w : HeightOneSpectrum (𝓞 K) => lw w * (vw w a : ℝ)) ⊆ (hfin.toFinset : Set (HeightOneSpectrum (𝓞 K)))`. Introduce `w hw`. Simplify using `only [Function.mem_support, Set.Finite.coe_toFinset, Set.mem_setOf_eq] at hw ⊢`.
+
+Introduce `h0`. Apply `hw` to reduce the goal to its premises. Simplify using `[hvw, h0]`. Use `⟨hfin.subset (by simpa using hsupp), ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp]`.
+
+Establish `hpos : ∀ w : HeightOneSpectrum (𝓞 K), (Ideal.absNorm w.asIdeal : ℝ) ≠ 0` using `fun w => by`. Rewrite using `[Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `w.ne_bot`. Establish `hN : (|Algebra.norm ℚ a| : ℚ) = ∏ w ∈ hfin.toFinset, ((Ideal.absNorm w.asIdeal : ℚ)) ^ FractionalIdeal.count K w I`. Rewrite using `[← FractionalIdeal.absNorm_span_singleton (𝓞 K), ← hIdef]`.
+
+Use `conv_lhs => rw [← FractionalIdeal.finprod_heightOneSpectrum_factorization' K hI]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := hfin.toFinset) ?_, map_prod]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, FractionalIdeal.coeIdeal_absNorm]`. Introduce `w hw`.
+
+Simplify using `only [Function.mem_mulSupport, Set.Finite.coe_toFinset, Set.mem_setOf_eq] at hw ⊢`. Introduce `h0`. Apply `hw` to reduce the goal to its premises. Rewrite using `[h0, zpow_zero]`. Establish `hlog : Real.log |((Algebra.norm ℚ a : ℚ) : ℝ)| = ∑ w ∈ hfin.toFinset, (FractionalIdeal.count K w I : ℝ) * Real.log (Ideal.absNorm w.asIdeal : ℝ)`.
+
+Establish `h1 : |((Algebra.norm ℚ a : ℚ) : ℝ)| = ∏ w ∈ hfin.toFinset, ((Ideal.absNorm w.asIdeal : ℝ)) ^ FractionalIdeal.count K w I`. Rewrite using `[← Rat.cast_abs, hN]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[h1, Real.log_prod (fun w _ => zpow_ne_zero _ (hpos w))]`.
+
+Conclude with `Finset.sum_congr rfl fun w _ => Real.log_zpow _ _`. Establish `hB` using `log_abs_norm_eq_two_sum K a ha`. Establish `hn : (finrank ℚ K : ℝ) ≠ 0`. Use `Module.finrank_pos (R := ℚ) (M := K)` as an intermediate fact. Check the signs of the components of the expression.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hB]`. Clear the denominators using the available nonvanishing facts. Use `_ = ∑ w ∈ hfin.toFinset, lw w * (vw w a : ℝ) := by`. Rewrite using `[hlog, Finset.sum_div]`.
+
+Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hvw, lw]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_formula' : ProdFormula := by
   intro K _ _ _ _ a ha
   set I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K := FractionalIdeal.spanSingleton _ a with hIdef

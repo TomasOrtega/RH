@@ -16,5 +16,8 @@ open GlobalTheory.ArithmeticHeightTower GlobalTheory.CompanionTheory.MPDict
 open GlobalTheory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MPDict.TwLine.exists_hermLine_of_twB | exact GlobalTheory.CompanionTheory.MPDict.TwLine.exists_hermLine_of_twB | (intros; apply GlobalTheory.CompanionTheory.MPDict.TwLine.exists_hermLine_of_twB <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hermRep_twisted_bundle_exists : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (M : HermLB (mpStr ℤ m n)) (c : Fin m) (t : ℤ), Nonempty (LBIso M.B (twB m n c t)) → ∃ A : Geo.HermLine (Bk n), IsHermRep M A ∧ A.a = Pi.single c.succ 1 + t • Pi.single 0 1 := by
   first | exact @GlobalTheory.CompanionTheory.MPDict.TwLine.exists_hermLine_of_twB | exact GlobalTheory.CompanionTheory.MPDict.TwLine.exists_hermLine_of_twB | (intros; apply GlobalTheory.CompanionTheory.MPDict.TwLine.exists_hermLine_of_twB <;> assumption)

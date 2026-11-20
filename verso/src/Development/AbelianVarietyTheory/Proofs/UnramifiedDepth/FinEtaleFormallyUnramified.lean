@@ -12,6 +12,29 @@ namespace GlobalTheory
 open TensorProduct IsLocalRing Matrix CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj in
 open scoped CategoryTheory.Obj CategoryTheory.MonObj in
 attribute [local instance] Over.cartesianMonoidalCategory in
+/- English proof (translation)
+Use `set I : Ideal B := LinearMap.ker (LinearMap.mulRight B y) with hI`. Establish `hItop : I ≠ ⊤`. Introduce `h`. Establish `h1 : (1 : B) ∈ I` using `h ▸ Submodule.mem_top`. Apply `hy` to reduce the goal to its premises.
+
+Simplify `h1` using `[hI]`. Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal I hItop`. Use `letI : Field (B ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Algebra.IsIntegral C (B ⧸ m) := Algebra.IsIntegral.of_finite C (B ⧸ m)`. Establish `hbij` using `IsAlgClosed.algebraMap_bijective_of_isIntegral (k := C) (K := B ⧸ m)`.
+
+Set `e` to `AlgEquiv.ofBijective (Algebra.ofId C (B ⧸ m)) hbij`. Set `φ : B →ₐ[C] C` to `e.symm.toAlgHom.comp (Ideal.Quotient.mkₐ C m)`. Establish `hφ : ∀ b, φ b = 0 ↔ b ∈ m`. Introduce `b`. Simplify using `[φ, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Establish `hφa : ∀ b, b - algebraMap C B (φ b) ∈ m`. Introduce `b`. Rewrite using `[← hφ, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Use `⟨φ, fun hy0 => ?_⟩` and prove the remaining obligations. Establish `hym : y ∈ m` using `(hφ y).1 hy0`.
+
+Establish `hmm : m ≤ m * m`. Introduce `x hx`. Assume the negation of the conclusion as `hx2`. Take `⟨ℓ, hℓx, hℓ⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem (p := (m * m).restrictScalars C) hx2 inferInstance`. Establish `hℓ0 : ∀ z ∈ m * m, ℓ z = 0`.
+
+Introduce `z hz`. Establish `hmem` using `Submodule.mem_map_of_mem (f := ℓ) (show z ∈ (m * m).restrictScalars C from hz)`. Rewrite `hmem` using `[hℓ]`. Conclude with `(Submodule.mem_bot C).1 hmem`. Set `D : B →ₗ[C] C` to `ℓ.comp (LinearMap.id - (Algebra.linearMap C B).comp φ.toLinearMap)`.
+
+Establish `hDapp : ∀ b, D b = ℓ (b - algebraMap C B (φ b))` using `fun b => rfl`. Establish `hD : ∀ a b, D (a * b) = φ a * D b + φ b * D a`. Introduce `a b`. Establish `key : a * b - algebraMap C B (φ (a * b)) = φ a • (b - algebraMap C B (φ b)) + φ b • (a - algebraMap C B (φ a)) + (a - algebraMap C B (φ a)) * (b - algebraMap C B (φ b))`. Rewrite using `[map_mul, map_mul, Algebra.smul_def, Algebra.smul_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hDapp, hDapp, hDapp, key, map_add, map_add, map_smul, map_smul, hℓ0 _ (Ideal.mul_mem_mul (hφa a) (hφa b)), smul_eq_mul, smul_eq_mul, add_zero]`. Establish `hD0` using `hder φ D hD`. Apply `hℓx` to reduce the goal to its premises. Establish `h2 : D x = ℓ x`.
+
+Rewrite using `[hDapp, (hφ x).2 hx, map_zero, sub_zero]`. Rewrite using `[← h2, hD0, LinearMap.zero_apply]`. Use `haveI : IsNoetherianRing B := isNoetherian_of_tower C inferInstance`. Establish `hidem : IsIdempotentElem m` using `le_antisymm Ideal.mul_le_left hmm`. Take `⟨e', _he', hme⟩` from `(Ideal.isIdempotentElem_iff_of_fg m (IsNoetherian.noetherian m)).1 hidem`.
+
+Establish `he'm : e' ∈ m` using `hme ▸ Submodule.mem_span_singleton_self e'`. Establish `hyspan : y ∈ B ∙ e'` using `hme ▸ hym`. Take `⟨z, hz⟩` from `Submodule.mem_span_singleton.1 hyspan`. Establish `hey : e' * y = y`. Rewrite using `[← hz, smul_eq_mul, ← _root_.mul_assoc, mul_comm e' z, _root_.mul_assoc, _he'.eq]`.
+
+Establish `h1e : 1 - e' ∈ m` using `hIm (by`. Rewrite using `[hI, LinearMap.mem_ker, LinearMap.mulRight_apply, sub_mul, _root_.one_mul, hey, sub_self])`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one m).2 (by simpa using m.add_mem h1e he'm))`.
+-/
 private theorem exists_algHom_apply_ne_zero_of_pointDerivation_eq_zero {C B : Type} [Field C] [IsAlgClosed C]
     [CommRing B] [Algebra C B] [FiniteDimensional C B]
     (hder : ∀ (φ : B →ₐ[C] C) (D : B →ₗ[C] C),
@@ -80,6 +103,13 @@ private theorem exists_algHom_apply_ne_zero_of_pointDerivation_eq_zero {C B : Ty
 open TensorProduct IsLocalRing Matrix CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj in
 open scoped CategoryTheory.Obj CategoryTheory.MonObj in
 attribute [local instance] Over.cartesianMonoidalCategory in
+/- English proof (translation)
+Use `haveI hfin : Finite (B →ₐ[C] C) := (linearIndependent_algHom_toLinearMap C B C).finite_of_isNoetherian`. Use `⟨hfin, le_antisymm ?_ (card_algHom_le_finrank C B C)⟩` and prove the remaining obligations. Use `letI := Fintype.ofFinite (B →ₐ[C] C)`. Set `ev : B →ₗ[C] ((B →ₐ[C] C) → C)` to `LinearMap.pi fun φ => φ.toLinearMap`. Establish `hev : Function.Injective ev`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `b hb`. Assume the negation of the conclusion as `hb0`. Take `⟨φ, hφ⟩` from `exists_algHom_apply_ne_zero_of_pointDerivation_eq_zero hder hb0`. Conclude with `hφ (congrFun hb φ)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Module.finrank_fintype_fun_eq_card, Nat.card_eq_fintype_card]`.
+-/
 private theorem finrank_eq_card_algHom_of_pointDerivation_eq_zero {C B : Type} [Field C] [IsAlgClosed C]
     [CommRing B] [Algebra C B] [FiniteDimensional C B]
     (hder : ∀ (φ : B →ₐ[C] C) (D : B →ₗ[C] C),
@@ -106,6 +136,37 @@ open TensorProduct IsLocalRing Matrix CategoryTheory AlgebraicGeometry MonoidalC
 open scoped CategoryTheory.Obj CategoryTheory.MonObj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Introduce `C O A _ _ v _ _ hv _ _ _ _ hpts`. Establish `hinj : Function.Injective (algebraMap O C)` using `hv.hom_inj`. Establish `hder : ∀ (φ : C ⊗[O] A →ₐ[C] C) (D : C ⊗[O] A →ₗ[C] C), (∀ a b, D (a * b) = φ a * D b + φ b * D a) → D = 0`. Introduce `φ D hD`. Establish `hD1 : D 1 = 0`.
+
+Establish `h11` using `hD 1 1`. Rewrite `h11` using `[_root_.mul_one, map_one φ, _root_.one_mul]`. Take the linear combination `-h11`. Set `L : C ⊗[O] A →ₗ[C] DualNumber C` to `(Algebra.linearMap C (DualNumber C)).comp φ.toLinearMap + (TrivSqZeroExt.inrHom C C).comp D`. Establish `hLfst : ∀ b, (L b).fst = φ b`.
+
+Introduce `b`. Simplify using `[L, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hLsnd : ∀ b, (L b).snd = D b`. Introduce `b`. Simplify using `[L, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Set `F : C ⊗[O] A →ₐ[C] DualNumber C` to `AlgHom.ofLinearMap L (TrivSqZeroExt.ext (by rw [hLfst, map_one]; rfl) (by rw [hLsnd, hD1]; rfl)) (fun a b => TrivSqZeroExt.ext (by rw [TrivSqZeroExt.fst_mul, hLfst, hLfst, hLfst, map_mul]) (by`. Rewrite using `[TrivSqZeroExt.snd_mul, hLsnd, hLsnd, hLsnd, hLfst, hLfst, hD, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Use the proof step `ring))`. Set `χ₁ : A →ₐ[O] DualNumber C` to `(F.restrictScalars O).comp Algebra.TensorProduct.includeRight`. Set `χ₀ : A →ₐ[O] DualNumber C` to `(((Algebra.ofId C (DualNumber C)).comp φ).restrictScalars O).comp Algebra.TensorProduct.includeRight`.
+
+Establish `hχ : χ₁ = χ₀` using `hpts χ₁ χ₀ (fun a => by show (L _).fst = _`. Rewrite using `[hLfst]`. Use the proof step `rfl)`. Establish `hDA : ∀ a : A, D ((1 : C) ⊗ₜ[O] a) = 0`. Introduce `a`.
+
+Establish `h1` using `congrArg TrivSqZeroExt.snd (DFunLike.congr_fun hχ a)`. Express the relevant statement in the definitionally equal form `(L ((1 : C) ⊗ₜ[O] a)).snd = (algebraMap C (DualNumber C) (φ ((1 : C) ⊗ₜ[O] a))).snd at h1`. Rewrite `h1` using `[hLsnd, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_inl]`. Conclude with `h1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c a`. Establish `hca : c ⊗ₜ[O] a = c • ((1 : C) ⊗ₜ[O] a)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+
+Rewrite using `[hca, map_smul, hDA, smul_zero, LinearMap.zero_apply]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, LinearMap.zero_apply, add_zero]`. Take `⟨_, hrankB⟩` from `finrank_eq_card_algHom_of_pointDerivation_eq_zero hder`. Set `Ψ : (A →ₐ[O] O) → (C ⊗[O] A →ₐ[C] C)` to `fun ψ => Algebra.TensorProduct.lift (Algebra.ofId C C) ((Algebra.ofId O C).comp ψ) (fun _ _ => Commute.all _ _)`. Establish `hΨapp : ∀ ψ a, Ψ ψ ((1 : C) ⊗ₜ[O] a) = algebraMap O C (ψ a)`.
+
+Introduce `ψ a`. Simplify using `[Ψ]`. Establish `hΨ : Function.Bijective Ψ`. Use `⟨fun ψ₁ ψ₂ h => AlgHom.ext fun a => hinj (by rw [← hΨapp, ← hΨapp, h]), fun φ => ?_⟩` and prove the remaining obligations. Set `φA : A →ₐ[O] C` to `(φ.restrictScalars O).comp Algebra.TensorProduct.includeRight`.
+
+Establish `hmem : ∀ a, φA a ∈ (Algebra.ofId O C).range`. Introduce `a`. Establish `hint : IsIntegral O (φA a)` using `(Algebra.IsIntegral.isIntegral a).map φA`. Take `⟨x, hx⟩` from `hv.exists_of_le_one (hv.mem_of_integral hint)`. Conclude with `⟨x, hx⟩`.
+
+Set `eO` to `AlgEquiv.ofInjective (Algebra.ofId O C) hinj`. Use `⟨eO.symm.toAlgHom.comp (φA.codRestrict _ hmem), ?_⟩` and prove the remaining obligations. Apply `Algebra.TensorProduct.ext (AlgHom.ext fun c => (AlgHom.commutes _ c).trans (AlgHom.commutes _ c).symm)` to reduce the goal to its premises. Use `AlgHom.ext fun a => ?_` and prove the remaining obligations. Use `show Ψ _ ((1 : C) ⊗ₜ[O] a) = φ ((1 : C) ⊗ₜ[O] a)`.
+
+Rewrite using `[hΨapp]`. Use `show algebraMap O C (eO.symm ⟨φA a, hmem a⟩) = φA a`. Establish `h1` using `congrArg Subtype.val (eO.apply_symm_apply ⟨φA a, hmem a⟩)`. Conclude with `h1`. Use `haveI hfinA : Finite (A →ₐ[O] O) := Finite.of_injective Ψ hΨ.1`.
+
+Use `⟨hfinA, fun f hf => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : C) ⊗ₜ[O] f = 0`. Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ⟩` from `exists_algHom_apply_ne_zero_of_pointDerivation_eq_zero hder hne`. Take `⟨ψ, rfl⟩` from `hΨ.2 φ`.
+
+Apply `hφ` to reduce the goal to its premises. Rewrite using `[hΨapp, hf ψ, map_zero]`. Establish `hflat : Function.Injective ((Algebra.linearMap O C).rTensor A)` using `Module.Flat.rTensor_preserves_injective_linearMap _ hinj`. Establish `h2 : ((Algebra.linearMap O C).rTensor A) ((1 : O) ⊗ₜ[O] f) = 0`. Rewrite using `[LinearMap.rTensor_tmul, Algebra.linearMap_apply, map_one]`.
+
+Conclude with `h1`. Establish `h3 : (1 : O) ⊗ₜ[O] f = 0` using `hflat (by rw [h2, map_zero])`. Simplify using `using congrArg (TensorProduct.lid O A) h3`. Use `haveI : Nontrivial O := (algebraMap O C).domain_nontrivial`. Rewrite using `[← Module.finrank_baseChange (R := C), hrankB, Nat.card_eq_of_bijective Ψ hΨ]`.
+-/
 theorem _root_.GlobalTheory.finEtale_main :
     (∀ (C O A : Type) [Field C] [IsAlgClosed C] (v : Valuation C NNReal) [CommRing O]
       [Algebra O C], v.Integers O →

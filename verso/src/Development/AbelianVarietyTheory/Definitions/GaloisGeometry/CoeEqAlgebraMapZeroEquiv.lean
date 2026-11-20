@@ -17,14 +17,23 @@ def formRes (s : X ⟶ Sp k) {U V : X.Opens} (h : V ≤ U) (j : ℕ) :
     OmU s U j →ₛₗ[RingHom.id k] OmU s V j :=
   (SemiHom.of_algHom (Sec.res s h)).mOm j
 
+/- English proof (translation)
+The claim follows from `SemiHom.mOm_smul _ b x`.
+-/
 theorem formRes_smul (s : X ⟶ Sp k) {U V : X.Opens} (h : V ≤ U) {j : ℕ} (b : Sec s U)
     (x : OmU s U j) : formRes s h j (b • x) = Sec.res s h b • formRes s h j x :=
   SemiHom.mOm_smul _ b x
 
+/- English proof (translation)
+The claim follows from `SemiHom.mOm_id _ (fun b ↦ congrArg (fun q ↦ q.hom b) (X.presheaf.map_id (op U))) x`.
+-/
 theorem formRes_refl (s : X ⟶ Sp k) (U : X.Opens) {j : ℕ} (x : OmU s U j) :
     formRes s (le_refl U) j x = x :=
   SemiHom.mOm_id _ (fun b ↦ congrArg (fun q ↦ q.hom b) (X.presheaf.map_id (op U))) x
 
+/- English proof (translation)
+The claim follows from `SemiHom.mOm_mOm _ _ _ (fun b ↦ (Sec.res_res s h h' b).symm) x`.
+-/
 theorem formRes_formRes (s : X ⟶ Sp k) {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) {j : ℕ}
     (x : OmU s U j) : formRes s h' j (formRes s h j x) = formRes s (h'.trans h) j x :=
   SemiHom.mOm_mOm _ _ _ (fun b ↦ (Sec.res_res s h h' b).symm) x
@@ -65,11 +74,17 @@ variable (s s' f) in
 def appSec (U : X.Opens) : Sec s U →+* Sec s' (f ⁻¹ᵁ U) := (f.app U).hom
 
 omit [CommRing k] in
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`.
+-/
 theorem appLE_comp_app {Y : Scheme.{0}} (g : X ⟶ Y) (f : X' ⟶ X) (U : X.Opens) (V : Y.Opens)
     (e : U ≤ g ⁻¹ᵁ V) (e' : f ⁻¹ᵁ U ≤ (f ≫ g) ⁻¹ᵁ V) :
     g.appLE V U e ≫ f.app U = (f ≫ g).appLE V (f ⁻¹ᵁ U) e' := by
   rw [Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]
 
+/- English proof (translation)
+The claim follows from `fun r b ↦ by subst hf rw [RingHom.id_apply, Algebra.smul_def, Algebra.smul_def, map_mul] congr 1 change (f.app U).hom ((secMap s U).hom r) = (secMap (f ≫ s) (f ⁻¹ᵁ U)).hom r rw [← CommRingCat.comp_apply] congr 2 change ((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ s.appLE ⊤ U le_to …`.
+-/
 theorem semiHom_appSec (hf : f ≫ s = s') (U : X.Opens) :
     SemiHom (RingHom.id k) (appSec s s' f U) := fun r b ↦ by
   subst hf
@@ -94,10 +109,18 @@ def formPull (hf : f ≫ s = s') (U : X.Opens) (j : ℕ) :
     OmU s U j →ₛₗ[RingHom.id k] OmU s' (f ⁻¹ᵁ U) j :=
   (semiHom_appSec hf U).mOm j
 
+/- English proof (translation)
+The claim follows from `SemiHom.mOm_smul _ b x`.
+-/
 theorem formPull_smul (hf : f ≫ s = s') (U : X.Opens) {j : ℕ} (b : Sec s U) (x : OmU s U j) :
     formPull hf U j (b • x) = appSec s s' f U b • formPull hf U j x :=
   SemiHom.mOm_smul _ b x
 
+/- English proof (translation)
+Establish `e : ∀ b : Sec s U, Sec.res s' (f.preimage_mono h) (appSec s s' f U b) = appSec s s' f V (Sec.res s h b)` using `fun b ↦ by`. Express the relevant statement in the definitionally equal form `(f.app U ≫ X'.presheaf.map (homOfLE (f.preimage_mono h)).op).hom b = (X.presheaf.map (homOfLE h).op ≫ f.app V).hom b`. Rewrite using `[f.naturality]`. Both sides reduce to the same expression. Establish `hγ : SemiHom (RingHom.id k) ((appSec s s' f V).comp (Sec.res s h : Sec s U →+* Sec s V))` using `(SemiHom.of_algHom (Sec.res s h)).comp (semiHom_appSec hf V)`.
+
+Conclude with `(SemiHom.mOm_mOm (semiHom_appSec hf U) (SemiHom.of_algHom (Sec.res s' (f.preimage_mono h))) hγ e x).trans (SemiHom.mOm_mOm (SemiHom.of_algHom (Sec.res s h)) (semiHom_appSec hf V) hγ (fun _ ↦ rfl) x).symm`.
+-/
 theorem formRes_formPull (hf : f ≫ s = s') {U V : X.Opens} (h : V ≤ U) {j : ℕ} (x : OmU s U j) :
     formRes s' (f.preimage_mono h) j (formPull hf U j x) = formPull hf V j (formRes s h j x) := by
   have e : ∀ b : Sec s U, Sec.res s' (f.preimage_mono h) (appSec s s' f U b) =
@@ -151,6 +174,9 @@ def omegaPull (hf : f ≫ s = s') (j : ℕ) :
   ((PresheafOfModules.sheafificationAdjunction (𝟙 X.ringCatSheaf.obj)).homEquiv _ _).symm
     (pullPre hf j)
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Express the relevant statement in the definitionally equal form `(f.appTop).hom ((s.appTop).hom _) = ((f ≫ s).appTop).hom _`. Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem appTop_algebraMap (hf : f ≫ s = s') (r : k) :
     letI := algΓ s; letI := algΓ s'
     f.appTop (algebraMap k Γ(X, ⊤) r) = algebraMap k Γ(X', ⊤) (RingHom.id k r) := by
@@ -168,6 +194,9 @@ section Api
 
 variable {X' : Scheme.{0}} {s : X ⟶ Sp k} {s' : X' ⟶ Sp k} {f : X' ⟶ X}
 
+/- English proof (translation)
+Establish `h` using `(PresheafOfModules.sheafificationAdjunction (𝟙 X.ringCatSheaf.obj)).homEquiv_unit (formsPre s j) ((Scheme.Modules.pushforward f).obj (Omega s' j)) (omegaPull hf j)`. Rewrite `h` using `[omegaPull, Equiv.apply_symm_apply]`. Establish `h2` using `congrArg (fun φ ↦ (φ.app (op U)).hom x) h`. Conclude with `h2.symm`.
+-/
 theorem omegaPull_toOmega (hf : f ≫ s = s') (j : ℕ) (U : X.Opens) (x : OmU s U j) :
     (omegaPull hf j).val.app (op U) ((toOmega s j).app (op U) x) =
       (toOmega s' j).app (op (f ⁻¹ᵁ U)) (formPull hf U j x) := by
@@ -183,6 +212,9 @@ section Zero
 
 variable {B : Type} [CommRing B] [Algebra k B]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (exteriorPower.zeroEquiv B Ω[B⁄k]).symm_apply_apply x]`. Generalize the expression as in `exteriorPower.zeroEquiv B Ω[B⁄k] x = b`. Rewrite using `[exteriorPower.zeroEquiv_symm_apply, Submodule.coe_smul, exteriorPower.ιMulti_apply_coe, ExteriorAlgebra.ιMulti_zero_apply, Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem coe_eq_algebraMap_zeroEquiv (x : Om k B 0) :
     (x : DR k B) = algebraMap B (DR k B) (exteriorPower.zeroEquiv B Ω[B⁄k] x) := by
   conv_lhs => rw [← (exteriorPower.zeroEquiv B Ω[B⁄k]).symm_apply_apply x]
@@ -190,6 +222,9 @@ theorem coe_eq_algebraMap_zeroEquiv (x : Om k B 0) :
   rw [exteriorPower.zeroEquiv_symm_apply, Submodule.coe_smul, exteriorPower.ιMulti_apply_coe,
     ExteriorAlgebra.ιMulti_zero_apply, Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+Rewrite using `[← LinearEquiv.eq_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[SemiHom.coe_mOm, coe_eq_algebraMap_zeroEquiv x, SemiHom.mDR_algebraMap, coe_eq_algebraMap_zeroEquiv (k := k') ((exteriorPower.zeroEquiv B' Ω[B'⁄k']).symm _), LinearEquiv.apply_symm_apply]`.
+-/
 theorem zeroEquiv_mOm {k' B' : Type} [CommRing k'] [CommRing B'] [Algebra k' B'] {σ : k →+* k'}
     {α : B →+* B'} (h : SemiHom σ α) (x : Om k B 0) :
     exteriorPower.zeroEquiv B' Ω[B'⁄k'] (h.mOm 0 x) = α (exteriorPower.zeroEquiv B Ω[B⁄k] x) := by
@@ -229,13 +264,22 @@ def hodgeZeroZeroEquiv : letI := algΓ s; hodgeH s 0 0 ≃ₗ[k] Γ(X, ⊤) :=
 
 end Zero2
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (s : X ⟶ Sp k) : Module k (hodgeH s 2 1) := inferInstance
 
+/- English proof (translation)
+The claim follows from `letI : Nontrivial Γ(Sp ℤ, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of ℤ)).commRingCatIsoToRingEquiv.toEquiv.nontrivial (hodgeZeroZeroEquiv (𝟙 (Sp ℤ))).toEquiv.nontrivial`.
+-/
 example : Nontrivial (hodgeH (𝟙 (Sp ℤ)) 0 0) :=
   letI : Nontrivial Γ(Sp ℤ, ⊤) :=
     (Scheme.ΓSpecIso (CommRingCat.of ℤ)).commRingCatIsoToRingEquiv.toEquiv.nontrivial
   (hodgeZeroZeroEquiv (𝟙 (Sp ℤ))).toEquiv.nontrivial
 
+/- English proof (translation)
+The claim follows from `map_smul _ r x`.
+-/
 example {X' : Scheme.{0}} (s : X ⟶ Sp k) (f : X' ⟶ X) (r : k) (x : hodgeH s 1 1) :
     hodgePull (s' := f ≫ s) rfl 1 1 (r • x) = r • hodgePull (s' := f ≫ s) rfl 1 1 x :=
   map_smul _ r x

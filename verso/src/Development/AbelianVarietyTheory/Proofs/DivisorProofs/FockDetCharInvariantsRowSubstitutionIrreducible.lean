@@ -18,6 +18,21 @@ namespace GlobalTheory.MinorFrame.RowIrr
 open GlobalTheory.MinorFrame
 variable {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `hP` to reduce the goal to its premises. Set `f : Var ι d a → MvPolynomial (ι × Fin d × Fin d) ℂ` to `fun y => X (y.1, Fin.castLE h y.2.2, y.2.1)`. Establish `key : ∀ (Q : Pol ι d a) (w : ι × Fin d × Fin d → ℂ), eval w (aeval f Q) = eval (fun y => eval w (f y)) Q`.
+
+Introduce `Q w`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p y hp => simp only [map_mul, hp, aeval_X, eval_X]`.
+
+Establish `hF0 : aeval f P = 0`. Use `Formalism.L2.Col.eq_zero_of_forall_unitary (ι := ι) (n := d) (fun _ => 1) (fun _ => by simp) _ fun u hu => ?_` and prove the remaining obligations. Simplify using `only [Matrix.one_mul]`. Rewrite using `[key]`. Establish `hu' : ∀ τ, u τ ∈ Matrix.unitaryGroup (Fin d) ℂ` using `fun τ => Matrix.mem_unitaryGroup_iff'.mpr (by simpa [Matrix.star_eq_conjTranspose] using hu τ)`.
+
+Use `hall (fun τ => ⟨u τ, hu' τ⟩)` as an intermediate fact. Rewrite `this` using `[eval_rowSub]`. Use `(congrArg (fun F => eval F P) (funext fun y => ?_)).trans this` and prove the remaining obligations. Simplify using `only [f, eval_X]`. Rewrite using `[Finset.sum_eq_single (Fin.castLE h y.2.2)]`.
+
+Simplify using `[basePt]`. Introduce `b _ hb`. Establish `: (b : ℕ) ≠ (y.2.2 : ℕ)` using `fun e => hb (Fin.ext (by simpa using e))`. Simplify using `[basePt, this]`. Simplify using the standard rewrite rules.
+
+Use `MvPolynomial.funext fun z => ?_` and prove the remaining obligations. Set `w : ι × Fin d × Fin d → ℂ` to `fun x => if hr : (x.2.1 : ℕ) < a then z (x.1, x.2.2, ⟨x.2.1, hr⟩) else 0`. Use `key P w` as an intermediate fact. Rewrite `this` using `[hF0, map_zero]`. Rewrite using `[map_zero, this]`.
+
+Conclude with `congrArg (fun F => eval F P) (funext fun y => by simp [f, w])`.
+-/
 theorem exists_unitary_eval_ne {a d : ℕ} (h : a ≤ d) (P : Pol ι d a) (hP : P ≠ 0) :
     ∃ κ : ι → Matrix.unitaryGroup (Fin d) ℂ,
       eval (basePt ι d a) (rowSub (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) P) ≠ 0 := by
@@ -55,6 +70,11 @@ theorem exists_unitary_eval_ne {a d : ℕ} (h : a ≤ d) (P : Pol ι d a) (hP : 
   rw [map_zero, this]
   exact congrArg (fun F => eval F P) (funext fun y => by simp [f, w])
 
+/- English proof (translation)
+Take `⟨τ, i, j⟩` from `y`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[lowScal]`. Introduce `b _ hb`. Simplify using `[lowScal, Matrix.diagonal_apply_ne _ hb]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem rowSub_lowScal_X {d a : ℕ} (t : ℂ) (y : Var ι d a) :
     (∑ i' : Fin d, C (lowScal d a t i' y.2.1) * (X (y.1, i', y.2.2) : Pol ι d a)) =
       C (if (y.2.1 : ℕ) < a then 1 else t) * X y := by
@@ -67,6 +87,11 @@ theorem rowSub_lowScal_X {d a : ℕ} (t : ℂ) (y : Var ι d a) :
 
 def lowDeg {d a : ℕ} (s : Var ι d a →₀ ℕ) : ℕ := s.sum fun y e => if (y.2.1 : ℕ) < a then 0 else e
 
+/- English proof (translation)
+Unfold `rowSub`. Rewrite using `[aeval_monomial]`. Simplify using `only [rowSub_lowScal_X, mul_pow, Finsupp.prod_mul]`. Establish `h1 : (s.prod fun y k => (C (if (y.2.1 : ℕ) < a then 1 else t) : Pol ι d a) ^ k) = C (t ^ lowDeg s)`. Unfold `Finsupp.prod lowDeg Finsupp.sum`.
+
+Rewrite using `[← Finset.prod_pow_eq_pow_sum, map_prod]`. Use `Finset.prod_congr rfl fun y _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h1, ← monomial_eq, algebraMap_eq, C_mul_monomial]`.
+-/
 theorem rowSub_lowScal_monomial {d a : ℕ} (t : ℂ) (s : Var ι d a →₀ ℕ) (c : ℂ) :
     rowSub (fun _ => lowScal d a t) (monomial s c : Pol ι d a) = monomial s (c * t ^ lowDeg s) := by
   unfold rowSub
@@ -80,10 +105,18 @@ theorem rowSub_lowScal_monomial {d a : ℕ} (t : ℂ) (s : Var ι d a →₀ ℕ
     split_ifs <;> simp
   rw [h1, ← monomial_eq, algebraMap_eq, C_mul_monomial]
 
+/- English proof (translation)
+Unfold `lowDeg Finsupp.sum`. Apply the tactic sequence `exact Finset.sum_le_sum fun y _ => by beta_reduce; split_ifs <;> omega`.
+-/
 theorem lowDeg_le {d a : ℕ} (s : Var ι d a →₀ ℕ) : lowDeg s ≤ s.sum fun _ e => e := by
   unfold lowDeg Finsupp.sum
   exact Finset.sum_le_sum fun y _ => by beta_reduce; split_ifs <;> omega
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Rewrite using `[lowScal, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply, Pi.star_apply]`.
+
+Distinguish the cases in `hi : (i : ℕ) < a`. Simplify using `[hi]`. Simplify using `only [hi, if_false, RCLike.star_def]`. Rewrite using `[Complex.conj_mul', ht]`. Simplify using the standard rewrite rules.
+-/
 theorem lowScal_mem_unitary {d a : ℕ} {t : ℂ} (ht : ‖t‖ = 1) : lowScal d a t ∈ Matrix.unitaryGroup (Fin d) ℂ := by
   rw [Matrix.mem_unitaryGroup_iff']
   rw [lowScal, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal,
@@ -96,6 +129,17 @@ theorem lowScal_mem_unitary {d a : ℕ} {t : ℂ} (ht : ‖t‖ = 1) : lowScal d
   · simp only [hi, if_false, RCLike.star_def]
     rw [Complex.conj_mul', ht]; simp
 
+/- English proof (translation)
+Use `set M := P.totalDegree + 1 with hMdef`. Establish `hM : M ≠ 0` using `by omega`. Use `set ω : ℂ := Complex.exp (2 * Real.pi * Complex.I / M)`. Establish `hω : IsPrimitiveRoot ω M` using `Complex.isPrimitiveRoot_exp M hM`. Establish `hωn : ∀ k : ℕ, ‖ω ^ k‖ = 1` using `fun k => by rw [norm_pow, hω.norm'_eq_one hM, one_pow]`.
+
+Establish `heq : rowSub (fun _ => lowScal d a 0) P = ∑ k ∈ Finset.range M, (M : ℂ)⁻¹ • rowSub (fun _ => lowScal d a (ω ^ k)) P` using `by conv_lhs => rw [as_sum P] conv_rhs => rw [as_sum P]`. Simplify using `only [map_sum, rowSub_lowScal_monomial, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (fun x _ => by rw [smul_monomial]), ← map_sum]`.
+
+Use `congr 1`. Establish `hb : lowDeg s < M` using `lt_of_le_of_lt (lowDeg_le s) (by have := le_totalDegree hs; omega)`. Establish `hx : ∀ x : ℕ, (ω ^ x) ^ lowDeg s = (ω ^ lowDeg s) ^ x` using `fun x => by rw [← pow_mul, ← pow_mul, mul_comm]`. Repeatedly rewrite using `[hx, smul_eq_mul]`. Rewrite using `[← Finset.mul_sum, ← Finset.mul_sum]`.
+
+Establish `hMc : (M : ℂ) ≠ 0` using `by exact_mod_cast hM`. Distinguish the cases in `hb0 : lowDeg s = 0`. Simplify using `only [hb0, pow_zero, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Clear the denominators using the available nonvanishing facts. Establish `hne : ω ^ lowDeg s ≠ 1` using `hω.pow_ne_one_of_pos_of_lt hb0 hb`.
+
+Rewrite using `[geom_sum_eq hne, show (ω ^ lowDeg s) ^ M = 1 by rw [← pow_mul, mul_comm, pow_mul, hω.pow_eq_one, one_pow], sub_self, zero_div, zero_pow hb0]`. Simplify using the standard rewrite rules. Rewrite using `[heq]`. Use `S.sum_mem fun k _ => S.smul_mem _ ?_` and prove the remaining obligations. Conclude with `hS (fun _ => ⟨lowScal d a (ω ^ k), lowScal_mem_unitary (hωn k)⟩) P hP`.
+-/
 theorem rowSub_lowScal_zero_mem {a d : ℕ} (S : Submodule ℂ (Pol ι d a))
     (hS : ∀ (κ : ι → Matrix.unitaryGroup (Fin d) ℂ), ∀ P ∈ S, rowSub (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) P ∈ S)
     (P : Pol ι d a) (hP : P ∈ S) : rowSub (fun _ => lowScal d a 0) P ∈ S := by
@@ -129,6 +173,17 @@ theorem rowSub_lowScal_zero_mem {a d : ℕ} (S : Submodule ℂ (Pol ι d a))
   refine S.sum_mem fun k _ => S.smul_mem _ ?_
   exact hS (fun _ => ⟨lowScal d a (ω ^ k), lowScal_mem_unitary (hωn k)⟩) P hP
 
+/- English proof (translation)
+Use `MvPolynomial.funext fun z => ?_` and prove the remaining obligations. Set `g : ι → Matrix (Fin a) (Fin a) ℂ` to `fun τ => Matrix.of fun i j => z (τ, Fin.castLE h i, j)`. Establish `hc` using `congrArg (eval (basePt ι d a)) (colSub_eq_detChar_smul_of_mem_inv n P hP g)`. Rewrite `hc` using `[eval_colSub, smul_eq_C_mul, map_mul, eval_C]`. Establish `hv : eval z (topMinors h n) = detChar n g`.
+
+Establish `hm : ∀ τ, (RingHom.mapMatrix (eval z)) (Matrix.of fun i i' : Fin a => (X (τ, (topRows h).1 i, i') : Pol ι d a)) = g τ` using `fun τ => by`. Use extensionality with `i j`. Simplify using `[g, topRows]`. Simplify using `only [topMinors, prodMinors, minorAt, map_prod, map_pow, RingHom.map_det, hm, detChar, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hpt : (fun y : Var ι d a => ∑ i' : Fin d, lowScal d a 0 i' y.2.1 * z (y.1, i', y.2.2)) = fun y => ∑ j' : Fin a, g y.1 j' y.2.2 * basePt ι d a (y.1, y.2.1, j')`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_eq_single y.2.1 (fun b _ hb => by simp [lowScal, Matrix.diagonal_apply_ne _ hb]) (by simp)]`. Distinguish the cases in `hy : (y.2.1 : ℕ) < a`. Rewrite using `[Finset.sum_eq_single ⟨y.2.1, hy⟩]`. Simplify using `[lowScal, hy, g, basePt]`.
+
+Introduce `b _ hb`. Establish `: (y.2.1 : ℕ) ≠ (b : ℕ)` using `fun e => hb (Fin.ext e.symm)`. Simplify using `[basePt, this]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_zero]`.
+
+Simplify using `[lowScal, hy]`. Introduce `b _`. Establish `: (y.2.1 : ℕ) ≠ (b : ℕ)` using `fun e => hy (e ▸ b.2)`. Simplify using `[basePt, this]`. Rewrite using `[eval_rowSub, hpt, hc, smul_eq_C_mul, map_mul, eval_C, hv, mul_comm]`.
+-/
 theorem rowSub_lowScal_zero_of_mem_inv {a d : ℕ} (h : a ≤ d) (n : ι → ℕ) (P : Pol ι d a) (hP : P ∈ inv a d n) :
     rowSub (fun _ => lowScal d a 0) P = eval (basePt ι d a) P • topMinors h n := by
   refine MvPolynomial.funext fun z => ?_
@@ -159,6 +214,15 @@ theorem rowSub_lowScal_zero_of_mem_inv {a d : ℕ} (h : a ≤ d) (n : ι → ℕ
         simp [basePt, this]
   rw [eval_rowSub, hpt, hc, smul_eq_C_mul, map_mul, eval_C, hv, mul_comm]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℂ N := Submodule.finiteDimensional_of_le hNV.le`. Establish `hlt : Module.finrank ℂ N < Module.finrank ℂ V` using `Submodule.finrank_lt_finrank_of_lt hNV`. Set `b` to `Module.finBasis ℂ N`. Set `L : V →ₗ[ℂ] (Fin (Module.finrank ℂ N) → ℂ)` to `LinearMap.pi fun i => (Formalism.L2.DIV.fockL ((b i : N) : MvPolynomial σ ℂ)).comp V.subtype`. Establish `hker : LinearMap.ker L ≠ ⊥` using `LinearMap.ker_ne_bot_of_finrank_lt (by simpa using hlt)`.
+
+Take `⟨Q, hQ, hQ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hker`. Use `⟨Q, Q.2, fun h => hQ0 (Subtype.ext h), fun P hP => ?_⟩` and prove the remaining obligations. Establish `hQi : ∀ i, Formalism.L2.DIV.fockS ((b i : N) : MvPolynomial σ ℂ) Q = 0` using `fun i => by`. Use `congrFun (LinearMap.mem_ker.mp hQ) i` as an intermediate fact. Simplify `this` using `[L, Formalism.L2.DIV.fockL_apply]`.
+
+Establish `hsum` using `b.sum_repr ⟨P, hP⟩`. Establish `hPe : P = ∑ i, (b.repr ⟨P, hP⟩ i) • ((b i : N) : MvPolynomial σ ℂ)`. Use `congrArg Subtype.val hsum` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at this`.
+
+Conclude with `this.symm`. Rewrite using `[hPe, ← Formalism.L2.DIV.fockL_apply, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, Formalism.L2.DIV.fockL_apply, hQi i, smul_zero]`.
+-/
 theorem exists_fockS_orth {σ : Type} (V N : Submodule ℂ (MvPolynomial σ ℂ)) [FiniteDimensional ℂ V] (hNV : N < V) :
     ∃ Q ∈ V, Q ≠ 0 ∧ ∀ P ∈ N, Formalism.L2.DIV.fockS P Q = 0 := by
   classical
@@ -183,12 +247,20 @@ theorem exists_fockS_orth {σ : Type} (V N : Submodule ℂ (MvPolynomial σ ℂ)
   refine Finset.sum_eq_zero fun i _ => ?_
   rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, Formalism.L2.DIV.fockL_apply, hQi i, smul_zero]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ (Set.range (prodMinors (ι := ι) (a := a) (d := d) (n := n)))) := FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Conclude with `Submodule.finiteDimensional_of_le (inv_le_span_prodMinors a d n)`.
+-/
 theorem inv_finiteDimensional (a d : ℕ) (n : ι → ℕ) : FiniteDimensional ℂ (inv (ι := ι) a d n) := by
   classical
   haveI : FiniteDimensional ℂ (Submodule.span ℂ (Set.range (prodMinors (ι := ι) (a := a) (d := d) (n := n)))) :=
     FiniteDimensional.span_of_finite ℂ (Set.finite_range _)
   exact Submodule.finiteDimensional_of_le (inv_le_span_prodMinors a d n)
 
+/- English proof (translation)
+Take `⟨P, hPS, hP0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hS0`. Take `⟨κ, hκ⟩` from `exists_unitary_eval_ne h P hP0`. Use `set P' := rowSub (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) P`. Establish `h1 : rowSub (fun _ => lowScal d a 0) P' ∈ S` using `rowSub_lowScal_zero_mem S hS P' (hS κ P hPS)`. Rewrite `h1` using `[rowSub_lowScal_zero_of_mem_inv h n P' (hSI (hS κ P hPS))]`.
+
+Use `S.smul_mem (eval (basePt ι d a) P')⁻¹ h1` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hκ, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem topMinors_mem {a d : ℕ} (h : a ≤ d) (n : ι → ℕ) (S : Submodule ℂ (Pol ι d a)) (hSI : S ≤ inv a d n)
     (hS : ∀ (κ : ι → Matrix.unitaryGroup (Fin d) ℂ), ∀ P ∈ S, rowSub (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) P ∈ S)
     (hS0 : S ≠ ⊥) : topMinors h n ∈ S := by
@@ -216,6 +288,23 @@ open scoped TensorProduct
 
 namespace GlobalTheory.MinorFrame.RowIrr
 
+/- English proof (translation)
+Introduce `ι _ a d n h N hNI hN`. Distinguish the cases in `hN0 : N = ⊥`. Conclude with `Or.inl hN0`. Use `Or.inr ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Use `haveI := inv_finiteDimensional (ι := ι) a d n`. Take `⟨Q, hQI, hQ0, hQN⟩` from `exists_fockS_orth (inv a d n) N (lt_of_le_of_ne hNI hne)`. Set `M : Submodule ℂ (GlobalTheory.MinorFrame.Pol ι d a)` to `{ carrier := {R | R ∈ GlobalTheory.MinorFrame.inv a d n ∧ ∀ P ∈ N, Formalism.L2.DIV.fockS P R = 0} add_mem' := fun {R R'} hR hR' => ⟨(GlobalTheory.MinorFrame.inv a d n).add_mem hR.1 hR'.1, fun P hP => by`. Rewrite using `[← Formalism.L2.DIV.fockL_apply, map_add, Formalism.L2.DIV.fockL_apply, Formalism.L2.DIV.fockL_apply, hR.2 P hP, hR'.2 P hP, add_zero]⟩`. Use the proof step `zero_mem' := ⟨(GlobalTheory.MinorFrame.inv a d n).zero_mem, fun P _ => by`.
+
+Rewrite using `[← Formalism.L2.DIV.fockL_apply, map_zero]⟩`. Use the proof step `smul_mem' := fun c {R} hR => ⟨(GlobalTheory.MinorFrame.inv a d n).smul_mem c hR.1, fun P hP => by`. Rewrite using `[← Formalism.L2.DIV.fockL_apply, map_smul, Formalism.L2.DIV.fockL_apply, hR.2 P hP, smul_zero]⟩ }`. Establish `hMI : M ≤ GlobalTheory.MinorFrame.inv a d n` using `fun R hR => hR.1`. Establish `hMs : ∀ (κ : ι → Matrix.unitaryGroup (Fin d) ℂ), ∀ R ∈ M, GlobalTheory.MinorFrame.rowSub (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) R ∈ M`.
+
+Introduce `κ R hR`. Use `⟨GlobalTheory.MinorFrame.rowSub_mem_inv _ hR.1, fun P hP => ?_⟩` and prove the remaining obligations. Establish `hP' : P = GlobalTheory.MinorFrame.rowSub (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) (GlobalTheory.MinorFrame.rowSub (fun τ => ((star (κ τ) : Matrix.unitaryGroup (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ)) P)`. Rewrite using `[rowSub_rowSub]`. Establish `: (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ) * ((star (κ τ) : Matrix.unitaryGroup (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ)) = fun _ => 1`.
+
+Use function extensionality and compare the values at `τ`. Conclude with `Unitary.mul_star_self_of_mem (κ τ).2`. Rewrite using `[this, rowSub_one]`. Rewrite using `[hP', GlobalTheory.MinorFrame.fockS_rowSub_unitary]`. Conclude with `hR.2 _ (hN (fun τ => star (κ τ)) P hP)`.
+
+Establish `hM0 : M ≠ ⊥`. Introduce `hM`. Apply `hQ0` to reduce the goal to its premises. Establish `: Q ∈ M` using `⟨hQI, hQN⟩`. Rewrite `this` using `[hM]`.
+
+Conclude with `(Submodule.mem_bot ℂ).1 this`. Establish `h1` using `topMinors_mem h n N hNI hN hN0`. Establish `h2` using `topMinors_mem h n M hMI hMs hM0`. Establish `h3` using `h2.2 _ h1`. Use `GlobalTheory.MinorFrame.fockS_self_re_pos (topMinors_ne_zero (ι := ι) h n)` as an intermediate fact.
+
+Rewrite `this` using `[h3]`. Simplify using `at this`.
+-/
 theorem inv_irreducible : ∀ {ι : Type} [Fintype ι] (a d : ℕ) (n : ι → ℕ), a ≤ d →
     ∀ N : Submodule ℂ (GlobalTheory.MinorFrame.Pol ι d a), N ≤ GlobalTheory.MinorFrame.inv (ι := ι) a d n →
     (∀ (κ : ι → Matrix.unitaryGroup (Fin d) ℂ), ∀ P ∈ N, GlobalTheory.MinorFrame.rowSub (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) P ∈ N) →

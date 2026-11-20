@@ -12,9 +12,17 @@ open Formalism.MainNotions.DIV.Cons (intO)
 
 namespace GlobalTheory.FlagEmb.LineNorm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Spec.preimage f).hom, (Spec.map_preimage f).symm⟩`.
+-/
 theorem exists_spMap' {A B : Type} [CommRing A] [CommRing B] (f : Sp B ⟶ Sp A) : ∃ β : A →+* B, f = spMap β :=
   ⟨(Spec.preimage f).hom, (Spec.map_preimage f).symm⟩
 
+/- English proof (translation)
+Establish `hr : Set.range x ⊆ Set.range hU.fromSpec`. Rewrite using `[hU.range_fromSpec]`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `h (Set.mem_univ y)`. Take `⟨φ, hφ⟩` from `exists_spMap' (A := Γ(X, U)) (IsOpenImmersion.lift hU.fromSpec x hr)`.
+
+Conclude with `⟨φ, hφ ▸ IsOpenImmersion.lift_fac _ _ hr⟩`.
+-/
 theorem exists_fromSpec {A : Type} [CommRing A] {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (x : Sp A ⟶ X)
     (h : ⊤ ≤ x ⁻¹ᵁ U) : ∃ φ : Γ(X, U) →+* A, spMap φ ≫ hU.fromSpec = x := by
   have hr : Set.range x ⊆ Set.range hU.fromSpec := by
@@ -24,6 +32,19 @@ theorem exists_fromSpec {A : Type} [CommRing A] {X : Scheme.{0}} {U : X.Opens} (
   obtain ⟨φ, hφ⟩ := exists_spMap' (A := Γ(X, U)) (IsOpenImmersion.lift hU.fromSpec x hr)
   exact ⟨φ, hφ ▸ IsOpenImmersion.lift_fac _ _ hr⟩
 
+/- English proof (translation)
+Use `GlobalTheory.LatDRFree.intO_isLocalRing C` as an intermediate fact. Take `⟨b, hb⟩` from `exists_spMap' (f ≫ PSpace.str R N)`. Take `⟨v, hv, rfl⟩` from `exists_eq_pt b f hb`. Rewrite `hq` using `[pt_preimage_chart]`. Establish `hu : IsUnit (v q)`.
+
+Establish `h1 : IsLocalRing.closedPoint ↥(intO C) ∈ spOpen (v q)` using `hq (Set.mem_univ _)`. Assume the negation of the conclusion as `hn`. Conclude with `mem_spOpen.1 h1 hn`. Rewrite `h` using `[GlobalTheory.ProjSpace.spMap_pt]`. Establish `hc : (intO C).subtype.comp b = c`.
+
+Establish `h1` using `congrArg (· ≫ PSpace.str R N) h`. Simplify using `only [pt_str] at h1`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`. Substitute `hc` using the available equality. Take `⟨s, rfl⟩` from `(pt_eq_pt_iff _ _ _).1 h`.
+
+Establish `h1 : ‖(v q : C)‖ = 1`. Take `⟨a, ha⟩` from `hu.exists_right_inv`. Establish `h2 : ‖(v q : C)‖ * ‖(a : C)‖ = 1`. Rewrite using `[← norm_mul, ← norm_one (α := C)]`. Conclude with `congrArg (fun x : ↥(intO C) => ‖(x : C)‖) ha`.
+
+Establish `h3 : ‖(v q : C)‖ ≤ 1` using `(v q).2`. Establish `h4 : ‖(a : C)‖ ≤ 1` using `a.2`. Use polynomial arithmetic with `[norm_nonneg (v q : C), norm_nonneg (a : C)]`. Establish `e : ∀ q', (s • ((intO C).subtype ∘ v)) q' = s.val * (v q' : C)` using `fun _ => rfl`. Use `⟨fun q' => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, e, norm_mul, norm_mul, h1]`. Conclude with `mul_le_mul_of_nonneg_left (v q').2 (norm_nonneg _)`. Rewrite using `[e]`. Conclude with `mul_ne_zero s.ne_zero (fun h0 => by simp [h0] at h1)`.
+-/
 theorem max_of_chart {R : Type} [CommRing R] {N : ℕ} {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     (f : Sp ↥(intO C) ⟶ PSpace R N) (q : Fin (N + 1)) (hq : ⊤ ≤ f ⁻¹ᵁ chart R N q) (c : R →+* C)
     (w : Fin (N + 1) → C) (hw : Ideal.span (Set.range w) = ⊤) (h : spMap (intO C).subtype ≫ f = pt c w hw) :
@@ -58,6 +79,27 @@ theorem max_of_chart {R : Type} [CommRing R] {N : ℕ} {C : Type} [NontriviallyN
   · rw [e]
     exact mul_ne_zero s.ne_zero (fun h0 => by simp [h0] at h1)
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ Z L aff M crd ι ρ g T n u kk h₀ h₁ L' ix q₀ q₁ r hL hu C _ _ z a i φ hφ hz`. Establish `: (Y Z.i).X.IsSeparated`. Establish `hp : IsProper (Y Z.i).s` using `projProper _ _ _ (Y Z.i).proj`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← terminal.comp_from (Y Z.i).s]`.
+
+Use `infer_instance`. Establish `hle` using `hz.trans (z.preimage_mono (hL.le i))`. Establish `hU : ⊤ ≤ (z ≫ Z.π) ⁻¹ᵁ L.U (ix i)` using `fun y hy => (hle hy).1`. Establish `hq₀ : ⊤ ≤ (z ≫ g ⟨kk, _, h₀⟩) ⁻¹ᵁ chart _ _ (q₀ i)` using `fun y hy => (hle hy).2.1`. Establish `hq₁ : ⊤ ≤ (z ≫ g ⟨kk + 1, _, h₁⟩) ⁻¹ᵁ chart _ _ (q₁ i)` using `fun y hy => (hle hy).2.2`.
+
+Take `⟨φO, hO⟩` from `exists_fromSpec (aff (ix i)) _ hU`. Establish `hx : spMap ((intO C).subtype.comp φO) ≫ (aff (ix i)).fromSpec = (spMap (intO C).subtype ≫ z) ≫ Z.π`. Rewrite using `[Category.assoc, ← hO, ← Category.assoc]`. Use `congr 1`. Conclude with `Spec.map_comp (CommRingCat.ofHom φO) (CommRingCat.ofHom (intO C).subtype)`.
+
+Establish `hx' : spMap φ ≫ Z.chart a ≫ Z.π = (spMap (intO C).subtype ≫ z) ≫ Z.π` using `by rw [← hφ, Category.assoc]`. Establish `P` using `GlobalTheory.FlagEmb.PlkPt.plk_pt E H Dw Xo p W Y i₀ Z L aff M crd ι ρ g T C a (ix i) φ _ (hx.trans hx'.symm)`. Establish `hg : ∀ en, spMap (intO C).subtype ≫ z ≫ g en = spMap φ ≫ Z.chart a ≫ g en` using `fun en => by`. Rewrite using `[← Category.assoc, ← hφ, Category.assoc]`. Take `⟨hu₀, e₀⟩` from `P ⟨kk, _, h₀⟩`.
+
+Take `⟨hu₁, e₁⟩` from `P ⟨kk + 1, _, h₁⟩`. Take `⟨hun, -⟩` from `P ⟨n, u, hu⟩`. Take `⟨m₀, n₀⟩` from `max_of_chart _ _ hq₀ _ _ _ ((hg _).trans e₀)`. Take `⟨m₁, n₁⟩` from `max_of_chart _ _ hq₁ _ _ _ ((hg _).trans e₁)`. Establish `hv` using `hL.val C a i φ _ (hx.trans hx'.symm) (by`.
+
+Rewrite using `[hφ]`. Conclude with `(spMap (intO C).subtype).preimage_mono hz)`. Establish `key` using `GlobalTheory.FlagEmb.GradedNorm.sInf_mul_norm_plk C M n (fun j => crd (ix i) C ((intO C).subtype.comp φO) ((Z.fr a).bc φ (u j).1 (u j).2)) kk (q₀ i) (q₁ i) (span_range_eq_top_iff_ne_zero.1 hun) m₀ m₁`. Establish `tan : ∀ j, IsTanAtG (Y Z.i).t ((spMap (intO C).subtype ≫ z) ≫ Z.π) ((Z.fr a).bc φ (u j).1 (u j).2)` using `fun j => hx' ▸ ((T.frame a C φ).1 (u j).1 (u j).2).1`. Establish `lat` using `fun w => GlobalTheory.LatDRCrd.mem_latDR_iff_crd E H _ (Y Z.i).t L aff M crd T.emb (ix i) C φO _ w hx`.
+
+Establish `hS : grNorm (Y Z.i).t ((spMap (intO C).subtype ≫ z) ≫ Z.π) (latDR (Y Z.i).t ((spMap (intO C).subtype ≫ z) ≫ Z.π)) (fun j => (Z.fr a).bc φ (u j).1 (u j).2) kk = sInf {s : ℝ | ∃ cf : Fin n → C, cf kk ≠ 0 ∧ (∀ k, kk < k → cf k = 0) ∧ (∀ s, ‖(∑ j, cf j • crd (ix i) C ((intO C).subtyp …`. Use `congrArg sInf (Set.ext fun s => exists_congr fun cf => and_congr_right fun _ => and_congr_right fun _ => and_congr_left fun _ => ⟨?_, fun hb => ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨w, hw, hc⟩`. Establish `ht` using `comb_tan _ tan hc`. Rewrite using `[← (T.emb.comb_iff _ _ hx tan ht cf).1 hc]`.
+
+Conclude with `(lat w ht).1 hw`. Take `⟨w, ht, hc⟩` from `exists_comb _ tan cf`. Use `⟨w, (lat w ht).2 ?_, hc⟩` and prove the remaining obligations. Rewrite using `[(T.emb.comb_iff _ _ hx tan ht cf).1 hc]`. Conclude with `hb`.
+
+Rewrite using `[hS, ← hφ]`. Establish `aux : ∀ (x A B : C) (s : ℝ), x * B = A → s * ‖A‖ = ‖B‖ → B ≠ 0 → Real.log ‖x‖ + Real.log s = 0`. Introduce `x A B s h1 h2 h3`. Establish `h4 : ‖x‖ * s = 1`. Use `mul_right_cancel₀ (norm_ne_zero_iff.2 h3) ?_` and prove the remaining obligations.
+
+Rewrite `h2` using `[← h1, norm_mul]`. Rewrite using `[one_mul]`. Take the linear combination `h2`. Rewrite using `[← Real.log_mul (left_ne_zero_of_mul_eq_one h4) (right_ne_zero_of_mul_eq_one h4), h4, Real.log_one]`. Conclude with `aux _ _ _ _ hv key n₁`.
+-/
 theorem log_norm_add_log_grNorm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (Z : Pre Y i₀) (L : FinLB (Y Z.i).X) (aff : ∀ i, IsAffineOpen (L.U i)) (M : ℕ) (crd : Crd (Y Z.i).t L M) (ι : Fin Z.m → Fin L.n) (ρ : ∀ a, Γ((Y Z.i).X, L.U (ι a)) →+* Γ(Z.X, (Z.U a).1)) (g : ∀ en : En Dw.mult, Z.X ⟶ PSpace (Z.i.c.V W) (plN M en.1)), Comparison₂ Z L aff crd ι ρ g → ∀ (n : ℕ) (u : Fin n → Let Dw.mult) (kk : Fin n) (h₀ : Down (u ∘ Fin.castLE kk.2.le)) (h₁ : Down (u ∘ Fin.castLE (Nat.succ_le_of_lt kk.2))) (L' : FinLB Z.X) (ix : Fin L'.n → Fin L.n) (q₀ : Fin L'.n → Fin (plN M kk + 1)) (q₁ : Fin L'.n → Fin (plN M (kk + 1) + 1)) (r : ∀ (a : Fin Z.m) (i : Fin L'.n), Γ(Z.X, (Z.U a).1 ⊓ L'.U i)ˣ), IsLine Z L aff crd g ⟨kk, _, h₀⟩ ⟨kk + 1, _, h₁⟩ L' ix q₀ q₁ r → Down u → ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (z : Sp ↥(intO C) ⟶ Z.X) a i (φ : Γ(Z.X, (Z.U a).1) →+* C), spMap φ ≫ Z.chart a = spMap (intO C).subtype ≫ z → ⊤ ≤ z ⁻¹ᵁ L'.U i → Real.log ‖valF (spMap (intO C).subtype ≫ z) _ (r a i).val‖ + Real.log (grNorm (Y Z.i).t ((spMap (intO C).subtype ≫ z) ≫ Z.π) (latDR (Y Z.i).t ((spMap (intO C).subtype ≫ z) ≫ Z.π)) (fun j => (Z.fr a).bc φ (u j).1 (u j).2) kk) = 0 := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z L aff M crd ι ρ g T n u kk h₀ h₁ L' ix q₀ q₁ r hL hu C _ _ z a i φ hφ hz
   have : (Y Z.i).X.IsSeparated := by

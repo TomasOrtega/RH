@@ -146,6 +146,25 @@ def RestFlat (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CLa' CD Csz CH CE 
   tableLineDegreeFive.admitted D CLa Ck Crk Cdeg → SourceCleaning.aux₃ D CLa' CD Csz → PlaneGramData.aux₃ D CH CE C6 C18 →
     ∃ Ct0 CDf C₁ : ℝ, 0 < Ct0 ∧ 0 < CDf ∧ 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → FlatStep C Ct0 CDf CLa
 
+/- English proof (translation)
+Introduce `hA h14a h14b`. Take `⟨CK, C₂, hCK, hC2, hC⟩` from `hCl hA`. Take `⟨Ct0, CDf, C₃, h0, h1, hC3, hF⟩` from `hFl hA h14a h14b`. Use `⟨Ct0, CK + CDf, max C₂ C₃, h0, by linarith, lt_of_lt_of_le hC2 (le_max_left _ _), ?_⟩` and prove the remaining obligations. Introduce `C hCC p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K _ _ hk hrk F hFr E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis FsB hFsB Θ hΘ`.
+
+Take `⟨κ, hκ, hcl⟩` from `hC C (le_trans (le_max_left _ _) hCC) p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K hk hrk F hFr E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis FsB hFsB Θ hΘ`. Take `⟨tF, DF, htF, hDF, hfl⟩` from `hF C (le_trans (le_max_right _ _) hCC) p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K hk hrk F hFr E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis FsB hFsB Θ hΘ`. Use `⟨tF + (r * TT.card * c0 + 2 * r * n' * cpp), κ + DF, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `om`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `push_cast`. Establish `e1 : (CK + CDf) * (TT.card : ℝ) * ((m : ℝ) + 1) ^ 2 * Real.logb p a = CK * (TT.card : ℝ) * ((m : ℝ) + 1) ^ 2 * Real.logb p a + CDf * (TT.card : ℝ) * ((m : ℝ) + 1) ^ 2 * Real.logb p a`. Expand and normalize the polynomial expressions, which then agree. Move the coercions through the operations in `at hκ hDF`.
+
+Rewrite using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `n2 sh hsh S hS c hv`. Take `⟨F1, f1, f2, f3, Λ, cc, l1, l2, l3, l4⟩` from `hcl n2 sh hsh S hS c hv`. Take `⟨T, t1, t2, t3, t4⟩` from `hfl F1 f1 f2 f3`.
+
+Use `⟨Λ T, ?_, (l2 T t2).1, ?_, ?_⟩` and prove the remaining obligations. Use `l4 _ T t1` as an intermediate fact. Use `this using 3` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `e' he' htg hne`. Use `l3 e' he' htg _ T (t3 e' he' htg hne)` as an intermediate fact. Use `this using 3` and compare the differences between its conclusion and the goal. Unfold `cPrime`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨aa, haa⟩` from `(l2 T t2).2`. Take `⟨y, b', hy, hyb⟩` from `t4`. Use `⟨aa, cc * b', haa.symm, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (algebraMap O Kf)`.
+
+Use `hSet.1.frac_O` as an intermediate fact. Conclude with `IsFractionRing.injective O Kf`. Apply `hinj` to reduce the goal to its premises. Establish `h5` using `l1 T`. Rewrite `h5` using `[← haa, hy]`.
+
+Establish `: algebraMap O Kf (aa * (cc * b')) = (algebraMap O Kf cc * algebraMap O Kf aa) * algebraMap O Kf b'`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, h5, mul_assoc, ← map_mul, hyb]`. Simplify using `[pow_add]`.
+-/
 theorem test_bound_of_two_halves (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 : ℝ)
     (hCl : RestCloudB D CLa Ck Crk Cdeg) (hFl : RestFlat D CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18) :
     RemainingInputsAfter D CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 := by

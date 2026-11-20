@@ -24,6 +24,9 @@ def offEquiv (S : Finset (Fin g)) : {n : Fin g → ℤ // ∀ k ∈ S, n k = 0} 
 
 open Matrix in
 variable {g : ℕ} {S : Finset (Fin g)} in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.PTheta.SiegelH`. Conclude with `⟨hs.submatrix _, hp.submatrix Subtype.val_injective⟩`.
+-/
 private theorem submatrix_mem_siegelH_of_posDef_im (S : Finset (Fin g)) {τ : Matrix (Fin g) (Fin g) ℂ}
     (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) :
     τ.submatrix (Subtype.val : {k // k ∉ S} → Fin g) Subtype.val ∈ _root_.ReciprocityTheory.PTheta.SiegelH {k // k ∉ S} := by
@@ -32,6 +35,9 @@ private theorem submatrix_mem_siegelH_of_posDef_im (S : Finset (Fin g)) {τ : Ma
 
 open Matrix in
 variable {g : ℕ} {S : Finset (Fin g)} in
+/- English proof (translation)
+Break down `h with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules. Apply the tactic sequence `apply Complex.ext <;> simp`.
+-/
 private theorem ofReal_re_eq_self_of_eq_zero_or_half {c : ℂ} (h : c = 0 ∨ c = 1 / 2) :
     ((c.re : ℝ) : ℂ) = c := by
   rcases h with rfl | rfl
@@ -40,6 +46,9 @@ private theorem ofReal_re_eq_self_of_eq_zero_or_half {c : ℂ} (h : c = 0 ∨ c 
 
 open Matrix in
 variable {g : ℕ} {S : Finset (Fin g)} in
+/- English proof (translation)
+Unfold `dotProduct`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun k => k ∉ S)]`. Establish `h0 : ∑ i : {k // ¬ k ∉ S}, v i * w i = 0` using `Finset.sum_eq_zero fun i _ => by rw [hv i (not_not.1 i.2), zero_mul]`. Rewrite using `[h0, add_zero]`.
+-/
 private theorem dotProduct_eq_restrict_of_vanishing (S : Finset (Fin g)) {v : Fin g → ℂ}
     (hv : ∀ k ∈ S, v k = 0) (w : Fin g → ℂ) :
     v ⬝ᵥ w = (fun i : {k // k ∉ S} => v i) ⬝ᵥ (fun i : {k // k ∉ S} => w i) := by
@@ -51,6 +60,9 @@ private theorem dotProduct_eq_restrict_of_vanishing (S : Finset (Fin g)) {v : Fi
 
 open Matrix in
 variable {g : ℕ} {S : Finset (Fin g)} in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, submatrix_apply]`. Rewrite using `[dotProduct_comm, dotProduct_eq_restrict_of_vanishing S hv, dotProduct_comm]`.
+-/
 private theorem mulVec_restrict_eq_submatrix_mulVec_of_vanishing (S : Finset (Fin g)) (τ : Matrix (Fin g) (Fin g) ℂ)
     {v : Fin g → ℂ} (hv : ∀ k ∈ S, v k = 0) :
     (fun i : {k // k ∉ S} => (τ *ᵥ v) i) =
@@ -61,6 +73,15 @@ private theorem mulVec_restrict_eq_submatrix_mulVec_of_vanishing (S : Finset (Fi
 
 open Matrix in
 variable {g : ℕ} {S : Finset (Fin g)} in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.thetaCharOff _root_.ReciprocityTheory.PTheta.theta _root_.ReciprocityTheory.PTheta.thetaTerm _root_.ReciprocityTheory.PTheta.eC _root_.ReciprocityTheory.PTheta.shiftVec _root_.ReciprocityTheory.PTheta.ofRealVec`. Rewrite using `[← (_root_.GlobalTheory.ThetaBlock.offEquiv S).tsum_eq]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Establish `hv : ∀ k ∈ S, ((fun i => ((n.1 i : ℤ) : ℂ)) + c₁) k = 0` using `fun k hk => by`.
+
+Simplify using `[n.2 k hk, hS k hk]`. Establish `hw : (fun i : {k // k ∉ S} => (((_root_.GlobalTheory.ThetaBlock.offEquiv S n) i : ℤ) : ℂ) + (((c₁ i).re : ℝ) : ℂ)) = fun i : {k // k ∉ S} => ((fun i => ((n.1 i : ℤ) : ℂ)) + c₁) i`. Use function extensionality and compare the values at `i`. Rewrite using `[ofReal_re_eq_self_of_eq_zero_or_half (h₁ i)]`. Both sides reduce to the same expression.
+
+Establish `hz : (fun i : {k // k ∉ S} => z i) + (fun i : {k // k ∉ S} => (((c₂ i).re : ℝ) : ℂ)) = fun i : {k // k ∉ S} => (z + c₂) i`. Use function extensionality and compare the values at `i`. Simplify using `[ofReal_re_eq_self_of_eq_zero_or_half (h₂ i)]`. Rewrite using `[hw, hz, dotProduct_eq_restrict_of_vanishing S hv (τ *ᵥ _), mulVec_restrict_eq_submatrix_mulVec_of_vanishing S τ hv, dotProduct_eq_restrict_of_vanishing S hv (z + c₂)]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem thetaCharOff_eq_theta_submatrix (S : Finset (Fin g)) (τ : Matrix (Fin g) (Fin g) ℂ)
     (c₁ c₂ : Fin g → ℂ) (h₁ : ∀ k, c₁ k = 0 ∨ c₁ k = 1 / 2) (h₂ : ∀ k, c₂ k = 0 ∨ c₂ k = 1 / 2)
     (hS : ∀ k ∈ S, c₁ k = 0) (z : Fin g → ℂ) :
@@ -91,6 +112,21 @@ private theorem thetaCharOff_eq_theta_submatrix (S : Finset (Fin g)) (τ : Matri
 open Matrix in
 variable {g : ℕ} {S : Finset (Fin g)} in
 
+/- English proof (translation)
+Establish `hτ` using `submatrix_mem_siegelH_of_posDef_im S hs hp`. Establish `hfun : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.thetaCharOff S τ c₁ c₂ = fun z => _root_.ReciprocityTheory.PTheta.theta (fun i : {k // k ∉ S} => (c₁ i).re) (fun i : {k // k ∉ S} => (c₂ i).re) (fun i : {k // k ∉ S} => z i) (τ.submatrix Subtype.val Subtype.val)`. Use function extensionality and compare the values at `(thetaCharOff_eq_theta_submatrix S τ c₁ c₂ h₁ h₂ hS)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Take `⟨w, hw⟩` from `Function.ne_iff.1 (_root_.GlobalTheory.theta_ne_zero hτ (fun i : {k // k ∉ S} => (c₁ i).re) (fun i : {k // k ∉ S} => (c₂ i).re))`. Apply `hw` to reduce the goal to its premises. Establish `h` using `congrFun h0 (fun k => if h : k ∈ S then 0 else w ⟨k, h⟩)`. Rewrite `h` using `[hfun]`. Establish `hr : (fun i : {k // k ∉ S} => (fun k => if h : k ∈ S then 0 else w ⟨k, h⟩) i.1) = w`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[i.2]`. Simplify using `only [Pi.zero_apply] at h`. Rewrite `h` using `[hr]`. Then use the resulting hypothesis. Rewrite using `[hfun]`.
+
+Conclude with `(_root_.GlobalTheory.differentiable_theta hτ _ _).comp (by fun_prop)`. Introduce `m n hn set N : Fin g → ℂ := fun i => (n i : ℂ) with hN set M : Fin g → ℂ := fun i => (m i : ℂ) with hM`. Establish `hsym : ∀ x y : Fin g → ℂ, x ⬝ᵥ τ *ᵥ y = y ⬝ᵥ τ *ᵥ x`. Introduce `x y`. Rewrite using `[dotProduct_mulVec, ← mulVec_transpose, hs.eq, dotProduct_comm]`.
+
+Use `⟨Complex.exp (2 * Real.pi * Complex.I * (c₁ ⬝ᵥ M) - Real.pi * Complex.I * (N ⬝ᵥ τ *ᵥ N) - 2 * Real.pi * Complex.I * (N ⬝ᵥ c₂)), Complex.exp_ne_zero _, fun z => ?_⟩` and prove the remaining obligations. Set `e : {p : Fin g → ℤ // ∀ k ∈ S, p k = 0} ≃ {p : Fin g → ℤ // ∀ k ∈ S, p k = 0}` to `{ toFun := fun p => ⟨p.1 - n, fun k hk => by simp [p.2 k hk, hn k hk]⟩ invFun := fun p => ⟨p.1 + n, fun k hk => by simp [p.2 k hk, hn k hk]⟩ left_inv := fun p => by ext; simp right_inv := fun p => by ext; simp }`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.thetaCharOff`. Rewrite using `[← e.tsum_eq, ← tsum_mul_left]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `p`. Establish `hQ : (fun i => (((e p).1 i : ℤ) : ℂ)) = (fun i => ((p.1 i : ℤ) : ℂ)) - N`. Use function extensionality and compare the values at `i`. Simplify using `[e, hN]`. Rewrite using `[hQ, ← Complex.exp_add, ← Complex.exp_add, Complex.exp_eq_exp_iff_exists_int]`.
+
+Use `⟨∑ i, (p.1 i - n i) * m i, ?_⟩` and prove the remaining obligations. Establish `hcast : ((∑ i, (p.1 i - n i) * m i : ℤ) : ℂ) = (fun i => ((p.1 i : ℤ) : ℂ)) ⬝ᵥ M - N ⬝ᵥ M`. Simplify using `[dotProduct, hM, hN, Finset.sum_sub_distrib, sub_mul]`. Simplify using `only [add_dotProduct, dotProduct_add, sub_dotProduct, dotProduct_sub, mulVec_add, mulVec_sub]`. Take the linear combination `(Real.pi * Complex.I) * hsym (fun i => ((p.1 i : ℤ) : ℂ)) N + (Real.pi * Complex.I) * hsym c₁ N - (2 * Real.pi * Complex.I) * hcast`.
+-/
 theorem _root_.GlobalTheory.ThetaBlock.thetaCharOff_ne_zero_differentiable_quasiPeriodic (g : ℕ) (S : Finset (Fin g))
     (τ : Matrix (Fin g) (Fin g) ℂ) (c₁ c₂ : Fin g → ℂ) (hs : τ.IsSymm)
     (hp : (τ.map Complex.im).PosDef) (h₁ : ∀ k, c₁ k = 0 ∨ c₁ k = 1 / 2)

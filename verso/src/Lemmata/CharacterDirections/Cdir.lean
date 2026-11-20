@@ -6,6 +6,21 @@ universe u_1
 
 namespace Bl.CoprimeDirections
 
+/- English proof (translation)
+Establish `hhn : 0 < ‖h‖` using `norm_pos_iff.mpr hh`. Use `set R := s / ‖h‖ with hR`. Establish `hRpos : 0 < R` using `div_pos hs hhn`. Use `set g : ℂ → F := fun z => f (v + z • h) with hg`. Establish `hmem : ∀ z : ℂ, ‖z‖ ≤ R → ‖(v + z • h) - v‖ ≤ s`.
+
+Introduce `z hz`. Rewrite using `[add_sub_cancel_left, norm_smul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hgd : ∀ z : ℂ, ‖z‖ ≤ R → DifferentiableAt ℂ g z`. Introduce `z hz`.
+
+Establish `h1 : DifferentiableAt ℂ (fun z : ℂ => v + z • h) z` using `(differentiableAt_const _).add (differentiableAt_id.smul_const h)`. Conclude with `(hd _ (hmem z hz)).comp z h1`. Establish `hdc : DiffContOnCl ℂ g (Metric.ball (0:ℂ) R)`. Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[closure_ball (0:ℂ) hRpos.ne']`.
+
+Introduce `z hz`. Apply `(hgd z _).differentiableWithinAt` to reduce the goal to its premises. Simplify using `using hz`. Establish `hC : ∀ z ∈ Metric.sphere (0:ℂ) R, ‖g z‖ ≤ B`. Introduce `z hz`.
+
+Apply `hB` to reduce the goal to its premises. Apply `hmem` to reduce the goal to its premises. Conclude with `le_of_eq (by simpa using hz)`. Establish `hest` using `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hRpos hdc hC`. Establish `hderiv : deriv g 0 = fderiv ℂ f v h`.
+
+Establish `h1 : HasDerivAt (fun z : ℂ => v + z • h) h 0`. Simplify using `using ((hasDerivAt_id (0:ℂ)).smul_const h).const_add v`. Establish `h2 : HasFDerivAt f (fderiv ℂ f v) (v + (0:ℂ) • h)`. Simplify using `using (hd v (by simp [hs.le])).hasFDerivAt`. Conclude with `(h2.comp_hasDerivAt (0:ℂ) h1).deriv`.
+
+Rewrite using `[← hderiv]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma cdir {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] {f : E → F} {v h : E} {s B : ℝ}
     (hh : h ≠ 0) (hs : 0 < s)
@@ -48,6 +63,9 @@ private lemma cdir {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
   calc ‖deriv g 0‖ ≤ B / R := hest
     _ = B / s * ‖h‖ := by rw [hR, div_div_eq_mul_div]; ring
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ (div_nonneg hB0 hs.le) ?_` and prove the remaining obligations. Introduce `h`. Distinguish the cases in `hh : h = 0`. Simplify using `[hh]`. Conclude with `cdir hh hs hd hB`.
+-/
 private lemma cop {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] {f : E → F} {v : E} {s B : ℝ}
     (hs : 0 < s) (hB0 : 0 ≤ B)
@@ -60,6 +78,19 @@ private lemma cop {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
   · simp [hh]
   · exact cdir hh hs hd hB
 
+/- English proof (translation)
+Take `⟨C, hCpos, hCb⟩` from `hO.exists_pos`. Establish `hev : ∀ᶠ w in nhds x, w ∈ U ∧ ‖f w‖ ≤ C * ‖‖w - x‖ ^ (k + 1 + 1)‖` using `(hU.eventually_mem hx).and hCb.bound`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff.mp hev`. Establish `hfd0 : fderiv ℂ f x = 0` using `(hO.hasFDerivAt (by omega)).fderiv`. Use `Asymptotics.IsBigO.of_bound (C * 2 ^ (k + 1 + 1)) ?_` and prove the remaining obligations.
+
+Establish `hnear : ∀ᶠ v in nhds x, dist v x < ε / 2` using `Metric.ball_mem_nhds x (half_pos hε)`. Use `filter_upwards [hnear] with v hv`. Rewrite using `[Real.norm_eq_abs, abs_pow, abs_norm]`. Distinguish the cases in `hvx : v = x`. Substitute `hvx` using the available equality.
+
+Simplify using `[hfd0]`. Establish `hρ : 0 < ‖v - x‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hvx)`. Establish `hρ' : ‖v - x‖ ≠ 0` using `hρ.ne'`. Rewrite `hv` using `[dist_eq_norm]`. Establish `hw : ∀ w, ‖w - v‖ ≤ ‖v - x‖ → dist w x < ε ∧ ‖w - x‖ ≤ 2 * ‖v - x‖`.
+
+Introduce `w hw`. Establish `: ‖w - x‖ ≤ ‖w - v‖ + ‖v - x‖` using `norm_sub_le_norm_sub_add_norm_sub w v x`. Prove the components needed by the constructor for the conclusion. Rewrite using `[dist_eq_norm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbd` using `cop (f := f) (v := v) (s := ‖v - x‖) (B := C * (2 * ‖v - x‖) ^ (k + 1 + 1)) hρ (by positivity) (fun w hw' => hf.differentiableAt (hU.mem_nhds (hball (hw w hw').1).1)) (fun w hw' => by`. Establish `h1` using `(hball (hw w hw').1).2`. Rewrite `h1` using `[Real.norm_eq_abs, abs_pow, abs_norm]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `(hw w hw').2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma key {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] {f : E → F} {U : Set E} {x : E}
     (hU : IsOpen U) (hx : x ∈ U) (hf : DifferentiableOn ℂ f U) {k : ℕ}
@@ -100,6 +131,9 @@ private lemma key {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
       _ = C * 2 ^ (k + 1 + 1) * ‖v - x‖ ^ (k + 1) := by
         rw [mul_pow]; field_simp; ring
 
+/- English proof (translation)
+Introduce `n F _ _ f U x hU hx hf m hO`. Conclude with `key hU hx hf hO`.
+-/
 theorem goal1 :
   ∀ {n : Nat} {F : Type u_1} [inst : NormedAddCommGroup.{u_1} F] [inst_1 : NormedSpace.{0, u_1} Complex F]
   {f : ReciprocityTheory.L2DbarEstimates.V n → F} {U : Set.{0} (ReciprocityTheory.L2DbarEstimates.V n)} {x : ReciprocityTheory.L2DbarEstimates.V n},

@@ -8,6 +8,17 @@ open CategoryTheory CategoryTheory.Limits TensorProduct Function
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `P : Ideal R` to `RingHom.ker (algebraMap R K)`. Use `haveI : P.IsPrime := RingHom.ker_isPrime _`. Set `O` to `Localization.AtPrime P`. Establish `h1` using `(exact_lTensor_iff_residueField P K rfl f g).1 h`. Establish `h2 : Exact (AlgebraTensorModule.lTensor O P.ResidueField f) (AlgebraTensorModule.lTensor O P.ResidueField g) ↔ Exact ((f.baseChange O).lTensor P.ResidueField) ((g.baseChange O).lTensor P.ResidueField)` using `Function.Exact.iff_of_ladder_linearEquiv (e₁ := AlgebraTensorModule.cancelBaseChange R O O P.ResidueField A) (e₂ := AlgebraTensorModule.cancelBaseChange R O O P.ResidueField B) (e₃ := AlgebraTensorModule.cancelBaseChange R O O P.ResidueField C) (by ext; simp) (by ext; simp)`.
+
+Establish `h3` using `h2.1 h1`. Establish `hfg' : g.baseChange O ∘ₗ f.baseChange O = 0`. Rewrite using `[← LinearMap.baseChange_comp, hfg, LinearMap.baseChange_zero]`. Take `⟨s, t, hst⟩` from `exists_homotopy_of_forall_exact_residueField hfg' (fun m _ => forall_exact_residueField_of_isLocalRing h3 m)`. Establish `h4` using `exact_of_homotopy hfg' hst`.
+
+Take `⟨x, hx⟩` from `(h4 ((1 : O) ⊗ₜ[R] b)).1 (by simp [hb])`. Take `⟨⟨a, u⟩, ha⟩` from `IsLocalizedModule.surj P.primeCompl (TensorProduct.mk R O A 1) x`. Establish `h5 : TensorProduct.mk R O B 1 ((u : R) • b) = TensorProduct.mk R O B 1 (f a)`. Use `congrArg (f.lTensor O) ha` as an intermediate fact. Rewrite `this` using `[Submonoid.smul_def, map_smul]`.
+
+Establish `hx' : f.lTensor O x = (1 : O) ⊗ₜ[R] b` using `hx`. Rewrite `this` using `[hx']`. Simplify using `using this`. Take `⟨v, hv⟩` from `IsLocalizedModule.exists_of_eq (S := P.primeCompl) h5`. Use `⟨(v * u : P.primeCompl), (v * u).2, (v : R) • a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, Submonoid.coe_mul, mul_smul]`. Conclude with `hv.symm`.
+-/
 theorem exists_smul_mem_range_of_exact_fibre {R : Type*} [CommRing R] {A B C : Type*}
     [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B] [AddCommGroup C] [Module R C]
     [Module.Finite R B] [Module.Projective R B] [Module.Finite R C] [Module.Projective R C]
@@ -47,6 +58,19 @@ theorem exists_smul_mem_range_of_exact_fibre {R : Type*} [CommRing R] {A B C : T
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Use `letI : Algebra R K := χ.toAlgebra`. Take `⟨L, φ, -, h2, -, h4, h5, -, h7⟩` from `exists_finite_projective_complex_quasiIso.{0, 0} C n hn hflat hfin`. Establish `h8 : QuasiIso (((ModuleCat.extendScalars.{0, 0, 0} χ).mapHomologicalComplex _).map φ)` using `h7 K`. Establish `h9 : (((ModuleCat.extendScalars.{0, 0, 0} χ).mapHomologicalComplex _).obj L).ExactAt p` using `(exactAt_iff_of_quasiIsoAt (((ModuleCat.extendScalars.{0, 0, 0} χ).mapHomologicalComplex _).map φ) p).2 (hac p)`. Establish `h10 : Exact ((L.sc p).f.hom.lTensor K) ((L.sc p).g.hom.lTensor K)` using `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 h9`.
+
+Establish `hpt : ∀ z : L.homology p, ∃ r : R, χ r ≠ 0 ∧ r • z = 0`. Introduce `z`. Set `e` to `(L.sc p).moduleCatHomologyIso.toLinearEquiv`. Take `⟨b, hb⟩` from `Submodule.Quotient.mk_surjective _ (e z)`. Use `haveI : Module.Finite R (L.sc p).X₂ := h2 _`.
+
+Use `haveI : Module.Finite R (L.sc p).X₃ := h2 _`. Use `haveI : Module.Projective R (L.sc p).X₂ := h4 _`. Use `haveI : Module.Projective R (L.sc p).X₃ := h4 _`. Take `⟨r, hr, a, ha⟩` from `exists_smul_mem_range_of_exact_fibre K (congrArg ModuleCat.Hom.hom (L.sc p).zero) h10 b.1 b.2`. Use `⟨r, hr, e.injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, map_zero, ← hb]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (show r • b ∈ _ from ⟨a, Subtype.ext ha⟩)`. Set `e` to `(isoOfQuasiIsoAt φ p).toLinearEquiv`. Set `P : PrimeSpectrum R` to `⟨RingHom.ker χ, RingHom.ker_isPrime χ⟩`. Establish `hP : P ∉ Module.support R (C.homology p)`.
+
+Rewrite using `[Module.notMem_support_iff']`. Introduce `z`. Take `⟨r, hr, hz⟩` from `hpt (e.symm z)`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[← e.apply_symm_apply z, ← map_smul, hz, map_zero]`.
+
+Use `haveI := hfin p`. Rewrite `hP` using `[Module.mem_support_iff_of_finite, SetLike.not_le_iff_exists]`. Take `⟨r, hr, hr'⟩` from `hP`. Conclude with `⟨r, hr', Module.mem_annihilator.1 hr⟩`.
+-/
 theorem exists_smul_homology_eq_zero_of_acyclic_fibre (R : Type) [CommRing R] [IsNoetherianRing R]
     (K : Type) [Field K] (χ : R →+* K) (C : CochainComplex (ModuleCat.{0} R) ℕ) (n : ℕ)
     (hn : ∀ p, n < p → IsZero (C.X p)) (hflat : ∀ p, Module.Flat R (C.X p))

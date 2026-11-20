@@ -14,6 +14,13 @@ section Abstract
 
 variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, v, rfl⟩` from `hx`. Use `⟨{(u : G)}, by simp, fun H hH => ?_⟩` and prove the remaining obligations. Simplify using `using GlobalTheory.IwahoriInj.sub_mem_twKer (π := τ) (hH u (by simp)) v`.
+
+Consider the case `zero => exact ⟨∅, by simp, fun _ _ => zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨S, hS, hx⟩` from `hx`. Take `⟨T, hT, hy⟩` from `hy`. Use `⟨S ∪ T, fun u hu => (Finset.mem_union.1 hu).elim (hS u) (hT u), fun H hH => add_mem (hx H fun u hu => hH u (Finset.mem_union_left _ hu)) (hy H fun u hu => hH u (Finset.mem_union_right _ hu))⟩` and prove the remaining obligations.
+
+Consider the case `smul c x _ hx`. Take `⟨S, hS, hx⟩` from `hx`. Conclude with `⟨S, hS, fun H hH => Submodule.smul_mem _ c (hx H hH)⟩`.
+-/
 theorem exists_finset_of_mem_twKer {τ : Representation ℂ G W} {N : Subgroup G} {w : W}
     (hw : w ∈ twKer τ N 1) :
     ∃ S : Finset G, (∀ u ∈ S, u ∈ N) ∧ ∀ H : Subgroup G, (∀ u ∈ S, u ∈ H) → w ∈ twKer τ H 1 := by
@@ -34,6 +41,9 @@ theorem exists_finset_of_mem_twKer {τ : Representation ℂ G W} {N : Subgroup G
     obtain ⟨S, hS, hx⟩ := hx
     exact ⟨S, hS, fun H hH => Submodule.smul_mem _ c (hx H hH)⟩
 
+/- English proof (translation)
+Establish `h : twKer σ H 1 ≤ (twKer τ H 1).comap f.toLinearMap` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨n, v, rfl⟩`. Use `Submodule.subset_span ⟨n, f v, ?_⟩` and prove the remaining obligations. Simplify using `[f.isIntertwining])`. Conclude with `h hv`.
+-/
 theorem map_mem_twKer {σ : Representation ℂ G V} {τ : Representation ℂ G W} (f : σ.IntertwiningMap τ)
     {H : Subgroup G} {v : V} (hv : v ∈ twKer σ H 1) : f v ∈ twKer τ H 1 := by
   have h : twKer σ H 1 ≤ (twKer τ H 1).comap f.toLinearMap := Submodule.span_le.2 (by
@@ -44,6 +54,13 @@ theorem map_mem_twKer {σ : Representation ℂ G V} {τ : Representation ℂ G W
 
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Establish `hσ : IsSmooth σ` using `(IsSubquotient.of_injective f hf).isSmooth hτ`. Take `⟨v', hv', he⟩` from `IwahoriOnto.exists_fixed_map_eq hσ hH (twKer σ H 1).mkQ v fun h hh => (Submodule.Quotient.eq _).2 (GlobalTheory.IwahoriInj.sub_mem_twKer hh v)`. Establish `h1 : v' - v ∈ twKer σ H 1` using `(Submodule.Quotient.eq _).1 he`. Establish `h2 : f v' ∈ twKer τ H 1`. Use `add_mem (map_mem_twKer f h1) hv` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, sub_add_cancel]`. Then use the resulting hypothesis. Establish `h3 : f v' ∈ fixed τ H` using `GlobalTheory.IwahoriInj.mem_fixed.2 fun h hh => by`. Rewrite using `[← f.isIntertwining, GlobalTheory.IwahoriInj.mem_fixed.1 hv' h hh]`. Establish `h4 : v' = 0` using `hf ((GlobalTheory.IwahoriInj.eq_zero_of_fixed hτ hH h3 h2).trans (map_zero f).symm)`. Rewrite `h1` using `[h4, zero_sub]`.
+
+Conclude with `neg_mem_iff.1 h1`.
+-/
 theorem mem_twKer_of_compact {σ : Representation ℂ G V} {τ : Representation ℂ G W} (hτ : IsSmooth τ)
     (f : σ.IntertwiningMap τ) (hf : Function.Injective f) {H : Subgroup G} (hH : IsCompact (H : Set G))
     {v : V} (hv : f v ∈ twKer τ H 1) : v ∈ twKer σ H 1 := by
@@ -68,6 +85,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n] {V W : Type} [AddCommGroup V] [Module ℂ V]
   [AddCommGroup W] [Module ℂ W] {s : ℕ} {d : Fin s → ℕ}
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1 : f v ∈ twKer τ (unipRad k e) 1` using `(Submodule.Quotient.mk_eq_zero _).1 hx`. Establish `hN : unipRad k e = unipOf k fun i => ((blk e i).val : ℤ)` using `unipRad_eq_unipOf k fun i j => by simp`. Take `⟨S, hS, h2⟩` from `exists_finset_of_mem_twKer h1`.
+
+Take `⟨H, hle, hH, hSH⟩` from `GlobalTheory.UnipCompact.exists_compact_subgroup k n _ S (hN ▸ hS)`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations. Conclude with `GlobalTheory.IwahoriInj.twKer_mono (hle.trans hN.ge) (mem_twKer_of_compact hτ f hf hH (h2 H hSH))`.
+-/
 theorem jacMap_injective (e : (Σ a, Fin (d a)) ≃ n) {σ : Representation ℂ (GL n k) V}
     {τ : Representation ℂ (GL n k) W} (hτ : IsSmooth τ) (f : σ.IntertwiningMap τ)
     (hf : Function.Injective f) : Function.Injective (jacMap e f) := by
@@ -81,6 +103,9 @@ theorem jacMap_injective (e : (Σ a, Fin (d a)) ≃ n) {σ : Representation ℂ 
   refine (Submodule.Quotient.mk_eq_zero _).2 ?_
   exact GlobalTheory.IwahoriInj.twKer_mono (hle.trans hN.ge) (mem_twKer_of_compact hτ f hf hH (h2 H hSH))
 
+/- English proof (translation)
+Introduce `y` and use `by obtain ⟨w, rfl⟩ := Submodule.Quotient.mk_surjective _ y obtain ⟨v, rfl⟩ := hf w exact ⟨Submodule.Quotient.mk v, rfl⟩`.
+-/
 theorem jacMap_surjective (e : (Σ a, Fin (d a)) ≃ n) {σ : Representation ℂ (GL n k) V}
     {τ : Representation ℂ (GL n k) W} (f : σ.IntertwiningMap τ)
     (hf : Function.Surjective f) : Function.Surjective (jacMap e f) := fun y => by
@@ -88,6 +113,9 @@ theorem jacMap_surjective (e : (Σ a, Fin (d a)) ≃ n) {σ : Representation ℂ
   obtain ⟨v, rfl⟩ := hf w
   exact ⟨Submodule.Quotient.mk v, rfl⟩
 
+/- English proof (translation)
+Take `⟨S, f, hf⟩` from `h`. Set `ι : S.toRepresentation.IntertwiningMap τ` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`. Conclude with `(IsSubquotient.of_surjective _ (jacMap_surjective e f hf)).trans (.of_injective _ (jacMap_injective e hτ ι Subtype.val_injective))`.
+-/
 theorem isSubquotient_jac (e : (Σ a, Fin (d a)) ≃ n) {π : Representation ℂ (GL n k) V}
     {τ : Representation ℂ (GL n k) W} (hτ : IsSmooth τ) (h : IsSubquotient π τ) :
     IsSubquotient (jac e π) (jac e τ) := by
@@ -98,6 +126,9 @@ theorem isSubquotient_jac (e : (Σ a, Fin (d a)) ≃ n) {π : Representation ℂ
 
 end Local
 
+/- English proof (translation)
+Take `⟨s, d, e, a, ha, Y, i1, i2, σ, hσ, hsub, hact⟩` from `hχ`. Conclude with `⟨s, d, e, a, ha, Y, i1, i2, σ, hσ, hsub.trans (isSubquotient_jac e hτ h), hact⟩`.
+-/
 theorem inSupport_of_isSubquotient (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (V : Type) [AddCommGroup V]
     [Module ℂ V] (W : Type) [AddCommGroup W] [Module ℂ W] (π : Representation ℂ (GL n k) V)

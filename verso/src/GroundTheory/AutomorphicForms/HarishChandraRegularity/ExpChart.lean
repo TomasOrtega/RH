@@ -10,6 +10,15 @@ set_option linter.unusedSectionVars false
 
 variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸]
 
+/- English proof (translation)
+Use `set e := expPartialHomeomorph ℝ 𝔸 with he`. Establish `hs : e.symm y ∈ e.source` using `e.map_target hy`. Establish `hu : IsUnit (fderiv ℝ (exp : 𝔸 → 𝔸) (e.symm y))` using `expPartialHomeomorph_source_subset ℝ 𝔸 hs`. Take `⟨p, hp⟩` from `exp_analytic (𝕂 := ℝ) (e.symm y)`. Establish `hp' : HasFPowerSeriesAt e p (e.symm y)`.
+
+Rewrite using `[he, coe_expPartialHomeomorph]`. Conclude with `hp`. Establish `h1 : p 1 = (continuousMultilinearCurryFin1 ℝ 𝔸 𝔸).symm ((ContinuousLinearEquiv.unitsEquiv ℝ 𝔸 hu.unit : 𝔸 ≃L[ℝ] 𝔸) : 𝔸 →L[ℝ] 𝔸)`. Establish `h2` using `hp.fderiv_eq`. Establish `h3 : ((ContinuousLinearEquiv.unitsEquiv ℝ 𝔸 hu.unit : 𝔸 ≃L[ℝ] 𝔸) : 𝔸 →L[ℝ] 𝔸) = fderiv ℝ (exp : 𝔸 → 𝔸) (e.symm y)`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h3, h2, LinearIsometryEquiv.symm_apply_apply]`. Use `e.hasFPowerSeriesAt_symm hs hp' h1` as an intermediate fact. Rewrite `this` using `[e.right_inv hy]`.
+
+Conclude with `this.analyticAt`.
+-/
 theorem analyticAt_expPartialHomeomorph_symm {y : 𝔸}
     (hy : y ∈ (expPartialHomeomorph ℝ 𝔸).target) :
     AnalyticAt ℝ (expPartialHomeomorph ℝ 𝔸).symm y := by
@@ -45,6 +54,9 @@ noncomputable def expChartCoeff {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X
     (x : EuclideanSpace ℝ (Fin d)) : EuclideanSpace ℝ (Fin d) :=
   fderiv ℝ (expChartFlow b X) (x, 0) (0, 1)
 
+/- English proof (translation)
+Unfold `expChartProd`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Conclude with `(contDiff_exp ℝ 𝔸 (n := 0)).continuous.comp (continuous_subtype_val.comp ((coordEquiv b).continuous.comp continuous_fst))`. Conclude with `(contDiff_exp ℝ 𝔸 (n := 0)).continuous.comp (continuous_snd.smul continuous_const)`.
+-/
 theorem continuous_expChartProd {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤) :
     Continuous (expChartProd b X) := by
   unfold expChartProd
@@ -53,6 +65,9 @@ theorem continuous_expChartProd {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X
       (continuous_subtype_val.comp ((coordEquiv b).continuous.comp continuous_fst))
   · exact (contDiff_exp ℝ 𝔸 (n := 0)).continuous.comp (continuous_snd.smul continuous_const)
 
+/- English proof (translation)
+Establish `h1 : AnalyticAt ℝ (fun q : EuclideanSpace ℝ (Fin d) × ℝ => ((coordEquiv b q.1 : 𝔤) : 𝔸)) p` using `(𝔤.subtypeL.comp ((coordEquiv b : EuclideanSpace ℝ (Fin d) →L[ℝ] 𝔤).comp (ContinuousLinearMap.fst ℝ _ ℝ))).analyticAt p`. Establish `h2 : AnalyticAt ℝ (fun q : EuclideanSpace ℝ (Fin d) × ℝ => q.2 • (X : 𝔸)) p` using `((ContinuousLinearMap.snd ℝ (EuclideanSpace ℝ (Fin d)) ℝ).smulRight (X : 𝔸)).analyticAt p`. Establish `h1'` using `(exp_analytic (𝕂 := ℝ) _).comp h1`. Establish `h2'` using `(exp_analytic (𝕂 := ℝ) _).comp h2`. Conclude with `h1'.mul h2'`.
+-/
 theorem analyticAt_expChartProd {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
     (p : EuclideanSpace ℝ (Fin d) × ℝ) : AnalyticAt ℝ (expChartProd b X) p := by
   have h1 : AnalyticAt ℝ (fun q : EuclideanSpace ℝ (Fin d) × ℝ => ((coordEquiv b q.1 : 𝔤) : 𝔸)) p :=
@@ -64,6 +79,9 @@ theorem analyticAt_expChartProd {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X
   have h2' := (exp_analytic (𝕂 := ℝ) _).comp h2
   exact h1'.mul h2'
 
+/- English proof (translation)
+Establish `hL : AnalyticAt ℝ (fun w : 𝔸 => (coordEquiv b).symm (subspaceProj 𝔤 w)) ((expPartialHomeomorph ℝ 𝔸).symm (expChartProd b X p))` using `(((coordEquiv b).symm : 𝔤 →L[ℝ] EuclideanSpace ℝ (Fin d)).comp (subspaceProj 𝔤)).analyticAt _`. Establish `h2 : AnalyticAt ℝ ((expPartialHomeomorph ℝ 𝔸).symm ∘ expChartProd b X) p` using `(analyticAt_expPartialHomeomorph_symm hp).comp (analyticAt_expChartProd b X p)`. Conclude with `AnalyticAt.comp (f := (expPartialHomeomorph ℝ 𝔸).symm ∘ expChartProd b X) (g := fun w : 𝔸 => (coordEquiv b).symm (subspaceProj 𝔤 w)) hL h2`.
+-/
 theorem analyticAt_expChartFlow {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
     {p : EuclideanSpace ℝ (Fin d) × ℝ}
     (hp : expChartProd b X p ∈ (expPartialHomeomorph ℝ 𝔸).target) :
@@ -76,6 +94,9 @@ theorem analyticAt_expChartFlow {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X
   exact AnalyticAt.comp (f := (expPartialHomeomorph ℝ 𝔸).symm ∘ expChartProd b X)
     (g := fun w : 𝔸 => (coordEquiv b).symm (subspaceProj 𝔤 w)) hL h2
 
+/- English proof (translation)
+Introduce `_ hp` and use `analyticAt_expChartFlow b X hp`.
+-/
 theorem analyticOnNhd_expChartFlow {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤) :
     AnalyticOnNhd ℝ (expChartFlow b X) (expChartProd b X ⁻¹' (expPartialHomeomorph ℝ 𝔸).target) :=
   fun _ hp => analyticAt_expChartFlow b X hp
@@ -84,6 +105,11 @@ namespace IsExpLieAlgebra
 
 variable (h : IsExpLieAlgebra G 𝔤)
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : EuclideanSpace ℝ (Fin d) => ((coordEquiv b x : 𝔤) : 𝔸))` using `continuous_subtype_val.comp (coordEquiv b).continuous`. Establish `h0 : h.nhd ∈ 𝓝 ((fun x : EuclideanSpace ℝ (Fin d) => ((coordEquiv b x : 𝔤) : 𝔸)) 0)`. Simplify using `only [map_zero, ZeroMemClass.coe_zero]`. Conclude with `h.isOpen_nhd.mem_nhds h.zero_mem_nhd`. Take `⟨r, hr, hball⟩` from `Metric.mem_nhds_iff.1 (hc.continuousAt.preimage_mem_nhds h0)`.
+
+Conclude with `⟨r, hr, fun x hx => hball hx⟩`.
+-/
 theorem exists_ball_coordEquiv_mem_nhd {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) :
     ∃ r > 0, ∀ x ∈ Metric.ball (0 : EuclideanSpace ℝ (Fin d)) r,
       ((coordEquiv b x : 𝔤) : 𝔸) ∈ h.nhd := by
@@ -95,11 +121,19 @@ theorem exists_ball_coordEquiv_mem_nhd {d : ℕ} (b : Module.Basis (Fin d) ℝ �
   obtain ⟨r, hr, hball⟩ := Metric.mem_nhds_iff.1 (hc.continuousAt.preimage_mem_nhds h0)
   exact ⟨r, hr, fun x hx => hball hx⟩
 
+/- English proof (translation)
+Simplify using `[expChartProd]`.
+-/
 theorem val_expG_mul_expG {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
     (p : EuclideanSpace ℝ (Fin d) × ℝ) :
     (((h.expG (coordEquiv b p.1) * h.expG (p.2 • X) : G) : 𝔸ˣ) : 𝔸) = expChartProd b X p := by
   simp [expChartProd]
 
+/- English proof (translation)
+Use `set w : G := h.expG (coordEquiv b p.1) * h.expG (p.2 • X) with hw`. Establish `hwv : ((w : 𝔸ˣ) : 𝔸) = expChartProd b X p` using `h.val_expG_mul_expG b X p`. Establish `hwN : ((w : 𝔸ˣ) : 𝔸) ∈ h.nhdOne` using `hwv ▸ hp`. Establish `hmem` using `h.symm_mem_lie hwN`. Establish `e1 : coordEquiv b (expChartFlow b X p) = subspaceProj 𝔤 ((expPartialHomeomorph ℝ 𝔸).symm ((w : 𝔸ˣ) : 𝔸))`.
+
+Rewrite using `[hwv]`. Conclude with `(coordEquiv b).apply_symm_apply _`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_expG, e1, subspaceProj_of_mem hmem, h.exp_symm hwN]`.
+-/
 theorem expG_expChartFlow {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
     {p : EuclideanSpace ℝ (Fin d) × ℝ} (hp : expChartProd b X p ∈ h.nhdOne) :
     h.expG (coordEquiv b (expChartFlow b X p)) = h.expG (coordEquiv b p.1) * h.expG (p.2 • X) := by
@@ -113,18 +147,27 @@ theorem expG_expChartFlow {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : �
   apply Subtype.ext; apply Units.ext
   rw [coe_expG, e1, subspaceProj_of_mem hmem, h.exp_symm hwN]
 
+/- English proof (translation)
+Simplify using `only [expChartFlow, expChartProd, zero_smul, exp_zero, mul_one]`. Rewrite using `[h.symm_exp hx, subspaceProj_coe, ContinuousLinearEquiv.symm_apply_apply]`.
+-/
 theorem expChartFlow_zero {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
     {x : EuclideanSpace ℝ (Fin d)} (hx : ((coordEquiv b x : 𝔤) : 𝔸) ∈ h.nhd) :
     expChartFlow b X (x, 0) = x := by
   simp only [expChartFlow, expChartProd, zero_smul, exp_zero, mul_one]
   rw [h.symm_exp hx, subspaceProj_coe, ContinuousLinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Simplify using `only [expChartProd, zero_smul, exp_zero, mul_one]`. Conclude with `h.exp_mem_nhdOne hx`.
+-/
 theorem expChartProd_zero_mem_nhdOne {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
     {x : EuclideanSpace ℝ (Fin d)} (hx : ((coordEquiv b x : 𝔤) : 𝔸) ∈ h.nhd) :
     expChartProd b X (x, 0) ∈ h.nhdOne := by
   simp only [expChartProd, zero_smul, exp_zero, mul_one]
   exact h.exp_mem_nhdOne hx
 
+/- English proof (translation)
+Establish `hA : AnalyticAt ℝ (expChartFlow b X) (x, 0)` using `analyticAt_expChartFlow b X (h.nhdOne_subset_target (h.expChartProd_zero_mem_nhdOne b X hx))`. Establish `hl : HasDerivAt (fun t : ℝ => (x, t)) ((0 : EuclideanSpace ℝ (Fin d)), (1 : ℝ)) 0` using `(hasDerivAt_const (0 : ℝ) x).prodMk (hasDerivAt_id 0)`. Conclude with `hA.differentiableAt.hasFDerivAt.comp_hasDerivAt (x := (0 : ℝ)) hl`.
+-/
 theorem hasDerivAt_expChartFlow {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
     {x : EuclideanSpace ℝ (Fin d)} (hx : ((coordEquiv b x : 𝔤) : 𝔸) ∈ h.nhd) :
     HasDerivAt (fun t : ℝ => expChartFlow b X (x, t)) (expChartCoeff b X x) 0 := by
@@ -134,6 +177,25 @@ theorem hasDerivAt_expChartFlow {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X
     (hasDerivAt_const (0 : ℝ) x).prodMk (hasDerivAt_id 0)
   exact hA.differentiableAt.hasFDerivAt.comp_hasDerivAt (x := (0 : ℝ)) hl
 
+/- English proof (translation)
+Take `⟨r, hr, hball⟩` from `h.exists_ball_coordEquiv_mem_nhd b`. Use `⟨r, hr, expChartCoeff b, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `X x hx`. Establish `hS : (x, (0 : ℝ)) ∈ expChartProd b X ⁻¹' (expPartialHomeomorph ℝ 𝔸).target` using `h.nhdOne_subset_target (h.expChartProd_zero_mem_nhdOne b X (hball x hx))`. Establish `hD` using `(analyticOnNhd_expChartFlow b X).fderiv (𝕜 := ℝ) _ hS`.
+
+Establish `hinl : AnalyticAt ℝ (fun y : EuclideanSpace ℝ (Fin d) => (y, (0 : ℝ))) x` using `(ContinuousLinearMap.inl ℝ (EuclideanSpace ℝ (Fin d)) ℝ).analyticAt x`. Establish `hD' : AnalyticAt ℝ (fun y : EuclideanSpace ℝ (Fin d) => fderiv ℝ (expChartFlow b X) (y, 0)) x` using `AnalyticAt.comp (g := fderiv ℝ (expChartFlow b X)) (f := fun y : EuclideanSpace ℝ (Fin d) => (y, (0 : ℝ))) hD hinl`. Establish `hap` using `(ContinuousLinearMap.apply ℝ (EuclideanSpace ℝ (Fin d)) ((0 : EuclideanSpace ℝ (Fin d)), (1 : ℝ))).analyticAt (fderiv ℝ (expChartFlow b X) (x, 0))`. Conclude with `AnalyticAt.comp (f := fun y : EuclideanSpace ℝ (Fin d) => fderiv ℝ (expChartFlow b X) (y, 0)) hap hD'`. Introduce `X`.
+
+Establish `h0 : ((coordEquiv b (0 : EuclideanSpace ℝ (Fin d)) : 𝔤) : 𝔸) ∈ h.nhd`. Simplify using `only [map_zero, ZeroMemClass.coe_zero]`. Conclude with `h.zero_mem_nhd`. Establish `hd` using `h.hasDerivAt_expChartFlow b X h0`. Establish `hev : (fun t : ℝ => expChartFlow b X (0, t)) =ᶠ[𝓝 0] fun t : ℝ => t • (coordEquiv b).symm X`.
+
+Establish `hc : Continuous (fun t : ℝ => t • (X : 𝔸))` using `continuous_id.smul continuous_const`. Establish `: ∀ᶠ t in 𝓝 (0 : ℝ), t • (X : 𝔸) ∈ h.nhd`. Establish `h1` using `hc.continuousAt (x := 0)`. Rewrite `h1` using `[ContinuousAt, zero_smul]`. Conclude with `h1 (h.isOpen_nhd.mem_nhds h.zero_mem_nhd)`.
+
+Use `filter_upwards [this] with t ht`. Simplify using `only [expChartFlow, expChartProd, map_zero, ZeroMemClass.coe_zero, exp_zero, one_mul]`. Rewrite using `[h.symm_exp ht, show t • (X : 𝔸) = ((t • X : 𝔤) : 𝔸) from rfl, subspaceProj_coe, map_smul]`. Establish `hd2 : HasDerivAt (fun t : ℝ => t • (coordEquiv b).symm X) ((coordEquiv b).symm X) 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).smul_const ((coordEquiv b).symm X)`.
+
+Conclude with `hd.unique (hd2.congr_of_eventuallyEq hev)`. Introduce `X f hf g x hx`. Establish `hxN` using `hball x hx`. Use `set u : EuclideanSpace ℝ (Fin d) → ℂ := fun y => f (g * h.expG (coordEquiv b y)) with hu`. Establish `hud : Differentiable ℝ u` using `(h.contDiff_comp_coordEquiv hf g b).differentiable (by simp)`.
+
+Establish `hφ` using `h.hasDerivAt_expChartFlow b X hxN`. Establish `h1 : HasDerivAt (fun t : ℝ => u (expChartFlow b X (x, t))) (fderiv ℝ u x (expChartCoeff b X x)) 0`. Use `(hud (expChartFlow b X (x, 0))).hasFDerivAt.comp_hasDerivAt (x := (0 : ℝ)) hφ` as an intermediate fact. Rewrite `this` using `[h.expChartFlow_zero b X hxN]`. Conclude with `this`.
+
+Establish `h2` using `h.hasDerivAt_rightDeriv hf X (g * h.expG (coordEquiv b x))`. Establish `hev : (fun t : ℝ => f (g * h.expG (coordEquiv b x) * h.expG (t • X))) =ᶠ[𝓝 0] fun t : ℝ => u (expChartFlow b X (x, t))`. Establish `hc : Continuous (fun t : ℝ => expChartProd b X (x, t))` using `(continuous_expChartProd b X).comp (continuous_const.prodMk continuous_id)`. Establish `: ∀ᶠ t in 𝓝 (0 : ℝ), expChartProd b X (x, t) ∈ h.nhdOne` using `hc.continuousAt.preimage_mem_nhds (h.isOpen_nhdOne.mem_nhds (h.expChartProd_zero_mem_nhdOne b X hxN))`. Use `filter_upwards [this] with t ht`.
+
+Simplify using `only [hu]`. Rewrite using `[h.expG_expChartFlow b X ht, mul_assoc]`. Conclude with `h2.unique (h1.congr_of_eventuallyEq hev)`.
+-/
 theorem exists_expChart_coeff {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) :
     ∃ r > 0, ∃ c : 𝔤 → EuclideanSpace ℝ (Fin d) → EuclideanSpace ℝ (Fin d),
       (∀ X, AnalyticOnNhd ℝ (c X) (Metric.ball 0 r)) ∧

@@ -23,6 +23,9 @@ variable {D : D7}
 
 abbrev ex (x : Pl D) : AE D := algebraMap (AF D.host.F) (AE D) (cP (· = x))
 
+/- English proof (translation)
+Apply `GlobalTheory.FinPl.Conductor.af_ext` to reduce the goal to its premises. Introduce `w`. Use `split_ifs with h`. Apply the tactic sequence `subst h; rw [map_mul, evalV_indP]; split_ifs <;> simp`. Apply the tactic sequence `rw [map_mul, evalV_indP, evalV_indP, map_zero]; split_ifs with h1 h2 <;> simp_all`.
+-/
 theorem indicatorAdele_singleton_mul_singleton (x v : Pl D) : indP (D := D) (· = v) * indP (· = x) = if v = x then indP (· = x) else 0 := by
   apply GlobalTheory.FinPl.Conductor.af_ext
   intro w
@@ -30,6 +33,9 @@ theorem indicatorAdele_singleton_mul_singleton (x v : Pl D) : indP (D := D) (· 
   · subst h; rw [map_mul, evalV_indP]; split_ifs <;> simp
   · rw [map_mul, evalV_indP, evalV_indP, map_zero]; split_ifs with h1 h2 <;> simp_all
 
+/- English proof (translation)
+Establish `e : cP (D` using `D) (· = v) * cP (· = x) = pairA D.host.F 0 (indP (· = v) * indP (· = x)) := Prod.ext (by show (0 : Ainf D.host.F) * 0 = 0; rw [zero_mul]) rfl`. Rewrite using `[e, indicatorAdele_singleton_mul_singleton]`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `Prod.ext rfl rfl`.
+-/
 theorem indicatorIdempotent_mul (x v : Pl D) : cP (D := D) (· = v) * cP (· = x) = if v = x then cP (· = x) else 0 := by
   have e : cP (D := D) (· = v) * cP (· = x) = pairA D.host.F 0 (indP (· = v) * indP (· = x)) :=
     Prod.ext (by show (0 : Ainf D.host.F) * 0 = 0; rw [zero_mul]) rfl
@@ -38,9 +44,19 @@ theorem indicatorIdempotent_mul (x v : Pl D) : cP (D := D) (· = v) * cP (· = x
   · rfl
   · exact Prod.ext rfl rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rw [ex, ex, ← map_mul, indicatorIdempotent_mul]; split_ifs <;> simp`.
+-/
 theorem ex_mul (x v : Pl D) : ex v * ex x = if v = x then ex x else 0 := by
   rw [ex, ex, ← map_mul, indicatorIdempotent_mul]; split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul]`. Establish `h : ∀ v ∈ S, ex v * incA D (f v) * ex x = if v = x then ex x * incA D (f x) else 0`. Introduce `v _`. Rewrite using `[mul_right_comm, ex_mul]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Both sides reduce to the same expression. Rewrite using `[zero_mul]`. Rewrite using `[Finset.sum_congr rfl h, Finset.sum_ite_eq']`. Use `split_ifs with hx`.
+
+Both sides reduce to the same expression. Rewrite using `[hf x hx, map_zero, mul_zero]`.
+-/
 theorem sum_mul_ex (S : Finset (Pl D)) (f : Pl D → D.host.E) (hf : ∀ v ∉ S, f v = 0) (x : Pl D) :
     (∑ v ∈ S, ex v * incA D (f v)) * ex x = ex x * incA D (f x) := by
   rw [Finset.sum_mul]
@@ -57,12 +73,22 @@ theorem sum_mul_ex (S : Finset (Pl D)) (f : Pl D → D.host.E) (hf : ∀ v ∉ S
 
 def alpha (S : Finset (Pl D)) (a : Pl D → D.host.E) : AE D := 1 + ∑ v ∈ S, ex v * incA D (a v - 1)
 
+/- English proof (translation)
+Rewrite using `[alpha, add_mul, one_mul, sum_mul_ex S (fun v => a v - 1) (fun v hv => by simp [ha v hv]), map_sub, map_one, mul_sub, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alpha_mul_ex (S : Finset (Pl D)) (a : Pl D → D.host.E) (ha : ∀ v ∉ S, a v = 1) (x : Pl D) :
     alpha S a * ex x = ex x * incA D (a x) := by
   rw [alpha, add_mul, one_mul, sum_mul_ex S (fun v => a v - 1) (fun v hv => by simp [ha v hv]), map_sub, map_one,
     mul_sub, mul_one]
   ring
 
+/- English proof (translation)
+Establish `ha' : ∀ v ∉ S, (fun v => (a v)⁻¹) v = 1` using `fun v hv => by simp [ha v hv]`. Establish `key : ∀ v ∈ S, ex v * incA D (a v - 1) * alpha S (fun v => (a v)⁻¹) = ex v * incA D ((a v - 1) * (a v)⁻¹)`. Introduce `v _`. Rewrite using `[mul_comm (ex v), mul_assoc, mul_comm (ex v), alpha_mul_ex S _ ha' v, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[alpha, add_mul, one_mul, Finset.sum_mul, Finset.sum_congr rfl key, alpha, add_assoc, ← Finset.sum_add_distrib]`. Establish `h2 : ∀ v ∈ S, ex v * incA D ((a v)⁻¹ - 1) + ex v * incA D ((a v - 1) * (a v)⁻¹) = 0`. Introduce `v _`. Rewrite using `[← mul_add, ← map_add]`. Establish `: (a v)⁻¹ - 1 + (a v - 1) * (a v)⁻¹ = 0` using `by rw [sub_mul, mul_inv_cancel₀ (h0 v)]; ring`.
+
+Rewrite using `[this, map_zero, mul_zero]`. Rewrite using `[Finset.sum_congr rfl h2, Finset.sum_const_zero, add_zero]`.
+-/
 theorem alpha_mul_inv (S : Finset (Pl D)) (a : Pl D → D.host.E) (ha : ∀ v ∉ S, a v = 1) (h0 : ∀ v, a v ≠ 0) :
     alpha S a * alpha S (fun v => (a v)⁻¹) = 1 := by
   have ha' : ∀ v ∉ S, (fun v => (a v)⁻¹) v = 1 := fun v hv => by simp [ha v hv]
@@ -78,11 +104,17 @@ theorem alpha_mul_inv (S : Finset (Pl D)) (a : Pl D → D.host.E) (ha : ∀ v �
     rw [this, map_zero, mul_zero]
   rw [Finset.sum_congr rfl h2, Finset.sum_const_zero, add_zero]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(1 : AF D.host.F) ⊗ₜ[D.host.F] D.sp.cm.sig t = _`. Rewrite using `[Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj]`. Both sides reduce to the same expression.
+-/
 theorem cA_incA (t : D.host.E) : cA D (incA D t) = incA D (D.host.conj t) := by
   change (1 : AF D.host.F) ⊗ₜ[D.host.F] D.sp.cm.sig t = _
   rw [Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ = (p ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] e)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+-/
 theorem tmul_eq (p : AF D.host.F) (e : D.host.E) :
     p ⊗ₜ[D.host.F] e = algebraMap (AF D.host.F) (AE D) p * incA D e := by
   change _ = (p ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] e)
@@ -94,6 +126,11 @@ namespace GlobalTheory.IdeleAA
 open GlobalTheory.SelfDualAt (cP indP evalV_indP algebraMap_placeIdempotent_mul cA_alg)
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[AlgHom.commutes, HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `h1 : x.intValuation c = 1` using `HeightOneSpectrum.intValuation_eq_one_iff.2 hc`. Establish `h2` using `HeightOneSpectrum.valuation_of_algebraMap (K := D.host.F) x c`. Rewrite `h2` using `[h1]`. Use `show Valued.v ((((c : D.host.F))⁻¹ : D.host.F) : x.adicCompletion D.host.F) ≤ 1`.
+
+Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', map_inv₀]`. Establish `: HeightOneSpectrum.valuation D.host.F x (c : D.host.F) = 1` using `h2`. Rewrite using `[this, inv_one]`.
+-/
 theorem evalV_inv_mem (x : Pl D) (c : 𝓞 D.host.F) (hc : c ∉ x.asIdeal) :
     evalV D.host.F x (algebraMap D.host.F (Af D.host.F) ((c : D.host.F))⁻¹) ∈ x.adicCompletionIntegers D.host.F := by
   rw [AlgHom.commutes, HeightOneSpectrum.mem_adicCompletionIntegers]
@@ -107,6 +144,11 @@ theorem evalV_inv_mem (x : Pl D) (c : 𝓞 D.host.F) (hc : c ∉ x.asIdeal) :
 
 def gam (x : Pl D) (c : 𝓞 D.host.F) : Af D.host.F := algebraMap D.host.F (Af D.host.F) ((c : D.host.F))⁻¹ * indP (· = x)
 
+/- English proof (translation)
+Introduce `w`. Rewrite using `[gam, map_mul, evalV_indP]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_one]`.
+
+Conclude with `evalV_inv_mem w c hc`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`.
+-/
 theorem gam_int (x : Pl D) (c : 𝓞 D.host.F) (hc : c ∉ x.asIdeal) : gam x c ∈ intAf D.host.F := by
   intro w
   rw [gam, map_mul, evalV_indP]
@@ -114,10 +156,18 @@ theorem gam_int (x : Pl D) (c : 𝓞 D.host.F) (hc : c ∉ x.asIdeal) : gam x c 
   · subst h; rw [mul_one]; exact evalV_inv_mem w c hc
   · rw [mul_zero]; exact zero_mem _
 
+/- English proof (translation)
+Introduce `w hw`. Rewrite using `[gam, map_mul, evalV_indP, if_neg hw, mul_zero]`.
+-/
 theorem gam_supp (x : Pl D) (c : 𝓞 D.host.F) : ∀ w, ¬ (w = x) → evalV D.host.F w (gam x c) = 0 := by
   intro w hw
   rw [gam, map_mul, evalV_indP, if_neg hw, mul_zero]
 
+/- English proof (translation)
+Introduce `h`. Apply `hc` to reduce the goal to its premises. Establish `: (c : D.host.F) = 0` using `by exact_mod_cast h`. Establish `: c = 0` using `by exact_mod_cast this`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem coe_ne_zero (x : Pl D) (c : 𝓞 D.host.F) (hc : c ∉ x.asIdeal) : ((c : D.host.F) : D.host.E) ≠ 0 := by
   intro h
   apply hc
@@ -125,6 +175,13 @@ theorem coe_ne_zero (x : Pl D) (c : 𝓞 D.host.F) (hc : c ∉ x.asIdeal) : ((c 
   have : c = 0 := by exact_mod_cast this
   rw [this]; exact zero_mem _
 
+/- English proof (translation)
+Rewrite using `[ex, ← tmul_eq]`. Establish `h1 : ((c : D.host.F) : D.host.E)⁻¹ * e = ((c : D.host.F))⁻¹ • e`. Rewrite using `[Algebra.smul_def, map_inv₀]`. Both sides reduce to the same expression. Rewrite using `[h1, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`.
+
+Use `congr 1`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show ((c : D.host.F))⁻¹ • (0 : Ainf D.host.F) = 0`. Conclude with `smul_zero _`. Use `show ((c : D.host.F))⁻¹ • indP (D := D) (· = x) = gam x c`.
+
+Rewrite using `[gam, Algebra.smul_def]`.
+-/
 theorem ex_scale (x : Pl D) (c : 𝓞 D.host.F) (e : D.host.E) :
     ex x * incA D (((c : D.host.F) : D.host.E)⁻¹ * e) = pairA D.host.F 0 (gam x c) ⊗ₜ[D.host.F] e := by
   rw [ex, ← tmul_eq]
@@ -138,6 +195,11 @@ theorem ex_scale (x : Pl D) (c : 𝓞 D.host.F) (e : D.host.E) :
   · show ((c : D.host.F))⁻¹ • indP (D := D) (· = x) = gam x c
     rw [gam, Algebra.smul_def]
 
+/- English proof (translation)
+Use `Prod.ext (by show (0 : Ainf D.host.F) * 0 = 0; rw [zero_mul]) ?_` and prove the remaining obligations. Use `show indP (D := D) (· = x) * γ = γ`. Apply `GlobalTheory.FinPl.Conductor.af_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_mul, evalV_indP]`.
+
+Use `split_ifs with h`. Rewrite using `[one_mul]`. Rewrite using `[hγ w h, mul_zero]`.
+-/
 theorem pair_supp (x : Pl D) (γ : Af D.host.F) (hγ : ∀ w, ¬ (w = x) → evalV D.host.F w γ = 0) :
     cP (D := D) (· = x) * pairA D.host.F 0 γ = pairA D.host.F 0 γ := by
   refine Prod.ext (by show (0 : Ainf D.host.F) * 0 = 0; rw [zero_mul]) ?_
@@ -149,6 +211,9 @@ theorem pair_supp (x : Pl D) (γ : Af D.host.F) (hγ : ∀ w, ¬ (w = x) → eva
   · rw [one_mul]
   · rw [hγ w h, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[tmul_eq, tmul_eq, ← pair_supp x γ hγ, map_mul, map_mul, ← ex, ← mul_assoc, ← mul_assoc, hρ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scale_tmul (x : Pl D) (ρ : AE D) (t : D.host.E) (hρ : ρ * ex x = ex x * incA D t) (γ : Af D.host.F)
     (hγ : ∀ w, ¬ (w = x) → evalV D.host.F w γ = 0) (e : D.host.E) :
     ρ * (pairA D.host.F 0 γ ⊗ₜ[D.host.F] e) = pairA D.host.F 0 γ ⊗ₜ[D.host.F] (t * e) := by
@@ -161,6 +226,11 @@ namespace GlobalTheory.IdeleAA
 open GlobalTheory.SelfDualAt (cP indP evalV_indP algebraMap_placeIdempotent_mul cA_alg)
 variable {D : D7}
 
+/- English proof (translation)
+Apply `GlobalTheory.FinPl.Conductor.af_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_mul, evalV_indP]`. Use `split_ifs with h`. Rewrite using `[one_mul]`.
+
+Rewrite using `[hγ w h, mul_zero]`.
+-/
 theorem indicatorAdele_mul_eq_self (x : Pl D) (γ : Af D.host.F) (hγ : ∀ w, ¬ (w = x) → evalV D.host.F w γ = 0) :
     indP (D := D) (· = x) * γ = γ := by
   apply GlobalTheory.FinPl.Conductor.af_ext
@@ -170,6 +240,11 @@ theorem indicatorAdele_mul_eq_self (x : Pl D) (γ : Af D.host.F) (hγ : ∀ w, �
   · rw [one_mul]
   · rw [hγ w h, mul_zero]
 
+/- English proof (translation)
+Establish `h1 : ((c : D.host.F) : D.host.E)⁻¹ * e = ((c : D.host.F))⁻¹ • e`. Rewrite using `[Algebra.smul_def, map_inv₀]`. Both sides reduce to the same expression. Rewrite using `[h1, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Use `congr 1`.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show ((c : D.host.F))⁻¹ • (0 : Ainf D.host.F) = 0`. Conclude with `smul_zero _`. Use `show ((c : D.host.F))⁻¹ • γ = gam x c * γ`. Rewrite using `[gam, mul_assoc, indicatorAdele_mul_eq_self x γ hγ, Algebra.smul_def]`.
+-/
 theorem pair_scale (x : Pl D) (c : 𝓞 D.host.F) (γ : Af D.host.F) (hγ : ∀ w, ¬ (w = x) → evalV D.host.F w γ = 0)
     (e : D.host.E) :
     pairA D.host.F 0 γ ⊗ₜ[D.host.F] (((c : D.host.F) : D.host.E)⁻¹ * e) =
@@ -184,14 +259,29 @@ theorem pair_scale (x : Pl D) (c : 𝓞 D.host.F) (γ : Af D.host.F) (hγ : ∀ 
   · show ((c : D.host.F))⁻¹ • γ = gam x c * γ
     rw [gam, mul_assoc, indicatorAdele_mul_eq_self x γ hγ, Algebra.smul_def]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LatVac.mul_mem_intAf (gam_int x c hc) hγ`.
+-/
 theorem gam_mul_int (x : Pl D) (c : 𝓞 D.host.F) (hc : c ∉ x.asIdeal) {γ : Af D.host.F} (hγ : γ ∈ intAf D.host.F) :
     gam x c * γ ∈ intAf D.host.F := GlobalTheory.LatVac.mul_mem_intAf (gam_int x c hc) hγ
 
+/- English proof (translation)
+Introduce `w hw`. Rewrite using `[map_mul, gam_supp x c w hw, zero_mul]`.
+-/
 theorem gam_mul_supp (x : Pl D) (c : 𝓞 D.host.F) (γ : Af D.host.F) :
     ∀ w, ¬ (w = x) → evalV D.host.F w (gam x c * γ) = 0 := by
   intro w hw
   rw [map_mul, gam_supp x c w hw, zero_mul]
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨γ, hγ, hsupp, a, ha, l, hl, rfl⟩` from `hy`. Take `⟨c, hc, a', ha', o, hao⟩` from `h𝔞 a ha`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises.
+
+Use `⟨gam x c * γ, gam_mul_int x c hc hγ, gam_mul_supp x c γ, a', ha', o • l, L.smul_mem o hl, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show ρ * (pairA D.host.F 0 γ ⊗ₜ[D.host.F] (a * l i)) = _`. Rewrite using `[scale_tmul x ρ t hρ γ hsupp, ← pair_scale x c γ hsupp]`. Use `congr 1`.
+
+Establish `ho : (o • l) i = (o : D.host.E) * l i` using `by rw [Pi.smul_apply, Algebra.smul_def]`. Rewrite using `[ho, ← mul_assoc, hao]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ h1 h2 => rw [smul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg x _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
+-/
 theorem smul_latMul (S' : HSp D) (L : Lat S') (x : Pl D) (𝔞 𝔞' : Set D.host.E) (ρ : AE D) (t : D.host.E)
     (hρ : ρ * ex x = ex x * incA D t)
     (h𝔞 : ∀ a ∈ 𝔞, ∃ c : 𝓞 D.host.F, c ∉ x.asIdeal ∧ ∃ a' ∈ 𝔞', ∃ o : 𝓞 D.host.E,
@@ -214,6 +304,15 @@ theorem smul_latMul (S' : HSp D) (L : Lat S') (x : Pl D) (𝔞 𝔞' : Set D.hos
   | add x y _ _ h1 h2 => rw [smul_add]; exact add_mem h1 h2
   | neg x _ h => rw [smul_neg]; exact neg_mem h
 
+/- English proof (translation)
+Establish `ha' : ∀ v ∉ S, (fun v => (a v)⁻¹) v = 1` using `fun v hv => by simp [ha v hv]`. Take `⟨c, hc, hca, hcb⟩` from `hgen x`. Establish `hc0` using `coe_ne_zero x c hc`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Use `smul_latMul Sp L x _ _ _ (a x)⁻¹ (alpha_mul_ex S _ ha' x) ?_ y hy` and prove the remaining obligations. Introduce `b hb`. Take `⟨o, ho⟩` from `hcb b hb`. Use `⟨c, hc, 1, rfl, o, ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, inv_mul_eq_iff_eq_mul₀ (h0 x), ← mul_assoc, mul_comm (a x), mul_assoc, ← ho, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul]`.
+
+Introduce `hy`. Establish `h` using `smul_latMul Sp L x {1} {a | a ∈ D.host.AA} _ (a x) (alpha_mul_ex S _ ha x) ?_ _ hy`. Rewrite `h` using `[smul_smul, alpha_mul_inv S a ha h0, one_smul]`. Then use the resulting hypothesis. Introduce `b hb`. Rewrite `hb` using `[Set.mem_singleton_iff]`.
+
+Substitute `hb` using the available equality. Use `⟨c, hc, _, hca, 1, ?_⟩` and prove the remaining obligations. Clear denominators, using `[hc0]` for the nonvanishing conditions. Simplify using the standard rewrite rules.
+-/
 theorem lat_iff (S : Finset (Pl D)) (a : Pl D → D.host.E) (ha : ∀ v ∉ S, a v = 1) (h0 : ∀ v, a v ≠ 0)
     (hgen : ∀ v, ∃ c : 𝓞 D.host.F, c ∉ v.asIdeal ∧ ((c : D.host.F) : D.host.E) * a v ∈ D.host.AA ∧
       ∀ b ∈ D.host.AA, ∃ o : 𝓞 D.host.E, ((c : D.host.F) : D.host.E) * b = a v * (o : D.host.E))
@@ -249,6 +348,11 @@ variable {D : D7}
 
 abbrev Dual (D : D7) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E := FractionalIdeal.dual ℤ ℚ 1
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `d ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) at hd`. Rewrite `hd` using `[FractionalIdeal.mem_dual (@one_ne_zero (FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) _ _ _)]`. Take `⟨n, hn⟩` from `hd (algebraMap _ _ o) ((FractionalIdeal.mem_one_iff _).2 ⟨o, rfl⟩)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[Algebra.traceForm_apply]`.
+
+Rewrite using `[← hn]`. Simplify using the standard rewrite rules.
+-/
 theorem trace_int_of_dual {d : D.host.E} (hd : d ∈ Dual D) (o : 𝓞 D.host.E) :
     ∃ n : ℤ, Algebra.trace ℚ D.host.E (d * o) = n := by
   change d ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) at hd
@@ -258,10 +362,18 @@ theorem trace_int_of_dual {d : D.host.E} (hd : d ∈ Dual D) (o : 𝓞 D.host.E)
   rw [Algebra.traceForm_apply] at hn
   rw [← hn]; simp
 
+/- English proof (translation)
+Establish `h` using `FractionalIdeal.mem_coe.1 (Submodule.smul_mem _ o (FractionalIdeal.mem_coe.2 hd))`. Rewrite `h` using `[Algebra.smul_def, mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem mul_mem_dual {d : D.host.E} (hd : d ∈ Dual D) (o : 𝓞 D.host.E) : d * (o : D.host.E) ∈ Dual D := by
   have h := FractionalIdeal.mem_coe.1 (Submodule.smul_mem _ o (FractionalIdeal.mem_coe.2 hd))
   rwa [Algebra.smul_def, mul_comm] at h
 
+/- English proof (translation)
+Rewrite using `[chi, GlobalTheory.LatVac.trace_tmul]`. Use `GlobalTheory.IntDense.addChar_eq_one_of_integral D.host.F ψ hψ.1.1 _ (fun a => ?_) _ hγ` and prove the remaining obligations. Rewrite using `[← smul_eq_mul, ← map_smul, GlobalTheory.LatVac.char_rat hψ]`. Establish `hi : IsIntegral ℤ (algebraMap D.host.F D.host.E (a : D.host.F))` using `a.isIntegral_coe.map (IsScalarTower.toAlgHom ℤ D.host.F D.host.E)`. Take `⟨n, hn⟩` from `trace_int_of_dual hd ⟨_, hi⟩`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn, Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem chi_tmul_dual {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {γ : Af D.host.F}
     (hγ : γ ∈ intAf D.host.F) {d : D.host.E} (hd : d ∈ Dual D) : chi ψ (γ ⊗ₜ[D.host.F] d) = 1 := by
   rw [chi, GlobalTheory.LatVac.trace_tmul]
@@ -274,6 +386,13 @@ theorem chi_tmul_dual {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1
   rw [← hn, Algebra.smul_def, mul_comm]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, o, rfl⟩` from `hw`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Conclude with `chi_tmul_dual hψ (GlobalTheory.LatVac.mul_mem_intAf hγ hα) (mul_mem_dual hd o)`.
+
+Consider the case `zero => rw [mul_zero]`. Conclude with `chi_zero ψ`. Consider the case `add x y _ _ hx hy => rw [mul_add, chi_add, hx, hy, one_mul]`. Consider the case `neg x _ hx`. Establish `h` using `chi_add ψ (γ ⊗ₜ[D.host.F] d * x) (γ ⊗ₜ[D.host.F] d * -x)`.
+
+Rewrite `h` using `[← mul_add, add_neg_cancel, mul_zero, chi_zero, hx, one_mul]`. Conclude with `h.symm`.
+-/
 theorem chi_dual {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {γ : Af D.host.F}
     (hγ : γ ∈ intAf D.host.F) {d : D.host.E} (hd : d ∈ Dual D) {w : Af D.host.F ⊗[D.host.F] D.host.E}
     (hw : w ∈ intAE D) : chi ψ ((γ ⊗ₜ[D.host.F] d) * w) = 1 := by
@@ -289,16 +408,35 @@ theorem chi_dual {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {�
     rw [← mul_add, add_neg_cancel, mul_zero, chi_zero, hx, one_mul] at h
     exact h.symm
 
+/- English proof (translation)
+Rewrite using `[← Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj]`. Conclude with `D.sp.cm.sig.commutes (c : D.host.F)`.
+-/
 theorem conj_F (c : 𝓞 D.host.F) : D.host.conj ((c : D.host.F) : D.host.E) = ((c : D.host.F) : D.host.E) := by
   rw [← Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj]
   exact D.sp.cm.sig.commutes (c : D.host.F)
 
+/- English proof (translation)
+Introduce `h`. Apply `ha` to reduce the goal to its premises. Use `congrArg D.host.conj h` as an intermediate fact. Rewrite `this` using `[Formalism.L2.Pj.conj_conj, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem conj_ne_zero {a : D.host.E} (ha : a ≠ 0) : D.host.conj a ≠ 0 := by
   intro h
   apply ha
   have := congrArg D.host.conj h
   rwa [Formalism.L2.Pj.conj_conj, map_zero] at this
 
+/- English proof (translation)
+Establish `hP` using `Formalism.IndefR.Fin.factPrincipalDatum`. Establish `hxi` using `Formalism.L2.Pj.cmHost_imaginaryGenerator_ne_zero hP D`. Establish `hca` using `conj_ne_zero ha0`. Express the relevant statement in the definitionally equal form `z ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) at hz`. Rewrite `hz` using `[← Formalism.L2.Pj.dual_eq hP D]`.
+
+Use `FractionalIdeal.mul_induction_on (C := fun z => ∃ o : 𝓞 D.host.E, ((c : D.host.F) : D.host.E) * ((c : D.host.F) : D.host.E) * (D.host.xi0⁻¹ * a⁻¹ * (D.host.conj a)⁻¹) * z = (o : D.host.E)) hz ?_ ?_` and prove the remaining obligations. Introduce `m hm n hn`. Use `FractionalIdeal.mul_induction_on (C := fun m => ∃ o : 𝓞 D.host.E, ((c : D.host.F) : D.host.E) * ((c : D.host.F) : D.host.E) * (D.host.xi0⁻¹ * a⁻¹ * (D.host.conj a)⁻¹) * (m * n) = (o : D.host.E)) hm ?_ ?_` and prove the remaining obligations. Introduce `s hs a1 ha1`. Take `⟨r, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hs`.
+
+Take `⟨o1, ho1⟩` from `hcb a1 ha1`. Take `⟨o2, ho2⟩` from `hcb _ (Formalism.L2.Pj.conj_mem_AA D hn)`. Establish `hn' : ((c : D.host.F) : D.host.E) * n = D.host.conj a * D.host.conj (o2 : D.host.E)`. Use `congrArg D.host.conj ho2` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, conj_F, Formalism.L2.Pj.conj_conj]`. Then use the resulting hypothesis.
+
+Use `⟨r * o1 * (D.host.conj • o2), ?_⟩` and prove the remaining obligations. Establish `e2 : ((D.host.conj • o2 : 𝓞 D.host.E) : D.host.E) = D.host.conj (o2 : D.host.E)` using `Formalism.L2.Pj.algebraMap_conj_smul D o2`. Establish `e1 : (((r * o1 * (D.host.conj • o2)) : 𝓞 D.host.E) : D.host.E) = (r : D.host.E) * (o1 : D.host.E) * D.host.conj (o2 : D.host.E)`. Rewrite using `[← e2]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, Algebra.smul_def]`. Establish `e3 : ((c : D.host.F) : D.host.E) * ((c : D.host.F) : D.host.E) * (D.host.xi0⁻¹ * a⁻¹ * (D.host.conj a)⁻¹) * (algebraMap (𝓞 D.host.E) D.host.E r * D.host.xi0 * a1 * n) = algebraMap (𝓞 D.host.E) D.host.E r * (((c : D.host.F) : D.host.E) * a1) * (((c : D.host.F) : D.host.E) * n) * ( …` using `by ring`. Rewrite using `[e3, ho1, hn', inv_mul_cancel₀ hxi]`. Clear the denominators using the available nonvanishing facts.
+
+Introduce and unpack `x y ⟨o, ho⟩ ⟨o', ho'⟩`. Conclude with `⟨o + o', by rw [add_mul, mul_add, ho, ho']; push_cast; rfl⟩`. Introduce and unpack `x y ⟨o, ho⟩ ⟨o', ho'⟩`. Conclude with `⟨o + o', by rw [mul_add, ho, ho']; push_cast; rfl⟩`.
+-/
 theorem claimC (a : D.host.E) (ha0 : a ≠ 0) (c : 𝓞 D.host.F)
     (hcb : ∀ b ∈ D.host.AA, ∃ o : 𝓞 D.host.E, ((c : D.host.F) : D.host.E) * b = a * (o : D.host.E))
     {z : D.host.E} (hz : z ∈ Dual D) :
@@ -339,6 +477,11 @@ theorem claimC (a : D.host.E) (ha0 : a ≠ 0) (c : 𝓞 D.host.F)
   · rintro x y ⟨o, ho⟩ ⟨o', ho'⟩
     exact ⟨o + o', by rw [mul_add, ho, ho']; push_cast; rfl⟩
 
+/- English proof (translation)
+Establish `hP` using `Formalism.IndefR.Fin.factPrincipalDatum`. Express the relevant statement in the definitionally equal form `_ ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`. Rewrite using `[← Formalism.L2.Pj.dual_eq hP D]`. Establish `e : ((c : D.host.F) : D.host.E) * ((c : D.host.F) : D.host.E) * (D.host.xi0 * a * D.host.conj a) = D.host.xi0 * (((c : D.host.F) : D.host.E) * a) * D.host.conj (((c : D.host.F) : D.host.E) * a)`. Rewrite using `[map_mul, conj_F]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `FractionalIdeal.mul_mem_mul (FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self _ _) hca) (Formalism.L2.Pj.conj_mem_AAbar D hca)`.
+-/
 theorem claimC' (a : D.host.E) (c : 𝓞 D.host.F) (hca : ((c : D.host.F) : D.host.E) * a ∈ D.host.AA) :
     ((c : D.host.F) : D.host.E) * ((c : D.host.F) : D.host.E) * (D.host.xi0 * a * D.host.conj a) ∈ Dual D := by
   have hP := Formalism.IndefR.Fin.factPrincipalDatum
@@ -358,12 +501,20 @@ open GlobalTheory.SelfDualAt (cP indP evalV_indP algebraMap_placeIdempotent_mul 
 open GlobalTheory.FinPl.Conductor (chi chi_add chi_zero psiE_eq_chi approx tmul_mem mul_mem_int lift_mem chi_rat chi_int ev_same ev_ne)
 variable {D : D7}
 
+/- English proof (translation)
+Establish `e : ex x = cA D (ex x)` using `(cA_alg _).symm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cA_mul_ex (ρ : AE D) (x : Pl D) (t : D.host.E) (h : ρ * ex x = ex x * incA D t) :
     cA D ρ * ex x = ex x * incA D (D.host.conj t) := by
   have e : ex x = cA D (ex x) := (cA_alg _).symm
   calc cA D ρ * ex x = cA D (ρ * ex x) := by rw [map_mul, ← e]
     _ = ex x * incA D (D.host.conj t) := by rw [h, map_mul, ← e, cA_incA]
 
+/- English proof (translation)
+Establish `ha' : ∀ v ∉ S, (fun v => (a v)⁻¹) v = 1` using `fun v hv => by simp [ha v hv]`. Establish `h1` using `alpha_mul_ex S _ ha' x`. Establish `h2` using `cA_mul_ex _ x _ h1`. Rewrite `h2` using `[map_inv₀ D.host.conj (a x)]`. Rewrite using `[mul_assoc, h2, ← mul_assoc, mul_assoc (incA D _), h1, map_mul, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem B_mul_ex (S : Finset (Pl D)) (a : Pl D → D.host.E) (ha : ∀ v ∉ S, a v = 1) (x : Pl D) :
     incA D D.host.xi0⁻¹ * alpha S (fun v => (a v)⁻¹) * cA D (alpha S (fun v => (a v)⁻¹)) * ex x =
       ex x * incA D (D.host.xi0⁻¹ * (a x)⁻¹ * (D.host.conj (a x))⁻¹) := by
@@ -374,6 +525,9 @@ theorem B_mul_ex (S : Finset (Pl D)) (a : Pl D → D.host.E) (ha : ∀ v ∉ S, 
   rw [mul_assoc, h2, ← mul_assoc, mul_assoc (incA D _), h1, map_mul, map_mul]
   ring
 
+/- English proof (translation)
+Establish `h1` using `alpha_mul_ex S _ ha x`. Establish `h2` using `cA_mul_ex _ x _ h1`. Rewrite using `[mul_assoc, h2, ← mul_assoc, mul_assoc (incA D _), h1, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Binv_mul_ex (S : Finset (Pl D)) (a : Pl D → D.host.E) (ha : ∀ v ∉ S, a v = 1) (x : Pl D) :
     incA D D.host.xi0 * alpha S a * cA D (alpha S a) * ex x =
       ex x * incA D (D.host.xi0 * a x * D.host.conj (a x)) := by
@@ -382,6 +536,9 @@ theorem Binv_mul_ex (S : Finset (Pl D)) (a : Pl D → D.host.E) (ha : ∀ v ∉ 
   rw [mul_assoc, h2, ← mul_assoc, mul_assoc (incA D _), h1, map_mul, map_mul]
   ring
 
+/- English proof (translation)
+Establish `hxi` using `Formalism.L2.Pj.cmHost_imaginaryGenerator_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Binv_mul_B (S : Finset (Pl D)) (a : Pl D → D.host.E) (ha : ∀ v ∉ S, a v = 1) (h0 : ∀ v, a v ≠ 0) :
     (incA D D.host.xi0 * alpha S a * cA D (alpha S a)) *
       (incA D D.host.xi0⁻¹ * alpha S (fun v => (a v)⁻¹) * cA D (alpha S (fun v => (a v)⁻¹))) = 1 := by
@@ -390,21 +547,38 @@ theorem Binv_mul_B (S : Finset (Pl D)) (a : Pl D → D.host.E) (ha : ∀ v ∉ S
         cA D (alpha S a * alpha S (fun v => (a v)⁻¹)) := by rw [map_mul, map_mul]; ring
     _ = 1 := by rw [mul_inv_cancel₀ hxi, alpha_mul_inv S a ha h0, map_one, map_one, one_mul, one_mul]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← algebraMap_placeIdempotent_mul (· = x) z hz]`. Rewrite using `[← mul_assoc, ← ex, h]`.
+-/
 theorem mul_of_ex (ρ : AE D) (x : Pl D) (t : D.host.E) (h : ρ * ex x = ex x * incA D t) {z : AE D}
     (hz : z ∈ idAt D (· = x)) : ρ * z = ex x * incA D t * z := by
   conv_lhs => rw [← algebraMap_placeIdempotent_mul (· = x) z hz]
   rw [← mul_assoc, ← ex, h]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Ideal.mul_mem_right _ _ hz.1, by rw [map_mul]; exact mul_mem_int hz.2 hw.2⟩`.
+-/
 theorem intAt_mul {x : Pl D} {z w : AE D} (hz : z ∈ intAt D (· = x)) (hw : w ∈ intAt D (· = x)) :
     z * w ∈ intAt D (· = x) :=
   ⟨Ideal.mul_mem_right _ _ hz.1, by rw [map_mul]; exact mul_mem_int hz.2 hw.2⟩
 
+/- English proof (translation)
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeC (c : 𝓞 D.host.F) : (((c * c : 𝓞 D.host.F) : D.host.F) : D.host.E) =
     ((c : D.host.F) : D.host.E) * ((c : D.host.F) : D.host.E) := by push_cast; ring
 
+/- English proof (translation)
+Introduce `h` and use `(x.isPrime.mem_or_mem h).elim hc hc`.
+-/
 theorem C_not_mem {x : Pl D} {c : 𝓞 D.host.F} (hc : c ∉ x.asIdeal) : c * c ∉ x.asIdeal := fun h =>
   (x.isPrime.mem_or_mem h).elim hc hc
 
+/- English proof (translation)
+Use `congrArg (pairA D.host.F 0) (GlobalTheory.FinPl.Conductor.af_ext fun w => ?_)` and prove the remaining obligations. Rewrite using `[evalV_indP]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[ev_same]`.
+
+Rewrite using `[ev_ne h]`.
+-/
 theorem indicatorIdempotent_eq_single (x : Pl D) : cP (D := D) (· = x) = pairA D.host.F 0 (singleV D.host.F x 1) := by
   refine congrArg (pairA D.host.F 0) (GlobalTheory.FinPl.Conductor.af_ext fun w => ?_)
   rw [evalV_indP]
@@ -412,13 +586,22 @@ theorem indicatorIdempotent_eq_single (x : Pl D) : cP (D := D) (· = x) = pairA 
   · subst h; rw [ev_same]
   · rw [ev_ne h]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `finPart D ((1 : AF D.host.F) ⊗ₜ[D.host.F] o) = _`. Simplify using `[finPart]`.
+-/
 theorem finPart_incA (o : D.host.E) : finPart D (incA D o) = (1 : Af D.host.F) ⊗ₜ[D.host.F] o := by
   change finPart D ((1 : AF D.host.F) ⊗ₜ[D.host.F] o) = _
   simp [finPart]
 
+/- English proof (translation)
+Rewrite using `[← mul_assoc p, ← mul_assoc p, h, one_mul]`.
+-/
 theorem assoc4 {R : Type*} [CommRing R] (p q s o : R) (h : p * q = 1) : s * o = p * (q * s * o) := by
   rw [← mul_assoc p, ← mul_assoc p, h, one_mul]
 
+/- English proof (translation)
+Rewrite using `[mul_add, Algebra.TensorProduct.tmul_mul_tmul, mul_one, h2]`. Use `add_mem (tmul_mem (gam_int x _ hc) o2) (mul_mem_int ?_ hu)` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `tmul_mem (gam_int x _ hc) o1`.
+-/
 theorem mem_of_split (x : Pl D) (c : 𝓞 D.host.F) (hc : c ∉ x.asIdeal) (K x0 : D.host.E)
     {u : Af D.host.F ⊗[D.host.F] D.host.E} (hu : u ∈ intAE D) (o1 o2 : 𝓞 D.host.E) (h1 : K = o1) (h2 : K * x0 = o2) :
     (gam x c ⊗ₜ[D.host.F] K) * ((1 : Af D.host.F) ⊗ₜ[D.host.F] x0 + u) ∈ intAE D := by
@@ -426,6 +609,9 @@ theorem mem_of_split (x : Pl D) (c : 𝓞 D.host.F) (hc : c ∉ x.asIdeal) (K x0
   refine add_mem (tmul_mem (gam_int x _ hc) o2) (mul_mem_int ?_ hu)
   rw [h1]; exact tmul_mem (gam_int x _ hc) o1
 
+/- English proof (translation)
+Establish `h : t = ((c : D.host.F) : D.host.E)⁻¹ * (((c : D.host.F) : D.host.E) * t)`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hc0, one_mul]`. Use `conv_lhs => rw [h]`. Rewrite using `[ex_scale, GlobalTheory.LatVac.finPart_pair]`.
+-/
 theorem finPart_ex (x : Pl D) (c : 𝓞 D.host.F) (hc0 : ((c : D.host.F) : D.host.E) ≠ 0) (t : D.host.E) :
     finPart D (ex x * incA D t) = gam x c ⊗ₜ[D.host.F] (((c : D.host.F) : D.host.E) * t) := by
   have h : t = ((c : D.host.F) : D.host.E)⁻¹ * (((c : D.host.F) : D.host.E) * t) := by
@@ -433,12 +619,32 @@ theorem finPart_ex (x : Pl D) (c : 𝓞 D.host.F) (hc0 : ((c : D.host.F) : D.hos
   conv_lhs => rw [h]
   rw [ex_scale, GlobalTheory.LatVac.finPart_pair]
 
+/- English proof (translation)
+Rewrite using `[(finPart D).map_mul, finPart_ex x c (coe_ne_zero x c hc)]`. Conclude with `chi_dual hψ (gam_int x _ hc) ht hw`.
+-/
 theorem finitePartTraceCharacter_idempotent_inverseDifferent {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (x : Pl D) (c : 𝓞 D.host.F)
     (hc : c ∉ x.asIdeal) (t : D.host.E) (ht : ((c : D.host.F) : D.host.E) * t ∈ Dual D) (w : AE D)
     (hw : finPart D w ∈ intAE D) : chi ψ (finPart D (ex x * incA D t * w)) = 1 := by
   rw [(finPart D).map_mul, finPart_ex x c (coe_ne_zero x c hc)]
   exact chi_dual hψ (gam_int x _ hc) ht hw
 
+/- English proof (translation)
+Take `⟨c, hc, hca, hcb⟩` from `hgen x`. Establish `hC` using `C_not_mem hc`. Establish `hC0` using `coe_ne_zero x _ hC`. Establish `hinf : infPart D s = 0` using `hs.1`. Establish `hinf' : ∀ o, infPart D (s * o) = 0` using `fun o => by rw [map_mul, hinf, zero_mul]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hz : ex x * s = s` using `algebraMap_placeIdempotent_mul _ s hs`. Take `⟨x0, u, hu, e⟩` from `approx (finPart D s)`. Establish `hx0 : x0 ∈ Dual D`.
+
+Express the relevant statement in the definitionally equal form `x0 ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`. Rewrite using `[FractionalIdeal.mem_dual (@one_ne_zero (FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) _ _ _)]`. Introduce `y hy`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hy`. Establish `h1` using `h (ex x * incA D (o : D.host.E)) (by rw [ex, indicatorIdempotent_eq_single, ← tmul_eq]; exact lift_mem x o)`.
+
+Rewrite `h1` using `[← mul_assoc, mul_comm s, hz, psiE_eq_chi ψ (hinf' _), map_mul, e, finPart_incA, add_mul, chi_add, chi_int hψ (mul_mem_int hu (tmul_mem (GlobalTheory.LatVac.one_mem_intAf _) o)), mul_one, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Take `⟨n, hn⟩` from `(chi_rat hψ _).1 h1`. Conclude with `⟨n, by rw [Algebra.traceForm_apply, hn]; simp⟩`. Establish `one_mem : (1 : D.host.E) ∈ Dual D` using `FractionalIdeal.one_le_dual_one ℤ ℚ (FractionalIdeal.one_mem_one _)`. Take `⟨o1, ho1⟩` from `claimC (a x) (h0 x) c hcb one_mem`.
+
+Take `⟨o2, ho2⟩` from `claimC (a x) (h0 x) c hcb hx0`. Establish `hB` using `mul_of_ex _ x _ (B_mul_ex S a ha x) hs`. Rewrite using `[hB]`. Use `⟨Ideal.mul_mem_left _ _ hs, ?_⟩` and prove the remaining obligations. Rewrite using `[(finPart D).map_mul]`.
+
+Rewrite using `[finPart_ex x (c * c) hC0]`. Rewrite using `[coeC]`. Rewrite using `[e]`. Rewrite `ho1` using `[mul_one]`. Conclude with `mem_of_split x (c * c) hC _ x0 hu o1 o2 ho1 ho2`.
+
+Introduce `hBs o ho`. Establish `hw` using `intAt_mul hBs ho`. Establish `hso : s * o = (incA D D.host.xi0 * alpha S a * cA D (alpha S a)) * (incA D D.host.xi0⁻¹ * alpha S (fun v => (a v)⁻¹) * cA D (alpha S (fun v => (a v)⁻¹)) * s * o)`. Conclude with `assoc4 _ _ s o (Binv_mul_B S a ha h0)`. Rewrite using `[psiE_eq_chi ψ (hinf' _), hso, mul_of_ex _ x _ (Binv_mul_ex S a ha x) hw.1]`.
+
+Conclude with `finitePartTraceCharacter_idempotent_inverseDifferent hψ x (c * c) hC _ (by rw [coeC]; exact claimC' (a x) c hca) _ hw.2`.
+-/
 theorem cond_iff {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S : Finset (Pl D)) (a : Pl D → D.host.E)
     (ha : ∀ v ∉ S, a v = 1) (h0 : ∀ v, a v ≠ 0)
     (hgen : ∀ v, ∃ c : 𝓞 D.host.F, c ∉ v.asIdeal ∧ ((c : D.host.F) : D.host.E) * a v ∈ D.host.AA ∧
@@ -491,6 +697,17 @@ end GlobalTheory.IdeleAA
 namespace GlobalTheory.IdeleAA
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `D ψ hψ`. Establish `hAA` using `Formalism.L2.Pj.AA_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D`. Establish `hloc` using `GlobalTheory.T.fractionalIdeal_localGenerator_at_basePrime D D.host.AA hAA`. Take `⟨S, hS⟩` from `GlobalTheory.T.fractionalIdeal_generated_by_one_almostEverywhere D D.host.AA hAA`. Set `a : Pl D → D.host.E` to `fun v => if v ∈ S then (hloc v).choose else 1`.
+
+Establish `hpos : ∀ v ∈ S, a v = (hloc v).choose` using `fun v hv => if_pos hv`. Establish `ha : ∀ v ∉ S, a v = 1` using `fun v hv => if_neg hv`. Establish `h0 : ∀ v, a v ≠ 0` using `fun v => by`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hpos v hv]`.
+
+Conclude with `(hloc v).choose_spec.1`. Rewrite using `[ha v hv]`. Conclude with `one_ne_zero`. Establish `hgen : ∀ v, ∃ c : 𝓞 D.host.F, c ∉ v.asIdeal ∧ ((c : D.host.F) : D.host.E) * a v ∈ D.host.AA ∧ ∀ b ∈ D.host.AA, ∃ o : 𝓞 D.host.E, ((c : D.host.F) : D.host.E) * b = a v * (o : D.host.E)` using `fun v => by`. Distinguish the cases in `hv : v ∈ S`.
+
+Rewrite using `[hpos v hv]`. Conclude with `(hloc v).choose_spec.2`. Rewrite using `[ha v hv]`. Take `⟨c, hc, hcA, hcb⟩` from `hS v hv`. Use `⟨c, hc, by rwa [mul_one], fun b hb => ?_⟩` and prove the remaining obligations.
+
+Take `⟨o, ho⟩` from `hcb b hb`. Conclude with `⟨o, by rw [ho, one_mul]⟩`. Use `⟨⟨alpha S a, alpha S (fun v => (a v)⁻¹), alpha_mul_inv S a ha h0, by rw [mul_comm]; exact alpha_mul_inv S a ha h0⟩, fun x => ⟨fun Sp L y => lat_iff S a ha h0 hgen Sp L x y, fun s hs => cond_iff hψ S a ha h0 hgen x s hs⟩⟩` and prove the remaining obligations.
+-/
 theorem exists_idele_AA : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∃ α : (AE D)ˣ, ∀ x : Pl D, (∀ (S : HSp D) (L : Lat S) (y : Fin S.rank → AE D), y ∈ latA S L (· = x) ↔ ((α⁻¹ : (AE D)ˣ) : AE D) • y ∈ latV S L (· = x)) ∧ ∀ s ∈ idAt D (· = x), ((∀ o ∈ intAt D (· = x), psiE ψ (s * o) = 1) ↔ incA D D.host.xi0⁻¹ * ((α⁻¹ : (AE D)ˣ) : AE D) * cA D ((α⁻¹ : (AE D)ˣ) : AE D) * s ∈ intAt D (· = x)) := by
   intro D ψ hψ
   have hAA := Formalism.L2.Pj.AA_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D

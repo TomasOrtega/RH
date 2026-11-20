@@ -10,6 +10,9 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.TorusElementPower
 
+/- English proof (translation)
+Unfold `GlobalTheory.GLDoubling.torusElt`. Rewrite using `[← map_pow]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.pow_apply, ← zpow_natCast, ← _root_.zpow_mul, mul_comm]`.
+-/
 theorem torusElt_pow_eq {k : Type} [Field k] {N : ℕ} (ϖ : kˣ) (ν : Fin N → ℤ) (m : ℕ) :
     GlobalTheory.GLDoubling.torusElt k (Fin N) ϖ ν ^ m = GlobalTheory.GLDoubling.torusElt k (Fin N) ϖ (fun a => (m : ℤ) * ν a) := by
   unfold GlobalTheory.GLDoubling.torusElt

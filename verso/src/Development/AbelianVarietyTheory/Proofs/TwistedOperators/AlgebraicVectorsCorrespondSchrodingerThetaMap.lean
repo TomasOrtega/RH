@@ -20,6 +20,9 @@ noncomputable section
 
 namespace GlobalTheory.SquareAgree
 
+/- English proof (translation)
+Use `⟨zero_mem _, fun u => ?_⟩` and prove the remaining obligations. Simplify using `[GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`.
+-/
 theorem isDatum_zero_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd)
     (ψ : AddChar (AF F) ℂ) {Z : Type} (crd : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) → Z) :
@@ -27,6 +30,9 @@ theorem isDatum_zero_zero {F E : Type} [Field F] [NumberField F] [Field E] [Numb
   refine ⟨zero_mem _, fun u => ?_⟩
   simp [GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]
 
+/- English proof (translation)
+Use `⟨Submodule.smul_mem _ _ h.1, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, ← h.2 u]`. Simplify using `only [GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← tsum_mul_left]`. Conclude with `tsum_congr fun η => mul_left_comm _ _ _`.
+-/
 theorem isDatum_smul_smul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd)
     (ψ : AddChar (AF F) ℂ) {Z : Type} (crd : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) → Z)
@@ -38,6 +44,47 @@ theorem isDatum_smul_smul {F E : Type} [Field F] [NumberField F] [Field E] [Numb
   rw [← tsum_mul_left]
   exact tsum_congr fun η => mul_left_comm _ _ _
 
+/- English proof (translation)
+Introduce `D ψ θ hθ ε S X A B d e Bs hBs hψ Vs Ws r s r' s' hJ hJW hVs hWs hcart M hM cS hcS`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hψ ▸ hBs.std`. Establish `hadd : ∀ {Φ Φ' : (Fin S.rank × Fin d → AF D.host.F) → ℂ} {f f' : WO S X → ℂ}, IsDatum M ψ cS Φ f → IsDatum M ψ cS Φ' f' → IsDatum M ψ cS (Φ + Φ') (f + f')` using `fun h h' => GlobalTheory.T.isSchrodingerThetaDatum_add_adelicSchwartz M ψ hstd cS _ _ _ _ h h'`. Use `set Aop := aPlusAll (heisO ψ (sgn ε S) X) θ (fun τ => cplxO ((frSgn ε A).cart τ) (B.cart τ)) A.onb B.onb with hAop`. Establish `hfock : ∀ f P, fockF ψ θ ε A B f P = pureTensorL Aop f P` using `fun f P => rfl`.
+
+Establish `step : ∀ g : WO S X → ℂ, (∃ ΦD ∈ algD M Bs.ψ Bs.emb, IsDatum M ψ cS ΦD g) → ∀ k, ∃ ΦD ∈ algD M Bs.ψ Bs.emb, IsDatum M ψ cS ΦD (Aop k g)`. Introduce and unpack `g ⟨ΦD, hD, hd⟩ k`. Take `⟨a, ha, h1⟩` from `GlobalTheory.T.realPlaceHeisenbergDeriv_thetaTransform_algebraicDatum D ψ θ hθ ε S X A B e Bs hBs hψ Vs Ws r s r' s' hJ hJW hVs hWs hcart M hM cS hcS ΦD hD g hd k.1 (unitMap (A.onb k.1) (B.onb k.1) k.2.1 k.2.2)`. Take `⟨b, hb, h2⟩` from `GlobalTheory.T.realPlaceHeisenbergDeriv_thetaTransform_algebraicDatum D ψ θ hθ ε S X A B e Bs hBs hψ Vs Ws r s r' s' hJ hJW hVs hWs hcart M hM cS hcS ΦD hD g hd k.1 (cplxO ((frSgn ε A).cart k.1) (B.cart k.1) (unitMap (A.onb k.1) (B.onb k.1) k.2.1 k.2.2))`. Use `⟨((fockScale D k.1 : ℂ)⁻¹) • (a + (-Complex.I) • b), Submodule.smul_mem _ _ (add_mem ha (Submodule.smul_mem _ _ hb)), ?_⟩` and prove the remaining obligations.
+
+Establish `e1` using `isDatum_smul_smul M ψ cS (hadd h1 (isDatum_smul_smul M ψ cS h2 (-Complex.I))) ((fockScale D k.1 : ℂ)⁻¹)`. Use `e1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [hAop, aPlusAll, aPlus, crea, sub_eq_add_neg, neg_smul]`. Establish `gen : ∀ f, IsFinF ψ θ ε A B f → ∀ P, ∃ ΦD ∈ algD M Bs.ψ Bs.emb, IsDatum M ψ cS ΦD (fockF ψ θ ε A B f P)`. Introduce `f hf P`.
+
+Establish `h0` using `GlobalTheory.T.exists_algebraicDatum_thetaTransform_eq D ψ θ hθ ε S X A B e Bs hBs hψ Vs Ws r s r' s' hJ hJW hVs hWs hcart M hM cS hcS f hf`. Establish `hl : ∀ l : List (FVar D X.rank S.rank), ∃ ΦD ∈ algD M Bs.ψ Bs.emb, IsDatum M ψ cS ΦD (l.foldr (fun i g => Aop i g) f)`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact h0`.
+
+Consider the case `cons k l ih => exact step _ ih k`. Rewrite using `[hfock]`. Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Establish `em : MvPolynomial.monomial u a = a • MvPolynomial.basisMonomials (FVar D X.rank S.rank) ℂ u`.
+
+Rewrite using `[MvPolynomial.coe_basisMonomials, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Take `⟨ΦD, hD, hd⟩` from `hl (Multiset.toList (Finsupp.toMultiset u))`. Use `⟨a • ΦD, Submodule.smul_mem _ _ hD, ?_⟩` and prove the remaining obligations. Rewrite using `[em, map_smul]`. Unfold `pureTensorL`.
+
+Rewrite using `[Module.Basis.constr_basis]`. Conclude with `isDatum_smul_smul M ψ cS hd a`. Consider the case `add p q hp hq`. Take `⟨a, ha, h1⟩` from `hp`. Take `⟨b, hb, h2⟩` from `hq`.
+
+Conclude with `⟨a + b, add_mem ha hb, by rw [map_add]; exact hadd h1 h2⟩`. Establish `fin_mem : ∀ f, IsFinF ψ θ ε A B f → f ∈ algF ψ θ ε A B`. Introduce `f hf`. Use `Submodule.subset_span ⟨f, 1, hf, ?_⟩` and prove the remaining obligations. Establish `e1 : (1 : MvPolynomial (FVar D X.rank S.rank) ℂ) = MvPolynomial.basisMonomials (FVar D X.rank S.rank) ℂ 0`.
+
+Rewrite using `[MvPolynomial.coe_basisMonomials]`. Both sides reduce to the same expression. Rewrite using `[hfock, e1]`. Unfold `pureTensorL`. Rewrite using `[Module.Basis.constr_basis]`.
+
+Simplify using `[opPow]`. Use `⟨fun Φ hΦ => ?_, fun ΦD hΦD => ?_⟩` and prove the remaining obligations. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, P, hf, rfl⟩` from `hx`.
+
+Conclude with `gen f hf P`. Consider the case `zero => exact ⟨0, zero_mem _, isDatum_zero_zero M ψ cS⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, h1⟩` from `hx`. Take `⟨b, hb, h2⟩` from `hy`.
+
+Conclude with `⟨a + b, add_mem ha hb, hadd h1 h2⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha, h1⟩` from `hx`. Conclude with `⟨c • a, Submodule.smul_mem _ _ ha, isDatum_smul_smul M ψ cS h1 c⟩`. Establish `pure_add : ∀ (g g' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin S.rank × Fin d)) (φ : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F), (Fin S.rank × Fin d → v.adicCompletion D.host.F) → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorM …`.
+
+Introduce `g g' φ`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]`. Establish `pure_smul : ∀ (c : ℂ) (g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin S.rank × Fin d)) (φ : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F), (Fin S.rank × Fin d → v.adicCompletion D.host.F) → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilT …`. Introduce `c g φ`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`. Establish `pure_zero : ∀ (φ : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F), (Fin S.rank × Fin d → v.adicCompletion D.host.F) → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin S.rank × …`. Introduce `φ`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`. Set `N : Submodule ℂ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin S.rank × Fin d))` to `{ carrier := {g | ∀ (φ : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F), (Fin S.rank × Fin d → v.adicCompletion D.host.F) → ℂ), (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = M.vac v) → ∃ f ∈ algF ψ θ ε A B, IsDatum M ψ cS (GlobalTheory.IndefiniteRo …`. Introduce `g g' hg hg' φ h1 h2`. Take `⟨a, ha, d1⟩` from `hg φ h1 h2`. Take `⟨b, hb, d2⟩` from `hg' φ h1 h2`.
+
+Conclude with `⟨a + b, add_mem ha hb, by rw [pure_add]; exact hadd d1 d2⟩`. Use the proof step `smul_mem' := by`. Introduce `c g hg φ h1 h2`. Take `⟨a, ha, d1⟩` from `hg φ h1 h2`. Conclude with `⟨c • a, Submodule.smul_mem _ _ ha, by rw [pure_smul]; exact isDatum_smul_smul M ψ cS d1 c⟩ }`.
+
+Establish `hPol : M.Pol Bs.ψ Bs.emb ≤ N`. Use `sInf_le ⟨fun g₀ hg₀ φ h1 h2 => ?_, fun u hu g hg g₁ hg₁ φ h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hd⟩` from `GlobalTheory.T.thetaTransform_gaussianVacuum_isFiniteDatum D ψ θ hθ ε S X A B e Bs hBs hψ Vs Ws r s r' s' hJ hJW hVs hWs hcart M hM cS hcS g₀ φ hg₀ h1 h2`. Conclude with `⟨f, fin_mem f hf, hd⟩`. Take `⟨f, hf, hd⟩` from `hg φ h1 h2`.
+
+Conclude with `GlobalTheory.T.exists_algebraicVector_thetaTransform_heisenbergDerivative D ψ θ hθ ε S X A B e Bs hBs hψ Vs Ws r s r' s' hJ hJW hVs hWs hcart M hM cS hcS g φ h1 h2 f hf hd u hu g₁ hg₁`. Proceed by induction on `hΦD using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, φ, hg, h1, h2, rfl⟩` from `hx`. Conclude with `hPol hg φ h1 h2`.
+
+Consider the case `zero => exact ⟨0, zero_mem _, isDatum_zero_zero M ψ cS⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, h1⟩` from `hx`. Take `⟨b, hb, h2⟩` from `hy`. Conclude with `⟨a + b, add_mem ha hb, hadd h1 h2⟩`.
+
+Consider the case `smul c x _ hx`. Take `⟨a, ha, h1⟩` from `hx`. Conclude with `⟨c • a, Submodule.smul_mem _ _ ha, isDatum_smul_smul M ψ cS h1 c⟩`.
+-/
 theorem algVec_correspond : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)
       (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E), Bs.IsGood D.sp.cm.sig → Bs.ψ = ψ →

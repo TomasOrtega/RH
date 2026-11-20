@@ -20,6 +20,9 @@ def CongKS : Prop := ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (O : Type) [Comm
       (h : ∀ j, KSOKE (L j) k (d j)), (∀ j, (h j).corr.r ≫ (GlobalTheory.KS.pow E.univ.A k).hom ≫ E.s = (h j).corr.p ≫ (GlobalTheory.KS.pow E.univ.A k).hom ≫ E.s) ∧
       PtId p (p ^ f) D.n (fn ((GlobalTheory.KS.pow E.univ.A k).hom ≫ E.s) ϖ) fun j => (h j).corr
 
+/- English proof (translation)
+Introduce `p _ D O _ _ _ _ f b N r w _ hs M ϖ hϖ 𝔞 ρ ha hu E π hπ hf mπ k`. Use `choose T hT using fun j : Fin (D.n + 1) => h1 p D O f b N r w hs M j (Nat.lt_succ_iff.1 j.2)`. Establish `L` using `fun j : Fin (D.n + 1) => (h2 p D O f b N r w hs M j _ (T j) (hT j) 𝔞 ρ ha hu E π hπ mπ).some`. Take `⟨d, h, e, ho⟩` from `h3 p D O f b N r w hs M ϖ hϖ T 𝔞 ρ E π hπ hf mπ L k`. Conclude with `⟨T, L, d, h, e, h4 _ _ _ _ _ _ ho⟩`.
+-/
 theorem congKS_of (h1 : TjExF) (h2 : TjEEx) (h3 : OrdKSE) (h4 : PtIdOfOrd) : CongKS := by
   intro p _ D O _ _ _ _ f b N r w _ hs M ϖ hϖ 𝔞 ρ ha hu E π hπ hf mπ k
   choose T hT using fun j : Fin (D.n + 1) => h1 p D O f b N r w hs M j (Nat.lt_succ_iff.1 j.2)

@@ -9,6 +9,11 @@ namespace GlobalTheory.CompanionTheory.UGeo.SpecGrad
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, mul_add, add_mul, hp, hq]`. Consider the case `monomial k a`. Establish `hk : X * A ^ k = B ^ k * X`. Proceed by induction on `k with`.
+
+Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, ← mul_assoc, ih, mul_assoc, h, ← mul_assoc, ← pow_succ]`. Simplify using `only [Polynomial.aeval_monomial]`. Rewrite using `[← mul_assoc, ← Algebra.commutes, mul_assoc, hk, mul_assoc]`.
+-/
 theorem aeval_intertwine {R : Type*} [Ring R] [Algebra ℝ R] {X A B : R} (h : X * A = B * X)
     (p : Polynomial ℝ) : X * Polynomial.aeval A p = Polynomial.aeval B p * X := by
   induction p using Polynomial.induction_on' with
@@ -26,6 +31,11 @@ def cj (U : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℝ) : Matrix (Fin n) (Fi
 
 variable {U : Matrix (Fin n) (Fin n) ℂ}
 
+/- English proof (translation)
+Establish `hd : diagonal (fun i => (d i : ℂ)) * diagonal (fun i => (e i : ℂ)) = diagonal (fun i => ((d i * e i : ℝ) : ℂ))`. Rewrite using `[diagonal_mul_diagonal]`. Simplify using the standard rewrite rules. Simplify using `only [cj]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.mul_one, Matrix.mul_assoc U, hd]`.
+-/
 theorem cj_mul (h1 : Uᴴ * U = 1) (d e : Fin n → ℝ) : cj U d * cj U e = cj U (fun i => d i * e i) := by
   have hd : diagonal (fun i => (d i : ℂ)) * diagonal (fun i => (e i : ℂ))
       = diagonal (fun i => ((d i * e i : ℝ) : ℂ)) := by
@@ -35,18 +45,34 @@ theorem cj_mul (h1 : Uᴴ * U = 1) (d e : Fin n → ℝ) : cj U d * cj U e = cj 
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [h1, Matrix.mul_one, Matrix.mul_assoc U, hd]
 
+/- English proof (translation)
+Establish `h : (diagonal fun i => (d i : ℂ))ᴴ = diagonal fun i => (d i : ℂ)`. Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Rewrite using `[cj, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, h, Matrix.mul_assoc]`.
+-/
 theorem cj_conj (d : Fin n → ℝ) : (cj U d)ᴴ = cj U d := by
   have h : (diagonal fun i => (d i : ℂ))ᴴ = diagonal fun i => (d i : ℂ) := by
     rw [diagonal_conjTranspose]; congr 1; funext i; simp
   rw [cj, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, h, Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `[cj, h2]`.
+-/
 theorem cj_one (h2 : U * Uᴴ = 1) : cj U (fun _ => 1) = 1 := by
   simp [cj, h2]
 
+/- English proof (translation)
+Rewrite using `[cj, cj, cj, ← Matrix.add_mul, ← Matrix.mul_add, diagonal_add]`. Use `congr 3`. Use function extensionality and compare the values at `i`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem cj_add (d e : Fin n → ℝ) : cj U (fun i => d i + e i) = cj U d + cj U e := by
   rw [cj, cj, cj, ← Matrix.add_mul, ← Matrix.mul_add, diagonal_add]
   congr 3; funext i; push_cast; rfl
 
+/- English proof (translation)
+Establish `h : (diagonal fun i => ((c * d i : ℝ) : ℂ)) = (c : ℂ) • diagonal fun i => (d i : ℂ)`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[diagonal_apply_ne _ hij]`. Rewrite using `[cj, cj, h, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem cj_smul (c : ℝ) (d : Fin n → ℝ) : cj U (fun i => c * d i) = (c : ℂ) • cj U d := by
   have h : (diagonal fun i => ((c * d i : ℝ) : ℂ)) = (c : ℂ) • diagonal fun i => (d i : ℂ) := by
     ext i j
@@ -55,16 +81,29 @@ theorem cj_smul (c : ℝ) (d : Fin n → ℝ) : cj U (fun i => c * d i) = (c : �
     · simp [diagonal_apply_ne _ hij]
   rw [cj, cj, h, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Use `cj_smul (U := U) (-1) d` as an intermediate fact. Simplify using `using this`.
+-/
 theorem cj_neg (d : Fin n → ℝ) : cj U (fun i => - d i) = - cj U d := by
   have := cj_smul (U := U) (-1) d
   simpa using this
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Matrix.algebraMap_matrix_apply]`. Simplify using `[Matrix.algebraMap_matrix_apply, hij]`.
+-/
 theorem algebraMap_eq (a : ℝ) : algebraMap ℝ (Matrix (Fin n) (Fin n) ℂ) a = (a : ℂ) • 1 := by
   ext i j
   by_cases hij : i = j
   · subst hij; simp [Matrix.algebraMap_matrix_apply]
   · simp [Matrix.algebraMap_matrix_apply, hij]
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, Polynomial.eval_add, hp, hq, cj_add]`. Consider the case `monomial k a`. Establish `hk : cj U d ^ k = cj U (fun i => d i ^ k)`. Proceed by induction on `k with`.
+
+Consider the case `zero => simp only [pow_zero]`. Conclude with `(cj_one h2).symm`. Consider the case `succ k ih => rw [pow_succ, ih, cj_mul h1]`. Simplify using `only [pow_succ]`. Rewrite using `[Polynomial.aeval_monomial, hk, algebraMap_eq, smul_mul_assoc, one_mul, ← cj_smul]`.
+
+Simplify using `only [Polynomial.eval_monomial]`.
+-/
 theorem cj_aeval (h1 : Uᴴ * U = 1) (h2 : U * Uᴴ = 1) (d : Fin n → ℝ) (p : Polynomial ℝ) :
     Polynomial.aeval (cj U d) p = cj U (fun i => p.eval (d i)) := by
   induction p using Polynomial.induction_on' with
@@ -77,6 +116,11 @@ theorem cj_aeval (h1 : Uᴴ * U = 1) (h2 : U * Uᴴ = 1) (d : Fin n → ℝ) (p 
     rw [Polynomial.aeval_monomial, hk, algebraMap_eq, smul_mul_assoc, one_mul, ← cj_smul]
     simp only [Polynomial.eval_monomial]
 
+/- English proof (translation)
+Establish `e : diagonal (fun i => (d i : ℂ)) = Uᴴ * cj U d * U`. Simplify using `only [cj]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `e` using `[h]`. Use `congrFun (congrFun e i) i` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem cj_eq_zero (h1 : Uᴴ * U = 1) {d : Fin n → ℝ} (h : cj U d = 0) (i : Fin n) : d i = 0 := by
   have e : diagonal (fun i => (d i : ℂ)) = Uᴴ * cj U d * U := by
     simp only [cj]
@@ -86,12 +130,18 @@ theorem cj_eq_zero (h1 : Uᴴ * U = 1) {d : Fin n → ℝ} (h : cj U d = 0) (i :
   have := congrFun (congrFun e i) i
   simpa using this
 
+/- English proof (translation)
+Simplify using `only [nsq, dotProduct, Pi.star_apply, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem nsq_eq_dot (v : Fin n → ℂ) : ((nsq v : ℝ) : ℂ) = star v ⬝ᵥ v := by
   simp only [nsq, dotProduct, Pi.star_apply, Complex.ofReal_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [Complex.star_def, Complex.conj_mul']
   push_cast; rfl
 
+/- English proof (translation)
+Establish `key : ∀ M : Matrix (Fin n) (Fin n) ℂ, ((nsq (M *ᵥ y) : ℝ) : ℂ) = star y ⬝ᵥ ((Mᴴ * M) *ᵥ y)`. Introduce `M`. Rewrite using `[nsq_eq_dot, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec]`. Conclude with `Complex.ofReal_injective (by rw [key, key, h])`.
+-/
 theorem nsq_eq_of_gram {M N : Matrix (Fin n) (Fin n) ℂ} (h : Mᴴ * M = Nᴴ * N) (y : Fin n → ℂ) :
     nsq (M *ᵥ y) = nsq (N *ᵥ y) := by
   have key : ∀ M : Matrix (Fin n) (Fin n) ℂ, ((nsq (M *ᵥ y) : ℝ) : ℂ) = star y ⬝ᵥ ((Mᴴ * M) *ᵥ y) := by
@@ -99,6 +149,11 @@ theorem nsq_eq_of_gram {M N : Matrix (Fin n) (Fin n) ℂ} (h : Mᴴ * M = Nᴴ *
     rw [nsq_eq_dot, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec]
   exact Complex.ofReal_injective (by rw [key, key, h])
 
+/- English proof (translation)
+Establish `hU : ∀ w : Fin n → ℂ, nsq (U *ᵥ w) = nsq w` using `fun w => by`. Use `nsq_eq_of_gram (M := U) (N := 1) (by simp [h1]) w` as an intermediate fact. Simplify using `using this`. Establish `e : cj U d *ᵥ y = U *ᵥ (diagonal (fun i => (d i : ℂ)) *ᵥ (Uᴴ *ᵥ y))`. Simplify using `only [cj, mulVec_mulVec, Matrix.mul_assoc]`.
+
+Rewrite using `[e, hU]`. Simplify using `only [nsq, mulVec_diagonal, norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs]`.
+-/
 theorem nsq_cj (h1 : Uᴴ * U = 1) (d : Fin n → ℝ) (y : Fin n → ℂ) :
     nsq (cj U d *ᵥ y) = ∑ i, d i ^ 2 * ‖(Uᴴ *ᵥ y) i‖ ^ 2 := by
   have hU : ∀ w : Fin n → ℂ, nsq (U *ᵥ w) = nsq w := fun w => by
@@ -109,6 +164,47 @@ theorem nsq_cj (h1 : Uᴴ * U = 1) (d : Fin n → ℝ) (y : Fin n → ℂ) :
   rw [e, hU]
   simp only [nsq, mulVec_diagonal, norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs]
 
+/- English proof (translation)
+Take `⟨U, hUdef⟩ : ∃ U : Matrix (Fin n) (Fin n) ℂ, U = (hT.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)` from `⟨_, rfl⟩`. Establish `h1 : Uᴴ * U = 1`. Rewrite using `[hUdef]`. Conclude with `Matrix.mem_unitaryGroup_iff'.1 hT.eigenvectorUnitary.2`. Establish `h2 : U * Uᴴ = 1`.
+
+Rewrite using `[hUdef]`. Conclude with `Matrix.mem_unitaryGroup_iff.1 hT.eigenvectorUnitary.2`. Take `⟨lam, hlam⟩ : ∃ lam : Fin n → ℝ, lam = hT.eigenvalues` from `⟨_, rfl⟩`. Rewrite `hα`, `hβ`, `hne` using `[← hlam]`. Establish `hTc : Hᴴ * H = cj U lam`.
+
+Use `hT.spectral_theorem` as an intermediate fact. Rewrite `this` using `[Unitary.conjStarAlgAut_apply, ← hUdef, ← hlam, Matrix.star_eq_conjTranspose]`. Conclude with `this`. Establish `hTG : (Hᴴ * H) * (G * Gᴴ) = 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hnn : ∀ i, 0 ≤ lam i` using `fun i => by`. Rewrite using `[hlam]`. Use `open scoped ComplexOrder in`. Conclude with `(Matrix.posSemidef_conjTranspose_mul_self H).eigenvalues_nonneg i`. Establish `hn0 : ∀ i, lam i ≠ 0` using `fun i h0 => by`.
+
+Establish `hd` using `congrArg Matrix.det hTG`. Rewrite `hd` using `[Matrix.det_mul, hT.det_eq_prod_eigenvalues, ← hlam, Finset.prod_eq_zero (Finset.mem_univ i) (by simp [h0])]`. Simplify using `at hd`. Establish `hpos : ∀ i, 0 < lam i` using `fun i => lt_of_le_of_ne (hnn i) (hn0 i).symm`. Establish `hinv : cj U (fun i => (lam i)⁻¹) = G * Gᴴ`.
+
+Establish `e : cj U (fun i => (lam i)⁻¹) * (Hᴴ * H) = 1`. Rewrite using `[hTc, cj_mul h1, ← cj_one (U := U) h2]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `inv_mul_cancel₀ (hn0 i)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hHc : Hᴴ = J * G * J`. Rewrite using `[hHJ]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hJc, Matrix.mul_assoc]`. Establish `hJT : J * (Hᴴ * H) = (G * Gᴴ) * J`.
+
+Rewrite using `[hHc, hHJ]`. Combine the equalities or inequalities in the displayed calculation. Set `S : Finset ℝ` to `Finset.univ.image lam ∪ Finset.univ.image (fun i => (lam i)⁻¹)`. Set `p : Polynomial ℝ` to `Lagrange.interpolate S id f`. Establish `hp : ∀ x ∈ S, p.eval x = f x` using `fun x hx => Lagrange.eval_interpolate_at_node (s := S) (v := id) f (Function.injective_id.injOn) hx`.
+
+Establish `hp1 : ∀ i, p.eval (lam i) = f (lam i)` using `fun i => hp _ (Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))`. Establish `hp2 : ∀ i, p.eval (lam i)⁻¹ = - f (lam i)` using `fun i => by`. Rewrite using `[hp _ (Finset.mem_union_right _ (Finset.mem_image_of_mem (fun i => (lam i)⁻¹) (Finset.mem_univ i)))]`. Conclude with `(hf _ (hpos i)).2`. Take `⟨a, ha⟩ : ∃ a : Fin n → ℝ, a = fun i => f (lam i)` from `⟨_, rfl⟩`.
+
+Establish `ha3 : ∀ i, a i = -1 ∨ a i = 0 ∨ a i = 1` using `fun i => by`. Rewrite using `[ha]`. Conclude with `(hf _ (hpos i)).1`. Establish `hA : Polynomial.aeval (Hᴴ * H) p = cj U a`. Rewrite using `[hTc, cj_aeval h1 h2, ha]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `hp1 i`. Establish `hAi : Polynomial.aeval (G * Gᴴ) p = - cj U a`. Rewrite using `[← hinv, cj_aeval h1 h2, ← cj_neg, ha]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `hp2 i`. Establish `hPm : Pm (cj U a) = cj U (fun i => (1 / 2 : ℝ) * (a i * a i + - a i))`. Rewrite using `[cj_smul, cj_add, cj_neg, ← cj_mul h1, ← sub_eq_add_neg]`.
+
+Simplify using `only [Pm]`. Use `congr 1`. Use `push_cast`. Both sides reduce to the same expression. Establish `hPz : Pz (cj U a) = cj U (fun i => 1 + - (a i * a i))`.
+
+Rewrite using `[cj_add, cj_neg, ← cj_mul h1, cj_one h2, ← sub_eq_add_neg]`. Both sides reduce to the same expression. Use `⟨cj U a, cj_conj a, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cj_mul h1, cj_mul h1]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases ha3 i with h | h | h <;> rw [h] <;> norm_num`. Introduce `h0`. Take `⟨i, hi⟩` from `hne`. Conclude with `hi (by have := cj_eq_zero h1 h0 i; rwa [ha] at this)`.
+
+Use `aeval_intertwine hJT p` as an intermediate fact. Rewrite `this` using `[hA, hAi]`. Then use the resulting hypothesis. Introduce `y`. Establish `hH : nsq (H *ᵥ y) = nsq (cj U (fun i => Real.sqrt (lam i)) *ᵥ y)`. Use `nsq_eq_of_gram ?_ y` and prove the remaining obligations.
+
+Rewrite using `[cj_conj, cj_mul h1, hTc]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(Real.mul_self_sqrt (hnn i)).symm`. Rewrite using `[hPm, hPz, hH, nsq_cj h1, nsq_cj h1, nsq_cj h1, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `hc : 0 ≤ ‖(Uᴴ *ᵥ y) i‖ ^ 2` using `by positivity`. Rewrite using `[Real.sq_sqrt (hnn i)]`. Establish `hfa : a i = f (lam i)` using `by rw [ha]`. Break down `ha3 i with h | h | h` into its components or cases.
+
+Establish `h'` using `hα i (by rw [← hfa, h])`. Rewrite using `[h]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h'` using `hβ i (by rw [← hfa, h])`. Rewrite using `[h]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[h]`. Use `hpos i` as an intermediate fact. Establish `h3 : 0 ≤ lam i * ‖(Uᴴ *ᵥ y) i‖ ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem core {J G H : Matrix (Fin n) (Fin n) ℂ} (hJ : J * J = 1) (hHG : H * G = 1) (hGH : G * H = 1)
     (hJc : Jᴴ = J) (hHJ : H = J * Gᴴ * J) (hT : (Hᴴ * H).IsHermitian) (f : ℝ → ℝ) (α β : ℝ)
     (hf : ∀ l : ℝ, 0 < l → (f l = -1 ∨ f l = 0 ∨ f l = 1) ∧ f l⁻¹ = - f l)
@@ -216,6 +312,11 @@ end GlobalTheory.CompanionTheory.UGeo.SpecGrad
 
 open GlobalTheory.CompanionTheory.UGeo.SpecGrad in
 
+/- English proof (translation)
+Introduce `n ε g hT f α β hf hα hβ hne`. Establish `hHG : S7.toM g⁻¹ * S7.toM g = 1` using `by show ((g⁻¹ : S7.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ).val * ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)).val = 1`. Simplify using the standard rewrite rules. Establish `hGH : S7.toM g * S7.toM g⁻¹ = 1` using `by show ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)).val * ((g⁻¹ : S7.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ).val = 1`. Simplify using the standard rewrite rules.
+
+Take `⟨A, hc, h3, h0, hJ, hy⟩` from `core (J := Formalism.REAL.Jm ε) (Formalism.REAL.Jm_mul_self ε) hHG hGH (Formalism.REAL.Jm_conjTranspose ε) (S7.toM_inv ε g) hT f α β hf hα hβ hne`. Use `⟨A, ⟨?_, hc, h3, h0⟩, hy⟩` and prove the remaining obligations. Use `show Aᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * A = 0`. Rewrite using `[hc, hJ, Matrix.neg_mul, add_neg_cancel]`.
+-/
 theorem GlobalTheory.CompanionTheory.UGeo.SpecGrad.grading_of_spectral :
     ∀ (n : ℕ) (ε : Fin n → Bool) (g : S7.UJ ε) (hT : ((S7.toM g⁻¹)ᴴ * S7.toM g⁻¹).IsHermitian) (f : ℝ → ℝ) (α β : ℝ), (∀ l : ℝ, 0 < l → (f l = -1 ∨ f l = 0 ∨ f l = 1) ∧ f l⁻¹ = - f l) → (∀ i, f (hT.eigenvalues i) = -1 → α ≤ hT.eigenvalues i) → (∀ i, f (hT.eigenvalues i) = 0 → β⁻¹ ≤ hT.eigenvalues i) → (∃ i, f (hT.eigenvalues i) ≠ 0) → ∃ A' : Matrix (Fin n) (Fin n) ℂ, IsGrad ε A' ∧ ∀ y : Fin n → ℂ, α * nsq (Pm A' *ᵥ y) + β⁻¹ * nsq (Pz A' *ᵥ y) ≤ nsq (S7.toM g⁻¹ *ᵥ y) := by
   intro n ε g hT f α β hf hα hβ hne

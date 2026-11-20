@@ -10,6 +10,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.St.G
 
+/- English proof (translation)
+Introduce `D u`. Use `⟨(GlobalTheory.HostSplit.split_of_one_mod D.R D.host _ (D.mem u).A.T_prime (D.T_mod_cond u)).1, D.nd.g_split, D.T_ne_g u, ?_, D.R.N_zero, ?_, (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D 0 (Nat.zero_le _)).ne_zero⟩` and prove the remaining obligations. Rewrite using `[D.host.finrank_cmField, Ranks.f, Ranks.n]`. Expand and normalize the polynomial expressions, which then agree. Set `_` to `D.host.cmStar`.
+
+Establish `h` using `D.sp.baseGram_isHermitian`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `congrFun (congrFun h (Fin.cast D.R.N_zero i)) (Fin.cast D.R.N_zero j)`.
+-/
 theorem record_facts : ∀ (D : D7) (u : D.what₂.Word), SplitsIn D.host.E (D.mem u).A.T ∧ (∀ i, SplitsIn D.host.E (D.host.g i)) ∧ (∀ i, (D.mem u).A.T ≠ D.host.g i) ∧ Module.finrank ℚ D.host.E = 2 * D.R.f ∧ D.R.N 0 = D.R.k ∧ IsHerm (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)) ∧ (gramN D 0 (Nat.zero_le _)).det ≠ 0 := by
   intro D u
   refine ⟨(GlobalTheory.HostSplit.split_of_one_mod D.R D.host _ (D.mem u).A.T_prime (D.T_mod_cond u)).1,

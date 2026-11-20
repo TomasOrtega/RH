@@ -27,6 +27,15 @@ noncomputable section
 
 namespace GlobalTheory.LeviThetaSum
 
+/- English proof (translation)
+Introduce `D ψ S S₀ T r d χS χT om ho`. Take `⟨v⟩` from `GlobalTheory.Unf.Inhab.nonempty_volM D T.rank r`. Take `⟨om₀, ho₀⟩` from `GlobalTheory.WeilExist.exists_isWeilDatumO D ψ ho.std S₀ T χS χT (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D) ho.hecS ho.hecT (GlobalTheory.Unf.resEta_core d ho.resS) ho.resT`. Use `⟨v.μ, v.𝓕, v.covol, fun f hf α => ?_⟩` and prove the remaining obligations. Establish `hF` using `GlobalTheory.MixSourceFormulas.mixed_source D ψ S S₀ T r d χS χT om om₀ ho ho₀ v.μ v.𝓕 v.covol f hf`.
+
+Establish `hg : IsThetaFunO ψ S T (om (d.levi α, 1) f)` using `ho.om_pres _ f hf`. Establish `hsum` using `(GlobalTheory.HeisMixSource.heis_mixS D ψ ho.std S S₀ T r d v (om (d.levi α, 1) f) hg).2.2.2.2 0`. Rewrite `hsum` using `[map_zero]`. Rewrite using `[← hsum.tsum_eq]`. Use `enorm_tsum_le_tsum_enorm.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[← ENNReal.tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `ξ`. Establish `e` using `congrFun (hF.levi α (GlobalTheory.MixModel.rat ξ)) 0`. Rewrite using `[e, Pi.smul_apply, smul_eq_mul, enorm_mul, enorm_mul]`.
+
+Use `congr 1`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, Circle.norm_coe, ENNReal.ofReal_one, one_mul, Complex.norm_real, Real.norm_of_nonneg (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod_pos _ _).le]`.
+-/
 theorem levi_sum : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S S₀ T : HSp D) (r : ℕ) (d : GlobalTheory.MixModel.HypDec S S₀ r)
     (χS χT : (Formalism.L2.Theta.AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)),
     IsWeilDatumO ψ S T χS χT om →

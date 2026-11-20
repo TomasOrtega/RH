@@ -22,6 +22,11 @@ namespace GlobalTheory.GoodStableDual
 
 open GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.DimPartsCompare GlobalTheory.BI
 
+/- English proof (translation)
+Take `⟨n, ρ, hρ⟩` from `h`. Set `e : Module.Dual ℂ (Fin n → ℂ) ≃ₗ[ℂ] (Fin n → ℂ)` to `(Pi.basisFun ℂ (Fin n)).dualBasis.equivFun`. Set `σ : Representation ℂ G (Fin n → ℂ)` to `{ toFun := fun g => e.conj (ρ.dual g) map_one' := by rw [map_one]; exact LinearEquiv.conj_id e map_mul' := fun a b => by rw [map_mul]; exact LinearEquiv.conj_comp e _ _ }`. Use `⟨n, σ, fun g => ?_⟩` and prove the remaining obligations. Establish `: σ.character g = ρ.dual.character g` using `LinearMap.trace_conj' _ e`.
+
+Use `show χ g⁻¹ = _`. Rewrite using `[Algebra.algebraMap_self, RingHom.id_apply, this, Representation.char_dual, hρ, Algebra.algebraMap_self, RingHom.id_apply]`.
+-/
 theorem isChar_dual {G : Type} [Group G] [Fintype G] {χ : G → ℂ} (h : IsChar ℂ ℂ χ) :
     IsChar ℂ ℂ fun g => χ g⁻¹ := by
   obtain ⟨n, ρ, hρ⟩ := h
@@ -38,6 +43,11 @@ theorem isChar_dual {G : Type} [Group G] [Fintype G] {χ : G → ℂ} (h : IsCha
 
 open Formalism.L2.DIV in
 
+/- English proof (translation)
+Take `⟨eR, plg, iso, h1, -, -⟩` from `hrec`. Set `π : LevelCuspCharacters.LevelGroup D.host ≃* G0g D.nd` to `MulEquiv.ofBijective (⟨⟨pull, rfl⟩, fun _ _ => rfl⟩ : LevelCuspCharacters.LevelGroup D.host →* G0g D.nd) pull_bijective`. Set `φ : G ≃* LevelCuspCharacters.LevelGroup D.host` to `eR.trans π.symm`. Establish `hφ : ∀ g, pull (φ g) = eR g` using `fun g => π.apply_symm_apply (eR g)`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises.
+
+Rewrite using `[h1, h1, ← hφ, ← hφ, hI, hI]`. Conclude with `GlobalTheory.GoodIdemFlip.coeff_goodIdem_flip _ D.host om Set.univ (φ g) (φ g⁻¹) (fun v _ => by rw [map_inv, Pi.inv_apply]) (fun v hv => absurd (Set.mem_univ v) hv)`.
+-/
 theorem coeff_idemOf_inv {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
     (hrec : R.grp_record) {om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* ℂˣ} (hI : IdemTie D om) (g : G) :
@@ -54,6 +64,13 @@ theorem coeff_idemOf_inv {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type
 
 open Formalism.L2.DIV in
 
+/- English proof (translation)
+Establish `hsym` using `coeff_idemOf_inv R hG.record hI`. Introduce `χ hχ`. Take `⟨ψ, hψ, hψe⟩` from `GlobalTheory.GoodTypeGeneric.exists_eq_of_idemOf D.what₂.embLL A.X hirr A.X (fun ψ g => D.what₂.embLL (ψ g⁻¹)) (fun ψ hψ => by`. Take `⟨n, ρ, -, hρ⟩` from `GlobalTheory.GoodTypeGeneric.isIrrChar_of_isAbsIrrChar D.what₂.embLL (hirr ψ hψ)`. Conclude with `isChar_dual ⟨n, ρ, hρ⟩) (fun g => by`.
+
+Rewrite using `[← hsym g]`. Simplify using `only [idemOf, MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply, coeff_chiIdem, map_sum, map_mul, map_div₀, map_natCast, inv_one, inv_inv, Nat.card_eq_fintype_card]) hχ`. Use `hψ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises.
+
+Simplify using `using hψe g⁻¹`.
+-/
 theorem goodStable_of_irr {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
     (F : Face D A) (hirr : ∀ χ ∈ A.X, IsAbsIrrChar χ) (hG : R.IsGrp F) (om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* ℂˣ)

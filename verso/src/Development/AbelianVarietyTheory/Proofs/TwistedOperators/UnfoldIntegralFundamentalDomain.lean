@@ -3,6 +3,13 @@ open MeasureTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hμ 𝓕 h𝓕 c g hc hg hB`. Take `⟨B, hB⟩` from `hB`. Establish `hcg : Integrable (fun w => c w * g w) μ` using `hc.mul_bdd hg.aestronglyMeasurable (Filter.Eventually.of_forall hB)`. Rewrite using `[h𝓕.integral_eq_tsum'' _ hcg]`. Establish `hmeas : ∀ γ : Γ, AEStronglyMeasurable (fun w => c ((γ : G) + w) * g ((γ : G) + w)) (μ.restrict 𝓕)`.
+
+Introduce `γ`. Conclude with `(hcg.aestronglyMeasurable.comp_measurePreserving (measurePreserving_add_left μ (γ : G))).restrict`. Establish `hfin : ∑' γ : Γ, ∫⁻ w in 𝓕, ‖c ((γ : G) + w) * g ((γ : G) + w)‖ₑ ∂μ ≠ ⊤`. Use `h𝓕.lintegral_eq_tsum'' (fun w => ‖c w * g w‖ₑ)` as an intermediate fact. Simplify using `only [AddSubgroup.vadd_def, vadd_eq_add] at this`.
+
+Rewrite using `[← this]`. Conclude with `hcg.2.ne`. Simplify using `only [AddSubgroup.vadd_def, vadd_eq_add]`. Conclude with `(integral_tsum hmeas hfin).symm`.
+-/
 theorem unfold_integral_fundamentalDomain (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (Γ : AddSubgroup G) [Countable Γ] (μ : Measure G) : μ.IsAddLeftInvariant → ∀ 𝓕 : Set G, IsAddFundamentalDomain Γ 𝓕 μ → ∀ c g : G → ℂ, Integrable c μ → Continuous g → (∃ B : ℝ, ∀ w, ‖g w‖ ≤ B) → ∫ w, c w * g w ∂μ = ∫ w in 𝓕, ∑' γ : Γ, c ((γ : G) + w) * g ((γ : G) + w) ∂μ := by
   intro hμ 𝓕 h𝓕 c g hc hg hB
   obtain ⟨B, hB⟩ := hB

@@ -16,11 +16,17 @@ variable {K : Type u} [Field K] {A : Type v} [Ring A] [Algebra K A]
 omit [FiniteDimensional K A] in
 variable (K A) in
 
+/- English proof (translation)
+The claim follows from `RingHom.injective (AlgHom.mulLeftRight K A).toRingHom`.
+-/
 theorem mulLeftRight_injective : Function.Injective (AlgHom.mulLeftRight K A) :=
   RingHom.injective (AlgHom.mulLeftRight K A).toRingHom
 
 variable (K A) in
 
+/- English proof (translation)
+Use `⟨mulLeftRight_injective K A, ?_⟩` and prove the remaining obligations. Establish `h` using `LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := (AlgHom.mulLeftRight K A).toLinearMap) (by rw [Module.finrank_tensorProduct, MulOpposite.finrank, Module.finrank_linearMap])`. Conclude with `h.mp (mulLeftRight_injective K A)`.
+-/
 theorem mulLeftRight_bijective : Function.Bijective (AlgHom.mulLeftRight K A) := by
   refine ⟨mulLeftRight_injective K A, ?_⟩
   have h := LinearMap.injective_iff_surjective_of_finrank_eq_finrank
@@ -46,6 +52,9 @@ noncomputable def csaOf (R : Type v) [Ring R] [Algebra K R] [Algebra.IsCentral K
   toAlgCat := AlgCat.of K R
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem csaOf_carrier (R : Type v) [Ring R] [Algebra K R] [Algebra.IsCentral K R]
     [IsSimpleRing R] [FiniteDimensional K R] : (csaOf K R : Type v) = R := rfl
 
@@ -55,10 +64,16 @@ noncomputable def matrixCSA (A : CSA.{u, v} K) (n : ℕ) [NeZero n] : CSA.{u, v}
 noncomputable def opCSA (A : CSA.{u, v} K) : CSA.{u, v} K :=
   csaOf K (A : Type v)ᵐᵒᵖ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, 1, one_ne_zero, one_ne_zero, ⟨e.mapMatrix⟩⟩`.
+-/
 theorem isBrauerEquivalent_of_algEquiv {A B : CSA.{u, v} K} (e : A ≃ₐ[K] B) :
     IsBrauerEquivalent A B :=
   ⟨1, 1, one_ne_zero, one_ne_zero, ⟨e.mapMatrix⟩⟩
 
+/- English proof (translation)
+Use `⟨Fintype.card ι', Fintype.card ι, Fintype.card_ne_zero, Fintype.card_ne_zero, ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `(Matrix.reindexAlgEquiv K A (Fintype.equivFin ι').symm).trans <| eA.mapMatrix.trans <| (Matrix.compAlgEquiv ι' ι C K).trans <| (Matrix.reindexAlgEquiv K C (Equiv.prodComm ι' ι)).trans <| (Matrix.compAlgEquiv ι ι' C K).symm.trans <| eB.symm.mapMatrix.trans <| Matrix.reindexAlgEqui …`.
+-/
 theorem isBrauerEquivalent_of_algEquiv_matrix {A B : CSA.{u, v} K} {C : Type w} [Ring C]
     [Algebra K C] {ι ι' : Type*} [Fintype ι] [DecidableEq ι] [Nonempty ι] [Fintype ι']
     [DecidableEq ι'] [Nonempty ι'] (eA : A ≃ₐ[K] Matrix ι ι C) (eB : B ≃ₐ[K] Matrix ι' ι' C) :
@@ -70,11 +85,17 @@ theorem isBrauerEquivalent_of_algEquiv_matrix {A B : CSA.{u, v} K} {C : Type w} 
     (Matrix.compAlgEquiv ι ι' C K).symm.trans <| eB.symm.mapMatrix.trans <|
     Matrix.reindexAlgEquiv K B (Fintype.equivFin ι)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, n, one_ne_zero, NeZero.ne n, ⟨(Matrix.compAlgEquiv (Fin 1) (Fin n) A K).trans (Matrix.reindexAlgEquiv K A (Equiv.uniqueProd (Fin n) (Fin 1)))⟩⟩`.
+-/
 theorem isBrauerEquivalent_matrixCSA (A : CSA.{u, v} K) (n : ℕ) [NeZero n] :
     IsBrauerEquivalent (matrixCSA A n) A :=
   ⟨1, n, one_ne_zero, NeZero.ne n, ⟨(Matrix.compAlgEquiv (Fin 1) (Fin n) A K).trans
     (Matrix.reindexAlgEquiv K A (Equiv.uniqueProd (Fin n) (Fin 1)))⟩⟩
 
+/- English proof (translation)
+Take `⟨n, m, hn, hm, ⟨e⟩⟩` from `hA`. Take `⟨p, q, hp, hq, ⟨f⟩⟩` from `hB`. Use `⟨n * p, m * q, mul_ne_zero hn hp, mul_ne_zero hm hq, ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `(Matrix.reindexAlgEquiv K _ finProdFinEquiv.symm).trans <| (Matrix.kroneckerTMulAlgEquiv (Fin n) (Fin p) K K A B).symm.trans <| (Algebra.TensorProduct.congr e f).trans <| (Matrix.kroneckerTMulAlgEquiv (Fin m) (Fin q) K K A' B').trans <| Matrix.reindexAlgEquiv K _ finProdFinEquiv`.
+-/
 theorem IsBrauerEquivalent.tensor {A A' B B' : CSA.{u, v} K} (hA : IsBrauerEquivalent A A')
     (hB : IsBrauerEquivalent B B') :
     IsBrauerEquivalent (tensorCSA A B) (tensorCSA A' B') := by
@@ -87,6 +108,9 @@ theorem IsBrauerEquivalent.tensor {A A' B B' : CSA.{u, v} K} (hA : IsBrauerEquiv
     (Matrix.kroneckerTMulAlgEquiv (Fin m) (Fin q) K K A' B').trans <|
     Matrix.reindexAlgEquiv K _ finProdFinEquiv
 
+/- English proof (translation)
+Take `⟨n, m, hn, hm, ⟨e⟩⟩` from `h`. Conclude with `⟨n, m, hn, hm, ⟨(AlgEquiv.mopMatrix (R := K)).trans <| (AlgEquiv.op e).trans (AlgEquiv.mopMatrix (R := K)).symm⟩⟩`.
+-/
 theorem IsBrauerEquivalent.op {A B : CSA.{u, v} K} (h : IsBrauerEquivalent A B) :
     IsBrauerEquivalent (opCSA A) (opCSA B) := by
   obtain ⟨n, m, hn, hm, ⟨e⟩⟩ := h
@@ -122,9 +146,15 @@ noncomputable instance : One (BrauerGroup.{u, u} K) where
 noncomputable instance : Inv (BrauerGroup.{u, u} K) where
   inv := Quotient.map opCSA fun _ _ h => IsBrauerEquivalent.op h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem BrauerGroup.mk_mul_mk (A B : CSA.{u, u} K) :
     (⟦A⟧ * ⟦B⟧ : BrauerGroup.{u, u} K) = ⟦tensorCSA A B⟧ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem BrauerGroup.one_def : (1 : BrauerGroup.{u, u} K) = ⟦oneCSA K⟧ := rfl
 
 noncomputable instance : CommGroup (BrauerGroup.{u, u} K) where
@@ -170,12 +200,20 @@ def columnIdeal (e : R ≃ₐ[K] Matrix ι ι D) (i₀ : ι) : Ideal R where
 
 variable (e : R ≃ₐ[K] Matrix ι ι D) (i₀ : ι)
 
+/- English proof (translation)
+Introduce `i j hj`. Rewrite using `[e.apply_symm_apply]`. Conclude with `Matrix.single_apply_of_col_ne i₀ i (Ne.symm hj) d`.
+-/
 theorem symm_single_mem_columnIdeal (d : D) :
     e.symm (Matrix.single i₀ i₀ d) ∈ columnIdeal e i₀ := by
   intro i j hj
   rw [e.apply_symm_apply]
   exact Matrix.single_apply_of_col_ne i₀ i (Ne.symm hj) d
 
+/- English proof (translation)
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, e.apply_symm_apply]`. Use extensionality with `i j`. Distinguish the cases in `hj : j = i₀`. Rewrite using `[hj, Matrix.mul_single_apply_same, mul_one]`.
+
+Rewrite using `[Matrix.mul_single_apply_of_ne (hbj := hj), hx i j hj]`.
+-/
 theorem mul_symm_single_one {x : R} (hx : x ∈ columnIdeal e i₀) :
     x * e.symm (Matrix.single i₀ i₀ 1) = x := by
   apply e.injective
@@ -185,6 +223,11 @@ theorem mul_symm_single_one {x : R} (hx : x ∈ columnIdeal e i₀) :
   · rw [hj, Matrix.mul_single_apply_same, mul_one]
   · rw [Matrix.mul_single_apply_of_ne (hbj := hj), hx i j hj]
 
+/- English proof (translation)
+Rewrite using `[map_mul, e.apply_symm_apply]`. Use extensionality with `i j`. Distinguish the cases in `hi : i = i₀`. Rewrite using `[hi, Matrix.single_mul_apply_same, one_mul]`. Distinguish the cases in `hj : j = i₀`.
+
+Rewrite using `[hj, Matrix.single_apply_same]`. Rewrite using `[Matrix.single_apply_of_col_ne i₀ i₀ (Ne.symm hj), hy i₀ j hj]`. Rewrite using `[Matrix.single_mul_apply_of_ne (h := hi), Matrix.single_apply_of_row_ne (Ne.symm hi)]`.
+-/
 theorem apply_symm_single_one_mul {y : R} (hy : y ∈ columnIdeal e i₀) :
     e (e.symm (Matrix.single i₀ i₀ 1) * y) = Matrix.single i₀ i₀ (e y i₀ i₀) := by
   rw [map_mul, e.apply_symm_apply]
@@ -196,6 +239,17 @@ theorem apply_symm_single_one_mul {y : R} (hy : y ∈ columnIdeal e i₀) :
     · rw [Matrix.single_apply_of_col_ne i₀ i₀ (Ne.symm hj), hy i₀ j hj]
   · rw [Matrix.single_mul_apply_of_ne (h := hi), Matrix.single_apply_of_row_ne (Ne.symm hi)]
 
+/- English proof (translation)
+Rewrite using `[isSimpleModule_iff_toSpanSingleton_surjective]`. Use `⟨⟨⟨⟨_, symm_single_mem_columnIdeal e i₀ 1⟩, 0, fun h => ?_⟩⟩, fun x hx y => ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg (fun z : columnIdeal e i₀ => e (z : R) i₀ i₀) h`. Simplify using `at h'`. Establish `hx' : ∃ i, e (x : R) i i₀ ≠ 0`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hx` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `e.injective` to reduce the goal to its premises.
+
+Use extensionality with `i j`. Distinguish the cases in `hj : j = i₀`. Substitute `hj` using the available equality. Simplify using `using hcon i`. Simplify using `using x.2 i j hj`.
+
+Take `⟨i, hi⟩` from `hx'`. Use `⟨e.symm (Matrix.of fun k l => if l = i then e (y : R) k i₀ * (e (x : R) i i₀)⁻¹ else 0), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `e.injective` to reduce the goal to its premises. Use extensionality with `k j`.
+
+Simplify using `only [LinearMap.toSpanSingleton_apply, Submodule.coe_smul, smul_eq_mul, map_mul, e.apply_symm_apply, Matrix.mul_apply, Matrix.of_apply, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Distinguish the cases in `hj : j = i₀`. Substitute `hj` using the available equality. Rewrite using `[mul_assoc, inv_mul_cancel₀ hi, mul_one]`. Rewrite using `[x.2 i j hj, y.2 k j hj, mul_zero]`.
+-/
 theorem isSimpleModule_columnIdeal : IsSimpleModule R (columnIdeal e i₀) := by
   rw [isSimpleModule_iff_toSpanSingleton_surjective]
   refine ⟨⟨⟨⟨_, symm_single_mem_columnIdeal e i₀ 1⟩, 0, fun h => ?_⟩⟩, fun x hx y => ?_⟩
@@ -232,6 +286,9 @@ def columnIdealUnit : columnIdeal e i₀ :=
 def endEntry (f : Module.End R (columnIdeal e i₀)) : D :=
   e (f (columnIdealUnit e i₀) : R) i₀ i₀
 
+/- English proof (translation)
+Establish `hx : x = (x : R) • columnIdealUnit e i₀` using `Subtype.ext (mul_symm_single_one e i₀ x.2).symm`. Establish `hu : columnIdealUnit e i₀ = (e.symm (Matrix.single i₀ i₀ 1) : R) • columnIdealUnit e i₀` using `Subtype.ext (mul_symm_single_one e i₀ (symm_single_mem_columnIdeal e i₀ 1)).symm`. Apply the tactic sequence `have hfu : e (f (columnIdealUnit e i₀) : R) = Matrix.single i₀ i₀ (endEntry e i₀ f) := by conv_lhs => rw [hu, map_smul, Submodule.coe_smul, smul_eq_mul]`. Conclude with `apply_symm_single_one_mul e i₀ (f _).2`. Use `conv_lhs => rw [hx, map_smul, Submodule.coe_smul, smul_eq_mul, map_mul, hfu]`.
+-/
 theorem apply_endomorphism (f : Module.End R (columnIdeal e i₀)) (x : columnIdeal e i₀) :
     e (f x : R) = e (x : R) * Matrix.single i₀ i₀ (endEntry e i₀ f) := by
   have hx : x = (x : R) • columnIdealUnit e i₀ :=
@@ -244,9 +301,15 @@ theorem apply_endomorphism (f : Module.End R (columnIdeal e i₀)) (x : columnId
     exact apply_symm_single_one_mul e i₀ (f _).2
   conv_lhs => rw [hx, map_smul, Submodule.coe_smul, smul_eq_mul, map_mul, hfu]
 
+/- English proof (translation)
+Simplify using `[endEntry, columnIdealUnit]`.
+-/
 theorem endEntry_one : endEntry e i₀ (1 : Module.End R (columnIdeal e i₀)) = 1 := by
   simp [endEntry, columnIdealUnit]
 
+/- English proof (translation)
+Establish `h` using `apply_endomorphism e i₀ f (g (columnIdealUnit e i₀))`. Establish `hu : e (columnIdealUnit e i₀ : R) = Matrix.single i₀ i₀ 1` using `e.apply_symm_apply _`. Rewrite `h` using `[apply_endomorphism e i₀ g, hu, Matrix.single_mul_single_same, one_mul, Matrix.single_mul_single_same]`. Use `conv_lhs => unfold endEntry`. Rewrite using `[Module.End.mul_apply, h, Matrix.single_apply_same]`.
+-/
 theorem endEntry_mul (f g : Module.End R (columnIdeal e i₀)) :
     endEntry e i₀ (f * g) = endEntry e i₀ g * endEntry e i₀ f := by
   have h := apply_endomorphism e i₀ f (g (columnIdealUnit e i₀))
@@ -256,6 +319,9 @@ theorem endEntry_mul (f g : Module.End R (columnIdeal e i₀)) :
   conv_lhs => unfold endEntry
   rw [Module.End.mul_apply, h, Matrix.single_apply_same]
 
+/- English proof (translation)
+Introduce `f g h`. Use extensionality with `x`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[apply_endomorphism, apply_endomorphism, h]`.
+-/
 theorem endEntry_injective : Function.Injective (endEntry e i₀) := by
   intro f g h
   ext x
@@ -268,6 +334,9 @@ def rightMulEnd (d : D) : Module.End R (columnIdeal e i₀) where
   map_add' _ _ := Subtype.ext (add_mul _ _ _)
   map_smul' _ _ := Subtype.ext (mul_assoc _ _ _)
 
+/- English proof (translation)
+Simplify using `[endEntry, rightMulEnd, columnIdealUnit]`.
+-/
 theorem endEntry_rightMulEnd (d : D) : endEntry e i₀ (rightMulEnd e i₀ d) = d := by
   simp [endEntry, rightMulEnd, columnIdealUnit]
 
@@ -288,6 +357,9 @@ noncomputable def endColumnIdealAlgEquiv : Module.End R (columnIdeal e i₀) ≃
 
 end ColumnIdeal
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, isSimpleModule_columnIdeal e (Classical.arbitrary ι), ⟨endColumnIdealAlgEquiv e (Classical.arbitrary ι)⟩⟩`.
+-/
 theorem exists_isSimpleModule_algEquiv_end {R : Type v} [Ring R] [Algebra K R] {D : Type w}
     [DivisionRing D] [Algebra K D] {ι : Type*} [Fintype ι] [DecidableEq ι] [Nonempty ι]
     (e : R ≃ₐ[K] Matrix ι ι D) :
@@ -295,6 +367,9 @@ theorem exists_isSimpleModule_algEquiv_end {R : Type v} [Ring R] [Algebra K R] {
   ⟨_, isSimpleModule_columnIdeal e (Classical.arbitrary ι),
     ⟨endColumnIdealAlgEquiv e (Classical.arbitrary ι)⟩⟩
 
+/- English proof (translation)
+Take `⟨I, hI, ⟨φ⟩⟩` from `exists_isSimpleModule_algEquiv_end (AlgEquiv.refl : Matrix ι ι D ≃ₐ[K] _)`. Take `⟨J, hJ, ⟨ψ⟩⟩` from `exists_isSimpleModule_algEquiv_end e`. Take `⟨g⟩` from `IsSimpleRing.isIsotypic (Matrix ι ι D) (Matrix ι ι D) I J`. Conclude with `⟨AlgEquiv.op.symm (φ.symm.trans ((g.conjAlgEquiv K).symm.trans ψ))⟩`.
+-/
 theorem nonempty_algEquiv_of_algEquiv_matrix {D : Type w} [DivisionRing D] [Algebra K D]
     {D' : Type*} [DivisionRing D'] [Algebra K D'] {ι ι' : Type*} [Fintype ι] [DecidableEq ι]
     [Nonempty ι] [Fintype ι'] [DecidableEq ι'] [Nonempty ι']
@@ -304,6 +379,11 @@ theorem nonempty_algEquiv_of_algEquiv_matrix {D : Type w} [DivisionRing D] [Alge
   obtain ⟨g⟩ := IsSimpleRing.isIsotypic (Matrix ι ι D) (Matrix ι ι D) I J
   exact ⟨AlgEquiv.op.symm (φ.symm.trans ((g.conjAlgEquiv K).symm.trans ψ))⟩
 
+/- English proof (translation)
+Establish `hs : Matrix.scalar ι z ∈ Subalgebra.center K (Matrix ι ι D)`. Rewrite `hz`, the goal using `[Subalgebra.mem_center_iff]`. Introduce `M`. Use extensionality with `i j`. Simplify using `[hz]`.
+
+Take `⟨k, hk⟩` from `Algebra.mem_bot.mp (Algebra.IsCentral.out hs)`. Use `Algebra.mem_bot.mpr ⟨k, ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun hk (Classical.arbitrary ι)) (Classical.arbitrary ι)` as an intermediate fact. Simplify `this` using `[Matrix.algebraMap_matrix_apply]`.
+-/
 theorem isCentral_of_isCentral_matrix {D : Type w} [Ring D] [Algebra K D] {ι : Type*}
     [Fintype ι] [DecidableEq ι] [Nonempty ι] [Algebra.IsCentral K (Matrix ι ι D)] :
     Algebra.IsCentral K D where
@@ -318,6 +398,11 @@ theorem isCentral_of_isCentral_matrix {D : Type w} [Ring D] [Algebra K D] {ι : 
     have := congrFun (congrFun hk (Classical.arbitrary ι)) (Classical.arbitrary ι)
     simpa [Matrix.algebraMap_matrix_apply] using this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, m, hn, hm, ⟨f⟩⟩`. Establish `: NeZero n` using `⟨hn⟩`. Establish `: NeZero m` using `⟨hm⟩`. Conclude with `nonempty_algEquiv_of_algEquiv_matrix <| (Matrix.compAlgEquiv (Fin n) ι D K).symm.trans <| eA.symm.mapMatrix.trans <| f.trans <| eB.mapMatrix.trans <| Matrix.compAlgEquiv (Fin m) ι' D' K`.
+
+Introduce and unpack `⟨g⟩`. Conclude with `isBrauerEquivalent_of_algEquiv_matrix eA (eB.trans g.symm.mapMatrix)`.
+-/
 theorem isBrauerEquivalent_iff_nonempty_algEquiv {A B : CSA.{u, v} K} {D : Type w}
     [DivisionRing D] [Algebra K D] {D' : Type*} [DivisionRing D'] [Algebra K D'] {ι ι' : Type*}
     [Fintype ι] [DecidableEq ι] [Nonempty ι] [Fintype ι'] [DecidableEq ι'] [Nonempty ι']

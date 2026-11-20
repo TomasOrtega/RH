@@ -23,18 +23,27 @@ namespace GlobalTheory.MixCondT
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨adj (incA D (-D.host.xi0) • (η ⬝ giA S)), ?_⟩` and prove the remaining obligations. Rewrite using `[HypDec.incAdj_apply, adj_adj, Matrix.smul_mul, Matrix.mul_assoc, giA_mul_gA, Matrix.mul_one, smul_smul, ← map_mul, neg_mul_neg, inv_mul_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one, one_smul]`.
+-/
 theorem incAdj_surj {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D) (η : Mx D ρ S.rank) :
     ∃ y, d.incAdj S y = d.incY S η := by
   refine ⟨adj (incA D (-D.host.xi0) • (η ⬝ giA S)), ?_⟩
   rw [HypDec.incAdj_apply, adj_adj, Matrix.smul_mul, Matrix.mul_assoc, giA_mul_gA, Matrix.mul_one, smul_smul,
     ← map_mul, neg_mul_neg, inv_mul_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one, one_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_smul (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (u : WO S T) (c : ℂ) (f : WO S T → ℂ) :
     heisO ψ S T u (c • f) = c • heisO ψ S T u f := by
   funext z
   simp only [heisO, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w₀`. Simplify using `only [GlobalTheory.MixModel.Check.mixT_eq, Pi.smul_apply, smul_eq_mul, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mixT_smul {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) {S : HSp D} (ψ : AddChar (AF D.host.F) ℂ)
     (μ : Measure (Mx D ρ S.rank)) (𝓕 : Set (Mx D ρ S.rank)) (c : ℂ) (f : WO S T → ℂ) (y : Mx D S.rank ρ) :
     d.mixT S ψ μ 𝓕 (c • f) y = c • d.mixT S ψ μ 𝓕 f y := by
@@ -44,6 +53,11 @@ theorem mixT_smul {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) {S : HSp D}
   funext a
   ring
 
+/- English proof (translation)
+Establish `hw : w = d.p0 ⬝ d.inc0 S w` using `by rw [HypDec.wittDecomp_inclAnisotropicHom_apply, ← Matrix.mul_assoc, d.p0_j0, Matrix.one_mul]`. Introduce `i j`. Rewrite using `[hw]`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_left_comm, h k j]`.
+-/
 theorem isHalf_of_wittHyperbolic_inclusion {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) {S : HSp D} {e : AE D} {w : WO S T₀}
     (h : IsHalf e (d.inc0 S w)) : IsHalf e w := by
   have hw : w = d.p0 ⬝ d.inc0 S w := by rw [HypDec.wittDecomp_inclAnisotropicHom_apply, ← Matrix.mul_assoc, d.p0_j0, Matrix.one_mul]
@@ -53,6 +67,11 @@ theorem isHalf_of_wittHyperbolic_inclusion {T T₀ : HSp D} {ρ : ℕ} (d : HypD
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [mul_left_comm, h k j]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Establish `h1 : finPart D (r i l) = 0`. Use `congrFun (congrFun hr i) l` as an intermediate fact.
+
+Simplify `this` using `only [Matrix.map_apply, Matrix.zero_apply]`. Establish `h2 : infPart D (ξ l j) = 0` using `RingHom.mem_ker.1 (Ideal.mem_inf.1 (hξ l j)).1`. Rewrite using `[mul_comm]`. Conclude with `GlobalTheory.RatHalfDense.mul_eq_zero_of_parts h2 h1`.
+-/
 theorem mul_eq_zero_real_fin {m k n : ℕ} {r : Mx D m k} {ξ : Mx D k n} (hr : r.map (finPart D) = 0)
     (hξ : MxAt (fun _ => True) ξ) : r ⬝ ξ = 0 := by
   ext i j
@@ -65,6 +84,23 @@ theorem mul_eq_zero_real_fin {m k n : ℕ} {r : Mx D m k} {ξ : Mx D k n} (hr : 
   rw [mul_comm]
   exact GlobalTheory.RatHalfDense.mul_eq_zero_of_parts h2 h1
 
+/- English proof (translation)
+Introduce `D ψ hψ V V₀ W W₀ ρ σ dV dW vT p x y hp β₂ g g' hgv hg' hmix hinv hsupp`. Establish `L` using `GlobalTheory.HeisTarget.main D ψ hψ V₀ W W₀ σ dW vT.μ vT.𝓕 vT.covol g' hg'`. Establish `inj : ∀ f f' : WO V₀ W → ℂ, IsThetaFunO ψ V₀ W f → IsThetaFunO ψ V₀ W f' → (∀ y', dW.mixT V₀ ψ vT.μ vT.𝓕 f y' = dW.mixT V₀ ψ vT.μ vT.𝓕 f' y') → f = f'` using `fun f f' hf hf' h => (GlobalTheory.T.thetaFunction_determined_by_mixedCoordinates D ψ hψ V₀ W f f' hf hf').2 W₀ σ dW vT h`. Establish `th : ∀ u, IsThetaFunO ψ V₀ W (heisO ψ V₀ W u g')` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hg'`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `ξ hξ`. Establish `hξf : MxAt (fun _ => True) ξ` using `hp.b₁.fin ξ hξ`. Establish `key : ∀ z, symplO V₀ W (dW.incAdj V₀ z) (dW.incX V₀ ξ) = -Algebra.trace (AF D.host.F) (AE D) (z ⬝ ξ).trace` using `fun z => by`. Rewrite using `[GlobalTheory.OrientedHeis.symplO_skew, HypDec.symplO_incX_incAdj]`. Use `inj _ _ (th _) (GlobalTheory.OrientedHeis.theta_smul _ hg') fun y' => ?_` and prove the remaining obligations.
+
+Rewrite using `[L.1 ξ y', mixT_smul, hmix y']`. Distinguish the cases in `hb : β₂ y' = 0`. Simplify using `only [hb, zero_smul, smul_zero]`. Take `⟨r, hr, η, hη, he⟩` from `hsupp y' hb`. Establish `hη1 : ψ (symplO V₀ W (dW.incY V₀ η) (dW.incX V₀ ξ)) = 1`.
+
+Rewrite using `[GlobalTheory.OrientedHeis.symplO_skew, AddChar.map_neg_eq_inv, (hp.dualB' η (hp.b₂.fin η hη)).1 hη ξ hξ, inv_one]`. Establish `hsplit : y' = y + r + (y' - (y + r))` using `by abel`. Establish `e1 : symplO V₀ W (dW.incAdj V₀ y') (dW.incX V₀ ξ) = symplO V₀ W (dW.incAdj V₀ y) (dW.incX V₀ ξ) + symplO V₀ W (dW.incY V₀ η) (dW.incX V₀ ξ)`. Rewrite using `[← he, key, key, key]`. Use `conv_lhs => rw [hsplit]`.
+
+Rewrite using `[Matrix.add_mul, Matrix.add_mul, mul_eq_zero_real_fin hr hξf, add_zero, Matrix.trace_add, map_add, neg_add]`. Rewrite using `[e1, AddChar.map_add_eq_mul, hη1, mul_one]`. Introduce `η hη`. Take `⟨b, hb⟩` from `incAdj_surj dW V₀ η`. Rewrite using `[← hb]`.
+
+Use `inj _ _ (th _) hg' fun y' => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.MixModel.Check.mixT_heis_incAdj, hmix, hmix, hinv η hη b hb y']`. Introduce `u hu`. Take `⟨w, hw, rfl⟩` from `AddSubgroup.mem_map.1 hu`. Rewrite using `[← map_nsmul]`.
+
+Use `inj _ _ (th _) hg' fun y' => ?_` and prove the remaining obligations. Rewrite using `[L.2.1, hmix, heisO_smul, hgv.2.1 w hw]`. Introduce `e he u hu hh`. Take `⟨w, hw, rfl⟩` from `AddSubgroup.mem_map.1 hu`. Use `inj _ _ (th _) hg' fun y' => ?_` and prove the remaining obligations.
+
+Rewrite using `[L.2.1, hmix, heisO_smul, hgv.2.2 e he w hw (isHalf_of_wittHyperbolic_inclusion dW hh)]`.
+-/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V₀ W W₀ : HSp D) (ρ σ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (vT : VolM D σ V₀.rank) (p : Pieces V₀ W W₀ ρ σ) (x : Mx D W.rank ρ) (y : Mx D V₀.rank σ), p.Is dV dW x ψ → ∀ (β₂ : Mx D V₀.rank σ → ℂ) (g : WO V₀ W₀ → ℂ) (g' : WO V₀ W → ℂ), VacG ψ V₀ W₀ p.Γ₀ g → IsThetaFunO ψ V₀ W g' → (∀ y', dW.mixT V₀ ψ vT.μ vT.𝓕 g' y' = β₂ y' • g) → (∀ η ∈ p.B₂, ∀ b, dW.incAdj V₀ b = dW.incY V₀ η → ∀ z, β₂ (z + b) = β₂ z) → (∀ z, β₂ z ≠ 0 → ∃ r : Mx D V₀.rank σ, r.map (finPart D) = 0 ∧ ∃ η ∈ p.B₂, dW.incAdj V₀ (z - (y + r)) = dW.incY V₀ η) → (∀ ξ ∈ p.B₁, heisO ψ V₀ W (dW.incX V₀ ξ) g' = ψ (symplO V₀ W (dW.incAdj V₀ y) (dW.incX V₀ ξ)) • g') ∧ (∀ η ∈ p.B₂, heisO ψ V₀ W (dW.incY V₀ η) g' = g') ∧ IsLatVac (heisO ψ V₀ W) (p.Γ₀.map (dW.inc0 V₀)) g' := by
   intro D ψ hψ V V₀ W W₀ ρ σ dV dW vT p x y hp β₂ g g' hgv hg' hmix hinv hsupp
   have L := GlobalTheory.HeisTarget.main D ψ hψ V₀ W W₀ σ dW vT.μ vT.𝓕 vT.covol g' hg'

@@ -20,6 +20,21 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l' Xo' c' W Y p _ n _ hstar hpW hA R _ _ _ ξ y hy a`. Take `⟨κ, hκM, hκW⟩` from `GlobalTheory.T.integrally_closed_generic_extension E H Dw l' Xo' c' W Y p n hA R ξ y hy a`. Use `⟨κ, hκM, ?_⟩` and prove the remaining obligations. Introduce `P' b hb x0 yy P π ψ hPt tt hlev β w hAt z hz`. Establish `hAt'` using `hAt.map (algebraMap 𝓞_ℂ_[p] ℂ_[p])`.
+
+Take `⟨φ, hφ⟩` from `GlobalTheory.HTMap.FP.ex_lift (P := P') hAt'.unit`. Rewrite `hAt'` using `[← hφ]`. Take `⟨σ, hσ⟩` from `hAt'.sect`. Set `wf : Over.mk (spMap (algebraMap R (Localization.Away P'.f)) ≫ ξ) ⟶ Y.t.G` to `GlobalTheory.HTMap.mkPt (spMap σ.toRingHom ≫ P'.u.left) (P'.at_sect σ).over`. Establish `hwf : wf ^ (p ^ n) = 1` using `(P'.at_sect σ).tors (w := wf)`.
+
+Establish `hgl` using `hb.1 _ _ (P'.at_sectK σ)`. Establish `hsb : σ b = algebraMap R (Localization.Away P'.f) (κ (spMap (P'.toK.comp σ.toRingHom) ≫ P'.u.left))`. Apply `P'.toK_inj` to reduce the goal to its premises. Rewrite using `[← RingHom.comp_apply P'.toK (algebraMap R _), P'.toK_comp]`. Conclude with `hgl`.
+
+Set `eyy : Over.mk yy ⟶ Y.oF.t.G` to `Over.homMk (yy ≫ (Y.oF.etaA a).left) (by`. Rewrite using `[Category.assoc, Over.w (Y.oF.etaA a)]`. Conclude with `Category.comp_id _)`. Set `σyy : Over.mk yy ⟶ Y.oF.t.G` to `Over.homMk (z.left ≫ ψ) (by`. Rewrite using `[Category.assoc, hPt.2.2.2.1.1.w, ← Category.assoc, Over.w z]`.
+
+Use the proof step `simp)`. Establish `hσyy : σyy.left ≫ Y.m.φ = spMap φ ≫ wf.left` using `by show (z.left ≫ ψ) ≫ Y.m.φ = spMap φ ≫ spMap σ.toRingHom ≫ P'.u.left`. Rewrite using `[Category.assoc, hPt.2.2.2.2.1, hz, ← hAt'.2, hσ]`. Conclude with `(GlobalTheory.HTMap.spc_assoc _ _ _).symm`. Take `⟨hσt, hW⟩` from `GlobalTheory.T.integrally_closed_point_level_extends E H Dw l' Xo' c' W Y p n hpW hA R ξ y hy a κ hκW P'.f wf hwf P'.toK P'.toK_comp x0 φ hφ yy hPt.1 eyy σyy rfl hσyy`.
+
+Establish `hc` using `GlobalTheory.T.p_adic_point_lattice_evaluation E H Dw l' Xo' c' W Y p n _ yy P π ψ hPt a tt hlev z eyy σyy rfl rfl hσt _ hW`. Rewrite using `[← hc]`. Establish `e1 : spMap P'.toK ≫ wf.left = spMap (P'.toK.comp σ.toRingHom) ≫ P'.u.left` using `GlobalTheory.HTMap.spc_assoc _ _ _`. Rewrite using `[e1]`. Use `show algebraMap 𝓞_ℂ_[p] ℂ_[p] (β b) = ((algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp x0) _`.
+
+Rewrite using `[← hφ, RingHom.comp_apply, ← hsb]`. Conclude with `RingHom.congr_fun hσ _`.
+-/
 theorem exists_weil_character : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l' : Level H)
     (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype) (p : ℕ)
     [Fact p.Prime] (n : ℕ) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → (p : ℂ) ∈ W.nonunits → l'.A = p ^ n →

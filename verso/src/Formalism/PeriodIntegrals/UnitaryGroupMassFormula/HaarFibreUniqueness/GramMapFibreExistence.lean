@@ -13,6 +13,17 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes MeasureTheory Num
 open PI.OmFibreUniq PI.VolStabSW PI.VolStabSW.TensAllW PI.VolStabSW.OmFibG
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Use `secondCountable_Fv F v` as an intermediate fact. Use `locallyCompact_Fv F v` as an intermediate fact. Establish `hfree` using `isOpen_linIndep (Module.finBasis F E) (Fv F v) (isOpen_units_Fv F v) (lip_field _) (a := a) (M := n)`. Take `⟨t1, t2, t3, t4, t5, _t6, t7⟩` from `tensFacts_of_fib σ n J a (Fv F v) hσ hJ hfree`.
+
+Use `hμ` as an intermediate fact. Use `hν` as an intermediate fact. Establish `: BorelSpace (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (HermR (Fv F v) σ a)` using `⟨rfl⟩`. Establish `: LocallyCompactSpace (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (LocallyCompactSpace (Fin a → Fin a → Fv F v ⊗[F] E))`.
+
+Establish `: T2Space (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (T2Space (Fin a → Fin a → Fv F v ⊗[F] E))`. Establish `: LocallyCompactSpace (HermR (Fv F v) σ a)` using `t4.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: IsTopologicalAddGroup (Fv F v ⊗[F] E)` using `IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`. Establish `hNA : HasCOSub (Fin a → Fin n → Fv F v ⊗[F] E)`. Take `⟨π, h0, hπ⟩` from `exists_pow_tendsto_zero_Fv v`.
+
+Conclude with `hasCOSub_of_lat (latSub (Module.finBasis F E) v a n) (PositiveNearLattice.isClopen_latV (Module.finBasis F E) v a n).isOpen (PositiveNearLattice.isCompact_latV (Module.finBasis F E) v a n) π h0 hπ`. Establish `hC : DensCosB (scaledB (Fv F v) (latSub (Module.finBasis F E) v a n)) μ (gramR (Fv F v) σ J) Subtype.val ν {X : Fin a → Fin n → Fv F v ⊗[F] E | LinearIndependent (Fv F v ⊗[F] E) X}`. Introduce `x hx`. Take `⟨N, hN, hd⟩` from `gramFilt_all σ hσ n J hJ hdet a v _ (Module.finBasis F E) x hx`. Use `⟨N, hN, fun y hy Λ0 hB _ _ hsub => ?_⟩` and prove the remaining obligations.
+
+Take `⟨Λ, H, D, h0, hΛo, hΛc, hΛa, hHo, hHc, hHb, hD, hyp⟩` from `hd y hy Λ0 hB hsub`. Substitute `h0` using the available equality. Conclude with `densCos_of_filt henselCount_holds cosDens_holds μ ν (gramR (Fv F v) σ J) Subtype.val Subtype.val_injective (gramH (Fv F v) σ hσ J hJ) (Continuous.subtype_mk t5 _) (fun _ => rfl) y Λ H hΛo hΛc hΛa hHo hHc hHb D hD hyp`. Establish `hLC` using `densLC_of_cosB _ _ (isCOBasis_latSub (Module.finBasis F E) v a n) hC`. Conclude with `(densAll_iff _ _ _ _ _).2 (densApprox_lc μ _ _ ν _ t7 hNA hLC)`.
+-/
 theorem densAll_gen {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (hJ : ∀ i j, σ (J j i) = J i j) (hdet : J.det ≠ 0) (v : HeightOneSpectrum (𝓞 F)) (a : ℕ)
@@ -57,6 +68,11 @@ theorem densAll_gen {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   have hLC := densLC_of_cosB _ _ (isCOBasis_latSub (Module.finBasis F E) v a n) hC
   exact (densAll_iff _ _ _ _ _).2 (densApprox_lc μ _ _ ν _ t7 hNA hLC)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J v a hCM hJ μ ν hμ hν`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol σ hCM.2.2.2`. Use `secondCountable_Fv F v` as an intermediate fact. Use `locallyCompact_Fv F v` as an intermediate fact.
+
+Establish `hfree` using `isOpen_linIndep (Module.finBasis F E) (Fv F v) (isOpen_units_Fv F v) (lip_field _) (a := a) (M := n)`. Conclude with `fib_of_tens DiscreteGroups.fibOfDens_holds (tensFacts_of_fib σ n J a (Fv F v) hσ hJ.1 hfree) μ ν hμ hν (densAll_gen σ hσ J hJ.1 hJ.2 v a μ ν hμ hν)`.
+-/
 theorem gram_map_fibre_existence : FibEx := by
   intro F E _ _ _ _ _ σ n J v a hCM hJ μ ν hμ hν
   have : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)

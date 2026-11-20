@@ -13,6 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
 namespace GlobalTheory.SquareAgree.StabKW
+/- English proof (translation)
+Introduce `_hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB _hθ _hTr _hO hT Pi rf rl p p' _hm k hk ΦD hΦD`. Establish `hdet : Γ.V.J.det ≠ 0 ∧ Γ.W.J.det ≠ 0` using `⟨GlobalTheory.FinUniq.det_ne_zero_herm hT.geo.hV, GlobalTheory.FinUniq.det_ne_zero_skew hT.geo.hW⟩`. Establish `key` using `GlobalTheory.T.compactUnitary_preserves_polynomialFock D.host.F D.host.E D.sp.cm.sig hT.base.cm W.rank (W.rank + W₁.rank) Γ.V Γ.W Γ.M Bs.ψ Xc.β (Xc.β / Xc.α) om hT.base.std hT.geo.hV.herm hdet.1 hT.geo.hW.skew hdet.2 hT.chars.resβ (GlobalTheory.ThKRatInv.resEtaPow_div hT.chars.re …`. Establish `hgen : {Φ | ∃ f φ, f ∈ Γ.M.Pol Bs.ψ Bs.emb ∧ (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) ∧ (∀ᶠ v in Filter.cofinite, φ v = Γ.M.vac v) ∧ Φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ} ⊆ ((algD Γ.M Bs.ψ Bs.emb).comap (om (1, k)) : Set _)`. Introduce and unpack `_ ⟨f, φ, hf, hSB, hcof, rfl⟩`.
+
+Take `⟨⟨f₁, hf₁⟩, hpol⟩` from `key f hf`. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers D.host.F} 1` using `(hcof.and hT.geo.hM.std).mono fun v hv => hv.1.trans hv.2`. Establish `hrest : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (⇑f) (GlobalTheory.EvZeroInf.finPart φ)` using `⟨fun x z hz => GlobalTheory.EvZeroInf.finPart_add φ x z hz, GlobalTheory.TensUniq.pure_mem_schA f φ hSB hstd⟩`. Establish `h` using `hf₁ _ hrest`. Rewrite `h` using `[← GlobalTheory.EvZeroInf.pure_eq_tens, ← GlobalTheory.EvZeroInf.pure_eq_tens]`.
+
+Use `show om (1, k) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) ∈ algD Γ.M Bs.ψ Bs.emb`. Rewrite using `[h]`. Conclude with `Submodule.subset_span ⟨f₁, φ, hpol f₁ hf₁, hSB, hcof, rfl⟩`. Conclude with `(Submodule.span_le.2 hgen) hΦD`.
+-/
 theorem stabilizer_compact_weyl_eq : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))
@@ -60,6 +67,9 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareAgree.StabKW.stabilizer_compact_weyl_eq | exact _root_.GlobalTheory.SquareAgree.StabKW.stabilizer_compact_weyl_eq | (intros; apply _root_.GlobalTheory.SquareAgree.StabKW.stabilizer_compact_weyl_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.square_agree_stabilizer_compact_weyl : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))

@@ -6,6 +6,19 @@ open scoped ContDiff
 
 namespace UpperTheory.V.Lit.Dr
 
+/- English proof (translation)
+Introduce `Γ V S _ _ _ d G u hu q c`. Take `⟨hsm, hfin, -⟩` from `hu`. Establish `hc : ∀ γ s, ContDiffOn ℝ ∞ ((c γ : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s) G.Y ∧ ∀ p ∉ G.Y, (c γ : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s p = 0` using `fun γ s => (c γ).2 s`. Simplify using `only [Geo.Om, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_setOf_eq]`. Introduce `s`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `contDiffOn_of_locally_contDiffOn` to reduce the goal to its premises. Introduce `p hp`. Take `⟨N, hN, hF⟩` from `hfin s p hp`. Take `⟨O, hON, hO, hpO⟩` from `mem_nhds_iff.mp hN`.
+
+Use `⟨O, hO, hpO, ?_⟩` and prove the remaining obligations. Establish `hsum : ContDiffOn ℝ ∞ (fun x => ∑ γ ∈ hF.toFinset, u ((G.σ γ⁻¹) s) ((G.ρ γ⁻¹) x) • (c γ : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s x) (G.Y ∩ O)`. Apply `ContDiffOn.sum` to reduce the goal to its premises. Introduce `γ _`. Establish `h1 : ContDiffOn ℝ ∞ (fun x => u ((G.σ γ⁻¹) s) ((G.ρ γ⁻¹) x)) (G.Y ∩ O)` using `((hsm _).comp (G.ρ γ⁻¹).contDiff.contDiffOn (fun x hx => G.maps γ⁻¹ x hx.1))`.
+
+Conclude with `h1.smul ((hc γ s).1.mono Set.inter_subset_left)`. Use `hsum.congr ?_` and prove the remaining obligations. Introduce `x hx`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `γ hγ`.
+
+Rewrite using `[Set.Finite.coe_toFinset]`. Use `⟨x, hON hx.2, ?_⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `hγ` using `[Function.mem_support]`. Conclude with `hγ (by rw [h0, zero_smul])`.
+
+Introduce `p hp`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `γ`. Simplify using `[(hc γ s).2 p hp]`.
+-/
 theorem avgMem : AvgMem := by
   intro Γ V S _ _ _ d G u hu q c
   obtain ⟨hsm, hfin, -⟩ := hu

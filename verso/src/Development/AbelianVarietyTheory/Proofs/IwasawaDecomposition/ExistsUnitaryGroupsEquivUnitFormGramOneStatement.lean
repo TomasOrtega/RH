@@ -12,6 +12,9 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 set_option maxHeartbeats 4000000
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mem.R3.LiftBrg.StdGroups.stdGroups_equiv | exact GlobalTheory.Mem.R3.LiftBrg.StdGroups.stdGroups_equiv | (intros; apply GlobalTheory.Mem.R3.LiftBrg.StdGroups.stdGroups_equiv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_unitaryGroups_equiv_unitForm_gram_one : ∀ (X : Stages) (i : Fin X.toD7.R.m), (Vc X.toD7 i).gram = 1 →
     ∃ (eG : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV ≃* Bridge.Gf (Vc X.toD7 i))
       (eΓ : Formalism.L2.Col.URat X.toD7.sp.cm X.B.R.nV ≃* GQ (Vc X.toD7 i)),

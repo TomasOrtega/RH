@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Unfold `KStar.TotallyRealRoots.princ KStar.TotallyRealRoots.redPow`. Rewrite using `[MonoidHom.mem_ker, ← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_one, sub_eq_zero, Units.ext_iff]`. Simplify using the standard rewrite rules.
+-/
 private theorem mem_princ_iff_pow_dvd_sub_one (l : ℕ) [Fact l.Prime] (m : ℕ) (u : ℤ_[l]ˣ) :
     u ∈ KStar.TotallyRealRoots.princ l m ↔ (l : ℤ_[l]) ^ m ∣ (u : ℤ_[l]) - 1 := by
   unfold KStar.TotallyRealRoots.princ KStar.TotallyRealRoots.redPow
@@ -11,6 +14,13 @@ private theorem mem_princ_iff_pow_dvd_sub_one (l : ℕ) [Fact l.Prime] (m : ℕ)
     map_sub, map_one, sub_eq_zero, Units.ext_iff]
   simp
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Establish `hg : v ^ l - 1 = (v - 1) * ∑ i ∈ Finset.range l, v ^ i`. Rewrite using `[mul_comm, geom_sum_mul]`. Establish `hs : v - 1 ∣ (∑ i ∈ Finset.range l, v ^ i) - l`. Establish `e : (∑ i ∈ Finset.range l, v ^ i) - l = ∑ i ∈ Finset.range l, (v ^ i - 1)`.
+
+Rewrite using `[Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `Finset.dvd_sum fun i _ => by simpa using sub_dvd_pow_sub_pow v 1 i`. Take `⟨d, hd⟩` from `hs`.
+
+Use `⟨c + (l : ℤ_[l]) ^ j * c ^ 2 * d, ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ i ∈ Finset.range l, v ^ i = l + (v - 1) * d` using `by linear_combination hd`. Rewrite using `[hg, hsum, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem pow_succ_dvd_pow_prime_sub_one (l : ℕ) [Fact l.Prime] (j : ℕ) (v : ℤ_[l])
     (h : (l : ℤ_[l]) ^ (j + 1) ∣ v - 1) : (l : ℤ_[l]) ^ (j + 2) ∣ v ^ l - 1 := by
   obtain ⟨c, hc⟩ := h
@@ -28,6 +38,13 @@ private theorem pow_succ_dvd_pow_prime_sub_one (l : ℕ) [Fact l.Prime] (j : ℕ
   rw [hg, hsum, hc]
   ring
 
+/- English proof (translation)
+Take `⟨q, rfl⟩` from `Submodule.Quotient.mk_surjective (ZlSub l) v`. Take `⟨m, hm⟩` from `pow_unbounded_of_one_lt ‖q‖ (by exact_mod_cast (Fact.out : l.Prime).one_lt : (1 : ℝ) < l)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use `show ((l : ℤ_[l]) ^ m • (Submodule.Quotient.mk q : ℚ_[l] ⧸ ZlSub l)) = 0`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+
+Unfold `ZlSub`. Use `⟨(⟨(l : ℚ_[l]) ^ m * q, ?_⟩ : ℤ_[l]), ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, Padic.norm_p, inv_pow, inv_mul_le_iff₀ (pow_pos (by exact_mod_cast (Fact.out : l.Prime).pos) m)]`. Simplify using `using hm.le`. Use `show (l : ℚ_[l]) ^ m * q = _`.
+
+Simplify using `[Algebra.smul_def]`.
+-/
 private theorem exists_prime_pow_smul_eq_zero_qz (l : ℕ) [Fact l.Prime] (v : QZ l) : ∃ m : ℕ, (l : ℤ_[l]) ^ m • v = 0 := by
   obtain ⟨q, rfl⟩ := Submodule.Quotient.mk_surjective (ZlSub l) v
   obtain ⟨m, hm⟩ := pow_unbounded_of_one_lt ‖q‖
@@ -42,6 +59,13 @@ private theorem exists_prime_pow_smul_eq_zero_qz (l : ℕ) [Fact l.Prime] (v : Q
   · show (l : ℚ_[l]) ^ m * q = _
     simp [Algebra.smul_def]
 
+/- English proof (translation)
+Rewrite `hV` using `[(Units.isOpenEmbedding_val (R := ℤ_[l])).isEmbedding.isInducing.nhds_eq_comap, Filter.mem_comap]`. Take `⟨t, ht, htV⟩` from `hV`. Rewrite `ht` using `[Units.val_one, Metric.mem_nhds_iff]`. Take `⟨ε, εpos, hball⟩` from `ht`. Establish `hl1 : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`.
+
+Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one εpos hl1`. Use `⟨n, fun u hu => htV (hball ?_)⟩` and prove the remaining obligations. Rewrite `hu` using `[mem_princ_iff_pow_dvd_sub_one]`. Take `⟨c, hc⟩` from `hu`. Rewrite using `[Metric.mem_ball, dist_eq_norm, hc, norm_mul, norm_pow, PadicInt.norm_p]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_princ_subset_of_mem_nhds_one (l : ℕ) [Fact l.Prime] (V : Set ℤ_[l]ˣ) (hV : V ∈ nhds (1 : ℤ_[l]ˣ)) :
     ∃ n, ∀ u ∈ KStar.TotallyRealRoots.princ l n, u ∈ V := by
   rw [(Units.isOpenEmbedding_val (R := ℤ_[l])).isEmbedding.isInducing.nhds_eq_comap,
@@ -59,6 +83,67 @@ private theorem exists_princ_subset_of_mem_nhds_one (l : ℕ) [Fact l.Prime] (V 
         mul_le_mul_of_nonneg_left (PadicInt.norm_le_one c) (by positivity)
     _ < ε := by rwa [mul_one]
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ N U _ hU φ hφ`. Establish `memC : ∀ x : G F Ω, x ∈ cycU l U ↔ x ∈ U ∧ cycZ F Ω l x = 1`. Introduce `x`. Unfold `cycU`. Rewrite using `[Subgroup.mem_inf, MonoidHom.mem_ker]`.
+
+Establish `memLev : ∀ (m : ℕ) (x : G F Ω), x ∈ levU l U m ↔ x ∈ U ∧ cycZ F Ω l x ∈ KStar.TotallyRealRoots.princ l m`. Introduce `m x`. Unfold `levU`. Rewrite using `[Subgroup.mem_inf, Subgroup.mem_comap]`. Establish `hφ'` using `hφ`.
+
+Unfold `Dinf XDual at hφ'`. Establish `hlc : IsLocallyConstant φ` using `hφ'.1`. Establish `hadd : ∀ a b, φ (a * b) = φ a + φ b` using `hφ'.2.1`. Establish `h1 : φ 1 = 0` using `by simpa using hadd 1 1`. Establish `hinv : ∀ a, φ a⁻¹ = - φ a` using `fun a => by`.
+
+Establish `h2` using `hadd a⁻¹ a`. Rewrite `h2` using `[inv_mul_cancel, h1]`. Conclude with `eq_neg_of_add_eq_zero_left h2.symm`. Establish `hCc : IsClosed (cycU l U : Set (G F Ω))`. Establish `e : (cycU l U : Set (G F Ω)) = (U : Set (G F Ω)) ∩ (cycZ F Ω l) ⁻¹' {1}`.
+
+Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, memC, Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff]`. Rewrite using `[e]`. Conclude with `hU.inter (isClosed_singleton.preimage (continuous_cycZ F Ω l))`. Establish `hCcpt : CompactSpace (cycU l U)` using `isCompact_iff_compactSpace.mp hCc.isCompact`.
+
+Take `⟨O, hO, hOeq⟩` from `isOpen_induced_iff.mp (hlc.isOpen_fiber 0)`. Establish `h1O : (1 : G F Ω) ∈ O`. Establish `h2 : (1 : cycU l U) ∈ Subtype.val ⁻¹' O`. Rewrite using `[hOeq]`. Conclude with `h1`.
+
+Conclude with `h2`. Take `⟨W, hW⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hO h1O`. Establish `hWker : ∀ (d : G F Ω) (hd : d ∈ cycU l U), d ∈ W.toSubgroup → φ ⟨d, hd⟩ = 0`. Introduce `d hd hdW`. Establish `h2 : (⟨d, hd⟩ : cycU l U) ∈ Subtype.val ⁻¹' O` using `hW hdW`.
+
+Rewrite `h2` using `[hOeq]`. Conclude with `h2`. Establish `conj_val : ∀ (γ : G F Ω) (x : cycU l U), ((conjHom (cycU l U) γ x : cycU l U) : G F Ω) = γ⁻¹ * x * γ` using `fun _ _ => rfl`. Establish `stabC : ∀ γ ∈ cycU l U, ∀ x, φ (conjHom (cycU l U) γ x) = φ x`. Introduce `γ hγ x`.
+
+Establish `e : conjHom (cycU l U) γ x = (⟨γ, hγ⟩ : cycU l U)⁻¹ * x * ⟨γ, hγ⟩` using `Subtype.ext (by simp only [conj_val, Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_mk])`. Rewrite using `[e, hadd, hadd, hinv]`. Normalize the expressions using the abelian group laws. Establish `stabW : ∀ γ ∈ W.toSubgroup, ∀ x, φ (conjHom (cycU l U) γ x) = φ x`. Introduce `γ hγ x`.
+
+Establish `hdC : γ⁻¹ * x * γ * (x : G F Ω)⁻¹ ∈ cycU l U` using `mul_mem (conjHom (cycU l U) γ x).2 (inv_mem x.2)`. Establish `hdW : γ⁻¹ * x * γ * (x : G F Ω)⁻¹ ∈ W.toSubgroup`. Establish `h3 : (x : G F Ω) * γ * (x : G F Ω)⁻¹ ∈ W.toSubgroup` using `W.isNormal'.conj_mem γ hγ x`. Establish `h2` using `mul_mem (inv_mem hγ) h3`. Simplify `h2` using `[mul_assoc]`.
+
+Establish `e : conjHom (cycU l U) γ x = ⟨_, hdC⟩ * x` using `Subtype.ext (by simp only [conj_val, Subgroup.coe_mul, Subgroup.coe_mk]; group)`. Rewrite using `[e, hadd, hWker _ hdC hdW, zero_add]`. Establish `stabMul : ∀ a b : G F Ω, (∀ x, φ (conjHom (cycU l U) a x) = φ x) → (∀ x, φ (conjHom (cycU l U) b x) = φ x) → ∀ x, φ (conjHom (cycU l U) (a * b) x) = φ x`. Introduce `a b ha hb x`. Establish `e : conjHom (cycU l U) (a * b) x = conjHom (cycU l U) b (conjHom (cycU l U) a x)` using `Subtype.ext (by simp only [conj_val]; group)`.
+
+Rewrite using `[e, hb, ha]`. Set `S : Set (G F Ω)` to `⋃ c : cycU l U, (fun γ => γ * (c : G F Ω)⁻¹) ⁻¹' (W.toSubgroup : Set (G F Ω))`. Establish `hSo : IsOpen S` using `isOpen_iUnion fun c => W.toOpenSubgroup.isOpen'.preimage (continuous_id.mul continuous_const)`. Establish `hSstab : ∀ γ ∈ S, ∀ x, φ (conjHom (cycU l U) γ x) = φ x`. Introduce `γ hγ`.
+
+Take `⟨c, hc⟩` from `Set.mem_iUnion.mp hγ`. Establish `e : γ = (γ * (c : G F Ω)⁻¹) * c` using `by group`. Rewrite using `[e]`. Conclude with `stabMul _ _ (stabW _ hc) (stabC _ c.2)`. Set `T : Set (G F Ω)` to `(U : Set (G F Ω)) ∩ Sᶜ`.
+
+Establish `hTc : IsCompact T` using `(hU.inter hSo.isClosed_compl).isCompact`. Establish `hχT : IsClosed (cycZ F Ω l '' T)` using `(hTc.image (continuous_cycZ F Ω l)).isClosed`. Establish `h1T : (1 : ℤ_[l]ˣ) ∉ cycZ F Ω l '' T`. Introduce and unpack `⟨t, ⟨htU, htS⟩, ht1⟩`. Apply `htS` to reduce the goal to its premises.
+
+Use `Set.mem_iUnion.mpr ⟨⟨t, (memC t).mpr ⟨htU, ht1⟩⟩, ?_⟩` and prove the remaining obligations. Use `show t * t⁻¹ ∈ W.toSubgroup`. Rewrite using `[mul_inv_cancel]`. Conclude with `one_mem _`. Take `⟨n, hn⟩` from `exists_princ_subset_of_mem_nhds_one l _ (hχT.isOpen_compl.mem_nhds h1T)`.
+
+Establish `hstab : ∀ g ∈ levU l U n, ∀ x, φ (conjHom (cycU l U) g x) = φ x`. Introduce `g hg`. Rewrite `hg` using `[memLev]`. Apply `hSstab` to reduce the goal to its premises. Assume the negation of the conclusion as `hgS`.
+
+Conclude with `hn _ hg.2 ⟨g, ⟨hg.1, hgS⟩, rfl⟩`. Use `⟨⟨n, fun g hg => ?_⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Conclude with `hstab g hg x`. Introduce `γ hγ`.
+
+Establish `hfin` using `hlc.range_finite`. Use `choose mf hmf using fun v : QZ l => exists_prime_pow_smul_eq_zero_qz l v`. Set `k0` to `hfin.toFinset.sup mf`. Establish `hk0 : (l : ℤ_[l]) ^ k0 • φ = 0`. Use function extensionality and compare the values at `x`.
+
+Establish `hle : mf (φ x) ≤ k0` using `Finset.le_sup (hfin.mem_toFinset.mpr ⟨x, rfl⟩)`. Rewrite using `[Pi.smul_apply, Pi.zero_apply, ← Nat.sub_add_cancel hle, pow_add, mul_smul, hmf, smul_zero]`. Use `set q := l ^ n with hqdef`. Establish `hqpos : 0 < q` using `pow_pos (Fact.out : l.Prime).pos n`. Establish `hγq : γ ^ q ∈ levU l U n`.
+
+Rewrite `hγ`, the goal using `[memLev]`. Use `⟨pow_mem hγ.1 q, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, mem_princ_iff_pow_dvd_sub_one]`. Establish `key : ∀ j : ℕ, (l : ℤ_[l]) ^ (j + 1) ∣ ((cycZ F Ω l γ ^ (l ^ j) : ℤ_[l]ˣ) : ℤ_[l]) - 1`. Introduce `j`.
+
+Proceed by induction on `j with`. Consider the case `zero => simpa [mem_princ_iff_pow_dvd_sub_one] using hγ.2`. Consider the case `succ j ih`. Rewrite using `[show l ^ (j + 1) = l ^ j * l from pow_succ l j, pow_mul, Units.val_pow_eq_pow_val]`. Conclude with `pow_succ_dvd_pow_prime_sub_one l j _ ih`.
+
+Conclude with `dvd_trans (pow_dvd_pow _ (Nat.le_succ n)) (key n)`. Set `ρ` to `funRep ℤ_[l] (QZ l) (cycU l U)`. Set `Tm : Module.End ℤ_[l] (cycU l U → QZ l)` to `ρ γ - 1`. Set `J : Ideal (Polynomial ℤ)` to `{ carrier := {p | Polynomial.aeval Tm p φ = 0} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, map_add, LinearMap.add_apply] at *`.
+
+Rewrite using `[ha, hb, add_zero]`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c p hp => by`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, map_mul, Module.End.mul_apply] at *`. Rewrite using `[hp, map_zero] }`.
+
+Establish `hB : (Polynomial.X + 1) ^ q - 1 ∈ J` using `by show (Polynomial.aeval Tm ((Polynomial.X + 1) ^ q - 1)) φ = 0`. Simplify using `only [map_sub, map_pow, map_add, Polynomial.aeval_X, map_one]`. Rewrite using `[show Tm + 1 = ρ γ from sub_add_cancel _ _, ← map_pow, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Use function extensionality and compare the values at `x`. Conclude with `hstab _ hγq x`.
+
+Establish `hL : Polynomial.C ((l : ℤ) ^ k0) ∈ J` using `by show (Polynomial.aeval Tm (Polynomial.C ((l : ℤ) ^ k0))) φ = 0`. Rewrite using `[Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one, LinearMap.smul_apply, Module.End.one_apply, ← Int.cast_smul_eq_zsmul ℤ_[l]]`. Use `push_cast`. Conclude with `hk0`. Establish `hP : Polynomial.C (l : ℤ) ∣ (Polynomial.X + 1) ^ q - Polynomial.X ^ q - 1`.
+
+Rewrite using `[Polynomial.C_dvd_iff_dvd_coeff]`. Introduce `i`. Establish `hmap : Polynomial.map (Int.castRingHom (ZMod l)) ((Polynomial.X + 1) ^ q - Polynomial.X ^ q - 1) = 0`. Simplify using `only [Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_add, Polynomial.map_X, Polynomial.map_one]`. Rewrite using `[hqdef, add_pow_char_pow, one_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg (fun P => Polynomial.coeff P i) hmap`. Simplify using `only [Polynomial.coeff_map, Polynomial.coeff_zero, eq_intCast] at h2`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp h2`. Take `⟨Qp, hQp⟩` from `hP`.
+
+Establish `hXq : (Polynomial.X : Polynomial ℤ) ^ q = ((Polynomial.X + 1) ^ q - 1) - Polynomial.C (l : ℤ) * Qp`. Take the linear combination `(-1 : Polynomial ℤ) * hQp`. Establish `hmem : (Polynomial.X : Polynomial ℤ) ^ (q * k0) ∈ J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, pow_mul, map_pow, hXq, map_sub, Ideal.Quotient.eq_zero_iff_mem.mpr hB, zero_sub, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Polynomial.C_pow, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [Ideal.Quotient.eq_zero_iff_mem.mpr hL, mul_zero]`. Use `⟨q * k0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show q * k0 = (q * k0 - k0) + k0 from (Nat.sub_add_cancel (Nat.le_mul_of_pos_left k0 hqpos)).symm, pow_add, mul_smul, hk0, smul_zero]`.
+
+Establish `h2` using `hmem`. Express the relevant statement in the definitionally equal form `(Polynomial.aeval Tm (Polynomial.X ^ (q * k0))) φ = 0 at h2`. Rewrite `h2` using `[map_pow, Polynomial.aeval_X]`. Conclude with `h2`.
+-/
 theorem UpperTheory.V.Kum.dinfNil :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (N : ℕ) (U : Subgroup (G F Ω)) [U.Normal], IsClosed (U : Set (G F Ω)) → ∀ φ ∈ Dinf l N U, (∃ n, ∀ g ∈ levU l U n, funRep ℤ_[l] (QZ l) (cycU l U) g φ = φ) ∧
     ∀ γ ∈ levU l U 1, ∃ k : ℕ, (l : ℤ_[l]) ^ k • φ = 0 ∧ ((funRep ℤ_[l] (QZ l) (cycU l U) γ - 1) ^ k) φ = 0 := by

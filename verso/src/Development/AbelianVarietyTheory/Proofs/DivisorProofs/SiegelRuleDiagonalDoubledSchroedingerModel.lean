@@ -22,6 +22,9 @@ namespace GlobalTheory.DiagSiegel
 
 open MeasureTheory
 
+/- English proof (translation)
+Establish `h : z * (GlobalTheory.WeilM.diagCols β : Matrix (β ⊕ β) β E)ᵀ = Matrix.fromCols z z`. Simplify using `[GlobalTheory.WeilM.diagCols, Matrix.transpose_fromRows, Matrix.mul_fromCols]`. Rewrite using `[h]`. Conclude with `GlobalTheory.DblSchr.isDblCoord_dblD c d z z`.
+-/
 theorem dblD_diagCols {R E : Type} [CommRing R] [CommRing E] [Algebra R E] [Invertible (2 : R)] (c : E →ₐ[R] E)
     {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] {ξ : E} {JA : Matrix α α E}
     {JB : Matrix β β E} {κ : Type} [Fintype κ] (d : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp c ξ JA JB) κ)
@@ -35,6 +38,17 @@ theorem dblD_diagCols {R E : Type} [CommRing R] [CommRing E] [Algebra R E] [Inve
 
 end GlobalTheory.DiagSiegel
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hξ κ _ co hco ωd hωd omd₀ htr`. Introduce `l hl hinv p t hpt φ hφ`. Take `⟨ν, 𝓕, hν⟩` from `GlobalTheory.Size.exists_isCovolOne (D := D) S T`. Use `letI mκ : MeasurableSpace (κ → AF D.host.F) := borel _`. Use `haveI : BorelSpace (κ → AF D.host.F) := ⟨rfl⟩`.
+
+Set `μ : MeasureTheory.Measure (κ → AF D.host.F)` to `MeasureTheory.Measure.addHaar`. Establish `hμ : μ.IsAddHaarMeasure` using `inferInstance`. Establish `hinv' : ∀ x y : κ → AF D.host.F, ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F (κ ⊕ κ), l (GlobalTheory.WeilM.schr ψ (Sum.elim x x, Sum.elim y (-y)) Φ) = l Φ`. Introduce `x y Φ hΦ`. Establish `h1` using `hinv (co.e.symm (x, y)) Φ hΦ`.
+
+Rewrite `h1` using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.DiagSiegel.dblD_diagCols, LinearEquiv.apply_symm_apply]`. Conclude with `h1`. Take `⟨c, hc⟩` from `GlobalTheory.T.diagonalHeisenbergInvariant_form_eq_smul_diagonalIntegral D ψ hψ κ l hl hinv' μ hμ`. Take `⟨c₂, hc₂0, hc₂⟩` from `GlobalTheory.T.diagonalThetaIntegral_eq_nonzero_mul_diagonal D ψ hψ S T JA JB ξ hJA hξ κ co hco ν 𝓕 hν μ hμ`. Take `⟨hmem, hrule⟩` from `GlobalTheory.T.diagonalThetaIntegral_siegelRule_doubledWeil D ψ hψ S T JA JB ξ hJA hξ κ co hco ν 𝓕 hν χS χT hS hT rS rT ωd hωd omd₀ htr p t hpt φ hφ`.
+
+Rewrite `hrule` using `[hc₂ _ hmem, hc₂ _ hφ]`. Establish `e` using `mul_left_cancel₀ hc₂0 (hrule.trans (mul_left_comm _ _ _))`. Use `show l (GlobalTheory.DblSchr.omdOf omd₀ p φ) = _`. Use `(hc _ hmem).trans ?_` and prove the remaining obligations. Use `(congrArg (c * ·) e).trans ?_` and prove the remaining obligations.
+
+Use `(mul_left_comm _ _ _).trans ?_` and prove the remaining obligations. Establish `h3` using `hc _ hφ`. Rewrite using `[h3]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.DiagSiegel.siegelRule_ddr : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →
       ResEta D χS S.rank → ResEta D χT T.rank →

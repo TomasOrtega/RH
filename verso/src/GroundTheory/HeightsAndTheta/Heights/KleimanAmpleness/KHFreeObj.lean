@@ -24,6 +24,11 @@ def posExp (a : (Σ k, ι k) → ℤ) : (Σ k, ι k) →₀ ℕ :=
 def negExp (a : (Σ k, ι k) → ℤ) : (Σ k, ι k) →₀ ℕ :=
   Finsupp.equivFunOnFinite.symm fun p => (-a p).toNat
 
+/- English proof (translation)
+Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod]`. Use `Submonoid.prod_mem _ fun p hp => Submonoid.pow_mem _ (Submonoid.subset_closure ?_) _` and prove the remaining obligations. Use `⟨p.1, p.2, h p.1 ?_, rfl⟩` and prove the remaining obligations. Establish `hp' : (negExp a) p ≠ 0` using `Finsupp.mem_support_iff.mp hp`. Simplify using `only [negExp, Finsupp.coe_equivFunOnFinite_symm] at hp'`.
+
+Simplify using `only [negSet, Finset.mem_filter, Finset.mem_univ, true_and]`. Use `show a p < 0`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem monomial_negExp_mem (S : Type) [CommRing S] (I : ∀ k, Finset (ι k)) (a : (Σ k, ι k) → ℤ)
     (h : ∀ k, negSet a k ⊆ I k) : (monomial (negExp a) (1 : S) : MRingOver S ι) ∈ KH.cellMon S I := by
   classical

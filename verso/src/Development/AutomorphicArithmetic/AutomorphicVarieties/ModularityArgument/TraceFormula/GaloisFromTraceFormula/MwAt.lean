@@ -6,6 +6,15 @@ open PositivityTheory.Rg.BcB.G8
 open UpperTheory.V.Af.Bc (cPl)
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
+/- English proof (translation)
+Introduce `E _ _ _ n l v`. Establish `hne : ComplexEmbedding.conjugate v.embedding ≠ v.embedding` using `fun h => (InfinitePlace.isComplex_iff.1 (NumberField.IsTotallyComplex.isComplex v)) (ComplexEmbedding.isReal_iff.2 h)`. Establish `hmk : InfinitePlace.mk (ComplexEmbedding.conjugate v.embedding) = v`. Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`. Prove the components needed by the constructor for the conclusion.
+
+Unfold `mW PositivityTheory.Rg.BcB.CG.mOf infOfWeight PositivityTheory.RgBcC.infOf`. Simplify using `only [InfinitePlace.mk_embedding, decide_true, if_true, one_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[add_sub_assoc]`.
+
+Unfold `mW PositivityTheory.Rg.BcB.CG.mOf infOfWeight PositivityTheory.RgBcC.infOf`. Simplify using `only [hmk, hne, decide_false, Multiset.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp, Bool.false_eq_true, if_false]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.mwAt :
     MWAt := by
   intro E _ _ _ n l v

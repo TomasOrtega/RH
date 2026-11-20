@@ -21,6 +21,19 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Parabolic Matrix GroundTh
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   {n : ℕ} {β γ : Fin n → ℕ}
 
+/- English proof (translation)
+Use `set C : Fin k → Set (Matrix.GeneralLinearGroup (Fin n) F) := fun l => doubleCoset (permGL F (w l)) (blockUpper F n β : Set (Matrix.GeneralLinearGroup (Fin n) F)) (blockUpper F n γ)`. Establish `hdisj : Pairwise fun i j => Disjoint (C i) (C j)`. Introduce `i j hij`. Rewrite using `[Set.disjoint_left]`. Introduce `g hgi hgj`.
+
+Take `⟨l, -, hl⟩` from `hcov g`. Conclude with `hij ((hl i hgi).trans (hl j hgj).symm)`. Establish `hcov' : ∀ g, ∃ l, g ∈ C l` using `fun g => (hcov g).exists`. Establish `hcl` using `closure_doubleCoset_subset_of_antitone hcov hanti`. Use `⟨fun i => jacquetFiltration γ (σ := σ) (cellUnion C i), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show jacquetFiltration γ (cellUnion C 0) = ⊥`. Rewrite using `[cellUnion_zero, jacquetFiltration_empty]`. Use `show jacquetFiltration γ (cellUnion C k) = ⊤`. Rewrite using `[cellUnion_of_cover hcov', jacquetFiltration_univ]`. Conclude with `fun i i' h => jacquetFiltration_mono γ (cellUnion_mono h)`.
+
+Use `⟨fun i m => jacquetFiltration_le_comap γ (cellUnion_mul_mem w i).1 m, fun j => ?_⟩` and prove the remaining obligations. Establish `hYo : IsOpen (cellUnion C ((j : ℕ) + 1))` using `isOpen_cellUnion hdisj hcov' hcl _`. Establish `hCY : closure (C j) ∩ cellUnion C ((j : ℕ) + 1) = C j` using `closure_inter_cellUnion_succ hdisj hcl j`. Establish `hYQ` using `(cellUnion_mul_mem (F := F) (β := β) (γ := γ) w ((j : ℕ) + 1)).1`. Establish `hYP` using `(cellUnion_mul_mem (F := F) (β := β) (γ := γ) w ((j : ℕ) + 1)).2`.
+
+Establish `hdiff : cellUnion C ((j : ℕ) + 1) \ C j = cellUnion C j`. Rewrite using `[cellUnion_succ j, union_sdiff_right, (disjoint_cellUnion hdisj j).symm.sdiff_eq_left]`. Use `⟨⟨gradedJacquetMap γ (w j) σ hYo hCY hYQ, fun m => ?_⟩, ?_, fun x => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Conclude with `gradedJacquetMap_jacquetRep σ hYo hCY hYQ m x`.
+
+Conclude with `gradedJacquetMap_surjective σ hYo hCY hYQ (cellJacquetMap_surjective hYo hCY hYP hYQ hσ)`. Use `gradedJacquetMap_eq_zero_iff σ hYo hCY hYQ (fun f hf h0 => exists_sub_mem_ker_of_cellJacquet_eq_zero σ hσ hYo hCY hYQ hf h0) x` as an intermediate fact. Rewrite `this` using `[hdiff]`. Conclude with `this`.
+-/
 theorem filtration_of_cellEnumeration {k : ℕ} (w : Fin k → Equiv.Perm (Fin n))
     (hcov : ∀ g : Matrix.GeneralLinearGroup (Fin n) F, ∃! j, g ∈ doubleCoset (permGL F (w j))
         (blockUpper F n β : Set (Matrix.GeneralLinearGroup (Fin n) F)) (blockUpper F n γ))
@@ -70,6 +83,11 @@ theorem filtration_of_cellEnumeration {k : ℕ} (w : Fin k → Equiv.Perm (Fin n
     rw [hdiff] at this
     exact this
 
+/- English proof (translation)
+Use `⟨(indCongrHom σ w).comp ((indTwistHom σ w).comp Ψ₀), ?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(indCongrHom_surjective σ w).comp ((indTwistHom_surjective σ w).comp hsurj)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `indTwistHom_injective σ w` to reduce the goal to its premises.
+
+Apply `indCongrHom_injective σ w` to reduce the goal to its premises. Rewrite using `[map_zero, map_zero]`. Conclude with `h`. Introduce `h show (indCongrHom σ w) ((indTwistHom σ w) (Ψ₀ x)) = 0`. Rewrite using `[h, map_zero, map_zero]`.
+-/
 theorem normalized_piece {W : Type} [AddCommGroup W] [Module ℂ W]
     (σ : Representation ℂ (levi F n β) W) (w : Equiv.Perm (Fin n))
     {A : Type} [AddCommGroup A] [Module ℂ A] {ρ : Representation ℂ (levi F n γ) A}
@@ -93,6 +111,11 @@ theorem normalized_piece {W : Type} [AddCommGroup W] [Module ℂ W]
 
 end Filtration
 
+/- English proof (translation)
+Introduce `F _ _ _ _ n β γ`. Take `⟨k, w, hcov, hanti⟩` from `GroundTheory.Automorphic.Parabolic.exists_cellEnumeration (F := F) β γ`. Use `⟨k, w, hcov, fun W _ _ σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨V, h0, hk, hmono, hV, hΨ⟩` from `filtration_of_cellEnumeration (γ := γ) w hcov hanti σ hσ`. Use `⟨V, h0, hk, hmono, hV, fun j => ?_⟩` and prove the remaining obligations.
+
+Take `⟨Ψ₀, hsurj, hker⟩` from `hΨ j`. Take `⟨Ψ, hΨs, hΨk⟩` from `normalized_piece σ (w j) Ψ₀ hsurj`. Conclude with `⟨Ψ, hΨs, fun x => (hΨk x).trans (hker x)⟩`.
+-/
 theorem geometricLemma_uniform : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ) (β γ : Fin n → ℕ), ∃ (K : ℕ) (w : Fin K → Equiv.Perm (Fin n)), (∀ g : GL (Fin n) F, ∃! j, g ∈ doubleCoset (permGL F (w j)) (blockUpper F n β : Set (GL (Fin n) F)) (blockUpper F n γ)) ∧ ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (levi F n β) W), GroundTheory.Automorphic.IsSmooth σ → ∃ V : ℕ → Submodule ℂ (JacquetModule F n γ (parabolicInd F n β σ)), V 0 = ⊥ ∧ V K = ⊤ ∧ Monotone V ∧ ∃ hV : ∀ i (m : levi F n γ), V i ≤ (V i).comap (jacquetRep F n γ (parabolicInd F n β σ) m), ∀ j : Fin K, ∃ Ψ : Representation.IntertwiningMap ((jacquetRep F n γ (parabolicInd F n β σ)).subrepresentation (V (j + 1)) (hV (j + 1))) (indRep (cellLeviSub F β γ (w j)) (normInducing σ γ (w j))), Function.Surjective Ψ ∧ ∀ x, Ψ x = 0 ↔ (x : JacquetModule F n γ (parabolicInd F n β σ)) ∈ V j := by
   intro F _ _ _ _ n β γ
   obtain ⟨k, w, hcov, hanti⟩ := GroundTheory.Automorphic.Parabolic.exists_cellEnumeration (F := F) β γ

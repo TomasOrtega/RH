@@ -7,6 +7,17 @@ open NumberField NumberField.Units NumberField.Units.dirichletUnitTheorem Global
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.UnitLattice
 
+/- English proof (translation)
+Set `b` to `(basisUnitLattice F).ofZLatticeBasis ℝ (unitLattice F)`. Set `R : ℝ` to `∑ i, ‖b i‖`. Establish `hR0 : 0 ≤ R` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `he0 : (0 : ℝ) < e` using `by exact_mod_cast he`. Use `⟨(e : ℝ) * R, by positivity, fun y => ?_⟩` and prove the remaining obligations.
+
+Set `v : logSpace F` to `fun w => -(y w) / (e : ℝ)`. Establish `hfl : ((ZSpan.floor b v : _) : logSpace F) ∈ unitLattice F`. Rewrite using `[← (basisUnitLattice F).ofZLatticeBasis_span ℝ (unitLattice F)]`. Conclude with `(ZSpan.floor b v).2`. Take `⟨x, -, hx⟩` from `Submodule.mem_map.mp hfl`.
+
+Use `⟨Additive.toMul x, fun w => ?_⟩` and prove the remaining obligations. Establish `hfr : ‖v - (ZSpan.floor b v : logSpace F)‖ ≤ R`. Simplify `ZSpan.norm_fract_le b v` using `[ZSpan.fract_apply]`. Establish `h1` using `norm_le_pi_norm (v - (ZSpan.floor b v : logSpace F)) w`. Rewrite `h1`, `hfr` using `[← hx]`.
+
+Establish `h2 : (logEmbedding F).toIntLinearMap x w = logEmbedding F (Additive.ofMul (Additive.toMul x)) w` using `rfl`. Rewrite `h1` using `[Pi.sub_apply, h2, Real.norm_eq_abs]`. Establish `h3 : y w + (e : ℝ) * logEmbedding F (Additive.ofMul (Additive.toMul x)) w = -((e : ℝ) * (v w - logEmbedding F (Additive.ofMul (Additive.toMul x)) w))`. Simplify using `only [v]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, abs_neg, abs_mul, abs_of_pos he0]`. Conclude with `mul_le_mul_of_nonneg_left (h1.trans hfr) he0.le`.
+-/
 theorem multiples_relativelyDense (F : Type) [Field F] [NumberField F] (e : ℕ) (he : 0 < e) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ y : logSpace F, ∃ u : (𝓞 F)ˣ,
       ∀ w, |y w + (e : ℝ) * logEmbedding F (Additive.ofMul u) w| ≤ C := by

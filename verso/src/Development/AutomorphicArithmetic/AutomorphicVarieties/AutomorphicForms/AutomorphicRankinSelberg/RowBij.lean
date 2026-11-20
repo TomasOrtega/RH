@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.A
 open UpperHalfPlane hiding I
 open scoped MatrixGroups
 
+/- English proof (translation)
+Establish `hc : (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 = (δ : Matrix (Fin 2) (Fin 2) ℤ) 1 0` using `congrFun h 0`. Establish `hd : (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 = (δ : Matrix (Fin 2) (Fin 2) ℤ) 1 1` using `congrFun h 1`. Establish `hγ` using `γ.det_coe`. Establish `hδ` using `δ.det_coe`. Rewrite `hγ`, `hδ` using `[Matrix.det_fin_two]`.
+
+Use `⟨-(γ : Matrix (Fin 2) (Fin 2) ℤ) 0 0 * (δ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 + (γ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 * (δ : Matrix (Fin 2) (Fin 2) ℤ) 0 0, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[ModularGroup.coe_T_zpow, Matrix.mul_apply, Fin.sum_univ_two, hc, hd]`. Rewrite `hγ` using `[hc, hd]`.
+
+Take the linear combination `(δ : Matrix (Fin 2) (Fin 2) ℤ) 0 0 * hγ - (γ : Matrix (Fin 2) (Fin 2) ℤ) 0 0 * hδ`. Rewrite `hγ` using `[hc, hd]`. Take the linear combination `(δ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 * hγ - (γ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 * hδ`.
+-/
 private theorem UpperTheory.V.Af.Rs.eq_T_zpow_mul_of_row_eq {γ δ : SL(2, ℤ)}
     (h : UpperTheory.V.Af.Rs.row γ = UpperTheory.V.Af.Rs.row δ) : ∃ n : ℤ, γ = ModularGroup.T ^ n * δ := by
   have hc : (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 = (δ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 := congrFun h 0
@@ -22,11 +29,27 @@ private theorem UpperTheory.V.Af.Rs.eq_T_zpow_mul_of_row_eq {γ δ : SL(2, ℤ)}
     linear_combination (δ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 * hγ
       - (γ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 * hδ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[UpperTheory.V.Af.Rs.row, ModularGroup.coe_T_zpow, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 private theorem UpperTheory.V.Af.Rs.row_T_zpow_mul (n : ℤ) (δ : SL(2, ℤ)) :
     UpperTheory.V.Af.Rs.row (ModularGroup.T ^ n * δ) = UpperTheory.V.Af.Rs.row δ := by
   funext i
   simp [UpperTheory.V.Af.Rs.row, ModularGroup.coe_T_zpow, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Use `⟨fun γ => ModularGroup.bottom_row_coprime γ, ?_⟩` and prove the remaining obligations. Introduce `z x`. Take `⟨g, -, hg⟩` from `ModularGroup.bottom_row_surj (R := ℤ) (Set.mem_setOf_eq ▸ x.2 : x.1 ∈ _)`. Establish `hrow : UpperTheory.V.Af.Rs.row g = x.1` using `hg`. Use `⟨ModularGroup.T ^ (-⌊(g • z).re⌋) * g, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[UpperTheory.V.Af.Rs.row_T_zpow_mul, hrow]`. Use `show 0 ≤ (_ : ℍ).re ∧ (_ : ℍ).re < 1`. Rewrite using `[mul_smul, ModularGroup.re_T_zpow_smul]`. Use `push_cast`. Prove the components needed by the constructor for the conclusion.
+
+Combine the linear relations using `[Int.floor_le (g • z).re]`. Combine the linear relations using `[Int.lt_floor_add_one (g • z).re]`. Introduce and unpack `γ' ⟨hr, hs⟩`. Establish `hr' : UpperTheory.V.Af.Rs.row γ' = UpperTheory.V.Af.Rs.row g` using `by rw [hr, hrow]`. Take `⟨m, rfl⟩` from `UpperTheory.V.Af.Rs.eq_T_zpow_mul_of_row_eq hr'`.
+
+Establish `hs' : 0 ≤ ((ModularGroup.T ^ m * g) • z).re ∧ ((ModularGroup.T ^ m * g) • z).re < 1` using `hs`. Rewrite `hs'` using `[mul_smul, ModularGroup.re_T_zpow_smul]`. Establish `h1 : ((m + ⌊(g • z).re⌋ : ℤ) : ℝ) < 1`. Use `push_cast`. Combine the linear relations using `[Int.floor_le (g • z).re]`.
+
+Establish `h2 : (-1 : ℝ) < ((m + ⌊(g • z).re⌋ : ℤ) : ℝ)`. Use `push_cast`. Combine the linear relations using `[Int.lt_floor_add_one (g • z).re]`. Establish `h1' : m + ⌊(g • z).re⌋ < 1` using `by exact_mod_cast h1`. Establish `h2' : -1 < m + ⌊(g • z).re⌋` using `by exact_mod_cast h2`.
+
+Establish `hm : m = -⌊(g • z).re⌋` using `by omega`. Rewrite using `[hm]`.
+-/
 theorem UpperTheory.V.Af.Rs.rowBij :
     UpperTheory.V.Af.Rs.RowBij := by
   refine ⟨fun γ => ModularGroup.bottom_row_coprime γ, ?_⟩

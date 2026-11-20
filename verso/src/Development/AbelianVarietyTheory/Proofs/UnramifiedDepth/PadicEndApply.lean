@@ -31,6 +31,9 @@ def padicEnd (p : ℕ) [Fact p.Prime] (M : Type) [AddCommGroup M] (hM : ∀ x : 
     change (PadicInt.toZMod (a + b)).val • x = (PadicInt.toZMod a).val • x + (PadicInt.toZMod b).val • x
     rw [map_add, ZMod.val_add, ← nsmul_eq_mod_nsmul _ (hM x), add_nsmul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma padicEnd_apply (p : ℕ) [Fact p.Prime] (M : Type) [AddCommGroup M] (hM : ∀ x : M, p • x = 0)
     (c : ℤ_[p]) (x : M) : padicEnd p M hM c x = (PadicInt.toZMod c).val • x := rfl
 
@@ -38,12 +41,18 @@ def liftInt {A B C : Type} [CommRing A] [CommRing B] [Ring C] (φ : A →+* C) (
     (h : ∀ a b, φ a * ψ b = ψ b * φ a) : A ⊗[ℤ] B →+* C :=
   (Algebra.TensorProduct.lift φ.toIntAlgHom ψ.toIntAlgHom h).toRingHom
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.lift_tmul φ.toIntAlgHom ψ.toIntAlgHom h a b`.
+-/
 lemma liftInt_tmul {A B C : Type} [CommRing A] [CommRing B] [Ring C] (φ : A →+* C) (ψ : B →+* C)
     (h : ∀ a b, φ a * ψ b = ψ b * φ a) (a : A) (b : B) : liftInt φ ψ h (a ⊗ₜ[ℤ] b) = φ a * ψ b :=
   Algebra.TensorProduct.lift_tmul φ.toIntAlgHom ψ.toIntAlgHom h a b
 
 variable {R₀ : Type} [CommRing R₀]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext ((mem_torP B p _).1 x.2)`.
+-/
 lemma pTorsion_nsmul_eq_zero (B : BX R₀) (p : ℕ) (S : LAlg R₀) (x : torP B p S) : p • x = 0 :=
   Subtype.ext ((mem_torP B p _).1 x.2)
 
@@ -52,6 +61,9 @@ def resEnd {B : BX R₀} {O : LAlg R₀} (e : OEnd B O) (p : ℕ) {S : LAlg R₀
   ((e.f s).comp (torP B p S).subtype).codRestrict (torP B p S) fun x => by
     rw [mem_torP, ← map_nsmul, pTorsion_nsmul_eq_zero, map_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma resEnd_apply {B : BX R₀} {O : LAlg R₀} (e : OEnd B O) (p : ℕ) {S : LAlg R₀} (s : LHom O S)
     (x : torP B p S) : (resEnd e p s x : B.G S) = e.f s x := rfl
 
@@ -73,6 +85,9 @@ def complEnd {B : BX R₀} {O : LAlg R₀} {O₀ : Type} [CommRing O₀] (f : O�
   liftInt (padicEnd p _ (pTorsion_nsmul_eq_zero B p S)) (ordEnd f p s h) fun c a =>
     AddMonoidHom.ext fun x => (map_nsmul (ordEnd f p s h a) (PadicInt.toZMod c).val x).symm
 
+/- English proof (translation)
+Establish `e : complEnd f p s h (c ⊗ₜ[ℤ] a) = padicEnd p _ (pTorsion_nsmul_eq_zero B p S) c * ordEnd f p s h a` using `liftInt_tmul _ _ _ c a`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 lemma complEnd_tmul {B : BX R₀} {O : LAlg R₀} {O₀ : Type} [CommRing O₀] (f : O₀ → OEnd B O) (p : ℕ)
     [Fact p.Prime] {S : LAlg R₀} (s : LHom O S)
     (h : ∀ x : B.G S, (f 1).f s x = x ∧ ∀ a b, (f (a + b)).f s x = (f a).f s x + (f b).f s x ∧
@@ -88,6 +103,9 @@ def complMat {g : ℕ} {O : Type} [CommRing O] {O₀ : Type} [CommRing O₀] (p 
     ℤ_[p] ⊗[ℤ] O₀ →+* Matrix (Fin g) (Fin g) O :=
   liftInt (algebraMap ℤ_[p] (Matrix (Fin g) (Fin g) O)) dL fun c a => Algebra.commutes c (dL a)
 
+/- English proof (translation)
+Rewrite using `[complMat, liftInt_tmul, algebraMap_smul]`. Conclude with `(Algebra.smul_def c (dL a)).symm`.
+-/
 lemma complMat_tmul {g : ℕ} {O : Type} [CommRing O] {O₀ : Type} [CommRing O₀] (p : ℕ)
     [Fact p.Prime] [Algebra ℤ_[p] O] (dL : O₀ →+* Matrix (Fin g) (Fin g) O) (c : ℤ_[p]) (a : O₀) :
     complMat p dL (c ⊗ₜ[ℤ] a) = algebraMap ℤ_[p] O c • dL a := by
@@ -97,6 +115,11 @@ lemma complMat_tmul {g : ℕ} {O : Type} [CommRing O] {O₀ : Type} [CommRing O�
 def kerMul {R S : LAlg R₀} (π : LHom R S) (r : (R : Type)) (i : π.ker) : π.ker :=
   ⟨r * i, Ideal.mul_mem_left (RingHom.ker π.1) r i.2⟩
 
+/- English proof (translation)
+Establish `h : c - ((PadicInt.toZMod c).val : ℤ_[p]) ∈ RingHom.ker (PadicInt.toZMod (p` using `p)) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Rewrite `h` using `[PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨d, hd⟩` from `h`. Establish `hc : c = d * p + ((PadicInt.toZMod c).val : ℤ_[p])` using `by rw [hd]; ring`.
+
+Rewrite `hi`, the goal using `[nsmul_eq_mul]`. Use `conv_lhs => rw [hc]`. Rewrite using `[map_add, map_mul, map_natCast, map_natCast, add_mul, _root_.mul_assoc, hi, mul_zero, zero_add]`.
+-/
 lemma padic_mul_eq {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] (t : ℤ_[p] →+* R) (c : ℤ_[p])
     (i : R) (hi : p • i = 0) : t c * i = (PadicInt.toZMod c).val • i := by
   have h : c - ((PadicInt.toZMod c).val : ℤ_[p]) ∈ RingHom.ker (PadicInt.toZMod (p := p)) := by
@@ -108,6 +131,37 @@ lemma padic_mul_eq {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] (t : ℤ_[p]
   conv_lhs => rw [hc]
   rw [map_add, map_mul, map_natCast, map_natCast, add_mul, _root_.mul_assoc, hi, mul_zero, zero_add]
 
+/- English proof (translation)
+Introduce `R₀ _ g B O gb O₀ _ f p _ _ dL hs hf htg`. Use `choose pre hpre using hs`. Set `L : ℤ_[p] ⊗[ℤ] O₀ → B.gg →ₗ[R₀] B.gg` to `fun a => gb.constr R₀ fun l => ∑ k, pre (complMat p dL a k l) • gb k`. Establish `hL : ∀ a l, L a (gb l) = ∑ k, pre (complMat p dL a k l) • gb k` using `fun a l => gb.constr_basis R₀ _ l`. Establish `key : ∀ a {R S : LAlg R₀} (s : LHom O R) (π : LHom R S) (hπ : π.SqZero) (l : Fin g) (i : π.ker) (hi : p • i = 0), (complEnd f p s (hf s) a ⟨B.tg π hπ (gb l ⊗ₜ i), tg_torP B p π hπ _ i hi⟩ : B.G R) = B.tg π hπ (∑ k, gb k ⊗ₜ[R₀] kerMul π (s.1 (complMat p dL a k l)) i)`.
+
+Introduce `a R S s π hπ l i hi`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero`. Establish `: ∀ k, kerMul π (s.1 (complMat p dL 0 k l)) i = 0` using `fun k => Subtype.ext (by simp [kerMul])`. Simplify using `only [this]`.
+
+Simplify using `only [TensorProduct.tmul_zero, Finset.sum_const_zero, map_zero]`. Both sides reduce to the same expression. Consider the case `tmul c a`. Rewrite using `[complEnd_tmul]`. Express the relevant statement in the definitionally equal form `_ • (f a).f s (B.tg π hπ (gb l ⊗ₜ i)) = _`.
+
+Rewrite using `[htg a s π hπ l i (fun k => kerMul π (s.1 (dL a k l)) i) (fun k => rfl), ← map_nsmul, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `(map_nsmul (TensorProduct.mk R₀ B.gg π.ker (gb k)) _ _).symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gb k ⊗ₜ[R₀] _ = _`.
+
+Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hi' : p • (i : (R : Type)) = 0` using `congrArg Subtype.val hi`. Establish `h2` using `padic_mul_eq (s.1.toRingHom.comp (algebraMap ℤ_[p] (O : Type))) c (s.1 (dL a k l) * i) (by rw [← mul_smul_comm, hi', mul_zero])`. Express the relevant statement in the definitionally equal form `(PadicInt.toZMod c).val • (s.1 (dL a k l) * i) = s.1 (complMat p dL (c ⊗ₜ a) k l) * i`.
+
+Rewrite using `[← h2, complMat_tmul, Matrix.smul_apply, smul_eq_mul, map_mul, _root_.mul_assoc]`. Both sides reduce to the same expression. Consider the case `add a b ha hb`. Establish `: ∀ k, kerMul π (s.1 (complMat p dL (a + b) k l)) i = kerMul π (s.1 (complMat p dL a k l)) i + kerMul π (s.1 (complMat p dL b k l)) i` using `fun k => Subtype.ext (by simp [kerMul, add_mul])`. Simplify using `only [this, TensorProduct.tmul_add, Finset.sum_add_distrib]`.
+
+Rewrite using `[map_add (B.tg π hπ), ← ha, ← hb, map_add]`. Both sides reduce to the same expression. Establish `key2 : ∀ a {R S : LAlg R₀} (s : LHom O R) (π : LHom R S) (hπ : π.SqZero) (l : Fin g) (i : π.ker) (hi : p • i = 0), (complEnd f p s (hf s) a ⟨B.tg π hπ (gb l ⊗ₜ i), tg_torP B p π hπ _ i hi⟩ : B.G R) = B.tg π hπ (L a (gb l) ⊗ₜ[R₀] i)`. Introduce `a R S s π hπ l i hi`. Rewrite using `[key a s π hπ l i hi, hL, TensorProduct.sum_tmul]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `s.1 (complMat p dL a k l) * i = pre (complMat p dL a k l) • (i : (R : Type))`. Rewrite using `[Algebra.smul_def, ← s.1.commutes, hpre]`. Use `⟨{ act := fun a S s => complEnd f p s (hf s) a act_one := fun S s x => by rw [map_one]; rfl act_mul := fun a b S s x => by rw [map_mul]; rfl act_add := fun a b S s x => by rw [map_add]; rfl act_nat := ?_ actL := L act_tg := ?_ }, complMat p dL, complMat_tmul p dL, ?_, fun c a S s …` and prove the remaining obligations. Introduce `a S S' s s' φ hφ x`. Substitute `hφ` using the available equality.
+
+Express the relevant statement in the definitionally equal form `B.map φ (complEnd f p s (hf s) a x : B.G S) = (complEnd f p (φ.comp s) (hf _) a ⟨B.map φ x, map_torP B p φ x⟩ : B.G S')`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c a => rw [complEnd_tmul, complEnd_tmul, map_nsmul, (f a).nat]`. Consider the case `add a b ha hb`.
+
+Rewrite using `[map_add, map_add]`. Express the relevant statement in the definitionally equal form `B.map φ ((complEnd f p s (hf s) a x : B.G S) + (complEnd f p s (hf s) b x : B.G S)) = _`. Rewrite using `[map_add, ha, hb]`. Both sides reduce to the same expression. Introduce `a R S s π hπ w i hi`.
+
+Establish `hr : ∀ l, p • (gb.repr w l • i) = 0` using `fun l => by rw [smul_comm, hi, smul_zero]`. Establish `h1 : (⟨B.tg π hπ (w ⊗ₜ i), tg_torP B p π hπ w i hi⟩ : torP B p R) = ∑ l, ⟨B.tg π hπ (gb l ⊗ₜ (gb.repr w l • i)), tg_torP B p π hπ _ _ (hr l)⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Express the relevant statement in the definitionally equal form `B.tg π hπ (w ⊗ₜ i) = ∑ l, B.tg π hπ (gb l ⊗ₜ (gb.repr w l • i))`.
+
+Rewrite using `[← map_sum]`. Use `congr 1`. Use `conv_lhs => rw [← gb.sum_repr w, TensorProduct.sum_tmul]`. Conclude with `Finset.sum_congr rfl fun l _ => TensorProduct.smul_tmul _ _ _`. Express the relevant statement in the definitionally equal form `(complEnd f p s (hf s) a ⟨B.tg π hπ (w ⊗ₜ i), tg_torP B p π hπ w i hi⟩ : B.G R) = _`.
+
+Rewrite using `[h1, map_sum, AddSubmonoidClass.coe_finset_sum, Finset.sum_congr rfl fun l _ => key2 a s π hπ l _ (hr l), ← map_sum]`. Use `congr 1`. Use `conv_rhs => rw [← gb.sum_repr w, map_sum, TensorProduct.sum_tmul]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [map_smul, TensorProduct.smul_tmul]`. Introduce `a k l`.
+
+Express the relevant statement in the definitionally equal form `complMat p dL a k l = algebraMap R₀ (O : Type) (gb.repr (L a (gb l)) k)`. Rewrite using `[hL, gb.repr_sum_self, hpre]`.
+-/
 theorem main :
   (∀ {R₀ : Type} [CommRing R₀] {g : ℕ} (B : BX R₀) (O : LAlg R₀) (gb : Module.Basis (Fin g) R₀ B.gg) (O₀ : Type) [CommRing O₀] (f : O₀ → OEnd B O) (p : ℕ) [Fact p.Prime] [Algebra ℤ_[p] (O : Type)] (dL : O₀ →+* Matrix (Fin g) (Fin g) (O : Type)),
     Function.Surjective (algebraMap R₀ (O : Type)) → (∀ {R : LAlg R₀} (s : LHom O R) (x : B.G R), (f 1).f s x = x ∧ ∀ a b, (f (a + b)).f s x = (f a).f s x + (f b).f s x ∧

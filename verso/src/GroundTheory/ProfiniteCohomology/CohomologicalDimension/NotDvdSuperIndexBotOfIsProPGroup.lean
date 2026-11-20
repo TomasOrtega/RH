@@ -20,6 +20,39 @@ attribute [local instance 2000] Rep.hV2
 
 omit [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Establish `hpf : Fact p.Prime` using `⟨hp⟩`. Establish `hnt : Nontrivial A`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hsimple.toNontrivial.exists_pair_ne.elim fun W₁ ⟨W₂, hW⟩ => hW (Subrepresentation.ext (by`.
+
+Use extensionality with `a`. Rewrite using `[Subsingleton.elim a 0]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩))`. Establish `htop : ∀ W : Submodule (ULift.{u} ℤ) A, (∀ g, W ≤ W.comap (A.ρ g)) → ∀ w ∈ W, w ≠ 0 → ∀ a : A, a ∈ W`. Introduce `W hW w hw hw0 a`.
+
+Set `W' : Subrepresentation A.ρ` to `⟨W, fun g v hv => hW g hv⟩`. Break down `hsimple.eq_bot_or_eq_top W' with h | h` into its components or cases. It suffices to derive a contradiction. Establish `: w ∈ W'.toSubmodule` using `hw`. Rewrite `this` using `[h]`.
+
+Conclude with `hw0 ((Submodule.mem_bot _).1 this)`. Establish `: a ∈ (⊤ : Subrepresentation A.ρ).toSubmodule` using `Submodule.mem_top`. Rewrite `this` using `[← h]`. Conclude with `this`. Take `⟨a₀, ha₀⟩` from `exists_ne (0 : A)`.
+
+Establish `hfin : Finite A`. Take `⟨W, hW, hWfin, haW⟩` from `exists_finite_stable_submodule A hp.pos (fun a => ⟨1, by rw [pow_one]; exact hA a⟩) a₀`. Establish `hall` using `htop W hW a₀ haW ha₀`. Conclude with `Finite.of_injective (fun x : A => (⟨x, hall x⟩ : W)) fun x y h => congrArg Subtype.val h`. Establish `hdisc` using `(isDiscreteRep_iff_forall_exists_openNormalSubgroup A).1 inferInstance`.
+
+Use `choose U hU using hdisc`. Take `⟨V, hV⟩` from `OpenNormalSubgroup.exists_le_of_finite U`. Establish `hVfix : ∀ g ∈ (V : Subgroup G), ∀ a : A, A.ρ g a = a`. Introduce `g hg a`. Use `(Representation.mem_invariants _ _).1 (hU a) ⟨g, hV a hg⟩` as an intermediate fact.
+
+Conclude with `this`. Set `H` to `(Representation.asGroupHom A.ρ).range`. Establish `hH : IsPGroup p H`. Introduce and unpack `⟨_, g, rfl⟩`. Take `⟨k, hk⟩` from `isProPGroup_iff.1 hG V g`.
+
+Use `⟨k, Subtype.ext (Units.ext (LinearMap.ext fun a => ?_))⟩` and prove the remaining obligations. Simplify using `only [SubmonoidClass.coe_pow, Subgroup.coe_one, Units.val_one, Module.End.one_apply]`. Rewrite using `[← map_pow, Representation.asGroupHom_apply, hVfix _ hk]`. Establish `hcard : p ∣ Nat.card A`. Establish `hPA : IsPGroup p (Multiplicative A)` using `fun x => ⟨1, by rw [pow_one]; exact hA (Multiplicative.toAdd x)⟩`.
+
+Establish `: Nontrivial (Multiplicative A)` using `hnt`. Take `⟨m, hm, hcm⟩` from `hPA.nontrivial_iff_card.1 this`. Rewrite using `[show Nat.card A = Nat.card (Multiplicative A) from rfl, hcm]`. Conclude with `dvd_pow_self p hm.ne'`. Establish `h0 : (0 : A) ∈ MulAction.fixedPoints H A` using `fun h => by show (h : (A →ₗ[ULift.{u} ℤ] A)ˣ) • (0 : A) = 0`.
+
+Conclude with `smul_zero _`. Take `⟨b, hb, hb0⟩` from `hH.exists_fixed_point_of_prime_dvd_card_of_fixed_point A hcard h0`. Establish `hbfix : ∀ g : G, A.ρ g b = b` using `fun g => hb ⟨_, g, rfl⟩`. Establish `htriv : ∀ (g : G) (a : A), A.ρ g a = a`. Introduce `g a`.
+
+Establish `hinv` using `htop A.ρ.invariants (fun g v hv h => by`. Rewrite using `[hv g]`. Conclude with `hv h) b ((Representation.mem_invariants _ _).2 hbfix) hb0.symm a`. Conclude with `(Representation.mem_invariants _ _).1 hinv g`. Establish `hspan : ∀ a : A, a ∈ AddSubgroup.zmultiples b`.
+
+Introduce `a`. Set `W : Submodule (ULift.{u} ℤ) A` to `{ AddSubgroup.zmultiples b with smul_mem' := fun r x hx => by`. Rewrite using `[show r = ((r.down : ℤ) : ULift.{u} ℤ) by ext; simp, Int.cast_smul_eq_zsmul]`. Conclude with `zsmul_mem (show x ∈ AddSubgroup.zmultiples b from hx) r.down }`. Conclude with `htop W (fun g x hx => by`.
+
+Rewrite using `[Submodule.mem_comap, htriv]`. Conclude with `hx) b (AddSubgroup.mem_zmultiples b) hb0.symm a`. Establish `horder : addOrderOf b = p` using `addOrderOf_eq_prime (hA b) hb0.symm`. Establish `hcardA : Nat.card A = p`. Rewrite using `[← horder, ← Nat.card_zmultiples]`.
+
+Conclude with `Nat.card_congr (Equiv.subtypeUnivEquiv hspan).symm`. Set `e : ZMod p ≃+ A` to `zmodAddEquivOfGenerator hspan hcardA`. Set `F : ULift.{u} (ZMod p) →ₗ[ULift.{u} ℤ] A` to `{ toFun := fun x => e x.down map_add' := fun x y => map_add e x.down y.down map_smul' := fun r x => by`. Take `⟨r⟩` from `r`. Take `⟨x⟩` from `x`.
+
+Rewrite using `[RingHom.id_apply]`. Use `conv_rhs => rw [show (⟨r⟩ : ULift.{u} ℤ) = ((r : ℤ) : ULift.{u} ℤ) by ext; simp, Int.cast_smul_eq_zsmul]`. Rewrite using `[← map_zsmul]`. Use `rfl }`. Use `⟨Rep.ofHom ⟨F, fun g => LinearMap.ext fun x => (htriv g (F x)).symm⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `⟨fun x y hxy => ULift.ext _ _ (e.injective hxy), fun a => ⟨⟨e.symm a⟩, e.apply_symm_apply a⟩⟩`.
+-/
 theorem exists_bijective_hom_of_isProPGroup {p : ℕ} (hp : p.Prime) (hG : IsProPGroup p G)
     (A : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep A] (hsimple : IsSimpleOrder (Subrepresentation A.ρ))
     (hA : ∀ a : A, p • a = 0) :
@@ -123,6 +156,15 @@ theorem exists_bijective_hom_of_isProPGroup {p : ℕ} (hp : p.Prime) (hG : IsPro
 
 end Simple
 
+/- English proof (translation)
+Establish `hpf : Fact p.Prime` using `⟨hp⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `subsingleton_cohomology_of_cdp_le hp h _ (fun a => ?_) (Nat.lt_succ_self n)` and prove the remaining obligations. Use `ext`.
+
+Simplify using the standard rewrite rules. Introduce `h`. Rewrite using `[cdp_le_iff_forall_simple hp]`. Introduce `A _ hsimple hA`. Take `⟨f, hf⟩` from `exists_bijective_hom_of_isProPGroup hp hG A hsimple hA`.
+
+Establish `: Mono f` using `(Rep.mono_iff_injective _).2 hf.1`. Establish `: Epi f` using `(Rep.epi_iff_surjective _).2 hf.2`. Establish `: IsIso f` using `isIso_of_mono_of_epi f`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `key : ∀ z : cohomology A (n + 1), (cohomologyMap f (n + 1)).hom ((cohomologyMap (inv f) (n + 1)).hom z) = z`.
+
+Introduce `z`. Express the relevant statement in the definitionally equal form `(cohomologyMap (inv f) (n + 1) ≫ cohomologyMap f (n + 1)).hom z = z`. Rewrite using `[← cohomologyMap_comp, IsIso.inv_hom_id, cohomologyMap_id]`. Both sides reduce to the same expression. Rewrite using `[← key x, ← key y, Subsingleton.elim ((cohomologyMap (inv f) (n + 1)).hom x)]`.
+-/
 theorem cdp_le_iff_of_isProPGroup {p : ℕ} (hp : p.Prime) (hG : IsProPGroup p G) (n : ℕ) :
     cdp p G ≤ n ↔
       Subsingleton (cohomology (Rep.trivial (ULift.{u} ℤ) G (ULift.{u} (ZMod p))) (n + 1)) := by

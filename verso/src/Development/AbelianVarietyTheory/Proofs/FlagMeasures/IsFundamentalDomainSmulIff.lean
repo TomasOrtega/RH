@@ -11,15 +11,26 @@ section General
 variable {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [MeasurableSpace K]
   [BorelSpace K] (Γ : Subgroup K) (μ : Measure K)
 
+/- English proof (translation)
+The claim follows from `hs.measure_eq ht`.
+-/
 theorem measure_eq [Countable Γ] [μ.IsMulLeftInvariant] {s t : Set K}
     (hs : IsFundamentalDomain Γ s μ) (ht : IsFundamentalDomain Γ t μ) : μ s = μ t := hs.measure_eq ht
 
 omit [IsTopologicalGroup K] [BorelSpace K] in
 
+/- English proof (translation)
+The claim follows from `hs.measure_ne_zero (NeZero.ne μ)`.
+-/
 theorem measure_ne_zero [Countable Γ] [μ.IsHaarMeasure] {s : Set K}
     (hs : IsFundamentalDomain Γ s μ) : μ s ≠ 0 :=
   hs.measure_ne_zero (NeZero.ne μ)
 
+/- English proof (translation)
+Use `open Pointwise in`. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono fun m hm => ?_` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, rfl⟩` from `hcov m`. Use `Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, ?_, hm⟩` and prove the remaining obligations.
+
+Conclude with `⟨k, subset_toMeasurable μ C hk, rfl⟩`. Use `_ ≤ ∑' g : Γ, μ (g • toMeasurable μ C ∩ s) := measure_iUnion_le _`. Use `_ = μ (toMeasurable μ C) := (hs.measure_eq_tsum _).symm`. Use `_ = μ C := measure_toMeasurable C`.
+-/
 theorem measure_le_of_cover [Countable Γ] [μ.IsMulLeftInvariant] {s : Set K}
     (hs : IsFundamentalDomain Γ s μ) {C : Set K}
     (hcov : ∀ m : K, ∃ γ ∈ Γ, ∃ k ∈ C, m = γ * k) : μ s ≤ μ C := by
@@ -35,6 +46,11 @@ theorem measure_le_of_cover [Countable Γ] [μ.IsMulLeftInvariant] {s : Set K}
 
 omit [TopologicalSpace K] [IsTopologicalGroup K] [BorelSpace K] in
 
+/- English proof (translation)
+Establish `hc' : (c : ENNReal) ≠ 0` using `by exact_mod_cast hc`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h.mono fun t ht => ?_` and prove the remaining obligations. Rewrite `ht` using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, mul_eq_zero]`.
+
+Conclude with `ht.resolve_left hc'`. Introduce `h`. Use `h.mono fun t ht => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, ht, smul_zero]`.
+-/
 theorem isFundamentalDomain_smul_iff {c : NNReal} (hc : c ≠ 0) (s : Set K) :
     IsFundamentalDomain Γ s (c • μ) ↔ IsFundamentalDomain Γ s μ := by
   have hc' : (c : ENNReal) ≠ 0 := by exact_mod_cast hc
@@ -47,6 +63,33 @@ theorem isFundamentalDomain_smul_iff {c : NNReal} (hc : c ≠ 0) (s : Set K) :
     refine h.mono fun t ht => ?_
     rw [Measure.smul_apply, ht, smul_zero]
 
+/- English proof (translation)
+Take `⟨U, hUo, hU1, hUV⟩` from `exists_open_nhds_one_split (hV.mem_nhds h1)`. Set `W : Set G` to `U ∩ (fun u => u⁻¹) ⁻¹' U`. Establish `hWo : IsOpen W` using `hUo.inter (hUo.preimage continuous_inv)`. Establish `hW1 : (1 : G) ∈ W` using `⟨hU1, by simp only [Set.mem_preimage, inv_one]; exact hU1⟩`. Establish `hWW : ∀ a ∈ W, ∀ b ∈ W, a * b⁻¹ ∈ V` using `fun a ha b hb => hUV a ha.1 b⁻¹ hb.2`.
+
+Set `A : G → Set G` to `fun g => (fun x => x * g⁻¹) ⁻¹' W`. Establish `hAo : ∀ g, IsOpen (A g)` using `fun g => hWo.preimage (continuous_mul_const _)`. Establish `hcov : ⋃ g, A g = Set.univ` using `Set.eq_univ_of_forall fun x => Set.mem_iUnion.2 ⟨x, by simp only [A, Set.mem_preimage, mul_inv_cancel]; exact hW1⟩`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable A hAo`. Establish `hmemT : ∀ x, ∃ g ∈ T, x ∈ A g` using `fun x => by`.
+
+Establish `hx : x ∈ ⋃ g ∈ T, A g` using `by rw [hTU, hcov]; exact Set.mem_univ x`. Take `⟨g, hg, hx'⟩` from `Set.mem_iUnion₂.1 hx`. Conclude with `⟨g, hg, hx'⟩`. Establish `hTne : T.Nonempty`. Take `⟨g, hg, -⟩` from `hmemT 1`.
+
+Conclude with `⟨g, hg⟩`. Take `⟨f, hf⟩` from `hTc.exists_eq_range hTne`. Set `B : ℕ → Set G` to `fun i => A (f i)`. Establish `hBo : ∀ i, IsOpen (B i)` using `fun i => hAo _`. Establish `hBcov : ∀ x, ∃ i, x ∈ B i`.
+
+Introduce `x`. Take `⟨g, hgT, hx⟩` from `hmemT x`. Rewrite `hgT` using `[hf]`. Take `⟨i, rfl⟩` from `hgT`. Conclude with `⟨i, hx⟩`.
+
+Establish `hinj : ∀ i y (δ : Γ), y ∈ B i → δ • y ∈ B i → δ = 1`. Introduce `i y δ hy hδy`. Establish `hm` using `hWW (δ • y * (f i)⁻¹) hδy (y * (f i)⁻¹) hy`. Establish `he : δ • y * (f i)⁻¹ * (y * (f i)⁻¹)⁻¹ = (δ : G)`. Simplify using `only [Subgroup.smul_def, smul_eq_mul]`.
+
+Use `group`. Rewrite `hm` using `[he]`. Conclude with `Subtype.ext (hΓV _ δ.2 hm)`. Set `E : ℕ → Set G` to `fun j => ⋃ γ : Γ, (fun x => γ • x) ⁻¹' B j`. Establish `hEo : ∀ j, IsOpen (E j)` using `fun j => isOpen_iUnion fun γ => (hBo j).preimage (by simpa only [Subgroup.smul_def, smul_eq_mul] using continuous_const_mul (γ : G))`.
+
+Establish `hE : ∀ j y, y ∈ E j ↔ ∃ δ : Γ, δ • y ∈ B j` using `fun j y => by`. Simplify using `only [E, Set.mem_iUnion, Set.mem_preimage]`. Set `s : Set G` to `⋃ i, (B i \ ⋃ (j : ℕ) (_ : j < i), E j)`. Establish `hs : ∀ y, y ∈ s ↔ ∃ i, y ∈ B i ∧ ∀ j < i, ∀ δ : Γ, δ • y ∉ B j`. Introduce `y`.
+
+Simplify using `only [s, Set.mem_iUnion, Set.mem_sdiff, not_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, hn⟩`. Conclude with `⟨i, hi, fun j hj δ hδ => hn j hj ((hE j y).2 ⟨δ, hδ⟩)⟩`. Introduce and unpack `⟨i, hi, hn⟩`.
+
+Use `⟨i, hi, fun j hj hy => ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ⟩` from `(hE j y).1 hy`. Conclude with `hn j hj δ hδ`. Use `⟨s, MeasurableSet.iUnion fun i => (hBo i).measurableSet.diff (isOpen_iUnion fun j => isOpen_iUnion fun _ => hEo j).measurableSet, fun x => ?_⟩` and prove the remaining obligations. Establish `hP : ∃ i, ∃ γ : Γ, γ • x ∈ B i`.
+
+Take `⟨i, hi⟩` from `hBcov x`. Conclude with `⟨i, 1, by simpa only [one_smul] using hi⟩`. Take `⟨γ, hγ⟩` from `Nat.find_spec hP`. Use `⟨γ, (hs _).2 ⟨_, hγ, fun j hj δ hδ => Nat.find_min hP hj ⟨δ * γ, by rwa [mul_smul]⟩⟩, fun γ' hγ' => ?_⟩` and prove the remaining obligations. Take `⟨i', hi', hmin'⟩` from `(hs _).1 hγ'`.
+
+Establish `hle : Nat.find hP ≤ i'` using `Nat.find_min' hP ⟨γ', hi'⟩`. Establish `hge : i' ≤ Nat.find hP`. Assume the negation of the conclusion as `hlt`. Conclude with `hmin' _ (not_le.1 hlt) (γ * γ'⁻¹) (by rw [mul_smul, inv_smul_smul]; exact hγ)`. Rewrite `hi'` using `[le_antisymm hge hle]`.
+
+Establish `h1'` using `hinj _ (γ • x) (γ' * γ⁻¹) hγ (by rw [mul_smul, inv_smul_smul]; exact hi')`. Conclude with `mul_inv_eq_one.1 h1'`.
+-/
 private theorem exists_measurableSet_unique_smul_mem_of_discrete {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G]
     [OpensMeasurableSpace G] (Γ : Subgroup G) {V : Set G} (hV : IsOpen V) (h1 : (1 : G) ∈ V)
@@ -127,6 +170,21 @@ private theorem exists_measurableSet_unique_smul_mem_of_discrete {G : Type} [Gro
 
 end General
 
+/- English proof (translation)
+Take `⟨hc, hd, -⟩` from `GlobalTheory.RationalUnitaryDomains.isDiscreteWithDomains_ratPts' F E σ n J`. Express the relevant statement in the definitionally equal form `Countable (HFinIn (AF F) σ J) at hc`. Express the relevant statement in the definitionally equal form `DiscreteTopology (HFinIn (AF F) σ J) at hd`. Take `⟨t, ht, hteq⟩` from `isOpen_induced_iff.1 (isOpen_discrete ({1} : Set (HFinIn (AF F) σ J)))`. Establish `ht1 : (1 : HA (AF F) σ J) ∈ t`.
+
+Establish `h : (1 : HFinIn (AF F) σ J) ∈ Subtype.val ⁻¹' t` using `by rw [hteq]; exact Set.mem_singleton _`. Conclude with `h`. Establish `htone : ∀ h ∈ HFinIn (AF F) σ J, h ∈ t → h = 1`. Introduce `h hh hht`. Establish `h' : (⟨h, hh⟩ : HFinIn (AF F) σ J) ∈ Subtype.val ⁻¹' t` using `hht`.
+
+Rewrite `h'` using `[hteq]`. Conclude with `congrArg Subtype.val (Set.mem_singleton_iff.1 h')`. Establish `hcnt : Countable (Subgroup.subgroupOf (G` using `HA (AF F) σ J) (HFinIn (AF F) σ J) K) := by`. Use `Function.Injective.countable (f := fun x => (⟨((x : K) : HA (AF F) σ J), Subgroup.mem_subgroupOf.1 x.2⟩ : HFinIn (AF F) σ J)) ?_` and prove the remaining obligations. Introduce `x y hxy`.
+
+Establish `h2` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (Subtype.ext h2)`. Establish `: SecondCountableTopology (AF F)` using `AdelicUnitaryTop.secondCountable_adele F`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isModTop`. Take `⟨m, φ, hφ⟩` from `Module.Finite.exists_fin' (AF F) (AF F ⊗[F] E)`.
+
+Establish `hq` using `IsModuleTopology.isOpenQuotientMap_of_surjective hφ`. Establish `: SecondCountableTopology (AF F ⊗[F] E)` using `hq.isQuotientMap.secondCountableTopology hq.isOpenMap`. Establish `: SecondCountableTopology (Matrix (Fin n) (Fin n) (AF F ⊗[F] E))` using `inferInstanceAs (SecondCountableTopology (Fin n → Fin n → AF F ⊗[F] E))`. Establish `: SecondCountableTopology (Matrix (Fin n) (Fin n) (AF F ⊗[F] E))ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isInducing.secondCountableTopology`. Establish `: SecondCountableTopology (GL (Fin n) (AF F ⊗[F] E))` using `Units.isInducing_embedProduct.secondCountableTopology`.
+
+Establish `: SecondCountableTopology (HA (AF F) σ J)` using `(Topology.IsInducing.subtypeVal : Topology.IsInducing (Subtype.val : HR (AF F) σ J → GL (Fin n) (AF F ⊗[F] E))).secondCountableTopology`. Establish `: IsTopologicalGroup (HA (AF F) σ J)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA σ J`. Establish `: BorelSpace (HA (AF F) σ J)` using `⟨rfl⟩`. Use `⟨inferInstance, inferInstance, hcnt, fun μ => ?_⟩` and prove the remaining obligations. Establish `hK1 : IsTopologicalGroup K` using `inferInstance`.
+
+Establish `hK2 : SecondCountableTopology K` using `Topology.IsInducing.subtypeVal.secondCountableTopology`. Establish `hK3 : OpensMeasurableSpace K` using `inferInstance`. Take `⟨s, hs, hex⟩` from `@exists_measurableSet_unique_smul_mem_of_discrete K _ _ hK1 hK2 _ hK3 (Subgroup.subgroupOf (G := HA (AF F) σ J) (HFinIn (AF F) σ J) K) ((Subtype.val : K → HA (AF F) σ J) ⁻¹' t) (ht.preimage continuous_subtype_val) ht1 (fun γ hγ hγV => Subtype.ext (htone _ (Subgroup.mem_subgroupOf …`. Conclude with `⟨s, IsFundamentalDomain.mk' hs.nullMeasurableSet hex⟩`.
+-/
 theorem countable_and_exists_domain (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E)
     (K : Subgroup (HA (AF F) σ J)) :
@@ -182,6 +240,13 @@ theorem countable_and_exists_domain (F E : Type) [Field F] [NumberField F] [Fiel
     (fun γ hγ hγV => Subtype.ext (htone _ (Subgroup.mem_subgroupOf.1 hγ) hγV))
   exact ⟨s, IsFundamentalDomain.mk' hs.nullMeasurableSet hex⟩
 
+/- English proof (translation)
+Take `⟨hTG, hB, hcnt, hex⟩` from `countable_and_exists_domain F E σ n J K`. Rewrite `hcnt`, `hex` using `[← hΓ]`. Use `hμ` as an intermediate fact. Use `⟨hex μ, fun 𝓕 h𝓕 => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨𝓕', h𝓕', hcv⟩` from `hcov μ ⟨𝓕, h𝓕⟩`.
+
+Use `⟨?_, @GlobalTheory.ClosedSubgroupCovol.measure_ne_zero _ _ _ _ Γ μ hcnt _ _ h𝓕, fun C _ hC => @GlobalTheory.ClosedSubgroupCovol.measure_le_of_cover _ _ _ hTG _ hB Γ μ hcnt _ _ h𝓕 _ hC⟩` and prove the remaining obligations. Rewrite using `[hcv, @GlobalTheory.ClosedSubgroupCovol.measure_eq _ _ _ hTG _ hB Γ μ hcnt _ _ _ h𝓕' h𝓕]`. Take `⟨𝓕, h𝓕⟩` from `hex μ`. Take `⟨𝓕', h𝓕', hcv⟩` from `hcov μ ⟨𝓕, h𝓕⟩`. Take `⟨𝓖, h𝓖, hcv'⟩` from `hcov (c • μ) ⟨𝓕, (isFundamentalDomain_smul_iff Γ μ hc 𝓕).2 h𝓕⟩`.
+
+Establish `h𝓖μ` using `(isFundamentalDomain_smul_iff Γ μ hc 𝓖).1 h𝓖`. Rewrite using `[hcv', hcv, Measure.smul_apply, @GlobalTheory.ClosedSubgroupCovol.measure_eq _ _ _ hTG _ hB Γ μ hcnt _ _ _ h𝓖μ h𝓕', ENNReal.smul_def, smul_eq_mul, ENNReal.toReal_mul, ENNReal.coe_toReal]`.
+-/
 theorem domains_and_covolume (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E)
     (K : Subgroup (HA (AF F) σ J)) (Γ : Subgroup K)

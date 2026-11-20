@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.ContUniv
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Establish `h1 : e c = e c * e' c`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_single c (fun b _ hb => hz c b hb.symm) (by simp)`.
+
+Establish `h2 : e' c = e c * e' c`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_eq_single c (fun b _ hb => hz b c hb) (by simp)`. Rewrite using `[h1, ← h2]`.
+-/
 theorem coi_eq_of_mul_eq_zero {R I : Type} [CommRing R] [Fintype I] {e e' : I → R}
     (h : CompleteOrthogonalIdempotents e) (h' : CompleteOrthogonalIdempotents e')
     (hz : ∀ c c', c ≠ c' → e c * e' c' = 0) : e = e' := by
@@ -25,6 +30,11 @@ theorem coi_eq_of_mul_eq_zero {R I : Type} [CommRing R] [Fintype I] {e e' : I �
         exact Finset.sum_eq_single c (fun b _ hb => hz b c hb) (by simp)
   rw [h1, ← h2]
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Establish `h` using `hζ.prod_one_sub_pow_eq_order`. Take `⟨j, rfl⟩ : ∃ j, d = j + 1` from `⟨d - 1, by omega⟩`. Establish `hd' : (1 - ζ ^ (j + 1)) ∣ ∏ i ∈ Finset.range k, (1 - ζ ^ (i + 1))` using `Finset.dvd_prod_of_mem (fun i => 1 - ζ ^ (i + 1)) (Finset.mem_range.2 (by omega))`. Rewrite `hd'` using `[h]`.
+
+Simplify using `using hd'`.
+-/
 theorem one_sub_pow_dvd {O : Type} [CommRing O] [IsDomain O] {ζ : O} {n d : ℕ}
     (hζ : IsPrimitiveRoot ζ n) (hd : 0 < d) (hdn : d < n) : 1 - ζ ^ d ∣ (n : O) := by
   obtain ⟨k, rfl⟩ : ∃ k, n = k + 1 := ⟨n - 1, by omega⟩
@@ -35,6 +45,13 @@ theorem one_sub_pow_dvd {O : Type} [CommRing O] [IsDomain O] {ζ : O} {n d : ℕ
   rw [h] at hd'
   simpa using hd'
 
+/- English proof (translation)
+Establish `hu : ∀ i : ℕ, IsUnit (ζ ^ i)` using `fun i => (hζ.isUnit (by omega)).pow i`. Establish `key : ∀ {a b : ℕ}, a < b → b < n → ζ ^ a - ζ ^ b ∣ (n : O)`. Introduce `a b h1 h2`. Establish `e : ζ ^ a - ζ ^ b = ζ ^ a * (1 - ζ ^ (b - a))`. Rewrite using `[mul_sub, mul_one, ← pow_add]`.
+
+Use `congr 2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Conclude with `(hu a).mul_left_dvd.2 (one_sub_pow_dvd hζ (by omega) (by omega))`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases.
+
+Conclude with `key h hb`. Rewrite using `[← neg_sub, neg_dvd]`. Conclude with `key h ha`.
+-/
 theorem pow_sub_pow_dvd {O : Type} [CommRing O] [IsDomain O] {ζ : O} {n a b : ℕ}
     (hζ : IsPrimitiveRoot ζ n) (ha : a < n) (hb : b < n) (hab : a ≠ b) :
     ζ ^ a - ζ ^ b ∣ (n : O) := by
@@ -53,6 +70,11 @@ theorem pow_sub_pow_dvd {O : Type} [CommRing O] [IsDomain O] {ζ : O} {n a b : �
   · rw [← neg_sub, neg_dvd]
     exact key h ha
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `pow_sub_pow_dvd hζ ha hb hab`. Establish `e : (n : U) = (g ζ ^ a - g ζ ^ b) * g w`. Rewrite using `[← map_natCast g, hw, map_mul, map_sub, map_pow, map_pow]`. Establish `h0 : S * S' * (g ζ ^ a - g ζ ^ b) = 0`. Take the linear combination `S * h' * 1 - S' * h`.
+
+Establish `h1 : (S * S') * (n : U) = 0`. Rewrite using `[e, ← mul_assoc, h0, zero_mul]`. Conclude with `(mem_nonZeroDivisors_iff_right.1 hn) _ h1`.
+-/
 theorem mul_eq_zero_of_pow {O U : Type} [CommRing O] [IsDomain O] [CommRing U] (g : O →+* U)
     {ζ : O} {n a b : ℕ} (hζ : IsPrimitiveRoot ζ n) (ha : a < n) (hb : b < n) (hab : a ≠ b)
     (hn : (n : U) ∈ nonZeroDivisors U) {x S S' : U}
@@ -68,15 +90,28 @@ theorem mul_eq_zero_of_pow {O U : Type} [CommRing O] [IsDomain O] [CommRing U] (
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Rewrite using `[oC_theta0, sW, WittVector.map_teichmuller]`. Both sides reduce to the same expression.
+-/
 theorem sharp_s_eq (t : PAlg l) (x : Ob l) :
     t.sharp (t.s x) = t.oC (theta0 l (WittVector.teichmuller l x)) := by
   rw [oC_theta0, sW, WittVector.map_teichmuller]
   rfl
 
+/- English proof (translation)
+The claim follows from `(RL.idem_au t 0 IsIdempotentElem.zero).unique ⟨he, h⟩ ⟨IsIdempotentElem.zero, sharp_zero t⟩`.
+-/
 theorem eq_zero_of_sharp (t : PAlg l) {e : t.A} (he : IsIdempotentElem e) (h : t.sharp e = 0) :
     e = 0 :=
   (RL.idem_au t 0 IsIdempotentElem.zero).unique ⟨he, h⟩ ⟨IsIdempotentElem.zero, sharp_zero t⟩
 
+/- English proof (translation)
+Introduce `l _ ε t m x e e' he he' h h'`. Establish `hζ` using `(GlobalTheory.T.epsilon_cyclotomic_element_properties ε).2.2.2.2 m`. Use `coi_eq_of_mul_eq_zero he he' fun c c' hc => ?_` and prove the remaining obligations. Establish `hn : ((l ^ m : ℕ) : t.U) ∈ nonZeroDivisors t.U`. Rewrite using `[Nat.cast_pow]`.
+
+Conclude with `pow_mem t.l_mem_nzd_U m`. Establish `h1` using `h c`. Establish `h2` using `h' c'`. Rewrite `h1`, `h2` using `[sharp_s_eq]`. Establish `h3` using `mul_eq_zero_of_pow t.oC hζ (ZMod.val_lt c) (ZMod.val_lt c') (fun hv => hc (ZMod.val_injective _ hv)) hn h1 h2`.
+
+Use `eq_zero_of_sharp t ((he.idem c).mul (he'.idem c')) ?_` and prove the remaining obligations. Rewrite using `[map_mul, h3]`.
+-/
 theorem idem_unique : ∀ {l : ℕ} [Fact l.Prime] (ε : Eps l) (t : PAlg l) (m : ℕ) (x : t.U)
     (e e' : ZMod (l ^ m) → t.A),
     CompleteOrthogonalIdempotents e → CompleteOrthogonalIdempotents e' →

@@ -15,11 +15,39 @@ variable {p : ℕ} [hp : Fact p.Prime] [IsPerfectoidField K p]
 
 local notation "𝔸" => Localization.Away (p : AInf K p)
 
+/- English proof (translation)
+Take `⟨M, x, h⟩` from `exists_toB_mul z`. Rewrite using `[TeichLift.coeffB_eq _ h]`. Conclude with `norm_zcoeff_incl_le_one x _`.
+-/
 theorem norm_coeffB_toB_le_one (z : 𝔸) (n : ℤ) : ‖(teichLift K p).coeffB (toB K p z) n‖ ≤ 1 := by
   obtain ⟨M, x, h⟩ := exists_toB_mul z
   rw [TeichLift.coeffB_eq _ h]
   exact norm_zcoeff_incl_le_one x _
 
+/- English proof (translation)
+Use `set a := (teichLift K p).coeffB (toB K p z) with ha_def`. Establish `hconv : ∀ ρ, 0 < ρ → ρ < 1 → ConvergesAt a ρ` using `fun ρ h0 h1 => convergesAt_toB z h0 h1`. Establish `ha0 : a ≠ 0`. Introduce `h`. Use `gn_pos (K := K) hr0 hr1 hz` as an intermediate fact.
+
+Unfold `gn at this`. Rewrite `this` using `[← ha_def, h]`. Simplify using `[gaussNorm] at this`. Use `set i := highIndex a r₀`. Establish `hi` using `highIndex_mem hr0 (hconv r₀ hr0 hr1) ha0`.
+
+Use `set β := ‖a i‖ with hβ_def`. Establish `hβ : 0 < β` using `norm_pos_iff.2 (ne_zero_of_mem_domSet hr0 (hconv r₀ hr0 hr1) ha0 hi)`. Establish `hG : gaussNorm a r₀ = β * r₀ ^ i` using `hi.symm`. Use `set ρt := (r₀ + 1) / 2 with hρt`. Establish `hρt0 : 0 < ρt` using `by linarith`.
+
+Establish `hρt1 : ρt < 1` using `by linarith`. Take `⟨L, hL⟩` from `exists_pow_lt_of_lt_one hβ hρt1`. Establish `hev : ∀ᶠ ρ in 𝓝 r₀, ∀ n ∈ Finset.Ioc i (i + L), ‖a n‖ * ρ ^ n < β * ρ ^ i`. Rewrite using `[Filter.eventually_all_finset]`. Introduce `n hn`.
+
+Establish `hlt : ‖a n‖ * r₀ ^ n < β * r₀ ^ i`. Rewrite using `[← hG]`. Conclude with `weight_lt_of_highIndex_lt hr0 (hconv r₀ hr0 hr1) ha0 (Finset.mem_Ioc.1 hn).1`. Establish `hc : ContinuousAt (fun ρ : ℝ => β * ρ ^ i - ‖a n‖ * ρ ^ n) r₀` using `(continuousAt_const.mul (continuousAt_zpow₀ r₀ i (Or.inl hr0.ne'))).sub (continuousAt_const.mul (continuousAt_zpow₀ r₀ n (Or.inl hr0.ne')))`. Use `filter_upwards [hc.eventually (lt_mem_nhds (sub_pos.2 hlt))] with ρ hρ`.
+
+Conclude with `sub_pos.1 hρ`. Take `⟨δ, hδ, hδf⟩` from `Metric.eventually_nhds_iff.1 hev`. Use `⟨β, i, min (r₀ + δ / 2) ρt, hβ, lt_min (by linarith) (by linarith), (min_le_right _ _).trans_lt hρt1, fun ρ hρ => ?_⟩` and prove the remaining obligations. Establish `hρ0 : 0 < ρ` using `hr0.trans_le hρ.1`. Establish `hρ1 : ρ < 1` using `hρ.2.trans_lt ((min_le_right _ _).trans_lt hρt1)`.
+
+Establish `hρt' : ρ ≤ ρt` using `hρ.2.trans (min_le_right _ _)`. Establish `hd : dist ρ r₀ < δ`. Rewrite using `[Real.dist_eq, abs_of_nonneg (by linarith [hρ.1])]`. Combine the linear relations using `[hρ.2, min_le_left (r₀ + δ / 2) ρt]`. Establish `hnear` using `hδf hd`.
+
+Unfold `gn`. Rewrite using `[← ha_def]`. Use `le_antisymm (gaussNorm_le fun n => ?_) ((hconv ρ hρ0 hρ1).le_gaussNorm i)` and prove the remaining obligations. Break down `le_or_gt n i with hni | hni` into its components or cases. Establish `h1 : ‖a n‖ * r₀ ^ n ≤ β * r₀ ^ i` using `hG ▸ (hconv r₀ hr0 hr1).le_gaussNorm n`.
+
+Establish `hq : 1 ≤ ρ / r₀` using `(one_le_div hr0).2 hρ.1`. Establish `h2 : (ρ / r₀) ^ n ≤ (ρ / r₀) ^ i` using `zpow_le_zpow_right₀ hq hni`. Establish `e1 : ‖a n‖ * ρ ^ n = (‖a n‖ * r₀ ^ n) * (ρ / r₀) ^ n`. Rewrite using `[div_zpow, mul_assoc, mul_div_assoc', mul_div_cancel_left₀ _ (zpow_ne_zero n hr0.ne')]`. Establish `e2 : β * ρ ^ i = (β * r₀ ^ i) * (ρ / r₀) ^ i`.
+
+Rewrite using `[div_zpow, mul_assoc, mul_div_assoc', mul_div_cancel_left₀ _ (zpow_ne_zero i hr0.ne')]`. Rewrite using `[e1, e2]`. Conclude with `mul_le_mul h1 h2 (zpow_nonneg (div_nonneg hρ0.le hr0.le) n) (mul_nonneg hβ.le (zpow_nonneg hr0.le i))`. Break down `le_or_gt n (i + L) with hnL | hnL` into its components or cases. Conclude with `(hnear n (Finset.mem_Ioc.2 ⟨hni, hnL⟩)).le`.
+
+Establish `h1 : ‖a n‖ * ρ ^ n ≤ ρ ^ n` using `mul_le_of_le_one_left (zpow_nonneg hρ0.le n) (norm_coeffB_toB_le_one z n)`. Establish `h2 : ρ ^ n = ρ ^ i * ρ ^ (n - i)` using `by rw [← zpow_add₀ hρ0.ne']; ring_nf`. Establish `h3 : ρ ^ (n - i) ≤ ρ ^ (L : ℤ)` using `zpow_le_zpow_right_of_le_one₀ hρ0 hρ1.le (by omega)`. Establish `h4 : ρ ^ (L : ℤ) ≤ ρt ^ L`. Rewrite using `[zpow_natCast]`.
+
+Conclude with `pow_le_pow_left₀ hρ0.le hρt' L`. Establish `h5 : ρ ^ (n - i) ≤ β` using `(h3.trans h4).trans hL.le`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_gn_eq_monomial {z : 𝔸} (hz : z ≠ 0) {r₀ : ℝ} (hr0 : 0 < r₀) (hr1 : r₀ < 1) :
     ∃ (β : ℝ) (i : ℤ) (ρ₃ : ℝ), 0 < β ∧ r₀ < ρ₃ ∧ ρ₃ < 1 ∧
       ∀ ρ ∈ Set.Icc r₀ ρ₃, gn K p ρ z = β * ρ ^ i := by

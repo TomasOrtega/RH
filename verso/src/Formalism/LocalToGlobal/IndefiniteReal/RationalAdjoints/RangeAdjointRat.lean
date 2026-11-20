@@ -11,6 +11,11 @@ namespace Formalism.IndefR.Rat
 
 open Formalism.DivisionValues Formalism.L2.Indef Formalism.L2.DIV Formalism.IndefR.Cx Formalism.IndefR.Cx.CxData
 
+/- English proof (translation)
+Establish `h1` using `hiso (a • x) x`. Establish `h2` using `hiso x x`. Rewrite `h1` using `[LinearMap.map_smulₛₗ, inner_smul_left, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_mul, ← h2]`. Establish `hne : ⟪jR x, jR x⟫_ℂ ≠ 0` using `inner_self_ne_zero.mpr hx`. Establish `h3` using `mul_right_cancel₀ hne h1`.
+
+Rewrite using `[h3]`. Both sides reduce to the same expression.
+-/
 theorem star_compat {K : Type} [Field K] [StarRing K] (σ : K →+* ℂ) {F : Type} [AddCommGroup F] [Module K F]
     {FC : Type} [NormedAddCommGroup FC] [InnerProductSpace ℂ FC] (jR : F →ₛₗ[σ] FC) (h : F →ₗ⋆[K] F →ₗ[K] K)
     (hiso : ∀ x y, ⟪jR x, jR y⟫_ℂ = σ (h x y)) (x : F) (hx : jR x ≠ 0) (a : K) :
@@ -24,6 +29,37 @@ theorem star_compat {K : Type} [Field K] [StarRing K] (σ : K →+* ℂ) {F : Ty
   rw [h3]
   rfl
 
+/- English proof (translation)
+Establish `: Finite ι` using `hli.finite`. Set `_ : Fintype ι` to `Fintype.ofFinite ι`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `hx`. Use `set e : Fin N → E := fun i => (InnerProductSpace.toDual ℂ E).symm (LinearMap.toContinuousLinearMap (ψ i)) with he`. Establish `hei : ∀ i u, ⟪e i, u⟫_ℂ = ψ i u`. Introduce `i u`. Simplify using `[he, InnerProductSpace.toDual_symm_apply]`.
+
+Establish `hspan : Submodule.span ℂ (Set.range e) = ⊤`. Rewrite using `[← Submodule.orthogonal_eq_bot_iff, Submodule.eq_bot_iff]`. Introduce `u hu`. Apply `hψ` to reduce the goal to its premises. Introduce `i`.
+
+Rewrite using `[← hei]`. Conclude with `inner_eq_zero_symm.mp ((Submodule.mem_orthogonal' _ _).mp hu _ (Submodule.subset_span ⟨i, rfl⟩))`. Establish `hrat : ∀ i, LinearMap.adjoint Θ (e i) ∈ Submodule.span ℂ (jR '' ((LinearMap.range (LinearMap.adjoint Θ)).comap jR : Set F))`. Introduce `i`. Use `set f : (ι → ℂ) →ₗ[ℂ] FC := Fintype.linearCombination ℂ fun k => jR (bb k) with hf`.
+
+Establish `hfinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Rewrite `hx` using `[hf, Fintype.linearCombination_apply]`. Use function extensionality and compare the values at `k`.
+
+Conclude with `Fintype.linearIndependent_iff.mp hli x hx k`. Establish `hfr : LinearMap.range f = ⊤` using `by rw [hf, Fintype.range_linearCombination, hsp]`. Take `⟨c, hc⟩ : LinearMap.adjoint Θ (e i) ∈ LinearMap.range f` from `by rw [hfr]; trivial`. Use `set φ : ι → Module.Dual ℂ FC := fun l => innerₛₗ ℂ (jR (bb l)) with hφ`. Establish `hφinj : ∀ u, (∀ l, φ l u = 0) → u = 0`.
+
+Introduce `u hu`. Establish `: u ∈ (Submodule.span ℂ (Set.range fun k => jR (bb k)))ᗮ`. Rewrite using `[Submodule.mem_orthogonal']`. Introduce `v hv`. Use `inner_eq_zero_symm.mp (Submodule.span_induction (p := fun v _ => ⟪v, u⟫_ℂ = 0) ?_ ?_ ?_ ?_ hv)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `hu l`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[inner_add_left, hx, hy, add_zero]`.
+
+Introduce `a x _ hx`. Rewrite using `[inner_smul_left, hx, mul_zero]`. Rewrite `this` using `[hsp, Submodule.top_orthogonal_eq_bot]`. Conclude with `this`. Establish `hfe : ∀ k, f (Pi.single k 1) = jR (bb k)`.
+
+Introduce `k`. Simplify using `[hf, Fintype.linearCombination_apply_single]`. Establish `hcoord` using `coord_rat σ φ hφinj f hfinj (fun l k => by rw [hfe]; exact ⟨h (bb l) (bb k), (hiso _ _).symm⟩) c (fun l => by`. Rewrite using `[hc]`. Express the relevant statement in the definitionally equal form `⟪jR (bb l), LinearMap.adjoint Θ (e i)⟫_ℂ ∈ Set.range σ`.
+
+Rewrite using `[LinearMap.adjoint_inner_right, ← inner_conj_symm, hei]`. Take `⟨a, ha⟩` from `hr i (bb l)`. Conclude with `⟨star a, by rw [← ha, star_compat σ jR h hiso (bb l) (hli.ne_zero l)]⟩)`. Use `choose a ha using hcoord`. Establish `hr' : jR (∑ k, a k • bb k) = LinearMap.adjoint Θ (e i)`.
+
+Rewrite using `[← hc, hf, Fintype.linearCombination_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, ha]`. Rewrite using `[← hr']`. Conclude with `Submodule.subset_span ⟨_, ⟨e i, hr'.symm⟩, rfl⟩`.
+
+Introduce and unpack `_ ⟨v, rfl⟩`. Establish `hv : v ∈ Submodule.span ℂ (Set.range e)` using `by rw [hspan]; trivial`. Use `Submodule.span_induction (p := fun v _ => LinearMap.adjoint Θ v ∈ Submodule.span ℂ (jR '' ((LinearMap.range (LinearMap.adjoint Θ)).comap jR : Set F))) ?_ ?_ ?_ ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hrat i`.
+
+Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Introduce `a x _ hx`.
+
+Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem range_adjoint_rat {K : Type} [Field K] [StarRing K] (σ : K →+* ℂ) {F : Type} [AddCommGroup F] [Module K F]
     {FC : Type} [NormedAddCommGroup FC] [InnerProductSpace ℂ FC] [FiniteDimensional ℂ FC]
     {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
@@ -104,6 +140,11 @@ theorem range_adjoint_rat {K : Type} [Field K] [StarRing K] (σ : K →+* ℂ) {
   · intro x y _ _ hx hy; rw [map_add]; exact Submodule.add_mem _ hx hy
   · intro a x _ hx; rw [map_smul]; exact Submodule.smul_mem _ a hx
 
+/- English proof (translation)
+Introduce `K _ _ _ Bs A X cv hKR hKL hJR hJL hRT hLT`. Use `⟨fun t => ?_, fun j t => ?_⟩` and prove the remaining obligations. Take `⟨N, ψ, hψ, hr⟩` from `hRT`. Conclude with `range_adjoint_rat Bs.v0.embedding (X.jR t) (cv.hR t) (bR t) (hKR t).1 (hKR t).2 (hJR t) (X.Θ t) ψ hψ (fun i x => hr t i x)`. Take `⟨N, ψ, hψ, hr⟩` from `hLT j`.
+
+Conclude with `range_adjoint_rat Bs.v0.embedding (X.jL j t) (cv.hL j t) (bL j t) (hKL j t).1 (hKL j t).2 (hJL j t) (X.θ' j t) ψ hψ (fun i x => hr t i x)`.
+-/
 theorem ratZOfTests : RatZOfTests := by
   intro K _ _ _ Bs A X cv hKR hKL hJR hJL hRT hLT
   refine ⟨fun t => ?_, fun j t => ?_⟩

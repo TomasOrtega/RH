@@ -13,6 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ D D' _ _ _ _ ψ hψ a h`. Use `letI : Algebra D D' := (ψ : D →+* D').toAlgebra`. Use `haveI : Module.FaithfullyFlat D D' := hψ`. Use `haveI : IsScalarTower R D D' := IsScalarTower.of_algebraMap_eq (fun r => (ψ.commutes r).symm)`. Establish `hinj : Function.Injective (algebraMap D D')` using `FaithfulSMul.algebraMap_injective D D'`.
+
+Set `α : D' →ₐ[R] D' ⊗[D] D'` to `Algebra.TensorProduct.includeLeft`. Set `β : D' →ₐ[R] D' ⊗[D] D'` to `(Algebra.TensorProduct.includeRight).restrictScalars R`. Establish `hαβ : α.comp ψ = β.comp ψ`. Use extensionality with `x`. Use `show ψ x ⊗ₜ[D] (1 : D') = (1 : D') ⊗ₜ[D] ψ x`.
+
+Establish `: ψ x = algebraMap D D' x` using `rfl`. Rewrite using `[this, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Establish `hab : a ⊗ₜ[D] (1 : D') = (1 : D') ⊗ₜ[D] a` using `h _ α β hαβ`. Take `⟨e, he⟩` from `GlobalTheory.ff_descent_elem D D' a hab`. Conclude with `⟨e, he, fun e' he' => hinj (he'.trans he.symm)⟩`.
+-/
 theorem ff_descent_pairs : ∀ (R : Type) [CommRing R] (D D' : Type) [CommRing D] [Algebra R D]
     [CommRing D'] [Algebra R D'] (ψ : D →ₐ[R] D'), (ψ : D →+* D').FaithfullyFlat → ∀ a : D',
     (∀ (E : Type) [CommRing E] [Algebra R E] (α β : D' →ₐ[R] E), α.comp ψ = β.comp ψ → α a = β a) →

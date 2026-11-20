@@ -7,5 +7,8 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.EisCellsPInv.pInv | exact GlobalTheory.CompanionTheory.EisCellsPInv.pInv | (intros; apply GlobalTheory.CompanionTheory.EisCellsPInv.pInv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eisenstein_siegel_parabolic_invariance : PositivityTheory.GramSchwartzFunctions.EC.PInv := by
   first | exact @GlobalTheory.CompanionTheory.EisCellsPInv.pInv | exact GlobalTheory.CompanionTheory.EisCellsPInv.pInv | (intros; apply GlobalTheory.CompanionTheory.EisCellsPInv.pInv <;> assumption)

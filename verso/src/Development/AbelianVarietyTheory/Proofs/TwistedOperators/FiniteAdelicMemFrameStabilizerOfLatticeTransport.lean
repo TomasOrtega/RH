@@ -10,6 +10,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LevMov
 
+/- English proof (translation)
+Introduce `D V L β hβ k hk`. Establish `h1` using `GlobalTheory.LevSplit.mem_St_iff β L hβ (Lev.finE V k)`. Establish `h2` using `GlobalTheory.LevSplit.stab_gen (GlobalTheory.LevSplit.swp D.host.F D.host.E) GlobalTheory.LevSplit.swp_bij.2 _ _ (GlobalTheory.LevSplit.latHat_iff L) (finHom V k)`. Use `h1.2 (h2.1 ?_)` and prove the remaining obligations. Establish `hk' : ∀ u, u ∈ hatV L ↔ ∃ u₀ ∈ hatV L, u = (finHom V k).1 *ᵥ u₀` using `hk`.
+
+Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `(hk' _).2 ⟨y, hy, rfl⟩`. Introduce `hy`.
+
+Take `⟨u₀, hu₀, e⟩` from `(hk' _).1 hy`. Establish `e2 : y = u₀`. Use `congrArg (fun z => ((finHom V k)⁻¹).1 *ᵥ z) e` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at this`. Conclude with `this`.
+
+Rewrite using `[e2]`. Conclude with `hu₀`.
+-/
 theorem finE_mem_St_of_isMov : ∀ (D : D7) (V : HSp D) (L : Lt D.host.E V.rank) (β : GL (Fin V.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame β L → ∀ k : GA D V, IsMov (fmt V k) L L → Lev.finE V k ∈ Formalism.L2.DIV.St β := by
   intro D V L β hβ k hk
   have h1 := GlobalTheory.LevSplit.mem_St_iff β L hβ (Lev.finE V k)

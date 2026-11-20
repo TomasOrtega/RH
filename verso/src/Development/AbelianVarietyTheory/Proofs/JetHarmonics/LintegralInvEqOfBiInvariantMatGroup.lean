@@ -12,10 +12,19 @@ def mulM {m : ℕ} (x y : PI.MtM m) : PI.MtM m := fun i j => (Matrix.of x * Matr
 
 noncomputable def invM {m : ℕ} (x : PI.MtM m) : PI.MtM m := fun i j => (Matrix.of x)⁻¹ i j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma of_mulM {m : ℕ} (x y : PI.MtM m) : Matrix.of (mulM x y) = Matrix.of x * Matrix.of y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma of_invM {m : ℕ} (x : PI.MtM m) : Matrix.of (invM x) = (Matrix.of x)⁻¹ := rfl
 
+/- English proof (translation)
+Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Simplify using `only [mulM, Matrix.mul_apply, Matrix.of_apply]`. Use `Finset.measurable_sum _ fun k _ => Measurable.mul ?_ ?_` and prove the remaining obligations. Conclude with `(measurable_pi_apply k).comp ((measurable_pi_apply i).comp hu)`. Conclude with `(measurable_pi_apply j).comp ((measurable_pi_apply k).comp hv)`.
+-/
 lemma measurable_mulM {m : ℕ} {α : Type*} [MeasurableSpace α] {u v : α → PI.MtM m}
     (hu : Measurable u) (hv : Measurable v) : Measurable fun a => mulM (u a) (v a) := by
   refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_
@@ -24,6 +33,11 @@ lemma measurable_mulM {m : ℕ} {α : Type*} [MeasurableSpace α] {u v : α → 
   · exact (measurable_pi_apply k).comp ((measurable_pi_apply i).comp hu)
   · exact (measurable_pi_apply j).comp ((measurable_pi_apply k).comp hv)
 
+/- English proof (translation)
+Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Establish `hof : Continuous fun x : PI.MtM m => (Matrix.of x : Matrix (Fin m) (Fin m) ℂ)` using `continuous_id`. Establish `h1 : Measurable fun x : PI.MtM m => (Matrix.of x).det` using `hof.matrix_det.measurable`. Establish `h2 : Measurable fun x : PI.MtM m => (Matrix.of x).adjugate i j` using `(hof.matrix_adjugate.matrix_elem i j).measurable`. Simplify using `only [invM, Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`.
+
+Conclude with `h1.inv.mul h2`.
+-/
 lemma measurable_invM {m : ℕ} : Measurable (invM : PI.MtM m → PI.MtM m) := by
   refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_
   have hof : Continuous fun x : PI.MtM m => (Matrix.of x : Matrix (Fin m) (Fin m) ℂ) := continuous_id
@@ -33,6 +47,27 @@ lemma measurable_invM {m : ℕ} : Measurable (invM : PI.MtM m → PI.MtM m) := b
   simp only [invM, Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]
   exact h1.inv.mul h2
 
+/- English proof (translation)
+Introduce `m S μ hS hμ hR f hf`. Take `⟨hσ, hne, hc, hL⟩` from `hμ`. Take `⟨-, -, -, hinv⟩` from `hS`. Establish `hae : ∀ᵐ x ∂μ, Matrix.of x ∈ S` using `hc`. Establish `left : ∀ a : PI.MtM m, Matrix.of a ∈ S → ∀ g : PI.MtM m → ℝ≥0∞, Measurable g → ∫⁻ y, g (mulM a y) ∂μ = ∫⁻ y, g y ∂μ`.
+
+Introduce `a ha g hg`. Establish `h` using `lintegral_map (μ := μ) hg (measurable_mulM (measurable_const (a := a)) measurable_id)`. Establish `e : (fun y : PI.MtM m => mulM a (id y)) = PI.lmulQ (Matrix.of a)` using `rfl`. Rewrite `h` using `[e, hL _ ha]`. Conclude with `h.symm`.
+
+Establish `right : ∀ a : PI.MtM m, Matrix.of a ∈ S → ∀ g : PI.MtM m → ℝ≥0∞, Measurable g → ∫⁻ y, g (mulM y a) ∂μ = ∫⁻ y, g y ∂μ`. Introduce `a ha g hg`. Establish `h` using `lintegral_map (μ := μ) hg (measurable_mulM measurable_id (measurable_const (a := a)))`. Establish `e : (fun y : PI.MtM m => mulM (id y) a) = PI.rmulQ (Matrix.of a)` using `rfl`. Rewrite `h` using `[e, hR _ ha]`.
+
+Conclude with `h.symm`. Take `⟨t, ht, -, ht0, ht1⟩` from `Measure.exists_subset_measure_lt_top (μ := μ) (r := 0) MeasurableSet.univ (Measure.measure_univ_pos.mpr hne)`. Use `set g : PI.MtM m → ℝ≥0∞ := t.indicator 1 with hgdef`. Establish `hg : Measurable g` using `measurable_one.indicator ht`. Establish `hgi : ∫⁻ y, g y ∂μ = μ t` using `lintegral_indicator_one ht`.
+
+Establish `hfi : Measurable fun x => f (invM x)` using `hf.comp measurable_invM`. Establish `key : (∫⁻ x, f (invM x) ∂μ) * μ t = (∫⁻ x, f x ∂μ) * μ t`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_mul_const _ hfi]`. Use `lintegral_congr_ae (hae.mono fun x hx => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Establish `hm : Measurable fun y => g (mulM x y)` using `hg.comp (measurable_mulM measurable_const measurable_id')`. Rewrite using `[lintegral_const_mul _ hm, left x hx g hg, hgi]`. Use `_ = ∫⁻ y, ∫⁻ x, f (invM x) * g (mulM x y) ∂μ ∂μ := by`. Use `lintegral_lintegral_swap (Measurable.aemeasurable ?_)` and prove the remaining obligations.
+
+Conclude with `(hfi.comp measurable_fst).mul (hg.comp (measurable_mulM measurable_fst measurable_snd))`. Use `_ = ∫⁻ y, ∫⁻ x, f (mulM y (invM x)) * g x ∂μ ∂μ := by`. Use `lintegral_congr_ae (hae.mono fun y hy => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← right y hy (fun x => f (mulM y (invM x)) * g x) ((hf.comp (measurable_mulM measurable_const measurable_invM)).mul hg)]`.
+
+Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Use `congr 2`. Apply `Matrix.of.injective` to reduce the goal to its premises. Rewrite using `[of_mulM, of_invM, of_invM, of_mulM, Matrix.mul_inv_rev, ← Matrix.mul_assoc, (hinv _ hy).2, Matrix.one_mul]`. Use `_ = ∫⁻ x, ∫⁻ y, f (mulM y (invM x)) * g x ∂μ ∂μ := by`.
+
+Use `lintegral_lintegral_swap (Measurable.aemeasurable ?_)` and prove the remaining obligations. Conclude with `(hf.comp (measurable_mulM measurable_fst (measurable_invM.comp measurable_snd))).mul (hg.comp measurable_snd)`. Use `_ = ∫⁻ x, (∫⁻ y, f y ∂μ) * g x ∂μ := by`. Use `lintegral_congr_ae (hae.mono fun x hx => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Establish `hm : Measurable fun y => f (mulM y (invM x))` using `hf.comp (measurable_mulM measurable_id' measurable_const)`. Rewrite using `[lintegral_mul_const _ hm, right (invM x) (hinv _ hx).1 f hf]`. Use `_ = (∫⁻ x, f x ∂μ) * μ t := by rw [lintegral_const_mul _ hg, hgi]`. Conclude with `(ENNReal.mul_left_inj ht0.ne' ht1.ne).mp key`.
+-/
 theorem lintegral_inv_eq : ∀ (m : ℕ) (S : Set (Matrix (Fin m) (Fin m) ℂ)) (μ : Measure (PI.MtM m)), PI.IsMatGroup S → PI.IsHaarOnM S μ → PI.IsRightInvM S μ → ∀ f : PI.MtM m → ℝ≥0∞, Measurable f → ∫⁻ s, f (fun i j => (Matrix.of s)⁻¹ i j) ∂μ = ∫⁻ s, f s ∂μ := by
   intro m S μ hS hμ hR f hf
   obtain ⟨hσ, hne, hc, hL⟩ := hμ

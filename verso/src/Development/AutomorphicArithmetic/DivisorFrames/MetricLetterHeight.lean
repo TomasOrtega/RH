@@ -14,6 +14,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Φ : FlagCpt Z e)
 
+/- English proof (translation)
+Rewrite using `[SmallSec.valAt_mul hf.regAt hg.regAt, map_mul, Real.log_mul (ε.w.ne_zero (SmallSec.valAt_ne_zero hf)) (ε.w.ne_zero (SmallSec.valAt_ne_zero hg))]`.
+-/
 private theorem log_valuation_mul {Y : Var F} {v : HeightOneSpectrum (𝓞 F)} (ε : Ext v) (y : AlgPt Y) {f g : Y.Fn}
     (hf : UnitAt (below y.1) f) (hg : UnitAt (below y.1) g) :
     Real.log (ε.w (valAt y.1 (f * g))) = Real.log (ε.w (valAt y.1 f)) + Real.log (ε.w (valAt y.1 g)) := by
@@ -21,10 +24,20 @@ private theorem log_valuation_mul {Y : Var F} {v : HeightOneSpectrum (𝓞 F)} (
     Real.log_mul (ε.w.ne_zero (SmallSec.valAt_ne_zero hf)) (ε.w.ne_zero (SmallSec.valAt_ne_zero hg))]
 
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `LineNorm.isEqn_sum _ y fun x => ((LineNorm.fr_spec Φ y).2 x.1 x.2).zsmul (n x)`.
+-/
 private theorem isEqn_prod (n : Letter Dw → ℤ) (y : Φ.Y.X) :
     (divOf Φ n).IsEqn y (∏ x : Letter Dw, LineNorm.dg Φ y x.1 x.2 ^ n x) :=
   LineNorm.isEqn_sum _ y fun x => ((LineNorm.fr_spec Φ y).2 x.1 x.2).zsmul (n x)
 
+/- English proof (translation)
+Establish `hq : (divOf Φ (expo Dw w)).IsEqn (below y.1) (eqn (divOf Φ (expo Dw w)) (below y.1))` using `(CartierDiv.exists_isEqn _ _).choose_spec`. Establish `u₁ : UnitAt (below y.1) (((∏ x : Letter Dw, LineNorm.dg Φ (below y.1) x.1 x.2 ^ expo Dw w x) * (eqn (divOf Φ (expo Dw w)) (below y.1))⁻¹ : Φ.Y.Fnˣ) : Φ.Y.Fn)`. Use `hq.iff_unitAt.1 (isEqn_prod Φ (expo Dw w) (below y.1))` as an intermediate fact. Rewrite `this` using `[div_eq_mul_inv, ← Units.val_inv_eq_inv_val, ← Units.val_mul]`. Then use the resulting hypothesis. Establish `u₂ : UnitAt (below y.1) (eqn (divOf Φ (expo Dw w)) (below y.1) : Φ.Y.Fn)`.
+
+Use `h.iff_unitAt.1 hq` as an intermediate fact. Rewrite `this` using `[Units.val_one, div_one]`. Then use the resulting hypothesis. Establish `e₀ : lam (adlOf Φ hm w) v ε y = LineNorm.lgCopy Φ w v ε y + Real.log (ε.w (valAt y.1 (eqn (divOf Φ (expo Dw w)) (below y.1) : Φ.Y.Fn)))` using `rfl`. Establish `e₁` using `log_valuation_mul ε y u₁ u₂`. Rewrite `e₁` using `[← Units.val_mul, inv_mul_cancel_right]`.
+
+Rewrite using `[e₀, LineNorm.lgCopy_eq, e₁]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem lam_eq {C : CxSt F} (hm : Mets Φ C) (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v)
     (y : AlgPt Φ.Y) (h : (divOf Φ (expo Dw w)).IsEqn (below y.1) 1) :
     lam (adlOf Φ hm w) v ε y = Real.log (ε.w (valAt y.1
@@ -46,6 +59,9 @@ private theorem lam_eq {C : CxSt F} (hm : Mets Φ C) (w : Sym E →₀ ℤ) (v :
   rw [e₀, LineNorm.lgCopy_eq, e₁]
   ring
 
+/- English proof (translation)
+Unfold `expo`. Rewrite using `[Finsupp.sum_single_index (by simp), hx]`. Simplify using the standard rewrite rules.
+-/
 private theorem expo_single (a : Sym E) (x : Letter Dw) (hx : letterOf Dw a.2.2 = some x) (x' : Letter Dw) :
     expo Dw (Finsupp.single a 1) x' = if x = x' then 1 else 0 := by
   unfold expo
@@ -54,6 +70,15 @@ private theorem expo_single (a : Sym E) (x : Letter Dw) (hx : letterOf Dw a.2.2 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β T F _ _ e Φ Cx hm a R st x hx v ε y hy`. Establish `he` using `expo_single (Dw := Dw) (a, R, st) x hx`. Establish `hd : divOf Φ (expo Dw (Finsupp.single (a, R, st) 1)) = Φ.gr x.1 x.2`. Unfold `divOf`. Rewrite using `[Finset.sum_eq_single x]`.
+
+Rewrite using `[he, if_pos rfl, one_smul]`. Introduce `x' _ h`. Rewrite using `[he, if_neg (Ne.symm h), zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ x) h`.
+
+Establish `hp : (∏ x' : Letter Dw, LineNorm.dg Φ (below y.1) x'.1 x'.2 ^ expo Dw (Finsupp.single (a, R, st) 1) x') = LineNorm.dg Φ (below y.1) x.1 x.2`. Rewrite using `[Finset.prod_eq_single x]`. Rewrite using `[he, if_pos rfl, zpow_one]`. Introduce `x' _ h`. Rewrite using `[he, if_neg (Ne.symm h), zpow_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ x) h`. Establish `h1 : (Φ.gr x.1 x.2).IsEqn (below y.1) 1` using `not_not.1 hy`. Use `⟨not_not.1 fun h => hy (((LineNorm.fr_spec Φ (below y.1)).2 x.1 x.2).mem_supp_iff.2 h), ?_⟩` and prove the remaining obligations. Rewrite using `[lam_eq Φ hm _ v ε y (hd ▸ h1), hp, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, Int.cast_one, one_mul]`.
+-/
 theorem UpperTheory.metric_letter_height :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (Φ : FlagCpt T e) (Cx : CxSt F) (hm : Mets Φ Cx) (a : ℕ → Bool) (R : Option ℝ) (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) (x : Pad.Letter Dw), letterOf Dw st = some x → ∀ (v : HeightOneSpectrum (𝓞 F)) (ε : TrueGeo.Ext v) (y : AlgPt Φ.Y), below y.1 ∉ (Φ.gr x.1 x.2).supp → UnitAt (below y.1) (GlobalTheory.LineNorm.dg Φ (below y.1) x.1 x.2 : Φ.Y.Fn) ∧ lam (adlOf Φ hm (Finsupp.single (a, R, st) 1)) v ε y = Real.log (ε.w (TrueGeo.valAt y.1 (GlobalTheory.LineNorm.dg Φ (below y.1) x.1 x.2 : Φ.Y.Fn))) + GlobalTheory.LineNorm.symLog Φ a st v ε y := by
   intro E _ _ _ H Dw l Xo c O _ β T F _ _ e Φ Cx hm a R st x hx v ε y hy

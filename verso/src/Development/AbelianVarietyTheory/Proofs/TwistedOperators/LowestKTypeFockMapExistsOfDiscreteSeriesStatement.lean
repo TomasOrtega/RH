@@ -15,5 +15,8 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ArchRec
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArchRec.IoMap.ioEx_of_discreteSeriesCover | exact GlobalTheory.ArchRec.IoMap.ioEx_of_discreteSeriesCover | (intros; apply GlobalTheory.ArchRec.IoMap.ioEx_of_discreteSeriesCover <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lowestKTypeFockMap_exists_of_discreteSeries : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ D : D7, IoEx D := by
   first | exact @GlobalTheory.ArchRec.IoMap.ioEx_of_discreteSeriesCover | exact GlobalTheory.ArchRec.IoMap.ioEx_of_discreteSeriesCover | (intros; apply GlobalTheory.ArchRec.IoMap.ioEx_of_discreteSeriesCover <;> assumption)

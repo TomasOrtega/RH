@@ -32,6 +32,13 @@ def DF : Obj I ⥤ CommRingCat.{0} where
   map_id _ := rfl
   map_comp _ _ := rfl
 
+/- English proof (translation)
+Set `_` to `φ.toAlgebra`. Establish `: Algebra.Etale A T` using `h.etale`. Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 (inferInstance : Algebra.FiniteType A T)`. Set `e0` to `Ideal.quotientKerAlgEquivOfSurjective hf`. Establish `hcomp : (e0.symm : T →+* MvPolynomial (Fin n) A ⧸ RingHom.ker f).comp φ = algebraMap A (MvPolynomial (Fin n) A ⧸ RingHom.ker f)`.
+
+Use `AlgHom.comp_algebraMap (e0.symm : T →ₐ[A] MvPolynomial (Fin n) A ⧸ RingHom.ker f)` as an intermediate fact. Rewrite using `[← RingHom.algebraMap_toAlgebra φ]`. Conclude with `this`. Establish `hg : Good (algebraMap A (MvPolynomial (Fin n) A ⧸ RingHom.ker f)) I`. Rewrite using `[← hcomp]`.
+
+Conclude with `hC.2 _ _ _ _ _ _ h (hC.1 _ _ e0.symm.toRingEquiv _)`. Conclude with `⟨⟨n, RingHom.ker f, hg⟩, e0.symm, hcomp⟩`.
+-/
 theorem key (hC : LeafComp) {T : Type} [CommRing T] (φ : A →+* T) (h : Good φ I) :
     ∃ (X : Obj I) (ρ : T →+* X.Q), ρ.comp φ = X.s := by
   let _ := φ.toAlgebra
@@ -48,6 +55,15 @@ theorem key (hC : LeafComp) {T : Type} [CommRing T] (φ : A →+* T) (h : Good �
     exact hC.2 _ _ _ _ _ _ h (hC.1 _ _ e0.symm.toRingEquiv _)
   exact ⟨⟨n, RingHom.ker f, hg⟩, e0.symm, hcomp⟩
 
+/- English proof (translation)
+Establish `hf : IsFiltered (Obj I)` using `{ cocone_objs := fun X Y => by`. Take `⟨T, _, u, u', huu, hg⟩` from `hS _ _ _ X.s Y.s I X.good Y.good`. Take `⟨Z, ρ, hρ⟩` from `key hC _ hg`. Use `⟨Z, ⟨ρ.comp u, by rw [RingHom.comp_assoc, hρ]⟩, ⟨ρ.comp u', ?_⟩, trivial⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, ← huu, hρ]`.
+
+Use `cocone_maps := fun X Y f g => by`. Take `⟨T, _, w, hw, hg⟩` from `hQ _ _ _ X.s Y.s I f.1 g.1 X.good Y.good f.2 g.2`. Take `⟨Z, ρ, hρ⟩` from `key hC _ hg`. Use `⟨Z, ⟨ρ.comp w, by rw [RingHom.comp_assoc, hρ]⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(ρ.comp w).comp f.1 = (ρ.comp w).comp g.1`.
+
+Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc, hw]`. Use `nonempty := by`. Take `⟨Z, _, _⟩` from `key hC (RingHom.id A) (hC.1 A A (RingEquiv.refl A) I)`. Conclude with `⟨Z⟩ }`. Use `⟨@Diag.mk A _ I (Obj I) _ hf DF (fun X => X.s) (fun e => e.2) (fun X => X.good) ?_⟩` and prove the remaining obligations.
+
+Introduce `j S _ ψ hψ`. Establish `hg : Good (ψ.comp j.s) I` using `hC.2 _ _ _ _ _ _ j.good hψ`. Take `⟨Z, ρ, hρ⟩` from `key hC _ hg`. Conclude with `⟨Z, ⟨ρ.comp ψ, hρ⟩, ρ, rfl⟩`.
+-/
 theorem diag_nonempty (hC : LeafComp) (hS : LeafSup) (hQ : LeafCoeq) (A : Type) [CommRing A] (I : Ideal A) :
     Nonempty (Diag A I) := by
   have hf : IsFiltered (Obj I) :=
@@ -75,6 +91,9 @@ end LateralTheory.CohomologicalPurity.Hz.DiagPf
 
 namespace LateralTheory.CohomologicalPurity.Hz
 
+/- English proof (translation)
+Introduce `A _ I` and use `DiagPf.diag_nonempty hC hS hQ A I`.
+-/
 theorem LeafDiag_of (hC : LeafComp) (hS : LeafSup) (hQ : LeafCoeq) : LeafDiag :=
   fun A _ I => DiagPf.diag_nonempty hC hS hQ A I
 

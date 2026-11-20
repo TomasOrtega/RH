@@ -14,6 +14,11 @@ section Local
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hs0 : 0 < valuation k (s : k)` using `by simp [zero_lt_iff]`. Establish `hmem : u * s⁻¹ ∈ unitFilt k m`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hus, mul_inv_cancel₀ hs0.ne']`. Establish `e : ((u * s⁻¹ : kˣ) : k) - 1 = ((u : k) - s) * (s : k)⁻¹`.
+
+Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, sub_mul, mul_inv_cancel₀ s.ne_zero]`. Rewrite using `[e, map_mul, map_inv₀, mul_inv_le_iff₀ hs0]`. Conclude with `h`. Use `hθ _ hmem` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem eq_of_close {θ : kˣ →* ℂˣ} {m : ℕ} (hθ : ∀ x ∈ unitFilt k m, θ x = 1) {u s : kˣ}
     (hus : valuation k (u : k) = valuation k (s : k))
     (h : valuation k ((u : k) - s) ≤ uniformizer k ^ m * valuation k (s : k)) : θ u = θ s := by
@@ -34,8 +39,14 @@ def ballSub (p : kˣ) : AddSubgroup k where
   zero_mem' := by simp [cball]
   neg_mem' := neg_mem_cball
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ballSub {p : kˣ} {z : k} : z ∈ ballSub p ↔ valuation k z ≤ valuation k (p : k) := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `Valuation.map_one_add_of_lt _ (lt_of_le_of_lt (mem_ballSub.1 z.2) hp)`.
+-/
 theorem val_one_add {p : kˣ} (hp : valuation k (p : k) < 1) (z : ballSub p) : valuation k (1 + (z : k)) = 1 :=
   Valuation.map_one_add_of_lt _ (lt_of_le_of_lt (mem_ballSub.1 z.2) hp)
 
@@ -45,6 +56,9 @@ def onePlus {p : kˣ} (hp : valuation k (p : k) < 1) (z : ballSub p) : kˣ :=
     rw [h0, map_zero] at this
     exact zero_ne_one this)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_onePlus {p : kˣ} (hp : valuation k (p : k) < 1) (z : ballSub p) :
     ((onePlus hp z : kˣ) : k) = 1 + (z : k) := rfl
 
@@ -53,6 +67,9 @@ def addCharOn (ψ : AddChar k Circle) (p : kˣ) (w : k) : Multiplicative (ballSu
   map_one' := by simp
   map_mul' x y := by simp [mul_add, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem addCharOn_apply (ψ : AddChar k Circle) (p : kˣ) (w : k) (z : Multiplicative (ballSub p)) :
     addCharOn ψ p w z = (ψ (w * ((Multiplicative.toAdd z : ballSub p) : k)) : ℂ) := rfl
 
@@ -78,6 +95,9 @@ def alphaChar (α : kˣ →* ℂˣ) {p : kˣ} (hp : valuation k (p : k) < 1) {m 
       rw [e, map_mul, val_onePlus, h1, mul_one]
       exact (mul_le_mul' (mem_ballSub.1 (Multiplicative.toAdd x).2) (mem_ballSub.1 (Multiplicative.toAdd y).2)).trans hpm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem alphaChar_apply (α : kˣ →* ℂˣ) {p : kˣ} (hp : valuation k (p : k) < 1) {m : ℕ}
     (hα : ∀ x ∈ unitFilt k m, α x = 1) (hpm : valuation k (p : k) * valuation k (p : k) ≤ uniformizer k ^ m)
     (z : Multiplicative (ballSub p)) :

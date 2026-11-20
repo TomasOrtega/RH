@@ -17,12 +17,20 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {a : Weil h →* (w.adicCompletion E)ˣ}
 
+/- English proof (translation)
+Establish `h0` using `ha.ord_eq (ineIncl h t)`. Rewrite `h0` using `[deg_ineIncl, neg_zero]`. Conclude with `ord_eq_zero_iff.mp h0`.
+-/
 theorem val_ine (ha : IsLocalArtin h a) (t : Ine (F := E) A) :
     valuation (w.adicCompletion E) ((a (ineIncl h t) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1 := by
   have h0 := ha.ord_eq (ineIncl h t)
   rw [deg_ineIncl, neg_zero] at h0
   exact ord_eq_zero_iff.mp h0
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `ha.surj u`. Establish `h0` using `ha.ord_eq σ`. Rewrite `h0` using `[hσ, ord_eq_zero hu]`. Establish `hd : deg σ = 0` using `by omega`. Use `⟨⟨(σ : G E Ω), deg_eq_zero_iff.mp hd⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `e : ineIncl h ⟨(σ : G E Ω), deg_eq_zero_iff.mp hd⟩ = σ` using `Subtype.ext rfl`. Rewrite using `[e, hσ]`.
+-/
 theorem exists_ine (ha : IsLocalArtin h a) (u : (w.adicCompletion E)ˣ)
     (hu : valuation (w.adicCompletion E) (u : w.adicCompletion E) = 1) :
     ∃ t : Ine (F := E) A, a (ineIncl h t) = u := by
@@ -36,6 +44,9 @@ theorem exists_ine (ha : IsLocalArtin h a) (u : (w.adicCompletion E)ˣ)
 
 end P_artinIne
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h a ha`. Conclude with `⟨P_artinIne.val_ine ha, P_artinIne.exists_ine ha⟩`.
+-/
 theorem step_artinIne : ArtinInertiaProp := by
   intro E Ω _ _ _ _ _ A w h a ha
   exact ⟨P_artinIne.val_ine ha, P_artinIne.exists_ine ha⟩

@@ -5,6 +5,9 @@ open GlobalTheory.HeckeFamilyMatrices Polynomial UpperHalfPlane
 open scoped MatrixGroups ModularForm
 open scoped Manifold
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeckeFamilyMatrices.HeckeEqv.period_map_equivariant | exact GlobalTheory.HeckeFamilyMatrices.HeckeEqv.period_map_equivariant | (intros; apply GlobalTheory.HeckeFamilyMatrices.HeckeEqv.period_map_equivariant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.per_hecke_and_diamond_sub_mem_b1_of_lev : ∀ (N l k : ℕ), 5 ≤ N → l.Prime → ¬ l ∣ N → 3 ≤ k → ∀ f : ModularForm (Lev N l) (k : ℤ),
   (∀ (q : ℕ) (σ : SL(2, ℤ)), q.Prime → ¬ q ∣ N * l → IsDiam N l (q : ZMod N) σ →
     per (Lev N l) (k - 2) (TqF (k : ℤ) q σ ⇑f) - TqZ (Lev N l) (k - 2) q σ (per (Lev N l) (k - 2) ⇑f) ∈ B1 (Lev N l) (k - 2)) ∧

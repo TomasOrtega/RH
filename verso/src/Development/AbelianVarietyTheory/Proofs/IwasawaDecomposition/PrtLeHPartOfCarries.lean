@@ -20,6 +20,11 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 
 namespace GlobalTheory.Mem.R3
 
+/- English proof (translation)
+Introduce `v`. Establish `hQ` using `(GlobalTheory.T.theta_lift_levels_good_primes_properties R.toRealDat F.lv2 hC.lev).1`. Establish `hS : R.Sb = R.Pg` using `hW.allPl`. Unfold `SsetF`. Rewrite using `[hQ, hS]`.
+
+Simplify using `only [Finset.union_empty, Finset.mem_image]`. Use `exists_congr fun PP => and_congr_right fun _ => ?_` and prove the remaining obligations. Conclude with `⟨fun h => by rw [← h]; rfl, fun h => HeightOneSpectrum.ext h⟩`.
+-/
 theorem isSF_ssetF_base {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hW : R.WeakCharacterisation F) (hC : GlobalTheory.Hk3.Core R.toRealDat F.lv2) :
@@ -35,6 +40,13 @@ theorem isSF_ssetF_base {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Ty
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `_ _ _ hR D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH _ π c p hE hc`. Take `⟨hC, hSF, -, -⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hP.char hH.aux.ex`. Establish `hS` using `GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hR R.toRealDat`. Establish `hμ : Y.tupT D.what₂.mu0 = A3.A.μ0` using `by rw [← Y.tup0, Y.tupT_tup]`. Establish `hSF' : GlobalTheory.Hk3.IsSF R.toRealDat (SsetF R.toRealDat (Y.tupT D.what₂.mu0))`.
+
+Rewrite using `[hμ]`. Conclude with `isSF_ssetF_base R F hP.char hC`. Establish `hinj` using `GlobalTheory.AdjPart.adjoint_injective_on_part R ⟨hH.prim.posScal.1, fun i t p => hH.prim.posScal.2 i t p _⟩ hH.prim.thmB`. Establish `hlab` using `GlobalTheory.T.heckePolynomials_of_carried_eigensystem R F (GlobalTheory.Chain.LiftConv.liftInteg_of_cuspRapidDecay hR D) hH.ok hP.char hH.aux.ex hS hinj p c hc`. Establish `hpart` using `(GlobalTheory.T.full_algebra_part_le_split_hecke_part R.toRealDat F.lv2 (s := 1) hH.ok.ok2 hC _ hSF' c (RealDat.polE (A := A3.A) p.1.1)).1 fun P hP => (hlab P hP).1`.
+
+Rewrite using `[Y.prtE π]`. Use `Submodule.map_mono fun U hU => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `GlobalTheory.T.rowTypePart_le_eigensystemPart R.toRealDat F.lv2 (s := 1) hC hS _ hSF' Y.hF Y.PY Y.PW Y.stdPsi.1 Y.stdPsi.2 _ _ c hE true U hU`. Conclude with `hpart x hx`.
+-/
 theorem prt_le_hPart_of_carries : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0), Pins R F cG → Holds R F → HostHyp D → ∀ (π : D.what₂.FT) c p, HasEig R F Y π c → R.Carries p c → (Y.Ish.prt : D.what₂.FT → Submodule ℂ (AmbT (R.MY 0))) π ≤ (hPart (R.MY 0) (levG _ (R.βY 0) (R.dat0 R.triv)) (A3.A.ok A3.A.μ0) R.pl A3.A.q (RealDat.polE (A := A3.A) p.1.1)).map (PiTensorProduct.lift : Mult.MMap (R.MY 0) ≃ₗ[ℂ] _).toLinearMap := by
   intro _ _ _ hR D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH _ π c p hE hc
   obtain ⟨hC, hSF, -, -⟩ := GlobalTheory.CoreOfWeak.core_of_weak R F hP.char hH.aux.ex

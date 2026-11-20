@@ -31,6 +31,11 @@ section Unique
 variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ}
   {G G' : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
 
+/- English proof (translation)
+Take `⟨F, hF⟩` from `(toGtPt_bijective g' (T := thickObj R I e G)).2 (toGtPt g (𝟙 _))`. Establish `h` using `isPointOf_toGtPt g (𝟙 (thickObj R I e G))`. Establish `h'` using `(toGtPt_eq_iff g' F _).1 hF`. Use `⟨F, h'.1.symm.trans (h.1.trans (Category.id_comp _)), fun χ Z r z J hJ => ?_⟩` and prove the remaining obligations. Use `(val_pull hJ _ _ _).symm.trans ((val_corr hJ (h'.2 χ) r).symm.trans ((val_corr hJ (h.2 χ) r).trans ((val_pull hJ _ _ _).trans ?_)))` and prove the remaining obligations.
+
+Conclude with `congrArg (fun x => val (g.t χ) x z J) (Category.comp_id r)`.
+-/
 theorem exists_coordHom (g : GtCoord I D e G) (g' : GtCoord I D e G') :
     ∃ F : thickObj R I e G ⟶ thickObj R I e G', F.left ≫ g'.pG.left = g.pG.left ∧
       ∀ (χ : D.X) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G).left) (z : Z) (J), Good D.P.L z J →
@@ -43,6 +48,21 @@ theorem exists_coordHom (g : GtCoord I D e G) (g' : GtCoord I D e G') :
     ((val_corr hJ (h.2 χ) r).trans ((val_pull hJ _ _ _).trans ?_)))
   exact congrArg (fun x => val (g.t χ) x z J) (Category.comp_id r)
 
+/- English proof (translation)
+Take `⟨F, hF, vF⟩` from `exists_coordHom g g'`. Take `⟨F', hF', vF'⟩` from `exists_coordHom g' g`. Establish `him : ∀ {T} (x : T ⟶ thickObj R I e G), im g' (x ≫ F) = im g x` using `fun x => Over.OverMorphism.ext ((Category.assoc x.left F.left _).trans (congrArg (x.left ≫ ·) hF))`. Establish `mul : ∀ (T) (x y : T ⟶ thickObj R I e G), (x * y) ≫ F = (x ≫ F) * (y ≫ F)`. Introduce `T x y`.
+
+Use `Over.OverMorphism.ext (ext_of_val g' _ _ ?_ fun χ z J hJ => ?_)` and prove the remaining obligations. Establish `: im g' ((x * y) ≫ F) = im g' ((x ≫ F) * (y ≫ F))`. Rewrite using `[him, im_mul, im_mul, him, him]`. Conclude with `congrArg (·.left) this`. Establish `a` using `val_t_mul_points g hG χ x y z J hJ`.
+
+Establish `a'` using `val_t_mul_points g' hG χ (x ≫ F) (y ≫ F) z J hJ`. Establish `c : cubeVal g' χ z J (x ≫ F) (y ≫ F) = cubeVal g χ z J x y`. Unfold `cubeVal`. Rewrite using `[him, him]`. Rewrite `a'` using `[c]`.
+
+Use `(vF χ _ _ z J hJ).trans (mul_right_cancel (a.trans (Eq.trans ?_ a'.symm)))` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (vF χ _ _ z J hJ).symm (vF χ _ _ z J hJ).symm`. Use `⟨⟨F, F', Over.OverMorphism.ext (ext_of_val g _ _ ?_ fun χ z J hJ => ?_), Over.OverMorphism.ext (ext_of_val g' _ _ ?_ fun χ z J hJ => ?_)⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left, Category.assoc, hF', hF]`. Conclude with `(Category.id_comp _).symm`.
+
+Use `(vF' χ _ _ z J hJ).trans (Eq.trans ?_ (vF χ _ _ z J hJ))` and prove the remaining obligations. Conclude with `congrArg (fun x => val (g'.t χ) x z J) (Category.id_comp _).symm`. Rewrite using `[Over.comp_left, Category.assoc, hF, hF']`. Conclude with `(Category.id_comp _).symm`. Use `(vF χ _ _ z J hJ).trans (Eq.trans ?_ (vF' χ _ _ z J hJ))` and prove the remaining obligations.
+
+Conclude with `congrArg (fun x => val (g.t χ) x z J) (Category.id_comp _).symm`. Establish `h` using `mul (𝟙_ _) 1 1`. Rewrite `h` using `[_root_.mul_one]`. Establish `h' : (1 : 𝟙_ _ ⟶ thickObj R I e G) ≫ F = 1` using `mul_eq_left.1 h.symm`. Simplify `h'` using `only [Hom.one_def, toUnit_unit, Category.id_comp]`.
+
+Establish `h` using `mul _ (fst _ _) (snd _ _)`. Rewrite `h` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Use `h.trans ?_` and prove the remaining obligations. Use `congr 1`.
+-/
 theorem exists_iso_of_coord (hG : GlobalFnsSt) (g : GtCoord I D e G) (g' : GtCoord I D e G') :
     ∃ F : thickObj R I e G ≅ thickObj R I e G', IsMonHom F.hom := by
   obtain ⟨F, hF, vF⟩ := exists_coordHom g g'
@@ -90,10 +110,18 @@ variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R)
 
 abbrev bundle₀ (χ : D.X) : LB D.P.A.left := LB.LinComb D.P.L (D.Oφ (𝟙 D.P.A) χ) Oε
 
+/- English proof (translation)
+The claim follows from `(WeightPf.Oφ_comp x (𝟙 _) χ k).trans (by rw [Category.comp_id])`.
+-/
 theorem comp_Oφ_id {T : Over (Spec (CommRingCat.of R))} (x : T ⟶ D.P.A) (χ : D.X) (k : Fin 4) :
     x.left ≫ D.Oφ (𝟙 D.P.A) χ k = D.Oφ x χ k :=
   (WeightPf.Oφ_comp x (𝟙 _) χ k).trans (by rw [Category.comp_id])
 
+/- English proof (translation)
+Use `(((refines_self _ _).div (refines_self _ _)).div (refines_self _ _)).exists_gen D.P.isLB (fun U _ h => ?_) _ (DVR.pullGen_isGen _ _ _ _ D.cub.isGen (lift (toUnit _ ≫ D.c χ) (lift (toUnit _ ≫ D.c χ') (𝟙 D.P.A))).left)` and prove the remaining obligations. Use `(prod_cub (toUnit _ ≫ D.c χ) (toUnit _ ≫ D.c χ') (𝟙 D.P.A) h).trans (Eq.symm ?_)` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Use `(congrArg₂ (· * ·) (congrArg₂ (· * ·) (prod_O D (𝟙 _) _ h) (congrArg (·⁻¹) (prod_O D (𝟙 _) _ h))) (congrArg (·⁻¹) (prod_O D (𝟙 _) _ h))).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[c_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem bundle₀_add (χ χ' : D.X) :
     ∃ t : LB.Iso (bundle₀ D χ') (LB.div (bundle₀ D (χ + χ')) (bundle₀ D χ)), t.IsGen := by
   refine (((refines_self _ _).div (refines_self _ _)).div (refines_self _ _)).exists_gen D.P.isLB (fun U _ h => ?_)
@@ -108,6 +136,11 @@ theorem bundle₀_add (χ χ' : D.X) :
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Use `(refines_self _ _).exists_gen D.P.isLB (fun U _ h => ?_) _ isGen_one` and prove the remaining obligations. Use `(Fintype.prod_empty _).trans (Eq.symm ((prod_O D (𝟙 _) _ h).trans ?_))` and prove the remaining obligations. Rewrite using `[c_zero, _root_.one_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem bundle₀_zero : ∃ t : LB.Gen (bundle₀ D 0), t.IsGen := by
   refine (refines_self _ _).exists_gen D.P.isLB (fun U _ h => ?_) _ isGen_one
   refine (Fintype.prod_empty _).trans (Eq.symm ((prod_O D (𝟙 _) _ h).trans ?_))
@@ -116,6 +149,11 @@ theorem bundle₀_zero : ∃ t : LB.Gen (bundle₀ D 0), t.IsGen := by
   simp only [ofMul_mul, ofMul_inv, ofMul_one]
   abel
 
+/- English proof (translation)
+Use `((refines_self _ _).linComb _ _).exists_gen D.P.isLB (fun U _ h => ?_) _ (DVR.pullGen_isGen _ _ _ _ D.cub.isGen (lift (toUnit _ ≫ D.c χ) (lift (x2 D.P.A 0) (x2 D.P.A 1))).left)` and prove the remaining obligations. Use `(prod_cub (toUnit _ ≫ D.c χ) (x2 D.P.A 0) (x2 D.P.A 1) h).trans (Eq.symm ?_)` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type]`. Simplify using `only [zpow_mul, Finset.prod_zpow, comp_Oφ_id]`. Use `(prod_square (x2 D.P.A) (fun x => ∏ k, h (D.Oφ x χ k) ^ Oε k)).trans ?_` and prove the remaining obligations.
+
+Use `(congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg₂ (· * ·) (prod_O D _ _ h) (congrArg (·⁻¹) (prod_O D _ _ h))) (congrArg (·⁻¹) (prod_O D _ _ h))) (prod_O D _ _ h)).trans ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_one, ← _root_.mul_assoc (toUnit _ ≫ D.c χ)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem bundle₀_primitive (χ : D.X) : ∃ t : LB.Gen (abelian₂ D.P.A (bundle₀ D χ)), t.IsGen := by
   refine ((refines_self _ _).linComb _ _).exists_gen D.P.isLB (fun U _ h => ?_)
     _ (DVR.pullGen_isGen _ _ _ _ D.cub.isGen (lift (toUnit _ ≫ D.c χ) (lift (x2 D.P.A 0) (x2 D.P.A 1))).left)
@@ -130,6 +168,13 @@ theorem bundle₀_primitive (χ : D.X) : ∃ t : LB.Gen (abelian₂ D.P.A (bundl
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Use `((refines_self _ _).linComb _ _).exists_gen D.P.isLB (fun U _ h => ?_) _ isGen_one` and prove the remaining obligations. Use `(Fintype.prod_empty _).trans (Eq.symm ?_)` and prove the remaining obligations. Establish `e₁ : η[D.P.A] = (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A)`. Rewrite using `[Hom.one_def, toUnit_unit, Category.id_comp]`. Establish `e₂ : ∀ k, eSec D.P.A ≫ D.Oφ (𝟙 D.P.A) χ k = D.Oφ (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A) χ k` using `fun k => e₁ ▸ comp_Oφ_id D η[D.P.A] χ k`.
+
+Rewrite using `[Fintype.prod_prod_type, Fintype.prod_unique]`. Simplify using `only [_root_.mul_one, e₂]`. Use `(prod_O D _ _ h).trans ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_one]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem bundle₀_rig (χ : D.X) : ∃ t : LB.Gen ((bundle₀ D χ).pull (eSec D.P.A)), t.IsGen := by
   refine ((refines_self _ _).linComb _ _).exists_gen D.P.isLB (fun U _ h => ?_) _ isGen_one
   refine (Fintype.prod_empty _).trans (Eq.symm ?_)
@@ -157,6 +202,13 @@ def extOf : SplitExt (Spec (CommRingCat.of R)) where
 variable {D} {R' : Type} [CommRing R'] [IsDomain R'] {D' : DegPre R'}
   {f : Spec (CommRingCat.of R') ⟶ Spec (CommRingCat.of R)} {φ : D'.P.A.left ⟶ D.P.A.left}
 
+/- English proof (translation)
+Set `ρ` to `pushHom h D'.P.A`. Establish `e₁ : ρ (toUnit _ ≫ D'.c y') = toUnit _ ≫ D.c y` using `Over.OverMorphism.ext (by`. Express the relevant statement in the definitionally equal form `(D'.P.A.hom ≫ (D'.c y').left) ≫ φ = (D'.P.A.hom ≫ f) ≫ (D.c y).left`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (D'.P.A.hom ≫ ·) hc).trans (Category.assoc _ _ _).symm))`. Establish `e₂ : (ρ (𝟙 _)).left = φ` using `Category.id_comp φ`.
+
+Rewrite using `[← congrArg (· ≫ D.Oφ (𝟙 _) y k) e₂]`. Use `Eq.trans ?_ (comp_Oφ_id D (ρ (𝟙 _)) y k).symm` and prove the remaining obligations. Use `fin_cases k`. Conclude with `congrArg (·.left) ((map_mul ρ (𝟙 _) (toUnit _ ≫ D'.c y')).trans (congrArg (ρ (𝟙 _) * ·) e₁))`. Conclude with `congrArg (·.left) e₁`.
+
+Both sides reduce to the same expression. Conclude with `congrArg (·.left) (map_one ρ)`.
+-/
 theorem Oφ_push (h : IsGrpPullback D'.P.A D.P.A f φ) {y : D.X} {y' : D'.X}
     (hc : (D'.c y').left ≫ φ = f ≫ (D.c y).left) (k : Fin 4) :
     D'.Oφ (𝟙 _) y' k ≫ φ = φ ≫ D.Oφ (𝟙 _) y k := by
@@ -173,6 +225,11 @@ theorem Oφ_push (h : IsGrpPullback D'.P.A D.P.A f φ) {y : D.X} {y' : D'.X}
   · rfl
   · exact congrArg (·.left) (map_one ρ)
 
+/- English proof (translation)
+Take `⟨d⟩` from `hE`. Take `⟨β, hβ, hβ'⟩` from `grpPullback_iso (isGrpPullback_pullback D.P.A (thick R' I e ≫ f)) ((isGrpPullback_pullback D'.P.A (thick R' I e)).comp h)`. Take `⟨κ, hκ, -⟩` from `grpPullback_iso (isGrpPullback_pullback G (thick R' I e ≫ f)) ((isGrpPullback_pullback ((Over.pullback f).obj G) (thick R' I e)).comp (isGrpPullback_pullback G f))`. Use `nonempty_gtCoord_of_isGt hG R' I D' e _ (GtBaseChange.extBC (thick R' I e ≫ f) (extOf D)) β xe hβ (fun χ => ?_) (isGt_of_iso κ (GtBaseChange.isGt_extBC _ _ G d))` and prove the remaining obligations. Use `LBIso.chartPull (chartPullOut D.P.L (D.Oφ (𝟙 _) (xe χ)) Oε _ _ fun k => ?_) (chartPullId _) (iso_linComb ((isGen_iff w).1 hw) _ Oε).symm` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, Oφ_push h (hc χ) k, ← Category.assoc]`. Conclude with `congrArg (· ≫ _) ((Category.assoc _ _ _).trans hβ')`.
+-/
 theorem nonempty_coord_pullback (hG : GlobalFnsSt) (h : IsGrpPullback D'.P.A D.P.A f φ)
     (w : LB.Iso D'.P.L (D.P.L.pull φ)) (hw : w.IsGen) (xe : D'.X ≃+ D.X)
     (hc : ∀ y, (D'.c y).left ≫ φ = f ≫ (D.c (xe y)).left) (I : Ideal R') (e : ℕ)
@@ -192,6 +249,11 @@ theorem nonempty_coord_pullback (hG : GlobalFnsSt) (h : IsGrpPullback D'.P.A D.P
 
 end Datum
 
+/- English proof (translation)
+Use `letI := hK.toField`. Take `⟨F, ⟨hF, eF⟩, -⟩` from `h T K G G' hG hG' f.hom hf`. Take `⟨F', ⟨hF', eF'⟩, -⟩` from `h T K G' G hG' hG f.inv inferInstance`. Use `⟨⟨F, F', (h T K G G hG hG (𝟙 _) inferInstance).unique ⟨inferInstance, ?_⟩ ⟨inferInstance, CategoryTheory.Functor.map_id _ _⟩, (h T K G' G' hG' hG' (𝟙 _) inferInstance).unique ⟨inferInstance, ?_⟩ ⟨inferInstance, CategoryTheory.Functor.map_id _ _⟩⟩, hF⟩` and prove the remaining obligations. Rewrite using `[Functor.map_comp, eF, eF']`.
+
+Conclude with `f.hom_inv_id`. Rewrite using `[Functor.map_comp, eF, eF']`. Conclude with `f.inv_hom_id`.
+-/
 theorem exists_iso_of_generic (h : HomExtSt) (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T]
     [CommRing K] (hK : IsField K) [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G']
     (hG : IsSemiAbelian G) (hG' : IsSemiAbelian G')
@@ -209,11 +271,19 @@ theorem exists_iso_of_generic (h : HomExtSt) (T K : Type) [CommRing T] [IsDomain
   · rw [Functor.map_comp, eF, eF']
     exact f.inv_hom_id
 
+/- English proof (translation)
+Use `Ideal.Quotient.eq.2 (Ideal.mem_of_dvd J (PowerSeries.X_dvd_iff.2 ?_) hJ)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem mk_C_constantCoeff {A : Type} [CommRing A] {J : Ideal (PowerSeries A)} (hJ : PowerSeries.X ∈ J)
     (s : PowerSeries A) : Ideal.Quotient.mk J (PowerSeries.C (PowerSeries.constantCoeff s)) = Ideal.Quotient.mk J s := by
   refine Ideal.Quotient.eq.2 (Ideal.mem_of_dvd J (PowerSeries.X_dvd_iff.2 ?_) hJ)
   simp
 
+/- English proof (translation)
+Establish `: Nontrivial (PowerSeries K ⧸ IsLocalRing.maximalIdeal (PowerSeries K) ^ (0 + 1))`. Rewrite using `[zero_add, pow_one]`. Use `infer_instance`. Use `⟨RingHom.injective _, fun x => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+
+Use `⟨_, mk_C_constantCoeff ?_ s⟩` and prove the remaining obligations. Rewrite using `[zero_add, pow_one, PowerSeries.maximalIdeal_eq_span_X]`. Conclude with `Ideal.subset_span rfl`.
+-/
 theorem bijective_mk_C (K : Type) [Field K] :
     Function.Bijective ((Ideal.Quotient.mk (IsLocalRing.maximalIdeal (PowerSeries K) ^ (0 + 1))).comp
       (PowerSeries.C (R := K))) := by
@@ -231,6 +301,23 @@ namespace GlobalTheory
 
 open ArcSplit
 
+/- English proof (translation)
+Introduce `hL _ _ hExt E _ _ _ H D l Xo c W₀ Y O' _ _ _ b a hO χ t m hA`. Take `⟨t', m', P, φ, -, w, e, hφ, hw, -, -, hc, -⟩` from `hA`. Establish `hG` using `hL.globalFns`. Take `⟨G, _, hGs, hGt⟩` from `exists_isSemiAbelian_isGt hG _ (extOf a.D₀)`. Use `hGs.comm` as an intermediate fact.
+
+Set `K'` to `FractionRing O'`. Set `I` to `IsLocalRing.maximalIdeal (PowerSeries K')`. Set `K` to `PowerSeries K' ⧸ I ^ (0 + 1)`. Set `f : O' →+* PowerSeries K'` to `(PowerSeries.C (R := K')).comp (algebraMap O' K')`. Establish `hb` using `bijective_mk_C K'`.
+
+Set `ε : K' ≃+* K` to `RingEquiv.ofBijective _ hb`. Establish `hK : IsField K` using `ε.symm.toMulEquiv.isField (Field.toIsField K')`. Use `letI : Algebra O' K := ((Ideal.Quotient.mk (I ^ (0 + 1))).comp f).toAlgebra`. Establish `: IsFractionRing O' K` using `IsLocalization.isLocalization_of_algEquiv (nonZeroDivisors O') (AlgEquiv.ofRingEquiv (f := ε) fun _ => rfl)`. Establish `hX : PowerSeries.X ∈ I ^ (0 + 1)`.
+
+Rewrite using `[zero_add, pow_one, show I = _ from PowerSeries.maximalIdeal_eq_span_X]`. Conclude with `Ideal.subset_span rfl`. Take `⟨g'⟩` from `nonempty_coord_pullback hG hφ w hw e.symm.toAddEquiv (fun y => by have := hc (e.symm y); rwa [e.apply_symm_apply] at this) I 0 G hGt`. Take `⟨F₁, hF₁⟩` from `exists_iso_of_coord hG (P.U.gt 0) g'`. Set `ev : PowerSeries O' →+* O'` to `PowerSeries.constantCoeff`.
+
+Set `A` to `(Over.pullback (spMap ev)).obj t.G`. Establish `e₁ : thick (PowerSeries K') I 0 ≫ spMap f = spMap (algebraMap O' K)` using `(spMap_comp _ _).symm`. Establish `e₂ : thick (PowerSeries K') I 0 ≫ spMap (PowerSeries.map (algebraMap O' K')) = spMap (algebraMap O' K) ≫ spMap ev`. Use `(spMap_comp _ _).symm.trans (Eq.trans (congrArg spMap (RingHom.ext fun s => ?_)) (spMap_comp _ _))` and prove the remaining obligations. Use `(mk_C_constantCoeff hX _).symm.trans (congrArg (fun x => Ideal.Quotient.mk _ (PowerSeries.C x)) ?_)` and prove the remaining obligations.
+
+Both sides reduce to the same expression. Take `⟨F₀, hF₀, -⟩` from `grpPullback_iso (((isGrpPullback_pullback A (spMap (algebraMap O' K))).comp (isGrpPullback_pullback t.G (spMap ev))).comp m.cart) (((isGrpPullback_pullback t'.G (thick (PowerSeries K') I 0)).comp m'.cart).congr (by rw [← Category.assoc, e₂]) rfl)`. Take `⟨F₂, hF₂, -⟩` from `grpPullback_iso (((isGrpPullback_pullback _ (thick (PowerSeries K') I 0)).comp (isGrpPullback_pullback G (spMap f))).congr e₁ rfl) (isGrpPullback_pullback G (spMap (algebraMap O' K)))`. Take `⟨F, hF⟩` from `exists_iso_of_generic hExt O' K hK A G (IsSemiAbelian.pullback _ t.G t.semi) hGs (F₀ ≪≫ F₁ ≪≫ F₂) (inferInstanceAs (IsMonHom (F₀.hom ≫ F₁.hom ≫ F₂.hom)))`. Establish `: IsMonHom F.symm.hom` using `inferInstanceAs (IsMonHom F.inv)`.
+
+Take `⟨d⟩` from `isGt_of_iso F.symm hGt`. Set `J : Ideal (PowerSeries O')` to `Ideal.span {PowerSeries.X}`. Set `s : O' →+* PowerSeries O' ⧸ J` to `(Ideal.Quotient.mk J).comp PowerSeries.C`. Establish `e₃ : spMap s ≫ spMap ev = spMap (Ideal.Quotient.mk J)` using `(spMap_comp _ _).symm.trans (congrArg spMap (RingHom.ext (mk_C_constantCoeff (Ideal.subset_span rfl))))`. Take `⟨F₃, hF₃, -⟩` from `grpPullback_iso (((isGrpPullback_pullback A (spMap s)).comp (isGrpPullback_pullback t.G (spMap ev))).congr e₃ rfl) (isGrpPullback_pullback t.G (spMap (Ideal.Quotient.mk J)))`.
+
+Conclude with `⟨_, isGt_of_iso F₃ (GtBaseChange.isGt_extBC (spMap s) _ A d)⟩`.
+-/
 theorem splitOver_of_hasArcData : Laws → Laws2 → Laws3 → HomExtSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype) (O' : Type) [CommRing O'] [IsDomain O'] [CharZero O'] (b : c.V W₀ →+* O') (a : ArcIn D l (c.V W₀).subtype O' b), IsDiscreteValuationRing O' → ∀ (χ : Sp (PowerSeries O') ⟶ Y.X) (t : SAB H (Sp (PowerSeries O'))) (_ : SABMap t Y.t χ), Y.HasArcData a (IsLocalRing.maximalIdeal (PowerSeries (FractionRing O'))) ((PowerSeries.C (R := FractionRing O')).comp (algebraMap O' _)) PowerSeries.X (spMap (PowerSeries.map (algebraMap O' (FractionRing O'))) ≫ χ) → SplitOver t.G (Ideal.span {(PowerSeries.X : PowerSeries O')}) := by
   intro hL _ _ hExt E _ _ _ H D l Xo c W₀ Y O' _ _ _ b a hO χ t m hA
   obtain ⟨t', m', P, φ, -, w, e, hφ, hw, -, -, hc, -⟩ := hA

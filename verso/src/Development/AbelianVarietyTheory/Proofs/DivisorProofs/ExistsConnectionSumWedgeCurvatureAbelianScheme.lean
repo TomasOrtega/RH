@@ -18,11 +18,25 @@ set_option autoImplicit false
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cohomologyDerivativeRelation_semilinearPullback R R _ _ A.hom Y.hom (RingHom.id R) f.left (ovw f) x n y w h`.
+-/
 theorem dRel_pO {R : Type} [CommRing R] {Y A : Over (Sp R)} (f : Y ⟶ A) (x : HO1 A.hom) {n : ℕ}
     (y : Fin n → HO1 A.hom) (w : Fin n → GlobForm A.hom) (h : DRel (OAff A.hom) x y w) :
     DRel (OAff Y.hom) (pO1 f x) (fun k ↦ pO1 f (y k)) (fun k ↦ pF f (w k)) :=
   GlobalTheory.T.cohomologyDerivativeRelation_semilinearPullback R R _ _ A.hom Y.hom (RingHom.id R) f.left (ovw f) x n y w h
 
+/- English proof (translation)
+Take `⟨-, -, hA2, hs2⟩` from `GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hA hs`. Take `⟨hF2, hC2, -, -⟩` from `GlobalTheory.T.abelianScheme_oneFormFrame_and_square R (A ⊗ A) (g + g) hA2 hs2`. Take `⟨hax, hafF, -⟩` from `GlobalTheory.T.grpObj_pullback_axes_cohomology_projections R A`. Establish `hprim` using `GlobalTheory.T.primitive_h1_structure_abelian R A g hA hs x`. Use `set a₁ : A ⟶ A ⊗ A := lift (𝟙 A) (toUnit A ≫ η[A])`.
+
+Use `set a₂ : A ⟶ A ⊗ A := lift (toUnit A ≫ η[A]) (𝟙 A)`. Establish `hμ` using `dRel_pO μ[A] x y w hx`. Establish `hfst` using `dRel_pO (fst A A) x y w hx`. Establish `hsnd` using `dRel_pO (snd A A) x y w hx`. Establish `hsum` using `(GlobalTheory.T.derivativeCurvatureClosedness_relations_add R _ (OAff (A ⊗ A).hom)).1 _ _ _ _ _ _ _ _ hfst hsnd`.
+
+Rewrite `hsum` using `[← hprim]`. Establish `key` using `GlobalTheory.T.cohomologyDerivativeRelation_pairing_wellDefined R _ (OAff (A ⊗ A).hom) hF2 hC2 _ _ _ _ _ _ _ hμ hsum (l ∘ₗ pF a₂)`. Rewrite `key` using `[Fin.sum_univ_add]`. Simplify using `only [LinearMap.comp_apply, Fin.append_left, Fin.append_right] at key`. Establish `e1 : ∀ k, l (pF a₂ (pF μ[A] (w k))) = l (w k)` using `fun k ↦ by rw [(hafF (w k)).2.2.2.2.2]`.
+
+Establish `e2 : ∀ k, l (pF a₂ (pF (fst A A) (w k))) = 0` using `fun k ↦ by rw [(hafF (w k)).2.2.2.1, map_zero]`. Establish `e3 : ∀ k, l (pF a₂ (pF (snd A A) (w k))) = l (w k)` using `fun k ↦ by rw [(hafF (w k)).2.2.2.2.1]`. Simplify using `only [e1, e2, e3, zero_smul, Finset.sum_const_zero, zero_add] at key`. Use `congrArg (pO1 a₁) key` as an intermediate fact. Simplify using `only [map_sum, map_smul] at this`.
+
+Establish `f1 : ∀ k, pO1 a₁ (pO1 μ[A] (y k)) = y k` using `fun k ↦ (hax (y k)).2.2.1`. Establish `f2 : ∀ k, pO1 a₁ (pO1 (snd A A) (y k)) = 0` using `fun k ↦ (hax (y k)).2.1`. Simplify using `only [f1, f2, smul_zero, Finset.sum_const_zero] at this`. Conclude with `this`.
+-/
 theorem sum_dRel_eq_zero (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A)
     (hs : SmoothOfRelativeDimension g A.hom) (x : HO1 A.hom) {n : ℕ} (y : Fin n → HO1 A.hom)
     (w : Fin n → GlobForm A.hom) (hx : DRel (OAff A.hom) x y w) (l : GlobForm A.hom →ₗ[R] R) :
@@ -52,6 +66,9 @@ theorem sum_dRel_eq_zero (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g
   simp only [f1, f2, smul_zero, Finset.sum_const_zero] at this
   exact this
 
+/- English proof (translation)
+Introduce `R _ A _ g hA hs x`. Take `⟨hF, hC, -, -⟩` from `GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hA hs`. Take `⟨n, y, w, hx⟩` from `GlobalTheory.T.exists_cohomologyDerivativeRelation_of_frame R _ (OAff A.hom) hF x`. Conclude with `GlobalTheory.T.exists_connection_of_cohomologyDerivativeRelation R _ (OAff A.hom) hF hC x n y w hx (fun l ↦ sum_dRel_eq_zero R A g hA hs x y w hx l)`.
+-/
 theorem exists_obRel_abelian : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → ∀ x : HO1 A.hom, ∃ (m : ℕ) (u v : Fin m → GlobForm A.hom),
       ObRel (OAff A.hom) x u v := by

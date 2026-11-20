@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.GaugeEx.GramDensity
 
+/- English proof (translation)
+Establish `h2` using `(measurePreserving_finTwoArrow (Measure.pi fun _ : Fin M => lam)).symm`. Establish `h1` using `measurePreserving_funUnique (Measure.pi fun _ : Fin M => lam) (Fin 1)`. Unfold `tupMeas`. Rewrite using `[← h2.lintegral_comp hf, lintegral_prod (fun a => f (MeasurableEquiv.finTwoArrow.symm a)) (hf.comp h2.measurable).aemeasurable, ← h1.lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _)]`. Both sides reduce to the same expression.
+-/
 theorem lintegral_tup_two {S : Type} [MeasurableSpace S] (lam : Measure S) [SigmaFinite lam] (M : ℕ)
     (f : (Fin 2 → Fin M → S) → ℝ≥0∞) (hf : Measurable f) :
     ∫⁻ X, f X ∂(tupMeas lam 2 M) =
@@ -29,6 +32,13 @@ theorem lintegral_tup_two {S : Type} [MeasurableSpace S] (lam : Measure S) [Sigm
     ← h1.lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _)]
   rfl
 
+/- English proof (translation)
+Establish `hk : IsCompact (Function.uncurry Ψ' '' (C ×ˢ tsupport φ))` using `(hC.prod hs).image_of_continuousOn (hΨ'.mono (Set.prod_mono le_rfl (Set.subset_univ _)))`. Establish `hz : ∀ p x, p ∈ C → x ∉ Function.uncurry Ψ' '' (C ×ˢ tsupport φ) → φ (Ψ p x) = 0`. Introduce `p x hp hx`. Assume the negation of the conclusion as `h`. Conclude with `hx ⟨(p, Ψ p x), ⟨hp, subset_tsupport _ h⟩, hinv p hp x⟩`.
+
+Use `⟨continuousOn_integral_of_compact_support (f := fun p x => φ (Ψ p x)) hk (hφ.comp_continuousOn hΨ) hz, fun p hp => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun x => φ (Ψ p x)`. Use `hφ.comp ?_` and prove the remaining obligations. Use `hΨ.comp_continuous (f := fun x => (p, x)) (by fun_prop) (fun x => ⟨hp, trivial⟩)` as an intermediate fact. Conclude with `this`.
+
+Conclude with `hc.integrable_of_hasCompactSupport (HasCompactSupport.intro hk fun x hx => hz p x hp hx)`.
+-/
 theorem continuousOn_integral_param {P X : Type} [TopologicalSpace P] [TopologicalSpace X] [T2Space X]
     [MeasurableSpace X] [OpensMeasurableSpace X] (N : Measure X) [IsFiniteMeasureOnCompacts N]
     {C : Set P} (hC : IsCompact C) (Ψ Ψ' : P → X → X)
@@ -51,9 +61,17 @@ theorem continuousOn_integral_param {P X : Type} [TopologicalSpace P] [Topologic
     exact this
   exact hc.integrable_of_hasCompactSupport (HasCompactSupport.intro hk fun x hx => hz p x hp hx)
 
+/- English proof (translation)
+The claim follows from `(IsOpenUnits.isOpenEmbedding_unitsVal (M := R)).isOpen_range`.
+-/
 theorem isOpen_isUnit {R : Type} [CommRing R] [TopologicalSpace R] (h : IsOpenUnits R) :
     IsOpen {u : R | IsUnit u} := (IsOpenUnits.isOpenEmbedding_unitsVal (M := R)).isOpen_range
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨u, rfl⟩`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Rewrite using `[← (IsOpenUnits.isOpenEmbedding_unitsVal (M := R)).continuousAt_iff]`. Establish `: (Ring.inverse : R → R) ∘ (Units.val : Rˣ → R) = fun u => ((u⁻¹ : Rˣ) : R)`. Use function extensionality and compare the values at `u`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Units.continuous_coe_inv.continuousAt`.
+-/
 theorem continuousOn_ringInverse {R : Type} [CommRing R] [TopologicalSpace R] (h : IsOpenUnits R) :
     ContinuousOn (Ring.inverse : R → R) {u : R | IsUnit u} := by
   rintro _ ⟨u, rfl⟩
@@ -64,6 +82,15 @@ theorem continuousOn_ringInverse {R : Type} [CommRing R] [TopologicalSpace R] (h
   rw [this]
   exact Units.continuous_coe_inv.continuousAt
 
+/- English proof (translation)
+Take `⟨-, -, ho, U, hU, h1, s, hs, hs1, hss⟩` from `h`. Take `⟨v, rfl⟩` from `hβ`. Use `set W : Set R := (fun b => b * ((v⁻¹ : Rˣ) : R)) ⁻¹' U ∩ {u | IsUnit u} with hW`. Establish `hWo : IsOpen W` using `(hU.preimage (by fun_prop)).inter (isOpen_isUnit ho)`. Establish `hc : ContinuousOn (fun b => s (b * ((v⁻¹ : Rˣ) : R))) W` using `hs.comp (by fun_prop) fun b hb => hb.1`.
+
+Establish `hv : (v : R) ∈ W` using `⟨by simpa using h1, v.isUnit⟩`. Use `⟨W, W.piecewise (fun b => s (b * ((v⁻¹ : Rˣ) : R))) (fun _ => 0), hWo, hv, hc.measurable_piecewise continuousOn_const hWo.measurableSet, hc.congr fun b hb => Set.piecewise_eq_of_mem _ _ _ hb, ?_, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hv]`. Simplify using `using hs1`. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hb]`.
+
+Establish `e` using `hss _ hb.1`. Use `⟨?_, by rw [e]; simp⟩` and prove the remaining obligations. Establish `: IsUnit (s (b * ((v⁻¹ : Rˣ) : R)) * s (b * ((v⁻¹ : Rˣ) : R)))`. Rewrite using `[e]`. Conclude with `IsUnit.mul hb.2 (Units.isUnit _)`.
+
+Conclude with `isUnit_of_mul_isUnit_left this`.
+-/
 theorem exists_root {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     [MeasurableSpace R] [BorelSpace R] (h : Nice R) {β : R} (hβ : IsUnit β) :
     ∃ (W : Set R) (ρ : R → R), IsOpen W ∧ β ∈ W ∧ Measurable ρ ∧ ContinuousOn ρ W ∧ ρ β = 1 ∧
@@ -87,6 +114,11 @@ theorem exists_root {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalR
       rw [e]; exact IsUnit.mul hb.2 (Units.isUnit _)
     exact isUnit_of_mul_isUnit_left this
 
+/- English proof (translation)
+Establish `hc` using `(GlobalTheory.GaugeEx.modu_basic S).2.2.2 h`. Use `hc.measurable_piecewise (g := fun _ => 0) continuousOn_const (isOpen_isUnit h).measurableSet` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : IsUnit u`.
+
+Simplify using `[Set.piecewise, hu]`. Simplify using `[Set.piecewise, modu, hu]`.
+-/
 theorem measurable_modu (S : Type) [CommRing S] [TopologicalSpace S] [IsTopologicalRing S] [T2Space S]
     [LocallyCompactSpace S] [SecondCountableTopology S] [MeasurableSpace S] [BorelSpace S]
     (h : IsOpenUnits S) : Measurable (modu S) := by
@@ -99,6 +131,11 @@ theorem measurable_modu (S : Type) [CommRing S] [TopologicalSpace S] [IsTopologi
   · simp [Set.piecewise, hu]
   · simp [Set.piecewise, modu, hu]
 
+/- English proof (translation)
+Establish `e` using `((GlobalTheory.GaugeEx.modu_basic S).1 u hu).2 lam hl`. Take `⟨v, rfl⟩` from `hu`. Establish `hm : MeasurableEmbedding (fun z : S => (v : S) * z)` using `(Homeomorph.smul v).measurableEmbedding`. Use `conv_lhs => rw [e]`. Rewrite using `[lintegral_smul_measure, hm.lintegral_map]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lintegral_scale {S : Type} [CommRing S] [TopologicalSpace S] [IsTopologicalRing S] [T2Space S]
     [LocallyCompactSpace S] [SecondCountableTopology S] [MeasurableSpace S] [BorelSpace S]
     (lam : Measure S) (hl : lam.IsAddHaarMeasure) {u : S} (hu : IsUnit u) (G : S → ℝ≥0∞) :
@@ -114,6 +151,11 @@ theorem lintegral_scale {S : Type} [CommRing S] [TopologicalSpace S] [IsTopologi
 def psi {S : Type} [CommRing S] {M : ℕ} (r t r' : S) (X : Fin 2 → Fin M → S) : Fin 2 → Fin M → S :=
   ![r • X 0, t • X 0 + r' • X 1]
 
+/- English proof (translation)
+Use `continuous_pi fun a => ?_` and prove the remaining obligations. Use `fin_cases a`. Simplify using `only [psi, Fin.zero_eta, Matrix.cons_val_zero]`. Use `fun_prop`. Simplify using `only [psi, Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_zero]`.
+
+Use `fun_prop`.
+-/
 theorem continuous_psi {S : Type} [CommRing S] [TopologicalSpace S] [IsTopologicalRing S] {M : ℕ} :
     Continuous fun p : (S × S × S) × (Fin 2 → Fin M → S) => psi p.1.1 p.1.2.1 p.1.2.2 p.2 := by
   refine continuous_pi fun a => ?_
@@ -121,6 +163,9 @@ theorem continuous_psi {S : Type} [CommRing S] [TopologicalSpace S] [IsTopologic
   · simp only [psi, Fin.zero_eta, Matrix.cons_val_zero]; fun_prop
   · simp only [psi, Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_zero]; fun_prop
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Use `fin_cases a`. Simplify using `[psi, ← mul_assoc, h]`. Simplify using `only [psi, Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_zero, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(-(k' * t * X 0 i)) * h + X 1 i * h'`.
+-/
 theorem psi_inv {S : Type} [CommRing S] {M : ℕ} {r t r' k k' : S} (h : k * r = 1) (h' : k' * r' = 1)
     (X : Fin 2 → Fin M → S) : psi k (-(k' * t * k)) k' (psi r t r' X) = X := by
   funext a i
@@ -130,6 +175,9 @@ theorem psi_inv {S : Type} [CommRing S] {M : ℕ} {r t r' k k' : S} (h : k * r =
       smul_eq_mul]
     linear_combination (-(k' * t * X 0 i)) * h + X 1 i * h'
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Apply the tactic sequence `fin_cases a <;> simp [psi]`.
+-/
 theorem psi_one {S : Type} [CommRing S] {M : ℕ} (X : Fin 2 → Fin M → S) : psi 1 0 1 X = X := by
   funext a
   fin_cases a <;> simp [psi]
@@ -141,6 +189,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R]
 
 omit [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R] in
+/- English proof (translation)
+Use `continuous_pi fun a => ?_` and prove the remaining obligations. Use `fin_cases a`. Conclude with `continuous_const`. Establish `h0 : Continuous fun y' : Fin 1 → Fin M → (R ⊗[F] E) => (B.map (inclR R)).mulVec (y' 0)` using `continuous_const.matrix_mulVec (continuous_apply 0)`. Establish `h1 : Continuous fun y' : Fin 1 → Fin M → (R ⊗[F] E) => ((HA.mat R σ J g : GL (Fin (M + 1)) (R ⊗[F] E)) : Matrix (Fin (M + 1)) (Fin (M + 1)) (R ⊗[F] E)).mulVec ((B.map (inclR R)).mulVec (y' 0))` using `continuous_const.matrix_mulVec h0`.
+
+Conclude with `h1`.
+-/
 theorem continuous_pairOf {M : ℕ} (J : Matrix (Fin (M + 1)) (Fin (M + 1)) E)
     (B : Matrix (Fin (M + 1)) (Fin M) E) (y : Fin 1 → Fin (M + 1) → (R ⊗[F] E)) (g : HA R σ J) :
     Continuous (pairOf R σ J B y g) := by
@@ -154,6 +207,9 @@ theorem continuous_pairOf {M : ℕ} (J : Matrix (Fin (M + 1)) (Fin (M + 1)) E)
           ((B.map (inclR R)).mulVec (y' 0)) := continuous_const.matrix_mulVec h0
     exact h1
 
+/- English proof (translation)
+Rewrite using `[lintegral_lintegral_swap (f := fun t X => K (t, X)) hK.aemeasurable, h (fun X => ∫⁻ t, K (t, X) ∂τ) hK.lintegral_prod_left' s hs]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Conclude with `lintegral_lintegral_swap (f := fun t y' => K (t, pairOf R σ J B y (s y) y')) (hK.comp (measurable_fst.prodMk ((continuous_pairOf σ R J B y (s y)).measurable.comp measurable_snd))).aemeasurable`.
+-/
 theorem twoStep_param {M : ℕ} {J : Matrix (Fin (M + 1)) (Fin (M + 1)) E} {x : Fin 1 → Fin (M + 1) → E}
     {B : Matrix (Fin (M + 1)) (Fin M) E} {m : Measure (Fin 1 → Fin (M + 1) → (R ⊗[F] E))}
     {m' : Measure (Fin 1 → Fin M → (R ⊗[F] E))} {N : Measure (Fin 2 → Fin (M + 1) → (R ⊗[F] E))}
@@ -173,12 +229,18 @@ variable (F E) in
 def wt (M : ℕ) (r : R) : ℝ≥0 := modu (R ⊗[F] E) (algebraMap R (R ⊗[F] E) r ^ M) * (modu R (r * r))⁻¹
 
 omit [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R] in
+/- English proof (translation)
+Establish `: (algebraMap R (R ⊗[F] E) : R → (R ⊗[F] E)) = fun r => r • (1 : (R ⊗[F] E))`. Use function extensionality and compare the values at `r`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Rewrite using `[this]`. Use `fun_prop`.
+-/
 theorem continuous_alg : Continuous (algebraMap R (R ⊗[F] E)) := by
   have : (algebraMap R (R ⊗[F] E) : R → (R ⊗[F] E)) = fun r => r • (1 : (R ⊗[F] E)) := by
     funext r; rw [Algebra.algebraMap_eq_smul_one]
   rw [this]
   fun_prop
 
+/- English proof (translation)
+Establish `h1` using `measurable_modu (R ⊗[F] E) (nice_tensor F E R h).2.2`. Establish `h2` using `measurable_modu R h.2.2.1`. Establish `h3` using `(continuous_alg (F := F) (E := E) R).measurable`. Unfold `wt`. Conclude with `(h1.comp (h3.pow_const M)).mul (h2.comp (measurable_id.mul measurable_id)).inv`.
+-/
 theorem measurable_wt (h : Nice R) (M : ℕ) : Measurable (wt F E R M) := by
   have h1 := measurable_modu (R ⊗[F] E) (nice_tensor F E R h).2.2
   have h2 := measurable_modu R h.2.2.1
@@ -186,6 +248,9 @@ theorem measurable_wt (h : Nice R) (M : ℕ) : Measurable (wt F E R M) := by
   unfold wt
   exact (h1.comp (h3.pow_const M)).mul (h2.comp (measurable_id.mul measurable_id)).inv
 
+/- English proof (translation)
+Establish `h1` using `(modu_basic (R ⊗[F] E)).2.2.2 (nice_tensor F E R h).2.2`. Establish `h2` using `(modu_basic R).2.2.2 h.2.2.1`. Establish `h3` using `continuous_alg (F := F) (E := E) R`. Unfold `wt`. Use `ContinuousOn.mul (h1.comp (h3.pow M).continuousOn fun r hr => (IsUnit.map _ hr).pow M) (ContinuousOn.inv₀ (h2.comp (continuous_id.mul continuous_id).continuousOn fun r hr => IsUnit.mul hr hr) fun r hr => ((modu_basic R).1 _ (IsUnit.mul hr hr)).1.ne')` and prove the remaining obligations.
+-/
 theorem continuousOn_wt (h : Nice R) (M : ℕ) : ContinuousOn (wt F E R M) {r | IsUnit r} := by
   have h1 := (modu_basic (R ⊗[F] E)).2.2.2 (nice_tensor F E R h).2.2
   have h2 := (modu_basic R).2.2.2 h.2.2.1
@@ -195,9 +260,29 @@ theorem continuousOn_wt (h : Nice R) (M : ℕ) : ContinuousOn (wt F E R M) {r | 
     (ContinuousOn.inv₀ (h2.comp (continuous_id.mul continuous_id).continuousOn
       fun r hr => IsUnit.mul hr hr) fun r hr => ((modu_basic R).1 _ (IsUnit.mul hr hr)).1.ne')
 
+/- English proof (translation)
+Rewrite using `[wt, map_one, one_pow, one_mul, (modu_basic (R ⊗[F] E)).2.2.1, (modu_basic R).2.2.1, inv_one, one_mul]`.
+-/
 theorem wt_one (M : ℕ) : wt F E R M 1 = 1 := by
   rw [wt, map_one, one_pow, one_mul, (modu_basic (R ⊗[F] E)).2.2.1, (modu_basic R).2.2.1, inv_one, one_mul]
 
+/- English proof (translation)
+Establish `hFi : Measurable ((gram3 R σ J ⁻¹' S).indicator φ)` using `hφ.indicator (hgc.measurable hS)`. Establish `hc2 : ∀ v : Fin (M + 1) → (R ⊗[F] E), Continuous fun z : Fin (M + 1) → (R ⊗[F] E) => ![v, z]`. Introduce `v`. Use `continuous_pi fun a => ?_` and prove the remaining obligations. Use `fin_cases a`.
+
+Conclude with `continuous_const`. Conclude with `continuous_id`. Rewrite using `[Subst.subst F E σ hσ R hR M J x a B J' hst lam hl g y hy (fun z => (gram3 R σ J ⁻¹' S).indicator φ ![algebraMap R (R ⊗[F] E) r • y 0, z]) (hFi.comp (hc2 _).measurable), lintegral_scale lam hl (IsUnit.of_mul_eq_one_right _ hu)]`. Use `congr 2`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations.
+
+Establish `hut : algebraMap R (R ⊗[F] E) (r * algebraMap F R a) * (u * t) = t` using `by rw [← mul_assoc, hu, one_mul]`. Rewrite using `[Polar.polar F E σ R hR M J' lam ν γ m' hl hν hγ hm' W ρ hW hρ (fun y' => (gram3 R σ J ⁻¹' S).indicator φ ![algebraMap R (R ⊗[F] E) r • y 0, (u * t) • y 0 + pairOf R σ J B y g y' 1]) (hFi.comp ((hc2 _).comp (continuous_const.add ((continuous_apply 1).comp (continuous_pairOf σ R J …`. Rewrite using `[← lintegral_indicator hW, ← lintegral_sub_right_eq_self _ (n (u * t))]`. Use `lintegral_congr fun d => ?_` and prove the remaining obligations. Distinguish the cases in `hd : d - n (u * t) ∈ W`.
+
+Rewrite using `[Set.indicator_of_mem hd, ← lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Establish `hq : ∀ᵐ y' ∂m', qR R σ J' (y' 0) = γ` using `(FibBasic.fibAt_basic F E σ R hR M J' _ ν γ m' hν hγ hm').1`. Use `lintegral_congr_ae (hq.mono fun y' hy' => ?_)` and prove the remaining obligations. Establish `e1 : pairOf R σ J B y g (algebraMap R (R ⊗[F] E) (ρ (d - n (u * t))) • y') 1 = algebraMap R (R ⊗[F] E) (ρ (d - n (u * t))) • pairOf R σ J B y g y' 1`. Simplify using `[pairOf, Matrix.mulVec_smul]`.
+
+Establish `e2` using `hn g y y' r (ρ (d - n (u * t))) (u * t) hy`. Rewrite `e2` using `[hb, hut, hy', (hρ _ hd).2, add_sub_cancel]`. Simplify using `only [e1]`. Distinguish the cases in `hm : (b, t, d) ∈ S`. Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem (by rw [Set.mem_preimage, e2]; exact hm)]`.
+
+Simplify using `only [Pi.one_apply, one_mul]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hm, Set.indicator_of_notMem (by rw [Set.mem_preimage, e2]; exact hm)]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hd, Set.indicator_of_notMem fun hm => hd (hSW t d hm)]`.
+
+Simplify using the standard rewrite rules. Introduce `y' hy'`. Use `Set.indicator_of_notMem (fun hm => hy' ?_) _` and prove the remaining obligations. Establish `e2` using `hn g y y' r 1 (u * t) hy`. Rewrite `e2` using `[hb, hut, map_one, one_smul, one_mul, one_mul]`.
+
+Rewrite `hm` using `[Set.mem_preimage, e2]`. Simplify using `using hSW _ _ hm`.
+-/
 theorem inner_integral (hσ : IsCMExt F E σ) (hR : Nice R) {M : ℕ}
     {J : Matrix (Fin (M + 1)) (Fin (M + 1)) E} {x : Fin 1 → Fin (M + 1) → E} {a : F}
     {B : Matrix (Fin (M + 1)) (Fin M) E} {J' : Matrix (Fin M) (Fin M) E} (hst : StepData σ J x a B J')
@@ -268,6 +353,45 @@ end Main
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ R _ _ _ _ _ _ _ _ _ hR M J x a B J' y₀ c lam ν m m' N hst hc hy₀ hl hν hm hm' hN φ hφ hφs hφ0`. Establish `hα : IsUnit (algebraMap F R a)` using `(IsUnit.mk0 a hst.2.1).map _`. Establish `hγ : IsUnit (algebraMap F R c)` using `(IsUnit.mk0 c hc).map _`. Take `⟨W₁, ρ₁, hW₁, hαW, -, hρ₁c, hρ₁1, hρ₁⟩` from `exists_root hR hα`. Take `⟨W₂, ρ₂, hW₂, hγW, hρ₂m, hρ₂c, hρ₂1, hρ₂⟩` from `exists_root hR hγ`.
+
+Take `⟨hgc, n, hnc, hn0, hn⟩` from `GramPair.gram_pair F E σ hσ R M J x a B J' hst`. Establish `horb` using `(GlobalTheory.T.fibreMeasure_invariant_supported_orbit_ne_zero F E σ hσ R hR _ J x a lam ν m hst.1 hst.2.1 hst.2.2.1 hl hν hm).2.1`. Establish `hinv'` using `(GlobalTheory.T.fibreMeasure_invariant_supported_orbit_ne_zero F E σ hσ R hR _ J' y₀ c lam ν m' hst.2.2.2.2.2 hc hy₀ hl hν hm').1`. Use `haveI hfm := (FibBasic.fibAt_basic F E σ R hR _ J _ ν _ m hν hα hm).2.1`. Use `haveI hfm' := (FibBasic.fibAt_basic F E σ R hR _ J' _ ν _ m' hν hγ hm').2.1`.
+
+Use `haveI hfN := twoStep_finite_on_compacts F E σ hσ R hR M J x a B J' m m' N hst horb hfm hfm' hinv' hN`. Establish `hdet` using `(GlobalTheory.FrameStep.frameStep F E σ hσ R M J x a B J' hst).1`. Establish `hι` using `continuous_alg (F := F) (E := E) R`. Establish `hri` using `continuousOn_ringInverse hR.2.2.1`. Use `set α := algebraMap F R a with hαdef`.
+
+Use `set γ := algebraMap F R c with hγdef`. Use `set u : R → (R ⊗[F] E) := fun b => algebraMap R (R ⊗[F] E) (Ring.inverse (ρ₁ b * α)) with hudef`. Establish `hu : ∀ b ∈ W₁, algebraMap R (R ⊗[F] E) (ρ₁ b * α) * u b = 1` using `fun b hb => by`. Rewrite using `[hudef, ← map_mul, Ring.mul_inverse_cancel _ ((hρ₁ b hb).1.mul hα), map_one]`. Establish `huc : ContinuousOn u W₁` using `hι.comp_continuousOn (hri.comp (hρ₁c.mul continuousOn_const) fun b hb => (hρ₁ b hb).1.mul hα)`.
+
+Use `set e : R × (R ⊗[F] E) × R → R := fun T => T.2.2 - n (u T.1 * T.2.1) with hedef`. Establish `htc : ContinuousOn (fun T : R × (R ⊗[F] E) × R => u T.1 * T.2.1) (Prod.fst ⁻¹' W₁)` using `(huc.comp continuousOn_fst fun T hT => hT).mul (by fun_prop)`. Establish `hec : ContinuousOn e (Prod.fst ⁻¹' W₁)` using `ContinuousOn.sub (by fun_prop) (hnc.comp_continuousOn htc)`. Establish `he0 : e (α, 0, γ) = γ` using `by simp [hedef, hn0]`. Establish `hU₀ : IsOpen (Prod.fst ⁻¹' W₁ ∩ e ⁻¹' W₂)` using `hec.isOpen_inter_preimage (hW₁.preimage continuous_fst) hW₂`.
+
+Take `⟨C, hC, hbase, hCU⟩` from `exists_compact_subset hU₀ (x := (α, 0, γ)) ⟨hαW, by rw [Set.mem_preimage, he0]; exact hγW⟩`. Establish `hC1 : C ⊆ Prod.fst ⁻¹' W₁` using `fun T hT => (hCU hT).1`. Establish `hr₁ : ContinuousOn (fun T : R × (R ⊗[F] E) × R => ρ₁ T.1) C` using `hρ₁c.comp continuousOn_fst fun T hT => hC1 hT`. Establish `hr₂ : ContinuousOn (fun T : R × (R ⊗[F] E) × R => ρ₂ (e T)) C` using `hρ₂c.comp (hec.mono hC1) fun T hT => (hCU hT).2`. Establish `hu₁ : ∀ T ∈ C, IsUnit (ρ₁ T.1)` using `fun T hT => (hρ₁ _ (hC1 hT)).1`.
+
+Establish `hu₂ : ∀ T ∈ C, IsUnit (ρ₂ (e T))` using `fun T hT => (hρ₂ _ (hCU hT).2).1`. Establish `hpsi : ∀ A : R × (R ⊗[F] E) × R → (R ⊗[F] E) × (R ⊗[F] E) × (R ⊗[F] E), ContinuousOn A C → ContinuousOn (Function.uncurry fun T (X : Fin 2 → Fin (M + 1) → (R ⊗[F] E)) => psi (A T).1 (A T).2.1 (A T).2.2 X) (C ×ˢ Set.univ)` using `fun A hA => continuous_psi.comp_continuousOn ((hA.comp continuousOn_fst fun p hp => hp.1).prodMk continuousOn_snd)`. Establish `hk₁` using `hι.comp_continuousOn (hri.comp hr₁ hu₁)`. Establish `hk₂` using `hι.comp_continuousOn (hri.comp hr₂ hu₂)`. Take `⟨hIc, hIi⟩` from `continuousOn_integral_param N hC (fun T X => psi (algebraMap R (R ⊗[F] E) (ρ₁ T.1)) (u T.1 * T.2.1) (algebraMap R (R ⊗[F] E) (ρ₂ (e T))) X) (fun T X => psi (algebraMap R (R ⊗[F] E) (Ring.inverse (ρ₁ T.1))) (-(algebraMap R (R ⊗[F] E) (Ring.inverse (ρ₂ (e T))) * (u T.1 * T.2.1) * a …`.
+
+Use `set p₀ : ℝ≥0 := modu (R ⊗[F] E) (inclR R (consCol x B).det) with hp₀`. Use `set w : R × (R ⊗[F] E) × R → ℝ≥0 := fun T => wt F E R (M + 1) (ρ₁ T.1) * (p₀ * (modu (R ⊗[F] E) (u T.1) * wt F E R M (ρ₂ (e T)))) with hwdef`. Establish `hwc : ContinuousOn w C` using `((continuousOn_wt R hR _).comp hr₁ hu₁).mul (continuousOn_const.mul ((((modu_basic (R ⊗[F] E)).2.2.2 (nice_tensor F E R hR).2.2).comp (huc.comp continuousOn_fst fun T hT => hC1 hT) fun T hT => IsUnit.of_mul_eq_one_right _ (hu _ (hC1 hT))).mul ((continuousOn_wt R hR _).comp hr₂ hu …`. Establish `hDc : ContinuousOn (fun T => (w T : ℝ) * ∫ X, φ (psi (algebraMap R (R ⊗[F] E) (ρ₁ T.1)) (u T.1 * T.2.1) (algebraMap R (R ⊗[F] E) (ρ₂ (e T))) X) ∂N) C` using `(NNReal.continuous_coe.comp_continuousOn hwc).mul hIc`. Use `⟨interior C, _, isOpen_interior, hbase, hDc.mono interior_subset, fun T _ => mul_nonneg (w T).2 (integral_nonneg fun X => hφ0 _), fun S hSC hS => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hSC' : S ⊆ C` using `hSC.trans interior_subset`. Establish `hφm : Measurable fun X => ENNReal.ofReal (φ X)` using `hφ.measurable.ennreal_ofReal`. Establish `hFi` using `hφm.indicator (hgc.measurable hS)`. Establish `hc2 : Continuous fun p : (Fin 1 → Fin (M + 1) → (R ⊗[F] E)) × (Fin (M + 1) → (R ⊗[F] E)) => ![p.1 0, p.2]`. Use `continuous_pi fun a => ?_` and prove the remaining obligations.
+
+Use `fin_cases a`. Establish `h0 : Continuous fun p : (Fin 1 → Fin (M + 1) → (R ⊗[F] E)) × (Fin (M + 1) → (R ⊗[F] E)) => p.1 0` using `(continuous_apply 0).comp continuous_fst`. Conclude with `h0`. Conclude with `continuous_snd`. Take `⟨s, hs⟩ : ∃ s, IsSec R σ J x s` from `⟨fun y => if h : ∃ g : HA R σ J, g • ratTup (F := F) R x = y then h.choose else 1, fun y h => by simp only [dif_pos h]; exact h.choose_spec⟩`.
+
+Rewrite using `[← lintegral_indicator (hgc.measurable hS), lintegral_tup_two lam _ _ hFi, Polar.polar F E σ R hR _ J lam ν α m hl hν hα hm W₁ ρ₁ hW₁.measurableSet hρ₁ (fun y => ∫⁻ z, (gram3 R σ J ⁻¹' S).indicator (fun X => ENNReal.ofReal (φ X)) ![y 0, z] ∂(Measure.pi fun _ => lam)) (hFi.comp hc …`. Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b ∈ W₁`. Use `swap`. Rewrite using `[Set.indicator_of_notMem hb]`.
+
+Use `((lintegral_congr fun p => ?_).trans lintegral_zero).symm` and prove the remaining obligations. Conclude with `Set.indicator_of_notMem (fun h => hb (hC1 (hSC' h))) _`. Rewrite using `[Set.indicator_of_mem hb]`. Use `set K : ((R ⊗[F] E) × R) × (Fin 2 → Fin (M + 1) → (R ⊗[F] E)) → ℝ≥0∞ := fun p => S.indicator 1 (b, p.1.1, p.1.2) * (wt F E R M (ρ₂ (p.1.2 - n (u b * p.1.1))) : ℝ≥0∞) * ENNReal.ofReal (φ (psi (algebraMap R (R ⊗[F] E) (ρ₁ b)) (u b * p.1.1) (algebraMap R (R ⊗[F] E) (ρ₂ (p.1.2 - n (u …`. Establish `hem : Measurable fun p : ((R ⊗[F] E) × R) × (Fin 2 → Fin (M + 1) → (R ⊗[F] E)) => ρ₂ (p.1.2 - n (u b * p.1.1))` using `hρ₂m.comp (Continuous.measurable (by fun_prop))`.
+
+Establish `hK : Measurable K` using `(((measurable_one.indicator hS).comp (measurable_const.prodMk measurable_fst)).mul ((measurable_wt R hR M).comp hem).coe_nnreal_ennreal).mul (hφm.comp (continuous_psi.measurable.comp ((measurable_const.prodMk ((measurable_fst.fst.const_mul (u b)).prodMk (hι.measurable.comp hem))) …`. Establish `h1 : ∀ᵐ y ∂m, ∫⁻ z, (gram3 R σ J ⁻¹' S).indicator (fun X => ENNReal.ofReal (φ X)) ![algebraMap R (R ⊗[F] E) (ρ₁ b) • y 0, z] ∂(Measure.pi fun _ => lam) = (p₀ : ℝ≥0∞) * ((modu (R ⊗[F] E) (u b) : ℝ≥0∞) * ∫⁻ t, ∫⁻ y', K (t, pairOf R σ J B y (s y) y') ∂m' ∂(lam.prod ν))`. Establish `h0 : ∀ᵐ y ∂m, ∃ g : HA R σ J, g • ratTup (F` using `F) R x = y := horb`. Use `h0.mono fun y hy => ?_` and prove the remaining obligations. Rewrite using `[inner_integral σ R hσ hR hst hl hν hγ hm' hgc hn hW₂.measurableSet hρ₂ _ hφm hS (ρ₁ b) b (hρ₁ b hb).2 (u b) (hu b hb) (fun t d h => (hCU (hSC' h)).2) (s y) y (hs y hy), lintegral_prod (fun t => ∫⁻ y', K (t, pairOf R σ J B y (s y) y') ∂m') (hK.comp (measurable_fst.prodMk ((contin …`.
+
+Use `(congrArg (_ * ·) (lintegral_congr_ae h1)).trans ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top, lintegral_const_mul' _ _ ENNReal.coe_ne_top, twoStep_param σ R hN (lam.prod ν) K hK s hs, ← lintegral_const_mul' _ _ ENNReal.coe_ne_top, ← lintegral_const_mul' _ _ ENNReal.coe_ne_top, ← lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Distinguish the cases in `hp : (b, p) ∈ S`. Establish `hp' : (b, p.1, p.2) ∈ S` using `hp`.
+
+Rewrite using `[Set.indicator_of_mem hp, ENNReal.ofReal_mul (NNReal.coe_nonneg (w (b, p))), ENNReal.ofReal_coe_nnreal, ofReal_integral_eq_lintegral_ofReal (hIi _ (hSC' hp)) (ae_of_all _ fun X => hφ0 _)]`. Simplify using `only [hKdef, Set.indicator_of_mem hp', Pi.one_apply, one_mul]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Simplify using `only [hwdef, hedef, wt, ENNReal.coe_mul, mul_assoc]`. Establish `hp' : (b, p.1, p.2) ∉ S` using `hp`.
+
+Rewrite using `[Set.indicator_of_notMem hp]`. Simplify using `[hKdef, Set.indicator_of_notMem hp']`. Introduce `y hy`. Use `(lintegral_congr fun z => ?_).trans lintegral_zero` and prove the remaining obligations. Use `Set.indicator_of_notMem (fun h => hy ?_) _` and prove the remaining obligations.
+
+Establish `h1 : gram3 R σ J ![y 0, z] ∈ S` using `h`. Conclude with `hC1 (hSC' h1)`. Establish `ha : (algebraMap F E a) ≠ 0` using `by simpa using hst.2.1`. Establish `hia : inclR R (algebraMap F E a) = algebraMap R (R ⊗[F] E) α`. Rewrite using `[hαdef, ← IsScalarTower.algebraMap_apply]`.
+
+Conclude with `(Algebra.TensorProduct.includeRight : E →ₐ[F] (R ⊗[F] E)).commutes a`. Establish `huα : u α = inclR R (algebraMap F E a)⁻¹`. Establish `h1` using `hu α hαW`. Rewrite `h1` using `[hρ₁1, one_mul, ← hia]`. Rewrite using `[← one_mul (u α), ← map_one (inclR R), ← inv_mul_cancel₀ ha, map_mul, mul_assoc, h1, mul_one]`.
+
+Simplify using `only [hwdef, he0, hρ₁1, hρ₂1, wt_one, map_one, mul_zero, psi_one, one_mul, mul_one, huα]`. Rewrite using `[div_eq_mul_inv, map_mul, (modu_basic (R ⊗[F] E)).2.1 _ _ ((IsUnit.mk0 _ hdet).map _) ((IsUnit.mk0 _ (inv_ne_zero ha)).map _)]`.
+-/
 theorem gram_density : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R], Nice R → ∀ (M : ℕ) (J : Matrix (Fin (M + 1)) (Fin (M + 1)) E) (x : Fin 1 → Fin (M + 1) → E) (a : F) (B : Matrix (Fin (M + 1)) (Fin M) E) (J' : Matrix (Fin M) (Fin M) E) (y : Fin 1 → Fin M → E) (c : F) (lam : Measure (R ⊗[F] E)) (ν : Measure R) (m : Measure (Fin 1 → Fin (M + 1) → R ⊗[F] E)) (m' : Measure (Fin 1 → Fin M → R ⊗[F] E)) (N : Measure (Fin 2 → Fin (M + 1) → R ⊗[F] E)), StepData σ J x a B J' → c ≠ 0 → hE σ J' (y 0) (y 0) = algebraMap F E c → lam.IsAddHaarMeasure → ν.IsAddHaarMeasure → FibAt R σ J (tupMeas lam 1 (M + 1)) ν (algebraMap F R a) m → FibAt R σ J' (tupMeas lam 1 M) ν (algebraMap F R c) m' → TwoStep R σ J x B m m' N → ∀ φ : (Fin 2 → Fin (M + 1) → R ⊗[F] E) → ℝ, Continuous φ → HasCompactSupport φ → (∀ X, 0 ≤ φ X) → ∃ (U : Set (R × (R ⊗[F] E) × R)) (D : R × (R ⊗[F] E) × R → ℝ), IsOpen U ∧ (algebraMap F R a, 0, algebraMap F R c) ∈ U ∧ ContinuousOn D U ∧ (∀ t ∈ U, 0 ≤ D t) ∧ (∀ S ⊆ U, MeasurableSet S → ∫⁻ X in gram3 R σ J ⁻¹' S, ENNReal.ofReal (φ X) ∂(tupMeas lam 2 (M + 1)) = ∫⁻ t in S, ENNReal.ofReal (D t) ∂(ν.prod (lam.prod ν))) ∧ D (algebraMap F R a, 0, algebraMap F R c) = (modu (R ⊗[F] E) (inclR R ((consCol x B).det / algebraMap F E a)) : ℝ) * ∫ X, φ X ∂N := by
   intro F E _ _ _ _ _ σ hσ R _ _ _ _ _ _ _ _ _ hR M J x a B J' y₀ c lam ν m m' N hst hc hy₀ hl hν hm hm'
     hN φ hφ hφs hφ0

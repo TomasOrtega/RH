@@ -6,6 +6,21 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 
 namespace GlobalTheory.VacLine
 
+/- English proof (translation)
+Introduce `F _ _ κ _ Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem Φ hΦ`. Take `⟨f, g, hg, rfl⟩` from `hΦ`. Establish `key : ∀ x y, slice (pureA F f g) x y = f x * g y`.
+
+Introduce `x y`. Simplify using `only [slice, pureA, mkPt, RingEquiv.apply_symm_apply]`. Use `⟨fun y => ⟨g y • f, fun x => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[key, SchwartzMap.smul_apply, smul_eq_mul, mul_comm]`. Establish `: slice (pureA F f g) x = f x • g`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[key]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hg`.
+
+Consider the case `zero`. Use `⟨fun y => ⟨0, fun x => rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.zero_mem _`. Consider the case `add Φ Φ' _ _ h h'`. Use `⟨fun y => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨f, hf⟩` from `h.1 y`. Take `⟨f', hf'⟩` from `h'.1 y`. Conclude with `⟨f + f', fun x => by show slice Φ x y + slice Φ' x y = (f + f') x`. Rewrite using `[hf, hf', SchwartzMap.add_apply]⟩`. Establish `: slice (Φ + Φ') x = slice Φ x + slice Φ' x` using `rfl`.
+
+Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (h.2 x) (h'.2 x)`. Consider the case `smul a Φ _ h`. Use `⟨fun y => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `h.1 y`.
+
+Conclude with `⟨a • f, fun x => by show a • slice Φ x y = (a • f) x`. Rewrite using `[hf, SchwartzMap.smul_apply]⟩`. Establish `: slice (a • Φ) x = a • slice Φ x` using `rfl`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (h.2 x)`.
+-/
 theorem slice_schA : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (Ψ : (κ → AF F) → ℂ), Ψ ∈ schA F κ →
     (∀ y : κ → Af F, ∃ f : SInf F κ, ∀ x, slice Ψ x y = f x) ∧ ∀ x, slice Ψ x ∈ SB (κ → Af F) := by
   intro F _ _ κ _ Ψ hΨ

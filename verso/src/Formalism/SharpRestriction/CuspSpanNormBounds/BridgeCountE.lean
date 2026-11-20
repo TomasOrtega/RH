@@ -83,21 +83,39 @@ def ShareFamilyAtConstant {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (Cre
   AdmF Fm Cres →
     FamilyLowestKTypeFormula Fm ∧ FamilyDiscreteSeriesDecay Fm ∧ FamilyMatrixCoefficientL1 Fm ∧ FamilyAbstractProjectorEveryMember Fm ∧ FamilyLocalProjectorEveryMember Fm ∧ ConclusionF2 Fm n₀ A Cb ∧ CountAllPointsClass P Fm n₀ A C c cb
 
+/- English proof (translation)
+Introduce `I b lam g g₀ e H _ _ _ σ w Hs _ _ _ σs tens μf _ fund R Re h' hS _ hc hg h1 h2 h3`. Conclude with `h I b lam g g₀ e H σ w Hs σs tens μf fund R Re h' hS hc hg h1 h2 h3`.
+-/
 theorem count_class_of_count {D : Formalism.BasicNotions.D7} {n₀ : ℕ} {A C c cb : ℝ} (h : PointsLemma D n₀ A C c cb) : CountIdempotentsClass P D n₀ A C c cb := by
   intro I b lam g g₀ e H _ _ _ σ w Hs _ _ _ σs tens μf _ fund R Re h' hS _ hc hg h1 h2 h3
   exact h I b lam g g₀ e H σ w Hs σs tens μf fund R Re h' hS hc hg h1 h2 h3
 
+/- English proof (translation)
+Introduce `hA h1 h2` and use `let h3 := h hA h1 h2 ⟨h3.1, h3.2.1, fun x i => count_class_of_count P (h3.2.2 x i)⟩`.
+-/
 theorem count_family_class_of_count {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {Cres : ℝ} {n₀ : ℕ} {A Cb C c cb : ℝ}
     (h : FlatLineDegreeFamilyStatement Fm Cres n₀ A Cb C c cb) : CountFamilyClassStatement P Fm Cres n₀ A Cb C c cb := fun hA h1 h2 =>
   let h3 := h hA h1 h2
   ⟨h3.1, h3.2.1, fun x i => count_class_of_count P (h3.2.2 x i)⟩
 
+/- English proof (translation)
+Introduce `hA` and use `let h' := h hA ⟨h'.1, h'.2.1, h'.2.2.1, h'.2.2.2.1, h'.2.2.2.2.1, h'.2.2.2.2.2.1, h'.2.2.2.2.2.2.1, h'.2.2.2.2.2.2.2.1, fun x i => count_class_of_count P (h'.2.2.2.2.2.2.2.2 x i)⟩`.
+-/
 theorem family_statement_class_of_general {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} {Cres : ℝ} {n₀ : ℕ} {A Cb C c cb : ℝ}
     (h : KudlaFamilyStatement Fm Cres n₀ A Cb C c cb) : ShareFamilyAtConstant P Fm Cres n₀ A Cb C c cb := fun hA =>
   let h' := h hA
   ⟨h'.1, h'.2.1, h'.2.2.1, h'.2.2.2.1, h'.2.2.2.2.1, h'.2.2.2.2.2.1,
     h'.2.2.2.2.2.2.1, h'.2.2.2.2.2.2.2.1, fun x i => count_class_of_count P (h'.2.2.2.2.2.2.2.2 x i)⟩
 
+/- English proof (translation)
+Introduce `hA`. Establish `a1 : admF1 Fm` using `fun x i => (hA x i).1`. Establish `a2 : admF2 Fm` using `fun x i => (hA x i).2.1`. Establish `a3 : admF3 Fm` using `fun x i => (hA x i).2.2.1`. Establish `a4 : admF4 Fm` using `fun x i => (hA x i).2.2.2.1`.
+
+Establish `a5 : admF5 Fm` using `fun x i => (hA x i).2.2.2.2.1`. Establish `a6 : admF6 Fm` using `fun x i => (hA x i).2.2.2.2.2.1`. Establish `a7 : admF7 Fm Cres` using `fun x i => (hA x i).2.2.2.2.2.2.1`. Establish `a8 : admF8 Fm` using `fun x i => (hA x i).2.2.2.2.2.2.2`. Establish `p0` using `i0 ⟨a2, a3⟩`.
+
+Establish `p1` using `BridgeLemma.family_decay_of_formula Fm p0`. Establish `p2` using `BridgeLemma.family_spherical_L1_statement Fm a2 p1`. Establish `p3` using `BridgeLemma.family_abstract_projector_statement Fm`. Establish `p4` using `BridgeLemma.family_projector_section_local Fm a1 p2 p3`. Establish `p5` using `i5 ⟨a1, a6, a8⟩ p1 p4`.
+
+Conclude with `⟨p0, p1, p2, p3, p4, p5, i6 ⟨a4, a5, a6, a7, a8⟩ p1 p5⟩`.
+-/
 theorem family_link_count_class {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) {Cres : ℝ} {n₀ : ℕ} {A Cb C c cb : ℝ} (i0 : FamilyFormulaStatement Fm)
     (i5 : DeterminantValueFamily Fm n₀ A Cb) (i6 : CountFamilyClassStatement P Fm Cres n₀ A Cb C c cb) : ShareFamilyAtConstant P Fm Cres n₀ A Cb C c cb := by
   intro hA
@@ -123,6 +141,23 @@ open Finset
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `hp`. Take `⟨-, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12⟩` from `hp`. Establish `hX'` using `hX.1`. Take `⟨⟨pl, T⟩, t5, tsp⟩` from `hX'`. Establish `hn` using `T.n_eq`.
+
+Establish `trd` using `T.rd_eq`. Establish `tg0` using `T.g0_eq`. Establish `tg` using `T.g_eq`. Establish `hq : ∀ v, X.I.pAt v = (univ.filter fun a : Fin D.R.r => epsS D.R a = true).card ∧ X.I.qAt v = (univ.filter fun a : Fin D.R.r => epsS D.R a = false).card`. Introduce `v`.
+
+Establish `he` using `T.eps_eq v`. Prove the components needed by the constructor for the conclusion. Simplify using `only [AutInst.pAt, he]`. Conclude with `card_cast hn (fun a => epsS D.R a = true)`. Simplify using `only [AutInst.qAt, he]`.
+
+Conclude with `card_cast hn (fun a => epsS D.R a = false)`. Establish `hS : PlaceDegreeData.HidaSetting X.I n0 A large₂.sc.b X.lam X.μf X.g X.g₀ X.e`. Use `⟨by rw [hn]; exact p2, ⟨_, _, hq, ?_⟩, p11, ?_, t5, ?_, X.e_adm, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hn]`. Conclude with `le_trans (Nat.pow_le_pow_left card_epsS_false 2) p3`.
+
+Rewrite using `[trd, hn]`. Conclude with `p4`. Introduce `v a`. Rewrite using `[T.lam_eq v a]`. Conclude with `p5 _ _`.
+
+Rewrite using `[tg]`. Conclude with `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos`. Rewrite using `[tg]`. Establish `: gg D = ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ)` using `by unfold gg; push_cast; ring`. Rewrite using `[← this]`.
+
+Conclude with `p6`. Rewrite using `[tg0]`. Conclude with `D.host.g_prime 0`. Rewrite using `[tg0, hn]`. Conclude with `p7`.
+
+Conclude with `tsp p8`. Use `h X large₂.sc.b _ hX hS (fun v a c hac => ?_) le_rfl p10 p12` and prove the remaining obligations. Rewrite using `[T.lam_eq v a, T.lam_eq v c]`. Conclude with `p9 _ _ _ (by rw [← T.eps_eq v a, ← T.eps_eq v c]; exact hac)`.
+-/
 theorem admissibility_ten_of_rows_class (large₂ : SizeData₂ D) (X : RowsAut) (hX : RowsTieP P D X) (n0 : ℕ) (A C cb c : ℝ)
     (h : CountRowsClass P D n0 A C c cb) : AdmissibleBoundsFromSource.adm10 D large₂ n0 A C cb c := by
   intro hp
@@ -161,6 +196,15 @@ theorem admissibility_ten_of_rows_class (large₂ : SizeData₂ D) (X : RowsAut)
   rw [T.lam_eq v a, T.lam_eq v c]
   exact p9 _ _ _ (by rw [← T.eps_eq v a, ← T.eps_eq v c]; exact hac)
 
+/- English proof (translation)
+Introduce `X b h hT hS hg h1 h2 h3`. Establish `hPX` using `hT.2`. Take `⟨⟨pl, hA⟩, -, -⟩` from `hT.1`. Establish `hD` using `hA.D_eq`. Establish `hDs : X.I.Dstar (PlaceDegreeData.fdegAll X.I X.σ X.w) X.μf X.fund X.e = D.what₂.Dstar` using `hA.Dstar_eq.symm`.
+
+Establish `hf` using `hA.f_eq`. Establish `hrd` using `hA.rd_eq`. Establish `hn` using `hA.n_eq`. Establish `hc : PlaceDegreeData.CountData X.I X.lam X.σ X.w X.σs X.tens X.μf X.fund X.R X.e X.Re` using `⟨hA.ds, hA.low, X.tens_spec, X.haar, X.fund_spec, X.R_spec, X.Re_spec⟩`. Rewrite `h1` using `[← hn, ← hf, ← hrd]`.
+
+Rewrite `h2`, `h3` using `[← hn, ← hf]`. Use `hp X.I b X.lam X.g X.g₀ X.e X.H X.σ X.w X.Hs X.σs X.tens X.μf X.fund X.R X.Re h hS hPX hc hg h1 h2 h3` as an intermediate fact. Establish `e1 : (X.I.Dcount X.σs X.μf X.fund X.R X.Re : ℝ) = (D.what₂.Dall : ℝ)` using `by exact_mod_cast hD`. Rewrite `this` using `[e1, hDs]`. Rewrite using `[← hn, ← hf]`.
+
+Use `this using 3` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem count_rows_class_of_count_class (n₀ : ℕ) (A C c cb : ℝ) (hp : CountIdempotentsClass P D n₀ A C c cb) : CountRowsClass P D n₀ A C c cb := by
   intro X b h hT hS hg h1 h2 h3
   have hPX := hT.2
@@ -187,6 +231,19 @@ section Family
 
 variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
 
+/- English proof (translation)
+Take `⟨-, hcb, h30⟩` from `h30`. Establish `hG` using `cGam_pos Fm`. Take `⟨Y1, hY1, HY1⟩` from `linear_le_pow_eight_eventually (8 * Fm.CGam) n0 (by positivity)`. Take `⟨Y2, -, HY2⟩` from `linear_le_pow_eight_eventually (cb7 * (8 * Fm.CGam)) 8 (by positivity)`. Take `⟨x4, hx4⟩` from `ev_y Fm (max Y1 Y2)`.
+
+Use `⟨max (Fm.x1 + 1) x4, fun x hx i hH => ?_⟩` and prove the remaining obligations. Establish `hx1 : Fm.x1 < x`. Use `le_trans (le_max_left _ _) hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy` using `hx4 x (le_trans (le_max_right _ _) hx)`.
+
+Use `set y : ℝ := x ^ (eps / 8) with hydef`. Establish `hy1 : 1 ≤ y` using `le_trans hY1 (le_trans (le_max_left _ _) hy)`. Establish `a1` using `HY1 y (le_trans (le_max_left _ _) hy)`. Establish `a2` using `HY2 y (le_trans (le_max_right _ _) hy)`. Establish `hL` using `scL_eq Fm x hx1 i`.
+
+Establish `hh : AdmissibleBoundsFromSource.hyp (Fm.D x i) (Fm.L x i) C0 (sC' Fm) (sCl Fm) Cg cb Cu cT CT` using `⟨hH.2.1, hH.1, hH.2.2⟩`. Establish `hk8` using `k_ge_of_hyp (Fm.L x i) hh`. Rewrite `hk8` using `[hL, Fm.CGam_eq x i]`. Take `⟨X, hX⟩` from `hR x hx1 i`. Use `admissibility_ten_of_rows_class P (Fm.L x i) X hX n0 A C cb7 c (h30 x i) (count_parameters_of_hyp (Fm.L x i) C0 _ _ Cg cb Cu cT CT n0 A C cb7 hC hcb hA ?_ hCl2 hCl3 ?_ hh)` and prove the remaining obligations.
+
+Establish `: (n0 : ℝ) ≤ n0 * y` using `le_mul_of_one_le_right (Nat.cast_nonneg _) hy1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hL, Real.log_pow]`. Establish `h1 : Real.log y ≤ y` using `Real.log_le_self (by linarith)`. Establish `h2 : cb7 * (8 * Fm.CGam * y ^ 8) ≤ cb7 * ((Fm.D x i).R.k : ℝ)` using `mul_le_mul_of_nonneg_left hk8 hcb.le`.
+
+Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem countOwn_of_rowsP (Cg cb Cu cT CT C0 : ℝ) (n0 : ℕ) (A C c cb7 : ℝ) (hC : 0 ≤ C) (hA : 2 * Cg ≤ A)
     (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm)
     (hR : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, ∃ X : RowsAut, RowsTieP P (Fm.D x i) X)
@@ -220,6 +277,9 @@ theorem countOwn_of_rowsP (Cg cb Cu cT CT C0 : ℝ) (n0 : ℕ) (A C c cb7 : ℝ)
     push_cast
     nlinarith
 
+/- English proof (translation)
+Establish `h30 : CountAllPointsClass P Fm n0 A C c7 cb7` using `(S30 A30).2.2.2.2.2.2`. Establish `h30R : CountRowsClassFamily P Fm n0 A C c7 cb7` using `⟨h30.1, h30.2.1, fun x i => count_rows_class_of_count_class P n0 A C c7 cb7 (h30.2.2 x i)⟩`. Conclude with `linkS_of_standing_hypotheses Fm Cg cb Cu cT CT C0 c7 h1 h30.1 hS0 hT (countOwn_of_rowsP P Fm Cg cb Cu cT CT C0 n0 A C c7 cb7 hC hA hCl2 hCl3 hR h30R)`.
+-/
 theorem linkS_of_thmSP (Cg cb Cu cT CT C0 Cres : ℝ) (n0 : ℕ) (A Cb C c7 cb7 : ℝ) (h1 : 1 ≤ C0) (hC : 0 ≤ C)
     (hA : 2 * Cg ≤ A) (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm)
     (hS0 : StandingHypothesesWithConstants Fm Cg cb Cu cT CT C0)
@@ -232,6 +292,19 @@ theorem linkS_of_thmSP (Cg cb Cu cT CT C0 Cres : ℝ) (n0 : ℕ) (A Cb C c7 cb7 
   exact linkS_of_standing_hypotheses Fm Cg cb Cu cT CT C0 c7 h1 h30.1 hS0 hT
     (countOwn_of_rowsP P Fm Cg cb Cu cT CT C0 n0 A C c7 cb7 hC hA hCl2 hCl3 hR h30R)
 
+/- English proof (translation)
+Take `⟨x0, hR0⟩` from `hR`. Take `⟨-, hcb, h30⟩` from `h30`. Establish `hG` using `cGam_pos Fm`. Take `⟨Y1, hY1, HY1⟩` from `linear_le_pow_eight_eventually (8 * Fm.CGam) n0 (by positivity)`. Take `⟨Y2, -, HY2⟩` from `linear_le_pow_eight_eventually (cb7 * (8 * Fm.CGam)) 8 (by positivity)`.
+
+Take `⟨x4, hx4⟩` from `ev_y Fm (max Y1 Y2)`. Use `⟨max (max (Fm.x1 + 1) x4) x0, fun x hx i hH => ?_⟩` and prove the remaining obligations. Establish `hx1 : Fm.x1 < x`. Use `le_trans (le_max_left _ _) (le_trans (le_max_left _ _) hx)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hy` using `hx4 x (le_trans (le_max_right _ _) (le_trans (le_max_left _ _) hx))`. Use `set y : ℝ := x ^ (eps / 8) with hydef`. Establish `hy1 : 1 ≤ y` using `le_trans hY1 (le_trans (le_max_left _ _) hy)`. Establish `a1` using `HY1 y (le_trans (le_max_left _ _) hy)`. Establish `a2` using `HY2 y (le_trans (le_max_right _ _) hy)`.
+
+Establish `hL` using `scL_eq Fm x hx1 i`. Establish `hh : AdmissibleBoundsFromSource.hyp (Fm.D x i) (Fm.L x i) C0 (sC' Fm) (sCl Fm) Cg cb Cu cT CT` using `⟨hH.2.1, hH.1, hH.2.2⟩`. Establish `hk8` using `k_ge_of_hyp (Fm.L x i) hh`. Rewrite `hk8` using `[hL, Fm.CGam_eq x i]`. Take `⟨X, hX⟩` from `hR0 x (le_trans (le_max_right _ _) hx) hx1 i`.
+
+Use `admissibility_ten_of_rows_class P (Fm.L x i) X hX n0 A C cb7 c (h30 x i) (count_parameters_of_hyp (Fm.L x i) C0 _ _ Cg cb Cu cT CT n0 A C cb7 hC hcb hA ?_ hCl2 hCl3 ?_ hh)` and prove the remaining obligations. Establish `: (n0 : ℝ) ≤ n0 * y` using `le_mul_of_one_le_right (Nat.cast_nonneg _) hy1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hL, Real.log_pow]`. Establish `h1 : Real.log y ≤ y` using `Real.log_le_self (by linarith)`.
+
+Establish `h2 : cb7 * (8 * Fm.CGam * y ^ 8) ≤ cb7 * ((Fm.D x i).R.k : ℝ)` using `mul_le_mul_of_nonneg_left hk8 hcb.le`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem countOwn_of_rowsP' (Cg cb Cu cT CT C0 : ℝ) (n0 : ℕ) (A C c cb7 : ℝ) (hC : 0 ≤ C) (hA : 2 * Cg ≤ A)
     (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm)
     (hR : ∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x, ∃ X : RowsAut, RowsTieP P (Fm.D x i) X)
@@ -266,6 +339,9 @@ theorem countOwn_of_rowsP' (Cg cb Cu cT CT C0 : ℝ) (n0 : ℕ) (A C c cb7 : ℝ
     push_cast
     nlinarith
 
+/- English proof (translation)
+Establish `h30 : CountAllPointsClass P Fm n0 A C c7 cb7` using `(S30 A30).2.2.2.2.2.2`. Establish `h30R : CountRowsClassFamily P Fm n0 A C c7 cb7` using `⟨h30.1, h30.2.1, fun x i => count_rows_class_of_count_class P n0 A C c7 cb7 (h30.2.2 x i)⟩`. Conclude with `linkS_of_standing_hypotheses Fm Cg cb Cu cT CT C0 c7 h1 h30.1 hS0 hT (countOwn_of_rowsP' P Fm Cg cb Cu cT CT C0 n0 A C c7 cb7 hC hA hCl2 hCl3 hR h30R)`.
+-/
 theorem linkS_of_thmSP' (Cg cb Cu cT CT C0 Cres : ℝ) (n0 : ℕ) (A Cb C c7 cb7 : ℝ) (h1 : 1 ≤ C0) (hC : 0 ≤ C)
     (hA : 2 * Cg ≤ A) (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm)
     (hS0 : StandingHypothesesWithConstants Fm Cg cb Cu cT CT C0)

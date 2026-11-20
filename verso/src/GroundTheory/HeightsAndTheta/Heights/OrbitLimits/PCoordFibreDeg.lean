@@ -12,6 +12,15 @@ namespace GroundTheory.Heights₂.Heights.Targets
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ κ v Ω _ _ y d G i hb hZ' hZ hi`. Establish `: CharZero G.Φ'`. Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations. Establish `hmem : (C (n : ℤ) : MRing ι') ∈ mCoordIdeal y`. Rewrite using `[← G.genericFibre_ker_target, RingHom.mem_ker]`.
+
+Simplify using `using hn`. Simplify using `only [mCoordIdeal, RingHom.mem_ker, mConeMap] at hmem`. Simplify using `using hmem`. Establish `hMH : IsMultiHomogIdeal (mCoordIdeal y)` using `hZ'.2.1.2.1`. Use `choose c hc using hZ.2.1.2.2`.
+
+Establish `hx : ∀ k, G.x ⟨k, c k⟩ ≠ 0` using `fun k h => hc k (by`. Rewrite using `[← G.ker_x, RingHom.mem_ker, aeval_X]`. Conclude with `h)`. Establish `hi' : ∀ k : FibreBlock κ, G.x' ⟨k.1, i k⟩ ≠ 0` using `fun k h => hi k (by`. Rewrite using `[fibreIdeal, RingHom.mem_ker, aeval_X]`.
+
+Conclude with `h)`. Establish `h1` using `Inter.ChartRankAdjoin.proof (FibreBlock κ) (fibreIdx ι' κ) G.Φ G.Φ' (fun q : Σ k : FibreBlock κ, fibreIdx ι' κ k => G.x' ⟨q.1.1, q.2⟩) i hi' (hM K ι K' ι' κ v (mCoordIdeal y) G hb hMH)`. Conclude with `h1.trans ((hD K ι K' ι' κ v (mCoordIdeal y) G c i hb hMH hx hi').trans (hR K ι K' ι' κ v Ω y G.Φ' G.x' hb G.genericFibre_ker_target))`.
+-/
 theorem CoordFibreDeg.proof (hM : FibreMultiHomog.Statement) (hD : GenFibreChartDeg.Statement)
     (hR : CoordRatioDeg.Statement) : CoordFibreDeg.Statement := by
   intro K _ ι _ K' _ ι' _ κ v Ω _ _ y d G i hb hZ' hZ hi

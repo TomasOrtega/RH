@@ -28,6 +28,9 @@ def PrIso {D : D7} (MX : DSModel D.sp.X' (parB (Ptw D) D.R.m)) (cX : CoefA D.sp.
     inner ℂ w w' = ∑ f : (∀ τ, ι τ),
       starRingEnd ℂ (prX w (PiTensorProduct.tprod ℂ fun τ => b τ (f τ))) * prX w' (PiTensorProduct.tprod ℂ fun τ => b τ (f τ))
 
+/- English proof (translation)
+Unfold `BrgAt`. Introduce `eG hrec θ hθ MX`. Take `⟨cX, cV, pl, Sb, plI, SF, prX, RS, LS, hcX, hcV, hdual, hRS, hLS, hrk, hB⟩` from `h eG hrec θ hθ MX`. Use `⟨cX, cV, pl, Sb, ⟨fun t => (hRS t).some, fun i t => (hLS i t).some, hrk.1, hrk.2⟩, plI, SF, prX, hcX, hcV, hdual, ?_⟩` and prove the remaining obligations. Conclude with `hB _ (fun t => (hRS t).some_mem) (fun i t => (hLS i t).some_mem)`.
+-/
 theorem brgAt_of_sides (A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (L : LevCh D T)
     (h : ∀ eG : G ≃* Formalism.L2.DIV.G0 L.Pg D.R.r, RecL A3 L eG → ∀ θ : InfFam D, IsInfFam θ →
       ∀ MX : DSModel D.sp.X' (parB (Ptw D) D.R.m),
@@ -44,6 +47,9 @@ theorem brgAt_of_sides (A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List
   refine ⟨cX, cV, pl, Sb, ⟨fun t => (hRS t).some, fun i t => (hLS i t).some, hrk.1, hrk.2⟩, plI, SF, prX, hcX, hcV, hdual, ?_⟩
   exact hB _ (fun t => (hRS t).some_mem) (fun i t => (hLS i t).some_mem)
 
+/- English proof (translation)
+Unfold `BrgAtP`. Introduce `eG hrec θ hθ MX`. Take `⟨cX, cV, pl, Sb, plI, SF, prX, RS, LS, hcX, hcV, hdual, hPr, hRS, hLS, hrk, hB⟩` from `h eG hrec θ hθ MX`. Use `⟨cX, cV, pl, Sb, ⟨fun t => (hRS t).some, fun i t => (hLS i t).some, hrk.1, hrk.2⟩, plI, SF, prX, hcX, hcV, hdual, hPr, ?_⟩` and prove the remaining obligations. Conclude with `hB _ (fun t => (hRS t).some_mem) (fun i t => (hLS i t).some_mem)`.
+-/
 theorem brgAtP_of_sides (A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (L : LevCh D T)
     (Pr : ∀ (M : DSModel D.sp.X' (parB (Ptw D) D.R.m)) (c : CoefA D.sp.X') (_cv : ∀ i, CoefA (Vc D i)), (c.W →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ) → Prop)
     (h : ∀ eG : G ≃* Formalism.L2.DIV.G0 L.Pg D.R.r, RecL A3 L eG → ∀ θ : InfFam D, IsInfFam θ →

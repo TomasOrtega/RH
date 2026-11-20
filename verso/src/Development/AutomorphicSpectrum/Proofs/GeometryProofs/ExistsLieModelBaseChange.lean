@@ -13,6 +13,13 @@ namespace GlobalTheory.CompanionTheory.Ar.FlagFib
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `X G _ _ _ R R' _ _ _ x V _ _ M`. Take `⟨T, iT, mT, ⟨M'⟩⟩` from `lieModel_exists X G R' (spMap (algebraMap R R') ≫ x)`. Use `letI mR : Module R T := Module.compHom T (algebraMap R R')`. Establish `hsm : ∀ (a : R) (t : T), a • t = algebraMap R R' a • t` using `fun _ _ => rfl`. Use `haveI tower : IsScalarTower R R' T := ⟨fun a b t => by rw [Algebra.smul_def, hsm, mul_smul]⟩`.
+
+Establish `hφ : Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x = spMap (algebraMap R R') ≫ x` using `rfl`. Establish `ex : ∀ e, ∃ t, M'.pt t = LieTangent.epsBase (algebraMap R R') hφ ≫ M.pt e` using `fun e => M'.onto _ (LieTangent.isTanAt_base _ hφ (M.tan e))`. Use `choose f hf using ex`. Set `j : V →ₗ[R] T` to `{ toFun := f map_add' := fun a b => M'.inj (by rw [M'.add, hf, hf, hf, M.add, comp_mul]) map_smul' := fun c e => M'.inj (by`. Rewrite using `[RingHom.id_apply, hsm, LieModel.pt_smul, hf, hf, LieModel.pt_smul, ← Category.assoc, LieTangent.base_scale, Category.assoc]) }`.
+
+Establish `hl : ∀ e, M.Lifts (algebraMap R R') (𝟙 G.left) e (M'.pt (j e))` using `fun e => by`. Express the relevant statement in the definitionally equal form `(M'.pt (f e)).left ≫ 𝟙 G.left = _`. Rewrite using `[hf, Category.comp_id]`. Both sides reduce to the same expression. Conclude with `⟨T, iT, mT, mR, tower, M', j, hl, GlobalTheory.T.lie_model_isBaseChange X G R R' x V T M M' j hl⟩`.
+-/
 theorem lieModel_liftBaseChange : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (x : Sp R ⟶ X) (V : Type) [AddCommGroup V] [Module R V] (M : LieModel G x V), ∃ (T : Type) (_ : AddCommGroup T) (_ : Module R' T) (_ : Module R T) (_ : IsScalarTower R R' T) (M' : LieModel G (spMap (algebraMap R R') ≫ x) T) (j : V →ₗ[R] T), (∀ e, M.Lifts (algebraMap R R') (𝟙 G.left) e (M'.pt (j e))) ∧ IsBaseChange R' j := by
   intro X G _ _ _ R R' _ _ _ x V _ _ M
   obtain ⟨T, iT, mT, ⟨M'⟩⟩ := lieModel_exists X G R' (spMap (algebraMap R R') ≫ x)

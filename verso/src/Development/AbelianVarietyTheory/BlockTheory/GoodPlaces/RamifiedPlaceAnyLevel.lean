@@ -42,6 +42,9 @@ def RamPlaceAnyLevel : Prop :=
           (((-(((vLa la (p : c₂.F) : ℤ) : ℝ) * D.host.vdH p * (Formalism.L2.Pj.DF (T.Q.Dw j) a : ℝ) / 2)) : ℝ) : EReal) ≤
             nval Tc.V e (harmVal C k P f)
 
+/- English proof (translation)
+Introduce `D T h j hj _ hs` and use `hG D T h j hj hs T.Q.l (T.Q.Xo j) T.Q.c`.
+-/
 theorem GoodPlaceAnyLevel.base (hG : GoodPlaceAnyLevel) :
     ∀ (D : D7) (T : Top D) (_h : LawsP T) (j : ℕ) (_hj : InR D j) [StarRing (𝓞 D.host.E)],
     (∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a) →
@@ -54,6 +57,9 @@ theorem GoodPlaceAnyLevel.base (hG : GoodPlaceAnyLevel) :
           0 ≤ nval Tc.V e (harmVal C k P f) :=
   fun D T h j hj _ hs => hG D T h j hj hs T.Q.l (T.Q.Xo j) T.Q.c
 
+/- English proof (translation)
+Introduce `D T h j hj _ hs` and use `hG D T h j hj hs T.Q.l (T.Q.Xo j) T.Q.c`.
+-/
 theorem RamPlaceAnyLevel.base (hG : RamPlaceAnyLevel) :
     ∀ (D : D7) (T : Top D) (_h : LawsP T) (j : ℕ) (_hj : InR D j) [StarRing (𝓞 D.host.E)],
     (∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a) →
@@ -67,6 +73,9 @@ theorem RamPlaceAnyLevel.base (hG : RamPlaceAnyLevel) :
             nval Tc.V e (harmVal C k P f) :=
   fun D T h j hj _ hs => hG D T h j hj hs T.Q.l (T.Q.Xo j) T.Q.c
 
+/- English proof (translation)
+Take `⟨F, fin, conj, zm, le⟩` from `c₂`. Simplify using `only at hF`. Substitute `hF` using the available equality. Conclude with `hG D T h j hj hs l₂ Xo₂ _ Tc io yI e la ho hy hp C k a n P hP f hf`.
+-/
 theorem GoodPlaceAnyLevel.cover (hG : GoodPlaceAnyLevel) (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j)
     [StarRing (𝓞 D.host.E)] (hs : ∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a)
     (l₂ : Level T.Q.H) (Xo₂ : Moduli (T.Q.Dw j) l₂) (c₂ : Coeff l₂) (hF : c₂.F = T.Q.c.F)
@@ -82,6 +91,9 @@ theorem GoodPlaceAnyLevel.cover (hG : GoodPlaceAnyLevel) (D : D7) (T : Top D) (h
   subst hF
   exact hG D T h j hj hs l₂ Xo₂ _ Tc io yI e la ho hy hp C k a n P hP f hf
 
+/- English proof (translation)
+Take `⟨F, fin, conj, zm, le⟩` from `c₂`. Simplify using `only at hF`. Substitute `hF` using the available equality. Conclude with `hG D T h j hj hs l₂ Xo₂ _ Tc io yI e la ho hy p hp hpl C k a n P hP f hf`.
+-/
 theorem RamPlaceAnyLevel.cover (hG : RamPlaceAnyLevel) (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j)
     [StarRing (𝓞 D.host.E)] (hs : ∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a)
     (l₂ : Level T.Q.H) (Xo₂ : Moduli (T.Q.Dw j) l₂) (c₂ : Coeff l₂) (hF : c₂.F = T.Q.c.F)

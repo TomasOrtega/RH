@@ -8,11 +8,17 @@ namespace GlobalTheory.EtC
 
 namespace FactorExt
 
+/- English proof (translation)
+Introduce `r`. Take `⟨z, hz⟩` from `ZMod.intCast_surjective r.down`. Conclude with `⟨z, ULift.ext _ _ (by simp [hz])⟩`.
+-/
 theorem intCast_surj (Q : ℕ) : Function.Surjective (Int.cast : ℤ → ULift.{1} (ZMod Q)) := by
   intro r
   obtain ⟨z, hz⟩ := ZMod.intCast_surjective r.down
   exact ⟨z, ULift.ext _ _ (by simp [hz])⟩
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `hA r`. Rewrite using `[Int.cast_smul_eq_zsmul, map_zsmul, map_intCast, Int.cast_smul_eq_zsmul]`.
+-/
 theorem map_smul_of_add {A B M N : Type*} [Ring A] [Ring B] (f : A →+* B)
     (hA : Function.Surjective (Int.cast : ℤ → A)) [AddCommGroup M] [Module A M] [AddCommGroup N] [Module B N]
     (g : M →+ N) (r : A) (m : M) : g (r • m) = f r • g m := by
@@ -21,6 +27,11 @@ theorem map_smul_of_add {A B M N : Type*} [Ring A] [Ring B] (f : A →+* B)
 
 variable {R S : Type} [CommRing R] [CommRing S]
 
+/- English proof (translation)
+Apply `Sheaf.hom_ext` to reduce the goal to its premises. Use `sheafify_hom_ext (J := Scheme.etaleTopology) (P := F.obj ⋙ ModuleCat.extendScalars.{1, 1, 1} (uliftHom φ)) f.hom g.hom G.cond ?_` and prove the remaining obligations. Use extensionality with `U : 2`. Apply `(ModuleCat.extendRestrictScalarsAdj.{1, 1, 1} (uliftHom φ)).homEquiv _ _ |>.injective` to reduce the goal to its premises. Rewrite using `[Adjunction.homEquiv_unit, Adjunction.homEquiv_unit]`.
+
+Use extensionality with `a`. Conclude with `h (unop U) a`.
+-/
 theorem extSh_hom_ext (φ : R →+* S) {F : Shv R} {G : Shv S} (f g : (extSh φ).obj F ⟶ G)
     (h : ∀ (U : Scheme.{0}) (a : Sec F U), Sec.map f (extSh.sec φ F U a) = Sec.map g (extSh.sec φ F U a)) : f = g := by
   apply Sheaf.hom_ext
@@ -68,6 +79,11 @@ def pre (s : ℤ) : (I.X s).obj ⋙ ModuleCat.extendScalars.{1, 1, 1} (uliftHom 
 def term (s : ℤ) : (extCx φ I).X s ⟶ K.X s :=
   ((sheafificationAdjunction Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} S))).homEquiv _ _).symm (pre φ hR ρ s)
 
+/- English proof (translation)
+Establish `h1 : toSheafify Scheme.etaleTopology.{0} ((I.X s).obj ⋙ ModuleCat.extendScalars.{1, 1, 1} (uliftHom φ)) ≫ (term φ hR ρ s).hom = pre φ hR ρ s`. Use `Adjunction.homEquiv_unit (sheafificationAdjunction Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} S))) _ _ (term φ hR ρ s)` as an intermediate fact. Rewrite `this` using `[sheafificationAdjunction_unit_app]`. Conclude with `this.symm.trans (Equiv.apply_symm_apply _ _)`. Establish `h2` using `Adjunction.homEquiv_unit (ModuleCat.extendRestrictScalarsAdj.{1, 1, 1} (uliftHom φ)) _ _ ((pre φ hR ρ s).app (op U))`.
+
+Establish `e1` using `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom (NatTrans.congr_app h1 (op U))) (((ModuleCat.extendRestrictScalarsAdj.{1, 1, 1} (uliftHom φ)).unit.app ((I.X s).obj.obj (op U))).hom a)`. Establish `e2` using `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom h2) a`. Simplify using `only [pre, Equiv.apply_symm_apply] at e2`. Conclude with `e1.trans e2.symm`.
+-/
 theorem term_sec (s : ℤ) (U : Scheme.{0}) (a : Sec (I.X s) U) :
     Sec.map (term φ hR ρ s) (extSh.sec φ (I.X s) U a) = ρ.app U s a := by
   have h1 : toSheafify Scheme.etaleTopology.{0} ((I.X s).obj ⋙ ModuleCat.extendScalars.{1, 1, 1} (uliftHom φ)) ≫
@@ -95,6 +111,9 @@ def hom : extCx φ I ⟶ K where
 
 end FactorExt
 
+/- English proof (translation)
+Introduce `Q _ hq _ _ ρ` and use `⟨FactorExt.hom _ (FactorExt.intCast_surj Q) ρ, fun U s a => (FactorExt.term_sec (ZMod.castHom hq _) (FactorExt.intCast_surj Q) ρ s U a).symm⟩`.
+-/
 theorem SemiMap.factor_extCx : ∀ (Q q : ℕ) (hq : q ∣ Q) (I : Cx (ZMod Q)) (K : Cx (ZMod q)) (ρ : SemiMap I K),
     ∃ u : extCx (ZMod.castHom hq (ZMod q)) I ⟶ K, ∀ (U : Scheme.{0}) (s : ℤ) (a : Sec (I.X s) U),
       ρ.app U s a = Sec.map (u.f s) ((extπ (ZMod.castHom hq (ZMod q)) I).app U s a) :=

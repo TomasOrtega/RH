@@ -26,10 +26,58 @@ namespace GlobalTheory.Reg.UnitBall
 def castHom {ι : Type} {Ω : ι → Type} [∀ Z, Field (Ω Z)] {U : Type} [Field U] {Z Z' : ι} (h : Z = Z')
     (f : Ω Z →+* U) : Ω Z' →+* U := h ▸ f
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castHom_apply {ι : Type} {Ω : ι → Type} [∀ Z, Field (Ω Z)] {U : Type} [Field U] {Z Z' : ι} (h : Z = Z')
     (f : Ω Z →+* U) (a : ∀ Z, Ω Z) : castHom h f (a Z') = f (a Z) := by
   subst h; rfl
 
+/- English proof (translation)
+Establish `hint : ∀ ζ, ∀ x ∈ As O A, v ζ (φ ζ x) ≤ 1` using `fun ζ x hx => by`. Establish `h0` using `ord_nonneg ζ hU hx`. Break down `hord ζ x with ⟨h1, -⟩ | ⟨n, h1, h2⟩` into its components or cases. Rewrite using `[h1, map_zero]`. Conclude with `zero_le`.
+
+Rewrite `h0` using `[h2]`. Establish `: (0 : ℤ) ≤ n` using `by exact_mod_cast h0`. Rewrite using `[h1, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hval : ∀ ζ x (n : ℤ), v ζ (φ ζ x) = WithZero.exp (-n) → ord ϖ ζ x = (n : WithTop ℤ)` using `fun ζ x n h => by`.
+
+Break down `hord ζ x with ⟨h1, -⟩ | ⟨m, h1, h2⟩` into its components or cases. Rewrite `h` using `[h1, map_zero]`. Conclude with `absurd h.symm WithZero.exp_ne_zero`. Rewrite `h` using `[h1, WithZero.exp_inj]`. Rewrite using `[h2, show m = n by omega]`.
+
+Establish `hpos : ∀ ζ x, v ζ (φ ζ x) < 1 → 0 < ord ϖ ζ x` using `fun ζ x h => by`. Break down `hord ζ x with ⟨-, h2⟩ | ⟨m, h1, h2⟩` into its components or cases. Rewrite using `[h2]`. Conclude with `WithTop.coe_lt_top 0`. Rewrite `h` using `[h1, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Rewrite using `[h2]; exact_mod_cast (show (0 : ℤ) < m by omega)`. Set `w : ∀ Z, {ζ // Zc ζ = Z} → Valuation (Ω Z) (WithZero (Multiplicative ℤ))` to `fun Z ζ => (v ζ.1).comap (castHom ζ.2 (jz ζ.1))`. Establish `hw : ∀ Z (ζ : {ζ // Zc ζ = Z}) (a : ∀ Z, Ω Z), w Z ζ (a Z) = v ζ.1 (jz ζ.1 (a (Zc ζ.1)))` using `fun Z ζ a => by show v ζ.1 (castHom ζ.2 (jz ζ.1) (a Z)) = _`. Rewrite using `[castHom_apply]`. Establish `hwgen : ∀ Z (ζ : {ζ // Zc ζ = Z}), ∃ x, w Z ζ x = ((Multiplicative.ofAdd (1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`.
+
+Introduce and unpack `Z ⟨ζ, rfl⟩`. Conclude with `hgen ζ`. Establish `hwind : ∀ Z (ζ ζ' : {ζ // Zc ζ = Z}), ζ ≠ ζ' → ¬ (w Z ζ).IsEquiv (w Z ζ')`. Introduce `Z ζ ζ' hne heq`. Take `⟨a, h1, h2⟩` from `hsep ζ.1 ζ'.1 (fun h => hne (Subtype.ext h)) (ζ.2.trans ζ'.2.symm)`.
+
+Rewrite `h1` using `[← hw Z ζ a]`. Rewrite `h2` using `[← hw Z ζ' a]`. Use `(Valuation.isEquiv_iff_val_lt_one.1 heq).1 h1` as an intermediate fact. Rewrite `this` using `[h2]`. Conclude with `lt_irrefl _ this`.
+
+Use `GlobalTheory.T.subalgebra_eq_integralClosure_of_values_residues O A ϖ hU C hC (fun n => ?_) (fun ζ b hb => ?_)` and prove the remaining obligations. Establish `hex : ∀ Z, ∃ x : Ω Z, ∀ ζ : {ζ // Zc ζ = Z}, w Z ζ x = WithZero.exp (-(n ζ.1 : ℤ))` using `fun Z => by haveI := Fintype.ofFinite {ζ // Zc ζ = Z}`. Conclude with `ReciprocityTheory.ChartRestriction.G.Lift.exists_val_eq (w Z) (hwgen Z) (hwind Z) (fun ζ => -(n ζ.1 : ℤ))`. Use `choose a ha using hex`. Establish `ha' : ∀ ζ, v ζ (jz ζ (a (Zc ζ))) = WithZero.exp (-(n ζ : ℤ))` using `fun ζ => (hw _ ⟨ζ, rfl⟩ a).symm.trans (ha _ ⟨ζ, rfl⟩)`.
+
+Take `⟨c, hc, hca⟩` from `hconst a fun ζ => by`. Rewrite using `[ha', ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨c, hc, fun ζ => hval ζ c _ (by rw [hca, ha'])⟩`. Take `⟨Tz, hT, hb'⟩` from `hres ζ`.
+
+Establish `key : ∀ u ∈ Subring.closure ({u | u ∈ Set.range (jz ζ) ∧ v ζ u ≤ 1} ∪ Tz), ∃ c ∈ C, v ζ (u - φ ζ c) < 1`. Introduce `u hu`. Proceed by induction on `hu using Subring.closure_induction with`. Consider the case `mem u hu`. Break down `hu with ⟨⟨x, rfl⟩, hx⟩ | hu` into its components or cases.
+
+Take `⟨x', h1, h2⟩` from `GlobalTheory.T.exists_integral_congr_weak_approximation (Ω (Zc ζ)) _ (w (Zc ζ)) (hwgen _) (hwind _) ⟨ζ, rfl⟩ x hx`. Set `a : ∀ Z, Ω Z` to `Function.update (fun _ => 0) (Zc ζ) x'`. Establish `haζ : a (Zc ζ) = x'` using `Function.update_self _ _ _`. Take `⟨c, hc, hca⟩` from `hconst a fun ζ' => by`. Distinguish the cases in `hz : Zc ζ' = Zc ζ`.
+
+Rewrite using `[← hw (Zc ζ) ⟨ζ', hz⟩ a, haζ]`. Conclude with `h1 _`. Rewrite using `[show a (Zc ζ') = 0 from Function.update_of_ne hz _ _, map_zero, map_zero]`. Conclude with `zero_le`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hca, haζ, ← map_sub]`. Conclude with `h2`. Take `⟨c, hc, rfl⟩` from `hT u hu`. Conclude with `⟨c, hc, by rw [sub_self, map_zero]; exact zero_lt_one⟩`. Consider the case `zero => exact ⟨0, C.zero_mem, by rw [map_zero, sub_self, map_zero]; exact zero_lt_one⟩`.
+
+Consider the case `one => exact ⟨1, C.one_mem, by rw [map_one, sub_self, map_zero]; exact zero_lt_one⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, hc, h1⟩` from `hx`. Take `⟨c', hc', h2⟩` from `hy`. Use `⟨c + c', C.add_mem hc hc', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, add_sub_add_comm]`. Conclude with `(v ζ).map_add_lt h1 h2`. Consider the case `neg x _ hx`. Take `⟨c, hc, h1⟩` from `hx`. Use `⟨-c, C.neg_mem hc, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_neg, ← neg_sub', Valuation.map_neg]`. Conclude with `h1`. Consider the case `mul x y _ _ hx hy`. Take `⟨c, hc, h1⟩` from `hx`. Take `⟨c', hc', h2⟩` from `hy`.
+
+Use `⟨c * c', C.mul_mem hc hc', ?_⟩` and prove the remaining obligations. Establish `e : x * y - φ ζ (c * c') = (x - φ ζ c) * (y - φ ζ c') + ((x - φ ζ c) * φ ζ c' + φ ζ c * (y - φ ζ c'))`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `i1` using `hint ζ c (hC hc)`.
+
+Establish `i2` using `hint ζ c' (hC hc')`. Rewrite using `[e]`. Apply the tactic sequence `refine (v ζ).map_add_lt ?_ ((v ζ).map_add_lt ?_ ?_) <;> rw [map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' h2.le) h1`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' i2) h1`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' i1) h2`. Take `⟨a, ha, d, hd, hd1, hab⟩` from `hb' b hb`. Take `⟨c, hc, h1⟩` from `key a ha`. Take `⟨c', hc', h2⟩` from `key d hd`. Use `⟨c, hc, c', hc', ?_, hpos ζ _ ?_⟩` and prove the remaining obligations.
+
+Establish `: v ζ (φ ζ c') = 1`. Establish `e : φ ζ c' = d + -(d - φ ζ c')` using `by ring`. Rewrite using `[e, (v ζ).map_add_eq_of_lt_left (by rw [Valuation.map_neg, hd1]; exact h2), hd1]`. Conclude with `hval ζ c' 0 (by rw [this]; rfl)`. Establish `e : φ ζ (c' * b - c) = (φ ζ b * d - a) + ((a - φ ζ c) + -(φ ζ b * (d - φ ζ c')))`.
+
+Rewrite using `[map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(v ζ).map_add_lt hab ((v ζ).map_add_lt h1 ?_)` and prove the remaining obligations. Rewrite using `[Valuation.map_neg, map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hint ζ b hb)) h2`.
+-/
 theorem core {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing A] [Algebra O A] {ϖ : O}
     (hU : IsUnif A ϖ) [∀ ζ : Pts O A, IsDVRAt ζ] [Finite (Pts O A)] [Module.Finite O ↥(As O A)]
     (C : Subalgebra O A) (hC : C ≤ As O A)
@@ -151,6 +199,13 @@ theorem core {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] 
       rw [Valuation.map_neg, map_mul]
       exact lt_of_le_of_lt (mul_le_of_le_one_left' (hint ζ b hb)) h2
 
+/- English proof (translation)
+Distinguish the cases in `hu : u = 0`. Substitute `hu` using the available equality. Rewrite `h` using `[nval_zero]`. Conclude with `Or.inl ⟨rfl, toE_eq_top h⟩`. Use `right`.
+
+Rewrite `h` using `[nval_of_ne hu]`. Use `⟨vV T.V u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[vV, neg_neg, WithZero.exp_log (valV_ne_zero hu)]`. Consider the cases of `o with`. Consider the case `top => exact absurd h.symm (EReal.coe_ne_top _)`.
+
+Consider the case `coe n`. Establish `h' : ((n : ℝ) : EReal) = _` using `h`. Rewrite `h'` using `[EReal.coe_eq_coe_iff, Nat.cast_one, div_one]`. Establish `: n = vV T.V u` using `by exact_mod_cast h'`. Rewrite using `[this]`.
+-/
 theorem ord_cases {T : CDVR} {o : WithTop ℤ} {u : T.Fr} (h : toE o = nval T.V 1 u) :
     (u = 0 ∧ o = ⊤) ∨ ∃ n : ℤ, valV T.V u = WithZero.exp (-n) ∧ o = (n : WithTop ℤ) := by
   by_cases hu : u = 0
@@ -169,6 +224,13 @@ theorem ord_cases {T : CDVR} {o : WithTop ℤ} {u : T.Fr} (h : toE o = nval T.V 
         have : n = vV T.V u := by exact_mod_cast h'
         rw [this]
 
+/- English proof (translation)
+Distinguish the cases in `hu : u = 0`. Substitute `hu` using the available equality. Rewrite using `[nval_zero, map_zero]`. Conclude with `⟨fun _ => zero_le, fun _ => le_top⟩`. Rewrite using `[nval_of_ne hu, EReal.coe_nonneg, Nat.cast_one, div_one, ← WithZero.exp_log (valV_ne_zero (V := T.V) hu), ← WithZero.exp_zero, WithZero.exp_le_exp, vV]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: (0 : ℤ) ≤ -WithZero.log (valV T.V u)` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+
+Conclude with `(show (0 : ℤ) ≤ -WithZero.log (valV T.V u) by omega)` after adjusting the coercions.
+-/
 theorem nval_nonneg_iff {T : CDVR} {u : T.Fr} : 0 ≤ nval T.V 1 u ↔ valV T.V u ≤ 1 := by
   by_cases hu : u = 0
   · subst hu; rw [nval_zero, map_zero]; exact ⟨fun _ => zero_le, fun _ => le_top⟩
@@ -181,6 +243,11 @@ theorem nval_nonneg_iff {T : CDVR} {u : T.Fr} : 0 ≤ nval T.V 1 u ↔ valV T.V 
     · intro h
       exact_mod_cast (show (0 : ℤ) ≤ -WithZero.log (valV T.V u) by omega)
 
+/- English proof (translation)
+Rewrite using `[map_div₀, div_lt_one₀ (zero_lt_iff.2 (valV_ne_zero hu'))]`. Distinguish the cases in `hu : u = 0`. Substitute `hu` using the available equality. Rewrite using `[map_zero]`. Conclude with `zero_lt_iff.2 (valV_ne_zero hu')`.
+
+Rewrite `h` using `[nval_of_ne hu, nval_of_ne hu', EReal.coe_lt_coe_iff, Nat.cast_one, div_one, div_one]`. Establish `h' : vV T.V u' < vV T.V u` using `by exact_mod_cast h`. Rewrite using `[← WithZero.exp_log (valV_ne_zero (V := T.V) hu), ← WithZero.exp_log (valV_ne_zero (V := T.V) hu'), WithZero.exp_lt_exp]`. Simplify using `only [vV] at h'`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem valV_lt_of_nval_lt {T : CDVR} {u u' : T.Fr} (hu' : u' ≠ 0) (h : nval T.V 1 u' < nval T.V 1 u) :
     valV T.V (u / u') < 1 := by
   rw [map_div₀, div_lt_one₀ (zero_lt_iff.2 (valV_ne_zero hu'))]
@@ -201,19 +268,33 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
 def phiPt {ζ : PtsG G la} {y₀ : E.Pt' la} (h : SecPt ζ y₀) : OsK (xplus X E hM) la G.w →+* h.T.Fr :=
   Ideal.Quotient.lift (Jid (xplus X E hM) la G.w) (h.lift.comp (Frac0 (xplus X E hM) la G.w).val.toRingHom) (fun _ hr => h.lift_Jid hr)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phiPt_to {ζ : PtsG G la} {y₀ : E.Pt' la} (h : SecPt ζ y₀) (x : ↥(Frac0 (xplus X E hM) la G.w)) :
     phiPt h (toOsK (xplus X E hM) la G.w x) = h.lift (x : Lw (xplus X E hM) la G.w) := rfl
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `toOsK_surjective (xplus X E hM) la G.w a`. Conclude with `h.ord x`.
+-/
 theorem ord_phiPt {ζ : PtsG G la} {y₀ : E.Pt' la} (h : SecPt ζ y₀) (a : OsK (xplus X E hM) la G.w) :
     toE (ord (unifO (xplus X E hM) la G.N) ζ a) = nval h.T.V 1 (phiPt h a) := by
   obtain ⟨x, rfl⟩ := toOsK_surjective (xplus X E hM) la G.w a
   exact h.ord x
 
+/- English proof (translation)
+Rewrite using `[← (toOsK (xplus X E hM) la G.w).commutes c, phiPt_to, ← h.lift_alg, ← IsScalarTower.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem phiPt_Kp {ζ : PtsG G la} {y₀ : E.Pt' la} (h : SecPt ζ y₀) (c : Kp (xplus X E hM) la G.N) :
     phiPt h (algebraMap (Kp (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w) c) = h.ev (algebraMap (Kp (xplus X E hM) la G.N) (Rp (xplus X E hM) la G.N) c) := by
   rw [← (toOsK (xplus X E hM) la G.w).commutes c, phiPt_to, ← h.lift_alg, ← IsScalarTower.algebraMap_apply]
   rfl
 
+/- English proof (translation)
+Establish `h0` using `ord_nonneg ζ hU ha`. Break down `ord_cases (ord_phiPt h a) with ⟨h1, -⟩ | ⟨n, h1, h2⟩` into its components or cases. Rewrite using `[h1, map_zero]`. Conclude with `zero_le`. Rewrite `h0` using `[h2]`.
+
+Establish `: (0 : ℤ) ≤ n` using `by exact_mod_cast h0`. Rewrite using `[h1, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem phiPt_int (hU : IsUnif (OsK (xplus X E hM) la G.w) (unifO (xplus X E hM) la G.N)) {ζ : PtsG G la} [IsDVRAt ζ] {y₀ : E.Pt' la}
     (h : SecPt ζ y₀) {a : OsK (xplus X E hM) la G.w} (ha : a ∈ As (Op (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w)) :
     valV h.T.V (phiPt h a) ≤ 1 := by
@@ -224,6 +305,9 @@ theorem phiPt_int (hU : IsUnif (OsK (xplus X E hM) la G.w) (unifO (xplus X E hM)
     have : (0 : ℤ) ≤ n := by exact_mod_cast h0
     rw [h1, ← WithZero.exp_zero, WithZero.exp_le_exp]; omega
 
+/- English proof (translation)
+Break down `ord_cases (ord_phiPt h a) with ⟨-, h2⟩ | ⟨n, h1, h2⟩` into its components or cases. Rewrite using `[h2]`. Conclude with `le_top`. Rewrite `ha` using `[h1, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite using `[h2]; exact_mod_cast (show (0 : ℤ) ≤ n by omega)`.
+-/
 theorem ord_nonneg_of {ζ : PtsG G la} {y₀ : E.Pt' la}
     (h : SecPt ζ y₀) {a : OsK (xplus X E hM) la G.w} (ha : valV h.T.V (phiPt h a) ≤ 1) :
     0 ≤ ord (unifO (xplus X E hM) la G.N) ζ a := by
@@ -234,6 +318,13 @@ theorem ord_nonneg_of {ζ : PtsG G la} {y₀ : E.Pt' la}
 
 variable {y : PtsG G la → E.Pt' la} (hs : ∀ ζ, SecPt ζ (y ζ))
 
+/- English proof (translation)
+Use `mem_RGL_of_stable hs (S := Set.range fun o : Op (xplus X E hM) la G.N => ιW hs (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) (algebraMap (Kp (xplus X E hM) la G.N) (Rp (xplus X E hM) la G.N) (algebraMap (Op (xplus X E hM) la G.N) (Kp (xplus X E hM) la G.N) o)) …` and prove the remaining obligations. Introduce and unpack `β _ ⟨o, rfl⟩`. Use `⟨hasseOp (xplus X E hM) la G.N β o, ?_⟩` and prove the remaining obligations. Use `show _ = hdL hs β (ιW hs _)`. Rewrite using `[hdW_ι]`.
+
+Use `congrArg (ιW hs) ?_` and prove the remaining obligations. Use `Eq.trans ?_ (hasse_algebraMap (xplus X E hM) la G.w β _).symm` and prove the remaining obligations. Rewrite using `[hasseRp_algebraMap, hasseKp_algebraMap]`. Both sides reduce to the same expression. Introduce and unpack `_ ⟨o, rfl⟩ ζ show 0 ≤ nval _ 1 (evL hs ζ (ιW hs _))`.
+
+Rewrite using `[evW_ι, (hs ζ).lift_alg, ← phiPt_Kp, nval_nonneg_iff]`. Conclude with `phiPt_int hU (hs ζ) ((As (Op (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w)).algebraMap_mem o)`.
+-/
 theorem op_mem_RGL (hU : IsUnif (OsK (xplus X E hM) la G.w) (unifO (xplus X E hM) la G.N)) [∀ ζ : PtsG G la, IsDVRAt ζ] (o : Op (xplus X E hM) la G.N) :
     ιW hs (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) (algebraMap (Kp (xplus X E hM) la G.N) (Rp (xplus X E hM) la G.N)
       (algebraMap (Op (xplus X E hM) la G.N) (Kp (xplus X E hM) la G.N) o))) ∈ RGL hs := by
@@ -278,6 +369,11 @@ def liftable (hU : IsUnif (OsK (xplus X E hM) la G.w) (unifO (xplus X E hM) la G
     · rw [Subalgebra.coe_one, map_one, mul_one, ← IsScalarTower.algebraMap_apply (Kp (xplus X E hM) la G.N) (Rp (xplus X E hM) la G.N)]
       rfl
 
+/- English proof (translation)
+Introduce and unpack `a ⟨f, d, hd, he, r, hr, hf⟩`. Rewrite using `[mem_As_iff hU]`. Introduce `ζ`. Use `ord_nonneg_of (hs ζ) ?_` and prove the remaining obligations. Establish `h1` using `congrArg (phiPt (hs ζ)) he`.
+
+Rewrite `h1` using `[map_mul, phiPt_to, phiPt_to]`. Establish `h2` using `congrArg (evL hs ζ) hf`. Rewrite `h2` using `[map_mul, evW_ι, evW_ι, h1, mul_comm]`. Rewrite using `[mul_right_cancel₀ (hd ζ) h2, ← nval_nonneg_iff]`. Conclude with `RGL_int hs hr ζ`.
+-/
 theorem liftable_le (hU : IsUnif (OsK (xplus X E hM) la G.w) (unifO (xplus X E hM) la G.N)) [∀ ζ : PtsG G la, IsDVRAt ζ] :
     liftable hs hU ≤ As (Op (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w) := by
   rintro a ⟨f, d, hd, he, r, hr, hf⟩
@@ -291,6 +387,11 @@ theorem liftable_le (hU : IsUnif (OsK (xplus X E hM) la G.w) (unifO (xplus X E h
   rw [mul_right_cancel₀ (hd ζ) h2, ← nval_nonneg_iff]
   exact RGL_int hs hr ζ
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing (OsK (xplus X E hM) la G.w) := IsArtinianRing.of_finite (Kp (xplus X E hM) la G.N) _`. Use `IsArtinianRing.isUnit_of_mem_nonZeroDivisors ?_` and prove the remaining obligations. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `c hc`. Use `eq_zero_of_ord_top hU c fun ζ => ?_` and prove the remaining obligations.
+
+Establish `h1` using `congrArg (phiPt (hs ζ)) hc`. Rewrite `h1` using `[map_mul, map_zero]`. Establish `h2` using `ord_phiPt (hs ζ) c`. Rewrite `h2` using `[(mul_eq_zero.1 h1).resolve_right (ha ζ), nval_zero]`. Conclude with `toE_eq_top h2`.
+-/
 theorem isUnit_of_ne (hfd : FiniteDimensional (Kp (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w))
     (hU : IsUnif (OsK (xplus X E hM) la G.w) (unifO (xplus X E hM) la G.N)) [∀ ζ : PtsG G la, IsDVRAt ζ] {a : OsK (xplus X E hM) la G.w}
     (ha : ∀ ζ, phiPt (hs ζ) a ≠ 0) : IsUnit a := by
@@ -305,9 +406,29 @@ theorem isUnit_of_ne (hfd : FiniteDimensional (Kp (xplus X E hM) la G.N) (OsK (x
   rw [(mul_eq_zero.1 h1).resolve_right (ha ζ), nval_zero] at h2
   exact toE_eq_top h2
 
+/- English proof (translation)
+The claim follows from `Tay.loc_isCst _ _ _ _ (Tay.loc_isCst _ _ _ _ (tayRp_isCst_emb (xplus X E hM) la F))`.
+-/
 theorem eFormL_isCst (F : X.Forms) : Tay.IsCst (tayL hs) (eFormL hs F) :=
   Tay.loc_isCst _ _ _ _ (Tay.loc_isCst _ _ _ _ (tayRp_isCst_emb (xplus X E hM) la F))
 
+/- English proof (translation)
+Set `f` to `CurveLoc.fr0 (xplus X E hM) la G.N G.w k (X.inc _ F) (emb_mem_Vw (xplus X E hM) la G.N _ F)`. Set `d` to `CurveLoc.fr0 (xplus X E hM) la G.N G.w k (X.inc _ F') (emb_mem_Vw (xplus X E hM) la G.N _ F')`. Establish `hf : ∀ ζ, (hs ζ).lift (f : Lw (xplus X E hM) la G.w) = (hs ζ).ev (emb (xplus X E hM) la G.N (X.inc _ F)) * ((hs ζ).ev (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec (xplus X E hM) la G.w 0))⁻¹ ^ k` using `fun ζ => (hs ζ).lift_frac k _`. Establish `hd : ∀ ζ, (hs ζ).lift (d : Lw (xplus X E hM) la G.w) = (hs ζ).ev (emb (xplus X E hM) la G.N (X.inc _ F')) * ((hs ζ).ev (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec (xplus X E hM) la G.w 0))⁻¹ ^ k` using `fun ζ => (hs ζ).lift_frac k _`. Establish `hd0 : ∀ ζ, (hs ζ).lift (d : Lw (xplus X E hM) la G.w) ≠ 0` using `fun ζ => by`.
+
+Rewrite using `[hd]`. Conclude with `mul_ne_zero (h ζ).1 (pow_ne_zero _ (inv_ne_zero (hs ζ).s0.ne_zero))`. Take `⟨e, he⟩` from `(isUnit_of_ne hs hfd hU (a := toOsK (xplus X E hM) la G.w d) hd0).exists_right_inv`. Establish `hfe : toOsK (xplus X E hM) la G.w f = toOsK (xplus X E hM) la G.w d * (e * toOsK (xplus X E hM) la G.w f)` using `by rw [← mul_assoc, he, one_mul]`. Establish `hval : ∀ ζ, phiPt (hs ζ) (e * toOsK (xplus X E hM) la G.w f) = u ζ` using `fun ζ => by`.
+
+Establish `h1` using `congrArg (phiPt (hs ζ)) hfe`. Rewrite `h1` using `[map_mul (phiPt (hs ζ)) (toOsK (xplus X E hM) la G.w d), phiPt_to, phiPt_to]`. Use `mul_left_cancel₀ (hd0 ζ) ?_` and prove the remaining obligations. Rewrite using `[← h1, hf, hd, (h ζ).2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hun : IsUnit (eFormL hs (X.inc _ F'))` using `isUnit_of_lift_ne hs (x := algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) (emb (xplus X E hM) la G.N (X.inc _ F'))) fun ζ => by rw [(hs ζ).lift_alg]; exact (h ζ).1`. Take `⟨e', he'⟩` from `hun.exists_right_inv`. Establish `hr : eFormL hs (X.inc _ F') * (e' * eFormL hs (X.inc _ F)) = eFormL hs (X.inc _ F)`. Rewrite using `[← mul_assoc, he', one_mul]`. Establish `hc : Tay.IsCst (tayL hs) (e' * eFormL hs (X.inc _ F))` using `Tay.IsCst.of_mul (eFormL_isCst hs _) (by rw [hr]; exact eFormL_isCst hs _) hun`.
+
+Use `⟨e * toOsK (xplus X E hM) la G.w f, ⟨f, d, hd0, hfe, e' * eFormL hs (X.inc _ F), ?_, ?_⟩, hval⟩` and prove the remaining obligations. Use `mem_RGL_of_stable hs (S := {e' * eFormL hs (X.inc _ F), 0}) ?_ ?_ (Or.inl rfl)` and prove the remaining obligations. Introduce and unpack `β s (rfl | rfl)`. Distinguish the cases in `hβ : β = 0`. Rewrite using `[hβ, hdL_zero]`.
+
+Conclude with `Or.inl rfl`. Conclude with `Or.inr (hc.co hβ)`. Conclude with `Or.inr (map_zero _)`. Introduce and unpack `s (rfl | rfl)`. Introduce `ζ`.
+
+Establish `h1` using `congrArg (evL hs ζ) hr`. Rewrite `h1` using `[map_mul (evL hs ζ) (eFormL hs _), evL_eFormL, evL_eFormL, (h ζ).2, mul_comm]`. Rewrite using `[mul_right_cancel₀ (h ζ).1 h1, nval_nonneg_iff]`. Conclude with `hu ζ`. Conclude with `intAll_zero hs`.
+
+Use `show ιW hs (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) (emb (xplus X E hM) la G.N (X.inc _ F)) * w0inv (xplus X E hM) la G.w ^ k) = _ * ιW hs (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) (emb (xplus X E hM) la G.N (X.inc _ F')) * w0inv ( …`. Rewrite using `[map_mul, map_mul, ← mul_assoc]`. Use `congr 1`. Conclude with `hr.symm.trans (mul_comm _ _)`.
+-/
 theorem ratio_liftable (hfd : FiniteDimensional (Kp (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w))
     (hU : IsUnif (OsK (xplus X E hM) la G.w) (unifO (xplus X E hM) la G.N)) [∀ ζ : PtsG G la, IsDVRAt ζ] (k : ℕ)
     (F F' : B.Cusp j (addL (wt0 D j) wL k)) (u : ∀ ζ, (hs ζ).T.Fr) (hu : ∀ ζ, valV (hs ζ).T.V (u ζ) ≤ 1)
@@ -357,6 +478,11 @@ theorem ratio_liftable (hfd : FiniteDimensional (Kp (xplus X E hM) la G.N) (OsK 
     congr 1
     exact hr.symm.trans (mul_comm _ _)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => show X.inc wL w₀ ^ (0 + 1) ∈ Set.range (X.inc (addL (wt0 D j) wL 1))`. Rewrite using `[add_zero_weight_one_eq, zero_add, pow_one]`. Conclude with `⟨w₀, rfl⟩`. Consider the case `succ k ih`.
+
+Take `⟨H, hH⟩` from `ih`. Use `show X.inc wL w₀ ^ (k + 1 + 1) ∈ Set.range (X.inc (addL (wt0 D j) wL (k + 1 + 1)))`. Rewrite using `[← wadd_addL, pow_succ', ← hH]`. Take `⟨H', hH'⟩` from `X.inc_mul _ _ w₀ H`. Conclude with `⟨H', hH'.symm⟩`.
+-/
 theorem pow_form (w₀ : B.Cusp j wL) (k : ℕ) :
     ∃ H : B.Cusp j (addL (wt0 D j) wL (k + 1)), X.inc _ H = X.inc wL w₀ ^ (k + 1) := by
   induction k with
@@ -370,6 +496,9 @@ theorem pow_form (w₀ : B.Cusp j wL) (k : ℕ) :
     obtain ⟨H', hH'⟩ := X.inc_mul _ _ w₀ H
     exact ⟨H', hH'.symm⟩
 
+/- English proof (translation)
+Use `show X.inc wL w₀ * X.inc _ F ∈ Set.range (X.inc (addL (wt0 D j) wL (k + 1)))`. Rewrite using `[← wadd_addL]`. Take `⟨H', hH'⟩` from `X.inc_mul _ _ w₀ F`. Conclude with `⟨H', hH'.symm⟩`.
+-/
 theorem mul_form (w₀ : B.Cusp j wL) (k : ℕ) (F : B.Cusp j (addL (wt0 D j) wL k)) :
     ∃ H : B.Cusp j (addL (wt0 D j) wL (k + 1)), X.inc _ H = X.inc wL w₀ * X.inc _ F := by
   show X.inc wL w₀ * X.inc _ F ∈ Set.range (X.inc (addL (wt0 D j) wL (k + 1)))
@@ -381,6 +510,9 @@ section Point
 
 variable {ζ : PtsG G la} {y₀ : E.Pt' la} (h : SecPt ζ y₀)
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.Gaps.EtaleWeightGaps.sec`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem ev_sec (i : Fin (WeightFamilies.dimY D j + 1)) : h.ev (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec (xplus X E hM) la G.w i) =
     ∑ k, h.ev (algebraMap (Kp (xplus X E hM) la G.N) (Rp (xplus X E hM) la G.N) (algebraMap (Op (xplus X E hM) la G.N) (Kp (xplus X E hM) la G.N) (Tv (xplus X E hM) la G.N (i, k)))) *
       h.ev (emb (xplus X E hM) la G.N (X.inc wL (G.w k))) := by
@@ -390,6 +522,9 @@ theorem ev_sec (i : Fin (WeightFamilies.dimY D j + 1)) : h.ev (Formalism.MainNot
   rw [Algebra.smul_def, map_mul]
   rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `h.s0.ne_zero ?_` and prove the remaining obligations. Rewrite using `[ev_sec]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [hne, mul_zero]`.
+-/
 theorem exists_ev_ne : ∃ k, h.ev (emb (xplus X E hM) la G.N (X.inc wL (G.w k))) ≠ 0 := by
   by_contra hne
   push Not at hne
@@ -404,12 +539,20 @@ variable {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : X.Forms →ₐ[B.KO] Ω)
 
 include h2 h3
 
+/- English proof (translation)
+Establish `h0 : jz (gF (X.inc u F')) ≠ 0` using `(map_ne_zero jz).2 fun e => hF' (h2 u F' e)`. Rewrite using `[map_div₀, div_eq_div_iff h0 hF', h3, mul_comm]`.
+-/
 theorem jz_ratio {u : WeightFamilies.Wt D j} (F F' : B.Cusp j u) (hF' : h.ev (emb (xplus X E hM) la G.N (X.inc u F')) ≠ 0) :
     jz (gF (X.inc u F) / gF (X.inc u F')) =
       h.ev (emb (xplus X E hM) la G.N (X.inc u F)) / h.ev (emb (xplus X E hM) la G.N (X.inc u F')) := by
   have h0 : jz (gF (X.inc u F')) ≠ 0 := (map_ne_zero jz).2 fun e => hF' (h2 u F' e)
   rw [map_div₀, div_eq_div_iff h0 hF', h3, mul_comm]
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `exists_ev_ne h`. Establish `h0 : gF (X.inc wL (G.w k)) ≠ 0` using `fun e => hk (h2 _ _ e)`. Establish `h1` using `jz_ratio h gF jz h2 h3 (a • G.w k) (G.w k) hk`. Establish `e1 : emb (xplus X E hM) la G.N (X.inc wL (a • G.w k)) = algebraMap (Kp (xplus X E hM) la G.N) (Rp (xplus X E hM) la G.N) (algebraMap ((xplus X E hM).Kl la) (Kp (xplus X E hM) la G.N) (algebraMap B.KO ((xplus X E hM).Kl la) a)) * emb (xplus X E hM) la G.N (X.inc wL (G.w k))`. Rewrite using `[map_smul, ← IsScalarTower.algebraMap_apply, ← Algebra.smul_def]`.
+
+Conclude with `emb_smul (xplus X E hM) la G.N a _`. Rewrite `h1` using `[e1, map_smul, map_smul, Algebra.smul_def, map_mul, mul_div_cancel_right₀ _ h0, mul_div_cancel_right₀ _ hk]`. Conclude with `h1`.
+-/
 theorem jz_const (a : B.KO) : jz (algebraMap B.KO Ω a) = h.ev (algebraMap (Kp (xplus X E hM) la G.N) (Rp (xplus X E hM) la G.N)
     (algebraMap ((xplus X E hM).Kl la) (Kp (xplus X E hM) la G.N) (algebraMap B.KO ((xplus X E hM).Kl la) a))) := by
   obtain ⟨k, hk⟩ := exists_ev_ne h
@@ -424,6 +567,21 @@ theorem jz_const (a : B.KO) : jz (algebraMap B.KO Ω a) = h.ev (algebraMap (Kp (
   rw [e1, map_smul, map_smul, Algebra.smul_def, map_mul, mul_div_cancel_right₀ _ h0, mul_div_cancel_right₀ _ hk] at h1
   exact h1
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `toOsK_surjective (xplus X E hM) la G.w b`. Take `⟨k, g, hg, hx⟩` from `(mem_Hfr (xplus X E hM) la G.w).1 ((mem_Frac0 (xplus X E hM) la G.w).1 x.2)`. Rewrite using `[phiPt_to, hx, h.lift_frac]`. Take `⟨k₀, hk⟩` from `exists_ev_ne h`. Use `set w₀ := h.ev (emb (xplus X E hM) la G.N (X.inc wL (G.w k₀))) with hw₀`.
+
+Establish `hs0 : h.ev (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec (xplus X E hM) la G.w 0) / w₀ ∈ S`. Rewrite using `[ev_sec, Finset.sum_div]`. Use `S.sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc, ← jz_ratio h gF jz h2 h3 _ _ hk]`. Conclude with `S.mul_mem (hK _) (hΩ _)`.
+
+Establish `hg' : h.ev g / w₀ ^ k ∈ S` using `by clear hx`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨F, rfl⟩` from `hg`. Take `⟨H, hH⟩` from `pow_form (X := X) (G.w k₀) k`.
+
+Take `⟨H', hH'⟩` from `mul_form (X := X) (G.w k₀) k F`. Establish `e : h.ev (emb (xplus X E hM) la G.N (X.inc _ H)) = w₀ ^ (k + 1)`. Rewrite using `[hH]`. Conclude with `(congrArg h.ev (map_pow (emb (xplus X E hM) la G.N) _ _)).trans (map_pow _ _ _)`. Establish `e' : h.ev (emb (xplus X E hM) la G.N (X.inc _ H')) = w₀ * h.ev (emb (xplus X E hM) la G.N (X.inc _ F))`.
+
+Rewrite using `[hH']`. Conclude with `(congrArg h.ev (map_mul (emb (xplus X E hM) la G.N) _ _)).trans (map_mul _ _ _)`. Establish `h1` using `jz_ratio h gF jz h2 h3 H' H (by rw [e]; exact pow_ne_zero _ hk)`. Rewrite `h1` using `[e, e', pow_succ', mul_div_mul_left _ _ hk]`. Conclude with `h1 ▸ hΩ _`.
+
+Consider the case `zero => rw [map_zero, zero_div]`. Conclude with `S.zero_mem`. Consider the case `add a b _ _ ha hb => rw [map_add, add_div]`. Conclude with `S.add_mem ha hb`. Consider the case `smul c a _ ha => rw [Algebra.smul_def, map_mul, mul_div_assoc]`.
+
+Conclude with `S.mul_mem (hK c) ha`. Establish `e : h.ev g * (h.ev (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec (xplus X E hM) la G.w 0))⁻¹ ^ k = h.ev g / w₀ ^ k * (h.ev (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec (xplus X E hM) la G.w 0) / w₀)⁻¹ ^ k`. Rewrite using `[inv_div, div_pow, inv_pow, div_mul_div_cancel₀ (pow_ne_zero k hk), div_eq_mul_inv]`. Rewrite using `[e]`. Conclude with `S.mul_mem hg' (S.pow_mem (S.inv_mem hs0) k)`.
+-/
 theorem phiPt_mem (S : Subfield h.T.Fr) (hK : ∀ c, h.ev (algebraMap (Kp (xplus X E hM) la G.N) (Rp (xplus X E hM) la G.N) c) ∈ S)
     (hΩ : ∀ a, jz a ∈ S) (b : OsK (xplus X E hM) la G.w) : phiPt h b ∈ S := by
   obtain ⟨x, rfl⟩ := toOsK_surjective (xplus X E hM) la G.w b
@@ -458,6 +616,25 @@ theorem phiPt_mem (S : Subfield h.T.Fr) (hK : ∀ c, h.ev (algebraMap (Kp (xplus
   rw [e]
   exact S.mul_mem hg' (S.pow_mem (S.inv_mem hs0) k)
 
+/- English proof (translation)
+Set `ψ : Kp (xplus X E hM) la G.N →+* h.T.Fr` to `h.ev.comp (algebraMap (Kp (xplus X E hM) la G.N) (Rp (xplus X E hM) la G.N))`. Establish `hψ : ∀ o : Op (xplus X E hM) la G.N, ψ (algebraMap (Op (xplus X E hM) la G.N) (Kp (xplus X E hM) la G.N) o) = phiPt h (algebraMap (Op (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w) o)` using `fun o => (phiPt_Kp h _).symm`. Establish `hint : ∀ o : Op (xplus X E hM) la G.N, valV h.T.V (ψ (algebraMap (Op (xplus X E hM) la G.N) (Kp (xplus X E hM) la G.N) o)) ≤ 1` using `fun o => by`. Rewrite using `[hψ]`. Conclude with `phiPt_int hU h ((As (Op (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w)).algebraMap_mem o)`.
+
+Establish `hϖ : valV h.T.V (ψ (algebraMap (Op (xplus X E hM) la G.N) (Kp (xplus X E hM) la G.N) (unifO (xplus X E hM) la G.N))) < 1`. Rewrite using `[hψ]`. Establish `he` using `ep_pos ζ hU`. Break down `ord_cases (ord_phiPt h (algebraMap (Op (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w) (unifO (xplus X E hM) la G.N))) with ⟨h1, -⟩ | ⟨n, h1, h2⟩` into its components or cases. Rewrite using `[h1, map_zero]`.
+
+Conclude with `zero_lt_one`. Rewrite `h2` using `[ord_unif ζ hU, WithTop.coe_inj]`. Rewrite using `[h1, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Establish `ht' : t = fun q => ψ (algebraMap (Op (xplus X E hM) la G.N) (Kp (xplus X E hM) la G.N) (Tv (xplus X E hM) la G.N q))`.
+
+Use function extensionality and compare the values at `fun q => (ht q).trans (hψ _).symm`. Take `⟨g1, g2, g3⟩` from `GlobalTheory.T.gauss_valuation_density_generation_localisation D B P j (xplus X E hM) la G.N h.T.Fr (valV h.T.V) ψ hint hϖ`. Take `⟨S', hS'⟩` from `GlobalTheory.T.exists_subfield_valuation_closure' h.T.Fr (valV h.T.V) (Subfield.closure (Set.range jz ∪ Set.range t))`. Establish `hle : ∀ u ∈ Subfield.closure (Set.range jz ∪ Set.range t), u ∈ S'` using `fun u hu => (hS' u).2 fun γ hγ => ⟨u, hu, by rw [sub_self, map_zero]; exact zero_lt_iff.2 hγ⟩`. Establish `hK : ∀ c, ψ c ∈ S'`.
+
+Use `g3 S' (fun c => (hS' _).2 fun γ hγ => ?_) fun q => hle _ (Subfield.subset_closure (Or.inr ⟨q, by rw [ht']⟩))` and prove the remaining obligations. Take `⟨a, ha⟩` from `g2 c γ hγ`. Conclude with `⟨_, Subfield.subset_closure (Or.inl ⟨algebraMap B.KO Ω a, jz_const h gF jz h2 h3 a⟩), ha⟩`. Establish `hmem` using `phiPt_mem h gF jz h2 h3 S' hK (fun a => hle _ (Subfield.subset_closure (Or.inl ⟨a, rfl⟩))) b`. Take `⟨g, hg, hgb⟩` from `(hS' _).1 hmem 1 one_ne_zero`.
+
+Establish `hg1 : valV h.T.V g ≤ 1`. Establish `e : g = phiPt h b + -(phiPt h b - g)` using `by ring`. Rewrite using `[e]`. Conclude with `(valV h.T.V).map_add_le (phiPt_int hU h hb) (by rw [Valuation.map_neg]; exact hgb.le)`. Take `⟨k₀, hk⟩` from `exists_ev_ne h`.
+
+Take `⟨a, ha, d, hd, hd1, hgd⟩` from `GlobalTheory.T.integral_elements_generic_linear_section_gauss_point B.KO Ω h.T.Fr jz (WeightFamilies.dimY D j) G.N htr (valV h.T.V) t (fun k => gF (X.inc wL (G.w k)) / gF (X.inc wL (G.w k₀))) ⟨k₀, div_ne_zero (fun e => hk (h2 _ _ e)) (fun e => hk (h2 _ _ e))⟩ (fun i => by`. Establish `h0` using `h.onS i`. Rewrite `h0` using `[ev_sec]`. Simplify using `only [jz_ratio h gF jz h2 h3 _ _ hk, ← mul_div_assoc, ← Finset.sum_div, ht']`. Conclude with `div_eq_zero_iff.2 (Or.inl h0))`.
+
+Use the proof step `(fun q => by rw [ht']; exact hint _)`. Use the proof step `(fun p hp hp' => by`. Rewrite using `[ht']`. Conclude with `g1 (jz.comp (algebraMap B.KO Ω)) (fun a => jz_const h gF jz h2 h3 a) p hp hp')`. Use `g hg hg1`.
+
+Use `⟨a, ha, d, hd, hd1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hgd, ← sub_mul, map_mul, hd1, mul_one]`. Conclude with `hgb`.
+-/
 theorem residue_at (hU : IsUnif (OsK (xplus X E hM) la G.w) (unifO (xplus X E hM) la G.N)) [IsDVRAt ζ]
     (htr : Algebra.trdeg B.KO Ω = WeightFamilies.dimY D j) (t : Idx D j G.N → h.T.Fr)
     (ht : ∀ q, t q = phiPt h (algebraMap (Op (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w) (Tv (xplus X E hM) la G.N q)))
@@ -514,6 +691,19 @@ theorem residue_at (hU : IsUnif (OsK (xplus X E hM) la G.w) (unifO (xplus X E hM
 
 end Point
 
+/- English proof (translation)
+Use `haveI := kp_charZero' (la := la) (G := G)`. Use `haveI hfin : Module.Finite (Op (xplus X E hM) la G.N) ↥(As (Op (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w)) := (integralClosure_dvr' (Op (xplus X E hM) la G.N) (Kp (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w)).1`. Use `haveI : Finite (PtsG G la) := (_root_.ramificationDegreeSum (Op (xplus X E hM) la G.N) (Kp (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w) (unifO (xplus X E hM) la G.N) hU.irreducible hfin).1`. Use `core hU (liftable hs hU) (liftable_le hs hU) Zc (fun ζ => valV (hs ζ).T.V) (fun ζ => phiPt (hs ζ)) jz (fun ζ x => ord_cases (ord_phiPt (hs ζ) x)) (fun a ha => ?_) (fun ζ => ?_) (fun ζ ζ' hne hZ => ?_) (fun ζ => ?_)` and prove the remaining obligations. Take `⟨k, F, F', hF⟩` from `GlobalTheory.T.exists_ratio_forms_at_points_alt D B P j (xplus X E hM) la G.N wL G.w (PtsG G la) (fun ζ => (hs ζ).T.Fr) (fun ζ => (hs ζ).ev) ι Ω gF Zc jz (fun ζ => exists_ev_ne (hs ζ)) h2 h3 hB hC a`.
+
+Conclude with `ratio_liftable hs hfd hU k F F' _ ha hF`. Take `⟨a, ha⟩` from `h1 ζ`. Establish `h0 : jz ζ a ≠ 0` using `fun e => by rw [e] at ha; simp [vV] at ha`. Use `⟨a⁻¹, ?_⟩` and prove the remaining obligations. Use `show valV _ _ = _`.
+
+Rewrite using `[map_inv₀, map_inv₀, ← WithZero.exp_log (valV_ne_zero (V := (hs ζ).T.V) h0), ← WithZero.exp_neg]`. Conclude with `congrArg _ ha`. Take `⟨u, F, F', a1, a2, a3, a4⟩` from `h4 ζ ζ' hne hZ`. Use `⟨fun Z => gF Z (X.inc u F) / gF Z (X.inc u F'), ?_, ?_⟩` and prove the remaining obligations. Use `show valV _ (jz ζ (_ / _)) < 1`.
+
+Rewrite using `[jz_ratio (hs ζ) (gF _) (jz ζ) (h2 ζ) (h3 ζ) F F' a1]`. Conclude with `valV_lt_of_nval_lt a1 a3`. Use `show valV _ (jz ζ' (_ / _)) = 1`. Rewrite using `[jz_ratio (hs ζ') (gF _) (jz ζ') (h2 ζ') (h3 ζ') F F' a2]`. Establish `h5` using `valV_lt_of_nval_lt a2 a4`.
+
+Rewrite `h5` using `[sub_div, div_self a2]`. Rewrite using `[← add_sub_cancel 1 (_ / _)]`. Conclude with `Valuation.map_one_add_of_lt _ h5`. Use `⟨Set.range fun q => phiPt (hs ζ) (algebraMap (Op (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w) (Tv (xplus X E hM) la G.N q)), ?_, fun b hb => residue_at (hs ζ) (gF _) (jz ζ) (h2 ζ) (h3 ζ) hU (htr _) _ (fun _ => rfl) b hb⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`.
+
+Conclude with `⟨_, (liftable hs hU).algebraMap_mem _, rfl⟩`.
+-/
 theorem as_le_liftable (hfd : FiniteDimensional (Kp (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w)) (hred : IsReduced (OsK (xplus X E hM) la G.w))
     (hU : IsUnif (OsK (xplus X E hM) la G.w) (unifO (xplus X E hM) la G.N)) [∀ ζ : PtsG G la, IsDVRAt ζ]
     {ι : Type} (Ω : ι → Type) [∀ Z, Field (Ω Z)] [∀ Z, Algebra B.KO (Ω Z)] (gF : ∀ Z, X.Forms →ₐ[B.KO] Ω Z)
@@ -567,6 +757,13 @@ theorem as_le_liftable (hfd : FiniteDimensional (Kp (xplus X E hM) la G.N) (OsK 
     rintro _ ⟨q, rfl⟩
     exact ⟨_, (liftable hs hU).algebraMap_mem _, rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `y hw g0 ⟨M⟩ - g hg`. Take `⟨Zc, jz, h1, h2, h3, h4⟩` from `hV y hw`. Establish `hfd : FiniteDimensional (Kp (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w)` using `by haveI : FiniteDimensional (Kp (xplus X E hM) la G.N) (↥M.A' ⧸ M.JA) := M.fin`. Conclude with `LinearEquiv.finiteDimensional M.quotEquiv.toLinearEquiv`. Establish `hred : IsReduced (OsK (xplus X E hM) la G.w)` using `by haveI : IsReduced (↥M.A' ⧸ M.JA) := M.red`.
+
+Conclude with `isReduced_of_injective M.quotEquiv.symm.toRingHom M.quotEquiv.symm.injective`. Establish `hU` using `isUnif_of_ring (G := G) hfd`. Use `haveI : ∀ ζ : PtsG G la, IsDVRAt ζ := isDVRAt_of_ring hfd hred`. Establish `hmem : toOsK (xplus X E hM) la G.w g ∈ As (Op (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w)` using `(mem_As_iff hU _).2 fun ζ => ord_nonneg_of (hw ζ).toSecPt (nval_nonneg_iff.1 (hg ζ))`. Take `⟨f, d, hd, he, r, hr, hf⟩` from `as_le_liftable (fun ζ => (hw ζ).toSecPt) hfd hred hU Ω gF Zc jz htr h1 (fun ζ u F e => h2 ζ u F ((hev _ _ _).symm.trans e)) (fun ζ u F F' => by rw [hev, hev]; exact h3 ζ u F F') h4 hB (fun Z u F => by simp only [hev]; exact hC Z u F) hmem`.
+
+Use `⟨f, d, hd, he, fun l ζ => ?_⟩` and prove the remaining obligations. Rewrite using `[hf, mul_assoc, IsUnit.mul_val_inv, mul_one]`. Conclude with `hr l ζ`.
+-/
 theorem locStruct_of
     {ι : Type} (Ω : ι → Type) [∀ Z, Field (Ω Z)] [∀ Z, Algebra B.KO (Ω Z)] (gF : ∀ Z, X.Forms →ₐ[B.KO] Ω Z)
     (evF : ∀ Z (u : WeightFamilies.Wt D j), B.Cusp j u → Ω Z) (hev : ∀ Z u F, gF Z (X.inc u F) = evF Z u F)
@@ -619,6 +816,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D T h j hj hG hT ka wL wF G S g0 la hH hI hC hB`. Conclude with `UnitBall.locStruct_of (X := recPJ h j hj) (E := extAll h j hj) (hM := intAtExt_extAll h j hj) (G := G) (la := la) (fun Z : Comp (T.Q.Xo j) T.Q.c => Om Z) (fun Z => formsEvR j hG hT Z) (fun Z u F => evC hG Z ((F : (recB h.toLawsCore).Cusp j u) : T.R j)) (fun Z u F => formsEvR_inc …`.
+-/
 theorem locStructSt_record : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (hT : GenFromTest (T.Q.Xo j) T.Q.c hG) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore)) (g0 : (recB h.toLawsCore).Cusp j wF) (la : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO)), CurveHyp h j hj hG ka wL wF G S g0 → GenValInjSt h j hG → CompSplitSt h j hG → BIRSt h j hj hG G → Formalism.L2.Pj.LocStructSt (E := extAll h j hj) (hM := intAtExt_extAll h j hj) G la := by
   intro D T h j hj hG hT ka wL wF G S g0 la hH hI hC hB
   exact UnitBall.locStruct_of (X := recPJ h j hj) (E := extAll h j hj) (hM := intAtExt_extAll h j hj) (G := G) (la := la)

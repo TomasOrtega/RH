@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `k _ n P a h i`. Establish `hroot : P.charpoly.eval (a i) = 0`. Rewrite using `[h, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`. Rewrite `hroot` using `[Matrix.eval_charpoly]`.
+
+Take `⟨v, hv, hv0⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hroot`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Rewrite `hv0` using `[Matrix.sub_mulVec, sub_eq_zero]`. Rewrite using `[← hv0]`. Use extensionality with `j`.
+
+Simplify using `[Matrix.mulVec_diagonal]`.
+-/
 theorem UpperTheory.Reformulated.B.Qi37.eig_ex :
     ∀ {k : Type} [inst : Field k] {n : ℕ} (P : Matrix (Fin n) (Fin n) k)
     (a : Fin n → k),

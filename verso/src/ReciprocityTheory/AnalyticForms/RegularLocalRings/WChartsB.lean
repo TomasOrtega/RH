@@ -6,6 +6,11 @@ open AlgebraicGeometry CategoryTheory
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite `ha`, the goal using `[mem_nonZeroDivisors_iff_right]`. Introduce `x hx`. Take `⟨⟨y, m⟩, rfl⟩` from `IsLocalization.mk'_surjective M x`. Establish `h1 : algebraMap R S (y * a) = 0`. Rewrite using `[map_mul, ← IsLocalization.mk'_spec S y m, mul_right_comm, hx, zero_mul]`.
+
+Take `⟨c, hc⟩` from `(IsLocalization.map_eq_zero_iff M S _).1 h1`. Conclude with `(IsLocalization.mk'_eq_zero_iff y m).2 ⟨c, ha _ (by rw [← hc, mul_assoc])⟩`.
+-/
 theorem algebraMap_mem_nonZeroDivisors_of_isLocalization {R S : Type*} [CommRing R] [CommRing S]
     [Algebra R S] (M : Submonoid R) [IsLocalization M S] {a : R} (ha : a ∈ nonZeroDivisors R) :
     algebraMap R S a ∈ nonZeroDivisors S := by
@@ -17,6 +22,21 @@ theorem algebraMap_mem_nonZeroDivisors_of_isLocalization {R S : Type*} [CommRing
   obtain ⟨c, hc⟩ := (IsLocalization.map_eq_zero_iff M S _).1 h1
   exact (IsLocalization.mk'_eq_zero_iff y m).2 ⟨c, ha _ (by rw [← hc, mul_assoc])⟩
 
+/- English proof (translation)
+Set `S'` to `Localization.Away (φ (g j))`. Establish `hinj : Function.Injective (algebraMap S S')` using `IsLocalization.injective S' (Submonoid.powers_le.2 hj)`. Set `L : Localization.Away (g j) →+* S'` to `IsLocalization.Away.map _ _ φ (g j)`. Establish `hL : ∀ r, L (algebraMap R _ r) = algebraMap S S' (φ r)` using `fun r => IsLocalization.map_eq _ _`. Establish `key : ∀ x ∈ FinalTheorems.reesChart g j, L x ∈ (algebraMap S S').range`.
+
+Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Use `⟨c k, ?_⟩` and prove the remaining obligations.
+
+Establish `hu : IsUnit (algebraMap S S' (φ (g j)))` using `IsLocalization.Away.algebraMap_isUnit _`. Apply `hu.mul_left_injective` to reduce the goal to its premises. Use `congrArg L (IsLocalization.mk'_spec (Localization.Away (g j)) (g k) (⟨g j, Submonoid.mem_powers _⟩ : Submonoid.powers (g j)))` as an intermediate fact. Rewrite `this` using `[map_mul, hL, hL]`. Use `show algebraMap S S' (c k) * _ = L _ * _`.
+
+Rewrite using `[← map_mul, ← hc]`. Conclude with `this.symm`. Consider the case `algebraMap r => exact ⟨φ r, (hL r).symm⟩`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`. Set `F : FinalTheorems.reesChart g j →+* (algebraMap S S').range` to `(L.comp (FinalTheorems.reesChart g j).val.toRingHom).codRestrict _ (fun x => key x.1 x.2)`. Set `E : S ≃+* (algebraMap S S').range` to `RingEquiv.ofBijective (algebraMap S S').rangeRestrict ⟨fun a b h => hinj (congrArg Subtype.val h), (algebraMap S S').rangeRestrict_surjective⟩`. Use `⟨E.symm.toRingHom.comp F, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[RingEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[F, E, hL]`.
+
+Apply the tactic sequence `try rfl`.
+-/
 theorem reesChart_lift {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {m : ℕ} (g : Fin m → R)
     (j : Fin m) (hj : φ (g j) ∈ nonZeroDivisors S) (c : Fin m → S) (hc : ∀ k, φ (g k) = c k * φ (g j)) :
     ∃ ψ : FinalTheorems.reesChart g j →+* S, ψ.comp (algebraMap R (FinalTheorems.reesChart g j)) = φ := by
@@ -55,6 +75,11 @@ theorem reesChart_lift {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {
   simp [F, E, hL]
   try rfl
 
+/- English proof (translation)
+Rewrite `ha`, the goal using `[mem_nonZeroDivisors_iff_right]`. Introduce `x hx`. Establish `: e.symm x * a = 0`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, e.apply_symm_apply, hx, map_zero]`.
+
+Simplify using `using congrArg e (ha _ this)`.
+-/
 theorem ringEquiv_mem_nonZeroDivisors {A B : Type*} [CommRing A] [CommRing B] (e : A ≃+* B) {a : A}
     (ha : a ∈ nonZeroDivisors A) : e a ∈ nonZeroDivisors B := by
   rw [mem_nonZeroDivisors_iff_right] at ha ⊢
@@ -63,6 +88,15 @@ theorem ringEquiv_mem_nonZeroDivisors {A B : Type*} [CommRing A] [CommRing B] (e
     apply e.injective; rw [map_mul, e.apply_symm_apply, hx, map_zero]
   simpa using congrArg e (ha _ this)
 
+/- English proof (translation)
+Introduce `x`. Take `⟨U, h, hxU, hh, hU⟩` from `hI (f x)`. Take `⟨r, hrle, hxr⟩` from `U.2.exists_basicOpen_le (V := f.opensRange) ⟨f x, ⟨x, rfl⟩⟩ hxU`. Establish `himg : f ''ᵁ (f ⁻¹ᵁ Y.basicOpen r) = Y.basicOpen r`. Rewrite using `[f.image_preimage_eq_opensRange_inf, inf_eq_right.2 hrle]`.
+
+Establish `hUX : IsAffineOpen (f ⁻¹ᵁ Y.basicOpen r)`. Rewrite using `[← f.isAffineOpen_iff_of_isOpenImmersion, himg]`. Conclude with `U.2.basicOpen r`. Establish `hle : f ''ᵁ (f ⁻¹ᵁ Y.basicOpen r) ≤ U.1` using `himg.le.trans (Y.basicOpen_le r)`. Establish `hnzd : ∀ (O : Y.Opens) (hO : O = Y.basicOpen r) (hOU : O ≤ U.1), Y.presheaf.map (homOfLE hOU).op h ∈ nonZeroDivisors Γ(Y, O)`.
+
+Introduce and unpack `O rfl hOU`. Use `U.2.isLocalization_basicOpen r` as an intermediate fact. Conclude with `algebraMap_mem_nonZeroDivisors_of_isLocalization (Submonoid.powers r) hh`. Set `e` to `(f.appIso (f ⁻¹ᵁ Y.basicOpen r)).commRingCatIsoToRingEquiv`. Use `⟨⟨_, hUX⟩, e (Y.presheaf.map (homOfLE hle).op h), hxr, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `ringEquiv_mem_nonZeroDivisors e (hnzd _ himg hle)`. Rewrite using `[Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion]`. Rewrite using `[← I.map_ideal (U := ⟨_, (f.isAffineOpen_iff_of_isOpenImmersion).2 hUX⟩) (V := U) hle, hU, Ideal.map_span, Set.image_singleton]`. Rewrite using `[show ((f.appIso (f ⁻¹ᵁ Y.basicOpen r)).inv.hom : _ →+* _) = (e.symm : _ →+* _) from rfl, Ideal.comap_coe, Ideal.comap_symm, Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+-/
 theorem effCartier_comap_of_isOpenImmersion' {X Y : Scheme.{0}} (I : Y.IdealSheafData) (f : X ⟶ Y)
     [IsOpenImmersion f] (hI : FinalTheorems.EffCartier I) : FinalTheorems.EffCartier (I.comap f) := by
   intro x
@@ -88,6 +122,37 @@ theorem effCartier_comap_of_isOpenImmersion' {X Y : Scheme.{0}} (I : Y.IdealShea
       Ideal.comap_coe, Ideal.comap_symm, Ideal.map_span, Set.image_singleton]
     rfl
 
+/- English proof (translation)
+Set `σ : ∀ k, FinalTheorems.reesChart g k →+* Γ(W, V k)` to `fun k => (V k).topIso.hom.hom.comp (((e k).hom.appTop).hom.comp (Scheme.ΓSpecIso (.of (FinalTheorems.reesChart g k))).inv.hom)`. Set `q : ∀ k l, FinalTheorems.reesChart g k` to `fun k l => ⟨IsLocalization.mk' (Localization.Away (g k)) (g l) (⟨g k, Submonoid.mem_powers _⟩ : Submonoid.powers (g k)), Algebra.subset_adjoin ⟨l, rfl⟩⟩`. Establish `hq : ∀ k l, algebraMap Γ(X, U.1) (FinalTheorems.reesChart g k) (g l) = q k l * algebraMap Γ(X, U.1) (FinalTheorems.reesChart g k) (g k)` using `fun k l => Subtype.ext (IsLocalization.mk'_spec _ _ _).symm`. Establish `hsec : ∀ k r, σ k (algebraMap _ _ r) = π.appLE _ (V k) (hV k) r` using `fun k r => sec_algebraMap_of_iso π U (V k) (hV k) _ (e k) (he k) r`. Establish `hP : ∀ k l, π.appLE _ (V k) (hV k) (g l) = σ k (q k l) * π.appLE _ (V k) (hV k) (g k)`.
+
+Introduce `k l`. Rewrite using `[← hsec, ← hsec, ← map_mul, ← hq]`. Establish `hnz : ∀ k, π.appLE _ (V k) (hV k) (g k) ∈ nonZeroDivisors Γ(W, V k)`. Introduce `k`. Rewrite using `[← hsec]`.
+
+Apply `sec_mem_nonZeroDivisors (V k) (e k)` to reduce the goal to its premises. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `x hx`. Establish `hu : IsUnit (algebraMap Γ(X, U.1) (Localization.Away (g k)) (g k))` using `IsLocalization.Away.algebraMap_isUnit _`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `hu.mul_left_eq_zero.1 (congrArg Subtype.val hx)`. Establish `hti : t = σ i (q i j)` using `ht`. Establish `hVi : IsAffineOpen (V i)` using `isAffineOpen_of_iso (V i) (e i)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `w hw`.
+
+Establish `hwi : w ∈ V i` using `hw.1`. Establish `hwj : w ∈ V j` using `hw.2`. Rewrite using `[Scheme.mem_basicOpen W t w hwi, hti]`. Establish `hg : ∀ k l (hwk : w ∈ V k), W.presheaf.germ (V k) w hwk (π.appLE _ (V k) (hV k) (g l)) = W.presheaf.germ (π ⁻¹ᵁ U.1) w (hV k hwk) (π.app U.1 (g l))`. Introduce `k l hwk`.
+
+Simplify using `only [Scheme.Hom.appLE, CommRingCat.comp_apply, TopCat.Presheaf.germ_res_apply]`. Establish `h1` using `congrArg (W.presheaf.germ (V i) w hwi) (hP i j)`. Establish `h2` using `congrArg (W.presheaf.germ (V j) w hwj) (hP j i)`. Rewrite `h1` using `[map_mul, hg, hg]`. Rewrite `h2` using `[map_mul, hg, hg]`.
+
+Establish `hA` using `germ_mem_nonZeroDivisors hVi (hnz i) w hwi`. Rewrite `hA` using `[hg]`. Establish `h3 : (W.presheaf.germ (V j) w hwj (σ j (q j i)) * W.presheaf.germ (V i) w hwi (σ i (q i j)) - 1) * W.presheaf.germ (π ⁻¹ᵁ U.1) w (hV i hwi) (π.app U.1 (g i)) = 0`. Rewrite using `[sub_mul, one_mul, mul_assoc, ← h1, ← h2, sub_self]`. Establish `h4` using `sub_eq_zero.1 ((mem_nonZeroDivisors_iff_right.1 hA) _ h3)`.
+
+Conclude with `IsUnit.of_mul_eq_one_right _ h4`. Establish `hD : IsAffineOpen (W.basicOpen t)` using `hVi.basicOpen t`. Establish `hDle : W.basicOpen t ≤ V i` using `W.basicOpen_le t`. Establish `hDU : W.basicOpen t ≤ π ⁻¹ᵁ U.1` using `hDle.trans (hV i)`. Set `ρ` to `W.presheaf.map (homOfLE hDle).op`.
+
+Set `φ` to `π.appLE U.1 (W.basicOpen t) hDU`. Establish `hφ : ∀ l, φ (g l) = ρ (π.appLE _ (V i) (hV i) (g l))` using `fun l => by show _ = (π.appLE _ (V i) (hV i) ≫ W.presheaf.map (homOfLE hDle).op) (g l)`. Rewrite using `[Scheme.Hom.appLE_map]`. Establish `hu : IsUnit (ρ t)` using `W.toRingedSpace.isUnit_res_basicOpen t`. Establish `key : ∀ (a b u x : Γ(W, W.basicOpen t)), u * x = 1 → a * b = a * u * (x * b)`.
+
+Introduce `a b u x h`. Take the linear combination `(-(a * b)) * h`. Establish `hc : ∀ l, φ.hom (g l) = (ρ (σ i (q i l)) * ↑hu.unit⁻¹) * φ.hom (g j)`. Introduce `l`. Use `show φ (g l) = _ * φ (g j)`.
+
+Rewrite using `[hφ, hφ, hP i l, hP i j, ← hti, map_mul, map_mul]`. Conclude with `key _ _ _ _ hu.val_inv_mul`. Establish `hnzj : φ.hom (g j) ∈ nonZeroDivisors Γ(W, W.basicOpen t)` using `by show φ (g j) ∈ _`. Rewrite using `[hφ, hP i j, map_mul, ← hti]`. Conclude with `mul_mem hu.mem_nonZeroDivisors (res_mem_nonZeroDivisors hDle hVi (hnz i))`.
+
+Take `⟨ψ, hψ⟩` from `reesChart_lift φ.hom g j hnzj _ hc`. Set `a` to `hD.fromSpec`. Set `b` to `Spec.map (CommRingCat.ofHom ψ) ≫ (e j).inv ≫ (V j).ι`. Establish `hab : b ≫ π = a ≫ π`. Simplify using `only [a, b, Category.assoc]`.
+
+Rewrite using `[← he j, Iso.inv_hom_id_assoc, ← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp, hψ, ← IsAffineOpen.SpecMap_appLE_fromSpec π U.2 hD hDU]`. Both sides reduce to the same expression. Establish `hE : FinalTheorems.EffCartier (J.comap (a ≫ π))`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`. Conclude with `effCartier_comap_of_isOpenImmersion' _ a hB.1`.
+
+Take `⟨h0, -, huniq⟩` from `hB.2 _ (a ≫ π) hE`. Establish `hab' : b = a` using `(huniq b hab).trans (huniq a rfl).symm`. Introduce `w hw`. Establish `hw' : w ∈ Set.range hD.fromSpec` using `by rw [hD.range_fromSpec]; exact hw`. Take `⟨x, rfl⟩` from `hw'`.
+
+Use `⟨hDle hw, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a x ∈ V j`. Rewrite using `[← hab']`. Express the relevant statement in the definitionally equal form `(V j).ι ((Spec.map (CommRingCat.ofHom ψ) ≫ (e j).inv) x) ∈ V j`. Conclude with `((Spec.map (CommRingCat.ofHom ψ) ≫ (e j).inv) x).2`.
+-/
 theorem inter_reesCharts' {X W : Scheme.{0}} (π : W ⟶ X) (J : X.IdealSheafData) (hB : FinalTheorems.Blowup π J)
     (U : X.affineOpens) {m : ℕ} (g : Fin m → Γ(X, U.1)) (hg : Ideal.span (Set.range g) = J.ideal U)
     (V : Fin m → W.Opens) (hV : ∀ i, V i ≤ π ⁻¹ᵁ U.1)

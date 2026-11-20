@@ -19,6 +19,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 namespace GlobalTheory.CompanionTheory.IwaAd
 open GlobalTheory.StdUnn GlobalTheory.StdUnn.Model GlobalTheory.StdUnn.LeftInvSect PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC PositivityTheory.PfSWUS
 variable {D : D7} {n : ℕ}
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D m n`. Use `haveI : IsTopologicalAddGroup (Mx D m n) := i1`. Use `haveI : LocallyCompactSpace (Mx D m n) := i2`. Use `haveI : SecondCountableTopology (Mx D m n) := i3`. Use `haveI : T2Space (Mx D m n) := i4`.
+
+Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Set `φ` to `GlobalTheory.ModuLR.lrCE (1 : GL (Fin m) (AE D)) a`. Establish `hc : addEquivAddHaarChar φ = absA D (Matrix.GeneralLinearGroup.det a) ^ m`. Use `GlobalTheory.ResidueEisenstein.ModMat.addEquivAddHaarChar_lrCE D.host.F D.host.E D.sp.cm.sig (isCMExt_host D) m n (1 : GL (Fin m) (AE D)) a` as an intermediate fact.
+
+Simplify using `using this`. Establish `hA : 0 < absA D (Matrix.GeneralLinearGroup.det a)` using `absA_pos _`. Establish `e : ∀ y : Mx D m n, (HMul.hMul y a.1 : Mx D m n) = φ y` using `fun y => by`. Simplify using `only [φ]`. Rewrite using `[GlobalTheory.ModuLR.lrCE_apply, Units.val_one, Matrix.one_mul]`.
+
+Establish `key : ∫ y, f (φ y) ∂μ = ((((addEquivAddHaarChar φ)⁻¹ : ℝ≥0) : ℝ) : ℂ) * ∫ y, f y ∂μ` using `integral_comp_char μ φ f`. Rewrite `key` using `[hc, npow_neg_nat hA]`. Simplify using `only [e]`. Conclude with `key`.
+-/
 theorem integral_mul_right (m : ℕ) (μ : Measure (Mx D m n)) (hμ : μ.IsAddHaarMeasure) (a : GL (Fin n) (AE D))
     (f : Mx D m n → ℂ) :
     ∫ y, f (HMul.hMul y a.1 : Mx D m n) ∂μ = npow (absA D (Matrix.GeneralLinearGroup.det a)) (-(m : ℂ)) * ∫ y, f y ∂μ := by
@@ -44,11 +53,17 @@ theorem integral_mul_right (m : ℕ) (μ : Measure (Mx D m n)) (hμ : μ.IsAddHa
   simp only [e]
   exact key
 
+/- English proof (translation)
+The claim follows from `integral_sub_right_eq_self f g`.
+-/
 theorem integral_shift {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A]
     [MeasurableSpace A] [BorelSpace A] (μ : Measure A) [μ.IsAddHaarMeasure] (f : A → ℂ) (g : A) :
     ∫ x, f (x - g) ∂μ = ∫ x, f x ∂μ :=
   integral_sub_right_eq_self f g
 
+/- English proof (translation)
+Take `⟨i1, -, -, -, -, -⟩` from `lattice_Mx D n n`. Use `haveI : IsTopologicalAddGroup (Mx D n n) := i1`. Use `haveI : BorelSpace (Mx D n n) := ⟨rfl⟩`. Conclude with `integral_shift lam f g`.
+-/
 theorem integral_shift_herm (lam : Measure (hermA D n)) (hl : lam.IsAddHaarMeasure) (f : hermA D n → ℂ) (g : hermA D n) :
     ∫ x, f (x - g) ∂lam = ∫ x, f x ∂lam := by
   obtain ⟨i1, -, -, -, -, -⟩ := lattice_Mx D n n
@@ -56,12 +71,21 @@ theorem integral_shift_herm (lam : Measure (hermA D n)) (hl : lam.IsAddHaarMeasu
   haveI : BorelSpace (Mx D n n) := ⟨rfl⟩
   exact integral_shift lam f g
 
+/- English proof (translation)
+Simplify using `[halfTr, mul_add]`.
+-/
 theorem halfTr_add (x y : AE D) : halfTr (x + y) = halfTr x + halfTr y := by
   simp [halfTr, mul_add]
 
+/- English proof (translation)
+Simplify using `[halfTr]`.
+-/
 theorem halfTr_neg (x : AE D) : halfTr (-x) = -halfTr x := by
   simp [halfTr]
 
+/- English proof (translation)
+Unfold `StdUnn.inner`. Rewrite using `[adj_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem inner_mul_right (V : HSp D) {r : ℕ} (x : Mx D V.rank r) (s : Mx D r r) :
     StdUnn.inner V (HMul.hMul x s : Mx D V.rank r) (HMul.hMul x s : Mx D V.rank r) =
       adj s * StdUnn.inner V x x * s := by
@@ -69,6 +93,9 @@ theorem inner_mul_right (V : HSp D) {r : ℕ} (x : Mx D V.rank r) (s : Mx D r r)
   rw [adj_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `h1 : a.1 * c * adj a.1 * (adj (a⁻¹).1 * Q * (a⁻¹).1) = a.1 * (c * Q * (a⁻¹).1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.trace_mul_comm, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`.
+-/
 theorem trace_cg (a : GL (Fin n) (AE D)) (c Q : Mx D n n) :
     Matrix.trace (a.1 * c * adj a.1 * (adj (a⁻¹).1 * Q * (a⁻¹).1)) = Matrix.trace (c * Q) := by
   have h1 : a.1 * c * adj a.1 * (adj (a⁻¹).1 * Q * (a⁻¹).1) = a.1 * (c * Q * (a⁻¹).1) := by
@@ -76,11 +103,17 @@ theorem trace_cg (a : GL (Fin n) (AE D)) (c Q : Mx D n n) :
       _ = _ := by rw [adj_mul_adj_inv]; simp only [Matrix.mul_assoc, Matrix.mul_one]
   rw [h1, Matrix.trace_mul_comm, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem trace_beta (a : GL (Fin n) (AE D)) (B c : Mx D n n) :
     Matrix.trace (B * (a.1 * c * adj a.1)) = Matrix.trace (adj a.1 * B * a.1 * c) := by
   rw [← Matrix.mul_assoc, Matrix.trace_mul_comm]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[map_mul, Module.End.mul_apply, hω.levi m a hm, hω.unip u b1 hu]`.
+-/
 theorem weil_pt {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D} {V : HSp D}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} (hω : IsWeilSch ψ χ θ V μ ω)
     (a : GL (Fin n) (AE D)) {m u : G D n} (hm : mat m = blk4 a.1 0 0 (adj (a⁻¹).1)) {b1 : Mx D n n}
@@ -91,6 +124,15 @@ theorem weil_pt {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ
         φ.1 (HMul.hMul y a.1 : Mx D V.rank n)) := by
   rw [map_mul, Module.End.mul_apply, hω.levi m a hm, hω.unip u b1 hu]
 
+/- English proof (translation)
+Use `set F : Mx D V.rank n → ℂ := fun y => φ.1 y * ψ (halfTr (Matrix.trace (HMul.hMul (c + b1).1 (StdUnn.inner V y y) : Mx D n n))) with hF`. Establish `hpt : ∀ y : Mx D V.rank n, (ω (m * u) φ).1 y * ψ (halfTr (Matrix.trace (HMul.hMul (cg a c).1 (StdUnn.inner V y y) : Mx D n n))) = ((χ (Matrix.GeneralLinearGroup.det a) : ℂ) * npow (absA D (Matrix.GeneralLinearGroup.det a)) ((V.rank : ℂ) / 2)) * F (HMul.hMul y a.1 : Mx D V.rank n)`. Introduce `y`. Establish `hy : y = (HMul.hMul (HMul.hMul y a.1 : Mx D V.rank n) (a⁻¹).1 : Mx D V.rank n)`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`.
+
+Use `set Y : Mx D V.rank n := HMul.hMul y a.1 with hY`. Establish `e1 : Matrix.trace (HMul.hMul (cg a c).1 (StdUnn.inner V y y) : Mx D n n) = Matrix.trace (c.1 * StdUnn.inner V Y Y)`. Rewrite using `[hy, inner_mul_right]`. Conclude with `trace_cg a c.1 _`. Rewrite using `[weil_pt hω a hm hu, e1]`.
+
+Simplify using `only [hF]`. Establish `e2 : Matrix.trace (HMul.hMul (c + b1).1 (StdUnn.inner V Y Y) : Mx D n n) = Matrix.trace (c.1 * StdUnn.inner V Y Y) + Matrix.trace (b1.1 * StdUnn.inner V Y Y)`. Rewrite using `[← Matrix.trace_add, ← Matrix.add_mul]`. Both sides reduce to the same expression. Rewrite using `[e2, halfTr_add, AddChar.map_add_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `Jt`. Simplify using `only [hpt]`. Rewrite using `[integral_const_mul, integral_mul_right V.rank μ hμ a F]`.
+-/
 theorem jt_step {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D} {V : HSp D}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} (hω : IsWeilSch ψ χ θ V μ ω)
     (hμ : μ.IsAddHaarMeasure) (a : GL (Fin n) (AE D)) {m u : G D n} (hm : mat m = blk4 a.1 0 0 (adj (a⁻¹).1))

@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.ZConvLeft
 
+/- English proof (translation)
+Take `⟨a, b, τ, τ', n, Φ, -, -, ⟨e, -, ⟨φ₁, φ₂, h1, -⟩, -⟩, -, rfl⟩` from `hΘ`. Introduce `d hd`. Take `⟨P, -, hP⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hd)`. Take `⟨d', hd', hd''⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hP)`. Establish `hdd` using `Finsupp.support_single_subset hd''`.
+
+Rewrite `hdd` using `[Finset.mem_singleton]`. Substitute `hdd` using the available equality. Establish `h0 : IsThetaFunO W.ψ (G.pS (.mu t i j)) (G.pT (.mu t i j)) (ρ.vT i j)` using `(ρ.vT_is t i j i.2.le j.2).2.2`. Establish `hf` using `GlobalTheory.GalLift.Vec.theta_of_thetaAt W.ψ_std W.θ_is (h1 d' hd').1.2 h0`. Conclude with `GlobalTheory.GalLift.Vec.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ hf _`.
+-/
 theorem isThetaFunO_down {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) {Θ : TotT G (routeBig t i j)} {Θ' : TotT G (routeSmall t i j)}
     (hΘ : IsMatched B t ρ i j Θ Θ') :
@@ -32,6 +37,13 @@ theorem isThetaFunO_down {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : 
   have hf := GlobalTheory.GalLift.Vec.theta_of_thetaAt W.ψ_std W.θ_is (h1 d' hd').1.2 h0
   exact GlobalTheory.GalLift.Vec.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ hf _
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W B ρ t i j Θ Θ' hΘ g₁ γ hγ g u`. Establish `hω` using `W.om_is (.mu t i j) ⟨i.2.le, j.2⟩`. Establish `hth` using `isThetaFunO_down W B ρ t i j hΘ`. Unfold `kerSmall`. Use `Finsupp.sum_congr fun d hd => ?_` and prove the remaining obligations.
+
+Use `congr 2`. Use `show thetaKO (W.om (.mu t i j)) u (γ * g) d.1.2 = thetaKO (W.om (.mu t i j)) u g d.1.2`. Unfold `thetaKO`. Establish `e : ((u, γ * g) : GA D (G.pS (.mu t i j)) × GA D (G.pT (.mu t i j))) = (1, γ) * (u, g)` using `by simp`. Rewrite using `[e, map_mul]`.
+
+Conclude with `hω.om_aut 1 (one_mem _) γ hγ _ (hω.om_pres _ _ (hth d hd))`.
+-/
 theorem kerSmall_rat_left : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (Θ : TotT G (routeBig t i j)) (Θ' : TotT G (routeSmall t i j))
     (hΘ : IsMatched B t ρ i j Θ Θ') (g₁ : GA D (G.V (.grid (i + 1) j))),

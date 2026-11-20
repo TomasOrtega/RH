@@ -13,5 +13,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PlaceOverSplit.eq_or_eq_cP | exact GlobalTheory.PlaceOverSplit.eq_or_eq_cP | (intros; apply GlobalTheory.PlaceOverSplit.eq_or_eq_cP <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.placeOver_splitPlace_eq_chosen_or_conjugate : ∀ (D : D7), D.host.F = maximalRealSubfield D.host.E → ∀ (s : SplitPlace D.host.E) (Q : Formalism.L2.DIV.Pl D.host.E), Q.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E)) = s.v.asIdeal → Q = s.w ∨ Q = GlobalTheory.IdemSupport.cP s.w := by
   first | exact @GlobalTheory.PlaceOverSplit.eq_or_eq_cP | exact GlobalTheory.PlaceOverSplit.eq_or_eq_cP | (intros; apply GlobalTheory.PlaceOverSplit.eq_or_eq_cP <;> assumption)

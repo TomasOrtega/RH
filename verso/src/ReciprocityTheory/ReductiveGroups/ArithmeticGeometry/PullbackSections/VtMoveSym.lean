@@ -17,9 +17,15 @@ section Transl
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {T : Over S}
 
+/- English proof (translation)
+Rewrite using `[translPt_eq, MonObj.comp_one, _root_.one_mul]`.
+-/
 theorem translPt_one' : translPt A (1 : T ⟶ A) = snd T A := by
   rw [translPt_eq, MonObj.comp_one, _root_.one_mul]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left]`. Use `congr 1`. Simplify using `only [translPt_eq, translT, MonObj.comp_mul, lift_snd, lift_fst_assoc]`. Rewrite using `[_root_.mul_left_comm, ← _root_.mul_assoc]`.
+-/
 theorem transl_translPt (y x : T ⟶ A) :
     (translT A y).left ≫ (translPt A x).left = (translPt A (y * x)).left := by
   rw [← Over.comp_left]
@@ -27,16 +33,30 @@ theorem transl_translPt (y x : T ⟶ A) :
   simp only [translPt_eq, translT, MonObj.comp_mul, lift_snd, lift_fst_assoc]
   rw [_root_.mul_left_comm, ← _root_.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[transl_translPt, pow_succ]`.
+-/
 theorem transl_pow_succ (x : T ⟶ A) (j : ℕ) :
     (translT A (x ^ j)).left ≫ (translPt A x).left = (translPt A (x ^ (j + 1))).left := by
   rw [transl_translPt, pow_succ]
 
+/- English proof (translation)
+Rewrite using `[transl_translPt, inv_mul_cancel, translPt_one']`.
+-/
 theorem transl_inv_translPt (x : T ⟶ A) : (translT A x⁻¹).left ≫ (translPt A x).left = (snd T A).left := by
   rw [transl_translPt, inv_mul_cancel, translPt_one']
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, negT, lift_snd]`.
+-/
 theorem negT_snd' : (negT A T).left ≫ (snd T A).left = (snd T A ≫ (GrpObj.inv : A ⟶ A)).left := by
   rw [← Over.comp_left, negT, lift_snd]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Establish `e1 : negT A T ≫ translPt A x = (fst T A ≫ x) * (snd T A)⁻¹`. Rewrite using `[translPt_eq, MonObj.comp_mul, negT, lift_fst_assoc, lift_snd]`. Both sides reduce to the same expression.
+
+Establish `e2 : translT A x⁻¹ ≫ snd T A ≫ (GrpObj.inv : A ⟶ A) = (fst T A ≫ x) * (snd T A)⁻¹`. Rewrite using `[← Category.assoc, translT, lift_snd, translPt_eq]`. Use `show ((fst T A ≫ x⁻¹) * snd T A)⁻¹ = _`. Rewrite using `[mul_inv, GrpObj.comp_inv, inv_inv]`. Rewrite using `[e1, e2]`.
+-/
 theorem negT_translPt (x : T ⟶ A) :
     (negT A T).left ≫ (translPt A x).left = (translT A x⁻¹).left ≫ (snd T A ≫ (GrpObj.inv : A ⟶ A)).left := by
   rw [← Over.comp_left, ← Over.comp_left]
@@ -60,12 +80,34 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {A : Over S'} [GrpObj A] [I
   {L₀ : LB G.left} {L₁ : LB A.left}
 
 include hp hτ in
+/- English proof (translation)
+Use `show (x ≫ GrpObj.inv).left ≫ φ = τ ≫ (x₀ ≫ GrpObj.inv).left`. Rewrite using `[push_inv hp x, push_eq hp τ hτ hx]`. Apply the tactic sequence `try rfl`.
+-/
 theorem inv_rel {x : T ⟶ A} {x₀ : T₀ ⟶ G} (hx : x.left ≫ φ = τ ≫ x₀.left) :
     (x⁻¹).left ≫ φ = τ ≫ (x₀⁻¹).left := by
   show (x ≫ GrpObj.inv).left ≫ φ = τ ≫ (x₀ ≫ GrpObj.inv).left
   rw [push_inv hp x, push_eq hp τ hτ hx]
   try rfl
 
+/- English proof (translation)
+Take `rfl` from `h₀.pt_eq`. Take `⟨θ, rfl, hm⟩` from `exists_theta_move hp τ hτ hL₀ hL₁ w hw k x θ₀ hx.symm`. Establish `hxn : θ.pt ^ n = 1` using `pow_eq_one hp τ hτ hx hn`. Establish `hc : ∀ i, (![(snd T A).left, (translPt A θ.pt).left] : Fin 2 → _) i ≫ φ = (psiO hp τ hτ).left ≫ (![(snd T₀ G).left, (translPt G θ₀.pt).left] : Fin 2 → _) i` using `fun i => by fin_cases i`. Conclude with `(psi_snd hp τ hτ).symm`.
+
+Conclude with `(psi_tr hp τ hτ θ.pt θ₀.pt hx.symm).symm`. Take `⟨nu₀, gnu₀, cnu₀⟩` from `h₀.sym`. Establish `hcn : ∀ i, (![(snd T A).left, (snd T A ≫ (GrpObj.inv : A ⟶ A)).left] : Fin 2 → _) i ≫ φ = (psiO hp τ hτ).left ≫ (![(snd T₀ G).left, (snd T₀ G ≫ (GrpObj.inv : G ⟶ G)).left] : Fin 2 → _) i` using `fun i => by fin_cases i`. Conclude with `(psi_snd hp τ hτ).symm`. Conclude with `snd_inv_push hp τ hτ`.
+
+Take `⟨nu, gnu, hmn⟩` from `exists_gen_move hL₀ hL₁ w ((isGen_iff w).1 hw) _ _ ![k, -k] (psiO hp τ hτ).left hcn nu₀ gnu₀`. Use `⟨θ, ⟨rfl, ?_, nu, gnu, ?_⟩, hm⟩` and prove the remaining obligations. Use `corr_of_val hL₁ fun y J hJ => ?_ choose J₀ hJ₀ using fun χ : (T ⊗ A).left ⟶ G.left => exists_chart hL₀ (χ y)` and prove the remaining obligations. Establish `hG : Good L₀ y J₀` using `hJ₀`. Take `⟨g, hg⟩ : ∃ g : ℕ → ((T ⊗ A).left.presheaf.stalk y)ˣ, ∀ j, g j = gw w (translPt A (θ.pt ^ j)).left y (J₀ ((translPt A (θ.pt ^ j)).left ≫ φ)) (J (translPt A (θ.pt ^ j)).left) ^ k` from `⟨_, fun _ => rfl⟩`.
+
+Establish `key : ∀ j : ℕ, val θ₀.φ ((psiO hp τ hτ).left ≫ (translT G (θ₀.pt ^ j)).left) y J₀ = g j / g (j + 1) * val θ.φ (𝟙 _ ≫ (translT A (θ.pt ^ j)).left) y J` using `fun j => by`. Rewrite using `[← psi_transl hp τ hτ _ _ (pow_rel hp τ hτ hx j).symm, val_pmaps w hc hm _ y J₀ J hG hJ, Category.id_comp]`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[transl_snd, transl_pow_succ, zpow_neg, div_eq_mul_inv, hg, hg]`. Establish `c` using `val_corr hG h₀.pow_eq (psiO hp τ hτ).left`.
+
+Rewrite `c` using `[val_powGenT θ₀ n _ y hG, val_one]`. Rewrite using `[val_powGenT θ n _ y hJ, val_one]`. Rewrite `c` using `[Fin.prod_univ_eq_prod_range (fun j => val θ₀.φ ((psiO hp τ hτ).left ≫ (translT G (θ₀.pt ^ j)).left) y J₀)]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun j => val θ.φ (𝟙 _ ≫ (translT A (θ.pt ^ j)).left) y J)]`. Simplify using `only [key, Finset.prod_mul_distrib, Finset.prod_range_div'] at c`.
+
+Establish `gn : g n = g 0` using `by rw [hg, hg, hxn, pow_zero]`. Rewrite `c` using `[gn, div_self', _root_.one_mul]`. Then use the resulting hypothesis. Use `corr_of_val hL₁ fun y J hJ => ?_ choose J₀ hJ₀ using fun χ : (T ⊗ A).left ⟶ G.left => exists_chart hL₀ (χ y)` and prove the remaining obligations. Establish `hG : Good L₀ y J₀` using `hJ₀`. Establish `c` using `val_corr hG cnu₀ (psiO hp τ hτ).left`.
+
+Rewrite `c` using `[val_symGen θ₀ nu₀ _ y hG, val_one]`. Rewrite using `[val_symGen θ nu _ y hJ, val_one]`. Establish `v1` using `val_pmaps w hc hm (translT A θ.pt⁻¹).left y J₀ J hG hJ`. Establish `v2` using `val_pmaps w hcn hmn (𝟙 _) y J₀ J hG hJ`. Establish `v3` using `val_pmaps w hc hm (negT A T).left y J₀ J hG hJ`.
+
+Establish `v4` using `val_pmaps w hcn hmn (translT A θ.pt⁻¹).left y J₀ J hG hJ`. Simplify using `only [Category.id_comp] at v2 ⊢`. Rewrite `c` using `[← psi_transl hp τ hτ θ.pt⁻¹ θ₀.pt⁻¹ (inv_rel hp τ hτ hx).symm, ← negT_push hp τ hτ, v1, v2, v3, v4]`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one] at c`. Rewrite `c` using `[transl_inv_translPt, negT_snd', negT_translPt]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `b` using `congrArg Additive.ofMul c`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_one, zpow_neg] at b ⊢`. Take the linear combination `(norm := abel) b`.
+-/
 theorem symLift_move (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (w : LB.Iso L₁ (L₀.pull φ)) (hw : w.IsGen) {k : ℤ} {n : ℕ}
     {x₀ : T₀ ⟶ G} {θ₀ : ThetaGrp G L₀ k T₀} (h₀ : SymLift G L₀ k n x₀ θ₀) (hn : x₀ ^ n = 1) {x : T ⟶ A}
     (hx : x.left ≫ φ = τ ≫ x₀.left) :

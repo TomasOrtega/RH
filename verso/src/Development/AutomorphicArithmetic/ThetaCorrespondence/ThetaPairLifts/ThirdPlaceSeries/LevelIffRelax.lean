@@ -54,6 +54,17 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws
   {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : B.Word}
   {a : _root_.GlobalTheory.Fam.GeometricFamily W u} {t : W.P.T}
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Substitute `e` using the available equality. Take `⟨e', he', hF⟩` from `(ha.stdQ (J.pl i) ⟨t, J.mem i⟩).1 ((J.G i).s + 1) le_rfl`. Set `e : XIx (Fin B.R.k) (Fin B.R.t) ((J.G i).s + 1) ≃ Fin (B.R.N ((J.G i).s + 1))` to `e'.trans (finCongr (rankN (I.rec7 l Z) ((J.G i).s + 1) hm))`. Establish `he : GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.xPos e` using `fun x => he' x`. Take `⟨K, hKJ, hK, -⟩` from `(_root_.GlobalTheory.Fam.QuadraticExtensionData.Reads.movedAt W hW u a ha t J hJ i).pen hm β e he`.
+
+Establish `hKe : GlobalTheory.TwBridge.Lev.phi (E` using `B.fields.E) ((J.G i).q.pr.comp (incA (I.rec7 l Z))) ((Equiv.sumEmpty _ (Fin 0)).trans e) (Formalism.L2.Col.frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 ((J.G i).s + 1) β).1.1 (J.P i)) = K := by`. Use `Units.ext (Matrix.ext ?_)` and prove the remaining obligations. Introduce and unpack `(x | x) (y | y)`. Conclude with `(hK (e' x) y).trans (GlobalTheory.Fam.MovedJoin.frameβ_mul_std _ e' hF _ x y)`. Conclude with `y.elim0`.
+
+Conclude with `x.elim0`. Conclude with `x.elim0`. Establish `hv : Formalism.L2.Col.IsOver (J.G i).q.v (J.pl i)` using `congrArg HeightOneSpectrum.asIdeal ((_root_.GlobalTheory.Fam.QJPlaces.places_under_alt W hW u a ha hTr t J hJ).2 i)`. Establish `hrd : _root_.GlobalTheory.PenBridge.reductionHomAtLevel J _ i rfl g = locG ((J.G i).q.prF (J.G i).idem) ((Equiv.sumEmpty _ (Fin 0)).trans e) κ`. Use `Units.ext (Matrix.ext ?_)` and prove the remaining obligations.
+
+Introduce and unpack `(x | x) (y | y)`. Use `(locHom_std (J.G i).q _ _ e' hF g x y).trans ?_` and prove the remaining obligations. Use `((J.G i).q.prF_toEAf (J.G i).idem _).symm.trans (congrArg _ ?_)` and prove the remaining obligations. Conclude with `(congrFun (congrFun hg (e x)) (e y)).symm`. Conclude with `y.elim0`.
+
+Conclude with `x.elim0`. Conclude with `x.elim0`. Rewrite using `[hrd]`. Use `(uloc_iff hW.tr.ok hW.tr.pins.some J.A hJ.is (J.P i) (J.G i).q (J.pl i) (hJ.eq i) (J.G i).idem (J.G i).s ((J.E i).tw (J.hψ i) (J.sg i)) _ (fun _ => rfl) (hJ.tw i) hm β e he (hKe ▸ hKJ) (J.E i).M (hJ.M i) _ hv κ hκ).trans ?_` and prove the remaining obligations. Conclude with `Iff.of_eq (congrArg (fun c => locG ((J.G i).q.prF (J.G i).idem) ((Equiv.sumEmpty _ (Fin 0)).trans e) κ ∈ GlobalTheory.PenVol.cosStab (((J.G i).T (J.E i).δ (J.E i).tame (J.E i).η).lev ((J.G i).s + 1) 0 rfl).J (box _ ((J.G i).ϖ ^ (J.E i).M)) c) (hJ.cos i β e he).symm)`.
+-/
 theorem bc_prV_of_mem_UPts (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) (ha : a.Is) (hTr : a.True) (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t) (hJ : J.Reads) (i : Fin J.r) (j : ℕ)
     (e : j = (J.G i).s + 1) (hm : j ≤ B.R.m) (β : J.Ch₀ j) (g : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j))
     (κ : GL (Fin (B.R.N j)) (EF (I.rec7 l Z))) (hg : κ.1 = finM _ (rankN (I.rec7 l Z) j hm) g)
@@ -95,6 +106,21 @@ theorem bc_prV_of_mem_UPts (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) 
 end GlobalTheory.PenLoc
 set_option maxHeartbeats 2000000 in
 open scoped Pointwise in
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α`. Establish `hm : j ≤ B.R.m` using `by omega`. Use `⟨1, fun i => one_mem _, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.one_apply, one_mul, inv_one, mul_one]`. Establish `key` using `fun i => _root_.GlobalTheory.PenLoc.bc_prV_of_mem_UPts hW ha hTr J hJ i j (_root_.GlobalTheory.PenBridge.eq_s_succ_of_succ_eq_m J hj i) hm (J.ι j α)`.
+
+Simplify using `only [hJ.sec j hm α] at key`. Establish `fwd` using `fun x (hx : x ∈ J.A.U j (J.ι j α)) i => ((hJ.is.U j hm _ x).1 hx).2.elim fun κ hκ => (key i x κ.1 hκ (((J.A.K j hm _).lev.U_eq _).1 κ.2).1).1 ((((J.A.K j hm _).lev.U_eq _).1 κ.2).2 _)`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Conclude with `⟨(_root_.GlobalTheory.PenLev.mem_relax_iff' J j hj α g).2 ⟨Subgroup.mem_sup_left hg, ((hJ.is.U j hm _ g).1 hg).1, fun i => (J.E i).le _ _ _ (GlobalTheory.PenVol.cosStab_le _ _ _ (fwd g hg i))⟩, fwd g hg⟩`.
+
+Introduce and unpack `⟨hr, hH⟩`. Take `⟨hs, hgf, -⟩` from `(_root_.GlobalTheory.PenLev.mem_relax_iff' J j hj α g).1 hr`. Establish `hN : (GlobalTheory.FinPl.grpAt ((I.rec7 l Z).sp.X j) (_root_.GlobalTheory.PenBridge.finitePlaceCondition J)).Normal`. Unfold `GlobalTheory.FinPl.grpAt GlobalTheory.FinPl.congGrp`. Conclude with `MonoidHom.normal_ker _`.
+
+Establish `: g ∈ ((J.A.U j (J.ι j α) : Set (GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j))) * (GlobalTheory.FinPl.grpAt ((I.rec7 l Z).sp.X j) (_root_.GlobalTheory.PenBridge.finitePlaceCondition J) : Set (GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j))))`. Rewrite using `[← Subgroup.mul_normal]`. Conclude with `hs`. Take `⟨x, hx, n, hn, rfl⟩` from `this`. Use `mul_mem hx ?_` and prove the remaining obligations.
+
+Establish `hnf : n ∈ GfC ((I.rec7 l Z).sp.X j)` using `(Subgroup.mul_mem_cancel_left _ ((hJ.is.U j hm _ x).1 hx).1).1 hgf`. Take `⟨φ, hφ⟩` from `GlobalTheory.FinPartIso.exists_finIso (I.rec7 l Z) _ _ (rankN (I.rec7 l Z) j hm)`. Use `(hJ.is.U j hm _ n).2 ⟨hnf, ⟨(φ ⟨n, hnf⟩).1, ((J.A.K j hm _).lev.U_eq _).2 ⟨(φ ⟨n, hnf⟩).2, fun v => ?_⟩⟩, hφ ⟨n, hnf⟩⟩` and prove the remaining obligations. Distinguish the cases in `hv : _root_.GlobalTheory.PenBridge.finitePlaceCondition J v`. Take `⟨i, rfl⟩` from `hv`.
+
+Use `(key i n _ (hφ ⟨n, hnf⟩) (φ ⟨n, hnf⟩).2).2 ?_` and prove the remaining obligations. Establish `h2` using `hH i`. Rewrite `h2` using `[map_mul, Pi.mul_apply]`. Conclude with `(Subgroup.mul_mem_cancel_left _ (fwd x hx i)).1 h2`. Rewrite using `[GlobalTheory.PenLoc.bc_prV_eq_one _ hn _ _ (hφ ⟨n, hnf⟩) v hv]`.
+
+Conclude with `one_mem _`.
+-/
 theorem GlobalTheory.PenLoc.level_iff_relax_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ j (hj : j + 1 = B.R.m), ∀ t (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → ∀ α : J.Ch j, ∃ c : (i : Fin J.r) → GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) ((J.G i).s + 1) ⊕ Fin 0) (J.G i).k, (∀ i, c i ∈ (((J.G i).T (J.E i).δ (J.E i).tame (J.E i).η).lev ((J.G i).s + 1) 0 rfl).J) ∧ ∀ g, g ∈ J.A.U j (J.ι j α) ↔ g ∈ _root_.GlobalTheory.PenLev.relaxedLevelSubgroup J j hj α ∧ ∀ i, c i * _root_.GlobalTheory.PenBridge.reductionHomAtLastLevel J j hj g i * (c i)⁻¹ ∈ GlobalTheory.PenVol.cosStab (((J.G i).T (J.E i).δ (J.E i).tame (J.E i).η).lev ((J.G i).s + 1) 0 rfl).J (GlobalTheory.StepData.box _ ((J.G i).ϖ ^ (J.E i).M)) ((J.E i).cos (cast (congrArg (J.E i).Ch (show j = (J.G i).s + 1 by have h1 := (J.G i).hs; have h2 : (I.rec7 l Z).R.m = B.R.m := rfl; omega)) (α i))) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α
   have hm : j ≤ B.R.m := by omega

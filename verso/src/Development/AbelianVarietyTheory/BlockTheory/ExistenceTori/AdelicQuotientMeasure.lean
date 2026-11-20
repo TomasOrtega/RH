@@ -16,6 +16,11 @@ abbrev LQuot : Type := MulAction.orbitRel.Quotient Γ H
 
 def cls (g : H) : LQuot Γ := Quotient.mk (MulAction.orbitRel Γ H) g
 
+/- English proof (translation)
+Rewrite using `[cls, cls, Quotient.eq, MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, h⟩`. Conclude with `⟨γ, γ.2, h.symm⟩`. Introduce and unpack `⟨γ, hγ, h⟩`.
+
+Conclude with `⟨⟨γ, hγ⟩, h.symm⟩`.
+-/
 theorem cls_eq_iff (g g' : H) : cls Γ g = cls Γ g' ↔ ∃ γ ∈ Γ, g = γ * g' := by
   rw [cls, cls, Quotient.eq, MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
   constructor
@@ -31,15 +36,24 @@ def rightMul (k : H) : LQuot Γ → LQuot Γ :=
 
 variable [MeasurableSpace H]
 
+/- English proof (translation)
+The claim follows from `measurable_quotient_mk' (s := MulAction.orbitRel Γ H)`.
+-/
 theorem measurable_cls : Measurable (cls Γ) := measurable_quotient_mk' (s := MulAction.orbitRel Γ H)
 
 def quotMeasure (μ : Measure H) (D : Set H) (_hD : IsFundamentalDomain Γ D μ) : Measure (LQuot Γ) :=
   (μ.restrict D).map (cls Γ)
 
+/- English proof (translation)
+Rewrite using `[quotMeasure, Measure.map_apply (measurable_cls Γ) hS, Measure.restrict_apply (measurable_cls Γ hS)]`.
+-/
 theorem quotMeasure_apply (μ : Measure H) (D : Set H) (hD : IsFundamentalDomain Γ D μ)
     {S : Set (LQuot Γ)} (hS : MeasurableSet S) : quotMeasure Γ μ D hD S = μ (cls Γ ⁻¹' S ∩ D) := by
   rw [quotMeasure, Measure.map_apply (measurable_cls Γ) hS, Measure.restrict_apply (measurable_cls Γ hS)]
 
+/- English proof (translation)
+Rewrite using `[quotMeasure_apply Γ μ D hD MeasurableSet.univ]`. Simplify using the standard rewrite rules.
+-/
 theorem quotMeasure_univ (μ : Measure H) (D : Set H) (hD : IsFundamentalDomain Γ D μ) :
     quotMeasure Γ μ D hD Set.univ = μ D := by
   rw [quotMeasure_apply Γ μ D hD MeasurableSet.univ]; simp
@@ -49,6 +63,9 @@ def probMeasure (μ : Measure H) (D : Set H) (hD : IsFundamentalDomain Γ D μ) 
   ⟨(μ D)⁻¹ • quotMeasure Γ μ D hD,
     ⟨by rw [Measure.smul_apply, quotMeasure_univ, smul_eq_mul, ENNReal.inv_mul_cancel h0 h1]⟩⟩
 
+/- English proof (translation)
+The claim follows from `MeasurableSet.univ.nullMeasurableSet ae_covers := Eventually.of_forall fun _ => ⟨1, Set.mem_univ _⟩ aedisjoint := fun a b hab => absurd (Subsingleton.elim a b) hab`.
+-/
 example (μ : Measure H) : IsFundamentalDomain (⊥ : Subgroup H) Set.univ μ where
   nullMeasurableSet := MeasurableSet.univ.nullMeasurableSet
   ae_covers := Eventually.of_forall fun _ => ⟨1, Set.mem_univ _⟩
@@ -118,11 +135,17 @@ def cj : E →+* E := (IsCMField.complexConj E : E →+* E)
 
 def cjAf : AfE E →+* AfE E := (GlobalTheory.AdLat.sg (AfF E) (IsCMField.complexConj E)).toRingHom
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(1 : AfF E) ⊗ₜ[maximalRealSubfield E] (IsCMField.complexConj E x) = GlobalTheory.AdLat.sg (AfF E) (IsCMField.complexConj E) ((1 : AfF E) ⊗ₜ[maximalRealSubfield E] x)`. Simplify using `[GlobalTheory.AdLat.sg]`.
+-/
 theorem toAf_cj (x : E) : toAf E (cj E x) = cjAf E (toAf E x) := by
   change (1 : AfF E) ⊗ₜ[maximalRealSubfield E] (IsCMField.complexConj E x) =
     GlobalTheory.AdLat.sg (AfF E) (IsCMField.complexConj E) ((1 : AfF E) ⊗ₜ[maximalRealSubfield E] x)
   simp [GlobalTheory.AdLat.sg]
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexEmbedding_complexConj E τ x`.
+-/
 theorem emb_cj (τ : E →+* ℂ) (x : E) : τ (cj E x) = starRingEnd ℂ (τ x) :=
   IsCMField.complexEmbedding_complexConj E τ x
 
@@ -130,6 +153,9 @@ variable {E} {n : ℕ}
 
 def IsHermGram (G : Matrix (Fin n) (Fin n) E) : Prop := (∀ a b, G b a = cj E (G a b)) ∧ G.det ≠ 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a b => by by_cases h : a = b <;> simp [Matrix.one_apply, h, eq_comm], by simp⟩`.
+-/
 example : IsHermGram (1 : Matrix (Fin n) (Fin n) E) :=
   ⟨fun a b => by by_cases h : a = b <;> simp [Matrix.one_apply, h, eq_comm], by simp⟩
 
@@ -193,6 +219,9 @@ instance : Countable (ratPts G) := by
   haveI : Countable (GL (Fin n) E) := Units.val_injective.countable
   exact (diag G).rangeRestrict_surjective.countable
 
+/- English proof (translation)
+The claim follows from `hD.measure_ne_zero (NeZero.ne μ)`.
+-/
 theorem vol_ne_zero (μ : Measure (UAd G)) [μ.IsHaarMeasure] (D : Set (UAd G))
     (hD : IsFundamentalDomain (ratPts G) D μ) : μ D ≠ 0 :=
   hD.measure_ne_zero (NeZero.ne μ)

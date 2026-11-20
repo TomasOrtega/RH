@@ -16,6 +16,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 def column {n : ℕ} (m : LtN Dw n →₀ ℕ) (b : Fin n) : Lt1 Dw →₀ ℕ :=
   Finsupp.equivFunOnFinite.symm fun ℓ => m ⟨ℓ.1, ℓ.2, b⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem column_apply {n : ℕ} (m : LtN Dw n →₀ ℕ) (b : Fin n) (ℓ : Lt1 Dw) :
     column m b ℓ = m ⟨ℓ.1, ℓ.2, b⟩ := rfl
 
@@ -34,6 +37,9 @@ def chartVal (C : ChartAt Xo c y) (k : ℕ) {n : ℕ} (P : MvPolynomial (LtN Dw 
     (f : Fin n → Germ.PS S 1 C.d) : S :=
   ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b : Fin n, colVal C k (f b) (column m b)
 
+/- English proof (translation)
+Simplify using `[chartVal]`.
+-/
 example (C : ChartAt Xo c y) (k n : ℕ) (f : Fin n → Germ.PS S 1 C.d) :
     chartVal C k (0 : MvPolynomial (LtN Dw n) c.F) f = 0 := by
   simp [chartVal]

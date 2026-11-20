@@ -20,6 +20,11 @@ open scoped ComplexConjugate
 variable {K V W : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
 
+/- English proof (translation)
+Establish `h1` using `hc σ 2 ![1, 1] ![x, y]`. Establish `h2` using `hc σ 2 ![1, Complex.I] ![x, y]`. Establish `hx` using `hc σ 1 ![1] ![x]`. Establish `hy` using `hc σ 1 ![1] ![y]`. Simplify using `only [csq, Fin.sum_univ_two, Fin.sum_univ_one, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, Matrix.head_cons, map_one, one_mul, mul_one, Complex.add_re] at h1 h2 hx hy`.
+
+Rewrite `h1`, `h2` using `[← n.conj_symm σ x y, ← n'.conj_symm σ (e x) (e y)]`. Simplify using `only [Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.I_re, Complex.I_im, Complex.conj_I, Complex.neg_re, Complex.neg_im, Complex.mul_im] at h1 h2`. Apply `Complex.ext` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem form_eq_of_csq (n : HermFam K V) (n' : HermFam K W) (e : V ≃ₗ[K] W)
     (hc : ∀ σ (m : ℕ) (c : Fin m → ℂ) (g : Fin m → V), csq n σ c g = csq n' σ c fun i => e (g i))
     (σ : K →+* ℂ) (x y : V) : n'.form σ (e x) (e y) = n.form σ x y := by
@@ -36,6 +41,19 @@ theorem form_eq_of_csq (n : HermFam K V) (n' : HermFam K W) (e : V ≃ₗ[K] W)
   · linarith
   · nlinarith
 
+/- English proof (translation)
+Introduce `K V W _ _ _ _ _ _ _ _ _ _ n n' e hc L hL`. Use `set f := e.toLinearMap.restrictScalars (𝓞 K) with hf`. Establish `hfi : Function.Injective f` using `e.injective`. Take `⟨v, hv⟩` from `exists_isFrame L hL`. Establish `hfv : IsFrame K (L.map f) (fun i => e (v i))`.
+
+Use `⟨fun i => ⟨v i, hv.1 i, rfl⟩, hv.2.1.map' e.toLinearMap e.ker, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h0 : e x ∈ (Submodule.span K (Set.range v)).map e.toLinearMap` using `⟨x, hv.2.2 hx, rfl⟩`. Rewrite `h0` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h0`.
+
+Rewrite using `[arakelovDegree_eq_degreeOfFamily n' (hL.map f) hfv, arakelovDegree_eq_degreeOfFamily n hL hv]`. Unfold `degreeOfFamily`. Establish `hs : Submodule.span (𝓞 K) (Set.range fun i => e (v i)) = (Submodule.span (𝓞 K) (Set.range v)).map f`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+
+Establish `hidx : (Submodule.span (𝓞 K) (Set.range fun i => e (v i))).toAddSubgroup.relIndex (L.map f).toAddSubgroup = (Submodule.span (𝓞 K) (Set.range v)).toAddSubgroup.relIndex L.toAddSubgroup`. Establish `key : ∀ P : Submodule (𝓞 K) V, (P.map f).toAddSubgroup = P.toAddSubgroup.map f.toAddMonoidHom` using `fun P => by`. Use extensionality with `y`. Simplify using `only [Submodule.mem_toAddSubgroup, Submodule.mem_map, AddSubgroup.mem_map, LinearMap.toAddMonoidHom_coe]`. Rewrite using `[hs, key, key]`.
+
+Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ hfi`. Establish `hg : ∀ σ, n'.gram σ (fun i => e (v i)) = n.gram σ v` using `fun σ => by`. Use extensionality with `i j`. Simplify using `only [HermFam.gram, Matrix.of_apply]`. Conclude with `GlobalTheory.IsoDeg.form_eq_of_csq n n' e hc σ (v i) (v j)`.
+
+Simplify using `only [hidx, hg]`.
+-/
 theorem deg_map_eq : ∀ (K V W : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W] (n : HermFam K V) (n' : HermFam K W) (e : V ≃ₗ[K] W), (∀ σ (m : ℕ) (c : Fin m → ℂ) (g : Fin m → V), csq n σ c g = csq n' σ c fun i => e (g i)) → ∀ L : Submodule (𝓞 K) V, L.FG → deg n' (L.map (e.toLinearMap.restrictScalars (𝓞 K))) = deg n L := by
   intro K V W _ _ _ _ _ _ _ _ _ _ n n' e hc L hL
   set f := e.toLinearMap.restrictScalars (𝓞 K) with hf

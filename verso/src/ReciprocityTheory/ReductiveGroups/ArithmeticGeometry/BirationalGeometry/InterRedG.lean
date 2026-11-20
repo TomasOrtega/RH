@@ -11,6 +11,9 @@ section Alg
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 open Classical in
+/- English proof (translation)
+Take `⟨k0, i0⟩` from `q`. Distinguish the cases in `h : k0 = k'`. Substitute `h` using the available equality. Simplify using `[Finsupp.single_apply, Sigma.mk.inj_iff]`. Simplify using `[Finsupp.single_apply, Sigma.mk.inj_iff, h]`.
+-/
 theorem blockDeg_single (q : Σ k, ι k) (m : ℕ) (k' : K) :
     ∑ i, (Finsupp.single q m : (Σ k, ι k) →₀ ℕ) ⟨k', i⟩ = if q.1 = k' then m else 0 := by
   obtain ⟨k0, i0⟩ := q
@@ -21,11 +24,19 @@ theorem blockDeg_single (q : Σ k, ι k) (m : ℕ) (k' : K) :
 
 def secOf (i : ∀ k, ι k) (b : K → ℕ) : MRing ι := ∏ k, X ⟨k, i k⟩ ^ b k
 
+/- English proof (translation)
+Rewrite using `[secOf, MvPolynomial.monomial_sum_one]`. Simplify using `[MvPolynomial.X_pow_eq_monomial]`.
+-/
 theorem secOf_eq (i : ∀ k, ι k) (b : K → ℕ) :
     secOf i b = monomial (∑ k, Finsupp.single (⟨k, i k⟩ : Σ k, ι k) (b k)) 1 := by
   rw [secOf, MvPolynomial.monomial_sum_one]
   simp [MvPolynomial.X_pow_eq_monomial]
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[secOf_eq, MvPolynomial.support_monomial, if_neg one_ne_zero, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using `only [Finsupp.finset_sum_apply]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [blockDeg_single]`. Simplify using the standard rewrite rules.
+-/
 theorem isMultiHomog_secOf (i : ∀ k, ι k) (b : K → ℕ) : IsMultiHomog (secOf i b) b := by
   classical
   intro m hm k
@@ -36,6 +47,9 @@ theorem isMultiHomog_secOf (i : ∀ k, ι k) (b : K → ℕ) : IsMultiHomog (sec
   simp only [blockDeg_single]
   simp
 
+/- English proof (translation)
+Rewrite using `[secOf]`. Introduce `h`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hP)).1 h`. Conclude with `hi k (hP.mem_of_pow_mem _ hk)`.
+-/
 theorem secOf_not_mem {P : Ideal (MRing ι)} (hP : P.IsPrime) {i : ∀ k, ι k}
     (hi : ∀ k, (X ⟨k, i k⟩ : MRing ι) ∉ P) (b : K → ℕ) : secOf i b ∉ P := by
   rw [secOf]

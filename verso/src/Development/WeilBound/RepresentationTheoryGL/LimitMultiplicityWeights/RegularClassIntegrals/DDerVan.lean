@@ -12,6 +12,9 @@ noncomputable section
 
 namespace MainStatements.WeightKernel.Dec.DDerVan
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(x * m * (y * c t), t), ⟨hk, ht⟩, by simp only [mul_assoc, inv_mul_cancel_left, mul_inv_cancel, mul_one]⟩`.
+-/
 theorem mem_aux {G : Type*} [Group G] (K : Set G) (B : Set ℝ) (c : ℝ → G) (x y m : G) (t : ℝ)
     (hk : x * m * (y * c t) ∈ K) (ht : t ∈ B) :
     m ∈ (fun p : G × ℝ => x⁻¹ * p.1 * (y * c p.2)⁻¹) '' (K ×ˢ B) :=
@@ -19,6 +22,17 @@ theorem mem_aux {G : Type*} [Group G] (K : Set G) (B : Set ℝ) (c : ℝ → G) 
 
 end MainStatements.WeightKernel.Dec.DDerVan
 
+/- English proof (translation)
+Introduce `hSm hDer F E _ _ _ _ _ σ h n J hJ N hN f hf b hb hV ν _ x y`. Establish `hfc` using `GlobalTheory.Orb.continuous_of_mem_ccAd (σ := σ) (J := J) hf`. Establish `hf'c` using `GlobalTheory.Orb.continuous_of_mem_ccAd (σ := σ) (J := J) (hDer F E σ h n J hJ f hf b hb)`. Establish `hs` using `hSm F E σ h n J hJ f hf`. Establish `hbc : Continuous b` using `GlobalTheory.RealLineCont.continuous_of_isRealLine F E σ h n J b hb`.
+
+Establish `hK : IsCompact (tsupport f ∪ tsupport (lineDer b f))` using `IsCompact.union hfc.2 hf'c.2`. Establish `hS : IsCompact ((fun p : GAd σ J × ℝ => x⁻¹ * p.1 * (y * b p.2)⁻¹) '' ((tsupport f ∪ tsupport (lineDer b f)) ×ˢ Metric.closedBall (0 : ℝ) 1))` using `(hK.prod (isCompact_closedBall 0 1)).image ((continuous_const.mul continuous_fst).mul ((continuous_const.mul (hbc.comp continuous_snd)).inv))`. Establish `hC` using `hN.isClosedEmbedding_subtypeVal.isCompact_preimage hS`. Establish `key` using `GlobalTheory.LaurentAut.hasDerivAt_integral_cpt (𝕜 := ℝ) ν (x₀ := 0) (Φ := fun t (m : N) => f (x * m * (y * b t))) (Φ' := fun t (m : N) => lineDer b f (x * m * (y * b t))) hC ?_ ?_ ?_ ?_`. Establish `h0 : (fun t : ℝ => ∫ m : N, f (x * m * (y * b t)) ∂ν) = fun _ => 0` using `funext fun t => hV ν x (y * b t)`.
+
+Rewrite `key` using `[h0]`. Establish `e` using `key.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))`. Simplify `e` using `[GlobalTheory.UAut.ConstAut.realLine_zero h hb]`. Introduce `t`. Conclude with `hfc.1.comp ((continuous_const.mul continuous_subtype_val).mul continuous_const)`.
+
+Conclude with `hf'c.1.comp ((continuous_const.mul (continuous_subtype_val.comp continuous_snd)).mul (continuous_const.mul (hbc.comp continuous_fst)))`. Introduce `t ht m hm`. Establish `hnot : x * ↑m * (y * b t) ∉ tsupport f ∪ tsupport (lineDer b f)` using `fun hk => hm (MainStatements.WeightKernel.Dec.DDerVan.mem_aux _ _ b x y (↑m) t hk ht)`. Conclude with `⟨image_eq_zero_of_notMem_tsupport (fun h' => hnot (Or.inl h')), image_eq_zero_of_notMem_tsupport (fun h' => hnot (Or.inr h'))⟩`. Introduce `t m`.
+
+Use `GlobalTheory.UAut.ConstAut.hasDerivAt_foldr h hs (l := []) (by simp) hb (x * ↑m * y) t` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 theorem MainStatements.WeightKernel.Dec.derVan : MainStatements.WeightKernel.Dec.SmOf → MainStatements.WeightKernel.Dec.DerMem → MainStatements.WeightKernel.Dec.DerVan := by
   intro hSm hDer F E _ _ _ _ _ σ h n J hJ N hN f hf b hb hV ν _ x y
   have hfc := GlobalTheory.Orb.continuous_of_mem_ccAd (σ := σ) (J := J) hf

@@ -12,6 +12,11 @@ namespace GlobalTheory.UnrTate
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨n, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) a`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`.
+
+Establish `hI : FractionalIdeal.spanSingleton (𝓞 E)⁰ (algebraMap (𝓞 E) E n / algebraMap (𝓞 E) E d) = FractionalIdeal.spanSingleton (𝓞 E)⁰ (algebraMap (𝓞 E) E d)⁻¹ * ↑(Ideal.span {n} : Ideal (𝓞 E))`. Rewrite using `[FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.spanSingleton_mul_spanSingleton, div_eq_mul_inv, mul_comm]`. Rewrite using `[FractionalIdeal.count_well_defined E w ((FractionalIdeal.spanSingleton_ne_zero_iff).2 ha) hI, map_div₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_if_neg _ hn0, HeightOneSpectrum.intValuation_if_neg _ hd0, …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem count_spanSingleton_of_ne (w : HeightOneSpectrum (𝓞 E)) {a : E} (ha : a ≠ 0) :
     FractionalIdeal.count E w (FractionalIdeal.spanSingleton (𝓞 E)⁰ a) = -WithZero.log (w.valuation E a) := by
   obtain ⟨n, d, hd, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 E) a
@@ -29,6 +34,11 @@ theorem count_spanSingleton_of_ne (w : HeightOneSpectrum (𝓞 E)) {a : E} (ha :
     WithZero.log_exp]
   ring
 
+/- English proof (translation)
+Rewrite using `[← FractionalIdeal.finprod_heightOneSpectrum_factorization' E hK]`. Use `finprod_induction (fun I => I ≤ 1) le_rfl (fun a b ha hb => ?_) (fun P => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le (h P) show (P.asIdeal : FractionalIdeal (𝓞 E)⁰ E) ^ FractionalIdeal.count E P K ≤ 1`. Rewrite using `[hn, zpow_natCast]`.
+
+Conclude with `pow_le_one' FractionalIdeal.coeIdeal_le_one n`.
+-/
 theorem le_one_of_count_nonneg {K : FractionalIdeal (𝓞 E)⁰ E} (hK : K ≠ 0)
     (h : ∀ P : HeightOneSpectrum (𝓞 E), 0 ≤ FractionalIdeal.count E P K) : K ≤ 1 := by
   rw [← FractionalIdeal.finprod_heightOneSpectrum_factorization' E hK]
@@ -40,6 +50,29 @@ theorem le_one_of_count_nonneg {K : FractionalIdeal (𝓞 E)⁰ E} (hK : K ≠ 0
     rw [hn, zpow_natCast]
     exact pow_le_one' FractionalIdeal.coeIdeal_le_one n
 
+/- English proof (translation)
+Use `set M := FractionalIdeal.spanSingleton (𝓞 E)⁰ z * 𝔞⁻¹ with hMdef`. Establish `hz0 : FractionalIdeal.spanSingleton (𝓞 E)⁰ z ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 hz`. Establish `hM0 : M ≠ 0` using `mul_ne_zero hz0 (inv_ne_zero h𝔞)`. Establish `hcM : ∀ P, FractionalIdeal.count E P M = -WithZero.log (P.valuation E z) - FractionalIdeal.count E P 𝔞`. Introduce `P`.
+
+Rewrite using `[hMdef, FractionalIdeal.count_mul E P hz0 (inv_ne_zero h𝔞), FractionalIdeal.count_inv, count_spanSingleton_of_ne P hz]`. Expand and normalize the polynomial expressions, which then agree. Use `set e : HeightOneSpectrum (𝓞 E) → ℤ := fun P => max (-FractionalIdeal.count E P M) 0 with hedef`. Establish `he : ∀ᶠ P in Filter.cofinite, e P = 0` using `(FractionalIdeal.finite_factors M).mono fun P hP => by simp [hedef, hP]`. Use `set D : FractionalIdeal (𝓞 E)⁰ E := ∏ᶠ P : HeightOneSpectrum (𝓞 E), (P.asIdeal : FractionalIdeal (𝓞 E)⁰ E) ^ e P with hDdef`.
+
+Establish `hcD : ∀ P, FractionalIdeal.count E P D = e P` using `fun P => FractionalIdeal.count_finprod E P e he`. Establish `hD0 : D ≠ 0`. Rewrite using `[hDdef]`. Use `finprod_induction (fun I => I ≠ 0) one_ne_zero (fun a b ha hb => mul_ne_zero ha hb) (fun P => ?_)` and prove the remaining obligations. Conclude with `zpow_ne_zero _ (FractionalIdeal.coeIdeal_ne_zero.2 P.ne_bot)`.
+
+Establish `hD1 : D ≤ 1` using `le_one_of_count_nonneg hD0 fun P => by rw [hcD]; exact le_max_right _ _`. Establish `hDM : D * M ≤ 1` using `le_one_of_count_nonneg (mul_ne_zero hD0 hM0) fun P => by`. Rewrite using `[FractionalIdeal.count_mul E P hD0 hM0, hcD]`. Use `le_max_left (-FractionalIdeal.count E P M) 0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨I, hI⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.1 hD1`. Establish `hex : ¬ Ideal.comap (algebraMap (𝓞 F) (𝓞 E)) I ≤ v.asIdeal`. Introduce `hle`. Take `⟨Q, hIQ, hQ, hQv⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral v.asIdeal I hle`. Establish `hQ0 : Q ≠ ⊥`.
+
+Introduce and unpack `rfl`. Apply `v.ne_bot` to reduce the goal to its premises. Rewrite using `[← hQv]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))`. Set `w : HeightOneSpectrum (𝓞 E)` to `⟨Q, hQ, hQ0⟩`.
+
+Establish `hw : w.under (𝓞 F) = v` using `HeightOneSpectrum.ext ((Ideal.under_def _ _).trans hQv)`. Establish `h1 : FractionalIdeal.count E w D = 0`. Rewrite using `[hcD, hedef]`. Use `h w hw` as an intermediate fact. Establish `h3` using `hcM w`.
+
+Simplify using `only`. Use linear arithmetic over natural numbers and integers. Establish `h2 : FractionalIdeal.count E w (w.asIdeal : FractionalIdeal (𝓞 E)⁰ E) ≤ FractionalIdeal.count E w D`. Rewrite using `[← hI]`. Conclude with `FractionalIdeal.count_mono E w (by rw [hI]; exact hD0) ((FractionalIdeal.coeIdeal_le_coeIdeal E).2 hIQ)`.
+
+Rewrite `h2` using `[FractionalIdeal.count_self, h1]`. Conclude with `absurd h2 (by norm_num)`. Take `⟨s, hsI, hsv⟩` from `Set.not_subset.1 hex`. Use `⟨s, hsv, ?_⟩` and prove the remaining obligations. Establish `hsD : algebraMap F E (s : F) ∈ D`.
+
+Rewrite using `[← hI]`. Use `(FractionalIdeal.mem_coeIdeal _).2 ⟨algebraMap (𝓞 F) (𝓞 E) s, hsI, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E]`. Rewrite using `[← FractionalIdeal.spanSingleton_le_iff_mem, ← FractionalIdeal.spanSingleton_mul_spanSingleton]`. Establish `hzM : FractionalIdeal.spanSingleton (𝓞 E)⁰ z = M * 𝔞`.
+
+Rewrite using `[hMdef, mul_assoc, inv_mul_cancel₀ h𝔞, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_mul_mem_of_count {v : HeightOneSpectrum (𝓞 F)} {𝔞 : FractionalIdeal (𝓞 E)⁰ E} (h𝔞 : 𝔞 ≠ 0)
     {z : E} (hz : z ≠ 0)
     (h : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v →
@@ -107,6 +140,17 @@ theorem exists_mul_mem_of_count {v : HeightOneSpectrum (𝓞 F)} {𝔞 : Fractio
     _ ≤ 1 * 𝔞 := mul_le_mul' hDM le_rfl
     _ = 𝔞 := one_mul _
 
+/- English proof (translation)
+Distinguish the cases in `hz : z = 0`. Rewrite using `[hz, TensorProduct.tmul_zero]`. Conclude with `zero_mem _`. Establish `hz' : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → FractionalIdeal.count E w 𝔞 ≤ -WithZero.log (w.valuation E z)`. Introduce `w hw`.
+
+Establish `h0 : w.valuation E z ≠ 0` using `by simpa using hz`. Use `h w hw` as an intermediate fact. Rewrite `this` using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨s, hsv, hs⟩` from `exists_mul_mem_of_count h𝔞 hz hz'`.
+
+Establish `hval : v.valuation F (s : F) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `le_antisymm (v.intValuation_le_one s) (not_lt.1 fun h => hsv ((v.intValuation_lt_one_iff_mem s).1 h))`. Establish `hs0 : (s : F) ≠ 0` using `fun h0 => by rw [h0, map_zero] at hval; exact zero_ne_one hval`. Establish `hc : (algebraMap F (Fv F v) (s : F))⁻¹ ∈ v.adicCompletionIntegers F`.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀]`. Establish `: Valued.v (algebraMap F (Fv F v) (s : F)) = 1`. Rewrite using `[← hval]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (s : F)`. Rewrite using `[this, inv_one]`.
+
+Use `AddSubgroup.subset_closure ⟨_, hc, _, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_inv_cancel₀ ((map_ne_zero _).2 hs0)]`.
+-/
 theorem one_tmul_mem_locId {v : HeightOneSpectrum (𝓞 F)} {𝔞 : FractionalIdeal (𝓞 E)⁰ E} (h𝔞 : 𝔞 ≠ 0) (z : E)
     (h : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v →
       w.valuation E z ≤ WithZero.exp (-FractionalIdeal.count E w 𝔞)) :
@@ -134,6 +178,17 @@ theorem one_tmul_mem_locId {v : HeightOneSpectrum (𝓞 F)} {𝔞 : FractionalId
   rw [← Algebra.smul_def, ← TensorProduct.smul_tmul, Algebra.smul_def,
     mul_inv_cancel₀ ((map_ne_zero _).2 hs0)]
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, a, ha, rfl⟩` from `hy`. Rewrite using `[toCompl_tmul, map_mul]`. Establish `h1 : Valued.v (complMap hw c) ≤ 1` using `complMap_mem hw hc`.
+
+Establish `h2 : Valued.v (algebraMap E (w.adicCompletion E) a) ≤ WithZero.exp (-FractionalIdeal.count E w 𝔞)`. Distinguish the cases in `ha0 : a = 0`. Rewrite using `[ha0, map_zero, map_zero]`. Conclude with `zero_le'`. Establish `e : Valued.v (algebraMap E (w.adicCompletion E) a) = w.valuation E a` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w a`.
+
+Rewrite using `[e]`. Establish `hc` using `FractionalIdeal.count_mono E w ((FractionalIdeal.spanSingleton_ne_zero_iff).2 ha0) (FractionalIdeal.spanSingleton_le_iff_mem.2 ha)`. Rewrite `hc` using `[count_spanSingleton_of_ne w ha0]`. Establish `h0 : w.valuation E a ≠ 0` using `by simpa using ha0`. Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `zero_le'`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+
+Conclude with `(Valuation.map_add _ _ _).trans (max_le hy hz)`. Consider the case `neg y _ hy => rw [map_neg, Valuation.map_neg]`. Conclude with `hy`.
+-/
 theorem val_le_of_mem_locId {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)}
     (hw : w.under (𝓞 F) = v) {𝔞 : FractionalIdeal (𝓞 E)⁰ E} {y : Fv F v ⊗[F] E}
     (hy : y ∈ GlobalTheory.SnMass.locId v 𝔞) :
@@ -161,6 +216,19 @@ theorem val_le_of_mem_locId {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpect
   | add y z _ _ hy hz => rw [map_add]; exact (Valuation.map_add _ _ _).trans (max_le hy hz)
   | neg y _ hy => rw [map_neg, Valuation.map_neg]; exact hy
 
+/- English proof (translation)
+Take `⟨a, ha0, ha⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger h𝔞`. Use `set b : E := algebraMap (𝓞 E) E a with hb`. Establish `hb0 : b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).2 ha0`. Take `⟨x0, hx0⟩` from `exists_sub_mem_intLoc v (((1 : Fv F v) ⊗ₜ[F] b⁻¹) * (x : Fv F v ⊗[F] E))`. Establish `hmul : ∀ y ∈ intLoc F E v, ((1 : Fv F v) ⊗ₜ[F] b) * y ∈ GlobalTheory.SnMass.locId v 𝔞`.
+
+Introduce `y hy`. Use `intLoc_induction (p := fun y => ((1 : Fv F v) ⊗ₜ[F] b) * y ∈ GlobalTheory.SnMass.locId v 𝔞) (fun c hc o => ?_) (by rw [mul_zero]; exact zero_mem _) (fun y z hy hz => by rw [mul_add]; exact add_mem hy hz) (fun y hy => by rw [mul_neg]; exact neg_mem hy) hy` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `AddSubgroup.subset_closure ⟨c, hc, b * o, ?_, rfl⟩` and prove the remaining obligations. Establish `: (o : 𝓞 E) • b ∈ 𝔞` using `Submodule.smul_mem _ o ha`.
+
+Rewrite `this` using `[Algebra.smul_def, mul_comm]`. Then use the resulting hypothesis. Establish `hd : (x : Fv F v ⊗[F] E) - (1 : Fv F v) ⊗ₜ[F] (b * x0) ∈ GlobalTheory.SnMass.locId v 𝔞`. Use `hmul _ hx0` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[mul_sub, ← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_inv_cancel₀ hb0, ← Algebra.TensorProduct.one_def, one_mul]`.
+
+Establish `hz : (1 : Fv F v) ⊗ₜ[F] (b * x0) ∈ GlobalTheory.SnMass.locId v 𝔞`. Use `one_tmul_mem_locId h𝔞 _ fun w hw => ?_` and prove the remaining obligations. Establish `e1 : w.valuation E (b * x0) = Valued.v (toCompl hw ((1 : Fv F v) ⊗ₜ[F] (b * x0)))`. Rewrite using `[toCompl_tmul, map_one, one_mul]`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _).symm`.
+
+Establish `e2 : Valued.v (toCompl hw (x : Fv F v ⊗[F] E)) ≤ WithZero.exp (-FractionalIdeal.count E w 𝔞)`. Rewrite using `[← valAt_of_under hw, valAt_eq_exp, WithZero.exp_le_exp, neg_le_neg_iff]`. Conclude with `hx w (GlobalTheory.LFun.mem_aboveF.2 hw)`. Establish `e3` using `val_le_of_mem_locId hw hd`. Rewrite using `[e1, show (1 : Fv F v) ⊗ₜ[F] (b * x0) = (x : Fv F v ⊗[F] E) - ((x : Fv F v ⊗[F] E) - (1 : Fv F v) ⊗ₜ[F] (b * x0)) by abel, map_sub]`.
+
+Conclude with `(Valuation.map_sub _ _ _).trans (max_le e2 e3)`. Use `add_mem hd hz` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem mem_locId_of_count_le_ordAt (v : Pl F) (𝔞 : FractionalIdeal (𝓞 E)⁰ E) (h𝔞 : 𝔞 ≠ 0)
     (x : (Fv F v ⊗[F] E)ˣ)
     (hx : ∀ w ∈ Formalism.L2.Host.aboveF (L := E) F v, FractionalIdeal.count E w 𝔞 ≤ ordAt v w x) :

@@ -15,6 +15,15 @@ section Ring
 
 variable {R : Type} [CommRing R] {a : ℕ}
 
+/- English proof (translation)
+Simplify using `only [posM, Matrix.sum_apply, Matrix.single_apply]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨(i, j), h.1, h.2.ge, h.2.le⟩]`. Simplify using the standard rewrite rules. Introduce `t _ ht`.
+
+Rewrite using `[if_neg]`. Introduce and unpack `⟨e1, e2⟩`. Conclude with `ht (Subtype.ext (Prod.ext e1 e2))`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[if_neg]`. Introduce and unpack `⟨e1, e2⟩`. Apply `h` to reduce the goal to its premises. Establish `h1` using `t.2`. Rewrite using `[← e1, ← e2]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem posM_blk_apply (m : ℕ) (c : UnipotentBlockColumnIndex a m m → R) (i j : Fin a) :
     posM (Subtype.val : UnipotentBlockColumnIndex a m m → Fin a × Fin a) c i j =
       if h : (i : ℕ) < m ∧ (j : ℕ) = m then c ⟨(i, j), h.1, h.2.ge, h.2.le⟩ else 0 := by
@@ -35,6 +44,13 @@ theorem posM_blk_apply (m : ℕ) (c : UnipotentBlockColumnIndex a m m → R) (i 
     rw [← e1, ← e2]
     omega
 
+/- English proof (translation)
+Simplify using `only [posM, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `h1` using `t.2`. Combine the equalities or inequalities in the displayed calculation. Use extensionality with `p q`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.single_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : t.1.1 = p ∧ t.1.2 = l`. Rewrite using `[if_pos h, hM l q (by rw [← h.2]; omega)]`. Rewrite using `[if_neg h, zero_mul, zero_mul]`.
+
+Use `_ = _ := mul_one _`.
+-/
 theorem posM_mul_of_row (m : ℕ) (c : UnipotentBlockColumnIndex a m m → R) (M : Matrix (Fin a) (Fin a) R)
     (hM : ∀ r j : Fin a, (r : ℕ) = m → M r j = (1 : Matrix (Fin a) (Fin a) R) r j) :
     posM (Subtype.val : UnipotentBlockColumnIndex a m m → Fin a × Fin a) c * M = posM Subtype.val c := by
@@ -50,21 +66,33 @@ theorem posM_mul_of_row (m : ℕ) (c : UnipotentBlockColumnIndex a m m → R) (M
         · rw [if_neg h, zero_mul, zero_mul]
     _ = _ := mul_one _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(1 + posM Subtype.val c) * γ.val = _`. Rewrite using `[add_mul, one_mul, posM_mul_of_row m c _ hM]`.
+-/
 theorem blkU_mul_val (m : ℕ) (c : UnipotentBlockColumnIndex a m m → R) (γ : GL (Fin a) R)
     (hM : ∀ r j : Fin a, (r : ℕ) = m → γ.val r j = (1 : Matrix (Fin a) (Fin a) R) r j) :
     (blkU c * γ).val = γ.val + posM Subtype.val c := by
   change (1 + posM Subtype.val c) * γ.val = _
   rw [add_mul, one_mul, posM_mul_of_row m c _ hM]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(1 - posM Subtype.val c) * γ.val = _`. Rewrite using `[sub_mul, one_mul, posM_mul_of_row m c _ hM]`.
+-/
 theorem blkU_inv_mul_val (m : ℕ) (c : UnipotentBlockColumnIndex a m m → R) (γ : GL (Fin a) R)
     (hM : ∀ r j : Fin a, (r : ℕ) = m → γ.val r j = (1 : Matrix (Fin a) (Fin a) R) r j) :
     ((blkU c)⁻¹ * γ).val = γ.val - posM Subtype.val c := by
   change (1 - posM Subtype.val c) * γ.val = _
   rw [sub_mul, one_mul, posM_mul_of_row m c _ hM]
 
+/- English proof (translation)
+The claim follows from `posU_add _ x y`.
+-/
 theorem blkU_add (m : ℕ) (x y : UnipotentBlockColumnIndex a m m → R) : blkU (x + y) = blkU x * blkU y :=
   posU_add _ x y
 
+/- English proof (translation)
+Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← blkU_add, neg_add_cancel]`. Conclude with `posU_zero _`.
+-/
 theorem blkU_neg (m : ℕ) (x : UnipotentBlockColumnIndex a m m → R) : blkU (-x) = (blkU x)⁻¹ := by
   refine eq_inv_of_mul_eq_one_left ?_
   rw [← blkU_add, neg_add_cancel]
@@ -74,9 +102,15 @@ end Ring
 
 variable {E : Type} [Field E] [NumberField E] {k : ℕ}
 
+/- English proof (translation)
+The claim follows from `h r j (Or.inl hr.ge)`.
+-/
 theorem row_of_blk {m : ℕ} {γ : GL (Fin k) E} (h : GlobalTheory m γ) (r j : Fin k) (hr : (r : ℕ) = m) :
     γ.val r j = (1 : Matrix (Fin k) (Fin k) E) r j := h r j (Or.inl hr.ge)
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[blkU_mul_val m c γ (row_of_blk h), Matrix.add_apply, posM_blk_apply, dif_neg (by omega), add_zero]`. Conclude with `h i j (by omega)`.
+-/
 theorem isMir_blkU_mul {m : ℕ} (c : UnipotentBlockColumnIndex k m m → E) {γ : GL (Fin k) E} (h : GlobalTheory m γ) :
     IsMir m (blkU c * γ) := by
   intro i j hij
@@ -118,25 +152,40 @@ def colEquiv (m : ℕ) :
           exact hp i j (by omega)
       exact ⟨(c, ⟨_, hγ⟩), Subtype.ext (mul_inv_cancel_left _ _)⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem colEquiv_val (m : ℕ) (c : UnipotentBlockColumnIndex k m m → E) (γ : ({γ | GlobalTheory m γ} : Set (GL (Fin k) E))) :
     (colEquiv m (c, γ)).1 = blkU c * γ.1 := rfl
 
+/- English proof (translation)
+Introduce `i j hij`. Express the relevant statement in the definitionally equal form `algebraMap E (Ad E) (γ.val i j) = _`. Rewrite using `[h i j hij, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem blk_ratGL {m : ℕ} {γ : GL (Fin k) E} (h : GlobalTheory m γ) : GlobalTheory m (ratGL E k γ) := by
   intro i j hij
   change algebraMap E (Ad E) (γ.val i j) = _
   rw [h i j hij, Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[nuG, lintegral_sum_measure]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map hΦ (measurable_const_mul _)]`.
+-/
 theorem lintegral_nuG (Γ : Set (GL (Fin k) E)) (d : ℕ) {Φ : GA E k → ℝ≥0∞} (hΦ : Measurable Φ) :
     ∫⁻ h, Φ h ∂nuG Γ d = ∑' γ : Γ, ∫⁻ h, Φ (ratGL E k γ * h) ∂nuD E k d := by
   rw [nuG, lintegral_sum_measure]
   refine tsum_congr fun γ => ?_
   rw [lintegral_map hΦ (measurable_const_mul _)]
 
+/- English proof (translation)
+The claim follows from `(((continuous_posU (isNil_blk k m m)).comp continuous_fst).mul continuous_snd).measurable`.
+-/
 theorem measurable_blkU_mul (m : ℕ) :
     Measurable fun p : (UnipotentBlockColumnIndex k m m → Ad E) × GA E k => (blkU p.1 * p.2 : GA E k) :=
   (((continuous_posU (isNil_blk k m m)).comp continuous_fst).mul continuous_snd).measurable
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Rewrite using `[nuD, lintegral_map hΦ (measurable_blkU_mul _)]`. Conclude with `lintegral_prod (fun p : (UnipotentBlockColumnIndex k (k - (d + 1)) (k - (d + 1)) → Ad E) × GA E k => Φ (blkU p.1 * p.2)) (hΦ.comp (measurable_blkU_mul _)).aemeasurable`.
+-/
 theorem lintegral_nuD_succ (m d : ℕ) (hm : m = k - (d + 1)) [SFinite (nuD E k d)] {Φ : GA E k → ℝ≥0∞}
     (hΦ : Measurable Φ) :
     ∫⁻ h, Φ h ∂nuD E k (d + 1) =
@@ -146,6 +195,13 @@ theorem lintegral_nuD_succ (m d : ℕ) (hm : m = k - (d + 1)) [SFinite (nuD E k 
   exact lintegral_prod (fun p : (UnipotentBlockColumnIndex k (k - (d + 1)) (k - (d + 1)) → Ad E) × GA E k => Φ (blkU p.1 * p.2))
     (hΦ.comp (measurable_blkU_mul _)).aemeasurable
 
+/- English proof (translation)
+Use `haveI : (vecMeasure E ι).IsNegInvariant := Measure.pi.isNegInvariant _`. Use `haveI := GroundTheory.Global.countable_numberField E`. Rewrite using `[← lintegral_neg_eq_self, (isAddFundamentalDomain_vecDomain (K := E) (ι := ι)).lintegral_eq_tsum']`. Set `e : (ι → E) ≃ vecLattice E ι` to `Equiv.ofBijective (fun c => ⟨fun t => algebraMap E (Ad E) (c t), c, rfl⟩) (by`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `c c' h`. Use function extensionality and compare the values at `t`. Conclude with `NumberField.AdeleRing.algebraMap_injective (𝓞 E) E (congrFun (congrArg Subtype.val h) t)`. Introduce and unpack `⟨_, c, rfl⟩`. Conclude with `⟨c, rfl⟩)`.
+
+Rewrite using `[← e.tsum_eq]`. Use `tsum_congr fun c => lintegral_congr fun x => ?_` and prove the remaining obligations. Use `congr 1`. Express the relevant statement in the definitionally equal form `-(-(fun t => algebraMap E (Ad E) (c t)) + x) = _`. Rewrite using `[neg_add, neg_neg, add_comm]`.
+-/
 theorem unfold_vec (ι : Type) [Fintype ι] (G : (ι → Ad E) → ℝ≥0∞) :
     ∫⁻ y, G y ∂vecMeasure E ι =
       ∑' c : ι → E, ∫⁻ x in vecDomain E ι, G (-x + fun t => algebraMap E (Ad E) (c t)) ∂vecMeasure E ι := by
@@ -166,6 +222,9 @@ theorem unfold_vec (ι : Type) [Fintype ι] (G : (ι → Ad E) → ℝ≥0∞) :
   change -(-(fun t => algebraMap E (Ad E) (c t)) + x) = _
   rw [neg_add, neg_neg, add_comm]
 
+/- English proof (translation)
+Use `haveI := GroundTheory.Global.countable_numberField E`. Use `haveI : Countable (Matrix (Fin k) (Fin k) E) := inferInstanceAs (Countable (Fin k → Fin k → E))`. Conclude with `Function.Injective.countable (f := fun g : GL (Fin k) E => g.val) Units.val_injective`.
+-/
 theorem countable_GL : Countable (GL (Fin k) E) := by
   haveI := GroundTheory.Global.countable_numberField E
   haveI : Countable (Matrix (Fin k) (Fin k) E) := inferInstanceAs (Countable (Fin k → Fin k → E))
@@ -173,15 +232,26 @@ theorem countable_GL : Countable (GL (Fin k) E) := by
 
 def innerI (d : ℕ) (F : GA E k → ℝ≥0∞) (g u : GA E k) : ℝ≥0∞ := ∫⁻ n, F (u * (g * n)) ∂nuD E k d
 
+/- English proof (translation)
+The claim follows from `Measurable.lintegral_prod_right' (f := fun p : GA E k × GA E k => F (p.1 * (g * p.2))) (hF.comp (measurable_fst.mul (measurable_snd.const_mul g)))`.
+-/
 theorem measurable_innerI (d : ℕ) [SFinite (nuD E k d)] {F : GA E k → ℝ≥0∞} (hF : Measurable F) (g : GA E k) :
     Measurable (innerI d F g) :=
   Measurable.lintegral_prod_right' (f := fun p : GA E k × GA E k => F (p.1 * (g * p.2)))
     (hF.comp (measurable_fst.mul (measurable_snd.const_mul g)))
 
+/- English proof (translation)
+The claim follows from `(measurable_innerI d hF g).comp (continuous_posU (isNil_blk k m m)).measurable`.
+-/
 theorem measurable_innerI_blkU (m d : ℕ) [SFinite (nuD E k d)] {F : GA E k → ℝ≥0∞} (hF : Measurable F)
     (g : GA E k) : Measurable fun y : UnipotentBlockColumnIndex k m m → Ad E => innerI d F g (blkU y) :=
   (measurable_innerI d hF g).comp (continuous_posU (isNil_blk k m m)).measurable
 
+/- English proof (translation)
+Establish `hkm : k - m = d + 1` using `by omega`. Rewrite using `[nuB, hkm, lintegral_nuG _ _ hF]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Establish `h1` using `lintegral_nuD_succ m d hm (Φ := fun h => F (ratGL E k γ.1 * h)) (hF.comp (measurable_const_mul _))`. Establish `key` using `mod (ratGL E k γ.1) (blk_ratGL γ.2) (innerI d F (ratGL E k γ.1)) (measurable_innerI d hF _)`.
+
+Rewrite `key` using `[dt1, inv_one, ENNReal.ofReal_one, one_mul]`. Rewrite using `[h1, ← key]`. Use `lintegral_congr fun x => lintegral_congr fun n => ?_` and prove the remaining obligations. Simplify using `only [mul_assoc, inv_mul_cancel_left]`.
+-/
 theorem left_side (m d : ℕ) (hm : m = k - (d + 1)) (hd : d + 1 ≤ k) (sf : SFinite (nuD E k d))
     (dt1 : ∀ γ : GL (Fin k) E, Dt (ratGL E k γ) = 1)
     (mod : ∀ g : GA E k, GlobalTheory m g → ∀ F : GA E k → ℝ≥0∞, Measurable F →
@@ -201,6 +271,9 @@ theorem left_side (m d : ℕ) (hm : m = k - (d + 1)) (hd : d + 1 ≤ k) (sf : SF
   refine lintegral_congr fun x => lintegral_congr fun n => ?_
   simp only [mul_assoc, inv_mul_cancel_left]
 
+/- English proof (translation)
+Establish `hkm' : k - (m + 1) = d` using `by omega`. Rewrite using `[nuP, hkm', lintegral_nuG _ _ (Φ := fun h => F ((blkU x)⁻¹ * h)) (hF.comp (measurable_const_mul _)), ← (colEquiv m).tsum_eq, ENNReal.tsum_prod', ENNReal.tsum_comm]`. Use `tsum_congr fun γ => tsum_congr fun c => lintegral_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[colEquiv_val, map_mul, ratGL_blkU, blkU_add, blkU_neg]`. Simplify using `only [mul_assoc]`.
+-/
 theorem right_inner (m d : ℕ) (hm : m = k - (d + 1)) (hd : d + 1 ≤ k) {F : GA E k → ℝ≥0∞} (hF : Measurable F)
     (x : UnipotentBlockColumnIndex k m m → Ad E) :
     ∫⁻ h, F ((blkU x)⁻¹ * h) ∂nuP E k m =
@@ -213,6 +286,11 @@ theorem right_inner (m d : ℕ) (hm : m = k - (d + 1)) (hd : d + 1 ≤ k) {F : G
   rw [colEquiv_val, map_mul, ratGL_blkU, blkU_add, blkU_neg]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Use `haveI := GroundTheory.Global.countable_numberField E`. Use `haveI : Countable (GL (Fin k) E) := countable_GL`. Establish `hmeas : ∀ (γ : ({γ | GlobalTheory m γ} : Set (GL (Fin k) E))) (c : UnipotentBlockColumnIndex k m m → E), Measurable fun x : UnipotentBlockColumnIndex k m m → Ad E => innerI d F (ratGL E k γ.1) (blkU (-x + fun t => algebraMap E (Ad E) (c t)))` using `fun γ c => (measurable_innerI_blkU m d hF _).comp (measurable_neg.add_const _)`. Rewrite using `[left_side m d hm hd sf dt1 mod hF, lintegral_congr (right_inner m d hm hd hF), lintegral_tsum fun γ => (Measurable.ennreal_tsum fun c => hmeas γ c).aemeasurable]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations.
+
+Rewrite using `[lintegral_tsum fun c => (hmeas γ c).aemeasurable]`. Conclude with `unfold_vec _ _`.
+-/
 theorem main (m d : ℕ) (hm : m = k - (d + 1)) (hd : d + 1 ≤ k) (sf : SFinite (nuD E k d))
     (dt1 : ∀ γ : GL (Fin k) E, Dt (ratGL E k γ) = 1)
     (mod : ∀ g : GA E k, GlobalTheory m g → ∀ F : GA E k → ℝ≥0∞, Measurable F →
@@ -233,6 +311,9 @@ theorem main (m d : ℕ) (hm : m = k - (d + 1)) (hd : d + 1 ≤ k) (sf : SFinite
   rw [lintegral_tsum fun c => (hmeas γ c).aemeasurable]
   exact unfold_vec _ _
 
+/- English proof (translation)
+Introduce `hD _ hN1 _ hM E _ _ _ k m hm F hF`. Take `⟨d, hd, hmd⟩ : ∃ d, d + 1 ≤ k ∧ m = k - (d + 1)` from `⟨k - (m + 1), by omega, by omega⟩`. Conclude with `main m d hmd hd (hN1 E k d (by omega)).1 (hD E k).2.2.2.1 (hM E k m hm) hF`.
+-/
 theorem one_more_column : D0 → N0 → N1 → N3 → ColumnConjugationMeasure → OneMoreAdelicColumn := by
   intro hD _ hN1 _ hM E _ _ _ k m hm F hF
   obtain ⟨d, hd, hmd⟩ : ∃ d, d + 1 ≤ k ∧ m = k - (d + 1) := ⟨k - (m + 1), by omega, by omega⟩

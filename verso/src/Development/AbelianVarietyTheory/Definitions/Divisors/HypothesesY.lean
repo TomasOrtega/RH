@@ -19,6 +19,9 @@ structure HypothesesY : Prop where
 
   perfd : GlobalTheory.Published.PrismaticDieudonnePerfd
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.alt, h.perfd⟩`.
+-/
 example (h : HypothesesY) : GlobalTheory.Published.RegularAlteration ∧ GlobalTheory.Published.PrismaticDieudonnePerfd := ⟨h.alt, h.perfd⟩
 
 end GlobalTheory.CovHt

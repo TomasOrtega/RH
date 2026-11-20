@@ -26,6 +26,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SeriesTie.BaseGood
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl F3 hC j F hF de hde hpl`. Establish `hL` using `hC.lev`. Establish `hS : SplitSet Rl.Pg`. Take `⟨P, h1, -, hP⟩` from `hpl.split`. Conclude with `hP.mono h1`.
+
+Establish `hr : Odd D.R.r` using `Formalism.L2.NTheta.odd_r D.R`. Establish `rV : (Vc D j).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) j.2`. Establish `rW : (Wc D j).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) j.2`. Take `⟨Pa, hPa1, hPa2, hPa⟩` from `hpl.split`. Use `⟨GlobalTheory.ConjTwist.liftWeight D j, fun PP => GlobalTheory.ConjTwist.toCircle (Rl.chi ((j : ℕ) + 1) PP)⁻¹, fun _ => rfl, fun _ => rfl, fun P => ?_⟩` and prove the remaining obligations.
+
+Conclude with `{ even := rV ▸ hr.add_odd D.R.t_odd odd := rW ▸ hr frame := hF de := hde places := hpl wt := GlobalTheory.ConjTwist.liftWeight_good D j sig := fun _ => rfl sigOK := D.sp.W_sig _ eta := GlobalTheory.EtaTildeOfComponents.isEtaTilde_of_chrEq D Rl.C Rl.eta hL.eta (GlobalTheory.HeckeC …`. Establish `e1` using `GlobalTheory.ConjTwist.eq_res_of_chrEq (hL.mu0 j) (hS.isIdemAt hPP) ((Rl.C.isMu0 j).tame PP) (hL.chi j PP hPP) x hx hi u hu`. Establish `e2` using `GlobalTheory.T.tame_residue_char_trivial_split_place_off_unramified D Circle de.chi de.Q Pa hde.unram hPa hPa2 PP (hPa1 hPP) (Finset.disjoint_left.1 hpl.disj hPP) x hx hi u hu`. Use `show Rl.mu0 ((j : ℕ) + 1) x * de.chi x = GlobalTheory.ConjTwist.toCircle (Rl.chi ((j : ℕ) + 1) PP)⁻¹ u`. Rewrite using `[e2, MonoidHom.one_apply, mul_one]`.
+
+Conclude with `Circle.ext e1`. Use `inf := fun τ => by`. Establish `e : ((GlobalTheory.ConjTwist.liftWeight D j).c τ : ℚ) - (((GlobalTheory.ConjTwist.liftWeight D j).p τ : ℚ) - (GlobalTheory.ConjTwist.liftWeight D j).q τ) / 2 + 1 / 2 = -(D.hc τ).e j`. Establish `h` using `GlobalTheory.ConjTwist.liftC_cast D j τ`. Simplify using `only [GlobalTheory.ConjTwist.liftWeight]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e]`. Conclude with `GlobalTheory.ConjRefChar.reference_lift_character_exponent_neg_base hL j τ }`.
+-/
 theorem base_good : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Rl : RealDat3 D A3 Ks) (F3 : Face3 D A3), Rl.Char3 F3 → ∀ (j : Fin D.R.m) (F : Frame (Vc D j) (Wc D j)) (hF : F.Good) (de : Twist D Circle), de.Good → PlacesOK Rl.Pg de.Q → ∃ (w : Weight D (Vc D j).rank) (mu : ResChars D Circle), (∀ τ, w.ap τ = aPl D j ((Wc D j).sig (tauE D τ)).1 τ) ∧ (∀ τ, w.am τ = aMi D j ((Wc D j).sig (tauE D τ)).1 ((Wc D j).sig (tauE D τ)).2 τ) ∧ ∀ P : LevelP Rl.Pg (Wc D j).rank ℂ, (⟨hF.rank_le, F, ⟨Rl.Pg, P, mu⟩, de, w, Rl.mu0 ((j : ℕ) + 1), Rl.eta⟩ : Base (Vc D j) (Wc D j)).Good := by
   intro D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl F3 hC j F hF de hde hpl
   have hL := hC.lev

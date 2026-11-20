@@ -23,11 +23,17 @@ namespace UpperTheory.V.Z.Coh
 
 open UpperTheory.V.Cj
 
+/- English proof (translation)
+The claim follows from `clozelConjC_of_steps PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity clozelCohC finExC R.exAlgRepCusp R.conjAlgRep S.cuspSupport conjEx (embed_of partH relFacts partA relOnto harmSub harmNe harmInj irrCo graph Lit.Bor.frameEx Lit.Bor.oneReal Lit.Geo.cuspRapid) noEis`.
+-/
 theorem clozelConjC : Published.ClozelConjC :=
   clozelConjC_of_steps PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity clozelCohC finExC R.exAlgRepCusp R.conjAlgRep S.cuspSupport conjEx
     (embed_of partH relFacts partA relOnto harmSub harmNe harmInj irrCo graph Lit.Bor.frameEx Lit.Bor.oneReal Lit.Geo.cuspRapid)
     noEis
 
+/- English proof (translation)
+The claim follows from `Lit.Geo.borelInjC`.
+-/
 theorem borelInjC : Published.BorelInjC := Lit.Geo.borelInjC
 
 end UpperTheory.V.Z.Coh

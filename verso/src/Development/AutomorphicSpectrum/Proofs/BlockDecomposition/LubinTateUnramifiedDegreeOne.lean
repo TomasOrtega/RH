@@ -18,6 +18,13 @@ open scoped GroundTheory.PAdicHodge.CyclNorms
 
 namespace GlobalTheory.CompanionTheory.LTLink
 
+/- English proof (translation)
+Introduce `F _ _ _ _ Ωv _ _ _ _ _ _ _ _ π hπ f hf u τ hτd hτ y hy`. Take `⟨L, _, _, hyL⟩` from `exists_finite_abelian_mem hy`. Take `⟨n, m, h⟩` from `exists_le_lubinTateField_sup_unramifiedTower hπ hf L`. Establish `hE` using `isUnramifiedSubextension_unramifiedTower (K := F) (Ω := Ωv) m`. Use `hE.1` as an intermediate fact.
+
+Use `hE.isGalois` as an intermediate fact. Establish `hab` using `isAbelianGalois_lubinTateField_sup hπ hf n.succ_pos hE`. Establish `key` using `restrictAb_localArtinMap_lubinTate hπ hf n.succ_pos (unramifiedTower F Ωv m) hE.le_maximalUnramifiedExtension u⁻¹ 0 τ (by rw [hτd]; simp) (by intro x hx; rw [inv_inv]; exact hτ _ x hx)`. Establish `hx : unitUniformizerPow hπ u⁻¹ 0 = unitsIncl F u⁻¹`. Rewrite using `[unitUniformizerPow_eq, zpow_zero, one_mul]`.
+
+Rewrite `key` using `[hx]`. Establish `h2` using `congrArg (fun σ => ((σ ⟨y, h hyL⟩ : (lubinTateField Ωv hπ hf (n + 1) ⊔ unramifiedTower F Ωv m : IntermediateField F Ωv)) : Ωv)) key`. Simplify using `only [restrictAb_apply, AlgEquiv.restrictNormalHom_apply] at h2`. Conclude with `h2`.
+-/
 theorem lt_local_artin_inertia : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     {Ωv : Type} [Field Ωv] [ValuativeRel Ωv] [TopologicalSpace Ωv] [IsValuativeTopology Ωv]
     [Algebra F Ωv] [ValuativeExtension F Ωv] [IsSepClosure F Ωv] [IsSepClosed Ωv]

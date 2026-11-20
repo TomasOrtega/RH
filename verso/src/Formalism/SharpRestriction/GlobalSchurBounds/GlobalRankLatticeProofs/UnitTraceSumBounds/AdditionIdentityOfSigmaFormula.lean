@@ -18,6 +18,9 @@ def PAdicSigmaAdditionFormula (D : D7) : Prop :=
         PowerSeries.subst (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) (ePhi1 g.lam g.abelian₂ g.C g.wq) ^ 2 *
         PowerSeries.subst (Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) (ePhi1 g.lam g.abelian₂ g.C g.wq) ^ 2
 
+/- English proof (translation)
+Introduce `p _ cc δ g hA`. Establish `ok : g.Ok` using `hA.2.2.2.2`. Conclude with `HC p g ok (hE p cc δ g hA) (hQ p cc δ g hA) (H31 p g ok (ha p cc δ g hA).1)`.
+-/
 theorem addition_identity_of_sigma_formula (H31 : UnitTraceSumSecondBound) (HC : CubeIdentityFromAdditionFormula) (D : D7) (hQ : PAdicSigmaAdditionFormula D) (hE : EPhiOne D) (ha : addInt D) :
     cube2 D := by
   intro p _ cc δ g hA

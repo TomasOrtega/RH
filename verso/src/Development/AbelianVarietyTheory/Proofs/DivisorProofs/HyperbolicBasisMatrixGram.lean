@@ -9,6 +9,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThK.FrameGram
 
+/- English proof (translation)
+Simplify using `only [form, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem gram_apply {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n m : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (Q : Matrix (Fin n) (Fin m) E) (a b : Fin m) :
     (Qᵀ * J * Q.map σ) a b = form σ J (fun r => Q r a) (fun r => Q r b) := by
@@ -16,6 +19,9 @@ theorem gram_apply {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ
     Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, mul_assoc]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hJ l k]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_swap {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = -J i j)
     (u v : Fin n → E) : form σ J v u = -σ (form σ J u v) := by
@@ -25,11 +31,29 @@ theorem form_swap {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   rw [hJ l k]; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem col_eq {E : Type} [Field E] {n m : ℕ} (ι : Matrix (Fin n) (Fin m) E) (a : Fin m) :
     (fun r => ι r a) = ι *ᵥ Pi.single a 1 := by
   funext r
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Introduce `F E _ _ _ σ d₁ J J₁ x y ι Q hσ hJ hxx hyy hxy hι hJ₁ hQι hQx hQy`. Establish `cQ : ∀ a, (fun r => Q r (Fin.castAdd 2 a)) = ι *ᵥ Pi.single a 1`. Introduce `a`. Rewrite using `[← col_eq]`. Use function extensionality and compare the values at `r`.
+
+Conclude with `hQι r a`. Establish `cx : (fun r => Q r (Fin.natAdd d₁ 0)) = x` using `funext hQx`. Establish `cy : (fun r => Q r (Fin.natAdd d₁ 1)) = y` using `funext hQy`. Establish `ht : ∀ t : Fin 2, (fun r => Q r (Fin.natAdd d₁ t)) = x ∨ (fun r => Q r (Fin.natAdd d₁ t)) = y`. Introduce `t`.
+
+Use `fin_cases t`. Use `left`. Conclude with `cx`. Use `right`. Conclude with `cy`.
+
+Establish `orth : ∀ a (t : Fin 2), form σ J (ι *ᵥ Pi.single a 1) (fun r => Q r (Fin.natAdd d₁ t)) = 0`. Introduce `a t`. Apply the tactic sequence `rcases ht t with h | h <;> rw [h]`. Conclude with `(hι _).1`. Conclude with `(hι _).2`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a a'`. Rewrite using `[gram_apply, cQ, cQ, ← col_eq, ← col_eq, ← hJ₁, gram_apply]`. Introduce `a t`. Rewrite using `[gram_apply, cQ, orth]`.
+
+Introduce `t a`. Rewrite using `[gram_apply, cQ, form_swap σ J hσ hJ, orth, map_zero, neg_zero]`. Rewrite using `[gram_apply, cx, hxx]`. Rewrite using `[gram_apply, cy, hyy]`. Rewrite using `[gram_apply, cx, cy, hxy]`.
+
+Rewrite using `[gram_apply, cx, cy, form_swap σ J hσ hJ, hxy, map_one]`.
+-/
 theorem frame_gram : ∀ {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (d₁ : ℕ)
     (J : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E) (J₁ : Matrix (Fin d₁) (Fin d₁) E) (x y : Fin (d₁ + 2) → E)
     (ι : Matrix (Fin (d₁ + 2)) (Fin d₁) E) (Q : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E),

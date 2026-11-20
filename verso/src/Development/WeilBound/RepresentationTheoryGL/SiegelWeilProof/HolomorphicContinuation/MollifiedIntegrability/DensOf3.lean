@@ -6,6 +6,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.WR.D
 
+/- English proof (translation)
+The claim follows from `dens_of algA intG derivF mollId`.
+-/
 theorem densOf3 : Gauss → ClsGain → Integr → Dens := dens_of algA intG derivF mollId
 
 end PositivityTheory.Rg.Sw.WR.D

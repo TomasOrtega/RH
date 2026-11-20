@@ -21,15 +21,28 @@ def mulPiU (ι : Type) (u : Rˣ) : (ι → R) ≃ᵐ (ι → R) :=
       measurable_toFun := (continuous_const.mul continuous_id).measurable
       measurable_invFun := (continuous_const.mul continuous_id).measurable }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulPiU_apply (ι : Type) (u : Rˣ) (x : ι → R) (i : ι) :
     mulPiU R ι u x i = (u : R) * x i := rfl
 
+/- English proof (translation)
+The claim follows from `pi_map_scale lam (fun y => (u : R) * y) (continuous_const.mul continuous_id).measurable c h`.
+-/
 theorem map_mulPiU {ι : Type} [Fintype ι] (lam : Measure R) [SigmaFinite lam] (u : Rˣ) (c : ℝ≥0)
     (h : lam.map (fun y => (u : R) * y) = c • lam) :
     (Measure.pi fun _ : ι => lam).map (mulPiU R ι u) =
       (c ^ Fintype.card ι) • Measure.pi fun _ : ι => lam :=
   pi_map_scale lam (fun y => (u : R) * y) (continuous_const.mul continuous_id).measurable c h
 
+/- English proof (translation)
+Take `⟨hr, -, -, -, -, -, hh, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Establish `hb` using `hh d b`. Establish `hemb : MeasurableEmbedding (fun (y : R ⊗[F] E) (k : Fin d) => (Algebra.TensorProduct.basis R b).repr y k)` using `hb.homeomorph.toMeasurableEquiv.measurableEmbedding`. Use `map_mulPiU (ι := Fin d) R lam u c h` as an intermediate fact.
+
+Rewrite `this` using `[Fintype.card_fin]`. Use `map_comap_scale _ _ _ ?_ (mulPiU R (Fin d) u) _ hb.surjective hb.injective (fun s hs => (hemb.measurableSet_image' hs).nullMeasurableSet) ?_ this` and prove the remaining obligations. Conclude with `(continuous_const.mul continuous_id).measurable`. Introduce `y`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[mulPiU_apply, ← Algebra.smul_def, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem coordK_map_unit (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {d : ℕ} (b : Module.Basis (Fin d) F E)
     (lam : Measure R) [SigmaFinite lam] (u : Rˣ) (c : ℝ≥0)
     (h : lam.map (fun y => (u : R) * y) = c • lam) :
@@ -53,6 +66,13 @@ theorem coordK_map_unit (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {d : ℕ} (b
 
 end U
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M d b lam hlam t ht c h`. Take `⟨j1, j2, j3, j4, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Ainf F)`. Use `haveI : BorelSpace (Ainf F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Take `⟨hK, -, -⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hσ (Ainf F) d b lam hlam`.
+
+Use `haveI := hK`. Take `⟨u, rfl⟩` from `ht`. Use `set f : Ainf F ⊗[F] E → Ainf F ⊗[F] E := fun y => algebraMap (Ainf F) (Ainf F ⊗[F] E) (u : Ainf F) * y with hf`. Establish `hfm : Measurable f` using `(continuous_const.mul continuous_id).measurable`. Establish `hk` using `coordK_map_unit (Ainf F) σ hσ b lam u c h`.
+
+Establish `hk1` using `pi_map_scale (ι := Fin M) (GlobalTheory.CompanionTheory.SW.coordK (Ainf F) b lam) f hfm _ hk`. Establish `hk2` using `pi_map_scale (ι := Fin 1) (Measure.pi fun _ : Fin M => GlobalTheory.CompanionTheory.SW.coordK (Ainf F) b lam) (fun x i => f (x i)) (measurable_pi_iff.2 fun i => hfm.comp (measurable_pi_apply i)) _ hk1`. Simplify using `only [Fintype.card_fin, pow_one, ← pow_mul] at hk2`. Conclude with `hk2`.
+-/
 theorem coordW_map_unit : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure (Ainf F)), lam.IsAddHaarMeasure → ∀ t : Ainf F, IsUnit t → ∀ c : ℝ≥0, lam.map (fun y => t * y) = c • lam → (GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b lam 1 M).map (fun X p i => algebraMap (Ainf F) (Ainf F ⊗[F] E) t * X p i) = (c ^ (d * M)) • GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b lam 1 M := by
   intro F E _ _ _ _ _ σ hσ M d b lam hlam t ht c h
   obtain ⟨j1, j2, j3, j4, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Ainf F)

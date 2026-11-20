@@ -23,6 +23,11 @@ open private comb from Development.AutomorphicArithmetic.DivisorFrames.NormalMod
 
 namespace GlobalTheory.CovCmp
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ a, IsDeg p L ζ a`. Take `⟨a, Z, i, hi, hZ, alg, hz, hd, ha⟩` from `h`. Rewrite using `[UpperTheory.pdeg_eq_of_isDeg p X d L hL ζ _ ⟨Z, i, hi, hZ, alg, hz, hd, rfl⟩, UpperTheory.pdeg_eq_of_isDeg p X d N hN ζ _ ⟨Z, i, hi, hZ, alg, hz, hd, rfl⟩]`. Take `⟨_, A, hA⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver (GlobalTheory.T.closed_subscheme_mod_l_projective _ _ _ _ hX _ i p)`. Establish `H` using `hA.diffVanish_chiPic_of_isProper (algebraMap_eq_strHom (ZMod p) Z) (structureModule Z) (d := d) (by rw [GlobalTheory.QCoh.suppDim_structureModule, hd])`.
+
+Rewrite using `[H.interNum_of_cls_eq_zsmul (P := fun j => (L j).pull i) (Q := fun j => (N j).pull i) (fun j => pull_isLB (hL j) i) (fun j => pull_isLB (hN j) i) (fun _ => (m : ℤ)) fun j => by`. Rewrite using `[CechPic.cls_pull (hN j), CechPic.cls_pull (hL j), e, map_nsmul, natCast_zsmul]]`. Simplify using the standard rewrite rules. Establish `h' : ¬ ∃ a, IsDeg p N ζ a` using `fun ⟨_, Z, i, hi, hZ, alg, hz, hd, _⟩ => h ⟨_, Z, i, hi, hZ, alg, hz, hd, rfl⟩`. Rewrite using `[pdeg, pdeg, dif_neg h, dif_neg h', mul_zero]`.
+-/
 private theorem pdeg_nsmul {R : Type} [CommRing R] {X : Scheme.{0}} {q : X ⟶ Sp R} {D : ℕ} (hX : IsArithVar q D) (p : ℕ)
     [Fact p.Prime] {d : ℕ} (m : ℕ) {L N : Fin d → LB X} (hL : ∀ k, (L k).IsLB) (hN : ∀ k, (N k).IsLB)
     (e : ∀ k, cls (N k) (hN k) = m • cls (L k) (hL k)) (ζ : X) : pdeg p N ζ = (m : ℤ) ^ d * pdeg p L ζ := by
@@ -41,6 +46,9 @@ private theorem pdeg_nsmul {R : Type} [CommRing R] {X : Scheme.{0}} {q : X ⟶ S
       h ⟨_, Z, i, hi, hZ, alg, hz, hd, rfl⟩
     rw [pdeg, pdeg, dif_neg h, dif_neg h', mul_zero]
 
+/- English proof (translation)
+Use `CartierDiv.ext_of_isEqn fun x => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart hL x`. Take `⟨j, hj⟩` from `exists_chart hN x`. Use `⟨_, ((presents_divOfRatSec hL hs).isEqn i x hi).nsmul a, (((presents_divOfRatSec hN ht).isEqn j x hj).nsmul b).iff_unitAt.2 ?_⟩` and prove the remaining obligations. Simplify `h x i j hi hj` using `only [Units.val_pow_eq_pow_val]`.
+-/
 private theorem nsmul_div_eq {X : Scheme.{0}} [IsIntegral X] {L N : LB X} (hL : L.IsLB) (hN : N.IsLB)
     {s : L.ι → X.functionFieldˣ} {t : N.ι → X.functionFieldˣ} (hs : IsRatSec L s) (ht : IsRatSec N t) (a b : ℕ)
     (h : ∀ x i j, x ∈ L.U i → x ∈ N.U j → UnitAt x ((s i : X.functionField) ^ a / (t j : X.functionField) ^ b)) :
@@ -52,12 +60,28 @@ private theorem nsmul_div_eq {X : Scheme.{0}} [IsIntegral X] {L N : LB X} (hL : 
     (((presents_divOfRatSec hN ht).isEqn j x hj).nsmul b).iff_unitAt.2 ?_⟩
   simpa only [Units.val_pow_eq_pow_val] using h x i j hi hj
 
+/- English proof (translation)
+Proceed by induction on `a with`. Consider the case `zero => simpa using (CartierDiv.isEqn_zero x).mult_eq.trans (unitAt_one x).ord_eq_zero`. Consider the case `succ n ih => rw [succ_nsmul, CartierDiv.mult_add, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem mult_nsmul {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] (D : CartierDiv X) (a : ℕ) (x : X) :
     (a • D).mult x = (a : ℤ) * D.mult x := by
   induction a with
   | zero => simpa using (CartierDiv.isEqn_zero x).mult_eq.trans (unitAt_one x).ord_eq_zero
   | succ n ih => rw [succ_nsmul, CartierDiv.mult_add, ih]; push_cast; ring
 
+/- English proof (translation)
+Use `hX.isNoetherian` as an intermediate fact. Use `hX'.isNoetherian` as an intermediate fact. Establish `hq (ζ : X') : q (g ζ) = q' ζ` using `by rw [← w, Scheme.Hom.comp_apply]`. Establish `key` using `comb (J := Unit) (X := fun _ => X') (fun _ => g) (fun _ ζ => if (q' ζ).asIdeal = I then (divOfRatSec (LB.isLB_pull hM g) (isRatSec_pullSec g hg hr)).mult ζ else 0) (fun _ => pdeg p (fun k => (N k).pull g)) (fun _ ζ => (g.residueDegree ζ : ℤ)) (fun _ => (CartierDiv.finite_support_ …`. Rewrite using `[hq]`.
+
+Assume the negation of the conclusion as `h'`. Conclude with `h (if_neg h'))`. Use the proof step `(fun _ ζ h => by`. Establish `h₁ : (q' ζ).asIdeal = I`. Assume the negation of the conclusion as `h'`.
+
+Conclude with `h (if_neg h')`. Rewrite `h` using `[if_pos h₁]`. Rewrite using `[Nat.cast_one, one_pow, one_mul]`. Use `UpperTheory.pullback_degree_of_line_bundles R X X' q q' d hX hX' g w p N hN ζ (h₁ ▸ hp) (CartierDiv.coheight_eq_one_of_mult_ne_zero h))` and compare the differences between its conclusion and the goal. Use the proof step `(fun η h => CartierDiv.coheight_eq_one_of_mult_ne_zero h)`.
+
+Use the proof step `(fun η hη hη' => by`. Take `⟨i, hi⟩` from `exists_chart hM η`. Rewrite using `[((presents_divOfRatSec hM hr).isEqn i η hi).mult_eq, one_mul, Fintype.sum_unique, ← Int.cast_natCast (g.residueDegree (genericPoint X')), ← Int.cast_mul, ← UpperTheory.pullback_degree_generic_residue R X X' q q' d hX hX' nX nX' g w hg hn η hη' (r i) (r i).ne_zero]`. Use `congr 1`. Use `finsum_congr fun ζ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : g ζ = η`. Rewrite using `[if_pos h, if_pos h, if_pos (by rw [← hq, h, hη]), Nat.cast_one, one_mul, ((presents_divOfRatSec (LB.isLB_pull hM g) (isRatSec_pullSec g hg hr)).isEqn (fun _ => i) ζ (mem_pull.2 (by rw [h]; exact hi))).mult_eq]`. Both sides reduce to the same expression. Rewrite using `[if_neg h, if_neg h])`. Rewrite `key` using `[Nat.cast_one, one_pow, one_mul, one_mul, Fintype.sum_unique]`.
+
+Use `key` and compare the differences between its conclusion and the goal.
+-/
 private theorem proj {R : Type} [CommRing R] {X X' : Scheme.{0}} [IsIntegral X] [IsIntegral X'] [IsLocallyNoetherian X]
     [IsLocallyNoetherian X'] {q : X ⟶ Sp R} {q' : X' ⟶ Sp R} {d : ℕ} (hX : IsArithVar q d) (hX' : IsArithVar q' d)
     (nX : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) (nX' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X') (g : X' ⟶ X)
@@ -107,6 +131,11 @@ private theorem proj {R : Type} [CommRing R] {X X' : Scheme.{0}} [IsIntegral X] 
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Establish `key (W : Mean4O.Cover Y) : W.π (genericPoint W.G) = genericPoint Y.X`. Use `(genericPoint_spec W.G).image W.π.continuous` as an intermediate fact. Rewrite `this` using `[Set.image_univ, W.π.surjective.range_eq, closure_univ]`. Conclude with `this.eq (genericPoint_spec _)`. Take `⟨U, hU, e⟩` from `isDiscrete_iff_forall_exists_isOpen.mp (V.π.isDiscrete_preimage_singleton (genericPoint Y.X)) (g (genericPoint V'.G)) (by rw [Set.mem_preimage, ← Scheme.Hom.comp_apply, h, key]; rfl)`.
+
+Establish `h₁ : g (genericPoint V'.G) ∈ U` using `(e.ge rfl).1`. Conclude with `(e.le ⟨(genericPoint_specializes _).mem_open hU h₁, key V⟩).symm`.
+-/
 private theorem map_gen {V' V : Mean4O.Cover Y} (g : V'.G ⟶ V.G) (h : g ≫ V.π = V'.π) :
     g (genericPoint V'.G) = genericPoint V.G := by
   have key (W : Mean4O.Cover Y) : W.π (genericPoint W.G) = genericPoint Y.X := by
@@ -123,6 +152,23 @@ def vsum (V : Mean4O.Cover Y) (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) [Fact p
   ∑ᶠ η : V.X, if (V.p η).asIdeal = v.asIdeal then
     (((haveI := V.ar.isLocallyNoetherian; (divOfRatSec hM hr).mult η) * pdeg p N η : ℤ) : ℝ) else 0
 
+/- English proof (translation)
+Substitute `hd` using the available equality. Take `⟨V, π₁, π₂, w₁, w₂, b₁, b₂⟩` from `GlobalTheory.CoverCommon.exists_cover_dominating_two F Y V₁ V₂`. Use `V.ar.isLocallyNoetherian` as an intermediate fact. Use `V₁.ar.isLocallyNoetherian` as an intermediate fact. Use `V₂.ar.isLocallyNoetherian` as an intermediate fact.
+
+Establish `hdeg : ∀ (V' : Mean4O.Cover Y) (π : V.X ⟶ V'.X), π ≫ V'.p = V.p → Lies V V' π → π (genericPoint V.X) = genericPoint V'.X ∧ π.residueDegree (genericPoint V.X) * V'.deg = V.deg` using `fun V' π w ⟨g, c₁, c₂⟩ => GlobalTheory.CoverDeg.map_genericPoint_and_deg F Y V' V π w g c₁.symm c₂ (map_gen g c₂)`. Take `⟨e₁, d₁⟩` from `hdeg V₁ π₁ w₁ b₁`. Take `⟨e₂, d₂⟩` from `hdeg V₂ π₂ w₂ b₂`. Establish `g₁` using `specializes_of_eq e₁`. Establish `g₂` using `specializes_of_eq e₂`.
+
+Establish `n₁ : π₁.residueDegree (genericPoint V.X) ≠ 0` using `left_ne_zero_of_mul (d₁ ▸ V.deg_pos.ne')`. Establish `n₂ : π₂.residueDegree (genericPoint V.X) ≠ 0` using `left_ne_zero_of_mul (d₂ ▸ V.deg_pos.ne')`. Establish `P₁` using `proj V₁.ar V.ar V₁.normal V.normal π₁ w₁ g₁ n₁ p _ hp hN₁ hM₁ hr₁`. Establish `P₂` using `proj V₂.ar V.ar V₂.normal V.normal π₂ w₂ g₂ n₂ p _ hp hN₂ hM₂ hr₂`. Establish `hdiv : ∀ {L₁ : LB V₁.X} (hL₁ : L₁.IsLB) {t₁ : L₁.ι → V₁.X.functionFieldˣ} (ht₁ : IsRatSec L₁ t₁) {L₂ : LB V₂.X} (hL₂ : L₂.IsLB) {t₂ : L₂.ι → V₂.X.functionFieldˣ} (ht₂ : IsRatSec L₂ t₂) (l : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ), (∀ v, CRead V₁ v L₁ t₁ fun e …` using `fun hL₁ t₁ _ _ hL₂ t₂ _ l c₁ c₂ => nsmul_div_eq _ _ _ _ _ _ fun x i j hi hj => UpperTheory.comparison_of_line_bundle_sections F Y V V₁ V₂ π₁ π₂ b₁ b₂ g₁ g₂ _ hL₁ t₁ _ hL₂ t₂ l m₁ m₂ c₁ c₂ x _ _ (mem_pull.1 hi) (mem_pull.1 hj)`.
+
+Establish `hcls (k : Fin Y.dim) : m₂ • cls _ (LB.isLB_pull (hN₁ k) π₁) = m₁ • cls _ (LB.isLB_pull (hN₂ k) π₂)`. Establish `h` using `congrArg toPic (hdiv (hN₁ k) (hs₁ k v).1 (hN₂ k) (hs₂ k v).1 (l k) (hs₁ k) (hs₂ k))`. Rewrite `h` using `[map_nsmul, map_nsmul, (presents_divOfRatSec _ _).toPic_eq, (presents_divOfRatSec _ _).toPic_eq]`. Then use the resulting hypothesis. Use `choose P hP eP using fun k => cls_surj (m₂ • cls _ (LB.isLB_pull (hN₁ k) π₁))`. Establish `hw (ζ : V.X) : (m₂ : ℤ) ^ Y.dim * pdeg p (fun k => (N₁ k).pull π₁) ζ = (m₁ : ℤ) ^ Y.dim * pdeg p (fun k => (N₂ k).pull π₂) ζ` using `(pdeg_nsmul V.ar p m₂ _ hP eP ζ).symm.trans (pdeg_nsmul V.ar p m₁ _ hP (fun k => (eP k).trans (hcls k)) ζ)`.
+
+Establish `hμ (ζ : V.X) : (m₂ : ℤ) * (divOfRatSec (LB.isLB_pull hM₁ π₁) (isRatSec_pullSec π₁ g₁ hr₁)).mult ζ = (m₁ : ℤ) * (divOfRatSec (LB.isLB_pull hM₂ π₂) (isRatSec_pullSec π₂ g₂ hr₂)).mult ζ`. Establish `h` using `congrArg (fun D => CartierDiv.mult D ζ) (hdiv hM₁ hr₁ hM₂ hr₂ l₀ a₁ a₂)`. Simplify `h` using `only [mult_nsmul]`. Establish `key : (m₂ : ℝ) ^ (Y.dim + 1) * ((π₁.residueDegree (genericPoint V.X) : ℝ) * vsum V₁ v p N₁ hM₁ hr₁) = (m₁ : ℝ) ^ (Y.dim + 1) * ((π₂.residueDegree (genericPoint V.X) : ℝ) * vsum V₂ v p N₂ hM₂ hr₂)`. Use `(congrArg _ P₁.symm).trans (Eq.trans ?_ (congrArg _ P₂))` and prove the remaining obligations.
+
+Rewrite using `[← Int.cast_natCast m₂, ← Int.cast_natCast m₁, ← Int.cast_pow, ← Int.cast_pow, ← Int.cast_mul, ← Int.cast_mul, mul_finsum, mul_finsum]`. Use `congr 1`. Use `finsum_congr fun ζ => ?_` and prove the remaining obligations. Use `split_ifs`. Take the linear combination `((m₂ : ℤ) ^ Y.dim * pdeg p (fun k => (N₁ k).pull π₁) ζ) * hμ ζ + ((m₁ : ℤ) * (divOfRatSec (LB.isLB_pull hM₂ π₂) (isRatSec_pullSec π₂ g₂ hr₂)).mult ζ) * hw ζ`.
+
+Simplify using the standard rewrite rules. Establish `D₁ : (π₁.residueDegree (genericPoint V.X) : ℝ) * V₁.deg = V.deg` using `by exact_mod_cast d₁`. Establish `D₂ : (π₂.residueDegree (genericPoint V.X) : ℝ) * V₂.deg = V.deg` using `by exact_mod_cast d₂`. Establish `z₀ : (V.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 V.deg_pos.ne'`. Establish `z₁ : (V₁.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 V₁.deg_pos.ne'`.
+
+Establish `z₂ : (V₂.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 V₂.deg_pos.ne'`. Rewrite using `[div_eq_div_iff (mul_ne_zero z₁ (pow_ne_zero _ (Nat.cast_ne_zero.2 h₁))) (mul_ne_zero z₂ (pow_ne_zero _ (Nat.cast_ne_zero.2 h₂)))]`. Use `mul_left_cancel₀ z₀ ?_` and prove the remaining obligations. Take the linear combination `(V₁.deg * V₂.deg : ℝ) * key - (vsum V₁ v p N₁ hM₁ hr₁ * V₂.deg * (m₂ : ℝ) ^ (Y.dim + 1)) * D₁ + (vsum V₂ v p N₂ hM₂ hr₂ * V₁.deg * (m₁ : ℝ) ^ (Y.dim + 1)) * D₂`.
+-/
 theorem vsum_cmp (V₁ V₂ : Mean4O.Cover Y) (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) [Fact p.Prime]
     (hp : (p : 𝓞 F) ∈ v.asIdeal) {d : ℕ} (hd : Y.dim = d) (m₁ m₂ : ℕ) (h₁ : m₁ ≠ 0) (h₂ : m₂ ≠ 0)
     (l₀ : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ)

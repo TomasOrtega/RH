@@ -15,6 +15,11 @@ namespace GlobalTheory.MtLatConj
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `Twist.locC`. Distinguish the cases in `hP : PP ∈ ν.Q`. Establish `hP' : PP ∈ ν'.Q` using `by rw [h.1]; exact hP`. Rewrite using `[if_pos hP, if_pos hP']`. Conclude with `(h.res hν hν' hP u).symm`.
+
+Establish `hP' : PP ∉ ν'.Q` using `by rw [h.1]; exact hP`. Rewrite using `[if_neg hP, if_neg hP']`. Simplify using the standard rewrite rules.
+-/
 theorem locC_conj {τ : ℂ ≃+* ℂ} {ν ν' : Twist D Circle} (h : ConjChar τ ν ν') (hν : ν.Good) (hν' : ν'.Good)
     (PP : Pl D.host.E) (u : (kP PP)ˣ) : τ ((ν.locC PP u : ℂˣ) : ℂ) = ((ν'.locC PP u : ℂˣ) : ℂ) := by
   classical
@@ -27,6 +32,9 @@ theorem locC_conj {τ : ℂ ≃+* ℂ} {ν ν' : Twist D Circle} (h : ConjChar �
     rw [if_neg hP, if_neg hP']
     simp
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.ext1`. Use `split_ifs`. Conclude with `hP _`. Simplify using the standard rewrite rules.
+-/
 theorem levPOf_ext1_apply_eq_units_map_inv {r : ℕ} {Pg : Finset (Pl D.host.E)} (P : LevelP Pg r ℂ) {τ : ℂ ≃+* ℂ}
     (hP : ∀ p, τ ((P.chi p : ℂˣ) : ℂ) = ((P.chi p : ℂˣ) : ℂ)) (g : G0 Pg r) :
     τ ((Formalism.L2.DIV.ext1 P.H P.chi g : ℂˣ) : ℂ) = ((Formalism.L2.DIV.ext1 P.H P.chi g : ℂˣ) : ℂ) := by
@@ -35,6 +43,11 @@ theorem levPOf_ext1_apply_eq_units_map_inv {r : ℕ} {Pg : Finset (Pl D.host.E)}
   · exact hP _
   · simp
 
+/- English proof (translation)
+Simplify using `only [levFn, Base.levS, Units.val_mul, Units.coe_prod, map_mul, map_prod]`. Rewrite using `[hcc.1]`. Use `congr 1`. Use `congr 1`. Conclude with `levPOf_ext1_apply_eq_units_map_inv B.G.P hf.2.1 _`.
+
+Use `Finset.prod_congr rfl fun PP hPP => Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Conclude with `hf.2.2 PP hPP _`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, MonoidHom.mul_apply, Units.val_mul, Units.val_mul, map_mul, locC_conj hf.conjChar hB.de hB.de, locC_conj hcc hψ hψ']`.
+-/
 theorem levFn_conj {S T : HSp D} {B : Base S T} (hB : B.Good) {τ : ℂ ≃+* ℂ} {ψ ψ' : Twist D Circle} (hψ : ψ.Good)
     (hψ' : ψ'.Good) (hcc : ConjChar τ ψ ψ') (hf : FixDat B τ) (x : GL (Fin S.rank) (Lev.EAf D)) :
     τ ((levFn B.F.βS (B.levS ψ) x : ℂˣ) : ℂ) = ((levFn B.F.βS (B.levS ψ') x : ℂˣ) : ℂ) := by
@@ -49,6 +62,9 @@ theorem levFn_conj {S T : HSp D} {B : Base S T} (hB : B.Good) {τ : ℂ ≃+* �
     rw [MonoidHom.mul_apply, MonoidHom.mul_apply, Units.val_mul, Units.val_mul, map_mul,
       locC_conj hf.conjChar hB.de hB.de, locC_conj hcc hψ hψ']
 
+/- English proof (translation)
+Simplify using `only [Base.levJ, Subgroup.mem_comap, Lev.toAfE, mem_lev, mem_parLev, Base.levS] at hk ⊢`. Rewrite `hk` using `[hQ]`. Conclude with `hk`.
+-/
 theorem mem_levJ_of {S T : HSp D} (B : Base S T) {ψ ψ' : Twist D Circle} (hQ : ψ'.Q = ψ.Q) {k : Bridge.Gf S}
     (hk : k ∈ B.levJ ψ') : k ∈ B.levJ ψ := by
   simp only [Base.levJ, Subgroup.mem_comap, Lev.toAfE, mem_lev, mem_parLev, Base.levS] at hk ⊢
@@ -56,11 +72,17 @@ theorem mem_levJ_of {S T : HSp D} (B : Base S T) {ψ ψ' : Twist D Circle} (hQ :
   exact hk
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Unfold `Base.levLam Lev.levCharAfE`. Both sides reduce to the same expression.
+-/
 theorem levelCharacter_apply_eq_levelFunction_swap {S T : HSp D} (B : Base S T) (ψ : Twist D Circle) (k : B.levJ ψ) :
     B.levLam ψ k = levFn B.F.βS (B.levS ψ) (Formalism.UG.bc (Lev.swapAE D) k.1.1) := by
   unfold Base.levLam Lev.levCharAfE
   rfl
 
+/- English proof (translation)
+Rewrite using `[levelCharacter_apply_eq_levelFunction_swap, levelCharacter_apply_eq_levelFunction_swap]`. Conclude with `(levFn_conj hB hψ hψ' hcc hf _).symm`.
+-/
 theorem levLam_conj {S T : HSp D} {B : Base S T} (hB : B.Good) {τ : ℂ ≃+* ℂ} {ψ ψ' : Twist D Circle} (hψ : ψ.Good)
     (hψ' : ψ'.Good) (hcc : ConjChar τ ψ ψ') (hf : FixDat B τ) (k : B.levJ ψ') :
     ((B.levLam ψ' k : ℂˣ) : ℂ) = τ ((B.levLam ψ ⟨k.1, mem_levJ_of B hcc.1 k.2⟩ : ℂˣ) : ℂ) := by
@@ -73,9 +95,21 @@ def cmapGL (τ : ℂ ≃+* ℂ) : GLR D n →* GLR D n :=
   MonoidHom.pi fun t => (Units.map (RingHom.mapMatrix (τ : ℂ →+* ℂ) : Matrix (Fin n) (Fin n) ℂ →+* _).toMonoidHom).comp
     (Pi.evalMonoidHom (fun _ : D.what₂.Tau => GL (Fin n) ℂ) t)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmapGL_val (τ : ℂ ≃+* ℂ) (y : GLR D n) (t : D.what₂.Tau) (a b : Fin n) :
     ((cmapGL τ y t : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) a b = τ (((y t : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) a b) := rfl
 
+/- English proof (translation)
+Simplify using `only [coefFn, map_mul]`. Use `congr 1`. Simplify using `only [detFam, MonoidHom.coe_mk, OneHom.coe_mk, Units.coe_prod, map_prod, Units.val_zpow_eq_zpow_val, map_zpow₀, GeneralLinearGroup.val_det_apply]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Establish `e` using `RingHom.map_det (τ : ℂ →+* ℂ) (((cmapGL τ.symm y t : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ))`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations. Use `congr 1`. Use extensionality with `a b`. Simplify using `[cmapGL_val]`.
+
+Simplify using `only [MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_map]`. Establish `e` using `MvPolynomial.hom_eval₂ F (RingHom.id ℂ) (τ : ℂ →+* ℂ) (fun v : D.what₂.Tau × Fin n × Fin n => ((cmapGL τ.symm y v.1 : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) v.2.1 v.2.2)`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `v`.
+
+Simplify using `[cmapGL_val]`.
+-/
 theorem coefFn_conj (τ : ℂ ≃+* ℂ) (lam : D.what₂.Tau → DomWeight n) (F : Pol ℂ D.what₂.Tau n) (y : GLR D n) :
     coefFn (RingHom.id ℂ) lam (MvPolynomial.map (τ : ℂ →+* ℂ) F) y = τ (coefFn (RingHom.id ℂ) lam F (cmapGL τ.symm y)) := by
   simp only [coefFn, map_mul]
@@ -97,6 +131,9 @@ theorem coefFn_conj (τ : ℂ ≃+* ℂ) (lam : D.what₂.Tau → DomWeight n) (
     funext v
     simp [cmapGL_val]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Rewrite using `[cmapGL_val]`. Conclude with `hτ t _`.
+-/
 theorem cmapGL_embGL (τ : ℂ ≃+* ℂ) (hτ : ∀ (t : D.what₂.Tau) (e : D.host.E), τ (tauE D t e) = tauE D t e)
     (g : GL (Fin n) D.host.E) : cmapGL τ (embGL (tauE D) g) = embGL (tauE D) g := by
   funext t
@@ -104,6 +141,23 @@ theorem cmapGL_embGL (τ : ℂ ≃+* ℂ) (hτ : ∀ (t : D.what₂.Tau) (e : D.
   rw [cmapGL_val]
   exact hτ t _
 
+/- English proof (translation)
+Introduce `γ h k`. Establish `hfn : ∀ (w : VsV D i ℂ) z, harmFn (Wc D i).rank B.w B.F.BS (Φ w) z = κ * coefLin (lamV D i) w z` using `fun w z => congrFun (hκ w) z`. Choose the witnesses or unpack the hypotheses as in `⟨γE, hγ⟩ : ∃ γE, Bridge.IsRatMat (Vc D i) γ γE := by`. Take `⟨y, -, hy⟩` from `γ.2`. Conclude with `⟨y, hy.symm⟩`.
+
+Use `set u := realGL B.F.θ (Vc D i) γ with hu_def`. Establish `hu : u = embGL (tauE D) γE` using `realGL_rat hB.frame.vac.2.inf hγ`. Establish `hact : ∀ P z, harmFn (Wc D i).rank B.w B.F.BS (B.act γ P) z = harmFn (Wc D i).rank B.w B.F.BS P (u⁻¹ * z)` using `fun P z => harmFn_fockGL _ _ _ _ _`. Establish `hfix : ∀ z, cmapGL τ.symm (u⁻¹ * z) = u⁻¹ * cmapGL τ.symm z`. Introduce `z`.
+
+Rewrite using `[map_mul, hu, ← map_inv, cmapGL_embGL τ.symm hτE]`. Establish `hconj : ∀ w z, coefLin (lamV D i) (x' w) z = τ (coefLin (lamV D i) (x w) (cmapGL τ.symm z))` using `fun w z => by`. Express the relevant statement in the definitionally equal form `coefFn (RingHom.id ℂ) (lamV D i) (x' w : Pol ℂ D.what₂.Tau (Vc D i).rank) z = τ (coefFn (RingHom.id ℂ) (lamV D i) (x w : Pol ℂ D.what₂.Tau (Vc D i).rank) _)`. Rewrite using `[hxx w]`. Conclude with `coefFn_conj τ _ _ z`.
+
+Use `set g := Bridge.ratF (Vc D i) γ * h * (k : Bridge.Gf (Vc D i)) with hg`. Use `set lam : ℂ := ((B.levLam ψ ⟨k.1, mem_levJ_of B hcc.1 k.2⟩ : ℂˣ) : ℂ) with hlam`. Establish `hL : Φ (x g) = lam • B.act γ (Φ (x h))` using `hlaw γ h ⟨k.1, mem_levJ_of B hcc.1 k.2⟩`. Establish `E1 : ∀ z, coefLin (lamV D i) (x g) z = lam * coefLin (lamV D i) (x h) (u⁻¹ * z)`. Introduce `z`.
+
+Establish `e1 : harmFn (Wc D i).rank B.w B.F.BS (Φ (x g)) z = lam * harmFn (Wc D i).rank B.w B.F.BS (B.act γ (Φ (x h))) z`. Rewrite using `[hL, map_smul]`. Both sides reduce to the same expression. Rewrite `e1` using `[hact, hfn, hfn]`. Apply `mul_left_cancel₀ hκ0` to reduce the goal to its premises.
+
+Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl' : ((B.levLam ψ' k : ℂˣ) : ℂ) = τ lam` using `levLam_conj hB hψ hψ' hcc hf k`. Use `show Φ ((τ κ / κ) • x' g) = ((B.levLam ψ' k : ℂˣ) : ℂ) • B.act γ (Φ ((τ κ / κ) • x' h))`. Rewrite using `[hl']`.
+
+Use `sub_eq_zero.1 (GlobalTheory.T.harmonic_polynomial_eq_zero_of_function D _ _ B.w B.F.BS hB.wt (GlobalTheory.CoefLatConj.pq_le hB) _ (sub_mem (hval _) (Submodule.smul_mem _ _ (Base.act_mem_valSpace _ (hval _)))) ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Establish `e2 : ∀ (P Q : PolF D (Wc D i).rank (Vc D i).rank) (a : ℂ), harmFn (Wc D i).rank B.w B.F.BS (P - a • Q) z = harmFn (Wc D i).rank B.w B.F.BS P z - a * harmFn (Wc D i).rank B.w B.F.BS Q z` using `fun P Q a => by`. Rewrite using `[map_sub, map_smul]`. Both sides reduce to the same expression.
+
+Rewrite using `[e2, hact, hfn, hfn, map_smul, map_smul]`. Express the relevant statement in the definitionally equal form `κ * ((τ κ / κ) * coefLin (lamV D i) (x' g) z) - τ lam * (κ * ((τ κ / κ) * coefLin (lamV D i) (x' h) (u⁻¹ * z))) = 0`. Rewrite using `[hconj, hconj, hfix, E1, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasLaw_conj {i : Fin D.R.m} {B : Base (Vc D i) (Wc D i)} (hB : B.Good)
     {Φ : VsV D i ℂ →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank} {κ : ℂ} (hκ0 : κ ≠ 0) (hval : ∀ x, Φ x ∈ B.valSpace)
     (hκ : ∀ x : VsV D i ℂ, harmFn (Wc D i).rank B.w B.F.BS (Φ x) =
@@ -158,6 +212,13 @@ theorem hasLaw_conj {i : Fin D.R.m} {B : Base (Vc D i) (Wc D i)} (hB : B.Good)
   rw [hconj, hconj, hfix, E1, map_mul]
   ring
 
+/- English proof (translation)
+Introduce `D i B hB hlam Φ κ hκ0 hval hκ K _ _ σ emb O hc τ hτ ψ ψ' hψ hψ' hcc hf f f' hff hfm`. Use `choose x x' hxx hfx hfx' using hff`. Establish `hτE : ∀ (t : D.what₂.Tau) (e : D.host.E), τ.symm (tauE D t e) = tauE D t e` using `fun t e => by`. Rewrite using `[← hc.emb t, RingHom.comp_apply, τ.symm_apply_eq, hτ]`. Take `⟨hform, hlat⟩` from `(Base.mem_mtLat B σ emb O).1 hfm`.
+
+Establish `hlaw : B.HasLaw ψ (fun h => Φ (x h))`. Establish `e : f = fun h => Φ (x h)` using `funext hfx`. Rewrite using `[← e]`. Conclude with `((Base.mem_formsC B).1 hform).2`. Establish `e' : f' = fun h => Φ ((τ κ / κ) • x' h)` using `funext hfx'`.
+
+Use `(Base.mem_mtLat B σ emb (O.map (τ : ℂ →+* ℂ))).2 ⟨(Base.mem_formsC B).2 ⟨fun h => (hfx' h).symm ▸ hval _, ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[e']`. Conclude with `hasLaw_conj hB hκ0 hval hκ hτE hψ hψ' hcc hf hxx hlaw`. Rewrite using `[hfx' h]`. Conclude with `(GlobalTheory.CoefLatConj.conj_mem_iff Φ hlam hκ0 hval hκ σ emb O τ hτ h (hxx h)).1 (hfx h ▸ hlat h)`.
+-/
 theorem mtLat_conj : ∀ (D : D7) (i : Fin D.R.m) (B : Base (Vc D i) (Wc D i)), B.Good → B.w.lam = lamV D i → ∀ (Φ : VsV D i ℂ →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank) (κ : ℂ), κ ≠ 0 → (∀ x, Φ x ∈ B.valSpace) → (∀ x : VsV D i ℂ, harmFn (Wc D i).rank B.w B.F.BS (Φ x) = κ • coefFn (RingHom.id ℂ) (lamV D i) (x : Pol ℂ D.what₂.Tau (Vc D i).rank)) → ∀ (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (emb : D.what₂.Tau → (D.host.E →+* K)) (O : Subring ℂ), IsCoefRing σ emb O → ∀ τ : ℂ ≃+* ℂ, (∀ a : K, τ (σ a) = σ a) → ∀ (ψ ψ' : Twist D Circle), ψ.Good → ψ'.Good → ConjChar τ ψ ψ' → FixDat B τ → ∀ f f' : Bridge.Gf (Vc D i) → PolF D (Wc D i).rank (Vc D i).rank, (∀ h, ∃ x x' : VsV D i ℂ, ConjVec i τ x x' ∧ f h = Φ x ∧ f' h = Φ ((τ κ / κ) • x')) → f ∈ B.mtLat σ emb O ψ → f' ∈ B.mtLat σ emb (O.map (τ : ℂ →+* ℂ)) ψ' := by
   intro D i B hB hlam Φ κ hκ0 hval hκ K _ _ σ emb O hc τ hτ ψ ψ' hψ hψ' hcc hf f f' hff hfm
   choose x x' hxx hfx hfx' using hff

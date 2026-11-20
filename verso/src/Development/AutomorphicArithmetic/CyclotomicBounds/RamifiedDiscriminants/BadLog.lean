@@ -7,6 +7,17 @@ import Development.AutomorphicArithmetic.FrobeniusLocalisation.LogRdSum
 open UpperTheory.HF
 open NumberField Formalism.HC
 
+/- English proof (translation)
+Introduce `φ H M S hM hS`. Establish `hD : (discr H.E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero H.E)`. Take `⟨hA, hB, -⟩` from `UpperTheory.HF.ram_eq H`. Establish `hsub : S ⊆ H.ram ∪ M.primeFactors`. Introduce `p hp`.
+
+Take `⟨hpp, h⟩` from `hS p hp`. Rewrite using `[Finset.mem_union]`. Break down `h with h | h | h | h` into its components or cases. Conclude with `Or.inl ((hA p).2 (Or.inl (h ▸ hB)))`. Conclude with `Or.inl ((hA p).2 (Or.inr (Or.inr h)))`.
+
+Conclude with `Or.inl (Nat.mem_primeFactors.2 ⟨hpp, h, hD⟩)`. Conclude with `Or.inr (Nat.mem_primeFactors.2 ⟨hpp, h, hM⟩)`. Establish `h1 : ∑ l ∈ H.ram, Real.log l ≤ 2 * Real.log H.rd`. Simplify using `using (UpperTheory.HF.rad_bounds2 H).1 0 1 le_rfl zero_le_one`. Establish `h2 : ∑ l ∈ M.primeFactors, Real.log l ≤ Real.log M`.
+
+Establish `hne : ∀ l ∈ M.primeFactors, (l : ℝ) ≠ 0` using `fun l hl => Nat.cast_ne_zero.2 (Nat.prime_of_mem_primeFactors hl).ne_zero`. Rewrite using `[← Real.log_prod hne, ← Nat.cast_prod]`. Use `Real.log_le_log ?_ ?_` and prove the remaining obligations. Conclude with `Nat.cast_pos.2 (Finset.prod_pos fun l hl => (Nat.prime_of_mem_primeFactors hl).pos)`. Conclude with `Nat.cast_le.2 (Nat.le_of_dvd (Nat.pos_of_ne_zero hM) (Nat.prod_primeFactors_dvd M))`.
+
+Establish `h3 : ∑ p ∈ S, Real.log p ≤ ∑ p ∈ H.ram ∪ M.primeFactors, Real.log p` using `Finset.sum_le_sum_of_subset_of_nonneg hsub fun p _ _ => Real.log_natCast_nonneg p`. Establish `h4` using `Finset.sum_union_inter (s₁ := H.ram) (s₂ := M.primeFactors) (f := fun p : ℕ => Real.log p)`. Establish `h5 : 0 ≤ ∑ p ∈ H.ram ∩ M.primeFactors, Real.log p` using `Finset.sum_nonneg fun p _ => Real.log_natCast_nonneg p`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.KR.sum_log_bad_le :
     ∀ {φ : Frame} (H : HostAx φ) (M : ℕ) (S : Finset ℕ), M ≠ 0 →
       (∀ p ∈ S, p.Prime ∧ (p = 2 ∨ p = H.d ∨ p ∣ (discr H.E).natAbs ∨ p ∣ M)) →

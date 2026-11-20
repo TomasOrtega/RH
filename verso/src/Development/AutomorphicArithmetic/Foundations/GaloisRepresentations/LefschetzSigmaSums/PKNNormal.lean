@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Lefsc
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.InvMemLatMonoidOfMemAwaySupp
 open UpperTheory.Gal.LocalSmoothExtension
 
+/- English proof (translation)
+Introduce `p _ D G L M`. Establish `key : ∀ k ∈ L.KN 1, ∀ u, L.CongOne M u → L.CongOne M (k * u * k⁻¹)`. Introduce `k hk u hu v hv`. Take `⟨w, hw, e⟩` from `hu _ (UpperTheory.Gal.Int.Geo.integ_of_mem (inv_mem hk) v hv)`. Use `⟨L.actG k w, UpperTheory.Gal.Int.Geo.integ_of_mem hk w hw, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : L.actG k (L.actG k⁻¹ v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, e, map_add, map_nsmul, h1]`. Use `⟨fun k hk u hu => ⟨key k hk u hu.1, ?_⟩, fun hM => GlobalTheory.W2.relIndex_KN_ne_zero L one_pos hM⟩` and prove the remaining obligations. Establish `e : (k * u * k⁻¹)⁻¹ = k * u⁻¹ * k⁻¹` using `by group`.
+
+Rewrite using `[e]`. Conclude with `key k hk _ hu.2`.
+-/
 theorem UpperTheory.Gal.LocalSmoothExtension.kNNormal_of :
     KNNormal := by
   intro p _ D G L M

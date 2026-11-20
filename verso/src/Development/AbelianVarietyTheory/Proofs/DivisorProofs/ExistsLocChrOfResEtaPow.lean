@@ -14,6 +14,17 @@ noncomputable section
 
 namespace GlobalTheory.HoweLocal
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ hcm m χ hχ hres v _`. Use `⟨locChr χ v, hχ.1.comp (hC F E v), ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Express the relevant statement in the definitionally equal form `((χ (liftU v (Units.map (algebraMap (Fv F v) (Fv F v ⊗[F] E) : Fv F v →* Fv F v ⊗[F] E) a)) : Circle) : ℂ) = _`. Rewrite using `[liftU_algebraMap]`.
+
+Establish `h` using `hres (liftUF v a)`. Simplify using `only [RingHom.toMonoidHom_eq_coe] at h ⊢`. Rewrite using `[h]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises.
+
+Rewrite using `[bot_sup_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Take `⟨y, hy, n, hn, hyn⟩` from `Subgroup.mem_sup.1 hm`. Take `⟨t, rfl⟩` from `hy`.
+
+Take `⟨z, rfl⟩` from `hn`. Conclude with `hQ hP.quadraticClassFieldTheory F E hcm.2.2.1 v a t z hyn.symm`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `Subgroup.mem_sup_right ⟨liftU v z, hN F E v z⟩`. Introduce `a ha`.
+
+Express the relevant statement in the definitionally equal form `χ (liftU v _) = χ a`. Rewrite using `[liftU_compFin_of_at v a ha]`.
+-/
 theorem locChr_exists (hC : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F), Continuous (GlobalTheory.HoweLocal.liftU (F := F) (E := E) v)) (hN : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F) (z : (Fv F v ⊗[F] E)ˣ), Units.map (Algebra.norm (AF F) : AE F E →* AF F) (GlobalTheory.HoweLocal.liftU v z) = GlobalTheory.HoweLocal.liftUF v (Units.map (Algebra.norm (Fv F v) : Fv F v ⊗[F] E →* Fv F v) z)) (hQ : GlobalTheory.Published.QuadraticClassFieldTheory → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], Module.finrank F E = 2 → ∀ (v : Pl F) (a : (Fv F v)ˣ) (t : Fˣ) (z : (AE F E)ˣ), GlobalTheory.HoweLocal.liftUF v a = Units.map (algebraMap F (AF F)).toMonoidHom t * Units.map (Algebra.norm (AF F) : AE F E →* AF F) z → a ∈ (Units.map (Algebra.norm (Fv F v) : Fv F v ⊗[F] E →* Fv F v)).range) : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (m : ℕ) (χ : Chr F E), IsHecke F E χ →
       ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ m →
@@ -42,6 +53,9 @@ theorem locChr_exists (hC : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
     change χ (liftU v _) = χ a
     rw [liftU_compFin_of_at v a ha]
 
+/- English proof (translation)
+The claim follows from `locChr_exists GlobalTheory.HoweLocal.continuous_liftU GlobalTheory.HoweLocal.NormLift.norm_liftU GlobalTheory.HoweLocal.mem_localNorms_of_liftUF_eq`.
+-/
 theorem exists_locChr_of_resEtaPow : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (m : ℕ) (χ : Chr F E), IsHecke F E χ →
       ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ m →

@@ -5,6 +5,9 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.SubEmb
 
+/- English proof (translation)
+The claim follows from `subEmbedding_of_stage GlobalTheory.T.product_irreducible_append_equiv`.
+-/
 theorem subEmbedding : Ysupp.SubEmbedding :=
   subEmbedding_of_stage GlobalTheory.T.product_irreducible_append_equiv
 

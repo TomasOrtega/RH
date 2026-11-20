@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.FexTheta.RealSim
 
+/- English proof (translation)
+Establish `hN : 0 < Complex.normSq z` using `Complex.normSq_pos.mpr hz`. Establish `hdet : LinearMap.det (LinearMap.mulLeft ℝ z) = Complex.normSq z`. Rewrite using `[← Algebra.norm_complex_apply, Algebra.norm_apply]`. Both sides reduce to the same expression. Establish `hmap : Measure.map (fun u : ℂ => z * u) (volume : Measure ℂ) = ENNReal.ofReal |(Complex.normSq z)⁻¹| • volume`.
+
+Establish `h` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure ℂ) (f := LinearMap.mulLeft ℝ z) (by rw [hdet]; exact hN.ne')`. Rewrite `h` using `[hdet]`. Conclude with `h`. Establish `hemb : MeasurableEmbedding (fun u : ℂ => z * u)` using `(Homeomorph.mulLeft₀ z hz).measurableEmbedding`. Establish `h1 : ∫ u, F (z * u) ∂(volume : Measure ℂ) = ((Complex.normSq z : ℝ) : ℂ)⁻¹ * ∫ v, F v ∂(volume : Measure ℂ)`.
+
+Rewrite using `[← hemb.integral_map (g := F) (μ := volume), hmap, integral_smul_measure, ENNReal.toReal_ofReal (abs_nonneg _), abs_of_pos (inv_pos.mpr hN), Complex.real_smul]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hN' : ((Complex.normSq z : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Unfold `volC`.
+
+Rewrite using `[integral_smul_measure, integral_smul_measure, h1]`. Simplify using `only [Complex.real_smul, ENNReal.toReal_ofNat, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem integral_mul_left_volC {z : ℂ} (hz : z ≠ 0) (F : ℂ → ℂ) :
     ∫ v, F v ∂volC = ((Complex.normSq z : ℝ) : ℂ) * ∫ u, F (z * u) ∂volC := by
   have hN : 0 < Complex.normSq z := Complex.normSq_pos.mpr hz
@@ -41,6 +50,35 @@ theorem integral_mul_left_volC {z : ℂ} (hz : z ≠ 0) (F : ℂ → ℂ) :
   simp only [Complex.real_smul, ENNReal.toReal_ofNat, smul_eq_mul]
   field_simp
 
+/- English proof (translation)
+Establish `hrpos : 0 < r` using `by rw [hr]; exact norm_pos_iff.mpr hz`. Establish `hrC : (r : ℂ) ≠ 0` using `by exact_mod_cast hrpos.ne'`. Establish `hapos : 0 < a` using `by rw [ha]; positivity`. Use `set w : ℂ := z / (r : ℂ) with hwdef`. Establish `hw1 : ‖w‖ = 1`.
+
+Rewrite using `[hwdef, norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hrpos, ← hr]`. Conclude with `div_self hrpos.ne'`. Establish `hw0 : w ≠ 0`. Introduce `h`. Rewrite `hw1` using `[h, norm_zero]`.
+
+Conclude with `zero_ne_one hw1`. Establish `hzw : z = (r : ℂ) * w` using `by rw [hwdef]; field_simp`. Establish `hNz : Complex.normSq z = a` using `by rw [Complex.normSq_eq_norm_sq, ← hr, ha]`. Establish `hNm : ∀ y : ℂ, Complex.normSq (y * z) = a * Complex.normSq y`. Introduce `y`.
+
+Rewrite using `[map_mul, hNz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwn : w ^ n * w ^ (-n) = 1`. Rewrite using `[← zpow_add₀ hw0]`. Simplify using the standard rewrite rules.
+
+Establish `hP : ∀ y : ℂ, PhiInf n (y * w) = w ^ (-n) * PhiInf n y` using `fun y => (GlobalTheory.CompanionTheory.PhiInfIso.phiIso n).2 y w hw1`. Distinguish the cases in `hC : C = 0`. Substitute `hC` using the available equality. Establish `e1 : A * (a * B) * Complex.normSq x = A * B * Complex.normSq (x * z)`. Rewrite using `[hNm]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (A : ℂ) * (x * z) * (s : ℂ) = (A : ℂ) * x * ((r * s : ℝ) : ℂ) * w`. Rewrite using `[hzw]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [rWR, zero_div, if_true]`. Rewrite using `[e1, e2, hP]`. Take the linear combination `(Complex.exp (2 * Real.pi * Complex.I * ((A * B * Complex.normSq (x * z) : ℝ) : ℂ)) * sgR A * ((|A| : ℝ) : ℂ) * PhiInf n ((A : ℂ) * x * ((r * s : ℝ) : ℂ))) * (-hwn)`. Establish `hCa : C / a ≠ 0` using `div_ne_zero hC hapos.ne'`. Establish `hsg : sgR (-(C / a)) = sgR (-C)`.
+
+Unfold `sgR`. Establish `: 0 < -(C / a) ↔ 0 < -C`. Rewrite using `[← neg_div, div_pos_iff_of_pos_right hapos]`. Simplify using `only [this]`. Establish `habs : |C / a|⁻¹ = a * |C|⁻¹`.
+
+Rewrite using `[abs_div, abs_of_pos hapos]`. Clear the denominators using the available nonvanishing facts. Establish `hre : ∀ u : ℂ, ((starRingEnd ℂ) (x * z) * (z * u)).re = a * ((starRingEnd ℂ) x * u).re`. Introduce `u`. Establish `: (starRingEnd ℂ) (x * z) * (z * u) = (a : ℂ) * ((starRingEnd ℂ) x * u)`.
+
+Rewrite using `[map_mul, ← hNz, Complex.normSq_eq_conj_mul_self]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.re_ofReal_mul]`. Establish `hint : ∀ u : ℂ, Complex.exp (2 * Real.pi * Complex.I * (((A * Complex.normSq (x * z) + d * Complex.normSq (z * u) - 2 * ((starRingEnd ℂ) (x * z) * (z * u)).re) / C : ℝ) : ℂ)) * PhiInf n (z * u * (s : ℂ)) = w ^ (-n) * (Complex.exp (2 * Real.pi * Complex.I * (((A * Complex.normSq x …`. Introduce `u`.
+
+Establish `e1 : (A * Complex.normSq (x * z) + d * Complex.normSq (z * u) - 2 * ((starRingEnd ℂ) (x * z) * (z * u)).re) / C = (A * Complex.normSq x + d * Complex.normSq u - 2 * ((starRingEnd ℂ) x * u).re) / (C / a)`. Rewrite using `[hNm, mul_comm z u, hNm, mul_comm u z, hre]`. Clear the denominators using the available nonvanishing facts. Establish `e2 : z * u * (s : ℂ) = u * ((r * s : ℝ) : ℂ) * w`. Rewrite using `[hzw]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, hP]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [rWR, if_neg hC, if_neg hCa]`.
+
+Establish `hJ` using `integral_mul_left_volC hz (fun v : ℂ => Complex.exp (2 * Real.pi * Complex.I * (((A * Complex.normSq (x * z) + d * Complex.normSq v - 2 * ((starRingEnd ℂ) (x * z) * v).re) / C : ℝ) : ℂ)) * PhiInf n (v * (s : ℂ)))`. Simplify using `only [hint] at hJ`. Rewrite using `[hJ, integral_const_mul, hsg, habs, hNz]`. Establish `key : ∀ J : ℂ, Complex.I * sgR (-C) * ((a * |C|⁻¹ : ℝ) : ℂ) * J = w ^ n * (Complex.I * sgR (-C) * ((|C|⁻¹ : ℝ) : ℂ) * ((a : ℂ) * (w ^ (-n) * J)))`. Introduce `J`.
+
+Rewrite using `[Complex.ofReal_mul]`. Take the linear combination `(-(Complex.I * sgR (-C) * (a : ℂ) * ((|C|⁻¹ : ℝ) : ℂ) * J)) * hwn`. Conclude with `key _`.
+-/
 theorem rWR_sim (n : ℤ) {z : ℂ} (hz : z ≠ 0) {r a : ℝ} (hr : r = ‖z‖) (ha : a = r ^ 2)
     (A B C d s : ℝ) (x : ℂ) :
     rWR A (a * B) (C / a) d (fun y => PhiInf n (y * ((r * s : ℝ) : ℂ))) x =
@@ -122,6 +160,29 @@ theorem rWR_sim (n : ℤ) {z : ℂ} (hz : z ≠ 0) {r a : ℝ} (hr : r = ‖z‖
       linear_combination (-(Complex.I * sgR (-C) * (a : ℂ) * ((|C|⁻¹ : ℝ) : ℂ) * J)) * hwn
     exact key _
 
+/- English proof (translation)
+Introduce `n t z a ha g x`. Establish `hz : (z : ℂ) ≠ 0` using `z.ne_zero`. Use `set r : ℝ := ‖(z : ℂ)‖ with hrdef`. Establish `hr : 0 < r` using `norm_pos_iff.mpr hz`. Establish `hapos : 0 < (a : ℝ)` using `by rw [ha]; positivity`.
+
+Establish `hdet : ((dg2 a 1 * g).val).det = (a : ℝ) * (g.val).det` using `by show ((dg2 a 1).val * g.val).det = _`. Rewrite using `[Matrix.det_mul]`. Use `congr 1`. Simplify using `[dg2, Matrix.det_fin_two]`. Distinguish the cases in `h : 0 < (g.val).det`.
+
+Use `swap`. Establish `h' : ¬ 0 < ((dg2 a 1 * g).val).det`. Rewrite using `[hdet]`. Introduce `h2`. Conclude with `h ((mul_pos_iff_of_pos_left hapos).mp h2)`.
+
+Unfold `piRc`. Rewrite using `[dif_neg h, dif_neg h', mul_zero]`. Establish `h' : 0 < ((dg2 a 1 * g).val).det` using `by rw [hdet]; exact mul_pos hapos h`. Unfold `piRc`. Rewrite using `[dif_pos h, dif_pos h']`.
+
+Use `set D : ℝ := (g.val).det with hD`. Establish `hs : Real.sqrt ((dg2 a 1 * g).val).det = r * Real.sqrt D`. Rewrite using `[hdet, ha, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hr.le]`. Establish `hpm : 0 < Real.sqrt D` using `Real.sqrt_pos.mpr h`. Establish `e00 : (dg2 a 1 * g).val 0 0 = (a : ℝ) * g.val 0 0` using `by show ((dg2 a 1).val * g.val) 0 0 = _`.
+
+Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e01 : (dg2 a 1 * g).val 0 1 = (a : ℝ) * g.val 0 1` using `by show ((dg2 a 1).val * g.val) 0 1 = _`. Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e10 : (dg2 a 1 * g).val 1 0 = g.val 1 0` using `by show ((dg2 a 1).val * g.val) 1 0 = _`. Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+
+Establish `e11 : (dg2 a 1 * g).val 1 1 = g.val 1 1` using `by show ((dg2 a 1).val * g.val) 1 1 = _`. Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `hchi` using `GlobalTheory.CompanionTheory.CenTheta.RealCentral.chC_pos_mul n (Complex.I * t) hr hpm (Units.mk0 ((r : ℝ) : ℂ) (Complex.ofReal_ne_zero.mpr hr.ne')) (Units.mk0 ((Real.sqrt D : ℝ) : ℂ) (Complex.ofReal_ne_zero.mpr hpm.ne')) (Units.mk0 ((Real.sqrt ((dg2 a 1 * g).val).det : ℝ) : ℂ) ( …`. Establish `hchz : chC n (Complex.I * t) z = ((z : ℂ) / (r : ℂ)) ^ n * chC n (Complex.I * t) (Units.mk0 ((r : ℝ) : ℂ) (Complex.ofReal_ne_zero.mpr hr.ne'))`. Establish `hn : ‖((Units.mk0 ((r : ℝ) : ℂ) (Complex.ofReal_ne_zero.mpr hr.ne') : ℂˣ) : ℂ)‖ = r`.
+
+Rewrite using `[Units.val_mk0, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr]`. Establish `hrC : (r : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`. Unfold `chC`. Rewrite using `[hn, Units.val_mk0, div_self hrC, one_zpow, one_mul]`. Rewrite using `[hchi]`.
+
+Establish `q00 : (dg2 a 1 * g).val 0 0 / ((dg2 a 1 * g).val).det = g.val 0 0 / D`. Rewrite using `[e00, hdet]`. Establish `: D ≠ 0` using `h.ne'`. Clear the denominators using the available nonvanishing facts. Establish `q10 : (dg2 a 1 * g).val 1 0 / ((dg2 a 1 * g).val).det = g.val 1 0 / D / (a : ℝ)`.
+
+Rewrite using `[e10, hdet]`. Establish `: D ≠ 0` using `h.ne'`. Clear the denominators using the available nonvanishing facts. Rewrite using `[q00, q10, e01, e11, hs, rWR_sim n hz rfl ha, hchz]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem piRc_sim : ∀ (n : ℤ) (t : ℝ) (z : ℂˣ) (a : ℝˣ), (a : ℝ) = ‖(z : ℂ)‖ ^ 2 → ∀ (g : GL (Fin 2) ℝ) (x : ℂ),
     piRc (chC n (Complex.I * t)) (dg2 a 1 * g) (PhiInf n) x =
       chC n (Complex.I * t) z * ((‖(z : ℂ)‖ : ℝ) : ℂ) * piRc (chC n (Complex.I * t)) g (PhiInf n) (x * z) := by

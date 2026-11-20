@@ -39,41 +39,142 @@ namespace PositivityTheory.RgEis.Hd
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.identity_tube_holds`.
+-/
 theorem idTube : IdTube := GlobalTheory.T.identity_tube_holds
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.tube_chain_holds`.
+-/
 theorem tubeChain : TubeChain := GlobalTheory.T.tube_chain_holds
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.section_law_holds`.
+-/
 theorem secLaw : SecLaw := GlobalTheory.T.section_law_holds
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.height_lipschitz_holds`.
+-/
 theorem htLip : HtLip := GlobalTheory.T.height_lipschitz_holds
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.staged_estimate_holds`.
+-/
 theorem stage : PiLocalization₂ := GlobalTheory.T.staged_estimate_holds
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.wall_law_of_section_law`.
+-/
 theorem wallLaw_of : SecLaw → WallLaw := GlobalTheory.T.wall_law_of_section_law
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.crossing_of_walls_and_heights`.
+-/
 theorem cross_of : SecLaw → HtLip → PiLocalization₂ → WallLaw → Cross := GlobalTheory.T.crossing_of_walls_and_heights
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.gallery_of_tubes_and_crossing`.
+-/
 theorem gallery_of : SecLaw → IdTube → TubeChain → Cross → Gallery := GlobalTheory.T.gallery_of_tubes_and_crossing
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.transfer_of_section_and_wall_laws`.
+-/
 theorem transfer_of : SecLaw → WallLaw → Transfer := GlobalTheory.T.transfer_of_section_and_wall_laws
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.twist_of_section_law`.
+-/
 theorem twist_of : SecLaw → Twist := GlobalTheory.T.twist_of_section_law
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.eisenstein_scaling_law`.
+-/
 theorem scale : Scale := GlobalTheory.T.eisenstein_scaling_law
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.general_linear_topological_group`.
+-/
 theorem grpTop : GrpTop := GlobalTheory.T.general_linear_topological_group
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.block_determinant_law`.
+-/
 theorem bdetLaw : BdetLaw := GlobalTheory.T.block_determinant_law
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.extension_law`.
+-/
 theorem extLaw : ExtLaw := GlobalTheory.T.extension_law
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.parabolic_law_of_block_det`.
+-/
 theorem parLaw_of : BdetLaw → ExtLaw → GrpTop → ParLaw := GlobalTheory.T.parabolic_law_of_block_det
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.levi_decomp_of_block_det`.
+-/
 theorem leviS_of : BdetLaw → ExtLaw → GrpTop → LeviS := GlobalTheory.T.levi_decomp_of_block_det
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.levi_quotient_of_block_det`.
+-/
 theorem leviQ_of : BdetLaw → ExtLaw → GrpTop → LeviQ := GlobalTheory.T.levi_quotient_of_block_det
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.convergence_group_of_block_det`.
+-/
 theorem convGrOf_of : BdetLaw → ExtLaw → ConvGrOf := GlobalTheory.T.convergence_group_of_block_det
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unipotent_convergence_of_parabolic`.
+-/
 theorem convU_of : ParLaw → ConvU := GlobalTheory.T.unipotent_convergence_of_parabolic
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.siegel_induction_from_gallery`.
+-/
 theorem sgStep_of : Gallery → Transfer → Twist → GrpTop → ParLaw → LeviS → LeviQ → ConvGrOf → ConvU → SgStep := GlobalTheory.T.siegel_induction_from_gallery
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.EpConvB.epConv`.
+-/
 theorem epConv : EpConv := GlobalTheory.CompanionTheory.EpConvB.epConv
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.EpsteinMain.Hd.epMain_of_epConv`.
+-/
 theorem epMain_of : EpConv → EpMain := GlobalTheory.CompanionTheory.EpsteinMain.Hd.epMain_of_epConv
+/- English proof (translation)
+The claim follows from `PositivityTheory.RgEis.TF.testFun`.
+-/
 theorem testFun : TestFun := PositivityTheory.RgEis.TF.testFun
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.spherical_test_function_exists`.
+-/
 theorem testSph : TestSph := GlobalTheory.T.spherical_test_function_exists
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.standard_section_good`.
+-/
 theorem stdGood : StdGood := GlobalTheory.T.standard_section_good
+/- English proof (translation)
+The claim follows from `PositivityTheory.RgEis.MG.mirGen`.
+-/
 theorem mirGen_of : SecLaw → StdGood → BdetLaw → EpConv → EpMain → TestFun → TestSph → MirGen := PositivityTheory.RgEis.MG.mirGen
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.local_global_dictionary`.
+-/
 theorem dict : Dict := GlobalTheory.T.local_global_dictionary
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.archimedean_local_global_dictionary`.
+-/
 theorem dictInf : DictInf := GlobalTheory.T.archimedean_local_global_dictionary
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.constant_multiplier_good`.
+-/
 theorem cmGood_of : StdGood → Dict → DictInf → CMGood := GlobalTheory.T.constant_multiplier_good
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.constant_multiplier_mirabolic`.
+-/
 theorem cmMir_of : Dict → CMGood → GrpTop → BdetLaw → ExtLaw → ParLaw → MirGen → CMMir := GlobalTheory.T.constant_multiplier_mirabolic
+/- English proof (translation)
+The claim follows from `PositivityTheory.RgEis.So.sgOne_hd`.
+-/
 theorem sgOne_of : SecLaw → WallLaw → Scale → StdGood → Dict → DictInf → CMGood → GrpTop → BdetLaw → ExtLaw → ParLaw →
     MirGen → SgOne := PositivityTheory.RgEis.So.sgOne_hd
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.siegel_eisenstein_multiplicativity`.
+-/
 theorem siegelMult_of : SecLaw → WallLaw → Dict → DictInf → CMGood → GrpTop → BdetLaw → ExtLaw → ParLaw → SgAll →
     SiegelEisensteinSeries.BRoad.SiegelMult := GlobalTheory.T.siegel_eisenstein_multiplicativity
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ χ c h h' hχ hc ε`. It suffices to establish `H : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι], Fintype.card ι = n → 1 ≤ n → (adCM σ χ).Sg ε ι from fun ι _ _ hι => H _ ι rfl hι`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+
+Introduce `ι _ _ hι hn`. Break down `Nat.eq_or_lt_of_le hn with e | e` into its components or cases. Conclude with `h1 F E σ χ c h h' hχ hc ε ι (hι.trans e.symm)`. Conclude with `hS E _ (adCM σ χ) (hG F E σ χ c h h' hχ hc) (hM F E σ χ c h h' hχ hc) ε ι (by omega) fun κ _ _ h1 h2 => ih _ (hι ▸ h2) κ rfl h1`.
+-/
 theorem sgAll_of (hG : CMGood) (hM : CMMir) (h1 : SgOne) (hS : SgStep) : SgAll := by
   intro F E _ _ _ _ _ σ χ c h h' hχ hc ε
   suffices H : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι], Fintype.card ι = n → 1 ≤ n → (adCM σ χ).Sg ε ι from
@@ -87,6 +188,9 @@ theorem sgAll_of (hG : CMGood) (hM : CMMir) (h1 : SgOne) (hS : SgStep) : SgAll :
     · exact hS E _ (adCM σ χ) (hG F E σ χ c h h' hχ hc) (hM F E σ χ c h h' hχ hc) ε ι (by omega)
         fun κ _ _ h1 h2 => ih _ (hι ▸ h2) κ rfl h1
 
+/- English proof (translation)
+The claim follows from `have hW := wallLaw_of secLaw have hP := parLaw_of bdetLaw extLaw grpTop have hG := cmGood_of stdGood dict dictInf have hM := mirGen_of secLaw stdGood bdetLaw epConv (epMain_of epConv) testFun testSph sgAll_of hG (cmMir_of dict hG grpTop bdetLaw extLaw hP hM) (sgOne_of secLaw hW s …`.
+-/
 theorem sgAll : SgAll :=
   have hW := wallLaw_of secLaw
   have hP := parLaw_of bdetLaw extLaw grpTop
@@ -98,6 +202,9 @@ theorem sgAll : SgAll :=
       (twist_of secLaw) grpTop hP (leviS_of bdetLaw extLaw grpTop) (leviQ_of bdetLaw extLaw grpTop)
       (convGrOf_of bdetLaw extLaw) (convU_of hP))
 
+/- English proof (translation)
+The claim follows from `have hW := wallLaw_of secLaw have hP := parLaw_of bdetLaw extLaw grpTop have hG := cmGood_of stdGood dict dictInf have hM := mirGen_of secLaw stdGood bdetLaw epConv (epMain_of epConv) testFun testSph SiegelEisensteinSeries.BRoad.eisBL_of GlobalTheory.T.eisenstein_half_holds (sieg …`.
+-/
 theorem eisBL : GlobalTheory.ThK.Dbl.EisBL :=
   have hW := wallLaw_of secLaw
   have hP := parLaw_of bdetLaw extLaw grpTop

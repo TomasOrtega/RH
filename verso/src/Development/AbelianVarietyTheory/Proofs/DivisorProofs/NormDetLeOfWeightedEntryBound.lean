@@ -6,6 +6,15 @@ open scoped ContDiff Matrix
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Establish `hM : ∀ i b, ‖M i b‖ ≤ |c| * ((w (u i))⁻¹ * (w b)⁻¹)`. Introduce `i b`. Establish `hp : 0 < w (u i) * w b` using `mul_pos (hw _) (hw _)`. Rewrite using `[← mul_inv, ← div_eq_mul_inv, le_div_iff₀ hp]`. Conclude with `(h i b).trans (le_abs_self c)`.
+
+Establish `hterm : ∀ σ : Equiv.Perm (Fin n), ‖((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, M (σ i) i‖ ≤ |c| ^ n * ∏ a, (w a)⁻¹ ^ 2`. Introduce `σ`. Establish `hs : ‖((Equiv.Perm.sign σ : ℤ) : ℂ)‖ = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h1 | h1 <;> simp [h1]`. Rewrite using `[norm_mul, hs, one_mul, norm_prod]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `e : ∏ i, (w (u (σ i)))⁻¹ = ∏ a, (w a)⁻¹` using `Equiv.prod_comp (σ.trans u) (fun a => (w a)⁻¹)`. Rewrite using `[e, ← Finset.prod_mul_distrib]`. Simplify using `only [sq]`.
+
+Rewrite using `[Matrix.det_apply']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul, mul_assoc]`.
+-/
 theorem norm_det_le_of_weighted {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (u : Equiv.Perm (Fin n))
     (w : Fin n → ℝ) (c : ℝ) (hw : ∀ a, 0 < w a)
     (h : ∀ i b, ‖M i b‖ * (w (u i) * w b) ≤ c) :

@@ -14,20 +14,44 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *`. Conclude with `mul_ne_zero ha hb`.
+-/
 theorem mem_GLs_mul {a b : Mat n} (ha : a ∈ GLs n) (hb : b ∈ GLs n) : a * b ∈ GLs n := by
   simp only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *
   exact mul_ne_zero ha hb
 
+/- English proof (translation)
+Simplify using `only [GLs, Set.mem_setOf_eq] at *`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `inv_ne_zero ha`.
+-/
 theorem mem_GLs_inv {a : Mat n} (ha : a ∈ GLs n) : a⁻¹ ∈ GLs n := by
   simp only [GLs, Set.mem_setOf_eq] at *
   rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv']
   exact inv_ne_zero ha
 
+/- English proof (translation)
+Apply `mem_GLs_inv` to reduce the goal to its premises. Simplify using `only [GLs, Set.mem_setOf_eq, Matrix.det_conjTranspose] at *`. Conclude with `(star_ne_zero).mpr ha`.
+-/
 theorem mem_GLs_conjT_inv {a : Mat n} (ha : a ∈ GLs n) : aᴴ⁻¹ ∈ GLs n := by
   apply mem_GLs_inv
   simp only [GLs, Set.mem_setOf_eq, Matrix.det_conjTranspose] at *
   exact (star_ne_zero).mpr ha
 
+/- English proof (translation)
+Introduce `n lam E Fr ε ι S Γ T h σ hσ hσ2 k hk hkK hch d hd c`. Use `⟨hS n E.V σ c Fr k Γ T d hd hσ hσ2 h.smooth hk, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨v, w⟩ ⟨hv, hw⟩`. Establish `hxv` using `(hC n σ hσ2 v hv).1`. Establish `hxw` using `(hC n σ hσ2 w hw).1`.
+
+Establish `hw0 : (σ v)⁻¹ * d * (σ w)ᴴ⁻¹ ∈ GLs n` using `mem_GLs_mul (mem_GLs_mul (mem_GLs_inv hxv) hd) (mem_GLs_conjT_inv hxw)`. Establish `e1` using `h.ΓFr _ hxv`. Establish `e2` using `(hch _ hw0).1`. Establish `e4` using `h.ΓFr _ (mem_GLs_inv hxw)`. Establish `e3` using `h.ΓT`.
+
+Simplify using `only [Kc, Kf]`. Rewrite using `[mul_smul_comm, smul_mul_assoc]`. Use `congr 1`. Establish `hcm : Commute Γ (Fr (σ v) * k ((σ v)⁻¹ * d * (σ w)ᴴ⁻¹) * Γ * T * Fr (σ w)⁻¹)` using `((((show Commute Γ (Fr (σ v)) from e1).mul_right (show Commute Γ (k ((σ v)⁻¹ * d * (σ w)ᴴ⁻¹)) from e2)).mul_right (Commute.refl Γ)).mul_right (show Commute Γ T from e3)).mul_right (show Commute Γ (Fr (σ w)⁻¹) from e4)`. Conclude with `hcm.eq`.
+
+Introduce and unpack `⟨v, w⟩ ⟨hv, hw⟩`. Rewrite using `[h1 n lam E Fr ε ι S Γ T h σ hσ hσ2 k hk hkK d hd c v hv w hw, h2 n lam E Fr ε ι S Γ T h σ hσ hσ2 k hk hkK d hd c v hv w hw, ← smul_add]`. Establish `hxv` using `(hC n σ hσ2 v hv).1`. Establish `hxw` using `(hC n σ hσ2 w hw).1`. Establish `hw0 : (σ v)⁻¹ * d * (σ w)ᴴ⁻¹ ∈ GLs n` using `mem_GLs_mul (mem_GLs_mul (mem_GLs_inv hxv) hd) (mem_GLs_conjT_inv hxw)`.
+
+Establish `hc` using `(hch _ hw0).2`. Use `set w0 := (σ v)⁻¹ * d * (σ w)ᴴ⁻¹`. Establish `hz : (∑ p, ε (hb p) * (fderiv ℝ Fr 1 (hb p) * k w0 + Ld (hb p) k w0)) + ∑ p, (Rd (hb p) k w0 * ε (hb p) - k w0 * ε (hb p) * fderiv ℝ Fr 1 (hb p)) = 0`. Establish `e : ∑ p, ε (hb p) * (fderiv ℝ Fr 1 (hb p) * k w0 + Ld (hb p) k w0) = ∑ p, ε (hb p) * (Ld (hb p) k w0 + fderiv ℝ Fr 1 (hb p) * k w0)`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[add_comm]`. Rewrite using `[e, hc, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Simplify using `only [neg_mul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[← add_mul, ← add_mul, ← add_mul, ← mul_add, ← smul_add, hz, smul_zero, mul_zero, zero_mul, zero_mul, zero_mul, smul_zero]`.
+-/
 theorem kChain_of (hS : KcSmooth) (hC : ConeGL) (h1 : HalfOne) (h2 : HalfTwo) : KChain := by
   intro n lam E Fr ε ι S Γ T h σ hσ hσ2 k hk hkK hch d hd c
   refine ⟨hS n E.V σ c Fr k Γ T d hd hσ hσ2 h.smooth hk, ?_, ?_⟩

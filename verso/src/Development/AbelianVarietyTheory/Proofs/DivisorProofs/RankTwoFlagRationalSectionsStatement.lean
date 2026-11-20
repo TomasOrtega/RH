@@ -14,6 +14,13 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open GlobalTheory.Cartier GlobalTheory.CovTest.SwapLine
 open scoped Classical
 
+/- English proof (translation)
+Establish `key (T : Scheme.{0}) (g : T ⟶ B) (a : T ⟶ Y) (w : a ≫ π = g) (i : Fin (n + 1)) : ∃ e : (Scheme.Modules.pullback a).obj (fl.F i) ≅ (flB.pull g).F i, e.hom ≫ (flB.pull g).ι i = (Scheme.Modules.pullback a).map (fl.ι i) ≫ (Scheme.Modules.pullbackComp a π).hom.app E ≫ (Scheme.Modules. …`. Take `⟨e, he⟩` from `hs i`. Use `⟨(Scheme.Modules.pullback a).mapIso e ≪≫ (Scheme.Modules.pullbackComp a π).app (flB.F i) ≪≫ (Scheme.Modules.pullbackCongr w).app (flB.F i), ?_⟩` and prove the remaining obligations. Establish `n₁` using `(Scheme.Modules.pullbackComp a π).hom.naturality (flB.ι i)`. Establish `n₂` using `(Scheme.Modules.pullbackCongr w).hom.naturality (flB.ι i)`.
+
+Rewrite using `[← he, Functor.map_comp, Category.assoc]`. Use `(Category.assoc _ _ _).trans (congrArg _ ?_)` and prove the remaining obligations. Use `Eq.trans ?_ ((congrArg (· ≫ (Scheme.Modules.pullbackCongr w).hom.app E) n₁).symm.trans (Category.assoc _ _ _))` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans (Eq.trans ?_ (Category.assoc _ _ _).symm)` and prove the remaining obligations. Conclude with `congrArg _ n₂.symm`.
+
+Establish `: Mono π` using `⟨fun {T} a b hab => (hF T (b ≫ π) fun _ => flB.pull _).unique ⟨hab, fun _ i => key T _ a hab i⟩ ⟨rfl, fun _ i => key T _ b rfl i⟩⟩`. Take `⟨s, ⟨hs, -⟩, -⟩` from `hF B (𝟙 B) fun _ => flB.pull _`. Establish `: IsSplitEpi π` using `⟨⟨⟨s, hs⟩⟩⟩`. Conclude with `isIso_of_mono_of_isSplitEpi π`.
+-/
 private theorem isIso_of_sameStep {B Y : Scheme.{0}} (π : Y ⟶ B) (E : B.Modules) (n : ℕ) (flB : Vert.Flag E n)
     (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) n)
     (hF : IsFlagBundle π (fun _ : Unit => E) (fun _ => n) (fun _ => fl))
@@ -38,6 +45,9 @@ private theorem isIso_of_sameStep {B Y : Scheme.{0}} (π : Y ⟶ B) (E : B.Modul
   have : IsSplitEpi π := ⟨⟨⟨s, hs⟩⟩⟩
   exact isIso_of_mono_of_isSplitEpi π
 
+/- English proof (translation)
+Establish `H₀ : (h.stepMet fl 0).IsCInf` using `H.restrict _ _`. Establish `hS₀` using `VMetric.stepSeq_shortExact fl 0`. Establish `i₂ : IsIso (VMetric.stepSeq fl 0).g` using `hS₀.isIso_g_iff.2 (VB.isVB_zero_iff.1 (fl.isVB (Fin.castSucc 0)))`. Apply the tactic sequence `exact T.det_metric_isometric_of_isometry k X p _ _ 1 (h.stepMet fl 0) (h.grMet fl 0) H₀ (H.grMet fl 0) (asIso (VMetric.stepSeq fl 0).g) ((VMetric.isIsometry_iff _).2 (VMetric.ext (funext fun σ => ChTwoModel.quot_eq_map ((h.stepMet fl 0).met σ) hS₀ (fl.isVB (Fin.castSucc 0)) _)))`.
+-/
 private theorem isometric_first {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {E : X.Modules}
     {h : VMetric p E 2} (H : h.IsCInf) (fl : Vert.Flag E 2) :
     (VMetric.det (H.restrict (fl.isSubbundle 1) (fl.isVB 1))).Isometric (VMetric.grLB fl 0 H) := by
@@ -50,6 +60,15 @@ private theorem isometric_first {k : Type} [CommRing k] {X : Scheme.{0}} {p : X 
         (funext fun σ => ChTwoModel.quot_eq_map ((h.stepMet fl 0).met σ) hS₀
           (fl.isVB (Fin.castSucc 0)) _)))
 
+/- English proof (translation)
+Establish `HQ` using `VMetric.IsCInf.quot (S := .mk l m w) hS hL hQ H`. Take `⟨r, hr, hv, hn⟩` from `T.exists_ratSec_det_dual_tensor_support k X p L' Q (h.restrict hl' hL') (VMetric.quot (S := .mk l m w) h hS hL hQ) (H.restrict hl' hL') HQ (l' ≫ m) hs`. Take `⟨r', hr', hd, hN⟩` from `(e₂.dual.tens e₁).exists_isRatSec hr`. Use `⟨r', hr', ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`.
+
+Introduce and unpack `z hz Z i _ rfl`. Conclude with `((e₂.pull i rfl).symm.trans (T.det_metric_restriction_vanishing_locus k X p V L Q L' l m w l' hS hQ hL hL' hl hl' h H Z i (hv _ hz)).symm).trans (e₃.pull i rfl)`. Take `⟨v, hc, -, -⟩` from `T.exists_continuous_cosSq_angle_function k X p σ V L L' _ (h.met σ) l l' (H σ) hl hl' hL hL'`. Use `⟨v, hc.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`.
+
+Introduce `y hy`. Take `⟨U, t, t', ht, ht', hU⟩` from `AdjFlag.exists_frames hL hL' y`. Take `⟨n₁, n₂⟩` from `hn σ y hy U t' ht' hU`. Establish `e` using `AdjFlag.div_eq_one_sub hS hL hQ hL' hl hl' (h.met σ) hc ht ht' hU`. Use `div_pos n₁ (AdjFlag.form_frame_pos ((h.met σ).restrict hl' hL') ht' hU)` as an intermediate fact.
+
+Establish `h₁ : 0 < 1 - v y` using `this.trans_eq e`. Conclude with `⟨by linarith, (hN σ hy).trans (n₂.trans (congrArg (Real.log · / 2) e))⟩`.
+-/
 private theorem exists_ratSec_lines {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     {V L Q L' : X.Modules} {l : L ⟶ V} {m : V ⟶ Q} {w : l ≫ m = 0} {l' : L' ⟶ V}
     (hS : (ShortComplex.mk l m w).ShortExact) (hL : VB.IsVB L 1) (hQ : VB.IsVB Q 1) (hL' : VB.IsVB L' 1)
@@ -85,6 +104,11 @@ private theorem exists_ratSec_lines {k : Type} [CommRing k] {X : Scheme.{0}} [Is
     have h₁ : 0 < 1 - v y := this.trans_eq e
     exact ⟨by linarith, (hN σ hy).trans (n₂.trans (congrArg (Real.log · / 2) e))⟩
 
+/- English proof (translation)
+Establish `i₁ : IsIso (fl.ι (Fin.succ 1))` using `fl.isIso_last`. Establish `H₁ : (h.stepMet fl 1).IsCInf` using `H.restrict _ _`. Apply the tactic sequence `have hI : (h.stepMet fl 1).IsIsometry h (asIso (fl.ι (Fin.succ 1))) := fun σ V s t y hy => ((h.met σ).form_restrict (fl.isSubbundle _) _ s t hy).symm`. Establish `he : (Iso.refl (fl.F 1)).hom ≫ fl.ι 1 = (VMetric.stepSeq fl 1).f ≫ (asIso (fl.ι (Fin.succ 1))).hom` using `(Category.id_comp _).trans (fl.step_ι 1).symm`. Establish `e` using `T.det_metric_shortExact_iso_isometric k X p (VMetric.stepSeq fl 1) (.mk (fl.ι 1) m w) 1 1 (h.stepMet fl 1) h H₁ H (VMetric.stepSeq_shortExact fl 1) hS (fl.isVB (Fin.castSucc 1)) (fl.isVB_gr 1) hL hQ (Iso.refl (fl.F 1)) (asIso (fl.ι (Fin.succ 1))) he hI`.
+
+Conclude with `e.1.symm`.
+-/
 private theorem isometric_second {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {E : X.Modules}
     {h : VMetric p E (1 + 1)} (H : h.IsCInf) (fl : Vert.Flag E 2) {Q : X.Modules} {m : E ⟶ Q} {w : fl.ι 1 ≫ m = 0}
     (hS : (ShortComplex.mk (fl.ι 1) m w).ShortExact) (hL : VB.IsVB (fl.F 1) 1) (hQ : VB.IsVB Q 1) :
@@ -100,6 +124,11 @@ private theorem isometric_second {k : Type} [CommRing k] {X : Scheme.{0}} {p : X
       (Iso.refl (fl.F 1)) (asIso (fl.ι (Fin.succ 1))) he hI
   exact e.1.symm
 
+/- English proof (translation)
+Establish `hL : VB.IsVB (fl'.F 1) 1` using `fl'.isVB 1`. Establish `hL' : VB.IsVB (fl.F 1) 1` using `fl.isVB 1`. Establish `hl` using `fl'.isSubbundle 1`. Establish `hl'` using `fl.isSubbundle 1`. Establish `hC : VB.IsVB (Limits.cokernel (fl'.ι 1)) 1` using `fl'.isVB_cokernel 1`.
+
+Establish `hC' : VB.IsVB (Limits.cokernel (fl.ι 1)) 1` using `fl.isVB_cokernel 1`. Establish `hS : (ShortComplex.mk (fl'.ι 1) _ (Limits.cokernel.condition (fl'.ι 1))).ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`. Establish `hS' : (ShortComplex.mk (fl.ι 1) _ (Limits.cokernel.condition (fl.ι 1))).ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`. Establish `hs : fl.ι 1 ≫ Limits.cokernel.π (fl'.ι 1) ≠ 0` using `fun hs => hne (T.iso_of_equal_sublines_shortExact X V _ _ _ _ _ _ _ _ _ _ hS hS' hC hC' hs)`. Conclude with `exists_ratSec_lines hS hL hC hL' hl hl' (h := h) H hs (isometric_first H fl) ((isometric_first H fl').trans hM) ((isometric_second H fl' hS hL hC).trans hQ)`.
+-/
 private theorem exists_ratSec_flags {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     {V : X.Modules} {h : VMetric p V 2} (H : h.IsCInf) (fl fl' : Vert.Flag V 2) (hne : ¬ fl.SameStep fl' 1)
     {M Q : HermLB p} (hM : (VMetric.grLB fl' 0 H).Isometric M) (hQ : (VMetric.grLB fl' 1 H).Isometric Q) :
@@ -127,6 +156,11 @@ private theorem exists_ratSec_flags {k : Type} [CommRing k] {X : Scheme.{0}} [Is
   exact exists_ratSec_lines hS hL hC hL' hl hl' (h := h) H hs (isometric_first H fl)
     ((isometric_first H fl').trans hM) ((isometric_second H fl' hS hL hC).trans hQ)
 
+/- English proof (translation)
+Introduce `k _ B Y _ _ q p d hB hY _ π w E h H flB fl hF A`. Establish `hne : ¬ fl.SameStep (flB.pull π) 1` using `fun h₁ => by`. Establish `: IsIso π` using `isIso_of_sameStep π E 2 flB fl hF fun i => by fin_cases i exacts [AdjFlag.sameStep_of_end (Or.inl rfl), h₁, AdjFlag.sameStep_of_end (Or.inr rfl)]`. Establish `e` using `IsHomeomorph.topologicalKrullDim_eq _ π.homeomorph.isHomeomorph`. Rewrite `e` using `[hB.dim_eq, hY.dim_eq]`.
+
+Establish `e' : d + 1 + 1 = d + 1` using `by exact_mod_cast e`. Use linear arithmetic over natural numbers and integers. Take `⟨r, hr, h₁, h₂⟩` from `exists_ratSec_flags (H.pull π w) fl (flB.pull π) hne (VMetric.isometric_grLB_pull k B Y q p E 2 h H flB π w 0) (VMetric.isometric_grLB_pull k B Y q p E 2 h H flB π w 1)`. Conclude with `⟨r, hr, fun z hz Z i _ _ hi => h₁ z hz Z i hi, h₂⟩`.
+-/
 theorem _root_.GlobalTheory.T.rank_two_flag_rational_sections : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ),
     IsArithVar q d → IsArithVar p (d + 1) → (∀ b : B, IsRegularLocalRing (B.presheaf.stalk b)) →
     ∀ (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf) (flB : Vert.Flag E 2)

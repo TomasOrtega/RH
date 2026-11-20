@@ -79,10 +79,16 @@ def hSh (F₁ F₂ : ct.Sh Z) : ct.Sh Z := Z.ofMod (homMod F₁.toMod F₂.toMod
 def hSec (φ : ct.GIso F₁ F₂) : ct.Sec (hSh ct F₁ F₂) :=
   (ct.ofModIso (isVB_homMod φ.isInv_left φ.isInv_right)).inv.app _ (compSec (𝟙 _) φ.iso.hom)
 
+/- English proof (translation)
+The claim follows from `congrArg sSup (nrmSet_iso y.z (ct.ofModIso (isVB_homMod φ.isInv_left φ.isInv_right)).symm _)`.
+-/
 theorem nrm_hSec (φ : ct.GIso F₁ F₂) (y : ct.Pt Z) :
     ct.nrm (hSh ct F₁ F₂) (hSec ct φ) y = sSup (nrmSet y.z (homMod F₁.toMod F₂.toMod) (compSec (𝟙 _) φ.iso.hom)) :=
   congrArg sSup (nrmSet_iso y.z (ct.ofModIso (isVB_homMod φ.isInv_left φ.isInv_right)).symm _)
 
+/- English proof (translation)
+Use `IsVB.isFiniteQC φ.isInv_left` as an intermediate fact. Use `IsVB.isFiniteQC φ.isInv_right` as an intermediate fact. Rewrite using `[nrm_hSec, nrm_hSec]`. Conclude with `sSup_compSec_mul y.z ct.hp.ne_zero φ.isInv_left φ.isInv_right _ _ (IsVB.restrict φ.isInv_right _) φ.iso`.
+-/
 theorem nrm_hSec_pos (φ : ct.GIso F₁ F₂) (y : ct.Pt Z) : 0 < ct.nrm (hSh ct F₁ F₂) (hSec ct φ) y ∧
     ct.nrm (hSh ct F₂ F₁) (hSec ct φ.symm) y = (ct.nrm (hSh ct F₁ F₂) (hSec ct φ) y)⁻¹ := by
   have := IsVB.isFiniteQC φ.isInv_left
@@ -92,11 +98,17 @@ theorem nrm_hSec_pos (φ : ct.GIso F₁ F₂) (y : ct.Pt Z) : 0 < ct.nrm (hSh ct
 
 def vr (φ : ct.GIso F₁ F₂) (y : ct.Pt Z) : ℝ := -Real.logb p (ct.nrm (hSh ct F₁ F₂) (hSec ct φ) y)
 
+/- English proof (translation)
+Rewrite using `[vr, neg_neg, Real.rpow_logb (Nat.cast_pos.2 ct.hp.pos) (by exact_mod_cast ct.hp.one_lt.ne') (nrm_hSec_pos ct φ y).1]`.
+-/
 theorem nrm_eq_vr (φ : ct.GIso F₁ F₂) (y : ct.Pt Z) :
     ct.nrm (hSh ct F₁ F₂) (hSec ct φ) y = (p : ℝ) ^ (-(vr ct φ y)) := by
   rw [vr, neg_neg, Real.rpow_logb (Nat.cast_pos.2 ct.hp.pos) (by exact_mod_cast ct.hp.one_lt.ne')
     (nrm_hSec_pos ct φ y).1]
 
+/- English proof (translation)
+The claim follows from `sSup_compSec_eq z hp hF _ hu φ`.
+-/
 theorem sSup_compSec_id {X : Scheme.{0}} {F G : X.Modules} {C : Formalism.MainNotions.DIV.Cons.SCF p}
     (z : Sp (Formalism.MainNotions.DIV.Cons.intO C.S) ⟶ X) (hp : p ≠ 0) (hF : IsVB F 1) [IsFiniteQC G] {u : Γ(F, ⊤)}
     (hu : GlobalTheory.VB.IsFrame fun _ : Fin 1 => u)
@@ -215,6 +227,9 @@ def stages0 (ct : At S κ p) : Stages ct where
 
 def stFam0 (S : Sig A N j) (κ : Lv A) : StFam S κ := ⟨stages0, alpOf D, fun _ => rfl⟩
 
+/- English proof (translation)
+Establish `k : ∀ (p : ℕ) [Fact p.Prime] (v : PlL D p), ∃ ct : At S κ p, ct.W = placeW D p v (jC p v)` using `fun p hp v => h p hp.out _ (GlobalTheory.ShFam.Pad.placeW_over D p v _ (hj p v)).1`. Conclude with `⟨fun p _ v => (k p v).choose, fun p _ v => (k p v).choose_spec⟩`.
+-/
 theorem exists_ats (h : ∀ (p : ℕ), p.Prime → ∀ W : ValuationSubring ℂ, (p : ℂ) ∈ W.nonunits → ∃ ct : At S κ p, ct.W = W)
     (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)) (hj : ∀ (p : ℕ) [Fact p.Prime] v, JcPin D p v (jC p v)) :
     ∃ cts : Ats S κ, cts.Over jC := by
@@ -222,17 +237,26 @@ theorem exists_ats (h : ∀ (p : ℕ), p.Prime → ∀ W : ValuationSubring ℂ,
     h p hp.out _ (GlobalTheory.ShFam.Pad.placeW_over D p v _ (hj p v)).1
   exact ⟨fun p _ v => (k p v).choose, fun p _ v => (k p v).choose_spec⟩
 
+/- English proof (translation)
+Rewrite using `[h p v, κ.e_emb]`. Conclude with `(GlobalTheory.ShFam.Pad.placeW_over D p v _ hj).2 x`.
+-/
 theorem over_induces {cts : Ats S κ} {jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)} (h : cts.Over jC)
     (p : ℕ) [Fact p.Prime] (v : PlL D p) (hj : JcPin D p v (jC p v)) (x : D.what₂.LL) :
     ((κ.e x : κ.c.F) : ℂ) ∈ (cts p v).W ↔ v.1.valuation D.what₂.LL x ≤ 1 := by
   rw [h p v, κ.e_emb]
   exact (GlobalTheory.ShFam.Pad.placeW_over D p v _ hj).2 x
 
+/- English proof (translation)
+Establish `h` using `BCEx.exists_isBCAt D A N j S κ p ct Z`. Rewrite using `[bcAt, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem isBCAt_bcAt (ct : At S κ p) (Z : CodeAt S κ) : IsBCAt ct Z (bcAt ct Z) := by
   have h := BCEx.exists_isBCAt D A N j S κ p ct Z
   rw [bcAt, dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Establish `h` using `BCEx.exists_isBCAt D A N j S κ p ct Z`. Rewrite using `[bcAt, dif_pos h]`. Conclude with `choose_eq_blowUp ct Z _ J h hJ`.
+-/
 theorem bcAt_eq_blowUp (ct : At S κ p) (Z : CodeAt S κ) (J : ct.Idl ct.Xm)
     (hJ : ∀ Z', IsBCAt ct Z Z' ↔ IsNBlow ct.Xm J Z') : bcAt ct Z = ct.blowUp ct.Xm J := by
   have h := BCEx.exists_isBCAt D A N j S κ p ct Z
@@ -241,6 +265,9 @@ theorem bcAt_eq_blowUp (ct : At S κ p) (Z : CodeAt S κ) (J : ct.Idl ct.Xm)
 
 variable (F : StFam S κ) (cts : Ats S κ)
 
+/- English proof (translation)
+Use `haveI := Fact.mk hp`. Express the relevant statement in the definitionally equal form `∃ d : (locAt F cts p).ex.IvD none, (locAt F cts p).bc Z = (locAt F cts p).ex.blowUp (locAt F cts p).loc.Xm ((locAt F cts p).ex.jIdl none d)`. Rewrite using `[locAt_prime]`. Use `choose d hd using h`. Conclude with `⟨d, funext fun v => bcAt_eq_blowUp _ Z _ (hd v)⟩`.
+-/
 theorem bc_eq_blowUp (hp : p.Prime) (Z : CodeAt S κ)
     (h : ∀ v, ∃ d, ∀ Z', IsBCAt (@cts p ⟨hp⟩ v) Z Z' ↔ IsNBlow _ ((F.st (@cts p ⟨hp⟩ v)).tr.jIdl none d) Z') :
     ∃ d : ((locStOf F cts).ex p).IvD none, (globStOf F cts).bc p Z =
@@ -252,6 +279,9 @@ theorem bc_eq_blowUp (hp : p.Prime) (Z : CodeAt S κ)
   choose d hd using h
   exact ⟨d, funext fun v => bcAt_eq_blowUp _ Z _ (hd v)⟩
 
+/- English proof (translation)
+Use `haveI := Fact.mk hp`. Rewrite using `[locStOf_loc]`. Conclude with `⟨fun Z y a => motTrue_psiV_half (cts p y.1) y.2 a, fun v => (cts p v).isInv_piPP, fun c v => (cts p v).isInv_keySh c⟩`.
+-/
 theorem theta_clauses (hp : p.Prime) :
     (∀ Z (y : ((locStOf F cts).loc p).Pt Z) (a : ((locStOf F cts).loc p).Ylat y),
       ((locStOf F cts).loc p).psiV y a = ((locStOf F cts).loc p).be y a a / 2) ∧
@@ -262,6 +292,9 @@ theorem theta_clauses (hp : p.Prime) :
   exact ⟨fun Z y a => motTrue_psiV_half (cts p y.1) y.2 a, fun v => (cts p v).isInv_piPP,
     fun c v => (cts p v).isInv_keySh c⟩
 
+/- English proof (translation)
+Use `haveI := Fact.mk hp`. Express the relevant statement in the definitionally equal form `(∀ y, (locAt F cts p).loc.nrm ((locAt F cts p).loc.keySh c) ((locAt F cts p).pbKF kf) y = 1) ↔ _`. Rewrite using `[locAt_prime]`. Conclude with `Sigma.forall`.
+-/
 theorem nrm_pbKF_iff (hp : p.Prime) {c : ℕ} (kf : ngTrue.KF (D.R.f * N) c) :
     (∀ y, ((locStOf F cts).loc p).nrm (((locStOf F cts).loc p).keySh c) ((locStOf F cts).pbKF p kf) y = 1) ↔
       ∀ v y, (@cts p ⟨hp⟩ v).nrm ((@cts p ⟨hp⟩ v).keySh c) ((@cts p ⟨hp⟩ v).pbKF kf) y = 1 := by
@@ -270,12 +303,20 @@ theorem nrm_pbKF_iff (hp : p.Prime) {c : ℕ} (kf : ngTrue.KF (D.R.f * N) c) :
   rw [locAt_prime]
   exact Sigma.forall
 
+/- English proof (translation)
+Use `haveI := Fact.mk hp`. Express the relevant statement in the definitionally equal form `((locAt F cts p).locB hp).alp = _`. Rewrite using `[locAt_prime]`. Both sides reduce to the same expression.
+-/
 theorem alp_eq (hp : p.Prime) : ((locStOf F cts).locB p hp).alp = F.α p := by
   haveI := Fact.mk hp
   change ((locAt F cts p).locB hp).alp = _
   rw [locAt_prime]
   rfl
 
+/- English proof (translation)
+Use `haveI := Fact.mk hp`. Rewrite using `[locStOf_loc]`. Introduce `n m h`. Take `⟨v⟩` from `plL_ne D p`. Establish `h1` using `((cts p v).B.lvl (some n)).2.2.1`.
+
+Establish `h2` using `((cts p v).B.lvl (some m)).2.2.1`. Establish `h3 : ((cts p v).B.X (some n)).i.l.A = ((cts p v).B.X (some m)).i.l.A` using `congrArg (fun Z : (cts p v).Mdl => Z.i.l.A) (congrFun h v)`. Rewrite `h3` using `[h1, h2]`. Conclude with `Nat.pow_right_injective hp.two_le (Nat.eq_of_mul_eq_mul_left κ.l.A_pos h3)`.
+-/
 theorem xn_injective (hp : p.Prime) : Function.Injective ((locStOf F cts).loc p).Xn := by
   haveI := Fact.mk hp
   rw [locStOf_loc]

@@ -6,5 +6,8 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.AmpleRigid
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AmpleRigid.serreAmple_of_finiteOrder_of_separated | exact GlobalTheory.AmpleRigid.serreAmple_of_finiteOrder_of_separated | (intros; apply GlobalTheory.AmpleRigid.serreAmple_of_finiteOrder_of_separated <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.ample_rigid_serre_ample : GlobalTheory.AmpleRigid.FiniteOrderSt → GlobalTheory.AmpleRigid.SeparatedSt → GlobalTheory.AmpleRigid.SerreAmpleSt := by
   first | exact @GlobalTheory.AmpleRigid.serreAmple_of_finiteOrder_of_separated | exact GlobalTheory.AmpleRigid.serreAmple_of_finiteOrder_of_separated | (intros; apply GlobalTheory.AmpleRigid.serreAmple_of_finiteOrder_of_separated <;> assumption)

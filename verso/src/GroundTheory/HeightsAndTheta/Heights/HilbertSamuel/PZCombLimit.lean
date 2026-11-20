@@ -21,16 +21,25 @@ namespace ZCombLimit
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+The claim follows from `hermLine_eq_of (by funext k; simp [HermLine.zcomb, HermLine.tensor, hermZpow]) (by funext z; simp [HermLine.zcomb, HermLine.tensor, hermZpow])`.
+-/
 theorem zcomb_eq_tensor_zpow (A B : HermLine ι) (m p : ℤ) :
     HermLine.zcomb A B m p = (hermZpow A m).tensor (hermZpow B p) :=
   hermLine_eq_of (by funext k; simp [HermLine.zcomb, HermLine.tensor, hermZpow])
     (by funext z; simp [HermLine.zcomb, HermLine.tensor, hermZpow])
 
+/- English proof (translation)
+Rewrite using `[zcomb_eq_tensor_zpow]`. Conclude with `isSmoothHerm_tensor (isSmoothHerm_hermZpow hA m) (isSmoothHerm_hermZpow hB p)`.
+-/
 theorem isSmoothHerm_zcomb_int {A B : HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) (m p : ℤ) :
     IsSmoothHerm (HermLine.zcomb A B m p) := by
   rw [zcomb_eq_tensor_zpow]
   exact isSmoothHerm_tensor (isSmoothHerm_hermZpow hA m) (isSmoothHerm_hermZpow hB p)
 
+/- English proof (translation)
+Rewrite using `[zcomb_eq_tensor_zpow]`. Establish `hAm` using `isSmoothHerm_hermZpow hA m`. Establish `hBp` using `isSmoothHerm_hermZpow hB p`. Establish `hR : ∀ i : Fin n, IsSmoothHerm ((fun i : Fin n => L (Equiv.swap a (Fin.last n) i.castSucc)) i)` using `fun i => hL _`. Rewrite using `[fam_update_eq_snoc hI hP L hL a (isSmoothHerm_tensor hAm hBp), fam_update_eq_snoc hI hP L hL a hA, fam_update_eq_snoc hI hP L hL a hB, hI.2.1 P n _ _ _ hP hR hAm hBp, fam_snoc_zpow hI hP _ hR hA m, fam_snoc_zpow hI hP _ hR hB p]`.
+-/
 theorem fam_update_zcomb_int {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} {P : Ideal (MRing ι)}
     {n : ℕ} (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1))
     (L : Fin (n + 1) → HermLine ι) (hL : ∀ j, IsSmoothHerm (L j)) (a : Fin (n + 1)) {A B : HermLine ι}
@@ -48,6 +57,21 @@ theorem fam_update_zcomb_int {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → 
 
 variable {J : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} {P : Ideal (MRing ι)} {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on generalizing t with`. Consider the case `empty`. Simplify using `only [Finset.notMem_empty, if_false]`. Conclude with `(famExt_basis e t).symm`. Consider the case `insert a T ha ih`.
+
+Establish `hins : ∀ {β : Type} (v : β) (F : Fin 2 → β), (fun j => if j ∈ insert a T then v else F (t j)) = Function.update (fun j => if j ∈ T then v else F (t j)) a v`. Introduce `β v F`. Use function extensionality and compare the values at `j`. Break down `eq_or_ne j a with rfl | h` into its components or cases. Simplify using the standard rewrite rules.
+
+Simplify using `[h]`. Establish `hupd : ∀ {β : Type} (v : β) (F : Fin 2 → β) (i : Fin 2), Function.update (fun j => if j ∈ T then v else F (t j)) a (F i) = fun j => if j ∈ T then v else F (Function.update t a i j)`. Introduce `β v F i`. Use function extensionality and compare the values at `j`. Break down `eq_or_ne j a with rfl | h` into its components or cases.
+
+Simplify using `[ha]`. Simplify using `[Function.update_of_ne h]`. Establish `hQ : ∀ j, Q ((fun j => if j ∈ T then Z else e (t j)) j)`. Introduce `j`. Simplify using `only`.
+
+Use `split_ifs`. Conclude with `hZ`. Conclude with `he (t j)`. Establish `eL : (fun j => if j ∈ insert a T then Z else e (t j)) = Function.update (fun j => if j ∈ T then Z else e (t j)) a Z` using `hins Z e`. Establish `eV : (fun j => if j ∈ insert a T then w else (Pi.single (t j) 1 : Fin 2 → ℝ)) = Function.update (fun j => if j ∈ T then w else (Pi.single (t j) 1 : Fin 2 → ℝ)) a w` using `hins w fun i => Pi.single i 1`.
+
+Establish `hL0 : Function.update (fun j => if j ∈ T then Z else e (t j)) a (e 0) = fun j => if j ∈ T then Z else e (Function.update t a 0 j)` using `hupd Z e 0`. Establish `hL1 : Function.update (fun j => if j ∈ T then Z else e (t j)) a (e 1) = fun j => if j ∈ T then Z else e (Function.update t a 1 j)` using `hupd Z e 1`. Establish `hV0 : Function.update (fun j => if j ∈ T then w else (Pi.single (t j) 1 : Fin 2 → ℝ)) a (Pi.single 0 1) = fun j => if j ∈ T then w else Pi.single (Function.update t a 0 j) 1` using `hupd w (fun i => Pi.single i 1) 0`. Establish `hV1 : Function.update (fun j => if j ∈ T then w else (Pi.single (t j) 1 : Fin 2 → ℝ)) a (Pi.single 1 1) = fun j => if j ∈ T then w else Pi.single (Function.update t a 1 j) 1` using `hupd w (fun i => Pi.single i 1) 1`. Establish `hw : w = w 0 • (Pi.single 0 1 : Fin 2 → ℝ) + w 1 • (Pi.single 1 1 : Fin 2 → ℝ)`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`. Rewrite using `[eL, eV, hposition _ a hQ, hL0, hL1, ih, ih, congrArg (Function.update (fun j => if j ∈ T then w else (Pi.single (t j) 1 : Fin 2 → ℝ)) a) hw, MultilinearMap.map_update_add, MultilinearMap.map_update_smul, MultilinearMap.map_update_smul, hV0, hV1, smul_eq_mul, smul_eq_mul]`.
+-/
 theorem eq_famExt_of_position (Q : HermLine ι → Prop) (e : Fin 2 → HermLine ι) (Z : HermLine ι) (w : Fin 2 → ℝ)
     (he : ∀ i, Q (e i)) (hZ : Q Z)
     (hposition : ∀ (L : Fin n → HermLine ι) (a : Fin n), (∀ j, Q (L j)) →
@@ -109,11 +133,17 @@ theorem eq_famExt_of_position (Q : HermLine ι → Prop) (e : Fin 2 → HermLine
       MultilinearMap.map_update_add, MultilinearMap.map_update_smul, MultilinearMap.map_update_smul, hV0, hV1,
       smul_eq_mul, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[show (fun _ : Fin n => c • w) = fun i => (fun _ : Fin n => c) i • (fun _ : Fin n => w) i from rfl, MultilinearMap.map_smul_univ, smul_eq_mul, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem famExt_const_smul (e : Fin 2 → HermLine ι) (c : ℝ) (w : Fin 2 → ℝ) :
     famExt J P n e (fun _ => c • w) = c ^ n * famExt J P n e (fun _ => w) := by
   rw [show (fun _ : Fin n => c • w) = fun i => (fun _ : Fin n => c) i • (fun _ : Fin n => w) i from rfl,
     MultilinearMap.map_smul_univ, smul_eq_mul, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
+/- English proof (translation)
+The claim follows from `|famExt J P n e (fun _ => ![1 - k * t, t]) - J P n (fun _ => e 0)| < ε := by have hv : ∀ i : Fin 2, Continuous fun t : ℝ => (![1 - k * t, t] : Fin 2 → ℝ) i := by intro i fin_cases i · simp only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero] fun_prop · simp only [Fin.mk_one, Fi …`.
+-/
 theorem exists_delta (e : Fin 2 → HermLine ι) (k : ℕ) (ε : ℝ) (hε : 0 < ε) :
     ∃ δ : ℝ, 0 < δ ∧ ∀ t : ℝ, |t| < δ →
       |famExt J P n e (fun _ => ![1 - k * t, t]) - J P n (fun _ => e 0)| < ε := by
@@ -140,6 +170,13 @@ theorem exists_delta (e : Fin 2 → HermLine ι) (k : ℕ) (ε : ℝ) (hε : 0 <
   have := hδ' t (by simpa [Real.dist_eq] using ht)
   rwa [Real.dist_eq, h0] at this
 
+/- English proof (translation)
+Establish `hq' : (q : ℝ) ≠ 0` using `by positivity`. Establish `hw : (![(((q : ℤ) - k * p : ℤ) : ℝ), ((p : ℤ) : ℝ)] : Fin 2 → ℝ) = (q : ℝ) • ![1 - k * ((p : ℝ) / q), (p : ℝ) / q]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero, Pi.smul_apply, smul_eq_mul]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using `only [Fin.mk_one, Fin.isValue, Matrix.cons_val_one, Matrix.cons_val_fin_one, Pi.smul_apply, smul_eq_mul, Int.cast_natCast]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hw, famExt_const_smul]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem famExt_div (e : Fin 2 → HermLine ι) (k p q : ℕ) (hq : 0 < q) :
     famExt J P n e (fun _ => ![(((q : ℤ) - k * p : ℤ) : ℝ), ((p : ℤ) : ℝ)]) / (q : ℝ) ^ n =
       famExt J P n e (fun _ => ![1 - k * ((p : ℝ) / q), (p : ℝ) / q]) := by
@@ -161,6 +198,17 @@ end ZCombLimit
 
 open GroundTheory.Heights₂.Heights.NumbersDVR in
 
+/- English proof (translation)
+Take `⟨-, ⟨hPp, ⟨S, hS, hPS⟩, hrel⟩, hhor, hdim⟩` from `hP`. Establish `: P.IsPrime` using `hPp`. Establish `hchar : ∀ m : ℤ, (C m : MvPolynomial (Σ k, ι k) ℤ) ∈ P → m = 0`. Introduce `m hm`. Establish `h1 : m ∈ P.comap (C : ℤ →+* ReciprocityTheory.ChartRestriction.G.Geo.MRing ι)` using `hm`.
+
+Rewrite `h1` using `[show P.comap (C : ℤ →+* ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) = ⊥ from hhor, Ideal.mem_bot]`. Conclude with `h1`. Take `⟨hqp, hcomap, hform⟩` from `ReciprocityTheory.AnForm.R.extQ_spec P hchar`. Establish `hq : ReciprocityTheory.AnForm.R.extQ P = P.map (MvPolynomial.map (Int.castRingHom ℚ))` using `rfl`. Rewrite using `[← hq]`.
+
+Use `⟨⟨hqp, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GroundTheory.Heights₂.Heights.Bridge.isMultiHomogIdeal_iff]`. Use `⟨MvPolynomial.map (Int.castRingHom ℚ) '' S, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨b, hb⟩` from `hS f hf`.
+
+Conclude with `⟨b, fun m hm k => hb m (MvPolynomial.support_map_subset _ _ hm) k⟩`. Rewrite using `[hq, hPS, Ideal.map_span]`. Introduce `k`. Take `⟨i, hi⟩` from `hrel k`. Use `⟨i, fun hX => hi ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hcomap, Ideal.mem_comap, map_X]`. Conclude with `hX`. Rewrite `hform` using `[hdim]`. Use `GroundTheory.Heights₂.Heights.ObjectsChow.GenericFibreDim.eq_natCast_of_add_one_eq (d + Fintype.card K) _ ?_` and prove the remaining obligations. Rewrite using `[hform, show d + 1 + Fintype.card K = (d + Fintype.card K) + 1 by omega, Nat.cast_succ]`.
+-/
 theorem ZCombLimit.genericFibre {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing ι)} {d : ℕ} (hP : IsArithVar P (d + 1)) :
     GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiProjPrime (P.map (MvPolynomial.map (Int.castRingHom ℚ))) ∧
@@ -192,6 +240,25 @@ theorem ZCombLimit.genericFibre {K : Type} [Fintype K] [DecidableEq K] {ι : K �
     refine GroundTheory.Heights₂.Heights.ObjectsChow.GenericFibreDim.eq_natCast_of_add_one_eq (d + Fintype.card K) _ ?_
     rw [hform, show d + 1 + Fintype.card K = (d + Fintype.card K) + 1 by omega, Nat.cast_succ]
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ _ y D A B II k hII hY hA hB ε hε`. Use `set P := mCoordIdeal y with hPdef`. Establish `hI` using `hII K ι`. Establish `hfullA : ∀ m p : ℤ, II K ι P (D + 1) (fun _ => HermLine.zcomb A B m p) = famExt (II K ι) P (D + 1) ![A, B] (fun _ => ![(m : ℝ), (p : ℝ)])`. Introduce `m p`.
+
+Establish `h` using `ZCombLimit.eq_famExt_of_position (J := II K ι) (P := P) IsSmoothHerm ![A, B] (HermLine.zcomb A B m p) ![(m : ℝ), (p : ℝ)] (Fin.forall_fin_two.mpr ⟨hA, hB⟩) (ZCombLimit.isSmoothHerm_zcomb_int hA hB m p) (fun L a hL => by simpa using ZCombLimit.fam_update_zcomb_int hI hY L hL a hA …`. Simplify using `using h`. Take `⟨-, hadd⟩` from `hM ℚ K ι (P.map (MvPolynomial.map (Int.castRingHom ℚ))) D (ZCombLimit.genericFibre hY).1 (ZCombLimit.genericFibre hY).2`. Set `Jg : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ` to `fun P' n L => (GroundTheory.Heights₂.Heights.NumbersDVR.intNum ℚ (P'.map (MvPolynomial.map (Int.castRingHom ℚ))) (fun j => (L j).a) : ℝ)`. Establish `hzs : ∀ (bs : Fin D → K → ℤ) (j : Fin D) (c : ℤ) (x : K → ℤ), GroundTheory.Heights₂.Heights.NumbersDVR.intNum ℚ (P.map (MvPolynomial.map (Int.castRingHom ℚ))) (Function.update bs j (c • x)) = c * GroundTheory.Heights₂.Heights.NumbersDVR.intNum ℚ (P.map (MvPolynomial.map (Int.cast …`.
+
+Introduce `bs j c x`. Set `φ : (K → ℤ) →+ ℤ` to `AddMonoidHom.mk' (fun x => GroundTheory.Heights₂.Heights.NumbersDVR.intNum ℚ (P.map (MvPolynomial.map (Int.castRingHom ℚ))) (Function.update bs j x)) (fun x y => hadd bs j x y)`. Conclude with `(map_zsmul φ c x).trans (smul_eq_mul _ _)`. Establish `hfullG : ∀ m p : ℤ, (genDeg P D (HermLine.zcomb A B m p).a : ℝ) = famExt Jg P D ![A, B] (fun _ => ![(m : ℝ), (p : ℝ)])`. Introduce `m p`.
+
+Establish `hposition : ∀ (L : Fin D → HermLine ι) (a : Fin D), (∀ _ : Fin D, True) → Jg P D (Function.update L a (HermLine.zcomb A B m p)) = (![(m : ℝ), (p : ℝ)] : Fin 2 → ℝ) 0 * Jg P D (Function.update L a (![A, B] 0)) + (![(m : ℝ), (p : ℝ)] : Fin 2 → ℝ) 1 * Jg P D (Function.update L a (![ …`. Introduce `L a _`. Establish `hcomp : ∀ Z : HermLine ι, (fun j => (Function.update L a Z j).a) = Function.update (fun j => (L j).a) a Z.a`. Introduce `Z`. Use function extensionality and compare the values at `j`.
+
+Break down `eq_or_ne j a with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`. Simplify using `only [Jg, hcomp, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one]`. Establish `ha : (HermLine.zcomb A B m p).a = m • A.a + p • B.a` using `rfl`.
+
+Rewrite using `[ha, hadd, hzs, hzs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `ZCombLimit.eq_famExt_of_position (J := Jg) (P := P) (fun _ => True) ![A, B] (HermLine.zcomb A B m p) ![(m : ℝ), (p : ℝ)] (fun _ => trivial) trivial hposition Finset.univ (fun _ => 0)`. Simplify `h` using `[Jg, genDeg]`.
+
+Take `⟨δ₁, hδ₁, h₁⟩` from `ZCombLimit.exists_delta (J := II K ι) (P := P) (n := D + 1) ![A, B] k ε hε`. Take `⟨δ₂, hδ₂, h₂⟩` from `ZCombLimit.exists_delta (J := Jg) (P := P) (n := D) ![A, B] k ε hε`. Use `⟨min δ₁ δ₂, lt_min hδ₁ hδ₂, fun p q hp hq hpq => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `ht : |(p : ℝ) / q| < δ₁`. Rewrite using `[abs_of_nonneg (by positivity)]`.
+
+Conclude with `hpq.trans_le (min_le_left _ _)`. Establish `h` using `h₁ _ ht`. Rewrite `h` using `[← ZCombLimit.famExt_div ![A, B] k p q hq, ← hfullA]`. Simplify using `using h`. Establish `ht : |(p : ℝ) / q| < δ₂`.
+
+Rewrite using `[abs_of_nonneg (by positivity)]`. Conclude with `hpq.trans_le (min_le_right _ _)`. Establish `h` using `h₂ _ ht`. Rewrite `h` using `[← ZCombLimit.famExt_div ![A, B] k p q hq, ← hfullG]`. Simplify `h` using `[Jg, genDeg]`.
+-/
 theorem ZCombLimit.proof (hM : MixedNumberPolynomial.Statement.{0}) : ZCombLimit.Statement := by
   classical
   intro K _ ι _ Ω _ _ y D A B II k hII hY hA hB ε hε

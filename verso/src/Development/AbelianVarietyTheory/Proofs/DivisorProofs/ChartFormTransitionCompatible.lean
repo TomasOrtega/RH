@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.MixDens
 
+/- English proof (translation)
+Establish `h : w = ∑ b, w b • EuclideanSpace.single b (1 : ℂ)`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [h]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.map_smulₛₗ, smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem antilin_apply_eq_sum {D : ℕ} (L : EuclideanSpace ℂ (Fin D) →L⋆[ℂ] ℂ) (w : EuclideanSpace ℂ (Fin D)) :
     L w = ∑ b, star (w b) * L (EuclideanSpace.single b 1) := by
   have h : w = ∑ b, w b • EuclideanSpace.single b (1 : ℂ) := by
@@ -27,6 +32,17 @@ theorem antilin_apply_eq_sum {D : ℕ} (L : EuclideanSpace ℂ (Fin D) →L⋆[�
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
+/- English proof (translation)
+Establish `ho` using `ChartGlue.isOpen_over c.e c'.e.open_source`. Establish `hm` using `ho.mem_nhds (ChartGlue.mem_over c.e hy hy')`. Establish `e₂ : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hy)`. Establish `hτ : DifferentiableAt ℂ (c'.e ∘ c.e.symm) (c.e y)` using `(c.holo_trans c').differentiableAt hm`. Establish `hτC : ContDiffAt ℂ 2 (c'.e ∘ c.e.symm) (c.e y)` using `contDiffAt_euclidean.2 fun i => ((ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn D _ _ ho (differentiableOn_euclidean.1 (c.holo_trans c') i)).contDiffAt hm).of_le (by norm_cast)`.
+
+Establish `hdd (a j : Fin D) : DifferentiableAt ℂ (fun v => fderiv ℂ (c'.e ∘ c.e.symm) v (EuclideanSpace.single j 1) a) (c.e y)`. Establish `h1 : DifferentiableAt ℂ (fderiv ℂ (c'.e ∘ c.e.symm)) (c.e y)` using `(hτC.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Conclude with `(EuclideanSpace.proj a : EuclideanSpace ℂ (Fin D) →L[ℂ] ℂ).differentiableAt.comp _ (h1.clm_apply (differentiableAt_const _))`. Establish `hg (a : Fin D) : DifferentiableAt ℝ (fun v => α c' (c'.e.symm v) a) ((c'.e ∘ c.e.symm) (c.e y))`. Rewrite using `[e₂]`.
+
+Conclude with `(hC c' y hy' a).differentiableAt one_ne_zero`. Establish `hgτ (a : Fin D) : DifferentiableAt ℝ (fun v => α c' (c'.e.symm ((c'.e ∘ c.e.symm) v)) a) (c.e y)` using `(hg a).comp (f := c'.e ∘ c.e.symm) _ (hτ.restrictScalars ℝ)`. Use extensionality with `j l`. Establish `hfe : (fun v => α c (c.e.symm v) j) =ᶠ[𝓝 (c.e y)] fun v => ∑ a, fderiv ℂ (c'.e ∘ c.e.symm) v (EuclideanSpace.single j 1) a * α c' (c'.e.symm ((c'.e ∘ c.e.symm) v)) a` using `by filter_upwards [hm] with v hv`. Rewrite using `[hT c c' _ (c.e.map_target hv.1) hv.2]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[transMat, of_apply, c.e.right_inv hv.1, Function.comp_apply, c'.e.left_inv hv.2]`. Rewrite using `[of_apply, dbar_congr hfe, dbar_sum fun a _ => ((hdd a j).restrictScalars ℝ).fun_mul (hgτ a), ContinuousLinearMap.sum_apply, chg]`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[dbar_mul ((hdd a j).restrictScalars ℝ) (hgτ a), dbar_eq_zero (hdd a j), ContinuousLinearMap.zero_apply, zero_mul, add_zero, dbar_comp_holo (u := fun v => α c' (c'.e.symm v) a) (hg a) hτ, e₂, antilin_apply_eq_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [transpose_apply, conjTranspose_apply, transMat, of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dbar_coeff_chg (α : AlgChart p σ D → CxPts p σ → Fin D → ℂ)
     (hC : ∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, ∀ j, ContDiffAt ℝ 1 (fun v => α c (c.e.symm v) j) (c.e y))
     (hT : ∀ (c c' : AlgChart p σ D) (y : CxPts p σ), y ∈ c.e.source → y ∈ c'.e.source →
@@ -74,6 +90,13 @@ theorem dbar_coeff_chg (α : AlgChart p σ D → CxPts p σ → Fin D → ℂ)
   simp only [transpose_apply, conjTranspose_apply, transMat, of_apply]
   ring
 
+/- English proof (translation)
+Introduce `k _ X p σ d A α hA hC hT`. Use `⟨fun c c' y hy hy' => ?_, fun c => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hA.1 c c' y hy hy', dbar_coeff_chg α hC hT c c' y hy hy', mix_chg, det_transMat]`. Establish `hc : Continuous fun x : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ × Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ => mix d x.1 x.2` using `continuous_const.mul (Complex.continuous_re.comp (continuous_fst.matrix_adjugate.matrix_mul continuous_snd).matrix_trace)`.
+
+Establish `hN : ContinuousOn (fun v => (Matrix.of fun j l => dbar (fun w => α c (c.e.symm w) j) v (EuclideanSpace.single l 1) : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ)) c.e.target`. Use `continuousOn_pi.2 fun j => continuousOn_pi.2 fun l => fun v hv => ?_` and prove the remaining obligations. Establish `h1` using `hC c (c.e.symm v) (c.e.map_target hv) j`. Rewrite `h1` using `[c.e.right_inv hv]`. Establish `h2 : ContinuousAt (fun w => fderiv ℝ (fun v => α c (c.e.symm v) j) w) v` using `(h1.fderiv_right (m := 0) (by norm_num)).continuousAt`.
+
+Establish `h4` using `h2.clm_apply (continuousAt_const (y := EuclideanSpace.single l (1 : ℂ)))`. Establish `h5` using `h2.clm_apply (continuousAt_const (y := Complex.I • EuclideanSpace.single l (1 : ℂ)))`. Conclude with `((h4.add (h5.const_smul Complex.I)).const_smul (1 / 2 : ℂ)).continuousWithinAt`. Use `(Continuous.comp_continuousOn (f := fun v => (A c (c.e.symm v), _)) hc ((hA.2.1 c).prodMk hN)).congr fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, c.e.right_inv hv]`.
+-/
 theorem isDens_mix_dbar : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) (A : AlgChart p σ (d + 1) → CxPts p σ → Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ) (α : AlgChart p σ (d + 1) → CxPts p σ → Fin (d + 1) → ℂ), IsForm A → (∀ c : AlgChart p σ (d + 1), ∀ y ∈ c.e.source, ∀ j, ContDiffAt ℝ 1 (fun v => α c (c.e.symm v) j) (c.e y)) → (∀ (c c' : AlgChart p σ (d + 1)) (y : CxPts p σ), y ∈ c.e.source → y ∈ c'.e.source → ∀ j, α c y j = ∑ a, transMat c c' y a j * α c' y a) → IsDens fun (c : AlgChart p σ (d + 1)) y => mix d (A c y) (Matrix.of fun j l => dbar (fun v => α c (c.e.symm v) j) (c.e y) (EuclideanSpace.single l 1)) := by
   intro k _ X p σ d A α hA hC hT
   refine ⟨fun c c' y hy hy' => ?_, fun c => ?_⟩

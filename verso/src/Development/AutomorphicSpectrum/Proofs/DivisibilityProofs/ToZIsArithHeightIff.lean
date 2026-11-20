@@ -20,6 +20,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
+/- English proof (translation)
+Establish `hv : IsArithVar (i ≫ p) 0` using `hX.of_isClosedImmersion i hc (by simpa using hd)`. Establish `e` using `GlobalTheory.T.sum_logNorm_eq_sum_embeddings k Z (i ≫ p) (i ≫ t) (Int.castRingHom ℂ) hv (L.restr i) (((toZ L t hL).restr i).φ (Int.castRingHom ℂ)) (wOver_restr_pow k X Z p t i L hL _).1 r hr`. Unfold `HermLB.curveDeg`. Use `congrArg (_ - ·) ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_single _ (Int.castRingHom ℂ) fun τ h => absurd (RingHom.ext_int _ _) h]`.
+
+Conclude with `e`.
+-/
 theorem curveDeg_toZ {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k} (t : X ⟶ Sp ℤ) {D : ℕ}
     (hX : IsArithVar p D) (L : HermLB p) (hL : ∀ τ, (wZ L t τ).IsCInf) (i : Z ⟶ X) [IsClosedImmersion i]
     [IsIntegral Z] [IsLocallyNoetherian Z] (hc : CharZero Γ(Z, ⊤)) (hd : topologicalKrullDim Z = 1)
@@ -34,6 +39,11 @@ theorem curveDeg_toZ {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k}
   rw [finsum_eq_single _ (Int.castRingHom ℂ) fun τ h => absurd (RingHom.ext_int _ _) h]
   exact e
 
+/- English proof (translation)
+Establish `hv : IsArithVar (i ≫ p) e` using `hX.of_isClosedImmersion i hc hd`. Establish `hw` using `wOver_restr_pow k X Z p t i L hL (Int.castRingHom ℂ)`. Take `⟨e₁, e₂⟩` from `GlobalTheory.T.archIntegrable_iff_over_integers k Z (i ≫ p) (i ≫ t) (Int.castRingHom ℂ) e hv (L.restr i) ((L.restr i).pow m) (((toZ L t hL).restr i).φ (Int.castRingHom ℂ)) ((((toZ L t hL).restr i).pow m).φ (Int.castRingHom ℂ)) hw.1 (hw.2 m) (((toZ L t hL).restr i).cInf _) e r hr`. Establish `hτ (τ : ℤ →+* ℂ) : τ = Int.castRingHom ℂ` using `RingHom.ext_int _ _`. Use `⟨⟨fun H => e₁.1 (H _), fun H τ => ?_⟩, fun H => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hτ τ]`. Conclude with `e₁.2 H`. Unfold `HermLB.archInt`. Rewrite using `[finsum_eq_single _ (Int.castRingHom ℂ) fun τ h => absurd (hτ τ) h]`. Conclude with `e₂ H`.
+-/
 theorem arch_toZ {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k} (t : X ⟶ Sp ℤ) {D : ℕ}
     (hX : IsArithVar p D) (L : HermLB p) (hL : ∀ τ, (wZ L t τ).IsCInf) (i : Z ⟶ X) [IsClosedImmersion i]
     [IsIntegral Z] (hc : CharZero Γ(Z, ⊤)) (e : ℕ) (hd : topologicalKrullDim Z = (e + 1 : ℕ)) (m : ℕ)
@@ -57,6 +67,13 @@ theorem arch_toZ {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k} (t 
     rw [finsum_eq_single _ (Int.castRingHom ℂ) fun τ h => absurd (hτ τ) h]
     exact e₂ H
 
+/- English proof (translation)
+Introduce `k _ X p t D hX L hL h`. Use `⟨fun H => ⟨H.vertical, ?_, ?_⟩, fun H => ⟨H.vertical, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `Z i _ _ _ hc hd r hr`. Conclude with `(H.point Z i hc hd r hr).trans (curveDeg_toZ t hX L hL i hc hd r hr)`. Introduce `Z i _ _ _ hc e he hd m r hr`.
+
+Take `⟨e₁, e₂⟩` from `arch_toZ t hX L hL i hc e hd m r hr`. Take `⟨h₁, h₂⟩` from `H.recursion Z i hc e he hd m r hr`. Establish `h₃` using `e₁.1 h₁`. Conclude with `⟨h₃, h₂.trans (congrArg (_ - ·) (e₂ h₃))⟩`. Introduce `Z i _ _ _ hc hd r hr`.
+
+Conclude with `(H.point Z i hc hd r hr).trans (curveDeg_toZ t hX L hL i hc hd r hr).symm`. Introduce `Z i _ _ _ hc e he hd m r hr`. Take `⟨e₁, e₂⟩` from `arch_toZ t hX L hL i hc e hd m r hr`. Take `⟨h₁, h₂⟩` from `H.recursion Z i hc e he hd m r hr`. Conclude with `⟨e₁.2 h₁, h₂.trans (congrArg (_ - ·) (e₂ h₁).symm)⟩`.
+-/
 theorem isArithHeight_toZ_iff : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (D : ℕ), IsArithVar p D → ∀ (L : HermLB p) (hL : ∀ τ, (wZ L t τ).IsCInf) (h : X → ℝ), (toZ L t hL).IsArithHeight h ↔ L.IsArithHeight h := by
   intro k _ X p t D hX L hL h
   refine ⟨fun H => ⟨H.vertical, ?_, ?_⟩, fun H => ⟨H.vertical, ?_, ?_⟩⟩

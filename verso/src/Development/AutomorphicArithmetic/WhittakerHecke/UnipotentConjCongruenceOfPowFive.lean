@@ -13,24 +13,38 @@ namespace UpperTheory.OrderAdditiveConjugation
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use `⟨rfl, fun v => ?_⟩` and prove the remaining obligations. Establish `h : ((0 : A E).2 v) = 0` using `rfl`. Rewrite using `[h, map_zero]`. Conclude with `zero_le_one`.
+-/
 private theorem oh_zero : (0 : A E) ∈ Oh E := by
   refine ⟨rfl, fun v => ?_⟩
   have h : ((0 : A E).2 v) = 0 := rfl
   rw [h, map_zero]
   exact zero_le_one
 
+/- English proof (translation)
+Use `⟨by show c.1 + d.1 = 0; rw [hc.1, hd.1, add_zero], fun v => ?_⟩` and prove the remaining obligations. Establish `h : ((c + d).2 v) = c.2 v + d.2 v` using `rfl`. Rewrite using `[h]`. Conclude with `(Valuation.map_add_le _ (hc.2 v) (hd.2 v))`.
+-/
 private theorem oh_add {c d : A E} (hc : c ∈ Oh E) (hd : d ∈ Oh E) : c + d ∈ Oh E := by
   refine ⟨by show c.1 + d.1 = 0; rw [hc.1, hd.1, add_zero], fun v => ?_⟩
   have h : ((c + d).2 v) = c.2 v + d.2 v := rfl
   rw [h]
   exact (Valuation.map_add_le _ (hc.2 v) (hd.2 v))
 
+/- English proof (translation)
+Use `⟨by show -c.1 = 0; rw [hc.1, neg_zero], fun v => ?_⟩` and prove the remaining obligations. Establish `h : ((-c).2 v) = -(c.2 v)` using `rfl`. Rewrite using `[h, Valuation.map_neg]`. Conclude with `hc.2 v`.
+-/
 private theorem oh_neg {c : A E} (hc : c ∈ Oh E) : -c ∈ Oh E := by
   refine ⟨by show -c.1 = 0; rw [hc.1, neg_zero], fun v => ?_⟩
   have h : ((-c).2 v) = -(c.2 v) := rfl
   rw [h, Valuation.map_neg]
   exact hc.2 v
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using oh_zero`. Consider the case `succ n ih`. Establish `: ((n + 1 : ℕ) : A E) * c = (n : A E) * c + c` using `by push_cast; ring`. Rewrite using `[this]`.
+
+Conclude with `oh_add ih hc`.
+-/
 private theorem oh_nat (n : ℕ) {c : A E} (hc : c ∈ Oh E) : (n : A E) * c ∈ Oh E := by
   induction n with
   | zero => simpa using oh_zero
@@ -39,6 +53,9 @@ private theorem oh_nat (n : ℕ) {c : A E} (hc : c ∈ Oh E) : (n : A E) * c ∈
     rw [this]
     exact oh_add ih hc
 
+/- English proof (translation)
+Use `⟨by show T.1 * c.1 = 0; rw [hc.1, mul_zero], fun v => ?_⟩` and prove the remaining obligations. Establish `h : ((T * c).2 v) = H.cp v T * c.2 v` using `rfl`. Rewrite using `[h, map_mul]`. Conclude with `mul_le_one' (hT v) (hc.2 v)`.
+-/
 private theorem oh_mul_of {T c : A E} (hT : ∀ w : H.P E, Valued.v (H.cp w T) ≤ 1) (hc : c ∈ Oh E) :
     T * c ∈ Oh E := by
   refine ⟨by show T.1 * c.1 = 0; rw [hc.1, mul_zero], fun v => ?_⟩
@@ -46,11 +63,19 @@ private theorem oh_mul_of {T c : A E} (hT : ∀ w : H.P E, Valued.v (H.cp w T) �
   rw [h, map_mul]
   exact mul_le_one' (hT v) (hc.2 v)
 
+/- English proof (translation)
+Establish `: (UpperTheory.ConvolutionTheory.R2.rt ((L : E) * θ) : A E) = algebraMap E (A E) ((L : E) * θ)` using `rfl`. Rewrite using `[this, map_mul, map_natCast]`.
+-/
 private theorem rt_mul_nat (L : ℕ) (θ : E) :
     (UpperTheory.ConvolutionTheory.R2.rt ((L : E) * θ) : A E) = (L : A E) * UpperTheory.ConvolutionTheory.R2.rt θ := by
   have : (UpperTheory.ConvolutionTheory.R2.rt ((L : E) * θ) : A E) = algebraMap E (A E) ((L : E) * θ) := rfl
   rw [this, map_mul, map_natCast]
 
+/- English proof (translation)
+Establish `hq : (L : ℚ) ≠ 0` using `by exact_mod_cast hL.ne'`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (L : A ℚ).1 * 0 = 0`. Conclude with `mul_zero _`. Use `show (L : A ℚ).2 * algebraMap ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ) (L : ℚ)⁻¹ = 1`.
+
+Establish `: (L : A ℚ).2 = algebraMap ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ) (L : ℚ)`. Rewrite using `[map_natCast]`. Both sides reduce to the same expression. Rewrite using `[this, ← map_mul, mul_inv_cancel₀ hq, map_one]`.
+-/
 private theorem nat_mul_iota (L : ℕ) (hL : 0 < L) : (L : A ℚ) * iota L = (0, 1) := by
   have hq : (L : ℚ) ≠ 0 := by exact_mod_cast hL.ne'
   refine Prod.ext ?_ ?_
@@ -61,6 +86,11 @@ private theorem nat_mul_iota (L : ℕ) (hL : 0 < L) : (L : A ℚ) * iota L = (0,
       rw [map_natCast]; rfl
     rw [this, ← map_mul, mul_inv_cancel₀ hq, map_one]
 
+/- English proof (translation)
+Establish `h1 : (L : A E) * am E (iota L) = am E ((L : A ℚ) * iota L)`. Rewrite using `[map_mul, map_natCast]`. Rewrite using `[h1, nat_mul_iota L hL]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (am E ((0, 1) : A ℚ)).1 * r.1 = r.1`.
+
+Rewrite using `[hr.1, mul_zero]`. Use `show (am E ((0, 1) : A ℚ)).2 * r.2 = r.2`. Establish `: (am E ((0, 1) : A ℚ)).2 = 1` using `map_one (AdeleBaseChange.finiteAdeleMap ℚ E)`. Rewrite using `[this, one_mul]`.
+-/
 private theorem unit_mul (L : ℕ) (hL : 0 < L) {r : A E} (hr : r ∈ Oh E) :
     ((L : A E) * am E (iota L)) * r = r := by
   have h1 : (L : A E) * am E (iota L) = am E ((L : A ℚ) * iota L) := by
@@ -73,6 +103,23 @@ private theorem unit_mul (L : ℕ) (hL : 0 < L) {r : A E} (hr : r ∈ Oh E) :
     have : (am E ((0, 1) : A ℚ)).2 = 1 := map_one (AdeleBaseChange.finiteAdeleMap ℚ E)
     rw [this, one_mul]
 
+/- English proof (translation)
+Take `⟨c00, m00, h00⟩` from `hK 0 0`. Take `⟨c01, m01, h01⟩` from `hK 0 1`. Take `⟨c10, m10, h10⟩` from `hK 1 0`. Take `⟨c11, m11, h11⟩` from `hK 1 1`. Simplify using `only [Matrix.one_apply_eq, ne_eq, zero_ne_one, one_ne_zero, not_false_eq_true, Matrix.one_apply_ne, sub_zero] at h00 h01 h10 h11`.
+
+Establish `q00` using `eQ c00 m00`. Establish `q10` using `eQ c10 m10`. Establish `q11` using `eQ c11 m11`. Establish `p00` using `eP c00 m00`. Establish `p01` using `eP c01 m01`.
+
+Establish `p10` using `eP c10 m10`. Establish `p11` using `eP c11 m11`. Establish `w10` using `eW c10 m10`. Establish `a00 : (!![1, -t; 0, 1] * K * !![1, t; 0, 1]) 0 0 = K 0 0 - t * K 1 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `a01 : (!![1, -t; 0, 1] * K * !![1, t; 0, 1]) 0 1 = (K 0 0 - t * K 1 0) * t + (K 0 1 - t * K 1 1)`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Establish `a10 : (!![1, -t; 0, 1] * K * !![1, t; 0, 1]) 1 0 = K 1 0`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]`. Establish `a11 : (!![1, -t; 0, 1] * K * !![1, t; 0, 1]) 1 1 = K 1 0 * t + K 1 1`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+
+Use `⟨P c00 + -Q c10, hadd (hP _ m00) (hneg (hQ _ m10)), ?_⟩ show (!![1, -t; 0, 1] * K * !![1, t; 0, 1]) 0 0 - (1 : Matrix (Fin 2) (Fin 2) R) 0 0 = _` and prove the remaining obligations. Rewrite using `[a00, Matrix.one_apply_eq]`. Take the linear combination `h00 - t * h10 + p00 - q10`. Use `⟨Q c00 + P c01 + -W c10 + -Q c11, hadd (hadd (hadd (hQ _ m00) (hP _ m01)) (hneg (hW _ m10))) (hneg (hQ _ m11)), ?_⟩ show (!![1, -t; 0, 1] * K * !![1, t; 0, 1]) 0 1 - (1 : Matrix (Fin 2) (Fin 2) R) 0 1 = _` and prove the remaining obligations. Rewrite using `[a01, Matrix.one_apply_ne (by simp)]`.
+
+Take the linear combination `t * h00 + h01 - t * t * h10 - t * h11 + q00 + p01 - w10 - q11`. Use `⟨P c10, hP _ m10, ?_⟩ show (!![1, -t; 0, 1] * K * !![1, t; 0, 1]) 1 0 - (1 : Matrix (Fin 2) (Fin 2) R) 1 0 = _` and prove the remaining obligations. Rewrite using `[a10, Matrix.one_apply_ne (by simp)]`. Take the linear combination `h10 + p10`. Use `⟨Q c10 + P c11, hadd (hQ _ m10) (hP _ m11), ?_⟩ show (!![1, -t; 0, 1] * K * !![1, t; 0, 1]) 1 1 - (1 : Matrix (Fin 2) (Fin 2) R) 1 1 = _` and prove the remaining obligations.
+
+Rewrite using `[a11, Matrix.one_apply_eq]`. Take the linear combination `t * h10 + h11 + q10 + p11`.
+-/
 private theorem conj_entry {R : Type} [CommRing R] (O : Set R) (l t : R)
     (hadd : ∀ {c d : R}, c ∈ O → d ∈ O → c + d ∈ O) (hneg : ∀ {c : R}, c ∈ O → -c ∈ O)
     (P Q W : R → R) (hP : ∀ r ∈ O, P r ∈ O) (hQ : ∀ r ∈ O, Q r ∈ O) (hW : ∀ r ∈ O, W r ∈ O)
@@ -124,6 +171,25 @@ private theorem conj_entry {R : Type} [CommRing R] (O : Set R) (l t : R)
 end UpperTheory.OrderAdditiveConjugation
 
 open UpperTheory.OrderAdditiveConjugation in
+/- English proof (translation)
+Introduce `E _ _ D L a hL hT κ hκ`. Take `⟨t, htd⟩ : ∃ t, t = D.mkE 0 ((a : A ℚ) * iota L)` from `⟨_, rfl⟩`. Take `⟨ν, hνd⟩ : ∃ ν, ν = nu D ((a : A ℚ) * iota L)` from `⟨_, rfl⟩`. Rewrite using `[← hνd]`. Establish `hν : (ν : Matrix (Fin 2) (Fin 2) (A E)) = !![1, t; 0, 1]` using `by rw [hνd, htd]; rfl`.
+
+Establish `hνi : ((ν⁻¹ : GL (Fin 2) (A E)) : Matrix (Fin 2) (Fin 2) (A E)) = !![1, -t; 0, 1]`. Rewrite using `[Matrix.coe_units_inv, hν]`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Simplify using `[Matrix.one_fin_two]`. Establish `ht : t = (a : A E) * am E (iota L) * UpperTheory.ConvolutionTheory.R2.rt D.θ`.
+
+Rewrite using `[htd, Dat.mkE_def, map_zero, map_mul, map_natCast, zero_add]`. Take `⟨T, hTd⟩ : ∃ T : A E, T = UpperTheory.ConvolutionTheory.R2.rt ((L : E) * D.θ)` from `⟨_, rfl⟩`. Establish `hT' : ∀ w : H.P E, Valued.v (H.cp w T) ≤ 1` using `by rw [hTd]; exact hT`. Establish `hTe : T = (L : A E) * UpperTheory.ConvolutionTheory.R2.rt D.θ` using `by rw [hTd, rt_mul_nat]`. Establish `key : ∀ r ∈ Oh E, (L : A E) ^ 2 * t * r = (a : A E) * (T * r)`.
+
+Introduce `r hr`. Establish `hu` using `unit_mul L hL hr`. Rewrite using `[ht, hTe]`. Take the linear combination `((a : A E) * ((L : A E) * UpperTheory.ConvolutionTheory.R2.rt D.θ)) * hu`. Apply the tactic sequence `have main := conj_entry (Oh E) (L : A E) t oh_add oh_neg (fun r => ((L ^ 4 : ℕ) : A E) * r) (fun r => ((L ^ 2 * a : ℕ) : A E) * (T * r)) (fun r => ((a ^ 2 : ℕ) : A E) * (T * (T * r))) (fun r hr => oh_nat _ hr) (fun r hr => oh_nat _ (oh_mul_of hT' hr)) (fun r hr => oh_nat _ (oh_mu …`.
+
+Use `key r hr` as an intermediate fact. Use `push_cast`. Take the linear combination `(L : A E) ^ 3 * this)`. Use the proof step `(fun r hr => by`. Establish `h1` using `key r hr`.
+
+Establish `h2` using `key (T * r) (oh_mul_of hT' hr)`. Use `push_cast`. Take the linear combination `((L : A E) ^ 3 * t) * h1 + ((L : A E) * (a : A E)) * h2)`. Establish `cast5 : ∀ {x : A E} {c : A E}, x = ((L ^ 5 : ℕ) : A E) * c → x = (L : A E) ^ 5 * c`. Introduce `x c h`.
+
+Rewrite using `[h, Nat.cast_pow]`. Establish `hinv : (ν⁻¹ * κ * ν)⁻¹ = ν⁻¹ * κ⁻¹ * ν` using `by group`. Introduce `i j`. Prove the components needed by the constructor for the conclusion. Take `⟨c, hc, e⟩` from `main (κ : Matrix (Fin 2) (Fin 2) (A E)) (fun i j => by`.
+
+Take `⟨c, hc, e⟩` from `(hκ i j).1`. Conclude with `⟨c, hc, cast5 e⟩) i j`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, Units.val_mul, Units.val_mul, hν, hνi]`. Take `⟨c, hc, e⟩` from `main ((κ⁻¹ : GL (Fin 2) (A E)) : Matrix (Fin 2) (Fin 2) (A E)) (fun i j => by`.
+
+Take `⟨c, hc, e⟩` from `(hκ i j).2`. Conclude with `⟨c, hc, cast5 e⟩) i j`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, hinv, Units.val_mul, Units.val_mul, hν, hνi]`.
+-/
 theorem UpperTheory.unipotent_conj_congruence_of_pow_five :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (L a : ℕ), 0 < L → (∀ w : H.P E, Valued.v (H.cp w (rt ((L : E) * D.θ))) ≤ 1) → ∀ κ : GL (Fin 2) (A E), CongE (L ^ 5) κ → CongE L ((nu D ((a : A ℚ) * iota L))⁻¹ * κ * nu D ((a : A ℚ) * iota L)) := by
   intro E _ _ D L a hL hT κ hκ

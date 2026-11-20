@@ -17,6 +17,9 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TypeSum.CoefRep.exists_rewrite | exact GlobalTheory.TypeSum.CoefRep.exists_rewrite | (intros; apply GlobalTheory.TypeSum.CoefRep.exists_rewrite <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_common_growth_exponent_gK_discreteSeries : GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach →
     ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ N : ℕ,

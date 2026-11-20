@@ -15,6 +15,15 @@ open scoped ContDiff
 
 namespace GlobalTheory.PPAS
 
+/- English proof (translation)
+Introduce `k _ S p hS P`. Establish `hV` using `hS.toIsArithVar`. Use `hV.isIntegral` as an intermediate fact. Use `hV.finite` as an intermediate fact. Use `hV.isLocallyNoetherian` as an intermediate fact.
+
+Use `P.isAb.smooth` as an intermediate fact. Use `P.isAb.geomConnected` as an intermediate fact. Establish `hI : IsIntegral P.A.left` using `isIntegral_of_smooth_of_geometricallyConnected P.A.hom`. Establish `hsurj : Function.Surjective P.A.hom` using `Surjective.surj`. Establish `hdS : topologicalKrullDim S = ((1 : ℕ) + 1 : ℕ)` using `hV.dim_eq`.
+
+Establish `hdA` using `GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_of_smooth_surjective S P.A.left P.A.hom P.g 1 hsurj hdS`. Use `RegCoverExists.isArithVar_of_toSpZ hV.isDomain hV.finite _ (s := ShFam.Pad.toSpZ P.A.left) ⟨inferInstance, inferInstance, hI, isProjOver_of_isProjOver_base S P (ShFam.Pad.isProjOver_toSpZ hV.isProjOver), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[specZIsTerminal.hom_ext (ShFam.Pad.toSpZ P.A.left ≫ spMap (Int.castRingHom ℤ)) (P.A.hom ≫ p ≫ spMap (Int.castRingHom k))]`. Use `hV.flat` as an intermediate fact. Use `infer_instance`.
+
+Rewrite using `[hdA]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isArithVar_total : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p →
     ∀ (P : PPAS S), IsArithVar (P.A.hom ≫ p) (P.g + 1) := by
   intro k _ S p hS P

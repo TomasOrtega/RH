@@ -24,6 +24,11 @@ def restrictEquiv {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
        obtain ⟨x, hx, hxy⟩ := hf.surjOn y.2
        exact ⟨⟨x, hx⟩, Subtype.ext hxy⟩⟩
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `exists_linear_of_bilinear_prodSB P Q (SB (P' × Q')) ((prodSBBil P' Q').compl₁₂ eP.toLinearMap eQ.toLinearMap)`. Take `⟨l', hl'⟩` from `exists_linear_of_bilinear_prodSB P' Q' (SB (P × Q)) ((prodSBBil P Q).compl₁₂ eP.symm.toLinearMap eQ.symm.toLinearMap)`. Establish `h1 : l.comp l' = LinearMap.id`. Use `LinearMap.ext_on_range (Span.span_prodSB_eq_top P' Q') fun q => ?_` and prove the remaining obligations. Simplify using `[hl, hl', prodSBBil]`.
+
+Establish `h2 : l'.comp l = LinearMap.id`. Use `LinearMap.ext_on_range (Span.span_prodSB_eq_top P Q) fun q => ?_` and prove the remaining obligations. Simplify using `[hl, hl', prodSBBil]`. Use `⟨LinearEquiv.ofLinear l l' h1 h2, fun a b => ?_⟩` and prove the remaining obligations. Simplify using `[hl, prodSBBil]`.
+-/
 theorem exists_prod_equiv {P Q P' Q' : Type} [TopologicalSpace P] [T2Space P] [LocallyCompactSpace P]
     [TotallyDisconnectedSpace P] [TopologicalSpace Q] [T2Space Q] [LocallyCompactSpace Q]
     [TotallyDisconnectedSpace Q] [TopologicalSpace P'] [T2Space P'] [LocallyCompactSpace P']
@@ -43,6 +48,15 @@ theorem exists_prod_equiv {P Q P' Q' : Type} [TopologicalSpace P] [T2Space P] [L
   refine ⟨LinearEquiv.ofLinear l l' h1 h2, fun a b => ?_⟩
   simp [hl, prodSBBil]
 
+/- English proof (translation)
+Introduce `P Q P' Q' Z Z' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ eZ eZ' f g hf hg`. Simplify using `only [GlobalTheory.WeilM.SB_eq] at hf hg ⊢`. Take `⟨L, hL⟩` from `exists_prod_equiv (restrictEquiv f hf) (restrictEquiv g hg)`. Set `E : SB Z ≃ₗ[ℂ] SB Z'` to `((comapEquiv eZ).symm.trans L).trans (comapEquiv eZ')`. Take `⟨h, hh⟩` from `LinearMap.exists_extend ((SB Z').subtype.comp E.toLinearMap)`.
+
+Establish `happ : ∀ F : SB Z, h F.1 = (E F).1` using `fun F => LinearMap.congr_fun hh F`. Use `⟨h, ⟨fun x hx => ?_, fun x hx y hy hxy => ?_, fun y hy => ?_⟩, fun a ha b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[happ ⟨x, hx⟩]`. Conclude with `(E _).2`. Rewrite `hxy` using `[happ ⟨x, hx⟩, happ ⟨y, hy⟩]`.
+
+Conclude with `congrArg Subtype.val (E.injective (Subtype.ext hxy))`. Use `⟨(E.symm ⟨y, hy⟩).1, (E.symm ⟨y, hy⟩).2, ?_⟩` and prove the remaining obligations. Rewrite using `[happ]`. Simplify using the standard rewrite rules. Establish `hF : (fun z => a (eZ z).1 * b (eZ z).2) = (comapEquiv eZ (prodSB ⟨a, ha⟩ ⟨b, hb⟩)).1` using `rfl`.
+
+Rewrite using `[hF, happ]`. Use function extensionality and compare the values at `z'`. Simplify using `only [E, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, hL]`. Both sides reduce to the same expression.
+-/
 theorem exists_linear_bijOn_prod : ∀ {P Q P' Q' Z Z' : Type} [TopologicalSpace P] [T2Space P] [LocallyCompactSpace P]
     [TotallyDisconnectedSpace P] [TopologicalSpace Q] [T2Space Q] [LocallyCompactSpace Q] [TotallyDisconnectedSpace Q]
     [TopologicalSpace P'] [T2Space P'] [LocallyCompactSpace P'] [TotallyDisconnectedSpace P']

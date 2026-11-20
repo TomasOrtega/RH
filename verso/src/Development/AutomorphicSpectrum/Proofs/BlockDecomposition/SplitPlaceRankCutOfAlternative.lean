@@ -28,6 +28,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.Jp
 
+/- English proof (translation)
+Unfold `hU`. Rewrite using `[Function.leftInverse_invFun (GlobalTheory.T.bijective_local_unitary_to_GL D n v τ).1 g]`.
+-/
 theorem hU_thU (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (g : GLoc D.sp.cm.sig (Jst D n) v) :
     hU D n v τ (thU D n v τ g) = GlobalTheory.LocIntw.hgtUp _ D.sp.cm.sig (Jst D n) (absEv D.host.F D.host.E v)
@@ -35,6 +38,11 @@ theorem hU_thU (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv 
   unfold hU
   rw [Function.leftInverse_invFun (GlobalTheory.T.bijective_local_unitary_to_GL D n v τ).1 g]
 
+/- English proof (translation)
+Introduce `a d b κ`. Take `⟨y, hy⟩` from `(GlobalTheory.T.bijective_local_unitary_to_GL D n v τ).2 (pM a d b)`. Take `⟨k, hk⟩` from `(GlobalTheory.T.bijective_local_unitary_to_GL D n v τ).2 (inL κ)`. Establish `hkK : k ∈ GlobalTheory.LocIntw.KUpFin D.sp.cm.sig (Jst D n) v` using `(GlobalTheory.T.mem_maximal_compact_iff_integral_image D n v τ k).2 ⟨κ, hk.symm⟩`. Take `⟨hyP, hab⟩` from `GlobalTheory.T.modulus_upper_parabolic_local D n v τ y a d b hy`.
+
+Rewrite using `[← hy, ← hk, ← map_mul, hU_thU]`. Conclude with `(GlobalTheory.LocIntw.hgtUp_mul (GlobalTheory.LocIntw.isIwasawaUp_fin D n v) ⟨y, hyP⟩ hkK).trans hab`.
+-/
 theorem hU_isHgt (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) :
     IsHgt (O := Ov D v) (nvL D v) (hU D n v τ) := by
   intro a d b κ
@@ -45,6 +53,9 @@ theorem hU_isHgt (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] F
   rw [← hy, ← hk, ← map_mul, hU_thU]
   exact (GlobalTheory.LocIntw.hgtUp_mul (GlobalTheory.LocIntw.isIwasawaUp_fin D n v) ⟨y, hyP⟩ hkK).trans hab
 
+/- English proof (translation)
+Rewrite using `[Matrix.rank_diagonal]`. Establish `hr : r ≤ n` using `by omega`. Simplify using `only [ne_eq, ite_eq_right_iff, one_ne_zero, imp_false, not_not]`. Conclude with `Fintype.card_fin_lt_of_le hr`.
+-/
 theorem rank_beta0 {k : Type} [Field k] {n r t : ℕ} (h : r + t = n) :
     (Matrix.diagonal fun i : Fin n => if i.1 < r then (1 : k) else 0).rank = r := by
   classical
@@ -53,6 +64,9 @@ theorem rank_beta0 {k : Type} [Field k] {n r t : ℕ} (h : r + t = n) :
   simp only [ne_eq, ite_eq_right_iff, one_ne_zero, imp_false, not_not]
   exact Fintype.card_fin_lt_of_le hr
 
+/- English proof (translation)
+Establish `key : Matrix.trace ((((w⁻¹ : (Lv D v)ˣ) : Lv D v) • liftM (L` using `Lv D v) ℓ Y) * T₀.map (algebraMap (Ov D v) (Lv D v))) = ((w⁻¹ : (Lv D v)ˣ) : Lv D v) * algebraMap (Ov D v) (Lv D v) (Matrix.trace (Y.map ℓ * T₀)) := by`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, GlobalTheory.CompanionTheory.Jp.liftM, Matrix.map_apply, map_sum, map_mul, Finset.mul_sum, mul_assoc]`. Establish `key2 : Matrix.trace (Y * T₀.map (IsLocalRing.residue (Ov D v))) = IsLocalRing.residue (Ov D v) (Matrix.trace (Y.map ℓ * T₀))`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul, hℓ]`. Rewrite using `[key, h, key2]`.
+-/
 theorem psiV_lift (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (v : Pl D) (w : (Lv D v)ˣ) (ψ₀ : AddChar (kv D v) ℂ)
     (h : ∀ c : Ov D v, psiV D.host.F ψ v (((w⁻¹ : (Lv D v)ˣ) : Lv D v) * algebraMap (Ov D v) (Lv D v) c) =
       ψ₀ (IsLocalRing.residue (Ov D v) c))
@@ -69,6 +83,37 @@ theorem psiV_lift (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (v : Pl D) (w : (Lv 
     simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul, hℓ]
   rw [key, h, key2]
 
+/- English proof (translation)
+Introduce `hA D n r t hrt hr ψ hψ nb hnb v hgood τ`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (Ov D v)`. Establish `hϖ0 : algebraMap (Ov D v) (Lv D v) ϖ ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (Ov D v) (Lv D v))]`. Conclude with `hϖ.ne_zero`.
+
+Take `⟨w, hw⟩ : ∃ w : (Lv D v)ˣ, (w : Lv D v) = algebraMap (Ov D v) (Lv D v) ϖ` from `⟨Units.mk0 _ hϖ0, rfl⟩`. Take `⟨ψ₀, hψ₀, hψ₀c⟩` from `GlobalTheory.T.exists_residue_character_of_conductor D ψ v hgood ϖ hϖ w hw`. Establish `hok` using `GlobalTheory.T.normalized_valuation_uniformizer D v ϖ hϖ w hw`. Use `choose ℓ hℓ using fun a : kv D v => IsLocalRing.residue_surjective (R := Ov D v) a`. Establish `hβ : (Matrix.diagonal fun i : Fin n => if i.1 < r then (1 : kv D v) else 0).rank = r` using `rank_beta0 hrt`.
+
+Take `⟨ρ, hρ, hρs, hρm⟩` from `GlobalTheory.T.surjective_reduction_maximal_compact D n v τ`. Take `⟨c, hcd, hct, hcint⟩` from `hA (Ov D v) (Lv D v) n r t hrt hr ψ₀ hψ₀ _ hβ`. Use `choose f hinf hoff hfX _ using fun Y : Matrix (Fin n) (Fin n) (kv D v) => GlobalTheory.T.exists_global_hermitian_local_approximation D n v τ (((w⁻¹ : (Lv D v)ˣ) : Lv D v) • liftM (L := Lv D v) ℓ Y)`. Establish `hfinj : Function.Injective f`. Introduce `Y Y' hYY`.
+
+Establish `h1 : ((w⁻¹ : (Lv D v)ˣ) : Lv D v) • liftM (L` using `Lv D v) ℓ Y = ((w⁻¹ : (Lv D v)ˣ) : Lv D v) • liftM (L := Lv D v) ℓ Y' := by`. Rewrite using `[← hfX Y, ← hfX Y', hYY]`. Use function extensionality and compare the values at `i j`. Establish `h2` using `congrFun (congrFun h1 i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, GlobalTheory.CompanionTheory.Jp.liftM, Matrix.map_apply] at h2`.
+
+Establish `h3` using `IsFractionRing.injective (Ov D v) (Lv D v) (mul_left_cancel₀ (Units.ne_zero _) h2)`. Rewrite using `[← hℓ (Y i j), ← hℓ (Y' i j), h3]`. Establish `hsinf : ∀ x ∈ Finset.univ.image f, ∀ (w' : NumberField.InfinitePlace D.host.F) (i j : Fin n), (GlobalTheory.AdelicU.compInf D.host.F D.host.E w') (x.1 i j) = 0`. Introduce `x hx`. Take `⟨Y, -, rfl⟩` from `Finset.mem_image.1 hx`.
+
+Conclude with `hinf Y`. Establish `hsoff : ∀ x ∈ Finset.univ.image f, ∀ (v' : Pl D), v' ≠ v → ∀ (i j : Fin n), (PositivityTheory.Rg.Rsw.L.cv D v') (x.1 i j) = 0`. Introduce `x hx`. Take `⟨Y, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hoff Y`.
+
+Use `⟨⟨Finset.univ.image f, fun x => coY ψ₀ (Matrix.diagonal fun i : Fin n => if i.1 < r then (1 : kv D v) else 0) (Function.invFun f x), hsinf, hsoff⟩, c, ?_, hcd, hct, ?_⟩` and prove the remaining obligations. Introduce `β' hβ' hint`. Establish `hTint : ∀ i j, (β'.1.map τ) i j ∈ HeightOneSpectrum.adicCompletionIntegers D.host.F v`. Apply `GlobalTheory.T.integral_of_character_trivial_on_lattice D ψ v hgood n` to reduce the goal to its premises. Introduce `X hX`.
+
+Take `⟨x, hinf', hoff', htx, hint'⟩` from `GlobalTheory.T.exists_global_hermitian_local_approximation D n v τ X`. Rewrite using `[← htx, ← GlobalTheory.T.character_pairing_local_hermitian D n v τ ψ x hinf' hoff' β']`. Apply `hint` to reduce the goal to its premises. Unfold `PositivityTheory.Rg.Rsw.L.IntAt`. Conclude with `⟨hinf', hoff', hint' hX⟩`.
+
+Set `T₀ : Matrix (Fin n) (Fin n) (Ov D v)` to `fun i j => ⟨(β'.1.map τ) i j, hTint i j⟩`. Establish `hT : (β'.1.map τ : Matrix (Fin n) (Fin n) (Lv D v)) = T₀.map (algebraMap (Ov D v) (Lv D v))` using `rfl`. Establish `hne : T₀.map (IsLocalRing.residue (Ov D v)) ≠ Matrix.diagonal fun i : Fin n => if i.1 < r then (1 : kv D v) else 0`. Introduce `heq`. Establish `h1` using `GlobalTheory.T.rank_residue_le_rank_generic (Ov D v) (Lv D v) n T₀`.
+
+Establish `h2` using `GlobalTheory.Core.Rk.rank_map_field (τ : D.host.E →+* Fv D.host.F v) β'.1`. Rewrite `h1` using `[heq, hβ]`. Establish `h3 : (T₀.map (algebraMap (Ov D v) (Lv D v))).rank = (β'.1.map τ).rank` using `by rw [← hT]`. Conclude with `absurd (h1.trans (h3.trans h2).le) (not_le.2 hβ')`. Establish `hpch : ∀ Y, PositivityTheory.Rg.Rsw.L.pch ψ (f Y).1 (GlobalTheory.MixModel.rat β'.1) = ψ₀ (Matrix.trace (Y * T₀.map (IsLocalRing.residue (Ov D v))))`.
+
+Introduce `Y`. Rewrite using `[GlobalTheory.T.character_pairing_local_hermitian D n v τ ψ (f Y) (hinf Y) (hoff Y) β', hfX Y, hT]`. Conclude with `psiV_lift D ψ v w ψ₀ hψ₀c ℓ hℓ Y T₀`. Use `show ∑ x ∈ Finset.univ.image f, coY ψ₀ (Matrix.diagonal fun i : Fin n => if i.1 < r then (1 : kv D v) else 0) (Function.invFun f x) * PositivityTheory.Rg.Rsw.L.pch ψ x.1 (GlobalTheory.MixModel.rat β'.1) = 0`. Rewrite using `[Finset.sum_image (fun Y _ Y' _ h => hfinj h)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun Y _ => ?_` and prove the remaining obligations. Rewrite using `[Function.leftInverse_invFun hfinj Y, hpch Y]`. Use `_ = 0 := GlobalTheory.T.sum_character_orthogonality_matrices (kv D v) n ψ₀ hψ₀ _ _ hne`. Introduce `νv hH hP z`.
+
+Establish `e1 : ∀ g, GlobalTheory.CompanionTheory.Jp.sphV D n v z g = GlobalTheory.Doubling.npow (hU D n v τ (thU D n v τ g)) (z + (n : ℂ) / 2)`. Introduce `g`. Rewrite using `[hU_thU]`. Both sides reduce to the same expression. Rewrite using `[← hcint ϖ hϖ w hw ℓ hℓ (nvL D v) hok (hU D n v τ) (hU_isHgt D n v τ) _ νv ρ hρs (hρm ϖ hϖ) z]`.
+
+Simplify using `only`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_image (fun Y _ Y' _ h => hfinj h)]`. Use `Finset.sum_congr rfl fun Y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Function.leftInverse_invFun hfinj Y, e1, map_mul, map_mul, hρ k, GlobalTheory.T.local_image_of_unipotent_element D n nb hnb v τ (f Y), hfX Y]`. Both sides reduce to the same expression.
+-/
 theorem split_place_rank_cut_of_local_computation : JpCondition → SplitPlaceRankCutEigenvalue := by
   intro hA D n r t hrt hr ψ hψ nb hnb v hgood τ
   classical

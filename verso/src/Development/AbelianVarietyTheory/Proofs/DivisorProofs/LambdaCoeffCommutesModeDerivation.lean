@@ -6,6 +6,9 @@ open MvPolynomial GlobalTheory.PsCo.Pc1 GlobalTheory.PsCo.Pc1.A
 
 namespace GlobalTheory.PsCo.Cw2a
 
+/- English proof (translation)
+Introduce `n L ε x b`. Establish `h` using `GlobalTheory.T.coeff_allOnes_sumAlgEquiv_derivation_eq (σ := EntIdx n) (L := L) (dM ε x) b`. Simplify `h` using `[exL, dL, inL, allOnes]`.
+-/
 theorem exL_dL_holds : GlobalTheory.PsCo.Cw2a.T_exL_dL := by
   intro n L ε x b
   have h := GlobalTheory.T.coeff_allOnes_sumAlgEquiv_derivation_eq (σ := EntIdx n) (L := L) (dM ε x) b

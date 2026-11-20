@@ -9,11 +9,17 @@ noncomputable section
 
 namespace PI.UnitaryGroupMassFormula.QmBorderES
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [PI.skip1, Fin.succAbove, Fin.lt_def, Fin.coe_castSucc]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 theorem skip_one_eq_succAbove {t : ℕ} (i : Fin (t + 1)) (j : Fin t) : PI.skip1 i j = i.succAbove j := by
   ext
   simp only [PI.skip1, Fin.succAbove, Fin.lt_def, Fin.coe_castSucc]
   split_ifs <;> simp_all
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[PI.bE, PI.bS, finRotate_succ_apply, Fin.last_add_one]`. Simplify using `[PI.bE, PI.bS, finRotate_succ_apply, Fin.coeSucc_eq_succ]`.
+-/
 theorem cons_comp_finRotate {n t : ℕ} (e : Fin n) (f : Fin t → Fin n) :
     PI.bE e f ∘ (finRotate (t + 1) : Fin (t + 1) → Fin (t + 1)) = PI.bS f e := by
   funext i
@@ -21,9 +27,21 @@ theorem cons_comp_finRotate {n t : ℕ} (e : Fin n) (f : Fin t → Fin n) :
   · simp [PI.bE, PI.bS, finRotate_succ_apply, Fin.last_add_one]
   · simp [PI.bE, PI.bS, finRotate_succ_apply, Fin.coeSucc_eq_succ]
 
+/- English proof (translation)
+Rewrite using `[← mul_pow, neg_one_mul, neg_neg, one_pow]`.
+-/
 theorem neg_one_pow_mul_self (t : ℕ) : ((-1 : ℤ) ^ t) * ((-1 : ℤ) ^ t) = 1 := by
   rw [← mul_pow, neg_one_mul, neg_neg, one_pow]
 
+/- English proof (translation)
+Establish `key : ∀ (a a' : Fin (t + 1) → Fin n) (ρ : Equiv.Perm (Fin (t + 1))), a ∘ ρ = a' → qminor E a b u = ((Equiv.Perm.sign ρ : ℤ) : A) * qminor E a' b u`. Introduce `a a' ρ hρ`. Unfold `qminor`. Rewrite using `[Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft ρ⁻¹) _ _ (fun σ => ?_)` and prove the remaining obligations.
+
+Establish `hu : Equiv.Perm.sign σ = Equiv.Perm.sign ρ * Equiv.Perm.sign (ρ⁻¹ * σ)`. Rewrite using `[Equiv.Perm.sign_mul, Equiv.Perm.sign_inv, ← mul_assoc, Int.units_mul_self, one_mul]`. Establish `hp : (List.ofFn fun k : Fin (t + 1) => Tm E (u - (k : ℂ)) (a (σ k)) (b k)) = List.ofFn fun k : Fin (t + 1) => Tm E (u - (k : ℂ)) (a' ((ρ⁻¹ * σ) k)) (b k)`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[← hρ]`. Simplify using `[Equiv.Perm.mul_apply]`. Rewrite using `[Equiv.coe_mulLeft, hu, Units.val_mul, Int.cast_mul, hp, mul_assoc]`. Rewrite using `[key (PI.bE e f) (PI.bS f e) (finRotate (t + 1)) (cons_comp_finRotate e f), sign_finRotate]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem qminor_bE_eq {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n → Fin n → A) (e : Fin n)
     (f : Fin t → Fin n) (b : Fin (t + 1) → Fin n) (u : ℂ) :
     qminor E (PI.bE e f) b u = (((-1 : ℤ) ^ t : ℤ) : A) * qminor E (PI.bS f e) b u := by
@@ -46,17 +64,29 @@ theorem qminor_bE_eq {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n 
   push_cast
   rfl
 
+/- English proof (translation)
+Rewrite using `[qminor_bE_eq E e f b u, ← mul_assoc, ← Int.cast_mul, neg_one_pow_mul_self, Int.cast_one, one_mul]`.
+-/
 theorem qminor_bS_eq {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n → Fin n → A) (e : Fin n)
     (f : Fin t → Fin n) (b : Fin (t + 1) → Fin n) (u : ℂ) :
     qminor E (PI.bS f e) b u = (((-1 : ℤ) ^ t : ℤ) : A) * qminor E (PI.bE e f) b u := by
   rw [qminor_bE_eq E e f b u, ← mul_assoc, ← Int.cast_mul, neg_one_pow_mul_self, Int.cast_one, one_mul]
 
+/- English proof (translation)
+Simplify using `[Tm, h]`.
+-/
 theorem Tm_of_ne {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (u : ℂ) {a b : Fin n}
     (h : a ≠ b) : Tm E u a b = E a b := by
   simp [Tm, h]
 
+/- English proof (translation)
+The claim follows from `(zsmul_eq_mul y z).symm`.
+-/
 theorem zmul {A : Type} [Ring A] (z : ℤ) (y : A) : (z : A) * y = z • y := (zsmul_eq_mul y z).symm
 
+/- English proof (translation)
+Establish `h1 : (PI.bS f e ∘ Fin.castSucc) = f` using `by funext j; simp [PI.bS]`. Establish `h2 : PI.bS f e (Fin.last t) = e` using `by simp [PI.bS]`. Rewrite using `[qminor_bE_eq, hR A n t E hG (PI.bS f e) b u, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[h1, h2, Tm_of_ne E u (he x).symm, ← mul_assoc, ← Int.cast_mul, pow_add, ← mul_assoc ((-1 : ℤ) ^ t), neg_one_pow_mul_self, one_mul]`.
+-/
 theorem rowPart (hR : PI.ExpLastRow) {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n → Fin n → A)
     (hG : GlRel E) (e : Fin n) (f : Fin t → Fin n) (b : Fin (t + 1) → Fin n) (he : ∀ x, b x ≠ e) (u : ℂ) :
     qminor E (PI.bE e f) b u = ∑ x : Fin (t + 1), (((-1 : ℤ) ^ (x : ℕ) : ℤ) : A) *
@@ -68,6 +98,9 @@ theorem rowPart (hR : PI.ExpLastRow) {A : Type} [Ring A] [Algebra ℂ A] {n t : 
   rw [h1, h2, Tm_of_ne E u (he x).symm, ← mul_assoc, ← Int.cast_mul, pow_add, ← mul_assoc ((-1 : ℤ) ^ t),
     neg_one_pow_mul_self, one_mul]
 
+/- English proof (translation)
+Establish `h1 : (PI.bE e f ∘ Fin.succ) = f` using `by funext j; simp [PI.bE]`. Establish `h2 : PI.bE e f 0 = e` using `by simp [PI.bE]`. Rewrite using `[qminor_bS_eq, hF A n t E hG (PI.bE e f) b u, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[h1, h2, Tm_of_ne E (u - (t : ℂ)) (he x).symm, ← mul_assoc, ← Int.cast_mul, pow_add]`.
+-/
 theorem colPart (hF : PI.ExpFirstRow) {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n → Fin n → A)
     (hG : GlRel E) (e : Fin n) (f : Fin t → Fin n) (b : Fin (t + 1) → Fin n) (he : ∀ x, b x ≠ e) (u : ℂ) :
     qminor E (PI.bS f e) b u = ∑ x : Fin (t + 1), (((-1 : ℤ) ^ (t + (x : ℕ)) : ℤ) : A) *
@@ -78,11 +111,27 @@ theorem colPart (hF : PI.ExpFirstRow) {A : Type} [Ring A] [Algebra ℂ A] {n t :
   refine Finset.sum_congr rfl fun x _ => ?_
   rw [h1, h2, Tm_of_ne E (u - (t : ℂ)) (he x).symm, ← mul_assoc, ← Int.cast_mul, pow_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Conclude with `congrArg v (skip_one_eq_succAbove w j)`.
+-/
 theorem comp_skip {n t : ℕ} (v : Fin (t + 1) → Fin n) (w : Fin (t + 1)) :
     (v ∘ PI.skip1 w : Fin t → Fin n) = v ∘ w.succAbove := by
   funext j
   exact congrArg v (skip_one_eq_succAbove w j)
 
+/- English proof (translation)
+Introduce `A _ _ n m E e es v hG hB u`. Take `⟨_, _, hve, _⟩` from `hB`. Rewrite using `[hC A n m E (PI.bE e v) (PI.bE e v) u, Fin.sum_univ_succ]`. Establish `hsucc : PI.bE e v ∘ Fin.succ = v` using `by funext j; simp [PI.bE]`. Establish `h0 : PI.bE e v 0 = e` using `by simp [PI.bE]`.
+
+Simplify using `only [Fin.succAbove_zero, hsucc, h0, Fin.val_zero, pow_zero, Int.cast_one, one_mul]`. Rewrite using `[sub_eq_add_neg (Tm E u e e * qminor E v v (u - 1)), ← Finset.sum_neg_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Consider the cases of `m with`.
+
+Consider the case `zero => exact w.elim0`. Consider the case `succ k`. Establish `hrow : PI.bE e v ∘ (Fin.succ w).succAbove = PI.bE e (v ∘ w.succAbove)`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations.
+
+Simplify using `[PI.bE, Fin.succ_succAbove_zero]`. Simplify using `[PI.bE, Fin.succ_succAbove_succ]`. Establish `hvw : PI.bE e v w.succ = v w` using `by simp [PI.bE]`. Rewrite using `[hrow, hvw, Tm_of_ne E u (hve w), rowPart hR E hG e (v ∘ w.succAbove) v hve (u - 1), Finset.mul_sum, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Use `erw [comp_skip v w, comp_skip v x]`. Rewrite using `[show u - 1 - 1 = u - 2 by ring]`. Simplify using `only [zmul, mul_smul_comm, smul_mul_assoc, smul_smul, Fin.val_succ, mul_assoc]`. Rewrite using `[← neg_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem borderE_of (hC : PI.ExpFirstCol) (hR : PI.ExpLastRow) : PI.BorderE := by
   intro A _ _ n m E e es v hG hB u
   obtain ⟨_, _, hve, _⟩ := hB
@@ -112,6 +161,19 @@ theorem borderE_of (hC : PI.ExpFirstCol) (hR : PI.ExpLastRow) : PI.BorderE := by
   congr 1
   ring
 
+/- English proof (translation)
+Introduce `A _ _ n m E e es v hG hB u`. Take `⟨_, _, _, hves⟩` from `hB`. Rewrite using `[hC A n m E (PI.bS v es) (PI.bS v es) u, Fin.sum_univ_castSucc]`. Establish `hcs : PI.bS v es ∘ Fin.castSucc = v` using `by funext j; simp [PI.bS]`. Establish `hl : PI.bS v es (Fin.last m) = es` using `by simp [PI.bS]`.
+
+Simplify using `only [Fin.succAbove_last, hcs, hl, Fin.val_last]`. Rewrite using `[pow_add, neg_one_pow_mul_self, Int.cast_one, one_mul, add_comm, sub_eq_add_neg (qminor E v v u * Tm E (u - (m : ℂ)) es es), ← Finset.sum_neg_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Consider the cases of `m with`.
+
+Consider the case `zero => exact w.elim0`. Consider the case `succ k`. Establish `hrow : PI.bS v es ∘ (Fin.castSucc w).succAbove = PI.bS (v ∘ w.succAbove) es`. Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations.
+
+Establish `: (Fin.castSucc w).succAbove (Fin.last k) = Fin.last (k + 1)`. Rewrite using `[Fin.succAbove_of_le_castSucc _ _ (by simpa using Fin.le_last w), Fin.succ_last]`. Simplify using `[PI.bS, this]`. Simplify using `[PI.bS, Fin.castSucc_succAbove_castSucc]`. Establish `hvw : PI.bS v es (Fin.castSucc w) = v w` using `by simp [PI.bS]`.
+
+Rewrite using `[hrow, hvw, Tm_of_ne E (u - ((k + 1 : ℕ) : ℂ)) (hves w), colPart hF E hG es (v ∘ w.succAbove) v hves u, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `erw [comp_skip v w, comp_skip v x]`. Simplify using `only [zmul, mul_smul_comm, smul_mul_assoc, smul_smul, Fin.coe_castSucc, mul_assoc]`. Rewrite using `[← neg_smul]`.
+
+Use `congr 1`. Take the linear combination `(-(-1 : ℤ) ^ ((w : ℕ) + (x : ℕ))) * neg_one_pow_mul_self k`.
+-/
 theorem borderS_of (hC : PI.ExpLastCol) (hF : PI.ExpFirstRow) : PI.BorderS := by
   intro A _ _ n m E e es v hG hB u
   obtain ⟨_, _, _, hves⟩ := hB
@@ -143,6 +205,9 @@ theorem borderS_of (hC : PI.ExpLastCol) (hF : PI.ExpFirstRow) : PI.BorderS := by
   congr 1
   linear_combination (-(-1 : ℤ) ^ ((w : ℕ) + (x : ℕ))) * neg_one_pow_mul_self k
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨borderE_of h1.1 h2.2, borderS_of h1.2 h2.1⟩`.
+-/
 theorem qmBorderES_of (h1 : PI.QmColExp) (h2 : PI.QmRowExp) : PI.QmBorderES :=
   ⟨borderE_of h1.1 h2.2, borderS_of h1.2 h2.1⟩
 

@@ -16,6 +16,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ hR R' _ _ _ ρ hfin hgal D D' hD A' G' _ _ hS' U' a G _ _ β hS pb hinv`. Take `⟨A, gen, κ, hgen, hκ, hLA⟩` from `GlobalTheory.T.polarised_generic_fibre_descends_galois R hR R' ρ hfin hgal D D' hD A' G' hS' U' a G β hS pb hinv`. Take `⟨P, hP⟩` from `GlobalTheory.T.uniformisationBundle_descends_along_galoisExtension R hR R' ρ hfin hgal D D' hD A' G' hS' U' a G β hS pb hinv`. Establish `hAP` using `GlobalTheory.T.lineBundleIso_genericFibre_descend_finite_ext R hR R' ρ hfin G' G β hS' hS pb A gen κ hgen hκ U'.LG.L U'.LG.isLB hLA P hP`. Establish `hev` using `GlobalTheory.T.evenCubicalTrivialisation_descended_closedTorus R hR R' ρ hfin hgal D D' hD A' G' hS' U' a G β hS pb hinv P hP`.
+
+Take `⟨D₁, U₁, hLG, -⟩` from `GlobalTheory.T.exists_uniformisation_completeLocal_evenOnTorus R hR G P hS hev A gen hgen hAP`. Establish `hP₁ : LBIso U'.LG.L (U₁.LG.L.pull β)` using `by rw [hLG]; exact hP`. Establish `h₁` using `GlobalTheory.T.nonempty_degData_iso_of_galoisDescendedGroup R hR R' ρ hfin hgal D D' hD A' G' hS' U' a G β hS pb hinv A D₁ U₁ hP₁`. Conclude with `GlobalTheory.T.hasSemiAbelianUniformisation_pullback_injective_local R R (RingHom.id R) hR.1 hR.1 Function.injective_id inferInstance D₁ D h₁ ⟨G, inferInstance, inferInstance, A, hS, ⟨U₁⟩⟩`.
+-/
 theorem has_of_galAct : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → IsGal ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G'), ∀ (a : GalAct ρ hD U') (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback G' G (spMap ρ) β → (∀ σ, a.act σ ≫ β = β) → Has D := by
   intro R _ _ _ hR R' _ _ _ ρ hfin hgal D D' hD A' G' _ _ hS' U' a G _ _ β hS pb hinv
   obtain ⟨A, gen, κ, hgen, hκ, hLA⟩ := GlobalTheory.T.polarised_generic_fibre_descends_galois R hR R' ρ hfin hgal D D' hD A' G' hS' U' a G β hS pb hinv

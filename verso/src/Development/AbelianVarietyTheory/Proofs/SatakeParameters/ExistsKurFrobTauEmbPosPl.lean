@@ -19,6 +19,13 @@ namespace GlobalTheory.KerStd
 
 open GlobalTheory.InertCompare GlobalTheory.Proof.IdempotentLatticeSequence
 
+/- English proof (translation)
+Establish `hmem : ∀ x, ∃ y, f y = g x` using `fun x => by`. Establish `hs` using `Normal.splits (inferInstance : Normal ℚ E) x`. Establish `hi : IsIntegral ℚ x` using `Algebra.IsIntegral.isIntegral x`. Establish `hr : (((minpoly ℚ x).map (algebraMap ℚ E)).map (f : E →+* K)).IsRoot (g x)`. Rewrite using `[Polynomial.map_map, AlgHom.comp_algebraMap_of_tower, Polynomial.IsRoot, Polynomial.eval_map_algebraMap, Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`.
+
+Conclude with `hs.mem_range_of_isRoot (Polynomial.map_ne_zero (minpoly.ne_zero hi)) hr`. Use `choose v hv using hmem`. Establish `hf : Function.Injective f` using `f.toRingHom.injective`. Set `w : E →ₐ[ℚ] E` to `{ toFun := v map_one' := hf (by rw [hv, map_one, map_one]) map_mul' := fun a b => hf (by rw [hv, map_mul, map_mul, hv, hv]) map_zero' := hf (by rw [hv, map_zero, map_zero]) map_add' := fun a b => hf (by rw [hv, map_add, map_add, hv, hv]) commutes' := fun r => hf (by`. Rewrite using `[hv, AlgHom.commutes, AlgHom.commutes]) }`.
+
+Conclude with `⟨AlgEquiv.ofBijective w (AlgHom.normal_bijective ℚ E E w), fun x => (hv x).symm⟩`.
+-/
 theorem exists_aut_of_algHoms {E K : Type} [Field E] [NumberField E] [IsGalois ℚ E] [Field K] [CharZero K]
     (f g : E →ₐ[ℚ] K) : ∃ u : E ≃ₐ[ℚ] E, ∀ x, g x = f (u x) := by
   have hmem : ∀ x, ∃ y, f y = g x := fun x => by
@@ -40,10 +47,16 @@ theorem exists_aut_of_algHoms {E K : Type} [Field E] [NumberField E] [IsGalois �
         rw [hv, AlgHom.commutes, AlgHom.commutes]) }
   exact ⟨AlgEquiv.ofBijective w (AlgHom.normal_bijective ℚ E E w), fun x => (hv x).symm⟩
 
+/- English proof (translation)
+The claim follows from `exists_aut_of_algHoms f.toRatAlgHom g.toRatAlgHom`.
+-/
 theorem exists_aut_of_embeddings {E K : Type} [Field E] [NumberField E] [IsGalois ℚ E] [Field K] [CharZero K]
     (f g : E →+* K) : ∃ u : E ≃ₐ[ℚ] E, ∀ x, g x = f (u x) :=
   exists_aut_of_algHoms f.toRatAlgHom g.toRatAlgHom
 
+/- English proof (translation)
+Apply the tactic sequence `have hc : Continuous (algebraMap ℚ_[p] ℂ_[p]) := (algebraMap_isometry ℚ_[p] ℂ_[p]).continuous`. Use `(Padic.denseRange_ratCast p).induction_on (p := fun x => algebraMap ℚ_[p] ℂ_[p] x ∈ MaximalUnramifiedExtension p) x ?_ ?_` and prove the remaining obligations. Conclude with `Formalism.L2.Th1.D.GaussNormEstimates.isClosed_Kur.preimage hc`. Introduce `q`. Simplify using the standard rewrite rules.
+-/
 theorem padic_mem_Kur (p : ℕ) [Fact p.Prime] (x : ℚ_[p]) : algebraMap ℚ_[p] ℂ_[p] x ∈ MaximalUnramifiedExtension p := by
   have hc : Continuous (algebraMap ℚ_[p] ℂ_[p]) := (algebraMap_isometry ℚ_[p] ℂ_[p]).continuous
   refine (Padic.denseRange_ratCast p).induction_on (p := fun x => algebraMap ℚ_[p] ℂ_[p] x ∈ MaximalUnramifiedExtension p) x ?_ ?_
@@ -51,6 +64,13 @@ theorem padic_mem_Kur (p : ℕ) [Fact p.Prime] (x : ℚ_[p]) : algebraMap ℚ_[p
   · intro q
     simp
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.Loc.MaximalUnramifiedExtension at hx`. Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨m, hm, hpm, h1⟩` from `hx`. Conclude with `Formalism.L2.Th1.D.GaussNormEstimates.mu_mem_Kur hm hpm (by rw [← map_pow, h1, map_one])`.
+
+Consider the case `algebraMap x`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `padic_mem_Kur p x`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `inv x _ hx => rw [map_inv₀]`. Conclude with `inv_mem hx`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+-/
 theorem coe_mem_Kur (p : ℕ) [Fact p.Prime] {x : PadicAlgCl p} (hx : x ∈ Formalism.BasicNotions.Loc.MaximalUnramifiedExtension p) :
     algebraMap (PadicAlgCl p) ℂ_[p] x ∈ MaximalUnramifiedExtension p := by
   unfold Formalism.BasicNotions.Loc.MaximalUnramifiedExtension at hx
@@ -65,6 +85,9 @@ theorem coe_mem_Kur (p : ℕ) [Fact p.Prime] {x : PadicAlgCl p} (hx : x ∈ Form
   | inv x _ hx => rw [map_inv₀]; exact inv_mem hx
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
+/- English proof (translation)
+Establish `: IsGalois ℚ H.E` using `H.hostE_isGalois`. Set `c : H.E →+* PadicAlgCl p` to `(IsAlgClosed.lift : H.E →ₐ[ℚ] PadicAlgCl p)`. Take `⟨u, hu⟩` from `exists_aut_of_embeddings ((algebraMap (PadicAlgCl p) ℂ_[p]).comp c) ρ`. Rewrite using `[hu, RingHom.comp_apply]`. Conclude with `coe_mem_Kur p (GlobalTheory.HostKur.host_image_mem_Kur H p h2 hq hd c _)`.
+-/
 theorem host_image_mem_Kur_complex {R : Ranks} (H : Host R) (p : ℕ) [Fact p.Prime] (h2 : p ∉ H.small) (hq : p ≠ H.q)
     (hd : p ≠ H.d) (ρ : H.E →+* ℂ_[p]) (x : H.E) : ρ x ∈ MaximalUnramifiedExtension p := by
   have : IsGalois ℚ H.E := H.hostE_isGalois
@@ -73,6 +96,23 @@ theorem host_image_mem_Kur_complex {R : Ranks} (H : Host R) (p : ℕ) [Fact p.Pr
   rw [hu, RingHom.comp_apply]
   exact coe_mem_Kur p (GlobalTheory.HostKur.host_image_mem_Kur H p h2 hq hd c _)
 
+/- English proof (translation)
+Introduce `D p _ lam σ hσ h z y`. Take `⟨h2, hq, hd⟩` from `ne_of_inert D p h`. Establish `: IsGalois ℚ D.host.E` using `D.host.hostE_isGalois`. Take `⟨ρ, hρ⟩ : ∃ ρ, ρ = rhoH D lam (tauPl D z)` from `⟨_, rfl⟩`. Establish `hK : ∀ x, ρ x ∈ MaximalUnramifiedExtension p` using `host_image_mem_Kur_complex D.host p h2 hq hd ρ`.
+
+Set `ρ' : D.host.E →+* MaximalUnramifiedExtension p` to `ρ.codRestrict (MaximalUnramifiedExtension p) hK`. Establish `hρ' : ∀ x, ((ρ' x : MaximalUnramifiedExtension p) : ℂ_[p]) = ρ x` using `fun _ => rfl`. Set `ρ2 : D.host.E →+* ℂ_[p]` to `(MaximalUnramifiedExtension p).subtype.comp (σ.comp ρ')`. Take `⟨g, hg⟩` from `exists_aut_of_embeddings ρ ρ2`. Use `primeOf_isPrime ρ` as an intermediate fact.
+
+Establish `hL` using `primeOf_liesOver ρ`. Establish `hc : Nat.card (ℤ ⧸ Ideal.under ℤ (primeOf ρ)) = p`. Rewrite using `[← hL.over, Int.card_ideal_quot]`. Establish `hgF : IsArithFrobAt ℤ g (primeOf ρ)`. Introduce `x`.
+
+Rewrite using `[hc, mem_primeOf]`. Establish `hx : ‖ρ' (x : D.host.E)‖ ≤ 1` using `norm_int_le ρ x`. Establish `h3` using `hσ.2.2.2.2 _ hx`. Establish `hp1 : (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt)`. Use `lt_of_le_of_lt ?_ hp1` and prove the remaining obligations.
+
+Use `le_of_eq_of_le ?_ h3` and prove the remaining obligations. Establish `e1 : ρ (algebraMap (𝓞 D.host.E) D.host.E ((MulSemiringAction.toAlgHom ℤ (𝓞 D.host.E) g) x - x ^ p)) = ((σ (ρ' (x : D.host.E)) - ρ' (x : D.host.E) ^ p : MaximalUnramifiedExtension p) : ℂ_[p])`. Establish `e0 : algebraMap (𝓞 D.host.E) D.host.E ((MulSemiringAction.toAlgHom ℤ (𝓞 D.host.E) g) x) = g (x : D.host.E)` using `rfl`. Rewrite using `[map_sub, map_sub, e0, ← hg, map_pow, map_pow]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1]`. Both sides reduce to the same expression. Take `⟨φ, hφ, -⟩` from `exists_frob_step D p h (primeOf ρ)`. Establish `hgφ : g = φ`. Establish `hI` using `hgF.mul_inv_mem_inertia hφ`.
+
+Establish `h1` using `((D.host.der.frob p (UpperTheory.Small.not_dvd_condN D.host Fact.out h2 hq hd) (primeOf ρ)).2.2.2 (g * φ⁻¹)).1 (fun x => hI x)`. Conclude with `mul_inv_eq_one.1 h1`. Establish `hcc : D.host.conj (D.host.conj y) = y` using `D.host.φ₀.injective (by`. Rewrite using `[D.host.conjE_apply, D.host.conjE_apply, Complex.conj_conj])`. Use `⟨ρ' y, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hρ', hρ, ← coe_rhoH]`. Establish `h4` using `rhoH_posPl_one D p lam h (primeOf ρ) φ hφ z (D.host.conj y)`. Rewrite `h4` using `[hcc]`. Rewrite using `[← coe_rhoH, h4, ← hρ, ← hgφ, ← hg]`. Both sides reduce to the same expression.
+-/
 theorem exists_kur_frob_tauEmb_posPl : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p), UnrOK (MaximalUnramifiedExtension p) p σ → (IsResidueClassZero D p ∨ IsSg D p) → ∀ (z : Bool × HH D) (y : D.host.E), ∃ a : MaximalUnramifiedExtension p, (a : ℂ_[p]) = tauEmb D lam (tauPl D z) y ∧ ((σ a : MaximalUnramifiedExtension p) : ℂ_[p]) = tauEmb D lam (tauPl D (posPl D p z 1)) (D.host.conj y) := by
   intro D p _ lam σ hσ h z y
   obtain ⟨h2, hq, hd⟩ := ne_of_inert D p h

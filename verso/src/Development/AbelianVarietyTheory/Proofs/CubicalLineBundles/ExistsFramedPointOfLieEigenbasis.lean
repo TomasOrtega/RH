@@ -20,6 +20,13 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 namespace GlobalTheory.LamT
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c K _ _ x Φ e U w hx hU hw heig`. Establish `hb : IsLieBasis w` using `((GlobalTheory.LieComb.lieComb_algebra K Φ.T.t.G Φ.T.g Φ.v Φ.basis.1).2.2.2.2 U w Φ.basis hw).2 hU.isUnit`. Establish `ht : TanBasis x (fun i => (w i).left ≫ Φ.m.φ)` using `((GlobalTheory.Frames.lieBasis_iff_tanBasis E H Dw l Xo K x Φ.T.t.G Φ.m.φ Φ.m.cart).2 _ w).1 hb`. Establish `htan : ∀ (τ : E →+* ℂ) (i : Fin (Dw.mult τ)), IsTanAt x ((w (e ⟨τ, i⟩)).left ≫ Φ.m.φ)` using `fun τ i => ht.1 (e ⟨τ, i⟩)`. Establish `hbas` using `(GlobalTheory.Frames.eigBasis_iff_tanBasis E H Dw l Xo c K x (fun τ i => (w (e ⟨τ, i⟩)).left ≫ Φ.m.φ) Φ.T.g e.symm htan heig).2 (by`.
+
+Establish `: (fun j => (w (e ⟨(e.symm j).1, (e.symm j).2⟩)).left ≫ Φ.m.φ) = fun i => (w i).left ≫ Φ.m.φ`. Use function extensionality and compare the values at `fun j => congrArg (fun k => (w k).left ≫ Φ.m.φ) (e.apply_symm_apply j)`. Conclude with `this ▸ ht)`. Take `⟨h1, -, h3⟩` from `GlobalTheory.T.rigidifiedSectionCorrespondence_existsUnique_nonvanishing E H Dw l Xo K x Φ.T.t Φ.m`. Take `⟨s, hs⟩` from `h1 Φ.th`.
+
+Establish `hgen : SecGen x s` using `GlobalTheory.Frames.secGen_of_secNZ GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo K x s ((h3 Φ.th s hs).2.2 Φ.th_ne)`. Conclude with `⟨⟨x, hx, fun τ i => (w (e ⟨τ, i⟩)).left ≫ Φ.m.φ, htan, heig, hbas, s, hgen⟩, rfl, hs, fun _ _ => rfl⟩`.
+-/
 theorem exists_frPt_of_eigenbasis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (x : Sp K ⟶ Xo.X) (Φ : FibKey Xo K x) (e : (Σ b : E →+* ℂ, Fin (Dw.mult b)) ≃ Fin Φ.T.g) (U : Matrix (Fin Φ.T.g) (Fin Φ.T.g) K) (w : Fin Φ.T.g → (epsR K ⟶ Φ.T.t.G)), x ≫ Xo.s = sOf c K → U.det ≠ 0 → (∀ k, IsLieComb (U k) Φ.v (w k)) → (∀ τ i, IsEigAt c τ ((w (e ⟨τ, i⟩)).left ≫ Φ.m.φ)) → ∃ y : FrPt Xo c K, y.x = x ∧ SecTie Φ.m Φ.th y.s ∧ ∀ τ i, y.u τ i = (w (e ⟨τ, i⟩)).left ≫ Φ.m.φ := by
   intro E _ _ _ H Dw l Xo c K _ _ x Φ e U w hx hU hw heig
   have hb : IsLieBasis w :=

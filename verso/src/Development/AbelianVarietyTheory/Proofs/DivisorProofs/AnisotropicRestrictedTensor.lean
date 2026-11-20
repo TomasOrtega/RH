@@ -16,6 +16,41 @@ namespace GlobalTheory.ThKKill
 
 open Classical in
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT hq f φ φ' hf hSB hvac hφ'1 hφ' hD`. Establish `hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hvac.and hT.geo.hM'.std).mono fun v h => h.1.trans h.2`. Take `⟨r, hr, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor B.v₁ f φ hstd`. Set `P : ((Fin a' × Fin (a + a') → Fv F B.v₁) → ℂ) → (Fin a' × Fin (a + a') → AF F) → ℂ` to `fun χ => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (Function.update φ B.v₁ χ)`. Establish `hPt : ∀ χ, P χ = tens (evFin F B.v₁) χ r` using `fun χ => (hrt χ).symm`.
+
+Establish `hupd : ∀ χ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁), ∀ v, Function.update φ B.v₁ χ v ∈ SB _`. Introduce `χ hχ v`. Distinguish the cases in `hv : v = B.v₁`. Substitute `hv` using the available equality. Rewrite using `[Function.update_self]`.
+
+Conclude with `hχ`. Rewrite using `[Function.update_of_ne hv]`. Conclude with `hSB v`. Establish `hPsch : ∀ χ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁), P χ ∈ schA F _` using `fun χ hχ => GlobalTheory.TensUniq.pure_mem_schA f _ (hupd χ hχ) (GlobalTheory.PureFactor.update_eventually φ B.v₁ χ hstd)`. Establish `hPpol : ∀ χ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁), P χ ∈ PolData B G.M'` using `fun χ hχ => Submodule.subset_span ⟨f, hf, Function.update φ B.v₁ χ, hupd χ hχ, by filter_upwards [hvac, Filter.eventually_cofinite_ne B.v₁] with v hv hne`.
+
+Rewrite using `[Function.update_of_ne hne]`. Conclude with `hv, rfl⟩`. Establish `hPadd : ∀ χ₁ χ₂, P (χ₁ + χ₂) = P χ₁ + P χ₂`. Introduce `χ₁ χ₂`. Rewrite using `[hPt, hPt, hPt]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hPsmul : ∀ (c : ℂ) χ, P (c • χ) = c • P χ`. Introduce `c χ`.
+
+Rewrite using `[hPt, hPt]`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hIsmul : ∀ (c : ℂ) Φ, G.M'.I om' (c • Φ) = c • G.M'.I om' Φ`.
+
+Introduce `c Φ`. Use function extensionality and compare the values at `h`. Simplify using `only [Model.I, theta, map_smul, Pi.smul_apply, smul_eq_mul]`. Establish `e : ∀ g, thetaSum F (c • om' (g, h) Φ) = c * thetaSum F (om' (g, h) Φ)`. Introduce `g`.
+
+Simplify using `only [thetaSum, Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`. Simplify using `only [e]`. Conclude with `integral_const_mul c _`. Set `J : ((Fin a' × Fin (a + a') → Fv F B.v₁) → ℂ) → UA σ G.W.J → ℂ` to `fun χ => G.M'.I om' (P χ)`.
+
+Establish `hJadd : ∀ χ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁), ∀ χ₂ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁), J (χ₁ + χ₂) = J χ₁ + J χ₂`. Introduce `χ₁ h₁ χ₂ h₂`. Use `show G.M'.I om' (P (χ₁ + χ₂)) = G.M'.I om' (P χ₁) + G.M'.I om' (P χ₂)`. Rewrite using `[hPadd]`. Conclude with `GlobalTheory.T.anisotropic_theta_additive hK F E σ B a a' G X om om' hT hq _ (hPpol χ₁ h₁) _ (hPpol χ₂ h₂)`.
+
+Establish `hJsmul : ∀ (c : ℂ) χ, J (c • χ) = c • J χ` using `fun c χ => by show G.M'.I om' (P (c • χ)) = c • G.M'.I om' (P χ)`. Rewrite using `[hPsmul, hIsmul]`. Establish `hTB : ThetaBasic` using `GlobalTheory.T.theta_basic_properties hK.base`. Establish `hgen : ∀ (g : UA σ G.V'.J) (ψ ψ₁ : (Fin a' × Fin (a + a') → Fv F B.v₁) → ℂ), ψ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁) → Acts (evFin F B.v₁) (om' (g, 1)) ψ ψ₁ → J ψ₁ = J ψ`. Introduce `g ψ ψ₁ hψ hA`.
+
+Establish `hRest : Rest (evFin F B.v₁) ψ r` using `⟨hr, by rw [← hPt]; exact hPsch ψ hψ⟩`. Establish `e` using `hA r hRest`. Use `show G.M'.I om' (P ψ₁) = G.M'.I om' (P ψ)`. Rewrite using `[hPt ψ₁, ← e, hPt ψ]`. Use function extensionality and compare the values at `h`.
+
+Conclude with `GlobalTheory.ThetaRightInv.rightInv hK.siegelSetUnitary hTB F E σ B a a' G X om om' hT hq _ (by rw [← hPt]; exact hPsch ψ hψ) g h`. Establish `hzero : J 0 = 0`. Establish `e : (0 : (Fin a' × Fin (a + a') → Fv F B.v₁) → ℂ) = (0 : ℂ) • (0 : (Fin a' × Fin (a + a') → Fv F B.v₁) → ℂ)` using `(zero_smul ℂ _).symm`. Rewrite using `[e, hJsmul, zero_smul]`. Establish `hkill : ∀ z ∈ augAt om' B.v₁, z ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁) ∧ J z = 0`.
+
+Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, -, ψ, hψ, ψ₁, hψ₁, hA, rfl⟩` from `hx`. Use `⟨sub_mem hψ₁ hψ, ?_⟩` and prove the remaining obligations.
+
+Establish `e : ψ₁ - ψ = ψ₁ + (-1 : ℂ) • ψ` using `by rw [neg_one_smul, sub_eq_add_neg]`. Rewrite using `[e, hJadd _ hψ₁ _ ((SB _).smul_mem _ hψ), hJsmul, hgen g ψ ψ₁ hψ hA, neg_one_smul, add_neg_cancel]`. Consider the case `zero => exact ⟨zero_mem _, hzero⟩`. Consider the case `add x y _ _ hx hy => exact ⟨add_mem hx.1 hy.1, by rw [hJadd _ hx.1 _ hy.1, hx.2, hy.2, add_zero]⟩`. Consider the case `smul c x _ hx => exact ⟨(SB _).smul_mem c hx.1, by rw [hJsmul, hx.2, smul_zero]⟩`.
+
+Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ = P (φ B.v₁)` using `by show _ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (Function.update φ B.v₁ (φ B.v₁)); rw [Function.update_eq_self]`. Establish `e2 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ' = P (φ' B.v₁)` using `by show _ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (Function.update φ B.v₁ (φ' B.v₁))`. Use `congr 1`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v = B.v₁`.
+
+Substitute `hv` using the available equality. Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne hv, hφ' v hv]`. Take `⟨hDSB, hD0⟩` from `hkill _ hD`. Establish `e3 : φ B.v₁ = φ' B.v₁ + (φ B.v₁ - φ' B.v₁)` using `by abel`.
+
+Use `show G.M'.I om' (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ') = G.M'.I om' (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ)`. Rewrite using `[e1, e2]`. Use `show J (φ' B.v₁) = J (φ B.v₁)`. Rewrite using `[e3, hJadd _ hφ'1 _ hDSB, hD0, add_zero]`.
+-/
 theorem kill : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → G.q = 0 →
     ∀ (f : SInf F (Fin a' × Fin (a + a'))) (φ φ' : ∀ v : Pl F, (Fin a' × Fin (a + a') → Fv F v) → ℂ), f ∈ G.M'.Pol B.ψ B.emb →

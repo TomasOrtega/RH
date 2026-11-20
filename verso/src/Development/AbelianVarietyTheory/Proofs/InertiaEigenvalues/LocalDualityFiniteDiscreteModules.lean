@@ -38,6 +38,15 @@ def cocycleEquiv : Z1 ρ ≃+ Z1 ρ' where
 
 include he in
 
+/- English proof (translation)
+Use `⟨QuotientAddGroup.congr ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup ((B1 ρ').comap (Z1 ρ').subtype).toAddSubgroup (cocycleEquiv ρ ρ' e he) ?_, fun z z' h => ?_⟩` and prove the remaining obligations. Use extensionality with `z'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Take `⟨m, hm⟩` from `(mem_coboundaries1 ρ _).1 hz`.
+
+Use `(mem_coboundaries1 ρ' _).2 ⟨e m, fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (z.1 g) = _`. Rewrite using `[← he, ← map_sub]`. Conclude with `congrArg e (hm g)`. Introduce `hz`.
+
+Take `⟨m, hm⟩` from `(mem_coboundaries1 ρ' _).1 hz`. Use `⟨(cocycleEquiv ρ ρ' e he).symm z', (mem_coboundaries1 ρ _).2 ⟨e.symm m, fun g => ?_⟩, (cocycleEquiv ρ ρ' e he).apply_symm_apply z'⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `e (e.symm (z'.1 g)) = _`. Rewrite using `[map_sub, he, e.apply_symm_apply, e.apply_symm_apply]`.
+
+Conclude with `hm g`. Take `rfl : z' = cocycleEquiv ρ ρ' e he z` from `Subtype.ext (funext h)`. Both sides reduce to the same expression.
+-/
 theorem exists_H1_equiv_of_equivariant_equiv : ∃ T : H1 ρ ≃+ H1 ρ', ∀ (z : Z1 ρ) (z' : Z1 ρ'),
     (∀ g, z'.1 g = e (z.1 g)) → T (Submodule.Quotient.mk z) = Submodule.Quotient.mk z' := by
   refine ⟨QuotientAddGroup.congr ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup
@@ -63,6 +72,11 @@ theorem exists_H1_equiv_of_equivariant_equiv : ∃ T : H1 ρ ≃+ H1 ρ', ∀ (z
 
 end Transport
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `exists_H1_equiv_of_equivariant_equiv ρ ρ' e he`. Use `⟨AddSubgroup.toZModSubmodule n (L.toAddSubgroup.comap T.symm.toAddMonoidHom), ?_, fun z z' h => ?_⟩` and prove the remaining obligations. Conclude with `Nat.card_congr (T.symm.toEquiv.subtypeEquiv fun _ => Iff.rfl)`. Rewrite using `[← hT z z' h]`. Express the relevant statement in the definitionally equal form `_ ↔ T.symm (T _) ∈ L`.
+
+Rewrite using `[T.symm_apply_apply]`.
+-/
 theorem exists_transport_cond {R : Type} [CommRing R] {n : ℕ} {D : Type} [Group D]
     [TopologicalSpace D] {M : Type} [AddCommGroup M] [Module R M] [TopologicalSpace M]
     [DiscreteTopology M] {M' : Type} [AddCommGroup M'] [Module (ZMod n) M'] [TopologicalSpace M']
@@ -78,6 +92,9 @@ theorem exists_transport_cond {R : Type} [CommRing R] {n : ℕ} {D : Type} [Grou
     change _ ↔ T.symm (T _) ∈ L
     rw [T.symm_apply_apply]
 
+/- English proof (translation)
+Use `(Nat.card_congr (e.toEquiv.subtypeEquiv fun m => ?_)).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∀ g, ρ g m = m) ↔ ∀ g, ρ' g (e m) = e m`. Rewrite using `[hφ.forall]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← he, e.injective.eq_iff]`.
+-/
 theorem card_H0_eq_of_equivariant_equiv {R R' : Type} [CommRing R] [CommRing R'] {D D' : Type} [Group D] [Group D']
     {M : Type} [AddCommGroup M] [Module R M] {M' : Type} [AddCommGroup M'] [Module R' M']
     (ρ : Representation R D M) (ρ' : Representation R' D' M') (φ : D → D')
@@ -89,6 +106,15 @@ theorem card_H0_eq_of_equivariant_equiv {R R' : Type} [CommRing R] [CommRing R']
   refine forall_congr' fun g => ?_
   rw [← he, e.injective.eq_iff]
 
+/- English proof (translation)
+Set `f : M' →+ TDual (ZMod n) M` to `AddMonoidHom.mk' (fun y => TDual.mk ((t.comp (P.flip y).toAddMonoidHom).toZModLinearMap n)) (fun y y' => by ext x; simp)`. Establish `hf : ∀ y x, f y x = t (P x y)` using `fun _ _ => rfl`. Establish `inj : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`.
+
+Use `h2 y fun x => ht _ fun a => ?_` and prove the remaining obligations. Use `hf y (a • x)` as an intermediate fact. Rewrite `this` using `[hy, map_smul P, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `this.symm`. Establish `c1 : Nat.card (TDual (ZMod n) M) = Nat.card M` using `GlobalTheory.ZModDual.card_dual_eq n M`.
+
+Establish `: Finite (TDual (ZMod n) M)` using `Nat.finite_of_card_ne_zero (by rw [c1]; exact Nat.card_pos.ne')`. Establish `c2 : Nat.card (Module.Dual k M') = Nat.card M'` using `Nat.card_congr (Module.finBasis k M').toDualEquiv.symm.toEquiv`. Establish `: Finite (Module.Dual k M')` using `Nat.finite_of_card_ne_zero (by rw [c2]; exact Nat.card_pos.ne')`. Establish `c3 : Nat.card M ≤ Nat.card M'`. Rewrite using `[← c2]`.
+
+Use `Nat.card_le_card_of_injective (P : M → Module.Dual k M') ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Conclude with `fun x hx => h1 x fun y => by rw [hx]; rfl`. Conclude with `⟨AddEquiv.ofBijective f (inj.bijective_of_nat_card_le (c1 ▸ c3)), hf⟩`.
+-/
 theorem exists_dual_equiv {n : ℕ} [NeZero n] {k : Type} [Field k] [Finite k]
     {M : Type} [AddCommGroup M] [Module k M] [Module (ZMod n) M] [Finite M]
     {M' : Type} [AddCommGroup M'] [Module k M'] [Finite M'] (P : M →ₗ[k] M' →ₗ[k] k)
@@ -118,10 +144,34 @@ theorem exists_dual_equiv {n : ℕ} [NeZero n] {k : Type} [Field k] [Finite k]
     exact fun x hx => h1 x fun y => by rw [hx]; rfl
   exact ⟨AddEquiv.ofBijective f (inj.bijective_of_nat_card_le (c1 ▸ c3)), hf⟩
 
+/- English proof (translation)
+Rewrite using `[← nsmul_eq_mul, map_nsmul, nsmul_eq_mul, ZMod.natCast_zmod_val]`.
+-/
 theorem form_val_mul {n : ℕ} [NeZero n] {k : Type} [Field k] (t : k →+ ZMod n) (c : ZMod n) (a : k) :
     t ((c.val : k) * a) = c * t a := by
   rw [← nsmul_eq_mul, map_nsmul, nsmul_eq_mul, ZMod.natCast_zmod_val]
 
+/- English proof (translation)
+Establish `hι : ∀ c : ZMod n, ι c = (c.val : k)` using `fun c => by conv_lhs => rw [← ZMod.natCast_zmod_val c, map_natCast]`. Establish `ht : ∀ g z, t (χ g * z) = ((μ (φ g) : (ZMod n)ˣ) : ZMod n) * t z` using `fun g z => by`. Rewrite using `[hχ, form_val_mul]`. Set `E` to `cocycleEquiv ρ (ρS.comp φ) (AddEquiv.refl M) hρ`. Establish `hE : ∀ x g, (E x).1 g = x.1 g` using `fun _ _ => rfl`.
+
+Establish `key : ∀ (x : Z1 ρ) g h, t (P (x.1 (g * h)) (y.1 (g * h))) = t (P (x.1 g) (y.1 g)) + t (P (x.1 g) (ρ' g (y.1 h))) + t (P (ρ g (x.1 h)) (y.1 g)) + ((μ (φ g) : (ZMod n)ˣ) : ZMod n) * t (P (x.1 h) (y.1 h))` using `fun x g h => by`. Rewrite using `[x.2.2, y.2.2, ← ht, ← hP]`. Simplify using `only [map_add, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `cb : ∀ x : Z1 ρ, Continuous fun g => t (P (x.1 g) (y.1 g))` using `fun x => (continuous_of_discreteTopology (f := fun p : M × M' => t (P p.1 p.2))).comp (x.2.1.prodMk y.2.1)`.
+
+Establish `hcup : ∀ x : Z1 ρ, cupH1H1TwistedDual μ ρS φ hc (Submodule.Quotient.mk y') (Submodule.Quotient.mk (E x)) = 0 ↔ ∃ c : D → ZMod n, Continuous c ∧ ∀ g h, t (P (x.1 g) (ρ' g (y.1 h))) = ((μ (φ g) : (ZMod n)ˣ) : ZMod n) * c h - c (g * h) + c g` using `fun x => by`. Establish `e0 : cupH1H1TwistedDual μ ρS φ hc (Submodule.Quotient.mk y') (Submodule.Quotient.mk (E x)) = 0 ↔ ∃ c : D → ZMod n, Continuous c ∧ ∀ g h, ((μ (φ g) : (ZMod n)ˣ) : ZMod n) * c h - c (g * h) + c g = t (P (ρ g (x.1 h)) (y.1 g))`. Use `(Submodule.Quotient.mk_eq_zero _).trans ((separated_dvr_second_cohomology_mem _ _).trans ?_)` and prove the remaining obligations. Use `exists_congr fun c => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[funext_iff, Prod.forall]`.
+
+Use `forall_congr' fun g => forall_congr' fun h => ?_` and prove the remaining obligations. Rewrite using `[← hy, hρ]`. Conclude with `Iff.rfl`. Rewrite using `[e0]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨c, hc1, hc2⟩`. Use `⟨fun g => -c g - t (P (x.1 g) (y.1 g)), hc1.neg.sub (cb x), fun g h => ?_⟩` and prove the remaining obligations. Take the linear combination `hc2 g h - key x g h`. Introduce and unpack `⟨c, hc1, hc2⟩`. Use `⟨fun g => -c g - t (P (x.1 g) (y.1 g)), hc1.neg.sub (cb x), fun g h => ?_⟩` and prove the remaining obligations.
+
+Take the linear combination `hc2 g h + key x g h`. Prove the components needed by the constructor for the conclusion. Introduce `H x hx`. Establish `H2` using `fun j => (hcup (a j • x)).1 (H _ ((hL _ _ (hE _)).1 (by`. Rewrite using `[Submodule.Quotient.mk_smul]`.
+
+Conclude with `L.smul_mem _ hx)))`. Use `choose c hc1 hc2 using H2`. Use `⟨fun g => ∑ j, ι (c j g) * b j, ?_, fun g h => ?_⟩` and prove the remaining obligations. Conclude with `((IsLocallyConstant.iff_continuous _).2 (continuous_pi hc1)).comp (fun w : Fin m → ZMod n => ∑ j, ι (w j) * b j)`. Rewrite using `[hab (P (x.1 g) (ρ' g (y.1 h))), Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e1` using `hc2 j g h`. Establish `e2 : P ((a j • x).1 g) (ρ' g (y.1 h)) = a j * P (x.1 g) (ρ' g (y.1 h))`. Express the relevant statement in the definitionally equal form `P (a j • x.1 g) _ = _`. Rewrite using `[map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+
+Rewrite `e1` using `[e2]`. Rewrite using `[e1, hχ, ← hι, ← hι, map_add, map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `H x hx`. Proceed by induction on `x using Submodule.Quotient.induction_on with | H x =>`.
+
+Take `⟨x, rfl⟩` from `E.surjective x`. Take `⟨f, hf1, hf2⟩` from `H x ((hL _ _ (hE _)).2 hx)`. Use `(hcup x).2 ⟨fun g => t (f g), (hf1.comp t).continuous, fun g h => ?_⟩` and prove the remaining obligations. Rewrite using `[hf2, map_add, map_sub, ht]`.
+-/
 theorem perp_iff {n : ℕ} [NeZero n] {k : Type} [Field k] (ι : ZMod n →+* k)
     {M : Type} [AddCommGroup M] [Module k M] [Module (ZMod n) M] [TopologicalSpace M]
     [DiscreteTopology M] {M' : Type} [AddCommGroup M'] [Module k M'] [TopologicalSpace M']
@@ -198,6 +248,15 @@ theorem perp_iff {n : ℕ} [NeZero n] {k : Type} [Field k] (ι : ZMod n →+* k)
     refine (hcup x).2 ⟨fun g => t (f g), (hf1.comp t).continuous, fun g h => ?_⟩
     rw [hf2, map_add, map_sub, ht]
 
+/- English proof (translation)
+Establish `hk : NS Ω S ≤ MonoidHom.ker ρ`. Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal ?_) ?_` and prove the remaining obligations. Introduce `τ hτ`. Simplify using `only [Set.mem_iUnion] at hτ`. Take `⟨v, hv, A, hA, hτ⟩` from `hτ`.
+
+Conclude with `h v hv A hA τ hτ`. Establish `: (MonoidHom.ker ρ : Set (G F Ω)) = ⋂ m, {g | ρ g m = m}`. Use extensionality with `g`. Simplify using `[LinearMap.ext_iff]`. Rewrite using `[this]`.
+
+Conclude with `isClosed_iInter fun m => isClosed_eq (hρ.comp (continuous_id.prodMk continuous_const)) continuous_const`. Use `⟨QuotientGroup.lift _ ρ hk, ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Unfold `ReciprocityTheory.Gal.ContAction`. Rewrite using `[continuous_prod_of_discrete_right]`. Introduce `m`.
+
+Rewrite using `[(QuotientGroup.isQuotientMap_mk _).continuous_iff]`. Conclude with `hρ.comp (continuous_id.prodMk continuous_const)`.
+-/
 theorem exists_descent {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {R : Type} [CommRing R] {M : Type} [AddCommGroup M] [Module R M]
     [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation R (G F Ω) M) (hρ : ContAction ρ)
@@ -223,6 +282,21 @@ theorem exists_descent {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algeb
   rw [(QuotientGroup.isQuotientMap_mk _).continuous_iff]
   exact hρ.comp (continuous_id.prodMk continuous_const)
 
+/- English proof (translation)
+Introduce `hPT hLF hGF hEC F Ω _ _ _ _ _ _ l _ k _ _ _ M _ _ _ _ _ M' _ _ _ _ _ ρ ρ' χ P hρ hρ' hχ h1 h2 hP S A hS hur L L' hL hL' hperp`. Use `haveI : NeZero (l ^ 1) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Take `⟨t, ht, m, a, b, hab⟩` from `GlobalTheory.finiteField_exists_traceForm_dualBases_pow_one l k`. Use `haveI : Module (ZMod (l ^ 1)) M := AddCommGroup.zmodModule fun x => by`. Rewrite using `[pow_one, ← Nat.cast_smul_eq_nsmul k, CharP.cast_eq_zero, zero_smul]`.
+
+Take `⟨ρS, hρS, hd⟩` from `exists_descent (zmodRep (l ^ 1) ρ) hρ (S : Set _) fun v hv B hB σ hσ => by`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `ρ σ x = x`. Rewrite using `[hur v hv B hB σ hσ]`. Both sides reduce to the same expression.
+
+Use `replace hd : ∀ (g : G F Ω) (x : M), ρ g x = ρS (toGS Ω (S : Set (HeightOneSpectrum (𝓞 F))) g) x := hd`. Take `⟨μ, hμ⟩` from `PoitouTate.exists_lift_cycMod (Ω := Ω) (r := 1) hS`. Establish `hχ' : ∀ g, χ g = (((μ (toGS Ω _ g) : (ZMod (l ^ 1))ˣ) : ZMod (l ^ 1)).val : k)` using `fun g => by`. Rewrite using `[hχ, ← hμ]`. Both sides reduce to the same expression.
+
+Take `⟨e, he⟩` from `exists_dual_equiv P h1 h2 t ht`. Establish `hee : ∀ g y, e (ρ' g y) = twDual μ ρS (toGS Ω _ g) (e y)` using `fun g y => by`. Use extensionality with `x`. Rewrite using `[twDual_apply, he, he, ← map_inv, ← hd, ← form_val_mul, ← hχ', ← hP, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hex` using `fun v : S => exists_transport_cond (ρ.comp (Dec (F := F) (A.1 v.1)).subtype) (ρS.comp (locFam S (fun v => A.1 v.1) v)) (AddEquiv.refl M) (fun g x => hd g x) (L v.1)`.
+
+Use `choose LS hLS1 hLS2 using hex`. Take `⟨f1, f2, hmain⟩` from `GlobalTheory.GWComplex.greenbergWiles_totallyComplex hPT hLF hGF hEC F Ω l 1 M S ρS one_pos hS hρS μ hμ (fun v => A.1 v.1) (fun v => A.2 v.1) LS`. Take `⟨E1⟩` from `GlobalTheory.SelInf.selAll_equiv_sel F Ω k (ZMod (l ^ 1)) M M S A ρ ρS (AddEquiv.refl M) hρ hd L LS hL hLS2`. Take `⟨E2⟩` from `GlobalTheory.SelInf.selAll_equiv_sel F Ω k (ZMod (l ^ 1)) M' _ S A ρ' (twDual μ ρS) e hρ' hee L' (perpCond μ ρS (locFam S fun v => A.1 v.1) (fun v => hρS.comp' (continuous_locFam S _ v)) LS) hL' fun v y y' hy => by`. Rewrite using `[hperp v.1 v.2 y, mem_perpCond]`.
+
+Conclude with `(perp_iff (ZMod.castHom (by rw [pow_one]) k) (ρ.comp (Dec (F := F) (A.1 v.1)).subtype) (ρ'.comp (Dec (F := F) (A.1 v.1)).subtype) P μ ρS (locFam S (fun v => A.1 v.1) v) (fun g x => hd g x) _ (fun g => χ g.1) (fun g => hχ' g) (fun g => hP g) t a b hab (L v.1) (LS v) (hLS2 v) y y' …`. Establish `hs : Function.Surjective (toGS Ω (S : Set (HeightOneSpectrum (𝓞 F))))` using `QuotientGroup.mk'_surjective _`. Use `⟨Finite.of_equiv _ E1.symm, Finite.of_equiv _ E2.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_congr E1, Nat.card_congr E2, ← card_H0_eq_of_equivariant_equiv ρ' _ _ hs e hee, ← card_H0_eq_of_equivariant_equiv ρ ρS _ hs (AddEquiv.refl M) hd, ← Finset.prod_coe_sort S, ← Finset.prod_coe_sort S]`. Simplify using `only [← hLS1]`.
+
+Rewrite using `[← hmain]`. Use `congr 2`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `(card_H0_eq_of_equivariant_equiv (ρ.comp (Dec (F := F) (A.1 v.1)).subtype) (ρS.comp (locFam S (fun v => A.1 v.1) v)) id Function.surjective_id (AddEquiv.refl M) (fun g x => hd g x)).symm`.
+-/
 theorem greenbergWiles_dualPair : PoitouTateTotallyComplex → LocalFiniteness → GlobalFiniteness → GlobalEulerChar → ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyComplex F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [Finite k] [CharP k l] (M : Type) [AddCommGroup M] [Module k M] [TopologicalSpace M] [DiscreteTopology M] [Finite M] (M' : Type) [AddCommGroup M'] [Module k M'] [TopologicalSpace M'] [DiscreteTopology M'] [Finite M'] (ρ : Representation k (G F Ω) M) (ρ' : Representation k (G F Ω) M') (χ : G F Ω → k) (P : M →ₗ[k] M' →ₗ[k] k), ContAction ρ → ContAction ρ' → (∀ g, χ g = (((cycMod F Ω l 1 g : (ZMod (l ^ 1))ˣ) : ZMod (l ^ 1)).val : k)) → (∀ x, (∀ y, P x y = 0) → x = 0) → (∀ y, (∀ x, P x y = 0) → y = 0) → (∀ g x y, P (ρ g x) (ρ' g y) = χ g * P x y) → ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (A : Formalism.GaloisCohomology.Places F Ω), ContainsAbove S l → (∀ v ∉ S, ∀ B : ValuationSubring Ω, IsPlaceOver B v → ∀ σ ∈ Ine (F := F) B, ρ σ = 1) → ∀ (L : ∀ v, Submodule k (H1 (ρ.comp (Dec (F := F) (A.1 v)).subtype))) (L' : ∀ v, Submodule k (H1 (ρ'.comp (Dec (F := F) (A.1 v)).subtype))), (∀ v ∉ S, L v = Formalism.GaloisCohomology.unrAt ρ (A.1 v)) → (∀ v ∉ S, L' v = Formalism.GaloisCohomology.unrAt ρ' (A.1 v)) → (∀ v ∈ S, ∀ y : Z1 (ρ'.comp (Dec (F := F) (A.1 v)).subtype), Submodule.Quotient.mk y ∈ L' v ↔ ∀ x : Z1 (ρ.comp (Dec (F := F) (A.1 v)).subtype), Submodule.Quotient.mk x ∈ L v → CupCob (fun g : Dec (F := F) (A.1 v) => χ g.1) (ρ'.comp (Dec (F := F) (A.1 v)).subtype) P x.1 y.1) → Finite (Formalism.GaloisCohomology.SelAll ρ A L) ∧ Finite (Formalism.GaloisCohomology.SelAll ρ' A L') ∧ Nat.card (Formalism.GaloisCohomology.SelAll ρ A L) * Nat.card (H0 ρ') * (∏ v ∈ S, Nat.card (H0 (ρ.comp (Dec (F := F) (A.1 v)).subtype))) * Nat.card M ^ InfinitePlace.nrComplexPlaces F = Nat.card (Formalism.GaloisCohomology.SelAll ρ' A L') * Nat.card (H0 ρ) * ∏ v ∈ S, Nat.card (L v) := by
   intro hPT hLF hGF hEC F Ω _ _ _ _ _ _ l _ k _ _ _ M _ _ _ _ _ M' _ _ _ _ _ ρ ρ' χ P hρ hρ' hχ h1 h2
     hP S A hS hur L L' hL hL' hperp

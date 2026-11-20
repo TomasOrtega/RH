@@ -12,6 +12,15 @@ variable {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommG
 
 end
 
+/- English proof (translation)
+It suffices to establish `key : ∀ s : Finset (Fin q), A (fun i => if i ∈ s then u i + a i • z else u i) = A u by`. Simplify using `using key Finset.univ`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`.
+
+Consider the case `insert j s hj ih`. Establish `e1 : (fun i => if i ∈ insert j s then u i + a i • z else u i) = Function.update (fun i => if i ∈ s then u i + a i • z else u i) j (u j + a j • z)`. Use extensionality with `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `e2 : Function.update (fun i => if i ∈ s then u i + a i • z else u i) j (u j) = fun i => if i ∈ s then u i + a i • z else u i`. Use extensionality with `i`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using `[hj]`. Simplify using `[h]`. Rewrite using `[e1, ContinuousAlternatingMap.map_update_add, ContinuousAlternatingMap.map_update_smul, hA (Function.update (fun i => if i ∈ s then u i + a i • z else u i) j z) j (by simp), smul_zero, add_zero, e2, ih]`.
+-/
 private theorem multilinear_apply_add_smul_of_vanishing {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {q : ℕ} (A : V [⋀^Fin q]→L[ℝ] F) (z : V)
     (hA : ∀ (u : Fin q → V) (i : Fin q), u i = z → A u = 0) (u : Fin q → V) (a : Fin q → ℝ) :
@@ -42,6 +51,23 @@ private theorem multilinear_apply_add_smul_of_vanishing {V F : Type} [NormedAddC
       hA (Function.update (fun i => if i ∈ s then u i + a i • z else u i) j z) j (by simp),
       smul_zero, add_zero, e2, ih]
 
+/- English proof (translation)
+Introduce `V F _ _ _ _ Y hY hC l hl q w`. Take `⟨hlc, hlpos, hlh⟩` from `hl`. Establish `hld : ∀ p ∈ Y, DifferentiableAt ℝ l p` using `fun p hp => (hlc.contDiffAt (hY.mem_nhds hp)).differentiableAt (by simp)`. Establish `hDr : ∀ p ∈ Y, ∀ h, fderiv ℝ (fun x => l x • x) p h = fderiv ℝ l p h • p + l p • h`. Introduce `p hp h`.
+
+Establish `hd : HasFDerivAt (fun x => l x • x) _ p` using `(hld p hp).hasFDerivAt.smul (hasFDerivAt_id p)`. Rewrite using `[hd.fderiv]`. Simplify using `[add_comm]`. Establish `heul : ∀ p ∈ Y, fderiv ℝ l p p = -l p`. Introduce `p hp`.
+
+Establish `hc : HasDerivAt (fun t : ℝ => t • p) p 1`. Simplify using `using (hasDerivAt_id (1 : ℝ)).smul_const p`. Establish `h' : HasFDerivAt l (fderiv ℝ l p) ((1 : ℝ) • p)`. Simplify using `using (hld p hp).hasFDerivAt`. Establish `h1 : HasDerivAt (fun t : ℝ => l (t • p)) (fderiv ℝ l p p) 1` using `h'.comp_hasDerivAt 1 hc`.
+
+Establish `h2 : HasDerivAt (fun t : ℝ => t⁻¹ * l p) (-l p) 1`. Simplify using `using (hasDerivAt_inv (one_ne_zero (α := ℝ))).mul_const (l p)`. Establish `heq : (fun t : ℝ => l (t • p)) =ᶠ[𝓝 1] fun t => t⁻¹ * l p` using `by filter_upwards [lt_mem_nhds one_pos] with t ht using hlh t ht p hp`. Conclude with `h1.unique (h2.congr_of_eventuallyEq heq)`. Establish `hDrp : ∀ p ∈ Y, fderiv ℝ (fun x => l x • x) p p = 0`.
+
+Introduce `p hp`. Rewrite using `[hDr p hp, heul p hp, neg_smul, neg_add_cancel]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `p hp v i hvi`. Simplify using `only [pull, ContinuousAlternatingMap.compContinuousLinearMap_apply]`.
+
+Apply `ContinuousAlternatingMap.map_coord_zero _ i` to reduce the goal to its premises. Simplify using `[hvi, hDrp p hp]`. Introduce `hR hH p hp`. Use extensionality with `v`. Simplify using `only [pull, ContinuousAlternatingMap.compContinuousLinearMap_apply]`.
+
+Establish `hc` using `hlpos p hp`. Establish `hcp : l p • p ∈ Y` using `hC _ hc p hp`. Establish `e1 : (fun i => fderiv ℝ (fun x => l x • x) p (v i)) = fun i => l p • v i + (fderiv ℝ l p (v i) / l p) • (l p • p)`. Use extensionality with `i`. Rewrite using `[hDr p hp, smul_smul, div_mul_cancel₀ _ hc.ne', add_comm]`.
+
+Express the relevant statement in the definitionally equal form `w (l p • p) (fun i => fderiv ℝ (fun x => l x • x) p (v i)) = w p v`. Rewrite using `[e1, multilinear_apply_add_smul_of_vanishing (w (l p • p)) (l p • p) (fun u i hu => hR _ hcp u i hu)]`. Conclude with `hH _ hc p hp v`.
+-/
 theorem pullA : PullTranslates := by
   intro V F _ _ _ _ Y hY hC l hl q w
   obtain ⟨hlc, hlpos, hlh⟩ := hl

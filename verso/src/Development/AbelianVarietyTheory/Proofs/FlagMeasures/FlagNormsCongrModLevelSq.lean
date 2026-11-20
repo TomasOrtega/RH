@@ -11,6 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.NormCong
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hnd`. Take `⟨a, b, hab⟩` from `(Prime.coprime_iff_not_dvd (Nat.prime_iff_prime_int.mp hℓ)).2 hnd`. Apply `hq.not_isUnit` to reduce the goal to its premises. Establish `h1 : ((a * ℓ + b * m : ℤ) : O) = 1` using `by rw [hab]; simp`. Move the coercions through the operations in `at h1`.
+
+Rewrite `h1` using `[h, ← hqℓ]`. Conclude with `isUnit_iff_exists_inv.2 ⟨a + b * c, by linear_combination h1⟩`.
+-/
 private theorem prime_dvd_int_of_cast_eq_mul {O : Type} [CommRing O] [IsDomain O] {ℓ : ℕ} (hℓ : ℓ.Prime) {q : O}
     (hq : Irreducible q) (hqℓ : q = (ℓ : O)) {m : ℤ} {c : O} (h : (m : O) = q * c) : (ℓ : ℤ) ∣ m := by
   by_contra hnd
@@ -21,6 +26,11 @@ private theorem prime_dvd_int_of_cast_eq_mul {O : Type} [CommRing O] [IsDomain O
   rw [h, ← hqℓ] at h1
   exact isUnit_iff_exists_inv.2 ⟨a + b * c, by linear_combination h1⟩
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `prime_dvd_int_of_cast_eq_mul hℓ hq hqℓ (c := q * c) (by rw [h]; ring)`. Move the coercions through the operations in `at h`. Rewrite `h` using `[← hqℓ]`. Establish `h2 : ((m : ℤ) : O) = q * c`. Apply `mul_left_cancel₀ hq.ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, rfl⟩` from `prime_dvd_int_of_cast_eq_mul hℓ hq hqℓ h2`. Conclude with `⟨k, by ring⟩`.
+-/
 theorem int_sq_dvd_of_eq {O : Type} [CommRing O] [IsDomain O] {ℓ : ℕ} (hℓ : ℓ.Prime) {q : O} (hq : Irreducible q)
     (hqℓ : q = (ℓ : O)) {n : ℤ} {c : O} (h : (n : O) = q ^ 2 * c) : (ℓ : ℤ) ^ 2 ∣ n := by
   obtain ⟨m, rfl⟩ := prime_dvd_int_of_cast_eq_mul hℓ hq hqℓ (c := q * c) (by rw [h]; ring)
@@ -32,6 +42,17 @@ theorem int_sq_dvd_of_eq {O : Type} [CommRing O] [IsDomain O] {ℓ : ℕ} (hℓ 
   obtain ⟨k, rfl⟩ := prime_dvd_int_of_cast_eq_mul hℓ hq hqℓ h2
   exact ⟨k, by ring⟩
 
+/- English proof (translation)
+Use `haveI hmax : (Ideal.span {(ℓ : ℤ)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hℓ).irreducible`. Establish `hker : RingHom.ker (algebraMap ℤ (𝓞 K)) ≤ Ideal.span {(ℓ : ℤ)}`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).mp (algebraMap ℤ (𝓞 K)).injective_int]`. Conclude with `bot_le`. Take `⟨Q, hQ, hQc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 K) _ hker`.
+
+Establish `hmem : ((ℓ : ℤ) : 𝓞 K) ∈ Q`. Establish `h1 : (ℓ : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 K))` using `hQc ▸ Ideal.mem_span_singleton_self _`. Simplify using `using h1`. Establish `hne : Q ≠ ⊥`. Introduce and unpack `rfl`.
+
+Establish `h0 : ((ℓ : ℕ) : 𝓞 K) = 0` using `by simpa using hmem`. Conclude with `hℓ.ne_zero (Nat.cast_eq_zero.mp h0)`. Use `⟨⟨Q, hQ.isPrime, hne⟩, ?_⟩` and prove the remaining obligations. Use `haveI := hQ`. Use `show ringChar (𝓞 K ⧸ Q) = ℓ`.
+
+Establish `hz : ((ℓ : ℕ) : 𝓞 K ⧸ Q) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk Q), Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using hmem`. Break down `(Nat.dvd_prime hℓ).1 ((ringChar.spec _ ℓ).1 hz) with h1 | h1` into its components or cases. Conclude with `absurd h1 CharP.ringChar_ne_one`.
+
+Conclude with `h1`.
+-/
 theorem exists_place_resChar (K : Type) [Field K] [NumberField K] {ℓ : ℕ} (hℓ : ℓ.Prime) :
     ∃ p : IsDedekindDomain.HeightOneSpectrum (𝓞 K), Formalism.MainNotions.S.Loc.resChar p = ℓ := by
   haveI hmax : (Ideal.span {(ℓ : ℤ)}).IsMaximal :=
@@ -57,6 +78,17 @@ theorem exists_place_resChar (K : Type) [Field K] [NumberField K] {ℓ : ℕ} (h
   · exact absurd h1 CharP.ringChar_ne_one
   · exact h1
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `exists_place_resChar D.host.F (D.host.g_prime i)`. Establish `hsome : ((D.s.atP p).split).isSome`. Rewrite using `[D.s_split p, hp]`. Apply the tactic sequence `fin_cases i <;> simp`. Take `⟨sg, hsg⟩` from `Option.isSome_iff_exists.mp hsome`.
+
+Take `⟨-, -, -, -, -, hm⟩` from `Z.agree p`. Break down `hg : (Z.M p).split with _ | g` into its components or cases. Rewrite `hm` using `[hg, hsg]`. Conclude with `(hm : False).elim`. Rewrite `hm` using `[hg, hsg]`.
+
+Take `⟨-, hq⟩` from `hm`. Take `⟨-, -, -, -, hG⟩` from `hN p`. Take `⟨-, c, hc⟩` from `hG g hg`. Take `⟨-, -, hA, hB'⟩` from `hB p`. Use `int_sq_dvd_of_eq (D.host.g_prime i) g.q_irr ?_ (c := c) ?_` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hq, sg.q_eq, hp]`. Simplify using the standard rewrite rules. Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`.
+
+Rewrite using `[← hA, ← hB']`. Conclude with `hc`.
+-/
 theorem sq_dvd_at (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (Tn T'n : ℕ)
     (F : LFlag (VS D) D.R.rS (Tn : D.host.E)) (F' : LFlag (VS D) D.R.rS (T'n : D.host.E))
     (hB : Based Z FP Tn T'n F F') (hN : ∀ p, (FP p).NormsOK) (i : Fin 2) :
@@ -87,6 +119,13 @@ theorem sq_dvd_at (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH
 end GlobalTheory.NormCong
 
 open GlobalTheory.NormCong in
+/- English proof (translation)
+Introduce `D Z FP u u' F F' hB hN`. Establish `h0` using `sq_dvd_at D Z FP (Tu D u) (Tu D u') F F' hB hN 0`. Establish `h1` using `sq_dvd_at D Z FP (Tu D u) (Tu D u') F F' hB hN 1`. Establish `hcop : IsCoprime (((D.host.g 0 : ℕ) : ℤ) ^ 2) (((D.host.g 1 : ℕ) : ℤ) ^ 2)`. Apply `IsCoprime.pow` to reduce the goal to its premises.
+
+Conclude with `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne)`. Establish `h` using `dvd_sub_comm.1 (hcop.mul_dvd h0 h1)`. Rewrite using `[Nat.modEq_iff_dvd, show gS D = D.host.g 0 * D.host.g 1 from rfl]`. Use `push_cast`. Rewrite using `[mul_pow]`.
+
+Conclude with `h`.
+-/
 theorem GlobalTheory.NormCong.norms_congr : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (u u' : D.what₂.Word) (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).NormsOK) → (D.mem u).A.T ≡ (D.mem u').A.T [MOD (gS D) ^ 2] := by
   intro D Z FP u u' F F' hB hN
   have h0 := sq_dvd_at D Z FP (Tu D u) (Tu D u') F F' hB hN 0

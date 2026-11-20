@@ -8,6 +8,21 @@ open GlobalTheory.TopLevelInv
 namespace GlobalTheory.FFunLeftInv
 open GlobalTheory.SplitFlip
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ A A' D _ _ _ _ _ _ μ _ σ ν Ψ u hu h`. Set `P : Matrix A A k → Matrix D D k` to `fun X => (fromBlocks X 0 0 (1 : Matrix A' A' k)).submatrix σ.symm σ.symm`. Establish `hP : ∀ X Y, P X * P Y = P (X * Y)` using `fun X Y => by`. Simplify using `only [P, Matrix.submatrix_mul_equiv, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+
+Establish `hP1 : P 1 = 1` using `by simp [P, fromBlocks_one]`. Set `m : GL D k` to `⟨P u.valᵀ, P (u⁻¹).valᵀ, by rw [hP, ← transpose_mul, Units.inv_mul, transpose_one, hP1], by rw [hP, ← transpose_mul, Units.mul_inv, transpose_one, hP1]⟩`. Use `set h' : GL D k := invT m * h with hh'`. Establish `e1 : u.valᵀ * (X0 k σ * (invT h).val) = X0 k σ * (invT h').val`. Rewrite using `[hh', map_mul, invT_invT, Units.val_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc]`.
+
+Use `congr 1`. Use extensionality with `i j`. Rewrite using `[frameMatrixFirstColumnBlock_mul_apply]`. Apply the tactic sequence `obtain ⟨j | j, rfl⟩ := σ.surjective j <;> simp [m, P, X0, Matrix.mul_apply, eq_comm]`. Establish `e2 : Y0 k σ * h'.val = Y0 k σ * h.val`.
+
+Rewrite using `[hh', Units.val_mul, ← Matrix.mul_assoc]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[invT_val]`. Apply the tactic sequence `obtain ⟨j | j, rfl⟩ := σ.surjective j <;> simp [m, P, Y0, Matrix.mul_apply, one_apply, eq_comm]`.
+
+Establish `e3 : gdet h' = (gdet u)⁻¹ * gdet h`. Rewrite using `[hh', gdet_mul, gdet_invT]`. Use `congr 2`. Use `ext`. Simplify using `[m, P, Matrix.GeneralLinearGroup.val_det_apply, det_submatrix_equiv_self, det_fromBlocks_zero₂₁]`.
+
+Establish `hv : valuation k ((gdet u)⁻¹ : kˣ) = 1`. Rewrite using `[← map_inv]`. Conclude with `valuation_gdet_of_mem_KO (inv_mem hu)`. Rewrite using `[e1, splitTheta_fFun_frameFirstBlock_mul, splitTheta_fFun_frameFirstBlock_mul, e2, e3, apow_mul, apow_of_valuation_eq_one hv, map_mul, Units.val_mul, map_inv]`. Establish `: (ν (gdet u) : ℂ) * ((ν (gdet u))⁻¹ : ℂˣ) = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+
+Take the linear combination `((ν (gdet h) : ℂ) * apow (gdet h) ((Fintype.card D : ℂ) / 2) * smallF μ ν Ψ (Y0 k σ * h.val)) * this`.
+-/
 theorem fFun_transpose_mul_of_mem_KO : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {A A' D : Type} [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] [Fintype D] [DecidableEq D]
     (μ : Measure (GL A' k)) [μ.IsHaarMeasure] (σ : A ⊕ A' ≃ D) (ν : kˣ →* ℂˣ) (Ψ : Matrix A' D k → ℂ) (u : GL A k), u ∈ KO k A → ∀ h : GL D k,
       (ν (gdet u) : ℂ) * fFun μ σ ν Ψ (u.valᵀ * (X0 k σ * (invT h).val)) = fFun μ σ ν Ψ (X0 k σ * (invT h).val) := by

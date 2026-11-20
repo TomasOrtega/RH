@@ -15,6 +15,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open Formalism.MainNotions.Gaps.EtaleWeightGaps.Num
 open scoped IntermediateField
 
+/- English proof (translation)
+Establish `hx1` using `L.sc.one_lt_alt.le`. Establish `he` using `L.sc.eps_pos`. Establish `h1 : L.sc.x ≤ L.sc.x ^ (9 / 2 + 10 * L.sc.eps - szTh L)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(h1.trans S.2.2.1.1).trans (Pm.k_le_r D)`.
+-/
 theorem scale_le_rank {D : D7} {L : SizeData₂ D} (S : SizesAt L) : L.sc.x ≤ (D.R.r : ℝ) := by
   have hx1 := L.sc.one_lt_alt.le
   have he := L.sc.eps_pos
@@ -23,6 +26,13 @@ theorem scale_le_rank {D : D7} {L : SizeData₂ D} (S : SizesAt L) : L.sc.x ≤ 
       _ ≤ _ := Real.rpow_le_rpow_of_exponent_le hx1 (by unfold szTh; linarith)
   exact (h1.trans S.2.2.1.1).trans (Pm.k_le_r D)
 
+/- English proof (translation)
+Introduce `D L P _ S hg hx`. Establish `hL` using `Pm.one_le_L L`. Establish `h6` using `Pm.six_le_r D`. Establish `hf` using `Pm.two_le_f D`. Use `⟨⟨?_, ?_, ?_, hg, P.pde_log, ?_⟩, fun h => h.2⟩` and prove the remaining obligations.
+
+Establish `h : ((62 : ℕ) : ℝ) ≤ D.R.r` using `le_trans (by norm_num) (hx.trans (scale_le_rank S))`. Conclude with `h` after adjusting the coercions. Establish `h1` using `Pm.log_r_le P`. Establish `h2 : Real.log 2 ≤ Real.log (D.R.r : ℝ)` using `Real.log_le_log (by norm_num) (by linarith)`. Combine the linear relations using `[Real.log_two_gt_d9]`.
+
+Combine the linear relations using `[Pm.log_f_le P]`. Establish `h : Real.log |((discr D.host.E : ℤ) : ℝ)| ≤ 2 * D.R.f * L.sc.L` using `logdE_le_two_f_L P`. Rewrite using `[div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem hostSz_of_sizes : ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (_Tp : ParamsT D L Pm), SizesAt L →
     (∀ i, Real.log (D.host.g i) ≤ 9 * L.sc.L + 1) → (10 : ℝ) ^ 60 ≤ L.sc.x →
     HostSz D.host L.sc.L ∧ (Sz (FO D) (poR D.R L.sc.L) (poR D.R L.sc.L) → FieldSmall D L) := by

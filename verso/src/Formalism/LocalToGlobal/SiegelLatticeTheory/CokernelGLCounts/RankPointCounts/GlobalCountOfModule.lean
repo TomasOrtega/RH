@@ -18,6 +18,29 @@ section RG8
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
+/- English proof (translation)
+Establish `hT₁` using `hyp.1.1`. Establish `hT₂` using `hg.1`. Establish `hF₁ : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f t₁.T` using `⟨hT₁.2.1.2.1, hT₁.2.1.2.2.1⟩`. Establish `hF₁' : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f' t₁.T'` using `⟨hT₁.2.2.1.2.1, hT₁.2.2.1.2.2.1⟩`. Establish `hD₂ : IsUnit (H.Dl f₂ f₂' (r + 1))` using `hT₂.2.2.2.1`.
+
+Establish `hD₁ : IsUnit (H.Dl t₁.f t₁.f' (r + 1))` using `hT₁.2.2.2.1`. Take `⟨ψ, -, hψc⟩` from `corrIso_holds M r n V H hn t₁ f₂ f₂' φ φ' hyp hD₂`. Establish `hU₁ : IsCompl (Submodule.span E (Set.range (Sum.elim t₁.f t₁.f'))) (H.W0 t₁.f t₁.f')` using `isCompl_span_frames_W0 H t₁.f t₁.f' t₁.T t₁.T' hF₁ hF₁' hD₁ (isUnit_Gdet H _ _ _ _ hT₁.2.2.2.2.1)`. Establish `hU₂ : IsCompl (Submodule.span E (Set.range (Sum.elim f₂ f₂'))) (H.W0 f₂ f₂')` using `isCompl_span_frames_W0 H f₂ f₂' t₁.T t₁.T' hyp.2.1 hyp.2.2.1 hD₂ (isUnit_Gdet H _ _ _ _ hT₂.2.2.2.2.1)`. Establish `hZ₁ : IsUnit (H.Zhat t₁.f t₁.f').det` using `by rw [← Dl_succ]; exact hD₁`.
+
+Establish `hZ₁' : IsUnit (H.Zhat t₁.f' t₁.f).det` using `det_Zhat_swap_unit H _ _ hZ₁`. Establish `hzφ : φ (H.mkW t₁.f ⟨t₁.f (Fin.last r), z_mem_perpX H hF₁⟩) = H.mkW f₂ ⟨f₂ (Fin.last r), z_mem_perpX H hyp.2.1⟩`. Establish `e` using `hyp.2.2.2.2.1 ⟨_, z_mem_perpX H hF₁⟩ ⟨_, z_mem_perpX H hyp.2.1⟩ rfl rfl`. Simplify using `using e`. Establish `hzφ' : φ' (H.mkW t₁.f' ⟨t₁.f' (Fin.last r), z_mem_perpX H hF₁'⟩) = H.mkW f₂' ⟨f₂' (Fin.last r), z_mem_perpX H hyp.2.2.1⟩`.
+
+Establish `e` using `hyp.2.2.2.2.2 ⟨_, z_mem_perpX H hF₁'⟩ ⟨_, z_mem_perpX H hyp.2.2.1⟩ rfl rfl`. Simplify using `using e`. Take `⟨u, hu⟩` from `hD₂`. Establish `hoφ : φ (H.mkW t₁.f ⟨H.om' t₁.f t₁.f', om'_mem_perpX H _ _⟩) = ((↑u⁻¹ : E) * H.Dl t₁.f t₁.f' (r + 1)) • H.mkW f₂ ⟨H.om' f₂ f₂', om'_mem_perpX H _ _⟩`. Establish `e : H.Dl f₂ f₂' (r + 1) • φ (H.mkW t₁.f ⟨H.om' t₁.f t₁.f', om'_mem_perpX H _ _⟩) = H.Dl t₁.f t₁.f' (r + 1) • H.mkW f₂ ⟨H.om' f₂ f₂', om'_mem_perpX H _ _⟩` using `hyp.2.2.2.1.2.2.2.1 _ _ rfl rfl`.
+
+Rewrite `e` using `[← hu]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Use `_ = _ := by rw [e, smul_smul]`. Take `⟨u', hu'⟩ : IsUnit (M.L.cj (H.Dl f₂ f₂' (r + 1)))` from `by rw [← hu]; exact (Units.isUnit u).map _`.
+
+Establish `hoφ' : φ' (H.mkW t₁.f' ⟨H.om' t₁.f' t₁.f, om'_mem_perpX H _ _⟩) = ((↑u'⁻¹ : E) * M.L.cj (H.Dl t₁.f t₁.f' (r + 1))) • H.mkW f₂' ⟨H.om' f₂' f₂, om'_mem_perpX H _ _⟩`. Establish `e : M.L.cj (H.Dl f₂ f₂' (r + 1)) • φ' (H.mkW t₁.f' ⟨H.om' t₁.f' t₁.f, om'_mem_perpX H _ _⟩) = M.L.cj (H.Dl t₁.f t₁.f' (r + 1)) • H.mkW f₂' ⟨H.om' f₂' f₂, om'_mem_perpX H _ _⟩` using `hyp.2.2.2.1.2.2.2.2.1 _ _ (om'_swap H _ _) (om'_swap H _ _)`. Rewrite `e` using `[← hu']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`.
+
+Use `_ = _ := by rw [e, smul_smul]`. Establish `hC2''` using `cond_second_of_iso H t₁.f' t₁.f f₂' f₂ t₁.T' t₁.T' hF₁' hyp.2.2.1 hZ₁' φ' _ hzφ' hoφ'`. Use `⟨ψ, { hU₂ := hU₂ hU₁ := hU₁ hsd₁ := hT₁.1 hsd₂ := hT₂.1 hMM₁ := Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hyp.1.2.1 i) hMM₂ := Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hg.2.1 i) hth := fun w => hth w (ψ w) ((hψc _ _).2 ⟨w.2, rfl⟩) hθ := ?_ hsurj₁ := surj_MMsharp M …` and prove the remaining obligations. Take `⟨_, _, c₁, _⟩` from `(hψc w (ψ w)).2 ⟨w.2, rfl⟩`. Conclude with `c₁`.
+
+Use the proof step `hC1' := fun w => by`. Take `⟨_, _, _, c₂⟩` from `(hψc w (ψ w)).2 ⟨w.2, rfl⟩`. Conclude with `c₂`. Use `hC2 := cond_second_of_iso H t₁.f t₁.f' f₂ f₂' t₁.T t₁.T hF₁ hyp.2.1 hZ₁ φ _ hzφ hoφ`. Use the proof step `hC2' := fun v hv hvp => by`.
+
+Rewrite `hv` using `[← U_swap]`. Take `⟨v', hv', hv'p, e⟩` from `hC2'' v hv hvp`. Rewrite `hv'` using `[U_swap]`. Conclude with `⟨v', hv', hv'p, e⟩ }⟩`. Introduce `m₁ m₂`.
+
+Rewrite using `[hθ m₁ m₂]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n₁, n₂, hc, h1, h2⟩`. Take `⟨hn₁, hψn⟩` from `(hψc _ _).1 hc`. Conclude with `⟨⟨n₁, hn₁⟩, h1, by rw [hψn]; exact h2⟩`.
+
+Introduce and unpack `⟨w, h1, h2⟩`. Conclude with `⟨w, ψ w, (hψc _ _).2 ⟨w.2, rfl⟩, h1, h2⟩`.
+-/
 theorem rgHyp_of (M : Model F E) (hM : M.OK) {r n : ℕ} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
     (hn : Module.finrank E V = n) (t₁ : Term V M r) (f₂ f₂' : Fin (r + 1) → V)
     (φ : H.Wb t₁.f ≃ₗ[E] H.Wb f₂) (φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb f₂') (hyp : LocalCountHypotheses H t₁ f₂ f₂' φ φ')
@@ -101,6 +124,17 @@ theorem rgHyp_of (M : Model F E) (hM : M.OK) {r n : ℕ} {V : Type} [AddCommGrou
   · rintro ⟨w, h1, h2⟩
     exact ⟨w, ψ w, (hψc _ _).2 ⟨w.2, rfl⟩, h1, h2⟩
 
+/- English proof (translation)
+Introduce `hsome V _ _ H hn t₁ f₂ f₂' φ φ' hyp Λ₂ hg hth θ hθ`. Take `⟨g, hs⟩` from `Option.isSome_iff_exists.1 hsome`. Take `⟨ψ, D⟩` from `rgHyp_of M hM H hn t₁ f₂ f₂' φ φ' hyp Λ₂ hg hth θ hθ`. Establish `core1` using `fun hI => Set.Subset.antisymm (rg_fwd_sub H g D hI) (rg_fwd_sup H g D hI)`. Establish `core2` using `fun hG => Set.Subset.antisymm (rg_bwd_sub H g D hG) (rg_bwd_sup H g D hG)`.
+
+Establish `hL1` using `Lset_eq_snd H hM g hs t₁ hyp.1 D.hU₁`. Establish `hL1'` using `Lset_eq_fst H hM g hs t₁ hyp.1 D.hU₁`. Establish `hL2` using `Lset_eq_snd H hM g hs (⟨Λ₂, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r) hg D.hU₂`. Establish `hL2'` using `Lset_eq_fst H hM g hs (⟨Λ₂, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r) hg D.hU₂`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hR`. Use `⟨fun h => absurd (hs.symm.trans h) (by simp), fun g' hg' => ?_⟩` and prove the remaining obligations. Rewrite using `[Option.some.inj (hg'.symm.trans hs)]`. Conclude with `core1 (hR.2.2.2.2 g hs)`. Introduce and unpack `⟨-, hGR⟩`.
+
+Establish `hI` using `core2 (hGR g hs)`. Establish `e : φ '' (Prod.snd '' H.iotaGraph g t₁) = Prod.snd '' (Prod.map φ' φ '' H.iotaGraph g t₁)`. Rewrite using `[Set.image_image, Set.image_image]`. Both sides reduce to the same expression. Establish `e' : φ' '' (Prod.fst '' H.iotaGraph g t₁) = Prod.fst '' (Prod.map φ' φ '' H.iotaGraph g t₁)`.
+
+Rewrite using `[Set.image_image, Set.image_image]`. Both sides reduce to the same expression. Use `⟨(congrArg (φ '' ·) hL1).trans (e.trans ((congrArg (Prod.snd '' ·) hI).trans hL2.symm)), hyp.2.2.2.2.1, (congrArg (φ' '' ·) hL1').trans (e'.trans ((congrArg (Prod.fst '' ·) hI).trans hL2'.symm)), hyp.2.2.2.2.2, fun g' hg' => ?_⟩` and prove the remaining obligations. Rewrite using `[Option.some.inj (hg'.symm.trans hs)]`. Conclude with `hI`.
+-/
 theorem claimRG_at (M : Model F E) (r n : ℕ) (hM : M.OK) : ClaimRG M r n := by
   intro hsome V _ _ H hn t₁ f₂ f₂' φ φ' hyp Λ₂ hg hth θ hθ
   obtain ⟨g, hs⟩ := Option.isSome_iff_exists.1 hsome
@@ -131,14 +165,23 @@ theorem claimRG_at (M : Model F E) (r n : ℕ) (hM : M.OK) : ClaimRG M r n := by
     rw [Option.some.inj (hg'.symm.trans hs)]
     exact hI
 
+/- English proof (translation)
+The claim follows from `claimR_of_modes M r n (claimRL_at M r n hM) (claimRG_at M r n hM)`.
+-/
 theorem claimR_at (M : Model F E) (r n : ℕ) (hM : M.OK) : ClaimR M r n :=
   claimR_of_modes M r n (claimRL_at M r n hM) (claimRG_at M r n hM)
 
+/- English proof (translation)
+The claim follows from `localCount_of_glue M r n hM (PI.LocCntLat.GE.glueEta_holds M r) (PI.LocCntLat.GC.glueConv_holds M r) (genOfPrim_holds M r n) (claimR_at M r n hM) h0 hU`.
+-/
 theorem localCount_of_module (M : Model F E) (r n : ℕ) (hM : M.OK) (h0 : ModSide0 M r n M.split.isSome)
     (hU : ModSideU M r n M.split.isSome) : Formalism.MainNotions.ThinScalesBound.FamilyLocalModel M r n :=
   localCount_of_glue M r n hM (PI.LocCntLat.GE.glueEta_holds M r) (PI.LocCntLat.GC.glueConv_holds M r)
     (genOfPrim_holds M r n) (claimR_at M r n hM) h0 hU
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hM`. Conclude with `localCount_of_module M D.R.rS D.R.r hM (h0 F E M hM) (hU F E M hM)`.
+-/
 theorem globalCount_of_module (D : Formalism.BasicNotions.D7)
     (h0 : Formalism.MainNotions.ThinScalesBound.AllLoc (fun M => ModSide0 M D.R.rS D.R.r M.split.isSome))
     (hU : Formalism.MainNotions.ThinScalesBound.AllLoc (fun M => ModSideU M D.R.rS D.R.r M.split.isSome)) : Formalism.MainNotions.ThinScalesBound.T2 D := by

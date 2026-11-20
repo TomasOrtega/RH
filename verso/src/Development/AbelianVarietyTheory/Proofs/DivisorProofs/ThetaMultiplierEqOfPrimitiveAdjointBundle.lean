@@ -25,6 +25,11 @@ section Ring
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Rewrite using `[MonObj.comp_mul, IsMonHom.one_hom, IsMonHom.one_hom, MonObj.one_eq_one, _root_.mul_one]`. Use `mul_hom := by`. Establish `h : ∀ k : G ⟶ G, [IsMonHom k] → (k ⊗ₘ k) ≫ μ[G] = (fst G G ≫ k) * (snd G G ≫ k)` using `fun k _ => by`. Rewrite using `[MonObj.mul_eq_mul, MonObj.comp_mul]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[MonObj.comp_mul, IsMonHom.mul_hom, IsMonHom.mul_hom, h, h, MonObj.mul_eq_mul, MonObj.comp_mul]`. Simplify using `only [← Category.assoc, tensorHom_fst, tensorHom_snd, MonObj.comp_mul]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+-/
 theorem isMonHom_mul' (f g : G ⟶ G) [IsMonHom f] [IsMonHom g] : IsMonHom (f * g) where
   one_hom := by
     rw [MonObj.comp_mul, IsMonHom.one_hom, IsMonHom.one_hom, MonObj.one_eq_one, _root_.mul_one]
@@ -82,11 +87,17 @@ def PolyO : Type := Polynomial ℤ
 
 instance : CommRing PolyO := inferInstanceAs (CommRing (Polynomial ℤ))
 
+/- English proof (translation)
+Rewrite using `[Polynomial.comp_assoc]`. Simplify using the standard rewrite rules.
+-/
 theorem comp_one_sub_invol (p : Polynomial ℤ) :
     (p.comp (1 - Polynomial.X)).comp (1 - Polynomial.X) = p := by
   rw [Polynomial.comp_assoc]
   simp
 
+/- English proof (translation)
+The claim follows from `Polynomial.add_comp`.
+-/
 theorem comp_one_sub_add (p q : Polynomial ℤ) :
     (p + q).comp (1 - Polynomial.X) = p.comp (1 - Polynomial.X) + q.comp (1 - Polynomial.X) :=
   Polynomial.add_comp
@@ -99,8 +110,14 @@ instance : StarRing PolyO where
 
 def xO : PolyO := (Polynomial.X : Polynomial ℤ)
 
+/- English proof (translation)
+The claim follows from `Polynomial.X_comp (R := ℤ)`.
+-/
 theorem star_xO : star xO = 1 - xO := Polynomial.X_comp (R := ℤ)
 
+/- English proof (translation)
+Rewrite using `[star_xO]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem xO_add_star : xO + star xO = 1 := by rw [star_xO]; ring
 
 section Act
@@ -120,6 +137,9 @@ def polyAct : RingAct G PolyO where
     have e := map_add (Polynomial.aeval (R := ℤ) (endOf f)) (a : Polynomial ℤ) (b : Polynomial ℤ)
     exact (congrArg (fun u : endRing G => evId u.1) e).trans rfl
 
+/- English proof (translation)
+Establish `e` using `Polynomial.aeval_X (R := ℤ) (endOf f)`. Conclude with `(congrArg (fun u : endRing G => evId u.1) e).trans (Category.id_comp f)`.
+-/
 theorem polyAct_X : (polyAct f).act xO = f := by
   have e := Polynomial.aeval_X (R := ℤ) (endOf f)
   exact (congrArg (fun u : endRing G => evId u.1) e).trans (Category.id_comp f)
@@ -127,6 +147,11 @@ theorem polyAct_X : (polyAct f).act xO = f := by
 def addOf (o : RingAct G PolyO) : PolyO →+ Additive (G ⟶ G) :=
   AddMonoidHom.mk' (fun a => Additive.ofMul (o.act a)) fun a b => by rw [o.map_add]; rfl
 
+/- English proof (translation)
+Establish `e` using `map_sub (addOf (polyAct f)) 1 xO`. Establish `e' : (polyAct f).act (1 - xO) = 𝟙 G / f`. Use `congrArg Additive.toMul e` as an intermediate fact. Simplify using `only [addOf, AddMonoidHom.mk'_apply, (polyAct f).map_one, polyAct_X] at this`. Conclude with `this`.
+
+Rewrite using `[star_xO, e']`. Conclude with `(eq_div_of_mul_eq' ((mul_comm f' f).trans h)).symm`.
+-/
 theorem polyAct_star {f' : G ⟶ G} (h : f * f' = 𝟙 G) : (polyAct f).act (star xO) = f' := by
   have e := map_sub (addOf (polyAct f)) 1 xO
   have e' : (polyAct f).act (1 - xO) = 𝟙 G / f := by
@@ -146,10 +171,28 @@ section Adj
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Rewrite using `[lam_comm, lam_mul_left hL hΘ, lam_comm, lam_comm _ z]`.
+-/
 theorem lam_mul_right' {L : LB G.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta G L), t.IsGen) {T : Over S}
     (x y z : T ⟶ G) : lam (cls L hL) x (y * z) = lam (cls L hL) x y + lam (cls L hL) x z := by
   rw [lam_comm, lam_mul_left hL hΘ, lam_comm, lam_comm _ z]
 
+/- English proof (translation)
+Establish `h0 : o.act 0 = 1`. Establish `e` using `map_zero (addOf o)`. Conclude with `congrArg Additive.toMul e`. Establish `hn : ∀ a, o.act (-a) = (o.act a)⁻¹` using `fun a => by`. Establish `e` using `map_neg (addOf o) a`.
+
+Conclude with `congrArg Additive.toMul e`. Set `Sb : Subring PolyO` to `{ carrier := {a | AdjCls (cls L hL) (cls L hL) (o.act a) (o.act (star a))} mul_mem' := fun {a b} ha hb T x z => by show lam _ x (z ≫ o.act (star (a * b))) = lam _ (x ≫ o.act (a * b)) z`. Rewrite using `[star_mul, o.map_mul, o.map_mul, ← Category.assoc, hb, ← Category.assoc, ha]`. Use the proof step `one_mem' := fun T x z => by show lam _ x (z ≫ o.act (star 1)) = lam _ (x ≫ o.act 1) z`. Rewrite using `[star_one, o.map_one, Category.comp_id, Category.comp_id]`.
+
+Use the proof step `add_mem' := fun {a b} ha hb T x z => by show lam _ x (z ≫ o.act (star (a + b))) = lam _ (x ≫ o.act (a + b)) z`. Rewrite using `[star_add, o.map_add, o.map_add]`. Use `show lam _ x (z ≫ (o.act (star a) * o.act (star b))) = lam _ (x ≫ (o.act a * o.act b)) z`. Rewrite using `[MonObj.comp_mul, MonObj.comp_mul, lam_mul_right' hL hΘ, lam_mul_left hL hΘ, ha, hb]`. Use the proof step `zero_mem' := fun T x z => by show lam _ x (z ≫ o.act (star 0)) = lam _ (x ≫ o.act 0) z`.
+
+Rewrite using `[star_zero, h0, MonObj.comp_one, MonObj.comp_one, lam_one_left, lam_one_right]`. Use the proof step `neg_mem' := fun {a} ha T x z => by show lam _ x (z ≫ o.act (star (-a))) = lam _ (x ≫ o.act (-a)) z`. Rewrite using `[star_neg, hn, hn, GrpObj.comp_inv, GrpObj.comp_inv]`. Establish `e₁` using `lam_mul_right' hL hΘ x (z ≫ o.act (star a)) (z ≫ o.act (star a))⁻¹`. Establish `e₂` using `lam_mul_left hL hΘ (x ≫ o.act a) (x ≫ o.act a)⁻¹ z`.
+
+Rewrite `e₁` using `[mul_inv_cancel, lam_one_right]`. Rewrite `e₂` using `[mul_inv_cancel, lam_one_left]`. Rewrite `e₁` using `[ha]`. Conclude with `(eq_neg_of_add_eq_zero_right e₁.symm).trans (eq_neg_of_add_eq_zero_right e₂.symm).symm }`. Establish `hXm : xO ∈ Sb` using `hX`.
+
+Introduce `a`. Use `show a ∈ Sb`. Proceed by induction on `(a : Polynomial ℤ) using Polynomial.induction_on with`. Consider the case `C c => exact (eq_intCast Polynomial.C c) ▸ intCast_mem Sb c`. Consider the case `add p q hp hq => exact Sb.add_mem hp hq`.
+
+Consider the case `monomial n c h`. Establish `e : (Polynomial.C c * Polynomial.X ^ (n + 1) : Polynomial ℤ) = Polynomial.C c * Polynomial.X ^ n * Polynomial.X`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Sb.mul_mem h hXm`.
+-/
 theorem adjCls_all {L : LB G.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta G L), t.IsGen) (o : RingAct G PolyO)
     (hX : AdjCls (cls L hL) (cls L hL) (o.act xO) (o.act (star xO))) :
     ∀ a, AdjCls (cls L hL) (cls L hL) (o.act a) (o.act (star a)) := by
@@ -198,6 +241,19 @@ theorem adjCls_all {L : LB G.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta G 
 
 end Adj
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D A G _ _ hG U f f' hf hf' hff hadj hcls fB m hB hm`. Set `o` to `polyAct f`. Establish `aX : o.act xO = f` using `polyAct_X f`. Establish `aS : o.act (star xO) = f'` using `polyAct_star f hff`. Establish `hΘ : ∃ t : LB.Gen (Theta G U.LG.L), t.IsGen` using `⟨U.cubG.t, U.cubG.isGen⟩`.
+
+Establish `adjA` using `adjCls_all U.LG.isLB hΘ o (by rw [aX, aS]; exact hadj)`. Establish `hros : ∀ a, LBIso (cubeLB G ![fst G G ≫ o.act a, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ o.act (star a)] U.LG.L)` using `fun a => by`. Establish `c₁` using `GlobalTheory.CechPic.cls_cube_two U.LG.isLB (fst G G ≫ o.act a) (snd G G) (LB.isLB_linComb U.LG.isLB _ _)`. Establish `c₂` using `GlobalTheory.CechPic.cls_cube_two U.LG.isLB (fst G G) (snd G G ≫ o.act (star a)) (LB.isLB_linComb U.LG.isLB _ _)`. Conclude with `(cls_eq_iff _ _).1 (c₁.trans ((adjA a _ (fst G G) (snd G G)).symm.trans c₂.symm))`.
+
+Establish `hprim : LBIso U.LG.L (cubeLB G ![𝟙 G, o.act xO] U.LG.L)`. Establish `c₁` using `GlobalTheory.CechPic.cls_cube_two U.LG.isLB (𝟙 G) f (LB.isLB_linComb U.LG.isLB _ _)`. Rewrite using `[aX]`. Conclude with `(cls_eq_iff _ _).1 (hcls.trans c₁.symm)`. Use `hR.2` as an intermediate fact.
+
+Take `⟨oA, hA⟩` from `GlobalTheory.PELOfUnif.exists_oAct_unif U.toUnifPre o hros`. Take `⟨-, h1, h2, h3, h4⟩` from `GlobalTheory.twistBaseChange_and_valuation_statements`. Take `⟨md, oD, lin⟩` from `GlobalTheory.RingActData.exists_oAct GlobalTheory.firstFiveLaws h1 h2 h3 h4 R (maximalIdeal R) hR.1 D A G hG U PolyO oA o hA hros`. Establish `pv` using `isPrimitiveValue_of_ringElement_psiRelation (GlobalTheory.PsiSign.psi_eq_tau_of_bundle_primitive_for_endomorphism R hR D A G hG U PolyO oD oA o lin hros xO xO_add_star hprim)`. Establish `uq` using `over₀_onTorus_unique R (maximalIdeal R) hR.1 D D A A G G U.toUnifPre U.toUnifPre f`.
+
+Establish `eB : fB = oD.onB.act xO` using `uq.1 _ _ hB fun e => by`. Use `lin.q_lin e xO` as an intermediate fact. Rewrite `this` using `[aX]`. Then use the resulting hypothesis. Establish `uq'` using `over₀_onTorus_unique R (maximalIdeal R) hR.1 D D A A G G U.toUnifPre U.toUnifPre f'`. Establish `eM : m = fun y => xO • y` using `uq'.2 _ _ hm fun e => by`.
+
+Take `⟨t, ht, he⟩` from `lin.i_lin e (star xO)`. Rewrite `*` using `[star_star, aS]`. Conclude with `⟨t, ht, he⟩`. Substitute `eB eM` using the available equality. Conclude with `pv`.
+-/
 theorem primVal_of_adj : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal R) D A G) (f f' : G ⟶ G), IsMonHom f → IsMonHom f' → f * f' = 𝟙 G → AdjCls (cls U.LG.L U.LG.isLB) (cls U.LG.L U.LG.isLB) f f' → cls U.LG.L U.LG.isLB = lam (cls U.LG.L U.LG.isLB) (𝟙 G) f → ∀ (fB : D.toPre.P.A ⟶ D.toPre.P.A) (m : D.toPre.X → D.toPre.X), Over₀ U.toUnifPre U.toUnifPre f fB → OnTorus U.toUnifPre U.toUnifPre f' m → PrimVal D.toPre fB m := by
   intro R _ _ _ hR D A G _ _ hG U f f' hf hf' hff hadj hcls fB m hB hm
   let o := polyAct f

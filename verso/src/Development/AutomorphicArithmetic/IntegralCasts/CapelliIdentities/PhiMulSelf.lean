@@ -6,6 +6,19 @@ noncomputable def UpperTheory.Reformulated.B.Yzd3.Phi :
       (Matrix.of : (Fin n → Fin n → R) → Matrix (Fin n) (Fin n) R) fun (i j : Fin n) ↦
         if (↑i : ℕ) + (↑j : ℕ) + (1 : ℕ) = n then (-1 : R) ^ (↑i : ℕ) else (0 : R)
 
+/- English proof (translation)
+Introduce `a R _`. Use extensionality with `i k`. Establish `hi` using `i.2`. Establish `hk` using `k.2`. Establish `hj : a - 1 - (i : ℕ) < a` using `by omega`.
+
+Simplify using `only [Matrix.mul_apply, UpperTheory.Reformulated.B.Yzd3.Phi, Matrix.of_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single (⟨a - 1 - (i : ℕ), hj⟩ : Fin a)]`. Establish `h1 : (i : ℕ) + (a - 1 - (i : ℕ)) + 1 = a` using `by omega dsimp only`. Rewrite using `[if_pos h1]`. Distinguish the cases in `hik : i = k`.
+
+Substitute `hik` using the available equality. Establish `h2 : (a - 1 - (i : ℕ)) + (i : ℕ) + 1 = a` using `by omega`. Rewrite using `[if_pos h2, if_pos rfl, mul_one, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2 : ¬ ((a - 1 - (i : ℕ)) + (k : ℕ) + 1 = a)`. Introduce `h`. Conclude with `hik (Fin.ext (by omega))`. Rewrite using `[if_neg h2, if_neg hik, mul_zero, mul_zero]`. Introduce `j _ hne`.
+
+Establish `h1 : ¬ ((i : ℕ) + (j : ℕ) + 1 = a)`. Introduce `h`. Conclude with `hne (Fin.ext (by simp only []; omega))`. Rewrite using `[if_neg h1, zero_mul]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem UpperTheory.Reformulated.B.Yzd3.phi_mul_self :
     ∀ (a : ℕ) {R : Type} [inst : CommRing R],
       UpperTheory.Reformulated.B.Yzd3.Phi a R * UpperTheory.Reformulated.B.Yzd3.Phi a R = (-1 : R) ^ (a - (1 : ℕ)) • (1 : Matrix (Fin a) (Fin a) R) := by

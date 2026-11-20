@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DominationHo
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BlowPolSt
 open GlobalTheory.TorRef GlobalTheory.ShFam
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DomModels.domSt_holds | exact GlobalTheory.DomModels.domSt_holds | (intros; apply GlobalTheory.DomModels.domSt_holds <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.domination_holds : DomSt := by
   first | exact @GlobalTheory.DomModels.domSt_holds | exact GlobalTheory.DomModels.domSt_holds | (intros; apply GlobalTheory.DomModels.domSt_holds <;> assumption)

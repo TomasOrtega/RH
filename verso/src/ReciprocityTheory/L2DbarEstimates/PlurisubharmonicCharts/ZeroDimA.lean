@@ -11,6 +11,9 @@ namespace ReciprocityTheory.L2DbarEstimates.Y
 variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F]
   [NormedSpace ℂ F]
 
+/- English proof (translation)
+Distinguish the cases in `hg : DifferentiableAt ℂ g y`. Establish `hev : (fun z => g z (w ∘ τ)) =ᶠ[𝓝 y] fun z => g z w` using `h.mono fun z hz => hz τ w`. Rewrite using `[← fderiv_continuousMultilinear_apply_const_apply hg (w ∘ τ) u, ← fderiv_continuousMultilinear_apply_const_apply hg w u, hev.fderiv_eq]`. Simplify using `[fderiv_zero_of_not_differentiableAt hg]`.
+-/
 theorem zd_fderiv_symm {k : ℕ} {g : E → ContinuousMultilinearMap ℂ (fun _ : Fin k => E) F}
     {y : E} (h : ∀ᶠ z in 𝓝 y, ∀ (τ : Equiv.Perm (Fin k)) (w : Fin k → E), g z (w ∘ τ) = g z w)
     (τ : Equiv.Perm (Fin k)) (u : E) (w : Fin k → E) :
@@ -21,6 +24,9 @@ theorem zd_fderiv_symm {k : ℕ} {g : E → ContinuousMultilinearMap ℂ (fun _ 
       ← fderiv_continuousMultilinear_apply_const_apply hg w u, hev.fderiv_eq]
   · simp [fderiv_zero_of_not_differentiableAt hg]
 
+/- English proof (translation)
+Rewrite using `[iteratedFDeriv_succ_apply_left, iteratedFDeriv_succ_eq_comp_left, LinearIsometryEquiv.comp_fderiv]`. Simplify using `[Fin.tail, Fin.succ_zero_eq_one]`.
+-/
 theorem zd_iter_two_left (f : E → F) (k : ℕ) (y : E) (m : Fin (k + 2) → E) :
     iteratedFDeriv ℂ (k + 2) f y m =
       fderiv ℂ (fderiv ℂ (iteratedFDeriv ℂ k f)) y (m 0) (m 1) (Fin.tail (Fin.tail m)) := by
@@ -28,6 +34,39 @@ theorem zd_iter_two_left (f : E → F) (k : ℕ) (y : E) (m : Fin (k + 2) → E)
     LinearIsometryEquiv.comp_fderiv]
   simp [Fin.tail, Fin.succ_zero_eq_one]
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `y _ σ v`. Use `congr 1`.
+
+Conclude with `Subsingleton.elim _ _`. Consider the case `succ k ih`. Introduce `y hy`. Establish `hmul : ∀ σ τ : Equiv.Perm (Fin (k + 1)), (∀ v : Fin (k + 1) → E, iteratedFDeriv ℂ (k + 1) f y (v ∘ σ) = iteratedFDeriv ℂ (k + 1) f y v) → (∀ v : Fin (k + 1) → E, iteratedFDeriv ℂ (k + 1) f y (v ∘ τ) = iteratedFDeriv ℂ (k + 1) f y v) → ∀ v : Fin (k + 1) → E, iteratedFDeriv ℂ (k + …`. Introduce `σ τ hσ hτ v`.
+
+Rewrite using `[Equiv.Perm.coe_mul, ← Function.comp_assoc, hτ, hσ]`. Establish `hstab : ∀ τ' : Equiv.Perm (Fin (k + 1)), τ' 0 = 0 → ∀ v : Fin (k + 1) → E, iteratedFDeriv ℂ (k + 1) f y (v ∘ τ') = iteratedFDeriv ℂ (k + 1) f y v`. Introduce `τ' h0 v`. Use `set p := Equiv.Perm.decomposeFin τ' with hpdef`. Establish `hp : τ' = Equiv.Perm.decomposeFin.symm p` using `by rw [hpdef, Equiv.symm_apply_apply]`.
+
+Establish `hp1 : p.1 = 0`. Use `Equiv.Perm.decomposeFin_symm_apply_zero p.1 p.2` as an intermediate fact. Rewrite `this` using `[Prod.mk.eta, ← hp, h0]`. Conclude with `this.symm`. Establish `hτ : τ' = Equiv.Perm.decomposeFin.symm (0, p.2)` using `by conv_lhs => rw [hp]`.
+
+Use `congr 1`. Conclude with `Prod.ext hp1 rfl`. Rewrite using `[hτ, iteratedFDeriv_succ_apply_left, iteratedFDeriv_succ_apply_left]`. Establish `e1 : (v ∘ ⇑(Equiv.Perm.decomposeFin.symm ((0 : Fin (k + 1)), p.2))) 0 = v 0`. Simplify using `[Equiv.Perm.decomposeFin_symm_apply_zero]`.
+
+Establish `e2 : Fin.tail (v ∘ ⇑(Equiv.Perm.decomposeFin.symm ((0 : Fin (k + 1)), p.2))) = Fin.tail v ∘ p.2`. Use function extensionality and compare the values at `i`. Simplify using `[Fin.tail, Equiv.Perm.decomposeFin_symm_apply_succ]`. Rewrite using `[e1, e2]`. Use `zd_fderiv_symm ?_ p.2 (v 0) (Fin.tail v)` and prove the remaining obligations.
+
+Use `filter_upwards [hU.mem_nhds hy] with z hz`. Conclude with `ih z hz`. Break down `k with _ | k` into its components or cases. Introduce `σ v`. Establish `hσ1 : σ = 1` using `Equiv.ext fun i => Fin.ext (by`.
+
+Establish `h1` using `(σ i).isLt`. Establish `h2` using `i.isLt`. Simplify using `only [Equiv.Perm.coe_one, id_eq]`. Use the proof step `omega)`. Rewrite using `[hσ1]`.
+
+Both sides reduce to the same expression. Establish `hswap01 : ∀ v : Fin (k + 2) → E, iteratedFDeriv ℂ (k + 2) f y (v ∘ ⇑(Equiv.swap (0 : Fin (k + 2)) 1)) = iteratedFDeriv ℂ (k + 2) f y v`. Introduce `v`. Establish `hc : ContDiffAt ℂ 2 (iteratedFDeriv ℂ k f) y` using `(hf.contDiffAt (hU.mem_nhds hy)).iteratedFDeriv_right (by first`. Consider the case `exact_mod_cast (le_top : ((2 + k : ℕ) : ℕ∞) ≤ ⊤)`.
+
+Consider the case `(norm_cast; exact le_top)`. Consider the case `exact le_top`. Consider the case `(rw [← WithTop.coe_natCast, ← WithTop.coe_ofNat, ← WithTop.coe_add]; exact WithTop.coe_le_coe.2 le_top))`. Establish `hsym : IsSymmSndFDerivAt ℂ (iteratedFDeriv ℂ k f) y` using `hc.isSymmSndFDerivAt (by simp [minSmoothness_of_isRCLikeNormedField])`. Rewrite using `[zd_iter_two_left, zd_iter_two_left]`.
+
+Establish `e3 : Fin.tail (Fin.tail (v ∘ ⇑(Equiv.swap (0 : Fin (k + 2)) 1))) = Fin.tail (Fin.tail v)`. Use function extensionality and compare the values at `i`. Simplify using `only [Fin.tail, Function.comp_apply]`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne (Fin.succ_ne_zero _) (Fin.succ_succ_ne_one _)]`. Rewrite using `[e3]`.
+
+Simplify using `only [Function.comp_apply, Equiv.swap_apply_left, Equiv.swap_apply_right]`. Rewrite using `[hsym (v 1) (v 0)]`. Establish `hswap : ∀ j : Fin (k + 2), ∀ v : Fin (k + 2) → E, iteratedFDeriv ℂ (k + 2) f y (v ∘ ⇑(Equiv.swap (0 : Fin (k + 2)) j)) = iteratedFDeriv ℂ (k + 2) f y v`. Introduce `j`. Distinguish the cases in `hj0 : j = 0`.
+
+Substitute `hj0` using the available equality. Introduce `v`. Rewrite using `[Equiv.swap_self]`. Both sides reduce to the same expression. Distinguish the cases in `hj1 : j = 1`.
+
+Substitute `hj1` using the available equality. Conclude with `hswap01`. Establish `h01 : (0 : Fin (k + 2)) ≠ 1` using `by simp`. Establish `hconj : Equiv.swap (1 : Fin (k + 2)) j * Equiv.swap 0 1 * Equiv.swap 1 j = Equiv.swap 0 j`. Rewrite using `[Equiv.swap_mul_swap_mul_swap h01 (Ne.symm hj0), Equiv.swap_comm]`.
+
+Establish `hfix : (Equiv.swap (1 : Fin (k + 2)) j) 0 = 0` using `Equiv.swap_apply_of_ne_of_ne h01 (Ne.symm hj0)`. Rewrite using `[← hconj]`. Conclude with `hmul _ _ (hmul _ _ (hstab _ hfix) hswap01) (hstab _ hfix)`. Introduce `σ v`. Establish `hfix : (Equiv.swap 0 (σ 0) * σ) 0 = 0`.
+
+Simplify using `[Equiv.swap_apply_right]`. Rewrite using `[← Equiv.swap_mul_self_mul (0 : Fin (k + 2)) (σ 0) σ]`. Conclude with `hmul _ _ (hswap _) (hstab _ hfix) v`.
+-/
 theorem zd_iteratedFDeriv_comp_perm {f : E → F} {U : Set E} (hU : IsOpen U) (hf : ContDiffOn ℂ ∞ f U) :
     ∀ k, ∀ y ∈ U, ∀ (σ : Equiv.Perm (Fin k)) (v : Fin k → E),
       iteratedFDeriv ℂ k f y (v ∘ σ) = iteratedFDeriv ℂ k f y v := by

@@ -7,6 +7,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CTLevi.ct_levi | exact GlobalTheory.CTLevi.ct_levi | (intros; apply GlobalTheory.CTLevi.ct_levi <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.constant_term_unipotent_integral_bis : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} (H : Plane E n n₁) (f c : UA σ Y.J → ℂ), IsCT H f c →
     (∀ γ ∈ ratU σ Y.J, ∀ x, f (γ * x) = f x) →
     (∃ (μ : Measure (unip σ Y H)) (𝓕 : Set (unip σ Y H)), μ.IsHaarMeasure ∧

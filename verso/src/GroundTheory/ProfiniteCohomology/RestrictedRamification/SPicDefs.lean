@@ -10,27 +10,47 @@ variable {F : Type*} [Field F] [NumberField F]
 noncomputable def ordAt (v : HeightOneSpectrum (𝓞 F)) (x : Fˣ) : ℤ :=
   -Multiplicative.toAdd (v.valuationOfNeZero x)
 
+/- English proof (translation)
+Simplify using `only [ordAt, map_mul, toAdd_mul, neg_add]`.
+-/
 theorem ordAt_mul (v : HeightOneSpectrum (𝓞 F)) (x y : Fˣ) :
     ordAt v (x * y) = ordAt v x + ordAt v y := by
   simp only [ordAt, map_mul, toAdd_mul, neg_add]
 
+/- English proof (translation)
+Simplify using `[ordAt]`.
+-/
 theorem ordAt_one (v : HeightOneSpectrum (𝓞 F)) : ordAt v (1 : Fˣ) = 0 := by
   simp [ordAt]
 
+/- English proof (translation)
+Simplify using `[ordAt]`.
+-/
 theorem ordAt_inv (v : HeightOneSpectrum (𝓞 F)) (x : Fˣ) : ordAt v x⁻¹ = -ordAt v x := by
   simp [ordAt]
 
+/- English proof (translation)
+Rewrite using `[ordAt, neg_eq_zero, ← valuationOfNeZero_eq, ← WithZero.coe_one, WithZero.coe_inj, ← toAdd_one]`. Conclude with `Multiplicative.toAdd.injective.eq_iff`.
+-/
 theorem ordAt_eq_zero_iff (v : HeightOneSpectrum (𝓞 F)) (x : Fˣ) :
     ordAt v x = 0 ↔ v.valuation F (x : F) = 1 := by
   rw [ordAt, neg_eq_zero, ← valuationOfNeZero_eq, ← WithZero.coe_one, WithZero.coe_inj,
     ← toAdd_one]
   exact Multiplicative.toAdd.injective.eq_iff
 
+/- English proof (translation)
+Rewrite using `[ordAt, neg_neg, ← valuationOfNeZero_eq]`. Both sides reduce to the same expression.
+-/
 theorem valuation_eq_exp_neg_ordAt (v : HeightOneSpectrum (𝓞 F)) (x : Fˣ) :
     v.valuation F (x : F) = WithZero.exp (-ordAt v x) := by
   rw [ordAt, neg_neg, ← valuationOfNeZero_eq]
   rfl
 
+/- English proof (translation)
+Use `((Support.finite (𝓞 F) (x : F)).union (Support.finite (𝓞 F) ((x⁻¹ : Fˣ) : F))).subset ?_` and prove the remaining obligations. Introduce `v hv`. Establish `hv' : v.valuation F (x : F) ≠ 1` using `fun h => hv ((ordAt_eq_zero_iff v x).2 h)`. Break down `lt_or_gt_of_ne hv' with h | h` into its components or cases. Use `right`.
+
+Express the relevant statement in the definitionally equal form `1 < v.valuation F ((x⁻¹ : Fˣ) : F)`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `one_lt_inv₀ (lt_of_le_of_ne zero_le (((map_ne_zero (v.valuation F)).2 x.ne_zero)).symm) |>.2 h`. Use `left`. Conclude with `h`.
+-/
 theorem finite_ordAt_ne_zero (x : Fˣ) : {v : HeightOneSpectrum (𝓞 F) | ordAt v x ≠ 0}.Finite := by
   refine ((Support.finite (𝓞 F) (x : F)).union (Support.finite (𝓞 F) ((x⁻¹ : Fˣ) : F))).subset ?_
   intro v hv
@@ -61,6 +81,9 @@ noncomputable def divS : Additive Fˣ →+ sDivisor S where
     ext v
     simp [Finsupp.ofSupportFinite_coe, toMul_add, ordAt_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem divS_apply (x : Additive Fˣ) (v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}) :
     divS S x v = ordAt v.1 (Additive.toMul x) :=
   rfl
@@ -69,6 +92,9 @@ abbrev sPic := sDivisor S ⧸ (divS S).range
 
 noncomputable abbrev sPicMk : sDivisor S →+ sPic S := QuotientAddGroup.mk' (divS S).range
 
+/- English proof (translation)
+Rewrite using `[QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff, AddMonoidHom.mem_range]`. Conclude with `⟨fun ⟨x, hx⟩ => ⟨Additive.toMul x, hx⟩, fun ⟨x, hx⟩ => ⟨Additive.ofMul x, hx⟩⟩`.
+-/
 theorem sPicMk_eq_zero_iff (D : sDivisor S) : sPicMk S D = 0 ↔ ∃ x : Fˣ, divS S (Additive.ofMul x) = D := by
   rw [QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff, AddMonoidHom.mem_range]
   exact ⟨fun ⟨x, hx⟩ => ⟨Additive.toMul x, hx⟩, fun ⟨x, hx⟩ => ⟨Additive.ofMul x, hx⟩⟩

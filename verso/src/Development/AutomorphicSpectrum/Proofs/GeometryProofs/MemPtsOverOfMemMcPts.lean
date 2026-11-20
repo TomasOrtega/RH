@@ -48,6 +48,15 @@ section Vals
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] {𝕜 : Type} [Field 𝕜]
   {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → 𝕜}
 
+/- English proof (translation)
+Take `⟨dg, dh, g, f, hg, hf, hd, e, hz0, ez⟩` from `h`. Take `⟨dg', dh', g', f', hg', hf', hd', e', hz0', ez'⟩` from `h'`. Establish `hdeg : dg' + dh = dg + dh'` using `funext fun k => by`. Establish `h1` using `hd k`. Establish `h2` using `hd' k`.
+
+Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Use `⟨dg + dh', dh + dh', g * f' + g' * f, f * f', FinRd.ValSub.mh_add (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hg hf') ?_, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hf hf', fun k => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hdeg]`. Conclude with `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hg' hf`.
+
+Establish `h1` using `hd k`. Simplify using `only [Pi.add_apply]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Simplify using `only [map_add, map_mul, e, e']`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hz0 hz0'`. Simplify using `only [map_add, map_mul, ez, ez']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasVal_add {a : K → ℤ} {s s' : Ω} {w w' : 𝕜} (h : Small.HasVal y a s z w)
     (h' : Small.HasVal y a s' z w') : Small.HasVal y a (s + s') z (w + w') := by
   obtain ⟨dg, dh, g, f, hg, hf, hd, e, hz0, ez⟩ := h
@@ -73,6 +82,11 @@ theorem hasVal_add {a : K → ℤ} {s s' : Ω} {w w' : 𝕜} (h : Small.HasVal y
   · simp only [map_add, map_mul, ez, ez']
     ring
 
+/- English proof (translation)
+Take `⟨dg, dh, g, f, hg, hf, hd, e, hz0, ez⟩` from `h`. Use `⟨dg, dh, MvPolynomial.C n * g, f, ?_, hf, hd, ?_, hz0, ?_⟩` and prove the remaining obligations. Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.C_mul']`. Conclude with `hg m (MvPolynomial.support_smul hm) k`.
+
+Rewrite using `[map_mul, e, MvPolynomial.aeval_C, ← mul_assoc]`. Simplify using `[zsmul_eq_mul]`. Rewrite using `[map_mul, ez, MvPolynomial.aeval_C, ← mul_assoc]`. Simplify using `[zsmul_eq_mul]`.
+-/
 theorem hasVal_zsmul {a : K → ℤ} {s : Ω} {w : 𝕜} (n : ℤ) (h : Small.HasVal y a s z w) :
     Small.HasVal y a (n • s) z (n • w) := by
   obtain ⟨dg, dh, g, f, hg, hf, hd, e, hz0, ez⟩ := h
@@ -85,11 +99,19 @@ theorem hasVal_zsmul {a : K → ℤ} {s : Ω} {w : 𝕜} (n : ℤ) (h : Small.Ha
   · rw [map_mul, ez, MvPolynomial.aeval_C, ← mul_assoc]
     simp [zsmul_eq_mul]
 
+/- English proof (translation)
+Take `⟨dg, dh, g, f, hg, hf, hd, e, hz0, ez⟩` from `h`. Conclude with `⟨dg, dh, 0, f, FinRd.ValSub.mh_zero dg, hf, hd, by simp, hz0, by simp⟩`.
+-/
 theorem hasVal_zero_of {a : K → ℤ} {s : Ω} {w : 𝕜} (h : Small.HasVal y a s z w) :
     Small.HasVal y a (0 : Ω) z (0 : 𝕜) := by
   obtain ⟨dg, dh, g, f, hg, hf, hd, e, hz0, ez⟩ := h
   exact ⟨dg, dh, 0, f, FinRd.ValSub.mh_zero dg, hf, hd, by simp, hz0, by simp⟩
 
+/- English proof (translation)
+Establish `key : ∀ S : Finset I, Small.HasVal y a (∑ i ∈ S, nn i • u i) z (∑ i ∈ S, nn i • v i)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using hasVal_zero_of h₀`. Consider the case `insert i S hi ih`.
+
+Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `hasVal_add (hasVal_zsmul _ (hu i)) ih`. Conclude with `Small.ReadFinTest.hasVal_unique hz h₀ (hs ▸ key Finset.univ)`.
+-/
 theorem hasVal_comb {I : Type} [Fintype I] (hz : z ∈ Small.ptsOver 𝕜 (mCoordIdeal y)) {a : K → ℤ} {s : Ω} {v₀ : 𝕜}
     (h₀ : Small.HasVal y a s z v₀) (u : I → Ω) (v : I → 𝕜) (nn : I → ℤ) (hu : ∀ i, Small.HasVal y a (u i) z (v i))
     (hs : s = ∑ i, nn i • u i) : v₀ = ∑ i, nn i • v i := by
@@ -105,6 +127,9 @@ theorem hasVal_comb {I : Type} [Fintype I] (hz : z ∈ Small.ptsOver 𝕜 (mCoor
 
 end Vals
 
+/- English proof (translation)
+Use `⟨h.1, fun f hf => ?_⟩` and prove the remaining obligations. Use `h.2 f hf` as an intermediate fact. Rewrite `this` using `[MvPolynomial.eval_map]`. Rewrite using `[MvPolynomial.aeval_def]`. Conclude with `this`.
+-/
 theorem mem_ptsOver_of_mem_mcPts {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)}
     {z : (Σ k, ι k) → ℂ} (h : z ∈ mcPts P) : z ∈ Small.ptsOver ℂ P := by
   refine ⟨h.1, fun f hf => ?_⟩
@@ -113,6 +138,11 @@ theorem mem_ptsOver_of_mem_mcPts {K : Type} [Fintype K] {ι : K → Type} [∀ k
   rw [MvPolynomial.aeval_def]
   exact this
 
+/- English proof (translation)
+Simplify using `only [← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hs'` using `(hs j).ne'`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_mul, ← zpow_mul, ← zpow_add₀ hs', ← zpow_add₀ hs']`. Use `congr 1`.
+
+Use `h j` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem prod_rel {J : Type} [Fintype J] (s : J → ℝ) (hs : ∀ j, 0 < s j) (a b c d : J → ℤ) (q m₁ m₂ : ℕ)
     (h : ∀ j, (q : ℤ) * a j = q * b j + m₁ * c j + m₂ * d j) :
     (∏ j, s j ^ a j) ^ q = (∏ j, s j ^ b j) ^ q * (∏ j, s j ^ c j) ^ m₁ * (∏ j, s j ^ d j) ^ m₂ := by
@@ -125,6 +155,9 @@ theorem prod_rel {J : Type} [Fintype J] (s : J → ℝ) (hs : ∀ j, 0 < s j) (a
   have := h j
   linarith
 
+/- English proof (translation)
+Rewrite using `[mul_pow, mul_pow, h]`. Take the linear combination `(-(B ^ q * C ^ m₁ * D ^ m₂)) * e`.
+-/
 theorem mul_eq_mul_conj_alt (A B C D P₁ P₂ : ℝ) (q m₁ m₂ : ℕ) (h : A ^ q = B ^ q * C ^ m₁ * D ^ m₂)
     (e : P₁ ^ q * P₂ ^ m₁ = 1) : A ^ q = (P₁ * B) ^ q * (P₂ * C) ^ m₁ * D ^ m₂ := by
   rw [mul_pow, mul_pow, h]
@@ -138,6 +171,9 @@ def zc (Dw : Datum H) (a : WZ E) : Option (RootIx Dw) → ℤ
   | none => 0
   | some r => if (r.2 : ℕ) < Dw.p then -a (r.1.1, r.2) else a (conjEmb r.1.1, Dw.p + Dw.q - 1 - r.2)
 
+/- English proof (translation)
+Break down `j with _ | r` into its components or cases. Simplify using `[zc, Top.RootModel.coef]`. Apply the tactic sequence `simp only [zc, Top.RootModel.coef, towerWt] split_ifs <;> simp`.
+-/
 theorem zc_coef (Dw : Datum H) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (a : WZ E) (j : Option (RootIx Dw)) :
     ((zc Dw a j : ℤ) : ℝ) = RM.coef (towerWt Dw a) 0 j := by
   rcases j with _ | r
@@ -145,6 +181,13 @@ theorem zc_coef (Dw : Datum H) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (a 
   · simp only [zc, Top.RootModel.coef, towerWt]
     split_ifs <;> simp
 
+/- English proof (translation)
+Break down `j with _ | r` into its components or cases. Simplify using `[zc]`. Simplify using `only [zc] split_ifs with hr`. Establish `hm : Dw.mult r.1.1 = Dw.p` using `Small.mult_labelC Dw (.inl r.1)`. Use `hWE r.1.1 r.2 (by rw [hm]; exact hr)` as an intermediate fact.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply] at this`. Move the coercions through the operations in `at this ⊢`. Take the linear combination `-this`. Establish `hm : Dw.mult (conjEmb r.1.1) = Dw.q` using `Small.mult_labelC Dw (.inr r.1)`. Establish `h2` using `r.2.2`.
+
+Use `hWE (conjEmb r.1.1) (Dw.p + Dw.q - 1 - r.2) (by rw [hm]; omega)` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.smul_apply, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply] at this`. Move the coercions through the operations in `at this ⊢`. Take the linear combination `this`.
+-/
 theorem zc_lin (Dw : Datum H) (a₁ a' aτ b : WZ E) (μ m : ℕ)
     (hWE : WEq Dw ((8 * μ) • a₁) ((8 * μ) • a' + (3 * μ) • aτ + m • b)) (j : Option (RootIx Dw)) :
     ((8 * μ : ℕ) : ℤ) * zc Dw a₁ j = ((8 * μ : ℕ) : ℤ) * zc Dw a' j + ((3 * μ : ℕ) : ℤ) * zc Dw aτ j + (m : ℤ) * zc Dw b j := by
@@ -171,18 +214,61 @@ section Fin
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
+/- English proof (translation)
+Establish `ht : v ≠ ⊤` using `(lt_of_le_of_lt h (EReal.coe_lt_top X)).ne`. Use `⟨v.toReal, (EReal.coe_toReal ht hb).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[← EReal.coe_le_coe_iff, EReal.coe_toReal ht hb]`. Conclude with `h`.
+-/
 theorem exists_real_of_le {v : EReal} {X : ℝ} (hb : v ≠ ⊥) (h : v ≤ (X : EReal)) : ∃ x : ℝ, v = x ∧ x ≤ X := by
   have ht : v ≠ ⊤ := (lt_of_le_of_lt h (EReal.coe_lt_top X)).ne
   refine ⟨v.toReal, (EReal.coe_toReal ht hb).symm, ?_⟩
   rw [← EReal.coe_le_coe_iff, EReal.coe_toReal ht hb]
   exact h
 
+/- English proof (translation)
+Establish `hb : v ≠ ⊥` using `(lt_of_lt_of_le (EReal.bot_lt_coe X) h).ne'`. Use `⟨v.toReal, (EReal.coe_toReal ht hb).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[← EReal.coe_le_coe_iff, EReal.coe_toReal ht hb]`. Conclude with `h`.
+-/
 theorem exists_real_of_ge {v : EReal} {X : ℝ} (ht : v ≠ ⊤) (h : (X : EReal) ≤ v) : ∃ x : ℝ, v = x ∧ X ≤ x := by
   have hb : v ≠ ⊥ := (lt_of_lt_of_le (EReal.bot_lt_coe X) h).ne'
   refine ⟨v.toReal, (EReal.coe_toReal ht hb).symm, ?_⟩
   rw [← EReal.coe_le_coe_iff, EReal.coe_toReal ht hb]
   exact h
 
+/- English proof (translation)
+Take `⟨u, hoff, hu⟩` from `GlobalTheory.T.uniform_laws_root_model_bound hG E H Dw l Xo c r U h e hL hU O β Y SS RM Sys Fx Or Fr Z Rd hOm hdisc`. Use `⟨u, hoff, fun p _ z hz hzu => ?_⟩` and prove the remaining obligations. Take `⟨la, y, rec, hpla, hye, hrec, hrd⟩` from `hu p z hz hzu`. Establish `hpP : p.Prime` using `Fact.out`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hpP.one_lt`.
+
+Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Take `⟨hRB, hcF, hτv⟩` from `hfin p hpP la hpla`. Take `⟨ht0, hτy⟩` from `hτv y`. Establish `hram : (0 : ℝ) < ramOverZ la`. Conclude with `Nat.pos_of_ne_zero (Formalism.MainNotions.ModuliIntegralCharts.H1.H1algLink.ramOverZ_ne_zero la)` after adjusting the coercions.
+
+Establish `hNpos : ∀ nn : Option (RootIx Dw) → ℤ, 0 < ∏ r', rec r' ^ nn (some r')` using `fun nn => Finset.prod_pos fun r' _ => zpow_pos (hrec r').1 _`. Establish `hzp : z ∈ Small.ptsOver (PadicAlgCl p) (mCoordIdeal RM.y)` using `hz.1`. Establish `hprel` using `prod_rel rec (fun r' => (hrec r').1) (fun r' => n₁ (some r')) (fun r' => n' (some r')) (fun r' => nτ (some r')) (fun r' => nσ (some r')) (8 * μ) (3 * μ) m (fun r' => hrel (some r'))`. Establish `e1 : ((p : ℝ) ^ (-(3 * bτ p / 8))) ^ (8 * μ) * ((p : ℝ) ^ (bτ p)) ^ (3 * μ) = 1`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hp0.le, ← Real.rpow_mul hp0.le, ← Real.rpow_add hp0]`.
+
+Establish `: -(3 * bτ p / 8) * ((8 * μ : ℕ) : ℝ) + bτ p * ((3 * μ : ℕ) : ℝ) = 0`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Real.rpow_zero]`. Use `⟨∏ r', rec r' ^ n₁ (some r'), (p : ℝ) ^ (-(3 * bτ p / 8)) * ∏ r', rec r' ^ n' (some r'), (p : ℝ) ^ (bτ p) * ∏ r', rec r' ^ nτ (some r'), ∏ r', rec r' ^ nσ (some r'), ρ * Ref.phU Xo c la y / ramOverZ la, c₀ * Ref.phU Xo c la y / ramOverZ la, hNpos _, mul_pos (Real.rpow_pos_of_pos …` and prove the remaining obligations.
+
+Establish `: c₀ * Ref.phU Xo c la y ≤ 3 * ρ * Ref.phU Xo c la y` using `mul_le_mul_of_nonneg_right hc₀ ht0`. Rewrite using `[← mul_div_assoc, div_le_div_iff_of_pos_right hram]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `v hv`. Take `⟨w₀, hw₀, hval⟩` from `hRB y`.
+
+Establish `hf : e Z * w₀ ∈ latOn U h a₁ Z` using `GlobalTheory.T.cusp_lattice_mul_component_section E H Dw l Xo c r U h e hL hU a₁ Z w₀ hw₀`. Establish `hfsec : e Z * w₀ ∈ secZ Xo c a₁` using `((mem_latIn _ _ _ _).1 hf).1.1.1`. Establish `hfmem : e Z * w₀ ∈ Submodule.span ℤ (Set.range ω)`. Rewrite using `[hspanZ]`. Conclude with `hf`.
+
+Take `⟨nn, hnn⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hfmem`. Take `⟨v₀, hv₀, -, hnorm⟩` from `hrd a₁ n₁ hn₁ _ hfsec`. Establish `hvalf : (Ref.pjSys Xo c).val y (e Z * w₀) = (Ref.pjSys Xo c).val y w₀`. Rewrite using `[(Ref.pjSys Xo c).val_mul, hye, zero_add]`. Take `⟨X, hX, hXle⟩` from `exists_real_of_le ((Ref.pjSys Xo c).val_ne_bot y w₀) hval`.
+
+Establish `hsv : (Ref.pjSys Xo c).val y (e Z * w₀) = ((ramOverZ la * (X / ramOverZ la) : ℝ) : EReal)`. Rewrite using `[hvalf, hX, mul_div_cancel₀ _ hram.ne']`. Establish `hn` using `hnorm _ hsv`. Establish `hsum : Fr.rd (e Z * w₀) * ∏ r', Or.e r' ^ (-n₁ (some r')) = ∑ i, nn (ei i) • G.w i`. Rewrite using `[← hnn, Small.GenFrame.rd, ← Small.GenFrame.rd, ← Small.GenFrame.rdHom_apply, map_sum, Finset.sum_mul, ← Equiv.sum_comp ei]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hGw i, map_zsmul, Small.GenFrame.rdHom_apply, smul_mul_assoc]`. Establish `hcomb` using `hasVal_comb hzp hv₀ G.w v (fun i => nn (ei i)) hv hsum`. Establish `hle : ‖v₀‖ ≤ ‖v‖`. Rewrite using `[hcomb]`.
+
+Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `le_trans ?_ hle` and prove the remaining obligations. Rewrite using `[hn]`.
+
+Use `mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le hp1.le ?_) (hNpos _).le` and prove the remaining obligations. Establish `: X / ramOverZ la ≤ ep p + c₀ * Ref.phU Xo c la y / ramOverZ la`. Rewrite using `[div_le_iff₀ hram, add_mul, div_mul_cancel₀ _ hram.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `wv hw`. Take `⟨v, hv, htop, hnorm⟩` from `hrd aτ nτ hnτ τ hτsec`. Establish `hwv : wv = v` using `Small.ReadFinTest.hasVal_unique hzp hw hv`. Rewrite using `[hwv]`. Distinguish the cases in `hT : (Ref.pjSys Xo c).val y τ = ⊤`.
+
+Rewrite using `[htop hT, norm_zero]`. Conclude with `mul_nonneg (Real.rpow_pos_of_pos hp0 _).le (mul_pos (Real.rpow_pos_of_pos hp0 _) (hNpos _)).le`. Take `⟨X, hX, hXle⟩` from `exists_real_of_ge hT hτy`. Establish `hsv : (Ref.pjSys Xo c).val y τ = ((ramOverZ la * (X / ramOverZ la) : ℝ) : EReal)`. Rewrite using `[hX, mul_div_cancel₀ _ hram.ne']`.
+
+Rewrite using `[hnorm _ hsv, ← mul_assoc, ← Real.rpow_add hp0]`. Use `mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le hp1.le ?_) (hNpos _).le` and prove the remaining obligations. Establish `: 8 * (ρ * Ref.phU Xo c la y / ramOverZ la) - bτ p ≤ X / ramOverZ la`. Rewrite using `[le_div_iff₀ hram, sub_mul, mul_assoc, div_mul_cancel₀ _ hram.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `wv hw`. Take `⟨v, hv, -, hnorm⟩` from `hrd (flatZ H w) nσ hnσ F.s F.s_sec`. Establish `hwv : wv = v` using `Small.ReadFinTest.hasVal_unique hzp hw hv`. Establish `hmem` using `GlobalTheory.T.point_values_in_value_set E H Dw l Xo c la y`.
+
+Establish `hcf : (Ref.pjSys Xo c).val y F.s = ((F.cFin la : ℝ) : EReal)` using `F.fin_eq la _ hmem hye`. Establish `hsv : (Ref.pjSys Xo c).val y F.s = ((ramOverZ la * (F.cFin la / ramOverZ la) : ℝ) : EReal)`. Rewrite using `[hcf, mul_div_cancel₀ _ hram.ne']`. Rewrite using `[hwv, hnorm _ hsv]`. Use `mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le hp1.le ?_) (hNpos _).le` and prove the remaining obligations.
+
+Establish `: -b p ≤ F.cFin la / ramOverZ la`. Rewrite using `[le_div_iff₀ hram]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs` using `GlobalTheory.T.sup_metric_combination_bound (CMType H) (Dw.p + Dw.q) RM (towerWt Dw a') n' p z rec _ hz.1.1 hn' (fun r' => (hrec r').1) (fun r' => (hrec r').2)`.
+
+Use `le_trans hs (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← Real.rpow_add hp0]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fin_bounds (hG : Top.Given) [IsGalois ℚ E] (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c)
     (e : Comp Xo c → Rul Xo c) (hL : CompLaws U h e) (hU : Ref.UnifAll Xo c)
     {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) (SS : Finset ℕ)
@@ -333,10 +419,16 @@ def linAt (σ : c.F →+* ℂ) (U₀ : Unf Xo c (goodOf c σ) r) (k : U₀.Comp)
     change Small.goodTwist c σ (goodOf c σ a * rdU U₀ f k y) = σ a * _
     rw [map_mul, Small.goodOf_apply, Small.goodTwist_goodTwist]
 
+/- English proof (translation)
+Simplify using `[Data.pnorm]`.
+-/
 theorem pnorm_eq_mul {X : Data E r} (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (y : Frame X.Ψ r) :
     X.pnorm la P y = ‖P y‖ * X.pnorm la (fun _ => 1) y := by
   simp [Data.pnorm]
 
+/- English proof (translation)
+Introduce `h'` and use `by have h1 : starRingEnd ℂ H.rt0 = H.rt0 := (congrArg (starRingEnd ℂ) h).symm.trans h' have him : H.rt0.im = 0 := Complex.conj_eq_iff_im.1 h1 have hre := congrArg Complex.re H.sqrt_neg_disc_sq have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos simp only [sq, Complex.mul_r …`.
+-/
 theorem not_good_conj {σ : c.F →+* ℂ} (h : GoodEmb c σ) : ¬ GoodEmb c ((starRingEnd ℂ).comp σ) := fun h' => by
   have h1 : starRingEnd ℂ H.rt0 = H.rt0 := (congrArg (starRingEnd ℂ) h).symm.trans h'
   have him : H.rt0.im = 0 := Complex.conj_eq_iff_im.1 h1
@@ -345,6 +437,11 @@ theorem not_good_conj {σ : c.F →+* ℂ} (h : GoodEmb c σ) : ¬ GoodEmb c ((s
   simp only [sq, Complex.mul_re, him, Complex.neg_re, Complex.natCast_re] at hre
   nlinarith [mul_self_nonneg H.rt0.re]
 
+/- English proof (translation)
+Establish `e : (starRingEnd ℂ).comp ((starRingEnd ℂ).comp σ) = σ` using `RingHom.ext fun a => Complex.conj_conj _`. Distinguish the cases in `h : GoodEmb c σ`. Rewrite using `[goodOf, goodOf, if_pos h, if_neg (not_good_conj h), e]`. Establish `h'` using `goodEmb_goodOf c σ`. Rewrite `h'` using `[goodOf, if_neg h]`.
+
+Rewrite using `[goodOf, goodOf, if_neg h, if_pos h']`.
+-/
 theorem goodOf_conj' (σ : c.F →+* ℂ) : goodOf c ((starRingEnd ℂ).comp σ) = goodOf c σ := by
   have e : (starRingEnd ℂ).comp ((starRingEnd ℂ).comp σ) = σ := RingHom.ext fun a => Complex.conj_conj _
   by_cases h : GoodEmb c σ
@@ -353,6 +450,9 @@ theorem goodOf_conj' (σ : c.F →+* ℂ) : goodOf c ((starRingEnd ℂ).comp σ)
     rw [goodOf, if_neg h] at h'
     rw [goodOf, goodOf, if_neg h, if_pos h']
 
+/- English proof (translation)
+The claim follows from `Real.exp_pos _`.
+-/
 theorem lieFacZ_pos (Dw : Datum H) (x : ℝ) (a : WZ E) : 0 < lieFacZ Dw x a := Real.exp_pos _
 
 end Arch
@@ -362,6 +462,33 @@ section ArchD
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
   {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨u, hoff, hA⟩` from `GlobalTheory.T.component_norm_constant_models hG D.host.E H Dw l Xo c D.R.r U h e hL (xiR D) hLv.xiAbs O β Y SS RM Sys Fx Or Fr Z Rd`. Use `⟨u, hoff, fun σ z hz hcst huz => ?_⟩` and prove the remaining obligations. Take `⟨k, hOv, y, hy, hθ⟩` from `hA σ z hz hcst huz`. Establish `hgood` using `goodEmb_goodOf c σ`. Take `⟨x0, FF, hO, hFS, hB⟩` from `harch (goodOf c σ) hgood k hOv`.
+
+Take `⟨hberg, hτle⟩` from `hB y hy`. Establish `hzp : z ∈ Small.ptsOver ℂ (mCoordIdeal RM.y)` using `mem_ptsOver_of_mem_mcPts hz`. Use `set lin : Rul Xo c →ₛₗ[σ] ℂ := linAt σ (U (goodOf c σ)) k y with hlin`. Establish `hlinf : ∀ f, lin f = Small.goodTwist c σ (rdU (U (goodOf c σ)) f k y)` using `fun f => rfl`. Establish `hread : ∀ (a : WZ D.host.E) (n' : Option (RootIx Dw) → ℤ), (∀ j, (n' j : ℝ) = RM.coef (towerWt Dw a) 0 j) → ∃ θ : ℂ, ‖θ‖ = (∏ r', (Or.sing r').h z ^ n' (some r')) * lieFacZ Dw (xiR D) a * ((U (goodOf c σ)).X k).pnorm (laZ (U (goodOf c σ)) a k) (fun _ => 1) y ∧ ∀ f ∈ secZ Xo c a, …`.
+
+Introduce `a n' hn'`. Take `⟨θ, h1, h2⟩` from `hθ a n' hn'`. Use `⟨θ, h1, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[hlinf]`. Distinguish the cases in `hg : GoodEmb c σ`.
+
+Establish `: Small.goodTwist c σ (rdU (U (goodOf c σ)) f k y) = rdU (U (goodOf c σ)) f k y`. Simplify using `[Small.goodTwist, hg]`. Rewrite using `[this]`. Conclude with `(h2 f hf).1 hg`. Establish `: Small.goodTwist c σ (rdU (U (goodOf c σ)) f k y) = starRingEnd ℂ (rdU (U (goodOf c σ)) f k y)`.
+
+Simplify using `[Small.goodTwist, hg]`. Rewrite using `[this]`. Conclude with `(h2 f hf).2 hg`. Establish `hhpos : ∀ nn : Option (RootIx Dw) → ℤ, 0 < ∏ r', (Or.sing r').h z ^ nn (some r')` using `fun nn => Finset.prod_pos fun r' _ => zpow_pos ((Or.sing r').pos z hz.1) _`. Establish `hωsec : ∀ j, ω j ∈ secZ Xo c a₁` using `fun j => by`.
+
+Establish `: ω j ∈ cuspOn U h a₁ Z` using `hspanF ▸ Submodule.subset_span ⟨j, rfl⟩`. Conclude with `this.1.1`. Use `⟨rh (goodOf c σ) k y, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Take `⟨θ, hθn, hf⟩` from `hread a₁ n₁ hn₁`.
+
+Establish `hvi : ∀ i, v i = θ * lin (ω (ei i))` using `fun i => Small.ReadFinTest.hasVal_unique hzp (hv i) (by rw [hGw i]; exact hf _ (hωsec _))`. Take `⟨hne, hν, hsq⟩` from `GlobalTheory.T.sqrt_bergman_lower_bound_le_pnorm_mul_height D H Dw l Xo c U h e W dict hL hLv hFV a₁ Z n ω G.I G.L ei hOnto hspanF σ k y lin hlinf (hmet σ lin) hOv hy x0 FF _ hO hFS (Real.exp_pos _) hberg`. Establish `hθpos : 0 < ‖θ‖`. Rewrite using `[hθn]`. Conclude with `mul_pos (mul_pos (hhpos _) (lieFacZ_pos _ _ _)) hν`.
+
+Establish `hθ0 : θ ≠ 0` using `norm_pos_iff.1 hθpos`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Take `⟨j, hj⟩` from `hne`. Establish `h1` using `congrFun h0 (ei.symm j)`.
+
+Rewrite `h1` using `[hvi, Pi.zero_apply, Equiv.apply_symm_apply]`. Conclude with `(mul_ne_zero hθ0 hj) h1`. Establish `hLh : G.L.h (fun x => v x.2) = ‖θ‖ * G.L.h (fun x => lin (ω (ei x.2)))`. Establish `h1` using `G.L.smul (fun _ => θ) (fun x => lin (ω (ei x.2))) (fun _ => hθ0)`. Simplify using `only [G.L_deg, zpow_one, Finset.univ_unique, Finset.prod_singleton] at h1`.
+
+Rewrite using `[← h1]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `hvi x.2`. Rewrite using `[hLh, hθn, Real.exp_half]`.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `wv hw`. Take `⟨θ, hθn, hf⟩` from `hread aτ nτ hnτ`. Establish `hwv : wv = θ * lin τ` using `Small.ReadFinTest.hasVal_unique hzp hw (hf τ hτsec)`. Rewrite using `[hwv, norm_mul, hθn, hlinf, Small.norm_goodTwist]`.
+
+Rewrite `hτle` using `[pnorm_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Introduce `wv hw`. Take `⟨θ, hθn, hf⟩` from `hread (flatZ H w) nσ hnσ`. Establish `hwv : wv = θ * lin F.s` using `Small.ReadFinTest.hasVal_unique hzp hw (hf F.s F.s_sec)`.
+
+Establish `hinf` using `F.inf_eq (goodOf c σ) hgood k hOv y hy`. Rewrite `hinf` using `[pnorm_eq_mul, ← F.cInf_good σ]`. Rewrite using `[hwv, norm_mul, hθn, hlinf, Small.norm_goodTwist, Real.exp_log (F.cInf_pos σ), ← hinf]`. Conclude with `le_of_eq (by ring)`.
+-/
 theorem arch_bounds (hG : Top.Given) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (h : GenFrEx Xo c)
     (e : Comp Xo c → Rul Xo c) (W : HSp D) (dict : ∀ σ : c.F →+* ℂ, GA D W → Σ k, Frame ((U σ).X k).Ψ D.R.r)
     (hL : CompLaws U h e) (hLv : abelian₂.LevelLaws U W dict) (hFV : FinVol W)
@@ -481,6 +608,11 @@ end ArchD
 
 section Emb
 
+/- English proof (translation)
+Set `eq : (F₂ →+* ℂ) ≃ (F₁ →+* ℂ)` to `{ toFun := fun sg => sg.comp (ψ : F₁ →+* F₂) invFun := fun σ => σ.comp (ψ.symm : F₂ →+* F₁) left_inv := fun sg => by ext x; simp right_inv := fun σ => by ext x; simp }`. Establish `hc : Fintype.card (F₂ →+* ℂ) = Module.finrank ℚ F₁`. Rewrite using `[Fintype.card_congr eq, NumberField.Embeddings.card F₁ ℂ]`. Unfold `Small.embMean`. Rewrite using `[hc]`.
+
+Use `congr 1`. Conclude with `Equiv.sum_comp eq g`.
+-/
 theorem embMean_comp {F₁ F₂ : Type} [Field F₁] [NumberField F₁] [Field F₂] [NumberField F₂] (ψ : F₁ ≃+* F₂)
     (g : (F₁ →+* ℂ) → ℝ) :
     Small.embMean (fun sg : F₂ →+* ℂ => g (sg.comp (ψ : F₁ →+* F₂))) = (∑ σ, g σ) / Module.finrank ℚ F₁ := by
@@ -504,6 +636,49 @@ namespace GlobalTheory.CompanionTheory.Ar.Rec
 
 open OS in
 
+/- English proof (translation)
+Introduce `hG D hGal H Dw l Xo c U h e W dict hL hLv hFV hU _ Y T o B b₀ Fr Z Rd a₁ a' aτ w F μ m τ n ω n₁ Λ G ei ψ S ep bτ b cp c₀ ρ A P R₀ cinf cc rh hμ hreg hWE hτsec hτne hOnto hspanZ hspanF hn₁ hψ hGw hmet hc₀ hfin hSp hcp0 hcpS hcpge harch hcinf hcc`. Establish `hn₁z : n₁ = zc Dw a₁` using `funext fun j => by`. Establish `h1` using `hn₁ j`. Rewrite `h1` using `[← zc_coef Dw (T.M B b₀) a₁ j]`. Conclude with `h1` after adjusting the coercions.
+
+Substitute `hn₁z` using the available equality. Establish `hrel` using `zc_lin Dw a₁ a' aτ (flatZ H w) μ m hWE`. Establish `hc1` using `zc_coef Dw (T.M B b₀) a₁`. Establish `hc'` using `zc_coef Dw (T.M B b₀) a'`. Establish `hcτ` using `zc_coef Dw (T.M B b₀) aτ`.
+
+Establish `hcσ` using `zc_coef Dw (T.M B b₀) (flatZ H w)`. Take `⟨q₀, n₀, ε, u₄, C, s₀, hq₀, hn₀, hε0, hεint, hu₄, hC, hs₀, hA5⟩` from `GlobalTheory.T.good_origin_root_weight_bound D.host.E H Dw l Xo c Y T o B b₀ (towerWt Dw a') (zc Dw a') hc' hreg`. Establish `hdisc : ∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr D.host.E → p ∈ o.toTowerOrigin.S B`. Introduce `p hp hd`. Rewrite using `[o.toTowerOrigin.S_iff]`.
+
+Use `⟨hp, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[o.toTowerOrigin.bad_iff]`. Conclude with `⟨hp, Dvd.dvd.mul_right (Dvd.dvd.mul_left hd 2) _⟩`. Use `haveI := hGal`. Take `⟨uF, huF, hFB⟩` from `fin_bounds hG U h e hL hU Y (o.toTowerOrigin.S B) (T.M B b₀) (o.toTowerOrigin.Sys b₀) (o.toTowerOrigin.Fx b₀) (o.toTowerOrigin.Or B b₀) Fr Z Rd (o.omVB B b₀) hdisc a₁ a' aτ w F μ m τ n ω (zc Dw a₁) (zc Dw a') (zc Dw aτ) (zc Dw (flatZ H w)) Λ G ei ep bτ b c₀ ρ hc1 hc' hcτ hcσ hrel …`.
+
+Take `⟨uA, huA, hAB⟩` from `arch_bounds hG U h e W dict hL hLv hFV Y (o.toTowerOrigin.S B) (T.M B b₀) (o.toTowerOrigin.Sys b₀) (o.toTowerOrigin.Fx b₀) (o.toTowerOrigin.Or B b₀) Fr Z Rd a₁ aτ w F τ n ω (zc Dw a₁) (zc Dw aτ) (zc Dw (flatZ H w)) Λ G ei A P R₀ rh hc1 hcτ hcσ hτsec hOnto hspanF hGw hmet harch`. Take `⟨uC, huC, hCst⟩` from `GlobalTheory.T.generic_form_valuation_embedding (T.M B b₀).K (T.M B b₀).ι (T.M B b₀).Ω (T.M B b₀).y G.F (T.M B b₀).birational (T.M B b₀).arith.2.1.2.2`. Establish `hmulOff : ∀ u v : MRing (T.M B b₀).ι, Small.IsFormOff (mCoordIdeal (T.M B b₀).y) u → Small.IsFormOff (mCoordIdeal (T.M B b₀).y) v → Small.IsFormOff (mCoordIdeal (T.M B b₀).y) (u * v)` using `fun u v hu hv => GlobalTheory.T.form_off_variety_mul _ _ _ _ _ _ _ (T.M B b₀).arith hu hv`. Establish `hu : Small.IsFormOff (mCoordIdeal (T.M B b₀).y) (u₄ * (uF * (uA * uC)))` using `hmulOff _ _ hu₄ (hmulOff _ _ huF (hmulOff _ _ huA huC))`. Establish `huz : ∀ z : (Σ k, (T.M B b₀).ι k) → ℂ, MvPolynomial.aeval z (u₄ * (uF * (uA * uC))) ≠ 0 → MvPolynomial.aeval z u₄ ≠ 0 ∧ MvPolynomial.aeval z uF ≠ 0 ∧ MvPolynomial.aeval z uA ≠ 0 ∧ MvPolynomial.aeval z uC ≠ 0`.
+
+Introduce `z hz`. Simplify using `only [map_mul, mul_ne_zero_iff] at hz`. Conclude with `⟨hz.1, hz.2.1, hz.2.2.1, hz.2.2.2⟩`. Establish `hτne' : Fr.rd τ * ∏ r', (o.toTowerOrigin.Or B b₀).e r' ^ (-zc Dw aτ (some r')) ≠ 0`. Use `mul_ne_zero ?_ (Finset.prod_ne_zero_iff.2 fun r' _ => zpow_ne_zero _ ((o.toTowerOrigin.Or B b₀).lines r').1)` and prove the remaining obligations.
+
+Rewrite using `[Rd.rd_eq aτ τ hτsec]`. Conclude with `mul_ne_zero (Units.ne_zero _) ((map_ne_zero Rd.φ).2 hτne)`. Establish `hσne' : Fr.rd F.s * ∏ r', (o.toTowerOrigin.Or B b₀).e r' ^ (-zc Dw (flatZ H w) (some r')) ≠ 0`. Use `mul_ne_zero ?_ (Finset.prod_ne_zero_iff.2 fun r' _ => zpow_ne_zero _ ((o.toTowerOrigin.Or B b₀).lines r').1)` and prove the remaining obligations. Introduce `h0`.
+
+Establish `h1 : Fr.rd (e Z) = Fr.rd F.s * Fr.rd F.s'`. Establish `h9` using `Fr.rd_mul F.s F.s'`. Rewrite `h9` using `[F.mul_eq]`. Conclude with `h9`. Rewrite `h1` using `[h0, zero_mul]`.
+
+Establish `h2 : e Z ∈ secZ Xo c (0 : WZ D.host.E)`. Use `(hL.e_sec Z)` as an intermediate fact. Rewrite `this` using `[← secZ_nat Xo c 0]`. Conclude with `this`. Establish `h3` using `Rd.rd_eq 0 (e Z) h2`.
+
+Rewrite `h3` using `[h1, (hL.e_val Z).1, map_one, mul_one]`. Conclude with `Units.ne_zero _ h3.symm`. Set `κ : (G.F →+* ℂ) → ℝ` to `fun sg => Real.log (F.cInf (sg.comp (ψ : c.F →+* G.F)))`. Establish `hκ : ∀ sg, κ (NumberField.ComplexEmbedding.conjugate sg) = κ sg`. Introduce `sg`.
+
+Establish `e1 : (NumberField.ComplexEmbedding.conjugate sg).comp (ψ : c.F →+* G.F) = (starRingEnd ℂ).comp (sg.comp (ψ : c.F →+* G.F))`. Use extensionality with `x`. Simplify using the standard rewrite rules. Use `show Real.log _ = Real.log _`. Rewrite using `[e1, F.cInf_good, goodOf_conj', ← F.cInf_good]`.
+
+Set `hN : (Option (RootIx Dw) → ℤ) → ((Σ k, (T.M B b₀).ι k) → ℂ) → ℝ` to `fun nn z => ∏ r', ((o.toTowerOrigin.Or B b₀).sing r').h z ^ nn (some r')`. Establish `hρ : ∀ z : (Σ k, (T.M B b₀).ι k) → ℂ, ∃ ρz : ℝ, ∀ sg : G.F →+* ℂ, z ∈ mcPts (mCoordIdeal (T.M B b₀).y) → LiesOver (T.M B b₀).y sg z → MvPolynomial.aeval z (u₄ * (uF * (uA * uC))) ≠ 0 → (∀ v : G.I → ℂ, (∀ i, Small.HasVal (T.M B b₀).y (Top.combLine ((T.M B b₀).line 1) (zc Dw a₁)).a …`. Introduce `z`. Distinguish the cases in `hex : ∃ sg : G.F →+* ℂ, z ∈ mcPts (mCoordIdeal (T.M B b₀).y) ∧ LiesOver (T.M B b₀).y sg z ∧ MvPolynomial.aeval z (u₄ * (uF * (uA * uC))) ≠ 0`. Take `⟨sg₀, hz, hl₀, hu₀⟩` from `hex`.
+
+Take `⟨-, -, hA0, hC0⟩` from `huz z hu₀`. Establish `hzp` using `mem_ptsOver_of_mem_mcPts hz`. Take `⟨φ, hφ⟩` from `hCst ℂ z hzp hC0`. Establish `hφeq : ∀ sg : G.F →+* ℂ, LiesOver (T.M B b₀).y sg z → sg = φ` using `fun sg hl => by`. Use extensionality with `θ`.
+
+Conclude with `(Small.hasVal_const hl (hφ θ)).symm`. Establish `hcst : ∀ t : c.F, Small.HasVal (T.M B b₀).y 0 ((o.toTowerOrigin.Or B b₀).𝔐.cst t) z ((sg₀.comp (ψ : c.F →+* G.F)) t)`. Introduce `t`. Use `hφ (ψ t)` as an intermediate fact. Rewrite `this` using `[hψ t, ← hφeq sg₀ hl₀]`.
+
+Conclude with `this`. Take `⟨ρz, h1, h2, h3⟩` from `hAB (sg₀.comp (ψ : c.F →+* G.F)) z hz hcst hA0`. Use `⟨ρz, fun sg _ hl _ => ?_⟩` and prove the remaining obligations. Take `rfl : sg = sg₀` from `(hφeq sg hl).trans (hφeq sg₀ hl₀).symm`. Conclude with `⟨h1, h2, h3⟩`.
+
+Use `⟨0, fun sg hz hl hu' => absurd ⟨sg, hz, hl, hu'⟩ hex⟩` and prove the remaining obligations. Use `choose ρf hρf using hρ`. Establish `hNpos : ∀ (nn : Option (RootIx Dw) → ℤ) (z : (Σ k, (T.M B b₀).ι k) → ℂ), z ∈ mcPts (mCoordIdeal (T.M B b₀).y) → 0 < hN nn z` using `fun nn z hz => Finset.prod_pos fun r' _ => zpow_pos (((o.toTowerOrigin.Or B b₀).sing r').pos z hz.1) _`. Use `Small.hasInputs_of_data (CMType H) (Dw.p + Dw.q) (T.M B b₀) Λ G (towerWt Dw a') T.nu (zc Dw a') n₀ q₀ μ m (Top.combLine ((T.M B b₀).line 1) (zc Dw a₁)).a (Top.combLine ((T.M B b₀).line 1) (zc Dw aτ)).a (Top.combLine ((T.M B b₀).line 1) (zc Dw (flatZ H w))).a (Fr.rd τ * ∏ r', (o.t …` and prove the remaining obligations. Introduce `x`.
+
+Simplify using `only [Small.combLine_line_a (T.M B b₀) 1, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, ← mul_assoc, hrel j]`. Expand and normalize the polynomial expressions, which then agree. Introduce `p hp`.
+
+Use `le_trans (le_of_eq ?_) (hcpge p hp)` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `p _ z hz hzu`. Use `hFB p z hz ?_` and prove the remaining obligations.
+
+Simplify using `only [map_mul, mul_ne_zero_iff] at hzu`. Conclude with `hzu.2.1`. Introduce `sg z hz hl hu'`. Take `⟨h1, h2, h3⟩` from `hρf z sg hz hl hu'`. Use `⟨hNpos _ z hz, hNpos _ z hz, hNpos _ z hz, hNpos _ z hz, ?_, h1, h2, h3⟩` and prove the remaining obligations.
+
+Conclude with `prod_rel _ (fun r' => ((o.toTowerOrigin.Or B b₀).sing r').pos z hz.1) (fun r' => zc Dw a₁ (some r')) (fun r' => zc Dw a' (some r')) (fun r' => zc Dw aτ (some r')) (fun r' => zc Dw (flatZ H w) (some r')) (8 * μ) (3 * μ) m (fun r' => hrel (some r'))`. Introduce `s hs hss z hz hzu x hx hx0`. Conclude with `hA5 s hs hss z hz (huz z hzu).1 x hx hx0`. Establish `hm : Small.embMean κ = (∑ σ : c.F →+* ℂ, Real.log (F.cInf σ)) / Module.finrank ℚ c.F` using `embMean_comp ψ (fun σ => Real.log (F.cInf σ))`. Rewrite using `[hm]`.
+
+Conclude with `hcinf`.
+-/
 theorem origin_small : Top.Given → ∀ (D : D7), IsGalois ℚ D.host.E → ∀ (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c) (W : HSp D) (dict : ∀ σ : c.F →+* ℂ, GA D W → Σ k, Frame ((U σ).X k).Ψ D.R.r), CompLaws U h e → abelian₂.LevelLaws U W dict → FinVol W → Ref.UnifAll Xo c → ∀ [DecidableEq (CMType H)] (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : Top.GoodOrigin Y T) (B : ℕ) (b₀ : T.Comp) (Fr : Small.GenFrame (o.toTowerOrigin.Or B b₀)) (Z : Comp Xo c) (Rd : Reading Fr h Z) (a₁ a' aτ : WZ D.host.E) (w : CMType H → ℤ) (F : FlatSec U (xiR D) (e Z) (flatZ H w)) (μ m : ℕ) (τ : Rul Xo c) (n : ℕ) (ω : Fin n → Rul Xo c) (n₁ : Option (RootIx Dw) → ℤ) (Λ : ℝ) (G : Small.GenModel (T.M B b₀) Λ) (ei : G.I ≃ Fin n) (ψ : c.F ≃+* G.F) (S : Finset ℕ) (ep bτ b cp : ℕ → ℝ) (c₀ ρ A P R₀ cinf cc : ℝ) (rh : ∀ σ k, Frame ((U σ).X k).Ψ D.R.r → ℝ), 0 < μ → Top.RegDominant (towerWt Dw a') → WEq Dw ((8 * μ) • a₁) ((8 * μ) • a' + (3 * μ) • aτ + m • flatZ H w) → τ ∈ secZ Xo c aτ → evC h Z τ ≠ 0 → OntoZ U h e a₁ Z → Submodule.span ℤ (Set.range ω) = (latOn U h a₁ Z).restrictScalars ℤ → Submodule.span c.F (Set.range ω) = cuspOn U h a₁ Z → (∀ j, (n₁ j : ℝ) = (T.M B b₀).coef (towerWt Dw a₁) 0 j) → (∀ t, algebraMap G.F (T.M B b₀).Ω (ψ t) = (o.toTowerOrigin.Or B b₀).𝔐.cst t) → (∀ j, G.w j = Fr.rd (ω (ei j)) * ∏ r', (o.toTowerOrigin.Or B b₀).e r' ^ (-n₁ (some r'))) → (∀ (σ : c.F →+* ℂ) (lin : Rul Xo c →ₛₗ[σ] ℂ) (as : Fin n → ℂ), ‖∑ j, as j * lin (ω j)‖ ^ 2 ≤ (∑ j, ∑ j', as j * starRingEnd ℂ (as j') * ipOn U W dict (xiR D) a₁ (e Z) σ (ω j) (ω j')).re * G.L.h (fun y => lin (ω (ei y.2))) ^ 2) → c₀ ≤ 3 * ρ → (∀ (p : ℕ), p.Prime → ∀ la : HeightOneSpectrum (𝓞 c.F), (p : 𝓞 c.F) ∈ la.asIdeal → (Ref.pjSys Xo c).RefBound (cuspZ Xo c U a₁) la (ramOverZ la * ep p) c₀ (Ref.phU Xo c la) ∧ -F.cFin la ≤ ramOverZ la * b p ∧ ∀ y : (Ref.pjSys Xo c).Pt la, 0 ≤ Ref.phU Xo c la y ∧ ((8 * ρ * Ref.phU Xo c la y - ramOverZ la * bτ p : ℝ) : EReal) ≤ (Ref.pjSys Xo c).val y τ) → (∀ p ∈ S, p.Prime) → (∀ p, 0 ≤ cp p) → (∀ p, p ∉ S → cp p = 0) → (∀ p : ℕ, p.Prime → (((8 * μ : ℕ) : ℝ) * (ep p + (if p ∈ o.toTowerOrigin.S B then 1 / ((p : ℝ) - 1) + (if p = 2 then 1 else 0) + (padicValInt p (discr D.host.E) : ℝ) / Module.finrank ℚ D.host.E else 0) * Top.l1 (towerWt Dw a')) + ((3 * μ : ℕ) : ℝ) * bτ p + m * b p) * Real.log p ≤ ((8 * μ : ℕ) : ℝ) * cp p) → (∀ σ, GoodEmb c σ → ∀ k, Over (U σ) (e Z) k → ∃ (x0 : Frame ((U σ).X k).Ψ D.R.r) (FF : Set (ReciprocityTheory.L2DbarEstimates.V (nd ((U σ).X k)))), IsOrth ((U σ).X k) x0 ∧ IsFundSet ((U σ).X k) x0 FF ∧ ∀ y ∈ ((U σ).X k).dom, ThA.BergLB ((U σ).X k) x0 FF (laZ (U σ) a₁ k) y (Real.exp (-(A + 3 * rh σ k y))) ∧ lieFacZ Dw (xiR D) aτ * ((U σ).X k).pnorm (laZ (U σ) aτ k) (rdU (U σ) τ k) y ≤ Real.exp (4 * (2 * P - rh σ k y) + R₀)) → ((8 * μ : ℕ) : ℝ) * (A / 2 + 3 * P) + ((3 * μ : ℕ) : ℝ) * R₀ + m * ((∑ σ : c.F →+* ℂ, Real.log (F.cInf σ)) / Module.finrank ℚ c.F) ≤ ((8 * μ : ℕ) : ℝ) * cinf → ∑ p ∈ S, cp p + cinf ≤ cc → G.HasInputs (T.lamS (towerWt Dw a')) cc := by
   intro hG D hGal H Dw l Xo c U h e W dict hL hLv hFV hU _ Y T o B b₀ Fr Z Rd a₁ a' aτ w F μ m τ n ω n₁ Λ G ei ψ S ep bτ b cp
     c₀ ρ A P R₀ cinf cc rh hμ hreg hWE hτsec hτne hOnto hspanZ hspanF hn₁ hψ hGw hmet hc₀ hfin hSp hcp0 hcpS hcpge harch

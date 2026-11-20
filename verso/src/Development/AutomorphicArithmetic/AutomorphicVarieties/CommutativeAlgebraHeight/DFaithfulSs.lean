@@ -13,6 +13,19 @@ import Mathlib.FieldTheory.IsAlgClosed.Basic
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Use `haveI := IsSimpleModule.nontrivial E M`. Take `⟨v, hv⟩` from `exists_ne (0 : M)`. Take `⟨r, hr⟩` from `IsSimpleModule.toSpanSingleton_surjective E hv (φ v)`. Use `replace hr : r • v = φ v := hr`. Take `⟨p, hp, hp0⟩` from `h r`.
+
+Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `key : ∀ s : Multiset k, aeval r (s.map fun a => X - C a).prod • v ≠ 0`. Introduce `s`. Proceed by induction on `s using Multiset.induction_on with`.
+
+Consider the case `empty => simpa using hv`. Consider the case `cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, mul_comm, map_mul, mul_smul]`. Use `set q := aeval r (s.map fun a => X - C a).prod`. Set `ψ : Module.End E M` to `φ - a • (1 : Module.End E M)`.
+
+Establish `h1 : aeval r (X - C a) • v = ψ v` using `by simp [ψ, sub_smul, hr]`. Rewrite using `[h1, ← map_smul]`. Break down `LinearMap.bijective_or_eq_zero ψ with hb | hb` into its components or cases. Conclude with `fun h0 => ih (hb.1 (h0.trans (map_zero ψ).symm))`. Take `⟨w, hw⟩` from `hne a`.
+
+Use `LinearMap.congr_fun hb w` as an intermediate fact. Simplify using `only [ψ, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, LinearMap.zero_apply] at this`. Conclude with `absurd (sub_eq_zero.1 this) hw`. Use `key p.roots` as an intermediate fact. Rewrite `this` using `[← (IsAlgClosed.splits p).eq_prod_roots_of_monic hp, hp0, zero_smul]`.
+
+Conclude with `this rfl`.
+-/
 private theorem fss_scalar {k E M : Type} [Field k] [IsAlgClosed k] [Ring E] [Algebra k E] [AddCommGroup M]
     [Module k M] [Module E M] [IsScalarTower k E M] [IsSimpleModule E M]
     (h : ∀ x : E, ∃ p : k[X], p.Monic ∧ aeval x p = 0) (φ : Module.End E M) : ∃ c : k, ∀ v, φ v = c • v := by
@@ -43,6 +56,19 @@ private theorem fss_scalar {k E M : Type} [Field k] [IsAlgClosed k] [Ring E] [Al
   rw [← (IsAlgClosed.splits p).eq_prod_roots_of_monic hp, hp0, zero_smul] at this
   exact this rfl
 
+/- English proof (translation)
+Set `b` to `Module.Basis.ofVectorSpace k M`. Break down `finite_or_infinite (Module.Basis.ofVectorSpaceIndex k M) with hf | hf` into its components or cases. Conclude with `Module.Finite.of_basis b`. It suffices to derive a contradiction. Set `e` to `Infinite.natEmbedding (Module.Basis.ofVectorSpaceIndex k M)`.
+
+Set `f : M →ₗ[k] M` to `b.constr k fun i => b (e (Function.invFun e i + 1))`. Establish `hfe : ∀ i, f (b (e i)) = b (e (i + 1))` using `fun i => by`. Simplify using `only [f, Module.Basis.constr_basis]`. Rewrite using `[Function.leftInverse_invFun e.injective i]`. Set `F : Module.End (Module.End E M) M` to `{ toFun := f map_add' := f.map_add map_smul' := fun φ v => by`.
+
+Take `⟨c, hc⟩` from `fss_scalar (k := k) (fun x => (h x).imp fun p hp => ⟨hp.1, hp.2.2⟩) φ`. Simplify using `[hc] }`. Take `⟨r, hr⟩` from `jacobson_density F ((Finset.range n).image fun i => b (e i))`. Establish `hr' : ∀ i ≤ n, r ^ i • b (e 0) = b (e i)`. Introduce `i hi`.
+
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[pow_succ', mul_smul, ih (by omega), ← hfe]`. Conclude with `(hr _ (Finset.mem_image_of_mem _ (Finset.mem_range.2 (by omega)))).symm`.
+
+Take `⟨p, hp, hpn, hp0⟩` from `h r`. Establish `h1 : ∑ i ∈ Finset.range (p.natDegree + 1), p.coeff i • b (e i) = 0`. Use `congrArg (· • b (e 0)) hp0` as an intermediate fact. Simplify using `only [aeval_eq_sum_range, zero_smul, Finset.sum_smul, smul_assoc] at this`. Rewrite using `[← this]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hr' i (by have := Finset.mem_range.1 hi; omega)]`. Establish `h2` using `linearIndependent_iff'.1 (b.linearIndependent.comp e e.injective) _ _ h1 p.natDegree (by simp)`. Rewrite `h2` using `[hp.coeff_natDegree]`. Conclude with `one_ne_zero h2`.
+-/
 private theorem fss_fin {n : ℕ} {k E M : Type} [Field k] [IsAlgClosed k] [Ring E] [Algebra k E] [AddCommGroup M]
     [Module k M] [Module E M] [IsScalarTower k E M] [IsSimpleModule E M]
     (h : ∀ x : E, ∃ p : k[X], p.Monic ∧ p.natDegree ≤ n ∧ aeval x p = 0) : Module.Finite k M := by
@@ -81,6 +107,23 @@ private theorem fss_fin {n : ℕ} {k E M : Type} [Field k] [IsAlgClosed k] [Ring
   rw [hp.coeff_natDegree] at h2
   exact one_ne_zero h2
 
+/- English proof (translation)
+Use `haveI : ∀ i, IsSimpleModule E (E ⧸ m i) := fun i => isSimpleModule_iff_isCoatom.2 (hm i)`. Set `a : ℕ ↪ k` to `Infinite.natEmbedding k`. Set `M` to `∀ i : Fin (n + 1), E ⧸ m i`. Establish `hz : ∀ (φ : Module.End E M) (i j : Fin (n + 1)) (x : E ⧸ m i), i ≠ j → φ (Pi.single i x) j = 0`. Introduce `φ i j x hij`.
+
+Break down `LinearMap.bijective_or_eq_zero ((LinearMap.proj j).comp (φ.comp (LinearMap.single E (fun i : Fin (n + 1) => E ⧸ m i) i))) with hb | hb` into its components or cases. Conclude with `absurd (Fin.ext (hinj (LinearEquiv.ofBijective _ hb).annihilator_eq)) hij`. Conclude with `LinearMap.congr_fun hb x`. Set `F : Module.End (Module.End E M) M` to `{ toFun := fun v j => algebraMap k E (a j) • v j map_add' := fun v w => funext fun j => smul_add _ _ _ map_smul' := fun φ v => funext fun j => by`. Establish `h1 : ∀ w : M, φ w j = φ (Pi.single j (w j)) j` using `fun w => by conv_lhs => rw [← Finset.univ_sum_single w, map_sum, Finset.sum_apply]`.
+
+Conclude with `Finset.sum_eq_single j (fun i _ hi => hz φ i j _ hi) (by simp)`. Express the relevant statement in the definitionally equal form `algebraMap k E (a j) • φ v j = φ (fun j => algebraMap k E (a j) • v j) j`. Rewrite using `[h1 v, h1 (fun j => algebraMap k E (a j) • v j), Pi.single_smul, map_smul]`. Use `rfl }`. Take `⟨r, hr⟩` from `jacobson_density F {fun i => Submodule.Quotient.mk 1}`.
+
+Use `replace hr := hr _ (Finset.mem_singleton_self _)`. Take `⟨p, hp, hpn, hp0⟩` from `h r`. Establish `hroot : ∀ j : Fin (n + 1), p.eval (a j) = 0`. Introduce `j`. Use `set v : E ⧸ m j := Submodule.Quotient.mk 1 with hv`.
+
+Establish `h1 : r • v = a j • v`. Rewrite using `[← algebraMap_smul E (a j) v]`. Conclude with `(congrFun hr j).symm`. Establish `h2 : ∀ i : ℕ, r ^ i • v = a j ^ i • v`. Introduce `i`.
+
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [pow_succ, mul_smul, h1, smul_comm, ih, smul_smul, pow_succ']`. Establish `h3 : aeval r p • v = p.eval (a j) • v`. Simplify using `only [aeval_eq_sum_range, eval_eq_sum_range, Finset.sum_smul, smul_assoc, h2, mul_smul]`.
+
+Rewrite `h3` using `[hp0, zero_smul]`. Use `(smul_eq_zero.1 h3.symm).resolve_right fun h0 => (hm j).1 ?_` and prove the remaining obligations. Conclude with `(Ideal.eq_top_iff_one _).2 ((Submodule.Quotient.mk_eq_zero _).1 h0)`. Use `hp.ne_zero (eq_zero_of_natDegree_lt_card_of_eval_eq_zero p (f := fun j : Fin (n + 1) => a j) (fun i j hij => Fin.ext (a.injective hij)) hroot ?_)` and prove the remaining obligations. Simplify using `only [Fintype.card_fin]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem fss_count {n : ℕ} {k E : Type} [Field k] [IsAlgClosed k] [Ring E] [Algebra k E]
     (h : ∀ x : E, ∃ p : k[X], p.Monic ∧ p.natDegree ≤ n ∧ aeval x p = 0) (m : ℕ → Ideal E)
     (hm : ∀ i, IsCoatom (m i)) (hinj : Function.Injective fun i => Module.annihilator E (E ⧸ m i)) : False := by
@@ -128,6 +171,17 @@ private theorem fss_count {n : ℕ} {k E : Type} [Field k] [IsAlgClosed k] [Ring
   simp only [Fintype.card_fin]
   omega
 
+/- English proof (translation)
+Set `S : Set (Ideal E)` to `{P | ∃ m : Ideal E, IsCoatom m ∧ Module.annihilator E (E ⧸ m) = P}`. Establish `hS : ∀ P : S, ∃ m : Ideal E, IsCoatom m ∧ Module.annihilator E (E ⧸ m) = P` using `fun P => P.2`. Use `choose m hm hm' using hS`. Use `haveI : Finite S := by`. Assume the negation of the conclusion as `hinf`.
+
+Rewrite `hinf` using `[not_finite_iff_infinite]`. Set `e` to `Infinite.natEmbedding S`. Use `fss_count h (fun i => m (e i)) (fun i => hm _) fun i j hij => e.injective (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[← hm', ← hm']`. Conclude with `hij`.
+
+Use `haveI : ∀ P, IsSimpleModule E (E ⧸ m P) := fun i => isSimpleModule_iff_isCoatom.2 (hm i)`. Use `haveI : ∀ P, Module.Finite k (E ⧸ m P) := fun i => fss_fin h`. Set `f : E →ₗ[k] ∀ P : S, Module.End k (E ⧸ m P)` to `LinearMap.pi fun P => (Algebra.lsmul k k (E ⧸ m P) (A := E)).toLinearMap`. Use `Module.Finite.of_injective f ((injective_iff_map_eq_zero f).2 fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[← Ideal.mem_bot, ← hj]`.
+
+Use `Submodule.mem_sInf.2 fun I hI => ?_` and prove the remaining obligations. Establish `h1 : x ∈ Module.annihilator E (E ⧸ m ⟨_, I, hI, rfl⟩)` using `Module.mem_annihilator.2 fun v => LinearMap.congr_fun (congrFun hx ⟨_, I, hI, rfl⟩) v`. Rewrite `h1` using `[hm']`. Establish `h2` using `Module.mem_annihilator.1 h1 (Submodule.Quotient.mk 1)`. Rewrite `h2` using `[← Submodule.Quotient.mk_smul, smul_eq_mul, mul_one]`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero _).1 h2`.
+-/
 private theorem fss_alg {n : ℕ} {k E : Type} [Field k] [IsAlgClosed k] [Ring E] [Algebra k E]
     (h : ∀ x : E, ∃ p : k[X], p.Monic ∧ p.natDegree ≤ n ∧ aeval x p = 0) (hj : Ring.jacobson E = ⊥) :
     Module.Finite k E := by
@@ -155,6 +209,19 @@ private theorem fss_alg {n : ℕ} {k E : Type} [Field k] [IsAlgClosed k] [Ring E
   rw [← Submodule.Quotient.mk_smul, smul_eq_mul, mul_one] at h2
   exact (Submodule.Quotient.mk_eq_zero _).1 h2
 
+/- English proof (translation)
+Introduce `n k E _ _ _ _ D hD`. Establish `hCH : D.IsCH` using `le_bot_iff.1 (hD ▸ d_ch_ker D)`. Establish `hj : Ring.jacobson E = ⊥`. Use `le_bot_iff.1 fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `(d_ker _ _).1.1 ((d_rad D hCH x).2 hx)`.
+
+Establish `h2 : D.Kills x`. Introduce `S _ _ y`. Use `letI : Algebra (ResidueField k) S := (Ideal.Quotient.lift (maximalIdeal k) (algebraMap k S) fun a ha => by`. Rewrite `ha` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`. Rewrite using `[ha, map_zero]).toAlgebra`.
+
+Use `haveI : IsScalarTower k (ResidueField k) S := .of_algebraMap_eq fun _ => rfl`. Choose the witnesses or unpack the hypotheses as in `⟨z, rfl⟩ : ∃ z, Det.cancel k E (ResidueField k) S z = y := by`. Proceed by induction on `y with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul s e => exact ⟨s ⊗ₜ (1 ⊗ₜ e), by simp [Det.cancel_tmul]⟩`.
+
+Consider the case `add a b ha hb`. Take `⟨a, rfl⟩` from `ha`. Take `⟨b, rfl⟩` from `hb`. Conclude with `⟨a + b, map_add _ _ _⟩`. Establish `h3` using `h1 S z`.
+
+Rewrite `h3` using `[(d_bc D (ResidueField k)).1]`. Simplify `h3` using `[Det.cancel_tmul]`. Establish `h4` using `(d_ker D x).1.2 h2`. Rewrite `h4` using `[hD]`. Simplify using `using h4`.
+
+Use `haveI := fss_alg (n := n) (k := k) (E := E) (fun x => ⟨D.chi x, (d_chi D x).2.2.2.2.1, (d_chi D x).2.2.2.2.2.1, ((d_chS D k).2.2 hCH).2 x⟩) hj`. Use `haveI : IsArtinianRing E := IsArtinianRing.of_finite k E`. Conclude with `⟨inferInstance, IsArtinianRing.isSemisimpleRing_iff_jacobson.2 hj⟩`.
+-/
 theorem UpperTheory.V.CA.d_faithful_ss :
     ∀ {n : ℕ} {k E : Type} [Field k] [IsAlgClosed k] [Ring E] [Algebra k E] (D : Det n k E), D.ker = ⊥ → Module.Finite k E ∧ IsSemisimpleRing E := by
   intro n k E _ _ _ _ D hD

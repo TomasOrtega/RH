@@ -70,6 +70,13 @@ def HeisenbergCoordinates : Prop :=
         (∀ a, ((Φ n').1 a : Fin M → AF F ⊗[F] E) = lin (AF F) σ J h ((Φ n).1 a)) ∧
           (Φ n').2 = (Φ n).2)
 
+/- English proof (translation)
+Establish `hS` using `heisenberg_le_stabilizer R σ J P hh`. Take `⟨h1, h2, h3⟩` from `hw`. Use `⟨fun a => ?_, fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← stabilizer_fixes_frame_vector R σ J P hS a, hR_lin]`. Conclude with `h1 a`.
+
+Use `hh` as an intermediate fact. Rewrite `this` using `[Hsub, mem_stabT]`. Establish `hf` using `this (Fin.natAdd (r + 1) a)`. Rewrite `hf` using `[tupH_f]`. Rewrite using `[← hf, hR_lin]`.
+
+Conclude with `h2 a`. Rewrite using `[← stabilizer_fixes_normal_vector hS, hR_lin]`. Conclude with `h3`.
+-/
 theorem lin_mem_Wsub {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R]
     [Algebra F R] {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} {r : ℕ}
     {P : Frame E M r} {h : HA R σ J} (hh : h ∈ Hsub R σ J P) {w : Fin M → R ⊗[F] E}

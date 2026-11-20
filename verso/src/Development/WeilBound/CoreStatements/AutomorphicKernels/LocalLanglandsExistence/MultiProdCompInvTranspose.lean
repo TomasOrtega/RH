@@ -16,6 +16,15 @@ noncomputable section
 
 namespace PositivityTheory.Pf1.LDual2
 
+/- English proof (translation)
+Use `open GlobalTheory.InvTransposeProd in`. Use `set π' : ∀ a, Representation ℂ (GL (Fin (d (Fin.rev a))) k) (X (Fin.rev a)) := fun a => (π (Fin.rev a)).comp (invTranspose (d (Fin.rev a))) with hπ'`. Establish `key : ∀ (q : parab k e) (hq : invTranspose n (q : GL (Fin n) k) ∈ parab k (GlobalTheory.InvTransposeProd.revPlace e)), ((twist (GlobalTheory.InvTransposeProd.revRep π') (deltaHalf k _)).comp (leviProj k (GlobalTheory.InvTransposeProd.revPlace e))) ⟨invTranspose n q, hq⟩ = ((twist …`. Introduce `q hq`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, twist_apply, twist_apply, GlobalTheory.InvTransposeProd.deltaHalf_revPlace e q hq, hπ', GlobalTheory.InvTransposeProd.revRep_leviProj e π q hq]`. Choose the witnesses or unpack the hypotheses as in `⟨A⟩ : Nonempty ((parInd (GlobalTheory.InvTransposeProd.revPlace e) (GlobalTheory.InvTransposeProd.revRep π')).Equiv ((multiProd e π).comp (invTranspose n))) := by`. Use `Relabel.smInd_equiv_comp (P := parab k (GlobalTheory.InvTransposeProd.revPlace e)) (Q := parab k e) (σ := (twist (GlobalTheory.InvTransposeProd.revRep π') (deltaHalf k _)).comp (leviProj k (GlobalTheory.InvTransposeProd.revPlace e))) (τ := (twist (piTensor π) (deltaHalf k _)).com …` and prove the remaining obligations. Establish `hp : invTranspose n (invTranspose n (p : GL (Fin n) k)) ∈ parab k (GlobalTheory.InvTransposeProd.revPlace e)`. Rewrite using `[invTranspose_invTranspose]`.
+
+Conclude with `p.2`. Use `⟨⟨_, GlobalTheory.InvTransposeProd.mem_parab_of_revPlace e p.2⟩, rfl, ?_⟩` and prove the remaining obligations. Use `(key ⟨_, GlobalTheory.InvTransposeProd.mem_parab_of_revPlace e p.2⟩ hp).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg _ (Subtype.ext (invTranspose_invTranspose n (p : GL (Fin n) k)))`. Take `⟨B⟩` from `GlobalTheory.PlacingProd.multiProd_placing_equiv k h n (fun a => d (Fin.rev a)) (GlobalTheory.InvTransposeProd.revPlace e) e' (fun a => X (Fin.rev a)) π'`.
+
+Conclude with `⟨A.symm.trans ((parIndEquiv (GlobalTheory.InvTransposeProd.revPlace e) (GlobalTheory.InvTransposeProd.revRepEquiv π')).trans B)⟩`.
+-/
 theorem multiProd_comp_invTranspose (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (h n : ℕ) (d : Fin h → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n)
     (e' : (Σ a, Fin (d (Fin.rev a))) ≃ Fin n) (X : Fin h → Type) [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)]
@@ -57,18 +66,27 @@ section Dual
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨e⟩` from `GlobalTheory.InvTransposeTwist.main k x.1 _ x.rep s`. Use `Eq.trans ?_ (IrrGL.tw_of _ _ _ _ _).symm` and prove the remaining obligations. Conclude with `IrrGL.of_eq_of.2 ⟨(GlobalTheory.DualityMap.compEquiv (IrrGL.twEquiv x _ (isSmoothChar_absPow s)).symm (invTranspose x.1)).trans e⟩`.
+-/
 theorem dual_nu (x : IrrGL k) (s : ℂ) : GlobalTheory.DualityMap.dual (x.nu s) = (GlobalTheory.DualityMap.dual x).nu (-s) := by
   obtain ⟨e⟩ := GlobalTheory.InvTransposeTwist.main k x.1 _ x.rep s
   refine Eq.trans ?_ (IrrGL.tw_of _ _ _ _ _).symm
   exact IrrGL.of_eq_of.2
     ⟨(GlobalTheory.DualityMap.compEquiv (IrrGL.twEquiv x _ (isSmoothChar_absPow s)).symm (invTranspose x.1)).trans e⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, isCuspidal_of_equiv (IrrGL.equivOf _ _ _) (GlobalTheory.InvTransposeCusp.isCuspidal_comp_invTranspose k x.1 _ x.rep h.2)⟩`.
+-/
 theorem isCusp_dual (x : IrrGL k) (h : x.IsCusp) : (GlobalTheory.DualityMap.dual x).IsCusp :=
   ⟨h.1, isCuspidal_of_equiv (IrrGL.equivOf _ _ _)
     (GlobalTheory.InvTransposeCusp.isCuspidal_comp_invTranspose k x.1 _ x.rep h.2)⟩
 
 end Dual
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.DualityMap.dual, fun x y => (GlobalTheory.DualClassTranspose.dualCl_iff k hA x y).trans ⟨fun ⟨_, _, h⟩ => h, fun h => ⟨_, _, h⟩⟩, GlobalTheory.DualityMap.dual_dual, dual_nu, isCusp_dual, fun _ => rfl⟩`.
+-/
 theorem dualMap (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) : ∃ D : IrrGL k → IrrGL k, (∀ x y, DualCl x y ↔ y = D x) ∧
       (∀ x, D (D x) = x) ∧ (∀ (x : IrrGL k) (s : ℂ), D (x.nu s) = (D x).nu (-s)) ∧
@@ -80,16 +98,35 @@ section Seg
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨Representation.Equiv.refl _⟩`.
+-/
 theorem prodIrr_congr {h N : ℕ} {x y : Fin h → IrrGL k} (e : x = y) (hx : ∑ a, (x a).1 = N)
     (hy : ∑ a, (y a).1 = N) : Nonempty ((prodIrr x hx).Equiv (prodIrr y hy)) := by
   subst e
   exact ⟨Representation.Equiv.refl _⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨Representation.Equiv.refl _⟩`.
+-/
 theorem prodIrr_cast {h h' N : ℕ} (e : h = h') (x : Fin h' → IrrGL k) (hx : ∑ a, (x (Fin.cast e a)).1 = N)
     (hy : ∑ a, (x a).1 = N) : Nonempty ((prodIrr (fun a => x (Fin.cast e a)) hx).Equiv (prodIrr x hy)) := by
   subst e
   exact ⟨Representation.Equiv.refl _⟩
 
+/- English proof (translation)
+Take `⟨hlen, hterm⟩` from `(GlobalTheory.SegDualProof.segDual_exists_terms k D hD hDD hnu hcusp hdeg Δ).2 Δ' hΔ`. Establish `key : ∀ w : IrrGL k, ∃ (h1 : IsSmooth (w.rep.comp (invTranspose w.1))) (h2 : Representation.IsIrreducible (w.rep.comp (invTranspose w.1))), D w = IrrGL.of (w.rep.comp (invTranspose w.1)) h1 h2` using `fun w => (GlobalTheory.DualClassTranspose.dualCl_iff k hA w (D w)).1 ((hD w _).2 rfl)`. Use `choose s1 s2 hs using key`. Take `⟨hd, hcos⟩` from `hx`. Establish `hd' : ∑ a, (Δ.term (Fin.rev a)).1 = x.1`.
+
+Rewrite using `[← hd]`. Conclude with `Equiv.sum_comp Fin.revPerm fun a => (Δ.term a).1`. Establish `hsurj : Function.Surjective (invTranspose (R` using `k) x.1) := fun g => ⟨_, invTranspose_invTranspose _ g⟩`. Establish `c1` using `GlobalTheory.CosocleComp.isCosocle_comp _ _ _ _ _ _ (invTranspose (R := k) x.1) hsurj hcos`. Take `⟨e1⟩` from `multiProd_comp_invTranspose k Δ.len x.1 (fun a => (Δ.term a).1) (stdBlocks (fun a => (Δ.term a).1) hd) (stdBlocks (fun a => (Δ.term (Fin.rev a)).1) hd') _ (fun a => (Δ.term a).rep)`.
+
+Establish `e2` using `prodIrrEquiv hd' (fun a => (Δ.term (Fin.rev a)).rep.comp (invTranspose (Δ.term (Fin.rev a)).1)) (fun a => s1 _) (fun a => s2 _)`. Establish `hfam : (fun a : Fin Δ.len => IrrGL.of ((Δ.term (Fin.rev a)).rep.comp (invTranspose (Δ.term (Fin.rev a)).1)) (s1 _) (s2 _)) = fun a => Δ'.term (Fin.cast hlen.symm a)`. Use function extensionality and compare the values at `a`. Rewrite using `[← hs]`. Use `show D (Δ.first.nu (((Fin.rev a : Fin Δ.len) : ℕ) : ℂ)) = Δ'.first.nu (((a : ℕ)) : ℂ)`.
+
+Rewrite using `[hterm a a.2, Fin.val_rev, Nat.cast_sub (by omega : (a : ℕ) + 1 ≤ Δ.len)]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `hd2 : ∑ a, (Δ'.term (Fin.cast hlen.symm a)).1 = x.1`. Rewrite using `[← hd']`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => (congrArg Sigma.fst (congrFun hfam a)).symm`. Establish `hd0 : ∑ a, (Δ'.term a).1 = x.1`. Rewrite using `[← hd2]`. Conclude with `(Equiv.sum_comp (finCongr hlen.symm) fun a => (Δ'.term a).1).symm`. Take `⟨E3⟩` from `prodIrr_congr hfam hd' hd2`.
+
+Take `⟨E4⟩` from `prodIrr_cast hlen.symm Δ'.term hd2 hd0`. Rewrite using `[hs x]`. Conclude with `⟨hd0, c1.of_equiv (IrrGL.equivOf _ (s1 x) (s2 x)) (e1.trans (e2.trans (E3.trans E4)))⟩`.
+-/
 theorem isLSeg_dual (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (D : IrrGL k → IrrGL k)
     (hD : ∀ x y, DualCl x y ↔ y = D x) (hDD : ∀ x, D (D x) = x)
     (hnu : ∀ (x : IrrGL k) (s : ℂ), D (x.nu s) = (D x).nu (-s)) (hcusp : ∀ x, x.IsCusp → (D x).IsCusp)
@@ -134,6 +171,17 @@ theorem isLSeg_dual (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (D : I
 
 end Seg
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA l x y hL hxy`. Take `⟨D, hD, hDD, hnu, hcusp, hdeg⟩` from `dualMap k hA`. Use `choose f hf using fun Δ : Segment k => (GlobalTheory.SegDualProof.segDual_exists_terms k D hD hDD hnu hcusp hdeg Δ).1`. Use `⟨l.map f, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[List.forall₂_map_right_iff]`.
+
+Conclude with `List.forall₂_same.2 fun Δ _ => hf Δ`. Take `⟨h, z, hd, ⟨Δ, ⟨hΔ, hord⟩, hz⟩, hcos⟩` from `hL`. Take `⟨h1, h2, rfl⟩` from `(GlobalTheory.DualClassTranspose.dualCl_iff k hA x y).1 hxy`. Establish `key : ∀ w : IrrGL k, ∃ (h1 : IsSmooth (w.rep.comp (invTranspose w.1))) (h2 : Representation.IsIrreducible (w.rep.comp (invTranspose w.1))), D w = IrrGL.of (w.rep.comp (invTranspose w.1)) h1 h2` using `fun w => (GlobalTheory.DualClassTranspose.dualCl_iff k hA w (D w)).1 ((hD w _).2 rfl)`. Use `choose s1 s2 hs using key`.
+
+Establish `hd' : ∑ a, (z (Fin.rev a)).1 = x.1`. Rewrite using `[← hd]`. Conclude with `Equiv.sum_comp Fin.revPerm fun a => (z a).1`. Establish `hsurj : Function.Surjective (invTranspose (R` using `k) x.1) := fun g => ⟨_, invTranspose_invTranspose _ g⟩`. Establish `c1` using `GlobalTheory.CosocleComp.isCosocle_comp _ _ _ _ _ _ (invTranspose (R := k) x.1) hsurj hcos`.
+
+Take `⟨e1⟩` from `multiProd_comp_invTranspose k h x.1 (fun a => (z a).1) (stdBlocks (fun a => (z a).1) hd) (stdBlocks (fun a => (z (Fin.rev a)).1) hd') _ (fun a => (z a).rep)`. Establish `e2` using `prodIrrEquiv hd' (fun a => (z (Fin.rev a)).rep.comp (invTranspose (z (Fin.rev a)).1)) (fun a => s1 _) (fun a => s2 _)`. Use `⟨h, fun a => IrrGL.of ((z (Fin.rev a)).rep.comp (invTranspose (z (Fin.rev a)).1)) (s1 _) (s2 _), hd', ⟨fun a => f (Δ (Fin.rev a)), ⟨?_, fun i j hij hp => ?_⟩, fun a => ?_⟩, c1.of_equiv (IrrGL.equivOf _ h1 h2) (e1.trans e2)⟩` and prove the remaining obligations. Rewrite using `[← Multiset.map_coe, ← hΔ, Multiset.map_map] conv_rhs => rw [← Finset.map_univ_equiv (Fin.revPerm (n := h)), Finset.map_val, Multiset.map_map]`. Both sides reduce to the same expression.
+
+Conclude with `hord _ _ (Fin.rev_lt_rev.2 hij) (GlobalTheory.LocLanglands.precedes_of_segDual_precedes k D hD hDD hnu hcusp hdeg _ _ _ _ (hf _) (hf _) hp)`. Use `isLSeg_dual hA D hD hDD hnu hcusp hdeg _ _ _ (hz (Fin.rev a)) (hf _)` as an intermediate fact. Rewrite `this` using `[hs]`. Conclude with `this`.
+-/
 theorem isL_dual_of_admissible : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → ∀ (l : List (Segment k)) (x y : IrrGL k),
     IsL (l : Multiset (Segment k)) x.rep → DualCl x y →
@@ -173,6 +221,9 @@ theorem isL_dual_of_admissible : ∀ (k : Type) [Field k] [ValuativeRel k] [Topo
     rw [hs] at this
     exact this
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _` and use `isL_dual_of_admissible k PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`.
+-/
 theorem langlandsDataDualGL_dual : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [CharZero k], ∀ (l : List (Segment k)) (x y : IrrGL k),
     IsL (l : Multiset (Segment k)) x.rep → DualCl x y →

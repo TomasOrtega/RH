@@ -17,6 +17,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {om : G2 σ Y →* Module.End ℂ ((κ → AF F) → ℂ)} {S : UA σ A.J →* Module.End ℂ ((κ → AF F) → ℂ)}
   {l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ}
 
+/- English proof (translation)
+Rewrite using `[dd.form]`. Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, map_add, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, Prod.fst_add, Prod.snd_add, add_assoc, add_dotProduct, dotProduct_add]`. Use `congr 2`. Take the linear combination `(-((dd.e a).1 ⬝ᵥ (dd.e b).2)) * invOf_mul_self (2 : AF F)`.
+-/
 theorem rho_rho (a b : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) (φ : (κ → AF F) → ℂ) :
     dd.rho ψ a (dd.rho ψ b φ) =
       ψ (⅟(2 : AF F) * symp (R := AF F) (cA σ) (-1) (incM F A.J) (dbl (incM F Y.J)) a b) • dd.rho ψ (a + b) φ := by
@@ -27,6 +30,9 @@ theorem rho_rho (a b : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) (φ : (κ → 
   congr 2
   linear_combination (-((dd.e a).1 ⬝ᵥ (dd.e b).2)) * invOf_mul_self (2 : AF F)
 
+/- English proof (translation)
+Establish `e1` using `congrArg l (rho_rho (dd := dd) (ψ := ψ) (Z * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E))ᵀ) w Φ)`. Establish `mem : dd.rho ψ w Φ ∈ schA F κ` using `GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ Φ hΦ`. Rewrite `e1` using `[map_smul, smul_eq_mul]`. Establish `e2` using `(h.kill Z _ mem).symm.trans e1`. Rewrite using `[e2, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`.
+-/
 theorem l_shift (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S l) (hψ : IsStd ψ)
     (Z : Matrix (Fin m) (Fin n) (AE F E)) (w : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) {Φ : (κ → AF F) → ℂ}
     (hΦ : Φ ∈ schA F κ) :
@@ -39,6 +45,11 @@ theorem l_shift (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S
   have e2 := (h.kill Z _ mem).symm.trans e1
   rw [e2, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]
 
+/- English proof (translation)
+Rewrite using `[h.weil.2.1.impl x _ Φ hΦ]`. Use `congr 3`. Simplify using `only [actB]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul]`. Express the relevant statement in the definitionally equal form `u = u * (mat2 x * mat2 x⁻¹)ᵀ`.
+
+Rewrite using `[show mat2 x * mat2 x⁻¹ = 1 from Units.mul_inv x.1, Matrix.transpose_one, Matrix.mul_one]`.
+-/
 theorem l_rho_om (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S l) (x : G2 σ Y)
     (u : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     l (dd.rho ψ u (om x Φ)) = l (om x (dd.rho ψ (u * (mat2 x⁻¹)ᵀ) Φ)) := by
@@ -49,12 +60,18 @@ theorem l_rho_om (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om 
   change u = u * (mat2 x * mat2 x⁻¹)ᵀ
   rw [show mat2 x * mat2 x⁻¹ = 1 from Units.mul_inv x.1, Matrix.transpose_one, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[h.weil.2.2 l h.adm h.kill x t hx φ hφ, modu_norm, Fintype.card_fin]`.
+-/
 theorem l_om_par (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S l) {x : G2 σ Y}
     {t : GL (Fin n) (AE F E)} (hx : IsPar x t) {φ : (κ → AF F) → ℂ} (hφ : φ ∈ schA F κ) :
     l (om x φ) = (χ (Matrix.GeneralLinearGroup.det t) : ℂ) *
       (((absE F E (Matrix.GeneralLinearGroup.det t) : ℝ) ^ ((m : ℝ) / 2) : ℝ) : ℂ) * l φ := by
   rw [h.weil.2.2 l h.adm h.kill x t hx φ hφ, modu_norm, Fintype.card_fin]
 
+/- English proof (translation)
+Establish `e : S g (dd.rho ψ (mat g⁻¹ * u) Φ) = dd.rho ψ (mat g * (mat g⁻¹ * u)) (S g Φ)` using `h.lin.impl g _ Φ hΦ`. Rewrite `e` using `[← Matrix.mul_assoc, show mat g * mat g⁻¹ = 1 from Units.mul_inv g.1, Matrix.one_mul]`. Establish `mem : dd.rho ψ (mat g⁻¹ * u) Φ ∈ schA F κ` using `GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ Φ hΦ`. Rewrite using `[← e, h.fix g _ mem]`.
+-/
 theorem l_rho_S (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S l) (hψ : IsStd ψ) (g : UA σ A.J)
     (u : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     l (dd.rho ψ u (S g Φ)) = l (dd.rho ψ (mat g⁻¹ * u) Φ) := by
@@ -63,6 +80,11 @@ theorem l_rho_S (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S
   have mem : dd.rho ψ (mat g⁻¹ * u) Φ ∈ schA F κ := GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ Φ hΦ
   rw [← e, h.fix g _ mem]
 
+/- English proof (translation)
+Take `⟨y, z, hyz⟩` from `h.rat a`. Take `⟨y', z', hyz'⟩` from `h.rat c`. Establish `h2 : ⅟(2 : AF F) = algebraMap F (AF F) (1 / 2)` using `invOf_eq_right_inv (by`. Rewrite using `[← map_ofNat (algebraMap F (AF F)) 2, ← map_mul, mul_one_div_cancel two_ne_zero, map_one])`. Establish `hd : ∀ u v : κ → F, (fun i => algebraMap F (AF F) (u i)) ⬝ᵥ (fun i => algebraMap F (AF F) (v i)) = algebraMap F (AF F) (u ⬝ᵥ v)` using `fun u v => by simp [dotProduct]`.
+
+Rewrite using `[dd.form, hyz, hyz']`. Simplify using `only [hd, h2, ← map_sub, ← map_mul, ← map_neg]`. Conclude with `hψ.2.1 _`.
+-/
 theorem psi_rat (h : IsDbl (σ := σ) (A := A) (Y := Y) (κ := κ) ψ dd χ om S l) (hψ : IsStd ψ)
     (a c : Matrix (Fin m) (Fin n ⊕ Fin n) E) :
     ψ (-(⅟(2 : AF F) * symp (R := AF F) (cA σ) (-1) (incM F A.J) (dbl (incM F Y.J)) (incM F a) (incM F c))) = 1 := by

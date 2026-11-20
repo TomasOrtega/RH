@@ -11,16 +11,25 @@ namespace GlobalTheory.ZarhinKerA
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Simplify using `only [mkZ, pa, lift_fst_assoc]`. Conclude with `(Out.powIsLimit A 4).fac (Fan.mk T u) ⟨i⟩`.
+-/
 theorem mkZ_pa' {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B] {T : Over S}
     (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) (i : Fin 4) : mkZ A B u v ≫ pa A B i = u i := by
   simp only [mkZ, pa, lift_fst_assoc]
   exact (Out.powIsLimit A 4).fac (Fan.mk T u) ⟨i⟩
 
+/- English proof (translation)
+Simplify using `only [mkZ, pb, lift_snd_assoc]`. Conclude with `(Out.powIsLimit B 4).fac (Fan.mk T v) ⟨j⟩`.
+-/
 theorem mkZ_pb' {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B] {T : Over S}
     (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) (j : Fin 4) : mkZ A B u v ≫ pb A B j = v j := by
   simp only [mkZ, pb, lift_snd_assoc]
   exact (Out.powIsLimit B 4).fac (Fan.mk T v) ⟨j⟩
 
+/- English proof (translation)
+Simplify using `only [zCls, map_add, map_sum, map_zsmul, evc, ← pull_comp, ← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc]`.
+-/
 theorem pull_zCls {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B]
     {P : LB (A ⊗ A).left} (hP : P.IsLB) {Q : LB (A ⊗ B).left} (hQ : Q.IsLB) (d : ℕ) (mu : B ⟶ A)
     {Y : Over S} (w w' : Y ⟶ Zob A B) :
@@ -32,6 +41,29 @@ theorem pull_zCls {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommM
   simp only [zCls, map_add, map_sum, map_zsmul, evc, ← pull_comp, ← Over.comp_left, comp_lift, lift_fst_assoc,
     lift_snd_assoc]
 
+/- English proof (translation)
+Introduce `h M d S t c B _ _ Q la mu hZ T x hx i`. Establish `hP` using `c.isLB`. Establish `hQ : Q.IsLB` using `hZ.2.1.isLB`. Establish `hQd : IsDual c.A B Q` using `hZ.2.1`. Establish `hQd' : IsDual B c.A (swap Q)` using `hZ.2.2.1`.
+
+Establish `hs : (swap Q).IsLB` using `hQd'.isLB`. Use `haveI : IsMonHom mu := hZ.2.2.2.2.1`. Establish `h0 : CechPic.pull (lift (snd (Zob c.A B) T ≫ x) (fst (Zob c.A B) T)).left (zCls c.A B c.isLB hQ d mu) = 0`. Rewrite using `[← cls_zP c.A B c.isLB hQ d mu, ← cls_pull (zarhinBundle_isLineBundle c.A B c.isLB hQ d mu) _ (pull_isLB (zarhinBundle_isLineBundle c.A B c.isLB hQ d mu) _)]`. Conclude with `(cls_eq_zero_iff _).2 hx`.
+
+Set `inc : c.A ⟶ Zob c.A B` to `mkZ c.A B (fun k => if k = i then 𝟙 c.A else 1) (fun _ => 1)`. Establish `h1` using `congrArg (CechPic.pull (lift (fst c.A T ≫ inc) (snd c.A T)).left) h0`. Rewrite `h1` using `[map_zero, ← pull_comp, ← Over.comp_left, comp_lift, lift_snd_assoc, lift_fst, pull_zCls]`. Establish `hpa : ∀ k, (fst c.A T ≫ inc) ≫ pa c.A B k = if k = i then fst c.A T else 1`. Introduce `k`.
+
+Rewrite using `[Category.assoc, mkZ_pa']`. Apply the tactic sequence `split_ifs <;> simp [MonObj.comp_one]`. Establish `hpb : ∀ j, (fst c.A T ≫ inc) ≫ pb c.A B j = 1`. Introduce `j`. Rewrite using `[Category.assoc, mkZ_pb', MonObj.comp_one]`.
+
+Establish `z1 : ∀ {Y : Over S} (a : Y ⟶ c.A), evc hP a (1 : Y ⟶ c.A) = 0` using `fun a => evc_one_right hP c.rig₂ a`. Establish `z2 : ∀ {Y : Over S} (a : Y ⟶ c.A), evc hQ a (1 : Y ⟶ B) = 0` using `fun a => evc_one_right hQ hQd.zero a`. Establish `z3 : ∀ {Y : Over S} (b : Y ⟶ B), evc hQ (1 : Y ⟶ c.A) b = 0` using `fun b => hQd.additive.evc_one hQ b`. Establish `s1 : (∑ k, evc hP ((snd c.A T ≫ x) ≫ pa c.A B k) ((fst c.A T ≫ inc) ≫ pa c.A B k)) = evc hP ((snd c.A T ≫ x) ≫ pa c.A B i) (fst c.A T)`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by rw [hpa, if_neg hk, z1]) (fun hi => absurd (Finset.mem_univ i) hi), hpa, if_pos rfl]`.
+
+Establish `s2 : (∑ k, ∑ j, quat d j k • evc hQ ((snd c.A T ≫ x) ≫ pa c.A B k) ((fst c.A T ≫ inc) ≫ pb c.A B j)) = 0`. Simplify using `only [hpb, z2, smul_zero, Finset.sum_const_zero]`. Establish `s3 : (∑ k, ∑ j, quat d j k • evc hQ ((fst c.A T ≫ inc) ≫ pa c.A B k) ((snd c.A T ≫ x) ≫ pb c.A B j)) = ∑ j, quat d j i • evc hQ (fst c.A T) ((snd c.A T ≫ x) ≫ pb c.A B j)`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by simp only [hpa, if_neg hk, z3, smul_zero, Finset.sum_const_zero]) (fun hi => absurd (Finset.mem_univ i) hi)]`. Rewrite using `[hpa, if_pos rfl]`.
+
+Establish `s4 : (∑ j, evc hQ ((fst c.A T ≫ inc) ≫ pb c.A B j ≫ mu) ((snd c.A T ≫ x) ≫ pb c.A B j)) = 0`. Simplify using `only [← Category.assoc _ (pb c.A B _) mu, hpb, MonObj.one_comp, z3, Finset.sum_const_zero]`. Rewrite `h1` using `[s1, s2, s3, s4, add_zero, add_zero]`. Establish `eS : cls c.P hP = evc hP (snd c.A c.A) (fst c.A c.A)` using `(cls_eq_iff hP (pull_isLB hP _)).2 c.symm`. Establish `eL : cls c.P hP = evc hQ (fst c.A c.A) (snd c.A c.A ≫ la)` using `(cls_eq_iff hP (pull_isLB hQ _)).2 hZ.2.2.2.2.2.2.2`.
+
+Establish `ePQ : ∀ {Y : Over S} (u a : Y ⟶ c.A), evc hP u a = evc hQ a (u ≫ la)`. Introduce `Y u a`. Establish `e1` using `congrArg (CechPic.pull (lift u a).left) eS`. Establish `e2` using `congrArg (CechPic.pull (lift a u).left) eL`. Rewrite `e1` using `[pull_evc, lift_snd, lift_fst]`.
+
+Rewrite `e2` using `[pull_evc, lift_fst, lift_snd_assoc]`. Conclude with `e1.trans e2`. Establish `hadd : ∀ {Y : Over S} (a : Y ⟶ c.A) (b b' : Y ⟶ B), evc hQ a (b * b') = evc hQ a b + evc hQ a b'`. Introduce `Y a b b'`. Rewrite using `[← evc_swap hQ hs, ← evc_swap hQ hs, ← evc_swap hQ hs]`.
+
+Conclude with `(isAdditive_iff hs).1 hQd'.additive Y b b' a`. Set `φ : (T ⟶ B) →* Multiplicative (Pic (c.A ⊗ T).left)` to `MonoidHom.mk' (fun b => Multiplicative.ofAdd (evc hQ (fst c.A T) (snd c.A T ≫ b))) fun b b' => by`. Simplify using `only [MonObj.comp_mul, hadd, ofAdd_add]`. Use `(hQd.isPerfect hQd').ker_right T _ ((triv_ev_iff hQ _ _).2 ?_)` and prove the remaining obligations. Establish `key : Multiplicative.toAdd (φ ((x ≫ pa c.A B i ≫ la) * ∏ j, (x ≫ pb c.A B j) ^ quat d j i)) = evc hQ (fst c.A T) (snd c.A T ≫ ((x ≫ pa c.A B i ≫ la) * ∏ j, (x ≫ pb c.A B j) ^ quat d j i))` using `rfl`.
+
+Rewrite using `[← key, map_mul, map_prod, toAdd_mul, toAdd_prod]`. Simplify using `only [map_zpow, toAdd_zpow, φ, MonoidHom.mk'_apply, toAdd_ofAdd]`. Rewrite using `[← Category.assoc, ← Category.assoc, ← ePQ]`. Simplify `h1` using `only [Category.assoc]`.
+-/
 theorem zarhinBundle_kernel : ∀ (h M d : ℕ) (S : Scheme.{0}) (t : S ⟶ Sp (cycAway M)) (c : SiegPre h M (zetaAway M) t) (B : Over S) [GrpObj B] [IsCommMonObj B] (Q : LB (c.A ⊗ B).left) (la : c.A ⟶ B) (mu : B ⟶ c.A) (hZ : GlobalTheory.ZarhinFam.ZData c d B Q la mu) (T : Over S) (x : T ⟶ GlobalTheory.ZarhinFam.Zob c.A B), (∃ t : ((GlobalTheory.ZarhinFam.zP c.A B c.isLB hZ.2.1.isLB d mu).pull (lift (snd (GlobalTheory.ZarhinFam.Zob c.A B) T ≫ x) (fst (GlobalTheory.ZarhinFam.Zob c.A B) T)).left).Gen, t.IsGen) → ∀ i, (x ≫ GlobalTheory.ZarhinFam.pa c.A B i ≫ la) * ∏ j, (x ≫ GlobalTheory.ZarhinFam.pb c.A B j) ^ GlobalTheory.ZarhinFam.quat d j i = 1 := by
   intro h M d S t c B _ _ Q la mu hZ T x hx i
   have hP := c.isLB

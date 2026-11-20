@@ -16,10 +16,22 @@ open Ad3.K Ad3.K.LC Ad3.K.LC.C GlobalTheory.CompanionTheory.GodementFE
 
 namespace GlobalTheory.CompanionTheory.AbsoluteW2Bounds
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => apply_nonneg _ _`.
+-/
 theorem pS_nonneg {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (N : ℕ) (f : SchwartzMap E ℂ) :
     0 ≤ pS N f :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => apply_nonneg _ _
 
+/- English proof (translation)
+Establish `hP : 0 ≤ pS N f'` using `pS_nonneg N f'`. Establish `hr : 0 < ‖A‖ / ‖D‖` using `div_pos (norm_pos_iff.2 hA) (norm_pos_iff.2 hD)`. Take `⟨i5, l5⟩` from `b5 A D hA hD`. Establish `h3` using `GlobalTheory.T.norm_whittakerGL2_le_integral k f f' κ A B D hA hD hκ hf`. Establish `hint : ∫ t : ℂ, (‖t‖ ^ 2)⁻¹ * ‖sF f' (t * A) (t * D)⁻¹‖ ≤ C1 * pS N f' * ∫ t : ℂ, (‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * D)⁻¹)`.
+
+Rewrite using `[← integral_const_mul]`. Use `integral_mono_of_nonneg (Filter.Eventually.of_forall fun t => by positivity) (i5.const_mul _) (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `b1 f' (t * A) (t * D)⁻¹` as an intermediate fact. Establish `h0 : 0 ≤ (‖t‖ ^ 2)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hmul : 0 ≤ C1 * pS N f'` using `mul_nonneg hC1 hP`. Combine the equalities or inequalities in the displayed calculation. Use `h3.trans (mul_le_mul_of_nonneg_left (hint.trans ?_) (by positivity))` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left l5 hmul`. Use `_ = C1 * pS N f' * c * ((‖A‖ / ‖D‖) * (‖A‖ / ‖D‖) ^ (-e)) := by`.
+
+Rewrite using `[div_eq_mul_inv ‖A‖ ‖D‖]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Rewrite using `[sub_eq_add_neg, Real.rpow_add hr, Real.rpow_one]`.
+-/
 theorem doubleOverlap_le_preimage_inter {C1 c e : ℝ} {N : ℕ} (hC1 : 0 ≤ C1) (hc : 0 ≤ c)
     (b1 : ∀ (f : SchwartzMap (Fin 2 → ℂ) ℂ) (x ξ : ℂ), ‖sF f x ξ‖ ≤ C1 * pS N f * (dd x * dd ξ))
     (b5 : ∀ A D : ℂ, A ≠ 0 → D ≠ 0 →
@@ -53,6 +65,19 @@ theorem doubleOverlap_le_preimage_inter {C1 c e : ℝ} {N : ℕ} (hC1 : 0 ≤ C1
     _ = _ := by
         rw [sub_eq_add_neg, Real.rpow_add hr, Real.rpow_one]
 
+/- English proof (translation)
+Establish `hp : 0 < s ^ σ` using `Real.rpow_pos_of_pos hs _`. Establish `hq : 0 < s ^ (σ + 1)` using `Real.rpow_pos_of_pos hs _`. Establish `hi : 0 < (1 + s ^ 2)⁻¹` using `by positivity`. Break down `le_total s 1 with hs1 | hs1` into its components or cases. Establish `hd : (1 : ℝ) ≤ 2 * (1 + s ^ 2)⁻¹`.
+
+Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `e1 : K1 * s ^ σ ≤ 2 * (K1 + K2) * (s ^ σ * (1 + s ^ 2)⁻¹)`. Establish `: s ^ σ ≤ s ^ σ * (2 * (1 + s ^ 2)⁻¹)` using `le_mul_of_one_le_right hp.le hd`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `mul_le_mul_of_nonneg_right (by linarith) (by positivity)` and prove the remaining obligations. Establish `e2 : 0 ≤ 2 * (K1 + K2) * (s ^ (σ + 1) * (1 + s ^ 2)⁻¹)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : s ^ (σ - 1) = s ^ (σ + 1) * (s ^ 2)⁻¹`. Rewrite using `[← Real.rpow_natCast s 2, ← Real.rpow_neg hs.le, ← Real.rpow_add hs]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hd2 : (s ^ 2)⁻¹ ≤ 2 * (1 + s ^ 2)⁻¹`. Rewrite using `[← one_div, ← div_eq_mul_inv, div_le_div_iff₀ (by positivity) (by positivity)]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `e2 : K2 * s ^ (σ - 1) ≤ 2 * (K1 + K2) * (s ^ (σ + 1) * (1 + s ^ 2)⁻¹)`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right (by linarith) (by positivity)` and prove the remaining obligations.
+
+Establish `e3 : 0 ≤ 2 * (K1 + K2) * (s ^ σ * (1 + s ^ 2)⁻¹)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem two_bounds {X K1 K2 s σ : ℝ} (hs : 0 < s) (h1 : 0 ≤ K1) (h2 : 0 ≤ K2)
     (b1 : X ≤ K1 * s ^ σ) (b2 : X ≤ K2 * s ^ (σ - 1)) :
     X ≤ 2 * (K1 + K2) * (s ^ σ * (1 + s ^ 2)⁻¹ + s ^ (σ + 1) * (1 + s ^ 2)⁻¹) := by
@@ -90,6 +115,47 @@ theorem two_bounds {X K1 K2 s σ : ℝ} (hs : 0 < s) (h1 : 0 ≤ K1) (h2 : 0 ≤
     have e3 : 0 ≤ 2 * (K1 + K2) * (s ^ σ * (1 + s ^ 2)⁻¹) := by positivity
     linarith
 
+/- English proof (translation)
+Introduce `k hk σ h0 h1`. Take `⟨C1, N, hC1, b1⟩` from `GlobalTheory.T.partial_fourier_bound_seminorm`. Take `⟨C2, hC2, b2⟩` from `GlobalTheory.T.seminorm_comp_unitary_le N`. Take `⟨c1, hc1, b5⟩` from `GlobalTheory.T.integral_decay_product_le_ratio_pow σ h0 (by linarith)`. Take `⟨c2, hc2, b6⟩` from `GlobalTheory.T.integral_decay_product_le_ratio_pow (σ + 1) (by linarith) (by linarith)`.
+
+Establish `hI` using `GlobalTheory.T.integrable_unit_norm_pow_decay σ h0 h1`. Use `set M : ℂˣ → ℝ := fun a => ‖(a : ℂ)‖ ^ σ * dd a + ‖(a : ℂ)‖ ^ (σ + 1) * dd a with hM`. Establish `hM0 : ∀ a, 0 ≤ M a` using `fun a => by`. Use `dd_pos (a : ℂ)` as an intermediate fact. Simplify using `only [hM]`.
+
+Check the signs of the components of the expression. Establish `hJ : 0 ≤ ∫ a, M a ∂mulC` using `integral_nonneg hM0`. Use `⟨2 * (C1 * C2 * c1 + C1 * C2 * c2) * ∫ a, M a ∂mulC, N, fun f g hg => ?_⟩` and prove the remaining obligations. Take `⟨κ, b, R, hR, hR2, hκ, hκd, hgκ⟩` from `GlobalTheory.T.gl2_complex_iwasawa_decomposition_upper_unitary g hg`. Take `⟨f', hf', hP⟩` from `b2 κ hκ f`.
+
+Establish `hRc : (R : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hR.ne'`. Use `set y : ℂ := g.det / (R : ℂ) ^ 2 with hy`. Establish `hy0 : y ≠ 0` using `div_ne_zero hg (pow_ne_zero _ hRc)`. Use `set yu : ℂˣ := Units.mk0 y hy0 with hyu`. Establish `hyn : 0 < ‖y‖` using `norm_pos_iff.2 hy0`.
+
+Establish `hf0 : 0 ≤ pS N f` using `pS_nonneg N f`. Establish `hf1 : 0 ≤ pS N f'` using `pS_nonneg N f'`. Use `set Q : ℝ := pS N f with hQ`. Establish `hpt : ∀ a : ℂˣ, ‖W2 k f (d2 a * g)‖ * ‖(a : ℂ)‖ ^ (2 * σ - 1) ≤ (2 * (C1 * C2 * c1 + C1 * C2 * c2) * Q * ‖y‖ ^ (1 - 2 * σ)) * M (yu * a)`. Introduce `a`.
+
+Establish `ha : (a : ℂ) ≠ 0` using `a.ne_zero`. Establish `han : 0 < ‖(a : ℂ)‖` using `norm_pos_iff.2 ha`. Use `set s : ℝ := ‖y * (a : ℂ)‖ with hs`. Establish `hs0 : 0 < s` using `norm_pos_iff.2 (mul_ne_zero hy0 ha)`. Establish `hmat : d2 a * g = !![(a : ℂ) * (g.det / (R : ℂ)), (a : ℂ) * b; 0, (R : ℂ)] * κ` using `by conv_lhs => rw [hgκ]`.
+
+Rewrite using `[← Matrix.mul_assoc]`. Use `congr 1`. Simplify using `[d2, Matrix.mul_fin_two]`. Establish `hA : (a : ℂ) * (g.det / (R : ℂ)) ≠ 0` using `mul_ne_zero ha (div_ne_zero hg hRc)`. Establish `hr : ‖(a : ℂ) * (g.det / (R : ℂ))‖ / ‖(R : ℂ)‖ = s`.
+
+Establish `e : y * (a : ℂ) = (a : ℂ) * (g.det / (R : ℂ)) / (R : ℂ)`. Rewrite using `[hy]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hs, e, norm_div]`. Establish `w1` using `doubleOverlap_le_preimage_inter hC1 hc1 b1 (b5) k f f' κ _ ((a : ℂ) * b) _ hA hRc hκd hf'`.
+
+Establish `w2` using `doubleOverlap_le_preimage_inter hC1 hc2 b1 (b6) k f f' κ _ ((a : ℂ) * b) _ hA hRc hκd hf'`. Rewrite `w1`, `w2` using `[← hmat, hr]`. Establish `hpow : ‖(a : ℂ)‖ ^ (2 * σ - 1) = ‖y‖ ^ (1 - 2 * σ) * s ^ (2 * σ - 1)`. Establish `: s = ‖y‖ * ‖(a : ℂ)‖` using `by rw [hs, norm_mul]`. Rewrite using `[this, Real.mul_rpow hyn.le han.le, ← mul_assoc, ← Real.rpow_add hyn]`.
+
+Simplify using the standard rewrite rules. Use `set Y : ℝ := ‖y‖ ^ (1 - 2 * σ) with hY`. Establish `hY0 : 0 < Y` using `Real.rpow_pos_of_pos hyn _`. Establish `hPQ : C1 * pS N f' ≤ C1 * (C2 * Q)` using `mul_le_mul_of_nonneg_left hP hC1`. Establish `hp2 : 0 ≤ s ^ (2 * σ - 1)` using `(Real.rpow_pos_of_pos hs0 _).le`.
+
+Establish `u1 : ‖W2 k f (d2 a * g)‖ * ‖(a : ℂ)‖ ^ (2 * σ - 1) ≤ (C1 * C2 * c1 * Q * Y) * s ^ σ`. Rewrite using `[hpow]`. Establish `e : s ^ σ = s ^ (1 - σ) * s ^ (2 * σ - 1)`. Rewrite using `[← Real.rpow_add hs0]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `w1' : ‖W2 k f (d2 a * g)‖ ≤ C1 * (C2 * Q) * c1 * s ^ (1 - σ)`. Use `w1.trans ?_` and prove the remaining obligations. Establish `: 0 ≤ s ^ (1 - σ)` using `(Real.rpow_pos_of_pos hs0 _).le`. Use `gcongr`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `u2 : ‖W2 k f (d2 a * g)‖ * ‖(a : ℂ)‖ ^ (2 * σ - 1) ≤ (C1 * C2 * c2 * Q * Y) * s ^ (σ - 1)`. Rewrite using `[hpow]`. Establish `e : s ^ (σ - 1) = s ^ (1 - (σ + 1)) * s ^ (2 * σ - 1)`. Rewrite using `[← Real.rpow_add hs0]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `w2' : ‖W2 k f (d2 a * g)‖ ≤ C1 * (C2 * Q) * c2 * s ^ (1 - (σ + 1))`. Use `w2.trans ?_` and prove the remaining obligations. Establish `: 0 ≤ s ^ (1 - (σ + 1))` using `(Real.rpow_pos_of_pos hs0 _).le`.
+
+Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Establish `hfin` using `two_bounds hs0 (K1 := C1 * C2 * c1 * Q * Y) (K2 := C1 * C2 * c2 * Q * Y) (by positivity) (by positivity) u1 u2`. Establish `hMe : M (yu * a) = s ^ σ * (1 + s ^ 2)⁻¹ + s ^ (σ + 1) * (1 + s ^ 2)⁻¹`. Simplify using `[hM, hyu, dd, hs]`.
+
+Rewrite using `[hMe]`. Use `hfin.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hIy : Integrable (fun a : ℂˣ => M (yu * a)) mulC` using `hI.comp_mul_left yu`. Establish `hmeas : AEStronglyMeasurable (fun a : ℂˣ => ‖W2 k f (d2 a * g)‖ * ‖(a : ℂ)‖ ^ (2 * σ - 1)) mulC`.
+
+Use `(GlobalTheory.T.aestronglyMeasurable_whittaker_diag_units k f g).norm.mul ?_` and prove the remaining obligations. Establish `hv : Measurable (Units.val : ℂˣ → ℂ)` using `val_measEmb.measurable`. Conclude with `(hv.norm.pow_const _).aestronglyMeasurable`. Establish `hnn : ∀ a : ℂˣ, 0 ≤ ‖W2 k f (d2 a * g)‖ * ‖(a : ℂ)‖ ^ (2 * σ - 1)` using `fun a => by positivity`. Establish `hdom` using `hIy.const_mul (2 * (C1 * C2 * c1 + C1 * C2 * c2) * Q * ‖y‖ ^ (1 - 2 * σ))`.
+
+Use `⟨hdom.mono' hmeas (Filter.Eventually.of_forall fun a => ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (hnn a)]`. Conclude with `hpt a`. Establish `hY : Yb g ^ (1 / 2 - σ) = ‖y‖ ^ (1 - 2 * σ)`. Establish `e : Yb g = ‖y‖ ^ 2`.
+
+Rewrite using `[Yb, ← hR2, hy, norm_div, norm_pow, Complex.norm_real, Real.norm_of_nonneg hR.le]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, ← Real.rpow_natCast, ← Real.rpow_mul hyn.le]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const_mul, integral_mul_left_eq_self M yu]`. Use `_ = _ := by rw [hY]; ring`.
+-/
 theorem main : Ad3.K.LC.C.AbsoluteZetaIntegralBound := by
   intro k hk σ h0 h1
   obtain ⟨C1, N, hC1, b1⟩ := GlobalTheory.T.partial_fourier_bound_seminorm

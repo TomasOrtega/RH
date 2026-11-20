@@ -15,6 +15,9 @@ namespace UpperTheory.V.Fb
 variable (E : Type) [Field E] [NumberField E] [IsTotallyReal E] (a : ℕ)
 
 omit [NumberField E] [IsTotallyReal E] in
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 private theorem toUnits_mk (y : GL (Fin a) (TR.Rinf E)) (h : y.val ∈ Matrix.unitaryGroup (Fin a) (TR.Rinf E)) :
     Unitary.toUnits (⟨y.val, h⟩ : TR.Kinf E a) = y := Units.ext rfl
 
@@ -29,11 +32,22 @@ def cptEq : TR.Kinf E a ≃* archCompact E a where
 
 variable {E a}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_cptEq (k : TR.Kinf E a) : (cptEq E a k : archGroup E a) = grpEq E a (Unitary.toUnits k) := rfl
 
+/- English proof (translation)
+Rewrite using `[coe_cptEq, infEmb_grpEq]`.
+-/
 theorem infEmb_cptEq (k : TR.Kinf E a) : infEmb E a (cptEq E a k) = TR.infGL E a (Unitary.toUnits k) := by
   rw [coe_cptEq, infEmb_grpEq]
 
+/- English proof (translation)
+Unfold `IsKFinite at h`. Establish `hle : (Submodule.span ℂ (Set.range fun k => TR.cptRep E a k φ)).map (TR.Sm E a).subtype ≤ _` using `(Submodule.map_span _ _).le.trans (Submodule.span_mono (t := Set.range fun k : (Reduction.maxCompact : Subgroup (GA E a)) => rightTranslate (k : GA E a) φ.1) (by`. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`. Conclude with `⟨⟨infEmb E a (cptEq E a k), (cptEq E a k).2⟩, congrArg (rightTranslate · φ.1) (infEmb_cptEq k)⟩))`. Use `Submodule.finiteDimensional_of_le hle` as an intermediate fact.
+
+Conclude with `Module.Finite.equiv (Submodule.equivMapOfInjective _ (TR.Sm E a).injective_subtype _).symm`.
+-/
 theorem kfin_of {φ : TR.Sm E a} (h : IsKFinite φ.1) :
     FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => TR.cptRep E a k φ)) := by
   unfold IsKFinite at h
@@ -45,6 +59,11 @@ theorem kfin_of {φ : TR.Sm E a} (h : IsKFinite φ.1) :
   have := Submodule.finiteDimensional_of_le hle
   exact Module.Finite.equiv (Submodule.equivMapOfInjective _ (TR.Sm E a).injective_subtype _).symm
 
+/- English proof (translation)
+Take `⟨U, -, hU⟩` from `exists_openSubgroup_rightInvariant hs h`. Set `S : Subgroup (GL (Fin a) (Af E))` to `{ carrier := {k | TR.finRep E a k φ = φ} one_mem' := by simp mul_mem' := fun {k l} hk hl => by`. Express the relevant statement in the definitionally equal form `TR.finRep E a (k * l) φ = φ`. Rewrite using `[map_mul, Module.End.mul_apply, hl, hk]`. Use the proof step `inv_mem' := fun {k} hk => by`.
+
+Express the relevant statement in the definitionally equal form `TR.finRep E a k⁻¹ φ = φ`. Use `conv_lhs => rw [← show TR.finRep E a k φ = φ from hk, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Use `rfl }`. Use `Subgroup.isOpen_mono (H₁ := U.toSubgroup) (H₂ := S) (fun u hu => Subtype.ext (funext fun g => ?_)) U.isOpen` and prove the remaining obligations. Conclude with `(congrArg (fun f : GL (Fin a) (Af E) →* GA E a => φ.1 (g * f u)) finEmb_eq).symm.trans (hU g u hu)`.
+-/
 theorem level_of {φ : TR.Sm E a} (hs : IsSmooth φ.1) (h : IsKFinite φ.1) : IsOpen {k | TR.finRep E a k φ = φ} := by
   obtain ⟨U, -, hU⟩ := exists_openSubgroup_rightInvariant hs h
   let S : Subgroup (GL (Fin a) (Af E)) :=
@@ -60,12 +79,20 @@ theorem level_of {φ : TR.Sm E a} (hs : IsSmooth φ.1) (h : IsKFinite φ.1) : Is
   refine Subgroup.isOpen_mono (H₁ := U.toSubgroup) (H₂ := S) (fun u hu => Subtype.ext (funext fun g => ?_)) U.isOpen
   exact (congrArg (fun f : GL (Fin a) (Af E) →* GA E a => φ.1 (g * f u)) finEmb_eq).symm.trans (hU g u hu)
 
+/- English proof (translation)
+Use `⟨(smEq E a φ).2, fun g => ?_⟩` and prove the remaining obligations. Use `filter_upwards [h.mem_nhds (show TR.finRep E a 1 φ = φ by simp)] with k hk`. Rewrite using `[finEmb_eq]`. Conclude with `congrFun (congrArg Subtype.val hk) g`.
+-/
 theorem isSmooth_of_level {φ : TR.Sm E a} (h : IsOpen {k | TR.finRep E a k φ = φ}) : IsSmooth φ.1 := by
   refine ⟨(smEq E a φ).2, fun g => ?_⟩
   filter_upwards [h.mem_nhds (show TR.finRep E a 1 φ = φ by simp)] with k hk
   rw [finEmb_eq]
   exact congrFun (congrArg Subtype.val hk) g
 
+/- English proof (translation)
+Take `⟨C, N, h⟩` from `h`. Take `⟨M, hM⟩` from `UpperTheory.adelicHeight_infGL_le_opNorm E a`. Use `⟨|C| * (heightConst E a * AutomorphicForm.height g) ^ N, M * N, fun y => (h _).trans ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ heightConst E a * AutomorphicForm.height g` using `mul_nonneg (zero_le_one.trans one_le_heightConst) (height_pos g).le`. Rewrite using `[mul_assoc, pow_mul, ← mul_pow]`.
+
+Conclude with `mul_le_mul (le_abs_self C) (pow_le_pow_left₀ (height_pos _).le ((height_mul_le _ _).trans (mul_le_mul_of_nonneg_left (hM y) h0)) N) (pow_nonneg (height_pos _).le N) (abs_nonneg C)`.
+-/
 theorem growth_of {φ : GA E a → ℂ} (h : HasModerateGrowth φ) (g : GA E a) :
     ∃ (C : ℝ) (N : ℕ), ∀ y, ‖φ (g * TR.infGL E a y)‖ ≤ C * TR.height y ^ N := by
   obtain ⟨C, N, h⟩ := h
@@ -77,19 +104,31 @@ theorem growth_of {φ : GA E a → ℂ} (h : HasModerateGrowth φ) (g : GA E a) 
   exact mul_le_mul (le_abs_self C) (pow_le_pow_left₀ (height_pos _).le
     ((height_mul_le _ _).trans (mul_le_mul_of_nonneg_left (hM y) h0)) N) (pow_nonneg (height_pos _).le N) (abs_nonneg C)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.left, isSmooth_of_level h.level, UpperTheory.isKFinite_totallyRealModel_of_isKFinite E a φ h.level h.kfin, (zfin_iff φ).1 h.zfin, UpperTheory.moderateGrowth_totallyRealModel_of_moderateGrowth E a φ h.left h.level h.growth⟩, fun h => ⟨h.isLeftInvariant, level_of h.isS …`.
+-/
 theorem isAutForm_iff (φ : TR.Sm E a) : TR.IsAutForm φ ↔ IsAutomorphicForm φ.1 :=
   ⟨fun h => ⟨h.left, isSmooth_of_level h.level, UpperTheory.isKFinite_totallyRealModel_of_isKFinite E a φ h.level h.kfin, (zfin_iff φ).1 h.zfin,
       UpperTheory.moderateGrowth_totallyRealModel_of_moderateGrowth E a φ h.left h.level h.growth⟩,
     fun h => ⟨h.isLeftInvariant, level_of h.isSmooth h.isKFinite, kfin_of h.isKFinite, (zfin_iff φ).2 h.isZFinite,
       growth_of h.hasModerateGrowth⟩⟩
 
+/- English proof (translation)
+Rewrite using `[TR.IsCuspForm, isAutForm_iff, mem_cuspForms]`. Conclude with `and_congr_right fun h => ⟨UpperTheory.constantTerm_eq_zero_of_isCuspidal E a _ h.isLeftInvariant h.continuous, UpperTheory.isCuspidal_of_constantTerm_eq_zero E a _ h.isLeftInvariant h.continuous⟩`.
+-/
 theorem isCuspForm_iff (φ : TR.Sm E a) : TR.IsCuspForm φ ↔ φ.1 ∈ cuspForms E a := by
   rw [TR.IsCuspForm, isAutForm_iff, mem_cuspForms]
   exact and_congr_right fun h => ⟨UpperTheory.constantTerm_eq_zero_of_isCuspidal E a _ h.isLeftInvariant h.continuous,
     UpperTheory.isCuspidal_of_constantTerm_eq_zero E a _ h.isLeftInvariant h.continuous⟩
 
+/- English proof (translation)
+Introduce `_ h` and use `(sm_eq E a).ge h.1.isSmooth.1`.
+-/
 theorem cuspForms_le_Sm : cuspForms E a ≤ TR.Sm E a := fun _ h => (sm_eq E a).ge h.1.isSmooth.1
 
+/- English proof (translation)
+Introduce `_ h` and use `(sm_eq E a).ge h.isSmooth.1`.
+-/
 theorem automorphicForms_le_Sm : automorphicForms E a ≤ TR.Sm E a := fun _ h => (sm_eq E a).ge h.isSmooth.1
 
 end UpperTheory.V.Fb

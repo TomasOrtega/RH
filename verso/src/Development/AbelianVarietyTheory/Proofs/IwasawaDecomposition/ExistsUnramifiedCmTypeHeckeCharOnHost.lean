@@ -13,6 +13,11 @@ namespace GlobalTheory.Mem.ChiPsiExist
 
 open Classical in
 
+/- English proof (translation)
+Introduce `R H`. Take `⟨c, -, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Take `⟨χ, hu, ht, hi, -, hunr, -⟩` from `GlobalTheory.Mem.Chr.AntiExist.exists_hecke_trivOn H.F H.E c (R.Psi) (embPsi H) hcm (fun _ => -1) ∅ (fun _ => 1) (fun w hw => absurd hw (Finset.notMem_empty w)) (by`. Introduce `ζ hζ`. Rewrite using `[Finset.prod_empty, mul_one]`.
+
+Conclude with `UpperTheory.Mu.prod_emb_zpow H (Equiv.refl _) hζ _)`. Conclude with `⟨χ, hu, fun v => hunr v (Finset.notMem_empty v) (fun w hw => absurd hw (Finset.notMem_empty w)), ht, hi⟩`.
+-/
 theorem exists_chiPsi : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R), ∃ χ : HChar H.E, IsChiPsi H χ := by
   intro R H
   obtain ⟨c, -, hcm, -⟩ := GlobalTheory.Mem.HostCM.host_cm R H

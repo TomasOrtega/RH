@@ -21,9 +21,17 @@ def glEquiv {A B : Type} [CommRing A] [CommRing B] (n : ℕ) (ψ : A ≃+* B) : 
 
 variable {ψ : Fv F v ≃+* w.adicCompletion E}
 
+/- English proof (translation)
+The claim follows from `(bc_mem_KGL_iff h3).symm`.
+-/
 theorem mem_KGL_iff (h3 : ∀ a, Valued.v (ψ a) = Valued.v a) (x : GL (Fin n) (Fv F v)) :
     x ∈ KGL v n ↔ glEquiv n ψ x ∈ KGL w n := (bc_mem_KGL_iff h3).symm
 
+/- English proof (translation)
+Establish `hd : diagJ n (ψ ϖ) j = ψ.mapMatrix (diagJ n ϖ j)`. Rewrite using `[RingEquiv.mapMatrix_apply, diagJ, diagJ, Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hv : ∀ x : GL (Fin n) (Fv F v), (glEquiv n ψ x).1 = ψ.mapMatrix x.1` using `fun _ => rfl`. Use `(funext fun g => (Set.indicator_comp_right (g := 1) (glEquiv n ψ)).symm).trans (congrArg (Set.indicator · 1) ?_)` and prove the remaining obligations. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, (glEquiv n ψ).surjective.exists, ← mem_KGL_iff h3, hd, hv, ← map_mul, EmbeddingLike.apply_eq_iff_eq]`.
+-/
 theorem Tj_comp (h3 : ∀ a, Valued.v (ψ a) = Valued.v a) (ϖ : Fv F v) (j : ℕ) :
     Tj ℂ n (Ov E w) (ψ ϖ) j ∘ glEquiv n ψ = Tj ℂ n (Ov F v) ϖ j := by
   have hd : diagJ n (ψ ϖ) j = ψ.mapMatrix (diagJ n ϖ j) := by
@@ -37,6 +45,11 @@ theorem Tj_comp (h3 : ∀ a, Valued.v (ψ a) = Valued.v a) (ϖ : Fv F v) (j : �
   simp only [Set.mem_preimage, Set.mem_ofPred_eq, (glEquiv n ψ).surjective.exists, ← mem_KGL_iff h3, hd, hv, ← map_mul,
     EmbeddingLike.apply_eq_iff_eq]
 
+/- English proof (translation)
+Unfold `IsSatVecGL`. Rewrite using `[mem_fixed_comp_symm (glEquiv n ψ) (mem_KGL_iff h3), hq, ψ.surjective.forall]`. Use `and_congr_right fun _ => and_congr_right fun hx => and_congr_right fun _ => forall_congr' fun ϖ => ?_` and prove the remaining obligations. Establish `hu : IsUnifV E w (ψ ϖ) ↔ IsUnifV F v ϖ` using `by unfold IsUnifV; rw [h3]`. Rewrite using `[hu]`.
+
+Use `forall_congr' fun hϖ => forall₂_congr fun j _ => ?_` and prove the remaining obligations. Rewrite using `[heckeVec_comp_symm (glEquiv n ψ) (mem_KGL_iff h3) (Tj_mem_hecke (hu.2 hϖ) j).1 hx, Tj_comp h3]`.
+-/
 theorem isSatVecGL_comp_symm (h3 : ∀ a, Valued.v (ψ a) = Valued.v a) (hq : qV E w = qV F v)
     (ρ : Representation ℂ (GL (Fin n) (Fv F v)) V) (x : V) (B : Multiset ℂˣ) :
     IsSatVecGL w (ρ.comp (glEquiv n ψ).symm.toMonoidHom) x B ↔ IsSatVecGL v ρ x B := by
@@ -56,14 +69,23 @@ section Compl
 
 variable (τ : E →ₐ[F] Fv F v) (hw : (splitPrime τ).under (𝓞 F) = v)
 
+/- English proof (translation)
+Take `⟨ψ, h1, -⟩` from `exists_equiv_complMap τ hw`. Conclude with `(funext h1 : ⇑ψ = complMap hw) ▸ ψ.bijective`.
+-/
 theorem complMap_bijective : Function.Bijective (complMap hw) := by
   obtain ⟨ψ, h1, -⟩ := exists_equiv_complMap τ hw
   exact (funext h1 : ⇑ψ = complMap hw) ▸ ψ.bijective
 
+/- English proof (translation)
+Take `⟨ψ, h1, -, h3, -⟩` from `exists_equiv_complMap τ hw`. Rewrite using `[← h1, h3]`.
+-/
 theorem valued_complMap (a : Fv F v) : Valued.v (complMap hw a) = Valued.v a := by
   obtain ⟨ψ, h1, -, h3, -⟩ := exists_equiv_complMap τ hw
   rw [← h1, h3]
 
+/- English proof (translation)
+Take `⟨ψ, h1, h2, -⟩` from `exists_equiv_complMap τ hw`. Rewrite using `[← h1, h2]`.
+-/
 theorem complMap_apply_emb (x : E) : complMap hw (τ x) = algebraMap E _ x := by
   obtain ⟨ψ, h1, h2, -⟩ := exists_equiv_complMap τ hw
   rw [← h1, h2]
@@ -71,11 +93,20 @@ theorem complMap_apply_emb (x : E) : complMap hw (τ x) = algebraMap E _ x := by
 def complEquiv : Fv F v ≃+* (splitPrime τ).adicCompletion E :=
   RingEquiv.ofBijective (complMap hw) (complMap_bijective τ hw)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem complEquiv_apply (a : Fv F v) : complEquiv τ hw a = complMap hw a := rfl
 
+/- English proof (translation)
+The claim follows from `toCompl_eq (ψ := complEquiv τ hw) (fun _ => rfl) (complMap_apply_emb τ hw) y`.
+-/
 theorem toCompl_eq_complMap (y : Fv F v ⊗[F] E) : toCompl hw y = complMap hw (splitProj τ y) :=
   toCompl_eq (ψ := complEquiv τ hw) (fun _ => rfl) (complMap_apply_emb τ hw) y
 
+/- English proof (translation)
+The claim follows from `absNorm_splitPrime τ`.
+-/
 theorem qV_splitPrime : qV E (splitPrime τ) = qV F v := absNorm_splitPrime τ
 
 end Compl

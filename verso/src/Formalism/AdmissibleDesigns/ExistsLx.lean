@@ -15,6 +15,11 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   {R' : Subalgebra (D.nd.O i) (X' → Matrix d d (FractionRing (D.nd.O i)))} {Tc : Type} [CommRing Tc] [Algebra Tc R']
   (r : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* R') (χ : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* Tcˣ)
 
+/- English proof (translation)
+Use `⟨Lx i dc r χ x' l, ?_, ?_, ?_, hdim⟩` and prove the remaining obligations. Apply the tactic sequence `apply colD_le_Lx <;> assumption`. Introduce `f z hz`. Apply the tactic sequence `apply comp_mem_Lx <;> assumption`. Introduce `f z hz`.
+
+Apply the tactic sequence `apply comp_mem_Lx <;> assumption`.
+-/
 theorem exists_Lx {Pe : Type} [AddCommGroup Pe] [Module R' Pe] [Module (D.nd.O i) Pe] [SMulCommClass R' (D.nd.O i) Pe]
     {PE : Type} [AddCommGroup PE] [Module R' PE] [Module (D.nd.O i) PE] [SMulCommClass R' (D.nd.O i) PE]
     (hPe : ∀ (c : D.nd.O i) (m : Pe), c • m = (algebraMap (D.nd.O i) R' c) • m)

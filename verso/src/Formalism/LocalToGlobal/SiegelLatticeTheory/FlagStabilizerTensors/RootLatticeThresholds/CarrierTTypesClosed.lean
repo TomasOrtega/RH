@@ -10,6 +10,9 @@ namespace Formalism.L2.SG.Pf.CarrierT
 
 open Formalism.L2.SG.Pf.Carrier Formalism.L2.SG.Pf.BaseOf Formalism.L2.SG.Pf.Built
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => simp [List.prod_cons, Module.End.mul_apply, ih]`.
+-/
 private theorem list_prod_apply_eq_foldr {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
     (l : List (Module.End ℂ W)) (v : W) :
     l.prod v = List.foldr (fun (T : W → W) (h : W) => T h) v
@@ -18,6 +21,11 @@ private theorem list_prod_apply_eq_foldr {W : Type} [NormedAddCommGroup W] [Norm
   | nil => rfl
   | cons a l ih => simp [List.prod_cons, Module.End.mul_apply, ih]
 
+/- English proof (translation)
+Simplify using `only [Formalism.FourierDecayAlt.Q.qmF, Formalism.REAL.qdet, Formalism.REAL.qminor]`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.intCast_apply, list_prod_apply_eq_foldr, List.map_ofFn]`. Rewrite using `[← Int.cast_smul_eq_zsmul ℂ]`.
+
+Use `congr 2`. Use `congr 1`. Use function extensionality and compare the values at `j y`. Simplify using `only [Function.comp, Formalism.REAL.Tm, id]`. Apply the tactic sequence `split_ifs <;> simp [Module.algebraMap_end_apply, sub_smul, Nat.cast_smul_eq_nsmul]`.
+-/
 private theorem qmF_eq_qdet_apply {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] {m : ℕ}
     (E : Fin m → Fin m → Module.End ℂ W) (w : ℂ) (v : W) :
     Formalism.FourierDecayAlt.Q.qmF (fun a b => (E a b : W → W)) id id w v = (Formalism.REAL.qdet E w) v := by
@@ -32,6 +40,19 @@ private theorem qmF_eq_qdet_apply {W : Type} [NormedAddCommGroup W] [NormedSpace
   simp only [Function.comp, Formalism.REAL.Tm, id]
   split_ifs <;> simp [Module.algebraMap_end_apply, sub_smul, Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+Introduce `Wp _ _ k r z u π hz hT hrep hcont hHC`. Take `⟨g, ⟨hgU, hgfix, hgz⟩, hU⟩` from `hHC`. Use `haveI : FiniteDimensional ℂ Wp := hU.2.1`. Introduce `Bs hBs w v`. Establish `hfr` using `Formalism.FourierDecayAlt.P.QrCap.fr_frame hgU hgfix _ hgz`.
+
+Establish `hcore` using `Formalism.FourierDecayAlt.P.QrCap.core (u := u) hz hT ⟨hrep, hcont⟩ hgU hgfix _ hgz hU.2.2.2 w v`. Establish `hE : (fun a b => Formalism.FourierDecayAlt.Q.EcRep (Formalism.QuantumDeterminants.Hpk k r) π (Formalism.FourierDecayAlt.Q.unitB (Formalism.QuantumDeterminants.Hpk k r) Bs a b)) = fun a b => ((Formalism.FourierDecayAlt.Qr.EB π Bs a b : Module.End ℂ Wp) : Wp → Wp)`. Use function extensionality and compare the values at `a b y`. Conclude with `Formalism.FourierDecayAlt.P.QrD.ecRep_eq hrep hcont (Formalism.FourierDecayAlt.P.QrD.frame_lie hBs a b).1 (Formalism.FourierDecayAlt.P.QrD.frame_lie hBs a b).2 y`. Establish `hcap : Formalism.FourierDecayAlt.Q.capRep k r π Bs w v = (Formalism.REAL.qdet (Formalism.FourierDecayAlt.Qr.EB π Bs) w) v`.
+
+Simplify using `only [Formalism.FourierDecayAlt.Q.capRep]`. Rewrite using `[hE, qmF_eq_qdet_apply]`. Rewrite using `[hcap, Formalism.FourierDecayAlt.P.QrCap.capChange hz hT ⟨hrep, hcont⟩ hBs hfr w, hcore]`. Use `congr 1`. Simplify using `only [Formalism.FourierDecayAlt.Qr.cpol, Formalism.FourierDecayAlt.P.QrCap.lowK_allPos]`.
+
+Establish `hI : Finset.Icc 1 k = (Finset.range k).map ⟨Nat.succ, Nat.succ_injective⟩`. Use extensionality with `i`. Simplify using `only [Finset.mem_Icc, Finset.mem_map, Finset.mem_range, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `⟨i - 1, by omega, by omega⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hI, Finset.prod_map, Finset.prod_range]`. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+
+Simplify using `[Nat.succ_sub_one, j.isLt]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem capacity_from_hermitian_char : CapFromHC := by
   intro Wp _ _ k r z u π hz hT hrep hcont hHC
   obtain ⟨g, ⟨hgU, hgfix, hgz⟩, hU⟩ := hHC

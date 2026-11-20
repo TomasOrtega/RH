@@ -11,6 +11,23 @@ open GlobalTheory.HeckeCount ReciprocityTheory.ChartRestriction.G.Geo.Tor
 section Gen
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Set `f : A →ₗ[R] A` to `DistribMulAction.toLinearMap R A π`. Establish `hmem : ∀ a ∈ J, ∃ r s : R, a = r * c + s * π`. Introduce `a ha`. Rewrite `ha` using `[← hJ, Submodule.mem_sup]`. Take `⟨y, hy, z, hz, rfl⟩` from `ha`.
+
+Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Take `⟨s, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Conclude with `⟨r, s, rfl⟩`. Establish `hπ : π ∈ J` using `hJ ▸ Submodule.mem_sup_right (Ideal.mem_span_singleton_self π)`. Establish `h1 : Submodule.torsionBySet R A (J : Set R) = LinearMap.ker f`.
+
+Use extensionality with `x`. Rewrite using `[Submodule.mem_torsionBySet_iff, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h ⟨π, hπ⟩`.
+
+Introduce and unpack `h ⟨a, ha⟩`. Take `⟨r, s, rfl⟩` from `hmem a ha`. Establish `h' : π • x = 0` using `h`. Simplify using `only [add_smul, mul_smul, hc, h', smul_zero, add_zero]`. Establish `h2 : J • (⊤ : Submodule R A) = LinearMap.range f`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.smul_le]`. Introduce `a ha n _`. Take `⟨r, s, rfl⟩` from `hmem a ha`. Use `⟨s • n, ?_⟩` and prove the remaining obligations.
+
+Use `show π • s • n = _`. Rewrite using `[add_smul, mul_smul, hc, smul_zero, zero_add, mul_smul, smul_comm]`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `Submodule.smul_mem_smul hπ trivial`. Rewrite using `[h1, h2]`.
+
+Establish `e1` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker f)`. Establish `e2` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.range f)`. Rewrite `e1` using `[Nat.card_congr (f.quotKerEquivRange).toEquiv]`. Establish `hpos : 0 < Nat.card (LinearMap.range f)` using `Nat.card_pos`. Rewrite `e2` using `[e1, mul_comm]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_left hpos e2`.
+-/
 theorem card_torsion_eq {A : Type} [AddCommGroup A] [Module R A] [Finite A] {c π : R} {J : Ideal R}
     (hJ : Ideal.span {c} ⊔ Ideal.span {π} = J) (hc : ∀ x : A, c • x = 0) :
     Nat.card (Submodule.torsionBySet R A (J : Set R)) = Nat.card (A ⧸ J • (⊤ : Submodule R A)) := by
@@ -68,6 +85,15 @@ def toQ (S : Submodule R (Submodule.torsionBySet R A (J : Set R))) :
     rw [algebraMap_smul]
     exact S.smul_mem r hx
 
+/- English proof (translation)
+Use `set V := Submodule.torsionBySet R A (J : Set R)`. Establish `cardT : ∀ T : Submodule R A, T ≤ V → Nat.card (toQ J (T.comap V.subtype)) = Nat.card T` using `fun T hT => Nat.card_congr { toFun := fun x => ⟨x.1.1, x.2⟩ invFun := fun y => ⟨⟨y.1, hT y.2⟩, y.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `cardS : ∀ S : Submodule (R ⧸ J) V, Nat.card ((S.restrictScalars R).map V.subtype) = Nat.card S` using `fun S => (Nat.card_congr (Submodule.equivMapOfInjective V.subtype V.injective_subtype (S.restrictScalars R)).toEquiv).symm`. Use `Nat.card_congr { toFun := fun T => ⟨toQ J (T.1.comap V.subtype), (cardT T.1 T.2.1).trans T.2.2⟩ invFun := fun S => ⟨(S.1.restrictScalars R).map V.subtype, fun _ ⟨x, _, hx⟩ => hx ▸ x.2, (cardS S.1).trans S.2⟩ left_inv := fun T => ?_ right_inv := fun S => ?_ }` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce `hy`.
+
+Conclude with `⟨⟨y, T.2.1 hy⟩, hy, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', hx', h⟩`.
+
+Establish `: x' = x` using `Subtype.ext h`. Conclude with `this ▸ hx'`. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+-/
 theorem card_sub_eq (m : ℕ) :
     Nat.card {T : Submodule R A // T ≤ Submodule.torsionBySet R A (J : Set R) ∧ Nat.card T = m} =
       Nat.card {S : Submodule (R ⧸ J) (Submodule.torsionBySet R A (J : Set R)) // Nat.card S = m} := by
@@ -110,6 +136,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 def pSub (D : Datum H) (p : ℕ) : Submodule (𝓞 E) D.La := Ideal.span {(p : 𝓞 E)} • ⊤
 
+/- English proof (translation)
+Rewrite using `[pSub, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists, mem_pLat]`. Simplify using `only [Submodule.mem_top, true_and, Nat.cast_smul_eq_nsmul]`. Conclude with `⟨fun ⟨b, hb⟩ => ⟨b, hb.symm⟩, fun ⟨b, hb⟩ => ⟨b, hb.symm⟩⟩`.
+-/
 theorem mem_pSub {D : Datum H} {p : ℕ} {x : D.La} : x ∈ pSub D p ↔ x ∈ pLat D p := by
   rw [pSub, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists, mem_pLat]
   simp only [Submodule.mem_top, true_and, Nat.cast_smul_eq_nsmul]
@@ -120,6 +149,11 @@ def asSub {D : Datum H} (N : AddSubgroup D.La) (hN : ∀ (a : 𝓞 E), ∀ x ∈
   toAddSubmonoid := N.toAddSubmonoid
   smul_mem' a x hx := hN a x hx
 
+/- English proof (translation)
+Set `g : D.La →+ D.La ⧸ pSub D p` to `(pSub D p).mkQ.toAddMonoidHom`. Establish `hker : g.ker = pLat D p`. Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, ← mem_pSub]`. Conclude with `Submodule.Quotient.mk_eq_zero _`.
+
+Rewrite using `[← hker, AddSubgroup.relIndex, AddSubgroup.addSubgroupOf, AddMonoidHom.comap_ker, AddSubgroup.index_ker, AddMonoidHom.range_comp, AddSubgroup.range_subtype]`. Both sides reduce to the same expression.
+-/
 theorem relIndex_eq_card {D : Datum H} {p : ℕ} (N : AddSubgroup D.La) (hN : ∀ (a : 𝓞 E), ∀ x ∈ N, a • x ∈ N) :
     (pLat D p).relIndex N = Nat.card ((asSub N hN).map (pSub D p).mkQ) := by
   let g : D.La →+ D.La ⧸ pSub D p := (pSub D p).mkQ.toAddMonoidHom
@@ -178,6 +212,27 @@ namespace GlobalTheory.LatCountGauss
 open GlobalTheory.HeckeCount ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw p J hp hJ hpJ k`. Use `haveI := Dw.fin`. Use `haveI := Dw.proj`. Use `letI := Ideal.Quotient.field J`. Use `set R := 𝓞 E`.
+
+Use `set L := Dw.La`. Establish `hp0 : (p : R) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne'`. Establish `hspan0 : Ideal.span {(p : R)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp0`.
+
+Establish `hJ0 : J ≠ ⊥` using `fun h => hp0 (by rw [h] at hpJ; exact (Submodule.mem_bot R).1 hpJ)`. Use `haveI hfinJ : Finite (R ⧸ J) := (Ideal.absNorm_ne_zero_iff J).1 (fun h => hJ0 (Ideal.absNorm_eq_zero_iff.1 h))`. Use `haveI : Finite (R ⧸ Ideal.span {(p : R)}) := (Ideal.absNorm_ne_zero_iff _).1 (fun h => hspan0 (Ideal.absNorm_eq_zero_iff.1 h))`. Establish `hq : Nat.card (R ⧸ J) = Ideal.absNorm J`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Use `haveI hA : Finite (L ⧸ pSub Dw p) := by haveI : Finite ((R ⧸ Ideal.span {(p : R)}) ⊗[R] L) := Module.finite_of_finite (R ⧸ Ideal.span {(p : R)})`. Conclude with `Finite.of_equiv _ (TensorProduct.quotTensorEquivQuotSMul L (Ideal.span {(p : R)})).toEquiv`. Use `set V := Submodule.torsionBySet R (L ⧸ pSub Dw p) (J : Set R)`. Establish `hc : ∀ x : L ⧸ pSub Dw p, (p : R) • x = 0`. Introduce `x`.
+
+Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ x`. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) trivial`. Take `⟨π, hπ⟩` from `IsDedekindDomain.exists_sup_span_eq (show Ideal.span {(p : R)} ≤ J from (Ideal.span_singleton_le_iff_mem J).2 hpJ) hspan0`. Establish `hle : pSub Dw p ≤ J • (⊤ : Submodule R L)` using `Submodule.smul_mono_left ((Ideal.span_singleton_le_iff_mem J).2 hpJ)`.
+
+Establish `hmap : J • (⊤ : Submodule R (L ⧸ pSub Dw p)) = (J • (⊤ : Submodule R L)).map (pSub Dw p).mkQ`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ]`. Establish `hV : Nat.card V = Ideal.absNorm J ^ Module.finrank R L`. Rewrite using `[card_torsion_eq hπ hc, hmap, Nat.card_congr (Submodule.quotientQuotientEquivQuotient _ _ hle).toEquiv, ← Nat.card_congr (TensorProduct.quotTensorEquivQuotSMul L J).toEquiv, Module.natCard_eq_pow_finrank (K := R ⧸ J), GlobalTheory.SW.Hyper.finrank_fibre R L (R ⧸ J), hq]`. Use `haveI : Finite V := inferInstance`.
+
+Use `haveI : Module.Finite (R ⧸ J) V := Module.Finite.of_finite`. Establish `hq2 : 2 ≤ Ideal.absNorm J`. Rewrite using `[← hq]`. Use `haveI : Nontrivial (R ⧸ J) := Ideal.Quotient.nontrivial_iff.2 hJ.ne_top`. Conclude with `Finite.one_lt_card`.
+
+Establish `hinj` using `Nat.pow_right_injective hq2`. Establish `hdim : Module.finrank (R ⧸ J) V = Module.finrank R L`. Apply `hinj` to reduce the goal to its premises. Use `show Ideal.absNorm J ^ _ = Ideal.absNorm J ^ _`. Rewrite using `[← hV, Module.natCard_eq_pow_finrank (K := R ⧸ J), hq]`.
+
+Rewrite using `[Nat.card_congr (latEquiv Dw p J _), card_sub_eq]`. Establish `key : ∀ S : Submodule (R ⧸ J) V, Nat.card S = Ideal.absNorm J ^ k ↔ Module.finrank (R ⧸ J) S = k`. Introduce `S`. Rewrite using `[Module.natCard_eq_pow_finrank (K := R ⧸ J), hq]`. Conclude with `hinj.eq_iff`.
+
+Rewrite using `[Nat.card_congr (Equiv.subtypeEquivRight key), GlobalTheory.GaussCount.subspaceCount (R ⧸ J) V k, hq, hdim]`.
+-/
 theorem card_latCount : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (p : ℕ) (J : Ideal (𝓞 E)), 0 < p → J.IsMaximal → (p : 𝓞 E) ∈ J → ∀ k : ℕ,
     Nat.card (GlobalTheory.HeckeCount.LatCount Dw p J (Ideal.absNorm J ^ k)) =

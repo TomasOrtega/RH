@@ -13,6 +13,33 @@ section CornerSg
 
 variable {K : Type} [Field K] {n : ℕ}
 
+/- English proof (translation)
+Establish `hLE : L * Ecorner n = Ecorner n`. Use extensionality with `a b`. Distinguish the cases in `hb : b = Fin.last n`. Substitute `hb` using the available equality. Distinguish the cases in `ha : a = Fin.last n`.
+
+Substitute `ha` using the available equality. Simplify using `[Matrix.mul_apply, Ecorner, hL.1]`. Simplify using `[Matrix.mul_apply, Ecorner, ha, hL.2 a (Fin.last n) (Fin.lt_last_iff_ne_last.mpr ha)]`. Simplify using `[Matrix.mul_apply, Ecorner, hb]`. Distinguish the cases in `hl : σ (Fin.last n) = Fin.last n`.
+
+Establish `hEU : Ecorner n * U = Ecorner n`. Use extensionality with `a b`. Distinguish the cases in `ha : a = Fin.last n`. Substitute `ha` using the available equality. Distinguish the cases in `hb : b = Fin.last n`.
+
+Substitute `hb` using the available equality. Simplify using `[Matrix.mul_apply, Ecorner, hU.1]`. Simplify using `[Matrix.mul_apply, Ecorner, hb, hU.2 b (Fin.last n) (Fin.lt_last_iff_ne_last.mpr hb)]`. Simplify using `[Matrix.mul_apply, Ecorner, ha]`. Use `⟨U, hU, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[if_pos hl, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, hLE, Matrix.smul_mul, hEU]`. Simplify using `[hl]`. Generalize the expression as in `hj : σ (Fin.last n) = j₀ at hl hu ⊢`. Establish `hm : M (Fin.last n) j₀ ≠ 0` using `hu hl`. Use `set X : Matrix (Fin (n + 1)) (Fin (n + 1)) K := Matrix.of fun a b => if a = j₀ ∧ b = Fin.last n then c / M (Fin.last n) j₀ else 0 with hX`.
+
+Establish `hMX : M * X = c • Ecorner n`. Use extensionality with `a b`. Distinguish the cases in `hb : b = Fin.last n`. Substitute `hb` using the available equality. Distinguish the cases in `ha : a = Fin.last n`.
+
+Substitute `ha` using the available equality. Simplify using `[Matrix.mul_apply, hX, Ecorner]`. Apply the tactic sequence `try field_simp`. Establish `hne : j₀ ≠ σ a`. Introduce `h`.
+
+Apply `ha` to reduce the goal to its premises. Establish `h'` using `congrArg σ h`. Rewrite `h'` using `[hσ a, ← hj, hσ]`. Conclude with `h'.symm`. Simplify using `[Matrix.mul_apply, hX, Ecorner, ha, hM a j₀ hne]`.
+
+Simplify using `[Matrix.mul_apply, hX, Ecorner, hb]`. Use `⟨U - X, ⟨fun a => ?_, fun a b hab => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hn : ¬ (a = j₀ ∧ a = Fin.last n)` using `fun h => hl (h.1.symm.trans h.2)`. Simplify using `only [Matrix.sub_apply, hX, Matrix.of_apply, hU.1 a, if_neg hn, sub_zero]`. Establish `hn : ¬ (b = j₀ ∧ a = Fin.last n)` using `fun h => by`.
+
+Rewrite `hab` using `[h.2]`. Conclude with `absurd hab (not_lt.mpr (Fin.le_last b))`. Simplify using `only [Matrix.sub_apply, hX, Matrix.of_apply, hU.2 a b hab, if_neg hn, sub_zero]`. Rewrite using `[if_neg hl, zero_smul, sub_zero, Matrix.mul_sub, Matrix.mul_assoc L M X, hMX, Matrix.mul_smul, hLE]`. Establish `key : ∀ j : Fin (n + 1), (if h : j.val + 1 < n + 1 then (U - X) j ⟨j.val + 1, h⟩ else 0) = (if h : j.val + 1 < n + 1 then U j ⟨j.val + 1, h⟩ else 0) - (if j = j₀ ∧ j.val + 1 = n then c / M (Fin.last n) j₀ else 0)`.
+
+Introduce `j`. Distinguish the cases in `h1 : j.val + 1 < n + 1`. Rewrite using `[dif_pos h1, dif_pos h1, Matrix.sub_apply]`. Use `congr 1`. Simplify using `only [hX, Matrix.of_apply, Fin.ext_iff, Fin.val_last]`.
+
+Rewrite using `[dif_neg h1, dif_neg h1]`. Establish `hn : ¬ (j = j₀ ∧ j.val + 1 = n)` using `fun h => h1 (by omega)`. Rewrite using `[if_neg hn, sub_zero]`. Unfold `Formalism.DoubleCosetMeasures.sUp`. Simplify using `only [key, Finset.sum_sub_distrib]`.
+
+Use `congr 1`. Simplify using `[ite_and, hl]`.
+-/
 theorem corner_sg (σ : Fin (n + 1) → Fin (n + 1)) (hσ : ∀ a, σ (σ a) = a)
     {L U M : Matrix (Fin (n + 1)) (Fin (n + 1)) K} (hL : IsLo L) (hU : IsUp U)
     (hM : ∀ a b, b ≠ σ a → M a b = 0) (c : K) (hu : σ (Fin.last n) ≠ Fin.last n → M (Fin.last n) (σ (Fin.last n)) ≠ 0) :
@@ -92,6 +119,9 @@ section LastBlock
 
 variable {K : Type*} [Zero K]
 
+/- English proof (translation)
+The claim follows from `| [], N, _, h => by simp at h | (t, s) :: bs, N, hpos, h => by simp only [List.map_cons, List.sum_cons] at h by_cases hlt : N < s · have hs : s = N + 1 := by have := hpos (t, s) List.mem_cons_self have h0 : (bs.map Prod.snd).sum = 0 := by omega omega have hbs : bs = [] := by rcas …`.
+-/
 theorem last_row : ∀ (bs : List (K × ℕ)) (N : ℕ), (∀ b ∈ bs, 1 ≤ b.2) → (bs.map Prod.snd).sum = N + 1 →
     bs.getLast? = some (pTau bs N, pSz bs N) ∧ pSt bs N + pSz bs N = N + 1 ∧ pSig bs N = pSt bs N
   | [], N, _, h => by simp at h
@@ -129,6 +159,13 @@ section Signs
 
 variable {R : Type} [CommRing R] {r : ℕ}
 
+/- English proof (translation)
+Unfold `Formalism.DoubleCosetMeasures.sLow Formalism.DoubleCosetMeasures.sUp`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : j.val + 1 < r + 1`. Rewrite using `[dif_pos h, dif_pos h]`.
+
+Simplify using `only [Sg, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.transpose_apply]`. Establish `e : r - j.val = (r - (j.val + 1)) + 1` using `by omega`. Establish `hx : (-1 : R) ^ (r - (j.val + 1)) * (-1 : R) ^ (r - (j.val + 1)) = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, pow_succ]`. Take the linear combination `(-(A j ⟨j.val + 1, h⟩)) * hx`. Rewrite using `[dif_neg h, dif_neg h, neg_zero]`.
+-/
 theorem sLow_sgT (A : Matrix (Fin (r + 1)) (Fin (r + 1)) R) : Formalism.DoubleCosetMeasures.sLow (Sg R r * A.transpose * Sg R r) = -Formalism.DoubleCosetMeasures.sUp A := by
   unfold Formalism.DoubleCosetMeasures.sLow Formalism.DoubleCosetMeasures.sUp
   rw [← Finset.sum_neg_distrib]
@@ -143,6 +180,13 @@ theorem sLow_sgT (A : Matrix (Fin (r + 1)) (Fin (r + 1)) R) : Formalism.DoubleCo
     linear_combination (-(A j ⟨j.val + 1, h⟩)) * hx
   · rw [dif_neg h, dif_neg h, neg_zero]
 
+/- English proof (translation)
+Unfold `Formalism.DoubleCosetMeasures.sLow Formalism.DoubleCosetMeasures.sUp`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : j.val + 1 < r + 1`. Rewrite using `[dif_pos h, dif_pos h]`.
+
+Simplify using `only [Sg, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.transpose_apply]`. Establish `e : r - j.val = (r - (j.val + 1)) + 1` using `by omega`. Establish `hx : (-1 : R) ^ (r - (j.val + 1)) * (-1 : R) ^ (r - (j.val + 1)) = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, pow_succ]`. Take the linear combination `(-(A ⟨j.val + 1, h⟩ j)) * hx`. Rewrite using `[dif_neg h, dif_neg h, neg_zero]`.
+-/
 theorem sUp_sgT (A : Matrix (Fin (r + 1)) (Fin (r + 1)) R) : Formalism.DoubleCosetMeasures.sUp (Sg R r * A.transpose * Sg R r) = -Formalism.DoubleCosetMeasures.sLow A := by
   unfold Formalism.DoubleCosetMeasures.sLow Formalism.DoubleCosetMeasures.sUp
   rw [← Finset.sum_neg_distrib]
@@ -167,6 +211,87 @@ variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `γ w F' L U hrel hgen hN p hMp`. Take `⟨-, -, hLu, hUu, e⟩` from `hN`. Establish `hL'` using `PCount.isLo_of_uni hLu`. Establish `hU'` using `PCount.isUp_of_uni hUu`. Establish `hf' : ZhatL (lf D F0) F' * Sg D.host.E D.R.rS = L * ptMat w * U` using `by rw [← zhatOM_eq]; exact e`.
+
+Take `⟨g, hM⟩` from `Option.ne_none_iff_exists'.1 hMp`. Establish `hAg` using `(hA p).2.2.2.2.2`. Break down `hR : (D.s.atP p).split with _ | sg` into its components or cases. Simplify using `only [hM, hR] at hAg`. Simplify using `only [hM, hR] at hAg`.
+
+Take `⟨hge, hgq⟩` from `hAg`. Use `set Zd : LocDat D := ⟨δ, M, hA⟩ with hZd`. Establish `hq : (sg.q : (D.s.atP p).Fp) ≠ 0` using `fun h => sg.q_irr.ne_zero (Subtype.ext h)`. Use `set φ1 := (p1 sg.e).comp (D.s.atP p).ιE with hφ1`. Use `set φ2 := (p2 sg.e).comp (D.s.atP p).ιE with hφ2`.
+
+Establish `hcc : ∀ a, cf Zd p a * cfi Zd p a = 1` using `cf_cfi Zd p`. Establish `hcc' : ∀ a, cfi Zd p a * cf Zd p a = 1` using `cfi_cf Zd p`. Establish `hY1 : (CntLocal.ZZP (M` using `M) δ u u' p (ZhatL (lf D F0) F') * sgnP p).map (p1 sg.e) = (Matrix.diagonal (cf Zd p) * L.map φ1 * Matrix.diagonal (cfi Zd p)) * ((sg.q : (D.s.atP p).Fp)⁻¹ • (Matrix.diagonal (cf Zd p) * (ptMat w).map φ1 * Matrix.diagonal (cf Zd p))) * (Matrix.diagonal (cfi Zd p) * U.map φ1 * Mat …`. Rewrite using `[PCount.zz1' Zd p sg hR g hM hge hgq u u' (ZhatL (lf D F0) F'), hf', Matrix.map_mul, Matrix.map_mul, fact1 (cf Zd p) (cfi Zd p) hcc']`. Establish `e2 : ((ZhatL (lf D F0) F').map φ2).transpose * Sg (D.s.atP p).Fp D.R.rS = (Sg (D.s.atP p).Fp D.R.rS * (U.map φ2).transpose * Sg (D.s.atP p).Fp D.R.rS) * (Sg (D.s.atP p).Fp D.R.rS * (ptMat w).map φ2 * Sg (D.s.atP p).Fp D.R.rS) * (Sg (D.s.atP p).Fp D.R.rS * (L.map φ2).transpose * S …`.
+
+Establish `hA' : ZhatL (lf D F0) F' = L * ptMat w * U * Sg D.host.E D.R.rS`. Rewrite using `[← hf', Matrix.mul_assoc, sg_sq, Matrix.mul_one]`. Rewrite using `[hA', Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, sg_map]`. Conclude with `fact2 _ _ _ _ (sg_sq _) (Matrix.diagonal_transpose _) (by rw [← Matrix.transpose_map, ptMat_transpose])`. Establish `hY2 : (CntLocal.ZZP (M` using `M) δ u u' p (ZhatL (lf D F0) F') * sgnP p).map (p2 sg.e) = (Matrix.diagonal (cf Zd p) * (Sg (D.s.atP p).Fp D.R.rS * (U.map φ2).transpose * Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cfi Zd p)) * ((-(sg.q : (D.s.atP p).Fp)⁻¹) • (Matrix.diagonal (cf Zd p) * (Sg (D.s.atP p).Fp D.R …`.
+
+Rewrite using `[PCount.zz2' Zd p sg hR g hM hge hgq u u' (ZhatL (lf D F0) F'), e2, fact1 (cf Zd p) (cfi Zd p) hcc']`. Establish `hm1` using `PCount.mm1' Zd p sg hR g hM hge hgq (D.mem u).A.T (D.mem u').A.T w`. Establish `hm2` using `PCount.mm2' Zd p sg hR g hM hge hgq (D.mem u).A.T (D.mem u').A.T w`. Establish `hl1 : IsLo (Matrix.diagonal (cf Zd p) * L.map φ1 * Matrix.diagonal (cfi Zd p))` using `isLo_conj (isLo_map φ1 hL') _ _ hcc`. Establish `hr1 : IsUp (Matrix.diagonal (cfi Zd p) * U.map φ1 * Matrix.diagonal (cf Zd p))` using `isUp_conj (isUp_map φ1 hU') _ _ hcc'`.
+
+Establish `hl2 : IsLo (Matrix.diagonal (cf Zd p) * (Sg (D.s.atP p).Fp D.R.rS * (U.map φ2).transpose * Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cfi Zd p))` using `isLo_conj (isLo_conj (isLo_transpose (isUp_map φ2 hU')) _ _ (fun a => sgn_sq' D.R.rS a)) _ _ hcc`. Establish `hr2 : IsUp (Matrix.diagonal (cfi Zd p) * (Sg (D.s.atP p).Fp D.R.rS * (L.map φ2).transpose * Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cf Zd p))` using `isUp_conj (isUp_conj (isUp_transpose (isLo_map φ2 hL')) _ _ (fun a => sgn_sq' D.R.rS a)) _ _ hcc'`. Establish `hcf0 : ∀ a, cf Zd p a ≠ 0` using `fun a h => by have := hcc a; rw [h, zero_mul] at this; exact zero_ne_one this`. Establish `hs0 : ∀ a : Fin (D.R.rS + 1), (-1 : (D.s.atP p).Fp) ^ (D.R.rS - a.val) ≠ 0` using `fun a => pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)`. Take `⟨r1', hr1', e1, hs1⟩` from `corner_sg (sgF w) (sgF_sgF w) hl1 hr1 (M := (sg.q : (D.s.atP p).Fp)⁻¹ • (Matrix.diagonal (cf Zd p) * (ptMat w).map φ1 * Matrix.diagonal (cf Zd p))) (fun a b hb => by`.
+
+Simplify using `only [Matrix.smul_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply', if_neg hb, map_zero, mul_zero, zero_mul, smul_eq_mul])`. Use the proof step `(-(((D.mem u).A.T : ℕ) : (D.s.atP p).Fp) / (sg.q : (D.s.atP p).Fp))`. Use the proof step `(fun _ => by`. Simplify using `only [Matrix.smul_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply', if_true, smul_eq_mul]`. Conclude with `mul_ne_zero (inv_ne_zero hq) (mul_ne_zero (mul_ne_zero (hcf0 _) ((map_ne_zero _).2 (pTau_ne' _ _))) (hcf0 _)))`.
+
+Take `⟨r2', hr2', e2', hs2⟩` from `corner_sg (sgF w) (sgF_sgF w) hl2 hr2 (M := (-(sg.q : (D.s.atP p).Fp)⁻¹) • (Matrix.diagonal (cf Zd p) * (Sg (D.s.atP p).Fp D.R.rS * (ptMat w).map φ2 * Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cf Zd p))) (fun a b hb => by`. Simplify using `only [Sg, Matrix.smul_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply', if_neg hb, map_zero, mul_zero, zero_mul, smul_eq_mul])`. Use the proof step `((((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) / (sg.q : (D.s.atP p).Fp))`. Use the proof step `(fun _ => by`. Simplify using `only [Sg, Matrix.smul_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply', if_true, smul_eq_mul]`.
+
+Conclude with `mul_ne_zero (neg_ne_zero.2 (inv_ne_zero hq)) (by have hpt := pTau_ne' w (Fin.last D.R.rS); simp only [Fin.val_last] at hpt; simp [hcf0, hpt]))`. Establish `hδZ : Zd.δ = δ` using `rfl`. Establish `hm1'` using `hm1`. Rewrite `hm1'` using `[hδZ, ← hφ1]`. Establish `hm2'` using `hm2`.
+
+Rewrite `hm2'` using `[hδZ, ← hφ2]`. Establish `hY : CntLocal.ZZP (M` using `M) δ u u' p (ZhatL (lf D F0) F') * sgnP p = glue sg.e (Matrix.diagonal (cf Zd p) * L.map φ1 * Matrix.diagonal (cfi Zd p)) (Matrix.diagonal (cf Zd p) * (Sg (D.s.atP p).Fp D.R.rS * (U.map φ2).transpose * Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cfi Zd p)) * modMat δ (D.mem u).A …`. Establish `c1eq : (CntLocal.ZZP (M` using `M) δ u u' p (ZhatL (lf D F0) F') * sgnP p).map (p1 sg.e) = (Matrix.diagonal (cf Zd p) * L.map φ1 * Matrix.diagonal (cfi Zd p)) * (modMat δ (D.mem u).A.T (D.mem u').A.T p w).map (p1 sg.e) * r1' := by`. Rewrite using `[hm1']`. Conclude with `hY1.trans e1`.
+
+Establish `c2eq : (CntLocal.ZZP (M` using `M) δ u u' p (ZhatL (lf D F0) F') * sgnP p).map (p2 sg.e) = (Matrix.diagonal (cf Zd p) * (Sg (D.s.atP p).Fp D.R.rS * (U.map φ2).transpose * Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cfi Zd p)) * (modMat δ (D.mem u).A.T (D.mem u').A.T p w).map (p2 sg.e) * r2' := by`. Rewrite using `[hm2']`. Conclude with `hY2.trans e2'`. Use `mat_eq sg.e ?_ ?_` and prove the remaining obligations. Rewrite using `[c1eq]`.
+
+Use `conv_rhs => rw [Matrix.map_mul, Matrix.map_mul, glue_map_fst, glue_map_fst]`. Rewrite using `[c2eq]`. Use `conv_rhs => rw [Matrix.map_mul, Matrix.map_mul, glue_map_snd, glue_map_snd]`. Take `⟨w₀, hw₀⟩` from `PCount.modPt_full (δ := δ) (D.mem u).A.T (D.mem u').A.T p (hA p).2.1 w`. Rewrite using `[phL_of_dec M δ (hA p).1 hw₀ (isLo_glue sg.e hl1 hl2) (isUp_glue sg.e hr1' hr2') hY]`.
+
+Rewrite using `[Formalism.MainNotions.LocalOrbitGerms.Cls.simpleLow_eq, Formalism.MainNotions.LocalOrbitGerms.Cls.simpleUp_eq]`. Establish `hx1 : p1 sg.e (Formalism.DoubleCosetMeasures.sLow (glue sg.e (Matrix.diagonal (cf Zd p) * L.map φ1 * Matrix.diagonal (cfi Zd p)) (Matrix.diagonal (cf Zd p) * (Sg (D.s.atP p).Fp D.R.rS * (U.map φ2).transpose * Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cfi Zd p))) + Formalism.Do …`. Rewrite using `[map_add, ← sLow_map, ← sUp_map, glue_map_fst, glue_map_fst]`. Establish `hx2 : p2 sg.e (Formalism.DoubleCosetMeasures.sLow (glue sg.e (Matrix.diagonal (cf Zd p) * L.map φ1 * Matrix.diagonal (cfi Zd p)) (Matrix.diagonal (cf Zd p) * (Sg (D.s.atP p).Fp D.R.rS * (U.map φ2).transpose * Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cfi Zd p))) + Formalism.Do …`. Rewrite using `[map_add, ← sLow_map, ← sUp_map, glue_map_snd, glue_map_snd]`.
+
+Establish `hyc : ∀ (j : Fin (D.R.rS + 1)) (h : j.val + 1 < D.R.rS + 1), cf Zd p ⟨j.val + 1, h⟩ * cfi Zd p j = yP Zd p` using `fun j h => cf_mul_cfi Zd p ⟨j.val + 1, h⟩ j rfl`. Establish `hyc' : ∀ (j : Fin (D.R.rS + 1)) (h : j.val + 1 < D.R.rS + 1), cfi Zd p j * cf Zd p ⟨j.val + 1, h⟩ = yP Zd p` using `fun j h => by rw [mul_comm]; exact cf_mul_cfi Zd p ⟨j.val + 1, h⟩ j rfl`. Establish `hl1s : Formalism.DoubleCosetMeasures.sLow (Matrix.diagonal (cf Zd p) * L.map φ1 * Matrix.diagonal (cfi Zd p)) = yP Zd p * φ1 (PairVal.sgLo L)`. Rewrite using `[sLow_conj _ _ _ _ hyc, sLow_map, sgLo_eq]`. Establish `hr1s : Formalism.DoubleCosetMeasures.sUp (Matrix.diagonal (cfi Zd p) * U.map φ1 * Matrix.diagonal (cf Zd p)) = yP Zd p * φ1 (PairVal.sgUp U)`.
+
+Rewrite using `[sUp_conj _ _ _ _ hyc', sUp_map, sgUp_eq]`. Establish `hl2s : Formalism.DoubleCosetMeasures.sLow (Matrix.diagonal (cf Zd p) * (Sg (D.s.atP p).Fp D.R.rS * (U.map φ2).transpose * Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cfi Zd p)) = -(yP Zd p * φ2 (PairVal.sgUp U))`. Rewrite using `[sLow_conj _ _ _ _ hyc, sLow_sgT, sUp_map, sgUp_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hr2s : Formalism.DoubleCosetMeasures.sUp (Matrix.diagonal (cfi Zd p) * (Sg (D.s.atP p).Fp D.R.rS * (L.map φ2).transpose * Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cf Zd p)) = -(yP Zd p * φ2 (PairVal.sgLo L))`.
+
+Rewrite using `[sUp_conj _ _ _ _ hyc', sUp_sgT, sLow_map, sgLo_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpsiR : ∀ x, (M p).psiR x = g.psiF ((p1 sg.e x - p2 sg.e x) / (sg.q : (D.s.atP p).Fp))`. Introduce `x`. Unfold `Loc.Model.psiR`.
+
+Rewrite using `[hM]`. Use `show g.psiF ((M p).trR g x) = _`. Simplify using `only [Loc.Model.trR, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[hge, hgq]`. Both sides reduce to the same expression.
+
+Establish `hAgr` using `(hA p).2.2.2.2.1`. Use `set s := PairVal.sgLo L + PairVal.sgUp U with hsdef`. Establish `hgE : ((gS D : ℕ) : D.host.E) ≠ 0`. Establish `: 0 < gS D` using `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos`. Conclude with `this.ne'` after adjusting the coercions.
+
+Establish `hδ : δ p ≠ 0` using `(hA p).2.1`. Establish `htgt : (D.s.atP p).psiE ((D.s.atP p).ιE (-(s / ((gS D : ℕ) : D.host.E)))) = g.psiF (δ p * (φ1 s + φ2 s) / ((gS D : ℕ) : (D.s.atP p).Fp))`. Establish `h` using `hAgr ((D.s.atP p).ιE (s / ((gS D : ℕ) : D.host.E)) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p))`. Rewrite `h` using `[mul_assoc, ← map_mul, mul_inv_cancel₀ hδ, map_one, mul_one, ← map_neg]`. Rewrite using `[← h, g.fractionFieldToGenericStalk_algebraMap_eq, hge, map_mul, AlgEquiv.commutes]`.
+
+Use `congr 1`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, Prod.algebraMap_apply, RingHom.id_apply]`. Rewrite using `[← adeleInfiniteComponent_apply, ← adele_ext_components]`. Establish `e1 : p1 sg.e ((D.s.atP p).ιE (s / ((gS D : ℕ) : D.host.E))) = φ1 s / ((gS D : ℕ) : (D.s.atP p).Fp)` using `by show φ1 (s / ((gS D : ℕ) : D.host.E)) = _`. Rewrite using `[map_div₀, map_natCast]`.
+
+Establish `e2 : p2 sg.e ((D.s.atP p).ιE (s / ((gS D : ℕ) : D.host.E))) = φ2 s / ((gS D : ℕ) : (D.s.atP p).Fp)` using `by show φ2 (s / ((gS D : ℕ) : D.host.E)) = _`. Rewrite using `[map_div₀, map_natCast]`. Rewrite using `[e1, e2]`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hgp : gpart p = Loc.resChar p`. Establish `hmem` using `(D.s_split p).1 (by rw [hR]; rfl)`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hmem`. Unfold `gpart`. Distinguish the cases in `h0 : Loc.resChar p = D.host.g 0`.
+
+Rewrite using `[if_pos h0, h0]`. Rewrite using `[if_neg h0, if_pos (hmem.resolve_left h0), hmem.resolve_left h0]`. Establish `hres : ((Loc.resChar p : ℕ) : (D.s.atP p).Fp) ≠ 0` using `by rw [← sg.q_eq]; exact hq`. Establish `hgF : ((gS D : ℕ) : (D.s.atP p).Fp) ≠ 0`. Rewrite using `[← map_natCast (D.s.atP p).ιF]`.
+
+Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos).ne')`. Establish `hu : (D.s.atP p).ιF ((uP p : ℚ) : D.host.F) = ((Loc.resChar p : ℕ) : (D.s.atP p).Fp) / ((gS D : ℕ) : (D.s.atP p).Fp)`. Rewrite using `[show ((uP p : ℚ) : D.host.F) = ((gpart p : ℕ) : D.host.F) / ((gS D : ℕ) : D.host.F) by unfold uP; push_cast; ring, map_div₀, map_natCast, map_natCast, hgp]`. Establish `hyq : yP Zd p / (sg.q : (D.s.atP p).Fp) = δ p / ((gS D : ℕ) : (D.s.atP p).Fp)` using `by show δ p * (D.s.atP p).ιF ((uP p : ℚ) : D.host.F) / (sg.q : (D.s.atP p).Fp) = _`. Rewrite using `[hu, sg.q_eq]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[htgt, hpsiR, hx1, hx2, hs1, hs2, hl1s, hr1s, hl2s, hr2s]`. Establish `hpos : ∀ b ∈ w.1, 1 ≤ b.2` using `fun b hb => (w.2.1 b hb).2`. Take `⟨hlast, hst, hsig⟩` from `last_row w.1 D.R.rS hpos w.2.2`. Establish `hσv : (sgF w (Fin.last D.R.rS)).val = pSt w.1 D.R.rS` using `by simp [sgF, hsig]`.
+
+Establish `hdf : dfac M δ (D.mem u).A.T (D.mem u').A.T p w = if pSz w.1 D.R.rS = 2 then (M p).psiR (tau0 p (D.mem u).A.T (D.mem u').A.T * Ring.inverse (blkMod δ (D.mem u).A.T (D.mem u').A.T p D.R.rS 2 (pTau w.1 D.R.rS))) else 1`. Unfold `dfac`. Rewrite using `[hR, hlast]`. Apply the tactic sequence `rcases hs : pSz w.1 D.R.rS with _ | _ | _ | k <;> simp`. Establish `hyP : yP Zd p = δ p / ((gS D : ℕ) : (D.s.atP p).Fp) * (sg.q : (D.s.atP p).Fp)`.
+
+Rewrite using `[← hyq]`. Clear the denominators using the available nonvanishing facts. Distinguish the cases in `h2 : pSz w.1 D.R.rS = 2`. Establish `hrs : 1 ≤ D.R.rS` using `by omega`. Establish `hne : sgF w (Fin.last D.R.rS) ≠ Fin.last D.R.rS` using `fun h => by`.
+
+Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[hσv, Fin.val_last]`. Use linear arithmetic over natural numbers and integers. Establish `hc : sgF w (Fin.last D.R.rS) ≠ Fin.last D.R.rS ∧ (sgF w (Fin.last D.R.rS)).val + 1 = D.R.rS` using `⟨hne, by rw [hσv]; omega⟩`. Rewrite using `[hdf, if_pos h2, if_pos hc, if_pos hc, hpsiR, ← AddChar.map_add_eq_mul]`.
+
+Use `congr 1`. Use `set b := blkMod δ (D.mem u).A.T (D.mem u').A.T p D.R.rS 2 (pTau w.1 D.R.rS) with hb`. Establish `hmb : modMat δ (D.mem u).A.T (D.mem u').A.T p w (Fin.last D.R.rS) (sgF w (Fin.last D.R.rS)) = b`. Rewrite using `[modMat_apply', if_pos rfl, Fin.val_last, h2, show 1 + pSt w.1 D.R.rS = D.R.rS by omega]`. Establish `hX1 : ((sg.q : (D.s.atP p).Fp)⁻¹ • (Matrix.diagonal (cf Zd p) * (ptMat w).map φ1 * Matrix.diagonal (cf Zd p))) (Fin.last D.R.rS) (sgF w (Fin.last D.R.rS)) = p1 sg.e b`.
+
+Establish `h` using `congrFun (congrFun hm1' (Fin.last D.R.rS)) (sgF w (Fin.last D.R.rS))`. Rewrite `h` using `[Matrix.map_apply, hmb, if_neg hne, zero_smul, sub_zero]`. Conclude with `h.symm`. Establish `hX2 : ((-(sg.q : (D.s.atP p).Fp)⁻¹) • (Matrix.diagonal (cf Zd p) * (Sg (D.s.atP p).Fp D.R.rS * (ptMat w).map φ2 * Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cf Zd p))) (Fin.last D.R.rS) (sgF w (Fin.last D.R.rS)) = p2 sg.e b`. Establish `h` using `congrFun (congrFun hm2' (Fin.last D.R.rS)) (sgF w (Fin.last D.R.rS))`.
+
+Rewrite `h` using `[Matrix.map_apply, hmb, if_neg hne, zero_smul, sub_zero]`. Conclude with `h.symm`. Establish `hb1 : p1 sg.e b ≠ 0`. Rewrite using `[← hX1]`. Simplify using `only [Matrix.smul_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply', if_true, smul_eq_mul]`.
+
+Conclude with `mul_ne_zero (inv_ne_zero hq) (by have hpt := pTau_ne' w (Fin.last D.R.rS); simp only [Fin.val_last] at hpt; simp [hcf0, hpt])`. Establish `hb2 : p2 sg.e b ≠ 0`. Rewrite using `[← hX2]`. Simplify using `only [Sg, Matrix.smul_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply', if_true, smul_eq_mul]`. Conclude with `mul_ne_zero (neg_ne_zero.2 (inv_ne_zero hq)) (by have hpt := pTau_ne' w (Fin.last D.R.rS); simp only [Fin.val_last] at hpt; simp [hcf0, hpt])`.
+
+Establish `hbu : IsUnit b`. Establish `h : IsUnit (sg.e b)` using `Prod.isUnit_iff.2 ⟨isUnit_iff_ne_zero.2 hb1, isUnit_iff_ne_zero.2 hb2⟩`. Conclude with `(isUnit_map_iff sg.e b).1 h`. Establish `hinv1 : p1 sg.e (Ring.inverse b) = (p1 sg.e b)⁻¹`. Establish `h` using `congrArg (p1 sg.e) (Ring.inverse_mul_cancel b hbu)`.
+
+Rewrite `h` using `[map_mul, map_one]`. Conclude with `eq_inv_of_mul_eq_one_left h`. Establish `hinv2 : p2 sg.e (Ring.inverse b) = (p2 sg.e b)⁻¹`. Establish `h` using `congrArg (p2 sg.e) (Ring.inverse_mul_cancel b hbu)`. Rewrite `h` using `[map_mul, map_one]`.
+
+Conclude with `eq_inv_of_mul_eq_one_left h`. Establish `hqi : Ring.inverse (qE p) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (sg.q : (D.s.atP p).Fp)⁻¹`. Simplify using `only [qE, hR]`. Use `Ring.inverse_unit ((Units.mk0 (sg.q : (D.s.atP p).Fp) hq).map (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep).toMonoidHom)` as an intermediate fact. Simplify `this` using `only [Units.coe_map, Units.val_mk0, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, Units.coe_map_inv, Units.val_inv_eq_inv_val]`.
+
+Establish `ht1 : p1 sg.e (tau0 p (D.mem u).A.T (D.mem u').A.T) = -(((D.mem u).A.T : ℕ) : (D.s.atP p).Fp) * (sg.q : (D.s.atP p).Fp)⁻¹`. Simplify using `only [tau0, hR, map_mul, fst_proj_symm, hqi, fst_proj_algebraMap]`. Establish `ht2 : p2 sg.e (tau0 p (D.mem u).A.T (D.mem u').A.T) = (((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) * (sg.q : (D.s.atP p).Fp)⁻¹`. Simplify using `only [tau0, hR, map_mul, snd_proj_symm, hqi, snd_proj_algebraMap]`. Rewrite using `[hX1, hX2, map_mul, map_mul, ht1, ht2, hinv1, hinv2, hsdef, map_add, map_add, hyP]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hc : ¬ (sgF w (Fin.last D.R.rS) ≠ Fin.last D.R.rS ∧ (sgF w (Fin.last D.R.rS)).val + 1 = D.R.rS)`. Introduce and unpack `⟨-, h2'⟩`. Apply `h2` to reduce the goal to its premises.
+
+Rewrite `h2'` using `[hσv]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hdf, if_neg h2, if_neg hc, if_neg hc, one_mul]`. Use `congr 1`. Rewrite using `[hsdef, map_add, map_add, hyP]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem local_phase_typed_places (hA : ∀ p, Agree δ M p) : PhaseLocG M δ u u' F0 what₂ := by
   intro γ w F' L U hrel hgen hN p hMp
   obtain ⟨-, -, hLu, hUu, e⟩ := hN

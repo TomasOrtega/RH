@@ -18,6 +18,9 @@ set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BigOn.LevVal.chi_val | exact GlobalTheory.BigOn.LevVal.chi_val | (intros; apply GlobalTheory.BigOn.LevVal.chi_val <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twisted_character_rational_values : AtTw fun Fm x hx i p w j => ∀ k, ∃ a : (Fm.D x i).what₂.LL,
   (Fm.D x i).what₂.embLL a = (((GlobalTheory.TraceIncl.envV (R2 p) j ((R2 p).mu ((Fm.D x i).plEq w))).χ k : ℂˣ) : ℂ) := by
   first | exact @GlobalTheory.BigOn.LevVal.chi_val | exact GlobalTheory.BigOn.LevVal.chi_val | (intros; apply GlobalTheory.BigOn.LevVal.chi_val <;> assumption)

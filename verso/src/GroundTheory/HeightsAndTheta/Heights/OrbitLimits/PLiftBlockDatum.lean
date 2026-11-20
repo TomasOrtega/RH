@@ -11,6 +11,13 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ _ ι _ Ω _ _ y D N P0 a ι' _ x' hD harith _ hP0 hsemi hconj _ hx' hgen hbir'`. Establish `hv : ∀ j, liftCoords x' j ∈ chartLat y (a • N.a) 1` using `fun j => hx' _`. Establish `hgv` using `generatesOn_liftCoords y (a • N.a) x' hgen`. Establish `harith'` using `isArithVar_addBlock y (a • N.a) (liftCoords x') harith hv hgv`. Take `⟨A, hAdeg, hAconj, hAsemi, hrel⟩` from `hMet K ι Ω y N P0 a (Fintype.card ι') (liftCoords x') hP0 hsemi hconj hv hgv`.
+
+Establish `hnot : ¬ (⊤ : Ideal (MRing (addIdx ι (Fintype.card ι')))) ≤ mCoordIdeal (addBlock y (liftCoords x'))` using `fun h => harith'.2.1.1.ne_top (top_le_iff.mp h)`. Take `⟨J, -, -, -, ⟨R⟩⟩` from `hE (Option K) (addIdx ι (Fintype.card ι')) _ ⊤ D harith' isMultiHomogIdeal_top hnot`. Set `_ : MeasurableSpace R.toAnRes.X` to `borel _`. Establish `: BorelSpace R.toAnRes.X` using `⟨rfl⟩`. Take `⟨dV, hdV⟩` from `hVol (Option K) (addIdx ι (Fintype.card ι')) _ J D R.toAnRes harith'`.
+
+Use `⟨ { y := addBlock y (liftCoords x'), k₀ := none, A := A, P0 := mCoordIdeal (addBlock y (liftCoords x')), J := J, R := R.toAnRes, meas := borel _, borel := ⟨rfl⟩, dV := dV, one_le := hD, arith := harith', birat := blockBirational_addBlock y x' hbir', deg := hAdeg, conjInv := hAcon …` and prove the remaining obligations. Conclude with `hPts K ι Ω y (a • N.a) (Fintype.card ι') (liftCoords x') hv hgv`.
+-/
 theorem LiftBlockDatum.proof (hE : ResExistsStatement) (hVol : ResVolume.Statement)
     (hPts : LiftGraphPoints.Statement) (hMet : LiftGraphMetric.Statement) : LiftBlockDatum.Statement := by
   intro K _ _ ι _ Ω _ _ y D N P0 a ι' _ x' hD harith _ hP0 hsemi hconj _ hx' hgen hbir'

@@ -22,24 +22,41 @@ def ev1 (a : Fin d → MvPowerSeries τ C) (f : PS C 1 d) : MvPowerSeries τ C :
 def ev2 (a b : Fin d → MvPowerSeries τ C) (f : PS C 2 d) : MvPowerSeries τ C :=
   subst (fun p : Fin 2 × Fin d => (![a, b] : Fin 2 → Fin d → MvPowerSeries τ C) p.1 p.2) f
 
+/- English proof (translation)
+Take `⟨j, i⟩` from `p`. Use `fin_cases j`. Conclude with `ha i`.
+-/
 theorem nc1 {a : Fin d → MvPowerSeries τ C} (ha : NC a) (p : Fin 1 × Fin d) :
     constantCoeff ((![a] : Fin 1 → Fin d → MvPowerSeries τ C) p.1 p.2) = 0 := by
   obtain ⟨j, i⟩ := p
   fin_cases j; exact ha i
 
+/- English proof (translation)
+Take `⟨j, i⟩` from `p`. Use `fin_cases j`. Use `exacts [ha i, hb i]`.
+-/
 theorem nc2 {a b : Fin d → MvPowerSeries τ C} (ha : NC a) (hb : NC b) (p : Fin 2 × Fin d) :
     constantCoeff ((![a, b] : Fin 2 → Fin d → MvPowerSeries τ C) p.1 p.2) = 0 := by
   obtain ⟨j, i⟩ := p
   fin_cases j; exacts [ha i, hb i]
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (nc1 ha)) (nc1 ha) hf`.
+-/
 theorem constantCoeff_substOnePointPowerSeries_eq_zero {a : Fin d → MvPowerSeries τ C} (ha : NC a) {f : PS C 1 d} (hf : constantCoeff f = 0) :
     constantCoeff (ev1 a f) = 0 :=
   constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (nc1 ha)) (nc1 ha) hf
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (nc2 ha hb)) (nc2 ha hb) hf`.
+-/
 theorem constantCoeff_germEvalPair_eq_zero {a b : Fin d → MvPowerSeries τ C} (ha : NC a) (hb : NC b) {f : PS C 2 d} (hf : constantCoeff f = 0) :
     constantCoeff (ev2 a b f) = 0 :=
   constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (nc2 ha hb)) (nc2 ha hb) hf
 
+/- English proof (translation)
+Unfold `ev1`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (nc1 ha)) hφ]`. Use `congr 1`. Use function extensionality and compare the values at `⟨j, i⟩`. Use `fin_cases j`.
+
+Both sides reduce to the same expression.
+-/
 theorem subst_substOnePointPowerSeries {φ : τ → MvPowerSeries τ' C} (hφ : HasSubst φ) {a : Fin d → MvPowerSeries τ C} (ha : NC a)
     (f : PS C 1 d) : subst φ (ev1 a f) = ev1 (fun i => subst φ (a i)) f := by
   unfold ev1
@@ -48,6 +65,9 @@ theorem subst_substOnePointPowerSeries {φ : τ → MvPowerSeries τ' C} (hφ : 
   funext ⟨j, i⟩
   fin_cases j; rfl
 
+/- English proof (translation)
+Unfold `ev2`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (nc2 ha hb)) hφ]`. Use `congr 1`. Use function extensionality and compare the values at `⟨j, i⟩`. Apply the tactic sequence `fin_cases j <;> rfl`.
+-/
 theorem subst_substTwoPointsPowerSeries {φ : τ → MvPowerSeries τ' C} (hφ : HasSubst φ) {a b : Fin d → MvPowerSeries τ C} (ha : NC a)
     (hb : NC b) (f : PS C 2 d) : subst φ (ev2 a b f) = ev2 (fun i => subst φ (a i)) (fun i => subst φ (b i)) f := by
   unfold ev2
@@ -56,9 +76,17 @@ theorem subst_substTwoPointsPowerSeries {φ : τ → MvPowerSeries τ' C} (hφ :
   funext ⟨j, i⟩
   fin_cases j <;> rfl
 
+/- English proof (translation)
+Rewrite using `[← coe_substAlgHom hφ, map_zero]`.
+-/
 theorem subst_zero' {φ : τ → MvPowerSeries τ' C} (hφ : HasSubst φ) : subst φ (0 : MvPowerSeries τ C) = 0 := by
   rw [← coe_substAlgHom hφ, map_zero]
 
+/- English proof (translation)
+Establish `hs : HasSubst (fun p : Fin 1 × Fin d => a p.2)` using `hasSubst_of_constantCoeff_zero fun p => ha p.2`. Establish `h1` using `congrArg (subst (fun p : Fin 1 × Fin d => a p.2)) (show ev2 (pt C (n := 1) d 0) 0 h = 0 from hh)`. Rewrite `h1` using `[subst_substTwoPointsPowerSeries hs (fun i => by simp [pt]) (fun i => by simp), subst_zero' hs]`. Rewrite using `[← h1]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [pt]`. Rewrite using `[subst_X hs]`. Use function extensionality and compare the values at `i`. Conclude with `(subst_zero' hs).symm`.
+-/
 theorem substTwoPointsPowerSeries_zero_of_vanish_first_axis {a : Fin d → MvPowerSeries τ C} (ha : NC a) {h : PS C 2 d}
     (hh : ev (n := 1) ![pt C d 0, 0] h = 0) : ev2 a 0 h = 0 := by
   have hs : HasSubst (fun p : Fin 1 × Fin d => a p.2) := hasSubst_of_constantCoeff_zero fun p => ha p.2
@@ -80,6 +108,13 @@ def germ (ψ : Fin n → Fin d → MvPowerSeries τ C) (s : Fin m → Fin d → 
 
 variable {hL h}
 
+/- English proof (translation)
+Unfold `germ`. Establish `h0 : constantCoeff ((k : C) • (∑ j, ev1 (ψ j) hL - ∑ b, ∑ b', ev2 (s b) (t b b') h)) = 0`. Simplify using `[map_sum, constantCoeff_substOnePointPowerSeries_eq_zero (hψ _) cL, constantCoeff_germEvalPair_eq_zero (hs _) (ht _ _) ch]`. Rewrite using `[subst_mul hφ, subst_comp_subst_apply (a := fun q : Fin n × Fin d => ψ q.1 q.2) (hasSubst_of_constantCoeff_zero fun q => hψ q.1 q.2) hφ]`. Use `congr 1`.
+
+Unfold `PowerSeries.subst`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun _ => h0) hφ]`. Use `congr 1`. Use function extensionality and compare the values at `_`. Rewrite using `[← coe_substAlgHom hφ]`.
+
+Simplify using `only [map_smul, map_sub, map_sum]`. Simplify using `only [coe_substAlgHom, subst_substOnePointPowerSeries hφ (hψ _), subst_substTwoPointsPowerSeries hφ (hs _) (ht _ _)]`.
+-/
 theorem subst_germ (cL : constantCoeff hL = 0) (ch : constantCoeff h = 0) {φ : τ → MvPowerSeries τ' C}
     (hφ : HasSubst φ) {ψ : Fin n → Fin d → MvPowerSeries τ C} {s : Fin m → Fin d → MvPowerSeries τ C}
     {t : Fin m → Fin m → Fin d → MvPowerSeries τ C} (hψ : ∀ j, NC (ψ j)) (hs : ∀ b, NC (s b))
@@ -108,24 +143,45 @@ variable {v : AddValuation C (WithTop ℝ)} (L : LogFGL v d)
 
 def exPt (w : Fin d → MvPowerSeries τ C) : Fin d → MvPowerSeries τ C := fun e => subst w (expOf L e)
 
+/- English proof (translation)
+Introduce `e` and use `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hw) hw ((isExp_expOf L).1 e)`.
+-/
 theorem nc_exPt {w : Fin d → MvPowerSeries τ C} (hw : NC w) : NC (exPt L w) := fun e =>
   constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hw) hw ((isExp_expOf L).1 e)
 
+/- English proof (translation)
+The claim follows from `subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hw) hφ _`.
+-/
 theorem subst_exPt {φ : τ → MvPowerSeries τ' C} (hφ : HasSubst φ) {w : Fin d → MvPowerSeries τ C} (hw : NC w)
     (e : Fin d) : subst φ (exPt L w e) = exPt L (fun i => subst φ (w i)) e :=
   subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hw) hφ _
 
+/- English proof (translation)
+Establish `hs` using `hasSubst_of_constantCoeff_zero hw`. Unfold `exPt`. Rewrite using `[← subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (isExp_expOf L).1) hs, (isExp_expOf L).2, subst_X hs]`.
+-/
 theorem lg_exPt {w : Fin d → MvPowerSeries τ C} (hw : NC w) (e : Fin d) : subst (exPt L w) (L.lg e) = w e := by
   have hs := hasSubst_of_constantCoeff_zero hw
   unfold exPt
   rw [← subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (isExp_expOf L).1) hs, (isExp_expOf L).2, subst_X hs]
 
+/- English proof (translation)
+Establish `hs` using `hasSubst_of_constantCoeff_zero ha`. Use function extensionality and compare the values at `e`. Unfold `exPt`. Rewrite using `[← subst_comp_subst_apply (hasSubst_of_constantCoeff_zero L.lg_const) hs, subst_lg_expOf, subst_X hs]`.
+-/
 theorem exPt_lg {a : Fin d → MvPowerSeries τ C} (ha : NC a) : exPt L (fun e => subst a (L.lg e)) = a := by
   have hs := hasSubst_of_constantCoeff_zero ha
   funext e
   unfold exPt
   rw [← subst_comp_subst_apply (hasSubst_of_constantCoeff_zero L.lg_const) hs, subst_lg_expOf, subst_X hs]
 
+/- English proof (translation)
+Establish `ha` using `nc_exPt L hw`. Establish `hb` using `nc_exPt L hw'`. Establish `hs : HasSubst (Sum.elim (exPt L w) (exPt L w'))` using `hasSubst_of_constantCoeff_zero fun s => by cases s; exacts [ha _, hb _]`. Rewrite using `[← exPt_lg L (a := fun i => ev2 (exPt L w) (exPt L w') (F i)) fun i => constantCoeff_germEvalPair_eq_zero ha hb (hF0 i)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `e`. Establish `h1` using `congrArg (subst (Sum.elim (exPt L w) (exPt L w'))) (L.lg_F e)`. Rewrite `h1` using `[subst_add hs, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero L.F_const) hs, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _) hs, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _) hs]`. Simplify using `only [subst_X hs, Sum.elim_inl, Sum.elim_inr] at h1`. Rewrite using `[Pi.add_apply, ← lg_exPt L hw e, ← lg_exPt L hw' e, ← h1]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hF, subst_comp_subst_apply hs_twoVars hs]`. Unfold `ev2`. Use `congr 1`.
+
+Use function extensionality and compare the values at `⟨j, i⟩`. Apply the tactic sequence `fin_cases j <;> simp [twoVars, subst_X hs]`.
+-/
 theorem exPt_add {F : Fin d → PS C 2 d} (hF0 : NC F) (hF : ∀ a, L.F a = subst (twoVars C d) (F a))
     {w w' : Fin d → MvPowerSeries τ C} (hw : NC w) (hw' : NC w') :
     (fun i => ev2 (exPt L w) (exPt L w') (F i)) = exPt L (w + w') := by
@@ -150,12 +206,24 @@ theorem exPt_add {F : Fin d → PS C 2 d} (hF0 : NC F) (hF : ∀ a, L.F a = subs
   funext ⟨j, i⟩
   fin_cases j <;> simp [twoVars, subst_X hs]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `e`. Conclude with `subst_zero_of_constantCoeff_zero ((isExp_expOf L).1 e)`.
+-/
 theorem exPt_zero : exPt L (0 : Fin d → MvPowerSeries τ C) = 0 := by
   funext e
   exact subst_zero_of_constantCoeff_zero ((isExp_expOf L).1 e)
 
 end Exp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hl` using `logOf_comp_hom G G φ hφ hhom`. Establish `h1` using `exp_eq_of_log_hom (logFGLOf v G hG) (logFGLOf v G hG) (fun e => subst (oneVar C d) (φ e)) (fun e => constantCoeff_subst_eq_zero hs_oneVar cc_oneVar (hφ e)) (dLin φ) (fun e => by show subst _ (subst (oneVar C d) _) = ∑ f, dLin φ e f • subst (oneVar C d) _`. Rewrite using `[subst_oneVar _ cc_oneVar _ hφ]`. Use `congrFun hl e` as an intermediate fact.
+
+Simplify using `only [comp1] at this`. Rewrite using `[this, ← coe_substAlgHom hs_oneVar]`. Simplify using `only [map_sum, map_smul]) _ w hw (fun _ => rfl) i`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations. Establish `hs : HasSubst (exPt (logFGLOf v G hG) w)` using `hasSubst_of_constantCoeff_zero (nc_exPt _ hw)`.
+
+Use `show _ = subst (exPt (logFGLOf v G hG) w) _`. Rewrite using `[subst_comp_subst_apply hs_oneVar hs]`. Unfold `ev1`. Use `congr 1`. Use function extensionality and compare the values at `⟨j, i⟩`.
+
+Use `fin_cases j`. Simplify using `[oneVar, subst_X hs]`.
+-/
 theorem exPt_hom [CharZero C] {v : AddValuation C (WithTop ℝ)} (G : FGLaw C d)
     (hG : ∀ a, MvIsInt v (subst (twoVars C d) (G.F a))) (φ : Pt C 1 d) (hφ : NC φ)
     (hhom : comp1 φ G.F = addOf G.F (comp1 φ (pt C (n := 2) d 0)) (comp1 φ (pt C (n := 2) d 1)))
@@ -187,15 +255,31 @@ variable {Λ : Type} [Fintype Λ]
 def lin (u : Λ → Fin d → C) (c : Λ → C) : Fin d → MvPowerSeries Λ C :=
   fun e => ∑ l, (c l * u l e) • (X l : MvPowerSeries Λ C)
 
+/- English proof (translation)
+Introduce `e` and use `by simp [lin]`.
+-/
 theorem nc_lin (u : Λ → Fin d → C) (c : Λ → C) : NC (lin u c) := fun e => by simp [lin]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `e`. Simplify using `only [lin, Pi.add_apply, add_mul, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem lin_add (u : Λ → Fin d → C) (c c' : Λ → C) : lin u c + lin u c' = lin u (c + c') := by
   funext e
   simp only [lin, Pi.add_apply, add_mul, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `e`. Simplify using `[lin]`.
+-/
 theorem lin_zero (u : Λ → Fin d → C) : lin u 0 = 0 := by
   funext e; simp [lin]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `e`. Simplify using `only [lin, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`.
+
+Use `congr 1`. Distinguish the cases in `hc : c l = 0`. Simplify using `[hc]`. Use `congrFun (hM l hc) e` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`.
+
+Rewrite using `[mul_assoc, ← this, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun f _ => by ring`.
+-/
 theorem mat_lin (u : Λ → Fin d → C) (M : Matrix (Fin d) (Fin d) C) (c z : Λ → C)
     (hM : ∀ l, c l ≠ 0 → M.mulVec (u l) = z l • u l) :
     (fun e => ∑ f, M e f • lin u c f) = lin u (fun l => c l * z l) := by
@@ -218,26 +302,51 @@ variable [CharZero C] {v : AddValuation C (WithTop ℝ)} {R : Type} [CommRing R]
 def colSum {m : ℕ} (x : Fin m → O) (s : List (Fin m)) : Pt C m d :=
   s.foldr (fun b acc => addOf (B.FK C) (comp1 (B.actK C (x b)) (pt C d b)) acc) 0
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.FBMap.mapLaw (algebraMap R C) B.G).const`.
+-/
 theorem nc_FK : NC (B.FK C) := (GlobalTheory.FBMap.mapLaw (algebraMap R C) B.G).const
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.FBMap.mapAct (algebraMap R C) B.A).const a`.
+-/
 theorem nc_actK (a : O) : NC (B.actK C a) := (GlobalTheory.FBMap.mapAct (algebraMap R C) B.A).const a
 
 omit [CharZero C] in
+/- English proof (translation)
+Introduce `i` and use `by simp [pt]`.
+-/
 theorem nc_pt {m : ℕ} (b : Fin m) : NC (pt C d b) := fun i => by simp [pt]
 
+/- English proof (translation)
+Introduce `i` and use `constantCoeff_substOnePointPowerSeries_eq_zero (nc_pt b) (nc_actK B a i)`.
+-/
 theorem nc_actPt {m : ℕ} (a : O) (b : Fin m) : NC (comp1 (B.actK C a) (pt C d b)) := fun i =>
   constantCoeff_substOnePointPowerSeries_eq_zero (nc_pt b) (nc_actK B a i)
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `nil => intro i`. Simplify using `[colSum]`. Consider the case `cons b s ih => exact fun i => constantCoeff_germEvalPair_eq_zero (nc_actPt B _ b) ih (nc_FK B i)`.
+-/
 theorem nc_colSum {m : ℕ} (x : Fin m → O) (s : List (Fin m)) : NC (colSum (C := C) B x s) := by
   induction s with
   | nil => intro i; simp [colSum]
   | cons b s ih => exact fun i => constantCoeff_germEvalPair_eq_zero (nc_actPt B _ b) ih (nc_FK B i)
 
 omit [CharZero C] in
+/- English proof (translation)
+Introduce `α` and use `by rw [coeff_map]; exact hR _`.
+-/
 theorem int_map (hR : ∀ r, IsIntV v (algebraMap R C r)) {σ : Type} (f : MvPowerSeries σ R) :
     MvIsInt v (MvPowerSeries.map (algebraMap R C) f) := fun α => by
   rw [coeff_map]; exact hR _
 
+/- English proof (translation)
+Proceed by induction on `s generalizing i with`. Consider the case `nil => intro α`. Simplify using `[colSum, IsIntV]`. Consider the case `cons b s ih`. Use `ReciprocityTheory.ChartRestriction.G.Sh.PTb.mvIsInt_subst v (int_map hR _) ?_ (nc2 (nc_actPt B _ b) (nc_colSum B x s))` and prove the remaining obligations.
+
+Introduce and unpack `⟨j, i⟩`. Use `fin_cases j`. Use `ReciprocityTheory.ChartRestriction.G.Sh.PTb.mvIsInt_subst v (int_map hR _) ?_ (nc1 (nc_pt b))` and prove the remaining obligations. Introduce and unpack `⟨j, i⟩ α`. Use `fin_cases j`.
+
+Use `show IsIntV v (coeff α (X (b, i)))`. Apply the tactic sequence `rw [coeff_X]; split_ifs <;> simp [IsIntV]`. Conclude with `ih i`.
+-/
 theorem int_colSum (hR : ∀ r, IsIntV v (algebraMap R C r)) {m : ℕ} (x : Fin m → O) (s : List (Fin m))
     (i : Fin d) : MvIsInt v (colSum (C := C) B x s i) := by
   induction s generalizing i with
@@ -261,10 +370,20 @@ def colExp (L : LogFGL v d) : Fin m × Fin d → MvPowerSeries Λ C :=
   fun q => exPt L (lin u fun l => if col l = q.1 then 1 else 0) q.2
 
 omit [CharZero C] in
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero fun q => nc_exPt L (nc_lin _ _) q.2`.
+-/
 theorem hs_colExp (L : LogFGL v d) : HasSubst (colExp col u L) :=
   hasSubst_of_constantCoeff_zero fun q => nc_exPt L (nc_lin _ _) q.2
 
 include hGF heig in
+/- English proof (translation)
+Establish `hs` using `hs_colExp col u (logFGLOf v G hG)`. Establish `hh` using `(GlobalTheory.FBMap.mapAct (algebraMap R C) B.A).hom a`. Rewrite `hh` using `[add_pt]`. Establish `h1` using `exPt_hom G hG (B.actK C a) (nc_actK B a) (by rw [hGF]; exact hh) (nc_lin u fun l => if col l = b then 1 else 0)`. Rewrite `h1` using `[mat_lin u (dLin (B.actK C a)) _ (fun l => σ (col l) a) fun l _ => heig a l]`.
+
+Establish `e : (fun l => (if col l = b then (1 : C) else 0) * σ (col l) a) = fun l => if col l = b then σ b a else 0`. Apply the tactic sequence `funext l; split_ifs with hl <;> simp [*]`. Rewrite using `[← e, ← h1]`. Use function extensionality and compare the values at `i`. Use `(subst_substOnePointPowerSeries hs (nc_pt b) _).trans ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `e`. Conclude with `subst_X hs _`.
+-/
 theorem subst_actPt (a : O) (b : Fin m) :
     (fun i => subst (colExp col u (logFGLOf v G hG)) (comp1 (B.actK C a) (pt C d b) i)) =
       exPt (logFGLOf v G hG) (lin u fun l => if col l = b then σ b a else 0) := by
@@ -284,6 +403,13 @@ theorem subst_actPt (a : O) (b : Fin m) :
   exact subst_X hs _
 
 include hGF heig in
+/- English proof (translation)
+Establish `hs` using `hs_colExp col u (logFGLOf v G hG)`. Proceed by induction on `s with`. Consider the case `nil`. Use function extensionality and compare the values at `i`. Simplify using `only [List.map_nil, List.sum_nil]`.
+
+Rewrite using `[show (fun _ : Λ => (0 : C)) = 0 from rfl, lin_zero, exPt_zero]`. Conclude with `subst_zero' hs`. Consider the case `cons b s ih`. Use function extensionality and compare the values at `i`. Use `(subst_substTwoPointsPowerSeries hs (nc_actPt B _ b) (nc_colSum B x s) _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[ih, subst_actPt B hGF hG col u σ heig]`. Use `(congrFun (exPt_add (logFGLOf v G hG) (nc_FK B) (fun a => by rw [← hGF]; rfl) (nc_lin _ _) (nc_lin _ _)) i).trans ?_` and prove the remaining obligations. Rewrite using `[lin_add]`. Both sides reduce to the same expression.
+-/
 theorem subst_colSum (x : Fin m → O) (s : List (Fin m)) :
     (fun i => subst (colExp col u (logFGLOf v G hG)) (colSum (C := C) B x s i)) =
       exPt (logFGLOf v G hG) (lin u fun l => (s.map fun b => if col l = b then σ b (x b) else 0).sum) := by
@@ -307,6 +433,9 @@ def coefs {n : ℕ} (γ : Fin m → Fin n → C) (δ : Fin m → Fin m → C) : 
   Sum.elim (fun j l => γ (col l) j)
     (Sum.elim (fun b l => if col l = b then 1 else 0) fun q l => if col l = q.2 then δ q.1 q.2 else 0)
 
+/- English proof (translation)
+Establish `hs : HasSubst (fun s : (Fin n ⊕ Fin m ⊕ Fin m × Fin m) × Fin d => ∑ l, (c s.1 l * u l s.2) • (X l : MvPowerSeries Λ C))` using `hasSubst_of_constantCoeff_zero fun s => nc_lin u (c s.1) s.2`. Establish `hX : ∀ j : Fin n ⊕ Fin m ⊕ Fin m × Fin m, NC fun e : Fin d => (X (j, e) : MvPowerSeries ((Fin n ⊕ Fin m ⊕ Fin m × Fin m) × Fin d) C)` using `fun j e => by simp`. Rewrite using `[subst_germ k g cL ch hs (fun _ => nc_exPt L (hX _)) (fun _ => nc_exPt L (hX _)) fun _ _ => nc_exPt L (hX _)]`. Simplify using `only [subst_exPt L hs (hX _), subst_X hs]`. Both sides reduce to the same expression.
+-/
 theorem subst_univ (L : LogFGL v d) {hL : PS C 1 d} {h : PS C 2 d} (cL : constantCoeff hL = 0)
     (ch : constantCoeff h = 0) (k : ℕ) {n : ℕ} (g : PS C n d) (c : Fin n ⊕ Fin m ⊕ Fin m × Fin m → Λ → C) :
     subst (fun s : (Fin n ⊕ Fin m ⊕ Fin m × Fin m) × Fin d =>
@@ -328,6 +457,37 @@ theorem subst_univ (L : LogFGL v d) {hL : PS C 1 d} {h : PS C 2 d} (cL : constan
 
 include hGF heig in
 
+/- English proof (translation)
+Use `set L := logFGLOf v G hG with hL`. Establish `ch : constantCoeff h = 0`. Establish `h0` using `congrArg constantCoeff (substTwoPointsPowerSeries_zero_of_vanish_first_axis (τ := Fin 2 × Fin d) (a := 0) (fun _ => by simp) hc.ax1)`. Establish `e : ev2 (0 : Fin d → PS C 2 d) 0 h = subst ((0 : Fin 2 × Fin d → C) • X) h`. Apply the tactic sequence `unfold ev2; congr 1; funext ⟨j, i⟩; fin_cases j <;> simp`.
+
+Rewrite `h0` using `[e, ← rescale_eq_subst, rescale_zero_apply]`. Simplify using `using h0`. Establish `cL : constantCoeff (B.hL C h w0) = 0` using `constantCoeff_germEvalPair_eq_zero (nc_pt 0) (nc_actPt B w0 0) ch`. Take `⟨K, hK⟩` from `GlobalTheory.FGDepth.derivAt0_subst_linear_lipschitz C v ((Fin n ⊕ Fin m ⊕ Fin m × Fin m) × Fin d) Λ P (germ (τ := (Fin n ⊕ Fin m ⊕ Fin m × Fin m) × Fin d) (B.hL C h w0) h k g (fun j => exPt L fun e => X (Sum.inl j, e)) (fun b => exPt L fun e => X (Sum.inr (Sum.inl b), e)) fun b …`. Use `⟨K, fun M x β hβ h1 h2 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨U, hU⟩` from `hU x`. Establish `hΦ : ∀ j, NC (colSum (C` using `C) B (fun b => x b j) (List.finRange m)) := fun j => nc_colSum B _ _`. Establish `imul : ∀ a b : C, IsIntV v a → IsIntV v b → IsIntV v (a * b)` using `fun a b ha hb => by`. Unfold `IsIntV at *`. Rewrite using `[v.map_mul]`.
+
+Conclude with `add_nonneg ha hb`. Establish `ico : ∀ (γ : Fin m → Fin n → C) (δ : Fin m → Fin m → C), (∀ b j, IsIntV v (γ b j)) → (∀ b j, IsIntV v (δ b j)) → ∀ s l, IsIntV v (coefs col γ δ s l)`. Introduce and unpack `γ δ hγ hδ (j | b | q) l`. Conclude with `hγ _ _`. Apply the tactic sequence `simp only [coefs, Sum.elim_inl, Sum.elim_inr]; split_ifs <;> simp [IsIntV]`.
+
+Simplify using `only [coefs, Sum.elim_inr]`. Use `split_ifs`. Conclude with `hδ _ _`. Simplify using `[IsIntV]`. Establish `key` using `hK M (fun s l => coefs col β 0 s.1 l * u l s.2) (fun s l => coefs col (fun b j => σ b (x b j)) (fun b b' => σ b' (w0 * ∑ j : Fin n, star (x b j) * x b' j)) s.1 l * u l s.2) (fun s l => imul _ _ (ico _ _ hβ (fun _ _ => by simp [IsIntV]) _ _) (hu _ _)) (fun s l => imul _ _ (ico _ _ …`.
+
+Introduce and unpack `⟨s, e⟩ l`. Rewrite using `[← sub_mul, v.map_mul]`. Use `le_add_of_le_of_nonneg ?_ (hu _ _)` and prove the remaining obligations. Break down `s with j | b | q` into its components or cases. Conclude with `h1 _ _`.
+
+Simplify using `[coefs]`. Simplify using `only [coefs, Sum.elim_inr]`. Use `split_ifs`. Simplify using `using h2 q.1 q.2`. Use the proof step `simp)`.
+
+Rewrite `key` using `[subst_univ u L cL ch, subst_univ u L cL ch]`. Use `⟨ev (fun j => colSum B (fun b => x b j) (List.finRange m)) g * FB.toK C U ^ k, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Introduce `α`. Rewrite using `[coeff_mul]`.
+
+Conclude with `v.map_le_sum fun q _ => imul _ _ (ReciprocityTheory.ChartRestriction.G.Sh.PTb.mvIsInt_subst v hg (fun q => int_colSum B hR _ _ _) (fun q => hΦ q.1 q.2) _) (int_map hR _ _)`. Use `key using 4` and compare the differences between its conclusion and the goal. Establish `hp : ∀ j, NC (exPt L (lin u fun l => β (col l) j))` using `fun j => nc_exPt L (nc_lin _ _)`. Establish `hs : HasSubst (fun q : Fin n × Fin d => exPt L (lin u fun l => β (col l) q.1) q.2)` using `hasSubst_of_constantCoeff_zero fun q => hp q.1 q.2`. Establish `e0 : g * FB.expS C ((k : C) • ∑ j : Fin n, ev (n` using `n) ![pt C d j] (B.hL C h w0)) = germ (m := 0) (B.hL C h w0) h k g (pt C d) (fun _ => 0) fun _ _ => 0 := by`.
+
+Unfold `germ`. Rewrite using `[show (fun q : Fin n × Fin d => pt C d q.1 q.2) = X from rfl, subst_self]`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, sub_zero]`. Both sides reduce to the same expression. Rewrite using `[e0, subst_germ k g cL ch hs nc_pt (fun _ _ => by simp) fun _ _ _ => by simp]`.
+
+Establish `e1 : ∀ b b' : Fin m, coefs col β 0 (Sum.inr (Sum.inr (b, b'))) = 0` using `fun b b' => by`. Use function extensionality and compare the values at `l`. Simplify using `[coefs]`. Simplify using `only [germ, pt, subst_X hs, e1, lin_zero, exPt_zero, substTwoPointsPowerSeries_zero_of_vanish_first_axis (nc_exPt L (nc_lin _ _)) hc.ax1, Finset.univ_eq_empty, Finset.sum_empty, Finset.sum_const_zero]`. Both sides reduce to the same expression.
+
+Establish `hs` using `hs_colExp col u L`. Establish `e0 : ev (fun j => colSum B (fun b => x b j) (List.finRange m)) g * FB.toK C U ^ k = germ (B.hL C h w0) h k g (fun j => colSum B (fun b => x b j) (List.finRange m)) (pt C d) fun b b' => comp1 (B.actK C (w0 * ∑ j : Fin n, star (x b j) * x b' j)) (pt C d b')`. Rewrite using `[hU, ← GlobalTheory.JetSer.IntTrans.expS_nsmul]`. Both sides reduce to the same expression. Rewrite using `[map_sub, map_sum, map_sum, sub_eq_zero]`.
+
+Use `(Finset.sum_eq_zero fun j _ => constantCoeff_substOnePointPowerSeries_eq_zero (hΦ j) cL).trans (Finset.sum_eq_zero fun b _ => ?_).symm` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun b' _ => constantCoeff_germEvalPair_eq_zero (nc_pt b) (nc_actPt B _ b') ch`. Rewrite using `[e0, subst_germ k g cL ch hs hΦ nc_pt fun b b' => nc_actPt B _ b']`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[subst_colSum B hGF hG col u σ heig]`. Use `congr 2`. Use function extensionality and compare the values at `l`. Rewrite using `[← Fin.sum_univ_def]`.
+
+Simplify using `[coefs]`. Use function extensionality and compare the values at `b e`. Conclude with `subst_X hs _`. Use function extensionality and compare the values at `b b'`. Conclude with `subst_actPt B hGF hG col u σ heig _ _`.
+-/
 theorem exists_germ_close (hR : ∀ r, IsIntV v (algebraMap R C r)) {h : PS C 2 d} (hc : B.IsCanonGauge C h) (w0 : O)
     (hu : ∀ l e, IsIntV v (u l e)) (hσ : ∀ b a, IsIntV v (σ b a)) {n : ℕ}
     (hU : ∀ x : Fin m → Fin n → O, ∃ U : PS R m d, FB.toK C U = FB.expS C ((∑ j : Fin n, ev (n := m)

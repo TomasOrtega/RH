@@ -16,6 +16,21 @@ noncomputable section
 
 namespace GlobalTheory.KeyOpen
 
+/- English proof (translation)
+Set `I` to `{W : Z.Opens // IsAffineOpen W ∧ W ≤ V ∧ P W}`. Use `choose a ha using fun i : I => loc i.1 i.2.1 i.2.2.1 i.2.2.2`. Establish `hc : ∀ p ∈ V, ∃ i : I, p ∈ i.1` using `fun p hp => by`. Take `⟨W, hW, hWV, hPW, hpW⟩` from `hP p hp`. Conclude with `⟨⟨W, hW, hWV, hPW⟩, hpW⟩`.
+
+Establish `hcov : V ≤ iSup fun i : I => i.1` using `fun p hp => TopologicalSpace.Opens.mem_iSup.2 (hc p hp)`. Establish `key : ∀ (i j : I) (L : Type) [Field L] (z : Sp L ⟶ Z) (hz : ⊤ ≤ z ⁻¹ᵁ (i.1 ⊓ j.1)), ev z _ hz (resG Z inf_le_left (a i).val) = ev z _ hz (resG Z inf_le_right (a j).val)`. Introduce `i j L _ z hz`. Establish `hi` using `GlobalTheory.FlagMod.le_preimage_mono inf_le_left hz`. Establish `hj` using `GlobalTheory.FlagMod.le_preimage_mono inf_le_right hz`.
+
+Rewrite using `[GlobalTheory.FlagMod.ev_res z _ hz hi, GlobalTheory.FlagMod.ev_res z _ hz hj]`. Conclude with `uniq L z (GlobalTheory.FlagMod.le_preimage_mono i.2.2.1 hi) _ _ (ha i L z hi) (ha j L z hj)`. Take `⟨s, hs, -⟩` from `Z.sheaf.existsUnique_gluing' (fun i : I => i.1) V (fun i => homOfLE i.2.2.1) hcov (fun i => (a i).val) (fun i j => GlobalTheory.FlagMod.ext_ev_field (a := resG Z inf_le_left (a i).val) (b := resG Z inf_le_right (a j).val) fun L _ z hz => key i j L z hz)`. Take `⟨t, ht, -⟩` from `Z.sheaf.existsUnique_gluing' (fun i : I => i.1) V (fun i => homOfLE i.2.2.1) hcov (fun i => (a i)⁻¹.val) (fun i j => GlobalTheory.FlagMod.ext_ev_field (a := resG Z inf_le_left (a i)⁻¹.val) (b := resG Z inf_le_right (a j)⁻¹.val) fun L _ z hz => by`. Establish `e` using `key i j L z hz`.
+
+Establish `e₁` using `map_units_inv (((ev z _ hz).comp (resG Z inf_le_left)) : Γ(Z, i.1) →+* L) (a i)`. Establish `e₂` using `map_units_inv (((ev z _ hz).comp (resG Z inf_le_right)) : Γ(Z, j.1) →+* L) (a j)`. Simplify using `only [RingHom.coe_comp, Function.comp_apply] at e₁ e₂`. Rewrite using `[e₁, e₂, e])`. Take `⟨s, t, hs, ht⟩ : ∃ s t : Γ(Z, V), (∀ i : I, resG Z i.2.2.1 s = (a i).val) ∧ ∀ i : I, resG Z i.2.2.1 t = (a i)⁻¹.val` from `⟨s, t, hs, ht⟩`.
+
+Establish `hval : ∀ (L : Type) [Field L] (z : Sp L ⟶ Z) (hz : ⊤ ≤ z ⁻¹ᵁ V), ∃ i : I, ∃ hi : ⊤ ≤ z ⁻¹ᵁ i.1, ev z V hz s = ev z i.1 hi (a i).val ∧ ev z V hz t = ev z i.1 hi (a i)⁻¹.val`. Introduce `L _ z hz`. Take `⟨i, hi⟩` from `hc (z (IsLocalRing.closedPoint L)) (hz (Set.mem_univ _))`. Establish `hi' : ⊤ ≤ z ⁻¹ᵁ i.1` using `((IsLocalRing.closed_point_mem_iff (U := z ⁻¹ᵁ i.1)).1 hi).ge`. Conclude with `⟨i, hi', (GlobalTheory.FlagMod.ev_res z i.2.2.1 hi' hz s).symm.trans (congrArg _ (hs i)), (GlobalTheory.FlagMod.ev_res z i.2.2.1 hi' hz t).symm.trans (congrArg _ (ht i))⟩`.
+
+Establish `hst : s * t = 1` using `GlobalTheory.FlagMod.ext_ev_field fun L _ z hz => by`. Take `⟨i, hi, e₁, e₂⟩` from `hval L z hz`. Rewrite using `[map_mul, map_one, e₁, e₂, ← map_mul, Units.mul_inv, map_one]`. Use `⟨⟨s, t, hst, by rw [mul_comm, hst]⟩, fun L _ z hz => ?_⟩` and prove the remaining obligations. Take `⟨i, hi, e₁, -⟩` from `hval L z hz`.
+
+Use `show R L z (ev z V hz s)`. Rewrite using `[e₁]`. Conclude with `ha i L z hi`.
+-/
 theorem glue_units {Z : Scheme.{0}} [IsReduced Z] (V : Z.Opens) (P : Z.Opens → Prop)
     (hP : ∀ p ∈ V, ∃ W : Z.Opens, IsAffineOpen W ∧ W ≤ V ∧ P W ∧ p ∈ W)
     (R : ∀ (L : Type) [Field L], (Sp L ⟶ Z) → L → Prop)

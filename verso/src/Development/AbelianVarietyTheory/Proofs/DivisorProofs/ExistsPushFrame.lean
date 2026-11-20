@@ -20,6 +20,15 @@ namespace GlobalTheory.AnMove
 open GlobalTheory.Dict.Lift
 open scoped MonObj
 
+/- English proof (translation)
+Use `choose ch hch using fun z => exists_chart (e z) L hL`. Establish `key : ∀ i j z, ⊤ ≤ (e z ≫ φ) ⁻¹ᵁ L.U i → ⊤ ≤ e z ⁻¹ᵁ L.U j → valAt' (e z) (O i (ch z)) (ω i (ch z)) * fr (ch z) z = valAt' (e z) (O i j) (ω i j) * fr j z`. Introduce `i j z hi hj`. Establish `h1` using `hg i (ch z) i j (e z) ((hO _ _ _).2 ⟨hi, hch z⟩) ((hO _ _ _).2 ⟨hi, hj⟩)`. Rewrite `h1` using `[val_g_self _ L hL i hi, _root_.one_mul]`.
+
+Rewrite using `[fr_g (ch z) j z ((top_le_preimage_inf _ _ _).2 ⟨hch z, hj⟩), ← mul_assoc, h1]`. Use `⟨fun i z => valAt' (e z) (O i (ch z)) (ω i (ch z)) * fr (ch z) z, fun i z₀ hz₀ => ?_, fun i z hi => ?_, fun i i' z h => ?_, key⟩` and prove the remaining obligations. Establish `hN` using `hol (O i (ch z₀)) (ω i (ch z₀))`. Establish `hm` using `hN.1.mem_nhds (x := z₀) ⟨trivial, (hO _ _ _).2 ⟨hz₀, hch z₀⟩⟩`. Establish `d1 : DifferentiableAt ℂ (fr (ch z₀)) z₀` using `(fr_hol (ch z₀)).differentiableAt (Filter.mem_of_superset hm fun z hz => ((hO _ _ _).1 hz.2).2)`.
+
+Establish `d2 : DifferentiableAt ℂ (fun z => valAt' (e z) (O i (ch z₀)) (ω i (ch z₀))) z₀` using `hN.2.differentiableAt hm`. Use `((d2.mul d1).congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hm] with z hz`. Conclude with `key i (ch z₀) z ((hO _ _ _).1 hz.2).1 ((hO _ _ _).1 hz.2).2`. Conclude with `mul_ne_zero (hne _ _ _ ((hO _ _ _).2 ⟨hi, hch z⟩)) (fr_ne _ z (hch z))`.
+
+Take `⟨hi, hi'⟩` from `(top_le_preimage_inf _ _ _).1 h`. Establish `h1` using `hg i (ch z) i' (ch z) (e z) ((hO _ _ _).2 ⟨hi, hch z⟩) ((hO _ _ _).2 ⟨hi', hch z⟩)`. Rewrite `h1` using `[val_g_self _ L hL _ (hch z), _root_.mul_one]`. Simplify using `only []`. Rewrite using `[h1, mul_assoc]`.
+-/
 theorem exists_push_frame {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {Y : Scheme.{0}} {L : LB Y}
     (hL : L.IsLB) (φ : Y ⟶ Y) (O : L.ι → L.ι → Y.Opens) (ω : ∀ i j, Γ(Y, O i j))
     (hO : ∀ i j (p : Sp ℂ ⟶ Y), ⊤ ≤ p ⁻¹ᵁ O i j ↔ (⊤ ≤ (p ≫ φ) ⁻¹ᵁ L.U i ∧ ⊤ ≤ p ⁻¹ᵁ L.U j))
@@ -62,6 +71,35 @@ theorem exists_push_frame {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] 
     simp only []
     rw [h1, mul_assoc]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c inst r g X bas idx e x L y y' A hsym hx hL gM gA hR`. Take `⟨σ, rfl⟩ : ∃ σ : c.F →+* ℂ, inst = σ.toAlgebra` from `⟨algebraMap c.F ℂ, Algebra.algebra_ext _ _ fun _ => rfl⟩`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Take `⟨ρ, ν, -, ⟨-, heta, -⟩, hmv⟩` from `hR`. Take `⟨O, ω, hO, hne, hg, hrig, hs⟩` from `GlobalTheory.MoveValues.frMove_values E H Dw l Xo c σ ρ ν y y' hmv`.
+
+Take `⟨hb, hu, -⟩` from `hmv`. Take `⟨Φ, hΦ⟩` from `exists_mulEquiv ν.cart y.x y'.x hb.symm`. Set `ex : (Fin g → ℂ) → (ptO Xo y'.x ⟶ Xo.univ.t.G)` to `fun z => Φ (A.ex z)`. Establish `hex : ∀ z, (ex z).left = (A.ex z).left ≫ ν.φ` using `fun z => hΦ _`. Establish `hexf : (fun z => (ex z).left) = fun z => (A.ex z).left ≫ ν.φ` using `funext hex`.
+
+Take `⟨fr, fr_hol, fr_ne, fr_g, key⟩` from `exists_push_frame Xo.univ.t.PP.isLB ν.φ O ω hO hne hg (fun z => (A.ex z).left) A.hol A.fr A.fr_hol A.fr_ne A.fr_g`. Establish `hch : ∀ z, ∃ a, ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U a` using `fun z => exists_chart _ _ Xo.univ.t.PP.isLB`. Establish `hex0 : (A.ex 0).left = y.x ≫ eSec Xo.univ.t.G`. Establish `h0 : A.ex 0 = 1`. Use `A.ex_add 0 0` as an intermediate fact.
+
+Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Rewrite using `[h0]`. Conclude with `one_left _`. Set `A' : AnFib X bas idx e x L y'` to `{ ex := ex ex_add := fun z z' => by simp only [ex, A.ex_add, map_mul] ex_onto := Φ.surjective.comp A.ex_onto ex_ker := fun z => by`.
+
+Rewrite using `[← A.ex_ker]`. Conclude with `Φ.map_eq_one_iff`. Use `ex_lin := fun a z => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hex, A.ex_lin, Over.comp_left, Over.comp_left, Category.assoc, ν.act, ← Category.assoc, hex]`.
+
+Use `hol := hexf ▸ ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp A.hol ν.φ`. Use `der := fun ℓ => by`. Rewrite using `[hexf, hu]`. Conclude with `FibreDeriv.isDerivAt0_comp (A.der ℓ) ν.φ`. Use `fr := fr`.
+
+Use `fr_hol := by simpa only [hex] using fr_hol`. Use `fr_ne := by simpa only [hex] using fr_ne`. Use `fr_g := by simpa only [hex] using fr_g`. Use `fr_0 := fun i hi => by`. Take `⟨j, hj⟩` from `hch 0`.
+
+Rewrite `hi` using `[hex]`. Rewrite using `[key i j 0 hi hj, A.fr_0 j hj, hb]`. Conclude with `(hrig i j y.x _ hex0 ((hO _ _ _).2 ⟨hi, hj⟩)).symm`. Use `χ := A.χ`. Use `χ_norm := A.χ_norm`.
+
+Use `fr_per := fun v hv i z hi => by`. Take `⟨j, hj⟩` from `hch z`. Rewrite `hi` using `[hex]`. Establish `hz : A.ex (z + pv X idx x v) = A.ex z`. Rewrite using `[A.ex_add, (A.ex_ker _).2 ⟨v, hv, rfl⟩, _root_.mul_one]`.
+
+Establish `h2` using `key i j (z + pv X idx x v) (hz ▸ hi) (hz ▸ hj)`. Simplify using `only [hz] at h2`. Rewrite using `[key i j z hi hj, h2, A.fr_per v hv j z hj]`. Use `ring }`. Use `⟨A', fun θ hθ i z pt' hp1 hp2 hi => ?_, fun mk hmk a ha => ?_⟩` and prove the remaining obligations.
+
+Take `⟨j, hj⟩` from `hch z`. Establish `hi' : ⊤ ≤ ((A.ex z).left ≫ ν.φ) ⁻¹ᵁ Xo.univ.t.PP.L.U i` using `hex z ▸ hi`. Set `pt : Sp ℂ ⟶ Gx y.x` to `(CartesianMonoidalCategory.lift (𝟙 (Over.mk y.x)) (A.ex z)).left`. Establish `hq1 : pt ≫ Formalism.L2.PjFree.gxFst y.x = (A.ex z).left` using `congrArg (·.left) (CartesianMonoidalCategory.lift_snd (𝟙 (Over.mk y.x)) (A.ex z))`. Establish `hq2 : pt ≫ Formalism.L2.PjFree.gxSnd y.x = 𝟙 _` using `congrArg (·.left) (CartesianMonoidalCategory.lift_fst (𝟙 (Over.mk y.x)) (A.ex z))`.
+
+Establish `h1` using `hθ j z pt hq1 hq2 hj`. Establish `h2` using `hs i j pt pt' _ hq1 hq2 (hp1.trans (hex z)) hp2 ((hO _ _ _).2 ⟨hi', hj⟩)`. Use `h2.trans ((congrArg (_ * ·) h1).trans ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = θ z * fr i z ^ (1 : ℤ)`. Rewrite using `[zpow_one, zpow_one, key i j z hi' hj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `ha' : gM a ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La)`. Use `Submodule.mem_map_of_mem (f := gM) ha` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top this`.
+
+Express the relevant statement in the definitionally equal form `_ = Φ (A.ex (pv X idx x (((l.M : E)⁻¹) • mk (gM a))))`. Rewrite using `[← hmk _ ha']`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hΦ, levPt, levPt, Over.comp_left, Over.comp_left, Category.assoc, heta, toUnit_left, toUnit_left, hb]`. Conclude with `Category.assoc _ _ _`.
+-/
 theorem anFib_move : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (x : Frame X.Ψ r) (L : Lt E r) (y y' : FrPt Xo c ℂ) (A : AnFib X bas idx e x L y), IsSympl X bas → x ∈ X.dom → SelfD X L → ∀ gM gA : Dw.La →ₗ[𝓞 E] Dw.La, levR (gM, gA) y y' → ∃ A' : AnFib X bas idx e x L y', (∀ θ, A.Reads 1 y.s θ → A'.Reads 1 y'.s θ) ∧ ∀ mk : Dw.La →ₗ[𝓞 E] (Fin r → E), A.Marked mk → A'.Marked (mk ∘ₗ gM) := by
   intro E _ _ _ H Dw l Xo c inst r g X bas idx e x L y y' A hsym hx hL gM gA hR
   obtain ⟨σ, rfl⟩ : ∃ σ : c.F →+* ℂ, inst = σ.toAlgebra :=

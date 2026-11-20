@@ -6,6 +6,17 @@ open scoped Matrix Topology
 
 namespace GlobalTheory.SBVanish
 
+/- English proof (translation)
+Proceed by induction on `P using Finset.induction_on with`. Consider the case `empty`. Introduce `_ f _ h3`. Use `W.zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
+
+Assume the negation of the conclusion as `ht`. Simplify using `using h3 t ht`. Consider the case `insert s P _ ih`. Introduce `hsep f hf h3`. Take `⟨b, hbB, hb1, hne⟩` from `hsep s (Finset.mem_insert_self _ _)`.
+
+Establish `hne' : e b s - 1 ≠ 0` using `sub_ne_zero.2 hne`. Establish `h1 : (e b s • f - fun t => e b t * f t) ∈ W`. Use `ih (fun p hp => hsep p (Finset.mem_insert_of_mem hp)) _ (sub_mem (S.smul_mem _ hf) (hS f hf b)) fun t ht => ?_` and prove the remaining obligations. Establish `hft : f t ≠ 0` using `fun h => ht (by simp [h])`. Take `⟨p, hp, u, hu, rfl⟩` from `h3 t hft`.
+
+Break down `Finset.mem_insert.1 hp with rfl | hp` into its components or cases. Conclude with `absurd (by simp [he, hb1 u hu]) ht`. Conclude with `⟨p, hp, u, hu, rfl⟩`. Establish `h2` using `W.smul_mem (e b s - 1)⁻¹ (add_mem h1 (hW f hf b hbB))`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [Pi.smul_apply, Pi.add_apply, Pi.sub_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_of_sep {G β : Type} [AddCommGroup G] (e : β → G → ℂ) (B : Set β)
     (he : ∀ b t u, e b (t + u) = e b t * e b u) (S W : Submodule ℂ (G → ℂ))
     (hS : ∀ f ∈ S, ∀ b, (fun t => e b t * f t) ∈ S)
@@ -39,6 +50,29 @@ theorem mem_of_sep {G β : Type} [AddCommGroup G] (e : β → G → ℂ) (B : Se
     field_simp
     ring
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ Y Y' _ _ _ _ ψ0 hc hn1 hne I φ hφ hv`. Set `ψk : AddChar k Circle` to `{ toFun := fun x => ⟨ψ0 x, mem_sphere_zero_iff_norm.2 (hn1 x)⟩ map_zero_eq_one' := Circle.ext (by simp) map_add_eq_mul' := fun x y => Circle.ext (ψ0.map_add_eq_mul x y) }`. Establish `hψk : ∀ x, (ψk x : ℂ) = ψ0 x` using `fun _ => rfl`. Establish `hck : Continuous ψk` using `hc.subtype_mk _`. Establish `hk1 : ψk ≠ 1` using `fun h => hne (by`.
+
+Use extensionality with `x`. Rewrite using `[← hψk, h]`. Use the proof step `simp)`. Take `⟨n, hn, hinv, hsupp⟩` from `GlobalTheory.SBUnif.sb_lattice_bounds k Y Y' φ hφ`. Take `⟨P, hP⟩` from `GlobalTheory.IrredSB.cover (k := k) (Y := Y) (Y' := Y') hn hn`.
+
+Establish `hn' : (n : k) ≠ 0` using `by exact_mod_cast hn.ne'`. Use `mem_of_sep (fun b t => (ψk (GlobalTheory.IrredSB.pair b t) : ℂ)) {z | ∀ r q, (r, q) ∉ I → z r q = 0} (fun b t u => by rw [GlobalTheory.IrredSB.pair_add_right, AddChar.map_add_eq_mul, Circle.coe_mul]) (GlobalTheory.WeilM.SB (Matrix Y Y' k)) _ (fun f hf b => GlobalTheory.IrredSB.mo …` and prove the remaining obligations. Introduce `f hf b hb`. Use `Submodule.subset_span ⟨b, hb, f, hf, ?_⟩` and prove the remaining obligations. Simplify using `only [hψk, GlobalTheory.IrredSB.pair, mul_comm (b _ _)]`.
+
+Introduce `p hp`. Establish `hp0 : φ p ≠ 0` using `(Finset.mem_filter.1 hp).2`. Establish `: ¬ ∀ r q, (r, q) ∈ I → (n : k)⁻¹ * p r q ∈ 𝒪[k]` using `fun h => hp0 (by`. Set `u : Matrix Y Y' k` to `fun r q => if (r, q) ∈ I then -((n : k)⁻¹ * p r q) else 0`. Establish `hu : ∀ r q, u r q ∈ 𝒪[k]` using `fun r q => by`.
+
+Distinguish the cases in `hI : (r, q) ∈ I`. Simplify using `only [u, if_pos hI]`. Conclude with `neg_mem (h r q hI)`. Simplify using `only [u, if_neg hI]`. Conclude with `zero_mem _`.
+
+Rewrite using `[← hinv u hu p]`. Use `hv _ fun r q hI => ?_` and prove the remaining obligations. Use `show p r q + n • u r q = 0`. Simplify using `only [u, if_pos hI, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Use the proof step `ring)`. Use `push Not at this`. Take `⟨r, q, hI, hrq⟩` from `this`. Take `⟨b, hb, hb'⟩` from `GlobalTheory.IrredSB.exists_sep ψk hck hk1 hrq`. Use `⟨Matrix.single r q (b * (n : k)⁻¹), fun r' q' h' => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `Matrix.single_apply_of_ne _ _ _ _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h' hI`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Rewrite using `[GlobalTheory.IrredSB.pair_single]`.
+
+Establish `: b * (n : k)⁻¹ * (nsmulAddMonoidHom n u : Matrix Y Y' k) r q = b * u r q` using `by show b * (n : k)⁻¹ * (n • u r q) = b * u r q`. Rewrite using `[nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, hb _ (hu r q)]`. Both sides reduce to the same expression.
+
+Rewrite using `[GlobalTheory.IrredSB.pair_single, mul_assoc]`. Conclude with `fun h => hb' (Circle.ext h)`. Introduce `t ht`. Take `⟨p, hp, _, ⟨u, hu, rfl⟩, rfl⟩` from `hP t (hsupp t ht)`. Use `⟨p, Finset.mem_filter.2 ⟨hp, ?_⟩, _, ⟨u, hu, rfl⟩, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[← hinv u hu p]`. Conclude with `ht`.
+-/
 theorem mem_span_of_vanish : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (ψ0 : AddChar k ℂ), Continuous ψ0 →
     (∀ x : k, ‖ψ0 x‖ = 1) → ψ0 ≠ 1 → ∀ (I : Set (Y × Y')) (φ : Matrix Y Y' k → ℂ), φ ∈ GlobalTheory.WeilM.SB (Matrix Y Y' k) →

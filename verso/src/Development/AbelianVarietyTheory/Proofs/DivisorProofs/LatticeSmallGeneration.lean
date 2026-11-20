@@ -23,6 +23,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.BigOn.Exp
 
+/- English proof (translation)
+Take `⟨c, hcE, -, -⟩` from `GlobalTheory.CoefExtC.exists_extC_bijective_unique D G Pl0 T0 A T R F κw v₀ hC hFW i Unit _ (O i) hO.2`. Take `⟨u, w₀, hu, -, -⟩` from `FWT.IsChosenExtremalVector.io _ hO.2.lift.v0 hio`. Take `⟨κ, -, -, -, hL⟩` from `GlobalTheory.CoefLatConj.coefLat_conj D G Pl0 T0 A T R F κw v₀ O hC hFW hio i hO c hcE u hu B hB hBo`. Establish `e1` using `(hL ↥D.LL0 (embLL0 D) (labLL0 D) Oc hc).1 h`. Establish `e2` using `(hL ↥D.LL0 (embLL0 D) (labLL0 D) Oc' hc').1 h`.
+
+Rewrite `hP` using `[e1]`. Use `Submodule.span_mono ?_ hP` and prove the remaining obligations. Introduce `Q hQ`. Rewrite using `[SetLike.mem_coe, e2]`. Conclude with `Submodule.subset_span hQ`.
+-/
 theorem coefLat_le_span {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {F : Face D A}
     {κw : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
@@ -43,6 +48,11 @@ theorem coefLat_le_span {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type
   rw [SetLike.mem_coe, e2]
   exact Submodule.subset_span hQ
 
+/- English proof (translation)
+Establish `hB` using `hρ.base i j b`. Establish `hlam` using `GlobalTheory.BaseLiftWeight.lam_eq D _ Rl.toLevCh A3.A.μ0 j (ρ.B i j b) hL hB (hp.mu0 i j b) (hp.ap i j b) (hp.am i j b)`. Establish `hc : ∀ τ, (ρ.B i j b).w.c τ = liftC D j τ` using `fun τ => GlobalTheory.BaseLiftWeight.c_eq hL hB (hp.mu0 i j b) τ`. Establish `hP : (ρ.B i j b).w.p = GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.pS D j` using `funext fun τ => congrArg Prod.fst (hB.sig τ)`. Establish `hQ : (ρ.B i j b).w.q = GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.qS D j` using `funext fun τ => congrArg Prod.snd (hB.sig τ)`.
+
+Establish `hAP : (ρ.B i j b).w.ap = GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.aP D j` using `funext fun τ => hp.ap i j b τ`. Establish `hAM : (ρ.B i j b).w.am = GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.aM D j` using `funext fun τ => hp.am i j b τ`. Use `{ ψ := hp.psi i j b, θ := hp.inf i j b, sT := hp.cartT i j b, BS := hp.onbS i j b, BT := hp.onbT i j b, ΛS := hp.latS i j b, ΛT := hp.latT i j b, βS := hp.frS i j b, βT := hp.frT i j b, vac := hp.vac i j b, Pg := hp.Pg i j b, mu0 := hp.mu0 i j b, eta := hp.eta i j b, lam := hlam, …` and prove the remaining obligations. Rewrite using `[← liftWeight_delta, Weight.delta, Weight.delta, hP, hQ, hAP, hAM]`. Both sides reduce to the same expression.
+-/
 theorem baseOf_of_realPin_at {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T0 : Type}
     {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     {Rl : RealDat3 D A3 Ks} {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd}
@@ -63,9 +73,17 @@ theorem baseOf_of_realPin_at {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I
   rw [← liftWeight_delta, Weight.delta, Weight.delta, hP, hQ, hAP, hAM]
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨embLL0_labLL0, fun a => ⟨a, rfl⟩⟩`.
+-/
 theorem smallInt_isCoefRing (D : D7) : IsCoefRing (embLL0 D) (labLL0 D) (smallInt D) :=
   ⟨embLL0_labLL0, fun a => ⟨a, rfl⟩⟩
 
+/- English proof (translation)
+Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ?_⟩⟩` and prove the remaining obligations. Use `⟨0, fun x hx _ i p hR hM w _ j ρ hρ hpin h P hP => ?_⟩` and prove the remaining obligations. Establish `hL` using `GlobalTheory.T.second_link_of_weight_rows _ _ _ _ _ _ _ _ _ _ p hR hM.1`. Establish `hC : GlobalTheory.Hk3.Core (R2 p) (F2 p)` using `⟨hL.1.lev, hL.1.grp, hL.1.fam, hL.1.models, hL.1.chain, hL.1.thP⟩`. Establish `hio : IoExt (R2 p)` using `hR.ioExt`.
+
+Establish `hBo : BaseOf (R2 p) j (ρ.B ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w))`. Establish `h0` using `baseOf_of_realPin_at (cG := p.cG) hC.lev hρ hpin ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)`. Conclude with `{ h0 with }`. Conclude with `coefLat_le_span hC ⟨fw2 p⟩ hio j (hL.2.2.2.2.2.2.1 j) _ (hρ.base _ j _) hBo (hρ.isCoefRing _ _) (smallInt_isCoefRing _) _ hP`.
+-/
 theorem latSmallGen : LatSmallGen := by
   refine ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ?_⟩⟩
   refine ⟨0, fun x hx _ i p hR hM w _ j ρ hρ hpin h P hP => ?_⟩

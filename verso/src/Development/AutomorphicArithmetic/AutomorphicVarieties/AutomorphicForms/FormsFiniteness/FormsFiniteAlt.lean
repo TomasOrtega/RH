@@ -31,11 +31,17 @@ structure Bdd (S : Submodule ℂ (archSmooth K n)) : Prop where
   types : Types S
   centre : Centre S
 
+/- English proof (translation)
+Take `⟨p, hp, hx⟩` from `h`. Conclude with `⟨p, hp, fun x hxS => hx x (hS hxS)⟩`.
+-/
 theorem AlgMod.mono {M : Type} [AddCommGroup M] [Module ℂ M] {S S' N : Submodule ℂ M} {T : Module.End ℂ M}
     (h : AlgMod S N T) (hS : S' ≤ S) : AlgMod S' N T := by
   obtain ⟨p, hp, hx⟩ := h
   exact ⟨p, hp, fun x hxS => hx x (hS hxS)⟩
 
+/- English proof (translation)
+The claim follows from `h.left φ (hS hφ) growth φ hφ := h.growth φ (hS hφ) level := h.level.imp fun _ hL => ⟨hL.1, fun φ hφ => hL.2 φ (hS hφ)⟩ types := h.types.imp fun _ hV => ⟨hV.1, hV.2.1, fun φ hφ => hV.2.2 φ (hS hφ)⟩ centre z hz := (h.centre z hz).mono hS`.
+-/
 theorem Bdd.mono {S S' : Submodule ℂ (archSmooth K n)} (h : Bdd S) (hS : S' ≤ S) : Bdd S' where
   left φ hφ := h.left φ (hS hφ)
   growth φ hφ := h.growth φ (hS hφ)

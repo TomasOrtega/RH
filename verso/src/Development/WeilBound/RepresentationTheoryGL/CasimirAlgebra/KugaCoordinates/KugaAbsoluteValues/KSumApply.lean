@@ -25,11 +25,17 @@ def kD (T : P →ₗ[ℝ] Module.End ℂ M) {m : ℕ} (η : P [⋀^Fin m]→ₗ[
     P [⋀^Fin (m + 1)]→ₗ[ℝ] M :=
   AlternatingMap.alternatizeUncurryFin (kPre T η)
 
+/- English proof (translation)
+Simplify using `[kD, AlternatingMap.alternatizeUncurryFin_apply, kPre, kLop]`.
+-/
 theorem kD_apply (T : P →ₗ[ℝ] Module.End ℂ M) {m : ℕ} (η : P [⋀^Fin m]→ₗ[ℝ] M)
     (v : Fin (m + 1) → P) :
     kD T η v = ∑ i : Fin (m + 1), (-1 : ℤ) ^ (i : ℕ) • T (v i) (η (i.removeNth v)) := by
   simp [kD, AlternatingMap.alternatizeUncurryFin_apply, kPre, kLop]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => simp [Finset.sum_insert ha, ih]`.
+-/
 theorem kSum_apply {N : Type} [AddCommGroup N] [Module ℝ N] {ι β : Type} (s : Finset β)
     (F : β → P [⋀^ι]→ₗ[ℝ] N) (v : ι → P) : (∑ i ∈ s, F i) v = ∑ i ∈ s, F i v := by
   classical
@@ -41,6 +47,9 @@ def kDel (T : P →ₗ[ℝ] Module.End ℂ M) {β : Type} [Fintype β] (b : β �
     (θ : P [⋀^Fin (n + 1)]→ₗ[ℝ] M) : P [⋀^Fin n]→ₗ[ℝ] M :=
   ∑ i, (kLop T (b i)).compAlternatingMap (θ.curryLeft (b i))
 
+/- English proof (translation)
+Unfold `kDel`. Rewrite using `[kSum_apply]`. Both sides reduce to the same expression.
+-/
 theorem kDel_apply (T : P →ₗ[ℝ] Module.End ℂ M) {β : Type} [Fintype β] (b : β → P) {n : ℕ}
     (θ : P [⋀^Fin (n + 1)]→ₗ[ℝ] M) (v : Fin n → P) :
     kDel T b θ v = ∑ i, T (b i) (θ (Matrix.vecCons (b i) v)) := by

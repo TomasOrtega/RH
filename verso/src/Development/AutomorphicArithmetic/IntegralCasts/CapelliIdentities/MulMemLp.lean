@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `X _ ν c hc hb f`. Use `MeasureTheory.MemLp.of_le (MeasureTheory.Lp.memLp f) ?_ ?_` and prove the remaining obligations. Conclude with `(Complex.measurable_ofReal.comp hc).aestronglyMeasurable.mul (MeasureTheory.Lp.aestronglyMeasurable f)`. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs]`.
+
+Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hb x)`.
+-/
 theorem UpperTheory.Reformulated.B.Qf3.mul_memLp.{u_1} :
     ∀ {X : Type u_1}
     [inst : MeasurableSpace X] {ν : MeasureTheory.Measure X} (c : X → ℝ),

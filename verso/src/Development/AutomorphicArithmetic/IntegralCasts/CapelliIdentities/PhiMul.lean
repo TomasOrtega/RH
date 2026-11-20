@@ -1,6 +1,11 @@
 import Mathlib
 import Formalism.WeaklyAdmissibleFiltrations.Statement
 
+/- English proof (translation)
+Introduce `G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD E _ _ x y`. Establish `h : ∀ z : TensorProduct Qp E B, Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL` using `E) (V := E) z = Algebra.TensorProduct.map (AlgHom.id E E) PD.φ z := by`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`.
+
+Consider the case `tmul a b => rfl`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Conclude with `(h (x * y)).trans ((map_mul _ x y).trans (congrArg₂ (· * ·) (h x).symm (h y).symm))`.
+-/
 theorem UpperTheory.Reformulated.B.Qf14.phi_mul :
     ∀ {G : Type} [inst : Group G] {Qp K₀ K : Type} [inst_1 : Field Qp] [inst_2 : Field K₀] [inst_3 : Field K]
       [inst_4 :

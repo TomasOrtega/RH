@@ -7,11 +7,17 @@ namespace LateralTheory.KummerTheory.AlgExtPf
 
 variable {R : Type} [CommRing R] (F : Shv R)
 
+/- English proof (translation)
+Introduce `n` and use `by have : (pull R (f ≫ g) F n : _ → _) = (pull R f F n) ∘ (pull R g F n) := funext (pull_comp R f g F n) rw [this]; exact (hf n).comp (hg n)`.
+-/
 theorem eqv_comp {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} (hf : Eqv R f F) (hg : Eqv R g F) :
     Eqv R (f ≫ g) F := fun n => by
   have : (pull R (f ≫ g) F n : _ → _) = (pull R f F n) ∘ (pull R g F n) := funext (pull_comp R f g F n)
   rw [this]; exact (hf n).comp (hg n)
 
+/- English proof (translation)
+Introduce `n` and use `by have hc : ∀ x, pull R (f ≫ g) F n x = pull R f F n (pull R g F n x) := pull_comp R f g F n refine ⟨fun a b hab => (h n).1 (by rw [hc, hc, hab]), fun y => ?_⟩ obtain ⟨z, hz⟩ := (h n).2 (pull R f F n y) exact ⟨z, (hf n).1 (by rw [← hc, hz])⟩`.
+-/
 theorem eqv_cancel {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} (h : Eqv R (f ≫ g) F) (hf : Eqv R f F) :
     Eqv R g F := fun n => by
   have hc : ∀ x, pull R (f ≫ g) F n x = pull R f F n (pull R g F n x) := pull_comp R f g F n
@@ -19,19 +25,31 @@ theorem eqv_cancel {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} (h : Eqv R (
   obtain ⟨z, hz⟩ := (h n).2 (pull R f F n y)
   exact ⟨z, (hf n).1 (by rw [← hc, hz])⟩
 
+/- English proof (translation)
+Introduce `n` and use `by refine Function.bijective_iff_has_inverse.2 ⟨pull R (inv f) F n, fun x => ?_, fun x => ?_⟩ · rw [← pull_comp, IsIso.inv_hom_id, pull_id] · rw [← pull_comp, IsIso.hom_inv_id, pull_id]`.
+-/
 theorem eqv_iso {E E' : Spc} (f : E ⟶ E') [IsIso f] : Eqv R f F := fun n => by
   refine Function.bijective_iff_has_inverse.2 ⟨pull R (inv f) F n, fun x => ?_, fun x => ?_⟩
   · rw [← pull_comp, IsIso.inv_hom_id, pull_id]
   · rw [← pull_comp, IsIso.hom_inv_id, pull_id]
 
+/- English proof (translation)
+The claim follows from `eqv_iso F _`.
+-/
 theorem eqv_sch_iso {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] : Eqv R (sch.map f) F := eqv_iso F _
 
+/- English proof (translation)
+Rewrite using `[← pullbackLeftPullbackSndIso_inv_fst, Functor.map_comp, Functor.map_comp]`. Conclude with `eqv_comp F (eqv_sch_iso F _) (eqv_comp F h1 h2)`.
+-/
 theorem eqv_fst_comp {W X Y Z : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) (g' : W ⟶ Y)
     (h1 : Eqv R (sch.map (pullback.fst (pullback.snd f g) g')) F) (h2 : Eqv R (sch.map (pullback.fst f g)) F) :
     Eqv R (sch.map (pullback.fst f (g' ≫ g))) F := by
   rw [← pullbackLeftPullbackSndIso_inv_fst, Functor.map_comp, Functor.map_comp]
   exact eqv_comp F (eqv_sch_iso F _) (eqv_comp F h1 h2)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `id`.
+-/
 theorem eqv_fst_congr {X Z W : Scheme.{0}} (f : X ⟶ Z) {h h' : W ⟶ Z} (e : h = h') :
     Eqv R (sch.map (pullback.fst f h)) F → Eqv R (sch.map (pullback.fst f h')) F := by
   subst e; exact id
@@ -41,6 +59,23 @@ end LateralTheory.KummerTheory.AlgExtPf
 namespace LateralTheory.KummerTheory
 open LateralTheory.KummerTheory.AlgExtPf
 
+/- English proof (translation)
+Introduce `hE2 hE3 q _ k K _ _ _ _ f hq X p _ _ i`. Set `_` to `f.toAlgebra`. Take `⟨T, σ, hσ, hres, hAIC, hSH⟩` from `hP k K`. Establish `hqT : IsUnit ((q : ℕ) : T)` using `by simpa using hq.map σ`. Use `set gσ : Spec (CommRingCat.of T) ⟶ Spec (CommRingCat.of k) := Spec.map (CommRingCat.ofHom σ) with hgσ`.
+
+Use `set gr : Spec (CommRingCat.of (IsLocalRing.ResidueField T)) ⟶ Spec (CommRingCat.of T) := Spec.map (CommRingCat.ofHom (IsLocalRing.residue T)) with hgr`. Establish `e2` using `hE2 q T hSH hqT (pullback.snd p gσ) i`. Establish `hiso : IsIso (CommRingCat.ofHom ((IsLocalRing.residue T).comp σ))` using `(RingEquiv.ofBijective _ hres).toCommRingCatIso.isIso_hom`. Establish `hcomp : gr ≫ gσ = Spec.map (CommRingCat.ofHom ((IsLocalRing.residue T).comp σ))`. Rewrite using `[hgr, hgσ, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Establish `hs : Eqv (ZMod q) (sch.map (pullback.fst p (gr ≫ gσ))) (tw q i)`. Rewrite using `[hcomp]`. Conclude with `eqv_sch_iso _ _`. Rewrite `hs` using `[← pullbackLeftPullbackSndIso_inv_fst, Functor.map_comp, Functor.map_comp]`.
+
+Establish `hT : Eqv (ZMod q) (sch.map (pullback.fst p gσ)) (tw q i)` using `eqv_cancel _ (eqv_cancel _ hs (eqv_sch_iso _ _)) e2`. Establish `e3` using `hE3 q T hAIC hqT (pullback.snd p gσ) i`. Set `eK : FractionRing T ≃+* K` to `(IsLocalization.algEquiv (nonZeroDivisors T) (FractionRing T) K).toRingEquiv`. Use `set gj : Spec (CommRingCat.of (FractionRing T)) ⟶ Spec (CommRingCat.of T) := Spec.map (CommRingCat.ofHom (algebraMap T (FractionRing T))) with hgj`. Use `set ge : Spec (CommRingCat.of K) ⟶ Spec (CommRingCat.of (FractionRing T)) := Spec.map (CommRingCat.ofHom eK.toRingHom) with hge`.
+
+Establish `hge_iso : IsIso ge`. Establish `: IsIso (CommRingCat.ofHom eK.toRingHom)` using `eK.toCommRingCatIso.isIso_hom`. Rewrite using `[hge]`. Use `infer_instance`. Establish `hfac : (ge ≫ gj) ≫ gσ = Spec.map (CommRingCat.ofHom f)`.
+
+Rewrite using `[hge, hgj, hgσ, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Establish `h1` using `hσ x`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply]`.
+
+Express the relevant statement in the definitionally equal form `eK (algebraMap T (FractionRing T) (σ x)) = f x`. Rewrite using `[show f x = algebraMap k K x from rfl, ← h1]`. Conclude with `(IsLocalization.algEquiv (nonZeroDivisors T) (FractionRing T) K).commutes (σ x)`. Use `eqv_fst_congr _ p hfac (eqv_fst_comp _ p gσ (ge ≫ gj) ?_ hT)` and prove the remaining obligations. Use `eqv_fst_comp _ _ gj ge ?_ e3` and prove the remaining obligations.
+
+Conclude with `eqv_sch_iso _ _`.
+-/
 theorem AlgExt_of (hP : Place) : AlgExt := by
   intro hE2 hE3 q _ k K _ _ _ _ f hq X p _ _ i
   let _ := f.toAlgebra

@@ -25,6 +25,9 @@ structure IsChain (n : ℕ) (K : ℕ → Submodule F N) (t : ℕ → N) : Prop w
   succ : ∀ i < n, K (i + 1) = K i ⊔ Submodule.span F {t i}
   notMem : ∀ i < n, t i ∉ K i
 
+/- English proof (translation)
+Introduce `a b hab` and use `Submodule.map_mono (h.mono (by omega)) zero := by simp top := by have : K (j + (n - j)) = ⊤ := top_le_iff.1 (h.top ▸ h.mono (by omega)) simp only [this, Submodule.map_top, Submodule.range_mkQ] succ := fun i hi => by simp only [← add_assoc] rw [h.succ (j + i) (by omega), Submodule …`.
+-/
 theorem IsChain.quot {n : ℕ} {K : ℕ → Submodule F N} {t : ℕ → N} (h : IsChain n K t) (j : ℕ) :
     IsChain (n - j) (fun i => (K (j + i)).map (K j).mkQ) (fun i => (K j).mkQ (t (j + i))) where
   mono := fun a b hab => Submodule.map_mono (h.mono (by omega))
@@ -40,6 +43,9 @@ theorem IsChain.quot {n : ℕ} {K : ℕ → Submodule F N} {t : ℕ → N} (h : 
     have : t (j + i) ∈ ((K (j + i)).map (K j).mkQ).comap (K j).mkQ := hm
     rwa [Submodule.comap_map_eq, Submodule.ker_mkQ, sup_eq_left.2 (h.mono (by omega))] at this
 
+/- English proof (translation)
+Apply `h.mono (show i + 1 ≤ j by omega)` to reduce the goal to its premises. Rewrite using `[h.succ i (by omega)]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`.
+-/
 theorem IsChain.mem {n : ℕ} {K : ℕ → Submodule F N} {t : ℕ → N} (h : IsChain n K t) {i j : ℕ}
     (hi : i < min j n) : t i ∈ K j := by
   apply h.mono (show i + 1 ≤ j by omega)
@@ -47,6 +53,9 @@ theorem IsChain.mem {n : ℕ} {K : ℕ → Submodule F N} {t : ℕ → N} (h : I
   exact Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)
 
 open Classical in
+/- English proof (translation)
+Introduce `a b hab` and use `Submodule.comap_mono (h.mono hab) zero := by simp [h.zero] top := by rw [Submodule.comap_subtype_eq_top] rcases le_total j n with h1 | h1 · rw [min_eq_left h1] · rw [min_eq_right h1, h.top]; exact le_top succ := fun i hi => by apply Submodule.map_injective_of_injective (K j).inje …`.
+-/
 theorem IsChain.sub {n : ℕ} {K : ℕ → Submodule F N} {t : ℕ → N} (h : IsChain n K t) (j : ℕ) :
     IsChain (min j n) (fun i => (K i).comap (K j).subtype)
       (fun i => if hi : t i ∈ K j then ⟨t i, hi⟩ else 0) where
@@ -69,6 +78,9 @@ theorem IsChain.sub {n : ℕ} {K : ℕ → Submodule F N} {t : ℕ → N} (h : I
     simp only [dif_pos (h.mem hi)] at hm
     exact hm
 
+/- English proof (translation)
+Introduce `a c hac` and use `Submodule.span_mono (Set.image_mono fun j hj => lt_of_lt_of_le hj hac) zero := by simp [flagSub] top := by have : {j : Fin n | (j : ℕ) < n} = Set.univ := Set.eq_univ_of_forall fun j => j.2 rw [flagSub, this, Set.image_univ, b.span_eq] succ := fun i hi => by have : {j : Fin n | (j …`.
+-/
 theorem isChain_flag {n : ℕ} (b : Module.Basis (Fin n) F N) :
     IsChain n (flagSub b) (fun i => if h : i < n then b ⟨i, h⟩ else 0) where
   mono := fun a c hac => Submodule.span_mono (Set.image_mono fun j hj => lt_of_lt_of_le hj hac)
@@ -101,6 +113,19 @@ variable (hex : type_of% @GlobalTheory.T.teichmuller_character_exists) (hsq : ty
 
 include hex hsq hsplit hos hv hp hF
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `N _ _ _ _ AA hst K t h s r hs hr`. Establish `: Subsingleton N` using `(Submodule.subsingleton_iff F).1 (subsingleton_of_bot_eq_top (h.zero.symm.trans h.top))`. Rewrite using `[hasLen_trivial hv hr]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `N _ _ _ _ AA hst K t h s r hs hr`. Take `⟨σ, hσ⟩` from `hex p C v R hv hp F f hF`. Establish `: Finite (N ⧸ K 1)` using `Finite.of_surjective _ (K 1).mkQ_surjective`.
+
+Set `_ : Fintype (N ⧸ K 1)` to `Fintype.ofFinite _`. Set `_ : Fintype (K 1)` to `Fintype.ofFinite _`. Take `⟨-, ⟨AQ, hQ, hQs⟩, -⟩` from `hsq p C v R hv hp F f hF N AA hst (K 1)`. Take `⟨b, -, hb⟩` from `(hsplit p C v R hv hp F f hF _ AQ hQs σ hσ).1 χ`. Establish `h1` using `ih _ AQ hQs _ _ (h.quot 1) (fun i => s (1 + i)) b (fun i hi => by`.
+
+Rewrite using `[hQ, quot_step _ (h.mono (by omega))]`. Conclude with `hs _ (by omega)) hb`. Establish `ht : t 0 ≠ 0` using `fun h0 => h.notMem 0 (by omega) (h0 ▸ Submodule.zero_mem _)`. Establish `h2` using `hs 0 (by omega)`. Rewrite `h2` using `[h.zero]`.
+
+Establish `h3` using `hasLen_line _ ht h2`. Establish `hK : Submodule.span F {t 0} = K 1`. Rewrite using `[h.succ 0 (by omega), h.zero, bot_sup_eq]`. Rewrite `h3` using `[hK]`. Rewrite `hb` using `[hQ]`.
+
+Establish `h4` using `hos p C v R hv hp F f hF N AA hst (K 1) χ _ _ _ h3 hb hr`. Rewrite using `[add_comm n 1, Finset.prod_range_add]`. Use `le_trans ?_ h4` and prove the remaining obligations. Rewrite using `[Finset.prod_range_one]`. Conclude with `mul_le_mul_right h1 _`.
+-/
 theorem chain_le (χ : MulChar F R) (n : ℕ) : ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N]
     [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier →
     ∀ (K : ℕ → Submodule F N) (t : ℕ → N), IsChain n K t → ∀ (s : ℕ → NNReal) (r : NNReal),
@@ -139,6 +164,17 @@ theorem chain_le (χ : MulChar F R) (n : ℕ) : ∀ (N : Type) [AddCommGroup N] 
     rw [Finset.prod_range_one]
     exact mul_le_mul_right h1 _
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `hex p C v R hv hp F f hF`. Establish `: Finite (N ⧸ K j)` using `Finite.of_surjective _ (K j).mkQ_surjective`. Set `_ : Fintype (N ⧸ K j)` to `Fintype.ofFinite _`. Set `_ : Fintype (K j)` to `Fintype.ofFinite _`. Take `⟨⟨AK, hK, hKs⟩, ⟨AQ, hQ, hQs⟩, -⟩` from `hsq p C v R hv hp F f hF N AA hst (K j)`.
+
+Take `⟨a, -, ha⟩` from `(hsplit p C v R hv hp F f hF _ AK hKs σ hσ).1 χ`. Take `⟨b, hb0, hb⟩` from `(hsplit p C v R hv hp F f hF _ AQ hQs σ hσ).1 χ`. Establish `h1` using `chain_le hex hsq hsplit hos p C v R hv hp F f hF χ _ _ AQ hQs _ _ (h.quot j) (fun i => s (j + i)) b (fun i hi => by`. Rewrite using `[hQ, quot_step _ (h.mono (by omega))]`. Conclude with `hs _ (by omega)) hb`.
+
+Establish `h2` using `chain_le hex hsq hsplit hos p C v R hv hp F f hF χ _ _ AK hKs _ _ (h.sub j) s a (fun i hi => by`. Rewrite using `[(hstep p C v R hv hp F f hF _ AK hKs _ _ ((h.sub j).notMem i hi)).2, hK, sub_stepRes _ (h.mono (by omega)), dif_pos (h.mem hi), ← (hstep p C v R hv hp F f hF _ AA hst _ _ (h.notMem i (by omega))).2]`. Conclude with `hs _ (by omega)) ha`. Rewrite `ha` using `[hK]`. Rewrite `hb` using `[hQ]`.
+
+Establish `h4` using `hos p C v R hv hp F f hF N AA hst (K j) χ _ _ _ ha hb hr`. Establish `h5 : ∏ i ∈ Finset.range n, s i = (∏ i ∈ Finset.range (min j n), s i) * ∏ i ∈ Finset.range (n - j), s (j + i)`. Break down `le_total j n with h6 | h6` into its components or cases. Rewrite using `[min_eq_left h6, ← Finset.prod_range_add, Nat.add_sub_cancel' h6]`. Rewrite using `[min_eq_right h6, Nat.sub_eq_zero_of_le h6, Finset.prod_range_zero, mul_one]`.
+
+Rewrite `h4` using `[h5]`. Establish `h7 : a ≤ ∏ i ∈ Finset.range (min j n), s i` using `le_of_mul_le_mul_right (h4.trans (mul_le_mul_right h1 _)) (pos_iff_ne_zero.2 hb0)`. Rewrite using `[← le_antisymm h7 h2]`. Conclude with `ha`.
+-/
 theorem chain_partial (hstep : type_of% @GlobalTheory.T.stable_hopf_order_subgroup_translation) (χ : MulChar F R) (n : ℕ) (N : Type)
     [AddCommGroup N] [Module F N] [Fintype N]
     [DecidableEq N] (AA : HopfOrder (C := C) R N) (hst : FStable F AA.carrier)

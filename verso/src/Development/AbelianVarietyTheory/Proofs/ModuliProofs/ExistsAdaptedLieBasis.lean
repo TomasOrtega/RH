@@ -15,6 +15,13 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.AdaptedBasis
 
+/- English proof (translation)
+Establish `hi : IsIntegral ℤ a` using `RingOfIntegers.isIntegral a`. Establish `hq : minpoly ℚ (algebraMap (𝓞 E) E a) = (minpoly ℤ a).map (algebraMap ℤ ℚ)` using `minpoly.isIntegrallyClosed_eq_field_fractions ℚ E hi`. Establish `hsep : (minpoly ℚ (algebraMap (𝓞 E) E a)).Separable` using `Algebra.IsSeparable.isSeparable ℚ _`. Rewrite `hsep` using `[hq]`. Establish `hK` using `hsep.map (f := algebraMap ℚ K)`.
+
+Rewrite `hK` using `[Polynomial.map_map, show (algebraMap ℚ K).comp (algebraMap ℤ ℚ) = algebraMap ℤ K from RingHom.ext_int _ _]`. Use `Module.End.isSemisimple_of_squarefree_aeval_eq_zero hK.squarefree ?_` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_map_algebraMap]`. Establish `hz` using `Polynomial.aeval_algHom_apply r.toIntAlgHom a (minpoly ℤ a)`. Rewrite `hz` using `[minpoly.aeval, map_zero]`.
+
+Conclude with `hz`.
+-/
 private theorem isSemisimple_ringOfIntegers_action {E K V : Type} [Field E] [NumberField E] [Field K] [CharZero K]
     [AddCommGroup V] [Module K V] (r : 𝓞 E →+* Module.End K V) (a : 𝓞 E) : (r a).IsSemisimple := by
   have hi : IsIntegral ℤ a := RingOfIntegers.isIntegral a
@@ -31,6 +38,11 @@ private theorem isSemisimple_ringOfIntegers_action {E K V : Type} [Field E] [Num
   rw [minpoly.aeval, map_zero] at hz
   exact hz
 
+/- English proof (translation)
+Establish `inj : Function.Injective fun c : K => c • v` using `smul_left_injective K hv`. Use `⟨{ toFun := χ map_one' := inj ?_ map_mul' := fun a b => inj ?_ map_zero' := inj ?_ map_add' := fun a b => inj ?_ }, fun _ => rfl⟩` and prove the remaining obligations. Use `show χ 1 • v = (1 : K) • v`. Rewrite using `[← h, map_one, Module.End.one_apply, one_smul]`. Use `show χ (a * b) • v = (χ a * χ b) • v`.
+
+Rewrite using `[← h, map_mul, Module.End.mul_apply, h b, map_smul, h a, smul_smul, mul_comm]`. Use `show χ 0 • v = (0 : K) • v`. Rewrite using `[← h, map_zero, LinearMap.zero_apply, zero_smul]`. Use `show χ (a + b) • v = (χ a + χ b) • v`. Rewrite using `[← h, map_add, LinearMap.add_apply, h a, h b, add_smul]`.
+-/
 private theorem exists_ringHom_eq_eigenvalue {R K V : Type} [CommRing R] [Field K] [AddCommGroup V] [Module K V]
     (r : R →+* Module.End K V) {v : V} (hv : v ≠ 0) (χ : R → K) (h : ∀ a, r a v = χ a • v) :
     ∃ t : R →+* K, ∀ a, t a = χ a := by
@@ -49,6 +61,15 @@ private theorem exists_ringHom_eq_eigenvalue {R K V : Type} [CommRing R] [Field 
   · show χ (a + b) • v = (χ a + χ b) • v
     rw [← h, map_add, LinearMap.add_apply, h a, h b, add_smul]
 
+/- English proof (translation)
+Establish `hc : ∀ a c : 𝓞 E, Commute (r a) (r c)` using `fun a c => by`. Rewrite using `[Commute, SemiconjBy, ← map_mul, ← map_mul, mul_comm]`. Establish `hmaps : ∀ (a c : 𝓞 E) (z : K), Set.MapsTo (r a) ((r c).maxGenEigenspace z) ((r c).maxGenEigenspace z)` using `fun a c z => Module.End.mapsTo_maxGenEigenspace_of_comm (hc c a) z`. Set `W : (𝓞 E → K) → Submodule K V` to `fun χ => ⨅ a, (r a).maxGenEigenspace (χ a)`. Establish `hint : DirectSum.IsInternal W` using `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top (Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo (fun a => r a) hmaps) (Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_forall_mapsTo (fun a => r a) hmaps fun a => Module.End.iSup_maxGenEigenspace_eq_top (r …`.
+
+Set `B` to `hint.collectedBasis fun χ => Module.finBasis K (W χ)`. Establish `: Finite (Σ χ, Fin (Module.finrank K (W χ)))` using `Module.Finite.finite_basis B`. Set `_ : Fintype (Σ χ, Fin (Module.finrank K (W χ)))` to `Fintype.ofFinite _`. Establish `heig : ∀ s : (Σ χ, Fin (Module.finrank K (W χ))), ∀ a, r a (B s) = s.1 a • B s`. Introduce `s a`.
+
+Establish `hm : B s ∈ W s.1` using `hint.collectedBasis_mem _ s`. Establish `hm' : B s ∈ (r a).maxGenEigenspace (s.1 a)` using `(Submodule.mem_iInf _).1 hm a`. Rewrite `hm'` using `[(isSemisimple_ringOfIntegers_action r a).isFinitelySemisimple.maxGenEigenspace_eq_eigenspace]`. Conclude with `Module.End.mem_eigenspace_iff.1 hm'`. Use `choose t ht using fun s : (Σ χ, Fin (Module.finrank K (W χ))) => exists_ringHom_eq_eigenvalue r (B.ne_zero s) s.1 (heig s)`.
+
+Set `e` to `Fintype.equivFin (Σ χ, Fin (Module.finrank K (W χ)))`. Use `⟨Fintype.card _, B.reindex e, fun j => t (e.symm j), fun a j => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply, ht, heig]`.
+-/
 theorem exists_eigenbasis {E K V : Type} [Field E] [NumberField E] [Field K] [IsAlgClosed K] [CharZero K]
     [AddCommGroup V] [Module K V] [Module.Finite K V] (r : 𝓞 E →+* Module.End K V) :
     ∃ (g : ℕ) (b : Module.Basis (Fin g) K V) (ty : Fin g → (𝓞 E →+* K)), ∀ a j, r a (b j) = ty j a • b j := by
@@ -86,6 +107,13 @@ variable {k : Type} [Field k] {G : Over (Sp k)} [GrpObj G] {n : ℕ}
 
 include hx in
 
+/- English proof (translation)
+Establish `: ∀ a, IsMonHom (act.act a)` using `act.hom`. Establish `hadd : ∀ a c, Chart.tmap hx (act.act (a + c)) = Chart.tmap hx (act.act a) + Chart.tmap hx (act.act c)` using `fun a c => LinearMap.ext fun v => Chart.tvec_inj hx (by`. Rewrite using `[LinearMap.add_apply, Chart.tvec_add hx, Chart.tvec_tmap, Chart.tvec_tmap, Chart.tvec_tmap, act.add, MonObj.comp_mul])`. Use `⟨{ toFun := fun a => Chart.tmap hx (act.act a) map_one' := ?_ map_mul' := fun a c => ?_ map_zero' := ?_ map_add' := hadd }, fun a c => Chart.tvec_tmap hx _ c⟩` and prove the remaining obligations. Use `LinearMap.ext fun v => Chart.tvec_inj hx ?_ show tvec (x := x) (Chart.tmap hx (act.act 1) v) = tvec (x := x) v` and prove the remaining obligations.
+
+Rewrite using `[Chart.tvec_tmap, act.one, Category.comp_id]`. Use `LinearMap.ext fun v => Chart.tvec_inj hx ?_ show tvec (x := x) (Chart.tmap hx (act.act (a * c)) v) = tvec (x := x) (Chart.tmap hx (act.act a) (Chart.tmap hx (act.act c) v))` and prove the remaining obligations. Rewrite using `[Chart.tvec_tmap, Chart.tvec_tmap, Chart.tvec_tmap, mul_comm a c, act.mul, Category.assoc]`. Establish `h00` using `hadd 0 0`. Rewrite `h00` using `[add_zero]`.
+
+Use `show Chart.tmap hx (act.act 0) = 0`. Conclude with `add_left_cancel (by rw [add_zero]; exact h00.symm : Chart.tmap hx (act.act 0) + Chart.tmap hx (act.act 0) = Chart.tmap hx (act.act 0) + 0)`.
+-/
 theorem exists_tangent_action {O : Type} [CommRing O] (act : OAct O G) :
     ∃ r : O →+* Module.End k (Fin n → k), ∀ a c, tvec (x := x) (r a c) = tvec (x := x) c ≫ act.act a := by
   have : ∀ a, IsMonHom (act.act a) := act.hom
@@ -111,6 +139,11 @@ theorem exists_tangent_action {O : Type} [CommRing O] (act : OAct O G) :
     exact add_left_cancel (by rw [add_zero]; exact h00.symm :
       Chart.tmap hx (act.act 0) + Chart.tmap hx (act.act 0) = Chart.tmap hx (act.act 0) + 0)
 
+/- English proof (translation)
+Establish `h0 : tvec (x` using `x) 0 = 1 := by`. Establish `h` using `Chart.tvec_add hx (0 : Fin n → k) 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`. Introduce `N f`.
+
+Proceed by induction on `N with`. Consider the case `zero => simp [h0]`. Consider the case `succ N ih => rw [List.ofFn_succ, List.prod_cons, ih (fun i => f i.succ), Fin.sum_univ_succ, Chart.tvec_add hx]`.
+-/
 private theorem tvec_sum' {k : Type} [Field k] {G : Over (Sp k)} [GrpObj G] {n : ℕ}
     {x : ∀ m : ℕ, Chart.sp (R₀ := k) (Chart.JetR k (Fin n) m) ⟶ G} (hx : IsUnivChart G n x) :
     ∀ {N : ℕ} (f : Fin N → Fin n → k), (List.ofFn fun i => tvec (x := x) (f i)).prod = tvec (x := x) (∑ i, f i) := by
@@ -125,6 +158,15 @@ private theorem tvec_sum' {k : Type} [Field k] {G : Over (Sp k)} [GrpObj G] {n :
 
 include hx in
 
+/- English proof (translation)
+Unfold `IsLieComb`. Establish `hs : ∀ i, tvec (x` using `x) (d i • b i) = Chart.spMap (scaleD (d i)) ≫ tvec (x := x) (b i) := fun i => Chart.tvec_smul hx (d i) (b i)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hw⟩`. Establish `hu' : u = fun i => tvec (x` using `x) (d i • b i) := by`.
+
+Use function extensionality and compare the values at `i`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hu i, hs i, Over.comp_left]`. Apply the tactic sequence `all_goals rfl`. Substitute `hu'` using the available equality.
+
+Rewrite `hw` using `[tvec_sum' hx]`. Conclude with `Chart.tvec_inj hx hw`. Introduce and unpack `rfl`. Use `⟨fun i => tvec (x := x) (d i • b i), fun i => ?_, (tvec_sum' hx _).symm⟩` and prove the remaining obligations. Use `show (tvec (x := x) (d i • b i)).left = spMap (epsScaleR (d i)) ≫ (tvec (x := x) (b i)).left`.
+
+Rewrite using `[hs i, Over.comp_left]`. Apply the tactic sequence `all_goals rfl`.
+-/
 theorem isLieComb_tvec_iff {N : ℕ} (b : Fin N → Fin n → k) (c : Fin n → k) (d : Fin N → k) :
     IsLieComb d (fun i => tvec (x := x) (b i)) (tvec (x := x) c) ↔ c = ∑ i, d i • b i := by
   unfold IsLieComb
@@ -150,6 +192,27 @@ end GlobalTheory.AdaptedBasis
 
 open ReciprocityTheory.ChartRestriction.G.Chart (tvec) in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D K _ _ _ G _ _ act ρ hsm hdet`. Unfold `DetCond at hdet`. Take `⟨n, x, hx⟩` from `Chart.univChartLoc G`. Take `⟨r, hr⟩` from `GlobalTheory.AdaptedBasis.exists_tangent_action hx act`. Take `⟨g, b, ty, hb⟩` from `GlobalTheory.AdaptedBasis.exists_eigenbasis (E := E) r`.
+
+Establish `: ∀ a, IsMonHom (act.act a)` using `act.hom`. Establish `hT : ∀ w : epsR K ⟶ G, IsTangent w ↔ Chart.IsTan w`. Introduce `w`. Unfold `IsTangent Chart.IsTan`. Establish `e1 : (Chart.spMap (Chart.fstD K)).left = spMap (TrivSqZeroExt.fstHom K K K).toRingHom` using `rfl`.
+
+Establish `e2 : (Chart.sp (R₀` using `K) K).hom = 𝟙 _ := by first`. Consider the case `rfl`. Consider the case `(unfold Chart.sp; simp)`. Consider the case `(simp [Chart.sp, Algebra.id.map_eq_id])`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Chart.one_left', e1, h, e2, Category.id_comp]`. Introduce `h`. Establish `h'` using `congrArg Over.Hom.left h`.
+
+Rewrite `h'` using `[Over.comp_left, Chart.one_left', e1, e2, Category.id_comp]`. Conclude with `h'`. Establish `hcomb : ∀ a j, IsLieComb (fun i => Matrix.diagonal (fun i => ty i a) i j) (fun i => tvec (x` using `x) (b i)) (tvec (x := x) (b j) ≫ act.act a) := by`. Introduce `a j`. Rewrite using `[← hr, hb, GlobalTheory.AdaptedBasis.isLieComb_tvec_iff hx]`.
+
+Simplify using `[Matrix.diagonal_apply, ite_smul]`. Establish `hex : ∀ w : epsR K ⟶ G, Chart.IsTan w → ∃ c, w = tvec (x` using `x) c := by`. Introduce `w hw`. Conclude with `⟨Chart.tcoord hx w hw, Chart.tcoord_spec hx w hw⟩`. Establish `hbasis : IsLieBasis (fun i => tvec (x` using `x) (b i)) := by`.
+
+Unfold `IsLieBasis`. Use `⟨fun i => (hT _).2 (Chart.isTan_tvec hx (b i)), fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hex w ((hT w).1 hw)`. Use `⟨fun i => b.repr c i, ?_, fun e he => ?_⟩` and prove the remaining obligations. Use `show IsLieComb (fun i => b.repr c i) (fun i => tvec (x := x) (b i)) (tvec (x := x) c)`.
+
+Rewrite using `[GlobalTheory.AdaptedBasis.isLieComb_tvec_iff hx]`. Conclude with `(b.sum_repr c).symm`. Establish `he' : IsLieComb e (fun i => tvec (x` using `x) (b i)) (tvec (x := x) c) := he`. Rewrite `he'` using `[GlobalTheory.AdaptedBasis.isLieComb_tvec_iff hx]`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[he', b.repr_sum_self]`. Establish `heig : ∀ i a, ((fun i => tvec (x` using `x) (b i)) i ≫ act.act a).left = spMap (epsScale (ty i a)) ≫ ((fun i => tvec (x := x) (b i)) i).left := by`. Introduce `i a`. Use `show (tvec (x := x) (b i) ≫ act.act a).left = spMap (epsScale (ty i a)) ≫ (tvec (x := x) (b i)).left`. Rewrite using `[← hr, hb, Chart.tvec_smul hx, Over.comp_left]`.
+
+Apply the tactic sequence `all_goals rfl`. Establish `hmult` using `GlobalTheory.lieMult_of_eigenbasis K (𝓞 E) G act g _ ty hsm hbasis heig`. Use `⟨g, fun i => tvec (x := x) (b i), ty, hbasis, fun τ => ⟨fun h1 => ?_, fun h2 => ?_⟩, hcomb⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.DetExtend.lieMult_iff_finrank act hx τ _).1 (hmult τ)).symm.trans ((GlobalTheory.DetExtend.lieMult_iff_finrank act hx τ _).1 ((hdet τ).1 h1))`. Conclude with `((GlobalTheory.DetExtend.lieMult_iff_finrank act hx τ _).1 (hmult τ)).symm.trans ((GlobalTheory.DetExtend.lieMult_iff_finrank act hx τ _).1 ((hdet τ).2 h2))`.
+-/
 theorem GlobalTheory.exists_adapted_lieBasis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (G : Over (Sp K)) [GrpObj G] [IsCommMonObj G] (act : OAct (𝓞 E) G) (ρ : K), Smooth G.hom → DetCond D act (𝟙 (Sp K)) ρ → ∃ (g : ℕ) (v : Fin g → (epsR K ⟶ G)) (ty : Fin g → (𝓞 E →+* K)), IsLieBasis v ∧ (∀ τ : 𝓞 E →+* K, (τ H.rt = ρ → Nat.card {i // ty i = τ} = D.p) ∧ (τ H.rt ≠ ρ → Nat.card {i // ty i = τ} = D.q)) ∧ ∀ a j, IsLieComb (fun i => Matrix.diagonal (fun i => ty i a) i j) v (v j ≫ act.act a) := by
   intro E _ _ _ H D K _ _ _ G _ _ act ρ hsm hdet
   unfold DetCond at hdet

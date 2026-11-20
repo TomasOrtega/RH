@@ -22,6 +22,9 @@ def SatakeBoundInertPS : Prop :=
     (α : Fin (n / 2) → ℂˣ),
       (haveI := locallyCompact_GU_of_unram hU n; HasSatakeU π α) → IsUnitarisable π → TrivialBound q n α
 
+/- English proof (translation)
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg q)]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bound_eq (q n : ℕ) : ((q : ℝ) ^ 2) ^ (((n : ℝ) - 1) / 2) = (q : ℝ) ^ ((n : ℝ) - 1) := by
   rw [← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg q)]
   congr 1
@@ -31,6 +34,13 @@ theorem bound_eq (q n : ℕ) : ((q : ℝ) ^ 2) ^ (((n : ℝ) - 1) / 2) = (q : �
 def trivParam (q n : ℕ) (hq : q ≠ 0) : Fin (n / 2) → ℂˣ :=
   fun i => Units.mk0 (q : ℂ) (by exact_mod_cast hq) ^ ((n : ℤ) - 1 - 2 * (i.val : ℤ))
 
+/- English proof (translation)
+Establish `hc : ∀ b : GU σ n, chiDeltaU q (fun i => (trivParam q n hq i : ℂ)) b = 1` using `fun b => by`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `hq' : (q : ℂ) ≠ 0` using `by exact_mod_cast hq`. Use `split_ifs with h`. Simplify using `only [trivParam, Units.val_zpow_eq_zpow_val, Units.val_mk0]`.
+
+Rewrite using `[← zpow_mul, ← zpow_add₀ hq']`. Use `zpow_zero (q : ℂ) using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression. Use `⟨⟨fun z => by simp, charRep_irreducible _⟩, charRep_unitarisable _ (by simp), ?_, fun x _ h0 => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Submodule.ne_bot_iff _).2 ⟨1, GlobalTheory.LGrp.mem_fixed.2 (by simp), one_ne_zero⟩`. Use `IsSatVecU.of_map hU (ρ' := rightReg ℂ _ ℂ) (LinearMap.pi fun _ => LinearMap.id) (fun g y => by funext z; simp [rightReg, LinearMap.funLeft]) (fun a b e => congrFun e 1) (isSatVecU_of_isSphericalU hU (fun b g k _ _ => by simp [hc]) fun e => h0 (congrFun e 1))` and prove the remaining obligations.
+-/
 theorem trivial_hyp {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] {ϖ : L}
     {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (hq : q ≠ 0) (n : ℕ) :
     IsIrrSmooth (charRep (1 : GU σ n →* ℂˣ)) ∧ IsUnitarisable (charRep (1 : GU σ n →* ℂˣ)) ∧

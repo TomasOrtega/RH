@@ -12,10 +12,16 @@ open GlobalTheory.CongW (IntMat)
 section
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
+/- English proof (translation)
+The claim follows from `_root_.natCast_mem (u.adicCompletionIntegers E) l`.
+-/
 private lemma natCast_int (u : HeightOneSpectrum (𝓞 E)) (l : ℕ) :
     (l : u.adicCompletion E) ∈ u.adicCompletionIntegers E :=
   _root_.natCast_mem (u.adicCompletionIntegers E) l
 
+/- English proof (translation)
+Establish `h` using `(u.valuation_lt_one_iff_mem (K := E) ((l : ℕ) : 𝓞 E)).2 hu`. Establish `h2` using `u.valuedAdicCompletion_eq_valuation (K := E) ((l : ℕ) : 𝓞 E)`. Rewrite `h` using `[← h2]`. Simplify using `using h`.
+-/
 private lemma v_lt_one (u : HeightOneSpectrum (𝓞 E)) {l : ℕ} (hu : ((l : ℕ) : 𝓞 E) ∈ u.asIdeal) :
     Valued.v (l : u.adicCompletion E) < 1 := by
   have h := (u.valuation_lt_one_iff_mem (K := E) ((l : ℕ) : 𝓞 E)).2 hu
@@ -23,6 +29,11 @@ private lemma v_lt_one (u : HeightOneSpectrum (𝓞 E)) {l : ℕ} (hu : ((l : �
   rw [← h2] at h
   simpa using h
 
+/- English proof (translation)
+Distinguish the cases in `hy : y = 0`. Conclude with `⟨0, by simp [hy]⟩`. Establish `hv : Valued.v y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Take `⟨d, hd⟩` from `exists_pow_lt₀ (v_lt_one u hu) (Units.mk0 _ (inv_ne_zero hv))`. Use `⟨d, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, map_pow]`. Establish `h0 : (0 : _) < Valued.v y` using `zero_lt_iff.2 hv`. Use `mul_le_mul_left (le_of_lt hd) (Valued.v y)` as an intermediate fact. Simplify `this` using `[hv]`.
+-/
 private lemma exists_pow_int (u : HeightOneSpectrum (𝓞 E)) {l : ℕ} (hu : ((l : ℕ) : 𝓞 E) ∈ u.asIdeal)
     (y : u.adicCompletion E) : ∃ d : ℕ, (l : u.adicCompletion E) ^ d * y ∈ u.adicCompletionIntegers E := by
   by_cases hy : y = 0
@@ -35,6 +46,11 @@ private lemma exists_pow_int (u : HeightOneSpectrum (𝓞 E)) {l : ℕ} (hu : ((
   have := mul_le_mul_left (le_of_lt hd) (Valued.v y)
   simpa [hv] using this
 
+/- English proof (translation)
+Introduce `i j`. Establish `h1` using `h i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at h1 ⊢`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hde`. Rewrite using `[pow_add, mul_comm (_ ^ d), mul_assoc]`.
+
+Conclude with `mul_mem (pow_mem (natCast_int u l) k) h1`.
+-/
 private lemma intMat_mono (u : HeightOneSpectrum (𝓞 E)) (l : ℕ) (m : Matrix (Fin a) (Fin a) (u.adicCompletion E))
     {d e : ℕ} (hde : d ≤ e) (h : IntMat u ((l : u.adicCompletion E) ^ d • m)) :
     IntMat u ((l : u.adicCompletion E) ^ e • m) := by
@@ -45,6 +61,11 @@ private lemma intMat_mono (u : HeightOneSpectrum (𝓞 E)) (l : ℕ) (m : Matrix
   rw [pow_add, mul_comm (_ ^ d), mul_assoc]
   exact mul_mem (pow_mem (natCast_int u l) k) h1
 
+/- English proof (translation)
+Use `choose D hD using fun p : Fin a × Fin a => exists_pow_int u hu (m p.1 p.2)`. Use `⟨Finset.univ.sup D, fun i j => ?_⟩` and prove the remaining obligations. Establish `hle : D (i, j) ≤ Finset.univ.sup D` using `Finset.le_sup (Finset.mem_univ _)`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hle`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[hk, pow_add, mul_comm (_ ^ D (i, j)), mul_assoc]`. Conclude with `mul_mem (pow_mem (natCast_int u l) k) (hD (i, j))`.
+-/
 private lemma exists_intMat (u : HeightOneSpectrum (𝓞 E)) {l : ℕ} (hu : ((l : ℕ) : 𝓞 E) ∈ u.asIdeal)
     (m : Matrix (Fin a) (Fin a) (u.adicCompletion E)) :
     ∃ d : ℕ, IntMat u ((l : u.adicCompletion E) ^ d • m) := by
@@ -56,6 +77,11 @@ private lemma exists_intMat (u : HeightOneSpectrum (𝓞 E)) {l : ℕ} (hu : ((l
   rw [hk, pow_add, mul_comm (_ ^ D (i, j)), mul_assoc]
   exact mul_mem (pow_mem (natCast_int u l) k) (hD (i, j))
 
+/- English proof (translation)
+Establish `e : {x | IntMat u (c • f x)} = ⋂ i, ⋂ j, {x | c * f x i j ∈ u.adicCompletionIntegers E}`. Use extensionality with `x`. Simplify using `[IntMat]`. Rewrite using `[e]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations.
+
+Establish `hc : Continuous fun x => c * f x i j` using `continuous_const.mul ((continuous_apply j).comp ((continuous_apply i).comp hf))`. Conclude with `(GroundTheory.Global.isOpen_adicCompletionIntegers u).preimage hc`.
+-/
 private lemma isOpen_intMat {X : Type*} [TopologicalSpace X] (u : HeightOneSpectrum (𝓞 E)) (c : u.adicCompletion E)
     (f : X → Matrix (Fin a) (Fin a) (u.adicCompletion E)) (hf : Continuous f) :
     IsOpen {x | IntMat u (c • f x)} := by
@@ -74,6 +100,21 @@ end UpperTheory.Gal.Gen.IntegralMatrixDenominatorBound
 
 open GlobalTheory.CongW (IntMat) in
 open UpperTheory.Gal.Gen.IntegralMatrixDenominatorBound in
+/- English proof (translation)
+Introduce `E _ _ _ l hl n Z hZ`. Establish `hl0 : ((l : ℕ) : 𝓞 E) ≠ 0`. Conclude with `hl.ne_zero` after adjusting the coercions. Establish `hS : {u : HeightOneSpectrum (𝓞 E) | ((l : ℕ) : 𝓞 E) ∈ u.asIdeal}.Finite`. Use `(Ideal.finite_factors (I := Ideal.span {((l : ℕ) : 𝓞 E)}) ?_).subset ?_` and prove the remaining obligations.
+
+Simplify using `using hl0`. Introduce `u hu`. Conclude with `Ideal.dvd_span_singleton.2 hu`. Establish `hopen : ∀ d : ℕ, IsOpen {g : UA E n | DenomLe l d g}`. Introduce `d`.
+
+Establish `e : {g : UA E n | DenomLe l d g} = ⋂ u ∈ {u : HeightOneSpectrum (𝓞 E) | ((l : ℕ) : 𝓞 E) ∈ u.asIdeal}, ({g : UA E n | IntMat u (((l : u.adicCompletion E) ^ d) • ((cLoc u g : GL (Fin n) (u.adicCompletion E)) : Matrix (Fin n) (Fin n) (u.adicCompletion E)))} ∩ {g : UA E n | IntMat u …`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_inter_iff, DenomLe]`. Rewrite using `[e]`. Use `hS.isOpen_biInter fun u _ => ?_` and prove the remaining obligations.
+
+Conclude with `(isOpen_intMat u _ _ (Units.continuous_val.comp (GlobalTheory.BCT.GlobLev.continuous_cLoc u))).inter (isOpen_intMat u _ _ (Units.continuous_coe_inv.comp (GlobalTheory.BCT.GlobLev.continuous_cLoc u)))`. Establish `hmono : ∀ {d e : ℕ}, d ≤ e → ∀ g : UA E n, DenomLe l d g → DenomLe l e g` using `fun hde g h u hu => ⟨intMat_mono u l _ hde (h u hu).1, intMat_mono u l _ hde (h u hu).2⟩`. Establish `hcover : ∀ g : UA E n, ∃ d : ℕ, DenomLe l d g`. Introduce `g`. Establish `h1 : ∀ u : HeightOneSpectrum (𝓞 E), ∃ d : ℕ, ((l : ℕ) : 𝓞 E) ∈ u.asIdeal → IntMat u (((l : u.adicCompletion E) ^ d) • ((cLoc u g : GL (Fin n) (u.adicCompletion E)) : Matrix (Fin n) (Fin n) (u.adicCompletion E))) ∧ IntMat u (((l : u.adicCompletion E) ^ d) • (((cLoc u g)⁻¹ : GL (Fi …`.
+
+Introduce `u`. Distinguish the cases in `hu : ((l : ℕ) : 𝓞 E) ∈ u.asIdeal`. Take `⟨d₁, h₁⟩` from `exists_intMat u hu ((cLoc u g : GL (Fin n) (u.adicCompletion E)) : Matrix (Fin n) (Fin n) (u.adicCompletion E))`. Take `⟨d₂, h₂⟩` from `exists_intMat u hu (((cLoc u g)⁻¹ : GL (Fin n) (u.adicCompletion E)) : Matrix (Fin n) (Fin n) (u.adicCompletion E))`. Conclude with `⟨max d₁ d₂, fun _ => ⟨intMat_mono u l _ (le_max_left _ _) h₁, intMat_mono u l _ (le_max_right _ _) h₂⟩⟩`.
+
+Conclude with `⟨0, fun h => absurd h hu⟩`. Use `choose D hD using h1`. Use `⟨hS.toFinset.sup D, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hle : D u ≤ hS.toFinset.sup D` using `Finset.le_sup (hS.mem_toFinset.2 hu)`. Conclude with `⟨intMat_mono u l _ hle (hD u hu).1, intMat_mono u l _ hle (hD u hu).2⟩`.
+
+Take `⟨d, hd⟩` from `hZ.elim_directed_cover (fun d : ℕ => {g : UA E n | DenomLe l d g}) hopen (fun g _ => Set.mem_iUnion.2 (hcover g)) (directed_of_isDirected_le fun _ _ hde g hg => hmono hde g hg)`. Conclude with `⟨d, fun g hg => hd hg⟩`.
+-/
 theorem UpperTheory.Gal.Gen.denomBdd_pf :
     UpperTheory.Gal.Gen.DenomBdd := by
   intro E _ _ _ l hl n Z hZ

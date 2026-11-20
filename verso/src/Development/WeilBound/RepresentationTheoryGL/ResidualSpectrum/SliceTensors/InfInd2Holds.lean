@@ -12,6 +12,9 @@ namespace PInfInd2A
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Rewrite using `[Multiset.map_add, Multiset.prod_add, Multiset.map_map, Multiset.map_map, Multiset.map_map, Multiset.map_map]`. Use `congr 2`. Conclude with `Multiset.map_congr rfl fun x _ => by simp only [Function.comp_apply]; ring`. Conclude with `Multiset.map_congr rfl fun x _ => by simp only [Function.comp_apply]; ring`.
+-/
 theorem prod_shift (M₁ M₂ : Multiset ℂ) (z₁ z₂ u : ℂ) (r s : ℕ) :
     (((M₁.map (· + z₁)).map (u - (s : ℂ) / 2 + ·)).prod * ((M₂.map (· + z₂)).map (u + (r : ℂ) / 2 + ·)).prod) =
       ((M₁.map (· + (z₁ - (s : ℂ) / 2)) + M₂.map (· + (z₂ + (r : ℂ) / 2))).map (u + ·)).prod := by
@@ -23,6 +26,17 @@ theorem prod_shift (M₁ M₂ : Multiset ℂ) (z₁ z₂ u : ℂ) (r s : ℕ) :
 end PInfInd2A
 
 open PInfInd2A in
+/- English proof (translation)
+Introduce `E _ _ _ r s V V₁ V₂ z₁ z₂ hV hV₁ hV₂ hemb τ m hm`. Take `⟨f, hfm, hfi, hfe⟩` from `hemb`. Take `⟨M₁, hM₁⟩` from `exists_hasInfCharGL hV₁ τ`. Take `⟨M₂, hM₂⟩` from `exists_hasInfCharGL hV₂ τ`. Use `⟨M₁, M₂, hM₁, hM₂, ?_⟩` and prove the remaining obligations.
+
+Establish `hW₁` using `GlobalTheory.NormIndCap.hasInfCharGL_map_mulChi hM₁ (GlobalTheory.CuspRep.Model.absC E z₁)`. Establish `hW₂` using `GlobalTheory.NormIndCap.hasInfCharGL_map_mulChi hM₂ (GlobalTheory.CuspRep.Model.absC E z₂)`. Rewrite `hW₁`, `hW₂` using `[GlobalTheory.CuspRep.Model.expo_absC]`. Use `GlobalTheory.BcSpehProof.hasInfCharGL_unique hV.ne_bot hm ⟨?_, fun u φ hφ => ?_⟩` and prove the remaining obligations. Simplify using `only [Multiset.card_add, Multiset.card_map, hM₁.1, hM₂.1]`.
+
+Establish `hI : ∀ X, ∀ φ ∈ V, lie E (r + s) X φ ∈ V` using `fun X φ hφ => hV.stable (.lie X) φ hφ`. Establish `hc : cap τ u (f φ) = (((M₁.map (· + z₁)).map (u - (s : ℂ) / 2 + ·)).prod * ((M₂.map (· + z₂)).map (u + (r : ℂ) / 2 + ·)).prod) • f φ` using `casimir_on_parabolic_induction (n := ![r, s]) (tw V₁ z₁) (tw V₂ z₂) τ _ _ hW₁ hW₂ u (f φ) (hfm φ hφ)`. Establish `e1 : f (cap τ u φ) = cap τ u (f φ)` using `GlobalTheory.SpehInfChar.cap_comm_quot hI f hfe τ u φ hφ`. Use `set Q := ((M₁.map (· + (z₁ - (s : ℂ) / 2)) + M₂.map (· + (z₂ + (r : ℂ) / 2))).map (u + ·)).prod with hQ`. Establish `hmem : cap τ u φ - Q • φ ∈ V`.
+
+Rewrite using `[hm.2 u φ hφ]`. Conclude with `V.sub_mem (V.smul_mem _ hφ) (V.smul_mem _ hφ)`. Establish `h0 : f (cap τ u φ - Q • φ) = 0`. Rewrite using `[map_sub, e1, hc, map_smul, hQ, ← prod_shift]`. Conclude with `sub_self _`.
+
+Conclude with `sub_eq_zero.1 (hfi _ hmem h0)`.
+-/
 theorem infInd2_holds : InfInd2 := by
   intro E _ _ _ r s V V₁ V₂ z₁ z₂ hV hV₁ hV₂ hemb τ m hm
   obtain ⟨f, hfm, hfi, hfe⟩ := hemb

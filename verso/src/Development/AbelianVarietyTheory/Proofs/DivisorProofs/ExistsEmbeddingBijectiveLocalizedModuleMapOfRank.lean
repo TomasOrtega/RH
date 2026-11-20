@@ -4,6 +4,11 @@ namespace GlobalTheory
 
 open Module
 
+/- English proof (translation)
+Use `haveI : Nontrivial R := nontrivial_of_ne (0 : R) 1 fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (h ▸ P.asIdeal.zero_mem))`. Use `haveI : Module.Free (Localization.AtPrime P.asIdeal) (LocalizedModule P.asIdeal.primeCompl Q) := Module.free_of_flat_of_isLocalRing`. Use `haveI : Module.Free (Localization.AtPrime P.asIdeal) (LocalizedModule P.asIdeal.primeCompl (Fin r → R)) := Module.free_of_flat_of_isLocalRing`. Establish `h1 : Module.finrank (Localization.AtPrime P.asIdeal) (LocalizedModule P.asIdeal.primeCompl (Fin r → R)) = r`. Use `congrFun (Module.rankAtStalk_eq_finrank_of_free (R := R) (M := Fin r → R)) P` as an intermediate fact.
+
+Rewrite `this` using `[Module.finrank_fin_fun]`. Conclude with `this`. Establish `h2 : Module.finrank (Localization.AtPrime P.asIdeal) (LocalizedModule P.asIdeal.primeCompl Q) = r` using `hP`. Set `e` to `LinearEquiv.ofFinrankEq _ _ (h1.trans h2.symm)`. Conclude with `OrzechProperty.injective_of_surjective_of_injective e.toLinearMap _ e.injective hs`.
+-/
 theorem localizedModule_map_injective_of_surjective_of_rankAtStalk
     {R Q : Type} [CommRing R] [AddCommGroup Q] [Module R Q] [Module.Finite R Q] [Module.Flat R Q]
     (r : ℕ) (P : PrimeSpectrum R) (hP : Module.rankAtStalk Q P = r) (φ : (Fin r → R) →ₗ[R] Q)
@@ -25,6 +30,17 @@ theorem localizedModule_map_injective_of_surjective_of_rankAtStalk
   let e := LinearEquiv.ofFinrankEq _ _ (h1.trans h2.symm)
   exact OrzechProperty.injective_of_surjective_of_injective e.toLinearMap _ e.injective hs
 
+/- English proof (translation)
+Establish `key : ∀ g : Q, ∃ a ∈ P.primeCompl, a • g ∈ LinearMap.range φ`. Introduce `g`. Take `⟨y, hy⟩` from `hs (LocalizedModule.mk g 1)`. Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h x t`.
+
+Rewrite `hy` using `[LocalizedModule.map_mk, LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `hy`. Use `⟨(u : R) * t, P.primeCompl.mul_mem u.2 t.2, ⟨(u : R) • x, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_smul, mul_smul]`. Simplify `hu` using `[Submonoid.smul_def]`.
+
+Use `choose a ha hga using key`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := R) (M := Q)`. Use `⟨∏ g ∈ s, a g, fun h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Submonoid.prod_mem P.primeCompl fun g _ => ha g) h`. Establish `hle : Submodule.span R (s : Set Q) ≤ (LinearMap.range φ).comap (LinearMap.lsmul R Q (∏ g ∈ s, a g))`.
+
+Rewrite using `[Submodule.span_le]`. Introduce `g hg`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.lsmul_apply]`. Rewrite using `[← Finset.prod_erase_mul s a hg, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hga g)`.
+
+Introduce `q`. Use `hle (hs ▸ Submodule.mem_top : q ∈ Submodule.span R (s : Set Q))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_smul_mem_range_of_surjective_localizedModule_map
     {R M Q : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup Q] [Module R Q]
     [Module.Finite R Q] (P : Ideal R) [P.IsPrime] (φ : M →ₗ[R] Q)
@@ -56,6 +72,11 @@ theorem exists_smul_mem_range_of_surjective_localizedModule_map
     have := hle (hs ▸ Submodule.mem_top : q ∈ Submodule.span R (s : Set Q))
     simpa using this
 
+/- English proof (translation)
+Introduce `y`. Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h q s`. Take `⟨x, hx⟩` from `h q`. Use `⟨LocalizedModule.mk x (⟨f, hf⟩ * s), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LocalizedModule.map_mk, LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Simplify using `only [one_smul, Submonoid.smul_def, Submonoid.coe_mul, mul_smul]`. Conclude with `smul_comm _ _ _`.
+-/
 theorem localizedModule_map_surjective_of_smul_mem_range
     {R M Q : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup Q] [Module R Q]
     (S : Submonoid R) (φ : M →ₗ[R] Q) (f : R) (hf : f ∈ S)
@@ -72,6 +93,15 @@ theorem localizedModule_map_surjective_of_smul_mem_range
     simp only [one_smul, Submonoid.smul_def, Submonoid.coe_mul, mul_smul]
     exact smul_comm _ _ _
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Set `I : Ideal R` to `LinearMap.ker (LinearMap.toSpanSingleton R M k)`. Establish `hd : Disjoint (I : Set R) (Submonoid.powers f : Set R)`. Rewrite using `[Set.disjoint_left]`.
+
+Introduce and unpack `a ha ⟨n, rfl⟩`. Conclude with `hne n (by simpa [I] using ha)`. Take `⟨P, hP, hIP, hPd⟩` from `Ideal.exists_le_prime_disjoint I _ hd`. Establish `hfP : f ∉ P` using `fun hf => Set.disjoint_left.1 hPd hf (Submonoid.mem_powers f)`. Establish `h0 : LocalizedModule.map P.primeCompl φ (LocalizedModule.mk k 1) = LocalizedModule.map P.primeCompl φ 0`.
+
+Rewrite using `[LocalizedModule.map_mk, hk, LocalizedModule.zero_mk, map_zero]`. Establish `h1` using `h P hfP h0`. Rewrite `h1` using `[← LocalizedModule.zero_mk 1, LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `h1`. Establish `hu' : (u : R) ∈ I`.
+
+Simplify `hu` using `[I, Submonoid.smul_def]`. Conclude with `u.2 (hIP hu')`.
+-/
 theorem exists_pow_smul_eq_zero_of_localizedModule_map_injective
     {R M Q : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup Q] [Module R Q]
     (φ : M →ₗ[R] Q) (f : R)
@@ -97,6 +127,29 @@ theorem exists_pow_smul_eq_zero_of_localizedModule_map_injective
     simpa [I, Submonoid.smul_def] using hu
   exact u.2 (hIP hu')
 
+/- English proof (translation)
+Introduce `R Q _ _ _ _ _ N r b hspan hrank P₀`. Set `p` to `P₀.asIdeal`. Use `haveI : Module.Free (Localization.AtPrime p) (LocalizedModule p.primeCompl Q) := Module.free_of_flat_of_isLocalRing`. Use `haveI : Module.FinitePresentation (Localization.AtPrime p) (LocalizedModule p.primeCompl Q) := Module.finitePresentation_of_projective _ _`. Set `v : Fin N → LocalizedModule p.primeCompl Q` to `fun i => LocalizedModule.mk (b i) 1`.
+
+Establish `hv : Submodule.span (Localization.AtPrime p) (Set.range v) = ⊤`. Establish `hle : Submodule.span R (Set.range b) ≤ ((Submodule.span (Localization.AtPrime p) (Set.range v)).restrictScalars R).comap (LocalizedModule.mkLinearMap p.primeCompl Q)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+
+Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h q s`. Establish `hq : LocalizedModule.mk q 1 ∈ Submodule.span (Localization.AtPrime p) (Set.range v)` using `hle (hspan ▸ Submodule.mem_top)`.
+
+Establish `: LocalizedModule.mk q s = (Localization.mk 1 s : Localization.AtPrime p) • LocalizedModule.mk q 1`. Rewrite using `[LocalizedModule.mk_smul_mk, one_smul, mul_one]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hq`. Take `⟨κ, a, bs, hb⟩` from `Module.exists_basis_of_span_of_flat v hv`.
+
+Use `haveI : Finite κ := Module.Finite.finite_basis bs`. Use `haveI : Fintype κ := Fintype.ofFinite κ`. Establish `hcard : Fintype.card κ = r`. Rewrite using `[← hrank P₀, Module.rankAtStalk, Module.finrank_eq_card_basis bs]`. Establish `ha : Function.Injective a` using `fun i j hij => bs.injective (by rw [hb, hb, hij])`.
+
+Set `eqv : Fin r ≃ κ` to `(Fintype.equivFinOfCardEq hcard).symm`. Set `σ : Fin r ↪ Fin N` to `eqv.toEmbedding.trans ⟨a, ha⟩`. Set `φ : (Fin r → R) →ₗ[R] Q` to `Fintype.linearCombination R (b ∘ σ)`. Establish `hs0 : Function.Surjective (LocalizedModule.map p.primeCompl φ)`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← bs.span_eq, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Use `⟨LocalizedModule.mk (Pi.single (eqv.symm j) 1) 1, ?_⟩` and prove the remaining obligations. Rewrite using `[LocalizedModule.map_mk, hb]`. Simplify using `[φ, σ, v]`. Take `⟨f, hf, hfr⟩` from `exists_smul_mem_range_of_surjective_localizedModule_map p φ hs0`.
+
+Use `⟨σ, f, hf, ?_, localizedModule_map_surjective_of_smul_mem_range _ φ f (Submonoid.mem_powers f) hfr⟩` and prove the remaining obligations. Establish `hloc : ∀ (P : Ideal R) [P.IsPrime], f ∉ P → Function.Injective (LocalizedModule.map P.primeCompl φ)`. Introduce `P hP hfP`. Conclude with `localizedModule_map_injective_of_surjective_of_rankAtStalk r ⟨P, hP⟩ (hrank ⟨P, hP⟩) φ (localizedModule_map_surjective_of_smul_mem_range _ φ f hfP hfr)`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `y hy`. Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h x s`. Rewrite `hy` using `[LocalizedModule.map_mk, ← LocalizedModule.zero_mk s, LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `hy`.
+
+Establish `hk : φ ((u : R) • (s : R) • x) = 0`. Simplify `hu` using `[Submonoid.smul_def, map_smul]`. Take `⟨n, hn⟩` from `exists_pow_smul_eq_zero_of_localizedModule_map_injective φ f hloc _ hk`. Rewrite using `[← LocalizedModule.zero_mk s, LocalizedModule.mk_eq]`. Use `⟨⟨f ^ n, n, rfl⟩ * u, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Submonoid.smul_def, smul_zero, Submonoid.coe_mul, mul_smul]`. Conclude with `hn`.
+-/
 theorem exists_embedding_bijective_localizedModule_map_of_rankAtStalk :
     ∀ (R Q : Type) [CommRing R] [AddCommGroup Q] [Module R Q] [Module.Finite R Q] [Module.Flat R Q]
       (N r : ℕ) (b : Fin N → Q), Submodule.span R (Set.range b) = ⊤ →

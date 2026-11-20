@@ -27,6 +27,9 @@ def idStd : ∀ u (w : D.what₂.places.Pl), GIdx D.host (D.mem u).A.T (D.what�
     (Classical.choose (companion_of_baseTied D H.base.toHermCols H.atT H.baseL u))
     (Classical.choose_spec (companion_of_baseTied D H.base.toHermCols H.atT H.baseL u))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem idStd_fr (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     (w' : HeightOneSpectrum (𝓞 D.host.F)) (h : ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∈ w'.asIdeal) :
     (idStd D H I0 B hBs u w hg).fr w' h = bc (((RingHom.fst _ _).comp ((idStd D H I0 B hBs u w hg).spl w' h).toRingHom).comp

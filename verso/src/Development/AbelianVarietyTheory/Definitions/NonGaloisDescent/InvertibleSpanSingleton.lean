@@ -109,6 +109,11 @@ def FCrys.toVBun (E : FCrys l R) : VBun l R where
 def FCrys.Effective (E : FCrys l R) : Prop :=
   ∀ (P : Obj l R) (x : E.M P), ∃ m : E.M P, ∀ d : ↥P.I, IsFrac (d : P.A) (E.Φ P d x) m 0
 
+/- English proof (translation)
+Establish `h` using `D.δ_add 0 0`. Establish `e : ∑ k ∈ Finset.Ioo 0 l, ((l.choose k / l : ℕ) : A) * (0 : A) ^ k * (0 : A) ^ (l - k) = 0` using `Finset.sum_eq_zero fun k hk => by`. Rewrite using `[zero_pow (Finset.mem_Ioo.1 hk).1.ne']`. Simplify using the standard rewrite rules. Rewrite `h` using `[e, add_zero]`.
+
+Take the linear combination `-h`.
+-/
 theorem Delta.δ_zero {A : Type} [CommRing A] (D : Delta l A) : D.δ 0 = 0 := by
   have h := D.δ_add 0 0
   have e : ∑ k ∈ Finset.Ioo 0 l, ((l.choose k / l : ℕ) : A) * (0 : A) ^ k * (0 : A) ^ (l - k) = 0 :=
@@ -155,14 +160,23 @@ def Delta.ofLift (l : ℕ) [hl : Fact l.Prime] {A : Type} [CommRing A] (φ : A �
   φ := φ
   φ_eq a := (h a).choose_spec
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Delta.ofLift_φ (l : ℕ) [Fact l.Prime] {A : Type} [CommRing A] (φ : A →+* A)
     (htf : ∀ x : A, (l : A) * x = 0 → x = 0) (h : ∀ a, ∃ b, φ a = a ^ l + (l : A) * b) :
     (Delta.ofLift l φ htf h).φ = φ := rfl
 
+/- English proof (translation)
+Simplify using `[D.φ_eq, D'.φ_eq, h]`.
+-/
 theorem Delta.map_φ_of_map_δ {A B : Type} [CommRing A] [CommRing B] (D : Delta l A) (D' : Delta l B)
     (f : A →+* B) (h : ∀ a, f (D.δ a) = D'.δ (f a)) (a : A) : f (D.φ a) = D'.φ (f a) := by
   simp [D.φ_eq, D'.φ_eq, h]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Apply `htf` to reduce the goal to its premises. Use `h a` as an intermediate fact. Simplify using `only [D.φ_eq, D'.φ_eq, map_add, map_mul, map_pow, map_natCast] at this`. Take the linear combination `this`.
+-/
 theorem Delta.map_δ_of_map_φ {A B : Type} [CommRing A] [CommRing B] (D : Delta l A) (D' : Delta l B)
     (htf : ∀ x : B, (l : B) * x = 0 → x = 0) (f : A →+* B) (h : ∀ a, f (D.φ a) = D'.φ (f a)) (a : A) :
     f (D.δ a) = D'.δ (f a) := by
@@ -171,12 +185,23 @@ theorem Delta.map_δ_of_map_φ {A B : Type} [CommRing A] [CommRing B] (D : Delta
   simp only [D.φ_eq, D'.φ_eq, map_add, map_mul, map_pow, map_natCast] at this
   linear_combination this
 
+/- English proof (translation)
+The claim follows from `P.D.map_φ_of_map_δ P'.D f.f f.f_δ a`.
+-/
 theorem Hom.f_φ {P P' : Obj l R} (f : Hom P P') (a : P.A) : f.f (P.D.φ a) = P'.D.φ (f.f a) :=
   P.D.map_φ_of_map_δ P'.D f.f f.f_δ a
 
+/- English proof (translation)
+Consider the cases of `f`. Consider the cases of `g`. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem Hom.ext' {P P' : Obj l R} {f g : Hom P P'} (h : f.f = g.f) : f = g := by
   cases f; cases g; cases h; rfl
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `hq.exists_right_inv`. Establish `e : (l : A) = v * (D.φ q - q ^ l)`. Rewrite using `[D.φ_eq]`. Take the linear combination `(-(l : A)) * hv`. Rewrite using `[e]`.
+
+Use `Ideal.mul_mem_left _ _ (Ideal.sub_mem _ ?_ ?_)` and prove the remaining obligations. Conclude with `Ideal.mem_sup_right (Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton_self q))`. Conclude with `Ideal.mem_sup_left (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self q) _ hl)`.
+-/
 theorem Delta.l_mem_of_isUnit (hl : 0 < l) {A : Type} [CommRing A] (D : Delta l A) {q : A}
     (hq : IsUnit (D.δ q)) : (l : A) ∈ Ideal.span {q} ⊔ (Ideal.span {q}).map D.φ := by
   obtain ⟨v, hv⟩ := hq.exists_right_inv
@@ -187,6 +212,9 @@ theorem Delta.l_mem_of_isUnit (hl : 0 < l) {A : Type} [CommRing A] (D : Delta l 
   · exact Ideal.mem_sup_right (Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton_self q))
   · exact Ideal.mem_sup_left (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self q) _ hl)
 
+/- English proof (translation)
+The claim follows from `Module.Invertible.congr (M := A) ((LinearEquiv.ofInjective (LinearMap.toSpanSingleton A A q) (by rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot'] exact fun a h => (mem_nonZeroDivisors_iff.1 hq).2 a h)).trans (LinearEquiv.ofEq _ _ (LinearMap.span_singleton_eq_range A A q).symm))`.
+-/
 theorem invertible_span_singleton {A : Type} [CommRing A] {q : A} (hq : q ∈ nonZeroDivisors A) :
     Module.Invertible A ↥(Ideal.span {q}) :=
   Module.Invertible.congr (M := A)
@@ -263,12 +291,20 @@ def Obj.crys (l : ℕ) [hl : Fact l.Prime] : Obj l ℤ_[l] where
     simp [this]⟩
   str := Ideal.Quotient.mk _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Nontrivial (ℤ_[l] ⧸ Ideal.span {(l : ℤ_[l])})`. Rewrite using `[← PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.Quotient.nontrivial_iff.2 (IsLocalRing.maximalIdeal.isMaximal _).ne_top`.
+-/
 theorem Obj.crys_quot_nontrivial (l : ℕ) [Fact l.Prime] :
     Nontrivial ((Obj.crys l).A ⧸ (Obj.crys l).I) := by
   change Nontrivial (ℤ_[l] ⧸ Ideal.span {(l : ℤ_[l])})
   rw [← PadicInt.maximalIdeal_eq_span_p]
   exact Ideal.Quotient.nontrivial_iff.2 (IsLocalRing.maximalIdeal.isMaximal _).ne_top
 
+/- English proof (translation)
+Introduce `Q _ _ v`. Use `⟨LinearMap.toSpanSingleton B Q (v 1), fun x => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `v.map_smulₛₗ x 1` as an intermediate fact. Simplify using `at this`. Simplify using `[this]`.
+
+Use `ext`. Use `hw 1` as an intermediate fact. Simplify using `using this`.
+-/
 theorem semiBC_self {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) : SemiBC f.toSemilinearMap := by
   intro Q _ _ v
   refine ⟨LinearMap.toSpanSingleton B Q (v 1), fun x => ?_, fun w hw => ?_⟩
@@ -308,6 +344,11 @@ def FCrys.unit (l : ℕ) (R : Type) [CommRing R] : FCrys l R where
     linear_combination (-(f.f d) ^ b * (d' : P'.A) ^ (a + b + j)) * ha' +
       (f.f d ^ (a + b + k) * (d' : P'.A) ^ a) * hb
 
+/- English proof (translation)
+Introduce `P x`. Use `⟨P.D.φ x, fun d => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `LocalizedModule.mk (P.D.φ x) (1 : Submonoid.powers (d : P.A)) = LocalizedModule.mk _ _`. Use `congr 1`. Use `ext`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem FCrys.unit_effective (l : ℕ) (R : Type) [CommRing R] : (FCrys.unit l R).Effective := by
   intro P x
   refine ⟨P.D.φ x, fun d => ?_⟩
@@ -335,6 +376,11 @@ instance VBun.unit_crys_nontrivial (l : ℕ) [Fact l.Prime] :
     Nontrivial ((VBun.unit l ℤ_[l]).M (Obj.crys l)) :=
   inferInstanceAs (Nontrivial ℤ_[l])
 
+/- English proof (translation)
+Introduce `h`. Establish `h' : LocalizedModule.mk (1 : ℤ_[l]) (1 : Submonoid.powers (l : ℤ_[l])) = LocalizedModule.mk (0 : ℤ_[l]) 1`. Rewrite using `[LocalizedModule.zero_mk]`. Conclude with `h`. Rewrite `h'` using `[LocalizedModule.mk_eq]`.
+
+Take `⟨⟨_, r, rfl⟩, h'⟩` from `h'`. Simplify using `[Submonoid.smul_def, hl.out.ne_zero] at h'`.
+-/
 theorem FCrys.unit_crys_Φ_ne_zero (l : ℕ) [hl : Fact l.Prime] :
     (FCrys.unit l ℤ_[l]).Φ (Obj.crys l) ⟨(l : ℤ_[l]), Ideal.mem_span_singleton_self _⟩ (1 : ℤ_[l]) ≠ 0 := by
   intro h
@@ -345,6 +391,11 @@ theorem FCrys.unit_crys_Φ_ne_zero (l : ℕ) [hl : Fact l.Prime] :
   obtain ⟨⟨_, r, rfl⟩, h'⟩ := h'
   simp [Submonoid.smul_def, hl.out.ne_zero] at h'
 
+/- English proof (translation)
+Establish `h : (l : ℤ_[l]) = (l : ℤ_[l]) ^ l + (l : ℤ_[l]) * (show ℤ_[l] from (Obj.crys l).D.δ (l : ℤ_[l]))` using `(Obj.crys l).D.φ_eq (l : ℤ_[l])`. Establish `h0 : (l : ℤ_[l]) ≠ 0` using `by exact_mod_cast hl.out.ne_zero`. Establish `h1 : (l : ℤ_[l]) ^ l = (l : ℤ_[l]) * (l : ℤ_[l]) ^ (l - 1)`. Rewrite using `[← pow_succ', Nat.sub_add_cancel hl.out.one_le]`. Use `mul_left_cancel₀ h0 (b := (show ℤ_[l] from (Obj.crys l).D.δ (l : ℤ_[l]))) ?_` and prove the remaining obligations.
+
+Take the linear combination `-h - h1`.
+-/
 example (l : ℕ) [hl : Fact l.Prime] :
     (Obj.crys l).D.δ (l : ℤ_[l]) = (1 : ℤ_[l]) - (l : ℤ_[l]) ^ (l - 1) := by
   have h : (l : ℤ_[l]) = (l : ℤ_[l]) ^ l + (l : ℤ_[l]) * (show ℤ_[l] from (Obj.crys l).D.δ (l : ℤ_[l])) :=
@@ -355,6 +406,9 @@ example (l : ℕ) [hl : Fact l.Prime] :
   refine mul_left_cancel₀ h0 (b := (show ℤ_[l] from (Obj.crys l).D.δ (l : ℤ_[l]))) ?_
   linear_combination -h - h1
 
+/- English proof (translation)
+Establish `hI : Finset.Ioo 0 2 = {1}` using `by decide`. Establish `h1` using `D.δ_add 1 1`. Rewrite `h1` using `[hI, D.δ_one, one_add_one_eq_two]`. Simplify using `using h1`.
+-/
 example {A : Type} [CommRing A] (D : Delta 2 A) : D.δ 2 = -1 := by
   have hI : Finset.Ioo 0 2 = {1} := by decide
   have h1 := D.δ_add 1 1

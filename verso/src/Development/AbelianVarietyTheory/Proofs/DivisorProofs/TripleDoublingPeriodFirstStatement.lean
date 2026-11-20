@@ -7,6 +7,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.Doubling GlobalTheory.ThK.Bot
 open Formalism.L2.Host (aboveF)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.BotReal.zetaOn_real_const | exact GlobalTheory.ThK.BotReal.zetaOn_real_const | (intros; apply GlobalTheory.ThK.BotReal.zetaOn_real_const <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.triple_doubling_period_first : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → G.p = 0 → G.q = 0 →
     ∀ (X₂ : Spc F E (a + a)) (i : UA σ G.V.J × UA σ G.V.J →* UA σ X₂.J) (K₂ : Subgroup (UA σ X₂.J)), IsDbl B G.V X₂ i K₂ →

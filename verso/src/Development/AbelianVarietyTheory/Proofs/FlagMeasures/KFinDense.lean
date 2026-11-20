@@ -6,6 +6,9 @@ open Formalism.MainNotions.S
 
 namespace GlobalTheory.KFinDenseDS
 
+/- English proof (translation)
+Introduce `k r ε lam H _ _ _ σ hl hds v hv Ws hWs δ hδ`. Take `⟨a, ha, hs⟩` from `GlobalTheory.KFinAvg.kDense k r ε lam H σ hl hds v hv Ws hWs δ hδ`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Simplify `hs` using `only [Formalism.MainNotions.BridgeCS3d.dsigW_eq]`.
+-/
 theorem kFin_dense : ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)),
     Formalism.QuantumDeterminants.IsHCParam lam → PI.UpqRep.IsDSHpk k r ε lam σ →

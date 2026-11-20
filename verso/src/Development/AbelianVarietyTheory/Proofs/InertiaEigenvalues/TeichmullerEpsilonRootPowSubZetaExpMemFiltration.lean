@@ -16,6 +16,15 @@ namespace GlobalTheory.ExpImage
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc
 open scoped Formalism.Per
 
+/- English proof (translation)
+Establish `h1` using `(Commute.all a b).geom_sum₂_mul N`. Rewrite `h1` using `[h, sub_self]`. Establish `h2 : IsNilpotent ((∑ i ∈ Finset.range N, a ^ i * b ^ (N - 1 - i)) - N * b ^ (N - 1))`. Establish `e : (N : Q) * b ^ (N - 1) = ∑ i ∈ Finset.range N, b ^ i * b ^ (N - 1 - i)`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => b ^ (N - 1))]`.
+
+Simplify using the standard rewrite rules. Introduce `i hi`. Rewrite using `[← pow_add]`. Use `congr 1`. Use `Finset.mem_range.1 hi` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[e, ← Finset.sum_sub_distrib, ← mem_nilradical]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul]`. Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow a b i`.
+
+Rewrite using `[hc, mul_assoc]`. Conclude with `Ideal.mul_mem_right _ _ (mem_nilradical.2 hn)`. Establish `h3` using `h2.isUnit_add_right_of_commute (hN.mul (hb.pow (N - 1))) (Commute.all _ _)`. Rewrite `h3` using `[sub_add_cancel]`. Conclude with `sub_eq_zero.1 ((h3.mul_right_eq_zero).1 h1)`.
+-/
 theorem eq_of_pow_eq_of_nilpotent {Q : Type*} [CommRing Q] {a b : Q} {N : ℕ} (hN : IsUnit (N : Q))
     (hb : IsUnit b) (hn : IsNilpotent (a - b)) (h : a ^ N = b ^ N) : a = b := by
   have h1 := (Commute.all a b).geom_sum₂_mul N
@@ -39,6 +48,9 @@ theorem eq_of_pow_eq_of_nilpotent {Q : Type*} [CommRing Q] {a b : Q} {N : ℕ} (
   rw [sub_add_cancel] at h3
   exact sub_eq_zero.1 ((h3.mul_right_eq_zero).1 h1)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ, add_mul, one_mul, IsNilpotent.exp_add_of_commute (Commute.all _ _) ((Commute.all _ _).isNilpotent_mul_left hx) hx, ih, pow_succ]`.
+-/
 theorem nilpotent_exp_nsmul {Q : Type*} [CommRing Q] [Module ℚ Q] {x : Q} (hx : IsNilpotent x) (n : ℕ) :
     IsNilpotent.exp ((n : Q) * x) = IsNilpotent.exp x ^ n := by
   induction n with
@@ -47,6 +59,19 @@ theorem nilpotent_exp_nsmul {Q : Type*} [CommRing Q] [Module ℚ Q] {x : Q} (hx 
     rw [Nat.cast_succ, add_mul, one_mul, IsNilpotent.exp_add_of_commute (Commute.all _ _)
       ((Commute.all _ _).isNilpotent_mul_left hx) hx, ih, pow_succ]
 
+/- English proof (translation)
+Use `letI : Algebra ℚ Q := ((algebraMap K Q).comp (algebraMap ℚ K)).toAlgebra`. Establish `hE : ∀ c : K, IsNilpotent.exp (algebraMap K Q c * t) = ∑ j ∈ Finset.range M, algebraMap K Q (c ^ j / (j.factorial : K)) * t ^ j`. Introduce `c`. Rewrite using `[IsNilpotent.exp_eq_sum (k := M) (by rw [mul_pow, ht, mul_zero])]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, mul_pow, ← mul_assoc, ← map_pow, div_eq_inv_mul, map_mul]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `algebraMap K Q (algebraMap ℚ K _) = _`. Simplify using the standard rewrite rules. Establish `hN' : (N : K) ≠ 0` using `Nat.cast_ne_zero.2 hN`.
+
+Establish `hx : IsNilpotent (algebraMap K Q (N : K)⁻¹ * t)` using `(Commute.all _ _).isNilpotent_mul_left ⟨M, ht⟩`. Establish `hk : ∀ k : ℕ, IsNilpotent.exp (algebraMap K Q (N : K)⁻¹ * t) ^ k = ∑ j ∈ Finset.range M, algebraMap K Q (((k : K) / (N : K)) ^ j / (j.factorial : K)) * t ^ j`. Introduce `k`. Rewrite using `[← nilpotent_exp_nsmul hx, ← hE, div_eq_mul_inv, map_mul, map_natCast, mul_assoc]`. Establish `hu : IsUnit z` using `IsUnit.of_pow_eq_one hz hN`.
+
+Establish `e : a = z * IsNilpotent.exp (algebraMap K Q (N : K)⁻¹ * t)`. Use `eq_of_pow_eq_of_nilpotent (N := N) ?_ (hu.mul hx.isUnit_exp) ?_ ?_` and prove the remaining obligations. Use `(IsUnit.mk0 _ hN').map (algebraMap K Q)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h1` using `(Commute.all z _).isNilpotent_mul_left hx.isNilpotent_exp_sub_one`.
+
+Establish `h2` using `(Commute.all _ _).isNilpotent_sub hn h1`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_pow, hz, one_mul, hk, ha]`. Simplify using `[div_self hN']`.
+
+Rewrite using `[e, mul_pow, hk]`.
+-/
 theorem pow_eq_mul_exp {K Q : Type*} [Field K] [CharZero K] [CommRing Q] [Algebra K Q] {a z t : Q}
     {M N : ℕ} (m : ℕ) (hN : N ≠ 0) (ht : t ^ M = 0) (hz : z ^ N = 1) (hn : IsNilpotent (a - z))
     (ha : a ^ N = ∑ j ∈ Finset.range M, algebraMap K Q ((j.factorial : K)⁻¹) * t ^ j) :
@@ -96,6 +121,11 @@ def filIdeal (P : LocPrime l) (M : ℕ) : Ideal ↥(filZero P) where
   add_mem' hx hy := (FilB P (M : ℤ)).add_mem hx hy
   smul_mem' c _ hx := FilB_zero_mul c.2 hx
 
+/- English proof (translation)
+Rewrite using `[epsT, ← map_pow]`. Use `congr 1`. Proceed by induction on `s with`. Consider the case `zero => simp [LocAinf.εroot]`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ', pow_mul, ← ih, LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p]`. Both sides reduce to the same expression.
+-/
 theorem epsT_pow {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) :
     epsT AI s ^ l ^ s = WittVector.teichmuller l AI.ε := by
   rw [epsT, ← map_pow]
@@ -107,16 +137,25 @@ theorem epsT_pow {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) :
       frobeniusEquiv_symm_pow_p]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => simp [P.ζQ_zero]`. Consider the case `succ n ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]`.
+-/
 theorem ζQ_pow (P : LocPrime l) (s : ℕ) : P.ζQ s ^ l ^ s = 1 := by
   induction s with
   | zero => simp [P.ζQ_zero]
   | succ n ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]
 
+/- English proof (translation)
+Take `⟨y, h1, -⟩` from `T.om x`. Conclude with `(GlobalTheory.ThetaTie.fil_zero T _).2 ⟨y, h1.symm⟩`.
+-/
 theorem oB_mem_zero {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) (x : Om l) :
     oB P x ∈ FilB P 0 := by
   obtain ⟨y, h1, -⟩ := T.om x
   exact (GlobalTheory.ThetaTie.fil_zero T _).2 ⟨y, h1.symm⟩
 
+/- English proof (translation)
+Take `⟨y, h1, h2⟩` from `T.om (P.ζQ s)`. Use `(GlobalTheory.ThetaTie.fil_nat T 1 _).2 ⟨GlobalTheory.MemLoc.aDp l (epsT AI s) - y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.1, map_sub, h2, (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.2.2.1, epsT, WittVector.fontaineTheta_teichmuller, untilt_εroot, AI.ζ_eq, sub_self]`. Rewrite using `[map_sub, map_sub, h1, io_apply, GlobalTheory.ThetaTie.eD_ιA]`.
+-/
 theorem epsT_sub_mem {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) (s : ℕ) :
     io AI (epsT AI s) - oB P (P.ζQ s) ∈ FilB P 1 := by
   obtain ⟨y, h1, h2⟩ := T.om (P.ζQ s)
@@ -125,6 +164,21 @@ theorem epsT_sub_mem {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) (s
       WittVector.fontaineTheta_teichmuller, untilt_εroot, AI.ζ_eq, sub_self]
   · rw [map_sub, map_sub, h1, io_apply, GlobalTheory.ThetaTie.eD_ιA]
 
+/- English proof (translation)
+Introduce `l _ P AI T s m M`. Set `π` to `Ideal.Quotient.mkₐ ℚ_[l] (filIdeal P M)`. Establish `hπ : ∀ x y : ↥(filZero P), π x = π y ↔ (x : P.R.BdR) - y ∈ FilB P (M : ℤ)` using `fun x y => Ideal.Quotient.eq`. Establish `hnil : ∀ x : ↥(filZero P), (x : P.R.BdR) ∈ FilB P 1 → π x ^ M = 0`. Introduce `x hx`.
+
+Rewrite using `[← map_pow, ← map_zero π, hπ]`. Simplify using `using FilB_pow hx M`. Set `a : ↥(filZero P)` to `⟨io AI (epsT AI s), io_mem AI _⟩`. Set `z : ↥(filZero P)` to `⟨oB P (P.ζQ s), oB_mem_zero T _⟩`. Set `t : ↥(filZero P)` to `⟨tD P, FilB_anti zero_le_one tD_mem⟩`.
+
+Establish `hs : ∀ c : ℕ → ℚ_[l], ∑ j ∈ Finset.range M, algebraMap ℚ_[l] _ (c j) * π t ^ j = π (∑ j ∈ Finset.range M, algebraMap ℚ_[l] _ (c j) * t ^ j)`. Introduce `c`. Simplify using `only [map_sum, map_mul, map_pow, AlgHom.commutes]`. Establish `hc : ∀ c : ℕ → ℚ_[l], ((∑ j ∈ Finset.range M, algebraMap ℚ_[l] _ (c j) * t ^ j : ↥(filZero P)) : P.R.BdR) = ∑ j ∈ Finset.range M, qB P (c j) * tD P ^ j`. Introduce `c`.
+
+Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Both sides reduce to the same expression. Establish `key` using `pow_eq_mul_exp (K := ℚ_[l]) (a := π a) (z := π z) (t := π t) (M := M) (N := l ^ s) m (pow_ne_zero _ (Fact.out : l.Prime).ne_zero) (hnil t tD_mem) (by`. Rewrite using `[← map_pow, ← map_one π]`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `oB P (P.ζQ s) ^ l ^ s = 1`. Rewrite using `[← map_pow, ζQ_pow, map_one])`. Use the proof step `⟨M, by rw [← map_sub]; exact hnil _ (epsT_sub_mem T s)⟩`. Use the proof step `(by`.
+
+Rewrite using `[hs (fun j => (j.factorial : ℚ_[l])⁻¹), ← map_pow, hπ, hc]`. Express the relevant statement in the definitionally equal form `io AI (epsT AI s) ^ l ^ s - _ ∈ _`. Rewrite using `[← map_pow, epsT_pow]`. Conclude with `GlobalTheory.T.teichmullerEpsilon_sub_exp_mem_hodgeFiltration l P AI T M)`. Rewrite `key` using `[hs (fun j => ((m : ℚ_[l]) / ((l ^ s : ℕ) : ℚ_[l])) ^ j / (j.factorial : ℚ_[l])), ← map_pow, ← map_pow, ← map_mul, hπ, Subalgebra.coe_mul, hc, Nat.cast_pow]`.
+
+Rewrite using `[map_pow, map_pow]`. Conclude with `key`.
+-/
 theorem epsT_pow_taylor : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     LocTied l P AI → ∀ s m M : ℕ, io AI (epsT AI s ^ m) - oB P (P.ζQ s ^ m) *
       ∑ j ∈ Finset.range M, qB P (((m : ℚ_[l]) / (l : ℚ_[l]) ^ s) ^ j / (j.factorial : ℚ_[l])) *

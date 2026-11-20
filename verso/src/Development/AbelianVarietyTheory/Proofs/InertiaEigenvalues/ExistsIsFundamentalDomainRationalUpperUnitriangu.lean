@@ -14,6 +14,9 @@ open scoped ENNReal nonZeroDivisors
 
 namespace GlobalTheory.CellDec
 
+/- English proof (translation)
+Introduce `E _ _ a μ`. Use `haveI : DiscreteTopology (GlobalTheory.CellDec.NE E a) := GlobalTheory.MirTower.discrete_of_le_range (Subgroup.map_le_range _ _)`. Conclude with `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain _ μ`.
+-/
 theorem exists_isFundamentalDomain_NE : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (μ : Measure (GA E a)),
     ∃ 𝓕₀ : Set (GA E a), IsFundamentalDomain (GlobalTheory.CellDec.NE E a) 𝓕₀ μ := by
   intro E _ _ a μ

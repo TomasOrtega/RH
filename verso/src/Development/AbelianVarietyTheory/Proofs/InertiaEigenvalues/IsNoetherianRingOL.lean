@@ -15,6 +15,15 @@ section Series
 
 variable {O : Type} [CommRing O] [IsDomain O]
 
+/- English proof (translation)
+Establish `hy : (1 + X : O⟦X⟧) ^ l = 1 + X * q` using `by rw [hq]; ring`. Use `set S : O⟦X⟧ := ∑ j ∈ Finset.range (1 + l), (1 + X * q) ^ j with hS`. Establish `h1 : γ X = X * (1 + (1 + X) * q)` using `by rw [hγ, pow_add, hy]; ring`. Establish `h2 : γ X * γ q = X * q * S`. Use `geom_sum_mul (1 + X * q : O⟦X⟧) (1 + l)` as an intermediate fact.
+
+Rewrite using `[← map_mul, hq, map_sub, map_pow, map_add, map_one, hγ, add_sub_cancel, ← pow_mul, mul_comm (1 + l), pow_mul, hy, ← this, ← hS]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (1 + (1 + X) * q) * γ q = q * S`. Apply `mul_left_cancel₀ (X_ne_zero (R := O))` to reduce the goal to its premises. Rewrite using `[← mul_assoc, ← h1, h2, mul_assoc]`.
+
+Establish `h4 : γ q = q * (S - (1 + X) * γ q)` using `by linear_combination h3`. Use `⟨_, h4, ?_⟩` and prove the remaining obligations. Establish `h5 : q ∣ S - (1 + (l : O⟦X⟧))`. Establish `: (1 + (l : O⟦X⟧)) = ∑ j ∈ Finset.range (1 + l), (1 : O⟦X⟧) ^ j` using `by simp`. Rewrite using `[this, hS, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.dvd_sum fun j _ => Dvd.dvd.trans ?_ (sub_dvd_pow_sub_pow _ _ j)` and prove the remaining obligations. Conclude with `⟨X, by ring⟩`. Establish `h6 : q ∣ (1 + X) * γ q` using `Dvd.dvd.mul_left ⟨_, h4⟩ _`. Use `dvd_sub h5 h6 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_gamma_q (l : ℕ) (q : O⟦X⟧) (hq : X * q = (1 + X) ^ l - 1) (γ : O⟦X⟧ →ₐ[O] O⟦X⟧)
     (hγ : γ X = (1 + X) ^ (1 + l) - 1) : ∃ w, γ q = q * w ∧ q ∣ w - (1 + (l : O⟦X⟧)) := by
   have hy : (1 + X : O⟦X⟧) ^ l = 1 + X * q := by rw [hq]; ring
@@ -39,6 +48,13 @@ theorem exists_gamma_q (l : ℕ) (q : O⟦X⟧) (hq : X * q = (1 + X) ^ l - 1) (
   convert dvd_sub h5 h6 using 1
   ring
 
+/- English proof (translation)
+Take `⟨w, hw, hw'⟩` from `exists_gamma_q l q hq γ hγ`. Establish `h1 : γ X = X * (1 + (1 + X) * q)` using `by rw [hγ, pow_add]; linear_combination (-(1 + X)) * hq`. Establish `hu : q ∣ γ u - u` using `GlobalTheory.CycFr.dvd_algHom_sub γ (AlgHom.id O _) ⟨_, h1⟩ dvd_rfl q ⟨X * (1 + X), by rw [h1, AlgHom.id_apply]; ring⟩ u`. Establish `E' : w ^ k * h' * u = w ^ m * γ u * h`. Apply `mul_left_cancel₀ (pow_ne_zero (k + m) hq0)` to reduce the goal to its premises.
+
+Rewrite `E` using `[map_mul, map_pow, hw]`. Take the linear combination `E`. Rewrite `hh`, `hh'`, `hw'`, `hu` using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]`. Establish `E2` using `congrArg (Ideal.Quotient.mk (Ideal.span {q})) E'`. Simplify using `only [map_mul, map_pow, hh, hh', hw', hu, map_one, mul_one] at E2`.
+
+Rewrite using `[map_sub, ← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]`. Apply `(u.isUnit.map (Ideal.Quotient.mk (Ideal.span {q}))).mul_left_cancel` to reduce the goal to its premises. Simplify using `only [map_mul, map_pow, map_add, map_one, map_natCast] at E2 ⊢`. Take the linear combination `E2`.
+-/
 theorem dvd_of_comm [IsNoetherianRing O] (l : ℕ) (q : O⟦X⟧) (hq0 : q ≠ 0) (hq : X * q = (1 + X) ^ l - 1)
     (γ : O⟦X⟧ →ₐ[O] O⟦X⟧) (hγ : γ X = (1 + X) ^ (1 + l) - 1) (k m : ℕ) (u : (O⟦X⟧)ˣ) (h h' : O⟦X⟧) (e : O)
     (hh : q ∣ h - C e) (hh' : q ∣ h' - 1)
@@ -64,6 +80,13 @@ variable {ι : Type} (J : O⟦X⟧ →ₐ[O] O⟦X⟧) (hJ : Function.Injective 
   (d : ι → (O⟦X⟧ →ₐ[O] O⟦X⟧)) (hr : ∀ a, (∃ b, J b = a) ↔ ∀ δ ∈ S, d δ a = a)
 include hJ hr
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Establish `h0 : J X ^ N ≠ 0` using `pow_ne_zero _ fun h => X_ne_zero (hJ (h.trans (map_zero J).symm))`. Establish `hf0 : f ≠ 0` using `fun h => h0 (by rw [hg, h, zero_mul])`. Take `⟨G, rfl⟩` from `(hr g).2 fun δ hδ => by`. Apply `mul_left_cancel₀ hf0` to reduce the goal to its premises.
+
+Establish `h1` using `congrArg (d δ) hg`. Rewrite `h1` using `[map_mul, hf δ hδ, map_pow, (hr _).1 ⟨X, rfl⟩ δ hδ]`. Rewrite using `[← h1, hg]`. Take `⟨F, rfl⟩` from `(hr f).2 hf`. Establish `h2 : F ∣ X ^ N` using `⟨G, hJ (by rw [map_pow, map_mul, hg])⟩`.
+
+Take `⟨m, -, hm⟩` from `(dvd_prime_pow X_prime N).1 h2`. Conclude with `⟨m, by simpa using hm.map J⟩`.
+-/
 theorem associated_of_dvd (f : O⟦X⟧) (hf : ∀ δ ∈ S, d δ f = f) (N : ℕ) (h : f ∣ J X ^ N) :
     ∃ m, Associated f (J X ^ m) := by
   obtain ⟨g, hg⟩ := h
@@ -79,6 +102,11 @@ theorem associated_of_dvd (f : O⟦X⟧) (hf : ∀ δ ∈ S, d δ f = f) (N : �
   obtain ⟨m, -, hm⟩ := (dvd_prime_pow X_prime N).1 h2
   exact ⟨m, by simpa using hm.map J⟩
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Establish `h0 : J X ≠ 0` using `fun h => X_ne_zero (hJ (h.trans (map_zero J).symm))`. Establish `hC : ∀ t : O⟦X⟧ →ₐ[O] O⟦X⟧, t (C c) = C c` using `fun t => t.commutes c`. Take `⟨G, rfl⟩` from `(hr g).2 fun δ hδ => by`. Apply `mul_left_cancel₀ h0` to reduce the goal to its premises.
+
+Establish `h1` using `congrArg (d δ) hg`. Rewrite `h1` using `[map_mul, hC, (hr _).1 ⟨X, rfl⟩ δ hδ]`. Rewrite using `[← h1, hg]`. Establish `h2 : C c = X * G` using `hJ (by rw [hC, map_mul, hg])`. Simplify using `using congrArg constantCoeff h2`.
+-/
 theorem eq_zero_of_dvd_C (c : O) (h : J X ∣ C c) : c = 0 := by
   obtain ⟨g, hg⟩ := h
   have h0 : J X ≠ 0 := fun h => X_ne_zero (hJ (h.trans (map_zero J).symm))
@@ -104,14 +132,25 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Use `W.φD_smul T (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.φE_ext, algebraMap_smul]`. Then use the resulting hypothesis.
+-/
 theorem φD_smulA (a : LetA O n) (x : W.DD T) : W.φD T (a • x) = W.φA a • W.φD T x := by
   have := W.φD_smul T (algebraMap (LetA O n) W.EE a) x
   rwa [algebraMap_smul, W.φE_ext, algebraMap_smul] at this
 
+/- English proof (translation)
+Use `W.γD_smul T g (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.γE_ext, algebraMap_smul]`. Then use the resulting hypothesis.
+-/
 theorem γD_smulA (g : W.Gam) (a : LetA O n) (x : W.DD T) : W.γD T g (a • x) = W.γA g a • W.γD T g x := by
   have := W.γD_smul T g (algebraMap (LetA O n) W.EE a) x
   rwa [algebraMap_smul, W.γE_ext, algebraMap_smul] at this
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite `hx` using `[SetLike.mem_coe, hN, Submodule.mem_span_singleton]`. Take `⟨a, rfl⟩` from `hx`.
+
+Rewrite using `[φD_smulA]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `⟨β, by rw [hN]; exact Submodule.mem_span_singleton_self _, rfl⟩`.
+-/
 theorem φpull_eq {β : W.DD T} (hN : W.N T = Submodule.span (LetA O n) {β}) :
     W.φpull T = Submodule.span (LetA O n) {W.φD T β} := by
   apply le_antisymm
@@ -127,6 +166,21 @@ theorem φpull_eq {β : W.DD T} (hN : W.N T = Submodule.span (LetA O n) {β}) :
 
 variable [IsDomain O]
 
+/- English proof (translation)
+Take `⟨h1, h2, -, -, -, h6, -⟩` from `hJ`. Take `⟨k, hk⟩` from `W.N_φ T β hβ.1`. Take `⟨k', hk'⟩` from `W.N_φinv T β hβ.1`. Express the relevant statement in the definitionally equal form `_ ∈ W.φpull T at hk'`. Rewrite `hk'` using `[φpull_eq W T hN, Submodule.mem_span_singleton]`.
+
+Rewrite `hk` using `[hN, Submodule.mem_span_singleton]`. Simplify using `only [hs, Nat.sub_self, pow_zero, AlgHom.one_apply] at hk hk'`. Take `⟨f, hf⟩` from `hk`. Take `⟨f', hf'⟩` from `hk'`. Express the relevant statement in the definitionally equal form `f • β = W.q ^ k • W.φD T β at hf`.
+
+Express the relevant statement in the definitionally equal form `f' • W.φD T β = W.q ^ k' • β at hf'`. Use `⟨k, f, hf.symm, fun i => ?_⟩` and prove the remaining obligations. Establish `e1 : f * f' = W.q ^ (k + k')` using `hi _ _ (by`. Rewrite using `[mul_comm, mul_smul, hf, smul_comm, hf', smul_smul, pow_add])`. Take `⟨w, hw⟩` from `h6.symm`.
+
+Set `w' : LetA O n` to `fun _ => w`. Set `q' : LetA O n` to `fun _ => J X`. Establish `hq' : q' = w' * W.q` using `funext fun _ => by`. Express the relevant statement in the definitionally equal form `J X = w * W.q₀`. Rewrite using `[← hw, mul_comm]`.
+
+Establish `e2 : (w' ^ k * f) • β = q' ^ k • W.φD T β` using `by rw [mul_smul, hf, smul_smul, hq', mul_pow]`. Establish `e3 : ∀ δ ∈ W.DelF, W.γ₀ δ ((w : O⟦X⟧) ^ k * f i) = (w : O⟦X⟧) ^ k * f i` using `fun δ hδ => by`. Establish `h3` using `congrArg (W.γD T δ) e2`. Establish `h4 : W.γA δ q' = q'` using `funext fun _ => (h2 _).1 ⟨X, rfl⟩ δ hδ`. Rewrite `h3` using `[γD_smulA, γD_smulA, ← W.φγ_comm, hβ.2 δ hδ, map_pow, h4, ← e2]`.
+
+Conclude with `congrFun (hi _ _ h3) i`. Establish `e4 : f i * f' i = W.q₀ ^ (k + k')` using `congrFun e1 i`. Establish `hwf : Associated ((w : O⟦X⟧) ^ k * f i) (f i)` using `associated_unit_mul_left _ _ (w.isUnit.pow k)`. Take `⟨m, hm⟩` from `associated_of_dvd J h1 W.DelF (fun δ => W.γ₀ δ) h2 _ e3 (k + k') (hwf.dvd.trans ((Dvd.intro _ e4).trans h6.symm.pow_pow.dvd))`. Take `⟨u, hu⟩` from `((hwf.symm.trans hm).trans h6.pow_pow).symm`.
+
+Conclude with `⟨m, u, hu.symm⟩`.
+-/
 theorem exists_frob (hs : W.s = 1) {g : W.Gam} {J : O⟦X⟧ →ₐ[O] O⟦X⟧} (hJ : QFrame W g J) {β : W.DD T}
     (hβ : β ∈ W.NΔ T) (hN : W.N T = Submodule.span (LetA O n) {β})
     (hi : ∀ a b : LetA O n, a • β = b • β → a = b) :
@@ -165,6 +219,21 @@ theorem exists_frob (hs : W.s = 1) {g : W.Gam} {J : O⟦X⟧ →ₐ[O] O⟦X⟧}
   obtain ⟨u, hu⟩ := ((hwf.symm.trans hm).trans h6.pow_pow).symm
   exact ⟨m, u, hu.symm⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, -, -, h6, -⟩` from `hJ`. Take `⟨y', hy', hπ⟩` from `W.N_π T g β (by rw [hN]; exact Submodule.mem_span_singleton_self _)`. Rewrite `hy`, `hz`, `hy'` using `[hN, Submodule.mem_span_singleton]`. Take `⟨r, rfl⟩` from `hy`. Take `⟨z, rfl⟩` from `hz`.
+
+Take `⟨r', rfl⟩` from `hy'`. Establish `hq0 : W.q₀ ≠ 0` using `h6.ne_zero_iff.1 fun h => X_ne_zero (h1 (h.trans (map_zero J).symm))`. Establish `e1 : W.γD T g β = (1 + W.π₀ * r) • β`. Rewrite using `[add_smul, one_smul, mul_smul, ← hγ, add_sub_cancel]`. Establish `e2 : W.π₀ * r = letπ * r'` using `hi _ _ (by rw [mul_smul, mul_smul, ← hγ, hπ])`.
+
+Establish `e3 : letE i * (r - algebraMap O (LetA O n) c) = (W.π₀ + (PD.p : LetA O n)) * z` using `hi _ _ (by`. Rewrite using `[mul_smul, mul_smul, ← hc, sub_smul, algebraMap_smul])`. Establish `e4 : r i - C c = J X * z i`. Use `congrFun e3 i` as an intermediate fact. Simplify using `only [Pi.mul_apply, letE, Pi.single_eq_same, one_mul] at this`.
+
+Rewrite using `[h3]`. Conclude with `this`. Establish `e5 : W.γA g W.q ^ k * W.φA (1 + W.π₀ * r) * f = W.q ^ k * W.γA g f * (1 + W.π₀ * r)` using `hi _ _ (by`. Use `congrArg (W.γD T g) hf` as an intermediate fact. Rewrite `this` using `[γD_smulA, γD_smulA, ← W.φγ_comm, e1, φD_smulA, map_pow]`.
+
+Rewrite using `[mul_smul, ← hf, mul_assoc (W.q ^ k), mul_smul (W.q ^ k), mul_smul (W.γA g f), ← this, smul_comm, mul_smul])`. Establish `e6 : W.γ₀ g W.q₀ ^ k * W.φ₀ (1 + X * r' (i - 1)) * (W.q₀ ^ m * u) = W.q₀ ^ k * W.γ₀ g (W.q₀ ^ m * u) * (1 + W.π₀₁ * r i)`. Use `congrFun e5 i` as an intermediate fact. Rewrite using `[← hu]`. Use `conv_lhs at this => rw [e2]`.
+
+Conclude with `this`. Establish `e7` using `dvd_of_comm PD.p W.q₀ hq0 W.q₀_def (W.γ₀ g) hg k m u _ _ (1 - PD.p * c) (h6.symm.dvd.trans ⟨W.π₀₁ * z i + C c, by`. Rewrite using `[map_sub, map_mul, map_natCast, map_one]`. Take the linear combination `W.π₀₁ * e4 - C c * h3⟩)`. Use the proof step `⟨X * W.φ₀ (r' (i - 1)), by rw [map_add, map_one, map_mul, W.φ₀_X]; ring⟩ e6`.
+
+Conclude with `sub_eq_zero.1 (eq_zero_of_dvd_C J h1 W.DelF (fun δ => W.γ₀ δ) h2 _ (h6.dvd.trans e7))`.
+-/
 theorem pow_eq_of_frob [IsNoetherianRing O] {g : W.Gam} {J : O⟦X⟧ →ₐ[O] O⟦X⟧} (hJ : QFrame W g J)
     (hg : W.γ₀ g X = (1 + X) ^ (1 + PD.p) - 1) {β : W.DD T}
     (hN : W.N T = Submodule.span (LetA O n) {β})
@@ -209,6 +278,19 @@ theorem pow_eq_of_frob [IsNoetherianRing O] {g : W.Gam} {J : O⟦X⟧ →ₐ[O] 
 
 omit [IsDomain O] in
 
+/- English proof (translation)
+Set `U : LetA O n` to `fun _ => u`. Set `U' : LetA O n` to `fun _ => (u⁻¹ : (O⟦X⟧)ˣ)`. Establish `hU : U' * U = 1` using `funext fun _ => u.inv_mul`. Establish `key : W.q ^ (-a).toNat • (letE i : LetA O n) • W.φD T β = W.q ^ a.toNat • (letE i : LetA O n) • U • β`. Establish `hc : ∀ x y : W.DD T, W.q ^ k • x = W.q ^ k • y → x = y` using `fun x y h => by`.
+
+Rewrite `h` using `[← algebraMap_smul W.EE, ← algebraMap_smul W.EE (W.q ^ k) y, map_pow]`. Conclude with `(hq.pow k).smul_left_cancel.1 h`. Apply `hc` to reduce the goal to its premises. Rewrite using `[smul_comm (W.q ^ k), smul_comm (W.q ^ k), hf]`. Simplify using `only [smul_smul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `only [Pi.mul_apply, Pi.pow_apply, letE, Pi.single_eq_same, one_mul, hu, LocWach.q, U]`.
+
+Rewrite using `[← mul_assoc, ← mul_assoc, ← pow_add, ← pow_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Simplify using `[letE, h]`. Rewrite using `[φpull_eq W T hN, hN]`.
+
+Simplify using `only [Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `_ ⟨c, rfl⟩`. Use `⟨c • U • β, ⟨c * U, mul_smul _ _ _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm _ c, smul_comm _ c, key, smul_comm _ c (U • β), smul_comm _ c]`.
+
+Introduce and unpack `_ ⟨c, rfl⟩`. Use `⟨(c * U') • W.φD T β, ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `: c • β = (c * U') • U • β` using `by rw [smul_smul, mul_assoc, hU, mul_one]`. Rewrite using `[this, smul_comm _ (c * U'), smul_comm _ (c * U'), key, smul_comm _ (c * U') (U • β), smul_comm _ (c * U')]`.
+-/
 theorem lines_of_frob (hq : IsUnit (algebraMap (LetA O n) W.EE W.q)) {β : W.DD T}
     (hN : W.N T = Submodule.span (LetA O n) {β}) {k : ℕ} {f : LetA O n} (hf : W.q ^ k • W.φD T β = f • β)
     {i : ZMod n} {m : ℕ} {u : (O⟦X⟧)ˣ} (hu : f i = W.q₀ ^ m * u) {a : ℤ} (ha : (m : ℤ) = k + a) :
@@ -248,6 +330,25 @@ theorem lines_of_frob (hq : IsUnit (algebraMap (LetA O n) W.EE W.q)) {β : W.DD 
     rw [this, smul_comm _ (c * U'), smul_comm _ (c * U'), key, smul_comm _ (c * U') (U • β),
       smul_comm _ (c * U')]
 
+/- English proof (translation)
+Introduce `T a hT _ i`. Establish `hQ : W.Q = W.q` using `by simp only [LocWach.Q, hs, Nat.sub_self, pow_zero, AlgHom.one_apply]`. Take `⟨b, hb1, hb2, hb3⟩` from `h1 T hT.1`. Generalize the expression as in `Module.finrank O ↥T.L.T = r at b hb1 hb2 hb3`. Take `⟨ν, hν, -, hA⟩` from `h2 T _ hT g hχ c hc`.
+
+Take `⟨A, hA1, hA2⟩` from `hA r (fun j => ⟨b j, hb1 j⟩) hb2 hb3 i`. Simplify using `only [Multiset.map_singleton, Multiset.prod_singleton] at hA1`. Choose the witnesses or unpack the hypotheses as in `rfl : r = 1 := by`. Use `congrArg Polynomial.natDegree hA1` as an intermediate fact. Rewrite `this` using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, Polynomial.natDegree_X_sub_C]`. Then use the resulting hypothesis.
+
+Establish `hA0 : A 0 0 = c (-a i)`. Rewrite `hA1` using `[Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply_eq]`. Conclude with `Polynomial.C_injective (sub_right_injective hA1)`. Establish `hN : W.N T = Submodule.span (LetA O n) {b 0}`. Rewrite using `[hb3, Set.range_unique]`.
+
+Both sides reduce to the same expression. Establish `hi : ∀ x y : LetA O n, x • b 0 = y • b 0 → x = y` using `fun x y h => by`. Use `Fintype.linearIndependent_iff.1 hb2 (fun _ => x - y) (by simp [sub_smul, h]) 0` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Take `⟨k, f, hf, hm⟩` from `exists_frob W T hs hJ (hb1 0) hN hi`.
+
+Take `⟨m, u, hu⟩` from `hm i`. Take `⟨z, hz, hz'⟩` from `hA2 0`. Rewrite `hz'` using `[Fin.sum_univ_one, hA0]`. Establish `e` using `pow_eq_of_frob W T hJ hg hN hi hf hu (ν ⟨b 0, hb1 0⟩).2.1 hz (hν ⟨b 0, hb1 0⟩) hz'`. Establish `e1` using `congrArg (algebraMap O LL) e`.
+
+Simplify using `only [map_pow, map_mul, map_add, map_sub, map_one, map_natCast] at e1`. Rewrite `e1` using `[hc, sub_sub_cancel]`. Establish `e2 : (1 + (PD.p : ℚ)) ^ (k : ℤ) = (1 + (PD.p : ℚ)) ^ ((m : ℤ) + -a i)`. Rewrite using `[zpow_add₀ (by positivity), zpow_natCast, zpow_natCast]`. Apply `(Rat.cast_injective (α := LL))` to reduce the goal to its premises.
+
+Use `push_cast`. Conclude with `e1`. Establish `hp : (0 : ℚ) < PD.p` using `by exact_mod_cast PD.hp.pos`. Establish `e3` using `zpow_right_injective₀ (by positivity) (by linarith) e2`. Rewrite using `[hQ]`.
+
+Use `lines_of_frob W T ?_ hN hf hu (by omega)` and prove the remaining obligations. Take `⟨-, -, h3, -, -, ⟨w, hw⟩, h7⟩` from `hJ`. Establish `: W.q = (W.π₀ + (PD.p : LetA O n)) * fun _ => (w : O⟦X⟧)` using `funext fun _ => by`. Express the relevant statement in the definitionally equal form `W.q₀ = (W.π₀₁ + (PD.p : O⟦X⟧)) * w`. Rewrite using `[← h3, hw]`.
+
+Rewrite using `[this, map_mul]`. Conclude with `h7.mul (IsUnit.map _ (Pi.isUnit_iff.2 fun _ => w.isUnit))`.
+-/
 theorem rankOne_of_qFrame [IsNoetherianRing O] [CharZero LL] (hs : W.s = 1) {g : W.Gam}
     {J : O⟦X⟧ →ₐ[O] O⟦X⟧} (hJ : QFrame W g J) (hχ : (W.χΓ g : O) = 1 + (PD.p : O))
     (hg : W.γ₀ g X = (1 + X) ^ (1 + PD.p) - 1) {c : ℤ → O} (hc : IsC PD LL c)
@@ -296,6 +397,11 @@ theorem rankOne_of_qFrame [IsNoetherianRing O] [CharZero LL] (hs : W.s = 1) {g :
 
 end Generic
 
+/- English proof (translation)
+Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]`. Establish `h : Units.map (Ideal.Quotient.mk (Ideal.span {x}) : O →* O ⧸ Ideal.span {x}) u = 1`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (Ideal.span {x}) (u : O) = 1`. Rewrite using `[hu, map_add, map_one, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self x), add_zero]`.
+
+Establish `h2` using `congrArg Units.val (map_zpow (Units.map (Ideal.Quotient.mk (Ideal.span {x}) : O →* O ⧸ Ideal.span {x})) u a)`. Rewrite `h2` using `[h, one_zpow]`. Rewrite using `[map_one]`. Conclude with `h2.symm`.
+-/
 theorem dvd_one_sub_zpow {O : Type} [CommRing O] (x : O) (u : Oˣ) (hu : (u : O) = 1 + x) (a : ℤ) :
     x ∣ 1 - ((u ^ a : Oˣ) : O) := by
   rw [← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]
@@ -309,6 +415,11 @@ theorem dvd_one_sub_zpow {O : Type} [CommRing O] (x : O) (u : Oˣ) (hu : (u : O)
   rw [map_one]
   exact h2.symm
 
+/- English proof (translation)
+Use `choose c hc using dvd_one_sub_zpow (p : O) u hu`. Use `⟨c, fun a => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (algebraMap O LL) (hc a)`. Rewrite `h2` using `[map_mul, map_natCast, map_sub, map_one]`. Rewrite using `[← h2]`.
+
+Use `congr 1`. Establish `h3` using `congrArg Units.val (map_zpow (chiLL LL (MonoidHom.id Oˣ)) u a)`. Rewrite `h3` using `[Units.val_zpow_eq_zpow_val, chiLL_apply, chiLL_apply, MonoidHom.id_apply, MonoidHom.id_apply, hu, map_add, map_one, map_natCast]`. Conclude with `h3`.
+-/
 theorem exists_c {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] (p : ℕ) (u : Oˣ)
     (hu : (u : O) = 1 + (p : O)) :
     ∃ c : ℤ → O, ∀ a : ℤ, (p : LL) * algebraMap O LL (c a) = 1 - (1 + (p : LL)) ^ a := by
@@ -328,6 +439,11 @@ section Local
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) {n : ℕ}
   (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) n)
 
+/- English proof (translation)
+Take `⟨χ, hχ, -, hon⟩` from `GlobalTheory.Cyc.exists_integral_cyclotomicChar l P`. Establish `hu : IsUnit (1 + (l : ℤ_[l]))`. Use `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits (-(l : ℤ_[l])) (fun hh => PadicInt.p_nonunit ((IsUnit.neg_iff _).1 hh))` as an intermediate fact. Rewrite `this` using `[sub_neg_eq_add]`. Then use the resulting hypothesis. Take `⟨g₀, hg₀, hg₀'⟩` from `hon K 1 h hu.unit (by simp)`.
+
+Use `⟨W.resΓ ⟨g₀, hg₀⟩, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (algebraMap ↥(OL LL) ↥LL.1)` using `Subtype.val_injective`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[W.χΓ_res, P.PD_χ, ← hχ, hg₀', hu.unit_spec, map_add, map_one, map_natCast, PadicInt.coe_add, PadicInt.coe_one, PadicInt.coe_natCast, map_add, map_one, map_natCast]`.
+-/
 theorem exists_gam (h : K.1 ≤ Ks K 1) : ∃ g : W.Gam, (W.χΓ g : ↥(OL LL)) = 1 + (l : ↥(OL LL)) := by
   obtain ⟨χ, hχ, -, hon⟩ := GlobalTheory.Cyc.exists_integral_cyclotomicChar l P
   have hu : IsUnit (1 + (l : ℤ_[l])) := by
@@ -341,6 +457,9 @@ theorem exists_gam (h : K.1 ≤ Ks K 1) : ∃ g : W.Gam, (W.χΓ g : ↥(OL LL))
   rw [W.χΓ_res, P.PD_χ, ← hχ, hg₀', hu.unit_spec, map_add, map_one, map_natCast, PadicInt.coe_add,
     PadicInt.coe_one, PadicInt.coe_natCast, map_add, map_one, map_natCast]
 
+/- English proof (translation)
+Take `⟨χ', hχ', -⟩` from `GlobalTheory.exists_cyclotomicChar_padicInt_units P K LL W`. Establish `h1 : (χ' g : ℤ_[l]) = ((1 + l : ℕ) : ℤ_[l])` using `GlobalTheory.algebraMap_padicInt_OL_injective LL (by`. Rewrite using `[hχ', hg, map_natCast, Nat.cast_add, Nat.cast_one])`. Rewrite using `[GlobalTheory.WachTie.γ₀_eq W (P.PD_p K) χ' hχ', h1, GlobalTheory.CycFr.act_nat_X]`.
+-/
 theorem gam_X {g : W.Gam} (hg : (W.χΓ g : ↥(OL LL)) = 1 + (l : ↥(OL LL))) :
     W.γ₀ g X = (1 + X) ^ (1 + l) - 1 := by
   obtain ⟨χ', hχ', -⟩ := GlobalTheory.exists_cyclotomicChar_padicInt_units P K LL W
@@ -348,10 +467,18 @@ theorem gam_X {g : W.Gam} (hg : (W.χΓ g : ↥(OL LL)) = 1 + (l : ↥(OL LL))) 
     rw [hχ', hg, map_natCast, Nat.cast_add, Nat.cast_one])
   rw [GlobalTheory.WachTie.γ₀_eq W (P.PD_p K) χ' hχ', h1, GlobalTheory.CycFr.act_nat_X]
 
+/- English proof (translation)
+Take `⟨_, -, -⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`. Use `infer_instance`.
+-/
 theorem isNoetherianRing_OL : IsNoetherianRing ↥(OL LL) := by
   obtain ⟨_, -, -⟩ := GlobalTheory.FinExtIntegers.dvr_complete LL
   infer_instance
 
+/- English proof (translation)
+Establish `hp` using `P.PD_p K`. Take `⟨g, hg⟩` from `exists_gam P K LL W h.2.2.2.2.1`. Take `⟨-, J, hJ⟩` from `exists_qFrame P K LL W g h hg`. Establish `hγ` using `gam_X P K LL W hg`. Take `⟨c, hc⟩` from `exists_c (LL := ↥LL.1) l (W.χΓ g) hg`.
+
+Use `haveI := isNoetherianRing_OL LL`. Conclude with `rankOne_of_qFrame W hs hJ (by rw [hp]; exact hg) (by rw [hp]; exact hγ) (c := c) (fun a => by rw [hp]; exact hc a) h1 h2`.
+-/
 theorem rankOne_of_caseA (h : CaseA K LL) (hs : W.s = 1) (h1 : InvBasis W) (h2 : SenOp W) : RankOne W := by
   have hp := P.PD_p K
   obtain ⟨g, hg⟩ := exists_gam P K LL W h.2.2.2.2.1
@@ -364,6 +491,9 @@ theorem rankOne_of_caseA (h : CaseA K LL) (hs : W.s = 1) (h1 : InvBasis W) (h2 :
 
 end Local
 
+/- English proof (translation)
+Introduce `{_} _ {P} _ H _ _ K LL h` and use `rankOne_of_caseA P K LL _ h (H.W_s K 1 LL h.2.2)`.
+-/
 theorem rankOne_of_senOp : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (H : LocHW l P) (E : LocFon l P AI H) (C : LocCmpT l P AI H E), ∀ (K LL : FinExt l) (h : CaseA K LL), InvBasis (H.W K 1 LL h.2.2) → SenOp (H.W K 1 LL h.2.2) → RankOne (H.W K 1 LL h.2.2) :=
   fun {_} _ {P} _ H _ _ K LL h => rankOne_of_caseA P K LL _ h (H.W_s K 1 LL h.2.2)
 

@@ -14,6 +14,11 @@ open Module
 variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ScaleIntoUnitBall.scale_into`. Consider the case `exact _root_.GlobalTheory.ScaleIntoUnitBall.scale_into`. Consider the case `(apply _root_.GlobalTheory.ScaleIntoUnitBall.scale_into <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ScaleIntoUnitBall.scale_into <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ScaleIntoUnitBall.scale_into <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ScaleIntoUnitBall.scale_into ..)`.
+-/
 theorem exists_smul_mem_of_mem_span (W : Submodule (𝓞 K) V) {x : V}
     (hx : x ∈ Submodule.span K (W : Set V)) : ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ W := by
   first
@@ -24,6 +29,15 @@ theorem exists_smul_mem_of_mem_span (W : Submodule (𝓞 K) V) {x : V}
   | (intros; apply @_root_.GlobalTheory.ScaleIntoUnitBall.scale_into <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.ScaleIntoUnitBall.scale_into ..)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨hW, hk⟩`. Conclude with `⟨Submodule.subset_span hW, hk⟩`. Introduce and unpack `x ⟨hx, hk⟩`.
+
+Take `⟨d, hd, h⟩` from `exists_smul_mem_of_mem_span W hx`. Establish `hdK : (algebraMap (𝓞 K) K d) ≠ 0`. Simplify using `using (IsFractionRing.injective (𝓞 K) K).ne hd`. Establish `hmem : d • x ∈ (W ⊓ (LinearMap.ker q).restrictScalars (𝓞 K) : Submodule (𝓞 K) V)`. Use `⟨h, ?_⟩` and prove the remaining obligations.
+
+Use `show q (d • x) = 0`. Rewrite using `[← algebraMap_smul K d x, map_smul]`. Establish `hk' : q x = 0` using `hk`. Rewrite using `[hk', smul_zero]`. Establish `: x = (algebraMap (𝓞 K) K d)⁻¹ • (d • x)`.
+
+Rewrite using `[← algebraMap_smul K d x, smul_smul, inv_mul_cancel₀ hdK, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+-/
 theorem span_inf_ker {V' : Type} [AddCommGroup V'] [Module K V'] [Module (𝓞 K) V']
     [IsScalarTower (𝓞 K) K V'] (q : V →ₗ[K] V') (W : Submodule (𝓞 K) V) :
     Submodule.span K ((W ⊓ (LinearMap.ker q).restrictScalars (𝓞 K) : Submodule (𝓞 K) V) : Set V)
@@ -47,6 +61,9 @@ theorem span_inf_ker {V' : Type} [AddCommGroup V'] [Module K V'] [Module (𝓞 K
     rw [this]
     exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
+/- English proof (translation)
+Rewrite using `[Submodule.map_coe, Submodule.map_span]`. Both sides reduce to the same expression.
+-/
 theorem span_map {V' : Type} [AddCommGroup V'] [Module K V'] [Module (𝓞 K) V']
     [IsScalarTower (𝓞 K) K V'] (q : V →ₗ[K] V') (W : Submodule (𝓞 K) V) :
     Submodule.span K ((W.map (q.restrictScalars (𝓞 K)) : Submodule (𝓞 K) V') : Set V')
@@ -58,6 +75,9 @@ end GlobalTheory.LatRankAdd
 
 open GlobalTheory.LatRankAdd in
 
+/- English proof (translation)
+Introduce `K _ _ m m' q W`. Unfold `latRank`. Rewrite using `[span_inf_ker q W, span_map q W]`. Use `set S := Submodule.span K (W : Set (Fin m → K))`. Rewrite using `[add_comm, ← (q.domRestrict S).finrank_range_add_finrank_ker, LinearMap.range_domRestrict, LinearMap.ker_domRestrict, ← Submodule.map_comap_subtype, Submodule.finrank_map_subtype_eq]`.
+-/
 theorem GlobalTheory.latRank_eq_latRank_inf_ker_add_latRank_map :
     ∀ (K : Type) [Field K] [NumberField K] (m m' : ℕ) (q : (Fin m → K) →ₗ[K] (Fin m' → K))
       (W : Submodule (𝓞 K) (Fin m → K)),

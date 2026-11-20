@@ -21,6 +21,9 @@ def RatCondition : Prop := ∀ v j, ∃ q : ℚ, X.g0v v j = q
 def HeckeIntegralLevel : Prop :=
   ∀ v, ∀ j < X.mm, ∀ i ∈ Icc 1 X.G.P.r, ∀ F ∈ X.Int (j + 1), X.Tt v i (j + 1) F ∈ X.Int (j + 1)
 
+/- English proof (translation)
+Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ v), if_pos rfl]`. Use `congr 1`. Use `Finset.sum_congr rfl fun v' hv' => ?_` and prove the remaining obligations. Rewrite using `[if_neg (Finset.ne_of_mem_erase hv')]`.
+-/
 theorem sum_ite_single {ι : Type} [Fintype ι] [DecidableEq ι] (v : ι) (a : ℝ) (f : ι → ℝ) :
     ∑ v', (if v' = v then a else f v') = a + ∑ v' ∈ univ.erase v, f v' := by
   rw [← Finset.add_sum_erase _ _ (Finset.mem_univ v), if_pos rfl]
@@ -30,6 +33,9 @@ theorem sum_ite_single {ι : Type} [Fintype ι] [DecidableEq ι] (v : ι) (a : �
 
 variable {X Y}
 
+/- English proof (translation)
+Unfold `PlaceB at *`. Break down `hP with ⟨hi, hL | hL⟩ | ⟨h1, h2, h3⟩` into its components or cases. Conclude with `Or.inl ⟨hi, Or.inl (Pend.LowAt.mono Y h hL)⟩`. Conclude with `Or.inl ⟨hi, Or.inr (h.trans hL)⟩`. Conclude with `Or.inr ⟨h1, h2, h.trans h3⟩`.
+-/
 theorem PlaceB.mono {j : ℕ} {v : X.Pl} {i : ℕ} {g g' : ℝ} (h : g' ≤ g) (hP : PlaceB X Y j v i g) :
     PlaceB X Y j v i g' := by
   unfold PlaceB at *
@@ -38,11 +44,23 @@ theorem PlaceB.mono {j : ℕ} {v : X.Pl} {i : ℕ} {g g' : ℝ} (h : g' ≤ g) (
   · exact Or.inl ⟨hi, Or.inr (h.trans hL)⟩
   · exact Or.inr ⟨h1, h2, h.trans h3⟩
 
+/- English proof (translation)
+Unfold `EntB at *`. Introduce `La La' h1 h2 φ I n`. Conclude with `Pend.geC_mono Y h (hB La La' h1 h2 φ I n)`.
+-/
 theorem EntB.mono {j : ℕ} {i0 : X.Pl → ℕ} {g g' : ℝ} (h : g' ≤ g) (hB : EntB X Y j i0 g) : EntB X Y j i0 g' := by
   unfold EntB at *
   intro La La' h1 h2 φ I n
   exact Pend.geC_mono Y h (hB La La' h1 h2 φ I n)
 
+/- English proof (translation)
+Establish `hD : 0 < ∑ v, gP v - g'` using `sub_pos.mpr hg`. Establish `hc : (0 : ℝ) < Fintype.card X.Pl + 1` using `by positivity`. Take `⟨ε, hε⟩ : ∃ ε : ℝ, ε = (∑ v, gP v - g') / (Fintype.card X.Pl + 1)` from `⟨_, rfl⟩`. Establish `hε0 : 0 < ε` using `by rw [hε]; exact div_pos hD hc`. Establish `hεc : (Fintype.card X.Pl : ℝ) * ε < ∑ v, gP v - g'`.
+
+Establish `h1 : ε * (Fintype.card X.Pl + 1) = ∑ v, gP v - g'`. Rewrite using `[hε]`. Conclude with `div_mul_cancel₀ _ hc.ne'`. Use the polynomial consequences of the given equalities and inequalities. Establish `hq : ∀ v, ∃ q : ℚ, gP v - ε < q ∧ (q : ℝ) < gP v` using `fun v => exists_rat_btwn (by linarith)`.
+
+Use `choose q hq1 hq2 using hq`. Establish `hsum : g' ≤ ∑ v, (q v : ℝ)`. Establish `h1 : ∑ v, (gP v - ε) ≤ ∑ v, (q v : ℝ)` using `Finset.sum_le_sum fun v _ => (hq1 v).le`. Rewrite `h1` using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `EntB.mono hsum (hE j hj i0 q fun v => PlaceB.mono (hq2 v).le (hP v))`.
+-/
 theorem ent_strict (hE : EntCondition X Y) (j : ℕ) (hj : j < X.mm) (i0 : X.Pl → ℕ) (gP : X.Pl → ℝ)
     (hP : ∀ v, PlaceB X Y j v (i0 v) (gP v)) (g' : ℝ) (hg : g' < ∑ v, gP v) : EntB X Y j i0 g' := by
   classical
@@ -62,6 +80,17 @@ theorem ent_strict (hE : EntCondition X Y) (j : ℕ) (hj : j < X.mm) (i0 : X.Pl 
     linarith
   exact EntB.mono hsum (hE j hj i0 q fun v => PlaceB.mono (hq2 v).le (hP v))
 
+/- English proof (translation)
+Establish `he0 : (0 : ℝ) ≤ (X.eO : ℝ)` using `Nat.cast_nonneg _`. Take `⟨x, hx⟩ : ∃ x : ℝ, x = (g - X.dG j) * (X.eO : ℝ)` from `⟨_, rfl⟩`. Establish `hc1 : (⌈x⌉ : ℝ) < x + 1` using `Int.ceil_lt_add_one x`. Establish `hc2 : x ≤ (⌈x⌉ : ℝ)` using `Int.le_ceil x`. Take `⟨δ, hδ⟩ : ∃ δ : ℝ, δ = (x - ⌈x⌉ + 1) / ((X.eO : ℝ) + 1)` from `⟨_, rfl⟩`.
+
+Establish `hδ0 : 0 < δ` using `by rw [hδ]; exact div_pos (by linarith) (by linarith)`. Establish `hδe : δ * (X.eO : ℝ) < x - ⌈x⌉ + 1`. Establish `h1 : δ * ((X.eO : ℝ) + 1) = x - ⌈x⌉ + 1`. Rewrite using `[hδ]; exact div_mul_cancel₀ _ (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hlin : (g - δ - X.dG j) * (X.eO : ℝ) = x - δ * (X.eO : ℝ)` using `by rw [hx]; ring`. Establish `hceil : ⌈(g - δ - X.dG j) * (X.eO : ℝ)⌉ = ⌈(g - X.dG j) * (X.eO : ℝ)⌉`. Rewrite using `[← hx, Int.ceil_eq_iff, hlin]`. Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h` using `hF j hj i0 vs (g - δ) hnd hr h0 (hB _ (by linarith)) G hG`. Establish `hv : X.vsc (g - δ - X.dG j) = X.vsc (g - X.dG j)` using `by rw [vsc_def, vsc_def, hceil]`. Unfold `Sys.vGe at h ⊢`. Rewrite `h` using `[hv]`.
+
+Conclude with `h`.
+-/
 theorem formB_lim (hF : FormB X Y) (j : ℕ) (hj : j < X.mm) (i0 : X.Pl → ℕ) (vs : List X.Pl) (g : ℝ) (hnd : vs.Nodup)
     (hr : ∀ v, i0 v ≤ X.G.P.r) (h0 : ∀ v, v ∉ vs → i0 v = 0) (hB : ∀ g' < g, EntB X Y j i0 g')
     (G : X.Fm j) (hG : G ∈ X.Int j) : X.vGe (j + 1) (TtL X (j + 1) i0 vs (X.Kz j G)) (g - X.dG j) := by
@@ -87,12 +116,18 @@ theorem formB_lim (hF : FormB X Y) (j : ℕ) (hj : j < X.mm) (i0 : X.Pl → ℕ)
   rw [hv] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `formB_lim hF j hj i0 vs (∑ v, gP v) hnd hr h0 (fun g' hg' => ent_strict hE j hj i0 gP hP g' hg') G hG`.
+-/
 theorem form_of_place (hF : FormB X Y) (hE : EntCondition X Y) (j : ℕ) (hj : j < X.mm) (i0 : X.Pl → ℕ) (vs : List X.Pl)
     (gP : X.Pl → ℝ) (hnd : vs.Nodup) (hr : ∀ v, i0 v ≤ X.G.P.r) (h0 : ∀ v, v ∉ vs → i0 v = 0)
     (hP : ∀ v, PlaceB X Y j v (i0 v) (gP v)) (G : X.Fm j) (hG : G ∈ X.Int j) :
     X.vGe (j + 1) (TtL X (j + 1) i0 vs (X.Kz j G)) (∑ v, gP v - X.dG j) :=
   formB_lim hF j hj i0 vs (∑ v, gP v) hnd hr h0 (fun g' hg' => ent_strict hE j hj i0 gP hP g' hg') G hG
 
+/- English proof (translation)
+Unfold `Conclusion0`. Introduce `j hj G hG`. Establish `h` using `hF j hj (fun _ => 0) [] 0 List.nodup_nil (fun _ => Nat.zero_le _) (fun _ _ => rfl) (fun La La' h1 h2 φ I n => h3 j hj La La' h1 h2 φ I n) G hG`. Rewrite `h` using `[zero_sub]`. Conclude with `h`.
+-/
 theorem form_valuation_of_bound (D : Formalism.BasicNotions.D7) (hF : FormB X Y) (h3 : adm3 D X Y) : Conclusion0 D X := by
   unfold Conclusion0
   intro j hj G hG
@@ -101,6 +136,11 @@ theorem form_valuation_of_bound (D : Formalism.BasicNotions.D7) (hF : FormB X Y)
   rw [zero_sub] at h
   exact h
 
+/- English proof (translation)
+Unfold `projection_lemma_base_level`. Introduce `j hj La La' h1 h2 φ I n`. Use `choose q hq using hQ`. Establish `hP : ∀ v, PlaceB X Y j v 0 (q v (j + 1))` using `fun v => Or.inl ⟨rfl, Or.inl (by rw [← hq v (j + 1)]; exact h2U v j hj)⟩`. Establish `h` using `hE j hj (fun _ => 0) (fun v => q v (j + 1)) hP La La' h1 h2 φ I n`.
+
+Establish `hs : ∑ v, X.g0v v (j + 1) = ∑ v, ((q v (j + 1) : ℚ) : ℝ)` using `Finset.sum_congr rfl fun v _ => hq v (j + 1)`. Rewrite using `[hs]`. Conclude with `h`.
+-/
 theorem theorem_A_entries_of_corollary (D : Formalism.BasicNotions.D7) (hE : EntCondition X Y) (hQ : RatCondition X) (h2U : VolumeRatio₂ D X Y) : projection_lemma_base_level D X Y := by
   unfold projection_lemma_base_level
   intro j hj La La' h1 h2 φ I n
@@ -113,12 +153,22 @@ theorem theorem_A_entries_of_corollary (D : Formalism.BasicNotions.D7) (hE : Ent
   rw [hs]
   exact h
 
+/- English proof (translation)
+Unfold `Conclusion2`. Introduce `j hj G hG`. Conclude with `form_of_place hF hE j hj (fun _ => 0) [] (fun v => X.g0v v (j + 1)) List.nodup_nil (fun _ => Nat.zero_le _) (fun _ _ => rfl) (fun v => Or.inl ⟨rfl, Or.inl (h2U v j hj)⟩) G hG`.
+-/
 theorem slopeEstimate_of_lemmaB_slopeLine (D : Formalism.BasicNotions.D7) (hF : FormB X Y) (hE : EntCondition X Y) (h2U : VolumeRatio₂ D X Y) : Conclusion2 D X := by
   unfold Conclusion2
   intro j hj G hG
   exact form_of_place hF hE j hj (fun _ => 0) [] (fun v => X.g0v v (j + 1)) List.nodup_nil
     (fun _ => Nat.zero_le _) (fun _ _ => rfl) (fun v => Or.inl ⟨rfl, Or.inl (h2U v j hj)⟩) G hG
 
+/- English proof (translation)
+Unfold `MassRatio₂`. Introduce `v j hj G hG`. Establish `hP : ∀ v', PlaceB X Y j v' 0 (if v' = v then X.gv v (j + 1) - X.alEven v else X.g0v v' (j + 1))`. Introduce `v'`. Distinguish the cases in `hv : v' = v`.
+
+Substitute `hv` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `Or.inl ⟨rfl, Or.inr le_rfl⟩`. Rewrite using `[if_neg hv]`. Conclude with `Or.inl ⟨rfl, Or.inl (h2U v' j hj)⟩`.
+
+Establish `h` using `form_of_place hF hE j hj (fun _ => 0) [] (fun v' => if v' = v then X.gv v (j + 1) - X.alEven v else X.g0v v' (j + 1)) List.nodup_nil (fun _ => Nat.zero_le _) (fun _ _ => rfl) hP G hG`. Use `beta_reduce at h`. Rewrite `h` using `[sum_ite_single]`. Conclude with `h`.
+-/
 theorem hecke_integral_of_forms (D : Formalism.BasicNotions.D7) (hF : FormB X Y) (hE : EntCondition X Y) (h2U : VolumeRatio₂ D X Y) : MassRatio₂ D X := by
   classical
   unfold MassRatio₂
@@ -139,6 +189,13 @@ theorem hecke_integral_of_forms (D : Formalism.BasicNotions.D7) (hF : FormB X Y)
   rw [sum_ite_single] at h
   exact h
 
+/- English proof (translation)
+Take `⟨hi1, hi2⟩` from `Finset.mem_Icc.mp hi`. Establish `hP : ∀ v', PlaceB X Y j v' (if v' = v then i else 0) (if v' = v then X.gv v (j + 1) else X.g0v v' (j + 1))`. Introduce `v'`. Distinguish the cases in `hv : v' = v`. Substitute `hv` using the available equality.
+
+Rewrite using `[if_pos rfl, if_pos rfl]`. Conclude with `Or.inr ⟨hi1, hi2, le_rfl⟩`. Rewrite using `[if_neg hv, if_neg hv]`. Conclude with `Or.inl ⟨rfl, Or.inl (h2U v' j hj)⟩`. Apply the tactic sequence `have h := form_of_place hF hE j hj (fun v' => if v' = v then i else 0) [v] (fun v' => if v' = v then X.gv v (j + 1) else X.g0v v' (j + 1)) (List.nodup_singleton v) (fun v' => by split_ifs <;> omega) (fun v' hv' => if_neg (by simpa using hv')) hP G hG`.
+
+Use `beta_reduce at h`. Rewrite `h` using `[sum_ite_single]`. Simplify `h` using `only [TtL, List.foldr_cons, List.foldr_nil, eq_self_iff_true, if_true, ↓reduceIte]`.
+-/
 theorem hecke_valuation_of_entries (D : Formalism.BasicNotions.D7) (hF : FormB X Y) (hE : EntCondition X Y) (h2U : VolumeRatio₂ D X Y) (v : X.Pl) (j : ℕ)
     (hj : j < X.mm) (i : ℕ) (hi : i ∈ Icc 1 X.G.P.r) (G : X.Fm j) (hG : G ∈ X.Int j) :
     X.vGe (j + 1) (X.Tt v i (j + 1) (X.Kz j G))
@@ -162,10 +219,16 @@ theorem hecke_valuation_of_entries (D : Formalism.BasicNotions.D7) (hF : FormB X
   rw [sum_ite_single] at h
   simpa only [TtL, List.foldr_cons, List.foldr_nil, eq_self_iff_true, if_true, ↓reduceIte] using h
 
+/- English proof (translation)
+Introduce `v j hj` and use `⟨fun i hi F hF' => hB1 v j hj i hi F hF', fun i hi G hG => hecke_valuation_of_entries D hF hE h2U v j hj i hi G hG⟩`.
+-/
 theorem latticeChain_succ_of_partial (D : Formalism.BasicNotions.D7) (hF : FormB X Y) (hE : EntCondition X Y) (h2U : VolumeRatio₂ D X Y) (hB1 : HeckeIntegralLevel X) :
     PointsLemma D X := fun v j hj =>
   ⟨fun i hi F hF' => hB1 v j hj i hi F hF', fun i hi G hG => hecke_valuation_of_entries D hF hE h2U v j hj i hi G hG⟩
 
+/- English proof (translation)
+Unfold `Conclusion5`. Use `⟨fun v => relative_presentation_of_d7 D _ _ _ _ _ _ _ _ _ _ _ _ (X.std v), fun VV F hF => ?_⟩` and prove the remaining obligations. Conclude with `h5D X.gv X.g0v X.Conclusion₂ X.Svv VV (fun _ _ _ _ => le_rfl) h2U (fun _ _ _ _ => le_rfl) (fun _ _ => le_rfl) F hF`.
+-/
 theorem ramifiedLattice_of_chain_estimates (D : Formalism.BasicNotions.D7) (h2U : VolumeRatio₂ D X Y) (h5D : LowTermBound D X Y) : Conclusion5 D X := by
   unfold Conclusion5
   refine ⟨fun v => relative_presentation_of_d7 D _ _ _ _ _ _ _ _ _ _ _ _ (X.std v), fun VV F hF => ?_⟩

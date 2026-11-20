@@ -14,6 +14,11 @@ noncomputable section
 
 namespace LevelTowerAlt.Comparison₂
 
+/- English proof (translation)
+Establish `h7` using `isPshAdd A _ _ (isPotentialAdd _ _ _ hP (pot_rsmul hΘ c)) (pot_rsmul hΘ (c' - c)) h (isPshRsmul A _ _ (sub_nonneg.2 hc) hΘ (TailBoundAlt.isPsh_of_isPosPot _ _ hΘp))`. Use `TailBoundAlt.isPsh_congr A _ _ h7 (fun x y hy => ⟨hy, hy.2⟩) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x y`. Use `show _ + _ * Θ.φ x y = P.φ x y + c * Θ.φ x y + _ * Θ.φ x y`. Use `show P.φ x y + _ = _`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psh_mono {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {P Θ : LocPot X} (hP : IsPotential A P)
     (hΘ : IsPotential A Θ) (hΘp : IsPosPot A Θ) {c c' : ℝ} (hc : c ≤ c') (h : IsPsh A (P + Θ.rsmul c)) :
     IsPsh A (P + Θ.rsmul c') := by
@@ -25,6 +30,11 @@ theorem psh_mono {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
   show P.φ x y + _ = _
   ring
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun t : ℝ => Real.log (1 / t)) (𝓝[>] 0) atTop`. Simplify using `only [one_div]`. Conclude with `Real.tendsto_log_atTop.comp tendsto_inv_nhdsGT_zero`. Establish `h2` using `(Real.isLittleO_log_id_atTop.tendsto_div_nhds_zero.comp h1).const_mul C`. Rewrite `h2` using `[mul_zero]`.
+
+Conclude with `h2.congr fun t => by simp [epsT, mul_div_assoc]`.
+-/
 theorem tendsto_epsT (C : ℝ) : Tendsto (epsT C) (𝓝[>] 0) (𝓝 0) := by
   have h1 : Tendsto (fun t : ℝ => Real.log (1 / t)) (𝓝[>] 0) atTop := by
     simp only [one_div]
@@ -35,12 +45,20 @@ theorem tendsto_epsT (C : ℝ) : Tendsto (epsT C) (𝓝[>] 0) (𝓝 0) := by
 
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
+/- English proof (translation)
+Simplify using `only [Top.combLine]`. Rewrite using `[Real.log_prod fun a _ => (zpow_pos ((A a).pos z hz) _).ne']`. Simplify using `only [Real.log_zpow]`.
+-/
 theorem log_comb {σ : Type} [Fintype σ] (A : σ → HermLine J) (n : σ → ℤ) {z : (Σ k, J k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     Real.log ((Top.combLine A n).h z) = ∑ a, (n a : ℝ) * Real.log ((A a).h z) := by
   simp only [Top.combLine]
   rw [Real.log_prod fun a _ => (zpow_pos ((A a).pos z hz) _).ne']
   simp only [Real.log_zpow]
 
+/- English proof (translation)
+Take `⟨u', v', h1, -, h2⟩` from `OneModel.exists_pair_ne h hz`. Establish `h3 : (u * v' - u' * v) * g ∈ P`. Use `P.sub_mem (P.mul_mem_left u' huv) (P.mul_mem_left u h1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h4 : evC z (u * v' - u' * v) = 0` using `hz.2 _ ((hP.mem_or_mem h3).resolve_right h.2.1)`. Introduce `h0`. Establish `h5 : evC z (u * v' - u' * v) = evC z u * evC z v' - evC z u' * evC z v` using `by simp [evC]`. Rewrite `h4` using `[h5, h0, mul_zero, sub_zero]`. Conclude with `mul_ne_zero hu h2 h4`.
+-/
 theorem den_ne {P : Ideal (MRing J)} (hP : P.IsPrime) {f g u v : MRing J} (h : UnitRatio P f g) {z : (Σ k, J k) → ℂ}
     (hz : z ∈ mcPts P) (huv : u * f - v * g ∈ P) (hu : evC z u ≠ 0) : evC z v ≠ 0 := by
   obtain ⟨u', v', h1, -, h2⟩ := OneModel.exists_pair_ne h hz
@@ -54,11 +72,17 @@ theorem den_ne {P : Ideal (MRing J)} (hP : P.IsPrime) {f g u v : MRing J} (h : U
   rw [h5, h0, mul_zero, sub_zero] at h4
   exact mul_ne_zero hu h2 h4
 
+/- English proof (translation)
+Establish `: 0 < ‖a‖ / ‖b‖` using `div_pos (norm_pos_iff.2 ha) (norm_pos_iff.2 hb)`. Rewrite using `[Real.log_div (mul_pos this hx).ne' hy.ne', Real.log_mul this.ne' hx.ne']`.
+-/
 theorem log_defect {a b : ℂ} (ha : a ≠ 0) (hb : b ≠ 0) {x y : ℝ} (hx : 0 < x) (hy : 0 < y) :
     Real.log (‖a‖ / ‖b‖ * x / y) = Real.log (‖a‖ / ‖b‖) + Real.log x - Real.log y := by
   have : 0 < ‖a‖ / ‖b‖ := div_pos (norm_pos_iff.2 ha) (norm_pos_iff.2 hb)
   rw [Real.log_div (mul_pos this hx).ne' hy.ne', Real.log_mul this.ne' hx.ne']
 
+/- English proof (translation)
+The claim follows from `|∑ a, (m a : ℝ) * u a| ≤ (∑ a, |(m a : ℝ)|) * c := by rw [Finset.sum_mul] refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun a _ => ?_) rw [abs_mul] exact mul_le_mul_of_nonneg_left (h a) (abs_nonneg _)`.
+-/
 theorem abs_sum_le {σ : Type} [Fintype σ] (m : σ → ℤ) {u : σ → ℝ} {c : ℝ} (h : ∀ a, |u a| ≤ c) :
     |∑ a, (m a : ℝ) * u a| ≤ (∑ a, |(m a : ℝ)|) * c := by
   rw [Finset.sum_mul]
@@ -66,6 +90,73 @@ theorem abs_sum_le {σ : Type} [Fintype σ] (m : σ → ℤ) {u : σ → ℝ} {c
   rw [abs_mul]
   exact mul_le_mul_of_nonneg_left (h a) (abs_nonneg _)
 
+/- English proof (translation)
+Take `⟨γ, c, hγ, hγn, hz⟩` from `exists_bdry_form Re alg`. Establish `hjb` using `GlobalTheory.T.block_join_inclusions_compat`. Establish `hn : rename v₁ γ ∉ mCoordIdeal y` using `fun h => hγn (by`. Rewrite using `[← he₁, ← hjb.2.1 K₁ J₁ K₃ ρ κ₁ v₁ Ω₃ y hb₁]`. Conclude with `h)`.
+
+Establish `hBn : β * rename v₁ γ ∉ mCoordIdeal y` using `fun h => (har.2.1.1.mem_or_mem h).elim hβn hn`. Establish `hBh` using `Build.isMultiHomog_mul hβ (isMultiHomog_rename hb₁ hγ)`. Take `⟨K', _, ρ', _, κ, v, y', J', R, Amp, hb, hy, hfield, har', -, -, hpot, hpos, hbad⟩` from `GlobalTheory.T.block_extension_arith_var hK K₃ ρ Ω₃ y d _ _ har hBh hBn`. Use `⟨K', inferInstance, ρ', inferInstance, κ, v, y', hb, hy, hfield, har', fun Mt l hMt hl a b n hab => ?_⟩` and prove the remaining obligations. Establish `e₀ : imageZ v (mCoordIdeal y') = mCoordIdeal y` using `by rw [hjb.2.1 K₃ ρ K' ρ' κ v Ω₃ y' hb, hy]`.
+
+Establish `hc₁` using `hjb.2.2 K₁ J₁ K₃ ρ K' ρ' κ₁ v₁ κ v hb₁ hb`. Establish `hc₂` using `hjb.2.2 K J K₃ ρ K' ρ' κ₂ v₂ κ v hb₂ hb`. Establish `e₁ : imageZ (v ∘ v₁) (mCoordIdeal y') = P₁`. Rewrite using `[hjb.2.1 K₁ J₁ K' ρ' (κ ∘ κ₁) (v ∘ v₁) Ω₃ y' hc₁.1, ← he₁, ← hy]`. Both sides reduce to the same expression.
+
+Establish `e₂ : imageZ (v ∘ v₂) (mCoordIdeal y') = mCoordIdeal D.y`. Rewrite using `[hjb.2.1 K J K' ρ' (κ ∘ κ₂) (v ∘ v₂) Ω₃ y' hc₂.1, ← he₂, ← hy]`. Both sides reduce to the same expression. Take `⟨π, hπ, l₁, p₁, q₁⟩` from `side hc₁.1 Re e₁ R har' alg`. Establish `hB0 : ∀ z, evC z (rename v (β * rename v₁ γ)) = evC (fun p => z (v p)) β * evC z (rename (v ∘ v₁) γ)`.
+
+Introduce `z`. Rewrite using `[evC_rename, evC_mul, evC_rename (v ∘ v₁), evC_rename v₁]`. Both sides reduce to the same expression. Establish `hbd₁ : ∀ x, π x ∈ bdry S.s → evC (R.lift x x) (rename v (β * rename v₁ γ)) = 0` using `fun x hx => by`. Rewrite using `[hB0, evC_bdry hc₁.1 Re e₁ R l₁ hγ hz x hx, mul_zero]`.
+
+Take `⟨L, s, nb, mb, Wb, C₅, C, t₀, hL, hsec, hsnc, hnorm, hbd, ht₁, -, hm, -⟩` from `GlobalTheory.T.common_resolution_potential_comparison hI.pullback K' ρ' _ J' d R Amp (rename v (β * rename v₁ γ)) _ σ S S π π hπ hπ hpot hpos (isMultiHomog_rename hb hBh) (fun h => hBn (e₀ ▸ h)) hbad hbd₁ hbd₁`. Establish `ht₀ : 0 < t₀` using `(hm (Classical.arbitrary σ)).2.1.1`. Establish `hp₁` using `GlobalTheory.T.block_pullback_herm_line K₁ J₁ K' ρ' (κ ∘ κ₁) (v ∘ v₁) hc₁.1`. Use `choose r hr using fun a => (hp₁.1 (Re.ref a)).exists`. Establish `hrs : ∀ a, IsSmoothHerm (r a)` using `fun a => hp₁.2.1 _ _ (hr a) (Re.ref_smooth a)`.
+
+Establish `hla : ∀ t a, (l t a).a = (r a).a` using `fun t a => by rw [(hl t a).1, (hr a).1, Re.line_deg]`. Establish `hx : ∀ x, R.lift x x ∈ mcPts (mCoordIdeal y')` using `fun x => R.mem x x (R.mem_U x)`. Establish `hq : ∀ a t, 0 < t → t ≤ t₀ → ∀ x, Real.log ((l t a).h (R.lift x x)) - Real.log ((r a).h (R.lift x x)) = S.phT a t (π x)` using `fun a t h0 h1 x => by`. Rewrite using `[(hl t a).2, (hr a).2, q₁ a t h0 (h1.trans ht₁) x, add_sub_cancel_left]`. Establish `hlr : ∀ x, 1 ≤ Real.log (rW L s x)` using `fun x => (Real.le_log_iff_exp_le ((Real.exp_pos 1).trans_le (rW_ge L s hnorm x))).2 (rW_ge L s hnorm x)`.
+
+Establish `hph : ∀ a, ∀ x ∉ bdry s, |S.ph a (π x)| ≤ |C₅| * Real.log (rW L s x)` using `fun a x hx => by`. Establish `h1 : _ ≤ S.ph a (π x) ∧ S.ph a (π x) ≤ _` using `(hm a).1.2.2.2 x hx`. Use `hlr x` as an intermediate fact. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> nlinarith [le_abs_self C₅, abs_nonneg C₅, h1.1, h1.2]`.
+
+Establish `hpT : ∀ a t, 0 < t → t ≤ t₀ → ∀ x ∉ bdry s, |S.phT a t (π x)| ≤ (|C| + |C₅|) * Real.log (rW L s x) ∧ S.phT a t (π x) ≤ |C|` using `fun a t h0 h1 x hx => by`. Take `⟨-, h2, h3, -⟩` from `(hm a).2.1.2.2 t h0 h1`. Establish `h4 : S.phT a t (π x) ≤ C` using `h2 x`. Establish `h5 : S.ph a (π x) ≤ S.phT a t (π x)` using `h3 x hx`. Use `hlr x` as an intermediate fact.
+
+Establish `h6` using `(abs_le.1 (hph a x hx)).1`. Apply the tactic sequence `refine ⟨abs_le.2 ⟨?_, ?_⟩, h4.trans (le_abs_self C)⟩ <;> nlinarith [le_abs_self C, abs_nonneg C₅, abs_nonneg C]`. Take `⟨ref, Cb, hrefs, hev, hun⟩` from `hB K J II Ψ Ω W D Hd M Sr B K' ρ' _ J' d R _ _ _ Mt hSr hc₂.1 e₂ hpot hpos hMt`. Take `⟨L₁, hL₁⟩` from `((GlobalTheory.T.block_pullback_herm_line K₁ J₁ K₃ ρ κ₁ v₁ hb₁).1 Sg).exists`. Take `⟨L₂, hL₂⟩` from `((GlobalTheory.T.block_pullback_herm_line K J K₃ ρ κ₂ v₂ hb₂).1 (muVert Hd B)).exists`.
+
+Take `⟨f, g, hfg, hdef⟩` from `hiso L₁ L₂ hL₁ hL₂`. Establish `hcr` using `(GlobalTheory.T.iso_line_on_equivalence K' ρ' _ ∅ har'.2.1 (Set.empty_subset _)).2.2.2 K₁ J₁ _ _ σ Re.ref r m hc₁.1 hr`. Establish `hfg' : IsLineIso (mCoordIdeal y') (Top.combLine r m).a ref.a (rename v f) (rename v g)`. Take `⟨t, ht⟩` from `hev.exists`. Rewrite using `[hcr.1, ← hSa, hc₁.2, ← hL₁.1, ← ht.2.1, (hMt t).1, hc₂.2, muReg, smoothRep_a]`.
+
+Use `(GlobalTheory.T.line_isomorphism_groupoid_laws K₃ ρ _ har.2.1).2.2.2.2 K' ρ' κ v _ hb e₀ _ _ _ _ hfg` as an intermediate fact. Rewrite `this` using `[hL₂.1]`. Then use the resulting hypothesis. Take `⟨w, hw, -, hws⟩` from `GlobalTheory.T.line_isomorphism_defect_function K' ρ' _ J' d R _ ref _ _ har'.2.1 hfg' ((GlobalTheory.T.hermitian_combination_smooth_conj K' ρ' σ r m).1 hrs) hrefs`. Take `⟨B₀, hB₀⟩` from `isCompact_univ.exists_bound_of_continuousOn (OneModel.continuous_of_smooth R.A hws).continuousOn`. Establish `hB₀' : ∀ x, |w (R.lift x x)| ≤ |B₀|` using `fun x => (hB₀ x trivial).trans (le_abs_self _)`.
+
+Establish `hmain : ∀ x ∉ bdry s, (fun p => R.lift x x ((v ∘ v₂) p)) ∉ D.Bd ∧ w (R.lift x x) = ∑ a, (m a : ℝ) * S.ph a (π x) + Real.log (ref.h (R.lift x x)) - Real.log ((muVert Hd B).h fun p => R.lift x x ((v ∘ v₂) p))`. Introduce `x hxb`. Establish `hz' : (fun p => R.lift x x (v p)) ∈ mcPts (mCoordIdeal y)` using `e₀ ▸ (GlobalTheory.T.block_pullback_herm_line K₃ ρ K' ρ' κ v hb).2.2.1 _ _ (hx x)`. Establish `hne : evC (R.lift x x) (rename v (β * rename v₁ γ)) ≠ 0` using `fun h => hxb ((hbd x).2 h)`. Establish `hβ' : evC (fun p => R.lift x x (v p)) β ≠ 0` using `fun h => hne (by rw [hB0, h, zero_mul])`.
+
+Use `⟨hbd₂ _ hz' hβ', ?_⟩` and prove the remaining obligations. Establish `hm1 : (fun p => R.lift x x ((v ∘ v₁) p)) ∈ mcPts P₁` using `e₁ ▸ hp₁.2.2.1 _ _ (hx x)`. Take `⟨x₁, hx₁⟩` from `GlobalTheory.T.log_resolution_covers_complex_points K₁ J₁ _ _ d Re.R Re.arith _ hm1`. Establish `ε₁ : π x = Re.π x₁` using `l₁ x x₁ hx₁`. Take `⟨u, u', huu, hu, hu'⟩` from `OneModel.exists_pair_ne hfg.2 hz'`.
+
+Establish `k₁` using `hdef _ ⟨hz', hβ'⟩ u u' huu hu`. Establish `k₂` using `hw _ (hx x) (rename v u) (rename v u') (by`. Establish `h' : u * f - u' * g ∈ imageZ v (mCoordIdeal y')` using `e₀ ▸ huu`. Establish `: rename v (u * f - u' * g) ∈ mCoordIdeal y'` using `h'`. Simplify using `using this) (by rw [evC_rename]; exact hu)`.
+
+Rewrite `k₂` using `[evC_rename, evC_rename, log_defect hu' hu (ref.pos _ (hx x).1) (HermLine.pos _ _ (hx x).1), hcr.2]`. Rewrite `k₁` using `[log_defect hu' hu (L₂.pos _ hz'.1) (L₁.pos _ hz'.1), hL₁.2, hL₂.2]`. Establish `k₃` using `log_diff_orbit hSa hm1.1 hx₁`. Rewrite `k₃` using `[hSh x₁ (fun h => hne (hbd₁ x (ε₁ ▸ h))), log_comb _ _ (Re.R.mem x₁ x₁ (Re.R.mem_U x₁)).1, ← ε₁]`. Simplify using `only [mul_add, Finset.sum_add_distrib, Function.comp_apply] at k₁ k₂ k₃ ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcomb : ∀ t, 0 < t → t ≤ t₀ → ∀ x, Real.log ((Top.combLine (fun o : Option σ => o.elim (SheetDecomposition.PF.cst ρ') (l t)) fun o => o.elim 0 m).h (R.lift x x)) - Real.log ((Top.combLine r m).h (R.lift x x)) = ∑ a, (m a : ℝ) * S.phT a t (π x)` using `fun t h0 h1 x => by`. Rewrite using `[log_comb _ _ (hx x).1, log_comb _ _ (hx x).1, Fintype.sum_option]`. Simplify using `only [Option.elim, Int.cast_zero, zero_mul, zero_add, ← hq _ t h0 h1 x, mul_sub, Finset.sum_sub_distrib]`. Establish `hsm : (0 : ℝ) ≤ ∑ a, |(m a : ℝ)|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+
+Establish `hlow : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ x ∉ bdry s, |Real.log ((Mt t).h (R.lift x x)) - Real.log (ref.h (R.lift x x))| ≤ (|Cb| + (∑ a, |(m a : ℝ)|) * |C₅| + |B₀|) * Real.log (rW L s x)` using `by filter_upwards [hev] with t ht x hxb`. Establish `h1` using `ht.2.2.2.1 x`. Establish `h2` using `ht.2.2.2.2 x (hmain x hxb).1`. Establish `h3` using `(hmain x hxb).2`. Establish `h4` using `abs_le.1 (abs_sum_le m fun a => hph a x hxb)`.
+
+Establish `h5` using `abs_le.1 (hB₀' x)`. Establish `h6` using `hlr x`. Establish `h7` using `mul_nonneg hsm (abs_nonneg C₅)`. Apply the tactic sequence `refine abs_le.2 ⟨?_, ?_⟩ <;> nlinarith [le_abs_self Cb, abs_nonneg Cb, abs_nonneg B₀]`. Use `hR hI II hII K' ρ' _ J' d a b R _ L s nb mb Wb (Option σ) _ Mt _ n (rename v f) (rename v g) (fun t z => w z + (Real.log ((Mt t).h z) - Real.log (ref.h z)) - (Real.log ((Top.combLine (fun o : Option σ => o.elim (SheetDecomposition.PF.cst ρ') (l t)) fun o => o.elim 0 m).h z) - Rea …` and prove the remaining obligations.
+
+Introduce and unpack `(_ | i)`. Use `⟨SheetDecomposition.PF.cst ρ', 0, SheetDecomposition.PF.cst_smooth, Eventually.of_forall fun t => ⟨SheetDecomposition.PF.cst_smooth, rfl, ?_, fun x _ => by simp⟩⟩` and prove the remaining obligations. Introduce `x j z _ u`. Establish `: (potOf R (SheetDecomposition.PF.cst ρ') + (potOf R Amp).rsmul 0).φ x ∘ (R.A.chart j).symm = fun _ => -1`. Use function extensionality and compare the values at `z`.
+
+Use `show Real.log (Real.exp (-1)) + 0 * _ = _`. Simplify using the standard rewrite rules. Conclude with `(this ▸ by simp [ReciprocityTheory.AnForm.levi] : 0 ≤ ReciprocityTheory.AnForm.levi ((potOf R (SheetDecomposition.PF.cst ρ') + (potOf R Amp).rsmul 0).φ x ∘ (R.A.chart j).symm) z u)`. Use `⟨r i, 1 + (|C| + |C₅|), hrs i, ?_⟩ filter_upwards [Ioc_mem_nhdsGT ht₀, (tendsto_epsT C).eventually_le_const one_pos] with t ht hε` and prove the remaining obligations. Establish `hs : IsSmoothHerm (l t i)` using `hp₁.2.1 _ _ (hl t i) (Re.line_smooth i t ht.1 (ht.2.trans ht₁))`.
+
+Take `⟨a1, -, -, -, a2, -⟩` from `(hm i).2.1.2.2 t ht.1 ht.2`. Use `⟨hs, hla t i, ?_, fun x hxb => ?_⟩` and prove the remaining obligations. Establish `hP` using `isPotentialAdd R.A _ _ (hm i).1.1 (isPotential_ofFun _ _ a1)`. Use `psh_mono (isPotential_potOf R hs) hpot hpos (hε.trans (le_add_of_nonneg_right (by positivity))) ?_` and prove the remaining obligations. Use `psh_of_locRe (isPotentialAdd _ _ _ (isPotential_potOf R hs) (pot_rsmul hpot _)) (isPotentialAdd _ _ _ hP (pot_rsmul hpot _)) (fun x => LocRe.congr (p₁ i _ (hr i) x trivial) ?_) a2` and prove the remaining obligations.
+
+Use `filter_upwards [(R.isOpen_U x).mem_nhds (R.mem_U x)] with z hz`. Establish `h1` using `log_diff_orbit (hla t i) (hx z).1 (R.compat x z z ⟨hz, R.mem_U z⟩)`. Rewrite `h1` using `[hq i t ht.1 ht.2]`. Use `show Real.log ((l t i).h (R.lift x z)) + _ - ((S.th i).φ (π x) (π z) + S.phT i t (π z) + _) = Real.log ((r i).h (R.lift x z)) - (S.th i).φ (π x) (π z)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1` using `hpT i t ht.1 ht.2 x hxb`. Establish `h2` using `hlr x`. Use `show _ ≤ Real.log ((l t i).h _) - _ ∧ Real.log ((l t i).h _) - _ ≤ _`. Rewrite using `[hq i t ht.1 ht.2]`. Conclude with `⟨by nlinarith [(abs_le.1 h1.1).1], by linarith [h1.2, abs_nonneg C₅]⟩`.
+
+Use `⟨ref, |Cb| + (∑ a, |(m a : ℝ)|) * |C₅| + |B₀|, hrefs, ?_⟩` and prove the remaining obligations. Establish `hle : Cb ≤ |Cb| + (∑ a, |(m a : ℝ)|) * |C₅| + |B₀|`. Combine the linear relations using `[le_abs_self Cb, abs_nonneg B₀, mul_nonneg hsm (abs_nonneg C₅)]`. Use `filter_upwards [hev, hlow] with t ht h1`. Conclude with `⟨ht.1, ht.2.1, psh_mono (isPotential_potOf R ht.1) hpot hpos hle ht.2.2.1, fun x hxb => ⟨by linarith [(abs_le.1 (h1 x hxb)).1], (ht.2.2.2.1 x).trans hle⟩⟩`.
+
+Use `filter_upwards [hev, hlow, Ioc_mem_nhdsGT ht₀] with t ht h1 h2`. Use `⟨?_, fun z hz u u' huu hu => ?_, fun x hxb => ?_⟩` and prove the remaining obligations. Use `hfg' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Top.combLine, Fintype.sum_option, Option.elim, zero_smul, zero_add, hla]`. Conclude with `ht.2.1`.
+
+Establish `hu'` using `den_ne har'.2.1.1 hfg'.2 hz huu hu beta_reduce`. Rewrite using `[hw z hz u u' huu hu, log_defect hu' hu (ref.pos _ hz.1) (HermLine.pos _ _ hz.1), log_defect hu' hu ((Mt t).pos _ hz.1) (HermLine.pos _ _ hz.1)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hcomb t h2.1 h2.2]`. Establish `h3` using `abs_le.1 (abs_sum_le m fun a => (hpT a t h2.1 h2.2 x hxb).1)`.
+
+Establish `h4` using `abs_le.1 (h1 x hxb)`. Establish `h5` using `abs_le.1 (hB₀' x)`. Establish `h6` using `mul_le_mul_of_nonneg_left (hlr x) (abs_nonneg B₀)`. Apply the tactic sequence `refine abs_le.2 ⟨?_, ?_⟩ <;> nlinarith`. Introduce `K₀ hK₀ hKc`.
+
+Take `⟨Rm, hRm⟩` from `hKc.exists_bound_of_continuousOn ((rW_open R.A L s hL hsec).1.mono hK₀)`. Establish `h1` using `Metric.tendstoUniformlyOn_iff.1 (hun K₀ (fun x hx => (hmain x (hK₀ hx)).1) hKc)`. Establish `h2 : Tendsto (fun t : ℝ => (∑ a, |(m a : ℝ)|) * (t ^ ((1 : ℝ) / 3) + |epsT C t| * Rm)) (𝓝[>] 0) (𝓝 0)`. Establish `a1 : Tendsto (fun t : ℝ => t ^ ((1 : ℝ) / 3)) (𝓝[>] 0) (𝓝 0)`. Use `(Real.continuousAt_rpow_const 0 (1 / 3) (Or.inr (by norm_num))).tendsto.mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))` as an intermediate fact.
+
+Rewrite `this` using `[Real.zero_rpow (by norm_num)]`. Then use the resulting hypothesis. Simplify using `using (a1.add ((tendsto_epsT C).abs.mul_const Rm)).const_mul (∑ a, |(m a : ℝ)|)`. Use `Metric.tendstoUniformlyOn_iff.2 fun ε hε => ?_` and prove the remaining obligations. Use `filter_upwards [h1 _ (half_pos hε), h2.eventually_lt_const (half_pos hε), Ioc_mem_nhdsGT ht₀] with t a1 a2 a3 x hxK`. Establish `b1` using `a1 x hxK`.
+
+Establish `b2 : ∀ i, |S.phT i t (π x) - S.ph i (π x)| ≤ t ^ ((1 : ℝ) / 3) + |epsT C t| * Rm` using `fun i => by`. Take `⟨-, -, c1, -, -, -, c2, -⟩` from `(hm i).2.1.2.2 t a3.1 a3.2`. Establish `c3 : S.ph i (π x) ≤ S.phT i t (π x)` using `c1 x (hK₀ hxK)`. Establish `c4 : S.phT i t (π x) ≤ S.ph i (π x) + _ + _` using `c2 x (hK₀ hxK)`. Establish `c5 : epsT C t * rW L s x ≤ |epsT C t| * Rm` using `(le_abs_self _).trans (by`.
+
+Rewrite using `[abs_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hRm x hxK) (abs_nonneg _))`. Rewrite using `[abs_of_nonneg (sub_nonneg.2 c3)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `b3` using `abs_le.1 (abs_sum_le m b2)`.
+
+Rewrite `b1`, the goal using `[Real.dist_eq, abs_lt]`. Rewrite using `[hcomb t a3.1 a3.2, (hmain x (hK₀ hxK)).2]`. Simplify using `only [mul_sub, Finset.sum_sub_distrib] at b3`. Apply the tactic sequence `constructor <;> linarith [b1.1, b1.2, b3.1, b3.2]`.
+-/
 theorem anCore (hR : Replace) (hB : BaseSide) (hI : PB.Inputs) (hK : ResK.ResKStatement) {II : IntersectionSystem}
     (hII : IsFullIntersectionSystem II) {K₁ : Type} [Fintype K₁] {J₁ : K₁ → Type} [∀ k, Fintype (J₁ k)] {P₁ : Ideal (MRing J₁)}
     {d : ℕ} {σ : Type} [Fintype σ] [Nonempty σ] {S : PB.AnSys d σ} (Re : PB.Realis S P₁) (alg : AlgOver Re) (m : σ → ℤ)

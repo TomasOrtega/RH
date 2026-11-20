@@ -9,6 +9,11 @@ open scoped ENNReal
 
 namespace GlobalTheory.CovHt.Link
 
+/- English proof (translation)
+Introduce `h2 hH hR D O x P hc hdim u hu B hB k`. Take `⟨C, hC⟩` from `GlobalTheory.T.approx_gap_le_const_mul h2 hH hR D O x P hc hdim u hu B hB k`. Use `⟨C, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hC, self_mem_nhdsWithin] with r hr hr0`. Introduce `τ hτ f hf σ y hy`.
+
+Rewrite using `[GlobalTheory.T.inf_sq_norm_eq_exp_gap D O.A O.N O.j O.S O.κ O.s O.Φ O.L x P B u r hr0 k τ hτ f hf σ y hy]`. Establish `h1` using `hr σ y hy`. Establish `h0 : (0:ℝ) ≤ τ` using `by positivity`. Establish `h3 : 2 * (τ:ℝ) * apxGap O.Φ O.L x P B u r k σ y ≤ 2 * (C * r * τ)` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hodge_le_exp_nrmInf : Hypotheses2 → HypothesesH → RegSt → ∀ (D : D7) (O : Setup D) (x : ToroidalCompactificationData O.s) (P : Mean4O.PolOf x O.Φ), O.CoreWith x P → 2 < D.R.f * (O.N - 1) → ∀ u : AllWt.Weight O.S.Dw, (∀ τ, StrictAnti (u τ)) → ∀ B : ℝ, 2 ≤ B → ∀ k : O.s.Comp, ∃ C : ℝ, ∀ᶠ r : ℚ in 𝓝[>] 0, ∀ τ : ℕ, 1 ≤ τ → ∀ f ∈ (mbarOf P B (wtR O.L u) r k).secs τ, ∀ (σ : D.what₂.LL →+* ℂ), ∀ y ∈ offBd O.Φ k σ, infSq O.Φ k x (τ • u) σ f y ≤ (Real.exp (C * r * τ) * (mbarOf P B (wtR O.L u) r k).nrmInf σ τ f y) ^ 2 := by
   intro h2 hH hR D O x P hc hdim u hu B hB k
   obtain ⟨C, hC⟩ := GlobalTheory.T.approx_gap_le_const_mul h2 hH hR D O x P hc hdim u hu B hB k

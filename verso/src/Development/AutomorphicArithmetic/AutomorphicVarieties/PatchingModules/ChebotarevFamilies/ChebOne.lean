@@ -3,6 +3,23 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChebotarevDegr
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `σ hσ`. Set `ρ : L ≃ₐ[Lp L] L` to `σ.restrictNormal L`. Establish `hρ : ∀ a : L, algebraMap L Ω (ρ a) = σ (algebraMap L Ω a)` using `fun a => σ.restrictNormal_commutes L a`. Establish `h2 : ρ = 1 ∨ ρ = IsCMField.complexConj L`. Establish `hm : ρ ∈ Submonoid.powers (IsCMField.complexConj L)`.
+
+Rewrite using `[mem_powers_iff_mem_zpowers, IsCMField.zpowers_complexConj_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨k, hk⟩` from `(Submonoid.mem_powers_iff _ _).mp hm`. Rewrite using `[← hk, ← pow_mod_orderOf, IsCMField.orderOf_complexConj]`. Apply the tactic sequence `rcases Nat.mod_two_eq_zero_or_one k with h | h <;> rw [h] <;> simp`.
+
+Establish `key : ρ = 1`. Use `h2.resolve_right fun hc => ?_` and prove the remaining obligations. Use `haveI : Fact (Ideal.absNorm w.asIdeal).Prime := ⟨hp⟩`. Use `haveI : Nontrivial (𝓞 L ⧸ w.asIdeal) := Ideal.Quotient.nontrivial_iff.mpr w.isPrime.ne_top`. Establish `hQ : Nat.card (𝓞 L ⧸ w.asIdeal) = Ideal.absNorm w.asIdeal`.
+
+Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Take `⟨n, hn⟩` from `(AddSubmonoid.mem_multiples_iff _ _).mp (mem_multiples_of_prime_card hQ (one_ne_zero (α := 𝓞 L ⧸ w.asIdeal)) (g' := Ideal.Quotient.mk w.asIdeal x))`. Establish `hxn : x - (n : 𝓞 L) ∈ w.asIdeal` using `Ideal.Quotient.eq.mp (by rw [map_natCast, ← hn, nsmul_one])`. Establish `e1 : ((IsCMField.ringOfIntegersComplexConj L x : 𝓞 L) : L) = ρ (x : L)`. Rewrite using `[hc]`.
+
+Both sides reduce to the same expression. Establish `hs : ∀ y : 𝓞 L, ((y - (n : 𝓞 L) : 𝓞 L) : L) = (y : L) - n` using `fun y => by simp`. Establish `e : algebraMap L Ω ((IsCMField.ringOfIntegersComplexConj L x - (n : 𝓞 L) : 𝓞 L) : L) = σ (algebraMap L Ω ((x - (n : 𝓞 L) : 𝓞 L) : L))`. Rewrite using `[hs, hs, e1]`. Simplify using `only [map_sub, map_natCast, hρ]`.
+
+Establish `hcn : IsCMField.ringOfIntegersComplexConj L x - (n : 𝓞 L) ∈ w.asIdeal`. Use `(hB _).mp ?_` and prove the remaining obligations. Rewrite using `[e, valuation_apply_lt_one_iff hσ]`. Conclude with `(hB _).mpr hxn`. Apply `hx` to reduce the goal to its premises.
+
+Use `w.asIdeal.sub_mem hcn hxn` as an intermediate fact. Simplify using `using this`. Use `⟨AlgEquiv.ofRingEquiv (f := σ.toRingEquiv) (fun a => ?_), ?_⟩` and prove the remaining obligations. Use `show σ (algebraMap L Ω a) = algebraMap L Ω a`. Rewrite using `[← hρ, key]`.
+
+Both sides reduce to the same expression. Use extensionality with `y`. Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.V.Pa.chebOne_split {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {w : Plc L} {B : ValuationSubring Ω} (hB : IsPlaceOver B w)
     (hp : (Ideal.absNorm w.asIdeal).Prime) (x : 𝓞 L)
@@ -51,6 +68,25 @@ private theorem UpperTheory.V.Pa.chebOne_split {L Ω : Type} [Field L] [NumberFi
   · ext y
     rfl
 
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ _ U g A hU hA`. Set `φ : Plc L → Plc (Lp L)` to `fun w => { asIdeal := w.asIdeal.comap (algebraMap (𝓞 (Lp L)) (𝓞 L)) isPrime := by haveI := w.isPrime; infer_instance ne_bot := by`. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot w.ne_bot`. Conclude with `Ideal.comap_ne_bot_of_integral_mem hy0 hy (Algebra.IsIntegral.isIntegral y) }`. Establish `hφ : ∀ (w : Plc L) (B : ValuationSubring Ω), IsPlaceOver B w → IsPlaceOver B (φ w)`.
+
+Introduce `w B hB y`. Use `show _ ↔ algebraMap (𝓞 (Lp L)) (𝓞 L) y ∈ w.asIdeal`. Rewrite using `[← hB]`. Both sides reduce to the same expression. Take `⟨x0, hx0⟩ : ∃ x0 : 𝓞 L, IsCMField.ringOfIntegersComplexConj L x0 ≠ x0` from `by by_contra! h`.
+
+Apply `IsCMField.complexConj_ne_one L` to reduce the goal to its premises. Use extensionality with `y`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (𝓞 L) y`. Establish `h' : ∀ a : 𝓞 L, IsCMField.complexConj L (algebraMap (𝓞 L) L a) = algebraMap (𝓞 L) L a` using `fun a => by`. Rewrite using `[show algebraMap (𝓞 L) L a = (a : L) from rfl, ← IsCMField.coe_ringOfIntegersComplexConj, h a]`.
+
+Rewrite using `[map_div₀, h', h', AlgEquiv.one_apply]`. Use `set d := IsCMField.ringOfIntegersComplexConj L x0 - x0 with hd_def`. Establish `hd : d ≠ 0` using `sub_ne_zero.mpr hx0`. Establish `hfin : ∀ y : 𝓞 L, y ≠ 0 → {w : Plc L | y ∈ w.asIdeal}.Finite` using `fun y hy => by`. Use `Ideal.finite_factors (I := Ideal.span {y}) (by rw [Ne, Submodule.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact hy)` as an intermediate fact.
+
+Simplify `this` using `[Ideal.dvd_span_singleton]`. Establish `hfib : ∀ v : Plc (Lp L), {w : Plc L | φ w = v}.Finite`. Introduce `v`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Use `(hfin (algebraMap (𝓞 (Lp L)) (𝓞 L) a) ?_).subset ?_` and prove the remaining obligations.
+
+Introduce `h0`. Apply `ha0` to reduce the goal to its premises. Conclude with `FaithfulSMul.algebraMap_injective _ _ (h0.trans (map_zero _).symm)`. Introduce `w hw`. Establish `hw' : φ w = v` using `hw`.
+
+Establish `: a ∈ (φ w).asIdeal` using `by rw [hw']; exact ha`. Conclude with `this`. Set `S : Set (Plc L)` to `{w | d ∈ w.asIdeal} ∪ ⋃ v ∈ A, {w | φ w = v}`. Establish `hS : S.Finite` using `(hfin d hd).union (hA.biUnion fun v _ => hfib v)`. Establish `hden` using `GlobalTheory.Published.ChebotarevDegreeOne.dense (Ω := Ω) GlobalTheory.Published.chebotarevDegreeOne' hS`.
+
+Establish `hO : IsOpen ((fun τ : G L Ω => τ * g⁻¹) ⁻¹' (U : Set (G L Ω)))` using `hU.preimage (continuous_mul_right _)`. Take `⟨σ, hσU, w, hwS, hin, B, hB, hF⟩` from `hden.inter_open_nonempty _ hO ⟨g, by simp [U.one_mem]⟩`. Establish `hp : (Ideal.absNorm w.asIdeal).Prime` using `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified L).1 w).mpr hin`. Use `⟨φ w, w, B, σ, ?_, hB, hφ w B hB, UpperTheory.V.Pa.chebOne_split hB hp x0 ?_, hF, hσU⟩` and prove the remaining obligations. Introduce `hv`.
+
+Conclude with `hwS (Or.inr (Set.mem_biUnion hv rfl))`. Introduce `h`. Conclude with `hwS (Or.inl h)`.
+-/
 theorem UpperTheory.V.Pa.chebOne :
     ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (U : Subgroup (G L Ω)) (g : G L Ω) (A : Set (Plc (Lp L))), IsOpen (U : Set (G L Ω)) → A.Finite → ∃ (v : Plc (Lp L)) (w : Plc L) (B : ValuationSubring Ω) (σ : G L Ω), v ∉ A ∧ IsPlaceOver B w ∧ IsPlaceOver B v ∧ Dec (F := Lp L) B ≤ (resP L Ω).range ∧ IsFrob (F := L) B (normV w) σ ∧ σ * g⁻¹ ∈ U := by
   intro L Ω _ _ _ _ _ _ U g A hU hA

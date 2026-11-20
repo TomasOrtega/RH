@@ -12,6 +12,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.HSNef
 
+/- English proof (translation)
+Introduce `hA k _ X _ p D hD P a b a' b' M α hRep hAmp hSP hSI ε hε`. Take `⟨t₀, ht⟩` from `GlobalTheory.T.ampleArithHilbertSamuel_largeRadius_pair hA k X p D hD P a b a' b' M α hRep hAmp hSP hSI`. Conclude with `GlobalTheory.VolBr.log_ncard_ball_one_eventually_ge X.functionField (fun m : ℕ => P.H (m * a + a') (m * b + b')) (fun m : ℕ => P.Bl (m * a + a') (m * b + b')) (D + 1) (Nat.succ_pos D) (fun m => GlobalTheory.VolBr.Pair.isBallFam k X p P _ _) (fun m R => GlobalTheory.T.hermLineBund …`.
+-/
 theorem lc_one_eventually_ge : AmpleHS → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p) (a b a' b' : ℤ) (M : HermLB p) (α : ℝ), P.Rep a b M → IsAmpleLB M.B → M.SemiPos D → M.IsSelfInter α → ∀ ε : ℝ, 0 < ε → ∀ᶠ m : ℕ in atTop, (α / (D + 1).factorial - ε) * (m : ℝ) ^ (D + 1) ≤ P.lc (m * a + a') (m * b + b') 1 := by
   intro hA k _ X _ p D hD P a b a' b' M α hRep hAmp hSP hSI ε hε
   obtain ⟨t₀, ht⟩ := GlobalTheory.T.ampleArithHilbertSamuel_largeRadius_pair hA k X p D hD P a b a' b' M α hRep hAmp hSP hSI

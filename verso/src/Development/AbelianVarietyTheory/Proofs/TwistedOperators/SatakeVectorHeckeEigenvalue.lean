@@ -25,6 +25,9 @@ section Twist
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {r : ℕ}
   {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `hx' : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Establish `hy' : Valued.v y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Rewrite using `[GlobalTheory.LGrp.BorelCompletion.ordV_eq, GlobalTheory.LGrp.BorelCompletion.ordV_eq, GlobalTheory.LGrp.BorelCompletion.ordV_eq, map_mul, WithZero.log_mul hx' hy']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ordV_mul {x y : w.adicCompletion E} (hx : x ≠ 0) (hy : y ≠ 0) :
     Formalism.UG.ordV E w (x * y) = Formalism.UG.ordV E w x + Formalism.UG.ordV E w y := by
   have hx' : Valued.v x ≠ 0 := (Valuation.ne_zero_iff _).2 hx
@@ -33,6 +36,9 @@ theorem ordV_mul {x y : w.adicCompletion E} (hx : x ≠ 0) (hy : y ≠ 0) :
     WithZero.log_mul hx' hy']
   ring
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.LGrp.BorelCompletion.ordV_eq, map_zpow₀, show Valued.v ϖ = _ from hϖ, WithZero.log_zpow, show WithZero.log (((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ)) : WithZero (Multiplicative ℤ)) = -1 from rfl]`. Simplify using the standard rewrite rules.
+-/
 theorem ordV_zpow {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) (k : ℤ) : Formalism.UG.ordV E w (ϖ ^ k) = k := by
   rw [GlobalTheory.LGrp.BorelCompletion.ordV_eq, map_zpow₀, show Valued.v ϖ = _ from hϖ, WithZero.log_zpow,
     show WithZero.log (((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ)) : WithZero (Multiplicative ℤ)) = -1 from rfl]
@@ -40,20 +46,35 @@ theorem ordV_zpow {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) (k : ℤ) : F
 
 def ordDet (g : GL (Fin r) (w.adicCompletion E)) : ℤ := Formalism.UG.ordV E w g.val.det
 
+/- English proof (translation)
+The claim follows from `(Matrix.GeneralLinearGroup.det g).ne_zero`.
+-/
 theorem det_ne_zero (g : GL (Fin r) (w.adicCompletion E)) : g.val.det ≠ 0 :=
   (Matrix.GeneralLinearGroup.det g).ne_zero
 
+/- English proof (translation)
+Rewrite using `[ordDet, Units.val_mul, Matrix.det_mul, ordV_mul (det_ne_zero g) (det_ne_zero h)]`. Both sides reduce to the same expression.
+-/
 theorem ordDet_mul (g h : GL (Fin r) (w.adicCompletion E)) : ordDet (g * h) = ordDet g + ordDet h := by
   rw [ordDet, Units.val_mul, Matrix.det_mul, ordV_mul (det_ne_zero g) (det_ne_zero h)]
   rfl
 
+/- English proof (translation)
+Establish `h : Valued.v k.val.det = 1` using `GlobalTheory.SphGal.isUnitAt_det_of_mem hk`. Rewrite using `[ordDet, GlobalTheory.LGrp.BorelCompletion.ordV_eq, h]`. Simplify using the standard rewrite rules.
+-/
 theorem ordDet_of_mem {k : GL (Fin r) (w.adicCompletion E)} (hk : k ∈ KGL w r) : ordDet k = 0 := by
   have h : Valued.v k.val.det = 1 := GlobalTheory.SphGal.isUnitAt_det_of_mem hk
   rw [ordDet, GlobalTheory.LGrp.BorelCompletion.ordV_eq, h]
   simp
 
+/- English proof (translation)
+The claim follows from `ordDet_of_mem (one_mem _)`.
+-/
 theorem ordDet_one : ordDet (1 : GL (Fin r) (w.adicCompletion E)) = 0 := ordDet_of_mem (one_mem _)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ h0]`.
+-/
 theorem prod_zpow_eq {ι : Type} {ϖ : w.adicCompletion E} (h0 : ϖ ≠ 0) (d : ι → ℤ) (s : Finset ι) :
     ∏ i ∈ s, ϖ ^ d i = ϖ ^ ∑ i ∈ s, d i := by
   classical
@@ -61,6 +82,9 @@ theorem prod_zpow_eq {ι : Type} {ϖ : w.adicCompletion E} (h0 : ϖ ≠ 0) (d : 
   | empty => simp
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ h0]
 
+/- English proof (translation)
+Establish `h0 : ϖ ≠ 0` using `fun h0 => by simp [IsUnifV, h0] at hϖ`. Rewrite using `[ordDet, ht, Matrix.det_diagonal, prod_zpow_eq h0, ordV_zpow hϖ]`.
+-/
 theorem ordDet_of_diagonal {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) {t : GL (Fin r) (w.adicCompletion E)}
     {d : Fin r → ℤ} (ht : t.1 = Matrix.diagonal fun i => ϖ ^ d i) : ordDet t = ∑ i, d i := by
   have h0 : ϖ ≠ 0 := fun h0 => by simp [IsUnifV, h0] at hϖ
@@ -76,9 +100,17 @@ def twistRep (ρ : Representation ℂ (GL (Fin r) (w.adicCompletion E)) V) (z : 
     simp only [Module.End.mul_apply, LinearMap.smul_apply, map_smul, mul_smul]
     exact smul_comm _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRep_apply (ρ : Representation ℂ (GL (Fin r) (w.adicCompletion E)) V) (z : ℂˣ)
     (g : GL (Fin r) (w.adicCompletion E)) (y : V) : twistRep ρ z g y = ((z : ℂ) ^ ordDet g) • ρ g y := rfl
 
+/- English proof (translation)
+Rewrite using `[heckeVec, heckeVec, smul_finsum]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hc : ∃ a ∈ KGL w r, ∃ b ∈ KGL w r, c.out = a * t * b`. Take `⟨a, ha, b, hb, e⟩` from `id hc`. Establish `h : ordDet c.out = ordDet t`.
+
+Rewrite using `[e, ordDet_mul, ordDet_mul, ordDet_of_mem ha, ordDet_of_mem hb]`. Simplify using the standard rewrite rules. Rewrite using `[twistRep_apply, h, smul_comm]`. Rewrite using `[GlobalTheory.WeylGL.dosetInd_of_not hc]`. Simplify using the standard rewrite rules.
+-/
 theorem heckeVec_twistRep (ρ : Representation ℂ (GL (Fin r) (w.adicCompletion E)) V) (z : ℂˣ)
     (t : GL (Fin r) (w.adicCompletion E)) (x : V) :
     heckeVec (twistRep ρ z) (KGL w r) (dosetInd ℂ (KGL w r) t) x =
@@ -94,6 +126,11 @@ theorem heckeVec_twistRep (ρ : Representation ℂ (GL (Fin r) (w.adicCompletion
   · rw [GlobalTheory.WeylGL.dosetInd_of_not hc]
     simp
 
+/- English proof (translation)
+Use `⟨hx.1, GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, by rw [Multiset.card_map, hx.2.2.1], fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[twistRep_apply, ordDet_of_mem hk, zpow_zero, one_smul]`. Conclude with `GlobalTheory.LGrp.mem_fixed.1 hx.2.1 k hk`. Establish `h0 : ϖ ≠ 0` using `fun h0 => by simp [IsUnifV, h0] at hϖ`. Establish `em : B.map (z * ·) = B.map (· * z)` using `Multiset.map_congr rfl fun b _ => mul_comm _ _`.
+
+Establish `ho : ordDet (GlobalTheory.WeylGL.tor h0 fun i : Fin r => if (i : ℕ) < j then 1 else 0) = j`. Rewrite using `[ordDet_of_diagonal hϖ (GlobalTheory.WeylGL.tor_val h0 _)]`. Simplify using `[Finset.sum_boole, Fin.card_filter_val_lt, min_eq_right hj]`. Rewrite using `[GlobalTheory.WeylGL.Tj_eq h0, heckeVec_twistRep, ← GlobalTheory.WeylGL.Tj_eq h0, hx.2.2.2 ϖ hϖ j hj, em, GlobalTheory.SphGal.satEig_map_mul, ho, zpow_natCast, smul_smul]`.
+-/
 theorem isSatVecGL_twistRep {ρ : Representation ℂ (GL (Fin r) (w.adicCompletion E)) V} {x : V} {B : Multiset ℂˣ}
     (hx : IsSatVecGL w ρ x B) (z : ℂˣ) : IsSatVecGL w (twistRep ρ z) x (B.map (z * ·)) := by
   refine ⟨hx.1, GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, by rw [Multiset.card_map, hx.2.2.1], fun ϖ hϖ j hj => ?_⟩
@@ -109,6 +146,11 @@ theorem isSatVecGL_twistRep {ρ : Representation ℂ (GL (Fin r) (w.adicCompleti
 
 end Twist
 
+/- English proof (translation)
+Introduce `hP E _ _ w r V _ _ ρ x B hx z ϖ hϖ T hT c hc`. Establish `hc' : ∀ d, heckeVec (twistRep ρ z) (KGL w r) (dosetInd ℂ (KGL w r) (T d)) x = ((z : ℂ) ^ (∑ i, d i) * c d) • x` using `fun d => by`. Rewrite using `[heckeVec_twistRep, hc d, ordDet_of_diagonal hϖ (hT d), smul_smul]`. Take `⟨δ, h0, h⟩` from `GlobalTheory.T.hasSum_heckeEigenvalue_generatingSeries_GL hP E w r V (twistRep ρ z) x _ (isSatVecGL_twistRep hx z) ϖ hϖ T hT _ hc'`. Use `⟨δ, h0, fun X h1 h2 => ?_⟩` and prove the remaining obligations.
+
+Use `h X h1 h2` as an intermediate fact. Rewrite `this` using `[Multiset.map_map]`. Conclude with `this`.
+-/
 theorem hasSum_twisted_hecke_eigenvalues : GlobalTheory.Published.UnramifiedDoublingGL → ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (r : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin r) (w.adicCompletion E)) V) (x : V) (B : Multiset ℂˣ), IsSatVecGL w ρ x B → ∀ (z : ℂˣ) (ϖ : w.adicCompletion E), IsUnifV E w ϖ → ∀ T : (Fin r → ℤ) → GL (Fin r) (w.adicCompletion E), (∀ d, (T d).1 = Matrix.diagonal fun i => ϖ ^ d i) → ∀ c : (Fin r → ℤ) → ℂ, (∀ d, heckeVec ρ (KGL w r) (dosetInd ℂ (KGL w r) (T d)) x = c d • x) → ∃ δ : ℝ, 0 < δ ∧ ∀ X : ℝ, 0 < X → X < δ → HasSum (fun d : {d : Fin r → ℤ // Antitone d} => (z : ℂ) ^ (∑ i, d.1 i) * c d.1 * (X : ℂ) ^ (∑ i, |d.1 i|).toNat) (eulerFac (B.map (z * ·)) ((qV E w : ℂ) ^ (((r : ℂ) - 1) / 2) * X) * eulerFac (B.map fun β => (z * β)⁻¹) ((qV E w : ℂ) ^ (((r : ℂ) - 1) / 2) * X) * ∏ i ∈ Finset.range r, (1 - (qV E w : ℂ) ^ i * (X : ℂ) ^ 2)) := by
   intro hP E _ _ w r V _ _ ρ x B hx z ϖ hϖ T hT c hc
   have hc' : ∀ d, heckeVec (twistRep ρ z) (KGL w r) (dosetInd ℂ (KGL w r) (T d)) x =

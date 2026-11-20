@@ -12,6 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CharpolyLattice
 
+/- English proof (translation)
+Establish `hb : Function.Bijective (algebraMap k (AlgebraicClosure k))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`. Use `haveI : IsIso (CommRingCat.ofHom (algebraMap k (AlgebraicClosure k))) := (RingEquiv.ofBijective _ hb).toCommRingCatIso.isIso_hom`. Use `haveI : IsIso (spMap (algebraMap k (AlgebraicClosure k))) := inferInstanceAs (IsIso (Spec.map (CommRingCat.ofHom (algebraMap k (AlgebraicClosure k)))))`. Set `i : ptOver k (AlgebraicClosure k) ≅ Over.mk (𝟙 (Sp k))` to `Over.isoMk (asIso (spMap (algebraMap k (AlgebraicClosure k)))) (Category.comp_id _)`. Use `⟨{ toFun := fun q => i.hom ≫ q invFun := fun q => i.inv ≫ q left_inv := fun q => by simp right_inv := fun q => by simp map_mul' := fun q q' => MonObj.comp_mul _ _ _ }, fun f q => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Category.assoc i.hom q f.hom).symm`.
+-/
 theorem pts_equiv (k : Type) [Field k] [IsAlgClosed k] (B : GlobalTheory.AV.AbVar k) :
     ∃ e : (Over.mk (𝟙 (Sp k)) ⟶ B.X) ≃* B.Pt,
       ∀ (f : B ⟶ B) (q : Over.mk (𝟙 (Sp k)) ⟶ B.X), e (q ≫ f.hom) = e q ≫ f.hom := by
@@ -30,6 +35,19 @@ theorem pts_equiv (k : Type) [Field k] [IsAlgClosed k] (B : GlobalTheory.AV.AbVa
             map_mul' := fun q q' => MonObj.comp_mul _ _ _ }, fun f q => ?_⟩
   exact (Category.assoc i.hom q f.hom).symm
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis R N`. Establish `hsum : ∀ c : Module.Free.ChooseBasisIndex R N → R, e (∑ i, c i • b i) = ∑ i, π (c i) • e (b i)` using `fun c => by`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hsmul _ _`. Establish `hli : LinearIndependent S fun i => e (b i)`.
+
+Use `Fintype.linearIndependent_iff.2 fun s hs i => ?_` and prove the remaining obligations. Use `choose c hc using fun i => hπ (s i)`. Take `⟨y, hy⟩` from `hk (∑ i, c i • b i) (by rw [hsum]; simpa only [hc] using hs)`. Establish `h` using `congrArg (fun z => b.repr z i) hy`. Simplify using `only [Module.Basis.repr_sum_self, map_smul, Finsupp.smul_apply, smul_eq_mul] at h`.
+
+Rewrite using `[← hc, h, map_mul, hn, zero_mul]`. Establish `hsp : ⊤ ≤ Submodule.span S (Set.range fun i => e (b i))`. Introduce `q _`. Take `⟨x, rfl⟩` from `he q`. Rewrite using `[← b.sum_repr x, hsum]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `b'` to `Module.Basis.mk hli hsp`. Establish `hb' : ∀ i, b' i = e (b i)` using `fun i => Module.Basis.mk_apply hli hsp i`. Use `⟨Module.Free.of_basis b', Module.Finite.of_basis b', ?_⟩` and prove the remaining obligations. Use `haveI := Module.Free.of_basis b'`.
+
+Use `haveI := Module.Finite.of_basis b'`. Rewrite using `[← LinearMap.charpoly_toMatrix G b', ← LinearMap.charpoly_toMatrix g b, ← Matrix.charpoly_map]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, hb', ← hg]`.
+
+Use `conv_lhs => rw [← b.sum_repr (g (b j)), hsum]`. Simplify using `only [← hb']`. Rewrite using `[Module.Basis.repr_sum_self]`.
+-/
 theorem charpoly_reduce {R S : Type} [CommRing R] [CommRing S] (π : R →+* S)
     (hπ : Function.Surjective π) (n : R) (hn : π n = 0)
     {N Q : Type} [AddCommGroup N] [Module R N] [Module.Free R N] [Module.Finite R N]
@@ -71,6 +89,9 @@ theorem charpoly_reduce {R S : Type} [CommRing R] [CommRing S] (π : R →+* S)
 
 open GlobalTheory.HTLat in
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression.
+-/
 theorem lev_pow_smul {M : Type} [CommGroup M] {l : ℕ} [Fact l.Prime]
     (s : Tate l M) (j n : ℕ) : (((l : ℤ_[l]) ^ j) • s).lev n = s.lev n ^ l ^ j := by
   rw [← Nat.cast_pow, Nat.cast_smul_eq_nsmul]
@@ -78,6 +99,11 @@ theorem lev_pow_smul {M : Type} [CommGroup M] {l : ℕ} [Fact l.Prime]
 
 open GlobalTheory.HTLat in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `ht`. Use `⟨Tate.mk (fun n => t.lev (j + n)) fun n => ⟨by rw [Tate.lev_add_pow, ht], Tate.lev_succ t (j + n)⟩, Tate.ext fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[lev_pow_smul, Tate.lev_mk, add_comm, Tate.lev_add_pow]`. Introduce and unpack `⟨s, rfl⟩`.
+
+Rewrite using `[lev_pow_smul, Tate.lev_pow]`.
+-/
 theorem tate_lev_eq_one_iff (M : Type) [CommGroup M] (l : ℕ) [Fact l.Prime]
     (t : GlobalTheory.HTLat.Tate l M) (j : ℕ) :
     t.lev j = 1 ↔ ∃ s : GlobalTheory.HTLat.Tate l M, t = ((l : ℤ_[l]) ^ j) • s := by
@@ -91,6 +117,13 @@ theorem tate_lev_eq_one_iff (M : Type) [CommGroup M] (l : ℕ) [Fact l.Prime]
 
 open GlobalTheory.HTLat in
 
+/- English proof (translation)
+Use `choose L hL using GlobalTheory.TateFree.exists_pow_eq hc`. Set `u : ∀ m : ℕ, {y : M // y ^ l ^ (j + m) = 1}` to `fun m => Nat.rec (motive := fun m => {y : M // y ^ l ^ (j + m) = 1}) ⟨x, hx⟩ (fun m y => ⟨L (j + m) y.1 y.2, (hL _ _ _).1⟩) m`. Establish `hu : ∀ m, (u (m + 1)).1 ^ l = (u m).1` using `fun m => (hL _ _ _).2`. Establish `hu' : ∀ m, (u m).1 ^ l ^ m = x` using `fun m => by`. Proceed by induction on `m with`.
+
+Consider the case `zero => exact pow_one x`. Consider the case `succ m ih => rw [pow_succ', pow_mul, hu, ih]`. Use `⟨Tate.mk (fun m => (u m).1 ^ l ^ j) fun m => ⟨?_, ?_⟩, hu' j⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, ← pow_add]`. Conclude with `(u m).2`.
+
+Rewrite using `[← pow_mul, mul_comm, pow_mul, hu]`.
+-/
 theorem tate_lev_surj (M : Type) [CommGroup M] (l : ℕ) [Fact l.Prime] (r : ℕ)
     (hc : ∀ n : ℕ, Nat.card {x : M // x ^ (l ^ n) = 1} = l ^ (r * n)) (j : ℕ) (x : M)
     (hx : x ^ (l ^ j) = 1) : ∃ t : GlobalTheory.HTLat.Tate l M, t.lev j = x := by
@@ -114,6 +147,35 @@ namespace GlobalTheory.AV.AbVar
 
 open GlobalTheory.CharpolyLattice GlobalTheory.HTLat in
 
+/- English proof (translation)
+Introduce `k _ _ B f L _ _ _ φ l hl hlk ev hadd hequi hker him`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Take `⟨e, he⟩` from `pts_equiv k B`. Take `⟨hfree, hfin, -⟩` from `tl_free_finrank k l hlk B`. Establish `hc : ∀ n : ℕ, Nat.card {x : B.Pt // x ^ (l ^ n) = 1} = l ^ (2 * B.dim * n)`.
+
+Introduce `n`. Rewrite using `[card_torsion_pt k B (l ^ n) (by push_cast; exact pow_ne_zero _ hlk), ← pow_mul, mul_comm n]`. Set `E : ℕ → L →+ Additive B.Pt` to `fun j => AddMonoidHom.mk' (fun x => Additive.ofMul (e (ev j x))) fun x y => by`. Rewrite using `[hadd, map_mul]`. Both sides reduce to the same expression.
+
+Establish `hE : ∀ j (n : ℕ) x, e (ev j (n • x)) = e (ev j x) ^ n` using `fun j n x => congrArg Additive.toMul (map_nsmul (E j) n x)`. Establish `key : ∀ j : ℕ, (LinearMap.charpoly φ).map (Int.castRingHom (ZMod (l ^ j))) = (LinearMap.charpoly (tend l B f)).map (PadicInt.toZModPow j)`. Introduce `j`. Use `haveI : NeZero (l ^ j) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Set `K` to `(powMonoidHom (l ^ j) : B.Pt →* B.Pt).ker`.
+
+Establish `hK : ∀ x : B.Pt, x ∈ K ↔ x ^ (l ^ j) = 1` using `fun x => MonoidHom.mem_ker`. Use `letI : Module (ZMod (l ^ j)) (Additive K) := AddCommGroup.zmodModule fun x => congrArg Additive.ofMul (Subtype.ext (by`. Express the relevant statement in the definitionally equal form `((Additive.toMul x : K) : B.Pt) ^ (l ^ j) = 1`. Conclude with `(hK _).1 (Additive.toMul x).2))`. Establish `hsm : ∀ (c : ZMod (l ^ j)) (q : Additive K), c • q = c.val • q` using `fun c q => by conv_lhs => rw [← ZMod.natCast_zmod_val c]`.
+
+Conclude with `Nat.cast_smul_eq_nsmul _ _ _`. Establish `hπ : ((l : ZMod (l ^ j))) ^ j = 0` using `by rw [← Nat.cast_pow, ZMod.natCast_self]`. Set `G0 : Additive K →+ Additive K` to `AddMonoidHom.mk' (fun q => Additive.ofMul ⟨((Additive.toMul q : K) : B.Pt) ≫ f.hom, (hK _).2 (by`. Rewrite using `[← ptMap_apply, ← map_pow, (hK _).1 (Additive.toMul q).2, map_one])⟩)`. Use `fun q q' => congrArg Additive.ofMul (Subtype.ext (MonObj.mul_comp _ _ _))`.
+
+Set `G : Additive K →ₗ[ZMod (l ^ j)] Additive K` to `G0.toZModLinearMap (l ^ j)`. Set `eL : L →+ Additive K` to `AddMonoidHom.mk' (fun x => Additive.ofMul ⟨e (ev j x), (hK _).2 (by`. Rewrite using `[← hE, (hker j _).2 ⟨x, rfl⟩, map_one])⟩)`. Use `fun x y => congrArg Additive.ofMul (Subtype.ext (by`. Express the relevant statement in the definitionally equal form `e (ev j (x + y)) = e (ev j x) * e (ev j y)`.
+
+Rewrite using `[hadd, map_mul]))`. Set `eT : Tate l B.Pt →+ Additive K` to `AddMonoidHom.mk' (fun t => Additive.ofMul ⟨t.lev j, (hK _).2 (t.lev_pow j)⟩) fun s t => rfl`. Take `⟨_, _, h1⟩` from `charpoly_reduce (Int.castRingHom (ZMod (l ^ j))) ZMod.intCast_surjective ((l : ℤ) ^ j) (by rw [map_pow, map_natCast, hπ]) eL (fun q => by`. Take `⟨x, hx⟩` from `(him j (e.symm (Additive.toMul q : K))).1 (by`. Rewrite using `[← map_pow, (hK _).1 (Additive.toMul q).2, map_one])`.
+
+Use `⟨x, congrArg Additive.ofMul (Subtype.ext ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (ev j x) = _`. Rewrite using `[hx, MulEquiv.apply_symm_apply]`. Use the proof step `rfl)`. Use the proof step `(fun r x => by rw [map_zsmul, eq_intCast, Int.cast_smul_eq_zsmul])`.
+
+Use the proof step `(fun x hx => by`. Establish `h0 : e (ev j x) = 1` using `congrArg Subtype.val (congrArg Additive.toMul hx)`. Take `⟨y, hy⟩` from `(hker j x).1 ((map_eq_one_iff e e.injective).1 h0)`. Conclude with `⟨y, by rw [hy, ← Nat.cast_pow, natCast_zsmul]⟩)`. Use `φ G (fun x => congrArg Additive.ofMul (Subtype.ext (by`.
+
+Express the relevant statement in the definitionally equal form `e (ev j (φ x)) = e (ev j x) ≫ f.hom`. Rewrite using `[hequi, he])))`. Take `⟨_, _, h2⟩` from `charpoly_reduce (PadicInt.toZModPow j) (ZMod.ringHom_surjective _) ((l : ℤ_[l]) ^ j) (by rw [map_pow, map_natCast, hπ]) eT (fun q => by`. Take `⟨t, ht⟩` from `tate_lev_surj B.Pt l (2 * B.dim) hc j _ ((hK _).1 (Additive.toMul q).2)`. Conclude with `⟨t, congrArg Additive.ofMul (Subtype.ext ht)⟩)`.
+
+Use the proof step `(fun a t => by`. Rewrite using `[hsm]`. Use the proof step `rfl)`. Use the proof step `(fun t ht => by`. Take `⟨s, hs⟩` from `(tate_lev_eq_one_iff B.Pt l t j).1 (congrArg Subtype.val (congrArg Additive.toMul ht))`.
+
+Conclude with `⟨s, hs⟩)`. Use the proof step `(tend l B f) G (fun t => rfl)`. Conclude with `h1.symm.trans h2`. Establish `hT` using `(charpoly_tate_det_trace k l hlk B f).2.1`. Establish `hinj : Function.Injective (Polynomial.map (Int.castRingHom ℤ_[l]))` using `Polynomial.map_injective _ Int.cast_injective`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[show Int.castRingHom ℤ_[l] = algebraMap ℤ ℤ_[l] from RingHom.ext_int _ _, hT]`. Use extensionality with `i`. Rewrite using `[← PadicInt.ext_of_toZModPow]`. Introduce `n`.
+
+Establish `h` using `congrArg (fun P => Polynomial.coeff P i) (key n)`. Simplify using `only [Polynomial.coeff_map, eq_intCast] at h ⊢`. Rewrite using `[map_intCast]`. Conclude with `h`.
+-/
 theorem charpoly_eq_lattice_model : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : GlobalTheory.AV.AbVar k) (f : B ⟶ B)
     (L : Type) [AddCommGroup L] [Module.Free ℤ L] [Module.Finite ℤ L]
     (φ : L →ₗ[ℤ] L) (l : ℕ), l.Prime → (l : k) ≠ 0 →

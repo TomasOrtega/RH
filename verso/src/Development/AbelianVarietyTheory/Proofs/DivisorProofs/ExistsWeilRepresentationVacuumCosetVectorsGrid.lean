@@ -23,6 +23,11 @@ namespace GlobalTheory.GridWeil
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hg : Topology.IsOpenEmbedding (Units.val : (InfiniteAdeleRing F)ˣ → InfiniteAdeleRing F)` using `Units.isOpenEmbedding_val (R := ∀ v : InfinitePlace F, v.Completion)`. Rewrite using `[DenseRange, dense_iff_inter_open]`. Introduce and unpack `U hU ⟨u, hu⟩`. Take `⟨k, v, hv, hk⟩` from `(InfiniteAdeleRing.denseRange_algebraMap F).exists_mem_open (hg.isOpenMap U hU) ⟨_, u, hu, rfl⟩`. Establish `hk0 : k ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hk` using `[map_zero]`. Conclude with `v.ne_zero hk`. Conclude with `⟨v, hv, Units.mk0 k hk0, Units.ext hk.symm⟩`.
+-/
 theorem denseRange_units_inf (F : Type) [Field F] [NumberField F] :
     DenseRange (Units.map (algebraMap F (InfiniteAdeleRing F)).toMonoidHom) := by
   have hg : Topology.IsOpenEmbedding (Units.val : (InfiniteAdeleRing F)ˣ → InfiniteAdeleRing F) :=
@@ -36,6 +41,13 @@ theorem denseRange_units_inf (F : Type) [Field F] [NumberField F] :
     exact v.ne_zero hk
   exact ⟨v, hv, Units.mk0 k hk0, Units.ext hk.symm⟩
 
+/- English proof (translation)
+Set `i : (Ainf D.host.F)ˣ →* (AF D.host.F)ˣ` to `Units.map (MonoidHom.inl (Ainf D.host.F) (Af D.host.F))`. Set `p : (AF D.host.F)ˣ →* (Ainf D.host.F)ˣ` to `Units.map (MonoidHom.fst (Ainf D.host.F) (Af D.host.F))`. Establish `key : ∀ a, c (idF D a) = c (idF D (i (p a)))` using `fun a => by`. Set `b : (AF D.host.F)ˣ` to `Units.map ((MonoidHom.inr (Ainf D.host.F) (Af D.host.F)).comp (MonoidHom.snd (Ainf D.host.F) (Af D.host.F))) a`. Establish `e : a = i (p a) * b` using `Units.ext (Prod.ext (mul_one _).symm (one_mul _).symm)`.
+
+Use `conv_lhs => rw [e, map_mul, map_mul, GlobalTheory.BaseIdeleTriv.finite_idele_base_trivial D c χ h hF b rfl, mul_one]`. Establish `c1 : Continuous (idF D)` using `Continuous.units_map _ (IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (AF D.host.F) (AE D)))`. Establish `c2 : Continuous i` using `Continuous.units_map _ (continuous_id.prodMk continuous_const)`. Rewrite using `[key]`. Generalize the expression as in `p a = z`.
+
+Use `(denseRange_units_inf D.host.F).induction_on z (isClosed_eq (h.1.1.comp (c1.comp c2)) continuous_const) fun k => ?_` and prove the remaining obligations. Use `(key (Units.map (algebraMap D.host.F (AF D.host.F)).toMonoidHom k)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← h.1.2 (Formalism.L2.Host.upF D.host.F k)]`. Use `congr 1`. Conclude with `Units.ext (GlobalTheory.BaseIdeleTriv.algebraMap_tmul_one (k : D.host.F))`.
+-/
 theorem triv_base {c : (AE D)ˣ →* Circle} {χ : Formalism.L2.Host.HChar D.host.E} (h : ChrEq c χ) (hF : χ.TrivOn D.host.F)
     (a : (AF D.host.F)ˣ) : c (idF D a) = 1 := by
   let i : (Ainf D.host.F)ˣ →* (AF D.host.F)ˣ := Units.map (MonoidHom.inl (Ainf D.host.F) (Af D.host.F))
@@ -57,6 +69,11 @@ theorem triv_base {c : (AE D)ˣ →* Circle} {χ : Formalism.L2.Host.HChar D.hos
   congr 1
   exact Units.ext (GlobalTheory.BaseIdeleTriv.algebraMap_tmul_one (k : D.host.F))
 
+/- English proof (translation)
+Establish `hsq : ∀ a, η (idF D a) * η (idF D a) = 1` using `GlobalTheory.VolHeckeCompare.IsEta_mul_self h1`. Unfold `Formalism.IndefR.Lift.attChr`. Use `split_ifs with hn`. Use `⟨⟨hc.1.mul hη.1.inv, fun x => by rw [MonoidHom.mul_apply, MonoidHom.inv_apply, hc.2, hη.2, inv_one, mul_one]⟩, ⟨_, h1⟩, fun η' h' a => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hn`.
+
+Rewrite using `[(GlobalTheory.IdeleNormChar.existsUnique_isEta D).unique h' h1, MonoidHom.mul_apply, MonoidHom.inv_apply, h0, MonoidHom.comp_apply, pow_succ, pow_mul, pow_two, hsq, one_pow, inv_eq_of_mul_eq_one_right (hsq a)]`. Use `⟨hc, ⟨_, h1⟩, fun η' h' a => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.not_odd_iff_even.1 hn`. Rewrite using `[(GlobalTheory.IdeleNormChar.existsUnique_isEta D).unique h' h1, h0, MonoidHom.comp_apply, pow_add, ← mul_pow, hsq, one_pow]`.
+-/
 theorem attChr_ok {c η : (AE D)ˣ →* Circle} (hc : IsHeckeChar D c) (h0 : ∀ a, c (idF D a) = 1) (hη : IsHeckeChar D η)
     (h1 : IsEta D (η.comp (idF D))) (n : ℕ) :
     IsHeckeChar D (Formalism.IndefR.Lift.attChr c η n) ∧ ResEta D (Formalism.IndefR.Lift.attChr c η n) n := by
@@ -74,6 +91,19 @@ theorem attChr_ok {c η : (AE D)ˣ →* Circle} (hc : IsHeckeChar D c) (h0 : ∀
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Take `⟨ε, fr, h⟩` from `GlobalTheory.Published.AutFin.exists_isFrameFam V hV`. Take `⟨⟨u, hu⟩, hG⟩` from `h τ`. Use `set J := Formalism.REAL.Jm (ε τ) with hJ`. Establish `J1 : J * J = 1`. Rewrite using `[hJ, Formalism.REAL.Jm, diagonal_mul_diagonal, ← diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`. Establish `J2 : Jᴴ = J`. Rewrite using `[hJ, Formalism.REAL.Jm, diagonal_conjTranspose]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.star_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `set A := fr τ`.
+
+Use `set B : Matrix (Fin V.rank) (Fin V.rank) ℂ := (u⁻¹).1`. Establish `AB : A * B = 1` using `by rw [← hu]; exact u.mul_inv`. Establish `BA : B * A = 1` using `by rw [← hu]; exact u.inv_mul`. Establish `AB' : ∀ X : Matrix (Fin V.rank) (Fin V.rank) ℂ, A * (B * X) = X` using `fun X => by rw [← Matrix.mul_assoc, AB, Matrix.one_mul]`. Establish `BA' : ∀ X : Matrix (Fin V.rank) (Fin V.rank) ℂ, Bᴴ * (Aᴴ * X) = X` using `fun X => by`.
+
+Rewrite using `[← Matrix.mul_assoc, ← conjTranspose_mul, AB, conjTranspose_one, Matrix.one_mul]`. Establish `J1' : ∀ X : Matrix (Fin V.rank) (Fin V.rank) ℂ, J * (J * X) = X` using `fun X => by rw [← Matrix.mul_assoc, J1, Matrix.one_mul]`. Rewrite using `[← hG]`. Use `⟨B * J * A, B, ⟨?_, ?_, ?_⟩, ε τ, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc, AB', J1', BA]`.
+
+Simplify using `only [conjTranspose_mul, J2, Matrix.mul_assoc, AB', BA', J1']`. Simplify using `only [Matrix.mul_assoc, AB', J1']`. Conclude with `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_of_isUnit ⟨u, hu⟩)`. Simplify using `only [Matrix.mul_assoc, AB, BA', Matrix.mul_one, hJ]`. Simplify using `only [Matrix.mul_assoc, AB, Matrix.mul_one, hJ]`.
+-/
 theorem exists_cartan {V : HSp D} (hV : V.SigOK) (τ : D.what₂.Tau) :
     ∃ s P : Matrix (Fin V.rank) (Fin V.rank) ℂ, IsCartanInv (gramAt D V τ) s ∧ ∃ ε : Fin V.rank → Bool,
       Pᴴ * gramAt D V τ * P = Formalism.REAL.Jm ε ∧ s * P = P * Formalism.REAL.Jm ε := by
@@ -108,6 +138,11 @@ theorem exists_cartan {V : HSp D} (hV : V.SigOK) (τ : D.what₂.Tau) :
   · simp only [Matrix.mul_assoc, AB, BA', Matrix.mul_one, hJ]
   · simp only [Matrix.mul_assoc, AB, Matrix.mul_one, hJ]
 
+/- English proof (translation)
+Take `⟨e, P, hP⟩` from `h`. Set `s` to `Equiv.sumComm (Fin p) (Fin q)`. Use `⟨e.trans s, Units.map (Matrix.reindexAlgEquiv ℂ ℂ s).toRingHom.toMonoidHom P, ?_⟩` and prove the remaining obligations. Establish `e1 : Formalism.UG.Jpq q p = -(Formalism.UG.Jpq p q).submatrix s.symm s.symm`. Use extensionality with `i j`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [Formalism.UG.Jpq, s]`. Rewrite using `[e1, ← hP, ← submatrix_mul_equiv _ _ _ s.symm, ← submatrix_mul_equiv _ _ _ s.symm, ← Matrix.neg_mul, ← Matrix.mul_neg]`. Both sides reduce to the same expression.
+-/
 theorem hasSignature_neg {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n ℂ} {p q : ℕ}
     (h : Formalism.UG.HasSignature J p q) : Formalism.UG.HasSignature (-J) q p := by
   obtain ⟨e, P, hP⟩ := h
@@ -119,6 +154,9 @@ theorem hasSignature_neg {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n 
   rw [e1, ← hP, ← submatrix_mul_equiv _ _ _ s.symm, ← submatrix_mul_equiv _ _ _ s.symm, ← Matrix.neg_mul, ← Matrix.mul_neg]
   rfl
 
+/- English proof (translation)
+Introduce `τ` and use `by have e : (negSp V).gram.map τ = -V.gram.map τ := Matrix.ext fun i j => map_neg τ _ rw [e] exact hasSignature_neg (h τ)`.
+-/
 theorem sigOK_neg {V : HSp D} (h : V.SigOK) : (negSp V).SigOK := fun τ => by
   have e : (negSp V).gram.map τ = -V.gram.map τ := Matrix.ext fun i j => map_neg τ _
   rw [e]
@@ -129,6 +167,15 @@ section Coset
 variable {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
   {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hM`. Set `O : AddSubgroup D.host.E` to `(algebraMap (𝓞 D.host.E) D.host.E).range.toAddSubgroup`. Take `⟨k, hk, hO⟩` from `GlobalTheory.PlaceVec.exists_common_nsmul O (fun p : s × Fin m × Fin n => p.1.1 p.2.1 p.2.2) fun p => by`. Take `⟨d, hd, h⟩` from `GlobalTheory.AdIdem.exists_nat_mul_integral D.host.E (p.1.1 p.2.1 p.2.2)`. Conclude with `⟨d, hd, by rw [nsmul_eq_mul]; exact h⟩`.
+
+Use `⟨k, hk, fun x hx i j => ?_⟩` and prove the remaining obligations. Use `show k • x i j ∈ O`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hO (⟨x, hx⟩, i, j)`. Consider the case `zero => rw [Matrix.zero_apply, smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.add_apply, smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Take `⟨o, ho⟩` from `hx`.
+
+Use `⟨c * o, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ho, Matrix.smul_apply, smul_comm, Algebra.smul_def c]`.
+-/
 theorem exists_den {m n : ℕ} (M : Submodule (𝓞 D.host.E) (Matrix (Fin m) (Fin n) D.host.E)) (hM : M.FG) :
     ∃ N : ℕ, 0 < N ∧ ∀ x ∈ M, ∀ i j, ∃ o : 𝓞 D.host.E, (o : D.host.E) = N • x i j := by
   obtain ⟨s, rfl⟩ := hM
@@ -147,6 +194,17 @@ theorem exists_den {m n : ℕ} (M : Submodule (𝓞 D.host.E) (Matrix (Fin m) (F
     refine ⟨c * o, ?_⟩
     rw [map_mul, ho, Matrix.smul_apply, smul_comm, Algebra.smul_def c]
 
+/- English proof (translation)
+Take `⟨N, hN, h⟩` from `exists_den M hM`. Take `⟨k, hk, h'⟩` from `GlobalTheory.PlaceVec.exists_nsmul_int_mem_latO hS hT`. Use `⟨k * N, mul_pos hk hN, fun w hw => ?_⟩` and prove the remaining obligations. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`.
+
+Take `⟨α, hα, x, hx, rfl⟩` from `hw`. Rewrite using `[mul_smul]`. Use `h' _ (Matrix.ext fun i j => ?_) fun i j => ?_` and prove the remaining obligations. Establish `h0 : infPart D (pairA D.host.F 0 α ⊗ₜ[D.host.F] x i j) = 0` using `TensorProduct.zero_tmul _ _`. Conclude with `((infPart D).toAddMonoidHom.map_nsmul N (pairA D.host.F 0 α ⊗ₜ[D.host.F] x i j)).trans ((congrArg (N • ·) h0).trans (nsmul_zero N))`.
+
+Take `⟨o, ho⟩` from `h x hx i j`. Establish `h1` using `GlobalTheory.PlaceVec.tmul_mem_int (F := D.host.F) hα o`. Rewrite `h1` using `[ho, ← TensorProduct.smul_tmul']`. Rewrite using `[GlobalTheory.PlaceVec.map_toEAf_nsmul]`. Conclude with `h1`.
+
+Consider the case `zero => rw [nsmul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [nsmul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [neg_nsmul]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem exists_nsmul_hatMx (hS : Submodule.IsLattice D.host.E ΛS) (hT : Submodule.IsLattice D.host.E ΛT)
     (M : Submodule (𝓞 D.host.E) (Matrix (Fin T.rank) (Fin S.rank) D.host.E)) (hM : M.FG) :
     ∃ K : ℕ, 0 < K ∧ ∀ w ∈ hatMx M,
@@ -171,6 +229,21 @@ theorem exists_nsmul_hatMx (hS : Submodule.IsLattice D.host.E ΛS) (hT : Submodu
   | add x y _ _ hx hy => rw [nsmul_add]; exact add_mem hx hy
   | neg x _ hx => rw [neg_nsmul]; exact neg_mem hx
 
+/- English proof (translation)
+Take `⟨d, hd, hA⟩` from `D.host.AA.isFractional`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Take `⟨c, hc⟩ : d ∣ (Ideal.absNorm (Ideal.span {d}) : 𝓞 D.host.E)` from `Ideal.mem_span_singleton.1 (Ideal.absNorm_mem _)`. Establish `p1 : 0 < Ideal.absNorm (Ideal.span {d})` using `Nat.pos_of_ne_zero fun h => hd0 (Ideal.span_singleton_eq_bot.1 (Ideal.absNorm_eq_zero_iff.1 h))`. Establish `p2 : 0 < Ideal.absNorm 𝔪` using `Nat.pos_of_ne_zero fun h => h𝔪 (Ideal.absNorm_eq_zero_iff.1 h)`.
+
+Generalize the expression as in `Ideal.absNorm (Ideal.span {d}) = N at hc p1`. Use `⟨Ideal.absNorm 𝔪 * N, mul_pos p2 p1, fun w hw => ?_⟩` and prove the remaining obligations. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩` from `hw`.
+
+Take `⟨o, ho⟩` from `hA a ha`. Set `x : Matrix (Fin T.rank) (Fin S.rank) D.host.E` to `Matrix.of fun i j => a * t i * ∑ k, star (s k) * S.gram k j`. Establish `hx : (N : 𝓞 D.host.E) • x ∈ homLat ΛS ΛT` using `fun y hy => by`. Take `⟨b, hb⟩` from `(hS.2 y).1 hy s hs`. Establish `e : ((N : 𝓞 D.host.E) • x) *ᵥ y = (c * o * b) • t`.
+
+Use function extensionality and compare the values at `i`. Establish `hb' : algebraMap (𝓞 D.host.E) D.host.E b = ∑ j, (∑ k, star (s k) * S.gram k j) * y j`. Rewrite using `[show algebraMap (𝓞 D.host.E) D.host.E b = _ from hb, Finset.sum_comm]`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[smul_mulVec, Pi.smul_apply, Pi.smul_apply, Algebra.smul_def, Algebra.smul_def, hc, map_mul, map_mul, map_mul, ho, hb', Algebra.smul_def]`.
+
+Simplify using `only [x, mulVec, dotProduct, of_apply, mul_assoc, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `ΛT.smul_mem _ ht`. Use `AddSubgroup.subset_closure ⟨α, hα, _, Submodule.smul_mem_smul (Ideal.absNorm_mem 𝔪) hx, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Simplify using `only [Nat.cast_smul_eq_nsmul, smul_smul, Matrix.smul_apply, of_apply, TensorProduct.tmul_smul, x]`. Consider the case `zero => rw [nsmul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [nsmul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [neg_nsmul]`. Conclude with `neg_mem hx`.
+-/
 theorem exists_nsmul_latO (hS : IsSelfDualC S ΛS) {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) :
     ∃ K : ℕ, 0 < K ∧ ∀ w ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True),
       K • w ∈ hatMx (𝔪 • homLat ΛS ΛT) := by
@@ -207,6 +280,21 @@ theorem exists_nsmul_latO (hS : IsSelfDualC S ΛS) {𝔪 : Ideal (𝓞 D.host.E)
   | add x y _ _ hx hy => rw [nsmul_add]; exact add_mem hx hy
   | neg x _ hx => rw [neg_nsmul]; exact neg_mem hx
 
+/- English proof (translation)
+Take `⟨K, hK, h1⟩` from `exists_nsmul_hatMx hS.1 hT.1 (homLat ΛS ΛT) (Module.Finite.iff_fg.1 (homLat_fg hS.1 hT.1.fg))`. Take `⟨K', hK', h2⟩` from `exists_nsmul_latO (T := T) (ΛT := ΛT) hS h𝔪`. Establish `hne : ∀ t, cosInd e κ t ≠ 0 → t ∈ cosSet e κ` using `fun t ht => Set.mem_of_indicator_ne_zero ht`. Use `⟨fun t ht => (hne t ht).1, K * K', mul_pos hK hK', fun u hu hu' t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hm : (K * K') • u ∈ hatMx (𝔪 • homLat ΛS ΛT)`.
+
+Rewrite using `[mul_smul]`. Conclude with `nsmul_mem (h2 u hu) K`. Establish `hh : IsHalf e (t + (K * K') • u) ↔ IsHalf e t`. Rewrite using `[GlobalTheory.PlaceModel.isHalf_iff, GlobalTheory.PlaceModel.isHalf_iff]`. Conclude with `add_mem_cancel_right (nsmul_mem ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hu') _)`.
+
+Establish `hiff : t + (K * K') • u ∈ cosSet e κ ↔ t ∈ cosSet e κ`. Use `and_congr hh (exists_congr fun x₀ => and_congr_right fun _ => ?_)` and prove the remaining obligations. Rewrite using `[add_sub_right_comm]`. Conclude with `add_mem_cancel_right hm`. Unfold `cosInd`.
+
+Distinguish the cases in `ht : t ∈ cosSet e κ`. Rewrite using `[Set.indicator_of_mem ht, Set.indicator_of_mem (hiff.2 ht)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem ht, Set.indicator_of_notMem fun h => ht (hiff.1 h)]`. Take `⟨-, x₀, -, h⟩` from `hne t ht`.
+
+Establish `a1` using `h1 _ (AddSubgroup.closure_mono (by`. Introduce and unpack `_ ⟨α, hα, x, hx, rfl⟩`. Conclude with `⟨α, hα, x, Submodule.smul_le_right hx, rfl⟩) h)`. Establish `a2` using `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ e (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, he])) _ (h1 _ (AddSubgroup.subset_closure ⟨1, one_mem (Formalism.UG.intAd D.host.F), x₀.1, x₀.2, rfl⟩))`. Establish `e1 : e • (x₀ : Matrix (Fin T.rank) (Fin S.rank) D.host.E).map (incA D) = e • (Matrix.of fun i j => (pairA D.host.F 0 1) ⊗ₜ[D.host.F] x₀.1 i j : WO S T)`.
+
+Use extensionality with `i j`. Use `show e * _ = e * _`. Use `GlobalTheory.SplitScalar.adele_ext (by rw [RingHom.map_mul, RingHom.map_mul, hinf, zero_mul, zero_mul]) ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, RingHom.map_mul]`. Both sides reduce to the same expression.
+
+Rewrite `a2` using `[smul_comm, ← e1]`. Establish `a3` using `add_mem a1 a2`. Rewrite `a3` using `[← nsmul_add, sub_add_cancel]`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `nsmul_mem a3 _`.
+-/
 theorem isSBHalf_cosInd (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥)
     {e : AE D} (he : e * e = e) (hinf : infPart D e = 0) (κ : Cos ΛS ΛT 𝔪) :
     IsSBHalf e (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True)
@@ -251,6 +339,29 @@ theorem isSBHalf_cosInd (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {𝔪 
 
 end Coset
 
+/- English proof (translation)
+Introduce `hW D T L μ0 hL sc G ψ hψ`. Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Establish `hV : ∀ X : Node, X.InRange D.R.m → (G.V X).SigOK ∧ IsSelfDualC (G.V X) (G.Λ X)` using `fun X hX => by`. Distinguish the cases in `h0 : ∀ j, X ≠ .grid 0 j`. Conclude with `⟨(G.isV hX h0).sigOK, (G.isV hX h0).sd⟩`.
+
+Use `push Not at h0`. Take `⟨j, rfl⟩` from `h0`. Conclude with `⟨(GlobalTheory.ChiGrid.colY_isV D T L μ0 hL j hX.2).sigOK, (GlobalTheory.ChiGrid.colY_isV D T L μ0 hL j hX.2).sd⟩`. Establish `h1 : ∀ (X : Node) (τ : D.what₂.Tau), ∃ s P : Matrix (Fin (G.V X).rank) (Fin (G.V X).rank) ℂ, X.InRange D.R.m → IsCartanInv (gramAt D (G.V X) τ) s ∧ ∃ ε : Fin (G.V X).rank → Bool, Pᴴ * gramAt D (G.V X) τ * P = Formalism.REAL.Jm ε ∧ s * P = P * Formalism.REAL.Jm ε` using `fun X τ => by`. Distinguish the cases in `hX : X.InRange D.R.m`.
+
+Take `⟨s, P, h⟩` from `exists_cartan (hV X hX).1 τ`. Conclude with `⟨s, P, fun _ => h⟩`. Conclude with `⟨1, 1, fun h => absurd h hX⟩`. Use `choose s P hs using h1`. Establish `hη` using `GlobalTheory.Mem.EtaTilde.isEta_res D _ _ hL.eta L.C.isEta`.
+
+Establish `hchi : ∀ i, i + 1 ≤ D.R.m → IsHeckeChar D (G.ch.chi (D.R.m - i)) ∧ ∀ a, G.ch.chi (D.R.m - i) (idF D a) = 1` using `fun i hi => ⟨(G.ch.chi_eq _ (by omega) (by omega)).1, triv_base (G.ch.chi_eq _ (by omega) (by omega)) (G.ch.triv _ (by omega) (by omega))⟩`. Establish `hmu : ∀ t j, j + 1 ≤ D.R.m → IsHeckeChar D (L.mu t (j + 1)) ∧ ∀ a, L.mu t (j + 1) (idF D a) = 1` using `fun t j hj => by`. Establish `a1` using `hL.mu0 ⟨j, hj⟩`. Establish `a2` using `hL.xi t`. Use `⟨⟨a1.1.1.mul a2.1.1, fun x => ?_⟩, fun a => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(congrArg₂ (· * ·) (a1.1.2 x) (a2.1.2 x)).trans (mul_one _)`. Conclude with `(congrArg₂ (· * ·) (triv_base a1 (L.C.isMu0 _).triv a) (triv_base a2 (hL.xi_triv t) a)).trans (mul_one _)`. Establish `hchr : ∀ p : Pair T, p.InRange D.R.m → IsHeckeChar D (G.chr p) ∧ ∀ a, G.chr p (idF D a) = 1`. Introduce and unpack `(⟨i, j⟩ | ⟨t, i, j⟩ | i | ⟨t, j⟩) hp`. Conclude with `hchi i hp.1`.
+
+Conclude with `hmu t j hp.2`. Conclude with `hchi i hp`. Conclude with `hmu t j hp`. Establish `h2 : ∀ p : Pair T, ∃ om : GA D (G.pS p) × GA D (G.pT p) →* Module.End ℂ (WO (G.pS p) (G.pT p) → ℂ), p.InRange D.R.m → IsWeilDatumO ψ (G.pS p) (G.pT p) (G.chrS p) (G.chrT p) om` using `fun p => by`. Distinguish the cases in `hp : p.InRange D.R.m`.
+
+Establish `a1` using `attChr_ok (hchr p hp).1 (hchr p hp).2 hL.eta.1 hη`. Take `⟨om, h⟩` from `hW D ψ (G.pS p) (G.pT p) (G.chrS p) (G.chrT p) hψ (a1 _).1 (a1 _).1 (a1 _).2 (a1 _).2`. Conclude with `⟨om, fun _ => h⟩`. Conclude with `⟨1, fun h => absurd h hp⟩`. Use `choose om hom using h2`.
+
+Establish `r1 : ∀ i, i < D.R.m → (Node.grid (i + 1) 0).InRange D.R.m` using `fun i hi => ⟨hi, Nat.zero_le _⟩`. Establish `r0 : ∀ i, i < D.R.m → (Node.grid i 0).InRange D.R.m` using `fun i hi => ⟨hi.le, Nat.zero_le _⟩`. Establish `h3 : ∀ i, ∃ f : WO (G.pS (.chi i 0)) (G.pT (.chi i 0)) → ℂ, i < D.R.m → IsVacO ψ θ _ _ (G.cartS s (.chi i 0)) (G.onT s (.chi i 0)) (G.latS (.chi i 0) : Set _) (G.latT (.chi i 0) : Set _) f` using `fun i => by`. Distinguish the cases in `hi : i < D.R.m`. Take `⟨f, h⟩` from `GlobalTheory.VacuumO.vacExists D ψ θ hψ hθ (G.pS (.chi i 0)) (G.pT (.chi i 0)) (G.cartS s (.chi i 0)) (G.onT s (.chi i 0)) (sigOK_neg (hV _ (r1 i hi)).1) (hV _ (r0 i hi)).1 (fun τ => isCartanInv_neg (hs _ τ (r1 i hi)).1) (fun τ => (hs _ τ (r0 i hi)).1) _ _ (isSelfDualC_neg (hV _ …`.
+
+Conclude with `⟨f, fun _ => h⟩`. Conclude with `⟨0, fun h => absurd h hi⟩`. Use `choose vac hvac using h3`. Take `⟨e, he⟩` from `GlobalTheory.GridIdem.exists_idempotentSum_auxiliaryPlaces D T L G.pl`. Establish `h4 : ∀ i (κ : G.CosAt i), ∃ f : WO (G.pS (.chi i 0)) (G.pT (.chi i 0)) → ℂ, i < D.R.m → IsThetaAt ψ (symplO _ _) (heisO ψ _ _) e (latO (G.pS (.chi i 0)) (G.pT (.chi i 0)) (G.latS (.chi i 0) : Set _) (G.latT (.chi i 0) : Set _) fun _ => True) 1 (vac i) (cosInd e κ) f` using `fun i κ => by`.
+
+Distinguish the cases in `hi : i < D.R.m`. Establish `dS` using `isSelfDualC_neg (hV _ (r1 i hi)).2`. Establish `dT` using `(hV _ (r0 i hi)).2`. Establish `e1` using `GlobalTheory.PlaceVec.idemSum_mul_self he`. Establish `e2` using `GlobalTheory.PlaceVec.idemSum_infPart he`.
+
+Take `⟨f, h⟩` from `GlobalTheory.PlaceVec.exists_isThetaAt hψ dS dT e1 e2 (GlobalTheory.PlaceModelSum.placeModelExistsSum D ψ hψ _ _ _ _ dS dT _ e he _ (hvac i hi).2.theta (hvac i hi).2.lat).1 (isSBHalf_cosInd dS dT (G.pl.modul_ne_bot sc) e1 e2 κ)`. Conclude with `⟨f, fun _ => h⟩`. Conclude with `⟨0, fun h => absurd h hi⟩`. Use `choose cv hcv using h4`. Conclude with `⟨⟨ψ, hψ, θ, hθ, s, fun X hX τ => (hs X τ hX).1, P, fun X hX τ => (hs X τ hX).2, om, hom, vac, hvac, cv, e, he, fun i hi κ => hcv i κ hi⟩, rfl⟩`.
+-/
 theorem exists_weil : GlobalTheory.Published.WeilRepresentationUnitaryPair → ∀ (D : D7) (T : Type) (L : LevCh D T) (μ0 : T), L.Is μ0 → ∀ (sc : Consts) (G : GridData L sc) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∃ W : G.Weil, W.ψ = ψ := by
   intro hW D T L μ0 hL sc G ψ hψ
   classical

@@ -21,6 +21,19 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.SharpLift
 
+/- English proof (translation)
+Establish `hker : RingHom.ker g ≤ RingHom.ker (IsLocalRing.residue R)`. Rewrite using `[IsLocalRing.ker_residue]`. Conclude with `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top g)`. Set `g' : R₀ →+* IsLocalRing.ResidueField R` to `RingHom.liftOfSurjective g hg ⟨IsLocalRing.residue R, hker⟩`. Establish `hg' : g'.comp g = IsLocalRing.residue R` using `RingHom.liftOfSurjective_comp g hg _`.
+
+Set `k` to `Spec.map (CommRingCat.ofHom (IsLocalRing.residue R))`. Establish `hk : Spec.map (CommRingCat.ofHom g') ≫ Spec.map (CommRingCat.ofHom g) = k`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hg']`. Set `ψ : pullback B.hom k ⟶ Y₀.left` to `hb.lift (pullback.fst B.hom k) (pullback.snd B.hom k ≫ Spec.map (CommRingCat.ofHom g')) (by rw [Category.assoc, hk, pullback.condition])`. Establish `hψ : ψ ≫ b = pullback.fst B.hom k` using `hb.lift_fst _ _ _`.
+
+Establish `hψ' : IsPullback ψ (pullback.snd B.hom k) Y₀.hom (Spec.map (CommRingCat.ofHom g'))`. Use `IsPullback.of_right ?_ (hb.lift_snd _ _ _) hb` and prove the remaining obligations. Rewrite using `[hψ, hk]`. Conclude with `IsPullback.of_hasPullback _ _`. Establish `h₁ : RelAmple ((Over.pullback k).obj B) (M.pull (pullback.fst B.hom k))` using `GlobalTheory.AmpleLocalBase.relAmple_baseChange (A' := (Over.pullback k).obj B) hψ' hN₀ (pull_isLB hM _) (LBIso.chartPull (Geo.Tor.chartPullPull N₀ ψ ψ rfl) (chartPullSame M (fun _ : PUnit => pullback.fst B.hom k) (fun _ => b) (fun _ => 1) ψ fun _ => hψ.symm) hiso).symm hA`.
+
+Take `⟨r, hr, h₂⟩` from `GlobalTheory.ProperFinite.relAmple_near_fibre B hM (IsLocalRing.residue R) (fun y => by`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective y`. Conclude with `⟨a, 1, by simp, by simp⟩) h₁`. Establish `hu : IsUnit r` using `(IsLocalRing.residue_ne_zero_iff_isUnit r).1 hr`. Establish `htop : PrimeSpectrum.basicOpen r = ⊤`.
+
+Conclude with `top_le_iff.1 fun p _ => fun hp => p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hp hu)`. Generalize the expression as in `(PrimeSpectrum.basicOpen r : (Spec (CommRingCat.of R)).Opens) = U at htop h₂`. Substitute `htop` using the available equality. Set `j` to `Scheme.Opens.ι (X := Spec (CommRingCat.of R)) ⊤`. Establish `: IsIso j` using `inferInstanceAs (IsIso (Spec (CommRingCat.of R)).topIso.hom)`.
+
+Establish `: IsAffine (⊤ : (Spec (CommRingCat.of R)).Opens).toScheme` using `isAffineOpen_top _`. Establish `h₃ : IsPullback (inv (pullback.fst B.hom j)) B.hom (pullback.snd B.hom j) (inv j)` using `IsPullback.of_horiz_isIso ⟨by`. Rewrite using `[IsIso.inv_comp_eq, ← Category.assoc, pullback.condition, Category.assoc, IsIso.hom_inv_id, Category.comp_id]⟩`. Use `GlobalTheory.AmpleLocalBase.relAmple_baseChange (A := (Over.pullback j).obj B) h₃ (pull_isLB hM _) hM ?_ h₂` and prove the remaining obligations. Conclude with `(LBIso.chartPull (Geo.Tor.chartPullPull _ _ _ rfl) (chartPullSec M _ _ (IsIso.inv_hom_id (pullback.fst B.hom j))) ⟨_, idIso_isGen (pull_isLB hM _)⟩).symm`.
+-/
 theorem relAmple_of_closed_proper (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (B : Over (Spec (CommRingCat.of R))) [IsProper B.hom] [Flat B.hom] (M : LB B.left) (hM : M.IsLB)
     (R₀ : Type) [CommRing R₀] [Nontrivial R₀] (g : R →+* R₀) (hg : Function.Surjective g)
@@ -68,6 +81,11 @@ theorem relAmple_of_closed_proper (R : Type) [CommRing R] [IsLocalRing R] [IsNoe
   exact (LBIso.chartPull (Geo.Tor.chartPullPull _ _ _ rfl) (chartPullSec M _ _ (IsIso.inv_hom_id (pullback.fst B.hom j)))
     ⟨_, idIso_isGen (pull_isLB hM _)⟩).symm
 
+/- English proof (translation)
+Take `⟨U, hU, H⟩` from `GlobalTheory.KTrivGlob.exists_open hM hN₀ hB hA hb hiso hK (IsLocalRing.closedPoint R)`. Establish `hcl : (spMap π) (IsLocalRing.closedPoint R) = IsLocalRing.closedPoint R₁`. Conclude with `IsLocalRing.comap_closedPoint π`. Establish `htop : U = ⊤`. Rewrite `hU` using `[hcl]`.
+
+Conclude with `top_le_iff.1 fun p _ => (IsLocalRing.specializes_closedPoint p).mem_open U.2 hU`. Substitute `htop` using the available equality. Establish `hL` using `pull_isLB hM (pullback.fst B.hom (⊤ : (Sp R₁).Opens).ι)`. Conclude with `GlobalTheory.CoverGlue.kTriv_of_cover _ PUnit (fun _ => ⊤) B _ _ (by simp) (fun _ => isGrpPullback_pullback B _) _ _ hM (fun _ => hL) (fun _ => GlobalTheory.lbIso_refl hL) hB (fun _ => GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hB (isGrpPullback_pullback B _)) (fun _ = …`.
+-/
 theorem kTriv_of_localHom (R₁ R : Type) [CommRing R₁] [IsLocalRing R₁] [IsNoetherianRing R₁] [CommRing R] [IsLocalRing R]
     (π : R₁ →+* R) [IsLocalHom π] (B : Over (Sp R₁)) [GrpObj B] (hB : IsAbelianScheme B) (M : LB B.left) (hM : M.IsLB)
     (hA : RelAmple B M) (Y₀ : Over (Sp R)) [GrpObj Y₀] (b : Y₀.left ⟶ B.left) (hb : IsGrpPullback Y₀ B (spMap π) b)

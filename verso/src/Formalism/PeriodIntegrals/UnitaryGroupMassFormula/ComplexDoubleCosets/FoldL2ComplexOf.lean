@@ -13,6 +13,31 @@ namespace PI.PoincareSeriesInner.W
 
 universe u
 
+/- English proof (translation)
+Introduce `Γ S S' hΓ hS hS' Ω hΩ h1 a a' Ph Ph' hP hP' F F' hF hF' hm hm' D D' hD hD' R hR Fs hFs FΓ hFΓ`. Use `haveI : Countable Γ := (TopologicalSpace.separableSpace_iff_countable).1 inferInstance`. Take `⟨hPm, hPinv, hPb⟩` from `hP`. Take `⟨hPm', hPinv', hPb'⟩` from `hP'`. Establish `hΩm : MeasurableSet Ω` using `hΩ.isClosed.measurableSet`.
+
+Take `⟨hM1, hMfin, hMinv, hMm⟩` from `overlapMultiplicityProperties G Γ hΓ Ω hΩ h1`. Establish `hbd` using `foldBound_holds G μ Γ S hΓ hS Ω hΩm a Ph hPm hPinv hPb F hF D hD`. Establish `hbd'` using `foldBound_holds G μ Γ S' hΓ hS' Ω hΩm a' Ph' hPm' hPinv' hPb' F' hF' D' hD'`. Establish `hQf : quotientLIntegral μ F Ph < ∞`. Use `lt_of_le_of_lt ?_ hm` and prove the remaining obligations.
+
+Conclude with `lintegral_mono fun y => le_mul_of_one_le_left zero_le' (hM1 y)`. Establish `hQf' : quotientLIntegral μ F' Ph' < ∞`. Use `lt_of_le_of_lt ?_ hm'` and prove the remaining obligations. Conclude with `lintegral_mono fun y => le_mul_of_one_le_left zero_le' (hM1 y)`. Establish `hK : ∫⁻ x in FΓ, mult Γ Ω x * ∑' δ' : D', ‖Ph' (δ' * x)‖ₑ ∂μ = multiplicityLIntegral μ Γ Ω F' Ph'`.
+
+Establish `hfun : (fun x => mult Γ Ω x * ∑' δ' : D', ‖Ph' (δ' * x)‖ₑ) = fun x => ∑' δ' : D', mult Γ Ω (δ' * x) * ‖Ph' (δ' * x)‖ₑ`. Use function extensionality and compare the values at `x`. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `tsum_congr fun δ' => ?_` and prove the remaining obligations. Rewrite using `[hMinv δ' (hD'.1 δ'.2) x]`.
+
+Rewrite using `[hfun]`. Conclude with `lintegralTransversalSum G μ Γ S' hS' F' hF' FΓ hFΓ D' hD' (fun y => mult Γ Ω y * ‖Ph' y‖ₑ) (hMm.mul hPm'.enorm) (fun s hs y => by simp only [hMinv s (hS' hs) y, hPinv' s hs y])`. Establish `hne : (a : ℝ≥0∞) * quotientLIntegral μ F Ph ≠ ∞` using `ENNReal.mul_ne_top ENNReal.coe_ne_top hQf.ne`. Establish `hfin : (a : ℝ≥0∞) * quotientLIntegral μ F Ph * multiplicityLIntegral μ Γ Ω F' Ph' < ∞` using `ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.coe_lt_top hQf) hm'`. Establish `hI : ∫⁻ x in FΓ, (∑' δ : D, ‖Ph (δ * x)‖ₑ) * ∑' δ' : D', ‖Ph' (δ' * x)‖ₑ ∂μ ≤ a * quotientLIntegral μ F Ph * multiplicityLIntegral μ Γ Ω F' Ph'`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `_ = ((a : ℝ≥0∞) * quotientLIntegral μ F Ph) * ∫⁻ x in FΓ, mult Γ Ω x * ∑' δ' : D', ‖Ph' (δ' * x)‖ₑ ∂μ := lintegral_const_mul' _ _ hne`. Use `_ = _ := by rw [hK]`.
+
+Establish `hunf` using `fold_dc_unfold G μ Γ S S' hS hS' D D' hD hD' R hR Fs hFs FΓ hFΓ (fun x => ‖Ph x‖ₑ) (fun x => ‖Ph' x‖ₑ) hPm.enorm hPm'.enorm (fun s hs y => by simp only [hPinv s hs y]) (fun s hs y => by simp only [hPinv' s hs y])`. Establish `h2 : ∑' r : R, ∫⁻ x in Fs r, ‖Ph x‖ₑ * ‖Ph' ((r : G)⁻¹ * x)‖ₑ ∂μ < ∞`. Rewrite using `[← hunf]`. Conclude with `hI.trans_lt hfin`. Establish `hconj : Measurable (fun z : ℂ => (starRingEnd ℂ) z)` using `Complex.continuous_conj.measurable`.
+
+Establish `henc : ∀ z : ℂ, ‖(starRingEnd ℂ) z‖ₑ = ‖z‖ₑ` using `fun z => by simp`. Use `⟨?_, h2, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ = a * quotientLIntegral μ F Ph * multiplicityLIntegral μ Γ Ω F' Ph' := by`. Rewrite using `[lintegral_const_mul' _ _ hne]`. Both sides reduce to the same expression. Introduce `r hr`. Establish `hle : ∫⁻ x in Fs r, ‖Ph x‖ₑ * ‖Ph' (r⁻¹ * x)‖ₑ ∂μ < ∞` using `(ENNReal.le_tsum (f := fun r : R => ∫⁻ x in Fs r, ‖Ph x‖ₑ * ‖Ph' ((r : G)⁻¹ * x)‖ₑ ∂μ) ⟨r, hr⟩).trans_lt h2`.
+
+Use `⟨(hPm.mul (hconj.comp (hPm'.comp (measurable_const_mul _)))).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Simplify `hle` using `[HasFiniteIntegral, enorm_mul, henc]`. Establish `hψm : Measurable (fun x => (starRingEnd ℂ) (Ph' x))` using `hconj.comp hPm'`. Establish `hpc : ∀ x, poinc D' (fun y => (starRingEnd ℂ) (Ph' y)) x = (starRingEnd ℂ) (poinc D' Ph' x)` using `fun x => by simp only [poinc, Complex.conj_tsum]`. Establish `key` using `hc G μ Γ S S' hS hS' D D' hD hD' R hR Fs hFs FΓ hFΓ Ph (fun x => (starRingEnd ℂ) (Ph' x)) hPm hψm hPinv (fun s hs y => by simp only [hPinv' s hs y]) (fun x => ((hbd x).trans_lt (ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.coe_lt_top (hMfin x)) hQf)).ne) (fun x => by`.
+
+Simplify using `only [henc]`. Conclude with `((hbd' x).trans_lt (ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.coe_lt_top (hMfin x)) hQf')).ne)`. Use the proof step `(by`. Simplify using `only [henc]`. Conclude with `(hI.trans_lt hfin).ne)`.
+
+Simplify using `only [hpc] at key`. Conclude with `key`.
+-/
 theorem fold_L2_complex_of (hc : CplxDC.{u}) (G : Type u) [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] : PoincareSeriesInner G μ := by

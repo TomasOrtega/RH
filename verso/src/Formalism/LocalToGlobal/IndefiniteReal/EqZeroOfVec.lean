@@ -31,6 +31,17 @@ variable {θ}
 
 open Classical in
 
+/- English proof (translation)
+Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT => exact ⟨hT.equiv, hT.cont⟩`. Consider the case `zero`. Use `⟨fun τ g _ v w _ => ?_, fun τ v x => ⟨0, sobCont_zero, fun w => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[MultilinearMap.zero_apply, MultilinearMap.zero_apply]`.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Consider the case `add T T' _ _ h h'`. Use `⟨fun τ g hg v w hw => ?_, fun τ v x => ?_⟩` and prove the remaining obligations. Rewrite using `[MultilinearMap.add_apply, MultilinearMap.add_apply, h.equiv τ g hg v w hw, h'.equiv τ g hg v w hw]`.
+
+Both sides reduce to the same expression. Take `⟨ℓ, hℓ, e⟩` from `h.cont τ v x`. Take `⟨ℓ', hℓ', e'⟩` from `h'.cont τ v x`. Conclude with `⟨ℓ + ℓ', sobCont_add hℓ hℓ', fun w => by`. Rewrite using `[LinearMap.add_apply, e, e', MultilinearMap.add_apply, Pi.add_apply]⟩`.
+
+Consider the case `smul a T _ h`. Use `⟨fun τ g hg v w hw => ?_, fun τ v x => ?_⟩` and prove the remaining obligations. Rewrite using `[MultilinearMap.smul_apply, MultilinearMap.smul_apply, h.equiv τ g hg v w hw]`. Both sides reduce to the same expression. Take `⟨ℓ, hℓ, e⟩` from `h.cont τ v x`.
+
+Conclude with `⟨a • ℓ, sobCont_smul a hℓ, fun w => by`. Rewrite using `[LinearMap.smul_apply, e, MultilinearMap.smul_apply, Pi.smul_apply]⟩`.
+-/
 theorem eqCont_of_mem {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M}
     (hT : T ∈ Mult θ M J χ) : EqCont θ M T := by
   induction hT using Submodule.span_induction with
@@ -55,6 +66,13 @@ theorem eqCont_of_mem {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ}
 
 open Classical in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Take `⟨ℓ, hℓ, e⟩` from `hT.cont τ v x`. Establish `horb : ∀ g : Gt V τ, ℓ (M.rep τ (gm g) (v τ : M.H τ)) = 0`. Introduce `g`. Establish `hm : M.rep τ (gm g) (v τ : M.H τ) ∈ M.sm τ` using `sm_stable M τ g (v τ).2`.
+
+Establish `e1` using `e ⟨M.rep τ (gm g) (v τ : M.H τ), hm⟩`. Rewrite `e1` using `[hT.equiv τ (gm g) (gm_mem g) v ⟨M.rep τ (gm g) (v τ : M.H τ), hm⟩ rfl, h0]`. Conclude with `e1`. Use `hS τ (v τ : M.H τ) (v τ).2 hv ℓ hℓ horb (w : M.H τ) w.2` as an intermediate fact. Rewrite using `[← e w, this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem place_zero {M : DSModel V S} (hS : SobOrbitDense M) {T : MMap M} (hT : EqCont θ M T) (τ : D.what₂.Tau)
     (v : M.Vec) (hv : (v τ : M.H τ) ≠ 0) (h0 : T v = 0) (w : M.sm τ) : T (Function.update v τ w) = 0 := by
   funext x
@@ -71,6 +89,15 @@ theorem place_zero {M : DSModel V S} (hS : SobOrbitDense M) {T : MMap M} (hT : E
 
 open Classical in
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset D.what₂.Tau, ∀ u : M.Vec, T (s.piecewise u v) = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro u`. Simplify using `using h0`.
+
+Consider the case `insert a s ha ih`. Introduce `u`. Establish `hva : ((s.piecewise u v) a : M.H a) ≠ 0`. Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ ha]`. Conclude with `hv a`.
+
+Use `place_zero hS hT a (s.piecewise u v) hva (ih u) (u a)` as an intermediate fact. Rewrite using `[Finset.piecewise_insert]`. Conclude with `this`. Use extensionality with `u`. Use `key Finset.univ u` as an intermediate fact.
+
+Rewrite `this` using `[Finset.piecewise_univ]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem eq_zero_of_vec {M : DSModel V S} (hS : SobOrbitDense M) {T : MMap M} (hT : EqCont θ M T) (v : M.Vec)
     (hv : ∀ τ, (v τ : M.H τ) ≠ 0) (h0 : T v = 0) : T = 0 := by
   have key : ∀ s : Finset D.what₂.Tau, ∀ u : M.Vec, T (s.piecewise u v) = 0 := by
@@ -93,6 +120,9 @@ theorem eq_zero_of_vec {M : DSModel V S} (hS : SobOrbitDense M) {T : MMap M} (hT
 variable (θ) in
 open Classical in
 
+/- English proof (translation)
+Introduce `T hT v hv h0`. Conclude with `eq_zero_of_vec hS (eqCont_of_mem hT) v hv h0`.
+-/
 theorem resInjVec (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (hS : SobOrbitDense M) :
     ResInjVec M (Mult θ M J χ) := by
   intro T hT v hv h0

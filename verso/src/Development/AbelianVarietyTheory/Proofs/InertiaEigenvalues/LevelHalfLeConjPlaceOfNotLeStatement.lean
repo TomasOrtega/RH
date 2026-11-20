@@ -14,5 +14,8 @@ set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LevelSeries
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LevelSeries.mb_le_conjPl_of_not_le | exact GlobalTheory.LevelSeries.mb_le_conjPl_of_not_le | (intros; apply GlobalTheory.LevelSeries.mb_le_conjPl_of_not_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.levelHalf_le_conj_place_of_not_le : ∀ (D : D7) (H : Geo.Tor.Host D.host.E) (l₂ : Geo.Tor.Level H) (Q : Formalism.L2.DIV.Pl D.host.E), ((l₂.M : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal → ¬ l₂.Mb ≤ Q.asIdeal → l₂.Mb ≤ (Formalism.L2.DIV.conjPl Q).asIdeal := by
   first | exact @GlobalTheory.LevelSeries.mb_le_conjPl_of_not_le | exact GlobalTheory.LevelSeries.mb_le_conjPl_of_not_le | (intros; apply GlobalTheory.LevelSeries.mb_le_conjPl_of_not_le <;> assumption)

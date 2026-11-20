@@ -5,6 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Cop
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Formalism.MainNotions.N ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Use `letI : Algebra B K[X] := ((algebraMap K K[X]).comp f).toAlgebra`. Set `φ : B[X] →ₐ[B] K[X]` to `{ Polynomial.mapRingHom f with commutes' := fun a => by simp [RingHom.algebraMap_toAlgebra] }`. Establish `e : (MonoidAlgebra.mapRingHom Γ (φ : B[X] →+* K[X])) (MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom Γ C z) = MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom Γ C (MonoidAlgebra.mapRingHom Γ f z)`. Rewrite using `[map_sub, MonoidAlgebra.mapRingHom_single]`. Use `congr 1`.
+
+Simplify using `[φ]`. Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g b => simp [φ, MonoidAlgebra.mapRingHom_single]`.
+
+Establish `h` using `D.nat B[X] K[X] φ (MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom Γ C z)`. Rewrite `h` using `[e]`. Conclude with `h.symm`.
+-/
 private theorem chi_map_eq_map_chi_mapRingHom {n : ℕ} {B K Γ : Type} [CommRing B] [CommRing K] [Group Γ]
     (D : W.GDet n B Γ) (f : B →+* K) (z : MonoidAlgebra B Γ) :
     (D.chi z).map f = (D.map f).chi (MonoidAlgebra.mapRingHom Γ f z) := by
@@ -26,6 +33,13 @@ private theorem chi_map_eq_map_chi_mapRingHom {n : ℕ} {B K Γ : Type} [CommRin
   rw [e] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `e : W.GDet.repAlg σ K[X] (MonoidAlgebra.mapRingHom Γ C w) = (C : K →+* K[X]).mapMatrix (MonoidAlgebra.lift K (Matrix (Fin n) (Fin n) K) Γ σ w)`. Proceed by induction on `w using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g b`.
+
+Simplify using `only [W.GDet.repAlg, MonoidAlgebra.mapRingHom_single, MonoidAlgebra.lift_single]`. Use extensionality with `i j`. Simplify using `[Polynomial.smul_eq_C_mul, Polynomial.algebraMap_apply]`. Establish `e1 : W.GDet.repAlg σ K[X] (MonoidAlgebra.single 1 X) = Matrix.scalar (Fin n) (X : K[X])`. Simplify using `only [W.GDet.repAlg, MonoidAlgebra.lift_single, map_one]`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Matrix.diagonal_apply]`. Use `show Matrix.det (W.GDet.repAlg σ K[X] (MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom Γ C w)) = _`. Rewrite using `[map_sub, e, e1]`. Both sides reduce to the same expression.
+-/
 private theorem chi_ofRep_eq_charpoly_lift {n : ℕ} {K Γ : Type} [CommRing K] [Group Γ]
     (σ : Γ →* Matrix (Fin n) (Fin n) K) (w : MonoidAlgebra K Γ) :
     (W.GDet.ofRep σ).chi w = (MonoidAlgebra.lift K (Matrix (Fin n) (Fin n) K) Γ σ w).charpoly := by
@@ -46,6 +60,11 @@ private theorem chi_ofRep_eq_charpoly_lift {n : ℕ} {K Γ : Type} [CommRing K] 
   rw [map_sub, e, e1]
   rfl
 
+/- English proof (translation)
+Rewrite using `[chi_map_eq_map_chi_mapRingHom, h, chi_ofRep_eq_charpoly_lift]`. Establish `e : MonoidAlgebra.mapRingHom Γ (f : B →+* K) (MonoidAlgebra.mapRingHom Γ (algebraMap O B) y) = MonoidAlgebra.mapRingHom Γ (algebraMap O K) y`. Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+
+Consider the case `single g b => simp [MonoidAlgebra.mapRingHom_single]`. Rewrite using `[e, MonoidAlgebra.lift_mapRingHom_algebraMap]`.
+-/
 private theorem chi_map {n : ℕ} {O B K Γ : Type} [CommRing O] [CommRing B] [CommRing K] [Algebra O B] [Algebra O K]
     [Group Γ] (D : W.GDet n B Γ) (f : B →ₐ[O] K) (σ : Γ →* Matrix (Fin n) (Fin n) K)
     (h : D.map (f : B →+* K) = W.GDet.ofRep σ) (y : MonoidAlgebra O Γ) :
@@ -60,6 +79,11 @@ private theorem chi_map {n : ℕ} {O B K Γ : Type} [CommRing O] [CommRing B] [C
     | single g b => simp [MonoidAlgebra.mapRingHom_single]
   rw [e, MonoidAlgebra.lift_mapRingHom_algebraMap]
 
+/- English proof (translation)
+Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Rewrite using `[map_add, ha, hb, Matrix.diagonal_add]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[map_add]`. Consider the case `single g b`. Use extensionality with `i j`. Simplify using `[W.diagRep, MonoidAlgebra.lift_single, Matrix.diagonal_apply]`.
+-/
 private theorem lift_diag {n : ℕ} {O K Γ : Type} [CommRing O] [CommRing K] [Algebra O K]
     [Group Γ] (χ : Fin n → Γ →* Kˣ) (y : MonoidAlgebra O Γ) :
     MonoidAlgebra.lift O (Matrix (Fin n) (Fin n) K) Γ (W.diagRep χ) y =
@@ -75,6 +99,27 @@ private theorem lift_diag {n : ℕ} {O K Γ : Type} [CommRing O] [CommRing K] [A
     ext i j
     simp [W.diagRep, MonoidAlgebra.lift_single, Matrix.diagonal_apply]
 
+/- English proof (translation)
+Establish `hcoef : ∀ k, ‖(P.map x).coeff k‖ ≤ 1` using `fun k => by rw [Polynomial.coeff_map]; exact h1 _`. Establish `hz1 : ‖z‖ ≤ 1`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hev` using `hz.eq_zero`.
+
+Rewrite `hev` using `[Polynomial.eval_eq_sum_range, Finset.sum_range_succ, hP.coeff_natDegree, one_mul]`. Use `set d := (P.map x).natDegree`. Establish `hzd : z ^ d = -∑ i ∈ Finset.range d, (P.map x).coeff i * z ^ i`. Take the linear combination `hev`. Break down `Nat.eq_zero_or_pos d with hd | hd` into its components or cases.
+
+Rewrite `hzd` using `[hd]`. Simplify using `at hzd`. Establish `hpos : 0 < ‖z‖ ^ (d - 1)` using `pow_pos (by linarith) _`. Establish `hle : ‖z‖ ^ d ≤ ‖z‖ ^ (d - 1)`. Rewrite using `[← norm_pow, hzd, norm_neg]`.
+
+Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hpos.le fun i hi => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Establish `hi' : i ≤ d - 1`. Use `Finset.mem_range.mp hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `: ‖z‖ ^ d = ‖z‖ ^ (d - 1) * ‖z‖`. Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hle` using `[this]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hE : ‖((P - ∏ i, (X - C (a i))).map x).eval z‖ < 1`. Rewrite using `[Polynomial.eval_eq_sum_range]`. Take `⟨k, -, hle⟩` from `IsUltrametricDist.exists_norm_finsetSum_le_of_nonempty ⟨0, Finset.mem_range.mpr (Nat.succ_pos _)⟩ (fun i => ((P - ∏ i, (X - C (a i))).map x).coeff i * z ^ i)`.
+
+Use `hle.trans_lt ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, Polynomial.coeff_map]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : (P.map x).eval z = (∏ i, (z - x (a i))) + ((P - ∏ i, (X - C (a i))).map x).eval z`. Rewrite using `[Polynomial.map_sub, Polynomial.eval_sub, Polynomial.map_prod, Polynomial.eval_prod]`.
+
+Simplify using the standard rewrite rules. Establish `hprod : ‖∏ i, (z - x (a i))‖ < 1`. Establish `: ∏ i, (z - x (a i)) = -((P - ∏ i, (X - C (a i))).map x).eval z`. Rewrite `hsum` using `[hz.eq_zero]`. Take the linear combination `(-1 : K) * hsum`.
+
+Rewrite using `[this, norm_neg]`. Conclude with `hE`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `: (1 : ℝ) ≤ ‖∏ i, (z - x (a i))‖`.
+
+Rewrite using `[norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem near {n : ℕ} {B K : Type} [CommRing B] [NormedField K] [IsUltrametricDist K] (I : Ideal B)
     (x : B →+* K) (h1 : ∀ b, ‖x b‖ ≤ 1) (hm : ∀ b ∈ I, ‖x b‖ < 1) (P : B[X]) (hP : (P.map x).Monic) (a : Fin n → B)
     (ha : ∀ k, (P - ∏ i, (X - C (a i))).coeff k ∈ I) (z : K) (hz : (P.map x).IsRoot z) : ∃ i, ‖z - x (a i)‖ < 1 := by
@@ -137,6 +182,29 @@ private theorem near {n : ℕ} {B K : Type} [CommRing B] [NormedField K] [IsUltr
       _ ≤ ∏ i, ‖z - x (a i)‖ := Finset.prod_le_prod (fun _ _ => zero_le_one) (fun i _ => hne i)
   linarith
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s V c n r B x ρ hx`. Introduce `y z hz`. Use `letI := B.ring`. Use `letI := B.alg`. Use `haveI := B.co`.
+
+Use `set D := B.u.D.comap V.pr with hD`. Establish `hxD : D.map (x : B.B →+* PadicAlgCl l) = W.GDet.ofRep (W.mat ρ)` using `hx`. Establish `hrD : D.map (res c.O B.B : B.B →+* ResidueField c.O) = W.GDet.ofRep (W.diagRep fun i => (r.chib i).comp V.pr)`. Establish `h0 : (B.u.D.map (res c.O B.B : B.B →+* ResidueField c.O)).comap V.pr = (r.Dbar).comap V.pr` using `by rw [B.u.red]`. Use `h0.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[W.Resid.Dbar]`. Use `((AlgebraTools.Det.repApi (W.diagRep r.chib)).2.2.2.2.2.2.1 V.pr).trans ?_` and prove the remaining obligations. Conclude with `congrArg W.GDet.ofRep (MonoidHom.ext fun g => rfl)`. Use `set P := D.chi (MonoidAlgebra.mapRingHom _ (algebraMap c.O B.B) y) with hP`. Establish `hPx` using `chi_map D (x : B.B →ₐ[c.O] PadicAlgCl l) (W.mat ρ) hxD y`.
+
+Establish `hPr` using `chi_map D (res c.O B.B) (W.diagRep fun i => (r.chib i).comp V.pr) hrD y`. Rewrite `hPr` using `[lift_diag, Matrix.charpoly_diagonal]`. Use `set d : Fin n → ResidueField c.O := fun i => MonoidAlgebra.lift c.O (ResidueField c.O) _ ((Units.coeHom _).comp ((r.chib i).comp V.pr)) y with hd`. Use `choose a' ha' using fun i => IsLocalRing.residue_surjective (d i)`. Establish `hco` using `(GradeZeroInterpolatingElement.coPt c B.B).1 x`.
+
+Take `⟨-, e, he1, he0, hen⟩` from `hco`. Establish `h1 : ∀ b, ‖(x : B.B →+* PadicAlgCl l) b‖ ≤ 1` using `fun b => by`. Use `hen 0 b (by simp)` as an intermediate fact. Simplify using `using this`. Establish `hm : ∀ b ∈ IsLocalRing.maximalIdeal B.B, ‖(x : B.B →+* PadicAlgCl l) b‖ < 1` using `fun b hb => by`.
+
+Use `hen 1 b (by simpa using hb)` as an intermediate fact. Simplify using `only [pow_one] at this`. Conclude with `lt_of_le_of_lt this he1`. Establish `hmon : (P.map (x : B.B →+* PadicAlgCl l)).Monic`. Rewrite using `[hPx]`.
+
+Conclude with `Matrix.charpoly_monic _`. Establish `hroot : (P.map (x : B.B →+* PadicAlgCl l)).IsRoot z`. Rewrite using `[hPx]`. Conclude with `Polynomial.isRoot_of_mem_roots hz`. Establish `hres : ∀ i, (res c.O B.B) (algebraMap c.O B.B (a' i)) = d i` using `fun i => by`.
+
+Rewrite using `[AlgHom.commutes, ← ha' i]`. Both sides reduce to the same expression. Establish `hcoef : ∀ k, (P - ∏ i, (X - C (algebraMap c.O B.B (a' i)))).coeff k ∈ IsLocalRing.maximalIdeal B.B`. Introduce `k`. Rewrite using `[← res_eq_zero_iff c.O B.B]`.
+
+Use `show (res c.O B.B : B.B →+* ResidueField c.O) _ = 0`. Rewrite using `[← Polynomial.coeff_map]`. Establish `: (P - ∏ i, (X - C (algebraMap c.O B.B (a' i)))).map (res c.O B.B : B.B →+* ResidueField c.O) = 0`. Rewrite using `[Polynomial.map_sub, hPr, Polynomial.map_prod, sub_eq_zero]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Use `congr 2`. Conclude with `(hres i).symm`. Rewrite using `[this, Polynomial.coeff_zero]`. Take `⟨i, hi⟩` from `near (IsLocalRing.maximalIdeal B.B) (x : B.B →+* PadicAlgCl l) h1 hm P hmon (fun i => algebraMap c.O B.B (a' i)) hcoef z hroot`.
+
+Use `⟨i, a' i, ha' i, ?_⟩` and prove the remaining obligations. Establish `: (x : B.B →+* PadicAlgCl l) (algebraMap c.O B.B (a' i)) = (a' i : PadicAlgCl l)` using `by show x (algebraMap c.O B.B (a' i)) = _`. Rewrite using `[AlgHom.commutes]`. Both sides reduce to the same expression. Rewrite `hi` using `[this]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.V.Ws.Pu.ptRed :
     ∀ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} (V : s.Lev) {c : Coef l} {n : ℕ} {r : W.Resid V.frame c.O n} (B : W.UniversalOrdinaryDeterminantRing r) (x : B.Pt) (ρ : G L Ω →* GL (Fin n) (PadicAlgCl l)), x.IsRep ρ → RedTo c ρ fun i => (r.chib i).comp V.pr := by
   intro l _ L Ω _ _ _ _ _ _ s V c n r B x ρ hx

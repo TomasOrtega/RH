@@ -12,5 +12,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArchLim.chernMat_pull_cell | exact GlobalTheory.ArchLim.chernMat_pull_cell | (intros; apply GlobalTheory.ArchLim.chernMat_pull_cell <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chern_matrix_pullback_cell : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (n r D : ℕ) (ε : Fin D ≃ Fin n ⊕ Low r) (σ : k →+* ℂ) (c : AlgChart q σ n) (c' : AlgChart p σ D), IsCell ε π w c c' → ∀ (N : HermLB q), ∀ y' ∈ c'.e.source, chernMat ((N.pull π w).φ σ) c' y' = cHess D (fun v => ((N.φ σ).φ (pick (N.φ σ).isLB (PtsOver.map π w (spMap σ) y')) (c.e.symm (base ε v)) : ℂ)) (c'.e y') := by
   first | exact @GlobalTheory.ArchLim.chernMat_pull_cell | exact GlobalTheory.ArchLim.chernMat_pull_cell | (intros; apply GlobalTheory.ArchLim.chernMat_pull_cell <;> assumption)

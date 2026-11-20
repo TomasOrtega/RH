@@ -10,6 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.exists_residue_coords_of_locModel | exact GlobalTheory.FieldPair.exists_residue_coords_of_locModel | (intros; apply GlobalTheory.FieldPair.exists_residue_coords_of_locModel <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_residue_coordinates_of_localModel_below_place : ∀ {L : Type} [Field L] (c : ℂ →+* L) (Q : Subring L) (hQ : IsLocModel c Q),
     letI := hQ.isLocalRing; ∀ (N r : ℕ) (V : Place c) (hC : V.Contains Q) (u : Fin r → V.ring),
     (∃ x : Fin N → L, TrBasis c x) →

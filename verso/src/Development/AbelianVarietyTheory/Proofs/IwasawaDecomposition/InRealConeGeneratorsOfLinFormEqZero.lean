@@ -7,6 +7,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.PolFan
 
+/- English proof (translation)
+Take `⟨c, hc, hsum⟩` from `hβ`. Establish `happ` using `apply_eq_of_toReal_eq hsum h`. Rewrite `happ` using `[hβ0, Int.cast_zero]`. Establish `hterm : ∀ i ∈ (Finset.univ : Finset (Fin m)), c i * (h (δ i) : ℝ) = 0` using `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => mul_nonneg (hc i) (by exact_mod_cast hnn i)).1 happ.symm`. Establish `hvan : ∀ i, i ∉ Set.range e → c i = 0`.
+
+Introduce `i hi`. Break down `mul_eq_zero.1 (hterm i (Finset.mem_univ i)) with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd (hz i (by exact_mod_cast h1)) hi`. Use `⟨fun k => c (e k), fun k => hc (e k), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsum, ← Finset.sum_map Finset.univ e (fun i => c i • toReal (δ i))]`. Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `i _ hi`. Establish `: i ∉ Set.range e`.
+
+Introduce and unpack `⟨k, rfl⟩`. Conclude with `hi (Finset.mem_map_of_mem e (Finset.mem_univ k))`. Rewrite using `[hvan i this, zero_smul]`.
+-/
 theorem inRCone_of_apply_eq_zero {X : Type} [AddCommGroup X] {m p : ℕ}
     (δ : Fin m → LinearMap.BilinForm ℤ X) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ)
     (e : Fin p ↪ Fin m) (β : LinearMap.BilinForm ℤ X) (hnn : ∀ i, 0 ≤ h (δ i))

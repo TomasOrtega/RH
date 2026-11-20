@@ -15,6 +15,11 @@ section Jet
 
 variable {S ι : Type} [CommRing S]
 
+/- English proof (translation)
+Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Use `⟨MvPolynomial.constantCoeff p, m + 1, ?_⟩` and prove the remaining obligations. Establish `h : Ideal.Quotient.mk (orig S ι ^ (m + 1)) p - algebraMap S (Jet S ι m) (MvPolynomial.constantCoeff p) = Ideal.Quotient.mk _ (p - MvPolynomial.C (MvPolynomial.constantCoeff p))`. Rewrite using `[map_sub]`. Both sides reduce to the same expression.
+
+Rewrite using `[h, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow (sub_const_mem_orig p) _`.
+-/
 theorem jet_exists_nil (m : ℕ) (a : Jet S ι m) : ∃ c : S, IsNilpotent (a - algebraMap S (Jet S ι m) c) := by
   obtain ⟨p, rfl⟩ := Ideal.Quotient.mk_surjective a
   refine ⟨MvPolynomial.constantCoeff p, m + 1, ?_⟩
@@ -49,6 +54,9 @@ def cgen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j0 : K → L.ι) (h0 : LB.wcha
   ⟨fun j => res (le_inf le_rfl (by rw [h0]; exact le_top) : LB.wchart L φ j ≤ LB.wchart L φ j ⊓ LB.wchart L φ j0)
     ((LB.LinComb L φ ε).g j j0)⟩
 
+/- English proof (translation)
+Introduce `i j` and use `unit_ext fun y hy => by have h0y : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart L φ j0 := by rw [h0]; trivial refine (gm_res _ y _ hy _).trans ((gm_res _ y _ hy.1 _).trans ((gm_linComb L φ ε (𝟙 _) y i j0 hy.1 h0y).trans ?_)) refine Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linComb …`.
+-/
 theorem cgen_isGen (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j0 : K → L.ι) (h0 : LB.wchart L φ j0 = ⊤) :
     (cgen L φ ε j0 h0).IsGen := fun i j => unit_ext fun y hy => by
   have h0y : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart L φ j0 := by rw [h0]; trivial
@@ -60,11 +68,21 @@ theorem cgen_isGen (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j0 : K
 def cv {Z : Scheme.{0}} (i0 : L.ι) (z : Z) (J : (Z ⟶ X) → L.ι) (ψ : Z ⟶ X) : (Z.presheaf.stalk z)ˣ :=
   gm ψ z (L.U (J ψ) ⊓ L.U i0) (L.g (J ψ) i0)
 
+/- English proof (translation)
+The claim follows from `(gm_res r z _ (hJ.mem φ r) _).trans (gm_linComb L φ ε r z _ _ (hJ.mem φ r) (by rw [h0]; trivial))`.
+-/
 theorem val_cgen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (i0 : L.ι) (h0 : LB.wchart L φ (fun _ => i0) = ⊤) {Z : Scheme.{0}}
     (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) (hJ : Good L z J) :
     val (cgen L φ ε (fun _ => i0) h0) r z J = ∏ k, cv L i0 z J (r ≫ φ k) ^ ε k :=
   (gm_res r z _ (hJ.mem φ r) _).trans (gm_linComb L φ ε r z _ _ (hJ.mem φ r) (by rw [h0]; trivial))
 
+/- English proof (translation)
+Take `⟨s, -, hv⟩` from `exists_gen hL (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ hU => by`. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_empty _).symm)` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[h U hU]`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel])`.
+
+Use the proof step `(LB.mulGen L _ _ _ _ t (LB.invGen L _ _ t')) (ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen _ _ _ _ _ _ _ ht (ReciprocityTheory.ChartRestriction.G.DVR.invGen_isGen _ _ _ _ ht'))`. Establish `le : (⊤ : Y.Opens) ≤ LB.wchart L (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨res le (s.s PEmpty.elim), fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Establish `e1` using `hv Z r z J hJ`. Rewrite `e1` using `[val_mul hJ, val_inv, val_of s r z J PEmpty.elim (fun k => k.elim)]`.
+
+Establish `e2` using `(gm_res r z le trivial (s.s PEmpty.elim)).trans e1`. Conclude with `mul_inv_eq_iff_eq_mul.1 e2.symm`.
+-/
 theorem exists_ratio (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     (h : FormEq φ ε φ' ε') (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (t' : LB.Gen (LB.LinComb L φ' ε'))
     (ht' : t'.IsGen) : ∃ u : Γ(Y, ⊤)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι), Good L z J →
@@ -92,6 +110,9 @@ def divLin (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε'
     LB.wchart L (Sum.elim φ φ') j ≤ (LB.div (LB.LinComb L φ ε) (LB.LinComb L φ' ε')).U (j ∘ Sum.inl, j ∘ Sum.inr))
     (w.s (j ∘ Sum.inl, j ∘ Sum.inr))⟩
 
+/- English proof (translation)
+Establish `hpq : (𝟙 Y : Y ⟶ Y) y ∈ (LB.div (LB.LinComb L φ ε) (LB.LinComb L φ' ε')).U p ⊓ (LB.div (LB.LinComb L φ ε) (LB.LinComb L φ' ε')).U q` using `⟨hp, hq⟩`. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res _ y _ hpq _).trans (gm_linComb L φ ε (𝟙 _) y p.1 q.1 hp.1 hq.1)) ((map_inv _ _).trans (congrArg _ ((gm_res _ y _ hpq _).trans (gm_linComb L φ' ε' (𝟙 _) y p.2 q.2 hp.2 hq.2)))))`.
+-/
 theorem gm_divLC (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (p q : (K → L.ι) × (K' → L.ι)) (y : Y) (hp : (𝟙 Y : Y ⟶ Y) y ∈ (LB.div (LB.LinComb L φ ε) (LB.LinComb L φ' ε')).U p)
     (hq : (𝟙 Y : Y ⟶ Y) y ∈ (LB.div (LB.LinComb L φ ε) (LB.LinComb L φ' ε')).U q) :
@@ -103,6 +124,9 @@ theorem gm_divLC (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)
     (gm_linComb L φ ε (𝟙 _) y p.1 q.1 hp.1 hq.1)) ((map_inv _ _).trans (congrArg _ ((gm_res _ y _ hpq _).trans
       (gm_linComb L φ' ε' (𝟙 _) y p.2 q.2 hp.2 hq.2)))))
 
+/- English proof (translation)
+Introduce `i j` and use `unit_ext fun y hy => by have le : ∀ j : K ⊕ K' → L.ι, LB.wchart L (Sum.elim φ φ') j ≤ (LB.div (LB.LinComb L φ ε) (LB.LinComb L φ' ε')).U (j ∘ Sum.inl, j ∘ Sum.inr) := fun _ _ hy => ⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inl k), Set.mem_iInter.2 fun k => Set.mem_iInte …`.
+-/
 theorem divLin_isGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (w : LB.Gen (LB.div (LB.LinComb L φ ε) (LB.LinComb L φ' ε'))) (hw : w.IsGen) :
     (divLin L φ ε φ' ε' w).IsGen := fun i j => unit_ext fun y hy => by

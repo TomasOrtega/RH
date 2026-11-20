@@ -5,6 +5,15 @@ open scoped ContDiff
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
+/- English proof (translation)
+Introduce `e X _ A U P f Θ hU hP hΘ hf j`. Establish `hVo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U)` using `(A.chart j).isOpen_inter_preimage_symm hU`. Establish `hm : Continuous (mdisc : (Fin e → Matrix (Fin e) (Fin e) ℂ) → ℂ)`. Unfold `mdisc`. Use `fun_prop`.
+
+Establish `hf2 : ∀ k, ContDiffOn ℝ 2 (f k ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U)` using `fun k => (hf k j).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hH : ContinuousOn (fun y => fun k => (hessC (fun y' => (P k).φ ((A.chart j).symm y) ((A.chart j).symm y')) y + hessC (f k ∘ (A.chart j).symm) y + hessC (fun y' => Θ.φ ((A.chart j).symm y) ((A.chart j).symm y')) y : Matrix (Fin e) (Fin e) ℂ)) ((A.chart j).target ∩ (A.chart j).symm …` using `continuousOn_pi.2 fun k => (((hessC_base_continuousOn A (P k) (hP k) j).mono Set.inter_subset_left).add (hessC_continuousOn _ _ hVo (hf2 k))).add ((hessC_base_continuousOn A Θ hΘ j).mono Set.inter_subset_left)`. Establish `hc` using `(continuousOn_const (c := (e.factorial : ℝ) * (2 / Real.pi) ^ e) (s := (A.chart j).target ∩ (A.chart j).symm ⁻¹' U)).mul (Complex.continuous_re.comp_continuousOn (hm.comp_continuousOn hH))`. Use `hc.congr fun y hy => ?_` and prove the remaining obligations. Unfold `locDens maDens`.
+
+Simplify using `only [Function.comp_apply, Pi.mul_apply]`. Use `congr 3`. Use function extensionality and compare the values at `k`. Establish `hP'` using `potential_contDiffAt A (P k) (hP k) j hy.1`. Establish `hΘ'` using `potential_contDiffAt A Θ hΘ j hy.1`.
+
+Establish `hf' : ContDiffAt ℝ 2 (f k ∘ (A.chart j).symm) y` using `(hf2 k).contDiffAt (hVo.mem_nhds hy)`. Rewrite using `[show (fun y' => (P k + LocPot.ofFun (f k) + Θ).φ ((A.chart j).symm y) ((A.chart j).symm y')) = fun y' => ((fun y' => (P k).φ ((A.chart j).symm y) ((A.chart j).symm y')) y' + (f k ∘ (A.chart j).symm) y') + (fun y' => Θ.φ ((A.chart j).symm y) ((A.chart j).symm y')) y' from rfl]`. Rewrite using `[hessC_add' _ _ _ (hP'.add hf') hΘ', hessC_add' _ _ _ hP' hf']`.
+-/
 theorem locDens_add_ofFun_continuousOn : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (U : Set X) (P : Fin e → LocPot X) (f : Fin e → X → ℝ) (Θ : LocPot X), IsOpen U → (∀ i, IsPotential A (P i)) → IsPotential A Θ → (∀ i, A.SmoothOn U (f i)) → ∀ j, ContinuousOn (locDens A (fun i => P i + LocPot.ofFun (f i) + Θ) j) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U) := by
   intro e X _ A U P f Θ hU hP hΘ hf j
   have hVo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U) :=

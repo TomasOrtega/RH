@@ -16,6 +16,13 @@ noncomputable section
 namespace GlobalTheory.TranslateEvenTriv
 open GlobalTheory.UU
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `h` using `pull_isLB hL F`. Establish `hc : ∀ k, φ k ≫ F = 𝟙 Y ≫ (fun k => φ k ≫ F) k` using `fun k => (Category.id_comp _).symm`. Take `⟨a, ha, Ha⟩` from `CubTransport.exists_pmaps ((isGen_iff _).1 (pullIso_isGen hL F)) hL h (𝟙 Y) hc t ht`. Use `⟨a, ha, fun Z r z J J' hJ hJ' => ?_⟩` and prove the remaining obligations.
+
+Take `rfl : J' = fun q _ => J (q ≫ F)` from `funext fun q => eq_of_heq (hJ' q)`. Establish `hg : Good (L.pull F) z (fun q _ => J (q ≫ F))` using `fun q => mem_pull.2 (hJ (q ≫ F))`. Use `CubTransport.val_pmaps hc Ha r hJ hg` as an intermediate fact. Rewrite `this` using `[Category.comp_id, Finset.prod_eq_one, _root_.one_mul]`. Conclude with `this.symm`.
+
+Introduce `k _`. Establish `: gw (pullIso L F) (r ≫ φ k) z (J ((r ≫ φ k) ≫ F)) (fun _ => J ((r ≫ φ k) ≫ F)) = 1` using `gm_self h (r ≫ φ k) z (hg (r ≫ φ k))`. Rewrite using `[this, one_zpow]`.
+-/
 theorem exists_gen_pull {X X' Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {F : X' ⟶ X} {L' : LB X'} (e : L' = L.pull F)
     {K : Type} [Fintype K] (φ : K → (Y ⟶ X')) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L (fun k => φ k ≫ F) ε))
     (ht : t.IsGen) : ∃ a : LB.Gen (LB.LinComb L' φ ε), a.IsGen ∧
@@ -36,6 +43,11 @@ theorem exists_gen_pull {X X' Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {F : X' �
       gm_self h (r ≫ φ k) z (hg (r ≫ φ k))
     rw [this, one_zpow]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `⟨fun q => J' (q ≫ F) PUnit.unit, fun q => ?_, fun q => heq_of_eq ?_⟩` and prove the remaining obligations. Establish `: ((q ≫ F) ≫ F) z ∈ L.U (J' (q ≫ F) PUnit.unit)` using `(mem_pull (F := F)).1 (hJ' (q ≫ F))`. Rewrite `this` using `[Category.assoc, hF, Category.comp_id]`. Then use the resulting hypothesis. Use `show J' q = J' ((q ≫ F) ≫ F)`.
+
+Rewrite using `[Category.assoc, hF, Category.comp_id]`.
+-/
 theorem exists_good_of_pull {X Z : Scheme.{0}} {L L' : LB X} {F : X ⟶ X} (hF : F ≫ F = 𝟙 X) (e : L' = L.pull F)
     {z : Z} {J' : (Z ⟶ X) → L'.ι} (hJ' : Good L' z J') :
     ∃ J : (Z ⟶ X) → L.ι, Good L z J ∧ ∀ q, HEq (J' q) (fun _ : PUnit.{1} => J (q ≫ F)) := by
@@ -50,6 +62,9 @@ variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
 
 omit [IsCommMonObj G] in
 
+/- English proof (translation)
+Rewrite using `[MonObj.comp_mul, comp_toUnit_assoc, Category.comp_id]`.
+-/
 theorem comp_translate (a : 𝟙_ (Over S) ⟶ G) {T : Over S} (g : T ⟶ G) :
     g ≫ ((toUnit G ≫ a) * 𝟙 G) = (toUnit T ≫ a) * g := by
   rw [MonObj.comp_mul, comp_toUnit_assoc, Category.comp_id]
@@ -58,11 +73,25 @@ variable {X : Type} [AddCommGroup X] (Q : TQ G X)
 
 omit [IsCommMonObj G] in
 
+/- English proof (translation)
+Use `Q.q_hom` as an intermediate fact. Establish `e : Q.i ≫ Q.q = 1` using `Q.isKernel.w`. Rewrite using `[MonObj.mul_comp, Category.assoc, e, MonObj.comp_one, _root_.mul_one]`.
+-/
 theorem mul_torus_comp {T : Over S} (g : T ⟶ G) (x : T ⟶ splitTorus S X) : (g * (x ≫ Q.i)) ≫ Q.q = g ≫ Q.q := by
   have := Q.q_hom
   have e : Q.i ≫ Q.q = 1 := Q.isKernel.w
   rw [MonObj.mul_comp, Category.assoc, e, MonObj.comp_one, _root_.mul_one]
 
+/- English proof (translation)
+Take `⟨t, ht, v⟩` from `exists_gen D.M.L.isLB (φ := (PEmpty.elim : PEmpty → ((splitTorus S X).left ⟶ Q.B.left))) (ε := PEmpty.elim) (K' := Fin 2) (φ' := fun _ => ((toUnit (splitTorus S X) ≫ a) ≫ Q.q).left) (ε' := ![1, -1]) (fun U _ h => by simp [Fin.prod_univ_two]) (LB.oneGen D.M.L.L) (fun i j => (map_o …`. Establish `hc : ∀ k : Fin 2, (![Q.i.left, (1 : splitTorus S X ⟶ G).left] k ≫ ((toUnit G ≫ a) * 𝟙 G).left) ≫ Q.q.left = 𝟙 _ ≫ ((toUnit (splitTorus S X) ≫ a) ≫ Q.q).left` using `fun k => by`. Rewrite using `[Category.id_comp]`. Use `fin_cases k`. Use `congrArg (fun q => q.left) (show (Q.i ≫ ((toUnit G ≫ a) * 𝟙 G)) ≫ Q.q = _ from ?_)` and prove the remaining obligations.
+
+Use `mul_torus_comp Q (toUnit (splitTorus S X) ≫ a) (𝟙 _)` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Rewrite using `[comp_translate, this]`. Use `congrArg (fun q => q.left) (show ((1 : splitTorus S X ⟶ G) ≫ ((toUnit G ≫ a) * 𝟙 G)) ≫ Q.q = _ from ?_)` and prove the remaining obligations. Rewrite using `[comp_translate, _root_.mul_one]`.
+
+Take `⟨s, hs, Hs⟩` from `CubTransport.exists_pmaps ((isGen_iff _).1 D.map.gen) D.M.L.isLB P₁.L.isLB (𝟙 _) hc t ht`. Use `⟨s, hs, fun T x z N J hN hJ W hW => ?_⟩` and prove the remaining obligations. Establish `e` using `CubTransport.val_pmaps hc Hs x.left hN hJ`. Rewrite `e` using `[v _ _ z N hN, val_one]`. Establish `hτ : ∀ g : T ⟶ G, g.left ≫ ((toUnit G ≫ a) * 𝟙 G).left = ((toUnit T ≫ a) * g).left` using `fun g => congrArg (fun q => q.left) (comp_translate a g)`.
+
+Establish `e₂` using `CubTrivTorus.prod_cubTriv Q.i x (fun q => gw D.w (q ≫ ((toUnit G ≫ a) * 𝟙 G).left) z (N ((q ≫ ((toUnit G ≫ a) * 𝟙 G).left) ≫ Q.q.left)) (J (q ≫ ((toUnit G ≫ a) * 𝟙 G).left)))`. Rewrite `e₂` using `[hτ, hτ, _root_.mul_one, ← hW, ← hW]`. Simplify using `only [← Category.assoc x.left] at e`. Establish `e₃` using `e.trans (congrArg₂ (· * ·) e₂ rfl)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Establish `e₄` using `congrArg Additive.ofMul e₃`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one] at e₄ ⊢`. Take the linear combination `(norm := abel) -e₄`.
+-/
 theorem exists_gen_torus {P₁ : CP G} (D : Q.Desc P₁) (a : 𝟙_ (Over S) ⟶ G) :
     ∃ s : LB.Gen (LB.LinComb P₁.L.L (K := Fin 2) (fun k => ![Q.i.left, (1 : splitTorus S X ⟶ G).left] k ≫
       ((toUnit G ≫ a) * 𝟙 G).left) ![1, -1]), s.IsGen ∧
@@ -100,6 +129,25 @@ theorem exists_gen_torus {P₁ : CP G} (D : Q.Desc P₁) (a : 𝟙_ (Over S) ⟶
   simp only [ofMul_mul, ofMul_inv, ofMul_one] at e₄ ⊢
   linear_combination (norm := abel) -e₄
 
+/- English proof (translation)
+Introduce and unpack `S G _ _ X _ Q P₁ ⟨D⟩ a ha P hP hsym hcub`. Use `Q.i_hom` as an intermediate fact. Establish `hinv : ∀ T : Over S, (toUnit T ≫ a)⁻¹ = toUnit T ≫ a` using `fun T => by`. Rewrite using `[inv_eq_iff_mul_eq_one, ← MonObj.comp_mul, ← pow_two, ha, MonObj.comp_one]`. Establish `hF : ((toUnit G ≫ a) * 𝟙 G).left ≫ ((toUnit G ≫ a) * 𝟙 G).left = 𝟙 G.left`.
+
+Use `congrArg (fun q => q.left) (show ((toUnit G ≫ a) * 𝟙 G) ≫ ((toUnit G ≫ a) * 𝟙 G) = 𝟙 G from ?_)` and prove the remaining obligations. Rewrite using `[comp_translate, ← _root_.mul_assoc, (inv_eq_iff_mul_eq_one.1 (hinv G)), _root_.one_mul]`. Take `⟨s, hs, vs⟩` from `exists_gen_torus Q D a`. Take `⟨σ, hσ, vσ⟩` from `exists_gen_pull P₁.L.isLB hP _ _ s hs`. Establish `hq : ∀ {T : Over S} (g : T ⟶ G) (x : T ⟶ splitTorus S X), (g * (x ≫ Q.i)).left ≫ Q.q.left = g.left ≫ Q.q.left` using `fun g x => congrArg (fun q => q.left) (mul_torus_comp Q g x)`.
+
+Use `⟨⟨σ, hσ, fun T x y u z J' hJ' => ?_⟩, fun T x z J' hJ' => ?_⟩` and prove the remaining obligations. Use `all_goals`. Take `⟨J, hJ, hJJ⟩` from `exists_good_of_pull hF hP hJ'`. Take `⟨N, hN⟩` from `exists_good_pt D.M.L.isLB z`. Take `⟨W, hW⟩ : ∃ W : (T ⟶ G) → (T.left.presheaf.stalk z)ˣ, ∀ g, W g = gw D.w g.left z (N (g.left ≫ Q.q.left)) (J g.left)` from `⟨_, fun _ => rfl⟩`.
+
+Establish `v : ∀ t : T ⟶ splitTorus S X, val σ t.left z J' = W (toUnit T ≫ a) * (W ((toUnit T ≫ a) * (t ≫ Q.i)))⁻¹` using `fun t => (vσ _ t.left z J J' hJ hJJ).trans (vs T t z N J hN hJ W hW)`. Take `⟨-, a₂, a₃⟩` from `D.map.vals T z J N hJ hN W hW`. Establish `b₁` using `a₃ (x ≫ Q.i) (y ≫ Q.i) ((toUnit T ≫ a) * (u ≫ Q.i))`. Establish `b₂` using `a₃ (x ≫ Q.i) (y ≫ Q.i) (toUnit T ≫ a)`. Establish `e : toBase (f` using `𝟙 S) (g := Q.q.left) (by simp) ((toUnit T ≫ a) * (u ≫ Q.i)) = toBase (f := 𝟙 S) (g := Q.q.left) (by simp) (toUnit T ≫ a) := Over.OverMorphism.ext (hq _ u)`.
+
+Rewrite `b₁` using `[e]`. Rewrite using `[hcub T _ _ _ z J J' hJ hJJ]`. Simplify using `only [v, MonObj.mul_comp]`. Generalize the expression as in `x ≫ Q.i = x' at *`. Generalize the expression as in `y ≫ Q.i = y' at *`.
+
+Generalize the expression as in `u ≫ Q.i = u' at *`. Generalize the expression as in `toUnit T ≫ a = A at *`. Rewrite `b₁` using `[mul_left_comm x' A, mul_left_comm y' A, mul_left_comm (x' * y') A]`. Rewrite `b₂` using `[mul_comm x' A, mul_comm y' A, mul_comm (x' * y') A]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Establish `c₁` using `congrArg Additive.ofMul b₁`. Establish `c₂` using `congrArg Additive.ofMul b₂`. Simplify using `only [ofMul_mul, ofMul_inv] at c₁ c₂ ⊢`. Take the linear combination `(norm := abel) c₁ - c₂`. Establish `b₁` using `a₂ ((toUnit T ≫ a) * (x ≫ Q.i))`.
+
+Establish `b₂` using `a₂ (toUnit T ≫ a)`. Rewrite `b₁` using `[hq, mul_inv, hinv]`. Rewrite `b₂` using `[hinv]`. Use `show val σ _ z J' = _ * val σ _ z J'`. Rewrite using `[hsym T _ z J J' hJ hJJ, v, v, GrpObj.inv_comp]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `c₁` using `congrArg Additive.ofMul b₁`. Establish `c₂` using `congrArg Additive.ofMul b₂`. Simplify using `only [ofMul_mul, ofMul_inv] at c₁ c₂ ⊢`. Take the linear combination `(norm := abel) c₁ - c₂`.
+-/
 theorem exists_even_cubTriv : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (X : Type) [AddCommGroup X]
     (Q : GlobalTheory.UU.TQ G X) (P₁ : GlobalTheory.UU.CP G), Nonempty (Q.Desc P₁) → ∀ a : 𝟙_ (Over S) ⟶ G, a ^ 2 = 1 →
     ∀ P : GlobalTheory.UU.CP G, P.L.L = P₁.L.L.pull ((toUnit G ≫ a) * 𝟙 G).left →

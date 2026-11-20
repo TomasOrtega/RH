@@ -19,11 +19,53 @@ open Formalism.MainNotions.Gaps Formalism.MainNotions.Gaps.NetNorms NumberField 
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Conclude with `hF.map' (Submodule.inclusion hAB) (Submodule.ker_inclusion A B hAB)`.
+-/
 private theorem linearIndependent_inclusion_of_le {K R ι : Type} [Field K] [AddCommGroup R] [Module K R]
     {A B : Submodule K R} (hAB : A ≤ B) (F : ι → A) (hF : LinearIndependent K F) :
     LinearIndependent K (fun i => (⟨F i, hAB (F i).2⟩ : B)) := by
   exact hF.map' (Submodule.inclusion hAB) (Submodule.ker_inclusion A B hAB)
 
+/- English proof (translation)
+Introduce `D T h hG large₂ j hj w hP hL hr hf σ hσ`. Take `⟨NN, -, hnet, hlog⟩` from `GlobalTheory.RunIn.exists_net_max_at_goodEmb D T h hG large₂ j hj w hP hL hr hf σ hσ`. Establish `hind0` using `GlobalTheory.cusp_readings_linearIndependent`. Unfold `ReciprocityTheory.ChartRestriction.G.PullbackSections.AlgInjAtSt at hind0`. Take `⟨L, hLdef⟩ : ∃ L, L = lieFac (T.Q.Dw j) (xiR D) (wtA w)` from `⟨_, rfl⟩`.
+
+Establish `hL0 : 0 < L` using `hLdef ▸ lieFac_pos _ _ _`. Establish `hpn : ∀ (k : (T.U j σ).Comp) (P : Frame ((T.U j σ).X k).Ψ D.R.r → ℂ) x, ((T.U j σ).X k).pnorm (laU (T.U j σ) (wtA w) w.n k) P x = ‖P x‖ * ((T.U j σ).X k).nfac (laU (T.U j σ) (wtA w) w.n k) x` using `fun _ _ _ => rfl`. Establish `hnf : ∀ (k : (T.U j σ).Comp) x, 0 ≤ ((T.U j σ).X k).nfac (laU (T.U j σ) (wtA w) w.n k) x`. Introduce `k x`. Establish `h1` using `GlobalTheory.NetNormExamples.pnorm_nonneg ((T.U j σ).X k) (laU (T.U j σ) (wtA w) w.n k) (fun _ => (1 : ℂ)) x`.
+
+Rewrite `h1` using `[hpn, norm_one, one_mul]`. Then use the resulting hypothesis. Establish `hg : goodOf T.Q.c σ = σ` using `by rw [goodOf, if_pos hσ]`. Establish `hsup : ∀ F : (recB h.toLawsCore).Cusp j w, (recB h.toLawsCore).supN j w σ F = L * supN (T.U j σ).X (laU (T.U j σ) (wtA w) w.n) (rdU (T.U j σ) F.1)`. Introduce `F`. Simplify using `only [recB, cutN]`.
+
+Rewrite using `[if_pos hj]`. Simplify using `only [Formalism.L2.Pj.Core.Ns, supC]`. Rewrite using `[hg, hLdef]`. Establish `hhol : ∀ F : (recB h.toLawsCore).Cusp j w, rdU (T.U j σ) F.1 ∈ holSub (T.U j σ).X (laU (T.U j σ) (wtA w) w.n)`. Introduce `F`.
+
+Establish `hC : F.1 ∈ cusp (T.Q.Xo j) T.Q.c (T.U j) (wtA w) w.n` using `(Submodule.mem_inf.mp F.2).1`. Conclude with `((mem_cusp _ _ _ _ _ _).mp hC).2 σ hσ`. Set `pt : Fin NN.card → FPt (T.U j σ).X` to `fun y => (NN.equivFin.symm y).1`. Establish `hsurj : ∀ p ∈ NN, ∃ y, pt y = p` using `fun p hp => ⟨NN.equivFin ⟨p, hp⟩, by simp only [pt, Equiv.symm_apply_apply]⟩`. Set `a : Fin NN.card → ℝ` to `fun y => L * ((T.U j σ).X (pt y).1).nfac (laU (T.U j σ) (wtA w) w.n (pt y).1) (pt y).2`.
+
+Establish `ha : ∀ y, 0 ≤ a y` using `fun y => mul_nonneg hL0.le (hnf _ _)`. Set `ev : Fin NN.card → ((recB h.toLawsCore).Cusp j w →ₛₗ[σ] ℂ)` to `fun y => { toFun := fun F => (a y : ℂ) * rdU (T.U j σ) F.1 (pt y).1 (pt y).2 map_add' := fun F G => by show (a y : ℂ) * rdU (T.U j σ) (F.1 + G.1) (pt y).1 (pt y).2 = (a y : ℂ) * rdU (T.U j σ) F.1 (pt y).1 (pt y).2 + (a y : ℂ) * rdU (T.U j σ) G.1 (pt y).1 (pt y).2`. Rewrite using `[map_add, Pi.add_apply, Pi.add_apply, mul_add]`. Use the proof step `map_smul' := fun c F => by show (a y : ℂ) * rdU (T.U j σ) (c • F.1) (pt y).1 (pt y).2 = σ c • ((a y : ℂ) * rdU (T.U j σ) F.1 (pt y).1 (pt y).2)`. Rewrite using `[LinearMap.map_smulₛₗ, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`.
+
+Use `ring }`. Establish `hev : ∀ y F, ev y F = (a y : ℂ) * rdU (T.U j σ) F.1 (pt y).1 (pt y).2` using `fun _ _ => rfl`. Establish `hnorm : ∀ y F, ‖ev y F‖ = L * ((T.U j σ).X (pt y).1).pnorm (laU (T.U j σ) (wtA w) w.n (pt y).1) (rdU (T.U j σ) F.1 (pt y).1) (pt y).2`. Introduce `y F`. Rewrite using `[hev, norm_mul, Complex.norm_of_nonneg (ha y), hpn]`.
+
+Simplify using `only [a]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨NN.card, ev, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `F`. Take `⟨p, hp, hb⟩` from `hnet _ (hhol F)`.
+
+Take `⟨y, rfl⟩` from `hsurj p hp`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[hnorm, hsup]`. Use `mul_le_mul_of_nonneg_left hb hL0.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `y F`. Rewrite using `[hnorm, hsup]`. Conclude with `mul_le_mul_of_nonneg_left (GlobalTheory.NetNormExamples.pnorm_le_supN (T.U j σ) _ (hhol F) (pt y)) hL0.le`. Conclude with `hlog`. Introduce `m F hF`.
+
+Establish `hF'` using `linearIndependent_inclusion_of_le (B := T.C j w) inf_le_left F hF`. Establish `hind` using `hind0 D T h j hj w σ hσ m _ hF'`. Rewrite `hind`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hgz i`. Use `hind g ?_ i` and prove the remaining obligations.
+
+Use `show ∑ i, g i • rdU (T.U j σ) (F i).1 = 0`. Take `⟨Q, hQ⟩ : ∃ Q, Q = ∑ i, g i • rdU (T.U j σ) (F i).1` from `⟨_, rfl⟩`. Rewrite using `[← hQ]`. Establish `hQmem : Q ∈ holSub (T.U j σ).X (laU (T.U j σ) (wtA w) w.n)`. Rewrite using `[hQ]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hhol (F i))`. Establish `hval : ∀ y, (a y : ℂ) * Q (pt y).1 (pt y).2 = 0`. Introduce `y`. Establish `h1` using `congrFun hgz y`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, hev] at h1`.
+
+Rewrite using `[hQ, Finset.sum_apply, Finset.sum_apply, Finset.mul_sum, ← h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨p, hp, hb⟩` from `hnet Q hQmem`.
+
+Take `⟨y, rfl⟩` from `hsurj p hp`. Establish `h0 : ((T.U j σ).X (pt y).1).pnorm (laU (T.U j σ) (wtA w) w.n (pt y).1) (Q (pt y).1) (pt y).2 = 0`. Establish `hn` using `congrArg (‖·‖) (hval y)`. Simplify using `only [norm_mul, Complex.norm_of_nonneg (ha y), norm_zero] at hn`. Simplify using `only [a] at hn`.
+
+Rewrite using `[hpn]`. Establish `h2 : L * (‖Q (pt y).1 (pt y).2‖ * ((T.U j σ).X (pt y).1).nfac (laU (T.U j σ) (wtA w) w.n (pt y).1) (pt y).2) = 0`. Rewrite using `[← hn]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_eq_zero.mp h2).resolve_left hL0.ne'`.
+
+Establish `hS : supN (T.U j σ).X (laU (T.U j σ) (wtA w) w.n) Q ≤ 0`. Rewrite `hb` using `[h0, mul_zero]`. Conclude with `hb`. Use function extensionality and compare the values at `k x`. Distinguish the cases in `hx : x ∈ ((T.U j σ).X k).dom`.
+
+Use `show Q k x = 0`. Apply `GlobalTheory.NetNormExamples.eq_zero_of_pnorm ((T.U j σ).X k) (laU (T.U j σ) (wtA w) w.n k) _ hx` to reduce the goal to its premises. Conclude with `le_antisymm ((GlobalTheory.NetNormExamples.pnorm_le_supN (T.U j σ) _ hQmem ⟨k, ⟨x, hx⟩⟩).trans hS) (GlobalTheory.NetNormExamples.pnorm_nonneg _ _ _ _)`. Use `show Q k x = 0`. Rewrite using `[hQ, Finset.sum_apply, Finset.sum_apply]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `hz : rdU (T.U j σ) (F i).1 k x = 0`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, dif_neg hx]`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, hz, smul_zero]`.
+-/
 theorem exists_scalar_readings_on_net : ∀ (D : D7) (T : Top D) (h : LawsP T), GamAt T.toCore → ∀ (large₂ : SizeData₂ D) (j : ℕ) (_hj : InR D j) (w : WeightFamilies.Wt D j), ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → 2 ≤ large₂.sc.L → D.R.r ≤ w.n → 16 ≤ D.R.f → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∃ (n : ℕ) (ev : Fin n → ((recB h.toLawsCore).Cusp j w →ₛₗ[σ] ℂ)), (∀ F, ∃ y, (recB h.toLawsCore).supN j w σ F / 4 ≤ ‖ev y F‖) ∧ (∀ y F, ‖ev y F‖ ≤ (recB h.toLawsCore).supN j w σ F) ∧ Real.log (16 * (n : ℝ)) ≤ 1041 * Zb D large₂ ^ 3 ∧ ∀ (m : ℕ) (F : Fin m → (recB h.toLawsCore).Cusp j w), LinearIndependent T.Q.c.F F → LinearIndependent ℂ (fun i => fun y => ev y (F i)) := by
   intro D T h hG large₂ j hj w hP hL hr hf σ hσ
   classical

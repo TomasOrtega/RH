@@ -14,14 +14,23 @@ namespace GlobalTheory.RowUnf
 
 variable {D : D7} {A B : HSp D} {c : ℕ} {ε : D.host.E}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ChiGrid.SumDual.gram_isom A B d.ι d.isom`.
+-/
 theorem frameMat_isom (d : HermitianOrthogonalExtensionData A B c ε) : (frameMat B A d.ι)ᴴ * B.gram * frameMat B A d.ι = A.gram :=
   GlobalTheory.ChiGrid.SumDual.gram_isom A B d.ι d.isom
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `congrFun (congrFun d.perp i) (f j)`.
+-/
 theorem perp_sub (d : HermitianOrthogonalExtensionData A B c ε) {k : ℕ} (f : Fin k → Fin c) :
     (frameMat B A d.ι)ᴴ * B.gram * d.a.submatrix id f = 0 := by
   refine Matrix.ext fun i j => ?_
   exact congrFun (congrFun d.perp i) (f j)
 
+/- English proof (translation)
+The claim follows from `d.gram_sub f g`.
+-/
 theorem gram_sub' (d : HermitianOrthogonalExtensionData A B c ε) {k l : ℕ} (f : Fin k → Fin c) (g : Fin l → Fin c) :
     (d.a.submatrix id f)ᴴ * B.gram * d.a.submatrix id g = (antiDiagonalSignGramMatrix c ε).submatrix f g :=
   d.gram_sub f g
@@ -57,17 +66,30 @@ def coreMat {σ : ℕ} (d : HermitianOrthogonalExtensionData A B c ε) (h : c = 
     Matrix (Fin B.rank) (Fin (GlobalTheory.Doubling.hsum A (GlobalTheory.SeeSaw.Model.nLine D)).rank) D.host.E :=
   (Matrix.fromCols (frameMat B A d.ι) (midCol d h)).submatrix id finSumFinEquiv.symm
 
+/- English proof (translation)
+Use `show -((Examples₂.stdSpace (E := D.host.E) Examples₂.star_isIntegral 1 (fun _ => false) 1 0).gram i j) = -1`. Rewrite using `[Examples₂.stdSpace_gram_apply, Subsingleton.elim i j]`. Simplify using `[Examples₂.sgn]`.
+-/
 theorem nLine_gram (i j : Fin 1) : (GlobalTheory.SeeSaw.Model.nLine D).gram i j = -1 := by
   show -((Examples₂.stdSpace (E := D.host.E) Examples₂.star_isIntegral 1 (fun _ => false) 1 0).gram i j) = -1
   rw [Examples₂.stdSpace_gram_apply, Subsingleton.elim i j]
   simp [Examples₂.sgn]
 
+/- English proof (translation)
+Establish `h` using `congrArg conjTranspose (perp_sub d f)`. Rewrite `h` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, conjTranspose_zero, ← Matrix.mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem perp_sub' (d : HermitianOrthogonalExtensionData A B c ε) {k : ℕ} (f : Fin k → Fin c) :
     (d.a.submatrix id f)ᴴ * B.gram * frameMat B A d.ι = 0 := by
   have h := congrArg conjTranspose (perp_sub d f)
   rwa [conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, conjTranspose_zero,
     ← Matrix.mul_assoc] at h
 
+/- English proof (translation)
+Establish `hNN : (midCol d h)ᴴ * B.gram * midCol d h = (GlobalTheory.SeeSaw.Model.nLine D).gram`. Use `(gram_sub' d _ _).trans (Matrix.ext fun i j => (?_ : _ = (-1 : D.host.E)).trans (nLine_gram i j).symm)` and prove the remaining obligations. Simplify using `only [submatrix_apply, antiDiagonalSignGramMatrix]`. Rewrite using `[if_pos (by omega), if_true]`. Establish `key : (Matrix.fromCols (frameMat B A d.ι) (midCol d h))ᴴ * B.gram * Matrix.fromCols (frameMat B A d.ι) (midCol d h) = Matrix.fromBlocks A.gram 0 0 (GlobalTheory.SeeSaw.Model.nLine D).gram`.
+
+Rewrite using `[conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul, fromRows_mul_fromCols, frameMat_isom, hNN]`. Rewrite using `[show (frameMat B A d.ι)ᴴ * B.gram * midCol d h = 0 from perp_sub d _, show (midCol d h)ᴴ * B.gram * frameMat B A d.ι = 0 from perp_sub' d _]`. Both sides reduce to the same expression. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Doubling.gram_hsum]`.
+
+Conclude with `congrFun (congrFun key _) _`.
+-/
 theorem coreMat_gram {σ : ℕ} (d : HermitianOrthogonalExtensionData A B c (-1)) (h : c = 2 * σ + 1) :
     (coreMat d h)ᴴ * B.gram * coreMat d h = (GlobalTheory.Doubling.hsum A (GlobalTheory.SeeSaw.Model.nLine D)).gram := by
   have hNN : (midCol d h)ᴴ * B.gram * midCol d h = (GlobalTheory.SeeSaw.Model.nLine D).gram := by
@@ -85,6 +107,11 @@ theorem coreMat_gram {σ : ℕ} (d : HermitianOrthogonalExtensionData A B c (-1)
   rw [GlobalTheory.Doubling.gram_hsum]
   exact congrFun (congrFun key _) _
 
+/- English proof (translation)
+Establish `key : (Matrix.fromCols (frameMat B A d.ι) (midCol d h))ᴴ * B.gram * d.a.submatrix id f = 0`. Rewrite using `[conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul, fromRows_mul, perp_sub]`. Rewrite using `[show (midCol d h)ᴴ * B.gram * d.a.submatrix id f = 0 from (gram_sub' d _ _).trans (Matrix.ext fun i j => by`. Simplify using `only [submatrix_apply, antiDiagonalSignGramMatrix, Matrix.zero_apply]`. Rewrite using `[if_neg (by have := hf j; omega)])]`.
+
+Conclude with `fromRows_zero`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `congrFun (congrFun key _) j`.
+-/
 theorem coreMat_perp {σ k : ℕ} (d : HermitianOrthogonalExtensionData A B c ε) (h : c = 2 * σ + 1) (f : Fin k → Fin c) (hf : ∀ i, (f i).1 + σ + 1 ≠ c) :
     (coreMat d h)ᴴ * B.gram * d.a.submatrix id f = 0 := by
   have key : (Matrix.fromCols (frameMat B A d.ι) (midCol d h))ᴴ * B.gram * d.a.submatrix id f = 0 := by
@@ -126,6 +153,9 @@ open GlobalTheory.FunObj
 
 variable {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc)
 
+/- English proof (translation)
+Establish `h` using `G.isV (X := .top j) hj fun i e => by cases e`. Use `GlobalTheory.SeeSaw.Inh.coCpt_of_isDefinite h.sigOK fun τ => Or.inl ?_` and prove the remaining obligations. Rewrite using `[h.sig τ, h.rank]`. Simplify using `[Node.neg]`.
+-/
 theorem cocpt_top {j : ℕ} (hj : j ≤ D.R.m) : CoCpt (G.V (.top j)) := by
   have h := G.isV (X := .top j) hj fun i e => by cases e
   refine GlobalTheory.SeeSaw.Inh.coCpt_of_isDefinite h.sigOK fun τ => Or.inl ?_

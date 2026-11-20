@@ -16,6 +16,9 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma nmul_zero (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S) :
     _root_.GlobalTheory.QLog.nmul μ 0 = fun _ => 0 := rfl
 
@@ -23,6 +26,9 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.QLog.nmul, _root_.GlobalTheory.QLog.nmul, Function.iterate_succ_apply']`.
+-/
 private lemma nmul_succ_eq_op_X (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S) (k : ℕ) :
     _root_.GlobalTheory.QLog.nmul μ (k + 1) =
       _root_.GlobalTheory.Katz.op μ (_root_.GlobalTheory.QLog.nmul μ k) (fun i => X i) := by
@@ -32,6 +38,9 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero fun s => by cases s <;> simp [hv, hw]`.
+-/
 private lemma hasSubst_sumElim_of_constantCoeff_eq_zero {τ : Type} {v w : Fin d → MvPowerSeries τ S}
     (hv : ∀ i, constantCoeff (v i) = 0) (hw : ∀ i, constantCoeff (w i) = 0) :
     HasSubst (Sum.elim v w) :=
@@ -41,6 +50,9 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_eq_zero (hasSubst_sumElim_of_constantCoeff_eq_zero hv hw) (fun s => by cases s <;> simp [hv, hw]) (hμ i)`.
+-/
 private lemma constantCoeff_katz_op_eq_zero {τ : Type} (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S)
     (hμ : ∀ i, constantCoeff (μ i) = 0) {v w : Fin d → MvPowerSeries τ S}
     (hv : ∀ i, constantCoeff (v i) = 0) (hw : ∀ i, constantCoeff (w i) = 0) (i : Fin d) :
@@ -52,6 +64,9 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
+/- English proof (translation)
+Proceed by induction on `k generalizing i with`. Consider the case `zero => simp [nmul_zero]`. Consider the case `succ k ih`. Rewrite using `[nmul_succ_eq_op_X]`. Conclude with `constantCoeff_katz_op_eq_zero μ hμ ih (fun j => constantCoeff_X j) i`.
+-/
 private lemma constantCoeff_nmul_eq_zero' (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S)
     (hμ : ∀ i, constantCoeff (μ i) = 0) (k : ℕ) (i : Fin d) :
     constantCoeff (_root_.GlobalTheory.QLog.nmul μ k i) = 0 := by
@@ -65,6 +80,9 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
+/- English proof (translation)
+Introduce `p q hpq` and use `by ext n apply hh simpa using congrArg (coeff n) hpq`.
+-/
 private lemma mvPowerSeries_map_injective {σ A B : Type} [CommRing A] [CommRing B] {h : A →+* B}
     (hh : Function.Injective h) : Function.Injective (map (σ := σ) h) := fun p q hpq => by
   ext n
@@ -75,6 +93,9 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
+/- English proof (translation)
+Rewrite using `[← coe_substAlgHom hc, map_zero]`.
+-/
 private lemma subst_zero_divisor {σ τ : Type} {c : σ → MvPowerSeries τ S} (hc : HasSubst c) :
     subst c (0 : MvPowerSeries σ S) = 0 := by
   rw [← coe_substAlgHom hc, map_zero]
@@ -83,6 +104,9 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
+/- English proof (translation)
+Rewrite using `[subst_comp_subst_apply (hasSubst_sumElim_of_constantCoeff_eq_zero hv hw) hc]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> rfl`.
+-/
 private lemma subst_subst_sumElim_eq_subst_sumElim_subst {τ υ : Type} {v w : Fin d → MvPowerSeries τ S}
     (hv : ∀ i, constantCoeff (v i) = 0) (hw : ∀ i, constantCoeff (w i) = 0)
     {c : τ → MvPowerSeries υ S} (hc : HasSubst c) (g : MvPowerSeries (Fin d ⊕ Fin d) S) :
@@ -97,6 +121,9 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
+/- English proof (translation)
+The claim follows from `subst_subst_sumElim_eq_subst_sumElim_subst hv hw hc (μ i)`.
+-/
 private lemma subst_katz_op_eq_op_subst {τ υ : Type} (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S)
     {v w : Fin d → MvPowerSeries τ S}
     (hv : ∀ i, constantCoeff (v i) = 0) (hw : ∀ i, constantCoeff (w i) = 0)
@@ -109,6 +136,19 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
+/- English proof (translation)
+Establish `hμ` using `hG.const`. Establish `hN` using `constantCoeff_nmul_eq_zero' μ hμ`. Establish `ha : HasSubst (_root_.GlobalTheory.QLog.nmul μ a)` using `hasSubst_of_constantCoeff_zero (hN a)`. Proceed by induction on `b with`. Consider the case `zero`.
+
+Use function extensionality and compare the values at `i`. Establish `h` using `congrArg (subst (_root_.GlobalTheory.QLog.nmul μ a)) (congrFun hG.unit i)`. Rewrite `h` using `[subst_katz_op_eq_op_subst μ (fun j => constantCoeff_X j) (fun _ => by simp) ha]`. Simplify using `only [subst_X ha, subst_zero_divisor ha] at h`. Rewrite using `[Nat.add_zero, nmul_zero]`.
+
+Conclude with `h.symm`. Consider the case `succ b ih`. Rewrite using `[← Nat.add_assoc, nmul_succ_eq_op_X, ih, nmul_succ_eq_op_X]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `have hc : HasSubst (Sum.elim (_root_.GlobalTheory.QLog.nmul μ a) (Sum.elim (_root_.GlobalTheory.QLog.nmul μ b) fun j => (X j : MvPowerSeries (Fin d) S))) := hasSubst_of_constantCoeff_zero fun s => by rcases s with s | s | s <;> simp [hN]`.
+
+Establish `h` using `congrArg (subst (Sum.elim (_root_.GlobalTheory.QLog.nmul μ a) (Sum.elim (_root_.GlobalTheory.QLog.nmul μ b) fun j => (X j : MvPowerSeries (Fin d) S)))) (congrFun hG.assoc i)`. Establish `h1 : ∀ j, constantCoeff (_root_.GlobalTheory.Katz.x1 (R` using `S) (d := d) j) = 0 := fun j => by`. Simplify using `[_root_.GlobalTheory.Katz.x1]`. Establish `h2 : ∀ j, constantCoeff (_root_.GlobalTheory.Katz.x2 (R` using `S) (d := d) j) = 0 := fun j => by`. Simplify using `[_root_.GlobalTheory.Katz.x2]`.
+
+Establish `h3 : ∀ j, constantCoeff (_root_.GlobalTheory.Katz.x3 (R` using `S) (d := d) j) = 0 := fun j => by`. Simplify using `[_root_.GlobalTheory.Katz.x3]`. Rewrite `h` using `[subst_katz_op_eq_op_subst μ (constantCoeff_katz_op_eq_zero μ hμ h1 h2) h3 hc, subst_katz_op_eq_op_subst μ h1 (constantCoeff_katz_op_eq_zero μ hμ h2 h3) hc]`. Rewrite `h` using `[subst_katz_op_eq_op_subst μ h1 h2 hc, subst_katz_op_eq_op_subst μ h2 h3 hc]`. Simplify using `only [_root_.GlobalTheory.Katz.x1, _root_.GlobalTheory.Katz.x2, _root_.GlobalTheory.Katz.x3, subst_X hc, Sum.elim_inl, Sum.elim_inr] at h`.
+
+Conclude with `h`.
+-/
 private lemma nmul_add_eq_op {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S}
     (hG : _root_.GlobalTheory.Katz.IsLaw μ) (a b : ℕ) :
     _root_.GlobalTheory.QLog.nmul μ (a + b) =
@@ -151,6 +191,13 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
+/- English proof (translation)
+Establish `hμ` using `hG.const`. Establish `hN` using `constantCoeff_nmul_eq_zero' μ hμ`. Establish `hm : HasSubst (_root_.GlobalTheory.QLog.nmul μ m)` using `hasSubst_of_constantCoeff_zero (hN m)`. Proceed by induction on `k generalizing i with`. Consider the case `zero`.
+
+Simplify using `only [Nat.zero_mul, nmul_zero]`. Conclude with `subst_zero_divisor hm`. Consider the case `succ k ih`. Rewrite using `[nmul_succ_eq_op_X, subst_katz_op_eq_op_subst μ (hN k) (fun j => constantCoeff_X j) hm]`. Repeatedly rewrite using `[ih, subst_X hm]`.
+
+Rewrite using `[Nat.succ_mul, nmul_add_eq_op hG]`.
+-/
 private lemma subst_nmul_nmul_eq_nmul_mul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S}
     (hG : _root_.GlobalTheory.Katz.IsLaw μ) (k m : ℕ) (i : Fin d) :
     subst (_root_.GlobalTheory.QLog.nmul μ m) (_root_.GlobalTheory.QLog.nmul μ k i) =
@@ -172,6 +219,15 @@ open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
 
+/- English proof (translation)
+Introduce `R Q _ _ _ d μ hG hinj f _ k m s t u hs ht hu`. Establish `hμ` using `hG.const`. Establish `hm : HasSubst (_root_.GlobalTheory.QLog.nmul μ m)` using `hasSubst_of_constantCoeff_zero (constantCoeff_nmul_eq_zero' μ hμ m)`. Establish `hmQ` using `_root_.GlobalTheory.QLog.hasSubst_up_nmul (Q := Q) hμ m`. Establish `hkQ` using `_root_.GlobalTheory.QLog.hasSubst_up_nmul (Q := Q) hμ k`.
+
+Apply `mvPowerSeries_map_injective hinj` to reduce the goal to its premises. Rewrite using `[map_add, map_subst hm, hs, hu, Nat.cast_smul_eq_nsmul, map_nsmul, ht]`. Express the relevant statement in the definitionally equal form `_ = subst (_root_.GlobalTheory.QLog.up Q (_root_.GlobalTheory.QLog.nmul μ m)) (_root_.GlobalTheory.QLog.defect μ k f) + _`. Simplify using `only [_root_.GlobalTheory.QLog.defect]`. Rewrite using `[subst_sub hmQ, subst_smul hmQ, subst_comp_subst_apply hkQ hmQ]`.
+
+Establish `hcomp : (fun i => subst (_root_.GlobalTheory.QLog.up Q (_root_.GlobalTheory.QLog.nmul μ m)) (_root_.GlobalTheory.QLog.up Q (_root_.GlobalTheory.QLog.nmul μ k) i)) = _root_.GlobalTheory.QLog.up Q (_root_.GlobalTheory.QLog.nmul μ (k * m))`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `subst (fun j => map (algebraMap R Q) (_root_.GlobalTheory.QLog.nmul μ m j)) (map (algebraMap R Q) (_root_.GlobalTheory.QLog.nmul μ k i)) = map (algebraMap R Q) (_root_.GlobalTheory.QLog.nmul μ (k * m) i)`. Rewrite using `[← map_subst hm, subst_nmul_nmul_eq_nmul_mul hG]`. Rewrite using `[hcomp, ← Nat.cast_smul_eq_nsmul Q, Nat.cast_mul, mul_smul, smul_sub]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem _root_.GlobalTheory.DefectComp.main : ∀ (R Q : Type) [CommRing R] [CommRing Q] [Algebra R Q] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R), _root_.GlobalTheory.Katz.IsLaw μ → Function.Injective (algebraMap R Q) → ∀ (f : MvPowerSeries (Fin d) Q), constantCoeff f = 0 → ∀ (k m : ℕ) (s t u : MvPowerSeries (Fin d) R), map (algebraMap R Q) s = _root_.GlobalTheory.QLog.defect μ k f → map (algebraMap R Q) t = _root_.GlobalTheory.QLog.defect μ m f → map (algebraMap R Q) u = _root_.GlobalTheory.QLog.defect μ (k * m) f → u = subst (_root_.GlobalTheory.QLog.nmul μ m) s + (k : R) • t := by
   intro R Q _ _ _ d μ hG hinj f _ k m s t u hs ht hu
   have hμ := hG.const

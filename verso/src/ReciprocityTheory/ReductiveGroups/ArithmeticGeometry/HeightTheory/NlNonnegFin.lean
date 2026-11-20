@@ -21,11 +21,25 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+The claim follows from `IsDedekindDomain.HeightOneSpectrum.ext (Ideal.ext fun a => (h1 a).symm.trans (h2 a))`.
+-/
 theorem isOver_unique {Ωc : Type*} [Field Ωc] [Algebra K Ωc] (v : AddValuation Ωc (WithTop ℤ))
     (la la' : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (h1 : IsOver (K := K) v la)
     (h2 : IsOver (K := K) v la') : la = la' :=
   IsDedekindDomain.HeightOneSpectrum.ext (Ideal.ext fun a => (h1 a).symm.trans (h2 a))
 
+/- English proof (translation)
+Use `⟨fun la => ?_, ?_⟩` and prove the remaining obligations. Unfold `Data.Nl`. Use `Finset.sum_nonneg fun c _ => finsum_nonneg fun w => finsum_nonneg fun hw => ?_` and prove the remaining obligations. Establish `h1` using `hd.ord_nonneg_et c _ (d.admissible_over_prime hd h la c w hw).1`. Establish `h2 : (0 : ℝ) ≤ (d.ord c (d.Wres c w) (d.n1 • d.wde) (d.et c) : ℝ)` using `by exact_mod_cast h1`.
+
+Conclude with `mul_nonneg (Nat.cast_nonneg _) h2`. Establish `hS : ∀ c, {v | d.admitted c v ∧ d.ord c v (d.n1 • d.wde) (d.et c) ≠ 0}.Finite` using `fun c => hd.a3' c (hd.et_mem c) (hd.et_ne c)`. Use `Set.Finite.subset (Set.finite_iUnion fun c => (hS c).biUnion (fun v _ => (show ({la | IsOver (K := K) v la} : Set _).Subsingleton from fun a ha b hb => isOver_unique v a b ha hb).finite)) ?_` and prove the remaining obligations. Introduce `la hla`. Assume the negation of the conclusion as `hno`.
+
+Apply `hla` to reduce the goal to its premises. Unfold `Data.Nl`. Use `Finset.sum_eq_zero fun c _ => finsum_eq_zero_of_forall_eq_zero fun w => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_if]`. Use `split_ifs with hw`.
+
+Use `swap`. Use the proof step `· rfl`. Establish `hs4` using `d.admissible_over_prime hd h la c w hw`. Distinguish the cases in `h0 : d.ord c (d.Wres c w) (d.n1 • d.wde) (d.et c) = 0`. Simplify using `[h0]`.
+
+Conclude with `absurd (Set.mem_iUnion.2 ⟨c, Set.mem_biUnion (x := d.Wres c w) (show d.Wres c w ∈ {v | d.admitted c v ∧ d.ord c v (d.n1 • d.wde) (d.et c) ≠ 0} from ⟨hs4.1, h0⟩) (show la ∈ {la | IsOver (K := K) (d.Wres c w) la} from hs4.2.1)⟩) hno`.
+-/
 theorem nl_nonneg_fin (hd : d.AxH 𝒜) (h : d.S1) :
     (∀ la, 0 ≤ d.Nl h la) ∧ (Function.support (d.Nl h)).Finite := by
   refine ⟨fun la => ?_, ?_⟩
@@ -55,6 +69,15 @@ theorem nl_nonneg_fin (hd : d.AxH 𝒜) (h : d.S1) :
       (show d.Wres c w ∈ {v | d.admitted c v ∧ d.ord c v (d.n1 • d.wde) (d.et c) ≠ 0} from ⟨hs4.1, h0⟩)
       (show la ∈ {la | IsOver (K := K) (d.Wres c w) la} from hs4.2.1)⟩) hno
 
+/- English proof (translation)
+Establish `hta : ∀ c, d.et c ∈ 𝒜 c (d.n1 • d.wde) ∧ d.et c ≠ 0` using `fun c => ⟨hd.et_mem c, hd.et_ne c⟩`. Establish `hbdd : ∀ sg : K →+* ℂ, BddAbove (Set.range fun p : (Σ c, PT (Ω` using `Ω c) sg) => d.nrm p.1 (d.n1 • d.wde) (d.et p.1) p.2) := fun sg => hd.bdd sg _ d.et (Or.inr (Or.inr (Or.inl ⟨rfl, rfl⟩)))`. Establish `hint` using `fun c sg => (d.int_Nsg hd h hI2be c sg).1 (d.n1 • d.wde) (d.et c) (Set.mem_insert_of_mem _ (Set.mem_insert _ _)) (hd.et_mem c) (hd.et_ne c)`. Establish `h4` using `(d.h_four hd h (d.n1 • d.wde) d.et hta (hd.ord_nonneg_et) hbdd hint).2`. Establish `hNl : (fun la => d.Nl h la * logNorm la) = (fun la => d.NlaG h (d.n1 • d.wde) d.et la * logNorm la)` using `rfl`.
+
+Rewrite using `[hNl]`. Establish `hi : (0 : ℝ) < d.i` using `by exact_mod_cast hd.i_ge`. Establish `hg : (0 : ℝ) < d.g0` using `by exact_mod_cast hd.g_zero_ge_ask_sum`. Establish `hn1 : ((d.n1 : ℕ) : ℝ) = (d.i : ℝ) * d.g0` using `by simp [Data.n1]`. Establish `hdel : (0 : ℝ) ≤ d.del` using `Nat.cast_nonneg _`.
+
+Establish `hE : meanK (fun sg => Real.log (d.supN sg (d.n1 • d.wde) d.et)) / d.i ≤ d.Pet` using `hI2et`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hn1]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ _ := by gcongr`.
+-/
 theorem disc_two (hd : d.AxH 𝒜) (h : d.S1) (hI2et : d.HeightIntegralEstimateTrivialPlace) (hI2be : d.HeightIntegralBoundEstimate) :
     ((∑ᶠ la, d.Nl h la * logNorm la) / (Module.finrank ℚ K : ℝ)) / d.i ≤
       d.g0 * (d.Hgt h (d.n1 • d.wde) d.et / d.n1 + d.D * ((d.aG h (d.n1 • d.wde) d.et : ℝ) / d.n1) *
@@ -83,6 +106,27 @@ theorem disc_two (hd : d.AxH 𝒜) (h : d.S1) (hI2et : d.HeightIntegralEstimateT
         rw [hn1]; field_simp; ring
     _ ≤ _ := by gcongr
 
+/- English proof (translation)
+Take `⟨_hDe0, hloc⟩` from `d.disc_lattice hd h`. Take `⟨hgf, hNef, hglob⟩` from `d.disc_global hd h hI2be ta' hta'`. Establish `hl : ∀ la : IsDedekindDomain.HeightOneSpectrum (𝓞 K), 0 ≤ logNorm la`. Introduce `la`. Apply `Real.log_nonneg` to reduce the goal to its premises.
+
+Establish `: Ideal.absNorm la.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `la.ne_bot`. Conclude with `Nat.one_le_iff_ne_zero.mpr this` after adjusting the coercions. Establish `hIL0 : ∀ la, 0 ≤ d.IL h hd.sel hd.a4.choose la` using `fun _ => Nat.cast_nonneg _`.
+
+Establish `hsupp : (Function.support (d.IL h hd.sel hd.a4.choose)).Finite`. Apply `(hgf.union hNef).subset` to reduce the goal to its premises. Introduce `la hla`. Simplify using `only [Function.mem_support, Set.mem_union] at hla ⊢`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Establish `h2` using `(hloc la).2`. Rewrite `h2` using `[hc.1, hc.2]`. Move the coercions through the operations in `at h2`. Conclude with `hla (le_antisymm (by linarith) (hIL0 la))`.
+
+Use `⟨fun la c => (d.places_over_la hd h la c).1, fun la => (hloc la).1, hsupp, ?_⟩` and prove the remaining obligations. Establish `hf1 : (Function.support fun la => 2 * (d.IL h hd.sel hd.a4.choose la * logNorm la)).Finite` using `hsupp.subset fun la hla => by`. Simplify using `only [Function.mem_support] at hla ⊢`. Introduce `h0`. Apply `hla` to reduce the goal to its premises.
+
+Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hf2 : (Function.support fun la => ((d.gOrd la (d.De hd h) : ℝ) + 2 * d.NlaG h d.wF hd.a4.choose la) * logNorm la).Finite` using `(hgf.union hNef).subset fun la hla => by`. Simplify using `only [Function.mem_support, Set.mem_union] at hla ⊢`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Apply `hla` to reduce the goal to its premises. Rewrite using `[hc.1, hc.2]`. Simplify using the standard rewrite rules. Establish `hf0 : (Function.support fun la => d.IL h hd.sel hd.a4.choose la * logNorm la).Finite` using `hsupp.subset fun la hla => by`.
+
+Simplify using `only [Function.mem_support] at hla ⊢`. Introduce `h0`. Apply `hla` to reduce the goal to its premises. Rewrite using `[h0, zero_mul]`. Establish `hle : (∑ᶠ la, 2 * (d.IL h hd.sel hd.a4.choose la * logNorm la)) ≤ ∑ᶠ la, ((d.gOrd la (d.De hd h) : ℝ) + 2 * d.NlaG h d.wF hd.a4.choose la) * logNorm la` using `finsum_le_finsum' hf1 hf2 fun la => by`.
+
+Use `(hloc la).2` as an intermediate fact. Use `hl la` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hnK : (0 : ℝ) < (Module.finrank ℚ K : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Rewrite `hle` using `[← mul_finsum' _ _ hf0]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem disc_one (hd : d.AxH 𝒜) (h : d.S1) (hI2et : d.HeightIntegralEstimateTrivialPlace) (hI2be : d.HeightIntegralBoundEstimate) (ta' : ∀ c, A c)
     (hta' : ∀ c, ta' c ∈ 𝒜 c d.wF ∧ ta' c ≠ 0) :
     (∀ la c, (d.PlOver la c).Finite) ∧ (∀ la, (d.htOf hd h).Ila la ≠ ⊤) ∧
@@ -138,6 +182,9 @@ theorem disc_one (hd : d.AxH 𝒜) (h : d.S1) (hI2et : d.HeightIntegralEstimateT
           (Module.finrank ℚ K : ℝ) := div_le_div_of_nonneg_right hle hnK.le
     _ ≤ _ := hglob
 
+/- English proof (translation)
+Introduce `lr`. Take `⟨h1, h2, h3, h4⟩` from `d.disc_one hd h hI2et hI2be ta' hta'`. Take `⟨h5, h6⟩` from `d.nl_nonneg_fin hd h`. Conclude with `⟨h1, h2, h3, h4, h5, h6, d.disc_two hd h hI2et hI2be⟩`.
+-/
 theorem disc (hd : d.AxH 𝒜) (h : d.S1) (hI2et : d.HeightIntegralEstimateTrivialPlace) (hI2be : d.HeightIntegralBoundEstimate) (ta' : ∀ c, A c)
     (hta' : ∀ c, ta' c ∈ 𝒜 c d.wF ∧ ta' c ≠ 0) :
     let lr := Real.log (d.N + 1 : ℕ) + 1 / 2

@@ -14,6 +14,9 @@ variable {A : Type*} [CommRing A]
 def zwPoly (W : WeierstrassCurve A) (z w : A) : A :=
   z ^ 3 + W.a₁ * z * w + W.a₂ * z ^ 2 * w + W.a₃ * w ^ 2 + W.a₄ * z * w ^ 2 + W.a₆ * w ^ 3 - w
 
+/- English proof (translation)
+Simplify using `[zwPoly]`.
+-/
 theorem map_zwPoly {B : Type*} [CommRing B] (f : A →+* B) (W : WeierstrassCurve A) (z w : A) :
     f (zwPoly W z w) = zwPoly (W.map f) (f z) (f w) := by
   simp [zwPoly]
@@ -26,11 +29,17 @@ def vStep (v : PowerSeries R) : PowerSeries R :=
   1 + C W.a₁ * X * v + C W.a₂ * X ^ 2 * v + C W.a₃ * X ^ 3 * v ^ 2 + C W.a₄ * X ^ 4 * v ^ 2 +
     C W.a₆ * X ^ 6 * v ^ 3
 
+/- English proof (translation)
+Simplify using `only [vStep]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vStep_sub (f g : PowerSeries R) : vStep W f - vStep W g = X * ((f - g) *
     (C W.a₁ + C W.a₂ * X + (C W.a₃ * X ^ 2 + C W.a₄ * X ^ 3) * (f + g) +
       C W.a₆ * X ^ 5 * (f ^ 2 + f * g + g ^ 2))) := by
   simp only [vStep]; ring
 
+/- English proof (translation)
+Rewrite using `[vStep_sub]`. Use `le_trans ?_ MvPowerSeries.le_order_mul` and prove the remaining obligations. Establish `hX : (1 : ℕ∞) ≤ MvPowerSeries.order (X : PowerSeries R)` using `MvPowerSeries.one_le_order_iff_constCoeff_eq_zero.2 PowerSeries.constantCoeff_X`. Establish `h2` using `le_trans h (le_trans (le_self_add) (MvPowerSeries.le_order_mul (f := f - g) (g := C W.a₁ + C W.a₂ * X + (C W.a₃ * X ^ 2 + C W.a₄ * X ^ 3) * (f + g) + C W.a₆ * X ^ 5 * (f ^ 2 + f * g + g ^ 2))))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem vStep_contract (f g : PowerSeries R) (n : ℕ)
     (h : (n : ℕ∞) ≤ MvPowerSeries.order (f - g)) :
     ((n + 1 : ℕ) : ℕ∞) ≤ MvPowerSeries.order (vStep W f - vStep W g) := by
@@ -44,43 +53,72 @@ theorem vStep_contract (f g : PowerSeries R) (n : ℕ)
   calc ((n + 1 : ℕ) : ℕ∞) = 1 + (n : ℕ∞) := by push_cast; ring
     _ ≤ _ := add_le_add hX h2
 
+/- English proof (translation)
+The claim follows from `GroundTheory.LocalField.FormalGroup.existsUnique_fixedPoint (vStep W) (vStep_contract W)`.
+-/
 theorem existsUnique_vStep : ∃! v : PowerSeries R, vStep W v = v :=
   GroundTheory.LocalField.FormalGroup.existsUnique_fixedPoint (vStep W) (vStep_contract W)
 
 def formalV : PowerSeries R := (existsUnique_vStep W).exists.choose
 
+/- English proof (translation)
+The claim follows from `(existsUnique_vStep W).exists.choose_spec`.
+-/
 theorem vStep_formalV : vStep W (formalV W) = formalV W :=
   (existsUnique_vStep W).exists.choose_spec
 
+/- English proof (translation)
+The claim follows from `(existsUnique_vStep W).unique h (vStep_formalV W)`.
+-/
 theorem eq_formalV {v : PowerSeries R} (h : vStep W v = v) : v = formalV W :=
   (existsUnique_vStep W).unique h (vStep_formalV W)
 
 def formalW : PowerSeries R := X ^ 3 * formalV W
 
+/- English proof (translation)
+Use `conv_lhs => rw [formalW, ← vStep_formalV]`. Simplify using `only [formalW, vStep]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem formalW_eq : formalW W = X ^ 3 + C W.a₁ * X * formalW W + C W.a₂ * X ^ 2 * formalW W +
     C W.a₃ * formalW W ^ 2 + C W.a₄ * X * formalW W ^ 2 + C W.a₆ * formalW W ^ 3 := by
   conv_lhs => rw [formalW, ← vStep_formalV]
   simp only [formalW, vStep]; ring
 
+/- English proof (translation)
+Rewrite using `[zwPoly, sub_eq_zero]`. Use `conv_rhs => rw [formalW_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem zwPoly_formalW : zwPoly (W.map C) X (formalW W) = 0 := by
   rw [zwPoly, sub_eq_zero]
   conv_rhs => rw [formalW_eq]
   simp
 
+/- English proof (translation)
+Use `conv_lhs => rw [← vStep_formalV]`. Simplify using `[vStep]`.
+-/
 theorem constantCoeff_formalV : constantCoeff (formalV W) = 1 := by
   conv_lhs => rw [← vStep_formalV]
   simp [vStep]
 
+/- English proof (translation)
+Use `eq_formalV _ ?_` and prove the remaining obligations. Use `conv_rhs => rw [← vStep_formalV]`. Simplify using `[vStep]`.
+-/
 theorem map_formalV {S : Type*} [CommRing S] (f : R →+* S) :
     (formalV W).map f = formalV (W.map f) := by
   refine eq_formalV _ ?_
   conv_rhs => rw [← vStep_formalV]
   simp [vStep]
 
+/- English proof (translation)
+Simplify using `[formalW, map_formalV]`.
+-/
 theorem map_formalW {S : Type*} [CommRing S] (f : R →+* S) :
     (formalW W).map f = formalW (W.map f) := by
   simp [formalW, map_formalV]
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.X i)]`. Repeatedly rewrite using `[MvPowerSeries.X_pow_eq, MvPowerSeries.coeff_monomial, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[finsum_eq_single _ (d i)]`. Introduce `n hn`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `rfl`. Simplify using `at hn`.
+-/
 theorem coeff_subst_X {σ : Type*} [DecidableEq σ] (i : σ) (f : PowerSeries R) (d : σ →₀ ℕ) :
     MvPowerSeries.coeff d (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ R) f) =
       if d = Finsupp.single i (d i) then PowerSeries.coeff (d i) f else 0 := by
@@ -96,22 +134,39 @@ theorem coeff_subst_X {σ : Type*} [DecidableEq σ] (i : σ) (f : PowerSeries R)
 def divDiff (f : PowerSeries R) : MvPowerSeries (Fin 2) R :=
   fun d => PowerSeries.coeff (d 0 + d 1 + 1) f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_divDiff (f : PowerSeries R) (d : Fin 2 →₀ ℕ) :
     MvPowerSeries.coeff d (divDiff f) = PowerSeries.coeff (d 0 + d 1 + 1) f := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Apply the tactic sequence `intro h; ext j; fin_cases j <;> simp [h]`.
+-/
 theorem fin_two_eq_single_one_iff (d : Fin 2 →₀ ℕ) : d = Finsupp.single 1 (d 1) ↔ d 0 = 0 := by
   constructor
   · intro h; rw [h]; simp
   · intro h; ext j; fin_cases j <;> simp [h]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Apply the tactic sequence `intro h; ext j; fin_cases j <;> simp [h]`.
+-/
 theorem fin_two_eq_single_zero_iff (d : Fin 2 →₀ ℕ) : d = Finsupp.single 0 (d 0) ↔ d 1 = 0 := by
   constructor
   · intro h; rw [h]; simp
   · intro h; ext j; fin_cases j <;> simp [h]
 
+/- English proof (translation)
+Rewrite using `[Finsupp.single_le_iff]`.
+-/
 theorem single_le_fin_two_iff (i : Fin 2) (d : Fin 2 →₀ ℕ) : Finsupp.single i 1 ≤ d ↔ 1 ≤ d i := by
   rw [Finsupp.single_le_iff]
 
+/- English proof (translation)
+Use extensionality with `d`. Rewrite using `[sub_mul, map_sub, map_sub, coeff_subst_X, coeff_subst_X, MvPowerSeries.X, MvPowerSeries.X, MvPowerSeries.coeff_monomial_mul, MvPowerSeries.coeff_monomial_mul]`. Simplify using `only [single_le_fin_two_iff, fin_two_eq_single_one_iff, fin_two_eq_single_zero_iff, coeff_divDiff, Finsupp.tsub_apply, one_mul]`. Apply the tactic sequence `rcases Nat.eq_zero_or_pos (d 0) with h0 | h0 <;> rcases Nat.eq_zero_or_pos (d 1) with h1 | h1`. Simplify using `[h0, h1]`.
+
+Simplify using `[h0, h1.ne', Nat.one_le_iff_ne_zero.2 h1.ne']`. Simplify using `[h1, h0.ne', Nat.one_le_iff_ne_zero.2 h0.ne']`. Simplify using `[h0.ne', h1.ne', Nat.one_le_iff_ne_zero.2 h0.ne', Nat.one_le_iff_ne_zero.2 h1.ne']`. Rewrite using `[show d 0 + (d 1 - 1) + 1 = d 0 - 1 + d 1 + 1 by omega, sub_self]`.
+-/
 theorem X_sub_X_mul_divDiff (f : PowerSeries R) :
     (MvPowerSeries.X 1 - MvPowerSeries.X 0) * divDiff f =
       PowerSeries.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) R) f -
@@ -128,10 +183,16 @@ theorem X_sub_X_mul_divDiff (f : PowerSeries R) :
   · simp [h0.ne', h1.ne', Nat.one_le_iff_ne_zero.2 h0.ne', Nat.one_le_iff_ne_zero.2 h1.ne']
     rw [show d 0 + (d 1 - 1) + 1 = d 0 - 1 + d 1 + 1 by omega, sub_self]
 
+/- English proof (translation)
+Use extensionality with `d`. Simplify using `[coeff_divDiff, MvPowerSeries.coeff_map]`.
+-/
 theorem map_divDiff {S : Type*} [CommRing S] (φ : R →+* S) (f : PowerSeries R) :
     MvPowerSeries.map φ (divDiff f) = divDiff (PowerSeries.map φ f) := by
   ext d; simp [coeff_divDiff, MvPowerSeries.coeff_map]
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_divDiff]`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_divDiff (f : PowerSeries R) :
     MvPowerSeries.constantCoeff (divDiff f) = PowerSeries.coeff 1 f := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_divDiff]; simp
@@ -145,12 +206,21 @@ def secantB (l : A) : A := 1 + V.a₂ * l + V.a₄ * l ^ 2 + V.a₆ * l ^ 3
 def secantA (l n : A) : A :=
   V.a₁ * l + V.a₂ * n + V.a₃ * l ^ 2 + 2 * V.a₄ * l * n + 3 * V.a₆ * l ^ 2 * n
 
+/- English proof (translation)
+Simplify using `[secantB]`.
+-/
 theorem map_secantB {B : Type*} [CommRing B] (f : A →+* B) (l : A) :
     f (secantB V l) = secantB (V.map f) (f l) := by simp [secantB]
 
+/- English proof (translation)
+Simplify using `[secantA, map_ofNat]`.
+-/
 theorem map_secantA {B : Type*} [CommRing B] (f : A →+* B) (l n : A) :
     f (secantA V l n) = secantA (V.map f) (f l) (f n) := by simp [secantA, map_ofNat]
 
+/- English proof (translation)
+Establish `e : (w - w') * (1 - (V.a₁ * z + V.a₂ * z ^ 2 + V.a₃ * (w + w') + V.a₄ * z * (w + w') + V.a₆ * (w ^ 2 + w * w' + w' ^ 2))) = 0`. Simplify using `only [zwPoly] at h h'`. Take the linear combination `(-1 : A) * h + h'`. Rewrite using `[← sub_eq_zero]`. Conclude with `(hu.mul_left_eq_zero).1 e`.
+-/
 theorem eq_of_zwPoly_eq_zero {z w w' : A} (h : zwPoly V z w = 0) (h' : zwPoly V z w' = 0)
     (hu : IsUnit (1 - (V.a₁ * z + V.a₂ * z ^ 2 + V.a₃ * (w + w') + V.a₄ * z * (w + w') +
       V.a₆ * (w ^ 2 + w * w' + w' ^ 2)))) : w = w' := by
@@ -163,10 +233,18 @@ theorem eq_of_zwPoly_eq_zero {z w w' : A} (h : zwPoly V z w = 0) (h' : zwPoly V 
 
 end Secant
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.mul_invOfUnit φ 1 (by simp [h])`.
+-/
 theorem mul_invOfUnit_one {σ : Type*} {φ : MvPowerSeries σ R} (h : MvPowerSeries.constantCoeff φ = 1) :
     φ * MvPowerSeries.invOfUnit φ 1 = 1 :=
   MvPowerSeries.mul_invOfUnit φ 1 (by simp [h])
 
+/- English proof (translation)
+Establish `h1 : MvPowerSeries.map f φ * MvPowerSeries.map f (MvPowerSeries.invOfUnit φ 1) = 1`. Rewrite using `[← map_mul, mul_invOfUnit_one h, map_one]`. Establish `h2 : MvPowerSeries.map f φ * MvPowerSeries.invOfUnit (MvPowerSeries.map f φ) 1 = 1` using `mul_invOfUnit_one (by simp [h])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, mul_one]`.
+
+Use `_ = _ := by rw [← mul_assoc, mul_comm _ (MvPowerSeries.map f φ), h1, one_mul]`.
+-/
 theorem map_invOfUnit_one {σ : Type*} {S : Type*} [CommRing S] (f : R →+* S)
     {φ : MvPowerSeries σ R} (h : MvPowerSeries.constantCoeff φ = 1) :
     MvPowerSeries.map f (MvPowerSeries.invOfUnit φ 1) =
@@ -183,6 +261,11 @@ theorem map_invOfUnit_one {σ : Type*} {S : Type*} [CommRing S] (f : R →+* S)
 def wAt {τ : Type*} (u : MvPowerSeries τ R) : MvPowerSeries τ R :=
   PowerSeries.subst u (formalW W)
 
+/- English proof (translation)
+Establish `hs` using `PowerSeries.HasSubst.of_constantCoeff_zero hu`. Use `congrArg (PowerSeries.substAlgHom (R := R) hs) (zwPoly_formalW W)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Rewrite using `[← this]`. Simplify using `only [zwPoly, map_add, map_sub, map_mul, map_pow]`.
+
+Simplify using `[PowerSeries.coe_substAlgHom, PowerSeries.subst_X hs, wAt]`.
+-/
 theorem zwPoly_wAt {τ : Type*} {u : MvPowerSeries τ R} (hu : MvPowerSeries.constantCoeff u = 0) :
     zwPoly (W.map MvPowerSeries.C) u (wAt W u) = 0 := by
   have hs := PowerSeries.HasSubst.of_constantCoeff_zero hu
@@ -192,10 +275,16 @@ theorem zwPoly_wAt {τ : Type*} {u : MvPowerSeries τ R} (hu : MvPowerSeries.con
   simp only [zwPoly, map_add, map_sub, map_mul, map_pow]
   simp [PowerSeries.coe_substAlgHom, PowerSeries.subst_X hs, wAt]
 
+/- English proof (translation)
+The claim follows from `PowerSeries.constantCoeff_subst_eq_zero hu _ (by simp [formalW])`.
+-/
 theorem constantCoeff_wAt {τ : Type*} {u : MvPowerSeries τ R}
     (hu : MvPowerSeries.constantCoeff u = 0) : MvPowerSeries.constantCoeff (wAt W u) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero hu _ (by simp [formalW])
 
+/- English proof (translation)
+Rewrite using `[wAt, PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero hu), map_formalW, wAt]`.
+-/
 theorem map_wAt {τ : Type*} {S : Type*} [CommRing S] (f : R →+* S) {u : MvPowerSeries τ R}
     (hu : MvPowerSeries.constantCoeff u = 0) :
     MvPowerSeries.map f (wAt W u) = wAt (W.map f) (MvPowerSeries.map f u) := by
@@ -219,35 +308,65 @@ def negDen : MvPowerSeries (Fin 2) R :=
 def addSeries : MvPowerSeries (Fin 2) R :=
   -thirdZ W * MvPowerSeries.invOfUnit (negDen W) 1
 
+/- English proof (translation)
+Simplify using `[formalW]`.
+-/
 theorem constantCoeff_formalW : PowerSeries.constantCoeff (formalW W) = 0 := by simp [formalW]
 
+/- English proof (translation)
+Rewrite using `[formalW, PowerSeries.coeff_X_pow_mul']`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_one_formalW : PowerSeries.coeff 1 (formalW W) = 0 := by
   rw [formalW, PowerSeries.coeff_X_pow_mul']; simp
 
+/- English proof (translation)
+Rewrite using `[addSlope, constantCoeff_divDiff, coeff_one_formalW]`.
+-/
 theorem constantCoeff_addSlope : MvPowerSeries.constantCoeff (addSlope W) = 0 := by
   rw [addSlope, constantCoeff_divDiff, coeff_one_formalW]
 
+/- English proof (translation)
+Simplify using `[addIntercept, constantCoeff_wAt W (MvPowerSeries.constantCoeff_X (R := R) (0 : Fin 2))]`.
+-/
 theorem constantCoeff_addIntercept : MvPowerSeries.constantCoeff (addIntercept W) = 0 := by
   simp [addIntercept, constantCoeff_wAt W (MvPowerSeries.constantCoeff_X (R := R) (0 : Fin 2))]
 
+/- English proof (translation)
+Simplify using `[secantB, constantCoeff_addSlope]`.
+-/
 theorem constantCoeff_secantB :
     MvPowerSeries.constantCoeff (secantB (W.map MvPowerSeries.C) (addSlope W)) = 1 := by
   simp [secantB, constantCoeff_addSlope]
 
+/- English proof (translation)
+Simplify using `[secantA, constantCoeff_addSlope, constantCoeff_addIntercept]`.
+-/
 theorem constantCoeff_secantA :
     MvPowerSeries.constantCoeff (secantA (W.map MvPowerSeries.C) (addSlope W) (addIntercept W))
       = 0 := by
   simp [secantA, constantCoeff_addSlope, constantCoeff_addIntercept]
 
+/- English proof (translation)
+Simplify using `[thirdZ, constantCoeff_secantA]`.
+-/
 theorem constantCoeff_thirdZ : MvPowerSeries.constantCoeff (thirdZ W) = 0 := by
   simp [thirdZ, constantCoeff_secantA]
 
+/- English proof (translation)
+Simplify using `[thirdW, constantCoeff_thirdZ, constantCoeff_addIntercept]`.
+-/
 theorem constantCoeff_thirdW : MvPowerSeries.constantCoeff (thirdW W) = 0 := by
   simp [thirdW, constantCoeff_thirdZ, constantCoeff_addIntercept]
 
+/- English proof (translation)
+Simplify using `[negDen, constantCoeff_thirdZ, constantCoeff_thirdW]`.
+-/
 theorem constantCoeff_negDen : MvPowerSeries.constantCoeff (negDen W) = 1 := by
   simp [negDen, constantCoeff_thirdZ, constantCoeff_thirdW]
 
+/- English proof (translation)
+Simplify using `[addSeries, constantCoeff_thirdZ]`.
+-/
 theorem constantCoeff_addSeries : MvPowerSeries.constantCoeff (addSeries W) = 0 := by
   simp [addSeries, constantCoeff_thirdZ]
 
@@ -255,13 +374,22 @@ section Map
 
 variable {S : Type*} [CommRing S] (f : R →+* S)
 
+/- English proof (translation)
+Rewrite using `[addSlope, map_divDiff, map_formalW, addSlope]`.
+-/
 theorem map_addSlope : MvPowerSeries.map f (addSlope W) = addSlope (W.map f) := by
   rw [addSlope, map_divDiff, map_formalW, addSlope]
 
+/- English proof (translation)
+Rewrite using `[addIntercept, map_sub, map_mul, map_wAt W f (MvPowerSeries.constantCoeff_X _), MvPowerSeries.map_X, map_addSlope, addIntercept]`.
+-/
 theorem map_addIntercept : MvPowerSeries.map f (addIntercept W) = addIntercept (W.map f) := by
   rw [addIntercept, map_sub, map_mul, map_wAt W f (MvPowerSeries.constantCoeff_X _),
     MvPowerSeries.map_X, map_addSlope, addIntercept]
 
+/- English proof (translation)
+Rewrite using `[WeierstrassCurve.map_map, WeierstrassCurve.map_map]`. Use `congr 1`. Use extensionality with `a : 1`. Simplify using the standard rewrite rules.
+-/
 theorem map_C_comp : (W.map MvPowerSeries.C).map (MvPowerSeries.map (σ := Fin 2) f) =
     (W.map f).map MvPowerSeries.C := by
   rw [WeierstrassCurve.map_map, WeierstrassCurve.map_map]
@@ -269,17 +397,29 @@ theorem map_C_comp : (W.map MvPowerSeries.C).map (MvPowerSeries.map (σ := Fin 2
   ext a : 1
   simp
 
+/- English proof (translation)
+Rewrite using `[thirdZ, map_sub, map_sub, map_neg, map_mul, MvPowerSeries.map_X, MvPowerSeries.map_X, map_invOfUnit_one f (constantCoeff_secantB W), map_secantA, map_secantB, map_C_comp, map_addSlope, map_addIntercept, thirdZ]`.
+-/
 theorem map_thirdZ : MvPowerSeries.map f (thirdZ W) = thirdZ (W.map f) := by
   rw [thirdZ, map_sub, map_sub, map_neg, map_mul, MvPowerSeries.map_X, MvPowerSeries.map_X,
     map_invOfUnit_one f (constantCoeff_secantB W), map_secantA, map_secantB, map_C_comp,
     map_addSlope, map_addIntercept, thirdZ]
 
+/- English proof (translation)
+Rewrite using `[thirdW, map_add, map_mul, map_addSlope, map_thirdZ, map_addIntercept, thirdW]`.
+-/
 theorem map_thirdW : MvPowerSeries.map f (thirdW W) = thirdW (W.map f) := by
   rw [thirdW, map_add, map_mul, map_addSlope, map_thirdZ, map_addIntercept, thirdW]
 
+/- English proof (translation)
+Simplify using `[negDen, map_thirdZ, map_thirdW, MvPowerSeries.map_C]`.
+-/
 theorem map_negDen : MvPowerSeries.map f (negDen W) = negDen (W.map f) := by
   simp [negDen, map_thirdZ, map_thirdW, MvPowerSeries.map_C]
 
+/- English proof (translation)
+Rewrite using `[addSeries, map_mul, map_neg, map_invOfUnit_one f (constantCoeff_negDen W), map_thirdZ, map_negDen, addSeries]`.
+-/
 theorem map_addSeries : MvPowerSeries.map f (addSeries W) = addSeries (W.map f) := by
   rw [addSeries, map_mul, map_neg, map_invOfUnit_one f (constantCoeff_negDen W), map_thirdZ,
     map_negDen, addSeries]
@@ -290,26 +430,46 @@ section LowDegree
 
 variable {τ : Type*}
 
+/- English proof (translation)
+The claim follows from `le_trans (le_min hf hg) MvPowerSeries.min_order_le_add`.
+-/
 theorem le_order_add_of_le {n : ℕ∞} {f g : MvPowerSeries τ R} (hf : n ≤ MvPowerSeries.order f)
     (hg : n ≤ MvPowerSeries.order g) : n ≤ MvPowerSeries.order (f + g) :=
   le_trans (le_min hf hg) MvPowerSeries.min_order_le_add
 
+/- English proof (translation)
+The claim follows from `le_trans (le_trans hf le_self_add) MvPowerSeries.le_order_mul`.
+-/
 theorem le_order_mul_of_le_left {n : ℕ∞} {f : MvPowerSeries τ R} (g : MvPowerSeries τ R)
     (hf : n ≤ MvPowerSeries.order f) : n ≤ MvPowerSeries.order (f * g) :=
   le_trans (le_trans hf le_self_add) MvPowerSeries.le_order_mul
 
+/- English proof (translation)
+The claim follows from `le_trans (add_le_add hf hg) MvPowerSeries.le_order_mul`.
+-/
 theorem le_order_mul_of_le {m n : ℕ∞} {f g : MvPowerSeries τ R} (hf : m ≤ MvPowerSeries.order f)
     (hg : n ≤ MvPowerSeries.order g) : m + n ≤ MvPowerSeries.order (f * g) :=
   le_trans (add_le_add hf hg) MvPowerSeries.le_order_mul
 
+/- English proof (translation)
+Simplify using `[Finsupp.degree_eq_sum, Fin.sum_univ_two]`.
+-/
 theorem degree_fin_two (d : Fin 2 →₀ ℕ) : d.degree = d 0 + d 1 := by
   simp [Finsupp.degree_eq_sum, Fin.sum_univ_two]
 
+/- English proof (translation)
+Use `MvPowerSeries.nat_le_order fun d hd => ?_` and prove the remaining obligations. Establish `hd2 : d 0 + d 1 < 2` using `by rw [degree_fin_two] at hd; exact_mod_cast hd`. Rewrite using `[addSlope, coeff_divDiff, formalW, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]`.
+-/
 theorem two_le_order_addSlope : (2 : ℕ∞) ≤ MvPowerSeries.order (addSlope W) := by
   refine MvPowerSeries.nat_le_order fun d hd => ?_
   have hd2 : d 0 + d 1 < 2 := by rw [degree_fin_two] at hd; exact_mod_cast hd
   rw [addSlope, coeff_divDiff, formalW, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]
 
+/- English proof (translation)
+Use `MvPowerSeries.nat_le_order fun d hd => ?_` and prove the remaining obligations. Establish `hd2 : d.degree < 2` using `by exact_mod_cast hd`. Rewrite using `[wAt, coeff_subst_X]`. Use `split_ifs with h`. Establish `: d i ≤ d.degree`.
+
+Apply the tactic sequence `rw [degree_fin_two]; fin_cases i <;> simp`. Rewrite using `[formalW, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]`. Both sides reduce to the same expression.
+-/
 theorem two_le_order_wAt_X (i : Fin 2) :
     (2 : ℕ∞) ≤ MvPowerSeries.order (wAt W (MvPowerSeries.X i : MvPowerSeries (Fin 2) R)) := by
   refine MvPowerSeries.nat_le_order fun d hd => ?_
@@ -321,12 +481,18 @@ theorem two_le_order_wAt_X (i : Fin 2) :
     rw [formalW, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]
   · rfl
 
+/- English proof (translation)
+Rewrite using `[addIntercept, sub_eq_add_neg]`. Use `le_order_add_of_le (two_le_order_wAt_X W 0) ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.order_neg]`. Conclude with `le_order_mul_of_le_left _ (two_le_order_addSlope W)`.
+-/
 theorem two_le_order_addIntercept : (2 : ℕ∞) ≤ MvPowerSeries.order (addIntercept W) := by
   rw [addIntercept, sub_eq_add_neg]
   refine le_order_add_of_le (two_le_order_wAt_X W 0) ?_
   rw [MvPowerSeries.order_neg]
   exact le_order_mul_of_le_left _ (two_le_order_addSlope W)
 
+/- English proof (translation)
+Establish `e : secantA (W.map MvPowerSeries.C) (addSlope W) (addIntercept W) = addSlope W * (MvPowerSeries.C W.a₁ + MvPowerSeries.C W.a₃ * addSlope W) + addIntercept W * (MvPowerSeries.C W.a₂ + 2 * MvPowerSeries.C W.a₄ * addSlope W + 3 * MvPowerSeries.C W.a₆ * addSlope W ^ 2)`. Simplify using `only [secantA, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `le_order_add_of_le (le_order_mul_of_le_left _ (two_le_order_addSlope W)) (le_order_mul_of_le_left _ (two_le_order_addIntercept W))`.
+-/
 theorem two_le_order_secantA :
     (2 : ℕ∞) ≤ MvPowerSeries.order (secantA (W.map MvPowerSeries.C) (addSlope W) (addIntercept W)) := by
   have e : secantA (W.map MvPowerSeries.C) (addSlope W) (addIntercept W) =
@@ -340,6 +506,9 @@ theorem two_le_order_secantA :
   exact le_order_add_of_le (le_order_mul_of_le_left _ (two_le_order_addSlope W))
     (le_order_mul_of_le_left _ (two_le_order_addIntercept W))
 
+/- English proof (translation)
+Establish `e : thirdZ W - (-MvPowerSeries.X 0 - MvPowerSeries.X 1) = -(secantA (W.map MvPowerSeries.C) (addSlope W) (addIntercept W) * MvPowerSeries.invOfUnit (secantB (W.map MvPowerSeries.C) (addSlope W)) 1)`. Rewrite using `[thirdZ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, MvPowerSeries.order_neg]`. Conclude with `le_order_mul_of_le_left _ (two_le_order_secantA W)`.
+-/
 theorem two_le_order_thirdZ_add :
     (2 : ℕ∞) ≤ MvPowerSeries.order (thirdZ W - (-MvPowerSeries.X 0 - MvPowerSeries.X 1)) := by
   have e : thirdZ W - (-MvPowerSeries.X 0 - MvPowerSeries.X 1) =
@@ -349,11 +518,19 @@ theorem two_le_order_thirdZ_add :
   rw [e, MvPowerSeries.order_neg]
   exact le_order_mul_of_le_left _ (two_le_order_secantA W)
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.one_le_order_iff_constCoeff_eq_zero.2 (by simp)`.
+-/
 theorem one_le_order_X_add_X :
     (1 : ℕ∞) ≤ MvPowerSeries.order (MvPowerSeries.X 0 + MvPowerSeries.X 1 :
       MvPowerSeries (Fin 2) R) :=
   MvPowerSeries.one_le_order_iff_constCoeff_eq_zero.2 (by simp)
 
+/- English proof (translation)
+Use `set c := MvPowerSeries.invOfUnit (negDen W) 1`. Establish `e : addSeries W - (MvPowerSeries.X 0 + MvPowerSeries.X 1) = -(thirdZ W - (-MvPowerSeries.X 0 - MvPowerSeries.X 1)) * c + (MvPowerSeries.X 0 + MvPowerSeries.X 1) * (c - 1)`. Rewrite using `[addSeries]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : (1 : ℕ∞) ≤ MvPowerSeries.order (c - 1)` using `MvPowerSeries.one_le_order_iff_constCoeff_eq_zero.2 (by simp [c])`.
+
+Rewrite using `[e]`. Use `le_order_add_of_le ?_ ?_` and prove the remaining obligations. Rewrite using `[neg_mul, MvPowerSeries.order_neg]`. Conclude with `le_order_mul_of_le_left _ (two_le_order_thirdZ_add W)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem two_le_order_addSeries_sub :
     (2 : ℕ∞) ≤ MvPowerSeries.order (addSeries W - (MvPowerSeries.X 0 + MvPowerSeries.X 1)) := by
   set c := MvPowerSeries.invOfUnit (negDen W) 1
@@ -370,6 +547,11 @@ theorem two_le_order_addSeries_sub :
   · calc (2 : ℕ∞) = 1 + 1 := by norm_num
       _ ≤ _ := le_order_mul_of_le one_le_order_X_add_X hc
 
+/- English proof (translation)
+Establish `hab` using `GroundTheory.LocalField.FormalGroup.hasSubst_pair ha hb`. Use `set H := G - (MvPowerSeries.C c₀ * MvPowerSeries.X 0 + MvPowerSeries.C c₁ * MvPowerSeries.X 1)`. Establish `hGH : G = MvPowerSeries.C c₀ * MvPowerSeries.X 0 + MvPowerSeries.C c₁ * MvPowerSeries.X 1 + H` using `by simp [H]`. Establish `h2 : (2 : ℕ∞) ≤ MvPowerSeries.order (MvPowerSeries.subst ![a, b] H)`. Apply the tactic sequence `have := GroundTheory.LocalField.FormalGroup.le_order_subst_sub_subst (f := H) (g := 0) hab (fun j => by fin_cases j <;> simp [ha, hb]) (by simpa using hG)`.
+
+Rewrite `this` using `[← MvPowerSeries.subst_sub hab, sub_zero]`. Then use the resulting hypothesis. Rewrite using `[hGH, ← MvPowerSeries.coe_substAlgHom hab]`. Simplify using `only [map_add, map_mul, MvPowerSeries.coe_substAlgHom hab, MvPowerSeries.subst_X hab, MvPowerSeries.subst_C]`. Rewrite using `[MvPowerSeries.coeff_of_lt_order (lt_of_lt_of_le (by simp) h2), add_zero, MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_C_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_single_subst_pair [DecidableEq τ] {G : MvPowerSeries (Fin 2) R} {c₀ c₁ : R}
     (hG : (2 : ℕ∞) ≤ MvPowerSeries.order (G - (MvPowerSeries.C c₀ * MvPowerSeries.X 0 +
       MvPowerSeries.C c₁ * MvPowerSeries.X 1)))
@@ -395,10 +577,16 @@ theorem coeff_single_subst_pair [DecidableEq τ] {G : MvPowerSeries (Fin 2) R} {
 
 end LowDegree
 
+/- English proof (translation)
+Rewrite using `[addIntercept]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wAt_X_zero_eq : wAt W (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R) =
     addSlope W * MvPowerSeries.X 0 + addIntercept W := by
   rw [addIntercept]; ring
 
+/- English proof (translation)
+Use `X_sub_X_mul_divDiff (formalW W)` as an intermediate fact. Simplify using `only [wAt, addIntercept, addSlope]`. Take the linear combination `(-1 : MvPowerSeries (Fin 2) R) * this`.
+-/
 theorem wAt_X_one_eq : wAt W (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) R) =
     addSlope W * MvPowerSeries.X 1 + addIntercept W := by
   have := X_sub_X_mul_divDiff (formalW W)
@@ -407,18 +595,29 @@ theorem wAt_X_one_eq : wAt W (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) R) =
 
 def formalG : PowerSeries R := X ^ 2 * formalV W
 
+/- English proof (translation)
+Rewrite using `[formalW, formalG]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem formalW_eq_X_mul : formalW W = X * formalG W := by
   rw [formalW, formalG]; ring
 
 def gAt {τ : Type*} (u : MvPowerSeries τ R) : MvPowerSeries τ R :=
   PowerSeries.subst u (formalG W)
 
+/- English proof (translation)
+Establish `hs` using `PowerSeries.HasSubst.of_constantCoeff_zero hu`. Rewrite using `[wAt, gAt, formalW_eq_X_mul, ← PowerSeries.coe_substAlgHom hs, map_mul, PowerSeries.substAlgHom_X]`.
+-/
 theorem wAt_eq_mul_gAt {τ : Type*} {u : MvPowerSeries τ R}
     (hu : MvPowerSeries.constantCoeff u = 0) : wAt W u = u * gAt W u := by
   have hs := PowerSeries.HasSubst.of_constantCoeff_zero hu
   rw [wAt, gAt, formalW_eq_X_mul, ← PowerSeries.coe_substAlgHom hs, map_mul,
     PowerSeries.substAlgHom_X]
 
+/- English proof (translation)
+Establish `hs` using `PowerSeries.HasSubst.of_constantCoeff_zero hu`. Establish `h1 : IsUnit (formalV W)`. Use `MvPowerSeries.isUnit_iff_constantCoeff.2 ?_` and prove the remaining obligations. Rewrite using `[show MvPowerSeries.constantCoeff (formalV W) = 1 from constantCoeff_formalV W]`. Conclude with `isUnit_one`.
+
+Rewrite using `[← PowerSeries.coe_substAlgHom hs]`. Conclude with `h1.map _`.
+-/
 theorem isUnit_subst_formalV {τ : Type*} {u : MvPowerSeries τ R}
     (hu : MvPowerSeries.constantCoeff u = 0) : IsUnit (PowerSeries.subst u (formalV W)) := by
   have hs := PowerSeries.HasSubst.of_constantCoeff_zero hu
@@ -429,22 +628,38 @@ theorem isUnit_subst_formalV {τ : Type*} {u : MvPowerSeries τ R}
   rw [← PowerSeries.coe_substAlgHom hs]
   exact h1.map _
 
+/- English proof (translation)
+Establish `hs` using `PowerSeries.HasSubst.of_constantCoeff_zero hu`. Rewrite using `[wAt, formalW, ← PowerSeries.coe_substAlgHom hs, map_mul, map_pow, PowerSeries.substAlgHom_X]`.
+-/
 theorem wAt_eq_pow_mul {τ : Type*} {u : MvPowerSeries τ R}
     (hu : MvPowerSeries.constantCoeff u = 0) :
     wAt W u = u ^ 3 * PowerSeries.subst u (formalV W) := by
   have hs := PowerSeries.HasSubst.of_constantCoeff_zero hu
   rw [wAt, formalW, ← PowerSeries.coe_substAlgHom hs, map_mul, map_pow, PowerSeries.substAlgHom_X]
 
+/- English proof (translation)
+Rewrite using `[wAt_eq_pow_mul W hu]`. Conclude with `mul_ne_zero (pow_ne_zero _ hu0) (isUnit_subst_formalV W hu).ne_zero`.
+-/
 theorem wAt_ne_zero [IsDomain R] {τ : Type*} {u : MvPowerSeries τ R}
     (hu : MvPowerSeries.constantCoeff u = 0) (hu0 : u ≠ 0) : wAt W u ≠ 0 := by
   rw [wAt_eq_pow_mul W hu]
   exact mul_ne_zero (pow_ne_zero _ hu0) (isUnit_subst_formalV W hu).ne_zero
 
+/- English proof (translation)
+The claim follows from `(X_sub_X_mul_divDiff (formalG W)).symm`.
+-/
 theorem gAt_X_one_sub_gAt_X_zero :
     gAt W (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) R) - gAt W (MvPowerSeries.X 0) =
       (MvPowerSeries.X 1 - MvPowerSeries.X 0) * divDiff (formalG W) :=
   (X_sub_X_mul_divDiff (formalG W)).symm
 
+/- English proof (translation)
+Use `MvPowerSeries.nat_le_order fun d hd => ?_` and prove the remaining obligations. Establish `hd2 : d 0 + d 1 < 2` using `by rw [degree_fin_two] at hd; exact_mod_cast hd`. Apply the tactic sequence `obtain ⟨p, q, rfl⟩ : ∃ p q : ℕ, d = Finsupp.single 0 p + Finsupp.single 1 q := ⟨d 0, d 1, by ext i; fin_cases i <;> simp⟩`. Establish `h01 : (Finsupp.single (0 : Fin 2) 1 : Fin 2 →₀ ℕ) ≠ Finsupp.single 1 1`. Introduce `h`.
+
+Use `congrArg (fun d => d 0) h` as an intermediate fact. Simplify using `at this`. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finsupp.single_eq_same, ne_eq, zero_ne_one, not_false_eq_true, Finsupp.single_eq_of_ne, add_zero, one_ne_zero, zero_add] at hd2`. Establish `hp : p < 2` using `by omega`. Establish `hq : q < 2` using `by omega`.
+
+Apply the tactic sequence `interval_cases p <;> interval_cases q <;>`. Simplify using `[coeff_divDiff, constantCoeff_divDiff, formalG, PowerSeries.coeff_X_pow_mul', MvPowerSeries.coeff_X, constantCoeff_formalV, Ne.symm h01]`.
+-/
 theorem two_le_order_divDiff_formalG :
     (2 : ℕ∞) ≤ MvPowerSeries.order (divDiff (formalG W) -
       (MvPowerSeries.C 1 * MvPowerSeries.X 0 + MvPowerSeries.C 1 * MvPowerSeries.X 1)) := by

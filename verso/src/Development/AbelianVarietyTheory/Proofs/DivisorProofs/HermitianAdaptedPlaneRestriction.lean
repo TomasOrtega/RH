@@ -20,6 +20,9 @@ def torusMat (c : R →+* R) (J : Matrix (Fin n) (Fin n) R) (X Y : Fin n → R) 
 section
 variable (c : R →+* R) (J : Matrix (Fin n) (Fin n) R) (X Y : Fin n → R)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, vecMul, dotProduct, map_sum, map_mul, hc]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hJ k i]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_mulVec (hJ : ∀ i j, c (J j i) = J i j) (V : Fin n → R) (hc : ∀ r, c (c r) = r) :
     (fun i => c ((J *ᵥ fun k => c (V k)) i)) = V ᵥ* J := by
   funext i
@@ -27,9 +30,15 @@ theorem conj_mulVec (hJ : ∀ i j, c (J j i) = J i j) (V : Fin n → R) (hc : �
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [hJ k i]; ring
 
+/- English proof (translation)
+Simplify using `[dotProduct, map_sum, map_mul]`.
+-/
 theorem conj_dot (a b : Fin n → R) : c (a ⬝ᵥ b) = (fun i => c (a i)) ⬝ᵥ (fun i => c (b i)) := by
   simp [dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[mulVec, dotProduct, vecMulVec, Finset.mul_sum, mul_comm, mul_left_comm]`.
+-/
 theorem vmv_mulVec (u v w : Fin n → R) : vecMulVec u v *ᵥ w = (v ⬝ᵥ w) • u := by
   ext i
   simp [mulVec, dotProduct, vecMulVec, Finset.mul_sum, mul_comm, mul_left_comm]
@@ -43,17 +52,26 @@ variable {c : R →+* R} {J : Matrix (Fin n) (Fin n) R} {X Y : Fin n → R}
   (hXY : X ⬝ᵥ J *ᵥ (fun i => c (Y i)) = 1)
 include hc hJ hXY
 
+/- English proof (translation)
+Rewrite using `[dotProduct_mulVec]`. Rewrite using `[← conj_mulVec c J hJ Y hc, ← conj_dot, dotProduct_comm (J *ᵥ _) X, hXY, map_one]`.
+-/
 theorem dot_yx : Y ⬝ᵥ J *ᵥ (fun i => c (X i)) = 1 := by
   rw [dotProduct_mulVec]
   rw [← conj_mulVec c J hJ Y hc, ← conj_dot, dotProduct_comm (J *ᵥ _) X, hXY, map_one]
 
 omit hc hJ in
+/- English proof (translation)
+Simplify using `only [torusMat, add_mulVec, one_mulVec, smul_mulVec, vmv_mulVec]`. Rewrite using `[dotProduct_comm (J *ᵥ _) X, dotProduct_comm (J *ᵥ _) X, hXY, hXX]`. Use `module`.
+-/
 theorem torus_mulVec_x (t : Rˣ) (hXX : X ⬝ᵥ J *ᵥ (fun i => c (X i)) = 0) :
     torusMat c J X Y t *ᵥ X = (t : R) • X := by
   simp only [torusMat, add_mulVec, one_mulVec, smul_mulVec, vmv_mulVec]
   rw [dotProduct_comm (J *ᵥ _) X, dotProduct_comm (J *ᵥ _) X, hXY, hXX]
   module
 
+/- English proof (translation)
+Establish `hyx` using `dot_yx hc hJ hXY`. Simplify using `only [torusMat, add_mulVec, one_mulVec, smul_mulVec, vmv_mulVec]`. Rewrite using `[dotProduct_comm (J *ᵥ _) Y, dotProduct_comm (J *ᵥ _) Y, hyx, hYY]`. Use `module`.
+-/
 theorem torus_mulVec_y (t : Rˣ) (hYY : Y ⬝ᵥ J *ᵥ (fun i => c (Y i)) = 0) :
     torusMat c J X Y t *ᵥ Y = c (↑t⁻¹ : R) • Y := by
   have hyx := dot_yx hc hJ hXY
@@ -62,11 +80,19 @@ theorem torus_mulVec_y (t : Rˣ) (hYY : Y ⬝ᵥ J *ᵥ (fun i => c (Y i)) = 0) 
   module
 
 omit hc hJ hXY in
+/- English proof (translation)
+Establish `hz : ∀ v : Fin n → R, vecMulVec v (0 : Fin m → R) = 0` using `fun v => by ext; simp [vecMulVec]`. Simplify using `only [torusMat, Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul, vecMulVec_mul, hu, hw, hz, smul_zero, add_zero]`.
+-/
 theorem torus_mul_of (t : Rˣ) (A : Matrix (Fin n) (Fin m) R) (hu : (J *ᵥ fun i => c (Y i)) ᵥ* A = 0)
     (hw : (J *ᵥ fun i => c (X i)) ᵥ* A = 0) : torusMat c J X Y t * A = A := by
   have hz : ∀ v : Fin n → R, vecMulVec v (0 : Fin m → R) = 0 := fun v => by ext; simp [vecMulVec]
   simp only [torusMat, Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul, vecMulVec_mul, hu, hw, hz, smul_zero, add_zero]
 
+/- English proof (translation)
+Establish `hyx` using `dot_yx hc hJ hXY`. Establish `ht : (t : R) * (↑t⁻¹ : R) = 1` using `Units.mul_inv t`. Establish `hct : c (t : R) * c (↑t⁻¹ : R) = 1` using `by rw [← map_mul, ht, map_one]`. Simplify using `only [torusMat, inv_inv, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, vecMulVec_mul_vecMulVec]`. Rewrite using `[dotProduct_comm (J *ᵥ fun i => c (Y i)) X, dotProduct_comm (J *ᵥ fun i => c (Y i)) Y, dotProduct_comm (J *ᵥ fun i => c (X i)) X, dotProduct_comm (J *ᵥ fun i => c (X i)) Y, hXY, hYY, hXX, hyx]`.
+
+Simplify using `only [vecMulVec_smul, vecMulVec_neg, zero_smul, vecMulVec_zero, smul_zero, add_zero, zero_add, one_smul, neg_smul, smul_neg, smul_smul]`. Apply the tactic sequence `match_scalars <;> first | linear_combination ht | linear_combination hct | linear_combination -hct | ring1`.
+-/
 theorem torus_mul_inv (t : Rˣ) (hXX : X ⬝ᵥ J *ᵥ (fun i => c (X i)) = 0)
     (hYY : Y ⬝ᵥ J *ᵥ (fun i => c (Y i)) = 0) : torusMat c J X Y t * torusMat c J X Y t⁻¹ = 1 := by
   have hyx := dot_yx hc hJ hXY
@@ -80,6 +106,17 @@ theorem torus_mul_inv (t : Rˣ) (hXX : X ⬝ᵥ J *ᵥ (fun i => c (X i)) = 0)
     smul_smul]
   match_scalars <;> first | linear_combination ht | linear_combination hct | linear_combination -hct | ring1
 
+/- English proof (translation)
+Establish `hyx` using `dot_yx hc hJ hXY`. Establish `ht : (t : R) * (↑t⁻¹ : R) = 1` using `Units.mul_inv t`. Establish `hct : c (t : R) * c (↑t⁻¹ : R) = 1` using `by rw [← map_mul, ht, map_one]`. Establish `hu` using `conj_mulVec c J hJ Y hc`. Establish `hw` using `conj_mulVec c J hJ X hc`.
+
+Establish `hmap : (torusMat c J X Y t).map c = 1 + c ((t : R) - 1) • vecMulVec (fun i => c (X i)) (Y ᵥ* J) + c (c (↑t⁻¹ : R) - 1) • vecMulVec (fun i => c (Y i)) (X ᵥ* J)`. Rewrite using `[← hu, ← hw]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [torusMat, Matrix.map_apply, vecMulVec_apply, one_apply, h]`. Establish `htr : (torusMat c J X Y t)ᵀ = 1 + ((t : R) - 1) • vecMulVec (J *ᵥ fun i => c (Y i)) X + (c (↑t⁻¹ : R) - 1) • vecMulVec (J *ᵥ fun i => c (X i)) Y`.
+
+Simplify using `[torusMat, transpose_add, transpose_smul, transpose_vecMulVec]`. Establish `d1 : (X ᵥ* J) ⬝ᵥ (fun i => c (X i)) = 0` using `by rw [← dotProduct_mulVec]; exact hXX`. Establish `d2 : (X ᵥ* J) ⬝ᵥ (fun i => c (Y i)) = 1` using `by rw [← dotProduct_mulVec]; exact hXY`. Establish `d3 : (Y ᵥ* J) ⬝ᵥ (fun i => c (X i)) = 1` using `by rw [← dotProduct_mulVec]; exact hyx`. Establish `d4 : (Y ᵥ* J) ⬝ᵥ (fun i => c (Y i)) = 0` using `by rw [← dotProduct_mulVec]; exact hYY`.
+
+Rewrite using `[hmap, htr]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul]`. Simplify using `only [vecMulVec_mul, mul_vecMulVec, vmv_mulVec, vecMul_vecMulVec, d1, d2, d3, d4, smul_vecMulVec, vecMulVec_smul, dotProduct_smul, smul_dotProduct]`. Simplify using `only [vecMulVec_smul, smul_vecMulVec, zero_smul, vecMulVec_zero, smul_zero, add_zero, zero_add, one_smul, smul_smul, map_sub, map_one, hc]`. Apply the tactic sequence `match_scalars <;> first | linear_combination ht | linear_combination -ht | linear_combination hct |`.
+
+Take the linear combination `-hct | ring1`.
+-/
 theorem torus_unitary (t : Rˣ) (hXX : X ⬝ᵥ J *ᵥ (fun i => c (X i)) = 0)
     (hYY : Y ⬝ᵥ J *ᵥ (fun i => c (Y i)) = 0) :
     (torusMat c J X Y t)ᵀ * J * (torusMat c J X Y t).map c = J := by
@@ -119,24 +156,39 @@ open Matrix
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ, h.2.2.2 τ, star_star]`.
+-/
 theorem sigma_invol {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [cA, h]`. Consider the case `add a b ha hb => simp [map_add, ha, hb]`.
+-/
 theorem cA_invol {σ : E →ₐ[F] E} (h : ∀ x, σ (σ x) = x) (a : AE F E) : cA σ (cA σ a) = a := by
   induction a using TensorProduct.induction_on with
   | zero => simp
   | tmul r e => simp [cA, h]
   | add a b ha hb => simp [map_add, ha, hb]
 
+/- English proof (translation)
+Simplify using `[cA, inclR]`.
+-/
 theorem cA_incl (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR]
 
+/- English proof (translation)
+Simplify using `[form, incV, incM, cA_incl, dotProduct, mulVec, map_sum, map_mul]`.
+-/
 theorem form_incl (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     incV F x ⬝ᵥ incM F J *ᵥ (fun i => cA σ (incV F y i)) = inclR (F := F) (AF F) (form σ J x y) := by
   simp [form, incV, incM, cA_incl, dotProduct, mulVec, map_sum, map_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[← form_incl]`. Simplify using `only [vecMul, dotProduct, incV, incM, Matrix.map_apply, mulVec_single_one]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [mul_comm]; rfl`.
+-/
 theorem vecMul_incM (σ : E →ₐ[F] E) {n k : ℕ} (J : Matrix (Fin n) (Fin n) E) (A : Matrix (Fin n) (Fin k) E) (y : Fin n → E) :
     (incM F J *ᵥ fun i => cA σ (incV F y i)) ᵥ* incM F A =
       fun j => inclR (F := F) (AF F) (form σ J (A *ᵥ Pi.single j 1) y) := by
@@ -147,6 +199,21 @@ theorem vecMul_incM (σ : E →ₐ[F] E) {n k : ℕ} (J : Matrix (Fin n) (Fin n)
 
 end GlobalTheory.LeviTorusH
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hA _ t`. Establish `hσ` using `GlobalTheory.LeviTorusH.sigma_invol hP.base.cm`. Establish `hc : ∀ a : AE F E, (cA σ).toRingHom ((cA σ).toRingHom a) = a` using `GlobalTheory.LeviTorusH.cA_invol hσ`. Establish `hJ : ∀ i j, (cA σ).toRingHom (incM F X.J j i) = incM F X.J i j`. Introduce `i j`.
+
+Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, incM, Matrix.map_apply, GlobalTheory.LeviTorusH.cA_incl, hP.herm.herm i j]`. Establish `hXX : incV F H.x ⬝ᵥ incM F X.J *ᵥ (fun i => (cA σ).toRingHom (incV F H.x i)) = 0`. Rewrite using `[show (fun i => (cA σ).toRingHom (incV F H.x i)) = fun i => cA σ (incV F H.x i) from rfl, GlobalTheory.LeviTorusH.form_incl, hA.xx, map_zero]`. Establish `hYY : incV F H.y ⬝ᵥ incM F X.J *ᵥ (fun i => (cA σ).toRingHom (incV F H.y i)) = 0`. Rewrite using `[show (fun i => (cA σ).toRingHom (incV F H.y i)) = fun i => cA σ (incV F H.y i) from rfl, GlobalTheory.LeviTorusH.form_incl, hA.yy, map_zero]`.
+
+Establish `hXY : incV F H.x ⬝ᵥ incM F X.J *ᵥ (fun i => (cA σ).toRingHom (incV F H.y i)) = 1`. Rewrite using `[show (fun i => (cA σ).toRingHom (incV F H.y i)) = fun i => cA σ (incV F H.y i) from rfl, GlobalTheory.LeviTorusH.form_incl, hA.xy, map_one]`. Establish `h01` using `GlobalTheory.LeviTorusH.torus_mul_inv hc hJ hXY t hXX hYY`. Establish `h10 : GlobalTheory.LeviTorusH.torusMat (cA σ).toRingHom (incM F X.J) (incV F H.x) (incV F H.y) t⁻¹ * GlobalTheory.LeviTorusH.torusMat (cA σ).toRingHom (incM F X.J) (incV F H.x) (incV F H.y) t = 1` using `by simpa only [inv_inv] using GlobalTheory.LeviTorusH.torus_mul_inv hc hJ hXY t⁻¹ hXX hYY`. Use `⟨⟨⟨GlobalTheory.LeviTorusH.torusMat (cA σ).toRingHom (incM F X.J) (incV F H.x) (incV F H.y) t, _, h01, h10⟩, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.LeviTorusH.torus_unitary hc hJ hXY t hXX hYY`. Conclude with `GlobalTheory.LeviTorusH.torus_mulVec_x hXY t hXX`. Conclude with `GlobalTheory.LeviTorusH.torus_mulVec_y hc hJ hXY t hYY`. Establish `hu : (incM F X.J *ᵥ fun i => (cA σ).toRingHom (incV F H.y i)) ᵥ* incM F H.ι = 0`. Rewrite using `[show (fun i => (cA σ).toRingHom (incV F H.y i)) = fun i => cA σ (incV F H.y i) from rfl, GlobalTheory.LeviTorusH.vecMul_incM]`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[(hA.orth _).2, map_zero]`. Both sides reduce to the same expression. Establish `hw : (incM F X.J *ᵥ fun i => (cA σ).toRingHom (incV F H.x i)) ᵥ* incM F H.ι = 0`. Rewrite using `[show (fun i => (cA σ).toRingHom (incV F H.x i)) = fun i => cA σ (incV F H.x i) from rfl, GlobalTheory.LeviTorusH.vecMul_incM]`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[(hA.orth _).1, map_zero]`. Both sides reduce to the same expression. Use `show GlobalTheory.LeviTorusH.torusMat (cA σ).toRingHom (incM F X.J) (incV F H.x) (incV F H.y) t * incM F H.ι = incM F H.ι * 1`. Rewrite using `[Matrix.mul_one]`.
+
+Conclude with `GlobalTheory.LeviTorusH.torus_mul_of t _ hu hw`.
+-/
 theorem GlobalTheory.LeviTorusH.exists_levi : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (om₁ : Rep σ X₁ W) (r₁ s₁ : ℕ),

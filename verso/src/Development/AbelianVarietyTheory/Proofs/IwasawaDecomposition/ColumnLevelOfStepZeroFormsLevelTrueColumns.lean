@@ -18,17 +18,31 @@ open scoped TensorProduct
 section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[reL, reV]`.
+-/
 theorem reL_rfl {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) : reL rfl L = L := by
   ext x; simp [reL, reV]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `x y`. Both sides reduce to the same expression.
+-/
 theorem reGL_rfl' {n : ℕ} (R : Type) [CommRing R] (g : GL (Fin n) R) : reGL rfl R g = g := by
   apply Units.ext; ext x y; rfl
 
+/- English proof (translation)
+Use `ext1 g`. Conclude with `reGL_rfl' R g`.
+-/
 theorem reGL_rfl_hom {n : ℕ} (R : Type) [CommRing R] :
     (reGL (rfl : n = n) R).toMonoidHom = MonoidHom.id _ := by
   ext1 g
   exact reGL_rfl' R g
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl : J' = J` from `by ext x y; exact hJ x y`. Simplify using `only [reL_rfl] at y_lat`. Use `⟨S', L', y', st', y_bij, y_lat, st_inj, st_range, ⟨(reL_rfl _).symm, fun v => ?_, ?_, fun c => (reGL_rfl' _ _).symm, fun c s => (reGL_rfl' _ _).symm⟩, fun i v hv => (reGL_rfl' _ _).symm⟩` and prove the remaining obligations. Rewrite using `[reGL_rfl_hom, Subgroup.map_id]`.
+
+Rewrite using `[reGL_rfl_hom, Subgroup.map_id]`.
+-/
 theorem exists_reindex {a b : ℕ} (h : a = b) {σ : E →ₐ[F] E} (J : Matrix (Fin a) (Fin a) E)
     {J' : Matrix (Fin b) (Fin b) E} (hJ : ∀ x y, J' x y = J (Fin.cast h.symm x) (Fin.cast h.symm y))
     {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))} {gp : Fin 2 → ℕ} {G : GLoc F E σ gp} {a' t nb skip fc : ℕ} {zl : Bool}
@@ -71,12 +85,20 @@ end Gen
 section Loc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨a, b, hab⟩ : IsCoprime (p : 𝓞 F) (q : 𝓞 F)` from `Nat.Coprime.cast h`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hp) (v.asIdeal.mul_mem_left _ hq)))`.
+-/
 theorem not_both_mem {p q : ℕ} (h : Nat.Coprime p q) (v : HeightOneSpectrum (𝓞 F)) (hp : (p : 𝓞 F) ∈ v.asIdeal)
     (hq : (q : 𝓞 F) ∈ v.asIdeal) : False := by
   obtain ⟨a, b, hab⟩ : IsCoprime (p : 𝓞 F) (q : 𝓞 F) := Nat.Coprime.cast h
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
     (hab ▸ v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hp) (v.asIdeal.mul_mem_left _ hq)))
 
+/- English proof (translation)
+Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `: (Ideal.span {(p : ℤ)}).IsMaximal` using `(Ideal.span_singleton_prime hpZ.ne_zero).2 hpZ |>.isMaximal (by simpa using hpZ.ne_zero)`. Take `⟨Q, hQ, hov⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 F) (Ideal.span {(p : ℤ)})`. Establish `hmem : (p : 𝓞 F) ∈ Q`. Establish `: (p : ℤ) ∈ Q.under ℤ` using `by rw [← hov.over]; exact Ideal.mem_span_singleton_self _`.
+
+Simplify using `using this`. Use `⟨⟨Q, hQ.isPrime, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `: (p : 𝓞 F) = 0` using `by simpa using hmem`. Conclude with `hp.ne_zero (by exact_mod_cast this)`.
+-/
 theorem exists_place (p : ℕ) (hp : p.Prime) : ∃ v : HeightOneSpectrum (𝓞 F), (p : 𝓞 F) ∈ v.asIdeal := by
   have hpZ : Prime (p : ℤ) := Nat.prime_iff_prime_int.1 hp
   have : (Ideal.span {(p : ℤ)}).IsMaximal :=
@@ -90,6 +112,11 @@ theorem exists_place (p : ℕ) (hp : p.Prime) : ∃ v : HeightOneSpectrum (𝓞 
   have : (p : 𝓞 F) = 0 := by simpa using hmem
   exact hp.ne_zero (by exact_mod_cast this)
 
+/- English proof (translation)
+Establish `hb : ∀ x : Fin n, blkOf a t x = x` using `fun x => if_pos (lt_of_lt_of_le x.2 ha)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, -, -⟩ i j`. Conclude with `⟨fun h => h1 i j (by rw [hb, hb]; exact h), h2 i (lt_of_lt_of_le i.2 ha)⟩`. Introduce `h`.
+
+Use `⟨fun x y hxy => (h x y).1 (by rw [hb, hb] at hxy; exact hxy), fun x _ => (h x x).2, fun x y hy => absurd y.2 (by omega), fun hz => absurd hz (by simp)⟩` and prove the remaining obligations.
+-/
 theorem inJ_iff {k : Type} [Field k] {n a t fc : ℕ} (ha : n ≤ a) (hfc : n ≤ fc) (M : Matrix (Fin n) (Fin n) k) :
     InJ a t fc false M ↔ ∀ i j : Fin n, (j < i → M i j = 0) ∧ M i i = 1 := by
   have hb : ∀ x : Fin n, blkOf a t x = x := fun x => if_pos (lt_of_lt_of_le x.2 ha)
@@ -105,6 +132,15 @@ variable {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : �
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hst : Formalism.L2.G.SplitStabL σ J v (G.sp i v hv) S.Lb (L.fr i v hv)` using `Formalism.L2.G.splitStabL_of σ J v (G.sp i v hv) S.Lb (L.fr i v hv) (G.sp_sig i v hv) (Formalism.L2.G.split_integral_completion F E v _ (G.sp_alg i v hv)) (Formalism.L2.G.self_dual_lattice_at F E n σ J v S.Lb T S.Lb_fin (fun x hx y hy => S.Lb_int y hy x hx) (fun y hy => S.Lb_dual …`. Establish `h1` using `hst x hx`. Rewrite `h1` using `[Formalism.L2.G.toFr_apply]`. Establish `key : ∀ g : GL (Fin n) (v.adicCompletionIntegers F), bc (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F)) g = (L.fr i v hv)⁻¹ * bc ((RingHom.fst _ _).comp (G.sp i v hv).toRingHom) x * L.fr i v hv → (InJ a t fc false (redM F v (G.mat i v hv (L.fr i v hv) x)) ↔ redGL ( …`. Introduce `g hg`.
+
+Establish `e : G.mat i v hv (L.fr i v hv) x = (bc (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F)) g : GL (Fin n) (v.adicCompletion F)).1`. Rewrite using `[hg]`. Both sides reduce to the same expression. Rewrite using `[e, Formalism.L2.G.redM_bc]`. Conclude with `inJ_iff (k := Formalism.L2.Forms.kv F v) ha hfc _`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hU`. Establish `hlev` using `S.Uloc_lev v hU`. Take `⟨g, hg⟩` from `h1.1 hlev`. Conclude with `Subgroup.mem_map.2 ⟨g, Subgroup.subset_closure ((key g hg).1 ((L.mem i v hv x hlev).1 hU)), hg⟩`.
+
+Introduce `hI`. Take `⟨g, hg, e⟩` from `Subgroup.mem_map.1 hI`. Conclude with `(L.mem i v hv x (h1.2 ⟨g, e⟩)).2 ((key g e).2 (Formalism.L2.G.Triv.closure_upperUni _ _ (Subgroup.mem_comap.1 hg)))`.
+-/
 theorem mem_Uloc_iff_iwU (S : Formalism.L2.Forms.StepLevel F E σ J T f bad) {G : GLoc F E σ gp} {a t nb skip fc : ℕ}
     (L : GLev S G a t nb skip fc false) (ha : n ≤ a) (hfc : n ≤ fc) (i : Fin 2) (v : HeightOneSpectrum (𝓞 F))
     (hv : (gp i : 𝓞 F) ∈ v.asIdeal) (hT : (T : 𝓞 F) ∉ v.asIdeal) (x : GL (Fin n) (E ⊗[F] v.adicCompletion F))
@@ -140,6 +176,15 @@ theorem mem_Uloc_iff_iwU (S : Formalism.L2.Forms.StepLevel F E σ J T f bad) {G 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨k, hk, e⟩` from `Subgroup.mem_map.1 hγ`. Establish `hk'` using `(S.U_eq k).1 hk`. Establish `hst` using `((GlobalTheory.LatticeStabLocal.mem_levelAfL_iff F E σ n J S.Lb S.Lb_fin k).2 ⟨hk'.1, fun v => S.Uloc_lev v (hk'.2 v)⟩).2`. Establish `hM : ∀ z : Fin n → E, z ∈ M ↔ (y⁻¹).1 *ᵥ (fun i => inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (z i)) ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) S.Lb := by`. Introduce `z`.
+
+Rewrite using `[← hy]`. Establish `h1 : z ∈ Formalism.UG.CS.globLat (F` using `F) 1 M ↔ ((1 : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))⁻¹).1 *ᵥ (fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (z i)) ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) M := Iff.rfl`. Rewrite `h1` using `[Formalism.UG.P.global_lattice_one_holds F E (Fin n) M hfin hspan, inv_one, Units.val_one, one_mulVec]`. Then use the resulting hypothesis. Establish `e2 : (fun i => inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) ((γ.1 *ᵥ x) i)) = (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ).1 *ᵥ (fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x i)) := by`. Use function extensionality and compare the values at `b`.
+
+Conclude with `RingHom.map_mulVec (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ.1 x b`. Establish `e3 : y⁻¹ * bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ = k * y⁻¹ := by`. Rewrite using `[← e]`. Use `show y⁻¹ * (y * k * y⁻¹) = _`. Use `group`.
+
+Rewrite using `[hM, hM, e2, mulVec_mulVec, ← Units.val_mul, e3, Units.val_mul, ← mulVec_mulVec]`. Conclude with `hst _`.
+-/
 theorem stab_class_lattice (S : Formalism.L2.Forms.StepLevel F E σ J T f bad) (M : Submodule (𝓞 E) (Fin n → E))
     (hfin : Module.Finite (𝓞 E) M) (hspan : Submodule.span E (M : Set (Fin n → E)) = ⊤)
     (y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
@@ -179,16 +224,25 @@ theorem stab_class_lattice (S : Formalism.L2.Forms.StepLevel F E σ J T f bad) (
 
 end Loc
 
+/- English proof (translation)
+Unfold `clsCrd reL Spaces.crdLat0`. Rewrite using `[← Submodule.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem clsCrd_zero (D : D7) (u : D.what₂.Word) (c : (D.mem u).C.cls 0) :
     clsCrd D u 0 (Nat.zero_le _) c = reL (rank_eq_first_level D.R) (D.sp.crdLat0 (D.clsLat u 0 c)) := by
   unfold clsCrd reL Spaces.crdLat0
   rw [← Submodule.map_comp]
   rfl
 
+/- English proof (translation)
+The claim follows from `Module.Finite.iff_fg.2 ((D.clsLat_lat u 0 c).fg.map _)`.
+-/
 theorem crdLat0_fin (D : D7) (u : D.what₂.Word) (c : (D.mem u).C.cls 0) :
     Module.Finite (𝓞 D.host.E) (D.sp.crdLat0 (D.clsLat u 0 c)) :=
   Module.Finite.iff_fg.2 ((D.clsLat_lat u 0 c).fg.map _)
 
+/- English proof (translation)
+Establish `: (D.sp.crdLat0 (D.clsLat u 0 c) : Set (Fin D.R.k → D.host.E)) = (D.sp.crd0 : (D.sp.X 0).V →ₗ[D.host.E] (Fin D.R.k → D.host.E)) '' (D.clsLat u 0 c : Set (D.sp.X 0).V)` using `rfl`. Rewrite using `[this, Submodule.span_image, (D.clsLat_lat u 0 c).span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `D.sp.crd0.surjective`.
+-/
 theorem crdLat0_span (D : D7) (u : D.what₂.Word) (c : (D.mem u).C.cls 0) :
     Submodule.span D.host.E (D.sp.crdLat0 (D.clsLat u 0 c) : Set (Fin D.R.k → D.host.E)) = ⊤ := by
   have : (D.sp.crdLat0 (D.clsLat u 0 c) : Set (Fin D.R.k → D.host.E)) =
@@ -198,6 +252,9 @@ theorem crdLat0_span (D : D7) (u : D.what₂.Word) (c : (D.mem u).C.cls 0) :
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨S, L, y, st, hbij, hlat, hinj, hrange, hcar, hfr⟩` from `exists_reindex (rank_eq_first_level D.R) (σ := sigD D) D.sp.gram0 (J' := gramN D 0 (Nat.zero_le _)) (fun _ _ => rfl) (F.cls 0 (Nat.zero_le _) (Or.inl rfl)).lev F.glev0 (fun c => D.sp.crdLat0 (D.clsLat u 0 c)) (F.cls 0 (Nat.zero_le _) (Or.inl rfl)).y (F.cls 0 (Nat.zero_le _) (Or.i …`. Take `⟨w, hw⟩` from `exists_place (F := D.host.F) (D.host.g 0) (D.host.g_prime 0)`. Use `⟨{ Lb := S.Lb Lb_fin := S.Lb_fin Lb_span := S.Lb_span Lb_int := S.Lb_int Lb_dual := S.Lb_dual Lb_index := S.Lb_index Uloc := S.Uloc Uloc_le := S.Uloc_le Uloc_lev := S.Uloc_lev Uloc_hyp := fun v h0 h1 hT => S.Uloc_hyp v (fun h => Or.elim h h0 h1) hT splitG := F.gl.sp splitG_sig := …` and prove the remaining obligations.
+-/
 theorem exists_colLevel (D : D7) (u : D.what₂.Word) {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
     (F : FormsTiedSym D u Ch chOf) :
     ∃ L : ColLevel D.R D.host.F D.host.E D.sp D.host.g (D.mem u).C (D.mem u).A (D.clsLat u),
@@ -257,6 +314,9 @@ theorem exists_colLevel (D : D7) (u : D.what₂.Word) {Ch : ℕ → Type} {chOf 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `I _ _ l Z u _ _ F _` and use `exists_colLevel (I.rec7 l Z) u F`.
+-/
 theorem colLevel_of_forms : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i} (F : FormsTiedSym (I.rec7 l Z) u Ch chOf), I.StdF l Z u F →
   ∃ L : ColLevel (I.rec7 l Z).R (I.rec7 l Z).host.F (I.rec7 l Z).host.E (I.rec7 l Z).sp (I.rec7 l Z).host.g ((I.rec7 l Z).mem u).C ((I.rec7 l Z).mem u).A ((I.rec7 l Z).clsLat u),
     SameCar (rank_eq_first_level (I.rec7 l Z).R) L.Lb (F.cls 0 (Nat.zero_le _) (Or.inl rfl)).lev.Lb

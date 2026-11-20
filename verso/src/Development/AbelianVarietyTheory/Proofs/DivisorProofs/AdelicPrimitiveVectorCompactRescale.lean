@@ -9,16 +9,30 @@ open scoped TensorProduct
 
 namespace GlobalTheory.EtC.GeomZero
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (y : Sec F U) :
     Sec.res (k ≫ g) y = Sec.res k (Sec.res g y) := by
   simp [Sec.res]
 
+/- English proof (translation)
+The claim follows from `map_nsmul ((F.obj.map g.op).hom) n t`.
+-/
 theorem res_nsmul {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (n : ℕ) (t : Sec F U) :
     Sec.res g (n • t) = n • Sec.res g t := map_nsmul ((F.obj.map g.op).hom) n t
 
+/- English proof (translation)
+The claim follows from `map_zero ((F.obj.map g.op).hom)`.
+-/
 theorem res_zero {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) :
     Sec.res g (0 : Sec F U) = 0 := map_zero ((F.obj.map g.op).hom)
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Establish `: ((q * k : ℕ) : ULift.{1} (ZMod q)) = 0`. Apply `ULift.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `zero_smul _ t`.
+-/
 theorem q_dvd_nsmul {q : ℕ} {i : ℤ} {U : Scheme.{0}} (t : Sec (tw q i) U) (k : ℕ) : (q * k) • t = 0 := by
   rw [← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]
   have : ((q * k : ℕ) : ULift.{1} (ZMod q)) = 0 := by
@@ -27,6 +41,21 @@ theorem q_dvd_nsmul {q : ℕ} {i : ℤ} {U : Scheme.{0}} (t : Sec (tw q i) U) (k
   rw [this]
   exact zero_smul _ t
 
+/- English proof (translation)
+Introduce `q _ R _ _ j a ha`. Take `⟨-, e, he, -⟩` from `GlobalTheory.T.etaleCohomology_negative_vanishing_degree_zero (ZMod q) (tw q j)`. Take `⟨s, rfl⟩` from `(e (Spec (CommRingCat.of R))).surjective a`. Establish `hgeo : ∀ (K : Type) [Field K] [IsAlgClosed K] (φ : Spec (CommRingCat.of K) ⟶ Spec (CommRingCat.of R)), Sec.res φ s = 0`. Introduce `K _ _ φ`.
+
+Establish `h` using `ha K (Spec.preimage φ).hom`. Establish `hφ : Spec.map (CommRingCat.ofHom (Spec.preimage φ).hom) = φ`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Rewrite `h` using `[spMap, hφ, he]`. Conclude with `(map_eq_zero_iff _ (e _).injective).1 h`.
+
+Establish `hs : s = 0`. Use `(sec_ext_glue (ZMod q) (tw q j) (Spec (CommRingCat.of R))).1 s 0 ?_` and prove the remaining obligations. Use `(loc_iff_etale_affine_points (Spec (CommRingCat.of R)) (fun _ g => Sec.res g s = Sec.res g 0) (fun V W g k h => by rw [res_comp, res_comp, h])).2 ?_` and prove the remaining obligations. Introduce `x`. Establish `stab : ∀ (V W : Scheme.{0}) (g : V ⟶ Spec (CommRingCat.of R)) (k : W ⟶ V), (Sec.res g s = 0 ∨ ∃ (ζ : Prim q Γ(V, ⊤)) (c : ℕ), Sec.res g s = c • twGen j ζ) → (Sec.res (k ≫ g) s = 0 ∨ ∃ (ζ : Prim q Γ(W, ⊤)) (c : ℕ), Sec.res (k ≫ g) s = c • twGen j ζ)`.
+
+Introduce and unpack `V W g k (h | ⟨ζ, c, h⟩)`. Use `left`. Rewrite using `[res_comp, h, res_zero]`. Use the proof step `right; exact ⟨ζ.map k.appTop.hom, c, by rw [res_comp, h, res_nsmul, (GlobalTheory.T.tateTwist_sections_locally_generated q j).2.2.2.1]⟩`. Take `⟨V, g, hV, hg, hx, hP⟩` from `(loc_iff_etale_affine_points (Spec (CommRingCat.of R)) (fun V g => Sec.res g s = 0 ∨ ∃ (ζ : Prim q Γ(V, ⊤)) (c : ℕ), Sec.res g s = c • twGen j ζ) stab).1 ((GlobalTheory.T.tateTwist_sections_locally_generated q j).1 _ s) x`.
+
+Use `⟨V, g, hV, hg, hx, ?_⟩` and prove the remaining obligations. Use `show Sec.res g s = Sec.res g 0`. Rewrite using `[res_zero]`. Break down `hP with h | ⟨ζ, c, h⟩` into its components or cases. Conclude with `h`.
+
+Take `⟨v, -⟩` from `hx`. Set `ψ : Spec (CommRingCat.of (AlgebraicClosure (V.residueField v))) ⟶ V` to `Spec.map (CommRingCat.ofHom (algebraMap (V.residueField v) (AlgebraicClosure (V.residueField v)))) ≫ V.fromSpecResidueField v`. Establish `h0` using `hgeo (AlgebraicClosure (V.residueField v)) (ψ ≫ g)`. Rewrite `h0` using `[res_comp, h, res_nsmul, (GlobalTheory.T.tateTwist_sections_locally_generated q j).2.2.2.1]`. Use `haveI : Nonempty (Spec (CommRingCat.of (AlgebraicClosure (V.residueField v)))) := inferInstance`.
+
+Take `⟨k, rfl⟩` from `(GlobalTheory.T.tateTwist_sections_locally_generated q j).2.2.1 _ _ _ h0`. Rewrite using `[h]`. Conclude with `q_dvd_nsmul _ k`. Rewrite using `[hs, map_zero]`.
+-/
 theorem eq_zero_of_geom : ∀ (q : ℕ) [NeZero q] (R : Type) [CommRing R], IsUnit (q : R) → ∀ (j : ℤ)
     (a : Ht q (sp R) 0 j), (∀ (K : Type) [Field K] [IsAlgClosed K] (f : R →+* K), pull _ (spMap f) _ 0 a = 0) → a = 0 := by
   intro q _ R _ _ j a ha

@@ -6,5 +6,8 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LatChain.exists_vert_isEqn | exact GlobalTheory.LatChain.exists_vert_isEqn | (intros; apply GlobalTheory.LatChain.exists_vert_isEqn <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_vertical_cartier_divisor_of_equations : ∀ (X : Scheme.{0}) [IsIntegral X] (p : ℕ) (η : X → X.functionFieldˣ), VEq p η → ∃ E : CartierDiv X, Vert p E ∧ ∀ x, Ov p x → E.IsEqn x (η x) := by
   first | exact @GlobalTheory.LatChain.exists_vert_isEqn | exact GlobalTheory.LatChain.exists_vert_isEqn | (intros; apply GlobalTheory.LatChain.exists_vert_isEqn <;> assumption)

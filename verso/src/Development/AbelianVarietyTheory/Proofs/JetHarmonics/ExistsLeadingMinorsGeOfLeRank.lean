@@ -3,6 +3,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `key : ∀ y ∈ Submodule.span O A, v (algebraMap O C (φ y)) < v (algebraMap O C (φ x))`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem a ha => exact hne a ha`. Consider the case `zero => simpa using pos_iff_ne_zero.mpr h0`. Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add, map_add]`. Conclude with `v.map_add_lt ha hb`.
+
+Consider the case `smul o a _ ha`. Rewrite using `[map_smul, smul_eq_mul, map_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hv.map_le_one o)) ha`. Conclude with `lt_irrefl _ (key x hx)`.
+-/
 theorem exists_mem_valuation_le_of_mem_span {C : Type} [Field C] (v : Valuation C NNReal)
     {O : Type} [CommRing O] [Algebra O C] (hv : v.Integers O) {M : Type} [AddCommGroup M]
     [Module O M] (A : Set M) (φ : M →ₗ[O] O) {x : M} (hx : x ∈ Submodule.span O A)
@@ -24,6 +31,33 @@ theorem exists_mem_valuation_le_of_mem_span {C : Type} [Field C] (v : Valuation 
       exact lt_of_le_of_lt (mul_le_of_le_one_left' (hv.map_le_one o)) ha
   exact lt_irrefl _ (key x hx)
 
+/- English proof (translation)
+Establish `hvc : v (algebraMap O C c) ≠ 0`. Rewrite using `[Ne, v.zero_iff]`. Introduce `h`. Conclude with `hc (hv.hom_inj (by rw [h, map_zero]))`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `_`. Use `⟨fun _ => 0, fun i hi => absurd hi (Nat.not_lt_zero i), ?_⟩` and prove the remaining obligations. Introduce `m hm h0`.
+
+Take `rfl : m = 0` from `Nat.le_zero.mp h0`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `hn`. Take `⟨t, htA, ht⟩` from `ih (Nat.le_of_succ_le hn)`.
+
+Set `coef : Fin (n + 1) → O` to `fun a => (-1) ^ ((a : ℕ) + n) * (Matrix.of fun b i : Fin n => t i (Fin.castLE hn (a.succAbove b))).det`. Set `φ : (Fin r → O) →ₗ[O] O` to `∑ a : Fin (n + 1), coef a • LinearMap.proj (Fin.castLE hn a)`. Establish `hφ : ∀ x, φ x = ∑ a : Fin (n + 1), coef a * x (Fin.castLE hn a)`. Introduce `x`. Simplify using `[φ, LinearMap.sum_apply]`.
+
+Establish `hdet : ∀ x, (Matrix.of fun a i : Fin (n + 1) => Function.update t n x i (Fin.castLE hn a)).det = φ x`. Introduce `x`. Rewrite using `[hφ, Matrix.det_succ_column _ (Fin.last n)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `: (Matrix.of fun a i : Fin (n + 1) => Function.update t n x i (Fin.castLE hn a)).submatrix a.succAbove (Fin.last n).succAbove = Matrix.of fun b i : Fin n => t i (Fin.castLE hn (a.succAbove b))`.
+
+Use extensionality with `b i`. Simplify using `[Function.update_of_ne (Nat.ne_of_lt i.isLt)]`. Rewrite using `[this]`. Simplify using `only [coef, Matrix.of_apply, Fin.val_last, Function.update_self]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hval : φ (c • Pi.single (Fin.castLE hn (Fin.last n)) 1) = c * (Matrix.of fun a i : Fin n => t i (Fin.castLE (Nat.le_of_succ_le hn) a)).det`. Rewrite using `[map_smul, smul_eq_mul, hφ, Finset.sum_eq_single (Fin.last n)]`. Use `congr 1`. Simplify using `only [coef, Pi.single_eq_same, mul_one, Fin.val_last, Fin.succAbove_last]`. Rewrite using `[← two_mul, pow_mul]`.
+
+Simplify using `only [even_two, Even.neg_pow, one_pow, one_mul]`. Both sides reduce to the same expression. Introduce `b _ hb`. Rewrite using `[Pi.single_eq_of_ne (fun h => hb (Fin.castLE_injective hn h)), mul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Establish `hlow : v (algebraMap O C c) ^ (n + 1) ≤ v (algebraMap O C (φ (c • Pi.single (Fin.castLE hn (Fin.last n)) 1)))`. Rewrite using `[hval, map_mul, map_mul, pow_succ']`. Conclude with `mul_le_mul_right (ht n _ le_rfl) _`. Take `⟨a, haA, ha⟩` from `exists_mem_valuation_le_of_mem_span v hv A φ (hA _) (ne_of_gt (lt_of_lt_of_le (pow_pos (pos_iff_ne_zero.mpr hvc) _) hlow))`.
+
+Use `⟨Function.update t n a, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hi with h | rfl` into its components or cases. Rewrite using `[Function.update_of_ne (Nat.ne_of_lt h)]`. Conclude with `htA i h`.
+
+Rewrite using `[Function.update_self]`. Conclude with `haA`. Introduce `m hm hmn`. Break down `Nat.lt_or_eq_of_le hmn with h | rfl` into its components or cases. Establish `h' : m ≤ n` using `Nat.lt_succ_iff.mp h`.
+
+Establish `: (Matrix.of fun b i : Fin m => Function.update t n a i (Fin.castLE hm b)) = Matrix.of fun b i : Fin m => t i (Fin.castLE hm b)`. Use extensionality with `b i`. Simplify using `[Function.update_of_ne (Nat.ne_of_lt (lt_of_lt_of_le i.isLt h'))]`. Rewrite using `[this]`. Conclude with `ht m hm h'`.
+
+Rewrite using `[hdet]`. Conclude with `hlow.trans ha`.
+-/
 theorem exists_leading_minors_ge_of_le_rank {C : Type} [Field C] (v : Valuation C NNReal)
     {O : Type} [CommRing O] [Algebra O C] (hv : v.Integers O) {r : ℕ} (A : Set (Fin r → O))
     {c : O} (hc : c ≠ 0) (hA : ∀ x : Fin r → O, c • x ∈ Submodule.span O A) :
@@ -103,6 +137,9 @@ theorem exists_leading_minors_ge_of_le_rank {C : Type} [Field C] (v : Valuation 
       · rw [hdet]
         exact hlow.trans ha
 
+/- English proof (translation)
+Introduce `C _ v O _ _ hv r A c hc hA`. Take `⟨t, htA, ht⟩` from `exists_leading_minors_ge_of_le_rank v hv A hc hA r le_rfl`. Conclude with `⟨fun i => t i, fun i => htA i i.isLt, fun s => ht (s.val + 1) s.isLt s.isLt⟩`.
+-/
 theorem exists_leading_minors_ge :
     ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C],
       v.Integers O → ∀ (r : ℕ) (A : Set (Fin r → O)) (c : O), c ≠ 0 →

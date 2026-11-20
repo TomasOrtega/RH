@@ -9,6 +9,11 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Dict
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z.Sym.Al
 
+/- English proof (translation)
+Establish `hc : ∀ h, T.conj (ρ h) = ρ h` using `fun h => by`. Use extensionality with `v`. Simplify using `[LinearEquiv.conj_apply, hT]`. Establish `key : T.conj (UpperTheory.V.Hi.dc ρ K K' x) = UpperTheory.V.Hi.dc ρ K K' x`. Unfold `UpperTheory.V.Hi.dc`.
+
+Use `AddEquiv.map_finsum (T.conj.toAddEquiv) (fun q : MulAction.orbit K (x : H ⧸ K') => ρ (q : H ⧸ K').out)` as an intermediate fact. Simplify `this` using `[hc]`. Use `congrArg (fun E : Module.End A M => E (T m)) key` as an intermediate fact. Simplify `this` using `[LinearEquiv.conj_apply]`.
+-/
 private theorem dc_conj {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [Module A M]
     (ρ : Representation A H M) (K K' : Subgroup H) (x : H) (T : M ≃ₗ[A] M)
     (hT : ∀ h m, T (ρ h m) = ρ h (T m)) (m : M) :
@@ -24,6 +29,29 @@ private theorem dc_conj {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [
   have := congrArg (fun E : Module.End A M => E (T m)) key
   simpa [LinearEquiv.conj_apply] using this
 
+/- English proof (translation)
+Introduce `L _ _ _ n V _ _ w φ φ' h`. Take `⟨h1, -, h3, h4, -, -⟩` from `UpperTheory.V.Z.Sym.Al.factor L n w`. Use `⟨fun π hπ hc => ?_, fun R A hA hf => ?_, fun w' hs hne W d c he => ?_⟩` and prove the remaining obligations. Use `Submodule.span_induction (p := fun ψ _ => CoefIn ψ π) ?_ ?_ ?_ ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ f`.
+
+Conclude with `hπ.stable x _ (hc f)`. Introduce `f`. Establish `e : f ∘ (0 : UA L n → V) = 0` using `by ext; simp`. Rewrite using `[e]`. Conclude with `π.zero_mem`.
+
+Introduce `a b _ _ ha hb f`. Establish `e : f ∘ (a + b) = f ∘ a + f ∘ b` using `by ext; simp`. Rewrite using `[e]`. Conclude with `π.add_mem (ha f) (hb f)`. Introduce `t a _ ha f`.
+
+Establish `e : f ∘ (t • a) = t • (f ∘ a)` using `by ext; simp`. Rewrite using `[e]`. Conclude with `π.smul_mem t (ha f)`. Establish `hle : Submodule.span ℂ {ψ | ∃ x ∈ locU n w, ψ = fun g => φ (g * x)} ≤ AF R A`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨fun γ hγ g => ?_, fun y hy g => ?_, fun u hu g => ?_⟩` and prove the remaining obligations. Use `show φ (γ * g * x) = φ (g * x)`. Rewrite using `[mul_assoc]`. Conclude with `hf.left γ hγ _`.
+
+Use `show φ (g * y * x) = R (infC L n y⁻¹) (φ (g * x))`. Rewrite using `[mul_assoc, ← h1 x hx y (h4 hy), ← mul_assoc]`. Conclude with `hf.inf y hy _`. Use `show φ (g * u * x) = φ (g * x)`. Rewrite using `[mul_assoc, ← h1 x hx u (hA hu), ← mul_assoc]`.
+
+Conclude with `hf.level u hu _`. Conclude with `hle h`. Establish `hsec` using `(UpperTheory.V.Z.Sym.Al.secSpec L n w' hs).1`. Use `Submodule.span_induction (p := fun ψ _ => EigAt ψ w' W d c) ?_ ?_ ?_ ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Set `T : (UA L n → V) ≃ₗ[ℂ] (UA L n → V)` to `{ toFun := fun ψ g => ψ (g * x) invFun := fun ψ g => ψ (g * x⁻¹) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun ψ => by ext g; simp right_inv := fun ψ => by ext g; simp }`. Establish `hT : ∀ (y : GL (Fin n) (Kw w')) (m : UA L n → V), T (((rightReg ℂ (UA L n) V).comp (secW n w')) y m) = ((rightReg ℂ (UA L n) V).comp (secW n w')) y (T m)`. Introduce `y m`. Use function extensionality and compare the values at `g`. Use `show m (g * x * secW n w' y) = m (g * secW n w' y * x)`.
+
+Rewrite using `[mul_assoc, mul_assoc, h1 x hx _ (h3 w' hne (hsec y))]`. Establish `e` using `dc_conj _ (W.J n) (W.J n) (Sig.dg d) T hT φ`. Use `show UpperTheory.V.Hi.dc _ _ _ _ (T φ) = c • T φ`. Rewrite using `[← e]`. Unfold `EigAt at he`.
+
+Rewrite using `[he, map_smul]`. Unfold `EigAt`. Rewrite using `[map_zero, smul_zero]`. Introduce `a b _ _ ha hb`. Unfold `EigAt at ha hb ⊢`.
+
+Rewrite using `[map_add, ha, hb, smul_add]`. Introduce `t a _ ha`. Unfold `EigAt at ha ⊢`. Rewrite using `[map_smul, ha, smul_comm]`.
+-/
 theorem UpperTheory.V.Z.Sym.Al.spanKeep :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (w : Plc L) (φ φ' : UA L n → V), InSpan w φ φ' →
         (∀ π, IsAutRepU π → CoefIn φ π → CoefIn φ' π) ∧

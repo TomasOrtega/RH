@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaDecompComplex
 
 namespace GlobalTheory.IwaInt
 
+/- English proof (translation)
+The claim follows from `iwasawaInt_of GlobalTheory.T.iwasawa_decomp_complexifiedMaxCompact`.
+-/
 theorem iwasawaInt : GlobalTheory.Dec.IwasawaInt := iwasawaInt_of GlobalTheory.T.iwasawa_decomp_complexifiedMaxCompact
 
 end GlobalTheory.IwaInt

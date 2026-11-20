@@ -8,6 +8,13 @@ open PositivityTheory.PfSWUS.Loc GlobalTheory.CompanionTheory.UnrDens
 
 namespace GlobalTheory.CompanionTheory.UnrDens.Sphere
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_sigma]`. Use `Nat.card_congr ?_` and prove the remaining obligations. Establish `e1 : {x : E × B.perp w // (B.perpForm hw).h x.2 x.2 = c - x.1 * τ x.1 * B.h w w} ≃ {v : V // B.h v v = c}` using `Equiv.subtypeEquiv (B.perpEquiv hw) (by`. Introduce and unpack `⟨a, v⟩`. Establish `hv : B.h (v : V) w = 0` using `v.2`.
+
+Simplify using `only [HermSp.perpEquiv_apply, HermSp.perpForm_h]`. Rewrite using `[B.norm_perp hv a]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Rewrite using `[← h]`. Use the proof step `ring)`. Conclude with `e1.symm.trans ⟨fun x => ⟨x.1.1, x.1.2, x.2⟩, fun s => ⟨(s.1, s.2.1), s.2.2⟩, fun _ => rfl, fun _ => rfl⟩`.
+-/
 theorem card_fibre {E : Type} [CommRing E] {τ : E →+* E} [Fintype E] {V : Type} [AddCommGroup V]
     [Module E V] [Finite V] (B : HermSp E τ V) {w : V} (hw : IsUnit (B.h w w)) (c : E) :
     Nat.card {v : V // B.h v v = c} =
@@ -27,6 +34,11 @@ theorem card_fibre {E : Type} [CommRing E] {τ : E →+* E} [Fintype E] {V : Typ
   exact e1.symm.trans
     ⟨fun x => ⟨x.1.1, x.1.2, x.2⟩, fun s => ⟨(s.1, s.2.1), s.2.2⟩, fun _ => rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Establish `h : ∀ a, (if p a then B₀ else A) = A + (B₀ - A) * (if p a then 1 else 0)`. Apply the tactic sequence `intro a; split_ifs <;> ring`. Simplify using `only [h]`. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_boole, Finset.sum_const, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Simplify using `only [Finset.card_univ, nsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_ite_card {E : Type} [Fintype E] (p : E → Prop) (A B₀ : ℝ) [DecidablePred p] :
     ∑ a, (if p a then B₀ else A) =
       (Nat.card {a // p a} : ℝ) * B₀ + ((Nat.card E : ℝ) - Nat.card {a // p a}) * A := by
@@ -38,12 +50,18 @@ theorem sum_ite_card {E : Type} [Fintype E] (p : E → Prop) (A B₀ : ℝ) [Dec
   simp only [Finset.card_univ, nsmul_eq_mul]
   ring
 
+/- English proof (translation)
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem arith_unit (q ε x Q : ℝ) (hq : q ≠ 0) :
     (q - ε) * (Q / q * (1 + (q - 1) * x)) + (q ^ 2 - (q - ε)) * (Q / q * (1 - x)) =
       Q * q ^ 2 / q * (1 - x * (ε / q)) := by
   field_simp
   ring
 
+/- English proof (translation)
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem arith_zero (q ε x Q : ℝ) (hq : q ≠ 0) :
     (q * (1 + ε) - ε) * (Q / q * (1 + (q - 1) * x)) +
         (q ^ 2 - (q * (1 + ε) - ε)) * (Q / q * (1 - x)) =
@@ -51,6 +69,45 @@ theorem arith_zero (q ε x Q : ℝ) (hq : q ≠ 0) :
   field_simp
   ring
 
+/- English proof (translation)
+Introduce `E _ τ q ε hR m`. Establish `hq1 : 1 < q` using `hR.one_lt`. Establish `hq0 : (q : ℝ) ≠ 0`. Establish `: 0 < q` using `by omega`. Conclude with `this.ne'` after adjusting the coercions.
+
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `V _ _ B hc`. Establish `hc1 : Nat.card V = 1` using `by simpa using hc`. Take `⟨hs, -⟩` from `Nat.card_eq_one_iff_unique.1 hc1`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `c _ hc0`. Establish `: IsEmpty {v : V // B.h v v = c}` using `⟨fun x => hc0 (by`. Establish `h` using `x.2`. Rewrite `h` using `[Subsingleton.elim x.1 0, B.zero_left]`.
+
+Conclude with `h.symm)⟩`. Rewrite using `[Nat.card_of_isEmpty]`. Simplify using the standard rewrite rules. Establish `: Subsingleton {v : V // B.h v v = 0}` using `inferInstance`. Rewrite using `[Nat.card_of_subsingleton (⟨0, B.zero_left 0⟩ : {v : V // B.h v v = 0})]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ m ih`. Introduce `V _ _ B hc`. Establish `hpow : 1 < q ^ (2 * (m + 1))` using `Nat.one_lt_pow (by omega) hq1`.
+
+Establish `hfin : Finite V` using `Nat.finite_of_card_ne_zero (by omega)`. Establish `hfinE : Finite E` using `Nat.finite_of_card_ne_zero (by`. Rewrite using `[hR.card]; exact pow_ne_zero _ (by omega))`. Establish `hnt : Nontrivial V` using `Finite.one_lt_card_iff_nontrivial.1 (by omega)`. Take `⟨w, hw⟩` from `GlobalTheory.T.hermitian_space_anisotropic_unit E τ q ε hR V B hnt`.
+
+Establish `hP : Nat.card (B.perp w) = q ^ (2 * m)`. Establish `h1 : Nat.card E * Nat.card (B.perp w) = Nat.card V`. Rewrite using `[← Nat.card_prod]`. Conclude with `Nat.card_congr (B.perpEquiv hw)`. Rewrite `h1` using `[hR.card, hc]`.
+
+Establish `hq2 : 0 < q ^ 2` using `pow_pos (by omega) _`. Apply `Nat.eq_of_mul_eq_mul_left hq2` to reduce the goal to its premises. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨ihc, ihz⟩` from `ih (B.perp w) (B.perpForm hw) hP`.
+
+Use `haveI := Fintype.ofFinite E`. Establish `hdfix : τ (B.h w w) = B.h w w` using `(B.symm w w).symm`. Take `⟨di, hdi⟩ : ∃ di, B.h w w * di = 1` from `hw.exists_right_inv`. Establish `hdifix : τ di = di`. Establish `h1 : B.h w w * τ di = 1`.
+
+Use `congrArg τ hdi` as an intermediate fact. Rewrite `this` using `[map_mul, hdfix, map_one]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Use `set A : ℝ := (q : ℝ) ^ (2 * m) / q * (1 - ((ε : ℝ) / q) ^ m) with hA`. Use `set B₀ : ℝ := (q : ℝ) ^ (2 * m) / q * (1 + ((q : ℝ) - 1) * ((ε : ℝ) / q) ^ m) with hB₀`.
+
+Establish `key : ∀ c : E, τ c = c → (Nat.card {v : V // B.h v v = c} : ℝ) = (Nat.card {a : E // a * τ a = c * di} : ℝ) * B₀ + ((q : ℝ) ^ 2 - Nat.card {a : E // a * τ a = c * di}) * A`. Introduce `c hcf`. Establish `hiff : ∀ a : E, a * τ a * B.h w w = c ↔ a * τ a = c * di`. Introduce `a`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Rewrite using `[← h, mul_assoc, hdi, mul_one]`. Introduce `h`. Rewrite using `[h, mul_assoc, mul_comm di, hdi, mul_one]`. Establish `hterm : ∀ a : E, (Nat.card {v : B.perp w // (B.perpForm hw).h v v = c - a * τ a * B.h w w} : ℝ) = if a * τ a = c * di then B₀ else A`.
+
+Introduce `a`. Use `split_ifs with h`. Establish `h0 : c - a * τ a * B.h w w = 0` using `by rw [(hiff a).2 h, sub_self]`. Rewrite using `[h0]`. Conclude with `ihz`.
+
+Use `ihc _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_mul, hcf, hdfix, hR.inv a]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h0`. Conclude with `h ((hiff a).1 (sub_eq_zero.1 h0).symm)`.
+
+Rewrite using `[card_fibre B hw c]`. Use `push_cast`. Rewrite using `[Finset.sum_congr rfl (fun a _ => hterm a), sum_ite_card, hR.card]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `hpw : (q : ℝ) ^ (2 * (m + 1)) = (q : ℝ) ^ (2 * m) * (q : ℝ) ^ 2` using `by ring`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `c hcf hc0`. Establish `hn : (Nat.card {a : E // a * τ a = c * di} : ℝ) = (q : ℝ) - ε`. Use `GlobalTheory.T.norm_fibre_card_nonzero E τ q ε hR (c * di) (by rw [map_mul, hcf, hdifix]) (by` as an intermediate fact.
+
+Introduce `h0`. Apply `hc0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Conclude with `this` after adjusting the coercions. Rewrite using `[key c hcf, hn, hpw, pow_succ ((ε : ℝ) / q) m]`.
+
+Conclude with `arith_unit _ _ _ _ hq0`. Establish `hn : (Nat.card {a : E // a * τ a = (0 : E) * di} : ℝ) = (q : ℝ) * (1 + ε) - ε`. Use `GlobalTheory.T.norm_fibre_card_zero E τ q ε hR` as an intermediate fact. Rewrite using `[zero_mul]`. Conclude with `this` after adjusting the coercions.
+
+Rewrite using `[key 0 (map_zero τ), hn, hpw, pow_succ ((ε : ℝ) / q) m]`. Conclude with `arith_zero _ _ _ _ hq0`.
+-/
 theorem count : ∀ (E : Type) [CommRing E] (τ : E →+* E) (q : ℕ) (ε : ℤ), ResAlg E τ q ε → ∀ (m : ℕ) (V : Type) [AddCommGroup V] [Module E V] (B : HermSp E τ V), Nat.card V = q ^ (2 * m) → (∀ c : E, τ c = c → c ≠ 0 → (Nat.card {v : V // B.h v v = c} : ℝ) = (q : ℝ) ^ (2 * m) / q * (1 - ((ε : ℝ) / q) ^ m)) ∧ (Nat.card {v : V // B.h v v = 0} : ℝ) = (q : ℝ) ^ (2 * m) / q * (1 + ((q : ℝ) - 1) * ((ε : ℝ) / q) ^ m) := by
   intro E _ τ q ε hR m
   have hq1 : 1 < q := hR.one_lt

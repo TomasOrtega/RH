@@ -8,6 +8,11 @@ open scoped IntermediateField
 
 namespace GlobalTheory.CMSqrtNeg
 
+/- English proof (translation)
+Establish `hm : (Polynomial.X ^ 2 - Polynomial.C c).Monic` using `Polynomial.monic_X_pow_sub_C c two_ne_zero`. Establish `h0 : Polynomial.aeval t (Polynomial.X ^ 2 - Polynomial.C c) = 0` using `by simp [ht]`. Establish `hi : IsIntegral E t` using `⟨_, hm, by simpa [Polynomial.aeval_def] using h0⟩`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.adjoin.finrank hi]`.
+
+Establish `h1 : (minpoly E t).natDegree ≤ 2`. Use `Polynomial.natDegree_le_of_dvd (minpoly.dvd E t h0) hm.ne_zero` as an intermediate fact. Rewrite `this` using `[Polynomial.natDegree_X_pow_sub_C]`. Then use the resulting hypothesis. Establish `h2 : 2 ≤ (minpoly E t).natDegree` using `(minpoly.two_le_natDegree_iff hi).2 (by simpa using hn)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_adjoin_sq {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] (c : E) (t : Ω)
     (ht : t ^ 2 = algebraMap E Ω c) (hn : t ∉ Set.range (algebraMap E Ω)) :
     IsIntegral E t ∧ Module.finrank E E⟮t⟯ = 2 := by
@@ -22,6 +27,19 @@ theorem finrank_adjoin_sq {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] (c :
   have h2 : 2 ≤ (minpoly E t).natDegree := (minpoly.two_le_natDegree_iff hi).2 (by simpa using hn)
   omega
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ p hp δ hδ hδn`. Establish `hδ' : δ ^ 2 = algebraMap E Ω (-(p : E))` using `by simp [hδ]`. Take `⟨hint, htwo⟩` from `finrank_adjoin_sq (-(p : E)) δ hδ' hδn`. Use `haveI : FiniteDimensional E E⟮δ⟯ := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI nf : NumberField E⟮δ⟯ := NumberField.of_module_finite E _`.
+
+Take `⟨d, s, hs, hsn, hneg⟩` from `GlobalTheory.CMGen.exists_sqrt_totallyNegative E`. Establish `hs0 : s ≠ 0` using `fun h => hsn (h ▸ zero_mem _)`. Set `t : E⟮δ⟯` to `⟨δ * algebraMap E Ω s, mul_mem (IntermediateField.subset_adjoin E {δ} rfl) (IntermediateField.algebraMap_mem _ s)⟩`. Set `d' : maximalRealSubfield E` to `-(p : maximalRealSubfield E) * (d : maximalRealSubfield E)`. Establish `ht : t ^ 2 = algebraMap E E⟮δ⟯ (algebraMap (maximalRealSubfield E) E d')`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (δ * algebraMap E Ω s) ^ 2 = algebraMap E Ω (algebraMap (maximalRealSubfield E) E d')`. Rewrite using `[mul_pow, hδ, ← map_pow, hs]`. Simplify using `[d']`. Establish `htn : t ∉ Set.range (algebraMap E E⟮δ⟯)`.
+
+Introduce and unpack `⟨e, he⟩`. Apply `hδn` to reduce the goal to its premises. Use `⟨e * s⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap E Ω e = δ * algebraMap E Ω s` using `congrArg Subtype.val he`. Establish `h2 : algebraMap E Ω s ≠ 0` using `(map_ne_zero _).2 hs0`.
+
+Rewrite using `[map_mul, h1, map_inv₀, mul_assoc, mul_inv_cancel₀ h2, mul_one]`. Establish `hpos : ∀ φ : maximalRealSubfield E →+* ℝ, 0 < φ d'` using `fun φ => by`. Use `hneg φ` as an intermediate fact. Establish `hp' : (0 : ℝ) < p` using `by exact_mod_cast hp`. Simplify using `only [d', map_mul, map_neg, map_natCast]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hcm` using `(GlobalTheory.isCMField_of_sq_eq_totallyPositive E E⟮δ⟯ htwo d' t ht htn hpos).1`. Conclude with `⟨⟨E⟮δ⟯, nf, hcm, htwo⟩, rfl⟩`.
+-/
 theorem exists_qcm_adjoin_sqrt_neg : ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (p : ℕ), 0 < p → ∀ δ : Ω, δ ^ 2 = -(p : Ω) → δ ∉ Set.range (algebraMap E Ω) →
     ∃ Q : GlobalTheory.RealGal.QCM E Ω, Q.K = IntermediateField.adjoin E {δ} := by

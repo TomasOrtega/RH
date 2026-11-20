@@ -9,6 +9,17 @@ namespace Formalism.MainNotions.G.SymmetricFormBlocks
 
 open MvPolynomial Finset Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.MainNotions.G.CountingStatementReduction
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ι, (∀ i ∈ s, f i ≤ T) → (⨆ i ∈ s, f i) ≤ T ∧ ∑ i ∈ s, Module.finrank K (f i) = Module.finrank K (⨆ i ∈ s, f i : Submodule K V)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_`.
+
+Establish `h0 : (⨆ i ∈ (∅ : Finset ι), f i) = ⊥` using `le_bot_iff.1 (iSup₂_le fun i hi => by simp at hi)`. Rewrite using `[h0, finrank_bot, Finset.sum_empty]`. Conclude with `⟨bot_le, rfl⟩`. Consider the case `insert a s ha ih`. Introduce `h`.
+
+Take `⟨h1, h2⟩` from `ih (fun i hi => h i (Finset.mem_insert_of_mem hi))`. Establish `hfa : f a ≤ T` using `h a (Finset.mem_insert_self a s)`. Establish `e : (⨆ i ∈ insert a s, f i) = f a ⊔ ⨆ i ∈ s, f i`. Rewrite using `[Finset.iSup_insert]`. Use `haveI : FiniteDimensional K (f a) := Submodule.finiteDimensional_of_le hfa`.
+
+Use `haveI : FiniteDimensional K (⨆ i ∈ s, f i : Submodule K V) := Submodule.finiteDimensional_of_le h1`. Establish `hd : Disjoint (f a) (⨆ i ∈ s, f i)` using `hf.disjoint_biSup ha`. Use `⟨by rw [e]; exact sup_le hfa h1, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert ha, h2, e]`. Use `Submodule.finrank_sup_add_finrank_inf_eq (f a) (⨆ i ∈ s, f i)` as an intermediate fact.
+
+Rewrite `this` using `[hd.eq_bot, finrank_bot, add_zero]`. Use linear arithmetic over natural numbers and integers. Take `⟨h1, h2⟩` from `key s hle`. Rewrite using `[h2]`. Conclude with `Submodule.finrank_mono h1`.
+-/
 theorem sum_finrank_le_of_indep {ι K V : Type*} [Field K] [AddCommGroup V] [Module K V] [DecidableEq ι]
     (f : ι → Submodule K V) (hf : iSupIndep f) (T : Submodule K V) [FiniteDimensional K T] (s : Finset ι)
     (hle : ∀ i ∈ s, f i ≤ T) : ∑ i ∈ s, Module.finrank K (f i) ≤ Module.finrank K T := by
@@ -41,6 +52,17 @@ theorem sum_finrank_le_of_indep {ι K V : Type*} [Field K] [AddCommGroup V] [Mod
 
 variable (C0 CE1 CE2 : ℝ) (X : flipOneThree.Inst)
 
+/- English proof (translation)
+Use `set Dd := blockData X.p (X.S C0 CE1 CE2) aTop aPlus X.m b with hDd`. Use `set V0 := Submodule.span ℚ_[X.p] (((gmB Dd).SSZ X.p (r := X.r) : Submodule ℤ_[X.p] (MvPolynomial (Formalism.GM.M.BVar (2 * X.s + 1) X.r (gmB Dd).T.t) ℚ_[X.p])) : Set (MvPolynomial (Formalism.GM.M.BVar (2 * X.s + 1) X.r (gmB Dd).T.t) ℚ_[X.p])) with hV0`. Use `set W := Submodule.span (KK X.O) ((Dd.SSZ X.O (r := X.r) : Submodule X.O (MvPolynomial (BVar (2 * X.s + 1) X.r Dd.T.t) (KK X.O))) : Set (MvPolynomial (BVar (2 * X.s + 1) X.r Dd.T.t) (KK X.O))) with hW`. Use `show FiniteDimensional ℚ_[X.p] V0`. Use `haveI : FiniteDimensional (KK X.O) W := span_SSZ_finite Dd`.
+
+Establish `hmemW : ∀ x ∈ V0, MvPolynomial.map (iotaX X) x ∈ W`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact map_SSZ (ι := iotaX X) (iotaX_int X) Dd x hx`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `W.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `W.add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul_Q]`. Conclude with `W.smul_mem _ hx`.
+
+Use `Module.rank_lt_aleph0_iff.1 (lt_of_le_of_lt (rank_le (n := Module.finrank (KK X.O) W) fun s hs => ?_) (Cardinal.natCast_lt_aleph0))` and prove the remaining obligations. Establish `hli : LinearIndependent ℚ_[X.p] (fun i : s => ((i : V0) : MvPolynomial (Formalism.GM.M.BVar (2 * X.s + 1) X.r (gmB Dd).T.t) ℚ_[X.p]))` using `hs.map' V0.subtype (Submodule.ker_subtype V0)`. Establish `hli2` using `li_map (iotaX X) _ hli`. Set `w : s → W` to `fun i => ⟨MvPolynomial.map (iotaX X) (i : V0).1, hmemW _ (i : V0).2⟩`. Establish `hli3 : LinearIndependent (KK X.O) w` using `LinearIndependent.of_comp W.subtype hli2`.
+
+Establish `h` using `hli3.fintype_card_le_finrank`. Simplify using `using h`.
+-/
 theorem span_SSZ_fin (aTop : Fin X.s → ℕ) (aPlus : ℕ) (b : SegBlock X.s X.r) :
     FiniteDimensional ℚ_[X.p] (Submodule.span ℚ_[X.p]
       (((gB C0 CE1 CE2 X aTop aPlus b).SSZ X.p (r := X.r) :
@@ -71,6 +93,13 @@ theorem span_SSZ_fin (aTop : Fin X.s → ℕ) (aPlus : ℕ) (b : SegBlock X.s X.
   have h := hli3.fintype_card_le_finrank
   simpa using h
 
+/- English proof (translation)
+Establish `hind` using `(Formalism.GM.semisimple_direct_sum p N r G hB hr).1`. Set `g : {x // x ∈ s} → {ij : (Fin G.T.t → ℕ) × ℕ // G.LevelOK ij.1 ij.2}` to `fun y => ⟨y.1, hs y.1 y.2⟩`. Establish `hg : Function.Injective g` using `fun y y' h => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val h` as an intermediate fact.
+
+Conclude with `this`. Establish `hind'` using `iSupIndep.comp hind hg`. Rewrite using `[← Finset.sum_attach]`. Use `sum_finrank_le_of_indep _ hind' _ s.attach fun y _ => ?_` and prove the remaining obligations. Apply `Submodule.span_le.2` to reduce the goal to its premises.
+
+Introduce `z hz`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `show z ∈ ((G.SSZ p (r := r) : Submodule ℤ_[p] (MvPolynomial (Formalism.GM.M.BVar N r G.T.t) ℚ_[p])) : Set (MvPolynomial (Formalism.GM.M.BVar N r G.T.t) ℚ_[p]))`. Unfold `Formalism.GM.M.BlockData.SSZ`. Conclude with `Submodule.subset_span (Set.mem_iUnion.2 ⟨y.1.1, Set.mem_iUnion.2 ⟨y.1.2, Set.mem_iUnion.2 ⟨hs y.1 y.2, hz⟩⟩⟩)`.
+-/
 theorem sum_gens_le (p : ℕ) [Fact p.Prime] {N r : ℕ} [NeZero r] (G : Formalism.GM.M.BlockData N) (hB : G.BlockOK)
     (hr : 1 ≤ r) (s : Finset ((Fin G.T.t → ℕ) × ℕ)) (hs : ∀ x ∈ s, G.LevelOK x.1 x.2)
     [FiniteDimensional ℚ_[p] (Submodule.span ℚ_[p] ((G.SSZ p (r := r) :
@@ -96,6 +125,11 @@ theorem sum_gens_le (p : ℕ) [Fact p.Prime] {N r : ℕ} [NeZero r] (G : Formali
   unfold Formalism.GM.M.BlockData.SSZ
   exact Submodule.subset_span (Set.mem_iUnion.2 ⟨y.1.1, Set.mem_iUnion.2 ⟨y.1.2, Set.mem_iUnion.2 ⟨hs y.1 y.2, hz⟩⟩⟩)
 
+/- English proof (translation)
+Introduce `aTop _ aPlus _ b _`. Use `haveI := span_SSZ_fin C0 CE1 CE2 X aTop aPlus b`. Establish `hr : 1 ≤ X.r` using `Nat.pos_of_ne_zero X.hm`. Use `sum_gens_le X.p (gB C0 CE1 CE2 X aTop aPlus b) (gB_blockOK C0 CE1 CE2 X aTop aPlus b) hr (lv C0 CE1 CE2 X aTop b) (fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[lv_eq C0 CE1 CE2 X aTop aPlus b]`.
+
+Unfold `levels at hx`. Conclude with `(Finset.mem_filter.1 hx).2`.
+-/
 theorem restSumSpan_proved : RestSumSpan C0 CE1 CE2 X := by
   classical
   intro aTop _ aPlus _ b _

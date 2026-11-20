@@ -4,6 +4,9 @@ namespace PI.SlopeSteps
 
 open Finset
 
+/- English proof (translation)
+Establish `h` using `Finset.sum_pow_eq_sum_piAntidiag (R := ℕ) (univ : Finset (Fin N)) (fun _ => (1 : ℕ)) (∑ a, f a)`. Simplify using `only [one_pow, prod_const_one, mul_one, sum_const, card_univ, Fintype.card_fin, smul_eq_mul] at h`. Rewrite using `[h]`. Conclude with `Finset.single_le_sum (f := fun k => Nat.multinomial univ k) (fun _ _ => Nat.zero_le _) (mem_piAntidiag.mpr ⟨rfl, fun i _ => mem_univ i⟩)`.
+-/
 theorem multinomial_le_pow {N : ℕ} (f : Fin N → ℕ) : Nat.multinomial univ f ≤ N ^ (∑ a, f a) := by
   have h := Finset.sum_pow_eq_sum_piAntidiag (R := ℕ) (univ : Finset (Fin N)) (fun _ => (1 : ℕ)) (∑ a, f a)
   simp only [one_pow, prod_const_one, mul_one, sum_const, card_univ, Fintype.card_fin, smul_eq_mul] at h
@@ -11,11 +14,19 @@ theorem multinomial_le_pow {N : ℕ} (f : Fin N → ℕ) : Nat.multinomial univ 
   exact Finset.single_le_sum (f := fun k => Nat.multinomial univ k) (fun _ _ => Nat.zero_le _)
     (mem_piAntidiag.mpr ⟨rfl, fun i _ => mem_univ i⟩)
 
+/- English proof (translation)
+Rewrite using `[← Nat.multinomial_spec univ f, mul_comm]`. Conclude with `Nat.mul_le_mul_right _ (multinomial_le_pow f)`.
+-/
 theorem col_fact_le {N : ℕ} (f : Fin N → ℕ) :
     (∑ a, f a).factorial ≤ N ^ (∑ a, f a) * ∏ a, (f a).factorial := by
   rw [← Nat.multinomial_spec univ f, mul_comm]
   exact Nat.mul_le_mul_right _ (multinomial_le_pow f)
 
+/- English proof (translation)
+Introduce `N ν m hm`. Establish `h1 : ∏ k ∈ m.support, (m k).factorial = ∏ s : Fin N, ∏ a : Fin N, (m (a, s)).factorial`. Rewrite using `[Finset.prod_subset (Finset.subset_univ _) (fun k _ hk => by`. Rewrite `hk` using `[Finsupp.mem_support_iff, not_not]`. Rewrite using `[hk, Nat.factorial_zero])]`.
+
+Rewrite using `[Fintype.prod_prod_type, Finset.prod_comm]`. Rewrite using `[h1, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod' fun s _ => ?_` and prove the remaining obligations. Use `col_fact_le (fun a => m (a, s))` as an intermediate fact. Rewrite `this` using `[hm s]`. Then use the resulting hypothesis.
+-/
 theorem monomial_factorization_lower : MonoFactLow := by
   intro N ν m hm
   classical

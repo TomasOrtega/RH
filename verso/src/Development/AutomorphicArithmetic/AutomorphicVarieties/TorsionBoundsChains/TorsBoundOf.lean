@@ -5,6 +5,19 @@ open NumberField
 
 namespace UpperTheory.V.KH
 
+/- English proof (translation)
+Introduce `L _ _ hL e he`. Take `⟨A, s, hs, hA, hσ, hT⟩` from `h L hL e he`. Use `⟨hT.1, (hT.log_le_exp hs hA hσ).trans ?_⟩` and prove the remaining obligations. Unfold `K.tBound`. Rewrite using `[Real.exp_le_exp]`.
+
+Establish `hn : (1 : ℝ) ≤ (Module.finrank ℚ L : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Establish `hD : (1 : ℝ) ≤ ((discr L).natAbs : ℝ)`. Conclude with `Int.natAbs_pos.2 (discr_ne_zero L)` after adjusting the coercions. Establish `hN : (8 : ℝ) ≤ ((4 * e + 4 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 8 ≤ 4 * e + 4)`. Establish `hm : (1 : ℝ) ≤ ((2 * e : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ 2 * e)`.
+
+Generalize the expression as in `((2 * e : ℕ) : ℝ) = m at *`. Generalize the expression as in `((4 * e + 4 : ℕ) : ℝ) = N at *`. Generalize the expression as in `(((discr L).natAbs : ℕ) : ℝ) = D at *`. Generalize the expression as in `(Module.finrank ℚ L : ℝ) = n at *`. Establish `hd : 8 ≤ n * N` using `by nlinarith`.
+
+Generalize the expression as in `n * N = d at *`. Establish `hlog : 1 ≤ Real.log (2 * D * d)`. Rewrite using `[Real.le_log_iff_exp_le (by positivity)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Generalize the expression as in `Real.log (2 * D * d) = l at *`. Establish `h1 : 2 ≤ d * N * l`. Establish `: 64 ≤ d * N` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : 1 ≤ d ^ 2` using `by nlinarith`.
+
+Establish `h3 : m * d ^ 2 * 2 ≤ m * d ^ 2 * (d * N * l)` using `mul_le_mul_of_nonneg_left h1 (by positivity)`. Establish `h4 : (m + 1) * d ^ 2 ≤ m * d ^ 2 * 2` using `by nlinarith`. Establish `h5 : 2 * m ≤ m * d ^ 2 * 2` using `by nlinarith`. Establish `h6` using `mul_le_mul_of_nonneg_left (h4.trans h3) hc`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem torsBound_of (c : ℝ) (hc : 0 ≤ c)
     (h : ∀ (L : Type) [Field L] [NumberField L], IsTotallyComplex L → ∀ e : ℕ, 1 ≤ e →
       ∃ A s : ℕ, 1 ≤ s ∧

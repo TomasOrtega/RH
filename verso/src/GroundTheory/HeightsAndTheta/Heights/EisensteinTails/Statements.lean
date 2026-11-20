@@ -121,6 +121,9 @@ def corePi (h : ∀ i, InnerProductSpace.Core ℂ (V i)) : InnerProductSpace.Cor
     funext i
     exact core_eq_zero_of_re (h i) _ (hz i (Finset.mem_univ i))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem corePi_inner (h : ∀ i, InnerProductSpace.Core ℂ (V i)) (x y : ∀ i, V i) :
     (corePi h).inner x y = ∑ i, (h i).inner (x i) (y i) := rfl
 
@@ -139,6 +142,9 @@ def fibrePi (σ : L →+* ℂ) : Fibre σ (∀ i, E i) ≃ₗ[ℂ] ∀ i, Fibre 
 
 variable {E}
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, Pi.zero_apply]`. Consider the case `tmul z v => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, Pi.add_apply, hx, hy, map_add, Pi.add_apply, map_add]`.
+-/
 theorem fibrePi_conjMap (σ : L →+* ℂ) (x : Fibre σ (∀ i, E i)) (i : ι) :
     fibrePi E (conjugate σ) (conjMap σ (∀ i, E i) x) i = conjMap σ (E i) (fibrePi E σ x i) := by
   induction x using TensorProduct.induction_on with

@@ -7,6 +7,15 @@ open GlobalTheory.EtC IsLocalRing Polynomial
 
 namespace LateralTheory.KummerTheory
 
+/- English proof (translation)
+Take `⟨g, hg, -, hgm⟩` from `lifts_and_degree_eq_and_monic ((lifts_iff_coeff_lifts f).2 hlift) hf`. Take `⟨b₀, rfl⟩` from `ha`. Establish `hmem : ∀ x, x ∈ maximalIdeal R ↔ φ x ∈ maximalIdeal S` using `fun x => by rw [← hc]; rfl`. Establish `e1 : φ (g.eval b₀) = f.eval (φ b₀)` using `by rw [← hg, eval_map, eval₂_at_apply]`. Establish `e2 : φ (g.derivative.eval b₀) = f.derivative.eval (φ b₀)`.
+
+Rewrite using `[← hg, derivative_map, eval_map, eval₂_at_apply]`. Establish `hu : IsUnit (g.derivative.eval b₀)`. Assume the negation of the conclusion as `hu`. Use `(hmem _).1 ((mem_maximalIdeal _).2 hu)` as an intermediate fact. Rewrite `this` using `[e2]`.
+
+Conclude with `(mem_maximalIdeal _).1 this h2`. Take `⟨b, hb, hbb⟩` from `HenselianLocalRing.is_henselian g hgm b₀ ((hmem _).2 (e1 ▸ h1)) hu`. Use `⟨φ b, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hb`, the goal using `[IsRoot.def]`. Rewrite using `[← hg, eval_map, eval₂_at_apply, hb, map_zero]`.
+
+Rewrite using `[← map_sub]`. Conclude with `(hmem _).1 hbb`.
+-/
 theorem hens_root_of_sub {R S : Type*} [CommRing R] [CommRing S] [HenselianLocalRing R] [IsLocalRing S]
     (φ : R →+* S) (hc : (maximalIdeal S).comap φ = maximalIdeal R) (f : S[X]) (hf : f.Monic) (a₀ : S)
     (hlift : ∀ n, f.coeff n ∈ Set.range φ) (ha : a₀ ∈ Set.range φ) (h1 : f.eval a₀ ∈ maximalIdeal S)
@@ -32,6 +41,9 @@ abbrev incMap (κ K A : Type) [Field κ] [Field K] [Algebra κ K] [CommRing A] [
     (L : IntermediateField κ K) : A ⊗[κ] L →ₐ[A] A ⊗[κ] K :=
   Algebra.TensorProduct.map (AlgHom.id A A) L.val
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Use `⟨Algebra.TensorProduct.map (AlgHom.id A A) (IntermediateField.inclusion h) y, ?_⟩` and prove the remaining obligations. Establish `: (incMap κ K A L').comp (Algebra.TensorProduct.map (AlgHom.id A A) (IntermediateField.inclusion h)) = incMap κ K A L` using `Algebra.TensorProduct.ext' (fun a l => by simp)`. Conclude with `congrArg (fun F : A ⊗[κ] L →ₐ[A] A ⊗[κ] K => F y) this`.
+-/
 theorem incMap_mono {κ K A : Type} [Field κ] [Field K] [Algebra κ K] [CommRing A] [Algebra κ A]
     {L L' : IntermediateField κ K} (h : L ≤ L') {x : A ⊗[κ] K} (hx : x ∈ (incMap κ K A L).range) :
     x ∈ (incMap κ K A L').range := by
@@ -41,6 +53,17 @@ theorem incMap_mono {κ K A : Type} [Field κ] [Field K] [Algebra κ K] [CommRin
       = incMap κ K A L := Algebra.TensorProduct.ext' (fun a l => by simp)
   exact congrArg (fun F : A ⊗[κ] L →ₐ[A] A ⊗[κ] K => F y) this
 
+/- English proof (translation)
+Establish `one : ∀ x : A ⊗[κ] K, ∃ L : IntermediateField κ K, FiniteDimensional κ L ∧ x ∈ (incMap κ K A L).range`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨⊥, inferInstance, zero_mem _⟩`. Consider the case `tmul a k`.
+
+Use `⟨IntermediateField.adjoin κ {k}, IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral k), ?_⟩` and prove the remaining obligations. Conclude with `⟨a ⊗ₜ ⟨k, IntermediateField.mem_adjoin_simple_self κ k⟩, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨L₁, h₁, hx⟩` from `hx`. Take `⟨L₂, h₂, hy⟩` from `hy`.
+
+Conclude with `⟨L₁ ⊔ L₂, inferInstance, add_mem (incMap_mono le_sup_left hx) (incMap_mono le_sup_right hy)⟩`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨⊥, inferInstance, by simp⟩`. Consider the case `insert a s _ ih`. Take `⟨L₁, h₁, ha⟩` from `one a`.
+
+Take `⟨L₂, h₂, hs⟩` from `ih`. Use `⟨L₁ ⊔ L₂, inferInstance, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `incMap_mono le_sup_left ha`.
+
+Conclude with `incMap_mono le_sup_right (hs x hx)`.
+-/
 theorem exists_fd_range {κ K A : Type} [Field κ] [Field K] [Algebra κ K] [Algebra.IsIntegral κ K] [CommRing A]
     [Algebra κ A] (s : Finset (A ⊗[κ] K)) :
     ∃ L : IntermediateField κ K, FiniteDimensional κ L ∧ ∀ x ∈ s, x ∈ (incMap κ K A L).range := by
@@ -68,6 +91,15 @@ theorem exists_fd_range {κ K A : Type} [Field κ] [Field K] [Algebra κ K] [Alg
     · exact incMap_mono le_sup_left ha
     · exact incMap_mono le_sup_right (hs x hx)
 
+/- English proof (translation)
+Introduce `κ K A _ _ _ _ _ _ hA _`. Establish `hA'` using `hA`. Take `⟨_, -⟩` from `hA'`. Use `{ toIsLocalRing := inferInstance, is_henselian := ?_ }` and prove the remaining obligations. Introduce `f hf a₀ h1 h2`.
+
+Take `⟨L, hFD, hs⟩` from `exists_fd_range (A := A) (insert a₀ (f.support.image f.coeff))`. Establish `: IsLocalRing (A ⊗[κ] L)` using `hL κ L A hA`. Establish `: HenselianLocalRing (A ⊗[κ] L)` using `GlobalTheory.henselianLocalRing_of_finite A _`. Establish `hint : (incMap κ K A L).toRingHom.IsIntegral`. Use `RingHom.IsIntegral.tower_top (algebraMap A (A ⊗[κ] L)) _ ?_` and prove the remaining obligations.
+
+Establish `e : (incMap κ K A L).toRingHom.comp (algebraMap A (A ⊗[κ] L)) = algebraMap A (A ⊗[κ] K)` using `(incMap κ K A L).comp_algebraMap`. Rewrite using `[e]`. Conclude with `fun x => Algebra.IsIntegral.isIntegral (R := A) x`. Establish `hc : (maximalIdeal (A ⊗[κ] K)).comap (incMap κ K A L).toRingHom = maximalIdeal (A ⊗[κ] L)` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' _ hint _)`. Use `hens_root_of_sub (incMap κ K A L).toRingHom hc f hf a₀ ?_ ?_ h1 h2` and prove the remaining obligations.
+
+Introduce `n`. Distinguish the cases in `hn : n ∈ f.support`. Conclude with `(AlgHom.mem_range _).1 (hs _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ hn)))`. Conclude with `⟨0, by simp [Polynomial.notMem_support_iff.1 hn]⟩`. Conclude with `(AlgHom.mem_range _).1 (hs _ (Finset.mem_insert_self _ _))`.
+-/
 theorem SHInsepHens_of (hL : SHInsepLoc) : SHInsepHens := by
   intro κ K A _ _ _ _ _ _ hA _
   have hA' := hA

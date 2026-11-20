@@ -22,12 +22,20 @@ variable {S : Scheme.{0}} {s : S ⟶ Sp (KA l)}
 namespace IndexZero
 open GlobalTheory.HeckeKerModel
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h l Xo P p i ⟨a, b, c, d, e⟩ => h l Xo P p i a b c d e, fun h l Xo P p i a b c d e => h l Xo P p i ⟨a, b, c, d, e⟩⟩`.
+-/
 theorem pointwise_iff : ToroidalHeckeCompatibility (H := H) (D := D) ↔ ∀ (l : Level H) (Xo : Moduli D l) (P : Ideal (𝓞 E)) (p i : ℕ),
     admitted l P p → ∀ (k : Type) [Field k] [IsAlgClosed k] (y : Sp k ⟶ Xo.X) (C : Subgroup (Over.mk y ⟶ Xo.univ.t.G)),
       Xo.univ.t.HeckeKer (Over.mk y) D P p i C → ∃! y'', PointQuot Xo p y y'' C :=
   ⟨fun h l Xo P p i ⟨a, b, c, d, e⟩ => h l Xo P p i a b c d e,
     fun h l Xo P p i a b c d e => h l Xo P p i ⟨a, b, c, d, e⟩⟩
 
+/- English proof (translation)
+Use `⟨AlgebraicClosure (X.residueField g), inferInstance, inferInstance, Spec.map (CommRingCat.ofHom (algebraMap (X.residueField g) (AlgebraicClosure (X.residueField g)))) ≫ X.fromSpecResidueField g, ?_⟩` and prove the remaining obligations. Apply `Set.eq_singleton_iff_unique_mem.2` to reduce the goal to its premises. Use `⟨⟨IsLocalRing.closedPoint _, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply _ _)`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `Scheme.fromSpecResidueField_apply _ _`.
+-/
 theorem exists_pt (X : Scheme.{0}) (g : X) :
     ∃ (k : Type) (_ : Field k) (_ : IsAlgClosed k) (x : Sp k ⟶ X), Set.range x = {g} := by
   refine ⟨AlgebraicClosure (X.residueField g), inferInstance, inferInstance,
@@ -40,6 +48,11 @@ theorem exists_pt (X : Scheme.{0}) (g : X) :
     rw [Scheme.Hom.comp_apply]
     exact Scheme.fromSpecResidueField_apply _ _
 
+/- English proof (translation)
+Establish `hs : Surjective (pullback.snd ν x)` using `⟨by`. Rewrite using `[← Set.range_eq_univ, Scheme.Pullback.range_snd]`. Conclude with `Set.eq_univ_of_forall fun t => h ⟨t, rfl⟩⟩`. Establish `: IsIso (pullback.snd ν x)` using `isIso_of_isClosedImmersion_of_surjective _`. Conclude with `⟨inv (pullback.snd ν x) ≫ pullback.fst ν x, by`.
+
+Rewrite using `[Category.assoc, pullback.condition, IsIso.inv_hom_id_assoc]⟩`.
+-/
 theorem lift_closed {T N B : Scheme.{0}} [IsReduced T] (x : T ⟶ B) (ν : N ⟶ B)
     [IsClosedImmersion ν] (h : Set.range x ⊆ Set.range ν) : ∃ l : T ⟶ N, l ≫ ν = x := by
   have hs : Surjective (pullback.snd ν x) := ⟨by
@@ -49,6 +62,9 @@ theorem lift_closed {T N B : Scheme.{0}} [IsReduced T] (x : T ⟶ B) (ν : N ⟶
   exact ⟨inv (pullback.snd ν x) ≫ pullback.fst ν x, by
     rw [Category.assoc, pullback.condition, IsIso.inv_hom_id_assoc]⟩
 
+/- English proof (translation)
+Use extensionality with `g`. Take `⟨k, _, _, z, hz⟩` from `exists_pt G.left g`. Use `h k (z ≫ G.hom) (Over.homMk z rfl)` as an intermediate fact. Express the relevant statement in the definitionally equal form `Set.range z ⊆ K ↔ Set.range z ⊆ K' at this`. Simplify `this` using `[hz]`.
+-/
 theorem set_ext {G : Over S} {K K' : Set G.left}
     (h : ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) (z : Over.mk x ⟶ G),
       Set.range z.left ⊆ K ↔ Set.range z.left ⊆ K') : K = K' := by
@@ -58,10 +74,24 @@ theorem set_ext {G : Over S} {K K' : Set G.left}
   change Set.range z ⊆ K ↔ Set.range z ⊆ K' at this
   simpa [hz] using this
 
+/- English proof (translation)
+The claim follows from `set_ext fun k _ _ x z => (h k x z).symm.trans (h' k x z)`.
+-/
 theorem kerSet_unique {G G' : Over S} [GrpObj G'] {ψ : G ⟶ G'} {K K' : Set G.left} (h : KerSet ψ K)
     (h' : KerSet ψ K') : K = K' :=
   set_ext fun k _ _ x z => (h k x z).symm.trans (h' k x z)
 
+/- English proof (translation)
+Introduce `k _ _ x z`. Establish `hw : (η[G'] : 𝟙_ (Over S) ⟶ G').left ≫ G'.hom = 𝟙 _` using `Over.w _`. Establish `: IsClosedImmersion (η[G'] : 𝟙_ (Over S) ⟶ G').left`. Establish `: IsClosedImmersion ((η[G'] : 𝟙_ (Over S) ⟶ G').left ≫ G'.hom)` using `by rw [hw]; infer_instance`. Conclude with `IsClosedImmersion.of_comp _ G'.hom`.
+
+Establish `h1 : (1 : Over.mk x ⟶ G').left = x ≫ (η[G'] : 𝟙_ (Over S) ⟶ G').left` using `rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨w, rfl⟩`. Use `⟨x w, ?_⟩` and prove the remaining obligations. Use `congrArg (fun f : Over.mk x ⟶ G' => f.left w) h` as an intermediate fact.
+
+Simplify using `only [h1, Over.comp_left, Scheme.Hom.comp_apply] at this`. Conclude with `this.symm`. Introduce `h`. Take `⟨t, ht⟩` from `lift_closed (T := Sp k) (z.left ≫ ψ.left) (η[G'] : 𝟙_ (Over S) ⟶ G').left (by`. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Conclude with `h ⟨w, rfl⟩)`. Establish `ht' : t = x`. Use `Over.w (z ≫ ψ)` as an intermediate fact. Rewrite `this` using `[Over.comp_left, ← ht, Category.assoc, hw]`. Conclude with `(Category.comp_id _).symm.trans this`.
+
+Conclude with `Over.OverMorphism.ext (by rw [h1, Over.comp_left, ← ht, ht'])`.
+-/
 theorem kerSet_preimage {G G' : Over S} [GrpObj G'] [IsSeparated G'.hom] (ψ : G ⟶ G') :
     KerSet ψ (ψ.left ⁻¹' Set.range (η[G'] : 𝟙_ (Over S) ⟶ G').left) := by
   intro k _ _ x z
@@ -86,6 +116,13 @@ theorem kerSet_preimage {G G' : Over S} [GrpObj G'] [IsSeparated G'.hom] (ψ : G
       exact (Category.comp_id _).symm.trans this
     exact Over.OverMorphism.ext (by rw [h1, Over.comp_left, ← ht, ht'])
 
+/- English proof (translation)
+Establish `hw : (η[G'] : 𝟙_ (Over S) ⟶ G').left ≫ G'.hom = 𝟙 _` using `Over.w _`. Establish `: IsClosedImmersion (η[G'] : 𝟙_ (Over S) ⟶ G').left`. Establish `: IsClosedImmersion ((η[G'] : 𝟙_ (Over S) ⟶ G').left ≫ G'.hom)` using `by rw [hw]; infer_instance`. Conclude with `IsClosedImmersion.of_comp _ G'.hom`. Use `⟨Over.mk (pullback.snd ψ.left (η[G'] : 𝟙_ (Over S) ⟶ G').left), Over.homMk (pullback.fst ψ.left (η[G'] : 𝟙_ (Over S) ⟶ G').left) ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Over.w ψ, ← Category.assoc, pullback.condition, Category.assoc, hw]`. Conclude with `Category.comp_id _`. Conclude with `inferInstanceAs (IsFinite (pullback.snd ψ.left (η[G'] : 𝟙_ (Over S) ⟶ G').left))`. Conclude with `inferInstanceAs (Etale (pullback.snd ψ.left (η[G'] : 𝟙_ (Over S) ⟶ G').left))`. Conclude with `inferInstanceAs (IsClosedImmersion (pullback.fst ψ.left (η[G'] : 𝟙_ (Over S) ⟶ G').left))`.
+
+Rewrite using `[kerSet_unique h (kerSet_preimage ψ)]`. Conclude with `Scheme.Pullback.range_fst _ _`.
+-/
 theorem etSet_of_kerSet {G G' : Over S} [GrpObj G'] [IsSeparated G'.hom] {ψ : G ⟶ G'} [IsFinite ψ.left] [Etale ψ.left]
     {K : Set G.left} (h : KerSet ψ K) : EtSet G K := by
   have hw : (η[G'] : 𝟙_ (Over S) ⟶ G').left ≫ G'.hom = 𝟙 _ := Over.w _
@@ -102,6 +139,9 @@ theorem etSet_of_kerSet {G G' : Over S} [GrpObj G'] [IsSeparated G'.hom] {ψ : G
   · rw [kerSet_unique h (kerSet_preimage ψ)]
     exact Scheme.Pullback.range_fst _ _
 
+/- English proof (translation)
+Use `⟨fun ⟨h, K, hK, hH⟩ => ⟨h, K, hK, hH, ?_, o', ψ, h, hK⟩, fun ⟨h, K, hK, hH, _⟩ => ⟨h, K, hK, hH⟩⟩` and prove the remaining obligations. Use `o'.proper` as an intermediate fact. Use `h.1.2.1` as an intermediate fact. Use `h.1.2.2.1` as an intermediate fact. Conclude with `etSet_of_kerSet hK`.
+-/
 theorem isHecke_iff (o o' : Ob D l s) (P : Ideal (𝓞 E)) (p i : ℕ) (ψ : o.t.G ⟶ o'.t.G) :
     IsHecke o o' P p i ψ ↔ IsIsog o o' p ψ ∧ ∃ K, KerSet ψ K ∧ HeckeSet D o.t P p i K ∧ EtSet o.t.G K ∧ HasQuot o p K := by
   refine ⟨fun ⟨h, K, hK, hH⟩ => ⟨h, K, hK, hH, ?_, o', ψ, h, hK⟩, fun ⟨h, K, hK, hH, _⟩ => ⟨h, K, hK, hH⟩⟩
@@ -113,20 +153,34 @@ theorem isHecke_iff (o o' : Ob D l s) (P : Ideal (𝓞 E)) (p i : ℕ) (ψ : o.t
 def torsSet (o : Ob D l s) (p : ℕ) : Set o.t.G.left :=
   (o.t.act.act (p : 𝓞 E)).left ⁻¹' Set.range (η[o.t.G] : 𝟙_ (Over S) ⟶ o.t.G).left
 
+/- English proof (translation)
+Use `o.proper` as an intermediate fact. Conclude with `(kerSet_preimage _ k x z).symm`.
+-/
 theorem range_subset_torsSet (o : Ob D l s) (p : ℕ) (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S)
     (z : Over.mk x ⟶ o.t.G) : Set.range z.left ⊆ torsSet o p ↔ z ≫ o.t.act.act (p : 𝓞 E) = 1 := by
   have := o.proper
   exact (kerSet_preimage _ k x z).symm
 
+/- English proof (translation)
+The claim follows from `heckeKer_zero o k x (Spec.preimage (x ≫ s)).hom (Spec.map_preimage (x ≫ s)).symm P p hp`.
+-/
 theorem heckeKer_tors (o : Ob D l s) (P : Ideal (𝓞 E)) {p : ℕ} (hp : 0 < p) (k : Type) [Field k] [IsAlgClosed k]
     (x : Sp k ⟶ S) : o.t.HeckeKer (Over.mk x) D P p 0 (torsSub o.t (Over.mk x) p) :=
   heckeKer_zero o k x (Spec.preimage (x ≫ s)).hom (Spec.map_preimage (x ≫ s)).symm P p hp
 
+/- English proof (translation)
+Introduce `k _ _ x` and use `⟨_, fun z => by rw [range_subset_torsSet, comp_act_natCast]; exact mem_tors_span o.t z p, heckeKer_tors o P hp k x⟩`.
+-/
 theorem heckeSet_torsSet (o : Ob D l s) (P : Ideal (𝓞 E)) {p : ℕ} (hp : 0 < p) :
     HeckeSet D o.t P p 0 (torsSet o p) := fun k _ _ x =>
   ⟨_, fun z => by rw [range_subset_torsSet, comp_act_natCast]; exact mem_tors_span o.t z p,
     heckeKer_tors o P hp k x⟩
 
+/- English proof (translation)
+Establish `hT` using `(heckeKer_tors o P hp k x).2.2.2.2.1`. Establish `h1` using `hC.2.2.2.2.1`. Establish `h2` using `hC.2.2.2.2.2`. Rewrite `h2` using `[pow_zero, _root_.mul_one]`. Establish `fT : Finite (torsSub o.t (Over.mk x) p)` using `Nat.finite_of_card_ne_zero (hT ▸ pow_ne_zero _ hp.ne')`.
+
+Establish `fC : Finite C` using `Nat.finite_of_card_ne_zero (h1 ▸ pow_ne_zero _ hp.ne')`. Establish `e1 : C ⊓ torsSub o.t (Over.mk x) p = torsSub o.t (Over.mk x) p` using `Subgroup.eq_of_le_of_card_ge inf_le_right h2.le`. Conclude with `(Subgroup.eq_of_le_of_card_ge (e1 ▸ inf_le_left) (h1.trans hT.symm).le).symm`.
+-/
 theorem eq_torsSub (o : Ob D l s) (P : Ideal (𝓞 E)) {p : ℕ} (hp : 0 < p) (k : Type) [Field k] [IsAlgClosed k]
     (x : Sp k ⟶ S) (C : Subgroup (Over.mk x ⟶ o.t.G)) (hC : o.t.HeckeKer (Over.mk x) D P p 0 C) :
     C = torsSub o.t (Over.mk x) p := by
@@ -140,6 +194,9 @@ theorem eq_torsSub (o : Ob D l s) (P : Ideal (𝓞 E)) {p : ℕ} (hp : 0 < p) (k
     Subgroup.eq_of_le_of_card_ge inf_le_right h2.le
   exact (Subgroup.eq_of_le_of_card_ge (e1 ▸ inf_le_left) (h1.trans hT.symm).le).symm
 
+/- English proof (translation)
+The claim follows from `set_ext fun k _ _ x z => by obtain ⟨C, hC, hk⟩ := hK k x rw [← hC, eq_torsSub o P hp k x C hk, range_subset_torsSet, comp_act_natCast] exact mem_tors_span o.t z p`.
+-/
 theorem eq_torsSet (o : Ob D l s) (P : Ideal (𝓞 E)) {p : ℕ} (hp : 0 < p) {K : Set o.t.G.left}
     (hK : HeckeSet D o.t P p 0 K) : K = torsSet o p :=
   set_ext fun k _ _ x z => by
@@ -147,6 +204,9 @@ theorem eq_torsSet (o : Ob D l s) (P : Ideal (𝓞 E)) {p : ℕ} (hp : 0 < p) {K
     rw [← hC, eq_torsSub o P hp k x C hk, range_subset_torsSet, comp_act_natCast]
     exact mem_tors_span o.t z p
 
+/- English proof (translation)
+The claim follows from `set_ext fun k _ _ x z => by have hc := n.cart.1 let z₀ : Over.mk (x ≫ f) ⟶ o.t.G := Over.homMk (z.left ≫ n.cm.F) (by rw [Category.assoc, hc.w, ← Category.assoc, Over.w z]; rfl) have e0 : Set.range z.left ⊆ n.toSABMap.φ ⁻¹' torsSet o p ↔ Set.range z₀.left ⊆ torsSet o p := by const …`.
+-/
 theorem torsSet_pull {S' : Scheme.{0}} {s' : S' ⟶ Sp (KA l)} (o' : Ob D l s') (o : Ob D l s) {f : S' ⟶ S}
     (n : ObjMap o' o f) (p : ℕ) : torsSet o' p = n.toSABMap.φ ⁻¹' torsSet o p :=
   set_ext fun k _ _ x z => by
@@ -174,6 +234,21 @@ theorem torsSet_pull {S' : Scheme.{0}} {s' : S' ⟶ Sp (KA l)} (o' : Ob D l s') 
       refine Over.OverMorphism.ext (hc.hom_ext (by rw [h2, h, h1]) ?_)
       rw [Over.w, Over.w]
 
+/- English proof (translation)
+Establish `hg` using `(GlobalTheory.obj_isAbelianScheme_dim_rigidified_sym E H D l _ _ S s o).2.1`. Establish `hL : Out.Laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Set `Q` to `HeckePoint.polOf o.t o.proper o.ample o.ktriv hg`. Establish `e : o.t.act.act (p : 𝓞 E) = 𝟙 o.t.G ^ p` using `by rw [← comp_act_natCast, Category.id_comp]`. Take `⟨h1, -, h2, h3, -⟩` from `hL.mulN S Q p hp`.
+
+Establish `hu : IsUnit (p : Γ(S, ⊤))`. Establish `h0 : IsUnit (p : Γ(Sp (KA l), ⊤))`. Simplify using `using ((baseKA l).unit p hp).map (Scheme.ΓSpecIso (CommRingCat.of (KA l))).inv.hom`. Simplify using `using h0.map s.appTop.hom`. Use `o.proper` as an intermediate fact.
+
+Use `⟨⟨⟨o.t.act.hom _, e ▸ h1, e ▸ h3 hu, e ▸ h2, fun a => ?_, ?_⟩, fun p' hp' a => ?_⟩, _, kerSet_preimage _, heckeSet_torsSet o P hp⟩` and prove the remaining obligations. Rewrite using `[← o.t.act.mul, ← o.t.act.mul, _root_.mul_comm]`. Establish `hN` using `o.t.PP.isLB`. Establish `h₂` using `(CechPic.cls_eq_zero_iff (LB.isLB_linComb hN _ _)).2 (hL.mulPull S Q p)`. Rewrite `h₂` using `[CechPic.cls_linComb hN]`.
+
+Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, CechPic.pull_id, one_zsmul, neg_zsmul] at h₂`. Use `(CechPic.cls_eq_iff (LB.isLB_linComb hN _ _) (LB.isLB_linComb hN _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[CechPic.cls_lbPow hN, CechPic.cls_pull hN, e, ← add_neg_eq_zero.1 h₂, ← natCast_zsmul, Nat.cast_pow]`. Conclude with `congrArg _ (CechPic.pull_id _).symm`. Establish `key : ∀ f : D.La → (𝟙_ (Over S) ⟶ o.t.G), (∀ a c, f (a + c) = f a * f c) → ∀ (n : ℕ) a, f a ^ n = f (n • a)`.
+
+Introduce `f hf n a`. Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `hf 0 0`. Rewrite `h` using `[add_zero]`.
+
+Rewrite using `[pow_zero, zero_nsmul, left_eq_mul.1 h]`. Consider the case `succ n ih => rw [pow_succ, ih, succ_nsmul, hf]`. Establish `hM : ∀ a, o.eta (l.M • a) = 1` using `fun a => o.eta_ker _ (by`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul (HeckePoint.natCast_M_mem l) Submodule.mem_top)`.
+
+Rewrite using `[comp_act_natCast, comp_act_natCast, key _ o.eta_add, key _ o.etaA_add, ← mul_nsmul', HeckePoint.eq_of_modEq _ o.eta_add hM (hp'.of_dvd (Nat.dvd_lcm_left _ _)), HeckePoint.eq_of_modEq _ o.etaA_add o.etaA_ker (hp'.of_dvd (Nat.dvd_lcm_right _ _)), one_nsmul]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem isHecke_mul [IsLocallyNoetherian S] (o : Ob D l s) (P : Ideal (𝓞 E)) {p : ℕ} (hp : 0 < p) : IsHecke o o P p 0 (o.t.act.act (p : 𝓞 E)) := by
   have hg := (GlobalTheory.obj_isAbelianScheme_dim_rigidified_sym E H D l _ _ S s o).2.1
   have hL : Out.Laws := GlobalTheory.abelianSchemeLaws_all.1
@@ -212,6 +287,9 @@ theorem isHecke_mul [IsLocallyNoetherian S] (o : Ob D l s) (P : Ideal (𝓞 E)) 
       HeckePoint.eq_of_modEq _ o.etaA_add o.etaA_ker (hp'.of_dvd (Nat.dvd_lcm_right _ _)), one_nsmul]
     exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Take `⟨-, K, -, h1, h2, -⟩` from `(isHecke_iff o o ⊤ p 0 _).1 (isHecke_mul o ⊤ hp)`. Conclude with `eq_torsSet o ⊤ hp h1 ▸ h2`.
+-/
 theorem etSet_torsSet [IsLocallyNoetherian S] (o : Ob D l s) {p : ℕ} (hp : 0 < p) : EtSet o.t.G (torsSet o p) := by
   obtain ⟨-, K, -, h1, h2, -⟩ := (isHecke_iff o o ⊤ p 0 _).1 (isHecke_mul o ⊤ hp)
   exact eq_torsSet o ⊤ hp h1 ▸ h2
@@ -240,6 +318,9 @@ def kerZero (Xo : Moduli D l) (P : Ideal (𝓞 E)) {p : ℕ} (hp : 0 < p) : KerS
     rintro g ⟨hg, m, -⟩
     exact hu g ⟨by rw [← hg, Category.id_comp], ⟨⟨m.toSABMap, m.eta, m.etaA⟩⟩⟩
 
+/- English proof (translation)
+Use `⟨Category.comp_id _, fun u v huv => ?_⟩` and prove the remaining obligations. Establish `: v = u` using `Over.OverMorphism.ext (huv.trans (Category.comp_id _))`. Substitute `this` using the available equality. Use `(range_subset_torsSet (univId Xo) p k y v).trans ?_` and prove the remaining obligations. Conclude with `(comp_act_natCast Xo.univ.t v p ▸ (mem_tors_span Xo.univ.t v p).symm : v ≫ Xo.univ.t.act.act (p : 𝓞 E) = 1 ↔ _)`.
+-/
 theorem kerZero_carries (Xo : Moduli D l) (P : Ideal (𝓞 E)) {p : ℕ} (hp : 0 < p) (k : Type) [Field k] [IsAlgClosed k]
     (y : Sp k ⟶ Xo.X) : (kerZero Xo P hp).Carries y y (torsSub Xo.univ.t (Over.mk y) p) := by
   refine ⟨Category.comp_id _, fun u v huv => ?_⟩
@@ -249,6 +330,9 @@ theorem kerZero_carries (Xo : Moduli D l) (P : Ideal (𝓞 E)) {p : ℕ} (hp : 0
   exact (comp_act_natCast Xo.univ.t v p ▸ (mem_tors_span Xo.univ.t v p).symm :
     v ≫ Xo.univ.t.act.act (p : 𝓞 E) = 1 ↔ _)
 
+/- English proof (translation)
+Take `⟨Xo, y, -⟩` from `ModuliInhabitant.moduli_inhabited.1 E H D hr l`. Conclude with `⟨Xo, kerZero Xo P hp, y, y, _, kerZero_carries Xo P hp ℂ y, (heckeKer_tors Xo.univ P hp ℂ y).2.2.2.2.1⟩`.
+-/
 theorem exists_kerScheme (hr : 1 ≤ D.p + D.q) (l : Level H) (P : Ideal (𝓞 E)) {p : ℕ} (hp : 0 < p) :
     ∃ (Xo : Moduli D l) (Z : KerScheme Xo P p 0) (z : Sp ℂ ⟶ Z.Hk) (y : Sp ℂ ⟶ Xo.X)
       (C : Subgroup (Over.mk y ⟶ Xo.univ.t.G)),
@@ -256,9 +340,17 @@ theorem exists_kerScheme (hr : 1 ≤ D.p + D.q) (l : Level H) (P : Ideal (𝓞 E
   obtain ⟨Xo, y, -⟩ := ModuliInhabitant.moduli_inhabited.1 E H D hr l
   exact ⟨Xo, kerZero Xo P hp, y, y, _, kerZero_carries Xo P hp ℂ y, (heckeKer_tors Xo.univ P hp ℂ y).2.2.2.2.1⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.exists_split_prime_outside_level E H l`.
+-/
 theorem exists_adm (l : Level H) : ∃ (P : Ideal (𝓞 E)) (p : ℕ), admitted l P p :=
   GlobalTheory.exists_split_prime_outside_level E H l
 
+/- English proof (translation)
+Take `⟨P, p, h⟩` from `exists_adm l`. Take `⟨Xo, Z, z, y, C, h1, h2⟩` from `exists_kerScheme hr l P h.2.2.1.pos`. Use `⟨P, p, Xo, Z, z, y, C, h, h1, fun hC => ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[hC, Subgroup.card_bot]`. Establish `h3 : 2 ≤ Module.finrank ℚ E`.
+
+Use `NumberField.IsTotallyComplex.finrank E` as an intermediate fact. Establish `: 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers. Establish `h4 : 0 < Module.finrank ℚ E / 2 * (D.p + D.q)` using `Nat.mul_pos (by omega) hr`. Conclude with `(Nat.one_lt_pow (by omega) h.2.2.1.one_lt).ne h2`.
+-/
 theorem exists_admissible_kernel_scheme (hr : 1 ≤ D.p + D.q) (l : Level H) :
     ∃ (P : Ideal (𝓞 E)) (p : ℕ) (Xo : Moduli D l) (Z : KerScheme Xo P p 0) (z : Sp ℂ ⟶ Z.Hk) (y : Sp ℂ ⟶ Xo.X)
       (C : Subgroup (Over.mk y ⟶ Xo.univ.t.G)), admitted l P p ∧ Z.Carries z y C ∧ C ≠ ⊥ := by
@@ -278,20 +370,34 @@ end IndexZero
 namespace KerScheme
 variable {Xo : Moduli D l} {𝔓 : Ideal (𝓞 E)} {p i : ℕ}
 
+/- English proof (translation)
+Use `Xo.smooth` as an intermediate fact. Use `SmoothOfRelativeDimension.smooth D.dim Xo.s` as an intermediate fact. Use `Z.et₁` as an intermediate fact. Use `infer_instance`.
+-/
 theorem smooth (Z : KerScheme Xo 𝔓 p i) : Smooth (Z.π₁ ≫ Xo.s) := by
   have := Xo.smooth
   have := SmoothOfRelativeDimension.smooth D.dim Xo.s
   have := Z.et₁
   infer_instance
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ _ Z.smooth).1`.
+-/
 theorem isReduced (Z : KerScheme Xo 𝔓 p i) : IsReduced Z.Hk :=
   (GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ _ Z.smooth).1
 
+/- English proof (translation)
+Take `⟨m', -⟩` from `((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ Z.o₁ o).2 Z.π₁ h Z.m₁).1 n`. Conclude with `(Xo.rep S s inferInstance o).unique ⟨by rw [Category.assoc, hh], ⟨m'⟩⟩ ⟨hf, ⟨m⟩⟩`.
+-/
 theorem comp_π₁ (Z : KerScheme Xo 𝔓 p i) [IsReduced S] {o : Ob D l s} {h : S ⟶ Z.Hk} (hh : h ≫ Z.π₁ ≫ Xo.s = s)
     (n : ObjMap o Z.o₁ h) {f : S ⟶ Xo.X} (hf : f ≫ Xo.s = s) (m : ObjMap o Xo.univ f) : h ≫ Z.π₁ = f := by
   obtain ⟨m', -⟩ := ((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ Z.o₁ o).2 Z.π₁ h Z.m₁).1 n
   exact (Xo.rep S s inferInstance o).unique ⟨by rw [Category.assoc, hh], ⟨m'⟩⟩ ⟨hf, ⟨m⟩⟩
 
+/- English proof (translation)
+Establish `key : ∀ (Z Z' : KerScheme Xo 𝔓 p i) (h : Z.Hk ⟶ Z'.Hk) (h' : Z'.Hk ⟶ Z.Hk), h ≫ Z'.π₁ ≫ Xo.s = Z.π₁ ≫ Xo.s → h' ≫ Z.π₁ ≫ Xo.s = Z'.π₁ ≫ Xo.s → ∀ (n : ObjMap Z.o₁ Z'.o₁ h) (n' : ObjMap Z'.o₁ Z.o₁ h'), Z.K = n.toSABMap.φ ⁻¹' Z'.K → Z'.K = n'.toSABMap.φ ⁻¹' Z.K → h ≫ h' = 𝟙 _`. Introduce `Z Z' h h' e e' n n' hK hK'`. Take `⟨⟨m₀, hm₀⟩, -⟩` from `GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ Z.o₁ Z.o₁ Z.o₁`. Take `⟨m, hm⟩` from `((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ Z.o₁ Z'.o₁ Z.o₁).2 h' h n').1 n`. Use `(Z.rep _ _ Z.isReduced Z.o₁ Z.K Z.et Z.hecke).unique ⟨by rw [Category.assoc, e', e], m, ?_⟩ ⟨Category.id_comp _, m₀, by rw [hm₀]; rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[hm, Scheme.Hom.comp_base, TopCat.coe_comp, Set.preimage_comp, ← hK', ← hK]`. Take `⟨h, ⟨e, n, hK⟩, -⟩` from `Z'.rep _ _ Z.isReduced Z.o₁ Z.K Z.et Z.hecke`. Take `⟨h', ⟨e', n', hK'⟩, -⟩` from `Z.rep _ _ Z'.isReduced Z'.o₁ Z'.K Z'.et Z'.hecke`. Use `Z.isReduced` as an intermediate fact. Conclude with `⟨⟨h, h', key Z Z' h h' e e' n n' hK hK', key Z' Z h' h e' e n' n hK' hK⟩, Z'.comp_π₁ e n rfl Z.m₁, n, hK⟩`.
+-/
 theorem exists_iso (Z Z' : KerScheme Xo 𝔓 p i) :
     ∃ e : Z.Hk ≅ Z'.Hk, e.hom ≫ Z'.π₁ = Z.π₁ ∧ ∃ n : ObjMap Z.o₁ Z'.o₁ e.hom, Z.K = n.toSABMap.φ ⁻¹' Z'.K := by
   have key : ∀ (Z Z' : KerScheme Xo 𝔓 p i) (h : Z.Hk ⟶ Z'.Hk) (h' : Z'.Hk ⟶ Z.Hk),
@@ -311,6 +417,9 @@ theorem exists_iso (Z Z' : KerScheme Xo 𝔓 p i) :
 
 end KerScheme
 
+/- English proof (translation)
+Take `⟨e, he, -⟩` from `Z.exists_iso (IndexZero.kerZero Xo 𝔓 hp)`. Establish `: e.hom = Z.π₁` using `(Category.comp_id _).symm.trans he`. Conclude with `this ▸ e.isIso_hom`.
+-/
 example {Xo : Moduli D l} {𝔓 : Ideal (𝓞 E)} {p : ℕ} (hp : 0 < p) (Z : KerScheme Xo 𝔓 p 0) : IsIso Z.π₁ := by
   obtain ⟨e, he, -⟩ := Z.exists_iso (IndexZero.kerZero Xo 𝔓 hp)
   have : e.hom = Z.π₁ := (Category.comp_id _).symm.trans he

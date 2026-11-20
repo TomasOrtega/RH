@@ -14,6 +14,25 @@ noncomputable section
 
 namespace GlobalTheory.MonPeriods
 
+/- English proof (translation)
+Introduce `E _ _ _ H W _ _ _ hW ϖ hϖ t P`. Take `⟨hdvr, hcomp, hchar⟩` from `hW`. Use `haveI := hdvr`. Use `haveI := hcomp`. Use `haveI := hchar`.
+
+Use `letI := H.starRing`. Use `choose Q hQ using QForm.exists_QVal hϖ P.D`. Establish `hQ' : QForm.IsQ P.D.toPre ϖ Q` using `hQ`. Establish `hex : ∀ χ, ∃ r, PsiCoord P.D.toPre χ r` using `fun χ => ((GlobalTheory.PsiCoordLocal.main W P.D inferInstance χ).1).imp fun _ h => h.1`. Establish `hv : ∀ χ, HasVal ϖ (algebraMap W (FractionRing W) (hex χ).choose) (Q χ)` using `fun χ => GlobalTheory.ValForm.hasVal_coord (hQ χ) (hex χ).choose_spec`.
+
+Establish `h0 : ∀ a, 0 ≤ Q a` using `fun a => by`. Distinguish the cases in `ha : a = 0`. Rewrite using `[ha, QForm.Q_zero hϖ P.D hQ']`. Conclude with `zero_le_one.trans (QForm.Q_pos hϖ P.D hQ' ha)`. Establish `hbal : ∀ (x : 𝓞 E) a b, QForm.bOf P.D.toPre Q (x • a) b = QForm.bOf P.D.toPre Q a (H.bar x • b)`.
+
+Introduce `x a b`. Take `⟨u, hu⟩` from `GlobalTheory.PeriodBalance.coord_balance P.D.toPre P.oD x a b (hex (x • a + b)).choose_spec (hex (x • a)).choose_spec (hex b).choose_spec (hex (a + H.bar x • b)).choose_spec (hex a).choose_spec (hex (H.bar x • b)).choose_spec`. Establish `h1` using `hasVal_mul_unit (GlobalTheory.ValForm.hasVal_mul hϖ (GlobalTheory.ValForm.hasVal_mul hϖ (hv (x • a + b)) (hv a)) (hv (H.bar x • b))) u`. Establish `h2` using `GlobalTheory.ValForm.hasVal_mul hϖ (GlobalTheory.ValForm.hasVal_mul hϖ (hv (a + H.bar x • b)) (hv (x • a))) (hv b)`. Rewrite `h1` using `[← map_mul, _root_.mul_comm, hu]`.
+
+Use `hasVal_unique hϖ h1 h2` as an intermediate fact. Simplify using `only [QForm.bOf]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `be : LinearMap.BilinForm ℤ P.D.toPre.X` to `LinearMap.mk₂ ℤ (fun a b => QForm.bHom hϖ P.D hQ' a b) (fun a a' b => by simp only [map_add, AddMonoidHom.add_apply]) (fun c a b => by simp only [map_zsmul, AddMonoidHom.smul_apply, smul_eq_mul]) (fun a b b' => by simp only [map_add]) (fun c a b => by simp only [map_zsmul, smul_e …`. Establish `hbe : ∀ a b, be a b = QForm.bOf P.D.toPre Q a b` using `fun _ _ => rfl`.
+
+Use `⟨be, ⟨fun y z => ?_, fun a y z => ?_, fun y z => by simp⟩, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hbe, hbe, QForm.bOf_comm]`. Rewrite using `[hbe, hbe]`. Conclude with `hbal a y z`. Take `⟨u, hu⟩` from `hv y set r := (hex y).choose with hr`.
+
+Establish `hn : (((Q y).toNat : ℕ) : ℤ) = Q y` using `Int.toNat_of_nonneg (h0 y)`. Establish `e : r = ↑u * ϖ ^ (Q y).toNat`. Apply `IsFractionRing.injective W (FractionRing W)` to reduce the goal to its premises. Rewrite using `[hu, map_mul, map_pow, _root_.mul_comm, ← zpow_natCast, hn]`. Use `⟨u, fun _ => (Q y).toNat, fun i => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `fin_cases i`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]`. Rewrite using `[hbe, ← QForm.two_Q_eq hϖ P.D hQ', hn]`. Establish `hc : PsiCoord P.D.toPre y r` using `(hex y).choose_spec`. Rewrite `hc` using `[e]`.
+
+Simplify using `using hc`.
+-/
 theorem exists_isMonomial_levelOne : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {W : Type}
     [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ ϖ : W, Irreducible ϖ → ∀ (t : SAB H (Sp W))
     (P : PELUnif (maximalIdeal W) t), ∃ be ∈ levelForms H 1 P.D.toPre.X, IsMonomial P.D.toPre ![ϖ] ![be] := by

@@ -13,6 +13,11 @@ section Ladder
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Introduce `y`. Take `⟨y', rfl⟩` from `b.surjective y`. Rewrite using `[h2, LinearEquiv.map_eq_zero_iff, h y']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', rfl⟩`.
+
+Conclude with `⟨a x', h1 x'⟩`. Introduce and unpack `⟨x, hx⟩`. Take `⟨x', rfl⟩` from `a.surjective x`. Conclude with `⟨x', b.injective (by rw [← h1, hx])⟩`.
+-/
 theorem exact_transfer {A A' B B' C C' : Type*}
     [AddCommGroup A] [Module R A] [AddCommGroup A'] [Module R A']
     [AddCommGroup B] [Module R B] [AddCommGroup B'] [Module R B']
@@ -31,6 +36,15 @@ theorem exact_transfer {A A' B B' C C' : Type*}
     obtain ⟨x', rfl⟩ := a.surjective x
     exact ⟨x', b.injective (by rw [← h1, hx])⟩
 
+/- English proof (translation)
+Take `⟨d1', d2', i0, e1, e2, e3, e4, e5, e6, e7, s8⟩` from `h`. Establish `hd1 : ∀ y, (a1.toLinearMap ∘ₗ d1' ∘ₗ w0.symm.toLinearMap) (w0 y) = a1 (d1' y)`. Introduce `y`. Simplify using the standard rewrite rules. Establish `hd2 : ∀ y, (a2.toLinearMap ∘ₗ d2' ∘ₗ w1.symm.toLinearMap) (w1 y) = a2 (d2' y)`.
+
+Introduce `y`. Simplify using the standard rewrite rules. Use `⟨a1.toLinearMap ∘ₗ d1' ∘ₗ w0.symm.toLinearMap, a2.toLinearMap ∘ₗ d2' ∘ₗ w1.symm.toLinearMap, ?_, exact_transfer a0 p0 w0 hg0 ht0 e1, exact_transfer p0 w0 a1 ht0 hd1 e2, exact_transfer w0 a1 p1 hd1 hg1 e3, exact_transfer a1 p1 w1 hg1 ht1 e4, exact_transfer p1 w1 a2 ht1 hd2 e5, exa …` and prove the remaining obligations. Introduce `x y hxy`. Take `⟨x', rfl⟩` from `a0.surjective x`.
+
+Take `⟨y', rfl⟩` from `a0.surjective y`. Rewrite `hxy` using `[hg0, hg0]`. Rewrite using `[i0 (p0.injective hxy)]`. Introduce `w`. Take `⟨y', hy⟩` from `s8 (w2.symm w)`.
+
+Conclude with `⟨p2 y', by rw [ht2, hy]; simp⟩`.
+-/
 theorem nine_ladder {X0 X1 X2 Y0 Y1 Y2 W0 W1 W2 X0' X1' X2' Y0' Y1' Y2' W0' W1' W2' : Type*}
     [AddCommGroup X0] [Module R X0] [AddCommGroup X1] [Module R X1]
     [AddCommGroup X2] [Module R X2] [AddCommGroup Y0] [Module R Y0]
@@ -85,6 +99,9 @@ def piE {I I' : Type*} {A : I' → Type*} {B : I → Type*} [∀ i, AddCommGroup
     (eI : I ≃ I') (e : ∀ i, A (eI i) ≃ₗ[R] B i) : (∀ i', A i') ≃ₗ[R] ∀ i, B i :=
   (LinearEquiv.piCongrLeft R A eI).symm ≪≫ₗ LinearEquiv.piCongrRight e
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem piE_apply {I I' : Type*} {A : I' → Type*} {B : I → Type*}
     [∀ i, AddCommGroup (A i)] [∀ i, Module R (A i)] [∀ i, AddCommGroup (B i)]
     [∀ i, Module R (B i)] (eI : I ≃ I') (e : ∀ i, A (eI i) ≃ₗ[R] B i) (x : ∀ i', A i') (i : I) :
@@ -110,6 +127,9 @@ variable {R : Type} [CommRing R] [TopologicalSpace R] [DiscreteTopology R] {Γ �
 
 include hχ hc in
 
+/- English proof (translation)
+Introduce `g f`. Use extensionality with `m`. Rewrite using `[twDual_apply, twDual_apply, hχ, ← map_inv eG, hc]`.
+-/
 theorem twDual_transfer : ∀ g f, twDual χ' ρ' (eG g) f = twDual χ ρ g f := by
   intro g f
   ext m
@@ -117,6 +137,9 @@ theorem twDual_transfer : ∀ g f, twDual χ' ρ' (eG g) f = twDual χ ρ g f :=
 
 include hD hc in
 
+/- English proof (translation)
+Introduce `i d m`. Simplify using `only [MonoidHom.comp_apply, hD, hc]`.
+-/
 theorem loc_transfer :
     ∀ i d m, (ρ'.comp (φ' (eI i))) (eD i d) m = (ρ.comp (φ i)) d m := by
   intro i d m
@@ -131,12 +154,20 @@ def P1 : (∀ i', H1 (ρ'.comp (φ' i'))) ≃ₗ[R] ∀ i, H1 (ρ.comp (φ i)) :
 def P2 : (∀ i', H2 (ρ'.comp (φ' i'))) ≃ₗ[R] ∀ i, H2 (ρ.comp (φ i)) :=
   piE eI fun i => equivH2OfIso (eD i) (ρ'.comp (φ' (eI i))) (ρ.comp (φ i)) (hl i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `Subtype.ext rfl`.
+-/
 theorem local_degree_zero_square (x : H0 ρ') :
     gloc0 φ ρ (equivH0OfIso eG ρ' ρ hc x) = P0 φ φ' ρ ρ' eI eD hl (gloc0 φ' ρ' x) := by
   funext i
   exact Subtype.ext rfl
 
 include hD in
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H f`. Use function extensionality and compare the values at `i`. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk _`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `d`. Use `show f.1 (eG (φ i d)) = f.1 (φ' (eI i) (eD i d))`. Rewrite using `[hD]`.
+-/
 theorem local_degree_one_square (x : H1 ρ') :
     gloc1 φ hφ ρ (equivH1OfIso eG ρ' ρ hc x) = P1 φ φ' ρ ρ' eI eD hl (gloc1 φ' hφ' ρ' x) := by
   induction x using Submodule.Quotient.induction_on with
@@ -150,6 +181,11 @@ theorem local_degree_one_square (x : H1 ρ') :
     rw [hD]
 
 include hD in
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H f`. Use function extensionality and compare the values at `i`. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk _`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `d`. Use `show f.1 (eG (φ i d.1), eG (φ i d.2)) = f.1 (φ' (eI i) (eD i d.1), φ' (eI i) (eD i d.2))`. Rewrite using `[hD, hD]`.
+-/
 theorem local_degree_two_square (x : H2 ρ') :
     gloc2 φ hφ ρ (equivH2OfIso eG ρ' ρ hc x) = P2 φ φ' ρ ρ' eI eD hl (gloc2 φ' hφ' ρ' x) := by
   induction x using Submodule.Quotient.induction_on with
@@ -169,6 +205,11 @@ variable (j : ∀ i, H2 ((charRep χ).comp (φ i)) →ₗ[R] R)
       j' (eI i) (Submodule.Quotient.mk z') = j i (Submodule.Quotient.mk z))
 
 include hD hj in
+/- English proof (translation)
+Simplify using `only [gtr0, LinearMap.sum_apply, LinearMap.compl₁₂_apply, LinearMap.compr₂_apply, LinearMap.proj_apply]`. Rewrite using `[← Equiv.sum_comp eI]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H z`.
+
+Use `(hj i _ _ fun g h => ?_).symm` and prove the remaining obligations. Use `show evalPair (x (eI i)).1 (z.1 (φ' (eI i) (eD i g), φ' (eI i) (eD i h))) = evalPair (x (eI i)).1 (z.1 (eG (φ i g), eG (φ i h)))`. Rewrite using `[hD, hD]`.
+-/
 theorem trace_pairing_degree_zero_square (x : ∀ i', H0 (ρ'.comp (φ' i'))) (y : H2 (twDual χ' ρ')) :
     gtr0 φ hφ χ j ρ (P0 φ φ' ρ ρ' eI eD hl x) (equivH2OfIso eG _ _ hd y) =
       gtr0 φ' hφ' χ' j' ρ' x y := by
@@ -184,6 +225,11 @@ theorem trace_pairing_degree_zero_square (x : ∀ i', H0 (ρ'.comp (φ' i'))) (y
     rw [hD, hD]
 
 include hj in
+/- English proof (translation)
+Simplify using `only [gtr2, LinearMap.sum_apply, LinearMap.compl₁₂_apply, LinearMap.compr₂_apply, LinearMap.proj_apply]`. Rewrite using `[← Equiv.sum_comp eI]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show P2 φ φ' ρ ρ' eI eD hl x i = equivH2OfIso (eD i) (ρ'.comp (φ' (eI i))) (ρ.comp (φ i)) (hl i) (x (eI i)) from rfl]`. Generalize the expression as in `x (eI i) = u`.
+
+Proceed by induction on `u using Submodule.Quotient.induction_on with`. Consider the case `H w`. Conclude with `(hj i _ _ fun g h => rfl).symm`.
+-/
 theorem trace_pairing_degree_two_square (x : ∀ i', H2 (ρ'.comp (φ' i'))) (y : H0 (twDual χ' ρ')) :
     gtr2 φ χ j ρ (P2 φ φ' ρ ρ' eI eD hl x) (equivH0OfIso eG _ _ hd y) =
       gtr2 φ' χ' j' ρ' x y := by
@@ -199,6 +245,13 @@ theorem trace_pairing_degree_two_square (x : ∀ i', H2 (ρ'.comp (φ' i'))) (y 
     exact (hj i _ _ fun g h => rfl).symm
 
 include hD hc hj in
+/- English proof (translation)
+Simplify using `only [gtr1, LinearMap.sum_apply, LinearMap.compl₁₂_apply, LinearMap.compr₂_apply, LinearMap.proj_apply, LinearMap.flip_apply]`. Rewrite using `[← Equiv.sum_comp eI]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show P1 φ φ' ρ ρ' eI eD hl x i = equivH1OfIso (eD i) (ρ'.comp (φ' (eI i))) (ρ.comp (φ i)) (hl i) (x (eI i)) from rfl]`. Generalize the expression as in `x (eI i) = u`.
+
+Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H a`. Proceed by induction on `u using Submodule.Quotient.induction_on with`. Consider the case `H b`. Use `(hj i _ _ fun g h => ?_).symm` and prove the remaining obligations.
+
+Use `show (a.1 (φ' (eI i) (eD i g))) (ρ' (φ' (eI i) (eD i g)) (b.1 (eD i h))) = (a.1 (eG (φ i g))) (ρ (φ i g) (b.1 (eD i h)))`. Rewrite using `[hD, hc]`.
+-/
 theorem trace_pairing_degree_one_square (hρ : ContAction ρ) (hρ' : ContAction ρ')
     (x : ∀ i', H1 (ρ'.comp (φ' i'))) (y : H1 (twDual χ' ρ')) :
     gtr1 φ hφ χ j ρ hρ (P1 φ φ' ρ ρ' eI eD hl x) (equivH1OfIso eG _ _ hd y) =
@@ -221,6 +274,11 @@ theorem trace_pairing_degree_one_square (hρ : ContAction ρ) (hρ' : ContAction
 
 end Main
 
+/- English proof (translation)
+Introduce `hD hχ hc j j' hρ hρ' hj hN`. Establish `hd` using `twDual_transfer χ χ' ρ ρ' eG hχ hc`. Establish `hl` using `loc_transfer φ φ' ρ ρ' eG eI eD hD hc`. Unfold `NineG at hN ⊢`. Establish `dual_sq : ∀ {A A' : Type} [AddCommGroup A] [Module R A] [AddCommGroup A'] [Module R A'] {Y Y' : Type} [AddCommGroup Y] [Module R Y] [AddCommGroup Y'] [Module R Y'] (β : A' ≃ₗ[R] A) (p : Y' ≃ₗ[R] Y) (t : Y →ₗ[R] Module.Dual R A) (t' : Y' →ₗ[R] Module.Dual R A') (_ : ∀ x y, t (p x) …`.
+
+Introduce `A A' _ _ _ _ Y Y' _ _ _ _ β p t t' h x`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨y', rfl⟩` from `β.surjective y`. Simplify using `[LinearEquiv.dualMap_apply, h]`. Conclude with `nine_ladder (equivH0OfIso eG ρ' ρ hc) (equivH1OfIso eG ρ' ρ hc) (equivH2OfIso eG ρ' ρ hc) (P0 φ φ' ρ ρ' eI eD hl) (P1 φ φ' ρ ρ' eI eD hl) (P2 φ φ' ρ ρ' eI eD hl) (equivH2OfIso eG _ _ hd).symm.dualMap (equivH1OfIso eG _ _ hd).symm.dualMap (equivH0OfIso eG _ _ hd).symm.dualMap (loc …`.
+-/
 theorem nineG_of_iso {R : Type} [CommRing R] [TopologicalSpace R] [DiscreteTopology R]
     {Γ Γ' : Type} [Group Γ] [TopologicalSpace Γ] [Group Γ'] [TopologicalSpace Γ'] {I I' : Type}
     [Fintype I] [Fintype I'] {D : I → Type} {D' : I' → Type} [∀ i, Group (D i)]

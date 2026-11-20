@@ -15,6 +15,45 @@ local instance  (D : D7) (T : TwR D.LL0 D.nd) (i : T.Tw) (b : Bool) : IsFraction
   inferInstanceAs (IsFractionRing (T.O i) (FractionRing (T.O i)))
 end GlobalTheory.HeightCounting.HeckeLat
 open GlobalTheory.HeightCounting.HeckeLat in
+/- English proof (translation)
+Introduce `D cf jE A S In b0 b1 Sx T Sp hSb _ i j b k P ⟨h1, h2, hk1, hk2, hsp, hP⟩ x hx`. Take `⟨Φ, hc, hf, hw, hint, W0, hW0, hW0c, hrel⟩` from `descend_integral D T S In i j b h1 h2`. Establish `ha` using `descend_actL D T S In i j b h1 h2 Φ hc hf`. Establish `he` using `descend_eSum D T S In i j b Φ hc ha`. Establish `hPb : P ∉ In.Sb` using `fun h => hP (by`.
+
+Rewrite using `[← Finset.mem_coe, Sp.ringSpec_excludedPlaces_eq i]`. Conclude with `Or.inr (Finset.mem_coe.mpr (hSb h)))`. Establish `hMW : ∀ y ∈ (S.A j).MK, y ∈ WKr D S j` using `fun y hy => by`. Rewrite using `[WKr_of D S h1 h2]`. Conclude with `hy.1`.
+
+Establish `hML : ∀ y ∈ Submodule.span (𝓞 D.what₂.LL) ((S.A j).MK : Set (S.WL j)), Φ y ∈ BsupT D T S i j b`. Establish `key : ∀ y ∈ Submodule.span (𝓞 D.what₂.LL) ((S.A j).MK : Set (S.WL j)), ∀ a : 𝓞 D.what₂.LL, Φ (a • y) ∈ BsupT D T S i j b`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Introduce `a`. Take `⟨o, ho⟩` from `hint a ⟨y, hMW y hy⟩`. Rewrite using `[← algebraMap_smul D.what₂.LL a y]`. Use `ho ▸ Submodule.smul_mem _ o ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨⟨y, hMW y hy⟩, hy, hw _⟩`.
+
+Consider the case `zero => intro a`. Rewrite using `[smul_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => intro a`. Rewrite using `[smul_add, map_add]`.
+
+Conclude with `add_mem (hy a) (hz a)`. Consider the case `smul a' y _ hy => intro a`. Rewrite using `[smul_smul]`. Conclude with `hy _`. Introduce `y hy`.
+
+Simplify using `using key y hy 1`. Establish `hhr : ∀ w : ↥(WKr D S j), (hLr D S In j k P w : S.WL j) = In.hL j k P w`. Introduce `w`. Unfold `hLr`. Rewrite using `[dif_pos ⟨h1, h2⟩]`.
+
+Both sides reduce to the same expression. Establish `hkΦ : ∀ y, hkT D T S In i j b k P (Φ y) = ((cHkT D T i b P : T.O i) ^ k) • Φ (In.hL j k P y)`. Introduce `y`. Rewrite using `[← algebraMap_smul (FractionRing (T.O i)), map_pow, hf _ _ hhr]`. Both sides reduce to the same expression.
+
+Take `⟨n, hn⟩` from `In.hL_int j k P h1 h2 hsp hPb hk2`. Take `⟨u, hu⟩` from `(normV_isUnit D T i P hP).pow n`. Establish `hstep : ∀ y ∈ Submodule.span (𝓞 D.what₂.LL) ((S.A j).MK : Set (S.WL j)), y ∈ goodL D S In.θ j → hkT D T S In i j b k P (Φ y) ∈ BI D T S In i j b`. Introduce `y hy hg`. Rewrite using `[hkΦ]`.
+
+Use `Submodule.smul_mem _ _ ⟨?_, ?_⟩` and prove the remaining obligations. Establish `h3` using `hML _ (hn y hy hg)`. Rewrite `h3` using `[map_nsmul, ← Nat.cast_smul_eq_nsmul (T.O i), Nat.cast_pow, ← hu]`. Establish `h4` using `Submodule.smul_mem _ (↑u⁻¹ : T.O i) h3`. Rewrite `h4` using `[smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+
+Conclude with `descend_mem_V0T D T S In i j b Φ hc ha he _ (hL_goodL D S In j k P h1 h2 ⟨hk1, hk2, hsp, hPb⟩ y hg)`. Establish `hET : ∀ a y, Φ (eqL D S In.θ j a y) = eqT D T S In i j b a (Φ y)`. Introduce `a y`. Consider the cases of `a with`. Consider the case `none => simp only [eqL, eqT, LinearMap.sub_apply, Module.End.one_apply, map_sub, he]`.
+
+Consider the case `some u`. Simplify using `only [eqL, eqT, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, ha, hc, LinearEquiv.coe_coe]`. Establish `hx0 : ∀ a, eqT D T S In i j b a x = 0`. Introduce `a`. Establish `h3` using `goodTwistSideForms_le_span_goodLiftForms D S In T i j b h1 h2 (eIdem_all D) Φ hc ha he hw hx.2`.
+
+Use `(Submodule.span_le (p := LinearMap.ker (eqT D T S In i j b a))).mpr ?_ h3` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, ← hET, (mem_goodL_iff D S In.θ j y).mp hy a, map_zero]`. Take `⟨m, o, g, rfl⟩` from `Submodule.mem_span_set'.mp hx.1`. Use `choose w hwM hwg using fun t => (g t).2`.
+
+Establish `hg : ∀ t, (g t : FmT D T S i j b) = Φ (w t)` using `fun t => (hwg t).trans (hw _).symm`. Simplify using `only [hg] at hx0 ⊢`. Use `haveI : Fintype ↥(Formalism.IndefR.NX.U D.nd) := Fintype.ofFinite _`. Establish `hsol` using `hrel (fun t a => eqL D S In.θ j a (w t)) (fun t a => eqL_rational D S In j h1 h2 W0 hW0 hW0c a (w t)) o (by`. Introduce `a`.
+
+Rewrite using `[← hx0 a, map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[hET, LinearMap.map_smul_of_tower])`. Use `clear hx0 hx`. Proceed by induction on `hsol using Submodule.span_induction with`.
+
+Consider the case `mem o ho`. Take `⟨c, hc0, hco⟩` from `ho`. Establish `h3 : ∑ t, o t • Φ (w t) = Φ (∑ t, ((c t : ↥D.LL0) : D.what₂.LL) • (w t : S.WL j))`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hc, ← hco, algebraMap_smul]`. Rewrite using `[h3]`. Use `hstep _ (Submodule.sum_mem _ fun t _ => ?_) ((mem_goodL_iff D S In.θ j _).mpr fun a => ?_)` and prove the remaining obligations. Set `a : 𝓞 D.what₂.LL` to `⟨((c t : ↥D.LL0) : D.what₂.LL), (RingOfIntegers.isIntegral_coe (c t)).map (algebraMap ↥D.LL0 D.what₂.LL).toIntAlgHom⟩`. Establish `h4` using `Submodule.smul_mem _ a (Submodule.subset_span (R := 𝓞 D.what₂.LL) (s := ((S.A j).MK : Set (S.WL j))) (hwM t))`.
+
+Rewrite `h4` using `[← algebraMap_smul D.what₂.LL a]`. Then use the resulting hypothesis. Rewrite using `[map_sum]`. Simplify `hc0 a` using `only [map_smul]`. Consider the case `zero => simp`. Consider the case `add o o' _ _ ho ho'`.
+
+Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib, map_add]`. Conclude with `add_mem ho ho'`. Consider the case `smul r o _ ho`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul, ← Finset.smul_sum, LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ _ ho`.
+-/
 theorem GlobalTheory.HeightCounting.FormsStep.hkStab_of_ringSpec_of_subset : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE) (S : RatDat D.ntw)
     (In : RatIn D S) (b0 b1 : Big D) (Sx : Finset (PlE D.host)) (T : TwR D.LL0 D.nd) (Sp : RingSpec D cf b0 b1 Sx T),
     In.Sb ⊆ Sx → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → HkStab D T S In := by

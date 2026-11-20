@@ -11,6 +11,11 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial
 
+/- English proof (translation)
+Rewrite using `[homogeneousComponent_apply, map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Rewrite `hα` using `[Finset.mem_filter]`. Simplify using `only [aeval_monomial, Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Establish `hdeg : Finsupp.degree α = ∑ i ∈ α.support, α i` using `rfl`.
+
+Rewrite using `[← hα.2, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_mul_homogeneousComponent {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω] {n : ℕ}
     (q : MvPolynomial (Fin n) F) (e : ℕ) (t : Ω) (x : Fin n → Ω) :
     aeval (fun m => t * x m) (homogeneousComponent e q) = t ^ e * aeval x (homogeneousComponent e q) := by
@@ -22,6 +27,33 @@ theorem aeval_mul_homogeneousComponent {F Ω : Type*} [Field F] [Field Ω] [Alge
   rw [← hα.2, hdeg]
   ring
 
+/- English proof (translation)
+Introduce `F _ n k Q hQ hdim x hx hxQ`. Take `⟨q, hqQ, hqx⟩` from `hxQ`. Establish `h1` using `ComponentOfIncIdeal.one_le_ringKrullDim_quot hQ`. Choose the witnesses or unpack the hypotheses as in `⟨d, hd, hdk⟩ : ∃ d : ℕ, ringKrullDim (MvPolynomial (Fin n) F ⧸ Q) = ((d + 1 : ℕ) : WithBot ℕ∞) ∧ d + 1 ≤ k := by`. Generalize the expression as in `ringKrullDim (MvPolynomial (Fin n) F ⧸ Q) = D at h1 hdim ⊢`.
+
+Proceed by induction on `D using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h1 (by simp)`. Consider the case `coe e`. Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top`.
+
+Establish `h' : ((⊤ : ℕ∞) : WithBot ℕ∞) ≤ ((k : ℕ∞) : WithBot ℕ∞)` using `hdim`. Conclude with `absurd (WithBot.coe_le_coe.mp h') (by simp)`. Consider the case `coe m`. Establish `h1' : 1 ≤ m` using `by exact_mod_cast h1`. Establish `hm : m ≤ k` using `by exact_mod_cast hdim`.
+
+Use `⟨m - 1, ?_, by omega⟩` and prove the remaining obligations. Rewrite using `[show m - 1 + 1 = m by omega]`. Both sides reduce to the same expression. Take `⟨j₀, hj₀⟩` from `Function.ne_iff.mp hx`. Set `c : Fin n → AlgebraicClosure F` to `Pi.single j₀ (x j₀)⁻¹`.
+
+Establish `hj₀' : x j₀ ≠ 0` using `hj₀`. Establish `hc : ∑ j, c j * x j = 1`. Rewrite using `[Finset.sum_eq_single j₀ (fun b _ hb => by simp [c, hb]) (by simp)]`. Simplify using `[c, hj₀']`. Assume the negation of the conclusion as `hno`.
+
+Use `push Not at hno`. Establish `hg` using `hI F n k Q x c hc hno`. Set `K` to `AlgebraicClosure F`. Set `R` to `MvPolynomial (Fin k × Fin n) K`. Set `Ω` to `AlgebraicClosure (FractionRing R)`.
+
+Establish `hinj : Function.Injective (algebraMap R Ω)`. Rewrite using `[IsScalarTower.algebraMap_eq R (FractionRing R) Ω]`. Conclude with `(algebraMap (FractionRing R) Ω).injective.comp (IsFractionRing.injective R (FractionRing R))`. Set `v : Fin k × Fin n → Ω` to `fun ij => algebraMap R Ω (genSubst x c ij)`. Establish `hv : ∀ g ∈ incIdeal Q k, aeval v g = 0`.
+
+Introduce `g hgI`. Establish `hval : aeval v g = algebraMap R Ω (aeval (genSubst x c) g)` using `aeval_algebraMap_apply Ω (genSubst x c) g`. Rewrite using `[hval, hg g hgI, map_zero]`. Take `⟨y, hy0, hyQ, hyv⟩` from `hZ F n k Q hQ.isHomog Ω v hv`. Establish `hnp : ∀ t : Ω, y ≠ fun m => t * algebraMap K Ω (x m)`.
+
+Introduce `t ht`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e, aeval x (homogeneousComponent e q) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hqx` to reduce the goal to its premises.
+
+Rewrite using `[← sum_homogeneousComponent q, map_sum]`. Conclude with `Finset.sum_eq_zero fun e _ => h e`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Apply `hy0` to reduce the goal to its premises.
+
+Rewrite using `[ht]`. Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules. Establish `hzero` using `hyQ _ (hQ.isHomog q hqQ e)`. Establish `hscale` using `aeval_mul_homogeneousComponent q e t (algebraMap K Ω ∘ x)`.
+
+Simplify using `only [Function.comp_apply] at hscale`. Rewrite `hzero` using `[ht, hscale, aeval_algebraMap_apply]`. Conclude with `mul_ne_zero (pow_ne_zero _ ht0) ((map_ne_zero _).mpr he) hzero`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hy0`. Establish `hk` using `hT K Ω n k hinj x c hc y j hj hnp hyv`.
+
+Establish `hb` using `hB F K Ω inferInstance (Fin n) (fun m => y m * (y j)⁻¹)`. Establish `hd'` using `hC F n d Q hQ hd Ω y j hyQ hj`. Establish `hkd : (k : Cardinal) ≤ d` using `hk.trans (hb.trans hd')`. Normalize the coercions in `at hkd`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem FormsThroughPoint.proof (hZ : IncidenceZeroLocus.Statement) (hI : ThroughPointIncIdeal.Statement)
     (hC : ChartZeroTrdeg.Statement) (hT : ThroughTwoPointsTrdeg.Statement)
     (hB : TrdegBaseAlgebraic.Statement) : FormsThroughPoint.Statement := by

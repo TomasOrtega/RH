@@ -15,6 +15,9 @@ variable {O F L : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [F
 variable (O F) in
 include F in
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `placesOver_bij O F L`. Use `⟨e.symm ⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← he, Equiv.apply_symm_apply]`.
+-/
 theorem addv_eq_of_mem {w : AddValuation L (WithTop ℤ)} (hw : w ∈ PlacesOver O L) :
     ∃ v : HeightOneSpectrum (integralClosure O L), w = addv L v := by
   obtain ⟨e, he⟩ := placesOver_bij O F L
@@ -23,6 +26,33 @@ theorem addv_eq_of_mem {w : AddValuation L (WithTop ℤ)} (hw : w ∈ PlacesOver
 
 variable (O F) in
 include F in
+/- English proof (translation)
+Establish `hval : ∀ y : L, y ≠ 0 → addv L v y = ((-WithZero.log (v.valuation L y) : ℤ) : WithTop ℤ)`. Introduce `y hy`. Unfold `addv`. Rewrite using `[AddValuation.of_apply, if_neg hy]`. Establish `hP : v.asIdeal.comap (algebraMap O (integralClosure O L)) = IsLocalRing.maximalIdeal O` using `by haveI := v.isMaximal`.
+
+Apply `IsLocalRing.eq_maximalIdeal` to reduce the goal to its premises. Use `first`. Consider the case `exact Ideal.isMaximal_comap_of_isIntegral_of_isMaximal v.asIdeal`. Consider the case `exact Ideal.IsMaximal.under O v.asIdeal`. Consider the case `infer_instance`.
+
+Simplify using `only [PlacesOver, IsNormDiscrete, Set.mem_setOf_eq]`. Use `⟨⟨fun a ha => ?_, ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hval a ha]`. Conclude with `WithTop.coe_ne_top`. Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer L`.
+
+Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`. Conclude with `absurd hπ.symm (by simp)`. Use `⟨π, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hval π hπ0, hπ]`. Use `first`. Consider the case `simp`. Consider the case `rfl`. Establish `hx : algebraMap O L x = algebraMap (integralClosure O L) L (algebraMap O (integralClosure O L) x)` using `IsScalarTower.algebraMap_apply O (integralClosure O L) L x`.
+
+Distinguish the cases in `hx0 : algebraMap O L x = 0`. Establish `hx00 : x = 0`. Establish `h1 : algebraMap O F x = 0`. Apply `(algebraMap F L).injective` to reduce the goal to its premises. Rewrite using `[← IsScalarTower.algebraMap_apply, map_zero]`.
+
+Conclude with `hx0`. Conclude with `IsFractionRing.injective O F (by rw [h1, map_zero])`. Substitute `hx00` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hval _ hx0]`.
+
+Establish `hv : v.valuation L (algebraMap O L x) ≠ 0` using `by simpa using hx0`. Establish `hle` using `WithZero.log_le_log hv one_ne_zero`. Establish `hge` using `WithZero.log_le_log one_ne_zero hv`. Rewrite `hle`, `hge` using `[WithZero.log_one]`. Establish `hmem : v.valuation L (algebraMap O L x) < 1 ↔ algebraMap O (integralClosure O L) x ∈ v.asIdeal`.
+
+Rewrite using `[hx]`. Use `first`. Consider the case `exact v.valuation_lt_one_iff_mem _`. Consider the case `exact v.valuation_lt_one_iff_mem L _`. Establish `hint : v.valuation L (algebraMap O L x) ≤ 1`.
+
+Rewrite using `[hx]`. Use `first`. Consider the case `exact v.valuation_le_one _`. Consider the case `exact v.valuation_le_one L _`. Rewrite using `[← hP, Ideal.mem_comap, ← hmem]`.
+
+Prove the components needed by the constructor for the conclusion. Establish `h3` using `hle.2 hint`. Conclude with `(show (0 : ℤ) ≤ -WithZero.log (v.valuation L (algebraMap O L x)) by omega)` after adjusting the coercions. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h' : (0 : ℤ) < -WithZero.log (v.valuation L (algebraMap O L x))`. Conclude with `h` after adjusting the coercions. Use `lt_of_le_of_ne hint (fun he => ?_)` and prove the remaining obligations. Rewrite `h'` using `[he, WithZero.log_one]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `h`. Establish `h1 : ¬ (0 ≤ WithZero.log (v.valuation L (algebraMap O L x)))` using `fun h0 => (not_le.2 h) (hge.1 h0)`. Establish `h2 : (0 : ℤ) < -WithZero.log (v.valuation L (algebraMap O L x))` using `by omega`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem addv_mem (v : HeightOneSpectrum (integralClosure O L)) : addv L v ∈ PlacesOver O L := by
   have hval : ∀ y : L, y ≠ 0 →
       addv L v y = ((-WithZero.log (v.valuation L y) : ℤ) : WithTop ℤ) := by
@@ -97,6 +127,13 @@ theorem addv_mem (v : HeightOneSpectrum (integralClosure O L)) : addv L v ∈ Pl
 
 omit [IsFractionRing O F] [FiniteDimensional F L] [Algebra.IsSeparable F L] [IsScalarTower O F L] in
 
+/- English proof (translation)
+Establish `hv : v.valuation L y ≠ 0` using `by simpa using hy`. Establish `hval : addv L v y = ((-WithZero.log (v.valuation L y) : ℤ) : WithTop ℤ)`. Unfold `addv`. Rewrite using `[AddValuation.of_apply, if_neg hy]`. Rewrite using `[hval]`.
+
+Establish `h2` using `WithZero.log_le_log hv one_ne_zero`. Rewrite `h2` using `[WithZero.log_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : (0 : ℤ) ≤ -WithZero.log (v.valuation L y)` using `by exact_mod_cast h`.
+
+Conclude with `h2.1 (by omega)`. Introduce `h`. Establish `h'` using `h2.2 h`. Establish `h'' : (0 : ℤ) ≤ -WithZero.log (v.valuation L y)` using `by omega`. Conclude with `h''` after adjusting the coercions.
+-/
 theorem addv_nonneg_iff (v : HeightOneSpectrum (integralClosure O L)) {y : L} (hy : y ≠ 0) :
     0 ≤ addv L v y ↔ v.valuation L y ≤ 1 := by
   have hv : v.valuation L y ≠ 0 := by simpa using hy
@@ -117,6 +154,17 @@ theorem addv_nonneg_iff (v : HeightOneSpectrum (integralClosure O L)) {y : L} (h
 
 variable (O F) in
 include F in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy w hw`. Take `⟨v, rfl⟩` from `addv_eq_of_mem O F hw`. Distinguish the cases in `hy0 : y = 0`. Substitute `hy0` using the available equality.
+
+Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`. Rewrite using `[addv_nonneg_iff v hy0] first`. Consider the case `exact v.valuation_le_one (⟨y, hy⟩ : integralClosure O L)`. Consider the case `exact v.valuation_le_one L (⟨y, hy⟩ : integralClosure O L)`.
+
+Introduce `h`. Distinguish the cases in `hy0 : y = 0`. Substitute `hy0` using the available equality. Conclude with `Subalgebra.zero_mem _`. Establish `hle : ∀ v : HeightOneSpectrum (integralClosure O L), v.valuation L y ≤ 1` using `fun v => (addv_nonneg_iff v hy0).1 (h _ (addv_mem O F v))`.
+
+Establish `hr : y ∈ (algebraMap (integralClosure O L) L).range` using `by first`. Consider the case `exact HeightOneSpectrum.mem_integers_of_valuation_le_one L y hle`. Consider the case `exact HeightOneSpectrum.mem_integers_of_valuation_le_one y hle`. Take `⟨b, hb⟩` from `hr`. Rewrite using `[← hb]`.
+
+Conclude with `b.2`.
+-/
 theorem mem_integralClosure_iff (y : L) :
     y ∈ integralClosure O L ↔ ∀ w ∈ PlacesOver O L, 0 ≤ w y := by
   constructor
@@ -147,6 +195,23 @@ theorem mem_integralClosure_iff (y : L) :
 variable (O F) in
 include F in
 
+/- English proof (translation)
+Take `⟨_, _, _, _, hmax, _⟩` from `ReciprocityTheory.MultiplicativeHeights.Closed.dedekindRank O F L`. Use `haveI : IsPrincipalIdealRing (integralClosure O L) := IsPrincipalIdealRing.of_finite_maximals hmax`. Use `haveI := hmax.to_subtype`. Use `haveI : Finite (HeightOneSpectrum (integralClosure O L)) := by`. Use `Finite.of_injective (fun v => (⟨v.asIdeal, v.isMaximal⟩ : {I : Ideal (integralClosure O L) | I.IsMaximal})) ?_` and prove the remaining obligations.
+
+Introduce `v v' h`. Conclude with `HeightOneSpectrum.ext (congrArg Subtype.val h)`. Use `letI := Fintype.ofFinite (HeightOneSpectrum (integralClosure O L))`. Set `π : HeightOneSpectrum (integralClosure O L) → integralClosure O L` to `fun v => Submodule.IsPrincipal.generator v.asIdeal`. Establish `hπ : ∀ v, v.asIdeal = Ideal.span {π v}` using `fun v => (Ideal.span_singleton_generator v.asIdeal).symm`.
+
+Establish `hπ0 : ∀ v, π v ≠ 0` using `fun v h => v.ne_bot (by rw [hπ v, Ideal.span_singleton_eq_bot.mpr h])`. Establish `hπL : ∀ v, algebraMap (integralClosure O L) L (π v) ≠ 0` using `fun v => (map_ne_zero_iff _ (IsFractionRing.injective (integralClosure O L) L)).mpr (hπ0 v)`. Establish `hval : ∀ v v' : HeightOneSpectrum (integralClosure O L), v'.valuation L (algebraMap _ L (π v)) = if v' = v then exp (-1 : ℤ) else 1`. Introduce `v v'`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `HeightOneSpectrum.intValuation_singleton _ (hπ0 v') (hπ v')`. Apply `le_antisymm (v'.intValuation_le_one _)` to reduce the goal to its premises. Rewrite using `[← not_lt, v'.intValuation_lt_one_iff_mem]`.
+
+Introduce `hmem`. Apply `h` to reduce the goal to its premises. Establish `hle : v.asIdeal ≤ v'.asIdeal`. Rewrite using `[hπ v, Ideal.span_singleton_le_iff_mem]`. Conclude with `hmem`.
+
+Conclude with `HeightOneSpectrum.ext (v.isMaximal.eq_of_le v'.isPrime.ne_top hle).symm`. Set `g : L` to `∏ v, (algebraMap _ L (π v)) ^ (n (addv L v))`. Establish `hg0 : g ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun v _ => zpow_ne_zero _ (hπL v)`. Establish `hgv : ∀ v' : HeightOneSpectrum (integralClosure O L), v'.valuation L g = exp (-(n (addv L v')))`. Introduce `v'`.
+
+Simplify using `only [g, map_prod, map_zpow₀, hval]`. Rewrite using `[Finset.prod_eq_single v']`. Rewrite using `[if_pos rfl, ← exp_zsmul, smul_eq_mul, mul_neg_one]`. Introduce `v _ hv`. Rewrite using `[if_neg (Ne.symm hv), one_zpow]`.
+
+Simplify using the standard rewrite rules. Use `⟨g, hg0, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `addv_eq_of_mem O F hw`. Rewrite using `[addv_apply v hg0, hgv, log_exp, neg_neg]`.
+-/
 theorem exists_val_eq (n : AddValuation L (WithTop ℤ) → ℤ) :
     ∃ g : L, g ≠ 0 ∧ ∀ w ∈ PlacesOver O L, w g = n w := by
   classical

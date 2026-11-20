@@ -12,20 +12,46 @@ section Alg
 
 variable {𝒰 : Type*} [Ring 𝒰] [Algebra ℂ 𝒰]
 
+/- English proof (translation)
+Unfold `cminor capEntry`. Simplify using `only [Function.comp_apply, he.eq_iff]`.
+-/
 theorem cminor_reindex {n n' : ℕ} (F : Fin n → Fin n → 𝒰) (e : Fin n' → Fin n) (he : Function.Injective e)
     {p : ℕ} (R C : Fin p → Fin n') (x : ℂ) :
     cminor (fun a b => F (e a) (e b)) R C x = cminor F (e ∘ R) (e ∘ C) x := by
   unfold cminor capEntry
   simp only [Function.comp_apply, he.eq_iff]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cminor_cast {n p p' : ℕ} (h : p = p') (F : Fin n → Fin n → 𝒰) (R C : Fin p' → Fin n) (x : ℂ) :
     cminor F (R ∘ Fin.cast h) (C ∘ Fin.cast h) x = cminor F R C x := by
   subst h; rfl
 
+/- English proof (translation)
+Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+-/
 theorem sign_mul_self_C {p : ℕ} (σ : Equiv.Perm (Fin p)) :
     ((Equiv.Perm.sign σ : ℤˣ) : ℂ) * ((Equiv.Perm.sign σ : ℤˣ) : ℂ) = 1 := by
   rw [← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]; simp
 
+/- English proof (translation)
+Use `set f : ℂ := ((m.factorial : ℕ) : ℂ)`. Establish `hf : f * f ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero m)) (Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero m))`. It suffices to establish `key : (f * f) • cminor (frameAB A B E) a.succAbove b.succAbove x = (f * f) • ∑ c : Fin (m + 1), ∑ d : Fin (m + 1), ((A.submatrix a.succAbove c.succAbove).det * (B.submatrix d.succAbove b.succAbove).det) • cminor E c.succAbove d.succAbove x by`. Use `congrArg (fun y => (f * f)⁻¹ • y) key` as an intermediate fact. Simplify `this` using `only [inv_smul_smul₀ hf]`.
+
+Rewrite using `[cminor_frameAB_cb E hE A B hAB]`. Rewrite using `[sum_symm_inj (fun ρ => ∑ τ : Fin m → Fin (m + 1), ((A.submatrix a.succAbove ρ).det * (B.submatrix τ b.succAbove).det) • cminor E ρ τ x)]`. Rewrite using `[mul_smul]`. Use `congr 1`. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[sum_symm_inj (fun τ => ((A.submatrix a.succAbove c.succAbove).det * (B.submatrix τ b.succAbove).det) • cminor E c.succAbove τ x)]`. Introduce `τ σ`. Establish `h1 : B.submatrix (τ ∘ σ) b.succAbove = (B.submatrix τ b.succAbove).submatrix σ id` using `rfl`. Simplify using `only [h1, Matrix.det_permute]`.
+
+Rewrite using `[cminor_perm_cols E hE, ← Int.cast_smul_eq_zsmul ℂ, smul_smul]`. Use `congr 1`. Take the linear combination `((A.submatrix a.succAbove c.succAbove).det * (B.submatrix τ b.succAbove).det) * sign_mul_self_C σ`. Introduce `τ hτ`. Establish `: (B.submatrix τ b.succAbove).det = 0`.
+
+Simplify using `only [Function.Injective, not_forall] at hτ`. Take `⟨i, j, hij, hne⟩` from `hτ`. Conclude with `Matrix.det_zero_of_row_eq hne (by funext l; simp [hij])`. Simplify using `[this]`. Introduce `ρ σ`.
+
+Establish `h1 : A.submatrix a.succAbove (ρ ∘ σ) = (A.submatrix a.succAbove ρ).submatrix id σ` using `rfl`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [h1, Matrix.det_permute']`. Rewrite using `[cminor_perm_rows E, ← Int.cast_smul_eq_zsmul ℂ, smul_smul]`. Use `congr 1`.
+
+Take the linear combination `((A.submatrix a.succAbove ρ).det * (B.submatrix τ b.succAbove).det) * sign_mul_self_C σ`. Introduce `ρ hρ`. Establish `: (A.submatrix a.succAbove ρ).det = 0`. Simplify using `only [Function.Injective, not_forall] at hρ`. Take `⟨i, j, hij, hne⟩` from `hρ`.
+
+Conclude with `Matrix.det_zero_of_column_eq hne (fun l => by simp [hij])`. Simplify using `[this]`.
+-/
 theorem cminor_frameAB_minor {m : ℕ} (E : Fin (m + 1) → Fin (m + 1) → 𝒰) (hE : GlRelR E)
     (A B : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hAB : A * B = 1) (a b : Fin (m + 1)) (x : ℂ) :
     cminor (frameAB A B E) a.succAbove b.succAbove x = ∑ c : Fin (m + 1), ∑ d : Fin (m + 1),
@@ -80,6 +106,9 @@ end Alg
 
 section Cov
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem adjugate_eq_of_mul {n : ℕ} (g g' : Matrix (Fin n) (Fin n) ℂ) (h : g' * g = 1) :
     Matrix.adjugate g = g.det • g' := by
   calc Matrix.adjugate g = (g' * g) * Matrix.adjugate g := by rw [h, Matrix.one_mul]
@@ -87,9 +116,15 @@ theorem adjugate_eq_of_mul {n : ℕ} (g g' : Matrix (Fin n) (Fin n) ℂ) (h : g'
     _ = g' * (g.det • (1 : Matrix (Fin n) (Fin n) ℂ)) := by rw [Matrix.mul_adjugate]
     _ = g.det • g' := by rw [Matrix.mul_smul, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem neg_one_pow_mul_self (k : ℕ) : (-1 : ℂ) ^ k * (-1 : ℂ) ^ k = 1 := by
   rw [← mul_pow]; simp
 
+/- English proof (translation)
+Establish `h1` using `Matrix.adjugate_fin_succ_eq_det_submatrix g j i`. Rewrite `h1` using `[adjugate_eq_of_mul g g' h, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[h1, ← mul_assoc, neg_one_pow_mul_self, one_mul]`.
+-/
 theorem det_sub_succAbove {m : ℕ} (g g' : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (h : g' * g = 1)
     (i j : Fin (m + 1)) :
     (g.submatrix i.succAbove j.succAbove).det = (-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * (g.det * g' j i) := by
@@ -116,6 +151,15 @@ def CapelliCovStatement : Prop :=
         ∑ d', ∑ c', (g' d d' * g c' c * (-1 : ℂ) ^ ((d' : ℕ) + (c' : ℕ))) •
           Capelli.cminor E d'.succAbove c'.succAbove x
 
+/- English proof (translation)
+Introduce `𝒰 _ _ m E g g' x hE hgg' d c`. Establish `hg'g : g' * g = 1` using `mul_eq_one_comm.mp hgg'`. Establish `hAB : gᵀ * g'ᵀ = 1` using `by rw [← Matrix.transpose_mul, hg'g, Matrix.transpose_one]`. Establish `hfam : (fun a b => ∑ c', ∑ d', (g c' a * g' b d') • E c' d') = frameAB gᵀ g'ᵀ E` using `rfl`. Establish `hD : g.det * g'.det = 1` using `by rw [← Matrix.det_mul, hgg', Matrix.det_one]`.
+
+Rewrite using `[hfam, cminor_frameAB_minor E hE _ _ hAB d c x, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun d' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+
+Use `congr 1`. Establish `e1 : (gᵀ.submatrix d.succAbove d'.succAbove).det = (g.submatrix d'.succAbove d.succAbove).det`. Rewrite using `[← Matrix.det_transpose]`. Both sides reduce to the same expression. Establish `e2 : (g'ᵀ.submatrix c'.succAbove c.succAbove).det = (g'.submatrix c.succAbove c'.succAbove).det`.
+
+Rewrite using `[← Matrix.det_transpose]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, det_sub_succAbove g g' hg'g, det_sub_succAbove g' g hgg']`. Simplify using `only [pow_add]`. Take the linear combination `(g' d d' * g c' c * (-1 : ℂ) ^ (d' : ℕ) * (-1 : ℂ) ^ (c' : ℕ)) * (((-1 : ℂ) ^ (c : ℕ) * (-1 : ℂ) ^ (c : ℕ) * (g.det * g'.det)) * neg_one_pow_mul_self (d : ℕ) + (g.det * g'.det) * neg_one_pow_mul_self (c : ℕ) + hD)`.
+-/
 theorem capelliCov : CapelliCovStatement.{u} := by
   intro 𝒰 _ _ m E g g' x hE hgg' d c
   have hg'g : g' * g = 1 := mul_eq_one_comm.mp hgg'
@@ -142,14 +186,27 @@ section Frame
 
 variable {M : Type*} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frameE_eq_frameAB {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℂ) (E : Fin n → Fin n → Module.End ℂ M) :
     frameE Q E = EvalC.frameAB (Q⁻¹)ᵀ Qᵀ E := rfl
 
+/- English proof (translation)
+Rewrite using `[frameE_eq_frameAB]`. Conclude with `EvalC.frameAB_glRel _ _ (by rw [← Matrix.transpose_mul, hQ, Matrix.transpose_one]) E hE`.
+-/
 theorem frameE_glRep {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℂ) (hQ : Q * Q⁻¹ = 1)
     (E : Fin n → Fin n → Module.End ℂ M) (hE : IsGlRep E) : IsGlRep (frameE Q E) := by
   rw [frameE_eq_frameAB]
   exact EvalC.frameAB_glRel _ _ (by rw [← Matrix.transpose_mul, hQ, Matrix.transpose_one]) E hE
 
+/- English proof (translation)
+Establish `hcov` using `capelliCov (Module.End ℂ M) m E Q⁻¹ Q x hE hQ`. Establish `e : ∀ d c : Fin (m + 1), (α d * γ c * (-1 : ℂ) ^ ((d : ℕ) + (c : ℕ))) • Capelli.cminor (frameE Q E) d.succAbove c.succAbove x = (α d * γ c) • ∑ d' : Fin (m + 1), ∑ c' : Fin (m + 1), (Q d d' * Q⁻¹ c' c * (-1 : ℂ) ^ ((d' : ℕ) + (c' : ℕ))) • Capelli.cminor E d'.succAbove c'.succAbov …`. Introduce `d c`. Rewrite using `[mul_smul, ← hcov d c]`. Both sides reduce to the same expression.
+
+Simplify using `only [e, Finset.smul_sum, smul_smul]`. Rewrite using `[EvalC.sum_four_swap_pairs_alt (fun d' c' d c => (α d * γ c * (Q d d' * Q⁻¹ c' c * (-1 : ℂ) ^ ((d' : ℕ) + (c' : ℕ)))) • Capelli.cminor E d'.succAbove c'.succAbove x)]`. Use `Finset.sum_congr rfl fun d' _ => Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Simplify using `only [← Finset.sum_smul]`. Use `congr 1`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frameE_cov {m : ℕ} (Q : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hQ : Q⁻¹ * Q = 1)
     (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ M) (hE : IsGlRep E) (α γ : Fin (m + 1) → ℂ) (x : ℂ) :
     ∑ d : Fin (m + 1), ∑ c : Fin (m + 1), (α d * γ c * (-1 : ℂ) ^ ((d : ℕ) + (c : ℕ))) •

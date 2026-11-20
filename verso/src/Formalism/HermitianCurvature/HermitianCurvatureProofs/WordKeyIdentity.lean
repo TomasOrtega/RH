@@ -11,6 +11,11 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons i l ih`. Establish `hi : Integrable (φ i) μ` using `h i (by simp)`. Take `⟨hl1, hl2⟩` from `ih (fun j hj => h j (by simp [hj]))`.
+
+Establish `hadd` using `integral_add (hi.smul (a i)) hl1`. Simplify using `only [Pi.smul_apply] at hadd`. Simplify using `only [List.map_cons, List.sum_cons]`. Use `⟨(hi.smul (a i)).add hl1, ?_⟩` and prove the remaining obligations. Rewrite using `[hadd, integral_smul, hl2]`.
+-/
 theorem int_list_smul' {α ι E : Type*} [MeasurableSpace α] [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
     (μ : Measure α) (l : List ι) (a : ι → ℂ) (φ : ι → α → E) (h : ∀ i ∈ l, Integrable (φ i) μ) :
     Integrable (fun p => (l.map fun i => a i • φ i p).sum) μ ∧
@@ -26,11 +31,17 @@ theorem int_list_smul' {α ι E : Type*} [MeasurableSpace α] [NormedAddCommGrou
     refine ⟨(hi.smul (a i)).add hl1, ?_⟩
     rw [hadd, integral_smul, hl2]
 
+/- English proof (translation)
+The claim follows from `(int_list_smul' μ l a φ h).2`.
+-/
 theorem int_list_smul {α ι E : Type*} [MeasurableSpace α] [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
     (μ : Measure α) (l : List ι) (a : ι → ℂ) (φ : ι → α → E) (h : ∀ i ∈ l, Integrable (φ i) μ) :
     ∫ p, (l.map fun i => a i • φ i p).sum ∂μ = (l.map fun i => a i • ∫ p, φ i p ∂μ).sum :=
   (int_list_smul' μ l a φ h).2
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons i l ih => simp [smul_add, ih, smul_comm c (a i)]`.
+-/
 theorem smul_list_smul {ι E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (c : ℂ) (l : List ι) (a : ι → ℂ)
     (x : ι → E) : c • (l.map fun i => a i • x i).sum = (l.map fun i => a i • (c • x i)).sum := by
   induction l with
@@ -40,9 +51,17 @@ theorem smul_list_smul {ι E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hg, fun a ha => by simp at ha⟩`.
+-/
 theorem glev0 {g : Mat k r} (hg : g ∈ GV k r) : g ∈ Q.Glev k r 0 :=
   ⟨hg, fun a ha => by simp at ha⟩
 
+/- English proof (translation)
+Establish `hCk : CkOn (m : ℕ∞) (GV k r) F` using `hF.choose_spec.1`. Take `⟨hI, hE⟩` from `(hW k r Wp Wq D A m F hT hF).2 [] w (by simp) hw (by simpa using hl) g hg`. Simplify using `only [List.map_nil] at hI hE`. Establish `hae : (fun p => xiP D p • rho D p (dLR [] (w.map (AdR p)) F) g) =ᵐ[D.μSS] fun p => xiP D p • Rw w (rho D p F) g` using `by filter_upwards [B5.ae_inSS D] with p hp`. Use `hR k r Wp Wq D m F p hp hCk [] w (by simp) (fun X hX => (hw X hX).1) (by simpa using hl) g hg.1` as an intermediate fact.
+
+Simplify using `only [List.map_nil] at this`. Rewrite using `[← this]`. Both sides reduce to the same expression. Conclude with `⟨hI.congr hae, by rw [← integral_congr_ae hae]; exact hE⟩`.
+-/
 theorem word_key (hW : JWords) (hR : RwRho) (D : RealPlaceData k r Wp Wq) {A : ℝ} {m : ℕ}
     {F : Mat k r → (Wq →L[ℂ] Wp)} (hT : TransportedAlt k r A m) (hF : InCC A m F) {g : Mat k r} (hg : g ∈ Om k r D.z D.z')
     (w : List (Mat k r)) (hw : ∀ X ∈ w, unitLie k r X) (hl : w.length ≤ m) :
@@ -68,6 +87,15 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `hW hWS hR k r Wp Wq _ _ _ _ _ _ D A m F Y hnm hT hF g hg`. Take `⟨L, hLw, hLeq⟩` from `hWS k r Y`. Establish `hCk : CkOn (m : ℕ∞) (GV k r) F` using `hF.choose_spec.1`. Establish `hCkn : CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) (GV k r) F` using `B5.ckOn_mono (by exact_mod_cast hnm) hCk`. Establish `hJck : CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) (Om k r D.z D.z') (JF D F)`.
+
+Introduce `g₀ hg₀`. Take `⟨U, F', hU, hgU, hc, he⟩` from `(hW k r Wp Wq D A m F hT hF).1 g₀ ⟨WordKeyIdentity.glev0 hg₀.1, hg₀.2⟩`. Conclude with `⟨U, F', hU, hgU, hc.of_le (by exact_mod_cast hnm), fun x hx hxG => he x hx (WordKeyIdentity.glev0 hxG)⟩`. Rewrite using `[hLeq _ _ _ hJck g hg hg.1]`. Establish `key : ∀ cw ∈ L, Integrable (fun p => xiP D p • Rw cw.2 (rho D p F) g) D.μSS ∧ Rw cw.2 (JF D F) g = ∫ p, xiP D p • Rw cw.2 (rho D p F) g ∂D.μSS` using `fun cw hcw => WordKeyIdentity.word_key hW hR D hT hF hg cw.2 (hLw cw hcw).1 ((hLw cw hcw).2.trans hnm)`.
+
+Establish `hRHS : (∫ p, xiP D p • Q.CV k r Y (rho D p F) g ∂D.μSS) = ∫ p, (L.map fun cw => cw.1 • (xiP D p • Rw cw.2 (rho D p F) g)).sum ∂D.μSS`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [B5.ae_inSS D] with p hp`. Rewrite using `[hLeq _ _ _ (B5.ckOn_rho D hp hCkn) g hg.1 hg.1, WordKeyIdentity.smul_list_smul]`. Rewrite using `[hRHS, WordKeyIdentity.int_list_smul D.μSS L (fun cw => cw.1) (fun cw p => xiP D p • Rw cw.2 (rho D p F) g) fun cw hcw => (key cw hcw).1]`.
+
+Use `congrArg List.sum (List.map_congr_left fun cw hcw => ?_)` and prove the remaining obligations. Rewrite using `[(key cw hcw).2]`.
+-/
 theorem capelli_under_integral_of_parts : Formalism.FourierDecayAlt.JF.CVUnderIntOfParts := by
   intro hW hWS hR k r Wp Wq _ _ _ _ _ _ D A m F Y hnm hT hF g hg
   obtain ⟨L, hLw, hLeq⟩ := hWS k r Y

@@ -11,6 +11,9 @@ namespace Formalism.RepresentationBoundsCohomology.JT
 
 open Formalism.NG Formalism.RepresentationBoundsCohomology.BR Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
+/- English proof (translation)
+Introduce `ℓ _ O _ G _ A _ _ ρA Dw Dat b w m U hsurj h z hz`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩` from `h`. Take `⟨x, rfl⟩` from `hsurj z hz`. Rewrite using `[← transport (ℓ := ℓ) O b, h0 ℓ w m h1 h2 h3 U h4 h5 Dat h6 h7 h8 h9 h10 x, map_zero]`.
+-/
 theorem h_zero_invariants_killed : HZeroInvariantsKilled := by
   intro ℓ _ O _ G _ A _ _ ρA Dw Dat b w m U hsurj h z hz
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩ := h

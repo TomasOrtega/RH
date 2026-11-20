@@ -14,10 +14,19 @@ variable {E : Type} [Field E] [NumberField E] {n a b : ℕ} (h : a + b = n) (w :
 
 def ix : Fin a ⊕ Fin b ≃ Fin n := finSumFinEquiv.trans (finCongr h)
 
+/- English proof (translation)
+Simplify using `[ix]`.
+-/
 theorem ix_inl_val (x : Fin a) : ((ix h (Sum.inl x) : Fin n) : ℕ) = x := by simp [ix]
 
+/- English proof (translation)
+Simplify using `[ix]`.
+-/
 theorem ix_inr_val (x : Fin b) : ((ix h (Sum.inr x) : Fin n) : ℕ) = a + x := by simp [ix]
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨P, rfl⟩` from `(ix h).surjective i`. Take `⟨Q, rfl⟩` from `(ix h).surjective j`. Conclude with `H P Q`.
+-/
 theorem ext_ix {R : Type} {M N : Matrix (Fin n) (Fin n) R}
     (H : ∀ P Q, M (ix h P) (ix h Q) = N (ix h P) (ix h Q)) : M = N := by
   ext i j
@@ -25,6 +34,15 @@ theorem ext_ix {R : Type} {M N : Matrix (Fin n) (Fin n) R}
   obtain ⟨Q, rfl⟩ := (ix h).surjective j
   exact H P Q
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hg i j`. Apply `hg` to reduce the goal to its premises. Establish `h1 : ¬ a ≤ (j : ℕ)` using `Nat.not_le.2 j.isLt`. Simplify using `only [ix_inl_val, ix_inr_val]`.
+
+Simplify using `[h1]`. Introduce `H i j hij`. Take `⟨P, rfl⟩` from `(ix h).surjective i`. Take `⟨Q, rfl⟩` from `(ix h).surjective j`. Apply the tactic sequence `rcases P with x | x <;> rcases Q with y | y`.
+
+Establish `h1 : ¬ a ≤ (x : ℕ)` using `Nat.not_le.2 x.isLt`. Simplify using `only [ix_inl_val] at hij`. Simplify using `[h1] at hij`. Apply the tactic sequence `exact absurd hij (by cases decide (a ≤ (y : ℕ)) <;> decide)`. Simplify using `only [ix_inl_val, ix_inr_val] at hij`.
+
+Simplify using `at hij`. Apply the tactic sequence `exact absurd hij (by cases decide (a ≤ (x : ℕ)) <;> decide)`. Conclude with `H x y`. Simplify using `only [ix_inr_val] at hij`. Simplify using `at hij`.
+-/
 theorem mem_parabolic_iff (g : GLw n w) :
     g ∈ parP a n w ↔ ∀ i j, g.val (ix h (Sum.inr i)) (ix h (Sum.inl j)) = 0 := by
   constructor
@@ -48,11 +66,17 @@ theorem mem_parabolic_iff (g : GLw n w) :
     · simp only [ix_inr_val] at hij
       simp at hij
 
+/- English proof (translation)
+Rewrite using `[UnipMean.blk_val]`. Simplify using `[ix]`.
+-/
 theorem blk_apply (m : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) (P Q : Fin a ⊕ Fin b) :
     (blk h w m X).val (ix h P) (ix h Q) = Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val P Q := by
   rw [UnipMean.blk_val]
   simp [ix]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `fun y => congrFun (congrFun hN y) j` as an intermediate fact. Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply] at this`. Simplify using `[Matrix.toBlocks₁₁, Matrix.mul_apply, Fintype.sum_sum_type, this]`.
+-/
 theorem toBlocks₁₁_mul {R α β : Type} [CommRing R] [Fintype α] [Fintype β] (M N : Matrix (α ⊕ β) (α ⊕ β) R)
     (hN : N.toBlocks₂₁ = 0) : (M * N).toBlocks₁₁ = M.toBlocks₁₁ * N.toBlocks₁₁ := by
   ext i j
@@ -60,6 +84,9 @@ theorem toBlocks₁₁_mul {R α β : Type} [CommRing R] [Fintype α] [Fintype �
   simp only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply] at this
   simp [Matrix.toBlocks₁₁, Matrix.mul_apply, Fintype.sum_sum_type, this]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `fun y => congrFun (congrFun hM i) y` as an intermediate fact. Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply] at this`. Simplify using `[Matrix.toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type, this]`.
+-/
 theorem toBlocks₂₂_mul {R α β : Type} [CommRing R] [Fintype α] [Fintype β] (M N : Matrix (α ⊕ β) (α ⊕ β) R)
     (hM : M.toBlocks₂₁ = 0) : (M * N).toBlocks₂₂ = M.toBlocks₂₂ * N.toBlocks₂₂ := by
   ext i j
@@ -67,6 +94,9 @@ theorem toBlocks₂₂_mul {R α β : Type} [CommRing R] [Fintype α] [Fintype �
   simp only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply] at this
   simp [Matrix.toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type, this]
 
+/- English proof (translation)
+Conclude with `Matrix.ext fun i j => (mem_parabolic_iff h w _).1 p.2 i j`.
+-/
 theorem toBlocks₂₁_of_mem (p : parP a n w) :
     ((p : GLw n w).val.submatrix (ix h) (ix h)).toBlocks₂₁ = 0 := by
   exact Matrix.ext fun i j => (mem_parabolic_iff h w _).1 p.2 i j
@@ -96,10 +126,16 @@ def sH : GLw a w × GLw b w →* parP a n w where
 def piH : parP a n w →* GLw a w × GLw b w :=
   MulEquiv.prodUnits.toMonoidHom.comp ((Units.map (dgH h w)).comp (toUnits : parP a n w ≃* (parP a n w)ˣ).toMonoidHom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piH_fst_val (p : parP a n w) :
     ((piH h w p).1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) =
       ((p : GLw n w).val.submatrix (ix h) (ix h)).toBlocks₁₁ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piH_snd_val (p : parP a n w) :
     ((piH h w p).2 : Matrix (Fin b) (Fin b) (w.adicCompletion E)) =
       ((p : GLw n w).val.submatrix (ix h) (ix h)).toBlocks₂₂ := rfl
@@ -109,16 +145,33 @@ def uH : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) →* parP 
   map_one' := Subtype.ext (UnipMean.blk_one_zero h w)
   map_mul' X Y := Subtype.ext (by simp only [toAdd_mul, Subgroup.coe_mul]; exact UnipMean.blk_add h w 1 _ _)
 
+/- English proof (translation)
+Use `Prod.ext (Units.ext ?_) (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[piH_fst_val]; exact Matrix.ext fun i j => by simp [Matrix.toBlocks₁₁, sH, blk_apply]`. Rewrite using `[piH_snd_val]; exact Matrix.ext fun i j => by simp [Matrix.toBlocks₂₂, sH, blk_apply]`.
+-/
 theorem piH_sH (m : GLw a w × GLw b w) : piH h w (sH h w m) = m := by
   refine Prod.ext (Units.ext ?_) (Units.ext ?_)
   · rw [piH_fst_val]; exact Matrix.ext fun i j => by simp [Matrix.toBlocks₁₁, sH, blk_apply]
   · rw [piH_snd_val]; exact Matrix.ext fun i j => by simp [Matrix.toBlocks₂₂, sH, blk_apply]
 
+/- English proof (translation)
+Introduce `X Y hXY`. Use `congrArg (fun p : parP a n w => UnipMean.corner h w 1 (p : GLw n w)) hXY` as an intermediate fact. Simplify `this` using `[uH, UnipMean.corner_blk]`.
+-/
 theorem uH_injective : Function.Injective (uH h w) := by
   intro X Y hXY
   have := congrArg (fun p : parP a n w => UnipMean.corner h w 1 (p : GLw n w)) hXY
   simpa [uH, UnipMean.corner_blk] using this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hp`. Establish `h1` using `congrArg (fun q : GLw a w × GLw b w => (q.1 : Matrix (Fin a) (Fin a) (w.adicCompletion E))) hp`. Establish `h2` using `congrArg (fun q : GLw a w × GLw b w => (q.2 : Matrix (Fin b) (Fin b) (w.adicCompletion E))) hp`. Simplify using `only [piH_fst_val, piH_snd_val, Prod.fst_one, Prod.snd_one, Units.val_one] at h1 h2`.
+
+Use `⟨Multiplicative.ofAdd ((p : GLw n w).val.submatrix (ix h) (ix h)).toBlocks₁₂, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `ext1`. Use `ext_ix h fun P Q => ?_` and prove the remaining obligations. Simplify using `only [uH, MonoidHom.coe_mk, OneHom.coe_mk, toAdd_ofAdd]`.
+
+Rewrite using `[blk_apply]`. Apply the tactic sequence `rcases P with x | x <;> rcases Q with y | y`. Use `congrFun (congrFun h1 x) y` as an intermediate fact. Simplify using `only [Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply] at this`. Simplify using `[this]`.
+
+Simplify using `[Matrix.toBlocks₁₂]`. Simplify using `[(mem_parabolic_iff h w _).1 p.2 x y]`. Use `congrFun (congrFun h2 x) y` as an intermediate fact. Simplify using `only [Matrix.toBlocks₂₂, Matrix.of_apply, Matrix.submatrix_apply] at this`. Simplify using `[this]`.
+
+Introduce and unpack `⟨X, rfl⟩`. Use `Prod.ext (Units.ext ?_) (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[piH_fst_val]; exact Matrix.ext fun i j => by simp [Matrix.toBlocks₁₁, uH, blk_apply]`. Rewrite using `[piH_snd_val]; exact Matrix.ext fun i j => by simp [Matrix.toBlocks₂₂, uH, blk_apply]`.
+-/
 theorem piH_eq_one_iff (p : parP a n w) : piH h w p = 1 ↔ ∃ X, uH h w X = p := by
   constructor
   · intro hp
@@ -144,6 +197,11 @@ theorem piH_eq_one_iff (p : parP a n w) : piH h w p = 1 ↔ ∃ X, uH h w X = p 
     · rw [piH_fst_val]; exact Matrix.ext fun i j => by simp [Matrix.toBlocks₁₁, uH, blk_apply]
     · rw [piH_snd_val]; exact Matrix.ext fun i j => by simp [Matrix.toBlocks₂₂, uH, blk_apply]
 
+/- English proof (translation)
+Set `T : Subgroup (Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)))` to `{ carrier := {X | ∀ i j, Valued.v (Multiplicative.toAdd X i j) ≤ 1} one_mem' := fun i j => by simp mul_mem' := fun {x y} hx hy i j => by`. Simplify using `only [Set.mem_setOf_eq, toAdd_mul, Matrix.add_apply] at *`. Conclude with `Valuation.map_add_le _ (hx i j) (hy i j)`. Use the proof step `inv_mem' := fun {x} hx i j => by`. Simplify using `only [Set.mem_setOf_eq, toAdd_inv, Matrix.neg_apply, Valuation.map_neg] at *`.
+
+Conclude with `hx i j }`. Establish `e : intMat a b w = T` using `le_antisymm ((Subgroup.closure_le _).2 fun x hx => hx) fun x hx => Subgroup.subset_closure hx`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem mem_intMat_iff (X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E))) :
     X ∈ intMat a b w ↔ ∀ i j, Valued.v (Multiplicative.toAdd X i j) ≤ 1 := by
   let T : Subgroup (Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E))) :=
@@ -160,6 +218,11 @@ theorem mem_intMat_iff (X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicComple
   rw [e]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H P Q`. Conclude with `H _ _`. Introduce `H i j`. Take `⟨P, rfl⟩` from `(ix h).surjective i`.
+
+Take `⟨Q, rfl⟩` from `(ix h).surjective j`. Conclude with `H P Q`.
+-/
 theorem ent_iff {M : Matrix (Fin n) (Fin n) (w.adicCompletion E)} :
     (∀ i j, Valued.v (M i j) ≤ 1) ↔ ∀ P Q, Valued.v (M (ix h P) (ix h Q)) ≤ 1 := by
   constructor
@@ -169,10 +232,18 @@ theorem ent_iff {M : Matrix (Fin n) (Fin n) (w.adicCompletion E)} :
     obtain ⟨Q, rfl⟩ := (ix h).surjective j
     exact H P Q
 
+/- English proof (translation)
+Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`.
+-/
 theorem one_ent {k : Type} [Fintype k] [DecidableEq k] (i j : k) :
     Valued.v ((1 : Matrix k k (w.adicCompletion E)) i j) ≤ 1 := by
   rw [Matrix.one_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[ent_iff h w]`. Introduce `P Q`. Rewrite using `[blk_apply]`. Apply the tactic sequence `rcases P with x | x <;> rcases Q with y | y`. Simplify using `using H1 x y`.
+
+Simplify using `using HX x y`. Simplify using the standard rewrite rules. Simplify using `using H2 x y`.
+-/
 theorem blk_ent (m : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E))
     (H1 : ∀ i j, Valued.v (m.1.val i j) ≤ 1) (H2 : ∀ i j, Valued.v (m.2.val i j) ≤ 1)
     (HX : ∀ i j, Valued.v ((m.1.val * X) i j) ≤ 1) : ∀ i j, Valued.v ((blk h w m X).val i j) ≤ 1 := by
@@ -185,6 +256,11 @@ theorem blk_ent (m : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicComp
   · simp
   · simpa using H2 x y
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_subgroupOf, GlobalTheory.BCT.GlobLev.mem_KGL_iff_val]`. Rewrite `hk` using `[Subgroup.mem_prod, GlobalTheory.BCT.GlobLev.mem_KGL_iff_val, GlobalTheory.BCT.GlobLev.mem_KGL_iff_val]`. Take `⟨⟨a1, a2⟩, b1, b2⟩` from `hk`. Use `⟨blk_ent h w k 0 a1 b1 (by simp), ?_⟩` and prove the remaining obligations. Establish `e : ((sH h w k : GLw n w))⁻¹ = (sH h w k⁻¹ : GLw n w)` using `by rw [map_inv]; rfl`.
+
+Rewrite using `[e]`. Conclude with `blk_ent h w k⁻¹ 0 a2 b2 (by simp)`.
+-/
 theorem sH_mem (k : GLw a w × GLw b w) (hk : k ∈ (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) :
     sH h w k ∈ (GlobalTheory.LFun.KGL w n).subgroupOf (parP a n w) := by
   rw [Subgroup.mem_subgroupOf, GlobalTheory.BCT.GlobLev.mem_KGL_iff_val]
@@ -195,6 +271,13 @@ theorem sH_mem (k : GLw a w × GLw b w) (hk : k ∈ (GlobalTheory.LFun.KGL w a).
   rw [e]
   exact blk_ent h w k⁻¹ 0 a2 b2 (by simp)
 
+/- English proof (translation)
+Rewrite `hk` using `[Subgroup.mem_subgroupOf, GlobalTheory.BCT.GlobLev.mem_KGL_iff_val]`. Take `⟨k1, k2⟩` from `hk`. Establish `e : (piH h w k)⁻¹ = piH h w k⁻¹` using `(map_inv _ _).symm`. Rewrite using `[Subgroup.mem_prod, GlobalTheory.BCT.GlobLev.mem_KGL_iff_val, GlobalTheory.BCT.GlobLev.mem_KGL_iff_val]`. Use `⟨⟨fun i j => ?_, fun i j => ?_⟩, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[piH_fst_val]`. Conclude with `k1 (ix h (Sum.inl i)) (ix h (Sum.inl j))`. Rewrite using `[← Prod.fst_inv, e, piH_fst_val]`. Conclude with `k2 (ix h (Sum.inl i)) (ix h (Sum.inl j))`. Rewrite using `[piH_snd_val]`.
+
+Conclude with `k1 (ix h (Sum.inr i)) (ix h (Sum.inr j))`. Rewrite using `[← Prod.snd_inv, e, piH_snd_val]`. Conclude with `k2 (ix h (Sum.inr i)) (ix h (Sum.inr j))`.
+-/
 theorem piH_mem (k : parP a n w) (hk : k ∈ (GlobalTheory.LFun.KGL w n).subgroupOf (parP a n w)) :
     piH h w k ∈ (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b) := by
   rw [Subgroup.mem_subgroupOf, GlobalTheory.BCT.GlobLev.mem_KGL_iff_val] at hk
@@ -207,6 +290,11 @@ theorem piH_mem (k : parP a n w) (hk : k ∈ (GlobalTheory.LFun.KGL w n).subgrou
   · rw [piH_snd_val]; exact k1 (ix h (Sum.inr i)) (ix h (Sum.inr j))
   · rw [← Prod.snd_inv, e, piH_snd_val]; exact k2 (ix h (Sum.inr i)) (ix h (Sum.inr j))
 
+/- English proof (translation)
+Rewrite using `[mem_intMat_iff, Subgroup.mem_subgroupOf, GlobalTheory.BCT.GlobLev.mem_KGL_iff_val]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨H, -⟩ i j`. Use `H (ix h (Sum.inl i)) (ix h (Sum.inr j))` as an intermediate fact. Simplify `this` using `[uH, blk_apply]`.
+
+Introduce `H`. Establish `e : ((uH h w X : GLw n w))⁻¹ = (uH h w X⁻¹ : GLw n w)` using `by rw [map_inv]; rfl`. Rewrite using `[e]`. Use `⟨blk_ent h w 1 _ (fun i j => by simpa using one_ent w i j) (fun i j => by simpa using one_ent w i j) (by simpa using H), blk_ent h w 1 _ (fun i j => by simpa using one_ent w i j) (fun i j => by simpa using one_ent w i j) (by simpa using H)⟩` and prove the remaining obligations.
+-/
 theorem uH_mem_iff (X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E))) :
     uH h w X ∈ (GlobalTheory.LFun.KGL w n).subgroupOf (parP a n w) ↔ X ∈ intMat a b w := by
   rw [mem_intMat_iff, Subgroup.mem_subgroupOf, GlobalTheory.BCT.GlobLev.mem_KGL_iff_val]
@@ -225,6 +313,9 @@ end GlobalTheory.LeviDesc.LeviHoms
 
 namespace GlobalTheory.LeviDesc.LeviHoms
 
+/- English proof (translation)
+Introduce `E _ _ n a b h w`. Conclude with `⟨sH h w, piH h w, uH h w, fun m => rfl, fun X => rfl, piH_sH h w, uH_injective h w, piH_eq_one_iff h w, fun k hk => sH_mem h w k hk, fun k hk => piH_mem h w k hk, uH_mem_iff h w⟩`.
+-/
 theorem levi_homs : ∀ (E : Type) [Field E] [NumberField E] (n a b : ℕ) (h : a + b = n) (w : Pl E), ∃ (s : GLw a w × GLw b w →* GlobalTheory.LeviDesc.parP a n w) (π : GlobalTheory.LeviDesc.parP a n w →* GLw a w × GLw b w) (u : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) →* GlobalTheory.LeviDesc.parP a n w), (∀ m, (s m : GLw n w) = blk h w m 0) ∧ (∀ X, (u X : GLw n w) = blk h w 1 (Multiplicative.toAdd X)) ∧ (∀ m, π (s m) = m) ∧ Function.Injective u ∧ (∀ p, π p = 1 ↔ ∃ X, u X = p) ∧ (∀ k ∈ (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b), s k ∈ (GlobalTheory.LFun.KGL w n).subgroupOf (GlobalTheory.LeviDesc.parP a n w)) ∧ (∀ k ∈ (GlobalTheory.LFun.KGL w n).subgroupOf (GlobalTheory.LeviDesc.parP a n w), π k ∈ (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) ∧ (∀ X, u X ∈ (GlobalTheory.LFun.KGL w n).subgroupOf (GlobalTheory.LeviDesc.parP a n w) ↔ X ∈ intMat a b w) := by
   intro E _ _ n a b h w
   exact ⟨sH h w, piH h w, uH h w, fun m => rfl, fun X => rfl, piH_sH h w, uH_injective h w, piH_eq_one_iff h w,

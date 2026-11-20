@@ -18,6 +18,11 @@ noncomputable section
 
 namespace GlobalTheory.SiegCmp
 
+/- English proof (translation)
+Introduce `V W K _ _ _ f j hf J c hc`. Use `letI := f.toAlgebra`. Use `letI := j.toAlgebra`. Use `letI : Algebra V K := (j.comp f).toAlgebra`. Use `haveI : IsScalarTower V W K := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+
+Use `haveI : Algebra.IsIntegral V W := ⟨hf⟩`. Establish `key : ∀ x : K, j.IsIntegralElem x → (j.comp f).IsIntegralElem x` using `fun x hx => (isIntegral_trans (R := V) (A := W) x hx : IsIntegral V x)`. Conclude with `⟨fun a => key _ (hc.1 a), let ⟨a, h0, h1⟩ := hc.2; ⟨a, h0, key _ h1⟩⟩`.
+-/
 theorem prim_comp_of_isIntegral : ∀ {V W K : Type} [CommRing V] [CommRing W] [Field K] (f : V →+* W) (j : W →+* K), f.IsIntegral → ∀ {J : Type} (c : J → K), Prim j c → Prim (j.comp f) c := by
   intro V W K _ _ _ f j hf J c hc
   letI := f.toAlgebra
@@ -29,6 +34,17 @@ theorem prim_comp_of_isIntegral : ∀ {V W K : Type} [CommRing V] [CommRing W] [
     (isIntegral_trans (R := V) (A := W) x hx : IsIntegral V x)
   exact ⟨fun a => key _ (hc.1 a), let ⟨a, h0, h1⟩ := hc.2; ⟨a, h0, key _ h1⟩⟩
 
+/- English proof (translation)
+Introduce `V W _ _ _ _ f fK hf hfK K _ _ io`. Use `letI := fK.toAlgebra`. Use `letI := io.toAlgebra`. Establish `hint : ∀ w : W, IsIntegral (FractionRing V) (algebraMap W (FractionRing W) w)`. Introduce `w`.
+
+Take `⟨p, hp, hpe⟩` from `hf w`. Use `⟨p.map (algebraMap V (FractionRing V)), hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `: (algebraMap (FractionRing V) (FractionRing W)).comp (algebraMap V (FractionRing V)) = (algebraMap W (FractionRing W)).comp f`. Use extensionality with `a`.
+
+Conclude with `hfK a`. Rewrite using `[this, ← Polynomial.hom_eval₂, hpe, map_zero]`. Establish `hmem : ∀ w : W, algebraMap W (FractionRing W) w ∈ algebraicClosure (FractionRing V) (FractionRing W)` using `fun w => mem_algebraicClosure_iff.2 (hint w).isAlgebraic`. Use `haveI : Algebra.IsAlgebraic (FractionRing V) (FractionRing W) := by`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `z`. Rewrite using `[← mem_algebraicClosure_iff]`. Take `⟨⟨w, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors W) z`. Simplify using `only [IsFractionRing.mk'_eq_div]`. Conclude with `div_mem (hmem w) (hmem s)`.
+
+Use `⟨(IsAlgClosed.lift : FractionRing W →ₐ[FractionRing V] K).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `(IsAlgClosed.lift : FractionRing W →ₐ[FractionRing V] K).commutes x`.
+-/
 theorem exists_ext_fractionRing : ∀ (V W : Type) [CommRing V] [IsDomain V] [CommRing W] [IsDomain W] (f : V →+* W) (fK : FractionRing V →+* FractionRing W), f.IsIntegral → (∀ a, fK (algebraMap V _ a) = algebraMap W _ (f a)) → ∀ (K : Type) [Field K] [IsAlgClosed K] (io : FractionRing V →+* K), ∃ io' : FractionRing W →+* K, io'.comp fK = io := by
   intro V W _ _ _ _ f fK hf hfK K _ _ io
   letI := fK.toAlgebra
@@ -55,6 +71,19 @@ theorem exists_ext_fractionRing : ∀ (V W : Type) [CommRing V] [IsDomain V] [Co
   ext x
   exact (IsAlgClosed.lift : FractionRing W →ₐ[FractionRing V] K).commutes x
 
+/- English proof (translation)
+Introduce `S G _ _ L ρ hL hρ V _ _ _ hV y P α hα hLα hS K _ _ io m m' N N' d d' hm hm3 hmu hm' hm3' hmu' hth`. Use `letI := P.isAb.comm`. Take `⟨ρP, hρP⟩` from `P.rigid`. Establish `h1 : HasTh₂ P.A P.L ρP m m' (spMap io) d d'` using `(ThMove.hasTh₂_move S G L ρ hL hρ _ P.A P.L ρP y α P.isLB hρP hα hLα m m' N N' K (spMap io) d d').2 hth`. Take `⟨W, _, _, _, _, f, fK, hWc, hfi, hfinj, hfK, A, β, hβ, hLβ, G', _, _, gen, hG', hgen, E, hE⟩` from `GlobalTheory.T.exists_split_semiAbelian_model_after_extension V hV P`.
+
+Use `letI := A.isAb.comm`. Establish `hSA : HypS A.A A.L` using `SymBaseChange.hypS_baseChange _ _ P.A A.A (spMap fK) β P.L A.L P.isLB A.isLB hβ hLβ hS`. Take `⟨D, U, -⟩` from `GlobalTheory.ZH.thmU_and_uTors.1 W hWc A G' hG' ⟨E, hE⟩ hSA gen hgen`. Take `⟨io', hio'⟩` from `exists_ext_fractionRing V W f fK hfi hfK K io`. Take `⟨ρA, hρA⟩` from `A.rigid`.
+
+Establish `hx : spMap io' ≫ spMap fK = spMap io`. Rewrite using `[← hio']`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `h2 : HasTh₂ A.A A.L ρA m m' (spMap io') d d'`. Use `(ThMove.hasTh₂_move _ P.A P.L ρP P.isLB hρP _ A.A A.L ρA (spMap fK) β A.isLB hρA hβ hLβ m m' N N' K (spMap io') d d').2 ?_` and prove the remaining obligations.
+
+Rewrite using `[hx]`. Conclude with `h1`. Establish `hmuW : IsUnit (m : W)` using `by simpa using hmu.map f`. Establish `hmuW' : IsUnit (m' : W)` using `by simpa using hmu'.map f`. Take `⟨a, ha, hp, hp'⟩` from `GlobalTheory.T.uniformised_trait_theta_constants_two_levels_integral W hWc D A G' hG' U ρA hρA K io' m m' N N' d d' hm hm3 hmuW hm' hm3' hmuW' h2`.
+
+Establish `hcomp : (io'.comp (algebraMap W (FractionRing W))).comp f = io.comp (algebraMap V (FractionRing V))`. Use extensionality with `x`. Simplify using `[← hfK, ← hio']`. Use `⟨a, ha, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomp]`.
+
+Conclude with `prim_comp_of_isIntegral f _ hfi _ hp`. Rewrite using `[← hcomp]`. Conclude with `prim_comp_of_isIntegral f _ hfi _ hp'`.
+-/
 theorem theta_two_levels_prim : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (y : Sp (FractionRing V) ⟶ S) (P : PolAV (Sp (FractionRing V))) (α : P.A.left ⟶ G.left), IsGrpPullback P.A G y α → LBIso P.L (L.pull α) → (letI := P.isAb.comm; HypS P.A P.L) → ∀ (K : Type) [Field K] [IsAlgClosed K] (io : FractionRing V →+* K) (m m' N N' : ℕ) (d : Fin N → K) (d' : Fin N' → K), Odd m → 3 ≤ m → IsUnit (m : V) → Odd m' → 3 ≤ m' → IsUnit (m' : V) → HasTh₂ G L ρ m m' (spMap io ≫ y) d d' → ∃ a : K, a ≠ 0 ∧ Prim (io.comp (algebraMap V (FractionRing V))) (fun b => d b / a) ∧ Prim (io.comp (algebraMap V (FractionRing V))) (fun b => d' b / a) := by
 
   intro S G _ _ L ρ hL hρ V _ _ _ hV y P α hα hLα hS K _ _ io m m' N N' d d' hm hm3 hmu hm' hm3' hmu' hth

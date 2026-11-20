@@ -7,6 +7,15 @@ open scoped InnerProductSpace Kronecker
 
 namespace GlobalTheory.CompanionTheory.WedgeDeriv
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun t => ∑ σ : Equiv.Perm (Fin m), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, A t (σ i) i) (∑ σ : Equiv.Perm (Fin m), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∑ j, (∏ i ∈ univ.erase j, A 0 (σ i) i) • A' (σ j) j) 0`. Use `HasDerivAt.fun_sum fun σ _ => HasDerivAt.const_mul _ ?_` and prove the remaining obligations. Conclude with `HasDerivAt.fun_finset_prod (f := fun i t => A t (σ i) i) fun i _ => h _ _`. Establish `h2 : ∀ j, ∑ i, adjugate (A 0) j i * A' i j = ((A 0).updateCol j fun i => A' i j).det`. Introduce `j`.
+
+Rewrite using `[← cramer_apply, cramer_eq_adjugate_mulVec]`. Both sides reduce to the same expression. Simplify using `only [h2, Matrix.det_apply']`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← Finset.prod_erase_mul _ _ (mem_univ j), updateCol_self, smul_eq_mul]`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i hi => updateCol_ne (ne_of_mem_erase hi)`.
+-/
 theorem hasDerivAt_det {m : ℕ} (A : ℝ → Matrix (Fin m) (Fin m) ℂ) (A' : Matrix (Fin m) (Fin m) ℂ)
     (h : ∀ i j, HasDerivAt (fun t => A t i j) (A' i j) 0) :
     HasDerivAt (fun t => (A t).det) (∑ j, ∑ i, adjugate (A 0) j i * A' i j) 0 := by
@@ -30,6 +39,15 @@ theorem hasDerivAt_det {m : ℕ} (A : ℝ → Matrix (Fin m) (Fin m) ℂ) (A' : 
   congr 1
   exact Finset.prod_congr rfl fun i hi => updateCol_ne (ne_of_mem_erase hi)
 
+/- English proof (translation)
+Use `split_ifs with h`. Establish `: f = g`. Use `(hf.range_inj hg).1 ?_` and prove the remaining obligations. Use `congrArg (fun s : Finset (Fin n) => (s : Set (Fin n))) h` as an intermediate fact. Simplify using `using this`.
+
+Substitute `this` using the available equality. Rewrite using `[submatrix_one _ hf.injective, det_one]`. Establish `: ∃ i, f i ∉ univ.image g`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Apply `h` to reduce the goal to its premises. Use `Finset.eq_of_subset_of_card_le (fun x hx => ?_) ?_` and prove the remaining obligations. Take `⟨i, _, rfl⟩` from `mem_image.1 hx`. Conclude with `hc i`. Rewrite using `[card_image_of_injective _ hf.injective, card_image_of_injective _ hg.injective]`.
+
+Take `⟨i, hi⟩` from `this`. Use `det_eq_zero_of_row_eq_zero i fun j => ?_` and prove the remaining obligations. Rewrite using `[submatrix_apply, one_apply_ne]`. Introduce `he`. Conclude with `hi (mem_image.2 ⟨j, mem_univ _, he.symm⟩)`.
+-/
 theorem det_one_submatrix {m n : ℕ} (f g : Fin m → Fin n) (hf : StrictMono f) (hg : StrictMono g) :
     ((1 : Matrix (Fin n) (Fin n) ℂ).submatrix f g).det = if univ.image f = univ.image g then 1 else 0 := by
   split_ifs with h
@@ -53,6 +71,11 @@ theorem det_one_submatrix {m n : ℕ} (f g : Fin m → Fin n) (hf : StrictMono f
     intro he
     exact hi (mem_image.2 ⟨j, mem_univ _, he.symm⟩)
 
+/- English proof (translation)
+Establish `: (((univ.image f).erase (f i)).filter fun c => c < f i) = (Iio i).image f`. Use extensionality with `x`. Simplify using `only [mem_filter, mem_erase, mem_image, mem_univ, true_and, mem_Iio]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, j, rfl⟩, h⟩`.
+
+Conclude with `⟨j, hf.lt_iff_lt.1 h, rfl⟩`. Introduce and unpack `⟨j, h, rfl⟩`. Conclude with `⟨⟨(hf h).ne, j, rfl⟩, hf h⟩`. Rewrite using `[this, card_image_of_injective _ hf.injective, Fin.card_Iio]`.
+-/
 theorem card_filter_lt {m n : ℕ} (f : Fin m → Fin n) (hf : StrictMono f) (i : Fin m) :
     (((univ.image f).erase (f i)).filter fun c => c < f i).card = i := by
   have : (((univ.image f).erase (f i)).filter fun c => c < f i) = (Iio i).image f := by
@@ -65,6 +88,11 @@ theorem card_filter_lt {m n : ℕ} (f : Fin m → Fin n) (hf : StrictMono f) (i 
       exact ⟨⟨(hf h).ne, j, rfl⟩, hf h⟩
   rw [this, card_image_of_injective _ hf.injective, Fin.card_Iio]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [mem_erase, mem_image, mem_univ, true_and, Function.comp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨fun h => Fin.succAbove_ne _ _ (hf.injective h), _, rfl⟩`.
+
+Introduce and unpack `⟨h, j, rfl⟩`. Take `⟨l, rfl⟩` from `Fin.exists_succAbove_eq (x := j) (y := i) (fun e => h (by rw [e]))`. Conclude with `⟨l, rfl⟩`.
+-/
 theorem image_succAbove {m n : ℕ} (f : Fin (m + 1) → Fin n) (hf : StrictMono f) (i : Fin (m + 1)) :
     univ.image (f ∘ i.succAbove) = (univ.image f).erase (f i) := by
   ext x
@@ -76,6 +104,23 @@ theorem image_succAbove {m n : ℕ} (f : Fin (m + 1) → Fin n) (hf : StrictMono
     obtain ⟨l, rfl⟩ := Fin.exists_succAbove_eq (x := j) (y := i) (fun e => h (by rw [e]))
     exact ⟨l, rfl⟩
 
+/- English proof (translation)
+Distinguish the cases in `hb : b ∈ univ.image g`. Use `swap`. Rewrite using `[if_neg (fun h => hb h.1)]`. Use `sum_eq_zero fun j _ => sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[single_apply_of_ne, mul_zero]`.
+
+Introduce and unpack `⟨_, rfl⟩`. Conclude with `hb (mem_image_of_mem _ (mem_univ _))`. Distinguish the cases in `ha : a ∈ univ.image f`. Use `swap`. Rewrite using `[if_neg (by rintro ⟨_, _, h⟩; exact ha (h ▸ mem_insert_self _ _))]`.
+
+Use `sum_eq_zero fun j _ => sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[single_apply_of_ne, mul_zero]`. Introduce and unpack `⟨rfl, _⟩`. Conclude with `ha (mem_image_of_mem _ (mem_univ _))`. Take `⟨j, _, rfl⟩` from `mem_image.1 hb`.
+
+Take `⟨i, _, rfl⟩` from `mem_image.1 ha`. Rewrite using `[sum_eq_single j, sum_eq_single i, single_apply_same, mul_one]`. Take `⟨m, rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by have := i.pos; omega⟩`. Rewrite using `[adjugate_fin_succ_eq_det_submatrix, submatrix_submatrix, det_one_submatrix _ _ (hf.comp (Fin.strictMono_succAbove i)) (hg.comp (Fin.strictMono_succAbove j)), image_succAbove f hf, image_succAbove g hg]`. Distinguish the cases in `h : (univ.image f).erase (f i) = (univ.image g).erase (g j)`.
+
+Rewrite using `[if_pos h, if_pos, card_filter_lt g hg, ← h, card_filter_lt f hf, mul_one, pow_add]`. Use `⟨hb, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `notMem_erase _ _`. Rewrite using `[← h, insert_erase ha]`.
+
+Rewrite using `[if_neg h, if_neg, mul_zero]`. Introduce and unpack `⟨_, h1, h2⟩`. Apply `h` to reduce the goal to its premises. Rewrite using `[h2, erase_insert h1]`. Introduce `i' _ hi`.
+
+Rewrite using `[single_apply_of_ne, mul_zero]`. Conclude with `fun h => hi (hf.injective h.1).symm`. Simplify using the standard rewrite rules. Introduce `j' _ hj`. Use `sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[single_apply_of_ne, mul_zero]`. Conclude with `fun h => hj (hg.injective h.2).symm`. Simplify using the standard rewrite rules.
+-/
 theorem sum_adj {m n : ℕ} (f g : Fin m → Fin n) (hf : StrictMono f) (hg : StrictMono g) (a b : Fin n) :
     ∑ j, ∑ i, adjugate ((1 : Matrix (Fin n) (Fin n) ℂ).submatrix f g) j i *
       (Matrix.single a b (1 : ℂ)) (f i) (g j) =
@@ -122,6 +167,9 @@ theorem sum_adj {m n : ℕ} (f g : Fin m → Fin n) (hf : StrictMono f) (hg : St
     exact fun h => hj (hg.injective h.2).symm
   · simp
 
+/- English proof (translation)
+Apply the tactic sequence `have h := hasDerivAt_det (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X)).submatrix (J.1.orderEmbOfFin J.2) (J'.1.orderEmbOfFin J'.2)) (X.submatrix (J.1.orderEmbOfFin J.2) (J'.1.orderEmbOfFin J'.2)) fun i j => PI.ComplexConjugateDerivative.exp_entry X _ _`. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, submatrix_apply] at h`. Conclude with `h.deriv`.
+-/
 theorem dR_wedge (k r m : ℕ) (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (J J' : Sub (2 * r + k + 1) m) :
     (wedge k r m).dR X J J' = ∑ j, ∑ i, adjugate ((1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ).submatrix (J.1.orderEmbOfFin J.2)
       (J'.1.orderEmbOfFin J'.2)) j i * X (J.1.orderEmbOfFin J.2 i) (J'.1.orderEmbOfFin J'.2 j) := by
@@ -131,6 +179,9 @@ theorem dR_wedge (k r m : ℕ) (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k
   simp only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, submatrix_apply] at h
   exact h.deriv
 
+/- English proof (translation)
+Establish `: Complex.I * (1 / (2 * Complex.I)) = 1 / 2` using `by field_simp`. Rewrite using `[reH, imH, smul_smul, this, ← smul_add]`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, Matrix.sub_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem reH_add_imH (k r : ℕ) (Y : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : reH k r Y + Complex.I • imH k r Y = Y := by
   have : Complex.I * (1 / (2 * Complex.I)) = 1 / 2 := by field_simp
   rw [reH, imH, smul_smul, this, ← smul_add]
@@ -138,6 +189,11 @@ theorem reH_add_imH (k r : ℕ) (Y : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + 
   simp only [Matrix.smul_apply, Matrix.add_apply, Matrix.sub_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `k r m a b J J'`. Establish `h` using `sum_adj _ _ (J.1.orderEmbOfFin J.2).strictMono (J'.1.orderEmbOfFin J'.2).strictMono a b`. Rewrite `h` using `[Finset.image_orderEmbOfFin_univ, Finset.image_orderEmbOfFin_univ]`. Rewrite using `[← h, FRep.dC, Matrix.add_apply, Matrix.smul_apply, dR_wedge, dR_wedge, smul_eq_mul, mul_sum, ← sum_add_distrib]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_sum, ← sum_add_distrib]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← reH_add_imH k r (Matrix.single a b 1)]`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dC_wedge_single : ∀ (k r m : ℕ) (a b : Fin (2 * r + k + 1)) (J J' : Sub (2 * r + k + 1) m), (wedge k r m).dC (Matrix.single a b 1) J J' = if b ∈ J'.1 ∧ a ∉ J'.1.erase b ∧ J.1 = insert a (J'.1.erase b) then (-1) ^ ((J'.1.erase b).filter fun c => c < a).card * (-1) ^ ((J'.1.erase b).filter fun c => c < b).card else 0 := by
   intro k r m a b J J'
   have h := sum_adj _ _ (J.1.orderEmbOfFin J.2).strictMono (J'.1.orderEmbOfFin J'.2).strictMono a b

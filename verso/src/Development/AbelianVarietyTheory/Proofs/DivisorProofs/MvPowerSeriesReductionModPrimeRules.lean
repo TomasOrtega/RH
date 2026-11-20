@@ -7,14 +7,25 @@ namespace GlobalTheory.Katz.RedRules
 
 variable (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] (σ : Type)
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.injective _ _`.
+-/
 theorem inj : Function.Injective (algebraMap (WittVector p k) (Fr p k)) :=
   IsFractionRing.injective _ _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `r • coeff α f = _`. Rewrite using `[Algebra.smul_def]`.
+-/
 theorem coeff_smul' (r : WittVector p k) (f : MvPowerSeries σ (Fr p k)) (α : σ →₀ ℕ) :
     coeff α (r • f) = algebraMap _ (Fr p k) r * coeff α f := by
   change r • coeff α f = _
   rw [Algebra.smul_def]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hf choose w hw using hf`. Use `⟨fun α => WittVector.constantCoeff (w α), fun α => ⟨w α, ?_, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[hw α, one_mul]`. Introduce and unpack `⟨g, hg⟩ α`.
+
+Take `⟨w, hw, -⟩` from `hg α`. Conclude with `⟨w, by rw [one_mul, hw]⟩`.
+-/
 theorem intBy_one_iff (f : MvPowerSeries σ (Fr p k)) :
     f ∈ intBy p k σ 1 ↔ ∃ g, Red p f g := by
   constructor
@@ -26,6 +37,9 @@ theorem intBy_one_iff (f : MvPowerSeries σ (Fr p k)) :
     obtain ⟨w, hw, -⟩ := hg α
     exact ⟨w, by rw [one_mul, hw]⟩
 
+/- English proof (translation)
+Use extensionality with `α`. Take `⟨w, hw, hg⟩` from `h α`. Take `⟨w', hw', hg'⟩` from `h' α`. Establish `: w = w'` using `inj p k (hw.symm.trans hw')`. Rewrite using `[← hg, ← hg', this]`.
+-/
 theorem red_unique (f : MvPowerSeries σ (Fr p k)) (g g' : MvPowerSeries σ k)
     (h : Red p f g) (h' : Red p f g') : g = g' := by
   ext α
@@ -34,10 +48,18 @@ theorem red_unique (f : MvPowerSeries σ (Fr p k)) (g g' : MvPowerSeries σ k)
   have : w = w' := inj p k (hw.symm.trans hw')
   rw [← hg, ← hg', this]
 
+/- English proof (translation)
+Introduce `α` and use `⟨WittVector.teichmuller p (coeff α g), coeff_lift p g α, by rw [WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]⟩`.
+-/
 theorem red_lift (g : MvPowerSeries σ k) : Red p (Katz.lift p g) g := fun α =>
   ⟨WittVector.teichmuller p (coeff α g), coeff_lift p g α, by
     rw [WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `α`. Take `⟨w, hw, hg⟩` from `h α`. Take `⟨w', hw', hg'⟩` from `h' α`. Conclude with `⟨w + w', by rw [map_add, map_add, hw, hw'], by rw [map_add, map_add, hg, hg']⟩`.
+
+Introduce `α`. Take `⟨w, hw, hg⟩` from `h α`. Take `⟨w', hw', hg'⟩` from `h' α`. Conclude with `⟨w - w', by rw [map_sub, map_sub, hw, hw'], by rw [map_sub, map_sub, hg, hg']⟩`.
+-/
 theorem red_add_sub (f f' : MvPowerSeries σ (Fr p k)) (g g' : MvPowerSeries σ k)
     (h : Red p f g) (h' : Red p f' g') : Red p (f + f') (g + g') ∧ Red p (f - f') (g - g') := by
   constructor
@@ -50,6 +72,9 @@ theorem red_add_sub (f f' : MvPowerSeries σ (Fr p k)) (g g' : MvPowerSeries σ 
     obtain ⟨w', hw', hg'⟩ := h' α
     exact ⟨w - w', by rw [map_sub, map_sub, hw, hw'], by rw [map_sub, map_sub, hg, hg']⟩
 
+/- English proof (translation)
+Introduce `α`. Take `⟨w, hw, hg⟩` from `h α`. Use `⟨r * w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_smul', hw, map_mul]`. Rewrite using `[map_mul, hg, MvPowerSeries.coeff_smul]`.
+-/
 theorem red_smul (r : WittVector p k) (f : MvPowerSeries σ (Fr p k)) (g : MvPowerSeries σ k)
     (h : Red p f g) : Red p (r • f) (WittVector.constantCoeff r • g) := by
   intro α
@@ -58,10 +83,18 @@ theorem red_smul (r : WittVector p k) (f : MvPowerSeries σ (Fr p k)) (g : MvPow
   · rw [coeff_smul', hw, map_mul]
   · rw [map_mul, hg, MvPowerSeries.coeff_smul]
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_natCast, CharP.cast_eq_zero, zero_mul]`.
+-/
 theorem constantCoeff_p_mul (v : WittVector p k) :
     WittVector.constantCoeff ((p : WittVector p k) * v) = 0 := by
   rw [map_mul, map_natCast, CharP.cast_eq_zero, zero_mul]
 
+/- English proof (translation)
+Distinguish the cases in `h0 : w = 0`. Conclude with `⟨0, by rw [h0, mul_zero]⟩`. Take `⟨m, b, hb, rfl⟩` from `WittVector.exists_eq_pow_p_mul w h0`. Consider the cases of `m with`. Consider the case `zero`.
+
+Rewrite `hw` using `[pow_zero, one_mul, WittVector.constantCoeff_apply]`. Conclude with `absurd hw hb`. Consider the case `succ m => exact ⟨(p : WittVector p k) ^ m * b, by rw [pow_succ, mul_comm _ (p : WittVector p k), mul_assoc]⟩`.
+-/
 theorem exists_p_mul [PerfectRing k p] (w : WittVector p k) (hw : WittVector.constantCoeff w = 0) :
     ∃ v, w = (p : WittVector p k) * v := by
   by_cases h0 : w = 0
@@ -73,6 +106,11 @@ theorem exists_p_mul [PerfectRing k p] (w : WittVector p k) (hw : WittVector.con
     exact absurd hw hb
   | succ m => exact ⟨(p : WittVector p k) ^ m * b, by rw [pow_succ, mul_comm _ (p : WittVector p k), mul_assoc]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hf α`. Take `⟨v, hv⟩` from `hf α`. Conclude with `⟨_, hv, by rw [constantCoeff_p_mul, map_zero]⟩`. Introduce `hf α`.
+
+Take `⟨w, hw, h0⟩` from `hf α`. Rewrite `h0` using `[map_zero]`. Take `⟨v, rfl⟩` from `exists_p_mul p k w h0`. Conclude with `⟨v, hw⟩`.
+-/
 theorem intBy_p_iff [PerfectRing k p] (f : MvPowerSeries σ (Fr p k)) :
     f ∈ intBy p k σ p ↔ Red p f 0 := by
   constructor
@@ -85,6 +123,11 @@ theorem intBy_p_iff [PerfectRing k p] (f : MvPowerSeries σ (Fr p k)) :
     obtain ⟨v, rfl⟩ := exists_p_mul p k w h0
     exact ⟨v, hw⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hf choose w hw using hf`. Use `⟨(fun α => algebraMap _ (Fr p k) (w α) : MvPowerSeries σ (Fr p k)), fun α => ⟨w α, by rw [one_mul]; rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `α`. Rewrite using `[hw α, map_mul]`.
+
+Conclude with `(coeff_smul' p k σ c (fun α => algebraMap _ (Fr p k) (w α)) α).symm`. Introduce and unpack `⟨g, hg, rfl⟩ α`. Take `⟨w, hw⟩` from `hg α`. Conclude with `⟨w, by rw [coeff_smul', hw, one_mul, map_mul]⟩`.
+-/
 theorem intBy_iff (c : WittVector p k) (f : MvPowerSeries σ (Fr p k)) :
     f ∈ intBy p k σ c ↔ ∃ g ∈ intBy p k σ 1, f = c • g := by
   constructor
@@ -101,6 +144,9 @@ theorem intBy_iff (c : WittVector p k) (f : MvPowerSeries σ (Fr p k)) :
 end GlobalTheory.Katz.RedRules
 
 open GlobalTheory.Katz.RedRules in
+/- English proof (translation)
+Introduce `p _ k _ _ _ σ`. Conclude with `⟨intBy_one_iff p k σ, red_unique p k σ, red_lift p k σ, red_add_sub p k σ, red_smul p k σ, intBy_p_iff p k σ, intBy_iff p k σ⟩`.
+-/
 theorem GlobalTheory.Katz.red_rules : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (σ : Type), (∀ (f : MvPowerSeries (σ) (Fr p k)), f ∈ intBy p k σ 1 ↔ ∃ g, Red p f g) ∧ (∀ (f : MvPowerSeries (σ) (Fr p k)) g g', Red p f g → Red p f g' → g = g') ∧ (∀ g : MvPowerSeries σ k, Red p (Katz.lift p g) g) ∧ (∀ (f f' : MvPowerSeries (σ) (Fr p k)) g g', Red p f g → Red p f' g' → Red p (f + f') (g + g') ∧ Red p (f - f') (g - g')) ∧ (∀ (r : WittVector p k) (f : MvPowerSeries (σ) (Fr p k)) g, Red p f g → Red p (r • f) (WittVector.constantCoeff r • g)) ∧ (∀ f : MvPowerSeries (σ) (Fr p k), f ∈ intBy p k σ p ↔ Red p f 0) ∧ (∀ (c : WittVector p k) (f : MvPowerSeries (σ) (Fr p k)), f ∈ intBy p k σ c ↔ ∃ g ∈ intBy p k σ 1, f = c • g) := by
   intro p _ k _ _ _ σ
   exact ⟨intBy_one_iff p k σ, red_unique p k σ, red_lift p k σ, red_add_sub p k σ, red_smul p k σ,

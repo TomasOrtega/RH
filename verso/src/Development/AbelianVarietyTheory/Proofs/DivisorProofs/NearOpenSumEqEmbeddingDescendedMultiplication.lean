@@ -10,40 +10,70 @@ namespace GlobalTheory.Mum.DescKP
 
 variable {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π : S ⟶ Sp R} {G : Over S}
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem toS_fst' (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     Desc.toS N p hp ≫ pullback.fst _ _ = pullback.fst _ _ := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem toS_snd' (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     Desc.toS N p hp ≫ pullback.snd _ _ = pullback.snd _ _ ≫ p := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem embL_fst' (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     (Desc.emb N p hp).left ≫ pullback.fst G.hom p = Desc.toS N p hp ≫ N.u := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem embL_snd' (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     (Desc.emb N p hp).left ≫ pullback.snd G.hom p = pullback.snd _ _ := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Use `show (lift (fstU N) (sndU N) ≫ fst _ _).left = _`. Rewrite using `[lift_fst]`. Both sides reduce to the same expression.
+-/
 theorem pairU_fst' (N : Near π G) :
     pairU N ≫ (fst N.U N.U).left = (fst (Desc.UT N) (Desc.UT N)).left ≫ pullback.fst _ _ := by
   show (lift (fstU N) (sndU N) ≫ fst _ _).left = _
   rw [lift_fst]; rfl
 
+/- English proof (translation)
+Use `show (lift (fstU N) (sndU N) ≫ snd _ _).left = _`. Rewrite using `[lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem pairU_snd' (N : Near π G) :
     pairU N ≫ (snd N.U N.U).left = (snd (Desc.UT N) (Desc.UT N)).left ≫ pullback.fst _ _ := by
   show (lift (fstU N) (sndU N) ≫ snd _ _).left = _
   rw [lift_snd]; rfl
 
+/- English proof (translation)
+The claim follows from `Over.w (fst (Desc.UT N) (Desc.UT N))`.
+-/
 theorem fst_hom' (N : Near π G) :
     (fst (Desc.UT N) (Desc.UT N)).left ≫ pullback.snd N.U.hom (pullback.fst π π ≫ π) = (Desc.UT N ⊗ Desc.UT N).hom :=
   Over.w (fst (Desc.UT N) (Desc.UT N))
 
+/- English proof (translation)
+The claim follows from `Over.w (snd (Desc.UT N) (Desc.UT N))`.
+-/
 theorem snd_hom' (N : Near π G) :
     (snd (Desc.UT N) (Desc.UT N)).left ≫ pullback.snd N.U.hom (pullback.fst π π ≫ π) = (Desc.UT N ⊗ Desc.UT N).hom :=
   Over.w (snd (Desc.UT N) (Desc.UT N))
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem mT_fst' (N : Near π G) (V : (N.U ⊗ N.U).left.Opens) (m : V.toScheme ⟶ N.U.left)
     (hm : m ≫ N.U.hom = V.ι ≫ (N.U ⊗ N.U).hom) : mT N V m hm ≫ pullback.fst _ _ = (pairU N ∣_ V) ≫ m :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem mT_snd' (N : Near π G) (V : (N.U ⊗ N.U).left.Opens) (m : V.toScheme ⟶ N.U.left)
     (hm : m ≫ N.U.hom = V.ι ≫ (N.U ⊗ N.U).hom) :
     mT N V m hm ≫ pullback.snd _ _ = (VT N V).ι ≫ (Desc.UT N ⊗ Desc.UT N).hom :=
@@ -55,31 +85,49 @@ namespace GlobalTheory.Mum.DescKP
 
 variable {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π : S ⟶ Sp R} {G : Over S}
 
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).trans (congrArg ((fst (Desc.UT N) (Desc.UT N)).left ≫ ·) (toS_fst' N p hp))`.
+-/
 theorem fst_toS_fst' (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     ((fst (Desc.UT N) (Desc.UT N)).left ≫ Desc.toS N p hp) ≫ pullback.fst _ _ =
       (fst (Desc.UT N) (Desc.UT N)).left ≫ pullback.fst _ _ :=
   (Category.assoc _ _ _).trans (congrArg ((fst (Desc.UT N) (Desc.UT N)).left ≫ ·) (toS_fst' N p hp))
 
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).trans (congrArg ((snd (Desc.UT N) (Desc.UT N)).left ≫ ·) (toS_fst' N p hp))`.
+-/
 theorem snd_toS_fst' (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     ((snd (Desc.UT N) (Desc.UT N)).left ≫ Desc.toS N p hp) ≫ pullback.fst _ _ =
       (snd (Desc.UT N) (Desc.UT N)).left ≫ pullback.fst _ _ :=
   (Category.assoc _ _ _).trans (congrArg ((snd (Desc.UT N) (Desc.UT N)).left ≫ ·) (toS_fst' N p hp))
 
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).trans ((congrArg ((fst (Desc.UT N) (Desc.UT N)).left ≫ ·) (toS_snd' N p hp)).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ p) (fst_hom' N))))`.
+-/
 theorem fst_toS_snd' (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     ((fst (Desc.UT N) (Desc.UT N)).left ≫ Desc.toS N p hp) ≫ pullback.snd _ _ = (Desc.UT N ⊗ Desc.UT N).hom ≫ p :=
   (Category.assoc _ _ _).trans ((congrArg ((fst (Desc.UT N) (Desc.UT N)).left ≫ ·) (toS_snd' N p hp)).trans
     ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ p) (fst_hom' N))))
 
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).trans ((congrArg ((snd (Desc.UT N) (Desc.UT N)).left ≫ ·) (toS_snd' N p hp)).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ p) (snd_hom' N))))`.
+-/
 theorem snd_toS_snd' (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     ((snd (Desc.UT N) (Desc.UT N)).left ≫ Desc.toS N p hp) ≫ pullback.snd _ _ = (Desc.UT N ⊗ Desc.UT N).hom ≫ p :=
   (Category.assoc _ _ _).trans ((congrArg ((snd (Desc.UT N) (Desc.UT N)).left ≫ ·) (toS_snd' N p hp)).trans
     ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ p) (snd_hom' N))))
 
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).trans (congrArg ((fst (Desc.UT N) (Desc.UT N)).left ≫ ·) (embL_fst' N p hp).symm)`.
+-/
 theorem fst_toS_u' (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     ((fst (Desc.UT N) (Desc.UT N)).left ≫ Desc.toS N p hp) ≫ N.u =
       (fst (Desc.UT N) (Desc.UT N)).left ≫ (Desc.emb N p hp).left ≫ pullback.fst G.hom p :=
   (Category.assoc _ _ _).trans (congrArg ((fst (Desc.UT N) (Desc.UT N)).left ≫ ·) (embL_fst' N p hp).symm)
 
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).trans (congrArg ((snd (Desc.UT N) (Desc.UT N)).left ≫ ·) (embL_fst' N p hp).symm)`.
+-/
 theorem snd_toS_u' (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     ((snd (Desc.UT N) (Desc.UT N)).left ≫ Desc.toS N p hp) ≫ N.u =
       (snd (Desc.UT N) (Desc.UT N)).left ≫ (Desc.emb N p hp).left ≫ pullback.fst G.hom p :=
@@ -89,6 +137,23 @@ end GlobalTheory.Mum.DescKP
 
 namespace GlobalTheory.Mum.DescKP
 
+/- English proof (translation)
+Introduce `R _ _ S π G _ N V m hm law p hp`. Set `T0 : Over (pullback π π)` to `Over.mk ((VT N V).ι ≫ (Desc.UT N ⊗ Desc.UT N).hom)`. Set `ι0 : T0 ⟶ Desc.UT N ⊗ Desc.UT N` to `Over.homMk (VT N V).ι rfl`. Set `a : T0 ⟶ (Over.pullback p).obj G` to `ι0 ≫ fst _ _ ≫ Desc.emb N p hp`. Set `b : T0 ⟶ (Over.pullback p).obj G` to `ι0 ≫ snd _ _ ≫ Desc.emb N p hp`.
+
+Establish `hab : ι0 ≫ Desc.sum N p hp = a * b` using `by rw [Desc.sum, comp_mul]`. Establish `wpt : ∀ c : T0 ⟶ (Over.pullback p).obj G, (c.left ≫ pullback.fst G.hom p) ≫ G.hom = T0.hom ≫ p`. Introduce `c`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ p) (Over.w c)`.
+
+Set `x : Over.mk (T0.hom ≫ p) ⟶ G` to `Over.homMk (a.left ≫ pullback.fst G.hom p) (wpt a)`. Set `y : Over.mk (T0.hom ≫ p) ⟶ G` to `Over.homMk (b.left ≫ pullback.fst G.hom p) (wpt b)`. Establish `hxy : (x * y).left = (a * b).left ≫ pullback.fst G.hom p` using `(isGrpPullback_pullback G p).2 T0 a b x y rfl rfl`. Establish `e : (pairU N ∣_ V) ≫ V.ι = (VT N V).ι ≫ pairU N` using `morphismRestrict_ι _ _`. Establish `e' : ∀ {Z : Scheme.{0}} (h : (N.U ⊗ N.U).left ⟶ Z), (pairU N ∣_ V) ≫ V.ι ≫ h = (VT N V).ι ≫ pairU N ≫ h` using `fun h => by rw [← Category.assoc, e, Category.assoc]`.
+
+Establish `ptx : N.Pt (T0.hom ≫ p) ((pairU N ∣_ V) ≫ V.ι ≫ (fst N.U N.U).left) x.left`. Use `⟨(VT N V).ι ≫ (fst (Desc.UT N) (Desc.UT N)).left ≫ Desc.toS N p hp, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((VT N V).ι ≫ ·) ((fst_toS_fst' N p hp).trans (pairU_fst' N).symm)).trans (e' _).symm)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((VT N V).ι ≫ ·) (fst_toS_snd' N p hp)).trans (Category.assoc _ _ _).symm)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((VT N V).ι ≫ ·) (fst_toS_u' N p hp)).trans (Category.assoc _ _ _).symm)`.
+
+Establish `pty : N.Pt (T0.hom ≫ p) ((pairU N ∣_ V) ≫ V.ι ≫ (snd N.U N.U).left) y.left`. Use `⟨(VT N V).ι ≫ (snd (Desc.UT N) (Desc.UT N)).left ≫ Desc.toS N p hp, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((VT N V).ι ≫ ·) ((snd_toS_fst' N p hp).trans (pairU_snd' N).symm)).trans (e' _).symm)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((VT N V).ι ≫ ·) (snd_toS_snd' N p hp)).trans (Category.assoc _ _ _).symm)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((VT N V).ι ≫ ·) (snd_toS_u' N p hp)).trans (Category.assoc _ _ _).symm)`.
+
+Take `⟨x₀, h₁, h₂, h₃⟩` from `law (VT N V).toScheme (pairU N ∣_ V) (T0.hom ≫ p) x y ptx pty`. Establish `hx₀ : x₀ = mT N V m hm ≫ Desc.toS N p hp`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `h₁.trans (((Category.assoc _ _ _).trans ((congrArg (mT N V m hm ≫ ·) (toS_fst' N p hp)).trans (mT_fst' N V m hm))).symm)`. Conclude with `h₂.trans (((Category.assoc _ _ _).trans ((congrArg (mT N V m hm ≫ ·) (toS_snd' N p hp)).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ p) (mT_snd' N V m hm))))).symm)`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc (mT N V m hm), embL_fst']`. Use `(?_ : _ = (mT N V m hm ≫ Desc.toS N p hp) ≫ N.u).trans (Category.assoc _ _ _)` and prove the remaining obligations. Rewrite using `[← hx₀, h₃, hxy, ← hab]`. Both sides reduce to the same expression.
+
+Establish `w : (Desc.sum N p hp).left ≫ pullback.snd G.hom p = (Desc.UT N ⊗ Desc.UT N).hom` using `Over.w _`. Rewrite using `[Category.assoc, w, Category.assoc, embL_snd', mT_snd']`.
+-/
 theorem sum_eq_mT_emb : ∀ {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π : S ⟶ Sp R} {G : Over S} [GrpObj G] (N : Near π G) (V : (N.U ⊗ N.U).left.Opens) (m : V.toScheme ⟶ N.U.left) (hm : m ≫ N.U.hom = V.ι ≫ (N.U ⊗ N.U).hom), (∀ (T : Scheme.{0}) (v : T ⟶ V.toScheme) (s : T ⟶ S) (x y : Over.mk s ⟶ G), N.Pt s (v ≫ V.ι ≫ (fst N.U N.U).left) x.left → N.Pt s (v ≫ V.ι ≫ (snd N.U N.U).left) y.left → N.Pt s (v ≫ m) (x * y).left) → ∀ (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π), (DescKP.VT N V).ι ≫ (Desc.sum N p hp).left = DescKP.mT N V m hm ≫ (Desc.emb N p hp).left := by
   intro R _ _ S π G _ N V m hm law p hp
   let T0 : Over (pullback π π) := Over.mk ((VT N V).ι ≫ (Desc.UT N ⊗ Desc.UT N).hom)

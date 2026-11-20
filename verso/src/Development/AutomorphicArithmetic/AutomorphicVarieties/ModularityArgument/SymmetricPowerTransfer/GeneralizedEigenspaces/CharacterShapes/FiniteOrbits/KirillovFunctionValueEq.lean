@@ -19,6 +19,27 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.V.Z.Sym.So.KO
 
+/- English proof (translation)
+Establish `hinv : ∀ (y : G) (u : W), f (y * u) • φ (h * (y * u)) = f y • φ (h * y)`. Introduce `y u`. Rewrite using `[hf, ← mul_assoc, hφ, smul_smul, Units.val_inv_eq_inv_val]`. Use `congr 1`. Use `Units.ne_zero (ω u)` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts. Establish `hne : ∀ (y : G) (u : W), f y ≠ 0 → f (y * u) ≠ 0` using `fun y u hy => by`. Rewrite using `[hf]`. Conclude with `mul_ne_zero (Units.ne_zero _) hy`. Establish `hDC : ∀ y ∈ DC U a, ∀ w ∈ U, y * w ∈ DC U a`.
+
+Introduce and unpack `_ ⟨p, hp, q, hq, rfl⟩ w hw`. Conclude with `⟨p, hp, q * w, mul_mem hq hw, by simp [mul_assoc]⟩`. Establish `hout : ∀ y : G ⧸ U, y.out ∈ DC U a → f ((y.out : G ⧸ W)).out ≠ 0` using `fun y hy => by`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul W y.out`. Rewrite using `[hu]`.
+
+Conclude with `hne _ _ (by rw [hval _ hy]; exact hc)`. Establish `hb : Set.BijOn (fun y : G ⧸ U => (y.out : G ⧸ W)) {y | y.out ∈ DC U a} {x | f x.out ≠ 0}`. Use `⟨fun y hy => hout y hy, fun y hy y' hy' e => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e' : y.out⁻¹ * y'.out ∈ W` using `QuotientGroup.eq.1 e`. Use `huniq _ hy _ e' (by simpa using hy')` as an intermediate fact.
+
+Rewrite using `[← QuotientGroup.out_eq' y, ← QuotientGroup.out_eq' y']`. Conclude with `QuotientGroup.eq.2 this`. Take `⟨u, hu, hxu⟩` from `hsupp _ hx`. Take `⟨w, hw⟩` from `QuotientGroup.mk_out_eq_mul U (x.out * u)`. Use `⟨((x.out * u : G) : G ⧸ U), ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Quotient.out _ ∈ DC U a`. Rewrite using `[hw]`. Conclude with `hDC _ hxu _ w.2`. Express the relevant statement in the definitionally equal form `((Quotient.out ((x.out * u : G) : G ⧸ U) : G) : G ⧸ W) = x`. Rewrite using `[hw, ← QuotientGroup.out_eq' x, QuotientGroup.eq]`.
+
+Simplify `inv_mem (mul_mem hu (hUW w.2))` using `[mul_assoc]`. Establish `h1 : ∑ᶠ x : G ⧸ W, f x.out • φ (h * x.out) = ∑ᶠ x ∈ {x : G ⧸ W | f x.out ≠ 0}, f x.out • φ (h * x.out)`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_if]`. Use `split_ifs with hx`.
+
+Both sides reduce to the same expression. Establish `: f x.out = 0` using `by simpa using hx`. Rewrite using `[this, zero_smul]`. Establish `h2 : c • ∑ᶠ (y : G ⧸ U) (_ : y.out ∈ DC U a), φ (h * y.out) = ∑ᶠ y ∈ {y : G ⧸ U | y.out ∈ DC U a}, c • φ (h * y.out)`. Rewrite using `[smul_finsum]`.
+
+Use `finsum_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[smul_finsum]`. Both sides reduce to the same expression. Rewrite using `[h1, h2]`. Use `symm`.
+
+Use `finsum_mem_eq_of_bijOn _ hb fun y hy => ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul W y.out`. Express the relevant statement in the definitionally equal form `c • φ (h * y.out) = f (Quotient.out ((y.out : G) : G ⧸ W)) • φ (h * Quotient.out ((y.out : G) : G ⧸ W))`. Rewrite using `[hu, hinv, hval _ hy]`.
+-/
 private theorem coset_sum {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (U W : Subgroup G) (hUW : U ≤ W) (ω : W →* ℂˣ) (f : G → ℂ) (a : G) (c : ℂ) (hc : c ≠ 0)
     (hf : ∀ (u : W) y, f (y * u) = ((ω u)⁻¹ : ℂˣ) * f y)
@@ -82,6 +103,9 @@ section Loc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_diagT]`. Use extensionality with `i j`. Simplify using `[Matrix.diagonal_apply, Matrix.one_apply, Matrix.scalar_apply]`.
+-/
 private theorem scalar_eq (n : ℕ) (z : kˣ) :
     (Matrix.GeneralLinearGroup.scalar (Fin n) z : GL (Fin n) k) = dg (fun _ => z) := by
   apply Units.ext
@@ -89,6 +113,17 @@ private theorem scalar_eq (n : ℕ) (z : kˣ) :
   ext i j
   simp [Matrix.diagonal_apply, Matrix.one_apply, Matrix.scalar_apply]
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, rfl⟩` from `hY`. Take `⟨p, hp, q, hq, e⟩` from `hYu`. Establish `hcomm : ∀ g : GL (Fin 2) k, g * dg (fun _ => z) = dg (fun _ => z) * g` using `fun g => by`. Rewrite using `[← scalar_eq]`. Apply `Units.ext` to reduce the goal to its premises.
+
+Conclude with `(Matrix.scalar_commute _ (fun r => Commute.all _ r) _).eq.symm`. Establish `h1 : dg (d * fun _ => z) ∈ V.DC d`. Use `⟨a⁻¹ * p, mul_mem (inv_mem ha) hp, q * j⁻¹ * b⁻¹, mul_mem (mul_mem hq (inv_mem hj)) (inv_mem hb), ?_⟩` and prove the remaining obligations. Establish `: dg (d * fun _ => z) = a⁻¹ * (a * dg d * b * u) * j⁻¹ * b⁻¹`. Rewrite using `[hu, scalar_eq]`.
+
+Simplify using `only [dg, map_mul]`. Use `hcomm b` as an intermediate fact. Simplify using `only [dg] at this`. Rewrite using `[show a⁻¹ * (a * diagT k (Fin 2) d * b * ((diagT k (Fin 2) fun _ => z) * j)) * j⁻¹ * b⁻¹ = diagT k (Fin 2) d * (b * (diagT k (Fin 2) fun _ => z)) * b⁻¹ by group, this]`. Use `group`.
+
+Rewrite using `[this, e]`. Use `group`. Establish `h2` using `(diagDC k V 2 d _ hd).1 h1 0`. Establish `h3 : z ∈ V.H` using `by simpa using h2`. Rewrite using `[hu, scalar_eq]`.
+
+Use `mul_mem ?_ hj` and prove the remaining obligations. Conclude with `le_sup_left (b := (glIwa k 2).Nm V.c) (le_sup_right (a := (glIwa k 2).N) ⟨fun _ => z, fun i _ => h3, rfl⟩)`.
+-/
 private theorem gl_uniq (V : Lev k) (d : Fin 2 → kˣ) (hd : Dom d) {Y u : GL (Fin 2) k} (hY : Y ∈ V.DC d) (hYu : Y * u ∈ V.DC d)
     (z : kˣ) (j : GL (Fin 2) k) (hj : j ∈ V.J 2) (hu : u = Matrix.GeneralLinearGroup.scalar (Fin 2) z * j) : u ∈ V.J 2 := by
   obtain ⟨a, ha, b, hb, rfl⟩ := hY
@@ -120,6 +155,13 @@ section Loc2
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hex : ∃ x : kˣ, valuation k (x : k) = uniformizer k`. Take `⟨x, hx⟩` from `valuation_surjective (uniformizer k)`. Establish `h0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[map_zero]`.
+
+Conclude with `uniformizer_ne_zero hx.symm`. Conclude with `⟨Units.mk0 x h0, hx⟩`. Establish `hu : valuation k (unif k : k) = uniformizer k` using `Classical.epsilon_spec hex`. Establish `h1 : valuation k (unif k : k) ≤ 1`. Rewrite using `[hu]`.
+
+Conclude with `uniformizer_lt_one.le`. Conclude with `lt_of_lt_of_le ht (pow_le_one' h1 2)`.
+-/
 private theorem val_lt (t : kˣ) (ht : valuation k (t : k) < valuation k (unif k : k) ^ 2) : valuation k (t : k) < 1 := by
   have hex : ∃ x : kˣ, valuation k (x : k) = uniformizer k := by
     obtain ⟨x, hx⟩ := valuation_surjective (uniformizer k)
@@ -133,16 +175,25 @@ private theorem val_lt (t : kˣ) (ht : valuation k (t : k) < valuation k (unif k
     rw [hu]; exact uniformizer_lt_one.le
   exact lt_of_lt_of_le ht (pow_le_one' h1 2)
 
+/- English proof (translation)
+Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`.
+-/
 private theorem sdom {t : kˣ} (ht : valuation k (t : k) < 1) : SDom (![t, 1] : Fin 2 → kˣ) := by
   intro i j hij
   fin_cases i <;> fin_cases j <;> simp_all
 
+/- English proof (translation)
+Introduce `i j hij`. Break down `hij.eq_or_lt with rfl | h` into its components or cases. Conclude with `le_rfl`. Conclude with `(sdom ht i j h).le`.
+-/
 private theorem dom_of {t : kˣ} (ht : valuation k (t : k) < 1) : Dom (![t, 1] : Fin 2 → kˣ) := by
   intro i j hij
   rcases hij.eq_or_lt with rfl | h
   · exact le_rfl
   · exact (sdom ht i j h).le
 
+/- English proof (translation)
+Take `⟨-, -, hz⟩` from `eqZ k V χ hχ 2 (by norm_num)`. Establish `h` using `(hz _ (sdom ht)).1 1 Y hY`. Rewrite `h` using `[map_one, one_mul, map_one, inv_one, Units.val_one]`. Rewrite using `[Lev.twistedCentralTestFunction, h, mul_one]`.
+-/
 private theorem kirillov_function_value_eq (V : Lev k) (χ : kˣ →* ℂˣ) (hχ : ∀ u ∈ V.H, χ u = 1) {t : kˣ} (ht : valuation k (t : k) < 1)
     {Y : GL (Fin 2) k} (hY : Y ∈ V.DC ![t, 1]) : V.twistedCentralTestFunction χ t Y = (((χ t)⁻¹ : ℂˣ) : ℂ) := by
   obtain ⟨-, -, hz⟩ := eqZ k V χ hχ 2 (by norm_num)
@@ -150,6 +201,9 @@ private theorem kirillov_function_value_eq (V : Lev k) (χ : kˣ →* ℂˣ) (h�
   rw [map_one, one_mul, map_one, inv_one, Units.val_one] at h
   rw [Lev.twistedCentralTestFunction, h, mul_one]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Apply `hY` to reduce the goal to its premises. Rewrite using `[Lev.twistedCentralTestFunction, Lev.fZ, dif_neg h, mul_zero]`.
+-/
 private theorem kirillov_function_support (V : Lev k) (χ : kˣ →* ℂˣ) {t : kˣ} {Y : GL (Fin 2) k} (hY : V.twistedCentralTestFunction χ t Y ≠ 0) :
     ∃ z : kˣ, (Matrix.GeneralLinearGroup.scalar (Fin 2) z)⁻¹ * Y ∈ V.DC ![t, 1] := by
   by_contra h
@@ -162,9 +216,15 @@ section Glb
 
 variable {F : Type} [Field F] [NumberField F] {Δ : F} (A : SD Δ)
 
+/- English proof (translation)
+Simplify using `[IsScal, mt]`.
+-/
 private theorem scal_one' {K : Type} [Field K] {Δ : K} : IsScal (1 : Kˣ) (1 : DX Δ) := by
   simp [IsScal, mt]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `mt s * mt y = mt y * mt s`. Rewrite using `[h]`. Conclude with `(Matrix.scalar_commute _ (fun r => Commute.all _ r) _).eq`.
+-/
 private theorem scal_comm' {K : Type} [Field K] {Δ : K} {z : Kˣ} {s : DX Δ} (h : IsScal z s) (y : DX Δ) : s * y = y * s := by
   apply Subtype.ext
   apply Units.ext
@@ -172,31 +232,54 @@ private theorem scal_comm' {K : Type} [Field K] {Δ : K} {z : Kˣ} {s : DX Δ} (
   rw [h]
   exact (Matrix.scalar_commute _ (fun r => Commute.all _ r) _).eq
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 private theorem dat_S (v : Pl F) (h : v ∈ A.Sg) : A.dat.S v = (A.V v).data (A.hs v h) (A.Ry v) (A.χ v) := dif_pos h
 
+/- English proof (translation)
+Establish `h' : v ∈ A.dat.Sg` using `h`. Rewrite using `[Dat.J2v, if_pos h', dat_S A v h]`. Both sides reduce to the same expression.
+-/
 private theorem level_two_at_sigma (v : Pl F) (h : v ∈ A.Sg) : A.dat.J2v v = ((A.V v).J 2).comap (eD (A.hs v h)) := by
   have h' : v ∈ A.dat.Sg := h
   rw [Dat.J2v, if_pos h', dat_S A v h]
   rfl
 
+/- English proof (translation)
+The claim follows from `if_neg h`.
+-/
 private theorem level_two_outside_sigma (v : Pl F) (h : v ∉ A.Sg) : A.dat.J2v v = KD _ (Ov v) := if_neg h
 
+/- English proof (translation)
+Establish `h' : v ∈ A.dat.Sg` using `h`. Rewrite using `[Dat.fKv, if_pos h', dat_S A v h]`. Both sides reduce to the same expression.
+-/
 private theorem fK_sig (t : Dat.Par F) (v : Pl F) (h : v ∈ A.Sg) (x : DX (cv v Δ)) :
     A.dat.fKv t v x = (A.V v).twistedCentralTestFunction (A.χ v) (t v) (eD (A.hs v h) x) := by
   have h' : v ∈ A.dat.Sg := h
   rw [Dat.fKv, if_pos h', dat_S A v h]
   rfl
 
+/- English proof (translation)
+The claim follows from `if_neg h`.
+-/
 private theorem fK_off (t : Dat.Par F) (v : Pl F) (h : v ∉ A.Sg) (x : DX (cv v Δ)) :
     A.dat.fKv t v x = fZD (Ov v) (A.χ v) x := if_neg h
 
 variable {A}
 
+/- English proof (translation)
+Take `⟨-, -, hl, -⟩` from `datOk F Δ A hA`. Take `⟨h1, h2, h3, -⟩` from `hl v h`. Conclude with `(eD_facts (Kv v) (Ov v) h1 h2 _ _ (A.hs v h) h3).1`.
+-/
 private theorem bij_sig (hA : A.Ok) (v : Pl F) (h : v ∈ A.Sg) : Function.Bijective (eD (A.hs v h)) := by
   obtain ⟨-, -, hl, -⟩ := datOk F Δ A hA
   obtain ⟨h1, h2, h3, -⟩ := hl v h
   exact (eD_facts (Kv v) (Ov v) h1 h2 _ _ (A.hs v h) h3).1
 
+/- English proof (translation)
+Rewrite using `[level_two_at_sigma A v h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, u', hu', rfl⟩`. Conclude with `⟨_, hu, _, hu', by rw [map_mul, map_mul, hg.1 v h]⟩`. Introduce and unpack `⟨a, ha, b, hb, e⟩`.
+
+Take `⟨u, rfl⟩` from `(bij_sig hA v h).2 a`. Take `⟨u', rfl⟩` from `(bij_sig hA v h).2 b`. Conclude with `⟨u, ha, u', hb, (bij_sig hA v h).1 (by rw [e, map_mul, map_mul, hg.1 v h])⟩`.
+-/
 private theorem dc_sig (hA : A.Ok) {g : DA Δ} {d : ParN F 2} (hg : A.IsElD g d) (v : Pl F) (h : v ∈ A.Sg) (y : DX (cv v Δ)) :
     y ∈ DC (A.dat.J2v v) (g.1 v) ↔ eD (A.hs v h) y ∈ (A.V v).DC (d v) := by
   rw [level_two_at_sigma A v h]
@@ -208,6 +291,11 @@ private theorem dc_sig (hA : A.Ok) {g : DA Δ} {d : ParN F 2} (hg : A.IsElD g d)
     obtain ⟨u', rfl⟩ := (bij_sig hA v h).2 b
     exact ⟨u, ha, u', hb, (bij_sig hA v h).1 (by rw [e, map_mul, map_mul, hg.1 v h])⟩
 
+/- English proof (translation)
+Establish `h` using `(uFBox (Pl F) (DA Δ) (fun v => DX (cv v Δ)) (fun v => KD (cv v Δ) (Ov v)) A.dat.J2v (rpg _ _) A.Sg (fun v hv => level_two_outside_sigma A v hv) g (fun v hv => by`. Express the relevant statement in the definitionally equal form `g.1 v ∈ _`. Rewrite using `[hg.2 v hv]`. Conclude with `one_mem _)).1 y`. Use `h.trans ⟨fun ⟨a, b⟩ => ⟨fun v hv => (dc_sig hA hg v hv _).1 (a v hv), fun v hv => ?_⟩, fun ⟨a, b⟩ => ⟨fun v hv => (dc_sig hA hg v hv _).2 (a v hv), fun v hv => ?_⟩⟩` and prove the remaining obligations.
+
+Use `b v hv` as an intermediate fact. Rewrite `this` using `[level_two_outside_sigma A v hv]`. Then use the resulting hypothesis. Rewrite using `[level_two_outside_sigma A v hv]`. Conclude with `b v hv`.
+-/
 private theorem dc_box (hA : A.Ok) {g : DA Δ} {d : ParN F 2} (hg : A.IsElD g d) (y : DA Δ) :
     y ∈ DC A.dat.U2 g ↔ (∀ v (h : v ∈ A.Sg), eD (A.hs v h) (y.1 v) ∈ (A.V v).DC (d v)) ∧ ∀ v ∉ A.Sg, y.1 v ∈ KD _ (Ov v) := by
   have h := (uFBox (Pl F) (DA Δ) (fun v => DX (cv v Δ)) (fun v => KD (cv v Δ) (Ov v)) A.dat.J2v (rpg _ _) A.Sg
@@ -222,12 +310,20 @@ private theorem dc_box (hA : A.Ok) {g : DA Δ} {d : ParN F 2} (hg : A.IsElD g d)
   · rw [level_two_outside_sigma A v hv]
     exact b v hv
 
+/- English proof (translation)
+Use `(Loc.fzdLaw (Ov v) (Kv v) (cv v Δ) (hA.off v hv) (A.χ v) (hA.chi v).1).2 1 1 x scal_one' hx` as an intermediate fact. Rewrite `this` using `[one_mul, map_one, inv_one, Units.val_one]`. Rewrite using `[fK_off A t v hv, this]`.
+-/
 private theorem fk_one (hA : A.Ok) (t : Dat.Par F) (v : Pl F) (hv : v ∉ A.Sg) (x : DX (cv v Δ)) (hx : x ∈ KD _ (Ov v)) :
     A.dat.fKv t v x = 1 := by
   have := (Loc.fzdLaw (Ov v) (Kv v) (cv v Δ) (hA.off v hv) (A.χ v) (hA.chi v).1).2 1 1 x scal_one' hx
   rw [one_mul, map_one, inv_one, Units.val_one] at this
   rw [fK_off A t v hv, this]
 
+/- English proof (translation)
+Take `⟨-, -, hl, -⟩` from `datOk F Δ A hA`. Take `⟨a, b⟩` from `(dc_box hA hg y).1 hy`. Rewrite using `[Dat.FK, finprod_eq_prod_of_mulSupport_subset (s := A.Sg)]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Take `⟨-, -, -, h4, -⟩` from `hl v hv`.
+
+Rewrite using `[fK_sig A t v hv]`. Conclude with `kirillov_function_value_eq _ _ (fun u hu => h4 u ((A.V v).H_le hu)) (val_lt _ (ht v hv)) (a v hv)`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (fk_one hA t v h _ (b v h))`.
+-/
 private theorem fk_val (hA : A.Ok) {t : Dat.Par F} (ht : A.Cone t) {g : DA Δ} (hg : A.IsElD g fun v => ![t v, 1]) (y : DA Δ)
     (hy : y ∈ DC A.dat.U2 g) : A.dat.FK t y = ∏ v ∈ A.Sg, (((A.χ v (t v))⁻¹ : ℂˣ) : ℂ) := by
   obtain ⟨-, -, hl, -⟩ := datOk F Δ A hA
@@ -241,6 +337,23 @@ private theorem fk_val (hA : A.Ok) {t : Dat.Par F} (ht : A.Cone t) {g : DA Δ} (
     by_contra h
     exact hv (fk_one hA t v h _ (b v h))
 
+/- English proof (translation)
+Take `⟨-, -, hl, -⟩` from `datOk F Δ A hA`. Establish `hco : ∀ᶠ v in Filter.cofinite, v ∉ A.Sg` using `Filter.eventually_cofinite.2 (by simpa using A.Sg.finite_toSet)`. Establish `hyK : ∀ᶠ v in Filter.cofinite, y.1 v ∈ KD (cv v Δ) (Ov v)` using `(rpg _ _).ae y`. Establish `hfin : (Function.mulSupport fun v => A.dat.fKv t v (y.1 v)).Finite`. Use `(Filter.eventually_cofinite.1 (hco.and hyK)).subset fun v hv h => hv ?_` and prove the remaining obligations.
+
+Conclude with `fk_one hA t v h.1 _ h.2`. Establish `hne : ∀ v, A.dat.fKv t v (y.1 v) ≠ 0` using `fun v h => hy (finprod_eq_zero _ v h hfin)`. Establish `hloc : ∀ v, ∃ (z : (Kv v)ˣ) (s : DX (cv v Δ)), IsScal z s ∧ (∀ h : v ∈ A.Sg, eD (A.hs v h) (s⁻¹ * y.1 v) ∈ (A.V v).DC ![t v, 1]) ∧ (v ∉ A.Sg → s⁻¹ * y.1 v ∈ KD _ (Ov v))`. Introduce `v`. Distinguish the cases in `hv : v ∈ A.Sg`.
+
+Establish `h0` using `hne v`. Rewrite `h0` using `[fK_sig A t v hv]`. Take `⟨z, hz⟩` from `kirillov_function_support _ _ h0`. Take `⟨h1, h2, h3, -⟩` from `hl v hv`. Take `⟨hb, -, -, hscal, -⟩` from `eD_facts (Kv v) (Ov v) h1 h2 _ _ (A.hs v hv) h3`.
+
+Take `⟨s, hs⟩` from `hb.2 (Matrix.GeneralLinearGroup.scalar (Fin 2) z)`. Conclude with `⟨z, s, (hscal z s).2 hs, fun _ => by rwa [map_mul, map_inv, hs], fun h => (h hv).elim⟩`. Establish `h0` using `hne v`. Rewrite `h0` using `[fK_off A t v hv]`. Establish `: ∃ (z : (Kv v)ˣ) (s : DX (cv v Δ)), IsScal z s ∧ s⁻¹ * y.1 v ∈ KD _ (Ov v)`.
+
+Assume the negation of the conclusion as `hh`. Conclude with `h0 (dif_neg hh)`. Take `⟨z, s, hs, hk⟩` from `this`. Conclude with `⟨z, s, hs, fun h => (hv h).elim, fun _ => hk⟩`. Use `choose z s hs hS hO using hloc`.
+
+Establish `hmem : ∀ᶠ v in Filter.cofinite, (s v)⁻¹ ∈ KD (cv v Δ) (Ov v)` using `(hco.and hyK).mono fun v h => by simpa using mul_mem (hO v h.1) (inv_mem h.2)`. Use `⟨⟨fun v => (s v)⁻¹, hmem⟩, Subgroup.mem_iInf.2 fun v => Subgroup.mem_comap.2 (Subgroup.mem_sup_left (inv_mem ⟨z v, Units.ext (hs v).symm⟩)), ?_⟩` and prove the remaining obligations. Establish `hc : ∀ v, (y * ⟨fun v => (s v)⁻¹, hmem⟩ : DA Δ).1 v = (s v)⁻¹ * y.1 v` using `fun v => by`. Express the relevant statement in the definitionally equal form `y.1 v * (s v)⁻¹ = _`. Use `scal_comm' (hs v) (y.1 v)` as an intermediate fact.
+
+Rewrite using `[eq_comm, inv_mul_eq_iff_eq_mul, ← mul_assoc, this, mul_inv_cancel_right]`. Use `(dc_box hA hg _).2 ⟨fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `hS v hv`. Rewrite using `[hc]`.
+
+Conclude with `hO v hv`.
+-/
 private theorem fk_supp (hA : A.Ok) {t : Dat.Par F} {g : DA Δ} (hg : A.IsElD g fun v => ![t v, 1]) (y : DA Δ)
     (hy : A.dat.FK t y ≠ 0) : ∃ u ∈ A.dat.UZ, y * u ∈ DC A.dat.U2 g := by
   obtain ⟨-, -, hl, -⟩ := datOk F Δ A hA
@@ -282,6 +395,15 @@ private theorem fk_supp (hA : A.Ok) {t : Dat.Par F} {g : DA Δ} (hg : A.IsElD g 
   · rw [hc]
     exact hO v hv
 
+/- English proof (translation)
+Take `⟨-, -, hl, -⟩` from `datOk F Δ A hA`. Take `⟨a, a'⟩` from `(dc_box hA hg y).1 hy`. Take `⟨b, b'⟩` from `(dc_box hA hg _).1 hyu`. Use `Subgroup.mem_iInf.2 fun v => Subgroup.mem_comap.2 ?_` and prove the remaining obligations. Establish `huv : u.1 v ∈ ZD _ ⊔ A.dat.J2v v` using `Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 hu v)`.
+
+Express the relevant statement in the definitionally equal form `u.1 v ∈ A.dat.J2v v`. Distinguish the cases in `hv : v ∈ A.Sg`. Rewrite `huv`, the goal using `[level_two_at_sigma A v hv]`. Take `⟨h1, h2, h3, h4, -⟩` from `hl v hv`. Take `⟨-, -, -, -, -, hZJ⟩` from `eD_facts (Kv v) (Ov v) h1 h2 _ _ (A.hs v hv) h3`.
+
+Rewrite `huv` using `[← hZJ]`. Take `⟨-, hm, -⟩` from `eqZ _ (A.V v) (A.χ v) (fun u hu => h4 u ((A.V v).H_le hu)) 2 (by norm_num)`. Take `⟨z, j, hj, e⟩` from `(hm _).1 huv`. Establish `hb` using `b v hv`. Establish `hbb : eD (A.hs v hv) (y.1 v) * eD (A.hs v hv) (u.1 v) ∈ (A.V v).DC ![t v, 1]`.
+
+Rewrite using `[← map_mul]`. Conclude with `hb`. Conclude with `gl_uniq _ _ (dom_of (val_lt _ (ht v hv))) (a v hv) hbb z j hj e`. Rewrite using `[level_two_outside_sigma A v hv]`. Conclude with `(mul_mem_cancel_left (a' v hv)).1 (b' v hv)`.
+-/
 private theorem fk_uniq (hA : A.Ok) {t : Dat.Par F} (ht : A.Cone t) {g : DA Δ} (hg : A.IsElD g fun v => ![t v, 1]) (y : DA Δ)
     (hy : y ∈ DC A.dat.U2 g) (u : DA Δ) (hu : u ∈ A.dat.UZ) (hyu : y * u ∈ DC A.dat.U2 g) : u ∈ A.dat.U2 := by
   obtain ⟨-, -, hl, -⟩ := datOk F Δ A hA
@@ -310,6 +432,31 @@ end Glb
 end UpperTheory.V.Z.Sym.So.KO
 
 open UpperTheory.V.Z.Sym.So.KO in
+/- English proof (translation)
+Introduce `F _ _ Δ A hA V _ _ ch B hB`. Take `⟨hOk, hCone, hl, -, -⟩` from `datOk F Δ A hA`. Establish `hle : A.dat.U2 ≤ B.U` using `fun u hu => by`. Rewrite using `[hB.U]`. Conclude with `Subgroup.mem_iInf.2 fun v => Subgroup.mem_comap.2 (Subgroup.mem_sup_right (Subgroup.mem_iInf.1 hu v))`.
+
+Establish `hinv : ∀ φ ∈ B.Forms, ∀ u ∈ A.dat.U2, ∀ g, φ (g * u) = φ g`. Introduce `φ hφ u hu g`. Establish `h1` using `hφ.2 g ⟨u, hle hu⟩`. Establish `h2` using `hB.ω ⟨u, hle hu⟩ (fun _ => 1) (fun _ => 1) fun v => ⟨scal_one', by`. Establish `h0 : u.1 v ∈ A.dat.J2v v` using `Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 hu v)`.
+
+Simplify using `using h0⟩`. Simplify using `only [map_one, Units.val_one, finprod_one] at h2`. Rewrite `h1` using `[h2, one_smul]`. Conclude with `h1`. Use `⟨fun t g ht hg φ => ?_, hinv, fun φ hφ z s hs g => ?_⟩` and prove the remaining obligations.
+
+Establish `ht' : A.dat.Cone t` using `(hCone t).2 ht`. Establish `htest` using `finK_test F Δ A.dat hOk V ch B hB t ht'`. Rewrite using `[Tf.rSpec _ _ _ B (Base.Tw.one B) _ htest φ]`. Use function extensionality and compare the values at `h`. Establish `hdc` using `(dcBasic (DA Δ) V A.dat.U2 g (dMul F Δ A hA g _ hg).1 φ.1 (hinv φ.1 φ.2)).2.1 h`.
+
+Rewrite using `[Pi.smul_apply, hdc]`. Use `coset_sum A.dat.U2 B.U hle B.ω (A.dat.FK t) g _ (Finset.prod_ne_zero_iff.2 fun v _ => Units.ne_zero _) (fun u y => htest.right u y) φ.1 (fun g u => φ.2.2 g u) (fk_val hA ht hg) (fun y hy => ?_) (fun y hy u hu hyu => ?_) h` and prove the remaining obligations. Take `⟨u, hu, e⟩` from `fk_supp hA hg y hy`. Conclude with `⟨u, hB.U ▸ hu, e⟩`. Conclude with `fk_uniq hA ht hg y hy u (hB.U ▸ hu) hyu`.
+
+Set `z' : Dat.Par F` to `fun v => if v ∈ A.Sg then z v else 1`. Establish `hsc : ∀ v, IsScal (z' v) (s.1 v)` using `fun v => by`. Distinguish the cases in `hv : v ∈ A.Sg`. Take `⟨h1, h2, h3, -⟩` from `hl v hv`. Take `⟨-, -, -, hscal, -⟩` from `eD_facts (Kv v) (Ov v) h1 h2 _ _ (A.hs v hv) h3`.
+
+Establish `hz : z' v = z v` using `if_pos hv`. Rewrite using `[hz, hscal, hs.1 v hv, scalar_eq]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+
+Establish `hz : z' v = 1` using `if_neg hv`. Rewrite using `[hz, hs.2 v hv]`. Conclude with `scal_one'`. Establish `hsU : s ∈ B.U`. Rewrite using `[hB.U]`.
+
+Conclude with `Subgroup.mem_iInf.2 fun v => Subgroup.mem_comap.2 (Subgroup.mem_sup_left ⟨z' v, Units.ext (hsc v).symm⟩)`. Establish `h1` using `hφ.2 g ⟨s, hsU⟩`. Establish `h2` using `hB.ω ⟨s, hsU⟩ z' (fun v => s.1 v) fun v => ⟨hsc v, by simp⟩`. Establish `h3 : (∏ᶠ v, (A.dat.χ v (z' v) : ℂ)) = ∏ v ∈ A.Sg, (A.χ v (z v) : ℂ)`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := A.Sg)]`.
+
+Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hz : z' v = z v` using `if_pos hv`. Rewrite using `[hz]`. Both sides reduce to the same expression. Introduce `v hv`.
+
+Assume the negation of the conclusion as `h`. Establish `hz : z' v = 1` using `if_neg h`. Conclude with `hv (by`. Express the relevant statement in the definitionally equal form `((A.dat.χ v (z' v) : ℂˣ) : ℂ) = 1`. Rewrite using `[hz]`.
+
+Use the proof step `simp)`. Rewrite `h1` using `[h2, h3]`. Conclude with `h1`.
+-/
 theorem UpperTheory.V.Z.Sym.So.kOps :
     UpperTheory.V.Z.Sym.So.KOps := by
   intro F _ _ Δ A hA V _ _ ch B hB

@@ -29,12 +29,22 @@ def UAd (hc : CMData F E) (S : HSpace E) : Subgroup (GL (Fin S.rank) (E ⊗[F] A
 def URe (S : HSpace E) (τ : E →+* ℂ) : Subgroup (GL (Fin S.rank) ℂ) :=
   UJ (starRingEnd ℂ) (S.gram.map τ)
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars, Submodule.mem_one, RingHom.mem_range]`.
+-/
 theorem mem_dual (S : HSpace E) (L : Submodule (𝓞 E) S.V) (x : S.V) :
     x ∈ Formalism.HermitianLatticesTheory.dual S.hT L ↔ ∀ y ∈ L, S.hT y x ∈ (algebraMap (𝓞 E) E).range := by
   unfold Formalism.HermitianLatticesTheory.dual Formalism.E.hdual
   simp only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars, Submodule.mem_one,
     RingHom.mem_range]
 
+/- English proof (translation)
+Establish `key : ((crdLat S (Formalism.HermitianLatticesTheory.dual S.hT L) : Submodule (𝓞 E) (Fin S.rank → E)) : Set (Fin S.rank → E)) = dualSet (hc.sig : E →+* E) S.gram (crdLat S L)`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ s ⟨y, hy, rfl⟩`. Use `(mem_dual S L x).1 hx y hy` as an intermediate fact.
+
+Rewrite `this` using `[hT_crd hc]`. Conclude with `this`. Introduce `ht`. Use `⟨(crd S).symm t, ?_, by simp⟩` and prove the remaining obligations. Use `(mem_dual S L _).2 fun y hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[hT_crd hc]`. Use `ht (crd S y) ⟨y, hy, rfl⟩` as an intermediate fact. Simplify using `using this`. Unfold `dualL`. Rewrite using `[← key, Submodule.span_eq]`.
+-/
 theorem crdLat_dual (hc : CMData F E) (S : HSpace E) (L : Submodule (𝓞 E) S.V) :
     crdLat S (Formalism.HermitianLatticesTheory.dual S.hT L) = dualL hc S (crdLat S L) := by
   have key : ((crdLat S (Formalism.HermitianLatticesTheory.dual S.hT L) : Submodule (𝓞 E) (Fin S.rank → E)) : Set (Fin S.rank → E)) =
@@ -54,15 +64,24 @@ theorem crdLat_dual (hc : CMData F E) (S : HSpace E) (L : Submodule (𝓞 E) S.V
   unfold dualL
   rw [← key, Submodule.span_eq]
 
+/- English proof (translation)
+Rewrite using `[← crdLat_dual, show Formalism.HermitianLatticesTheory.dual S.hT S.L0 = S.L0 from S.baseLattice_isUnimodular]`.
+-/
 theorem coordinate_lattice_self_dual (hc : CMData F E) (S : HSpace E) : dualL hc S (crdLat S S.L0) = crdLat S S.L0 := by
   rw [← crdLat_dual, show Formalism.HermitianLatticesTheory.dual S.hT S.L0 = S.L0 from S.baseLattice_isUnimodular]
 
+/- English proof (translation)
+The claim follows from `let ⟨c, _⟩ := X.y_bij.2 (Quotient.mk'' (1 : UAf hc S)); ⟨c⟩`.
+-/
 theorem ClassTie.nonempty {hc : CMData F E} {S : HSpace E} {Lb : Submodule (𝓞 E) (Fin S.rank → E)}
     {U : Subgroup (GL (Fin S.rank) (E ⊗[F] Af F))} {cls : Type} {stab : cls → Type}
     [∀ c, Group (stab c)] {lat : cls → Submodule (𝓞 E) S.V} (X : ClassTie hc S Lb U stab lat) :
     Nonempty cls :=
   let ⟨c, _⟩ := X.y_bij.2 (Quotient.mk'' (1 : UAf hc S)); ⟨c⟩
 
+/- English proof (translation)
+Rewrite using `[Nat.card_congr (MonoidHom.ofInjective (X.stabI_inj c)).toEquiv]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight (fun γ => X.stabI_range c γ))`.
+-/
 theorem ClassTie.card_stab {hc : CMData F E} {S : HSpace E} {Lb : Submodule (𝓞 E) (Fin S.rank → E)}
     {U : Subgroup (GL (Fin S.rank) (E ⊗[F] Af F))} {cls : Type} {stab : cls → Type}
     [∀ c, Group (stab c)] {lat : cls → Submodule (𝓞 E) S.V} (X : ClassTie hc S Lb U stab lat) (c : cls) :

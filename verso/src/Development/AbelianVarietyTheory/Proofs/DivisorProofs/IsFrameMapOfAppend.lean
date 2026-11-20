@@ -9,6 +9,25 @@ open scoped ComplexOrder
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨ha1, ha2, ha3⟩` from `ha`. Take `⟨hab1, hab2, hab3⟩` from `hab`. Establish `hbW : ∀ j, b j ∈ W` using `fun j => by simpa using hab1 (Fin.natAdd s j)`. Establish `hqa : ∀ i, q (a i) = 0` using `fun i => (ha1 i).2`. Use `⟨fun j => ⟨b j, hbW j, rfl⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Use `set x : Fin m → K := ∑ j, g j • b j with hx`. Establish `hqx : q x = 0` using `by simpa [hx, map_sum, map_smul] using hg`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 K)) Finset.univ g`.
+
+Use `choose c hc using fun j => hd j (Finset.mem_univ j)`. Establish `hd0 : ((d : 𝓞 K) : K) ≠ 0`. Use `nonZeroDivisors.coe_ne_zero d` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hdx : ((d : 𝓞 K) : K) • x = ∑ j, c j • b j`.
+
+Rewrite using `[hx, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← algebraMap_smul K (c j) (b j), hc j, Algebra.smul_def]`. Both sides reduce to the same expression. Establish `hdxW : ((d : 𝓞 K) : K) • x ∈ W ⊓ (LinearMap.ker q).restrictScalars (𝓞 K)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdx]`. Conclude with `Submodule.sum_mem W fun j _ => W.smul_mem (c j) (hbW j)`. Simplify using `[hqx]`. Establish `hxa : x ∈ Submodule.span K (Set.range a)` using `(Submodule.smul_mem_iff _ hd0).mp (ha3 hdxW)`.
+
+Take `⟨h, hh⟩` from `Submodule.mem_span_range_iff_exists_fun K |>.mp hxa`. Rewrite `hab2` using `[Fintype.linearIndependent_iff]`. Establish `key` using `hab2 (Fin.append (fun i => -h i) g) (by`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, neg_smul, Finset.sum_neg_distrib, hh]`.
+
+Simplify using `[hx])`. Introduce `j`. Simplify using `using key (Fin.natAdd s j)`. Introduce and unpack `y ⟨w, hw, rfl⟩`. Establish `hle : Submodule.span K (Set.range (Fin.append a b)) ≤ (Submodule.span K (Set.range (q ∘ b))).comap q`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Proceed by induction on `k using Fin.addCases with`. Consider the case `left i => simp [hqa]`. Consider the case `right j`.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, Fin.append_right]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Conclude with `hle (hab3 hw)`.
+-/
 theorem isFrame_map_of_append_frame (K : Type) [Field K] [NumberField K] (m m' : ℕ)
     (q : (Fin m → K) →ₗ[K] (Fin m' → K)) (W : Submodule (𝓞 K) (Fin m → K)) (s t : ℕ)
     (a : Fin s → Fin m → K) (b : Fin t → Fin m → K)

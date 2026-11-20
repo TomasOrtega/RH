@@ -8,11 +8,17 @@ namespace PositivityTheory.Pf1.MbRank
 
 open GroundTheory.Heights₂.Heights.HilbertSamuel
 
+/- English proof (translation)
+The claim follows from `ShiftSectionsRankUpper.of_degreeGeneric (GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree (GlobalTheory.CompanionTheory.Ar.Giv.degree_of_system hAIS))`.
+-/
 theorem ShiftSectionsRankUpper.of_ais (hAIS : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement) :
     ShiftSectionsRankUpper.Statement :=
   ShiftSectionsRankUpper.of_degreeGeneric
     (GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree (GlobalTheory.CompanionTheory.Ar.Giv.degree_of_system hAIS))
 
+/- English proof (translation)
+The claim follows from `ShiftVolumeBound.of_upper hSep hCount (ShiftSectionsRankUpper.of_ais hAIS)`.
+-/
 theorem ShiftVolumeBound.of_ais (hSep : ShiftSectionSeparation.Statement) (hCount : SeparatedSmallCount.Statement)
     (hAIS : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement) : ShiftVolumeBound.Statement :=
   ShiftVolumeBound.of_upper hSep hCount (ShiftSectionsRankUpper.of_ais hAIS)

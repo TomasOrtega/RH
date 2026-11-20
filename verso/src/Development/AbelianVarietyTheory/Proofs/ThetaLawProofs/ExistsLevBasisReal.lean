@@ -27,6 +27,15 @@ namespace GlobalTheory.KeyKa.LevelBasis
 section Real
 open ReciprocityTheory.PTheta Matrix
 
+/- English proof (translation)
+Establish `key : ∀ (m n : Fin g → ℤ) (z : Fin g → ℂ), Complex.exp (2 * Real.pi * Complex.I * (ofRealVec a ⬝ᵥ (fun i => (m i : ℂ)) - ofRealVec b ⬝ᵥ (fun i => (n i : ℂ)) - ((fun i => (n i : ℂ)) ⬝ᵥ τ.mulVec (fun i => (n i : ℂ))) / 2 - (fun i => (n i : ℂ)) ⬝ᵥ z)) ^ l = eC ((l : ℂ) * (ofRealVec …`. Introduce `m n z`. Unfold `eC`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`.
+
+Unfold `ofIntVec`. Expand and normalize the polynomial expressions, which then agree. Establish `e : ∀ (m n : Fin g → ℤ) (z : Fin g → ℂ), z + ((fun i => (m i : ℂ)) + τ.mulVec (fun i => (n i : ℂ))) = z + τ *ᵥ ofIntVec n + ofIntVec m`. Introduce `m n z`. Unfold `ofIntVec`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[mem_thetaLevelChar]`. Use `and_congr Iff.rfl ⟨fun h n m z => ?_, fun h m n z => ?_⟩` and prove the remaining obligations. Rewrite using `[← key, ← e]`. Conclude with `h m n z`.
+
+Rewrite using `[key, e]`. Conclude with `h n m z`.
+-/
 theorem isLevel_iff {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) (l : ℕ) (F : (Fin g → ℂ) → ℂ) :
     IsLevel τ (ofRealVec a) (ofRealVec b) l F ↔ F ∈ thetaLevelChar a b l τ := by
   have key : ∀ (m n : Fin g → ℤ) (z : Fin g → ℂ),
@@ -50,6 +59,9 @@ theorem isLevel_iff {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g →
   · rw [← key, ← e]; exact h m n z
   · rw [key, e]; exact h n m z
 
+/- English proof (translation)
+Establish `H` using `thetaHolo_of_domainOpen_of_mTest siegelSubDomain_and_domainOpen.2 thetaMTest_holds (Fin g) ((fun i => (c i : ℝ) / l) + a) ((l : ℝ) • b)`. Establish `hd : Differentiable ℂ (fun q : (Fin g → Fin g → ℂ) × (Fin g → ℂ) => (((l : ℂ) • q.2, fun i j => (l : ℂ) * ((1 / 2 : ℂ) * (q.1 i j + q.1 j i))) : (Fin g → ℂ) × (Fin g → Fin g → ℂ)))` using `by fun_prop`. Use `(H.comp hd.differentiableOn fun q hq => ?_).congr fun q _ => rfl` and prove the remaining obligations. Conclude with `siegelSubDomain_and_domainOpen.1 _ (smul_mem_siegelH hq.1 hl)`.
+-/
 theorem holFam_levelTheta {g : ℕ} (a b : Fin g → ℝ) {l : ℕ} (hl : 0 < l) (c : Fin g → ℤ) :
     HolFam (Key.phDom g) (fun p => levelTheta a b l (per p) c) := by
   have H := thetaHolo_of_domainOpen_of_mTest siegelSubDomain_and_domainOpen.2 thetaMTest_holds (Fin g)
@@ -61,6 +73,15 @@ theorem holFam_levelTheta {g : ℕ} (a b : Fin g → ℝ) {l : ℕ} (hl : 0 < l)
   refine (H.comp hd.differentiableOn fun q hq => ?_).congr fun q _ => rfl
   exact siegelSubDomain_and_domainOpen.1 _ (smul_mem_siegelH hq.1 hl)
 
+/- English proof (translation)
+Set `e : Fin (l ^ g) ≃ (Fin g → Fin l)` to `finFunctionFinEquiv.symm`. Set `r : Fin (l ^ g) → Fin g → ℤ` to `fun k i => ((e k i : ℕ) : ℤ)`. Establish `hr : Function.Bijective fun k i => (r k i : ZMod l)` using `(@bijective_fin_zmod (Fin g) l hl).comp e.bijective`. Use `⟨fun k p => levelTheta a b l (per p) (r k), fun k => holFam_levelTheta a b hl _, fun p hp => ⟨fun k => (isLevel_iff _ _ _ _ _).2 (levelTheta_mem hp hl _), fun F hF => ?_⟩⟩` and prove the remaining obligations. Set `B` to `thetaLevelCharBasis a b (τ := per p) hp hl hr`.
+
+Establish `hF'` using `(isLevel_iff _ _ _ _ _).1 hF`. Establish `hB : ∀ (c : Fin (l ^ g) → ℂ) z, ((∑ k, c k • B k : thetaLevelChar a b l (per p)) : (Fin g → ℂ) → ℂ) z = ∑ k, c k * levelTheta a b l (per p) (r k) z` using `fun c z => by`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `congrArg _ (congrFun (thetaLevelCharBasis_apply (τ := per p) hp hl hr k) z)`. Use `⟨fun k => B.repr ⟨F, hF'⟩ k, fun z => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[← hB, B.sum_repr]`. Establish `: (⟨F, hF'⟩ : thetaLevelChar a b l (per p)) = ∑ k, c k • B k` using `Subtype.ext (funext fun z => by`. Rewrite using `[hB]`.
+
+Conclude with `hc z)`. Use function extensionality and compare the values at `k`. Rewrite using `[this, B.repr_sum_self]`.
+-/
 theorem exists_levBasis_real (g : ℕ) (a b : Fin g → ℝ) {l : ℕ} (hl : 0 < l) :
     ∃ Th : Fin (l ^ g) → (Fin g → Fin g → ℂ) → (Fin g → ℂ) → ℂ, LevBasis (ofRealVec a) (ofRealVec b) l Th := by
   let e : Fin (l ^ g) ≃ (Fin g → Fin l) := finFunctionFinEquiv.symm
@@ -85,6 +106,9 @@ theorem exists_levBasis_real (g : ℕ) (a b : Fin g → ℝ) {l : ℕ} (hl : 0 <
 
 end Real
 
+/- English proof (translation)
+Introduce `g a b l h hl`. Use `exists_levBasis_real g (fun i => (a i).re) (fun i => (b i).re) (l := l) hl` as an intermediate fact. Rewrite `this` using `[TorusAlg.ofRealVec_re h.1, TorusAlg.ofRealVec_re h.2]`. Then use the resulting hypothesis.
+-/
 theorem exists_levBasis : ∀ (g : ℕ) (a b : Fin g → ℂ) (l : ℕ), charHalf g a b → 1 ≤ l → ∃ Th : Fin (l ^ g) → (Fin g → Fin g → ℂ) → (Fin g → ℂ) → ℂ, LevBasis a b l Th := by
   intro g a b l h hl
   have := exists_levBasis_real g (fun i => (a i).re) (fun i => (b i).re) (l := l) hl

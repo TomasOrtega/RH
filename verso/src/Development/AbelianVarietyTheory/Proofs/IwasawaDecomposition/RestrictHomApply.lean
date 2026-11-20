@@ -20,6 +20,9 @@ def restrictHom (a : WDRep h V) (S : Submodule ℂ V) (hS : ∀ σ, ∀ v ∈ S,
   map_one' := by ext; simp
   map_mul' σ τ := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem restrictHom_apply (a : WDRep h V) (S : Submodule ℂ V)
     (hS : ∀ σ, ∀ v ∈ S, a.ρ σ v ∈ S) (σ : Weil h) (v : S) :
     ((restrictHom a S hS σ v : S) : V) = a.ρ σ v := rfl
@@ -48,9 +51,15 @@ def restrict (a : WDRep h V) (S : Submodule ℂ V) (hS : IsSubWD a S) : WDRep h 
     ext v
     simp [restrictHom, a.comm_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem restrict_ρ_apply (a : WDRep h V) (S : Submodule ℂ V) (hS : IsSubWD a S)
     (σ : Weil h) (v : S) : (((restrict a S hS).ρ σ v : S) : V) = a.ρ σ v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem restrict_N_apply (a : WDRep h V) (S : Submodule ℂ V) (hS : IsSubWD a S) (v : S) :
     (((restrict a S hS).N v : S) : V) = a.N v := rfl
 
@@ -65,10 +74,16 @@ def restrictρ (a : WDRep h V) (S : Submodule ℂ V) (hS : ∀ σ, ∀ v ∈ S, 
   nilpotent := IsNilpotent.zero
   comm σ := by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem restrictρ_ρ_apply (a : WDRep h V) (S : Submodule ℂ V)
     (hS : ∀ σ, ∀ v ∈ S, a.ρ σ v ∈ S) (σ : Weil h) (v : S) :
     (((restrictρ a S hS).ρ σ v : S) : V) = a.ρ σ v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem restrictρ_N (a : WDRep h V) (S : Submodule ℂ V)
     (hS : ∀ σ, ∀ v ∈ S, a.ρ σ v ∈ S) : (restrictρ a S hS).N = 0 := rfl
 
@@ -81,9 +96,15 @@ def strand (N : End ℂ V) (S : Submodule ℂ V) (m : ℕ) : Submodule ℂ V :=
 def lowPart (U : ℤ → Submodule ℂ V) (N : End ℂ V) (m : ℕ) : Submodule ℂ V :=
   ⨆ k : ℤ, U k ⊓ LinearMap.ker (N ^ (((m : ℤ) - k + 1) / 2).toNat)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun _ _ _ => trivial, fun _ _ => trivial⟩, ⟨fun _ v hv => by simp_all, fun v hv => by simp_all⟩⟩`.
+-/
 example (a : WDRep h V) : IsSubWD a ⊤ ∧ IsSubWD a ⊥ :=
   ⟨⟨fun _ _ _ => trivial, fun _ _ => trivial⟩, ⟨fun _ v hv => by simp_all, fun v hv => by simp_all⟩⟩
 
+/- English proof (translation)
+Introduce `v hv`. Conclude with `Submodule.mem_iSup_of_mem (0 : Fin (m + 1)) ⟨v, hv, by simp⟩`.
+-/
 theorem le_strand (N : End ℂ V) (S : Submodule ℂ V) (m : ℕ) : S ≤ strand N S m := by
   intro v hv
   exact Submodule.mem_iSup_of_mem (0 : Fin (m + 1)) ⟨v, hv, by simp⟩

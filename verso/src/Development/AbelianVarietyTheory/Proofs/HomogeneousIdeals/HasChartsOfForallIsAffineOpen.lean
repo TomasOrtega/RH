@@ -18,10 +18,16 @@ scoped instance sectionsAlgebra (X : Over (Spec (CommRingCat.of k))) (U : X.left
     Algebra k Γ(X.left, U) :=
   ((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ X.hom.appLE ⊤ U le_top).hom.toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_sections (X : Over (Spec (CommRingCat.of k))) (U : X.left.Opens) :
     algebraMap k Γ(X.left, U) =
       ((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ X.hom.appLE ⊤ U le_top).hom := rfl
 
+/- English proof (translation)
+Rewrite using `[algebraMap_sections, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+-/
 theorem algebraMap_sections_top (X : Over (Spec (CommRingCat.of k))) :
     algebraMap k Γ(X.left, ⊤) =
       ((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ X.hom.appTop).hom := by
@@ -34,6 +40,9 @@ def pull {X Y : Over (Spec (CommRingCat.of k))} (m : Y ⟶ X) : Γ(X.left, ⊤) 
     rw [algebraMap_sections_top, algebraMap_sections_top, ← Over.w m, Scheme.Hom.comp_appTop]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pull_comp {X Y Z : Over (Spec (CommRingCat.of k))} (m : Z ⟶ Y) (n : Y ⟶ X)
     (s : Γ(X.left, ⊤)) : pull (m ≫ n) s = pull m (pull n s) := rfl
 
@@ -52,21 +61,38 @@ def value (x : sp A ⟶ X) : Γ(X.left, ⊤) →ₐ[k] A where
     rw [algebraMap_sections_top]
     exact congr(($h).hom c)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem value_comp {Y : Over (Spec (CommRingCat.of k))} (y : sp A ⟶ Y) (m : Y ⟶ X)
     (s : Γ(X.left, ⊤)) : value (y ≫ m) s = value y (pull m s) := rfl
 
+/- English proof (translation)
+The claim follows from `congr(($(Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ.toRingHom))).hom (x.left.appTop s))`.
+-/
 theorem value_spMap (φ : A →ₐ[k] B) (x : sp A ⟶ X) (s : Γ(X.left, ⊤)) :
     value (spMap φ ≫ x) s = φ (value x s) :=
   congr(($(Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ.toRingHom))).hom (x.left.appTop s))
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (Spec.map_id _)`.
+-/
 theorem spMap_id : spMap (AlgHom.id k A) = 𝟙 (sp (R₀ := k) A) :=
   Over.OverMorphism.ext (Spec.map_id _)
 
+/- English proof (translation)
+Introduce `φ ψ h`. Establish `h1 : (spMap φ).left = (spMap ψ).left` using `by rw [h]`. Conclude with `AlgHom.coe_ringHom_injective (congrArg CommRingCat.Hom.hom (Spec.map_injective h1))`.
+-/
 theorem spMap_injective : Function.Injective (spMap : (A →ₐ[k] B) → (sp B ⟶ sp A)) := by
   intro φ ψ h
   have h1 : (spMap φ).left = (spMap ψ).left := by rw [h]
   exact AlgHom.coe_ringHom_injective (congrArg CommRingCat.Hom.hom (Spec.map_injective h1))
 
+/- English proof (translation)
+Introduce `m`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (R := CommRingCat.of A) (S := CommRingCat.of B) m.left`. Establish `h : CommRingCat.ofHom (algebraMap k A) ≫ φ = CommRingCat.ofHom (algebraMap k B)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hφ]`.
+
+Conclude with `Over.w m`. Conclude with `⟨⟨φ.hom, fun c => congr(($h).hom c)⟩, Over.OverMorphism.ext hφ⟩`.
+-/
 theorem spMap_surjective : Function.Surjective (spMap : (A →ₐ[k] B) → (sp B ⟶ sp A)) := by
   intro m
   obtain ⟨φ, hφ⟩ := Spec.map_surjective (R := CommRingCat.of A) (S := CommRingCat.of B) m.left
@@ -83,6 +109,9 @@ def spSections (A : Type) [CommRing A] [Algebra k A] : Γ((sp (R₀ := k) A).lef
   AlgEquiv.ofBijective (value (𝟙 (sp A)))
     (Scheme.ΓSpecIso (CommRingCat.of A)).commRingCatIsoToRingEquiv.bijective
 
+/- English proof (translation)
+Rewrite using `[← Category.comp_id (spMap φ), value_spMap]`. Both sides reduce to the same expression.
+-/
 theorem value_spMap_eq (φ : A →ₐ[k] B) (s : Γ((sp (R₀ := k) A).left, ⊤)) :
     value (spMap φ) s = φ (spSections A s) := by
   rw [← Category.comp_id (spMap φ), value_spMap]
@@ -96,12 +125,20 @@ def affinePoint {U : X.left.Opens} (hU : IsAffineOpen U) : sp Γ(X.left, U) ⟶ 
     change hU.fromSpec ≫ X.hom = Spec.map (CommRingCat.ofHom (algebraMap k Γ(X.left, U)))
     rw [← h, algebraMap_sections, CommRingCat.ofHom_hom, Spec.map_comp])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem affinePoint_left {U : X.left.Opens} (hU : IsAffineOpen U) :
     (affinePoint hU).left = hU.fromSpec := rfl
 
 abbrev toAway (r : A) : A →ₐ[k] Localization.Away r :=
   IsScalarTower.toAlgHom k A (Localization.Away r)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hI : LinearMap.ker (LinearMap.toSpanSingleton A A (a - b)) ≠ ⊤` using `fun e => hne (by`. Establish `h1 : (1 : A) ∈ LinearMap.ker (LinearMap.toSpanSingleton A A (a - b))` using `e ▸ trivial`. Simplify `h1)` using `[sub_eq_zero]`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hI`.
+
+Take `⟨r, hr, e⟩` from `h ⟨P, hP.isPrime⟩`. Take `⟨⟨_, n, rfl⟩, hn⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers r) _).mp e`. Use `hr (hP.isPrime.mem_of_pow_mem n (hle ?_))` and prove the remaining obligations. Simplify `hn` using `[mul_sub, sub_eq_zero]`.
+-/
 theorem eq_of_forall_prime {a b : A}
     (h : ∀ p : PrimeSpectrum A, ∃ r ∉ p.asIdeal,
       algebraMap A (Localization.Away r) a = algebraMap A (Localization.Away r) b) : a = b := by
@@ -115,6 +152,13 @@ theorem eq_of_forall_prime {a b : A}
   refine hr (hP.isPrime.mem_of_pow_mem n (hle ?_))
   simpa [mul_sub, sub_eq_zero] using hn
 
+/- English proof (translation)
+Take `⟨_, ⟨_, ⟨r, rfl⟩, rfl⟩, hr, hle⟩` from `PrimeSpectrum.isBasis_basic_opens.exists_subset_of_mem_open (a := p) (u := (x.left ⁻¹ᵁ v.left.opensRange).1) hp (x.left ⁻¹ᵁ v.left.opensRange).2`. Establish `hsub : Set.range (spMap (toAway (k` using `k) r) ≫ x).left ⊆ Set.range v.left := by`. Introduce and unpack `_ ⟨q, rfl⟩`. Use `hle (a := PrimeSpectrum.comap (algebraMap A (Localization.Away r)) q) ?_` and prove the remaining obligations. Rewrite using `[← PrimeSpectrum.localization_away_comap_range (Localization.Away r) r]`.
+
+Conclude with `⟨q, rfl⟩`. Establish `hl` using `IsOpenImmersion.lift_fac v.left _ hsub`. Take `⟨ψ, hψ⟩` from `spMap_surjective (k := k) (A := B) (B := Localization.Away r) (Over.homMk (IsOpenImmersion.lift v.left _ hsub) (by`. Rewrite using `[← Over.w v, ← Category.assoc, hl, Over.w]))`. Use `⟨r, hr, ψ, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hψ]`. Conclude with `hl.symm`.
+-/
 theorem exists_away_factor (x : sp A ⟶ X) (v : sp B ⟶ X) [IsOpenImmersion v.left]
     (p : PrimeSpectrum A) (hp : x.left p ∈ Set.range v.left) :
     ∃ r ∉ p.asIdeal, ∃ ψ : B →ₐ[k] Localization.Away r,
@@ -154,17 +198,26 @@ def HasCharts (𝒯 : AlgClass k) (X : Over (Spec (CommRingCat.of k))) : Prop :=
 
 variable {𝒯 𝒯' : AlgClass k} {X : Over (Spec (CommRingCat.of k))}
 
+/- English proof (translation)
+Take `⟨A, _, _, u, hu⟩` from `h p`. Conclude with `⟨CommAlgCat.of k A, u, hu⟩`.
+-/
 theorem HasCharts.exists_bundled (h : HasCharts 𝒯 X) (p : X.left) :
     ∃ (A : CommAlgCat.{0} k) (u : sp A ⟶ X),
       𝒯 A ∧ IsOpenImmersion u.left ∧ p ∈ Set.range u.left := by
   obtain ⟨A, _, _, u, hu⟩ := h p
   exact ⟨CommAlgCat.of k A, u, hu⟩
 
+/- English proof (translation)
+Introduce `p` and use `by obtain ⟨A, _, _, u, hA, hu⟩ := h p exact ⟨A, _, _, u, hle A hA, hu⟩`.
+-/
 theorem HasCharts.mono (h : HasCharts 𝒯 X)
     (hle : ∀ (A : Type) [CommRing A] [Algebra k A], 𝒯 A → 𝒯' A) : HasCharts 𝒯' X := fun p => by
   obtain ⟨A, _, _, u, hA, hu⟩ := h p
   exact ⟨A, _, _, u, hle A hA, hu⟩
 
+/- English proof (translation)
+Use `choose A u hA hu hp using hX.exists_bundled`. Set `𝒰 : X.left.OpenCover` to `Scheme.Cover.mkOfCovers X.left (fun p => Spec (CommRingCat.of (A p))) (fun p => (u p).left) (fun p => ⟨p, hp p⟩) hu`. Conclude with `𝒰.ext_elem s t fun p => (Scheme.ΓSpecIso (CommRingCat.of (A p))).commRingCatIsoToRingEquiv.injective (h (A p) (hA p) (u p) (hu p))`.
+-/
 theorem ext_of_charts (hX : HasCharts 𝒯 X) {s t : Γ(X.left, ⊤)}
     (h : ∀ (A : Type) [CommRing A] [Algebra k A], 𝒯 A → ∀ u : sp A ⟶ X, IsOpenImmersion u.left →
       value u s = value u t) : s = t := by
@@ -175,6 +228,9 @@ theorem ext_of_charts (hX : HasCharts 𝒯 X) {s t : Γ(X.left, ⊤)}
     (Scheme.ΓSpecIso (CommRingCat.of (A p))).commRingCatIsoToRingEquiv.injective
       (h (A p) (hA p) (u p) (hu p))
 
+/- English proof (translation)
+The claim follows from `ext_of_charts hX fun A _ _ hA u _ => h A hA u`.
+-/
 theorem ext_of_values (hX : HasCharts 𝒯 X) {s t : Γ(X.left, ⊤)}
     (h : ∀ (A : Type) [CommRing A] [Algebra k A], 𝒯 A → ∀ x : sp A ⟶ X,
       value x s = value x t) : s = t :=
@@ -214,29 +270,53 @@ def NatFamily.mk (f : ∀ (A : Type) [CommRing A] [Algebra k A], 𝒯 A → (sp 
 section
 variable (A : Type) [CommRing A] [Algebra k A] (hA : 𝒯 A) (x : sp A ⟶ X)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem NatFamily.mk_app (f : ∀ (A : Type) [CommRing A] [Algebra k A],
     𝒯 A → (sp A ⟶ X) → A) (hf) : (NatFamily.mk f hf).app A hA x = f A hA x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem NatFamily.add_app (f g : NatFamily 𝒯 X) :
     (f + g).app A hA x = f.app A hA x + g.app A hA x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem NatFamily.mul_app (f g : NatFamily 𝒯 X) :
     (f * g).app A hA x = f.app A hA x * g.app A hA x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem NatFamily.zero_app : (0 : NatFamily 𝒯 X).app A hA x = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem NatFamily.one_app : (1 : NatFamily 𝒯 X).app A hA x = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem NatFamily.smul_app (c : k) (f : NatFamily 𝒯 X) :
     (c • f).app A hA x = c • f.app A hA x := rfl
 
 end
 
+/- English proof (translation)
+The claim follows from `f.2 A B hA hB φ x`.
+-/
 theorem NatFamily.natural (f : NatFamily 𝒯 X) {A B : Type} [CommRing A] [Algebra k A]
     [CommRing B] [Algebra k B] (hA : 𝒯 A) (hB : 𝒯 B) (φ : A →ₐ[k] B) (x : sp A ⟶ X) :
     f.app B hB (spMap φ ≫ x) = φ (f.app A hA x) :=
   f.2 A B hA hB φ x
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `A x`. Conclude with `h A.1 A.2 x`.
+-/
 theorem NatFamily.ext {f g : NatFamily 𝒯 X}
     (h : ∀ (A : Type) [CommRing A] [Algebra k A] (hA : 𝒯 A) (x : sp A ⟶ X),
       f.app A hA x = g.app A hA x) : f = g := by
@@ -254,12 +334,27 @@ def toFamily : Γ(X.left, ⊤) →ₐ[k] NatFamily 𝒯 X where
   map_add' s t := NatFamily.ext fun _ _ _ _ x => map_add (value x) s t
   commutes' c := NatFamily.ext fun _ _ _ _ x => (value x).commutes c
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toFamily_apply (s : Γ(X.left, ⊤)) (A : Type) [CommRing A] [Algebra k A]
     (hA : 𝒯 A) (x : sp A ⟶ X) : (toFamily 𝒯 X s).app A hA x = value x s := rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `ext_of_values hX fun A _ _ hA x => congr(($h).app A hA x)`.
+-/
 theorem toFamily_injective (hX : HasCharts 𝒯 X) : Function.Injective (toFamily 𝒯 X) :=
   fun _ _ h => ext_of_values hX fun A _ _ hA x => congr(($h).app A hA x)
 
+/- English proof (translation)
+Use `eq_of_forall_prime fun q => ?_` and prove the remaining obligations. Take `⟨g, hg, ψ, hψ⟩` from `exists_away_factor u v (PrimeSpectrum.comap α.toRingHom q) ⟨(spMap β).left q, congr(($h).left q).symm⟩`. Use `⟨α g, hg, ?_⟩` and prove the remaining obligations. Set `α' : Localization.Away g →ₐ[k] Localization.Away (α g)` to `IsLocalization.Away.mapₐ _ _ α g`. Establish `hα' : α'.comp (toAway g) = (toAway (α g)).comp α`.
+
+Use extensionality with `a`. Simplify using `[α', IsLocalization.Away.mapₐ, IsLocalization.Away.map]`. Establish `: Mono v` using `Over.mono_of_mono_left v`. Establish `e : α'.comp ψ = (toAway (α g)).comp β`. Apply `spMap_injective` to reduce the goal to its premises.
+
+Rewrite using `[← cancel_mono v, ← spMap_comp, ← spMap_comp, Category.assoc, Category.assoc, ← hψ, ← h, ← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp, hα']`. Establish `h1` using `f.natural hA (h𝒯 A g hA) (toAway g) u`. Rewrite `h1` using `[hψ, f.natural hB (h𝒯 A g hA) ψ v]`. Establish `h2` using `congr($hα' (f.app A hA u))`. Establish `h3` using `congr($e (f.app B hB v))`.
+
+Simplify using `only [AlgHom.comp_apply] at h2 h3`. Conclude with `h2.symm.trans ((congrArg α' h1.symm).trans h3)`.
+-/
 theorem NatFamily.compatible (h𝒯 : 𝒯.StableAway) (f : NatFamily 𝒯 X) {A B C : Type} [CommRing A]
     [Algebra k A] [CommRing B] [Algebra k B] [CommRing C] [Algebra k C] (hA : 𝒯 A) (hB : 𝒯 B)
     (u : sp A ⟶ X) (v : sp B ⟶ X) [IsOpenImmersion v.left] (α : A →ₐ[k] C) (β : B →ₐ[k] C)
@@ -287,6 +382,13 @@ theorem NatFamily.compatible (h𝒯 : 𝒯.StableAway) (f : NatFamily 𝒯 X) {A
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Spec.map_surjective (R := CommRingCat.of k) (S := C) (a ≫ u.left ≫ X.hom)`. Set `_ : Algebra k C` to `c.hom.toAlgebra`. Establish `hc' : (sp (R₀` using `k) C).hom = a ≫ u.left ≫ X.hom := hc`. Take `⟨α, hα⟩` from `spMap_surjective (k := k) (A := A) (B := C) (Over.homMk a (by rw [← Over.w u, hc']))`. Take `⟨β, hβ⟩` from `spMap_surjective (k := k) (A := B) (B := C) (Over.homMk b (by rw [← Over.w v, hc', ← Category.assoc, ← hab, Category.assoc]))`.
+
+Establish `hα' : (spMap α).left = a` using `by rw [hα]; rfl`. Establish `hβ' : (spMap β).left = b` using `by rw [hβ]; rfl`. Establish `h : spMap α ≫ u = spMap β ≫ v`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Over.comp_left, hα', hβ', hab]`.
+
+Establish `e : α.comp (Polynomial.aeval (f.app A hA u)) = β.comp (Polynomial.aeval (f.app B hB v))`. Apply `Polynomial.algHom_ext` to reduce the goal to its premises. Simplify using `using f.compatible h𝒯 hA hB u v α β h`. Rewrite using `[← hα', ← hβ', ← Over.comp_left, ← Over.comp_left, spMap_comp, spMap_comp, e]`.
+-/
 theorem NatFamily.compatible_left (h𝒯 : 𝒯.StableAway) (f : NatFamily 𝒯 X) {A B : Type}
     [CommRing A] [Algebra k A] [CommRing B] [Algebra k B] (hA : 𝒯 A) (hB : 𝒯 B)
     (u : sp A ⟶ X) (v : sp B ⟶ X) [IsOpenImmersion v.left] (C : CommRingCat.{0})
@@ -312,6 +414,21 @@ theorem NatFamily.compatible_left (h𝒯 : 𝒯.StableAway) (f : NatFamily 𝒯 
   rw [← hα', ← hβ', ← Over.comp_left, ← Over.comp_left, spMap_comp, spMap_comp, e]
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Introduce `f`. Use `choose A u hA hu hp using hX.exists_bundled`. Set `𝒰 : X.left.OpenCover` to `Scheme.Cover.mkOfCovers X.left (fun p => Spec (CommRingCat.of (A p))) (fun p => (u p).left) (fun p => ⟨p, hp p⟩) hu`. Set `ev (p : X.left) : Polynomial k →ₐ[k] A p` to `Polynomial.aeval (f.app (A p) (hA p) (u p))`. Establish `hglue : ∀ p q : X.left, pullback.fst (u p).left (u q).left ≫ (spMap (ev p)).left = pullback.snd (u p).left (u q).left ≫ (spMap (ev q)).left`.
+
+Introduce `p q`. Use `Scheme.Cover.hom_ext (pullback (u p).left (u q).left).affineOpenCover.openCover _ _ fun i => ?_` and prove the remaining obligations. Set `C` to `(pullback (u p).left (u q).left).affineOpenCover.X i`. Set `w : Spec C ⟶ pullback (u p).left (u q).left` to `(pullback (u p).left (u q).left).affineOpenCover.f i`. Use `f.compatible_left h𝒯 (hA p) (hA q) (u p) (u q) C (w ≫ pullback.fst _ _) (w ≫ pullback.snd _ _) (by rw [Category.assoc, Category.assoc, pullback.condition])` as an intermediate fact.
+
+Rewrite `this` using `[Category.assoc, Category.assoc]`. Conclude with `this`. Set `F : X.left ⟶ Spec (CommRingCat.of (Polynomial k))` to `𝒰.glueMorphisms (fun p => (spMap (ev p)).left) hglue`. Establish `hF : ∀ p, (u p).left ≫ F = (spMap (ev p)).left` using `fun p => Scheme.Cover.ι_glueMorphisms 𝒰 _ hglue p`. Set `F' : X ⟶ sp (Polynomial k)` to `Over.homMk F (by`.
+
+Use `Scheme.Cover.hom_ext 𝒰 _ _ fun p => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(u p).left ≫ _ = (u p).left ≫ _`. Rewrite using `[← Category.assoc, hF, Over.w, Over.w])`. Establish `hF' : ∀ p, u p ≫ F' = spMap (ev p)` using `fun p => Over.OverMorphism.ext (hF p)`. Set `s : Γ(X.left, ⊤)` to `pull F' ((spSections (Polynomial k)).symm Polynomial.X)`.
+
+Establish `hs : ∀ p, value (u p) s = f.app (A p) (hA p) (u p)` using `fun p => by`. Rewrite using `[← value_comp, hF', value_spMap_eq, AlgEquiv.apply_symm_apply, Polynomial.aeval_X]`. Use `⟨s, NatFamily.ext fun R _ _ hR x => eq_of_forall_prime fun q => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, ψ, hψ⟩` from `exists_away_factor x (u (x.left q)) q (hp _)`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `value_spMap (toAway r) x s`. Establish `h2` using `f.natural hR (h𝒯 R r hR) (toAway r) x`. Rewrite `h1`, `h2` using `[hψ]`. Rewrite `h1` using `[value_spMap, hs]`. Rewrite `h2` using `[f.natural (hA _) (h𝒯 R r hR)]`.
+
+Conclude with `h1.symm.trans h2`.
+-/
 theorem toFamily_surjective (h𝒯 : 𝒯.StableAway) (hX : HasCharts 𝒯 X) :
     Function.Surjective (toFamily 𝒯 X) := by
   intro f
@@ -356,6 +473,9 @@ theorem toFamily_surjective (h𝒯 : 𝒯.StableAway) (hX : HasCharts 𝒯 X) :
 def familyEquiv (h𝒯 : 𝒯.StableAway) (hX : HasCharts 𝒯 X) : Γ(X.left, ⊤) ≃ₐ[k] NatFamily 𝒯 X :=
   AlgEquiv.ofBijective (toFamily 𝒯 X) ⟨toFamily_injective hX, toFamily_surjective h𝒯 hX⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem familyEquiv_apply (h𝒯 : 𝒯.StableAway) (hX : HasCharts 𝒯 X) (s : Γ(X.left, ⊤))
     (A : Type) [CommRing A] [Algebra k A] (hA : 𝒯 A) (x : sp A ⟶ X) :
     (familyEquiv h𝒯 hX s).app A hA x = value x s := rfl

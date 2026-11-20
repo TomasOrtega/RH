@@ -11,6 +11,15 @@ namespace Formalism.L2.FormalSeriesBounds.HaP
 
 open MvPolynomial Formalism.L2.Pj
 
+/- English proof (translation)
+Introduce `ι _ W hW`. Use `haveI : NoZeroSMulDivisors ℤ ((ι → ℤ) ⧸ W) := by`. Use `⟨fun {z x} h => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective W x`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+
+Distinguish the cases in `hz : z = 0`. Conclude with `Or.inl hz`. Use `right`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `hW z x hz h`.
+
+Use `haveI : Module.Free ℤ ((ι → ℤ) ⧸ W) := Module.free_of_finite_type_torsion_free'`. Take `⟨s, hs⟩` from `Module.projective_lifting_property W.mkQ LinearMap.id (Submodule.mkQ_surjective W)`. Establish `hs' : ∀ y, W.mkQ (s y) = y` using `fun y => by rw [← LinearMap.comp_apply, hs, LinearMap.id_apply]`. Use `⟨(LinearMap.id - s ∘ₗ W.mkQ : (ι → ℤ) →ₗ[ℤ] (ι → ℤ)), fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : W.mkQ ((LinearMap.id - s ∘ₗ W.mkQ : (ι → ℤ) →ₗ[ℤ] (ι → ℤ)) x) = 0`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, hs', sub_self]`. Rewrite `h1` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Establish `h0 : W.mkQ x = 0` using `by rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]; exact hx`. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, h0, map_zero, sub_zero]`.
+-/
 theorem satRetr : SatRetrSt := by
   intro ι _ W hW
   haveI : NoZeroSMulDivisors ℤ ((ι → ℤ) ⧸ W) := by
@@ -32,6 +41,21 @@ theorem satRetr : SatRetrSt := by
   · have h0 : W.mkQ x = 0 := by rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]; exact hx
     simp only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, h0, map_zero, sub_zero]
 
+/- English proof (translation)
+Unfold `RowInvUpSt RowInv`. Introduce `Ty r n K _ _ P hP σ i i' hii t`. Take `⟨Φ, hΦ⟩ : ∃ Φ : MvPolynomial (Letter Ty r n) K →ₐ[K] Polynomial (MvPolynomial (Letter Ty r n) K), ∀ ℓ : Letter Ty r n, Φ (X ℓ) = if ∃ b, ℓ = ⟨σ, (i, b)⟩ then Polynomial.C (X ℓ) + Polynomial.X * Polynomial.C (X ⟨σ, (i', ℓ.snd.2)⟩) else Polynomial.C (X ℓ)` from `⟨aeval _, fun ℓ => aeval_X _ _⟩`. Establish `key : ∀ (s : K) (Q : MvPolynomial (Letter Ty r n) K), rowShift r n K σ i i' s Q = Polynomial.eval (C s) (Φ Q)`. Introduce `s Q`.
+
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `h1` using `(rowShift r n K σ i i' s).commutes a`. Establish `h2` using `Φ.commutes a`. Rewrite `h1`, `h2` using `[MvPolynomial.algebraMap_eq]`.
+
+Rewrite using `[h1, h2, Polynomial.algebraMap_apply, MvPolynomial.algebraMap_eq, Polynomial.eval_C]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, Polynomial.eval_add, hp, hq]`. Consider the case `mul_X p ℓ hp`. Rewrite using `[map_mul, map_mul, Polynomial.eval_mul, hp, hΦ]`.
+
+Use `congr 1`. Establish `hx : rowShift r n K σ i i' s (X ℓ) = (aeval (R` using `K) fun ℓ : Letter Ty r n => if ∃ b, ℓ = ⟨σ, (i, b)⟩ then (X ℓ + C s * X ⟨σ, (i', ℓ.snd.2)⟩ : MvPolynomial (Letter Ty r n) K) else (X ℓ : MvPolynomial (Letter Ty r n) K)) (X ℓ) := by`. Unfold `rowShift`. Both sides reduce to the same expression. Rewrite using `[hx, aeval_X]`.
+
+Apply the tactic sequence `split_ifs <;> simp only [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X] <;> ring`. Establish `hQ : Φ P - Polynomial.C P = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Apply `Set.Infinite.mono (s := Set.range (fun q : ℚ => (C (q : K) : MvPolynomial (Letter Ty r n) K)))` to reduce the goal to its premises. Introduce and unpack `_ ⟨q, rfl⟩`.
+
+Simplify using `only [Set.mem_setOf_eq, Polynomial.IsRoot, Polynomial.eval_sub, Polynomial.eval_C]`. Rewrite using `[← key, hP σ i i' hii q, sub_self]`. Conclude with `Set.infinite_range_of_injective fun a b h => Rat.cast_injective (MvPolynomial.C_injective _ _ h)`. Rewrite using `[key t]`. Establish `h` using `congrArg (Polynomial.eval (C t)) hQ`.
+
+Rewrite `h` using `[Polynomial.eval_sub, Polynomial.eval_C, Polynomial.eval_zero]`. Conclude with `sub_eq_zero.mp h`.
+-/
 theorem rowInvUp : RowInvUpSt := by
   unfold RowInvUpSt RowInv
   intro Ty r n K _ _ P hP σ i i' hii t

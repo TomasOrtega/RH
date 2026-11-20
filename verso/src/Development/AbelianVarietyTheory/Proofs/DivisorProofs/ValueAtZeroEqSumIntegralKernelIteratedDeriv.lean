@@ -5,6 +5,39 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `ε hε`. Use `set e : ℂ := (ε : ℂ) with he_def`. Establish `he : e ≠ 0`. Rewrite using `[he_def]`. Conclude with `hε.ne'` after adjusting the coercions.
+
+Set `s : ℝ → ℝ` to `fun t => max 0 (min t ε)`. Establish `hs_cont : Continuous s` using `by fun_prop`. Establish `hs_eq : ∀ t ∈ Set.Icc 0 ε, s t = t`. Introduce `t ht`. Simplify using `only [s]`.
+
+Rewrite using `[min_eq_left ht.2, max_eq_right ht.1]`. Set `P : Fin 3 → ℂ → ℂ` to `![fun x => x * (6 / e ^ 2 * (1 - x / e)), fun x => x * (2 * (-3 / e * (1 - x / e) ^ 2)), fun x => x * (1 - x / e) ^ 3]`. Establish `hP_cont : ∀ n, Continuous (P n)`. Apply the tactic sequence `intro n; fin_cases n <;> simp [P] <;> fun_prop`. Establish `hP0 : ∀ n, P n 0 = 0`.
+
+Apply the tactic sequence `intro n; fin_cases n <;> simp [P]`. Establish `hPe : ∀ n, P n e = 0`. Apply the tactic sequence `intro n; fin_cases n <;> simp [P, div_self he]`. Establish `hzero : ∀ n t, t ∉ Set.Ioc 0 ε → P n (s t : ℂ) = 0`. Introduce `n t ht`.
+
+Break down `le_or_gt t 0 with h | h` into its components or cases. Establish `: s t = 0` using `by simp only [s]; exact max_eq_left (min_le_of_left_le h)`. Rewrite using `[this, Complex.ofReal_zero, hP0]`. Establish `h' : ε < t`. Assume the negation of the conclusion as `h''`.
+
+Conclude with `ht ⟨h, not_lt.mp h''⟩`. Establish `: s t = ε` using `by simp only [s]; rw [min_eq_right h'.le, max_eq_right hε.le]`. Rewrite using `[this, ← he_def, hPe]`. Use `⟨fun n t => P n (s t : ℂ), ?_, ?_⟩` and prove the remaining obligations. Introduce `n`.
+
+Use `⟨(hP_cont n).comp (Complex.continuous_ofReal.comp hs_cont), ?_⟩` and prove the remaining obligations. Use `closure_minimal ?_ isClosed_Icc` and prove the remaining obligations. Introduce `t ht`. Assume the negation of the conclusion as `h`. Apply `ht` to reduce the goal to its premises.
+
+Apply `hzero n t` to reduce the goal to its premises. Introduce `h2; exact h ⟨by linarith [h2.1], h2.2⟩`. Introduce `u hu`. Establish `h1` using `contDiff_infty_iff_deriv.mp hu`. Establish `h2` using `contDiff_infty_iff_deriv.mp h1.2`.
+
+Establish `hu1 : ∀ x, HasDerivAt u (deriv u x) x` using `fun x => (h1.1 x).hasDerivAt`. Establish `hu2 : ∀ x, HasDerivAt (deriv u) (deriv (deriv u) x) x` using `fun x => (h2.1 x).hasDerivAt`. Establish `hc0 : Continuous u` using `h1.1.continuous`. Establish `hc1 : Continuous (deriv u)` using `h2.1.continuous`. Establish `hc2 : Continuous (deriv (deriv u))` using `h2.2.continuous`.
+
+Establish `hd2 : iteratedDeriv 2 u = deriv (deriv u)`. Rewrite using `[iteratedDeriv_succ, iteratedDeriv_one]`. Establish `hI : ∀ (g : ℝ → ℂ) (n : Fin 3), ∫ t, P n (s t : ℂ) * g t = ∫ t in (0:ℝ)..ε, P n (s t : ℂ) * g t`. Introduce `g n`. Rewrite using `[intervalIntegral.integral_of_le hε.le, setIntegral_eq_integral_of_forall_compl_eq_zero]`.
+
+Introduce `t ht`. Rewrite using `[hzero n t ht, zero_mul]`. Establish `hK : ∀ n, Continuous (fun t => P n (s t : ℂ))` using `fun n => (hP_cont n).comp (Complex.continuous_ofReal.comp hs_cont)`. Rewrite using `[Fin.sum_univ_three]`. Establish `e0 : iteratedDeriv ((0 : Fin 3) : ℕ) u = u` using `iteratedDeriv_zero`.
+
+Establish `e1 : iteratedDeriv ((1 : Fin 3) : ℕ) u = deriv u` using `iteratedDeriv_one`. Establish `e2 : iteratedDeriv ((2 : Fin 3) : ℕ) u = deriv (deriv u)` using `hd2`. Rewrite using `[e0, e1, e2]`. Rewrite using `[hI, hI, hI, ← intervalIntegral.integral_add, ← intervalIntegral.integral_add]`. Apply the tactic sequence `all_goals try (apply Continuous.intervalIntegrable; have := hK 0; have := hK 1; have := hK 2; fun_prop)`.
+
+Set `F : ℝ → ℂ` to `fun t => (t : ℂ) * (-3 / e * (1 - (t : ℂ) / e) ^ 2 * u t + (1 - (t : ℂ) / e) ^ 3 * deriv u t) - (1 - (t : ℂ) / e) ^ 3 * u t`. Establish `key` using `intervalIntegral.integral_eq_sub_of_hasDerivAt (f := F) (a := 0) (b := ε) (f' := fun t => P 0 (s t : ℂ) * u t + P 1 (s t : ℂ) * deriv u t + P 2 (s t : ℂ) * deriv (deriv u) t) ?_ (by apply Continuous.intervalIntegrable; have := hK 0; have := hK 1; have := hK 2; fun_prop)`. Rewrite using `[key]`. Simplify using `only [F, Complex.ofReal_zero, zero_div, sub_zero, one_pow, one_mul, zero_mul, zero_sub, ← he_def, div_self he, sub_self]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `x hx`. Rewrite `hx` using `[Set.uIcc_of_le hε.le]`. Simplify using `only [hs_eq x hx]`. Establish `hx' : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 x`. Simplify using `using (hasDerivAt_id x).ofReal_comp`.
+
+Establish `hL : HasDerivAt (fun t : ℝ => (1 : ℂ) - (t : ℂ) / e) (-(1 / e)) x`. Use `(hx'.div_const e).const_sub 1 using 1` and compare the differences between its conclusion and the goal. Establish `hφ : HasDerivAt (fun t : ℝ => (1 - (t : ℂ) / e) ^ 3) (-3 / e * (1 - (x : ℂ) / e) ^ 2) x`. Apply the tactic sequence `exact (hL.pow 3).congr_deriv (by norm_num <;> ring)`. Establish `hφ' : HasDerivAt (fun t : ℝ => -3 / e * (1 - (t : ℂ) / e) ^ 2) (6 / e ^ 2 * (1 - (x : ℂ) / e)) x`.
+
+Apply the tactic sequence `exact ((hL.pow 2).const_mul (-3 / e)).congr_deriv (by norm_num <;> ring)`. Establish `hF` using `(hx'.mul ((hφ'.mul (hu1 x)).add (hφ.mul (hu2 x)))).sub (hφ.mul (hu1 x))`. Use `hF.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Pi.add_apply, P, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem value_at_zero_eq_sum_integral_kernel_iteratedDeriv :
     ∀ ε : ℝ, 0 < ε → ∃ κ : Fin 3 → ℝ → ℂ,
       (∀ n, Continuous (κ n) ∧ tsupport (κ n) ⊆ Set.Icc (-ε) ε) ∧

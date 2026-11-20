@@ -9,6 +9,9 @@ import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevRepZApply
 open ReciprocityTheory.Gal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ShapeNeg.Shape.quotShape_of_counts | exact GlobalTheory.ShapeNeg.Shape.quotShape_of_counts | (intros; apply GlobalTheory.ShapeNeg.Shape.quotShape_of_counts <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.torsion_shape_of_torsion_counts : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Finite (IsLocalRing.ResidueField O)]
     {ϖ : O}, Irreducible ϖ → ∀ {X : Type} [AddCommGroup X] [Module O X] (Hc : Submodule O X) (d a : ℕ)
     {F : Type} [AddCommGroup F] [Module O F] [Finite F], (Hc ≃ₗ[O] (Fin a → Formalism.NG.KO O) × F) →

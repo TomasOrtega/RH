@@ -59,6 +59,11 @@ section Val
 
 variable {T : CDVR} {p : ℕ} [Fact p.Prime] (X : ValExt T p)
 
+/- English proof (translation)
+Establish `hp0 : (p : X.C) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `hpos : (0 : ℝ) < (X.v (p : X.C) : ℝ)`. Establish `: X.v (p : X.C) ≠ 0` using `by simpa using (Fact.out : p.Prime).ne_zero`. Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions. Establish `hle : X.v (p : X.C) ≤ 1`.
+
+Use `X.ints.map_le_one (p : X.O)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hne : X.v (p : X.C) ≠ 1` using `fun h => X.nonunit.out (X.ints.isUnit_of_one' (by rwa [map_natCast]))`. Conclude with `Real.log_neg hpos (by exact_mod_cast lt_of_le_of_ne hle hne)`.
+-/
 theorem log_v_p_neg : Real.log (X.v (p : X.C) : ℝ) < 0 := by
   have hp0 : (p : X.C) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero
   have hpos : (0 : ℝ) < (X.v (p : X.C) : ℝ) := by
@@ -74,14 +79,27 @@ theorem log_v_p_neg : Real.log (X.v (p : X.C) : ℝ) < 0 := by
 def vX_vp : AddValuation X.C (WithTop ℝ) :=
   (exists_addValuation_mul_log X.v (Real.log (X.v (p : X.C) : ℝ))⁻¹ (inv_lt_zero.2 (log_v_p_neg X))).choose
 
+/- English proof (translation)
+The claim follows from `(exists_addValuation_mul_log X.v _ (inv_lt_zero.2 (log_v_p_neg X))).choose_spec x hx`.
+-/
 theorem vX_vp_apply {x : X.C} (hx : x ≠ 0) :
     vX_vp X x = (((Real.log (X.v (p : X.C) : ℝ))⁻¹ * Real.log (X.v x : ℝ) : ℝ) : WithTop ℝ) :=
   (exists_addValuation_mul_log X.v _ (inv_lt_zero.2 (log_v_p_neg X))).choose_spec x hx
 
+/- English proof (translation)
+Rewrite using `[vX_vp_apply X (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero), inv_mul_cancel₀ (log_v_p_neg X).ne]`. Both sides reduce to the same expression.
+-/
 theorem vX_vp_p : vX_vp X (p : X.C) = 1 := by
   rw [vX_vp_apply X (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero), inv_mul_cancel₀ (log_v_p_neg X).ne]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `[IsIntV]`. Establish `hpos : (0 : ℝ) < (X.v x : ℝ)`. Establish `: X.v x ≠ 0` using `by simpa using hx`.
+
+Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions. Establish `hl` using `inv_lt_zero.2 (log_v_p_neg X)`. Establish `h1 : Real.log (X.v x : ℝ) ≤ 0 ↔ X.v x ≤ 1`. Rewrite using `[Real.log_nonpos_iff hpos.le]`. Conclude with `Iff.rfl` after adjusting the coercions.
+
+Rewrite using `[IsIntV, vX_vp_apply X hx, ← WithTop.coe_zero, WithTop.coe_le_coe, ← h1]`. Conclude with `⟨fun h => by by_contra hn; nlinarith [mul_pos_of_neg_of_neg hl (neg_neg_of_pos (not_le.1 hn))], fun h => mul_nonneg_of_nonpos_of_nonpos hl.le h⟩`.
+-/
 theorem isIntV_iff (x : X.C) : IsIntV (vX_vp X) x ↔ X.v x ≤ 1 := by
   by_cases hx : x = 0
   · subst hx; simp [IsIntV]
@@ -97,16 +115,27 @@ theorem isIntV_iff (x : X.C) : IsIntV (vX_vp X) x ↔ X.v x ≤ 1 := by
 
 def jX : T.V →+* X.C := X.ιF.comp (algebraMap T.V T.Fr)
 
+/- English proof (translation)
+Rewrite using `[isIntV_iff, jX, RingHom.comp_apply, X.comp]`. Conclude with `X.ints.map_le_one _`.
+-/
 theorem isIntV_jX (r : T.V) : IsIntV (vX_vp X) (jX X r) := by
   rw [isIntV_iff, jX, RingHom.comp_apply, X.comp]
   exact X.ints.map_le_one _
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hr.exists_right_inv`. Establish `h : vX_vp X (jX X r) + vX_vp X (jX X s) = 0`. Rewrite using `[← AddValuation.map_mul, ← map_mul, hs, map_one, AddValuation.map_one]`. Conclude with `le_antisymm (h ▸ le_add_of_nonneg_right (isIntV_jX X s)) (isIntV_jX X r)`.
+-/
 theorem vX_vp_jX_unit {r : T.V} (hr : IsUnit r) : vX_vp X (jX X r) = 0 := by
   obtain ⟨s, hs⟩ := hr.exists_right_inv
   have h : vX_vp X (jX X r) + vX_vp X (jX X s) = 0 := by
     rw [← AddValuation.map_mul, ← map_mul, hs, map_one, AddValuation.map_one]
   exact le_antisymm (h ▸ le_add_of_nonneg_right (isIntV_jX X s)) (isIntV_jX X r)
 
+/- English proof (translation)
+Establish `hpos : (0 : ℝ) < (X.v (p : X.C) : ℝ)`. Establish `: X.v (p : X.C) ≠ 0` using `by simpa using (Fact.out : p.Prime).ne_zero`. Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions. Rewrite using `[vX_vp_apply X ((map_ne_zero X.ιF).2 hx), X.val x hx, Real.log_rpow hpos]`. Use `congr 1`.
+
+Use `(log_v_p_neg X).ne` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem vX_vp_ιF {x : T.Fr} (hx : x ≠ 0) :
     vX_vp X (X.ιF x) = (((vV T.V x : ℝ) / (vV T.V (p : T.Fr) : ℝ) : ℝ) : WithTop ℝ) := by
   have hpos : (0 : ℝ) < (X.v (p : X.C) : ℝ) := by
@@ -117,6 +146,9 @@ theorem vX_vp_ιF {x : T.Fr} (hx : x ≠ 0) :
   have := (log_v_p_neg X).ne
   field_simp
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, map_zero, nval_zero, AddValuation.map_zero]`. Both sides reduce to the same expression. Rewrite using `[vX_vp_ιF X hx, nval_of_ne hx, he]`. Both sides reduce to the same expression.
+-/
 theorem toE_vX_vp_ιF {e : ℕ} (he : vV T.V (p : T.Fr) = e) (x : T.Fr) :
     toE (vX_vp X (X.ιF x)) = nval T.V e x := by
   by_cases hx : x = 0
@@ -131,6 +163,9 @@ section Exponents
 
 abbrev rk (f : Lt1 Dw) : ℕ := f.2.val + 1
 
+/- English proof (translation)
+The claim follows from `f.2.isLt`.
+-/
 theorem rk_le (f : Lt1 Dw) : rk f ≤ Dw.mult f.1 := f.2.isLt
 
 def gap (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℕ) (f : Lt1 Dw) : ℕ :=
@@ -138,6 +173,13 @@ def gap (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℕ) (f : Lt1 Dw) : ℕ :=
 
 def degP (cx : Lt1 Dw → ℕ) : ℕ := ∑ f, rk f * cx f
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Establish `key : ∀ n, i ≤ n → ∑ j ∈ Finset.range n, (if i < j + 1 then g j - g (j + 1) else 0) + g n = g i`. Introduce `n hn`. Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base`.
+
+Rewrite using `[Finset.sum_eq_zero fun j hj => if_neg (by have := Finset.mem_range.1 hj; omega), zero_add]`. Consider the case `succ n hn ih`. Use `hg (Nat.le_succ n)` as an intermediate fact. Rewrite using `[Finset.sum_range_succ, if_pos (by omega), ← ih]`. Simplify using `only [Nat.succ_eq_add_one] at this`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_range_succ, if_pos hi, if_neg (lt_irrefl _), Nat.sub_zero, ← key k (by omega)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[if_pos (show j + 1 < k + 1 by have := Finset.mem_range.1 hj; omega)]`.
+-/
 theorem sum_gap_tail (g : ℕ → ℕ) (hg : Antitone g) (m i : ℕ) (hi : i < m) :
     ∑ j ∈ Finset.range m, (if i < j + 1 then g j - (if j + 1 < m then g (j + 1) else 0) else 0) = g i := by
   obtain ⟨k, rfl⟩ : ∃ k, m = k + 1 := ⟨m - 1, by omega⟩
@@ -158,6 +200,11 @@ theorem sum_gap_tail (g : ℕ → ℕ) (hg : Antitone g) (m i : ℕ) (hi : i < m
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Fintype.sum_sigma, Finset.sum_eq_single τ]`. Rewrite using `[← sum_gap_tail (fun i => a (τ, i)) (ha τ) (Dw.mult τ) i i.isLt, ← Fin.sum_univ_eq_sum_range (fun j => if i.val < j + 1 then a (τ, j) - (if j + 1 < Dw.mult τ then a (τ, j + 1) else 0) else 0)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [true_and, gap, rk]`. Introduce `σ _ hσ`.
+
+Conclude with `Finset.sum_eq_zero fun j _ => if_neg fun h => hσ h.1`. Introduce `h`. Conclude with `absurd (Finset.mem_univ τ) h`.
+-/
 theorem sum_gap_row {a : (E →+* ℂ) × ℕ → ℕ} (ha : ∀ τ, Antitone fun i => a (τ, i)) (τ : E →+* ℂ)
     (i : Fin (Dw.mult τ)) :
     ∑ f ∈ Finset.univ.filter (fun f : Lt1 Dw => f.1 = τ ∧ i.val < rk f), gap Dw a f = a (τ, i) := by
@@ -186,6 +233,9 @@ variable [StarRing (𝓞 E)] {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T 
 
 def lawX : FGLaw X.C (chD Ch.ch) := letI := io.toAlgebra; GlobalTheory.FBMap.mapLaw X.ιF Ch.ch.B.G
 
+/- English proof (translation)
+Set `_` to `io.toAlgebra`. Use `show MvPowerSeries.map X.ιF (Ch.ch.B.G.F a) = _`. Rewrite using `[Ch.gen.1.1 a, jX, MvPowerSeries.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem lawX_F (a : Fin (chD Ch.ch)) : (lawX Ch X).F a = MvPowerSeries.map (jX X) (Ch.FT a) := by
   let _ := io.toAlgebra
   show MvPowerSeries.map X.ιF (Ch.ch.B.G.F a) = _
@@ -202,6 +252,9 @@ def fgl : LogFGL (vX_vp X) (chD Ch.ch) :=
     rw [e, MvPowerSeries.coeff_map]
     exact isIntV_jX X _
 
+/- English proof (translation)
+Rewrite using `[← lawX_F]`. Both sides reduce to the same expression.
+-/
 theorem fgl_F (a : Fin (chD Ch.ch)) :
     (fgl Ch X).F a = MvPowerSeries.subst (twoVars X.C _) (MvPowerSeries.map (jX X) (Ch.FT a)) := by
   rw [← lawX_F]; rfl
@@ -214,6 +267,13 @@ def lieVec (ℓ : Lt1 Dw) : Fin (chD Ch.ch) → X.C := fun e => jX X (Ch.uvecT �
 def frame (f : Lt1 Dw) : Fin (rk f) → Fin (chD Ch.ch) → X.C :=
   fun a => lieVec Ch X ⟨f.1, Fin.castLE (rk_le f) a⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `e : (U * S).det = ∑ r : Fin i → Fin d, (Matrix.of fun a b => U a (r b)).det * ∏ k, S (r k) k`. Simplify using `only [Matrix.det_apply', Matrix.mul_apply, Finset.prod_univ_sum, Finset.mul_sum, Fintype.piFinset_univ, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, mul_assoc]`. Establish `hm : (U * S).det ∈ maximalIdeal R`. Rewrite using `[e]`. Conclude with `Ideal.sum_mem _ fun r _ => Ideal.mul_mem_right _ _ ((mem_maximalIdeal _).2 (hn r))`.
+
+Rewrite `hm` using `[h, Matrix.det_one]`. Conclude with `(mem_maximalIdeal _).1 hm isUnit_one`.
+-/
 theorem exists_unit_minor {R : Type} [CommRing R] [IsLocalRing R] {i d : ℕ} (U : Matrix (Fin i) (Fin d) R)
     (S : Matrix (Fin d) (Fin i) R) (h : U * S = 1) :
     ∃ r : Fin i → Fin d, IsUnit (Matrix.of fun a b => U a (r b)).det := by
@@ -231,6 +291,15 @@ theorem exists_unit_minor {R : Type} [CommRing R] [IsLocalRing R] {i d : ℕ} (U
   rw [h, Matrix.det_one] at hm
   exact (mem_maximalIdeal _).1 hm isUnit_one
 
+/- English proof (translation)
+Use `⟨fun a e => isIntV_jX X _, ?_⟩` and prove the remaining obligations. Take `⟨⟨w, emb, hw, hb⟩, -⟩` from `chart_saturated T io y Ch f.1`. Use `choose s hs using fun e : Fin (chD Ch.ch) => (hb (Pi.single e 1)).exists`. Establish `h1 : Matrix.of s * Matrix.of w = 1`. Use extensionality with `e j`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify `hs e j` using `[Pi.single_apply, eq_comm]`. Establish `h2 : Matrix.of w * Matrix.of s = 1` using `mul_eq_one_comm.1 h1`. Take `⟨r, hr⟩` from `exists_unit_minor (Matrix.of fun (a : Fin (rk f)) e => Ch.uvecT ⟨f.1, Fin.castLE (rk_le f) a⟩ e) (Matrix.of fun e (b : Fin (rk f)) => s e (emb (Fin.castLE (rk_le f) b))) (by`. Use extensionality with `a b`.
+
+Establish `h3` using `congrFun (congrFun h2 (emb (Fin.castLE (rk_le f) a))) (emb (Fin.castLE (rk_le f) b))`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, hw, Matrix.one_apply, EmbeddingLike.apply_eq_iff_eq, Fin.castLE_inj] at h3 ⊢`. Conclude with `h3)`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[← vX_vp_jX_unit X hr, RingHom.map_det]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isSatFrame_frame (f : Lt1 Dw) : IsSatFrame (vX_vp X) (frame Ch X f) := by
   refine ⟨fun a e => isIntV_jX X _, ?_⟩
   obtain ⟨⟨w, emb, hw, hb⟩, -⟩ := chart_saturated T io y Ch f.1
@@ -263,6 +332,9 @@ def nuLocOf (e k : ℕ) {n : ℕ} (P : MvPolynomial (LtN Dw n) T.Fr) : EReal :=
     letI := io.toAlgebra
     nval T.V e (nabValN Ch.ch.B T.Fr Ch.ch.h H.w0 k f (fun ℓ => ℓ.2.2) (fun ℓ => Ch.ch.uvec ⟨ℓ.1, ℓ.2.1⟩) P)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nuLocC_eq_iInf (e k : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     nuLocC Ch e k a n = ⨅ (P : MvPolynomial (LtN Dw n) T.Fr) (_ : P ∈ FFV (Dw := Dw) T a n), nuLocOf Ch e k P :=
   rfl
@@ -283,16 +355,31 @@ def nuProd (cx : Lt1 Dw → ℕ) : EReal :=
 
 variable {p y}
 
+/- English proof (translation)
+The claim follows from `iInf_le_of_le Ch (iInf_le _ X)`.
+-/
 theorem nuFac_le (Ch : IntegralChartA3 Xo c T io y) (X : ValExt T p) (f : Lt1 Dw) (k : ℕ) :
     nuFac p y f k ≤ nuFacC Ch X f k :=
   iInf_le_of_le Ch (iInf_le _ X)
 
+/- English proof (translation)
+The claim follows from `le_iInf₂ h`.
+-/
 theorem le_nuFac {f : Lt1 Dw} {k : ℕ} {r : EReal}
     (h : ∀ (Ch : IntegralChartA3 Xo c T io y) (X : ValExt T p), r ≤ nuFacC Ch X f k) : r ≤ nuFac p y f k :=
   le_iInf₂ h
 
 omit [StarRing (𝓞 E)] in
 
+/- English proof (translation)
+Introduce `hu`. Establish `hp0 : (p : 𝓞 c.F) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `h1 : la.1.valuation c.F (p : c.F) < 1`. Use `(la.1.valuation_lt_one_iff_mem (K := c.F) (p : 𝓞 c.F)).2 la.2` as an intermediate fact. Simplify using `using this`.
+
+Establish `h0 : la.1.valuation c.F (p : c.F) ≠ 0` using `(Valuation.ne_zero_iff _).2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `h2 : 0 < vLa la.1 (p : c.F)`. Unfold `vLa`. Rewrite `h1` using `[← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h3` using `ho.2 (p : c.F)`. Rewrite `h3` using `[map_natCast]`. Establish `h4 : valV T.V (p : T.Fr) = 1`. Use `(HeightOneSpectrum.valuation_eq_one_iff_notMem (K := T.Fr) (IsDiscreteValuationRing.maximalIdeal T.V) (r := (p : T.V))).2 fun h => (mem_maximalIdeal _).1 h hu` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+
+Establish `h5 : vV T.V (p : T.Fr) = 0` using `by simp [vV, h4]`. Establish `h6 : (0 : ℤ) < e` using `by exact_mod_cast ho.1`. Use polynomial arithmetic with `[mul_pos h6 h2]`.
+-/
 theorem not_isUnit_of_overLa (la : PointsOfFlagModel.abelian₂ p c) {e : ℕ} (ho : OverLa la.1 T.V io e) : ¬ IsUnit (p : T.V) := by
   intro hu
   have hp0 : (p : 𝓞 c.F) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero
@@ -317,6 +404,9 @@ theorem not_isUnit_of_overLa (la : PointsOfFlagModel.abelian₂ p c) {e : ℕ} (
 
 omit [StarRing (𝓞 E)] in
 
+/- English proof (translation)
+The claim follows from `nonempty_valExt T p (not_isUnit_of_overLa la ho)`.
+-/
 theorem nonempty_valExt_of_overLa (la : PointsOfFlagModel.abelian₂ p c) {e : ℕ} (ho : OverLa la.1 T.V io e) : Nonempty (ValExt T p) :=
   nonempty_valExt T p (not_isUnit_of_overLa la ho)
 
@@ -345,6 +435,15 @@ def polyT {T : CDVR} {n : ℕ} (B : ∀ f : Lt1 Dw, Fin (rk f) → Fin n → T.V
     MvPolynomial (LtN Dw n) T.Fr :=
   polyP (fun f b j => algebraMap T.V T.Fr (B f b j)) cx
 
+/- English proof (translation)
+Take `⟨blk, hb⟩` from `hB`. Establish `hcc : ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate τ ≠ τ` using `fun τ h => IsTotallyComplex.complexEmbedding_not_isReal τ h`. Use `GlobalTheory.CombMinor.prod_det_mem_HaO (E →+* ℂ) Dw.mult n T.Fr _ _ _ _ (Lt1 Dw) (fun f => f.1) rk rk_le _ _ (fun f b j => ⟨_, rfl⟩) hcc (fun f f' hf hf' h b b' j => ?_) (fun τ i => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hn push Not at hn`. Establish `h1 : j ∈ Set.range fun j => blk ⟨⟨f, hf⟩, j⟩`.
+
+Assume the negation of the conclusion as `hj`. Conclude with `hn.1 (by rw [(hb ⟨f, hf⟩).1 b j hj, map_zero])`. Establish `h2 : j ∈ Set.range fun j => blk ⟨⟨f', hf'⟩, j⟩`. Assume the negation of the conclusion as `hj`. Conclude with `hn.2 (by rw [(hb ⟨f', hf'⟩).1 b' j hj, map_zero])`.
+
+Take `⟨j1, h1⟩` from `h1`. Take `⟨j2, h2⟩` from `h2`. Establish `h3 : f = f'` using `congrArg (fun s => s.1.1) (blk.injective (h1.trans h2.symm))`. Substitute `h3` using the available equality. Conclude with `hcc _ h.symm`.
+
+Use `sum_gap_row (Dw := Dw) ha τ i` and compare the differences between its conclusion and the goal.
+-/
 theorem polyT_mem_FFV {T : CDVR} {io : c.F →+* T.Fr} {p n : ℕ} {a : (E →+* ℂ) × ℕ → ℕ}
     (ha : ∀ τ, Antitone fun i => a (τ, i)) {B : ∀ f : Lt1 Dw, Fin (rk f) → Fin n → T.V}
     (hB : IsCols c T io p (gap Dw a) B) : polyT B (gap Dw a) ∈ FFV (Dw := Dw) T a n := by
@@ -368,6 +467,9 @@ theorem polyT_mem_FFV {T : CDVR} {io : c.F →+* T.Fr} {p n : ℕ} {a : (E →+*
     exact hcc _ h.symm
   · convert sum_gap_row (Dw := Dw) ha τ i
 
+/- English proof (translation)
+Rewrite using `[nuLocC_eq_iInf]`. Conclude with `iInf₂_le _ (polyT_mem_FFV ha hB)`.
+-/
 theorem nuLocC_le_nuLocOf [StarRing (𝓞 E)] {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io}
     (Ch : IntegralChartA3 Xo c T io y) (e k : ℕ) {p n : ℕ} {a : (E →+* ℂ) × ℕ → ℕ}
     (ha : ∀ τ, Antitone fun i => a (τ, i)) {B : ∀ f : Lt1 Dw, Fin (rk f) → Fin n → T.V}
@@ -422,6 +524,11 @@ def GenEx (Y : Model Xo c β) (Z : Comp Xo c) (la : HeightOneSpectrum (𝓞 c.F)
 attribute [local instance] Over.cartesianMonoidalCategory in
 open MonObj in
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hv.1, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', dualMap_comp_alg]`. Establish `e : (TrivSqZeroExt.fstHom S' S' S').toRingHom.comp (dualMap φ) = φ.comp (TrivSqZeroExt.fstHom S S S).toRingHom`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Simplify using `[dualMap]`.
+
+Rewrite using `[← Category.assoc, spMap_comp', e, ← spMap_comp', Category.assoc, hv.2]`. Set `ψ : Over.mk (spMap φ ≫ x) ⟶ Over.mk x` to `Over.homMk (spMap φ) rfl`. Conclude with `congrArg (fun g => g.left) (MonObj.comp_one ψ : ψ ≫ (1 : Over.mk x ⟶ t.G) = 1)`.
+-/
 theorem isTanAtG_map {X0 : Scheme.{0}} (t : SAB H X0) {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S')
     {x : Sp S ⟶ X0} {v : Sp (DualNumber S) ⟶ t.G.left} (hv : IsTanAtG t x v) :
     IsTanAtG t (spMap φ ≫ x) (spMap (dualMap φ) ≫ v) := by
@@ -461,25 +568,43 @@ def ePLoc {O : PointsOfFlagModel.abelian₂ p c → Type} [∀ la, CommRing (O l
 
 variable {cls : ∀ (T : CDVR) (io : c.F →+* T.Fr), IntFr Xo c T io → Prop} {la : PointsOfFlagModel.abelian₂ p c} {cx : Lt1 Dw → ℕ}
 
+/- English proof (translation)
+The claim follows from `iSup_le fun T => iSup_le fun io => iSup_le fun e => iSup_le fun ho => iSup₂_le (h T io e ho)`.
+-/
 theorem nuPSup_le {r : EReal} (h : ∀ (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ), OverLa la.1 T.V io e →
     ∀ y : IntFr Xo c T io, cls T io y → nuP p y cx ≤ r) : nuPSup cls la cx ≤ r :=
   iSup_le fun T => iSup_le fun io => iSup_le fun e => iSup_le fun ho => iSup₂_le (h T io e ho)
 
+/- English proof (translation)
+The claim follows from `le_iInf fun T => le_iInf fun io => le_iInf fun e => le_iInf fun ho => le_iInf₂ (h T io e ho)`.
+-/
 theorem le_nuPInf {r : EReal} (h : ∀ (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ), OverLa la.1 T.V io e →
     ∀ y : IntFr Xo c T io, cls T io y → r ≤ nuP p y cx) : r ≤ nuPInf cls la cx :=
   le_iInf fun T => le_iInf fun io => le_iInf fun e => le_iInf fun ho => le_iInf₂ (h T io e ho)
 
 end Osc
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : ∑ j ∈ Finset.range 3, (if 0 < j + 1 then (fun i => if i = 0 then 5 else 2) j -
     (if j + 1 < 3 then (fun i => if i = 0 then 5 else 2) (j + 1) else 0) else 0) = 5 := by decide
 
+/- English proof (translation)
+Apply the tactic sequence `unfold gap; split_ifs <;> simp`.
+-/
 example (n : ℕ) (f : Lt1 Dw) : gap Dw (fun _ => n) f = if rk f < Dw.mult f.1 then 0 else n := by
   unfold gap; split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `[polyP]`.
+-/
 example {k : Type} [Field k] {n : ℕ} (B : ∀ f : Lt1 Dw, Fin (rk f) → Fin n → k) : polyP B 0 = 1 := by
   simp [polyP]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => RatFunc.X, algebraicIndependent_unique_type_iff.2 fun h => by let e := (algebraMap k (RatFunc k)).rangeRestrictFieldEquiv let g : (⊥ : Subfield (RatFunc k)) →+* k := e.symm.toRingHom.comp (Subfield.inclusion bot_le) refine RatFunc.transcendental_X (K := k) (h.ringHom_of …`.
+-/
 example (k : Type) [Field k] : TrdegGe (RatFunc k) 1 :=
   ⟨fun _ => RatFunc.X, algebraicIndependent_unique_type_iff.2 fun h => by
     let e := (algebraMap k (RatFunc k)).rangeRestrictFieldEquiv

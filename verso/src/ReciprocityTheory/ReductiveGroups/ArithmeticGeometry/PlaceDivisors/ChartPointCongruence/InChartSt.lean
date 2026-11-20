@@ -13,7 +13,13 @@ namespace ReciprocityTheory.ChartRestriction.G.Pdiv.ChPt
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : @JetR = @ReciprocityTheory.ChartRestriction.G.Chart.JetR := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : @zR = @ReciprocityTheory.ChartRestriction.G.Chart.zR := rfl
 
 def NilSt : Prop :=

@@ -24,6 +24,15 @@ namespace GlobalTheory.ThK.CTIntegrate
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+
+Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → AE F E))`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`.
+
+Use `haveI : LocallyCompactSpace (GL (Fin n) (AE F E)) := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin n) (AE F E)) := Units.isEmbedding_embedProduct.secondCountableTopology`. Establish `hcA : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`.
+
+Establish `hc : IsClosed (UG (cA σ) (incM F J) : Set (GL (Fin n) (AE F E)))`. Establish `hv : Continuous fun g : GL (Fin n) (AE F E) => (g : Matrix (Fin n) (Fin n) (AE F E))` using `Units.continuous_val`. Conclude with `isClosed_eq (((hv.matrix_transpose.matrix_mul continuous_const).matrix_mul (hv.matrix_map hcA))) continuous_const`. Conclude with `⟨hc.isClosedEmbedding_subtypeVal.locallyCompactSpace, hc.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology⟩`.
+-/
 theorem lcsc_UA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     LocallyCompactSpace (UA σ J) ∧ SecondCountableTopology (UA σ J) := by
   haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F
@@ -52,6 +61,29 @@ theorem lcsc_UA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' hT Φ hΦs μ 𝓕 hμ hF h1 h`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Take `⟨lc1, sc1⟩` from `lcsc_UA σ G.V.J`. Take `⟨lc2, sc2⟩` from `lcsc_UA σ G.W.J`.
+
+Use `haveI := lc1`. Use `haveI := sc1`. Use `haveI := lc2`. Use `haveI := sc2`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hT`.
+
+Establish `hcond : b + 2 + a' + 2 * min (b + 2 - G.p) G.p < 2 * (b + 2)`. Establish `e1` using `hT.geo.eBig`. Establish `e2` using `hC.q0`. Use linear arithmetic over natural numbers and integers. Take `⟨hW, -⟩` from `GlobalTheory.T.weil_convergence_of_kernel hK F E σ B _ _ G.V G.W G.M _ _ om _ _ _ _ hP (Or.inl hcond)`.
+
+Take `⟨hconv, C, k, hbd⟩` from `hW Φ hΦs`. Take `⟨hth, -⟩` from `GlobalTheory.T.theta_basic_properties hK.base F E σ B _ _ G.V G.W G.M _ _ om _ _ _ _ hP`. Take `⟨hcont, hinv, -⟩` from `hth Φ hΦs`. Take `⟨R, hR⟩` from `GlobalTheory.T.unipotent_bounded_height_reduction F E σ B _ _ G.W G₁.W H' 0 (b + 1) _ _ hT.base hT.geo.hW hC.hH'`. Use `haveI : (G.M.μ).IsHaarMeasure := hT.geo.hM.haar`.
+
+Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 (by rw [h1]; exact ENNReal.one_ne_top)`. Use `haveI : SigmaCompactSpace (UA σ G.V.J) := inferInstance`. Use `haveI : SigmaFinite G.M.μ := inferInstance`. Use `haveI hs1 : SFinite (G.M.μ.restrict G.M.dom) := inferInstance`. Use `haveI hs2 : SFinite (μ.restrict 𝓕) := inferInstance`.
+
+Establish `hfc : Continuous (fun p : UA σ G.V.J × unip σ G.W H' => theta om Φ p.1 (p.2.1 * h))` using `hcont.comp (continuous_fst.prodMk ((continuous_subtype_val.comp continuous_snd).mul continuous_const))`. Establish `hfm` using `hfc.stronglyMeasurable`. Establish `hC0 : 0 ≤ C`. Establish `h0` using `(integral_nonneg (μ := G.M.μ.restrict G.M.dom) fun g => norm_nonneg (theta om Φ g 1)).trans (hbd 1)`. Establish `hpos : (0 : ℝ) < (ht (1 : UA σ G.W.J) : ℝ) ^ k` using `pow_pos (lt_of_lt_of_le zero_lt_one (by exact_mod_cast one_le_heightGL F _)) k`.
+
+Conclude with `nonneg_of_mul_nonneg_left h0 hpos`. Establish `hbound : ∀ u : unip σ G.W H', ∫ g in G.M.dom, ‖theta om Φ g (u.1 * h)‖ ∂G.M.μ ≤ C * ((R : ℝ) * ht h) ^ k`. Introduce `u`. Take `⟨γ, hγ, hγR⟩` from `hR u.1 u.2`. Establish `e : ∀ g, theta om Φ g (u.1 * h) = theta om Φ g ((γ * u.1) * h)`.
+
+Introduce `g`. Use `hinv 1 (one_mem _) γ hγ.1 g (u.1 * h)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Rewrite using `[mul_assoc, this]`. Repeatedly rewrite using `[e]`.
+
+Use `(hbd _).trans (mul_le_mul_of_nonneg_left ?_ hC0)` and prove the remaining obligations. Use `pow_le_pow_left₀ (by positivity) ?_ k` and prove the remaining obligations. Use `heightGL_mul_le F (γ * u.1).1 h.1` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hint : Integrable (Function.uncurry fun g (u : unip σ G.W H') => theta om Φ g (u.1 * h)) ((G.M.μ.restrict G.M.dom).prod (μ.restrict 𝓕))`.
+
+Use `(integrable_prod_iff' hfm.aestronglyMeasurable).2 ⟨Eventually.of_forall fun u => hconv (u.1 * h), ?_⟩` and prove the remaining obligations. Use `Integrable.mono' (integrable_const (C * ((R : ℝ) * ht h) ^ k)) ?_ (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Conclude with `(hfm.norm.integral_prod_left (μ := G.M.μ.restrict G.M.dom)).aestronglyMeasurable`. Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Conclude with `hbound u`.
+
+Use `⟨hint.integral_prod_left, ?_⟩` and prove the remaining obligations. Use `show ∫ u in 𝓕, ∫ g in G.M.dom, theta om Φ g (u.1 * h) ∂G.M.μ ∂μ = _`. Conclude with `(integral_integral_swap hint).symm`.
+-/
 theorem fubini_big : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
@@ -122,12 +154,18 @@ namespace GlobalTheory.ThK.CTIntegrate
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, -, φ, hSB, hv, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB (hv.and hM.std |>.mono fun v h => h.1.trans h.2)`.
+-/
 theorem polData_le_schA {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W}
     (hM : M.IsGood B.ψ) : PolData B M ≤ schA F (Fin n × Fin d) := by
   refine Submodule.span_le.2 ?_
   rintro Φ ⟨f, -, φ, hSB, hv, rfl⟩
   exact GlobalTheory.TensUniq.pure_mem_schA f φ hSB (hv.and hM.std |>.mono fun v h => h.1.trans h.2)
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> simp [mat]`.
+-/
 theorem isLevi_one {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} (H' : Plane E d d₁) :
     IsLevi (σ := σ) (W := W) (W₁ := W₁) H' 1 1 1 := by
   refine ⟨?_, ?_, ?_⟩ <;> simp [mat]
@@ -136,6 +174,31 @@ end GlobalTheory.ThK.CTIntegrate
 
 open GlobalTheory.ThK.CTIntegrate in
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hc e he`. Distinguish the cases in `hex : ∃ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' ∧ IsTriple B G₁ X om₁ om₁'`. Use `swap`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce `γ hγ X om om' om₁ om₁' hT hT₁`.
+
+Conclude with `absurd ⟨X, om, om', om₁, om₁', hT, hT₁⟩ hex`. Take `⟨X₀, o₀, o₀', o₁, o₁', hT₀, hT₀₁⟩` from `hex`. Take `⟨M₁, hM₁⟩` from `GlobalTheory.T.exists_good_schrodinger_model F E σ B hT₀.base (b + 2) (b + a') G.V G₁.W _ _ _ _ hT₀.geo.hV hT₀₁.geo.hW`. Set `M₂ : Model σ G.V G₁.W` to `⟨M₁.co, M₁.vac, G.M.μ, G.M.dom⟩`. Establish `hM₂ : M₂.IsGood B.ψ` using `⟨hM₁.rat, hM₁.vac, hM₁.std, hT₀.geo.hM.haar, hT₀.geo.hM.dom⟩`.
+
+Take `⟨e₀, he₀⟩` from `((GlobalTheory.T.theta_evaluation_zero_cone hKP.base).1 F E σ B (b + 2) (b + 2 + a') G.V G.W G.M _ _ o₀ _ _ _ _ (Inhab.pairV hT₀) (b + a') G.V G₁.W H' 0 (b + 1) M₂ rfl hc.hH' hM₂).1`. Take `⟨C₀, -, -, hK⟩` from `GlobalTheory.T.adapted_plane_evaluation_constant hKP F E σ B (b + 2) (b + 2 + a') (b + a') G.V G.W G₁.W G.M M₂ H' 0 (b + 1) hc.hH' hM₂ e₀ he₀`. Take `⟨C₁, hC₁, hK1⟩` from `hK b G₁.V H 0 (b + 1) G₁.M hc.hH hT₀₁.geo.hM e he`. Use `⟨C₁, hC₁, ?_⟩` and prove the remaining obligations. Introduce `γ hγ X om om' om₁ om₁' hT hT₁ Φ hΦ`.
+
+Establish `hΦs : Φ ∈ schA F _` using `polData_le_schA hT.geo.hM hΦ`. Establish `hP` using `Inhab.pairV hT`. Establish `hP₁` using `Inhab.pairV hT₁`. Take `⟨ω, hω⟩` from `GlobalTheory.WeilExGen.exists_isWeil hKP.base F E σ B hT.base (b + 2) (b + a') G.V G₁.W _ _ _ _ hT.geo.hV hT₁.geo.hW M₂ hM₂ X.β (X.β / X.α) hP.hX hP₁.hW hP.resX hP₁.resW`. Establish `hP₂ : IsPair B M₂ X.β (X.β / X.α) ω (b + 2 - G.p) G.p (b + a' - (G₁.p + G₁.q)) (G₁.p + G₁.q)` using `{ base := hT.base, herm := hT.geo.hV, skew := hT₁.geo.hW, good := hM₂, hX := hP.hX, hW := hP₁.hW, resX := hP.resX, resW := hP₁.resW, weil := hω }`.
+
+Establish `hmix` using `GlobalTheory.T.adapted_plane_second_variable hKP.base F E σ B (b + 2) (b + 2 + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hP (b + a') G₁.W H' 0 (b + 1) M₂ ω _ _ hc.hH' hP₂ e₀ he₀`. Establish `hpres : ∀ x, om x Φ ∈ schA F _` using `fun x => hT.weil.isUSplitting.pres x Φ hΦs`. Establish `hT0 : ∀ g h, thetaSum F (e₀ (om (g, h) Φ)) = theta ω (e₀ (om (1, h) Φ)) g 1`. Introduce `g h`. Use `hmix g 1 1 1 (isLevi_one H') 1 (one_mem _) (om (1, h) Φ) (hpres _)` as an intermediate fact.
+
+Rewrite `this` using `[one_mul, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`. Rewrite using `[this]`. Simplify using `[theta]`. Use `⟨fun h => C₀ * ∫ g in G.M.dom, thetaSum F (e₀ (om (g, h) Φ)) ∂G.M.μ, ?_, ?_⟩` and prove the remaining obligations. Introduce `t m hL h`.
+
+Establish `key : ∀ g, thetaSum F (e₀ (om (g, m * h) Φ)) = ((X.β t : ℂ) * (((absE F E t : ℝ) ^ (((b + 2 : ℕ) : ℝ) / 2) : ℝ) : ℂ)) * thetaSum F (e₀ (om (g, h) Φ))`. Introduce `g`. Use `hmix 1 t 1 m hL 1 (one_mem _) (om (g, h) Φ) (hpres _)` as an intermediate fact. Rewrite `this` using `[one_mul, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[this, Prod.mk_one_one, map_one, Module.End.one_apply]`.
+
+Simplify using `only [thetaSum, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`. Simplify using `only [key, MeasureTheory.integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `μ 𝓕 hμ h𝓕 h1 h`.
+
+Take `⟨hint, hswap⟩` from `fubini_big hKP F E σ B b a' G G₁ H H' hc X om om' hT Φ hΦs μ 𝓕 hμ h𝓕 h1 h`. Establish `hpt : ∀ g, ∫ u in 𝓕, theta om Φ g (u.1 * h) ∂μ = C₀ * thetaSum F (e₀ (om (g, h) Φ)) + C₁ * ∑' x, thetaSum F (e (G.M.co.rho B.ψ (shiftA H H' 1) (om (γ x * g, h) Φ)))` using `fun g => ((hK1 γ hγ _ _ om _ _ _ _ hP Φ hΦs g).2 μ 𝓕 hμ h𝓕 h1 h).symm`. Establish `hcond : b + a' + 2 * min (b + 2 - G.p) G.p < 2 * (b + 2) ∨ min (b + 2 - G.p) G.p = 0` using `by left`. Establish `h1` using `hT.geo.eBig`. Establish `h2` using `hc.q0`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hint0 : Integrable (fun g => C₀ * thetaSum F (e₀ (om (g, h) Φ))) (G.M.μ.restrict G.M.dom)`. Establish `hcv` using `((GlobalTheory.T.weil_convergence_of_kernel hKP F E σ B (b + 2) (b + a') G.V G₁.W M₂ _ _ ω _ _ _ _ hP₂ hcond).1 (e₀ (om (1, h) Φ)) (he₀.maps _ (hpres (1, h)))).1 1`. Simplify using `only [hT0]`. Conclude with `hcv.const_mul C₀`.
+
+Simplify using `only [hpt] at hint`. Establish `hint1 : Integrable (fun g => C₁ * ∑' x, thetaSum F (e (G.M.co.rho B.ψ (shiftA H H' 1) (om (γ x * g, h) Φ)))) (G.M.μ.restrict G.M.dom)`. Use `(hint.sub hint0).congr (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, add_sub_cancel_left]`. Use `show _ = ∫ u in 𝓕, G.M.I om Φ (u.1 * h) ∂μ`.
+
+Rewrite using `[hswap]`. Simplify using `only [hpt]`. Rewrite using `[integral_add hint0 hint1, integral_const_mul, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.ThK.ctBig_integrate : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∃ C₁ : ℂ, C₁ ≠ 0 ∧ ∀ γ : {x : Fin (b + 2) → E // x ≠ 0 ∧ form σ G.V.J x x = 0} → UA σ G.V.J,

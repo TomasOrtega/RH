@@ -11,6 +11,19 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PSer
 
+/- English proof (translation)
+Introduce `l _ h j r x y hh hr hx hy`. Establish `hr0 : 0 ≤ r` using `le_trans (norm_nonneg _) hx`. Establish `hxy : ‖sh (x + y)‖ ≤ r` using `(GlobalTheory.T.tiltUntilt_add_estimate_le l r x y hx hy).2`. Establish `sx` using `(GlobalTheory.T.untiltFrobeniusLaurentSeries_hasSum_bound_frobenius l h j r x hh hr hx).1`. Establish `sy` using `(GlobalTheory.T.untiltFrobeniusLaurentSeries_hasSum_bound_frobenius l h j r y hh hr hy).1`.
+
+Establish `sxy` using `(GlobalTheory.T.untiltFrobeniusLaurentSeries_hasSum_bound_frobenius l h j r (x + y) hh hr hxy).1`. Establish `hs` using `(sxy.sub sx).sub sy`. Establish `hg` using `(GlobalTheory.T.untiltFrobeniusSeriesRadiusSize_laws l h j r hh hr0 hr).1`. Establish `hpw` using `GlobalTheory.T.tiltFrobeniusIntegerPower_laws l`. Establish `hε : 0 ≤ ‖(l : ℂ_[l])‖ * gam l h j r` using `mul_nonneg (norm_nonneg _) (GlobalTheory.T.untiltFrobeniusSeriesRadiusSize_laws l h j r hh hr0 hr).2.2.1`.
+
+Establish `key` using `GlobalTheory.T.ultrametric_norm_hasSum_sub_finset_sum_le ℂ_[l] ℤ _ _ ∅ _ hε hs (by`. Introduce `n _`. Use `set k : ℤ := n * h + j`. Use `beta_reduce`. Rewrite using `[hpw.1 k x y]`.
+
+Establish `e : (l : ℂ_[l]) ^ (-n) * sh (pw k x + pw k y) - (l : ℂ_[l]) ^ (-n) * sh (pw k x) - (l : ℂ_[l]) ^ (-n) * sh (pw k y) = (l : ℂ_[l]) ^ (-n) * (sh (pw k x + pw k y) - sh (pw k x) - sh (pw k y))` using `by ring`. Rewrite using `[e, norm_mul, norm_zpow]`. Establish `hl0 : 0 ≤ (l : ℝ) ^ k` using `zpow_nonneg (Nat.cast_nonneg _) _`. Establish `bx : ‖sh (pw k x)‖ ≤ r ^ ((l : ℝ) ^ k)`. Rewrite using `[hpw.2.2.2.2.2.2 k x]`.
+
+Conclude with `Real.rpow_le_rpow (norm_nonneg _) hx hl0`. Establish `by' : ‖sh (pw k y)‖ ≤ r ^ ((l : ℝ) ^ k)`. Rewrite using `[hpw.2.2.2.2.2.2 k y]`. Conclude with `Real.rpow_le_rpow (norm_nonneg _) hy hl0`. Establish `ha` using `(GlobalTheory.T.tiltUntilt_add_estimate_le l _ (pw k x) (pw k y) bx by').1`.
+
+Establish `hn : 0 ≤ ‖(l : ℂ_[l])‖ ^ (-n)` using `zpow_nonneg (norm_nonneg _) _`. Combine the equalities or inequalities in the displayed calculation. Simplify using `using key`.
+-/
 theorem lam_add_sub_le : ∀ (l : ℕ) [Fact l.Prime] (h j : ℕ) (r : ℝ) (x y : Fl l), 1 ≤ h → r < 1 → ‖sh x‖ ≤ r → ‖sh y‖ ≤ r → ‖lam h j (x + y) - lam h j x - lam h j y‖ ≤ ‖(l : ℂ_[l])‖ * gam l h j r := by
   intro l _ h j r x y hh hr hx hy
   have hr0 : 0 ≤ r := le_trans (norm_nonneg _) hx

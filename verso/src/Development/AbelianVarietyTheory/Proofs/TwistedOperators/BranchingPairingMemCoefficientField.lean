@@ -17,6 +17,9 @@ section General
 
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.Proof.TensorMapDescent.eq_zero_of_fockB sg (Br.projVV sg x.1 - x) fun i => by`. Rewrite using `[← fockBL_apply, Submodule.coe_sub, map_sub, fockBL_apply, fockBL_apply, GlobalTheory.Proof.TensorMapDescent.fockB_projVV_basis, sub_self]`. Conclude with `sub_eq_zero.mp h`.
+-/
 theorem projVV_of_mem {K : Type} [Field K] [CharZero K] (sg : ι → DomWeight n) (x : VV K sg) :
     Br.projVV sg x.1 = x := by
   have h := GlobalTheory.Proof.TensorMapDescent.eq_zero_of_fockB sg (Br.projVV sg x.1 - x) fun i => by
@@ -24,6 +27,9 @@ theorem projVV_of_mem {K : Type} [Field K] [CharZero K] (sg : ι → DomWeight n
       GlobalTheory.Proof.TensorMapDescent.fockB_projVV_basis, sub_self]
   exact sub_eq_zero.mp h
 
+/- English proof (translation)
+Use `choose c hc using h`. Use `⟨∑ m ∈ P.support, monomial m (c m), ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [P.as_sum]`. Simplify using `[map_sum, map_monomial, hc]`.
+-/
 theorem exists_map_eq {K : Type} [Field K] (φ : K →+* ℂ) {σ : Type} (P : MvPolynomial σ ℂ)
     (h : ∀ m, coeff m P ∈ Set.range φ) : ∃ P₀ : MvPolynomial σ K, map φ P₀ = P := by
   classical
@@ -32,12 +38,18 @@ theorem exists_map_eq {K : Type} [Field K] (φ : K →+* ℂ) {σ : Type} (P : M
   conv_rhs => rw [P.as_sum]
   simp [map_sum, map_monomial, hc]
 
+/- English proof (translation)
+Take `⟨P₀, hP⟩` from `exists_map_eq φ x.1 h`. Use `⟨Br.projVV sg P₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.Proof.TensorMapDescent.projVV_map φ sg P₀, hP, projVV_of_mem]`.
+-/
 theorem descend {K : Type} [Field K] [CharZero K] (φ : K →+* ℂ) (sg : ι → DomWeight n) (x : VV ℂ sg)
     (h : ∀ m, coeff m x.1 ∈ Set.range φ) : ∃ y : VV K sg, map φ y.1 = x.1 := by
   obtain ⟨P₀, hP⟩ := exists_map_eq φ x.1 h
   refine ⟨Br.projVV sg P₀, ?_⟩
   rw [← GlobalTheory.Proof.TensorMapDescent.projVV_map φ sg P₀, hP, projVV_of_mem]
 
+/- English proof (translation)
+Unfold `frDet`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a s`. Simplify using the standard rewrite rules.
+-/
 theorem map_frDet {K : Type} [Field K] (φ : K →+* ℂ) (τ : ι) : map φ (frDet K n τ) = frDet ℂ n τ := by
   unfold frDet
   rw [RingHom.map_det]
@@ -45,6 +57,13 @@ theorem map_frDet {K : Type} [Field K] (φ : K →+* ℂ) (τ : ι) : map φ (fr
   ext a s
   simp
 
+/- English proof (translation)
+Establish `e : (map φ : Pol K ι n →+* Pol ℂ ι n).comp (dualSubst K ι n).toRingHom = (dualSubst ℂ ι n).toRingHom.comp (map φ)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[dualSubst]`. Introduce `v`.
+
+Establish `hm : (Matrix.of fun a s : Fin n => (X (v.1, a, s) : Pol ℂ ι n)) = (map φ : Pol K ι n →+* Pol ℂ ι n).mapMatrix (Matrix.of fun a s : Fin n => (X (v.1, a, s) : Pol K ι n))`. Use extensionality with `a s`. Simplify using the standard rewrite rules. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, dualSubst, aeval_X, map_X]`. Rewrite using `[hm, ← RingHom.map_adjugate]`.
+
+Both sides reduce to the same expression. Conclude with `DFunLike.congr_fun e P`.
+-/
 theorem map_dualSubst {K : Type} [Field K] (φ : K →+* ℂ) (P : Pol K ι n) :
     map φ (dualSubst K ι n P) = dualSubst ℂ ι n (map φ P) := by
   have e : (map φ : Pol K ι n →+* Pol ℂ ι n).comp (dualSubst K ι n).toRingHom =
@@ -62,6 +81,9 @@ theorem map_dualSubst {K : Type} [Field K] (φ : K →+* ℂ) (P : Pol K ι n) :
       rfl
   exact DFunLike.congr_fun e P
 
+/- English proof (translation)
+Unfold `IsFunForm at h ⊢`. Establish `h1` using `congrArg (map φ) h`. Simplify using `only [map_mul, map_prod, map_pow, map_frDet, map_dualSubst] at h1`. Conclude with `h1`.
+-/
 theorem isFunForm_map {K : Type} [Field K] (φ : K →+* ℂ) (σ : ι → DomWeight n) {F : VV K σ}
     {f : VV K fun τ => (σ τ).dual} (h : IsFunForm σ F f) :
     IsFunForm σ ⟨map φ F.1, GlobalTheory.Proof.TensorMapDescent.map_mem_VV φ σ _ F.2⟩
@@ -71,6 +93,11 @@ theorem isFunForm_map {K : Type} [Field K] (φ : K →+* ℂ) (σ : ι → DomWe
   simp only [map_mul, map_prod, map_pow, map_frDet, map_dualSubst] at h1
   exact h1
 
+/- English proof (translation)
+Establish `hex : ∃ φ : (VV ℂ fun τ => (σ τ).dual) →ₗ[ℂ] VV ℂ σ, ∀ f, IsFunForm σ (φ f) f` using `⟨(funEquiv σ).symm.toLinearMap, fun f => (isFunForm_iff_eq σ _ f).2 (by simp)⟩`. Establish `e : covOf σ f = hex.choose f` using `by rw [covOf, dif_pos hex]`. Rewrite using `[e]`. Apply `(funEquiv σ).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+
+Conclude with `((isFunForm_iff_eq σ _ f).1 (hex.choose_spec f)).symm`.
+-/
 theorem covOf_eq (σ : ι → DomWeight n) (f : VV ℂ fun τ => (σ τ).dual) : covOf σ f = (funEquiv σ).symm f := by
   have hex : ∃ φ : (VV ℂ fun τ => (σ τ).dual) →ₗ[ℂ] VV ℂ σ, ∀ f, IsFunForm σ (φ f) f :=
     ⟨(funEquiv σ).symm.toLinearMap, fun f => (isFunForm_iff_eq σ _ f).2 (by simp)⟩
@@ -80,6 +107,11 @@ theorem covOf_eq (σ : ι → DomWeight n) (f : VV ℂ fun τ => (σ τ).dual) :
   rw [LinearEquiv.apply_symm_apply]
   exact ((isFunForm_iff_eq σ _ f).1 (hex.choose_spec f)).symm
 
+/- English proof (translation)
+Take `⟨f₀, hf₀⟩` from `descend φ _ f hf`. Use `⟨(funEquiv σ).symm f₀, ?_⟩` and prove the remaining obligations. Establish `h1 : IsFunForm σ ((funEquiv σ).symm f₀) f₀`. Use `isFunForm_funEquiv σ ((funEquiv σ).symm f₀)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+
+Establish `h2` using `isFunForm_map φ σ h1`. Establish `h4 : f = funEquiv σ ⟨map φ ((funEquiv σ).symm f₀).1, GlobalTheory.Proof.TensorMapDescent.map_mem_VV φ σ _ ((funEquiv σ).symm f₀).2⟩`. Rewrite using `[← (isFunForm_iff_eq σ _ _).1 h2]`. Conclude with `Subtype.ext hf₀.symm`. Rewrite using `[covOf_eq, h4, LinearEquiv.symm_apply_apply]`.
+-/
 theorem covOf_desc {K : Type} [Field K] [CharZero K] (φ : K →+* ℂ) (σ : ι → DomWeight n)
     (f : VV ℂ fun τ => (σ τ).dual) (hf : ∀ m, coeff m f.1 ∈ Set.range φ) :
     ∃ F₀ : VV K σ, map φ F₀.1 = (covOf σ f).1 := by
@@ -94,6 +126,11 @@ theorem covOf_desc {K : Type} [Field K] [CharZero K] (φ : K →+* ℂ) (σ : ι
     exact Subtype.ext hf₀.symm
   rw [covOf_eq, h4, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Take `⟨U₀, hU₀⟩` from `exists_map_eq φ U.1 hU`. Take `⟨F₀, hF₀⟩` from `covOf_desc φ σ V hV`. Use `⟨(extNormB K σ)⁻¹ * fockB (Br.brStdP hN Λ σ U₀ : Pol K ι n) F₀.1, ?_⟩` and prove the remaining obligations. Rewrite using `[brPair, LinearMap.compl₁₂_apply, pairBK_apply, pairB_apply, ← hF₀, Br.brStd, LinearMap.comp_apply, Submodule.subtype_apply, ← hU₀, GlobalTheory.Proof.TensorMapDescent.branchingProjection_map, GlobalTheory.Proof.TensorMapDescent.fockB_map, map_mul, map_inv₀]`. Use `congr 2`.
+
+Unfold `extNormB`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.Proof.TensorMapDescent.fockB_map, Formalism.L2.DIV.map_extremal]`.
+-/
 theorem brPair_mem_range {K : Type} [Field K] [CharZero K] (φ : K →+* ℂ) (σ : ι → DomWeight n) {N : ℕ}
     (hN : N = n + 1) (Λ : ι → DomWeight N) (U : VV ℂ Λ) (V : VV ℂ fun τ => (σ τ).dual)
     (hU : ∀ m, coeff m U.1 ∈ Set.range φ) (hV : ∀ m, coeff m V.1 ∈ Set.range φ) :
@@ -115,6 +152,9 @@ end GlobalTheory.BrRat
 
 namespace GlobalTheory.RowClaim
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F _ _ _ t Φ _ U V hU hV`. Use `haveI : CharZero D.what₂.LL := (RingHom.charZero_iff D.what₂.embLL.injective).mpr inferInstance`. Conclude with `GlobalTheory.BrRat.brPair_mem_range D.what₂.embLL _ _ _ U V hU hV`.
+-/
 theorem brPair_mem_coefField : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (large₂ : SizeData₂ D) (F : Face D A), HidaSetting large₂ R F → ch.Is → ch.FieldOK → ∀ (t : T) (Φ : ch.G.Datum), ch.S.SumOK t Φ → ∀ (U : VV ℂ (wt ch.G (.top D.R.m))) (V : VV ℂ (wt ch.G (.grid D.R.m D.R.m))), (∀ m, MvPolynomial.coeff m U.1 ∈ Set.range D.what₂.embLL) → (∀ m, MvPolynomial.coeff m V.1 ∈ Set.range D.what₂.embLL) → brPair (listedWt ch.G (.grid D.R.m D.R.m)) ch.G.sp.topDec.rank.symm (wt ch.G (.top D.R.m)) U V ∈ Set.range D.what₂.embLL := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F _ _ _ t Φ _ U V hU hV
   haveI : CharZero D.what₂.LL := (RingHom.charZero_iff D.what₂.embLL.injective).mpr inferInstance

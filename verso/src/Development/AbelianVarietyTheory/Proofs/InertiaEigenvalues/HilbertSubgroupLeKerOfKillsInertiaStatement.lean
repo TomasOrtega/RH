@@ -6,6 +6,9 @@ import ReciprocityTheory.NeutralLocalFields.HilbertClassField
 import ReciprocityTheory.NeutralLocalFields.LocalFieldComparison.HilbertClassFieldA
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Neutral.HilbertClassField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HilbertKill.hilbertSubgroup_le_ker | exact GlobalTheory.HilbertKill.hilbertSubgroup_le_ker | (intros; apply GlobalTheory.HilbertKill.hilbertSubgroup_le_ker <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hilbertSubgroup_le_ker_of_kills_inertia : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (Av : HeightOneSpectrum (𝓞 E) → ValuationSubring Ω), (∀ v, IsPlaceOver (Av v) v) →
     ∀ (M : Type) [AddCommGroup M] (z : G E Ω → M), (∀ g h, z (g * h) = z g + z h) →

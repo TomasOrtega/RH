@@ -12,5 +12,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.AbLaw GlobalTheory.UU GlobalTheory.LN GlobalTheory.Raynaud IsLocalRing
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ActPull.exists_act_pull | exact GlobalTheory.ActPull.exists_act_pull | (intros; apply GlobalTheory.ActPull.exists_act_pull <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_ring_action_pullback_cartesian_group_schemes : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G : Over S) [GrpObj G] (G' : Over S') [GrpObj G'] (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → ∀ (O : Type) [Ring O] (act : O → (G ⟶ G)), (∀ a, IsMonHom (act a)) → act 1 = 𝟙 G → (∀ a b, act (a * b) = act a ≫ act b) → (∀ a b, act (a + b) = act a * act b) → ∃ act' : O → (G' ⟶ G'), ((∀ a, IsMonHom (act' a)) ∧ act' 1 = 𝟙 G' ∧ (∀ a b, act' (a * b) = act' a ≫ act' b) ∧ (∀ a b, act' (a + b) = act' a * act' b)) ∧ ∀ a, (act' a).left ≫ φ = φ ≫ (act a).left := by
   first | exact @GlobalTheory.ActPull.exists_act_pull | exact GlobalTheory.ActPull.exists_act_pull | (intros; apply GlobalTheory.ActPull.exists_act_pull <;> assumption)

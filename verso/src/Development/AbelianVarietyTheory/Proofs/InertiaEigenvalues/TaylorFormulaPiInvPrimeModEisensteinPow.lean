@@ -14,6 +14,9 @@ section Scal
 
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul o w`. Conclude with `congrArg (fun y : Per.BdRp l => o ⊗ₜ[ℤ_[l]] y) ((GlobalTheory.MemLoc.crisP_unique_equivariant l (crisP l) (isCrisP_crisP l)).2.1 g w).symm`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem galOD_crisToOD (g : GQ l) (x : OCr l O) :
     galOD O g (crisToOD l O x) = crisToOD l O (galOCr O g x) := by
   induction x using TensorProduct.induction_on with
@@ -23,6 +26,9 @@ theorem galOD_crisToOD (g : GQ l) (x : OCr l O) :
       ((GlobalTheory.MemLoc.crisP_unique_equivariant l (crisP l) (isCrisP_crisP l)).2.1 g w).symm
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Establish `h0 : ((n : ℕ) : ℤ_[l]) ≠ 0` using `by exact_mod_cast hn`. Establish `h1` using `congrArg (algebraMap ℤ_[l] (OD l O)) (PadicInt.unitCoeff_spec h0)`. Rewrite `h1` using `[map_natCast, map_mul, map_pow, map_natCast]`. Rewrite using `[h1]`. Conclude with `((PadicInt.unitCoeff h0).isUnit.map _).mul (isUnit_l_OD.pow _)`.
+-/
 theorem isUnit_natCast_OD {n : ℕ} (hn : n ≠ 0) : IsUnit (n : OD l O) := by
   have h0 : ((n : ℕ) : ℤ_[l]) ≠ 0 := by exact_mod_cast hn
   have h1 := congrArg (algebraMap ℤ_[l] (OD l O)) (PadicInt.unitCoeff_spec h0)
@@ -35,6 +41,11 @@ variable [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] {a : ℕ} [NeZero a] 
 
 variable (O K) in
 
+/- English proof (translation)
+Establish `hξ : ϖ.iAl O K (EIn l e _) = 1 ⊗ₜ ainfToBdRp l (ϖ.ev 1 (eis l 1 e))` using `(ϖ.iAl_of_mem O K (E_mem l e _) _).trans (congrArg (toOD l O) (ϖ.iA_E 1 O K))`. Establish `hmem : ϖ.mu g ∈ Ideal.span {ϖ.ev 1 (eis l 1 e)}`. Rewrite using `[ϖ.span_ev_eis 1]`. Conclude with `ϖ.theta_mu (ϖ.gal_pi a g)`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hmem`.
+
+Use `⟨1 ⊗ₜ ainfToBdRp l c, ?_⟩` and prove the remaining obligations. Rewrite using `[hξ, ← hc]`. Express the relevant statement in the definitionally equal form `(1 : O) ⊗ₜ[ℤ_[l]] ainfToBdRp l (c * _) = _`. Rewrite using `[map_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_comm]`.
+-/
 theorem dvd_toOD_mu (ϖ : PiSys l e) (g : ↥(GK (ϖ.field a))) :
     ϖ.iAl O K (EIn l e _) ∣ toOD l O (1 ⊗ₜ ϖ.mu g) := by
   have hξ : ϖ.iAl O K (EIn l e _) = 1 ⊗ₜ ainfToBdRp l (ϖ.ev 1 (eis l 1 e)) :=
@@ -50,6 +61,11 @@ theorem dvd_toOD_mu (ϖ : PiSys l e) (g : ↥(GK (ϖ.field a))) :
 
 variable (O) in
 
+/- English proof (translation)
+Establish `h1` using `congrArg (Algebra.TensorProduct.includeRight : Per.Acris l →ₐ[ℤ_[l]] OCr l O) (factorial_mul_dpow (ϖ.mu g) (ϖ.theta_mu (ϖ.gal_pi a g)) i)`. Rewrite `h1` using `[map_mul, map_natCast, map_pow]`. Establish `h2` using `congrArg (crisToOD l O) h1`. Rewrite `h2` using `[map_mul, map_natCast, map_pow, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.includeRight_apply, ← toOCr_tmul, crisToOD_toOCr]`. Establish `hu` using `isUnit_natCast_OD (l := l) (O := O) i.factorial_ne_zero`.
+
+Rewrite using `[← h2, mul_comm, ← mul_assoc, Ring.inverse_mul_cancel _ hu, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem crisToOD_muDiv (ϖ : PiSys l e) (g : ↥(GK (ϖ.field a))) (i : ℕ) :
     crisToOD l O (ϖ.muDiv a O g i) = toOD l O (1 ⊗ₜ ϖ.mu g) ^ i * Ring.inverse (i.factorial : OD l O) := by
   have h1 := congrArg (Algebra.TensorProduct.includeRight : Per.Acris l →ₐ[ℤ_[l]] OCr l O)
@@ -64,6 +80,13 @@ theorem crisToOD_muDiv (ϖ : PiSys l e) (g : ↥(GK (ϖ.field a))) (i : ℕ) :
 
 variable (K) in
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `GlobalTheory.BKReal.CrisBounded.bdd_crisToOD l e O K ϖ R`. Use `GlobalTheory.BKReal.SepFil.dvd_of_forall_near_OD l e O K ϖ R _ fun k => ?_` and prove the remaining obligations. Take `⟨M₀, hM₀⟩` from `ϖ.taylor_S a O K g s (N + k)`. Take `⟨z, hz⟩` from `hM₀ (max M₀ R) (le_max_left _ _)`. Take `⟨y, hy⟩` from `hN z`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `hz'` using `congrArg (crisToOD l O) hz`. Simplify using `only [map_sub, map_sum, map_mul, map_pow, map_natCast, crisToOD_muDiv] at hz'`. Rewrite `hz'` using `[← galOD_crisToOD, ← Finset.sum_range_add_sum_Ico _ (le_max_right M₀ R)]`. Establish `key : galOD O g (crisToOD l O (ϖ.iS O K s)) - ∑ i ∈ Finset.range R, toOD l O (1 ⊗ₜ ϖ.mu g) ^ i * Ring.inverse (i.factorial : OD l O) * crisToOD l O (ϖ.iS O K ⟨descN K i s, descN_mem_S e i s.2⟩) - (l : OD l O) ^ k * toOD l O y = (l : OD l O) ^ k * ((l : OD l O) ^ N * crisToOD l O …`.
+
+Take the linear combination `hz'`. Rewrite using `[key]`. Use `dvd_add (Dvd.dvd.mul_left hy _) (Finset.dvd_sum fun i hi => ?_)` and prove the remaining obligations. Establish `hi' : R ≤ i` using `(Finset.mem_Ico.1 hi).1`. Conclude with `Dvd.dvd.mul_right (Dvd.dvd.mul_right ((pow_dvd_pow _ hi').trans (pow_dvd_pow_of_dvd (dvd_toOD_mu O K ϖ g) i)) _) _`.
+-/
 theorem taylor_S_mod (ϖ : PiSys l e) (g : ↥(GK (ϖ.field a))) (s : S O K e) (R : ℕ) :
     ϖ.iAl O K (EIn l e _) ^ R ∣ galOD O g (crisToOD l O (ϖ.iS O K s)) -
       ∑ i ∈ Finset.range R, toOD l O (1 ⊗ₜ ϖ.mu g) ^ i * Ring.inverse (i.factorial : OD l O) *
@@ -103,6 +126,21 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O]
   {K : Type} [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K]
   [TameDescentExponentData K l e a] [CompleteSpace K]
 
+/- English proof (translation)
+Establish `hiHat : ∀ (f' : K⟦X⟧) (hf' : f' ∈ invL l (S O K e)), ϖ.iHat O K (hatR O f') = ϖ.iSD O K ⟨f', hf'⟩` using `fun f' hf' => (GlobalTheory.BKReal.TwoMaps.iSD_eq_iHat_of_hat l a e O K t ϖ ⟨f', hf'⟩ (hatR O f') (by`. Rewrite using `[hatR_of_mem (O := O) (invL_S_le_Rpi l e hf')]`. Conclude with `hat_coe_Rpi l e ⟨f', invL_S_le_Rpi l e hf'⟩)).symm`. Take `⟨n, hn⟩` from `hf`. Establish `hC : ((l : S O K e) : K⟦X⟧) ^ n = C ((l : K) ^ n)` using `by simp`.
+
+Establish `hlin : ∀ (i : ℕ) (x : K⟦X⟧), ((l : S O K e) : K⟦X⟧) ^ n * descN K i x = descN K i (((l : S O K e) : K⟦X⟧) ^ n * x)` using `fun i x => by`. Rewrite using `[hC, ← smul_eq_C_mul, ← smul_eq_C_mul, map_smul]`. Establish `hdesc : ∀ i : ℕ, descN K i f ∈ invL l (S O K e)` using `fun i => ⟨n, by rw [hlin]; exact descN_mem_S e i hn⟩`. Use `set s : S O K e := ⟨_, hn⟩ with hs`. Establish `e0 : (l : OD l O) ^ n * ϖ.iSD O K ⟨f, ⟨n, hn⟩⟩ = crisToOD l O (ϖ.iS O K s)`.
+
+Establish `h1 : (l : invL l (S O K e)) ^ n * ⟨f, ⟨n, hn⟩⟩ = algebraMap (S O K e) (invL l (S O K e)) s` using `Subtype.ext (by simp [s])`. Establish `h2` using `congrArg (ϖ.iSD O K) h1`. Rewrite `h2` using `[map_mul, map_pow, map_natCast]`. Rewrite using `[h2]`. Conclude with `ϖ.iSD_of_mem O K s.2 _`.
+
+Establish `ei : ∀ i : ℕ, (l : OD l O) ^ n * ϖ.iSD O K ⟨descN K i f, hdesc i⟩ = crisToOD l O (ϖ.iS O K ⟨descN K i s, descN_mem_S e i s.2⟩)` using `fun i => by`. Establish `h1 : (l : invL l (S O K e)) ^ n * ⟨descN K i f, hdesc i⟩ = algebraMap (S O K e) (invL l (S O K e)) ⟨descN K i s, descN_mem_S e i s.2⟩` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `((l : K⟦X⟧)) ^ n * descN K i f = descN K i (((l : S O K e) : K⟦X⟧) ^ n * f)`. Rewrite using `[← hlin]`. Use the proof step `simp)`.
+
+Establish `h2` using `congrArg (ϖ.iSD O K) h1`. Rewrite `h2` using `[map_mul, map_pow, map_natCast]`. Rewrite using `[h2]`. Conclude with `ϖ.iSD_of_mem O K (descN_mem_S e i s.2) _`. Establish `g0` using `congrArg (galOD O g) e0`.
+
+Rewrite `g0` using `[map_mul, map_pow, map_natCast]`. Establish `key : (l : OD l O) ^ n * (galOD O g (ϖ.iHat O K (hatR O f)) - ∑ i ∈ Finset.range R, toOD l O (1 ⊗ₜ ϖ.mu g) ^ i * Ring.inverse (i.factorial : OD l O) * ϖ.iHat O K (hatR O (descN K i f))) = galOD O g (crisToOD l O (ϖ.iS O K s)) - ∑ i ∈ Finset.range R, toOD l O (1 ⊗ₜ ϖ.mu g) ^ i * R …`. Rewrite using `[hiHat f ⟨n, hn⟩, ← g0, mul_sub, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hiHat _ (hdesc i), ← ei i]`. Expand and normalize the polynomial expressions, which then agree. Establish `hW` using `Ideal.mem_span_singleton.2 (taylor_S_mod K ϖ g s R)`. Rewrite `hW` using `[← key]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ (isUnit_l_OD.pow n)).1 hW`.
+-/
 theorem taylor_invL_mod (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (g : ↥(GK (ϖ.field a))) {f : K⟦X⟧}
     (hf : f ∈ invL l (S O K e)) (R : ℕ) :
     galOD O g (ϖ.iHat O K (hatR O f)) - ∑ i ∈ Finset.range R, toOD l O (1 ⊗ₜ ϖ.mu g) ^ i *
@@ -155,6 +193,9 @@ theorem taylor_invL_mod (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (g : ↥
   rw [← key] at hW
   exact (Ideal.unit_mul_mem_iff_mem _ (isUnit_l_OD.pow n)).1 hW
 
+/- English proof (translation)
+Establish `h : ∀ x ∈ Kunr l a, (g : GQ l) x = x` using `fun x hx => (IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 x (ϖ.Kunr_le_field a hx)`. Express the relevant statement in the definitionally equal form `galOD O g (toOD l O (constA t _)) = toOD l O (constA t _)`. Rewrite using `[← crisToOD_toOCr, galOD_crisToOD, galOCr_toOCr, galOA_constA t h]`.
+-/
 theorem galOD_idem (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (g : ↥(GK (ϖ.field a))) (τ : ZMod a) :
     galOD O g (idem (constD t) τ) = idem (constD t) τ := by
   have h : ∀ x ∈ Kunr l a, (g : GQ l) x = x := fun x hx =>
@@ -164,6 +205,13 @@ theorem galOD_idem (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (g : ↥(GK (
 
 end Scal2
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ _ t ϖ g hg f hf R`. Set `g' : ↥(GK (ϖ.field a))` to `⟨g, hg⟩`. Establish `hED : ED K t ϖ = ϖ.iAl O K (EIn l e _)` using `(glue_const _ _ _).trans (ϖ.iHat_ofAl O K _)`. Rewrite using `[hED]`. Establish `hfix : ∀ τ, galOD O g (idem (constD t) τ) = idem (constD t) τ` using `galOD_idem t ϖ g'`.
+
+Establish `hsplit : galOD O g (ϖ.iD t K (fun τ => hatR O (f τ))) - ∑ i ∈ Finset.range R, toOD l O (1 ⊗ₜ ϖ.mu g) ^ i * Ring.inverse (i.factorial : OD l O) * ϖ.iD t K (fun τ => hatR O (descN K i (f τ))) = ∑ τ, idem (constD t) τ * (galOD O g (ϖ.iHat O K (hatR O (f τ))) - ∑ i ∈ Finset.range R, …`. Simplify using `only [PiSys.iD, glue_apply, map_sum, map_mul, hfix, mul_sub, Finset.sum_sub_distrib, Finset.mul_sum]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Conclude with `Ideal.sum_mem _ fun τ _ => Ideal.mul_mem_left _ _ (taylor_invL_mod t ϖ g' (hf τ) R)`.
+-/
 theorem taylor_iD_mod_ED : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] [CompleteSpace K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (g : GQ l), g ∈ GK (ϖ.field a) → ∀ f : ZMod a → K⟦X⟧, (∀ τ, f τ ∈ invL l (S O K e)) → ∀ R : ℕ, GlobalTheory.GalStep.galOD O g (ϖ.iD t K (fun τ => GlobalTheory.GalStep.hatR O (f τ))) - ∑ i ∈ Finset.range R, toOD l O (1 ⊗ₜ ϖ.mu g) ^ i * Ring.inverse (i.factorial : OD l O) * ϖ.iD t K (fun τ => GlobalTheory.GalStep.hatR O (descN K i (f τ))) ∈ Ideal.span {GlobalTheory.GalStep.ED K t ϖ ^ R} := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ _ t ϖ g hg f hf R
   let g' : ↥(GK (ϖ.field a)) := ⟨g, hg⟩

@@ -6,6 +6,29 @@ open NumberField NumberField.mixedEmbedding Matrix MeasureTheory GroundTheory.Au
 open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
+/- English proof (translation)
+Introduce `K _ _ r s S hB hS`. Establish `hrt : ∀ (φ φ' : AdelicGLn.AdelicGL K (r + s) → ℂ) (k : AdelicGLn.AdelicGL K (r + s)), (∀ x, φ' x = φ (x * k)) → ∀ g, constantTerm r φ (g * k) = constantTerm r φ' g`. Introduce `φ φ' k h g`. Unfold `constantTerm`. Simplify using `only [h, mul_assoc]`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `ψ ⟨φ, hφ, e⟩ X g`. Rewrite using `[e]`. Conclude with `UpperTheory.constantTerm_unipotent_left_invariant K _ r φ.1 (hB.left φ hφ) X g`.
+
+Introduce `ψ hψ`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem ψ h`. Take `⟨φ, hφ, e⟩` from `h`. Rewrite using `[e]`.
+
+Conclude with `UpperTheory.hasModerateGrowth_constantTerm K _ r φ.1 (hB.growth φ hφ)`. Consider the case `zero => exact hasModerateGrowth_zero`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.smul c`. Take `⟨L, hL, h⟩` from `hB.level`.
+
+Use `⟨L, hL, fun ψ hψ u hu g => ?_⟩` and prove the remaining obligations. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem ψ h'`. Take `⟨φ, hφ, e⟩` from `h'`. Rewrite using `[e]`.
+
+Conclude with `hrt φ.1 φ.1 _ (fun x => (h φ hφ u hu x).symm) g`. Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => exact congrArg₂ (· + ·) hx hy`. Consider the case `smul c x _ hx => exact congrArg (c • ·) hx`. Introduce `k hk ψ hψ`.
+
+Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem ψ h'`. Take `⟨φ, hφ, e⟩` from `h'`. Use `Submodule.subset_span ⟨rt k φ, hS k hk φ hφ, funext fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[rt_apply, e]`.
+
+Conclude with `hrt φ.1 _ k (rt_apply k φ) g`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Introduce `ψ hψ γ₁ γ₂ g`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem ψ h'`.
+
+Take `⟨φ, hφ, e⟩` from `h'`. Rewrite using `[e]`. Conclude with `UpperTheory.constantTerm_levi_rational_left_invariant K r s φ.1 (hB.left φ hφ) γ₁ γ₂ g`. Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => exact congrArg₂ (· + ·) hx hy`.
+
+Consider the case `smul c x _ hx => exact congrArg (c • ·) hx`.
+-/
 theorem UpperTheory.constantTermSpace_automorphic_properties :
     ∀ (K : Type) [Field K] [NumberField K] (r s : ℕ) (S : Submodule ℂ (archSmooth K (r + s))), Bdd S → Sat S → ctSp r S ≤ NInv K (r + s) r ∧ Growth (ctSp r S) ∧ Level (ctSp r S) ∧ Sat (ctSp r S) ∧ ∀ ψ ∈ ctSp r S, ∀ (γ₁ : GL (Fin r) K) (γ₂ : GL (Fin s) K) g, ψ.1 (AdelicGLn.diagonal K (r + s) (blk γ₁ γ₂) * g) = ψ.1 g := by
   intro K _ _ r s S hB hS

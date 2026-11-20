@@ -6,6 +6,19 @@ open scoped Classical
 
 namespace GlobalTheory.GramCount
 
+/- English proof (translation)
+Establish `hmem : ∀ u : A, u ∈ Ideal.span {p} → c u ∈ Ideal.span {p}`. Introduce `u hu`. Rewrite `hu`, the goal using `[Ideal.mem_span_singleton]`. Use `map_dvd c hu` as an intermediate fact. Rewrite `this` using `[hp]`. Then use the resulting hypothesis.
+
+Set `σ : (Fin m → Fin m → Ideal.span {p}) →+ (Fin m → Fin m → Ideal.span {p})` to `{ toFun := fun H a b => ⟨c (H b a).1, hmem _ (H b a).2⟩ map_zero' := by`. Use function extensionality and compare the values at `a b`. Conclude with `Subtype.ext (by simp)`. Use the proof step `map_add' := fun H K => by`. Use function extensionality and compare the values at `a b`.
+
+Conclude with `Subtype.ext (by simp) }`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Use function extensionality and compare the values at `a b`. Conclude with `Subtype.ext (hc _)`. Establish `hs : ∀ (r : A) x, σ (r • x) = c r • σ x` using `fun r x => by`.
+
+Use function extensionality and compare the values at `a b`. Conclude with `Subtype.ext (map_mul c r _)`. Establish `h` using `(card_fixed_sq c hc hω σ hσ hs).1`. Set `e : {H : Matrix (Fin m) (Fin m) A // (∀ a b, c (H b a) = H a b) ∧ ∀ a b, p ∣ H a b} ≃ {x : Fin m → Fin m → Ideal.span {p} // σ x = x}` to `{ toFun := fun H => ⟨fun a b => ⟨H.1 a b, Ideal.mem_span_singleton.2 (H.2.2 a b)⟩, by`. Use function extensionality and compare the values at `a b`.
+
+Conclude with `Subtype.ext (H.2.1 a b)⟩`. Use `invFun := fun x => ⟨fun a b => (x.1 a b).1, fun a b => congrArg Subtype.val (congrFun (congrFun x.2 a) b), fun a b => Ideal.mem_span_singleton.1 (x.1 a b).2⟩`. Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl }`. Establish `e2 : {u : A // p ∣ u} ≃ Ideal.span {p}` using `Equiv.subtypeEquivRight fun u => Ideal.mem_span_singleton.symm`.
+
+Rewrite using `[Nat.card_congr e, h, Nat.card_congr e2, Nat.card_fun, Nat.card_fun, ← pow_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem card_hermitian_dvd_sq {A : Type} [CommRing A] [Finite A] (c : A →+* A)
     (hc : ∀ u, c (c u) = u) (ω : A) (hω : IsUnit (ω - c ω)) (p : A) (hp : c p = p) (m : ℕ) :
     Nat.card {H : Matrix (Fin m) (Fin m) A // (∀ a b, c (H b a) = H a b) ∧ ∀ a b, p ∣ H a b} ^ 2

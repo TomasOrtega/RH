@@ -10,6 +10,9 @@ noncomputable section
 
 variable {κ : Type*} [Fintype κ]
 
+/- English proof (translation)
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul, Real.norm_eq_abs, mul_pow, sq_abs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma weighted_sum_smul (q : κ → ℝ) (t : ℝ) (b : κ → ℂ) :
     ∑ i, q i * ‖(t • b) i‖ ^ 2 = t ^ 2 * ∑ i, q i * ‖b i‖ ^ 2 := by
   rw [Finset.mul_sum]
@@ -17,6 +20,9 @@ private lemma weighted_sum_smul (q : κ → ℝ) (t : ℝ) (b : κ → ℂ) :
   rw [Pi.smul_apply, norm_smul, Real.norm_eq_abs, mul_pow, sq_abs]
   ring
 
+/- English proof (translation)
+Repeatedly rewrite using `[Pi.smul_apply, enorm_smul, mul_pow]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ← pow_mul, Real.enorm_eq_ofReal ht.le, ENNReal.ofReal_pow ht.le]`.
+-/
 private lemma prod_smul (n : ℕ) {t : ℝ} (ht : 0 < t) (b : κ → ℂ) :
     ∏ i, ‖(t • b) i‖ₑ ^ (2 * n) =
       ENNReal.ofReal (t ^ (2 * n * Fintype.card κ)) * ∏ i, ‖b i‖ₑ ^ (2 * n) := by
@@ -24,6 +30,11 @@ private lemma prod_smul (n : ℕ) {t : ℝ} (ht : 0 < t) (b : κ → ℂ) :
   rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ← pow_mul,
     Real.enorm_eq_ofReal ht.le, ENNReal.ofReal_pow ht.le]
 
+/- English proof (translation)
+Establish `hmem : (t • b) ∈ {b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < t ^ 2} ↔ b ∈ {b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < 1 ^ 2}`. Simplify using `only [Set.mem_ofPred_eq, weighted_sum_smul, one_pow]`. Conclude with `mul_lt_iff_lt_one_right (by positivity)`. Distinguish the cases in `hb : b ∈ {b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < 1 ^ 2}`. Rewrite using `[Set.indicator_of_mem (hmem.2 hb), Set.indicator_of_mem hb, prod_smul n ht]`.
+
+Rewrite using `[Set.indicator_of_notMem (fun h => hb (hmem.1 h)), Set.indicator_of_notMem hb, mul_zero]`.
+-/
 private lemma indicator_smul (q : κ → ℝ) (n : ℕ) {t : ℝ} (ht : 0 < t) (b : κ → ℂ) :
     {b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < t ^ 2}.indicator
         (fun b => ∏ i, ‖b i‖ₑ ^ (2 * n)) (t • b) =
@@ -38,6 +49,9 @@ private lemma indicator_smul (q : κ → ℝ) (n : ℕ) {t : ℝ} (ht : 0 < t) (
   · rw [Set.indicator_of_mem (hmem.2 hb), Set.indicator_of_mem hb, prod_smul n ht]
   · rw [Set.indicator_of_notMem (fun h => hb (hmem.1 h)), Set.indicator_of_notMem hb, mul_zero]
 
+/- English proof (translation)
+Use `Measurable.indicator ?_ ?_` and prove the remaining obligations. Conclude with `Finset.measurable_prod _ fun i _ => (measurable_pi_apply i).enorm.pow_const _`. Conclude with `measurableSet_lt (Finset.measurable_sum _ fun i _ => measurable_const.mul ((measurable_pi_apply i).norm.pow_const 2)) measurable_const`.
+-/
 private lemma measurable_integrand (q : κ → ℝ) (n : ℕ) (s : ℝ) :
     Measurable ({b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < s}.indicator
       (fun b => ∏ i, ‖b i‖ₑ ^ (2 * n))) := by
@@ -46,10 +60,20 @@ private lemma measurable_integrand (q : κ → ℝ) (n : ℕ) (s : ℝ) :
   · exact measurableSet_lt (Finset.measurable_sum _ fun i _ =>
       measurable_const.mul ((measurable_pi_apply i).norm.pow_const 2)) measurable_const
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, Finset.sum_const, smul_eq_mul, Finset.card_univ, mul_comm]`.
+-/
 private lemma finrank_fun_complex : Module.finrank ℝ (κ → ℂ) = 2 * Fintype.card κ := by
   rw [Module.finrank_pi_fintype, Complex.finrank_real_complex, Finset.sum_const, smul_eq_mul,
     Finset.card_univ, mul_comm]
 
+/- English proof (translation)
+Use `set g : (κ → ℂ) → ℝ≥0∞ := {b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < 1 ^ 2}.indicator (fun b => ∏ i, ‖b i‖ₑ ^ (2 * n)) with hg`. Establish `hpt : ∀ b : κ → ℂ, {b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < t ^ 2}.indicator (fun b => ∏ i, ‖b i‖ₑ ^ (2 * n)) b = ENNReal.ofReal (t ^ (2 * n * Fintype.card κ)) * g (t⁻¹ • b)`. Introduce `b`. Establish `h` using `indicator_smul q n ht (t⁻¹ • b)`. Rewrite `h` using `[smul_inv_smul₀ ht.ne']`. Then use the resulting hypothesis.
+
+Establish `hmeas : Measurable g` using `measurable_integrand q n _`. Establish `hmap : ∫⁻ b : κ → ℂ, g (t⁻¹ • b) = ENNReal.ofReal (t ^ (2 * Fintype.card κ)) * ∫⁻ b, g b`. Rewrite using `[← lintegral_map hmeas (measurable_const_smul _), Measure.map_addHaar_smul volume (inv_ne_zero ht.ne'), lintegral_smul_measure, finrank_fun_complex, inv_pow, inv_inv, abs_of_pos (by positivity : 0 < t ^ (2 * Fintype.card κ)), smul_eq_mul]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, hmap, ← mul_assoc, mul_comm, ← ENNReal.ofReal_mul (by positivity), ← pow_add]`.
+
+Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma integral_scaling (q : κ → ℝ) (n : ℕ) {t : ℝ} (ht : 0 < t) :
     ∫⁻ b : κ → ℂ, {b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < t ^ 2}.indicator
         (fun b => ∏ i, ‖b i‖ₑ ^ (2 * n)) b =
@@ -77,6 +101,27 @@ private lemma integral_scaling (q : κ → ℝ) (n : ℕ) {t : ℝ} (ht : 0 < t)
   congr 3
   ring
 
+/- English proof (translation)
+Introduce `q hq n`. Use `⟨∫⁻ b : κ → ℂ, {b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < 1 ^ 2}.indicator (fun b => ∏ i, ‖b i‖ₑ ^ (2 * n)) b, ?_, ?_, fun t ht => integral_scaling q n ht⟩` and prove the remaining obligations. Rewrite using `[lintegral_pos_iff_support (measurable_integrand q n _)]`. Establish `hS : 0 ≤ ∑ i, q i` using `Finset.sum_nonneg fun i _ => (hq i).le`. Set `V : Set (κ → ℂ)` to `{b | ∑ i, q i * ‖b i‖ ^ 2 < 1 ^ 2} ∩ ⋂ i, {b | b i ≠ 0}`.
+
+Establish `hVo : IsOpen V` using `(isOpen_lt (by fun_prop) continuous_const).inter (isOpen_iInter_of_finite fun i => isOpen_ne_fun (continuous_apply i) continuous_const)`. Establish `hVne : V.Nonempty`. Establish `hx : 0 < ((∑ i, q i) + 1)⁻¹` using `by positivity`. Establish `h1 : ‖((((∑ i, q i) + 1)⁻¹ : ℝ) : ℂ)‖ = ((∑ i, q i) + 1)⁻¹`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg hx.le]`.
+
+Use `⟨fun _ => ((((∑ i, q i) + 1)⁻¹ : ℝ) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Use `show ∑ i, q i * ‖((((∑ i, q i) + 1)⁻¹ : ℝ) : ℂ)‖ ^ 2 < 1 ^ 2`. Rewrite using `[h1, ← Finset.sum_mul, one_pow, inv_pow, ← div_eq_mul_inv, div_lt_one (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `Set.mem_iInter.2 fun i => Complex.ofReal_ne_zero.2 hx.ne'`.
+
+Use `lt_of_lt_of_le (hVo.measure_pos volume hVne) (measure_mono ?_)` and prove the remaining obligations. Introduce and unpack `b ⟨hb1, hb2⟩`. Rewrite using `[Function.mem_support, Set.indicator_of_mem hb1]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (enorm_ne_zero.2 (Set.mem_iInter.1 hb2 i))`. Use `set R : ℝ := ∑ i, (q i)⁻¹ + 1 with hR`.
+
+Establish `hR1 : 1 ≤ R`. Establish `: 0 ≤ ∑ i, (q i)⁻¹` using `Finset.sum_nonneg fun i _ => (inv_pos.2 (hq i)).le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbd : ∀ b ∈ {b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < 1 ^ 2}, ∀ i, ‖b i‖ < R`. Introduce `b hb i`.
+
+Establish `hb' : ∑ j, q j * ‖b j‖ ^ 2 < 1` using `by simpa using hb`. Establish `hi : q i * ‖b i‖ ^ 2 < 1` using `lt_of_le_of_lt (Finset.single_le_sum (f := fun j => q j * ‖b j‖ ^ 2) (fun j _ => mul_nonneg (hq j).le (sq_nonneg _)) (Finset.mem_univ i)) hb'`. Establish `hsq : ‖b i‖ ^ 2 < (q i)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (hq i).ne', one_mul]`.
+
+Use `_ < (q i)⁻¹ * 1 := mul_lt_mul_of_pos_left hi (inv_pos.2 (hq i))`. Use `_ = (q i)⁻¹ := mul_one _`. Establish `hle : (q i)⁻¹ ≤ ∑ j, (q j)⁻¹` using `Finset.single_le_sum (f := fun j => (q j)⁻¹) (fun j _ => (inv_pos.2 (hq j)).le) (Finset.mem_univ i)`. Establish `hx` using `norm_nonneg (b i)`. Use `by_contra! h`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hsub : {b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < 1 ^ 2} ⊆ Metric.ball 0 R`. Introduce `b hb`. Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff (by linarith)]`. Conclude with `hbd b hb`.
+
+Establish `hle : {b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < 1 ^ 2}.indicator (fun b => ∏ i, ‖b i‖ₑ ^ (2 * n)) ≤ {b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < 1 ^ 2}.indicator (fun _ => ∏ _i : κ, ENNReal.ofReal R ^ (2 * n))`. Introduce `b`. Distinguish the cases in `hb : b ∈ {b : κ → ℂ | ∑ i, q i * ‖b i‖ ^ 2 < 1 ^ 2}`. Rewrite using `[Set.indicator_of_mem hb, Set.indicator_of_mem hb]`. Use `Finset.prod_le_prod' fun i _ => pow_le_pow_left' ?_ _` and prove the remaining obligations.
+
+Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (hbd b hb i).le`. Rewrite using `[Set.indicator_of_notMem hb, Set.indicator_of_notMem hb]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem TorusIntegralHomogeneous.proof (κ : Type*) [Fintype κ] :
     TorusIntegralHomogeneous.Statement κ := by
   intro q hq n

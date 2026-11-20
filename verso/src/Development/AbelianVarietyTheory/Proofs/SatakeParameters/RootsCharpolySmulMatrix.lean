@@ -10,6 +10,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory.RowTie.EigTwist
 
+/- English proof (translation)
+Establish `hM` using `(IsAlgClosed.splits M.charpoly).eq_prod_roots_of_monic (Matrix.charpoly_monic M)`. Establish `hc : Multiset.card M.charpoly.roots = Fintype.card ι`. Rewrite using `[← (IsAlgClosed.splits M.charpoly).natDegree_eq_card_roots, Matrix.charpoly_natDegree_eq_dim]`. It suffices to establish `(u • M).charpoly = ((M.charpoly.roots.map (· * u)).map fun α => X - C α).prod by`. Rewrite using `[this, roots_multiset_prod_X_sub_C]`.
+
+Break down `eq_or_ne u 0 with rfl | hu` into its components or cases. Simplify using `[hc]`. Use `Polynomial.funext fun x => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (eval (x / u)) hM`. Rewrite `h1` using `[Matrix.eval_charpoly, eval_multiset_prod, Multiset.map_map]`.
+
+Establish `e : Matrix.scalar ι x - u • M = u • (Matrix.scalar ι (x / u) - M)`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+
+Clear the denominators using the available nonvanishing facts. Simplify using `[Matrix.diagonal_apply_ne _ hab]`. Rewrite using `[Matrix.eval_charpoly, e, Matrix.det_smul, h1, eval_multiset_prod, Multiset.map_map, Multiset.map_map, ← hc, ← Multiset.prod_replicate, ← Multiset.map_const, ← Multiset.prod_map_mul]`. Use `congrArg _ (Multiset.map_congr rfl fun α _ => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem roots_charpoly_smul_matrix {ι : Type*} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℂ) (u : ℂ) :
     (u • M).charpoly.roots = M.charpoly.roots.map (· * u) := by
   have hM := (IsAlgClosed.splits M.charpoly).eq_prod_roots_of_monic (Matrix.charpoly_monic M)
@@ -35,6 +46,9 @@ theorem roots_charpoly_smul_matrix {ι : Type*} [Fintype ι] [DecidableEq ι] (M
     simp
     field_simp
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.charpoly_toMatrix (u • f) (Module.finBasis ℂ V), ← LinearMap.charpoly_toMatrix f (Module.finBasis ℂ V), map_smul, roots_charpoly_smul_matrix]`.
+-/
 theorem roots_charpoly_smul {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (f : Module.End ℂ V) (u : ℂ) : (u • f).charpoly.roots = f.charpoly.roots.map (· * u) := by
   rw [← LinearMap.charpoly_toMatrix (u • f) (Module.finBasis ℂ V),
@@ -43,12 +57,28 @@ theorem roots_charpoly_smul {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteD
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {B : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver B w}
 
+/- English proof (translation)
+Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Rewrite using `[WD.lpTw_mk, WD.eig_mk, WD.eig_mk, WDRep.tw_ρ, hφ, zpow_one, roots_charpoly_smul]`.
+-/
 theorem eig_lpTw (x : WD h) {φ : Weil h} (hφ : deg φ = 1) (s : ℝ) :
     (x.lpTw s).eig φ = (x.eig φ).map (· * ((normV w : ℕ) : ℂ) ^ ((s : ℝ) : ℂ)) := by
   induction x using WD.ind with
   | hP n a =>
     rw [WD.lpTw_mk, WD.eig_mk, WD.eig_mk, WDRep.tw_ρ, hφ, zpow_one, roots_charpoly_smul]
 
+/- English proof (translation)
+Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Proceed by induction on `y using WD.ind with`. Consider the case `hP m b`. Rewrite `hy` using `[WD.lpDim_mk, Module.finrank_fin_fun]`.
+
+Substitute `hy` using the available equality. Rewrite `hc` using `[WD.eig_mk]`. Establish `hb : b.ρ φ = c • 1`. Establish `hp : (b.ρ φ).charpoly = X - C c`. Rewrite using `[(IsAlgClosed.splits _).eq_prod_roots_of_monic (LinearMap.charpoly_monic _), hc]`.
+
+Simplify using the standard rewrite rules. Establish `h3` using `LinearMap.aeval_self_charpoly (b.ρ φ)`. Rewrite `h3` using `[hp, map_sub, aeval_X, aeval_C, sub_eq_zero, Algebra.algebraMap_eq_smul_one]`. Conclude with `h3`. Rewrite using `[WD.lpChar_mk, WD.eig_mk, WD.eig_mk, WDRep.tensor_ρ, hb]`.
+
+Set `e : (Fin n → ℂ) ⊗[ℂ] (Fin 1 → ℂ) ≃ₗ[ℂ] (Fin n → ℂ)` to `(TensorProduct.congr (LinearEquiv.refl ℂ _) (LinearEquiv.funUnique (Fin 1) ℂ ℂ)).trans (TensorProduct.rid ℂ _)`. Establish `he : e.conj (TensorProduct.map (a.ρ φ) (c • 1)) = c • a.ρ φ`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `e.surjective v`. Rewrite using `[LinearEquiv.conj_apply, LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+
+Use `erw [LinearEquiv.symm_apply_apply]`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [e, smul_smul, mul_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Rewrite using `[← LinearEquiv.charpoly_conj e, he, roots_charpoly_smul]`.
+-/
 theorem eig_lpChar (x y : WD h) (φ : Weil h) (hy : y.lpDim = 1) (c : ℂ) (hc : y.eig φ = {c}) :
     (x.lpChar y).eig φ = (x.eig φ).map (· * c) := by
   induction x using WD.ind with
@@ -84,6 +114,13 @@ end GlobalTheory.RowTie.EigTwist
 
 open GlobalTheory.RowTie.EigTwist in
 
+/- English proof (translation)
+Introduce `R H what₂ N A T w σ hσ`. Establish `hW : σ ∈ Weil (N.plOm.2 w)` using `mem_Weil_of_isFrob _ hσ`. Set `φ : Weil (N.plOm.2 w)` to `⟨σ, hW⟩`. Establish `hφ : deg φ = 1` using `deg_eq_one_iff.mpr hσ`. Establish `key : ∀ a, T.eig w a σ = (T.e w a).eig φ` using `fun a => by`.
+
+Rewrite using `[WDTie.eig, WD.inePol_of_mem _ hW]`. Both sides reduce to the same expression. Use `⟨fun a => ?_, fun a s => ?_, fun a χ c hχ hc => ?_⟩` and prove the remaining obligations. Rewrite using `[key, WD.card_eig, T.dim]`. Rewrite using `[key, key, T.tw, eig_lpTw _ hφ]`.
+
+Rewrite `hc` using `[key]`. Rewrite using `[key, key, T.char _ _ _ hχ, eig_lpChar _ _ _ (by rw [T.dim, hχ]) c hc]`.
+-/
 theorem GlobalTheory.RowTie.eigLaws_of_wdTie : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂)
     (A : NAut N) (T : GlobalTheory.RowTie.WDTie N A), GlobalTheory.LocalInv.EigLaws N A T.eig := by
   intro R H what₂ N A T w σ hσ

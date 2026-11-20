@@ -16,6 +16,21 @@ noncomputable section
 
 namespace GlobalTheory.IotaNorm
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `set ι := (Formalism.IndefR.RationalEmbedding.iota D).trans (Formalism.L2.SG.RowsJoinPinned.castGA (rfl : Formalism.L2.SG.InstExistsPf.instOf D = _).symm) with hιdef`. Establish `key : ∀ k, (∀ v, Formalism.MainNotions.S.uMat ((ι k).1 v) = Formalism.L2.SG.AdBridge.ofHAInf (Formalism.L2.SG.InstExistsPf.instOf D) k v) ∧ (Formalism.L2.SG.InstExistsPf.instOf D).fmat (ι k).2 = Formalism.L2.SG.AdBridge.ofHAFin _ k`. Introduce `k`. Use `Formalism.IndefR.RationalEmbedding.iota_symm_isBridge D (Formalism.IndefR.RationalEmbedding.iota D k)` as an intermediate fact.
+
+Establish `e` using `(Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply k`. Conclude with `⟨fun v => (this.1 v).trans (congrArg (fun z => Formalism.L2.SG.AdBridge.ofHAInf (Formalism.IndefR.RationalEmbedding.inst D) z v) e), this.2.trans (congrArg (Formalism.L2.SG.AdBridge.ofHAFin (Formalism.IndefR.RationalEmbedding.inst D)) e)⟩`. Establish `hinf : ∀ k v, Formalism.MainNotions.S.uMat ((ι k).1 v) = ((Formalism.L2.SG.InstExistsPf.instOf D).P v)⁻¹ * Formalism.MainNotions.StandardLattice.infMat (Formalism.L2.SG.InstExistsPf.instOf D).cm.sig (Formalism.L2.SG.InstExistsPf.instOf D).J (θ ((Formalism.L2.Host.tauPl D).symm v) …` using `fun k v => ((key k).1 v).trans (congrArg (fun M => ((Formalism.L2.SG.InstExistsPf.instOf D).P v)⁻¹ * M * (Formalism.L2.SG.InstExistsPf.instOf D).P v) (GlobalTheory.IotaReal.map_thetaV_gen (Formalism.L2.SG.InstExistsPf.instOf D) v (θ ((Formalism.L2.Host.tauPl D).symm v)) (hθ _) k) …`. Establish `hfin : ∀ g ∈ GinfC (D.sp.Y 0), (ι g).2 = 1`. Introduce `g hg`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `(key g).2.trans (GlobalTheory.IotaReal.ofHAFin_eq_one _ _ ?_)` and prove the remaining obligations. Establish `e3 : (finHom (D.sp.Y 0) g).val = 1`. Rewrite using `[show finHom (D.sp.Y 0) g = 1 from hg]`.
+
+Both sides reduce to the same expression. Use extensionality with `i j`. Conclude with `congrFun (congrFun e3 i) j`. Use `⟨hfin, fun hn x => ?_⟩` and prove the remaining obligations. Use `choose c hc0 hc using fun v => GlobalTheory.TauNorm.exp_dOp_le ((Formalism.L2.SG.InstExistsPf.instOf D).P v)⁻¹ ((Formalism.L2.SG.InstExistsPf.instOf D).P v)`.
+
+Establish `hC : 0 ≤ ∑ v, c v` using `Finset.sum_nonneg fun v _ => hc0 v`. Establish `hn' : 1 ≤ (Formalism.L2.SG.InstExistsPf.instOf D).n` using `hn`. Establish `hp : 0 ≤ (GlobalTheory.Count.tau1 (Formalism.L2.SG.InstExistsPf.instOf D) x)⁻¹` using `inv_nonneg.2 ((GlobalTheory.TauLipschitz.tauLip (Formalism.L2.SG.InstExistsPf.instOf D) hn').1 _).le`. Use `⟨(GlobalTheory.Count.tau1 (Formalism.L2.SG.InstExistsPf.instOf D) x)⁻¹ * ∑ v, c v, mul_nonneg hp hC, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hv : ∀ v, Real.exp (GlobalTheory.Count.dOp (Formalism.MainNotions.S.uMat ((ι g).1 v))) ≤ (∑ v, c v) * normInf θ (D.sp.Y 0) g`.
+
+Introduce `v`. Establish `h0` using `GlobalTheory.TauNorm.uMat_ne_zero (Formalism.L2.SG.InstExistsPf.instOf D) hn' (ι g) v`. Rewrite `h0`, the goal using `[hinf g v]`. Establish `h2` using `hc v _ h0`. Establish `h3 : c v ≤ ∑ v, c v` using `Finset.single_le_sum (fun v _ => hc0 v) (Finset.mem_univ _)`.
+
+Conclude with `h2.trans (mul_le_mul h3 (GlobalTheory.TauNorm.sum_le_normInf θ g ((Formalism.L2.Host.tauPl D).symm v)) (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) hC)`. Establish `hh` using `GlobalTheory.TauNorm.inv_tau_mul_le (Formalism.L2.SG.InstExistsPf.instOf D) hn' x (ι g) (hfin g hg) _ hv`. Rewrite `hh` using `[← mul_assoc]`. Conclude with `hh`.
+-/
 theorem iota_norm_of_eq {D : D7} (θ : D.what₂.Tau → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
     (hθ : IsInfFam θ) (I : Formalism.MainNotions.S.AutInst) (h : I = Formalism.L2.SG.InstExistsPf.instOf D) :
     (∀ g ∈ GinfC (D.sp.Y 0), ((Formalism.IndefR.RationalEmbedding.iota D).trans (Formalism.L2.SG.RowsJoinPinned.castGA h.symm) g).2 = 1) ∧
@@ -63,6 +78,9 @@ theorem iota_norm_of_eq {D : D7} (θ : D.what₂.Tau → (Formalism.MainNotions.
   rw [← mul_assoc] at hh
   exact hh
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F X h _ _ hMod _`. Conclude with `iota_norm_of_eq R.θ hMod.inf X.B.I h`.
+-/
 theorem iotaX_norm : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → (∀ x : X.B.I.E, HEq (X.ιE x) x) → (∀ g ∈ GinfC (D.sp.Y 0), (iotaX X h g).2 = 1) ∧ (1 ≤ (D.sp.Y 0).rank → ∀ x : X.B.I.GA, ∃ C : ℝ, 0 ≤ C ∧ ∀ g ∈ GinfC (D.sp.Y 0), (GlobalTheory.Count.tau1 X.B.I (x * iotaX X h g))⁻¹ ≤ C * normInf R.θ (D.sp.Y 0) g) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F X h _ _ hMod _
   exact iota_norm_of_eq R.θ hMod.inf X.B.I h

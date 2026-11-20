@@ -53,9 +53,15 @@ def indSnd (e : a ⊕ b ≃ n) (τ : Representation ℂ (Γ × (GL a k × GL b k
     rw [← Module.End.mul_apply, ← map_mul, mul_assoc]
     simp))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem indSnd_apply (e : a ⊕ b ≃ n) (τ : Representation ℂ (Γ × (GL a k × GL b k)) W) (γ : Γ)
     (h x : GL n k) (f) : (indSnd e τ (γ, h) f).1.1 x = τ (γ, 1) (f.1.1 (x * h)) := rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => by show τ (1 : Γ × (GL a k × GL b k)) (f.1.1 (x * h)) = f.1.1 (x * h) simp))`.
+-/
 theorem indSnd_inr (e : a ⊕ b ≃ n) (τ : Representation ℂ (Γ × (GL a k × GL b k)) W) (h : GL n k) :
     indSnd e τ (1, h) = ind₂ e (τ.comp (MonoidHom.inr Γ _)) h :=
   LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => by
@@ -72,17 +78,29 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def act (x : Matrix b a k) (γ : GL a k × GL b k) : Matrix b a k := (γ.2⁻¹ : GL b k).val * x * γ.1.val
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `[act]`.
+-/
 theorem act_one (x : Matrix b a k) : act x 1 = x := by simp [act]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `only [act, Prod.fst_mul, Prod.snd_mul, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc]`.
+-/
 theorem act_mul (x : Matrix b a k) (γ δ : GL a k × GL b k) : act x (γ * δ) = act (act x γ) δ := by
   simp only [act, Prod.fst_mul, Prod.snd_mul, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+The claim follows from `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+-/
 theorem continuous_act (γ : GL a k × GL b k) : Continuous fun x : Matrix b a k => act x γ :=
   (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Unfold `act`. Rewrite using `[rank_mul_eq_left_of_isUnit_det _ _ ((isUnit_iff_isUnit_det _).1 γ.1.isUnit), rank_mul_eq_right_of_isUnit_det _ _ ((isUnit_iff_isUnit_det _).1 (γ.2⁻¹).isUnit)]`.
+-/
 theorem rank_act (x : Matrix b a k) (γ : GL a k × GL b k) : (act x γ).rank = x.rank := by
   unfold act
   rw [rank_mul_eq_left_of_isUnit_det _ _ ((isUnit_iff_isUnit_det _).1 γ.1.isUnit),
@@ -108,6 +126,11 @@ def omegaOn (μ : kˣ →* ℂˣ) (s : Set ℕ) : Representation ℂ (GL a k × 
 
 variable {a b}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `h1 : ((Fintype.card b : ℂ) / 2) = (((Fintype.card b : ℝ) / 2 : ℝ) : ℂ)` using `by push_cast; rfl`. Establish `h2 : (-(Fintype.card a : ℂ) / 2) = ((-(Fintype.card a : ℝ) / 2 : ℝ) : ℂ)` using `by push_cast; rfl`. Use `show (omChar a b μ (g, h) : ℂ) * Φ.1 (act x (g, h)) = _`. Simplify using `only [omChar, om, act, MonoidHom.mul_apply, MonoidHom.comp_apply, detChar_apply, Units.val_mul, h1, h2, val_absPow_ofReal, MonoidHom.inv_apply, inv_inv, MonoidHom.coe_fst, MonoidHom.coe_snd]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem omega_eq_om (μ : kˣ →* ℂˣ) (g : GL a k) (h : GL b k) (Φ : SB (Matrix b a k)) :
     (omega a b μ (g, h) Φ).1 = om μ⁻¹ g h Φ.1 := by
   funext x
@@ -118,6 +141,9 @@ theorem omega_eq_om (μ : kˣ →* ℂˣ) (g : GL a k) (h : GL b k) (Φ : SB (Ma
     val_absPow_ofReal, MonoidHom.inv_apply, inv_inv, MonoidHom.coe_fst, MonoidHom.coe_snd]
   ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem omegaOn_apply (μ : kˣ →* ℂˣ) (s : Set ℕ) (γ : GL a k × GL b k) (Φ : SB (RankIn k a b s))
     (x : RankIn k a b s) :
     (omegaOn a b μ s γ Φ).1 x =
@@ -192,9 +218,15 @@ def RankStrata : Prop :=
     (a t : ℕ), 1 ≤ a → 1 ≤ t → ∀ μ : kˣ →* ℂˣ, IsSmoothChar μ → IsUnitaryChar μ →
       (OpenClosedSeq a t μ ∧ RankFiltration a t μ) ∧ LowerStrata a t μ ∧ OpenStratum a t μ
 
+/- English proof (translation)
+The claim follows from `eq_top_iff.2 fun _ _ _ hx => absurd hx (Nat.not_lt_zero _)`.
+-/
 example (a t : ℕ) (μ : kˣ →* ℂˣ) : filt (Fin a) (Fin (a + t)) μ (Set.Iio a) 0 = ⊤ :=
   eq_top_iff.2 fun _ _ _ hx => absurd hx (Nat.not_lt_zero _)
 
+/- English proof (translation)
+The claim follows from `Subrepresentation.toSubmodule_injective <| eq_bot_iff.2 fun _ hΦ => Subtype.ext (funext fun x => hΦ x x.2)`.
+-/
 example (a t : ℕ) (μ : kˣ →* ℂˣ) : filt (Fin a) (Fin (a + t)) μ (Set.Iio a) a = ⊥ :=
   Subrepresentation.toSubmodule_injective <|
     eq_bot_iff.2 fun _ hΦ => Subtype.ext (funext fun x => hΦ x x.2)

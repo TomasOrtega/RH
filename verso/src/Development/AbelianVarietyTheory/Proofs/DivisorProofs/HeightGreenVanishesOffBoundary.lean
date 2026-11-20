@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.HeightParts
 
+/- English proof (translation)
+Introduce `D O x c σ τ i y hy`. Simplify using `only [offBd, Set.mem_setOf_eq, not_not] at hy`. Establish `hL : LiesIn ((O.Φ.C c).down y) (Toroidal.genBd O.s.T.Z)` using `hy`. Establish `hh : ∀ (n : Pad.Letter O.S.Dw → ℤ) (a : (O.Φ.C c).Y.Fnˣ), (metsOf x O.Φ c none σ n).h a y = (refMet x O.Φ c σ n).h a y` using `fun n a => FlagCpt.met_congr _ n (fun g τ' => x.hodge_gram_of_liesIn hL g τ') a`. Establish `hr : ∀ (n : Pad.Letter O.S.Dw → ℤ), lnRatio (metsOf x O.Φ c none σ n) (refMet x O.Φ c σ n) y = 0` using `fun n => by`.
+
+Simplify using `only [lnRatio, lnN]`. Use `show Real.log (ProjVar.Var.pn _ σ _ _ _ y) / 2 - Real.log (ProjVar.Var.pn _ σ _ _ _ y) / 2 = 0`. Simplify using `only [ProjVar.Var.pn, hh]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [psi, phW, hr, mul_zero, Finset.sum_const_zero]`.
+-/
 theorem zero_psi_of_not_mem_offBd : ∀ (D : D7) (O : Setup D) (x : ToroidalCompactificationData O.s) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) (i : Fin O.N)
     (y : GlobalTheory.TrueGeo.Pts (O.var c) σ), y ∉ offBd O.Φ c σ → GlobalTheory.HeightParts.psi O x c σ τ i y = 0 := by
   intro D O x c σ τ i y hy

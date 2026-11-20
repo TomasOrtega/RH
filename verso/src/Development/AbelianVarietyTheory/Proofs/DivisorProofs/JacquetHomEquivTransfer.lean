@@ -7,6 +7,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory.JacTransport
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n m e P Q P₁ _ _ _ _ _ _ π π' σ₁ ξ₁ ξ₂ ⟨φ⟩ h`. Set `f` to `jacMap e φ.toIntertwiningMap`. Set `g` to `jacMap e φ.symm.toIntertwiningMap`. Establish `hgf : ∀ x, g (f x) = x`. Introduce `x`.
+
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H v => show Submodule.Quotient.mk (φ.symm (φ v)) = Submodule.Quotient.mk v`. Use `congr 1`. Conclude with `φ.toLinearEquiv.symm_apply_apply v`. Establish `hfg : ∀ x, f (g x) = x`.
+
+Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H v => show Submodule.Quotient.mk (φ (φ.symm v)) = Submodule.Quotient.mk v`. Use `congr 1`. Conclude with `φ.toLinearEquiv.apply_symm_apply v`.
+
+Set `L : Jacquet π (unipRad k e) ≃ₗ[ℂ] Jacquet π' (unipRad k e)` to `{ f.toLinearMap with invFun := g, left_inv := hgf, right_inv := hfg }`. Set `Φ : (jac e π).Equiv (jac e π')` to `Representation.Equiv.mk L fun x => f.isIntertwining' x`. Establish `h1` using `HomLeOne.of_equiv Φ h`. Introduce `μ μ'`. Conclude with `h1 (twistMap μ _) (twistMap μ' _)`.
+-/
 theorem homLeOne_jacU_of_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n m : ℕ) (e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n) (P Q P₁ : Type) [AddCommGroup P] [Module ℂ P]
     [AddCommGroup Q] [Module ℂ Q] [AddCommGroup P₁] [Module ℂ P₁] (π : Representation ℂ (GL (Fin n) k) P)

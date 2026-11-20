@@ -19,6 +19,9 @@ def finMap {F : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} {V W : Scheme.
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 variable {R : Type} [CommRing R] (P : _root_.GlobalTheory.EtC.PSh) in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.NatFamExt.finMap, Finsupp.mapDomain_single]`.
+-/
 theorem _root_.GlobalTheory.NatFamExt.finMap_single {F : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)}
     {V W : Scheme.{0}ᵒᵖ} (g : V ⟶ W) (x : P.obj V) (a : F.obj V) :
     _root_.GlobalTheory.NatFamExt.finMap P g (Finsupp.single x a) =
@@ -64,6 +67,17 @@ def famHom (G : Shv R) {A : Shv R} (ψ : ∀ V : Scheme.{0}, P.obj (op V) → Se
 end GlobalTheory.NatFamExt
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
+/- English proof (translation)
+Introduce `R _ P G hG A B f hf ψ hψ`. Establish `hfval : Mono f.hom` using `(sheafToPresheaf _ _).map_mono f`. Establish `hinj : ∀ V, Function.Injective (f.hom.app V).hom` using `fun V => (ModuleCat.mono_iff_injective _).1 ((NatTrans.mono_iff_mono_app f.hom).1 hfval V)`. Use `haveI : Injective G.obj := Injective.injective_of_adjoint (sheafificationAdjunction Scheme.etaleTopology _) G`. Use `haveI : Mono (_root_.GlobalTheory.NatFamExt.finPMap P f.hom) := by`.
+
+Rewrite using `[NatTrans.mono_iff_mono_app]`. Introduce `V`. Rewrite using `[ModuleCat.mono_iff_injective]`. Conclude with `Finsupp.mapRange_injective _ (map_zero _) (hinj V)`. Take `⟨θ, hθ⟩` from `Injective.factors (_root_.GlobalTheory.NatFamExt.famHom P G ψ hψ) (_root_.GlobalTheory.NatFamExt.finPMap P f.hom)`.
+
+Use `⟨fun V x => (θ.app (op V)).hom ∘ₗ Finsupp.lsingle x, ?_, ?_⟩` and prove the remaining obligations. Introduce `V W w x b`. Establish `h` using `congrArg (fun h => h.hom (Finsupp.single x b)) (θ.naturality w.op)`. Express the relevant statement in the definitionally equal form `(θ.app (op W)).hom (_root_.GlobalTheory.NatFamExt.finMap P w.op (Finsupp.single x b)) = (G.obj.map w.op).hom ((θ.app (op V)).hom (Finsupp.single x b)) at h`. Rewrite `h` using `[_root_.GlobalTheory.NatFamExt.finMap_single]`.
+
+Conclude with `h.symm`. Introduce `V x a`. Establish `h` using `congrArg (fun h => (h.app (op V)).hom (Finsupp.single x a)) hθ`. Express the relevant statement in the definitionally equal form `(θ.app (op V)).hom (Finsupp.mapRange.linearMap (f.hom.app (op V)).hom (Finsupp.single x a)) = Finsupp.lsum (ULift.{1} R) (ψ V) (Finsupp.single x a) at h`. Rewrite `h` using `[Finsupp.mapRange.linearMap_apply, Finsupp.mapRange_single, Finsupp.lsum_single]`.
+
+Conclude with `h`.
+-/
 theorem _root_.GlobalTheory.natFam_extend_of_injective : ∀ (R : Type) [CommRing R] (P : _root_.GlobalTheory.EtC.PSh)
     (G : _root_.GlobalTheory.EtC.Shv R), Injective G → ∀ {A B : _root_.GlobalTheory.EtC.Shv R} (f : A ⟶ B), Mono f →
     ∀ (ψ : ∀ V : Scheme.{0}, P.obj (op V) →

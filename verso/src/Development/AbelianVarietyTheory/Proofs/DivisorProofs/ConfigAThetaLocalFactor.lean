@@ -15,6 +15,9 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.IndLine
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Use `haveI := GlobalTheory.T.config_first_matched_reps_compat hKP F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Conclude with `⟨Submodule.finiteDimensional_of_le (twPart_le B G.M om R.p G₁.W H' X.α _ _), GlobalTheory.T.kStabL_twPart_lowPartInf_of_isMatched hKP F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁, GlobalTheory.T.config_a_theta_lift_vanishing hKP F E σ B b a' G G₁ H H' hC X om om …`.
+-/
 theorem twPart_lowPart_irreducible : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

@@ -13,6 +13,9 @@ variable {k r : ℕ}
 
 def sgI (k r : ℕ) (i : ℕ) : ℕ := if i < r ∨ r + k < i then 2 * r + k - i else i
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Establish `hl` using `l.isLt`. Simplify using `only [Hpk, sgI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 lemma hpk_apply (i l : Fin (2 * r + k + 1)) :
     Hpk k r i l = if l.val = sgI k r i.val then (if i.val = r + k then -1 else 1) else 0 := by
   have hi := i.isLt
@@ -20,21 +23,39 @@ lemma hpk_apply (i l : Fin (2 * r + k + 1)) :
   simp only [Hpk, sgI, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Unfold `sgI`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 lemma sgI_lt (i : Fin (2 * r + k + 1)) : sgI k r i.val < 2 * r + k + 1 := by
   have hi := i.isLt
   unfold sgI
   split_ifs <;> omega
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Unfold `sgI`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 lemma sgI_sgI (i : Fin (2 * r + k + 1)) : sgI k r (sgI k r i.val) = i.val := by
   have hi := i.isLt
   unfold sgI
   split_ifs <;> omega
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Unfold `sgI`. Apply the tactic sequence `split_ifs <;> constructor <;> intro <;> omega`.
+-/
 lemma sgI_eq_iff (i : Fin (2 * r + k + 1)) : sgI k r i.val = r + k ↔ i.val = r + k := by
   have hi := i.isLt
   unfold sgI
   split_ifs <;> constructor <;> intro <;> omega
 
+/- English proof (translation)
+Use extensionality with `i l`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Repeatedly rewrite using `[hpk_apply]`. Rewrite using `[Finset.sum_eq_single (⟨sgI k r i.val, sgI_lt i⟩ : Fin (2 * r + k + 1))]`. Simplify using `only [if_true, sgI_sgI]`.
+
+Distinguish the cases in `hil : i = l`. Substitute `hil` using the available equality. Distinguish the cases in `hi : i.val = r + k`. Establish `h2 : sgI k r (r + k) = r + k` using `hi ▸ (sgI_eq_iff i).2 hi`. Simplify using `[hi, h2]`.
+
+Establish `h2 : ¬ sgI k r i.val = r + k` using `fun h => hi ((sgI_eq_iff i).1 h)`. Simplify using `[hi, h2]`. Establish `h3 : ¬ l.val = i.val` using `fun h => hil (Fin.ext h.symm)`. Simplify using `[h3, hil]`. Introduce `j _ hj`.
+
+Establish `h4 : ¬ j.val = sgI k r i.val` using `fun h => hj (Fin.ext h)`. Simplify using `[h4]`. Simplify using the standard rewrite rules.
+-/
 theorem hpk_mul_self : Hpk k r * Hpk k r = 1 := by
   ext i l
   rw [Matrix.mul_apply, Matrix.one_apply]
@@ -55,12 +76,22 @@ theorem hpk_mul_self : Hpk k r * Hpk k r = 1 := by
     simp [h4]
   · simp
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg Matrix.det (hpk_mul_self (k := k) (r := r))`. Rewrite `h1` using `[Matrix.det_mul, h, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h1`.
+-/
 theorem hpk_det_ne : (Hpk k r).det ≠ 0 := by
   intro h
   have h1 := congrArg Matrix.det (hpk_mul_self (k := k) (r := r))
   rw [Matrix.det_mul, h, zero_mul, Matrix.det_one] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Use extensionality with `i l`. Rewrite using `[Matrix.conjTranspose_apply, hpk_apply, hpk_apply]`. Distinguish the cases in `h : i.val = sgI k r l.val`. Establish `h' : l.val = sgI k r i.val` using `by rw [h, sgI_sgI]`. Establish `hs : (i.val = r + k ↔ l.val = r + k)` using `by rw [h, sgI_eq_iff]`.
+
+Rewrite using `[if_pos h, if_pos h']`. Distinguish the cases in `hl : l.val = r + k`. Simplify using `[hl, hs.2 hl]`. Establish `hi : ¬ i.val = r + k` using `fun h2 => hl (hs.1 h2)`. Simplify using `[hl, hi]`.
+
+Establish `h' : ¬ l.val = sgI k r i.val` using `fun h' => h (by rw [h', sgI_sgI])`. Rewrite using `[if_neg h, if_neg h']`. Simplify using the standard rewrite rules.
+-/
 theorem hpk_conjTranspose : (Hpk k r)ᴴ = Hpk k r := by
   ext i l
   rw [Matrix.conjTranspose_apply, hpk_apply, hpk_apply]
@@ -76,8 +107,14 @@ theorem hpk_conjTranspose : (Hpk k r)ᴴ = Hpk k r := by
     rw [if_neg h, if_neg h']
     simp
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_GV_iff {g : B.Mat k r} : g ∈ B.GV k r ↔ gᴴ * Hpk k r * g = Hpk k r := Iff.rfl
 
+/- English proof (translation)
+Rewrite `*` using `[mem_GV_iff]`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [ha, hb]`.
+-/
 theorem mul_mem_GV {a b : B.Mat k r} (ha : a ∈ B.GV k r) (hb : b ∈ B.GV k r) : a * b ∈ B.GV k r := by
   rw [mem_GV_iff] at *
   rw [Matrix.conjTranspose_mul]
@@ -85,15 +122,26 @@ theorem mul_mem_GV {a b : B.Mat k r} (ha : a ∈ B.GV k r) (hb : b ∈ B.GV k r)
         simp only [Matrix.mul_assoc]
     _ = Hpk k r := by rw [ha, hb]
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `congrArg Matrix.det (mem_GV_iff.1 hg)`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Conclude with `hpk_det_ne h1.symm`.
+-/
 theorem det_ne_of_mem_GV {g : B.Mat k r} (hg : g ∈ B.GV k r) : g.det ≠ 0 := by
   intro h0
   have h1 := congrArg Matrix.det (mem_GV_iff.1 hg)
   rw [Matrix.det_mul, Matrix.det_mul, h0, mul_zero] at h1
   exact hpk_det_ne h1.symm
 
+/- English proof (translation)
+The claim follows from `isUnit_iff_ne_zero.2 (det_ne_of_mem_GV hg)`.
+-/
 theorem isUnit_det_of_mem_GV {g : B.Mat k r} (hg : g ∈ B.GV k r) : IsUnit g.det :=
   isUnit_iff_ne_zero.2 (det_ne_of_mem_GV hg)
 
+/- English proof (translation)
+Establish `hu` using `isUnit_det_of_mem_GV hg`. Rewrite `*` using `[mem_GV_iff]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = Hpk k r := by`. Rewrite using `[Matrix.mul_nonsing_inv _ hu]`. Simplify using the standard rewrite rules.
+-/
 theorem inv_mem_GV {g : B.Mat k r} (hg : g ∈ B.GV k r) : g⁻¹ ∈ B.GV k r := by
   have hu := isUnit_det_of_mem_GV hg
   rw [mem_GV_iff] at *
@@ -108,21 +156,33 @@ theorem inv_mem_GV {g : B.Mat k r} (hg : g ∈ B.GV k r) : g⁻¹ ∈ B.GV k r :
 def Ff (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) ℂ :=
   Matrix.of fun i a => fvec k r z a i
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `cases j <;> simp [Fm, Ff, gramVec, Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+-/
 theorem Fm_eq (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) :
     Fm k r z z' γ = Matrix.fromCols (Ff k r z) (γ * Ff k r z') := by
   ext i j
   cases j <;> simp [Fm, Ff, gramVec, Matrix.mulVec, dotProduct, Matrix.mul_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Fm, Matrix.conjTranspose_apply]`.
+-/
 theorem Fm_conjTranspose (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) :
     (Fm k r z z' γ)ᴴ = Matrix.of fun i j => star (gramVec k r z z' γ i j) := by
   ext i j
   simp [Fm, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Rewrite using `[Fm_conjTranspose]`. Both sides reduce to the same expression.
+-/
 theorem mem_Uperp_iff (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) (v : Fin (2 * r + k + 1) → ℂ) :
     v ∈ Uperp k r z z' γ ↔ ((Fm k r z z' γ)ᴴ * Hpk k r) *ᵥ v = 0 := by
   rw [Fm_conjTranspose]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply]`. Simplify using `only [Matrix.conjTranspose_apply, dotProduct, Matrix.mulVec, Matrix.mul_apply, Pi.star_apply]`.
+-/
 private lemma conjTranspose_mul_mul_apply_eq_dotProduct {p q : Type} [Fintype p] [Fintype q]
     (A : Matrix (Fin (2 * r + k + 1)) p ℂ) (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (C : Matrix (Fin (2 * r + k + 1)) q ℂ) (i : p) (j : q) :
@@ -130,12 +190,20 @@ private lemma conjTranspose_mul_mul_apply_eq_dotProduct {p q : Type} [Fintype p]
   rw [Matrix.mul_assoc, Matrix.mul_apply]
   simp only [Matrix.conjTranspose_apply, dotProduct, Matrix.mulVec, Matrix.mul_apply, Pi.star_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[conjTranspose_mul_mul_apply_eq_dotProduct]`. Both sides reduce to the same expression.
+-/
 theorem gramM_eq (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) :
     gramM k r z z' γ = (Fm k r z z' γ)ᴴ * Hpk k r * Fm k r z z' γ := by
   ext i j
   rw [conjTranspose_mul_mul_apply_eq_dotProduct]
   rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[show (Ff k r z)ᴴ * Hpk k r * γ * Ff k r z' = (Ff k r z)ᴴ * Hpk k r * (γ * Ff k r z') by`. Simplify using `only [Matrix.mul_assoc], conjTranspose_mul_mul_apply_eq_dotProduct]`. Establish `h1 : (fun l => (γ * Ff k r z') l b) = γ *ᵥ fvec k r z' b`. Use function extensionality and compare the values at `l`.
+
+Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Ff]`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+-/
 theorem Zhat_eq (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) :
     Zhat k r z z' γ = (Ff k r z)ᴴ * Hpk k r * γ * Ff k r z' := by
   ext a b
@@ -147,17 +215,28 @@ theorem Zhat_eq (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) :
   rw [h1]
   rfl
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[Matrix.dotProduct_mulVec, Matrix.star_dotProduct, Matrix.star_mulVec, star_star, hpk_conjTranspose]`.
+-/
 theorem herm_swap (v w : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) v w = star (herm (Hpk k r) w v) := by
   unfold herm
   rw [Matrix.dotProduct_mulVec, Matrix.star_dotProduct, Matrix.star_mulVec, star_star,
     hpk_conjTranspose]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, mem_GV_iff.1 hg]`.
+-/
 theorem herm_GV {g : B.Mat k r} (hg : g ∈ B.GV k r) (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (g *ᵥ v) (g *ᵥ w) = herm (Hpk k r) v w := by
   unfold herm
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec,
     mem_GV_iff.1 hg]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec, dotProduct]`. Repeatedly rewrite using `[hpk_apply]`. Rewrite using `[Finset.sum_eq_single (⟨sgI k r j.val, sgI_lt j⟩ : Fin (2 * r + k + 1))]`. Simplify using the standard rewrite rules. Introduce `l _ hl`.
+
+Establish `h4 : ¬ l.val = sgI k r j.val` using `fun h => hl (Fin.ext h)`. Simplify using `[h4]`. Simplify using the standard rewrite rules.
+-/
 theorem hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ v) j = (if j.val = r + k then -1 else 1) * v ⟨sgI k r j.val, sgI_lt j⟩ := by
   rw [Matrix.mulVec, dotProduct]
@@ -169,10 +248,18 @@ theorem hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)) :
     simp [h4]
   · simp
 
+/- English proof (translation)
+Simplify using `[herm, bvec, dotProduct, Pi.single_apply]`.
+-/
 theorem herm_bvec (v : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)) :
     herm (Hpk k r) v (bvec j) = (Hpk k r *ᵥ v) j := by
   simp [herm, bvec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Rewrite using `[herm_bvec, hpk_mulVec]`. Establish `h1 : ¬ (eI k r a).val = r + k` using `by simp [eI]; omega`. Rewrite using `[if_neg h1, one_mul]`. Use `congr 1`.
+
+Use `ext`. Simplify using `[eI, esI, sgI, ha]`.
+-/
 theorem herm_e (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) v (bvec (eI k r a)) = v (esI k r a) := by
   have ha := a.isLt
@@ -183,6 +270,13 @@ theorem herm_e (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
   ext
   simp [eI, esI, sgI, ha]
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Rewrite using `[herm_bvec, hpk_mulVec]`. Establish `h1 : ¬ (esI k r a).val = r + k` using `by simp [esI]; omega`. Rewrite using `[if_neg h1, one_mul]`. Establish `h2 : sgI k r (2 * r + k - a.val) = a.val`.
+
+Unfold `sgI`. Rewrite using `[if_pos (Or.inr (by omega))]`. Use linear arithmetic over natural numbers and integers. Use `congr 1`. Use `ext`.
+
+Simplify using `[esI, eI, h2]`.
+-/
 theorem herm_es (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) v (bvec (esI k r a)) = v (eI k r a) := by
   have ha := a.isLt
@@ -197,9 +291,15 @@ theorem herm_es (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
   ext
   simp [esI, eI, h2]
 
+/- English proof (translation)
+Simplify using `[bvec, Pi.single_apply]`.
+-/
 theorem bvec_apply (i j : Fin (2 * r + k + 1)) : bvec i j = if j = i then 1 else 0 := by
   simp [bvec, Pi.single_apply]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[Matrix.mulVec_sum, dotProduct_sum]`. Simplify using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem herm_sum_left (v : Fin (r + 1) → Fin (2 * r + k + 1) → ℂ) (c : Fin (r + 1) → ℂ)
     (w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (∑ a, c a • v a) w = ∑ a, c a * herm (Hpk k r) (v a) w := by
@@ -207,6 +307,11 @@ theorem herm_sum_left (v : Fin (r + 1) → Fin (2 * r + k + 1) → ℂ) (c : Fin
   rw [Matrix.mulVec_sum, dotProduct_sum]
   simp [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Establish `hc` using `c.isLt`. Unfold `fvec`. Distinguish the cases in `h : c.val < r`. Rewrite using `[dif_pos h]`.
+
+Simplify using `only [bvec, Pi.single_apply, eI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[dif_neg h, hz (eI k r a) (Or.inl (by simp [eI])), if_neg (by omega)]`.
+-/
 theorem fvec_eI (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (c : Fin (r + 1)) (a : Fin r) :
     fvec k r z c (eI k r a) = if c.val = a.val then 1 else 0 := by
   have ha := a.isLt
@@ -218,9 +323,17 @@ theorem fvec_eI (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (c : Fin (r 
     split_ifs <;> first | rfl | (exfalso; omega)
   · rw [dif_neg h, hz (eI k r a) (Or.inl (by simp [eI])), if_neg (by omega)]
 
+/- English proof (translation)
+The claim follows from `hz (esI k r a) (Or.inr (by have := a.isLt; simp [esI]; omega))`.
+-/
 theorem z_esI (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (a : Fin r) : z (esI k r a) = 0 :=
   hz (esI k r a) (Or.inr (by have := a.isLt; simp [esI]; omega))
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Unfold `fvec`. Distinguish the cases in `h : c.val < r`. Rewrite using `[dif_pos h]`. Simplify using `only [bvec, Pi.single_apply, eI, esI, Fin.ext_iff]`.
+
+Rewrite using `[if_neg (by omega)]`. Rewrite using `[dif_neg h]`. Conclude with `z_esI z hz a`.
+-/
 theorem fvec_esI (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (c : Fin (r + 1)) (a : Fin r) :
     fvec k r z c (esI k r a) = 0 := by
   have ha := a.isLt
@@ -232,6 +345,11 @@ theorem fvec_esI (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (c : Fin (r
   · rw [dif_neg h]
     exact z_esI z hz a
 
+/- English proof (translation)
+Distinguish the cases in `hc : c.val < r`. Establish `hne : c ≠ Fin.last r` using `fun h => by rw [h] at hc; simp at hc`. Rewrite using `[if_neg hne]`. Simplify using `only [fvec, dif_pos hc]`. Rewrite using `[herm_swap, herm_e, z_esI z hz]`.
+
+Simplify using the standard rewrite rules. Establish `heq : c = Fin.last r` using `Fin.ext (by have := c.isLt; simp; omega)`. Rewrite using `[if_pos heq]`. Simplify using `only [fvec, dif_neg hc]`.
+-/
 theorem herm_Hpk_fvec_eq_ite (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (c : Fin (r + 1)) :
     herm (Hpk k r) (fvec k r z c) z = if c = Fin.last r then herm (Hpk k r) z z else 0 := by
   by_cases hc : c.val < r
@@ -244,6 +362,11 @@ theorem herm_Hpk_fvec_eq_ite (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
     rw [if_pos heq]
     simp only [fvec, dif_neg hc]
 
+/- English proof (translation)
+Distinguish the cases in `ha : a.val < r`. Establish `hne : a ≠ Fin.last r` using `fun h => by rw [h] at ha; simp at ha`. Rewrite using `[if_neg (fun h => hne h.1)]`. Rewrite using `[show fvec k r z a = bvec (eI k r ⟨a.val, ha⟩) by simp [fvec, ha], herm_e, fvec_esI z hz]`. Establish `heq : a = Fin.last r` using `Fin.ext (by have := a.isLt; simp; omega)`.
+
+Rewrite using `[show fvec k r z a = z by simp [fvec, ha], herm_Hpk_fvec_eq_ite z hz b]`. Simplify using `[heq]`.
+-/
 theorem herm_fvec_fvec (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (a b : Fin (r + 1)) :
     herm (Hpk k r) (fvec k r z b) (fvec k r z a) =
       if a = Fin.last r ∧ b = Fin.last r then herm (Hpk k r) z z else 0 := by
@@ -255,11 +378,19 @@ theorem herm_fvec_fvec (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (a b 
     rw [show fvec k r z a = z by simp [fvec, ha], herm_Hpk_fvec_eq_ite z hz b]
     simp [heq]
 
+/- English proof (translation)
+Establish `h` using `herm_swap (k := k) (r := r) v v`. Conclude with `Complex.conj_eq_iff_re.1 h.symm`.
+-/
 theorem herm_self_re (v : Fin (2 * r + k + 1) → ℂ) :
     ((herm (Hpk k r) v v).re : ℂ) = herm (Hpk k r) v v := by
   have h := herm_swap (k := k) (r := r) v v
   exact Complex.conj_eq_iff_re.1 h.symm
 
+/- English proof (translation)
+Simplify using `only [Adiag, Matrix.diagonal_apply, Tz, Complex.ofReal_neg, neg_neg, herm_self_re]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Apply the tactic sequence `by_cases ha : a = Fin.last r <;> simp [ha]`. Rewrite using `[if_neg hab]`.
+
+Establish `h2 : ¬ (a = Fin.last r ∧ b = Fin.last r)` using `fun h => hab (h.1.trans h.2.symm)`. Rewrite using `[if_neg h2]`.
+-/
 theorem Adiag_apply (z : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r + 1)) :
     Adiag k r z a b = if a = Fin.last r ∧ b = Fin.last r then herm (Hpk k r) z z else 0 := by
   simp only [Adiag, Matrix.diagonal_apply, Tz, Complex.ofReal_neg, neg_neg, herm_self_re]
@@ -270,6 +401,11 @@ theorem Adiag_apply (z : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r + 1)) :
     have h2 : ¬ (a = Fin.last r ∧ b = Fin.last r) := fun h => hab (h.1.trans h.2.symm)
     rw [if_neg h2]
 
+/- English proof (translation)
+Use extensionality with `(a | a) (b | b)`. Simplify using `only [gramM, gramVec, Matrix.fromBlocks_apply₁₁]`. Rewrite using `[herm_fvec_fvec z hz, Adiag_apply]`. Simplify using `only [gramM, gramVec, Matrix.fromBlocks_apply₁₂]`. Both sides reduce to the same expression.
+
+Simplify using `only [gramM, gramVec, Matrix.fromBlocks_apply₂₁, Matrix.conjTranspose_apply]`. Rewrite using `[herm_swap]`. Both sides reduce to the same expression. Simplify using `only [gramM, gramVec, Matrix.fromBlocks_apply₂₂]`. Rewrite using `[herm_GV hγ, herm_fvec_fvec z' hz', Adiag_apply]`.
+-/
 theorem gramM_blocks (z z' : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hz' : inWb k r z') (γ : B.Mat k r)
     (hγ : γ ∈ B.GV k r) :
     gramM k r z z' γ = Matrix.fromBlocks (Adiag k r z) (Zhat k r z z' γ) (Zhat k r z z' γ)ᴴ (Adiag k r z') := by
@@ -284,6 +420,13 @@ theorem gramM_blocks (z z' : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hz'
   · simp only [gramM, gramVec, Matrix.fromBlocks_apply₂₂]
     rw [herm_GV hγ, herm_fvec_fvec z' hz', Adiag_apply]
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨_, ⟨_, hT⟩, ⟨_, hT'⟩⟩` from `hS`. Take `⟨_, hG⟩` from `hP`. Establish `hD : Dmin k r z z' γ (Fin.last (r + 1)) = 0`. Unfold `Dmin`.
+
+Establish `h1 : (Zhat k r z z' γ).submatrix (Fin.castLE (Nat.le_of_lt_succ (Fin.last (r + 1)).isLt)) (Fin.castLE (Nat.le_of_lt_succ (Fin.last (r + 1)).isLt)) = Zhat k r z z' γ`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `h0`.
+
+Unfold `Gf at hG`. Rewrite `hG` using `[hD, Complex.normSq_zero, zero_sub]`. Establish `h2 : 0 ≤ Tz k r z * Tz k r z' * Complex.normSq (Dmin k r z z' γ ⟨r, by omega⟩)` using `mul_nonneg (mul_nonneg hT.le hT'.le) (Complex.normSq_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem det_Zhat_ne (z z' : Fin (2 * r + k + 1) → ℂ) (hS : Std k r z z') (γ : B.Mat k r) (hP : PosPt k r z z' γ) :
     (Zhat k r z z' γ).det ≠ 0 := by
   intro h0
@@ -303,6 +446,11 @@ theorem det_Zhat_ne (z z' : Fin (2 * r + k + 1) → ℂ) (hS : Std k r z z') (γ
     mul_nonneg (mul_nonneg hT.le hT'.le) (Complex.normSq_nonneg _)
   linarith
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun (congrFun h i) b`. Simplify using `only [Matrix.mul_apply, Ff, Matrix.of_apply] at h1`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h1]`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`.
+-/
 theorem col_of_mul (z : Fin (2 * r + k + 1) → ℂ) (s : B.Mat k r) (x : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
     (h : s * Ff k r z = Ff k r z * x) (b : Fin (r + 1)) : s *ᵥ fvec k r z b = ∑ c, x c b • fvec k r z c := by
   funext i
@@ -312,6 +460,17 @@ theorem col_of_mul (z : Fin (2 * r + k + 1) → ℂ) (s : B.Mat k r) (x : Matrix
   rw [h1]
   exact Finset.sum_congr rfl fun c _ => mul_comm _ _
 
+/- English proof (translation)
+Take `⟨hzW, hT⟩` from `hz`. Use extensionality with `a b`. Establish `hcol` using `col_of_mul z s x h b`. Simplify using `only [uMap]`. Use `split_ifs with ha`.
+
+Rewrite using `[hcol, herm_sum_left]`. Repeatedly rewrite using `[herm_es, fvec_eI z hzW]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+
+Establish `h2 : ¬ c.val = a.val` using `fun h2 => hc (Fin.ext h2)`. Simplify using `[h2]`. Simplify using the standard rewrite rules. Establish `heq : a = Fin.last r` using `Fin.ext (by have := a.isLt; simp; omega)`. Establish `hne : herm (Hpk k r) z z ≠ 0`.
+
+Introduce `h0`. Simplify using `[Tz, h0] at hT`. Rewrite using `[hcol, herm_sum_left]`. Repeatedly rewrite using `[herm_Hpk_fvec_eq_ite z hzW]`. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`.
+
+Rewrite using `[if_pos rfl, heq, mul_div_assoc, div_self hne, mul_one]`. Introduce `c _ hc`. Rewrite using `[if_neg hc, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem uMap_eq (z : Fin (2 * r + k + 1) → ℂ) (hz : StdZ k r z) (s : B.Mat k r)
     (x : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (h : s * Ff k r z = Ff k r z * x) : uMap k r z s = x := by
   obtain ⟨hzW, hT⟩ := hz

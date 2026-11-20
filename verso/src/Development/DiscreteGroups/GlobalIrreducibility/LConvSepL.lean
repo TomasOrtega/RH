@@ -10,6 +10,9 @@ namespace DiscreteGroups.sglob.LConv
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {m : ℕ}
   {ψ : AddChar k Circle}
 
+/- English proof (translation)
+Take `⟨K₁, h1o, -, h1⟩` from `exists_fix y`. Take `⟨K₂, h2o, -, h2⟩` from `exists_fix z`. Take `⟨K, hK, hsub⟩` from `exists_good hψ (Filter.inter_mem (h1o.mem_nhds K₁.one_mem) (h2o.mem_nhds K₂.one_mem))`. Conclude with `⟨K, hK, fun κ hκ => ⟨h1 κ (hsub hκ).1, h2 κ (hsub hκ).2⟩⟩`.
+-/
 theorem exists_good_fix (hψ : Continuous ψ) (y z : WT (m := m) ψ) : ∃ K : Subgroup (GL (Fin m) k), Good ψ K ∧
     ∀ κ ∈ K, rhoW ψ κ y = y ∧ rhoW ψ κ z = z := by
   obtain ⟨K₁, h1o, -, h1⟩ := exists_fix y
@@ -23,6 +26,11 @@ def lamK (I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ) (B : WT (m := m) ψ →ₗ
     (K : Subgroup (GL (Fin m) k)) (y : WT (m := m) ψ) : ℂ :=
   B y (delta ψ K) / cK ψ I K
 
+/- English proof (translation)
+Establish `h1 : ∀ κ ∈ K, ∀ x, B y (rhoW ψ κ x) = B y x` using `fun κ hκ x => by`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ∀ κ ∈ K, ∀ x, formI ψ I (delta ψ K) (rhoW ψ κ x) = formI ψ I (delta ψ K) x` using `fun κ hκ x => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[rhoW_delta hκ]`.
+
+Use `_ = _ := (isInvForm_formI hI).2.2 κ _ x`. Establish `h` using `delta_avg hK hK' hle (B y) (formI ψ I (delta ψ K)) h1 h2`. Rewrite `h` using `[formI_delta_le I hK hK' hle]`. Rewrite using `[lamK, lamK, div_eq_div_iff (cK_ne_zero hI hK') (cK_ne_zero hI hK)]`. Conclude with `h`.
+-/
 theorem lamK_mono {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I)
     {B : WT (m := m) ψ →ₗ⋆[ℂ] WT (m := m) ψ →ₗ[ℂ] ℂ} (hB : IsInvForm (rhoW ψ) B)
     {K K' : Subgroup (GL (Fin m) k)} (hK : Good ψ K) (hK' : Good ψ K') (hle : K' ≤ K) {y : WT (m := m) ψ}
@@ -39,6 +47,9 @@ theorem lamK_mono {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I)
   rw [lamK, lamK, div_eq_div_iff (cK_ne_zero hI hK') (cK_ne_zero hI hK)]
   exact h
 
+/- English proof (translation)
+Take `⟨K, hK, hsub⟩` from `exists_good hψ (Filter.inter_mem (h1.1.mem_nhds K₁.one_mem) (h2.1.mem_nhds K₂.one_mem))`. Rewrite using `[← lamK_mono hI hB h1 hK (fun x hx => (hsub hx).1) hy1, lamK_mono hI hB h2 hK (fun x hx => (hsub hx).2) hy2]`.
+-/
 theorem lamK_eq (hψ : Continuous ψ) {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I)
     {B : WT (m := m) ψ →ₗ⋆[ℂ] WT (m := m) ψ →ₗ[ℂ] ℂ} (hB : IsInvForm (rhoW ψ) B)
     {K₁ K₂ : Subgroup (GL (Fin m) k)} (h1 : Good ψ K₁) (h2 : Good ψ K₂) {y : WT (m := m) ψ}
@@ -53,6 +64,9 @@ def lam (hψ : Continuous ψ) (I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ)
     (B : WT (m := m) ψ →ₗ⋆[ℂ] WT (m := m) ψ →ₗ[ℂ] ℂ) (y : WT (m := m) ψ) : ℂ :=
   lamK ψ I B (Classical.choose (exists_good_fix hψ y y)) y
 
+/- English proof (translation)
+Establish `h` using `Classical.choose_spec (exists_good_fix hψ y y)`. Conclude with `lamK_eq hψ hI hB h.1 hK (fun κ hκ => (h.2 κ hκ).1) hy`.
+-/
 theorem lam_eq (hψ : Continuous ψ) {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I)
     {B : WT (m := m) ψ →ₗ⋆[ℂ] WT (m := m) ψ →ₗ[ℂ] ℂ} (hB : IsInvForm (rhoW ψ) B)
     {K : Subgroup (GL (Fin m) k)} (hK : Good ψ K) {y : WT (m := m) ψ} (hy : ∀ κ ∈ K, rhoW ψ κ y = y) :
@@ -60,6 +74,9 @@ theorem lam_eq (hψ : Continuous ψ) {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ
   have h := Classical.choose_spec (exists_good_fix hψ y y)
   exact lamK_eq hψ hI hB h.1 hK (fun κ hκ => (h.2 κ hκ).1) hy
 
+/- English proof (translation)
+Take `⟨K, hK, hKf⟩` from `exists_good_fix hψ y z`. Rewrite using `[lam_eq hψ hI hB hK (fun κ hκ => by rw [map_add, (hKf κ hκ).1, (hKf κ hκ).2]), lam_eq hψ hI hB hK (fun κ hκ => (hKf κ hκ).1), lam_eq hψ hI hB hK (fun κ hκ => (hKf κ hκ).2)]`. Simplify using `only [lamK, map_add, LinearMap.add_apply, add_div]`.
+-/
 theorem lam_add (hψ : Continuous ψ) {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I)
     {B : WT (m := m) ψ →ₗ⋆[ℂ] WT (m := m) ψ →ₗ[ℂ] ℂ} (hB : IsInvForm (rhoW ψ) B) (y z : WT (m := m) ψ) :
     lam ψ hψ I B (y + z) = lam ψ hψ I B y + lam ψ hψ I B z := by
@@ -68,6 +85,9 @@ theorem lam_add (hψ : Continuous ψ) {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] �
     lam_eq hψ hI hB hK (fun κ hκ => (hKf κ hκ).1), lam_eq hψ hI hB hK (fun κ hκ => (hKf κ hκ).2)]
   simp only [lamK, map_add, LinearMap.add_apply, add_div]
 
+/- English proof (translation)
+Take `⟨K, hK, hKf⟩` from `exists_good_fix hψ y y`. Rewrite using `[lam_eq hψ hI hB hK (fun κ hκ => by rw [map_smul, (hKf κ hκ).1]), lam_eq hψ hI hB hK (fun κ hκ => (hKf κ hκ).1)]`. Simplify using `only [lamK, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, mul_div_assoc]`.
+-/
 theorem lam_smul (hψ : Continuous ψ) {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I)
     {B : WT (m := m) ψ →ₗ⋆[ℂ] WT (m := m) ψ →ₗ[ℂ] ℂ} (hB : IsInvForm (rhoW ψ) B) (a : ℂ) (y : WT (m := m) ψ) :
     lam ψ hψ I B (a • y) = (starRingEnd ℂ) a * lam ψ hψ I B y := by

@@ -5,6 +5,9 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `_ X` and use `Formalism.L2.SG.Pf.rowDictGoodOp_exists X`.
+-/
 theorem rowDict_goodOp_nonempty :
     ∀ (D : D7) (X : HidaSetting D), Nonempty (Formalism.L2.SG.RowDict.GoodOp X) :=
   fun _ X => Formalism.L2.SG.Pf.rowDictGoodOp_exists X

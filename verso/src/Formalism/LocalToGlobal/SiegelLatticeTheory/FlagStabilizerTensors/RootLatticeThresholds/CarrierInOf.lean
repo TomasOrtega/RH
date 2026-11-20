@@ -26,12 +26,18 @@ def embE (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (j : Fin (nfE D)) : D.ho
 def PlaceTie (e : InfinitePlace D.host.E ≃ D.what₂.Tau) : Prop :=
   ∀ x : InfinitePlace D.host.E, InfinitePlace.mk ((X.B.I.φ (X.pl.symm (e x))).comp X.ιE.symm.toRingHom) = x
 
+/- English proof (translation)
+The claim follows from `h (plE D j)`.
+-/
 theorem hembE (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (h : PlaceTie X e) (j : Fin (nfE D)) :
     InfinitePlace.mk (embE X e j) = plE D j := h (plE D j)
 
 def castLoc (u : D.what₂.Word) {v w : InfinitePlace X.B.I.F} (h : v = w) : X.Vloc u v ≃ₗᵢ[ℂ] X.Vloc u w := by
   subst h; exact LinearIsometryEquiv.refl ℂ _
 
+/- English proof (translation)
+Simplify using `[tauE]`.
+-/
 theorem tauE_symm (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (v : InfinitePlace X.B.I.F) :
     X.pl.symm (e (plE D ((tauE X e).symm v))) = v := by
   simp [tauE]

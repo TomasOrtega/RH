@@ -6,6 +6,17 @@ open MeasureTheory GlobalTheory.SplitFlip ValuativeRel
 open scoped Matrix
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n d S hS hcov Ψ hΨ`. Take `⟨⟨hlc, hcs⟩, hz⟩` from `hΨ`. Establish `hcl : IsClosed (Function.support Ψ)`. Establish `h` using `(hlc.isOpen_fiber 0).isClosed_compl`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `Y`. Simplify using `[Function.mem_support]`. Establish `hK : IsCompact (Function.support Ψ)` using `IsCompact.of_isClosed_subset hcs hcl (subset_tsupport Ψ)`. Establish `hU : ∀ E : GL (Fin n) k, IsOpen ((fun Y : Matrix (Fin n) (Fin d) k => E.val * Y) ⁻¹' S)` using `fun E => hS.preimage (Continuous.matrix_mul continuous_const continuous_id)`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun E : GL (Fin n) k => (fun Y : Matrix (Fin n) (Fin d) k => E.val * Y) ⁻¹' S) hU (by`.
+
+Introduce `Y hY`. Establish `hr : Y.rank = n`. Assume the negation of the conclusion as `h`. Conclude with `hY (hz Y h)`. Take `⟨E, hE⟩` from `hcov Y hr`.
+
+Conclude with `Set.mem_iUnion.2 ⟨E, hE⟩)`. Use `⟨t, fun Y hY => ?_⟩` and prove the remaining obligations. Use `ht hY` as an intermediate fact. Simplify using `only [Set.mem_iUnion, Set.mem_preimage] at this`. Take `⟨E, hEt, hE⟩` from `this`.
+
+Conclude with `⟨E, hEt, hE⟩`.
+-/
 theorem GlobalTheory.FullRankCoinv.fullRk_support_finite_cover : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ)
     (S : Set (Matrix (Fin n) (Fin d) k)), IsOpen S →
     (∀ Y : Matrix (Fin n) (Fin d) k, Y.rank = n → ∃ E : GL (Fin n) k, E.val * Y ∈ S) →

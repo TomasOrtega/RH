@@ -19,6 +19,9 @@ def overIso {R : Type} [CommRing R] (X : Scheme.{0}) (F G : Shv R)
 def LocOver : Prop := Hyps → ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (F G : Shv R),
   Nonempty (F.over X ≅ G.over X) → ∀ n : ℤ, Nonempty (H R (sch.obj X) F n ≃+ H R (sch.obj X) G n)
 
+/- English proof (translation)
+Introduce `hy R _ X F G e he n`. Conclude with `hO hy R X F G ⟨overIso X F G e he⟩ n`.
+-/
 theorem LeafLoc_of (hO : LocOver) : LateralTheory.E.LeafTwistPf.LeafLoc := by
   intro hy R _ X F G e he n
   exact hO hy R X F G ⟨overIso X F G e he⟩ n
@@ -32,6 +35,9 @@ def LocSec : Prop := Hyps → ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (F : 
 def LocSlice : Prop := Hyps → ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (F G : Shv R),
   Nonempty (F.over X ≅ G.over X) → ∀ n : ℤ, Nonempty ((secCx F X).homology n ≃+ (secCx G X).homology n)
 
+/- English proof (translation)
+Introduce `hy R _ X F G hi n`. Take `⟨a⟩` from `hS hy R X F n`. Take `⟨b⟩` from `hS hy R X G n`. Take `⟨c⟩` from `hL hy R X F G hi n`. Conclude with `⟨(a.trans c).trans b.symm⟩`.
+-/
 theorem LocOver_of (hS : LocSec) (hL : LocSlice) : LocOver := by
   intro hy R _ X F G hi n
   obtain ⟨a⟩ := hS hy R X F n
@@ -39,6 +45,9 @@ theorem LocOver_of (hS : LocSec) (hL : LocSlice) : LocOver := by
   obtain ⟨c⟩ := hL hy R X F G hi n
   exact ⟨(a.trans c).trans b.symm⟩
 
+/- English proof (translation)
+The claim follows from `LeafLoc_of (LocOver_of hS hL)`.
+-/
 theorem LeafLoc_of' (hS : LocSec) (hL : LocSlice) : LateralTheory.E.LeafTwistPf.LeafLoc :=
   LeafLoc_of (LocOver_of hS hL)
 

@@ -10,6 +10,11 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)`. Substitute `hg` using the available equality. Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Establish `hs : ∀ x : E, sigR (AF F) σ (inclR (F` using `F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl`. Simplify using `only`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `h using 3` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `exact Matrix.ext fun i j => (hs ((m : Matrix (Fin n) (Fin n) E) j i)).symm`.
+-/
 theorem unitary_of_map_inclR (σ : E →ₐ[F] E) (n : ℕ) (J' : Matrix (Fin n) (Fin n) E) (m : GL (Fin n) E)
     (g : GL (Fin n) (AF F ⊗[F] E)) (hg : g = Matrix.GeneralLinearGroup.map (inclR (F := F) (E := E) (AF F)) m)
     (h : Formalism.UG.cT (sigR (AF F) σ) (g : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) * JR (AF F) J' *
@@ -27,6 +32,23 @@ theorem unitary_of_map_inclR (σ : E →ₐ[F] E) (n : ℕ) (J' : Matrix (Fin n)
     | rfl
     | exact Matrix.ext fun i j => (hs ((m : Matrix (Fin n) (Fin n) E) j i)).symm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n J c hc φ hφ μ 𝓕 hμ h𝓕`. Set `e` to `toGAd hσ J hc`. Establish `he : Continuous e`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Conclude with `continuous_subtype_val`.
+
+Establish `hes : Continuous e.symm`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Conclude with `continuous_subtype_val`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Use `haveI : ContinuousMul (UA σ J) := ⟨by`.
+
+Establish `h : (fun p : UA σ J × UA σ J => p.1 * p.2) = e.symm ∘ (fun q : GAd σ (c • J.map σ) × GAd σ (c • J.map σ) => q.1 * q.2) ∘ Prod.map e e`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `hes.comp (continuous_mul.comp (he.prodMap he))⟩`.
+
+Set `t : UA σ J ≃ₜ GAd σ (c • J.map σ)` to `⟨e.toEquiv, he, hes⟩`. Set `me` to `t.toMeasurableEquiv`. Establish `hp : MeasurePreserving me μ (μ.map me)` using `⟨me.measurable, rfl⟩`. Establish `hH : (μ.map me).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map μ e he hes`. Establish `hps : MeasurePreserving me.symm (μ.map me) μ` using `hp.symm`.
+
+Establish `hmemU : ∀ γ : ratPts σ (c • J.map σ), e.symm γ.1 ∈ ratU σ J` using `fun γ => by`. Take `⟨u, -, hu2⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 γ.2)`. Conclude with `Subgroup.mem_subgroupOf.2 ⟨u, hu2⟩`. Establish `hmemP : ∀ δ : ratU σ J, e δ.1 ∈ ratPts σ (c • J.map σ)` using `fun δ => by`. Take `⟨m, hm⟩` from `Subgroup.mem_subgroupOf.1 δ.2`.
+
+Establish `h2` using `(e δ.1).2`. Use `Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨m, ?_, hm⟩)` and prove the remaining obligations. Conclude with `unitary_of_map_inclR σ n _ m _ (by rw [hm]; rfl) h2`. Set `f : ratU σ J → ratPts σ (c • J.map σ)` to `fun δ => ⟨e δ.1, hmemP δ⟩`. Establish `hf : Function.Bijective f` using `⟨fun a b hab => Subtype.ext (e.injective (congrArg Subtype.val hab)), fun γ => ⟨⟨e.symm γ.1, hmemU γ⟩, Subtype.ext (e.apply_symm_apply γ.1)⟩⟩`.
+
+Establish `hfd` using `h𝓕.preimage_of_equiv hps.quasiMeasurePreserving hf fun δ x => by show e.symm (e δ.1 * x) = δ.1 * e.symm x`. Rewrite using `[map_mul, e.symm_apply_apply]`. Establish `h1` using `hφ (μ.map me) (me.symm ⁻¹' 𝓕) hH hfd`. Establish `h3` using `(hp.integrableOn_comp_preimage me.measurableEmbedding).2 h1`. Establish `hset : me ⁻¹' (me.symm ⁻¹' 𝓕) = 𝓕`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite `h3` using `[hset]`. Conclude with `h3`.
+-/
 theorem isSqInt_transport : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (c : E) (hc : c ≠ 0)
     (φ : GAd σ (c • J.map σ) → ℂ), IsSqInt σ (c • J.map σ) φ →

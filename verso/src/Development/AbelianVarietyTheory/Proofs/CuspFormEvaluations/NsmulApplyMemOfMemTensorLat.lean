@@ -9,6 +9,13 @@ open ReciprocityTheory.GeometryOfNumbersTheory (stdLat)
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {dim : (E →+* ℂ) → ℕ} {n : ℕ}
 
+/- English proof (translation)
+Establish `hs : ∀ j, ∑ i, cc (w i j) • v i = (Pi.single j (1 : E) : Fin n → E)`. Introduce `j`. Rewrite using `[h (Pi.single j 1)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[DualFamily.herm_one_eq]`. Simplify using `[Pi.single_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hs j, tens_sum_right]`.
+
+Repeatedly rewrite using `[tens_smul_right]`. Use `_ = ∑ i, ∑ j, tens (actE (cc (w i j)) (γ j)) (v i) := Finset.sum_comm`. Use `_ = ∑ i, tens (contr γ (w i)) (v i) := by`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[contr, tens_sum_left]`.
+-/
 theorem eq_sum_tens_contr {ι : Type*} [Fintype ι] {v w : ι → Fin n → E}
     (h : ∀ u : Fin n → E, u = ∑ i, herm 1 u (w i) • v i) (γ : Fin n → Vsp dim) :
     γ = ∑ i, tens (contr γ (w i)) (v i) := by
@@ -31,10 +38,18 @@ theorem eq_sum_tens_contr {ι : Type*} [Fintype ι] {v w : ι → Fin n → E}
 
 variable {X : PT E} {Λ' : Submodule (𝓞 E) (Fin n → E)}
 
+/- English proof (translation)
+The claim follows from `tens_mem_tensorLat hx fun w hw => hint v hv w hw`.
+-/
 theorem tens_mem_of_integral (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y))
     {x : Vsp X.dim} (hx : x ∈ X.L) {v : Fin n → E} (hv : v ∈ Λ') : tens x v ∈ tensorLat X Λ' :=
   tens_mem_tensorLat hx fun w hw => hint v hv w hw
 
+/- English proof (translation)
+Take `⟨-, m, v, w, hv, hw, hexp⟩` from `GlobalTheory.exists_dual_family Λ' hfg hint hdual`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `γ hγ`. Rewrite using `[eq_sum_tens_contr hexp γ]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨_, mem_tensorLat.1 hγ (w i) (hw i), v i, hv i, rfl⟩`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `γ ⟨x, hx, u, hu, rfl⟩`. Conclude with `tens_mem_of_integral hint hx hu`.
+-/
 theorem tensorLat_eq_span (hfg : Λ'.FG)
     (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y))
     (hdual : ∀ x, (∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y)) → x ∈ Λ') :
@@ -49,6 +64,11 @@ theorem tensorLat_eq_span (hfg : Λ'.FG)
     rintro γ ⟨x, hx, u, hu, rfl⟩
     exact tens_mem_of_integral hint hx hu
 
+/- English proof (translation)
+Take `⟨-, m, v, w, hv, hw, hexp⟩` from `GlobalTheory.exists_dual_family Λ' hfg hint hdual`. Establish `hc` using `mem_tensorLat.1 hγ'`. Use `choose k hk using fun i => im_HC_tens_int hγ (hc (w i) (hw i)) (hv i)`. Use `⟨∑ i, k i, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_sum_tens_contr hexp γ', HC_sum_right, Complex.im_sum]`.
+
+Use `push_cast`. Conclude with `Finset.sum_congr rfl fun i _ => hk i`.
+-/
 theorem im_HC_int (hfg : Λ'.FG)
     (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y))
     (hdual : ∀ x, (∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y)) → x ∈ Λ')
@@ -62,6 +82,15 @@ theorem im_HC_int (hfg : Λ'.FG)
   push_cast
   exact Finset.sum_congr rfl fun i _ => hk i
 
+/- English proof (translation)
+Take `⟨-, m, v, w, hv, hw, hexp⟩` from `GlobalTheory.exists_dual_family Λ' hfg hint hdual`. Set `ψ : Fin m → (X.L →+ ℤ)` to `fun i => φ.comp { toFun := fun x => ⟨tens (x : Vsp X.dim) (v i), tens_mem_of_integral hint x.2 (hv i)⟩ map_zero' := Subtype.ext (tens_zero_left _) map_add' := fun a b => Subtype.ext (tens_add_left _ _ _) }`. Use `choose y hyL hy using fun i => X.perfect (ψ i)`. Use `⟨∑ i, tens (y i) (w i), Submodule.sum_mem _ fun i _ => tens_mem_of_integral hint (hyL i) (hw i), fun γ' => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ i, contr (γ' : Fin n → Vsp X.dim) (w i) ∈ X.L` using `fun i => mem_tensorLat.1 γ'.2 (w i) (hw i)`.
+
+Establish `hsplit : γ' = ∑ i, (⟨tens (contr (γ' : Fin n → Vsp X.dim) (w i)) (v i), tens_mem_of_integral hint (hc i) (hv i)⟩ : tensorLat X Λ')`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Conclude with `eq_sum_tens_contr hexp _`. Rewrite using `[HC_sum_left, Complex.im_sum]`.
+
+Use `conv_lhs => rw [hsplit]`. Rewrite using `[map_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[HC_tens_left]`.
+
+Conclude with `hy i ⟨_, hc i⟩`.
+-/
 theorem exists_im_HC_eq (hfg : Λ'.FG)
     (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y))
     (hdual : ∀ x, (∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y)) → x ∈ Λ')
@@ -91,6 +120,9 @@ theorem exists_im_HC_eq (hfg : Λ'.FG)
   rw [HC_tens_left]
   exact hy i ⟨_, hc i⟩
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul E N v, tens_smul_right, actE_natCast]`. Use function extensionality and compare the values at `k`. Simplify using `only [tens_apply, Pi.smul_apply]`. Rewrite using `[← actL_apply, map_nsmul, actL_apply]`.
+-/
 private lemma tens_nsmul (x : Vsp dim) (v : Fin n → E) (N : ℕ) :
     tens x (N • v) = N • tens x v := by
   rw [← Nat.cast_smul_eq_nsmul E N v, tens_smul_right, actE_natCast]
@@ -98,6 +130,11 @@ private lemma tens_nsmul (x : Vsp dim) (v : Fin n → E) (N : ℕ) :
   simp only [tens_apply, Pi.smul_apply]
   rw [← actL_apply, map_nsmul, actL_apply]
 
+/- English proof (translation)
+Establish `hs : ∀ k, N • (Pi.single k (1 : E) : Fin n → E) ∈ Λ'` using `fun k => hN _ (mem_stdLat.2 fun j => by`. Apply the tactic sequence `by_cases hjk : j = k <;> simp [hjk, isIntegral_one, isIntegral_zero])`. Establish `heq : N • γ = ∑ k, tens (γ k) (N • (Pi.single k (1 : E) : Fin n → E))` using `by conv_lhs => rw [← sum_tens_single γ]`. Rewrite using `[Finset.smul_sum]`. Repeatedly rewrite using `[tens_nsmul]`.
+
+Rewrite using `[heq]`. Conclude with `Submodule.sum_mem _ fun k _ => tens_mem_of_integral hint (hγ k) (hs k)`.
+-/
 theorem nsmul_mem_tensorLat (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y)) {N : ℕ}
     (hN : ∀ u ∈ stdLat E n, N • u ∈ Λ') {γ : Fin n → Vsp X.dim} (hγ : ∀ k, γ k ∈ X.L) :
     N • γ ∈ tensorLat X Λ' := by
@@ -111,6 +148,11 @@ theorem nsmul_mem_tensorLat (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ
   rw [heq]
   exact Submodule.sum_mem _ fun k _ => tens_mem_of_integral hint (hγ k) (hs k)
 
+/- English proof (translation)
+Establish `h1 : N • (Pi.single k (1 : E) : Fin n → E) ∈ Λ'` using `hN _ (mem_stdLat.2 fun j => by`. Apply the tactic sequence `by_cases hjk : j = k <;> simp [hjk, isIntegral_one, isIntegral_zero])`. Establish `h2` using `mem_tensorLat.1 hγ _ h1`. Rewrite `h2` using `[← Nat.cast_smul_eq_nsmul E N (Pi.single k (1 : E) : Fin n → E), contr_smul_right, contr_single]`. Establish `hcc : cc (N : E) = N`.
+
+Unfold `cc`. Conclude with `map_natCast _ N`. Rewrite `h2` using `[hcc, actE_natCast]`. Conclude with `h2`.
+-/
 theorem nsmul_apply_mem_of_mem_tensorLat {N : ℕ} (hN : ∀ u ∈ stdLat E n, N • u ∈ Λ')
     {γ : Fin n → Vsp X.dim} (hγ : γ ∈ tensorLat X Λ') (k : Fin n) : (N • γ) k ∈ X.L := by
   have h1 : N • (Pi.single k (1 : E) : Fin n → E) ∈ Λ' :=
@@ -125,6 +167,21 @@ theorem nsmul_apply_mem_of_mem_tensorLat {N : ℕ} (hN : ∀ u ∈ stdLat E n, N
   rw [hcc, actE_natCast] at h2
   exact h2
 
+/- English proof (translation)
+Establish `: Algebra.IsAlgebraic ℤ E` using `(IsFractionRing.comap_isAlgebraic_iff (K := ℚ)).2 inferInstance`. Take `⟨-, m, v, w, hv, hw, hexp⟩` from `GlobalTheory.exists_dual_family Λ' hfg hint hdual`. Take `⟨y, hy0, hy⟩` from `Algebra.IsAlgebraic.exists_integral_multiples ℤ (Finset.univ.image fun p : Fin m × Fin n => cc (w p.1 p.2))`. Establish `hN : ((y.natAbs : ℕ) : E) = (y : E) ∨ ((y.natAbs : ℕ) : E) = -(y : E)`. Break down `Int.natAbs_eq y with hq | hq` into its components or cases.
+
+Use `left conv_rhs => rw [hq]`. Simplify using the standard rewrite rules. Use `right conv_rhs => rw [hq]`. Simplify using the standard rewrite rules. Establish `hyz : ∀ i a, IsIntegral ℤ ((y.natAbs : E) * cc (w i a))`.
+
+Introduce `i a`. Establish `h` using `hy _ (Finset.mem_image.2 ⟨(i, a), Finset.mem_univ _, rfl⟩)`. Rewrite `h` using `[zsmul_eq_mul]`. Break down `hN with e | e` into its components or cases. Rewrite using `[e]`.
+
+Conclude with `h`. Rewrite using `[e, neg_mul]`. Conclude with `h.neg`. Use `⟨y.natAbs, Nat.one_le_iff_ne_zero.2 (Int.natAbs_ne_zero.2 hy0), fun u hu => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ i, IsIntegral ℤ ((y.natAbs : E) * herm 1 u (w i))`.
+
+Introduce `i`. Rewrite using `[DualFamily.herm_one_eq, Finset.mul_sum]`. Use `IsIntegral.sum _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `(mem_stdLat.1 hu a).mul (hyz i a)`.
+
+Establish `hmem : ∑ i, (⟨_, hc i⟩ : 𝓞 E) • v i ∈ Λ'` using `Λ'.sum_mem fun i _ => Λ'.smul_mem _ (hv i)`. Use `hmem using 1` and compare the differences between its conclusion and the goal. Use `conv_lhs => rw [hexp u]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [Pi.smul_apply, smul_eq_mul, nsmul_eq_mul]`. Rewrite using `[Algebra.smul_def, ← mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem exists_nsmul_stdLat_le (hfg : Λ'.FG)
     (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y))
     (hdual : ∀ x, (∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y)) → x ∈ Λ') :
@@ -169,6 +226,9 @@ theorem exists_nsmul_stdLat_le (hfg : Λ'.FG)
   rw [Algebra.smul_def, ← mul_assoc]
   rfl
 
+/- English proof (translation)
+Take `⟨N, hN1, hN⟩` from `exists_nsmul_stdLat_le hfg hint hdual`. Conclude with `⟨N, hN1, fun γ hγ => nsmul_mem_tensorLat hint hN hγ, fun γ hγ k => nsmul_apply_mem_of_mem_tensorLat hN hγ k⟩`.
+-/
 theorem exists_nsmul_commensurable (hfg : Λ'.FG)
     (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y))
     (hdual : ∀ x, (∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y)) → x ∈ Λ') :
@@ -179,6 +239,9 @@ theorem exists_nsmul_commensurable (hfg : Λ'.FG)
   exact ⟨N, hN1, fun γ hγ => nsmul_mem_tensorLat hint hN hγ,
     fun γ hγ k => nsmul_apply_mem_of_mem_tensorLat hN hγ k⟩
 
+/- English proof (translation)
+Use `⟨?_, fun m v w h γ => eq_sum_tens_contr h γ, tensorLat_eq_span hfg hint hdual, fun α γ hγ => act_mem_tensorLat α hγ, fun γ hγ γ' hγ' => im_HC_int hfg hint hdual hγ hγ', exists_im_HC_eq hfg hint hdual, exists_nsmul_stdLat_le hfg hint hdual, fun N hN => ⟨fun γ hγ => nsmul_mem_tenso …` and prove the remaining obligations. Take `⟨-, m, v, w, hv, hw, hexp⟩` from `GlobalTheory.exists_dual_family Λ' hfg hint hdual`. Conclude with `⟨m, v, w, hv, hw, hexp, fun γ => eq_sum_tens_contr hexp γ⟩`.
+-/
 theorem tensorLat_span_integral_perfect (X : PT E) (Λ' : Submodule (𝓞 E) (Fin n → E))
     (hfg : Λ'.FG) (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y))
     (hdual : ∀ x, (∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y)) → x ∈ Λ') :
@@ -208,6 +271,9 @@ theorem tensorLat_span_integral_perfect (X : PT E) (Λ' : Submodule (𝓞 E) (Fi
   obtain ⟨-, m, v, w, hv, hw, hexp⟩ := GlobalTheory.exists_dual_family Λ' hfg hint hdual
   exact ⟨m, v, w, hv, hw, hexp, fun γ => eq_sum_tens_contr hexp γ⟩
 
+/- English proof (translation)
+Take `⟨γ, hγ, h⟩` from `exists_im_HC_eq stdLat_fg (fun _ hx => mem_stdLat_iff_herm.1 hx) (fun _ hx => mem_stdLat_iff_herm.2 hx) φ`. Conclude with `⟨γ, mem_tensorLat_stdLat.1 hγ, h⟩`.
+-/
 example (X : PT E) (φ : tensorLat X (stdLat E n) →+ ℤ) :
     ∃ γ : Fin n → Vsp X.dim, (∀ k, γ k ∈ X.L) ∧ ∀ γ' : tensorLat X (stdLat E n),
       (φ γ' : ℝ) = (HC γ (γ' : Fin n → Vsp X.dim)).im := by

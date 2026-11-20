@@ -11,6 +11,15 @@ namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.GeometryOfNumbersTheory MvPolynomial MeasureTheory Module Filter Asymptotics
 open scoped ComplexOrder
 
+/- English proof (translation)
+Rewrite using `[aeval_def, eval₂_eq']`. Use `symm`. Use `Finset.sum_bij_ne_zero (fun a _ _ => Finsupp.equivFunOnFinite.symm a) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a _ ha`. Rewrite using `[MvPolynomial.mem_support_iff]`.
+
+Introduce `h`. Apply `ha` to reduce the goal to its premises. Simplify using `[h]`. Introduce `a _ _ b _ _ h`. Conclude with `Finsupp.equivFunOnFinite.symm.injective h`.
+
+Introduce `d hd hne`. Use `⟨Finsupp.equivFunOnFinite d, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.Nat.mem_antidiagonalTuple]`. Establish `h` using `hg (MvPolynomial.mem_support_iff.1 hd)`. Rewrite `h` using `[Finsupp.weight_apply]`.
+
+Simplify `h` using `[Finsupp.sum_fintype]`. Simplify using `using hne`. Simplify using the standard rewrite rules. Introduce `a _ _`. Simplify using the standard rewrite rules.
+-/
 theorem aeval_eq_sum_adt {D N : ℕ} {S : Type*} [CommRing S] (g : MvPolynomial (Fin (D + 1)) ℤ)
     (hg : g.IsHomogeneous N) (y : Fin (D + 1) → S) :
     aeval y g = ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) N,
@@ -37,6 +46,9 @@ theorem aeval_eq_sum_adt {D N : ℕ} {S : Type*} [CommRing S] (g : MvPolynomial 
   · intro a _ _
     simp
 
+/- English proof (translation)
+Establish `hae : ∀ᵐ w ∂(sphProb (D + 1)), sqN w = 1`. Rewrite using `[ae_iff]`. Conclude with `sphProb_compl_sphere D`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integral_sphProb_le {D : ℕ} (F : (Fin (D + 1) → ℂ) → ℝ) (hF0 : ∀ w, 0 ≤ F w) {B : ℝ}
     (hB : ∀ w, sqN w = 1 → F w ≤ B) : ∫ w, F w ∂(sphProb (D + 1)) ≤ B := by
   have hae : ∀ᵐ w ∂(sphProb (D + 1)), sqN w = 1 := by
@@ -54,6 +66,9 @@ def secTraceHom {Ω : Type*} [Field Ω] [CharZero Ω] {κ : Type*} [Fintype κ] 
 def adtEnum (D N : ℕ) (i : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card) : Fin (D + 1) → ℕ :=
   ((Finset.Nat.antidiagonalTuple (D + 1) N).equivFin.symm i).1
 
+/- English proof (translation)
+Conclude with `(Fintype.sum_equiv (Finset.Nat.antidiagonalTuple (D + 1) N).equivFin.symm _ (fun x => f x.1) fun _ => rfl).trans (Finset.sum_coe_sort _ f)`.
+-/
 theorem sum_adtEnum {M : Type*} [AddCommMonoid M] (D N : ℕ) (f : (Fin (D + 1) → ℕ) → M) :
     ∑ i, f (adtEnum D N i) = ∑ a ∈ Finset.Nat.antidiagonalTuple (D + 1) N, f a := by
   exact (Fintype.sum_equiv (Finset.Nat.antidiagonalTuple (D + 1) N).equivFin.symm _
@@ -63,6 +78,11 @@ def monoDiag (D N δ : ℕ) : Matrix (Fin (δ * (Finset.Nat.antidiagonalTuple (D
     (Fin (δ * (Finset.Nat.antidiagonalTuple (D + 1) N).card)) ℂ :=
   Matrix.diagonal fun p => ((monoNormSq (adtEnum D N (finProdFinEquiv.symm p).2) : ℝ) : ℂ)
 
+/- English proof (translation)
+Rewrite using `[monoDiag, Matrix.posDef_diagonal_iff]`. Introduce `p`. Establish `h : 0 < monoNormSq (adtEnum D N (finProdFinEquiv.symm p).2)`. Unfold `monoNormSq`. Check the signs of the components of the expression.
+
+Conclude with `h` after adjusting the coercions.
+-/
 theorem monoDiag_posDef (D N δ : ℕ) : (monoDiag D N δ).PosDef := by
   rw [monoDiag, Matrix.posDef_diagonal_iff]
   intro p
@@ -71,6 +91,13 @@ theorem monoDiag_posDef (D N δ : ℕ) : (monoDiag D N δ).PosDef := by
     positivity
   exact_mod_cast h
 
+/- English proof (translation)
+Establish `hpos : ∀ a : Fin (D + 1) → ℕ, 0 < monoNormSq a` using `fun a => by`. Unfold `monoNormSq`. Check the signs of the components of the expression. Establish `hdet : (monoDiag D N δ).det.re = ∏ p : Fin (δ * (Finset.Nat.antidiagonalTuple (D + 1) N).card), monoNormSq (adtEnum D N (finProdFinEquiv.symm p).2)`. Rewrite using `[monoDiag, Matrix.det_diagonal, ← Complex.ofReal_prod, Complex.ofReal_re]`.
+
+Rewrite using `[hdet, Real.log_prod fun p _ => (hpos _).ne']`. Rewrite using `[← finProdFinEquiv.sum_comp (fun p => Real.log (monoNormSq (adtEnum D N (finProdFinEquiv.symm p).2)))]`. Simplify using `only [Equiv.symm_apply_apply]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only`.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, sum_adtEnum D N (fun a => Real.log (monoNormSq a)), chiP]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem neg_log_det_monoDiag (D N δ : ℕ) :
     -(1 / 2) * Real.log (monoDiag D N δ).det.re = δ * chiP D N := by
   have hpos : ∀ a : Fin (D + 1) → ℕ, 0 < monoNormSq a := fun a => by

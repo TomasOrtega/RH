@@ -18,14 +18,31 @@ def loweringMonoid (E : GLOps n K V) : Submonoid (Module.End K V) :=
 def hwvLoweringSpan (E : GLOps n K V) (mu : Fin n → ℤ) : Submodule K V :=
   Submodule.span K {x | ∃ u ∈ loweringMonoid E, ∃ w, IsHWV E mu w ∧ x = u w}
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator .. | (apply UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator <;> assumption) | (apply @UpperTheory.Reformulated …`.
+-/
 theorem isotypic_stable_operator (E : GLOps n K V) (mu : Fin n → ℤ) (a b : Fin n) {x : V} (hx : x ∈ isoSub E mu) :
     E a b x ∈ isoSub E mu := by
   first | exact UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator .. | (apply UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator n K V ‹_› ‹_› ‹_› E mu a b x hx | exact @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator n K V ‹_› ‹_› ‹_› E mu a b x | exact @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator n K V ‹_› ‹_› ‹_› E mu a b | exact @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator n K V ‹_› ‹_› ‹_› E mu a | exact @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator n K V ‹_› ‹_› ‹_› E mu | exact @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator n K V ‹_› ‹_› ‹_› E | exact @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator n K V ‹_› ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator n K V ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator n K V ‹_› | exact @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator n K V | exact @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator n K | exact @UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator n
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower .. | (apply UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower <;> assumption) | (apply @UpperTheory.Reformulated.B. …`.
+-/
 theorem hwv_lowering_span_lower (E : GLOps n K V) (mu : Fin n → ℤ) {a b : Fin n} (hab : b < a) {x : V}
     (hx : x ∈ hwvLoweringSpan E mu) : E a b x ∈ hwvLoweringSpan E mu := by
   first | exact UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower .. | (apply UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower n K V ‹_› ‹_› ‹_› E mu a b hab x hx | exact @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower n K V ‹_› ‹_› ‹_› E mu a b hab x | exact @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower n K V ‹_› ‹_› ‹_› E mu a b hab | exact @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower n K V ‹_› ‹_› ‹_› E mu a b | exact @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower n K V ‹_› ‹_› ‹_› E mu a | exact @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower n K V ‹_› ‹_› ‹_› E mu | exact @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower n K V ‹_› ‹_› ‹_› E | exact @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower n K V ‹_› ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower n K V ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower n K V ‹_› | exact @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower n K V | exact @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower n K | exact @UpperTheory.Reformulated.B.Qk30.hwv_lowering_span_lower n
 
+/- English proof (translation)
+Unfold `loweringMonoid at hu`. Proceed by induction on `hu using Submonoid.closure_induction_left with`. Consider the case `one`. Introduce `c d`. Rewrite using `[Module.End.one_apply]`.
+
+Break down `lt_trichotomy c d with h | h | h` into its components or cases. Rewrite using `[hw.2.2 c d h]`. Conclude with `Submodule.zero_mem _`. Substitute `h` using the available equality. Rewrite using `[(mem_weightSpace_iff_diagonal_rep E mu w).1 hw.2.1 c]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, (loweringMonoid E).one_mem, w, hw, rfl⟩)`. Conclude with `Submodule.subset_span ⟨E c d, Submonoid.subset_closure ⟨c, d, h, rfl⟩, w, hw, rfl⟩`. Consider the case `mul_left g hg y _ ih`. Take `⟨b, a, hab, rfl⟩` from `hg`. Introduce `c d`.
+
+Rewrite using `[Module.End.mul_apply, gl_commutation_apply hE c d b a (y w)]`. Use `Submodule.sub_mem _ (Submodule.add_mem _ (hwv_lowering_span_lower E mu hab (ih c d)) ?_) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `ih c a`. Conclude with `Submodule.zero_mem _`.
+
+Use `split_ifs`. Conclude with `ih b d`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem lowering_word_hwv_operator_mem {E : GLOps n K V} (hE : IsGLRep E) (mu : Fin n → ℤ) {w : V} (hw : IsHWV E mu w)
     {u : Module.End K V} (hu : u ∈ loweringMonoid E) : ∀ c d : Fin n, E c d (u w) ∈ hwvLoweringSpan E mu := by
   unfold loweringMonoid at hu
@@ -51,6 +68,13 @@ theorem lowering_word_hwv_operator_mem {E : GLOps n K V} (hE : IsGLRep E) (mu : 
       · exact ih b d
       · exact Submodule.zero_mem _
 
+/- English proof (translation)
+Establish `hx'` using `hx`. Unfold `hwvLoweringSpan at hx'`. Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem x hx1`. Take `⟨u, hu, v, hv, rfl⟩` from `hx1`.
+
+Conclude with `lowering_word_hwv_operator_mem hE mu hv hu c d`. Consider the case `zero => simp`. Consider the case `add x y hx1 hy1 hx2 hy2`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ (hx2 hx1) (hy2 hy1)`.
+
+Consider the case `smul c x hx1 hx2 => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ (hx2 hx1)`.
+-/
 theorem hwv_lowering_span_stable {E : GLOps n K V} (hE : IsGLRep E) (mu : Fin n → ℤ) (c d : Fin n) {x : V}
     (hx : x ∈ hwvLoweringSpan E mu) : E c d x ∈ hwvLoweringSpan E mu := by
   have hx' := hx
@@ -64,6 +88,11 @@ theorem hwv_lowering_span_stable {E : GLOps n K V} (hE : IsGLRep E) (mu : Fin n 
     rw [map_add]; exact Submodule.add_mem _ (hx2 hx1) (hy2 hy1)
   | smul c x hx1 hx2 => rw [map_smul]; exact Submodule.smul_mem _ _ (hx2 hx1)
 
+/- English proof (translation)
+Unfold `isoSub`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨u, hu, v, hv, rfl⟩`. Unfold `Umon at hu`. Proceed by induction on `hu using Submonoid.closure_induction_left with`.
+
+Consider the case `one => exact Submodule.subset_span ⟨1, (loweringMonoid E).one_mem, v, hv, rfl⟩`. Consider the case `mul_left g hg y _ ih`. Take `⟨ab, rfl⟩` from `hg`. Conclude with `hwv_lowering_span_stable hE mu ab.1 ab.2 ih`.
+-/
 theorem isotypic_le_lowering_span {E : GLOps n K V} (hE : IsGLRep E) (mu : Fin n → ℤ) : isoSub E mu ≤ hwvLoweringSpan E mu := by
   unfold isoSub
   rw [Submodule.span_le]
@@ -75,6 +104,19 @@ theorem isotypic_le_lowering_span {E : GLOps n K V} (hE : IsGLRep E) (mu : Fin n
     obtain ⟨ab, rfl⟩ := hg
     exact hwv_lowering_span_stable hE mu ab.1 ab.2 ih
 
+/- English proof (translation)
+Unfold `hwvLoweringSpan at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, w, hw, rfl⟩` from `hx`. Unfold `loweringMonoid at hu`.
+
+Proceed by induction on `hu using Submonoid.closure_induction_left with`. Consider the case `one`. Rewrite using `[Module.End.one_apply]`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, lam a ≠ mu a := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hne (funext h)`. Establish `h1` using `hB a a v w`. Rewrite `h1` using `[(mem_weightSpace_iff_diagonal_rep E lam v).1 hv.2.1 a, (mem_weightSpace_iff_diagonal_rep E mu w).1 hw.2.1 a, map_smul, map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`. Establish `h2 : ((lam a : K) - (mu a : K)) * B v w = 0` using `by rw [sub_mul, h1, sub_self]`.
+
+Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. It suffices to derive a contradiction. Apply `ha` to reduce the goal to its premises. Establish `: (lam a : K) = (mu a : K)` using `sub_eq_zero.1 h3`. Conclude with `this` after adjusting the coercions.
+
+Conclude with `h3`. Consider the case `mul_left g hg y _ _`. Take `⟨c, d, hcd, rfl⟩` from `hg`. Rewrite using `[Module.End.mul_apply, ← hB d c v (y w), hv.2.2 d c hcd]`. Simplify using the standard rewrite rules.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [map_smul, hx, smul_zero]`.
+-/
 theorem hwv_orthogonal_lowering_span [CharZero K] {E : GLOps n K V} (B : V →ₗ[K] V →ₗ[K] K)
     (hB : ∀ a b x y, B (E a b x) y = B x (E b a y)) {lam mu : Fin n → ℤ} (hne : lam ≠ mu) {v : V}
     (hv : IsHWV E lam v) {z : V} (hz : z ∈ hwvLoweringSpan E mu) : B v z = 0 := by
@@ -107,6 +149,17 @@ theorem hwv_orthogonal_lowering_span [CharZero K] {E : GLOps n K V} (B : V →�
   | add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]
   | smul c x _ hx => rw [map_smul, hx, smul_zero]
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ n E hE B hB lam mu hne x hx`. Unfold `isoSub at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, v, hv, rfl⟩` from `hx`.
+
+Unfold `Umon at hu`. Proceed by induction on `hu using Submonoid.closure_induction_left with`. Consider the case `one`. Introduce `y hy`. Conclude with `hwv_orthogonal_lowering_span B hB hne hv (isotypic_le_lowering_span hE mu hy)`.
+
+Consider the case `mul_left g hg u' _ ih`. Take `⟨ab, rfl⟩` from `hg`. Introduce `y hy`. Rewrite using `[Module.End.mul_apply]`. Use `show B (E ab.1 ab.2 (u' v)) y = 0`.
+
+Rewrite using `[hB]`. Conclude with `ih _ (isotypic_stable_operator E mu _ _ hy)`. Consider the case `zero => intro y _`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro z hz`.
+
+Rewrite using `[map_add, LinearMap.add_apply, hx z hz, hy z hz, add_zero]`. Consider the case `smul c x _ hx => intro z hz`. Rewrite using `[map_smul, LinearMap.smul_apply, hx z hz, smul_zero]`.
+-/
 theorem contravariant_orthogonality_holds : ContravariantIsotypicOrthogonal := by
   intro K V _ _ _ _ n E hE B hB lam mu hne x hx
   unfold isoSub at hx

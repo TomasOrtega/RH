@@ -16,6 +16,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {d : ℕ} {J : Matrix (Fin d) (Fin d) E}
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Take `⟨U, hU, h⟩` from `hL F E σ B n d X W M χX χW om r s r' s' hp g hg`. Conclude with `mem_of_superset hU fun u hu k => h u hu k f`.
+
+Consider the case `zero => exact Eventually.of_forall fun _ _ => map_zero _`. Consider the case `add x y _ _ hx hy => filter_upwards [hx, hy] with u h1 h2 k using by rw [map_add, h1 k, h2 k]`. Consider the case `smul a x _ hx => filter_upwards [hx] with u h1 k using by rw [map_smul, h1 k]`.
+-/
 theorem level_sch_k (hL : _root_.PositivityTheory.ThKEst.Level_k) {n : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W} {χX χW om r s r' s'}
     (hp : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s') {Φ : Fn F n d} (hΦ : Φ ∈ schA F _) :
     ∀ᶠ u in 𝓝 (1 : UA σ W.J), (∀ w, (mat u).map (piInf (B.emb w)) = 1) → om (1, u) Φ = Φ := by

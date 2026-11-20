@@ -7,6 +7,35 @@ open Filter
 
 namespace GlobalTheory.QSA
 
+/- English proof (translation)
+Introduce `K _ _ _ _ h2 hne a b ha g hg W hW`. Distinguish the cases in `hre : g.re ^ 2 = 1`. Use `swap`. Conclude with `⟨g, hg, hre, hW⟩`. Establish `hs0 : g.re ≠ 0`.
+
+Introduce `h`. Rewrite `hre` using `[h]`. Simplify using `at hre`. Set `X0 : K → K` to `fun τ => (1 + a * τ ^ 2) / (1 - a * τ ^ 2)`. Set `X1 : K → K` to `fun τ => 2 * τ / (1 - a * τ ^ 2)`.
+
+Set `x : K → ℍ[K, a, b]` to `fun τ => ⟨X0 τ, X1 τ, 0, 0⟩`. Establish `hD : Tendsto (fun τ : K => 1 - a * τ ^ 2) (𝓝 0) (𝓝 1)`. Establish `: Continuous (fun τ : K => 1 - a * τ ^ 2)` using `by fun_prop`. Simplify using `using this.tendsto 0`. Establish `hx0 : Tendsto X0 (𝓝 0) (𝓝 1)`.
+
+Establish `h1 : Continuous (fun τ : K => 1 + a * τ ^ 2)` using `by fun_prop`. Use `(h1.tendsto 0).div hD one_ne_zero` as an intermediate fact. Simplify `this` using `[Pi.div_def]`. Establish `hx1 : Tendsto X1 (𝓝 0) (𝓝 0)`. Establish `h1 : Continuous (fun τ : K => 2 * τ)` using `by fun_prop`.
+
+Use `(h1.tendsto 0).div hD one_ne_zero` as an intermediate fact. Simplify `this` using `[Pi.div_def]`. Establish `key : ∀ c d : K, Tendsto (fun τ => c * X0 τ + d * X1 τ) (𝓝 0) (𝓝 c)`. Introduce `c d`. Simplify using `using (hx0.const_mul c).add (hx1.const_mul d)`.
+
+Establish `hf : Tendsto (fun τ => g * x τ) (𝓝 0) (𝓝 g)`. Rewrite using `[(Topology.IsInducing.induced coords).tendsto_nhds_iff, tendsto_pi_nhds]`. Introduce `i`. Use `fin_cases i`. Use `(key g.re (a * g.imI)).congr fun τ => ?_` and prove the remaining obligations.
+
+Simplify using `[coords, x]`. Use `(key g.imI g.re).congr fun τ => ?_` and prove the remaining obligations. Simplify using `[coords, x, add_comm]`. Use `(key g.imJ (-(a * g.imK))).congr fun τ => ?_` and prove the remaining obligations. Simplify using `[coords, x, sub_eq_add_neg]`.
+
+Use `(key g.imK (-g.imJ)).congr fun τ => ?_` and prove the remaining obligations. Simplify using `[coords, x, add_comm]`. Establish `e1 : ∀ᶠ τ in 𝓝[≠] (0 : K), τ ≠ 0` using `self_mem_nhdsWithin`. Establish `e2 : ∀ᶠ τ in 𝓝[≠] (0 : K), 1 - a * τ ^ 2 ≠ 0` using `(hD.eventually_ne one_ne_zero).filter_mono nhdsWithin_le_nhds`. Establish `e3 : ∀ᶠ τ in 𝓝[≠] (0 : K), g.re + a * τ * g.imI ≠ 0`.
+
+Establish `h1 : Continuous (fun τ : K => g.re + a * τ * g.imI)` using `by fun_prop`. Conclude with `((h1.tendsto 0).eventually_ne (by simpa using hs0)).filter_mono nhdsWithin_le_nhds`. Establish `e4 : ∀ᶠ τ in 𝓝[≠] (0 : K), g.re * τ + g.imI ≠ 0`. Distinguish the cases in `hI : g.imI = 0`. Use `filter_upwards [e1] with τ hτ`.
+
+Simplify `⟨hs0, hτ⟩` using `[hI]`. Establish `h1 : Continuous (fun τ : K => g.re * τ + g.imI)` using `by fun_prop`. Conclude with `((h1.tendsto 0).eventually_ne (by simpa using hI)).filter_mono nhdsWithin_le_nhds`. Establish `e5 : ∀ᶠ τ in 𝓝[≠] (0 : K), g * x τ ∈ interior W` using `(hf.eventually (interior_mem_nhds.2 hW)).filter_mono nhdsWithin_le_nhds`. Take `⟨τ, h1, h2', h3, h4, h5⟩` from `(e1.and (e2.and (e3.and (e4.and e5)))).exists`.
+
+Use `⟨g * x τ, ?_, ?_, mem_interior_iff_mem_nhds.1 h5⟩` and prove the remaining obligations. Rewrite using `[nrm_mul, hg, one_mul]`. Simplify using `only [nrm, x, X0, X1]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hr : (g * x τ).re = g.re * X0 τ + a * g.imI * X1 τ` using `by simp [x]`. Rewrite using `[hr]`. Introduce `h`. Establish `hm : g.re * X0 τ + a * g.imI * X1 τ - g.re = 2 * a * τ * (g.re * τ + g.imI) / (1 - a * τ ^ 2)`. Simplify using `only [X0, X1]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hp : g.re * X0 τ + a * g.imI * X1 τ + g.re = 2 * (g.re + a * τ * g.imI) / (1 - a * τ ^ 2)`. Simplify using `only [X0, X1]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hz : (g.re * X0 τ + a * g.imI * X1 τ - g.re) * (g.re * X0 τ + a * g.imI * X1 τ + g.re) = 0`. Take the linear combination `h - hre`. Rewrite `hz` using `[hm, hp]`. Conclude with `mul_ne_zero (div_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero h2 ha) h1) h4) h2') (div_ne_zero (mul_ne_zero h2 h3) h2') hz`.
+-/
 theorem exists_nrm_one_re_sq_ne_one : ∀ (K : Type) [Field K] [TopologicalSpace K] [IsTopologicalDivisionRing K] [T2Space K], (2 : K) ≠ 0 → (𝓝[≠] (0 : K)).NeBot → ∀ a b : K, a ≠ 0 → ∀ g : ℍ[K, a, b], nrm g = 1 → ∀ W : Set ℍ[K, a, b], W ∈ 𝓝 g → ∃ g' : ℍ[K, a, b], nrm g' = 1 ∧ g'.re ^ 2 ≠ 1 ∧ W ∈ 𝓝 g' := by
   intro K _ _ _ _ h2 hne a b ha g hg W hW
   by_cases hre : g.re ^ 2 = 1

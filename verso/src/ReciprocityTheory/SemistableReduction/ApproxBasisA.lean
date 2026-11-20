@@ -7,50 +7,86 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Matrix NumberField ComplexConjugate
 open scoped ComplexOrder
 
+/- English proof (translation)
+Simplify using `only [jForm, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem approxB_jForm_add_right (p : ℕ) {r : ℕ} (x y z : Fin r → ℂ) :
     jForm p x (y + z) = jForm p x y + jForm p x z := by
   simp only [jForm, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [jForm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+-/
 theorem approxB_jForm_smul_right (p : ℕ) {r : ℕ} (x y : Fin r → ℂ) (a : ℂ) :
     jForm p x (a • y) = a * jForm p x y := by
   simp only [jForm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Simplify using `only [jForm, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem approxB_jForm_sub_right (p : ℕ) {r : ℕ} (x y z : Fin r → ℂ) :
     jForm p x (y - z) = jForm p x y - jForm p x z := by
   simp only [jForm, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `only [jForm, Finset.sum_apply, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+-/
 theorem approxB_jForm_sum_right (p : ℕ) {r : ℕ} {α : Type*} (s : Finset α) (x : Fin r → ℂ)
     (f : α → Fin r → ℂ) : jForm p x (∑ j ∈ s, f j) = ∑ j ∈ s, jForm p x (f j) := by
   simp only [jForm, Finset.sum_apply, Finset.mul_sum]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [jForm, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+-/
 theorem approxB_jForm_smul_left (p : ℕ) {r : ℕ} (x y : Fin r → ℂ) (a : ℂ) :
     jForm p (a • x) y = conj a * jForm p x y := by
   simp only [jForm, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Simplify using `only [jForm, Finset.sum_apply, map_sum, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+-/
 theorem approxB_jForm_sum_left (p : ℕ) {r : ℕ} {α : Type*} (s : Finset α) (y : Fin r → ℂ)
     (f : α → Fin r → ℂ) : jForm p (∑ j ∈ s, f j) y = ∑ j ∈ s, jForm p (f j) y := by
   simp only [jForm, Finset.sum_apply, map_sum, Finset.sum_mul, Finset.mul_sum]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Rewrite using `[jForm, jForm, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : (k : ℕ) < p <;> simp [sgn, h, mul_comm]`.
+-/
 theorem approxB_jForm_conj (p : ℕ) {r : ℕ} (x y : Fin r → ℂ) : conj (jForm p x y) = jForm p y x := by
   rw [jForm, jForm, map_sum]
   refine Finset.sum_congr rfl fun k _ => ?_
   by_cases h : (k : ℕ) < p <;> simp [sgn, h, mul_comm]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun k _ => by split_ifs <;> positivity`.
+-/
 theorem approxB_posSq_nonneg (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : 0 ≤ posSq p u := Finset.sum_nonneg fun k _ => by split_ifs <;> positivity
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun k _ => by split_ifs <;> positivity`.
+-/
 theorem approxB_negSq_nonneg (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : 0 ≤ negSq p u := Finset.sum_nonneg fun k _ => by split_ifs <;> positivity
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun k _ => by positivity`.
+-/
 theorem approxB_normSq_nonneg {r : ℕ} (u : Fin r → ℂ) : 0 ≤ normSq u := Finset.sum_nonneg fun k _ => by positivity
 
+/- English proof (translation)
+Rewrite using `[posSq, negSq, normSq, ← Finset.sum_add_distrib]`. Apply the tactic sequence `exact Finset.sum_congr rfl fun k _ => by split_ifs <;> simp`.
+-/
 theorem approxB_posSq_add_negSq (p : ℕ) {r : ℕ} (u : Fin r → ℂ) :
     posSq p u + negSq p u = normSq u := by
   rw [posSq, negSq, normSq, ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun k _ => by split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[jForm, posSq, negSq, ← Finset.sum_sub_distrib]`. Use `push_cast`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.conj_mul']`. Apply the tactic sequence `by_cases h : (k : ℕ) < p <;> simp [sgn, h]`.
+-/
 theorem approxB_jForm_self (p : ℕ) {r : ℕ} (u : Fin r → ℂ) :
     jForm p u u = ((posSq p u - negSq p u : ℝ) : ℂ) := by
   rw [jForm, posSq, negSq, ← Finset.sum_sub_distrib]
@@ -59,16 +95,27 @@ theorem approxB_jForm_self (p : ℕ) {r : ℕ} (u : Fin r → ℂ) :
   rw [Complex.conj_mul']
   by_cases h : (k : ℕ) < p <;> simp [sgn, h]
 
+/- English proof (translation)
+Rewrite using `[approxB_jForm_self, Complex.ofReal_re]`.
+-/
 theorem approxB_jForm_self_re (p : ℕ) {r : ℕ} (u : Fin r → ℂ) :
     (jForm p u u).re = posSq p u - negSq p u := by
   rw [approxB_jForm_self, Complex.ofReal_re]
 
+/- English proof (translation)
+Rewrite using `[approxB_jForm_self, Complex.norm_real, Real.norm_eq_abs, ← approxB_posSq_add_negSq]`. Establish `h1` using `approxB_posSq_nonneg p u`. Establish `h2` using `approxB_negSq_nonneg p u`. Conclude with `abs_sub_le_iff.mpr ⟨by linarith, by linarith⟩`.
+-/
 theorem approxB_norm_jForm_self_le (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : ‖jForm p u u‖ ≤ normSq u := by
   rw [approxB_jForm_self, Complex.norm_real, Real.norm_eq_abs, ← approxB_posSq_add_negSq]
   have h1 := approxB_posSq_nonneg p u
   have h2 := approxB_negSq_nonneg p u
   exact abs_sub_le_iff.mpr ⟨by linarith, by linarith⟩
 
+/- English proof (translation)
+Unfold `normSq`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Establish `h1 : ‖a k + b k‖ ^ 2 ≤ (‖a k‖ + ‖b k‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) (norm_add_le _ _) 2`.
+
+Use polynomial arithmetic with `[sq_nonneg (‖a k‖ - ‖b k‖)]`.
+-/
 theorem approxB_normSq_add_le {r : ℕ} (a b : Fin r → ℂ) :
     normSq (a + b) ≤ 2 * normSq a + 2 * normSq b := by
   unfold normSq
@@ -79,6 +126,11 @@ theorem approxB_normSq_add_le {r : ℕ} (a b : Fin r → ℂ) :
     pow_le_pow_left₀ (norm_nonneg _) (norm_add_le _ _) 2
   nlinarith [sq_nonneg (‖a k‖ - ‖b k‖)]
 
+/- English proof (translation)
+Unfold `normSq`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[sq_abs]`. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem approxB_normSq_single {r : ℕ} (j : Fin r) (R : ℝ) :
     normSq ((R : ℂ) • (Pi.single j 1 : Fin r → ℂ)) = R ^ 2 := by
   unfold normSq
@@ -90,12 +142,18 @@ theorem approxB_normSq_single {r : ℕ} (j : Fin r) (R : ℝ) :
 
 abbrev ApproxPosIdx (r p : ℕ) := {j : Fin r // (j : ℕ) < p}
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.filter fun j : Fin r => (j : ℕ) < p)) (fun j _ hj => hf j (by simpa using hj))]`. Conclude with `Finset.sum_subtype _ (fun j => by simp) f`.
+-/
 theorem approxB_sum_pos {M : Type*} [AddCommMonoid M] {r p : ℕ} (f : Fin r → M)
     (hf : ∀ j : Fin r, ¬ (j : ℕ) < p → f j = 0) : ∑ j, f j = ∑ k : ApproxPosIdx r p, f k := by
   rw [← Finset.sum_subset (Finset.subset_univ (Finset.univ.filter fun j : Fin r => (j : ℕ) < p))
     (fun j _ hj => hf j (by simpa using hj))]
   exact Finset.sum_subtype _ (fun j => by simp) f
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.filter fun j : Fin r => ¬ (j : ℕ) < p)) (fun j _ hj => hf j (by simpa using hj))]`. Conclude with `Finset.sum_subtype _ (fun j => by simp) f`.
+-/
 theorem approxB_sum_neg {M : Type*} [AddCommMonoid M] {r p : ℕ} (f : Fin r → M)
     (hf : ∀ j : Fin r, (j : ℕ) < p → f j = 0) :
     ∑ j, f j = ∑ k : {j : Fin r // ¬ (j : ℕ) < p}, f k := by
@@ -103,6 +161,9 @@ theorem approxB_sum_neg {M : Type*} [AddCommMonoid M] {r p : ℕ} (f : Fin r →
     (fun j _ hj => hf j (by simpa using hj))]
   exact Finset.sum_subtype _ (fun j => by simp) f
 
+/- English proof (translation)
+Set `e : ApproxPosIdx r p ≃ Fin p` to `{ toFun := fun j => ⟨j.1, j.2⟩ invFun := fun i => ⟨⟨i, lt_of_lt_of_le i.2 hp⟩, i.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Rewrite using `[Fintype.card_congr e, Fintype.card_fin]`.
+-/
 theorem approxB_card_pos {r p : ℕ} (hp : p ≤ r) : Fintype.card (ApproxPosIdx r p) = p := by
   let e : ApproxPosIdx r p ≃ Fin p :=
     { toFun := fun j => ⟨j.1, j.2⟩
@@ -111,6 +172,9 @@ theorem approxB_card_pos {r p : ℕ} (hp : p ≤ r) : Fintype.card (ApproxPosIdx
       right_inv := fun _ => rfl }
   rw [Fintype.card_congr e, Fintype.card_fin]
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_subtype_compl, approxB_card_pos hp, Fintype.card_fin]`.
+-/
 theorem approxB_card_neg {r p : ℕ} (hp : p ≤ r) :
     Fintype.card {j : Fin r // ¬ (j : ℕ) < p} = r - p := by
   rw [Fintype.card_subtype_compl, approxB_card_pos hp, Fintype.card_fin]
@@ -118,11 +182,17 @@ theorem approxB_card_neg {r p : ℕ} (hp : p ≤ r) :
 def approxPadPos {r p : ℕ} (x : ApproxPosIdx r p → ℂ) : Fin r → ℂ :=
   fun j => if h : (j : ℕ) < p then x ⟨j, h⟩ else 0
 
+/- English proof (translation)
+Rewrite using `[approxB_sum_pos (p := p) _ (fun j hj => by simp [approxPadPos, hj])]`. Conclude with `Finset.sum_congr rfl fun k _ => by simp [approxPadPos, k.2]`.
+-/
 theorem approxB_pad_sum {r p : ℕ} (x : ApproxPosIdx r p → ℂ) (X : Fin r → Fin r → ℂ) :
     ∑ j, approxPadPos x j • X j = ∑ k : ApproxPosIdx r p, x k • X k.1 := by
   rw [approxB_sum_pos (p := p) _ (fun j hj => by simp [approxPadPos, hj])]
   exact Finset.sum_congr rfl fun k _ => by simp [approxPadPos, k.2]
 
+/- English proof (translation)
+Introduce `h`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Establish `h1` using `congr_fun h k.1`. Simplify `h1` using `[approxPadPos, k.2]`.
+-/
 theorem approxB_pad_ne {r p : ℕ} (x : ApproxPosIdx r p → ℂ) (hx : x ≠ 0) : approxPadPos x ≠ 0 := by
   intro h
   apply hx
@@ -130,10 +200,20 @@ theorem approxB_pad_ne {r p : ℕ} (x : ApproxPosIdx r p → ℂ) (hx : x ≠ 0)
   have h1 := congr_fun h k.1
   simpa [approxPadPos, k.2] using h1
 
+/- English proof (translation)
+Simplify using `[approxPadPos, not_lt.mpr hj]`.
+-/
 theorem approxB_pad_zero {r p : ℕ} (x : ApproxPosIdx r p → ℂ) (j : Fin r) (hj : p ≤ (j : ℕ)) :
     approxPadPos x j = 0 := by
   simp [approxPadPos, not_lt.mpr hj]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hg (approxPadPos x) (fun j hj => approxB_pad_zero x j hj)`. Rewrite `h1`, `h2` using `[approxB_pad_sum]`. Rewrite using `[approxB_jForm_self_re]`. Establish `hρ' : (ρ / 3) ^ 2 ≤ 1 / 9`. Establish `h3 : ρ / 3 ≤ 1 / 3` using `by linarith`.
+
+Establish `h4 : 0 ≤ ρ / 3` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hp0` using `approxB_posSq_nonneg p (∑ k, x k • X k.1)`. Use `⟨by nlinarith, fun hx => ?_⟩` and prove the remaining obligations. Establish `h5` using `h2 (approxB_pad_ne x hx)`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem approxB_graph_pos {r p : ℕ} {ρ : ℝ} (hρ1 : ρ ≤ 1) (hρ : 0 < ρ) (X : Fin r → Fin r → ℂ)
     (hg : ∀ w : Fin r → ℂ, (∀ j : Fin r, p ≤ (j : ℕ) → w j = 0) →
       negSq p (∑ j, w j • X j) ≤ (ρ / 3) ^ 2 * posSq p (∑ j, w j • X j) ∧
@@ -153,6 +233,13 @@ theorem approxB_graph_pos {r p : ℕ} {ρ : ℝ} (hρ1 : ρ ≤ 1) (hρ : 0 < ρ
   have h5 := h2 (approxB_pad_ne x hx)
   nlinarith
 
+/- English proof (translation)
+Rewrite using `[Matrix.posSemidef_iff_dotProduct_mulVec]`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `k j`. Simplify using `[Matrix.conjTranspose_apply, approxB_jForm_conj]`. Establish `e : star x ⬝ᵥ ((Matrix.of fun k j : ApproxPosIdx r p => jForm p (X k.1) (X j.1)) *ᵥ x) = jForm p (∑ k, x k • X k.1) (∑ k, x k • X k.1)`.
+
+Rewrite using `[approxB_jForm_sum_left]`. Simplify using `only [approxB_jForm_smul_left, approxB_jForm_sum_right, approxB_jForm_smul_right]`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.of_apply, Pi.star_apply, Finset.mul_sum, Complex.star_def]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, approxB_jForm_self]`. Establish `h` using `(approxB_graph_pos hρ1 hρ X hg x).1`. Rewrite `h` using `[approxB_jForm_self_re]`. Conclude with `Complex.zero_le_real.mpr (by linarith)`.
+-/
 theorem approxB_gram_posSemidef {r p : ℕ} {ρ : ℝ} (hρ1 : ρ ≤ 1) (hρ : 0 < ρ) (X : Fin r → Fin r → ℂ)
     (hg : ∀ w : Fin r → ℂ, (∀ j : Fin r, p ≤ (j : ℕ) → w j = 0) →
       negSq p (∑ j, w j • X j) ≤ (ρ / 3) ^ 2 * posSq p (∑ j, w j • X j) ∧
@@ -175,6 +262,19 @@ theorem approxB_gram_posSemidef {r p : ℕ} {ρ : ℝ} (hρ1 : ρ ≤ 1) (hρ : 
     rw [approxB_jForm_self_re] at h
     exact Complex.zero_le_real.mpr (by linarith)
 
+/- English proof (translation)
+Establish `hH` using `hN.isHermitian`. Establish `hdet : N.det = ∏ i, (hH.eigenvalues i : ℂ)` using `hH.det_eq_prod_eigenvalues`. Establish `hl : ∀ i, 0 ≤ hH.eigenvalues i` using `hN.eigenvalues_nonneg`. Establish `htr : ∑ i, hH.eigenvalues i = ∑ k, (N k k).re`. Establish `h2` using `congrArg Complex.re hH.trace_eq_sum_eigenvalues`.
+
+Simplify using `only [Matrix.trace, Matrix.diag, Complex.re_sum, Complex.ofReal_re] at h2`. Conclude with `h2.symm`. Establish `hnorm : ‖N.det‖ = ∏ i, hH.eigenvalues i`. Rewrite using `[hdet, norm_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [Complex.norm_real, Real.norm_of_nonneg (hl i)]`.
+
+Rewrite using `[hnorm]`. Establish `hsum : ∑ i, hH.eigenvalues i ≤ Fintype.card n * c`. Rewrite using `[htr]`. Combine the equalities or inequalities in the displayed calculation. Break down `Nat.eq_zero_or_pos (Fintype.card n) with h0 | hpos` into its components or cases.
+
+Use `haveI : IsEmpty n := Fintype.card_eq_zero_iff.mp h0`. Simplify using `[h0]`. Establish `hm : (0 : ℝ) < Fintype.card n` using `by exact_mod_cast hpos`. Establish `hAM` using `Real.geom_mean_le_arith_mean_weighted Finset.univ (fun _ => (1 : ℝ) / Fintype.card n) hH.eigenvalues (fun i _ => by positivity) (by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]; field_simp) (fun i _ => hl i)`. Establish `h2 : ∑ i, (1 : ℝ) / Fintype.card n * hH.eigenvalues i ≤ c`.
+
+Rewrite using `[← Finset.mul_sum, div_mul_eq_mul_div, one_mul, div_le_iff₀ hm]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG : 0 ≤ ∏ i, hH.eigenvalues i ^ ((1 : ℝ) / Fintype.card n)` using `Finset.prod_nonneg fun i _ => Real.rpow_nonneg (hl i) _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.prod_pow]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (hl i), one_div_mul_cancel hm.ne', Real.rpow_one]`. Use `_ ≤ c ^ Fintype.card n := pow_le_pow_left₀ hG (hAM.trans h2) _`.
+-/
 theorem approxB_det_le_of_posSemidef {n : Type*} [Fintype n] [DecidableEq n]
     (N : Matrix n n ℂ) (hN : N.PosSemidef)
     (c : ℝ) (hc : ∀ k, (N k k).re ≤ c) : ‖N.det‖ ≤ c ^ Fintype.card n := by

@@ -10,6 +10,11 @@ namespace Formalism.MainNotions.G.ColumnFamilies
 
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees Formalism.MainNotions.LemmaBAlt
 
+/- English proof (translation)
+Rewrite using `[Submodule.disjoint_def]`. Introduce `x hs ht`. Rewrite `hs`, `ht` using `[MvPolynomial.mem_restrictSupport_iff]`. Assume the negation of the conclusion as `hx`. Take `⟨m, hm⟩` from `MvPolynomial.support_nonempty.2 hx`.
+
+Conclude with `(Set.disjoint_left.1 h) (hs (by simpa using hm)) (ht (by simpa using hm))`.
+-/
 theorem disjoint_restrictSupport_of_disjoint {R σ : Type*} [CommRing R] {s t : Set (σ →₀ ℕ)} (h : Disjoint s t) :
     Disjoint (MvPolynomial.restrictSupport R s) (MvPolynomial.restrictSupport R t) := by
   rw [Submodule.disjoint_def]
@@ -19,6 +24,17 @@ theorem disjoint_restrictSupport_of_disjoint {R σ : Type*} [CommRing R] {s t : 
   obtain ⟨m, hm⟩ := MvPolynomial.support_nonempty.2 hx
   exact (Set.disjoint_left.1 h) (hs (by simpa using hm)) (ht (by simpa using hm))
 
+/- English proof (translation)
+Use `linearIndependent_iUnion_finite (f := fun (b : Fin N → ℕ) (x : WI n N LL b) => Psi R x.1.1.mu x.1.2) (fun b => (standardPath_basis_any_ring R N n LL b).1) ?_` and prove the remaining obligations. Introduce `b t _ hb`. Establish `h1 : ∀ b' : Fin N → ℕ, Submodule.span R (Set.range fun x : WI n N LL b' => Psi R x.1.1.mu x.1.2) ≤ Pol R n b'`. Introduce `b'`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `standardWord_mem_multihomogeneous R x.1.1 x.1.2 x.2`. Establish `h2 : (⨆ i ∈ t, Submodule.span R (Set.range fun x : WI n N LL i => Psi R x.1.1.mu x.1.2)) ≤ MvPolynomial.restrictSupport R {m : Fin N × Fin n →₀ ℕ | ∃ i ∈ t, ∀ j, multideg m j = i j}`. Use `iSup₂_le fun i hi => (h1 i).trans ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Rewrite `hx` using `[Pol, MvPolynomial.mem_restrictSupport_iff]`. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Conclude with `⟨i, hi, hx hm⟩`. Use `Disjoint.mono (h1 b) h2 (disjoint_restrictSupport_of_disjoint ?_)` and prove the remaining obligations.
+
+Rewrite using `[Set.disjoint_left]`. Introduce and unpack `m hm ⟨i, hi, hmi⟩`. Apply `hb` to reduce the goal to its premises. Establish `: b = i`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[← hm j, hmi j]`. Rewrite using `[this]`. Conclude with `hi`.
+-/
 theorem linearIndependent_words_all_degrees (R : Type) [CommRing R] (N n : ℕ) (LL : Letters (Fin N)) :
     LinearIndependent R (fun x : (Σ b : Fin N → ℕ, WI n N LL b) => Psi R x.2.1.1.mu x.2.1.2) := by
   refine linearIndependent_iUnion_finite (f := fun (b : Fin N → ℕ) (x : WI n N LL b) => Psi R x.1.1.mu x.1.2)
@@ -63,12 +79,25 @@ def joinVarsRingHom : MvPolynomial (Fin N × Fin (r + K)) R →+*
     (fun v => Fin.addCases (motive := fun _ => MvPolynomial (Fin N × Fin r) (MvPolynomial (Fin N × Fin K) R))
       (fun a => X (v.1, a)) (fun b => C (X (v.1, b))) v.2)
 
+/- English proof (translation)
+Simplify using `[towerToPolynomialHom]`.
+-/
 theorem towerToPolynomialHom_C_eq_rename_tan (s : MvPolynomial (Fin N × Fin K) R) : towerToPolynomialHom R N r K (C s) = rename (tanVar (r := r)) s := by
   simp [towerToPolynomialHom]
 
+/- English proof (translation)
+Simplify using `[towerToPolynomialHom]`.
+-/
 theorem towerToPolynomialHom_X_eq_X_pl (v : Fin N × Fin r) : towerToPolynomialHom R N r K (X v) = X (plVar (K := K) v) := by
   simp [towerToPolynomialHom]
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `s`. Establish `: ((joinVarsRingHom R N r K).comp (towerToPolynomialHom R N r K)).comp MvPolynomial.C = (RingHom.id _).comp MvPolynomial.C`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`.
+
+Simplify using `[towerToPolynomialHom_C_eq_rename_tan, joinVarsRingHom]`. Introduce `w`. Simplify using `[towerToPolynomialHom_C_eq_rename_tan, joinVarsRingHom, tanVar]`. Conclude with `congrArg (fun f => f s) this`. Introduce `v`.
+
+Simplify using `[towerToPolynomialHom_X_eq_X_pl, joinVarsRingHom, plVar]`.
+-/
 theorem joinVarsRingHom_comp_towerToPolynomialHom_eq_id : (joinVarsRingHom R N r K).comp (towerToPolynomialHom R N r K) = RingHom.id _ := by
   apply MvPolynomial.ringHom_ext
   · intro s
@@ -82,12 +111,20 @@ theorem joinVarsRingHom_comp_towerToPolynomialHom_eq_id : (joinVarsRingHom R N r
   · intro v
     simp [towerToPolynomialHom_X_eq_X_pl, joinVarsRingHom, plVar]
 
+/- English proof (translation)
+Introduce `x y h`. Use `congrArg (joinVarsRingHom R N r K) h` as an intermediate fact. Establish `e : ∀ z, joinVarsRingHom R N r K (towerToPolynomialHom R N r K z) = z` using `fun z => congrArg (fun f => f z) (joinVarsRingHom_comp_towerToPolynomialHom_eq_id R N r K)`. Rewrite `this` using `[e, e]`. Then use the resulting hypothesis.
+-/
 theorem towerToPolynomialHom_injective : Function.Injective (towerToPolynomialHom R N r K) := by
   intro x y h
   have := congrArg (joinVarsRingHom R N r K) h
   have e : ∀ z, joinVarsRingHom R N r K (towerToPolynomialHom R N r K z) = z := fun z => congrArg (fun f => f z) (joinVarsRingHom_comp_towerToPolynomialHom_eq_id R N r K)
   rwa [e, e] at this
 
+/- English proof (translation)
+Establish `: (towerToPolynomialHom R N r K).comp (MvPolynomial.map MvPolynomial.C) = (rename (plVar (K` using `K)) : MvPolynomial (Fin N × Fin r) R →ₐ[R] _).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[towerToPolynomialHom_C_eq_rename_tan]`. Introduce `v`.
+
+Simplify using `[towerToPolynomialHom_X_eq_X_pl]`. Conclude with `congrArg (fun f => f a) this`.
+-/
 theorem towerToPolynomialHom_map_C_eq_rename_pl (a : MvPolynomial (Fin N × Fin r) R) :
     towerToPolynomialHom R N r K (MvPolynomial.map MvPolynomial.C a) = rename (plVar (K := K)) a := by
   have : (towerToPolynomialHom R N r K).comp (MvPolynomial.map MvPolynomial.C) =
@@ -111,6 +148,23 @@ def towerToPolynomialLinearMap : MvPolynomial (Fin N × Fin r) (MvPolynomial (Fi
 
 end Theta
 
+/- English proof (translation)
+Establish `hb` using `linearIndependent_words_all_degrees R N K LL`. Establish `hc` using `linearIndependent_words_all_degrees (MvPolynomial (Fin N × Fin K) R) N r LL`. Establish `hbc` using `linearIndependent_smul hb hc`. Establish `hex : ∀ x : PIdx r K LL B, ∃ y : (Σ b : Fin N → ℕ, WI K N LL b) × (Σ b : Fin N → ℕ, WI r N LL b), y.1.2.1.1.mu = x.1.2.1 ∧ y.1.2.1.2 = x.1.2.2 ∧ y.2.2.1.1.mu = x.1.1.1 ∧ y.2.2.1.2 = x.1.1.2`. Introduce and unpack `⟨⟨⟨nu, I'⟩, ⟨ka, I''⟩⟩, ⟨b', b'', _, ⟨P1, e1⟩, ⟨P2, e2⟩⟩, h2, h3⟩`.
+
+Establish `e1' : P1.mu = nu` using `e1`. Establish `e2' : P2.mu = ka` using `e2`. Establish `h2' : IsSt P1.mu I'` using `by rw [e1']; exact h2`. Establish `h3' : IsSt P2.mu I''` using `by rw [e2']; exact h3`. Conclude with `⟨(⟨b'', ⟨(P2, I''), h3'⟩⟩, ⟨b', ⟨(P1, I'), h2'⟩⟩), e2', rfl, e1', rfl⟩`.
+
+Use `choose io hio using hex`. Establish `hinj : Function.Injective io`. Introduce `x y hxy`. Take `⟨a1, a2, a3, a4⟩` from `hio x`. Take `⟨c1, c2, c3, c4⟩` from `hio y`.
+
+Rewrite `a1`, `a2`, `a3`, `a4` using `[hxy]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Rewrite using `[← a3, c3]`.
+
+Rewrite using `[← a4, c4]`. Apply `Prod.ext` to reduce the goal to its premises. Rewrite using `[← a1, c1]`. Rewrite using `[← a2, c2]`. Establish `h1` using `(hbc.comp io hinj).map' (towerToPolynomialLinearMap R N r K) (LinearMap.ker_eq_bot.2 (towerToPolynomialHom_injective R N r K))`.
+
+Establish `h2 : (⇑(towerToPolynomialLinearMap R N r K) ∘ (fun p : (Σ b : Fin N → ℕ, WI K N LL b) × (Σ b : Fin N → ℕ, WI r N LL b) => Psi R p.1.2.1.1.mu p.1.2.1.2 • Psi (MvPolynomial (Fin N × Fin K) R) p.2.2.1.1.mu p.2.2.1.2) ∘ io) = pvec R r K LL B`. Use function extensionality and compare the values at `x`. Take `⟨a1, a2, a3, a4⟩` from `hio x`. Simplify using `only [Function.comp_apply]`. Rewrite using `[a1, a2, a3, a4]`.
+
+Express the relevant statement in the definitionally equal form `towerToPolynomialHom R N r K _ = _`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, towerToPolynomialHom_C_eq_rename_tan, ← map_Psi' (MvPolynomial.C : R →+* _), towerToPolynomialHom_map_C_eq_rename_pl]`. Unfold `pvec PsiPl PsiTan`. Rewrite using `[mul_comm]`. Rewrite using `[← h2]`.
+
+Conclude with `h1`.
+-/
 theorem linearIndependent_productBasis (R : Type) [CommRing R] (N r K : ℕ) (LL : Letters (Fin N)) (B : Fin N → ℕ) :
     LinearIndependent R (pvec R r K LL B) := by
   classical

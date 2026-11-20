@@ -9,6 +9,11 @@ namespace GlobalTheory.CompanionTheory.MirFourier
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = Fin.last n`. Substitute `hj` using the available equality. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simpa [colMat] using continuous_const`.
+
+Consider the case `cast i`. Establish `h : Continuous fun a : Multiplicative (Fin n → k) => Multiplicative.toAdd a i` using `(continuous_apply i).comp continuous_toAdd`. Simplify `h` using `[colMat]`. Simplify `continuous_const` using `[colMat, hj]`.
+-/
 theorem continuous_colMat_toAdd (n : ℕ) :
     Continuous fun x : Multiplicative (Fin n → k) => colMat k n x.toAdd := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -22,6 +27,9 @@ theorem continuous_colMat_toAdd (n : ℕ) :
       simpa [colMat] using h
   · simpa [colMat, hj] using continuous_const
 
+/- English proof (translation)
+Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `continuous_const.add (continuous_colMat_toAdd n)`. Establish `h : Continuous fun x : Multiplicative (Fin n → k) => (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k) - colMat k n x.toAdd` using `continuous_const.sub (continuous_colMat_toAdd n)`. Conclude with `h`.
+-/
 theorem continuous_unipMir (n : ℕ) : Continuous (unipMir k n) := by
   refine Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _
   · exact continuous_const.add (continuous_colMat_toAdd n)
@@ -29,6 +37,9 @@ theorem continuous_unipMir (n : ℕ) : Continuous (unipMir k n) := by
       continuous_const.sub (continuous_colMat_toAdd n)
     exact h
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n V _ _ τ h w`. Conclude with `(h w).preimage (continuous_unipMir n)`.
+-/
 theorem isSmooth_comp_unipMir : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ (Mir k n) V), IsSmooth τ → IsSmooth (τ.comp (unipMir k n)) := by
   intro k _ _ _ _ n V _ _ τ h w
   exact (h w).preimage (continuous_unipMir n)

@@ -7,6 +7,33 @@ namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 
 open MvPolynomial Kleiman
 
+/- English proof (translation)
+Introduce `S _ 𝔪 _ O _ _ _ Ω _ _ _ _ N x pp' hpp' F`. Use `set p := pp'.comap (MvPolynomial.map (algebraMap S O) : Poly S N →+* Poly O N) with hp_def`. Use `set G := F.twist (idealSys x p) with hG_def`. Establish `hG : (F.baseChange O).twist (idealSys x pp') = G.baseChange O`. Rewrite using `[idealSys_localize 𝔪 pp', hG_def, baseChange_twist]`.
+
+Establish `hCO : ∀ m ∈ 𝔪, C (algebraMap S O m) ∈ pp'` using `fun m hm => hpp' (Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ hm))`. Establish `hCS : ∀ m ∈ 𝔪, C m ∈ p` using `fun m hm => by`. Rewrite using `[hp_def, Ideal.mem_comap]`. Express the relevant statement in the definitionally equal form `MvPolynomial.map (algebraMap S O) (C m) ∈ pp'`. Rewrite using `[map_C]`.
+
+Conclude with `hCO m hm`. Establish `killS : ∀ m ∈ 𝔪, ∀ y ∈ F.secs, algebraMap S Ω m * y ∈ G.secs` using `fun m hm y hy => mul_mem_secs_twist_idealSys p (hCS m hm) F hy`. Establish `killO : ∀ m ∈ 𝔪, ∀ y ∈ (F.baseChange O).secs, algebraMap S Ω m * y ∈ (G.baseChange O).secs`. Introduce `m hm y hy`. Rewrite using `[← hG, IsScalarTower.algebraMap_apply S O Ω]`.
+
+Conclude with `mul_mem_secs_twist_idealSys pp' (hCO m hm) _ hy`. Unfold `restrLen`. Rewrite using `[hG]`. Set `P'` to `((G.baseChange O).secs).comap (F.baseChange O).secs.subtype`. Set `φ : F.secs →ₗ[S] ((F.baseChange O).secs ⧸ P')` to `{ toFun := fun y => Submodule.Quotient.mk ⟨(y : Ω), mem_secs_baseChange y.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+
+Establish `hker : LinearMap.ker φ = G.secs.comap F.secs.subtype`. Use extensionality with `⟨y, hy⟩`. Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+
+Express the relevant statement in the definitionally equal form `y ∈ (G.baseChange O).secs ↔ y ∈ G.secs`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨t, ht, hty⟩` from `exists_mul_mem_secs 𝔪 h`. Take `⟨u, i, hi, hui⟩` from `Ideal.IsMaximal.exists_inv (inferInstance : 𝔪.IsMaximal) ht`.
+
+Establish `h1 : algebraMap S Ω u * algebraMap S Ω t + algebraMap S Ω i = 1`. Rewrite using `[← map_mul, ← map_add, hui, map_one]`. Establish `e : y = algebraMap S Ω u * (algebraMap S Ω t * y) + algebraMap S Ω i * y`. Take the linear combination `(-y) * h1`. Rewrite using `[e]`.
+
+Use `add_mem ?_ (killS i hi y hy)` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def]`. Conclude with `G.secs.smul_mem u hty`. Conclude with `fun h => mem_secs_baseChange h`. Establish `hsurj : Function.Surjective φ`.
+
+Introduce `q`. Take `⟨⟨w, hw⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨t, ht, htw⟩` from `exists_mul_mem_secs 𝔪 hw`. Take `⟨u, i, hi, hui⟩` from `Ideal.IsMaximal.exists_inv (inferInstance : 𝔪.IsMaximal) ht`. Establish `h1 : algebraMap S Ω u * algebraMap S Ω t + algebraMap S Ω i = 1`.
+
+Rewrite using `[← map_mul, ← map_add, hui, map_one]`. Use `⟨u • ⟨_, htw⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = Submodule.Quotient.mk _`. Rewrite using `[Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `u • (algebraMap S Ω t * w) - w ∈ (G.baseChange O).secs`.
+
+Establish `e : u • (algebraMap S Ω t * w) - w = -(algebraMap S Ω i * w)`. Rewrite using `[Algebra.smul_def]`. Take the linear combination `w * h1`. Rewrite using `[e]`. Conclude with `neg_mem (killO i hi w hw)`.
+
+Establish `hkill : ∀ m ∈ 𝔪, ∀ q : (F.baseChange O).secs ⧸ P', m • q = 0`. Introduce `m hm q`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Express the relevant statement in the definitionally equal form `m • (w : Ω) ∈ (G.baseChange O).secs`.
+
+Rewrite using `[Algebra.smul_def]`. Conclude with `killO m hm w w.2`. Rewrite using `[← length_eq_of_killed 𝔪 hkill, ((Submodule.quotEquivOfEq _ _ hker.symm).trans (φ.quotKerEquivOfSurjective hsurj)).length_eq]`.
+-/
 theorem LocalizeRestrLen.proof : LocalizeRestrLen.Statement := by
   intro S _ 𝔪 _ O _ _ _ Ω _ _ _ _ N x pp' hpp' F
   set p := pp'.comap (MvPolynomial.map (algebraMap S O) : Poly S N →+* Poly O N) with hp_def

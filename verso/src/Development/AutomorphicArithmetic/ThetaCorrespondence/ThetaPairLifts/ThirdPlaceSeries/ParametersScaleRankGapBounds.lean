@@ -21,6 +21,11 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 end GlobalTheory.CovTop.DefSizes
 namespace GlobalTheory.CovTop.DefSizes
+/- English proof (translation)
+Establish `hdim : ∀ (n : ℕ) (la : Fin n → ℕ), Antitone la → ∀ w : ℤ, (GlobalTheory.DualWeyl.dim la : ℝ) ≤ ((∑ i, |((la i : ℤ) : ℝ) - w|) + 1) ^ n.choose 2` using `fun n la h => (GlobalTheory.T.dualWeyl_dim_formula_duality_bound n la h).2.2`. Establish `H` using `Closed.and _root_.GlobalTheory.CovTop.WtShape.wtN_z (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 1)`. Simplify using `only [_root_.GlobalTheory.CovTop.LiftWeightNumerator, _root_.GlobalTheory.CovTop.HostNAlt, _root_.GlobalTheory.CovTop.LiftsCondition] at H`. Unfold `_root_.GlobalTheory.CovTop.LiftsCondition`. Use `Closed.imp H ?_` and prove the remaining obligations.
+
+Introduce `eps Fm CH _ h`. Take `⟨⟨C1, -, hw⟩, ⟨A, -, hh⟩⟩` from `h`. Take `⟨x0, h⟩` from `_root_.GlobalTheory.CovTop.EventuallyAtAllPoints.and hw hh`. Conclude with `⟨35, by norm_num, x0, fun x hx hle ι p hp i _ => sizes_at p i ((h x hx hle ι p hp).1 i) ((h x hx hle ι p hp).2 i) (Fm.sizes x hx ι) hdim⟩`.
+-/
 theorem parameters_scale_rank_gap_bounds :
     _root_.GlobalTheory.CovTop.LiftsCondition fun Fm x _ ι p i _ C => (i : ℕ) + 1 = (Fm.D x ι).R.m → |(ofRecord (Fm.D x ι) (Fm.L x ι) p.Del p.h0).logOm| *
       (∑ τ : Psi p.T.Q.H, ∑ k, |(laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ k : ℝ) -

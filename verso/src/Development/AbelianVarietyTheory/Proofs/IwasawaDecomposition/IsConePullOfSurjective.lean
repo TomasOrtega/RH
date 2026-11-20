@@ -8,6 +8,11 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan
 
 namespace GlobalTheory.PolFan
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hb`. Establish `hA` using `hp z`. Establish `h` using `hp (z + (-(β z z + 1) * β y z) • y)`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hy, hs z y] at h`. Establish `hb2 : 1 ≤ β y z * β y z` using `mul_self_pos.2 hb`.
+
+Establish `h3` using `mul_nonneg (by linarith : 0 ≤ β z z + 1) (sub_nonneg.2 hb2)`. Use polynomial arithmetic with `[h3]`.
+-/
 theorem apply_eq_zero_of_diag {X : Type} [AddCommGroup X] {β : LinearMap.BilinForm ℤ X} (hs : ∀ y z, β y z = β z y)
     (hp : ∀ y, 0 ≤ β y y) {y : X} (hy : β y y = 0) (z : X) : β y z = 0 := by
   by_contra hb
@@ -18,6 +23,15 @@ theorem apply_eq_zero_of_diag {X : Type} [AddCommGroup X] {β : LinearMap.BilinF
   have h3 := mul_nonneg (by linarith : 0 ≤ β z z + 1) (sub_nonneg.2 hb2)
   nlinarith [h3]
 
+/- English proof (translation)
+Establish `key1 : ∀ a a' b, r a = r a' → β a b = β a' b` using `fun a a' b h => by`. Use `hk (a - a') (by rw [map_sub, h, sub_self]) b` as an intermediate fact. Rewrite `this` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`. Then use the resulting hypothesis. Establish `key : ∀ a a' b b', r a = r a' → r b = r b' → β a b = β a' b'` using `fun a a' b b' h h' => by`. Rewrite using `[key1 a a' b h, hs a' b, key1 b b' a' h', hs]`.
+
+Establish `hs' : ∀ a, r (Function.surjInv hr a) = a` using `Function.surjInv_eq hr`. Use `⟨LinearMap.mk₂ ℤ (fun a b => β (Function.surjInv hr a) (Function.surjInv hr b)) ?_ ?_ ?_ ?_, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Introduce `a a' b`. Rewrite using `[← LinearMap.add_apply, ← map_add]`. Conclude with `key _ _ _ _ (by rw [map_add, hs', hs', hs']) rfl`.
+
+Introduce `n a b`. Rewrite using `[← LinearMap.smul_apply, ← map_smul]`. Conclude with `key _ _ _ _ (by rw [map_zsmul r, hs', hs']) rfl`. Introduce `a b b'`. Rewrite using `[← map_add]`.
+
+Conclude with `key _ _ _ _ rfl (by rw [map_add, hs', hs', hs'])`. Introduce `n a b`. Rewrite using `[← map_smul]`. Conclude with `key _ _ _ _ rfl (by rw [map_zsmul r, hs', hs'])`. Simplify using `using key _ _ _ _ (hs' (r a)) (hs' (r b))`.
+-/
 theorem exists_pull_eq {O : Type} [CommRing O] {X X₁ : Type} [AddCommGroup X] [Module O X] [AddCommGroup X₁] [Module O X₁]
     {r : X →ₗ[O] X₁} (hr : Function.Surjective r) {β : LinearMap.BilinForm ℤ X} (hs : ∀ y z, β y z = β z y)
     (hk : ∀ y, r y = 0 → ∀ z, β y z = 0) : ∃ β' : LinearMap.BilinForm ℤ X₁, pull r β' = β := by
@@ -43,6 +57,23 @@ theorem exists_pull_eq {O : Type} [CommRing O] {X X₁ : Type} [AddCommGroup X] 
     exact key _ _ _ _ rfl (by rw [map_zsmul r, hs', hs'])
   · simpa using key _ _ _ _ (hs' (r a)) (hs' (r b))
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar X _ _ _ φ X₁ _ _ _ r m γ hF hr hγ`. Establish `hx` using `GlobalTheory.PolFan.ConeSub.sum_smul_toReal_mem_psdCone O bar X m (fun i => pull r (γ i)) (fun _ => 1) (fun i => pull_mem r (hγ.mem i)) (fun i y => hγ.nonneg i _) (fun _ => zero_le_one)`. Take `⟨m₂, σ, c, hσ, hc, hsum⟩` from `hF.cover _ hx`. Set `J : Finset (Fin m₂)` to `Finset.univ.filter fun j => c j ≠ 0`. Set `t : Fin J.card ↪ Fin m₂` to `(J.orderEmbOfFin rfl).toEmbedding`.
+
+Establish `hpos : ∀ k, c (t k) ≠ 0` using `fun k => (Finset.mem_filter.1 (J.orderEmbOfFin_mem rfl k)).2`. Establish `hout : ∀ j, j ∉ Set.range t → c j = 0` using `fun j hj => by`. Assume the negation of the conclusion as `h0`. Use `hj ?_` and prove the remaining obligations. Establish `: j ∈ Set.range (J.orderEmbOfFin rfl)`.
+
+Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `Finset.mem_coe.2 (Finset.mem_filter.2 ⟨Finset.mem_univ _, h0⟩)`. Conclude with `this`. Establish `hδ` using `hF.face _ _ σ t hσ`. Establish `hsum' : ∑ i, (1 : ℝ) • toReal (pull r (γ i)) = ∑ k, c (t k) • toReal (σ (t k))` using `hsum.trans (Fintype.sum_of_injective t t.injective _ _ (fun j hj => by simp [hout j hj]) fun _ => rfl).symm`.
+
+Establish `hvan : ∀ k y, r y = 0 → σ (t k) y y = 0` using `fun k y hy => by`. Establish `h1` using `LinearMap.congr_fun₂ hsum' y y`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, pull_apply, hy, map_zero, LinearMap.zero_apply, Int.cast_zero, smul_zero, smul_eq_mul, mul_zero, Finset.sum_const_zero] at h1`. Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg fun k _ => mul_nonneg (hc (t k)) (by exact_mod_cast hσ.nonneg (t k) y : (0 : ℝ) ≤ (σ (t k) y y : ℝ))).1 h1.symm k (Finset.mem_univ _)`. Conclude with `(mul_eq_zero.1 h2).resolve_left (hpos k)` after adjusting the coercions.
+
+Establish `hex : ∀ k, ∃ β' : LinearMap.BilinForm ℤ X₁, pull r β' = σ (t k)` using `fun k => exists_pull_eq hr (hσ.mem (t k)).1 fun y hy z => apply_eq_zero_of_diag (hσ.mem (t k)).1 (hσ.nonneg (t k)) (hvan k y hy) z`. Use `choose δ hδ' using hex`. Establish `hδc : IsCone bar φ δ` using `GlobalTheory.PolFan.isCone_of_pull O bar φ X X₁ r _ δ hr (by simpa only [hδ'] using hδ)`. Establish `hsum₁ : ∑ i, (1 : ℝ) • toReal (γ i) = ∑ k, c (t k) • toReal (δ k)` using `LinearMap.ext₂ fun a b => by`. Take `⟨a, rfl⟩` from `hr a`.
+
+Take `⟨b, rfl⟩` from `hr b`. Establish `h1` using `LinearMap.congr_fun₂ hsum' a b`. Simplify using `only [← hδ'] at h1`. Simplify `h1` using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, pull_apply]`. Establish `hmeet` using `GlobalTheory.PolFan.cone_meet O bar φ X₁ m _ γ δ (fun _ => 1) (fun k => c (t k)) hγ hδc (fun _ => zero_le_one) (fun k => hc _) hsum₁`.
+
+Use `choose j hj using fun i => hmeet i one_ne_zero`. Establish `hinj : Function.Injective j` using `fun i i' h => hγ.injective ((hj i).1.trans ((congrArg δ h).trans (hj i').1.symm))`. Establish `hfin` using `hF.face _ _ _ ⟨j, hinj⟩ hδ`. Establish `heq : (fun i => pull r (γ i)) = fun i => σ (t (j i))` using `funext fun i => by rw [(hj i).1, hδ']`. Rewrite using `[heq]`.
+
+Conclude with `hfin`.
+-/
 theorem isCone_pull_of_surjective : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] (φ : InvFun O) (X₁ : Type) [AddCommGroup X₁] [Module O X₁] [Module.Finite O X₁] (r : X →ₗ[O] X₁) (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X₁), IsPolFanOn bar φ X → Function.Surjective r → IsCone bar φ γ → IsCone bar φ (fun i => pull r (γ i)) := by
   intro O _ _ _ _ bar X _ _ _ φ X₁ _ _ _ r m γ hF hr hγ
   classical

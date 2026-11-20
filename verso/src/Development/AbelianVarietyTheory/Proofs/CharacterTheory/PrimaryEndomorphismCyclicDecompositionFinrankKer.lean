@@ -7,6 +7,19 @@ noncomputable section
 
 namespace GlobalTheory.CuspGL
 
+/- English proof (translation)
+Establish `hle : Ideal.span {f ^ e} ≤ Ideal.span {f ^ min j e}` using `Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow f (min_le_right j e))`. Use `haveI : Module.Finite F (F[X] ⧸ Ideal.span {f ^ e}) := (AdjoinRoot.powerBasis (pow_ne_zero e hf)).finite`. Set `π` to `(Ideal.Quotient.factorₐ F hle).toLinearMap`. Establish `hπ : LinearMap.range π = ⊤`. Rewrite using `[LinearMap.range_eq_top]`.
+
+Conclude with `Ideal.Quotient.factor_surjective hle`. Establish `hker : LinearMap.ker π = LinearMap.range ((LinearMap.lsmul F[X] (F[X] ⧸ Ideal.span {f ^ e}) (f ^ j)).restrictScalars F)`. Use extensionality with `x`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `h1 : π (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk _ x` using `rfl`.
+
+Establish `h2 : ∀ y : F[X], ((LinearMap.lsmul F[X] (F[X] ⧸ Ideal.span {f ^ e}) (f ^ j)).restrictScalars F) (Ideal.Quotient.mk _ y) = Ideal.Quotient.mk _ (f ^ j * y)` using `fun y => rfl`. Rewrite using `[LinearMap.mem_ker, h1, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Break down `le_total j e with h | h` into its components or cases.
+
+Conclude with `⟨Ideal.Quotient.mk _ c, by rw [h2, min_eq_left h]⟩`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, min_eq_right h, eq_comm, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `dvd_mul_right _ _`. Introduce and unpack `⟨y, hy⟩`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite `hy` using `[h2, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Establish `h3 : f ^ min j e ∣ f ^ j * y - x` using `(pow_dvd_pow f (min_le_right j e)).trans hy`. Establish `h4 : f ^ min j e ∣ f ^ j * y` using `(pow_dvd_pow f (min_le_left j e)).mul_right y`. Simplify using `using dvd_sub h4 h3`.
+
+Establish `h1` using `LinearMap.finrank_range_add_finrank_ker π`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker ((LinearMap.lsmul F[X] (F[X] ⧸ Ideal.span {f ^ e}) (f ^ j)).restrictScalars F)`. Rewrite `h1` using `[hπ, hker, finrank_top, finrank_quotient_span_eq_natDegree, natDegree_pow]`. Rewrite using `[mul_comm]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_ker_lsmul_pow_quotient {F : Type} [Field F] (f : F[X]) (hf : f ≠ 0) (e j : ℕ) :
     Module.finrank F (LinearMap.ker
       ((LinearMap.lsmul F[X] (F[X] ⧸ Ideal.span {f ^ e}) (f ^ j)).restrictScalars F)) =
@@ -101,6 +114,15 @@ def kerAevalEquivPi {F : Type} [Field F] {V : Type} [AddCommGroup V] [Module F V
     apply Subtype.ext
     simp
 
+/- English proof (translation)
+Introduce `F _ V _ _ _ g f m hf hm`. Establish `hT : Module.IsTorsion' (Module.AEval' g) (Submonoid.powers f)`. Rewrite using `[Submodule.isTorsion'_powers_iff]`. Introduce `x`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Apply `(Module.AEval'.of g).symm.injective` to reduce the goal to its premises. Rewrite using `[Module.AEval.of_symm_smul, hm, zero_smul, map_zero]`. Take `⟨d, k, ⟨φ⟩⟩` from `Module.torsion_by_prime_power_decomposition hf hT`. Set `σ` to `Fintype.equivFin {i : Fin d // 0 < k i}`. Set `ψ : Module.AEval' g ≃ₗ[F[X]] ((i : Fin (Fintype.card {i : Fin d // 0 < k i})) → F[X] ⧸ Ideal.span {f ^ k (σ.symm i)})` to `φ ≪≫ₗ DirectSum.linearEquivFunOnFintype F[X] (Fin d) (fun i => F[X] ⧸ Ideal.span {f ^ k i}) ≪≫ₗ piDropTrivial (fun i => F[X] ⧸ Ideal.span {f ^ k i}) (fun i => 0 < k i) (fun i hi => by`.
+
+Establish `: k i = 0` using `by omega`. Rewrite using `[Ideal.Quotient.subsingleton_iff, this, pow_zero, Ideal.span_singleton_one]) ≪≫ₗ`. Use the proof step `LinearEquiv.piCongrLeft' F[X] (fun i : {i : Fin d // 0 < k i} => F[X] ⧸ Ideal.span {f ^ k i}) σ`. Use `⟨_, fun i => k (σ.symm i), fun i => (σ.symm i).2, ⟨ψ⟩, fun j => ?_⟩` and prove the remaining obligations. Use `haveI : ∀ e : ℕ, Module.Finite F (F[X] ⧸ Ideal.span {f ^ e}) := fun e => (AdjoinRoot.powerBasis (pow_ne_zero e hf.ne_zero)).finite`.
+
+Rewrite using `[(kerAevalEquivPi g _ ψ (f ^ j)).finrank_eq, Module.finrank_pi_fintype, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => finrank_ker_lsmul_pow_quotient f hf.ne_zero _ j`.
+-/
 theorem primary_structure : ∀ (F : Type) [Field F] (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V] (g : Module.End F V) (f : F[X]) (m : ℕ), Irreducible f → aeval g (f ^ m) = 0 → ∃ (d : ℕ) (e : Fin d → ℕ), (∀ i, 0 < e i) ∧ Nonempty (Module.AEval' g ≃ₗ[F[X]] ((i : Fin d) → F[X] ⧸ Ideal.span {f ^ e i})) ∧ ∀ j : ℕ, Module.finrank F (LinearMap.ker (aeval g (f ^ j))) = f.natDegree * ∑ i, min j (e i) := by
   intro F _ V _ _ _ g f m hf hm
   classical

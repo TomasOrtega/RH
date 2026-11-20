@@ -11,11 +11,21 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.FMX
 
+/- English proof (translation)
+Unfold `blkF`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem blkF_ne_inl (Ψ : Type) (p q : ℕ) {K₀ : Type} (k : K₀) (r : Ψ × Fin (p + q)) :
     blkF Ψ p q K₀ r ≠ some (.inl k) := by
   unfold blkF
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 bW bO n m φ ht e hs`. Take `⟨bd, hsnc, hiff⟩` from `hs`. Set `bk : K₀ → NonPluckerBlocks (blkF (CMType H) D.p D.q K₀)` to `fun k => ⟨Sum.inl k, fun r => blkF_ne_inl (CMType H) D.p D.q k r⟩`. Set `bx : ∀ k, J₀ k ≃ baseIdx (idx (p` to `D.p) (q := D.q) J₀ n) (blkF (CMType H) D.p D.q K₀) (bk k) := fun k => Equiv.refl _`. Establish `hval : ∀ (k : K₀) (a : J₀ k), xb (p` using `D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀ ⟨bk k, bx k a⟩ = x₀ ⟨k, a⟩ := fun _ _ => rfl`.
+
+Establish `hreg : ∀ q' : Cpt 𝔐.ξ, (∀ r : ℕ, Nat.Prime r → ¬ InFibre 𝔐.ξ r q') → ∀ h : genPt 𝔐.ξ ⤳ (𝟙 𝔐.X : 𝔐.X ⟶ 𝔐.X) q'.1, regAt 𝔐.ξ q' = regAt 𝔐.ξ ⟨(𝟙 𝔐.X : 𝔐.X ⟶ 𝔐.X) q'.1, h⟩` using `fun _ _ _ => rfl`. Establish `hinj : ∀ q₁ q₂ : Cpt 𝔐.ξ, (∀ r : ℕ, Nat.Prime r → ¬ InFibre 𝔐.ξ r q₁) → (𝟙 𝔐.X : 𝔐.X ⟶ 𝔐.X) q₁.1 = (𝟙 𝔐.X : 𝔐.X ⟶ 𝔐.X) q₂.1 → q₁ = q₂` using `fun _ _ _ h => Subtype.ext h`. Establish `hsnc'` using `GlobalTheory.CompanionTheory.Ar.SncRefine.isSncModel_refine 𝔐.X 𝔐.X Ω 𝔐.ξ 𝔐.ξ (𝟙 _) K₀ J₀ x₀ _ _ (xb (p := D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀) bk bx e bd 𝔐.all 𝔐.all 𝔐.tie ht (Category.comp_id _) hval hreg hinj hsnc`. Unfold `HasSncBoundary`. Use `⟨_, hsnc', fun z w hw => ?_⟩` and prove the remaining obligations.
+
+Establish `hdown` using `GlobalTheory.CompanionTheory.Ar.CoordsDown.coordsAt_down 𝔐.X 𝔐.X Ω 𝔐.ξ 𝔐.ξ (𝟙 _) K₀ J₀ x₀ _ _ (xb (p := D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀) bk bx z w 𝔐.all 𝔐.all 𝔐.tie.gen (Category.comp_id _) hval hreg hw`. Establish `hnd1 : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0` using `fun k => (hw.1 k).imp fun _ h => h.ne_zero`. Establish `hnd2 : ∀ k, ∃ i, w ⟨bk k, bx k i⟩ ≠ 0` using `fun k => (hdown.1 k).imp fun _ h => h.ne_zero`. Conclude with `(GlobalTheory.CompanionTheory.Ar.EigBase.mem_mcPts_rename (fun p => (⟨bk p.1, bx p.1 p.2⟩ : Σ k, _)) bd w hnd1 hnd2).trans (hiff z _ hdown)`.
+-/
 theorem hasSncBoundary_reTie : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (K₀ : Type) [Fintype K₀] (J₀ : K₀ → Type) [∀ k, Fintype (J₀ k)] (x₀ : (Σ k, J₀ k) → Ω) (𝔐 : HodgeCpt Y S x₀) (bW : WBases 𝔐) (bO : OmBases 𝔐) (n m : CMType H ⊕ CMType H → ℕ) (φ : ∀ s, Fin (n s) → Module.Dual Ω (EE 𝔐)) (ht : CoordTie ℤ 𝔐.ξ (seg (xb (p := D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀))) (e : ℕ), HasSncBoundary 𝔐 e → HasSncBoundary (reTie 𝔐 (xb (p := D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀) ht) e := by
   intro E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 bW bO n m φ ht e hs
   obtain ⟨bd, hsnc, hiff⟩ := hs

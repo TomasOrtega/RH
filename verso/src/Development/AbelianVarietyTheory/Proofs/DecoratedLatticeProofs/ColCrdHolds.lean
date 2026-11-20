@@ -16,11 +16,25 @@ namespace GlobalTheory.MiTop
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Conclude with `(Fintype.linearCombination_apply ℂ _ x).symm`.
+-/
 theorem colC_eq_lin (W : RealPack ex) (u : D.what₂.Word) :
     colC W u = Formalism.IndefR.Cx.lin (fun k => D.jN u (W.P.I.eNu u (Pi.single k 1))) := by
   funext x
   exact (Fintype.linearCombination_apply ℂ _ x).symm
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u`. Establish `hbij : Function.Bijective (Formalism.IndefR.Cx.lin (fun k => D.jN u (W.P.I.eNu u (Pi.single k 1))))` using `GlobalTheory.Mem.SJ.lin_bijective_of_form D.what₂.embLL (D.jN u) (D.div.Nu u).b (W.P.I.eNu u) (D.jN_basis u)`. Establish `hrat : ∀ x, colC W u (cpt D.what₂.embLL x) = D.jN u (W.P.I.eNu u x)` using `fun x => by`. Rewrite using `[colC_eq_lin]`. Conclude with `GlobalTheory.Mem.SJ.lin_cpt_semilinear D.what₂.embLL ((D.jN u).comp (W.P.I.eNu u).toLinearMap) x`.
+
+Use `⟨colC_eq_lin W u ▸ hbij, hrat, 1, one_pos, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul]`. Set `e : (Fin (W.P.Dc.a (W.P.I.wU u)) → ℂ) ≃ₗ[ℂ] D.what₂.Mu u` to `LinearEquiv.ofBijective (Formalism.IndefR.Cx.lin (fun k => D.jN u (W.P.I.eNu u (Pi.single k 1)))) hbij`. Establish `hv0 : W.P.A3.A.v0 = InfinitePlace.mk D.what₂.embLL` using `W.Q.Rl.hv0`. Establish `htw : ∀ a, (InfinitePlace.mk D.what₂.embLL).embedding a = Formalism.IndefR.Links.cj (Formalism.L2.SG.JoinSI.twQ W.P) (D.what₂.embLL a)`.
+
+Introduce `a`. Rewrite using `[← hv0]`. Conclude with `Formalism.L2.SG.JoinSI.twist_of_realT W.Q a`. Establish `key` using `GlobalTheory.Mem.SJ.fnorm_cjv_eq_norm D.what₂.LL D.what₂.embLL (Formalism.L2.SG.JoinSI.twQ W.P) htw (GlobalTheory.Mem.SJ.colNorm_exists_im_ne_zero _) (D.div.Nu u) _ (W.P.NuC (W.P.I.wU u)) _ (W.P.I.eNu u) (W.P.tied.div.cols.Nu u) (D.what₂.Mu u) (D.jN u) e.symm (GlobalTheory.Mem.SJ …`. Rewrite using `[LinearEquiv.symm_symm]`.
+
+Conclude with `(congrFun (colC_eq_lin W u) _).symm.trans (hrat y)) (colC W u x)`. Establish `hx : e.symm (colC W u x) = x`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `congrFun (colC_eq_lin W u) x`. Rewrite `key` using `[hx]`.
+
+Establish `hv : W.P.A3.fam3.base3.v0 = InfinitePlace.mk D.what₂.embLL` using `hv0`. Rewrite using `[hv]`. Conclude with `key`.
+-/
 theorem colCrd_holds : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), ColCrd W := by
   intro D L hT Gi Gl Kc Yd cX ex W u

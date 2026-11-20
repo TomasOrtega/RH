@@ -19,5 +19,8 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SupSpanDeep.span_latW_eq_top | exact GlobalTheory.SupSpanDeep.span_latW_eq_top | (intros; apply GlobalTheory.SupSpanDeep.span_latW_eq_top <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weight_lattice_span_eq_top : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ la : GlobalTheory.AllWt.Weight (T.Q.Dw j), GapGe 1 la → FiniteDimensional Y.d.c₂.F (Y.V (wtOf _ la 0)) → Submodule.span Y.d.c₂.F (GlobalTheory.AllWt.latW Y.U (wtOf _ la 0) : Set (Y.V (wtOf _ la 0))) = ⊤ := by
   first | exact @GlobalTheory.SupSpanDeep.span_latW_eq_top | exact GlobalTheory.SupSpanDeep.span_latW_eq_top | (intros; apply GlobalTheory.SupSpanDeep.span_latW_eq_top <;> assumption)

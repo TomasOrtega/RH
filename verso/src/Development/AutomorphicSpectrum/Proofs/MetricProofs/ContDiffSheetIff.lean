@@ -14,6 +14,11 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
+/- English proof (translation)
+Introduce `k _ _ X p t τ σ f y`. Establish `hE` using `(GlobalTheory.T.sheet_isOpenEmbedding_range k X p t τ σ).1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, h₅⟩`. Conclude with `⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, hE.continuous.continuousAt.eventually h₅⟩`.
+
+Introduce and unpack `⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, h₅⟩`. Use `⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, ?_⟩` and prove the remaining obligations. Use `show ∀ᶠ w in 𝓝 (sheet t τ y), f w = F fun a => ev t τ W (g a) w`. Rewrite using `[← hE.map_nhds_eq, eventually_map]`. Conclude with `h₅`.
+-/
 theorem cInfAt_sheet_iff : ∀ (k : Type) [CommRing k] [Module.Finite ℤ k] (X : Scheme.{0}) (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ) (σ : k →+* ℂ) (f : CxPts t τ → ℝ) (y : CxPts p σ), CInfAt f (sheet t τ y) ↔ CInfAt (fun z : CxPts p σ => f (sheet t τ z)) y := by
   intro k _ _ X p t τ σ f y
   have hE := (GlobalTheory.T.sheet_isOpenEmbedding_range k X p t τ σ).1

@@ -19,6 +19,19 @@ set_option autoImplicit false
 
 namespace GlobalTheory.PullHodge
 
+/- English proof (translation)
+Introduce `P2 PH D A N j S κ s x T b q hbq Q θ hθ hL h hh α hα h₀ hiso`. Introduce `σ' yc y hy u U W hU f f' hyU`. Establish `hW' : b ⁻¹ᵁ U ≤ LieVB.unitSec Q.A ⁻¹ᵁ (θ ⁻¹ᵁ W)`. Establish `e : LieVB.unitSec Q.A ⁻¹ᵁ (θ ⁻¹ᵁ W) = b ⁻¹ᵁ (LieVB.unitSec s.T.Z.t.G ⁻¹ᵁ W)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, LieVB.unitSec_comp hθ]`.
+
+Rewrite using `[e]`. Conclude with `fun p hp => hU hp`. Establish `horig : ⊤ ≤ (y.1 ≫ LieVB.unitSec Q.A) ⁻¹ᵁ (θ ⁻¹ᵁ W)`. Rewrite using `[Scheme.Hom.comp_preimage]`. Conclude with `(top_le_preimage_iff_mem _ _).2 (hW' (mem_ptsIn.1 hyU))`.
+
+Establish `e1` using `hiso _ (b ⁻¹ᵁ U) (QCoh.pullbackSections b (LieVB.omega s.T.Z.t.G) (le_refl (b ⁻¹ᵁ U)) (LieVB.dUnit s.T.Z.t.G hU f)) (QCoh.pullbackSections b (LieVB.omega s.T.Z.t.G) (le_refl (b ⁻¹ᵁ U)) (LieVB.dUnit s.T.Z.t.G hU f')) y hyU`. Establish `e2 : ∀ g : Γ(s.T.Z.t.G.left, W), (α.hom.app (b ⁻¹ᵁ U)) (QCoh.pullbackSections b (LieVB.omega s.T.Z.t.G) (le_refl (b ⁻¹ᵁ U)) (LieVB.dUnit s.T.Z.t.G hU g)) = LieVB.dUnit Q.A hW' (θ.appLE W (θ ⁻¹ᵁ W) le_rfl g)` using `fun g => by`. Rewrite using `[hα]`. Conclude with `LieVB.omegaBase_dUnit hθ hU le_rfl hW' le_rfl g`. Use `e1.symm.trans ((congrArg₂ (fun a c => (h.met (σ'.comp (algebraMap (𝓞 κ.c.F) κ.c.F))).form a c y) (e2 f) (e2 f')).trans ?_)` and prove the remaining obligations.
+
+Establish `key` using `hh (σ'.comp (algebraMap (𝓞 κ.c.F) κ.c.F)) y`. Establish `kd : Nonempty ((PPAS.ofPolAV Q).RiemannData y.1)` using `key.1`. Take `⟨d⟩` from `kd`. Establish `e4` using `key.2 d (b ⁻¹ᵁ U) (θ ⁻¹ᵁ W) hW' (θ.appLE W (θ ⁻¹ᵁ W) le_rfl f) (θ.appLE W (θ ⁻¹ᵁ W) le_rfl f') hyU`. Use `e4.trans ?_` and prove the remaining obligations.
+
+Establish `hu' : ∀ τ i, Formalism.L2.Pj.IsTanAtG s.T.Z.t (y.1 ≫ b) (u.v τ i)` using `fun τ i => by rw [hy]; exact u.tan τ i`. Use `choose z v hv1 hv2 hv3 using fun τ i => GlobalTheory.T.exists_tangent_riemann_data D A N j S κ s T b Q θ hθ y.1 d (u.v τ i) (hu' τ i)`. Establish `hG` using `GlobalTheory.T.eigen_frame_polarization_iso D A N j S κ s x T b Q θ hθ hL (GlobalTheory.T.eigen_frame_polarized_pullback P2 PH D A N j S κ s x T b Q θ hθ hL) σ' yc y.1 hy u d z fun τ i => ⟨v τ i, hv1 τ i, hv2 τ i, hv3 τ i⟩`. Establish `hder : ∀ τ i (g : Γ(s.T.Z.t.G.left, W)), TrivSqZeroExt.snd (valR (u.v τ i) W g) = ∑ a, z τ i a * d.cov (θ ⁻¹ᵁ W) (θ.appLE W (θ ⁻¹ᵁ W) le_rfl g) a` using `fun τ i g => by`. Rewrite using `[← hv3 τ i]`.
+
+Conclude with `GlobalTheory.T.riemann_derivative_tangent_vector T (PPAS.ofPolAV Q) y.1 d _ θ W horig g (v τ i) (z τ i) (hv1 τ i) (hv2 τ i)`. Establish `u₁ : EigFrame s.T.Z σ' (y.1 ≫ b)` using `by rw [hy]; exact u`. Repeatedly rewrite using `[hder]`. Conclude with `GlobalTheory.T.dual_gram_hermitian_frame (fun τ => S.Dw.mult τ) Q.g d.H d.posDef (GlobalTheory.T.eigen_frame_multiplicity_sum D A N j S κ s T b Q θ hθ σ' y.1 u₁) z (fun τ => (x.hodge σ').gram yc u τ) (fun τ => (x.hodge σ').pos yc u τ) hG.1 hG.2 _ _`.
+-/
 theorem isDualEigOn_hodge : Hypotheses2 → HypothesesH → ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (T : Scheme.{0}) (b : T ⟶ s.T.Z.X) (q : T ⟶ Sp (𝓞 κ.c.F)), b ≫ s.T.Z.s = q → ∀ (Q : Out.PolAV T) (θ : Q.A.left ⟶ s.T.Z.t.G.left) (hθ : IsGrpPullback Q.A s.T.Z.t.G b θ), LBIso (s.T.Z.t.PP.L.pull θ) Q.L → ∀ h : VMetric q (LieVB.omega Q.A) Q.g, (PPAS.ofPolAV Q).IsHodge h → ∀ (α : (Scheme.Modules.pullback b).obj (LieVB.omega s.T.Z.t.G) ≅ LieVB.omega Q.A), α.hom = LieVB.omegaBase hθ → ∀ h₀ : VMetric q ((Scheme.Modules.pullback b).obj (LieVB.omega s.T.Z.t.G)) Q.g, h₀.IsIsometry h α → IsDualEigOn (fun σ' => x.hodge σ') b h₀ := by
   intro P2 PH D A N j S κ s x T b q hbq Q θ hθ hL h hh α hα h₀ hiso
   intro σ' yc y hy u U W hU f f' hyU

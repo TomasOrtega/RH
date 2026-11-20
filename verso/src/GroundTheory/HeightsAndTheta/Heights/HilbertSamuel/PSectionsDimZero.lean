@@ -26,16 +26,27 @@ def blockDeg (m : (Σ k, ι k) →₀ ℕ) (k : K) : ℕ :=
 def rt (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) : (Σ k, ι k) → Ω :=
   fun p => y p / y ⟨p.1, c p.1⟩
 
+/- English proof (translation)
+Rewrite using `[aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), eq_intCast]`. Both sides reduce to the same expression.
+-/
 theorem aeval_monomial_int (z : (Σ k, ι k) → Ω) (m : (Σ k, ι k) →₀ ℕ) (q : ℤ) :
     aeval z (monomial m q : MRing ι) = (q : Ω) * monVal z m := by
   rw [aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), eq_intCast]
   rfl
 
+/- English proof (translation)
+Rewrite using `[aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem aeval_monomial_rat (z : (Σ k, ι k) → Ω) (m : (Σ k, ι k) →₀ ℕ) (q : ℚ) :
     aeval z (monomial m q : MvPolynomial (Σ k, ι k) ℚ) = q • monVal z m := by
   rw [aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Algebra.smul_def]
   rfl
 
+/- English proof (translation)
+Establish `h : ∀ p : Σ k, ι k, y p ^ m p = rt y c p ^ m p * y ⟨p.1, c p.1⟩ ^ m p` using `fun p => by`. Rewrite using `[← mul_pow, rt, div_mul_cancel₀ _ (hc p.1)]`. Simplify using `only [monVal, h, Finset.prod_mul_distrib, blockDeg]`. Use `congr 1`. Rewrite using `[Fintype.prod_sigma]`.
+
+Conclude with `Finset.prod_congr rfl fun k _ => Finset.prod_pow_eq_pow_sum Finset.univ (fun i => m ⟨k, i⟩) (y ⟨k, c k⟩)`.
+-/
 theorem monVal_eq (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (m : (Σ k, ι k) →₀ ℕ) :
     monVal y m = monVal (rt y c) m * ∏ k, y ⟨k, c k⟩ ^ blockDeg m k := by
@@ -46,19 +57,31 @@ theorem monVal_eq (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨
   rw [Fintype.prod_sigma]
   exact Finset.prod_congr rfl fun k _ => Finset.prod_pow_eq_pow_sum Finset.univ (fun i => m ⟨k, i⟩) (y ⟨k, c k⟩)
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨p, rfl⟩`.
+-/
 theorem rt_mem (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (p : Σ k, ι k) : rt y c p ∈ chartRingQ y c :=
   Algebra.subset_adjoin ⟨p, rfl⟩
 
+/- English proof (translation)
+The claim follows from `prod_mem fun p _ => pow_mem (rt_mem y c p) _`.
+-/
 theorem monVal_mem (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (m : (Σ k, ι k) →₀ ℕ) :
     monVal (rt y c) m ∈ chartRingQ y c :=
   prod_mem fun p _ => pow_mem (rt_mem y c p) _
 
+/- English proof (translation)
+The claim follows from `Subalgebra.inv_mem_of_algebraic (A := chartRingQ y c) (x := ⟨_, rt_mem y c ⟨k, i⟩⟩) (CoordCurveDegree.isAlgebraic_ratio hP c hc ⟨k, i⟩)`.
+-/
 theorem inv_mem_chart {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) (c : ∀ k, ι k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (k : K) (i : ι k) :
     (y ⟨k, i⟩ / y ⟨k, c k⟩)⁻¹ ∈ chartRingQ y c :=
   Subalgebra.inv_mem_of_algebraic (A := chartRingQ y c) (x := ⟨_, rt_mem y c ⟨k, i⟩⟩)
     (CoordCurveDegree.isAlgebraic_ratio hP c hc ⟨k, i⟩)
 
+/- English proof (translation)
+Break down `e with e | e` into its components or cases. Rewrite using `[Int.ofNat_eq_natCast, zpow_natCast]`. Conclude with `pow_mem (rt_mem y c ⟨k, i⟩) _`. Rewrite using `[zpow_negSucc, ← inv_pow]`. Conclude with `pow_mem (inv_mem_chart hP c hc k i) _`.
+-/
 theorem zpow_mem_chart {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) (c : ∀ k, ι k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (k : K) (i : ι k) (e : ℤ) :
     (y ⟨k, i⟩ / y ⟨k, c k⟩) ^ e ∈ chartRingQ y c := by
@@ -68,6 +91,11 @@ theorem zpow_mem_chart {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y
   · rw [zpow_negSucc, ← inv_pow]
     exact pow_mem (inv_mem_chart hP c hc k i) _
 
+/- English proof (translation)
+Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `e : y p / y ⟨p.1, c p.1⟩ = rt y c' p * (y ⟨p.1, c p.1⟩ / y ⟨p.1, c' p.1⟩)⁻¹`. Rewrite using `[rt, inv_div, div_mul_div_cancel₀ (hc' p.1)]`. Use `show y p / y ⟨p.1, c p.1⟩ ∈ chartRingQ y c'`.
+
+Rewrite using `[e]`. Conclude with `mul_mem (rt_mem y c' p) (inv_mem_chart hP c' hc' p.1 (c p.1))`.
+-/
 theorem chart_le {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) (c c' : ∀ k, ι k)
     (hc' : ∀ k, y ⟨k, c' k⟩ ≠ 0) : chartRingQ y c ≤ chartRingQ y c' := by
   refine Algebra.adjoin_le ?_
@@ -78,6 +106,9 @@ theorem chart_le {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) (
   rw [e]
   exact mul_mem (rt_mem y c' p) (inv_mem_chart hP c' hc' p.1 (c p.1))
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (LinearMap.mulRight ℚ w)` using `fun s t h => by`. Simplify using `only [LinearMap.mulRight_apply] at h`. Conclude with `mul_right_cancel₀ hw h`. Rewrite using `[← (Submodule.equivMapOfInjective _ hinj _).finrank_eq, Subalgebra.finrank_toSubmodule]`.
+-/
 theorem finrank_map_mulRight (L : Subalgebra ℚ Ω) {w : Ω} (hw : w ≠ 0) :
     Module.finrank ℚ ((Subalgebra.toSubmodule L).map (LinearMap.mulRight ℚ w)) = Module.finrank ℚ L := by
   have hinj : Function.Injective (LinearMap.mulRight ℚ w) := fun s t h => by
@@ -85,6 +116,15 @@ theorem finrank_map_mulRight (L : Subalgebra ℚ Ω) {w : Ω} (hw : w ≠ 0) :
     exact mul_right_cancel₀ hw h
   rw [← (Submodule.equivMapOfInjective _ hinj _).finrank_eq, Subalgebra.finrank_toSubmodule]
 
+/- English proof (translation)
+Establish `hu : ∀ c' : ∀ k, ι k, (∀ k, y ⟨k, c' k⟩ ≠ 0) → (∏ k, y ⟨k, c' k⟩ ^ (-((n : ℤ) * a k))) * ∏ k, y ⟨k, c' k⟩ ^ ((n : ℤ) * a k) = 1`. Introduce `c' hc'`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun k _ => by rw [← zpow_add₀ (hc' k), neg_add_cancel, zpow_zero]`. Use extensionality with `s`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hs`. Use `Submodule.mem_map.mpr ⟨s * ∏ k, y ⟨k, c k⟩ ^ (-((n : ℤ) * a k)), hs c hc, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mulRight_apply, mul_assoc, hu c hc, mul_one]`. Introduce and unpack `⟨t, ht, rfl⟩ c' hc'`.
+
+Rewrite using `[LinearMap.mulRight_apply]`. Establish `e : (∏ k, y ⟨k, c k⟩ ^ ((n : ℤ) * a k)) * ∏ k, y ⟨k, c' k⟩ ^ (-((n : ℤ) * a k)) = ∏ k, (y ⟨k, c k⟩ / y ⟨k, c' k⟩) ^ ((n : ℤ) * a k)`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [div_zpow, zpow_neg, div_eq_mul_inv]`. Rewrite using `[mul_assoc, e]`.
+
+Conclude with `mul_mem (chart_le hP c c' hc' ht) (prod_mem fun k _ => zpow_mem_chart hP c' hc' k (c k) _)`.
+-/
 theorem chartLatQ_eq {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) (c : ∀ k, ι k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (a : K → ℤ) (n : ℕ) :
     chartLatQ y a n = (Subalgebra.toSubmodule (chartRingQ y c)).map
@@ -108,6 +148,11 @@ theorem chartLatQ_eq {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 
     rw [mul_assoc, e]
     exact mul_mem (chart_le hP c c' hc' ht) (prod_mem fun k _ => zpow_mem_chart hP c' hc' k (c k) _)
 
+/- English proof (translation)
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Rewrite using `[SetLike.mem_coe, g.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial_int, monVal_eq y c hc m]`.
+
+Establish `hb : ∀ k, blockDeg m k = d k` using `fun k => hg m hm k`. Simplify using `only [hb]`. Conclude with `Submodule.mem_map.mpr ⟨((coeff m g : ℤ) : Ω) * monVal (rt y c) m, (mul_mem (intCast_mem _ _) (monVal_mem y c m) : _ * _ ∈ chartRingQ y c), by rw [LinearMap.mulRight_apply, mul_assoc]⟩`.
+-/
 theorem valueSpan_le (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (d : K → ℕ) :
     valueSpan y d ≤ (Subalgebra.toSubmodule (chartRingQ y c)).map
       (LinearMap.mulRight ℚ (∏ k, y ⟨k, c k⟩ ^ d k)) := by
@@ -122,6 +167,19 @@ theorem valueSpan_le (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y 
     (mul_mem (intCast_mem _ _) (monVal_mem y c m) : _ * _ ∈ chartRingQ y c),
     by rw [LinearMap.mulRight_apply, mul_assoc]⟩
 
+/- English proof (translation)
+Use `set m' : (Σ k, ι k) →₀ ℕ := Finsupp.equivFunOnFinite.symm (fun p => m p + if p.2 = c p.1 then d p.1 - blockDeg m p.1 else 0) with hm'_def`. Establish `hm' : ∀ p, m' p = m p + if p.2 = c p.1 then d p.1 - blockDeg m p.1 else 0` using `fun p => by`. Simplify using `[hm'_def]`. Establish `hdeg : ∀ k, blockDeg m' k = d k`. Introduce `k`.
+
+Establish `h1 : blockDeg m' k = blockDeg m k + (d k - blockDeg m k)`. Simplify using `only [blockDeg, hm', Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `hm k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hextra : ∏ p, rt y c p ^ (if p.2 = c p.1 then d p.1 - blockDeg m p.1 else 0) = 1`.
+
+Use `Finset.prod_eq_one fun p _ => ?_` and prove the remaining obligations. Take `⟨k, i⟩` from `p`. Simplify using `only`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Rewrite using `[rt, div_self (hc k), one_pow]`. Conclude with `pow_zero _`. Establish `hval : monVal (rt y c) m' = monVal (rt y c) m`. Unfold `monVal`. Simplify using `only [hm', pow_add, Finset.prod_mul_distrib, hextra, mul_one]`.
+
+Use `Submodule.subset_span ⟨monomial m' 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `e he k`. Rewrite `he` using `[support_monomial, if_neg one_ne_zero, Finset.mem_singleton]`. Rewrite using `[he]`. Conclude with `hdeg k`.
+
+Rewrite using `[aeval_monomial_int, Int.cast_one, one_mul, monVal_eq y c hc, hval]`. Simplify using `only [hdeg]`.
+-/
 theorem mem_valueSpan (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (d : K → ℕ)
     (m : (Σ k, ι k) →₀ ℕ) (hm : ∀ k, blockDeg m k ≤ d k) :
     monVal (rt y c) m * ∏ k, y ⟨k, c k⟩ ^ d k ∈ valueSpan y d := by
@@ -155,6 +213,15 @@ theorem mem_valueSpan (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y
   · rw [aeval_monomial_int, Int.cast_one, one_mul, monVal_eq y c hc, hval]
     simp only [hdeg]
 
+/- English proof (translation)
+Use `set V : ℕ → Submodule ℚ Ω := fun D => Submodule.span ℚ {x | ∃ m, (∀ k, blockDeg m k ≤ D) ∧ monVal (rt y c) m = x} with hV`. Establish `hmono : Monotone V` using `fun D D' h => Submodule.span_mono (by`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `⟨m, fun k => (hm k).trans h, rfl⟩)`. Establish `hfin : Module.Finite ℚ (chartRingQ y c)` using `Algebra.finite_adjoin_of_finite_of_isIntegral (Set.finite_range _) (by`.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `(CoordCurveDegree.isAlgebraic_ratio hP c hc p).isIntegral)`. Establish `hfg : (Subalgebra.toSubmodule (chartRingQ y c)).FG` using `Module.Finite.iff_fg.mp hfin`. Establish `hcpt` using `(CompleteLattice.isCompactElement_iff_le_of_directed_sSup_le _ _).mp ((Submodule.fg_iff_compact _).mp hfg)`. Take `⟨_, ⟨D, rfl⟩, hD⟩` from `hcpt (Set.range V) (Set.range_nonempty V) (directedOn_range.mpr hmono.directed_le) (by`.
+
+Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ chartRingQ y c at hx`. Rewrite `hx` using `[chartRingQ, Algebra.adjoin_range_eq_range_aeval]`. Take `⟨f, rfl⟩` from `hx`. Rewrite using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe, f.as_sum, map_sum]`.
+
+Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial_rat]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `(le_sSup (Set.mem_range_self (∑ k, blockDeg m k)) : V _ ≤ _) (Submodule.subset_span ⟨m, fun k => Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ k), rfl⟩))`. Conclude with `⟨D, hD⟩`.
+-/
 theorem exists_le_span {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) (c : ∀ k, ι k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) : ∃ D : ℕ, Subalgebra.toSubmodule (chartRingQ y c) ≤
       Submodule.span ℚ {x | ∃ m, (∀ k, blockDeg m k ≤ D) ∧ monVal (rt y c) m = x} := by
@@ -184,6 +251,9 @@ theorem exists_le_span {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y
         ⟨m, fun k => Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ k), rfl⟩))
   exact ⟨D, hD⟩
 
+/- English proof (translation)
+Use `le_antisymm (valueSpan_le y c hc d) ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `hD.trans (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `mem_valueSpan y c hc d m fun k => (hm k).trans (hd k)`.
+-/
 theorem valueSpan_eq (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (D : ℕ)
     (hD : Subalgebra.toSubmodule (chartRingQ y c) ≤
       Submodule.span ℚ {x | ∃ m, (∀ k, blockDeg m k ≤ D) ∧ monVal (rt y c) m = x})
@@ -196,6 +266,9 @@ theorem valueSpan_eq (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y 
   rintro _ ⟨m, hm, rfl⟩
   exact mem_valueSpan y c hc d m fun k => (hm k).trans (hd k)
 
+/- English proof (translation)
+Establish `hex : ∃ c, ∀ᶠ m in atTop, f m = c` using `⟨v, h⟩`. Rewrite using `[NumbersDVR.eventualValue, dif_pos hex]`. Take `⟨m, h1, h2⟩` from `(hex.choose_spec.and h).exists`. Rewrite using `[← h1, h2]`.
+-/
 theorem eventualValue_eq {f : (K → ℤ) → ℤ} {v : ℤ} (h : ∀ᶠ m in atTop, f m = v) :
     NumbersDVR.eventualValue f = v := by
   have hex : ∃ c, ∀ᶠ m in atTop, f m = c := ⟨v, h⟩
@@ -207,6 +280,13 @@ end SectionsDimZero
 
 open SectionsDimZero in
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ _ y a n hP`. Use `choose c hcX using hP.2.1.2.2`. Establish `hc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k h0 => hcX k (CoordCurveDegree.X_mem_of_eq_zero h0)`. Take `⟨D, hD⟩` from `exists_le_span hP c hc`. Rewrite using `[chartLatQ_eq hP c hc, finrank_map_mulRight _ (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hc k))]`.
+
+Use `symm`. Unfold `genDeg NumbersDVR.intNum`. Simplify using `only [NumbersDVR.mixedDiff, List.ofFn_zero, List.foldr_nil]`. Apply `eventualValue_eq` to reduce the goal to its premises. Use `filter_upwards [eventually_ge_atTop (fun _ : K => (D : ℤ))] with m hm`.
+
+Establish `hm0 : ∀ k, (D : ℤ) ≤ m k` using `hm`. Establish `e : m = fun k => (((m k).toNat : ℕ) : ℤ)` using `funext fun k => by`. Use `hm0 k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, HilbFnValueSpan.proof, valueSpan_eq y c hc D hD _ (fun k => by have := hm0 k; omega), finrank_map_mulRight _ (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k))]`.
+-/
 theorem SectionsDimZero.proof : SectionsDimZero.Statement := by
   intro K _ ι _ Ω _ _ y a n hP
   classical

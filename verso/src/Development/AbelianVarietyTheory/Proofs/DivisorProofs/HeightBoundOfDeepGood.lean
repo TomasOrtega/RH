@@ -29,6 +29,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.CovHtAll
 
+/- English proof (translation)
+Introduce `pxh gd hq py p2 ph q hks hsl hsw dg sz dd fd`. Establish `px : GlobalTheory.CovTop.HypothesesX` using `pxh.toClassicalTheoremsX`. Establish `hShort : Short` using `GlobalTheory.CovHt.ShortPf.short p2 dg sz fd`. Establish `hGeom : Geom` using `GlobalTheory.T.geometric_of_published_inputs px gd hq p2 ph.sieg hks hsl dg sz`. Establish `hMult : MultC` using `GlobalTheory.CovMult.multC_of_refW (GlobalTheory.RefSum.refW_of_size p2 dg sz fd) (GlobalTheory.T.exists_carrying_section_orders p2 ph dg sz fd)`.
+
+Establish `hBudget : Budget` using `GlobalTheory.CovHt.BudgetPf.budget GlobalTheory.CovTop.Sizes.hostN GlobalTheory.CovTop.WtShape.wtN sz`. Establish `hSlope : SlopeSt` using `GlobalTheory.T.slope_statement_of_inputs pxh py p2 ph (GlobalTheory.T.inputs_of_scholze_weinstein pxh p2 ph q hsw)`. Establish `hDeep : DeepSt` using `GlobalTheory.CovHt.DeepOfSrc.deepSt_of_srcSt p2 ph (GlobalTheory.T.source_statement_of_slope pxh p2 ph q.reg hSlope)`. Use `GlobalTheory.T.height_of_mean_bound px p2 dg sz dd hShort hGeom hMult hBudget ?_` and prove the remaining obligations. Take `⟨C, hC, h⟩` from `hDeep`.
+
+Use `⟨C, hC, fun D T hT hm => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `first | exact h D T hT | exact h D T hT hm`.
+-/
 theorem height_of_steps : GlobalTheory.CovTop.HypothesesXH → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted →
     HypothesesY → Hypotheses2 → HypothesesH → Known₂ → GlobalTheory.Published.ToroidalForFanKS →
     GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.Published.ScholzeWeinsteinB → DeepGood → Size → Deg → FlatDeg → Height := by

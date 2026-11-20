@@ -13,6 +13,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory.ThetaFacIrr
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hm N hN hI Φ hPM`. Take `⟨T, -, m, m', f, φ, f', φ', hi, hj, hΦ, h0, heq⟩` from `hPM`. Establish `hz` using `GlobalTheory.T.sum_multilinear_vacuum_outside F E σ a' (a + a') G.V' G.W G.M' B.ψ hm.triple.geo.hM' T m' f' φ' (fun j v hv => (hj j).2.2 v hv) h0.symm R.Pi Rf.Pi R.p' (fun v => Rf.p' v)`. Rewrite `heq` using `[hz]`. Take `⟨Ψ, hΨ⟩` from `GlobalTheory.T.exists_multilinear_factorization F E σ a (a + a') G.V G.W G.M B.ψ hm.triple.geo.hM T`.
+
+Establish `hvac : ∀ v, G.M.vac v ∈ SB _` using `fun v => (hm.triple.geo.hM.vac v).1`. Establish `hext : ∀ s : ∀ v : T, (Fin a × Fin (a + a') → Fv F v) → ℂ, (∀ i, s i ∈ SB _) → (∀ v, (if h : v ∈ T then s ⟨v, h⟩ else G.M.vac v) ∈ SB _) ∧ (∀ᶠ v in Filter.cofinite, (if h : v ∈ T then s ⟨v, h⟩ else G.M.vac v) = G.M.vac v)`. Introduce `s hs`. Use `⟨fun v => ?_, Filter.eventually_cofinite.2 ((T.finite_toSet).subset fun v hv => ?_)⟩` and prove the remaining obligations. Use `split_ifs with h`.
+
+Conclude with `hs _`. Conclude with `hvac v`. Assume the negation of the conclusion as `h`. Conclude with `hv (dif_neg (by simpa using h))`. Establish `hk1 : ∀ x ∈ G.M.Pol B.ψ B.emb, ∀ s : ∀ v : T, (Fin a × Fin (a + a') → Fv F v) → ℂ, (∀ i, s i ∈ SB _) → R.p x = 0 → Ψ x s ∈ N`.
+
+Introduce `x hx s hs hp`. Rewrite using `[hΨ]`. Conclude with `GlobalTheory.T.matched_triple_adapted_factor hKP F E σ B a a' G X om om' R Rf hm N hN hI _ _ hx (hext s hs).1 (hext s hs).2 hp`. Establish `hk2 : ∀ x ∈ G.M.Pol B.ψ B.emb, ∀ s : ∀ v : T, (Fin a × Fin (a + a') → Fv F v) → ℂ, (∀ i, s i ∈ SB _) → ∀ i : T, Rf.p i (s i) = 0 → Ψ x s ∈ N`. Introduce `x hx s hs i hp`.
+
+Rewrite using `[hΨ]`. Use `GlobalTheory.T.matched_triple_adapted_scalar hKP F E σ B a a' G X om om' R Rf hm N hN hI _ _ hx (hext s hs).1 (hext s hs).2 i ?_` and prove the remaining obligations. Simplify using `using hp`. Establish `key` using `GlobalTheory.T.multilinear_quotient_factorization T (SInf F (Fin a × Fin (a + a'))) R.Pi ((Fin a × Fin (a + a') → AF F) → ℂ) (fun v : T => (Fin a × Fin (a + a') → Fv F v) → ℂ) (fun v : T => Rf.Pi v) (G.M.Pol B.ψ B.emb) (fun v => SB _) N R.p (fun v => Rf.p v) Ψ hm.real.quot.onto ( …`. Rewrite using `[hΦ]`.
+
+Use `key using 2 with k` and compare the differences between its conclusion and the goal. Rewrite using `[hΨ]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Use `split_ifs with h`.
+
+Both sides reduce to the same expression. Conclude with `((hi k).2.2 v h)`.
+-/
 theorem thetaKer_le : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ N, GlobalTheory.ThetaFac.IsMaxTh B om (GlobalTheory.ThK.PolData B G.M) N → (∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M, G.M.I om Ψ = 0 → Ψ ∈ N) → ∀ Φ, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PolMatch B G X R Rf Φ 0 → Φ ∈ N := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hm N hN hI Φ hPM
   classical

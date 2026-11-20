@@ -14,11 +14,21 @@ noncomputable section
 
 def entryGauss (z : ℂ) : ℝ≥0∞ := ENNReal.ofReal (Real.exp (-‖z‖ ^ 2))
 
+/- English proof (translation)
+Unfold `entryGauss`. Conclude with `ENNReal.measurable_ofReal.comp (Real.continuous_exp.comp ((continuous_norm.pow 2).neg)).measurable`.
+-/
 theorem measurable_entryGauss : Measurable entryGauss := by
   unfold entryGauss
   exact ENNReal.measurable_ofReal.comp
     (Real.continuous_exp.comp ((continuous_norm.pow 2).neg)).measurable
 
+/- English proof (translation)
+Establish `hm : Measurable fun x : ℝ => ENNReal.ofReal (Real.exp (-x ^ 2))` using `ENNReal.measurable_ofReal.comp (Real.continuous_exp.comp ((continuous_pow 2).neg)).measurable`. Establish `h1 : ∫⁻ x : ℝ, ENNReal.ofReal (Real.exp (-x ^ 2)) < ⊤`. Simplify using `using (integrable_exp_neg_mul_sq one_pos).lintegral_lt_top`. Establish `he : ∀ z : ℂ, entryGauss z = (fun p : ℝ × ℝ => ENNReal.ofReal (Real.exp (-p.1 ^ 2)) * ENNReal.ofReal (Real.exp (-p.2 ^ 2))) (Complex.measurableEquivRealProd z)`. Introduce `z`.
+
+Use `show ENNReal.ofReal (Real.exp (-‖z‖ ^ 2)) = ENNReal.ofReal (Real.exp (-z.re ^ 2)) * ENNReal.ofReal (Real.exp (-z.im ^ 2))`. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add, ← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Measure.volume_eq_prod]`. Conclude with `lintegral_prod_mul hm.aemeasurable hm.aemeasurable`. Use `_ < ⊤ := ENNReal.mul_lt_top h1 h1`.
+-/
 theorem lintegral_entryGauss_lt_top : ∫⁻ z, entryGauss z < ⊤ := by
   have hm : Measurable fun x : ℝ => ENNReal.ofReal (Real.exp (-x ^ 2)) :=
     ENNReal.measurable_ofReal.comp (Real.continuous_exp.comp ((continuous_pow 2).neg)).measurable
@@ -45,6 +55,11 @@ theorem lintegral_entryGauss_lt_top : ∫⁻ z, entryGauss z < ⊤ := by
         exact lintegral_prod_mul hm.aemeasurable hm.aemeasurable
     _ < ⊤ := ENNReal.mul_lt_top h1 h1
 
+/- English proof (translation)
+Rewrite using `[pos_iff_ne_zero, Ne, lintegral_eq_zero_iff measurable_entryGauss]`. Introduce `h`. Take `⟨z, hz⟩` from `h.exists`. Establish `: entryGauss z ≠ 0`. Simplify using `[entryGauss, Real.exp_pos]`.
+
+Conclude with `this hz`.
+-/
 theorem lintegral_entryGauss_pos : 0 < ∫⁻ z, entryGauss z := by
   rw [pos_iff_ne_zero, Ne, lintegral_eq_zero_iff measurable_entryGauss]
   intro h
@@ -53,6 +68,15 @@ theorem lintegral_entryGauss_pos : 0 < ∫⁻ z, entryGauss z := by
     simp [entryGauss, Real.exp_pos]
   exact this hz
 
+/- English proof (translation)
+Establish `hx : ∀ x : Fin m → Fin n → ℂ, matGauss x = ∏ i, ∏ j, entryGauss (x i j)`. Introduce `x`. Simplify using `only [matGauss, entryGauss, ← Finset.sum_neg_distrib, Real.exp_sum]`. Rewrite using `[ENNReal.ofReal_prod_of_nonneg (fun i _ => Finset.prod_nonneg fun j _ => (Real.exp_pos _).le)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ENNReal.ofReal_prod_of_nonneg (fun j _ => (Real.exp_pos _).le)]`. Rewrite using `[gaussM, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ]`. Repeatedly rewrite using `[hx]`. Establish `hmeas : ∀ _i : Fin m, Measurable (fun y : Fin n → ℂ => ∏ j, entryGauss (y j))` using `fun _ => Finset.measurable_prod _ fun j _ => measurable_entryGauss.comp (measurable_pi_apply j)`. Establish `hin : ∫⁻ y : Fin n → ℂ, ∏ j, entryGauss (y j) = ∏ _j : Fin n, ∫⁻ z, entryGauss z`.
+
+Rewrite using `[volume_pi]`. Conclude with `LeadBlockGaussTail.lintegral_pi_prod (volume : Measure ℂ) n (fun _ => entryGauss) fun _ => measurable_entryGauss`. Establish `hout` using `LeadBlockGaussTail.lintegral_pi_prod (volume : Measure (Fin n → ℂ)) m (fun _ y => ∏ j, entryGauss (y j)) hmeas`. Rewrite using `[volume_pi]`. Rewrite using `[hout]`.
+
+Conclude with `Finset.prod_congr rfl fun _ _ => hin`.
+-/
 theorem gaussM_univ_eq (m n : ℕ) :
     gaussM m n Set.univ = ∏ _i : Fin m, ∏ _j : Fin n, ∫⁻ z, entryGauss z := by
   have hx : ∀ x : Fin m → Fin n → ℂ, matGauss x = ∏ i, ∏ j, entryGauss (x i j) := by
@@ -75,6 +99,9 @@ theorem gaussM_univ_eq (m n : ℕ) :
   rw [hout]
   exact Finset.prod_congr rfl fun _ _ => hin
 
+/- English proof (translation)
+Introduce `m n`. Rewrite using `[gaussM_univ_eq]`. Prove the components needed by the constructor for the conclusion. Conclude with `CanonicallyOrderedAdd.prod_pos.2 fun i _ => CanonicallyOrderedAdd.prod_pos.2 fun j _ => lintegral_entryGauss_pos`. Conclude with `ENNReal.prod_lt_top fun i _ => ENNReal.prod_lt_top fun j _ => lintegral_entryGauss_lt_top`.
+-/
 theorem gaussM_univ_pos_lt_top : ∀ m n : ℕ, 0 < gaussM m n Set.univ ∧ gaussM m n Set.univ < ⊤ := by
   intro m n
   rw [gaussM_univ_eq]

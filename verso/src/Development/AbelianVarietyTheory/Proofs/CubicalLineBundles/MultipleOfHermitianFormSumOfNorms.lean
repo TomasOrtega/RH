@@ -19,16 +19,28 @@ def IsSumOfNorms (B : M → M → R) : Prop :=
 
 variable {br}
 
+/- English proof (translation)
+Take `⟨J, _, l, hl⟩` from `h`. Conclude with `⟨J, inferInstance, l, fun x y => (e x y).trans (hl x y)⟩`.
+-/
 theorem IsSumOfNorms.congr {B B' : M → M → R} (h : IsSumOfNorms br B) (e : ∀ x y, B' x y = B x y) : IsSumOfNorms br B' := by
   obtain ⟨J, _, l, hl⟩ := h
   exact ⟨J, inferInstance, l, fun x y => (e x y).trans (hl x y)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Empty, inferInstance, fun e => e.elim, fun x y => by simp⟩`.
+-/
 theorem IsSumOfNorms.zero : IsSumOfNorms br (fun (_ _ : M) => (0 : R)) :=
   ⟨Empty, inferInstance, fun e => e.elim, fun x y => by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Unit, inferInstance, fun _ => f, fun x y => by simp⟩`.
+-/
 theorem IsSumOfNorms.one (f : M →ₗ[R] R) : IsSumOfNorms br (fun x y => f x * br (f y)) :=
   ⟨Unit, inferInstance, fun _ => f, fun x y => by simp⟩
 
+/- English proof (translation)
+Take `⟨J, _, l, hl⟩` from `h`. Take `⟨J', _, l', hl'⟩` from `h'`. Use `⟨J ⊕ J', inferInstance, Sum.elim l l', fun x y => ?_⟩` and prove the remaining obligations. Simplify using `[Fintype.sum_sum_type, hl, hl']`.
+-/
 theorem IsSumOfNorms.add {B B' : M → M → R} (h : IsSumOfNorms br B) (h' : IsSumOfNorms br B') :
     IsSumOfNorms br (fun x y => B x y + B' x y) := by
   obtain ⟨J, _, l, hl⟩ := h
@@ -36,17 +48,26 @@ theorem IsSumOfNorms.add {B B' : M → M → R} (h : IsSumOfNorms br B) (h' : Is
   refine ⟨J ⊕ J', inferInstance, Sum.elim l l', fun x y => ?_⟩
   simp [Fintype.sum_sum_type, hl, hl']
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact IsSumOfNorms.zero.congr fun x y => by simp`. Consider the case `succ n ih => exact (ih.add h).congr fun x y => by push_cast; ring`.
+-/
 theorem IsSumOfNorms.nsmul {B : M → M → R} (h : IsSumOfNorms br B) (n : ℕ) :
     IsSumOfNorms br (fun x y => (n : R) * B x y) := by
   induction n with
   | zero => exact IsSumOfNorms.zero.congr fun x y => by simp
   | succ n ih => exact (ih.add h).congr fun x y => by push_cast; ring
 
+/- English proof (translation)
+Take `⟨J, _, l, hl⟩` from `h`. Conclude with `⟨J, inferInstance, fun k => l k ∘ₗ Z, fun x y => hl _ _⟩`.
+-/
 theorem IsSumOfNorms.comp {B : M → M → R} (h : IsSumOfNorms br B) (Z : M →ₗ[R] M) :
     IsSumOfNorms br (fun x y => B (Z x) (Z y)) := by
   obtain ⟨J, _, l, hl⟩ := h
   exact ⟨J, inferInstance, fun k => l k ∘ₗ Z, fun x y => hl _ _⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact IsSumOfNorms.zero.congr fun x y => by simp`. Consider the case `insert a s ha ih => exact ((h a).add ih).congr fun x y => by rw [Finset.sum_insert ha]`.
+-/
 theorem IsSumOfNorms.sum {κ : Type} (s : Finset κ) {B : κ → M → M → R} (h : ∀ i, IsSumOfNorms br (B i)) :
     IsSumOfNorms br (fun x y => ∑ i ∈ s, B i x y) := by
   classical
@@ -58,6 +79,11 @@ variable (g : M → M →ₗ[R] R) (herm : ∀ x y, g x y = br (g y x))
 
 include herm in
 
+/- English proof (translation)
+Use `⟨(q : R) • LinearMap.id - (g e).smulRight e, by simp [hq], fun x y => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ a, g (((q : R) • LinearMap.id - (g e).smulRight e : M →ₗ[R] M) y) a = q * g y a - br (g e y) * g e a`. Introduce `a`. Rewrite using `[herm]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, LinearMap.smulRight_apply, map_sub, map_smul, smul_eq_mul, map_mul, map_natCast]`.
+
+Rewrite using `[← herm, ← herm e a]`. Rewrite using `[h1]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, LinearMap.smulRight_apply, map_sub, map_smul, smul_eq_mul, hq]`. Rewrite using `[herm y e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_step (e : M) (q : ℕ) (hq : g e e = q) :
     ∃ Z : M →ₗ[R] M, Z e = 0 ∧
       ∀ x y, g (Z y) (Z x) = (q : R) ^ 2 * g y x - q * (g e x * br (g e y)) := by
@@ -78,6 +104,15 @@ theorem exists_step (e : M) (q : ℕ) (hq : g e e = q) :
 variable (pos : ∀ x, x ≠ 0 → ∃ q : ℕ, 1 ≤ q ∧ g x x = q)
 
 include herm pos in
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, LinearMap.id, le_rfl, by simp, IsSumOfNorms.zero.congr fun x y => by simp⟩`. Consider the case `insert a s ha ih`. Take `⟨N, Z, hN, hZ, hB⟩` from `ih`. Distinguish the cases in `he : Z (v a) = 0`.
+
+Use `⟨N, Z, hN, fun i hi => ?_, hB⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Use `exacts [he, hZ i hi]`. Take `⟨q, hq1, hq⟩` from `pos _ he`. Take `⟨Y, hY, hY'⟩` from `exists_step g herm _ q hq`.
+
+Use `⟨q ^ 2 * N, Y ∘ₗ Z, Nat.mul_pos (pow_pos hq1 2) hN, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `hY`. Simplify using `[hZ i hi]`. Use `((hB.nsmul (q ^ 2)).add (((IsSumOfNorms.one (g (Z (v a)))).comp Z).nsmul q)).congr fun x y => ?_` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.comp_apply, hY']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_kill {κ : Type} (v : κ → M) (s : Finset κ) :
     ∃ (N : ℕ) (Z : M →ₗ[R] M), 1 ≤ N ∧ (∀ i ∈ s, Z (v i) = 0) ∧
       IsSumOfNorms br (fun x y => (N : R) * g y x - g (Z y) (Z x)) := by
@@ -103,6 +138,21 @@ theorem exists_kill {κ : Type} (v : κ → M) (s : Finset κ) :
 
 include herm pos in
 
+/- English proof (translation)
+Take `⟨N, Z, hN, hZ, hB⟩` from `exists_kill g herm pos u Finset.univ`. Establish `hZ0 : ∀ a, Z a = 0` using `fun a => by`. Rewrite using `[fr a, map_sum]`. Conclude with `Finset.sum_eq_zero fun i hi => by rw [map_smul, hZ i hi, smul_zero]`. Establish `hB' : IsSumOfNorms br (fun x y => (N : R) * g y x)` using `hB.congr fun x y => by simp [hZ0]`.
+
+Establish `key : ∀ e : M, ∃ K : ℕ, IsSumOfNorms br (fun x y => (K : R) * g y x - g e x * br (g e y))`. Introduce `e`. Distinguish the cases in `he : e = 0`. Use `⟨0, IsSumOfNorms.zero.congr fun x y => ?_⟩` and prove the remaining obligations. Substitute `he` using the available equality.
+
+Rewrite using `[herm 0 x]`. Simplify using the standard rewrite rules. Take `⟨q, hq1, hq⟩` from `pos _ he`. Take `⟨Y, -, hY'⟩` from `exists_step g herm _ q hq`. Take `⟨c, hc⟩ : ∃ c : ℕ, N * q = c + 1` from `⟨N * q - 1, by have := Nat.mul_pos hN hq1; omega⟩`.
+
+Establish `hc' : (N : R) * q = c + 1` using `by exact_mod_cast congrArg (Nat.cast : ℕ → R) hc`. Use `⟨N * q ^ 2, ((hB'.comp Y).add ((IsSumOfNorms.one (g e)).nsmul c)).congr fun x y => ?_⟩` and prove the remaining obligations. Simplify using `only [hY']`. Use `push_cast`. Take the linear combination `(g e x * br (g e y)) * hc'`.
+
+Use `choose K hK using key`. Take `⟨J, _, l, hl⟩` from `hB'.add (IsSumOfNorms.sum Finset.univ fun i => hK (w i))`. Set `eqv` to `Fintype.equivFin (Fin n ⊕ J)`. Use `⟨N + ∑ i, K (w i), Fintype.card (Fin n ⊕ J), LinearMap.pi fun k => Sum.elim (fun i => g (w i)) l (eqv.symm k), ∑ i, (LinearMap.proj (eqv (Sum.inl i)) : (Fin _ → R) →ₗ[R] R).smulRight (u i), by omega, ?_, fun x y => ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.proj_apply, LinearMap.pi_apply, Equiv.symm_apply_apply, Sum.elim_inl, LinearMap.id_apply]`. Conclude with `(fr a).symm`. Simplify using `only [LinearMap.pi_apply]`. Rewrite using `[eqv.symm.sum_comp (fun k => Sum.elim (fun i => g (w i)) l k x * br (Sum.elim (fun i => g (w i)) l k y)), Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`.
+
+Rewrite using `[← hl x y]`. Simplify using `only [Finset.sum_sub_distrib, ← Finset.sum_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_split {n : ℕ} (u w : Fin n → M) (fr : ∀ a, a = ∑ i, g (w i) a • u i) :
     ∃ (N m : ℕ) (l : M →ₗ[R] (Fin m → R)) (r : (Fin m → R) →ₗ[R] M), 1 ≤ N ∧ r ∘ₗ l = LinearMap.id ∧
       ∀ x y, (N : R) * g y x = ∑ k, l x k * br (l y k) := by
@@ -147,6 +197,15 @@ theorem exists_split {n : ℕ} (u w : Fin n → M) (fr : ∀ a, a = ∑ i, g (w 
 
 end general
 
+/- English proof (translation)
+Introduce `E _ _ _ H D ε h hh hpos`. Take `⟨h₀, -, huniq, hherm, -, hdiag, -, n, u, w, fr⟩` from `GlobalTheory.CM.exists_kForm E H D ε`. Take `⟨-, -, ⟨br, hbr, -⟩, -⟩` from `GlobalTheory.CM.OK_isDedekindDomain_and_projective E H`. Take `rfl` from `huniq h hh`. Set `g : D.La → D.La →ₗ[OK H] OK H` to `fun y => { toFun := fun x => h₀ x y map_add' := fun a b => by rw [map_add]; rfl map_smul' := fun c a => by rw [map_smul]; rfl }`.
+
+Take `⟨N, m, l, r, hN, hr, hl⟩` from `exists_split (br := br.toRingHom) g (fun x y => Subtype.ext ((hherm x y).trans (hbr _).symm)) (fun x hx => by`. Establish `h1` using `hpos x hx`. Use `⟨((ε : ℤ) * D.EF (H.w0 • x) x).toNat, by omega, Subtype.ext ?_⟩` and prove the remaining obligations. Use `(hdiag x).trans ?_` and prove the remaining obligations. Use `conv_lhs => rw [← Int.toNat_of_nonneg h1.le]`.
+
+Rewrite using `[Int.cast_natCast, SubringClass.coe_natCast]) u w fr`. Use `⟨N, m, l, r, hN, hr, fun x y => ?_⟩` and prove the remaining obligations. Use `congrArg (OK H).val (hl x y)` as an intermediate fact. Simplify using `only [map_mul, map_sum, map_natCast, Subalgebra.coe_val] at this`. Simplify using `only [← hbr]`.
+
+Conclude with `this`.
+-/
 theorem kForm_sum_sq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (ε : ℤˣ) (h : D.La → D.La → OK H), IsKForm D ε h → (∀ x : D.La, x ≠ 0 → 0 < (ε : ℤ) * D.EF (H.w0 • x) x) → ∃ (N m : ℕ) (l : D.La →ₗ[OK H] (Fin m → OK H)) (r : (Fin m → OK H) →ₗ[OK H] D.La), 1 ≤ N ∧ r ∘ₗ l = LinearMap.id ∧ ∀ x y, (N : 𝓞 E) * (h x y : OK H) = ∑ k, ((l x k : OK H) : 𝓞 E) * H.bar (l y k : OK H) := by
   intro E _ _ _ H D ε h hh hpos
   obtain ⟨h₀, -, huniq, hherm, -, hdiag, -, n, u, w, fr⟩ := GlobalTheory.CM.exists_kForm E H D ε

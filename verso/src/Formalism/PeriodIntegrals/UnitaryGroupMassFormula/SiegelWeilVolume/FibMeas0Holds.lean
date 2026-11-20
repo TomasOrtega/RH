@@ -23,6 +23,11 @@ variable {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V] 
   [ν.IsOpenPosMeasure]
   {f : V → Y} {ι : X → Y} {U : Set V} {fib1 fib2 : X → Measure V}
 
+/- English proof (translation)
+Establish `c1` using `(h1.2.2 φ hφc hφs hφU).2`. Establish `c2` using `(h2.2.2 φ hφc hφs hφU).2`. Establish `h0 : ∀ S, IsCompact S → S ⊆ univ → ∫ b in S, (∫ v, φ v ∂(fib1 b) - ∫ v, φ v ∂(fib2 b)) ∂ν = 0`. Introduce `S hS _`. Rewrite using `[integral_sub ((c1.mono (subset_univ S)).integrableOn_compact hS) ((c2.mono (subset_univ S)).integrableOn_compact hS), ← PI.VolStabSW.DensGen.fib_set h1 hf' hff' hι φ hφc hφs hφU S hS (subset_univ S), ← PI.VolStabSW.DensGen.fib_set h2 hf' hff' hι φ hφc hφs hφU S hS (subset_univ S …`.
+
+Conclude with `sub_eq_zero.1 (PI.VolStabSW.DensGen.eq_zero_of_setIntegral (ν := ν) (fun b => ∫ v, φ v ∂(fib1 b) - ∫ v, φ v ∂(fib2 b)) univ b univ_mem (c1.sub c2) h0)`.
+-/
 theorem integral_eq (h1 : IsFibreFamily μ f ι U ν univ fib1)
     (h2 : IsFibreFamily μ f ι U ν univ fib2) {f' : V → X} (hf' : Continuous f')
     (hff' : ∀ v, f v = ι (f' v)) (hι : Function.Injective ι) (φ : V → ℝ) (hφc : Continuous φ)
@@ -40,6 +45,11 @@ theorem integral_eq (h1 : IsFibreFamily μ f ι U ν univ fib1)
   exact sub_eq_zero.1 (PI.VolStabSW.DensGen.eq_zero_of_setIntegral (ν := ν)
     (fun b => ∫ v, φ v ∂(fib1 b) - ∫ v, φ v ∂(fib2 b)) univ b univ_mem (c1.sub c2) h0)
 
+/- English proof (translation)
+Take `⟨g, hgK, hgc, hgU, -⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen hK hU hKU`. Establish `hi` using `(h.2.2 g g.continuous hgc hgU).1 b (mem_univ b)`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hv : v ∈ K`.
+
+Simplify using `[hv, hgK hv]`. Simplify using `[hv]`. Use `_ < ⊤ := hi.lintegral_lt_top`.
+-/
 theorem fin_cpt {fib : X → Measure V} (h : IsFibreFamily μ f ι U ν univ fib) (hU : IsOpen U)
     (b : X) (K : Set V) (hK : IsCompact K) (hKU : K ⊆ U) : fib b K < ⊤ := by
   obtain ⟨g, hgK, hgc, hgU, -⟩ := exists_continuousMap_one_of_isCompact_subset_isOpen hK hU hKU
@@ -52,6 +62,13 @@ theorem fin_cpt {fib : X → Measure V} (h : IsFibreFamily μ f ι U ν univ fib
         · simp [hv]
     _ < ⊤ := hi.lintegral_lt_top
 
+/- English proof (translation)
+Take `⟨φ, hφ, h01, hmono, hlim⟩` from `PI.VolStabSW.DiscreteGroups.approx O hO`. Establish `hmeas : ∀ k, Measurable fun v => ENNReal.ofReal (φ k v)` using `fun k => ENNReal.measurable_ofReal.comp (hφ k).1.measurable`. Establish `hmon : Monotone fun k v => ENNReal.ofReal (φ k v)` using `fun i j hij v => ENNReal.ofReal_le_ofReal (hmono v hij)`. Establish `key : ∀ fib : X → Measure V, IsFibreFamily μ f ι U ν univ fib → fib b O = ⨆ k, ENNReal.ofReal (∫ v, φ k v ∂(fib b))`. Introduce `fib hf`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `(ofReal_integral_eq_lintegral_ofReal ((hf.2.2 _ (hφ k).1 (hφ k).2.1 ((hφ k).2.2.trans hOU)).1 b (mem_univ b)) (ae_of_all _ fun v => (h01 k v).1)).symm`. Rewrite using `[key fib1 h1, key fib2 h2]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[integral_eq h1 h2 hf' hff' hι (φ k) (hφ k).1 (hφ k).2.1 ((hφ k).2.2.trans hOU) b]`.
+-/
 theorem open_eq (h1 : IsFibreFamily μ f ι U ν univ fib1)
     (h2 : IsFibreFamily μ f ι U ν univ fib2) {f' : V → X} (hf' : Continuous f')
     (hff' : ∀ v, f v = ι (f' v)) (hι : Function.Injective ι) (O : Set V) (hO : IsOpen O)
@@ -79,6 +96,17 @@ theorem open_eq (h1 : IsFibreFamily μ f ι U ν univ fib1)
   funext k
   rw [integral_eq h1 h2 hf' hff' hι (φ k) (hφ k).1 (hφ k).2.1 ((hφ k).2.2.trans hOU) b]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Take `⟨W, hW, hWU⟩` from `PI.VolStabSW.DiscreteGroups.cover U hU`. Establish `hWsub : ∀ n, W n ⊆ U` using `fun n => subset_closure.trans (hW n).2.2`. Establish `hnull : ∀ fib : X → Measure V, IsFibreFamily μ f ι U ν univ fib → fib b Uᶜ = 0` using `fun fib hf => measure_mono_null (compl_subset_compl.2 inter_subset_right) (hf.1 b)`. Establish `hfin : ∀ fib : X → Measure V, IsFibreFamily μ f ι U ν univ fib → ∀ n, fib b (W n) ≠ ⊤` using `fun fib hf n => (lt_of_le_of_lt (measure_mono subset_closure) (fin_cpt hf hU b _ (hW n).2.1 (hW n).2.2)).ne`.
+
+Set `s : Option ℕ → Set V` to `fun o => o.elim Uᶜ W`. Establish `hs : ⋃ o, s o = univ`. Rewrite using `[iUnion_option]`. Simplify using `only [s, Option.elim_none, Option.elim_some]`. Rewrite using `[hWU, compl_union_self]`.
+
+Use `(Measure.ext_iff_of_iUnion_eq_univ hs).2 fun o => ?_` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none`. Simplify using `only [s, Option.elim_none]`. Rewrite using `[Measure.restrict_eq_zero.2 (hnull fib1 h1), Measure.restrict_eq_zero.2 (hnull fib2 h2)]`.
+
+Consider the case `some n`. Simplify using `only [s, Option.elim_some]`. Establish `: IsFiniteMeasure ((fib1 b).restrict (W n))` using `isFiniteMeasure_restrict.2 (hfin fib1 h1 n)`. Use `ext_of_generate_finite {t : Set V | IsOpen t} (BorelSpace.measurable_eq.trans rfl) isPiSystem_isOpen (fun t ht => ?_) ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply ht.measurableSet, Measure.restrict_apply ht.measurableSet]`.
+
+Conclude with `open_eq h1 h2 hf' hff' hι _ (ht.inter (hW n).1) (inter_subset_right.trans (hWsub n)) b`. Rewrite using `[Measure.restrict_apply_univ, Measure.restrict_apply_univ]`. Conclude with `open_eq h1 h2 hf' hff' hι _ (hW n).1 (hWsub n) b`.
+-/
 theorem fib_eq (h1 : IsFibreFamily μ f ι U ν univ fib1)
     (h2 : IsFibreFamily μ f ι U ν univ fib2) {f' : V → X} (hf' : Continuous f')
     (hff' : ∀ v, f v = ι (f' v)) (hι : Function.Injective ι) (hU : IsOpen U) : fib1 = fib2 := by

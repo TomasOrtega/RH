@@ -10,9 +10,17 @@ section
 
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 private theorem sand_comp (g h : GL (Fin a) (Cinf E)) (v : HV E a) : sand g (sand h v) = sand (g * h) v := by
   rw [map_mul]; rfl
 
+/- English proof (translation)
+Establish `h1 : sand (g⁻¹ * h) (hOne E a) = hOne E a`. Rewrite using `[← sand_comp, ← e, sand_comp, inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Establish `h2 : (g⁻¹ * h).val * star (g⁻¹ * h).val = 1`. Establish `h3` using `sand_val (g⁻¹ * h) (hOne E a)`.
+
+Rewrite `h3` using `[h1, hOne_val, mul_one]`. Conclude with `h3.symm`. Use `⟨⟨(g⁻¹ * h).val, Matrix.mem_unitaryGroup_iff.2 h2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_mul_eq_iff_eq_mul]`. Conclude with `Units.ext rfl`.
+-/
 private theorem unitary_of_eq {g h : GL (Fin a) (Cinf E)} (e : sand g (hOne E a) = sand h (hOne E a)) :
     ∃ k : Kinf E a, h = g * Unitary.toUnits k := by
   have h1 : sand (g⁻¹ * h) (hOne E a) = hOne E a := by
@@ -25,10 +33,18 @@ private theorem unitary_of_eq {g h : GL (Fin a) (Cinf E)} (e : sand g (hOne E a)
   rw [← inv_mul_eq_iff_eq_mul]
   exact Units.ext rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem hv_adHerm (k : Kinf E a) (X : Herm E a) : hv (adHerm k X) = sand (Unitary.toUnits k) (hv X) := rfl
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ a U Y C hY`. Use `⟨fun s p => if h : p ∈ cone E a then sand h.choose (hv (Y (infGL E a h.choose * finGL E a s.out))) else 0, fun g x => ?_⟩` and prove the remaining obligations. Establish `hp : sand g (hOne E a) ∈ cone E a` using `⟨g, rfl⟩`. Take `⟨k, hk⟩` from `unitary_of_eq hp.choose_spec.symm`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul U x`.
+
+Use `beta_reduce`. Rewrite using `[dif_pos hp, hk, hu, map_mul (finGL E a), ← mul_assoc, hY.lev _ u.2, ← sand_comp, ← hv_adHerm, map_mul (infGL E a), mul_assoc, infGL_comm, ← mul_assoc, hY.cpt]`.
+-/
 theorem UpperTheory.V.Lit.Geo.fieldDef :
     FieldDef := by
   classical

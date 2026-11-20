@@ -10,6 +10,13 @@ namespace Formalism.L2.SG.LocalCountModules.UnramifiedPairingAlgebraic
 
 variable {E : Type} [CommRing E] (O : Subring E) (cj : E →+* E) {r : ℕ}
 
+/- English proof (translation)
+Use `set N : Matrix (Fin (r + 1)) (Fin (r + 1)) E := (Z.map O.subtype).transpose.map cj with hN`. Establish `hdet : IsUnit N.det`. Establish `h1 : N.det = cj (Z.map O.subtype).det`. Rewrite using `[hN, ← Matrix.det_transpose (Z.map O.subtype)]`. Conclude with `(RingHom.map_det cj _).symm`.
+
+Rewrite using `[h1]`. Conclude with `hu.map cj`. Use `⟨N⁻¹.mulVec (fun j => (y' j : E)), fun b => ?_⟩` and prove the remaining obligations. Establish `h2 : N.mulVec (N⁻¹.mulVec (fun j => (y' j : E))) = fun j => (y' j : E)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv N hdet, Matrix.one_mulVec]`.
+
+Establish `h3` using `congrFun h2 b`. Rewrite using `[← h3]`. Simplify using `[Matrix.mulVec, dotProduct, hN]`.
+-/
 private theorem exists_cj_combination_of_isUnit_det (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O)
     (hu : IsUnit (Z.map O.subtype).det) (y' : Fin (r + 1) → O) :
     ∃ w : Fin (r + 1) → E, ∀ b, (y' b : E) = ∑ a, cj (Z.map O.subtype a b) * w a := by
@@ -27,6 +34,23 @@ private theorem exists_cj_combination_of_isUnit_det (Z : Matrix (Fin (r + 1)) (F
   rw [← h3]
   simp [Matrix.mulVec, dotProduct, hN]
 
+/- English proof (translation)
+Take `⟨y₂', hy₂'⟩` from `Submodule.Quotient.mk_surjective _ (p.1.2 (eCl (cjT O cj hO Z₁)))`. Establish `hlam : lamS O cj Z₂ y₂' = lamS O cj Z₁ (Pi.single (Fin.last r) 1)` using `p.2.2.1 (Pi.single (Fin.last r) 1) y₂' hy₂'.symm`. Use `set d : Fin (r + 1) → O := y₂' - Pi.single (Fin.last r) 1 with hd`. Take `⟨w, hw⟩` from `exists_cj_combination_of_isUnit_det O cj Z₂ hu₂ d`. Establish `hlast : w (Fin.last r) = 0`.
+
+Rewrite using `[← lamS_cjT O cj Z₂ hu₂ d w hw, hd, lamS_sub, hlam, lamS_e', lamS_e', hκ, sub_self]`. Establish `hmem : ∀ a, w a ∈ O`. Introduce `a`. Take `⟨c, hc⟩` from `Submodule.Quotient.mk_surjective _ (p.1.1.symm (Submodule.Quotient.mk (Pi.single a 1)))`. Establish `h1 : p.1.1 (Submodule.Quotient.mk c) = Submodule.Quotient.mk (Pi.single a 1)`.
+
+Rewrite using `[hc]`. Simplify using the standard rewrite rules. Establish `hB` using `p.2.2.2 c (Pi.single (Fin.last r) 1) (Pi.single a 1) y₂' h1 hy₂'.symm`. Establish `hL` using `lam_keep O hu₁ hu₂ p.1.1.toLinearMap p.2.1.1 c (Pi.single a 1) h1`. Establish `hsplit : y₂' = d + Pi.single (Fin.last r) 1`.
+
+Rewrite using `[hd]`. Normalize the expressions using the abelian group laws. Rewrite `hB` using `[hsplit, bRaw_add_right, bRaw_e, bRaw_e, hL, add_sub_cancel_right, bRaw_cjT O cj hcj Z₂ hu₂ _ d w hw]`. Establish `hs : (∑ b : Fin (r + 1), cj (w b) * ((Pi.single a (1 : O) : Fin (r + 1) → O) b : E)) = cj (w a)`. Rewrite using `[Finset.sum_eq_single a]`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+
+Rewrite `hB` using `[hs]`. Use `hO _ hB` as an intermediate fact. Rewrite `this` using `[hcj]`. Then use the resulting hypothesis. Establish `hdmem : d ∈ headCols (cjT O cj hO Z₂)`. Rewrite using `[mem_headCols_iff]`.
+
+Use `⟨fun a => ⟨w a, hmem a⟩, Subtype.ext hlast, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[cjT_mulVec_coe]`. Conclude with `hw b`.
+
+Rewrite using `[← hy₂']`. Conclude with `(Submodule.Quotient.eq _).2 hdmem`.
+-/
 theorem pair_eG (hcj : ∀ x, cj (cj x) = x) (hO : ∀ x ∈ O, cj x ∈ O)
     {Z₁ Z₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) O}
     (hu₁ : IsUnit (Z₁.map O.subtype).det) (hu₂ : IsUnit (Z₂.map O.subtype).det)
@@ -84,6 +108,13 @@ variable (hcj : ∀ x, cj (cj x) = x) (hO : ∀ x ∈ O, cj x ∈ O) (t t' : O)
 
 include hcj hu₁ hu₂ hκ hG₁ hG₂ in
 
+/- English proof (translation)
+Establish `hl : lamC (Z₂.map O.subtype) (fun j => ((Y₂ (Sum.inl j) : O) : E)) = lamC (Z₁.map O.subtype) (fun j => ((Y (Sum.inl j) : O) : E))` using `lam_keep O hu₁ hu₂ p.1.1.toLinearMap p.2.1.1 _ _ hy`. Establish `hs : lamStarC cj (Z₂.map O.subtype) (fun j => ((Y₂ (Sum.inr j) : O) : E)) = lamStarC cj (Z₁.map O.subtype) (fun j => ((Y (Sum.inr j) : O) : E))` using `p.2.2.1 _ _ hy'`. Establish `hlw : lamC (Z₂.map O.subtype) (fun j => ((W₂ (Sum.inl j) : O) : E)) = lamC (Z₁.map O.subtype) (fun j => ((W (Sum.inl j) : O) : E))` using `lam_keep O hu₁ hu₂ p.1.1.toLinearMap p.2.1.1 _ _ hw`. Establish `hsw : lamStarC cj (Z₂.map O.subtype) (fun j => ((W₂ (Sum.inr j) : O) : E)) = lamStarC cj (Z₁.map O.subtype) (fun j => ((W (Sum.inr j) : O) : E))` using `p.2.2.1 _ _ hw'`. Take `⟨hc1, hc2⟩` from `cG_transfer O cj hcj Z₁ Z₂ hu₁ hu₂ _ _ hG₁ hG₂ hκ Y Y₂ hl hs`.
+
+Establish `hb1` using `p.2.2.2 _ _ _ _ hy hw'`. Establish `hb2` using `p.2.2.2 _ _ _ _ hw hy'`. Rewrite using `[formC_eqG O cj hcj Z₂ hu₂ _ _ hG₂, formC_eqG O cj hcj Z₁ hu₁ _ _ hG₁, hc1, hc2, hlw, hsw]`. Establish `key : ∀ a b c d X X' : E, (a + cj b + X + X') - (c + cj d + X + X') = (a - c) + cj (b - d)`. Introduce `a b c d X X'`.
+
+Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `add_mem hb1 (hO _ hb2)`.
+-/
 theorem form_diff (p : PairSet O cj hO Z₁ Z₂) (Y Y₂ W W₂ : Ix r → O)
     (hy : p.1.1 (Submodule.Quotient.mk fun j => Y (Sum.inl j)) = Submodule.Quotient.mk fun j => Y₂ (Sum.inl j))
     (hy' : p.1.2 (Submodule.Quotient.mk fun j => Y (Sum.inr j)) = Submodule.Quotient.mk fun j => Y₂ (Sum.inr j))

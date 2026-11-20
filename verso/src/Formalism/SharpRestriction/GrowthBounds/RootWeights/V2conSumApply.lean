@@ -18,6 +18,9 @@ def letterPolarizationDerivation (R : Type*) [CommRing R] {ι : Type*} [Fintype 
        else -((X (l, b) : MvPolynomial (ι × Fin n) R) • pderiv (l, a)))
     else 0
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]`.
+-/
 theorem v2con_sum_apply {R : Type*} [CommRing R] {σ : Type*} {α : Type*} (s : Finset α)
     (f : α → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)) (F : MvPolynomial σ R) :
     (∑ i ∈ s, f i) F = ∑ i ∈ s, f i F := by
@@ -27,6 +30,9 @@ theorem v2con_sum_apply {R : Type*} [CommRing R] {σ : Type*} {α : Type*} (s : 
   · intro a s ha ih
     rw [Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]
 
+/- English proof (translation)
+Unfold `glAct letterPolarizationDerivation`. Rewrite using `[LinearMap.sum_apply, v2con_sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem v2con_glAct_eq {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (a b : Fin n) (F : MvPolynomial (ι × Fin n) R) : glAct R LL S a b F = letterPolarizationDerivation R LL S a b F := by
   unfold glAct letterPolarizationDerivation
@@ -35,6 +41,9 @@ theorem v2con_glAct_eq {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : �
   split_ifs <;> simp
 
 open Classical in
+/- English proof (translation)
+Unfold `letterPolarizationDerivation`. Rewrite using `[v2con_sum_apply, Finset.sum_eq_single l]`. Apply the tactic sequence `split_ifs <;> simp_all [pderiv_X, Pi.single_apply]`. Apply the tactic sequence `intro l' _ hl' split_ifs <;> simp [pderiv_X, Pi.single_apply, Ne.symm hl']`. Simplify using the standard rewrite rules.
+-/
 theorem v2con_der_X {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (a b : Fin n) (l : ι) (c : Fin n) : letterPolarizationDerivation R LL S a b (X (l, c)) =
       if l ∈ S then

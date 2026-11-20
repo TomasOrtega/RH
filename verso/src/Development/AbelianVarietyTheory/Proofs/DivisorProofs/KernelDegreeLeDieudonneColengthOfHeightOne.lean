@@ -21,6 +21,17 @@ open Module
 
 variable {p : ℕ} [Fact p.Prime] {k : Type} [Field k]
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `he`. Establish `hlev : finrank k (G.A 1 ⧸ kerIdeal (q.app 1)) = p ^ e`. Rewrite using `[← GlobalTheory.Dieu.finrank_quot_kerIdeal_eq p k G H 1 (max N 1) q q' (by rw [pow_one]; exact h1) (le_max_right _ _)]`. Conclude with `hN _ (le_max_left _ _)`. Take `⟨C, _, _, _, _, π, hπ, hker, hnil, hFaug⟩` from `GlobalTheory.T.exists_quotient_kernel_sup_frobeniusKernel p k G H q`.
+
+Establish `hker' : RingHom.ker π = kerIdeal (q.app 1)` using `by rw [hker]; exact sup_eq_left.2 hF`. Establish `hC : finrank k C = p ^ e`. Rewrite using `[← hlev, ← hker']`. Conclude with `((Ideal.quotientKerAlgEquivOfSurjective (f := (π : G.A 1 →ₐ[k] C)) hπ).toLinearEquiv.finrank_eq).symm`. Establish `hfrobC : frobKerIdeal p k C = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Simplify using `[hnil a ha]`. Establish `hCq : finrank k C = finrank k (C ⧸ frobKerIdeal p k C)`.
+
+Use `LinearEquiv.finrank_eq (LinearEquiv.ofBijective (Ideal.Quotient.mkₐ k (frobKerIdeal p k C)).toLinearMap ⟨fun a b h => ?_, Ideal.Quotient.mkₐ_surjective k _⟩)` and prove the remaining obligations. Establish `h'` using `Ideal.Quotient.eq.1 h`. Rewrite `h'` using `[hfrobC, Ideal.mem_bot, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hle` using `GlobalTheory.PDiv.FrobKerOrder.finrank_le_pow_finrank_cot p k C`. Rewrite `hle` using `[← hCq, hC]`.
+
+Establish `hcot` using `(GlobalTheory.T.cotangent_kernel_eq_coker_omegaMap p k G H q C π hπ).2.1 (by rw [hker]; exact sup_le_sup_left hFaug _) hker'.ge`. Rewrite using `[hcot]`. Conclude with `(Nat.pow_le_pow_iff_right (Fact.out : p.Prime).one_lt).1 hle`.
+-/
 theorem le_finrank_coker_omegaMap [CharP k p] (G H : PDivGroup p k) (q : G ⟶ H) (q' : H ⟶ G) (e : ℕ)
     (h1 : q ≫ q' = (p : ℤ_[p]) • 𝟙 G) (hF : frobKerIdeal p k (G.A 1) ≤ kerIdeal (q.app 1))
     (he : HasLogDeg q e) : e ≤ finrank k (G.omega ⧸ LinearMap.range (omegaMap G H q)) := by
@@ -50,6 +61,9 @@ theorem le_finrank_coker_omegaMap [CharP k p] (G H : PDivGroup p k) (q : G ⟶ H
   rw [hcot]
   exact (Nat.pow_le_pow_iff_right (Fact.out : p.Prime).one_lt).1 hle
 
+/- English proof (translation)
+Establish `h1` using `Submodule.finrank_quotient_add_finrank (LinearMap.range (lieMap A B f))`. Establish `h2` using `Submodule.finrank_quotient_add_finrank (LinearMap.range (omegaMap A B f))`. Establish `h3 : finrank k (LinearMap.range (lieMap A B f)) = finrank k (LinearMap.range (omegaMap A B f))` using `LinearMap.finrank_range_dualMap_eq_finrank_range (omegaMap A B f)`. Establish `h4 : finrank k B.Lie = finrank k B.omega` using `Subspace.dual_finrank_eq`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_coker_lieMap {A B : PDivGroup p k} (f : A ⟶ B) [FiniteDimensional k A.omega]
     [FiniteDimensional k B.omega] (hd : finrank k A.omega = finrank k B.omega) :
     finrank k (B.Lie ⧸ LinearMap.range (lieMap A B f)) =
@@ -61,6 +75,11 @@ theorem finrank_coker_lieMap {A B : PDivGroup p k} (f : A ⟶ B) [FiniteDimensio
   have h4 : finrank k B.Lie = finrank k B.omega := Subspace.dual_finrank_eq
   omega
 
+/- English proof (translation)
+Set `L : B.Lie ≃ₗ[k] B'.Lie` to `LinearEquiv.ofLinear (lieMap B B' eB.hom) (lieMap B' B eB.inv) (by rw [← lieMap_comp, eB.inv_hom_id, lieMap_id]) (by rw [← lieMap_comp, eB.hom_inv_id, lieMap_id])`. Establish `hA : LinearMap.range (lieMap A A' eA.hom) = ⊤`. Use `LinearMap.range_eq_top.2 fun x => ⟨lieMap A' A eA.inv x, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← lieMap_comp, eA.inv_hom_id, lieMap_id, LinearMap.id_apply]`. Establish `hr : LinearMap.range (lieMap A' B' f') = (LinearMap.range (lieMap A B f)).map (L : B.Lie →ₗ[k] B'.Lie)`.
+
+Rewrite using `[← LinearMap.range_comp_of_range_eq_top _ hA, ← lieMap_comp, hc, lieMap_comp, LinearMap.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hr]`. Conclude with `(Submodule.Quotient.equiv _ _ L rfl).finrank_eq.symm`.
+-/
 theorem finrank_coker_lieMap_congr {A B A' B' : PDivGroup p k} (eA : A ≅ A') (eB : B ≅ B') (f : A ⟶ B)
     (f' : A' ⟶ B') (hc : eA.hom ≫ f' = f ≫ eB.hom) :
     finrank k (B'.Lie ⧸ LinearMap.range (lieMap A' B' f')) =
@@ -80,6 +99,11 @@ end GlobalTheory.Dieu.ColengthHtOne
 
 open GlobalTheory.Dieu.ColengthHtOne in
 
+/- English proof (translation)
+Introduce `p _ T k _ _ _ G H q q' e h1 h2 hF he`. Establish `h3` using `le_finrank_coker_omegaMap G H q q' e h1 hF he`. Establish `hp0 : (p : k) = 0` using `CharP.cast_eq_zero k p`. Use `haveI := GlobalTheory.PDivGroup.finite_omega_of_eq_zero hp0 G`. Use `haveI := GlobalTheory.PDivGroup.finite_omega_of_eq_zero hp0 H`.
+
+Establish `hiso : IsIsog q` using `⟨1, q', by rw [pow_one]; exact h1, by rw [pow_one]; exact h2⟩`. Establish `hd` using `(GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k G H q hiso).2.2.1`. Establish `hL` using `(GlobalTheory.T.finrank_quot_range_le_length_quot_range_map p T k H.dual G.dual (dualHom G H q)).2`. Rewrite `hL` using `[finrank_coker_lieMap_congr G.bidual H.bidual q _ (bidual_hom_dualHom_dualHom q), finrank_coker_lieMap q hd]`. Use `⟨le_trans (by exact_mod_cast h3) (GlobalTheory.T.finrank_quot_range_le_length_quot_range_map p T k G H q).1, le_trans (by exact_mod_cast h3) hL, h3⟩` and prove the remaining obligations.
+-/
 theorem GlobalTheory.Dieu.le_colength_of_htOne : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k] [CharP k p]
     [PerfectRing k p] (G H : PDivGroup p k) (q : G ⟶ H) (q' : H ⟶ G) (e : ℕ), q ≫ q' = (p : ℤ_[p]) • 𝟙 G →
     q' ≫ q = (p : ℤ_[p]) • 𝟙 H → frobKerIdeal p k (G.A 1) ≤ kerIdeal (q.app 1) → HasLogDeg q e →

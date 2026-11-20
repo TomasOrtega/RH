@@ -18,10 +18,18 @@ variable (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 def abelian₂ (L : Set (Fin M → E)) (h : HA (AF F) σ J) : Set (Fin M → E) :=
   {x | (finMat σ J h⁻¹).mulVec (vinc (F := F) x) ∈ latHat F E L}
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem sigR_inclR (R : Type) [CommRing R] [Algebra F R] (e : E) :
     sigR R σ (inclR R e) = inclR R (σ e) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+Establish `hg' : cT (σ : E →+* E) (g : Matrix (Fin M) (Fin M) E) * J * (g : Matrix (Fin M) (Fin M) E) = J` using `hg`. Establish `hc : cT (sigR (AF F) σ) ((g : Matrix (Fin M) (Fin M) E).map (inclR (AF F))) = (cT (σ : E →+* E) (g : Matrix (Fin M) (Fin M) E)).map (inclR (AF F))`. Use extensionality with `i j`. Simplify using `[cT, sigR_inclR]`. Use `show cT (sigR (AF F) σ) ((g : Matrix (Fin M) (Fin M) E).map (inclR (AF F))) * J.map (inclR (AF F)) * (g : Matrix (Fin M) (Fin M) E).map (inclR (AF F)) = J.map (inclR (AF F))`.
+
+Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul, hg']`.
+-/
 theorem bc_mem (g : GL (Fin M) E) (hg : g ∈ UJ (σ : E →+* E) J) :
     bc (inclR (AF F)) g ∈ HR (AF F) σ J := by
   have hg' : cT (σ : E →+* E) (g : Matrix (Fin M) (Fin M) E) * J * (g : Matrix (Fin M) (Fin M) E) = J := hg
@@ -38,10 +46,16 @@ def emb : UJ (σ : E →+* E) J →* HA (AF F) σ J where
   map_one' := Subtype.ext (map_one _)
   map_mul' a b := Subtype.ext (map_mul _ _ _)
 
+/- English proof (translation)
+Establish `: (show HR (AF F) σ J from emb σ J g).1 ∈ HFin (AF F) σ J` using `⟨g.1, g.2, rfl⟩`. Conclude with `this`.
+-/
 theorem emb_mem (g : UJ (σ : E →+* E) J) : emb σ J g ∈ GamG σ J := by
   have : (show HR (AF F) σ J from emb σ J g).1 ∈ HFin (AF F) σ J := ⟨g.1, g.2, rfl⟩
   exact this
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)) ((1 : AF F) ⊗ₜ[F] ((g : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) i j) = (1 : Af F) ⊗ₜ[F] ((g : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) i j`. Simplify using `[Algebra.TensorProduct.map_tmul]`.
+-/
 theorem finMat_emb (g : UJ (σ : E →+* E) J) :
     finMat σ J (emb σ J g) = ((g : GL (Fin M) E) : Matrix (Fin M) (Fin M) E).map (inclR (Af F)) := by
   ext i j
@@ -50,6 +64,9 @@ theorem finMat_emb (g : UJ (σ : E →+* E) J) :
     (1 : Af F) ⊗ₜ[F] ((g : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) i j
   simp [Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [vinc]`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem map_mulVec_vinc (A : Matrix (Fin M) (Fin M) E) (x : Fin M → E) :
     (A.map (inclR (Af F))).mulVec (vinc (F := F) x) = vinc (F := F) (A.mulVec x) := by
   ext i
@@ -57,6 +74,13 @@ theorem map_mulVec_vinc (A : Matrix (Fin M) (Fin M) E) (x : Fin M → E) :
   rw [RingHom.map_mulVec]
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `hinv : (emb σ J g * h)⁻¹ = h⁻¹ * emb σ J g⁻¹` using `by rw [_root_.mul_inv_rev, map_inv]`. Establish `h1 : ((g : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) * (((g⁻¹ : UJ (σ : E →+* E) J) : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel]`. Both sides reduce to the same expression.
+
+Establish `h2 : (((g⁻¹ : UJ (σ : E →+* E) J) : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) * ((g : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression. Simplify using `only [abelian₂, Set.mem_ofPred_eq, Set.mem_image, hinv, finMat_mul, ← Matrix.mulVec_mulVec, finMat_emb, map_mulVec_vinc]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Use `⟨_, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]` and apply the resulting hypothesis.
+-/
 theorem Lam_emb_mul (L : Set (Fin M → E)) (g : UJ (σ : E →+* E) J) (h : HA (AF F) σ J) :
     abelian₂ σ J L (emb σ J g * h) =
       (fun x => ((g : GL (Fin M) E) : Matrix (Fin M) (Fin M) E).mulVec x) '' abelian₂ σ J L h := by
@@ -96,6 +120,9 @@ def ClassFinite : Prop :=
     ∃ S : Set (Set (Fin M → E)), S.Finite ∧ ∀ h : HA (AF F) σ J, ∃ s ∈ S, ∃ g : UJ (σ : E →+* E) J,
       abelian₂ σ J L h = (fun x => ((g : GL (Fin M) E) : Matrix (Fin M) (Fin M) E).mulVec x) '' s
 
+/- English proof (translation)
+Introduce `y`. Rewrite using `[finMat_mul, ← Matrix.mulVec_mulVec]`. Establish `e1 : (finMat σ J h'⁻¹).mulVec ((finMat σ J h').mulVec y) = y`. Rewrite using `[Matrix.mulVec_mulVec, ← finMat_mul, inv_mul_cancel, finMat_one, Matrix.one_mulVec]`. Rewrite using `[hR h, he, ← hR h', e1]`.
+-/
 theorem sfin_of_Lam_eq (L : Set (Fin M → E))
     (hR : ∀ (h : HA (AF F) σ J) (y : Fin M → Af F ⊗[F] E),
       (finMat σ J h⁻¹).mulVec y ∈ latHat F E L ↔ y ∈ latHat F E (abelian₂ σ J L h))

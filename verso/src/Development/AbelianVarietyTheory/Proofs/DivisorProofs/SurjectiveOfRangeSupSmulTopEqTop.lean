@@ -11,6 +11,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set S := LinearMap.range f`. Establish `key : ∀ I : Ideal R, I.IsMaximal → ¬ Module.annihilator R (N ⧸ S) ≤ I`. Introduce `I hI hle`. Establish `hle' : (⊤ : Submodule R (N ⧸ S)) ≤ I • (⊤ : Submodule R (N ⧸ S))`. Establish `h1` using `congrArg (Submodule.map S.mkQ) (h I hI)`.
+
+Rewrite `h1` using `[Submodule.map_sup, Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ]`. Establish `h2 : Submodule.map S.mkQ S = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify `(Submodule.Quotient.mk_eq_zero S).mpr hx` using `[Submodule.mem_bot]`.
+
+Rewrite `h1` using `[h2, bot_sup_eq]`. Rewrite using `[h1]`. Take `⟨r, hr1, hr⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul I ⊤ (Module.Finite.fg_top) hle'`. Establish `hrA : r ∈ Module.annihilator R (N ⧸ S)` using `Module.mem_annihilator.mpr fun m => hr m trivial`. Establish `hrI : r ∈ I` using `hle hrA`.
+
+Establish `h1I : (1 : R) ∈ I`. Use `I.sub_mem hrI hr1` as an intermediate fact. Simplify using `using this`. Conclude with `hI.ne_top ((Ideal.eq_top_iff_one I).mpr h1I)`. Establish `htop : Module.annihilator R (N ⧸ S) = ⊤`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨I, hI, hle⟩` from `Ideal.exists_le_maximal _ hne`. Conclude with `key I hI hle`. Establish `hS : S = ⊤`. Rewrite using `[eq_top_iff]`.
+
+Introduce `n _`. Establish `h1 : (1 : R) ∈ Module.annihilator R (N ⧸ S)` using `htop ▸ Submodule.mem_top`. Establish `h2` using `Module.mem_annihilator.mp h1 (S.mkQ n)`. Rewrite `h2` using `[one_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h2`.
+
+Conclude with `LinearMap.range_eq_top.mp hS`.
+-/
 theorem surjective_of_range_sup_smul_top_eq_top (R : Type) [CommRing R] (M : Type 1)
     [AddCommGroup M] [Module R M] (N : Type) [AddCommGroup N] [Module R N] [Module.Finite R N]
     (f : M →ₗ[R] N)
@@ -51,6 +66,9 @@ theorem surjective_of_range_sup_smul_top_eq_top (R : Type) [CommRing R] (M : Typ
     exact h2
   exact LinearMap.range_eq_top.mp hS
 
+/- English proof (translation)
+The claim follows from `@surjective_of_range_sup_smul_top_eq_top`.
+-/
 example : ∀ (R : Type) [CommRing R] (M : Type 1) [AddCommGroup M] [Module R M] (N : Type) [AddCommGroup N] [Module R N] [Module.Finite R N] (f : M →ₗ[R] N), (∀ I : Ideal R, I.IsMaximal → LinearMap.range f ⊔ I • (⊤ : Submodule R N) = ⊤) → Function.Surjective f := @surjective_of_range_sup_smul_top_eq_top
 
 end GlobalTheory

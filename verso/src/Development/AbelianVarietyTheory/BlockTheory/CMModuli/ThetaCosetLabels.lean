@@ -64,6 +64,9 @@ noncomputable def ThObj.ev (X : ThObj g M I ζ s) (t : EndTerm I) : X.P.A ⟶ X.
   EndTerm.rec (motive := fun _ => X.P.A ⟶ X.P.A) X.endo (𝟙 _) (fun _ _ f f' => f * f') (fun _ f => f⁻¹)
     (fun _ _ f f' => f' ≫ f) t
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl⟩`.
+-/
 example (X : ThObj g M I ζ s) (i : I) (t t' : EndTerm I) :
     X.ev (.var i) = X.endo i ∧ X.ev .one = 𝟙 _ ∧ X.ev (.add t t') = X.ev t * X.ev t' ∧ X.ev (.neg t) = (X.ev t)⁻¹ ∧
       X.ev (.mul t t') = X.ev t' ≫ X.ev t := ⟨rfl, rfl, rfl, rfl, rfl⟩
@@ -145,11 +148,17 @@ def CosetCond (n N' : ℕ) {R : Type} [CommRing R] (v : Lab g (N' ^ 2) → R) : 
 def CritCond (n N' : ℕ) (V : Type) {K : Type} [CommRing V] [Field K] [Algebra V K] (w : Lab g (N' ^ 2) → K) : Prop :=
   ∃ (c : Kˣ) (v : Lab g (N' ^ 2) → V), (∀ a, algebraMap V K (v a) = c * w a) ∧ (∃ a, IsUnit (v a)) ∧ CosetUnit n N' v
 
+/- English proof (translation)
+Introduce `c` and use `by obtain ⟨a, ha, hu⟩ := h c exact Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨a, ha, rfl⟩) hu`.
+-/
 theorem CosetUnit.cosetCond {n N' : ℕ} {R : Type} [CommRing R] {v : Lab g (N' ^ 2) → R} (h : CosetUnit n N' v) :
     CosetCond n N' v := fun c => by
   obtain ⟨a, ha, hu⟩ := h c
   exact Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨a, ha, rfl⟩) hu
 
+/- English proof (translation)
+Introduce `c` and use `by by_contra hc have : Ideal.span (v '' {a | SameCoset n N' a c}) ≤ IsLocalRing.maximalIdeal R := by rw [Ideal.span_le] rintro _ ⟨a, ha, rfl⟩ exact fun hu => hc ⟨a, ha, hu⟩ rw [h c] at this exact (IsLocalRing.maximalIdeal.isMaximal R).ne_top (top_le_iff.1 this)`.
+-/
 theorem CosetCond.cosetUnit {n N' : ℕ} {R : Type} [CommRing R] [IsLocalRing R] {v : Lab g (N' ^ 2) → R}
     (h : CosetCond n N' v) : CosetUnit n N' v := fun c => by
   by_contra hc
@@ -248,6 +257,9 @@ def MMFamilyExists (n : ℕ) (C : CClass g N' I ζ e₀) : Prop :=
 
 end Family
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun c => ⟨c, by simp [SameCoset], isUnit_one⟩, fun h => by obtain ⟨_, _, hu⟩ := h 0; exact not_isUnit_zero hu⟩`.
+-/
 example (g n N' : ℕ) : CosetUnit (g := g) n N' (fun _ => (1 : ℚ)) ∧ ¬ CosetUnit (g := g) n N' (fun _ => (0 : ℚ)) :=
   ⟨fun c => ⟨c, by simp [SameCoset], isUnit_one⟩, fun h => by obtain ⟨_, _, hu⟩ := h 0; exact not_isUnit_zero hu⟩
 

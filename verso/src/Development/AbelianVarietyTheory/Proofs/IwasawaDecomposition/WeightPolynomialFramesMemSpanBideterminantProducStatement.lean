@@ -16,6 +16,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 open GlobalTheory.Mem.CanonicalSurjection
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mem.WeightBideterminants.weightPolynomial_mem_span_bideterminantProducts | exact GlobalTheory.Mem.WeightBideterminants.weightPolynomial_mem_span_bideterminantProducts | (intros; apply GlobalTheory.Mem.WeightBideterminants.weightPolynomial_mem_span_bide …`.
+-/
 theorem _root_.GlobalTheory.T.weightPolynomial_frames_mem_span_bideterminantProducts : ∀ (K L : Type) [Field K] [Field L] [Infinite K] (φ : K →+* L) (ι : Type) [Fintype ι] (N : ℕ)
     (ν : ι → Fin N → ℕ) (M : ι → Matrix (Fin N) (Fin N) L), ∀ Q ∈ WtPol K ν,
     (fun y : ι → Matrix (Fin N) (Fin N) L =>

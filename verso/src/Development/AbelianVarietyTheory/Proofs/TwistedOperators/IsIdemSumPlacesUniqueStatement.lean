@@ -13,5 +13,8 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IdemSumSet.places_eq_of_isIdemSum | exact GlobalTheory.IdemSumSet.places_eq_of_isIdemSum | (intros; apply GlobalTheory.IdemSumSet.places_eq_of_isIdemSum <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isIdemSum_places_unique : ∀ (D : D7) (e : AE D) (P P' : Finset (Pl D.host.E)), IsIdemSum e P → IsIdemSum e P' → P = P' := by
   first | exact @GlobalTheory.IdemSumSet.places_eq_of_isIdemSum | exact GlobalTheory.IdemSumSet.places_eq_of_isIdemSum | (intros; apply GlobalTheory.IdemSumSet.places_eq_of_isIdemSum <;> assumption)

@@ -7,6 +7,13 @@ open PositivityTheory.PfSWUS.Loc GlobalTheory.CompanionTheory.UnrDens GlobalTheo
 
 namespace GlobalTheory.CompanionTheory.SiegLoc.NuDiag
 
+/- English proof (translation)
+Establish `hinj : Function.Injective fun y : Fin n → Q => Matrix.vecMul y G`. Introduce `y₁ y₂ hy`. Establish `h` using `congrArg (fun v => Matrix.vecMul v G') hy`. Simplify `h` using `only [Matrix.vecMul_vecMul, hG, Matrix.vecMul_one]`. Establish `hrange : (Set.range fun z : Fin n → Q => Matrix.vecMul z (P * H * G)) = (fun y => Matrix.vecMul y G) '' Set.range fun x : Fin n → Q => Matrix.vecMul x H`.
+
+Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨Matrix.vecMul (Matrix.vecMul z P) H, ⟨Matrix.vecMul z P, rfl⟩, by simp only [Matrix.vecMul_vecMul]⟩`. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`.
+
+Conclude with `⟨Matrix.vecMul x P', by`. Simplify using `only [Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hP, Matrix.one_mul]⟩`. Rewrite using `[hrange, Nat.card_image_of_injective hinj]`.
+-/
 private theorem card_range_vecMul_mul_mul_eq_of_mul_eq_one {Q : Type} [CommRing Q] {n : ℕ}
     (H P P' G G' : Matrix (Fin n) (Fin n) Q) (hP : P' * P = 1) (hG : G * G' = 1) :
     Nat.card (Set.range fun z : Fin n → Q => Matrix.vecMul z (P * H * G)) =
@@ -27,23 +34,40 @@ private theorem card_range_vecMul_mul_mul_eq_of_mul_eq_one {Q : Type} [CommRing 
         simp only [Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hP, Matrix.one_mul]⟩
   rw [hrange, Nat.card_image_of_injective hinj]
 
+/- English proof (translation)
+Simplify using `only [PositivityTheory.PfSWUS.Loc.cT, Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 theorem cT_mul' {R : Type} [CommRing R] (σ : R →+* R) {n : ℕ} (a b : Matrix (Fin n) (Fin n) R) :
     cT σ (a * b) = cT σ b * cT σ a := by
   simp only [PositivityTheory.PfSWUS.Loc.cT, Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Simplify using `only [PositivityTheory.PfSWUS.Loc.cT, Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.transpose_one]`.
+-/
 theorem cT_one' {R : Type} [CommRing R] (σ : R →+* R) {n : ℕ} :
     cT σ (1 : Matrix (Fin n) (Fin n) R) = 1 := by
   simp only [PositivityTheory.PfSWUS.Loc.cT, Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.transpose_one]
 
+/- English proof (translation)
+Simplify using `only [PositivityTheory.PfSWUS.Loc.red, Matrix.map_mul]`.
+-/
 theorem red_mul' {R : Type} [CommRing R] (ϖ : R) (k : ℕ) {n : ℕ} (a b : Matrix (Fin n) (Fin n) R) :
     red ϖ k (a * b) = red ϖ k a * red ϖ k b := by
   simp only [PositivityTheory.PfSWUS.Loc.red, Matrix.map_mul]
 
+/- English proof (translation)
+Simplify using `only [PositivityTheory.PfSWUS.Loc.red]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem red_one' {R : Type} [CommRing R] (ϖ : R) (k : ℕ) {n : ℕ} :
     red ϖ k (1 : Matrix (Fin n) (Fin n) R) = 1 := by
   simp only [PositivityTheory.PfSWUS.Loc.red]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Establish `hset : (Set.range fun z : Fin n → A => Matrix.vecMul z (Matrix.diagonal e)) = Set.pi Set.univ (fun i => Set.range fun w : A => w * e i)`. Use extensionality with `v`. Simplify using `only [Set.mem_range, Set.mem_univ_pi]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩ i`.
+
+Conclude with `⟨z i, by rw [Matrix.vecMul_diagonal]⟩`. Introduce `hv choose z hz using hv`. Conclude with `⟨z, funext fun i => by rw [Matrix.vecMul_diagonal, hz i]⟩`. Rewrite using `[hset, Nat.card_congr (Equiv.Set.univPi _), Nat.card_pi]`.
+-/
 theorem card_range_vecMul_diagonal {A : Type} [CommRing A] {n : ℕ} (e : Fin n → A) :
     Nat.card (Set.range fun z : Fin n → A => Matrix.vecMul z (Matrix.diagonal e)) =
       ∏ i : Fin n, Nat.card (Set.range fun w : A => w * e i) := by
@@ -59,6 +83,13 @@ theorem card_range_vecMul_diagonal {A : Type} [CommRing A] {n : ℕ} (e : Fin n 
       exact ⟨z, funext fun i => by rw [Matrix.vecMul_diagonal, hz i]⟩
   rw [hset, Nat.card_congr (Equiv.Set.univPi _), Nat.card_pi]
 
+/- English proof (translation)
+Introduce `R _ σ ϖ _ _ k _ n h g g' d hgg' hg'g hdiag`. Establish `hP : PositivityTheory.PfSWUS.Loc.red ϖ k (PositivityTheory.PfSWUS.Loc.cT σ g') * PositivityTheory.PfSWUS.Loc.red ϖ k (PositivityTheory.PfSWUS.Loc.cT σ g) = 1`. Rewrite using `[← GlobalTheory.CompanionTheory.SiegLoc.NuDiag.red_mul', ← GlobalTheory.CompanionTheory.SiegLoc.NuDiag.cT_mul', hgg', GlobalTheory.CompanionTheory.SiegLoc.NuDiag.cT_one', GlobalTheory.CompanionTheory.SiegLoc.NuDiag.red_one']`. Establish `hG : PositivityTheory.PfSWUS.Loc.red ϖ k g * PositivityTheory.PfSWUS.Loc.red ϖ k g' = 1`. Rewrite using `[← GlobalTheory.CompanionTheory.SiegLoc.NuDiag.red_mul', hgg', GlobalTheory.CompanionTheory.SiegLoc.NuDiag.red_one']`.
+
+Establish `hD : PositivityTheory.PfSWUS.Loc.red ϖ k (PositivityTheory.PfSWUS.Loc.cT σ g) * PositivityTheory.PfSWUS.Loc.red ϖ k h * PositivityTheory.PfSWUS.Loc.red ϖ k g = Matrix.diagonal fun i => Ideal.Quotient.mk (PositivityTheory.PfSWUS.Loc.lev ϖ k) (d i)`. Rewrite using `[← GlobalTheory.CompanionTheory.SiegLoc.NuDiag.red_mul', ← GlobalTheory.CompanionTheory.SiegLoc.NuDiag.red_mul', hdiag]`. Simplify using `only [PositivityTheory.PfSWUS.Loc.red]`. Conclude with `Matrix.diagonal_map (map_zero _)`. Unfold `PositivityTheory.PfSWUS.Loc.nuAt`.
+
+Use `Eq.trans ?_ (GlobalTheory.CompanionTheory.SiegLoc.NuDiag.card_range_vecMul_diagonal (fun i => Ideal.Quotient.mk (PositivityTheory.PfSWUS.Loc.lev ϖ k) (d i)))` and prove the remaining obligations. Rewrite using `[← hD]`. Conclude with `(card_range_vecMul_mul_mul_eq_of_mul_eq_one _ _ _ _ _ hP hG).symm`.
+-/
 theorem nuAt_eq_prod : ∀ (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R), σ ϖ = ϖ → (∀ a, σ (σ a) = a) → ∀ (k : ℕ) [Fintype (R ⧸ lev ϖ k)] (n : ℕ) (h g g' : Matrix (Fin n) (Fin n) R) (d : Fin n → R), g * g' = 1 → g' * g = 1 → cT σ g * h * g = Matrix.diagonal d → nuAt ϖ (red ϖ k h) = ∏ i : Fin n, Nat.card (Set.range fun w : R ⧸ lev ϖ k => w * Ideal.Quotient.mk (lev ϖ k) (d i)) := by
   intro R _ σ ϖ _ _ k _ n h g g' d hgg' hg'g hdiag
   have hP : PositivityTheory.PfSWUS.Loc.red ϖ k (PositivityTheory.PfSWUS.Loc.cT σ g') *

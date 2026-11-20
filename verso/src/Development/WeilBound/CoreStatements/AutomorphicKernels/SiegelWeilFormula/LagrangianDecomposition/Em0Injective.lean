@@ -14,10 +14,18 @@ def i0 {N n : ℕ} (h : n + 1 = N) : Fin N := ⟨n, by omega⟩
 
 def em0 {N n : ℕ} (h : n + 1 = N) : Fin n → Fin N := fun i => ⟨i, by omega⟩
 
+/- English proof (translation)
+Introduce `a b e` and use `by simp only [em0, Fin.mk.injEq] at e exact Fin.ext e`.
+-/
 theorem em0_injective {N n : ℕ} (h : n + 1 = N) : Function.Injective (em0 h) := fun a b e => by
   simp only [em0, Fin.mk.injEq] at e
   exact Fin.ext e
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hi`. Use `⟨⟨i.1, ?_⟩, Fin.ext rfl⟩` and prove the remaining obligations. Establish `: i.1 ≠ n` using `fun e => hi (Fin.ext e)`. Use linear arithmetic over natural numbers and integers.
+
+Introduce and unpack `⟨k, rfl⟩ e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `[em0, i0] at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ne_last_iff_mem_range {N n : ℕ} (h : n + 1 = N) (i : Fin N) : i ≠ i0 h ↔ i ∈ Set.range (em0 h) := by
   constructor
   · intro hi
@@ -36,6 +44,9 @@ def Tof {m n : ℕ} {A : Spc F E m} {Y : Spc F E n} (ψ : AddChar (AF F) ℂ) {�
     (b : GL (Fin n ⊕ Fin n) E) (Φ : (κ → AF F) → ℂ) (X : Mx F E m n) : ℂ :=
   l (dd.rho ψ (X * (incM F b.1.toCols₂)ᵀ) Φ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem T_eq (d : SD σ) (Φ : d.Fn) (X : Mx F E d.m d.n) : d.T Φ X = Tof d.B.ψ d.dd d.l d.b Φ X := rfl
 
 def SignOK (d : SD σ) {n : ℕ} (Y : Spc F E n) : Prop :=

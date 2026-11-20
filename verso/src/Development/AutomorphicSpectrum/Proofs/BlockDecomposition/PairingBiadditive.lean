@@ -22,6 +22,9 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl GlobalTheory.CompanionTheo
 noncomputable section
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.PairAdd
 
+/- English proof (translation)
+Establish `h : pairA F 0 (x + y) = pairA F 0 x + pairA F 0 y`. Simplify using `only [pairA]`. Conclude with `Prod.ext (add_zero 0).symm rfl`. Simplify using `only [psiFin]`. Rewrite using `[h, AddChar.map_add_eq_mul]`.
+-/
 theorem psiFin_add' (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (x y : Af F) :
     psiFin F ψ (x + y) = psiFin F ψ x * psiFin F ψ y := by
   have h : pairA F 0 (x + y) = pairA F 0 x + pairA F 0 y := by
@@ -30,18 +33,31 @@ theorem psiFin_add' (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) �
   simp only [psiFin]
   rw [h, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Simplify using `[hR, Formalism.UG.hform, Pi.add_apply, map_add, Matrix.mulVec_add, Matrix.add_mulVec, dotProduct_add, add_dotProduct, Finset.sum_add_distrib, add_mul, mul_add]`.
+-/
 theorem hR_add_left {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (x x' y : Fin M → R ⊗[F] E) :
     hR R σ J (x + x') y = hR R σ J x y + hR R σ J x' y := by
   simp [hR, Formalism.UG.hform, Pi.add_apply, map_add, Matrix.mulVec_add, Matrix.add_mulVec, dotProduct_add,
     add_dotProduct, Finset.sum_add_distrib, add_mul, mul_add]
 
+/- English proof (translation)
+Simplify using `[hR, Formalism.UG.hform, Pi.add_apply, map_add, Matrix.mulVec_add, Matrix.add_mulVec, dotProduct_add, add_dotProduct, Finset.sum_add_distrib, add_mul, mul_add]`.
+-/
 theorem hR_add_right {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (x y y' : Fin M → R ⊗[F] E) :
     hR R σ J x (y + y') = hR R σ J x y + hR R σ J x y' := by
   simp [hR, Formalism.UG.hform, Pi.add_apply, map_add, Matrix.mulVec_add, Matrix.add_mulVec, dotProduct_add,
     add_dotProduct, Finset.sum_add_distrib, add_mul, mul_add]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ M J n ψ b`. Establish `hg1 : ∀ X X' Y : Fin n → Fin M → Af F ⊗[F] E, gram2 σ J (X + X') Y = gram2 σ J X Y + gram2 σ J X' Y`. Introduce `X X' Y`. Use extensionality with `a c`. Simplify using `only [gram2, Pi.add_apply, Matrix.add_apply]`.
+
+Conclude with `hR_add_left _ σ J _ _ _`. Establish `hg2 : ∀ X Y Y' : Fin n → Fin M → Af F ⊗[F] E, gram2 σ J X (Y + Y') = gram2 σ J X Y + gram2 σ J X Y'`. Introduce `X Y Y'`. Use extensionality with `a c`. Simplify using `only [gram2, Pi.add_apply, Matrix.add_apply]`.
+
+Conclude with `hR_add_right _ σ J _ _ _`. Use `⟨fun X X' Y => ?_, fun X Y Y' => ?_⟩` and prove the remaining obligations. Simplify using `only [pairB, hg1, Matrix.mul_add, Matrix.trace_add, map_add, psiFin_add']`. Simplify using `only [pairB, hg2, Matrix.mul_add, Matrix.trace_add, map_add, psiFin_add']`.
+-/
 theorem pairB_add : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (n : ℕ) (ψ : AddChar (AF F) ℂ)
     (b : HermR (Af F) σ n),

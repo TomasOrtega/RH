@@ -7,6 +7,15 @@ namespace UpperTheory.V.Z.Sym.Tf
 
 open MulAction
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `h`. Set `r : Setoid G` to `{ r := fun a b => ∃ t, ∃ u ∈ U, b = ι t * a * u iseqv := ⟨fun a => ⟨1, 1, U.one_mem, by simp⟩, fun {a b} ⟨t, u, hu, e⟩ => ⟨t⁻¹, u⁻¹, U.inv_mem hu, by rw [e]; simp [mul_assoc]⟩, fun {a b c} ⟨t, u, hu, e⟩ ⟨t', u', hu', e'⟩ => ⟨t' * t, u * u', U.mul_mem hu hu', by rw [e', e]; simp [ …`. Use `⟨(S.image (fun s => Quotient.mk r s)).image Quotient.out, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha b hb t u hu e`. Simplify using `only [Finset.mem_image] at ha hb`.
+
+Take `⟨q, -, rfl⟩` from `ha`. Take `⟨q', -, rfl⟩` from `hb`. Establish `hr : r q.out q'.out` using `⟨t, u, hu, e⟩`. Use `Quotient.sound (s := r) hr` as an intermediate fact. Simplify using `only [Quotient.out_eq] at this`.
+
+Rewrite using `[this]`. Introduce `y hy`. Take `⟨t, s, hs, u, hu, rfl⟩` from `hS y hy`. Take `⟨t', u', hu', e⟩ : ∃ t', ∃ u' ∈ U, s = ι t' * (Quotient.mk r s).out * u'` from `Quotient.mk_out (s := r) s`. Use `⟨t * t', _, Finset.mem_image_of_mem _ (Finset.mem_image_of_mem _ hs), u' * u, U.mul_mem hu' hu, ?_⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [e]`. Simplify using `[mul_assoc]`.
+-/
 private lemma thin {T G : Type} [Group T] [Group G] (ι : T →* G) (θ : G →* G) (U : Subgroup G) (f : G → ℂ) (δ : G)
     (h : FinOrb ι θ U f δ) : ∃ R : Finset G, (∀ a ∈ R, ∀ b ∈ R, ∀ t, ∀ u ∈ U, b = ι t * a * u → a = b) ∧
       ∀ y, f (y⁻¹ * δ * θ y) ≠ 0 → ∃ t, ∃ s ∈ R, ∃ u ∈ U, y = ι t * s * u := by
@@ -36,6 +45,11 @@ private lemma thin {T G : Type} [Group T] [Group G] (ι : T →* G) (θ : G →*
     conv_lhs => rw [e]
     simp [mul_assoc]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `P.surj (fun v => if h : v ∈ S then j ⟨v, h⟩ else 1) (by`. Rewrite using `[Filter.eventually_cofinite]`. Use `S.finite_toSet.subset ?_` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hvS`.
+
+Rewrite `hvS` using `[Finset.mem_coe]`. Conclude with `hv (by simp only [dif_neg hvS]; exact (K v).one_mem))`. Use `⟨g, fun v => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hg, dif_pos v.2]`. Rewrite using `[hg, dif_neg hv]`.
+-/
 private lemma glue {I G : Type} [Group G] {Gv : I → Type} [∀ v, Group (Gv v)] {K : ∀ v, Subgroup (Gv v)} (P : RPG G Gv K)
     (S : Finset I) (j : ∀ v : S, Gv v) : ∃ g, (∀ v : S, P.p v g = j v) ∧ ∀ v ∉ S, P.p v g = 1 := by
   classical
@@ -50,10 +64,16 @@ private lemma glue {I G : Type} [Group G] {Gv : I → Type} [∀ v, Group (Gv v)
   · rw [hg, dif_pos v.2]
   · rw [hg, dif_neg hv]
 
+/- English proof (translation)
+Simplify using `[RPG.box, Subgroup.mem_iInf]`.
+-/
 private lemma mem_box {I G : Type} [Group G] {Gv : I → Type} [∀ v, Group (Gv v)] {K : ∀ v, Subgroup (Gv v)} (P : RPG G Gv K)
     (U : ∀ v, Subgroup (Gv v)) (g : G) : g ∈ P.box U ↔ ∀ v, P.p v g ∈ U v := by
   simp [RPG.box, Subgroup.mem_iInf]
 
+/- English proof (translation)
+Repeatedly rewrite using `[Subgroup.index, ← Nat.card_pi]`. Use `Nat.card_congr ((Quotient.congrRight (fun x y => ?_)).trans (Setoid.piQuotientEquiv _).symm)` and prove the remaining obligations. Rewrite using `[QuotientGroup.leftRel_pi]`.
+-/
 private lemma index_pi' {J : Type} [Fintype J] {G : J → Type} [∀ j, Group (G j)] (H : ∀ j, Subgroup (G j)) :
     (Subgroup.pi Set.univ H).index = ∏ j, (H j).index := by
   simp_rw [Subgroup.index, ← Nat.card_pi]
@@ -61,6 +81,19 @@ private lemma index_pi' {J : Type} [Fintype J] {G : J → Type} [∀ j, Group (G
     ((Quotient.congrRight (fun x y => ?_)).trans (Setoid.piQuotientEquiv _).symm)
   rw [QuotientGroup.leftRel_pi]
 
+/- English proof (translation)
+Set `φ : Q.box C →* ((v : S) → C v)` to `Pi.monoidHom fun v => ((Q.p v).comp (Q.box C).subtype).codRestrict (C v) (fun x => (mem_box Q C x).1 x.2 v)`. Establish `hφ : Function.Surjective φ`. Introduce `j`. Take `⟨g, hg1, hg2⟩` from `glue Q S (fun v => (j v : Tv v))`. Establish `hg : g ∈ Q.box C`.
+
+Rewrite using `[mem_box]`. Introduce `v`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hg1 ⟨v, hv⟩]`. Conclude with `(j ⟨v, hv⟩).2`.
+
+Rewrite using `[hg2 v hv]`. Conclude with `(C v).one_mem`. Use `⟨⟨g, hg⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `hg1 v`. Establish `hcomap : (Q.box A).subgroupOf (Q.box C) = (Subgroup.pi Set.univ fun v : S => (A v).subgroupOf (C v)).comap φ`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_comap, Subgroup.mem_pi, Set.mem_univ, true_implies]`. Rewrite using `[mem_box]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx v`. Conclude with `hx v`. Introduce `hx v`. Distinguish the cases in `hv : v ∈ S`.
+
+Conclude with `hx ⟨v, hv⟩`. Conclude with `h v hv ((mem_box Q C x).1 x.2 v)`. Unfold `Subgroup.relIndex`. Rewrite using `[hcomap]`. Conclude with `(Subgroup.index_comap_of_surjective _ hφ).trans (index_pi' _)`.
+-/
 private lemma relIndex_box {I T : Type} [Group T] {Tv : I → Type} [∀ v, Group (Tv v)] {C₀ : ∀ v, Subgroup (Tv v)}
     (Q : RPG T Tv C₀) (A C : ∀ v, Subgroup (Tv v)) (S : Finset I) (h : ∀ v ∉ S, C v ≤ A v) :
     (Q.box A).relIndex (Q.box C) = ∏ v : S, (A v).relIndex (C v) := by
@@ -99,12 +132,62 @@ private lemma relIndex_box {I T : Type} [Group T] {Tv : I → Type} [∀ v, Grou
   rw [hcomap]
   exact (Subgroup.index_comap_of_surjective _ hφ).trans (index_pi' _)
 
+/- English proof (translation)
+Rewrite using `[mem_stabilizer_iff, MulAction.Quotient.smul_mk, QuotientGroup.eq, ← U.inv_mem_iff]`. Simplify using `[mul_assoc]`.
+-/
 private lemma mem_stab {G : Type} [Group G] (U : Subgroup G) (x g : G) :
     g ∈ stabilizer G (x : G ⧸ U) ↔ x⁻¹ * g * x ∈ U := by
   rw [mem_stabilizer_iff, MulAction.Quotient.smul_mk, QuotientGroup.eq, ← U.inv_mem_iff]
   simp [mul_assoc]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `I G T _ _ Gv Tv _ _ K U C₀ C P Q ι ιv θ θv f fv δ hι hθ hf hinv hδ S hS hout`. Establish `hR : ∀ v : S, ∃ R : Finset (Gv v), (∀ a ∈ R, ∀ b ∈ R, ∀ t, ∀ u ∈ U v, b = ιv v t * a * u → a = b) ∧ ∀ y, fv v (y⁻¹ * P.p v δ * θv v y) ≠ 0 → ∃ t, ∃ s ∈ R, ∃ u ∈ U v, y = ιv v t * s * u` using `fun v => thin (ιv v) (θv v) (U v) (fv v) (P.p v δ) (hS v v.2)`. Use `choose R hRd hRc using hR`. Use `choose x hx1 hx2 using fun c : ((v : S) → Gv v) => glue P S c`. Establish `hsupp : ∀ y, (Function.mulSupport fun v => fv v (P.p v (y⁻¹ * δ * θ y))).Finite`.
+
+Introduce `y`. Establish `hae` using `P.ae y`. Rewrite `hae` using `[Filter.eventually_cofinite]`. Use `(hae.union S.finite_toSet).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+
+Assume the negation of the conclusion as `hvn`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, Finset.mem_coe, not_or, not_not] at hvn`. Rewrite `hv` using `[Function.mem_mulSupport]`. Apply `hv` to reduce the goal to its premises. Take `⟨hK, -, -, h1, -⟩` from `hout v hvn.2`.
+
+Simplify using `only [map_mul, map_inv, hθ]`. Rewrite using `[hinv v _ (hK hvn.1), h1]`. Establish `hcov : ∀ y, f (y⁻¹ * δ * θ y) ≠ 0 → ∃ t, ∃ c ∈ Fintype.piFinset R, ∃ u ∈ P.box U, y = ι t * x c * u`. Introduce `y hy`. Establish `hloc : ∀ v, fv v ((P.p v y)⁻¹ * P.p v δ * θv v (P.p v y)) ≠ 0`.
+
+Introduce `v h0`. Apply `hy` to reduce the goal to its premises. Rewrite using `[hf]`. Use `finprod_eq_zero _ v ?_ (hsupp y)` and prove the remaining obligations. Simplify `h0` using `only [map_mul, map_inv, hθ]`.
+
+Establish `hA : ∀ v : S, ∃ tv, ∃ s ∈ R v, ∃ uv ∈ U v, P.p v y = ιv v tv * s * uv` using `fun v => hRc v (P.p v y) (hloc v)`. Use `choose tS c hc uS huS heS using hA`. Establish `hB : ∀ v, v ∉ S → ∃ tv, ∃ uv ∈ U v, P.p v y = ιv v tv * uv` using `fun v hv => (hout v hv).2.2.2.2 _ (hloc v)`. Set `tv : (v : I) → Tv v` to `fun v => if hv : v ∈ S then tS ⟨v, hv⟩ else if P.p v y ∈ K v then 1 else (hB v hv).choose`. Take `⟨t, ht⟩` from `Q.surj tv (by`.
+
+Establish `hae` using `P.ae y`. Rewrite `hae`, the goal using `[Filter.eventually_cofinite]`. Use `(hae.union S.finite_toSet).subset ?_` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hvn`.
+
+Simplify using `only [Set.mem_union, Set.mem_setOf_eq, Finset.mem_coe, not_or, not_not] at hvn`. Apply `hv` to reduce the goal to its premises. Simplify using `only [tv, dif_neg hvn.2, if_pos hvn.1]`. Conclude with `(C₀ v).one_mem)`. Use `⟨t, c, Fintype.mem_piFinset.2 hc, (ι t * x c)⁻¹ * y, ?_, by group⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_box]`. Introduce `v`. Rewrite using `[map_mul, map_inv, map_mul, hι, ht]`. Distinguish the cases in `hv : v ∈ S`. Establish `e1 : P.p v (x c) = c ⟨v, hv⟩` using `hx1 c ⟨v, hv⟩`.
+
+Establish `e2 : P.p v y = ιv v (tS ⟨v, hv⟩) * c ⟨v, hv⟩ * uS ⟨v, hv⟩` using `heS ⟨v, hv⟩`. Simplify using `only [tv, dif_pos hv, e1, e2]`. Simplify `huS ⟨v, hv⟩` using `[mul_assoc]`. Rewrite using `[hx2 c v hv]`. Distinguish the cases in `hK : P.p v y ∈ K v`.
+
+Simplify using `only [tv, dif_neg hv, if_pos hK, map_one, mul_one, inv_one, one_mul]`. Conclude with `(hout v hv).1 hK`. Simplify using `only [tv, dif_neg hv, if_neg hK, mul_one]`. Take `⟨uv, huv, euv⟩` from `(hB v hv).choose_spec`. Establish `e3 : (ιv v (hB v hv).choose)⁻¹ * P.p v y = uv`.
+
+Rewrite using `[inv_mul_eq_iff_eq_mul]`. Conclude with `euv`. Rewrite using `[e3]`. Conclude with `huv`. Establish `hdist : ∀ c ∈ Fintype.piFinset R, ∀ c' ∈ Fintype.piFinset R, ∀ t, ∀ u ∈ P.box U, x c' = ι t * x c * u → c = c'`.
+
+Introduce `c hc c' hc' t u hu e`. Use function extensionality and compare the values at `v`. Establish `e'` using `congrArg (P.p v) e`. Rewrite `e'` using `[map_mul, map_mul, hι, hx1, hx1]`. Conclude with `hRd v (c v) (Fintype.mem_piFinset.1 hc v) (c' v) (Fintype.mem_piFinset.1 hc' v) (Q.p v t) (P.p v u) ((mem_box P U u).1 hu v) e'`.
+
+Establish `hfinv : ∀ u ∈ P.box U, ∀ g, f (u⁻¹ * g * θ u) = f g`. Introduce `u hu g`. Rewrite using `[hf, hf]`. Use `finprod_congr (fun v => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, hθ]`.
+
+Conclude with `hinv v _ ((mem_box P U u).1 hu v) _`. Establish `hδg : ∀ t, (ι t)⁻¹ * δ * θ (ι t) = δ`. Introduce `t`. Establish `h1` using `P.inj ((ι t)⁻¹ * δ * θ (ι t) * δ⁻¹) (fun v => by`. Simplify using `only [map_mul, map_inv, hθ, hι]`.
+
+Rewrite using `[hδ v (Q.p v t)]`. Use the proof step `simp)`. Conclude with `mul_inv_eq_one.1 h1`. Establish `hglob` using `orbReps T G ι (Q.box C) θ (P.box U) f δ hfinv hδg _ (Fintype.piFinset R) x hdist hcov`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `FinOrb`. Use `⟨(Fintype.piFinset R).image x, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨t, c, hc, u, hu, e⟩` from `hcov y hy`. Conclude with `⟨t, x c, Finset.mem_image_of_mem _ hc, u, hu, e⟩`. Rewrite using `[hglob]`.
+
+Establish `hloc : ∏ v ∈ S, orb (ιv v) (C v) (θv v) (U v) (fv v) (P.p v δ) = ∏ v : S, ∑ s ∈ R v, ((Subgroup.comap (ιv v) (stabilizer (Gv v) (s : Gv v ⧸ U v))).relIndex (C v) : ℂ) * fv v (s⁻¹ * P.p v δ * θv v s)`. Rewrite using `[← Finset.prod_coe_sort]`. Use `Finset.prod_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Conclude with `orbReps (Tv v) (Gv v) (ιv v) (C v) (θv v) (U v) (fv v) (P.p v δ) (hinv v) (hδ v) (Gv v) (R v) id (hRd v) (hRc v)`. Rewrite using `[hloc, Finset.prod_univ_sum]`.
+
+Use `Finset.sum_congr rfl (fun c hc => ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`. Use `congr 1`. Establish `hA : Subgroup.comap ι (stabilizer G ((x c : G) : G ⧸ P.box U)) = Q.box (fun v => Subgroup.comap (ιv v) (stabilizer (Gv v) ((P.p v (x c) : Gv v) : Gv v ⧸ U v)))`. Use extensionality with `t`.
+
+Rewrite using `[Subgroup.mem_comap, mem_stab, mem_box, mem_box]`. Use `forall_congr' (fun v => ?_)` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, mem_stab, map_mul, map_mul, map_inv, hι]`. Establish `hCA : ∀ v ∉ S, C v ≤ Subgroup.comap (ιv v) (stabilizer (Gv v) ((P.p v (x c) : Gv v) : Gv v ⧸ U v))`. Introduce `v hv a ha`.
+
+Rewrite using `[Subgroup.mem_comap, mem_stab, hx2 c v hv]`. Simplify using `using (hout v hv).2.2.1 (Subgroup.mem_map_of_mem _ ha)`. Rewrite using `[hA, relIndex_box Q _ C S hCA, Nat.cast_prod]`. Use `Finset.prod_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[hx1 c v]`.
+
+Rewrite using `[hf, finprod_eq_prod_of_mulSupport_subset (s := S) _ ?_, ← Finset.prod_coe_sort]`. Use `Finset.prod_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, hθ, hx1 c v]`. Introduce `v hv`. Rewrite using `[Finset.mem_coe]`.
+
+Assume the negation of the conclusion as `hvS`. Rewrite `hv` using `[Function.mem_mulSupport]`. Apply `hv` to reduce the goal to its premises. Simplify using `only [map_mul, map_inv, hθ, hx2 c v hvS, inv_one, one_mul, map_one, mul_one]`. Conclude with `(hout v hvS).2.2.2.1`.
+-/
 theorem orbProd : OrbProd := by
   intro I G T _ _ Gv Tv _ _ K U C₀ C P Q ι ιv θ θv f fv δ hι hθ hf hinv hδ S hS hout
   classical

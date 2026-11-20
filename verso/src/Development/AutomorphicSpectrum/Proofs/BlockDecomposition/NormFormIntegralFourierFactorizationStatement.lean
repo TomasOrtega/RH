@@ -7,6 +7,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormFormIntegra
 open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 Ad3.K.GL2LocalData
 open GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep
 open scoped ValuativeRel
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WeilSquare.gauss_core | exact GlobalTheory.CompanionTheory.WeilSquare.gauss_core | (intros; apply GlobalTheory.CompanionTheory.WeilSquare.gauss_core <;> assumption) | exact @GlobalTheory.CompanionTheory.WeilSquare.gauss_core | exact Glo …`.
+-/
 theorem _root_.GlobalTheory.T.norm_form_integral_fourier_factorization : ForEF fun F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ χ σ η => ∀ (a : Fˣ), ∀ Φ ∈ SBE E, ∃ n₀ : ℤ, ∀ n ≤ n₀,
   ∫ u, (χ ((a : F) * Algebra.norm F u) : ℂ) * FTE E χ σ Φ u ∂muE E χ =
     (∫ u in (valBall E n : Set E), (χ ((a : F) * Algebra.norm F u) : ℂ) ∂muE E χ) *

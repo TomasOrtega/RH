@@ -14,6 +14,11 @@ section D
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Establish `hU : MeasurableSet (GJTwo.cellU F)` using `GJTwo.isOpen_cellU.measurableSet`. Establish `hmap` using `GJTwo.hG_eq_map GJHaar.gjm1 hψ`. Rewrite `hf` using `[hmap]`. Establish `hs` using `hf.aestronglyMeasurable`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite `hf` using `[integrable_map_measure hs GJTwo.measurable_cellPsi.aemeasurable, GJTwo.cellNu, integrable_withDensity_iff_integrable_smul GJTwo.measurable_cellD]`. Rewrite using `[GJTwo.Ff_eq, integrable_indicator_iff hU]`. Conclude with `hf`. Rewrite using `[hmap, integral_map GJTwo.measurable_cellPsi.aemeasurable hs, GJTwo.cellNu, integral_withDensity_eq_integral_smul GJTwo.measurable_cellD, GJTwo.Ff_eq, integral_indicator hU]`. Both sides reduce to the same expression.
+-/
 theorem integrable_Ff {ψ : AddChar F Circle} (hψ : IsStd ψ) {f : GL (Fin 2) F → ℂ}
     (hf : Integrable f (LFS.hG ψ)) :
     Integrable (GJTwo.Ff f) (GJTwo.cM ψ) ∧
@@ -32,6 +37,11 @@ theorem integrable_Ff {ψ : AddChar F Circle} (hψ : IsStd ψ) {f : GL (Fin 2) F
       integral_indicator hU]
     rfl
 
+/- English proof (translation)
+Use `haveI : SigmaFinite (LFS.vol2 ψ) := by unfold LFS.vol2; infer_instance`. Rewrite `hG` using `[GJTwo.cM]`. Rewrite using `[GJTwo.cM, integral_prod _ hG]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hG.prod_right_ae] with r hr`.
+
+Conclude with `integral_prod_symm _ hr`.
+-/
 theorem integral_fibre {ψ : AddChar F Circle} {G : (Fin 2 → F) × F × F → ℂ}
     (hG : Integrable G (GJTwo.cM ψ)) :
     ∫ p, G p ∂GJTwo.cM ψ =
@@ -43,6 +53,9 @@ theorem integral_fibre {ψ : AddChar F Circle} {G : (Fin 2 → F) × F × F → 
   filter_upwards [hG.prod_right_ae] with r hr
   exact integral_prod_symm _ hr
 
+/- English proof (translation)
+Establish `hP' : P (uni2 x * (dg2 (Units.mk0 y (fun e => h (Or.inl e))) 1 * hr r)) = fun M => P (dg2 (Units.mk0 y (fun e => h (Or.inl e))) 1 * hr r) ((uni2 (-x)).val * M)`. Use function extensionality and compare the values at `fun M => hP _ _ M`. Simplify using `only [GJTwo.Ff, dif_neg h]`. Rewrite using `[mul_assoc (uni2 x), hA, hP']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Ff_cell {ψ : AddChar F Circle} (A : GL (Fin 2) F → ℂ)
     (P : GL (Fin 2) F → Matrix (Fin 2) (Fin 2) F → ℂ)
     (hA : ∀ u z, A (uni2 u * z) = (ψ u : ℂ) * A z)
@@ -62,6 +75,11 @@ theorem Ff_cell {ψ : AddChar F Circle} (A : GL (Fin 2) F → ℂ)
 
 end D
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ hyp A P hA hP hS h1 h2`. Take `⟨i1, q1⟩` from `integrable_Ff hψ h1`. Take `⟨i2, q2⟩` from `integrable_Ff hψ h2`. Rewrite using `[q1, q2, integral_fibre i1, integral_fibre i2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `h : y = 0 ∨ r 1 = 0`. Simplify using `only [GJTwo.Ff, dif_pos h]`. Simplify using `only [Ff_cell A P hA hP (Lpart ψ) r _ y h, Ff_cell A P hA hP (Rpart ψ) r _ y h]`. Rewrite using `[integral_const_mul, integral_const_mul, hyp _ (hS _)]`.
+-/
 theorem core : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ → (∀ p : Matrix (Fin 2) (Fin 2) F → ℂ, SB2 p → ∫ u, (ψ u : ℂ) * Lpart ψ (fun M => p ((uni2 (-u)).val * M)) ∂selfDualMeasure ψ = ∫ t, (ψ t : ℂ) * Rpart ψ (fun M => p ((uni2 (-t)).val * M)) ∂selfDualMeasure ψ) → ∀ (A : GL (Fin 2) F → ℂ) (P : GL (Fin 2) F → Matrix (Fin 2) (Fin 2) F → ℂ), (∀ u z, A (uni2 u * z) = (ψ u : ℂ) * A z) → (∀ u z M, P (uni2 u * z) M = P z ((uni2 (-u)).val * M)) → (∀ z, SB2 (P z)) → Integrable (fun z => A z * Lpart ψ (P z)) (LFS.hG ψ) → Integrable (fun z => A z * Rpart ψ (P z)) (LFS.hG ψ) → ∫ z, A z * Lpart ψ (P z) ∂LFS.hG ψ = ∫ z, A z * Rpart ψ (P z) ∂LFS.hG ψ := by
   intro F _ _ _ _ _ _ ψ hψ hyp A P hA hP hS h1 h2
   obtain ⟨i1, q1⟩ := integrable_Ff hψ h1

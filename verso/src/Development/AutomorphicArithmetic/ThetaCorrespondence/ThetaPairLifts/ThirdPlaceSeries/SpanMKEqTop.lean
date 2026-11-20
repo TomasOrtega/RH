@@ -18,6 +18,17 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000
 noncomputable section
 namespace GlobalTheory.CovTop.SpanMK
+/- English proof (translation)
+Take `⟨ι, hι, -, himg⟩` from `GlobalTheory.CovTop.SupImage.exists_emb_image_latW D _ _ _ _ p.T p.R.toRealDat p.κ p.v₀ p.fw i`. Establish `hspan` using `hG.2.2.2.2.2`. Establish `hall : ∀ g, g ∈ Submodule.span p.T.Q.c.F (latW (p.T.U ((i : ℕ) + 1)) (wtZ (wtA (p.κ i)) (p.κ i).n) : Set (VK p.fw i)) → ι g ∈ Submodule.span D.what₂.LL ((p.R.toRealDat.FW i).MK : Set (Fin (p.R.nW i) → D.what₂.LL))`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`.
+
+Consider the case `mem x hx => exact Submodule.subset_span (himg ▸ ⟨x, hx, rfl⟩)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul a x _ hx => rw [LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`. Take `⟨n, b, hbW, -, -, -, hbL⟩` from `p.fw.ks i`. Rewrite using `[eq_top_iff, ← hbL, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Take `⟨f, hf⟩` from `(p.fw.e i).surjective ⟨b k, hbW k⟩`. Establish `hE : VK p.fw i = p.T.cuspA ((i : ℕ) + 1) (wtA (p.κ i)) (p.κ i).n` using `GlobalTheory.AllWt.cuspW_wtZ _ _`. Set `g : VK p.fw i` to `⟨f.1, hE.symm ▸ f.2⟩`. Take `⟨h, hg⟩` from `hι g`. Establish `e1 : ι g = b k`.
+
+Rewrite using `[hg]`. Establish `: (⟨(g : p.T.R ((i : ℕ) + 1)), h⟩ : p.T.cuspA ((i : ℕ) + 1) (wtA (p.κ i)) (p.κ i).n) = f` using `Subtype.ext rfl`. Rewrite using `[this, hf]`. Rewrite using `[← e1]`. Conclude with `hall g (hspan.ge Submodule.mem_top)`.
+-/
 theorem span_MK_eq_top_alt {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m) (_hR : _root_.GlobalTheory.CovTop.RowsTAlt p) (hG : GramAt p i) :
     Submodule.span D.what₂.LL ((p.R.toRealDat.FW i).MK : Set (Fin (p.R.nW i) → D.what₂.LL)) = ⊤ := by

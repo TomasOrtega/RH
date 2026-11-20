@@ -12,6 +12,13 @@ namespace GlobalTheory.IsoPartPairing
 
 open GlobalTheory.MixModel
 
+/- English proof (translation)
+Establish `hC0 : Cᴴ * V.gram * C' = 1` using `hC`. Establish `hC1 : C'ᴴ * V.gram * C = 1`. Establish `h` using `congrArg Matrix.conjTranspose hC0`. Rewrite `h` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, GlobalTheory.MixModel.gram_conjTranspose, Matrix.conjTranspose_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Establish `hx : GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C' u = u ⬝ rat (C'ᴴ * V.gram)` using `rfl`.
+
+Establish `hz : GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C y = y ⬝ rat (Cᴴ * V.gram)` using `rfl`. Establish `hg : giA V ⬝ adj (rat (Cᴴ * V.gram)) = rat C`. Rewrite using `[← rat_conjTranspose, Matrix.conjTranspose_mul, GlobalTheory.MixModel.gram_conjTranspose, Matrix.conjTranspose_conjTranspose, giA, ← rat_mul, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (GlobalTheory.MixModel.gram_isUnit_det V), Matrix.one_mul]`. Rewrite using `[hx, hz, hO_eq_trace, adj_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc (giA V), hg]`. Rewrite using `[show rat C ⬝ (adj y ⬝ (gA W ⬝ (u ⬝ rat (C'ᴴ * V.gram)))) = (rat C ⬝ adj y ⬝ gA W ⬝ u) ⬝ rat (C'ᴴ * V.gram) by`. Simplify using `only [Matrix.mul_assoc]]`. Rewrite using `[Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← rat_mul, hC1, rat_one, Matrix.one_mul, Matrix.mul_assoc]`.
+-/
 theorem hO_isoPart {D : D7} (V W : HSp D) {r : ℕ} (C C' : Matrix (Fin V.rank) (Fin r) D.host.E)
     (hC : GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D C * V.gram * C' = 1) (u y : Mx D W.rank r) :
     hO V W (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C' u) (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C y) =
@@ -35,11 +42,17 @@ theorem hO_isoPart {D : D7} (V W : HSp D) {r : ℕ} (C C' : Matrix (Fin V.rank) 
   rw [Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← rat_mul, hC1, rat_one,
     Matrix.one_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `show algebraMap D.host.F (AF D.host.F) (1 / 2) * _ + algebraMap D.host.F (AF D.host.F) (1 / 2) * _ = _`. Rewrite using `[← add_mul, ← map_add, add_halves, map_one, one_mul]`.
+-/
 theorem trHalf_add_self {D : D7} (z : AE D) :
     trHalf D z + trHalf D z = Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * z) := by
   show algebraMap D.host.F (AF D.host.F) (1 / 2) * _ + algebraMap D.host.F (AF D.host.F) (1 / 2) * _ = _
   rw [← add_mul, ← map_add, add_halves, map_one, one_mul]
 
+/- English proof (translation)
+Introduce `D V W r C C' hC u y`. Rewrite using `[symplOH_eq, hO_isoPart V W C C' hC u y, trHalf_add_self]`.
+-/
 theorem symplOH_isoPart_add_self : ∀ (D : D7) (V W : HSp D) (r : ℕ) (C C' : Matrix (Fin V.rank) (Fin r) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D C * V.gram * C' = 1 → ∀ u y : Mx D W.rank r, symplOH V W (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C' u) (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C y) + symplOH V W (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C' u) (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W C y) = Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * (HMul.hMul (GlobalTheory.MixModel.adj y) (HMul.hMul (GlobalTheory.MixModel.gA W) u)).trace) := by
   intro D V W r C C' hC u y
   rw [symplOH_eq, hO_isoPart V W C C' hC u y, trHalf_add_self]

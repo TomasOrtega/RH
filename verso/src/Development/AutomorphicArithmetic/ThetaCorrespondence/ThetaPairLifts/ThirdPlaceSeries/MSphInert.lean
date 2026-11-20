@@ -15,6 +15,13 @@ open ReciprocityTheory.Aut Formalism.AUTREP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 open GlobalTheory.SphInertRef
 noncomputable section
+/- English proof (translation)
+Establish `hLvl` using `GlobalTheory.T.standardFrame_nonsplit_maxCompact_in_level`. Introduce `hP hL`. Establish `hG` using `_root_.UpperTheory.One.M.goodRef_alt hP hL`. Unfold `_root_.GlobalTheory.LiftRef.ForallRowSideParameters at hG ⊢`. Use `GlobalTheory.LiftRef.overRows_and_mono hLvl hG (fun K B f T w Z Wt hX z p0 Y h hg => ?_)` and prove the remaining obligations.
+
+Introduce `Rw a M tup Q hMA hx j h1 h2 S hS hne w' hw'`. Establish `hgood` using `hg Rw a M tup Q hMA hx j h1 h2 S hS hne`. Take `⟨i, rfl⟩ : ∃ i : Fin (w.st Z).toD7.R.m, i.1 + 1 = j` from `⟨⟨j - 1, by omega⟩, by simp only; omega⟩`. Rewrite using `[a.A.sph (i.1 + 1) h1 h2 _ w' (HeightOneSpectrum.under (𝓞 (maximalRealSubfield (w.st Z).toD7.host.E)) w') hw' rfl]`. Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).1 hne`.
+
+Establish `hry : (M _ _ h1 h2).real y ≠ 0` using `fun e => hy0 ((M _ _ h1 h2).real_inj (e.trans (map_zero _).symm))`. Take `⟨f, hf, hf0, hff⟩` from `GlobalTheory.AutUnr.exists_fixed_of_isoTyp _ hS.1.stable {κ | κ ∈ Umax (w.st Z).toD7.host.E (w.st Z).toD7.R.nV ∧ TrivOutside {HeightOneSpectrum.under (𝓞 (maximalRealSubfield (w.st Z).toD7.host.E)) w'} κ} hy hry (fun κ hκ => rt_real_eq_of_lev hMA i y κ (h i (hMA.PV i) (hMA.std i) …`. Conclude with `_root_.UpperTheory.One.M.New.sphMk ⟨f, hf, hf0, fun κ hU htr => hff κ ⟨hU, htr⟩⟩ fun _ => hgood`.
+-/
 theorem UpperTheory.One.M.sphInert_of_isoTyp_comap_ne_bot : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.LiftRef.ForallRowSideParameters hL fun D _ _ _ a M => ∀ (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (S : Submodule ℂ (Formalism.AUTREP.GAf D.host.E D.R.nV → (M D.what₂.mu0 j h1 h2).wt.W)) (hS : NG.IsIrrRep (M D.what₂.mu0 j h1 h2).wt.ρ S), (NG.isoTyp (M D.what₂.mu0 j h1 h2).wt.ρ S).comap (M D.what₂.mu0 j h1 h2).real ≠ ⊥ → SphericalInertData.SphInert D.nd D.naut D.nbc j (a.A.cls j h1 h2 (GlobalTheory.LiftRef.autOf (M D.what₂.mu0 j h1 h2) S hS)) := by
   have hLvl := GlobalTheory.T.standardFrame_nonsplit_maxCompact_in_level
   intro hP hL

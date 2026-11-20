@@ -22,21 +22,35 @@ open GlobalTheory.WeierstrassCurve
 noncomputable def evalAt {Z : Scheme.{0}} {k : Type} [CommRing k] (x : Spec (.of k) ⟶ Z) :
     Γ(Z, ⊤) →+* k := (x.appTop ≫ (Scheme.ΓSpecIso (.of k)).hom).hom
 
+/- English proof (translation)
+Rewrite using `[Scheme.toSpecΓ_naturality, ← SpecMap_ΓSpecIso_hom, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem comp_toSpecΓ {Z : Scheme.{0}} {k : Type} [CommRing k] (x : Spec (.of k) ⟶ Z) :
     x ≫ Z.toSpecΓ = Spec.map (CommRingCat.ofHom (evalAt x)) := by
   rw [Scheme.toSpecΓ_naturality, ← SpecMap_ΓSpecIso_hom, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Simplify using `[evalAt]`. Both sides reduce to the same expression.
+-/
 theorem evalAt_comp {Z Z' : Scheme.{0}} {k : Type} [CommRing k] (x : Spec (.of k) ⟶ Z)
     (f : Z ⟶ Z') (s : Γ(Z', ⊤)) : evalAt (x ≫ f) s = evalAt x (f.appTop.hom s) := by
   simp [evalAt]
   rfl
 
+/- English proof (translation)
+Rewrite using `[evalAt, Scheme.ΓSpecIso_naturality]`. Simplify using the standard rewrite rules.
+-/
 theorem evalAt_specMap {A : CommRingCat.{0}} {k : Type} [CommRing k] (φ : A ⟶ .of k) (a : A) :
     evalAt (Spec.map φ) ((Scheme.ΓSpecIso A).inv.hom a) = φ.hom a := by
   rw [evalAt, Scheme.ΓSpecIso_naturality]
   simp
 
+/- English proof (translation)
+Apply `RingedSpace.isUnit_of_isUnit_germ Z.toRingedSpace ⊤ s` to reduce the goal to its premises. Introduce `z hz`. Establish `h1 : IsUnit ((Z.fromSpecResidueField z).appTop.hom s)` using `(isUnit_map_iff (Scheme.ΓSpecIso (Z.residueField z)).commRingCatIsoToRingEquiv _).mp (Ne.isUnit (h _ (Z.fromSpecResidueField z)))`. Establish `h3 : (Z.fromSpecResidueField z) ⁻¹ᵁ Z.basicOpen s = ⊤`. Rewrite using `[Scheme.preimage_basicOpen_top, Scheme.basicOpen_of_isUnit _ h1]`.
+
+Establish `h4 : (Z.fromSpecResidueField z) default ∈ Z.basicOpen s` using `h3.ge (Set.mem_univ _)`. Rewrite `h4` using `[Scheme.fromSpecResidueField_apply]`. Conclude with `(Z.mem_basicOpen_top s z).mp h4`.
+-/
 theorem isUnit_of_forall_evalAt {Z : Scheme.{0}} (s : Γ(Z, ⊤))
     (h : ∀ (k : Type) [Field k] (x : Spec (.of k) ⟶ Z), evalAt x s ≠ 0) : IsUnit s := by
   apply RingedSpace.isUnit_of_isUnit_germ Z.toRingedSpace ⊤ s
@@ -58,15 +72,27 @@ variable {S : Scheme.{0}} {Z : Over S}
 noncomputable def unitOf (t : Z ⟶ splitTorus S ℤ) : Γ(Z.left, ⊤)ˣ :=
   splitTorusPointsEquiv S ℤ Z t (Multiplicative.ofAdd 1)
 
+/- English proof (translation)
+Simplify using `[unitOf]`.
+-/
 theorem unitOf_mul (a b : Z ⟶ splitTorus S ℤ) : unitOf (a * b) = unitOf a * unitOf b := by
   simp [unitOf]
 
+/- English proof (translation)
+Introduce `_ _ h` and use `(splitTorusPointsEquiv S ℤ Z).injective (MonoidHom.ext_mint h)`.
+-/
 theorem unitOf_injective : Function.Injective (unitOf : (Z ⟶ splitTorus S ℤ) → _) :=
   fun _ _ h => (splitTorusPointsEquiv S ℤ Z).injective (MonoidHom.ext_mint h)
 
+/- English proof (translation)
+Introduce `u` and use `⟨(splitTorusPointsEquiv S ℤ Z).symm (zpowersHom _ u), by simp [unitOf]⟩`.
+-/
 theorem unitOf_surjective : Function.Surjective (unitOf : (Z ⟶ splitTorus S ℤ) → _) :=
   fun u => ⟨(splitTorusPointsEquiv S ℤ Z).symm (zpowersHom _ u), by simp [unitOf]⟩
 
+/- English proof (translation)
+Simplify using `[unitOf, splitTorusPointsEquiv_val]`. Both sides reduce to the same expression.
+-/
 theorem unitOf_comp {Z' : Over S} (x : Z' ⟶ Z) (t : Z ⟶ splitTorus S ℤ) :
     (unitOf (x ≫ t)).val = x.left.appTop.hom (unitOf t).val := by
   simp [unitOf, splitTorusPointsEquiv_val]
@@ -78,13 +104,22 @@ noncomputable def valOf {k : Type} [CommRing k] {s : Spec (.of k) ⟶ S}
 
 variable {k : Type} [CommRing k] {s : Spec (.of k) ⟶ S}
 
+/- English proof (translation)
+Rewrite using `[valOf, unitOf_mul, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem valOf_mul (a b : Over.mk s ⟶ splitTorus S ℤ) : valOf (a * b) = valOf a * valOf b := by
   rw [valOf, unitOf_mul, map_mul]; rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `unitOf_injective (Units.map_injective (Scheme.ΓSpecIso (.of k)).commRingCatIsoToRingEquiv.injective h)`.
+-/
 theorem valOf_injective : Function.Injective (valOf : (Over.mk s ⟶ splitTorus S ℤ) → kˣ) :=
   fun _ _ h => unitOf_injective (Units.map_injective
     (Scheme.ΓSpecIso (.of k)).commRingCatIsoToRingEquiv.injective h)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (.of k)).hom.hom (unitOf (x ≫ t)).val = _`. Rewrite using `[unitOf_comp]`. Both sides reduce to the same expression.
+-/
 theorem valOf_comp (x : Over.mk s ⟶ Z) (t : Z ⟶ splitTorus S ℤ) :
     (valOf (x ≫ t) : k) = evalAt x.left (unitOf t).val := by
   change (Scheme.ΓSpecIso (.of k)).hom.hom (unitOf (x ≫ t)).val = _
@@ -97,15 +132,24 @@ def param {A : Type} [CommRing A] (u : A) : Fin 3 → A := ![u * (1 - u), u ^ 2,
 
 abbrev node (K : Type) [CommRing K] : WeierstrassCurve K := ⟨1, 0, 0, 0, 0⟩
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp`.
+-/
 theorem node_map {K A : Type} [CommRing K] [CommRing A] (ρ : K →+* A) :
     (node K).map ρ = node A := by
   ext <;> simp
 
+/- English proof (translation)
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [param]`.
+-/
 theorem comp_param {A B : Type} [CommRing A] [CommRing B] (g : A →+* B) (u : A) :
     g ∘ param u = param (g u) := by
   ext i
   fin_cases i <;> simp [param]
 
+/- English proof (translation)
+Use `.of_isUnit ?_ 1 (u.isUnit.pow 2)` and prove the remaining obligations. Rewrite using `[node_map, WeierstrassCurve.Projective.equation_iff]`. Simplify using `[param]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isUnimodularSol_param {K A : Type} [CommRing K] [CommRing A] (ρ : K →+* A) (u : Aˣ) :
     IsUnimodularSol ((node K).map ρ) (param (u : A)) := by
   refine .of_isUnit ?_ 1 (u.isUnit.pow 2)
@@ -118,6 +162,9 @@ variable (K : Type) [Field K]
 noncomputable def constHom (Z : Over (Spec (.of K))) : K →+* Γ(Z.left, ⊤) :=
   ((Scheme.ΓSpecIso (.of K)).inv ≫ Z.hom.appTop).hom
 
+/- English proof (translation)
+Rewrite using `[constHom, CommRingCat.ofHom_hom, Spec.map_comp, ← Category.assoc, ← Scheme.toSpecΓ_naturality, ← SpecMap_ΓSpecIso_hom, Category.assoc, ← Spec.map_comp]`. Simplify using the standard rewrite rules.
+-/
 theorem toSpecΓ_constHom (Z : Over (Spec (.of K))) :
     Z.left.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (constHom K Z)) = Z.hom := by
   rw [constHom, CommRingCat.ofHom_hom, Spec.map_comp, ← Category.assoc,
@@ -128,11 +175,19 @@ noncomputable def paramHom : (splitTorus (Spec (.of K)) ℤ).left ⟶ scheme (no
   (splitTorus (Spec (.of K)) ℤ).left.toSpecΓ ≫
     ptHom (node K) (constHom K _) (param (unitOf (𝟙 _)).val) (isUnimodularSol_param _ _)
 
+/- English proof (translation)
+Rewrite using `[paramHom, Category.assoc, ptHom_toSpec, toSpecΓ_constHom]`.
+-/
 theorem paramHom_toSpec : paramHom K ≫ toSpec (node K) = (splitTorus (Spec (.of K)) ℤ).hom := by
   rw [paramHom, Category.assoc, ptHom_toSpec, toSpecΓ_constHom]
 
 variable {K}
 
+/- English proof (translation)
+Establish `e` using `comp_toSpecΓ (k := k) x.left`. Establish `e2 : (evalAt (k` using `k) x.left).comp (constHom K _) = ρ := by`. Establish `: Spec.map (CommRingCat.ofHom ((evalAt (k` using `k) x.left).comp (constHom K _))) = Spec.map (CommRingCat.ofHom ρ) := by`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, ← e]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (x.left ≫ ·) (toSpecΓ_constHom K _)).trans (Over.w x))`.
+
+Conclude with `congrArg (·.hom) (Spec.map_injective this)`. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) e).trans ?_)` and prove the remaining obligations. Rewrite using `[SpecMap_ptHom]`. Use `ptHom_congr _ _ _ _ e2 ?_ _` and prove the remaining obligations. Rewrite using `[comp_param, ← valOf_comp, Category.comp_id]`.
+-/
 theorem comp_paramHom {k : Type} [CommRing k] {ρ : K →+* k}
     (x : Over.mk (Spec.map (CommRingCat.ofHom ρ)) ⟶ splitTorus (Spec (.of K)) ℤ) :
     x.left ≫ paramHom K = ptHom (node K) ρ (param (valOf x : k)) (isUnimodularSol_param _ _) := by
@@ -149,11 +204,17 @@ theorem comp_paramHom {k : Type} [CommRing k] {ρ : K →+* k}
   refine ptHom_congr _ _ _ _ e2 ?_ _
   rw [comp_param, ← valOf_comp, Category.comp_id]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Spec.preimage (x ≫ Z.hom)).hom, Over.homMk x (by simp), rfl⟩`.
+-/
 theorem exists_over_point {Z : Over (Spec (.of K))} {k : Type} [CommRing k]
     (x : Spec (.of k) ⟶ Z.left) :
     ∃ (ρ : K →+* k) (y : Over.mk (Spec.map (CommRingCat.ofHom ρ)) ⟶ Z), y.left = x :=
   ⟨(Spec.preimage (x ≫ Z.hom)).hom, Over.homMk x (by simp), rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨z, rfl⟩`. Use `h _ (Z.fromSpecResidueField z) (Set.mem_univ default)` as an intermediate fact. Establish `h2 : f ((Z.fromSpecResidueField z) default) ∈ V` using `this`. Rewrite `h2` using `[Scheme.fromSpecResidueField_apply]`. Then use the resulting hypothesis.
+-/
 theorem range_subset_of_forall_field {Z Y : Scheme.{0}} (f : Z ⟶ Y) (V : Y.Opens)
     (h : ∀ (k : Type) [Field k] (x : Spec (.of k) ⟶ Z), ⊤ ≤ (x ≫ f) ⁻¹ᵁ V) :
     Set.range f ⊆ V := by
@@ -162,6 +223,9 @@ theorem range_subset_of_forall_field {Z Y : Scheme.{0}} (f : Z ⟶ Y) (V : Y.Ope
   have h2 : f ((Z.fromSpecResidueField z) default) ∈ V := this
   rwa [Scheme.fromSpecResidueField_apply] at h2
 
+/- English proof (translation)
+The claim follows from `over_hom_eq_iff_forall_field_algebra.mpr fun k _ _ x => h k _ x`.
+-/
 theorem over_hom_ext_field {T Y : Over (Spec (.of K))} [IsReduced T.left] [IsSeparated Y.hom]
     {f g : T ⟶ Y} (h : ∀ (k : Type) [Field k] (ρ : K →+* k)
       (x : Over.mk (Spec.map (CommRingCat.ofHom ρ)) ⟶ T), x ≫ f = x ≫ g) : f = g :=
@@ -176,6 +240,11 @@ variable (U : (scheme (node K)).Opens)
 
 include hU
 
+/- English proof (translation)
+Establish `h : Set.range (paramHom K) ⊆ Set.range U.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Use `range_subset_of_forall_field _ _ fun k _ x => ?_` and prove the remaining obligations. Take `⟨ρ, y, rfl⟩` from `exists_over_point x`. Rewrite using `[comp_paramHom, hU, node_map]`.
+
+Conclude with `(nonsingular_points k).1 _`. Establish `e` using `IsOpenImmersion.lift_fac U.ι (paramHom K) h`. Use `⟨Over.homMk (IsOpenImmersion.lift U.ι (paramHom K) h) ?_, e⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) e).trans (paramHom_toSpec K))`.
+-/
 theorem exists_toLocus : ∃ f : splitTorus (Spec (.of K)) ℤ ⟶ Over.mk (U.ι ≫ toSpec (node K)),
     f.left ≫ U.ι = paramHom K := by
   have h : Set.range (paramHom K) ⊆ Set.range U.ι := by
@@ -188,6 +257,9 @@ theorem exists_toLocus : ∃ f : splitTorus (Spec (.of K)) ℤ ⟶ Over.mk (U.ι
   refine ⟨Over.homMk (IsOpenImmersion.lift U.ι (paramHom K) h) ?_, e⟩
   exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) e).trans (paramHom_toSpec K))
 
+/- English proof (translation)
+Take `⟨P, h, e⟩` from `exists_eq_ptHom (node K) ρ (y.left ≫ U.ι) ((Category.assoc _ _ _).trans (Over.w y))`. Use `⟨P, h, e, ?_⟩` and prove the remaining obligations. Rewrite using `[← node_map ρ, ← hU k ρ P h, ← e]`. Introduce `z _`. Conclude with `(y.left z).2`.
+-/
 theorem exists_nonsingular {k : Type} [Field k] {ρ : K →+* k}
     (y : Over.mk (Spec.map (CommRingCat.ofHom ρ)) ⟶ Over.mk (U.ι ≫ toSpec (node K))) :
     ∃ (P : Fin 3 → k) (h : IsUnimodularSol ((node K).map ρ) P),
@@ -199,6 +271,23 @@ theorem exists_nonsingular {k : Type} [Field k] {ρ : K →+* k}
   intro z _
   exact (y.left z).2
 
+/- English proof (translation)
+Establish `h : Set.range U.ι ⊆ Set.range (awayChart (node K) 1)`. Rewrite using `[← (awayChart (node K) 1).coe_opensRange, opensRange_awayChart]`. Use `range_subset_of_forall_field _ _ fun k _ x => ?_` and prove the remaining obligations. Take `⟨ρ, y, rfl⟩` from `exists_over_point (Z := Over.mk (U.ι ≫ toSpec (node K))) x`. Take `⟨P, hP, e, hn⟩` from `exists_nonsingular U hU y`.
+
+Establish `h1` using `((nonsingular_points k).2.2 P hn).1`. Use `le_of_eq (Eq.symm ?_)` and prove the remaining obligations. Use `(congrArg (· ⁻¹ᵁ _) e).trans ?_` and prove the remaining obligations. Rewrite using `[ptHom_preimage_coordOpen]`. Conclude with `top_le_iff.mp fun p _ hp => p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hp h1.isUnit)`.
+
+Set `j` to `IsOpenImmersion.lift (awayChart (node K) 1) U.ι h`. Establish `hj : j ≫ awayChart (node K) 1 = U.ι` using `IsOpenImmersion.lift_fac _ _ h`. Set `s : Γ(U.toScheme, ⊤)` to `j.appTop.hom ((Scheme.ΓSpecIso (.of (AwayRing (node K) 1))).inv.hom (awayCoord (node K) 1 0 + 1))`. Establish `key : ∀ (k : Type) [Field k] (ρ : K →+* k) (x : Spec (.of k) ⟶ U.toScheme) (P : Fin 3 → k) (h : IsUnimodularSol ((node K).map ρ) P), x ≫ U.ι = ptHom (node K) ρ P h → P 1 ≠ 0 ∧ P 0 + P 1 ≠ 0 ∧ evalAt x s * P 1 = P 0 + P 1`. Introduce `k _ ρ x P hP e`.
+
+Establish `hn : (node k).toProjective.Nonsingular P`. Rewrite using `[← node_map ρ, ← hU k ρ P hP, ← e]`. Introduce `z _`. Conclude with `(x z).2`. Take `⟨h1, h2, -⟩` from `(nonsingular_points k).2.2 P hn`.
+
+Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Establish `e2 : x ≫ j = Spec.map (CommRingCat.ofHom (awayEval (node K) 1 ρ P hP.equation h1.isUnit))`. Rewrite using `[← cancel_mono (awayChart (node K) 1), Category.assoc, hj, e, ptHom_eq_awayChart _ 1 _ _ _ h1.isUnit]`. Rewrite using `[← evalAt_comp, e2, evalAt_specMap, CommRingCat.hom_ofHom, map_add, map_one, add_mul, awayEval_awayCoord_mul, _root_.one_mul]`. Establish `hs : IsUnit s`.
+
+Use `isUnit_of_forall_evalAt s fun k _ x h0 => ?_` and prove the remaining obligations. Take `⟨ρ, y, rfl⟩` from `exists_over_point (Z := Over.mk (U.ι ≫ toSpec (node K))) x`. Take `⟨P, hP, e, -⟩` from `exists_nonsingular U hU y`. Take `⟨-, h2, h3⟩` from `key k ρ y.left P hP e`. Conclude with `h2 (by rw [← h3]; exact mul_eq_zero_of_left h0 _)`.
+
+Take `⟨g, hg⟩` from `unitOf_surjective (Z := Over.mk (U.ι ≫ toSpec (node K))) hs.unit⁻¹`. Use `⟨g, fun k _ ρ y P hP e => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `key k ρ y.left P hP e`. Establish `h4 : evalAt (k` using `k) y.left (unitOf g).val * evalAt (k := k) y.left s = 1 := by`. Rewrite using `[hg]`.
+
+Conclude with `(map_mul _ _ _).symm.trans ((congrArg _ hs.val_inv_mul).trans (map_one _))`. Rewrite using `[valOf_comp, eq_div_iff h2, ← h3, ← _root_.mul_assoc]`. Conclude with `(congrArg (· * P 1) h4).trans (_root_.one_mul _)`.
+-/
 theorem exists_fromLocus : ∃ g : Over.mk (U.ι ≫ toSpec (node K)) ⟶ splitTorus (Spec (.of K)) ℤ,
     ∀ (k : Type) [Field k] (ρ : K →+* k)
       (y : Over.mk (Spec.map (CommRingCat.ofHom ρ)) ⟶ Over.mk (U.ι ≫ toSpec (node K)))
@@ -252,6 +341,9 @@ theorem exists_fromLocus : ∃ g : Over.mk (U.ι ≫ toSpec (node K)) ⟶ splitT
 
 end Locus
 
+/- English proof (translation)
+The claim follows from `h one_hom := by have e : (η[G] ≫ f) * (η[G] ≫ f) = η[G] ≫ f := by have h1 : lift η[G] η[G] ≫ μ[G] = η[G] := by simpa using MonObj.lift_comp_one_left (𝟙 (𝟙_ C)) η[G] rw [Hom.mul_def, ← lift_map, Category.assoc, ← h, ← Category.assoc, h1] rw [mul_eq_left.mp e, Hom.one_def] simp`.
+-/
 theorem isMonHom_of_mul_hom {C : Type*} [Category C] [CartesianMonoidalCategory C] {G H : C}
     [GrpObj G] [GrpObj H] (f : G ⟶ H) (h : μ[G] ≫ f = (f ⊗ₘ f) ≫ μ[H]) : IsMonHom f where
   mul_hom := h
@@ -263,6 +355,21 @@ theorem isMonHom_of_mul_hom {C : Type*} [Category C] [CartesianMonoidalCategory 
     rw [mul_eq_left.mp e, Hom.one_def]
     simp
 
+/- English proof (translation)
+Introduce `K _ W hW`. Substitute `hW` using the available equality. Introduce `U hU hsm _ _ hadd`. Take `⟨f, hf⟩` from `exists_toLocus U hU`. Take `⟨g, hg⟩` from `exists_fromLocus U hU`.
+
+Establish `hpt : ∀ (k : Type) [Field k] (ρ : K →+* k) (x : Over.mk (Spec.map (CommRingCat.ofHom ρ)) ⟶ splitTorus (Spec (.of K)) ℤ), (x ≫ f).left ≫ U.ι = ptHom (node K) ρ (param (valOf x : k)) (isUnimodularSol_param _ _)` using `fun k _ ρ x => (Category.assoc _ _ _).trans ((congrArg (x.left ≫ ·) hf).trans (comp_paramHom x))`. Establish `r1 : IsReduced (splitTorus (Spec (.of K)) ℤ).left` using `isReduced_of_smooth_of_isReduced (splitTorus (Spec (.of K)) ℤ).hom`. Establish `r2 : IsReduced (Over.mk (U.ι ≫ toSpec (node K))).left` using `@isReduced_of_smooth_of_isReduced _ _ (U.ι ≫ toSpec (node K)) hsm _`. Establish `s3 : Smooth (splitTorus (Spec (.of K)) ℤ ⊗ splitTorus (Spec (.of K)) ℤ).hom` using `inferInstanceAs (Smooth (pullback.fst (splitTorus (Spec (.of K)) ℤ).hom (splitTorus (Spec (.of K)) ℤ).hom ≫ (splitTorus (Spec (.of K)) ℤ).hom))`. Establish `r3 : IsReduced (splitTorus (Spec (.of K)) ℤ ⊗ splitTorus (Spec (.of K)) ℤ).left` using `isReduced_of_smooth_of_isReduced (splitTorus (Spec (.of K)) ℤ ⊗ splitTorus (Spec (.of K)) ℤ).hom`.
+
+Establish `sep : IsSeparated (Over.mk (U.ι ≫ toSpec (node K))).hom` using `inferInstanceAs (IsSeparated (U.ι ≫ toSpec (node K)))`. Establish `ext : ∀ {Z : Over (Spec (.of K))} {a b : Z ⟶ Over.mk (U.ι ≫ toSpec (node K))}, a.left ≫ U.ι = b.left ≫ U.ι → a = b` using `fun h => Over.OverMorphism.ext ((cancel_mono U.ι).mp h)`. Use `⟨⟨f, g, ?_, ?_⟩, isMonHom_of_mul_hom f ?_⟩` and prove the remaining obligations. Use `over_hom_ext_field fun k _ ρ x => valOf_injective (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[← Category.assoc, hg k ρ _ _ _ (hpt k ρ x), Category.comp_id]`.
+
+Use `(valOf x).ne_zero` as an intermediate fact. Establish `e : param (valOf x : k) 0 + param (valOf x : k) 1 = valOf x`. Simplify using `[param]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, div_eq_iff this]`.
+
+Simplify using `[param, sq]`. Use `over_hom_ext_field fun k _ ρ y => ext ?_` and prove the remaining obligations. Take `⟨P, hP, e, hn⟩` from `exists_nonsingular U hU y`. Take `⟨-, -, c, hc⟩` from `(nonsingular_points k).2.2 P hn`. Rewrite using `[← Category.assoc, hpt, Category.comp_id, e, ptHom_eq_ptHom_iff]`.
+
+Conclude with `⟨c, by rw [hg k ρ y P hP e]; exact hc⟩`. Use `over_hom_ext_field fun k _ ρ x => ext ?_` and prove the remaining obligations. Take `⟨h, e⟩` from `hadd k ρ _ _ _ _ _ _ (hpt k ρ (x ≫ fst _ _)) (hpt k ρ (x ≫ snd _ _))`. Establish `e1 : x ≫ μ = (x ≫ fst _ _) * (x ≫ snd _ _)`. Rewrite using `[Hom.mul_def, lift_comp_fst_snd]`.
+
+Establish `e2 : x ≫ (f ⊗ₘ f) = lift ((x ≫ fst _ _) ≫ f) ((x ≫ snd _ _) ≫ f)`. Rewrite using `[← lift_map, lift_comp_fst_snd]`. Take `⟨c, hc⟩` from `(nonsingular_points k).2.1 (valOf (x ≫ fst _ _)) (valOf (x ≫ snd _ _))`. Rewrite using `[← Category.assoc, ← Category.assoc, e1, e2, hpt, e, ptHom_eq_ptHom_iff]`. Conclude with `⟨c, by rw [valOf_mul, node_map]; exact hc⟩`.
+-/
 theorem exists_splitTorus_iso : ∀ (K : Type) [Field K] (W : WeierstrassCurve K), W = ⟨1, 0, 0, 0, 0⟩ → ∀ (U : (GlobalTheory.WeierstrassCurve.scheme W).Opens), (∀ (k : Type) [Field k] (ρ : K →+* k) (P : Fin 3 → k) (h : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) P), ⊤ ≤ GlobalTheory.WeierstrassCurve.ptHom W ρ P h ⁻¹ᵁ U ↔ (W.map ρ).toProjective.Nonsingular P) → Smooth (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W) → GeometricallyIntegral (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W) → ∀ [GrpObj (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))], (∀ (k : Type) [Field k] (ρ : K →+* k) (x y : Over.mk (Spec.map (CommRingCat.ofHom ρ)) ⟶ (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))) (P Q : Fin 3 → k) (hP : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) P) (hQ : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) Q), x.left ≫ U.ι = GlobalTheory.WeierstrassCurve.ptHom W ρ P hP → y.left ≫ U.ι = GlobalTheory.WeierstrassCurve.ptHom W ρ Q hQ → ∃ h : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) ((W.map ρ).toProjective.add P Q), (lift x y ≫ μ[(Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))]).left ≫ U.ι = GlobalTheory.WeierstrassCurve.ptHom W ρ _ h) → ∃ i : splitTorus (Spec (CommRingCat.of K)) ℤ ≅ (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W)), IsMonHom i.hom := by
   intro K _ W hW
   subst hW

@@ -15,18 +15,30 @@ namespace GlobalTheory.SimLift
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
 
+/- English proof (translation)
+The claim follows from `D.unimod.1 (LinearMap.ext h)`.
+-/
 theorem ext_form {x y : D.La} (h : ∀ b, D.EF x b = D.EF y b) : x = y :=
   D.unimod.1 (LinearMap.ext h)
 
+/- English proof (translation)
+Establish `h` using `D.alt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, D.alt] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem form_skew (x y : D.La) : D.EF x y = -D.EF y x := by
   have h := D.alt (x + y)
   simp only [map_add, LinearMap.add_apply, D.alt] at h
   linarith
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `D.unimod.2 (AddMonoidHom.mk' φ hφ).toIntLinearMap`. Conclude with `⟨x, fun b => by rw [hx]; rfl⟩`.
+-/
 theorem exists_vec (φ : D.La → ℤ) (hφ : ∀ a b, φ (a + b) = φ a + φ b) : ∃ x, ∀ b, D.EF x b = φ b := by
   obtain ⟨x, hx⟩ := D.unimod.2 (AddMonoidHom.mk' φ hφ).toIntLinearMap
   exact ⟨x, fun b => by rw [hx]; rfl⟩
 
+/- English proof (translation)
+Use `choose u hu using fun a => exists_vec D (B a) (h2 a)`. Use `⟨⟨⟨u, fun a a' => ext_form D fun b => ?_⟩, fun c a => ext_form D fun b => ?_⟩, hu⟩` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply, hu, hu, hu, h1]`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[D.adj, hu, hu, h3]`.
+-/
 theorem exists_rep (B : D.La → D.La → ℤ) (h1 : ∀ a a' b, B (a + a') b = B a b + B a' b)
     (h2 : ∀ a b b', B a (b + b') = B a b + B a b')
     (h3 : ∀ (c : 𝓞 E) a b, B (c • a) b = B a (H.bar c • b)) :
@@ -37,6 +49,11 @@ theorem exists_rep (B : D.La → D.La → ℤ) (h1 : ∀ a a' b, B (a + a') b = 
   · simp only [RingHom.id_apply]
     rw [D.adj, hu, hu, h3]
 
+/- English proof (translation)
+Use `choose φ hφ using h`. Establish `hn' : (n : ℤ) ≠ 0` using `by exact_mod_cast hn.ne'`. Take `⟨y, hy⟩` from `exists_vec D φ fun a b => by`. Apply `mul_left_cancel₀ hn'` to reduce the goal to its premises. Rewrite using `[← hφ, map_add, hφ, hφ, mul_add]`.
+
+Use `⟨y, ext_form D fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, LinearMap.smul_apply, hy, hφ, nsmul_eq_mul]`.
+-/
 theorem modN_of_dvd {n : ℕ} (hn : 0 < n) {x : D.La} (h : ∀ b, (n : ℤ) ∣ D.EF x b) : D.ModN n x := by
   choose φ hφ using h
   have hn' : (n : ℤ) ≠ 0 := by exact_mod_cast hn.ne'
@@ -46,11 +63,17 @@ theorem modN_of_dvd {n : ℕ} (hn : 0 < n) {x : D.La} (h : ∀ b, (n : ℤ) ∣ 
   refine ⟨y, ext_form D fun b => ?_⟩
   rw [map_nsmul, LinearMap.smul_apply, hy, hφ, nsmul_eq_mul]
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `h`. Take `⟨b, rfl⟩` from `hx`. Conclude with `⟨k • b, mul_smul _ _ _⟩`.
+-/
 theorem modN_of_dvd_modulus {n m : ℕ} (h : n ∣ m) {x : D.La} (hx : D.ModN m x) : D.ModN n x := by
   obtain ⟨k, rfl⟩ := h
   obtain ⟨b, rfl⟩ := hx
   exact ⟨k • b, mul_smul _ _ _⟩
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `h1`. Take `⟨c, hc⟩` from `h2`. Conclude with `⟨b + c, by rw [smul_add, ← hb, ← hc]; abel⟩`.
+-/
 theorem modN_trans {n : ℕ} {x y z : D.La} (h1 : D.ModN n (x - y)) (h2 : D.ModN n (y - z)) :
     D.ModN n (x - z) := by
   obtain ⟨b, hb⟩ := h1
@@ -60,11 +83,33 @@ theorem modN_trans {n : ℕ} {x y z : D.La} (h1 : D.ModN n (x - y)) (h2 : D.ModN
 def IsSimMod (n : ℕ) (f : D.La →ₗ[𝓞 E] D.La) (ν : ℤ) : Prop :=
   IsCoprime ν (n : ℤ) ∧ ∀ a b, (n : ℤ) ∣ D.EF (f a) (f b) - ν * D.EF a b
 
+/- English proof (translation)
+The claim follows from `have h' : (n : ℤ) ∣ m := Int.natCast_dvd_natCast.mpr h ⟨hf.1.of_isCoprime_of_dvd_right h', fun a b => h'.trans (hf.2 a b)⟩`.
+-/
 theorem IsSimMod.of_dvd {n m : ℕ} (h : n ∣ m) {f : D.La →ₗ[𝓞 E] D.La} {ν : ℤ} (hf : IsSimMod D m f ν) :
     IsSimMod D n f ν :=
   have h' : (n : ℤ) ∣ m := Int.natCast_dvd_natCast.mpr h
   ⟨hf.1.of_isCoprime_of_dvd_right h', fun a b => h'.trans (hf.2 a b)⟩
 
+/- English proof (translation)
+Take `⟨hc, hB⟩` from `hf`. Establish `hc2 : IsCoprime ν ((n * n : ℕ) : ℤ)` using `by push_cast; exact hc.mul_right hc`. Take `⟨κ, t, hκ⟩` from `hc`. Use `choose B hB using hB`. Establish `hn' : (n : ℤ) ≠ 0` using `by exact_mod_cast hn.ne'`.
+
+Take `⟨u, hu⟩` from `exists_rep D B (fun a a' b => by`. Apply `mul_left_cancel₀ hn'` to reduce the goal to its premises. Rewrite using `[mul_add, ← hB, ← hB, ← hB]`. Simplify using `only [map_add, LinearMap.add_apply]`. Use the proof step `ring)`.
+
+Use the proof step `(fun a b b' => by`. Apply `mul_left_cancel₀ hn'` to reduce the goal to its premises. Rewrite using `[mul_add, ← hB, ← hB, ← hB]`. Simplify using `only [map_add]`. Use the proof step `ring)`.
+
+Use the proof step `(fun c a b => by`. Apply `mul_left_cancel₀ hn'` to reduce the goal to its premises. Rewrite using `[← hB, ← hB, f.map_smul, f.map_smul, D.adj, D.adj])`. Establish `hskew : ∀ a b, B a b = -B b a` using `fun a b => by`. Apply `mul_left_cancel₀ hn'` to reduce the goal to its premises.
+
+Rewrite using `[mul_neg, ← hB, ← hB, form_skew D (f a), form_skew D a]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsa : ∀ a b, D.EF a (u b) = D.EF (u a) b` using `fun a b => by`. Rewrite using `[form_skew D a, hu, hu, hskew a b]`. Use `set v : D.La →ₗ[𝓞 E] D.La := H.w0 • u with hv`.
+
+Establish `hkey : ∀ a b, D.EF (v a) b + D.EF a (v b) = B a b` using `fun a b => by`. Establish `h1 : D.EF a (v b) = D.EF ((1 - H.w0) • u a) b`. Establish `hb : H.bar (1 - H.w0) = H.w0`. Rewrite using `[map_sub, map_one, HostModel.cmHost_bar_halfIntegerGenerator]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← u.map_smul, ← hsa, D.adj, hb, hv, LinearMap.smul_apply]`. Rewrite using `[h1, ← LinearMap.add_apply, ← map_add, hv, LinearMap.smul_apply, ← add_smul, ← hu]`. Simplify using the standard rewrite rules. Establish `hff : ∀ a b, D.EF (f a) (f b) = ν * D.EF a b + n * B a b` using `fun a b => by`. Rewrite using `[← hB]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨f - ((n : ℤ) * κ) • (f ∘ₗ v), ⟨hc2, fun a b => ?_⟩, fun a => ⟨-(κ • f (v a)), ?_⟩⟩` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply, map_sub, map_zsmul, smul_eq_mul, hff]`. Use `⟨t * B a b - κ * (B (v a) b + B a (v b)) + κ * κ * (ν * D.EF (v a) (v b) + n * B (v a) (v b)), ?_⟩` and prove the remaining obligations. Use `push_cast`.
+
+Take the linear combination `(-(n : ℤ) * κ * ν) * hkey a b - (n : ℤ) * B a b * hκ`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply]`. Rewrite using `[mul_smul, natCast_zsmul, smul_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem step_sq {n : ℕ} (hn : 0 < n) {f : D.La →ₗ[𝓞 E] D.La} {ν : ℤ} (hf : IsSimMod D n f ν) :
     ∃ f', IsSimMod D (n * n) f' ν ∧ ∀ a, D.ModN n (f' a - f a) := by
   obtain ⟨hc, hB⟩ := hf
@@ -110,6 +155,15 @@ theorem step_sq {n : ℕ} (hn : 0 < n) {f : D.La →ₗ[𝓞 E] D.La} {ν : ℤ}
   · simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply]
     rw [mul_smul, natCast_zsmul, smul_neg]; abel
 
+/- English proof (translation)
+Take `⟨x, y, hxy⟩` from `hnr`. Take `⟨hc, hB⟩` from `hf`. Use `⟨(y * r) • f + (x * n) • LinearMap.id, y * r * ν + x * n, ⟨?_, fun a b => ?_⟩, fun a => ⟨x • (a - f a), ?_⟩, ⟨x * (1 - ν), by linear_combination ν * hxy⟩⟩` and prove the remaining obligations. Use `push_cast`. Use `IsCoprime.mul_right ?_ ?_` and prove the remaining obligations.
+
+Take `⟨κ, t, hκ⟩` from `hc`. Conclude with `⟨κ, t - κ * x * (1 - ν), by linear_combination hκ + κ * ν * hxy⟩`. Conclude with `⟨1, y * (1 - ν), by linear_combination hxy⟩`. Take `⟨B, hB⟩` from `hB a b`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.id_apply, map_add, map_zsmul, smul_eq_mul]`.
+
+Use `⟨y * B + x * y * (D.EF (f a) b + D.EF a (f b) - D.EF (f a) (f b) - D.EF a b), ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(y * r) * hB + (y * r * D.EF (f a) (f b) + x * n * D.EF a b) * hxy`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Establish `h : y * (r : ℤ) = 1 - n * x` using `by linear_combination hxy`.
+
+Rewrite using `[h, ← natCast_zsmul, ← mul_smul, _root_.mul_comm x, sub_smul, smul_sub, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem step_coprime {n r : ℕ} (hnr : IsCoprime (n : ℤ) (r : ℤ)) {f : D.La →ₗ[𝓞 E] D.La} {ν : ℤ}
     (hf : IsSimMod D n f ν) :
     ∃ f' ν', IsSimMod D (n * r) f' ν' ∧ (∀ a, D.ModN n (f' a - f a)) ∧ (n : ℤ) ∣ ν' - ν := by
@@ -132,6 +186,15 @@ theorem step_coprime {n r : ℕ} (hnr : IsCoprime (n : ℤ) (r : ℤ)) {f : D.La
     have h : y * (r : ℤ) = 1 - n * x := by linear_combination hxy
     rw [h, ← natCast_zsmul, ← mul_smul, _root_.mul_comm x, sub_smul, smul_sub, one_smul]; abel
 
+/- English proof (translation)
+Proceed by induction on `m using induction_on_primes with`. Consider the case `zero => intro h`. Conclude with `absurd h (lt_irrefl 0)`. Consider the case `one`. Introduce `_ n _ f ν hf`.
+
+Conclude with `⟨f, ν, by simpa using hf, fun a => ⟨0, by simp⟩, by simp⟩`. Consider the case `prime_mul p a hp ih`. Introduce `hpa n hn f ν hf`. Establish `ha : 0 < a` using `Nat.pos_of_mul_pos_left hpa`. Establish `h1 : ∃ f' ν', IsSimMod D (n * p) f' ν' ∧ (∀ a, D.ModN n (f' a - f a)) ∧ (n : ℤ) ∣ ν' - ν`.
+
+Distinguish the cases in `hpn : p ∣ n`. Take `⟨f', h1, h2⟩` from `step_sq D hn hf`. Conclude with `⟨f', ν, h1.of_dvd D (Nat.mul_dvd_mul_left n hpn), h2, by simp⟩`. Conclude with `step_coprime D (Nat.isCoprime_iff_coprime.mpr ((Nat.Prime.coprime_iff_not_dvd hp).mpr hpn).symm) hf`. Take `⟨f₁, ν₁, h1, h2, h3⟩` from `h1`.
+
+Take `⟨f₂, ν₂, h4, h5, h6⟩` from `ih ha (n * p) (Nat.mul_pos hn hp.pos) f₁ ν₁ h1`. Use `⟨f₂, ν₂, by rwa [← Nat.mul_assoc], fun x => modN_trans D (modN_of_dvd_modulus D (dvd_mul_right n p) (h5 x)) (h2 x), ?_⟩` and prove the remaining obligations. Establish `h7 : (n : ℤ) ∣ ν₂ - ν₁` using `(Int.natCast_dvd_natCast.mpr (dvd_mul_right n p)).trans h6`. Simplify using `using dvd_add h7 h3`.
+-/
 theorem step (m : ℕ) : 0 < m → ∀ (n : ℕ), 0 < n → ∀ (f : D.La →ₗ[𝓞 E] D.La) (ν : ℤ), IsSimMod D n f ν →
     ∃ f' ν', IsSimMod D (n * m) f' ν' ∧ (∀ a, D.ModN n (f' a - f a)) ∧ (n : ℤ) ∣ ν' - ν := by
   induction m using induction_on_primes with
@@ -155,6 +218,17 @@ theorem step (m : ℕ) : 0 < m → ∀ (n : ℕ), 0 < n → ∀ (f : D.La →ₗ
     have h7 : (n : ℤ) ∣ ν₂ - ν₁ := (Int.natCast_dvd_natCast.mpr (dvd_mul_right n p)).trans h6
     simpa using dvd_add h7 h3
 
+/- English proof (translation)
+Take `⟨⟨κ, t, hκ⟩, hB⟩` from `hf`. Take `⟨u, hu⟩` from `exists_rep D (fun a b => D.EF a (f b)) (fun a a' b => by simp) (fun a b b' => by simp) (fun c a b => by rw [f.map_smul, D.adj])`. Use `set g : D.La →ₗ[𝓞 E] D.La := κ • u with hg`. Establish `h1 : ∀ a, D.ModN n (g (f a) - a)` using `fun a => modN_of_dvd D hn fun b => by`. Take `⟨B, hB⟩` from `hB a b`.
+
+Simplify using `only [hg, LinearMap.smul_apply, map_sub, map_zsmul, LinearMap.sub_apply, smul_eq_mul, hu]`. Conclude with `⟨κ * B - t * D.EF a b, by linear_combination κ * hB + D.EF a b * hκ⟩`. Set `S : Submodule (𝓞 E) D.La` to `LinearMap.range (n • (LinearMap.id : D.La →ₗ[𝓞 E] D.La))`. Establish `hS : ∀ x, x ∈ S ↔ D.ModN n x` using `fun x => ⟨fun ⟨b, hb⟩ => ⟨b, hb.symm⟩, fun ⟨b, hb⟩ => ⟨b, hb.symm⟩⟩`. Establish `hgS : S ≤ S.comap g`.
+
+Introduce and unpack `x hx`. Take `⟨b, rfl⟩` from `(hS x).mp hx`. Conclude with `(hS _).mpr ⟨g b, map_nsmul g n b⟩`. Use `D.fin` as an intermediate fact. Establish `hsurj : Function.Surjective (S.mapQ S g hgS)`.
+
+Introduce `q`. Take `⟨a, rfl⟩` from `S.mkQ_surjective q`. Conclude with `⟨S.mkQ (f a), (Submodule.Quotient.eq S).mpr ((hS _).mpr (h1 a))⟩`. Establish `hinj` using `OrzechProperty.injective_of_surjective_endomorphism _ hsurj`. Use `⟨g, fun a => ⟨h1 a, (hS _).mp ((Submodule.Quotient.eq S).mp (hinj ?_))⟩⟩` and prove the remaining obligations.
+
+Conclude with `(Submodule.Quotient.eq S).mpr ((hS _).mpr (h1 (g a)))`.
+-/
 theorem exists_inv {n : ℕ} (hn : 0 < n) {f : D.La →ₗ[𝓞 E] D.La} {ν : ℤ} (hf : IsSimMod D n f ν) :
     ∃ g : D.La →ₗ[𝓞 E] D.La, ∀ a, D.ModN n (g (f a) - a) ∧ D.ModN n (f (g a) - a) := by
   obtain ⟨⟨κ, t, hκ⟩, hB⟩ := hf
@@ -187,6 +261,19 @@ namespace GlobalTheory
 
 open SimLift
 
+/- English proof (translation)
+Introduce `E _ _ _ H D N f ν hN hc hf`. Set `T : ℕ → Type` to `fun k => {x : (D.La →ₗ[𝓞 E] D.La) × ℤ // IsSimMod D (N * k.factorial) x.1 x.2}`. Establish `hstep : ∀ k (x : T k), ∃ y : T (k + 1), (∀ a, D.ModN (N * k.factorial) (y.1.1 a - x.1.1 a)) ∧ ((N * k.factorial : ℕ) : ℤ) ∣ y.1.2 - x.1.2`. Introduce `k x`. Take `⟨f', ν', h1, h2⟩` from `step D (k + 1) k.succ_pos _ (Nat.mul_pos hN k.factorial_pos) _ _ x.2`.
+
+Use `⟨⟨(f', ν'), ?_⟩, h2⟩` and prove the remaining obligations. Rewrite using `[Nat.factorial_succ, Nat.mul_comm (k + 1), ← Nat.mul_assoc]` and apply the resulting hypothesis. Use `choose nx hnx using hstep`. Set `s : ∀ k, T k` to `fun k => Nat.rec (⟨(f, ν), by`. Rewrite using `[Nat.factorial_zero, Nat.mul_one]`.
+
+Conclude with `⟨hc, hf⟩⟩ : T 0) nx k`. Establish `hs : ∀ k j, k ≤ j → (∀ a, D.ModN (N * k.factorial) ((s j).1.1 a - (s k).1.1 a)) ∧ ((N * k.factorial : ℕ) : ℤ) ∣ (s j).1.2 - (s k).1.2`. Introduce `k j hkj`. Proceed by induction on `j, hkj using Nat.le_induction with`. Consider the case `base => exact ⟨fun a => ⟨0, by simp⟩, by simp⟩`.
+
+Consider the case `succ j hkj ih`. Establish `hd : N * k.factorial ∣ N * j.factorial` using `Nat.mul_dvd_mul_left N (Nat.factorial_dvd_factorial hkj)`. Take `⟨h1, h2⟩` from `hnx j (s j)`. Use `⟨fun a => modN_trans D (modN_of_dvd_modulus D hd (h1 a)) (ih.1 a), ?_⟩` and prove the remaining obligations. Establish `h3` using `dvd_add ((Int.natCast_dvd_natCast.mpr hd).trans h2) ih.2`.
+
+Rewrite `h3` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `hd : ∀ n, 0 < n → n ∣ N * n.factorial` using `fun n hn => (Nat.dvd_factorial hn le_rfl).mul_left N`. Use `⟨⟨fun n => (s n).1.1, fun n => (s n).1.2, fun n m hn hm a => ?_, fun n hn => ?_, fun n hn => ?_⟩, fun a => ?_, ?_⟩` and prove the remaining obligations. Conclude with `modN_of_dvd_modulus D (hd n hn) ((hs n _ (Nat.le_mul_of_pos_right n hm)).1 a)`. Conclude with `exists_inv D hn ((s n).2.of_dvd D (hd n hn))`.
+
+Conclude with `((s n).2.of_dvd D (hd n hn)).2`. Conclude with `modN_of_dvd_modulus D (dvd_mul_right N _) ((hs 0 N N.zero_le).1 a)`. Conclude with `(Int.natCast_dvd_natCast.mpr (dvd_mul_right N _)).trans (hs 0 N N.zero_le).2`.
+-/
 theorem exists_sim_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (N : ℕ)
     (f : D.La →ₗ[𝓞 E] D.La) (ν : ℤ), 0 < N → IsCoprime ν (N : ℤ) →
     (∀ a b, (N : ℤ) ∣ D.EF (f a) (f b) - ν * D.EF a b) →

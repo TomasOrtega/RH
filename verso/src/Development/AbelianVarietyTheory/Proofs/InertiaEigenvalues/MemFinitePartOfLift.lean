@@ -11,6 +11,13 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.UseLoc.DescHf
 
+/- English proof (translation)
+Take `⟨r, hr, hr1⟩` from `GlobalTheory.T.exists_integral_retraction_localIntegers h`. Take `⟨p, hp, hpr⟩` from `GlobalTheory.T.exists_fieldExtension_of_integral_retraction h r hr hr1`. Establish `h1 : p 1 = 1`. Use `hpr 1` as an intermediate fact. Rewrite `this` using `[hr1]`.
+
+Conclude with `this`. Use `⟨p, hp, fun a => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `hp a 1` as an intermediate fact. Rewrite `this` using `[mul_one, h1, mul_one]`. Conclude with `this`.
+
+Use `hpr ⟨x, hx⟩` as an intermediate fact. Rewrite using `[show p x = _ from this]`. Conclude with `(r ⟨x, hx⟩).2`.
+-/
 theorem exists_retraction {l : ℕ} [Fact l.Prime] {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) :
     ∃ p : ↥LL'.1 →ₗ[ℚ_[l]] ↥LL.1, (∀ (a : ↥LL.1) (x : ↥LL'.1), p (IntermediateField.inclusion h a * x) = a * p x) ∧
       (∀ a : ↥LL.1, p (IntermediateField.inclusion h a) = a) ∧ (∀ x : ↥LL'.1, x ∈ OL LL' → p x ∈ OL LL) := by
@@ -31,6 +38,17 @@ theorem exists_retraction {l : ℕ} [Fact l.Prime] {LL LL' : FinExt l} (h : LL.1
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D i w hw C k M z hz`. Take `⟨p, hpm, hp1, hpO⟩` from `exists_retraction C.le`. Take `⟨c, hc, m, hcm⟩` from `(GlobalTheory.BlochKatoBaseChangeLe.mem_HfD_gen _ _ _).1 hz`. Establish `hent : ∀ g a b, (mapM (algebraMap ↥(OL C.LL) ↥C.LL.1) (locOC C M) g) a b = IntermediateField.inclusion C.le (Br.loc D.nbr i w hw M g a b)` using `fun g a b => rfl`. Establish `hp : ∀ g (v : Fin k → ↥C.LL.1), (fun j => p ((mapM (algebraMap ↥(OL C.LL) ↥C.LL.1) (locOC C M) g).mulVec v j)) = (Br.loc D.nbr i w hw M g).mulVec fun j => p (v j)`.
+
+Introduce `g v`. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, hent, hpm]`. Establish `hc'` using `GlobalTheory.TwistedSelmerCompare.crystallineCocycle_transport_conjugation (D.loc (D.nd.l i)) (D.nbr i w hw).Kw (D.nbr i w hw).Kw C.LL (D.nbr i w hw).LL (MonoidHom.id _) continuous_id 1 (fun g => by simp) _ (Br.loc D.nbr i w hw M) p hp c hc`. Use `(GlobalTheory.BlochKatoBaseChangeLe.mem_HfD_gen _ _ _).2 ⟨_, hc', fun j => p (m j), fun g => ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, hu⟩` from `Submodule.Quotient.mk_surjective _ (z g)`. Establish `h1 : (Submodule.Quotient.mk (p` using `stdG ↥(OL C.LL) ↥C.LL.1 k) (incV C.le k u)) = Submodule.Quotient.mk (c g + ((mapM (algebraMap ↥(OL C.LL) ↥C.LL.1) (locOC C M) g).mulVec m - m)) := by`. Use `(liftQ_mk C.le k u).symm.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (hcm g)` and prove the remaining obligations. Conclude with `congrArg (liftQ C.le k) hu`.
+
+Take `⟨n, hn⟩` from `(Submodule.Quotient.eq (stdG ↥(OL C.LL) ↥C.LL.1 k)).1 h1`. Use `hu.symm.trans ((Submodule.Quotient.eq (stdG (Br.OLL D.nbr i w hw) (Br.LL D.nbr i w hw) k)).2 ?_)` and prove the remaining obligations. Use `⟨fun j => ⟨p (n j), hpO _ (n j).2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Establish `h2` using `congrArg p (congrFun hn j)`.
+
+Establish `h3` using `congrFun (hp g m) j`. Express the relevant statement in the definitionally equal form `p ((n j : ↥C.LL.1)) = p (IntermediateField.inclusion C.le (u j) - (c g j + ((mapM (algebraMap ↥(OL C.LL) ↥C.LL.1) (locOC C M) g).mulVec m j - m j))) at h2`. Express the relevant statement in the definitionally equal form `(p (n j) : Br.LL D.nbr i w hw) = u j - (p (c g j) + ((Br.loc D.nbr i w hw M g).mulVec (fun j => p (m j)) j - p (m j)))`. Rewrite using `[h2, map_sub, map_add, map_sub, hp1, ← h3]`.
+-/
 theorem descHf : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (k : ℕ) (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i))
     (z : Br.G D.nbr i w hw → (Fin k → Br.LL D.nbr i w hw) ⧸ (Br.locLat D.nbr i w hw M).T),

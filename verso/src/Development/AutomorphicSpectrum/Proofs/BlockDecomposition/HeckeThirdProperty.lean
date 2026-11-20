@@ -5,6 +5,11 @@ namespace GlobalTheory.CompanionTheory.TwistedCent
 
 open PositivityTheory.Rg.Tf.Loc
 
+/- English proof (translation)
+Rewrite using `[mem_twCent, mem_twCent]`. Simplify using `only [twConj, map_mul, map_inv]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mem_twCent_twConj_iff {G : Type} [Group G] (θ : Monoid.End G) (g δ x : G) :
     x ∈ twCent θ (twConj θ g δ) ↔ g * x * g⁻¹ ∈ twCent θ δ := by
   rw [mem_twCent, mem_twCent]
@@ -20,6 +25,9 @@ theorem mem_twCent_twConj_iff {G : Type} [Group G] (θ : Monoid.End G) (g δ x :
         = g⁻¹ * ((g * x * g⁻¹)⁻¹ * δ * (θ g * θ x * (θ g)⁻¹)) * θ g := by group
       _ = g⁻¹ * δ * θ g := by rw [h]
 
+/- English proof (translation)
+Introduce `_ _ θ g δ x` and use `mem_twCent_twConj_iff θ g δ x`.
+-/
 theorem h3 : PositivityTheory.Rg.Tf.Loc.H3 := fun _ _ θ g δ x => mem_twCent_twConj_iff θ g δ x
 
 end GlobalTheory.CompanionTheory.TwistedCent

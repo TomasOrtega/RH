@@ -10,5 +10,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZV
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BundleForm.exists_formIs | exact GlobalTheory.BundleForm.exists_formIs | (intros; apply GlobalTheory.BundleForm.exists_formIs <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_polarisationForm_of_lineBundle : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (M : LB P.A.left), M.IsLB → ∃ s : P.A ⟶ P.A, FormIs P M s := by
   first | exact @GlobalTheory.BundleForm.exists_formIs | exact GlobalTheory.BundleForm.exists_formIs | (intros; apply GlobalTheory.BundleForm.exists_formIs <;> assumption)

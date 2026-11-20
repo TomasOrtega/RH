@@ -16,6 +16,9 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.RealLift Formalism.BasicNotions.TH
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FockDegPf.fockDeg_eq_map | exact GlobalTheory.FockDegPf.fockDeg_eq_map | (intros; apply GlobalTheory.FockDegPf.fockDeg_eq_map <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.archimedean_theta_polynomial_lift_exists : GlobalTheory.RealLift.ActsLaws → GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.VacLine →
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d P Q R S : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w)

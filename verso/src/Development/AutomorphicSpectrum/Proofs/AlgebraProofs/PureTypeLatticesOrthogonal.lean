@@ -8,6 +8,9 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.Ar.PureOrth
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.Xgf.pure_type_lattices_orthogonal`.
+-/
 theorem sesq_eq_zero_of_opposite_pure : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (P : D.La →+ (Fin g → ℂ)) (hP : IsPeriod D ty P) (a b : D.La), a ∈ PureType.lat hP (sgnRt H true) → b ∈ PureType.lat hP (sgnRt H false) → sesq D a b = 0 ∧ sesq D b a = 0 :=
   @PositivityTheory.Xgf.pure_type_lattices_orthogonal
 

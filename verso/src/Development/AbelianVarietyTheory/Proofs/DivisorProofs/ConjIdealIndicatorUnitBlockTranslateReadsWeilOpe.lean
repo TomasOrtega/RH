@@ -28,12 +28,20 @@ open scoped TensorProduct
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : finPart D (pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E)) = 1` using `rfl`. Use `conv_lhs => rw [eq_lift_of_infPart z hz]`. Rewrite using `[lift_mul, h, mul_one, ← eq_lift_of_infPart z hz]`.
+-/
 theorem mul_finOne {z : Formalism.L2.Theta.AE D} (hz : infPart D z = 0) :
     z * (pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E)) = z := by
   have h : finPart D (pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E)) = 1 := rfl
   conv_lhs => rw [eq_lift_of_infPart z hz]
   rw [lift_mul, h, mul_one, ← eq_lift_of_infPart z hz]
 
+/- English proof (translation)
+Establish `h1 : (1 : D.host.E) ∈ D.host.AA0`. Use `FractionalIdeal.one_mem_inv_coe_ideal fun h => ?_` and prove the remaining obligations. Establish `h2` using `D.host.𝔟_spec.2`. Rewrite `h2` using `[h, Ideal.smul_bot, sup_bot_eq]`. Conclude with `bot_ne_top h2`.
+
+Rewrite using `[Host.AA, Host.ccE, h, Ideal.map_top, FractionalIdeal.coeIdeal_top, one_mul]` and apply the resulting hypothesis.
+-/
 theorem one_mem_AA (h : D.host.ccK = ⊤) : (1 : D.host.E) ∈ D.host.AA := by
   have h1 : (1 : D.host.E) ∈ D.host.AA0 := by
     refine FractionalIdeal.one_mem_inv_coe_ideal fun h => ?_
@@ -42,6 +50,9 @@ theorem one_mem_AA (h : D.host.ccK = ⊤) : (1 : D.host.E) ∈ D.host.AA := by
     exact bot_ne_top h2
   rwa [Host.AA, Host.ccE, h, Ideal.map_top, FractionalIdeal.coeIdeal_top, one_mul]
 
+/- English proof (translation)
+The claim follows from `(h _).2 fun i => by by_cases hi : i = j · exact ⟨1, by rw [hi, Pi.single_eq_same]; rfl⟩ · exact ⟨0, by rw [Pi.single_eq_of_ne hi]; rfl⟩`.
+-/
 theorem single_mem {n : ℕ} {L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : IsStdLat L) (j : Fin n) :
     (Pi.single j 1 : Fin n → D.host.E) ∈ L :=
   (h _).2 fun i => by
@@ -52,6 +63,15 @@ theorem single_mem {n : ℕ} {L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)
 variable {S T : HSp D} {LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
   {LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
+/- English proof (translation)
+Establish `e : t = ∑ i, ∑ j, t i j • genL S T 1 1 (Pi.single j 1) (Pi.single i 1)`. Use extensionality with `k l`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, genL, Matrix.of_apply, hG]`. Rewrite using `[Finset.sum_eq_single k, Finset.sum_eq_single l]`. Establish `: (1 : D.host.E) * (Pi.single k 1 : Fin T.rank → D.host.E) k * ∑ m, star ((Pi.single l 1 : Fin S.rank → D.host.E) m) * (1 : Matrix (Fin S.rank) (Fin S.rank) D.host.E) m l = 1`.
+
+Simplify using `[Matrix.one_apply]`. Rewrite using `[this, mul_finOne (h0 k l)]`. Introduce `j _ hj`. Establish `: (1 : D.host.E) * (Pi.single k 1 : Fin T.rank → D.host.E) k * ∑ m, star ((Pi.single j 1 : Fin S.rank → D.host.E) m) * (1 : Matrix (Fin S.rank) (Fin S.rank) D.host.E) m l = 0`. Simplify using `[Matrix.one_apply, Pi.single_eq_of_ne hj.symm]`.
+
+Rewrite using `[this, TensorProduct.tmul_zero, mul_zero]`. Conclude with `fun h => (h (Finset.mem_univ _)).elim`. Introduce `i _ hi`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.single_eq_of_ne hi.symm, mul_zero, zero_mul, TensorProduct.tmul_zero, mul_zero]`.
+
+Conclude with `fun h => (h (Finset.mem_univ _)).elim`. Rewrite using `[e]`. Use `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.sum_mem _ fun j _ => smul_mem_latAll (h1 i j) ?_` and prove the remaining obligations. Conclude with `genL_mem (fun v => by rw [map_one]; exact one_mem _) (one_mem_AA hc) (single_mem hS j) (single_mem hT i)`.
+-/
 theorem mem_latO_of_int (hc : D.host.ccK = ⊤) (hG : S.gram = 1) (hS : IsStdLat LS) (hT : IsStdLat LT) {t : WO S T}
     (h0 : ∀ i j, infPart D (t i j) = 0) (h1 : ∀ i j, finPart D (t i j) ∈ intAE D) :
     t ∈ latO S T LS LT fun _ => True := by
@@ -79,6 +99,11 @@ theorem mem_latO_of_int (hc : D.host.ccK = ⊤) (hG : S.gram = 1) (hS : IsStdLat
 
 variable {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Take `⟨T0, -, huniq, -⟩` from `Formalism.IndefR.Fin.placeModelAtF D ψ hψ S T LS LT hS hT P e he vac hv hfix (cA D e) (Or.inr rfl)`. Establish `ap : ∀ Φ, (c⁻¹ • (heisL S T ψ u ∘ₗ Tm)) Φ = c⁻¹ • heisO ψ S T u (Tm Φ)` using `fun _ => rfl`. Establish `hT' : IsPlaceModel ψ (symplO S T) (heisO ψ S T) (cA D e) (latO S T LS LT fun _ => True) 1 vac (c⁻¹ • (heisL S T ψ u ∘ₗ Tm))`. Use `⟨fun Φ hΦ x hx => ?_, fun Φ hΦ x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ap, ap, hTm.trans Φ hΦ x hx, heis_comm, h1 x hx, AddChar.map_zero_eq_one, one_smul, heis_smul]`.
+
+Rewrite using `[ap, ap, hTm.modul Φ hΦ x hx, heis_comm, h2 x hx, AddChar.map_zero_eq_one, one_smul, heis_smul]`. Rewrite using `[ap, hTm.vac, hu, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Establish `h` using `(huniq _ hT' Φ hΦ).trans (huniq _ hTm Φ hΦ).symm`. Rewrite `h` using `[ap]`. Rewrite using `[← h, smul_smul, mul_inv_cancel₀ hc, one_smul, h]`.
+-/
 theorem heis_off (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S LS) (hT : IsSelfDualC T LT) {e : Formalism.L2.Theta.AE D}
     {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e P) {vac : WO S T → ℂ} (hv : IsThetaFunO ψ S T vac)
     {Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)}
@@ -102,6 +127,23 @@ theorem heis_off (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S LS) (hT : IsSel
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hee` using `GlobalTheory.PlaceVec.idemSum_mul_self he`. Establish `hcc : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, hee]`. Establish `hec` using `he.2`. Establish `hinf` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart he)`. Establish `hLL` using `(lattice_facts (S := S) (T := T) hψ hS hT hcc hinf).1`.
+
+Establish `hb : cA D (cA D e) = e` using `GlobalTheory.DualPairCheck.cA_cA e`. Establish `hfix : ∀ u ∈ latO S T LS LT fun _ => True, (IsHalf e u ∨ IsHalf (cA D e) u) → heisO ψ S T u vac = vac` using `fun u hu h => h.elim (fun h => fix_conj hLL hTm hu (by rwa [hb])) fun h => fix_half hTm hu h`. Establish `hA : IsHalf (cA D e) (cA D e • w)` using `isHalf_smul.2 (by rw [smul_smul, hcc])`. Establish `hB : IsHalf e (e • w)` using `isHalf_smul.2 (by rw [smul_smul, hee])`. Establish `hAL` using `GlobalTheory.PlaceModelSum.idem_smul_latO hcc hw`.
+
+Establish `hBL` using `GlobalTheory.PlaceModelSum.idem_smul_latO hee hw`. Establish `k : cA D (1 - cA D e - e) = 1 - e - cA D e` using `by rw [RingHom.map_sub, RingHom.map_sub, RingHom.map_one, hb]`. Establish `h1 : ∀ x : WO S T, IsHalf (cA D e) x → symplO S T ((1 - cA D e - e) • w) x = 0` using `fun x hx => by`. Establish `: (1 - e - cA D e) * cA D e = 0` using `by linear_combination -hec - hcc`. Rewrite using `[← isHalf_smul.1 hx, symplO_smul, k, smul_smul, this, zero_smul, symplO_zero_right]`.
+
+Establish `h2 : ∀ x : WO S T, IsHalf e x → symplO S T ((1 - cA D e - e) • w) x = 0` using `fun x hx => by`. Establish `: (1 - e - cA D e) * e = 0` using `by linear_combination -hec - hee`. Rewrite using `[← isHalf_smul.1 hx, symplO_smul, k, smul_smul, this, zero_smul, symplO_zero_right]`. Establish `hp : ψ (symplOH S T (cA D e • w) (e • w)) ≠ 0` using `(AddChar.val_isUnit ψ _).ne_zero`. Establish `dec : ∀ f, ψ (symplOH S T (cA D e • w) (e • w)) • heisO ψ S T w f = heisO ψ S T ((1 - cA D e - e) • w) (heisO ψ S T (cA D e • w) (heisO ψ S T (e • w) f))` using `fun f => by`.
+
+Establish `e1 : w = (1 - cA D e - e) • w + (cA D e • w + e • w)`. Rewrite using `[← add_smul, ← add_smul, sub_sub, sub_add_cancel, one_smul]`. Establish `e2 : heisO ψ S T (cA D e • w) (heisO ψ S T (e • w) f) = ψ (symplOH S T (cA D e • w) (e • w)) • heisO ψ S T (cA D e • w + e • w) f` using `heisL_heisL S T ψ _ _ f`. Rewrite using `[e2, heis_smul, ← heis_add (by rw [symplO_add_right, h1 _ hA, h2 _ hB, add_zero]), ← e1]`. Establish `hvu` using `dec vac`.
+
+Rewrite `hvu` using `[hfix _ hBL (Or.inl hB), hfix _ hAL (Or.inr hA), hu, smul_smul]`. Establish `hoff` using `heis_off hψ hS hT he hv hTm hfix h1 (by rwa [hb]) (mul_ne_zero hp hc) hvu.symm hΦ`. Establish `hm : heisO ψ S T (e • w) (Tm Φ) = Tm Φ`. Rewrite using `[← hTm.modul Φ hΦ _ (by rwa [hb])]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `t`. Distinguish the cases in `ht : Φ t = 0`. Rewrite using `[ht, mul_zero]`. Rewrite using `[hLL t (hsupp t ht) (hΦ.1 t ht) _ hBL (by rwa [hb]), one_mul]`. Establish `hF` using `dec (Tm Φ)`.
+
+Rewrite `hF` using `[hm, heis_comm, h1 _ hA, AddChar.map_zero_eq_one, one_smul, hoff, heis_smul, ← hTm.trans Φ hΦ _ hA, mul_smul]`. Conclude with `smul_right_injective _ hp hF`.
+-/
 theorem heis_model (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S LS) (hT : IsSelfDualC T LT) {e : Formalism.L2.Theta.AE D}
     {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e P) {vac : WO S T → ℂ} (hv : IsThetaFunO ψ S T vac)
     {Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)}
@@ -153,6 +195,29 @@ theorem heis_model (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S LS) (hT : IsS
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D ψ θ S T a d hS hT δ hcc hset LS LT hLS hLT hSd hTd e P c hge hSB κ e0 vac he0 hrd _ Tm hTm G o hG`. Establish `hinf` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart hge.1)`. Use `set x := pt D (tor0 D ⊤ δ) δ (unitBlock D o a d) with hx`. Establish `hph : wdPh D (tor0 D ⊤ δ) x ≠ 0` using `Complex.exp_ne_zero _`. Establish `hW : ∀ F, Wd D (tor0 D ⊤ δ) x F = wdPh D (tor0 D ⊤ δ) x • U D (tor0 D ⊤ δ) x F` using `fun _ => rfl`.
+
+Establish `hfix : Wd D (tor0 D ⊤ δ) x e0 = e0` using `GlobalTheory.NormSum.VacMove.wd_fix (GlobalTheory.InducedType.induced_type D).1 hset.crv (GlobalTheory.NormSum.VacMove.klat _ (GlobalTheory.NormSum.VacMove.moves_one D _) (GlobalTheory.NormSum.VacMove.moves_one D _)) he0 (pt_unitBlock_mem δ o a d)`. Establish `hU : U D (tor0 D ⊤ δ) x (κ • e0) = (wdPh D (tor0 D ⊤ δ) x)⁻¹ • κ • e0`. Establish `e1 : U D (tor0 D ⊤ δ) x (κ • e0) = κ • U D (tor0 D ⊤ δ) x e0`. Use function extensionality and compare the values at `z`. Simplify using `only [U, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+
+Rewrite using `[e1, smul_comm]`. Use `conv_rhs => rw [← hfix, hW, smul_smul _ (wdPh D _ x), inv_mul_cancel₀ hph, one_smul]`. Establish `hvac : heisO ψ S T (finPt hS hT 1 (unitBlock D o a d)) vac = (wdPh D (tor0 D ⊤ δ) x)⁻¹ • vac`. Establish `h` using `heisO_finPt_reads ψ θ S T hS hT ⊤ δ 1 hset _ _ hrd (unitBlock D o a d)`. Rewrite `h` using `[← hx, hU]`.
+
+Conclude with `h.unique (hrd.smul _)`. Establish `hent : ∀ i j, finPt hS hT 1 (unitBlock D o a d) i j = if i.1 = o + j.1 then -(pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E)) else 0` using `fun i j => by show pairA D.host.F 0 1 ⊗ₜ[D.host.F] (-((1 : D.host.E)⁻¹ * if i.1 = o + j.1 then 1 else 0)) = _ split_ifs`. Rewrite using `[inv_one, mul_one, TensorProduct.tmul_neg]`. Rewrite using `[mul_zero, neg_zero, TensorProduct.tmul_zero]`. Establish `hw : finPt hS hT 1 (unitBlock D o a d) ∈ latO S T LS LT fun _ => True`.
+
+Use `mem_latO_of_int hcc hset.gS hLS hLT (fun i j => congrFun (congrFun (GlobalTheory.VacUnique.finRat_inf S T _) i) j) fun i j => ?_` and prove the remaining obligations. Rewrite using `[hent]`. Use `split_ifs`. Establish `h : finPart D (pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E)) = 1` using `rfl`. Rewrite using `[RingHom.map_neg, h]`.
+
+Conclude with `neg_mem (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (mul_one _))`. Rewrite using `[RingHom.map_zero]`. Conclude with `zero_mem _`. Establish `hsupp : ∀ t : WO S T, cosetFn (cA D e) (D.host.conj • modul P c) 0 t ≠ 0 → t ∈ latO S T LS LT fun _ => True`. Introduce `t ht`.
+
+Establish `h : IsHalf (cA D e) t ∧ ∀ i j, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId (D.host.conj • modul P c) (toEAf D (t i j - (0 : WO S T) i j))`. Assume the negation of the conclusion as `h`. Conclude with `ht (if_neg h)`. Use `mem_latO_of_int hcc hset.gS hLS hLT (fun i j => ?_) fun i j => GlobalTheory.PlaceVec.finPart_mem_intAE ?_` and prove the remaining obligations. Rewrite using `[← h.1 i j, RingHom.map_mul, hinf, zero_mul]`.
+
+Take `⟨h1, -⟩` from `h.2 i j`. Rewrite `h1` using `[Matrix.zero_apply, sub_zero]`. Then use the resulting hypothesis. Establish `hmod` using `heis_model hset.std hSd hTd hge.1 hrd.1 hTm hw (inv_ne_zero hph) hvac hSB hsupp`. Establish `hcc' : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, GlobalTheory.PlaceVec.idemSum_mul_self hge.1]`. Establish `hA : ∀ i j, (cA D e • finPt hS hT 1 (unitBlock D o a d)) i j = -unitPt S T (cA D e) o i j` using `fun i j => by`.
+
+Rewrite using `[Matrix.smul_apply, smul_eq_mul, hent, unitPt]`. Use `split_ifs`. Rewrite using `[mul_neg, mul_finOne hinf]`. Rewrite using `[mul_zero, neg_zero]`. Establish `hΦ : (fun t => cosetFn (cA D e) (D.host.conj • modul P c) (0 : WO S T) (t + cA D e • finPt hS hT 1 (unitBlock D o a d))) = cosetFn (cA D e) (D.host.conj • modul P c) (unitPt S T (cA D e) o)`.
+
+Use function extensionality and compare the values at `t`. Use `if_congr (and_congr ?_ (forall_congr' fun i => forall_congr' fun j => ?_)) rfl rfl` and prove the remaining obligations. Rewrite using `[isHalf_smul, isHalf_smul, smul_add, smul_smul, hcc', add_left_inj]`. Rewrite using `[Matrix.add_apply, hA, Matrix.zero_apply, sub_zero, ← sub_eq_add_neg]`. Establish `h` using `(heisO_finPt_reads ψ θ S T hS hT ⊤ δ 1 hset _ _ hG (unitBlock D o a d)).smul (wdPh D (tor0 D ⊤ δ) x)`.
+
+Rewrite `h` using `[hmod, hΦ, smul_smul, mul_inv_cancel₀ hph, one_smul]`. Conclude with `⟨1, IsRootOne.one, by rw [one_smul]; exact h⟩`.
+-/
 theorem reads_transl : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d) (δ : ℂ),
     D.host.ccK = ⊤ → Setup ψ θ S T ⊤ δ 1 →
     ∀ (LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)),

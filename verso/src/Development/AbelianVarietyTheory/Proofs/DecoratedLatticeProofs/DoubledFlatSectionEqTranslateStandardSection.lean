@@ -11,6 +11,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.StdUnn
 
+/- English proof (translation)
+Introduce `D ψ A B χB omh hW ν 𝓨 _ θ _ μ _ κ _ omS hT lam _ a p f hf Φ hΦ`. Establish `h0 : s0 B A.rank = sZero A B` using `by unfold s0 sZero; ring`. Establish `h3 : ∀ g : GA D (dblSp A), (omS (κ (g * p)) Φ).1 = sch ψ A B ν 𝓨 (omh (g, 1) f)` using `fun g => by`. Rewrite using `[hT (g * p) _ (hW.om_pres _ f hf) Φ hΦ, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, mul_inv_cancel_right]`. Use `⟨h0, fun z g => ?_, h3⟩` and prove the remaining obligations.
+
+Establish `hp : 0 < absA D (aP A p)` using `hom_pos _ _`. Establish `h1 : npow (absA D (aP A p)) (sZero A B - z) * npow (absA D (aP A p)) (z - sZero A B) = 1`. Rewrite using `[← npow_add hp, show sZero A B - z + (z - sZero A B) = 0 by ring, npow_zero]`. Establish `h2 : hgtStd A a κ p (κ (g * p)) = hgt A a g * absA D (aP A p)`. Rewrite using `[hgtStd, MulEquiv.symm_apply_apply, mul_inv_cancel_right]`.
+
+Establish `h4 : sch ψ A B ν 𝓨 (omh (g, 1) f) 0 = swSec A B omh ν 𝓨 f g` using `mixS_dblDec_zero A B ψ ν 𝓨 _ 0`. Establish `h5 : flat A a (swSec A B omh ν 𝓨 f) (sZero A B) z g = swSec A B omh ν 𝓨 f g * npow (hgt A a g) (z - sZero A B)` using `rfl`. Rewrite using `[h5, sect, h3, h4, h2, h0, npow_mul]`. Take the linear combination `(-(swSec A B omh ν 𝓨 f g * npow (hgt A a g) (z - sZero A B))) * h1`.
+-/
 theorem flat_swSec_eq_sect : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ θ : InfFam D, IsInfFam θ → ∀ μ : D.host.E, IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → ∀ omS : G D A.rank →* Module.End ℂ (schwartzA θ B.rank A.rank), IsTransport ψ θ A B ν 𝓨 omh κ omS → ∀ lam : D.host.F, algebraMap D.host.F D.host.E lam = -D.host.xi0 / μ → ∀ (a : GL (Fin A.rank) (AE D)) (p : siegel A) (f : WO (dblSp A) B → ℂ), IsThetaFunO ψ (dblSp A) B f → ∀ Φ : schwartzA θ B.rank A.rank, Φ.1 = sch ψ A B ν 𝓨 (omh ((p : GA D (dblSp A))⁻¹, 1) f) → s0 B A.rank = sZero A B ∧ (∀ (z : ℂ) (g : GA D (dblSp A)), flat A a (swSec A B omh ν 𝓨 f) (sZero A B) z g = npow (absA D (aP A p)) (sZero A B - z) * sect omS (hgtStd A a κ p) Φ z (κ (g * p))) ∧ ∀ g : GA D (dblSp A), (omS (κ (g * p)) Φ).1 = sch ψ A B ν 𝓨 (omh (g, 1) f) := by
   intro D ψ A B χB omh hW ν 𝓨 _ θ _ μ _ κ _ omS hT lam _ a p f hf Φ hΦ
   have h0 : s0 B A.rank = sZero A B := by unfold s0 sZero; ring

@@ -2,6 +2,13 @@ import Mathlib
 
 namespace Bl.FirstLemmaD
 
+/- English proof (translation)
+Introduce `F _ _ v`. Use `v.isPrime` as an intermediate fact. Establish `hne : v.asIdeal.comap (algebraMap ℤ (NumberField.RingOfIntegers F)) ≠ ⊥` using `fun h => v.ne_bot (Ideal.eq_bot_of_comap_eq_bot h)`. Establish `hpr : (v.asIdeal.comap (algebraMap ℤ (NumberField.RingOfIntegers F))).IsPrime` using `Ideal.comap_isPrime _ _`. Take `⟨x, hx, hxp⟩` from `hpr.exists_mem_prime_of_ne_bot hne`.
+
+Use `⟨x.natAbs, Int.prime_iff_natAbs_prime.mp hxp, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩ : x ∣ (x.natAbs : ℤ)` from `Int.dvd_natAbs.mpr dvd_rfl`. Establish `hmem : ((x.natAbs : ℤ)) ∈ v.asIdeal.comap (algebraMap ℤ (NumberField.RingOfIntegers F))`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right c _ hx`.
+
+Rewrite `hmem` using `[Ideal.mem_comap, map_natCast]`. Conclude with `hmem`.
+-/
 theorem goal1 :
   ∀ {F : Type} [inst : Field.{0} F] [NumberField.{0} F]
   (v : IsDedekindDomain.HeightOneSpectrum.{0} (NumberField.RingOfIntegers.{0} F)),

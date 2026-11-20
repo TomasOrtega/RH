@@ -4,6 +4,13 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hI`. Take `⟨⟨d, hd⟩, h⟩` from `IsLocalization.exist_integer_multiples_of_finset A⁰ s`. Use `⟨d, nonZeroDivisors.ne_zero hd, fun y hy => ?_⟩` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨a, ha⟩` from `h x hx`. Conclude with `⟨a, by rw [ha]; exact Algebra.smul_def d x⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+
+Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [map_add, ha, hb, mul_add]⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`. Conclude with `⟨c * a, by rw [map_mul, ha, Algebra.smul_def]; ring⟩`.
+-/
 theorem exists_den_of_fg {A K : Type} [CommRing A] [IsDomain A] [Field K] [Algebra A K]
     [IsFractionRing A K] (I : Submodule A K) (hI : I.FG) :
     ∃ d : A, d ≠ 0 ∧ ∀ y ∈ I, ∃ a : A, algebraMap A K a = algebraMap A K d * y := by
@@ -23,6 +30,35 @@ theorem exists_den_of_fg {A K : Type} [CommRing A] [IsDomain A] [Field K] [Algeb
     obtain ⟨a, ha⟩ := hx
     exact ⟨c * a, by rw [map_mul, ha, Algebra.smul_def]; ring⟩
 
+/- English proof (translation)
+Introduce `A K _ _ _ _ _ _ _`. Use `haveI : Module.Free ℤ A := Module.free_of_finite_type_torsion_free'`. Set `bS` to `Module.Free.chooseBasis ℤ A`. Establish `adm : (AbsoluteValue.abs : AbsoluteValue ℤ ℤ).IsAdmissible` using `AbsoluteValue.absIsAdmissible`. Establish `hM0 : (∏ m ∈ ClassGroup.finsetApprox bS adm, m) ≠ 0`.
+
+Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `m hm h`. Substitute `h` using the available equality. Conclude with `ClassGroup.finsetApprox.zero_notMem bS adm hm`. Use `⟨∏ m ∈ ClassGroup.finsetApprox bS adm, m, hM0, ?_⟩` and prove the remaining obligations.
+
+Introduce `I J hIJ`. Use `set M := ∏ m ∈ ClassGroup.finsetApprox bS adm, m with hMdef`. Establish `hinj : Function.Injective (algebraMap A K)` using `IsFractionRing.injective A K`. Establish `hMK : (M : K) ≠ 0`. Rewrite using `[← map_intCast (algebraMap A K)]`.
+
+Conclude with `(map_ne_zero_iff _ hinj).2 (Int.cast_ne_zero.2 hM0)`. Establish `hFG : I.FG` using `Submodule.fg_unit (Units.mkOfMulEqOne I J hIJ)`. Take `⟨d, hd0, hd⟩` from `exists_den_of_fg I hFG`. Establish `hdK : algebraMap A K d ≠ 0` using `(map_ne_zero_iff _ hinj).2 hd0`. Set `f : A →ₗ[A] K` to `(LinearMap.mulLeft A (algebraMap A K d)⁻¹) ∘ₗ Algebra.linearMap A K`.
+
+Set `I₀ : Ideal A` to `I.comap f`. Establish `hmem : ∀ a, a ∈ I₀ ↔ (algebraMap A K d)⁻¹ * algebraMap A K a ∈ I` using `fun a => Iff.rfl`. Establish `hIbot : I ≠ ⊥`. Introduce `h`. Rewrite `hIJ` using `[h, Submodule.bot_mul]`.
+
+Establish `: (1 : K) ∈ (1 : Submodule A K)` using `Submodule.mem_one.2 ⟨1, map_one _⟩`. Rewrite `this` using `[← hIJ, Submodule.mem_bot]`. Conclude with `one_ne_zero this`. Take `⟨y, hyI, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hIbot`. Take `⟨a0, ha0⟩` from `hd y hyI`.
+
+Establish `hI₀ : I₀ ≠ ⊥`. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨a0, (hmem a0).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ha0, ← mul_assoc, inv_mul_cancel₀ hdK, one_mul]`. Conclude with `hyI`.
+
+Introduce and unpack `rfl`. Rewrite `ha0` using `[map_zero]`. Conclude with `mul_ne_zero hdK hy0 ha0.symm`. Take `⟨b, hbI, hb0, hbmin⟩` from `ClassGroup.exists_min AbsoluteValue.abs ⟨I₀, mem_nonZeroDivisors_of_ne_zero hI₀⟩`. Establish `key : ∀ a ∈ I₀, ∃ c : A, (M : A) * a = b * c`.
+
+Introduce `a ha`. Take `⟨q, r, hr, hlt⟩` from `ClassGroup.exists_mem_finset_approx' bS adm a hb0`. Establish `hsub : r • a - q * b ∈ I₀`. Rewrite using `[zsmul_eq_mul]`. Conclude with `I₀.sub_mem (I₀.mul_mem_left _ ha) (I₀.mul_mem_left q hbI)`.
+
+Establish `hz` using `hbmin _ hsub hlt`. Rewrite `hz` using `[sub_eq_zero, zsmul_eq_mul]`. Take `⟨k, hk⟩ : r ∣ M` from `Finset.dvd_prod_of_mem _ hr`. Use `⟨k * q, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, Int.cast_mul]`.
+
+Take the linear combination `(k : A) * hz`. Establish `hbK : algebraMap A K b ≠ 0` using `(map_ne_zero_iff _ hinj).2 hb0`. Use `⟨(M : K) * algebraMap A K d / algebraMap A K b, div_ne_zero (mul_ne_zero hMK hdK) hbK, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.mul_le.2 fun u hu z hz => ?_` and prove the remaining obligations. Take `⟨α, rfl⟩` from `Submodule.mem_span_singleton.1 hu`.
+
+Take `⟨a, ha⟩` from `hd z hz`. Establish `haI : a ∈ I₀` using `(hmem a).2 (by rw [ha, ← mul_assoc, inv_mul_cancel₀ hdK, one_mul]; exact hz)`. Take `⟨c, hc⟩` from `key a haI`. Establish `hcK : (M : K) * algebraMap A K a = algebraMap A K b * algebraMap A K c`. Use `congrArg (algebraMap A K) hc` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_mul, map_intCast]`. Then use the resulting hypothesis. Use `Submodule.mem_one.2 ⟨α * c, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(algebraMap A K α)) * hcK + algebraMap A K α * (M : K) * ha`.
+
+Establish `hbI' : (algebraMap A K d)⁻¹ * algebraMap A K b ∈ I` using `(hmem b).1 hbI`. Use `Submodule.mul_mem_mul (Submodule.mem_span_singleton_self ((M : K) * algebraMap A K d / algebraMap A K b)) hbI' using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_principal_mul_integral_ideal_contains_int :
     ∀ (A K : Type) [CommRing A] [IsDomain A] [CharZero A] [Module.Finite ℤ A]
     [Field K] [Algebra A K] [IsFractionRing A K],

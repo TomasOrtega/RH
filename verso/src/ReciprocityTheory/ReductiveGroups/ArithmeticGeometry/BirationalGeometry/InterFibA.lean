@@ -6,6 +6,53 @@ namespace ReciprocityTheory.ChartRestriction.G.Geo
 
 open MvPolynomial
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty W with hW | hW` into its components or cases. Conclude with `Set.Subsingleton.finite fun x _ y _ => funext fun i => (IsEmpty.false i).elim`. Choose the witnesses or unpack the hypotheses as in `⟨B, hB⟩ : ∃ B : Finset (W →₀ ℕ), ∀ u, u ∈ B ↔ ∀ i, u i < r i := by`. Use `⟨(Fintype.piFinset fun i => Finset.range (r i)).map Finsupp.equivFunOnFinite.symm.toEmbedding, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_map_equiv, Equiv.symm_symm, Fintype.mem_piFinset]`.
+
+Simplify using `[Finset.mem_range]`. Take `⟨M, hMdef⟩ : ∃ M : Submodule ℂ (MvPolynomial W ℂ), M = Submodule.span ℂ ((fun b => monomial b (1 : ℂ)) '' (B : Set (W →₀ ℕ)))` from `⟨_, rfl⟩`. Establish `hmon : ∀ (n : ℕ) (u : W →₀ ℕ), u.degree ≤ n → ∀ a : ℂ, ∃ q ∈ M, ∀ w : W → ℂ, (∀ i, w i ^ r i = eval w (H i)) → eval w (monomial u a) = eval w q`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+
+Consider the case `_ n ih`. Introduce `u hu a`. Distinguish the cases in `hall : ∀ i, u i < r i`. Use `⟨monomial u a, ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Establish `e : monomial u a = a • monomial u (1 : ℂ)` using `by rw [smul_monomial, smul_eq_mul, mul_one]`.
+
+Rewrite using `[e, hMdef]`. Conclude with `Submodule.smul_mem _ a (Submodule.subset_span ⟨u, (hB u).mpr hall, rfl⟩)`. Use `push_neg at hall`. Take `⟨i, hi⟩` from `hall`. Establish `hle : Finsupp.single i (r i) ≤ u` using `Finsupp.single_le_iff.mpr hi`.
+
+Take `⟨u', hu'⟩ : ∃ u', u = u' + Finsupp.single i (r i)` from `⟨u - Finsupp.single i (r i), (tsub_add_cancel_of_le hle).symm⟩`. Establish `hdeg : u'.degree + r i = u.degree`. Rewrite using `[hu', map_add, Finsupp.degree_single]`. Establish `hsplit : ∀ w : W → ℂ, (∀ i, w i ^ r i = eval w (H i)) → eval w (monomial u a) = eval w (monomial u' a * H i)`. Introduce `w hw`.
+
+Rewrite using `[hu', show monomial (u' + Finsupp.single i (r i)) a = monomial u' a * monomial (Finsupp.single i (r i)) 1 by rw [monomial_mul, mul_one], map_mul, map_mul, ← X_pow_eq_monomial, map_pow, eval_X, hw i]`. Establish `hsum : monomial u' a * H i = ∑ v ∈ (H i).support, monomial (u' + v) (a * coeff v (H i))` using `by conv_lhs => rw [(H i).as_sum]`. Rewrite using `[Finset.mul_sum]`. Simplify using `only [monomial_mul]`. Establish `hterm : ∀ v ∈ (H i).support, ∃ q ∈ M, ∀ w : W → ℂ, (∀ i, w i ^ r i = eval w (H i)) → eval w (monomial (u' + v) (a * coeff v (H i))) = eval w q`.
+
+Introduce `v hv`. Establish `hv' : v.degree ≤ (H i).totalDegree` using `le_totalDegree hv`. Establish `hlt : (u' + v).degree < n`. Rewrite using `[map_add]`. Use `hH i` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `ih _ hlt _ le_rfl _`. Use `choose q hqM hq using hterm`. Use `⟨∑ v ∈ (H i).support.attach, q v.1 v.2, Submodule.sum_mem _ fun v _ => hqM v.1 v.2, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+
+Rewrite using `[hsplit w hw, hsum, map_sum, map_sum]`. Conclude with `(Finset.sum_attach _ _).symm.trans (Finset.sum_congr rfl fun v _ => hq v.1 v.2 w hw)`. Establish `hA : ∀ p : MvPolynomial W ℂ, ∃ q ∈ M, ∀ w : W → ℂ, (∀ i, w i ^ r i = eval w (H i)) → eval w p = eval w q`. Introduce `p`. Use `MvPolynomial.induction_on' p (fun u a => hmon _ u le_rfl a) (fun p q hp hq => ?_)` and prove the remaining obligations.
+
+Take `⟨p', hp'M, hp'⟩` from `hp`. Take `⟨q', hq'M, hq'⟩` from `hq`. Conclude with `⟨p' + q', M.add_mem hp'M hq'M, fun w hw => by rw [map_add, map_add, hp' w hw, hq' w hw]⟩`. Establish `hex : ∀ x y : W → ℂ, ∃ i, x ≠ y → x i ≠ y i` using `fun x y => by`. Distinguish the cases in `h : x = y`.
+
+Conclude with `⟨Classical.arbitrary W, fun h' => (h' h).elim⟩`. Take `⟨i, hi⟩` from `Function.ne_iff.mp h`. Conclude with `⟨i, fun _ => hi⟩`. Use `choose idx hidx using hex`. Assume the negation of the conclusion as `hinf`.
+
+Establish `hinf' : Set.Infinite {w : W → ℂ | ∀ i, w i ^ r i = eval w (H i)}` using `hinf`. Take `⟨T, hTS, hTcard⟩` from `hinf'.exists_subset_card_eq (B.card + 1)`. Set `Φ : (B → ℂ) →ₗ[ℂ] (T → ℂ)` to `{ toFun := fun c t => ∑ b : B, c b * eval (t : W → ℂ) (monomial (b : W →₀ ℕ) 1) map_add' := fun c c' => by`. Use function extensionality and compare the values at `t`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+
+Use the proof step `map_smul' := fun a c => by`. Use function extensionality and compare the values at `t`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum, mul_assoc] }`. Establish `hΦ : ∀ c t, Φ c t = ∑ b : B, c b * eval (t : W → ℂ) (monomial (b : W →₀ ℕ) 1)` using `fun _ _ => rfl`. Establish `key : ∀ q ∈ M, ∃ c : B → ℂ, ∀ t : T, eval (t : W → ℂ) q = Φ c t`.
+
+Introduce `q hq`. Rewrite `hq` using `[hMdef]`. Proceed by induction on `hq using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`.
+
+Use `⟨Pi.single ⟨b, hb⟩ 1, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, Finset.sum_eq_single ⟨b, hb⟩]`. Simplify using the standard rewrite rules. Introduce `b' _ hb'`. Simplify using `[Pi.single_apply, hb']`.
+
+Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, fun t => by simp [hΦ]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, hc⟩` from `hx`. Take `⟨c', hc'⟩` from `hy`.
+
+Conclude with `⟨c + c', fun t => by rw [map_add, hc, hc', map_add]; rfl⟩`. Consider the case `smul a x _ hx`. Take `⟨c, hc⟩` from `hx`. Conclude with `⟨a • c, fun t => by rw [MvPolynomial.smul_eval, hc, map_smul]; rfl⟩`. Take `⟨L, hL⟩ : ∃ L : (W → ℂ) → MvPolynomial W ℂ, ∀ x, L x = ∏ y ∈ T.erase x, (C ((x (idx x y) - y (idx x y))⁻¹) * (X (idx x y) - C (y (idx x y))))` from `⟨_, fun _ => rfl⟩`.
+
+Establish `hLself : ∀ x, eval x (L x) = 1`. Introduce `x`. Rewrite using `[hL, map_prod]`. Use `Finset.prod_eq_one fun y hy => ?_` and prove the remaining obligations. Establish `hne : x ≠ y` using `(Finset.ne_of_mem_erase hy).symm`.
+
+Rewrite using `[map_mul, eval_C, map_sub, eval_X, eval_C, inv_mul_cancel₀ (sub_ne_zero.mpr (hidx x y hne))]`. Establish `hLother : ∀ x, ∀ z ∈ T, z ≠ x → eval z (L x) = 0`. Introduce `x z hz hzx`. Rewrite using `[hL, map_prod]`. Use `Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hzx, hz⟩) ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_sub, eval_X, eval_C, eval_C, sub_self, mul_zero]`. Establish `hsurj : Function.Surjective Φ`. Introduce `f`. Take `⟨f', hf'⟩ : ∃ f' : (W → ℂ) → ℂ, ∀ t : T, f' t = f t` from `⟨fun x => if h : x ∈ T then f ⟨x, h⟩ else 0, fun t => by simp [t.2]⟩`. Take `⟨q, hqM, hq⟩` from `hA (∑ x ∈ T, C (f' x) * L x)`.
+
+Take `⟨c, hc⟩` from `key q hqM`. Use `⟨c, funext fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc t, ← hq t (hTS t.2), map_sum, Finset.sum_eq_single (t : W → ℂ)]`. Rewrite using `[map_mul, eval_C, hLself, mul_one, hf']`. Introduce `x _ hxt`.
+
+Rewrite using `[map_mul, hLother x t t.2 (Ne.symm hxt), mul_zero]`. Introduce `h`. Conclude with `absurd t.2 h`. Establish `h1` using `LinearMap.finrank_range_le Φ`. Rewrite `h1` using `[LinearMap.range_eq_top.mpr hsurj, finrank_top, Module.finrank_fintype_fun_eq_card, Module.finrank_fintype_fun_eq_card, Fintype.card_coe, Fintype.card_coe]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem fibSys_finite {W : Type*} [Fintype W] (r : W → ℕ) (H : W → MvPolynomial W ℂ)
     (hH : ∀ i, (H i).totalDegree < r i) :
     {w : W → ℂ | ∀ i, w i ^ r i = eval w (H i)}.Finite := by

@@ -98,6 +98,17 @@ structure KSAll : Prop where
   cong : KSCong
   hodge : KSHodge
 
+/- English proof (translation)
+Take `⟨gb, hgb⟩` from `h.std P.p P.D P.sc.a1 E P.e`. Take `⟨k, hk⟩` from `h.hodge P.p P.D P.G P.L P.sc P.lam P.anti`. Take `⟨T⟩` from `h.ex P.p P.D P.G P.L P.sc E gb k`. Establish `hc : ∀ w B, CongP ι a P.e P.g P.θ P.κ w B → CongFor ι a (T.tower P.N P.g) P.θ P.κ w B`. Introduce and unpack `w B ⟨hu, 𝔴, ϑ, h1, h2, h3⟩`.
+
+Use `⟨hu, ϑ, ?_, h3⟩` and prove the remaining obligations. Use `h.cong P.p P.D P.G P.L P.sc E P.e gb hgb k T P.N P.J _ P.g P.θ w 𝔴 h1 ϑ h2` as an intermediate fact. Rewrite `this` using `[P.n_eq]`. Then use the resulting hypothesis. Use `⟨⟨T.tower P.N P.g, P.θ, P.κ, P.m, h.nice P.p P.D P.G P.L P.sc E gb k T P.N P.J P.g, P.alg, ?_⟩, ?_, fun w hw B hB => hc w B (hw B hB)⟩` and prove the remaining obligations. Take `⟨X, hX⟩` from `P.cong`.
+
+Conclude with `⟨X, fun w h1 h2 h3 B hB => hc w B (hX w h1 h2 h3 B hB)⟩`. Introduce and unpack `v ⟨hu, ⟨𝔴, h1, h2⟩, h3⟩`. Use `⟨hu, h.good P.p P.D P.G P.L P.sc E P.e gb hgb k T P.N P.J _ P.g P.θ v 𝔴 h1 h2, fun τ hτ => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ, h4⟩` from `h3 τ hτ`. Use `⟨σ, fun lam hl j hj => ?_⟩` and prove the remaining obligations.
+
+Take `⟨i₀, hh, i, h5, h6⟩` from `h4 lam hl j hj`. Use `⟨hh i, h6, hk E gb T P.N P.J P.g _ P.f P.fn P.spec (σ.toRingHom.comp τ) ?_ (fun i c => ?_) σ i₀ hh h5 i⟩` and prove the remaining obligations. Rewrite using `[hgb.1]`. Conclude with `(hσ i₀ _).trans (P.D.tau_ω i₀)`. Rewrite using `[hgb.2]`.
+
+Conclude with `hσ i _`.
+-/
 theorem Plan.pack (h : KSAll) {E : Type} [Field E] [NumberField E] [IsCMField E] {l : ℕ} [Fact l.Prime] {a : ℕ}
     {ι : Qbar l ≃+* ℂ} {d : ℕ} {U : Submodule ℂ (UA E a → ℂ)} (P : Plan ι d U) :
     ∃ Q : Pack ι d U, (∀ v, P.HTFor v → Q.HTFor v) ∧ ∀ w, P.CongAll w → Q.CongAll w := by
@@ -124,6 +135,13 @@ theorem Plan.pack (h : KSAll) {E : Type} [Field E] [NumberField E] [IsCMField E]
     · rw [hgb.2]
       exact hσ i _
 
+/- English proof (translation)
+Introduce `E _ _ _ l _ ι a ha d hd x hx T hT w₀ v' h0 hv hap h1 S U hU hTy hS hsph`. Take `⟨⟨P, hP0⟩, hA, hB⟩` from `hP E l ι a ha d hd x hx T hT w₀ v' h0 hv hap h1 S U hU hTy hS hsph`. Use `⟨?_, fun w hw hl hs => ?_, fun w hl hk ha0 hav hs => ?_⟩` and prove the remaining obligations. Take `⟨Q, h1, -⟩` from `P.pack h`. Conclude with `⟨Q, h1 _ hP0⟩`.
+
+Take `⟨P, a1, a2⟩` from `hA w hw hl hs`. Take `⟨Q, h1, h2⟩` from `P.pack h`. Conclude with `⟨Q, h1 _ a1, h2 _ a2⟩`. Take `⟨⟨P, a1, a2⟩, P', b1, b2⟩` from `hB w hl hk ha0 hav hs`. Take `⟨Q, h1, -⟩` from `P.pack h`.
+
+Take `⟨Q', h1', h2'⟩` from `P'.pack h`. Conclude with `⟨⟨Q, h1 _ a1, h1 _ a2⟩, Q', h1' _ b1, h2' _ b2⟩`.
+-/
 theorem packEx_of (h : KSAll) (hP : PlanEx) : PackEx := by
   intro E _ _ _ l _ ι a ha d hd x hx T hT w₀ v' h0 hv hap h1 S U hU hTy hS hsph
   obtain ⟨⟨P, hP0⟩, hA, hB⟩ := hP E l ι a ha d hd x hx T hT w₀ v' h0 hv hap h1 S U hU hTy hS hsph

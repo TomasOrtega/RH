@@ -10,21 +10,33 @@ open NumberField
 
 variable {E : Type} [Field E] [StarRing E] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hform_add_left (J : Matrix (Fin n) (Fin n) E) (x x' y : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J (x + x') y =
       Formalism.UG.hform (starRingEnd E) J x y + Formalism.UG.hform (starRingEnd E) J x' y := by
   simp only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hform_add_right (J : Matrix (Fin n) (Fin n) E) (x y y' : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J x (y + y') =
       Formalism.UG.hform (starRingEnd E) J x y + Formalism.UG.hform (starRingEnd E) J x y' := by
   simp only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hform_smul_left (J : Matrix (Fin n) (Fin n) E) (c : E) (x y : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J (c • x) y =
       starRingEnd E c * Formalism.UG.hform (starRingEnd E) J x y := by
   simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_smul_right (J : Matrix (Fin n) (Fin n) E) (c : E) (x y : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J x (c • y) =
       c * Formalism.UG.hform (starRingEnd E) J x y := by
@@ -32,14 +44,27 @@ theorem hform_smul_right (J : Matrix (Fin n) (Fin n) E) (c : E) (x y : Fin n →
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.hform]`.
+-/
 theorem hform_zero_left (J : Matrix (Fin n) (Fin n) E) (y : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J 0 y = 0 := by
   simp [Formalism.UG.hform]
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.hform]`.
+-/
 theorem hform_zero_right (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J x 0 = 0 := by
   simp [Formalism.UG.hform]
 
+/- English proof (translation)
+Establish `h1 : ∀ x ∈ S, ∀ y ∈ Submodule.span E S, Formalism.UG.hform (starRingEnd E) J x y = 0`. Introduce `x hx y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz => exact hS x hx z hz`. Consider the case `zero => exact hform_zero_right J x`.
+
+Consider the case `add a b _ _ ha hb => rw [hform_add_right, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [hform_smul_right, ha, mul_zero]`. Introduce `x hx y hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz => exact h1 z hz y hy`.
+
+Consider the case `zero => exact hform_zero_left J y`. Consider the case `add a b _ _ ha hb => rw [hform_add_left, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [hform_smul_left, ha, mul_zero]`.
+-/
 theorem hform_span_eq_zero (J : Matrix (Fin n) (Fin n) E) (S : Set (Fin n → E))
     (hS : ∀ y ∈ S, ∀ z ∈ S, Formalism.UG.hform (starRingEnd E) J y z = 0) :
     ∀ x ∈ Submodule.span E S, ∀ y ∈ Submodule.span E S,
@@ -58,6 +83,11 @@ theorem hform_span_eq_zero (J : Matrix (Fin n) (Fin n) E) (S : Set (Fin n → E)
   | add a b _ _ ha hb => rw [hform_add_left, ha, hb, add_zero]
   | smul c a _ ha => rw [hform_smul_left, ha, mul_zero]
 
+/- English proof (translation)
+Introduce `I R hR hiso`. Use `⟨?_, hform_span_eq_zero I.J _ hiso⟩` and prove the remaining obligations. Take `⟨r, hr, hr0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hR`. Introduce `h`. Apply `hr0` to reduce the goal to its premises.
+
+Establish `: r ∈ Submodule.span I.E (↑R : Set (Fin I.n → I.E))` using `Submodule.subset_span hr`. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot _).1 this`.
+-/
 theorem main : ∀ (I : Formalism.MainNotions.S.AutInst)
     (R : Submodule (NumberField.RingOfIntegers (Formalism.MainNotions.S.AutInst.E I))
       (Fin (Formalism.MainNotions.S.AutInst.n I) → Formalism.MainNotions.S.AutInst.E I)),

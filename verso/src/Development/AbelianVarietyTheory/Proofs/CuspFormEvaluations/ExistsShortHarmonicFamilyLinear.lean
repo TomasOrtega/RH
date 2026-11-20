@@ -24,11 +24,17 @@ noncomputable def conjVec : (Fin n → E) →ₛₗ[((IsCMField.ringOfIntegersCo
   map_add' v w := funext fun k => map_add (IsCMField.complexConj E) (v k) (w k)
   map_smul' a v := funext fun k => map_mul (IsCMField.complexConj E) (a : E) (v k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem conjVec_apply (v : Fin n → E) (k : Fin n) : conjVec E n v k = cc (v k) := rfl
 
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Conclude with `_root_.GlobalTheory.TraceDualMin.cc_cc (v k)`.
+-/
 @[simp] theorem _root_.GlobalTheory.Harm.conjVec_conjVec (v : Fin n → E) :
     _root_.GlobalTheory.Harm.conjVec E n (_root_.GlobalTheory.Harm.conjVec E n v) = v := by
   funext k
@@ -37,6 +43,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.DualFamily.herm_one_eq, _root_.GlobalTheory.Harm.conjVec_apply, _root_.GlobalTheory.TraceDualMin.cc_cc]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+-/
 theorem _root_.GlobalTheory.Harm.herm_conjVec (v w : Fin n → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 (_root_.GlobalTheory.Harm.conjVec E n v) (_root_.GlobalTheory.Harm.conjVec E n w)
       = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 w v := by
@@ -53,6 +62,11 @@ open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 variable {Λ : Submodule (𝓞 E) (Fin n → E)} in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Rewrite using `[_root_.GlobalTheory.Harm.conjVec_conjVec]`. Conclude with `hw`. Introduce `hv`.
+
+Conclude with `⟨_, hv, _root_.GlobalTheory.Harm.conjVec_conjVec v⟩`.
+-/
 theorem _root_.GlobalTheory.Harm.mem_conjLattice {v : Fin n → E} :
     v ∈ _root_.GlobalTheory.Harm.conjLattice Λ ↔ _root_.GlobalTheory.Harm.conjVec E n v ∈ Λ := by
   constructor
@@ -62,6 +76,9 @@ theorem _root_.GlobalTheory.Harm.mem_conjLattice {v : Fin n → E} :
   · intro hv
     exact ⟨_, hv, _root_.GlobalTheory.Harm.conjVec_conjVec v⟩
 
+/- English proof (translation)
+Use extensionality with `v`. Rewrite using `[mem_conjLattice, mem_conjLattice, conjVec_conjVec]`.
+-/
 @[simp] theorem conjLattice_conjLattice : conjLattice (conjLattice Λ) = Λ := by
   ext v; rw [mem_conjLattice, mem_conjLattice, conjVec_conjVec]
 
@@ -69,6 +86,15 @@ open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 variable {Λ : Submodule (𝓞 E) (Fin n → E)} in
 
+/- English proof (translation)
+Use `⟨hfg.map _, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[_root_.GlobalTheory.Harm.mem_conjLattice]`. Establish `h` using `hint _ hy _ hx`. Rewrite `h` using `[_root_.GlobalTheory.Harm.herm_conjVec]`. Then use the resulting hypothesis.
+
+Introduce `x hx`. Rewrite using `[_root_.GlobalTheory.Harm.mem_conjLattice]`. Use `hdual _ fun y hy => ?_` and prove the remaining obligations. Establish `hy' : _root_.GlobalTheory.Harm.conjVec E n y ∈ _root_.GlobalTheory.Harm.conjLattice Λ`. Rewrite using `[_root_.GlobalTheory.Harm.mem_conjLattice, _root_.GlobalTheory.Harm.conjVec_conjVec]`.
+
+Conclude with `hy`. Establish `h` using `_root_.GlobalTheory.TraceDualMin.isIntegral_cc (hx _ hy')`. Rewrite `h` using `[← _root_.GlobalTheory.DualFamily.herm_one_symm]`. Establish `h2` using `_root_.GlobalTheory.Harm.herm_conjVec (E := E) x (_root_.GlobalTheory.Harm.conjVec E n y)`. Rewrite `h2` using `[_root_.GlobalTheory.Harm.conjVec_conjVec]`.
+
+Rewrite using `[h2]`. Conclude with `h`.
+-/
 theorem _root_.GlobalTheory.Harm.conjLattice_selfDual (hfg : Λ.FG)
     (hint : ∀ x ∈ Λ, ∀ y ∈ Λ, IsIntegral ℤ (_root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 x y))
     (hdual : ∀ x, (∀ y ∈ Λ, IsIntegral ℤ (_root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 x y)) → x ∈ Λ) :
@@ -99,6 +125,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 variable {Λ : Submodule (𝓞 E) (Fin n → E)} in
 omit [IsCMField E] in
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.rdE _root_.ReciprocityTheory.ChartRestriction.G.FD.dE`. Apply `Real.one_le_rpow _ (by positivity)` to reduce the goal to its premises. Establish `h : (discr E : ℝ) ≠ 0` using `by exact_mod_cast discr_ne_zero E`. Establish `h' : (1 : ℝ) ≤ |((discr E : ℤ) : ℝ)|`. Rewrite using `[← Int.cast_abs]`.
+
+Conclude with `Int.one_le_abs (discr_ne_zero E)` after adjusting the coercions. Conclude with `h'` after adjusting the coercions.
+-/
 theorem _root_.GlobalTheory.Harm.one_le_rdE : 1 ≤ _root_.ReciprocityTheory.ChartRestriction.G.FD.rdE E := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.rdE _root_.ReciprocityTheory.ChartRestriction.G.FD.dE
   apply Real.one_le_rpow _ (by positivity)
@@ -112,6 +143,9 @@ open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 variable {Λ : Submodule (𝓞 E) (Fin n → E)} in
 
+/- English proof (translation)
+Establish `h` using `_root_.GlobalTheory.ShortVectors.finrank_eq (E := E)`. Establish `hpos : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.Harm.one_le_fdeg : 1 ≤ _root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E := by
   have h := _root_.GlobalTheory.ShortVectors.finrank_eq (E := E)
   have hpos : 0 < Module.finrank ℚ E := Module.finrank_pos
@@ -121,6 +155,9 @@ open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 variable {Λ : Submodule (𝓞 E) (Fin n → E)} in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hpq`. Take `⟨rfl, rfl⟩ : p = 0 ∧ q = 0` from `by omega`. Simplify using `[_root_.GlobalTheory.Harm.typeDegree, _root_.GlobalTheory.Harm.partSize] at ha`.
+-/
 theorem _root_.GlobalTheory.Harm.one_le_add_of_one_le_typeDegree {T : Type*} [Fintype T] {p q : ℕ}
     {c : T → Fin p → ℕ} {c' : T → Fin q → ℕ} (ha : 1 ≤ _root_.GlobalTheory.Harm.typeDegree c c') :
     1 ≤ p + q := by
@@ -139,6 +176,15 @@ open NumberField in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} in
 variable {Λ : Submodule (𝓞 E) (Fin n → E)} in
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.TB.perpVec`. Use `set M := _root_.ReciprocityTheory.ChartRestriction.G.TB.hMat (_root_.GlobalTheory.Harm.hermPairing E n) e e' with hM`. Establish `hMint : ∀ i j, IsIntegral ℤ (M i j)` using `fun i j => hint _ (he' i) _ (he j)`. Set `Mo : Matrix (Fin p) (Fin p) (𝓞 E)` to `fun i j => ⟨M i j, hMint i j⟩`. Establish `hMo : M = (algebraMap (𝓞 E) E).mapMatrix Mo` using `by ext i j; rfl`.
+
+Establish `key : ∀ (c : 𝓞 E) (x : Fin n → E), x ∈ Λ → ((c : E) • x) ∈ Λ` using `fun c x hx => Λ.smul_mem c hx`. Apply `Λ.sub_mem` to reduce the goal to its premises. Rewrite using `[hMo, ← RingHom.map_det]`. Conclude with `key _ _ hg`. Use `Λ.sum_mem fun a _ => Λ.sum_mem fun a' _ => ?_` and prove the remaining obligations.
+
+Establish `hga : IsIntegral ℤ (_root_.GlobalTheory.Harm.hermPairing E n g (e a))` using `hint _ hg _ (he a)`. Rewrite using `[hMo, ← RingHom.map_adjugate]`. Establish `hc : (algebraMap (𝓞 E) E).mapMatrix Mo.adjugate a a' * _root_.GlobalTheory.Harm.hermPairing E n g (e a) = ((Mo.adjugate a a' * ⟨_, hga⟩ : 𝓞 E) : E)`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[hc]`. Conclude with `key _ _ (he' a')`.
+-/
 theorem _root_.GlobalTheory.Harm.perpVec_hermPairing_mem
     (hint : ∀ x ∈ Λ, ∀ y ∈ Λ, IsIntegral ℤ (_root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 x y)) {p : ℕ}
     {e e' : Fin p → Fin n → E} {g : Fin n → E} (he : ∀ a, e a ∈ Λ) (he' : ∀ a, e' a ∈ Λ)

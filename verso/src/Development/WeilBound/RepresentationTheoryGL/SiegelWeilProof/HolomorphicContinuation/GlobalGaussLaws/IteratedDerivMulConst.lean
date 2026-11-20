@@ -29,12 +29,22 @@ instance fcGR (n : ℕ) : FirstCountableTopology (GR n) := by
     (MulOpposite.opHomeomorph.symm.isInducing).firstCountableTopology
   exact (Units.isInducing_embedProduct.comp Topology.IsInducing.subtypeVal).firstCountableTopology
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ r ih => rw [iteratedDeriv_succ, ih, iteratedDeriv_succ]`. Conclude with `deriv_mul_const_field' k`.
+-/
 theorem iteratedDeriv_mul_const (f : ℂ → ℂ) (k : ℂ) (r : ℕ) :
     iteratedDeriv r (fun w => f w * k) = fun w => iteratedDeriv r f w * k := by
   induction r with
   | zero => simp
   | succ r ih => rw [iteratedDeriv_succ, ih, iteratedDeriv_succ]; exact deriv_mul_const_field' k
 
+/- English proof (translation)
+Establish `hc : ((-(Complex.I * r)) • (1 : Matrix (Fin n) (Fin n) ℂ))ᴴ = (Complex.I * r) • 1`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_one, star_neg, star_mul', Complex.star_def, Complex.conj_I, Complex.conj_ofReal]`. Put the polynomial expressions in normal form. Rewrite using `[hc]`. Establish `: IsSiegel ((Complex.I * r) • (1 : Matrix (Fin n) (Fin n) ℂ))`.
+
+Unfold `IsSiegel`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_one, ← sub_smul, smul_smul]`. Establish `e : -(Complex.I / 2) * (Complex.I * r - star (Complex.I * r)) = (r : ℂ)`. Rewrite using `[star_mul', Complex.star_def, Complex.conj_I, Complex.conj_ofReal]`. Put the polynomial expressions in normal form.
+
+Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Matrix.PosDef.one.smul (by exact_mod_cast hr)`. Conclude with `⟨this, this⟩`.
+-/
 theorem isSiegel_Ir {n : ℕ} {r : ℝ} (hr : 0 < r) :
     IsSiegel ((Complex.I * r) • (1 : Matrix (Fin n) (Fin n) ℂ)) ∧
       IsSiegel (((-(Complex.I * r)) • (1 : Matrix (Fin n) (Fin n) ℂ))ᴴ) := by
@@ -61,6 +71,51 @@ attribute [local irreducible] famC
 
 set_option maxHeartbeats 1000000 in
 open DilAH DilCH DilEH DilH in
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx Ψ hΨA g X a ha`. Establish `hl0 : ∀ τ', l τ' ≠ 0` using `hLNe D ψ θ l hcx.hψ hcx.hθ hcx.hl`. Establish `hc : 0 < cLoc l τ` using `cLoc_pos (hl0 τ)`. Establish `htc : |tLoc l τ| = cLoc l τ` using `abs_tLoc l τ`. Establish `hfr : IsUnit fr.det` using `hcx.hfr.1`.
+
+Establish `hΨ : AwayCls θ τ fr Ψ` using `hAI D n V θ l s τ ε fr hcx.hθ hcx.hs hcx.hfr hl0 Ψ hΨA`. Take `⟨L, hL⟩` from `hLF D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx`. Take `⟨e, hG⟩` from `hGL D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL`. Take `⟨x, y₀, hxt, hg, -⟩` from `hDecA D n θ τ ι hcx.hθ hcx.hι g`. Take `⟨A, hA⟩` from `hAway D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx x hxt`.
+
+Take `⟨hAΨ, hAact⟩` from `hA Ψ hΨ`. Establish `hsch1 : ∀ P : PX V.rank n, IsSch (fP (cLoc l τ) P)` using `fun P => hSF _ _ _ hc P`. Take `⟨hB1, hB2, hB3⟩` from `dBound V.rank n ε (tLoc l τ) (cLoc l τ) e X hc htc`. Establish `hfam : ∀ (y : GR n) (z : ℂ), z ∈ stripS X → IsSch (famC ε (tLoc l τ) (cLoc l τ) e y X z)`. Introduce `y z hz`.
+
+Take `⟨h1, h2, -, -⟩` from `dSieg n y X z hz`. Unfold `famC`. Conclude with `SchwartzDifferenceQuotient.isSch_smul _ (gCSch V.rank n ε _ _ hc htc _ _ h1 h2)`. Establish `hphi : ∀ P : PX V.rank n, phiS θ τ fr (cLoc l τ) Ψ P = ⟨tens θ τ fr (fP (cLoc l τ) P) Ψ, hΨ.2 _ (hsch1 P)⟩`. Introduce `P`.
+
+Unfold `phiS`. Rewrite using `[dif_pos (hΨ.2 _ (hsch1 P))]`. Establish `hω : ∀ (y : GR n) (P : PX V.rank n), (ω (g * ι y) (phiS θ τ fr (cLoc l τ) Ψ P)).1 = tens θ τ fr (L (y₀ * y) (fP (cLoc l τ) P)) (A Ψ)`. Introduce `y P`. Establish `h1 : ω (ι (y₀ * y)) ⟨tens θ τ fr (fP (cLoc l τ) P) Ψ, hΨ.2 _ (hsch1 P)⟩ = ⟨tens θ τ fr (L (y₀ * y) (fP (cLoc l τ) P)) Ψ, hΨ.2 _ (hL.1 _ _ (hsch1 P))⟩` using `Subtype.ext (hL.2 _ Ψ hΨ _ (hsch1 P))`.
+
+Rewrite using `[hg, mul_assoc, ← map_mul ι, map_mul ω, Module.End.mul_apply, hphi, h1]`. Conclude with `hAact _ (hL.1 _ _ (hsch1 P))`. Establish `hbase : ∀ (y : GR n) (s' : ℝ), L (y * a s') (fP (cLoc l τ) 1) = famC ε (tLoc l τ) (cLoc l τ) e y X s'`. Introduce `y s'`. Rewrite using `[fP_one ε (tLoc l τ) _ hc, hG _ _ isSiegel_I, dReal _ _ ε _ _ e y X a ha s']`.
+
+Establish `hR : ∀ s' : ℝ, (s' : ℂ) ∈ stripS X` using `fun s' j => by simp [div_pos Real.pi_pos]`. Establish `hAc : Continuous (A Ψ)` using `FTH.cont_of_away hcx.hθ hAΨ`. Use `set φ : GR n → ℂ → Mx D V.rank n → ℂ := fun y z xx => tens θ τ fr (famC ε (tLoc l τ) (cLoc l τ) e (y₀ * y) X z) (A Ψ) xx with hφ`. Establish `hs1 : ∀ y z, z ∈ stripS X → φ y z ∈ schwartzA θ V.rank n` using `fun y z hz => hAΨ.2 _ (hfam _ z hz)`. Establish `hs2 : ∀ y xx, DifferentiableOn ℂ (fun z => φ y z xx) (stripS X)` using `fun y xx => (hB1 (y₀ * y) _).mul_const _`.
+
+Establish `hcu : Continuous fun xx : Mx D V.rank n => fr⁻¹ * compAt θ τ xx` using `continuous_const.matrix_mul (GlobalTheory.RealWeil.continuous_compAt hcx.hθ τ V.rank n)`. Establish `hs3 : ∀ xx, ContinuousOn (fun p : GR n × ℂ => φ p.1 p.2 xx) (Set.univ ×ˢ stripS X)`. Introduce `xx`. Establish `hm : Continuous fun p : GR n × ℂ => (y₀ * p.1, p.2, fr⁻¹ * compAt θ τ xx)` using `by fun_prop`. Use `ContinuousOn.mul (hB2.comp hm.continuousOn fun p hp => ⟨Set.mem_univ _, hp.2, Set.mem_univ _⟩) continuousOn_const` and prove the remaining obligations.
+
+Establish `hs4 : ∀ y, ContinuousOn (fun zx : ℂ × Mx D V.rank n => φ y zx.1 zx.2) (stripS X ×ˢ Set.univ)`. Introduce `y`. Establish `hm : Continuous fun zx : ℂ × Mx D V.rank n => (y₀ * y, zx.1, fr⁻¹ * compAt θ τ zx.2)` using `continuous_const.prodMk (continuous_fst.prodMk (hcu.comp continuous_snd))`. Use `ContinuousOn.mul (hB2.comp hm.continuousOn fun p hp => ⟨Set.mem_univ _, hp.1, Set.mem_univ _⟩) (hAc.comp continuous_snd).continuousOn` and prove the remaining obligations. Establish `hs5 : ∀ (p₀ : GR n) (z₀ : ℂ), z₀ ∈ stripS X → ∃ (N : Set (GR n × ℂ)) (M : Mx D V.rank n → ℂ), N ∈ 𝓝 (p₀, z₀) ∧ M ∈ schwartzA θ V.rank n ∧ ∀ pz ∈ N, pz.2 ∈ stripS X → ∀ xx, ‖φ pz.1 pz.2 xx‖ ≤ ‖M xx‖`.
+
+Introduce `p₀ z₀ hz₀`. Take `⟨N', δ, C, hN', hδ, hbd⟩` from `hB3 (y₀ * p₀) z₀ hz₀`. Establish `hm : Continuous fun p : GR n × ℂ => (y₀ * p.1, p.2)` using `by fun_prop`. Establish `hdc : 0 < δ / cLoc l τ` using `div_pos hδ hc`. Take `⟨hS1, hS2⟩` from `isSiegel_Ir (n := n) hdc`.
+
+Establish `hgs` using `gCSch V.rank n ε _ _ hc htc _ _ hS1 hS2`. Use `⟨(fun p : GR n × ℂ => (y₀ * p.1, p.2)) ⁻¹' N', tens θ τ fr (fun u => ((max C 0 : ℝ) : ℂ) * gC ε (tLoc l τ) (cLoc l τ) ((Complex.I * ((δ / cLoc l τ : ℝ) : ℂ)) • 1) ((-(Complex.I * ((δ / cLoc l τ : ℝ) : ℂ))) • 1) u) (A Ψ), hm.continuousAt.preimage_mem_nhds hN', hAΨ.2 _ (SchwartzDif …` and prove the remaining obligations. Establish `hb` using `hbd _ hpz hz (fr⁻¹ * compAt θ τ xx)`. Simplify using `only [hφ, tens, norm_mul]`. Establish `hgg` using `gC_gauss ε (tLoc l τ) (cLoc l τ) hc δ (fr⁻¹ * compAt θ τ xx)`.
+
+Rewrite using `[hgg]`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (le_max_right C 0)]`. Establish `he : ∀ r : ℝ, ‖Complex.exp (-(r : ℂ))‖ = Real.exp (-r)` using `fun r => by`. Rewrite using `[← Complex.ofReal_neg, Complex.norm_exp_ofReal]`. Rewrite using `[he]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (hb.trans (mul_le_mul_of_nonneg_right (le_max_left C 0) (Real.exp_pos _).le)) (norm_nonneg _)`. Take `⟨hcont, hdiff, hiter⟩` from `dHol hWTC D n V hcx.hn hcx.hr.2.2 θ hcx.hθ ν hcx.hν (GR n) (stripS X) (DBoundBH.isOpen_stripS X) φ hs1 hs2 hs3 hs4 hs5`. Use `⟨stripS X, fun y z => ⨍ q, descend (GQ V) (fun h => ∑' ξ, φ y z (GlobalTheory.SiegelFormula.invPt V h ξ)) q ∂autMeasure V ν, DBoundBH.isOpen_stripS X, hR, hcont, fun y => ⟨hdiff y, fun t' => ?_, fun r => ?_⟩⟩` and prove the remaining obligations. Establish `hfun : (ω (g * ι (y * a t')) (phiS θ τ fr (cLoc l τ) Ψ 1)).1 = φ y t'`. Rewrite using `[hω, ← mul_assoc, hbase]`.
+
+Establish `key : (fun h => ∑' ξ, φ y t' (GlobalTheory.SiegelFormula.invPt V h ξ)) = theta ω (phiS θ τ fr (cLoc l τ) Ψ 1) (g * ι (y * a t'))`. Use function extensionality and compare the values at `h`. Unfold `theta`. Rewrite using `[hfun]`. Both sides reduce to the same expression.
+
+Use `show (⨍ q, descend (GQ V) (fun h => ∑' ξ, φ y t' (GlobalTheory.SiegelFormula.invPt V h ξ)) q ∂autMeasure V ν) = _`. Rewrite using `[key]`. Both sides reduce to the same expression. Rewrite using `[hiter y r 0 (hR 0)]`. Establish `hpt : ∀ xx : Mx D V.rank n, iteratedDeriv r (fun w => φ y w xx) 0 = tens θ τ fr (L (y₀ * y) (fP (cLoc l τ) ((dil (cLoc l τ) X ^ r) 1))) (A Ψ) xx`.
+
+Introduce `xx`. Simplify using `only [hφ, tens]`. Rewrite using `[iteratedDeriv_mul_const]`. Use `beta_reduce`. Distinguish the cases in `hz : ∃ x₀, Ψ x₀ ≠ 0`.
+
+Take `⟨x₀, hx₀⟩` from `hz`. Take `⟨κ, hκ, hκL⟩` from `hLL2 D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL (y₀ * y)`. Establish `hofR` using `congrFun (iteratedDeriv_ofReal (DBoundBH.isOpen_stripS X) (hB1 (y₀ * y) (fr⁻¹ * compAt θ τ xx)) hR r) 0`. Simplify using `only [Complex.ofReal_zero] at hofR`. Rewrite using `[← hofR, exch dReal dBound hDC dL2 contDeriv schScale hSF hL hcx.hθ hfr hΨ hx₀ hc htc hG ha (y₀ * y) hκ hκL r]`.
+
+Use `push_neg at hz`. Establish `hΨ0 : Ψ = 0` using `funext hz`. Establish `h0 : tens θ τ fr (fP (cLoc l τ) 1) (A Ψ) = 0`. Rewrite using `[← hAact _ (hsch1 1)]`. Establish `: (⟨tens θ τ fr (fP (cLoc l τ) 1) Ψ, hΨ.2 _ (hsch1 1)⟩ : schwartzA θ V.rank n) = 0` using `Subtype.ext (by funext x'; simp [tens, hΨ0])`.
+
+Rewrite using `[this, map_zero]`. Both sides reduce to the same expression. Establish `hAx : A Ψ xx = 0`. Use `congrFun h0 xx` as an intermediate fact. Simplify using `only [tens, Pi.zero_apply] at this`.
+
+Use `(mul_eq_zero.1 this).resolve_left ?_` and prove the remaining obligations. Simplify using `[fP, evX, gs, Complex.exp_ne_zero]`. Rewrite using `[hAx, mul_zero, mul_zero]`. Establish `key : (fun h => ∑' ξ, iteratedDeriv r (fun w => φ y w (GlobalTheory.SiegelFormula.invPt V h ξ)) 0) = theta ω (phiS θ τ fr (cLoc l τ) Ψ ((dil (cLoc l τ) X ^ r) 1)) (g * ι y)`. Use function extensionality and compare the values at `h`.
+
+Unfold `theta`. Rewrite using `[hω]`. Use `congr 1`. Use function extensionality and compare the values at `ξ`. Conclude with `hpt _`.
+
+Use `show (⨍ q, descend (GQ V) (fun h => ∑' ξ, iteratedDeriv r (fun w => φ y w (GlobalTheory.SiegelFormula.invPt V h ξ)) 0) q ∂autMeasure V ν) = _`. Rewrite using `[key]`. Both sides reduce to the same expression.
+-/
 theorem gIdil_of' (hWTC : GlobalTheory.Published.WeilThetaConvergence) (hDecA : DecompAway) (hAway : AwayAct) (hLF : LocFact)
     (hGL : GaussLaw) (hAI : AwayIn) (hLL2 : LocalL2Isometry) (hSF : SchFP) (hLNe : LNe) (hDC : DCalc) : GIdil := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx Ψ hΨA g X a ha
@@ -182,6 +237,9 @@ theorem gIdil_of' (hWTC : GlobalTheory.Published.WeilThetaConvergence) (hDecA : 
       ∂autMeasure V ν) = _
     rw [key]; rfl
 
+/- English proof (translation)
+The claim follows from `gIdil_of' hWTC hDecA hAway hLF hGL hAI hLL2 schFP lNe dCalc`.
+-/
 theorem gIdil_of (hWTC : GlobalTheory.Published.WeilThetaConvergence) (_hGZ : GZSch) (hDecA : DecompAway) (hAway : AwayAct)
     (hLF : LocFact) (hGL : GaussLaw) (hAI : AwayIn) (hLL2 : LocalL2Isometry) : GIdil :=
   gIdil_of' hWTC hDecA hAway hLF hGL hAI hLL2 schFP lNe dCalc

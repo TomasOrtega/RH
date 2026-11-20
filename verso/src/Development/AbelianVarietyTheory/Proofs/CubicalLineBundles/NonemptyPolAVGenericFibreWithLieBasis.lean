@@ -9,6 +9,9 @@ open GlobalTheory GlobalTheory.CM
 
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+Introduce `hB K _ _ P`. Take `⟨P₀, φ, h⟩` from `exists_isPolFibre hB (algebraMap (𝓞 K) K) P`. Take `⟨v, hv⟩` from `GlobalTheory.KeyPow.exists_isLieBasis P₀.A P₀.smoothDim`. Conclude with `⟨⟨P₀, φ, h, v, hv⟩⟩`.
+-/
 theorem GenFib.nonempty_of_baseChange :
     Out.PolBaseChangeSt → ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))), Nonempty (GenFib P) := by
   intro hB K _ _ P

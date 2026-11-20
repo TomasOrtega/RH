@@ -11,6 +11,13 @@ noncomputable section
 
 namespace GlobalTheory.InertLocModel
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v Y _ Xm hXm ρ hρ Γ _ j ω hω actY hact g x`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.RestWitness.exists_rest (F := F) (Fin a × Fin (a + a')) v`. Establish `hS` using `IsUWeilPair.isUSplitting hT.weil`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `GlobalTheory.InertAvgDual.eq_of_tens_eq v hR0 (hR _ φ.2).1` to reduce the goal to its premises. Simplify using `only [Module.End.mul_apply]`. Establish `h1` using `(hω g (ρ x φ) _).2 rfl R (hR _ (ρ x φ).2)`. Establish `h2` using `hρ x φ R (hR _ φ.2)`.
+
+Establish `h3` using `(hω g φ _).2 rfl R (hR _ φ.2)`. Establish `h4` using `hρ (actY g x) (ω g φ) R (hR _ (ω g φ).2)`. Establish `h5` using `hS.impl (j g) (Xm x) (tens (evFin F v) (φ : (Fin a × Fin (a + a') → Fv F v) → ℂ) R) (hR _ φ.2).2`. Rewrite using `[← h1, ← h4, ← h2, h5, hact, h3]`.
+-/
 theorem weil_normalises_schr : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (Y : Type) [AddCommGroup Y] (Xm : Y →+ Matrix (Fin a) (Fin (a + a')) (AE F E)),

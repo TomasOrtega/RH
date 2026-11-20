@@ -8,11 +8,17 @@ namespace Formalism.InvariantFactorPaths.ColumnFamilies
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Matrix.mulVec_zero _, fun R' _ _ u _ _ => by have e : (fun i => algebraMap R R' ((0 : M.ι → R) i)) = 0 := by funext i; simp rw [e, Matrix.mulVec_zero]⟩`.
+-/
 lemma qd_high_zero (M : GLMod n) (R : Type) [CommRing R] (mu : Fin n → ℤ) : IsHighest M R mu 0 :=
   ⟨Matrix.mulVec_zero _, fun R' _ _ u _ _ => by
     have e : (fun i => algebraMap R R' ((0 : M.ι → R) i)) = 0 := by funext i; simp
     rw [e, Matrix.mulVec_zero]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [Matrix.mulVec_add, hx.1, hy.1], fun R' _ _ u h1 h2 => by have e : (fun i => algebraMap R R' ((x + y) i)) = (fun i => algebraMap R R' (x i)) + fun i => algebraMap R R' (y i) := by funext i; simp rw [e, Matrix.mulVec_add, hx.2 R' u h1 h2, hy.2 R' u h1 h2]⟩`.
+-/
 lemma qd_high_add (M : GLMod n) (R : Type) [CommRing R] (mu : Fin n → ℤ) {x y : M.ι → R}
     (hx : IsHighest M R mu x) (hy : IsHighest M R mu y) : IsHighest M R mu (x + y) :=
   ⟨by rw [Matrix.mulVec_add, hx.1, hy.1], fun R' _ _ u h1 h2 => by
@@ -20,6 +26,9 @@ lemma qd_high_add (M : GLMod n) (R : Type) [CommRing R] (mu : Fin n → ℤ) {x 
         (fun i => algebraMap R R' (x i)) + fun i => algebraMap R R' (y i) := by funext i; simp
     rw [e, Matrix.mulVec_add, hx.2 R' u h1 h2, hy.2 R' u h1 h2]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [Matrix.mulVec_smul, hx.1], fun R' _ _ u h1 h2 => by have e : (fun i => algebraMap R R' ((c • x) i)) = algebraMap R R' c • fun i => algebraMap R R' (x i) := by funext i; simp rw [e, Matrix.mulVec_smul, hx.2 R' u h1 h2]⟩`.
+-/
 lemma qd_high_smul (M : GLMod n) (R : Type) [CommRing R] (mu : Fin n → ℤ) (c : R) {x : M.ι → R}
     (hx : IsHighest M R mu x) : IsHighest M R mu (c • x) :=
   ⟨by rw [Matrix.mulVec_smul, hx.1], fun R' _ _ u h1 h2 => by
@@ -27,6 +36,9 @@ lemma qd_high_smul (M : GLMod n) (R : Type) [CommRing R] (mu : Fin n → ℤ) (c
       funext i; simp
     rw [e, Matrix.mulVec_smul, hx.2 R' u h1 h2]⟩
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_isUpperTriangular (fun a b hab => h2 a b hab)]`. Simplify using `[h1]`.
+-/
 lemma qd_det_unitri {R : Type} [CommRing R] (u : GL (Fin n) R) (h1 : ∀ a, u.val a a = 1)
     (h2 : ∀ a b, b < a → u.val a b = 0) : Matrix.GeneralLinearGroup.det u = 1 := by
   ext
@@ -35,6 +47,17 @@ lemma qd_det_unitri {R : Type} [CommRing R] (u : GL (Fin n) R) (h1 : ∀ a, u.va
 
 variable [NeZero n]
 
+/- English proof (translation)
+Rewrite using `[qb_evGL_minorC]`. Use `split_ifs with hJ`. Substitute `hJ` using the available equality. Rewrite using `[Matrix.det_of_isUpperTriangular]`. Simplify using `[h1]`.
+
+Introduce `a b hab`. Conclude with `h2 _ _ ((OrderEmbedding.lt_iff_lt _).2 hab)`. Choose the witnesses or unpack the hypotheses as in `⟨j, hjJ, hj⟩ : ∃ j ∈ J.1, colH mu c ≤ j.val := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Apply `hJ` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `j hj`. Conclude with `(qb_mem_canT mu c j).2 (hcon j hj)`.
+
+Rewrite using `[J.2, (canT mu c).2]`. Establish `hr : j ∈ Set.range (J.1.orderEmbOfFin J.2)`. Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `hjJ`. Take `⟨a, ha⟩` from `hr`.
+
+Apply `Matrix.det_eq_zero_of_row_eq_zero a` to reduce the goal to its premises. Introduce `b`. Rewrite using `[Matrix.of_apply, ha, qd_can_emb]`. Apply `h2` to reduce the goal to its premises. Conclude with `Fin.lt_def.2 (lt_of_lt_of_le (show (Fin.castLE (colH_le mu c) b).val < colH mu c from b.2) hj)`.
+-/
 lemma qd_minor_unitri {R : Type} [CommRing R] (u : GL (Fin n) R) (h1 : ∀ a, u.val a a = 1)
     (h2 : ∀ a b, b < a → u.val a b = 0) (mu : Fin n → ℤ) (c : ↥(TCols mu))
     (J : {J : Finset (Fin n) // J.card = colH mu c}) :
@@ -64,6 +87,13 @@ lemma qd_minor_unitri {R : Type} [CommRing R] (u : GL (Fin n) R) (h1 : ∀ a, u.
     apply h2
     exact Fin.lt_def.2 (lt_of_lt_of_le (show (Fin.castLE (colH_le mu c) b).val < colH mu c from b.2) hj)
 
+/- English proof (translation)
+Unfold `TMat`. Rewrite using `[map_mul, map_prod, qd_evGL_detU, qd_det_unitri u h1 h2, one_zpow, Units.val_one, one_mul]`. Simplify using `only [qd_minor_unitri u h1 h2]`. Use `split_ifs with hK`. Substitute `hK` using the available equality.
+
+Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, K c ≠ canT mu c := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hK (funext hcon)`.
+
+Conclude with `Finset.prod_eq_zero (Finset.mem_univ c) (if_neg hc)`.
+-/
 lemma unipotent_eval_canonical {R : Type} [CommRing R] (u : GL (Fin n) R) (h1 : ∀ a, u.val a a = 1)
     (h2 : ∀ a b, b < a → u.val a b = 0) (mu : Fin n → ℤ) (K : TIdx mu) :
     evGL u (TMat mu K (canT mu)) = if K = canT mu then 1 else 0 := by
@@ -79,6 +109,13 @@ lemma unipotent_eval_canonical {R : Type} [CommRing R] (u : GL (Fin n) R) (h1 : 
       exact hK (funext hcon)
     exact Finset.prod_eq_zero (Finset.mem_univ c) (if_neg hc)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `i`. Use `congrArg (Int.cast : ℤ → R) (qb_prMu_ph CF j (CF.mu j) i (canT (CF.mu j)))` as an intermediate fact. Rewrite `this` using `[if_pos (qb_wtT_can (CF.dom j))]`. Move the coercions through the operations in `at this`.
+
+Simplify `this` using `[Matrix.mulVec, dotProduct, ColFam.vec]`. Introduce `R' _ _ u h1 h2`. Use function extensionality and compare the values at `i`. Establish `h` using `congrArg (evGL u) (qb_equiv_apply CF j i (canT (CF.mu j)))`. Simplify using `only [map_sum, map_mul, map_intCast, unipotent_eval_canonical u h1 h2, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`.
+
+Simplify `h` using `[Matrix.mulVec, dotProduct, ColFam.vec]`.
+-/
 lemma qd_vec_can_high {M : GLMod n} (CF : ColFam M) (R : Type) [CommRing R] (j : CF.J) :
     IsHighest M R (CF.mu j) (fun i => (CF.vec j (canT (CF.mu j)) i : R)) := by
   constructor
@@ -94,6 +131,11 @@ lemma qd_vec_can_high {M : GLMod n} (CF : ColFam M) (R : Type) [CommRing R] (j :
       Finset.mem_univ, if_true] at h
     simpa [Matrix.mulVec, dotProduct, ColFam.vec] using h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `i`. Use `congrArg (Int.cast : ℤ → ℚ) (congrFun hx.1 i)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct]`. Introduce `R' _ _ u h1 h2`.
+
+Use `hx.2 R' u h1 h2` as an intermediate fact. Simplify using `using this`.
+-/
 lemma qd_high_cast (M : GLMod n) (mu : Fin n → ℤ) (x : M.ι → ℤ) (hx : IsHighest M ℤ mu x) :
     IsHighest M ℚ mu (fun i => (x i : ℚ)) := by
   constructor
@@ -104,6 +146,23 @@ lemma qd_high_cast (M : GLMod n) (mu : Fin n → ℤ) (x : M.ι → ℤ) (hx : I
     have := hx.2 R' u h1 h2
     simpa using this
 
+/- English proof (translation)
+Introduce `hA n _ M CF mu hmu`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.span_induction (p := fun x _ => IsHighest M ℤ mu x) ?_ (qd_high_zero M ℤ mu) (fun x y _ _ hx hy => qd_high_add M ℤ mu hx hy) (fun c x _ hx => qd_high_smul M ℤ mu c hx) hx` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨j, rfl, rfl⟩`. Use `qd_vec_can_high CF ℤ j` as an intermediate fact. Simplify using `using this`. Introduce `hx`. Establish `hQ` using `highest_vectors_rational_span_of hA n M CF mu hmu _ (qd_high_cast M mu x hx)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b : qb_Idx CF → ℤ, ∑ y, b y • qb_vecF CF ℤ y = x := by`. Establish `: x ∈ Submodule.span ℤ (Set.range (qb_vecF CF ℤ))` using `by rw [(qb_basisR hA CF ℤ).2]; trivial`. Conclude with `(Submodule.mem_span_range_iff_exists_fun ℤ).1 this`. Set `S : Set (qb_Idx CF)` to `{y | CF.mu y.1 = mu ∧ y.2.1 = canT (CF.mu y.1)}`. Establish `hcast : (fun i => (x i : ℚ)) = ∑ y, (b y : ℚ) • qb_basis hA CF ℚ y`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[← hb]`. Simplify using `[qb_basis_apply, qb_vecF, Finset.sum_apply]`. Establish `hS : (fun i => (x i : ℚ)) ∈ Submodule.span ℚ (qb_basis hA CF ℚ '' S)`. Use `Submodule.span_mono ?_ hQ` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `⟨⟨j, ⟨canT (CF.mu j), qd_canT_std _⟩⟩, ⟨hj, rfl⟩, by rw [qb_basis_apply]; rfl⟩`. Rewrite `hS` using `[Module.Basis.mem_span_image, hcast]`. Establish `hsupp : ∀ y, b y ≠ 0 → y ∈ S`. Introduce `y hy`.
+
+Apply `hS` to reduce the goal to its premises. Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff, Module.Basis.repr_sum_self]`. Conclude with `hy` after adjusting the coercions. Rewrite using `[← hb]`. Use `Submodule.sum_mem _ fun y _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hy : b y = 0`. Rewrite using `[hy, zero_smul]`. Conclude with `zero_mem _`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Take `⟨e1, e2⟩` from `hsupp y hy`. Use `⟨y.1, e1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [qb_vecF, Int.cast_id]`. Rewrite using `[e2]`.
+-/
 theorem highest_vectors_eq_lattice_of : LemmaA → HighestVectorsEqLattice := by
   intro hA n _ M CF mu hmu
   classical

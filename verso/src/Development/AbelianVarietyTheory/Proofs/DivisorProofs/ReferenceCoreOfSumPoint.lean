@@ -12,6 +12,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum GlobalTheory.FactorDepth GlobalTheory.CharDepth GlobalTheory.FGDepth GlobalTheory.PtTie GlobalTheory.PlaceInt
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Apply the tactic sequence `refine ⟨fun q hq => ?_, fun q => add_nonneg (h2 q) (by split_ifs <;> norm_num), fun q hq => ?_, ?_⟩`. Break down `Finset.mem_union.1 hq with hq | hq` into its components or cases. Conclude with `h1 q hq`. Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 hq`.
+
+Conclude with `hg k`. Rewrite `hq` using `[Finset.mem_union, not_or]`. Simplify using `only [h3 q hq.1, if_neg hq.2, add_zero]`. Establish `a : ∑ q ∈ S ∪ Finset.univ.image g, e q * Real.log q = ∑ q ∈ S, e q * Real.log q` using `(Finset.sum_subset Finset.subset_union_left fun q _ hq => by rw [h3 q hq, zero_mul]).symm`. Establish `b : ∑ q ∈ S ∪ Finset.univ.image g, (if q ∈ Finset.univ.image g then (1 : ℝ) else 0) * Real.log q = ∑ q ∈ Finset.univ.image g, Real.log q`.
+
+Rewrite using `[← Finset.sum_subset Finset.subset_union_right fun q _ hq => by rw [if_neg hq, zero_mul]]`. Conclude with `Finset.sum_congr rfl fun q hq => by rw [if_pos hq, one_mul]`. Establish `c : ∑ q ∈ Finset.univ.image g, Real.log (q : ℕ) ≤ ∑ k : Fin 2, Real.log (g k)` using `Finset.sum_image_le_of_nonneg (f := fun q : ℕ => Real.log q) fun q _ => Real.log_natCast_nonneg q`. Rewrite `c` using `[Fin.sum_univ_two]`. Simplify using `only [add_mul, Finset.sum_add_distrib]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem GlobalTheory.RefSum.primeSum_add_pair {S : Finset ℕ} {e : ℕ → ℝ} {s : ℝ} (h : PrimeSum S e s) (g : Fin 2 → ℕ)
     (hg : ∀ k, (g k).Prime) :
     PrimeSum (S ∪ Finset.univ.image g) (fun q => e q + if q ∈ Finset.univ.image g then 1 else 0)
@@ -36,6 +45,15 @@ theorem GlobalTheory.RefSum.primeSum_add_pair {S : Finset ℕ} {e : ℕ → ℝ}
     simp only [add_mul, Finset.sum_add_distrib]
     linarith
 
+/- English proof (translation)
+Introduce `hS hSum`. Use `Closed.imp (Closed.and hSum (Closed.and (GlobalTheory.T.quotient_weight_gap_bounds hS) (GlobalTheory.T.jet_number_quotient_bounds hS))) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨C1, hC1, h1⟩, ⟨C2, -, h2⟩, C3, hC3, h3⟩`. Use `⟨C1 + C3, add_nonneg hC1 hC3, (h1.and (h2.and h3)).imp fun x0 h x hx hle ι p hp i hi u1 hu => ?_⟩` and prove the remaining obligations. Take `⟨k1, k2, k3⟩` from `h x hx hle ι p hp`.
+
+Take `⟨S, e, s, hP, hs, hO⟩` from `k1 i hi u1 hu`. Take `⟨-, -, -, -, -, -, hD, hL, -⟩` from `k2 i hi u1 hu`. Take `⟨hJ, hr, hg⟩` from `k3 i hi u1 hu`. Establish `hI : InR (Fm.D x ι) ((i : ℕ) + 1)` using `⟨by omega, hi.le⟩`. Use `⟨_, _, _, primeSum_add_pair hP (Fm.D x ι).host.g (Fm.D x ι).host.g_prime, by rw [mul_add, add_mul]; exact add_le_add hs hg, fun q hq => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hq' : q ∈ Finset.univ.image (Fm.D x ι).host.g`. Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 hq'`. Use `(GlobalTheory.T.supLatticeReferenceExponent_thetaWeight_level_le_one _ p.T.toCore p.fw.laws.toLawsM (Fm.ex x hx ι).errX _ hI _ _ _ hD hL sum_le_nCol hr hJ k).trans (EReal.coe_le_coe_iff.2 ?_)` and prove the remaining obligations. Simplify using `only [if_pos hq']`. Combine the linear relations using `[hP.2.1 ((Fm.D x ι).host.g k)]`.
+
+Use `haveI := Fact.mk hq`. Establish `hne : ∀ k, q ≠ (Fm.D x ι).host.g k` using `fun k h => hq' (Finset.mem_image.2 ⟨k, Finset.mem_univ _, h.symm⟩)`. Use `(GlobalTheory.T.baseLocusExponent_le_oscillation_nonTypePrime _ p.T.toCore p.fw.laws.toLawsM (Fm.ex x hx ι).errX _ hI _ _ _ hD hL sum_le_nCol hr hJ q hne _ (hO q hne)).trans (EReal.coe_le_coe_iff.2 ?_)` and prove the remaining obligations. Simplify using `only [if_neg hq', add_zero, le_refl]`.
+-/
 theorem GlobalTheory.RefSum.refCore_of_sumPt : Size → SumPt → RefCore := by
   intro hS hSum
   refine Closed.imp (Closed.and hSum (Closed.and (GlobalTheory.T.quotient_weight_gap_bounds hS) (GlobalTheory.T.jet_number_quotient_bounds hS))) ?_

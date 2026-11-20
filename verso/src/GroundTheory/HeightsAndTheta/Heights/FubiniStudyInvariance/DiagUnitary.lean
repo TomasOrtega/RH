@@ -9,6 +9,39 @@ open MeasureTheory MvPolynomial CP
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `N a b hab hdeg`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, a k ≠ b k := by`. Assume the negation of the conclusion as `h`. Conclude with `hab (Finsupp.ext fun i => by_contra fun hi => h ⟨i, hi⟩)`. Establish `hA : monomial a (1 : ℂ) ∈ H0 N a.degree` using `(mem_homogeneousSubmodule _ _).mpr (isHomogeneous_monomial _ rfl)`.
+
+Establish `hB : monomial b (1 : ℂ) ∈ H0 N a.degree` using `(mem_homogeneousSubmodule _ _).mpr (isHomogeneous_monomial _ hdeg.symm)`. Use `set θ : ℝ := Real.pi / |(b k : ℝ) - a k| with hθ`. Establish `key : ((b k : ℝ) - a k) * θ = Real.pi ∨ ((b k : ℝ) - a k) * θ = -Real.pi`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Establish `h' : (0 : ℝ) < (b k : ℝ) - a k`.
+
+Establish `: (a k : ℝ) < b k` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : (b k : ℝ) - a k ≠ 0` using `h'.ne'`. Use `left`. Rewrite using `[hθ, abs_of_pos h']`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h' : (b k : ℝ) - a k < 0`. Establish `: (b k : ℝ) < a k` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : (b k : ℝ) - a k ≠ 0` using `h'.ne`.
+
+Use `right`. Rewrite using `[hθ, abs_of_neg h']`. Clear the denominators using the available nonvanishing facts. Establish `hzmem : Complex.exp (θ * Complex.I) ∈ unitary ℂ`. Rewrite using `[Unitary.mem_iff_star_mul_self, Complex.star_def, Complex.conj_mul', Complex.norm_exp_ofReal_mul_I]`.
+
+Evaluate the numerical expressions. Use `set z : unitary ℂ := ⟨Complex.exp (θ * Complex.I), hzmem⟩ with hz`. Establish `hfac : conj ((z : ℂ) ^ a k) * (z : ℂ) ^ b k = -1`. Rewrite using `[hz, map_pow, ← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I, ← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Establish `harg : (a k : ℂ) * (θ * -Complex.I) + (b k : ℂ) * (θ * Complex.I) = (((b k : ℝ) - a k) * θ : ℝ) * Complex.I` using `by push_cast; ring`.
+
+Rewrite using `[harg]`. Apply the tactic sequence `rcases key with h | h <;> rw [h]`. Conclude with `Complex.exp_pi_mul_I`. Rewrite using `[Complex.ofReal_neg, neg_mul, Complex.exp_neg, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions.
+
+Use `set w : Fin (N + 1) → unitary ℂ := fun i => if i = k then z else 1 with hw`. Establish `hwv : ∀ i, ((w i : unitary ℂ) : ℂ) = if i = k then (z : ℂ) else 1` using `fun i => by`. Apply the tactic sequence `simp only [hw]; split_ifs <;> rfl`. Establish `hwn : ∀ i, ‖((w i : unitary ℂ) : ℂ)‖ = 1` using `fun i => by`. Rewrite using `[hwv]`.
+
+Use `split_ifs`. Rewrite using `[hz]`. Conclude with `Complex.norm_exp_ofReal_mul_I θ`. Conclude with `norm_one`. Establish `hprod : ∀ c : Fin (N + 1) →₀ ℕ, ∏ i, ((w i : unitary ℂ) : ℂ) ^ c i = (z : ℂ) ^ c k`.
+
+Introduce `c`. Simplify using `only [hwv, ite_pow, one_pow, Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Establish `hlin : ∀ v : Fin (N + 1) → ℂ, Matrix.toLin' (diagUnitary w : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ) v = fun i => ((w i : unitary ℂ) : ℂ) * v i` using `fun v => by`. Use function extensionality and compare the values at `i`. Simplify using `[diagUnitary, Matrix.toLin'_apply, Matrix.mulVec_diagonal]`.
+
+Establish `hev : ∀ (c : Fin (N + 1) →₀ ℕ) (v : Fin (N + 1) → ℂ), eval (fun i => ((w i : unitary ℂ) : ℂ) * v i) (monomial c (1 : ℂ)) = (z : ℂ) ^ c k * eval v (monomial c 1)` using `fun c v => by`. Rewrite using `[← hprod c, eval_monomial, eval_monomial, one_mul, one_mul, Finsupp.prod_fintype _ _ (fun i => pow_zero _), Finsupp.prod_fintype _ _ (fun i => pow_zero _), ← Finset.prod_mul_distrib]`. Simplify using `only [mul_pow]`. Establish `hnorm : ∀ v : Fin (N + 1) → ℂ, norm2 (fun i => ((w i : unitary ℂ) : ℂ) * v i) = norm2 v` using `fun v => by simp only [norm2, normSq2, norm_mul, hwn, one_mul]`. Use `set f := fsPair (N := N) a.degree (monomial a (1 : ℂ)) (monomial b 1) with hf`.
+
+Establish `hpt : ∀ x, f (unitaryAct (diagUnitary w) x) = -f x`. Introduce `x`. Proceed by induction on `x using Projectivization.ind with`. Consider the case `h v hv`. Rewrite using `[hf, unitaryAct_mk, hP N _ _ _ hA hB, hP N _ _ _ hA hB, hlin, hev, hev, hnorm, map_mul]`.
+
+Take the linear combination `(conj (eval v (monomial a (1 : ℂ))) * eval v (monomial b 1) / ((norm2 v ^ (2 * a.degree) : ℝ) : ℂ)) * hfac`. Establish `hcont : Continuous f`. Rewrite using `[ProjTopology.continuous_iff]`. Establish `e : f ∘ Projectivization.mk' ℂ = fun v : {v : Fin (N + 1) → ℂ // v ≠ 0} => conj (eval v.1 (monomial a (1 : ℂ))) * eval v.1 (monomial b 1) / ((norm2 v.1 ^ (2 * a.degree) : ℝ) : ℂ)`. Use function extensionality and compare the values at `⟨v, hv⟩`.
+
+Conclude with `hP N _ _ _ hA hB v hv`. Rewrite using `[e]`. Establish `hc2 : Continuous fun v : Fin (N + 1) → ℂ => norm2 v` using `Real.continuous_sqrt.comp (continuous_finsetSum _ fun j _ => (continuous_norm.comp (continuous_apply j)).pow 2)`. Use `Continuous.div ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(Complex.continuous_conj.comp ((MvPolynomial.continuous_eval _).comp continuous_subtype_val)).mul ((MvPolynomial.continuous_eval _).comp continuous_subtype_val)`.
+
+Conclude with `Complex.continuous_ofReal.comp ((hc2.comp continuous_subtype_val).pow _)`. Introduce `v`. Conclude with `(pow_pos (euclideanNorm_pos v.2) _).ne'` after adjusting the coercions. Establish `hmp` using `hU N (diagUnitary w)`. Establish `hint : ∫ x, f x ∂fsMeasure N = ∫ x, f (unitaryAct (diagUnitary w) x) ∂fsMeasure N` using `by conv_lhs => rw [← hmp.map_eq]`.
+
+Conclude with `integral_map hmp.measurable.aemeasurable hcont.measurable.aestronglyMeasurable`. Rewrite `hint` using `[show (fun x => f (unitaryAct (diagUnitary w) x)) = fun x => -f x from funext hpt, integral_neg]`. Use `show ∫ x, f x ∂fsMeasure N = 0`. Take the linear combination `hint / 2`.
+-/
 theorem Orth.proof (hU : UnitaryInv.Statement) (hP : PairMk.Statement) : Orth.Statement := by
   intro N a b hab hdeg
   obtain ⟨k, hk⟩ : ∃ k, a k ≠ b k := by

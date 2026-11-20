@@ -17,6 +17,13 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.XTermInteg
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ 𝓓 h𝓓 Φ hΦ h`. Take `⟨K, μK, μ, hK, -, hμK, hμ⟩` from `GlobalTheory.T.theta_stabilizer_exists hKP.base F E σ B (b + 2) G.V _ _ hT.base hT.geo.hV`. Take `⟨m, hm⟩` from `GlobalTheory.LeviElem.levi_exists F E σ B b a' G G₁ H H' hC hT.base hT.geo hT₁.geo`. Take `⟨μN, c, hμN, hc0, hctop, hI⟩` from `GlobalTheory.T.doubling_configuration_haar_unfolding_second F E σ B b a' G G₁ H H' hC hT.base hT.geo hT₁.geo K μK μ hK hμK hμ m hm`. Take `⟨C, -, hCtop, hU⟩` from `GlobalTheory.T.config_a_haar_unfolding F E σ B b a' G G₁ H H' hC hT.base hT.geo hT₁.geo K μK μ hK hμK hμ m hm μN c hμN hc0 hctop hI`.
+
+Establish `hf` using `GlobalTheory.T.doubling_eigen_intertwiner_triple_compatible F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ Φ hΦ h`. Establish `hQ` using `GlobalTheory.T.doubling_eigen_intertwiner_local_factor hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ Φ hΦ h`. Establish `hN` using `GlobalTheory.T.doubling_eigen_intertwiner_global_factor hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ Φ hΦ h`. Establish `hfin` using `GlobalTheory.T.doubling_configuration_levi_integral hKP F E σ B b a' G G₁ H H' hC K μK μ hK hμK hμ m hm e he X om om' om₁ om₁' hT hT₁ Φ hΦ h`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`.
+
+Use `⟨hf.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `key` using `hU 𝓓 h𝓓 (fun g => ‖thetaSum F (e (G.M.co.rho B.ψ (shiftA H H' 1) (om (g, h) Φ)))‖ₑ) (continuous_enorm.comp hf) (fun q hq g => by simp only [hQ q hq g]) (fun n hn g => by simp only [hN n hn g])`. Use `show ∫⁻ g in 𝓓, ‖thetaSum F (e (G.M.co.rho B.ψ (shiftA H H' 1) (om (g, h) Φ)))‖ₑ ∂G.M.μ < ⊤`. Rewrite using `[key]`. Conclude with `ENNReal.mul_lt_top hCtop.lt_top hfin`.
+-/
 theorem xTerm_integrableOn : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

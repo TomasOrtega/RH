@@ -17,12 +17,20 @@ variable {V V₁ : Type} [CommRing V] [IsDomain V] [CommRing V₁] [IsDomain V�
 def fracPt (ρ : V →+* V₁) (hρ : Function.Injective ρ) : (TK V₁).left ⟶ (TK V).left :=
   spMap (IsFractionRing.map (K := FractionRing V) (L := FractionRing V₁) hρ)
 
+/- English proof (translation)
+Simplify using `only [fracPt, spMap, jK, TK, Over.mk_hom, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[IsFractionRing.map, IsLocalization.map_eq]`.
+-/
 theorem fracPt_comp (ρ : V →+* V₁) (hρ : Function.Injective ρ) : fracPt ρ hρ ≫ jK V = jK V₁ ≫ spMap ρ := by
   simp only [fracPt, spMap, jK, TK, Over.mk_hom, ← Spec.map_comp]
   congr 1
   ext x
   simp [IsFractionRing.map, IsLocalization.map_eq]
 
+/- English proof (translation)
+Establish `h` using `gm_pull (𝟙 _) (spMap f) z ⊤ trivial (unitOn k)`. Rewrite `h` using `[Category.id_comp]`. Use `h.symm.trans (congrArg _ ?_)` and prove the remaining obligations. Use `ext`. Establish `e` using `congrArg (fun g => g.hom (k : R)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`.
+
+Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Simplify using `only [unitOn, pullU, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`. Conclude with `e.symm`.
+-/
 theorem gm_spMap_unitOn {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (z : Sp R') (k : Rˣ) :
     gm (spMap f) z ⊤ (unitOn k) = gm (𝟙 _) z ⊤ (unitOn (Units.map f.toMonoidHom k)) := by
   have h := gm_pull (𝟙 _) (spMap f) z ⊤ trivial (unitOn k)
@@ -34,11 +42,27 @@ theorem gm_spMap_unitOn {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R'
   simp only [unitOn, pullU, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]
   exact e.symm
 
+/- English proof (translation)
+The claim follows from `gm_scaleGen t c r z _ (hJ.mem φ r)`.
+-/
 theorem val_scaleGen {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (c : Γ(Y, ⊤)ˣ) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     val (scaleGen t c) r z J = gm r z ⊤ c * val t r z J :=
   gm_scaleGen t c r z _ (hJ.mem φ r)
 
+/- English proof (translation)
+Establish `hz : ∀ i, x i = 0 → ∀ c, e c i = 0`. Introduce `i hi c`. Assume the negation of the conclusion as `hne`. Conclude with `h c (Finset.prod_eq_zero (Finset.mem_univ i) (by rw [hi, zero_zpow _ hne]))`. Use `set y : I → F := fun i => if x i = 0 then 1 else x i with hy`.
+
+Establish `hy0 : ∀ i, y i ≠ 0` using `fun i => by`. Apply the tactic sequence `by_cases hi : x i = 0 <;> simp [hy, hi]`. Establish `hxy : ∀ i (n : ℤ), (x i = 0 → n = 0) → x i ^ n = y i ^ n`. Introduce `i n hn`. Distinguish the cases in `hi : x i = 0`.
+
+Rewrite using `[hn hi]`. Simplify using the standard rewrite rules. Simplify using `[hy, hi]`. Establish `l1 : ∀ c, ∏ i, x i ^ e c i = ∏ i, y i ^ e c i` using `fun c => Finset.prod_congr rfl fun i _ => hxy i _ fun hi => hz i hi c`. Establish `l2 : ∀ i, x i ^ ∑ c, w c * e c i = y i ^ ∑ c, w c * e c i` using `fun i => hxy i _ fun hi => by`.
+
+Simplify using `[hz i hi]`. Repeatedly rewrite using `[l1, l2, ← Finset.prod_zpow, ← zpow_mul]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `key : ∀ (a : F), a ≠ 0 → ∀ (s : Finset C) (n : C → ℤ), ∏ c ∈ s, a ^ n c = a ^ ∑ c ∈ s, n c`.
+
+Introduce `a ha s n`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert c s hc ih => rw [Finset.prod_insert hc, Finset.sum_insert hc, ih, zpow_add₀ ha]`. Rewrite using `[key _ (hy0 i)]`.
+
+Conclude with `congrArg _ (Finset.sum_congr rfl fun c _ => mul_comm _ _)`.
+-/
 theorem prod_zpow_swap {F : Type} [Field F] {I C : Type} [Fintype I] [Fintype C] (x : I → F) (e : C → I → ℤ)
     (w : C → ℤ) (h : ∀ c, ∏ i, x i ^ e c i ≠ 0) :
     ∏ c, (∏ i, x i ^ e c i) ^ w c = ∏ i, x i ^ ∑ c, w c * e c i := by
@@ -72,6 +96,21 @@ theorem prod_zpow_swap {F : Type} [Field F] {I C : Type} [Fintype I] [Fintype C]
 
 abbrev fracOver (ρ : V →+* V₁) (hρ : Function.Injective ρ) : Over (Sp V) := Over.mk (fracPt ρ hρ ≫ jK V)
 
+/- English proof (translation)
+Establish `hL : Q.M.L.IsLB` using `Q.M.isLB`. Use `choose k hk hkv using fun a b => (hτ a b).2`. Establish `htau : ∀ a b, val (Q.tau a b) (fracPt ρ hρ) z J = gm (fracPt ρ hρ) z ⊤ (unitOn (k a b)) * val (τ₀ a b) (fracPt ρ hρ ≫ jK V) z J`. Introduce `a b`. Set `t₁` to `scaleGen (LB.pullGen Q.M.L (lamPts (Q.c a) (Q.c b)) negε (τ₀ a b) (toUnit (TK V)).left) (unitOn (k a b))`.
+
+Establish `hc : LB.Gen.Corr Q.M.L _ _ _ _ (Q.tau a b) t₁` using `corr_of_val hL fun y J₁ hJ₁ => by`. Rewrite using `[val_scaleGen _ _ _ _ hJ₁, val_pull hJ₁, Category.id_comp]`. Conclude with `hkv a b y J₁ hJ₁`. Rewrite using `[val_corr hJ hc (fracPt ρ hρ), val_scaleGen _ _ _ _ hJ, val_pull hJ]`. Both sides reduce to the same expression.
+
+Establish `hunit : ∀ a b, gm (fracPt ρ hρ) z ⊤ (unitOn (k a b)) = gm (𝟙 _) z ⊤ (unitOn (Units.map (IsFractionRing.map (K` using `FractionRing V) (L := FractionRing V₁) hρ).toMonoidHom (k a b))) := fun a b => gm_spMap_unitOn _ z _`. Establish `hbase : ∀ a b, val (τ₀ a b) (fracPt ρ hρ ≫ jK V) z J = lamVal (Z` using `(TK V₁).left) w₀ (lift (toUnit (fracOver ρ hρ) ≫ Q.c a) (toUnit (fracOver ρ hρ) ≫ Q.c b)).left z J₀ J * val (τ₁ a b) ((fracPt ρ hρ ≫ jK V) ≫ spMap ib) z J₀ := fun a b => h₀ (fracOver ρ hρ) a b z J₀ J hJ₀ hJ`. Establish `hfk : ∀ a b, ((Units.map (IsFractionRing.map (K` using `FractionRing V) (L := FractionRing V₁) hρ).toMonoidHom (k a b) : (FractionRing V₁)ˣ) : FractionRing V₁) = ∏ i, algebraMap V₁ (FractionRing V₁) (ρ (s i)) ^ ε i a b := by`. Introduce `a b`. Use `show IsFractionRing.map (K := FractionRing V) (L := FractionRing V₁) hρ (k a b : FractionRing V) = _`.
+
+Rewrite using `[hk a b, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀]`. Simplify using `[IsFractionRing.map, IsLocalization.map_eq]`. Use `⟨∏ a, ∏ b, Units.map (IsFractionRing.map (K := FractionRing V) (L := FractionRing V₁) hρ).toMonoidHom (k (mu a) (mu b)) ^ W a b, ?_, ?_⟩` and prove the remaining obligations.
+
+Repeatedly rewrite using `[Units.coe_prod, Units.val_zpow_eq_zpow_val, hfk]`. Establish `hne : ∀ c : Fin 8 × Fin 8, ∏ i, algebraMap V₁ (FractionRing V₁) (ρ (s i)) ^ ε i (mu c.1) (mu c.2) ≠ 0` using `fun c => by rw [← hfk]; exact Units.ne_zero _`. Establish `e` using `prod_zpow_swap (fun i => algebraMap V₁ (FractionRing V₁) (ρ (s i))) (fun (c : Fin 8 × Fin 8) i => ε i (mu c.1) (mu c.2)) (fun (c : Fin 8 × Fin 8) => W c.1 c.2) hne`. Rewrite `e` using `[Fintype.prod_prod_type]`. Simplify using `only [Fintype.sum_prod_type] at e`.
+
+Rewrite using `[e]`. Both sides reduce to the same expression. Rewrite using `[hw (fracPt ρ hρ) (fracPt_comp ρ hρ) mu z J J' hJ hJ', _root_.mul_assoc]`. Use `congr 1`. Use `clear hw h₀ hkv hk hτ hfk`.
+
+Simplify using `only [htau, hunit, hbase]`. Simplify using `only [unitOn, map_prod, map_zpow, mul_zpow, Finset.prod_mul_distrib]`. Conclude with `_root_.mul_comm _ _`.
+-/
 theorem psi_val (W : Matrix (Fin 8) (Fin 8) ℤ) (Q : Data V) (ρ : V →+* V₁) (hρ : Function.Injective ρ) (D : DegPre V₁)
     (e : (Fin 8 → Q.X) ≃+ D.X) (pr : Fin 8 → (D.P.A ⟶ (Over.pullback (spMap ρ)).obj Q.B))
     (w : LB.Iso D.P.L (LB.LinComb Q.M.L (K := (Fin 8 × Fin 8) × Fin 4)
@@ -143,6 +182,9 @@ theorem psi_val (W : Matrix (Fin 8) (Fin 8) ℤ) (Q : Data V) (ρ : V →+* V₁
     simp only [unitOn, map_prod, map_zpow, mul_zpow, Finset.prod_mul_distrib]
     exact _root_.mul_comm _ _
 
+/- English proof (translation)
+Take `⟨pr, w, h1, h2, h3, h4, hw⟩` from `hS`. Take `⟨B₀, _, _, M₀, c₀, τ₁, β, β₂, w₀, g1, g2, g3, g4, g5, g6, g7, h₀⟩` from `hB`. Conclude with `⟨pr, w, h1, h2, h3, h4, B₀, inferInstance, inferInstance, M₀, c₀, τ₁, β, β₂, w₀, g1, g2, g3, g4, g5, g6, g7, h₀, fun mu z J J' J₀ hJ hJ' hJ₀ => psi_val W Q ρ hρ D e pr w hw τ₀ s ε hτ ib B₀ M₀ c₀ τ₁ β₂ w₀ h₀ mu z J J' J₀ hJ hJ' hJ₀⟩`.
+-/
 theorem psi_val_of (W : Matrix (Fin 8) (Fin 8) ℤ) (Q : Data V) (ρ : V →+* V₁) (hρ : Function.Injective ρ) (D : DegPre V₁)
     (e : (Fin 8 → Q.X) ≃+ D.X) (hS : SharpRef W Q ρ D e) (τ₀ : Gens Q) {n : ℕ} (s : Fin n → V)
     (ε : Fin n → LinearMap.BilinForm ℤ Q.X) (hτ : TauIn Q τ₀ s ε) {W₀ : Type} [CommRing W₀] (ib : W₀ →+* V)

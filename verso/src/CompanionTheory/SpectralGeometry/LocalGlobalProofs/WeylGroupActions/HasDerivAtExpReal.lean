@@ -29,9 +29,17 @@ def wt (p N : ℕ) : Fin (2 * 0 + 4 + 1) → ℂ := ![0, 1, (p : ℂ) + 1, 2 * (
 def eul {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (a b c d : Fin (2 * 0 + 4 + 1)) (f : B.Mat 4 0 → E) :
     B.Mat 4 0 → E := fun g => g c d • fderiv ℂ f g (Matrix.single a b 1)
 
+/- English proof (translation)
+The claim follows from `isOpen_ne_fun ((continuous_apply (4 : Fin (2 * 0 + 4 + 1))).comp (continuous_apply (4 : Fin (2 * 0 + 4 + 1)))) continuous_const`.
+-/
 theorem isOpen_cone : IsOpen cone :=
   isOpen_ne_fun ((continuous_apply (4 : Fin (2 * 0 + 4 + 1))).comp (continuous_apply (4 : Fin (2 * 0 + 4 + 1)))) continuous_const
 
+/- English proof (translation)
+Establish `h2 : minor2 1 = 1`. Unfold `minor2; rw [Matrix.submatrix_one _ (by decide), det_one]`. Establish `h3 : minor3 1 = 1`. Unfold `minor3; rw [Matrix.submatrix_one _ (by decide), det_one]`. Establish `h4 : minor4 1 = 1`.
+
+Unfold `minor4; rw [Matrix.submatrix_one _ (by decide), det_one]`. Simplify using `[coef, h2, h3, h4]`.
+-/
 theorem coef_one (p N : ℕ) : coef p N 1 = 1 := by
   have h2 : minor2 1 = 1 := by
     unfold minor2; rw [Matrix.submatrix_one _ (by decide), det_one]
@@ -45,10 +53,18 @@ section deriv
 
 variable {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+The claim follows from `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => CompanionTheory.D.Inhab.exp_entry n X i j`.
+-/
 theorem hasDerivAt_exp_real (X : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0 :=
   hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => CompanionTheory.D.Inhab.exp_entry n X i j
 
+/- English proof (translation)
+Unfold `RdV`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `(LinearMap.mulLeft ℝ g).toContinuousLinearMap`. Establish `h1 : HasDerivAt (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) (g * X) 0` using `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_exp_real X)`. Establish `h2 : HasFDerivAt f ((fderiv ℂ f g).restrictScalars ℝ) (g * NormedSpace.exp (((0 : ℝ) : ℂ) • X))`. Rewrite using `[Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero]`.
+
+Rewrite using `[Matrix.mul_one]`. Conclude with `hf.hasFDerivAt.restrictScalars ℝ`. Conclude with `(h2.comp_hasDerivAt (0 : ℝ) h1).deriv`.
+-/
 theorem rdV_eq_fderiv (X g : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n) ℂ → E)
     (hf : DifferentiableAt ℂ f g) : RdV X f g = fderiv ℂ f g (g * X) := by
   unfold RdV
@@ -61,6 +77,11 @@ theorem rdV_eq_fderiv (X g : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fi
     exact hf.hasFDerivAt.restrictScalars ℝ
   exact (h2.comp_hasDerivAt (0 : ℝ) h1).deriv
 
+/- English proof (translation)
+Unfold `B.LdV`. Set `L : B.Mat k r →L[ℝ] B.Mat k r` to `(LinearMap.mulRight ℝ g).toContinuousLinearMap`. Establish `h1 : HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • (-X)) * g) ((-X) * g) 0` using `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_exp_real (-X))`. Establish `h2 : HasFDerivAt f ((fderiv ℂ f g).restrictScalars ℝ) (NormedSpace.exp (((0 : ℝ) : ℂ) • (-X)) * g)`. Rewrite using `[Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero]`.
+
+Rewrite using `[Matrix.one_mul]`. Conclude with `hf.hasFDerivAt.restrictScalars ℝ`. Establish `h3` using `(h2.comp_hasDerivAt (0 : ℝ) h1).deriv`. Simplify using `only [smul_neg, Matrix.neg_mul] at h3`. Conclude with `h3`.
+-/
 theorem ldV_eq_fderiv {k r : ℕ} (X g : B.Mat k r) (f : B.Mat k r → E)
     (hf : DifferentiableAt ℂ f g) : B.LdV X f g = fderiv ℂ f g (-(X * g)) := by
   unfold B.LdV
@@ -75,6 +96,11 @@ theorem ldV_eq_fderiv {k r : ℕ} (X g : B.Mat k r) (f : B.Mat k r → E)
   simp only [smul_neg, Matrix.neg_mul] at h3
   exact h3
 
+/- English proof (translation)
+Unfold `EabH`. Rewrite using `[rdV_eq_fderiv _ _ _ hf, rdV_eq_fderiv _ _ _ hf, ← map_smul, ← map_add, ← Matrix.mul_smul, ← Matrix.mul_add]`. Use `congr 2`. Unfold `hpart1 hpart2`. Rewrite using `[smul_smul]`.
+
+Establish `: Complex.I * (1 / (2 * Complex.I)) = 1 / 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, ← smul_add]`. Rewrite using `[sub_add_add_cancel, ← two_smul ℂ, smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem eabH_eq_fderiv (H g : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) (f : Matrix (Fin n) (Fin n) ℂ → E)
     (hf : DifferentiableAt ℂ f g) : EabH H a b f g = fderiv ℂ f g (g * Matrix.single a b 1) := by
   unfold EabH

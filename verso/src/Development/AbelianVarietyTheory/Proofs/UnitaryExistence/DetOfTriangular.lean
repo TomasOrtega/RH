@@ -14,6 +14,9 @@ open scoped ComplexConjugate
 open NumberField Matrix in
 open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply]`. Use `fun_prop`.
+-/
 lemma _root_.GlobalTheory.PerMove.differentiable_det {X : Type*} [NormedAddCommGroup X] [NormedSpace ℂ X] {r : ℕ}
     (M : X → Matrix (Fin r) (Fin r) ℂ) (hM : ∀ a b, Differentiable ℂ fun x => M x a b) :
     Differentiable ℂ fun x => (M x).det := by
@@ -23,6 +26,9 @@ lemma _root_.GlobalTheory.PerMove.differentiable_det {X : Type*} [NormedAddCommG
 open NumberField Matrix in
 open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
+/- English proof (translation)
+Rewrite using `[Matrix.inv_def, Matrix.smul_mulVec, Pi.smul_apply, smul_eq_mul, Ring.inverse_eq_inv', ← Matrix.cramer_eq_adjugate_mulVec, Matrix.cramer_apply]`.
+-/
 lemma _root_.GlobalTheory.PerMove.inv_mulVec_apply {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (w : Fin r → ℂ) (a : Fin r) :
     (A⁻¹ *ᵥ w) a = (A.det)⁻¹ * (A.updateCol a w).det := by
   rw [Matrix.inv_def, Matrix.smul_mulVec, Pi.smul_apply, smul_eq_mul, Ring.inverse_eq_inv',
@@ -32,6 +38,9 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 
+/- English proof (translation)
+Use `letI : LinearOrder n := LinearOrder.lift' f hf`. Conclude with `Matrix.det_of_upperTriangular fun k l h => hM k l h`.
+-/
 lemma _root_.GlobalTheory.PerMove.det_of_triangular {n α : Type*} [Fintype n] [DecidableEq n] [LinearOrder α] (f : n → α)
     (hf : Function.Injective f) (M : Matrix n n ℂ) (hM : ∀ k l, f l < f k → M k l = 0) :
     M.det = ∏ k, M k k := by
@@ -44,10 +53,16 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
+/- English proof (translation)
+The claim follows from `NumberField.IsCMField.complexEmbedding_complexConj (K := E) τ z`.
+-/
 lemma _root_.GlobalTheory.PerMove.map_cc (τ : E →+* ℂ) (z : E) : τ (_root_.ReciprocityTheory.ChartRestriction.G.FD.cc z) = conj (τ z) :=
   NumberField.IsCMField.complexEmbedding_complexConj (K := E) τ z
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Simplify using `[FD.hermC, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 lemma hermC_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u w : Fin r → ℂ) :
     FD.hermC τ G u w = u ⬝ᵥ (G.map τ *ᵥ star w) := by
   simp [FD.hermC, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
@@ -56,6 +71,9 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
+/- English proof (translation)
+Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 private lemma hermC_eq_dotProduct' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u w : Fin r → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ G u w = u ⬝ᵥ (G.map τ *ᵥ star w) := by
   simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
@@ -64,6 +82,9 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
+/- English proof (translation)
+Establish `hstar : star (P *ᵥ w) = P.map (starRingEnd ℂ) *ᵥ star w`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct]`. Rewrite using `[hermC_eq_dotProduct', hstar, Matrix.mulVec_mulVec, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 private lemma hermC_mulVec_mulVec' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (P : Matrix (Fin r) (Fin r) ℂ) (u w : Fin r → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ G (P *ᵥ u) (P *ᵥ w) = u ⬝ᵥ ((Pᵀ * G.map τ * P.map (starRingEnd ℂ)) *ᵥ star w) := by
@@ -76,6 +97,13 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
+/- English proof (translation)
+Establish `hM : γᵀ * G * γ.map _root_.ReciprocityTheory.ChartRestriction.G.FD.cc = G`. Use extensionality with `a b`. Establish `h` using `hγ (Pi.single a 1) (Pi.single b 1)`. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.herm, Matrix.mulVec_single_one] at h`. Simplify using `[Pi.single_apply, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc] at h`.
+
+Simplify using `[Matrix.mul_apply, Finset.sum_mul, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc]`. Rewrite using `[Finset.sum_comm]`. Apply the tactic sequence `convert h using 3 <;> ring_nf`. Establish `hconj : (γ.map τ).map (starRingEnd ℂ) = (γ.map _root_.ReciprocityTheory.ChartRestriction.G.FD.cc).map τ`. Use extensionality with `i j`.
+
+Simplify using `[_root_.GlobalTheory.PerMove.map_cc]`. Rewrite using `[hermC_mulVec_mulVec', hconj, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hM, hermC_eq_dotProduct']`.
+-/
 lemma _root_.GlobalTheory.PerMove.hermC_unitary (τ : E →+* ℂ) (G γ : Matrix (Fin r) (Fin r) E)
     (hγ : ∀ u v, _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G (γ *ᵥ u) (γ *ᵥ v) = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G u v) (u w : Fin r → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ G (γ.map τ *ᵥ u) (γ.map τ *ᵥ w) = _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ G u w := by
@@ -98,6 +126,9 @@ open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb, Matrix.mulVec, dotProduct, map_sum]`.
+-/
 lemma _root_.GlobalTheory.PerMove.emb_mulVec (τ : E →+* ℂ) (γ : Matrix (Fin r) (Fin r) E) (v : Fin r → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ (γ *ᵥ v) = γ.map τ *ᵥ _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ v := by
   ext a
@@ -107,6 +138,9 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+-/
 lemma _root_.GlobalTheory.PerMove.col_mul (g x : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.col (g * x) a = g *ᵥ _root_.ReciprocityTheory.ChartRestriction.G.FD.col x a := by
   ext i
@@ -117,6 +151,11 @@ open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC, _root_.ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma _root_.GlobalTheory.PerMove.hermC_col_mul (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x b : Matrix (Fin r) (Fin r) ℂ)
     (a : Fin r) (w : Fin r → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ G (_root_.ReciprocityTheory.ChartRestriction.G.FD.col (x * b) a) w = ∑ c, b c a * _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ G (_root_.ReciprocityTheory.ChartRestriction.G.FD.col x c) w := by
@@ -133,6 +172,9 @@ open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Introduce `i j h` and use `(hb τ).2 i j h`.
+-/
 lemma _root_.GlobalTheory.PerMove.bor_tri {Ψ : Finset (E →+* ℂ)} {b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r} (hb : b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor Ψ r) (τ : Ψ) :
     (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ).BlockTriangular id := fun i j h => (hb τ).2 i j h
 
@@ -141,6 +183,9 @@ open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Establish `h` using `(hb τ).1`. Rewrite `h` using `[Matrix.det_of_upperTriangular (_root_.GlobalTheory.PerMove.bor_tri hb τ)]`. Conclude with `Finset.prod_ne_zero_iff.mp h a (Finset.mem_univ a)`.
+-/
 lemma _root_.GlobalTheory.PerMove.bor_diag_ne {Ψ : Finset (E →+* ℂ)} {b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r} (hb : b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor Ψ r) (τ : Ψ)
     (a : Fin r) : _root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ a a ≠ 0 := by
   have h := (hb τ).1
@@ -152,6 +197,9 @@ open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use `letI := (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ).invertibleOfIsUnitDet (isUnit_iff_ne_zero.mpr (hb τ).1)`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular (_root_.GlobalTheory.PerMove.bor_tri hb τ)`.
+-/
 lemma _root_.GlobalTheory.PerMove.bor_inv_tri {Ψ : Finset (E →+* ℂ)} {b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r} (hb : b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor Ψ r) (τ : Ψ) :
     (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ)⁻¹.BlockTriangular id := by
   letI := (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ).invertibleOfIsUnitDet (isUnit_iff_ne_zero.mpr (hb τ).1)
@@ -162,6 +210,13 @@ open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use `set M := _root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ with hM`. Establish `hmul : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv M (isUnit_iff_ne_zero.mpr (hb τ).1)`. Establish `h` using `congrFun (congrFun hmul a) a`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq, Finset.sum_eq_single a]`. Establish `hd : M a a = b τ a a` using `rfl`.
+
+Rewrite using `[← hd]`. Conclude with `eq_inv_of_mul_eq_one_right h`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with hlt | hlt` into its components or cases. Rewrite using `[show M a k = 0 from _root_.GlobalTheory.PerMove.bor_tri hb τ hlt, zero_mul]`.
+
+Rewrite using `[show M⁻¹ k a = 0 from _root_.GlobalTheory.PerMove.bor_inv_tri hb τ hlt, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+-/
 lemma _root_.GlobalTheory.PerMove.bor_inv_diag {Ψ : Finset (E →+* ℂ)} {b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r} (hb : b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor Ψ r) (τ : Ψ)
     (a : Fin r) : (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ)⁻¹ a a = (b τ a a)⁻¹ := by
   set M := _root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ with hM
@@ -181,6 +236,13 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
+/- English proof (translation)
+Introduce `τ`. Establish `hmat : _root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b) τ = _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ * _root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ` using `rfl`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hmat, Matrix.det_mul]`. Conclude with `mul_ne_zero (hx τ).1 (hb τ).1`.
+
+Establish `h` using `(hx τ).2 i`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin at h ⊢`. Rewrite using `[hmat, _root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.gram_mul, _root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.lminor_conj (_root_.GlobalTheory.PerMove.bor_tri hb τ)]`. Use `set z := ∏ j, _root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ (Fin.castLE (Nat.le_of_lt_succ i.isLt) j) (Fin.castLE (Nat.le_of_lt_succ i.isLt) j)`. Establish `hz : z ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun j _ => _root_.GlobalTheory.PerMove.bor_diag_ne hb τ _`.
+
+Establish `hre : ∀ m : ℂ, (z * m * (starRingEnd ℂ) z).re = Complex.normSq z * m.re`. Introduce `m`. Rewrite using `[mul_right_comm, Complex.mul_conj, Complex.re_ofReal_mul]`. Rewrite using `[hre, mul_left_comm]`. Conclude with `mul_pos (Complex.normSq_pos.mpr hz) h`.
+-/
 lemma _root_.GlobalTheory.PerMove.rmul_mem_GG {Ψ : Finset (E →+* ℂ)} {G : Matrix (Fin r) (Fin r) E} {q : ℕ}
     {x b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r} (hx : x ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.GG Ψ G q) (hb : b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor Ψ r) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.GG Ψ G q := by
@@ -208,6 +270,9 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC _root_.ReciprocityTheory.ChartRestriction.G.FD.col _root_.ReciprocityTheory.ChartRestriction.G.FD.mat`. Simplify using `only [Matrix.of_apply]`. Use `fun_prop`.
+-/
 private lemma differentiable_hermC_col_mat {Ψ : Finset (E →+* ℂ)} (G : Matrix (Fin r) (Fin r) E)
     (σ : Ψ) (a : Fin r) (w : Fin r → ℂ) :
     Differentiable ℂ fun x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r => _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC σ.1 G (_root_.ReciprocityTheory.ChartRestriction.G.FD.col (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x σ) a) w := by
@@ -219,6 +284,13 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.PerMove.inv_mulVec_apply]`. Use `DifferentiableOn.mul ?_ ?_` and prove the remaining obligations. Use `DifferentiableOn.inv ?_ fun x hx => hs x hx σ` and prove the remaining obligations. Use `(_root_.GlobalTheory.PerMove.differentiable_det _ fun i j => ?_).differentiableOn` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.mat`.
+
+Simplify using `only [Matrix.of_apply]`. Use `fun_prop`. Use `(_root_.GlobalTheory.PerMove.differentiable_det _ fun i j => ?_).differentiableOn` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.mat`. Simplify using `only [Matrix.updateCol_apply, Matrix.of_apply]`.
+
+Apply the tactic sequence `split_ifs <;> fun_prop`.
+-/
 private lemma differentiableOn_mat_inv_mulVec_apply {Ψ : Finset (E →+* ℂ)} (s : Set (_root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r))
     (hs : ∀ x ∈ s, ∀ σ, (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x σ).det ≠ 0) (σ : Ψ) (a : Fin r) (w : Fin r → ℂ) :
     DifferentiableOn ℂ (fun x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r => ((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x σ)⁻¹ *ᵥ w) a) s := by
@@ -237,6 +309,11 @@ open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[← idx.symm.sum_comp]`. Simplify using `only [Equiv.apply_symm_apply, ite_mul, zero_mul, Fintype.sum_prod_type]`. Rewrite using `[Finset.sum_eq_single σ]`. Simplify using the standard rewrite rules. Introduce `τ _ hτ`.
+
+Simplify using `[hτ]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ σ) h`.
+-/
 private lemma sum_ite_fst_eq_sum_symm {Ψ : Finset (E →+* ℂ)} [DecidableEq Ψ] {g : ℕ} (idx : Fin g ≃ Ψ × Fin r) (σ : Ψ)
     (F : Fin g → ℂ) (c : Fin r → ℂ) :
     ∑ l, (if (idx l).1 = σ then c (idx l).2 else 0) * F l = ∑ a, c a * F (idx.symm (σ, a)) := by
@@ -253,6 +330,37 @@ open scoped nonZeroDivisors in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D r ξ Gm φ Ψ hΨ g idx ty hty _ _ _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P hP v`. Rewrite using `[differentiableOn_pi]`. Introduce `k`.
+
+Simplify using `only [hP]`. Use `split_ifs`. Conclude with `(differentiable_hermC_col_mat Gm _ _ _).differentiableOn`. Conclude with `differentiableOn_mat_inv_mulVec_apply _ (fun x hx σ => (hx σ).1) _ _ _`. Introduce `x γ P P' hγ hP hP' v v' hv`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[hP', hP, hv]`. Establish `hmat : _root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ x) (idx k).1 = (γ : Matrix (Fin r) (Fin r) E).map (idx k).1.1 * _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x (idx k).1` using `rfl`. Rewrite using `[hmat, _root_.GlobalTheory.PerMove.emb_mulVec]`. Use `split_ifs`.
+
+Rewrite using `[_root_.GlobalTheory.PerMove.col_mul, _root_.GlobalTheory.PerMove.hermC_unitary _ _ _ hγ]`. Establish `hunit : IsUnit ((γ : Matrix (Fin r) (Fin r) E).map (idx k).1.1).det`. Rewrite using `[show ((γ : Matrix (Fin r) (Fin r) E).map (idx k).1.1).det = (idx k).1.1 (γ : Matrix (Fin r) (Fin r) E).det from (RingHom.map_det _ _).symm]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp γ.isUnit).map _`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hunit, Matrix.mul_one]`.
+
+Introduce `x hx b hb P P' hP hP'`. Use `⟨_root_.GlobalTheory.PerMove.rmul_mem_GG hx hb, ?_⟩` and prove the remaining obligations. Set `coeff : Fin g → Fin r → ℂ` to `fun k c => if ((idx k).2 : ℕ) < D.q then _root_.ReciprocityTheory.ChartRestriction.G.FD.mat b (idx k).1 c (idx k).2 else (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat b (idx k).1)⁻¹ (idx k).2 c`. Set `h : Matrix (Fin g) (Fin g) ℂ` to `Matrix.of fun k l => if (idx l).1 = (idx k).1 then coeff k (idx l).2 else 0`. Use `⟨h, fun v => ?_, fun k => ?_, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `k`. Establish `hmat : _root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b) (idx k).1 = _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x (idx k).1 * _root_.ReciprocityTheory.ChartRestriction.G.FD.mat b (idx k).1` using `rfl`. Rewrite using `[hP', hmat, show (h *ᵥ P v) k = ∑ l, h k l * P v l from rfl]`. Simplify using `only [h, Matrix.of_apply]`. Rewrite using `[sum_ite_fst_eq_sum_symm]`.
+
+Simplify using `only [hP, Equiv.apply_symm_apply, coeff]`. Use `split_ifs with hk`. Rewrite using `[_root_.GlobalTheory.PerMove.hermC_col_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`.
+
+Both sides reduce to the same expression. Rewrite using `[show _root_.ReciprocityTheory.ChartRestriction.G.FD.mat b (idx k).1 c (idx k).2 = 0 from _root_.GlobalTheory.PerMove.bor_tri hb _ (by`. Simplify using `only [id_eq, Fin.lt_def]`. Use the proof step `omega), zero_mul, zero_mul]`. Rewrite using `[Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, Matrix.mulVec, dotProduct]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Rewrite using `[show (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat b (idx k).1)⁻¹ (idx k).2 c = 0 from _root_.GlobalTheory.PerMove.bor_inv_tri hb _ (by`. Simplify using `only [id_eq, Fin.lt_def]`. Use the proof step `omega), zero_mul, zero_mul]`.
+
+Both sides reduce to the same expression. Simplify using `only [h, coeff, Matrix.of_apply, if_true] split_ifs`. Both sides reduce to the same expression. Conclude with `_root_.GlobalTheory.PerMove.bor_inv_diag hb _ _`. Set `key : Fin r → ℤ` to `fun a => if (a : ℕ) < D.q then -(a : ℤ) else a`.
+
+Set `f : Fin g → ℕ ×ₗ ℤ` to `fun k => toLex ((Fintype.equivFin Ψ (idx k).1 : ℕ), key (idx k).2)`. Establish `hkey : ∀ a c : Fin r, key a = key c → a = c`. Introduce `a c hac`. Simplify using `only [key] at hac`. Use `ext`.
+
+Apply the tactic sequence `split_ifs at hac <;> omega`. Use `_root_.GlobalTheory.PerMove.det_of_triangular f (fun k l hkl => ?_) h fun k l hlt => ?_` and prove the remaining obligations. Simplify using `only [f, toLex_inj, Prod.mk.injEq] at hkl`. Apply `idx.injective` to reduce the goal to its premises. Conclude with `Prod.ext ((Fintype.equivFin Ψ).injective (Fin.ext hkl.1)) (hkey _ _ hkl.2)`.
+
+Simplify using `only [h, Matrix.of_apply] split_ifs with hσ`. Establish `hk : key (idx l).2 < key (idx k).2`. Break down `(Prod.Lex.toLex_lt_toLex).mp hlt with h1 | ⟨_, h2⟩` into its components or cases. Simplify using `only [hσ] at h1`. Conclude with `absurd h1 (lt_irrefl _)`.
+
+Conclude with `h2`. Simplify using `only [key] at hk`. Simplify using `only [coeff]`. Use `split_ifs with ha`. Apply the tactic sequence `exact _root_.GlobalTheory.PerMove.bor_tri hb _ (by simp only [id_eq, Fin.lt_def]; split_ifs at hk <;> omega)`.
+
+Apply the tactic sequence `exact _root_.GlobalTheory.PerMove.bor_inv_tri hb _ (by simp only [id_eq, Fin.lt_def]; split_ifs at hk <;> omega)`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.per_move :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
         : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D

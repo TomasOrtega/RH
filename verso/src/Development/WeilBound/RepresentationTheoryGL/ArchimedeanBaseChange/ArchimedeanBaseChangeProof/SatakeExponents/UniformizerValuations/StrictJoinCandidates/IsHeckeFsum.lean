@@ -31,11 +31,19 @@ def hiE (n : ℕ) : Fin (n / 2) ↪ Fin n :=
 def xiOf (n : ℕ) (β : Fin (n / 2) → ℂˣ) (k : Fin n) : ℂˣ :=
   if h : k.val < n / 2 then β ⟨k.val, h⟩ else if h' : n - 1 - k.val < n / 2 then (β ⟨n - 1 - k.val, h'⟩)⁻¹ else 1
 
+/- English proof (translation)
+Unfold `xiOf`. Rewrite using `[dif_pos (show (loE n i).val < n / 2 from i.isLt)]`. Both sides reduce to the same expression.
+-/
 theorem xi_lo (n : ℕ) (β : Fin (n / 2) → ℂˣ) (i : Fin (n / 2)) : xiOf n β (loE n i) = β i := by
   unfold xiOf
   rw [dif_pos (show (loE n i).val < n / 2 from i.isLt)]
   rfl
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Unfold `xiOf`. Rewrite using `[dif_neg (show ¬ (hiE n i).val < n / 2 by show ¬ (n - 1 - i.val < n / 2); omega), dif_pos (show n - 1 - (hiE n i).val < n / 2 by show n - 1 - (n - 1 - i.val) < n / 2; omega)]`. Establish `key : ∀ j : Fin (n / 2), j.val = i.val → (β j)⁻¹ = (β i)⁻¹`. Introduce `j hj`.
+
+Rewrite using `[Fin.ext hj]`. Conclude with `key _ (by show n - 1 - (n - 1 - i.val) = i.val; omega)`.
+-/
 theorem xi_hi (n : ℕ) (β : Fin (n / 2) → ℂˣ) (i : Fin (n / 2)) : xiOf n β (hiE n i) = (β i)⁻¹ := by
   have hi := i.isLt
   unfold xiOf
@@ -46,11 +54,25 @@ theorem xi_hi (n : ℕ) (β : Fin (n / 2) → ℂˣ) (i : Fin (n / 2)) : xiOf n 
     rw [Fin.ext hj]
   exact key _ (by show n - 1 - (n - 1 - i.val) = i.val; omega)
 
+/- English proof (translation)
+Unfold `xiOf`. Rewrite using `[dif_neg h1, dif_neg h2]`.
+-/
 theorem xi_mid (n : ℕ) (β : Fin (n / 2) → ℂˣ) (k : Fin n) (h1 : ¬ k.val < n / 2) (h2 : ¬ n - 1 - k.val < n / 2) :
     xiOf n β k = 1 := by
   unfold xiOf
   rw [dif_neg h1, dif_neg h2]
 
+/- English proof (translation)
+Establish `hdisj : Disjoint (Finset.univ.map (loE n)) (Finset.univ.map (hiE n))`. Rewrite using `[Finset.disjoint_left]`. Introduce `a ha hb`. Take `⟨i, -, hi⟩` from `Finset.mem_map.1 ha`. Take `⟨j, -, hj⟩` from `Finset.mem_map.1 hb`.
+
+Establish `e1 : a.val = i.val` using `by rw [← hi]; rfl`. Establish `e2 : a.val = n - 1 - j.val` using `by rw [← hj]; rfl`. Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hsub : ∀ k ∈ (Finset.univ : Finset (Fin n)), k ∉ Finset.univ.map (loE n) ∪ Finset.univ.map (hiE n) → F k = 1`. Introduce `k _ hk`. Establish `hkl` using `k.isLt`. Apply `hmid k` to reduce the goal to its premises. Introduce `h`.
+
+Conclude with `hk (Finset.mem_union_left _ (Finset.mem_map.2 ⟨⟨k.val, h⟩, Finset.mem_univ _, Fin.ext rfl⟩))`. Introduce `h`. Use `hk (Finset.mem_union_right _ (Finset.mem_map.2 ⟨⟨n - 1 - k.val, h⟩, Finset.mem_univ _, Fin.ext ?_⟩))` and prove the remaining obligations. Use `show n - 1 - (n - 1 - k.val) = k.val`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[← Finset.prod_subset (Finset.subset_univ _) hsub, Finset.prod_union hdisj, Finset.prod_map, Finset.prod_map, Finset.prod_mul_distrib]`.
+-/
 theorem prod_halves {M : Type} [CommMonoid M] (n : ℕ) (F : Fin n → M)
     (hmid : ∀ k : Fin n, ¬ k.val < n / 2 → ¬ n - 1 - k.val < n / 2 → F k = 1) :
     ∏ k, F k = ∏ i : Fin (n / 2), F (loE n i) * F (hiE n i) := by
@@ -81,6 +103,13 @@ def uq {E : Type} [Field E] [NumberField E] (w : Pl E) : ℂˣ := Units.mk0 (qh 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Establish `r1 : rh n (loE n i : ℕ) = (n : ℤ) - 1 - 2 * ((i : ℕ) : ℤ)` using `rfl`. Establish `r2 : rh n (hiE n i : ℕ) = -((n : ℤ) - 1 - 2 * ((i : ℕ) : ℤ))` using `by show (n : ℤ) - 1 - 2 * (((n - 1 - i.val : ℕ)) : ℤ) = _`. Use linear arithmetic over natural numbers and integers. Establish `hl : lOf x i = x (loE n i) - x (hiE n i)` using `rfl`.
+
+Unfold `chiN`. Rewrite using `[xi_lo, xi_hi, unit_power_eq_residue_power, unit_power_eq_residue_power, r1, r2, hl]`. Express the relevant statement in the definitionally equal form `(β i * uq w ^ _) ^ _ * ((β i)⁻¹ * uq w ^ _) ^ _ = _`. Use `set r : ℤ := (n : ℤ) - 1 - 2 * ((i : ℕ) : ℤ)`. Use `set a := x (loE n i)`.
+
+Use `set c := x (hiE n i)`. Rewrite using `[mul_zpow, mul_zpow, _root_.inv_zpow', ← _root_.zpow_mul, ← _root_.zpow_mul, show r * (a - c) = r * a + -r * c by ring, show a - c = a + -c by ring, _root_.zpow_add, _root_.zpow_add]`. The two sides agree by associativity and commutativity.
+-/
 theorem chi_pair (w : Pl E) (β : Fin (n / 2) → ℂˣ) (x : Fin n → ℤ) (i : Fin (n / 2)) :
     chiN w (xiOf n β) (loE n i) ^ x (loE n i) * chiN w (xiOf n β) (hiE n i) ^ x (hiE n i) =
       uq w ^ (((n : ℤ) - 1 - 2 * ((i : ℕ) : ℤ)) * lOf x i) * β i ^ lOf x i := by
@@ -100,6 +129,13 @@ theorem chi_pair (w : Pl E) (β : Fin (n / 2) → ℂˣ) (x : Fin n → ℤ) (i 
     show r * (a - c) = r * a + -r * c by ring, show a - c = a + -c by ring, _root_.zpow_add, _root_.zpow_add]
   ac_rfl
 
+/- English proof (translation)
+Rewrite using `[prod_halves n (fun k => chiN w (xiOf n β) k ^ x k) (fun k h1 h2 => by`. Establish `hk` using `k.isLt`. Use `show chiN w (xiOf n β) k ^ x k = 1`. Unfold `chiN`. Rewrite using `[xi_mid n β k h1 h2, unit_power_eq_residue_power, show rh n (k : ℕ) = 0 by unfold rh; omega]`.
+
+Use the proof step `simp)]`. Simplify using `only [chi_pair]`. Rewrite using `[Finset.prod_mul_distrib, Units.val_mul, ← zpow_finsum']`. Use `congr 1`. Unfold `dlt uq`.
+
+Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_mk0]`. Unfold `pw`. Rewrite using `[Units.coe_prod]`.
+-/
 theorem dlt_pw (w : Pl E) (β : Fin (n / 2) → ℂˣ) (x : Fin n → ℤ) :
     dlt n w (lOf x) * pw β (lOf x) = ((∏ k, chiN w (xiOf n β) k ^ x k : ℂˣ) : ℂ) := by
   rw [prod_halves n (fun k => chiN w (xiOf n β) k ^ x k) (fun k h1 h2 => by
@@ -116,20 +152,40 @@ theorem dlt_pw (w : Pl E) (β : Fin (n / 2) → ℂˣ) (x : Fin n → ℤ) :
   · unfold pw
     rw [Units.coe_prod]
 
+/- English proof (translation)
+Unfold `xiOf`. Rewrite using `[dif_pos h]`.
+-/
 theorem xn_lo (β : Fin (n / 2) → ℂˣ) (k : Fin n) (h : k.val < n / 2) :
     ‖(xiOf n β k : ℂ)‖ = ‖(β ⟨k.val, h⟩ : ℂ)‖ := by
   unfold xiOf
   rw [dif_pos h]
 
+/- English proof (translation)
+Unfold `xiOf`. Rewrite using `[dif_neg h1, dif_pos h, Units.val_inv_eq_inv_val, norm_inv]`.
+-/
 theorem xn_hi (β : Fin (n / 2) → ℂˣ) (k : Fin n) (h1 : ¬ k.val < n / 2) (h : n - 1 - k.val < n / 2) :
     ‖(xiOf n β k : ℂ)‖ = ‖(β ⟨n - 1 - k.val, h⟩ : ℂ)‖⁻¹ := by
   unfold xiOf
   rw [dif_neg h1, dif_pos h, Units.val_inv_eq_inv_val, norm_inv]
 
+/- English proof (translation)
+Rewrite using `[xi_mid n β k h1 h2, Units.val_one, norm_one]`.
+-/
 theorem xn_mid (β : Fin (n / 2) → ℂˣ) (k : Fin n) (h1 : ¬ k.val < n / 2) (h2 : ¬ n - 1 - k.val < n / 2) :
     ‖(xiOf n β k : ℂ)‖ = 1 := by
   rw [xi_mid n β k h1 h2, Units.val_one, norm_one]
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `hij' : i.val ≤ j.val` using `hij`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Establish `hpos : ∀ k, 0 < ‖(β k : ℂ)‖` using `fun k => lt_of_lt_of_le one_pos (hg k)`.
+
+Distinguish the cases in `h1 : i.val < n / 2`. Distinguish the cases in `h3 : j.val < n / 2`. Rewrite using `[xn_lo β j h3, xn_lo β i h1]`. Conclude with `hm _ _ hij'`. Distinguish the cases in `h4 : n - 1 - j.val < n / 2`.
+
+Rewrite using `[xn_hi β j h3 h4, xn_lo β i h1]`. Conclude with `le_trans (inv_le_one_of_one_le₀ (hg _)) (hg _)`. Rewrite using `[xn_mid β j h3 h4, xn_lo β i h1]`. Conclude with `hg _`. Establish `h3 : ¬ j.val < n / 2` using `by omega`.
+
+Distinguish the cases in `h2 : n - 1 - i.val < n / 2`. Establish `h4 : n - 1 - j.val < n / 2` using `by omega`. Rewrite using `[xn_hi β j h3 h4, xn_hi β i h1 h2]`. Conclude with `inv_anti₀ (hpos _) (hm _ _ (show n - 1 - j.val ≤ n - 1 - i.val by omega))`. Rewrite using `[xn_mid β i h1 h2]`.
+
+Distinguish the cases in `h4 : n - 1 - j.val < n / 2`. Rewrite using `[xn_hi β j h3 h4]`. Conclude with `inv_le_one_of_one_le₀ (hg _)`. Rewrite using `[xn_mid β j h3 h4]`.
+-/
 theorem xi_mono (β : Fin (n / 2) → ℂˣ) (hm : ∀ i j : Fin (n / 2), i ≤ j → ‖(β j : ℂ)‖ ≤ ‖(β i : ℂ)‖)
     (hg : ∀ i, 1 ≤ ‖(β i : ℂ)‖) : N3.Mono (xiOf n β) := by
   intro i j hij
@@ -156,6 +212,25 @@ theorem xi_mono (β : Fin (n / 2) → ℂˣ) (hm : ∀ i j : Fin (n / 2), i ≤ 
         exact inv_le_one_of_one_le₀ (hg _)
       · rw [xn_mid β j h3 h4]
 
+/- English proof (translation)
+Establish `e1 : (Finset.univ : Finset (Fin n)).filter (fun k => k.val < n / 2) = Finset.univ.map (loE n)`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `⟨⟨k.val, h⟩, Fin.ext rfl⟩`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `i.isLt`. Establish `e2 : ((Finset.univ : Finset (Fin n)).filter (fun k => ¬ k.val < n / 2)).filter (fun k => n - 1 - k.val < n / 2) = Finset.univ.map (hiE n)`. Use extensionality with `k`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map]`. Establish `hk` using `k.isLt`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Use `⟨⟨n - 1 - k.val, h⟩, Fin.ext ?_⟩` and prove the remaining obligations.
+
+Use `show n - 1 - (n - 1 - k.val) = k.val`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨i, rfl⟩`. Use `i.isLt` as an intermediate fact. Conclude with `⟨by show ¬ (n - 1 - i.val < n / 2); omega, by show n - 1 - (n - 1 - i.val) < n / 2; omega⟩`.
+
+Use `set S := ((Finset.univ : Finset (Fin n)).filter (fun k => ¬ k.val < n / 2)).filter (fun k => ¬ n - 1 - k.val < n / 2) with hS`. Establish `e3 : S.val.map (xiOf n β) = Multiset.replicate S.card 1`. Rewrite using `[Multiset.eq_replicate]`. Use `⟨by simp, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, rfl⟩` from `Multiset.mem_map.1 hu`.
+
+Establish `hk2 : k ∈ S` using `hk`. Rewrite `hk2` using `[hS]`. Establish `hk'` using `Finset.mem_filter.1 hk2`. Conclude with `xi_mid n β k (Finset.mem_filter.1 hk'.1).2 hk'.2`. Establish `hsplit : (Finset.univ : Finset (Fin n)).val = ((Finset.univ : Finset (Fin n)).filter (fun k => k.val < n / 2)).val + (((Finset.univ : Finset (Fin n)).filter (fun k => ¬ k.val < n / 2)).filter (fun k => n - 1 - k.val < n / 2)).val + S.val`.
+
+Rewrite using `[hS, add_assoc]`. Simplify using `only [Finset.filter_val]`. Rewrite using `[Multiset.filter_add_not, Multiset.filter_add_not]`. Establish `hcard : S.card = n % 2`. Establish `hc` using `congrArg Multiset.card hsplit`.
+
+Simplify using `only [Multiset.card_add, ← Finset.card_def, e1, e2, Finset.card_map, Finset.card_univ, Fintype.card_fin] at hc`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hsplit, Multiset.map_add, Multiset.map_add, e3, hcard, e1, e2, Finset.map_val, Finset.map_val, Multiset.map_map, Multiset.map_map]`. Unfold `GlobalTheory.LGrp.bcParam`. Use `congr 3`.
+
+Use function extensionality and compare the values at `i`. Conclude with `xi_lo n β i`. Use function extensionality and compare the values at `i`. Conclude with `xi_hi n β i`.
+-/
 theorem xi_map (β : Fin (n / 2) → ℂˣ) : Finset.univ.val.map (xiOf n β) = GlobalTheory.LGrp.bcParam n β := by
   have e1 : (Finset.univ : Finset (Fin n)).filter (fun k => k.val < n / 2) = Finset.univ.map (loE n) := by
     ext k
@@ -208,6 +283,13 @@ theorem xi_map (β : Fin (n / 2) → ℂˣ) : Finset.univ.val.map (xiOf n β) = 
   · funext i
     exact xi_hi n β i
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `[levOp]`. Consider the case `insert j s hj ih`. Establish `hfin : {q : G ⧸ K' | (∑ i ∈ s, a i • f i) q.out ≠ 0}.Finite`.
+
+Use `(s.finite_toSet.biUnion fun i _ => hf i).subset ?_` and prove the remaining obligations. Introduce `q hq`. Establish `hq' : ∑ i ∈ s, a i * f i q.out ≠ 0`. Simplify `hq` using `[Finset.sum_apply]`. Take `⟨i, hi, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hq'`.
+
+Conclude with `Set.mem_biUnion hi (right_ne_zero_of_mul hne)`. Establish `hfin1 : {q : G ⧸ K' | (a j • f j) q.out ≠ 0}.Finite` using `(hf j).subset fun q hq => right_ne_zero_of_mul (by simpa using hq)`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, GlobalTheory.TwTrLin.levOp_add ρ K K' _ _ A hfin1 hfin, GlobalTheory.TwTrLin.levOp_smul_fun, ih]`.
+-/
 theorem levOp_fsum {G V ι : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     (K K' : Subgroup G) (A : V →ₗ[ℂ] V) (s : Finset ι) (a : ι → ℂ) (f : ι → G → ℂ)
     (hf : ∀ i, {q : G ⧸ K' | f i q.out ≠ 0}.Finite) :
@@ -228,6 +310,11 @@ theorem levOp_fsum {G V ι : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ
     rw [Finset.sum_insert hj, Finset.sum_insert hj, GlobalTheory.TwTrLin.levOp_add ρ K K' _ _ A hfin1 hfin,
       GlobalTheory.TwTrLin.levOp_smul_fun, ih]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty]`. Conclude with `⟨HasCompactSupport.zero, fun _ _ _ => ⟨rfl, rfl⟩⟩`. Consider the case `insert j s hj ih`.
+
+Rewrite using `[Finset.sum_insert hj]`. Conclude with `GlobalTheory.CompanionTheory.LocHecke.isHecke_add (GlobalTheory.CompanionTheory.LocHecke.isHecke_smul _ (hf j)) ih`.
+-/
 theorem isHecke_fsum {G ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K' : Subgroup G)
     (s : Finset ι) (a : ι → ℂ) (f : ι → G → ℂ) (hf : ∀ i, IsHecke K' (f i)) : IsHecke K' (∑ i ∈ s, a i • f i) := by
   induction s using Finset.induction_on with
@@ -238,6 +325,19 @@ theorem isHecke_fsum {G ι : Type} [Group G] [TopologicalSpace G] [IsTopological
     rw [Finset.sum_insert hj]
     exact GlobalTheory.CompanionTheory.LocHecke.isHecke_add (GlobalTheory.CompanionTheory.LocHecke.isHecke_smul _ (hf j)) ih
 
+/- English proof (translation)
+Introduce `hEI hBW E _ _ _ n w hw b ϖ q σ α hb hϖ hq hadm hsat`. Take `⟨β, hWβ, hmono, hge, y, hyfix, hy0, hey⟩` from `hEI E n w hw b ϖ q σ α hb hϖ hq hadm hsat`. Use `⟨xiOf n β, xi_mono β hmono hge, by rw [hBW n α β hWβ]; exact xi_map β, ⟨y, hyfix⟩, fun h => hy0 (congrArg Subtype.val h), fun c hc => ?_⟩` and prove the remaining obligations. Establish `ho` using `GlobalTheory.CompanionTheory.IwLevels.isOpen_iwU n w b`. Establish `hidx : (iwU n w b).relIndex (KL n w) ≠ 0` using `GlobalTheory.CompanionTheory.IwLevels.relIndex_ne_zero ho (GlobalTheory.LocFinU.isCompact_KL n w)`.
+
+Establish `hH : ∀ l, IsHecke (iwU n w b) (fU n w b ϖ l)` using `fun l => GlobalTheory.CompanionTheory.MatchPow.fU_hecke hw b ϖ l (GlobalTheory.LocFinU.continuous_cj w)`. Establish `hidx' : (((iwU n w b).relIndex (KL n w) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hidx`. Establish `hg : gc w b ϖ c = ∑ x ∈ c.support, (c x * (((iwU n w b).relIndex (KL n w) : ℕ) : ℂ)) • fU n w b ϖ (lOf x)`. Use function extensionality and compare the values at `γ`. Simplify using `only [gc, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Establish `hHg : IsHecke (iwU n w b) (gc w b ϖ c)`. Rewrite using `[hg]`. Conclude with `isHecke_fsum _ _ _ _ fun x => hH _`. Establish `hcone : ∀ x ∈ c.support, Cone (lOf x)`. Introduce `x hx`.
+
+Distinguish the cases in `hn : 2 ≤ n`. Conclude with `coneTwo n x hn (hc hx)`. Use `⟨fun i => absurd i.isLt (by omega), fun i => absurd i.isLt (by omega)⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.LocHecke.locOp_val σ ho hHg, hg, levOp_fsum _ _ _ _ _ _ _ fun x => GlobalTheory.TwTrLin.finite_out_support ho (hH _).1, LinearMap.sum_apply]`.
+
+Simplify using `only [LinearMap.smul_apply]`. Rewrite using `[Submodule.coe_smul, evalGL, Finsupp.sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hey (lOf x) (hcone x hx), smul_smul, ← dlt_pw w β x]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem coneEigOf : ConeEigOf := by
   intro hEI hBW E _ _ _ n w hw b ϖ q σ α hb hϖ hq hadm hsat
   obtain ⟨β, hWβ, hmono, hge, y, hyfix, hy0, hey⟩ := hEI E n w hw b ϖ q σ α hb hϖ hq hadm hsat

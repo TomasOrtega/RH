@@ -18,6 +18,11 @@ section Val
 variable {K K' : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [Field K'] [ValuativeRel K'] [TopologicalSpace K'] [IsNonarchimedeanLocalField K']
 
+/- English proof (translation)
+Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero' K).tendsto_right_iff]`. Introduce `γ hγ`. Establish `: MulArchimedean (ValueGroupWithZero K)` using `ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Take `⟨n, hn⟩` from `exists_pow_lt₀ h (Units.mk0 γ hγ)`. Use `filter_upwards [eventually_ge_atTop n] with m hm`.
+
+Rewrite using `[map_pow]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' h.le hm) hn`.
+-/
 theorem tendsto_pow_zero {x : K} (h : valuation K x < 1) : Tendsto (fun n : ℕ => x ^ n) atTop (𝓝 0) := by
   rw [(IsValuativeTopology.hasBasis_nhds_zero' K).tendsto_right_iff]
   intro γ hγ
@@ -28,9 +33,17 @@ theorem tendsto_pow_zero {x : K} (h : valuation K x < 1) : Tendsto (fun n : ℕ 
   rw [map_pow]
   exact lt_of_le_of_lt (pow_le_pow_right_of_le_one' h.le hm) hn
 
+/- English proof (translation)
+The claim follows from `(IsValuativeTopology.hasBasis_nhds_zero' K').mem_iff.2 ⟨1, one_ne_zero, fun _ hy => hy⟩`.
+-/
 theorem lt_one_mem_nhds : {y : K' | valuation K' y < 1} ∈ 𝓝 (0 : K') :=
   (IsValuativeTopology.hasBasis_nhds_zero' K').mem_iff.2 ⟨1, one_ne_zero, fun _ hy => hy⟩
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun n : ℕ => i x ^ n) atTop (𝓝 0)`. Use `(hi.tendsto 0).comp (tendsto_pow_zero h)` as an intermediate fact. Simplify `this` using `[Function.comp_def, map_pow]`. Take `⟨N, hN⟩` from `(h1.eventually lt_one_mem_nhds).exists`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Establish `: 1 ≤ valuation K' (i x ^ N)` using `by rw [map_pow]; exact one_le_pow₀ hc`. Conclude with `absurd hN (not_lt.2 this)`.
+-/
 theorem lt_one_of_map (i : K →+* K') (hi : Continuous i) {x : K} (h : valuation K x < 1) :
     valuation K' (i x) < 1 := by
   have h1 : Tendsto (fun n : ℕ => i x ^ n) atTop (𝓝 0) := by
@@ -42,6 +55,11 @@ theorem lt_one_of_map (i : K →+* K') (hi : Continuous i) {x : K} (h : valuatio
   have : 1 ≤ valuation K' (i x ^ N) := by rw [map_pow]; exact one_le_pow₀ hc
   exact absurd hN (not_lt.2 this)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hy : y ≠ 0` using `fun h0 => by simp [h0] at hc`. Establish `h1 : valuation K y⁻¹ < 1` using `by rw [map_inv₀]; exact inv_lt_one_of_one_lt₀ hc`. Establish `h2` using `lt_one_of_map i hi h1`.
+
+Rewrite `h2` using `[map_inv₀, map_inv₀]`. Establish `h0 : (0 : ValueGroupWithZero K') < valuation K' (i y)`. Rewrite using `[zero_lt_iff, Valuation.ne_zero_iff]`. Conclude with `(map_ne_zero i).2 hy`. Conclude with `absurd h (not_le.2 ((inv_lt_one₀ h0).1 h2))`.
+-/
 theorem le_one_of_map (i : K →+* K') (hi : Continuous i) {y : K} (h : valuation K' (i y) ≤ 1) :
     valuation K y ≤ 1 := by
   by_contra hc
@@ -55,6 +73,11 @@ theorem le_one_of_map (i : K →+* K') (hi : Continuous i) {y : K} (h : valuatio
     exact (map_ne_zero i).2 hy
   exact absurd h (not_le.2 ((inv_lt_one₀ h0).1 h2))
 
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff, Valuation.mem_integer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `le_one_of_map σ.symm.toRingHom h2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `valuation K (σ.symm (σ a)) ≤ 1`.
+
+Rewrite using `[σ.symm_apply_apply]` and apply the resulting hypothesis. Conclude with `le_one_of_map σ.toRingHom h1`.
+-/
 theorem mem_integer_iff_of_equiv (σ : K ≃+* K') (h1 : Continuous σ) (h2 : Continuous σ.symm) (a : K) :
     a ∈ 𝒪[K] ↔ σ a ∈ 𝒪[K'] := by
   rw [Valuation.mem_integer_iff, Valuation.mem_integer_iff]
@@ -71,9 +94,15 @@ open GlobalTheory.FinPl GlobalTheory.FinPl.SplitPoint GlobalTheory.IdemModTwo Gl
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← p.π_ι x, ← p.π_ι y, ← RingHom.map_mul, p.ι_π, ← mul_assoc, Witness.e_ι]`.
+-/
 theorem ι_mul (p : Place D k) (x y : k) : p.ι (x * y) = p.ι x * p.ι y := by
   conv_lhs => rw [← p.π_ι x, ← p.π_ι y, ← RingHom.map_mul, p.ι_π, ← mul_assoc, Witness.e_ι]
 
+/- English proof (translation)
+Rewrite using `[← p.π.map_one, p.ι_π, mul_one]`.
+-/
 theorem ι_one (p : Place D k) : p.ι 1 = p.e := by rw [← p.π.map_one, p.ι_π, mul_one]
 
 section Chart
@@ -98,11 +127,20 @@ def toFv : k ≃+* Fv D.host.F v where
     change comp he (p.ι (x + y)) = comp he (p.ι x) + comp he (p.ι y)
     rw [map_add, map_add]
 
+/- English proof (translation)
+The claim follows from `(continuous_comp he).comp p.cont_ι`.
+-/
 theorem continuous_toFv : Continuous (toFv p he) := (continuous_comp he).comp p.cont_ι
 
+/- English proof (translation)
+The claim follows from `p.cont_π.comp continuous_sec`.
+-/
 theorem continuous_toFv_symm : Continuous (toFv p he).symm := p.cont_π.comp continuous_sec
 
 include he in
+/- English proof (translation)
+Rewrite using `[mem_integer_iff_of_equiv (toFv p he) (continuous_toFv p he) (continuous_toFv_symm p he) a, GlobalTheory.LocMod.SplitCompl.int_iff_sec he]`. Express the relevant statement in the definitionally equal form `finPart D (sec D v p.e (comp he (p.ι a))) ∈ intAE D ↔ _`. Rewrite using `[GlobalTheory.LocMod.SplitCompl.sec_comp, Witness.e_ι]`.
+-/
 theorem int_iff (a : k) : a ∈ 𝒪[k] ↔ finPart D (p.ι a) ∈ intAE D := by
   rw [mem_integer_iff_of_equiv (toFv p he) (continuous_toFv p he) (continuous_toFv_symm p he) a,
     GlobalTheory.LocMod.SplitCompl.int_iff_sec he]
@@ -111,6 +149,9 @@ theorem int_iff (a : k) : a ∈ 𝒪[k] ↔ finPart D (p.ι a) ∈ intAE D := by
 
 end Chart
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p`. Take `⟨-, -, v, ε, hε, hs⟩` from `p.split`. Establish `he : SplitAt D v p.e` using `splitAt_of p.split hε hs`. Conclude with `⟨⟨v, p.e, p.split, ⟨ε, hε, hs⟩, p.π, p.ι, p.π_ι, p.ι_π, p.cont_π, p.cont_ι, int_iff p he⟩, rfl⟩`.
+-/
 theorem exists_splitPt : ∀ {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : GlobalTheory.LocMod.Place D k), ∃ q : GlobalTheory.FinPl.SplitPt D k, GlobalTheory.LocMod.Place.ofSplitPt q = p := by
   intro D k _ _ _ _ p

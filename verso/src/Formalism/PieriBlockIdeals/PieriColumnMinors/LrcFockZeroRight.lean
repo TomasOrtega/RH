@@ -25,14 +25,28 @@ def Zl (l : ℕ) : Subring ℚ where
     intro a ha
     simpa using ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Zl (l : ℕ) (x : ℚ) : x ∈ Zl l ↔ x.den.Coprime l := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_Zl]`. Simplify using the standard rewrite rules.
+-/
 theorem lrc_int_mem (l : ℕ) (z : ℤ) : (z : ℚ) ∈ Zl l := by
   rw [mem_Zl]; simp
 
+/- English proof (translation)
+Rewrite using `[Int.natCast_dvd_natCast, Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hl]`.
+-/
 theorem lrc_coprime_iff {l : ℕ} (hl : l.Prime) (m : ℕ) : m.Coprime l ↔ ¬ (l : ℤ) ∣ (m : ℤ) := by
   rw [Int.natCast_dvd_natCast, Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hl]
 
+/- English proof (translation)
+Rewrite using `[mem_Zl]`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm (dvd_zero _)`. Establish `h : ((m : ℚ)⁻¹).den = m.natAbs`.
+
+Rewrite using `[Rat.inv_intCast_den, if_neg hm0]`. Rewrite using `[h, lrc_coprime_iff hl, Int.dvd_natAbs]`. Conclude with `hm`.
+-/
 theorem lrc_inv_mem {l : ℕ} (hl : l.Prime) (m : ℤ) (hm : ¬ (l : ℤ) ∣ m) : ((m : ℚ)⁻¹) ∈ Zl l := by
   rw [mem_Zl]
   have hm0 : m ≠ 0 := by
@@ -43,6 +57,13 @@ theorem lrc_inv_mem {l : ℕ} (hl : l.Prime) (m : ℤ) (hm : ¬ (l : ℤ) ∣ m)
   rw [h, lrc_coprime_iff hl, Int.dvd_natAbs]
   exact hm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨(x.den : ℤ), (lrc_coprime_iff hl _).1 hx, x.num, ?_⟩` and prove the remaining obligations. Use `Rat.den_mul_eq_num x` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Introduce and unpack `⟨m, hm, z, hz⟩`. Establish `hm0 : (m : ℚ) ≠ 0`. Introduce `h`. Establish `: m = 0` using `by exact_mod_cast h`. Substitute `this` using the available equality.
+
+Conclude with `hm (dvd_zero _)`. Establish `: x = (m : ℚ)⁻¹ * (z : ℚ)`. Rewrite using `[← hz, ← mul_assoc, inv_mul_cancel₀ hm0, one_mul]`. Rewrite using `[this]`. Conclude with `(Zl l).mul_mem (lrc_inv_mem hl m hm) (lrc_int_mem l z)`.
+-/
 theorem zl_mem_iff {l : ℕ} (hl : l.Prime) (x : ℚ) :
     x ∈ Zl l ↔ ∃ m : ℤ, ¬ (l : ℤ) ∣ m ∧ ∃ z : ℤ, (m : ℚ) * x = z := by
   constructor
@@ -61,6 +82,11 @@ theorem zl_mem_iff {l : ℕ} (hl : l.Prime) (x : ℚ) :
     rw [this]
     exact (Zl l).mul_mem (lrc_inv_mem hl m hm) (lrc_int_mem l z)
 
+/- English proof (translation)
+Establish `hm0 : (m : ℚ) ≠ 0`. Introduce `h`. Establish `: m = 0` using `by exact_mod_cast h`. Substitute `this` using the available equality. Conclude with `hm (dvd_zero _)`.
+
+Use `IsUnit.of_mul_eq_one (⟨(m : ℚ)⁻¹, lrc_inv_mem hl m hm⟩ : Zl l) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hm0]`.
+-/
 theorem zl_unit {l : ℕ} (hl : l.Prime) (m : ℤ) (hm : ¬ (l : ℤ) ∣ m) : IsUnit (m : Zl l) := by
   have hm0 : (m : ℚ) ≠ 0 := by
     intro h
@@ -71,6 +97,11 @@ theorem zl_unit {l : ℕ} (hl : l.Prime) (m : ℤ) (hm : ¬ (l : ℤ) ∣ m) : I
   apply Subtype.ext
   simp [hm0]
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Introduce `hx`.
+
+Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+-/
 theorem mem_one_iff (l : ℕ) (x : ℚ) : x ∈ (1 : Submodule (Zl l) ℚ) ↔ x ∈ Zl l := by
   rw [Submodule.mem_one]
   constructor
@@ -79,9 +110,18 @@ theorem mem_one_iff (l : ℕ) (x : ℚ) : x ∈ (1 : Submodule (Zl l) ℚ) ↔ x
   · intro hx
     exact ⟨⟨x, hx⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (l : ℕ) (V : Type) [AddCommGroup V] [Module ℚ V] : IsScalarTower (Zl l) ℚ V := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (l : ℕ) : Algebra (Zl l) ℚ := inferInstance
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lrc_smul_def (l : ℕ) {V : Type*} [AddCommGroup V] [Module ℚ V] (c : Zl l) (v : V) :
     c • v = (c : ℚ) • v := rfl
 
@@ -119,18 +159,32 @@ def locSpan (l : ℕ) (hl : l.Prime) {V : Type*} [AddCommGroup V] [Module ℚ V]
       rw [this]
       exact M.zsmul_mem hv _
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locSpan (l : ℕ) (hl : l.Prime) {V : Type*} [AddCommGroup V] [Module ℚ V] (M : AddSubgroup V) (v : V) :
     v ∈ locSpan l hl M ↔ ∃ m : ℤ, ¬ (l : ℤ) ∣ m ∧ m • v ∈ M := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun h => by have := Int.natCast_dvd_natCast.1 (by simpa using h : ((l : ℕ) : ℤ) ∣ ((1 : ℕ) : ℤ)) exact hl.one_lt.ne' (Nat.dvd_one.1 this), by simpa using hv⟩`.
+-/
 theorem le_locSpan (l : ℕ) (hl : l.Prime) {V : Type*} [AddCommGroup V] [Module ℚ V] (M : AddSubgroup V) {v : V}
     (hv : v ∈ M) : v ∈ locSpan l hl M :=
   ⟨1, fun h => by
     have := Int.natCast_dvd_natCast.1 (by simpa using h : ((l : ℕ) : ℤ) ∣ ((1 : ℕ) : ℤ))
     exact hl.one_lt.ne' (Nat.dvd_one.1 this), by simpa using hv⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lrc_intQ_apply (r n : ℕ) (P : MvPolynomial (Fin r × Fin n) ℤ) :
     intQ r n P = map (Int.castRingHom ℚ) P := rfl
 
+/- English proof (translation)
+Establish `h : (eval (idFrame ℚ r n)).comp (map (Int.castRingHom ℚ)) = (Int.castRingHom ℚ).comp (eval (idFrame ℤ r n))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using the standard rewrite rules. Introduce `v`.
+
+Simplify using `only [RingHom.comp_apply, map_X, eval_X, idFrame]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `congrArg (fun F => F P) h`.
+-/
 theorem lrc_eval_map (r n : ℕ) (P : MvPolynomial (Fin r × Fin n) ℤ) :
     eval (idFrame ℚ r n) (map (Int.castRingHom ℚ) P) = ((eval (idFrame ℤ r n) P : ℤ) : ℚ) := by
   have h : (eval (idFrame ℚ r n)).comp (map (Int.castRingHom ℚ)) =
@@ -143,6 +197,9 @@ theorem lrc_eval_map (r n : ℕ) (P : MvPolynomial (Fin r × Fin n) ℤ) :
       split_ifs <;> simp
   exact congrArg (fun F => F P) h
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons x w ih`. Rewrite using `[applyWord_cons]`. Conclude with `rowDivStable R r n ν _ _ _ _ ih`.
+-/
 theorem lrc_applyWord_mem (R : Type) [CommRing R] (r n : ℕ) (ν : Fin n → ℕ) (w : List (Fin r × Fin r × ℕ))
     (f : MvPolynomial (Fin r × Fin n) R) (hf : f ∈ dualWeyl R r n ν) : applyWord R w f ∈ dualWeyl R r n ν := by
   induction w with
@@ -151,16 +208,28 @@ theorem lrc_applyWord_mem (R : Type) [CommRing R] (r n : ℕ) (ν : Fin n → �
     rw [applyWord_cons]
     exact rowDivStable R r n ν _ _ _ _ ih
 
+/- English proof (translation)
+Rewrite using `[(fockQPos σ f (g + g')).1, (fockQBilin σ g g' f 1).1, (fockQPos σ g f).1, (fockQPos σ g' f).1]`.
+-/
 theorem lrc_fock_add_right {σ : Type} (f g g' : MvPolynomial σ ℚ) : fockQ f (g + g') = fockQ f g + fockQ f g' := by
   rw [(fockQPos σ f (g + g')).1, (fockQBilin σ g g' f 1).1, (fockQPos σ g f).1, (fockQPos σ g' f).1]
 
+/- English proof (translation)
+Rewrite using `[(fockQPos σ f (c • g)).1, (fockQBilin σ g 0 f c).2, (fockQPos σ g f).1]`.
+-/
 theorem lrc_fock_smul_right {σ : Type} (c : ℚ) (f g : MvPolynomial σ ℚ) : fockQ f (c • g) = c * fockQ f g := by
   rw [(fockQPos σ f (c • g)).1, (fockQBilin σ g 0 f c).2, (fockQPos σ g f).1]
 
+/- English proof (translation)
+Use `lrc_fock_smul_right (0 : ℚ) f 0` as an intermediate fact. Simplify using `using this`.
+-/
 theorem lrc_fock_zero_right {σ : Type} (f : MvPolynomial σ ℚ) : fockQ f 0 = 0 := by
   have := lrc_fock_smul_right (0 : ℚ) f 0
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[(fockQPos _ F _).1, fock_space_word_adjoint, fock_space_highest_weight r r le_rfl ν hν _ (lrc_applyWord_mem ℚ r r ν _ F hF)]`.
+-/
 theorem fock_word (r : ℕ) (ν : Fin r → ℕ) (hν : Antitone ν) (F : MvPolynomial (Fin r × Fin r) ℚ)
     (hF : F ∈ dualWeyl ℚ r r ν) (w : List (Fin r × Fin r × ℕ)) :
     fockQ F (applyWord ℚ w (hw ℚ le_rfl ν)) =
@@ -168,6 +237,17 @@ theorem fock_word (r : ℕ) (ν : Fin r → ℕ) (hν : Antitone ν) (F : MvPoly
   rw [(fockQPos _ F _).1, fock_space_word_adjoint,
     fock_space_highest_weight r r le_rfl ν hν _ (lrc_applyWord_mem ℚ r r ν _ F hF)]
 
+/- English proof (translation)
+Unfold `weyl at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, rfl⟩` from `hy`. Use `⟨eval (idFrame ℤ r r) (applyWord ℤ (transposeWord w) x), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [lrc_intQ_apply]`. Rewrite using `[← lclosedeq_applyWord_map, lclosedeq_hw_map, fock_word r ν hν _ (dualWeylMap ℤ ℚ (Int.castRingHom ℚ) r r ν x hx) w, lclosedeq_applyWord_map, lrc_eval_map]`. Consider the case `zero`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, lrc_fock_zero_right]`.
+
+Simplify using the standard rewrite rules. Consider the case `add y y' _ _ ih ih'`. Take `⟨z, hz⟩` from `ih`. Take `⟨z', hz'⟩` from `ih'`. Use `⟨z + z', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, lrc_fock_add_right, hz, hz']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul c y _ ih`. Take `⟨z, hz⟩` from `ih`.
+
+Use `⟨c * z, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← Int.cast_smul_eq_zsmul ℚ, lrc_fock_smul_right, hz]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fock_int (r : ℕ) (ν : Fin r → ℕ) (hν : Antitone ν) (x : MvPolynomial (Fin r × Fin r) ℤ)
     (hx : x ∈ dualWeyl ℤ r r ν) (y : MvPolynomial (Fin r × Fin r) ℤ) (hy : y ∈ weyl ℤ r r le_rfl ν) :
     ∃ z : ℤ, fockQ (intQ r r x) (intQ r r y) = z * fockQ (hw ℚ le_rfl ν) (hw ℚ le_rfl ν) := by
@@ -197,6 +277,11 @@ theorem fock_int (r : ℕ) (ν : Fin r → ℕ) (hν : Antitone ν) (x : MvPolyn
     push_cast
     ring
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `h`. Use `⟨(k : ℤ) * x.num, ?_⟩` and prove the remaining obligations. Use `Rat.den_mul_eq_num x` as an intermediate fact. Use `push_cast`. Rewrite using `[← this]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lrc_den_dvd_mul (x : ℚ) (m : ℕ) (h : x.den ∣ m) : ∃ z : ℤ, (m : ℚ) * x = z := by
   obtain ⟨k, rfl⟩ := h
   refine ⟨(k : ℤ) * x.num, ?_⟩
@@ -205,6 +290,21 @@ theorem lrc_den_dvd_mul (x : ℚ) (m : ℕ) (h : x.den ∣ m) : ∃ z : ℤ, (m 
   rw [← this]
   ring
 
+/- English proof (translation)
+Establish `hhom : IsWeightedHomogeneous (colW r r) g ν` using `hg.1`. Establish `h1 : ∀ e : Fin r × Fin r →₀ ℕ, LowerTri e → coeff e g ∈ Zl l`. Introduce `e he`. Distinguish the cases in `hs : ∀ s : Fin r, ∑ a : Fin r, e (a, s) = ν s`. Rewrite using `[hC ℚ r r ν g e hhom he hs]`.
+
+Conclude with `h _`. Establish `: coeff e g = 0`. Assume the negation of the conclusion as `hne`. Apply `hs` to reduce the goal to its premises. Introduce `s`.
+
+Rewrite using `[← lccomp_weight_colW_apply, hhom hne]`. Rewrite using `[this]`. Conclude with `(Zl l).zero_mem`. Use `set M : ℕ := ∏ e ∈ g.support.filter (fun e => LowerTri e), (coeff e g).den with hM`. Establish `hMc : M.Coprime l`.
+
+Rewrite using `[hM]`. Use `Nat.Coprime.prod_left fun e he => ?_` and prove the remaining obligations. Conclude with `h1 e (Finset.mem_filter.1 he).2`. Establish `h2 : ∀ e : Fin r × Fin r →₀ ℕ, LowerTri e → ∃ z : ℤ, coeff e ((M : ℚ) • g) = z`. Introduce `e he`.
+
+Rewrite using `[coeff_smul, smul_eq_mul]`. Distinguish the cases in `hes : e ∈ g.support`. Conclude with `lrc_den_dvd_mul _ _ (Finset.dvd_prod_of_mem (fun e => (coeff e g).den) (Finset.mem_filter.2 ⟨hes, he⟩))`. Rewrite using `[notMem_support_iff.1 hes]`. Conclude with `⟨0, by simp⟩`.
+
+Establish `hMg : (M : ℚ) • g ∈ dualWeyl ℚ r r ν` using `(dualWeyl ℚ r r ν).smul_mem _ hg`. Take `⟨Q', hQ'⟩` from `hL r r ν _ hMg h2`. Use `⟨(M : ℤ), (lrc_coprime_iff hl M).1 hMc, Q', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[dualWeylIntRat r r ν Q', ← lrc_intQ_apply, ← hQ']`. Conclude with `hMg`.
+
+Rewrite using `[← hQ']`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem dual_int_loc (hC : CoeffWord) (hL : LowerTriIntegral) (l : ℕ) (hl : l.Prime) (r : ℕ) (ν : Fin r → ℕ)
     (g : MvPolynomial (Fin r × Fin r) ℚ) (hg : g ∈ dualWeyl ℚ r r ν)
     (h : ∀ ω : List (Fin r × Fin r × ℕ), eval (idFrame ℚ r r) (applyWord ℚ ω g) ∈ Zl l) :

@@ -20,13 +20,22 @@ abbrev pK : Sp X.K ⟶ Sp (𝓞 X.K) := 𝟙 (Sp X.K) ≫ spMap (algebraMap (�
 def Mm : LieModel Xo.univ.t.G (under X.y) (Fin g → X.K) := (models X).choose
 
 def ρm : 𝓞 E →+* Module.End X.K (Fin g → X.K) := (models X).choose_spec.choose
+/- English proof (translation)
+The claim follows from `(models X).choose_spec.choose_spec.1`.
+-/
 theorem hρm : (Mm X).IsActOf Xo.univ.t.act.act (ρm X) := (models X).choose_spec.choose_spec.1
 
 def curveLieModel : LieModel X.t.G (𝟙 (Sp X.K)) (Fin g → X.K) := (models X).choose_spec.choose_spec.2.choose
 
 def integralLieModel : LieModel X.B.t.G (pK X) (Fin g → X.K) := (models X).choose_spec.choose_spec.2.choose_spec.choose
+/- English proof (translation)
+The claim follows from `(models X).choose_spec.choose_spec.2.choose_spec.choose_spec.1`.
+-/
 theorem hM1 : ∀ e, ((curveLieModel X).pt e).left ≫ X.m.φ = ((Mm X).pt e).left :=
   (models X).choose_spec.choose_spec.2.choose_spec.choose_spec.1
+/- English proof (translation)
+The claim follows from `(models X).choose_spec.choose_spec.2.choose_spec.choose_spec.2`.
+-/
 theorem hM2 : ∀ e, ((curveLieModel X).pt e).left ≫ X.m'.φ = ((integralLieModel X).pt e).left :=
   (models X).choose_spec.choose_spec.2.choose_spec.choose_spec.2
 
@@ -37,10 +46,20 @@ def bK : epsAt (pK X) ⟶ epsR (𝓞 X.K) :=
     congr 1
     ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bK_left : (bK X).left = spMap (dualMap (algebraMap (𝓞 X.K) X.K)) := rfl
 
 def wB (b : Bool) (a : PureType.lat hP (sgnRt H b)) : epsAt (pK X) ⟶ X.B.t.G := bK X ≫ (X.C b).v ≫ X.ψ b a
 
+/- English proof (translation)
+Use `haveI := ((X.fam b).1 a).isMonHom`. Unfold `IsTanAt wB`. Establish `hv` using `(X.C b).basis.1 0`. Simplify using `only [Matrix.cons_val_zero] at hv`. Unfold `IsTangent at hv`.
+
+Rewrite using `[Over.comp_left, Over.comp_left, bK_left, ← Category.assoc, ← Category.assoc]`. Establish `e1 : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom X.K X.K X.K).toRingHom) ≫ spMap (dualMap (algebraMap (𝓞 X.K) X.K)) = spMap (algebraMap (𝓞 X.K) X.K) ≫ spMap (TrivSqZeroExt.fstHom (𝓞 X.K) (𝓞 X.K) (𝓞 X.K)).toRingHom`. Rewrite using `[show Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom X.K X.K X.K).toRingHom) = spMap (TrivSqZeroExt.fstHom X.K X.K X.K).toRingHom from rfl, isogeny_decomposition_product.spMap_comp, isogeny_decomposition_product.spMap_comp]`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Rewrite using `[e1]`. Simplify using `only [Category.assoc]`. Rewrite using `[← Category.assoc (spMap (TrivSqZeroExt.fstHom (𝓞 X.K) (𝓞 X.K) (𝓞 X.K)).toRingHom) (X.C b).v.left (X.ψ b a).left, hv, ← Over.comp_left, IsMonHom.one_hom, one_left]`. Simplify using `[pK]`.
+-/
 theorem wB_tan (b : Bool) (a : PureType.lat hP (sgnRt H b)) : IsTanAt X.B.t.G (pK X) (wB X b a) := by
   haveI := ((X.fam b).1 a).isMonHom
   unfold IsTanAt wB
@@ -64,6 +83,9 @@ theorem wB_tan (b : Bool) (a : PureType.lat hP (sgnRt H b)) : IsTanAt X.B.t.G (p
 def lam (b : Bool) (a : PureType.lat hP (sgnRt H b)) : Fin g → X.K :=
   Classical.choose ((integralLieModel X).onto (wB X b a) (wB_tan X b a))
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec ((integralLieModel X).onto (wB X b a) (wB_tan X b a))`.
+-/
 theorem lam_spec (b : Bool) (a : PureType.lat hP (sgnRt H b)) : (integralLieModel X).pt (lam X b a) = wB X b a :=
   Classical.choose_spec ((integralLieModel X).onto (wB X b a) (wB_tan X b a))
 

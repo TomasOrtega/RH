@@ -15,6 +15,13 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp GlobalTheory.UnitaryBC
 open UpperTheory.V.Af UpperTheory.V.Af.Gu UpperTheory.V.Z.Win UpperTheory.V.Z.Win.Gu
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+/- English proof (translation)
+Introduce `PH hRow E Ω _ _ _ _ _ _ l _ ι a ha P χ hreg hpol σ hσ`. Take `⟨r, wt, HT, H⟩` from `hRow E Ω l ι a ha P χ hreg ⟨hpol.sign, GlobalTheory.T.cuspContragredientIsCMConjTwist_of_paired_invTranspose E a P (compNorm E χ) (PH.toClassicalTheorems.litN.aut.gk E a _) hpol.dual⟩`. Establish `hRc : Continuous fun g => (r g : Matrix (Fin a) (Fin a) (Qbar l))` using `Units.continuous_val.comp H.cont`. Use `⟨r, HT, ⟨H.cont, H.ss, fun w hg A h O _ _ _ Bw hj => ?_, fun w A h rc hrc => ⟨fun hw => ?_, fun O _ _ _ Bw hj g => ?_⟩⟩, H.weights⟩` and prove the remaining obligations. Take `⟨rc, hrc⟩` from `UpperTheory.Zero.LLC.recTExists E Ω A w h`.
+
+Take `⟨g1, g2⟩` from `hg A h rc hrc`. Take `⟨k1, -, k3, -⟩` from `(H.above (Loc.PP l) _ (Loc.tiedP l) w A h O Bw hj).nice (σ w) (hσ w) rc hrc (Or.inr g1) g2`. Conclude with `⟨k1, k3⟩`. Conclude with `⟨wdOf h hw ι r, isWDOf_wdOf hw ι hRc, fun g => (H.away w hw A h rc hrc (σ w) (hσ w)).tor g.1 g.2⟩`. Take `⟨-, k2, -, k4⟩` from `(H.above (Loc.PP l) _ (Loc.tiedP l) w A h O Bw hj).nice (σ w) (hσ w) rc hrc (Or.inr g.1) g.2`.
+
+Conclude with `⟨k2, k4.tor g.1 g.2⟩`.
+-/
 theorem UpperTheory.V.Z.Win.Gu.polG_of_printsH_of_rT :
     _root_.UpperTheory.V.Af.HypothesesH' → RowT → PolG := by
   intro PH hRow E Ω _ _ _ _ _ _ l _ ι a ha P χ hreg hpol σ hσ

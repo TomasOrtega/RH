@@ -4,6 +4,13 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc TensorProduct P
 
 namespace GlobalTheory.BKReal.Conn
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Finset.sum_choose_succ_nsmul (fun i j => (fun τ => (⇑(derivative K))^[i] (f τ)) • (C.nabla ^ j) v) k, pow_succ', Module.End.mul_apply, ih, map_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+
+Establish `hpk : p ≤ k` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hp)`. Rewrite using `[map_nsmul, C.leibniz, smul_add, add_comm]`. Use `congr 2`. Rewrite using `[show k + 1 - p = k - p + 1 by omega, pow_succ', Module.End.mul_apply]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `τ`. Rewrite using `[Function.iterate_succ_apply']`.
+-/
 theorem pow_apply_smul_nsmul {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
     [IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] {P : PhiMod O K l e a ι} (C : Conn P)
     (k : ℕ) (f : ZMod a → K⟦X⟧) (v : Vec K a ι) :
@@ -23,6 +30,9 @@ theorem pow_apply_smul_nsmul {O K : Type} [CommRing O] [NormedField K] [IsUltram
       funext τ
       rw [Function.iterate_succ_apply']
 
+/- English proof (translation)
+Rewrite using `[pow_apply_smul_nsmul]`. Conclude with `Finset.sum_congr rfl fun p _ => (Nat.cast_smul_eq_nsmul K⟦X⟧ _ _).symm`.
+-/
 theorem pow_apply_smul {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
     [IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] {P : PhiMod O K l e a ι} (C : Conn P)
     (k : ℕ) (f : ZMod a → K⟦X⟧) (v : Vec K a ι) :

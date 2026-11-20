@@ -8,6 +8,17 @@ open TensorProduct
 
 section Modules
 
+/- English proof (translation)
+Establish `: IsArtinianRing R` using `IsArtinianRing.of_finite K R`. Break down `subsingleton_or_nontrivial (M × N) with hMN | hMN` into its components or cases. Establish `: Subsingleton M` using `(Prod.fst_surjective (β := N)).subsingleton`. Establish `: Subsingleton N` using `(Prod.snd_surjective (α := M)).subsingleton`. Conclude with `⟨LinearEquiv.ofSubsingleton M N⟩`.
+
+Establish `: Module.Finite R (M × N)` using `Module.Finite.of_restrictScalars_finite K R _`. Establish `: Module.Finite R M` using `Module.Finite.of_restrictScalars_finite K R _`. Establish `: Module.Finite R N` using `Module.Finite.of_restrictScalars_finite K R _`. Take `⟨k, _, S, hS, -⟩` from `(IsSimpleRing.isIsotypic R (M × N)).linearEquiv_fun`. Establish `hT : IsIsotypicOfType R (M × N) S` using `IsSimpleRing.isIsotypic R (M × N) S`.
+
+Take `⟨m, ⟨eM⟩⟩` from `(hT.of_injective (LinearMap.inl R M N) LinearMap.inl_injective).linearEquiv_fun`. Take `⟨n, ⟨eN⟩⟩` from `(hT.of_injective (LinearMap.inr R M N) LinearMap.inr_injective).linearEquiv_fun`. Establish `: Nontrivial S` using `IsSimpleModule.nontrivial R S`. Establish `: FiniteDimensional K S` using `FiniteDimensional.of_injective ((Submodule.subtype S).restrictScalars K) Subtype.val_injective`. Establish `hS0 : 0 < Module.finrank K S` using `Module.finrank_pos`.
+
+Establish `hm : Module.finrank K M = m * Module.finrank K S`. Rewrite using `[(eM.restrictScalars K).finrank_eq, Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Establish `hn : Module.finrank K N = n * Module.finrank K S`. Rewrite using `[(eN.restrictScalars K).finrank_eq, Module.finrank_pi_fintype]`.
+
+Simplify using the standard rewrite rules. Take `rfl : m = n` from `Nat.eq_of_mul_eq_mul_right hS0 (hm.symm.trans (h.trans hn))`. Conclude with `⟨eM.trans eN.symm⟩`.
+-/
 theorem nonempty_linearEquiv_of_finrank_eq {K R : Type*} {M N : Type*} [Field K] [Ring R]
     [Algebra K R] [IsSimpleRing R] [FiniteDimensional K R]
     [AddCommGroup M] [Module K M] [Module R M] [IsScalarTower K R M] [FiniteDimensional K M]
@@ -56,6 +67,9 @@ noncomputable def bimoduleHom (f : B →ₐ[K] A) : A ⊗[K] Bᵐᵒᵖ →ₐ[K
   Algebra.TensorProduct.lift (Algebra.lmul K A) (mulRightHom f) fun a b ↦ by
     ext x; simp [mulRightHom, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[bimoduleHom, mulRightHom, mul_assoc]`.
+-/
 theorem bimoduleHom_tmul (f : B →ₐ[K] A) (a : A) (b : Bᵐᵒᵖ) (x : A) :
     bimoduleHom f (a ⊗ₜ[K] b) x = a * x * f b.unop := by
   simp [bimoduleHom, mulRightHom, mul_assoc]
@@ -80,6 +94,9 @@ noncomputable instance : Module (A ⊗[K] Bᵐᵒᵖ) (Twist f) :=
   letI : Module (A ⊗[K] Bᵐᵒᵖ) A := Module.compHom A (bimoduleHom f).toRingHom
   inferInstanceAs (Module (A ⊗[K] Bᵐᵒᵖ) A)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_smul (r : A ⊗[K] Bᵐᵒᵖ) (x : Twist f) : (r • x).val = bimoduleHom f r x.val := rfl
 
 instance : IsScalarTower K (A ⊗[K] Bᵐᵒᵖ) (Twist f) :=
@@ -87,12 +104,21 @@ instance : IsScalarTower K (A ⊗[K] Bᵐᵒᵖ) (Twist f) :=
     change bimoduleHom f (c • r) x.val = c • bimoduleHom f r x.val
     rw [map_smul]; rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_of (x : A) : (of f x).val = x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem of_val (x : Twist f) : of f x.val = x := rfl
 
 variable {f} {g : B →ₐ[K] A}
 
+/- English proof (translation)
+Establish `hx : of f x = (x ⊗ₜ[K] (1 : Bᵐᵒᵖ)) • of f 1`. Express the relevant statement in the definitionally equal form `x = bimoduleHom f (x ⊗ₜ[K] (1 : Bᵐᵒᵖ)) 1`. Simplify using `[bimoduleHom_tmul]`. Rewrite using `[hx, map_smul, val_smul, bimoduleHom_tmul]`. Simplify using the standard rewrite rules.
+-/
 theorem map_val (φ : Twist f →ₗ[A ⊗[K] Bᵐᵒᵖ] Twist g) (x : A) :
     (φ (of f x)).val = x * (φ (of f 1)).val := by
   have hx : of f x = (x ⊗ₜ[K] (1 : Bᵐᵒᵖ)) • of f 1 := by
@@ -101,6 +127,9 @@ theorem map_val (φ : Twist f →ₗ[A ⊗[K] Bᵐᵒᵖ] Twist g) (x : A) :
   rw [hx, map_smul, val_smul, bimoduleHom_tmul]
   simp
 
+/- English proof (translation)
+Establish `hb : of f (f b) = ((1 : A) ⊗ₜ[K] MulOpposite.op b) • of f 1`. Express the relevant statement in the definitionally equal form `f b = bimoduleHom f ((1 : A) ⊗ₜ[K] MulOpposite.op b) 1`. Simplify using `[bimoduleHom_tmul]`. Rewrite using `[hb, map_smul, val_smul, bimoduleHom_tmul]`. Simplify using the standard rewrite rules.
+-/
 theorem map_val_apply (φ : Twist f →ₗ[A ⊗[K] Bᵐᵒᵖ] Twist g) (b : B) :
     (φ (of f (f b))).val = (φ (of f 1)).val * g b := by
   have hb : of f (f b) = ((1 : A) ⊗ₜ[K] MulOpposite.op b) • of f 1 := by
@@ -123,6 +152,13 @@ variable {K A B : Type*} [Field K] [Ring A] [Algebra K A] [Ring B] [Algebra K B]
   [Algebra.IsCentral K A] [IsSimpleRing A] [FiniteDimensional K A]
   [IsSimpleRing B] [FiniteDimensional K B]
 
+/- English proof (translation)
+Take `⟨e⟩` from `nonempty_linearEquiv_of_finrank_eq (K := K) (R := A ⊗[K] Bᵐᵒᵖ) (M := Twist f) (N := Twist g) (by rfl)`. Use `set u := (e (Twist.of f 1)).val with hu`. Use `set v := (e.symm (Twist.of g 1)).val with hv`. Establish `hvu : v * u = 1`. Use `Twist.map_val e.toLinearMap v` as an intermediate fact.
+
+Simplify using `only [LinearEquiv.coe_coe, hv, Twist.of_val, LinearEquiv.apply_symm_apply] at this`. Conclude with `this.symm`. Establish `huv : u * v = 1`. Use `Twist.map_val e.symm.toLinearMap u` as an intermediate fact. Simplify using `only [LinearEquiv.coe_coe, hu, Twist.of_val, LinearEquiv.symm_apply_apply] at this`.
+
+Conclude with `this.symm`. Use `⟨⟨v, u, hvu, huv⟩, fun x ↦ ?_⟩` and prove the remaining obligations. Establish `h` using `(Twist.map_val e.toLinearMap (f x)).symm.trans (Twist.map_val_apply e.toLinearMap x)`. Simplify using `only [LinearEquiv.coe_coe, ← hu] at h`. Simplify using `only [Units.val_mk, Units.inv_mk, mul_assoc, h, ← mul_assoc v u, hvu, one_mul]`.
+-/
 theorem exists_unit_conj (f g : B →ₐ[K] A) :
     ∃ a : Aˣ, ∀ x, g x = a * f x * ↑a⁻¹ := by
   obtain ⟨e⟩ := nonempty_linearEquiv_of_finrank_eq (K := K) (R := A ⊗[K] Bᵐᵒᵖ)
@@ -142,6 +178,9 @@ theorem exists_unit_conj (f g : B →ₐ[K] A) :
   simp only [LinearEquiv.coe_coe, ← hu] at h
   simp only [Units.val_mk, Units.inv_mk, mul_assoc, h, ← mul_assoc v u, hvu, one_mul]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `GroundTheory.Brauer.exists_unit_conj (AlgHom.id K A) σ.toAlgHom`. Conclude with `⟨a, fun x ↦ by simpa using ha x⟩`.
+-/
 theorem AlgEquiv.exists_unit_conj (σ : A ≃ₐ[K] A) :
     ∃ a : Aˣ, ∀ x, σ x = a * x * ↑a⁻¹ := by
   obtain ⟨a, ha⟩ := GroundTheory.Brauer.exists_unit_conj (AlgHom.id K A) σ.toAlgHom

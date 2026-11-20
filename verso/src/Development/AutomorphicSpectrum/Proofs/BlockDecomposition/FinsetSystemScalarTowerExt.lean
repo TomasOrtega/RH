@@ -15,6 +15,9 @@ variable {P Q R P' Q' R' : Type} [AddCommGroup P] [AddCommGroup Q] [AddCommGroup
   [Module A P'] [Module A Q'] [Module A R'] [Module B P'] [Module B Q'] [Module B R']
   [IsScalarTower B A P'] [IsScalarTower B A Q'] [IsScalarTower B A R']
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [IsBaseChange.equiv_tmul, h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem equiv_lTensor {p : P →ₗ[B] P'} {q : Q →ₗ[B] Q'} (hp : IsBaseChange A p) (hq : IsBaseChange A q)
     (f : P →ₗ[B] Q) (f' : P' →ₗ[A] Q') (h : ∀ x, f' (p x) = q (f x)) (z : A ⊗[B] P) :
     f' (hp.equiv z) = hq.equiv (LinearMap.lTensor A f z) := by
@@ -23,6 +26,15 @@ theorem equiv_lTensor {p : P →ₗ[B] P'} {q : Q →ₗ[B] Q'} (hp : IsBaseChan
   | tmul a x => simp [IsBaseChange.equiv_tmul, h]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Introduce `y hy`. Set `P0 : Submodule B P` to `(LinearMap.ker g).comap f`. Set `f0 : P0 →ₗ[B] Q` to `f ∘ₗ P0.subtype`. Establish `h0 : Function.Exact f0 g`. Introduce `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨x, rfl⟩` from `hex y hy`. Conclude with `⟨⟨x, hy⟩, rfl⟩`. Introduce and unpack `⟨x, rfl⟩`.
+
+Conclude with `x.2`. Establish `h1` using `Module.Flat.lTensor_exact A h0`. Establish `h2 : LinearMap.lTensor A g (hq.equiv.symm y) = 0`. Apply `hs.equiv.injective` to reduce the goal to its premises. Rewrite using `[← equiv_lTensor hq hs g g' hg, LinearEquiv.apply_symm_apply, hy, map_zero]`.
+
+Take `⟨z, hz⟩` from `(h1 _).1 h2`. Use `⟨hp.equiv (LinearMap.lTensor A P0.subtype z), ?_⟩` and prove the remaining obligations. Establish `h3 : LinearMap.lTensor A f (LinearMap.lTensor A P0.subtype z) = LinearMap.lTensor A f0 z`. Simplify using `only [f0, LinearMap.lTensor_comp, LinearMap.comp_apply]`. Rewrite using `[equiv_lTensor hp hq f f' hf, h3, hz, LinearEquiv.apply_symm_apply]`.
+-/
 theorem exact_core [Module.Flat B A] {p : P →ₗ[B] P'} {q : Q →ₗ[B] Q'} {s : R →ₗ[B] R'}
     (hp : IsBaseChange A p) (hq : IsBaseChange A q) (hs : IsBaseChange A s)
     (f : P →ₗ[B] Q) (g : Q →ₗ[B] R) (f' : P' →ₗ[A] Q') (g' : Q' →ₗ[A] R')
@@ -49,6 +61,11 @@ theorem exact_core [Module.Flat B A] {p : P →ₗ[B] P'} {q : Q →ₗ[B] Q'} {
     simp only [f0, LinearMap.lTensor_comp, LinearMap.comp_apply]
   rw [equiv_lTensor hp hq f f' hf, h3, hz, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hi : Function.Injective g` using `(injective_iff_map_eq_zero g).2 hinj`. Establish `h1` using `Module.Flat.lTensor_preserves_injective_linearMap (M := A) g hi`. Establish `h2 : LinearMap.lTensor A g (hq.equiv.symm y) = 0`. Apply `hs.equiv.injective` to reduce the goal to its premises.
+
+Rewrite using `[← equiv_lTensor hq hs g g' hg, LinearEquiv.apply_symm_apply, hy, map_zero]`. Establish `h3 : hq.equiv.symm y = 0` using `h1 (h2.trans (map_zero _).symm)`. Simplify using `using h3`.
+-/
 theorem inj_core [Module.Flat B A] {q : Q →ₗ[B] Q'} {s : R →ₗ[B] R'}
     (hq : IsBaseChange A q) (hs : IsBaseChange A s)
     (g : Q →ₗ[B] R) (g' : Q' →ₗ[A] R') (hg : ∀ x, g' (q x) = s (g x))
@@ -99,6 +116,19 @@ def augL (K : Type) [CommRing K] (M : Finset ι → Type) [∀ S, AddCommGroup (
     funext i
     exact (hr _).map_smul a x
 
+/- English proof (translation)
+Introduce `B A _ _ _ _ ι _ _ M N _ _ _ _ _ _ r hr r' hr' ψ hψ hn hM`. Set `Ψ : ∀ m : ℕ, (∀ i : Fin (m + 1) → ι, M (ent i)) →ₗ[B] ∀ i : Fin (m + 1) → ι, N (ent i)` to `fun m => .pi fun i => ψ (ent i) ∘ₗ .proj i`. Establish `hΨ : ∀ m, IsBaseChange A (Ψ m)` using `fun m => IsBaseChange.pi _ fun i => hψ _`. Establish `hd : ∀ m c, dZL A N r' hr' m (Ψ m c) = Ψ (m + 1) (dZL B M r hr m c)`. Introduce `m c`.
+
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `∑ k : Fin (m + 2), _ = ψ _ (∑ k : Fin (m + 2), _)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`.
+
+Use `congr 1`. Conclude with `hn _ _`. Establish `ha : ∀ x, augL A N r' hr' (ψ ∅ x) = Ψ 0 (augL B M r hr x)`. Introduce `x`. Use function extensionality and compare the values at `i`.
+
+Conclude with `hn _ _`. Take `⟨h1, h2, h3⟩` from `hM`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `inj_core (hψ ∅) (hΨ 0) (augL B M r hr) (augL A N r' hr') ha (fun y hy => h1 y fun i => congrFun hy i) x (funext hx)`.
+
+Introduce `c hc`. Take `⟨x, hx⟩` from `exact_core (hψ ∅) (hΨ 0) (hΨ 1) (augL B M r hr) (dZL B M r hr 0) (augL A N r' hr') (dZL A N r' hr' 0) ha (hd 0) (fun y hy => by`. Take `⟨x, hx⟩` from `h2 y hy`. Conclude with `⟨x, funext hx⟩) c hc`. Conclude with `⟨x, fun i => congrFun hx i⟩`.
+
+Introduce `m c hc`. Conclude with `exact_core (hΨ m) (hΨ (m + 1)) (hΨ (m + 2)) (dZL B M r hr m) (dZL B M r hr (m + 1)) (dZL A N r' hr' m) (dZL A N r' hr' (m + 1)) (hd m) (hd (m + 1)) (h3 m) c hc`.
+-/
 theorem exP_flat : ∀ {B A : Type} [CommRing B] [CommRing A] [Algebra B A] [Module.Flat B A] {ι : Type}
     [DecidableEq ι] [Fintype ι] (M N : Finset ι → Type) [∀ S, AddCommGroup (M S)] [∀ S, Module B (M S)]
     [∀ S, AddCommGroup (N S)] [∀ S, Module A (N S)] [∀ S, Module B (N S)] [∀ S, IsScalarTower B A (N S)]

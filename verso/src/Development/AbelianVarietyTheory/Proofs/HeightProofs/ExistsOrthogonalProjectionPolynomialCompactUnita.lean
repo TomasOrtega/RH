@@ -23,6 +23,11 @@ namespace GlobalTheory.KFourier
 
 open MeasureTheory
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.OrthogonalProjectionPoly.exists_proj_polyV`. Consider the case `exact _root_.GlobalTheory.OrthogonalProjectionPoly.exists_proj_polyV`. Consider the case `(apply _root_.GlobalTheory.OrthogonalProjectionPoly.exists_proj_polyV <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.OrthogonalProjectionPoly.exists_proj_polyV <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.OrthogonalProjectionPoly.exists_proj_polyV <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.OrthogonalProjectionPoly.exists_proj_polyV ..)`.
+-/
 theorem exists_orthProj_polyV {n : ℕ} (ε : Fin n → Bool) (d : ℕ) (p : KG ε → ℂ) (hp : Continuous p) :
     ∃ p' ∈ GlobalTheory.KFourier.polyV ε d, ∀ q ∈ GlobalTheory.KFourier.polyV ε d,
       ∫ k, star (q k) * (p k - p' k) ∂(muK ε) = 0 := by

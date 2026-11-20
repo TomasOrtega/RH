@@ -8,5 +8,8 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Desc.RegPull.regAt_map | exact GlobalTheory.Desc.RegPull.regAt_map | (intros; apply GlobalTheory.Desc.RegPull.regAt_map <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.regularAtPoint_functionField_map_of_genericPoint_comp : ∀ (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (π : Y ⟶ X) (θ : X.functionField →+* Y.functionField), PFF (𝟙 _) π θ → ∀ (y : Y) (u : X.functionField), GlobalTheory.Cartier.RegAt (π y) u → GlobalTheory.Cartier.RegAt y (θ u) := by
   first | exact @GlobalTheory.Desc.RegPull.regAt_map | exact GlobalTheory.Desc.RegPull.regAt_map | (intros; apply GlobalTheory.Desc.RegPull.regAt_map <;> assumption)

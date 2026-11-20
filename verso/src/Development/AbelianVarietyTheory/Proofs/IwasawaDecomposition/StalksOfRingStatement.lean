@@ -11,6 +11,19 @@ namespace GlobalTheory.FibreChart
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `X G U hU W hW R _ _ _ g hWg ξ hξ v hv`. Substitute `hξ` using the available equality. Set `aR` to `Spec.map (CommRingCat.ofHom (algebraMap Γ(X, U) R))`. Set `aW` to `Spec.map (CommRingCat.ofHom (algebraMap Γ(X, U) Γ(G, W)))`. Set `m` to `pullback.map aR aW (aR ≫ hU.fromSpec) g (𝟙 _) hW.fromSpec hU.fromSpec (by simp) hWg.symm`.
+
+Use `haveI : IsOpenImmersion m := inferInstance`. Use `⟨(pullbackSpecIso Γ(X, U) R Γ(G, W)).inv ≫ m, inferInstance, ?_⟩` and prove the remaining obligations. Establish `hv' : v ∈ Set.range (pullback.fst (pullback.snd (aR ≫ hU.fromSpec) g) hW.fromSpec)`. Rewrite using `[IsOpenImmersion.range_pullbackFst]`. Express the relevant statement in the definitionally equal form `(pullback.snd (aR ≫ hU.fromSpec) g) v ∈ hW.fromSpec.opensRange`.
+
+Rewrite using `[hW.opensRange_fromSpec]`. Conclude with `hv`. Take `⟨q, hq⟩` from `hv'`. Establish `e1` using `pullback.condition (f := aR ≫ hU.fromSpec) (g := g)`. Establish `e2` using `pullback.condition (f := pullback.snd (aR ≫ hU.fromSpec) g) (g := hW.fromSpec)`.
+
+Establish `hc : (pullback.fst (pullback.snd (aR ≫ hU.fromSpec) g) hW.fromSpec ≫ pullback.fst _ _) ≫ aR = pullback.snd (pullback.snd (aR ≫ hU.fromSpec) g) hW.fromSpec ≫ aW`. Rewrite using `[← cancel_mono hU.fromSpec]`. Combine the equalities or inequalities in the displayed calculation. Set `ℓ` to `pullback.lift _ _ hc`. Establish `hℓ : ℓ ≫ m = pullback.fst _ _`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, ℓ, m, pullback.map, pullback.lift_fst, pullback.lift_fst_assoc, Category.comp_id]`. Simplify using `only [Category.assoc, ℓ, m, pullback.map, pullback.lift_snd, pullback.lift_snd_assoc]`. Conclude with `e2.symm`. Use `⟨(pullbackSpecIso Γ(X, U) R Γ(G, W)).hom (ℓ q), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.comp_apply, Iso.hom_inv_id_assoc, ← Scheme.Hom.comp_apply, hℓ, hq]`.
+-/
 theorem chart : ∀ (X G : Scheme.{0}) (U : X.Opens) (hU : IsAffineOpen U) (W : G.Opens) (hW : IsAffineOpen W)
     (R : Type) [CommRing R] [Algebra Γ(X, U) R] [Algebra Γ(X, U) Γ(G, W)] (g : G ⟶ X),
     hW.fromSpec ≫ g = Spec.map (CommRingCat.ofHom (algebraMap Γ(X, U) Γ(G, W))) ≫ hU.fromSpec →
@@ -49,6 +62,9 @@ theorem chart : ∀ (X G : Scheme.{0}) (U : X.Opens) (hU : IsAffineOpen U) (W : 
   refine ⟨(pullbackSpecIso Γ(X, U) R Γ(G, W)).hom (ℓ q), ?_⟩
   rw [← Scheme.Hom.comp_apply, Iso.hom_inv_id_assoc, ← Scheme.Hom.comp_apply, hℓ, hq]
 
+/- English proof (translation)
+Introduce `X R _ _ ξ U hU hx`. Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec ξ hU (isAffineOpen_top (Sp R)) (Scheme.preimage_eq_top_of_closedPoint_mem ξ hx).ge`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Rewrite using `[Spec.map_comp, Category.assoc, h, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+-/
 theorem factor : ∀ (X : Scheme.{0}) (R : Type) [CommRing R] [IsLocalRing R] (ξ : Sp R ⟶ X) (U : X.Opens)
     (hU : IsAffineOpen U) (hx : ξ (IsLocalRing.closedPoint (CommRingCat.of R)) ∈ U),
     ξ = Spec.map (ξ.appLE U ⊤ (Scheme.preimage_eq_top_of_closedPoint_mem ξ hx).ge ≫
@@ -60,6 +76,13 @@ theorem factor : ∀ (X : Scheme.{0}) (R : Type) [CommRing R] [IsLocalRing R] (�
   rw [Spec.map_comp, Category.assoc, h, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id,
     Category.id_comp]
 
+/- English proof (translation)
+Introduce `S hS W hW M C _ _ _ Q _`. Use `haveI hP : (Q.comap (algebraMap Γ(S, W) C)).IsPrime := Ideal.comap_isPrime _ _`. Use `haveI : IsLocalization.AtPrime (Localization.AtPrime Q) (Q.comap (algebraMap Γ(S, W) C)) := IsLocalization.isLocalization_isLocalization_atPrime_isLocalization M (Localization.AtPrime Q) Q`. Set `y : PrimeSpectrum Γ(S, W)` to `⟨Q.comap (algebraMap Γ(S, W) C), hP⟩`. Establish `hy : hW.fromSpec y ∈ W`.
+
+Establish `h0 : hW.fromSpec y ∈ Set.range hW.fromSpec` using `⟨y, rfl⟩`. Rewrite `h0` using `[hW.range_fromSpec]`. Then use the resulting hypothesis. Use `letI := TopCat.Presheaf.algebra_section_stalk S.presheaf ⟨hW.fromSpec y, hy⟩`. Use `haveI : IsLocalization.AtPrime (S.presheaf.stalk (hW.fromSpec y)) (Q.comap (algebraMap Γ(S, W) C)) := hW.isLocalization_stalk' y hy`. Set `e : S.presheaf.stalk (hW.fromSpec y) ≃+* Localization.AtPrime Q` to `(IsLocalization.algEquiv (Q.comap (algebraMap Γ(S, W) C)).primeCompl _ _).toRingEquiv`.
+
+Take `⟨h1, h2⟩` from `hS (hW.fromSpec y)`. Conclude with `⟨e.symm.toMulEquiv.isDomain _, .of_equiv e⟩`.
+-/
 theorem locnorm : ∀ (S : Scheme.{0}), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S → ∀ (W : S.Opens), IsAffineOpen W →
     ∀ (M : Submonoid Γ(S, W)) (C : Type) [CommRing C] [Algebra Γ(S, W) C] [IsLocalization M C]
     (Q : Ideal C) [Q.IsPrime], IsDomain (Localization.AtPrime Q) ∧ IsIntegrallyClosed (Localization.AtPrime Q) := by
@@ -79,6 +102,13 @@ theorem locnorm : ∀ (S : Scheme.{0}), ReciprocityTheory.ChartRestriction.G.Geo
   obtain ⟨h1, h2⟩ := hS (hW.fromSpec y)
   exact ⟨e.symm.toMulEquiv.isDomain _, .of_equiv e⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y W hW`. Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Use `haveI := GlobalTheory.ThetaDescent.isProper_of_isProjOver Y.proj`. Use `haveI : LocallyOfFiniteType (genStr Y) := inferInstance`.
+
+Establish `h1 : ((genStr Y).appLE ⊤ W (fun _ _ => trivial)).hom.FiniteType` using `(genStr Y).finiteType_appLE (isAffineOpen_top _) hW (fun _ _ => trivial)`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of c.F)).inv.hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (fun y => ⟨(Scheme.ΓSpecIso (CommRingCat.of c.F)).hom y, by simp⟩)`. Establish `hQ : Algebra.EssFiniteType ℤ ℚ` using `Algebra.EssFiniteType.of_isLocalization ℚ (nonZeroDivisors ℤ)`. Establish `hZF : Algebra.EssFiniteType ℤ c.F` using `Algebra.EssFiniteType.comp ℤ ℚ c.F`. Use `RingHom.essFiniteType_algebraMap.1 ?_` and prove the remaining obligations.
+
+Use `((RingHom.essFiniteType_algebraMap.2 hZF).comp h2.essFiniteType).comp h1.essFiniteType using 1` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem eft : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (W : (gen Y).Opens), IsAffineOpen W →
     Algebra.EssFiniteType ℤ Γ(gen Y, W) := by
@@ -97,6 +127,9 @@ theorem eft : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E
   convert ((RingHom.essFiniteType_algebraMap.2 hZF).comp h2.essFiniteType).comp h1.essFiniteType using 1
   exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `hv`. Use `haveI : t.asIdeal.IsPrime := PrimeSpectrum.isPrime (R := T) t`. Set `e : V.presheaf.stalk (ι t) ≃+* Localization.AtPrime t.asIdeal` to `(asIso (ι.stalkMap t) ≪≫ Spec.stalkIso (CommRingCat.of T) t).commRingCatIsoToRingEquiv`. Take `⟨h1, h2, h3⟩` from `h t.asIdeal`. Conclude with `⟨e.toMulEquiv.isDomain _, .of_equiv e.symm, isNoetherianRing_of_ringEquiv _ e.symm⟩`.
+-/
 theorem stalk_of_chart {V : Scheme.{0}} (T : Type) [CommRing T] (ι : Sp T ⟶ V) [IsOpenImmersion ι]
     (v : V) (hv : v ∈ Set.range ι)
     (h : ∀ (Q : Ideal T) [Q.IsPrime], IsDomain (Localization.AtPrime Q) ∧ IsIntegrallyClosed (Localization.AtPrime Q) ∧

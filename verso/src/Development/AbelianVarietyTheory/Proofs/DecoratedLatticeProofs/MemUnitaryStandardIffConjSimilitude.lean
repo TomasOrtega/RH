@@ -11,6 +11,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.StdUnn
 
+/- English proof (translation)
+Introduce `R _ σ _ N M y r hM`. Establish `hAB : M.1 * (M⁻¹).1 = 1` using `Units.mul_inv M`. Establish `hBA : (M⁻¹).1 * M.1 = 1` using `Units.inv_mul M`. Establish `h1 : Formalism.UG.cT σ M.1 = (r : R) • (M⁻¹).1`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mul_assoc, hAB, Matrix.mul_one]`. Use `_ = (r : R) • (M⁻¹).1 := by rw [hM, Matrix.smul_mul, Matrix.one_mul]`. Establish `h2 : (r : R) • (Formalism.UG.cT σ (M⁻¹).1 * (M⁻¹).1) = 1`. Rewrite using `[← Matrix.mul_smul, ← h1, ← Formalism.UG.cT_mul, hAB, Formalism.UG.cT_one]`. Establish `key : Formalism.UG.cT σ (M⁻¹ * y * M).1 * 1 * (M⁻¹ * y * M).1 = (M⁻¹).1 * (Formalism.UG.cT σ y.1 * 1 * y.1) * M.1`.
+
+Rewrite using `[Units.val_mul, Units.val_mul, Formalism.UG.cT_mul, Formalism.UG.cT_mul, h1]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h2]`. Use `show Formalism.UG.cT σ y.1 * 1 * y.1 = 1 ↔ Formalism.UG.cT σ (M⁻¹ * y * M).1 * 1 * (M⁻¹ * y * M).1 = 1`.
+
+Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, Matrix.mul_one, hBA]`. Introduce `h`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hAB, Matrix.one_mul, Matrix.mul_one]`. Use `_ = M.1 * ((M⁻¹).1 * (Formalism.UG.cT σ y.1 * 1 * y.1) * M.1) * (M⁻¹).1 := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h, Matrix.mul_one, hAB]`.
+-/
 theorem mem_UJ_one_iff_conj_similitude :
     ∀ (R : Type) [CommRing R] (σ : R →+* R), (∀ x, σ (σ x) = x) → ∀ (N : ℕ) (M y : GL (Fin N) R) (r : Rˣ), Formalism.UG.cT σ M.1 * M.1 = (r : R) • 1 → (y ∈ Formalism.UG.UJ σ (1 : Matrix (Fin N) (Fin N) R) ↔ M⁻¹ * y * M ∈ Formalism.UG.UJ σ (1 : Matrix (Fin N) (Fin N) R)) := by
   intro R _ σ _ N M y r hM

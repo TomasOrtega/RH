@@ -30,6 +30,19 @@ variable {D : D7} {T : WDTie D.nd D.naut} {C₀ C : CharFrame D} (S : CharSide D
   {ρ : Reading D.ntw i (D.ntw.side i s)} {σ : D.what₂.FT} {π : D.naut.CG D.R.r}
   {r : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GalE D →* GL (Fin D.R.r) (Qbar (D.ntw.l i))} {ν : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GalE D →* (D.ntw.O0 i)ˣ}
   {w : D.what₂.places.Pl} {red : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.Zbar (D.ntw.l i) →+* FbAt D w}
+/- English proof (translation)
+Use `filter_upwards [(D.ntw.S0 i).finite_toSet.compl_mem_cofinite] with P hP B g hB hg`. Establish `hl : P ∉ placesOver D.host.E (D.ntw.l i)` using `fun hl => hP (D.ntw.twistExcludedPlaces_contains_residueChar i hl)`. Establish `hk : ∀ k, P ∉ placesOver D.host.E (D.host.g k)` using `fun k hk => hP (D.ntw.placesOver_subset_exceptional i k hk)`. Establish `hμ` using `mu_unr C (jIdx s) hk fun hp => hP (D.ntw.primes_subset_exceptional i hp)`. Take `⟨h1, h2⟩` from `twBy_unr S (mu_unitary C (D.ntw.l i) (jIdx s)) (h.unr_of_notMem hP) hμ.inv`.
+
+Take `⟨n, hn⟩` from `hχ.chiS`. Establish `h3` using `hn.frob ha (Or.inl hl) (fun x hx => by`. Rewrite using `[blockChar, GlobalTheory.GalChar.block_loc (C.isEta.unr P) hx]`. Conclude with `hμ x hx) hB hg`. Establish `h4` using `h.charpoly_frob ha hl hk hB hg`.
+
+Rewrite `h4` using `[← Matrix.charpoly_map]`. Establish `h5 : (Tmat i s g).map ρ.toC = (((blockChar C (D.ntw.l i) (jIdx s)).val P : ℂˣ) : ℂ) • ((D.ntw.rhoS i s g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.ntw.O0 i)).map ρ.toC`. Use extensionality with `x y`. Simplify using `only [Tmat, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_units_inv]`. Rewrite using `[ρ.toC_apply ((chiS i s g : (D.ntw.O0 i)ˣ) : D.ntw.O0 i), h3, inv_inv]`.
+
+Establish `h6` using `charpoly_smul_of_prod _ (((D.naut.frobEig (D.naut.locG π P)).map fun a => a * ((normV P : ℕ) : ℂ) ^ (((1 - (D.R.r : ℝ)) / 2 : ℝ) : ℂ) * (((shiftChar C).val P : ℂˣ) : ℂ)⁻¹)) (((blockChar C (D.ntw.l i) (jIdx s)).val P : ℂˣ) : ℂ) (by rw [h4, Multiset.map_map]; rfl)`. Rewrite `h6` using `[← h5, Matrix.charpoly_map]`. Rewrite using `[Tgl_coe]`. Use `h6.trans ?_` and prove the remaining obligations. Rewrite using `[D.naut.frobEig_tw _ _ h1, h2, Multiset.map_map, Multiset.map_map, Multiset.map_map]`.
+
+Use `congrArg _ (Multiset.map_congr rfl fun a _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[shiftChar_val, blockChar_val, cpow_add_real, cpow_add_real, Complex.ofReal_neg, Complex.cpow_neg, HChar.val_inv, Units.val_inv_eq_inv_val]`. Use `congr 2`. Use `(C.eta.val P).ne_zero` as an intermediate fact.
+
+Use `cpow_ne_zero' P (((D.R.t : ℝ) / 2 : ℝ) : ℂ)` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem frobMatch_Tgl_of_isTripleWith (ha : GlobalTheory.HeckeGal.IsGlobalArtin art) (hχ : IsChars C art ρ) (h : _root_.GlobalTheory.Triple.IsGaloisTripleWithReduction C art ρ s σ π r ν w red) :
     FrobMatch D (twBy S π (mu_unitary C (D.ntw.l i) (jIdx s))) (rd i (ρ.ι.toRingHom.comp ρ.κ)) (Tgl i s)
       (((D.R.r : ℝ) / 2 + -((D.R.t : ℝ) / 2)) + (1 - (D.R.r : ℝ)) / 2) := by

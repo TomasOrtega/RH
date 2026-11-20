@@ -14,6 +14,9 @@ def pullSectionOn {T Z : Scheme.{u}} (g : T ⟶ Z) (M : Z.Modules) (U : Z.Opens)
     Γ(M, U) →+ Γ((Scheme.Modules.pullback g).obj M, g ⁻¹ᵁ U) :=
   (((Scheme.Modules.pullbackPushforwardAdjunction g).unit.app M).app U).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma pullSectionOn_top {T Z : Scheme.{u}} (g : T ⟶ Z) (M : Z.Modules) :
     pullSectionOn g M ⊤ = pullSection g M := rfl
 

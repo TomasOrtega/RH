@@ -6,6 +6,17 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Arch GlobalTheory.CompanionTheo
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.HuaInt
 
+/- English proof (translation)
+Introduce `n t ht`. Establish `ht0 : 0 < t` using `lt_of_le_of_lt n.cast_nonneg ht`. Establish `hdim : (Module.finrank ℝ (Fin n → ℂ) : ℝ) < 2 * t`. Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hint` using `integrable_rpow_neg_one_add_norm_sq (E := Fin n → ℂ) (μ := volume) hdim`. Use `ne_of_lt (lt_of_le_of_lt (lintegral_mono fun v => ?_) hint.lintegral_lt_top)` and prove the remaining obligations. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hS0 : 0 ≤ ∑ i, Complex.normSq (v i)` using `Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _`. Establish `hnorm : ‖v‖ ≤ Real.sqrt (∑ i, Complex.normSq (v i))`.
+
+Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).mpr fun i => ?_` and prove the remaining obligations. Establish `h1 : ‖v i‖ ^ 2 ≤ ∑ j, Complex.normSq (v j)`. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Conclude with `Finset.single_le_sum (fun j _ => Complex.normSq_nonneg (v j)) (Finset.mem_univ i)`. Simplify `Real.abs_le_sqrt h1` using `[abs_of_nonneg (norm_nonneg _)]`.
+
+Establish `hab : 1 + ‖v‖ ^ 2 ≤ 1 + ∑ i, Complex.normSq (v i)`. Establish `h2` using `pow_le_pow_left₀ (norm_nonneg v) hnorm 2`. Rewrite `h2` using `[Real.sq_sqrt hS0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha : 0 < 1 + ‖v‖ ^ 2` using `by positivity`.
+
+Rewrite using `[show -(2 * t) / 2 = -t by ring, Real.rpow_neg (by linarith), Real.rpow_neg ha.le]`. Conclude with `inv_anti₀ (Real.rpow_pos_of_pos ha t) (Real.rpow_le_rpow ha.le hab ht0.le)`.
+-/
 theorem lintegral_one_add_normSq_rpow_ne_top :
     ∀ (n : ℕ) (t : ℝ), (n : ℝ) < t →
     ∫⁻ v : Fin n → ℂ, ENNReal.ofReal ((1 + ∑ i, Complex.normSq (v i)) ^ (-t)) ≠ ⊤ := by

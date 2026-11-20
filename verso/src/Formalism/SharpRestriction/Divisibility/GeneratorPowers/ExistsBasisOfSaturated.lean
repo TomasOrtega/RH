@@ -6,6 +6,29 @@ noncomputable section
 
 namespace Formalism.L2.Pj.SatLin
 
+/- English proof (translation)
+Use `set S := Submodule.span R (Set.range u) with hS`. Use `haveI : NoZeroSMulDivisors R ((Fin d → R) ⧸ S) := by`. Use `⟨fun {a q} h => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective S q`. Distinguish the cases in `ha : a = 0`.
+
+Conclude with `Or.inl ha`. Use `right`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `hs v a ha h`.
+
+Use `haveI : Module.Free R ((Fin d → R) ⧸ S) := Module.free_of_finite_type_torsion_free'`. Set `bQ` to `Module.Free.chooseBasis R ((Fin d → R) ⧸ S)`. Use `choose s' hs' using fun j => Submodule.Quotient.mk_surjective S (bQ j)`. Set `w'` to `Sum.elim u s'`. Establish `hmk : ∀ i, Submodule.Quotient.mk (p` using `S) (u i) = 0 := fun i => (Submodule.Quotient.mk_eq_zero S).2 (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Establish `hli : LinearIndependent R w'`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[Fintype.sum_sum_type]`. Establish `hr : ∀ j, g (Sum.inr j) = 0`.
+
+Establish `h1` using `congrArg S.mkQ hg`. Simplify using `only [w', Sum.elim_inl, Sum.elim_inr, map_add, map_sum, map_smul, map_zero, Submodule.mkQ_apply, hmk, hs', smul_zero, Finset.sum_const_zero, zero_add] at h1`. Conclude with `Fintype.linearIndependent_iff.1 bQ.linearIndependent _ h1`. Establish `hl : ∀ i, g (Sum.inl i) = 0`. Simplify using `only [hr, zero_smul, Finset.sum_const_zero, add_zero, w', Sum.elim_inl] at hg`.
+
+Conclude with `Fintype.linearIndependent_iff.1 hu _ hg`. Introduce and unpack `(i | j)`. Conclude with `hl i`. Conclude with `hr j`. Establish `hsp : ⊤ ≤ Submodule.span R (Set.range w')`.
+
+Introduce `v _`. Establish `hv` using `bQ.sum_repr (Submodule.Quotient.mk (p := S) v)`. Establish `ht : (∑ j, bQ.repr (Submodule.Quotient.mk (p` using `S) v) j • s' j) ∈ Submodule.span R (Set.range w') := Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr j, rfl⟩)`. Establish `hvt : v - ∑ j, bQ.repr (Submodule.Quotient.mk (p` using `S) v) j • s' j ∈ S := by`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, map_sub, map_sum]`.
+
+Simplify using `only [map_smul, Submodule.mkQ_apply, hs']`. Rewrite using `[hv, sub_self]`. Establish `hSle : S ≤ Submodule.span R (Set.range w')` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact Submodule.subset_span ⟨Sum.inl i, rfl⟩)`. Establish `h` using `Submodule.add_mem _ (hSle hvt) ht`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Set `B` to `Module.Basis.mk hli hsp`. Establish `hcard : Fintype.card (Fin r ⊕ Module.Free.ChooseBasisIndex R ((Fin d → R) ⧸ S)) = d`. Rewrite using `[← Module.finrank_eq_card_basis B, Module.finrank_fin_fun]`. Set `e` to `Fintype.equivFinOfCardEq hcard`. Set `b` to `B.reindex e`.
+
+Use `⟨fun k => b k, ⟨fun i => e (Sum.inl i), e.injective.comp Sum.inl_injective⟩, fun i => ?_, fun v => ?_⟩` and prove the remaining obligations. Simplify using `[b, B, Module.Basis.reindex_apply, Module.Basis.mk_apply, w']`. Use `⟨fun k => b.repr v k, fun j => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (b.sum_repr v) j`. Simplify `h` using `[Finset.sum_apply, smul_eq_mul]`.
+
+Establish `hv : ∑ k, a k • b k = v` using `funext fun j => by simpa [Finset.sum_apply, smul_eq_mul] using ha j`. Use function extensionality and compare the values at `k`. Rewrite using `[← hv]`. Simplify using `[map_sum, Module.Basis.repr_self, Finsupp.single_apply]`.
+-/
 theorem exists_basis_of_saturated {R : Type} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R] {d r : ℕ}
     (u : Fin r → (Fin d → R)) (hu : LinearIndependent R u)
     (hs : ∀ (v : Fin d → R) (a : R), a ≠ 0 → a • v ∈ Submodule.span R (Set.range u) →

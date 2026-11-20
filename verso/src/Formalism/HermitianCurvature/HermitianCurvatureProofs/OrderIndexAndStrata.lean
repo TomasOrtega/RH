@@ -68,25 +68,44 @@ noncomputable def tb : MassData Unit where
   IntC := 1
   IntOO := 1
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>`. Evaluate the numerical expressions using `[MassData.Pos, MassData.InTwoA, MassData.InForm, MassData.InKernel, MassData.InMass, MassData.InDens, MassData.InTheoremA, MassData.InJacMod, MassData.InNu, MassData.InInfinity, MassData.InVolumes, MassData.InLevelS, MassData.InMasses, MassData.InColumns, MassData.InOrdinary, Mas …`.
+-/
 theorem tb_all : tb.Pos ∧ tb.InTwoA ∧ tb.InForm ∧ tb.InKernel ∧ tb.InMass ∧ tb.InDens ∧ tb.InTheoremA ∧
     tb.InJacMod ∧ tb.InNu ∧ tb.InInfinity ∧ tb.InVolumes ∧ tb.InLevelS ∧ tb.InMasses ∧ tb.InColumns ∧
     tb.InOrdinary ∧ tb.InTyped ∧ tb.InIndices := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
     norm_num [MassData.Pos, MassData.InTwoA, MassData.InForm, MassData.InKernel, MassData.InMass, MassData.InDens, MassData.InTheoremA, MassData.InJacMod, MassData.InNu, MassData.InInfinity, MassData.InVolumes, MassData.InLevelS, MassData.InMasses, MassData.InColumns, MassData.InOrdinary, MassData.InTyped, MassData.InIndices, MassData.tt, MassData.Gam1, MassData.ga, MassData.AA, MassData.MM, MassData.μK, MassData.unitLevelVolume, MassData.Smod, MassData.c0, MassData.c0', MassData.μS, MassData.μSpp, MassData.μS', MassData.μSpp', MassData.Dstar, MassData.μKpp, MassData.GS, tb, Finset.univ_unique, Finset.prod_singleton]
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> norm_num [MassData.Pos, MassData.InTwoA, MassData.InForm, MassData.InKernel, MassData.InMass, MassData.InDens, MassData.InTheoremA, MassData.InJacMod, MassData.InNu, MassData.InInfinity, MassData.InVolumes, MassData.InLevelS, MassData.InMasses, MassData.In …`.
+-/
 theorem tb_sharp : tb.GS = (1 + tb.δ) * tb.e1 * tb.tt * (tb.d * tb.d' / tb.Dstar) ∧ tb.Gam1 = 3 ∧
     tb.GS = 4/5 := by
   refine ⟨?_, ?_, ?_⟩ <;> norm_num [MassData.Pos, MassData.InTwoA, MassData.InForm, MassData.InKernel, MassData.InMass, MassData.InDens, MassData.InTheoremA, MassData.InJacMod, MassData.InNu, MassData.InInfinity, MassData.InVolumes, MassData.InLevelS, MassData.InMasses, MassData.InColumns, MassData.InOrdinary, MassData.InTyped, MassData.InIndices, MassData.tt, MassData.Gam1, MassData.ga, MassData.AA, MassData.MM, MassData.μK, MassData.unitLevelVolume, MassData.Smod, MassData.c0, MassData.c0', MassData.μS, MassData.μSpp, MassData.μS', MassData.μSpp', MassData.Dstar, MassData.μKpp, MassData.GS, tb, Finset.univ_unique, Finset.prod_singleton]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17⟩` from `tb_all`. Conclude with `⟨Unit, inferInstance, tb, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, by rw [tb_sharp.2.2]; norm_num, tb_sharp.1⟩`.
+-/
 theorem mainSharp : MainSharp := by
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17⟩ := tb_all
   exact ⟨Unit, inferInstance, tb, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, by rw [tb_sharp.2.2]; norm_num, tb_sharp.1⟩
 
+/- English proof (translation)
+Introduce `volNo volJH volKpp volOm q r hNo hJH hKpp hOm`. Rewrite using `[hOm]`. Apply the tactic sequence `field_simp <;> ring`.
+-/
 theorem unitStratumTotal : UnitStratumTotal := by
   intro volNo volJH volKpp volOm q r hNo hJH hKpp hOm
   rw [hOm]
   field_simp <;> ring
 
+/- English proof (translation)
+Introduce `P _ B hB`. Take `⟨hp, hμKo, -, -, -, hU00o, -, -, -, -, -, -, hvolZZ, -, hal, -, -, -, -, -, -, -, -, -, -, hCoo, -⟩` from `hB`. Establish `hU : 0 < B.unitLevelVolume` using `mul_pos hU00o (Finset.prod_pos fun p _ => (hp p).2.2.2.2.2.2.2.2.2.2.2.2.2)`. Establish `hK : 0 < B.μK` using `mul_pos hμKo (Finset.prod_pos fun p _ => (hp p).2.2.2.2.2.1)`. Establish `h1` using `hU.ne'`.
+
+Establish `h2` using `hK.ne'`. Establish `h3` using `hal.ne'`. Establish `h4` using `hvolZZ.ne'`. Establish `h5` using `hCoo.ne'`. Simplify using `only [MassData.nn0, MassData.AA]`.
+
+Apply the tactic sequence `field_simp <;> ring`.
+-/
 theorem nn0FromMass : DensityFromMassFormula := by
   intro P _ B hB
   obtain ⟨hp, hμKo, -, -, -, hU00o, -, -, -, -, -, -, hvolZZ, -, hal, -, -, -, -, -, -, -, -, -, -,
@@ -102,6 +121,11 @@ theorem nn0FromMass : DensityFromMassFormula := by
   simp only [MassData.nn0, MassData.AA]
   field_simp <;> ring
 
+/- English proof (translation)
+Introduce `o _ _ _`. Establish `hs : Function.Surjective ((IsLocalRing.residue o).comp ((RingHom.fst o o).comp (ROrd o).subtype))`. Introduce `y`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective y`. Conclude with `⟨⟨(a, a), by simp [ROrd]⟩, rfl⟩`.
+
+Conclude with `Nat.card_congr (RingHom.quotientKerEquivOfSurjective hs).toEquiv`.
+-/
 theorem rOrderIndex : ROrderIndex := by
   intro o _ _ _
   have hs : Function.Surjective ((IsLocalRing.residue o).comp
@@ -111,6 +135,13 @@ theorem rOrderIndex : ROrderIndex := by
     exact ⟨⟨(a, a), by simp [ROrd]⟩, rfl⟩
   exact Nat.card_congr (RingHom.quotientKerEquivOfSurjective hs).toEquiv
 
+/- English proof (translation)
+Introduce `o _ _ _ ϖ hϖ r k j hj`. Establish `h0 : b31 (j.map (IsLocalRing.residue o)) = 0` using `((hNU _ r k _).1 hj.2).2.2.2.1`. Establish `hmax : IsLocalRing.maximalIdeal o = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Establish `hdiv : ∀ a b, ϖ ∣ b31 j a b`. Introduce `a b`.
+
+Establish `hr : IsLocalRing.residue o (b31 j a b) = 0`. Use `congrFun (congrFun h0 a) b` as an intermediate fact. Simplify `this` using `[b31]`. Rewrite `hr` using `[IsLocalRing.residue_eq_zero_iff, hmax, Ideal.mem_span_singleton]`. Conclude with `hr`.
+
+Use `choose X hX using hdiv`. Conclude with `⟨Matrix.of X, by ext a b; simp [hX a b]⟩`.
+-/
 theorem kppCorner (hNU : NUExplicit) : KppCorner := by
   intro o _ _ _ ϖ hϖ r k j hj
   have h0 : b31 (j.map (IsLocalRing.residue o)) = 0 := ((hNU _ r k _).1 hj.2).2.2.2.1
@@ -126,6 +157,13 @@ theorem kppCorner (hNU : NUExplicit) : KppCorner := by
   choose X hX using hdiv
   exact ⟨Matrix.of X, by ext a b; simp [hX a b]⟩
 
+/- English proof (translation)
+Establish `e21 : ∀ i j, x (Sum.inr (Sum.inl i)) (Sum.inl j) = 0` using `fun i j => by`. Simplify `congrFun (congrFun h21 i) j` using `[b21]`. Establish `e31 : ∀ i j, x (Sum.inr (Sum.inr i)) (Sum.inl j) = 0` using `fun i j => by`. Simplify `congrFun (congrFun h31 i) j` using `[b31]`. Establish `e32 : ∀ i j, x (Sum.inr (Sum.inr i)) (Sum.inr (Sum.inl j)) = 0` using `fun i j => by`.
+
+Simplify `congrFun (congrFun h32 i) j` using `[b32]`. Establish `hx' : x = Matrix.fromBlocks (b11 x) (Matrix.fromCols (b12 x) (b13 x)) 0 (Matrix.fromBlocks (b22 x) (b23 x) 0 (b33 x))`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i | i <;> rcases j with j | j | j <;>`. Simplify using `[b11, b12, b13, b22, b23, b33, e21, e31, e32]`.
+
+Establish `hdet : x.det = (b11 x).det * ((b22 x).det * (b33 x).det)` using `by conv_lhs => rw [hx']`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₂₁]`. Rewrite `hx` using `[hdet]`. Conclude with `isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_right hx)`.
+-/
 theorem det_mid {A : Type} [CommRing A] {r k : ℕ} (x : Matrix (Idx r k) (Idx r k) A) (hx : IsUnit x.det)
     (h21 : b21 x = 0) (h31 : b31 x = 0) (h32 : b32 x = 0) : IsUnit (b22 x).det := by
   have e21 : ∀ i j, x (Sum.inr (Sum.inl i)) (Sum.inl j) = 0 := fun i j => by
@@ -145,6 +183,11 @@ theorem det_mid {A : Type} [CommRing A] {r k : ℕ} (x : Matrix (Idx r k) (Idx r
   rw [hdet] at hx
   exact isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_right hx)
 
+/- English proof (translation)
+Establish `hy' : y = midEmb (Matrix.of fun a b => y (Sum.inl a) (Sum.inl b))`. Use extensionality with `(a | ⟨⟩) (b | ⟨⟩)`. Simplify using `[midEmb]`. Simplify `c22 (Sum.inl a)` using `[midEmb]`. Simplify `r22 (Sum.inl b)` using `[midEmb]`.
+
+Simplify `c22 (Sum.inr ())` using `[midEmb]`. Use `⟨_, ?_, hy'⟩` and prove the remaining obligations. Rewrite `hy` using `[hy', Formalism.FourierDecayAlt.P.S3x1.midEmb_det]`. Conclude with `hy`.
+-/
 theorem mid_form {A : Type} [CommRing A] {k : ℕ} (y : Matrix (Mid k) (Mid k) A) (hy : IsUnit y.det)
     (c22 : ∀ a, y a (Sum.inr ()) = if a = Sum.inr () then 1 else 0)
     (r22 : ∀ b, y (Sum.inr ()) b = if b = Sum.inr () then 1 else 0) :
@@ -159,6 +202,13 @@ theorem mid_form {A : Type} [CommRing A] {k : ℕ} (y : Matrix (Mid k) (Mid k) A
   rw [hy', Formalism.FourierDecayAlt.P.S3x1.midEmb_det] at hy
   exact hy
 
+/- English proof (translation)
+Introduce `A _ r k x hx`. Rewrite using `[hS]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h11, h33, h21, h31, h32, h, hh, h22⟩`. Use `⟨⟨h11, h21, h31, fun a => ?_, fun a => ?_⟩, ⟨h33, h32, fun b => ?_, fun b => ?_⟩⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `rw [h22]; rcases a with a | ⟨⟩ <;> simp [midEmb]`. Simplify using `[h32]`. Apply the tactic sequence `rw [h22]; rcases b with b | ⟨⟩ <;> simp [midEmb]`. Simplify using `[h21]`. Introduce and unpack `⟨⟨h11, h21, h31, hc, -⟩, ⟨h33, h32, hr, -⟩⟩`.
+
+Take `⟨h, hh, he⟩` from `mid_form (b22 x) (det_mid x hx h21 h31 h32) hc hr`. Conclude with `⟨h11, h33, h21, h31, h32, h, hh, he⟩`.
+-/
 theorem sFrame (hS : SExplicit) : SIsFrameStabiliser := by
   intro A _ r k x hx
   rw [hS]
@@ -173,9 +223,43 @@ theorem sFrame (hS : SExplicit) : SIsFrameStabiliser := by
     obtain ⟨h, hh, he⟩ := mid_form (b22 x) (det_mid x hx h21 h31 h32) hc hr
     exact ⟨h11, h33, h21, h31, h32, h, hh, he⟩
 
+/- English proof (translation)
+Conclude with `Formalism.DoubleCosetMeasures.isUpUni_one (K := A)`.
+-/
 theorem isUpUni_one' {A : Type} [CommRing A] {n : ℕ} : IsUpUni (1 : Matrix (Fin n) (Fin n) A) := by
   exact Formalism.DoubleCosetMeasures.isUpUni_one (K := A)
 
+/- English proof (translation)
+Introduce `A _ r k x hx`. Unfold `IsInertiaInfiniteCyclotomic`. Rewrite using `[hS]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨-, -, h21, h31, h32, h, -, h22⟩, h11, h33, h12, h23⟩`.
+
+Establish `E11 : ∀ a b, x (Sum.inl a) (Sum.inl b) = (1 : Matrix (Fin r) (Fin r) A) a b` using `fun a b => by simpa [b11] using congrFun (congrFun h11 a) b`. Establish `E33 : ∀ a b, x (Sum.inr (Sum.inr a)) (Sum.inr (Sum.inr b)) = (1 : Matrix (Fin r) (Fin r) A) a b` using `fun a b => by simpa [b33] using congrFun (congrFun h33 a) b`. Establish `E21 : ∀ a b, x (Sum.inr (Sum.inl a)) (Sum.inl b) = 0` using `fun a b => by simpa [b21] using congrFun (congrFun h21 a) b`. Establish `E31 : ∀ a b, x (Sum.inr (Sum.inr a)) (Sum.inl b) = 0` using `fun a b => by simpa [b31] using congrFun (congrFun h31 a) b`. Establish `E32 : ∀ a b, x (Sum.inr (Sum.inr a)) (Sum.inr (Sum.inl b)) = 0` using `fun a b => by simpa [b32] using congrFun (congrFun h32 a) b`.
+
+Establish `E22 : ∀ a b, x (Sum.inr (Sum.inl a)) (Sum.inr (Sum.inl b)) = midEmb h a b` using `fun a b => by simpa [b22] using congrFun (congrFun h22 a) b`. Establish `E12 : ∀ a, x (Sum.inl a) (Sum.inr (Sum.inl (Sum.inr ()))) = 0` using `fun a => by simpa [b12] using h12 a`. Establish `E23 : ∀ b, x (Sum.inr (Sum.inl (Sum.inr ()))) (Sum.inr (Sum.inr b)) = 0` using `fun b => by simpa [b23] using h23 b`. Use `⟨fun i b => ?_, fun i => ?_, fun a i => ?_, fun i => ?_⟩` and prove the remaining obligations. Break down `i with i | i | i` into its components or cases.
+
+Rewrite using `[E11]`. Simplify using `[Matrix.one_apply]`. Rewrite using `[E21]`. Simplify using the standard rewrite rules. Rewrite using `[E31]`.
+
+Simplify using the standard rewrite rules. Break down `i with i | (i | ⟨⟩) | i` into its components or cases. Rewrite using `[E12]`. Simplify using the standard rewrite rules. Rewrite using `[E22]`.
+
+Simplify using `[midEmb]`. Rewrite using `[E22]`. Simplify using `[midEmb]`. Rewrite using `[E32]`. Simplify using the standard rewrite rules.
+
+Break down `i with i | i | i` into its components or cases. Rewrite using `[E31]`. Simplify using the standard rewrite rules. Rewrite using `[E32]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[E33]`. Simplify using `[Matrix.one_apply]`. Break down `i with i | (i | ⟨⟩) | i` into its components or cases. Rewrite using `[E21]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[E22]`. Simplify using `[midEmb]`. Rewrite using `[E22]`. Simplify using `[midEmb]`. Rewrite using `[E23]`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `⟨C1, C2, C3, C4⟩`. Establish `h21 : b21 x = 0` using `by ext a b; simpa [b21] using C1 (Sum.inr (Sum.inl a)) b`. Establish `h31 : b31 x = 0` using `by ext a b; simpa [b31] using C1 (Sum.inr (Sum.inr a)) b`. Establish `h11 : b11 x = 1` using `by ext a b; simpa [b11, Matrix.one_apply] using C1 (Sum.inl a) b`.
+
+Establish `h32 : b32 x = 0` using `by ext a b; simpa [b32] using C3 a (Sum.inr (Sum.inl b))`. Establish `h33 : b33 x = 1`. Use extensionality with `a b`. Simplify `C3 a (Sum.inr (Sum.inr b))` using `[b33, Matrix.one_apply]`. Establish `h12 : ∀ a, b12 x a (Sum.inr ()) = 0` using `fun a => by simpa [b12] using C2 (Sum.inl a)`.
+
+Establish `h23 : ∀ b, b23 x (Sum.inr ()) b = 0` using `fun b => by`. Simplify `C4 (Sum.inr (Sum.inr b))` using `[b23]`. Establish `c22 : ∀ a, b22 x a (Sum.inr ()) = if a = Sum.inr () then 1 else 0`. Introduce `a`. Break down `a with a | ⟨⟩` into its components or cases.
+
+Simplify `C2 (Sum.inr (Sum.inl (Sum.inl a)))` using `[b22]`. Simplify `C2 (Sum.inr (Sum.inl (Sum.inr ())))` using `[b22]`. Establish `r22 : ∀ b, b22 x (Sum.inr ()) b = if b = Sum.inr () then 1 else 0`. Introduce `b`. Break down `b with b | ⟨⟩` into its components or cases.
+
+Simplify `C4 (Sum.inr (Sum.inl (Sum.inl b)))` using `[b22]`. Simplify `C4 (Sum.inr (Sum.inl (Sum.inr ())))` using `[b22]`. Take `⟨h, hh, he⟩` from `mid_form (b22 x) (det_mid x hx h21 h31 h32) c22 r22`. Use `⟨⟨?_, ?_, h21, h31, h32, h, hh, he⟩, h11, h33, h12, h23⟩` and prove the remaining obligations. Rewrite using `[h11]`.
+
+Conclude with `isUpUni_one'`. Rewrite using `[h33]`. Conclude with `isUpUni_one'`.
+-/
 theorem pointwise_stabiliser_of_explicit (hS : SExplicit) : FrameStabiliserPointwise := by
   intro A _ r k x hx
   unfold IsInertiaInfiniteCyclotomic
@@ -244,12 +328,23 @@ theorem pointwise_stabiliser_of_explicit (hS : SExplicit) : FrameStabiliserPoint
 
 end Formalism.FourierDecayAlt.P.OrderIndexAndStrata
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.OrderIndexAndStrata.sFrame (fun A _ r k x => Formalism.FourierDecayAlt.P.S3x1.isS_iff x)`.
+-/
 theorem Formalism.FourierDecayAlt.P.frame_stabiliser_characterisation : Formalism.FourierDecayAlt.S3.SIsFrameStabiliser :=
   Formalism.FourierDecayAlt.P.OrderIndexAndStrata.sFrame (fun A _ r k x => Formalism.FourierDecayAlt.P.S3x1.isS_iff x)
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.OrderIndexAndStrata.pointwise_stabiliser_of_explicit (fun A _ r k x => Formalism.FourierDecayAlt.P.S3x1.isS_iff x)`.
+-/
 theorem Formalism.FourierDecayAlt.P.pointwise_stabiliser_characterisation : Formalism.FourierDecayAlt.S3.FrameStabiliserPointwise :=
   Formalism.FourierDecayAlt.P.OrderIndexAndStrata.pointwise_stabiliser_of_explicit (fun A _ r k x => Formalism.FourierDecayAlt.P.S3x1.isS_iff x)
 
+/- English proof (translation)
+Introduce `o _ _ r k`. Take `⟨B, hB⟩` from `Formalism.FourierDecayAlt.P.S3x1.pointwise_stabiliser_is_subgroup (A := IsLocalRing.ResidueField o) (r := r) (k := k)`. Use `⟨⟨B.comap (Formalism.FourierDecayAlt.S3.red o (Formalism.FourierDecayAlt.S3.Idx r k)), fun x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, hB]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Conclude with `⟨_, hx, rfl⟩`. Introduce and unpack `⟨g, hg, he⟩`. Rewrite `hg` using `[Units.ext he]`. Then use the resulting hypothesis.
+-/
 theorem Formalism.FourierDecayAlt.P.frame_level_exists_alt : Formalism.FourierDecayAlt.S3.FrameLevelExists :=
   by
   intro o _ _ r k
@@ -262,17 +357,32 @@ theorem Formalism.FourierDecayAlt.P.frame_level_exists_alt : Formalism.FourierDe
   · rintro ⟨g, hg, he⟩
     rwa [Units.ext he] at hg
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.OrderIndexAndStrata.kppCorner (fun A _ r k x => Formalism.FourierDecayAlt.P.S3x1.isNU_iff x)`.
+-/
 theorem Formalism.FourierDecayAlt.P.corner_group_index_explicit : Formalism.FourierDecayAlt.S3.KppCorner :=
   Formalism.FourierDecayAlt.P.OrderIndexAndStrata.kppCorner (fun A _ r k x => Formalism.FourierDecayAlt.P.S3x1.isNU_iff x)
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.OrderIndexAndStrata.rOrderIndex`.
+-/
 theorem Formalism.FourierDecayAlt.P.order_index_alt : Formalism.FourierDecayAlt.S3.ROrderIndex :=
   Formalism.FourierDecayAlt.P.OrderIndexAndStrata.rOrderIndex
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.OrderIndexAndStrata.unitStratumTotal`.
+-/
 theorem Formalism.FourierDecayAlt.P.unit_stratum_total_alt : Formalism.FourierDecayAlt.S3.UnitStratumTotal :=
   Formalism.FourierDecayAlt.P.OrderIndexAndStrata.unitStratumTotal
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.OrderIndexAndStrata.nn0FromMass`.
+-/
 theorem Formalism.FourierDecayAlt.P.density_from_mass : Formalism.FourierDecayAlt.S3.DensityFromMassFormula :=
   Formalism.FourierDecayAlt.P.OrderIndexAndStrata.nn0FromMass
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.OrderIndexAndStrata.mainSharp`.
+-/
 theorem Formalism.FourierDecayAlt.P.mass_formula_sharp : Formalism.FourierDecayAlt.S3.MainSharp :=
   Formalism.FourierDecayAlt.P.OrderIndexAndStrata.mainSharp

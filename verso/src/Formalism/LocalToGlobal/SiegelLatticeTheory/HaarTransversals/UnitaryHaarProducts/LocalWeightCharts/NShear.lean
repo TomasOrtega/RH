@@ -24,6 +24,11 @@ def shG (m₀ : Mx k r) (x : CI k r → ℂ) : CI k r → ℂ
 
 def shH (m₀ : Mx k r) (x : CI k r → ℂ) : Fin r → ℝ := fun a => (dlt m₀ x a a).im
 
+/- English proof (translation)
+Establish `: ∀ c, A a c * v c = (if a = c then v c else 0) + (if a < c then A a c * v c else 0)`. Introduce `c`. Break down `lt_trichotomy a c with h | rfl | h` into its components or cases. Rewrite using `[if_neg (ne_of_lt h), if_pos h, zero_add]`. Rewrite using `[if_pos rfl, if_neg (lt_irrefl a), add_zero, hA a a le_rfl, if_pos rfl, one_mul]`.
+
+Rewrite using `[if_neg (ne_of_gt h), if_neg (not_lt.2 h.le), add_zero, hA a c h.le, if_neg (ne_of_gt h), zero_mul]`. Rewrite using `[Finset.sum_congr rfl fun c _ => this c, Finset.sum_add_distrib, Finset.sum_ite_eq, if_pos (Finset.mem_univ _)]`.
+-/
 theorem split_low {A : Matrix (Fin r) (Fin r) ℂ} (hA : LowId A) (v : Fin r → ℂ) (a : Fin r) :
     ∑ c, A a c * v c = v a + ∑ c, if a < c then A a c * v c else 0 := by
   have : ∀ c, A a c * v c = (if a = c then v c else 0) + (if a < c then A a c * v c else 0) := by
@@ -36,8 +41,16 @@ theorem split_low {A : Matrix (Fin r) (Fin r) ℂ} (hA : LowId A) (v : Fin r →
   rw [Finset.sum_congr rfl fun c _ => this c, Finset.sum_add_distrib, Finset.sum_ite_eq,
     if_pos (Finset.mem_univ _)]
 
+/- English proof (translation)
+Introduce `a b h` and use `hc.aa a b h`.
+-/
 theorem lowId_bA {g : Mx k r} (hc : ColB g) : LowId (bA g) := fun a b h => hc.aa a b h
 
+/- English proof (translation)
+Establish `hc0` using `colB_of_mem h0`. Establish `hF0` using `rel_F hc0 h0.1`. Rewrite using `[mof, mof, bF_mul hc0, bC_mul, conjTranspose_mul]`. Rewrite using `[add_assoc, Matrix.mul_add, Matrix.mul_add, Matrix.mul_add]`. Establish `: (bF g)ᴴ * (bF m₀)ᴴ * (bA m₀ * bC g) = (bF g)ᴴ * bC g`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (bF m₀)ᴴ, hF0, Matrix.one_mul]`. Rewrite using `[this]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_add]`.
+-/
 theorem mof_mul {m₀ g : Mx k r} (h0 : m₀ ∈ Nset k r) (hg : g ∈ Nset k r) :
     mof (m₀ * g) = mof g + (bF g)ᴴ * ((bF m₀)ᴴ * (bB m₀ * bE g + bC m₀ * bF g)) := by
   have hc0 := colB_of_mem h0
@@ -49,6 +62,19 @@ theorem mof_mul {m₀ g : Mx k r} (h0 : m₀ ∈ Nset k r) (hg : g ∈ Nset k r)
   rw [this]
   simp only [Matrix.mul_assoc, Matrix.mul_add]
 
+/- English proof (translation)
+Establish `hg` using `test_vector_mem_schwartz_bruhat x s`. Establish `hcg` using `colB_of_mem hg`. Establish `hc0` using `colB_of_mem h0`. Establish `hps` using `nilpotent_chart_right_inverse x s`. Establish `hM : mof (m₀ * phi0 x s) = mof (phi0 x s) + dlt m₀ x`.
+
+Rewrite using `[mof_mul h0 hg, dlt, phi0, bF_mk, bE_mk]`. Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `i`. Break down `i with ⟨⟨a, b⟩, h⟩ | ⟨a, j⟩ | ⟨⟨a, b⟩, h⟩` into its components or cases. Use `show bA (m₀ * phi0 x s) a b = _`.
+
+Rewrite using `[bA_mul hcg, Matrix.mul_apply, phi0, bA_mk, split_low (lowId_bA hc0)]`. Simplify using `only [Pi.add_apply, shG, cA, dif_pos h]`. Use `show bB (m₀ * phi0 x s) a j = _`. Rewrite using `[bB_mul hcg, Matrix.add_apply, Matrix.mul_apply, phi0, bB_mk, split_low (lowId_bA hc0)]`. Simplify using `only [Pi.add_apply, shG, cB]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show kof (m₀ * phi0 x s) a b = _`. Establish `e1 : kof (phi0 x s) a b = x (Sum.inr (Sum.inr ⟨(a, b), h⟩))` using `congrFun hps.1 (Sum.inr (Sum.inr ⟨(a, b), h⟩))`. Simplify using `only [kof, hM, Matrix.add_apply, Pi.add_apply, shG, star_add] at e1 ⊢`. Rewrite using `[← e1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `a`. Establish `e1 : (mof (phi0 x s) a a).im = s a` using `congrFun hps.2 a`. Use `show (mof (m₀ * phi0 x s) a a).im = _`. Rewrite using `[hM, Matrix.add_apply, Complex.add_im, e1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lmul_coord {m₀ : Mx k r} (h0 : m₀ ∈ Nset k r) (x : CI k r → ℂ) (s : Fin r → ℝ) :
     psiC (m₀ * phi0 x s) = x + shG m₀ x ∧ psiR (m₀ * phi0 x s) = s + shH m₀ x := by
   have hg := test_vector_mem_schwartz_bruhat x s
@@ -79,6 +105,19 @@ theorem lmul_coord {m₀ : Mx k r} (h0 : m₀ ∈ Nset k r) (x : CI k r → ℂ)
     rw [hM, Matrix.add_apply, Complex.add_im, e1]
     rfl
 
+/- English proof (translation)
+Establish `hAB : (∀ j, rk j ≤ r → x j = y j) → cA x = cA y ∧ cB x = cB y`. Introduce `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Unfold `cA`.
+
+Use `split_ifs with h1`. Conclude with `h _ (by simp only [rk]; omega)`. Both sides reduce to the same expression. Both sides reduce to the same expression. Use extensionality with `a j; exact h _ (by simp only [rk]; omega)`.
+
+Break down `i with ⟨⟨a, b⟩, h⟩ | ⟨a, j⟩ | ⟨⟨a, b⟩, h⟩` into its components or cases. Simplify using `only [shG]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with hac`. Use `congr 1`.
+
+Unfold `cA`. Use `split_ifs with hcb`. Conclude with `hxy _ (by simp only [rk]; have := c.isLt; have : a.val < c.val := hac; omega)`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression. Simplify using `only [shG]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with hac`.
+
+Use `congr 1`. Conclude with `hxy _ (by simp only [rk]; have := c.isLt; have : a.val < c.val := hac; omega)`. Both sides reduce to the same expression. Take `⟨hA, hB⟩` from `hAB fun j hj => hxy j (by show rk j < r + 1; omega)`. Simplify using `only [shG, dlt, cF, cE, hA, hB]`.
+-/
 theorem shG_dep (m₀ : Mx k r) (i : CI k r) (x y : CI k r → ℂ)
     (hxy : ∀ j, rk j < rk i → x j = y j) : shG m₀ x i = shG m₀ y i := by
   have hAB : (∀ j, rk j ≤ r → x j = y j) → cA x = cA y ∧ cB x = cB y := by
@@ -110,10 +149,20 @@ theorem shG_dep (m₀ : Mx k r) (i : CI k r) (x y : CI k r → ℂ)
   · obtain ⟨hA, hB⟩ := hAB fun j hj => hxy j (by show rk j < r + 1; omega)
     simp only [shG, dlt, cF, cE, hA, hB]
 
+/- English proof (translation)
+The claim follows from `continuous_cF.matrix_conjTranspose.matrix_mul (continuous_const.matrix_mul ((continuous_const.matrix_mul continuous_cE).add (continuous_const.matrix_mul continuous_cF)))`.
+-/
 theorem continuous_dlt (m₀ : Mx k r) : Continuous (dlt m₀) :=
   continuous_cF.matrix_conjTranspose.matrix_mul (continuous_const.matrix_mul
     ((continuous_const.matrix_mul continuous_cE).add (continuous_const.matrix_mul continuous_cF)))
 
+/- English proof (translation)
+Break down `i with ⟨⟨a, b⟩, h⟩ | ⟨a, j⟩ | ⟨⟨a, b⟩, h⟩` into its components or cases. Simplify using `only [shG]`. Use `continuous_finsetSum _ fun c _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `continuous_const.mul (continuous_cA.matrix_elem _ _)`.
+
+Conclude with `continuous_const`. Simplify using `only [shG]`. Use `(continuous_finsetSum _ fun c _ => ?_).add continuous_const` and prove the remaining obligations. Use `split_ifs`. Conclude with `continuous_const.mul (continuous_cB.matrix_elem _ _)`.
+
+Conclude with `continuous_const`. Simplify using `only [shG]`. Conclude with `(((continuous_dlt m₀).matrix_elem _ _).sub ((continuous_dlt m₀).matrix_elem _ _).star).div_const _`.
+-/
 theorem continuous_shG (m₀ : Mx k r) (i : CI k r) : Continuous fun x => shG m₀ x i := by
   rcases i with ⟨⟨a, b⟩, h⟩ | ⟨a, j⟩ | ⟨⟨a, b⟩, h⟩
   · simp only [shG]
@@ -129,9 +178,15 @@ theorem continuous_shG (m₀ : Mx k r) (i : CI k r) : Continuous fun x => shG m�
   · simp only [shG]
     exact (((continuous_dlt m₀).matrix_elem _ _).sub ((continuous_dlt m₀).matrix_elem _ _).star).div_const _
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun a => Complex.continuous_im.comp ((continuous_dlt m₀).matrix_elem a a)`.
+-/
 theorem continuous_shH (m₀ : Mx k r) : Continuous (shH m₀) :=
   continuous_pi fun a => Complex.continuous_im.comp ((continuous_dlt m₀).matrix_elem a a)
 
+/- English proof (translation)
+Establish `h1 : MeasurePreserving (fun x : ι → ℂ => fun i => x i + G x i) volume volume` using `PI.LowSplitHaarW.triShear ι rkf (fun i x => G x i) hG hdep`. Establish `h2` using `h1.skew_product (μc := (volume : Measure (Fin d → ℝ))) (μd := volume) (g := fun x s => s + H x) (measurable_snd.add (hH.comp measurable_fst)) (Filter.Eventually.of_forall fun x => map_add_right_eq_self volume (H x))`. Conclude with `h2`.
+-/
 theorem shear_mp {ι : Type} [Fintype ι] [DecidableEq ι] {d : ℕ} (rkf : ι → ℕ) (G : (ι → ℂ) → ι → ℂ)
     (H : (ι → ℂ) → Fin d → ℝ) (hG : ∀ i, Measurable fun x => G x i)
     (hdep : ∀ i (x y : ι → ℂ), (∀ j, rkf j < rkf i → x j = y j) → G x i = G y i)

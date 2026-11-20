@@ -4,6 +4,15 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKMid GlobalTheory.LKDef GlobalTheory.CuspRep GlobalTheory.UnitaryBC UpperTheory.Gal.W2.Seed UpperTheory.Gal.G1
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `hq2 : (2 : ℝ) ≤ q` using `by exact_mod_cast hq.out.two_le`. Distinguish the cases in `h : q = 2`. Substitute `h` using the available equality. Establish `h2 : ‖(2 : ℤ_[2])‖ = (2 : ℝ) ^ (-1 : ℤ)`. Use `PadicInt.norm_p_pow (p := 2) 1` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[h2]`. Evaluate the numerical expressions. Establish `h1 : ‖(2 : ℤ_[q])‖ = 1`. Apply `le_antisymm (PadicInt.norm_le_one _)` to reduce the goal to its premises.
+
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hd` using `(PadicInt.norm_int_lt_one_iff_dvd (p := q) 2).1 (by exact_mod_cast hlt)`. Establish `hd' : q ∣ 2` using `by exact_mod_cast hd`. Conclude with `h ((Nat.prime_dvd_prime_iff_eq hq.out Nat.prime_two).1 hd')`.
+
+Rewrite using `[h1, one_pow, _root_.zpow_neg]`. Establish `hlt : (1 : ℝ) < (q : ℝ) ^ (3 : ℤ)` using `one_lt_zpow₀ (by linarith) (by norm_num)`. Conclude with `inv_lt_one_of_one_lt₀ hlt`.
+-/
 private lemma pow_neg_three_lt_two_norm_sq (q : ℕ) [hq : Fact q.Prime] :
     (q : ℝ) ^ (-3 : ℤ) < ‖(2 : ℤ_[q])‖ ^ 2 := by
   have hq2 : (2 : ℝ) ≤ q := by exact_mod_cast hq.out.two_le
@@ -25,6 +34,9 @@ private lemma pow_neg_three_lt_two_norm_sq (q : ℕ) [hq : Fact q.Prime] :
     have hlt : (1 : ℝ) < (q : ℝ) ^ (3 : ℤ) := one_lt_zpow₀ (by linarith) (by norm_num)
     exact inv_lt_one_of_one_lt₀ hlt
 
+/- English proof (translation)
+Establish `hn : ‖Polynomial.aeval (1 : ℤ_[q]) (Polynomial.X ^ 2 - Polynomial.C z : Polynomial ℤ_[q])‖ < ‖Polynomial.aeval (1 : ℤ_[q]) (Polynomial.derivative (Polynomial.X ^ 2 - Polynomial.C z : Polynomial ℤ_[q]))‖ ^ 2`. Simplify `hz` using `[Polynomial.derivative_X_pow, one_add_one_eq_two]`. Take `⟨x, hx, -⟩` from `hensels_lemma hn`. Use `⟨x, ?_⟩` and prove the remaining obligations. Simplify `hx` using `[sub_eq_zero]`.
+-/
 private lemma sq_of_close (q : ℕ) [hq : Fact q.Prime] (z : ℤ_[q])
     (hz : ‖(1 : ℤ_[q]) - z‖ < ‖(2 : ℤ_[q])‖ ^ 2) : ∃ x : ℤ_[q], x ^ 2 = z := by
   have hn : ‖Polynomial.aeval (1 : ℤ_[q]) (Polynomial.X ^ 2 - Polynomial.C z : Polynomial ℤ_[q])‖ <
@@ -35,6 +47,23 @@ private lemma sq_of_close (q : ℕ) [hq : Fact q.Prime] (z : ℤ_[q])
   refine ⟨x, ?_⟩
   simpa [sub_eq_zero] using hx
 
+/- English proof (translation)
+Introduce `q hq`. Use `haveI : NeZero (q ^ 3) := ⟨pow_ne_zero 3 hq.out.ne_zero⟩`. Use `⟨Fintype.card (ZMod (q ^ 3)), fun u => Fintype.equivFin (ZMod (q ^ 3)) (if h : ‖u‖ ≤ 1 then PadicInt.toZModPow 3 ⟨u, h⟩ else 0), ?_⟩` and prove the remaining obligations. Introduce `u u' hu hu' hk`. Simplify using `only [dif_pos hu.le, dif_pos hu'.le, (Fintype.equivFin _).injective.eq_iff] at hk`.
+
+Take `⟨a, ha⟩ : ∃ a : ℤ_[q], (a : ℚ_[q]) = u ∧ PadicInt.toZModPow 3 a = PadicInt.toZModPow 3 ⟨u, hu.le⟩` from `⟨⟨u, hu.le⟩, rfl, rfl⟩`. Take `⟨b, hb⟩ : ∃ b : ℤ_[q], (b : ℚ_[q]) = u' ∧ PadicInt.toZModPow 3 b = PadicInt.toZModPow 3 ⟨u', hu'.le⟩` from `⟨⟨u', hu'.le⟩, rfl, rfl⟩`. Establish `hmem : b - a ∈ RingHom.ker (PadicInt.toZModPow (p` using `q) 3) := by`. Rewrite using `[RingHom.sub_mem_ker_iff, ha.2, hb.2]`. Conclude with `hk.symm`.
+
+Rewrite `hmem` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hmem`. Establish `hd : ‖u' - u‖ ≤ (q : ℝ) ^ (-3 : ℤ)`. Establish `h1 : ‖b - a‖ ≤ (q : ℝ) ^ (-((3 : ℕ) : ℤ))`. Rewrite using `[hc, norm_mul, PadicInt.norm_p_pow]`.
+
+Establish `hc1` using `PadicInt.norm_le_one c`. Establish `hpos : (0 : ℝ) ≤ (q : ℝ) ^ (-((3 : ℕ) : ℤ))` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[PadicInt.norm_def, PadicInt.coe_sub, ha.1, hb.1]`. Simplify using `using h1`.
+
+Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hu`. Establish `hz : ‖u' / u‖ ≤ 1`. Rewrite using `[norm_div, hu, hu']`.
+
+Simplify using the standard rewrite rules. Take `⟨w, hw⟩ : ∃ w : ℤ_[q], (w : ℚ_[q]) = u' / u` from `⟨⟨u' / u, hz⟩, rfl⟩`. Take `⟨x, hx⟩` from `sq_of_close q w (by`. Establish `e : ‖(1 : ℤ_[q]) - w‖ = ‖u' - u‖`. Rewrite using `[PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_one, hw, show (1 : ℚ_[q]) - u' / u = (u - u') / u by field_simp, norm_div, hu, div_one, norm_sub_rev]`.
+
+Rewrite using `[e]`. Conclude with `lt_of_le_of_lt hd (pow_neg_three_lt_two_norm_sq q))`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `hx' : (x : ℚ_[q]) ^ 2 = u' / u`. Rewrite using `[← hw, ← hx]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hx']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem UpperTheory.Gal.G1.pPadicSqFin :
     PadicSqFin := by
   intro q hq

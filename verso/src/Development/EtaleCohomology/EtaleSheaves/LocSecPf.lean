@@ -14,6 +14,9 @@ def LocSecA : Prop := ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (F : Shv R) (
 def LocSecB : Prop := ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (F : Shv R) (n : ℤ),
   Nonempty (CohomologyClass (pt R X) (res R F) n ≃+ (LateralTheory.E.LeafLocPf.secCx F X).homology n)
 
+/- English proof (translation)
+Introduce `_ R _ X F n`. Take `⟨a⟩` from `hA R X F n`. Take `⟨b⟩` from `hB R X F n`. Conclude with `⟨a.trans b⟩`.
+-/
 theorem LocSec_of (hA : LocSecA) (hB : LocSecB) : LateralTheory.E.LeafLocPf.LocSec := by
   intro _ R _ X F n
   obtain ⟨a⟩ := hA R X F n

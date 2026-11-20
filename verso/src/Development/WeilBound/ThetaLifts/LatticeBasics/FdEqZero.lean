@@ -28,6 +28,15 @@ structure Cpt (J : Matrix (Fin n) (Fin n) E) : Prop where
 def CptAll : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (Y : Spc F E n) (r s : ℕ), B.IsGood σ → (Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) → min r s = 0 → Cpt σ Y.J
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n Y r s hB hY h0`. Take `⟨e, -, hr⟩` from `h2 F E σ B hB n Y r s hY`. Take `⟨a1, a2, a3, a4, -, -, -, a5⟩` from `h1 F E σ hB.cm n Y.J e`. Take `⟨fr, g, -, ⟨Ω, hΩ, hc⟩, -⟩` from `h3 F E σ hB.cm n Y.J e`. Establish `r0 : fr.r = 0` using `by have := hr fr g; omega`.
+
+Establish `a0 : ∀ t, fr.a t = 1` using `fun t => by`. Establish `: t + t = t` using `funext fun i => absurd i.2 (by omega)`. Establish `e` using `g.add t t`. Rewrite `e` using `[this]`. Conclude with `left_eq_mul.1 e`.
+
+Establish `cov : ∀ x, ∃ γ ∈ ratU σ Y.J, γ * x ∈ Ω` using `fun x => by`. Take `⟨γ, hγ, t, -, κ, hκ, e⟩` from `hc x`. Conclude with `⟨γ, hγ, by rwa [e, a0, one_mul]⟩`. Take `⟨C, hC⟩` from `a5 Ω hΩ`. Take `⟨-, u1, u2⟩ : Countable (ratU σ Y.J) ∧ _ ∧ _` from `e.1.elim (fun h => h5 F E σ hB.cm n Y.J 1 (fun i j => by simp [h]) e.2) fun h => h5 F E σ hB.cm n Y.J (-1) (fun i j => by simp [h]) e.2`.
+
+Use `⟨a1, a2, a3, a4, ⟨Ω, hΩ, cov⟩, ⟨C, fun x => ?_⟩, u1, h4 F E σ hB.cm n Y.J e, u2⟩` and prove the remaining obligations. Take `⟨γ, hγ, hx⟩` from `cov x`. Conclude with `(ciInf_le (OrderBot.bddBelow _) (⟨γ, hγ⟩ : ratU σ Y.J)).trans (hC _ hx)`.
+-/
 theorem cptAll_of (h1 : PositivityTheory.ThKEst.GrpTop) (h2 : PositivityTheory.ThKEst.EpsOf) (h3 : PositivityTheory.ThKEst.SiegelAll) (h4 : PositivityTheory.ThKEst.FinVolU)
     (h5 : PositivityTheory.ThKF.Unimod) : CptAll := by
   intro F E _ _ _ _ _ σ B n Y r s hB hY h0
@@ -55,8 +64,16 @@ section Gen
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] {μ : Measure G}
   [μ.IsHaarMeasure] {Γ : Subgroup G} [Countable Γ] {D : Set G}
 
+/- English proof (translation)
+The claim follows from `hD.measure_ne_zero (NeZero.ne μ)`.
+-/
 theorem fd_ne (hD : IsFundamentalDomain Γ D μ) : μ D ≠ 0 := hD.measure_ne_zero (NeZero.ne μ)
 
+/- English proof (translation)
+Establish `h1 : μ {g | f g ≠ 0} = 0`. Use `hD.measure_zero_of_invariant _ (fun γ => Set.ext fun x => ?_) ?_` and prove the remaining obligations. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Conclude with `(congrArg (· ≠ 0) (hi _ (γ⁻¹).2 x)).to_iff`. Rewrite using `[← Measure.restrict_apply (isOpen_ne_fun hc continuous_const).measurableSet]`.
+
+Conclude with `measure_mono_null (fun g hg => by simpa using hg) (ae_iff.1 h0)`. Conclude with `(hc.ae_eq_iff_eq μ continuous_const).1 h1`.
+-/
 theorem fd_eq_zero (hD : IsFundamentalDomain Γ D μ) {f : G → ℂ} (hc : Continuous f) (hi : ∀ γ ∈ Γ, ∀ g, f (γ * g) = f g)
     (h0 : (fun g => ‖f g‖ ^ 2) =ᵐ[μ.restrict D] 0) : f = 0 := by
   have h1 : μ {g | f g ≠ 0} = 0 := by
@@ -77,6 +94,9 @@ instance topUA : IsTopologicalGroup (UA σ J) :=
   haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _
   Subgroup.instIsTopologicalGroupSubtypeMem _
 
+/- English proof (translation)
+Take `⟨Ω, hΩ, cov⟩` from `h.cov`. Take `⟨C, hC⟩` from `hΩ.exists_bound_of_continuousOn hc.continuousOn`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hg⟩` from `cov g`. Conclude with `hi γ hγ g ▸ hC _ hg`.
+-/
 theorem Cpt.bdd (h : Cpt σ J) {f : UA σ J → ℂ} (hc : Continuous f) (hi : ∀ γ ∈ ratU σ J, ∀ g, f (γ * g) = f g) :
     ∃ C : ℝ, ∀ g, ‖f g‖ ≤ C := by
   obtain ⟨Ω, hΩ, cov⟩ := h.cov
@@ -85,6 +105,11 @@ theorem Cpt.bdd (h : Cpt σ J) {f : UA σ J → ℂ} (hc : Continuous f) (hi : �
   obtain ⟨γ, hγ, hg⟩ := cov g
   exact hi γ hγ g ▸ hC _ hg
 
+/- English proof (translation)
+Take `⟨Ω, hΩ, cov⟩` from `h.cov`. Take `⟨Ω', hΩ', cov'⟩` from `h'.cov`. Take `⟨C, hC⟩` from `(hΩ.prod hΩ').exists_bound_of_continuousOn hc.continuousOn`. Use `⟨C, fun x => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hg⟩` from `cov x.1`.
+
+Take `⟨δ, hδ, hg'⟩` from `cov' x.2`. Conclude with `(hi γ hγ δ hδ x.1 x.2 ▸ hC (γ * x.1, δ * x.2) ⟨hg, hg'⟩ :)`.
+-/
 theorem Cpt.bdd₂ {m : ℕ} {J' : Matrix (Fin m) (Fin m) E} (h : Cpt σ J) (h' : Cpt σ J') {f : UA σ J × UA σ J' → ℂ}
     (hc : Continuous f) (hi : ∀ γ ∈ ratU σ J, ∀ δ ∈ ratU σ J', ∀ g g', f (γ * g, δ * g') = f (g, g')) : ∃ C : ℝ, ∀ x, ‖f x‖ ≤ C := by
   obtain ⟨Ω, hΩ, cov⟩ := h.cov
@@ -95,6 +120,9 @@ theorem Cpt.bdd₂ {m : ℕ} {J' : Matrix (Fin m) (Fin m) E} (h : Cpt σ J) (h' 
   obtain ⟨δ, hδ, hg'⟩ := cov' x.2
   exact (hi γ hγ δ hδ x.1 x.2 ▸ hC (γ * x.1, δ * x.2) ⟨hg, hg'⟩ :)
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `h.bdd hc hi`. Take `⟨b, hb⟩` from `h.hgt`. Conclude with `⟨hc, hi, fun N => ⟨C * (b : ℝ) ^ N, fun g => mul_le_mul (hC g) (pow_le_pow_left₀ (NNReal.coe_nonneg _) (hb g) N) (by positivity) ((norm_nonneg _).trans (hC g))⟩⟩`.
+-/
 theorem Cpt.rapid {Y : Spc F E n} (h : Cpt σ Y.J) {f : UA σ Y.J → ℂ} (hc : Continuous f)
     (hi : ∀ γ ∈ ratU σ Y.J, ∀ g, f (γ * g) = f g) : IsRapid f := by
   obtain ⟨C, hC⟩ := h.bdd hc hi
@@ -102,11 +130,19 @@ theorem Cpt.rapid {Y : Spc F E n} (h : Cpt σ Y.J) {f : UA σ Y.J → ℂ} (hc :
   exact ⟨hc, hi, fun N => ⟨C * (b : ℝ) ^ N, fun g => mul_le_mul (hC g) (pow_le_pow_left₀ (NNReal.coe_nonneg _) (hb g) N)
     (by positivity) ((norm_nonneg _).trans (hC g))⟩⟩
 
+/- English proof (translation)
+Use `haveI := h.cnt`. Conclude with `ENNReal.toReal_ne_zero.2 ⟨fd_ne hD, (h.fin μ D hμ hD).ne⟩`.
+-/
 theorem Cpt.vol_ne (h : Cpt σ J) {μ : Measure (UA σ J)} {D : Set (UA σ J)} (hμ : μ.IsHaarMeasure)
     (hD : IsFundamentalDomain (ratU σ J) D μ) : μ.real D ≠ 0 := by
   haveI := h.cnt
   exact ENNReal.toReal_ne_zero.2 ⟨fd_ne hD, (h.fin μ D hμ hD).ne⟩
 
+/- English proof (translation)
+Use `haveI := h.cnt`. Take `⟨C, hC⟩` from `h.bdd hc hi`. Establish `hi2 : IntegrableOn (fun g => ‖f g‖ ^ 2) D μ` using `Measure.integrableOn_of_bounded (M := C ^ 2) (h.fin μ D hμ hD).ne (hc.norm.pow 2).aestronglyMeasurable (Eventually.of_forall fun g => by`. Rewrite using `[norm_pow, norm_norm]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hC g) 2)`.
+
+Establish `e : pet μ D f f = ((∫ g in D, ‖f g‖ ^ 2 ∂μ : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal]`. Conclude with `integral_congr_ae (Eventually.of_forall fun g => by simpa using Complex.mul_conj' (f g))`. Rewrite `h0` using `[e, Complex.ofReal_eq_zero, integral_eq_zero_iff_of_nonneg (fun g => by positivity) hi2]`. Conclude with `fd_eq_zero hD hc hi h0`.
+-/
 theorem Cpt.eq_zero (h : Cpt σ J) {μ : Measure (UA σ J)} {D : Set (UA σ J)} (hμ : μ.IsHaarMeasure)
     (hD : IsFundamentalDomain (ratU σ J) D μ) {f : UA σ J → ℂ} (hc : Continuous f)
     (hi : ∀ γ ∈ ratU σ J, ∀ g, f (γ * g) = f g) (h0 : pet μ D f f = 0) : f = 0 := by

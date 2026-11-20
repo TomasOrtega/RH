@@ -19,6 +19,9 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealQuotBot.real_quot_inv_equiv | exact GlobalTheory.RealQuotBot.real_quot_inv_equiv | (intros; apply GlobalTheory.RealQuotBot.real_quot_inv_equiv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chain_frame_signature_data : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (A A' WW : HSp D) (FA : GlobalTheory.ChainFr.Fr A) (FA' : GlobalTheory.ChainFr.Fr A') (FW : GlobalTheory.ChainFr.Fr WW) (a b : D.what₂.Tau → ℚ)

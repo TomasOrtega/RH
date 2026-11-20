@@ -6,6 +6,9 @@ open CategoryTheory AlgebraicGeometry
 
 namespace GlobalTheory.Vert.Flag
 
+/- English proof (translation)
+Introduce `X M N fl i U e y hy`. Take `⟨W, hW, hy', t, ht⟩` from `VB.exists_app_eq_of_epi (fl.π i) e hy`. Conclude with `⟨W, hW, t, hy', ht⟩`.
+-/
 theorem exists_local_lift_gr : ∀ {X : Scheme.{0}} {M : X.Modules} {N : ℕ} (fl : Vert.Flag M N)
     (i : Fin N) (U : X.Opens) (e : Γ(fl.gr i, U)) (y : X), y ∈ U →
     ∃ (W : X.Opens) (hW : W ≤ U) (t : Γ(fl.F i.succ, W)),

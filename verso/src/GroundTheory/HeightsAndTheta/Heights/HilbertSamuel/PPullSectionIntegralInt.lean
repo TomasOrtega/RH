@@ -12,6 +12,11 @@ noncomputable section
 
 namespace PullSectionIntegralInt
 
+/- English proof (translation)
+Proceed by induction on `b using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `V.add_mem hp hq`. Consider the case `mul_X p i hp => rw [map_mul, aeval_X]`.
+
+Conclude with `V.mul_mem hp (hy i)`.
+-/
 theorem aeval_mem_of_forall {σ Ω : Type} [Field Ω] (V : Subring Ω) (y' : σ → Ω) (hy : ∀ p, y' p ∈ V)
     (b : MvPolynomial σ ℤ) : aeval y' b ∈ V := by
   induction b using MvPolynomial.induction_on with
@@ -19,6 +24,43 @@ theorem aeval_mem_of_forall {σ Ω : Type} [Field Ω] (V : Subring Ω) (y' : σ 
   | add p q hp hq => rw [map_add]; exact V.add_mem hp hq
   | mul_X p i hp => rw [map_mul, aeval_X]; exact V.mul_mem hp (hy i)
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y D e L q N M hrel he hL hM hdeg τ s hs j hj`. Use `set ℓ := aeval y (L j)`. Use `set B := Algebra.adjoin ℤ (insert ((M : Ω)⁻¹) (Set.range fun i => aeval y (L i) / ℓ))`. Use `set R := (integralClosure B Ω).toSubring`. Establish `: IsIntegrallyClosedIn R Ω` using `inferInstanceAs (IsIntegrallyClosedIn (integralClosure B Ω) Ω)`.
+
+Use `show s / ℓ ^ (q * τ) ∈ R`. Assume the negation of the conclusion as `hnot`. Take `⟨V, hRV, htV⟩` from `Subring.exists_le_valuationSubring_of_isIntegrallyClosedIn hnot`. Establish `hBV : ∀ x ∈ B, x ∈ V` using `fun x hx => hRV (isIntegral_algebraMap (R := B) (A := Ω) (x := ⟨x, hx⟩))`. Establish `hmax : ∀ k, ∃ c : ι k, ∀ i, V.valuation (y ⟨k, i⟩) ≤ V.valuation (y ⟨k, c⟩)`.
+
+Introduce `k`. Take `⟨i0, -⟩` from `hrel k`. Take `⟨c, -, hc⟩` from `Finset.exists_max_image Finset.univ (fun i => V.valuation (y ⟨k, i⟩)) ⟨i0, Finset.mem_univ _⟩`. Conclude with `⟨c, fun i => hc i (Finset.mem_univ _)⟩`. Use `choose c hc using hmax`.
+
+Establish `hc0 : ∀ k, y ⟨k, c k⟩ ≠ 0`. Introduce `k h0`. Take `⟨i0, hi0⟩` from `hrel k`. Use `hc k i0` as an intermediate fact. Rewrite `this` using `[h0, map_zero, le_zero_iff, map_eq_zero]`.
+
+Conclude with `hi0 this`. Establish `hratio : ∀ p : Σ k, ι k, y p / y ⟨p.1, c p.1⟩ ∈ V`. Introduce `p`. Rewrite using `[← V.valuation_le_one_iff, map_div₀]`. Conclude with `div_le_one_of_le₀ (hc p.1 p.2) zero_le`.
+
+Use `set Mc : Ω := ∏ k, y ⟨k, c k⟩ ^ e k`. Establish `hMc0 : Mc ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc0 k)`. Establish `hchart : (chartRingZ y c : Set Ω) ⊆ V`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx => obtain ⟨p, rfl⟩ := hx`. Conclude with `hratio p`. Consider the case `algebraMap r => simp`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`.
+
+Establish `: IsIntegrallyClosedIn V.toSubring Ω` using `inferInstanceAs (IsIntegrallyClosedIn V Ω)`. Establish `hxV : s * ∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * ((q * e k : ℕ) : ℤ))) ∈ V.toSubring` using `(Subring.integralClosure_le_iff (R := chartRingZ y c) (T := V.toSubring)).mpr (fun r => hchart r.2) (hs c hc0)`. Establish `hprod : ∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * ((q * e k : ℕ) : ℤ))) = (Mc ^ (q * τ))⁻¹`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[show -((τ : ℤ) * ((q * e k : ℕ) : ℤ)) = -((e k * (q * τ) : ℕ) : ℤ) by push_cast; ring, zpow_neg, zpow_natCast, pow_mul]`. Rewrite `hxV` using `[hprod]`. Use `set w := N * ∑ k, Fintype.card (ι k)`. Establish `hd : ∀ k, e k + N * Fintype.card (ι k) ≤ ((w + 1) • e) k`. Introduce `k`.
+
+Establish `h1 : Fintype.card (ι k) ≤ ∑ k, Fintype.card (ι k)` using `Finset.single_le_sum (f := fun k => Fintype.card (ι k)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Establish `h2 : N * Fintype.card (ι k) ≤ w` using `Nat.mul_le_mul_left N h1`. Establish `h3 : w ≤ w * e k` using `Nat.le_mul_of_pos_right w (he k)`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Take `⟨a, ha, hrelM⟩` from `hdeg ((w + 1) • e) (xpow c ((w + 1) • e)) (isMultiHomog_xpow c _) hd`. Establish `ha' : ∀ i, IsMultiHomog (a i) (fun k => w * e k)`. Introduce `i`. Use `ha i using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[add_mul, one_mul, Nat.add_sub_cancel]`. Establish `hg : aeval y (xpow c ((w + 1) • e)) = Mc ^ (w + 1)`. Simplify using `only [xpow, map_prod, map_pow, aeval_X, Mc, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, ← pow_mul, mul_comm]`. Use `set t : K → Ω := fun k => (y ⟨k, c k⟩)⁻¹`. Establish `hscale : ∀ i, aeval (fun p => t p.1 * y p) (a i) = (Mc ^ w)⁻¹ * aeval y (a i)`. Introduce `i`. Rewrite using `[PullSectionIntegral.aeval_scale_of_isMultiHomog y t (ha' i)]`.
+
+Use `congr 1`. Simplify using `only [Mc, t, ← Finset.prod_pow, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[inv_pow, ← pow_mul, mul_comm]`. Establish `hsum : Mc / ℓ = (M : Ω)⁻¹ * ∑ i, aeval (fun p => t p.1 * y p) (a i) * (aeval y (L i) / ℓ)`.
+
+Establish `: ∑ i, aeval (fun p => t p.1 * y p) (a i) * (aeval y (L i) / ℓ) = (Mc ^ w)⁻¹ * (∑ i, aeval y (a i) * aeval y (L i)) / ℓ`. Simplify using `only [hscale, Finset.mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, ← hrelM, hg]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hMV : Mc / ℓ ∈ V`. Rewrite using `[hsum]`. Use `mul_mem (hBV _ (Algebra.subset_adjoin (Set.mem_insert _ _))) (sum_mem fun i _ => mul_mem ?_ ?_)` and prove the remaining obligations.
+
+Conclude with `aeval_mem_of_forall V.toSubring _ (fun p => by simpa [t, div_eq_inv_mul] using hratio p) (a i)`. Conclude with `hBV _ (Algebra.subset_adjoin (Set.mem_insert_of_mem _ ⟨i, rfl⟩))`. Apply `htV` to reduce the goal to its premises. Establish `hMn : Mc ^ (q * τ) ≠ 0` using `pow_ne_zero _ hMc0`. Establish `: s / ℓ ^ (q * τ) = s * (Mc ^ (q * τ))⁻¹ * (Mc / ℓ) ^ (q * τ)`.
+
+Rewrite using `[div_pow, mul_assoc, ← mul_div_assoc, inv_mul_cancel₀ hMn, mul_one_div]`. Rewrite using `[this]`. Conclude with `mul_mem hxV (pow_mem hMV _)`.
+-/
 theorem proof : PullSectionIntegralInt.Statement := by
   intro K _ ι _ Ω _ y D e L q N M hrel he hL hM hdeg τ s hs j hj
   classical

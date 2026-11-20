@@ -13,6 +13,9 @@ set_option autoImplicit false in
 open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 
+/- English proof (translation)
+Introduce `n r _ _ K v hK`. Unfold `_root_.GlobalTheory.GoodTop.mixTop`. Simplify using `only [Matrix.det_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem _root_.GlobalTheory.GoodTop.continuousAt_mixTop :
     ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r]
       {K : _root_.ReciprocityTheory.L2DbarEstimates.V n → Fin n → _root_.GlobalTheory.GoodTop.EndValuedForm11Coeffs n r} {v : _root_.ReciprocityTheory.L2DbarEstimates.V n},

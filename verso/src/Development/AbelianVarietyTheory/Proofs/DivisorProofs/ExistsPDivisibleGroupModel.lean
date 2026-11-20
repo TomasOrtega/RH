@@ -18,6 +18,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Aff
 
+/- English proof (translation)
+Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `hn : ∀ n : ℕ, p ^ n ≠ 0` using `fun n => pow_ne_zero n hp`. Use `choose A i1 i2 i3 i4 i5 θ hθ using fun n : ℕ => GlobalTheory.T.exists_level_structure_hopf R K G hG (p ^ n) (hn n)`. Establish `hd : ∀ n : ℕ, p ^ n ∣ p ^ (n + 1)` using `fun n => Dvd.intro p rfl`. Establish `hg` using `fun n : ℕ => (GlobalTheory.T.level_structure_divisibility_map R K G hG (p ^ n) (p ^ (n + 1)) (hn n) (hd n) (A n) (A (n + 1)) (θ n) (θ (n + 1)) (hθ n) (hθ (n + 1)) (𝟙 G) inferInstance).exists`.
+
+Use `choose g hg using hg`. Establish `hg' : ∀ (n : ℕ) (B : Type) [CommRing B] [Algebra R B] (z : Tors G (p ^ n) B), (θ (n + 1)).pt B (torsIncl (hd n) z) = ((θ n).pt B z).comp (g n : A (n + 1) →ₐ[R] A n)` using `fun n B _ _ z => hg n B z _ (Category.comp_id _).symm`. Set `GG : PDivGroup p R` to `{ height := h A := A rank_eq := fun n q => by`. Rewrite using `[(GlobalTheory.T.finite_hopf_points_separate R K (A n)).2.2 q, ← hc n]`. Conclude with `(Nat.card_eq_of_bijective _ (hθ n).gen).symm`.
+
+Use `res := g`. Use `res_surjective := fun n => GlobalTheory.T.level_structure_divisibility_compat R K G hG (p ^ n) (p ^ (n + 1)) (hd n) (hn n) (A n) (A (n + 1)) (θ n) (θ (n + 1)) (hθ n) (hθ (n + 1)) (g n) (hg' n)`. Use `ker_res := fun n => GlobalTheory.T.level_structure_multiplication_map R K G hG (p ^ n) p (hn n) hp (A n) (A (n + 1)) (θ n) (θ (n + 1)) (hθ n) (hθ (n + 1)) (g n) (hg' n) }`. Set `Θ : TorsionMap G GG` to `{ pt := fun n B _ _ z => (θ n).pt B z nat := fun n B C _ _ _ _ φ z z' e => by`. Take `rfl : z' = torsMap φ z` from `Subtype.ext e`.
+
+Conclude with `(θ n).nat B C φ z`. Use `mul := fun n B _ _ x y z e => by`. Take `rfl : z = x * y` from `Subtype.ext e`. Conclude with `(θ n).mul B x y`. Use `res := fun n B _ _ z z' e => hg n B z z' (e.trans (Category.comp_id _).symm) }`.
+
+Conclude with `⟨GG, Θ, rfl, fun n => ⟨(hθ n).opn, (hθ n).gen⟩⟩`.
+-/
 theorem exists_pDivGroup_isModel (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R]
     [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
     (hG : IsSemiAbelian G) (h : ℕ) (hc : ∀ n, Nat.card (Tors G (p ^ n) K) = p ^ (n * h)) :

@@ -3,6 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.EqOne
 
 open MvPolynomial Equiv UpperTheory.V.AlgebraTools.Hk
 
+/- English proof (translation)
+Introduce `n p h1 hstep`. Take `⟨hA, hB, -, -, -⟩` from `UpperTheory.V.AlgebraTools.hkInv n`. Establish `red : ∀ w : Perm (Fin n), w ≠ 1 → ∃ w', invN w = invN w' + 1 ∧ (p w' → p w)`. Introduce `w hw`. Take `⟨a, c, hac, hlt⟩` from `hB w hw`.
+
+Establish `hlt' : (swap a c * w)⁻¹ a < (swap a c * w)⁻¹ c`. Rewrite using `[mul_inv_rev, swap_inv, Perm.mul_apply, Perm.mul_apply, swap_apply_left, swap_apply_right]`. Conclude with `hlt`. Establish `hw' : swap a c * (swap a c * w) = w` using `swap_mul_self_mul a c w`. Use `⟨swap a c * w, ?_, fun hp => ?_⟩` and prove the remaining obligations.
+
+Use `(hA a c hac _ hlt').2.2` as an intermediate fact. Rewrite `this` using `[hw']`. Then use the resulting hypothesis. Use `hstep a c hac _ hlt' hp` as an intermediate fact. Rewrite `this` using `[hw']`. Then use the resulting hypothesis. Establish `key : ∀ k, ∀ w : Perm (Fin n), invN w = k → p w`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `w hw`. Distinguish the cases in `h : w = 1`.
+
+Substitute `h` using the available equality. Conclude with `h1`. Take `⟨w', e, -⟩` from `red w h`. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers.
+
+Consider the case `succ k ih`. Introduce `w hw`. Distinguish the cases in `h : w = 1`. Substitute `h` using the available equality. Conclude with `h1`.
+
+Take `⟨w', e, hp⟩` from `red w h`. Conclude with `hp (ih w' (by omega))`. Conclude with `fun w => key _ w rfl`.
+-/
 theorem UpperTheory.V.AlgebraTools.hkInd :
     ∀ (n : ℕ) (p : Perm (Fin n) → Prop), p 1 →
       (∀ (a c : Fin n), a.val + 1 = c.val → ∀ w : Perm (Fin n), w⁻¹ a < w⁻¹ c → p w → p (swap a c * w)) → ∀ w, p w := by

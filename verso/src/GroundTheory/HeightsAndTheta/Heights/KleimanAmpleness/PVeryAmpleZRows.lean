@@ -18,11 +18,17 @@ variable {R : Type u} [CommRing R] {V : Type v} [AddCommGroup V] [Module R V] {n
 def onSet {i : ℕ} (s : Cech.Cochain (fun _ : Cell U => V) i) (A : Finset (Fin n)) : V :=
   if h : A.card = i + 1 ∧ A ⊆ U then s ⟨⟨A, Finset.card_pos.mp (by omega), h.2⟩, h.1⟩ else 0
 
+/- English proof (translation)
+Unfold `onSet`. Rewrite using `[dif_pos ⟨I.2, I.1.2.2⟩]`.
+-/
 theorem onSet_idx {i : ℕ} (s : Cech.Cochain (fun _ : Cell U => V) i) (I : Cech.Idx U i) :
     onSet s I.1.1 = s I := by
   unfold onSet
   rw [dif_pos ⟨I.2, I.1.2.2⟩]
 
+/- English proof (translation)
+Rewrite using `[Cech.d_apply, ← Finset.sum_coe_sort K.1.1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← onSet_idx s (Cech.face K j)]`. Both sides reduce to the same expression.
+-/
 theorem d_eq {i : ℕ} (s : Cech.Cochain (fun _ : Cell U => V) i) (K : Cech.Idx U (i + 1)) :
     Cech.d (fun _ : Cell U => V) (Cech.idRes R V U) i s K =
       ∑ j ∈ K.1.1, Cech.sgn K.1.1 j • onSet s (K.1.1.erase j) := by
@@ -31,6 +37,13 @@ theorem d_eq {i : ℕ} (s : Cech.Cochain (fun _ : Cell U => V) i) (K : Cech.Idx 
   rw [← onSet_idx s (Cech.face K j)]
   rfl
 
+/- English proof (translation)
+Establish `hcard : ({a, b} : Finset (Fin n)).card = 0 + 1 + 1` using `Finset.card_pair hab.ne`. Establish `h` using `congrFun hs ⟨⟨{a, b}, Finset.insert_nonempty _ _, Finset.insert_subset ha (Finset.singleton_subset_iff.mpr hb)⟩, hcard⟩`. Rewrite `h` using `[d_eq]`. Express the relevant statement in the definitionally equal form `∑ j ∈ ({a, b} : Finset (Fin n)), Cech.sgn {a, b} j • onSet s (({a, b} : Finset _).erase j) = 0 at h`. Rewrite `h` using `[Finset.sum_pair hab.ne, Finset.erase_insert (Finset.notMem_singleton.mpr hab.ne), Finset.erase_insert_of_ne hab.ne, Finset.erase_singleton, insert_empty_eq]`.
+
+Establish `e1 : Cech.sgn ({a, b} : Finset (Fin n)) a = 1`. Simplify using `[Cech.sgn, Finset.filter_insert, Finset.filter_singleton, not_lt.mpr hab.le]`. Establish `e2 : Cech.sgn ({a, b} : Finset (Fin n)) b = -1`. Simplify using `[Cech.sgn, Finset.filter_insert, Finset.filter_singleton, hab]`. Rewrite `h` using `[e1, e2, one_smul, neg_one_smul, ← sub_eq_add_neg, sub_eq_zero]`.
+
+Conclude with `h.symm`.
+-/
 theorem onSet_pair {s : Cech.Cochain (fun _ : Cell U => V) 0}
     (hs : Cech.d (fun _ : Cell U => V) (Cech.idRes R V U) 0 s = 0) {a b : Fin n} (ha : a ∈ U) (hb : b ∈ U)
     (hab : a < b) : onSet s {a} = onSet s {b} := by
@@ -48,6 +61,11 @@ theorem onSet_pair {s : Cech.Cochain (fun _ : Cell U => V) 0}
   rw [e1, e2, one_smul, neg_one_smul, ← sub_eq_add_neg, sub_eq_zero] at h
   exact h.symm
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Finset.card_eq_one.mp I.2`. Take `⟨b, hb⟩` from `Finset.card_eq_one.mp K.2`. Establish `haU : a ∈ U` using `I.1.2.2 (ha ▸ Finset.mem_singleton_self a)`. Establish `hbU : b ∈ U` using `K.1.2.2 (hb ▸ Finset.mem_singleton_self b)`. Rewrite using `[← onSet_idx s I, ← onSet_idx s K, ha, hb]`.
+
+Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Conclude with `onSet_pair hs haU hbU h`. Both sides reduce to the same expression. Conclude with `(onSet_pair hs hbU haU h).symm`.
+-/
 theorem const_zero {s : Cech.Cochain (fun _ : Cell U => V) 0}
     (hs : Cech.d (fun _ : Cell U => V) (Cech.idRes R V U) 0 s = 0) (I K : Cech.Idx U 0) : s I = s K := by
   obtain ⟨a, ha⟩ := Finset.card_eq_one.mp I.2
@@ -64,6 +82,17 @@ end VeryAmpleZRows
 
 open VeryAmpleZRows in
 
+/- English proof (translation)
+Introduce `S _ Ω _ _ N x E _ _ _ _ G H r h hH J`. Establish `hmono : ∀ I I' : Chart x, I.1 ⊆ I'.1 → secsOnZChart G.toSubSystem H.toSubSystem h I J ≤ secsOnZChart G.toSubSystem H.toSubSystem h I' J`. Introduce `I I' hII'`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `e ⟨m, hm⟩`.
+
+Conclude with `⟨m, (G.toSubSystem.twist (H.toSubSystem.pow (J.1.card * m))).mono I I' hII' _ hm⟩`. Take `⟨j, hjJ⟩` from `J.2.1`. Take `⟨n, a, b, K, ha, hb, hab, hK⟩` from `hH.affine j ((mem_support h).mp (J.2.2 hjJ))`. Establish `hn : 0 < n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+
+Simplify using `at hab`. Conclude with `hn`. Set `pt : ∀ i, i ∈ support x → Cech.Idx (support x) 0` to `fun i hi => ⟨⟨{i}, Finset.singleton_nonempty _, Finset.singleton_subset_iff.mpr hi⟩, Finset.card_singleton _⟩`. Take `⟨i₀, hi₀⟩` from `(K ⟨0, hn⟩).2.1`. Establish `hi₀x : i₀ ∈ support x` using `(K ⟨0, hn⟩).2.2 hi₀`.
+
+Use `⟨hmono, fun I => iInf_le _ I, fun z _ hz => hz (pt i₀ hi₀x), ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs hds`. Use `⟨s (pt i₀ hi₀x), Submodule.mem_iInf _ |>.mpr fun I => ?_, fun I => const_zero hds I _⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `I.2.1`. Rewrite using `[const_zero hds (pt i₀ hi₀x) (pt i (I.2.2 hi))]`.
+
+Conclude with `hmono (pt i (I.2.2 hi)).1 I (Finset.singleton_subset_iff.mpr hi) ((Submodule.mem_pi.mp hs) _ (Set.mem_univ _))`. Introduce `p s hs hds`. Establish `hjk : ∀ k, (K k).2.1.choose ∈ (K k).1` using `fun k => (K k).2.1.choose_spec`. Conclude with `hPart S Ω E (support x) (fun I => secsOnZChart G.toSubSystem H.toSubSystem h I J) n a b (fun k => (K k).2.1.choose) (fun k => (K k).2.2 (hjk k)) hab (fun k I z hz => hSmul S Ω N x E G.toSubSystem H.toSubSystem r h hH.mem_secs J j hjJ I (a k) (ha k) z hz) (fun k I z hz => hSmul S …`.
+-/
 theorem VeryAmpleZRows.proof (hPart : CechPartition.Statement.{u, v, w}) (hSmul : ZChartSmul.Statement.{u, v, w})
     (hLoc : ZChartLocal.Statement.{u, v, w}) : VeryAmpleZRows.Statement.{u, v, w} := by
   intro S _ Ω _ _ N x E _ _ _ _ G H r h hH J

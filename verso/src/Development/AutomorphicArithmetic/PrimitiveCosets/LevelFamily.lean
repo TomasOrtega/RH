@@ -9,6 +9,9 @@ open Classical in
 private noncomputable def UpperTheory.Comparison₂.level_family_wt (Λ : Level) (ψ : PChar) : ℝ :=
   if ψ = PChar.one then 1 else Λ.wt ψ
 
+/- English proof (translation)
+Unfold `UpperTheory.Comparison₂.level_family_wt Level.wt`. Use `split_ifs`. Conclude with `one_pos`. Conclude with `one_pos`. Check the signs of the components of the expression.
+-/
 private theorem UpperTheory.Comparison₂.level_family_wt_pos (Λ : Level) (ψ : PChar) : 0 < UpperTheory.Comparison₂.level_family_wt Λ ψ := by
   unfold UpperTheory.Comparison₂.level_family_wt Level.wt
   split_ifs
@@ -16,6 +19,11 @@ private theorem UpperTheory.Comparison₂.level_family_wt_pos (Λ : Level) (ψ :
   · exact one_pos
   · positivity
 
+/- English proof (translation)
+Distinguish the cases in `h : ψ.χ = 1`. Use `left`. Establish `hp` using `ψ.prim`. Rewrite `hp` using `[DirichletCharacter.IsPrimitive, h, DirichletCharacter.conductor_one]`. Conclude with `hp.symm`.
+
+Conclude with `Or.inr h`.
+-/
 private theorem UpperTheory.Comparison₂.level_family_adm (ψ : PChar) : ψ.N = 1 ∨ ψ.χ ≠ 1 := by
   by_cases h : ψ.χ = 1
   · left
@@ -24,6 +32,11 @@ private theorem UpperTheory.Comparison₂.level_family_adm (ψ : PChar) : ψ.N =
     exact hp.symm
   · exact Or.inr h
 
+/- English proof (translation)
+Rewrite using `[← Finset.add_sum_erase _ _ Λ.one_mem, Level.Gm, Level.Nt]`. Use `congr 1`. Establish `h1 : UpperTheory.Comparison₂.level_family_wt Λ PChar.one = 1`. Simplify using `[UpperTheory.Comparison₂.level_family_wt]`. Rewrite using `[h1, one_mul, ← gChi_eq, (Gz_eq y).1]`.
+
+Simplify using `only [An.gChi, PChar.one]`. Conclude with `(congrArg Complex.re (if_pos rfl)).trans (Complex.ofReal_re _)`. Use `Finset.sum_congr (by congr) fun ψ hψ => ?_` and prove the remaining obligations. Establish `hne : ψ ≠ PChar.one` using `Finset.ne_of_mem_erase hψ`. Simplify using `only [UpperTheory.Comparison₂.level_family_wt, if_neg hne, gChi_eq]`.
+-/
 private theorem UpperTheory.Comparison₂.level_family_sum (Λ : Level) (y : ℝ) :
     ∑ ψ ∈ Λ.KEPT, UpperTheory.Comparison₂.level_family_wt Λ ψ * (Deduction.Gchi ψ.χ y).re = Λ.Gm y := by
   classical
@@ -38,6 +51,11 @@ private theorem UpperTheory.Comparison₂.level_family_sum (Λ : Level) (y : ℝ
     have hne : ψ ≠ PChar.one := Finset.ne_of_mem_erase hψ
     simp only [UpperTheory.Comparison₂.level_family_wt, if_neg hne, gChi_eq]
 
+/- English proof (translation)
+Introduce `Λ`. Use `⟨@Deduction.CharFamily.mk Λ.KEPT _ (fun i => i.1.N) (fun i => i.1.ne) (fun i => i.1.χ) (fun i => UpperTheory.Comparison₂.level_family_wt Λ i.1) (fun i => UpperTheory.Comparison₂.level_family_wt_pos Λ i.1) (fun i => UpperTheory.Comparison₂.level_family_adm i.1), fun y => ?_, fun θ …` and prove the remaining obligations. Rewrite using `[← UpperTheory.Comparison₂.level_family_sum Λ y, Deduction.Gm]`. Conclude with `Finset.sum_coe_sort Λ.KEPT (fun ψ => UpperTheory.Comparison₂.level_family_wt Λ ψ * (Deduction.Gchi ψ.χ y).re)`. Simplify using `only [Deduction.ZeroFree, Level.ZeroFreeAbove, PChar.ZeroFreeAbove]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h ψ hψ s hs`. Conclude with `h ⟨ψ, hψ⟩ s hs`. Introduce `h i s hs`. Conclude with `h i.1 i.2 s hs`.
+-/
 theorem UpperTheory.Comparison₂.level_family :
     ∀ Λ : Level, ∃ F : Deduction.CharFamily, (∀ y, Deduction.Gm F y = Λ.Gm y) ∧ ∀ θ, Deduction.ZeroFree F θ ↔ Λ.ZeroFreeAbove θ := by
   intro Λ

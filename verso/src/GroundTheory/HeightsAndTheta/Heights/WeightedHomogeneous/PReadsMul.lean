@@ -12,6 +12,13 @@ namespace ReadsMul
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
+/- English proof (translation)
+Establish `hg'` using `(geoMultiHomog_iff g d).mpr hg`. Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+
+Establish `hX : ∏ p : Coord n, (X p.1 : MvPolynomial ι Ω) ^ m p = ∏ k, (X k : MvPolynomial ι Ω) ^ d k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, (X k : MvPolynomial ι Ω) ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hg' m hm k]`.
+
+Simplify using `only [Geo.mConeMap, aeval_monomial]`. Rewrite using `[Finsupp.prod_fintype _ _ (fun i => by simp), Finsupp.prod_fintype _ _ (fun i => by simp)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hX, map_mul, map_prod, map_pow, MvPolynomial.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mConeMap_of_homog {Ω : Type} [Field Ω] (y : Coord n → Ω) {g : MvPolynomial (Coord n) ℤ}
     {d : ι → ℕ} (hg : IsWeightedHomogeneous (coordDeg n) g d) :
     Geo.mConeMap (ι := blockIdx n) y g = C (aeval y g) * ∏ k, (X k : MvPolynomial ι Ω) ^ d k := by
@@ -31,11 +38,23 @@ theorem mConeMap_of_homog {Ω : Type} [Field Ω] (y : Coord n → Ω) {g : MvPol
     MvPolynomial.algebraMap_apply]
   ring
 
+/- English proof (translation)
+Rewrite using `[Geo.mCoordIdeal, RingHom.mem_ker, mConeMap_of_homog y hg, h0, map_zero, zero_mul]`.
+-/
 theorem mem_mCoordIdeal {Ω : Type} [Field Ω] (y : Coord n → Ω) {g : MvPolynomial (Coord n) ℤ}
     {d : ι → ℕ} (hg : IsWeightedHomogeneous (coordDeg n) g d) (h0 : aeval y g = 0) :
     g ∈ Geo.mCoordIdeal (ι := blockIdx n) y := by
   rw [Geo.mCoordIdeal, RingHom.mem_ker, mConeMap_of_homog y hg, h0, map_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `ι _ _ n Ω _ y P a b s s' t t' hP ⟨f, q, δf, δq, hf, hq, hfq, hqP, ht⟩ _ hR hR'`. Substitute `ht` using the available equality. Establish `hqy : aeval y q ≠ 0` using `fun h0 ↦ hqP (hP ▸ mem_mCoordIdeal y hq h0)`. Establish `hqF : P.mkF q ≠ 0` using `fun h0 ↦ hqP ((P.mkF_eq_zero_iff q).mp h0)`. Establish `hfy : aeval y f = s * aeval y q` using `(hR f q δf δq hf hq (fun k ↦ by have := hfq k; omega)).mpr (div_mul_cancel₀ _ hqF).symm`.
+
+Introduce `g h δg δh hg hh hd`. Establish `key` using `hR' (g * q) (f * h) (δg + δq) (δf + δh) (hg.mul hq) (hf.mul hh) (fun k ↦ by`. Establish `h1` using `hfq k`. Establish `h2` using `hd k`. Simplify using `only [Pi.add_apply, Nat.cast_add] at h1 h2 ⊢`.
+
+Use the proof step `omega)`. Rewrite `key` using `[map_mul, map_mul, map_mul, map_mul]`. Establish `e1 : (aeval y g = s * s' * aeval y h) ↔ (aeval y g * aeval y q = s' * (aeval y f * aeval y h))`. Rewrite using `[← mul_left_inj' hqy, hfy, show s * s' * aeval y h * aeval y q = s' * (s * aeval y q * aeval y h) by ring]`. Establish `e2 : (P.mkF g = P.mkF f / P.mkF q * t' * P.mkF h) ↔ (P.mkF g * P.mkF q = t' * (P.mkF f * P.mkF h))`.
+
+Rewrite using `[← mul_left_inj' hqF, show P.mkF f / P.mkF q * t' * P.mkF h * P.mkF q = t' * (P.mkF f * P.mkF h) by field_simp]`. Conclude with `e1.trans (key.trans e2.symm)`.
+-/
 theorem proof : ReadsMul.Statement := by
   intro ι _ _ n Ω _ y P a b s s' t t' hP ⟨f, q, δf, δq, hf, hq, hfq, hqP, ht⟩ _ hR hR'
   subst ht

@@ -10,6 +10,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1.S0.A
 
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.psiGen`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+-/
 theorem psiGen_norm (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (g : Mat k r) :
     ‖Formalism.MainNotions.S.psiGen k r z c g‖ = 1 := by
   unfold Formalism.MainNotions.S.psiGen
@@ -17,6 +20,13 @@ theorem psiGen_norm (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r →
   exact Complex.norm_exp_ofReal_mul_I _
 
 open Formalism.QuantumDeterminants.WeylGroupFacts in
+/- English proof (translation)
+Establish `hc` using `((nset_iff m).1 hm).2`. Establish `hc'` using `((nset_iff m').1 hm').2`. Establish `hi : (Formalism.QuantumDeterminants.eI k r a).val < r` using `a.isLt`. Unfold `Formalism.MainNotions.S.ellA`. Use `split_ifs with h`.
+
+Conclude with `mul_apply_add hc hc' _ _ hi (show (Formalism.QuantumDeterminants.eI k r ⟨a.val + 1, h⟩).val ≤ r + k by show a.val + 1 ≤ r + k; omega) (show (Formalism.QuantumDeterminants.eI k r a).val < (Formalism.QuantumDeterminants.eI k r ⟨a.val + 1, h⟩).val by show a.val < a.val + 1; omega) ( …`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Distinguish the cases in `hq : r ≤ q.val ∧ q.val ≤ r + k`.
+
+Rewrite using `[mul_apply_add hc hc' _ _ hi hq.2 (show (Formalism.QuantumDeterminants.eI k r a).val < q.val by show a.val < q.val; omega) (Or.inr (show r ≤ (Formalism.QuantumDeterminants.eI k r a).val + 1 by show r ≤ a.val + 1; omega)), add_mul]`. Establish `hz0 : z q = 0` using `hz q (by omega)`. Rewrite using `[hz0, mul_zero, mul_zero, mul_zero, add_zero]`.
+-/
 theorem ellA_mul {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {m m' : Mat k r}
     (hm : m ∈ Nset k r) (hm' : m' ∈ Nset k r) (a : Fin r) :
     Formalism.MainNotions.S.ellA k r z (m * m') a = Formalism.MainNotions.S.ellA k r z m a + Formalism.MainNotions.S.ellA k r z m' a := by
@@ -42,6 +52,11 @@ theorem ellA_mul {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
       rw [hz0, mul_zero, mul_zero, mul_zero, add_zero]
 
 open Formalism.QuantumDeterminants.WeylGroupFacts in
+/- English proof (translation)
+Establish `hb` using `uw_block hh`. Establish `hb'` using `uw_block (uw_inv hh)`. Establish `hz' : h⁻¹ *ᵥ z = z` using `(uw_inv hh).2.2`. Establish `hrow : ∀ p, h (Formalism.QuantumDeterminants.eI k r a) p = if Formalism.QuantumDeterminants.eI k r a = p then 1 else 0` using `fun p => hb.2 _ p (Or.inl (show (Formalism.QuantumDeterminants.eI k r a).val < r from a.isLt))`. Unfold `Formalism.MainNotions.S.ellA`.
+
+Use `split_ifs with h1`. Establish `hcol : ∀ q, h⁻¹ q (Formalism.QuantumDeterminants.eI k r ⟨a.val + 1, h1⟩) = if q = Formalism.QuantumDeterminants.eI k r ⟨a.val + 1, h1⟩ then 1 else 0` using `fun q => hb'.1 q _ (Or.inl (show (Formalism.QuantumDeterminants.eI k r ⟨a.val + 1, h1⟩).val < r from h1))`. Rewrite using `[mul_apply_of_col _ _ _ hcol, mul_apply_of_row _ _ _ hrow]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, mulVec_apply_of_row _ _ hrow, hz']`.
+-/
 theorem ellA_conj {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {h m : Mat k r}
     (hh : h ∈ UWset k r z) (hm : m ∈ Nset k r) (a : Fin r) :
     Formalism.MainNotions.S.ellA k r z (h * m * h⁻¹) a = Formalism.MainNotions.S.ellA k r z m a := by
@@ -58,6 +73,11 @@ theorem ellA_conj {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z
     rw [mul_apply_of_col _ _ _ hcol, mul_apply_of_row _ _ _ hrow]
   · rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, mulVec_apply_of_row _ _ hrow, hz']
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.psiGen`. Rewrite using `[← Complex.exp_add]`. Establish `e : ∑ a, c a * Formalism.MainNotions.S.ellA k r z (m * m') a = (∑ a, c a * Formalism.MainNotions.S.ellA k r z m a) + ∑ a, c a * Formalism.MainNotions.S.ellA k r z m' a`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ellA_mul hz hm hm' a, mul_add]`. Rewrite using `[e, Complex.add_re, Complex.ofReal_add, mul_add]`.
+-/
 theorem psiGen_mul {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : Fin r → ℂ) {m m' : Mat k r}
     (hm : m ∈ Nset k r) (hm' : m' ∈ Nset k r) :
     Formalism.MainNotions.S.psiGen k r z c (m * m') = Formalism.MainNotions.S.psiGen k r z c m * Formalism.MainNotions.S.psiGen k r z c m' := by
@@ -70,6 +90,9 @@ theorem psiGen_mul {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r 
     rw [ellA_mul hz hm hm' a, mul_add]
   rw [e, Complex.add_re, Complex.ofReal_add, mul_add]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.psiGen`. Establish `e : ∑ a, c a * Formalism.MainNotions.S.ellA k r z (h * m * h⁻¹) a = ∑ a, c a * Formalism.MainNotions.S.ellA k r z m a` using `Finset.sum_congr rfl fun a _ => by rw [ellA_conj hz hh hm a]`. Rewrite using `[e]`.
+-/
 theorem psiGen_conj {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : Fin r → ℂ) {h m : Mat k r}
     (hh : h ∈ UWset k r z) (hm : m ∈ Nset k r) :
     Formalism.MainNotions.S.psiGen k r z c (h * m * h⁻¹) = Formalism.MainNotions.S.psiGen k r z c m := by

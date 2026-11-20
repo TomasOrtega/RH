@@ -25,11 +25,26 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
   {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {r : ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_perp (H : HermSp M V) {S : Submodule E V} {v : V} : v ∈ H.perp S ↔ ∀ x ∈ S, H.h v x = 0 := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm]`.
+-/
 theorem h_smul_right (H : HermSp M V) (c : E) (x y : V) : H.h x (c • y) = M.L.cj c * H.h x y := by
   rw [H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨v, hv, rfl⟩ := hx`. Conclude with `⟨v, hv, rfl⟩`.
+
+Consider the case `zero => exact ⟨0, Λ.zero_mem, (smul_zero c).symm⟩`. Consider the case `add x y _ _ ihx ihy`. Take `⟨v, hv, rfl⟩` from `ihx`. Take `⟨w, hw, rfl⟩` from `ihy`. Conclude with `⟨v + w, Λ.add_mem hv hw, (smul_add c v w).symm⟩`.
+
+Consider the case `smul o x _ ih`. Take `⟨v, hv, rfl⟩` from `ih`. Use `⟨o • v, Λ.smul_mem o hv, ?_⟩` and prove the remaining obligations. Use `show ((o : E)) • (c • v) = c • ((o : E) • v)`. Rewrite using `[smul_smul, smul_smul, mul_comm]`.
+
+Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `Submodule.subset_span ⟨v, hv, rfl⟩`.
+-/
 theorem mem_smulLat (H : HermSp M V) (c : E) (Λ : Submodule M.L.O V) {x : V} :
     x ∈ H.smulLat c Λ ↔ ∃ v ∈ Λ, x = c • v := by
   constructor
@@ -55,6 +70,11 @@ def Fam (H : HermSp M V) (Λ : Submodule M.L.O V) (f f' : Fin (r + 1) → V) (a 
 
 variable {H : HermSp M V} {Λ : Submodule M.L.O V} {f f' : Fin (r + 1) → V}
 
+/- English proof (translation)
+Take `⟨y', hy', y, hy, hP', hP, h1, h2, hv⟩` from `h`. Use `⟨y', hy', y, hy, hP', hP, ?_, ?_, hv⟩` and prove the remaining obligations. Establish `e : y' - a' = (y' - a) + (a - a')` using `by abel`. Rewrite using `[e]`. Conclude with `add_mem h1 ha`.
+
+Establish `e : y - b' = (y - b) + (b - b')` using `by abel`. Rewrite using `[e]`. Conclude with `add_mem h2 hb`.
+-/
 theorem fam_congr {a b a' b' : V} (h : Fam H Λ f f' a b) (ha : a - a' ∈ H.X f') (hb : b - b' ∈ H.X f) :
     Fam H Λ f f' a' b' := by
   obtain ⟨y', hy', y, hy, hP', hP, h1, h2, hv⟩ := h
@@ -64,6 +84,13 @@ theorem fam_congr {a b a' b' : V} (h : Fam H Λ f f' a b) (ha : a - a' ∈ H.X f
   · have e : y - b' = (y - b) + (b - b') := by abel
     rw [e]; exact add_mem h2 hb
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨y', hy', y, hy, hP', hP, h1, h2, hv⟩` from `h`. Use `⟨y', hy', y, hy, hP', hP, ?_, ?_, y', hy', y, hy, hP', hP, by simp, by simp, hv⟩` and prove the remaining obligations. Use `neg_mem h1` as an intermediate fact.
+
+Simplify using `using this`. Use `neg_mem h2` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨x', -, x, -, -, -, ha, hb, h⟩`. Use `fam_congr h ?_ ?_` and prove the remaining obligations.
+
+Use `neg_mem ha` as an intermediate fact. Simplify using `using this`. Use `neg_mem hb` as an intermediate fact. Simplify using `using this`.
+-/
 theorem fam_iff {a b : V} : Fam H Λ f f' a b ↔ ∃ x' ∈ Λ, ∃ x ∈ Λ, x' ∈ H.perp (H.X f') ∧ x ∈ H.perp (H.X f) ∧
     a - x' ∈ H.X f' ∧ b - x ∈ H.X f ∧ Fam H Λ f f' x' x := by
   constructor
@@ -77,6 +104,13 @@ theorem fam_iff {a b : V} : Fam H Λ f f' a b ↔ ∃ x' ∈ Λ, ∃ x ∈ Λ, x
     · have := neg_mem ha; simpa using this
     · have := neg_mem hb; simpa using this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y', hy', y, hy, -, -, h1, h2, v, hv, e⟩`. Use `⟨-(algebraMap F E (LocNG.theta M) • v), (mem_smulLat H _ Λ).2 ⟨-v, Λ.neg_mem hv, by rw [smul_neg]⟩, x - y, Λ.sub_mem hx hy, y' - x', Λ.sub_mem hy' hx', ?_, h1, ?_⟩` and prove the remaining obligations. Use `neg_mem h2` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[← e]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨s, hs, b₀, hb₀, c₀, hc₀, hb₀X, hc₀X, e⟩`. Take `⟨w, hw, rfl⟩` from `(mem_smulLat H _ Λ).1 hs`. Use `⟨x' + c₀, Λ.add_mem hx' hc₀, x - b₀, Λ.sub_mem hx hb₀, add_mem hP' (iso' hc₀X), sub_mem hP (iso hb₀X), by simpa using hc₀X, by simpa using neg_mem hb₀X, -w, Λ.neg_mem hw, ?_⟩` and prove the remaining obligations.
+
+Establish `e2 : algebraMap F E (LocNG.theta M) • w = x - x' - b₀ - c₀` using `by rw [e]; abel`. Rewrite using `[smul_neg, e2]`. Normalize the expressions using the abelian group laws.
+-/
 theorem fam_pt (iso : H.X f ≤ H.perp (H.X f)) (iso' : H.X f' ≤ H.perp (H.X f')) {x' x : V} (hx' : x' ∈ Λ) (hx : x ∈ Λ)
     (hP' : x' ∈ H.perp (H.X f')) (hP : x ∈ H.perp (H.X f)) :
     Fam H Λ f f' x' x ↔ Cong H Λ f f' (x - x') := by
@@ -93,6 +127,21 @@ theorem fam_pt (iso : H.X f ≤ H.perp (H.X f)) (iso' : H.X f' ≤ H.perp (H.X f
     have e2 : algebraMap F E (LocNG.theta M) • w = x - x' - b₀ - c₀ := by rw [e]; abel
     rw [smul_neg, e2]; abel
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y', hy', y, hy, hyP1, hyP, h1, h2, hv⟩`. Establish `hx'Λ : gβ.symm y' ∈ Λ` using `(hΛ _).1 (by simpa using hy')`. Establish `hx'P : gβ.symm y' ∈ H.perp (H.X f₀)` using `(hP _).1 (by simpa using hyP1)`. Use `⟨gβ.symm y', hx'Λ, y, hy, hx'P, hyP, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `k1` using `(hnX _).2 h1`. Rewrite `k1` using `[map_sub, LinearEquiv.apply_symm_apply]`. Establish `k2` using `hm _ hx'P`. Rewrite `k2` using `[LinearEquiv.apply_symm_apply]`. Establish `e : a - gβ.symm y' = (gn y' - gβ.symm y') - (gn y' - a)` using `by abel`.
+
+Rewrite using `[e]`. Conclude with `sub_mem k2 k1`. Establish `k1` using `(hnA _).2 h2`. Rewrite `k1` using `[map_sub, LinearEquiv.apply_symm_apply]`. Establish `k2` using `hnP y hyP`.
+
+Establish `e : b - y = (gn y - y) - (gn y - b)` using `by abel`. Rewrite using `[e]`. Conclude with `sub_mem k2 k1`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `⟨y', hy', y, hy, hyP1, hyP, by simp, by simp, hv⟩`.
+
+Introduce and unpack `⟨x', hx', x, hx, hx'P, hxP, ha, hb, y', hy', y, hy, hyP1, hyP, h1, h2, hv⟩`. Use `⟨y', hy', y, hy, hyP1, hyP, ?_, ?_, hv⟩` and prove the remaining obligations. Rewrite using `[← hnX, map_sub, LinearEquiv.apply_symm_apply]`. Establish `k1` using `(hnX _).2 h1`. Rewrite `k1` using `[map_sub]`.
+
+Establish `k2` using `hm _ hx'P`. Establish `e : gn y' - a = (gn y' - gn (gβ x')) + (gn (gβ x') - x') - (a - x')` using `by abel`. Rewrite using `[e]`. Conclude with `sub_mem (add_mem k1 k2) ha`. Rewrite using `[← hnA, map_sub, LinearEquiv.apply_symm_apply]`.
+
+Establish `k2` using `hnP y hyP`. Establish `e : gn y - b = (gn y - y) + (y - x) - (b - x)` using `by abel`. Rewrite using `[e]`. Conclude with `sub_mem (add_mem k2 h2) hb`.
+-/
 theorem famL_iff {f₀ f₁ : Fin (r + 1) → V} (gβ gn : V ≃ₗ[E] V)
     (hΛ : ∀ v, gβ v ∈ Λ ↔ v ∈ Λ)
     (hX : ∀ v, gβ v ∈ H.X f₁ ↔ v ∈ H.X f₀)
@@ -134,6 +183,21 @@ theorem famL_iff {f₀ f₁ : Fin (r + 1) → V} (gβ gn : V ≃ₗ[E] V)
       have e : gn y - b = (gn y - y) + (y - x) - (b - x) := by abel
       rw [e]; exact sub_mem (add_mem k2 h2) hb
 
+/- English proof (translation)
+Establish `iso1 : H.X f₁ ≤ H.perp (H.X f₁)`. Introduce `z hz`. Establish `h1 : gβ.symm z ∈ H.X f₀` using `(hX _).1 (by simpa using hz)`. Establish `h2` using `(hP _).2 (iso0 h1)`. Simplify using `using h2`.
+
+Establish `Lpt : ∀ x' ∈ Λ, ∀ x ∈ Λ, x' ∈ H.perp (H.X f₀) → x ∈ H.perp (H.X f) → (Fam H Λ f f₁ (gn.symm x') (gn.symm x) ↔ Fam H Λ f f₁ (gβ x') x)`. Introduce `x' hx' x hx hx'P hxP`. Rewrite using `[famL_iff gβ gn hΛ hX hP hnX hm hnA hnP]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x₁, -, x₂, -, -, -, h1, h2, h⟩`.
+
+Use `fam_congr h ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_sub]`. Use `(hX _).2 ?_` and prove the remaining obligations. Use `neg_mem h1` as an intermediate fact. Simplify using `using this`.
+
+Use `neg_mem h2` as an intermediate fact. Simplify using `using this`. Introduce `h`. Conclude with `⟨x', hx', x, hx, hx'P, hxP, by simp, by simp, h⟩`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h x' hx' x hx hx'P hxP`. Rewrite using `[← fam_pt isoA iso0 hx' hx hx'P hxP, ← fam_pt isoA iso1 ((hΛ _).2 hx') hx ((hP _).2 hx'P) hxP, ← Lpt x' hx' x hx hx'P hxP, h]`. Introduce `h a b`. Rewrite using `[famL_iff gβ gn hΛ hX hP hnX hm hnA hnP, fam_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x', hx', x, hx, hx'P, hxP, ha, hb, k⟩`. Use `⟨x', hx', x, hx, hx'P, hxP, ha, hb, ?_⟩` and prove the remaining obligations. Rewrite `k` using `[fam_pt isoA iso1 ((hΛ _).2 hx') hx ((hP _).2 hx'P) hxP, ← h x' hx' x hx hx'P hxP]`. Conclude with `(fam_pt isoA iso0 hx' hx hx'P hxP).2 k`. Introduce and unpack `⟨x', hx', x, hx, hx'P, hxP, ha, hb, k⟩`.
+
+Use `⟨x', hx', x, hx, hx'P, hxP, ha, hb, ?_⟩` and prove the remaining obligations. Rewrite `k` using `[fam_pt isoA iso0 hx' hx hx'P hxP, h x' hx' x hx hx'P hxP]`. Conclude with `(fam_pt isoA iso1 ((hΛ _).2 hx') hx ((hP _).2 hx'P) hxP).2 k`.
+-/
 theorem main_abs {f₀ f₁ : Fin (r + 1) → V} (gβ gn : V ≃ₗ[E] V)
     (hΛ : ∀ v, gβ v ∈ Λ ↔ v ∈ Λ)
     (hX : ∀ v, gβ v ∈ H.X f₁ ↔ v ∈ H.X f₀)
@@ -193,6 +257,13 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
   {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {r : ℕ} {H : HermSp M V}
 
+/- English proof (translation)
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨a, rfl⟩` from `hz`. Establish `h1` using `hg.2.1 a`. Establish `h2 : Submodule.span E ((fun b : Fin r => f b.castSucc) '' {b | b < a}) ≤ H.X f` using `Submodule.span_mono (Set.image_subset_range _ _)`.
+
+Establish `e : g (f a.castSucc) = (g (f a.castSucc) - f a.castSucc) + f a.castSucc` using `by abel`. Rewrite using `[e]`. Conclude with `add_mem (h2 h1) (Submodule.subset_span ⟨a, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem nu_keepX {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : g ∈ NU H f) {z : V} (hz : z ∈ H.X f) :
     g z ∈ H.X f := by
   induction hz using Submodule.span_induction with
@@ -207,10 +278,18 @@ theorem nu_keepX {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : g ∈ NU H f)
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by simpa using nu_keepX hg' h, nu_keepX hg⟩`.
+-/
 theorem nu_X_iff {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : g ∈ NU H f) (hg' : g.symm ∈ NU H f) (z : V) :
     g z ∈ H.X f ↔ z ∈ H.X f :=
   ⟨fun h => by simpa using nu_keepX hg' h, nu_keepX hg⟩
 
+/- English proof (translation)
+Rewrite using `[mem_perp, mem_perp]`. Prove the components needed by the constructor for the conclusion. Introduce `hv x hx`. Rewrite using `[← hu]`. Conclude with `hv _ ((hS x).2 hx)`.
+
+Introduce `hv y hy`. Use `hv _ ((hS (g.symm y)).1 (by simpa using hy))` as an intermediate fact. Rewrite `this` using `[← hu v (g.symm y), LinearEquiv.apply_symm_apply]`. Conclude with `this`.
+-/
 theorem perp_iff_of_map {g : V ≃ₗ[E] V} (hu : IsUnitary H g) {S S' : Submodule E V} (hS : ∀ v, g v ∈ S' ↔ v ∈ S)
     (v : V) : g v ∈ H.perp S' ↔ v ∈ H.perp S := by
   rw [mem_perp, mem_perp]
@@ -222,6 +301,11 @@ theorem perp_iff_of_map {g : V ≃ₗ[E] V} (hu : IsUnitary H g) {S S' : Submodu
     rw [← hu v (g.symm y), LinearEquiv.apply_symm_apply] at this
     exact this
 
+/- English proof (translation)
+Establish `hm : (H.X f).map (g : V →ₗ[E] V) = H.X f'`. Simplify using `only [HermSp.X]`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using `[h]`. Rewrite using `[← hm, Submodule.mem_map_equiv]`. Simplify using the standard rewrite rules.
+-/
 theorem X_iff_of_map {g : V ≃ₗ[E] V} {f f' : Fin (r + 1) → V} (h : ∀ a, g (f a) = f' a) (v : V) :
     g v ∈ H.X f' ↔ v ∈ H.X f := by
   have hm : (H.X f).map (g : V →ₗ[E] V) = H.X f' := by
@@ -233,6 +317,15 @@ theorem X_iff_of_map {g : V ≃ₗ[E] V} {f f' : Fin (r + 1) → V} (h : ∀ a, 
   rw [← hm, Submodule.mem_map_equiv]
   simp
 
+/- English proof (translation)
+Establish `s1 : ∀ x ∈ H.X f, ∀ b : Fin r, H.h x (f b.castSucc) = 0`. Introduce `x hx b`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Conclude with `h0 a b`.
+
+Consider the case `zero => exact H.h_zero_left _`. Consider the case `add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]`. Introduce `y hy`. Rewrite using `[mem_perp]`.
+
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨b, rfl⟩ := hx`. Conclude with `s1 y hy b`. Consider the case `zero => rw [H.h_herm 0 y, H.h_zero_left, map_zero]`.
+
+Consider the case `add x x' _ _ hx hx'`. Rewrite using `[H.h_herm (x + x') y, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm, hx, hx', add_zero]`. Consider the case `smul c x _ hx => rw [h_smul_right, hx, mul_zero]`.
+-/
 theorem X_le_perp_of (f : Fin (r + 1) → V) (h0 : ∀ a b : Fin r, H.h (f a.castSucc) (f b.castSucc) = 0) :
     H.X f ≤ H.perp (H.X f) := by
   have s1 : ∀ x ∈ H.X f, ∀ b : Fin r, H.h x (f b.castSucc) = 0 := by
@@ -258,6 +351,11 @@ section Glob
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `X_le_perp_of _ fun a b => ?_` and prove the remaining obligations. Simplify using `only [scaled, GlobalTheory.LocExt.frame_castSucc]`. Rewrite using `[(locH Z p).h_smul_left, h_smul_right]`. Use `show _ * (_ * LocFacts₂ Z.M p _ _) = 0`. Rewrite using `[baseChangeAt_form Z.M p (Z.hcj p)]`.
+
+Simplify using `[brS, F.fl.e_iso]`.
+-/
 theorem scaled_iso (Z : LocDat D) (p : PlF D) {T : D.host.E} (F : LFlag (VS D) D.R.rS T) :
     (locH Z p).X (scaled Z p (frame F)) ≤ (locH Z p).perp ((locH Z p).X (scaled Z p (frame F))) := by
   refine X_le_perp_of _ fun a b => ?_
@@ -267,17 +365,26 @@ theorem scaled_iso (Z : LocDat D) (p : PlF D) {T : D.host.E} (F : LFlag (VS D) D
   rw [baseChangeAt_form Z.M p (Z.hcj p)]
   simp [brS, F.fl.e_iso]
 
+/- English proof (translation)
+Introduce `x` and use `by show ga (gb (baseChange₂ D p x)) = baseChange₂ D p (a (b x)) rw [hb, ha]`.
+-/
 theorem ext_trans {p : PlF D} {a b : (VS D).V ≃ₗ[D.host.E] (VS D).V} {ga gb : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p}
     (ha : Ext p a ga) (hb : Ext p b gb) : Ext p (a * b) (gb.trans ga) := fun x => by
   show ga (gb (baseChange₂ D p x)) = baseChange₂ D p (a (b x))
   rw [hb, ha]
 
+/- English proof (translation)
+Introduce `x` and use `by rw [LinearEquiv.symm_apply_eq, h] show baseChange₂ D p x = baseChange₂ D p (a (a.symm x)) rw [LinearEquiv.apply_symm_apply]`.
+-/
 theorem ext_symm {p : PlF D} {a : (VS D).V ≃ₗ[D.host.E] (VS D).V} {g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p}
     (h : Ext p a g) : Ext p a⁻¹ g.symm := fun x => by
   rw [LinearEquiv.symm_apply_eq, h]
   show baseChange₂ D p x = baseChange₂ D p (a (a.symm x))
   rw [LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.LocExt.locEquiv_unique p γ g h]`. Conclude with `GlobalTheory.LocExt.locEquiv_NU Z p γ F hN`.
+-/
 theorem nu_of_ext (Z : LocDat D) (p : PlF D) {T : D.host.E} {F : LFlag (VS D) D.R.rS T}
     {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} {g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p} (hN : γ ∈ NRat F) (h : Ext p γ g) :
     g ∈ NU (locH Z p) (scaled Z p (frame F)) := by
@@ -292,6 +399,31 @@ namespace GlobalTheory.PullGraph
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hi0 : t₀.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t₀.rep.2.2.1`. Establish `hi1 : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Establish `hβ : t.lin * t₀.lin⁻¹ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem hi1 ((Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hi0)`. Establish `hβΛ : Formalism.HermitianLatticesTheory.gmap (t.lin * t₀.lin⁻¹) t₀.lam = t₀.lam`. Establish `hg0 : Formalism.HermitianLatticesTheory.gmap t₀.lin t₀.lam' = t₀.lam` using `t₀.rep.2.2.2.1`.
+
+Establish `hg1 : Formalism.HermitianLatticesTheory.gmap t.lin t.lam' = t.lam` using `t.rep.2.2.2.1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Formalism.L2.SG.Pf.gmap_mul_sat, hg0]`. Use `_ = t₀.lam := by rw [Formalism.L2.SG.Pf.gmap_inv_gmap, ← hl', hg1, hl]`. Establish `hfr : ∀ a, (t.lin * t₀.lin⁻¹) (frame t₀.frame a) = frame t.frame a`.
+
+Introduce `a`. Use `show (t.lin * t₀.lin⁻¹) (frame (mapLF t₀.lin (lf D (X.Fu u'))) a) = frame (mapLF t.lin (lf D (X.Fu u'))) a`. Rewrite using `[Formalism.L2.SG.Pf.Act.frame_mapLF hi0, Formalism.L2.SG.Pf.Act.frame_mapLF hi1]`. Use `show t.lin (t₀.lin.symm (t₀.lin _)) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+
+Establish `hm0 : n * (t.lin * t₀.lin⁻¹) ∈ NRat t₀.frame`. Establish `e : n * (t.lin * t₀.lin⁻¹) = t₀.lin * m * t₀.lin⁻¹` using `by rw [ht]; group`. Rewrite using `[e]`. Conclude with `GlobalTheory.StabCnt.nrat_conj (GlobalTheory.StabCnt.adapt_mapLF hi0) hm`. Establish `hgβ : Ext p (t.lin * t₀.lin⁻¹) (GlobalTheory.LocExt.locEquiv p (t.lin * t₀.lin⁻¹))` using `GlobalTheory.LocExt.locEquiv_ext p _`.
+
+Establish `huβ` using `GlobalTheory.LocExt.locEquiv_unitary Z p _ hβ`. Establish `hgf : ∀ a, GlobalTheory.LocExt.locEquiv p (t.lin * t₀.lin⁻¹) (scaled Z p (frame t₀.frame) a) = scaled Z p (frame t.frame) a`. Introduce `a`. Simplify using `only [scaled, map_smul, hgβ _, hfr]`. Establish `hXβ` using `X_iff_of_map (H := locH Z p) hgf`.
+
+Establish `hPβ` using `perp_iff_of_map huβ hXβ`. Establish `hΛ : ∀ v, GlobalTheory.LocExt.locEquiv p (t.lin * t₀.lin⁻¹) v ∈ lattice₂ D Z.M p t₀.lam ↔ v ∈ lattice₂ D Z.M p t₀.lam`. Establish `himg` using `GlobalTheory.LocExt.locEquiv_img Z p (t.lin * t₀.lin⁻¹) t₀.lam`. Rewrite `himg` using `[hβΛ]`. Introduce `v`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Rewrite `hv` using `[← himg]`. Take `⟨w, hw, e⟩` from `Submodule.mem_map.1 hv`. Establish `: w = v` using `(GlobalTheory.LocExt.locEquiv p (t.lin * t₀.lin⁻¹)).injective e`.
+
+Rewrite using `[← this]` and apply the resulting hypothesis. Introduce `hv`. Rewrite using `[← himg]`. Conclude with `Submodule.mem_map_of_mem hv`. Establish `hg0` using `ext_trans hgn hgβ`.
+
+Establish `hNU0` using `nu_of_ext Z p hm0 hg0`. Establish `hNU0'` using `nu_of_ext Z p (GlobalTheory.StabCnt.nrat_inv hm0) (ext_symm hg0)`. Establish `hnN` using `nu_of_ext Z p hn hgn`. Establish `hnN'` using `nu_of_ext Z p (GlobalTheory.StabCnt.nrat_inv hn) (ext_symm hgn)`. Establish `hnX : ∀ z, gn z ∈ (locH Z p).X (scaled Z p (frame t₀.frame)) ↔ z ∈ (locH Z p).X (scaled Z p (frame t.frame))`.
+
+Introduce `z`. Establish `e : gn z = ((GlobalTheory.LocExt.locEquiv p (t.lin * t₀.lin⁻¹)).trans gn) ((GlobalTheory.LocExt.locEquiv p (t.lin * t₀.lin⁻¹)).symm z)` using `by simp`. Rewrite using `[e, nu_X_iff hNU0 hNU0', ← hXβ, LinearEquiv.apply_symm_apply]`. Establish `hmm : ∀ x ∈ (locH Z p).perp ((locH Z p).X (scaled Z p (frame t₀.frame))), gn (GlobalTheory.LocExt.locEquiv p (t.lin * t₀.lin⁻¹) x) - x ∈ (locH Z p).X (scaled Z p (frame t₀.frame))` using `fun x hx => hNU0.2.2 x hx`. Establish `key` using `main_abs (GlobalTheory.LocExt.locEquiv p (t.lin * t₀.lin⁻¹)) gn hΛ hXβ hPβ hnX hmm (nu_X_iff hnN hnN') hnN.2.2 (scaled_iso Z p _) (scaled_iso Z p _)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h gβ hgβ'`. Rewrite using `[GlobalTheory.LocExt.locEquiv_unique p _ gβ hgβ']`. Conclude with `key.1 h`. Introduce `h`.
+
+Conclude with `key.2 (h _ hgβ)`.
+-/
 theorem pulled_iff_local (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) (Z : LocDat D) (t₀ t : TauC Y u u')
     (n m : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hl : t.lam = t₀.lam) (hl' : t.lam' = t₀.lam')
     (hn : n ∈ NRat (lf D (X.Fu u))) (hm : m ∈ NRat (lf D (X.Fu u'))) (ht : t.lin = n⁻¹ * t₀.lin * m)
@@ -369,6 +501,9 @@ theorem pulled_iff_local (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word
   · intro h
     exact key.2 (h _ hgβ)
 
+/- English proof (translation)
+Introduce `D X Y u u' t₀ t n m hl hl' hnm p gn hgn`. Conclude with `pulled_iff_local X Y u u' _ t₀ t n m hl hl' hnm.1 hnm.2.1 hnm.2.2 p gn hgn`.
+-/
 theorem pulled_graph_iff : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) (t₀ t : TauC Y u u') (n m : (VS D).V ≃ₗ[D.host.E] (VS D).V), t.lam = t₀.lam → t.lam' = t₀.lam' → n ∈ NRat (lf D (X.Fu u)) ∧ m ∈ NRat (lf D (X.Fu u')) ∧ t.lin = n⁻¹ * t₀.lin * m → ∀ (p : PlF D) (gn : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p), Ext p n gn → ((∀ a b : Vp D p, (∃ y' ∈ lattice₂ D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p t₀.lam, ∃ y ∈ lattice₂ D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p t₀.lam, y' ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).perp ((locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame t.frame))) ∧ y ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).perp ((locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame (lf D (X.Fu u))))) ∧ y' - gn.symm a ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame t.frame)) ∧ y - gn.symm b ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame (lf D (X.Fu u)))) ∧ ∃ v ∈ lattice₂ D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p t₀.lam, y' - y = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (LocNG.theta ((⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p)) • v) ↔ (∃ y' ∈ lattice₂ D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p t₀.lam, ∃ y ∈ lattice₂ D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p t₀.lam, y' ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).perp ((locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame t₀.frame))) ∧ y ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).perp ((locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame (lf D (X.Fu u))))) ∧ y' - a ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame t₀.frame)) ∧ y - b ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame (lf D (X.Fu u)))) ∧ ∃ v ∈ lattice₂ D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p t₀.lam, y' - y = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (LocNG.theta ((⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p)) • v)) ↔ (∀ gβ, Ext p (t.lin * t₀.lin⁻¹) gβ → ∀ x' ∈ lattice₂ D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p t₀.lam, ∀ x ∈ lattice₂ D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p t₀.lam, x' ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).perp ((locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame t₀.frame))) → x ∈ (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).perp ((locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p).X (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame (lf D (X.Fu u))))) → (Cong (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) (lattice₂ D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p t₀.lam) (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame (lf D (X.Fu u)))) (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame t₀.frame)) (x - x') ↔ Cong (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) (lattice₂ D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D).M p t₀.lam) (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame (lf D (X.Fu u)))) (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame t.frame)) (x - gβ x')))) := by
   intro D X Y u u' t₀ t n m hl hl' hnm p gn hgn
   exact pulled_iff_local X Y u u' _ t₀ t n m hl hl' hnm.1 hnm.2.1 hnm.2.2 p gn hgn

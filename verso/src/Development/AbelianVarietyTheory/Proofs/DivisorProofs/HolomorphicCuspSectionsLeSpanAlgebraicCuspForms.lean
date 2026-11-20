@@ -18,6 +18,11 @@ namespace GlobalTheory.OntoCore
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T h j hj w hw hn σ hσ`. Establish `hr : 1 ≤ D.R.r` using `by unfold Ranks.r; have := D.R.two_le_m; omega`. Establish `hfr : Module.finrank ℚ D.host.E = 2 * D.R.f` using `Formalism.L2.Pj.hostSize_finrank D`. Establish `hn' : 4 * (Module.finrank ℚ D.host.E * D.R.r) + 4 ≤ w.n`. Rewrite using `[hfr]`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨hrk, hM⟩` from `h.modelW j hj σ hσ`. Establish `key` using `GlobalTheory.Dict.holSub0_le_span_cusp GlobalTheory.chartIndependence_unconditional D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r (fun s => Formalism.L2.PjFree.Unf.ofPj (T.U j s)) hr h.pins.2.1.2 (fun s hs => (Formalism.L2.PjFree.isUnf_ofPj _).2 (h.unf j hj s hs)) σ hσ ( …`. Introduce `P hP`. Conclude with `key ⟨hP.1, hP.2⟩`.
+-/
 theorem holSub0_le_span_cuspA : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, InR D j → ∀ w : WeightFamilies.Wt D j, w.LastPos → 8 * D.R.f * D.R.r + 4 ≤ w.n → ∀ σ, GoodEmb T.Q.c σ → Formalism.L2.Pj.holSub0 (T.U j σ).X (laU (T.U j σ) (wtA w) w.n) ≤ Submodule.span ℂ (rdU (T.U j σ) '' (T.cuspA j (wtA w) w.n : Set (T.R j))) := by
   intro D T h j hj w hw hn σ hσ
   have hr : 1 ≤ D.R.r := by unfold Ranks.r; have := D.R.two_le_m; omega

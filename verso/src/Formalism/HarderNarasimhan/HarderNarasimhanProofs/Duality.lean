@@ -12,6 +12,11 @@ section Dual
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
+/- English proof (translation)
+Establish `key : ∀ x : E, y ∈ ((Int.castAddHom ℝ).range.toIntSubmodule).comap ((innerSL ℝ x : E →L[ℝ] ℝ).toLinearMap.restrictScalars ℤ) ↔ ∃ n : ℤ, (n : ℝ) = inner ℝ x y`. Introduce `x`. Rewrite using `[Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `(innerSL ℝ x) y ∈ (Int.castAddHom ℝ).range ↔ _`. Rewrite using `[AddMonoidHom.mem_range]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [dualZ, Submodule.mem_inf, Submodule.restrictScalars_mem, Submodule.mem_iInf, key]`.
+-/
 theorem duality_mem_dualZ (L : Submodule ℤ E) (y : E) :
     y ∈ dualZ L ↔ y ∈ span ℝ (L : Set E) ∧ ∀ x ∈ L, ∃ n : ℤ, (n : ℝ) = inner ℝ x y := by
   have key : ∀ x : E, y ∈ ((Int.castAddHom ℝ).range.toIntSubmodule).comap
@@ -26,11 +31,21 @@ theorem duality_mem_dualZ (L : Submodule ℤ E) (y : E) :
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Simplify using `[inner_sum, real_inner_smul_right, hvw]`.
+-/
 theorem duality_inner_sum_dual (v w : ι → E)
     (hvw : ∀ k i, inner ℝ (v k) (w i) = if k = i then 1 else 0) (c : ι → ℝ) (k : ι) :
     inner ℝ (v k) (∑ i, c i • w i) = c k := by
   simp [inner_sum, real_inner_smul_right, hvw]
 
+/- English proof (translation)
+Establish `hall : ∀ u ∈ span ℝ (Set.range v), inner ℝ u z = 0`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`.
+
+Conclude with `h k`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [inner_add_left, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [real_inner_smul_left, hx, mul_zero]`. Establish `hzz` using `hall z hz`.
+
+Conclude with `inner_self_eq_zero.mp hzz`.
+-/
 theorem duality_eq_zero_of_inner (v : ι → E) {z : E} (hz : z ∈ span ℝ (Set.range v))
     (h : ∀ k, inner ℝ (v k) z = 0) : z = 0 := by
   have hall : ∀ u ∈ span ℝ (Set.range v), inner ℝ u z = 0 := by
@@ -45,6 +60,11 @@ theorem duality_eq_zero_of_inner (v : ι → E) {z : E} (hz : z ∈ span ℝ (Se
   have hzz := hall z hz
   exact inner_self_eq_zero.mp hzz
 
+/- English proof (translation)
+Establish `hs : (∑ k, inner ℝ (v k) y • w k) ∈ span ℝ (Set.range v)` using `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hw k)`. Establish `h0` using `duality_eq_zero_of_inner v (Submodule.sub_mem _ hy hs) fun j => by`. Establish `h2` using `duality_inner_sum_dual v w hvw (fun k => inner ℝ (v k) y) j`. Rewrite using `[inner_sub_right, sub_eq_zero]`. Conclude with `h2.symm`.
+
+Conclude with `sub_eq_zero.mp h0`.
+-/
 theorem duality_expand (v w : ι → E) (hw : ∀ i, w i ∈ span ℝ (Set.range v))
     (hvw : ∀ k i, inner ℝ (v k) (w i) = if k = i then 1 else 0) {y : E}
     (hy : y ∈ span ℝ (Set.range v)) : y = ∑ k, inner ℝ (v k) y • w k := by
@@ -56,6 +76,13 @@ theorem duality_expand (v w : ι → E) (hw : ∀ i, w i ∈ span ℝ (Set.range
     exact h2.symm
   exact sub_eq_zero.mp h0
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `hy k`. Consider the case `zero => exact ⟨0, by simp⟩`.
+
+Consider the case `add x z _ _ hx hz`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hz`. Conclude with `⟨a + b, by rw [inner_add_left, ← ha, ← hb, Int.cast_add]⟩`. Consider the case `smul a x _ hx`.
+
+Take `⟨b, hb⟩` from `hx`. Use `⟨a * b, ?_⟩` and prove the remaining obligations. Establish `hsm : a • x = (a : ℝ) • x`. Conclude with `(Int.cast_smul_eq_zsmul (R := ℝ) a x).symm`. Rewrite using `[hsm, real_inner_smul_left, ← hb, Int.cast_mul]`.
+-/
 private theorem exists_int_inner_of_mem_span_int (v : ι → E) (y : E)
     (hy : ∀ k, ∃ n : ℤ, (n : ℝ) = inner ℝ (v k) y) {x : E} (hx : x ∈ span ℤ (Set.range v)) :
     ∃ n : ℤ, (n : ℝ) = inner ℝ x y := by
@@ -75,6 +102,17 @@ private theorem exists_int_inner_of_mem_span_int (v : ι → E) (y : E)
       exact (Int.cast_smul_eq_zsmul (R := ℝ) a x).symm
     rw [hsm, real_inner_smul_left, ← hb, Int.cast_mul]
 
+/- English proof (translation)
+Establish `hspan : span ℝ ((span ℤ (Set.range v) : Submodule ℤ E) : Set E) = span ℝ (Set.range v)`. Conclude with `Submodule.span_span_of_tower ℤ ℝ (Set.range v)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[duality_mem_dualZ, hspan]`.
+
+Take `⟨hy1, hy2⟩` from `hy`. Rewrite using `[duality_expand v w hw hvw hy1]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `hy2 (v k) (Submodule.subset_span (Set.mem_range_self k))`. Establish `hsm : inner ℝ (v k) y • w k = n • w k`.
+
+Rewrite using `[← hn]`. Conclude with `Int.cast_smul_eq_zsmul (R := ℝ) n (w k)`. Rewrite using `[hsm]`. Conclude with `Submodule.smul_mem _ n (Submodule.subset_span (Set.mem_range_self k))`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, duality_mem_dualZ, hspan]`. Use `⟨hw i, fun x hx => exists_int_inner_of_mem_span_int v (w i) (fun k => ?_) hx⟩` and prove the remaining obligations. Use `⟨if k = i then 1 else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[hvw]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem duality_dualZ_span (v w : ι → E) (hw : ∀ i, w i ∈ span ℝ (Set.range v))
     (hvw : ∀ k i, inner ℝ (v k) (w i) = if k = i then 1 else 0) :
     dualZ (span ℤ (Set.range v)) = span ℤ (Set.range w) := by
@@ -100,12 +138,28 @@ theorem duality_dualZ_span (v w : ι → E) (hw : ∀ i, w i ∈ span ℝ (Set.r
     rw [hvw]
     split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg k`. Rewrite using `[← duality_inner_sum_dual v w hvw g k, hg, inner_zero_right]`.
+-/
 theorem duality_linIndep (v w : ι → E)
     (hvw : ∀ k i, inner ℝ (v k) (w i) = if k = i then 1 else 0) : LinearIndependent ℝ w := by
   rw [Fintype.linearIndependent_iff]
   intro g hg k
   rw [← duality_inner_sum_dual v w hvw g k, hg, inner_zero_right]
 
+/- English proof (translation)
+Establish `hGdet : (Matrix.gram ℝ v).det ≠ 0`. Introduce `h0`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Apply `hc0` to reduce the goal to its premises. Establish `hz : ∑ i, c i • v i = 0`.
+
+Use `duality_eq_zero_of_inner v (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self i))) fun k => ?_` and prove the remaining obligations. Establish `hk : ∑ i, Matrix.gram ℝ v k i * c i = 0` using `congrFun hc k`. Rewrite using `[inner_sum, ← hk]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[real_inner_smul_right, Matrix.gram_apply, mul_comm]`.
+
+Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.mp hv c hz i`. Establish `hunit : IsUnit (Matrix.gram ℝ v).det` using `isUnit_iff_ne_zero.mpr hGdet`. Establish `hmul : Matrix.gram ℝ v * (Matrix.gram ℝ v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hunit`. Establish `hmul' : (Matrix.gram ℝ v)⁻¹ * Matrix.gram ℝ v = 1` using `Matrix.nonsing_inv_mul _ hunit`.
+
+Use `⟨fun i => ∑ j, (Matrix.gram ℝ v)⁻¹ j i • v j, fun i => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self j)), fun k i => ?_, ?_⟩` and prove the remaining obligations. Use `show inner ℝ (v k) (∑ j, (Matrix.gram ℝ v)⁻¹ j i • v j) = if k = i then 1 else 0`. Establish `h` using `congrFun (congrFun hmul k) i`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[inner_sum, ← h]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[real_inner_smul_right, Matrix.gram_apply, mul_comm]`. Use `show (Matrix.gram ℝ (fun i => ∑ j, (Matrix.gram ℝ v)⁻¹ j i • v j)).det = _`. Rewrite using `[Formalism.F.gram_sum_smul_eq_transpose_mul v (Matrix.gram ℝ v)⁻¹, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Establish `h1 : ((Matrix.gram ℝ v)⁻¹).det * (Matrix.gram ℝ v).det = 1`.
+
+Rewrite using `[← Matrix.det_mul, hmul', Matrix.det_one]`. Rewrite using `[h1, one_mul]`. Conclude with `eq_inv_of_mul_eq_one_left h1`.
+-/
 theorem duality_exists_dual (v : ι → E) (hv : LinearIndependent ℝ v) :
     ∃ w : ι → E, (∀ i, w i ∈ span ℝ (Set.range v)) ∧
       (∀ k i, inner ℝ (v k) (w i) = if k = i then 1 else 0) ∧
@@ -146,12 +200,28 @@ theorem duality_exists_dual (v : ι → E) (hv : LinearIndependent ℝ v) :
 
 variable [FiniteDimensional ℝ E]
 
+/- English proof (translation)
+Use `(Formalism.F.discreteTopology_span_range_and_covol u hu).1` as an intermediate fact. Rewrite using `[Formalism.F.rank_eq_finrank_span (span ℤ (Set.range u)), Submodule.span_span_of_tower, finrank_span_eq_card hu]`.
+-/
 private theorem rk_span_range_eq_card_of_linearIndependent (u : ι → E) (hu : LinearIndependent ℝ u) :
     Formalism.F.rk (span ℤ (Set.range u)) = Fintype.card ι := by
   have := (Formalism.F.discreteTopology_span_range_and_covol u hu).1
   rw [Formalism.F.rank_eq_finrank_span (span ℤ (Set.range u)), Submodule.span_span_of_tower,
     finrank_span_eq_card hu]
 
+/- English proof (translation)
+Take `⟨v, hv, hL⟩ : ∃ v : Fin (Module.finrank ℤ L) → E, LinearIndependent ℝ v ∧ span ℤ (Set.range v) = L` from `⟨fun i => ((Module.finBasis ℤ L i : L) : E), Formalism.F.linearIndependent_coe_basis L (Module.finBasis ℤ L), Formalism.F.span_range_coe_basis' L (Module.finBasis ℤ L)⟩`. Take `⟨w, hw, hvw, hdet⟩` from `duality_exists_dual v hv`. Establish `hwli` using `duality_linIndep v w hvw`. Establish `hdual : dualZ L = span ℤ (Set.range w)`. Rewrite using `[← duality_dualZ_span v w hw hvw, hL]`.
+
+Establish `hwv : ∀ k i, inner ℝ (w k) (v i) = if k = i then 1 else 0`. Introduce `k i`. Rewrite using `[real_inner_comm, hvw]`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm h), if_neg h]`. Establish `hv' : ∀ i, v i ∈ span ℝ (Set.range w)`. Introduce `i`. Rewrite using `[duality_expand v w hw hvw (Submodule.subset_span (Set.mem_range_self i))]`.
+
+Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self k))`. Establish `hrkL` using `rk_span_range_eq_card_of_linearIndependent v hv`. Rewrite `hrkL` using `[hL]`. Establish `hcv` using `(Formalism.F.discreteTopology_span_range_and_covol v hv).2`. Rewrite `hcv` using `[hL]`.
+
+Establish `hcw` using `Formalism.F.discreteTopology_span_range_and_covol w hwli`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdual]`. Conclude with `hcw.1`. Rewrite using `[hdual, rk_span_range_eq_card_of_linearIndependent w hwli, hrkL]`.
+
+Rewrite using `[hdual]`. Unfold `Formalism.F.deg`. Rewrite using `[hcw.2, hcv, hdet, Real.sqrt_inv, Real.log_inv]`. Rewrite using `[hdual, duality_dualZ_span w v hv' hwv, hL]`.
+-/
 theorem duality_basic (L : Submodule ℤ E) [DiscreteTopology L] :
     DiscreteTopology (dualZ L) ∧ Formalism.F.rk (dualZ L) = Formalism.F.rk L ∧
     Formalism.F.deg (dualZ L) = - Formalism.F.deg L ∧ dualZ (dualZ L) = L := by
@@ -190,6 +260,11 @@ theorem duality_basic (L : Submodule ℤ E) [DiscreteTopology L] :
     rw [hcw.2, hcv, hdet, Real.sqrt_inv, Real.log_inv]
   · rw [hdual, duality_dualZ_span w v hv' hwv, hL]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `(duality_basic L).2.1`. Establish `h2` using `Formalism.F.att_rk_pos hL`. Rewrite `h1` using `[h]`. Establish `h3 : Formalism.F.rk (⊥ : Submodule ℤ E) = 0`.
+
+Simplify using `[Formalism.F.rk]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem duality_ne_bot (L : Submodule ℤ E) [DiscreteTopology L] (hL : L ≠ ⊥) : dualZ L ≠ ⊥ := by
   intro h
   have h1 := (duality_basic L).2.1
@@ -199,6 +274,9 @@ theorem duality_ne_bot (L : Submodule ℤ E) [DiscreteTopology L] (hL : L ≠ �
     simp [Formalism.F.rk]
   omega
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `K.starProjection_apply_mem x`. Conclude with `K.sub_starProjection_mem_orthogonal x`.
+-/
 private theorem starProjection_mem_and_sub_mem_orthogonal (K : Submodule ℝ E)
     [K.HasOrthogonalProjection] (x : E) :
     K.starProjection x ∈ K ∧ x - K.starProjection x ∈ Kᗮ := by
@@ -206,6 +284,19 @@ private theorem starProjection_mem_and_sub_mem_orthogonal (K : Submodule ℝ E)
   · exact K.starProjection_apply_mem x
   · exact K.sub_starProjection_mem_orthogonal x
 
+/- English proof (translation)
+Introduce `y hy`. Rewrite `hy`, the goal using `[duality_mem_dualZ]`. Take `⟨hy1, hy2⟩` from `hy`. Establish `hWL : span ℝ (T : Set E) ≤ span ℝ (L : Set E)` using `Submodule.span_mono hT`. Establish `hQ : ∀ x ∈ L, (span ℝ (T : Set E))ᗮ.starProjection x ∈ Formalism.F.quot L T ∧ (span ℝ (T : Set E))ᗮ.starProjection x ∈ (span ℝ (T : Set E))ᗮ ∧ x - (span ℝ (T : Set E))ᗮ.starProjection x ∈ span ℝ (T : Set E)`.
+
+Introduce `x hx`. Take `⟨h1, h2⟩` from `starProjection_mem_and_sub_mem_orthogonal (span ℝ (T : Set E))ᗮ x`. Use `⟨Submodule.mem_map_of_mem (f := ((span ℝ (T : Set E))ᗮ.starProjection : E →L[ℝ] E).toLinearMap.restrictScalars ℤ) hx, h1, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[Submodule.orthogonal_orthogonal]`. Then use the resulting hypothesis. Establish `hspan : span ℝ (Formalism.F.quot L T : Set E) ≤ (span ℝ (T : Set E))ᗮ ⊓ span ℝ (L : Set E)`.
+
+Use `Submodule.span_le.mpr fun q hq => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `hq`. Express the relevant statement in the definitionally equal form `(span ℝ (T : Set E))ᗮ.starProjection x ∈ (span ℝ (T : Set E))ᗮ ⊓ span ℝ (L : Set E)`. Take `⟨-, h1, h2⟩` from `hQ x hx`. Rewrite using `[Submodule.mem_inf]`.
+
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h4` using `Submodule.sub_mem _ (Submodule.subset_span hx : x ∈ span ℝ (L : Set E)) (hWL h2)`. Rewrite `h4` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Take `⟨hyW, hyL⟩` from `Submodule.mem_inf.mp (hspan hy1)`. Use `⟨hyL, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hq, -, h2⟩` from `hQ x hx`. Take `⟨n, hn⟩` from `hy2 _ hq`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h0 : inner ℝ (x - (span ℝ (T : Set E))ᗮ.starProjection x) y = 0`. Conclude with `Submodule.inner_right_of_mem_orthogonal h2 hyW`.
+
+Rewrite `h0` using `[inner_sub_left, sub_eq_zero]`. Rewrite using `[hn, h0]`.
+-/
 theorem duality_dualZ_quot_le (L T : Submodule ℤ E) (hT : T ≤ L) :
     dualZ (Formalism.F.quot L T) ≤ dualZ L := by
   intro y hy
@@ -241,10 +332,20 @@ theorem duality_dualZ_quot_le (L T : Submodule ℤ E) (hT : T ≤ L) :
   rw [inner_sub_left, sub_eq_zero] at h0
   rw [hn, h0]
 
+/- English proof (translation)
+Conclude with `Formalism.F.discreteTopology_of_le h`.
+-/
 private theorem discreteTopology_of_le_of_discreteTopology {L N : Submodule ℤ E} (h : N ≤ L)
     [DiscreteTopology L] : DiscreteTopology N := by
   exact Formalism.F.discreteTopology_of_le h
 
+/- English proof (translation)
+Take `⟨hsat, hSS, hrkS⟩` from `Formalism.F.saturProps E L S hL hS`. Take `⟨hQd, hrk, hdeg⟩` from `Formalism.F.degQuot E L (Formalism.F.satur L S) hL hsat`. Use `hQd` as an intermediate fact. Take `⟨-, hr, hd, -⟩` from `duality_basic (Formalism.F.quot L (Formalism.F.satur L S))`. Establish `hS'd : DiscreteTopology (Formalism.F.satur L S)` using `discreteTopology_of_le_of_discreteTopology hsat.1`.
+
+Establish `hcov` using `Formalism.F.covolAntiSameRank E S (Formalism.F.satur L S) hS'd hSS hrkS.symm`. Establish `hpos` using `Formalism.F.covol_pos (Formalism.F.satur L S)`. Use `⟨_, duality_dualZ_quot_le L _ hsat.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, ← hrkS]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hd]`. Establish `hdS : Formalism.F.deg S ≤ Formalism.F.deg (Formalism.F.satur L S)`. Unfold `Formalism.F.deg`. Conclude with `neg_le_neg (Real.log_le_log hpos hcov)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem duality_compl (L S : Submodule ℤ E) [hL : DiscreteTopology L] (hS : S ≤ L) :
     ∃ N : Submodule ℤ E, N ≤ dualZ L ∧ Formalism.F.rk N + Formalism.F.rk S = Formalism.F.rk L ∧
       Formalism.F.deg S - Formalism.F.deg L ≤ Formalism.F.deg N := by
@@ -269,6 +370,9 @@ theorem duality_compl (L S : Submodule ℤ E) [hL : DiscreteTopology L] (hS : S 
       exact neg_le_neg (Real.log_le_log hpos hcov)
     linarith
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[satR_mem_zl]`. Simplify using the standard rewrite rules.
+-/
 theorem duality_zl_id (N : Submodule ℤ E) : zl (AddMonoidHom.id E) N = N := by
   ext y
   rw [satR_mem_zl]
@@ -278,6 +382,25 @@ end Dual
 
 universe u
 
+/- English proof (translation)
+Take `⟨hDd, hDr, hDdeg, hDD⟩` from `duality_basic L`. Establish `hD0` using `duality_ne_bot L hL`. Establish `hlat : ∀ M : Submodule ℤ E, DiscreteTopology M → IsLat (AddMonoidHom.id E) M`. Introduce `M hM`. Unfold `IsLat`.
+
+Use `⟨fun x _ y _ h => by simpa using h, ?_⟩` and prove the remaining obligations. Rewrite using `[duality_zl_id]`. Conclude with `hM`. Establish `hA` using `(h1 ℤ E E (AddMonoidHom.id E) (dualZ L) (hlat _ hDd) hD0).1`. Establish `hB` using `(h1 ℤ E E (AddMonoidHom.id E) L (hlat _ inferInstance) hL).2.1`.
+
+Establish `key : ∀ θ : ℝ, muMax (AddMonoidHom.id E) (dualZ L) ≤ θ ↔ -θ ≤ muMin (AddMonoidHom.id E) L`. Introduce `θ`. Rewrite using `[hA θ, hB (-θ)]`. Simplify using `only [deg, rk, duality_zl_id]`. Use `hDd` as an intermediate fact.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h N hN`. Take `⟨M, hM, hr, hd⟩` from `duality_compl L N hN`. Establish `hMd` using `h M hM`. Establish `hr' : (Formalism.F.rk M : ℝ) + Formalism.F.rk N = Formalism.F.rk L`.
+
+Conclude with `hr` after adjusting the coercions. Establish `hc : (Formalism.F.rk M : ℝ) = Formalism.F.rk L - Formalism.F.rk N`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hMd` using `[hc]`. Rewrite using `[neg_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h M hM`. Take `⟨N, hN, hr, hd⟩` from `duality_compl (dualZ L) M hM`. Rewrite `hN` using `[hDD]`. Establish `hNd` using `h N hN`.
+
+Establish `hr' : (Formalism.F.rk N : ℝ) + Formalism.F.rk M = Formalism.F.rk L`. Rewrite using `[← hDr]`. Conclude with `hr` after adjusting the coercions. Establish `hc : (Formalism.F.rk M : ℝ) = Formalism.F.rk L - Formalism.F.rk N`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[hc]`. Rewrite `hNd` using `[neg_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(key _).mpr (neg_neg _).le`.
+
+Establish `h2` using `(key _).mp le_rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem duality_muMax (h1 : MuChar.{0, u, u}) {E : Type u} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] (L : Submodule ℤ E) [DiscreteTopology L]
     (hL : L ≠ ⊥) :
@@ -326,6 +449,11 @@ theorem duality_muMax (h1 : MuChar.{0, u, u}) {E : Type u} [NormedAddCommGroup E
   · have h2 := (key _).mp le_rfl
     linarith
 
+/- English proof (translation)
+Introduce `E _ _ _ L hL`. Use `hL` as an intermediate fact. Take `⟨hDd, hDr, hDdeg, hDD⟩` from `duality_basic L`. Use `⟨hDd, hDr, hDdeg, hDD, fun hL0 => ⟨duality_muMax h1 L hL0, ?_⟩⟩` and prove the remaining obligations. Use `hDd` as an intermediate fact.
+
+Establish `h` using `duality_muMax h1 (dualZ L) (duality_ne_bot L hL0)`. Rewrite `h` using `[hDD]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem duality_of (h1 : MuChar.{0, u, u}) : Duality.{u} := by
   intro E _ _ _ L hL
   have := hL
@@ -337,6 +465,9 @@ theorem duality_of (h1 : MuChar.{0, u, u}) : Duality.{u} := by
   rw [hDD] at h
   linarith
 
+/- English proof (translation)
+The claim follows from `duality_of slope_characterization`.
+-/
 theorem slope_duality_formula : Duality :=
   duality_of slope_characterization
 

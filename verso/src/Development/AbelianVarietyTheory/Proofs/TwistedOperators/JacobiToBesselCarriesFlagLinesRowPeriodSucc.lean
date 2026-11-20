@@ -15,6 +15,9 @@ namespace GlobalTheory.RowShape.ColsJB
 
 variable {D : D7} {A B : HSp D} {c : ℕ}
 
+/- English proof (translation)
+Use `(Matrix.submatrix_mul_equiv _ _ _ _ _).trans ?_` and prove the remaining obligations. Use `show Matrix.fromCols (frameMat B A d.ι) (midCol d h) * Matrix.fromRows (0 : Matrix (Fin A.rank) (Fin 1) D.host.E) (1 : Matrix (Fin 1) (Fin 1) D.host.E) = _`. Rewrite using `[Matrix.fromCols_mul_fromRows, Matrix.mul_one, Matrix.mul_zero, zero_add]`.
+-/
 theorem coreMat_iB' {σ : ℕ} (d : HermitianOrthogonalExtensionData A B c (-1)) (h : c = 2 * σ + 1) :
     coreMat d h * (GlobalTheory.OrthSumExists.orthDecHsum D A (GlobalTheory.SeeSaw.Model.nLine D)).iB = midCol d h := by
   refine (Matrix.submatrix_mul_equiv _ _ _ _ _).trans ?_
@@ -22,6 +25,9 @@ theorem coreMat_iB' {σ : ℕ} (d : HermitianOrthogonalExtensionData A B c (-1))
       Matrix.fromRows (0 : Matrix (Fin A.rank) (Fin 1) D.host.E) (1 : Matrix (Fin 1) (Fin 1) D.host.E) = _
   rw [Matrix.fromCols_mul_fromRows, Matrix.mul_one, Matrix.mul_zero, zero_add]
 
+/- English proof (translation)
+Use `show coreMat d h *ᵥ (_ *ᵥ _) = _`. Rewrite using `[Matrix.mulVec_mulVec, coreMat_iB']`. Use function extensionality and compare the values at `k`. Use `show ∑ j : Fin 1, midCol d h k j * x = _`. Simplify using `[midCol, mul_comm]`.
+-/
 theorem coreMat_vecB {σ : ℕ} (d : HermitianOrthogonalExtensionData A B c (-1)) (h : c = 2 * σ + 1) (x : D.host.E) :
     coreMat d h *ᵥ vecB (GlobalTheory.OrthSumExists.orthDecHsum D A (GlobalTheory.SeeSaw.Model.nLine D)) (fun _ => x) =
       fun k => x * d.a k ⟨σ, by omega⟩ := by
@@ -33,6 +39,25 @@ theorem coreMat_vecB {σ : ℕ} (d : HermitianOrthogonalExtensionData A B c (-1)
 
 end GlobalTheory.RowShape.ColsJB
 
+/- English proof (translation)
+Use `⟨0, fun _ _ _ => ⟨0, fun D _ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ => ?_⟩⟩` and prove the remaining obligations. Introduce `i σ hi v a s hs`. Establish `hodd : Odd i`. Take `⟨k, hk⟩` from `D.R.m_even`. Conclude with `⟨k - σ - 2, by omega⟩`.
+
+Unfold `GlobalTheory.RowShape.rowN`. Rewrite using `[dif_pos (by omega), dif_pos (by omega)]`. Establish `hrat : ∀ {m n : ℕ} (N : Matrix (Fin m) (Fin n) D.host.E) (z : Fin n → D.host.E), GlobalTheory.MixModel.rat N *ᵥ ratV z = ratV (N *ᵥ z)`. Introduce `m n N z`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[GlobalTheory.MixModel.rat, ratV, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Establish `hL : colMul (rowJac ch.G i (by omega) (σ + 1) (by omega)).jX a s = fun k => s * incA D ((ch.G.rowDec i (by omega)).a k ⟨a.1, by omega⟩)`. Use function extensionality and compare the values at `k`. Both sides reduce to the same expression. Establish `hR : colMul (xLast (besDecAt ch.G (i + 1) σ (by omega)) (vecB (GlobalTheory.OrthSumExists.orthDecHsum D (ch.G.V (.top (i + 1))) (GlobalTheory.SeeSaw.Model.nLine D)) fun _ => D.host.xi0 ^ σ)) a s = fun k => (s * incA D (D.host.xi0 ^ a.1)) * incA D ((ch.G.rowDec (i + 1) (by omega)) …`.
+
+Use function extensionality and compare the values at `k`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Establish `e1` using `GlobalTheory.RowShape.ColsJB.coreMat_vecB (ch.G.rowDec (i + 1) (by omega)) (σ := σ) (by omega) (D.host.xi0 ^ σ)`. Simplify using `only [colMul, xLast, Matrix.of_apply, Fin.snoc_last, HypDec.j0, hrat, Fin.val_last]`.
+
+Use `show s * ratV ((coreMat (ch.G.rowDec (i + 1) (by omega)) (σ := σ) (by omega)) *ᵥ _) k = _`. Rewrite using `[e1]`. Simplify using `only [ratV, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `cast b`.
+
+Simplify using `only [colMul, xLast, Matrix.of_apply, Fin.snoc_castSucc, HypDec.jX, GlobalTheory.MixModel.rat, Matrix.map_apply]`. Use `show s * incA D ((Matrix.submatrix (ch.G.rowDec (i + 1) (by omega)).a id (Fin.castLE (by omega)) * diagonal (lam (D := D) σ) : Matrix (Fin _) (Fin σ) D.host.E) k b) = _`. Rewrite using `[Matrix.mul_diagonal, map_mul]`. Simplify using `only [lam, Matrix.submatrix_apply, id, Fin.coe_castSucc]`. Rewrite using `[mul_comm (incA D _) (incA D _), ← mul_assoc]`.
+
+Both sides reduce to the same expression. Rewrite using `[hL, hR, (GlobalTheory.AscFin.UnitaryEmbeddingLine.embedding_line_mem_lattice_iff _ (neg_ne_zero.2 one_ne_zero) _ _ _ v s).1, (GlobalTheory.AscFin.UnitaryEmbeddingLine.embedding_line_mem_lattice_iff _ (neg_ne_zero.2 one_ne_zero) _ _ _ v _).2]`. Establish `hx : D.host.xi0 ^ a.1 ≠ 0` using `pow_ne_zero _ (GlobalTheory.Unf.Inhab.cmHost_imaginaryGenerator_ne_zero D)`. Establish `h1 : GlobalTheory.RowShape.rowId D i ⟨a.1, by omega⟩ = FractionalIdeal.spanSingleton _ ((D.host.xi0 ^ a.1)⁻¹) * stairId D.host.AA D.host.AAbar (D.R.m - 1 - i) ⟨a.1, by omega⟩`. Unfold `GlobalTheory.RowShape.rowId GlobalTheory.RowShape.tiltSc`.
+
+Rewrite using `[if_pos hodd, if_pos (by simp only; omega)]`. Establish `h2 : D.host.AA * GlobalTheory.RowShape.rowId D (i + 1) ⟨a.1, by omega⟩ = stairId D.host.AA D.host.AAbar (D.R.m - 1 - i) ⟨a.1, by omega⟩`. Unfold `GlobalTheory.RowShape.rowId GlobalTheory.RowShape.tiltSc`. Rewrite using `[if_neg (by rw [Nat.not_odd_iff_even]; exact hodd.add_one), FractionalIdeal.spanSingleton_one, one_mul]`. Unfold `stairId`.
+
+Rewrite using `[show D.R.m - 1 - i - a.1 = (D.R.m - 1 - (i + 1) - a.1) + 1 by omega, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, idV_spanSingleton_mul_iff D v _ _ (inv_ne_zero hx) s, inv_inv, mul_comm, and_iff_left hs]`.
+-/
 theorem GlobalTheory.RowShape.cols_jacBes_rowN : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => ∀ i σ (hi : i + 2 * (σ + 1) + 1 = D.R.m) v, GlobalTheory.FinPl.ColsAt (rowJac ch.G i (by omega) (σ + 1) (by omega))
     (xLast (besDecAt ch.G (i + 1) σ (by omega)) (vecB (GlobalTheory.OrthSumExists.orthDecHsum D (ch.G.V (.top (i + 1))) (GlobalTheory.SeeSaw.Model.nLine D)) fun _ => D.host.xi0 ^ σ))
     (GlobalTheory.RowShape.rowN ch.G i) (GlobalTheory.RowShape.rowN ch.G (i + 1)) v := by

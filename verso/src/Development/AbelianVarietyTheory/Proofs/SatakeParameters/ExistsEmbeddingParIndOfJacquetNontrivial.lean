@@ -10,6 +10,15 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `(Model.evalOne_bijective e π.smooth τ).2 q`. Use `⟨φ, (injective_iff_map_eq_zero _).2 fun v hv => ?_⟩` and prove the remaining obligations. Establish `hK : φ.ker ≠ ⊤`. Introduce `hK`. Use `haveI := Model.nontrivial_of_isIrreducible hirr`.
+
+Take `⟨y, hy⟩` from `exists_ne (0 : Y)`. Take `⟨x, rfl⟩` from `hq y`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Apply `hy` to reduce the goal to its premises. Establish `hw : φ w = 0` using `(show w ∈ φ.ker from hK ▸ trivial)`.
+
+Establish `h1 : q (Submodule.Quotient.mk w) = (φ w).1.1 1` using `(congrArg (fun F => F (Submodule.Quotient.mk w)) hφ).symm`. Rewrite using `[h1, hw]`. Both sides reduce to the same expression. Establish `hv' : v ∈ φ.ker` using `hv`. Use `haveI := π.irr`.
+
+Rewrite `hv'` using `[(eq_bot_or_eq_top φ.ker).resolve_right hK]`. Conclude with `hv'`.
+-/
 theorem injective_of_jacquet_surjective {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : ℕ} (π : Irr k n) {s : ℕ} {d : Fin s → ℕ}
     (e : (Σ a, Fin (d a)) ≃ Fin n) {Y : Type} [AddCommGroup Y] [Module ℂ Y]
@@ -35,6 +44,17 @@ theorem injective_of_jacquet_surjective {k : Type} [Field k] [ValuativeRel k] [T
   rw [(eq_bot_or_eq_top φ.ker).resolve_right hK] at hv'
   exact hv'
 
+/- English proof (translation)
+Introduce `hBZ k _ _ _ _ n π s d e hJ`. Establish `hfl : HasFiniteLength (jac e π.π)` using `(hBZ k).2.1 (Fin s) (Fin n) (fun a => Fin (d a)) e π.V π.π π.smooth (hasFiniteLength_of_isIrreducible π.irr)`. Use `haveI : WellFoundedGT (Subrepresentation (jac e π.π)) := ((hasFiniteLength_iff_wellFounded _).1 hfl).1`. Establish `hne : (⊥ : Subrepresentation (jac e π.π)) ≠ ⊤`. Introduce `h`.
+
+Apply `hJ` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `x y`. Establish `hx : x ∈ (⊥ : Subrepresentation (jac e π.π))` using `h ▸ trivial`. Establish `hy : y ∈ (⊥ : Subrepresentation (jac e π.π))` using `h ▸ trivial`.
+
+Conclude with `(hx : x = 0).trans (hy : y = 0).symm`. Take `⟨M, hM, -⟩` from `(eq_top_or_exists_le_coatom (⊥ : Subrepresentation (jac e π.π))).resolve_left hne`. Set `q : (jac e π.π).IntertwiningMap (subQuot ⊤ M)` to `⟨(Submodule.mkQ _) ∘ₗ LinearMap.codRestrict (⊤ : Subrepresentation (jac e π.π)).toSubmodule LinearMap.id (fun v => trivial), fun g => rfl⟩`. Establish `hq : Function.Surjective q`. Introduce `y`.
+
+Take `⟨⟨v, hv⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨v, rfl⟩`. Establish `hirr : (subQuot ⊤ M).IsIrreducible` using `isIrreducible_subQuot hM.covBy_top`. Establish `hsq : IsSubquotient (subQuot ⊤ M) (jac e π.π)` using `.of_surjective q hq`. Use `⟨_, _, _, subQuot ⊤ M, hirr, hsq.isSmooth (isSmooth_jac e π.smooth), hsq, ?_⟩` and prove the remaining obligations.
+
+Conclude with `injective_of_jacquet_surjective π e hirr q hq`.
+-/
 theorem exists_embedding_parInd_of_jacquet_nontrivial : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (π : Irr k n) (s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n), ¬ Subsingleton (Jacquet π.π (unipRad k e)) → ∃ (Y : Type) (_ : AddCommGroup Y) (_ : Module ℂ Y) (τ : Representation ℂ (Levi k fun a => Fin (d a)) Y), τ.IsIrreducible ∧ IsSmooth τ ∧ IsSubquotient τ (jac e π.π) ∧ ∃ φ : π.π.IntertwiningMap (parInd e τ), Function.Injective φ := by
   intro hBZ k _ _ _ _ n π s d e hJ
   have hfl : HasFiniteLength (jac e π.π) :=

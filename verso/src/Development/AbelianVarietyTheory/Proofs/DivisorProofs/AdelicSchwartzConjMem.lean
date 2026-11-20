@@ -23,9 +23,23 @@ def conjSchwartz {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : Schw
     rw [e, LinearIsometryEquiv.norm_iteratedFDeriv_comp_left]
     exact hC x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjSchwartz_apply {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : SchwartzMap V ℂ) (x : V) :
     conjSchwartz f x = starRingEnd ℂ (f x) := rfl
 
+/- English proof (translation)
+Introduce `F _ _ κ _ Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Ψ hΨ`. Take `⟨f, g, hg, rfl⟩` from `hΨ`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `⟨conjSchwartz f, fun y => starRingEnd ℂ (g y), ⟨hg.1.comp _, hg.2.comp_left (map_zero _)⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[pureA, conjSchwartz_apply, map_mul]`. Consider the case `zero`. Use `(schA F κ).zero_mem using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `add Ψ₁ Ψ₂ _ _ h₁ h₂`. Use `(schA F κ).add_mem h₁ h₂` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `smul c Ψ _ h`. Use `(schA F κ).smul_mem (starRingEnd ℂ c) h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+-/
 theorem conj_mem_schA : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ], ∀ Φ ∈ schA F κ, (fun x => starRingEnd ℂ (Φ x)) ∈ schA F κ := by
   intro F _ _ κ _ Φ hΦ
   induction hΦ using Submodule.span_induction with

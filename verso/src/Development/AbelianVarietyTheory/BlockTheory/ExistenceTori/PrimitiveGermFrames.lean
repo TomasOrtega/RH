@@ -107,6 +107,9 @@ def GermSt (t : SAB H X₀) (x : Sp S ⟶ X₀) (d : ℕ) : Prop :=
     IsFrameL t x j e W eL → ∀ (k : ℤ) (F : LB.Sec (Out.LPow t.G t.PP.L k (Over.mk x))),
       ∃! f : Germ.PS S 1 d, IsGermIn eL k F f
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem sum_primε : ∑ k, primε k = -1 := by
   decide
 

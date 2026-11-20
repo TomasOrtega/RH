@@ -15,6 +15,11 @@ universe u
 variable {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
   [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La]
 
+/- English proof (translation)
+Unfold `WeightedAtlas.nsq`. Establish `hp` using `A.mem_pick y`. Establish `hg` using `A.g_ne la i (A.pick y) y hi hp`. Establish `hpos : 0 < ‖A.g la i (A.pick y) y‖ ^ 2` using `pow_pos (norm_pos_iff.2 hg) 2`. Rewrite using `[A.ph_trans la i (A.pick y) y hi hp, hs, norm_mul, mul_pow]`.
+
+Rewrite using `[show -(A.ph la i y - Real.log (‖A.g la i (A.pick y) y‖ ^ 2)) = -A.ph la i y + Real.log (‖A.g la i (A.pick y) y‖ ^ 2) by ring, Real.exp_add, Real.exp_log hpos]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hyq_nsq_chart (A : WeightedAtlas n Y ι La) (la : La) (s : ι → Y → ℂ) (i : ι) (y : Y)
     (hi : y ∈ (A.chart i).source)
     (hs : s i y = A.g la i (A.pick y) y * s (A.pick y) y) :
@@ -29,11 +34,19 @@ theorem hyq_nsq_chart (A : WeightedAtlas n Y ι La) (la : La) (s : ι → Y → 
     Real.exp_log hpos]
   ring
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `(isCompact_closedBall c r).bddAbove_image hf`. Conclude with `⟨C, fun v hv => hC (Set.mem_image_of_mem f hv)⟩`.
+-/
 theorem hyq_bdd {f : V n → ℝ} {c : V n} {r : ℝ} (hf : ContinuousOn f (closedBall c r)) :
     ∃ C : ℝ, ∀ v ∈ closedBall c r, f v ≤ C := by
   obtain ⟨C, hC⟩ := (isCompact_closedBall c r).bddAbove_image hf
   exact ⟨C, fun v hv => hC (Set.mem_image_of_mem f hv)⟩
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `y`. Establish `hy` using `A.mem_pick y`. Establish `h1 : ContinuousOn (f ∘ (A.chart (A.pick y)).symm) (A.chart (A.pick y)).target` using `(hf (A.pick y)).continuousOn`. Establish `h2 : ContinuousAt (f ∘ (A.chart (A.pick y)).symm) (A.chart (A.pick y) y)` using `h1.continuousAt ((A.chart (A.pick y)).open_target.mem_nhds ((A.chart (A.pick y)).map_source hy))`.
+
+Use `(h2.comp ((A.chart (A.pick y)).continuousAt hy)).congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart (A.pick y)).open_source.mem_nhds hy] with x hx`. Simplify using `[(A.chart (A.pick y)).left_inv hx]`.
+-/
 theorem hyq_smoothFn_cont (A : WeightedAtlas n Y ι La) {f : Y → ℝ} (hf : A.SmoothFn f) :
     Continuous f := by
   rw [continuous_iff_continuousAt]
@@ -47,10 +60,16 @@ theorem hyq_smoothFn_cont (A : WeightedAtlas n Y ι La) {f : Y → ℝ} (hf : A.
   filter_upwards [(A.chart (A.pick y)).open_source.mem_nhds hy] with x hx
   simp [(A.chart (A.pick y)).left_inv hx]
 
+/- English proof (translation)
+The claim follows from `(((contDiffOn_of_differentiableOn n g U hU hg).contDiffAt (hU.mem_nhds hc))).restrict_scalars ℝ`.
+-/
 theorem hyq_contDiffAt_of_holo {g : V n → ℂ} {U : Set (V n)} (hU : IsOpen U)
     (hg : DifferentiableOn ℂ g U) {c : V n} (hc : c ∈ U) : ContDiffAt ℝ ∞ g c :=
   (((contDiffOn_of_differentiableOn n g U hU hg).contDiffAt (hU.mem_nhds hc))).restrict_scalars ℝ
 
+/- English proof (translation)
+Take `⟨U, hU, hUo, hcU⟩` from `_root_.eventually_nhds_iff.1 hg`. Conclude with `hyq_contDiffAt_of_holo hUo (fun v hv => (hU v hv).differentiableWithinAt) hcU`.
+-/
 theorem hyq_contDiffAt_of_ev {g : V n → ℂ} {c : V n}
     (hg : ∀ᶠ v in 𝓝 c, DifferentiableAt ℂ g v) : ContDiffAt ℝ ∞ g c := by
   obtain ⟨U, hU, hUo, hcU⟩ := _root_.eventually_nhds_iff.1 hg
@@ -67,24 +86,54 @@ def sectionFrameQuotient (A : WeightedAtlas n Y ι La) (F0 σ : ι → Y → ℂ
 variable   (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ}
   {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} {la : La} {σ : ι → Y → ℂ}
 
+/- English proof (translation)
+Take `⟨⟨_, htr⟩, hne⟩` from `hσ`. Rewrite using `[htr i (A.pick y) y hy hi (A.mem_pick y)]`. Conclude with `mul_ne_zero (A.g_ne _ i (A.pick y) y hi (A.mem_pick y)) (hne y hy)`.
+-/
 theorem hyq_sigma_ne (hσ : A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ) {y : Y}
     (hy : y ∈ A.Mset w0 s De) (i : ι) (hi : y ∈ (A.chart i).source) : σ i y ≠ 0 := by
   obtain ⟨⟨_, htr⟩, hne⟩ := hσ
   rw [htr i (A.pick y) y hy hi (A.mem_pick y)]
   exact mul_ne_zero (A.g_ne _ i (A.pick y) y hi (A.mem_pick y)) (hne y hy)
 
+/- English proof (translation)
+Take `⟨_, hne⟩` from `hσ`. Unfold `WeightedAtlas.nsq`. Conclude with `mul_pos (pow_pos (norm_pos_iff.2 (hne y hy)) 2) (Real.exp_pos _)`.
+-/
 theorem hyq_nsig_pos (hσ : A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ) {y : Y}
     (hy : y ∈ A.Mset w0 s De) : 0 < A.nsq (A.kap + la) σ y := by
   obtain ⟨_, hne⟩ := hσ
   unfold WeightedAtlas.nsq
   exact mul_pos (pow_pos (norm_pos_iff.2 (hne y hy)) 2) (Real.exp_pos _)
 
+/- English proof (translation)
+Unfold `WeightedAtlas.nsq`. Establish `h` using `hF.deriv_ne y hy`. Conclude with `mul_pos (pow_pos (norm_pos_iff.2 h) 2) (Real.exp_pos _)`.
+-/
 theorem hyq_nJ_pos (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) {y : Y}
     (hy : y ∈ A.Mset w0 s De) : 0 < A.nsq A.kap (fun i y => (jz A w0 s i y).det) y := by
   unfold WeightedAtlas.nsq
   have h := hF.deriv_ne y hy
   exact mul_pos (pow_pos (norm_pos_iff.2 h) 2) (Real.exp_pos _)
 
+/- English proof (translation)
+Take `⟨hw0d, hw0t⟩` from `hD.isSection_denom`. Establish `hsd : ∀ k, DifferentiableOn ℂ (s k i ∘ (A.chart i).symm) ((A.chart i).target ∩ (A.chart i).symm ⁻¹' Set.univ)` using `fun k => by`. Take `⟨h1, _⟩` from `hD.sec_s k`. Conclude with `h1 i`. Establish `hst : ∀ k, ∀ i j y, y ∈ (Set.univ : Set Y) → y ∈ (A.chart i).source → y ∈ (A.chart j).source → s k i y = A.g L i j y * s k j y` using `fun k => by`.
+
+Take `⟨_, h2⟩` from `hD.sec_s k`. Conclude with `h2`. Establish `hT : (A.chart i).target ∩ (A.chart i).symm ⁻¹' Set.univ = (A.chart i).target` using `by simp`. Establish `hw0c : ContinuousOn (w0 i ∘ (A.chart i).symm) (A.chart i).target`. Establish `h` using `(hw0d i).continuousOn`.
+
+Rewrite `h` using `[hT]`. Then use the resulting hypothesis. Establish `hsc : ∀ k, ContinuousOn (s k i ∘ (A.chart i).symm) (A.chart i).target` using `fun k => by`. Establish `h` using `(hsd k).continuousOn`. Rewrite `h` using `[hT]`. Then use the resulting hypothesis. Establish `hU1 : IsOpen ((A.chart i).target ∩ (w0 i ∘ (A.chart i).symm) ⁻¹' {0}ᶜ)` using `hw0c.isOpen_inter_preimage (A.chart i).open_target isOpen_compl_singleton`.
+
+Establish `hF2 : ContinuousOn (fun v => MvPolynomial.eval (fun k => s k i ((A.chart i).symm v) / w0 i ((A.chart i).symm v)) De) ((A.chart i).target ∩ (w0 i ∘ (A.chart i).symm) ⁻¹' {0}ᶜ)` using `(MvPolynomial.continuous_eval De).comp_continuousOn (continuousOn_pi.2 fun k => ((hsc k).mono Set.inter_subset_left).div (hw0c.mono Set.inter_subset_left) (fun v hv => hv.2))`. Establish `hU2` using `hF2.isOpen_inter_preimage hU1 (isOpen_compl_singleton (x := (0 : ℂ)))`. Establish `key : ∀ v ∈ (A.chart i).target, ((A.chart i).symm v ∈ A.Mset w0 s De ↔ (w0 i ((A.chart i).symm v) ≠ 0 ∧ MvPolynomial.eval (fun k => s k i ((A.chart i).symm v) / w0 i ((A.chart i).symm v)) De ≠ 0))`. Introduce `v hv`. Establish `hy : (A.chart i).symm v ∈ (A.chart i).source` using `(A.chart i).map_target hv`.
+
+Establish `hp` using `A.mem_pick ((A.chart i).symm v)`. Establish `hg` using `A.g_ne L i (A.pick ((A.chart i).symm v)) ((A.chart i).symm v) hy hp`. Establish `e0` using `hw0t i (A.pick ((A.chart i).symm v)) ((A.chart i).symm v) (Set.mem_univ _) hy hp`. Establish `ek : ∀ k, s k i ((A.chart i).symm v) / w0 i ((A.chart i).symm v) = s k (A.pick ((A.chart i).symm v)) ((A.chart i).symm v) / w0 (A.pick ((A.chart i).symm v)) ((A.chart i).symm v)` using `fun k => by`. Rewrite using `[hst k i (A.pick ((A.chart i).symm v)) ((A.chart i).symm v) (Set.mem_univ _) hy hp, e0, mul_div_mul_left _ _ hg]`.
+
+Simplify using `only [ek]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e0]`.
+
+Conclude with `mul_ne_zero hg h1`. Simplify `h2` using `[WeightedAtlas.zmap]`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Apply `h1` to reduce the goal to its premises. Rewrite using `[e0, h0, mul_zero]`. Simplify `h2` using `[WeightedAtlas.zmap]`. Establish `hW : (A.chart i).target ∩ (A.chart i).symm ⁻¹' A.Mset w0 s De = ((A.chart i).target ∩ (w0 i ∘ (A.chart i).symm) ⁻¹' {0}ᶜ) ∩ (fun v => MvPolynomial.eval (fun k => s k i ((A.chart i).symm v) / w0 i ((A.chart i).symm v)) De) ⁻¹' {0}ᶜ`. Use extensionality with `v`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, hm⟩`. Conclude with `⟨⟨hv, ((key v hv).1 hm).1⟩, ((key v hv).1 hm).2⟩`. Introduce and unpack `⟨⟨hv, h1⟩, h2⟩`. Conclude with `⟨hv, (key v hv).2 ⟨h1, h2⟩⟩`.
+
+Use `⟨by rw [hW]; exact hU2, (A.chart i).map_source hi, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, (A.chart i).left_inv hi]`. Conclude with `hx`.
+-/
 theorem isOpen_chart_image_mem (hD : A.D0 L w w0 s) {x : Y} (hx : x ∈ A.Mset w0 s De) (i : ι)
     (hi : x ∈ (A.chart i).source) :
     IsOpen ((A.chart i).target ∩ (A.chart i).symm ⁻¹' A.Mset w0 s De) ∧
@@ -153,6 +202,9 @@ theorem isOpen_chart_image_mem (hD : A.D0 L w w0 s) {x : Y} (hx : x ∈ A.Mset w
   rw [Set.mem_preimage, (A.chart i).left_inv hi]
   exact hx
 
+/- English proof (translation)
+Take `⟨⟨hd, _⟩, _⟩` from `hσ`. Take `⟨ho, hm⟩` from `isOpen_chart_image_mem A hD hx i hi`. Conclude with `hyq_contDiffAt_of_ev (Filter.eventually_of_mem (ho.mem_nhds hm) fun v hv => (hd i v hv).differentiableAt (ho.mem_nhds hv))`.
+-/
 theorem hyq_sig_cd (hD : A.D0 L w w0 s) (hσ : A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ)
     {x : Y} (hx : x ∈ A.Mset w0 s De) (i : ι) (hi : x ∈ (A.chart i).source) :
     ContDiffAt ℝ ∞ (σ i ∘ (A.chart i).symm) (A.chart i x) := by
@@ -161,6 +213,9 @@ theorem hyq_sig_cd (hD : A.D0 L w w0 s) (hσ : A.IsFrameOn (A.kap + la) (A.Mset 
   exact hyq_contDiffAt_of_ev (Filter.eventually_of_mem (ho.mem_nhds hm) fun v hv =>
     (hd i v hv).differentiableAt (ho.mem_nhds hv))
 
+/- English proof (translation)
+Take `⟨⟨hd, _⟩, _⟩` from `hσ`. Take `⟨ho, hm⟩` from `isOpen_chart_image_mem A hD hx i hi`. Use `filter_upwards [ho.mem_nhds hm] with v hv`. Conclude with `(hd i v hv).differentiableAt (ho.mem_nhds hv)`.
+-/
 theorem hyq_sig_holo (hD : A.D0 L w w0 s) (hσ : A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ)
     {x : Y} (hx : x ∈ A.Mset w0 s De) (i : ι) (hi : x ∈ (A.chart i).source) :
     ∀ᶠ v in 𝓝 (A.chart i x), DifferentiableAt ℂ (σ i ∘ (A.chart i).symm) v := by
@@ -169,6 +224,9 @@ theorem hyq_sig_holo (hD : A.D0 L w w0 s) (hσ : A.IsFrameOn (A.kap + la) (A.Mse
   filter_upwards [ho.mem_nhds hm] with v hv
   exact (hd i v hv).differentiableAt (ho.mem_nhds hv)
 
+/- English proof (translation)
+Take `⟨ho, hm⟩` from `isOpen_chart_image_mem A hD hx i hi`. Use `filter_upwards [ho.mem_nhds hm] with v hv`. Conclude with `⟨hv.1, hv.2⟩`.
+-/
 theorem hyq_evM (hD : A.D0 L w w0 s) {x : Y} (hx : x ∈ A.Mset w0 s De) (i : ι)
     (hi : x ∈ (A.chart i).source) :
     ∀ᶠ v in 𝓝 (A.chart i x), v ∈ (A.chart i).target ∧ (A.chart i).symm v ∈ A.Mset w0 s De := by
@@ -176,6 +234,11 @@ theorem hyq_evM (hD : A.D0 L w w0 s) {x : Y} (hx : x ∈ A.Mset w0 s De) (i : ι
   filter_upwards [ho.mem_nhds hm] with v hv
   exact ⟨hv.1, hv.2⟩
 
+/- English proof (translation)
+Use `filter_upwards [(A.chart i).open_source.mem_nhds hi, (isOpen_Mset A hD).mem_nhds hx] with y hyi hyM`. Establish `hp` using `A.mem_pick y`. Establish `hσne` using `hyq_sigma_ne A hσ hyM i hyi`. Establish `hJne` using `jz_det_ne A hD hF y hyM i hyi`. Establish `e1` using `hyq_nsq_chart A _ σ i y hyi (hσ.1.2 i _ y hyM hyi hp)`.
+
+Establish `e2` using `hyq_nsq_chart A A.kap (fun i y => (jz A w0 s i y).det) i y hyi (by show (jz A w0 s i y).det = A.g A.kap i (A.pick y) y * (jz A w0 s (A.pick y) y).det`. Rewrite using `[jz_det_trans A hD hF y hyM i (A.pick y) hyi hp, mul_comm])`. Unfold `hyPhi`. Rewrite using `[e1, e2, A.ph_add A.kap la i y hyi, norm_mul, norm_inv, mul_pow, inv_pow, Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_inv, Real.log_exp, Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hyq_phi_loc (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ) (ps : Y → ℝ)
     {x : Y} (hx : x ∈ A.Mset w0 s De) (i : ι) (hi : x ∈ (A.chart i).source) :
@@ -196,6 +259,11 @@ theorem hyq_phi_loc (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     Real.log_mul (by positivity) (by positivity), Real.log_inv, Real.log_exp, Real.log_exp]
   ring
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [differentiableAt_det_jz A hD hF x hx i hi, hyq_sig_holo A hD hσ hx i hi, hyq_evM A hD hx i hi] with v h1 h2 h3`. Conclude with `h1.mul (h2.inv (hyq_sigma_ne A hσ h3.2 i ((A.chart i).map_target h3.1)))`. Use `filter_upwards [(A.chart i).open_target.mem_nhds ((A.chart i).map_source hi)] with v hv`. Simplify using `only [Function.comp, jz, (A.chart i).right_inv hv]`.
+
+Simplify using `only [(A.chart i).left_inv hi]`. Conclude with `mul_ne_zero (by simpa [jz] using jz_det_ne A hD hF x hx i hi) (inv_ne_zero (hyq_sigma_ne A hσ hx i hi))`.
+-/
 theorem hyq_q_cd (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ)
     {x : Y} (hx : x ∈ A.Mset w0 s De) (i : ι) (hi : x ∈ (A.chart i).source) :
@@ -214,6 +282,13 @@ theorem hyq_q_cd (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     exact mul_ne_zero (by simpa [jz] using jz_det_ne A hD hF x hx i hi)
       (inv_ne_zero (hyq_sigma_ne A hσ hx i hi))
 
+/- English proof (translation)
+Establish `hloc` using `hyq_phi_loc A hD hF hσ ps hx i hi`. Take `⟨hQd, hQeq, hQne⟩` from `hyq_q_cd A hD hF hσ hx i hi`. Establish `hc` using `(A.chart i).map_source hi`. Establish `ht : Filter.Tendsto (A.chart i).symm (𝓝 (A.chart i x)) (𝓝 x)`. Establish `h0` using `(A.chart i).continuousAt_symm hc`.
+
+Rewrite `h0` using `[ContinuousAt, (A.chart i).left_inv hi]`. Then use the resulting hypothesis. Establish `h1 : hyPhi A w0 s σ la ps ∘ (A.chart i).symm =ᶠ[𝓝 (A.chart i x)] fun v => (A.ph la i ((A.chart i).symm v) + ps ((A.chart i).symm v)) + Real.log (‖(fderiv ℂ (A.zLoc w0 s i) v).det * (σ i ((A.chart i).symm v))⁻¹‖ ^ 2)` using `by filter_upwards [hloc.comp_tendsto ht, hQeq] with v e1 e2`. Simplify using `only [Function.comp_apply] at e1 e2 ⊢`. Rewrite using `[e1, e2]`. Use `ContDiffAt.congr_of_eventuallyEq ?_ h1` and prove the remaining obligations.
+
+Establish `hph : ContDiffAt ℝ ∞ (A.ph la i ∘ (A.chart i).symm) (A.chart i x)` using `(A.smooth_ph la i).contDiffAt ((A.chart i).open_target.mem_nhds hc)`. Establish `hps' : ContDiffAt ℝ ∞ (ps ∘ (A.chart i).symm) (A.chart i x)` using `(hps i).contDiffAt ((A.chart i).open_target.mem_nhds hc)`. Establish `hQs` using `hyq_contDiffAt_of_ev hQd`. Establish `hlog` using `(hQs.norm_sq ℝ).log (pow_ne_zero 2 (norm_ne_zero_iff.2 hQne))`. Conclude with `(hph.add hps').add hlog`.
+-/
 theorem hyq_phi_smooth (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ) {ps : Y → ℝ} (hps : A.SmoothFn ps)
     {x : Y} (hx : x ∈ A.Mset w0 s De) (i : ι) (hi : x ∈ (A.chart i).source) :
@@ -239,6 +314,13 @@ theorem hyq_phi_smooth (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
   have hlog := (hQs.norm_sq ℝ).log (pow_ne_zero 2 (norm_ne_zero_iff.2 hQne))
   exact (hph.add hps').add hlog
 
+/- English proof (translation)
+Take `⟨hqd, hqe, hqne⟩` from `hyq_q_cd A hD hF hσ hx i hi`. Establish `hc : (A.chart i).symm (A.chart i x) = x` using `(A.chart i).left_inv hi`. Establish `hT` using `(A.chart i).open_target.mem_nhds ((A.chart i).map_source hi)`. Establish `hq : ContDiffAt ℝ ∞ (fun v => (fderiv ℂ (A.zLoc w0 s i) v).det * (σ i ((A.chart i).symm v))⁻¹) (A.chart i x)` using `((contDiffAt_det_jz A hD hF x hx i hi).restrict_scalars ℝ).mul ((hyq_sig_cd A hD hσ hx i hi).inv (by simp only [Function.comp, hc]; exact hyq_sigma_ne A hσ hx i hi))`. Establish `hf2 : ContDiffAt ℝ 2 ((fun y => A.ph la i y + ps y) ∘ (A.chart i).symm) (A.chart i x)` using `(((A.smooth_ph la i).contDiffAt hT).add ((hps i).contDiffAt hT)).of_le (WithTop.coe_le_coe.mpr le_top)`.
+
+Establish `hg2 : ContDiffAt ℝ 2 ((fun y => Real.log (‖(jz A w0 s i y).det * (σ i y)⁻¹‖ ^ 2)) ∘ (A.chart i).symm) (A.chart i x)`. Use `(((hq.norm_sq ℝ).log (by positivity)).of_le (WithTop.coe_le_coe.mpr le_top)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hqe] with v hv`. Simplify using `only [Function.comp] at hv ⊢`. Rewrite using `[hv]`.
+
+Establish `hh : ∀ᶠ v in 𝓝 (A.chart i x), DifferentiableAt ℂ ((fun y => (jz A w0 s i y).det * (σ i y)⁻¹) ∘ (A.chart i).symm) v` using `by filter_upwards [hqd, hqe.eventuallyEq_nhds] with v h1 h2`. Conclude with `h1.congr_of_eventuallyEq h2`. Rewrite using `[leviAt_congr A i _ _ x hi (hyq_phi_loc A hD hF hσ ps hx i hi) ξ, leviAt_add A i (fun y => A.ph la i y + ps y) (fun y => Real.log (‖(jz A w0 s i y).det * (σ i y)⁻¹‖ ^ 2)) x hf2 hg2 ξ, leviAt_log_normSq A i (fun y => (jz A w0 s i y).det * (σ i y)⁻¹) x hi hh (mul_ne_zero (jz_det_ne …`.
+-/
 theorem hyq_levi_phi (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ) {ps : Y → ℝ} (hps : A.SmoothFn ps)
     {x : Y} (hx : x ∈ A.Mset w0 s De) (i : ι) (hi : x ∈ (A.chart i).source) (ξ : Fin n → ℂ) :
@@ -269,6 +351,11 @@ theorem hyq_levi_phi (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
       (mul_ne_zero (jz_det_ne A hD hF x hx i hi) (inv_ne_zero (hyq_sigma_ne A hσ hx i hi))) ξ,
     add_zero]
 
+/- English proof (translation)
+Establish `hsg` using `hyq_sig_cd A hD hσ hx i hi`. Take `⟨⟨_, htr⟩, _⟩` from `hσ`. Take `⟨ho, hm⟩` from `isOpen_chart_image_mem A hD hx i hi`. Establish `hev : A.nsq (A.kap + la) σ ∘ (A.chart i).symm =ᶠ[𝓝 (A.chart i x)] fun v => ‖σ i ((A.chart i).symm v)‖ ^ 2 * Real.exp (-A.ph (A.kap + la) i ((A.chart i).symm v))` using `by filter_upwards [ho.mem_nhds hm] with v hv`. Establish `hs'` using `(A.chart i).map_target hv.1`.
+
+Conclude with `hyq_nsq_chart A (A.kap + la) σ i ((A.chart i).symm v) hs' (htr i (A.pick ((A.chart i).symm v)) ((A.chart i).symm v) hv.2 hs' (A.mem_pick _))`. Use `ContDiffAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Establish `hph : ContDiffAt ℝ ∞ (A.ph (A.kap + la) i ∘ (A.chart i).symm) (A.chart i x)` using `(A.smooth_ph (A.kap + la) i).contDiffAt ((A.chart i).open_target.mem_nhds ((A.chart i).map_source hi))`. Conclude with `(hsg.norm_sq ℝ).mul hph.neg.exp`.
+-/
 theorem hyq_nsig_smooth (hD : A.D0 L w w0 s) (hσ : A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ)
     {x : Y} (hx : x ∈ A.Mset w0 s De) (i : ι) (hi : x ∈ (A.chart i).source) :
     ContDiffAt ℝ ∞ (A.nsq (A.kap + la) σ ∘ (A.chart i).symm) (A.chart i x) := by
@@ -287,6 +374,15 @@ theorem hyq_nsig_smooth (hD : A.D0 L w w0 s) (hσ : A.IsFrameOn (A.kap + la) (A.
       ((A.chart i).open_target.mem_nhds ((A.chart i).map_source hi))
   exact (hsg.norm_sq ℝ).mul hph.neg.exp
 
+/- English proof (translation)
+Establish `h2` using `hyq_sig_cd A hD hσ hx i hi`. Establish `hne` using `hyq_sigma_ne A hσ hx i hi`. Take `⟨⟨_, htr⟩, _⟩` from `hσ`. Take `⟨hF0s, hF0t⟩` from `hF0`. Take `⟨ho, hm⟩` from `isOpen_chart_image_mem A hD hx i hi`.
+
+Establish `hev : sectionFrameQuotient A F0 σ ∘ (A.chart i).symm =ᶠ[𝓝 (A.chart i x)] fun v => F0 i ((A.chart i).symm v) / σ i ((A.chart i).symm v)` using `by filter_upwards [ho.mem_nhds hm] with v hv`. Establish `hs'` using `(A.chart i).map_target hv.1`. Establish `hp` using `A.mem_pick ((A.chart i).symm v)`. Simplify using `only [Function.comp_apply, sectionFrameQuotient]`. Rewrite using `[hF0t i _ _ hs' hp, htr i _ _ hv.2 hs' hp, mul_div_mul_left _ _ (A.g_ne _ i _ _ hs' hp)]`.
+
+Use `ContDiffAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Establish `h1 : ContDiffAt ℝ ∞ (F0 i ∘ (A.chart i).symm) (A.chart i x)` using `(hF0s i).contDiffAt ((A.chart i).open_target.mem_nhds ((A.chart i).map_source hi))`. Establish `hne' : (σ i ∘ (A.chart i).symm) (A.chart i x) ≠ 0`. Simplify `hne` using `[(A.chart i).left_inv hi]`. Establish `h3` using `h1.mul (h2.inv hne')`.
+
+Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `[div_eq_mul_inv]`.
+-/
 theorem contDiffAt_sectionFrameQuotient (hD : A.D0 L w w0 s) (hσ : A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ)
     {F0 : ι → Y → ℂ} (hF0 : A.IsSSec (A.kap + la) F0)
     {x : Y} (hx : x ∈ A.Mset w0 s De) (i : ι) (hi : x ∈ (A.chart i).source) :
@@ -313,6 +409,21 @@ theorem contDiffAt_sectionFrameQuotient (hD : A.D0 L w w0 s) (hσ : A.IsFrameOn 
   refine h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun v => ?_)
   simp [div_eq_mul_inv]
 
+/- English proof (translation)
+Establish `hsh` using `hyq_sig_holo A hD hσ hx i hi`. Establish `hne` using `hyq_sigma_ne A hσ hx i hi`. Take `⟨⟨_, htr⟩, _⟩` from `hσ`. Take `⟨hF0s, hF0t⟩` from `hF0`. Take `⟨ho, hm⟩` from `isOpen_chart_image_mem A hD hx i hi`.
+
+Establish `hc` using `(A.chart i).map_source hi`. Establish `hev : sectionFrameQuotient A F0 σ ∘ (A.chart i).symm =ᶠ[𝓝 (A.chart i x)] fun v => (F0 i ∘ (A.chart i).symm) v * ((σ i ∘ (A.chart i).symm) v)⁻¹` using `by filter_upwards [ho.mem_nhds hm] with v hv`. Establish `hs'` using `(A.chart i).map_target hv.1`. Establish `hp` using `A.mem_pick ((A.chart i).symm v)`. Simplify using `only [Function.comp_apply, sectionFrameQuotient]`.
+
+Rewrite using `[hF0t i _ _ hs' hp, htr i _ _ hv.2 hs' hp, ← div_eq_mul_inv, mul_div_mul_left _ _ (A.g_ne _ i _ _ hs' hp)]`. Establish `hne' : (σ i ∘ (A.chart i).symm) (A.chart i x) ≠ 0`. Simplify `hne` using `[(A.chart i).left_inv hi]`. Establish `hFd : DifferentiableAt ℝ (F0 i ∘ (A.chart i).symm) (A.chart i x)` using `((hF0s i).contDiffAt ((A.chart i).open_target.mem_nhds hc)).differentiableAt (by simp)`. Establish `hGd : DifferentiableAt ℂ (fun v => ((σ i ∘ (A.chart i).symm) v)⁻¹) (A.chart i x)` using `hsh.self_of_nhds.inv hne'`.
+
+Establish `key : ∀ (j : Fin n) (F G : V n → ℂ) (c : V n), DifferentiableAt ℝ F c → DifferentiableAt ℂ G c → wdb n j (fun v => F v * G v) c = wdb n j F c * G c`. Introduce `j F G c hF hG`. Unfold `wdb`. Rewrite using `[fderiv_fun_mul hF (hG.restrictScalars ℝ), hG.fderiv_restrictScalars ℝ]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, ContinuousLinearMap.coe_restrictScalars', map_smul]`.
+
+Take the linear combination `(F c * fderiv ℂ G c (bas n j) / 2) * Complex.I_mul_I`. Unfold `WeightedAtlas.dbarAt`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show wdb n j (sectionFrameQuotient A F0 σ ∘ (A.chart i).symm) (A.chart i x) * (starRingEnd ℂ) (ξ j) = wdb n j (F0 i ∘ (A.chart i).symm) (A.chart i x) * (starRingEnd ℂ) (ξ j) / σ i x`.
+
+Establish `hw1 : wdb n j (sectionFrameQuotient A F0 σ ∘ (A.chart i).symm) (A.chart i x) = wdb n j (fun v => (F0 i ∘ (A.chart i).symm) v * ((σ i ∘ (A.chart i).symm) v)⁻¹) (A.chart i x)`. Unfold `wdb`. Rewrite using `[hev.fderiv_eq (𝕜 := ℝ)]`. Rewrite using `[hw1, key j _ _ _ hFd hGd]`. Simplify using `only [Function.comp_apply, (A.chart i).left_inv hi]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dbar_sectionFrameQuotient (hD : A.D0 L w w0 s) (hσ : A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ)
     {F0 : ι → Y → ℂ} (hF0 : A.IsSSec (A.kap + la) F0)
     {x : Y} (hx : x ∈ A.Mset w0 s De) (i : ι) (hi : x ∈ (A.chart i).source) (ξ : Fin n → ℂ) :

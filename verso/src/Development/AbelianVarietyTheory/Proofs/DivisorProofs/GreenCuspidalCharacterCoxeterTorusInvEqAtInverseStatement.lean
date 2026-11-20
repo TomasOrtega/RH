@@ -8,5 +8,8 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CuspInv.cuspChar_inv | exact GlobalTheory.CuspInv.cuspChar_inv | (intros; apply GlobalTheory.CuspInv.cuspChar_inv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.greenCuspidalCharacterCoxeterTorus_inv_eq_at_inverse : ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (ι : Type) [Fintype ι] [DecidableEq ι] (θ : LevelCuspCharacters.Tor p (Fintype.card ι) →* Kˣ) (h h' : Matrix ι ι (ZMod p)), h * h' = 1 → LevelCuspCharacters.cuspChar θ⁻¹ h = LevelCuspCharacters.cuspChar θ h' := by
   first | exact @GlobalTheory.CuspInv.cuspChar_inv | exact GlobalTheory.CuspInv.cuspChar_inv | (intros; apply GlobalTheory.CuspInv.cuspChar_inv <;> assumption)

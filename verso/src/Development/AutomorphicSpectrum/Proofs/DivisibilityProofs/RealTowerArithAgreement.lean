@@ -15,6 +15,19 @@ namespace GlobalTheory.CompanionTheory.Ar.Top.RootNum
 
 def rc {N : ℕ} (i k : Fin N) : ℤ := (if (k : ℕ) + 1 = i then 1 else 0) - (if k = i then 1 else 0)
 
+/- English proof (translation)
+Establish `h1 : ∀ k : Fin N, rc i k • (-∑ l ∈ Finset.Iic k, a l) = (if (k : ℕ) + 1 = i then (-∑ l ∈ Finset.Iic k, a l) else 0) - (if k = i then (-∑ l ∈ Finset.Iic k, a l) else 0)`. Introduce `k`. Unfold `rc`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [h1, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Take `⟨i, hi⟩` from `i`. Consider the cases of `i with`. Consider the case `zero`. Establish `h2 : Finset.Iic (⟨0, hi⟩ : Fin N) = {⟨0, hi⟩}`. Use extensionality with `l`.
+
+Simplify using `[Fin.ext_iff, Fin.le_def]`. Simplify using `[h2]`. Consider the case `succ j`. Establish `hj : j < N` using `by omega`. Establish `h3 : ∑ k : Fin N, (if (k : ℕ) + 1 = j + 1 then (-∑ l ∈ Finset.Iic k, a l) else 0) = -∑ l ∈ Finset.Iic (⟨j, hj⟩ : Fin N), a l`.
+
+Rewrite using `[Finset.sum_eq_single ⟨j, hj⟩]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`.
+
+Conclude with `hb (Fin.ext (by simpa using h))`. Simplify using the standard rewrite rules. Establish `h4 : Finset.Iic (⟨j + 1, hi⟩ : Fin N) = insert ⟨j + 1, hi⟩ (Finset.Iic ⟨j, hj⟩)`. Use extensionality with `l`. Simplify using `[Fin.ext_iff, Fin.le_def]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [h3]`. Rewrite using `[h4, Finset.sum_insert (by simp [Fin.le_def])]`. Normalize the expressions using the abelian group laws.
+-/
 theorem sum_rc_smul {N : ℕ} {A : Type} [AddCommGroup A] (a : Fin N → A) (i : Fin N) :
     ∑ k : Fin N, rc i k • (-∑ l ∈ Finset.Iic k, a l) = a i := by
   have h1 : ∀ k : Fin N, rc i k • (-∑ l ∈ Finset.Iic k, a l) =
@@ -50,6 +63,15 @@ theorem sum_rc_smul {N : ℕ} {A : Type} [AddCommGroup A] (a : Fin N → A) (i :
     rw [h4, Finset.sum_insert (by simp [Fin.le_def])]
     abel
 
+/- English proof (translation)
+Establish `h1 : ∀ i : Fin N, l i * (rc i k : ℝ) = (if (k : ℕ) + 1 = i then l i else 0) - (if k = i then l i else 0)`. Introduce `i`. Unfold `rc`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [h1, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Use `congr 1`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨k + 1, h⟩]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Rewrite using `[if_neg]`. Introduce `e`. Conclude with `hb (Fin.ext e.symm)`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[if_neg]`. Introduce `e`. Conclude with `h (e ▸ b.2)`.
+-/
 theorem sum_mul_rc {N : ℕ} (l : Fin N → ℝ) (k : Fin N) :
     ∑ i : Fin N, l i * (rc i k : ℝ) = (if h : (k : ℕ) + 1 < N then l ⟨k + 1, h⟩ else 0) - l k := by
   have h1 : ∀ i : Fin N, l i * (rc i k : ℝ) =
@@ -80,10 +102,18 @@ def rootC : Option (Ψ × Fin N) → Option (Ψ × Fin N) → ℤ
   | some _, none => 0
   | some p, some q => if q.1 = p.1 then rc p.2 q.2 else 0
 
+/- English proof (translation)
+Simplify using `[Fintype.sum_option, rootC]`.
+-/
 theorem sum_rootC_none {A : Type} [AddCommGroup A] (g : Option (Ψ × Fin N) → A) :
     ∑ b, rootC none b • g b = g none := by
   simp [Fintype.sum_option, rootC]
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_option]`. Simplify using `only [rootC, zero_smul, zero_add]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single p.1]`. Simplify using `only [if_true, hg]`. Conclude with `sum_rc_smul (fun l => a (p.1, l)) p.2`.
+
+Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_rootC_some {A : Type} [AddCommGroup A] (g : Option (Ψ × Fin N) → A) (a : Ψ × Fin N → A)
     (hg : ∀ τ k, g (some (τ, k)) = -∑ l ∈ Finset.Iic k, a (τ, l)) (p : Ψ × Fin N) :
     ∑ b, rootC (some p) b • g b = a p := by
@@ -96,6 +126,13 @@ theorem sum_rootC_some {A : Type} [AddCommGroup A] (g : Option (Ψ × Fin N) →
     simp [hb]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_option]`. Consider the cases of `b with`. Consider the case `none => simp [rootC, RootModel.coef, PB.gapS]`. Consider the case `some q`. Simplify using `only [rootC, RootModel.coef, Int.cast_zero, mul_zero, zero_add]`.
+
+Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single q.1]`. Simplify using `only [if_true, mul_comm, neg_mul]`. Use `sum_mul_rc (fun i => lam q.1 i) q.2` as an intermediate fact. Simplify using `only [PB.gapS, Option.elim, PB.gap, PB.gapX]`. Rewrite using `[Finset.sum_neg_distrib, this]`.
+
+Apply the tactic sequence `by_cases h : (q.2 : ℕ) + 1 < N <;> simp [h]`. Introduce `c _ hc`. Simplify using `[Ne.symm hc]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_coef_rootC (M : RootModel Ψ N) (lam : Wt Ψ N) (s : ℝ) (b : Option (Ψ × Fin N)) :
     ∑ o, M.coef lam s o * (rootC o b : ℝ) = PB.gapS (fun x => lam x.1 x.2) (s / M.kA) b := by
   rw [Fintype.sum_option]
@@ -117,6 +154,11 @@ section Lines
 
 variable {M : RootModel Ψ N} {S : PB.AnSys (dimFl Ψ N) (Option (Ψ × Fin N))} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨x, c, hc, hzx⟩` from `GroundTheory.Heights₂.Heights.Targets.ResAboveCover.surj_all GroundTheory.Heights₂.Heights.HilbertSamuel.NonvanishingDense.full M.P R.Re.J R.Re.R R.Re.arith z hz`. Establish `hum : R.Re.R.lift x x ∈ mcPts M.P` using `R.Re.R.mem x x (R.Re.R.mem_U x)`. Establish `e` using `R.Re.line_eq none t ht0 ht x`. Rewrite `e` using `[R.phT_none, add_zero]`. Establish `e' : (R.Re.line none t).h (R.Re.R.lift x x) = (R.Re.ref none).h (R.Re.R.lift x x)` using `Real.log_injOn_pos (Set.mem_Ioi.2 ((R.Re.line none t).pos _ hum.1)) (Set.mem_Ioi.2 ((R.Re.ref none).pos _ hum.1)) e`.
+
+Rewrite using `[← R.ref_none.2 z hz, hzx, (R.Re.line none t).smul c _ hc, (R.Re.ref none).smul c _ hc, e', R.Re.line_deg]`.
+-/
 theorem line_none_h (R : RealTie M S n) (t : ℝ) (ht0 : 0 < t) (ht : t ≤ S.t₀) (z : (Σ k, M.ι k) → ℂ)
     (hz : z ∈ mcPts M.P) : (R.Re.line none t).h z = M.A.h z := by
   obtain ⟨x, c, hc, hzx⟩ := GroundTheory.Heights₂.Heights.Targets.ResAboveCover.surj_all
@@ -130,6 +172,13 @@ theorem line_none_h (R : RealTie M S n) (t : ℝ) (ht0 : 0 < t) (ht : t ≤ S.t�
   rw [← R.ref_none.2 z hz, hzx, (R.Re.line none t).smul c _ hc, (R.Re.ref none).smul c _ hc, e',
     R.Re.line_deg]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `κ`. Rewrite using `[PB.combLine_a]`. Simplify using `only [← smul_eq_mul]`. Consider the cases of `o with`. Consider the case `none`.
+
+Rewrite using `[sum_rootC_none (fun b => (R.Re.line b t).a κ), R.Re.line_deg, R.ref_none.1]`. Both sides reduce to the same expression. Consider the case `some p`. Rewrite using `[sum_rootC_some (fun b => (R.Re.line b t).a κ) (fun q => M.xdeg q κ)]`. Use `show _ = (M.x t p).a κ`.
+
+Rewrite using `[M.x_deg]`. Introduce `τ k`. Rewrite using `[R.Re.line_deg, R.fund_deg]`. Simplify using `[Finset.sum_apply]`.
+-/
 theorem comb_a (R : RealTie M S n) (t : ℝ) (o : Option (Ψ × Fin N)) :
     (PB.combLine (fun b => R.Re.line b t) (rootC o)).a = (M.line t o).a := by
   funext κ
@@ -147,6 +196,13 @@ theorem comb_a (R : RealTie M S n) (t : ℝ) (o : Option (Ψ × Fin N)) :
       rw [R.Re.line_deg, R.fund_deg]
       simp [Finset.sum_apply]
 
+/- English proof (translation)
+Establish `hp : ∀ b, 0 < (R.Re.line b t).h z` using `fun b => (R.Re.line b t).pos z hz.1`. Establish `hlog : Real.log ((PB.combLine (fun b => R.Re.line b t) (rootC o)).h z) = ∑ b, rootC o b • Real.log ((R.Re.line b t).h z)`. Rewrite using `[PB.combLine_h, Real.log_prod (fun b _ => (zpow_pos (hp b) _).ne')]`. Simplify using `[Real.log_zpow]`. Use `Real.log_injOn_pos (Set.mem_Ioi.2 ((PB.combLine (fun b => R.Re.line b t) (rootC o)).pos z hz.1)) (Set.mem_Ioi.2 ((M.line t o).pos z hz.1)) ?_` and prove the remaining obligations.
+
+Rewrite using `[hlog]`. Consider the cases of `o with`. Consider the case `none`. Rewrite using `[sum_rootC_none (fun b => Real.log ((R.Re.line b t).h z)), line_none_h R t ht0 ht z hz]`. Both sides reduce to the same expression.
+
+Consider the case `some p`. Rewrite using `[sum_rootC_some (fun b => Real.log ((R.Re.line b t).h z)) (fun q => Real.log ((M.x t q).h z))]`. Both sides reduce to the same expression. Introduce `τ k`. Conclude with `R.fund_reg τ k t ht0 ht z hz`.
+-/
 theorem comb_h (R : RealTie M S n) (t : ℝ) (ht0 : 0 < t) (ht : t ≤ S.t₀) (o : Option (Ψ × Fin N))
     (z : (Σ k, M.ι k) → ℂ) (hz : z ∈ mcPts M.P) :
     (PB.combLine (fun b => R.Re.line b t) (rootC o)).h z = (M.line t o).h z := by
@@ -168,11 +224,17 @@ theorem comb_h (R : RealTie M S n) (t : ℝ) (ht0 : 0 < t) (ht : t ≤ S.t₀) (
     · intro τ k
       exact R.fund_reg τ k t ht0 ht z hz
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `none => exact M.A_smooth`. Consider the case `some p => exact M.x_smooth t p`.
+-/
 theorem smooth_line (M : RootModel Ψ N) (t : ℝ) (o : Option (Ψ × Fin N)) : IsSmoothHerm (M.line t o) := by
   cases o with
   | none => exact M.A_smooth
   | some p => exact M.x_smooth t p
 
+/- English proof (translation)
+Establish `hc` using `GlobalTheory.T.arithmetic_intersection_multilinear_polar hL II hII M.K M.ι (Option (Ψ × Fin N)) M.P (dimFl Ψ N + 1) (fun a => R.Re.line a t) (fun r => rootC (w r)) R.Re.arith (fun a => R.Re.line_smooth a t ht0 ht)`. Rewrite using `[← hc.2]`. Conclude with `hL M.K M.ι (II M.K M.ι) (hII.1 M.K M.ι) M.P _ _ _ R.Re.arith (fun j => smooth_line M t _) hc.1 (fun j => (comb_a R t _).symm) (fun j z hz => (comb_h R t ht0 ht _ z hz).symm)`.
+-/
 theorem word_eq (hL : ReciprocityTheory.ChartRestriction.G.AI.I2.MetricLocalStatement) (II : IntersectionSystem)
     (hII : IsFullIntersectionSystem II) (R : RealTie M S n) (t : ℝ) (ht0 : 0 < t) (ht : t ≤ S.t₀)
     (w : Fin (dimFl Ψ N + 1) → Option (Ψ × Fin N)) :
@@ -187,10 +249,18 @@ theorem word_eq (hL : ReciprocityTheory.ChartRestriction.G.AI.I2.MetricLocalStat
 
 end Lines
 
+/- English proof (translation)
+Simplify using `[PB.formPoly, map_sum, map_prod]`.
+-/
 theorem eval_formPoly {σ : Type} [Fintype σ] (d : ℕ) (a : (Fin d → σ) → ℝ) (c : σ → ℝ) :
     eval c (PB.formPoly d a) = ∑ w, a w * ∏ j, c (w j) := by
   simp [PB.formPoly, map_sum, map_prod]
 
+/- English proof (translation)
+Simplify using `only [PB.polar, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_mul_distrib, mul_assoc]`.
+-/
 theorem polar_swap {J : Type} [Fintype J] [DecidableEq J] {d : ℕ} (c : J → ℝ) (nn : J → J → ℝ)
     (I : (Fin d → J) → ℝ) :
     ∑ w : Fin d → J, (∏ k, c (w k)) * PB.polar d I (fun r a => nn (w r) a) =
@@ -204,23 +274,37 @@ theorem polar_swap {J : Type} [Fintype J] [DecidableEq J] {d : ℕ} (c : J → �
 
 def cS (lam : Wt Ψ N) (s : ℝ) : Option (Ψ × Fin N) → ℝ := fun o => o.elim s fun r => -lam r.1 r.2
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_option]`. Simplify using `[linA, toA, linRoot, cS, map_sum, add_comm]`.
+-/
 theorem linA_eq (lam : Wt Ψ N) (s : ℝ) : linA lam s = ∑ j, C (cS lam s j) * X j := by
   rw [Fintype.sum_option]
   simp [linA, toA, linRoot, cS, map_sum, add_comm]
 
 variable (M : RootModel Ψ N) (II : IntersectionSystem)
 
+/- English proof (translation)
+Use `(basisMonomials (Option (Ψ × Fin N)) ℝ).constr_basis ℝ (M.arMono II t) m` as an intermediate fact. Simplify `this` using `[RootModel.arFun]`.
+-/
 theorem arFun_monomial (t : ℝ) (m : Option (Ψ × Fin N) →₀ ℕ) :
     M.arFun II t (monomial m 1) = M.arMono II t m := by
   have := (basisMonomials (Option (Ψ × Fin N)) ℝ).constr_basis ℝ (M.arMono II t) m
   simpa [RootModel.arFun] using this
 
+/- English proof (translation)
+Use `(basisMonomials (Option (Ψ × Fin N)) ℝ).constr_basis ℝ (fun m => limUnder (𝓝[>] (0 : ℝ)) fun t => M.arMono II t m) m` as an intermediate fact. Simplify `this` using `[RootModel.PP]`.
+-/
 theorem PP_monomial (m : Option (Ψ × Fin N) →₀ ℕ) :
     M.PP II (monomial m 1) = limUnder (𝓝[>] 0) fun t => M.arMono II t m := by
   have := (basisMonomials (Option (Ψ × Fin N)) ℝ).constr_basis ℝ
     (fun m => limUnder (𝓝[>] (0 : ℝ)) fun t => M.arMono II t m) m
   simpa [RootModel.PP] using this
 
+/- English proof (translation)
+Establish `hk : (M.kA : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 M.kA_pos.ne'`. Rewrite using `[Finsupp.finset_sum_apply, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Consider the cases of `w k with`. Consider the case `none => simp [cS, RootModel.coef, hk]`.
+
+Consider the case `some r => simp [cS, RootModel.coef]`.
+-/
 theorem prod_cS (lam : Wt Ψ N) (s : ℝ) {d : ℕ} (w : Fin d → Option (Ψ × Fin N)) :
     ∏ k, cS lam s (w k) = (∏ k, M.coef lam s (w k)) *
       (M.kA : ℝ) ^ ((∑ k, Finsupp.single (w k) 1 : Option (Ψ × Fin N) →₀ ℕ) none) := by
@@ -231,6 +315,13 @@ theorem prod_cS (lam : Wt Ψ N) (s : ℝ) {d : ℕ} (w : Fin d → Option (Ψ ×
   | none => simp [cS, RootModel.coef, hk]
   | some r => simp [cS, RootModel.coef]
 
+/- English proof (translation)
+Establish `hk : (M.kA : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 M.kA_pos.ne'`. Establish `hd : (M.δ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 M.δ_pos.ne'`. Establish `e : linA lam s ^ (dimFl Ψ N + 1) = ∏ _k : Fin (dimFl Ψ N + 1), ∑ j, C (cS lam s j) * X j`. Rewrite using `[linA_eq, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[e]`.
+
+Establish `h1` using `GlobalTheory.T.functional_product_linear_forms (Option (Ψ × Fin N)) (dimFl Ψ N + 1) (M.arFun II t) (fun _ => cS lam s)`. Rewrite using `[h1, Finset.sum_div]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Take `⟨hdeg, σ, -, hii⟩` from `GlobalTheory.T.monomial_lines_permutation II hII.1 M.K M.ι M.P (dimFl Ψ N + 1) (Option (Ψ × Fin N)) (M.line t) w M.arith (smooth_line M t)`. Rewrite using `[arFun_monomial, RootModel.arMono, if_pos hdeg, hii, prod_cS M lam s w]`.
+
+Establish `hp : ((M.kA : ℝ) ^ ((∑ k, Finsupp.single (w k) 1 : Option (Ψ × Fin N) →₀ ℕ) none)) ≠ 0` using `pow_ne_zero _ hk`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem arFun_lin (hII : IsFullIntersectionSystem II) (lam : Wt Ψ N) (s t : ℝ) :
     M.arFun II t (linA lam s ^ (dimFl Ψ N + 1)) =
       (∑ w : Fin (dimFl Ψ N + 1) → Option (Ψ × Fin N), (∏ k, M.coef lam s (w k)) *
@@ -252,6 +343,11 @@ theorem arFun_lin (hII : IsFullIntersectionSystem II) (lam : Wt Ψ N) (s t : ℝ
     pow_ne_zero _ hk
   field_simp
 
+/- English proof (translation)
+Establish `hlen : (Finsupp.toMultiset m).toList.length = d`. Rewrite using `[Multiset.length_toList, Finsupp.card_toMultiset, ← hm]`. Simplify using `only [Finsupp.sum, id]`. Both sides reduce to the same expression. Use `⟨fun k => (Finsupp.toMultiset m).toList.get ⟨k, by omega⟩, fun ℓ => funext fun k => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [monoLines]`. Rewrite using `[dif_pos (by omega)]`.
+-/
 theorem exists_word {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {J : Type} (m : J →₀ ℕ) {d : ℕ}
     (hm : m.degree = d) : ∃ w : Fin d → J, ∀ ℓ : J → HermLine ι, monoLines ℓ m d = fun k => ℓ (w k) := by
   have hlen : (Finsupp.toMultiset m).toList.length = d := by
@@ -266,6 +362,13 @@ section Limits
 
 variable {M II} {S : PB.AnSys (dimFl Ψ N) (Option (Ψ × Fin N))} {n : ℕ}
 
+/- English proof (translation)
+Establish `hdeg : (R.Re.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 R.Re.deg_pos.ne'`. Establish `hδ : (M.δ : ℝ) = n * R.Re.deg` using `by exact_mod_cast R.δ_eq`. Establish `hn : (n : ℝ) ≠ 0`. Introduce `h`. Establish `h' : (M.δ : ℝ) = 0` using `by rw [hδ, h, zero_mul]`.
+
+Conclude with `(Nat.cast_ne_zero.2 M.δ_pos.ne') h'`. Establish `e : ∑ w : Fin (dimFl Ψ N + 1) → Option (Ψ × Fin N), (∏ k, M.coef lam s (w k)) * II M.K M.ι M.P (dimFl Ψ N + 1) (fun r => M.line t (w r)) = ∑ v : Fin (dimFl Ψ N + 1) → Option (Ψ × Fin N), (∏ r, PB.gapS (fun x => lam x.1 x.2) (s / M.kA) (v r)) * II M.K M.ι M.P (dimFl Ψ N + 1) (fun …`. Simplify using `only [word_eq hL II hII R t ht0 ht]`. Use `(polar_swap (M.coef lam s) (fun o a => (rootC o a : ℝ)) _).trans ?_` and prove the remaining obligations. Simplify using `only [sum_coef_rootC]`.
+
+Rewrite using `[arFun_lin M II hII, PB.Realis.FT, eval_formPoly, e, hδ, Finset.sum_div, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[PB.Realis.num]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem num_eq (hL : ReciprocityTheory.ChartRestriction.G.AI.I2.MetricLocalStatement) (hII : IsFullIntersectionSystem II)
     (R : RealTie M S n) (lam : Wt Ψ N) (s t : ℝ) (ht0 : 0 < t) (ht : t ≤ S.t₀) :
     (n : ℝ) * M.arFun II t (linA lam s ^ (dimFl Ψ N + 1)) =
@@ -289,6 +392,15 @@ theorem num_eq (hL : ReciprocityTheory.ChartRestriction.G.AI.I2.MetricLocalState
   rw [PB.Realis.num]
   field_simp
 
+/- English proof (translation)
+Distinguish the cases in `hm : m.degree = dimFl Ψ N + 1`. Take `⟨w, hw⟩` from `exists_word (ι := M.ι) m hm`. Establish `hdeg : (R.Re.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 R.Re.deg_pos.ne'`. Establish `h1 : Tendsto (fun t => PB.polar (dimFl Ψ N + 1) (fun v => (R.Re.deg : ℝ) * R.Re.num II t v) (fun r a => (rootC (w r) a : ℝ)) / ((M.δ : ℝ) * (M.kA : ℝ) ^ m none)) (𝓝[>] 0) (𝓝 (PB.polar (dimFl Ψ N + 1) (fun v => (R.Re.deg : ℝ) * R.Re.limNum II v) (fun r a => (rootC (w r) a : ℝ)) / …`. Use `Tendsto.div_const ?_ _` and prove the remaining obligations.
+
+Simplify using `only [PB.polar]`. Conclude with `tendsto_finset_sum _ fun v _ => ((hconv v).const_mul _).const_mul _`. Use `⟨_, h1.congr' ?_⟩` and prove the remaining obligations. Use `filter_upwards [Ioc_mem_nhdsGT h0] with t ht`. Establish `e : (fun v => (R.Re.deg : ℝ) * R.Re.num II t v) = fun v => II M.K M.ι M.P (dimFl Ψ N + 1) fun r => R.Re.line (v r) t`.
+
+Use function extensionality and compare the values at `v`. Rewrite using `[PB.Realis.num]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[RootModel.arMono, if_pos hm, hw, word_eq hL II hII R t ht.1 ht.2, e]`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [RootModel.arMono, if_neg hm]`. Conclude with `tendsto_const_nhds`.
+-/
 theorem exists_lim_arMono (hL : ReciprocityTheory.ChartRestriction.G.AI.I2.MetricLocalStatement)
     (hII : IsFullIntersectionSystem II) (R : RealTie M S n)
     (hconv : ∀ w, Tendsto (fun t => R.Re.num II t w) (𝓝[>] 0) (𝓝 (R.Re.limNum II w)))
@@ -316,6 +428,11 @@ theorem exists_lim_arMono (hL : ReciprocityTheory.ChartRestriction.G.AI.I2.Metri
     simp only [RootModel.arMono, if_neg hm]
     exact tendsto_const_nhds
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Establish `e : monomial u a = a • (monomial u (1 : ℝ) : RPA Ψ N)`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Take `⟨L, hLim⟩` from `hC u`.
+
+Simplify using `only [e, map_smul, arFun_monomial, PP_monomial, smul_eq_mul]`. Rewrite using `[hLim.limUnder_eq]`. Conclude with `hLim.const_mul a`. Consider the case `add p q hp hq => simpa only [map_add] using hp.add hq`.
+-/
 theorem tendsto_arFun (hC : M.Converges II) (F : RPA Ψ N) :
     Tendsto (fun t => M.arFun II t F) (𝓝[>] 0) (𝓝 (M.PP II F)) := by
   induction F using MvPolynomial.induction_on' with
@@ -330,6 +447,13 @@ theorem tendsto_arFun (hC : M.Converges II) (F : RPA Ψ N) :
 
 end Limits
 
+/- English proof (translation)
+Introduce `hI II hII Ψ _ _ N M S n R lam s`. Establish `hL` using `hI.metricLocal`. Use `⟨Nat.pos_of_ne_zero fun h => M.δ_pos.ne' (R.δ_eq.trans (Nat.mul_eq_zero.2 (Or.inl h))), fun t ht0 ht => num_eq hL hII R lam s t ht0 ht, fun hconv h0 => ?_⟩` and prove the remaining obligations. Establish `hC : M.Converges II` using `exists_lim_arMono hL hII R hconv h0`. Use `⟨hC, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `(tendsto_arFun hC (linA lam s ^ (dimFl Ψ N + 1))).const_mul (n : ℝ)`. Establish `h2 : Tendsto (fun t => eval (PB.gapS (fun x => lam x.1 x.2) (s / M.kA)) (R.Re.FT II t)) (𝓝[>] 0) (𝓝 (eval (PB.gapS (fun x => lam x.1 x.2) (s / M.kA)) (R.Re.PB II)))`. Simplify using `only [PB.Realis.FT, PB.Realis.PB, eval_formPoly]`. Conclude with `tendsto_finset_sum _ fun v _ => (hconv v).mul_const _`. Use `tendsto_nhds_unique (h1.congr' ?_) h2` and prove the remaining obligations.
+
+Use `filter_upwards [Ioc_mem_nhdsGT h0] with t ht`. Conclude with `num_eq hL hII R lam s t ht.1 ht.2`.
+-/
 theorem arith_degrees : PB.Inputs → ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (M : RootModel Ψ N) (S : PB.AnSys (dimFl Ψ N) (Option (Ψ × Fin N))) (n : ℕ) (R : RealTie M S n) (lam : Wt Ψ N) (s : ℝ), 0 < n ∧ (∀ t, 0 < t → t ≤ S.t₀ → (n : ℝ) * M.arFun II t (linA lam s ^ (dimFl Ψ N + 1)) = eval (PB.gapS (fun x => lam x.1 x.2) (s / M.kA)) (R.Re.FT II t)) ∧ ((∀ w, Tendsto (fun t => R.Re.num II t w) (𝓝[>] 0) (𝓝 (R.Re.limNum II w))) → 0 < S.t₀ → M.Converges II ∧ (n : ℝ) * M.PP II (linA lam s ^ (dimFl Ψ N + 1)) = eval (PB.gapS (fun x => lam x.1 x.2) (s / M.kA)) (R.Re.PB II)) := by
   intro hI II hII Ψ _ _ N M S n R lam s
   have hL := hI.metricLocal

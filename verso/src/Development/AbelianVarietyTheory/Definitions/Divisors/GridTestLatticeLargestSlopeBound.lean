@@ -24,6 +24,11 @@ open Classical in
 
 def deltaForm (x : A) (v : M) (g : A) : M := ∑ᶠ γ : Γ, if x⁻¹ * ((ι γ)⁻¹ * g) ∈ U then ρ γ v else 0
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (ρ δ)` using `Function.LeftInverse.injective (g := ρ δ⁻¹) fun y => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Unfold `deltaForm`. Rewrite using `[← finsum_comp_equiv (Equiv.mulLeft δ)]`. Use `Eq.trans (finsum_congr fun γ => ?_) ((ρ δ).toAddMonoidHom.map_finsum_of_injective hinj _).symm` and prove the remaining obligations.
+
+Simplify using `only [Equiv.coe_mulLeft, map_mul, _root_.mul_inv_rev, mul_assoc, inv_mul_cancel_left, LinearMap.toAddMonoidHom_coe]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem deltaForm_left (x : A) (v : M) (δ : Γ) (g : A) :
     deltaForm ι U ρ x v (ι δ * g) = ρ δ (deltaForm ι U ρ x v g) := by
   classical
@@ -35,6 +40,9 @@ theorem deltaForm_left (x : A) (v : M) (δ : Γ) (g : A) :
   simp only [Equiv.coe_mulLeft, map_mul, _root_.mul_inv_rev, mul_assoc, inv_mul_cancel_left, LinearMap.toAddMonoidHom_coe]
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `deltaForm`. Use `finsum_congr fun γ => ?_` and prove the remaining obligations. Establish `: x⁻¹ * ((ι γ)⁻¹ * (g * u)) ∈ U ↔ x⁻¹ * ((ι γ)⁻¹ * g) ∈ U`. Rewrite using `[← mul_assoc _ g, ← mul_assoc x⁻¹, U.mul_mem_cancel_right hu]`. Conclude with `propext this ▸ rfl`.
+-/
 theorem deltaForm_right (x : A) (v : M) (g : A) {u : A} (hu : u ∈ U) :
     deltaForm ι U ρ x v (g * u) = deltaForm ι U ρ x v g := by
   unfold deltaForm
@@ -43,11 +51,17 @@ theorem deltaForm_right (x : A) (v : M) (g : A) {u : A} (hu : u ∈ U) :
     rw [← mul_assoc _ g, ← mul_assoc x⁻¹, U.mul_mem_cancel_right hu]
   exact propext this ▸ rfl
 
+/- English proof (translation)
+Unfold `deltaForm`. Rewrite using `[finsum_eq_single _ 1 fun γ hγ => if_neg fun hm => hγ (inv_eq_one.1 (h γ⁻¹ (by rwa [map_inv, mul_assoc])))]`. Simplify using `[U.one_mem]`.
+-/
 theorem deltaForm_self (x : A) (v : M) (h : ∀ γ, x⁻¹ * ι γ * x ∈ U → γ = 1) : deltaForm ι U ρ x v x = v := by
   unfold deltaForm
   rw [finsum_eq_single _ 1 fun γ hγ => if_neg fun hm => hγ (inv_eq_one.1 (h γ⁻¹ (by rwa [map_inv, mul_assoc])))]
   simp [U.one_mem]
 
+/- English proof (translation)
+Unfold `deltaForm`. Use `finsum_eq_zero_of_forall_eq_zero fun γ => if_neg fun hm => h γ _ hm ?_` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+-/
 theorem deltaForm_eq_zero (x : A) (v : M) (g : A) (h : ∀ γ, ∀ u ∈ U, g ≠ ι γ * x * u) : deltaForm ι U ρ x v g = 0 := by
   unfold deltaForm
   refine finsum_eq_zero_of_forall_eq_zero fun γ => if_neg fun hm => h γ _ hm ?_
@@ -59,10 +73,16 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GlobalTheory.Chi
 
 abbrev Xp : HSp D := G.V (.top 0)
 
+/- English proof (translation)
+Use `G.sp.P_is D.R.m le_rfl` as an intermediate fact. Rewrite `this` using `[Nat.sub_self]`. Then use the resulting hypothesis.
+-/
 theorem isV_Xp : (G.node (.top 0)).IsV (rankP D D.R.m) 0 := by
   have := G.sp.P_is D.R.m le_rfl
   rwa [Nat.sub_self] at this
 
+/- English proof (translation)
+The claim follows from `(isV_Xp G).rank`.
+-/
 theorem rank_Xp : (Xp G).rank = rankP D D.R.m := (isV_Xp G).rank
 
 def LaP (τ : D.what₂.Tau) : DomWeight (Xp G).rank where
@@ -131,14 +151,27 @@ def scal (θ : InfFam D) (ξ : Module.Dual ℂ (VV ℂ (LaP G))) (Ψ : GLf G →
   ξ (rhoK (LaP G) (invTrK (GlobalTheory.CoefModel.realGL θ (Xp G) h⁻¹))
     (GlobalTheory.CoefModel.mapVV D.what₂.embLL (LaP G) (Ψ (Formalism.IndefR.Lev.finE (Xp G) h))))
 
+/- English proof (translation)
+The claim follows from `deltaForm_left _ _ _ _ _ _ _`.
+-/
 theorem psi_left (rp : ClassReps G) {n : ℕ} (e : Fin n ≃ TestIx G × VVIdx (LaP G)) (a : Fin n) (γ : UR D.sp.cm (Xp G).gram)
     (g : GLf G) : psi rp e a (ratIn G γ * g) = rhoW G γ (psi rp e a g) := deltaForm_left _ _ _ _ _ _ _
 
+/- English proof (translation)
+The claim follows from `deltaForm_right _ _ _ _ _ _ hk`.
+-/
 theorem psi_right (rp : ClassReps G) {n : ℕ} (e : Fin n ≃ TestIx G × VVIdx (LaP G)) (a : Fin n) (g : GLf G) {k : GLf G}
     (hk : k ∈ G.Kplus) : psi rp e a (g * k) = psi rp e a g := deltaForm_right _ _ _ _ _ _ hk
 
 open Classical in
 
+/- English proof (translation)
+Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `deltaForm_self _ _ _ _ _ (hN c')`. Use `deltaForm_eq_zero _ _ _ _ _ _ fun γ u hu he => h ?_` and prove the remaining obligations. Establish `hγ : ratIn G γ ∈ UA D.sp.cm (Xp G).gram`.
+
+Establish `e : ratIn G γ = rp.x c' * u⁻¹ * (rp.x c : GLf G)⁻¹` using `by rw [he]; group`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (rp.x c').2 (inv_mem hu.1)) (inv_mem (rp.x c).2)`. Rewrite using `[← rp.classRepresentative_mk c, ← rp.classRepresentative_mk c']`. Use `symm`.
+
+Conclude with `(DoubleCoset.eq _ _ _ _).2 ⟨⟨_, hγ⟩, ⟨γ.1, γ.2, rfl⟩, ⟨u, hu.1⟩, hu, Subtype.ext he⟩`.
+-/
 theorem ClassReps.gridClassReps_delta_apply_rep (rp : ClassReps G) (hN : rp.Neat) (c c' : G.ClPlus) (v : WtSp G) :
     rp.delta c v (rp.x c') = if c' = c then v else 0 := by
   split_ifs with h
@@ -152,6 +185,15 @@ theorem ClassReps.gridClassReps_delta_apply_rep (rp : ClassReps G) (hN : rp.Neat
     symm
     exact (DoubleCoset.eq _ _ _ _).2 ⟨⟨_, hγ⟩, ⟨γ.1, γ.2, rfl⟩, ⟨u, hu.1⟩, hu, Subtype.ext he⟩
 
+/- English proof (translation)
+Rewrite using `[psi, rp.gridClassReps_delta_apply_rep hN]`. Apply `(bVV D.what₂.LL (LaP G)).equivFun.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `e1 : (bVV D.what₂.LL (LaP G)).equivFun (valAt (LaP G) e (datumOf e a, c) (Pi.single a 1)) i = (Pi.single a 1 : Fin n → D.what₂.LL) (e.symm ((datumOf e a, c), i))`. Conclude with `congrFun ((bVV D.what₂.LL (LaP G)).equivFun.apply_symm_apply _) i`.
+
+Establish `e2 : e.symm ((datumOf e a, c), i) = a ↔ c = (e a).1.2 ∧ i = (e a).2`. Rewrite using `[Equiv.symm_apply_eq]`. Simplify using `[Prod.ext_iff, datumOf]`. Rewrite using `[e1, Pi.single_apply]`. Simplify using `only [e2]`.
+
+Use `split_ifs with h1 h2 h2`. Simplify using `[h2.2]`. Establish `: ¬ (e a).2 = i` using `fun h => h2 ⟨h1, h.symm⟩`. Simplify using `[Finsupp.single_apply, this]`. Conclude with `absurd h2.1 h1`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem testFunction_value_at_rep (rp : ClassReps G) (hN : rp.Neat) {n : ℕ} (e : Fin n ≃ TestIx G × VVIdx (LaP G)) (a : Fin n) (c : G.ClPlus) :
     psi rp e a (rp.x c) = valAt (LaP G) e (datumOf e a, c) (Pi.single a 1) := by
   classical
@@ -175,11 +217,17 @@ theorem testFunction_value_at_rep (rp : ClassReps G) (hN : rp.Neat) {n : ℕ} (e
 
 variable (G)
 
+/- English proof (translation)
+Use `(isV_Xp G).sigOK φ` as an intermediate fact. Rewrite `this` using `[(isV_Xp G).sig φ]`. Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`.
+-/
 theorem posDef_Xp (φ : D.host.E →+* ℂ) : ((Xp G).gram.map φ).PosDef := by
   have := (isV_Xp G).sigOK φ
   rw [(isV_Xp G).sig φ] at this
   exact GlobalTheory.DefiniteQuotient.posDef_of_signature this
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(isV_Xp G).sd`. Establish `hf` using `Module.Finite.iff_fg.2 h1.fg`. Conclude with `⟨Formalism.UG.P.global_lattice_isLattice_holds _ _ _ _ hf h1.span_eq_top _, GlobalTheory.PointLattice.globLat_selfDual D.sp.cm.sig _ _ h2 hf h1.span_eq_top g.1 g.2⟩`.
+-/
 theorem isSelfDualE_latOf (g : UA D.sp.cm (Xp G).gram) :
     IsSelfDualE (D.sp.cm.sig : D.host.E →+* D.host.E) (Xp G).gram (latOf G g) := by
   obtain ⟨h1, h2⟩ := (isV_Xp G).sd
@@ -187,12 +235,22 @@ theorem isSelfDualE_latOf (g : UA D.sp.cm (Xp G).gram) :
   exact ⟨Formalism.UG.P.global_lattice_isLattice_holds _ _ _ _ hf h1.span_eq_top _,
     GlobalTheory.PointLattice.globLat_selfDual D.sp.cm.sig _ _ h2 hf h1.span_eq_top g.1 g.2⟩
 
+/- English proof (translation)
+Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[D.starLL_cx]`. Conclude with `(D.sp.cm.cmUnram.2.1 (D.what₂.embLL.comp (emb D τ)) x).symm`.
+-/
 theorem star_emb (τ : D.what₂.Tau) (x : D.host.E) :
     star (emb D τ x) = emb D τ ((D.sp.cm.sig : D.host.E →+* D.host.E) x) := by
   apply D.what₂.embLL.injective
   rw [D.starLL_cx]
   exact (D.sp.cm.cmUnram.2.1 (D.what₂.embLL.comp (emb D τ)) x).symm
 
+/- English proof (translation)
+Take `⟨i⟩` from `SlopeModel.nonempty_idx (LaP G)`. Use `haveI : Finite (TestIx G) := Finite.of_injective (fun c => e.symm (c, i)) fun _ _ h => congrArg Prod.fst (e.symm.injective h)`. Take `⟨X, hX⟩` from `(SlopeModel.exists_isMetric (formGram G e) fun φ => SlopeModel.sumGram_posDef _ e _ φ fun τ => by`. Establish `hP` using `posDef_Xp G (φ.comp (emb D τ))`. Establish `hd : IsUnit ((Xp G).gram.map (emb D τ)).det`.
+
+Use `(Matrix.isUnit_iff_isUnit_det _).1 hP.isUnit` as an intermediate fact. Rewrite `this` using `[RingHom.coe_comp, ← Matrix.map_map, ← RingHom.mapMatrix_apply φ, ← RingHom.map_det, isUnit_iff_ne_zero, map_ne_zero]`. Conclude with `isUnit_iff_ne_zero.2 this`. Establish `e : (((Xp G).gram.map (emb D τ))⁻¹).map φ = ((Xp G).gram.map (φ.comp (emb D τ)))⁻¹`. Use `symm`.
+
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[RingHom.coe_comp, ← Matrix.map_map, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hd, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[gramKd, Matrix.transpose_map, e]`. Conclude with `hP.inv.transpose).2`. Conclude with `⟨X, _, hX, rfl⟩`.
+-/
 theorem exists_isTestLat (rp : ClassReps G) (n : ℕ) (e : Fin n ≃ TestIx G × VVIdx (LaP G)) : ∃ X' M, IsTestLat G rp n e X' M := by
   obtain ⟨i⟩ := SlopeModel.nonempty_idx (LaP G)
   haveI : Finite (TestIx G) := Finite.of_injective (fun c => e.symm (c, i)) fun _ _ h => congrArg Prod.fst (e.symm.injective h)
@@ -214,6 +272,9 @@ theorem exists_isTestLat (rp : ClassReps G) (n : ℕ) (e : Fin n ≃ TestIx G ×
 
 variable {G}
 
+/- English proof (translation)
+Use `haveI : Nonempty (TestIx G) := ⟨⟨fun _ => default, Quotient.mk'' 1⟩⟩`. Rewrite using `[h.2]`. Conclude with `(hS D.host.E D.what₂.LL v₀ hv _ (fun φ x => D.sp.cm.cmUnram.2.1 φ x) _ (emb D) star_emb _ (LaP G) R hR hLa _ (posDef_Xp G) (TestIx G) (fun c => rp.lat c.2) (fun c => isSelfDualE_latOf G _) n e X').2.2.1 h.1`.
+-/
 theorem IsTestLat.gridTestLattice_largestSlope_bound (hS : SlopeE) {v₀ : InfinitePlace D.what₂.LL} (hv : Formalism.DivisionValues.IsConjAt v₀) {R : ℝ} (hR : 1 ≤ R)
     (hLa : SpreadLe (LaP G) R) {rp : ClassReps G} {n : ℕ} {e : Fin n ≃ TestIx G × VVIdx (LaP G)}
     {X' : InfinitePlace D.what₂.LL → Matrix (Fin n) (Fin n) ℂ} {M : Submodule (𝓞 D.what₂.LL) (Fin n → D.what₂.LL)}
@@ -224,6 +285,9 @@ theorem IsTestLat.gridTestLattice_largestSlope_bound (hS : SlopeE) {v₀ : Infin
   exact (hS D.host.E D.what₂.LL v₀ hv _ (fun φ x => D.sp.cm.cmUnram.2.1 φ x) _ (emb D) star_emb _ (LaP G) R hR hLa
     _ (posDef_Xp G) (TestIx G) (fun c => rp.lat c.2) (fun c => isSelfDualE_latOf G _) n e X').2.2.1 h.1
 
+/- English proof (translation)
+Establish `h` using `deltaForm_left (MonoidHom.id ℚˣ) ⊥ ((Algebra.lsmul ℚ ℚ ℚ).toMonoidHom.comp (Units.coeHom ℚ)) 1 (3 : ℚ) (-1) 1`. Rewrite `h` using `[deltaForm_self _ _ _ _ _ (by simp)]`. Simplify using `using h`.
+-/
 example : deltaForm (MonoidHom.id ℚˣ) ⊥ ((Algebra.lsmul ℚ ℚ ℚ).toMonoidHom.comp (Units.coeHom ℚ)) 1 (3 : ℚ) (-1) = -3 := by
   have h := deltaForm_left (MonoidHom.id ℚˣ) ⊥ ((Algebra.lsmul ℚ ℚ ℚ).toMonoidHom.comp (Units.coeHom ℚ)) 1 (3 : ℚ) (-1) 1
   rw [deltaForm_self _ _ _ _ _ (by simp)] at h

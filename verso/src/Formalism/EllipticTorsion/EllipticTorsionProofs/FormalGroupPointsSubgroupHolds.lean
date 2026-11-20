@@ -11,13 +11,22 @@ open WeierstrassCurve Polynomial
 
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Conclude with `(IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`.
+-/
 lemma add_le {a b : K} {c : ℝ} (ha : ‖a‖ ≤ c) (hb : ‖b‖ ≤ c) : ‖a + b‖ ≤ c := by
   exact (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `add_le ha (by rwa [norm_neg])`.
+-/
 lemma sub_le {a b : K} {c : ℝ} (ha : ‖a‖ ≤ c) (hb : ‖b‖ ≤ c) : ‖a - b‖ ≤ c := by
   rw [sub_eq_add_neg]
   exact add_le ha (by rwa [norm_neg])
 
+/- English proof (translation)
+Establish `h1 : ‖a‖ ≤ max ‖a - b‖ ‖b‖`. Simplify using `using IsUltrametricDist.norm_add_le_max (a - b) b`. Break down `le_max_iff.mp h1 with h2 | h2` into its components or cases. Conclude with `h2`. Conclude with `absurd h2 (not_le.mpr h)`.
+-/
 lemma le_sub_of_lt {a b : K} (h : ‖b‖ < ‖a‖) : ‖a‖ ≤ ‖a - b‖ := by
   have h1 : ‖a‖ ≤ max ‖a - b‖ ‖b‖ := by
     simpa using IsUltrametricDist.norm_add_le_max (a - b) b
@@ -25,10 +34,22 @@ lemma le_sub_of_lt {a b : K} (h : ‖b‖ < ‖a‖) : ‖a‖ ≤ ‖a - b‖ :
   · exact h2
   · exact absurd h2 (not_le.mpr h)
 
+/- English proof (translation)
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul ha hb (norm_nonneg _) ((norm_nonneg _).trans ha)`.
+-/
 lemma mul_le {a b : K} {c d : ℝ} (ha : ‖a‖ ≤ c) (hb : ‖b‖ ≤ d) : ‖a * b‖ ≤ c * d := by
   rw [norm_mul]
   exact mul_le_mul ha hb (norm_nonneg _) ((norm_nonneg _).trans ha)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Establish `h' : y ^ 2 + W.a₁ * x * y + W.a₃ * y = x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆` using `(WeierstrassCurve.Affine.equation_iff _ _).mp h`. Assume the negation of the conclusion as `hy`. Use `push_neg at hy`. Establish `hR : ‖x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆‖ ≤ 1`.
+
+Establish `hx2 : ‖x ^ 2‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hx`. Establish `hx3 : ‖x ^ 3‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hx`. Use `add_le (add_le (add_le hx3 ?_) ?_) h6` and prove the remaining obligations. Simplify using `using mul_le h2 hx2`. Simplify using `using mul_le h4 hx`.
+
+Establish `hT : ‖W.a₁ * x * y + W.a₃ * y‖ ≤ ‖y‖`. Use `add_le ?_ ?_` and prove the remaining obligations. Simplify using `using mul_le (mul_le h1 hx) (le_refl ‖y‖)`. Simplify using `using mul_le h3 (le_refl ‖y‖)`. Establish `hlt : ‖-(W.a₁ * x * y + W.a₃ * y)‖ < ‖y ^ 2‖`.
+
+Rewrite using `[norm_neg, norm_pow]`. Use the polynomial consequences of the given equalities and inequalities. Establish `key` using `le_sub_of_lt hlt`. Rewrite `key` using `[sub_neg_eq_add, ← add_assoc, h', norm_pow]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma y_int (W : WeierstrassCurve K)
     (hW : IntegralModel W) {x y : K} (h : W.toAffine.Equation x y) (hx : ‖x‖ ≤ 1) : ‖y‖ ≤ 1 := by
   obtain ⟨h1, h2, h3, h4, h6⟩ := hW
@@ -52,6 +73,19 @@ lemma y_int (W : WeierstrassCurve K)
   rw [sub_neg_eq_add, ← add_assoc, h', norm_pow] at key
   nlinarith
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Establish `h' : y ^ 2 + W.a₁ * x * y + W.a₃ * y = x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆` using `(WeierstrassCurve.Affine.equation_iff _ _).mp h`. Assume the negation of the conclusion as `hy`. Use `push_neg at hy`. Establish `hx0 : (0 : ℝ) < ‖x‖` using `by linarith`.
+
+Establish `hx2 : ‖x‖ ^ 2 < ‖x‖ ^ 3`. Use polynomial arithmetic with `[mul_pos (mul_pos hx0 hx0) (by linarith : (0 : ℝ) < ‖x‖ - 1)]`. Establish `hx1 : ‖x‖ ≤ ‖x‖ ^ 3`. Use polynomial arithmetic with `[mul_pos hx0 (by linarith : (0 : ℝ) < ‖x‖ - 1)]`. Establish `hxy : ‖x‖ < ‖y‖`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `mul_le_mul hc hc (norm_nonneg y) hx0.le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hR : ‖x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆‖ ≤ ‖x‖ ^ 3`.
+
+Use `add_le (add_le (add_le (le_of_eq (norm_pow _ _)) ?_) ?_) ?_` and prove the remaining obligations. Conclude with `(mul_le h2 (le_of_eq (norm_pow x 2))).trans (by linarith)`. Conclude with `(mul_le h4 (le_refl ‖x‖)).trans (by linarith)`. Conclude with `h6.trans (one_le_pow₀ hx.le)`. Establish `hT : ‖W.a₁ * x * y + W.a₃ * y‖ ≤ ‖x‖ * ‖y‖`.
+
+Use `add_le ?_ ?_` and prove the remaining obligations. Simplify using `using mul_le (mul_le h1 (le_refl ‖x‖)) (le_refl ‖y‖)`. Conclude with `(mul_le h3 (le_refl ‖y‖)).trans (by nlinarith [norm_nonneg y])`. Establish `hlt : ‖-(W.a₁ * x * y + W.a₃ * y)‖ < ‖y ^ 2‖`. Rewrite using `[norm_neg, norm_pow]`.
+
+Use polynomial arithmetic with `[norm_nonneg y]`. Establish `key` using `le_sub_of_lt hlt`. Rewrite `key` using `[sub_neg_eq_add, ← add_assoc, h', norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma y_sq_le (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
     (h : W.toAffine.Equation x y) (hx : 1 < ‖x‖) : ‖y‖ ^ 2 ≤ ‖x‖ ^ 3 := by
   obtain ⟨h1, h2, h3, h4, h6⟩ := hW
@@ -84,6 +118,39 @@ lemma y_sq_le (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
   rw [sub_neg_eq_add, ← add_assoc, h', norm_pow] at key
   linarith
 
+/- English proof (translation)
+Use `set ℓ := W.toAffine.slope x₁ x₂ y₁ y₂ with hℓ`. Use `set x₃ := W.toAffine.addX x₁ x₂ ℓ with hx₃`. Use `set y₃ := W.toAffine.negAddY x₁ x₂ y₁ ℓ with hy₃`. Assume the negation of the conclusion as `hC`. Use `push Not at hC`.
+
+Establish `h₃ : W.toAffine.Equation x₃ y₃` using `Affine.equation_negAdd h₁ h₂ hxy`. Establish `hy3 : ‖y₃‖ ≤ 1` using `y_int W hW h₃ hC`. Establish `hpoly` using `Affine.addPolynomial_slope h₁ h₂ hxy`. Rewrite `hpoly` using `[← hℓ]`. Establish `hev` using `congrArg (Polynomial.eval (x₃ + 1)) hpoly`.
+
+Simplify using `only [Affine.addPolynomial, Affine.linePolynomial, Affine.polynomial] at hev`. Simplify using `at hev`. Establish `hx3def : x₃ = ℓ ^ 2 + W.toAffine.a₁ * ℓ - W.toAffine.a₂ - x₁ - x₂` using `by simp [hx₃]`. Rewrite `hev` using `[← hx3def]`. Take `⟨a1, a2, a3, a4, a6⟩` from `hW`.
+
+Establish `hy3def : y₃ = ℓ * (x₃ - x₁) + y₁` using `by simp [hy₃, hx₃]`. Establish `hx0 : 0 ≤ ‖x₁‖` using `norm_nonneg _`. Establish `hℓ0 : 0 ≤ ‖ℓ‖` using `norm_nonneg _`. Establish `hsq` using `y_sq_le W ⟨a1, a2, a3, a4, a6⟩ h₁ hx₁`. Establish `hd : ‖x₁‖ ≤ ‖x₁ - x₃‖` using `le_sub_of_lt (by linarith)`.
+
+Establish `hlin : ‖ℓ‖ * ‖x₁‖ ≤ max ‖y₁‖ 1`. Establish `e : ℓ * (x₁ - x₃) = y₁ - y₃` using `by rw [hy3def]; ring`. Establish `: ‖ℓ * (x₁ - x₃)‖ ≤ max ‖y₁‖ 1`. Rewrite using `[e]`. Conclude with `sub_le (le_max_left _ _) (hy3.trans (le_max_right _ _))`.
+
+Rewrite `this` using `[norm_mul]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hℓsq : ‖ℓ‖ ^ 2 ≤ ‖x₁‖`. Establish `hm : (max ‖y₁‖ 1) ^ 2 ≤ ‖x₁‖ ^ 3`. Break down `le_total ‖y₁‖ 1 with h | h` into its components or cases.
+
+Rewrite using `[max_eq_right h, one_pow]`. Conclude with `one_le_pow₀ hx₁.le`. Rewrite using `[max_eq_left h]`. Conclude with `hsq`. Establish `: (‖ℓ‖ * ‖x₁‖) ^ 2 ≤ ‖x₁‖ ^ 3` using `(pow_le_pow_left₀ (by positivity) hlin 2).trans hm`.
+
+Establish `hx1p : 0 < ‖x₁‖ ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Use `set M := max 1 ‖ℓ‖ with hM`. Establish `hM1 : 1 ≤ M` using `le_max_left _ _`. Establish `hMℓ : ‖ℓ‖ ≤ M` using `le_max_right _ _`.
+
+Establish `hMsq : M ^ 2 ≤ ‖x₁‖`. Break down `le_total 1 ‖ℓ‖ with h | h` into its components or cases. Rewrite using `[hM, max_eq_right h]`. Conclude with `hℓsq`. Rewrite using `[hM, max_eq_left h]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `ht : ‖x₃ + 1‖ ≤ 1` using `add_le hC (by simp)`. Establish `hu : ‖ℓ * (x₃ + 1 - x₁) + y₁‖ ≤ M`. Establish `e : ℓ * (x₃ + 1 - x₁) + y₁ = y₃ + ℓ` using `by rw [hy3def]; ring`. Rewrite using `[e]`.
+
+Conclude with `add_le (hy3.trans hM1) hMℓ`. Establish `hM2 : M ≤ M ^ 2` using `by nlinarith`. Establish `hLHS : ‖(ℓ * (x₃ + 1 - x₁) + y₁) ^ 2 + W.a₁ * (x₃ + 1) * (ℓ * (x₃ + 1 - x₁) + y₁) + W.a₃ * (ℓ * (x₃ + 1 - x₁) + y₁) - ((x₃ + 1) ^ 3 + W.a₂ * (x₃ + 1) ^ 2 + W.a₄ * (x₃ + 1) + W.a₆)‖ ≤ ‖x₁‖`. Establish `ht2 : ‖(x₃ + 1) ^ 2‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ht`. Establish `ht3 : ‖(x₃ + 1) ^ 3‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ht`.
+
+Establish `hc : ‖(x₃ + 1) ^ 3 + W.a₂ * (x₃ + 1) ^ 2 + W.a₄ * (x₃ + 1) + W.a₆‖ ≤ 1`. Use `add_le (add_le (add_le ht3 ?_) ?_) a6` and prove the remaining obligations. Simplify using `using mul_le a2 ht2`. Simplify using `using mul_le a4 ht`. Use `sub_le (add_le (add_le ?_ ?_) ?_) (hc.trans (by nlinarith))` and prove the remaining obligations.
+
+Rewrite using `[norm_pow]`. Conclude with `(pow_le_pow_left₀ (norm_nonneg _) hu 2).trans hMsq`. Use `mul_le (mul_le a1 ht) hu` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_le a3 hu` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hRHS : ‖x₁‖ * ‖x₂‖ ≤ ‖(x₃ + 1 - x₁) * (x₃ + 1 - x₂) * (x₃ + 1 - x₃)‖`. Establish `e1 : ‖x₁‖ ≤ ‖x₃ + 1 - x₁‖`. Rewrite using `[norm_sub_rev]; exact le_sub_of_lt (by linarith)`. Establish `e2 : ‖x₂‖ ≤ ‖x₃ + 1 - x₂‖`.
+
+Rewrite using `[norm_sub_rev]; exact le_sub_of_lt (by linarith)`. Establish `e3 : x₃ + 1 - x₃ = 1` using `by ring`. Rewrite using `[e3, mul_one, norm_mul]`. Conclude with `mul_le_mul e1 e2 (norm_nonneg _) (norm_nonneg _)`. Establish `heq : (ℓ * (x₃ + 1 - x₁) + y₁) ^ 2 + W.a₁ * (x₃ + 1) * (ℓ * (x₃ + 1 - x₁) + y₁) + W.a₃ * (ℓ * (x₃ + 1 - x₁) + y₁) - ((x₃ + 1) ^ 3 + W.a₂ * (x₃ + 1) ^ 2 + W.a₄ * (x₃ + 1) + W.a₆) = -((x₃ + 1 - x₁) * (x₃ + 1 - x₂) * (x₃ + 1 - x₃))`.
+
+Take the linear combination `hev`. Rewrite `hLHS` using `[heq, norm_neg]`. Use `hRHS.trans hLHS` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma addX_norm [DecidableEq K] (W : WeierstrassCurve K) (hW : IntegralModel W)
     {x₁ x₂ y₁ y₂ : K} (h₁ : W.toAffine.Equation x₁ y₁) (h₂ : W.toAffine.Equation x₂ y₂)
     (hxy : ¬(x₁ = x₂ ∧ y₁ = W.toAffine.negY x₂ y₂)) (hx₁ : 1 < ‖x₁‖) (hx₂ : 1 < ‖x₂‖) :
@@ -177,6 +244,15 @@ namespace Formalism.ELL
 open WeierstrassCurve
 
 open Classical in
+/- English proof (translation)
+Introduce `K _ _ W hW _ P Q hP hQ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Break down `P with _ | @⟨x₁, y₁, h₁⟩` into its components or cases. Rewrite using `[show (Affine.Point.zero : W.toAffine.Point) = 0 from rfl, zero_add]`. Conclude with `hQ`.
+
+Break down `Q with _ | @⟨x₂, y₂, h₂⟩` into its components or cases. Rewrite using `[show (Affine.Point.zero : W.toAffine.Point) = 0 from rfl, add_zero]`. Conclude with `hP`. Distinguish the cases in `hxy : x₁ = x₂ ∧ y₁ = W.toAffine.negY x₂ y₂`. Rewrite using `[Affine.Point.add_of_Y_eq hxy.1 hxy.2]`.
+
+Discharge the goal by the elementary cases of `trivial`. Rewrite using `[Affine.Point.add_some hxy]`. Conclude with `FormalGroupPointsSubgroup.addX_norm W hW h₁.1 h₂.1 hxy hP hQ`. Break down `P with _ | @⟨x, y, h⟩` into its components or cases. Discharge the goal by the elementary cases of `trivial`.
+
+Simplify `hP` using `[InFormalGroupPoints]`.
+-/
 theorem formal_group_points_subgroup_holds : Formalism.ELL.FormalGroupPointsSubgroup' := by
   intro K _ _ W hW _ P Q hP hQ
   refine ⟨?_, ?_⟩

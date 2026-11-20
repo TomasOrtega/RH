@@ -19,9 +19,15 @@ variable {M : Type} [CommGroup M] {α : Type}
 def logHom (f : α → M) : (α →₀ ℤ) →+ Additive M :=
   Finsupp.liftAddHom fun v => zmultiplesHom (Additive M) (Additive.ofMul (f v)⁻¹)
 
+/- English proof (translation)
+Simplify using `[logHom]`.
+-/
 theorem logHom_single (f : α → M) (v : α) : logHom f (Finsupp.single v 1) = Additive.ofMul (f v)⁻¹ := by
   simp [logHom]
 
+/- English proof (translation)
+Simplify using `[logHom, Finsupp.liftAddHom_apply, Finsupp.sum, toMul_sum, toMul_zsmul, inv_zpow']`.
+-/
 theorem prod_eq_logHom (f : α → M) (c : α →₀ ℤ) :
     ∏ v ∈ c.support, f v ^ (-(c v)) = Additive.toMul (logHom f c) := by
   simp [logHom, Finsupp.liftAddHom_apply, Finsupp.sum, toMul_sum, toMul_zsmul, inv_zpow']
@@ -30,19 +36,33 @@ end Calc
 
 variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
 
+/- English proof (translation)
+Simplify using `only [vecLat, Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+-/
 theorem vecLat_add (T : Tens D D' W) (u v : Vec r) (y y' : D'.X) :
     vecLat T (u + v) y y' = vecLat T u y y' + vecLat T v y y' := by
   simp only [vecLat, Pi.add_apply, add_smul, Finset.sum_add_distrib]; abel
 
+/- English proof (translation)
+Simplify using `[vecLat]`.
+-/
 theorem vecLat_zero (T : Tens D D' W) (y y' : D'.X) : vecLat T 0 y y' = 0 := by
   simp [vecLat]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases a <;>`. Simplify using `[vecLat, rosVec, rosLat, axv, azv, xv, zv, GlobalTheory.TensAct.xe_latAct, map_add, Pi.single_apply, Finset.sum_add_distrib, add_smul, ite_smul]`.
+-/
 theorem vecLat_rosVec (T : Tens D D' W) (A A' : Matrix (Fin r) (Fin r) ℤ) (y y' : D'.X) (a : Fin 6) (i : Fin r) :
     vecLat T (rosVec A A' a i) y y' = T.xe (rosLat T A A' y y' a) i := by
   fin_cases a <;>
     simp [vecLat, rosVec, rosLat, axv, azv, xv, zv, GlobalTheory.TensAct.xe_latAct, map_add, Pi.single_apply,
       Finset.sum_add_distrib, add_smul, ite_smul]
 
+/- English proof (translation)
+Establish `hk : val (D.psi 0) (𝟙 _) z J = (val D.rigK (𝟙 _) z J)⁻¹`. Establish `e` using `(GlobalTheory.TauBalBox.tau_val D hJ 0 0 (𝟙 _)).symm.trans (GlobalTheory.TauBalElem.tau_zero_left hB hJ 0)`. Rewrite `e` using `[add_zero, mul_inv_cancel, _root_.one_mul]`. Conclude with `inv_mul_eq_one.mp e`. Establish `h0 : vecLat T (0 : Vec r) y y' = 0` using `vecLat_zero T y y'`.
+
+Simplify using `only [lam, map_add, map_sub, logHom_single, vecLat_add]`. Rewrite using `[h0, vecLat_add]`. Rewrite using `[GlobalTheory.TauBalBox.tau_val D hJ, hk]`. Simplify using `only [ofMul_mul, ofMul_inv, inv_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem logHom_lam (T : Tens D D' W) (hB : D.TauBimult) {z : (TK R).left} {J} (hJ : Good D.P.L z J)
     (y y' : D'.X) (u v : Vec r) :
     logHom (fun w => val (D.psi (vecLat T w y y')) (𝟙 _) z J) (lam u v) =
@@ -58,6 +78,11 @@ theorem logHom_lam (T : Tens D D' W) (hB : D.TauBimult) {z : (TK R).left} {J} (h
   simp only [ofMul_mul, ofMul_inv, inv_inv]
   abel
 
+/- English proof (translation)
+Introduce `R _ _ D D' r W T hB A A' z J hJ y y'`. Rewrite using `[prod_eq_logHom (fun w => val (D.psi (vecLat T w y y')) (𝟙 _) z J)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Rewrite using `[ofMul_toMul]`. Simplify using `only [sig, map_sum, map_zsmul, logHom_lam T hB hJ, vecLat_rosVec, qv, ofMul_prod, ofMul_zpow, Finset.smul_sum, ofMul_inv, smul_neg, smul_smul]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← neg_smul, neg_mul, vecLat_rosVec, vecLat_rosVec]`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ)
     (T : Tens D D' W), D.TauBimult → ∀ (A A' : Matrix (Fin r) (Fin r) ℤ) (z : (TK R).left)
     (J : ((TK R).left ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L z J → ∀ y y' : D'.X,

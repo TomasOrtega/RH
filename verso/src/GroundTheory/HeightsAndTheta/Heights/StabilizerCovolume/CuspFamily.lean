@@ -75,8 +75,14 @@ def cuspWeight (z : (Σ k, ι k) → ℂ) : ℝ :=
   max 0 (sSup {x | ∃ I : Submodule O abelian₂, I ≠ ⊥ ∧ IsSaturated I ∧ IsIsoSub C.form I ∧
     x = -Real.log (C.Nz z I)})
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrict_Nz (hT : T ⊆ S) : (C.restrict hT).Nz = C.Nz := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrict_cuspWeight (hT : T ⊆ S) : (C.restrict hT).cuspWeight = C.cuspWeight := rfl
 
 def toCuspData (C : CuspDataOn D D.Xo O abelian₂) : CuspData D O abelian₂ where
@@ -120,12 +126,24 @@ section Bridge
 
 variable {D : ComponentData II Ψ K ι Ω E} {O abelian₂ : Type} [CommRing O] [AddCommGroup abelian₂] [Module O abelian₂]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CuspDataOn.toCuspData_ofCuspData (Cd : CuspData D O abelian₂) : (CuspDataOn.ofCuspData Cd).toCuspData = Cd := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CuspDataOn.ofCuspData_toCuspData (C : CuspDataOn D D.Xo O abelian₂) : CuspDataOn.ofCuspData C.toCuspData = C := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CuspDataOn.ofCuspData_Nz (Cd : CuspData D O abelian₂) : (CuspDataOn.ofCuspData Cd).Nz = Cd.Nz := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CuspDataOn.ofCuspData_cuspWeight (Cd : CuspData D O abelian₂) : (CuspDataOn.ofCuspData Cd).cuspWeight = Cd.cuspWeight := rfl
 
 end Bridge
@@ -162,6 +180,9 @@ def Uat (z : (Σ k, ι k) → ℂ) : ℝ := (F.cusp (F.comp z)).cuspWeight z
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single (F.comp z) (fun c _ hc => if_neg (Ne.symm hc)) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl]`. Both sides reduce to the same expression.
+-/
 theorem Uat_eq_sum (z : (Σ k, ι k) → ℂ) :
     F.Uat z = ∑ c, if F.comp z = c then (F.cusp c).cuspWeight z else 0 := by
   rw [Finset.sum_eq_single (F.comp z) (fun c _ hc => if_neg (Ne.symm hc)) (fun h => absurd (Finset.mem_univ _) h),
@@ -204,10 +225,19 @@ def CuspFamily.const (Cd : CuspData D O abelian₂) (hXo : D.Xo.Nonempty) : Cusp
 
 variable (Cd : CuspData D O abelian₂) (hXo : D.Xo.Nonempty) (H : HodgeData D)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CuspFamily.const_Uat : (CuspFamily.const Cd hXo).Uat = Cd.cuspWeight := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CuspFamily.const_meanU : (CuspFamily.const Cd hXo).meanU H = LowerBoundFree.meanU H Cd := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CuspFamily.const_cuspCorr : (CuspFamily.const Cd hXo).cuspCorr H = LowerBoundFree.cuspCorr H Cd := rfl
 
 end Const
@@ -262,13 +292,22 @@ def ComponentFamilySetting.componentFamilySetting_ofSetting (X : ComponentSettin
   Lval := X.Lval
 
 omit [DecidableEq Ψ] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem CuspMean.iff_fam (Cu : ℝ) (X : ComponentSetting D O Lt) (hXo : D.Xo.Nonempty) :
     CuspMean Cu X ↔ CuspMeanFam Cu (ComponentFamilySetting.componentFamilySetting_ofSetting X hXo) := Iff.rfl
 
 omit [DecidableEq Ψ] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem StokesLimit.hyp_iff_fam (X : ComponentSetting D O Lt) (hXo : D.Xo.Nonempty) (B : ℕ) (a : ℝ) :
     StokesLimit.Hyp X B a ↔ StokesLimitFam.Hyp (ComponentFamilySetting.componentFamilySetting_ofSetting X hXo) B a := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `h II Ψ K ι Ω E D (ComponentFamilySetting.componentFamilySetting_ofSetting X hXo) B a hII hB hlim hyp`.
+-/
 theorem StokesLimit.of_fam (h : StokesLimitFam.Statement) (X : ComponentSetting D O Lt) (hXo : D.Xo.Nonempty) (B : ℕ)
     (a : ℝ) (hII : IsIntersectionSystem II) (hB : 4 * D.f + 2 ≤ B) (hlim : ArLimExists X.H X.S B)
     (hyp : StokesLimit.Hyp X B a) :
@@ -284,12 +323,18 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree.Line
 variable (II : IntersectionSystem)
   (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2])
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 1, mem_mcPts_line.2 ⟨0, one_ne_zero⟩, Set.notMem_empty _⟩`.
+-/
 theorem lineData_Xo_nonempty : (lineData II hII).Xo.Nonempty :=
   ⟨fun _ => 1, mem_mcPts_line.2 ⟨0, one_ne_zero⟩, Set.notMem_empty _⟩
 
 def planeFamily : CuspFamily (lineData II hII) :=
   CuspFamily.const (planeCusp II hII) (lineData_Xo_nonempty II hII)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨planeLine, planeLine_ne_bot, planeLine_saturated, planeLine_isIso, planeCusp_Nz_pos II hII z⟩`.
+-/
 theorem planeFamily_isotropic (z : (Σ _ : Unit, Fin 2) → ℂ) :
     ∃ I : Submodule ((planeFamily II hII).O ((planeFamily II hII).comp z))
         ((planeFamily II hII).abelian₂ ((planeFamily II hII).comp z)),

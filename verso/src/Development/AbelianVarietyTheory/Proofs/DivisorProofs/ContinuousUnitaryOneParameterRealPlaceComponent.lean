@@ -8,6 +8,9 @@ namespace GlobalTheory.ContMapReal
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `show Continuous (fun a : AF F => a.1 w)`. Conclude with `(continuous_apply w).comp continuous_fst`.
+-/
 theorem continuous_evInf (w : InfinitePlace F) : Continuous (evInf F w) := by
   show Continuous (fun a : AF F => a.1 w)
   exact (continuous_apply w).comp continuous_fst
@@ -15,9 +18,15 @@ theorem continuous_evInf (w : InfinitePlace F) : Continuous (evInf F w) := by
 def phiW (w : InfinitePlace F) : AF F →+* ℂ :=
   (InfinitePlace.Completion.extensionEmbedding w).comp (evInf F w).toRingHom
 
+/- English proof (translation)
+The claim follows from `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_evInf w)`.
+-/
 theorem continuous_phiW (w : InfinitePlace F) : Continuous (phiW (F := F) w) :=
   (InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_evInf w)
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul]`. Use `congr 1`. Simplify using `[piInf, compInf, infEmb, phiW, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem piInf_smul {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) (x : AE F E) :
     piInf τ (a • x) = phiW w a * piInf τ x := by
   rw [Algebra.smul_def, map_mul]
@@ -25,6 +34,9 @@ theorem piInf_smul {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) (x : AE F
   simp [piInf, compInf, infEmb, phiW, Algebra.TensorProduct.algebraMap_apply]
   rfl
 
+/- English proof (translation)
+Use `letI : Module (AF F) ℂ := Module.compHom ℂ (phiW (F := F) w)`. Use `haveI : ContinuousSMul (AF F) ℂ := ⟨by show Continuous (fun p : AF F × ℂ => phiW w p.1 * p.2)`. Conclude with `((continuous_phiW w).comp continuous_fst).mul continuous_snd⟩`. Set `L : AE F E →ₗ[AF F] ℂ` to `{ toFun := piInf τ map_add' := map_add _ map_smul' := fun a x => by rw [piInf_smul]; rfl }`. Conclude with `IsModuleTopology.continuous_of_linearMap L`.
+-/
 theorem continuous_piInf {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (piInf (E := E) τ) := by
   letI : Module (AF F) ℂ := Module.compHom ℂ (phiW (F := F) w)
   haveI : ContinuousSMul (AF F) ℂ := ⟨by
@@ -36,6 +48,9 @@ theorem continuous_piInf {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (
       map_smul' := fun a x => by rw [piInf_smul]; rfl }
   exact IsModuleTopology.continuous_of_linearMap L
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun t : ℝ => ((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)))` using `Units.continuous_val.comp (continuous_subtype_val.comp (hγ.comp continuous_ofAdd))`. Conclude with `h1.matrix_map (continuous_piInf τ)`.
+-/
 theorem contmap {σ : E →ₐ[F] E} {β : Type} [Fintype β] [DecidableEq β] {J : Matrix β β (AE F E)}
     (γ : Multiplicative ℝ →* UG (cA σ) J) (hγ : Continuous γ) (w : InfinitePlace F) (τ : EmbOver E w) :
     Continuous (fun t : ℝ => ((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)).map (piInf τ)) := by

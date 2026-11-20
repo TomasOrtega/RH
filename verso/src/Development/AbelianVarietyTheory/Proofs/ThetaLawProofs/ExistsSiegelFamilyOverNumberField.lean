@@ -22,6 +22,13 @@ open scoped CategoryTheory.Obj TensorProduct in
 attribute [local instance] Over.cartesianMonoidalCategory in
 open NumberField Polynomial in
 
+/- English proof (translation)
+Take `⟨hex, hprin, -⟩` from `_root_.GlobalTheory.SiegelRingChange.siegPre_pull_ringChange h k o B ζ (j ζ) j F.X (pullback F.s (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j)) F.s (pullback.snd F.s (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j)) (pullback.fst F.s (_root_.Reciproci …`. Use `rfl pullback.condition`. Take `⟨U, hU⟩` from `hex F.univ`. Establish `hsmooth : SmoothOfRelativeDimension (h * (h + 1) / 2) (pullback.snd F.s (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j))` using `by haveI := smoothOfRelativeDimension_isStableUnderBaseChange (h * (h + 1) / 2)`. Conclude with `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension (h * (h + 1) / 2)) (IsPullback.of_hasPullback F.s (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j)) F.3`.
+
+Use `⟨⟨pullback F.s (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j), pullback.snd F.s (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j), hsmooth, (_root_.GlobalTheory.isQProjOver_baseChange_and_finite_restrict o B j F.X F.s).1 F.4, U, hprin F.univ U hU F.6, ? …` and prove the remaining obligations. Introduce `S s' c hS hdense hc`. Use `_root_.GlobalTheory.SiegelFamilyBaseChange.rep_baseChange F j rfl U hU s' c hS (hdense.mono ?_) hc` and prove the remaining obligations. Introduce `x hx`. Express the relevant statement in the definitionally equal form `Ideal.comap j (s' x).asIdeal = ⊥`.
+
+Rewrite using `[show (s' x).asIdeal = ⊥ from hx]`. Conclude with `Ideal.comap_bot_of_injective j hinj`. Introduce `R _ _ x y s' c hxy hx hy`. Conclude with `_root_.GlobalTheory.SiegelFamilyBaseChange.inj_baseChange F j rfl U hU x y s' c hxy hx hy`.
+-/
 theorem _root_.GlobalTheory.SiegelFamilyNumberField.nonempty_baseChange {h k : ℕ} {o B : Type} [CommRing o] [CommRing B] {ζ : o}
     (F : _root_.GlobalTheory.ZM.SFam h k ζ)
     (j : o →+* B) (hinj : Function.Injective j) : Nonempty (_root_.GlobalTheory.ZM.SFam h k (j ζ)) := by
@@ -49,6 +56,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct in
 attribute [local instance] Over.cartesianMonoidalCategory in
 open NumberField Polynomial in
+/- English proof (translation)
+Establish `hζO : IsPrimitiveRoot ζ k` using `hζ.of_map_of_injective (IsFractionRing.injective (𝓞 K) K)`. Establish `hunit : IsUnit (β (algebraMap (𝓞 K) (Localization.Away (k : 𝓞 K)) (k : 𝓞 K)))` using `(IsLocalization.Away.algebraMap_isUnit (k : 𝓞 K)).map β`. Establish `hkL : ((k : ℕ) : L) ≠ 0`. Simplify using `using hunit.ne_zero`. Use `haveI : NeZero ((k : ℕ) : L) := ⟨hkL⟩`.
+
+Use `set g : 𝓞 K →+* L := β.comp (algebraMap (𝓞 K) (Localization.Away (k : 𝓞 K)))`. Establish `hroot : IsRoot (cyclotomic k (𝓞 K)) ζ` using `hζO.isRoot_cyclotomic hk`. Establish `: IsRoot (cyclotomic k L) (g ζ)`. Rewrite using `[← map_cyclotomic k g, IsRoot, Polynomial.eval_map, Polynomial.eval₂_hom, hroot.eq_zero, map_zero]`. Conclude with `(isRoot_cyclotomic_iff).mp this`.
+-/
 private theorem isPrimitiveRoot_map_localization_away (k : ℕ) (hk : 0 < k) (K : Type) [Field K]
     [NumberField K] (ζ : 𝓞 K) (hζ : IsPrimitiveRoot (algebraMap (𝓞 K) K ζ) k)
     (L : Type) [Field L] (β : Localization.Away (k : 𝓞 K) →+* L) :
@@ -71,6 +83,23 @@ open scoped CategoryTheory.Obj TensorProduct in
 attribute [local instance] Over.cartesianMonoidalCategory in
 open NumberField Polynomial in
 
+/- English proof (translation)
+Introduce `hL hL2 hT h hh`. Take `⟨j₀, hj₀⟩` from `_root_.GlobalTheory.ZM.SiegelArithFamily.nonempty_sFam hL hL2 _root_.GlobalTheory.Moduli.cube_of_isLB hT h 3 hh Nat.prime_three ⟨1, rfl⟩`. Establish `hkpos : 0 < (3 ^ max j₀ 1) ^ 2` using `by positivity`. Use `haveI : NeZero ((3 ^ max j₀ 1) ^ 2) := ⟨hkpos.ne'⟩`. Use `haveI := _root_.GlobalTheory.ZM.CycBase.cyc (k := (3 ^ max j₀ 1) ^ 2)`.
+
+Use `haveI : NumberField ↥(_root_.GlobalTheory.ZM.CycBase.CF ((3 ^ max j₀ 1) ^ 2)) := IsCyclotomicExtension.numberField {(3 ^ max j₀ 1) ^ 2} ℚ _`. Establish `hprim : IsPrimitiveRoot (_root_.GlobalTheory.ZM.CycBase.zF ((3 ^ max j₀ 1) ^ 2)) ((3 ^ max j₀ 1) ^ 2)` using `_root_.GlobalTheory.ZM.CycBase.zF_prim hkpos.ne'`. Use `set k := (3 ^ max j₀ 1) ^ 2 with hk`. Use `set K := ↥(_root_.GlobalTheory.ZM.CycBase.CF k) with hK`. Set `ζO : 𝓞 K` to `⟨_root_.GlobalTheory.ZM.CycBase.zF k, hprim.isIntegral hkpos⟩`.
+
+Establish `hζO : algebraMap (𝓞 K) K ζO = _root_.GlobalTheory.ZM.CycBase.zF k` using `rfl`. Establish `hprimO : IsPrimitiveRoot ζO k` using `(hζO ▸ hprim).of_map_of_injective (IsFractionRing.injective (𝓞 K) K)`. Take `⟨em, hem, -⟩` from `_root_.GlobalTheory.ZM.exists_arBase_away (_root_.GlobalTheory.ZM.CycBase.CF k).val.toRingHom (n := k) hkpos.ne'`. Set `b : _root_.GlobalTheory.ZM.TBase (Localization.Away (k : 𝓞 K)) k` to `⟨((hprimO.isUnit hkpos.ne').map (algebraMap (𝓞 K) (Localization.Away (k : 𝓞 K)))).unit, by simpa using IsLocalization.Away.algebraMap_isUnit (k : 𝓞 K), fun L _ β => isPrimitiveRoot_map_localization_away k hkpos K ζO (hζO ▸ hprim) L β⟩`. Establish `F0` using `hj₀ (max j₀ 1) (le_max_left _ _) (Localization.Away (k : 𝓞 K)) b em hem`.
+
+Establish `hunitK : IsUnit (algebraMap (𝓞 K) K (k : 𝓞 K))`. Rewrite using `[map_natCast]`. Conclude with `isUnit_iff_ne_zero.mpr (Nat.cast_ne_zero.mpr hkpos.ne')`. Set `emb : Localization.Away (k : 𝓞 K) →+* K` to `IsLocalization.Away.lift (k : 𝓞 K) hunitK`. Establish `hinjO : Function.Injective (algebraMap (𝓞 K) (Localization.Away (k : 𝓞 K)))` using `IsLocalization.injective (Localization.Away (k : 𝓞 K)) (powers_le_nonZeroDivisors_of_noZeroDivisors (Nat.cast_ne_zero.mpr hkpos.ne'))`.
+
+Establish `hemb : Function.Injective emb`. Use `(IsLocalization.lift_injective_iff _).mpr fun x y => ?_` and prove the remaining obligations. Rewrite using `[hinjO.eq_iff, (IsFractionRing.injective (𝓞 K) K).eq_iff]`. Take `⟨F1⟩` from `_root_.GlobalTheory.SiegelFamilyNumberField.nonempty_baseChange F0.some emb hemb`. Use `⟨k, K, inferInstance, inferInstance, emb ↑b.ζ, (starRingEnd ℂ).comp (_root_.GlobalTheory.ZM.CycBase.CF k).val.toRingHom, ?_, ?_, ?_, ⟨F1⟩⟩` and prove the remaining obligations.
+
+Establish `h3 : 3 ≤ 3 ^ max j₀ 1` using `Nat.le_self_pow (by omega) 3`. Establish `h4 : 3 ^ max j₀ 1 ≤ (3 ^ max j₀ 1) ^ 2` using `Nat.le_self_pow (by norm_num) _`. Use linear arithmetic over natural numbers and integers. Conclude with `(Odd.pow ⟨1, rfl⟩).pow`. Establish `hb : emb ↑b.ζ = _root_.GlobalTheory.ZM.CycBase.zF k`.
+
+Express the relevant statement in the definitionally equal form `emb (algebraMap (𝓞 K) (Localization.Away (k : 𝓞 K)) ζO) = _`. Conclude with `(IsLocalization.lift_eq _ _).trans hζO`. Rewrite using `[RingHom.comp_apply, hb]`. Express the relevant statement in the definitionally equal form `(starRingEnd ℂ) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta k) = _`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta`.
+
+Rewrite using `[← Complex.exp_conj]`. Use `congr 1`. Simplify using `[map_div₀, Complex.conj_ofReal, map_ofNat]`.
+-/
 theorem _root_.GlobalTheory.SiegelFamilyNumberField.exists_sFam_numberField : _root_.ReciprocityTheory.ChartRestriction.G.Out.Laws → _root_.ReciprocityTheory.ChartRestriction.G.Out.Laws2 → _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ThetaUnifAV → ∀ h : ℕ, 1 ≤ h → ∃ (k : ℕ) (K : Type) (_ : Field K) (_ : NumberField K) (ζ : K) (σ : K →+* ℂ), 3 ≤ k ∧ Odd k ∧ σ ζ = Complex.exp (-(2 * Real.pi * Complex.I) / k) ∧ Nonempty (_root_.GlobalTheory.ZM.SFam h k ζ) := by
   intro hL hL2 hT h hh
   obtain ⟨j₀, hj₀⟩ := _root_.GlobalTheory.ZM.SiegelArithFamily.nonempty_sFam hL hL2

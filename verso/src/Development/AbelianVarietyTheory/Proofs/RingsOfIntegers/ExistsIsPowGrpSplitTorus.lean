@@ -23,6 +23,9 @@ noncomputable def torusMap (S : Scheme.{0}) (φ : X →+ X') : splitTorus S X' �
   (splitTorusPointsEquiv S X (splitTorus S X')).symm
     ((splitTorusPointsEquiv S X' (splitTorus S X') (𝟙 _)).comp (AddMonoidHom.toMultiplicative φ))
 
+/- English proof (translation)
+Rewrite using `[← splitTorusPointsEquiv_val, torusMap, MulEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `(splitTorusPointsEquiv S X' (splitTorus S X') (𝟙 _) (Multiplicative.ofAdd (φ χ))).val = _`. Rewrite using `[splitTorusPointsEquiv_val]`. Simplify using the standard rewrite rules.
+-/
 theorem torusMap_char (φ : X →+ X') (χ : X) :
     (torusMap S φ).left.appTop.hom (charUnit S X χ).val = (charUnit S X' (φ χ)).val := by
   rw [← splitTorusPointsEquiv_val, torusMap, MulEquiv.apply_symm_apply]
@@ -30,6 +33,9 @@ theorem torusMap_char (φ : X →+ X') (χ : X) :
   rw [splitTorusPointsEquiv_val]
   simp
 
+/- English proof (translation)
+Use `MonoidHom.ext fun χ => Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(splitTorusPointsEquiv S X Z (t ≫ torusMap S φ) (Multiplicative.ofAdd χ.toAdd)).val = (splitTorusPointsEquiv S X' Z t (Multiplicative.ofAdd (φ χ.toAdd))).val`. Rewrite using `[splitTorusPointsEquiv_val, splitTorusPointsEquiv_val, ← torusMap_char, Over.comp_left, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem points_comp_torusMap (φ : X →+ X') {Z : Over S} (t : Z ⟶ splitTorus S X') :
     splitTorusPointsEquiv S X Z (t ≫ torusMap S φ) =
       (splitTorusPointsEquiv S X' Z t).comp (AddMonoidHom.toMultiplicative φ) := by
@@ -40,12 +46,20 @@ theorem points_comp_torusMap (φ : X →+ X') {Z : Over S} (t : Z ⟶ splitTorus
     Scheme.Hom.comp_appTop]
   rfl
 
+/- English proof (translation)
+Apply `(splitTorusPointsEquiv S X Z).injective` to reduce the goal to its premises. Rewrite using `[map_mul, points_comp_torusMap, points_comp_torusMap, points_comp_torusMap, map_mul, MonoidHom.mul_comp]`.
+-/
 theorem mul_comp_torusMap (φ : X →+ X') {Z : Over S} (a b : Z ⟶ splitTorus S X') :
     (a * b) ≫ torusMap S φ = (a ≫ torusMap S φ) * (b ≫ torusMap S φ) := by
   apply (splitTorusPointsEquiv S X Z).injective
   rw [map_mul, points_comp_torusMap, points_comp_torusMap, points_comp_torusMap, map_mul,
     MonoidHom.mul_comp]
 
+/- English proof (translation)
+Establish `h : (1 : 𝟙_ (Over S) ⟶ splitTorus S X') ≫ torusMap S φ = 1`. Apply `(splitTorusPointsEquiv S X _).injective` to reduce the goal to its premises. Rewrite using `[points_comp_torusMap, map_one, map_one, MonoidHom.one_comp]`. Simplify `h` using `[Hom.one_def]`. Use `mul_hom := by`.
+
+Establish `h` using `mul_comp_torusMap (S := S) φ (fst _ _) (snd _ _)`. Rewrite `h` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[h]`. Use `congr 1`.
+-/
 theorem isMonHom_torusMap (φ : X →+ X') : IsMonHom (torusMap S φ) where
   one_hom := by
     have h : (1 : 𝟙_ (Over S) ⟶ splitTorus S X') ≫ torusMap S φ = 1 := by
@@ -61,13 +75,24 @@ theorem isMonHom_torusMap (φ : X →+ X') : IsMonHom (torusMap S φ) where
 def incl {j : ℕ} (xe : X' ≃+ (Fin j → X)) (i : Fin j) : X →+ X' :=
   xe.symm.toAddMonoidHom.comp (AddMonoidHom.single (fun _ => X) i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_apply {j : ℕ} (xe : X' ≃+ (Fin j → X)) (i : Fin j) (χ : X) :
     incl xe i χ = xe.symm (Pi.single i χ) := rfl
 
+/- English proof (translation)
+Simplify using `only [incl_apply]`. Rewrite using `[← map_sum, Finset.univ_sum_single, AddEquiv.symm_apply_apply]`.
+-/
 theorem sum_incl {j : ℕ} (xe : X' ≃+ (Fin j → X)) (x : X') : ∑ i, incl xe i (xe x i) = x := by
   simp only [incl_apply]
   rw [← map_sum, Finset.univ_sum_single, AddEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `e : x = ∏ i, Multiplicative.ofAdd (incl xe i (xe x.toAdd i))`. Rewrite using `[← ofAdd_sum, sum_incl]`. Both sides reduce to the same expression. Rewrite using `[e, map_prod, map_prod]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => DFunLike.congr_fun (h i) (Multiplicative.ofAdd (xe x.toAdd i))`.
+-/
 theorem hom_ext_incl {M : Type} [CommGroup M] {j : ℕ} (xe : X' ≃+ (Fin j → X))
     {u v : Multiplicative X' →* M}
     (h : ∀ i, u.comp (AddMonoidHom.toMultiplicative (incl xe i)) =
@@ -79,6 +104,11 @@ theorem hom_ext_incl {M : Type} [CommGroup M] {j : ℕ} (xe : X' ≃+ (Fin j →
   exact Finset.prod_congr rfl fun i _ =>
     DFunLike.congr_fun (h i) (Multiplicative.ofAdd (xe x.toAdd i))
 
+/- English proof (translation)
+Use `⟨∏ i, (w i).comp (AddMonoidHom.toMultiplicative ((Pi.evalAddMonoidHom (fun _ => X) i).comp xe.toAddMonoidHom)), fun i => ?_⟩` and prove the remaining obligations. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, MonoidHom.finset_prod_apply, Finset.prod_eq_single i]`. Simplify using `[incl_apply]`. Introduce `k _ hk`.
+
+Simplify using `[incl_apply, Pi.single_eq_of_ne hk]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_hom_incl {M : Type} [CommGroup M] {j : ℕ} (xe : X' ≃+ (Fin j → X))
     (w : Fin j → (Multiplicative X →* M)) :
     ∃ u : Multiplicative X' →* M,
@@ -114,6 +144,11 @@ noncomputable def isPowGrp (S : Scheme.{0}) {j : ℕ} (xe : X' ≃+ (Fin j → X
 
 end SplitTorusPow
 
+/- English proof (translation)
+Introduce `S X X' _ _ j xe`. Use `⟨SplitTorusPow.isPowGrp S xe, fun i χ => ?_⟩` and prove the remaining obligations. Use `ext1`. Rewrite using `[← SplitTorusPow.incl_apply, ← SplitTorusPow.torusMap_char]`. Express the relevant statement in the definitionally equal form `((splitTorus S X').left.presheaf.map (𝟙 _)).hom ((SplitTorusPow.torusMap S (SplitTorusPow.incl xe i)).left.appTop.hom (charUnit S X χ).val) = _`.
+
+Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 theorem exists_isPowGrp_splitTorus : ∀ (S : Scheme.{0}) (X X' : Type) [AddCommGroup X] [AddCommGroup X'] (j : ℕ) (xe : X' ≃+ (Fin j → X)), ∃ p : IsPowGrp (splitTorus S X') (splitTorus S X) j, ∀ (i : Fin j) (χ : X), res (fun x _ => show (p.pr i).left.base x ∈ (⊤ : TopologicalSpace.Opens _) from trivial) (pullU (p.pr i).left ⊤ (charUnit S X χ)) = charUnit S X' (xe.symm (Pi.single i χ)) := by
   intro S X X' _ _ j xe
   refine ⟨SplitTorusPow.isPowGrp S xe, fun i χ => ?_⟩

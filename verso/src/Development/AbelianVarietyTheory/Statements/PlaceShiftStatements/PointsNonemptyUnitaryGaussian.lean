@@ -63,8 +63,14 @@ def FixP.one {G : HTGroup p} (v : InfinitePlace G.F) (P : Form G) (K' : Subgroup
     FixP v P K' a :=
   ⟨1, fixL_one G v P.β _, by simpa using K'.one_mem⟩
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 example {G : HTGroup p} (P : Form G) (h : G.GAf) : h⁻¹ * P.toAf 1 * h = 1 := by simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Stab.one G v P.β _ _ _ Kf K' a⟩`.
+-/
 example {G : HTGroup p} (v : InfinitePlace G.F) (P : Form G) (Kf : Subgroup G.GAf) (K' : Subgroup (Gr G 1))
     (a : Dat G v P.β) : Nonempty (Form.Stab v P Kf K' a) :=
   ⟨Stab.one G v P.β _ _ _ Kf K' a⟩

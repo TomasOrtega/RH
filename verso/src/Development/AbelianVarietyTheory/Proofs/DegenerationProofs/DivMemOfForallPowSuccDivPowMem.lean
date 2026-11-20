@@ -4,6 +4,19 @@ open Module
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Introduce `Ω _ O _ _ hO f f' hf hf' h`. Assume the negation of the conclusion as `hn`. Establish `hg : f / f' ∈ O`. Break down `hO (f' / f) with h1 | h1` into its components or cases. Conclude with `absurd h1 hn`.
+
+Simplify using `using h1`. Use `set g : O := ⟨f / f', hg⟩ with hgdef`. Establish `hI : Ideal.span {g} ≠ ⊤`. Introduce `htop`. Take `⟨u, hu⟩` from `(Ideal.span_singleton_eq_top.mp htop).exists_right_inv`.
+
+Establish `hu' : f / f' * (u : Ω) = 1` using `congrArg Subtype.val hu`. Establish `: (u : Ω) = f' / f`. Clear denominators, using `at hu' ⊢` for the nonvanishing conditions. Take the linear combination `hu'`. Conclude with `hn (this ▸ u.2)`.
+
+Establish `hK` using `Ideal.iInf_pow_eq_bot_of_isDomain _ hI`. Establish `hmem : (⟨f' ^ (1 + 1) / f ^ 1, h 1 le_rfl⟩ : O) ∈ ⨅ n : ℕ, Ideal.span {g} ^ n`. Rewrite using `[Ideal.mem_iInf]`. Introduce `n`. Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`.
+
+Use `⟨⟨f' ^ (n + 1 + 1) / f ^ (n + 1), h (n + 1) (by omega)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [hgdef, Subring.coe_mul, SubmonoidClass.coe_pow, div_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `hmem` using `[hK, Ideal.mem_bot]`.
+
+Establish `h0 : f' ^ (1 + 1) / f ^ 1 = 0` using `congrArg Subtype.val hmem`. Conclude with `div_ne_zero (pow_ne_zero _ hf') (pow_ne_zero _ hf) h0`.
+-/
 theorem div_mem_of_forall_pow_succ_div_pow_mem :
     ∀ (Ω : Type) [Field Ω] (O : Subring Ω) [ValuationRing O] [IsNoetherianRing O],
       (∀ x : Ω, x ∈ O ∨ x⁻¹ ∈ O) → ∀ f f' : Ω, f ≠ 0 → f' ≠ 0 →

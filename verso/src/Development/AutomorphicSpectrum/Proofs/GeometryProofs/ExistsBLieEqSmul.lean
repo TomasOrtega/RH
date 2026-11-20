@@ -37,6 +37,31 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero
   [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C]
   {Λ : Type} [CommRing Λ] [StarRing Λ] (P : Point p v O Λ)
 
+/- English proof (translation)
+Use `haveI := P.isLocalRing`. Use `haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)`. Take `⟨e, h₁, h₂⟩` from `exists_param P.G (smoothDim_model P)`. Take `⟨e', h₃, h₄⟩` from `exists_lieEquiv P`. Set `F` to `e.trans e'`.
+
+Establish `hFadd : ∀ c d, F (c + d) = lieAdd (F c) (F d)` using `fun c d => Subtype.ext (h₃ _ _ _ (h₁ c d))`. Establish `hFsmul : ∀ (a : O) c, F (a • c) = AvDefs.lieScale P.Gt a (F c)` using `fun a c => Subtype.ext (h₄ a _ _ (h₂ a c))`. Set `B : (Fin P.A.g → O) →ₗ[O] P.V` to `{ toFun := fun c => P.bLie (F c) map_add' := fun c d => by rw [hFadd, P.bLie_add] map_smul' := fun a c => by rw [hFsmul, P.bLie_scale]; rfl }`. Establish `hB : ∀ c, B c = P.bLie (F c)` using `fun _ => rfl`. Set `f : Fin P.A.g → omega P.Gt` to `fun j => ⟨fun x => F.symm x j, fun x y h => by`.
+
+Establish `: (⟨x.1 * y.1, h⟩ : LieG P.Gt) = F (F.symm x + F.symm y)`. Rewrite using `[hFadd, F.apply_symm_apply, F.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[this]; simp only [F.symm_apply_apply, Pi.add_apply], fun a x h => by`. Establish `: (⟨ptMap (dualScale a) ≫ x.1, h⟩ : LieG P.Gt) = F (a • F.symm x)`.
+
+Rewrite using `[hFsmul, F.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[this]`. Simplify using `only [F.symm_apply_apply, Pi.smul_apply, smul_eq_mul]⟩`. Establish `hf : ∀ j c, (f j).1 (F c) = c j` using `fun j c => by`.
+
+Express the relevant statement in the definitionally equal form `F.symm (F c) j = c j`. Rewrite using `[F.symm_apply_apply]`. Use `choose y hy using fun j => hcok (f j)`. Establish `hyF : ∀ j c, P.pairV (B c) (P.inclT (y j)) = algebraMap O C (q * c j)` using `fun j c => by`. Rewrite using `[hB, GlobalTheory.FlatModel.BoundProof.pairV_bLie_inclT, hy j, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, hf]`.
+
+Establish `hBinj : ∀ c c', B c = B c' → c = c'` using `fun c c' hcc => funext fun j => mul_left_cancel₀ hq0 (P.integers.hom_inj (by rw [← hyF, ← hyF, hcc]))`. Establish `hinj : ∀ x x' : LieG P.Gt, P.bLie x = P.bLie x' → x = x'` using `fun x x' hxx => by`. Rewrite `hxx`, the goal using `[← F.apply_symm_apply x, ← F.apply_symm_apply x']`. Conclude with `congrArg F (hBinj _ _ hxx)`. Set `s : Fin P.A.g → P.V` to `fun i => B fun j => if i = j then 1 else 0`.
+
+Establish `hBs : ∀ c, B c = ∑ i, c i • s i` using `fun c => B.pi_apply_eq_sum_univ c`. Establish `hspan' : u ∈ Submodule.span C (Set.range s)`. Use `Submodule.span_le.2 ?_ hspan` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← F.apply_symm_apply x, ← hB, hBs]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul C]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun C).1 hspan'`. Establish `hint : ∀ j, (algebraMap O C q * a j) ∈ (algebraMap O C).range` using `fun j => by`.
+
+Establish `h` using `GlobalTheory.FlatModel.BoundProof.pairV_inclT_mem P hu (y j)`. Rewrite `h` using `[← ha]`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single j]`.
+
+Rewrite using `[hyF]`. Simplify using `[mul_comm]`. Introduce `i _ hij`. Rewrite using `[hyF]`. Simplify using `[hij, Ne.symm hij]`.
+
+Simplify using the standard rewrite rules. Use `choose b hb using hint`. Establish `hx : P.bLie (F b) = algebraMap O C q • u`. Rewrite using `[← hB, hBs, ← ha, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← algebraMap_smul C (b i), hb, smul_smul]`. Use `⟨F b, fun c => hinj _ _ ?_, hx⟩` and prove the remaining obligations. Rewrite using `[P.bLie_act, P.bLie_scale, hx, map_smul, mem_eigenSub.1 heig c, RingHom.comp_apply, ← algebraMap_smul C (χ c) (algebraMap O C q • u), smul_smul, smul_smul, mul_comm]`.
+-/
 theorem exists_bLie_eq_smul (q : O) (hq0 : q ≠ 0) (hcok : ∀ f : omega P.Gt, q • f ∈ LinearMap.range P.al)
     (χ : Λ →+* O) {u : P.V} (hu : u ∈ P.latT) (hspan : u ∈ Submodule.span C (Set.range P.bLie))
     (heig : u ∈ P.eigV χ) :
@@ -112,6 +137,21 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero
   [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C]
   {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)] (P : Point p v O (𝓞 E))
 
+/- English proof (translation)
+Set `eq` to `Fintype.equivFin (Module.Free.ChooseBasisIndex ℤ (𝓞 E))`. Establish `hI : ∀ j, IsIntegral ℤ ((δ : E) * ReciprocityTheory.ChartRestriction.G.TB.trDual (integralBasis E) j)` using `fun j => by`. Establish `h` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.dual_int δ hδ (eq j)`. Simplify `h` using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.ERam.omDF, eq]`. Set `ω` to `RingOfIntegers.basis E`.
+
+Set `r : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → 𝓞 E` to `fun j => ⟨_, hI j⟩`. Set `t : C ⊗[ℤ] 𝓞 E` to `∑ j, algebraMap O C (embO P.integers i (r j)) ⊗ₜ ω j`. Establish `ht : t = i (δ : E) • idem (isSplitting_embO (E` using `E) P.integers) i := by`. Apply `(isSplitting_embO (E := E) P.integers).1` to reduce the goal to its premises. Rewrite using `[map_smul, splitMap_idem]`.
+
+Use extensionality with `k`. Simplify using `only [t, map_sum, Finset.sum_apply, splitMap_tmul, RingHom.comp_apply, Pi.smul_apply, smul_eq_mul, algebraMap_embO]`. Establish `h` using `_root_.idempotent_evaluation E C _ (integralBasis E) k i`. Establish `h2 : ∑ j, i (ReciprocityTheory.ChartRestriction.G.TB.trDual (integralBasis E) j) * k (integralBasis E j) = ReciprocityTheory.ChartRestriction.G.TB.evAt i (ReciprocityTheory.ChartRestriction.G.TB.idemOf (integralBasis E) k)`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.TB.idemOf, ReciprocityTheory.ChartRestriction.G.TB.evAt, map_sum, Algebra.TensorProduct.productMap_apply_tmul, map_mul]`.
+
+Both sides reduce to the same expression. Establish `h3 : ∑ j, i ((r j : 𝓞 E) : E) * k ((ω j : 𝓞 E) : E) = i (δ : E) * ReciprocityTheory.ChartRestriction.G.TB.evAt i (ReciprocityTheory.ChartRestriction.G.TB.idemOf (integralBasis E) k)`. Rewrite using `[← h2, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e1 : ((r j : 𝓞 E) : E) = (δ : E) * ReciprocityTheory.ChartRestriction.G.TB.trDual (integralBasis E) j` using `rfl`.
+
+Establish `e2 : integralBasis E j = ((ω j : 𝓞 E) : E)` using `integralBasis_apply E j`. Rewrite using `[e1, e2, map_mul, _root_.mul_assoc]`. Use `h3.trans ?_` and prove the remaining obligations. Rewrite using `[h]`. Distinguish the cases in `hik : i = k`.
+
+Substitute `hik` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hik, Ne.symm hik]`. Establish `e2 : i (δ : E) • proj (isSplitting_embO (E` using `E) P.integers) P.actV i y = tensorAction P.actV t y := by`. Rewrite using `[ht, map_smul, proj, LinearMap.smul_apply]`.
+
+Rewrite using `[e2]`. Simplify using `only [t, map_sum, LinearMap.sum_apply, tensorAction_tmul]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (GlobalTheory.FlatModel.BoundProof.actV_mem_latT P _ hy)`.
+-/
 theorem delta_smul_proj_mem {_ : DecidableEq (E →+* C)} (i : E →+* C) {δ : 𝓞 E}
     (hδ : δ ∈ differentIdeal ℤ (𝓞 E)) {y : P.V} (hy : y ∈ P.latT) :
     i (δ : E) • proj (isSplitting_embO (E := E) P.integers) P.actV i y ∈ P.latT := by
@@ -163,6 +203,19 @@ section Lin
 variable {O C U : Type} [CommRing O] [Field C] [Algebra O C] [AddCommGroup U] [Module C U] [Module O U]
   [IsScalarTower O C U] {n : ℕ}
 
+/- English proof (translation)
+Establish `hl : LinearIndependent C g.row` using `LinearIndependent.of_comp (Fintype.linearCombination C b) hb.1`. Establish `hu` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_rows_iff_isUnit.1 hl)`. Use `letI : Invertible g := Matrix.invertibleOfIsUnitDet g hu`. Establish `ht : g.BlockTriangular OrderDual.toDual` using `fun a b hab => hg a b hab`. Establish `hinv : g⁻¹.BlockTriangular OrderDual.toDual` using `Matrix.blockTriangular_inv_of_blockTriangular ht`.
+
+Establish `hgi : g⁻¹ * g = 1` using `Matrix.nonsing_inv_mul g hu`. Establish `hbj : ∀ j, ∑ i, g⁻¹ j i • ∑ k, g i k • b k = b j` using `fun j => by`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul]`.
+
+Establish `e : ∀ k, ∑ i, g⁻¹ j i * g i k = (1 : Matrix (Fin n) (Fin n) C) j k` using `fun k => by`. Rewrite using `[← Matrix.mul_apply, hgi]`. Repeatedly rewrite using `[e]`. Simplify using `[Matrix.one_apply]`. Establish `hI : ∀ j i, g⁻¹ j i ∈ (algebraMap O C).range` using `fun j => (hb.sum_mem_iff (g⁻¹ j)).1 (by rw [hbj j]; exact hmem j)`.
+
+Establish `hd : g⁻¹ i i * g i i = 1`. Establish `h1` using `congrFun (congrFun hgi i) i`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply_eq, Finset.sum_eq_single i]`. Conclude with `h1`. Introduce `k _ hk`.
+
+Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hg k i h, mul_zero]`. Rewrite using `[hinv (OrderDual.toDual_lt_toDual.2 h), zero_mul]`. Simplify using the standard rewrite rules. Establish `h0 : g i i ≠ 0` using `fun h => by rw [h, mul_zero] at hd; exact zero_ne_one hd`.
+
+Conclude with `⟨h0, by rw [← eq_inv_of_mul_eq_one_left hd]; exact hI i i⟩`.
+-/
 theorem inv_diag_mem (La : Submodule O U) (b : Fin n → U) (g : Matrix (Fin n) (Fin n) C)
     (hg : ∀ i j, i < j → g i j = 0) (hb : IsLatBasis C La fun i => ∑ j, g i j • b j) (hmem : ∀ j, b j ∈ La)
     (i : Fin n) : g i i ≠ 0 ∧ (g i i)⁻¹ ∈ (algebraMap O C).range := by
@@ -200,6 +253,25 @@ section Wt
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
+/- English proof (translation)
+Establish `hm1 : ∀ {τ : E →+* ℂ}, τ (H.rt : E) = H.rt0 → Dw.mult τ = Dw.p` using `fun h => if_pos h`. Establish `hm2 : ∀ {τ : E →+* ℂ}, ¬ τ (H.rt : E) = H.rt0 → Dw.mult τ = Dw.q` using `fun h => if_neg h`. Set `φ : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) → Psi H × Fin (Dw.p + Dw.q)` to `fun s => if h : s.1 (H.rt : E) = H.rt0 then (⟨s.1, h⟩, ⟨s.2, by have := lt_of_lt_of_eq s.2.2 (hm1 h); omega⟩) else (⟨conjEmb s.1, conj_mem h⟩, ⟨Dw.p + (Dw.q - 1 - s.2), by have := lt_of_lt_of_eq s.2.2 (hm2 h); omega⟩)`. Establish `hφ : ∀ s, |((exOf Dw u 0 (some s) : ℤ) : ℝ)| = |((u (φ s).1 (φ s).2 : ℤ) : ℝ)|`. Introduce and unpack `⟨τ, i⟩`.
+
+Distinguish the cases in `h : τ (H.rt : E) = H.rt0`. Establish `hi` using `lt_of_lt_of_eq i.2 (hm1 h)`. Establish `e : exOf Dw u 0 (some ⟨τ, i⟩) = (wtOf Dw u 0).1 (τ, i)` using `rfl`. Rewrite using `[e, wtOf_big u 0 ⟨τ, h⟩ i hi]`. Simplify using `[φ, h]`.
+
+Establish `hi` using `lt_of_lt_of_eq i.2 (hm2 h)`. Establish `e : exOf Dw u 0 (some ⟨τ, i⟩) = (wtOf Dw u 0).1 (τ, i)` using `rfl`. Establish `key` using `wtOf_small u 0 ⟨conjEmb τ, conj_mem h⟩ i hi`. Simplify using `only [conjEmb_conjEmb] at key`. Rewrite using `[e, key]`.
+
+Simplify using `[φ, h, abs_neg]`. Establish `hinj : Function.Injective φ`. Introduce and unpack `⟨τ, i⟩ ⟨τ', i'⟩ e`. Apply the tactic sequence `by_cases h : τ (H.rt : E) = H.rt0 <;> by_cases h' : τ' (H.rt : E) = H.rt0`. Simplify using `only [φ, dif_pos h, dif_pos h'] at e`.
+
+Establish `e1 : τ = τ'` using `congrArg (fun x : Psi H × Fin (Dw.p + Dw.q) => x.1.1) e`. Substitute `e1` using the available equality. Establish `e2 : (i : ℕ) = i'` using `congrArg (fun x : Psi H × Fin (Dw.p + Dw.q) => (x.2 : ℕ)) e`. Conclude with `congrArg (Sigma.mk τ) (Fin.ext e2)`. Simplify using `only [φ, dif_pos h, dif_neg h'] at e`.
+
+Establish `e2 : (i : ℕ) = Dw.p + (Dw.q - 1 - i')` using `congrArg (fun x : Psi H × Fin (Dw.p + Dw.q) => (x.2 : ℕ)) e`. Establish `hi` using `lt_of_lt_of_eq i.2 (hm1 h)`. Use linear arithmetic over natural numbers and integers. Simplify using `only [φ, dif_neg h, dif_pos h'] at e`. Establish `e2 : Dw.p + (Dw.q - 1 - i) = (i' : ℕ)` using `congrArg (fun x : Psi H × Fin (Dw.p + Dw.q) => (x.2 : ℕ)) e`.
+
+Establish `hi'` using `lt_of_lt_of_eq i'.2 (hm1 h')`. Use linear arithmetic over natural numbers and integers. Simplify using `only [φ, dif_neg h, dif_neg h'] at e`. Establish `e1 : conjEmb τ = conjEmb τ'` using `congrArg (fun x : Psi H × Fin (Dw.p + Dw.q) => x.1.1) e`. Establish `e3 : τ = τ'` using `by rw [← conjEmb_conjEmb τ, e1, conjEmb_conjEmb]`.
+
+Substitute `e3` using the available equality. Establish `e2 : Dw.p + (Dw.q - 1 - i) = Dw.p + (Dw.q - 1 - i')` using `congrArg (fun x : Psi H × Fin (Dw.p + Dw.q) => (x.2 : ℕ)) e`. Establish `hi` using `lt_of_lt_of_eq i.2 (hm2 h)`. Establish `hi'` using `lt_of_lt_of_eq i'.2 (hm2 h)`. Conclude with `congrArg (Sigma.mk τ) (Fin.ext (by omega))`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_abs_exOf_le (u : GlobalTheory.AllWt.Weight Dw) :
     ∑ s : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), |((exOf Dw u 0 (some s) : ℤ) : ℝ)| ≤ GlobalTheory.CovHt.l1 u := by
   classical
@@ -265,6 +337,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C]
   [Algebra c.F C] [StarRing (𝓞 E)]
 
+/- English proof (translation)
+Establish `h2` using `h κ hκ f.1 f.2`. Rewrite `h2` using `[← (weilChar_surjective_and_map_range_al p C v O (𝓞 E) P).2]`. Take `⟨_, ⟨t, rfl⟩, ht⟩` from `h2`. Conclude with `⟨t, Subtype.ext ht⟩`.
+-/
 theorem cok_of_htChar (P : Point p v O (𝓞 E)) (h : HTChar p v P.Gt) (κ : O)
     (hκ : v (algebraMap O C κ) ^ (p - 1) ≤ v (p : C)) (f : omega P.Gt) : κ • f ∈ LinearMap.range P.al := by
   have h2 := h κ hκ f.1 f.2
@@ -272,6 +347,17 @@ theorem cok_of_htChar (P : Point p v O (𝓞 E)) (h : HTChar p v P.Gt) (κ : O)
   obtain ⟨_, ⟨t, rfl⟩, ht⟩ := h2
   exact ⟨t, Subtype.ext ht⟩
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Establish `hht : HTChar p v P.Gt` using `htChar_of_pointOver E H Dw l Xo c p C v O T io y₀ hy k.toRingHom kO P ψ hP`. Establish `hli` using `(alC_surjective_and_linearIndependent_bLie p C v O (𝓞 E) P hht).2 _ _ (linearIndependent_evLie_of_lieTie E H Dw l Xo c p C v O T io y₀ k kO P ψ z hP hz τ x hx)`. Establish `hsp` using `RecSpan.span_bLie_eq_wRec E H Dw l Xo c p C v O T io y₀ k kO P ψ z hP hz τ x hx`. Establish `heig1 : ∀ j, P.bLie (x j) ∈ P.eigV (embInt c P.integers τ)` using `fun j => bLie_mem_eigV ((hx j).isEig hP (z.eig τ j))`.
+
+Establish `hspan : algebraMap O C d • ∑ j, a j • P.bLie (x j) ∈ Submodule.span C (Set.range P.bLie)` using `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))`. Establish `heig : algebraMap O C d • ∑ j, a j • P.bLie (x j) ∈ P.eigV (embInt c P.integers τ)` using `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (heig1 j))`. Take `⟨x', hx', hb⟩` from `exists_bLie_eq_smul P κ hκ0 (cok_of_htChar P hht κ hκ) (embInt c P.integers τ) (hd _ ha) hspan heig`. Establish `hmem : P.bLie x' ∈ Submodule.span O (Set.range fun j => P.bLie (x j))`. Rewrite using `[hsp]`.
+
+Conclude with `⟨⟨x', hx'⟩, rfl⟩`. Take `⟨cc, hcc⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 hmem`. Establish `hcc' : ∑ j, algebraMap O C (cc j) • P.bLie (x j) = P.bLie x'`. Rewrite using `[← hcc]`. Conclude with `Finset.sum_congr rfl fun j _ => algebraMap_smul C _ _`.
+
+Establish `hrel : ∑ j, (algebraMap O C (cc j) - algebraMap O C κ * algebraMap O C d * a j) • P.bLie (x j) = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[hcc', hb, sub_eq_zero, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, _root_.mul_assoc]`.
+
+Establish `h0` using `Fintype.linearIndependent_iff.1 hli _ hrel j`. Conclude with `⟨cc j, sub_eq_zero.1 h0⟩`.
+-/
 theorem coef_mem {T : CDVR} {io : c.F →+* T.Fr} (y₀ : IntFr Xo c T io) (hy : y₀.IsAlg)
     (k : letI := io.toAlgebra; T.Fr →ₐ[c.F] C) (kO : T.V →+* O) (P : Point p v O (𝓞 E))
     (ψ : P.A.A.left ⟶ Xo.univ.t.G.left) (z : FrPt Xo c C)
@@ -309,6 +395,15 @@ theorem coef_mem {T : CDVR} {io : c.F →+* T.Fr} (y₀ : IntFr Xo c T io) (hy :
   have h0 := Fintype.linearIndependent_iff.1 hli _ hrel j
   exact ⟨cc j, sub_eq_zero.1 h0⟩
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Take `⟨g, a, x, ⟨h1, h2, pm, h3, h4, h5⟩, hg, ha, hx, hb⟩` from `h`. Establish `hmem : ∀ τ j, P.bLie (x τ j) ∈ htLat c P τ` using `fun τ j => wRec_le_htLat P τ ⟨⟨x τ j, (hx τ j).isEig hP (z.eig τ j)⟩, rfl⟩`. Establish `hdiag` using `fun τ i => inv_diag_mem (htLat c P τ) (fun j => P.bLie (x τ j)) (g τ) (hg τ) (hb τ) (hmem τ) i`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at ha`.
+
+Use `⟨fun i => Option.rec (Units.mk0 a ha0) (fun s => Units.mk0 _ (hdiag s.1 s.2).1) i, ⟨h1, fun τ i => ⟨g τ i, rfl, hg τ i, h2 τ i⟩, pm, h3, ?_, h5⟩, ha, fun s => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h4, show spMap (RingHom.id C) = 𝟙 _ from Spec.map_id _]`. Conclude with `Category.comp_id _`. Express the relevant statement in the definitionally equal form `1 ≤ v (g s.1 s.2 s.2)`. Take `⟨r, hr⟩` from `(hdiag s.1 s.2).2`.
+
+Establish `h6` using `P.integers.map_le_one r`. Rewrite `h6` using `[hr, map_inv₀]`. Conclude with `(inv_le_one₀ (pos_iff_ne_zero.2 ((Valuation.ne_zero_iff v).2 (hdiag s.1 s.2).1))).1 h6`. Express the relevant statement in the definitionally equal form `v (algebraMap O C κ) * v (algebraMap O C (d s.1)) * v (g s.1 s.2 s.2) ≤ 1`. Take `⟨r, hr⟩` from `coef_mem y₀ hy k kO P ψ z hP hz s.1 (x s.1) (hx s.1) κ (d s.1) hκ0 hκ (hd s.1) (g s.1 s.2) ((hb s.1).2.le (Submodule.subset_span ⟨s.2, rfl⟩)).1 s.2`.
+
+Establish `h6` using `P.integers.map_le_one r`. Rewrite `h6` using `[hr, map_mul, map_mul]`. Conclude with `h6`.
+-/
 theorem exists_diag {T : CDVR} {io : c.F →+* T.Fr} (y₀ : IntFr Xo c T io) (hy : y₀.IsAlg)
     (k : letI := io.toAlgebra; T.Fr →ₐ[c.F] C) (kO : T.V →+* O) (P : Point p v O (𝓞 E))
     (ψ : P.A.A.left ⟶ Xo.univ.t.G.left) (z : FrPt Xo c C)
@@ -341,6 +436,19 @@ theorem exists_diag {T : CDVR} {io : c.F →+* T.Fr} (y₀ : IntFr Xo c T io) (h
     rw [hr, map_mul, map_mul] at h6
     exact h6
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Establish `hn : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero E)`. Set `ψ : E →+* T.Fr` to `io.comp (embF c τ)`. Establish `hψp : ψ (p : E) = io (p : c.F)` using `by simp [ψ]`. Establish `hpos : 0 < vV T.V (ψ (p : E))`.
+
+Rewrite using `[hψp, ho.2]`. Conclude with `mul_pos (by exact_mod_cast ho.1) (ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.ERam.vLa_pos la p hp.ne_zero hpl)`. Establish `hdisc : (discr E).natAbs = p ^ padicValNat p (discr E).natAbs * ((discr E).natAbs / p ^ (discr E).natAbs.factorization p)`. Rewrite using `[← Nat.factorization_def _ hp]`. Conclude with `(Nat.ordProj_mul_ordCompl_eq_self _ p).symm`.
+
+Take `⟨δ, hδ, h0, hval⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.ERam.exists_delta_val (V := T.V) p _ _ hp (Nat.not_dvd_ordCompl hp hn) hdisc ψ ψ.injective hpos`. Use `⟨δ, hδ, h0, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `exists_log_eq hv k kO hk`. Establish `hδ0 : ψ (δ : E) ≠ 0` using `(map_ne_zero ψ).2 (by exact_mod_cast h0)`. Establish `hp0 : ψ (p : E) ≠ 0` using `(map_ne_zero ψ).2 (Nat.cast_ne_zero.2 hp.ne_zero)`.
+
+Establish `e1` using `hr _ hδ0`. Establish `e2` using `hr _ hp0`. Establish `k1 : k (ψ (δ : E)) = embAt c C τ (δ : E)` using `hkc _`. Establish `k2 : k (ψ (p : E)) = (p : C)` using `by simp`. Rewrite `e1` using `[k1]`.
+
+Rewrite `e2` using `[k2]`. Establish `hval' : (vV T.V (ψ (δ : E)) : ℝ) * (Module.finrank ℚ E : ℝ) = (padicValNat p (discr E).natAbs : ℝ) * (vV T.V (ψ (p : E)) : ℝ)`. Establish `h9` using `congrArg (Int.cast : ℤ → ℝ) hval`. Simplify using `only [Int.cast_mul, Int.cast_natCast] at h9`. Conclude with `h9`.
+
+Rewrite using `[e1, e2]`. Take the linear combination `r * hval'`.
+-/
 theorem exists_diff [IsGalois ℚ E] {T : CDVR} {io : c.F →+* T.Fr} {la : HeightOneSpectrum (𝓞 c.F)} {e : ℕ}
     (ho : OverLa la T.V io e) (hpl : (p : 𝓞 c.F) ∈ la.asIdeal) (hv : v.Integers O) (k : T.Fr →+* C)
     (kO : T.V →+* O) (hk : ∀ a, algebraMap O C (kO a) = k (algebraMap T.V T.Fr a))
@@ -387,6 +495,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C]
   [Algebra c.F C] [StarRing (𝓞 E)]
 
+/- English proof (translation)
+The claim follows from `|Real.log (v (t (some s) : C)) / Real.log (v (p : C))| ≤ exTwo E p := by classical letI := io.toAlgebra have hp : p.Prime := Fact.out have hv1 : v (p : C) < 1 := lt_one_of_not_isUnit P.integers Fact.out have hpC : (p : C) ≠ 0 := Nat.cast_ne_zero.2 hp.ne_zero have hvp0 : 0 < v (p …`.
+-/
 theorem exists_bound [IsGalois ℚ E] {T : CDVR} {io : c.F →+* T.Fr} {la : HeightOneSpectrum (𝓞 c.F)} {e : ℕ}
     (ho : OverLa la T.V io e) (hpl : (p : 𝓞 c.F) ∈ la.asIdeal) (y₀ : IntFr Xo c T io) (hy : y₀.IsAlg)
     (k : letI := io.toAlgebra; T.Fr →ₐ[c.F] C) (kO : T.V →+* O) (P : Point p v O (𝓞 E))
@@ -481,6 +592,9 @@ section Main
 
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨a, b, hab⟩ : IsCoprime (p : 𝓞 K) (q : 𝓞 K)` from `Nat.Coprime.cast ((Nat.coprime_primes hp hq).2 hne)`. Conclude with `la.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))`.
+-/
 theorem prime_unique {K : Type} [Field K] [NumberField K] {la : HeightOneSpectrum (𝓞 K)} {p q : ℕ}
     (hp : p.Prime) (hq : q.Prime) (h1 : (p : 𝓞 K) ∈ la.asIdeal) (h2 : (q : 𝓞 K) ∈ la.asIdeal) : p = q := by
   by_contra hne
@@ -488,6 +602,11 @@ theorem prime_unique {K : Type} [Field K] [NumberField K] {la : HeightOneSpectru
   exact la.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
     (hab ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))
 
+/- English proof (translation)
+Establish `h0 : ∀ i, (0 : ℝ) < v (t i : C)` using `fun i => by`. Conclude with `pos_iff_ne_zero.2 ((Valuation.ne_zero_iff v).2 (t i).ne_zero)` after adjusting the coercions. Rewrite using `[Units.coe_prod, map_prod, NNReal.coe_prod, Real.log_prod]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, NNReal.coe_zpow, Real.log_zpow]`.
+
+Introduce `i _`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, NNReal.coe_zpow]`. Conclude with `(zpow_pos (h0 i) _).ne'`.
+-/
 theorem log_prod_zpow {A C : Type} [Fintype A] [Field C] (v : Valuation C ℝ≥0) (t : A → Cˣ) (e : A → ℤ) :
     Real.log (v ((∏ i, t i ^ e i : Cˣ) : C)) = ∑ i, (e i : ℝ) * Real.log (v (t i : C)) := by
   have h0 : ∀ i, (0 : ℝ) < v (t i : C) := fun i => by
@@ -499,6 +618,27 @@ theorem log_prod_zpow {A C : Type} [Fintype A] [Field C] (v : Valuation C ℝ≥
     rw [Units.val_zpow_eq_zpow_val, map_zpow₀, NNReal.coe_zpow]
     exact (zpow_pos (h0 i) _).ne'
 
+/- English proof (translation)
+Introduce `q la hq hql w hw`. Take `⟨p, hp, _, T, io, e, y₀, k, y, ho, hAlg, hy, rfl⟩` from `hw`. Take `rfl : p = q` from `prime_unique hp.out hq (hy.mem ho) hql`. Use `letI := H.starRing`. Use `letI := io.toAlgebra`.
+
+Establish `hy' : IsHTFrame p (Valued.v : Valuation ℂ_[p] ℝ≥0) 𝓞_ℂ_[p] y₀ k y` using `hy`. Establish `hm` using `hy'.val_vw_map ho`. Take `⟨-, kO, P, ψ, z, hPO, hz, hch⟩` from `hy'`. Take `⟨t, hb, h1, h2⟩` from `exists_bound ho hql y₀ hAlg k kO P ψ z hPO hz hch`. Use `⟨vAtV (PtV.mk (cls := algCls Xo c) (lies := fun _ _ _ _ => True) la ho y₀ hAlg () trivial), ⟨_, rfl⟩, fun u f hf => ?_⟩` and prove the remaining obligations.
+
+Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.allSixLaws.1.secBaseChange`. Establish `hA` using `GlobalTheory.evR_frBor_of_mem_secZ hS Xo c _ hf ℂ_[p] t z y hb`. Establish `hB : evR Xo c f z = k (evI y₀ f)` using `GlobalTheory.FlagTan.evR_frMap hf.1 hz`. Use `show nval T.V e (evI y₀ f) ≤ val_vw la p (Valued.v : Valuation ℂ_[p] ℝ≥0) (evR Xo c f y) + (((vLa la (p : c.F) : ℝ) * exTwo E p * GlobalTheory.CovHt.l1 u : ℝ) : EReal)`. Rewrite using `[hA, hB, val_vw_mul, hm, val_vw_of_ne la p _ (Units.ne_zero _), log_prod_zpow]`.
+
+Establish `hex0 : 0 ≤ exTwo E p`. Establish `h3 : (0 : ℝ) ≤ 1 / ((p : ℝ) - 1)`. Establish `: (2 : ℝ) ≤ p` using `by exact_mod_cast hp.out.two_le`. Conclude with `div_nonneg zero_le_one (by linarith)`. Establish `h4 : (0 : ℝ) ≤ (padicValNat p (discr E).natAbs : ℝ) / (Module.finrank ℚ E : ℝ)` using `div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)`.
+
+Apply the tactic sequence `have h5 : (0 : ℝ) ≤ if p = 2 then 1 else 0 := by split_ifs <;> norm_num`. Simplify using `only [exTwo, GlobalTheory.CovHt.htEx]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set ℓ := Real.log (Valued.v (p : ℂ_[p]) : ℝ≥0)`. Use `set R : ℝ := ∑ s : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), ((exOf Dw u 0 (some s) : ℤ) : ℝ) * (Real.log (Valued.v ((t (some s) : ℂ_[p]ˣ) : ℂ_[p]) : ℝ≥0) / ℓ) with hRdef`.
+
+Establish `hR : (∑ i, ((exOf Dw u 0 i : ℤ) : ℝ) * Real.log (Valued.v ((t i : ℂ_[p]ˣ) : ℂ_[p]) : ℝ≥0)) / ℓ = R`. Rewrite using `[Fintype.sum_option, h1, NNReal.coe_one, Real.log_one, mul_zero, zero_add, Finset.sum_div, hRdef]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`. Establish `hRb : -(exTwo E p * GlobalTheory.CovHt.l1 u) ≤ R`. Use `neg_le_of_abs_le ((Finset.abs_sum_le_sum_abs _ _).trans ?_)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul_of_nonneg_left (h2 s) (abs_nonneg _)`. Use `_ = (∑ s : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), |((exOf Dw u 0 (some s) : ℤ) : ℝ)|) * exTwo E p := (Finset.sum_mul _ _ _).symm`. Use `_ ≤ GlobalTheory.CovHt.l1 u * exTwo E p := mul_le_mul_of_nonneg_right (sum_abs_exOf_le u) hex0`.
+
+Use `_ = exTwo E p * GlobalTheory.CovHt.l1 u := mul_comm _ _`. Establish `hvl : (0 : ℝ) ≤ (vLa la (p : c.F) : ℝ)`. Conclude with `(ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.ERam.vLa_pos la p hp.out.ne_zero hql).le` after adjusting the coercions. Rewrite using `[hR]`. Establish `hc : 0 ≤ (vLa la (p : c.F) : ℝ) * R + (vLa la (p : c.F) : ℝ) * exTwo E p * GlobalTheory.CovHt.l1 u`.
+
+Use `mul_le_mul_of_nonneg_left hRb hvl` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hXb` using `nval_ne_bot (V := T.V) e (evI y₀ f)`. Generalize the expression as in `nval T.V e (evI y₀ f) = X at hXb ⊢`. Break down `eq_or_ne X ⊤ with hT | hT` into its components or cases.
+
+Substitute `hT` using the available equality. Rewrite using `[EReal.coe_add_top, EReal.top_add_coe]`. Use `lift X to ℝ using ⟨hT, hXb⟩`. Rewrite using `[← EReal.coe_add, ← EReal.coe_add, EReal.coe_le_coe_iff]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem htLow_all (E : Type) [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) :
     HTLow Xo c := by

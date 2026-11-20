@@ -8,6 +8,9 @@ namespace Formalism.FourierDecayAlt.P.CutSE
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.P5
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ D s H _ g _`. Unfold `wvG`. Conclude with `PBFV.JF_mul_inv D _ (fun p hp x => by rw [BigCellZetaMinors.dmin_sgs D hp]) H g`.
+-/
 theorem radial_wave_orbital : RDWaveJ := by
   intro k r Wp Wq _ _ _ _ _ _ D s H _ g _
   unfold wvG

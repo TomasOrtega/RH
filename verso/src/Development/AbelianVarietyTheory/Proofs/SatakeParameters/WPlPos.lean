@@ -9,6 +9,11 @@ open Formalism.MainNotions Formalism.BasicNotions Formalism.MainNotions.G Classi
 
 namespace GlobalTheory.Ggeo
 
+/- English proof (translation)
+Introduce `eps Fm`. Take `⟨x0, h0⟩` from `GlobalTheory.ShNums.size_rel Fm`. Take `⟨y0, h1⟩` from `GlobalTheory.Ggeo.wPl_windows Fm`. Use `⟨max x0 y0, fun x hx hx1 i j hj z => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, -, -, -, -, -, hw, -⟩` from `h0 x (le_trans (le_max_left _ _) hx) hx1 i`.
+
+Establish `h2` using `(h1 x (le_trans (le_max_right _ _) hx) hx1 i j hj z).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem wPl_pos : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), 0 < wPl (Fm.D x i) (j + 1) z := by
   intro eps Fm
   obtain ⟨x0, h0⟩ := GlobalTheory.ShNums.size_rel Fm

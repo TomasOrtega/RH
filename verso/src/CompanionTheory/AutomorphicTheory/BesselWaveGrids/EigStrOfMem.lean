@@ -16,6 +16,11 @@ variable {k r : ℕ} {Wp Wq Wq' : Type} [NormedAddCommGroup Wp] [InnerProductSpa
   [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wq']
   {ε : Fin (2 * r + k + 1) → Bool} {μ : Fin (2 * r + k + 1) → ℝ}
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h'`. Take `⟨φ, T, hφ, rfl⟩` from `h'`. Conclude with `hC hK k r ε A h hD μ φ _ T m hφ hg`. Consider the case `zero => exact JCx2.sq_inCC_zero`.
+
+Consider the case `add F F' _ _ h h' => exact JCx2.sq_inCC_add h h'`. Consider the case `smul c F _ h => exact JCx2.sq_inCC_smul c h`.
+-/
 theorem w_inCC (hK : PI.KFinSmooth) (hC : CoefCC) {A h : ℝ} (hD : KDecay k r ε A h)
     (hg : PI.ZuckTensor.GapAtLeast ε μ h) {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : F ∈ Wsp k r Wp Wq ε μ) (m : ℕ) :
     B.InCC A m F := by
@@ -27,6 +32,15 @@ theorem w_inCC (hK : PI.KFinSmooth) (hC : CoefCC) {A h : ℝ} (hD : KDecay k r �
   | add F F' _ _ h h' => exact JCx2.sq_inCC_add h h'
   | smul c F _ h => exact JCx2.sq_inCC_smul c h
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h'`. Take `⟨φ, T, hφ, rfl⟩` from `h'`. Use `smul_mem_iSup (h2 t hZ hZd k r ε μ h d q φ hq hφ hg ht) (T.comp L)` as an intermediate fact. Use `this using 2 with g` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[ContinuousLinearMap.smul_comp, smul_smul, Pi.mul_apply]`. Consider the case `zero`. Use `Submodule.zero_mem _ using 2 with g` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Consider the case `add F F' _ _ h h'`.
+
+Use `Submodule.add_mem _ h h' using 2 with g` and compare the differences between its conclusion and the goal. Simplify using `[ContinuousLinearMap.add_comp]`. Consider the case `smul c F _ h`. Use `Submodule.smul_mem _ c h using 2 with g` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, ContinuousLinearMap.smul_comp]`.
+
+Rewrite using `[smul_comm]`.
+-/
 theorem mul_mem_box (h2 : SpanPow) {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (hZ : ZuckT t) (hZd : ZuckDualT t) {h : ℝ} {d : ℕ}
     {q : B.Mat k r → ℂ} (hq : q ∈ Letters k r ^ d) (hg : PI.ZuckTensor.GapAtLeast ε μ h)
     (ht : t _ ε + 1 + 2 * (d : ℝ) < h) (L : Wq' →L[ℂ] Wq) {F : B.Mat k r → (Wq →L[ℂ] Wp)}
@@ -57,6 +71,9 @@ variable {P : M.Par} {Wp Wq Wq' : Type} [NormedAddCommGroup Wp] [InnerProductSpa
   [InnerProductSpace ℂ Wq] [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wp]
   [FiniteDimensional ℂ Wq] [FiniteDimensional ℂ Wq']
 
+/- English proof (translation)
+Establish `hs` using `hB P Wp Wq p f A hA (wsp_ckOn hK hS hf) hcc fun Y => ⟨_, wsp_eig hK hS hE _ hf⟩`. Conclude with `EqShift.jf_ff_of_smooth p.T.base f (OmKB p) fun g₀ hg₀ => hs g₀ ⟨hg₀.1, (CutMP.jdc_om_of _ _ hg₀.1.1 hg₀.2).2⟩`.
+-/
 theorem w_ffkb (hK : PI.KFinSmooth) (hS : CoefSmooth) (hE : CoefEig) (hB : SmoothKB)
     (p : KB.Pl P Wp Wq) {ε : Fin (2 * P.r + P.k + 1) → Bool} {μ : Fin (2 * P.r + P.k + 1) → ℝ}
     {f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (hf : f ∈ Wsp P.k P.r Wp Wq ε μ) {A : ℝ}
@@ -66,6 +83,11 @@ theorem w_ffkb (hK : PI.KFinSmooth) (hS : CoefSmooth) (hE : CoefEig) (hB : Smoot
   exact EqShift.jf_ff_of_smooth p.T.base f (OmKB p) fun g₀ hg₀ =>
     hs g₀ ⟨hg₀.1, (CutMP.jdc_om_of _ _ hg₀.1.1 hg₀.2).2⟩
 
+/- English proof (translation)
+Take `⟨c, hc, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ F₁).1 hF₁`. Set `e` to `c.support.equivFin.symm`. Establish `hgν : ∀ ν : Box lam d, PI.ZuckTensor.GapAtLeast ε ν.1 h₀` using `fun ν => gap_of_box ν.2 hgap hh`. Establish `hFs : ∀ g ∈ B.GV P.k P.r, F g = ∑ i, c (e i) g`. Introduce `g hg`.
+
+Rewrite using `[hFF g hg, ← hsum, Finsupp.sum, Finset.sum_apply, ← Finset.sum_coe_sort]`. Conclude with `(Equiv.sum_comp e fun ν : c.support => c ν g).symm`. Conclude with `⟨A, c.support.card, fun i => c (e i), fun i y => Formalism.QuantumDeterminants.capP (fun s => ((e i).1.1 s : ℂ)) (y : ℂ), hA, fun i => wsp_ckOn hK h3 (hc _), fun i => wsp_inCC hK h4 hD (hgν _) (hc _), hFs, fun i y _ => wsp_eig hK h3 h5 _ (hc _), fun i y hy => (norm_capP_le (e i). …`.
+-/
 theorem eigStr_of_mem (h3 : CoefSmooth) (h4 : CoefCC) (h5 : CoefEig) (h6 : PhZero) (h7 : BetaInfZero)
     (hK : PI.KFinSmooth) (p : KB.Pl P Wp Wq) (F F₁ : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (nn : ℝ → ℝ) (Y : Finset ℝ)
     {ε : Fin (2 * P.r + P.k + 1) → Bool} {lam : Fin (2 * P.r + P.k + 1) → ℝ} {A h h₀ d : ℝ}
@@ -86,6 +108,9 @@ theorem eigStr_of_mem (h3 : CoefSmooth) (h4 : CoefCC) (h5 : CoefEig) (h6 : PhZer
     fun i j hij => wsp_orth hK h4 h5 h6 h7 _ hA hD (hgν _) (hgν _)
       (fun hh' => hij (e.injective (Subtype.ext (Subtype.ext hh')))) (hc _) (hc _)⟩
 
+/- English proof (translation)
+The claim follows from `eigStr_of_mem h3 h4 h5 h6 h7 hK p _ _ nn Y (mul_mem_box h2 hZ hZd (h1 P.k P.r p.T.base.z p.T.base.z' p₀) hgap ht (ContinuousLinearMap.id ℂ Wq) hf) (fun _ _ => rfl) hgap hA hD hh hnn`.
+-/
 theorem eigStr_fpmW (h1 : GfPoly) (h2 : SpanPow) (h3 : CoefSmooth) (h4 : CoefCC)
     (h5 : CoefEig) (h6 : PhZero) (h7 : BetaInfZero) (hK : PI.KFinSmooth)
     {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (hZ : ZuckT t) (hZd : ZuckDualT t)
@@ -100,6 +125,11 @@ theorem eigStr_fpmW (h1 : GfPoly) (h2 : SpanPow) (h3 : CoefSmooth) (h4 : CoefCC)
     (mul_mem_box h2 hZ hZd (h1 P.k P.r p.T.base.z p.T.base.z' p₀) hgap ht (ContinuousLinearMap.id ℂ Wq) hf)
     (fun _ _ => rfl) hgap hA hD hh hnn
 
+/- English proof (translation)
+Take `⟨n, cf, L, hcf, hAe⟩` from `hAop`. Use `set q : B.Mat P.k P.r → ℂ := fun g => ((Formalism.QuantumDeterminants.Gf P.k P.r p.T.base.z p.T.base.z' g ^ p₀ : ℝ) : ℂ) with hq`. Use `eigStr_of_mem h3 h4 h5 h6 h7 hK p _ (∑ i, fun g => (q * cf i) g • (f g).comp (L i)) nn Y (Submodule.sum_mem _ fun i _ => mul_mem_box h2 hZ hZd (LimSh.mul_mem_letters_pow (h1 P.k P.r _ _ p₀) (LimSh.polyDeg_mem (hcf i))) hgap ht (L i) hf) (fun g _ => ?_) hgap hA hD hh hnn` and prove the remaining obligations. Use `show q g • (f g).comp (Aop g) = _`. Rewrite using `[hAe g, ContinuousLinearMap.comp_finsetSum, Finset.smul_sum, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_smul, smul_smul]`. Both sides reduce to the same expression.
+-/
 theorem eigStr_fpmShW {u u' : ℕ → ℝ} (h1 : GfPoly) (h2 : SpanPow) (h3 : CoefSmooth) (h4 : CoefCC)
     (h5 : CoefEig) (h6 : PhZero) (h7 : BetaInfZero) (hK : PI.KFinSmooth)
     {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (hZ : ZuckT t) (hZd : ZuckDualT t)
@@ -154,6 +184,17 @@ def EndEqW (t : ∀ n : ℕ, (Fin n → Bool) → ℝ) : Prop :=
       3 * (P.r + 1) ≤ 2 * p₀ → (p₀ : ℝ) ≤ C₀ * (3 * ((P.r : ℝ) + 1)) + 1 →
       BigCellDerivativeExpansion p f b C₃ (2 * p₀ + n₀) → ThmBpAt p f b C₄ n₀ p₀
 
+/- English proof (translation)
+Introduce `Cb C₃ CT C₀ hC₃ hCT hC₀`. Take `⟨C₄, c₃, Cc, Cc', Cc'', H⟩` from `hAsm Cb C₃ (6 + CT) C₀ hC₃ (by linarith) hC₀`. Use `set CA : ℝ := max (max (max c₃ Cc) (max Cc' Cc'')) 46 with hCA`. Establish `k0 : 46 ≤ CA` using `le_max_right _ _`. Establish `k1 : c₃ ≤ CA` using `le_max_of_le_left (le_max_of_le_left (le_max_left _ _))`.
+
+Establish `k2 : Cc ≤ CA` using `le_max_of_le_left (le_max_of_le_left (le_max_right _ _))`. Establish `k3 : Cc' ≤ CA` using `le_max_of_le_left (le_max_of_le_right (le_max_left _ _))`. Establish `k4 : Cc'' ≤ CA` using `le_max_of_le_left (le_max_of_le_right (le_max_right _ _))`. Use `⟨C₄, CA, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ _ P p f b p₀ lam lam' ε c g e h hfK hbox hec hgap hh hL hu hu' hTT hT hlen hN hp₀ hCb hexp`.
+
+Take `⟨s1, s2, s3, s4, s5, s6, s7⟩` from `hS`. Establish `hd : (0 : ℝ) ≤ (((2 * P.r + 2) * p₀ : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hX : 0 ≤ CA * thrX P.k P.r` using `mul_nonneg (by linarith) (thrX_nonneg _ _)`. Establish `hD` using `kDecay_of_gap hZ P.k P.r ε hX hd hh`. Establish `hfA` using `w_inCC hK s4 hD (gap_mono hgap (by linarith)) hfK`.
+
+Establish `hXA : CA * thrX P.k P.r ≤ CA * thrX P.k P.r + (((2 * P.r + 2) * p₀ : ℕ) : ℝ)` using `by linarith`. Establish `hXA' : CA * thrX P.k P.r ≤ CA * thrX P.k P.r + (((2 * P.r + 2) * p₀ : ℕ) : ℝ) - (((2 * P.r + 2) * p₀ : ℕ) : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : 0 < c` using `by linarith [hL.c_ge]`. Take `⟨hW, hLi⟩` from `grids_diff p lam c g b hL hu hu' hlen`.
+
+Take `⟨hΛ1, hΛ2⟩` from `gridΛ_bounds p b CT hL.b_ge_three hCT hTT`. Conclude with `H Wp Wq P p f b _ _ p₀ Topx2.chi0 (PStar lam c) (gridY P p.l0 (3 * (P.r + 1))) 3 (3 * (P.r + 1)) hL.b_ge_three hΛ1 hΛ2 hT hp₀ le_rfl (by omega) Topx2.base_cutoff_is_truncation (PStar_pos lam hc) hCb (wsp_ckOn hK s3 hfK) hfA (w_ffkb hK s3 s5 hB p hfK (fun m hm => thr_JF _ _ m hm k …`.
+-/
 theorem endDiffW_of (hAsm : AsmDiff) (hS : LimSteps) (hB : SmoothKB) (hK : PI.KFinSmooth)
     {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (hZ : ZuckT t) (hZd : ZuckDualT t) : EndDiffW t := by
   intro Cb C₃ CT C₀ hC₃ hCT hC₀
@@ -185,6 +226,19 @@ theorem endDiffW_of (hAsm : AsmDiff) (hS : LimSteps) (hB : SmoothKB) (hK : PI.KF
     (limBd_of_eigStr p _ _ _ _ (eigStr_fpmW s1 s2 s3 s4 s5 s6 s7 hK hZ hZd p f p₀ _ _ hfK hgap (by linarith)
       (thr_AB _ _ k0 hXA) hD (by linarith) fun y _ => pStar_box hbox hd hec y))
 
+/- English proof (translation)
+Introduce `C₃ CT C₀ hC₃ hCT hC₀`. Take `⟨Cb, c₅, -, hSh⟩` from `EqShift.shiftAtR_full hW`. Take `⟨C₄, c₃, Cc, Cc', Cc'', H⟩` from `hAsm Cb C₃ (6 + CT) C₀ hC₃ (by linarith) hC₀`. Use `set CA : ℝ := max (max (max c₃ Cc) (max Cc' Cc'')) (max 46 c₅) with hCA`. Establish `k0 : 46 ≤ CA` using `le_max_of_le_right (le_max_left _ _)`.
+
+Establish `k5 : c₅ ≤ CA` using `le_max_of_le_right (le_max_right _ _)`. Establish `k1 : c₃ ≤ CA` using `le_max_of_le_left (le_max_of_le_left (le_max_left _ _))`. Establish `k2 : Cc ≤ CA` using `le_max_of_le_left (le_max_of_le_left (le_max_right _ _))`. Establish `k3 : Cc' ≤ CA` using `le_max_of_le_left (le_max_of_le_right (le_max_left _ _))`. Establish `k4 : Cc'' ≤ CA` using `le_max_of_le_left (le_max_of_le_right (le_max_right _ _))`.
+
+Use `⟨C₄, CA, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ _ P p f b p₀ n₀ l lam lam' ε c g e h hfK hbox hec hgap hh hL hu huu hTT hT hn₀ hl1 hlk hposition hN hp₀ hexp`. Take `⟨s1, s2, s3, s4, s5, s6, s7⟩` from `hS`. Establish `hd : (0 : ℝ) ≤ (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hX : 0 ≤ CA * thrX P.k P.r` using `mul_nonneg (by linarith) (thrX_nonneg _ _)`.
+
+Establish `hD` using `kDecay_of_gap hZ P.k P.r ε hX hd hh`. Establish `hfA` using `w_inCC hK s4 hD (gap_mono hgap (by linarith)) hfK`. Establish `hXA : CA * thrX P.k P.r ≤ CA * thrX P.k P.r + (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ)` using `by linarith`. Establish `hXA' : CA * thrX P.k P.r ≤ CA * thrX P.k P.r + (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ) - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) - ((n₀ * (P.r + 1) : ℕ) : ℝ)`. Rewrite using `[Nat.cast_add]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : 0 < c` using `by linarith [hL.c_ge]`. Establish `hJ` using `w_ffkb hK s3 s5 hB p hfK (fun m hm => thr_JF _ _ m hm k0 hXA) hfA`. Take `⟨S, e1, e2, e3, e4, e5, e6, hDp, hDm, hJp, hJm⟩` from `hSh P Wp Wq p f b n₀ l _ huu hl1 hlk (huu ▸ hposition) hL.b_ge_three (fun i hi => huu ▸ hu.u_le i (Finset.mem_Icc.1 hi).1 (Finset.mem_Icc.1 hi).2) (thr_conv _ _ k5 (by linarith) hXA) (thr_JF _ _ _ (Nat.zero_le _) k0 hXA) (hfA 1) (hfA 0) hJ`. Rewrite `e2`, `e4` using `[← huu]`.
+
+Take `⟨hWp, hLip⟩` from `grids_plus S.pp lam c g b l n₀ hL hu hn₀ hl1 hlk hposition e1 e2 e5`. Take `⟨hWm, hLim⟩` from `grids_minus S.pm lam c g b l n₀ hL hu hn₀ hl1 hlk hposition e3 e4 e6`. Take `⟨hΛ1, hΛ2⟩` from `gridΛ_bounds p b CT hL.b_ge_three hCT hTT`. Conclude with `H P Wp Wq p f b n₀ S _ _ p₀ Topx2.chi0 (PStar lam c) (PStar lam c) (gridY (shP P S.up S.up') S.pp.l0 (3 * (P.r + 1))) (gridY (shP P S.um S.um') S.pm.l0 (3 * (P.r + 1))) 3 (3 * (P.r + 1)) hL.b_ge_three hΛ1 hΛ2 hT hn₀.le hp₀ le_rfl (by omega) Topx2.base_cutoff_is_truncation (PStar_ …`.
+-/
 theorem endEqW_of (hAsm : AsmEq) (hW : WigExists) (hS : LimSteps) (hB : SmoothKB) (hK : PI.KFinSmooth)
     {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (hZ : ZuckT t) (hZd : ZuckDualT t) : EndEqW t := by
   intro C₃ CT C₀ hC₃ hCT hC₀

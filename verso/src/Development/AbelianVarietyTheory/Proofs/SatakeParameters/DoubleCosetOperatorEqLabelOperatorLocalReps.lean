@@ -16,6 +16,27 @@ noncomputable section
 
 namespace GlobalTheory.HkDict
 
+/- English proof (translation)
+Use `choose s hs1 hs2 using hs`. Establish `hsL : ∀ a ∈ B, s a ∈ L₀` using `fun a ha => by`. Take `⟨g, hg, rfl⟩` from `hB a ha`. Rewrite using `[hi _ _ (hs1 _) (hLN g hg) (hs2 _)]`. Conclude with `hg`.
+
+Establish `hsinj : Function.Injective s` using `fun a b h => by rw [← hs2 a, ← hs2 b, h]`. Establish `hKJ : ∀ k, k ∈ K ∧ k ∈ L₀ → φ k ∈ J` using `fun k hk => (hJ k (hLN k hk.2)).2 ((hK k hk.2).2 hk.1)`. Use `⟨B.image s, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hγ`.
+
+Conclude with `hsL a ha`. Introduce `γ hγ`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hγ`. Take `⟨⟨k₁, h₁⟩, ⟨k₂, h₂⟩, hk⟩` from `hDC.1 a ha`. Establish `j₁ : s k₁ ∈ J₀` using `(hJ _ (hs1 _)).1 (by rwa [hs2])`.
+
+Establish `j₂ : s k₂ ∈ J₀` using `(hJ _ (hs1 _)).1 (by rwa [hs2])`. Take `⟨a₁, ha₁, b₁, hb₁, la₁, lb₁, e₁⟩` from `hsp _ j₁`. Take `⟨a₂, ha₂, b₂, hb₂, la₂, lb₂, e₂⟩` from `hsp _ j₂`. Establish `e : s a = s k₁ * α * s k₂`. Use `hi _ _ (hs1 _) (N.mul_mem (N.mul_mem (hs1 _) (hLN _ hα)) (hs1 _)) ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, hs2, hs2, hs2]`. Conclude with `hk`. Establish `e' : s a = (a₁ * α * a₂) * (b₁ * b₂)`. Rewrite using `[e, e₁, e₂]`. Establish `c` using `(hc _ _ (L₀.mul_mem hα la₂) lb₁).eq`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hb : b₁ * b₂ = 1`. Use `hd _ ?_ (L₁.mul_mem lb₁ lb₂)` and prove the remaining obligations. Establish `: b₁ * b₂ = (a₁ * α * a₂)⁻¹ * s a` using `by rw [e', inv_mul_cancel_left]`. Rewrite using `[this]`.
+
+Conclude with `L₀.mul_mem (L₀.inv_mem (L₀.mul_mem (L₀.mul_mem la₁ hα) la₂)) (hsL a ha)`. Conclude with `⟨a₁, ⟨(hK _ la₁).1 ha₁, la₁⟩, a₂, ⟨(hK _ la₂).1 ha₂, la₂⟩, by rw [e', hb, mul_one]⟩`. Introduce and unpack `x ⟨k₁, h₁, k₂, h₂, hx⟩`. Establish `hxL : x ∈ L₀` using `hx ▸ L₀.mul_mem (L₀.mul_mem h₁.2 hα) h₂.2`. Take `⟨a, ⟨ha, haJ⟩, hu⟩` from `hDC.2 (φ x) ⟨⟨φ k₁, hKJ _ h₁⟩, ⟨φ k₂, hKJ _ h₂⟩, by rw [hx, map_mul, map_mul]⟩`.
+
+Establish `hL : (s a)⁻¹ * x ∈ L₀` using `L₀.mul_mem (L₀.inv_mem (hsL a ha)) hxL`. Use `⟨s a, ⟨Finset.mem_image_of_mem s ha, (hK _ hL).1 ((hJ _ (hLN _ hL)).1 ?_), hL⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, hs2]` and apply the resulting hypothesis. Introduce and unpack `γ ⟨hγ, hγK⟩`. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 hγ`.
+
+Use `hKJ _ hγK` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, hs2]`. Rewrite using `[hu b ⟨hb, this⟩]`. Introduce `W _ F`. Rewrite using `[Finset.sum_image fun a _ b _ h => hsinj h]`.
+
+Simplify using `only [hs2]`.
+-/
 theorem lift_cosets {H G : Type} [Group H] [Group G] (φ : H →* G) (N J₀ L₀ L₁ : Subgroup H) (J : Subgroup G) (K : Set H)
     (hs : ∀ x, ∃ g ∈ N, φ g = x) (hi : ∀ g g', g ∈ N → g' ∈ N → φ g = φ g' → g = g')
     (hJ : ∀ g, g ∈ N → (φ g ∈ J ↔ g ∈ J₀)) (hLN : ∀ g ∈ L₀, g ∈ N)
@@ -83,6 +104,11 @@ def rightTr {H G : Type} [Group H] [Group G] (φ : H →* G) (W : Type) [AddComm
   map_one' := by ext F h; simp
   map_mul' g g' := by ext F h; simp [mul_assoc]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `: Formalism.L2.Theta.mt V g - 1 = 0`. Use extensionality with `i j`. Establish `a` using `h i j`.
+
+Establish `b` using `h' i j`. Rewrite `b` using `[sub_mul, one_mul, a, sub_self]`. Conclude with `b.symm`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem supp_both {D : D7} (V : HSp D) (f : Formalism.L2.Theta.AE D) (g : GA D V) (h : SuppF V f g) (h' : SuppF V (1 - f) g) :
     g = 1 := by
   apply Subtype.ext
@@ -98,6 +124,25 @@ theorem supp_both {D : D7} (V : HSp D) (f : Formalism.L2.Theta.AE D) (g : GA D V
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.SplitHeckeAdj in
 
+/- English proof (translation)
+Introduce `D V β Λ N L hβ P hN hoff d x B hd hx hB hDC`. Take `⟨e, f, ϖ, α, hP, hϖ, hϖ', -, hxα, hα, hdiv⟩` from `hx`. Establish `hG` using `GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V`. Establish `h01` using `hG.2.2.1 P e f hP`. Establish `hff` using `h01.1`.
+
+Establish `hcf` using `h01.2.1`. Establish `hff' : (1 - f) * (1 - f) = 1 - f`. Rewrite using `[mul_sub, mul_one, sub_mul, one_mul, hff, sub_self, sub_zero]`. Establish `hcf' : cA D (1 - f) = 1 - f` using `by rw [map_sub, map_one, hcf]`. Take `⟨L₀, hL₀⟩` from `(hG.1 f hff hcf).1`.
+
+Take `⟨L₁, hL₁⟩` from `(hG.1 _ hff' hcf').1`. Establish `h03` using `(GlobalTheory.LevSplit.lev_split V β Λ N (flag1L L) hβ).2 P e f hP hN hoff`. Establish `hK` using `h03.1`. Establish `hsp` using `h03.2.2`. Establish `hx' : x = fin V α` using `Subtype.ext hxα`.
+
+Substitute `hx'` using the available equality. Establish `hB' : ∀ a ∈ B, ∃ g ∈ L₀, fin V g = a` using `fun a ha => by`. Take `⟨e', f', g, hP', -, h1, h2⟩` from `hB a ha`. Establish `h3 : f' = f` using `(h01.2.2.2.1 e' f' hP').2`. Rewrite `h2` using `[h3]`.
+
+Conclude with `⟨g, (hL₀ g).2 h2, Subtype.ext h1.symm⟩`. Establish `main` using `lift_cosets (fin V) (GfC V) (levG V β (flag1L L)) L₀ L₁ (levEnv V β L).J (KsphC V ∅) (fin_lift V) (fun g g' => fin_inj V) (fun g => mem_J V β L) (fun g hg => h01.2.2.1 g ((hL₀ g).1 hg)) (fun g g' h h' => commute_compl V _ hff hcf ((hL₀ g).1 h) ((hL₁ g').1 h')) (fun g h h' => supp …`. Take `⟨k₁, h₁, k₂, h₂, s₁, s₂, h⟩` from `hsp k hk`. Conclude with `⟨k₁, h₁, k₂, h₂, (hL₀ _).2 s₁, (hL₁ _).2 s₂, h⟩)`. Use `α ((hL₀ α).2 hα) B hB' hDC`.
+
+Take `⟨R, r1, r2, r3, r4⟩` from `main`. Simplify using `only [hL₀] at r1 r2 r3`. Establish `hR : SphOp V P d R` using `⟨e, f, ϖ, α, fun v hv => absurd hv (Finset.notMem_empty v), hP, hϖ, hϖ', hd, fun _ _ => Iff.rfl, fun _ _ _ => rfl, hα, hdiv, r1, fun γ hγ => ⟨h01.2.2.1 γ (r1 γ hγ), r2 γ hγ⟩, r3⟩`. Use `⟨⟨R, hR⟩, fun W _ _ Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hfix : ∀ k ∈ hyp V P, rightTr (fin V) W k Φ = Φ`.
+
+Introduce and unpack `k ⟨hk, e', f', hP', hs⟩`. Establish `h3 : f' = f` using `(h01.2.2.2.1 e' f' hP').2`. Rewrite `hs` using `[h3]`. Establish `hkf` using `h01.2.2.1 k hs`. Use function extensionality and compare the values at `h`.
+
+Conclude with `hΦ h ⟨fin V k, (mem_J V β L hkf).2 ((hK k hs).2 hk)⟩ ⟨e, f, k, hP, hkf, rfl, hs⟩`. Establish `h` using `((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V P).1 d R hR).2 _ (rightTr (fin V) W) Φ hfix`. Use function extensionality and compare the values at `g`. Establish `h1` using `congrFun h g`. Establish `h2 : Bridge.dcOp B Φ g = ∑ γ ∈ R, Φ (g * fin V γ)` using `r4 W fun a => Φ (g * a)`.
+
+Rewrite using `[h2]`. Simplify using `only [opOf, hkF, zero_smul, Finsupp.sum_single_index, one_smul, Finset.sum_apply, LinearMap.sum_apply] at h1 ⊢`. Conclude with `h1`.
+-/
 theorem dcOp_eq_label : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ) (L : LevDat D.host.E ℂ V.rank), IsBaseFrame V β Λ N → ∀ P : Pl D.host.E, ((N : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal → (∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → PP ≠ P ∧ ¬ Formalism.IndefR.Lev.IsConjPl PP P) → ∀ (d : List ℤ) (x : Bridge.Gf V) (B : Finset (Bridge.Gf V)), d.Pairwise (fun a b => b ≤ a) → IsLabElt V P d x → (∀ a ∈ B, IsLocElt V P a) → Bridge.IsDC (levEnv V β L).J x B → IsLab V P d ∧ ∀ (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] (Φ : Bridge.Gf V → W), (∀ h (k : (levEnv V β L).J), IsLocElt V P k → Φ (h * k) = Φ h) → Bridge.dcOp B Φ = hkF V P (Finsupp.single d 1) Φ := by
   intro D V β Λ N L hβ P hN hoff d x B hd hx hB hDC
   obtain ⟨e, f, ϖ, α, hP, hϖ, hϖ', -, hxα, hα, hdiv⟩ := hx

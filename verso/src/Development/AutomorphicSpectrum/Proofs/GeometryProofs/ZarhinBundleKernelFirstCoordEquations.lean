@@ -17,6 +17,9 @@ variable {X Y : Scheme.{0}} {Ω : Type} [Field Ω]
 def push (η : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) (p : Cpt η) : Cpt (η ≫ f) :=
   ⟨f p.1, p.2.map f.continuous⟩
 
+/- English proof (translation)
+Establish `h1` using `Scheme.stalkClosedPointTo_comp η f`. Establish `h2` using `Scheme.Hom.stalkSpecializes_stalkMap f _ _ p.2`. Establish `h3 : X.presheaf.stalkSpecializes (push η f p).2 ≫ Scheme.stalkClosedPointTo (η ≫ f) = f.stalkMap p.1 ≫ (Y.presheaf.stalkSpecializes p.2 ≫ Scheme.stalkClosedPointTo η)` using `(congrArg (X.presheaf.stalkSpecializes (push η f p).2 ≫ ·) h1).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ Scheme.stalkClosedPointTo η) h2).trans (Category.assoc _ _ _)))`. Conclude with `congrArg (fun g => g.hom) h3`.
+-/
 theorem genMap_push (η : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) (p : Cpt η) :
     genMap (η ≫ f) (push η f p) = (genMap η p).comp (f.stalkMap p.1).hom := by
   have h1 := Scheme.stalkClosedPointTo_comp η f
@@ -28,6 +31,11 @@ theorem genMap_push (η : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) (p : Cpt
         (Category.assoc _ _ _)))
   exact congrArg (fun g => g.hom) h3
 
+/- English proof (translation)
+Establish `hb : Function.Bijective (f.stalkMap p.1).hom` using `ConcreteCategory.bijective_of_isIso _`. Unfold `regAt`. Rewrite using `[genMap_push]`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨s, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce and unpack `⟨s, rfl⟩`. Take `⟨t, rfl⟩` from `hb.2 s`. Conclude with `⟨t, rfl⟩`.
+-/
 theorem regAt_push (η : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) [IsOpenImmersion f] (p : Cpt η) :
     regAt (η ≫ f) (push η f p) = regAt η p := by
   have hb : Function.Bijective (f.stalkMap p.1).hom := ConcreteCategory.bijective_of_isIso _
@@ -41,6 +49,9 @@ theorem regAt_push (η : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) [IsOpenIm
     obtain ⟨t, rfl⟩ := hb.2 s
     exact ⟨t, rfl⟩
 
+/- English proof (translation)
+Establish `hb : Function.Bijective (f.stalkMap p.1).hom` using `ConcreteCategory.bijective_of_isIso _`. Rewrite using `[genMap_push]`. Conclude with `h.comp hb.1`.
+-/
 theorem genMap_push_injective (η : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) [IsOpenImmersion f]
     (p : Cpt η) (h : Function.Injective (genMap η p)) :
     Function.Injective (genMap (η ≫ f) (push η f p)) := by
@@ -54,6 +65,9 @@ section Chart
 
 variable {X : Scheme.{0}} {Ω A : Type} [Field Ω] [CommRing A]
 
+/- English proof (translation)
+Use `(PrimeSpectrum.le_iff_specializes _ _).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(genPt (CptModel.pt φ)).asIdeal ≤ _`. Rewrite using `[CptModel.genPt_asIdeal, (RingHom.injective_iff_ker_eq_bot _).1 hφ]`. Conclude with `bot_le`.
+-/
 theorem specializes_of_injective (φ : A →+* Ω) (hφ : Function.Injective φ)
     (q : Spec (CommRingCat.of A)) : genPt (CptModel.pt φ) ⤳ q := by
   refine (PrimeSpectrum.le_iff_specializes _ _).1 ?_
@@ -61,6 +75,9 @@ theorem specializes_of_injective (φ : A →+* Ω) (hφ : Function.Injective φ)
   rw [CptModel.genPt_asIdeal, (RingHom.injective_iff_ker_eq_bot _).1 hφ]
   exact bot_le
 
+/- English proof (translation)
+Substitute `e` using the available equality. Set `p : Cpt (CptModel.pt φ)` to `⟨q, specializes_of_injective φ hφ q⟩`. Use `⟨(push _ f p).2, genMap_push_injective _ f p (CptModel.genMap_injective φ hφ p), fun c => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (c ∈ ·) (regAt_push _ f p)).to_iff.trans (CptModel.mem_regAt_iff φ p c)`.
+-/
 theorem chart (ξ : Spec (CommRingCat.of Ω) ⟶ X) (φ : A →+* Ω) (hφ : Function.Injective φ)
     (f : Spec (CommRingCat.of A) ⟶ X) [IsOpenImmersion f] (e : ξ = CptModel.pt φ ≫ f)
     (q : Spec (CommRingCat.of A)) :
@@ -71,6 +88,15 @@ theorem chart (ξ : Spec (CommRingCat.of Ω) ⟶ X) (φ : A →+* Ω) (hφ : Fun
   refine ⟨(push _ f p).2, genMap_push_injective _ f p (CptModel.genMap_injective φ hφ p), fun c => ?_⟩
   exact (congrArg (c ∈ ·) (regAt_push _ f p)).to_iff.trans (CptModel.mem_regAt_iff φ p c)
 
+/- English proof (translation)
+Set `I : Ideal A` to `{ carrier := {s | c * φ s ∈ φ.range} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, map_add, mul_add] at *`. Conclude with `add_mem ha hb`. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := fun a b hb => by`.
+
+Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, map_mul] at *`. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem ⟨a, rfl⟩ hb }`. Establish `hI : I = ⊤`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal I hne`. Take `⟨a, s, hs, -, e⟩` from `h ⟨m, hm.isPrime⟩`. Conclude with `hs (hle (show c * φ s ∈ φ.range from ⟨a, e.symm⟩))`. Establish `h1 : (1 : A) ∈ I` using `hI ▸ Submodule.mem_top`. Establish `h2 : c * φ 1 ∈ φ.range` using `h1`.
+
+Simplify using `using h2`.
+-/
 theorem mem_range_of_forall (φ : A →+* Ω) (c : Ω)
     (h : ∀ q : PrimeSpectrum A, ∃ a s : A, s ∉ q.asIdeal ∧ φ s ≠ 0 ∧ c * φ s = φ a) :
     c ∈ φ.range := by
@@ -105,12 +131,20 @@ variable {σ A Ω : Type} [CommRing A] [SetLike σ A] [AddSubgroupClass σ A] (�
 def awayEval (ψ : A →+* Ω) (f : A) (hf : ψ f ≠ 0) : Away 𝒜 f →+* Ω :=
   (Localization.awayLift ψ f (IsUnit.mk0 _ hf)).comp (algebraMap (Away 𝒜 f) (Localization.Away f))
 
+/- English proof (translation)
+Simplify using `only [awayEval, RingHom.coe_comp, Function.comp_apply, HomogeneousLocalization.algebraMap_apply, Away.val_mk]`. Rewrite using `[Localization.awayLift_mk (v := (ψ f)⁻¹) (hv := mul_inv_cancel₀ hf), div_eq_mul_inv, inv_pow]`.
+-/
 theorem awayEval_mk (ψ : A →+* Ω) (f : A) (hf : ψ f ≠ 0) {d : ℕ} (hd : f ∈ 𝒜 d) (n : ℕ) (a : A)
     (ha : a ∈ 𝒜 (n • d)) : awayEval 𝒜 ψ f hf (Away.mk 𝒜 hd n a ha) = ψ a / ψ f ^ n := by
   simp only [awayEval, RingHom.coe_comp, Function.comp_apply, HomogeneousLocalization.algebraMap_apply,
     Away.val_mk]
   rw [Localization.awayLift_mk (v := (ψ f)⁻¹) (hv := mul_inv_cancel₀ hf), div_eq_mul_inv, inv_pow]
 
+/- English proof (translation)
+Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Take `⟨n, a, ha, rfl⟩` from `Away.mk_surjective 𝒜 hd z`. Establish `hg : ψ g ≠ 0`. Rewrite `h0` using `[hx, map_mul]`. Conclude with `right_ne_zero_of_mul h0`.
+
+Rewrite using `[RingHom.comp_apply, awayMap_mk, awayEval_mk, awayEval_mk]`. Substitute `hx` using the available equality. Simplify using `only [map_mul, map_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem awayEval_comp_awayMap (ψ : A →+* Ω) {f g x : A} {d e : ℕ} (hd : f ∈ 𝒜 d) (he : g ∈ 𝒜 e)
     (hx : x = f * g) (hf : ψ f ≠ 0) (h0 : ψ x ≠ 0) :
     (awayEval 𝒜 ψ x h0).comp (awayMap 𝒜 he hx) = awayEval 𝒜 ψ f hf := by
@@ -124,6 +158,11 @@ theorem awayEval_comp_awayMap (ψ : A →+* Ω) {f g x : A} {d e : ℕ} (hd : f 
   simp only [map_mul, map_pow, mul_pow]
   field_simp
 
+/- English proof (translation)
+Establish `h0 : ψ (f * g) ≠ 0`. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hf hg`. Rewrite using `[← awayEval_comp_awayMap 𝒜 ψ hd he rfl hf h0, ← awayEval_comp_awayMap 𝒜 ψ he hd (mul_comm f g) hg h0]`. Unfold `CptModel.pt`.
+
+Rewrite using `[CommRingCat.ofHom_comp, CommRingCat.ofHom_comp, Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, Proj.SpecMap_awayMap_awayι, Proj.SpecMap_awayMap_awayι]`. Both sides reduce to the same expression.
+-/
 theorem pt_awayι_eq (ψ : A →+* Ω) {f g : A} {d e : ℕ} (hd : f ∈ 𝒜 d) (he : g ∈ 𝒜 e)
     (d0 : 0 < d) (e0 : 0 < e) (hf : ψ f ≠ 0) (hg : ψ g ≠ 0) :
     CptModel.pt (awayEval 𝒜 ψ f hf) ≫ Proj.awayι 𝒜 f hd d0 =
@@ -148,6 +187,11 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 variable {o κ Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
+/- English proof (translation)
+Rewrite using `[aeval_def, aeval_def, eval₂_eq, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `h : ∑ i ∈ d.support, d i = n`. Use `hg (mem_support_iff.1 hd)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`.
+
+Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_mul_of_isHomogeneous {B : Type} [CommRing B] [Algebra o B] (x : κ → B) (t : B)
     {g : MvPolynomial κ o} {n : ℕ} (hg : g.IsHomogeneous n) :
     aeval (fun j => t * x j) g = t ^ n * aeval x g := by
@@ -159,12 +203,18 @@ theorem aeval_mul_of_isHomogeneous {B : Type} [CommRing B] [Algebra o B] (x : κ
   simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, h]
   ring
 
+/- English proof (translation)
+The claim follows from `isHomogeneous_X o c`.
+-/
 theorem X_mem (c : κ) : (X c : MvPolynomial κ o) ∈ homogeneousSubmodule κ o 1 := isHomogeneous_X o c
 
 def chartEval (x : κ → Ω) (c : κ) (hc : x c ≠ 0) :
     Away (homogeneousSubmodule κ o) (X c : MvPolynomial κ o) →+* Ω :=
   awayEval (homogeneousSubmodule κ o) (aeval x : MvPolynomial κ o →ₐ[o] Ω).toRingHom (X c) (by simpa using hc)
 
+/- English proof (translation)
+Unfold `chartEval`. Rewrite using `[awayEval_mk]`. Simplify using the standard rewrite rules.
+-/
 theorem chartEval_mk (x : κ → Ω) (c : κ) (hc : x c ≠ 0) (n : ℕ) (a : MvPolynomial κ o)
     (ha : a ∈ homogeneousSubmodule κ o (n • 1)) :
     chartEval x c hc (Away.mk _ (X_mem c) n a ha) = aeval x a / x c ^ n := by
@@ -172,6 +222,15 @@ theorem chartEval_mk (x : κ → Ω) (c : κ) (hc : x c ≠ 0) (n : ℕ) (a : Mv
   rw [awayEval_mk]
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Take `⟨n, a, ha, rfl⟩` from `Away.mk_surjective _ (X_mem (o := o) c) z`. Establish `ha' : a.IsHomogeneous n` using `by simpa using ha`. Rewrite using `[chartEval_mk, Algebra.adjoin_range_eq_range_aeval]`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Use `aeval_mul_of_isHomogeneous x (x c)⁻¹ ha'` as an intermediate fact. Simplify using `only [div_eq_inv_mul, ← inv_pow]`. Conclude with `this`. Introduce `h`.
+
+Proceed by induction on `h using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`. Conclude with `⟨Away.mk _ (X_mem c) 1 (X j) (X_mem j), (chartEval_mk x c hc 1 _ _).trans (by simp)⟩`. Consider the case `algebraMap r`.
+
+Conclude with `⟨Away.mk _ (X_mem c) 0 (C r) (isHomogeneous_C κ r), (chartEval_mk x c hc 0 _ _).trans (by simp)⟩`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `mul y z _ _ hy hz => exact mul_mem hy hz`.
+-/
 theorem mem_range_chartEval (x : κ → Ω) (c : κ) (hc : x c ≠ 0) (a : Ω) :
     a ∈ (chartEval (o := o) x c hc).range ↔ a ∈ Algebra.adjoin o (Set.range fun j => x j / x c) := by
   constructor
@@ -193,6 +252,11 @@ theorem mem_range_chartEval (x : κ → Ω) (c : κ) (hc : x c ≠ 0) (a : Ω) :
     | add y z _ _ hy hz => exact add_mem hy hz
     | mul y z _ _ hy hz => exact mul_mem hy hz
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨n, a, ha, rfl⟩` from `Away.mk_surjective _ (X_mem (o := o) c) z`. Rewrite `hz` using `[chartEval_mk, div_eq_zero_iff, or_iff_left (pow_ne_zero _ hc)]`. Take `rfl` from `hinj _ a ha hz`.
+
+Use `ext`. Simplify using `[Localization.mk_zero]`.
+-/
 theorem chartEval_injective (x : κ → Ω) (c : κ) (hc : x c ≠ 0)
     (hinj : ∀ (n : ℕ) (g : MvPolynomial κ o), g.IsHomogeneous n → aeval x g = 0 → g = 0) :
     Function.Injective (chartEval (o := o) x c hc) := by
@@ -204,6 +268,11 @@ theorem chartEval_injective (x : κ → Ω) (c : κ) (hc : x c ≠ 0)
   ext
   simp [Localization.mk_zero]
 
+/- English proof (translation)
+Establish `h` using `Proj.iSup_basicOpen_eq_top' (homogeneousSubmodule κ o) (fun c : κ => X c) (fun c => ⟨1, X_mem c⟩) (by`. Rewrite using `[eq_top_iff]`. Introduce and unpack `g -`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C r => exact Subalgebra.algebraMap_mem _ (⟨C r, isHomogeneous_C κ r⟩ : homogeneousSubmodule κ o 0)`.
+
+Consider the case `add p q hp hq => exact add_mem hp hq`. Consider the case `mul_X p i hp => exact mul_mem hp (Algebra.subset_adjoin ⟨i, rfl⟩))`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 (h.ge (Set.mem_univ q))`.
+-/
 theorem exists_mem_basicOpen (q : Proj (homogeneousSubmodule κ o)) :
     ∃ c, q ∈ Proj.basicOpen (homogeneousSubmodule κ o) (X c) := by
   have h := Proj.iSup_basicOpen_eq_top' (homogeneousSubmodule κ o) (fun c : κ => X c)
@@ -216,6 +285,13 @@ theorem exists_mem_basicOpen (q : Proj (homogeneousSubmodule κ o)) :
       | mul_X p i hp => exact mul_mem hp (Algebra.subset_adjoin ⟨i, rfl⟩))
   exact TopologicalSpace.Opens.mem_iSup.1 (h.ge (Set.mem_univ q))
 
+/- English proof (translation)
+Set `K` to `FractionRing (MvPolynomial (Option ι) o)`. Set `y : Option ι → K` to `fun j => algebraMap (MvPolynomial (Option ι) o) K (X j)`. Establish `hy : y none ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ K)).2 (X_ne_zero _)`. Establish `h1` using `congrArg (aeval (R := o) fun j : ι => (y none)⁻¹ * y (some j)) h`. Rewrite `h1` using `[map_zero, ← AlgHom.comp_apply, comp_aeval]`.
+
+Establish `h2 : (fun j : Option ι => aeval (R` using `o) (fun j : ι => (y none)⁻¹ * y (some j)) (j.elim 1 X : MvPolynomial ι o)) = fun j => (y none)⁻¹ * y j := by`. Use function extensionality and compare the values at `j`. Consider the cases of `j with`. Consider the case `none => exact (map_one _).trans (inv_mul_cancel₀ hy).symm`. Consider the case `some j => simp`.
+
+Rewrite `h1` using `[h2, aeval_mul_of_isHomogeneous y _ hg, mul_eq_zero, or_iff_right (pow_ne_zero _ (inv_ne_zero hy))]`. Establish `h3` using `aeval_algebraMap_apply (R := o) K (fun j : Option ι => (X j : MvPolynomial (Option ι) o)) g`. Rewrite `h3` using `[aeval_X_left_apply]`. Conclude with `(map_eq_zero_iff _ (IsFractionRing.injective _ K)).1 (h3.symm.trans h1)`.
+-/
 theorem eq_zero_of_dehom [IsDomain o] {ι : Type} {n : ℕ} {g : MvPolynomial (Option ι) o}
     (hg : g.IsHomogeneous n)
     (h : aeval (fun j : Option ι => (j.elim 1 X : MvPolynomial ι o)) g = 0) : g = 0 := by

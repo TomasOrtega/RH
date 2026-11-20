@@ -18,6 +18,37 @@ def smulRightLinear {K L W : Type} [Field K] [AddCommGroup L] [Module K L] [AddC
     simp only [LinearMap.smulRight_apply, RingHom.id_apply, LinearMap.smul_apply]
     exact smul_comm _ _ _
 
+/- English proof (translation)
+Introduce `n K W _ _ _ _ _ E hE lam e he v0 hv0 hL P hP ι _ b m`. Establish `hEL` using `restrictRepresentation_isRep E hE _ hL`. Establish `hv0'` using `highest_vector_restrict E _ hL lam v0 (self_mem_cyclicSubmodule E v0) hv0`. Establish `hcyc` using `cyclicSubmodule_restrict_eq_top E v0 hL`. Establish `hPe` using `fun g => invariant_projection_equivariant D h2 (restrictRepresentation E _ hL) E hEL hE P hP g`.
+
+Set `Θ : W →ₗ[K] W` to `∑ i, (LinearMap.applyₗ (b i)) ∘ₗ P ∘ₗ smulRightLinear (b.coord i)`. Establish `hΘ : ∀ m, Θ m = ∑ i, P ((b.coord i).smulRight m) (b i)`. Introduce `m`. Simplify using `only [Θ, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.applyₗ_apply_apply]`. Both sides reduce to the same expression.
+
+Establish `hle : (⨆ mu, isoSub E mu) ≤ LinearMap.eqLocus ((Fintype.card ι : K) • Θ) e`. Use `iSup_le fun mu => ?_` and prove the remaining obligations. Distinguish the cases in `hmu : mu = lam`. Substitute `hmu` using the available equality. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨u, hu, v, hv, rfl⟩`. Establish `hy : u v ∈ isoSub E mu` using `Submodule.subset_span ⟨u, hu, v, hv, rfl⟩`. Take `⟨φ, hφ, hφv⟩` from `exists_equivariant_cyclic_to_hwv D h2 E hE mu v0 v hv0 hv hL`. Take `⟨uL, _, huL⟩` from `equivariant_lifts_monoid (restrictRepresentation E _ hL) E φ hφ hu`. Establish `hm : u v = φ (uL ⟨v0, self_mem_cyclicSubmodule E v0⟩)` using `by rw [huL, hφv]`.
+
+Take `⟨P0, hP0⟩` from `invariant_projection_exists D h2 n K _ _ (homRepresentation_isRep _ _ hEL hEL)`. Establish `hT : IsEquivariantMap (homRepresentation (restrictRepresentation E _ hL) (restrictRepresentation E _ hL)) (homRepresentation (restrictRepresentation E _ hL) E) (LinearMap.llcomp K _ _ W φ)`. Introduce `a c g`. Use extensionality with `x`. Simplify using `only [LinearMap.llcomp_apply, homRepresentation_apply, map_sub]`.
+
+Rewrite using `[hφ]`. Express the relevant statement in the definitionally equal form `((Fintype.card ι : K) • Θ) (u v) = e (u v)`. Rewrite using `[he.1 _ hy, LinearMap.smul_apply, hΘ, hm, Finset.smul_sum]`. Use `set l := uL ⟨v0, self_mem_cyclicSubmodule E v0⟩ with hl`. Establish `hterm : ∀ i, (Fintype.card ι : K) • P ((b.coord i).smulRight (φ l)) (b i) = (b.repr l i) • φ (b i)`.
+
+Introduce `i`. Establish `h3 : (b.coord i).smulRight (φ l) = LinearMap.llcomp K _ _ W φ ((b.coord i).smulRight l)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `h4` using `equivariant_commutes_isotypic D h2 n K _ _ _ _ (homRepresentation_isRep _ _ hEL hEL) (homRepresentation_isRep _ _ hEL hE) (LinearMap.llcomp K _ _ W φ) hT P0 P hP0 hP ((b.coord i).smulRight l)`.
+
+Establish `h5` using `schur_invariant_projection_trace D h2 _ hEL mu _ hv0' hcyc P0 hP0 ((b.coord i).smulRight l)`. Rewrite `h5` using `[Module.finrank_eq_card_basis b, LinearMap.trace_smulRight]`. Rewrite using `[h3, ← h4, LinearMap.llcomp_apply, ← map_smul, ← LinearMap.smul_apply, h5]`. Simplify using `[Module.Basis.coord_apply]`. Rewrite using `[Finset.sum_congr rfl fun i _ => hterm i]`.
+
+Use `conv_rhs => rw [← b.sum_repr l]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (map_smul _ _ _).symm`. Introduce `y hy`. Establish `hWm : IsSubrepresentation E (isoSub E mu)` using `fun a c => isotypic_stable_under_gl_operator E mu a c`.
+
+Establish `hEm` using `restrictRepresentation_isRep E hE _ hWm`. Take `⟨P1, hP1⟩` from `invariant_projection_exists D h2 n K _ _ (homRepresentation_isRep _ _ hEL hEm)`. Establish `hT : IsEquivariantMap (homRepresentation (restrictRepresentation E _ hL) (restrictRepresentation E _ hWm)) (homRepresentation (restrictRepresentation E _ hL) E) (LinearMap.llcomp K _ _ W (isoSub E mu).subtype)`. Introduce `a c g`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Establish `hzero : ∀ ξ : cyclicSubmodule E v0 →ₗ[K] K, P (ξ.smulRight y) = 0`. Introduce `ξ`. Establish `h3 : ξ.smulRight y = LinearMap.llcomp K _ _ W (isoSub E mu).subtype (ξ.smulRight (⟨y, hy⟩ : isoSub E mu))`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Establish `h4` using `equivariant_commutes_isotypic D h2 n K _ _ _ _ (homRepresentation_isRep _ _ hEL hEm) (homRepresentation_isRep _ _ hEL hE) (LinearMap.llcomp K _ _ W (isoSub E mu).subtype) hT P1 P hP1 hP (ξ.smulRight (⟨y, hy⟩ : isoSub E mu))`. Establish `hmem : ∀ x, P (ξ.smulRight y) x ∈ isoSub E mu`. Introduce `x`. Rewrite using `[h3, ← h4]`.
+
+Simplify using the standard rewrite rules. Establish `hv00 : P (ξ.smulRight y) ⟨v0, self_mem_cyclicSubmodule E v0⟩ = 0`. Assume the negation of the conclusion as `h0`. Establish `h6` using `highest_vector_mem_isotypic E lam _ (equivariant_image_highest_vector _ E _ (hPe _) lam _ hv0' h0)`. Conclude with `h0 ((he.1 _ h6).symm.trans (he.2 mu hmu _ (hmem _)))`.
+
+Use extensionality with `x`. Conclude with `equivariant_kills_cyclic_of_zero _ E _ (hPe _) _ hv00 x (by rw [hcyc]; trivial)`. Express the relevant statement in the definitionally equal form `((Fintype.card ι : K) • Θ) y = e y`. Rewrite using `[he.2 mu hmu y hy, LinearMap.smul_apply, hΘ]`. Simplify using `[hzero]`.
+
+Establish `hm : m ∈ (⨆ mu, isoSub E mu)` using `by rw [isotypic_submodules_span_top D h2 n K W E hE]; trivial`. Use `hle hm` as an intermediate fact. Express the relevant statement in the definitionally equal form `((Fintype.card ι : K) • Θ) m = e m at this`. Rewrite `this` using `[LinearMap.smul_apply, hΘ]`. Conclude with `this`.
+-/
 theorem isotypic_projector_trace_formula (D : Formalism.BasicNotions.D7) (h2 : adm2 D) : IsotypicProjectorTraceFormula := by
   intro n K W _ _ _ _ _ E hE lam e he v0 hv0 hL P hP ι _ b m
   have hEL := restrictRepresentation_isRep E hE _ hL
@@ -99,6 +130,9 @@ theorem isotypic_projector_trace_formula (D : Formalism.BasicNotions.D7) (h2 : a
   rw [LinearMap.smul_apply, hΘ] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `lattice_theorem_of_trace_formula D h2 h (isotypic_projector_trace_formula D h2)`.
+-/
 theorem isotypicProjectorTheoremField_of_sharp_bound (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (h : InvariantDenominatorEllPBound) : IsotypicProjectorTheoremField D :=
   lattice_theorem_of_trace_formula D h2 h (isotypic_projector_trace_formula D h2)
 

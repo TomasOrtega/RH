@@ -16,6 +16,13 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.KCriterion
 
+/- English proof (translation)
+Establish `hs : Surjective (pullback.diagonal f)` using `⟨fun z => by`. Set `κ : Type` to `(pullback f f).residueField z`. Set `y : Sp (AlgebraicClosure κ) ⟶ pullback f f` to `spMap (algebraMap κ (AlgebraicClosure κ)) ≫ (pullback f f).fromSpecResidueField z`. Establish `e` using `h _ (y ≫ pullback.fst f f) (y ≫ pullback.snd f f) ((Category.assoc _ _ _).trans ((congrArg _ pullback.condition).trans (Category.assoc _ _ _).symm))`. Establish `e' : (y ≫ pullback.fst f f) ≫ pullback.diagonal f = y`.
+
+Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[e]`. Conclude with `⟨(y ≫ pullback.fst f f) (IsLocalRing.closedPoint _), (congrArg (fun q => q (IsLocalRing.closedPoint _)) e').trans (Scheme.fromSpecResidueField_apply z _)⟩⟩`. Establish `: IsIso (pullback.diagonal f)` using `(isIso_iff_isOpenImmersion_and_surjective _).2 ⟨inferInstance, hs⟩`.
+
+Conclude with `(pullback.isIso_diagonal_iff f).1 this`.
+-/
 theorem mono_of_unramified_of_geometric_points {X Y : Scheme.{0}} (f : X ⟶ Y) [FormallyUnramified f]
     [LocallyOfFiniteType f]
     (h : ∀ (k : Type) [Field k] [IsAlgClosed k] (y y' : Sp k ⟶ X), y ≫ f = y' ≫ f → y = y') : Mono f := by
@@ -34,6 +41,9 @@ theorem mono_of_unramified_of_geometric_points {X Y : Scheme.{0}} (f : X ⟶ Y) 
   have : IsIso (pullback.diagonal f) := (isIso_iff_isOpenImmersion_and_surjective _).2 ⟨inferInstance, hs⟩
   exact (pullback.isIso_diagonal_iff f).1 this
 
+/- English proof (translation)
+Take `⟨V, hp, c, hc⟩` from `hx (IsLocalRing.closedPoint K)`. Establish `hV : V = ⊤` using `(IsLocalRing.closedPoint_mem_iff V).1 hp`. Use `exists_isGen_translDiff_comp A M x (𝟙 _) V (fun q => hV.ge trivial) c hc` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem triv_of_inK_local {S : Scheme.{0}} {A : Over S} [GrpObj A] {M : LB A.left} {K : Type} [CommRing K]
     [IsLocalRing K] {t : Sp K ⟶ S} {x : Over.mk t ⟶ A} (hx : InK A M x) : Triv (Out.translDiff A M x) := by
   obtain ⟨V, hp, c, hc⟩ := hx (IsLocalRing.closedPoint K)
@@ -41,6 +51,19 @@ theorem triv_of_inK_local {S : Scheme.{0}} {A : Over S} [GrpObj A] {M : LB A.lef
   have := exists_isGen_translDiff_comp A M x (𝟙 _) V (fun q => hV.ge trivial) c hc
   rwa [Category.id_comp] at this
 
+/- English proof (translation)
+Introduce `hL R _ A _ _ hA hP M hM hK`. Take `⟨hO, -, hT⟩` from `TrivTwist.inK_iff_trivial_twist _ A M hM`. Take `⟨H, j, hj, hH⟩` from `GlobalTheory.UU.TwistKer.exists_closed_twist_kernel hL.globalFns R A hA hP M (pw M 0) hM hO`. Establish `hrep : ∀ (T : Over (Sp R)) (x : T ⟶ A), InK A M x ↔ ∃ y : T ⟶ H, y ≫ j = x` using `fun T x => (hT _ rfl T x).trans (hH T x)`. Use `hA.proper` as an intermediate fact.
+
+Establish `hft : LocallyOfFiniteType H.hom` using `by rw [← Over.w j]; infer_instance`. Establish `hpt : ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (y : Over.mk t ⟶ H), y ≫ j = 1`. Introduce `k _ _ t`. Take `⟨φ, rfl⟩` from `Spec.map_surjective t`. Set `_ : Algebra R k` to `φ.hom.toAlgebra`.
+
+Conclude with `fun y => (hK k).1 (y ≫ j) (triv_of_inK_local ((hrep _ _).2 ⟨y, rfl⟩))`. Establish `htan : ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (y : Over.mk (TangentCrit.dualBase k ≫ t) ⟶ H), y ≫ j = 1`. Introduce `k _ _ t`. Take `⟨φ, rfl⟩` from `Spec.map_surjective t`. Set `_ : Algebra R k` to `φ.hom.toAlgebra`.
+
+Establish `e : TangentCrit.dualBase k ≫ Spec.map φ = spMap (algebraMap R (DualNumber k))` using `(Spec.map_comp _ _).symm`. Rewrite using `[e]`. Introduce `y`. Use `(hK k).2 (y ≫ j) ?_ (triv_of_inK_local ((hrep _ _).2 ⟨y, rfl⟩))` and prove the remaining obligations. Rewrite using `[← Category.assoc]`.
+
+Conclude with `hpt k _ _`. Establish `hext : ∀ {T : Scheme.{0}} {t : T ⟶ Sp R}, (∀ y : Over.mk t ⟶ H, y ≫ j = 1) → ∀ w w' : T ⟶ H.left, w ≫ H.hom = t → w' ≫ H.hom = t → w = w'` using `fun h w w' e e' => (cancel_mono j.left).1 (congrArg (fun q => q.left) ((h (Over.homMk w e)).trans (h (Over.homMk w' e')).symm))`. Establish `hu : FormallyUnramified H.hom` using `TangentCrit.formallyUnramified_of_tangent H.hom fun k _ _ w hw => hext (htan k (TangentCrit.dualPt k ≫ w ≫ H.hom)) _ _ hw (by simp only [Category.assoc])`. Establish `hm : Mono H.hom` using `mono_of_unramified_of_geometric_points H.hom fun k _ _ y y' e => hext (hpt k (y' ≫ H.hom)) _ _ e rfl`. Use `kTriv_iff_forall.2 fun T x hx => ?_` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `(hrep T x).1 hx`. Take `⟨y', hy'⟩` from `(hrep T 1).1 (inK_one hM T)`. Establish `: y = y'` using `Over.OverMorphism.ext ((cancel_mono H.hom).1 ((Over.w y).trans (Over.w y').symm))`. Rewrite using `[this, hy']`.
+-/
 theorem kTriv_of_points_of_tangents : Out.Laws → ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → IsProjBy A.hom → ∀ M : LB A.left, M.IsLB → (∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra R K], (∀ x : specO R K ⟶ A, Triv (Out.translDiff A M x) → x = 1) ∧ ∀ x : specO R (DualNumber K) ⟶ A, ptMap (TrivSqZeroExt.fstHom R K K) ≫ x = 1 → Triv (Out.translDiff A M x) → x = 1) → Out.KTriv A M := by
   intro hL R _ A _ _ hA hP M hM hK
   obtain ⟨hO, -, hT⟩ := TrivTwist.inK_iff_trivial_twist _ A M hM

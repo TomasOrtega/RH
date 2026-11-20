@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.DownLift.GenSplit
 
+/- English proof (translation)
+Introduce `D V v φ e he B g`. Take `⟨h, hs, hr⟩` from `GlobalTheory.SplitOnto.exists_suppAt_rho_eq e v (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdA φ) he.1 (GlobalTheory.SplitProjChart.chart_rdA D v φ e he).1 V B g`. Use `⟨h, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr]`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[GlobalTheory.SplitHecke.rho_val]`. Both sides reduce to the same expression.
+-/
 theorem exists_suppAt_grpCo_eq : ∀ (D : D7) (V : HSp D) (v : FinPl D) (φ : SplitProj D v) (e : Formalism.L2.Theta.AE D),
     IsIdemOf φ e → ∀ (B g : GL (Fin V.rank) (Fv D.host.F v)), ∃ h : GA D V, Formalism.L2.Theta.SuppAt e V h ∧ grpCo φ V B h = g := by
   intro D V v φ e he B g

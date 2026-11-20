@@ -9,6 +9,17 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2
 
 open UpperTheory.ConvolutionTheory.R2.H in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π h0 Q hQ`. Establish `hs : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite, ∀ v : HeightOneSpectrum (𝓞 F), Below v w → ∃ B, π.HasSat v B`. Establish `h1` using `UpperTheory.V.Af.Gk.satAE F 2 π`. Rewrite `h1`, the goal using `[Filter.eventually_cofinite]`. Use `(h1.biUnion (t := fun v => {w : HeightOneSpectrum (𝓞 E) | Below v w}) fun v _ => ?_).subset fun w hw => ?_` and prove the remaining obligations.
+
+Use `v.isMaximal` as an intermediate fact. Use `Set.Finite.of_finite_image (f := fun w => w.asIdeal) ((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 E)).subset ?_) fun _ _ _ _ e => HeightOneSpectrum.ext e` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `⟨w.isPrime, ⟨hw⟩⟩`. Simplify using `only [Set.mem_setOf_eq, not_forall] at hw`.
+
+Take `⟨v, hv, hn⟩` from `hw`. Conclude with `Set.mem_biUnion (show v ∈ {v | ¬ ∃ B, π.HasSat v B} from hn) hv`. Use `filter_upwards [hs, placeAe F E D, unrInert F E D W M π h0 Q hQ] with w h1 h2 h3 v hv f hf`. Take `⟨B, hB⟩` from `h1 v hv`. Establish `h4 : 1 < normV v`.
+
+Use `GlobalTheory.LFun.one_lt_absNorm v` as an intermediate fact. Simplify `this` using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Break down `h2 v hv with hsp | hi` into its components or cases. Establish `: f = 1` using `Nat.pow_right_injective h4 (show normV v ^ f = normV v ^ 1 by rw [← hf, hsp.1, pow_one])`.
+
+Substitute `this` using the available equality. Simplify using `using unrSplit F E D W M π h0 Q hQ v w hsp B hB`. Establish `: f = 2` using `Nat.pow_right_injective h4 (show normV v ^ f = normV v ^ 2 by rw [← hf, hi.norm])`. Substitute `this` using the available equality. Conclude with `h3 v hv hi B hB`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.unr :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), St.Unr W M π := by
   intro F E _ _ _ _ _ _ _ D W M π h0 Q hQ

@@ -7,6 +7,13 @@ open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisens
 
 namespace GlobalTheory.NTr
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.Glue.KTExp.map_eOm ε (1 / (p : ℚ) ^ n)`. Establish `hn : p ^ n ≠ 0` using `pow_ne_zero _ hp.ne'`. Establish `hc` using `Complex.isPrimitiveRoot_exp (p ^ n) hn`. Establish `e : Complex.exp (2 * Real.pi * Complex.I * (((1 / (p : ℚ) ^ n : ℚ)) : ℂ)) = Complex.exp (2 * Real.pi * Complex.I / ((p ^ n : ℕ) : ℂ))`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Unfold `zt`. Rewrite `hc` using `[← h]`.
+
+Conclude with `(IsPrimitiveRoot.map_iff_of_injective ε.injective).mp hc`.
+-/
 theorem zt_prim {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (p n : ℕ) (hp : 0 < p) :
     IsPrimitiveRoot (zt ε p n) (p ^ n) := by
   have h := GlobalTheory.Glue.KTExp.map_eOm ε (1 / (p : ℚ) ^ n)
@@ -19,6 +26,11 @@ theorem zt_prim {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (�
   rw [← h] at hc
   exact (IsPrimitiveRoot.map_iff_of_injective ε.injective).mp hc
 
+/- English proof (translation)
+Apply `ε.injective` to reduce the goal to its premises. Unfold `zt`. Rewrite using `[map_pow, GlobalTheory.Glue.KTExp.map_eOm, GlobalTheory.Glue.KTExp.map_eOm, ← Complex.exp_nat_mul]`. Use `congr 1`. Establish `hpL : (p : ℂ) ^ L = (p : ℂ) ^ (L - m) * (p : ℂ) ^ m` using `by rw [← pow_add, Nat.sub_add_cancel hm]`.
+
+Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne'`. Use `push_cast`. Rewrite using `[hpL]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem zt_pow {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (p L m : ℕ) (hp : 0 < p) (hm : m ≤ L) :
     zt ε p L ^ (p ^ (L - m)) = zt ε p m := by
   apply ε.injective
@@ -31,6 +43,15 @@ theorem zt_pow {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε
   rw [hpL]
   field_simp
 
+/- English proof (translation)
+Use `haveI : IsAlgClosure ℚ Ω := ⟨inferInstance, inferInstance⟩`. Use `haveI : Normal ℚ Ω := IsAlgClosure.normal ℚ Ω`. Use `haveI : NeZero (n : Ω) := ⟨by exact_mod_cast hn.ne'⟩`. Establish `hint : IsIntegral ℚ ζ` using `(hζ.isIntegral hn).tower_top`. Establish `hk' : IsPrimitiveRoot (ζ ^ k) n` using `hζ.pow_of_coprime k hk`.
+
+Establish `hmin : minpoly ℚ ζ = Polynomial.cyclotomic n ℚ` using `(Polynomial.cyclotomic_eq_minpoly_rat hζ hn).symm`. Establish `hroot : ζ ^ k ∈ (minpoly ℚ ζ).aroots Ω`. Rewrite using `[Polynomial.mem_aroots, hmin]`. Use `⟨Polynomial.cyclotomic_ne_zero n ℚ, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`.
+
+Conclude with `(Polynomial.isRoot_cyclotomic_iff).2 hk'`. Set `φ` to `(IntermediateField.algHomAdjoinIntegralEquiv ℚ hint).symm ⟨ζ ^ k, hroot⟩`. Set `ψ : Ω →ₐ[ℚ] Ω` to `φ.liftNormal Ω`. Use `⟨(AlgEquiv.ofBijective ψ (Algebra.IsAlgebraic.algHom_bijective ψ)).toRingEquiv, ?_⟩` and prove the remaining obligations. Establish `h1` using `φ.liftNormal_commutes Ω (IntermediateField.AdjoinSimple.gen ℚ ζ)`.
+
+Rewrite `h1` using `[IntermediateField.algHomAdjoinIntegralEquiv_symm_apply_gen]`. Simplify `h1` using `[ψ]`.
+-/
 theorem exists_algEquiv_primitiveRoot_pow_of_isAlgClosed {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosed Ω] [Algebra.IsAlgebraic ℚ Ω] (ζ : Ω) (n : ℕ) (hn : 0 < n)
     (hζ : IsPrimitiveRoot ζ n) (k : ℕ) (hk : k.Coprime n) : ∃ σ : Ω ≃+* Ω, σ ζ = ζ ^ k := by
   haveI : IsAlgClosure ℚ Ω := ⟨inferInstance, inferInstance⟩
@@ -51,6 +72,11 @@ theorem exists_algEquiv_primitiveRoot_pow_of_isAlgClosed {Ω : Type} [Field Ω] 
   rw [IntermediateField.algHomAdjoinIntegralEquiv_symm_apply_gen] at h1
   simpa [ψ] using h1
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `e : iA = DivisionRing.toRatAlgebra` using `Subsingleton.elim _ _`. Establish `i1 : Algebra.IsAlgebraic ℚ Ω` using `IsAlgClosure.isAlgebraic`. Use `haveI i2 : @Algebra.IsAlgebraic ℚ Ω _ _ DivisionRing.toRatAlgebra := by convert i1 using 2; exact e.symm`.
+
+Take `⟨σ, hσ⟩` from `exists_algEquiv_primitiveRoot_pow_of_isAlgClosed (Ω := Ω) ζ n hn hζ k hk`. Use `⟨AlgEquiv.ofRingEquiv (f := σ) (fun x => ?_), hσ⟩` and prove the remaining obligations. Rewrite using `[eq_ratCast]`. Conclude with `map_ratCast σ x`.
+-/
 theorem exists_aut {Ω : Type} [Field Ω] [iA : Algebra ℚ Ω] [iC : IsAlgClosure ℚ Ω] (ζ : Ω) (n : ℕ) (hn : 0 < n)
     (hζ : IsPrimitiveRoot ζ n) (k : ℕ) (hk : k.Coprime n) : ∃ σ : Ω ≃ₐ[ℚ] Ω, σ ζ = ζ ^ k := by
   haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective
@@ -64,6 +90,29 @@ theorem exists_aut {Ω : Type} [Field Ω] [iA : Algebra ℚ Ω] [iC : IsAlgClosu
   exact map_ratCast σ x
 
 open Classical in
+/- English proof (translation)
+Establish `hp : p.Prime` using `hpf.out`. Establish `hp1 : 1 < p` using `hp.one_lt`. Establish `hpm : 1 < p ^ m` using `Nat.one_lt_pow (by omega) hp1`. Establish `hN : p ^ m * p ^ (L - m) = p ^ L` using `by rw [← pow_add, Nat.add_sub_cancel' hm]`. Establish `cop : ∀ k : ℕ, Nat.Coprime (1 + p ^ m * k) (p ^ L)`.
+
+Introduce `k`. Apply `Nat.Coprime.pow_right` to reduce the goal to its premises. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `h`. Establish `h2 : p ∣ p ^ m * k` using `dvd_mul_of_dvd_left (dvd_pow_self p (by omega)) k`.
+
+Conclude with `hp.not_dvd_one ((Nat.dvd_add_left h2).mp h)`. Establish `hlt : ∀ k < p ^ (L - m), 1 + p ^ m * k < p ^ L`. Introduce `k hk`. Establish `: p ^ m * (k + 1) ≤ p ^ m * p ^ (L - m)` using `Nat.mul_le_mul_left _ hk`. Rewrite `this` using `[hN]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hval : ∀ k < p ^ (L - m), ((ZMod.unitOfCoprime (1 + p ^ m * k) (cop k) : (ZMod (p ^ L))ˣ) : ZMod (p ^ L)).val = 1 + p ^ m * k`. Introduce `k hk`. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt (hlt k hk)]`. Use `symm`.
+
+Use `Finset.sum_bij (fun k _ => ZMod.unitOfCoprime (1 + p ^ m * k) (cop k)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_range]`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[hval k hk]`.
+
+Simplify using `[Nat.ModEq, Nat.add_mul_mod_self_left]`. Introduce `k hk k' hk' h`. Rewrite `hk`, `hk'` using `[Finset.mem_range]`. Use `congrArg (fun u : (ZMod (p ^ L))ˣ => (u : ZMod (p ^ L)).val) h` as an intermediate fact. Rewrite `this` using `[hval k hk, hval k' hk']`.
+
+Establish `h3 : p ^ m * k = p ^ m * k'` using `by omega`. Conclude with `Nat.eq_of_mul_eq_mul_left (by omega) h3`. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Establish `hv : (b : ZMod (p ^ L)).val % p ^ m = 1`.
+
+Use `hb` as an intermediate fact. Unfold `Nat.ModEq at this`. Rewrite using `[this, Nat.mod_eq_of_lt hpm]`. Establish `hvl : (b : ZMod (p ^ L)).val < p ^ L` using `ZMod.val_lt _`. Establish `hdm` using `Nat.div_add_mod ((b : ZMod (p ^ L)).val) (p ^ m)`.
+
+Rewrite `hdm` using `[hv]`. Use `set k := (b : ZMod (p ^ L)).val / p ^ m`. Establish `hk : k < p ^ (L - m)`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Establish `: p ^ m * p ^ (L - m) ≤ p ^ m * k` using `Nat.mul_le_mul_left _ hc`. Rewrite `this` using `[hN]`. Use linear arithmetic over natural numbers and integers. Use `⟨k, Finset.mem_range.mpr hk, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[ZMod.coe_unitOfCoprime]`. Establish `: 1 + p ^ m * k = (b : ZMod (p ^ L)).val` using `by omega`. Rewrite using `[this, ZMod.natCast_zmod_val]`. Introduce `k hk`. Rewrite using `[hval k (Finset.mem_range.mp hk)]`.
+-/
 theorem sum_reindex (p : ℕ) [hpf : Fact p.Prime] (L m : ℕ) (hm1 : 1 ≤ m) (hm : m ≤ L) {M : Type} [AddCommMonoid M] (g : ℕ → M) :
     ∑ a ∈ Finset.univ.filter (fun a : (ZMod (p ^ L))ˣ => (a : ZMod (p ^ L)).val ≡ 1 [MOD p ^ m]), g (a : ZMod (p ^ L)).val
       = ∑ k ∈ Finset.range (p ^ (L - m)), g (1 + p ^ m * k) := by
@@ -122,6 +171,17 @@ theorem sum_reindex (p : ℕ) [hpf : Fact p.Prime] (L m : ℕ) (hm1 : 1 ≤ m) (
     rw [hval k (Finset.mem_range.mp hk)]
 
 open Classical in
+/- English proof (translation)
+Establish `hp : p.Prime` using `hpf.out`. Establish `hN : p ^ L = p ^ m * p ^ (L - m)` using `by rw [← pow_add, Nat.add_sub_cancel' hm]`. Establish `hs : ∀ a : (ZMod (p ^ L))ˣ, τ a (ζ ^ i) = ζ ^ ((a : ZMod (p ^ L)).val * i)`. Introduce `a`. Rewrite using `[map_pow, hτ, ← pow_mul]`.
+
+Establish `hr` using `sum_reindex p L m hm1 hm (fun v => ζ ^ (v * i))`. Rewrite using `[Finset.sum_congr rfl (fun a _ => hs a), hr]`. Establish `hw : IsPrimitiveRoot (ζ ^ p ^ m) (p ^ (L - m))` using `hζ.pow (pow_pos hp.pos _) hN`. Establish `hterm : ∀ k, ζ ^ ((1 + p ^ m * k) * i) = ζ ^ i * ((ζ ^ p ^ m) ^ i) ^ k`. Introduce `k`.
+
+Rewrite using `[← pow_mul, ← pow_mul, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hterm, ← Finset.mul_sum]`. Distinguish the cases in `hd : p ^ (L - m) ∣ i`.
+
+Take `⟨j, hj⟩` from `hd`. Use `⟨(ζ ^ p ^ (L - m)) ^ j, Subring.pow_mem _ (Subring.subset_closure (Set.mem_singleton _)) _, ?_⟩` and prove the remaining obligations. Establish `h1 : (ζ ^ p ^ m) ^ i = 1` using `by rw [hj, pow_mul, hw.pow_eq_one, one_pow]`. Establish `h2 : ζ ^ i = (ζ ^ p ^ (L - m)) ^ j` using `by rw [hj, pow_mul]`. Rewrite using `[h1, h2]`.
+
+Simplify using `only [one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, Nat.cast_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨0, Subring.zero_mem _, ?_⟩` and prove the remaining obligations. Establish `h1 : (ζ ^ p ^ m) ^ i ≠ 1` using `fun h => hd ((hw.pow_eq_one_iff_dvd i).mp h)`. Rewrite using `[geom_sum_eq h1, ← pow_mul, mul_comm i, pow_mul, hw.pow_eq_one, one_pow, sub_self, zero_div, mul_zero, mul_zero]`.
+-/
 theorem trace_pow {Ω : Type} [Field Ω] [Algebra ℚ Ω] (p : ℕ) [hpf : Fact p.Prime] (L m : ℕ) (hm1 : 1 ≤ m) (hm : m ≤ L)
     (ζ : Ω) (hζ : IsPrimitiveRoot ζ (p ^ L)) (τ : (ZMod (p ^ L))ˣ → (Ω ≃ₐ[ℚ] Ω))
     (hτ : ∀ a, τ a ζ = ζ ^ (a : ZMod (p ^ L)).val) (i : ℕ) :
@@ -151,6 +211,13 @@ theorem trace_pow {Ω : Type} [Field Ω] [Algebra ℚ Ω] (p : ℕ) [hpf : Fact 
     rw [geom_sum_eq h1, ← pow_mul, mul_comm i, pow_mul, hw.pow_eq_one, one_pow, sub_self, zero_div, mul_zero, mul_zero]
 
 open Classical in
+/- English proof (translation)
+Rewrite `hy` using `[Subring.mem_closure_iff, Submonoid.closure_singleton_eq]`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `trace_pow p L m hm1 hm ζ hζ τ hτ i`.
+
+Consider the case `zero => exact ⟨0, Subring.zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨z1, h1, e1⟩` from `hx`. Take `⟨z2, h2, e2⟩` from `hy`. Conclude with `⟨z1 + z2, Subring.add_mem _ h1 h2, by simp only [map_add, Finset.sum_add_distrib, e1, e2]; ring⟩`.
+
+Consider the case `neg x _ hx`. Take `⟨z1, h1, e1⟩` from `hx`. Conclude with `⟨-z1, Subring.neg_mem _ h1, by simp only [map_neg, Finset.sum_neg_distrib, e1]; ring⟩`.
+-/
 theorem trace_closure {Ω : Type} [Field Ω] [Algebra ℚ Ω] (p : ℕ) [hpf : Fact p.Prime] (L m : ℕ) (hm1 : 1 ≤ m) (hm : m ≤ L)
     (ζ : Ω) (hζ : IsPrimitiveRoot ζ (p ^ L)) (τ : (ZMod (p ^ L))ˣ → (Ω ≃ₐ[ℚ] Ω))
     (hτ : ∀ a, τ a ζ = ζ ^ (a : ZMod (p ^ L)).val) (y : Ω) (hy : y ∈ Subring.closure {ζ}) :
@@ -173,6 +240,21 @@ theorem trace_closure {Ω : Type} [Field Ω] [Algebra ℚ Ω] (p : ℕ) [hpf : F
 
 open Classical in
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε p hpf L m hm1 hm F hF`. Establish `hp : p.Prime` using `hpf.out`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `hζ` using `zt_prim ε p L hp.pos`. Establish `hpow` using `zt_pow ε p L m hp.pos hm`.
+
+Establish `hcop : ∀ a : (ZMod (p ^ L))ˣ, ((a : ZMod (p ^ L)).val).Coprime (p ^ L)` using `fun a => ZMod.val_coe_unit_coprime a`. Use `choose τ hτ using fun a : (ZMod (p ^ L))ˣ => exists_aut (zt ε p L) (p ^ L) (pow_pos hp.pos _) hζ _ (hcop a)`. Take `⟨D, hD, hDF⟩` from `hF`. Establish `hD0 : (D : Ω) ≠ 0`. Establish `: D ≠ 0` using `by rintro rfl; exact hD (dvd_zero p)`.
+
+Conclude with `this` after adjusting the coercions. Establish `hpN : (p : Ω) ^ (L - m) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hp.ne_zero)`. Take `⟨z, hz, hT⟩` from `trace_closure p L m hm1 hm (zt ε p L) hζ τ hτ _ hDF`. Rewrite `hz` using `[hpow]`. Simplify using `only [map_mul, map_natCast, ← Finset.mul_sum] at hT`.
+
+Establish `hsum : ∀ σ : (ZMod (p ^ L))ˣ → (Ω ≃ₐ[ℚ] Ω), (∀ a, σ a (zt ε p L) = zt ε p L ^ (a : ZMod (p ^ L)).val) → ∀ a, σ a F = τ a F`. Introduce `σ hσ a`. Establish `hagree : Set.EqOn ((σ a : Ω ≃+* Ω) : Ω →+* Ω) ((τ a : Ω ≃+* Ω) : Ω →+* Ω) (Subring.closure {zt ε p L})`. Apply `RingHom.eqOn_set_closure` to reduce the goal to its premises. Introduce `x hx`.
+
+Rewrite using `[Set.mem_singleton_iff.mp hx]`. Use `show σ a (zt ε p L) = τ a (zt ε p L)`. Rewrite using `[hσ, hτ]`. Establish `h2 : σ a ((D : Ω) * F) = τ a ((D : Ω) * F)` using `hagree hDF`. Rewrite `h2` using `[map_mul, map_mul, map_natCast, map_natCast]`.
+
+Conclude with `mul_left_cancel₀ hD0 h2`. Establish `hE : (p : Ω) ^ (L - m) * (z / D) = ∑ a ∈ Finset.univ.filter (fun a : (ZMod (p ^ L))ˣ => (a : ZMod (p ^ L)).val ≡ 1 [MOD p ^ m]), τ a F`. Rewrite using `[← mul_div_assoc, ← hT, mul_div_cancel_left₀ _ hD0]`. Use `⟨z / D, ⟨τ, hτ, hE⟩, ⟨D, hD, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: (D : Ω) * (z / D) = z` using `by field_simp`.
+
+Rewrite using `[this]`. Conclude with `hz`. Introduce and unpack `F'' ⟨σ, hσ, hF''⟩`. Rewrite `hF''` using `[Finset.sum_congr rfl (fun a _ => hsum σ hσ a), ← hE]`. Conclude with `mul_left_cancel₀ hpN hF''`.
+-/
 theorem normTrace_exists_unique : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (p : ℕ) [Fact p.Prime] (L m : ℕ), 1 ≤ m → m ≤ L → ∀ F : Ω, InZl ε p L F → ∃ F' : Ω, IsNT ε p L m F F' ∧ InZl ε p m F' ∧ ∀ F'' : Ω, IsNT ε p L m F F'' → F'' = F' := by
   intro Ω _ _ _ ε p hpf L m hm1 hm F hF
   have hp : p.Prime := hpf.out

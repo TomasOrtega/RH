@@ -7,6 +7,11 @@ open Matrix Finset Real Formalism.FourierDecayAlt.K
 
 variable {K : Type} [Field K] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[ha h, zero_mul]`. Rewrite using `[hb h, mul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem diag_mul {a b : Matrix (Fin n) (Fin n) K} (ha : a.BlockTriangular id)
     (hb : b.BlockTriangular id) (i : Fin n) : (a * b) i i = a i i * b i i := by
   rw [Matrix.mul_apply, Finset.sum_eq_single i]
@@ -17,17 +22,31 @@ theorem diag_mul {a b : Matrix (Fin n) (Fin n) K} (ha : a.BlockTriangular id)
   · intro h
     exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Matrix.BlockTriangular.mul ha.1 hb.1, fun i => by rw [diag_mul ha.1 hb.1, ha.2, hb.2, one_mul]⟩`.
+-/
 theorem upUni_mul {a b : Matrix (Fin n) (Fin n) K} (ha : IsUpUni a) (hb : IsUpUni b) :
     IsUpUni (a * b) := ⟨Matrix.BlockTriangular.mul ha.1 hb.1, fun i => by rw [diag_mul ha.1 hb.1, ha.2, hb.2, one_mul]⟩
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular ha.1]`. Simplify using `[ha.2]`.
+-/
 theorem upUni_det {a : Matrix (Fin n) (Fin n) K} (ha : IsUpUni a) : a.det = 1 := by
   rw [Matrix.det_of_upperTriangular ha.1]
   simp [ha.2]
 
+/- English proof (translation)
+Rewrite using `[upUni_det ha]`. Conclude with `isUnit_one`.
+-/
 theorem upUni_isUnit {a : Matrix (Fin n) (Fin n) K} (ha : IsUpUni a) : IsUnit a.det := by
   rw [upUni_det ha]
   exact isUnit_one
 
+/- English proof (translation)
+Use `haveI := Matrix.invertibleOfIsUnitDet a (upUni_isUnit ha)`. Establish `hinv` using `Matrix.blockTriangular_inv_of_blockTriangular ha.1`. Use `⟨hinv, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `diag_mul hinv ha.1 i`. Rewrite `h` using `[Matrix.nonsing_inv_mul _ (upUni_isUnit ha), ha.2, mul_one, Matrix.one_apply_eq]`.
+
+Conclude with `h.symm`.
+-/
 theorem upUni_inv {a : Matrix (Fin n) (Fin n) K} (ha : IsUpUni a) : IsUpUni a⁻¹ := by
   haveI := Matrix.invertibleOfIsUnitDet a (upUni_isUnit ha)
   have hinv := Matrix.blockTriangular_inv_of_blockTriangular ha.1
@@ -36,6 +55,13 @@ theorem upUni_inv {a : Matrix (Fin n) (Fin n) K} (ha : IsUpUni a) : IsUpUni a⁻
   rw [Matrix.nonsing_inv_mul _ (upUni_isUnit ha), ha.2, mul_one, Matrix.one_apply_eq] at h
   exact h.symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal]`. Simplify using `only [w0, Matrix.of_apply]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`.
+
+Establish `hiff : ((i : ℕ) + (j : ℕ) + 1 = n) ↔ i = Fin.rev j`. Rewrite using `[Fin.ext_iff, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h : i = Fin.rev j`. Rewrite using `[if_pos (hiff.mpr h), if_pos h, one_mul]`.
+
+Rewrite using `[if_neg (fun h' => h (hiff.mp h')), if_neg h, zero_mul]`.
+-/
 theorem antidiag_mul_diagonal (d : Fin n → K) :
     w0 n * diagonal d = Matrix.of fun i j => if i = Fin.rev j then d j else 0 := by
   ext i j
@@ -50,6 +76,11 @@ theorem antidiag_mul_diagonal (d : Fin n → K) :
   · rw [if_pos (hiff.mpr h), if_pos h, one_mul]
   · rw [if_neg (fun h' => h (hiff.mp h')), if_neg h, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[antidiag_mul_diagonal, Matrix.mul_apply, Finset.sum_eq_single (Fin.rev j)]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[hk]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem mulW_apply (a : Matrix (Fin n) (Fin n) K) (d : Fin n → K) (i j : Fin n) :
     (a * (w0 n * diagonal d) : Matrix (Fin n) (Fin n) K) i j = a i (Fin.rev j) * d j := by
   rw [antidiag_mul_diagonal, Matrix.mul_apply, Finset.sum_eq_single (Fin.rev j)]
@@ -59,6 +90,11 @@ theorem mulW_apply (a : Matrix (Fin n) (Fin n) K) (d : Fin n → K) (i j : Fin n
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Rewrite using `[antidiag_mul_diagonal, Matrix.mul_apply, Finset.sum_eq_single (Fin.rev i)]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[if_neg, zero_mul]`.
+
+Introduce `h`. Apply `hk` to reduce the goal to its premises. Rewrite using `[h, Fin.rev_rev]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem Wmul_apply (c : Matrix (Fin n) (Fin n) K) (d : Fin n → K) (i j : Fin n) :
     ((w0 n * diagonal d) * c : Matrix (Fin n) (Fin n) K) i j = d (Fin.rev i) * c (Fin.rev i) j := by
   rw [antidiag_mul_diagonal, Matrix.mul_apply, Finset.sum_eq_single (Fin.rev i)]
@@ -72,6 +108,13 @@ theorem Wmul_apply (c : Matrix (Fin n) (Fin n) K) (d : Fin n → K) (i j : Fin n
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Use extensionality with `i k`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs with hik`. Substitute `hik` using the available equality. Conclude with `ha.2 i`.
+
+Break down `lt_or_gt_of_ne hik with h' | h'` into its components or cases. Establish `e` using `congrFun (congrFun h i) (Fin.rev k)`. Rewrite `e` using `[mulW_apply, Wmul_apply, Fin.rev_rev]`. Establish `hc0 : c (Fin.rev i) (Fin.rev k) = 0` using `hc.1 (Fin.rev_lt_rev.mpr h')`. Rewrite `e` using `[hc0, mul_zero]`.
+
+Conclude with `(mul_eq_zero.mp e).resolve_right (hd _)`. Conclude with `ha.1 h'`.
+-/
 theorem lower_eq_one {a c : Matrix (Fin n) (Fin n) K} {d : Fin n → K} (ha : IsUpUni a)
     (hc : IsUpUni c) (hd : ∀ x, d x ≠ 0)
     (h : a * (w0 n * diagonal d) = (w0 n * diagonal d) * c) : a = 1 := by
@@ -88,6 +131,11 @@ theorem lower_eq_one {a c : Matrix (Fin n) (Fin n) K} {d : Fin n → K} (ha : Is
       exact (mul_eq_zero.mp e).resolve_right (hd _)
     · exact ha.1 h'
 
+/- English proof (translation)
+Use extensionality with `x j`. Establish `e` using `congrFun (congrFun h (Fin.rev x)) j`. Establish `e1 : (w0 n * Matrix.diagonal d : Matrix (Fin n) (Fin n) K) (Fin.rev x) j = ((w0 n * Matrix.diagonal d) * 1 : Matrix (Fin n) (Fin n) K) (Fin.rev x) j`. Rewrite using `[Matrix.mul_one]`. Rewrite `e` using `[e1, Wmul_apply, Wmul_apply, Fin.rev_rev]`.
+
+Conclude with `mul_left_cancel₀ (hd x) e`.
+-/
 theorem right_eq_one {b : Matrix (Fin n) (Fin n) K} {d : Fin n → K} (hd : ∀ x, d x ≠ 0)
     (h : (w0 n * diagonal d) * b = w0 n * diagonal d) : b = 1 := by
   ext x j
@@ -98,6 +146,21 @@ theorem right_eq_one {b : Matrix (Fin n) (Fin n) K} {d : Fin n → K} (hd : ∀ 
   rw [e1, Wmul_apply, Wmul_apply, Fin.rev_rev] at e
   exact mul_left_cancel₀ (hd x) e
 
+/- English proof (translation)
+Introduce `K' _ m v v' u u' d hv hv' hu hu' hd h`. Establish `hvU` using `upUni_isUnit hv`. Establish `hv'U` using `upUni_isUnit hv'`. Rewrite `h` using `[Matrix.mul_assoc v (w0 m) (Matrix.diagonal d)]`. Take `⟨W, hW⟩ : ∃ W, W = w0 m * Matrix.diagonal d` from `⟨_, rfl⟩`.
+
+Rewrite `h` using `[← hW]`. Establish `ha : IsUpUni (v⁻¹ * u * v)` using `upUni_mul (upUni_mul (upUni_inv hv) hu) hv`. Establish `hc : IsUpUni (v' * u' * v'⁻¹)` using `upUni_mul (upUni_mul hv' hu') (upUni_inv hv')`. Establish `hcU` using `upUni_isUnit hc`. Establish `key : (v⁻¹ * u * v) * W * (v' * u' * v'⁻¹) = W`.
+
+Establish `e : v⁻¹ * (u * (v * W * v') * u') * v'⁻¹ = W`. Rewrite using `[h, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hvU, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hv'U, Matrix.mul_one]`. Rewrite using `[show (v⁻¹ * u * v) * W * (v' * u' * v'⁻¹) = v⁻¹ * (u * (v * W * v') * u') * v'⁻¹ by`. Simplify using `only [Matrix.mul_assoc]]`. Conclude with `e`.
+
+Establish `key2 : (v⁻¹ * u * v) * W = W * (v' * u' * v'⁻¹)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hcU, Matrix.mul_one]`. Use `_ = ((v⁻¹ * u * v) * W * (v' * u' * v'⁻¹)) * (v' * u' * v'⁻¹)⁻¹ := (Matrix.mul_assoc _ _ _).symm`. Use `_ = W * (v' * u' * v'⁻¹)⁻¹ := by rw [key]`.
+
+Establish `ha1 : v⁻¹ * u * v = 1` using `lower_eq_one ha (upUni_inv hc) hd (by rw [← hW]; exact key2)`. Rewrite `key` using `[ha1, Matrix.one_mul]`. Establish `hc1 : v' * u' * v'⁻¹ = 1` using `right_eq_one hd (by rw [← hW]; exact key)`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hvU, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hvU, Matrix.mul_one]`. Use `_ = 1 := by rw [ha1, Matrix.mul_one, Matrix.mul_nonsing_inv _ hvU]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hv'U, Matrix.one_mul]`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hv'U, Matrix.mul_one]`. Use `_ = 1 := by rw [hc1, Matrix.mul_one, Matrix.nonsing_inv_mul _ hv'U]`.
+-/
 theorem bigCellFree : BigCellFree := by
   intro K' _ m v v' u u' d hv hv' hu hu' hd h
   have hvU := upUni_isUnit hv
@@ -135,6 +198,17 @@ theorem bigCellFree : BigCellFree := by
           rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hv'U, Matrix.mul_one]
       _ = 1 := by rw [hc1, Matrix.mul_one, Matrix.nonsing_inv_mul _ hv'U]
 
+/- English proof (translation)
+Introduce `C₀ hC₀`. Take `⟨C, hC⟩` from `Formalism.FourierDecayAlt.P.coarseBound`. Use `⟨2 * C₀, C, ?_⟩` and prove the remaining obligations. Introduce `Kx Θ f r e σ hKx hf hΘ hr he hσ hrec`. Establish `hΘ1 : 1 ≤ Θ` using `by linarith`.
+
+Establish `hΘpos : 0 < Θ` using `by linarith`. Establish `ha0 : 0 ≤ C₀ / Θ` using `div_nonneg (by linarith) hΘpos.le`. Establish `hq : C₀ / Θ ≤ 1 / 2`. Rewrite using `[div_le_iff₀ hΘpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `ha : (C₀ / Θ) ^ f ≤ 1 / 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hrp : Θ ^ (-(Kx - 5 / 2)) ≤ Θ⁻¹`. Rewrite using `[← Real.rpow_neg_one]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hΘ1 (by linarith)`.
+
+Establish `hε0 : 0 ≤ C₀ * Θ ^ (-(Kx - 5 / 2))` using `mul_nonneg (by linarith) (Real.rpow_nonneg hΘpos.le _)`. Establish `hεa : (C₀ * Θ ^ (-(Kx - 5 / 2))) ^ f ≤ (C₀ / Θ) ^ f`. Apply `pow_le_pow_left₀ hε0` to reduce the goal to its premises. Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_le_mul_of_nonneg_left hrp (by linarith)`.
+
+Conclude with `hC r ((C₀ / Θ) ^ f) ((C₀ * Θ ^ (-(Kx - 5 / 2))) ^ f) e σ (pow_nonneg ha0 _) ha (pow_nonneg hε0 _) hεa hr he hσ hrec`.
+-/
 theorem jointTheoremA : JointTheoremA := by
   intro C₀ hC₀
   obtain ⟨C, hC⟩ := Formalism.FourierDecayAlt.P.coarseBound
@@ -163,6 +237,12 @@ theorem jointTheoremA : JointTheoremA := by
 
 end Formalism.FourierDecayAlt.P.K
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.K.bigCellFree`.
+-/
 theorem Formalism.FourierDecayAlt.P.big_cell_free : Formalism.FourierDecayAlt.K.BigCellFree := Formalism.FourierDecayAlt.P.K.bigCellFree
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.K.jointTheoremA`.
+-/
 theorem Formalism.FourierDecayAlt.P.joint_theorem_A' : Formalism.FourierDecayAlt.K.JointTheoremA := Formalism.FourierDecayAlt.P.K.jointTheoremA

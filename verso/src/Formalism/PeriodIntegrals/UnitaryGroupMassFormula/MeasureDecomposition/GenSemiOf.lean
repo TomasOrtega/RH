@@ -8,6 +8,35 @@ noncomputable section
 
 namespace PI.ScMuExists.UnitaryGroupMassFormula
 
+/- English proof (translation)
+Unfold `GenSemi`. Introduce `G _ _ _ _ _ _ _ _ N H hN hH hconj hinvN hprop`. Take `⟨hσN, -, hcN, htN, hfinN, hposN⟩` from `hHaar G N hN`. Take `⟨hσH, -, hcH, htH, hfinH, hposH⟩` from `hHaar G H hH`. Use `set μN := haarSub N hN with hμN`.
+
+Use `set μH := haarSub H hH with hμH`. Use `haveI : SigmaFinite μN := hσN`. Use `haveI : SigmaFinite μH := hσH`. Establish `hmul : Measurable (fun p : G × G => p.1 * p.2)` using `measurable_fst.mul measurable_snd`. Establish `hNH : (N : Set G) * (H : Set G) = (fun p : G × G => p.1 * p.2) '' ((N : Set G) ×ˢ (H : Set G))`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨(a, b), ⟨ha, hb⟩, rfl⟩`. Introduce and unpack `⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩`.
+
+Conclude with `⟨a, ha, b, hb, rfl⟩`. Establish `hmeasNH : MeasurableSet ((N : Set G) * (H : Set G))`. Rewrite using `[hNH]`. Take `⟨K, hK, hKU⟩` from `(isSigmaCompact_univ.of_isClosed_subset (hN.prod hH) (Set.subset_univ _)).image continuous_mul`. Rewrite using `[← hKU]`.
+
+Conclude with `MeasurableSet.iUnion fun n => (hK n).measurableSet`. Establish `hprodc : (μN.prod μH) ((N : Set G) ×ˢ (H : Set G))ᶜ = 0`. Rewrite using `[Set.compl_prod_eq_union]`. Use `measure_union_null ?_ ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, hcN, zero_mul]`.
+
+Rewrite using `[Measure.prod_prod, hcH, mul_zero]`. Use `⟨?_, hmeasNH, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show SFinite ((μN.prod μH).map (fun p : G × G => p.1 * p.2)) infer_instance`. Use `show ((μN.prod μH).map (fun p : G × G => p.1 * p.2)) ((N : Set G) * (H : Set G))ᶜ = 0`. Rewrite using `[Measure.map_apply hmul hmeasNH.compl]`.
+
+Use `measure_mono_null ?_ hprodc` and prove the remaining obligations. Introduce `p hp hpNH`. Conclude with `hp ⟨p.1, hpNH.1, p.2, hpNH.2, rfl⟩`. Introduce and unpack `t ⟨n0, hn0, h0, hh0, rfl⟩ show ((μN.prod μH).map (fun p : G × G => p.1 * p.2)).map (fun x => n0 * h0 * x) = (μN.prod μH).map (fun p : G × G => p.1 * p.2)`. Establish `hc : Measurable (fun x : G => h0 * x * h0⁻¹)` using `(measurable_const_mul h0).mul_const _`.
+
+Establish `hf : Measurable (fun x : G => n0 * (h0 * x * h0⁻¹))` using `(measurable_const_mul n0).comp hc`. Establish `hg : Measurable (fun y : G => h0 * y)` using `measurable_const_mul h0`. Establish `hfN : μN.map (fun x : G => n0 * (h0 * x * h0⁻¹)) = μN` using `by show μN.map ((fun x : G => n0 * x) ∘ (fun x : G => h0 * x * h0⁻¹)) = μN`. Rewrite using `[← Measure.map_map (measurable_const_mul n0) hc, hinvN h0 hh0, htN n0 hn0]`. Establish `hgH : μH.map (fun y : G => h0 * y) = μH` using `htH h0 hh0`.
+
+Establish `hPM : Measurable (Prod.map (fun x : G => n0 * (h0 * x * h0⁻¹)) (fun y : G => h0 * y))` using `hf.prodMap hg`. Establish `hcomp : (fun x : G => n0 * h0 * x) ∘ (fun p : G × G => p.1 * p.2) = (fun p : G × G => p.1 * p.2) ∘ Prod.map (fun x : G => n0 * (h0 * x * h0⁻¹)) (fun y : G => h0 * y)`. Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp_apply, Prod.map_fst, Prod.map_snd]`. Use `group`.
+
+Rewrite using `[Measure.map_map (measurable_const_mul _) hmul, hcomp, ← Measure.map_map hmul hPM, ← Measure.map_prod_map μN μH hf hg, hfN, hgH]`. Introduce `U hU h1U show 0 < ((μN.prod μH).map (fun p : G × G => p.1 * p.2)) U`. Rewrite using `[Measure.map_apply hmul hU.measurableSet]`. Establish `hUo : IsOpen ((fun p : G × G => p.1 * p.2) ⁻¹' U)` using `hU.preimage continuous_mul`. Establish `h11 : ((1 : G), (1 : G)) ∈ (fun p : G × G => p.1 * p.2) ⁻¹' U` using `by show (1 : G) * 1 ∈ U`.
+
+Rewrite using `[one_mul]` and apply the resulting hypothesis. Take `⟨u, v, hu, hv, h1u, h1v, huv⟩` from `isOpen_prod_iff.mp hUo 1 1 h11`. Combine the equalities or inequalities in the displayed calculation. Introduce `C hC show ((μN.prod μH).map (fun p : G × G => p.1 * p.2)) C < ⊤`. Rewrite using `[Measure.map_apply hmul hC.measurableSet]`.
+
+Establish `hK` using `hprop C hC`. Use `set P := {p : G × G | p.1 ∈ N ∧ p.2 ∈ H ∧ p.1 * p.2 ∈ C} with hP`. Establish `hsub : (fun p : G × G => p.1 * p.2) ⁻¹' C ⊆ P ∪ ((N : Set G) ×ˢ (H : Set G))ᶜ`. Introduce `p hp`. Distinguish the cases in `h : p ∈ (N : Set G) ×ˢ (H : Set G)`.
+
+Conclude with `Or.inl ⟨h.1, h.2, hp⟩`. Conclude with `Or.inr h`. Establish `hPbox : P ⊆ (Prod.fst '' P) ×ˢ (Prod.snd '' P)` using `fun p hp => ⟨⟨p, hp, rfl⟩, ⟨p, hp, rfl⟩⟩`. Establish `hPfin : (μN.prod μH) P < ⊤`. Use `lt_of_le_of_lt (measure_mono hPbox) ?_` and prove the remaining obligations.
+
+Rewrite using `[Measure.prod_prod]`. Conclude with `ENNReal.mul_lt_top (hfinN _ (hK.image continuous_fst)) (hfinH _ (hK.image continuous_snd))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem genSemi_of (hHaar : GenHaarSub) : GenSemi := by
   unfold GenSemi
   intro G _ _ _ _ _ _ _ _ N H hN hH hconj hinvN hprop

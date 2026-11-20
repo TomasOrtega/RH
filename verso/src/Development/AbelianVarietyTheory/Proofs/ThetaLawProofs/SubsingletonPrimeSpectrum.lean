@@ -28,6 +28,11 @@ variable {R : Type} [CommRing R] {A : Over (Spec (CommRingCat.of R))}
 def pullFn (y : sp (R₀ := R) S ⟶ A) (U : A.left.Opens) (h : ⊤ ≤ y.left ⁻¹ᵁ U) (f : Γ(A.left, U)) : S :=
   (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom ((y.left.appLE U ⊤ h).hom f)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `e : (Chart.spMap φ ≫ y).left.appLE U ⊤ h' = y.left.appLE U ⊤ h ≫ (Spec.map (CommRingCat.ofHom (φ : S →+* S'))).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (Spec.map (CommRingCat.ofHom (φ : S →+* S'))) y.left U ⊤ ⊤ h le_rfl).symm`. Establish `e2` using `congrArg (fun k => k.hom ((y.left.appLE U ⊤ h).hom f)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (φ : S →+* S')))`.
+
+Unfold `pullFn`. Rewrite using `[e]`. Conclude with `e2`.
+-/
 theorem pullFn_comp (φ : S →ₐ[R] S') (y : sp (R₀ := R) S ⟶ A) (y' : sp (R₀ := R) S' ⟶ A)
     (e : y' = Chart.spMap φ ≫ y) (U : A.left.Opens) (h : ⊤ ≤ y.left ⁻¹ᵁ U)
     (h' : ⊤ ≤ y'.left ⁻¹ᵁ U) (f : Γ(A.left, U)) :
@@ -43,12 +48,20 @@ theorem pullFn_comp (φ : S →ₐ[R] S') (y : sp (R₀ := R) S ⟶ A) (y' : sp 
   rw [e]
   exact e2
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `fun x _ => h (Set.mem_univ ((Chart.spMap φ).left x))`.
+-/
 theorem le_preimage_comp (φ : S →ₐ[R] S') (y : sp (R₀ := R) S ⟶ A) (y' : sp (R₀ := R) S' ⟶ A)
     (e : y' = Chart.spMap φ ≫ y) (U : A.left.Opens) (h : ⊤ ≤ y.left ⁻¹ᵁ U) :
     ⊤ ≤ y'.left ⁻¹ᵁ U := by
   subst e
   exact fun x _ => h (Set.mem_univ ((Chart.spMap φ).left x))
 
+/- English proof (translation)
+Substitute `e` using the available equality. Introduce `x _`. Take `⟨x'⟩ : Nonempty (PrimeSpectrum S')` from `inferInstance`. Use `h (Set.mem_univ x')` as an intermediate fact. Establish `hx : (Chart.spMap φ).left x' = x` using `Subsingleton.elim (α := PrimeSpectrum S) _ _`.
+
+Express the relevant statement in the definitionally equal form `y.left ((Chart.spMap φ).left x') ∈ U at this`. Rewrite `this` using `[hx]`. Then use the resulting hypothesis.
+-/
 theorem le_preimage_of_comp [Subsingleton (PrimeSpectrum S)] [Nontrivial S'] (φ : S →ₐ[R] S')
     (y : sp (R₀ := R) S ⟶ A) (y' : sp (R₀ := R) S' ⟶ A)
     (e : y' = Chart.spMap φ ≫ y) (U : A.left.Opens) (h : ⊤ ≤ y'.left ⁻¹ᵁ U) :
@@ -63,6 +76,13 @@ theorem le_preimage_of_comp [Subsingleton (PrimeSpectrum S)] [Nontrivial S'] (φ
 
 end Pull
 
+/- English proof (translation)
+Establish `h : ∀ z : PrimeSpectrum (TrivSqZeroExt K M), ∀ a, a ∈ z.asIdeal ↔ a.fst = 0` using `fun z a => by`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Assume the negation of the conclusion as `h0`. Conclude with `z.2.ne_top (z.asIdeal.eq_top_of_isUnit_mem ha (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (Ne.isUnit h0)))`.
+
+Introduce `ha`. Use `z.2.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Apply the tactic sequence `rw [show a ^ 2 = 0 by ext <;> simp [pow_two, ha]]`. Conclude with `z.asIdeal.zero_mem`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `a`. Rewrite using `[h, h]`.
+-/
 theorem subsingleton_primeSpectrum (K M : Type) [Field K] [AddCommGroup M] [Module K M] [Module Kᵐᵒᵖ M]
     [IsCentralScalar K M] : Subsingleton (PrimeSpectrum (TrivSqZeroExt K M)) := by
   have h : ∀ z : PrimeSpectrum (TrivSqZeroExt K M), ∀ a, a ∈ z.asIdeal ↔ a.fst = 0 := fun z a => by
@@ -81,6 +101,17 @@ theorem subsingleton_primeSpectrum (K M : Type) [Field K] [AddCommGroup M] [Modu
 
 variable {K : Type} [Field K] {A : Over (Spec (CommRingCat.of K))} [GrpObj A]
 
+/- English proof (translation)
+Set `E` to `TrivSqZeroExt K (Fin 2 → K)`. Establish `: Subsingleton (PrimeSpectrum E)` using `subsingleton_primeSpectrum K _`. Set `e : Fin 2 → E` to `fun i => inr (Pi.single i 1)`. Establish `he : ∀ i j, e i * e j = 0` using `fun i j => TrivSqZeroExt.inr_mul_inr _ _ _`. Establish `ax : ∀ c : Fin 2 → K, ∀ a b : Fin 2, (inr (c a) : DualNumber K) * inr (c b) = 0` using `fun c a b => TrivSqZeroExt.inr_mul_inr _ _ _`.
+
+Set `q : (Fin 2 → K) → (E →ₐ[K] DualNumber K)` to `fun c => vecTo (Algebra.ofId K _) (fun a => inr (c a)) (ax c)`. Establish `hq : ∀ c a, q c (e a) = inr (c a)` using `fun c a => vecTo_single _ _ _ _`. Establish `hqs : ∀ c (x : E), (q c x).snd = x.snd 0 * c 0 + x.snd 1 * c 1` using `fun c x => by`. Use `(congrArg TrivSqZeroExt.snd (vecTo_apply _ _ (ax c) x)).trans ?_` and prove the remaining obligations. Simplify using `[Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl, mul_comm]`.
+
+Establish `hid : ∀ (t : DualNumber K) (ht : t * t = 0), t = inr 1 → epsTo K t ht = AlgHom.id K _` using `fun t ht h => DualNumber.algHom_ext (by rw [epsTo_eps, h]; rfl)`. Set `p : sp (R₀` to `K) E ⟶ A := (Chart.spMap (epsTo K (e 0) (he 0 0)) ≫ v) * (Chart.spMap (epsTo K (e 1) (he 1 1)) ≫ v')`. Establish `e₀ : v * v' = Chart.spMap (q ![1, 1]) ≫ p`. Simplify using `only [p, MonObj.comp_mul, ← Category.assoc, Chart.spMap_comp, comp_epsTo]`. Rewrite using `[hid _ _ (by simp [hq]), hid _ _ (by simp [hq]), Chart.spMap_id, Category.id_comp, Category.id_comp]`.
+
+Establish `e₁ : v = Chart.spMap (q ![1, 0]) ≫ p`. Simplify using `only [p, MonObj.comp_mul, ← Category.assoc, Chart.spMap_comp, comp_epsTo]`. Rewrite using `[hid _ _ (by simp [hq]), epsTo_zero_comp hv' _ (by simp [hq]), Chart.spMap_id, Category.id_comp, _root_.mul_one]`. Establish `e₂ : v' = Chart.spMap (q ![0, 1]) ≫ p`. Simplify using `only [p, MonObj.comp_mul, ← Category.assoc, Chart.spMap_comp, comp_epsTo]`.
+
+Rewrite using `[epsTo_zero_comp hv _ (by simp [hq]), hid _ _ (by simp [hq]), Chart.spMap_id, Category.id_comp, _root_.one_mul]`. Establish `hp` using `le_preimage_of_comp _ _ _ e₀ U h`. Use `⟨le_preimage_comp _ _ _ e₁ U hp, le_preimage_comp _ _ _ e₂ U hp, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[pullFn_comp _ _ _ e₀ U hp, pullFn_comp _ _ _ e₁ U hp, pullFn_comp _ _ _ e₂ U hp, hqs, hqs, hqs]`. Simplify using the standard rewrite rules.
+-/
 theorem snd_pullFn_mul {v v' : sp (R₀ := K) (DualNumber K) ⟶ A} (hv : IsTan v) (hv' : IsTan v')
     (U : A.left.Opens) (h : ⊤ ≤ (v * v').left ⁻¹ᵁ U) :
     ∃ (h₁ : ⊤ ≤ v.left ⁻¹ᵁ U) (h₂ : ⊤ ≤ v'.left ⁻¹ᵁ U), ∀ f : Γ(A.left, U),
@@ -121,6 +152,9 @@ section Unif
 
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
+/- English proof (translation)
+Introduce `U hU f`. Take `⟨h₁, h₂, e⟩` from `snd_pullFn_mul hv hv' U hU`. Rewrite using `[map_add, ← h U h₁ f, ← h' U h₂ f]`. Conclude with `e f`.
+-/
 theorem isDiff_mul {w w' : Fin g → ℂ} {v v' : epsR ℂ ⟶ A} (hv : IsTan v) (hv' : IsTan v')
     (h : u.IsDiff w v) (h' : u.IsDiff w' v') : u.IsDiff (w + w') (v * v') := by
   intro U hU f
@@ -128,6 +162,11 @@ theorem isDiff_mul {w w' : Fin g → ℂ} {v v' : epsR ℂ ⟶ A} (hv : IsTan v)
   rw [map_add, ← h U h₁ f, ← h' U h₂ f]
   exact e f
 
+/- English proof (translation)
+Introduce `U hU f`. Establish `: Subsingleton (PrimeSpectrum (DualNumber ℂ))` using `subsingleton_primeSpectrum ℂ ℂ`. Establish `hU'` using `le_preimage_of_comp (scaleD c) v _ rfl U hU`. Rewrite using `[map_smul, ← h U hU' f]`. Use `(congrArg TrivSqZeroExt.snd (pullFn_comp (scaleD c) v _ rfl U hU' hU f)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[scaleD_eq]`. Simplify using `[epsTo, dualTo_apply, Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl, pullFn, mul_comm]`.
+-/
 theorem isDiff_scale {w : Fin g → ℂ} {v : epsR ℂ ⟶ A} (h : u.IsDiff w v) (c : ℂ) :
     u.IsDiff (c • w) (Chart.spMap (scaleD c) ≫ v) := by
   intro U hU f
@@ -138,6 +177,9 @@ theorem isDiff_scale {w : Fin g → ℂ} {v : epsR ℂ ⟶ A} (h : u.IsDiff w v)
   rw [scaleD_eq]
   simp [epsTo, dualTo_apply, Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl, pullFn, mul_comm]
 
+/- English proof (translation)
+Introduce `U hU f`. Rewrite using `[map_zero]`. Use `(congrArg TrivSqZeroExt.snd (pullFn_comp (scaleD (0 : ℂ)) (1 : epsR ℂ ⟶ A) 1 (comp_one' _).symm U hU hU f)).trans ?_` and prove the remaining obligations. Rewrite using `[scaleD_eq]`. Simplify using `[epsTo, dualTo_apply, Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem isDiff_one : u.IsDiff 0 (1 : epsR ℂ ⟶ A) := by
   intro U hU f
   rw [map_zero]
@@ -146,6 +188,9 @@ theorem isDiff_one : u.IsDiff 0 (1 : epsR ℂ ⟶ A) := by
   rw [scaleD_eq]
   simp [epsTo, dualTo_apply, Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+The claim follows from `| 0, W, v, _, _ => by rw [List.ofFn_zero, List.prod_nil, Finset.univ_eq_empty, Finset.sum_empty] exact ⟨isTan_one, isDiff_one u⟩ | n + 1, W, v, hv, h => by obtain ⟨h₁, h₂⟩ := isDiff_prod (fun i => W i.succ) (fun i => v i.succ) (fun i => hv _) (fun i => h _) rw [List.ofFn_succ, Li …`.
+-/
 theorem isDiff_prod : ∀ {n : ℕ} (W : Fin n → Fin g → ℂ) (v : Fin n → (epsR ℂ ⟶ A)),
     (∀ i, IsTan (v i)) → (∀ i, u.IsDiff (W i) (v i)) →
       IsTan (List.ofFn v).prod ∧ u.IsDiff (∑ i, W i) (List.ofFn v).prod
@@ -159,6 +204,9 @@ theorem isDiff_prod : ∀ {n : ℕ} (W : Fin n → Fin g → ℂ) (v : Fin n →
 
 end Unif
 
+/- English proof (translation)
+Introduce `A _ L g n u W v c w hv h hw`. Rewrite using `[(isLieComb_iff c v w).1 hw]`. Conclude with `(isDiff_prod u (fun i => c i • W i) _ (fun i => isTan_scale (c i) ((isTan_iff _).2 (hv i))) (fun i => isDiff_scale u (h i) (c i))).2`.
+-/
 theorem isDiff_of_isLieComb :
     ∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (g n : ℕ) (u : HolUnif A L g) (W : Fin n → (Fin g → ℂ))
       (v : Fin n → (epsR ℂ ⟶ A)) (c : Fin n → ℂ) (w : epsR ℂ ⟶ A), (∀ i, IsTangent (v i)) →

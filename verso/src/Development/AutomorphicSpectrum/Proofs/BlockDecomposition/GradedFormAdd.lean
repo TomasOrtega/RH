@@ -10,6 +10,11 @@ namespace GlobalTheory.CompanionTheory.GrForm
 section Abstract
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C]
 
+/- English proof (translation)
+Take `⟨f, hf, rfl, e⟩` from `hc`. Take `⟨f', hf', rfl, e'⟩` from `hc'`. Use `⟨f + f', by rw [map_add, hf, hf', add_zero], rfl, fun s => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(show sqM a b _ from f s).1 + (show sqM a b _ from f' s).1 = _`. Rewrite using `[e s, e' s, ← map_add]`.
+
+Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Use `(b.S _).neg_mem (h s)` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis.
+-/
 theorem rep_add {A : C ⥤ CommAlgCat.{0} R} {a b : IdF A} {j : ℕ}
     {z z' z'' : ∀ s : ComposableArrows C j, A.obj (s.obj (Fin.last j))} {c c' : CH.H (sq a b) j}
     (h : ∀ s, z'' s - (z s + z' s) ∈ b.S _) (hc : Rep a b z c) (hc' : Rep a b z' c') :
@@ -23,6 +28,11 @@ theorem rep_add {A : C ⥤ CommAlgCat.{0} R} {a b : IdF A} {j : ℕ}
   have := (b.S _).neg_mem (h s)
   rwa [neg_sub] at this
 
+/- English proof (translation)
+Take `⟨f, hf, rfl, e⟩` from `hc`. Use `⟨-f, by rw [map_neg, hf, neg_zero], rfl, fun s => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-(show sqM a b _ from f s).1 = _`. Rewrite using `[e s, ← map_neg]`. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations.
+
+Use `(b.S _).neg_mem (h s)` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis.
+-/
 theorem rep_neg {A : C ⥤ CommAlgCat.{0} R} {a b : IdF A} {j : ℕ}
     {z z' : ∀ s : ComposableArrows C j, A.obj (s.obj (Fin.last j))} {c : CH.H (sq a b) j}
     (h : ∀ s, z' s - (-z s) ∈ b.S _) (hc : Rep a b z c) : Rep a b z' (-c) := by
@@ -34,6 +44,11 @@ theorem rep_neg {A : C ⥤ CommAlgCat.{0} R} {a b : IdF A} {j : ℕ}
   have := (b.S _).neg_mem (h s)
   rwa [neg_sub] at this
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_sub_distrib]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub]`. Establish `h1 : y i - y' i ∈ (Fil ((1 : ℕ) : ℤ)).S _`. Rewrite using `[Nat.cast_one, hF.one]`.
+
+Conclude with `h i`. Use `hF.mul j 1 _ (wz_mem hF u hu (I i) s) h1` as an intermediate fact. Rewrite `this` using `[Nat.cast_add, Nat.cast_one]`. Then use the resulting hypothesis.
+-/
 theorem sum_wz_sub {Φ : PDF R C} {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) {d j : ℕ} (u : Fin d → ∀ T : C, Φ.A.obj T)
     (hu : ∀ i {T T' : C} (φ : T ⟶ T'), u i T' - (Φ.A.map φ).hom (u i T) ∈ Φ.J.S T')
     {ι : Type} [Fintype ι] (I : ι → Fin j → Fin d) (s : ComposableArrows C j)
@@ -53,14 +68,23 @@ end Abstract
 section Forms
 variable {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_add, lft_spec T h, lft_spec T h, lft_spec T h, map_add, sub_self]`.
+-/
 theorem lft_add_sub {W : X.Opens} (T : Thick (LL q)) (h : InU W T) (f g : Γ(X, W)) :
     lft W T (f + g) - (lft W T f + lft W T g) ∈ T.J := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_add, lft_spec T h, lft_spec T h, lft_spec T h, map_add, sub_self]
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_neg, lft_spec T h, lft_spec T h, map_neg, sub_self]`.
+-/
 theorem lft_neg_sub {W : X.Opens} (T : Thick (LL q)) (h : InU W T) (f : Γ(X, W)) :
     lft W T (-f) - (-lft W T f) ∈ T.J := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_neg, lft_spec T h, lft_spec T h, map_neg, sub_self]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `u i T'.obj - φ.hom.φ (u i T.obj) ∈ T'.obj.J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, hu i _ (hP _ T'.property), ev_nat φ.hom (hP _ T.property) (hP _ T'.property), ← hu i _ (hP _ T.property)]`. Conclude with `sub_eq_zero.2 rfl`.
+-/
 theorem lift_cocycle {W : X.Opens} {d : ℕ} {t : Fin d → Γ(X, W)} {u : Fin d → ∀ T : Thick (LL q), T.B}
     (hu : IsLift W t u) (P : ObjectProperty (Thick (LL q))) (hP : ∀ T, P T → InU W T) (i : Fin d)
     {T T' : P.FullSubcategory} (φ : T ⟶ T') :
@@ -72,6 +96,11 @@ theorem lift_cocycle {W : X.Opens} {d : ℕ} {t : Fin d → Γ(X, W)} {u : Fin d
 
 end Forms
 
+/- English proof (translation)
+Introduce `O _ X q W d t u hu P hP r x x' c c' hc hc'`. Establish `hF : IsFil (sP P) (sFil P)` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil P`. Establish `hcoc` using `fun i {T T' : P.FullSubcategory} (φ : T ⟶ T') => lift_cocycle hu P hP i φ`. Prove the components needed by the constructor for the conclusion. Use `rep_add (fun s => ?_) hc hc'` and prove the remaining obligations.
+
+Use `sum_wz_sub hF (fun i T => u i T.obj) hcoc (fun I : Idx r d => I.1) s (fun I => (show (sP P).A.obj (s.obj (Fin.last r)) from lft W (s.obj (Fin.last r)).obj ((x + x') I))) (fun I => (show (sP P).A.obj (s.obj (Fin.last r)) from lft W (s.obj (Fin.last r)).obj (x I)) + (show (sP P).A. …` as an intermediate fact. Simplify `this` using `only [mul_add, Finset.sum_add_distrib]`. Use `rep_neg (fun s => ?_) hc` and prove the remaining obligations. Use `sum_wz_sub hF (fun i T => u i T.obj) hcoc (fun I : Idx r d => I.1) s (fun I => (show (sP P).A.obj (s.obj (Fin.last r)) from lft W (s.obj (Fin.last r)).obj ((-x) I))) (fun I => -(show (sP P).A.obj (s.obj (Fin.last r)) from lft W (s.obj (Fin.last r)).obj (x I))) (fun I => lft_neg_s …` as an intermediate fact. Simplify `this` using `only [mul_neg, Finset.sum_neg_distrib]`.
+-/
 theorem stAdd : StAdd := by
   intro O _ X q W d t u hu P hP r x x' c c' hc hc'
   have hF : IsFil (sP P) (sFil P) := GlobalTheory.CompanionTheory.DPFil.isFil_sFil P

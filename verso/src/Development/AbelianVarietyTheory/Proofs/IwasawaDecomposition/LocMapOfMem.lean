@@ -22,10 +22,16 @@ def locMap (c : AlgChart p σ d) (f : ReciprocityTheory.L2DbarEstimates.V d × R
       c.e.symm (f (c.e y, WithLp.toLp 2 (c₀.dtrans c y ξ)))
     else y
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem locMap_of_mem (c c₀ : AlgChart p σ d) (f : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d → ReciprocityTheory.L2DbarEstimates.V d)
     {y : CxPts p σ} {ξ : Fin d → ℂ} (h : y ∈ c.e.source ∧ f (c.e y, WithLp.toLp 2 (c₀.dtrans c y ξ)) ∈ c.e.target) :
     locMap c f c₀ y ξ = c.e.symm (f (c.e y, WithLp.toLp 2 (c₀.dtrans c y ξ))) := if_pos h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [AlgChart.dtrans, Pi.smul_apply]`. Rewrite using `[WithLp.toLp_smul, ContinuousLinearMap.map_smul_of_tower]`. Both sides reduce to the same expression.
+-/
 theorem dtrans_smul (c c₀ : AlgChart p σ d) (y : CxPts p σ) (t : ℝ) (ξ : Fin d → ℂ) :
     c₀.dtrans c y (t • ξ) = t • c₀.dtrans c y ξ := by
   funext b

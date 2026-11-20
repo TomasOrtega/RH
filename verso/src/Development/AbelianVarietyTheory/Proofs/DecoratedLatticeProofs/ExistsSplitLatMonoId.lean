@@ -15,52 +15,84 @@ namespace GlobalTheory.SeeSaw.SplitLat
 
 variable {D : D7} {S S₀ : HSp D} {ρ : ℕ}
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, mul_assoc]`.
+-/
 theorem sum_pair_eq {n : ℕ} (G : Matrix (Fin n) (Fin n) D.host.E) (x y : Fin n → D.host.E) :
     ∑ i, ∑ j, star (x i) * G i j * y j = star x ⬝ᵥ (G *ᵥ y) := by
   simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]`.
+-/
 theorem pair_mul {m n : ℕ} (A B : Matrix (Fin m) (Fin n) D.host.E) (x y : Fin n → D.host.E) :
     star x ⬝ᵥ ((Aᴴ * B) *ᵥ y) = star (A *ᵥ x) ⬝ᵥ (B *ᵥ y) := by
   rw [← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]
 
 variable (d : HypDec S S₀ ρ)
 
+/- English proof (translation)
+Rewrite using `[gram_eq d, Matrix.add_mulVec, Matrix.add_mulVec, dotProduct_add, dotProduct_add, pair_mul, pair_mul, pair_mul, ← Matrix.mulVec_mulVec]`.
+-/
 theorem pair_decomp (x y : Fin S.rank → D.host.E) :
     star x ⬝ᵥ (S.gram *ᵥ y) = star (d.qY *ᵥ x) ⬝ᵥ (d.qX *ᵥ y) + star (d.q0 *ᵥ x) ⬝ᵥ (S₀.gram *ᵥ (d.q0 *ᵥ y)) +
       star (d.qX *ᵥ x) ⬝ᵥ (d.qY *ᵥ y) := by
   rw [gram_eq d, Matrix.add_mulVec, Matrix.add_mulVec, dotProduct_add, dotProduct_add, pair_mul, pair_mul, pair_mul,
     ← Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Apply the tactic sequence `funext j; by_cases h : j = i <;> simp [h, Pi.single_apply]`.
+-/
 theorem star_single (i : Fin ρ) (b : D.host.E) : star (Pi.single i b : Fin ρ → D.host.E) = Pi.single i (star b) := by
   funext j; by_cases h : j = i <;> simp [h, Pi.single_apply]
 
+/- English proof (translation)
+Rewrite using `[pair_decomp d]`. Simplify using `only [Matrix.mulVec_mulVec, qX_e, wittDecomposition_coreProj_mul_e_eq_zero, qY_e, Matrix.one_mulVec, Matrix.zero_mulVec, star_zero, zero_dotProduct, add_zero, zero_add, star_single, single_dotProduct]`.
+-/
 theorem pair_e (i : Fin ρ) (b : D.host.E) (y : Fin S.rank → D.host.E) :
     star (d.e *ᵥ Pi.single i b) ⬝ᵥ (S.gram *ᵥ y) = star b * (d.qY *ᵥ y) i := by
   rw [pair_decomp d]
   simp only [Matrix.mulVec_mulVec, qX_e, wittDecomposition_coreProj_mul_e_eq_zero, qY_e, Matrix.one_mulVec, Matrix.zero_mulVec, star_zero,
     zero_dotProduct, add_zero, zero_add, star_single, single_dotProduct]
 
+/- English proof (translation)
+Rewrite using `[pair_decomp d]`. Simplify using `only [Matrix.mulVec_mulVec, qX_e', wittZeroProjection_mul_dualBasis_eq_zero, qY_e', Matrix.one_mulVec, Matrix.zero_mulVec, star_zero, zero_dotProduct, add_zero, zero_add, star_single, single_dotProduct]`.
+-/
 theorem pair_e' (i : Fin ρ) (c : D.host.E) (y : Fin S.rank → D.host.E) :
     star (d.e' *ᵥ Pi.single i c) ⬝ᵥ (S.gram *ᵥ y) = star c * (d.qX *ᵥ y) i := by
   rw [pair_decomp d]
   simp only [Matrix.mulVec_mulVec, qX_e', wittZeroProjection_mul_dualBasis_eq_zero, qY_e', Matrix.one_mulVec, Matrix.zero_mulVec, star_zero,
     zero_dotProduct, add_zero, zero_add, star_single, single_dotProduct]
 
+/- English proof (translation)
+Rewrite using `[pair_decomp d]`. Simplify using `only [Matrix.mulVec_mulVec, qX_i₀, wittDecomposition_coreProj_mul_core_eq_one, qY_i₀, Matrix.one_mulVec, Matrix.zero_mulVec, star_zero, zero_dotProduct, add_zero, zero_add]`.
+-/
 theorem pair_i₀ (x₀ : Fin S₀.rank → D.host.E) (y : Fin S.rank → D.host.E) :
     star (d.i₀ *ᵥ x₀) ⬝ᵥ (S.gram *ᵥ y) = star x₀ ⬝ᵥ (S₀.gram *ᵥ (d.q0 *ᵥ y)) := by
   rw [pair_decomp d]
   simp only [Matrix.mulVec_mulVec, qX_i₀, wittDecomposition_coreProj_mul_core_eq_one, qY_i₀, Matrix.one_mulVec, Matrix.zero_mulVec, star_zero,
     zero_dotProduct, add_zero, zero_add]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, ← Matrix.add_mulVec, d.sum_eq_one_rat, Matrix.one_mulVec]`.
+-/
 theorem decomp (y : Fin S.rank → D.host.E) : y = d.e *ᵥ (d.qX *ᵥ y) + d.i₀ *ᵥ (d.q0 *ᵥ y) + d.e' *ᵥ (d.qY *ᵥ y) := by
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, ← Matrix.add_mulVec,
     d.sum_eq_one_rat, Matrix.one_mulVec]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h (FractionalIdeal.eq_zero_iff.2 hc)`.
+-/
 theorem exists_ne_zero {𝔟 : FI D} (h : 𝔟 ≠ 0) : ∃ b ∈ 𝔟, b ≠ 0 := by
   by_contra hc
   push_neg at hc
   exact h (FractionalIdeal.eq_zero_iff.2 hc)
 
+/- English proof (translation)
+Take `⟨a, ha, hint⟩` from `𝔟.isFractional`. Use `⟨star (algebraMap (𝓞 D.host.E) D.host.E a), fun b hb => ?_, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `hint b hb`. Establish `: star b * star (algebraMap (𝓞 D.host.E) D.host.E a) = star (algebraMap (𝓞 D.host.E) D.host.E r)`. Rewrite using `[hr, Algebra.smul_def, star_mul', mul_comm]`.
+
+Rewrite using `[this]`. Conclude with `GlobalTheory.HypLattice.star_mem_int ⟨r, rfl⟩`. Rewrite using `[Ne, star_eq_zero]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 D.host.E) D.host.E)).2 (nonZeroDivisors.ne_zero ha)`.
+-/
 theorem exists_ne_zero_dualC (𝔟 : FI D) : ∃ c ∈ dualC 𝔟, c ≠ 0 := by
   obtain ⟨a, ha, hint⟩ := 𝔟.isFractional
   refine ⟨star (algebraMap (𝓞 D.host.E) D.host.E a), fun b hb => ?_, ?_⟩
@@ -72,6 +104,11 @@ theorem exists_ne_zero_dualC (𝔟 : FI D) : ∃ c ∈ dualC 𝔟, c ≠ 0 := by
   · rw [Ne, star_eq_zero]
     exact (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 D.host.E) D.host.E)).2 (nonZeroDivisors.ne_zero ha)
 
+/- English proof (translation)
+Take `⟨β, hβ, hβ0⟩` from `exists_ne_zero h`. Use `⟨(star β)⁻¹, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨o, ho⟩` from `hc β hβ`. Establish `hs : star β ≠ 0` using `by rwa [Ne, star_eq_zero]`. Use `Submodule.mem_span_singleton.2 ⟨o, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, ho, mul_comm (star β), mul_assoc, mul_inv_cancel₀ hs, mul_one]`.
+-/
 theorem dualC_le_span {𝔟 : FI D} (h : 𝔟 ≠ 0) : ∃ γ : D.host.E, dualC 𝔟 ≤ Submodule.span (𝓞 D.host.E) {γ} := by
   obtain ⟨β, hβ, hβ0⟩ := exists_ne_zero h
   refine ⟨(star β)⁻¹, fun c hc => ?_⟩
@@ -80,12 +117,34 @@ theorem dualC_le_span {𝔟 : FI D} (h : 𝔟 ≠ 0) : ∃ γ : D.host.E, dualC 
   refine Submodule.mem_span_singleton.2 ⟨o, ?_⟩
   rw [Algebra.smul_def, ho, mul_comm (star β), mul_assoc, mul_inv_cancel₀ hs, mul_one]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_smul, ← Pi.single_smul', smul_eq_mul, mul_assoc, inv_mul_cancel₀ hb, mul_one]`.
+-/
 theorem mulVec_single_smul {n : ℕ} (M : Matrix (Fin S.rank) (Fin n) D.host.E) (i : Fin n) {a b : D.host.E} (hb : b ≠ 0) :
     M *ᵥ Pi.single i a = (a * b⁻¹) • (M *ᵥ Pi.single i b) := by
   rw [← Matrix.mulVec_smul, ← Pi.single_smul', smul_eq_mul, mul_assoc, inv_mul_cancel₀ hb, mul_one]
 
 variable {L₀ : Lat S₀} {𝔟 : ℕ → FI D}
 
+/- English proof (translation)
+Use `choose γ hγ using fun i : Fin ρ => dualC_le_span (h𝔟 i)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Set `T : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)` to `(⨆ i : Fin ρ, (𝔟 i : Submodule (𝓞 D.host.E) D.host.E).map ((LinearMap.toSpanSingleton D.host.E _ (d.e *ᵥ Pi.single i 1)).restrictScalars (𝓞 D.host.E))) ⊔ L₀.map ((Matrix.mulVecLin d.i₀).restrictScalars (𝓞 D.host.E)) ⊔ ⨆ i : Fin ρ, (Submodule.span (𝓞 D.host.E) {γ i}).map ((LinearM …`. Establish `hT : T.FG` using `((Submodule.fg_iSup _ fun i : Fin ρ => (FractionalIdeal.fg_of_isNoetherianRing le_rfl (𝔟 i)).map _).sup (hL₀.fg.map _)).sup (Submodule.fg_iSup _ fun i : Fin ρ => (Submodule.fg_span_singleton _).map _)`. Use `hT.of_le fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨h1, h2, h3⟩` from `(mem_splitL d L₀ 𝔟 y).1 hy`. Establish `hs : ∀ (M : Matrix (Fin S.rank) (Fin ρ) D.host.E) (w : Fin ρ → D.host.E), M *ᵥ w = ∑ i, w i • (M *ᵥ Pi.single i 1)`. Introduce `M w`. Use `conv_lhs => rw [← Finset.univ_sum_single w]`. Rewrite using `[Matrix.mulVec_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_smul, ← Pi.single_smul', smul_eq_mul, mul_one]`. Rewrite using `[decomp d y, hs d.e, hs d.e']`. Use `add_mem (add_mem (Submodule.mem_sup_left (Submodule.mem_sup_left ?_)) (Submodule.mem_sup_left (Submodule.mem_sup_right ⟨_, h2, rfl⟩))) (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Conclude with `sum_mem fun i _ => Submodule.mem_iSup_of_mem i ⟨_, h1 i, rfl⟩`.
+
+Conclude with `sum_mem fun i _ => Submodule.mem_iSup_of_mem i ⟨_, hγ i (h3 i), rfl⟩`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Rewrite using `[decomp d y]`. Use `add_mem (add_mem ?_ ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.univ_sum_single (d.qX *ᵥ y), Matrix.mulVec_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Take `⟨β, hβ, hβ0⟩` from `exists_ne_zero (h𝔟 i)`. Rewrite using `[mulVec_single_smul d.e i hβ0]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (e_mem (single_mem_of_mem (I := fun j => (𝔟 j : Submodule (𝓞 D.host.E) D.host.E)) i hβ)))`.
+
+Establish `hx : d.q0 *ᵥ y ∈ Submodule.span D.host.E (L₀ : Set (Fin S₀.rank → D.host.E))`. Rewrite using `[hL₀.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Generalize the expression as in `d.q0 *ᵥ y = x₀ at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x hx => exact Submodule.subset_span (i₀_mem hx)`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x x' _ _ hx hx' => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hx'`.
+
+Consider the case `smul a x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ a hx`. Rewrite using `[← Finset.univ_sum_single (d.qY *ᵥ y), Matrix.mulVec_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Take `⟨c, hc, hc0⟩` from `exists_ne_zero_dualC (𝔟 i)`.
+
+Rewrite using `[mulVec_single_smul d.e' i hc0]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (e'_mem (single_mem_of_mem (I := fun j => dualC (𝔟 j)) i hc)))`.
+-/
 theorem isLattice_splitL (h𝔟 : ∀ i, 𝔟 i ≠ 0) (hL₀ : Submodule.IsLattice D.host.E L₀) :
     Submodule.IsLattice D.host.E (splitL d L₀ 𝔟) := by
   choose γ hγ using fun i : Fin ρ => dualC_le_span (h𝔟 i)
@@ -137,6 +196,21 @@ theorem isLattice_splitL (h𝔟 : ∀ i, 𝔟 i ≠ 0) (hL₀ : Submodule.IsLatt
       rw [mulVec_single_smul d.e' i hc0]
       exact Submodule.smul_mem _ _ (Submodule.subset_span (e'_mem (single_mem_of_mem (I := fun j => dualC (𝔟 j)) i hc)))
 
+/- English proof (translation)
+Establish `hR : ∀ z : D.host.E, (∃ b : 𝓞 D.host.E, (b : D.host.E) = z) ↔ z ∈ (algebraMap (𝓞 D.host.E) D.host.E).range` using `fun z => Iff.rfl`. Establish `h0 : ∀ y₀ : Fin S₀.rank → D.host.E, y₀ ∈ L₀ ↔ ∀ x₀ ∈ L₀, star x₀ ⬝ᵥ (S₀.gram *ᵥ y₀) ∈ (algebraMap (𝓞 D.host.E) D.host.E).range` using `fun y₀ => by`. Rewrite using `[hL₀.2 y₀]`. Simplify using `only [hR, sum_pair_eq]`. Use `⟨isLattice_splitL d h𝔟 hL₀.1, fun y => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hR, sum_pair_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Take `⟨hy1, hy2, hy3⟩` from `(mem_splitL d L₀ 𝔟 y).1 hy`. Take `⟨hx1, hx2, hx3⟩` from `(mem_splitL d L₀ 𝔟 x).1 hx`.
+
+Rewrite using `[pair_decomp]`. Use `add_mem (add_mem (sum_mem fun i _ => ?_) ((h0 _).1 hy2 _ hx2)) (sum_mem fun i _ => ?_)` and prove the remaining obligations. Use `GlobalTheory.HypLattice.star_mem_int (hx3 i _ (hy1 i))` as an intermediate fact. Rewrite `this` using `[star_mul', star_star, mul_comm]`. Then use the resulting hypothesis. Conclude with `hy3 i _ (hx1 i)`.
+
+Introduce `hy`. Use `(mem_splitL d L₀ 𝔟 y).2 ⟨fun i => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hi : 𝔟 i ≠ 0` using `h𝔟 i`. Rewrite using `[← inv_inv (𝔟 i), FractionalIdeal.mem_inv_iff (inv_ne_zero hi)]`. Introduce `z hz`.
+
+Establish `hc : star z ∈ dualC (𝔟 i)` using `fun b hb => by`. Use `GlobalTheory.HypLattice.star_mem_int (GlobalTheory.HypLattice.mem_one_iff_range.1 ((FractionalIdeal.mem_inv_iff hi).1 hz b hb))` as an intermediate fact. Rewrite `this` using `[star_mul', mul_comm]`. Then use the resulting hypothesis. Use `hy _ (e'_mem (single_mem_of_mem (I := fun j => dualC (𝔟 j)) i hc))` as an intermediate fact. Rewrite `this` using `[pair_e', star_star, mul_comm]`.
+
+Conclude with `GlobalTheory.HypLattice.mem_one_iff_range.2 this`. Rewrite using `[h0]`. Introduce `x₀ hx₀`. Use `hy _ (i₀_mem (d := d) (𝔟 := 𝔟) hx₀)` as an intermediate fact. Rewrite `this` using `[pair_i₀]`. Then use the resulting hypothesis.
+
+Introduce `b hb`. Use `hy _ (e_mem (L₀ := L₀) (single_mem_of_mem (I := fun j => (𝔟 j : Submodule (𝓞 D.host.E) D.host.E)) i hb))` as an intermediate fact. Rewrite `this` using `[pair_e]`. Then use the resulting hypothesis.
+-/
 theorem isSelfDualC_splitL (h𝔟 : ∀ i, 𝔟 i ≠ 0) (hL₀ : IsSelfDualC S₀ L₀) : IsSelfDualC S (splitL d L₀ 𝔟) := by
   have hR : ∀ z : D.host.E, (∃ b : 𝓞 D.host.E, (b : D.host.E) = z) ↔ z ∈ (algebraMap (𝓞 D.host.E) D.host.E).range :=
     fun z => Iff.rfl

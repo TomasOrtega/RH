@@ -24,6 +24,9 @@ abbrev expR (μ : ((ι × Fin b × Fin b) ⊕ DVar ι a b) →₀ ℕ) : DVar ι
   μ.comapDomain Sum.inr Sum.inr_injective.injOn
 
 omit [Fintype ι] in
+/- English proof (translation)
+Establish `h : (monomial μ c : MvPolynomial σ K) = c • basisMonomials σ K μ`. Rewrite using `[coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[h, map_smul, Module.Basis.constr_basis]`.
+-/
 theorem constr_monomial {σ V : Type} [AddCommGroup V] [Module K V] (f : (σ →₀ ℕ) → V) (μ : σ →₀ ℕ) (c : K) :
     (basisMonomials σ K).constr K f (monomial μ c) = c • f μ := by
   have h : (monomial μ c : MvPolynomial σ K) = c • basisMonomials σ K μ := by
@@ -31,6 +34,9 @@ theorem constr_monomial {σ V : Type} [AddCommGroup V] [Module K V] (f : (σ →
   rw [h, map_smul, Module.Basis.constr_basis]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use `conv_lhs => rw [Q.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[jetLin, constr_monomial, smul_monomial, smul_monomial, smul_eq_mul, smul_eq_mul, mul_comm]`.
+-/
 theorem jetLin_eq_sum (J : (DVar ι a b →₀ ℕ) → K) (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K) :
     jetLin J Q = ∑ μ ∈ Q.support, J (expR μ) • monomial (expL μ) (Q.coeff μ) := by
   conv_lhs => rw [Q.as_sum]
@@ -38,6 +44,9 @@ theorem jetLin_eq_sum (J : (DVar ι a b →₀ ℕ) → K) (Q : MvPolynomial ((�
   refine Finset.sum_congr rfl fun μ _ => ?_
   rw [jetLin, constr_monomial, smul_monomial, smul_monomial, smul_eq_mul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+The claim follows from `jetLin_eq_sum J _`.
+-/
 theorem jetMap_eq_sum (J : (DVar ι a b →₀ ℕ) → K) (n : ι → ℕ) (P : Pol K ι a) :
     jetMap J n P = ∑ μ ∈ (subD K ι a b (sharp n P)).support,
       J (expR μ) • monomial (expL μ) ((subD K ι a b (sharp n P)).coeff μ) :=
@@ -47,6 +56,9 @@ def ptEval (σ : K →+* L) (ap : ι → Matrix (Fin a) (Fin b) L) :
     MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K →+* Pol L ι b :=
   eval₂Hom (C.comp σ) (Sum.elim X fun k => C (ap k.1 k.2.2 k.2.1))
 
+/- English proof (translation)
+Rewrite using `[ptEval, eval₂Hom_monomial, monomial_eq, ptTable, Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp), Fintype.prod_sum_type, smul_eq_C_mul, map_prod]`. Simplify using `only [RingHom.comp_apply, Sum.elim_inl, Sum.elim_inr, Finsupp.comapDomain_apply, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ptEval_monomial (σ : K →+* L) (ap : ι → Matrix (Fin a) (Fin b) L)
     (μ : ((ι × Fin b × Fin b) ⊕ DVar ι a b) →₀ ℕ) (c : K) :
     ptEval σ ap (monomial μ c) = ptTable ap (expR μ) • monomial (expL μ) (σ c) := by
@@ -57,6 +69,11 @@ theorem ptEval_monomial (σ : K →+* L) (ap : ι → Matrix (Fin a) (Fin b) L)
   ring
 
 omit [Fintype ι] in
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp [ptEval, subD, substAdj]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, hp, map_X]`.
+
+Use `congr 1`. Establish `h : v.2.2.1 < b` using `lt_of_lt_of_le v.2.2.2 hab`. Simplify using `only [subD, substAdj, aeval_X, dif_pos h, map_sum, map_mul, ptEval, eval₂Hom_X', Sum.elim_inl, Sum.elim_inr]`. Conclude with `Finset.sum_congr rfl fun β _ => mul_comm _ _`.
+-/
 theorem ptEval_subD (hab : a ≤ b) (σ : K →+* L) (ap : ι → Matrix (Fin a) (Fin b) L) (P : Pol K ι a) :
     ptEval σ ap (subD K ι a b P) = substAdj hab ap (map σ P) := by
   induction P using MvPolynomial.induction_on with
@@ -69,6 +86,9 @@ theorem ptEval_subD (hab : a ≤ b) (σ : K →+* L) (ap : ι → Matrix (Fin a)
     simp only [subD, substAdj, aeval_X, dif_pos h, map_sum, map_mul, ptEval, eval₂Hom_X', Sum.elim_inl, Sum.elim_inr]
     exact Finset.sum_congr rfl fun β _ => mul_comm _ _
 
+/- English proof (translation)
+Rewrite using `[← ptEval_subD]`. Use `conv_rhs => rw [(subD K ι a b P).as_sum]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun μ _ => (ptEval_monomial σ ap μ _).symm`.
+-/
 theorem sum_ptTable (hab : a ≤ b) (σ : K →+* L) (ap : ι → Matrix (Fin a) (Fin b) L) (P : Pol K ι a) :
     ∑ μ ∈ (subD K ι a b P).support, ptTable ap (expR μ) • monomial (expL μ) (σ ((subD K ι a b P).coeff μ)) =
       substAdj hab ap (map σ P) := by
@@ -77,12 +97,24 @@ theorem sum_ptTable (hab : a ≤ b) (σ : K →+* L) (ap : ι → Matrix (Fin a)
   rw [map_sum]
   exact Finset.sum_congr rfl fun μ _ => (ptEval_monomial σ ap μ _).symm
 
+/- English proof (translation)
+Rewrite using `[jetMap_eq_sum]`. Establish `h` using `sum_ptTable hab (RingHom.id K) ap (sharp n P)`. Rewrite `h` using `[map_id]`. Then use the resulting hypothesis.
+-/
 theorem jetMap_ptTable (hab : a ≤ b) (ap : ι → Matrix (Fin a) (Fin b) K) (n : ι → ℕ) (P : Pol K ι a) :
     jetMap (ptTable ap) n P = substAdj hab ap (sharp n P) := by
   rw [jetMap_eq_sum]
   have h := sum_ptTable hab (RingHom.id K) ap (sharp n P)
   rwa [map_id] at h
 
+/- English proof (translation)
+Rewrite using `[← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff]`. Introduce `φ hφ`. Rewrite `hφ` using `[Submodule.mem_dualAnnihilator]`. Use `set Q := subD K ι a b (sharp n P) with hQ`. Establish `h0 : (∑ μ ∈ Q.support, monomial (expR μ) (φ (monomial (expL μ) (Q.coeff μ))) : MvPolynomial (DVar ι a b) K) = 0`.
+
+Use `MvPolynomial.funext fun x => ?_` and prove the remaining obligations. Establish `h1` using `hφ _ (h fun τ => Matrix.of fun α β => x (τ, β, α))`. Rewrite `h1` using `[← jetMap_ptTable, jetMap_eq_sum, map_sum]`. Rewrite using `[map_zero, map_sum, ← h1]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[eval_monomial, map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression. Establish `h2` using `congrArg ((basisMonomials (DVar ι a b) K).constr K J) h0`. Rewrite `h2` using `[map_zero, map_sum]`. Rewrite using `[jetMap_eq_sum, map_sum, ← h2]`.
+
+Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[constr_monomial, map_smul, smul_eq_mul, smul_eq_mul, mul_comm]`.
+-/
 theorem jetMap_mem [Infinite K] (hab : a ≤ b) (n : ι → ℕ) (P : Pol K ι a) (U : Submodule K (Pol K ι b))
     (h : ∀ ap : ι → Matrix (Fin a) (Fin b) K, substAdj hab ap (sharp n P) ∈ U) (J : (DVar ι a b →₀ ℕ) → K) :
     jetMap J n P ∈ U := by
@@ -105,6 +137,9 @@ theorem jetMap_mem [Infinite K] (hab : a ≤ b) (n : ι → ℕ) (P : Pol K ι a
   refine Finset.sum_congr rfl fun μ _ => ?_
   rw [constr_monomial, map_smul, smul_eq_mul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Establish `h1 : retrVV K lam' ((⟨_, h⟩ : VV K lam') : Pol K ι b) = ⟨_, h⟩` using `Submodule.projectionOnto_apply_left _ _`. Conclude with `congrArg Subtype.val h1`.
+-/
 theorem coe_jetOp (lam : ι → DomWeight a) (lam' : ι → DomWeight b) (J : (DVar ι a b →₀ ℕ) → K) (n : ι → ℕ)
     (F : VV K lam) (h : jetMap J n (F : Pol K ι a) ∈ VV K lam') :
     ((jetOp lam lam' J n F : VV K lam') : Pol K ι b) = jetMap J n (F : Pol K ι a) := by
@@ -112,18 +147,29 @@ theorem coe_jetOp (lam : ι → DomWeight a) (lam' : ι → DomWeight b) (J : (D
   exact congrArg Subtype.val h1
 
 omit [Fintype ι] in
+/- English proof (translation)
+Rewrite using `[DomWeight.detShift, dif_pos (by omega)]`. Conclude with `h.2.1 τ _ (by simp only; omega)`.
+-/
 theorem detShift_eq {hab : a < b} {lam : ι → DomWeight a} {lam' : ι → DomWeight b} {s s' : ι → ℤ} {n : ι → ℕ}
     (h : WtCompat hab lam lam' s s' n) (τ : ι) : (lam' τ).detShift = -s τ := by
   rw [DomWeight.detShift, dif_pos (by omega)]
   exact h.2.1 τ _ (by simp only; omega)
 
 omit [Fintype ι] in
+/- English proof (translation)
+Rewrite using `[frDet, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem map_frDet {R : Type} [CommRing R] (φ : Pol K ι a →+* R) (τ : ι) :
     φ (frDet K a τ) = (Matrix.of fun α s : Fin a => φ (X (τ, α, s))).det := by
   rw [frDet, RingHom.map_det]
   rfl
 
 omit [Fintype ι] in
+/- English proof (translation)
+Unfold `evalFr`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp [substAdj]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+
+Simplify using `only [map_mul, hp]`. Simplify using `[substAdj, Matrix.mul_apply]`.
+-/
 theorem evalFr_substAdj (hab : a ≤ b) (ap : ι → Matrix (Fin a) (Fin b) K) (y : ι → Matrix (Fin b) (Fin b) K)
     (P : Pol K ι a) :
     evalFr y (substAdj hab ap P) = evalFr (fun τ => (ap τ * y τ).submatrix id (Fin.castLE hab)) P := by
@@ -137,6 +183,15 @@ theorem evalFr_substAdj (hab : a ≤ b) (ap : ι → Matrix (Fin a) (Fin b) K) (
 
 end Expand
 
+/- English proof (translation)
+Introduce `K _ ι _ a b hab lam lam' s s' n hw ap F`. Establish `h1 : ((jetOp lam lam' (ptTable ap) n F : VV K lam') : Pol K ι b) = substAdj hab.le ap (sharp n (F : Pol K ι a))`. Rewrite using `[coe_jetOp, jetMap_ptTable hab.le]`. Rewrite using `[jetMap_ptTable hab.le]`. Conclude with `GlobalTheory.SubstMem.substAdj_sharp_mem K ι a b hab lam lam' s s' n hw ap _ F.2`.
+
+Use `⟨h1, fun y => ?_, fun y => ?_⟩` and prove the remaining obligations. Unfold `fnOf sharp evalFr`. Rewrite using `[map_mul, map_prod, mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_pow, map_frDet, ← zpow_add₀ (y τ).det_ne_zero, ← hw.2.2 τ, zpow_natCast]`. Use `congr 2`. Use extensionality with `α t`. Simplify using the standard rewrite rules. Rewrite using `[h1, fnOf, evalFr_substAdj, div_eq_mul_inv, ← Finset.prod_inv_distrib]`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => by rw [detShift_eq hw, zpow_neg]`.
+-/
 theorem substitution : Substitution := by
   intro K _ ι _ a b hab lam lam' s s' n hw ap F
   have h1 : ((jetOp lam lam' (ptTable ap) n F : VV K lam') : Pol K ι b) =
@@ -163,6 +218,11 @@ open Formalism.GradedWeylDivisibility (blockAct)
 
 variable {K L Γ : Type} [Field K] [Field L] [LinearOrderedCommGroupWithZero Γ] {ι : Type} [Fintype ι] {a b : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, rfl⟩ m`. Rewrite using `[coeff_map]`. Conclude with `(Q.coeff m).2`. Introduce `h`.
+
+Rewrite using `[P.as_sum]`. Conclude with `sum_mem fun m _ => ⟨monomial m ⟨_, h m⟩, by rw [map_monomial]; rfl⟩`.
+-/
 theorem mem_range_iff (v : Valuation L Γ) {τ : Type} (P : MvPolynomial τ L) :
     P ∈ (map (σ := τ) v.integer.subtype).range ↔ ∀ m, v (P.coeff m) ≤ 1 := by
   constructor
@@ -174,6 +234,11 @@ theorem mem_range_iff (v : Valuation L Γ) {τ : Type} (P : MvPolynomial τ L) :
     exact sum_mem fun m _ => ⟨monomial m ⟨_, h m⟩, by rw [map_monomial]; rfl⟩
 
 omit [Fintype ι] in
+/- English proof (translation)
+Take `⟨Q, rfl⟩` from `hP`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C c => exact ⟨C c, by simp [substAdj]⟩`. Consider the case `add p q hp hq => rw [map_add, map_add]`. Conclude with `add_mem hp hq`.
+
+Consider the case `mul_X p x hp`. Rewrite using `[map_mul, map_mul, map_X]`. Use `mul_mem hp ?_` and prove the remaining obligations. Rewrite using `[substAdj, aeval_X]`. Conclude with `sum_mem fun β _ => mul_mem ⟨C ⟨_, hA _ _ _⟩, by rw [map_C]; rfl⟩ ⟨X _, map_X _ _⟩`.
+-/
 theorem substAdj_int (v : Valuation L Γ) (hab : a ≤ b) (A : ι → Matrix (Fin a) (Fin b) L)
     (hA : ∀ τ i j, v (A τ i j) ≤ 1) {P : Pol L ι a} (hP : P ∈ (map v.integer.subtype).range) :
     substAdj hab A P ∈ (map v.integer.subtype).range := by
@@ -187,6 +252,9 @@ theorem substAdj_int (v : Valuation L Γ) (hab : a ≤ b) (A : ι → Matrix (Fi
     rw [substAdj, aeval_X]
     exact sum_mem fun β _ => mul_mem ⟨C ⟨_, hA _ _ _⟩, by rw [map_C]; rfl⟩ ⟨X _, map_X _ _⟩
 
+/- English proof (translation)
+Use `mul_mem hP (prod_mem fun τ _ => pow_mem ?_ _)` and prove the remaining obligations. Rewrite using `[frDet, Matrix.det_apply']`. Conclude with `sum_mem fun g _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => ⟨X _, map_X _ _⟩)`.
+-/
 theorem sharp_int (v : Valuation L Γ) (n : ι → ℕ) {P : Pol L ι a} (hP : P ∈ (map v.integer.subtype).range) :
     sharp n P ∈ (map v.integer.subtype).range := by
   refine mul_mem hP (prod_mem fun τ _ => pow_mem ?_ _)
@@ -194,6 +262,11 @@ theorem sharp_int (v : Valuation L Γ) (n : ι → ℕ) {P : Pol L ι a} (hP : P
   exact sum_mem fun g _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => ⟨X _, map_X _ _⟩)
 
 omit [Fintype ι] in
+/- English proof (translation)
+Establish `h : (blockAct L g).comp (substAdj hab ap) = substAdj hab (fun τ => ap τ * g τ)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [AlgHom.comp_apply, blockAct, substAdj, aeval_X, map_sum, map_mul, algHom_C, Matrix.mul_apply]`. Simplify using `only [algebraMap_eq, Finset.mul_sum, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Simplify using `[mul_assoc]`. Conclude with `congrArg (fun φ => φ P) h`.
+-/
 theorem blockAct_substAdj (hab : a ≤ b) (ap : ι → Matrix (Fin a) (Fin b) L) (g : ι → Matrix (Fin b) (Fin b) L)
     (P : Pol L ι a) : blockAct L g (substAdj hab ap P) = substAdj hab (fun τ => ap τ * g τ) P := by
   have h : (blockAct L g).comp (substAdj hab ap) = substAdj hab (fun τ => ap τ * g τ) := by
@@ -206,6 +279,11 @@ theorem blockAct_substAdj (hab : a ≤ b) (ap : ι → Matrix (Fin a) (Fin b) L)
   exact congrArg (fun φ => φ P) h
 
 omit [Fintype ι] in
+/- English proof (translation)
+Establish `h : (substAdj hab A).comp (blockAct L g) = substAdj hab (fun τ => g τ * A τ)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [AlgHom.comp_apply, blockAct, substAdj, aeval_X, map_sum, map_mul, algHom_C, Matrix.mul_apply]`. Simplify using `only [algebraMap_eq, Finset.mul_sum, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Simplify using `[mul_assoc]`. Conclude with `congrArg (fun φ => φ P) h`.
+-/
 theorem substAdj_blockAct (hab : a ≤ b) (A : ι → Matrix (Fin a) (Fin b) L) (g : ι → Matrix (Fin a) (Fin a) L)
     (P : Pol L ι a) : substAdj hab A (blockAct L g P) = substAdj hab (fun τ => g τ * A τ) P := by
   have h : (substAdj hab A).comp (blockAct L g) = substAdj hab (fun τ => g τ * A τ) := by
@@ -218,6 +296,11 @@ theorem substAdj_blockAct (hab : a ≤ b) (A : ι → Matrix (Fin a) (Fin b) L) 
   exact congrArg (fun φ => φ P) h
 
 omit [Fintype ι] in
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp [blockAct]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p x hp`. Simplify using `only [map_mul, hp]`.
+
+Simplify using `[blockAct]`.
+-/
 theorem map_blockAct (σ : K →+* L) (g : ι → Matrix (Fin a) (Fin a) K) (P : Pol K ι a) :
     map σ (blockAct K g P) = blockAct L (fun τ => (g τ).map σ) (map σ P) := by
   induction P using MvPolynomial.induction_on with
@@ -227,10 +310,18 @@ theorem map_blockAct (σ : K →+* L) (g : ι → Matrix (Fin a) (Fin a) K) (P :
     simp only [map_mul, hp]
     simp [blockAct]
 
+/- English proof (translation)
+Simplify using `only [sharp, map_mul, map_prod, map_pow, map_frDet, map_X]`. Both sides reduce to the same expression.
+-/
 theorem map_sharp (σ : K →+* L) (n : ι → ℕ) (P : Pol K ι a) : map σ (sharp n P) = sharp n (map σ P) := by
   simp only [sharp, map_mul, map_prod, map_pow, map_frDet, map_X]
   rfl
 
+/- English proof (translation)
+Establish `h : ∀ τ, blockAct K g (frDet K a τ) = C (g τ).det * frDet K a τ` using `fun τ => by`. Establish `h1` using `map_frDet (blockAct K (n := a) g : Pol K ι a →+* Pol K ι a) τ`. Rewrite `h1` using `[RingHom.coe_coe]`. Rewrite using `[h1, RingHom.map_det, frDet, ← Matrix.det_mul]`. Use `congr 1`.
+
+Use `ext1 α t`. Simplify using `[blockAct, Matrix.mul_apply]`. Simplify using `only [sharp, map_mul, map_prod, map_pow, h, mul_pow, Finset.prod_mul_distrib, smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem blockAct_sharp (g : ι → Matrix (Fin a) (Fin a) K) (n : ι → ℕ) (P : Pol K ι a) :
     blockAct K g (sharp n P) = (∏ τ, (g τ).det ^ n τ) • sharp n (blockAct K g P) := by
   have h : ∀ τ, blockAct K g (frDet K a τ) = C (g τ).det * frDet K a τ := fun τ => by
@@ -243,6 +334,13 @@ theorem blockAct_sharp (g : ι → Matrix (Fin a) (Fin a) K) (n : ι → ℕ) (P
   simp only [sharp, map_mul, map_prod, map_pow, h, mul_pow, Finset.prod_mul_distrib, smul_eq_C_mul]
   ring
 
+/- English proof (translation)
+Use `⟨_, (mem_range_iff v _).mp (substAdj_int v hab _ hA (sharp_int v n ((mem_range_iff v (map σ ((∏ τ, (B τ : Matrix (Fin a) (Fin a) K).det ^ e τ) • blockAct K (fun τ => (B τ : Matrix (Fin a) (Fin a) K)) F))).mpr fun m => by rw [coeff_map]; exact hF m))), ?_⟩` and prove the remaining obligations. Establish `h1 : (fun τ => ap τ * (BW τ : Matrix (Fin b) (Fin b) K).map σ) = fun τ => (B τ : Matrix (Fin a) (Fin a) K).map σ * ((((B τ)⁻¹ : GL (Fin a) K) : Matrix (Fin a) (Fin a) K).map σ * ap τ * (BW τ : Matrix (Fin b) (Fin b) K).map σ)`. Use function extensionality and compare the values at `τ`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ σ.map_zero σ.map_one, Matrix.one_mul]`. Establish `h2 : (∏ τ, (B τ : Matrix (Fin a) (Fin a) K).det ^ n τ) = (∏ τ, (B τ : Matrix (Fin a) (Fin a) K).det ^ s' τ) * ∏ τ, (B τ : Matrix (Fin a) (Fin a) K).det ^ e τ`.
+
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (B τ).det_ne_zero, add_comm, ← hn τ, zpow_natCast]`. Rewrite using `[blockAct_substAdj, h1, ← substAdj_blockAct, ← map_blockAct, blockAct_sharp, h2, ← map_smul, ← map_sharp]`. Use `congr 1`.
+
+Simplify using `only [sharp, smul_eq_C_mul, map_mul, map_C]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem point_int (v : Valuation L Γ) (σ : K →+* L) (hab : a ≤ b) (e s' : ι → ℤ) (n : ι → ℕ)
     (hn : ∀ τ, (n τ : ℤ) = e τ + s' τ) (B : ι → GL (Fin a) K) (BW : ι → GL (Fin b) K)
     (ap : ι → Matrix (Fin a) (Fin b) L)
@@ -280,6 +378,17 @@ open Formalism.GradedWeylDivisibility (blockAct)
 
 variable {K L Γ : Type} [Field K] [NumberField K] [Field L] [LinearOrderedCommGroupWithZero Γ]
 
+/- English proof (translation)
+Establish `hdiv : ∀ y ε : K, ε ≠ 0 → v (σ y) ≤ v (σ ε) → w.valuation K (y / ε) ≤ 1` using `fun y ε hε hy => by`. Rewrite using `[← hσ, map_div₀, map_div₀]`. Conclude with `div_le_one_of_le₀ hy zero_le`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality.
+
+Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_zero]`. Assume the negation of the conclusion as `hx`. Take `⟨π, hπ⟩` from `w.valuation_exists_uniformizer K`. Establish `hπ0 : π ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Take `⟨z, -, hz⟩` from `h (x * π) (mul_ne_zero hx hπ0)`. Rewrite `hz` using `[map_zero, zero_mul, sub_zero]`.
+
+Establish `h1` using `hdiv _ _ (mul_ne_zero hx hπ0) hz`. Rewrite `h1` using `[div_mul_cancel_left₀ hx, map_inv₀, hπ, ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Take `⟨z, hz1, hz⟩` from `h c hc`. Use `⟨x / c, hdiv _ _ hc ?_, by field_simp⟩` and prove the remaining obligations.
+
+Establish `h1 : σ x = (σ x - σ c * z) + σ c * z` using `by ring`. Rewrite using `[h1]`. Use `v.map_add_le hz ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_of_le_one_right' hz1`.
+-/
 theorem exists_mul_of_approx (w : HeightOneSpectrum (𝓞 K)) (v : Valuation L Γ) (σ : K →+* L)
     (hσ : ∀ x : K, v (σ x) ≤ 1 ↔ w.valuation K x ≤ 1) (x c : K)
     (h : ∀ ε : K, ε ≠ 0 → ∃ z : L, v z ≤ 1 ∧ v (σ x - σ c * z) ≤ v (σ ε)) :
@@ -310,6 +419,39 @@ theorem exists_mul_of_approx (w : HeightOneSpectrum (𝓞 K)) (v : Valuation L �
     rw [map_mul]
     exact mul_le_of_le_one_right' hz1
 
+/- English proof (translation)
+Introduce `K _ _ w L Γ _ _ v σ hσ ι _ a b hab lam lam' s s' n hw M MW B BW hM hMW κ J hJ F hF`. Establish `hmem : jetMap J n (F : Pol K ι a) ∈ VV K lam'` using `jetMap_mem hab.le n _ _ (fun ap => GlobalTheory.SubstMem.substAdj_sharp_mem K ι a b hab lam lam' s s' n hw ap _ F.2) J`. Rewrite `hF` using `[GlobalTheory.HAtBasis.mem_HAt_iff K w ι a lam M B hM]`. Use `set Q := subD K ι a b (sharp n (F : Pol K ι a)) with hQ`. Use `set D := ∏ τ, (B τ : Matrix (Fin a) (Fin a) K).det ^ s' τ with hD`.
+
+Use `set T := blockAct K (n := b) (fun τ => (BW τ : Matrix (Fin b) (Fin b) K)) with hT`. Use `set d := fun μ => T (monomial (expL μ) (Q.coeff μ)) with hd`. Establish `hH : T (jetMap J n (F : Pol K ι a)) = ∑ μ ∈ Q.support, J (expR μ) • d μ`. Rewrite using `[jetMap_eq_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun μ _ => map_smul _ _ _`.
+
+Establish `hpt : ∀ ap : ι → Matrix (Fin a) (Fin b) L, admitted v σ M MW ap → ∀ p, ∃ z : L, v z ≤ 1 ∧ ∑ μ ∈ Q.support, ptTable ap (expR μ) * σ ((d μ).coeff p) = σ D * z`. Introduce `ap hap p`. Take `⟨Z, hZ, hZ'⟩` from `point_int v σ hab.le (fun τ => (lam τ).detShift) s' n hw.2.2 B BW ap (fun τ => (GlobalTheory.ExtLatMatrix.extLat_matrix_integral K w L Γ v σ hσ).2 a b (M τ) (MW τ) (B τ) (BW τ) (hM τ).2 (hMW τ).2 (ap τ) (hap τ)) F fun m => (hσ _).mpr (hF m)`. Use `⟨Z.coeff p, hZ p, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (coeff p) hZ'`.
+
+Rewrite `h1` using `[← sum_ptTable, map_sum, coeff_sum, coeff_smul, smul_eq_mul]`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, coeff_smul, smul_eq_mul, ← map_monomial, ← map_blockAct, coeff_map]`. Establish `hu : ∀ p, ∃ u : K, w.valuation K u ≤ 1 ∧ (T (jetMap J n (F : Pol K ι a))).coeff p = κ * D * u`.
+
+Introduce `p`. Use `exists_mul_of_approx w v σ hσ _ _ fun ε hε => ?_` and prove the remaining obligations. Take `⟨⟨t, ht⟩, htd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 K)) Q.support fun μ => (d μ).coeff p`. Establish `ht0 : algebraMap (𝓞 K) K t ≠ 0` using `by simpa using nonZeroDivisors.ne_zero ht`. Take `⟨k, c, ap, hc, hap, happ⟩` from `hJ (ε * algebraMap (𝓞 K) K t) (mul_ne_zero hε ht0)`.
+
+Use `choose z hz hz' using fun i => hpt (ap i) (hap i) p`. Use `⟨∑ i, c i * z i, v.map_sum_le fun i _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hc i) (hz i)`. Establish `h1 : σ ((T (jetMap J n (F : Pol K ι a))).coeff p) - σ (κ * D) * ∑ i, c i * z i = ∑ μ ∈ Q.support, (σ (J (expR μ)) - σ κ * ∑ i, c i * ptTable (ap i) (expR μ)) * σ ((d μ).coeff p)`.
+
+Establish `h2 : σ D * ∑ i, c i * z i = ∑ μ ∈ Q.support, (∑ i, c i * ptTable (ap i) (expR μ)) * σ ((d μ).coeff p)`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← hz' i, Finset.mul_sum]`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[hH, coeff_sum, map_sum, map_mul, mul_assoc, h2, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h1]`. Use `v.map_sum_le fun μ hμ => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `htd μ hμ`. Establish `h3 : v (σ (algebraMap (𝓞 K) K t * (d μ).coeff p)) ≤ 1`. Rewrite using `[hσ, ← Algebra.smul_def]`.
+
+Conclude with `hy ▸ w.valuation_le_one y`. Rewrite using `[map_mul]`. Use `(mul_le_mul_left (happ _ (GlobalTheory.subD_sharp_inDeg K ι a b hab lam lam' s s' n hw _ F.2 μ hμ)) _).trans ?_` and prove the remaining obligations. Rewrite `h3` using `[map_mul, map_mul]`. Rewrite using `[map_mul, map_mul, mul_assoc]`.
+
+Conclude with `mul_le_of_le_one_right' h3`. Establish `hfac : detFac s s' B BW = D * ∏ τ, (BW τ : Matrix (Fin b) (Fin b) K).det ^ (lam' τ).detShift`. Simplify using `only [detFac, hD, detShift_eq hw, Finset.prod_mul_distrib]`. Establish `hD0 : D ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun τ _ => zpow_ne_zero _ (B τ).det_ne_zero`. Establish `hW0 : (∏ τ, (BW τ : Matrix (Fin b) (Fin b) K).det ^ (lam' τ).detShift) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun τ _ => zpow_ne_zero _ (BW τ).det_ne_zero`.
+
+Distinguish the cases in `hκ : κ = 0`. Use `⟨0, zero_mem _, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h0 : T (jetMap J n (F : Pol K ι a)) = 0`. Use extensionality with `p`. Take `⟨u, -, hu'⟩` from `hu p`.
+
+Rewrite using `[hu', hκ, zero_mul, zero_mul, coeff_zero]`. Establish `h1` using `congrArg (blockAct K (n := b) fun τ => (((BW τ)⁻¹ : GL (Fin b) K) : Matrix (Fin b) (Fin b) K)) h0`. Rewrite `h1` using `[map_zero, hT, ← AlgHom.comp_apply, blockAct_comp]`. Simplify using `only [Units.mul_inv, blockAct_one, AlgHom.id_apply] at h1`. Rewrite using `[smul_zero, coe_jetOp _ _ _ _ _ hmem, h1]`.
+
+Both sides reduce to the same expression. Use `⟨(κ * detFac s s' B BW)⁻¹ • jetOp lam lam' J n F, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.HAtBasis.mem_HAt_iff K w ι b lam' MW BW hMW]`. Introduce `p`. Take `⟨u, hu1, hu'⟩` from `hu p`.
+
+Rewrite using `[Submodule.coe_smul, coe_jetOp _ _ _ _ _ hmem, map_smul, coeff_smul, coeff_smul, hu', hfac, smul_eq_mul, smul_eq_mul]`. Use `hu1 using 2` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Rewrite using `[smul_inv_smul₀]`. Rewrite using `[hfac]`.
+
+Conclude with `mul_ne_zero hκ (mul_ne_zero hD0 hW0)`.
+-/
 theorem closureIntegral : ClosureIntegral := by
   intro K _ _ w L Γ _ _ v σ hσ ι _ a b hab lam lam' s s' n hw M MW B BW hM hMW κ J hJ F hF
   have hmem : jetMap J n (F : Pol K ι a) ∈ VV K lam' :=
@@ -397,6 +539,15 @@ theorem closureIntegral : ClosureIntegral := by
       rw [hfac]
       exact mul_ne_zero hκ (mul_ne_zero hD0 hW0)
 
+/- English proof (translation)
+Introduce `K _ _ w ι _ a b hab lam lam' s s' n hw M MW B BW hM hMW ap hap F hF`. Establish `hσ : ∀ x : K, w.valuation K (RingHom.id K x) ≤ 1 ↔ w.valuation K x ≤ 1` using `fun _ => Iff.rfl`. Establish `hadm : admitted (w.valuation K) (RingHom.id K) M MW ap`. Introduce `τ y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `(GlobalTheory.ExtLatMatrix.extLat_matrix_integral K w K _ (w.valuation K) (RingHom.id K) hσ).1 a (M τ) _ (hap τ x hx)`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `h` using `closureIntegral K w K _ (w.valuation K) (RingHom.id K) hσ ι a b hab lam lam' s s' n hw M MW B BW hM hMW 1 (ptTable ap) (fun _ _ => ⟨1, fun _ => 1, fun _ => ap, fun _ => by simp, fun _ => hadm, fun m _ => by simp⟩) F hF`.
+
+Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem pointIntegral : PointIntegral := by
   intro K _ _ w ι _ a b hab lam lam' s s' n hw M MW B BW hM hMW ap hap F hF
   have hσ : ∀ x : K, w.valuation K (RingHom.id K x) ≤ 1 ↔ w.valuation K x ≤ 1 := fun _ => Iff.rfl
@@ -415,6 +566,9 @@ theorem pointIntegral : PointIntegral := by
 
 end Closure
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨substitution, GlobalTheory.DetIndexPf.detIndex, pointIntegral, closureIntegral⟩`.
+-/
 theorem jetPointStatement : JetPointStatement :=
   ⟨substitution, GlobalTheory.DetIndexPf.detIndex, pointIntegral, closureIntegral⟩
 

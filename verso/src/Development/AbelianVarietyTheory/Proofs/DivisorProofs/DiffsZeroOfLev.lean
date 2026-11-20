@@ -47,11 +47,17 @@ def Lev (B : Base F E) (X : Chars F E) (a a' : ℕ) {d d₁ : ℕ} {W : Spc F E 
     (alphaSpan (sp 0) H X.α X.β ((a' : ℝ) / 2) ((a : ℝ) / 2) (finK σ W B.emb) S)
     (fun i L => alphaSpan (sp (i + 1)) (pl i) X.α X.β ((a' : ℝ) / 2) (zb a i) (finK σ (sp i) B.emb) L) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_zero (B : Base F E) (X : Chars F E) (a a' : ℕ) {d d₁ : ℕ} {W : Spc F E d} (H : Plane E d d₁)
     (sp : ∀ j : ℕ, Spc F E (d₁ - 2 * j)) (pl : ∀ j : ℕ, Plane E (d₁ - 2 * j) (d₁ - 2 * (j + 1)))
     (S : Submodule ℂ (UA σ W.J → ℂ)) :
     Lev B X a a' H sp pl S 0 = alphaSpan (sp 0) H X.α X.β ((a' : ℝ) / 2) ((a : ℝ) / 2) (finK σ W B.emb) S := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_succ (B : Base F E) (X : Chars F E) (a a' : ℕ) {d d₁ : ℕ} {W : Spc F E d} (H : Plane E d d₁)
     (sp : ∀ j : ℕ, Spc F E (d₁ - 2 * j)) (pl : ∀ j : ℕ, Plane E (d₁ - 2 * j) (d₁ - 2 * (j + 1)))
     (S : Submodule ℂ (UA σ W.J → ℂ)) (i : ℕ) :
@@ -71,6 +77,9 @@ instance {B : Base F E} {n n₁ : ℕ} {H : Plane E n n₁} {Y : Spc F E n} {Y�
     CoeOut (InducedMaj B H Y Y₁) (∀ w, IsCartan (Complex.I • Y₁.J.map (B.emb w).1) (Y₁.θ w)) :=
   ⟨fun h => h.cartan⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h₁, fun w => ⟨0, by have e : Matrix.vecMulVec (fun i => (B.emb w).1 (H.x i)) (0 : Fin n₁ → ℂ) = 0 := by ext; simp [Matrix.vecMulVec_apply] rw [e, add_zero]; exact h₂ w⟩⟩`.
+-/
 theorem InducedMaj.of_comm {B : Base F E} {n n₁ : ℕ} {H : Plane E n n₁} {Y : Spc F E n} {Y₁ : Spc F E n₁}
     (h₁ : ∀ w, IsCartan (Complex.I • Y₁.J.map (B.emb w).1) (Y₁.θ w))
     (h₂ : ∀ w, Y.θ w * H.ι.map (B.emb w).1 = H.ι.map (B.emb w).1 * Y₁.θ w) : InducedMaj B H Y Y₁ :=
@@ -85,6 +94,9 @@ def IsIsoPlane (B : Base F E) {n n₁ : ℕ} (H : Plane E n n₁) (Y : Spc F E n
     (∀ u, form σ Y.J (H.ι *ᵥ u) H.x = 0 ∧ form σ Y.J (H.ι *ᵥ u) H.y = 0) ∧ H.ιᵀ * Y.J * H.ι.map σ = Y₁.J ∧
     (∀ w, IsCartan (Complex.I • Y.J.map (B.emb w).1) (Y.θ w)) ∧ InducedMaj B H Y Y₁
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hH.rank, hH.xx, hH.yy, hH.xy, hH.orth, hH.gram, h, .of_comm h₁ fun w => (hH.cartan w).1⟩`.
+-/
 theorem IsIsoPlane.of_adapted {B : Base F E} {n n₁ i₀ i₁ : ℕ} {H : Plane E n n₁} {Y : Spc F E n} {Y₁ : Spc F E n₁}
     (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) (h : ∀ w, IsCartan (Complex.I • Y.J.map (B.emb w).1) (Y.θ w))
     (h₁ : ∀ w, IsCartan (Complex.I • Y₁.J.map (B.emb w).1) (Y₁.θ w)) : IsIsoPlane σ B H Y Y₁ :=

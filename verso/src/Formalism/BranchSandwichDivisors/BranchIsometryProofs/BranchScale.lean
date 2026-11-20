@@ -8,14 +8,23 @@ noncomputable section
 
 namespace Formalism.BranchingDeterminantCap
 
+/- English proof (translation)
+Rewrite using `[smul_eq_C_mul, LFocks_C_mul_left]`.
+-/
 lemma bs_fock_smul_left {σ : Type*} (c : ℂ) (f g : MvPolynomial σ ℂ) :
     fockF (c • f) g = c * fockF f g := by
   rw [smul_eq_C_mul, LFocks_C_mul_left]
 
+/- English proof (translation)
+Rewrite using `[smul_eq_C_mul, LFocks_C_mul_right]`.
+-/
 lemma bs_fock_smul_right {σ : Type*} (c : ℂ) (f g : MvPolynomial σ ℂ) :
     fockF f (c • g) = star c * fockF f g := by
   rw [smul_eq_C_mul, LFocks_C_mul_right]
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_eq_single (Fin.last n)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+-/
 lemma bs_zScale_prod (n : ℕ) (t : ℝ) (e : Fin (n + 1) → ℕ) :
     ∏ a, (if a = Fin.last n then (t : ℂ) else 1) ^ e a = (t : ℂ) ^ e (Fin.last n) := by
   rw [Finset.prod_eq_single (Fin.last n)]
@@ -23,6 +32,13 @@ lemma bs_zScale_prod (n : ℕ) (t : ℝ) (e : Fin (n + 1) → ℕ) :
   · intro b _ hb; simp [hb]
   · simp
 
+/- English proof (translation)
+Introduce `n k d t F hF`. Establish `h1 : rowAct ℂ (zScale n t) F = ((t : ℂ) ^ d) • F`. Use extensionality with `m`. Rewrite using `[zScale, ldrow_coeff_rowAct_diag, bs_zScale_prod, coeff_smul, smul_eq_mul]`. Distinguish the cases in `hm : m ∈ F.support`.
+
+Rewrite using `[hF m hm, mul_comm]`. Rewrite using `[notMem_support_iff.mp hm]`. Simplify using the standard rewrite rules. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, bs_fock_smul_left, bs_fock_smul_right]`.
+
+Establish `: star ((t : ℂ) ^ d) = (t : ℂ) ^ d` using `by simp`. Rewrite using `[this, two_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem branch_scale_formula : BranchScale := by
   intro n k d t F hF
   have h1 : rowAct ℂ (zScale n t) F = ((t : ℂ) ^ d) • F := by
@@ -36,6 +52,13 @@ theorem branch_scale_formula : BranchScale := by
   have : star ((t : ℂ) ^ d) = (t : ℂ) ^ d := by simp
   rw [this, two_mul, pow_add]; ring
 
+/- English proof (translation)
+Unfold `weyl at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`. Rewrite using `[← lclosedeq_applyWord_map, lclosedeq_hw_map]`.
+
+Conclude with `Submodule.subset_span ⟨w, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`.
+
+Rewrite using `[smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 lemma bs_map_weyl {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (f : MvPolynomial (Fin r × Fin n) ℚ)
     (hf : f ∈ weyl ℚ r n hn ν) : map (algebraMap ℚ ℂ) f ∈ weyl ℂ r n hn ν := by
   unfold weyl at hf
@@ -50,6 +73,11 @@ lemma bs_map_weyl {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (f : MvPolynom
     rw [smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Rewrite using `[standardMonomialSpanDomain ℂ r n ν, Submodule.span_le]`. Introduce and unpack `_ ⟨K, sz, hsz, I, hsh, rfl⟩`. Rewrite using `[← ldlat_map_bidet (algebraMap ℚ ℂ)]`. Apply `bs_map_weyl` to reduce the goal to its premises. Rewrite using `[weylEqNablaQ r n hn ν hν, ← hsh]`.
+
+Conclude with `bidetMem ℚ r n K sz hsz I`.
+-/
 lemma bs_dual_le_weyl {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Antitone ν) :
     dualWeyl ℂ r n ν ≤ weyl ℂ r n hn ν := by
   rw [standardMonomialSpanDomain ℂ r n ν, Submodule.span_le]
@@ -59,6 +87,15 @@ lemma bs_dual_le_weyl {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Ant
   rw [weylEqNablaQ r n hn ν hν, ← hsh]
   exact bidetMem ℚ r n K sz hsz I
 
+/- English proof (translation)
+Rewrite `hf` using `[standardMonomialSpanDomain ℂ r n ν]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨K, sz, hsz, I, hshape, rfl⟩` from `hx`. Introduce `m hm`.
+
+Establish `h` using `bidetDominance ℂ r n K sz hsz I m hm`. Rewrite `h` using `[hshape]`. Conclude with `h`. Consider the case `zero`. Introduce `m hm`.
+
+Simplify using `at hm`. Consider the case `add x y _ _ hx hy`. Introduce `m hm`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases. Conclude with `hx m h`.
+
+Conclude with `hy m h`. Consider the case `smul c x _ hx`. Introduce `m hm`. Conclude with `hx m (support_smul hm)`.
+-/
 lemma bs_dom {r n : ℕ} (ν : Fin n → ℕ) (f : MvPolynomial (Fin r × Fin n) ℂ)
     (hf : f ∈ dualWeyl ℂ r n ν) : ∀ m ∈ f.support,
       (∀ k : ℕ, (∑ a : Fin r with a.val < k, rowDeg m a) ≤ ∑ t : Fin n with t.val < k, ν t) ∧
@@ -84,6 +121,17 @@ lemma bs_dom {r n : ℕ} (ν : Fin n → ℕ) (f : MvPolynomial (Fin r × Fin n)
     intro m hm
     exact hx m (support_smul hm)
 
+/- English proof (translation)
+Establish `h1 : ∀ a : Fin n, (a.val : ℤ) = ∑ k ∈ Finset.range n, if k < a.val then (1 : ℤ) else 0`. Introduce `a`. Rewrite using `[Finset.sum_boole]`. Establish `: (Finset.range n).filter (fun k => k < a.val) = Finset.range a.val`. Use extensionality with `k`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Finset.card_range]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [h1 a]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+
+Use `_ = ∑ k ∈ Finset.range n, ∑ a : Fin n, (if k < a.val then x a else 0) := Finset.sum_comm`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_filter, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : k < a.val`. Rewrite using `[if_pos h, if_neg (by omega)]; ring`. Rewrite using `[if_neg h, if_pos (by omega)]; ring`.
+-/
 lemma bs_abel (n : ℕ) (x : Fin n → ℤ) :
     ∑ a, (a.val : ℤ) * x a =
       ∑ k ∈ Finset.range n, ((∑ a, x a) - ∑ a : Fin n with a.val < k + 1, x a) := by
@@ -112,6 +160,11 @@ lemma bs_abel (n : ℕ) (x : Fin n → ℤ) :
         · rw [if_pos h, if_neg (by omega)]; ring
         · rw [if_neg h, if_pos (by omega)]; ring
 
+/- English proof (translation)
+Rewrite using `[bs_abel, bs_abel]`. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Establish `e1` using `h1 (k + 1)`. Establish `e1' : (∑ a : Fin n with a.val < k + 1, (x a : ℤ)) ≤ ∑ a : Fin n with a.val < k + 1, (y a : ℤ)`. Conclude with `e1` after adjusting the coercions.
+
+Establish `e2' : (∑ a, (x a : ℤ)) = ∑ a, (y a : ℤ)` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma bs_height_le (n : ℕ) (x y : Fin n → ℕ)
     (h1 : ∀ k : ℕ, (∑ a : Fin n with a.val < k, x a) ≤ ∑ a : Fin n with a.val < k, y a)
     (h2 : ∑ a, x a = ∑ a, y a) :
@@ -124,6 +177,15 @@ lemma bs_height_le (n : ℕ) (x y : Fin n → ℕ)
   have e2' : (∑ a, (x a : ℤ)) = ∑ a, (y a : ℤ) := by exact_mod_cast h2
   linarith
 
+/- English proof (translation)
+Apply `hwLine ℂ n n le_rfl sg hsg q hq` to reduce the goal to its premises. Introduce `a b hab k hk`. Assume the negation of the conclusion as `hne`. Establish `hmem` using `rowDivStable ℂ n n sg a b k q hq`. Establish `hht : IsWeightedHomogeneous (lhwinHt n n) q (∑ a : Fin n, (a.val : ℤ) * (sg a : ℤ))`.
+
+Introduce `d hd`. Rewrite using `[lhwin_weight_ht, hqw hd]`. Establish `hsh` using `lhwin_rowDiv_shift ℂ _ a b k q hht`. Take `⟨d, hd⟩` from `ne_zero_iff.mp hne`. Establish `e` using `hsh hd`.
+
+Rewrite `e` using `[lhwin_weight_ht]`. Simplify using `only [ldrow_weight_rowW] at e`. Establish `dom` using `bs_dom sg _ hmem d (mem_support_iff.mpr hd)`. Establish `hle` using `bs_height_le n (rowDeg d) sg dom.1 dom.2`. Establish `hab' : (a.val : ℤ) - b.val ≤ -1`.
+
+Establish `: a.val < b.val` using `hab`. Use linear arithmetic over natural numbers and integers. Establish `hk' : (1 : ℤ) ≤ k` using `by exact_mod_cast hk`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma bs_hwspace {n : ℕ} (sg : Fin n → ℕ) (hsg : Antitone sg) (q : MvPolynomial (Fin n × Fin n) ℂ)
     (hq : q ∈ dualWeyl ℂ n n sg) (hqw : IsWeightedHomogeneous (rowW n n) q sg) :
     ∃ c : ℂ, q = c • hw ℂ le_rfl sg := by
@@ -161,14 +223,23 @@ namespace BsForm
 variable {n : ℕ} {sg : Fin n → ℕ}
   {D : MvPolynomial (Fin n × Fin n) ℂ → MvPolynomial (Fin n × Fin n) ℂ → ℂ}
 
+/- English proof (translation)
+Use `H.smull 0 0 q` as an intermediate fact. Simplify using `using this`.
+-/
 lemma zerol (H : BsForm sg D) (q) : D 0 q = 0 := by
   have := H.smull 0 0 q
   simpa using this
 
+/- English proof (translation)
+Use `H.smulr 0 p 0` as an intermediate fact. Simplify using `using this`.
+-/
 lemma zeror (H : BsForm sg D) (p) : D p 0 = 0 := by
   have := H.smulr 0 p 0
   simpa using this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [H.zerol]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.addl, ih]`.
+-/
 lemma suml (H : BsForm sg D) {ι : Type*} (s : Finset ι) (g : ι → MvPolynomial (Fin n × Fin n) ℂ) (q) :
     D (∑ i ∈ s, g i) q = ∑ i ∈ s, D (g i) q := by
   classical
@@ -176,6 +247,9 @@ lemma suml (H : BsForm sg D) {ι : Type*} (s : Finset ι) (g : ι → MvPolynomi
   | empty => simp [H.zerol]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.addl, ih]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [H.zeror]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.addr, ih]`.
+-/
 lemma sumr (H : BsForm sg D) {ι : Type*} (s : Finset ι) (g : ι → MvPolynomial (Fin n × Fin n) ℂ) (p) :
     D p (∑ i ∈ s, g i) = ∑ i ∈ s, D p (g i) := by
   classical
@@ -183,6 +257,21 @@ lemma sumr (H : BsForm sg D) {ι : Type*} (s : Finset ι) (g : ι → MvPolynomi
   | empty => simp [H.zeror]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.addr, ih]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Function.ne_iff.mp hμ`. Set `t : Fin n → ℂ` to `fun b => if b = a then 2 else 1`. Establish `hprod : ∀ e : Fin n → ℕ, ∏ b, t b ^ e b = 2 ^ e a`. Introduce `e`. Rewrite using `[Finset.prod_eq_single a]`.
+
+Simplify using `[t]`. Introduce `b _ hb`. Simplify using `[t, hb]`. Simplify using the standard rewrite rules. Establish `hnu : rowNu (r` using `n) sg = sg := by`.
+
+Use function extensionality and compare the values at `b`. Simplify using `[rowNu]`. Establish `hhw : IsWeightedHomogeneous (rowW n n) (hw ℂ le_rfl sg) sg`. Use `hwRowWeight ℂ n n le_rfl sg hsg` as an intermediate fact. Rewrite `this` using `[hnu]`. Then use the resulting hypothesis.
+
+Establish `hconj : (Matrix.diagonal t).conjTranspose = Matrix.diagonal t`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Apply the tactic sequence `by_cases hb : b = a <;> simp [t, hb]`.
+
+Establish `e` using `H.adj (Matrix.diagonal t) _ (hwMem ℂ n n le_rfl sg hsg) q hq`. Rewrite `e` using `[hconj, rowActDiagWeight ℂ n n t sg _ hhw, rowActDiagWeight ℂ n n t μ _ hqw, hprod, hprod, H.smull, H.smulr]`. Establish `hstar : star ((2 : ℂ) ^ μ a) = 2 ^ μ a` using `by simp`. Rewrite `e` using `[hstar]`. Establish `hne : (2 : ℂ) ^ sg a - 2 ^ μ a ≠ 0`.
+
+Rewrite using `[sub_ne_zero]`. Introduce `h`. Establish `h' : (2 : ℕ) ^ sg a = 2 ^ μ a` using `by exact_mod_cast h`. Conclude with `ha (Nat.pow_right_injective le_rfl h').symm`. Establish `: ((2 : ℂ) ^ sg a - 2 ^ μ a) * D (hw ℂ le_rfl sg) q = 0` using `by rw [sub_mul, e, sub_self]`.
+
+Conclude with `(mul_eq_zero.mp this).resolve_left hne`.
+-/
 lemma hw_weight (H : BsForm sg D) (hsg : Antitone sg) (μ : Fin n → ℕ) (hμ : μ ≠ sg)
     (q : MvPolynomial (Fin n × Fin n) ℂ) (hq : q ∈ dualWeyl ℂ n n sg)
     (hqw : IsWeightedHomogeneous (rowW n n) q μ) : D (hw ℂ le_rfl sg) q = 0 := by
@@ -218,6 +307,13 @@ lemma hw_weight (H : BsForm sg D) (hsg : Antitone sg) (μ : Fin n → ℕ) (hμ 
   have : ((2 : ℂ) ^ sg a - 2 ^ μ a) * D (hw ℂ le_rfl sg) q = 0 := by rw [sub_mul, e, sub_self]
   exact (mul_eq_zero.mp this).resolve_left hne
 
+/- English proof (translation)
+Establish `hfin` using `weightedHomogeneousComponent_finsupp (w := rowW n n) q`. Establish `hsum` using `sum_weightedHomogeneousComponent (rowW n n) q`. Rewrite `hsum` using `[finsum_eq_sum _ hfin]`. Rewrite using `[← hsum, H.sumr]`. Use `Finset.sum_eq_zero fun μ _ => ?_` and prove the remaining obligations.
+
+Establish `hmem` using `dualWeylRowGraded ℂ n n sg μ q hq`. Establish `hw'` using `weightedHomogeneousComponent_isWeightedHomogeneous (w := rowW n n) μ q`. Distinguish the cases in `hμ : μ = sg`. Substitute `hμ` using the available equality. Take `⟨c, hc⟩` from `bs_hwspace μ hsg _ hmem hw'`.
+
+Rewrite using `[hc, H.smulr, h0, mul_zero]`. Conclude with `H.hw_weight hsg μ hμ _ hmem hw'`.
+-/
 lemma hw_rad (H : BsForm sg D) (hsg : Antitone sg) (h0 : D (hw ℂ le_rfl sg) (hw ℂ le_rfl sg) = 0)
     (q : MvPolynomial (Fin n × Fin n) ℂ) (hq : q ∈ dualWeyl ℂ n n sg) : D (hw ℂ le_rfl sg) q = 0 := by
   have hfin := weightedHomogeneousComponent_finsupp (w := rowW n n) q
@@ -233,6 +329,15 @@ lemma hw_rad (H : BsForm sg D) (hsg : Antitone sg) (h0 : D (hw ℂ le_rfl sg) (h
     rw [hc, H.smulr, h0, mul_zero]
   · exact H.hw_weight hsg μ hμ _ hmem hw'
 
+/- English proof (translation)
+Introduce `q hq`. Use `set N := (rowGen ℂ a b p).natDegree + k + 1 with hN`. Establish `h1 : (rowGen ℂ a b p).natDegree < N` using `by omega`. Establish `hk : k ∈ Finset.range N` using `Finset.mem_range.mpr (by omega)`. Use `set P : Polynomial ℂ := ∑ i ∈ Finset.range N, Polynomial.monomial i (D (rowDiv ℂ a b i p) q) with hP`.
+
+Establish `hP0 : P = 0`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [hP, Polynomial.eval_finsetSum, Polynomial.eval_monomial, Polynomial.eval_zero]`. Establish `e` using `H.adj (lfockq_mat a b c) p hp q hq`.
+
+Rewrite `e` using `[h0 _ (dualWeylRowStable ℂ n n sg _ q hq), ← lfockq_eval_rowGen, lfockq_eval_C _ N h1, H.suml]`. Rewrite using `[← e]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul, H.smull, mul_comm]`. Both sides reduce to the same expression.
+
+Use `congrArg (fun p => Polynomial.coeff p k) hP0` as an intermediate fact. Simplify using `only [hP, Polynomial.finsetSum_coeff, Polynomial.coeff_monomial, Finset.sum_ite_eq', if_pos hk, Polynomial.coeff_zero] at this`. Conclude with `this`.
+-/
 lemma rad_rowDiv (H : BsForm sg D) (p : MvPolynomial (Fin n × Fin n) ℂ) (hp : p ∈ dualWeyl ℂ n n sg)
     (h0 : ∀ q ∈ dualWeyl ℂ n n sg, D p q = 0) (a b : Fin n) (k : ℕ) :
     ∀ q ∈ dualWeyl ℂ n n sg, D (rowDiv ℂ a b k p) q = 0 := by
@@ -257,6 +362,15 @@ lemma rad_rowDiv (H : BsForm sg D) (p : MvPolynomial (Fin n × Fin n) ℂ) (hp :
     if_pos hk, Polynomial.coeff_zero] at this
   exact this
 
+/- English proof (translation)
+Establish `W : ∀ w : List (Fin n × Fin n × ℕ), applyWord ℂ w (hw ℂ le_rfl sg) ∈ dualWeyl ℂ n n sg ∧ ∀ q ∈ dualWeyl ℂ n n sg, D (applyWord ℂ w (hw ℂ le_rfl sg)) q = 0`. Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => exact ⟨hwMem ℂ n n le_rfl sg hsg, H.hw_rad hsg h0⟩`. Consider the case `cons x w ih`.
+
+Rewrite using `[applyWord_cons]`. Conclude with `⟨rowDivStable ℂ n n sg _ _ _ _ ih.1, H.rad_rowDiv _ ih.1 ih.2 _ _ _⟩`. Introduce `p hp q hq`. Establish `key : ∀ p ∈ weyl ℂ n n le_rfl sg, D p q = 0`. Introduce `p hp'`.
+
+Unfold `weyl at hp'`. Proceed by induction on `hp' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`. Conclude with `(W w).2 q hq`.
+
+Consider the case `zero => exact H.zerol q`. Consider the case `add x y _ _ hx hy => rw [H.addl, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [H.smull, hx, mul_zero]`. Conclude with `key p (bs_dual_le_weyl le_rfl sg hsg hp)`.
+-/
 theorem eq_zero (H : BsForm sg D) (hsg : Antitone sg)
     (h0 : D (hw ℂ le_rfl sg) (hw ℂ le_rfl sg) = 0) :
     ∀ p ∈ dualWeyl ℂ n n sg, ∀ q ∈ dualWeyl ℂ n n sg, D p q = 0 := by
@@ -283,6 +397,11 @@ theorem eq_zero (H : BsForm sg D) (hsg : Antitone sg)
 
 end BsForm
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.conjTranspose_apply, extM, Matrix.of_apply]`. Distinguish the cases in `h : a.val < n ∧ b.val < n`. Rewrite using `[dif_pos h, dif_pos ⟨h.2, h.1⟩]`. Rewrite using `[dif_neg h, dif_neg (fun h' => h ⟨h'.2, h'.1⟩)]`.
+
+Distinguish the cases in `e : a = b`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg e, if_neg (Ne.symm e)]`. Simplify using the standard rewrite rules.
+-/
 lemma bs_extM_conj {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     (extM ℂ g).conjTranspose = extM ℂ g.conjTranspose := by
   ext a b
@@ -294,6 +413,23 @@ lemma bs_extM_conj {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     · subst e; simp
     · rw [if_neg e, if_neg (Ne.symm e)]; simp
 
+/- English proof (translation)
+Introduce `n sg hsg io heq f h hh`. Take `⟨io', hio'⟩` from `LinearMap.exists_extend io`. Establish `hio : ∀ p (hp : p ∈ dualWeyl ℂ n n sg), io' p = io ⟨p, hp⟩`. Introduce `p hp`. Rewrite using `[← hio']`.
+
+Both sides reduce to the same expression. Establish `hact : ∀ (g : Matrix (Fin n) (Fin n) ℂ), ∀ p ∈ dualWeyl ℂ n n sg, io' (rowAct ℂ g p) = rowAct ℂ (extM ℂ g) (io' p)`. Introduce `g p hp`. Rewrite using `[hio _ (dualWeylRowStable ℂ n n sg g p hp), hio p hp]`. Conclude with `heq g ⟨p, hp⟩ ⟨_, dualWeylRowStable ℂ n n sg g p hp⟩ rfl`.
+
+Set `D : MvPolynomial (Fin n × Fin n) ℂ → MvPolynomial (Fin n × Fin n) ℂ → ℂ` to `fun p q => fockF (io' p) (io' q) * fockF (hw ℂ le_rfl sg) (hw ℂ le_rfl sg) - fockF (io' (hw ℂ le_rfl sg)) (io' (hw ℂ le_rfl sg)) * fockF p q`. Establish `H : BsForm sg D`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p p' q`. Simplify using `only [D, map_add, fischerInner_add_left]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `c p q`. Simplify using `only [D, map_smul, bs_fock_smul_left]`. Expand and normalize the polynomial expressions, which then agree. Introduce `p q q'`.
+
+Simplify using `only [D, map_add, fischerInner_add_right]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c p q`. Simplify using `only [D, map_smul, bs_fock_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `g p hp q hq`. Simplify using `only [D]`. Rewrite using `[hact g p hp, hact _ q hq, fockRowAdj (n + 1) n, fockRowAdj n n, bs_extM_conj]`. Establish `h0 : D (hw ℂ le_rfl sg) (hw ℂ le_rfl sg) = 0`. Simplify using `only [D]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e` using `H.eq_zero hsg h0 f f.2 f f.2`. Simplify using `only [D] at e`. Establish `e1 : io' (f : MvPolynomial (Fin n × Fin n) ℂ) = io f` using `hio _ f.2`. Establish `e2 : io' (hw ℂ le_rfl sg) = io h`.
+
+Rewrite using `[← hh]`. Conclude with `hio _ h.2`. Rewrite `e` using `[e1, e2]`. Rewrite using `[hh]`. Conclude with `sub_eq_zero.mp e`.
+-/
 theorem branch_isometry : BranchIsometry := by
   intro n sg hsg io heq f h hh
   obtain ⟨io', hio'⟩ := LinearMap.exists_extend io
@@ -333,6 +469,17 @@ theorem branch_isometry : BranchIsometry := by
   rw [hh]
   exact sub_eq_zero.mp e
 
+/- English proof (translation)
+Establish `step : ∀ (a b : Fin n), b.val = a.val + 1 → sg b ≤ sg a`. Introduce `a b hab`. Establish `h1` using `(h a).2`. Establish `h2` using `(h b).1`. Establish `e : (a.succ : Fin (n + 1)) = b.castSucc` using `by ext; simp [hab]`.
+
+Rewrite `h1` using `[e]`. Establish `: (sg b : ℤ) ≤ sg a` using `le_trans h2 h1`. Conclude with `this` after adjusting the coercions. Establish `all : ∀ (k : ℕ) (a b : Fin n), b.val = a.val + k → sg b ≤ sg a`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `a b hab`. Establish `: a = b` using `by ext; omega`. Rewrite using `[this]`.
+
+Consider the case `succ k ih`. Introduce `a b hab`. Establish `hlt : a.val + k < n` using `by have := b.isLt; omega`. Conclude with `le_trans (step ⟨a.val + k, hlt⟩ b (by simp; omega)) (ih a ⟨a.val + k, hlt⟩ rfl)`. Introduce `a b hab`.
+
+Conclude with `all (b.val - a.val) a b (by have : a.val ≤ b.val := hab; omega)`.
+-/
 lemma bs_antitone {n : ℕ} (lam sg : Fin n → ℕ) (h : Interlace (lamZ lam) (fun i => (sg i : ℤ))) :
     Antitone sg := by
   have step : ∀ (a b : Fin n), b.val = a.val + 1 → sg b ≤ sg a := by
@@ -358,6 +505,15 @@ lemma bs_antitone {n : ℕ} (lam sg : Fin n → ℕ) (h : Interlace (lamZ lam) (
   intro a b hab
   exact all (b.val - a.val) a b (by have : a.val ≤ b.val := hab; omega)
 
+/- English proof (translation)
+Unfold `hw`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Use `congr 1`.
+
+Unfold `lpMinor`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Establish `hne : Fin.castLE (by omega : s.val + 1 ≤ n + 1) p ≠ Fin.last n`.
+
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Establish `h1` using `p.isLt`. Establish `h2` using `s.isLt`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[zScale, ldrow_rowAct_diag_eq, hne]`.
+-/
 lemma bs_zScale_hw (n : ℕ) (lam : Fin n → ℕ) (t : ℝ) :
     rowAct ℂ (zScale n t) (hw ℂ (Nat.le_succ n) lam) = hw ℂ (Nat.le_succ n) lam := by
   unfold hw
@@ -378,6 +534,13 @@ lemma bs_zScale_hw (n : ℕ) (lam : Fin n → ℕ) (t : ℝ) :
     omega
   simp [zScale, ldrow_rowAct_diag_eq, hne]
 
+/- English proof (translation)
+Introduce `n lam sg t hint io heq hhw hdeg`. Use `⟨bs_zScale_hw n lam t, fun f => ?_⟩` and prove the remaining obligations. Establish `hsg` using `bs_antitone lam sg hint`. Set `h : ↥(dualWeyl ℂ n n sg)` to `⟨hw ℂ le_rfl sg, hwMem ℂ n n le_rfl sg hsg⟩`. Establish `e1` using `(branch_scale_formula n n _ t (io f) (hdeg f)).2`.
+
+Apply the tactic sequence `have e2 := branch_isometry n sg hsg io heq f h rfl`. Establish `e3` using `hhw h rfl`. Rewrite `e2` using `[e3, bs_fock_smul_left, bs_fock_smul_right]`. Establish `hstar : star (((cCap (lamZ lam) (fun i => (sg i : ℤ)) : ℤ) : ℂ)) = ((cCap (lamZ lam) (fun i => (sg i : ℤ)) : ℤ) : ℂ)` using `by simp`. Rewrite `e2` using `[hstar]`.
+
+Rewrite using `[e1, mul_assoc, e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem branch_norm_trace : BranchNormT := by
   intro n lam sg t hint io heq hhw hdeg
   refine ⟨bs_zScale_hw n lam t, fun f => ?_⟩

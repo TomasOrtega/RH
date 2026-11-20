@@ -13,6 +13,9 @@ namespace WeylCell
 
 namespace WeylUnipotentShell
 
+/- English proof (translation)
+Rewrite `hab` using `[Fin.lt_iff_val_lt_val]`. Rewrite using `[Equiv.swap_apply_def, Equiv.swap_apply_def]`. Apply the tactic sequence `split_ifs with h1 h2 h3 h4 h3 h4 <;>`. Apply the tactic sequence `simp only [Fin.lt_iff_val_lt_val, Fin.ext_iff] at * <;> omega`.
+-/
 theorem swap_lt_swap_iff_of_add_two {n : ℕ} (A A' a b : Fin n) (hA : A'.val = A.val + 2) (hab : a < b) :
     Equiv.swap A A' a < Equiv.swap A A' b ↔ (a < A ∨ A' < b) := by
   rw [Fin.lt_iff_val_lt_val] at hab
@@ -20,6 +23,9 @@ theorem swap_lt_swap_iff_of_add_two {n : ℕ} (A A' a b : Fin n) (hA : A'.val = 
   split_ifs with h1 h2 h3 h4 h3 h4 <;>
     simp only [Fin.lt_iff_val_lt_val, Fin.ext_iff] at * <;> omega
 
+/- English proof (translation)
+Establish `h2` using `Nat.odd_iff.1 (Nat.not_even_iff_odd.1 hn)`. Use `k.isLt` as an intermediate fact. Simplify using `only [Fin.val_rev, lo, Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem val_rev_lo_of_last {n : ℕ} (k : Fin (n / 2)) (hk : ¬ k.val + 1 < n / 2) (hn : ¬ Even n) :
     ((lo k).rev : Fin n).val = (lo k).val + 2 := by
   have h2 := Nat.odd_iff.1 (Nat.not_even_iff_odd.1 hn)
@@ -27,6 +33,13 @@ theorem val_rev_lo_of_last {n : ℕ} (k : Fin (n / 2)) (hk : ¬ k.val + 1 < n / 
   simp only [Fin.val_rev, lo, Fin.coe_castLE]
   omega
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q _ n k hk hn y _ hy u`. Establish `hw : simpleU k = Equiv.swap (lo k) (lo k).rev` using `by simp [simpleU, hk]`. Establish `hA` using `val_rev_lo_of_last k hk hn`. Rewrite `hy` using `[hw]`. Rewrite using `[cellU, Subgroup.mem_subgroupOf, GKFactor.mem_cell_iff hy, mem_unipB, Equiv.swap_inv]`.
+
+Unfold `IsUnipU IsBorelU`. Use `and_congr_right fun _ => forall₂_congr fun a b => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h hab hor`. Conclude with `h hab ((swap_lt_swap_iff_of_add_two _ _ a b hA hab).2 hor)`.
+
+Introduce `h hab hs`. Conclude with `h hab ((swap_lt_swap_iff_of_add_two _ _ a b hA hab).1 hs)`.
+-/
 theorem mem_cellU_last_iff : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q →
     ∀ (n : ℕ) (k : Fin (n / 2)), ¬ k.val + 1 < n / 2 → ¬ Even n →

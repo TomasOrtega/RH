@@ -26,6 +26,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LastCompare
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Rewrite `h` using `[Valuation.mem_integer_iff, not_le]`. Establish `hK : IsCompact (φ '' (𝒪[k] : Set k))` using `(isCompact_iff_compactSpace.2 (inferInstance : CompactSpace 𝒪[k])).image hφ`. Use `haveI : MulArchimedean (ValueGroupWithZero k') := ValuativeRel.isRankLeOne_iff_mulArchimedean.1 inferInstance`. Establish `h0 : valuation k' (φ a) ≠ 0` using `(zero_lt_one.trans h).ne'`.
+
+Establish `hU : ∀ n : ℕ, IsOpen {y : k' | valuation k' y < valuation k' (φ a) ^ n}` using `fun n => by`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y hy`. Use `Filter.mem_of_superset ((IsValuativeTopology.hasBasis_nhds y).mem_of_mem (i := Units.mk0 _ (pow_ne_zero n h0)) trivial) ?_` and prove the remaining obligations. Introduce `z hz`.
+
+Use `(valuation k').map_add_lt hz hy` as an intermediate fact. Simplify using `using this`. Take `⟨n, hn⟩` from `hK.elim_directed_cover _ hU (fun y _ => by`. Take `⟨n, hn⟩` from `MulArchimedean.arch (valuation k' y) h`. Conclude with `Set.mem_iUnion.2 ⟨n + 1, hn.trans_lt (pow_lt_pow_right₀ h n.lt_succ_self)⟩)`.
+
+Use the proof step `(directed_of_isDirected_le fun m n hmn y hy => lt_of_lt_of_le hy (pow_le_pow_right₀ h.le hmn))`. Use `hn ⟨a ^ n, pow_mem ha n, rfl⟩` as an intermediate fact. Simplify using `at this`.
+-/
 theorem map_mem_integer {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] (φ : k →* k') (hφ : Continuous φ)
     {a : k} (ha : a ∈ 𝒪[k]) : φ a ∈ 𝒪[k'] := by
@@ -50,6 +59,9 @@ theorem map_mem_integer {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpa
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← p.π_ι x, ← p.π_ι y, ← RingHom.map_mul, p.ι_π, ← mul_assoc, Witness.e_ι]`.
+-/
 theorem iota_mul (p : Place D k) (x y : k) : p.ι (x * y) = p.ι x * p.ι y := by
   conv_lhs => rw [← p.π_ι x, ← p.π_ι y, ← RingHom.map_mul, p.ι_π, ← mul_assoc, Witness.e_ι]
 

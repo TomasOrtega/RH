@@ -10,6 +10,15 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.InertiaEigenvalues
 
+/- English proof (translation)
+Introduce `l _ LL χ hopen`. Take `⟨t₁, ht₁, ht₁e⟩` from `isOpen_induced_iff.mp hopen`. Take `⟨t₂, ht₂, ht₂e⟩` from `isOpen_induced_iff.mp ht₁`. Establish `h1 : (1 : GQ l) ∈ t₂`. Establish `hk : (1 : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))) ∈ (χ.ker : Set ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l)))` using `χ.ker.one_mem`.
+
+Rewrite `hk` using `[← ht₁e]`. Establish `hk' : ((1 : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))) : Gl l) ∈ t₁` using `hk`. Rewrite `hk'` using `[← ht₂e]`. Conclude with `hk'`. Take `⟨E, hfd, hN, hE⟩` from `(krullTopology_mem_nhds_one_iff_of_normal ℚ_[l] (Om l) t₂).1 (ht₂.mem_nhds h1)`.
+
+Use `⟨⟨E, hfd⟩, hN, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hg₂ : ((g : Gl l) : GQ l) ∈ t₂` using `hE ((IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => hg x hx)`. Establish `hg₁ : (g : Gl l) ∈ t₁`. Rewrite using `[← ht₂e]`. Conclude with `hg₂`.
+
+Establish `hg₀ : g ∈ (χ.ker : Set ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l)))`. Rewrite using `[← ht₁e]`. Conclude with `hg₁`. Conclude with `hg₀`.
+-/
 theorem char_inertia_trivial_on_fixing_normal : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l)
     (χ : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l)) →* (↥LL.1)ˣ), IsOpen (χ.ker : Set ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))) →
     ∃ F : FinExt l, Normal ℚ_[l] ↥F.1 ∧ ∀ g : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l)),

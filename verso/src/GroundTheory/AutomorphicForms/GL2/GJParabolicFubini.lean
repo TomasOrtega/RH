@@ -26,10 +26,16 @@ variable (F) in
 def unipMatrix {β : Fin n → α} (u : UnipotentIndex n β → F) : Matrix (Fin n) (Fin n) F :=
   fun i j => if h : β i < β j then u ⟨(i, j), h⟩ else 0
 
+/- English proof (translation)
+Simplify using `[unipMatrix, h]`.
+-/
 theorem unipMatrix_apply_of_lt {β : Fin n → α} (u : UnipotentIndex n β → F) {i j : Fin n}
     (h : β i < β j) : unipMatrix F u i j = u ⟨(i, j), h⟩ := by
   simp [unipMatrix, h]
 
+/- English proof (translation)
+Simplify using `[unipMatrix, h]`.
+-/
 theorem unipMatrix_apply_of_not_lt {β : Fin n → α} (u : UnipotentIndex n β → F) {i j : Fin n}
     (h : ¬ β i < β j) : unipMatrix F u i j = 0 := by
   simp [unipMatrix, h]
@@ -45,12 +51,20 @@ def lieLevi : Submodule F (Matrix (Fin n) (Fin n) F) where
   smul_mem' c A hA i j h := by simp [hA i j h]
 
 variable {F n β} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_lieLevi {A : Matrix (Fin n) (Fin n) F} :
     A ∈ lieLevi F n β ↔ ∀ i j, β i ≠ β j → A i j = 0 :=
   Iff.rfl
 
 variable {F n β} in
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hik : β i = β k`. Rewrite using `[hB k j (fun e => h (hik.trans e)), mul_zero]`.
+
+Rewrite using `[hA i k hik, zero_mul]`.
+-/
 theorem mul_mem_lieLevi {A B : Matrix (Fin n) (Fin n) F} (hA : A ∈ lieLevi F n β)
     (hB : B ∈ lieLevi F n β) : A * B ∈ lieLevi F n β := by
   intro i j h
@@ -75,6 +89,9 @@ def leviCoord : lieLevi F n β ≃ₗ[F] (LeviIndex n β → F) where
     funext s
     simp [s.2]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem leviCoord_apply (A : lieLevi F n β) (s : LeviIndex n β) :
     leviCoord F n β A s = (A : Matrix (Fin n) (Fin n) F) s.1.1 s.1.2 :=
   rfl
@@ -95,6 +112,13 @@ def leviCoordHomeomorph : lieLevi F n β ≃ₜ (LeviIndex n β → F) where
 def toLieLevi (m : levi F n β) : lieLevi F n β :=
   ⟨((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F), fun i j h => mem_levi.1 m.2 i j h⟩
 
+/- English proof (translation)
+Establish `hemb : IsEmbedding (toLieLevi F n β)` using `((isOpenEmbedding_val F n).isEmbedding.comp IsEmbedding.subtypeVal).codRestrict (lieLevi F n β : Set (Matrix (Fin n) (Fin n) F)) fun m : levi F n β => fun i j h => mem_levi.1 m.2 i j h`. Use `⟨hemb, ?_⟩` and prove the remaining obligations. Establish `: Set.range (toLieLevi F n β) = Subtype.val ⁻¹' Set.range (Units.val : GL (Fin n) F → Matrix (Fin n) (Fin n) F)`. Use extensionality with `A`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨m, rfl⟩`. Conclude with `⟨m, rfl⟩`. Introduce and unpack `⟨u, hu⟩`. Use `⟨⟨u, mem_levi.2 fun i j h => ?_⟩, Subtype.ext hu⟩` and prove the remaining obligations. Rewrite using `[hu]`.
+
+Conclude with `A.2 i j h`. Rewrite using `[this]`. Conclude with `(isOpenEmbedding_val F n).isOpen_range.preimage continuous_subtype_val`.
+-/
 theorem isOpenEmbedding_toLieLevi : IsOpenEmbedding (toLieLevi F n β) := by
   have hemb : IsEmbedding (toLieLevi F n β) :=
     ((isOpenEmbedding_val F n).isEmbedding.comp IsEmbedding.subtypeVal).codRestrict
@@ -149,10 +173,16 @@ def leviChart : LinearChart F (LeviIndex n β) (levi F n β) where
 
 variable {β}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem leviChart_apply (m : levi F n β) (s : LeviIndex n β) :
     (leviChart β).toFun m s = ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) s.1.1 s.1.2 :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem parabolicChart_apply (p : blockUpper F n β) (s : ParabolicIndex n β) :
     (parabolicChart F n β).toFun p s = ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) s.1.1 s.1.2 :=
   rfl
@@ -163,12 +193,20 @@ section ParabolicMk
 
 variable {β : Fin n → α}
 
+/- English proof (translation)
+Introduce `i j hji`. Rewrite using `[Matrix.add_apply, mem_levi.1 m.2 i j (ne_of_gt hji), unipMatrix_apply_of_not_lt u (not_lt.2 hji.le), add_zero]`.
+-/
 theorem blockTriangular_add_unipMatrix (m : levi F n β) (u : UnipotentIndex n β → F) :
     (((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) + unipMatrix F u).BlockTriangular β := by
   intro i j hji
   rw [Matrix.add_apply, mem_levi.1 m.2 i j (ne_of_gt hji),
     unipMatrix_apply_of_not_lt u (not_lt.2 hji.le), add_zero]
 
+/- English proof (translation)
+Establish `hm : ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).BlockTriangular β` using `fun i j h => mem_levi.1 m.2 i j (ne_of_gt h)`. Rewrite using `[(blockTriangular_add_unipMatrix m u).det, hm.det]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.toSquareBlock_def, Matrix.of_apply, Matrix.add_apply]`. Rewrite using `[unipMatrix_apply_of_not_lt u (by rw [i.2, j.2]; exact lt_irrefl _), add_zero]`.
+-/
 theorem det_add_unipMatrix (m : levi F n β) (u : UnipotentIndex n β → F) :
     (((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) + unipMatrix F u).det =
       ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).det := by
@@ -182,6 +220,9 @@ theorem det_add_unipMatrix (m : levi F n β) (u : UnipotentIndex n β → F) :
   simp only [Matrix.toSquareBlock_def, Matrix.of_apply, Matrix.add_apply]
   rw [unipMatrix_apply_of_not_lt u (by rw [i.2, j.2]; exact lt_irrefl _), add_zero]
 
+/- English proof (translation)
+Rewrite using `[Matrix.isUnit_iff_isUnit_det, det_add_unipMatrix, ← Matrix.isUnit_iff_isUnit_det]`. Conclude with `(m : GL (Fin n) F).isUnit`.
+-/
 theorem isUnit_add_unipMatrix (m : levi F n β) (u : UnipotentIndex n β → F) :
     IsUnit (((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) + unipMatrix F u) := by
   rw [Matrix.isUnit_iff_isUnit_det, det_add_unipMatrix, ← Matrix.isUnit_iff_isUnit_det]
@@ -194,11 +235,19 @@ def parabolicMk (m : levi F n β) (u : UnipotentIndex n β → F) : blockUpper F
     rw [mem_blockUpper, IsUnit.unit_spec]
     exact blockTriangular_add_unipMatrix m u⟩
 
+/- English proof (translation)
+The claim follows from `IsUnit.unit_spec _`.
+-/
 theorem coe_parabolicMk (m : levi F n β) (u : UnipotentIndex n β → F) :
     (((parabolicMk β m u : blockUpper F n β) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) =
       ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) + unipMatrix F u :=
   IsUnit.unit_spec _
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[leviProj_apply, coe_parabolicMk]`. Use `split_ifs with h`.
+
+Rewrite using `[Matrix.add_apply, unipMatrix_apply_of_not_lt u (by rw [h]; exact lt_irrefl _), add_zero]`. Conclude with `(mem_levi.1 m.2 i j h).symm`.
+-/
 theorem leviProj_parabolicMk (m : levi F n β) (u : UnipotentIndex n β → F) :
     leviProj F n β (parabolicMk β m u) = m := by
   apply Subtype.ext
@@ -212,12 +261,20 @@ theorem leviProj_parabolicMk (m : levi F n β) (u : UnipotentIndex n β → F) :
 def unipCoord (p : blockUpper F n β) : UnipotentIndex n β → F :=
   fun s => ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) s.1.1 s.1.2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Rewrite using `[unipCoord, coe_parabolicMk, Matrix.add_apply, mem_levi.1 m.2 _ _ (ne_of_lt s.2), unipMatrix_apply_of_lt u s.2, zero_add]`.
+-/
 theorem unipCoord_parabolicMk (m : levi F n β) (u : UnipotentIndex n β → F) :
     unipCoord (parabolicMk β m u) = u := by
   funext s
   rw [unipCoord, coe_parabolicMk, Matrix.add_apply, mem_levi.1 m.2 _ _ (ne_of_lt s.2),
     unipMatrix_apply_of_lt u s.2, zero_add]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[coe_parabolicMk, Matrix.add_apply, leviProj_apply]`. Break down `lt_trichotomy (β i) (β j) with h | h | h` into its components or cases.
+
+Rewrite using `[if_neg (ne_of_lt h), unipMatrix_apply_of_lt _ h, zero_add]`. Both sides reduce to the same expression. Rewrite using `[if_pos h, unipMatrix_apply_of_not_lt _ (by rw [h]; exact lt_irrefl _), add_zero]`. Rewrite using `[if_neg (ne_of_gt h), unipMatrix_apply_of_not_lt _ (not_lt.2 h.le), add_zero]`. Conclude with `((mem_blockUpper F n).1 p.2 h).symm`.
+-/
 theorem parabolicMk_leviProj_unipCoord (p : blockUpper F n β) :
     parabolicMk β (leviProj F n β p) (unipCoord p) = p := by
   apply Subtype.ext
@@ -250,12 +307,18 @@ def leviRatio : levi F n β →* ℝ≥0 where
     borelize F ↥(levi F n β) ↥(blockUpper F n β)
     rw [map_mul, LinearChart.leftModulus_mul, LinearChart.leftModulus_mul, div_mul_div_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem leviRatio_apply (m : levi F n β) :
     leviRatio β m = (leviChart β).leftModulus m / (parabolicChart F n β).leftModulus (leviIncl m) :=
   rfl
 
 variable {β}
 
+/- English proof (translation)
+Use `borelize F ↥(levi F n β) ↥(blockUpper F n β)`. Use `show Continuous fun m : levi F n β => (leviChart β).leftModulus m / (parabolicChart F n β).leftModulus (leviIncl m)`. Use `Continuous.div (LinearChart.continuous_leftModulus _) ?_ fun m => (LinearChart.leftModulus_pos _ _).ne'` and prove the remaining obligations. Conclude with `(LinearChart.continuous_leftModulus _).comp (continuous_subtype_val.subtype_mk _ : Continuous fun m : levi F n β => leviIncl m)`.
+-/
 theorem continuous_leviRatio : Continuous (leviRatio (F := F) β) := by
   borelize F ↥(levi F n β) ↥(blockUpper F n β)
   show Continuous fun m : levi F n β =>
@@ -286,6 +349,9 @@ def coordAddEquiv : ((LeviIndex n β → F) × (UnipotentIndex n β → F)) ≃+
     funext s
     by_cases h : β s.1.1 = β s.1.2 <;> simp [h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coordAddEquiv_apply (x : (LeviIndex n β → F) × (UnipotentIndex n β → F))
     (s : ParabolicIndex n β) :
     coordAddEquiv β x s = if h : β s.1.1 = β s.1.2 then x.1 ⟨s.1, h⟩
@@ -307,10 +373,18 @@ def coordEquiv : ((LeviIndex n β → F) × (UnipotentIndex n β → F)) ≃ₜ+
     refine Continuous.prodMk (continuous_pi fun s => ?_) (continuous_pi fun s => ?_) <;>
     exact continuous_apply _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_coordEquiv : ⇑(coordEquiv (F := F) β) = coordAddEquiv β := rfl
 
 variable {β}
 
+/- English proof (translation)
+Use `(leviChart β).isOpenEmbedding.isInducing.continuous_iff.2 ?_` and prove the remaining obligations. Establish `: (leviChart β).toFun ∘ leviProj F n β = fun (p : blockUpper F n β) (s : LeviIndex n β) => ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) s.1.1 s.1.2`. Use function extensionality and compare the values at `p s`. Simplify using `only [Function.comp_apply, leviChart_apply, leviProj_apply, if_pos s.2]`. Rewrite using `[this]`.
+
+Conclude with `continuous_pi fun s => (Units.continuous_val.comp continuous_subtype_val).matrix_elem s.1.1 s.1.2`.
+-/
 theorem continuous_leviProj : Continuous (leviProj F n β) := by
   refine (leviChart β).isOpenEmbedding.isInducing.continuous_iff.2 ?_
   have : (leviChart β).toFun ∘ leviProj F n β = fun (p : blockUpper F n β) (s : LeviIndex n β) =>
@@ -321,6 +395,11 @@ theorem continuous_leviProj : Continuous (leviProj F n β) := by
   exact continuous_pi fun s =>
     (Units.continuous_val.comp continuous_subtype_val).matrix_elem s.1.1 s.1.2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Rewrite using `[parabolicChart_apply, coe_parabolicMk, Matrix.add_apply, coordAddEquiv_apply]`. Distinguish the cases in `h : β s.1.1 = β s.1.2`. Rewrite using `[dif_pos h, unipMatrix_apply_of_not_lt u (by rw [h]; exact lt_irrefl _), add_zero]`. Both sides reduce to the same expression.
+
+Establish `hlt` using `lt_of_le_of_ne (not_lt.1 s.2) h`. Rewrite using `[dif_neg h, mem_levi.1 m.2 _ _ h, unipMatrix_apply_of_lt u hlt, zero_add]`.
+-/
 theorem parabolicChart_parabolicMk (m : levi F n β) (u : UnipotentIndex n β → F) :
     (parabolicChart F n β).toFun (parabolicMk β m u) = coordAddEquiv β ((leviChart β).toFun m, u) := by
   funext s
@@ -354,6 +433,15 @@ def parabolicMkHomeomorph : (levi F n β × (UnipotentIndex n β → F)) ≃ₜ 
 
 end Coordinates
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `(hK.image hχ).bddAbove`. Establish `hbd : ∀ x ∈ K, χ x ≤ B` using `fun x hx => hB ⟨x, hx, rfl⟩`. Establish `key : ∀ x ∈ K, ¬ 1 < χ x` using `fun x hx h1 => by`. Take `⟨N, hN⟩` from `pow_unbounded_of_one_lt B h1`. Rewrite `hN` using `[← map_pow]`.
+
+Conclude with `(hbd _ (K.pow_mem hx N)).not_gt hN`. Establish `hne : χ k ≠ 0`. Introduce `h0`. Use `map_mul_eq_one χ (mul_inv_cancel k)` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`.
+
+Conclude with `zero_ne_one this`. Break down `lt_trichotomy (χ k) 1 with h | h | h` into its components or cases. It suffices to derive a contradiction. Use `key k⁻¹ (K.inv_mem hk) ?_` and prove the remaining obligations. Rewrite using `[map_inv]`.
+
+Conclude with `one_lt_inv₀ (pos_iff_ne_zero.2 hne) |>.2 h`. Conclude with `h`. Conclude with `absurd h (key k hk)`.
+-/
 theorem eq_one_of_mem_compact {G : Type*} [Group G] [TopologicalSpace G] (χ : G →* ℝ≥0)
     (hχ : Continuous χ) {K : Subgroup G} (hK : IsCompact (K : Set G)) {k : G} (hk : k ∈ K) :
     χ k = 1 := by
@@ -403,6 +491,11 @@ instance isAddHaarMeasure_parabolicMeasure (μ𝔪 : Measure (LeviIndex n β →
     (parabolicMeasure β μ𝔪 μ𝔫).IsAddHaarMeasure :=
   ContinuousAddEquiv.isAddHaarMeasure_map _ _
 
+/- English proof (translation)
+Take `⟨K, hKc, -, hK⟩` from `exists_compactOpen_unipotentRadical ({⟨(p : GL (Fin n) F), hp⟩} : Finset (unipotentRadical F n β))`. Establish `hle : ∀ x : unipotentRadical F n β, (x : GL (Fin n) F) ∈ blockUpper F n β` using `fun x => (mem_unipotentRadical.1 x.2).1`. Set `φ : unipotentRadical F n β →* blockUpper F n β` to `{ toFun := fun x => ⟨x, hle x⟩ map_one' := rfl map_mul' := fun _ _ => rfl }`. Establish `hφ : Continuous φ` using `continuous_induced_rng.2 continuous_subtype_val`. Use `eq_one_of_mem_compact (((parabolicChart F n β).leftModulusHom).comp φ) ((LinearChart.continuous_leftModulus _).comp hφ) hKc (hK _ (Finset.mem_singleton_self _))` as an intermediate fact.
+
+Conclude with `this`.
+-/
 theorem parabolicChart_leftModulus_of_mem {p : blockUpper F n β}
     (hp : (p : GL (Fin n) F) ∈ unipotentRadical F n β) :
     (parabolicChart F n β).leftModulus p = 1 := by
@@ -419,6 +512,9 @@ theorem parabolicChart_leftModulus_of_mem {p : blockUpper F n β}
     ((LinearChart.continuous_leftModulus _).comp hφ) hKc (hK _ (Finset.mem_singleton_self _))
   exact this
 
+/- English proof (translation)
+Establish `h` using `leviProj_inv_mul_mem (parabolicMk β m u)`. Rewrite `h` using `[leviProj_parabolicMk]`. Establish `e : parabolicMk β m u = leviIncl m * ((leviIncl m)⁻¹ * parabolicMk β m u)` using `by group`. Rewrite using `[e, LinearChart.leftModulus_mul, parabolicChart_leftModulus_of_mem h, mul_one]`.
+-/
 theorem parabolicChart_leftModulus_parabolicMk (m : levi F n β) (u : UnipotentIndex n β → F) :
     (parabolicChart F n β).leftModulus (parabolicMk β m u) =
       (parabolicChart F n β).leftModulus (leviIncl m) := by
@@ -427,6 +523,21 @@ theorem parabolicChart_leftModulus_parabolicMk (m : levi F n β) (u : UnipotentI
   have e : parabolicMk β m u = leviIncl m * ((leviIncl m)⁻¹ * parabolicMk β m u) := by group
   rw [e, LinearChart.leftModulus_mul, parabolicChart_leftModulus_of_mem h, mul_one]
 
+/- English proof (translation)
+Use extensionality with `S hS`. Establish `hSP` using `(parabolicChart F n β).measurableEmbedding.measurableSet_image.2 hS`. Establish `hΘ : Measurable (parabolicMkHomeomorph (F` using `F) β) := (parabolicMkHomeomorph β).continuous.measurable`. Establish `hE : Measurable (coordEquiv (F` using `F) β) := (coordEquiv β).continuous.measurable`. Rewrite using `[(parabolicChart F n β).measurableEmbedding.comap_apply, parabolicMeasure, map_apply hE hSP, map_apply hΘ hS, Measure.prod_apply (hE hSP), Measure.prod_apply (hΘ hS)]`.
+
+Use `set G : (LeviIndex n β → F) → ℝ≥0∞ := fun a => μ𝔫 (Prod.mk a ⁻¹' (coordEquiv β ⁻¹' ((parabolicChart F n β).toFun '' S))) with hG`. Establish `hslice : ∀ m : levi F n β, μ𝔫 (Prod.mk m ⁻¹' (parabolicMkHomeomorph β ⁻¹' S)) = G ((leviChart β).toFun m)`. Introduce `m`. Rewrite using `[hG]`. Use `congr 1`.
+
+Use extensionality with `u`. Simplify using `only [Set.mem_preimage]`. Use `show parabolicMk β m u ∈ S ↔ coordEquiv β ((leviChart β).toFun m, u) ∈ _`. Rewrite using `[coe_coordEquiv, ← parabolicChart_parabolicMk, (parabolicChart F n β).isOpenEmbedding.injective.mem_set_image]`. Establish `hsupp : Function.support G ⊆ Set.range (leviChart β).toFun`.
+
+Introduce `a ha`. Choose the witnesses or unpack the hypotheses as in `⟨u, p, -, hp⟩ : ∃ u, coordEquiv β (a, u) ∈ (parabolicChart F n β).toFun '' S := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `ha` to reduce the goal to its premises.
+
+Rewrite using `[hG]`. Use `measure_empty (μ := μ𝔫)` and compare the differences between its conclusion and the goal. Use extensionality with `u`. Simplify using `using h u`. Use `⟨leviProj F n β p, ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `congrArg (fun y => ((coordAddEquiv β).symm y).1) hp`. Simplify using `only [coe_coordEquiv, AddEquiv.symm_apply_apply] at e`. Rewrite using `[← e]`. Use function extensionality and compare the values at `s`. Rewrite using `[leviChart_apply, leviProj_apply, if_pos s.2]`.
+
+Both sides reduce to the same expression. Rewrite using `[show (fun x : levi F n β => μ𝔫 (Prod.mk x ⁻¹' (parabolicMkHomeomorph β ⁻¹' S))) = fun m => G ((leviChart β).toFun m) from funext hslice, ← (leviChart β).measurableEmbedding.lintegral_map, (leviChart β).measurableEmbedding.map_comap, setLIntegral_eq_of_support_subset hsupp]`.
+-/
 theorem comap_parabolicMeasure (μ𝔪 : Measure (LeviIndex n β → F))
     (μ𝔫 : Measure (UnipotentIndex n β → F)) [μ𝔪.IsAddHaarMeasure] [μ𝔫.IsAddHaarMeasure] :
     (parabolicMeasure β μ𝔪 μ𝔫).comap (parabolicChart F n β).toFun =
@@ -481,6 +592,9 @@ variable [MeasurableSpace F] [BorelSpace F] [MeasurableSpace (GL (Fin n) F)]
 
 variable {β : Fin n → α}
 
+/- English proof (translation)
+Use extensionality with `S hS`. Rewrite using `[withDensity_apply _ hS, map_apply e.measurable hS, withDensity_apply _ (e.measurable hS), setLIntegral_map hS hf e.measurable]`. Both sides reduce to the same expression.
+-/
 theorem withDensity_map_equiv {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y] (e : X ≃ᵐ Y)
     (ν : Measure X) {f : Y → ℝ≥0∞} (hf : Measurable f) :
     (map e ν).withDensity f = map e (ν.withDensity (f ∘ e)) := by
@@ -489,6 +603,15 @@ theorem withDensity_map_equiv {X Y : Type*} [MeasurableSpace X] [MeasurableSpace
     setLIntegral_map hS hf e.measurable]
   rfl
 
+/- English proof (translation)
+Establish `hθ : Measurable fun m : levi F n β => (leviRatio β m : ℝ≥0∞)` using `(ENNReal.continuous_coe.comp continuous_leviRatio).measurable`. Establish `hρM` using `(leviChart (F := F) β).measurable_density`. Use `show ((parabolicMeasure β μ𝔪 μ𝔫).comap (parabolicChart F n β).toFun).withDensity _ = _`. Rewrite using `[comap_parabolicMeasure, ← Homeomorph.toMeasurableEquiv_coe, withDensity_map_equiv _ _ (parabolicChart F n β).measurable_density]`. Use `congr 1`.
+
+Establish `hfun : ((fun p : blockUpper F n β => ((((parabolicChart F n β).leftModulus p)⁻¹ : ℝ≥0) : ℝ≥0∞)) ∘ (parabolicMkHomeomorph β).toMeasurableEquiv) = fun z => (fun m : levi F n β => ((((leviChart β).leftModulus m)⁻¹ : ℝ≥0) : ℝ≥0∞) * (leviRatio β m : ℝ≥0∞)) z.1 * (1 : (UnipotentIndex n …`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply, Homeomorph.toMeasurableEquiv_coe, Pi.one_apply, mul_one]`. Use `show ((((parabolicChart F n β).leftModulus (parabolicMk β z.1 z.2))⁻¹ : ℝ≥0) : ℝ≥0∞) = _`. Rewrite using `[parabolicChart_leftModulus_parabolicMk, leviRatio_apply, ← ENNReal.coe_mul]`.
+
+Use `congr 1`. Establish `h1` using `((leviChart β).leftModulus_pos z.1).ne'`. Establish `h2` using `((parabolicChart F n β).leftModulus_pos (leviIncl z.1)).ne'`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hfun, ← prod_withDensity (f := fun m : levi F n β => ((((leviChart β).leftModulus m)⁻¹ : ℝ≥0) : ℝ≥0∞) * (leviRatio β m : ℝ≥0∞)) (hρM.mul hθ) measurable_one, withDensity_one]`.
+
+Rewrite using `[show (fun m : levi F n β => ((((leviChart β).leftModulus m)⁻¹ : ℝ≥0) : ℝ≥0∞) * (leviRatio β m : ℝ≥0∞)) = (fun m : levi F n β => ((((leviChart β).leftModulus m)⁻¹ : ℝ≥0) : ℝ≥0∞)) * (fun m : levi F n β => (leviRatio β m : ℝ≥0∞)) from rfl, withDensity_mul _ hρM hθ]`. Both sides reduce to the same expression.
+-/
 theorem haarParabolic_eq_map (μ𝔪 : Measure (LeviIndex n β → F))
     (μ𝔫 : Measure (UnipotentIndex n β → F)) [μ𝔪.IsAddHaarMeasure] [μ𝔫.IsAddHaarMeasure] :
     haarParabolic (parabolicMeasure β μ𝔪 μ𝔫) =
@@ -523,6 +646,9 @@ theorem haarParabolic_eq_map (μ𝔪 : Measure (LeviIndex n β → F))
         (fun m : levi F n β => (leviRatio β m : ℝ≥0∞)) from rfl, withDensity_mul _ hρM hθ]
   rfl
 
+/- English proof (translation)
+Establish `hθ : Measurable fun m : levi F n β => (leviRatio β m : ℝ≥0∞)` using `(ENNReal.continuous_coe.comp continuous_leviRatio).measurable`. Establish `hHΘ : Measurable fun z : levi F n β × (UnipotentIndex n β → F) => H (parabolicMkHomeomorph β z)` using `hH.comp (parabolicMkHomeomorph β).continuous.measurable`. Rewrite using `[haarParabolic_eq_map, (parabolicMkHomeomorph β).measurableEmbedding.lintegral_map, lintegral_prod _ hHΘ.aemeasurable, lintegral_withDensity_eq_lintegral_mul _ hθ hHΘ.lintegral_prod_right']`. Both sides reduce to the same expression.
+-/
 theorem lintegral_haarParabolic (μ𝔪 : Measure (LeviIndex n β → F))
     (μ𝔫 : Measure (UnipotentIndex n β → F)) [μ𝔪.IsAddHaarMeasure] [μ𝔫.IsAddHaarMeasure]
     {H : blockUpper F n β → ℝ≥0∞} (hH : Measurable H) :
@@ -537,6 +663,11 @@ theorem lintegral_haarParabolic (μ𝔪 : Measure (LeviIndex n β → F))
     lintegral_withDensity_eq_lintegral_mul _ hθ hHΘ.lintegral_prod_right']
   rfl
 
+/- English proof (translation)
+Establish `hθ : Measurable fun m : levi F n β => leviRatio β m` using `continuous_leviRatio.measurable`. Rewrite `hH`, the goal using `[haarParabolic_eq_map]`. Establish `hΘ` using `(parabolicMkHomeomorph (F := F) β).measurableEmbedding`. Rewrite using `[hΘ.integral_map]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`.
+-/
 theorem integral_haarParabolic (μ𝔪 : Measure (LeviIndex n β → F))
     (μ𝔫 : Measure (UnipotentIndex n β → F)) [μ𝔪.IsAddHaarMeasure] [μ𝔫.IsAddHaarMeasure]
     {H : blockUpper F n β → ℂ} (hH : Integrable H (haarParabolic (parabolicMeasure β μ𝔪 μ𝔫))) :
@@ -557,6 +688,15 @@ theorem integral_haarParabolic (μ𝔪 : Measure (LeviIndex n β → F))
     _ = _ := by
         congr 1
 
+/- English proof (translation)
+Take `⟨r, A, hinv, hsupp⟩` from `hΦ.exists_invariant`. Use `⟨r, A, fun X Y _ _ hY => ?_, fun X hX hne i j => ?_⟩` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[add_right_comm]`.
+
+Conclude with `hinv _ Y hY`. Distinguish the cases in `hij : β i = β j`. Assume the negation of the conclusion as `h`. Apply `hne` to reduce the goal to its premises. Establish `hz : (fun u : UnipotentIndex n β → F => Φ (X + unipMatrix F u)) = 0`.
+
+Use function extensionality and compare the values at `u`. Assume the negation of the conclusion as `h'`. Apply `h` to reduce the goal to its premises. Use `hsupp _ h' i j` as an intermediate fact. Rewrite `this` using `[Matrix.add_apply, unipMatrix_apply_of_not_lt u (by rw [hij]; exact lt_irrefl _), add_zero]`. Then use the resulting hypothesis.
+
+Simplify using `only`. Rewrite using `[hz]`. Conclude with `integral_zero _ _`. Rewrite using `[hX i j hij, mul_zero]`. Conclude with `zero_mem _`.
+-/
 theorem isLeviSchwartz_integral (μ𝔫 : Measure (UnipotentIndex n β → F)) [μ𝔫.IsAddHaarMeasure]
     {Φ : Matrix (Fin n) (Fin n) F → ℂ} (hΦ : IsSchwartzBruhat Φ) :
     IsLeviSchwartz β (fun X => ∫ u, Φ (X + unipMatrix F u) ∂μ𝔫) := by

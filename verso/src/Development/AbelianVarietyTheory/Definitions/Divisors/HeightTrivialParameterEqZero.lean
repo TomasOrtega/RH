@@ -21,6 +21,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 variable (Ω) in
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.PlaceBallNormLemmas.exists_bridge`. Consider the case `exact _root_.GlobalTheory.PlaceBallNormLemmas.exists_bridge`. Consider the case `(apply _root_.GlobalTheory.PlaceBallNormLemmas.exists_bridge <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PlaceBallNormLemmas.exists_bridge <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.PlaceBallNormLemmas.exists_bridge <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PlaceBallNormLemmas.exists_bridge ..)`.
+-/
 theorem exists_bridge (τ : E →+* Qbar l) : ∃ (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (_ : IsPlaceOver A w)
     (LL : FinExt l) (Bw : LocBridge l E Ω (Dec (F := E) A) ↥(OL LL)), GlobalTheory.Pst.Induces Bw ∧
       IsInduced Bw τ (AlgHom.id ℚ_[l] ↥Bw.Kw.1) := by
@@ -32,6 +37,11 @@ theorem exists_bridge (τ : E →+* Qbar l) : ∃ (w : HeightOneSpectrum (𝓞 E
   | (intros; apply @_root_.GlobalTheory.PlaceBallNormLemmas.exists_bridge <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.PlaceBallNormLemmas.exists_bridge ..)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Take `⟨w, A, hA, LL, Bw, hI, hτ0⟩` from `exists_bridge Ω τ`. Take `⟨P, AI, ⟨T⟩⟩` from `GlobalTheory.MemLoc.exists_locPrime_tied l`. Establish `h1` using `(h'.2 _ _ ⟨T⟩ w A hA _ Bw hI).2 _ _ _ hτ0`. Take `⟨L, r', hM, -, τ', hτ, hc⟩` from `(h.2 _ _ ⟨T⟩ w A hA _ Bw hI).2 _ _ _ hτ0`.
+
+Use extensionality with `a`. Conclude with `(hc a).trans (IsJumpsAt.count_eq _ hM hτ h1 a).symm` after adjusting the coercions.
+-/
 theorem jumps_unique {n : ℕ} {r : G E Ω →* GL (Fin n) (Qbar l)} {J J' : (E →+* Qbar l) → Multiset ℤ}
     (h : CrysWith r J) (h' : CrysWith r J') : J = J' := by
   funext τ
@@ -42,6 +52,9 @@ theorem jumps_unique {n : ℕ} {r : G E Ω →* GL (Fin n) (Qbar l)} {J J' : (E 
   ext a
   exact_mod_cast (hc a).trans (IsJumpsAt.count_eq _ hM hτ h1 a).symm
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 := jumps_unique h (Inhab.crysWith_cyc_pow E Ω l 1) have τ : E →ₐ[ℚ] PadicAlgCl l := IsAlgClosed.lift have := congrFun h1 τ.toRingHom simp at this`.
+-/
 theorem not_crysWith_cyc : ¬ CrysWith (rk1 (cyc E Ω l ^ 1)) fun _ => {1} := fun h => by
   have h1 := jumps_unique h (Inhab.crysWith_cyc_pow E Ω l 1)
   have τ : E →ₐ[ℚ] PadicAlgCl l := IsAlgClosed.lift
@@ -54,6 +67,19 @@ section RankOne
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `add a b ha hb => rw [map_add, ha, hb, smul_add]`. Consider the case `smul_tprod c x`. Rewrite using `[map_smul, smul_comm]`. Use `congr 1`.
+
+Simplify using `only [grp, Formalism.CohomologicalDescent.RealLocalDeltaNabla.nablaRep, MonoidHom.coe_comp, Function.comp_apply]`. Rewrite using `[PiTensorProduct.mapMonoidHom_apply, PiTensorProduct.map_tprod]`. Establish `e` using `(PiTensorProduct.tprod R (s := fun τ : Unit => Formalism.GradedWeylDivisibility.dualWeyl R 1 1 (res 1 (mu τ)))).map_update_smul x () (((g ())⁻¹.val 0 0) ^ (mu () 0)) (x ())`. Rewrite `e` using `[Function.update_eq_self]`. Rewrite using `[← e]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ`. Take `rfl : τ = ()` from `rfl`. Rewrite using `[Function.update_self]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Take `⟨p, hp⟩` from `x ()`. Establish `hp1` using `(MvPolynomial.mem_weightedHomogeneousSubmodule _ _ _ _).1 (Submodule.mem_inf.1 hp).1`. Express the relevant statement in the definitionally equal form `Formalism.UG.dwAct R 1 1 (g ()) p = ((g ())⁻¹.val 0 0) ^ (mu () 0) • p`. Use `clear hp`. Proceed by induction on `hp1 using MvPolynomial.IsWeightedHomogeneous.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add p q _ _ hp hq => rw [map_add, hp, hq, smul_add]`. Consider the case `monomial d r hr`. Establish `hd : d (0, 0) = mu () 0`. Use `congrFun hr 0` as an intermediate fact.
+
+Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum_fintype, Formalism.GradedWeylDivisibility.colW, res, Fintype.sum_prod_type]`. Rewrite using `[← hd]`. Simplify using `[Formalism.UG.dwAct, Formalism.GradedWeylDivisibility.rowAct, MvPolynomial.aeval_monomial, Finsupp.prod_fintype, Fintype.prod_prod_type, MvPolynomial.monomial_eq, mul_pow, MvPolynomial.smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem grp_rank_one {R : Type} [CommRing R] (mu : Unit → ℕ → ℕ) (g : Unit → GL (Fin 1) R) (v : NablaT R 1 mu) :
     grp R 1 mu g v = ((g ())⁻¹.val 0 0) ^ (mu () 0) • v := by
   induction v using PiTensorProduct.induction_on with
@@ -88,6 +114,15 @@ theorem grp_rank_one {R : Type} [CommRing R] (mu : Unit → ℕ → ℕ) (g : Un
         MvPolynomial.monomial_eq, mul_pow, MvPolynomial.smul_eq_C_mul]
       ring
 
+/- English proof (translation)
+Establish `h1 : (MvPolynomial.X (0, 0) ^ mu () 0 : MvPolynomial (Fin 1 × Fin 1) K) ∈ Formalism.GradedWeylDivisibility.dualWeyl K 1 1 (res 1 (mu ()))`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_weightedHomogeneousSubmodule]`. Use `(MvPolynomial.isWeightedHomogeneous_X K (Formalism.GradedWeylDivisibility.colW 1 1) (0, 0)).pow (mu () 0)` as an intermediate fact. Establish `e : res 1 (mu ()) = mu () 0 • Formalism.GradedWeylDivisibility.colW 1 1 (0, 0)`.
+
+Use function extensionality and compare the values at `a`. Use `fin_cases a`. Simplify using `[res, Formalism.GradedWeylDivisibility.colW]`. Rewrite using `[e]`. Conclude with `this`.
+
+Simplify using `only [Submodule.mem_iInf]`. Introduce `a b h`. Conclude with `absurd h (by omega)`. Use `⟨PiTensorProduct.tprod K fun _ => ⟨_, h1⟩, fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (PiTensorProduct.subsingletonEquiv (R := K) (s := fun τ : Unit => Formalism.GradedWeylDivisibility.dualWeyl K 1 1 (res 1 (mu τ))) ()) h`.
+
+Rewrite `h2` using `[PiTensorProduct.subsingletonEquiv_apply_tprod, map_zero]`. Conclude with `pow_ne_zero _ (MvPolynomial.X_ne_zero _) (congrArg Subtype.val h2)`.
+-/
 theorem exists_ne_zero_rank_one (K : Type) [Field K] (mu : Unit → ℕ → ℕ) : ∃ v : NablaT K 1 mu, v ≠ 0 := by
   have h1 : (MvPolynomial.X (0, 0) ^ mu () 0 : MvPolynomial (Fin 1 × Fin 1) K) ∈ Formalism.GradedWeylDivisibility.dualWeyl K 1 1 (res 1 (mu ())) := by
     refine Submodule.mem_inf.2 ⟨?_, ?_⟩
@@ -110,12 +145,30 @@ theorem exists_ne_zero_rank_one (K : Type) [Field K] (mu : Unit → ℕ → ℕ)
 
 def parOne : Par := { k := 1, m := 0, t := 1, f := 1, n := 1, Nr := 1, L := 0, x := 1, b' := 1, η := 0, S := -3 }
 
+/- English proof (translation)
+Simplify using `[Formalism.CohomologicalDescent.ShortWeightBounds.h0, Par.h, Par.b, parOne]`. Evaluate the numerical expressions.
+-/
 theorem height_trivialParameter_eq_zero : Formalism.CohomologicalDescent.ShortWeightBounds.h0 parOne = 0 := by
   simp [Formalism.CohomologicalDescent.ShortWeightBounds.h0, Par.h, Par.b, parOne]
   norm_num
 
 variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
 
+/- English proof (translation)
+Take `⟨Pl, pt, Fn, ep, -, hG, -⟩` from `h`. Establish `ha : ∀ m : ℕ → ℕ, Antitone (res parOne.Nr m)` using `fun m a b _ => by`. Rewrite using `[Subsingleton.elim (α := Fin 1) a b]`. Take `⟨r, J, hJ, hr, hR⟩` from `hG mu θ (fun _ => ha _) h1`. Take `⟨r', J', hJ', hr', hR'⟩` from `hG mu' θ (fun _ => ha _) h2`.
+
+Establish `hz` using `continuous_zpow (G := G E Ω) (Fn.sgn : ℤ)`. Establish `e : (fun σ : G E Ω => r (σ ^ (Fn.sgn : ℤ))) = fun σ => r' (σ ^ (Fn.sgn : ℤ))`. Use `hC.eq_of_frob Fn.cofin (hr.1.comp hz) (hr'.1.comp hz) fun v hv hd B hB σ hσ => ?_` and prove the remaining obligations. Establish `hpr : (Ideal.absNorm v.asIdeal).Prime` using `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified E).1 v).2 hd`. Establish `hv' : v ∈ Set.range Fn.lab`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hv ⟨hpr, h⟩`. Take `⟨P0, rfl⟩` from `hv'`. Establish `e1` using `(hR P0 B σ hB hσ).trans (hR' P0 B σ hB hσ).symm`. Establish `key : ∀ M M' : Matrix (Fin 1) (Fin 1) (Qbar l), M.charpoly.reverse = M'.charpoly.reverse → M = M'` using `fun M M' hM => by`.
+
+Rewrite `hM` using `[Matrix.reverse_charpoly, Matrix.reverse_charpoly]`. Use `congrArg (Polynomial.coeff · 1) hM` as an intermediate fact. Simplify using `[Matrix.charpolyRev, Polynomial.coeff_one] at this`. Use extensionality with `a b`. Use `fin_cases a`.
+
+Use `fin_cases b`. Conclude with `this`. Conclude with `Units.ext (key _ _ e1)`. Establish `e2 : r = r'` using `MonoidHom.ext fun σ => by`. Use `congrFun e (σ ^ (Fn.sgn : ℤ))` as an intermediate fact.
+
+Rewrite `this` using `[← zpow_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, zpow_one]`. Then use the resulting hypothesis. Substitute `e2` using the available equality. Establish `e3` using `congrFun (jumps_unique hr hr') (ep (inc ()))`. Establish `e4 : J (ep (inc ())) (0 : Fin 1) = J' (ep (inc ())) (0 : Fin 1)`. Establish `e5 : ∀ f : Fin 1 → ℤ, Finset.univ.val.map f = {f 0}` using `fun f => by simp`.
+
+Conclude with `Multiset.singleton_inj.1 ((e5 _).symm.trans (e3.trans (e5 _)))`. Rewrite `e4` using `[(hJ () (0 : Fin 1)).1, (hJ' () (0 : Fin 1)).1]`. Simplify `e4` using `[Formalism.CohomologicalDescent.UnitNormBounds.UN]`.
+-/
 theorem weight_unique (hC : GlobalTheory.Published.ChebotarevDegreeOne) {inc : Unit → (E →+* Qbar l)} {W : Wts Unit} {F : Frame l Unit parOne.Nr}
     {Bk : (F.I → Qbar l) → Prop} (h : GalSide Ω inc parOne W F Bk) {mu mu' : Unit → ℕ → ℕ} {θ : F.I → Qbar l}
     (h1 : F.IsEig mu θ) (h2 : F.IsEig mu' θ) : mu () 0 = mu' () 0 := by
@@ -151,6 +204,9 @@ theorem weight_unique (hC : GlobalTheory.Published.ChebotarevDegreeOne) {inc : U
   rw [(hJ () (0 : Fin 1)).1, (hJ' () (0 : Fin 1)).1] at e4
   simpa [Formalism.CohomologicalDescent.UnitNormBounds.UN] using e4
 
+/- English proof (translation)
+Use `⟨Inhab.twoFrame_ok l 1, fun h => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `exists_ne_zero_rank_one (PadicAlgCl l) fun _ _ => 0`. Take `⟨v', hv'⟩` from `exists_ne_zero_rank_one (PadicAlgCl l) fun _ _ => 1`. Conclude with `zero_ne_one (weight_unique l hC h (Inhab.twoFrame_isEig l 1 _ v hv 1) (Inhab.twoFrame_isEig l 1 _ v' hv' 1))`.
+-/
 theorem not_galSide (hC : GlobalTheory.Published.ChebotarevDegreeOne) (inc : Unit → (E →+* Qbar l)) (W : Wts Unit)
     (Bk : (Unit → Qbar l) → Prop) : (Inhab.twoFrame l 1).Ok ∧ ¬ GalSide Ω inc parOne W (Inhab.twoFrame l 1) Bk := by
   refine ⟨Inhab.twoFrame_ok l 1, fun h => ?_⟩
@@ -170,6 +226,11 @@ def invFrame : Frame l Unit 1 where
   tr _ := {1}
   cst _ := 1
 
+/- English proof (translation)
+Use `⟨fun _ => GLInhab.oneVec l 1, ?_, ⟨fun _ _ _ => rfl, fun κ g => ?_⟩, fun i g => ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `GLInhab.oneVec_ne_zero l 1 (congrFun h (1 : GL (Fin 1) ℤ_[l]))`. Use `show Inhab.embZ l 1 • _ = _`. Rewrite using `[map_one, one_smul]`.
+
+Conclude with `GLInhab.grp_oneVec l 1 _`. Use `show Inhab.embZ l 1 • ∑ s ∈ ({1} : Finset (GL (Fin 1) ℤ_[l])), GLInhab.oneVec l 1 = (1 : PadicAlgCl l) • GLInhab.oneVec l 1`. Rewrite using `[map_one, Finset.sum_singleton]`.
+-/
 theorem invFrame_isEig : (invFrame l).IsEig (fun _ _ => 0) fun _ => 1 := by
   refine ⟨fun _ => GLInhab.oneVec l 1, ?_, ⟨fun _ _ _ => rfl, fun κ g => ?_⟩, fun i g => ?_⟩
   · intro h
@@ -180,6 +241,19 @@ theorem invFrame_isEig : (invFrame l).IsEig (fun _ _ => 0) fun _ => 1 := by
   · show Inhab.embZ l 1 • ∑ s ∈ ({1} : Finset (GL (Fin 1) ℤ_[l])), GLInhab.oneVec l 1 = (1 : PadicAlgCl l) • GLInhab.oneVec l 1
     rw [map_one, Finset.sum_singleton]
 
+/- English proof (translation)
+Take `⟨f, h0, ⟨hΓ, hK⟩, hθ⟩` from `h`. Establish `hc : ∀ g, f g = f 1` using `fun g => by simpa using hΓ g trivial 1`. Establish `hv : f 1 ≠ 0` using `fun h => h0 (funext fun g => (hc g).trans h)`. Use `⟨?_, funext fun i => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (1 + (l : ℤ_[l]))`.
+
+Rewrite using `[add_comm, ← sub_neg_eq_add, ← neg_sub]`. Use `IsUnit.neg ?_` and prove the remaining obligations. Use `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits (-(l : ℤ_[l])) (by` as an intermediate fact. Simplify using `using (PadicInt.irreducible_p (p := l)).not_isUnit)`. Establish `h2` using `this.neg`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Set `g : GL (Fin 1) ℤ_[l]` to `Matrix.GeneralLinearGroup.scalar (Fin 1) hu.unit`. Establish `h1` using `hK ⟨g⁻¹, trivial⟩ 1`. Rewrite `h1` using `[hc (_ * _)]`.
+
+Express the relevant statement in the definitionally equal form `Inhab.embZ l 1 • grp (PadicAlgCl l) 1 mu (fun _ => Matrix.GeneralLinearGroup.map (Inhab.embZ l) g⁻¹) (f 1) = f 1 at h1`. Rewrite `h1` using `[map_one, one_smul, grp_rank_one, map_inv, inv_inv]`. Establish `h2 : (Matrix.GeneralLinearGroup.map (Inhab.embZ l) g).val 0 0 = ((1 + l : ℕ) : PadicAlgCl l)`. Simplify using `[g]`. Rewrite `h1` using `[h2]`.
+
+Establish `h3 : ((1 + l : ℕ) : PadicAlgCl l) ^ mu () 0 = 1` using `smul_left_injective _ hv (h1.trans (one_smul _ _).symm)`. Establish `h4 : (1 + l) ^ mu () 0 = 1` using `by exact_mod_cast h3`. Use `(Fact.out : l.Prime).pos` as an intermediate fact. Conclude with `(Nat.pow_eq_one.1 h4).resolve_left (by omega)`. Establish `h1` using `hθ i 1`.
+
+Express the relevant statement in the definitionally equal form `Inhab.embZ l 1 • ∑ s ∈ ({1} : Finset (GL (Fin 1) ℤ_[l])), f ((1 : GL (Fin 1) ℤ_[l]) * s) = θ i • f 1 at h1`. Rewrite `h1` using `[map_one, Finset.sum_singleton, mul_one]`. Conclude with `(smul_left_injective _ hv h1).symm`.
+-/
 theorem eq_of_invFrame_isEig {mu : Unit → ℕ → ℕ} {θ : Unit → PadicAlgCl l} (h : (invFrame l).IsEig mu θ) :
     mu () 0 = 0 ∧ θ = fun _ => 1 := by
   obtain ⟨f, h0, ⟨hΓ, hK⟩, hθ⟩ := h
@@ -211,6 +285,19 @@ theorem eq_of_invFrame_isEig {mu : Unit → ℕ → ℕ} {θ : Unit → PadicAlg
     rw [map_one, Finset.sum_singleton, mul_one] at h1
     exact (smul_left_injective _ hv h1).symm
 
+/- English proof (translation)
+Establish `hcp : ∀ σ : G E Ω, ((rk1 (cyc E Ω l ^ 0) σ).val).charpoly = Polynomial.X - Polynomial.C 1` using `fun σ => by`. Rewrite using `[Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply_eq]`. Simplify using `[rk1]`. Establish `hR : (Inhab.allPlaces l E Ω).Reads 1 (sysOf (I` using `Unit) 1 (fun _ _ => ()) (fun _ => 1)) fun _ => Polynomial.X - Polynomial.C 1 := by`. Establish `: sysOf (l` using `l) (Pl := HeightOneSpectrum (𝓞 E)) (I := Unit) 1 (fun _ _ => ()) (fun _ => 1) = fun _ _ => 1 := by`.
+
+Use function extensionality and compare the values at `P k`. Simplify using `[sysOf]`. Rewrite using `[this]`. Conclude with `Inhab.allPlaces_reads l E Ω`. Use `⟨_, fun _ _ => (), Inhab.allPlaces l E Ω, id, Or.inl rfl, fun mu θ _ h => ?_, fun θ h _ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hm, rfl⟩` from `eq_of_invFrame_isEig l h`. Use `⟨rk1 (cyc E Ω l ^ 0), fun _ _ => 0, fun τ a => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `ha : ∀ b : Fin parOne.Nr, (b : ℕ) = 0` using `fun b => Nat.lt_one_iff.1 b.2`. Rewrite using `[height_trivialParameter_eq_zero, ha, ha]`. Simplify using `[Formalism.CohomologicalDescent.UnitNormBounds.UN, parOne, hm]`.
+
+Conclude with `Inhab.crysWith_cyc_pow E Ω l 0`. Establish `: (fun σ : G E Ω => ((rk1 (cyc E Ω l ^ 0) σ).val).charpoly) = fun _ => Polynomial.X - Polynomial.C 1` using `funext hcp`. Conclude with `this ▸ hR`. Take `⟨hm, rfl⟩` from `eq_of_invFrame_isEig l h`. Use `⟨0, 1, fun _ => cyc E Ω l ^ 0, fun _ => 0, rfl, continuous_const, fun s => ?_, fun τ => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hs : (s : ℕ) = 0` using `Nat.lt_one_iff.1 s.2`. Rewrite using `[hs]`. Conclude with `Inhab.crysWith_cyc_pow E Ω l 0`. Rewrite using `[height_trivialParameter_eq_zero]`. Simplify using `[Wts.bot, Wts.U, kc, Formalism.CohomologicalDescent.UnitNormBounds.UN, parOne, hm, hj]`.
+
+Establish `: (fun σ : G E Ω => ((1 : G E Ω →* GL (Fin 0) (Qbar l)) σ).val.charpoly * ∏ s : Fin 1, (Polynomial.X - Polynomial.C (((cyc E Ω l ^ 0) σ : (Qbar l)ˣ) : Qbar l))) = fun _ => Polynomial.X - Polynomial.C 1`. Use function extensionality and compare the values at `σ`. Simplify using `[Matrix.charpoly]`. Conclude with `this ▸ hR`.
+-/
 theorem galSide_invFrame (inc : Unit → (E →+* Qbar l)) (W : Wts Unit) (hj : W.j () = 0) :
     GalSide Ω inc parOne W (invFrame l) fun _ => True := by
   have hcp : ∀ σ : G E Ω, ((rk1 (cyc E Ω l ^ 0) σ).val).charpoly = Polynomial.X - Polynomial.C 1 := fun σ => by
@@ -248,6 +335,9 @@ end RankOne
 
 section Small
 
+/- English proof (translation)
+Introduce `τ`. Apply the tactic sequence `refine ⟨fun a b h => ?_, by simp, fun a => by fin_cases a <;> simp, ?_⟩`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp_all [res]`. Rewrite using `[Fin.prod_univ_two, Fin.prod_univ_two, mul_comm]`. Apply the tactic sequence `congr 3 <;> decide +revert`.
+-/
 theorem linked_three : Linked 3 2 (fun (_ : Unit) a => if a = 0 then 3 else 0) (fun _ a => if a = 0 then 2 else 1) := by
   intro τ
   refine ⟨fun a b h => ?_, by simp, fun a => by fin_cases a <;> simp, ?_⟩
@@ -255,12 +345,20 @@ theorem linked_three : Linked 3 2 (fun (_ : Unit) a => if a = 0 then 3 else 0) (
   · rw [Fin.prod_univ_two, Fin.prod_univ_two, mul_comm]
     congr 3 <;> decide +revert
 
+/- English proof (translation)
+Introduce `h` and use `by have := congrArg (Polynomial.eval 0) (h ()).2.2.2 simp [Fin.prod_univ_two] at this revert this decide`.
+-/
 theorem not_linked_three : ¬ Linked 3 2 (fun (_ : Unit) a => if a = 0 then 2 else 0) (fun _ _ => 1) := fun h => by
   have := congrArg (Polynomial.eval 0) (h ()).2.2.2
   simp [Fin.prod_univ_two] at this
   revert this
   decide
 
+/- English proof (translation)
+Introduce `τ x`. Take `⟨n, rfl⟩` from `Rat.ringOfIntegersEquiv.symm.surjective x`. Rewrite using `[eq_intCast Rat.ringOfIntegersEquiv.symm n]`. Take `⟨c, hc⟩ : (l : ℤ) ∣ n - n ^ l` from `(ZMod.intCast_zmod_eq_zero_iff_dvd _ l).1 (by simp)`. Establish `e : (1 : Equiv.Perm (ℚ →+* Qbar l)) τ ((n : 𝓞 ℚ) : ℚ) - τ ((n : 𝓞 ℚ) : ℚ) ^ l = (l : Qbar l) * (c : Qbar l)`.
+
+Use `congrArg (Int.cast : ℤ → Qbar l) hc` as an intermediate fact. Simplify using `using this`. Rewrite using `[e, norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) GlobalTheory.PlaceBridge.norm_l_lt_one (IsUltrametricDist.norm_intCast_le_one _ c)`.
+-/
 theorem isFrobPerm_rat (l : ℕ) [Fact l.Prime] : IsFrobPerm (E := ℚ) (l := l) 1 := by
   intro τ x
   obtain ⟨n, rfl⟩ := Rat.ringOfIntegersEquiv.symm.surjective x

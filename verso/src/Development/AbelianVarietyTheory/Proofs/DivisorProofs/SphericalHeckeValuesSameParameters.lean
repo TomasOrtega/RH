@@ -12,16 +12,30 @@ section Abstract
 
 variable {G : Type} [Group G] {K : Subgroup G}
 
+/- English proof (translation)
+Simplify using `using DoubleCoset.mem_doubleCoset (s := (K : Set G)) (t := (K : Set G)) (a := g) (b := x)`.
+-/
 theorem mem_doset {g x : G} :
     x ∈ DoubleCoset.doubleCoset g (K : Set G) K ↔ ∃ a ∈ K, ∃ b ∈ K, x = a * g * b := by
   simpa using DoubleCoset.mem_doubleCoset (s := (K : Set G)) (t := (K : Set G)) (a := g) (b := x)
 
+/- English proof (translation)
+Unfold `dosetInd`. Rewrite using `[Set.indicator_of_mem (mem_doset.2 h)]`. Both sides reduce to the same expression.
+-/
 theorem dosetInd_of_mem {g x : G} (h : ∃ a ∈ K, ∃ b ∈ K, x = a * g * b) : dosetInd ℂ K g x = 1 := by
   unfold dosetInd; rw [Set.indicator_of_mem (mem_doset.2 h)]; rfl
 
+/- English proof (translation)
+Unfold `dosetInd`. Rewrite using `[Set.indicator_of_notMem (fun h' => h (mem_doset.1 h'))]`.
+-/
 theorem dosetInd_of_not {g x : G} (h : ¬ ∃ a ∈ K, ∃ b ∈ K, x = a * g * b) : dosetInd ℂ K g x = 0 := by
   unfold dosetInd; rw [Set.indicator_of_notMem (fun h' => h (mem_doset.1 h'))]
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, rfl⟩` from `h`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : ∃ c ∈ K, ∃ d ∈ K, y = c * g * d`. Rewrite using `[dosetInd_of_mem hy, dosetInd_of_mem]`. Take `⟨c, hc, d, hd, rfl⟩` from `hy`.
+
+Conclude with `⟨c * a⁻¹, K.mul_mem hc (K.inv_mem ha), b⁻¹ * d, K.mul_mem (K.inv_mem hb) hd, by group⟩`. Rewrite using `[dosetInd_of_not hy, dosetInd_of_not]`. Introduce and unpack `⟨c, hc, d, hd, rfl⟩`. Conclude with `hy ⟨c * a, K.mul_mem hc ha, b * d, K.mul_mem hb hd, by group⟩`.
+-/
 theorem dosetInd_congr {g x : G} (h : ∃ a ∈ K, ∃ b ∈ K, x = a * g * b) : dosetInd ℂ K x = dosetInd ℂ K g := by
   obtain ⟨a, ha, b, hb, rfl⟩ := h
   funext y
@@ -33,6 +47,9 @@ theorem dosetInd_congr {g x : G} (h : ∃ a ∈ K, ∃ b ∈ K, x = a * g * b) :
     rintro ⟨c, hc, d, hd, rfl⟩
     exact hy ⟨c * a, K.mul_mem hc ha, b * d, K.mul_mem hb hd, by group⟩
 
+/- English proof (translation)
+Unfold `hAct`. Rewrite using `[← finsum_add_distrib]`. Conclude with `finsum_congr fun x => by simp [add_mul]`. Conclude with `(Formalism.UG.P.finite_supp K hK f hf).subset fun x hx h0 => hx (by simp [h0])`. Conclude with `(Formalism.UG.P.finite_supp K hK f' hf').subset fun x hx h0 => hx (by simp [h0])`.
+-/
 theorem hAct_add (hK : IsCommensurated K) {f f' : G → ℂ} (hf : f ∈ Hecke ℂ K) (hf' : f' ∈ Hecke ℂ K) (φ : G → ℂ) (g : G) :
     hAct K (f + f') φ g = hAct K f φ g + hAct K f' φ g := by
   unfold hAct
@@ -41,6 +58,9 @@ theorem hAct_add (hK : IsCommensurated K) {f f' : G → ℂ} (hf : f ∈ Hecke �
   · exact (Formalism.UG.P.finite_supp K hK f hf).subset fun x hx h0 => hx (by simp [h0])
   · exact (Formalism.UG.P.finite_supp K hK f' hf').subset fun x hx h0 => hx (by simp [h0])
 
+/- English proof (translation)
+Unfold `hAct`. Rewrite using `[mul_finsum]`. Conclude with `finsum_congr fun x => by simp [mul_assoc]`.
+-/
 theorem hAct_smul (c : ℂ) (f φ : G → ℂ) (g : G) : hAct K (c • f) φ g = c * hAct K f φ g := by
   unfold hAct
   rw [mul_finsum]
@@ -56,10 +76,26 @@ def agree (hK : IsCommensurated K) (φ φ' : G → ℂ) : Submodule ℂ (G → �
     rintro c f ⟨hf, e⟩
     exact ⟨Submodule.smul_mem _ c hf, by rw [hAct_smul, hAct_smul, e]⟩
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, rfl⟩` from `hx`. Conclude with `hh.1 ⟨a, ha⟩ ⟨b, hb⟩ g`.
+-/
 theorem biInv_apply {h : G → ℂ} (hh : h ∈ Hecke ℂ K) {g x : G} (hx : ∃ a ∈ K, ∃ b ∈ K, x = a * g * b) : h x = h g := by
   obtain ⟨a, ha, b, hb, rfl⟩ := hx
   exact hh.1 ⟨a, ha⟩ ⟨b, hb⟩ g
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hh.2`. Proceed by induction on `S using Finset.induction_on generalizing h with`. Consider the case `empty`. Establish `: h = 0` using `funext fun g => by`. Assume the negation of the conclusion as `h0`.
+
+Take `⟨s, hs, _⟩` from `hS g h0`. Simplify using `at hs`. Rewrite using `[this]`. Conclude with `A.zero_mem`. Consider the case `insert s S _ ih`.
+
+Establish `h1 : h s • dosetInd ℂ K s ∈ A`. Distinguish the cases in `h0 : h s = 0`. Rewrite using `[h0, zero_smul]`. Conclude with `A.zero_mem`. Conclude with `A.smul_mem _ (hs s h0)`.
+
+Establish `key : ∀ g, (h - h s • dosetInd ℂ K s) g ≠ 0 → h g ≠ 0 ∧ ¬ ∃ a ∈ K, ∃ b ∈ K, g = a * s * b`. Introduce `g hg`. Distinguish the cases in `hx : ∃ a ∈ K, ∃ b ∈ K, g = a * s * b`. Conclude with `absurd (by simp [dosetInd_of_mem hx, biInv_apply hh hx]) hg`. Conclude with `⟨by simpa [dosetInd_of_not hx] using hg, hx⟩`.
+
+Establish `h2 : h - h s • dosetInd ℂ K s ∈ A`. Use `ih (Submodule.sub_mem _ hh (Submodule.smul_mem _ _ (Final.DosetIndMem G K ℂ s))) (fun g hg => hs g (key g hg).1) fun g hg => ?_` and prove the remaining obligations. Take `⟨t, ht, a, b, e⟩` from `hS g (key g hg).1`. Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Conclude with `absurd ⟨a, a.2, b, b.2, e⟩ (key g hg).2`.
+
+Conclude with `⟨t, ht, a, b, e⟩`. Simplify using `using A.add_mem h1 h2`.
+-/
 theorem mem_of_supp (A : Submodule ℂ (G → ℂ)) {h : G → ℂ} (hh : h ∈ Hecke ℂ K)
     (hs : ∀ g, h g ≠ 0 → dosetInd ℂ K g ∈ A) : h ∈ A := by
   classical
@@ -90,6 +126,11 @@ theorem mem_of_supp (A : Submodule ℂ (G → ℂ)) {h : G → ℂ} (hh : h ∈ 
       · exact ⟨t, ht, a, b, e⟩
     simpa using A.add_mem h1 h2
 
+/- English proof (translation)
+Establish `h2 : f - f s • dosetInd ℂ K s ∈ A`. Use `mem_of_supp A (Submodule.sub_mem _ hf (Submodule.smul_mem _ _ (Final.DosetIndMem G K ℂ s))) fun g hg => ?_` and prove the remaining obligations. Distinguish the cases in `hx : ∃ a ∈ K, ∃ b ∈ K, g = a * s * b`. Conclude with `absurd (by simp [dosetInd_of_mem hx, biInv_apply hf hx]) hg`. Conclude with `(hs g (by simpa [dosetInd_of_not hx] using hg)).resolve_left hx`.
+
+Establish `h3` using `A.smul_mem (f s)⁻¹ (A.sub_mem hA h2)`. Simplify `h3` using `[smul_smul, inv_mul_cancel₀ h0]`.
+-/
 theorem dosetInd_mem_of_top (A : Submodule ℂ (G → ℂ)) {f : G → ℂ} (hf : f ∈ Hecke ℂ K) (hA : f ∈ A) {s : G} (h0 : f s ≠ 0)
     (hs : ∀ g, f g ≠ 0 → (∃ a ∈ K, ∃ b ∈ K, g = a * s * b) ∨ dosetInd ℂ K g ∈ A) : dosetInd ℂ K s ∈ A := by
   have h2 : f - f s • dosetInd ℂ K s ∈ A := by
@@ -100,12 +141,20 @@ theorem dosetInd_mem_of_top (A : Submodule ℂ (G → ℂ)) {f : G → ℂ} (hf 
   have h3 := A.smul_mem (f s)⁻¹ (A.sub_mem hA h2)
   simpa [smul_smul, inv_mul_cancel₀ h0] using h3
 
+/- English proof (translation)
+Rewrite `h` using `[Final.ConvCount G K ℂ hK, Nat.cast_ne_zero, Nat.card_ne_zero]`. Take `⟨⟨x, h1, h2⟩, -⟩` from `h`. Conclude with `⟨x.out, x.out⁻¹ * g, mem_doset.1 h1, mem_doset.1 h2, by group⟩`.
+-/
 theorem conv_supp (hK : IsCommensurated K) {a b g : G} (h : conv K (dosetInd ℂ K a) (dosetInd ℂ K b) g ≠ 0) :
     ∃ x y, (∃ c ∈ K, ∃ d ∈ K, x = c * a * d) ∧ (∃ c ∈ K, ∃ d ∈ K, y = c * b * d) ∧ g = x * y := by
   rw [Final.ConvCount G K ℂ hK, Nat.cast_ne_zero, Nat.card_ne_zero] at h
   obtain ⟨⟨x, h1, h2⟩, -⟩ := h
   exact ⟨x.out, x.out⁻¹ * g, mem_doset.1 h1, mem_doset.1 h2, by group⟩
 
+/- English proof (translation)
+Rewrite using `[Final.ConvCount G K ℂ hK, Nat.cast_ne_zero, Nat.card_ne_zero]`. Prove the components needed by the constructor for the conclusion. Take `⟨κ, hκ⟩` from `QuotientGroup.mk_out_eq_mul K a`. Use `⟨⟨(a : G ⧸ K), mem_doset.2 ⟨1, K.one_mem, κ, κ.2, by rw [hκ, one_mul]⟩, mem_doset.2 ⟨κ⁻¹, K.inv_mem κ.2, 1, K.one_mem, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[hκ]`.
+
+Use `group`. Use `Set.Finite.to_subtype ((Formalism.UG.P.finite_supp K hK _ (Final.DosetIndMem G K ℂ a)).subset fun x hx => ?_) show dosetInd ℂ K a x.out ≠ 0` and prove the remaining obligations. Rewrite using `[dosetInd_of_mem (mem_doset.1 hx.1)]`. Conclude with `one_ne_zero`.
+-/
 theorem conv_top (hK : IsCommensurated K) (a b : G) : conv K (dosetInd ℂ K a) (dosetInd ℂ K b) (a * b) ≠ 0 := by
   rw [Final.ConvCount G K ℂ hK, Nat.cast_ne_zero, Nat.card_ne_zero]
   constructor
@@ -130,18 +179,32 @@ def tor (h0 : ϖ ≠ 0) (a : Fin n → ℤ) : GL (Fin n) (P.adicCompletion E) wh
   val_inv := by simp [Matrix.diagonal_mul_diagonal, zpow_ne_zero _ h0]
   inv_val := by simp [Matrix.diagonal_mul_diagonal, zpow_ne_zero _ h0]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tor_val (h0 : ϖ ≠ 0) (a : Fin n → ℤ) :
     (tor h0 a : Matrix (Fin n) (Fin n) (P.adicCompletion E)) = Matrix.diagonal fun i => ϖ ^ a i := rfl
 
+/- English proof (translation)
+Use `ext1`. Simplify using `[tor_val, Matrix.diagonal_mul_diagonal, zpow_add₀ h0]`.
+-/
 theorem tor_add (h0 : ϖ ≠ 0) (a b : Fin n → ℤ) : tor h0 (a + b) = tor h0 a * tor h0 b := by
   ext1
   simp [tor_val, Matrix.diagonal_mul_diagonal, zpow_add₀ h0]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[tor_val, Matrix.diagonal_mul, Matrix.mul_diagonal, mul_comm]`.
+-/
 theorem tor_const_comm (h0 : ϖ ≠ 0) (c : ℤ) (g : GL (Fin n) (P.adicCompletion E)) :
     tor h0 (fun _ => c) * g = g * tor h0 (fun _ => c) := by
   ext i j
   simp [tor_val, Matrix.diagonal_mul, Matrix.mul_diagonal, mul_comm]
 
+/- English proof (translation)
+Establish `e : diagJ n ϖ j = (tor h0 fun i : Fin n => if (i : ℕ) < j then 1 else 0 : GL _ _)`. Apply the tactic sequence `rw [tor_val, diagJ]; congr 1; funext i; split_ifs <;> simp`. Unfold `Tj dosetInd`. Use `congr 1`. Use extensionality with `g`.
+
+Rewrite using `[mem_doset, e]`. Simplify using `only [Set.mem_setOf_eq, ← Units.val_mul, Units.val_inj]`.
+-/
 theorem Tj_eq (h0 : ϖ ≠ 0) (j : ℕ) :
     Tj ℂ n (Ov E P) ϖ j = dosetInd ℂ (GLint (Fin n) (Ov E P)) (tor h0 fun i => if (i : ℕ) < j then 1 else 0) := by
   have e : diagJ n ϖ j = (tor h0 fun i : Fin n => if (i : ℕ) < j then 1 else 0 : GL _ _) := by
@@ -152,6 +215,9 @@ theorem Tj_eq (h0 : ϖ ≠ 0) (j : ℕ) :
   rw [mem_doset, e]
   simp only [Set.mem_setOf_eq, ← Units.val_mul, Units.val_inj]
 
+/- English proof (translation)
+Establish `hm : ϖ ∈ Ov E P` using `by show Valued.v ϖ ≤ 1`. Rewrite using `[hu]; exact le_of_lt (by decide)`. Take `⟨a, ha, c, hc, d, hd, e⟩` from `Final.CartanDecomp E P n ϖ hm hu g`. Conclude with `⟨a, ha, c, hc, d, hd, Units.ext e⟩`.
+-/
 theorem cartan (h0 : ϖ ≠ 0) (hu : IsUnifV E P ϖ) (g : GL (Fin n) (P.adicCompletion E)) :
     ∃ a : Fin n → ℤ, Antitone a ∧ ∃ c ∈ GLint (Fin n) (Ov E P), ∃ d ∈ GLint (Fin n) (Ov E P), g = c * tor h0 a * d := by
   have hm : ϖ ∈ Ov E P := by
@@ -163,22 +229,36 @@ theorem cartan (h0 : ϖ ≠ 0) (hu : IsUnifV E P ϖ) (g : GL (Fin n) (P.adicComp
 def IntM (g : GL (Fin n) (P.adicCompletion E)) : Prop :=
   ∀ i j, (g : Matrix (Fin n) (Fin n) (P.adicCompletion E)) i j ∈ Ov E P
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hg i k) (hh k j)`.
+-/
 theorem IntM.mul {g h : GL (Fin n) (P.adicCompletion E)} (hg : IntM g) (hh : IntM h) : IntM (g * h) := by
   intro i j
   rw [Units.val_mul, Matrix.mul_apply]
   exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hg i k) (hh k j)
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `hg`. Introduce `i j`. Conclude with `((x : Matrix (Fin n) (Fin n) (Ov E P)) i j).2`.
+-/
 theorem intM_of_mem {g : GL (Fin n) (P.adicCompletion E)} (hg : g ∈ GLint (Fin n) (Ov E P)) : IntM g := by
   obtain ⟨x, rfl⟩ := hg
   intro i j
   exact ((x : Matrix (Fin n) (Fin n) (Ov E P)) i j).2
 
+/- English proof (translation)
+Use `show Valued.v (ϖ ^ m) ≤ 1 ↔ _`. Rewrite using `[map_zpow₀, hu]`. Establish `h1 : ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) < 1` using `by decide`. Conclude with `zpow_le_one_iff_right_of_lt_one₀ (by decide) h1`.
+-/
 theorem v_zpow (hu : IsUnifV E P ϖ) (m : ℤ) : ϖ ^ m ∈ Ov E P ↔ 0 ≤ m := by
   show Valued.v (ϖ ^ m) ≤ 1 ↔ _
   rw [map_zpow₀, hu]
   have h1 : ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) < 1 := by decide
   exact zpow_le_one_iff_right_of_lt_one₀ (by decide) h1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i`. Use `h i i` as an intermediate fact. Rewrite `this` using `[tor_val, Matrix.diagonal_apply_eq, v_zpow hu]`. Then use the resulting hypothesis. Introduce `h i j`.
+
+Rewrite using `[tor_val, Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `(v_zpow hu _).2 (h i)`. Conclude with `Subring.zero_mem _`.
+-/
 theorem intM_tor (h0 : ϖ ≠ 0) (hu : IsUnifV E P ϖ) (a : Fin n → ℤ) : IntM (tor h0 a) ↔ ∀ i, 0 ≤ a i := by
   constructor
   · intro h i
@@ -190,11 +270,19 @@ theorem intM_tor (h0 : ϖ ≠ 0) (hu : IsUnifV E P ϖ) (a : Fin n → ℤ) : Int
     · exact (v_zpow hu _).2 (h i)
     · exact Subring.zero_mem _
 
+/- English proof (translation)
+Take `⟨c, hc, d, hd, rfl⟩` from `hx`. Conclude with `((intM_of_mem hc).mul hg).mul (intM_of_mem hd)`.
+-/
 theorem intM_doset {g x : GL (Fin n) (P.adicCompletion E)} (hg : IntM g)
     (hx : ∃ c ∈ GLint (Fin n) (Ov E P), ∃ d ∈ GLint (Fin n) (Ov E P), x = c * g * d) : IntM x := by
   obtain ⟨c, hc, d, hd, rfl⟩ := hx
   exact ((intM_of_mem hc).mul hg).mul (intM_of_mem hd)
 
+/- English proof (translation)
+Establish `e : intL (P.adicCompletion E) = Ov E P` using `rfl`. Rewrite using `[e]`. Take `⟨c, hc, d, hd, rfl⟩` from `hx`. Use `⟨c⁻¹, Subgroup.inv_mem _ hc, d⁻¹, Subgroup.inv_mem _ hd, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg]`.
+
+Use `congr 1`. Use `group`.
+-/
 theorem flip {g x : GL (Fin n) (P.adicCompletion E)} {M : Matrix (Fin n) (Fin n) (P.adicCompletion E)} (hg : (g : Matrix _ _ _) = M)
     (hx : ∃ c ∈ GLint (Fin n) (Ov E P), ∃ d ∈ GLint (Fin n) (Ov E P), x = c * g * d) :
     ∃ c ∈ GLint (Fin n) (intL (P.adicCompletion E)), ∃ d ∈ GLint (Fin n) (intL (P.adicCompletion E)),
@@ -205,6 +293,27 @@ theorem flip {g x : GL (Fin n) (P.adicCompletion E)} {M : Matrix (Fin n) (Fin n)
   refine ⟨c⁻¹, Subgroup.inv_mem _ hc, d⁻¹, Subgroup.inv_mem _ hd, ?_⟩
   rw [← hg]; congr 1; group
 
+/- English proof (translation)
+Establish `hK` using `Final.GLintComm E P n`. Introduce `s`. Proceed by induction on `s using Nat.strong_induction_on with`. Consider the case `_ s ihs`. Introduce `q`.
+
+Proceed by induction on `q using Nat.strong_induction_on with`. Consider the case `_ q ihq`. Introduce `d hd hs hq`. Use `set k := (Finset.univ.filter fun i => 0 < d i).card with hk`. Establish `hkn : k ≤ n` using `by simpa using Finset.card_filter_le (Finset.univ : Finset (Fin n)) fun i => 0 < d i`.
+
+Establish `hdk : ∀ i : Fin n, 0 < d i ↔ (i : ℕ) < k` using `fun i => (Fin.lt_card_filter_univ_iff_apply_of_imp (fun i => 0 < d i) fun a b hab ha => lt_of_lt_of_le ha (hd hab)).symm`. Establish `ha` using `hT k hkn`. Rewrite `ha` using `[Tj_eq h0]`. Distinguish the cases in `hz : ∀ i, d i = 0`. Use `ha using 3` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Use `hdk i` as an intermediate fact. Rewrite using `[if_neg (by rw [← this, hz i]; simp), hz i]; rfl`. Use `push_neg at hz`. Take `⟨i₀, hi₀⟩` from `hz`.
+
+Establish `hlt : ∑ i, (d i - 1) < s`. Rewrite using `[← hs]`. Conclude with `Finset.sum_lt_sum (fun i _ => Nat.sub_le _ _) ⟨i₀, Finset.mem_univ _, by omega⟩`. Establish `hg` using `ihs _ hlt _ (fun i => d i - 1) (fun a b hab => Nat.sub_le_sub_right (hd hab) 1) rfl rfl`. Establish `hf` using `hc _ hg _ ha`.
+
+Establish `e : (tor h0 fun i => (d i : ℤ)) = (tor h0 fun i => ((d i - 1 : ℕ) : ℤ)) * tor h0 fun i : Fin n => if (i : ℕ) < k then 1 else 0`. Rewrite using `[← tor_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `hdk i` as an intermediate fact.
+
+Simplify using `only [Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> omega`. Use `dosetInd_mem_of_top A (Final.HeckeConvMem _ _ ℂ hK _ (Final.DosetIndMem _ _ ℂ _) _ (Final.DosetIndMem _ _ ℂ _)) hf (by rw [e]; exact conv_top hK _ _) fun g hg => ?_` and prove the remaining obligations. Take `⟨x, y, hx, hy, rfl⟩` from `conv_supp hK hg`. Take `⟨a, haa, hxy⟩` from `cartan h0 hu (x * y)`.
+
+Apply the tactic sequence `have hI : IntM (x * y) := (intM_doset ((intM_tor h0 hu _).2 fun i => by positivity) hx).mul (intM_doset ((intM_tor h0 hu _).2 fun i => by split_ifs <;> simp) hy)`. Establish `ha0 : ∀ i, 0 ≤ a i`. Take `⟨c, hc, c', hc', e'⟩` from `hxy`. Use `(intM_tor h0 hu a).1 (intM_doset hI ⟨c⁻¹, Subgroup.inv_mem _ hc, c'⁻¹, Subgroup.inv_mem _ hc', ?_⟩)` and prove the remaining obligations. Rewrite using `[e']`.
+
+Use `group`. Take `⟨d', rfl⟩ : ∃ d' : Fin n → ℕ, a = fun i => (d' i : ℤ)` from `⟨fun i => (a i).toNat, funext fun i => (Int.toNat_of_nonneg (ha0 i)).symm⟩`. Establish `hd' : Antitone d'` using `fun a b hab => Int.ofNat_le.1 (haa hab)`. Apply the tactic sequence `rcases GlobalTheory.T.elementaryDivisors_mul_minuscule_top_term (P.adicCompletion E) ϖ n hu d k hd hdk x y (flip (by simp [tor_val]) hx) (flip (by rw [tor_val]; congr 1; funext i; split_ifs <;> simp) hy) d' hd' (flip (by simp [tor_val]) hxy) with rfl | ⟨h1, h2⟩`. Conclude with `Or.inl hxy`.
+
+Use `right`. Rewrite using `[dosetInd_congr hxy]`. Conclude with `ihq _ (hq ▸ h2) d' hd' (h1.trans hs) rfl`.
+-/
 theorem gen_nat (h0 : ϖ ≠ 0) (hu : IsUnifV E P ϖ) (A : Submodule ℂ (GL (Fin n) (P.adicCompletion E) → ℂ))
     (hT : ∀ j ≤ n, Tj ℂ n (Ov E P) ϖ j ∈ A)
     (hc : ∀ f ∈ A, ∀ f' ∈ A, conv (GLint (Fin n) (Ov E P)) f f' ∈ A) :

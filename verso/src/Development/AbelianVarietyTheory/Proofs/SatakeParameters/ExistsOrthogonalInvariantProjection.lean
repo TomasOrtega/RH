@@ -6,6 +6,31 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential GlobalTheory GlobalThe
 
 namespace GlobalTheory.PD.XCover
 
+/- English proof (translation)
+Introduce `d Z _ p _ inst hinst φ _ _ hgen I hI h y hy`. Use `haveI : Smooth p := SmoothOfRelativeDimension.smooth d p`. Establish `hsc : ∀ r : ℂ, algebraMap ℂ Z.functionField r = (Z.presheaf.germ ⊤ (genericPoint Z) trivial).hom (p.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom r))`. Substitute `hinst` using the available equality. Introduce `r`.
+
+Both sides reduce to the same expression. Use `set U : Z.Opens := I.inf fun i => φ ⁻¹ᵁ chart d i with hU`. Establish `hUa : IsAffineOpen U` using `(GlobalTheory.T.projective_chart_affine_cover d Z φ).2 I hI`. Use `haveI : Nonempty U := ⟨⟨_, h⟩⟩`. Use `haveI := functionField_isFractionRing_of_isAffineOpen Z U hUa`.
+
+Establish `halg : ∀ b, algebraMap Γ(Z, U) Z.functionField b = (Z.presheaf.germ U (genericPoint Z) h).hom b` using `fun _ => rfl`. Use `haveI : IsIntegrallyClosed Γ(Z, U) := by`. Establish `hs` using `p.smooth_appLE (U := ⊤) (isAffineOpen_top _) hUa (by simp)`. Use `letI := (p.appLE ⊤ U (by simp)).hom.toAlgebra`. Use `haveI : Algebra.Smooth Γ(Sp ℂ, ⊤) Γ(Z, U) := hs`.
+
+Set `e : Γ(Sp ℂ, ⊤) ≃+* ℂ` to `(Scheme.ΓSpecIso (CommRingCat.of ℂ)).commRingCatIsoToRingEquiv`. Use `haveI : IsDomain Γ(Sp ℂ, ⊤) := e.injective.isDomain (e : Γ(Sp ℂ, ⊤) →+* ℂ)`. Use `haveI : IsIntegrallyClosed Γ(Sp ℂ, ⊤) := IsIntegrallyClosed.of_equiv e.symm`. Conclude with `isIntegrallyClosed_of_smooth Γ(Sp ℂ, ⊤) Γ(Z, U)`. Establish `hgerm : ∀ a ∈ rA ℂ (crd φ) I, ∃ g : Γ(Z, U), (Z.presheaf.germ U (genericPoint Z) h).hom g = ((a : fld φ) : Z.functionField)`.
+
+Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, j, rfl⟩` from `hx`. Establish `hle : U ≤ φ ⁻¹ᵁ chart d i` using `Finset.inf_le hi`.
+
+Use `⟨Z.presheaf.map (homOfLE hle).op (φ.app (chart d i) (ratioSec d i j)), ?_⟩` and prove the remaining obligations. Rewrite using `[Z.presheaf.germ_res_apply]`. Establish `hr` using `(GlobalTheory.T.pulledBackProjCoordinateRatio_overlap_div d Z φ 0 i j (hgen 0) (hgen i)).2`. Simplify using `only [IntermediateField.coe_div, crd_val]`. Rewrite using `[← hr, rat, dif_pos (hgen i)]`.
+
+Consider the case `algebraMap r`. Use `⟨Z.presheaf.map (homOfLE le_top).op (p.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom r)), ?_⟩` and prove the remaining obligations. Rewrite using `[Z.presheaf.germ_res_apply]`. Conclude with `(hsc r).symm`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨g, hg⟩` from `hx`. Take `⟨g', hg'⟩` from `hy`. Conclude with `⟨g + g', by rw [map_add, hg, hg']; rfl⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨g, hg⟩` from `hx`.
+
+Take `⟨g', hg'⟩` from `hy`. Conclude with `⟨g * g', by rw [map_mul, hg, hg']; rfl⟩`. Establish `hy' : IsIntegral (rA ℂ (crd φ) I) y` using `hy`. Establish `hB : IsIntegral Γ(Z, U) y`. Take `⟨q, hq, hqy⟩` from `hy'`.
+
+Establish `hl : q.map (algebraMap (rA ℂ (crd φ) I) Z.functionField) ∈ Polynomial.lifts (algebraMap Γ(Z, U) Z.functionField)`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Rewrite using `[Polynomial.coeff_map]`. Take `⟨g, hg⟩` from `hgerm _ (q.coeff n).2`.
+
+Conclude with `⟨g, by rw [halg, hg]; rfl⟩`. Take `⟨Q, hQ, -, hQm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl (hq.map _)`. Use `⟨Q, hQm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval_map, hQ, Polynomial.eval_map, hqy]`. Take `⟨b, hb⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hB`.
+
+Conclude with `⟨b, hb⟩`.
+-/
 theorem mem_germ_range_of_mem_rB : ∀ (d : ℕ) (Z : Scheme.{0}) [IsIntegral Z] (p : Z ⟶ Sp ℂ) [SmoothOfRelativeDimension d p] [inst : Algebra ℂ Z.functionField], inst = ffAlg p → ∀ (φ : Z ⟶ PSpace ℂ d) [IsFinite φ], φ ≫ PSpace.str ℂ d = p → (∀ i, genericPoint Z ∈ φ ⁻¹ᵁ chart d i) → ∀ (I : Finset (Fin (d + 1))), I.Nonempty → ∀ (h : genericPoint Z ∈ I.inf fun i => φ ⁻¹ᵁ chart d i) (y : Z.functionField), y ∈ rB ℂ Z.functionField (crd φ) I → ∃ f : Γ(Z, I.inf fun i => φ ⁻¹ᵁ chart d i), (Z.presheaf.germ _ (genericPoint Z) h).hom f = y := by
   intro d Z _ p _ inst hinst φ _ _ hgen I hI h y hy
   haveI : Smooth p := SmoothOfRelativeDimension.smooth d p

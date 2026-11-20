@@ -8,6 +8,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 
 namespace GlobalTheory.Mem.Col2.TC
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `B.R.t_odd`. Establish `h2 : B.R.t + 1 = 2 * (b + 1)` using `by omega`. Rewrite using `[h2, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2), Nat.mul_left_comm, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cTw_eq_mul (B : Base) :
     ((B.R.m * (B.R.t + 1) / 2 : ℕ) : ℤ) = (B.R.m : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ) := by
   obtain ⟨b, hb⟩ := B.R.t_odd
@@ -17,6 +20,11 @@ theorem cTw_eq_mul (B : Base) :
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h` using `cTw_eq_mul B`. Use `show Formalism.MainNotions.product_first_zeroth_parts.wSh (Examples₂.lamOf (B.hcW u τ) B.R.m) (Formalism.MainNotions.product_first_zeroth_parts.cTw B.R) = Formalism.L2.Col.shiftW (Examples₂.lamOf (B.hcW u τ) B.R.m) (-((B.R.m : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ)))`. Unfold `Formalism.MainNotions.product_first_zeroth_parts.wSh Formalism.L2.Col.shiftW Formalism.MainNotions.product_first_zeroth_parts.cTw`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trueWeight_lastStep_trueColumns {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word)
     (τ : (I.rec7 l Z).what₂.Tau) : Formalism.MainNotions.product_first_zeroth_parts.lamTr (I.rec7 l Z) u τ = B.wts.lamTrue u B.R.m τ := by
   have h := cTw_eq_mul B
@@ -28,6 +36,11 @@ theorem trueWeight_lastStep_trueColumns {B : Base} {X : PreX B.toPre} (I : TC B 
   rw [h]
   ring
 
+/- English proof (translation)
+Establish `h` using `cTw_eq_mul B`. Use `show Formalism.MainNotions.product_first_zeroth_parts.wSh (B.wts.row τ).sg (Formalism.MainNotions.product_first_zeroth_parts.cTw B.R) = Formalism.L2.Col.shiftW (B.wts.row τ).sg (-((B.R.m : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ)))`. Unfold `Formalism.MainNotions.product_first_zeroth_parts.wSh Formalism.L2.Col.shiftW Formalism.MainNotions.product_first_zeroth_parts.cTw`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trueRowWeight_trueColumns {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word)
     (τ : (I.rec7 l Z).what₂.Tau) : Formalism.MainNotions.product_first_zeroth_parts.sgTr (I.rec7 l Z) u τ = B.wts.sgTrue τ := by
   have h := cTw_eq_mul B
@@ -43,6 +56,11 @@ end GlobalTheory.Mem.Col2.TC
 
 namespace GlobalTheory.Mem.Col2.TC
 
+/- English proof (translation)
+Introduce `τ`. Establish `e1` using `trueWeight_lastStep_trueColumns I l Z u τ`. Establish `e2` using `trueRowWeight_trueColumns I l Z u τ`. Establish `n1 : (Formalism.MainNotions.product_first_zeroth_parts.lamTr (I.rec7 l Z) u τ).natW = (((I.rec7 l Z).fm u).lam (I.rec7 l Z).R.m τ).natW` using `Formalism.MainNotions.product_first_zeroth_parts.natW_wSh _ _`. Establish `n2 : (Formalism.MainNotions.product_first_zeroth_parts.sgTr (I.rec7 l Z) u τ).natW = (((I.rec7 l Z).fm u).sg τ).natW` using `Formalism.MainNotions.product_first_zeroth_parts.natW_wSh _ _`.
+
+Use `show fockOpNorm (B.wts.lamTrue u B.R.m τ) (B.wts.sgTrue τ) (GlobalTheory.IndefiniteRowSideFullHecke.InterlacingEquivariance.brOne ℂ (N_m_succ B.R) (B.wts.lamTrue u B.R.m τ) (B.wts.sgTrue τ)) = fockOpNorm (((I.rec7 l Z).fm u).lam (I.rec7 l Z).R.m τ) (((I.rec7 l Z).fm u).sg τ) (For …`. Rewrite `*` using `[e1, e2]`. Conclude with `fockOpNorm_congr _ n1 n2`.
+-/
 theorem branchingNorm_identity_trueColumns_members {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) :
     BeOnTie (I.rec7 l Z) u := by
   intro τ
@@ -59,6 +77,9 @@ theorem branchingNorm_identity_trueColumns_members {B : Base} {X : PreX B.toPre}
   rw [e1, e2] at *
   exact fockOpNorm_congr _ n1 n2
 
+/- English proof (translation)
+Introduce `I _ _ l Z u` and use `branchingNorm_identity_trueColumns_members I l Z u`.
+-/
 theorem beOnTie_true : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws)
     (Z : TC.Later B (I.cols l)), ∀ u, BeOnTie (I.rec7 l Z) u :=
   fun I _ _ l Z u => branchingNorm_identity_trueColumns_members I l Z u

@@ -3,6 +3,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 namespace GlobalTheory.Svd
 
+/- English proof (translation)
+Introduce `B f T w Z t`. Establish `hc : t.full.1.cols = t.C.herm` using `t.full.2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (t.full.1.cols.levelZeroCompatibility (w.D Z).u₀).piG = _`. Rewrite using `[hc, ← t.C.piG]`.
+
+Conclude with `(t.std _).gl.piG`. Use function extensionality and compare the values at `u show (t.full.1.cols.atT u).piU = _`. Rewrite using `[hc, ← t.C.piU u]`. Conclude with `(t.std u).piU`.
+-/
 theorem errXS_pi_of_colT : ∀ (B : GlobalTheory.Mem.Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (t : ColT w Z), (Formalism.L2.Herm.toErrXS t.full.1).piG = w.px.piG ∧ (Formalism.L2.Herm.toErrXS t.full.1).piT = w.px.piT := by
   intro B f T w Z t
   have hc : t.full.1.cols = t.C.herm := t.full.2

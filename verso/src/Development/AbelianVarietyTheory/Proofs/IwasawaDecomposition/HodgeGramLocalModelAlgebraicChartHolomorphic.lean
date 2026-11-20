@@ -14,6 +14,21 @@ open scoped Matrix
 
 namespace GlobalTheory.PointChern
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU Φ k X j f f₀ Eb A₀ hj hL y hy c' hc' A hA ix`. Take `⟨hoi, -, hT⟩` from `hL`. Take `⟨k', s, hs, hev⟩` from `GlobalTheory.T.exists_analytic_flagDomain_frame_lift_algebraicChart E H Dw l Xo c O β Y T F e σ U hσ hU X j hj hoi y hy c' hc'`. Take `⟨K, hK, hKu, hKev⟩` from `GlobalTheory.T.exists_holomorphic_invertible_frame_coordinates E H Dw l Xo c O β Y T F e σ U hσ hU X j f₀ Eb A₀ hj hoi hT y hy c' hc' A hA k' s hs hev`. Take `⟨G, z, cc, hcc, hG⟩` from `GlobalTheory.T.hodgeMetric_gram_holomorphic_frame_form E H Dw l Xo c O β T.Z σ U hσ hU k'`.
+
+Take `⟨hs0, -⟩` from `hev.self_of_nhds`. Take `⟨hGa, hza, hGu, hzD, -⟩` from `hG (s (c'.e y)) hs0`. Set `φ : ReciprocityTheory.L2DbarEstimates.V X.dim → ReciprocityTheory.L2DbarEstimates.V X.dim` to `fun w => (EuclideanSpace.equiv (Fin X.dim) ℂ).symm (fun i => z (s w) (ix i).1 (ix i).2.1 (ix i).2.2)`. Establish `hco : ∀ w, coordOf ix (φ w) = z (s w)` using `fun w => by`. Use function extensionality and compare the values at `τ a b`.
+
+Simplify using `[φ, coordOf]`. Use `⟨φ, fun w τ => (K w τ)ᵀ * G (s w) τ, cc, hcc, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(EuclideanSpace.equiv (Fin X.dim) ℂ).symm.analyticAt _ |>.comp ?_` and prove the remaining obligations. Use `analyticAt_pi_iff.2 fun i => ?_` and prove the remaining obligations. Conclude with `(hza (ix i).1 (ix i).2.1 (ix i).2.2).comp hs`.
+
+Introduce `τ a b`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply]`. Conclude with `Finset.analyticAt_fun_sum Finset.univ (fun i _ => (hK τ i a).mul ((hGa τ i b).comp hs))`. Introduce `τ`. Rewrite using `[Matrix.det_mul, Matrix.det_transpose]`.
+
+Conclude with `(hKu τ).mul (hGu τ)`. Rewrite using `[hco]`. Conclude with `hzD`. Use `filter_upwards [hKev, hev] with w ⟨⟨g0, hg0⟩, hKw⟩ ⟨hsw, _⟩ τ`. Establish `hex : ∃ g, FrameAt e f₀ A₀ A (c'.e.symm w) g` using `⟨g0, hg0⟩`.
+
+Rewrite using `[lieGram, dif_pos hex]`. Use `show ((hodgeMet T.Z U).gram _ hex.choose τ)ᵀ = _`. Rewrite using `[hKw hsw _ hex.choose_spec, Matrix.transpose_mul, Matrix.transpose_mul, (hG (s w) hsw).2.2.2.2 τ, hco]`. Establish `hKt : ((K w τ)ᴴ)ᵀ = ((K w τ)ᵀ)ᴴ` using `by ext; simp`. Rewrite using `[hKt]`.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`.
+-/
 theorem lieGram_local_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (Φ : FlagTor T.Z e U) (k : U.Comp), ∀ (X : Var F) (j : X.X ⟶ gen T.Z) (f : (Φ.C k).Y.X ⟶ X.X) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsLieBase e (Φ.C k) X j f f₀ Eb A₀ → ∀ y ∈ ptsIn X.str (σ.comp e.toRingHom) (openPart j), ∀ c' : AlgChart X.str (σ.comp e.toRingHom) X.dim, y ∈ c'.e.source → ∀ A ∈ Eb.S (under y), ∀ ix : Fin X.dim ≃ GlobalTheory.AllWt.Psi H × Fin Dw.p × Fin Dw.q, ∃ (φ : ReciprocityTheory.L2DbarEstimates.V X.dim → ReciprocityTheory.L2DbarEstimates.V X.dim) (g : ReciprocityTheory.L2DbarEstimates.V X.dim → Mat Dw.mult ℂ) (cc : (E →+* ℂ) → ℝ), (∀ τ, 0 < cc τ) ∧ AnalyticAt ℂ φ (c'.e y) ∧ (∀ τ i j, AnalyticAt ℂ (fun w => g w τ i j) (c'.e y)) ∧ (∀ τ, IsUnit (g (c'.e y) τ).det) ∧ InDom (coordOf ix (φ (c'.e y))) ∧ ∀ᶠ w in 𝓝 (c'.e y), ∀ τ, lieGram e U hj f₀ A₀ A (c'.e.symm w) τ = (cc τ : ℂ) • (g w τ * modelGram H Dw (coordOf ix (φ w)) τ * (g w τ)ᴴ) := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU Φ k X j f f₀ Eb A₀ hj hL y hy c' hc' A hA ix
   obtain ⟨hoi, -, hT⟩ := hL

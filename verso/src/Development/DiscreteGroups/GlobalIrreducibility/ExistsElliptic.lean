@@ -10,6 +10,13 @@ namespace DiscreteGroups.sglob.DzType.Kon
 
 variable {g : ℕ} [Fact g.Prime] {n : ℕ} {K : Type} [Field K] [Algebra (ZMod g) K]
 
+/- English proof (translation)
+Set `b : Module.Basis (Fin n) (ZMod g) K` to `Module.finBasisOfFinrankEq (ZMod g) K hfr`. Set `L` to `Algebra.leftMulMatrix b`. Use `⟨Units.map (L : K →* Matrix (Fin n) (Fin n) (ZMod g)) z, ?_⟩` and prove the remaining obligations. Establish `hy : ((Units.map (L : K →* Matrix (Fin n) (Fin n) (ZMod g)) z : Gn g n) : Mt g n) = L (z : K)` using `rfl`. Rewrite using `[hy]`.
+
+Establish `hc : aeval (z : K) (L (z : K)).charpoly = 0`. Establish `h1` using `Matrix.aeval_self_charpoly (L (z : K))`. Rewrite `h1` using `[aeval_algHom_apply]`. Conclude with `Algebra.leftMulMatrix_injective b (h1.trans (map_zero L).symm)`. Establish `hint : IsIntegral (ZMod g) (z : K)` using `Algebra.IsIntegral.isIntegral _`.
+
+Establish `hdvd` using `minpoly.dvd (ZMod g) (z : K) hc`. Establish `heq : (L (z : K)).charpoly = minpoly (ZMod g) (z : K)` using `Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hint) (Matrix.charpoly_monic _) hdvd (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, hz])`. Rewrite using `[heq]`. Conclude with `⟨minpoly.irreducible hint, minpoly.aeval _ _⟩`.
+-/
 theorem exists_elliptic [FiniteDimensional (ZMod g) K] (hfr : Module.finrank (ZMod g) K = n) (z : Kˣ)
     (hz : (minpoly (ZMod g) (z : K)).natDegree = n) :
     ∃ y : Gn g n, Irreducible (y : Mt g n).charpoly ∧ aeval (z : K) (y : Mt g n).charpoly = 0 := by
@@ -30,6 +37,19 @@ theorem exists_elliptic [FiniteDimensional (ZMod g) K] (hfr : Module.finrank (ZM
   rw [heq]
   exact ⟨minpoly.irreducible hint, minpoly.aeval _ _⟩
 
+/- English proof (translation)
+Establish `hint : IsIntegral (ZMod g) (z : K)` using `Algebra.IsIntegral.isIntegral _`. Use `set d := (minpoly (ZMod g) (z : K)).natDegree with hd`. Establish `hd1 : 0 < d` using `minpoly.natDegree_pos hint`. Establish `hfd : Module.finrank (ZMod g) (ZMod g)⟮(z : K)⟯ = d` using `IntermediateField.adjoin.finrank hint`. Establish `htow` using `Module.finrank_mul_finrank (ZMod g) (ZMod g)⟮(z : K)⟯ K`.
+
+Rewrite `htow` using `[hfd, hfr]`. Use `set r := Module.finrank (ZMod g)⟮(z : K)⟯ K`. Establish `hr1 : r ≠ 1`. Introduce `h1`. Rewrite `htow` using `[h1, mul_one]`.
+
+Conclude with `hz htow`. Establish `hr0 : r ≠ 0`. Introduce `h0`. Rewrite `htow` using `[h0, mul_zero]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2d : d * 2 ≤ n`. Rewrite using `[← htow]; exact Nat.mul_le_mul_left _ (by omega)`. Use `⟨d, Finset.mem_Icc.2 ⟨hd1, (Nat.le_div_iff_mul_le (by norm_num)).2 h2d⟩, ?_⟩` and prove the remaining obligations. Establish `: Finite K` using `Module.finite_of_finite (ZMod g)`. Establish `: Finite (ZMod g)⟮(z : K)⟯` using `Finite.of_injective _ Subtype.val_injective`.
+
+Use `letI : Fintype (ZMod g)⟮(z : K)⟯ := Fintype.ofFinite _`. Establish `hcard : Fintype.card (ZMod g)⟮(z : K)⟯ = g ^ d`. Rewrite using `[Module.card_eq_pow_finrank (K := ZMod g), ZMod.card, hfd]`. Establish `hx` using `FiniteField.pow_card (⟨(z : K), IntermediateField.mem_adjoin_simple_self _ _⟩ : (ZMod g)⟮(z : K)⟯)`. Rewrite `hx` using `[hcard]`.
+
+Establish `hx'` using `congrArg Subtype.val hx`. Simplify using `only [IntermediateField.coe_pow] at hx'`. Conclude with `Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hx')`.
+-/
 theorem bad_of_deg [FiniteDimensional (ZMod g) K] (hn : 0 < n) (hfr : Module.finrank (ZMod g) K = n) (z : Kˣ)
     (hz : (minpoly (ZMod g) (z : K)).natDegree ≠ n) : ∃ i ∈ Finset.Icc 1 (n / 2), z ^ g ^ i = z := by
   have hint : IsIntegral (ZMod g) (z : K) := Algebra.IsIntegral.isIntegral _
@@ -57,6 +77,13 @@ theorem bad_of_deg [FiniteDimensional (ZMod g) K] (hn : 0 < n) (hfr : Module.fin
   simp only [IntermediateField.coe_pow] at hx'
   exact Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hx')
 
+/- English proof (translation)
+Establish `hg : 1 < g` using `(Fact.out : g.Prime).one_lt`. Establish `hq : 1 < g ^ i` using `Nat.one_lt_pow hi.ne' hg`. Establish `hne` using `FiniteField.X_pow_card_sub_X_ne_zero K hq`. Establish `hdeg` using `FiniteField.X_pow_card_sub_X_natDegree_eq K hq`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.card_le_card_of_injOn (fun z : Kˣ => (z : K)) ?_ ?_` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hz`. Simplify using `only [Finset.mem_coe, Multiset.mem_toFinset, mem_roots hne, IsRoot, eval_sub, eval_pow, eval_X]`. Rewrite using `[← Units.val_pow_eq_pow_val, hz, sub_self]`.
+
+Introduce `x _ y _ h`. Conclude with `Units.ext h`. Use `_ ≤ (X ^ g ^ i - X : K[X]).roots.card := Multiset.toFinset_card_le _`. Use `_ ≤ (X ^ g ^ i - X : K[X]).natDegree := card_roots' _`. Use `_ = g ^ i := hdeg`.
+-/
 theorem card_fixed_le [Fintype K] [DecidableEq K] (i : ℕ) (hi : 0 < i) :
     (Finset.univ.filter fun z : Kˣ => z ^ g ^ i = z).card ≤ g ^ i := by
   have hg : 1 < g := (Fact.out : g.Prime).one_lt

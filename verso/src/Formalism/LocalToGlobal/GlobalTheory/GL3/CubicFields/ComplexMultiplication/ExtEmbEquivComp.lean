@@ -9,6 +9,13 @@ open Formalism.BasicNotions (D7)
 open Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity (IsLat jL Uniformization CMTransitive)
 open Formalism.MainNotions.TaylorLogMetric (lamOf)
 
+/- English proof (translation)
+Use `letI : Algebra R K := f.toAlgebra`. Use `letI : Algebra R L := g.toAlgebra`. Use `haveI : FaithfulSMul R K := (faithfulSMul_iff_algebraMap_injective R K).2 f.injective`. Use `haveI : FaithfulSMul R L := (faithfulSMul_iff_algebraMap_injective R L).2 g.injective`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis R K`.
+
+Take `⟨t, ht⟩` from `exists_isTranscendenceBasis R L`. Establish `h1` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ hs hR hK`. Establish `h2` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ ht hR (hKL ▸ hK)`. Establish `e : s ≃ t` using `(Cardinal.eq.1 (h1.symm.trans (hKL.trans h2))).some`. Use `⟨IsAlgClosed.equivOfTranscendenceBasis _ _ e hs ht, fun r => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [IsAlgClosed.equivOfTranscendenceBasis]`. Rewrite using `[show f r = algebraMap R K r from rfl, IsScalarTower.algebraMap_apply R (Algebra.adjoin R (Set.range ((↑) : s → K))) K, IsAlgClosure.equivOfEquiv_algebraMap]`. Simplify using `[AlgEquiv.commutes]`. Both sides reduce to the same expression.
+-/
 theorem extEmb_equiv_comp {R K L : Type} [Field R] [Field K] [Field L] [IsAlgClosed K]
     [IsAlgClosed L] (f : R →+* K) (g : R →+* L) (hR : #R ≤ ℵ₀) (hK : ℵ₀ < #K) (hKL : #K = #L) :
     ∃ σ : K ≃+* L, ∀ r : R, σ (f r) = g r := by
@@ -29,6 +36,9 @@ theorem extEmb_equiv_comp {R K L : Type} [Field R] [Field K] [Field L] [IsAlgClo
   simp [AlgEquiv.commutes]
   rfl
 
+/- English proof (translation)
+Introduce `M hM ρ`. Use `haveI := hM`. Establish `hR : Cardinal.mk M ≤ Cardinal.aleph0` using `(Algebra.IsAlgebraic.cardinalMk_le_max ℚ M).trans (max_le Cardinal.mk_le_aleph0 le_rfl)`. Take `⟨σ, hσ⟩` from `extEmb_equiv_comp (M.val.toRingHom : M →+* ℂ) (ρ.toRingHom : M →+* ℂ) hR (by rw [Cardinal.mk_complex]; exact Cardinal.aleph0_lt_continuum) rfl`. Conclude with `⟨σ, fun x => hσ x⟩`.
+-/
 theorem extendEmb_holds : ExtendEmb := by
   intro M hM ρ
   haveI := hM

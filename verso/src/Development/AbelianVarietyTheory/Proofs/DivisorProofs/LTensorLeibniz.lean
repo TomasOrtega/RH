@@ -4,6 +4,13 @@ namespace GlobalTheory.TensorLeibnizRule
 
 open TensorProduct
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r s`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul r' s'`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, LinearMap.lTensor_tmul, Derivation.coeFn_coe, Derivation.leibniz, smul_eq_mul, TensorProduct.tmul_add]`. Rewrite using `[mul_comm r' r]`. Consider the case `add y₁ y₂ h₁ h₂`. Rewrite using `[mul_add, map_add, h₁, h₂, map_add, mul_add, add_mul]`.
+
+Normalize the expressions using the abelian group laws. Consider the case `add x₁ x₂ h₁ h₂`. Rewrite using `[add_mul, map_add, h₁, h₂, map_add, add_mul, mul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lTensor_leibniz {R S : Type} [CommRing R] [Algebra ℂ R] [CommRing S] [Algebra ℂ S]
     (d : Derivation ℂ S S) (x y : TensorProduct ℂ R S) :
     (LinearMap.lTensor R (↑d : S →ₗ[ℂ] S) : TensorProduct ℂ R S → TensorProduct ℂ R S) (x * y) =

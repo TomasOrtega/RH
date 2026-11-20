@@ -19,6 +19,55 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 section Alg
 
+/- English proof (translation)
+Establish `hcardI : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) = Fintype.card J`. Rewrite using `[hcard, ← RingOfIntegers.rank, Module.finrank_eq_card_chooseBasisIndex]`. Set `b : Module.Basis J ℤ (𝓞 E)` to `(RingOfIntegers.basis E).reindex (Fintype.equivOfCardEq hcardI)`. Set `κ : K →+* S` to `algebraMap K S`. Set `χ' : J → (𝓞 E →+* K)` to `fun σ => (χ σ).comp (algebraMap (𝓞 E) E)`.
+
+Establish `hχ' : ∀ σ (y : 𝓞 E), χ' σ y = χ σ (y : E)` using `fun σ y => rfl`. Set `A : Matrix J J K` to `fun σ j => χ' σ (b j)`. Establish `hA : IsUnit A.det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `hdet`.
+
+Take `⟨c, hc0, hc⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr hdet`. Use `hc0 ?_` and prove the remaining obligations. Establish `hψ : Function.Injective fun σ => ((χ' σ : 𝓞 E →+* K) : 𝓞 E →* K)`. Introduce `σ τ h`. Apply `hχ` to reduce the goal to its premises.
+
+Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E))` to reduce the goal to its premises. Use extensionality with `y`. Conclude with `DFunLike.congr_fun h y`. Establish `hli` using `(linearIndependent_monoidHom (𝓞 E) K).comp _ hψ`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`.
+
+Establish `hcj : ∀ j, ∑ σ, c σ * χ' σ (b j) = 0` using `fun j => by`. Simplify `congrFun hc j` using `[Matrix.vecMul, dotProduct, A]`. Establish `hsum : ∀ y : 𝓞 E, ∑ σ, c σ * χ' σ y = 0`. Introduce `y`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [map_sum, zsmul_eq_mul, map_mul, map_intCast, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun σ _ => by ring`. Use `_ = 0 := by simp [hcj]`. Use function extensionality and compare the values at `σ`.
+
+Use `hli c ?_ σ` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify `hsum y` using `[Finset.sum_apply]`. Set `B : Matrix J J K` to `A⁻¹`. Establish `hAB : ∀ σ τ, ∑ k, A σ k * B k τ = if σ = τ then 1 else 0` using `fun σ τ => by`.
+
+Use `congrFun (congrFun (Matrix.mul_nonsing_inv A hA) σ) τ` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `hBA : ∀ j k, ∑ τ, B j τ * A τ k = if j = k then 1 else 0` using `fun j k => by`. Use `congrFun (congrFun (Matrix.nonsing_inv_mul A hA) j) k` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.one_apply]`.
+
+Set `P : J → M → M` to `fun σ V => ∑ j, κ (B j σ) • ρ (b j) V`. Establish `hPadd : ∀ τ (F : J → M), P τ (∑ σ, F σ) = ∑ σ, P τ (F σ)`. Introduce `τ F`. Simplify using `only [P, map_sum, Finset.smul_sum]`. Conclude with `Finset.sum_comm`.
+
+Establish `hρ : ∀ (y : 𝓞 E) (V : M), ρ y V = ∑ τ, κ (χ' τ y) • P τ V`. Introduce `y V`. Establish `e1 : ∀ τ, χ' τ y = ∑ k, (b.repr y k : K) * A τ k` using `fun τ => by conv_lhs => rw [← b.sum_repr y]`. Simplify using `only [map_sum, zsmul_eq_mul, map_mul, map_intCast, A]`. Establish `hy : ∀ j, ∑ τ, χ' τ y * B j τ = (b.repr y j : K)`.
+
+Introduce `j`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [e1, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun k _ => by ring`. Use `_ = ∑ k, (b.repr y k : K) * ∑ τ, B j τ * A τ k := by`.
+
+Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`. Use `_ = (b.repr y j : K) := by`. Simplify using `only [hBA, mul_ite, _root_.mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [map_sum, map_zsmul, LinearMap.sum_apply, LinearMap.smul_apply, map_intCast, Int.cast_smul_eq_zsmul]`. Use `_ = ∑ j, κ (∑ τ, χ' τ y * B j τ) • ρ (b j) V := by simp only [hy]`. Use `_ = ∑ τ, κ (χ' τ y) • P τ V := by`. Simplify using `only [P, Finset.smul_sum, smul_smul, map_sum, Finset.sum_smul, map_mul]`. Conclude with `Finset.sum_comm`.
+
+Establish `hPeig : ∀ σ V (a : 𝓞 E), ρ a (P σ V) = algebraMap K S (χ σ (a : E)) • P σ V`. Introduce `σ V a`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [P, map_sum, map_smul, map_mul, Module.End.mul_apply]`. Use `_ = ∑ k, ∑ ν, κ (B k σ * (χ' ν a * A ν k)) • P ν V := by`.
+
+Simplify using `only [hρ, Finset.smul_sum, smul_smul, ← map_mul, A]`. Use `_ = ∑ ν, κ (χ' ν a * ∑ k, A ν k * B k σ) • P ν V := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, map_sum, Finset.sum_smul]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => by congr 2; ring`. Use `_ = algebraMap K S (χ σ (a : E)) • P σ V := by`. Rewrite using `[Finset.sum_eq_single σ]`. Rewrite using `[hAB, if_pos rfl, _root_.mul_one]`. Both sides reduce to the same expression.
+
+Introduce `ν _ hν`. Rewrite using `[hAB, if_neg hν, mul_zero, map_zero, zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ σ) h`. Establish `hPZ : ∀ σ τ (Z : M), (∀ a : 𝓞 E, ρ a Z = algebraMap K S (χ σ (a : E)) • Z) → P τ Z = if σ = τ then Z else 0`.
+
+Introduce `σ τ Z hZ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [P, hZ, smul_smul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [mul_comm, map_mul]; rfl`. Use `_ = κ (∑ j, A σ j * B j τ) • Z := by rw [map_sum, Finset.sum_smul]`.
+
+Use `_ = if σ = τ then Z else 0 := by`. Apply the tactic sequence `rw [hAB]; split_ifs <;> simp`. Establish `hPsum : ∑ τ, P τ W = W`. Use `hρ 1 W` as an intermediate fact. Simplify using `only [map_one, Module.End.one_apply, one_smul] at this`.
+
+Conclude with `this.symm`. Establish `hYeig : ∀ (a : (Σ σ, Fin (mult σ)) → S) σ (c : 𝓞 E), ρ c (∑ i, a ⟨σ, i⟩ • U ⟨σ, i⟩) = algebraMap K S (χ σ (c : E)) • ∑ i, a ⟨σ, i⟩ • U ⟨σ, i⟩`. Introduce `a σ c`. Rewrite using `[map_sum, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, hU, smul_comm]`.
+
+Establish `hproj : ∀ (a : (Σ σ, Fin (mult σ)) → S), ∑ ℓ, a ℓ • U ℓ = W → ∀ τ, ∑ i, a ⟨τ, i⟩ • U ⟨τ, i⟩ = P τ W`. Introduce `a ha τ`. Rewrite using `[← ha, Fintype.sum_sigma, hPadd, Finset.sum_eq_single τ]`. Rewrite using `[hPZ τ τ _ (hYeig a τ), if_pos rfl]`. Introduce `σ _ hστ`.
+
+Rewrite using `[hPZ σ τ _ (hYeig a σ), if_neg hστ]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ τ) h`. Establish `hex : ∀ σ, ∃! c : Fin (mult σ) → S, ∑ i, c i • U ⟨σ, i⟩ = P σ W` using `fun σ => hb σ (P σ W) (hPeig σ W)`. Use `choose c hc using fun σ => (hex σ).exists`.
+
+Use `⟨fun ℓ => c ℓ.1 ℓ.2, ?_, ?_⟩` and prove the remaining obligations. Use `show ∑ ℓ, c ℓ.1 ℓ.2 • U ℓ = W`. Rewrite using `[Fintype.sum_sigma]`. Simplify using `only [hc]`. Conclude with `hPsum`.
+
+Introduce `a' ha'`. Use function extensionality and compare the values at `ℓ`. Take `⟨σ, i⟩` from `ℓ`. Use `(hex σ).unique (hproj a' ha' σ) (hc σ)` as an intermediate fact. Conclude with `congrFun this i`.
+-/
 theorem global_basis_algebra {E : Type} [Field E] [NumberField E] {K S M : Type} [Field K] [CharZero K]
     [CommRing S] [Algebra K S] [AddCommGroup M] [Module S M] {J : Type} [Fintype J] [DecidableEq J]
     (χ : J → (E →+* K)) (hχ : Function.Injective χ)
@@ -161,10 +210,32 @@ theorem global_basis_algebra {E : Type} [Field E] [NumberField E] {K S M : Type}
 
 end Alg
 
+/- English proof (translation)
+Conclude with `(Spec.map_comp _ _).symm`.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   exact (Spec.map_comp _ _).symm
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (p1.prod p2)`. Introduce `a b hab`. Establish `e1 : p1 a = p1 b` using `congrArg Prod.fst hab`. Establish `e2 : p2 a = p2 b` using `congrArg Prod.snd hab`. Conclude with `sub_eq_zero.mp (hk (a - b) (by rw [map_sub, e1, sub_self]) (by rw [map_sub, e2, sub_self]))`.
+
+Establish `: IsSchemeTheoreticallyDominant (spMap (p1.prod p2))`. Use `⟨le_bot_iff.mp (Scheme.IdealSheafData.le_of_isAffine ?_)⟩` and prove the remaining obligations. Use `((spMap (p1.prod p2)).ideal_ker_le _).trans fun z hz => ?_` and prove the remaining obligations. Establish `hz' : (Spec.map (CommRingCat.ofHom (p1.prod p2))).appTop.hom z = 0` using `RingHom.mem_ker.mp hz`. Establish `e` using `congrArg (fun h => h.hom z) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (p1.prod p2)))`.
+
+Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom, hz', map_zero] at e`. Establish `h0 : (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom z = 0` using `hinj (e.symm.trans (map_zero (p1.prod p2)).symm)`. Establish `hz0 : z = 0`. Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom h0` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[hz0]`. Conclude with `zero_mem _`. Establish `hπ : spMap (p1.prod p2) ≫ f = spMap (p1.prod p2) ≫ g`. Establish `e1 : Spec.map (CommRingCat.ofHom (RingHom.fst A A)) ≫ spMap (p1.prod p2) = spMap p1` using `(spMap_comp' (p1.prod p2) (RingHom.fst A A)).trans (congrArg spMap (RingHom.ext fun _ => rfl))`. Establish `e2 : Spec.map (CommRingCat.ofHom (RingHom.snd A A)) ≫ spMap (p1.prod p2) = spMap p2` using `(spMap_comp' (p1.prod p2) (RingHom.snd A A)).trans (congrArg spMap (RingHom.ext fun _ => rfl))`.
+
+Rewrite using `[← cancel_epi (coprodSpec A A)]`. Apply `coprod.hom_ext` to reduce the goal to its premises. Rewrite using `[coprodSpec_inl_assoc, coprodSpec_inl_assoc, reassoc_of% e1, reassoc_of% e1, h1]`. Rewrite using `[coprodSpec_inr_assoc, coprodSpec_inr_assoc, reassoc_of% e2, reassoc_of% e2, h2]`. Establish `hsurj : ∀ x : PrimeSpectrum R, ∃ y : PrimeSpectrum A, PrimeSpectrum.comap p1 y = x`.
+
+Introduce `x`. Establish `hker : RingHom.ker p1 ≤ x.asIdeal` using `fun m hm => x.isPrime.mem_of_pow_mem 2 (by rw [pow_two, hn m (RingHom.mem_ker.mp hm)]; exact zero_mem _)`. Use `x.isPrime` as an intermediate fact. Use `⟨⟨Ideal.map p1 x.asIdeal, Ideal.map_isPrime_of_surjective hs hker⟩, PrimeSpectrum.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap p1 (Ideal.map p1 x.asIdeal) = x.asIdeal`.
+
+Rewrite using `[Ideal.comap_map_of_surjective p1 hs, ← RingHom.ker_eq_comap_bot, sup_eq_left.mpr hker]`. Establish `hbase : f.base = g.base`. Use extensionality with `x`. Take `⟨y, rfl⟩` from `hsurj x`. Conclude with `congrArg (fun h : Sp A ⟶ X => h.base y) h1`.
+
+Use `Scheme.Hom.ext hbase fun U => ?_` and prove the remaining obligations. Establish `: Mono ((spMap (p1.prod p2)).app (g ⁻¹ᵁ U))` using `ConcreteCategory.mono_of_injective _ ((spMap (p1.prod p2)).app_injective _)`. Rewrite using `[← cancel_mono ((spMap (p1.prod p2)).app (g ⁻¹ᵁ U)), Category.assoc, Scheme.Hom.naturality, ← Category.assoc, ← Scheme.Hom.comp_app, ← Scheme.Hom.comp_app, Scheme.Hom.congr_app hπ U]`. Establish `hid : ∀ {V : (TopologicalSpace.Opens ↥(Sp (A × A)))ᵒᵖ} (k : V ⟶ V), (Sp (A × A)).presheaf.map k = 𝟙 _` using `fun k => by rw [show k = 𝟙 _ from Quiver.Hom.unop_inj (Subsingleton.elim _ _), CategoryTheory.Functor.map_id]`. Simplify using `[← Functor.map_comp]`.
+
+Use `erw [hid, Category.comp_id]`.
+-/
 theorem spec_ext_two {R A : Type} [CommRing R] [CommRing A] (p1 p2 : R →+* A)
     (hs : Function.Surjective p1) (hn : ∀ x, p1 x = 0 → x * x = 0)
     (hk : ∀ x, p1 x = 0 → p2 x = 0 → x = 0) {X : Scheme.{0}} (f g : Sp R ⟶ X)
@@ -223,6 +294,9 @@ section Scal
 
 variable {X0 : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X0)
 
+/- English proof (translation)
+Use `ext1`. Simplify using `only [Formalism.L2.Pj.homAt, Over.comp_left, Over.homMk_left]`. Rewrite using `[spMap_comp']`. Both sides reduce to the same expression.
+-/
 theorem homAt_comp {A B C : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S B] [CommRing C] [Algebra S C]
     (f : A →ₐ[S] B) (g : B →ₐ[S] C) : homAt x0 g ≫ homAt x0 f = homAt x0 (g.comp f) := by
   ext1
@@ -230,6 +304,9 @@ theorem homAt_comp {A B C : Type} [CommRing A] [Algebra S A] [CommRing B] [Algeb
   rw [spMap_comp']
   rfl
 
+/- English proof (translation)
+Use `ext1`. Simplify using `only [Formalism.L2.Pj.homAt, Over.homMk_left, Over.id_left]`. Conclude with `Spec.map_id _`.
+-/
 theorem homAt_id {A : Type} [CommRing A] [Algebra S A] : homAt x0 (AlgHom.id S A) = 𝟙 _ := by
   ext1
   simp only [Formalism.L2.Pj.homAt, Over.homMk_left, Over.id_left]
@@ -244,26 +321,58 @@ variable {G : Over X0} [GrpObj G]
 def smT (a : S) (v : overAt x0 (DualNumber S) ⟶ G) : overAt x0 (DualNumber S) ⟶ G :=
   homAt x0 (tm (a • (LinearMap.id : S →ₗ[S] S))) ≫ v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smT_left (a : S) (v : overAt x0 (DualNumber S) ⟶ G) : (smT x0 a v).left = spMap (epsMul a) ≫ v.left := rfl
 
+/- English proof (translation)
+Simplify using `only [smT, MonObj.comp_mul]`.
+-/
 theorem smT_mul (a : S) (u w : overAt x0 (DualNumber S) ⟶ G) : smT x0 a (u * w) = smT x0 a u * smT x0 a w := by
   simp only [smT, MonObj.comp_mul]
 
+/- English proof (translation)
+Simplify using `only [smT, MonObj.comp_one]`.
+-/
 theorem smT_one' (a : S) : smT x0 a (1 : overAt x0 (DualNumber S) ⟶ G) = 1 := by
   simp only [smT, MonObj.comp_one]
 
+/- English proof (translation)
+Unfold `smT`. Rewrite using `[← Category.assoc, homAt_comp]`. Use `congr 2`. Apply the tactic sequence `refine AlgHom.ext fun z => TrivSqZeroExt.ext ?_ ?_ <;> (simp [tm] <;> ring)`.
+-/
 theorem smT_smT (a b : S) (v : overAt x0 (DualNumber S) ⟶ G) : smT x0 a (smT x0 b v) = smT x0 (a * b) v := by
   unfold smT
   rw [← Category.assoc, homAt_comp]
   congr 2
   refine AlgHom.ext fun z => TrivSqZeroExt.ext ?_ ?_ <;> (simp [tm] <;> ring)
 
+/- English proof (translation)
+Unfold `smT`. Establish `e : tm ((1 : S) • (LinearMap.id : S →ₗ[S] S)) = AlgHom.id S (DualNumber S)` using `AlgHom.ext fun z => TrivSqZeroExt.ext (by simp [tm]) (by simp [tm])`. Rewrite using `[e, homAt_id, Category.id_comp]`.
+-/
 theorem smT_unit (v : overAt x0 (DualNumber S) ⟶ G) : smT x0 1 v = v := by
   unfold smT
   have e : tm ((1 : S) • (LinearMap.id : S →ₗ[S] S)) = AlgHom.id S (DualNumber S) :=
     AlgHom.ext fun z => TrivSqZeroExt.ext (by simp [tm]) (by simp [tm])
   rw [e, homAt_id, Category.id_comp]
 
+/- English proof (translation)
+Set `m : DualNumber S →ₐ[S] TrivSqZeroExt S (S × S)` to `TrivSqZeroExt.map (LinearMap.prod LinearMap.id LinearMap.id)`. Set `i1 : DualNumber S →ₐ[S] TrivSqZeroExt S (S × S)` to `TrivSqZeroExt.map (LinearMap.inl S S S)`. Set `i2 : DualNumber S →ₐ[S] TrivSqZeroExt S (S × S)` to `TrivSqZeroExt.map (LinearMap.inr S S S)`. Set `q1 : TrivSqZeroExt S (S × S) →ₐ[S] DualNumber S` to `TrivSqZeroExt.map (LinearMap.fst S S S)`. Set `q2 : TrivSqZeroExt S (S × S) →ₐ[S] DualNumber S` to `TrivSqZeroExt.map (LinearMap.snd S S S)`.
+
+Set `qa : TrivSqZeroExt S (S × S) →ₐ[S] DualNumber S` to `TrivSqZeroExt.map (LinearMap.coprod (a • LinearMap.id) (b • LinearMap.id))`. Establish `h0' : homAt x0 (tm ((0 : S) • (LinearMap.id : S →ₗ[S] S))) ≫ v = 1` using `h0`. Establish `key : homAt x0 m ≫ v = homAt x0 i1 ≫ v * homAt x0 i2 ≫ v`. Establish `e1 : homAt x0 q1 ≫ (homAt x0 m ≫ v) = homAt x0 q1 ≫ (homAt x0 i1 ≫ v * homAt x0 i2 ≫ v)`. Establish `c1 : q1.comp m = AlgHom.id S _` using `AlgHom.ext fun z => TrivSqZeroExt.ext (by simp [q1, m]) (by simp [q1, m])`.
+
+Establish `c2 : q1.comp i1 = AlgHom.id S _` using `AlgHom.ext fun z => TrivSqZeroExt.ext (by simp [q1, i1]) (by simp [q1, i1])`. Establish `c3 : q1.comp i2 = tm ((0 : S) • (LinearMap.id : S →ₗ[S] S))` using `AlgHom.ext fun z => TrivSqZeroExt.ext (by simp [q1, i2, tm]) (by simp [q1, i2, tm])`. Simplify using `only [MonObj.comp_mul, ← Category.assoc, homAt_comp, c1, c2, c3, homAt_id, Category.id_comp, h0', _root_.mul_one]`. Establish `e2 : homAt x0 q2 ≫ (homAt x0 m ≫ v) = homAt x0 q2 ≫ (homAt x0 i1 ≫ v * homAt x0 i2 ≫ v)`. Establish `c1 : q2.comp m = AlgHom.id S _` using `AlgHom.ext fun z => TrivSqZeroExt.ext (by simp [q2, m]) (by simp [q2, m])`.
+
+Establish `c2 : q2.comp i1 = tm ((0 : S) • (LinearMap.id : S →ₗ[S] S))` using `AlgHom.ext fun z => TrivSqZeroExt.ext (by simp [q2, i1, tm]) (by simp [q2, i1, tm])`. Establish `c3 : q2.comp i2 = AlgHom.id S _` using `AlgHom.ext fun z => TrivSqZeroExt.ext (by simp [q2, i2]) (by simp [q2, i2])`. Simplify using `only [MonObj.comp_mul, ← Category.assoc, homAt_comp, c1, c2, c3, homAt_id, Category.id_comp, h0', _root_.one_mul]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `spec_ext_two (q1 : TrivSqZeroExt S (S × S) →+* DualNumber S) (q2 : TrivSqZeroExt S (S × S) →+* DualNumber S) ?_ ?_ ?_ _ _ (congrArg Over.Hom.left e1) (congrArg Over.Hom.left e2)` and prove the remaining obligations.
+
+Introduce `z`. Conclude with `⟨TrivSqZeroExt.inl z.fst + TrivSqZeroExt.inr (z.snd, 0), TrivSqZeroExt.ext (by simp [q1]) (by simp [q1])⟩`. Introduce `z hz`. Establish `h1 : z.fst = 0` using `by simpa [q1] using congrArg TrivSqZeroExt.fst hz`. Conclude with `TrivSqZeroExt.ext (by simp [h1]) (by simp [h1])`.
+
+Introduce `z hz1 hz2`. Establish `h1 : z.fst = 0` using `by simpa [q1] using congrArg TrivSqZeroExt.fst hz1`. Establish `h2 : z.snd.1 = 0` using `by simpa [q1] using congrArg TrivSqZeroExt.snd hz1`. Establish `h3 : z.snd.2 = 0` using `by simpa [q2] using congrArg TrivSqZeroExt.snd hz2`. Conclude with `TrivSqZeroExt.ext h1 (Prod.ext h2 h3)`.
+
+Establish `ca : qa.comp m = tm ((a + b) • (LinearMap.id : S →ₗ[S] S))` using `AlgHom.ext fun z => TrivSqZeroExt.ext (by simp [qa, m, tm]) (by simp [qa, m, tm, add_smul])`. Establish `cb1 : qa.comp i1 = tm (a • (LinearMap.id : S →ₗ[S] S))` using `AlgHom.ext fun z => TrivSqZeroExt.ext (by simp [qa, i1, tm]) (by simp [qa, i1, tm])`. Establish `cb2 : qa.comp i2 = tm (b • (LinearMap.id : S →ₗ[S] S))` using `AlgHom.ext fun z => TrivSqZeroExt.ext (by simp [qa, i2, tm]) (by simp [qa, i2, tm])`. Establish `e` using `congrArg (homAt x0 qa ≫ ·) key`. Simplify using `only [MonObj.comp_mul, ← Category.assoc, homAt_comp, ca, cb1, cb2] at e`.
+
+Conclude with `e`.
+-/
 theorem smT_add (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (a b : S) :
     smT x0 (a + b) v = smT x0 a v * smT x0 b v := by
   let m : DualNumber S →ₐ[S] TrivSqZeroExt S (S × S) := TrivSqZeroExt.map (LinearMap.prod LinearMap.id LinearMap.id)
@@ -329,6 +438,9 @@ def smHom (a : S) : (overAt x0 (DualNumber S) ⟶ G) →* (overAt x0 (DualNumber
   map_one' := smT_one' x0 a
   map_mul' := smT_mul x0 a
 
+/- English proof (translation)
+Establish `h' : homAt x0 (tm ((0 : S) • (LinearMap.id : S →ₗ[S] S))) ≫ W = 1` using `h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tan_pull {P : Over X0} (ψ : P ⟶ overAt x0 (DualNumber S))
     (hψ : ψ ≫ homAt x0 (tm ((0 : S) • (LinearMap.id : S →ₗ[S] S))) = ψ) (W : overAt x0 (DualNumber S) ⟶ G)
     (h : smT x0 0 W = 1) : ψ ≫ W = 1 := by
@@ -336,6 +448,9 @@ theorem tan_pull {P : Over X0} (ψ : P ⟶ overAt x0 (DualNumber S))
   calc ψ ≫ W = (ψ ≫ homAt x0 (tm ((0 : S) • (LinearMap.id : S →ₗ[S] S)))) ≫ W := by rw [hψ]
     _ = 1 := by rw [Category.assoc, h', MonObj.comp_one]
 
+/- English proof (translation)
+Simplify using `only [smT, Category.assoc]`.
+-/
 theorem smT_post (a : S) (v : overAt x0 (DualNumber S) ⟶ G) (φ : G ⟶ G) :
     smT x0 a (v ≫ φ) = smT x0 a v ≫ φ := by
   simp only [smT, Category.assoc]
@@ -349,6 +464,13 @@ section TanSAB
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
 variable {S : Type} [CommRing S] (x0 : Sp S ⟶ X0)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hw⟩`. Establish `e : u = fun j => smT x0 (cf j) (v j)`. Use function extensionality and compare the values at `fun j => Over.OverMorphism.ext ((hu j).trans (smT_left x0 (cf j) (v j)).symm)`. Substitute `e` using the available equality.
+
+Rewrite using `[← hw, List.prod_ofFn]`. Both sides reduce to the same expression. Introduce `h`. Use `⟨fun j => smT x0 (cf j) (v j), fun j => smT_left x0 (cf j) (v j), ?_⟩` and prove the remaining obligations. Rewrite using `[List.prod_ofFn]`.
+
+Conclude with `h`.
+-/
 theorem isCombAtG_iff {m : ℕ} (v : Fin m → (tEpsG x0 ⟶ t.G)) (cf : Fin m → S) (w : Sp (DualNumber S) ⟶ t.G.left) :
     IsCombAtG t x0 (fun j => (v j).left) cf w ↔ (combT x0 v cf).left = w := by
   constructor
@@ -363,15 +485,24 @@ theorem isCombAtG_iff {m : ℕ} (v : Fin m → (tEpsG x0 ⟶ t.G)) (cf : Fin m �
     rw [List.prod_ofFn]
     exact h
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun z => TrivSqZeroExt.ext (by simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]) (by simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl])`.
+-/
 private theorem eps_zero_lemma :
     epsMul (0 : S) = (algebraMap S (DualNumber S)).comp (TrivSqZeroExt.fstHom S S S).toRingHom :=
   RingHom.ext fun z => TrivSqZeroExt.ext (by simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl])
     (by simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl])
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun z => by simp [epsMul]`.
+-/
 private theorem fst_eps_lemma_2 :
     (TrivSqZeroExt.fstHom S S S).toRingHom.comp (epsMul (0 : S)) = (TrivSqZeroExt.fstHom S S S).toRingHom :=
   RingHom.ext fun z => by simp [epsMul]
 
+/- English proof (translation)
+Establish `h : (Over.homMk (spMap (algebraMap S (DualNumber S))) rfl : tEpsG x0 ⟶ Over.mk x0) ≫ (1 : Over.mk x0 ⟶ G) = 1` using `MonObj.comp_one _`. Conclude with `(congrArg Over.Hom.left h).symm`.
+-/
 private theorem one_left_lemma_3 {G : Over X0} [GrpObj G] :
     (1 : tEpsG x0 ⟶ G).left = spMap (algebraMap S (DualNumber S)) ≫ (1 : Over.mk x0 ⟶ G).left := by
   have h : (Over.homMk (spMap (algebraMap S (DualNumber S))) rfl : tEpsG x0 ⟶ Over.mk x0) ≫
@@ -382,12 +513,22 @@ variable {t x0}
 
 def ovT {v : Sp (DualNumber S) ⟶ t.G.left} (hv : IsTanAtG t x0 v) : tEpsG x0 ⟶ t.G := Over.homMk v hv.1
 
+/- English proof (translation)
+Use `ext1`. Establish `e : spMap (epsMul (0 : S)) ≫ v = spMap (algebraMap S (DualNumber S)) ≫ (1 : Over.mk x0 ⟶ t.G).left`. Rewrite using `[eps_zero_lemma, ← spMap_comp', Category.assoc, hv.2]`. Conclude with `(smT_left x0 0 (ovT hv)).trans (e.trans (one_left_lemma_3 x0 (G := t.G)).symm)`.
+-/
 theorem smT_zero_ovT {v : Sp (DualNumber S) ⟶ t.G.left} (hv : IsTanAtG t x0 v) : smT x0 0 (ovT hv) = 1 := by
   ext1
   have e : spMap (epsMul (0 : S)) ≫ v = spMap (algebraMap S (DualNumber S)) ≫ (1 : Over.mk x0 ⟶ t.G).left := by
     rw [eps_zero_lemma, ← spMap_comp', Category.assoc, hv.2]
   exact (smT_left x0 0 (ovT hv)).trans (e.trans (one_left_lemma_3 x0 (G := t.G)).symm)
 
+/- English proof (translation)
+Use `⟨Over.w W, ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg Over.Hom.left h`. Rewrite `h'` using `[smT_left]`. Establish `hs : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 _`. Rewrite using `[spMap_comp', show (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S from RingHom.ext fun s => by simp]`.
+
+Conclude with `Spec.map_id _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc, spMap_comp', fst_eps_lemma_2]`. Use `_ = spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ (1 : tEpsG x0 ⟶ t.G).left := congrArg _ h'`. Use `_ = (1 : Over.mk x0 ⟶ t.G).left := by`.
+
+Rewrite using `[one_left_lemma_3 x0, ← Category.assoc, hs, Category.id_comp]`.
+-/
 theorem isTanAtG_of (W : tEpsG x0 ⟶ t.G) (h : smT x0 0 W = 1) : IsTanAtG t x0 W.left := by
   refine ⟨Over.w W, ?_⟩
   have h' := congrArg Over.Hom.left h
@@ -405,6 +546,11 @@ theorem isTanAtG_of (W : tEpsG x0 ⟶ t.G) (h : smT x0 0 W = 1) : IsTanAtG t x0 
 
 variable {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Unfold `IsEigAt`. Use `forall_congr' fun a => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `ext1`. Rewrite using `[Over.comp_left, smT_left]`. Conclude with `h`.
+
+Establish `h'` using `congrArg Over.Hom.left h`. Rewrite `h'` using `[Over.comp_left, smT_left]`. Conclude with `h'`.
+-/
 theorem isEigAt_iff [Algebra c.F S] {x : Sp S ⟶ Xo.X} (τ : E →+* ℂ)
     (W : tEpsG x ⟶ Xo.univ.t.G) :
     IsEigAt c τ W.left ↔ ∀ a : 𝓞 E, W ≫ Xo.univ.t.act.act a = smT x (algebraMap c.F S (embK c τ a)) W := by
@@ -444,21 +590,39 @@ variable {x0 G}
 
 def tv (m : TanM x0 G) : overAt x0 (DualNumber S) ⟶ G := (Additive.toMul m : tanSub x0 G)
 
+/- English proof (translation)
+Conclude with `(Additive.toMul m).prop`.
+-/
 theorem tv_zero' (m : TanM x0 G) : smT x0 0 (tv m) = 1 := by
   exact (Additive.toMul m).prop
 
 def mkT (W : overAt x0 (DualNumber S) ⟶ G) (h : smT x0 0 W = 1) : TanM x0 G := Additive.ofMul ⟨W, h⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_mkT (W : overAt x0 (DualNumber S) ⟶ G) (h : smT x0 0 W = 1) : tv (mkT W h) = W := rfl
 
+/- English proof (translation)
+Introduce `m m' h`. Conclude with `Additive.toMul.injective (Subtype.ext h)`.
+-/
 theorem tv_injective : Function.Injective (tv (x0 := x0) (G := G)) := by
   intro m m' h
   exact Additive.toMul.injective (Subtype.ext h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_add (m m' : TanM x0 G) : tv (m + m') = tv m * tv m' := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_zero : tv (0 : TanM x0 G) = 1 := rfl
 
+/- English proof (translation)
+Use `Finset.induction_on s (by rw [Finset.sum_empty, Finset.prod_empty]; exact tv_zero) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, tv_add, ih]`.
+-/
 theorem tv_sum {κ : Type} (s : Finset κ) (f : κ → TanM x0 G) : tv (∑ i ∈ s, f i) = ∏ i ∈ s, tv (f i) := by
   classical
   refine Finset.induction_on s (by rw [Finset.sum_empty, Finset.prod_empty]; exact tv_zero) ?_
@@ -474,6 +638,9 @@ instance : Module S (TanM x0 G) where
   add_smul a b m := tv_injective (smT_add x0 (tv m) (tv_zero' m) a b)
   zero_smul m := tv_injective (tv_zero' m)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_smul (a : S) (m : TanM x0 G) : tv (a • m) = smT x0 a (tv m) := rfl
 
 def postL (φ : G ⟶ G) [IsMonHom φ] : Module.End S (TanM x0 G) where
@@ -481,6 +648,9 @@ def postL (φ : G ⟶ G) [IsMonHom φ] : Module.End S (TanM x0 G) where
   map_add' m m' := tv_injective (MonObj.mul_comp (tv m) (tv m') φ)
   map_smul' a m := tv_injective (smT_post x0 a (tv m) φ).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_postL (φ : G ⟶ G) [IsMonHom φ] (m : TanM x0 G) : tv (postL φ m) = tv m ≫ φ := rfl
 
 def actL {O : Type} [CommRing O] (ρ : OAct O G) : O →+* Module.End S (TanM x0 G) where
@@ -499,9 +669,15 @@ def actL {O : Type} [CommRing O] (ρ : OAct O G) : O →+* Module.End S (TanM x0
   map_add' a b := LinearMap.ext fun m => tv_injective (by
     rw [LinearMap.add_apply, tv_add, tv_postL, tv_postL, tv_postL, ρ.add, MonObj.comp_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_actL {O : Type} [CommRing O] (ρ : OAct O G) (a : O) (m : TanM x0 G) :
     tv (actL ρ a m) = tv m ≫ ρ.act a := rfl
 
+/- English proof (translation)
+Rewrite using `[tv_sum]`. Conclude with `Finset.prod_congr rfl fun k _ => tv_smul _ _`.
+-/
 theorem tv_comb {κ : Type} [Fintype κ] (v : κ → TanM x0 G) (a : κ → S) :
     tv (∑ k, a k • v k) = ∏ k, smT x0 (a k) (tv (v k)) := by
   rw [tv_sum]
@@ -509,6 +685,25 @@ theorem tv_comb {κ : Type} [Fintype κ] (v : κ → TanM x0 G) (a : κ → S) :
 
 end Tan
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c S _ _ y w hw`. Set `U : Lt1 Dw → TanM y.x Xo.univ.t.G` to `fun ℓ => mkT (ovT (y.tan ℓ.1 ℓ.2)) (smT_zero_ovT _)`. Set `ρ : 𝓞 E →+* Module.End S (TanM y.x Xo.univ.t.G)` to `actL Xo.univ.t.act`. Establish `hinj : Function.Injective fun τ : E →+* ℂ => embF c τ`. Introduce `τ τ' h`.
+
+Use extensionality with `x`. Conclude with `congrArg (fun f : E →+* c.F => ((f x : c.F) : ℂ)) h`. Establish `hcard : Fintype.card (E →+* ℂ) = Module.finrank ℚ E` using `NumberField.Embeddings.card E ℂ`. Establish `hU : ∀ σ i (a : 𝓞 E), ρ a (U ⟨σ, i⟩) = algebraMap c.F S (embF c σ (a : E)) • U ⟨σ, i⟩`. Introduce `σ i a`.
+
+Apply `tv_injective` to reduce the goal to its premises. Rewrite using `[tv_actL, tv_smul, tv_mkT]`. Conclude with `(isEigAt_iff σ (ovT (y.tan σ i))).mp (y.eig σ i) a`. Establish `hb : ∀ σ (V : TanM y.x Xo.univ.t.G), (∀ a : 𝓞 E, ρ a V = algebraMap c.F S (embF c σ (a : E)) • V) → ∃! c' : Fin (Dw.mult σ) → S, ∑ i, c' i • U ⟨σ, i⟩ = V`. Introduce `σ V hV`.
+
+Establish `htan : IsTanAt y.x (tv V).left` using `isTanAtG_of (tv V) (tv_zero' V)`. Establish `heig : IsEigAt c σ (tv V).left` using `(isEigAt_iff σ (tv V)).mpr fun a => by`. Establish `h` using `congrArg tv (hV a)`. Rewrite `h` using `[tv_actL, tv_smul]`. Then use the resulting hypothesis. Take `⟨c', hc', huniq⟩` from `y.basis σ _ htan heig`.
+
+Use `⟨c', ?_, fun c'' hc'' => huniq c'' ?_⟩` and prove the remaining obligations. Apply `tv_injective` to reduce the goal to its premises. Rewrite using `[tv_comb]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(isCombAtG_iff (t := Xo.univ.t) (x0 := y.x) (fun i => ovT (y.tan σ i)) c' (tv V).left).mp hc'`.
+
+Use `(isCombAtG_iff (t := Xo.univ.t) (x0 := y.x) (fun i => ovT (y.tan σ i)) c'' (tv V).left).mpr ?_` and prove the remaining obligations. Conclude with `congrArg Over.Hom.left ((tv_comb (fun i => U ⟨σ, i⟩) c'').symm.trans (congrArg tv hc''))`. Establish `hiff : ∀ a : Lt1 Dw → S, IsCombAt y.x (m` using `Fintype.card (Lt1 Dw)) (fun i => y.u ((Fintype.equivFin (Lt1 Dw)).symm i).1 ((Fintype.equivFin (Lt1 Dw)).symm i).2) (fun i => a ((Fintype.equivFin (Lt1 Dw)).symm i)) w ↔ ∑ ℓ, a ℓ • U ℓ = mkT (ovT hw) (smT_zero_ovT hw) := by`. Introduce `a`. Establish `hprod : tv (∑ ℓ, a ℓ • U ℓ) = ∏ i : Fin (Fintype.card (Lt1 Dw)), smT y.x (a ((Fintype.equivFin (Lt1 Dw)).symm i)) (ovT (y.tan ((Fintype.equivFin (Lt1 Dw)).symm i).1 ((Fintype.equivFin (Lt1 Dw)).symm i).2))`.
+
+Rewrite using `[tv_comb]`. Conclude with `(Equiv.prod_comp (Fintype.equivFin (Lt1 Dw)).symm (fun ℓ => smT y.x (a ℓ) (ovT (y.tan ℓ.1 ℓ.2)))).symm`. Use `(isCombAtG_iff (t := Xo.univ.t) (x0 := y.x) (fun i => ovT (y.tan ((Fintype.equivFin (Lt1 Dw)).symm i).1 ((Fintype.equivFin (Lt1 Dw)).symm i).2)) (fun i => a ((Fintype.equivFin (Lt1 Dw)).symm i)) w).trans ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Apply `tv_injective` to reduce the goal to its premises. Rewrite using `[tv_mkT, hprod]`.
+
+Conclude with `Over.OverMorphism.ext h`. Establish `h'` using `congrArg (fun V => (tv V).left) h`. Simplify using `only [hprod, tv_mkT] at h'`. Conclude with `h'`. Take `⟨a, ha, huniq⟩` from `global_basis_algebra (fun τ : E →+* ℂ => embF c τ) hinj hcard ρ U hU hb (mkT (ovT hw) (smT_zero_ovT hw))`.
+
+Conclude with `⟨a, (hiff a).mpr ha, fun a' ha' => huniq a' ((hiff a').mp ha')⟩`.
+-/
 theorem frame_tangent_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left), IsTanAt y.x w → ∃! a : Lt1 Dw → S, IsCombAt y.x (m := Fintype.card (Lt1 Dw)) (fun i => y.u ((Fintype.equivFin (Lt1 Dw)).symm i).1 ((Fintype.equivFin (Lt1 Dw)).symm i).2) (fun i => a ((Fintype.equivFin (Lt1 Dw)).symm i)) w := by
   intro E _ _ _ H Dw l Xo c S _ _ y w hw
   classical

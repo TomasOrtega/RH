@@ -26,6 +26,11 @@ namespace GlobalTheory.RealGeo.PhaseOne
 
 open GlobalTheory.PhaseRationalDegenerate GlobalTheory.AdTh GlobalTheory.PtId GlobalTheory.OneMapTuples
 
+/- English proof (translation)
+Establish `h : 0 < 2 * Real.pi * x` using `by positivity`. Establish `e : (Real.sqrt (2 * Real.pi * x))⁻¹ = Real.exp (-(1 / 2) * Real.log (2 * Real.pi * x))`. Rewrite using `[Real.sqrt_eq_rpow, Real.rpow_def_of_pos h, ← Real.exp_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, ← Real.exp_nat_mul, lieFac, GlobalTheory.PtId.degW]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lieFac_eq_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H) {x : ℝ}
     (hx : 0 < x) (a : (E →+* ℂ) × ℕ → ℕ) : lieFac Dw x a = (Real.sqrt (2 * Real.pi * x))⁻¹ ^ GlobalTheory.PtId.degW Dw a := by
   have h : 0 < 2 * Real.pi * x := by positivity
@@ -38,6 +43,9 @@ theorem lieFac_eq_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Re
   push_cast
   ring
 
+/- English proof (translation)
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem shape {c s l k m r : ℂ} (hc : c ≠ 0) : s * l * k * (m * r) = c * (c⁻¹ * s * k * l * m * r) := by
   field_simp
 
@@ -54,9 +62,15 @@ end Rat
 variable {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)}
   {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec} {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0}
 
+/- English proof (translation)
+The claim follows from `(hT.kap i (D.eTau.symm 1)).2.2.trans (D.sp.V_rank _ (Nat.le_add_left _ _) i.2).symm`.
+-/
 theorem wt_n (hT : TieIn T R κ v₀) (i : Fin D.R.m) : (κ i).n = (Vc D i).rank :=
   (hT.kap i (D.eTau.symm 1)).2.2.trans (D.sp.V_rank _ (Nat.le_add_left _ _) i.2).symm
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨a, rfl⟩`. Establish `h : ((O.jL a : O.c'.F) : ℂ) = D.what₂.embLL a` using `RingHom.congr_fun hP.lift.field a`. Use `show D.what₂.embLL a ∈ O.c'.F`. Conclude with `h ▸ (O.jL a).2`.
+-/
 theorem fieldRange_le (O : OMDat T.toCore R i Tp tup)
     (hP : O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0)) :
     D.what₂.embLL.toRatAlgHom.fieldRange ≤ O.c'.F := by
@@ -67,6 +81,9 @@ theorem fieldRange_le (O : OMDat T.toCore R i Tp tup)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fieldRange_le O hP, (GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ O.hle).2 _ _, (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ O.hle _ _ hP.act.1).2, oneMapRow_of_serOf_ofPre D G Pl0 T0 A T R κ v₀ hR hT i Tp tup O hP cc hs (GlobalTheory.ClassSumRule.exists_cusp_isTh …`.
+-/
 theorem tieC_of_serOf (hR : PreChar R) (hT : TieIn T R κ v₀) (O : OMDat T.toCore R i Tp tup)
     (hP : O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0)) {cc : (T.U ((i : ℕ) + 1) O.s0).Comp → ℂ}
     (hs : SerOf O (κ i) (v₀ i (sg0 D A)) cc 1) :
@@ -85,6 +102,19 @@ open GlobalTheory.AdTh GlobalTheory.PtId GlobalTheory.OneMapTuples PhaseOne
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0)`. Use `swap`. Conclude with `⟨1, norm_one, fun Tp tup O hP => absurd ⟨Tp, tup, O, hP⟩ hex⟩`. Take `⟨Tp₀, tup₀, O₀, hP₀⟩` from `hex`. Take `⟨ka, hka1, hka⟩` from `OneScalar.exists_scalar_ofPre D G Pl0 T0 A T R κ v₀ hC hT hio i c0L`.
+
+Establish `hs₀ : O₀.s0 = T.toCore.σ₀` using `sOv_eq _ _ _`. Take `⟨hemb, hiso, -⟩` from `dict_cast T hT.laws _ (inR i) O₀.s0 (hs₀ ▸ T.toCore.good_σ₀) (Wc D i) O₀.hV (rank_Wc i)`. Take `⟨δ, hδ⟩` from `ShortSeries.thetaKO_eq_short_series_ofPre D G Pl0 T0 A _ R hC i hP₀.lift.std _ _ (iotaW T i) hemb hiso`. Take `⟨s, hs⟩ : ∃ s : ℂ, s = ka * (((δ : ℤ) : ℂ) ^ GlobalTheory.PtId.degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i)) * (-1) ^ GlobalTheory.PtId.degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i)))` from `⟨_, rfl⟩`. Establish `hs1 : ‖s‖ = 1`.
+
+Apply the tactic sequence `rcases Int.units_eq_one_or δ with h | h <;> simp [hs, h, hka1]`. Establish `hx : 0 < xiR D` using `norm_pos_iff.2 ((_root_.map_ne_zero _).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D))`. Establish `hcm : cmpConst D ka δ (GlobalTheory.PtId.degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i))) = s * (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℂ)`. Rewrite using `[lieFac_eq_pow _ hx, hs, cmpConst]`. Simplify using `only [Complex.ofReal_pow, Complex.ofReal_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨s, hs1, fun Tp tup O hP hbc c0 h0 hxi cc hcc => ?_⟩` and prove the remaining obligations. Establish `hne : c0 ≠ 0` using `norm_ne_zero_iff.1 (h0 ▸ one_ne_zero)`. Use `⟨fun k => ?_, norm_one, fun t h J' hR y x hx f _ hf g => ?_⟩` and prove the remaining obligations. Use `show ‖c0⁻¹ * s * cc k‖ = 1`.
+
+Rewrite using `[norm_mul, norm_mul, norm_inv, h0, hs1, hcc.1 k]`. Evaluate the numerical expressions. Establish `h2` using `exact_identity_ofPre hC hT O hP (hka Tp tup O hP hbc) hδ (covAt_of_xiConst_ofPre D G Pl0 T0 A T R κ v₀ hC hT i Tp tup O hP c0 hxi) hcc t h J' hR y x hx f hf g`. Rewrite `h2` using `[hcm]`. Use `mul_left_cancel₀ hne ((congrArg _ (one_mul _)).trans (h2.trans ?_))` and prove the remaining obligations.
+
+Conclude with `shape hne`.
+-/
 theorem exists_scalar_serOf {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)}
     {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec} (hC : PreChar R) (hT : TieIn T R κ v₀) (hio : IoExt R)
@@ -127,6 +157,11 @@ theorem exists_scalar_serOf {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hC hT hio i Tp tup O hP cc hcc`. Take `⟨_, _, c0L, -, hbc⟩` from `hP.lift.c0`. Take `⟨c0, ⟨m, hm, hr⟩, hxi⟩` from `hP.cxi`. Establish `h0 : ‖c0‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one hr hm.ne'`. Take `⟨s, hs1, hs⟩` from `exists_scalar_serOf hC hT hio i (c0L i)`.
+
+Use `⟨c0⁻¹ * s, ?_, hs Tp tup O hP hbc c0 h0 hxi cc hcc⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_inv, h0, hs1]`. Evaluate the numerical expressions.
+-/
 theorem exists_serOf_of_ccIs : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), PreChar R → TieIn T R κ v₀ → IoExt R → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ∀ cc, CcIs R.θ (Vc D i) (Wc D i) (rank_Wc i) (T.U ((i : ℕ) + 1) O.s0) O.dict O.mu (T.x₀ ((i : ℕ) + 1) O.s0) (R.ωP i A.μ0) (R.vacP i) cc → ∃ u : ℂ, ‖u‖ = 1 ∧ SerOf O (κ i) (v₀ i (sg0 D A)) (u • cc) 1 := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hC hT hio i Tp tup O hP cc hcc
   obtain ⟨_, _, c0L, -, hbc⟩ := hP.lift.c0
@@ -139,6 +174,9 @@ theorem exists_serOf_of_ccIs : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hC hT hio i Tp tup O hP`. Take `⟨cc, hcc⟩` from `CcEx.exists_ccIs_ofPre GlobalTheory.ChartFree.chartIndep D G Pl0 T0 A T R κ v₀ hC hT i Tp tup O hP`. Take `⟨u, hu, hS⟩` from `exists_serOf_of_ccIs D G Pl0 T0 A T R κ v₀ hC hT hio i Tp tup O hP cc hcc`. Conclude with `⟨cc, hcc, u, hu, GlobalTheory.FrameConstMove.equivAt_of_ccIs_ofPre GlobalTheory.ChartFree.chartIndep D G Pl0 T0 A T R κ v₀ hC hT i Tp tup O hP cc hcc u, hS, tieC_of_serOf hC hT O hP hS⟩`.
+-/
 theorem exists_ccIs_equivAt_serOf_tie : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), PreChar R → TieIn T R κ v₀ → IoExt R → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ∃ cc, CcIs R.θ (Vc D i) (Wc D i) (rank_Wc i) (T.U ((i : ℕ) + 1) O.s0) O.dict O.mu (T.x₀ ((i : ℕ) + 1) O.s0) (R.ωP i A.μ0) (R.vacP i) cc ∧ ∃ u : ℂ, ‖u‖ = 1 ∧ O.EquivAt (κ i) (u • cc) ∧ SerOf O (κ i) (v₀ i (sg0 D A)) (u • cc) 1 ∧ OneMapTieC O.hle D.what₂.embLL.toRatAlgHom.fieldRange (T.U ((i : ℕ) + 1)) (inC O.c') (Wc D i) O.dict O.mu (xiR D) (wtA (κ i)) (actLev T.Q.c O.lev2) (actLev O.c' O.lev2) O.dδ O.Cl' O.w O.La O.Nc O.gam O.vol O.ep O.io O.thAd O.Plc (u • cc) 1 := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hC hT hio i Tp tup O hP
   obtain ⟨cc, hcc⟩ := CcEx.exists_ccIs_ofPre GlobalTheory.ChartFree.chartIndep D G Pl0 T0 A T R κ v₀ hC hT i Tp tup O hP

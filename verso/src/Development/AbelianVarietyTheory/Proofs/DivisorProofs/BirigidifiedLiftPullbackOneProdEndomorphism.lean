@@ -15,6 +15,17 @@ open GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual GlobalTheory.Pu
 
 namespace GlobalTheory.BirigidLift
 
+/- English proof (translation)
+Introduce `HG HD R R₀ _ _ I κ hκ π hπ hI g A₀ _ A _ i h hA hg l hl L hL aL u₀ u _ _ hu P₀ Q₀ hP₀ hQ₀ eQ₀ P Q hP hQ p₁ p₂ q₁ q₂ eP eQ`. Use `set m : (A ⊗ A).left ⟶ (A ⊗ A).left := (lift (fst A A) (snd A A ≫ u)).left with hm`. Use `set m₀ : (A₀ ⊗ A₀).left ⟶ (A₀ ⊗ A₀).left := (lift (fst A₀ A₀) (snd A₀ A₀ ≫ u₀)).left with hm₀`. Establish `hP' : (P.pull m).IsLB` using `pull_isLB hP m`. Establish `hev : ∀ (a : A ⟶ A) (t : A ⟶ A), evc hP' a t = evc hP a (t ≫ u)` using `fun a t ↦ by`.
+
+Use `evc_ev hP (fst A A) (snd A A ≫ u) hP' a t` as an intermediate fact. Rewrite using `[this, lift_fst, lift_snd_assoc]`. Establish `z₁ : evc hP (1 : A ⟶ A) (𝟙 A) = 0` using `(triv_ev_iff hP _ _).1 p₁`. Establish `z₂ : evc hP (𝟙 A) (1 : A ⟶ A) = 0` using `(triv_ev_iff hP _ _).1 p₂`. Establish `h₁' : Triv (ev (P.pull m) (1 : A ⟶ A) (𝟙 A))`.
+
+Rewrite using `[triv_ev_iff hP', hev, Category.id_comp]`. Use `pull_evc hP u (1 : A ⟶ A) (𝟙 A)` as an intermediate fact. Rewrite `this` using `[z₁, map_zero, Category.comp_id, MonObj.comp_one]`. Conclude with `this.symm`. Establish `h₂' : Triv (ev (P.pull m) (𝟙 A) (1 : A ⟶ A))`.
+
+Rewrite using `[triv_ev_iff hP', hev, MonObj.one_comp]`. Conclude with `z₂`. Establish `sq : l ≫ m = m₀ ≫ l`. Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hm, hm₀, lift_left_fst, hl.1, lift_left_fst_assoc]`.
+
+Rewrite using `[Category.assoc, Category.assoc, hm, hm₀, lift_left_snd, hl.2, lift_left_snd_assoc, Over.comp_left, Over.comp_left, ← Category.assoc, hl.2, Category.assoc, Category.assoc, hu]`. Establish `e' : LBIso ((P.pull m).pull l) Q₀`. Use `(cls_eq_iff (pull_isLB hP' l) hQ₀).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hP' l, cls_pull hP m, ← pull_comp, sq, pull_comp, ← cls_pull hP l (pull_isLB hP l), (cls_eq_iff (pull_isLB hP l) hP₀).2 eP, ← cls_pull hP₀ m₀ (pull_isLB hP₀ m₀), (cls_eq_iff hQ₀ (pull_isLB hP₀ m₀)).2 eQ₀]`. Conclude with `lift_unique HG HD.1 hκ hπ hI hA hg hA hg h h hl.1 hl.2 hL aL hL aL hQ₀ hQ q₁ q₂ eQ hP' h₁' h₂' e'`.
+-/
 theorem pull_one_prod_of_lift : GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.Published.AbelianDualCrystal →
     ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (κ : DividedPowers I), IsNilDP κ →
     ∀ (π : R →+* R₀), Function.Surjective π → RingHom.ker π = I →

@@ -4,6 +4,9 @@ universe u_1
 
 namespace Bl.MatrixMapSub
 
+/- English proof (translation)
+Introduce `A _ d σ X Y`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.sub_apply, map_sub]`.
+-/
 theorem goal1 :
   ∀ {A : Type u_1} [inst : CommRing.{u_1} A] {d : Nat} (σ : RingHom.{u_1, u_1} A A)
   (X Y : Matrix.{0, 0, u_1} (Fin d) (Fin d) A),

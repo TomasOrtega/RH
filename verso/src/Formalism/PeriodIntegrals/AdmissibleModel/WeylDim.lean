@@ -18,6 +18,11 @@ def Intl {K N : ℕ} (f : Fin K → Fin N → ℕ) : Prop :=
 def SSZ (k : ℕ) (κ : Fin k → ℤ) : Type :=
   {g : Fin k → Fin k → ℕ // Intl g ∧ ∀ t, ((∑ a, g a t : ℕ) : ℤ) = κ t}
 
+/- English proof (translation)
+Establish `h : ¬ (Fin.last k ≤ a.castSucc)` using `not_le.mpr (Fin.castSucc_lt_last a)`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, Fin.sum_univ_castSucc, if_neg h, add_zero]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : i ≤ a`. Rewrite using `[if_pos hi, if_pos (Fin.castSucc_le_castSucc_iff.mpr hi)]`.
+
+Rewrite using `[if_neg hi, if_neg (fun h' => hi (Fin.castSucc_le_castSucc_iff.mp h'))]`.
+-/
 theorem sum_le_castSucc {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
     (∑ b : Fin (k + 1) with b ≤ a.castSucc, F b) = ∑ b : Fin k with b ≤ a, F b.castSucc := by
   have h : ¬ (Fin.last k ≤ a.castSucc) := not_le.mpr (Fin.castSucc_lt_last a)
@@ -27,6 +32,11 @@ theorem sum_le_castSucc {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
   · rw [if_pos hi, if_pos (Fin.castSucc_le_castSucc_iff.mpr hi)]
   · rw [if_neg hi, if_neg (fun h' => hi (Fin.castSucc_le_castSucc_iff.mp h'))]
 
+/- English proof (translation)
+Establish `h : ¬ (Fin.last k < a.castSucc)` using `not_lt.mpr (Fin.castSucc_lt_last a).le`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, Fin.sum_univ_castSucc, if_neg h, add_zero]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : i < a`. Rewrite using `[if_pos hi, if_pos (Fin.castSucc_lt_castSucc_iff.mpr hi)]`.
+
+Rewrite using `[if_neg hi, if_neg (fun h' => hi (Fin.castSucc_lt_castSucc_iff.mp h'))]`.
+-/
 theorem sum_lt_castSucc {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
     (∑ b : Fin (k + 1) with b < a.castSucc, F b) = ∑ b : Fin k with b < a, F b.castSucc := by
   have h : ¬ (Fin.last k < a.castSucc) := not_lt.mpr (Fin.castSucc_lt_last a).le
@@ -36,16 +46,29 @@ theorem sum_lt_castSucc {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
   · rw [if_pos hi, if_pos (Fin.castSucc_lt_castSucc_iff.mpr hi)]
   · rw [if_neg hi, if_neg (fun h' => hi (Fin.castSucc_lt_castSucc_iff.mp h'))]
 
+/- English proof (translation)
+Rewrite using `[Finset.filter_true_of_mem (fun b _ => Fin.le_last b)]`.
+-/
 theorem sum_le_last {k : ℕ} (F : Fin (k + 1) → ℕ) :
     (∑ b : Fin (k + 1) with b ≤ Fin.last k, F b) = ∑ b, F b := by
   rw [Finset.filter_true_of_mem (fun b _ => Fin.le_last b)]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Fin.sum_univ_castSucc, if_neg (lt_irrefl _), add_zero]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[if_pos (Fin.castSucc_lt_last i)]`.
+-/
 theorem sum_lt_last {k : ℕ} (F : Fin (k + 1) → ℕ) :
     (∑ b : Fin (k + 1) with b < Fin.last k, F b) = ∑ b : Fin k, F b.castSucc := by
   rw [Finset.sum_filter, Fin.sum_univ_castSucc, if_neg (lt_irrefl _), add_zero]
   refine Finset.sum_congr rfl (fun i _ => ?_)
   rw [if_pos (Fin.castSucc_lt_last i)]
 
+/- English proof (translation)
+Introduce `tv`. Proceed by induction on `tv with`. Consider the case `zero => intro t _ a ha`. Conclude with `absurd ha (Nat.not_lt_zero _)`. Consider the case `succ m ih`.
+
+Introduce `t ht a ha`. Establish `hm : m < N` using `by have := t.isLt; omega`. Establish `key` using `hf ⟨m, hm⟩ t (by exact ht) a`. Establish `h0 : (∑ b : Fin K with b < a, f b ⟨m, hm⟩) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `b hb`. Rewrite `hb` using `[Finset.mem_filter]`. Conclude with `ih ⟨m, hm⟩ rfl b (by have := hb.2; rw [Fin.lt_def] at this; omega)`. Rewrite `key` using `[h0, Nat.le_zero, Finset.sum_eq_zero_iff]`. Conclude with `key a (by simp)`.
+-/
 theorem intl_zero {K N : ℕ} (f : Fin K → Fin N → ℕ) (hf : Intl f) :
     ∀ (tv : ℕ) (t : Fin N), t.val = tv → ∀ a : Fin K, a.val < tv → f a t = 0 := by
   intro tv
@@ -68,12 +91,24 @@ def restr {k : ℕ} (f : Fin (k + 1) → Fin (k + 1) → ℕ) : Fin k → Fin k 
 def UU (k : ℕ) (μ : Fin (k + 1) → ℤ) : Type :=
   {g : Fin k → Fin k → ℕ // Intl g ∧ (fun t => ((∑ a, g a t : ℕ) : ℤ)) ∈ gtBox μ}
 
+/- English proof (translation)
+Rewrite using `[show gtBox μ = Fintype.piFinset fun i => Finset.Icc (μ i.succ) (μ i.castSucc) from rfl, Fintype.mem_piFinset]`. Simplify using `only [Finset.mem_Icc]`.
+-/
 theorem mem_gtBox' {n : ℕ} (μ : Fin (n + 1) → ℤ) (κ : Fin n → ℤ) :
     κ ∈ gtBox μ ↔ ∀ i, μ i.succ ≤ κ i ∧ κ i ≤ μ i.castSucc := by
   rw [show gtBox μ = Fintype.piFinset fun i => Finset.Icc (μ i.succ) (μ i.castSucc) from rfl,
     Fintype.mem_piFinset]
   simp only [Finset.mem_Icc]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `l j hlj a`. Use `f.2.1 l.castSucc j.castSucc (by simpa using hlj) a.castSucc` as an intermediate fact. Rewrite `this` using `[sum_le_castSucc, sum_lt_castSucc]`. Conclude with `this`.
+
+Rewrite using `[mem_gtBox']`. Introduce `i`. Establish `hs1` using `f.2.2 i.castSucc`. Establish `hs2` using `f.2.2 i.succ`. Establish `hI` using `f.2.1 i.castSucc i.succ (by simp) (Fin.last k)`.
+
+Rewrite `hI` using `[sum_le_last, sum_lt_last]`. Rewrite `hs1` using `[Fin.sum_univ_castSucc]`. Simplify using `only [restr]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← hs2]`.
+
+Conclude with `hI` after adjusting the coercions. Rewrite using `[← hs1]`. Conclude with `Nat.le_add_right _ _` after adjusting the coercions.
+-/
 theorem restr_mem {k : ℕ} (μ : Fin (k + 1) → ℤ) (f : SSZ (k + 1) μ) :
     Intl (restr f.1) ∧ (fun t => ((∑ a, restr f.1 a t : ℕ) : ℤ)) ∈ gtBox μ := by
   constructor
@@ -95,6 +130,15 @@ theorem restr_mem {k : ℕ} (μ : Fin (k + 1) → ℤ) (f : SSZ (k + 1) μ) :
 
 def rho {k : ℕ} (μ : Fin (k + 1) → ℤ) (f : SSZ (k + 1) μ) : UU k μ := ⟨restr f.1, restr_mem μ f⟩
 
+/- English proof (translation)
+Introduce `f g h`. Establish `hr : restr f.1 = restr g.1` using `congrArg Subtype.val h`. Establish `hcol : ∀ t : Fin (k + 1), ∀ a : Fin k, f.1 a.castSucc t = g.1 a.castSucc t`. Introduce `t a`. Proceed by induction on `t using Fin.lastCases with`.
+
+Consider the case `last`. Rewrite using `[intl_zero f.1 f.2.1 k (Fin.last k) rfl a.castSucc (by rw [Fin.coe_castSucc]; exact a.isLt), intl_zero g.1 g.2.1 k (Fin.last k) rfl a.castSucc (by rw [Fin.coe_castSucc]; exact a.isLt)]`. Consider the case `cast t => exact congrFun (congrFun hr a) t`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a t`.
+
+Proceed by induction on `a using Fin.lastCases with`. Consider the case `cast a => exact hcol t a`. Consider the case `last`. Establish `e1` using `f.2.2 t`. Establish `e2` using `g.2.2 t`.
+
+Rewrite `e1`, `e2` using `[Fin.sum_univ_castSucc]`. Establish `hs : (∑ a : Fin k, f.1 a.castSucc t) = ∑ a : Fin k, g.1 a.castSucc t` using `Finset.sum_congr rfl (fun a _ => hcol t a)`. Rewrite `e1` using `[hs]`. Establish `h4 : (∑ a : Fin k, g.1 a.castSucc t) + f.1 (Fin.last k) t = (∑ a : Fin k, g.1 a.castSucc t) + g.1 (Fin.last k) t` using `by exact_mod_cast e1.trans e2.symm`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rho_inj {k : ℕ} (μ : Fin (k + 1) → ℤ) : Function.Injective (rho μ) := by
   intro f g h
   have hr : restr f.1 = restr g.1 := congrArg Subtype.val h
@@ -126,22 +170,41 @@ def ext {k : ℕ} (μ : Fin (k + 1) → ℤ) (g : Fin k → Fin k → ℕ) : Fin
       (fun t' => (μ t'.castSucc - ((∑ b, g b t' : ℕ) : ℤ)).toNat) t)
     (fun a' => Fin.lastCases (motive := fun _ => ℕ) 0 (fun t' => g a' t') t) a
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.G.Model.ext, Fin.lastCases_castSucc, Fin.lastCases_last]`.
+-/
 theorem ext_cc {k : ℕ} (μ : Fin (k + 1) → ℤ) (g : Fin k → Fin k → ℕ) (a t : Fin k) :
     ext μ g a.castSucc t.castSucc = g a t := by
   simp only [Formalism.L2.G.Model.ext, Fin.lastCases_castSucc, Fin.lastCases_last]
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.G.Model.ext, Fin.lastCases_castSucc, Fin.lastCases_last]`.
+-/
 theorem ext_cl {k : ℕ} (μ : Fin (k + 1) → ℤ) (g : Fin k → Fin k → ℕ) (a : Fin k) :
     ext μ g a.castSucc (Fin.last k) = 0 := by
   simp only [Formalism.L2.G.Model.ext, Fin.lastCases_castSucc, Fin.lastCases_last]
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.G.Model.ext, Fin.lastCases_castSucc, Fin.lastCases_last]`.
+-/
 theorem ext_lc {k : ℕ} (μ : Fin (k + 1) → ℤ) (g : Fin k → Fin k → ℕ) (t : Fin k) :
     ext μ g (Fin.last k) t.castSucc = (μ t.castSucc - ((∑ b, g b t : ℕ) : ℤ)).toNat := by
   simp only [Formalism.L2.G.Model.ext, Fin.lastCases_castSucc, Fin.lastCases_last]
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.G.Model.ext, Fin.lastCases_castSucc, Fin.lastCases_last]`.
+-/
 theorem ext_ll {k : ℕ} (μ : Fin (k + 1) → ℤ) (g : Fin k → Fin k → ℕ) :
     ext μ g (Fin.last k) (Fin.last k) = (μ (Fin.last k)).toNat := by
   simp only [Formalism.L2.G.Model.ext, Fin.lastCases_castSucc, Fin.lastCases_last]
 
+/- English proof (translation)
+Proceed by induction on `t using Fin.lastCases with`. Consider the case `last`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [ext_cl, ext_ll, Finset.sum_const_zero, zero_add]`. Conclude with `Int.toNat_of_nonneg hμ`.
+
+Consider the case `cast t`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [ext_cc, ext_lc]`. Establish `hb : ((∑ b, g.1 b t : ℕ) : ℤ) ≤ μ t.castSucc` using `((mem_gtBox' μ _).1 g.2.2 t).2`. Establish `hnn : 0 ≤ μ t.castSucc - ((∑ b, g.1 b t : ℕ) : ℤ)` using `by linarith`.
+
+Rewrite using `[Nat.cast_add, Int.toNat_of_nonneg hnn]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ext_sum {k : ℕ} (μ : Fin (k + 1) → ℤ) (hμ : 0 ≤ μ (Fin.last k)) (g : UU k μ) (t : Fin (k + 1)) :
     ((∑ a, ext μ g.1 a t : ℕ) : ℤ) = μ t := by
   induction t using Fin.lastCases with
@@ -157,6 +220,15 @@ theorem ext_sum {k : ℕ} (μ : Fin (k + 1) → ℤ) (hμ : 0 ≤ μ (Fin.last k
     rw [Nat.cast_add, Int.toNat_of_nonneg hnn]
     ring
 
+/- English proof (translation)
+Introduce `l j hlj a`. Establish `hl : l.val < k` using `by have := j.isLt; omega`. Take `⟨l', rfl⟩ : ∃ l' : Fin k, l'.castSucc = l` from `⟨⟨l.val, hl⟩, rfl⟩`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`.
+
+Rewrite using `[sum_le_last, sum_lt_last]`. Simplify using `only [ext_cc]`. Establish `hj : j = l'.succ` using `Fin.ext (by rw [Fin.val_succ, hlj, Fin.coe_castSucc])`. Establish `h1` using `ext_sum μ hμ g j`. Establish `h2 : μ j ≤ ((∑ b, g.1 b l' : ℕ) : ℤ)` using `by rw [hj]; exact ((mem_gtBox' μ _).1 g.2.2 l').1`.
+
+Establish `h3 : ((∑ b, ext μ g.1 b j : ℕ) : ℤ) ≤ ((∑ b, g.1 b l' : ℕ) : ℤ)` using `by rw [h1]; exact h2`. Conclude with `h3` after adjusting the coercions. Consider the case `cast a`. Rewrite using `[sum_le_castSucc, sum_lt_castSucc]`. Proceed by induction on `j using Fin.lastCases with`.
+
+Consider the case `last => simp [ext_cl]`. Consider the case `cast j`. Simplify using `only [ext_cc]`. Conclude with `g.2.1 l' j (by simpa using hlj) a`.
+-/
 theorem ext_intl {k : ℕ} (μ : Fin (k + 1) → ℤ) (hμ : 0 ≤ μ (Fin.last k)) (g : UU k μ) : Intl (ext μ g.1) := by
   intro l j hlj a
   have hl : l.val < k := by have := j.isLt; omega
@@ -178,6 +250,9 @@ theorem ext_intl {k : ℕ} (μ : Fin (k + 1) → ℤ) (hμ : 0 ≤ μ (Fin.last 
       simp only [ext_cc]
       exact g.2.1 l' j (by simpa using hlj) a
 
+/- English proof (translation)
+Introduce `g`. Use `⟨⟨ext μ g.1, ext_intl μ hμ g, fun t => ext_sum μ hμ g t⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a t`. Conclude with `ext_cc μ g.1 a t`.
+-/
 theorem rho_surj {k : ℕ} (μ : Fin (k + 1) → ℤ) (hμ : 0 ≤ μ (Fin.last k)) : Function.Surjective (rho μ) := by
   intro g
   refine ⟨⟨ext μ g.1, ext_intl μ hμ g, fun t => ext_sum μ hμ g t⟩, ?_⟩
@@ -185,6 +260,11 @@ theorem rho_surj {k : ℕ} (μ : Fin (k + 1) → ℤ) (hμ : 0 ≤ μ (Fin.last 
   funext a t
   exact ext_cc μ g.1 a t
 
+/- English proof (translation)
+Establish `hb : ∀ g : SSZ k κ, ∀ a t, g.1 a t < (∑ t, (κ t).toNat) + 1`. Introduce `g a t`. Establish `h1 : g.1 a t ≤ ∑ a', g.1 a' t` using `Finset.single_le_sum (f := fun a' => g.1 a' t) (fun _ _ => Nat.zero_le _) (Finset.mem_univ a)`. Establish `e` using `g.2.2 t`. Establish `hnn : 0 ≤ κ t` using `by rw [← e]; positivity`.
+
+Establish `e2 : (((κ t).toNat : ℕ) : ℤ) = κ t` using `Int.toNat_of_nonneg hnn`. Establish `h2 : (∑ a', g.1 a' t) = (κ t).toNat` using `by exact_mod_cast e.trans e2.symm`. Establish `h3 : (κ t).toNat ≤ ∑ t', (κ t').toNat` using `Finset.single_le_sum (f := fun t' => (κ t').toNat) (fun _ _ => Nat.zero_le _) (Finset.mem_univ t)`. Use linear arithmetic over natural numbers and integers. Conclude with `Finite.of_injective (fun g : SSZ k κ => fun a t => (⟨g.1 a t, hb g a t⟩ : Fin ((∑ t, (κ t).toNat) + 1))) (fun g h e => Subtype.ext (funext fun a => funext fun t => congrArg Fin.val (congrFun (congrFun e a) t)))`.
+-/
 theorem SSZ_finite (k : ℕ) (κ : Fin k → ℤ) : Finite (SSZ k κ) := by
   have hb : ∀ g : SSZ k κ, ∀ a t, g.1 a t < (∑ t, (κ t).toNat) + 1 := by
     intro g a t
@@ -214,6 +294,15 @@ def fibEquiv {k : ℕ} (μ : Fin (k + 1) → ℤ) : UU k μ ≃ Σ κ : ↥(gtBo
     subst this
     rfl
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `κ _`. Simplify using `only [dGT]`.
+
+Rewrite using `[Nat.card_eq_one_iff_unique]`. Conclude with `⟨⟨fun x y => Subtype.ext (funext fun a => a.elim0)⟩, ⟨⟨fun a => a.elim0, fun l => l.elim0, fun t => t.elim0⟩⟩⟩`. Consider the case `succ k ih`. Introduce `μ hμ`. Rewrite using `[Nat.card_congr (Equiv.ofBijective (rho μ) ⟨rho_inj μ, rho_surj μ (hμ _)⟩), Nat.card_congr (fibEquiv μ)]`.
+
+Use `haveI : ∀ κ : ↥(gtBox μ), Finite (SSZ k κ.1) := fun κ => SSZ_finite k κ.1`. Rewrite using `[Nat.card_sigma]`. Simplify using `only [dGT]`. Rewrite using `[← Finset.sum_coe_sort (gtBox μ)]`. Use `Finset.sum_congr rfl (fun κ _ => ih κ.1 (fun t => ?_))` and prove the remaining obligations.
+
+Establish `h1` using `((mem_gtBox' μ κ.1).1 κ.2 t).1`. Establish `h2` using `hμ t.succ`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem card_SSZ : ∀ (k : ℕ) (κ : Fin k → ℤ), (∀ t, 0 ≤ κ t) → Nat.card (SSZ k κ) = dGT k κ := by
   intro k
   induction k with
@@ -252,16 +341,29 @@ def ssEquiv (k : ℕ) (ν : Fin k → ℕ) : ↥(ssIdx k k ν) ≃ SSZ k (fun t 
         exact h1 l j hlj a
       · exact Nat.cast_injective (R := ℤ) (h2 t))
 
+/- English proof (translation)
+Rewrite using `[Nat.card_congr (ssEquiv k ν)]`. Conclude with `card_SSZ k _ (fun t => by simp)`.
+-/
 theorem card_ssIdx (k : ℕ) (ν : Fin k → ℕ) : Nat.card ↥(ssIdx k k ν) = dGT k (fun t => (ν t : ℤ)) := by
   rw [Nat.card_congr (ssEquiv k ν)]
   exact card_SSZ k _ (fun t => by simp)
 
+/- English proof (translation)
+Take `⟨b, hb, -⟩` from `Formalism.GradedWeylDivisibility.sSBasis K k k ν`. Use `haveI : Fintype ↥(ssIdx k k ν) := (Formalism.GradedWeylDivisibility.sSIdxFinite k k ν).fintype`. Rewrite using `[← hb.2.1, finrank_span_eq_card hb.1, ← Nat.card_eq_fintype_card, card_ssIdx]`.
+-/
 theorem finrank_dualWeyl (K : Type) [Field K] (k : ℕ) (ν : Fin k → ℕ) :
     Module.finrank K (dualWeyl K k k ν) = dGT k (fun t => (ν t : ℤ)) := by
   obtain ⟨b, hb, -⟩ := Formalism.GradedWeylDivisibility.sSBasis K k k ν
   haveI : Fintype ↥(ssIdx k k ν) := (Formalism.GradedWeylDivisibility.sSIdxFinite k k ν).fintype
   rw [← hb.2.1, finrank_span_eq_card hb.1, ← Nat.card_eq_fintype_card, card_ssIdx]
 
+/- English proof (translation)
+Use `conv_rhs => rw [Finset.prod_comm]`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun j => ∏ i ∈ range j, F i j)]`. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Establish `key : ∀ i : Fin n, (if i < j then F ↑i ↑j else 1) = (if (i : ℕ) < (j : ℕ) then F ↑i ↑j else 1)`. Introduce `i`.
+
+Distinguish the cases in `h : i < j`. Rewrite using `[if_pos h, if_pos (Fin.lt_iff_val_lt_val.mp h)]`. Rewrite using `[if_neg h, if_neg (fun h' => h (Fin.lt_iff_val_lt_val.mpr h'))]`. Rewrite using `[Finset.prod_congr rfl (fun i _ => key i), Fin.prod_univ_eq_prod_range (fun m => if m < (j : ℕ) then F m ↑j else 1) n, ← Finset.prod_filter]`. Use `congr 1`.
+
+Use extensionality with `m`. Simplify using `only [Finset.mem_range, Finset.mem_filter]`. Use `j.isLt` as an intermediate fact. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+-/
 theorem prodConv (n : ℕ) (F : ℕ → ℕ → ℝ) :
     ∏ j ∈ range n, ∏ i ∈ range j, F i j = ∏ i : Fin n, ∏ j : Fin n, if i < j then F i j else 1 := by
   conv_rhs => rw [Finset.prod_comm]
@@ -280,6 +382,15 @@ theorem prodConv (n : ℕ) (F : ℕ → ℕ → ℝ) :
   have := j.isLt
   constructor <;> intro h <;> omega
 
+/- English proof (translation)
+Establish `h` using `Formalism.InvariantFactorPaths.BranchingDimensions.Top.weylGT n μ hμ`. Express the relevant statement in the definitionally equal form `∏ j ∈ range n, ∏ i ∈ range j, (((Formalism.InvariantFactorPaths.BranchingDimensions.extW μ i - Formalism.InvariantFactorPaths.BranchingDimensions.extW μ j : ℤ) : ℝ) + ((j : ℝ) - (i : ℝ))) / ((j : ℝ) - (i : ℝ)) = _ at h`. Establish `h2` using `prodConv n (fun i j => (((Formalism.InvariantFactorPaths.BranchingDimensions.extW μ i - Formalism.InvariantFactorPaths.BranchingDimensions.extW μ j : ℤ) : ℝ) + ((j : ℝ) - (i : ℝ))) / ((j : ℝ) - (i : ℝ)))`. Rewrite `h` using `[h2]`. Establish `he : ∀ i : Fin n, Formalism.InvariantFactorPaths.BranchingDimensions.extW μ (i : ℕ) = μ i`.
+
+Introduce `i`. Use `show (if h : (i : ℕ) < n then μ ⟨i, h⟩ else 0) = μ i`. Rewrite using `[dif_pos i.2]`. Simplify using `only [he] at h`. Apply `Rat.cast_injective (α := ℝ)` to reduce the goal to its premises.
+
+Use `push_cast`. Rewrite using `[← h]`. Use `Finset.prod_congr rfl (fun i _ => Finset.prod_congr rfl (fun j _ => ?_))` and prove the remaining obligations. Use `split_ifs`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Rat.cast_one]`.
+-/
 theorem weylQ (n : ℕ) (μ : Fin n → ℤ) (hμ : Antitone μ) :
     ((dGT n μ : ℕ) : ℚ) = ∏ i : Fin n, ∏ j : Fin n,
       if i < j then (((μ i : ℤ) : ℚ) - ((μ j : ℤ) : ℚ) + ((j : ℕ) : ℚ) - ((i : ℕ) : ℚ)) /
@@ -303,6 +414,9 @@ theorem weylQ (n : ℕ) (μ : Fin n → ℤ) (hμ : Antitone μ) :
     ring
   · rw [Rat.cast_one]
 
+/- English proof (translation)
+Rewrite using `[finrank_dualWeyl K n nu, weylQ n (fun t => (nu t : ℤ)) (fun a b hab => Nat.cast_le.mpr (h hab))]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem weyl_dualWeyl (K : Type) [Field K] (n : ℕ) (nu : Fin n → ℕ) (h : Antitone nu) :
     (Module.finrank K (dualWeyl K n n nu) : ℚ) =
       ∏ i : Fin n, ∏ j : Fin n,
@@ -311,10 +425,18 @@ theorem weyl_dualWeyl (K : Type) [Field K] (n : ℕ) (nu : Fin n → ℕ) (h : A
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `K _ _ n nu h`. Conclude with `weyl_dualWeyl K n nu h`.
+-/
 theorem weyl_dual_weight_admissible (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.ColumnSystems.adm3 D := by
   intro K _ _ n nu h
   exact weyl_dualWeyl K n nu h
 
+/- English proof (translation)
+Use `choose b hb using fun s => Formalism.GradedWeylDivisibility.sSBasis Kf k n (ν s)`. Use `haveI : ∀ s, Fintype ↥(ssIdx k n (ν s)) := fun s => (Formalism.GradedWeylDivisibility.sSIdxFinite k n (ν s)).fintype`. Take `⟨hli, hsp⟩` from `Formalism.GradedWeylDivisibility.tensorBasis Kf Kf S k n (fun s => ↥(ssIdx k n (ν s))) (fun s => dualWeyl Kf k n (ν s)) b (fun s => (hb s).1.1) (fun s => (hb s).1.2.1)`. Rewrite using `[← hsp, finrank_span_eq_card hli, Fintype.card_pi]`. Use `Finset.prod_congr rfl (fun s _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← (hb s).1.2.1, finrank_span_eq_card (hb s).1.1]`.
+-/
 theorem finrank_tensor' (Kf : Type) [Field Kf] (S : Type) [Fintype S] [DecidableEq S] (k n : ℕ)
     (ν : S → Fin n → ℕ) :
     Module.finrank Kf (tensorLat Kf Kf fun s => dualWeyl Kf k n (ν s)) =
@@ -327,6 +449,11 @@ theorem finrank_tensor' (Kf : Type) [Field Kf] (S : Type) [Fintype S] [Decidable
   refine Finset.prod_congr rfl (fun s _ => ?_)
   rw [← (hb s).1.2.1, finrank_span_eq_card (hb s).1.1]
 
+/- English proof (translation)
+Introduce `a b hab`. Unfold `lamAt`. Use `split_ifs with h`. Conclude with `hdom s hab`. Use `hdom s (Fin.rev_le_rev.mpr hab) show -lam0 s b.rev ≤ -lam0 s a.rev` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lamAt_antitone' {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hdom : IsDominant lam0) (s : Fin n') :
     Antitone (lamAt lam0 s) := by
   intro a b hab
@@ -337,6 +464,17 @@ theorem lamAt_antitone' {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd
     show -lam0 s b.rev ≤ -lam0 s a.rev
     linarith
 
+/- English proof (translation)
+Introduce `Kf _ n' m lam0 hdom`. Establish `hA : ∀ s, Antitone (lamAt lam0 s)` using `lamAt_antitone' lam0 hdom`. Establish `hV : Vsp Kf lam0 = tensorLat Kf Kf fun s => dualWeyl Kf (m + 1) (m + 1) (nuOf (lamAt lam0 s))`. Unfold `Vsp`. Use `congr 1`.
+
+Use function extensionality and compare the values at `s`. Rewrite using `[if_pos (hA s)]`. Use `show ((Module.finrank Kf (Vsp Kf lam0) : ℕ) : ℚ) = _`. Rewrite using `[hV, finrank_tensor', Nat.cast_prod]`. Use `Finset.prod_congr rfl (fun s _ => ?_)` and prove the remaining obligations.
+
+Establish `hmono : Antitone (nuOf (lamAt lam0 s))` using `fun a b hab => Int.toNat_le_toNat (by linarith [hA s hab])`. Rewrite using `[weyl_dualWeyl Kf (m + 1) (nuOf (lamAt lam0 s)) hmono]`. Establish `hnu : ∀ t, ((nuOf (lamAt lam0 s) t : ℕ) : ℚ) = ((lamAt lam0 s t : ℤ) : ℚ) - ((lamAt lam0 s (Fin.last m) : ℤ) : ℚ)`. Introduce `t`. Establish `h0 : 0 ≤ lamAt lam0 s t - lamAt lam0 s (Fin.last m)` using `sub_nonneg.mpr (hA s (Fin.le_last t))`.
+
+Establish `h1 : ((nuOf (lamAt lam0 s) t : ℕ) : ℤ) = lamAt lam0 s t - lamAt lam0 s (Fin.last m)` using `Int.toNat_of_nonneg h0`. Conclude with `h1` after adjusting the coercions. Use `Finset.prod_congr rfl (fun i _ => Finset.prod_congr rfl (fun j _ => ?_))` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[hnu, hnu]`.
+
+Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
+-/
 theorem weylV_proved : Formalism.MainNotions.flipOneThree.WeylV := by
   intro Kf _ n' m lam0 hdom
   have hA : ∀ s, Antitone (lamAt lam0 s) := lamAt_antitone' lam0 hdom
@@ -364,9 +502,27 @@ theorem weylV_proved : Formalism.MainNotions.flipOneThree.WeylV := by
     ring
   · rfl
 
+/- English proof (translation)
+Conclude with `weylV_proved`.
+-/
 theorem fewBadOrbits (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.tableLineDegreeFive.FewBadOrbits D := by
   exact weylV_proved
 
+/- English proof (translation)
+Introduce `K _ _ n lam hlam`. Simplify using `only [finrank_dualWeyl]`. Simplify using `only [dGT]`. Use `symm`. Use `Finset.sum_nbij' (fun mu t => ((mu t : ℕ) : ℤ)) (fun κ t => (κ t).toNat) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `mu hmu`. Rewrite `hmu` using `[Finset.mem_filter]`. Rewrite using `[mem_gtBox']`. Introduce `i`. Conclude with `⟨Nat.cast_le.mpr (hmu.2 i).1, Nat.cast_le.mpr (hmu.2 i).2⟩`.
+
+Introduce `κ hκ`. Rewrite `hκ` using `[mem_gtBox']`. Rewrite using `[Finset.mem_filter, Fintype.mem_piFinset]`. Use `⟨fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `hκ i`.
+
+Establish `h0 : lam i.castSucc ≤ lam 0` using `hlam (Fin.zero_le _)`. Rewrite using `[Finset.mem_range]`. Apply the tactic sequence `try dsimp only at h1 ⊢`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `have h1 := hκ i try dsimp only at h1 ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `mu _`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Introduce `κ hκ`.
+
+Rewrite `hκ` using `[mem_gtBox']`. Use function extensionality and compare the values at `t`. Establish `h1` using `(hκ t).1`. Apply the tactic sequence `try dsimp only at h1 ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `mu _`. Both sides reduce to the same expression.
+-/
 theorem gl_branching_dimension (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.ColumnSystems.adm2 D := by
   intro K _ _ n lam hlam
   simp only [finrank_dualWeyl]

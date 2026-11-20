@@ -31,6 +31,9 @@ def DegreeCompatibility (large₂ : SizeData₂ D) (V : DivX D) (ell : D.what₂
     (∀ (c : V.Comp D.R.m) τ, V.degHH D.R.m c τ = -placeRankTwoOne.c1 D V D.R.m τ) ∧
     (∀ Cc rd Lchi : ℝ, ∀ τ, |placeRankTwoOne.c1 D V D.R.m τ + (D.R.r : ℝ) * large₂.logOm / 2| ≤ Cc * 0 * (Real.log rd + Lchi))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (τ : D.what₂.Tau) : embT D τ = placeRankTwoOne.embTau D τ := rfl
 
 end Formalism.L2.Geo.Def

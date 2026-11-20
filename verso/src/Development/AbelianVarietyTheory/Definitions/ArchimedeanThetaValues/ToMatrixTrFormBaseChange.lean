@@ -24,12 +24,18 @@ instance instAddCommGroup : AddCommGroup (ConjDual H) :=
 def toDual (H : Host E) : ConjDual H ≃ₗ[ℤ] Module.Dual ℤ (𝓞 E) :=
   (AddEquiv.refl (Module.Dual ℤ (𝓞 E)) : ConjDual H ≃+ Module.Dual ℤ (𝓞 E)).toIntLinearEquiv
 
+/- English proof (translation)
+The claim follows from `(toDual H).injective (LinearMap.ext h)`.
+-/
 @[ext] theorem ext {f g : ConjDual H} (h : ∀ x, toDual H f x = toDual H g x) : f = g :=
   (toDual H).injective (LinearMap.ext h)
 
 instance instSMul : SMul (𝓞 E) (ConjDual H) :=
   ⟨fun a f => (toDual H).symm (toDual H f ∘ₗ LinearMap.mulLeft ℤ (H.bar a))⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem smul_apply (a : 𝓞 E) (f : ConjDual H) (x : 𝓞 E) :
     toDual H (a • f) x = toDual H f (H.bar a * x) := rfl
 
@@ -47,6 +53,9 @@ instance instFiniteInt : Module.Finite ℤ (ConjDual H) := .equiv (toDual H).sym
 
 instance instFinite : Module.Finite (𝓞 E) (ConjDual H) := .of_restrictScalars_finite ℤ _ _
 
+/- English proof (translation)
+Rewrite using `[(toDual H).finrank_eq, Module.finrank_linearMap_self]`.
+-/
 theorem finrank_int : finrank ℤ (ConjDual H) = finrank ℤ (𝓞 E) := by
   rw [(toDual H).finrank_eq, Module.finrank_linearMap_self]
 
@@ -77,14 +86,30 @@ def traceDual (H : Host E) : 𝓞 E →ₗ[𝓞 E] ConjDual H where
   map_add' x y := by ext; simp
   map_smul' a x := by ext; simp [trForm_mul_left]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toDual_traceDual (H : Host E) (x : 𝓞 E) : toDual H (traceDual H x) = trForm H x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem traceDual_apply (H : Host E) (x y : 𝓞 E) :
     toDual H (traceDual H x) y = Algebra.trace ℤ (𝓞 E) (H.bar x * y) := rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `trForm_injective H (congrArg (toDual H) h)`.
+-/
 theorem traceDual_injective (H : Host E) : Function.Injective (traceDual H) :=
   fun _ _ h => trForm_injective H (congrArg (toDual H) h)
 
+/- English proof (translation)
+Use `haveI : Module.Finite (𝓞 E) N := .of_restrictScalars_finite ℤ _ _`. Establish `h1` using `Submodule.finrank_quotient_add_finrank ((LinearMap.range φ).restrictScalars ℤ)`. Establish `h2` using `Submodule.finrank_quotient_add_finrank (LinearMap.range φ)`. Establish `e` using `LinearEquiv.ofInjective φ hφ`. Establish `h3 : finrank ℤ ((LinearMap.range φ).restrictScalars ℤ) = finrank ℤ M` using `(e.toAddEquiv.toIntLinearEquiv.finrank_eq).symm`.
+
+Establish `h4 : finrank ℤ (N ⧸ (LinearMap.range φ).restrictScalars ℤ) = 0` using `by omega`. Establish `h5 : finrank (𝓞 E) (N ⧸ LinearMap.range φ) = 0`. Rewrite `h4`, the goal using `[Module.finrank_eq_zero_iff]`. Introduce `x`. Take `⟨n, hn, hx⟩` from `h4 x`.
+
+Use `⟨(n : 𝓞 E), by exact_mod_cast hn, ?_⟩` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `hx`. Rewrite using `[e.finrank_eq]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_eq_of_injective {M N : Type} [AddCommGroup M] [AddCommGroup N] [Module (𝓞 E) M] [Module (𝓞 E) N]
     [Module.Finite ℤ N] (φ : M →ₗ[𝓞 E] N) (hφ : Function.Injective φ) (h : finrank ℤ M = finrank ℤ N) :
     finrank (𝓞 E) M = finrank (𝓞 E) N := by
@@ -105,11 +130,17 @@ theorem finrank_eq_of_injective {M N : Type} [AddCommGroup M] [AddCommGroup N] [
   rw [e.finrank_eq]
   omega
 
+/- English proof (translation)
+Rewrite using `[← finrank_eq_of_injective _ (traceDual_injective H) finrank_int.symm, finrank_self]`.
+-/
 theorem ConjDual.finrank_eq_one (H : Host E) : finrank (𝓞 E) (ConjDual H) = 1 := by
   rw [← finrank_eq_of_injective _ (traceDual_injective H) finrank_int.symm, finrank_self]
 
 abbrev HypLattice (H : Host E) : Type := 𝓞 E × ConjDual H
 
+/- English proof (translation)
+Rewrite using `[← finrank_eq_of_injective (LinearMap.prodMap LinearMap.id (traceDual H)) (Function.injective_id.prodMap (traceDual_injective H)) (by rw [finrank_prod, finrank_prod, finrank_int])]`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_hypLattice (H : Host E) : finrank (𝓞 E) (HypLattice H) = 2 := by
   rw [← finrank_eq_of_injective (LinearMap.prodMap LinearMap.id (traceDual H))
     (Function.injective_id.prodMap (traceDual_injective H))
@@ -121,14 +152,30 @@ def hypForm (H : Host E) : LinearMap.BilinForm ℤ (HypLattice H) :=
     (fun u u' v => by simp; ring) (fun c u v => by simp [mul_sub, -zsmul_eq_mul, Prod.smul_fst, Prod.smul_snd])
     (fun u v v' => by simp; ring) (fun c u v => by simp [mul_sub, -zsmul_eq_mul, Prod.smul_fst, Prod.smul_snd])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hypForm_apply (H : Host E) (u v : HypLattice H) :
     hypForm H u v = toDual H u.2 v.1 - toDual H v.2 u.1 := rfl
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem hypForm_self (H : Host E) (u : HypLattice H) : hypForm H u u = 0 := by simp
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem hypForm_smul (H : Host E) (a : 𝓞 E) (u v : HypLattice H) :
     hypForm H (a • u) v = hypForm H u (H.bar a • v) := by simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero _).mpr fun u hu => Prod.ext ?_ ?_` and prove the remaining obligations. Use `(Module.forall_dual_apply_eq_zero_iff ℤ u.1).mp fun g => ?_` and prove the remaining obligations. Simplify using `using LinearMap.congr_fun hu (0, (toDual H).symm g)`. Use extensionality with `y`.
+
+Simplify using `using LinearMap.congr_fun hu (y, 0)`. Introduce `φ`. Take `⟨x, hx⟩` from `(Module.evalEquiv ℤ (𝓞 E)).surjective (-(φ ∘ₗ LinearMap.inr ℤ _ _ ∘ₗ (toDual H).symm.toLinearMap))`. Use `⟨(x, (toDual H).symm (φ ∘ₗ LinearMap.inl ℤ _ _)), LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun hx (toDual H v.2)`.
+
+Simplify using `at h`. Simplify using `[h, ← map_add]`.
+-/
 theorem hypForm_bijective (H : Host E) : Function.Bijective (hypForm H) := by
   constructor
   · refine (injective_iff_map_eq_zero _).mpr fun u hu => Prod.ext ?_ ?_
@@ -149,18 +196,30 @@ abbrev BasisIndex (E : Type) [Field E] [NumberField E] : Type := Free.ChooseBasi
 def hypBasis (H : Host E) : Basis (BasisIndex E ⊕ BasisIndex E) ℤ (HypLattice H) :=
   (RingOfIntegers.basis E).prod ((RingOfIntegers.basis E).dualBasis.map (toDual H).symm)
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [hypBasis]`.
+-/
 theorem hypBasis_inl (H : Host E) (i : BasisIndex E) :
     hypBasis H (Sum.inl i) = (RingOfIntegers.basis E i, 0) := by
   ext <;> simp [hypBasis]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [hypBasis]`.
+-/
 theorem hypBasis_inr (H : Host E) (i : BasisIndex E) :
     hypBasis H (Sum.inr i) = (0, (toDual H).symm ((RingOfIntegers.basis E).coord i)) := by
   ext <;> simp [hypBasis]
 
+/- English proof (translation)
+Simplify using `[hypBasis]`.
+-/
 theorem hypBasis_repr_inl (H : Host E) (u : HypLattice H) (i : BasisIndex E) :
     (hypBasis H).repr u (Sum.inl i) = (RingOfIntegers.basis E).repr u.1 i := by
   simp [hypBasis]
 
+/- English proof (translation)
+Simplify using `[hypBasis]`.
+-/
 theorem hypBasis_repr_inr (H : Host E) (u : HypLattice H) (i : BasisIndex E) :
     (hypBasis H).repr u (Sum.inr i) = toDual H u.2 (RingOfIntegers.basis E i) := by
   simp [hypBasis]
@@ -171,15 +230,24 @@ def hypRealBasis (H : Host E) : Basis (BasisIndex E ⊕ BasisIndex E) ℝ (ℝ �
 def gram (H : Host E) : Matrix (BasisIndex E) (BasisIndex E) ℝ :=
   Matrix.of fun i j => (trForm H (RingOfIntegers.basis E i) (RingOfIntegers.basis E j) : ℤ)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[gram, trForm_symm H (RingOfIntegers.basis E j)]`.
+-/
 theorem gram_transpose (H : Host E) : (gram H)ᵀ = gram H := by
   ext i j
   simp [gram, trForm_symm H (RingOfIntegers.basis E j)]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[gram]`.
+-/
 theorem toMatrix_trForm_baseChange (H : Host E) :
     LinearMap.BilinForm.toMatrix ((RingOfIntegers.basis E).baseChange ℝ) ((trForm H).baseChange ℝ) = gram H := by
   ext i j
   simp [gram]
 
+/- English proof (translation)
+Use `Matrix.PosDef.of_dotProduct_mulVec_pos (by simpa [Matrix.IsHermitian] using gram_transpose H) fun x hx => ?_` and prove the remaining obligations. Use `set b := (RingOfIntegers.basis E).baseChange ℝ`. Establish `h` using `trForm_baseChange_pos H (v := b.equivFun.symm x) (by simpa only [ne_eq, map_eq_zero_iff _ b.equivFun.symm.injective] using hx)`. Rewrite `h` using `[LinearMap.BilinForm.apply_eq_dotProduct_toMatrix_mulVec b, toMatrix_trForm_baseChange, ← Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Conclude with `h`.
+-/
 theorem gram_posDef (H : Host E) : (gram H).PosDef := by
   refine Matrix.PosDef.of_dotProduct_mulVec_pos (by simpa [Matrix.IsHermitian] using gram_transpose H)
     fun x hx => ?_
@@ -189,14 +257,23 @@ theorem gram_posDef (H : Host E) : (gram H).PosDef := by
     ← Basis.equivFun_apply, LinearEquiv.apply_symm_apply] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `(gram_posDef H).det_pos.ne'.isUnit`.
+-/
 theorem isUnit_det_gram (H : Host E) : IsUnit (gram H).det := (gram_posDef H).det_pos.ne'.isUnit
 
 def hypJ (H : Host E) : ℝ ⊗[ℤ] HypLattice H →ₗ[ℝ] ℝ ⊗[ℤ] HypLattice H :=
   Matrix.toLin (hypRealBasis H) (hypRealBasis H) (Matrix.fromBlocks 0 (-(gram H)⁻¹) (gram H) 0)
 
+/- English proof (translation)
+The claim follows from `LinearMap.toMatrix_toLin _ _ _`.
+-/
 theorem toMatrix_hypJ (H : Host E) : LinearMap.toMatrix (hypRealBasis H) (hypRealBasis H) (hypJ H) =
     Matrix.fromBlocks 0 (-(gram H)⁻¹) (gram H) 0 := LinearMap.toMatrix_toLin _ _ _
 
+/- English proof (translation)
+Establish `: hypJ H ∘ₗ hypJ H = -LinearMap.id`. Apply `(LinearMap.toMatrix (hypRealBasis H) (hypRealBasis H)).injective` to reduce the goal to its premises. Rewrite using `[LinearMap.toMatrix_comp _ (hypRealBasis H), toMatrix_hypJ, map_neg, LinearMap.toMatrix_id, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_neg]`. Simplify using `[Matrix.mul_nonsing_inv _ (isUnit_det_gram H), Matrix.nonsing_inv_mul _ (isUnit_det_gram H)]`. Conclude with `LinearMap.congr_fun this x`.
+-/
 theorem hypJ_hypJ (H : Host E) (x) : hypJ H (hypJ H x) = -x := by
   have : hypJ H ∘ₗ hypJ H = -LinearMap.id := by
     apply (LinearMap.toMatrix (hypRealBasis H) (hypRealBasis H)).injective
@@ -205,11 +282,17 @@ theorem hypJ_hypJ (H : Host E) (x) : hypJ H (hypJ H x) = -x := by
     simp [Matrix.mul_nonsing_inv _ (isUnit_det_gram H), Matrix.nonsing_inv_mul _ (isUnit_det_gram H)]
   exact LinearMap.congr_fun this x
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;>`. Simplify using `[hypRealBasis, hypBasis_inl, hypBasis_inr, Matrix.one_apply, Finsupp.single_apply, eq_comm]`.
+-/
 theorem toMatrix_hypForm (H : Host E) :
     LinearMap.BilinForm.toMatrix (hypRealBasis H) ((hypForm H).baseChange ℝ) = Matrix.fromBlocks 0 (-1) 1 0 := by
   ext (i | i) (j | j) <;>
     simp [hypRealBasis, hypBasis_inl, hypBasis_inr, Matrix.one_apply, Finsupp.single_apply, eq_comm]
 
+/- English proof (translation)
+Establish `: ((hypForm H).baseChange ℝ).comp (hypJ H) (hypJ H) = (hypForm H).baseChange ℝ`. Apply `(LinearMap.BilinForm.toMatrix (hypRealBasis H)).injective` to reduce the goal to its premises. Rewrite using `[LinearMap.BilinForm.toMatrix_comp (hypRealBasis H), toMatrix_hypJ, toMatrix_hypForm]`. Simplify using `[Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.transpose_nonsing_inv, gram_transpose, Matrix.mul_nonsing_inv _ (isUnit_det_gram H), Matrix.nonsing_inv_mul _ (isUnit_det_gram H)]`. Conclude with `LinearMap.congr_fun₂ this x y`.
+-/
 theorem hypForm_hypJ_hypJ (H : Host E) (x y) :
     (hypForm H).baseChange ℝ (hypJ H x) (hypJ H y) = (hypForm H).baseChange ℝ x y := by
   have : ((hypForm H).baseChange ℝ).comp (hypJ H) (hypJ H) = (hypForm H).baseChange ℝ := by
@@ -219,6 +302,15 @@ theorem hypForm_hypJ_hypJ (H : Host E) (x y) :
       Matrix.mul_nonsing_inv _ (isUnit_det_gram H), Matrix.nonsing_inv_mul _ (isUnit_det_gram H)]
   exact LinearMap.congr_fun₂ this x y
 
+/- English proof (translation)
+Establish `h : LinearMap.BilinForm.toMatrix (hypRealBasis H) (((hypForm H).baseChange ℝ).compLeft (hypJ H)) = Matrix.fromBlocks (gram H) 0 0 (gram H)⁻¹`. Rewrite using `[LinearMap.BilinForm.toMatrix_compLeft, toMatrix_hypJ, toMatrix_hypForm]`. Simplify using `[Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.transpose_nonsing_inv, gram_transpose]`. Establish `h2` using `LinearMap.BilinForm.apply_eq_dotProduct_toMatrix_mulVec (hypRealBasis H) (((hypForm H).baseChange ℝ).compLeft (hypJ H)) x x`. Rewrite `h2` using `[h, LinearMap.BilinForm.compLeft_apply]`.
+
+Establish `hc : (hypRealBasis H).repr x ≠ 0` using `by simpa using hx`. Use `set c : BasisIndex E ⊕ BasisIndex E → ℝ := ⇑((hypRealBasis H).repr x) with hc'`. Rewrite using `[h2, ← Sum.elim_comp_inl_inr c, Matrix.fromBlocks_mulVec]`. Simplify using `only [Sum.elim_comp_inl, Sum.elim_comp_inr, Matrix.zero_mulVec, add_zero, zero_add, sumElim_dotProduct_sumElim]`. Establish `p1` using `gram_posDef H`.
+
+Establish `p2` using `p1.inv`. Distinguish the cases in `h1 : c ∘ Sum.inl = 0`. Establish `h3 : c ∘ Sum.inr ≠ 0`. Introduce `h3`. Apply `hc` to reduce the goal to its premises.
+
+Use extensionality with `(i | i)`. Use `exacts [congrFun h1 i, congrFun h3 i]`. Simplify `p2.dotProduct_mulVec_pos h3` using `[h1]`. Conclude with `add_pos_of_pos_of_nonneg (by simpa using p1.dotProduct_mulVec_pos h1) (by simpa using p2.posSemidef.dotProduct_mulVec_nonneg (c ∘ Sum.inr))`.
+-/
 theorem hypForm_hypJ_pos (H : Host E) (x) (hx : x ≠ 0) : 0 < (hypForm H).baseChange ℝ (hypJ H x) x := by
   have h : LinearMap.BilinForm.toMatrix (hypRealBasis H) (((hypForm H).baseChange ℝ).compLeft (hypJ H)) =
       Matrix.fromBlocks (gram H) 0 0 (gram H)⁻¹ := by
@@ -247,10 +339,18 @@ theorem hypForm_hypJ_pos (H : Host E) (x) (hx : x ≠ 0) : 0 < (hypForm H).baseC
 def mulMatrix (a : 𝓞 E) : Matrix (BasisIndex E) (BasisIndex E) ℝ :=
   (Algebra.leftMulMatrix (RingOfIntegers.basis E) a).map Int.cast
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_eq_matrix_trace (RingOfIntegers.basis E)]`. Simplify using `[mulMatrix, Matrix.trace]`.
+-/
 theorem trace_mulMatrix (a : 𝓞 E) : (mulMatrix a).trace = (Algebra.trace ℤ (𝓞 E) a : ℤ) := by
   rw [Algebra.trace_eq_matrix_trace (RingOfIntegers.basis E)]
   simp [mulMatrix, Matrix.trace]
 
+/- English proof (translation)
+Establish `h : ∀ (a : 𝓞 E) i j, (gram H * mulMatrix a) i j = (trForm H (RingOfIntegers.basis E i) (a * RingOfIntegers.basis E j) : ℤ)`. Introduce `a i j`. Use `conv_rhs => rw [← (RingOfIntegers.basis E).sum_repr (a * RingOfIntegers.basis E j)]`. Simplify using `only [map_sum, map_zsmul]`. Simplify using `[Matrix.mul_apply, gram, mulMatrix, Algebra.leftMulMatrix_eq_repr_mul, mul_comm]`.
+
+Use extensionality with `i j`. Rewrite using `[← gram_transpose H, ← Matrix.transpose_mul, gram_transpose, Matrix.transpose_apply, h, h, trForm_symm, trForm_mul_left]`.
+-/
 theorem gram_mul_mulMatrix (H : Host E) (a : 𝓞 E) :
     gram H * mulMatrix a = (mulMatrix (H.bar a))ᵀ * gram H := by
   have h : ∀ (a : 𝓞 E) i j, (gram H * mulMatrix a) i j =
@@ -263,6 +363,9 @@ theorem gram_mul_mulMatrix (H : Host E) (a : 𝓞 E) :
   rw [← gram_transpose H, ← Matrix.transpose_mul, gram_transpose, Matrix.transpose_apply, h, h,
     trForm_symm, trForm_mul_left]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;>`. Simplify using `[LinearMap.toMatrix_apply, hypRealBasis, hA, hypBasis_inl, hypBasis_inr, hypBasis_repr_inl, hypBasis_repr_inr, mulMatrix, Algebra.leftMulMatrix_eq_repr_mul]`.
+-/
 theorem toMatrix_of_smul (H : Host E) (a : 𝓞 E) (A : ℝ ⊗[ℤ] HypLattice H →ₗ[ℝ] ℝ ⊗[ℤ] HypLattice H)
     (hA : ∀ x, A (1 ⊗ₜ x) = 1 ⊗ₜ (a • x)) :
     LinearMap.toMatrix (hypRealBasis H) (hypRealBasis H) A =
@@ -271,6 +374,19 @@ theorem toMatrix_of_smul (H : Host E) (a : 𝓞 E) (A : ℝ ⊗[ℤ] HypLattice 
     simp [LinearMap.toMatrix_apply, hypRealBasis, hA, hypBasis_inl, hypBasis_inr, hypBasis_repr_inl,
       hypBasis_repr_inr, mulMatrix, Algebra.leftMulMatrix_eq_repr_mul]
 
+/- English proof (translation)
+Establish `hd : (H.d : ℂ) ≠ 0` using `by exact_mod_cast H.d_prime.ne_zero`. Establish `h0 : -H.rt0 ≠ H.rt0`. Introduce `h`. Establish `h1 : H.rt0 = 0` using `by linear_combination (-1 / 2 : ℂ) * h`. Establish `h2` using `H.sqrt_neg_disc_sq`.
+
+Rewrite `h2` using `[h1]`. Conclude with `hd (by linear_combination h2)`. Establish `hsq : ∀ τ : E →+* ℂ, τ (H.rt : E) ≠ H.rt0 → τ (H.rt : E) = -H.rt0` using `fun τ h => by`. Establish `: τ (H.rt : E) ^ 2 = H.rt0 ^ 2` using `by rw [← map_pow, coe_rt_sq, H.sqrt_neg_disc_sq]; simp`. Conclude with `(sq_eq_sq_iff_eq_or_eq_neg.mp this).resolve_left h`.
+
+Rewrite using `[coe_trace_eq_sum, Finset.sum_add_distrib, ← Finset.sum_filter_add_sum_filter_not Finset.univ (fun τ : E →+* ℂ => τ (H.rt : E) = H.rt0)]`. Use `congr 1`. Use `Finset.sum_nbij' ComplexEmbedding.conjugate ComplexEmbedding.conjugate ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ hτ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hτ ⊢`.
+
+Rewrite using `[ComplexEmbedding.conjugate_coe_eq, conj_embedding_rt, hτ]`. Conclude with `h0`. Introduce `τ hτ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hτ ⊢`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, conj_embedding_rt, hsq τ hτ, neg_neg]`.
+
+Introduce `τ _`. Conclude with `star_star τ`. Introduce `τ _`. Conclude with `star_star τ`. Introduce `τ _`.
+
+Both sides reduce to the same expression.
+-/
 theorem sum_add_conj_eq_trace (H : Host E) (a : 𝓞 E) :
     ∑ τ ∈ Finset.univ.filter (fun τ : E →+* ℂ => τ (H.rt : E) = H.rt0),
       (τ (a : E) + starRingEnd ℂ (τ (a : E))) = (Algebra.trace ℤ (𝓞 E) a : ℤ) := by
@@ -305,6 +421,9 @@ variable (H : Host E) (a : 𝓞 E) (A : ℝ ⊗[ℤ] HypLattice H →ₗ[ℝ] �
   (hA : ∀ x, A (1 ⊗ₜ x) = 1 ⊗ₜ (a • x))
 include hA
 
+/- English proof (translation)
+Apply `(LinearMap.toMatrix (hypRealBasis H) (hypRealBasis H)).injective` to reduce the goal to its premises. Establish `h : (gram H)⁻¹ * (mulMatrix (H.bar a))ᵀ = mulMatrix a * (gram H)⁻¹`. Rewrite using `[← Matrix.mul_nonsing_inv_cancel_right (gram H) (mulMatrix (H.bar a))ᵀ (isUnit_det_gram H), ← gram_mul_mulMatrix, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ (isUnit_det_gram H)]`. Rewrite using `[LinearMap.toMatrix_comp _ (hypRealBasis H), LinearMap.toMatrix_comp _ (hypRealBasis H), toMatrix_hypJ, toMatrix_of_smul H a A hA]`. Simplify using `[Matrix.fromBlocks_multiply, gram_mul_mulMatrix, h]`.
+-/
 theorem hypJ_comm : hypJ H ∘ₗ A = A ∘ₗ hypJ H := by
   apply (LinearMap.toMatrix (hypRealBasis H) (hypRealBasis H)).injective
   have h : (gram H)⁻¹ * (mulMatrix (H.bar a))ᵀ = mulMatrix a * (gram H)⁻¹ := by
@@ -314,6 +433,11 @@ theorem hypJ_comm : hypJ H ∘ₗ A = A ∘ₗ hypJ H := by
     toMatrix_of_smul H a A hA]
   simp [Matrix.fromBlocks_multiply, gram_mul_mulMatrix, h]
 
+/- English proof (translation)
+Rewrite using `[LinearMap.trace_eq_matrix_trace ℝ (hypRealBasis H), toMatrix_of_smul H a A hA, two_mul]`. Establish `h1` using `trace_mulMatrix a`. Establish `h2` using `trace_mulMatrix (H.bar a)`. Rewrite `h2` using `[trace_bar]`. Simplify using `only [Matrix.trace, Matrix.diag] at h1 h2`.
+
+Simplify using `[Matrix.trace, Fintype.sum_sum_type, h1, h2]`.
+-/
 theorem trace_of_smul : LinearMap.trace ℝ _ A = 2 * (Algebra.trace ℤ (𝓞 E) a : ℤ) := by
   rw [LinearMap.trace_eq_matrix_trace ℝ (hypRealBasis H), toMatrix_of_smul H a A hA, two_mul]
   have h1 := trace_mulMatrix a
@@ -322,6 +446,9 @@ theorem trace_of_smul : LinearMap.trace ℝ _ A = 2 * (Algebra.trace ℤ (𝓞 E
   simp only [Matrix.trace, Matrix.diag] at h1 h2
   simp [Matrix.trace, Fintype.sum_sum_type, h1, h2]
 
+/- English proof (translation)
+Rewrite using `[LinearMap.trace_eq_matrix_trace ℝ (hypRealBasis H), LinearMap.toMatrix_comp _ (hypRealBasis H), toMatrix_hypJ, toMatrix_of_smul H a A hA]`. Simplify using `[Matrix.fromBlocks_multiply, Matrix.trace, Fintype.sum_sum_type]`.
+-/
 theorem trace_hypJ_comp : LinearMap.trace ℝ _ (hypJ H ∘ₗ A) = 0 := by
   rw [LinearMap.trace_eq_matrix_trace ℝ (hypRealBasis H), LinearMap.toMatrix_comp _ (hypRealBasis H), toMatrix_hypJ,
     toMatrix_of_smul H a A hA]
@@ -329,6 +456,13 @@ theorem trace_hypJ_comp : LinearMap.trace ℝ _ (hypJ H ∘ₗ A) = 0 := by
 
 end Action
 
+/- English proof (translation)
+Apply `(hypRealBasis H).repr.injective` to reduce the goal to its premises. Establish `h` using `LinearMap.toMatrix_mulVec_repr (hypRealBasis H) (hypRealBasis H) (hypJ H) (1 ⊗ₜ (x, 0))`. Apply `DFunLike.coe_injective` to reduce the goal to its premises. Rewrite using `[← h, toMatrix_hypJ]`. Establish `hx : ∀ y, trForm H x y = ∑ j, trForm H y (RingOfIntegers.basis E j) * (RingOfIntegers.basis E).repr x j`.
+
+Introduce `y`. Rewrite using `[trForm_symm]`. Use `conv_lhs => rw [← (RingOfIntegers.basis E).sum_repr x]`. Simplify using `only [map_sum, map_zsmul]`. Simplify using `[mul_comm]`.
+
+Apply the tactic sequence `ext (i | i) <;>`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, hypRealBasis, hypBasis_repr_inl, hypBasis_repr_inr, gram, hx]`.
+-/
 theorem hypJ_inl (H : Host E) (x : 𝓞 E) :
     hypJ H (1 ⊗ₜ (x, 0)) = 1 ⊗ₜ (0, traceDual H x) := by
   apply (hypRealBasis H).repr.injective
@@ -345,6 +479,9 @@ theorem hypJ_inl (H : Host E) (x : 𝓞 E) :
   ext (i | i) <;>
     simp [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, hypRealBasis, hypBasis_repr_inl, hypBasis_repr_inr, gram, hx]
 
+/- English proof (translation)
+Rewrite using `[← hypJ_inl, hypJ_hypJ]`.
+-/
 theorem hypJ_inr (H : Host E) (x : 𝓞 E) :
     hypJ H (1 ⊗ₜ (0, traceDual H x)) = -(1 ⊗ₜ (x, 0)) := by
   rw [← hypJ_inl, hypJ_hypJ]
@@ -366,39 +503,78 @@ theorem hypJ_inr (H : Host E) (x : 𝓞 E) :
     · rw [trace_of_smul H a A hA, ht, Complex.intCast_re]
     · rw [trace_hypJ_comp H a A hA, ht, Complex.intCast_im, mul_zero]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hypDatum_La (H : Host E) : (hypDatum H).La = (𝓞 E × ConjDual H) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hypDatum_p (H : Host E) : (hypDatum H).p = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hypDatum_q (H : Host E) : (hypDatum H).q = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hypDatum_EF (H : Host E) (x y : 𝓞 E) (f g : ConjDual H) :
     (hypDatum H).EF (x, f) (y, g) = toDual H f y - toDual H g x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hypDatum_smul (H : Host E) (a x : 𝓞 E) (f : ConjDual H) :
     (a • (x, f) : (hypDatum H).La) = (a * x, a • f) := rfl
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem hypDatum_EF_inl_inl (H : Host E) (x y : 𝓞 E) : (hypDatum H).EF (x, 0) (y, 0) = 0 := by simp
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem hypDatum_EF_inr_inr (H : Host E) (f g : ConjDual H) : (hypDatum H).EF (0, f) (0, g) = 0 := by simp
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem hypDatum_EF_inr_inl (H : Host E) (f : ConjDual H) (y : 𝓞 E) :
     (hypDatum H).EF (0, f) (y, 0) = toDual H f y := by simp
 
 instance instNonemptyDatum (H : Host E) : Nonempty (Datum H) := ⟨hypDatum H⟩
 
+/- English proof (translation)
+The claim follows from `(hypDatum H).rank`.
+-/
 example (H : Host E) : finrank (𝓞 E) (hypDatum H).La = 2 := (hypDatum H).rank
 
+/- English proof (translation)
+Simplify using `[trForm_one_one]`.
+-/
 example (H : Host E) : (hypDatum H).EF (0, traceDual H 1) (1, 0) = finrank ℚ E := by
   simp [trForm_one_one]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 example (H : Host E) (f : ConjDual H) (x : 𝓞 E) : toDual H (H.rt • f) x = -toDual H f (H.rt * x) := by simp
 
+/- English proof (translation)
+The claim follows from `trace_of_smul H a _ fun _ => rfl`.
+-/
 example (H : Host E) (a : 𝓞 E) :
     LinearMap.trace ℝ _ ((DistribSMul.toLinearMap ℤ (HypLattice H) a).baseChange ℝ) =
       2 * (Algebra.trace ℤ (𝓞 E) a : ℤ) :=
   trace_of_smul H a _ fun _ => rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `finrank ℤ (𝓞 E21 × ConjDual host) = 24`. Rewrite using `[finrank_prod, finrank_int, RingOfIntegers.rank, finrank_rat_E21_eq_twelve]`.
+-/
 example : finrank ℤ (hypDatum host).La = 24 := by
   change finrank ℤ (𝓞 E21 × ConjDual host) = 24
   rw [finrank_prod, finrank_int, RingOfIntegers.rank, finrank_rat_E21_eq_twelve]

@@ -28,13 +28,22 @@ variable {D : D7} {p : ℕ} [Fact p.Prime]
 def rho (D : D7) (lam : Qbar →+* ℂ_[p]) (τ : D.what₂.Tau) : D.host.E →+* ℂ_[p] :=
   lam.comp (Formalism.L2.KerInert.IntegralOrthonormalChange.embQ D τ)
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.KerInert.IntegralOrthonormalChange.lamC_embT D lam τ x`.
+-/
 theorem lamC_embT_eq (lam : Qbar →+* ℂ_[p]) (τ : D.what₂.Tau) (x : D.host.E) :
     lamC lam (embT D τ x) = rho D lam τ x :=
   Formalism.L2.KerInert.IntegralOrthonormalChange.lamC_embT D lam τ x
 
+/- English proof (translation)
+The claim follows from `funext fun x => lamC_embT_eq lam τ x`.
+-/
 theorem tauEmb_eq (lam : Qbar →+* ℂ_[p]) (τ : D.what₂.Tau) : tauEmb D lam τ = rho D lam τ :=
   funext fun x => lamC_embT_eq lam τ x
 
+/- English proof (translation)
+Establish `hs : ¬ IsSg D p` using `fun h => by`. Establish `h' : D.host.cls p = PrimeClass.signal` using `h`. Rewrite `h'` using `[show D.host.cls p = PrimeClass.inertClass from hc]`. Consider the cases of `h'`. Simplify using `[posPl, partner, hs, h0]`.
+-/
 theorem posPl_one (hc : IsResidueClassZero D p) (h0 : hP D p = 0) (z : Bool × HH D) : posPl D p z 1 = z := by
   have hs : ¬ IsSg D p := fun h => by
     have h' : D.host.cls p = PrimeClass.signal := h
@@ -42,6 +51,13 @@ theorem posPl_one (hc : IsResidueClassZero D p) (h0 : hP D p = 0) (z : Bool × H
     cases h'
   simp [posPl, partner, hs, h0]
 
+/- English proof (translation)
+Take `⟨hp, -, -, -, h⟩` from `hσ`. Establish `h1 : ‖((σ a - a ^ p : MaximalUnramifiedExtension p) : ℂ_[p])‖ < 1` using `lt_of_le_of_lt (h a ha.le) (inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt))`. Establish `h3 : ‖((a ^ p : MaximalUnramifiedExtension p) : ℂ_[p])‖ < 1`. Use `push_cast`. Rewrite using `[norm_pow]`.
+
+Conclude with `pow_lt_one₀ (norm_nonneg _) ha hp.ne_zero`. Establish `e : ((σ a : MaximalUnramifiedExtension p) : ℂ_[p]) = ((σ a - a ^ p : MaximalUnramifiedExtension p) : ℂ_[p]) + ((a ^ p : MaximalUnramifiedExtension p) : ℂ_[p])`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h1 h3)`.
+-/
 theorem norm_sigma_lt {σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p} (hσ : UnrOK (MaximalUnramifiedExtension p) p σ) {a : MaximalUnramifiedExtension p} (ha : ‖(a : ℂ_[p])‖ < 1) :
     ‖((σ a : MaximalUnramifiedExtension p) : ℂ_[p])‖ < 1 := by
   obtain ⟨hp, -, -, -, h⟩ := hσ
@@ -57,6 +73,13 @@ theorem norm_sigma_lt {σ : MaximalUnramifiedExtension p →+* MaximalUnramified
   rw [e]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h1 h3)
 
+/- English proof (translation)
+Take `⟨hp, -, -, -, h⟩` from `hσ`. Establish `h1 : ‖((σ a - a ^ p : MaximalUnramifiedExtension p) : ℂ_[p])‖ ≤ 1` using `(h a ha).trans (inv_le_one_of_one_le₀ (by exact_mod_cast hp.one_lt.le))`. Establish `h3 : ‖((a ^ p : MaximalUnramifiedExtension p) : ℂ_[p])‖ ≤ 1`. Use `push_cast`. Rewrite using `[norm_pow]`.
+
+Conclude with `pow_le_one₀ (norm_nonneg _) ha`. Establish `e : ((σ a : MaximalUnramifiedExtension p) : ℂ_[p]) = ((σ a - a ^ p : MaximalUnramifiedExtension p) : ℂ_[p]) + ((a ^ p : MaximalUnramifiedExtension p) : ℂ_[p])`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 h3)`.
+-/
 theorem norm_sigma_le {σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p} (hσ : UnrOK (MaximalUnramifiedExtension p) p σ) {a : MaximalUnramifiedExtension p} (ha : ‖(a : ℂ_[p])‖ ≤ 1) :
     ‖((σ a : MaximalUnramifiedExtension p) : ℂ_[p])‖ ≤ 1 := by
   obtain ⟨hp, -, -, -, h⟩ := hσ
@@ -77,6 +100,9 @@ section Frob
 variable (lam : Qbar →+* ℂ_[p]) {σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p} (hσ : UnrOK (MaximalUnramifiedExtension p) p σ) (hc : IsResidueClassZero D p) (h0 : hP D p = 0)
 include hσ hc h0
 
+/- English proof (translation)
+Take `⟨a, h1, h2⟩` from `GlobalTheory.KerStd.exists_kur_frob_tauEmb_posPl D p lam σ hσ (Or.inl hc) z y`. Rewrite `h2` using `[posPl_one hc h0]`. Conclude with `⟨a, by rw [h1, tauEmb_eq], by rw [h2, tauEmb_eq]⟩`.
+-/
 theorem frob (z : Bool × HH D) (y : D.host.E) :
     ∃ a : MaximalUnramifiedExtension p, (a : ℂ_[p]) = rho D lam (tauPl D z) y ∧
       ((σ a : MaximalUnramifiedExtension p) : ℂ_[p]) = rho D lam (tauPl D z) (D.host.conj y) := by
@@ -84,18 +110,33 @@ theorem frob (z : Bool × HH D) (y : D.host.E) :
   rw [posPl_one hc h0] at h2
   exact ⟨a, by rw [h1, tauEmb_eq], by rw [h2, tauEmb_eq]⟩
 
+/- English proof (translation)
+Take `⟨a, h1, h2⟩` from `frob lam hσ hc h0 z y`. Rewrite using `[← h2]`. Conclude with `norm_sigma_lt hσ (by rw [h1]; exact hy)`.
+-/
 theorem norm_conj_lt (z : Bool × HH D) {y : D.host.E} (hy : ‖rho D lam (tauPl D z) y‖ < 1) :
     ‖rho D lam (tauPl D z) (D.host.conj y)‖ < 1 := by
   obtain ⟨a, h1, h2⟩ := frob lam hσ hc h0 z y
   rw [← h2]
   exact norm_sigma_lt hσ (by rw [h1]; exact hy)
 
+/- English proof (translation)
+Take `⟨a, h1, h2⟩` from `frob lam hσ hc h0 z y`. Rewrite using `[← h2]`. Conclude with `norm_sigma_le hσ (by rw [h1]; exact hy)`.
+-/
 theorem norm_conj_le (z : Bool × HH D) {y : D.host.E} (hy : ‖rho D lam (tauPl D z) y‖ ≤ 1) :
     ‖rho D lam (tauPl D z) (D.host.conj y)‖ ≤ 1 := by
   obtain ⟨a, h1, h2⟩ := frob lam hσ hc h0 z y
   rw [← h2]
   exact norm_sigma_le hσ (by rw [h1]; exact hy)
 
+/- English proof (translation)
+Use `set ρ := rho D lam (tauPl D z) with hρ`. Establish `hn : ¬ D.host.𝔟 ≤ smallIdeal ρ` using `fun h => by`. Establish `h2 : D.host.conj • D.host.𝔟 ≤ smallIdeal ρ`. Rewrite using `[Ideal.pointwise_smul_def, Ideal.map_le_iff_le_comap]`. Conclude with `fun x hx => norm_conj_lt lam hσ hc h0 z (h hx)`.
+
+Establish `h3 : D.host.𝔟 ⊔ D.host.conj • D.host.𝔟 = ⊤` using `D.host.𝔟_spec.2`. Conclude with `(smallIdeal_isPrime ρ).ne_top (top_le_iff.1 (h3 ▸ sup_le h h2))`. Take `⟨t, ht, htP⟩` from `SetLike.not_le_iff_exists.1 hn`. Establish `hb : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 fun h => hn (h ▸ bot_le)`. Take `⟨u, hu⟩` from `(FractionalIdeal.mem_one_iff _).1 ((FractionalIdeal.mem_inv_iff hb).1 ha _ (FractionalIdeal.mem_coeIdeal_of_mem _ ht))`.
+
+Establish `hnt : 1 ≤ ‖ρ (t : D.host.E)‖` using `not_lt.1 htP`. Establish `e : ρ (u : D.host.E) = ρ a * ρ (t : D.host.E)`. Rewrite using `[← map_mul]`. Conclude with `congrArg ρ hu`. Establish `h4` using `norm_int_le_one ρ u`.
+
+Rewrite `h4` using `[e, norm_mul]`. Conclude with `(le_mul_of_one_le_right (norm_nonneg _) hnt).trans h4`.
+-/
 theorem norm_cmTypeEmbeddingPadic_le_one_of_mem_baseIdeal (z : Bool × HH D) {a : D.host.E} (ha : a ∈ D.host.AA0) : ‖rho D lam (tauPl D z) a‖ ≤ 1 := by
   set ρ := rho D lam (tauPl D z) with hρ
   have hn : ¬ D.host.𝔟 ≤ smallIdeal ρ := fun h => by
@@ -119,6 +160,9 @@ theorem norm_cmTypeEmbeddingPadic_le_one_of_mem_baseIdeal (z : Bool × HH D) {a 
 
 end Frob
 
+/- English proof (translation)
+The claim follows from `D.host.φ₀.injective (by rw [Formalism.HC.HostAx.conjE_apply, Formalism.HC.HostAx.conjE_apply, Complex.conj_conj])`.
+-/
 theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x :=
   D.host.φ₀.injective (by
     rw [Formalism.HC.HostAx.conjE_apply, Formalism.HC.HostAx.conjE_apply, Complex.conj_conj])
@@ -129,6 +173,15 @@ variable {ρ : D.host.E →+* ℂ_[p]} {N N' : ℕ} {L : Submodule (𝓞 D.host.
   {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} {P : Matrix (Fin N) (Fin N) D.host.E}
   {P' Q' : Matrix (Fin N') (Fin N') D.host.E}
 
+/- English proof (translation)
+Take `⟨s, hs, hsL⟩` from `hP.2.1 a`. Take `⟨s', hs', c, hc⟩` from `hP'.2.2 _ (hA _ hsL)`. Establish `hcol : ∀ a' : Fin N', Q'.mulVec (P'.transpose a') = fun b => (1 : Matrix (Fin N') (Fin N') D.host.E) b a'` using `fun a' => by`. Use function extensionality and compare the values at `b`. Rewrite using `[← hQ]`.
+
+Both sides reduce to the same expression. Establish `key : (s' : D.host.E) * ((s : D.host.E) * (Q' * A * P) b a) = (c b : D.host.E)`. Establish `h1` using `congrArg (fun v => Q'.mulVec v b) hc`. Simplify using `only [Matrix.mulVec_smul, Matrix.mulVec_sum, hcol] at h1`. Establish `e1 : Q'.mulVec (A.mulVec (P.transpose a)) b = (Q' * A * P) b a`.
+
+Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Establish `e2 : (∑ x, c x • fun b => (1 : Matrix (Fin N') (Fin N') D.host.E) b x) b = (c b : D.host.E)`. Rewrite using `[Finset.sum_apply]`. Simplify using `[Algebra.smul_def, Matrix.one_apply]`.
+
+Rewrite `h1` using `[e2, Pi.smul_apply, Pi.smul_apply, e1, Algebra.smul_def, Algebra.smul_def]`. Conclude with `h1`. Establish `h4` using `norm_int_le_one ρ (c b)`. Rewrite `h4` using `[← key, map_mul, map_mul, norm_mul, norm_mul, hs, hs', one_mul, one_mul]`. Conclude with `h4`.
+-/
 theorem entry_le_of_maps (hQ : Q' * P' = 1) (hP : LocBasisW D ρ L P) (hP' : LocBasisW D ρ L' P')
     {A : Matrix (Fin N') (Fin N) D.host.E} (hA : ∀ x ∈ L, A.mulVec x ∈ L') (b : Fin N') (a : Fin N) :
     ‖ρ ((Q' * A * P) b a)‖ ≤ 1 := by
@@ -158,29 +211,51 @@ def IntIn (ρ : D.host.E →+* ℂ_[p]) (Q' : Matrix (Fin N') (Fin N') D.host.E)
     (B : Matrix (Fin N') (Fin N) D.host.E) : Prop :=
   ∀ b a, ‖ρ ((Q' * B * P) b a)‖ ≤ 1
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]`.
+-/
 theorem entry_smul (e : D.host.E) (B : Matrix (Fin N') (Fin N) D.host.E) (b : Fin N') (a : Fin N) :
     (Q' * (e • B) * P) b a = e * (Q' * B * P) b a := by
   rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `b a` and use `by rw [entry_smul, map_mul, norm_mul] exact mul_le_one₀ he (norm_nonneg _) (h b a)`.
+-/
 theorem IntIn.smul {e : D.host.E} (he : ‖ρ e‖ ≤ 1) {B : Matrix (Fin N') (Fin N) D.host.E} (h : IntIn ρ Q' P B) :
     IntIn ρ Q' P (e • B) := fun b a => by
   rw [entry_smul, map_mul, norm_mul]
   exact mul_le_one₀ he (norm_nonneg _) (h b a)
 
+/- English proof (translation)
+Introduce `b a` and use `by rw [Matrix.mul_add, Matrix.add_mul, Matrix.add_apply, map_add] exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hB b a) (hC b a))`.
+-/
 theorem IntIn.add {B C : Matrix (Fin N') (Fin N) D.host.E} (hB : IntIn ρ Q' P B) (hC : IntIn ρ Q' P C) :
     IntIn ρ Q' P (B + C) := fun b a => by
   rw [Matrix.mul_add, Matrix.add_mul, Matrix.add_apply, map_add]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hB b a) (hC b a))
 
+/- English proof (translation)
+Introduce `b a` and use `by simp`.
+-/
 theorem IntIn.zero : IntIn ρ Q' P (0 : Matrix (Fin N') (Fin N) D.host.E) := fun b a => by
   simp
 
+/- English proof (translation)
+Establish `e : c • B = (c : D.host.E) • B` using `(algebraMap_smul D.host.E c B).symm`. Rewrite using `[e]`. Conclude with `h.smul (norm_int_le_one ρ c)`.
+-/
 theorem IntIn.smul_int (c : 𝓞 D.host.E) {B : Matrix (Fin N') (Fin N) D.host.E} (h : IntIn ρ Q' P B) :
     IntIn ρ Q' P (c • B) := by
   have e : c • B = (c : D.host.E) • B := (algebraMap_smul D.host.E c B).symm
   rw [e]
   exact h.smul (norm_int_le_one ρ c)
 
+/- English proof (translation)
+Establish `hhom : ∀ A ∈ homL D L L', IntIn ρ Q' P A`. Introduce `A hA`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA => exact fun b a => entry_le_of_maps hQ hP hP' hA b a`. Consider the case `zero => exact IntIn.zero`.
+
+Consider the case `add X Y _ _ h1 h2 => exact h1.add h2`. Consider the case `smul c X _ h => exact h.smul_int c`. Proceed by induction on `hB using Submodule.span_induction with`. Consider the case `mem B hB`. Take `⟨a, ha, A, hA, rfl⟩` from `hB`.
+
+Conclude with `(hhom A hA).smul (hA0 a (FractionalIdeal.mem_coe.1 ha))`. Consider the case `zero => exact IntIn.zero`. Consider the case `add X Y _ _ h1 h2 => exact h1.add h2`. Consider the case `smul c X _ h => exact h.smul_int c`.
+-/
 theorem intIn_of_mem (hA0 : ∀ a ∈ D.host.AA0, ‖ρ a‖ ≤ 1) (hQ : Q' * P' = 1) (hP : LocBasisW D ρ L P)
     (hP' : LocBasisW D ρ L' P') {B : Matrix (Fin N') (Fin N) D.host.E} (hB : B ∈ YYl D L L') : IntIn ρ Q' P B := by
   have hhom : ∀ A ∈ homL D L L', IntIn ρ Q' P A := by
@@ -198,6 +273,9 @@ theorem intIn_of_mem (hA0 : ∀ a ∈ D.host.AA0, ‖ρ a‖ ≤ 1) (hQ : Q' * P
   | add X Y _ _ h1 h2 => exact h1.add h2
   | smul c X _ h => exact h.smul_int c
 
+/- English proof (translation)
+Introduce `x a` and use `by obtain ⟨s, hs, hsb⟩ := hb.2.1 i have h1 := intIn_of_mem hA0 hQ hP hP' hsb x a have hs1 : ‖(s : ℂ_[p])‖ = 1 := Formalism.DworkPowerSeriesWeights.norm_natCast_eq_one_of_not_dvd (Fact.out : p.Prime) hp (fun h => (Fact.out : p.Prime).one_lt.ne' (Nat.Coprime.eq_one_of_dvd hs.symm h …`.
+-/
 theorem intIn_of_locBasis (hp : ‖(p : ℂ_[p])‖ < 1) (hA0 : ∀ a ∈ D.host.AA0, ‖ρ a‖ ≤ 1) (hQ : Q' * P' = 1)
     (hP : LocBasisW D ρ L P) (hP' : LocBasisW D ρ L' P') {r : ℕ} {b : Fin r → Matrix (Fin N') (Fin N) D.host.E}
     (hb : LocBasis D p (YYl D L L') b) (i : Fin r) : IntIn ρ Q' P (b i) := fun x a => by
@@ -215,6 +293,11 @@ section Sums
 
 variable {R ι κ : Type} [CommRing R] [Fintype ι] [Fintype κ] [DecidableEq κ]
 
+/- English proof (translation)
+Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `e : ∀ k', ∑ i, u k i * (v k' i * A k') = (if k = k' then 1 else 0) * A k'` using `fun k' => by`. Rewrite using `[← h k k', Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+
+Simplify using `[e]`.
+-/
 theorem lin_of_inv {u v : κ → ι → R} (h : ∀ k k', ∑ i, u k i * v k' i = if k = k' then 1 else 0) (A : κ → R) (k : κ) :
     ∑ i, u k i * ∑ k', v k' i * A k' = A k := by
   simp_rw [Finset.mul_sum]
@@ -224,6 +307,9 @@ theorem lin_of_inv {u v : κ → ι → R} (h : ∀ k k', ∑ i, u k i * v k' i 
     exact Finset.sum_congr rfl fun i _ => by ring
   simp [e]
 
+/- English proof (translation)
+Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← lin_of_inv h A k, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem bilin_of_inv {u v : κ → ι → R} (h : ∀ k k', ∑ i, u k i * v k' i = if k = k' then 1 else 0) (B A : κ → R) :
     ∑ i, (∑ k, u k i * B k) * ∑ k', v k' i * A k' = ∑ k, B k * A k := by
   simp_rw [Finset.sum_mul]
@@ -238,6 +324,9 @@ section Subst
 
 variable {K : Type} [Field K] {κ ν ι : Type} [Fintype κ] [Fintype ν] [Fintype ι]
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coe_substAlgHom hs, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom hs, MvPowerSeries.subst_mul hs, MvPowerSeries.subst_X hs, MvPowerSeries.subst_C]`.
+-/
 theorem subst_lin {a : ν → MvPowerSeries ι K} (hs : MvPowerSeries.HasSubst a) (w : ν → K) :
     MvPowerSeries.subst a (∑ j, MvPowerSeries.C (w j) * MvPowerSeries.X j : MvPowerSeries ν K) =
       ∑ j, MvPowerSeries.C (w j) * a j := by
@@ -251,6 +340,15 @@ section Subst2
 
 variable {p : ℕ} [Fact p.Prime] {κ ν ι : Type} [Finite κ] [Fintype ν] [Fintype ι]
 
+/- English proof (translation)
+Establish `h1 : MvPowerSeries.HasSubst (fun k : s => (∑ j, algebraMap ℂ_[p] (MvPowerSeries ν ℂ_[p]) (m k j) * MvPowerSeries.X j : MvPowerSeries ν ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun k => by simp`. Establish `h2 : MvPowerSeries.HasSubst (fun v : ν => (MvPowerSeries.C c * MvPowerSeries.X v : MvPowerSeries ν ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun k => by simp`. Establish `h3 : MvPowerSeries.HasSubst (fun k : s => (∑ i, MvPowerSeries.C (t k i) * MvPowerSeries.X i : MvPowerSeries ι ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun k => by simp`. Establish `h4 : MvPowerSeries.HasSubst (fun i : ι => (∑ j, MvPowerSeries.C (g i j) * MvPowerSeries.X j : MvPowerSeries ν ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun k => by simp`. Unfold `atLin`.
+
+Rewrite using `[MvPowerSeries.subst_comp_subst_apply h1 h2, MvPowerSeries.subst_comp_subst_apply h3 h4]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `e : (∑ j, algebraMap ℂ_[p] (MvPowerSeries ν ℂ_[p]) (m k j) * MvPowerSeries.X j : MvPowerSeries ν ℂ_[p]) = ∑ j, MvPowerSeries.C (m k j) * MvPowerSeries.X j` using `rfl`. Rewrite using `[e, subst_lin h2, subst_lin h4]`.
+
+Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul, h k j, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, mul_assoc]`.
+-/
 theorem subst_atLin {s : Type} [Fintype s] [Finite s] (m : s → ν → ℂ_[p]) (t : s → ι → ℂ_[p]) (g : ι → ν → ℂ_[p]) (c : ℂ_[p])
     (h : ∀ k j, m k j * c = ∑ i, t k i * g i j) (G : MvPowerSeries s ℂ_[p]) :
     (MvPowerSeries.subst (fun v : ν => (MvPowerSeries.C c * MvPowerSeries.X v : MvPowerSeries ν ℂ_[p]))
@@ -301,12 +399,23 @@ def cB (j : (Bool × HH D) × Fin N × Fin N') (k : D.what₂.Tau × Fin N' × F
     rho D lam (tauPl D j.1) (D.host.conj (P' (tauPl D j.1) k.2.1 j.2.2)) * rho D lam (tauPl D j.1) (P (tauPl D j.1) k.2.2 j.2.1)
   else 0
 
+/- English proof (translation)
+The claim follows from `lamC_embT_eq lam _ _`.
+-/
 theorem lamB_eq (k : D.what₂.Tau × Fin N' × Fin N) (i : Fin r) :
     lamB D lam b k i = rho D lam k.1 (b i k.2.1 k.2.2) := lamC_embT_eq lam _ _
 
+/- English proof (translation)
+The claim follows from `lamC_embT_eq lam _ _`.
+-/
 theorem lamBc_eq (k : D.what₂.Tau × Fin N' × Fin N) (i : Fin r) :
     lamBc D lam b k i = rho D lam k.1 (D.host.conj (b i k.2.1 k.2.2)) := lamC_embT_eq lam _ _
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single (tauPl D j.1)]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [yy, map_sum, map_mul, cA, if_true, lamBc_eq]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `t _ ht`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Simplify using `[cA, Ne.symm ht]`. Simplify using the standard rewrite rules.
+-/
 theorem rho_yy (i : Fin r) (j : (Bool × HH D) × Fin N × Fin N') :
     rho D lam (tauPl D j.1) (yy D P P' b i j) = ∑ k, lamBc D lam b k i * cA D lam P P' j k := by
   rw [Fintype.sum_prod_type, Finset.sum_eq_single (tauPl D j.1)]
@@ -319,6 +428,11 @@ theorem rho_yy (i : Fin r) (j : (Bool × HH D) × Fin N × Fin N') :
     simp [cA, Ne.symm ht]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single (tauPl D j.1)]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [yy, map_sum, map_mul, cB, if_true, lamB_eq, conj_conj]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `t _ ht`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Simplify using `[cB, Ne.symm ht]`. Simplify using the standard rewrite rules.
+-/
 theorem rho_conj_yy (i : Fin r) (j : (Bool × HH D) × Fin N × Fin N') :
     rho D lam (tauPl D j.1) (D.host.conj (yy D P P' b i j)) = ∑ k, lamB D lam b k i * cB D lam P P' j k := by
   rw [Fintype.sum_prod_type, Finset.sum_eq_single (tauPl D j.1)]
@@ -331,6 +445,9 @@ theorem rho_conj_yy (i : Fin r) (j : (Bool × HH D) × Fin N × Fin N') :
     simp [cB, Ne.symm ht]
   · simp
 
+/- English proof (translation)
+Simplify using `only [yy, map_sum, map_mul, conj_conj, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_yy (i : Fin r) (j : (Bool × HH D) × Fin N × Fin N') :
     D.host.conj (yy D P P' b i j) =
       (((P' (tauPl D j.1)).map D.host.conj).transpose * b i * P (tauPl D j.1)) j.2.2 j.2.1 := by
@@ -341,6 +458,11 @@ theorem conj_yy (i : Fin r) (j : (Bool × HH D) × Fin N × Fin N') :
 
 variable {P P'}
 
+/- English proof (translation)
+Establish `hinv : ((P (tauPl D j.1)).map (tauEmb D lam (tauPl D j.1)))⁻¹ = (((P (tauPl D j.1)).map D.host.conj).transpose).map (rho D lam (tauPl D j.1))`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[tauEmb_eq, ← Matrix.map_mul, hU, Matrix.map_one _ (map_zero _) (map_one _)]`. Unfold `chgB cA`. Distinguish the cases in `h : tauPl D j.1 = k.1`.
+
+Simplify using `only [if_pos h]`. Rewrite using `[hinv, tauEmb_eq]`. Both sides reduce to the same expression. Simplify using `only [if_neg h]`.
+-/
 theorem chgB_eq (hU : ∀ z, ((P (tauPl D z)).map D.host.conj).transpose * P (tauPl D z) = 1)
     (j : (Bool × HH D) × Fin N × Fin N') (k : D.what₂.Tau × Fin N' × Fin N) :
     chgB D lam P P' k ((0 : ZMod 1), (tauPl D j.1, j.2)) = cA D lam P P' j k := by
@@ -355,6 +477,23 @@ theorem chgB_eq (hU : ∀ z, ((P (tauPl D z)).map D.host.conj).transpose * P (ta
     rfl
   · simp only [if_neg h]
 
+/- English proof (translation)
+Take `⟨z, a, b⟩` from `j`. Take `⟨z', a', b'⟩` from `j'`. Distinguish the cases in `hz : z = z'`. Substitute `hz` using the available equality. Establish `e1 : ∑ x, D.host.conj (P' (tauPl D z) x b) * P' (tauPl D z) x b' = if b = b' then 1 else 0`.
+
+Use `congrFun (congrFun (hU' z) b) b'` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Conclude with `this`. Establish `e2 : ∑ x, D.host.conj (P (tauPl D z) x a') * P (tauPl D z) x a = if a' = a then 1 else 0`. Use `congrFun (congrFun (hU z) a') a` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Conclude with `this`. Establish `e3 : ∑ k, cB D lam P P' (z, a, b) k * cA D lam P P' (z, a', b') k = rho D lam (tauPl D z) (∑ x, D.host.conj (P' (tauPl D z) x b) * P' (tauPl D z) x b') * rho D lam (tauPl D z) (∑ x, D.host.conj (P (tauPl D z) x a') * P (tauPl D z) x a)`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single (tauPl D z)]`. Rewrite using `[Fintype.sum_prod_type]`.
+
+Rewrite using `[map_sum, map_sum, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, cA, cB, if_true]`. Expand and normalize the polynomial expressions, which then agree. Introduce `t _ ht`.
+
+Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Simplify using `[cA, Ne.symm ht]`. Simplify using the standard rewrite rules. Rewrite using `[e3, e1, e2]`. Distinguish the cases in `hb : b = b'`.
+
+Distinguish the cases in `ha : a = a'`. Simplify using `[hb, ha]`. Establish `ha' : ¬ a' = a` using `fun h => ha h.symm`. Simplify using `[hb, ha, ha']`. Simplify using `[hb]`.
+
+Establish `hne : tauPl D z ≠ tauPl D z'` using `fun h => hz ((tauPl_bij D).1 h)`. Rewrite using `[if_neg (fun h => hz (congrArg Prod.fst h))]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : tauPl D z = k.1`. Establish `h' : tauPl D z' ≠ k.1` using `fun h2 => hne (h.trans h2.symm)`.
+
+Simplify using `[cA, h']`. Simplify using `[cB, h]`.
+-/
 theorem sum_cB_cA (hU : ∀ z, ((P (tauPl D z)).map D.host.conj).transpose * P (tauPl D z) = 1)
     (hU' : ∀ z, ((P' (tauPl D z)).map D.host.conj).transpose * P' (tauPl D z) = 1)
     (j j' : (Bool × HH D) × Fin N × Fin N') :
@@ -405,6 +544,23 @@ end GlobalTheory.KerStd.UnitaryMat
 
 open GlobalTheory.KerStd.UnitaryMat in
 
+/- English proof (translation)
+Introduce `D p _ lam σ hσ h5 hc h0 N N' L L' P P' hadm hP hP' r b hb ho`. Establish `hon : LamONB D lam b` using `Formalism.L2.KerInert.RepFrame.lamONB_of_cols D lam b (Formalism.L2.KerInert.RepFrame.rank_of_locBasis L L' hadm.2.2.1 hadm.2.2.2 b hb) (Formalism.L2.KerInert.RepFrame.cols_of_trace D (Formalism.L2.KerInert.RepFrame.trace_tau_sum D) lam b ho)`. Establish `hU : ∀ z, ((P (tauPl D z)).map D.host.conj).transpose * P (tauPl D z) = 1` using `fun z => by`. Use `hP.2.1 (Or.inl hc) z` as an intermediate fact. Rewrite `this` using `[posPl_one hc h0]`. Then use the resulting hypothesis.
+
+Establish `hU' : ∀ z, ((P' (tauPl D z)).map D.host.conj).transpose * P' (tauPl D z) = 1` using `fun z => by`. Use `hP'.2.1 (Or.inl hc) z` as an intermediate fact. Rewrite `this` using `[posPl_one hc h0]`. Then use the resulting hypothesis. Establish `hp1 : ‖(p : ℂ_[p])‖ < 1`. Rewrite using `[norm_prime_padicComplex]`.
+
+Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt)`. Use `choose g hg1 hg2 using fun (i : Fin r) (j : (Bool × HH D) × Fin N × Fin N') => frob lam hσ hc h0 j.1 (yy D P P' b i j)`. Use `⟨g, fun i j => ⟨?_, ?_⟩, fun j j' => ?_, fun c G => ?_⟩` and prove the remaining obligations. Use `show ‖(g i j : ℂ_[p])‖ ≤ 1`. Rewrite using `[hg1, ← conj_conj D (yy D P P' b i j)]`.
+
+Use `norm_conj_le lam hσ hc h0 j.1 ?_` and prove the remaining obligations. Rewrite using `[conj_yy]`. Establish `hb'` using `intIn_of_locBasis hp1 (fun a ha => norm_cmTypeEmbeddingPadic_le_one_of_mem_baseIdeal lam hσ hc h0 j.1 ha) (hU' j.1) (by rw [← tauEmb_eq]; exact hP.1 _) (by rw [← tauEmb_eq]; exact hP'.1 _) hb i`. Conclude with `hb' _ _`. Take `⟨a', h1, h2⟩` from `frob lam hσ hc h0 j.1 (D.host.conj (yy D P P' b i j))`.
+
+Establish `e : a' = σ (g i j)` using `Subtype.ext (h1.trans (hg2 i j).symm)`. Rewrite `h2` using `[e, conj_conj]`. Conclude with `Subtype.ext (h2.trans (hg1 i j).symm)`. Establish `e : ((∑ i, σ (g i j) * g i j' : MaximalUnramifiedExtension p) : ℂ_[p]) = ∑ i, (σ (g i j) : ℂ_[p]) * (g i j' : ℂ_[p])`. Use `push_cast`.
+
+Both sides reduce to the same expression. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[e]`. Simplify using `only [hg1, hg2, rho_yy, rho_conj_yy]`. Rewrite using `[bilin_of_inv hon, sum_cB_cA D lam hU hU']`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Use `subst_atLin _ _ _ c (fun k j => ?_) G` and prove the remaining obligations. Rewrite using `[one_mul, chgB_eq D lam hU]`. Establish `e : ∀ i, c * lamC lam (embT D k.1 (b i k.2.1 k.2.2)) * (g i j : ℂ_[p]) = c * (lamB D lam b k i * ∑ k', lamBc D lam b k' i * cA D lam P P' j k')` using `fun i => by`. Rewrite using `[hg1, rho_yy, mul_assoc]`.
+
+Both sides reduce to the same expression. Simplify using `only [e]`. Rewrite using `[← Finset.mul_sum, lin_of_inv hon, mul_comm]`.
+-/
 theorem GlobalTheory.KerStd.unitary_of_orthonormal : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p), UnrOK (MaximalUnramifiedExtension p) p σ → 5 ≤ p → IsResidueClassZero D p → hP D p = 0 → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (P : D.what₂.Tau → Matrix (Fin N) (Fin N) D.host.E) (P' : D.what₂.Tau → Matrix (Fin N') (Fin N') D.host.E), admitted D N N' L L' → StdBases D lam L P → StdBases D lam L' P' → ∀ (r : ℕ) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E), LocBasis D p (YYl D L L') b → TaylorLogMetric.Orthonormal D b → ∃ γ : Fin r → (OrbitPlaces.Pl D × Fin N × Fin N') → MaximalUnramifiedExtension p, (∀ i j, ‖γ i j‖ ≤ 1 ∧ σ (σ (γ i j)) = γ i j) ∧ (∀ j j', ∑ i, σ (γ i j) * γ i j' = if j = j' then 1 else 0) ∧ ∀ (c : ℂ_[p]) (G : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]), (MvPowerSeries.subst (fun v : OrbitPlaces.Pl D × Fin N × Fin N' => (MvPowerSeries.C c * MvPowerSeries.X v : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p])) (stdSer D lam (fun _ => 1) P P' G) : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p]) = MvPowerSeries.subst (fun i => (∑ j, MvPowerSeries.C (γ i j : ℂ_[p]) * MvPowerSeries.X j : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p])) (thOrth D lam c b G) := by
   intro D p _ lam σ hσ h5 hc h0 N N' L L' P P' hadm hP hP' r b hb ho
   have hon : LamONB D lam b := Formalism.L2.KerInert.RepFrame.lamONB_of_cols D lam b

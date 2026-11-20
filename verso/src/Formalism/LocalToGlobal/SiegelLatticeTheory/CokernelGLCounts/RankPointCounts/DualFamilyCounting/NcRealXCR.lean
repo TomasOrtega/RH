@@ -18,6 +18,11 @@ def RefNBox : Prop :=
       ENNReal.ofReal ((Tw w)⁻¹ ^ (D.R.rS * Fintype.card (InfinitePlace X.B.I.F)) *
         (2 : ℝ) ^ (Fintype.card (InfinitePlace X.B.I.F) * (D.R.rS * D.R.k + D.R.rS ^ 2)))
 
+/- English proof (translation)
+Establish `hR` using `fun v : InfinitePlace X.B.I.F => refNg_isHaarLoc (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (ProductExactness.zV X w v) (ProductExactness.Tw_pos u) (fX_ee X v) (fX_ff X v) (fX_ef X v) (fX_ww X u v) (fX_ew X u v) (fX_fw X u v) (fX …`. Use `haveI : ∀ v, SigmaFinite (refNX X u v) := fun v => (hR v).1`. Establish `hco : X.NinfU w = (ProductExactness.NinfG X w : Set X.B.I.Ginf)` using `(ProductExactness.NinfG_coe X w).symm`. Use `⟨inferInstance, ProductExactness.PiM.pi_ne_zero _ fun v => (hR v).2.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hco, ProductExactness.NinfG, Subgroup.coe_pi]`.
+
+Conclude with `ProductExactness.PiM.pi_conc _ _ fun v => (hR v).2.2.1`. Introduce `g hg`. Rewrite `hg` using `[hco]`. Conclude with `ProductExactness.PiM.pi_map_mul_left _ g fun v => (hR v).2.2.2 (g v) (hg v (Set.mem_univ v))`.
+-/
 theorem refNX_haar {D : D7} (X : HidaSetting D) (u w : D.what₂.Word) :
     IsHaarOnSet X.B.I (X.NinfU w) (Measure.pi (refNX X u)) := by
   have hR := fun v : InfinitePlace X.B.I.F => refNg_isHaarLoc (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v)
@@ -32,6 +37,19 @@ theorem refNX_haar {D : D7} (X : HidaSetting D) (u w : D.what₂.Word) :
     rw [hco] at hg
     exact ProductExactness.PiM.pi_map_mul_left _ g fun v => (hR v).2.2.2 (g v) (hg v (Set.mem_univ v))
 
+/- English proof (translation)
+Rewrite using `[hN D X w _ FdN (refNX_haar X u w) hF, hB X u w]`. Use `set f := Fintype.card (InfinitePlace X.B.I.F) with hf`. Use `set r := D.R.rS with hr`. Use `set k := D.R.k with hk`. Establish `hT : 0 < Tw (D` using `D) w := ProductExactness.Tw_pos w`.
+
+Establish `hd : 0 < |(NumberField.discr X.B.I.F : ℝ)|` using `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero X.B.I.F)`. Establish `h2r : 2 * (r * (r - 1) / 2) + 2 * (r * (r + 1) / 2) = 2 * r ^ 2`. Establish `e1 : 2 * (r * (r - 1) / 2) = r * (r - 1)` using `Nat.mul_div_cancel' (Nat.even_mul_pred_self r).two_dvd`. Establish `e2 : 2 * (r * (r + 1) / 2) = r * (r + 1)` using `Nat.mul_div_cancel' (Nat.even_mul_succ_self r).two_dvd`. Rewrite using `[e1, e2]`.
+
+Break down `Nat.eq_zero_or_pos r with h0 | hpos` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Take `⟨m, hm⟩ : ∃ m, r = m + 1` from `⟨r - 1, by omega⟩`. Rewrite using `[hm, Nat.add_sub_cancel]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsum : r * (r - 1) / 2 + r * (r + 1) / 2 = r ^ 2` using `by omega`. Unfold `LsNc5.covolN`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ENNReal.toReal_ofReal (by positivity)]`. Rewrite using `[show ((D.mem w).A.T : ℕ) = Tw (D := D) w from rfl]`.
+
+Establish `hpow : (2 : ℝ) ^ (-((f * (r * k + r * (r - 1) / 2) : ℕ) : ℝ)) / (2 : ℝ) ^ (f * (r * (r + 1) / 2)) * (2 : ℝ) ^ (f * (r * k + r ^ 2)) = 1`. Rewrite using `[Real.rpow_neg (by norm_num), Real.rpow_natCast, ← hsum]`. Rewrite using `[show f * (r * k + (r * (r - 1) / 2 + r * (r + 1) / 2)) = f * (r * k + r * (r - 1) / 2) + f * (r * (r + 1) / 2) by ring, pow_add]`. Establish `h1 : (0 : ℝ) < 2 ^ (f * (r * k + r * (r - 1) / 2))` using `by positivity`. Establish `h2 : (0 : ℝ) < 2 ^ (f * (r * (r + 1) / 2))` using `by positivity`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hTp : (Tw (D` using `D) w : ℝ) ^ (r * f) * (Tw (D := D) w)⁻¹ ^ (r * f) = 1 := by`. Rewrite using `[← mul_pow, mul_inv_cancel₀ hT.ne', one_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem covol_refN (hN : LsNc5.CovolN) (hB : RefNBox) {D : D7} (X : HidaSetting D) (u w : D.what₂.Word)
     (FdN : Set X.B.I.Ginf) (hF : IsSFund X.B.I (Formalism.L2.SG.PoincareInHH.PoincareSetting.NOinf X w) FdN) :
     ((Measure.pi (refNX X u)) FdN).toReal = |(NumberField.discr X.B.I.F : ℝ)| ^ LsNc5.covolumeExponent D.R.rS D.R.k := by
@@ -72,6 +90,11 @@ theorem covol_refN (hN : LsNc5.CovolN) (hB : RefNBox) {D : D7} (X : HidaSetting 
           (2 : ℝ) ^ (f * (r * k + r ^ 2))) * |(NumberField.discr X.B.I.F : ℝ)| ^ LsNc5.covolumeExponent r k := by ring
     _ = |(NumberField.discr X.B.I.F : ℝ)| ^ LsNc5.covolumeExponent r k := by rw [hTp, hpow, one_mul, one_mul]
 
+/- English proof (translation)
+Use `delta CovolRef`. Introduce `D X hb FdN FdN' u u' hH`. Establish `hd : (0 : ℝ) < |(NumberField.discr X.B.I.F : ℝ)|` using `abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero _))`. Apply the tactic sequence `rw [covol_refN hN hB X u _ FdN hH.2.2.1, covol_refN hN hB X u _ FdN' (by first | exact hH.2.2.2.1 | exact hH.2.2.2), ← Real.rpow_add hd]`. Use `congr 1`.
+
+Use `delta eDF LsNc5.covolumeExponent`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem covolRef_of (hN : LsNc5.CovolN) (hB : RefNBox) : CovolRef := by
   delta CovolRef
   intro D X hb FdN FdN' u u' hH
@@ -83,6 +106,9 @@ theorem covolRef_of (hN : LsNc5.CovolN) (hB : RefNBox) : CovolRef := by
   delta eDF LsNc5.covolumeExponent
   ring
 
+/- English proof (translation)
+The claim follows from `covolRef_of (covolN_of_coordCovol hC) hB`.
+-/
 theorem covolRef_of_steps (hC : LsNc5.CoordCovol) (hB : RefNBox) : CovolRef :=
   covolRef_of (covolN_of_coordCovol hC) hB
 

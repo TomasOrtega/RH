@@ -11,6 +11,9 @@ open MeasureTheory GroundTheory.Automorphic.GJMatrix
 
 namespace GlobalTheory.StdCharEq
 
+/- English proof (translation)
+Rewrite using `[← GroundTheory.Global.mixedTrace_homeomorphMixedSpace, GroundTheory.Global.homeomorphMixedSpace_apply, GroundTheory.Global.mixedTrace_apply, Algebra.trace_prod_apply, PI.ProdFormulaE.Tr.trace_pi, PI.ProdFormulaE.Tr.trace_pi]`. Simplify using `only [Algebra.trace_self_apply, Algebra.trace_complex_apply]`.
+-/
 theorem trace_eq_infiniteTrace (F : Type) [Field F] [NumberField F] (x : InfiniteAdeleRing F) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (InfiniteAdeleRing.ringEquiv_mixedSpace F x) =
       GroundTheory.Global.infiniteTrace F x := by
@@ -20,6 +23,19 @@ theorem trace_eq_infiniteTrace (F : Type) [Field F] [NumberField F] (x : Infinit
     PI.ProdFormulaE.Tr.trace_pi]
   simp only [Algebra.trace_self_apply, Algebra.trace_complex_apply]
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ`. Establish `hadd : ∀ a b : AF F, (GroundTheory.Global.adelicChar F (a + b) : ℂ) = (GroundTheory.Global.adelicChar F a : ℂ) * (GroundTheory.Global.adelicChar F b : ℂ)` using `fun a b => by`. Rewrite using `[← Circle.coe_mul]`. Conclude with `congrArg _ ((GroundTheory.Global.adelicChar F).map_add_eq_mul a b)`. Establish `hinf : ∀ x : Ainf F, ψ (pairA F x 0) = (GroundTheory.Global.adelicChar F (pairA F x 0) : ℂ)` using `fun x => by`.
+
+Establish `h : GroundTheory.Global.adelicChar F (pairA F x 0) = 𝐞 (-GroundTheory.Global.infiniteTrace F x)` using `GroundTheory.Global.adelicChar_infinite x`. Rewrite using `[GlobalTheory.StdCharFromIsStd.psi_pairA hψ, trace_eq_infiniteTrace, h, Real.fourierChar_apply]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hp : Continuous fun y : Af F => pairA F 0 y` using `continuous_const.prodMk continuous_id`. Establish `hc : Continuous fun a : AF F => (GroundTheory.Global.adelicChar F a : ℂ)` using `continuous_subtype_val.comp GroundTheory.Global.continuous_adelicChar`. Establish `hcl : IsClosed {y : Af F | ψ (pairA F 0 y) = (GroundTheory.Global.adelicChar F (pairA F 0 y) : ℂ)}` using `isClosed_eq (hψ.1.comp hp) (hc.comp hp)`. Establish `hrange : Set.range (algebraMap F (Af F)) ⊆ {y : Af F | ψ (pairA F 0 y) = (GroundTheory.Global.adelicChar F (pairA F 0 y) : ℂ)}`. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Establish `h1` using `hψ.2.1 a`. Establish `h2 : (GroundTheory.Global.adelicChar F (algebraMap F (AF F) a) : ℂ) = 1`. Establish `h` using `GroundTheory.Global.adelicChar_algebraMap (K := F) a`. Conclude with `(congrArg (fun z : Circle => (z : ℂ)) h).trans Circle.coe_one`. Rewrite `h1` using `[GlobalTheory.AdeleCharTwist.algebraMap_eq_pairA, AddChar.map_add_eq_mul, hinf]`.
+
+Rewrite `h2` using `[GlobalTheory.AdeleCharTwist.algebraMap_eq_pairA, hadd]`. Conclude with `mul_left_cancel₀ (Circle.coe_ne_zero _) (h1.trans h2.symm)`. Establish `hall` using `hcl.closure_subset_iff.2 hrange`. Rewrite `hall` using `[GlobalTheory.AdeleCharTwist.denseRange_fin.closure_range]`. Introduce `x`.
+
+Rewrite using `[GlobalTheory.StdCharFromIsStd.pairA_split x, AddChar.map_add_eq_mul, hadd, hinf]`. Conclude with `congrArg _ (hall (Set.mem_univ x.2))`.
+-/
 theorem eq_adelicChar : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ x : AF F, ψ x = (GroundTheory.Global.adelicChar F x : ℂ) := by
   intro F _ _ ψ hψ

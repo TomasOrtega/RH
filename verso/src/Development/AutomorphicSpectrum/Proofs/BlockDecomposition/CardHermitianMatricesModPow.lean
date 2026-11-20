@@ -7,6 +7,13 @@ open PositivityTheory.PfSWUS.Loc GlobalTheory.CompanionTheory.UnrDens
 
 namespace GlobalTheory.CompanionTheory.UnrDens
 
+/- English proof (translation)
+Take `⟨u, hu, -⟩` from `h.basis`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `hσ : σ (u - σ u) = -(u - σ u)` using `by rw [map_sub, h.inv]; ring`. Establish `hsv : σ v = -v`. Establish `h1 : σ (u - σ u) * σ v = 1` using `by rw [← map_mul, hv, map_one]`.
+
+Rewrite `h1` using `[hσ]`. Establish `h2 : (u - σ u) * (σ v + v) = 0` using `by linear_combination (-1 : R) * h1 + hv`. Establish `h3 : v * ((u - σ u) * (σ v + v)) = 0` using `by rw [h2, mul_zero]`. Rewrite `h3` using `[← mul_assoc, mul_comm v, hv, one_mul]`. Take the linear combination `h3`.
+
+Use `⟨u, u * v, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hsv]`. Take the linear combination `hv`.
+-/
 theorem exists_trace_one {R : Type} [CommRing R] {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ}
     (h : IsUnrQuad R σ ϖ q ε) : ∃ u θ : R, IsUnit (u - σ u) ∧ θ + σ θ = 1 := by
   obtain ⟨u, hu, -⟩ := h.basis
@@ -23,6 +30,17 @@ theorem exists_trace_one {R : Type} [CommRing R] {σ : R →+* R} {ϖ : R} {q : 
   rw [map_mul, hsv]
   linear_combination hv
 
+/- English proof (translation)
+Use extensionality with `H`. Simplify using `only [PositivityTheory.PfSWUS.Loc.hermMod, Set.mem_image, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, hh, rfl⟩ a b`. Establish `hab` using `congrFun (congrFun hh a) b`.
+
+Simplify using `only [PositivityTheory.PfSWUS.Loc.cT, Matrix.transpose_apply, Matrix.map_apply] at hab`. Simplify using `only [PositivityTheory.PfSWUS.Loc.red, Matrix.map_apply, barσ_mk]`. Rewrite using `[hab]`. Introduce `hH`. Take `⟨-, θ, -, hθ⟩` from `exists_trace_one h`.
+
+Use `choose lift hlift using fun a b => Ideal.Quotient.mk_surjective (H a b)`. Use `⟨Matrix.of fun a b => θ * lift a b + σ (θ * lift b a), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `only [PositivityTheory.PfSWUS.Loc.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, map_add, h.inv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use extensionality with `a b`. Establish `e1 : Ideal.Quotient.mk (PositivityTheory.PfSWUS.Loc.lev ϖ k) (σ (lift b a)) = barσ σ ϖ h.fix_ϖ k (H b a)`. Rewrite using `[← hlift b a, barσ_mk]`. Establish `hθ' : Ideal.Quotient.mk (PositivityTheory.PfSWUS.Loc.lev ϖ k) θ + Ideal.Quotient.mk (PositivityTheory.PfSWUS.Loc.lev ϖ k) (σ θ) = 1`. Rewrite using `[← map_add, hθ, map_one]`.
+
+Simplify using `only [PositivityTheory.PfSWUS.Loc.red, Matrix.map_apply, Matrix.of_apply, map_add, map_mul, hlift]`. Rewrite using `[e1, hH a b]`. Take the linear combination `(H a b) * hθ'`.
+-/
 theorem hermMod_eq {R : Type} [CommRing R] {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ}
     (h : IsUnrQuad R σ ϖ q ε) (n k : ℕ) :
     hermMod σ ϖ n k = {H | ∀ a b, barσ σ ϖ h.fix_ϖ k (H b a) = H a b} := by
@@ -51,6 +69,19 @@ theorem hermMod_eq {R : Type} [CommRing R] {σ : R →+* R} {ϖ : R} {q : ℕ} {
       rw [e1, hH a b]
       linear_combination (H a b) * hθ'
 
+/- English proof (translation)
+Introduce `R _ σ ϖ q ε h n k`. Rewrite using `[hermMod_eq h n k]`. Establish `hcard` using `GlobalTheory.T.unramified_quotient_card R σ ϖ q ε h k`. Establish `hq : 1 < q` using `h.one_lt`. Use `haveI : Finite (R ⧸ PositivityTheory.PfSWUS.Loc.lev ϖ k) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ (by omega))`.
+
+Take `⟨u, hu, -⟩` from `h.basis`. Establish `hinv : ∀ x, barσ σ ϖ h.fix_ϖ k (barσ σ ϖ h.fix_ϖ k x) = x`. Introduce `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[barσ_mk, barσ_mk, h.inv]`.
+
+Establish `hω : IsUnit (Ideal.Quotient.mk (PositivityTheory.PfSWUS.Loc.lev ϖ k) u - barσ σ ϖ h.fix_ϖ k (Ideal.Quotient.mk (PositivityTheory.PfSWUS.Loc.lev ϖ k) u))`. Rewrite using `[barσ_mk, ← map_sub]`. Conclude with `hu.map _`. Establish `key` using `GlobalTheory.GramCount.card_hermitian_dvd_sq (barσ σ ϖ h.fix_ϖ k) hinv _ hω 1 (map_one _) n`. Establish `e2 : Nat.card {x : R ⧸ PositivityTheory.PfSWUS.Loc.lev ϖ k // (1 : R ⧸ PositivityTheory.PfSWUS.Loc.lev ϖ k) ∣ x} = q ^ (2 * k)`.
+
+Rewrite using `[← hcard]`. Conclude with `Nat.card_congr (Equiv.subtypeUnivEquiv fun x => one_dvd x)`. Apply `Nat.pow_left_injective two_ne_zero` to reduce the goal to its premises. Use `show _ ^ 2 = _ ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Conclude with `Nat.card_congr { toFun := fun H => ⟨H.1, H.2, fun _ _ => one_dvd _⟩ invFun := fun H => ⟨H.1, H.2.1⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Use `_ = Nat.card {x : R ⧸ PositivityTheory.PfSWUS.Loc.lev ϖ k // (1 : R ⧸ PositivityTheory.PfSWUS.Loc.lev ϖ k) ∣ x} ^ (n * n) := key`. Use `_ = (q ^ (k * n ^ 2)) ^ 2 := by`. Rewrite using `[e2, ← pow_mul, ← pow_mul]`.
+
+Put the polynomial expressions in normal form.
+-/
 theorem card_hermMod : ∀ (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R) (q : ℕ) (ε : ℤ),
     IsUnrQuad R σ ϖ q ε → ∀ n k : ℕ, Nat.card (hermMod σ ϖ n k) = q ^ (k * n ^ 2) := by
   intro R _ σ ϖ q ε h n k

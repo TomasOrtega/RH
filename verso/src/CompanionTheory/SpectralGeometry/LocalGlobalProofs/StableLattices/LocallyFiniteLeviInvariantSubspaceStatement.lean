@@ -8,6 +8,9 @@ open Formalism.REAL (GlRel KHighest IsWeight)
 open CompanionTheory.D.DSIC (KUnit)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RgExhStableChains.exists_stable | exact GlobalTheory.CompanionTheory.RgExhStableChains.exists_stable | (intros; apply GlobalTheory.CompanionTheory.RgExhStableChains.exists_stable <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.locally_finite_levi_invariant_subspace : ∀ (n : ℕ) (ε : Fin n → Bool) (lev : Fin n → ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (d : ℕ) (y : Cn n V), LocFin ε E → SuppIn (inU lev) y → Deg d y →
     ∃ T : Submodule ℂ (Cn n V), FiniteDimensional ℂ T ∧ y ∈ T ∧ (∀ x ∈ T, SuppIn (inU lev) x ∧ Deg d x) ∧

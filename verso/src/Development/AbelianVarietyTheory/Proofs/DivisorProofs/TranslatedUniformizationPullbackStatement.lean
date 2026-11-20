@@ -17,6 +17,9 @@ set_option autoImplicit false
 
 noncomputable section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorusPullFrame.exists_holUnif_pull_right | exact GlobalTheory.TorusPullFrame.exists_holUnif_pull_right | (intros; apply GlobalTheory.TorusPullFrame.exists_holUnif_pull_right <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.translated_uniformization_pullback : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L₀ : LB A.left) (g : ℕ) (u : HolUnif A L₀ g)
     (L : LB (A ⊗ A).left) (U : HolUnif (A ⊗ A) L (g + g)),
     (∀ x y, U.ex (Fin.append x y) = lift (u.ex x) (u.ex y)) → ∀ x₀ : Fin g → ℂ,

@@ -13,6 +13,9 @@ namespace LeviHolPerturb
 
 variable {J : Type} [Fintype J]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hf.eventually (by simp)] with t ht`. Conclude with `(ht.differentiableAt (by norm_num)).hasDerivAt`. Establish `h1 : ContDiffAt ℝ 1 (fun t => fderiv ℝ f t 1) 0` using `(hf.fderiv_right (m := 1) (by norm_num)).clm_apply contDiffAt_const`. Conclude with `(h1.differentiableAt one_ne_zero).hasDerivAt`.
+-/
 theorem hasDerivAt_of_contDiffAt_two {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] {f : ℝ → F}
     (hf : ContDiffAt ℝ 2 f 0) :
     (∀ᶠ t in 𝓝 (0 : ℝ), HasDerivAt f (deriv f t) t) ∧ HasDerivAt (deriv f) (deriv (deriv f) 0) 0 := by
@@ -23,6 +26,11 @@ theorem hasDerivAt_of_contDiffAt_two {F : Type*} [NormedAddCommGroup F] [NormedS
       (hf.fderiv_right (m := 1) (by norm_num)).clm_apply contDiffAt_const
     exact (h1.differentiableAt one_ne_zero).hasDerivAt
 
+/- English proof (translation)
+Take `⟨hf1, hf2⟩` from `hasDerivAt_of_contDiffAt_two hf`. Take `⟨hg1, hg2⟩` from `hasDerivAt_of_contDiffAt_two hg`. Establish `hev : deriv (fun t => f t * g t) =ᶠ[𝓝 0] fun t => deriv f t * g t + f t * deriv g t` using `by filter_upwards [hf1, hg1] with t h1 h2`. Conclude with `(h1.mul h2).deriv`. Rewrite using `[hev.deriv_eq]`.
+
+Use `((hf2.mul hg1.self_of_nhds).add (hf1.self_of_nhds.mul hg2)).deriv.trans ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deriv_deriv_mul {f g : ℝ → ℝ} (hf : ContDiffAt ℝ 2 f 0) (hg : ContDiffAt ℝ 2 g 0) :
     deriv (deriv fun t => f t * g t) 0 =
       deriv (deriv f) 0 * g 0 + 2 * (deriv f 0 * deriv g 0) + f 0 * deriv (deriv g) 0 := by
@@ -35,6 +43,9 @@ theorem deriv_deriv_mul {f g : ℝ → ℝ} (hf : ContDiffAt ℝ 2 f 0) (hg : Co
   refine ((hf2.mul hg1.self_of_nhds).add (hf1.self_of_nhds.mul hg2)).deriv.trans ?_
   ring
 
+/- English proof (translation)
+Establish `hline : HasDerivAt (fun s : ℝ => z + s • e) e 0` using `(((hasDerivAt_id (0 : ℝ)).smul_const e).const_add z).congr_deriv (one_smul ℝ e)`. Establish `hz0 : z + (0 : ℝ) • e = z` using `by rw [zero_smul, add_zero]`. Conclude with `(hf.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hline hz0.symm).deriv`.
+-/
 theorem deriv_line {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] {f : (J → ℂ) → F} {z : J → ℂ}
     (hf : DifferentiableAt ℝ f z) (e : J → ℂ) :
     deriv (fun s : ℝ => f (z + s • e)) 0 = fderiv ℝ f z e := by
@@ -43,6 +54,15 @@ theorem deriv_line {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] {f : (
   have hz0 : z + (0 : ℝ) • e = z := by rw [zero_smul, add_zero]
   exact (hf.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hline hz0.symm).deriv
 
+/- English proof (translation)
+Establish `hline : ∀ s : ℝ, HasDerivAt (fun s : ℝ => z + s • e) e s` using `fun s => (((hasDerivAt_id s).smul_const e).const_add z).congr_deriv (one_smul ℝ e)`. Establish `hz0 : z + (0 : ℝ) • e = z` using `by rw [zero_smul, add_zero]`. Establish `hcont : Tendsto (fun s : ℝ => z + s • e) (𝓝 0) (𝓝 z)`. Establish `h` using `(hline 0).continuousAt.tendsto`. Rewrite `h` using `[hz0]`. Then use the resulting hypothesis.
+
+Establish `hfe : ∀ᶠ y in 𝓝 z, ContDiffAt ℝ 2 f y` using `hf.eventually (by simp)`. Establish `hev : deriv (fun s : ℝ => f (z + s • e)) =ᶠ[𝓝 0] fun s => fderiv ℝ f (z + s • e) e` using `by filter_upwards [hcont.eventually hfe] with s hs`. Establish `h` using `(hs.differentiableAt (by norm_num)).hasFDerivAt.comp_hasDerivAt s (hline s)`. Conclude with `h.deriv`. Establish `hH : HasFDerivAt (fderiv ℝ f) (fderiv ℝ (fderiv ℝ f) z) z` using `((hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).hasFDerivAt`.
+
+Establish `hA : HasFDerivAt (fun y => fderiv ℝ f y e) ((fderiv ℝ (fderiv ℝ f) z).flip e) z`. Establish `h` using `hH.clm_apply (hasFDerivAt_const e z)`. Simplify using `using h`. Establish `hd : HasDerivAt (fun s : ℝ => fderiv ℝ f (z + s • e) e) (fderiv ℝ (fderiv ℝ f) z e e) 0` using `hA.comp_hasDerivAt_of_eq (0 : ℝ) (hline 0) hz0.symm`. Rewrite using `[hev.deriv_eq]`.
+
+Conclude with `hd.deriv`.
+-/
 theorem deriv_deriv_line {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] {f : (J → ℂ) → F}
     {z : J → ℂ} (hf : ContDiffAt ℝ 2 f z) (e : J → ℂ) :
     deriv (deriv fun s : ℝ => f (z + s • e)) 0 = fderiv ℝ (fderiv ℝ f) z e e := by
@@ -67,6 +87,9 @@ theorem deriv_deriv_line {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] 
   rw [hev.deriv_eq]
   exact hd.deriv
 
+/- English proof (translation)
+Establish `hl : ContDiffAt ℝ 2 (fun s : ℝ => z + s • e) 0` using `(contDiff_const.add (contDiff_id.smul contDiff_const)).contDiffAt`. Conclude with `ContDiffAt.comp (g := f) (0 : ℝ) (by simpa using hf) hl`.
+-/
 theorem contDiffAt_line {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] {f : (J → ℂ) → F}
     {z : J → ℂ} (hf : ContDiffAt ℝ 2 f z) (e : J → ℂ) :
     ContDiffAt ℝ 2 (fun s : ℝ => f (z + s • e)) 0 := by
@@ -74,6 +97,13 @@ theorem contDiffAt_line {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] {
     (contDiff_const.add (contDiff_id.smul contDiff_const)).contDiffAt
   exact ContDiffAt.comp (g := f) (0 : ℝ) (by simpa using hf) hl
 
+/- English proof (translation)
+Establish `hR : AnalyticAt ℝ φ z` using `hφ.restrictScalars`. Establish `hT : HasFDerivAt (fderiv ℝ φ) (fderiv ℝ (fderiv ℝ φ) z) z` using `(((hR.contDiffAt (n := 2)).fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).hasFDerivAt`. Establish `hlin : ∀ a b : J → ℂ, fderiv ℝ (fderiv ℝ φ) z a (Complex.I • b) = Complex.I • fderiv ℝ (fderiv ℝ φ) z a b`. Introduce `a b`. Establish `h1` using `hT.clm_apply (hasFDerivAt_const (Complex.I • b) z)`.
+
+Establish `h2` using `(hT.clm_apply (hasFDerivAt_const b z)).const_smul Complex.I`. Establish `hev : (fun y => fderiv ℝ φ y (Complex.I • b)) =ᶠ[𝓝 z] (fun y => Complex.I • fderiv ℝ φ y b)` using `by filter_upwards [hφ.eventually_analyticAt] with y hy`. Rewrite using `[hy.differentiableAt.fderiv_restrictScalars ℝ]`. Simplify using the standard rewrite rules. Establish `h3` using `(h1.congr_of_eventuallyEq hev.symm).unique h2`.
+
+Use `congrArg (fun L => L a) h3` as an intermediate fact. Simplify using `using this`. Establish `hsymm : IsSymmSndFDerivAt ℝ φ z` using `(hR.contDiffAt (n := ω)).isSymmSndFDerivAt le_top`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sndDeriv_I_I {φ : (J → ℂ) → ℂ} {z : J → ℂ} (hφ : AnalyticAt ℂ φ z) (a : J → ℂ) :
     fderiv ℝ (fderiv ℝ φ) z (Complex.I • a) (Complex.I • a) = - fderiv ℝ (fderiv ℝ φ) z a a := by
   have hR : AnalyticAt ℝ φ z := hφ.restrictScalars
@@ -100,6 +130,19 @@ theorem sndDeriv_I_I {φ : (J → ℂ) → ℂ} {z : J → ℂ} (hφ : AnalyticA
     _ = Complex.I • Complex.I • fderiv ℝ (fderiv ℝ φ) z a a := by rw [hlin]
     _ = - fderiv ℝ (fderiv ℝ φ) z a a := by rw [smul_smul, Complex.I_mul_I]; simp
 
+/- English proof (translation)
+Establish `hg : (fun t => X t * (‖A t + Φ t‖ ^ 2 - ‖A t‖ ^ 2)) = fun t => X t * (2 * inner ℝ (A t) (Φ t) + inner ℝ (Φ t) (Φ t))`. Use function extensionality and compare the values at `t`. Rewrite using `[norm_add_sq_real, real_inner_self_eq_norm_sq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hg]`.
+
+Take `⟨hX1, hX2⟩` from `hasDerivAt_of_contDiffAt_two hX`. Take `⟨hA1, hA2⟩` from `hasDerivAt_of_contDiffAt_two hA`. Take `⟨hΦ1, hΦ2⟩` from `hasDerivAt_of_contDiffAt_two hΦ`. Establish `hN2 : ContDiffAt ℝ 2 (fun t => 2 * inner ℝ (A t) (Φ t) + inner ℝ (Φ t) (Φ t)) 0` using `(contDiffAt_const.mul (hA.inner ℝ hΦ)).add (hΦ.inner ℝ hΦ)`. Establish `hN0 : (2 * inner ℝ (A 0) (Φ 0) + inner ℝ (Φ 0) (Φ 0) : ℝ) = 0` using `by simp [h0]`.
+
+Establish `hNd : HasDerivAt (fun t => 2 * inner ℝ (A t) (Φ t) + inner ℝ (Φ t) (Φ t)) 0 0`. Establish `h` using `((hA1.self_of_nhds.inner ℝ hΦ1.self_of_nhds).const_mul 2).add (hΦ1.self_of_nhds.inner ℝ hΦ1.self_of_nhds)`. Conclude with `h.congr_deriv (by simp [h0, h1])`. Establish `hev : deriv (fun t => 2 * inner ℝ (A t) (Φ t) + inner ℝ (Φ t) (Φ t)) =ᶠ[𝓝 0] fun t => 2 * (inner ℝ (A t) (deriv Φ t) + inner ℝ (deriv A t) (Φ t)) + (inner ℝ (Φ t) (deriv Φ t) + inner ℝ (deriv Φ t) (Φ t))` using `by filter_upwards [hA1, hΦ1] with t ha hp`. Conclude with `(((ha.inner ℝ hp).const_mul 2).add (hp.inner ℝ hp)).deriv`.
+
+Establish `hNdd : deriv (deriv fun t => 2 * inner ℝ (A t) (Φ t) + inner ℝ (Φ t) (Φ t)) 0 = 2 * inner ℝ (A 0) (deriv (deriv Φ) 0)`. Rewrite using `[hev.deriv_eq]`. Establish `h` using `((((hA1.self_of_nhds.inner ℝ hΦ2).add (hA2.inner ℝ hΦ1.self_of_nhds)).const_mul 2).add ((hΦ1.self_of_nhds.inner ℝ hΦ2).add (hΦ2.inner ℝ hΦ1.self_of_nhds)))`. Use `h.deriv.trans ?_` and prove the remaining obligations. Simplify using `[h0, h1]`.
+
+Establish `key` using `deriv_deriv_mul hX hN2`. Use `beta_reduce at key`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(hX1.self_of_nhds.mul hNd).deriv.trans ?_` and prove the remaining obligations. Simplify using `[h0]`.
+
+Rewrite using `[key, hNdd, hN0, hNd.deriv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem line_key {X : ℝ → ℝ} {A Φ : ℝ → ℂ} (hX : ContDiffAt ℝ 2 X 0) (hA : ContDiffAt ℝ 2 A 0)
     (hΦ : ContDiffAt ℝ 2 Φ 0) (h0 : Φ 0 = 0) (h1 : deriv Φ 0 = 0) :
     deriv (fun t => X t * (‖A t + Φ t‖ ^ 2 - ‖A t‖ ^ 2)) 0 = 0 ∧
@@ -141,6 +184,13 @@ theorem line_key {X : ℝ → ℝ} {A Φ : ℝ → ℂ} (hX : ContDiffAt ℝ 2 X
   · rw [key, hNdd, hN0, hNd.deriv]
     ring
 
+/- English proof (translation)
+Establish `haR : ContDiffAt ℝ 2 a z` using `ha.restrictScalars.contDiffAt`. Establish `hφR : ContDiffAt ℝ 2 φ z` using `hφ.restrictScalars.contDiffAt`. Establish `hz0 : z + (0 : ℝ) • v = z` using `by rw [zero_smul, add_zero]`. Establish `h0 : (fun t : ℝ => φ (z + t • v)) 0 = 0` using `by simp [hφ0]`. Establish `h1 : deriv (fun t : ℝ => φ (z + t • v)) 0 = 0`.
+
+Rewrite using `[deriv_line (hφR.differentiableAt (by norm_num)) v, hφ.differentiableAt.fderiv_restrictScalars ℝ]`. Simplify using `using hv`. Take `⟨k1, k2⟩` from `line_key (X := fun t => ξ (z + t • v)) (A := fun t => a (z + t • v)) (Φ := fun t => φ (z + t • v)) (contDiffAt_line hξ v) (contDiffAt_line haR v) (contDiffAt_line hφR v) h0 h1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← deriv_line (hu.differentiableAt (by norm_num)) v]`.
+
+Conclude with `k1`. Rewrite using `[← deriv_deriv_line hu v, ← deriv_deriv_line hφR v]`. Rewrite using `[show ξ z = ξ (z + (0 : ℝ) • v) by rw [hz0], show a z = a (z + (0 : ℝ) • v) by rw [hz0]]`. Conclude with `k2`.
+-/
 theorem along {ξ : (J → ℂ) → ℝ} {a φ : (J → ℂ) → ℂ} {z : J → ℂ} (hξ : ContDiffAt ℝ 2 ξ z)
     (ha : AnalyticAt ℂ a z) (hφ : AnalyticAt ℂ φ z) (hφ0 : φ z = 0)
     (hu : ContDiffAt ℝ 2 (fun x => ξ x * (‖a x + φ x‖ ^ 2 - ‖a x‖ ^ 2)) z) (v : J → ℂ)
@@ -166,6 +216,11 @@ theorem along {ξ : (J → ℂ) → ℝ} {a φ : (J → ℂ) → ℂ} {z : J →
     rw [show ξ z = ξ (z + (0 : ℝ) • v) by rw [hz0], show a z = a (z + (0 : ℝ) • v) by rw [hz0]]
     exact k2
 
+/- English proof (translation)
+Introduce `J _ ξ a φ z w hξ ha hφ hφ0 hdφ`. Establish `haR : ContDiffAt ℝ 2 a z` using `ha.restrictScalars.contDiffAt`. Establish `hφR : ContDiffAt ℝ 2 φ z` using `hφ.restrictScalars.contDiffAt`. Establish `hu : ContDiffAt ℝ 2 (fun x => ξ x * (‖a x + φ x‖ ^ 2 - ‖a x‖ ^ 2)) z` using `hξ.mul (((haR.add hφR).norm_sq ℝ).sub (haR.norm_sq ℝ))`. Establish `hw` using `along hξ ha hφ hφ0 hu w hdφ`.
+
+Establish `hIw` using `along hξ ha hφ hφ0 hu (Complex.I • w) (by rw [map_smul, hdφ, smul_zero])`. Use `⟨hu, by simp [hφ0], hw.1, hIw.1, ?_⟩` and prove the remaining obligations. Unfold `leviForm`. Rewrite using `[hw.2, hIw.2, sndDeriv_I_I hφ w, inner_neg_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proof : LeviHolPerturb.Statement := by
   intro J _ ξ a φ z w hξ ha hφ hφ0 hdφ
   have haR : ContDiffAt ℝ 2 a z := ha.restrictScalars.contDiffAt

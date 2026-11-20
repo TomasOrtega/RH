@@ -8,6 +8,31 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
+/- English proof (translation)
+Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl τ i`. Use `choose cX hcX using D.arith.2.1.2.2`. Establish `hy : ∀ k, D.y ⟨k, cX k⟩ ≠ 0`. Introduce `k h0`. Apply `hcX k` to reduce the goal to its premises.
+
+Rewrite using `[mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_X, h0, map_zero, zero_mul]`. Establish `hseg : segreCoord D.y cX ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hy k`. Take `⟨M, f, cc, -, -, hsum, hPr⟩` from `Pl.generates τ i cX hseg`. Establish `hM : 0 < M`. Break down `Nat.eq_zero_or_pos M with h | h` into its components or cases.
+
+Substitute `h` using the available equality. Simplify using `at hsum`. Conclude with `h`. Take `⟨b, -, -, hA⟩` from `hPr ⟨0, hM⟩`. Establish `hmono : StrictMono (Fin.castLE (step_le i))` using `Fin.strictMono_castLE (step_le i)`.
+
+Take `⟨a, -, ha⟩` from `hA _ hmono`. Establish `h1` using `ha _ hmono`. Rewrite `h1` using `[if_pos rfl]`. Take `⟨m0, -, hm0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (h1.symm ▸ one_ne_zero)`. Establish `hb : Pl.gen τ i m0 (exteriorPower.ιMulti Ω _ (b ∘ Fin.castLE (step_le i))) ≠ 0` using `fun h => hm0 (by rw [h, zero_mul, mul_zero])`.
+
+Establish `hc0 : ∃ c0 : Fin ((i : ℕ) + 1) → Fin D.N, Pl.gen τ i m0 (exteriorPower.ιMulti Ω _ (Pl.e τ ∘ c0)) ≠ 0`. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_not] at hcon`. Set `B : Module.Basis (Fin D.N) Ω (E τ)` to `Module.Basis.mk (Pl.e_indep τ) (Pl.e_span τ).ge`. Establish `hzero : (Pl.gen τ i m0).compAlternatingMap (exteriorPower.ιMulti Ω ((i : ℕ) + 1)) = 0`.
+
+Use `Module.Basis.ext_alternating B fun v _ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.compAlternatingMap_apply, AlternatingMap.zero_apply, B, Module.Basis.coe_mk]`. Conclude with `hcon v`. Apply `hb` to reduce the goal to its premises. Use `congrArg (fun φ => φ (b ∘ Fin.castLE (step_le i))) hzero` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨c0, hc0⟩` from `hc0`. Use `⟨m0, ?_⟩` and prove the remaining obligations. Set `v : (Fin ((i : ℕ) + 1) → Fin D.N) → Fin ((i : ℕ) + 1) → Ψ × Fin D.N × Fin D.N` to `fun c a => (τ, headIdx (step_le i) a, c a)`. Set `μ : (Fin ((i : ℕ) + 1) → Fin D.N) → (Ψ × Fin D.N × Fin D.N) →₀ ℕ` to `fun c => ∑ a, Finsupp.single (v c a) 1`.
+
+Set `g : (Fin ((i : ℕ) + 1) → Fin D.N) → Ω` to `fun c => Pl.gen τ i m0 (exteriorPower.ιMulti Ω _ (Pl.e τ ∘ c))`. Set `P : MvPolynomial (Ψ × Fin D.N × Fin D.N) Ω` to `∑ c, monomial (μ c) (g c)`. Establish `hP : Pl.pluecker τ i m0 = algebraMap _ Pl.ΩY P`. Simplify using `only [PlueckerData.pluecker, PlueckerData.gvar, PlueckerData.ofΩ, P, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_prod, ← map_mul]`. Use `congr 1`. Rewrite using `[show monomial (μ c) (g c) = C (g c) * monomial (μ c) 1 by rw [C_mul_monomial, mul_one], monomial_sum_one, mul_comm]`. Both sides reduce to the same expression. Establish `hμ : ∀ c, μ c = μ c0 → c = c0`.
+
+Introduce `c h`. Use function extensionality and compare the values at `a`. Establish `h2` using `congrArg (fun φ : (Ψ × Fin D.N × Fin D.N) →₀ ℕ => φ (τ, headIdx (step_le i) a, c0 a)) h`. Simplify using `only [μ, v, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.single_apply, Prod.mk.injEq, true_and, headIdx, Fin.castLE_inj] at h2`. Rewrite `h2` using `[Finset.sum_eq_single a (fun a' _ h' => if_neg fun h'' => h' h''.1) (by simp), Finset.sum_eq_single a (fun a' _ h' => if_neg fun h'' => h' h''.1) (by simp)]`.
+
+Assume the negation of the conclusion as `hne`. Simplify using `[hne] at h2`. Establish `hcoeff : coeff (μ c0) P = g c0`. Simplify using `only [P, coeff_sum, coeff_monomial]`. Rewrite using `[Finset.sum_eq_single c0 (fun c _ hc => if_neg fun h => hc (hμ c h)) (by simp), if_pos rfl]`.
+
+Establish `hPne : P ≠ 0` using `fun h => hc0 (by rw [h, coeff_zero] at hcoeff; exact hcoeff.symm)`. Rewrite using `[hP]`. Conclude with `fun h => hPne (IsFractionRing.injective (MvPolynomial (Ψ × Fin D.N × Fin D.N) Ω) Pl.ΩY (by rw [h, map_zero]))`.
+-/
 theorem PlueckerNeZero.proof : PlueckerNeZero.Statement := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl τ i
   classical

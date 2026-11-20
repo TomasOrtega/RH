@@ -22,6 +22,9 @@ noncomputable def defect (H : Host E) (p q : ℕ) {R : Type} [CommRing R] {n : �
   2 * r * LinearMap.trace R _ (M a) - ((p + q) * r * ((Algebra.intTrace ℤ (𝓞 E) a : ℤ) : R) +
     (p - q) * ((Algebra.intTrace ℤ (𝓞 E) (H.rt * a) : ℤ) : R))
 
+/- English proof (translation)
+Rewrite using `[defect, ← GlobalTheory.TraceSpread.map_trace f (M a) (M' a) (hM a)]`. Simplify using `only [map_sub, map_mul, map_add, map_natCast, map_intCast, map_ofNat]`.
+-/
 theorem map_defect (H : Host E) (p q : ℕ) {R K : Type} [CommRing R] [CommRing K] {n : ℕ}
     (M : 𝓞 E →+* Module.End R (Fin n → R)) (r : R) (f : R →+* K) (M' : 𝓞 E →+* Module.End K (Fin n → K))
     (hM : ∀ a c, f ∘ M a c = M' a (f ∘ c)) (a : 𝓞 E) :
@@ -30,6 +33,15 @@ theorem map_defect (H : Host E) (p q : ℕ) {R K : Type} [CommRing R] [CommRing 
   rw [defect, ← GlobalTheory.TraceSpread.map_trace f (M a) (M' a) (hM a)]
   simp only [map_sub, map_mul, map_add, map_natCast, map_intCast, map_ofNat]
 
+/- English proof (translation)
+Use `letI : Algebra ℚ R := hQ.toAlgebra`. Set `L` to `AlgebraicClosure (FractionRing R)`. Set `emb : R →+* L` to `(algebraMap (FractionRing R) L).comp (algebraMap R (FractionRing R))`. Establish `hemb : Function.Injective emb` using `(algebraMap (FractionRing R) L).injective.comp (IsFractionRing.injective R (FractionRing R))`. Use `haveI : CharZero L := ((RingHom.charZero_iff (emb.comp hQ).injective).1 inferInstance)`.
+
+Take `⟨ML, hML⟩` from `hM L emb`. Establish `hs : emb r ∈ integralClosure ℚ L`. Establish `h2 : (emb r) ^ 2 = algebraMap ℚ L (-(H.d : ℚ))`. Rewrite using `[← map_pow, hr]`. Simplify using the standard rewrite rules.
+
+Conclude with `IsIntegral.of_pow (by norm_num : 0 < 2) (h2 ▸ isIntegral_algebraMap)`. Establish `hφ : ∀ φ : E →+* L, φ (a : E) ∈ integralClosure ℚ L` using `fun φ => (Algebra.IsIntegral.isIntegral (R := ℚ) (a : E)).map φ.toRatAlgHom`. Establish `hint : emb (defect H p q M r a) ∈ integralClosure ℚ L`. Rewrite using `[map_defect H p q M r emb ML hML a, GlobalTheory.TraceSpread.trace_eq_sum]`. Establish `h2 : (2 : L) ∈ integralClosure ℚ L`.
+
+Simplify using `using Subalgebra.natCast_mem (integralClosure ℚ L) 2`. Use `Subalgebra.sub_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ h2 hs) (Subalgebra.sum_mem _ fun φ _ => Subalgebra.mul_mem _ (Subalgebra.natCast_mem _ _) (hφ φ))) (Subalgebra.add_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Subalgebra.add_mem _ (Subalgebra.natCast_mem _ _) …` and prove the remaining obligations. Establish `hR : IsIntegral ℚ (defect H p q M r a)` using `(isIntegral_algHom_iff emb.toRatAlgHom hemb).1 hint`. Assume the negation of the conclusion as `h0`. Conclude with `(hR.isUnit h0).map f |>.ne_zero hf`.
+-/
 theorem eq_zero_of_map (H : Host E) (p q : ℕ) {R : Type} [CommRing R] [IsDomain R] (hQ : ℚ →+* R) {n : ℕ}
     (M : 𝓞 E →+* Module.End R (Fin n → R))
     (hM : ∀ (K : Type) [Field K] (f : R →+* K), ∃ M' : 𝓞 E →+* Module.End K (Fin n → K), ∀ a c, f ∘ M a c = M' a (f ∘ c))
@@ -69,6 +81,15 @@ namespace GlobalTheory.SpreadOnePoint
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Set `R` to `Localization.Away r`. Set `j : Sp R ⟶ Sp A` to `spMap (algebraMap A R)`. Use `haveI : SmoothOfRelativeDimension d ((Over.pullback j).obj G).hom := (smoothOfRelativeDimension_isStableUnderBaseChange d).of_isPullback (IsPullback.of_hasPullback _ _) hd`. Establish `hs : Smooth ((Over.pullback j).obj G).hom` using `SmoothOfRelativeDimension.smooth d _`. Take `⟨act', hact'⟩` from `GlobalTheory.DetExtend.exists_oAct_pullback j act`.
+
+Take `⟨M, hM⟩` from `GlobalTheory.exists_lie_coordinates_lieMult_iff (𝓞 E) R _ act' d v hs hv`. Use `⟨M, fun K _ f => (hM K f).imp fun M' h => h.1, ?_⟩` and prove the remaining obligations. Introduce `K _ _ _ f ρ hρ`. Take `⟨M', hc, e⟩` from `hM K f`. Establish `hx : spMap (f.comp (algebraMap A R)) = spMap f ≫ j`.
+
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hpull : ∀ τ N, LieMult act (spMap (f.comp (algebraMap A R))) τ N ↔ Module.finrank K (GlobalTheory.EigenSplit.eigenSub M' τ) = N`. Introduce `τ N`. Rewrite using `[hx, ← GlobalTheory.LiePull.lieMult_pull (𝓞 E) _ _ G _ j (pullback.fst _ _) act act' (isGrpPullback_pullback G j) (fun c => by rw [hact']; exact pullback.lift_fst _ _ _) K (spMap f) τ N, e]`.
+
+Unfold `DetCond`. Simplify using `only [hpull]`. Rewrite using `[GlobalTheory.TraceSpread.finrank_iff_trace H D.p D.q M' _ hρ]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations. Rewrite using `[map_defect H D.p D.q M _ f M' hc x, sub_eq_zero]`.
+-/
 theorem detCond_iff_defect {H : Host E} (D : Datum H) {A : Type} [CommRing A] (G : Over (Sp A)) [GrpObj G]
     [IsCommMonObj G] (act : OAct (𝓞 E) G) (d : ℕ) (hd : SmoothOfRelativeDimension d G.hom) (r : A)
     (v : Fin d → (epsR (Localization.Away r) ⟶
@@ -103,6 +124,25 @@ theorem detCond_iff_defect {H : Host E} (D : Datum H) {A : Type} [CommRing A] (G
   refine forall_congr' fun x => ?_
   rw [map_defect H D.p D.q M _ f M' hc x, sub_eq_zero]
 
+/- English proof (translation)
+Introduce `E _ _ _ H D A _ _ _ G _ _ act ρ hG hρ hQ' K₀ _ _ g₀ h₀ K _ _ g`. Take `⟨hQ⟩` from `hQ'`. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `hc : ConnectedSpace G.left` using `(GlobalTheory.GroupConn.connectedSpace_group _ G).1`.
+
+Take `⟨x⟩ : Nonempty G.left` from `inferInstance`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected G.hom x`. Establish `cz : ∀ (F : Type) [Field F] (f : A →+* F), CharZero F` using `fun F _ f => (RingHom.charZero_iff (f.comp hQ).injective).1 inferInstance`. Establish `key : ∀ (K₁ : Type) [Field K₁] [IsAlgClosed K₁] (g₁ : A →+* K₁) (K₂ : Type) [Field K₂] [IsAlgClosed K₂] (g₂ : A →+* K₂) (r : A), g₁ r ≠ 0 → g₂ r ≠ 0 → (∃ v : Fin d → (epsR (Localization.Away r) ⟶ (Over.pullback (spMap (algebraMap A (Localization.Away r)))).obj G), IsLieBasis v) → …`. Introduce `K₁ _ _ g₁ K₂ _ _ g₂ r h₁ h₂ ⟨v, hv⟩ hdet`.
+
+Use `haveI := cz K₁ g₁`. Use `haveI := cz K₂ g₂`. Establish `hr0 : r ≠ 0` using `fun e => h₁ (by rw [e, map_zero])`. Use `haveI : IsDomain (Localization.Away r) := IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors hr0)`. Take `⟨M, hM, hiff⟩` from `detCond_iff_defect D G act d hd r v hv`.
+
+Set `f₁ : Localization.Away r →+* K₁` to `IsLocalization.Away.lift r (isUnit_iff_ne_zero.2 h₁)`. Set `f₂ : Localization.Away r →+* K₂` to `IsLocalization.Away.lift r (isUnit_iff_ne_zero.2 h₂)`. Establish `e₁ : f₁.comp (algebraMap A _) = g₁` using `IsLocalization.lift_comp _`. Establish `e₂ : f₂.comp (algebraMap A _) = g₂` using `IsLocalization.lift_comp _`. Establish `v₁ : f₁ (algebraMap A _ ρ) = g₁ ρ` using `by rw [← RingHom.comp_apply, e₁]`.
+
+Establish `v₂ : f₂ (algebraMap A _ ρ) = g₂ ρ` using `by rw [← RingHom.comp_apply, e₂]`. Establish `hρ₁ : (f₁ (algebraMap A _ ρ)) ^ 2 = -(H.d : K₁)` using `by rw [v₁, ← map_pow, hρ]; simp`. Establish `hρ₂ : (f₂ (algebraMap A _ ρ)) ^ 2 = -(H.d : K₂)` using `by rw [v₂, ← map_pow, hρ]; simp`. Establish `hρR : (algebraMap A (Localization.Away r) ρ) ^ 2 = -(H.d : Localization.Away r)`. Rewrite using `[← map_pow, hρ]`.
+
+Simplify using the standard rewrite rules. Establish `h` using `(hiff K₁ f₁ ρ hρ₁).1 (by rw [e₁, v₁]; exact hdet)`. Establish `h'` using `(hiff K₂ f₂ ρ hρ₂).2 fun a => by`. Rewrite using `[eq_zero_of_map H D.p D.q ((algebraMap A _).comp hQ) M hM _ hρR a f₁ (h a), map_zero]`. Rewrite `h'` using `[e₂, v₂]`. Then use the resulting hypothesis.
+
+Set `L` to `AlgebraicClosure (FractionRing A)`. Set `gen : A →+* L` to `(algebraMap (FractionRing A) L).comp (algebraMap A (FractionRing A))`. Establish `hgen : Function.Injective gen` using `(algebraMap (FractionRing A) L).injective.comp (IsFractionRing.injective A (FractionRing A))`. Take `⟨r₀, hr₀, v₀⟩` from `GlobalTheory.LieLoc.lie_locally_free A G d hd ⟨RingHom.ker g₀, RingHom.ker_isPrime g₀⟩`. Establish `h₀r : g₀ r₀ ≠ 0` using `fun e => hr₀ (RingHom.mem_ker.2 e)`.
+
+Establish `hgr₀ : gen r₀ ≠ 0` using `fun e => h₀r (by rw [hgen (e.trans (map_zero gen).symm), map_zero])`. Establish `hdg` using `key K₀ g₀ L gen r₀ h₀r hgr₀ v₀ h₀`. Take `⟨r, hr, v⟩` from `GlobalTheory.LieLoc.lie_locally_free A G d hd ⟨RingHom.ker g, RingHom.ker_isPrime g⟩`. Establish `hg : g r ≠ 0` using `fun e => hr (RingHom.mem_ker.2 e)`. Establish `hgr : gen r ≠ 0` using `fun e => hg (by rw [hgen (e.trans (map_zero gen).symm), map_zero])`.
+
+Conclude with `key L gen K g r hgr hg v hdg`.
+-/
 theorem detCond_of_point : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] (G : Over (Sp A)) [GrpObj G] [IsCommMonObj G] (act : OAct (𝓞 E) G) (ρ : A), IsAbelianScheme G → ρ ^ 2 = -(H.d : A) → Nonempty (ℚ →+* A) → ∀ (K₀ : Type) [Field K₀] [IsAlgClosed K₀] (g₀ : A →+* K₀), DetCond D act (spMap g₀) (g₀ ρ) → ∀ (K : Type) [Field K] [IsAlgClosed K] (g : A →+* K), DetCond D act (spMap g) (g ρ) := by
   intro E _ _ _ H D A _ _ _ G _ _ act ρ hG hρ hQ' K₀ _ _ g₀ h₀ K _ _ g
   obtain ⟨hQ⟩ := hQ'

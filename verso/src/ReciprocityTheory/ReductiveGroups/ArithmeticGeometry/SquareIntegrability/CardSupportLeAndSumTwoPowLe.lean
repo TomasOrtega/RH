@@ -18,6 +18,13 @@ noncomputable def fockU {g : ℕ} (a : EuclideanSpace ℂ (Fin g)) (F : Euclidea
 def IsPolyLE {g : ℕ} (c : ℕ) (F : EuclideanSpace ℂ (Fin g) → ℂ) : Prop :=
   ∃ p : MvPolynomial (Fin g) ℂ, p.totalDegree ≤ c ∧ ∀ z, F z = MvPolynomial.eval (fun i => z i) p
 
+/- English proof (translation)
+Establish `hu : |u| ≤ Real.sqrt A * Real.sqrt P`. Rewrite using `[← Real.sqrt_mul hA, ← Real.sqrt_sq_eq_abs]`. Conclude with `Real.sqrt_le_sqrt huP`. Establish `hv' : v ≤ Real.sqrt B * Real.sqrt Q`. Rewrite using `[← Real.sqrt_mul hB, ← Real.sqrt_sq hv]`.
+
+Conclude with `Real.sqrt_le_sqrt hvQ`. Establish `hPQ : Real.sqrt P * Real.sqrt Q ≤ (t * P + Q / t) / 2`. Establish `key : 2 * t * (Real.sqrt P * Real.sqrt Q) ≤ t ^ 2 * P + Q`. Use polynomial arithmetic with `[sq_nonneg (t * Real.sqrt P - Real.sqrt Q), Real.sq_sqrt hP, Real.sq_sqrt hQ]`. Establish `e : (t * P + Q / t) / 2 = (t ^ 2 * P + Q) / (2 * t)`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e, le_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_le_sqrt_mul_sqrt_mul_avg {u v A B P Q t : ℝ} (hv : 0 ≤ v) (hA : 0 ≤ A) (hB : 0 ≤ B)
     (hP : 0 ≤ P) (hQ : 0 ≤ Q) (ht : 0 < t) (huP : u ^ 2 ≤ A * P) (hvQ : v ^ 2 ≤ B * Q) :
     u * v ≤ Real.sqrt A * Real.sqrt B * ((t * P + Q / t) / 2) := by
@@ -40,15 +47,32 @@ theorem mul_le_sqrt_mul_sqrt_mul_avg {u v A B P Q t : ℝ} (hv : 0 ≤ v) (hA : 
     _ = Real.sqrt A * Real.sqrt B * (Real.sqrt P * Real.sqrt Q) := by ring
     _ ≤ _ := mul_le_mul_of_nonneg_left hPQ (by positivity)
 
+/- English proof (translation)
+Rewrite using `[show -x / 8 = -x / 16 + -x / 16 by ring, Real.exp_add, Real.sqrt_mul_self (Real.exp_pos _).le]`.
+-/
 theorem sqrt_exp_neg_div_eight (x : ℝ) : Real.sqrt (Real.exp (-x / 8)) = Real.exp (-x / 16) := by
   rw [show -x / 8 = -x / 16 + -x / 16 by ring, Real.exp_add,
     Real.sqrt_mul_self (Real.exp_pos _).le]
 
+/- English proof (translation)
+Unfold `fockIP`. Rewrite using `[integral_mul_conj_gaussian_eq_coeffNormSq p F hF, Complex.ofReal_re]`.
+-/
 theorem fockInner_self_re_eq_coeffNormSq {g : ℕ} (p : MvPolynomial (Fin g) ℂ) (F : EuclideanSpace ℂ (Fin g) → ℂ)
     (hF : ∀ z, F z = MvPolynomial.eval (fun i => z i) p) : (fockIP F F).re = fa1N p := by
   unfold fockIP
   rw [integral_mul_conj_gaussian_eq_coeffNormSq p F hF, Complex.ofReal_re]
 
+/- English proof (translation)
+Establish `hdeg : ∀ α ∈ p.support, ∑ i, α i ≤ c` using `fun α hα => by`. Use `MvPolynomial.le_totalDegree hα` as an intermediate fact. Rewrite `this` using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Conclude with `this.trans hp`. Establish `h1 : (p.support.card : ℝ) ≤ ∑ α ∈ p.support, (2 : ℝ) ^ c * ∏ i, (1 / 2 : ℝ) ^ α i`.
+
+Rewrite using `[Finset.card_eq_sum_ones, Nat.cast_sum]`. Use `Finset.sum_le_sum fun α hα => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_one, Finset.prod_pow_eq_pow_sum, one_div, inv_pow, ← div_eq_mul_inv, one_le_div (by positivity)]`. Conclude with `pow_le_pow_right₀ (by norm_num) (hdeg α hα)`. Establish `hsub : p.support.image (fun α : Fin g →₀ ℕ => (α : Fin g → ℕ)) ⊆ Fintype.piFinset (fun _ : Fin g => Finset.range (c + 1))`.
+
+Introduce `x hx`. Take `⟨α, hα, rfl⟩` from `Finset.mem_image.1 hx`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `i`. Rewrite using `[Finset.mem_range, Nat.lt_succ_iff]`.
+
+Conclude with `(Finset.single_le_sum (fun j _ => Nat.zero_le (α j)) (Finset.mem_univ i)).trans (hdeg α hα)`. Establish `h2 : ∑ α ∈ p.support, ∏ i, (1 / 2 : ℝ) ^ α i ≤ ∏ _i : Fin g, ∑ k ∈ Finset.range (c + 1), (1 / 2 : ℝ) ^ k`. Combine the equalities or inequalities in the displayed calculation. Establish `hcard : (p.support.card : ℝ) ≤ 2 ^ (g + c)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hcard, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_support_le_and_sum_two_pow_le {g c : ℕ} (p : MvPolynomial (Fin g) ℂ) (hp : p.totalDegree ≤ c) :
     (p.support.card : ℝ) ≤ 2 ^ (g + c) ∧
       ∑ α ∈ p.support, (2 : ℝ) ^ (g + ∑ i, α i) ≤ 2 ^ (g + c) * 2 ^ (g + c) := by
@@ -100,6 +124,55 @@ theorem card_support_le_and_sum_two_pow_le {g c : ℕ} (p : MvPolynomial (Fin g)
     _ = p.support.card * 2 ^ (g + c) := by rw [Finset.sum_const, nsmul_eq_mul]
     _ ≤ 2 ^ (g + c) * 2 ^ (g + c) := mul_le_mul_of_nonneg_right hcard (by positivity)
 
+/- English proof (translation)
+Take `⟨p, hpc, hp⟩` from `hF`. Take `⟨q, hqc, hq⟩` from `hG`. Rewrite using `[fockInner_self_re_eq_coeffNormSq p F hp, fockInner_self_re_eq_coeffNormSq q G hq]`. Establish `hNF` using `coeffNormSq_nonneg p`. Establish `hNG` using `coeffNormSq_nonneg q`.
+
+Establish `hre : ∀ z : EuclideanSpace ℂ (Fin g), (∑ i, z i * (starRingEnd ℂ) (a i)).re = (‖z‖ ^ 2 + ‖a‖ ^ 2 - ‖z - a‖ ^ 2) / 2`. Introduce `z`. Establish `h1 : (∑ i, z i * (starRingEnd ℂ) (a i)) = inner ℂ a z`. Simplify using `[PiLp.inner_apply, RCLike.inner_apply, mul_comm]`. Establish `h2` using `norm_sub_sq (𝕜 := ℂ) z a`.
+
+Establish `h3` using `inner_re_symm (𝕜 := ℂ) z a`. Simplify using `only [RCLike.re_to_complex] at h2 h3`. Rewrite using `[h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hI : ∀ z : EuclideanSpace ℂ (Fin g), ‖fockU a F z * (starRingEnd ℂ) (G z) * ((Real.exp (-‖z‖ ^ 2) : ℝ) : ℂ)‖ = ‖F (z - a)‖ * ‖G z‖ * Real.exp (-‖z - a‖ ^ 2 / 2 - ‖z‖ ^ 2 / 2)`.
+
+Introduce `z`. Simplify using `only [fockU, norm_mul, Complex.norm_exp, Complex.norm_conj, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Rewrite using `[Complex.sub_re, Complex.ofReal_re, hre z]`. Establish `e : Real.exp ((‖z‖ ^ 2 + ‖a‖ ^ 2 - ‖z - a‖ ^ 2) / 2 - ‖a‖ ^ 2 / 2) * Real.exp (-‖z‖ ^ 2) = Real.exp (-‖z - a‖ ^ 2 / 2 - ‖z‖ ^ 2 / 2)`. Rewrite using `[← Real.exp_add]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmain : ∀ M : EuclideanSpace ℂ (Fin g) → ℝ, Integrable M → (∀ z, ‖F (z - a)‖ * ‖G z‖ * Real.exp (-‖z - a‖ ^ 2 / 2 - ‖z‖ ^ 2 / 2) ≤ M z) → ‖fockIP (fockU a F) G‖ ≤ (Real.pi ^ g)⁻¹ * ∫ z, M z`.
+
+Introduce `M hM hle`. Unfold `fockIP`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity)]`. Conclude with `mul_le_mul_of_nonneg_left (norm_integral_le_of_norm_le hM (Filter.Eventually.of_forall fun z => (hI z).le.trans (hle z))) (by positivity)`. Establish `hexp2 : ∀ x : ℝ, Real.exp (x / 2) ^ 2 = Real.exp x`.
+
+Introduce `x`. Rewrite using `[sq, ← Real.exp_add]`. Put the polynomial expressions in normal form. Establish `hs : 0 ≤ Real.sqrt (fa1N p) * Real.sqrt (fa1N q)` using `by positivity`. Take `⟨hcp, hsp⟩` from `card_support_le_and_sum_two_pow_le p hpc`.
+
+Take `⟨hcq, hsq⟩` from `card_support_le_and_sum_two_pow_le q hqc`. Establish `hi1p : Integrable (fun z : EuclideanSpace ℂ (Fin g) => fa1K p z * Real.exp (-‖z‖ ^ 2))`. Simplify using `using integrable_monomialKernel_mul_gaussian p (b := 1) one_pos`. Establish `hi1q : Integrable (fun z : EuclideanSpace ℂ (Fin g) => fa1K q z * Real.exp (-‖z‖ ^ 2))`. Simplify using `using integrable_monomialKernel_mul_gaussian q (b := 1) one_pos`.
+
+Establish `hi2p : Integrable (fun z : EuclideanSpace ℂ (Fin g) => fa1K p z * Real.exp (-(1 / 2) * ‖z‖ ^ 2))` using `integrable_monomialKernel_mul_gaussian p (by norm_num)`. Establish `hi2q : Integrable (fun z : EuclideanSpace ℂ (Fin g) => fa1K q z * Real.exp (-(1 / 2) * ‖z‖ ^ 2))` using `integrable_monomialKernel_mul_gaussian q (by norm_num)`. Establish `hB1 : ‖fockIP (fockU a F) G‖ ≤ Real.sqrt (fa1N p) * Real.sqrt (fa1N q) * 2 ^ (g + c)`. Establish `hM : Integrable (fun z : EuclideanSpace ℂ (Fin g) => Real.sqrt (fa1N p) * Real.sqrt (fa1N q) * ((fa1K p (z - a) * Real.exp (-‖z - a‖ ^ 2) + fa1K q z * Real.exp (-‖z‖ ^ 2)) / 2))` using `(((hi1p.comp_sub_right a).add hi1q).div_const 2).const_mul _`. Use `(hmain _ hM (fun z => ?_)).trans ?_` and prove the remaining obligations.
+
+Establish `hu : (‖F (z - a)‖ * Real.exp (-‖z - a‖ ^ 2 / 2)) ^ 2 ≤ fa1N p * (fa1K p (z - a) * Real.exp (-‖z - a‖ ^ 2))`. Rewrite using `[mul_pow, hexp2, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (by rw [hp]; exact norm_eval_sq_le p (z - a)) (Real.exp_pos _).le`. Establish `hv : (‖G z‖ * Real.exp (-‖z‖ ^ 2 / 2)) ^ 2 ≤ fa1N q * (fa1K q z * Real.exp (-‖z‖ ^ 2))`. Rewrite using `[mul_pow, hexp2, ← mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (by rw [hq]; exact norm_eval_sq_le q z) (Real.exp_pos _).le`. Establish `hab` using `mul_le_sqrt_mul_sqrt_mul_avg (by positivity) hNF hNG (mul_nonneg (monomialKernel_nonneg p _) (Real.exp_pos _).le) (mul_nonneg (monomialKernel_nonneg q _) (Real.exp_pos _).le) one_pos hu hv`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show -‖z - a‖ ^ 2 / 2 - ‖z‖ ^ 2 / 2 = -‖z - a‖ ^ 2 / 2 + -‖z‖ ^ 2 / 2 by ring, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ _ := hab`. Use `_ = _ := by ring`. Establish `hT : ∫ z : EuclideanSpace ℂ (Fin g), fa1K p (z - a) * Real.exp (-‖z - a‖ ^ 2) = ∫ z : EuclideanSpace ℂ (Fin g), fa1K p z * Real.exp (-‖z‖ ^ 2)` using `integral_sub_right_eq_self (fun z => fa1K p z * Real.exp (-‖z‖ ^ 2)) a`. Rewrite using `[integral_const_mul, integral_div, integral_add (hi1p.comp_sub_right a) hi1q, hT, integral_monomialKernel_mul_gaussian, integral_monomialKernel_mul_gaussian]`. Establish `hpi : 0 < Real.pi ^ g` using `by positivity`.
+
+Establish `e : (Real.pi ^ g)⁻¹ * (Real.sqrt (fa1N p) * Real.sqrt (fa1N q) * ((Real.pi ^ g * p.support.card + Real.pi ^ g * q.support.card) / 2)) = Real.sqrt (fa1N p) * Real.sqrt (fa1N q) * ((p.support.card + q.support.card) / 2)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_left (by linarith) hs`. Establish `hB2 : ‖fockIP (fockU a F) G‖ ≤ Real.exp (-‖a‖ ^ 2 / 8) * (Real.sqrt (fa1N p) * Real.sqrt (fa1N q) * (2 ^ (g + c) * 2 ^ (g + c)))`.
+
+Establish `hM : Integrable (fun z : EuclideanSpace ℂ (Fin g) => Real.exp (-‖a‖ ^ 2 / 8) * (Real.sqrt (fa1N p) * Real.sqrt (fa1N q) * ((fa1K p (z - a) * Real.exp (-(1 / 2) * ‖z - a‖ ^ 2) + fa1K q z * Real.exp (-(1 / 2) * ‖z‖ ^ 2)) / 2)))` using `((((hi2p.comp_sub_right a).add hi2q).div_const 2).const_mul _).const_mul _`. Use `(hmain _ hM (fun z => ?_)).trans ?_` and prove the remaining obligations. Establish `hu : (‖F (z - a)‖ * Real.exp (-(1 / 2) * ‖z - a‖ ^ 2 / 2)) ^ 2 ≤ fa1N p * (fa1K p (z - a) * Real.exp (-(1 / 2) * ‖z - a‖ ^ 2))`. Rewrite using `[mul_pow, hexp2, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (by rw [hp]; exact norm_eval_sq_le p (z - a)) (Real.exp_pos _).le`.
+
+Establish `hv : (‖G z‖ * Real.exp (-(1 / 2) * ‖z‖ ^ 2 / 2)) ^ 2 ≤ fa1N q * (fa1K q z * Real.exp (-(1 / 2) * ‖z‖ ^ 2))`. Rewrite using `[mul_pow, hexp2, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (by rw [hq]; exact norm_eval_sq_le q z) (Real.exp_pos _).le`. Establish `hab` using `mul_le_sqrt_mul_sqrt_mul_avg (by positivity) hNF hNG (mul_nonneg (monomialKernel_nonneg p _) (Real.exp_pos _).le) (mul_nonneg (monomialKernel_nonneg q _) (Real.exp_pos _).le) one_pos hu hv`. Establish `hpar : ‖a‖ ^ 2 ≤ 2 * (‖z - a‖ ^ 2 + ‖z‖ ^ 2)`.
+
+Establish `h` using `norm_sub_le z (z - a)`. Rewrite `h` using `[sub_sub_cancel]`. Use polynomial arithmetic with `[norm_nonneg a, norm_nonneg z, norm_nonneg (z - a), sq_nonneg (‖z‖ - ‖z - a‖)]`. Establish `hexpb : Real.exp (-‖z - a‖ ^ 2 / 2 - ‖z‖ ^ 2 / 2) ≤ Real.exp (-‖a‖ ^ 2 / 8) * (Real.exp (-(1 / 2) * ‖z - a‖ ^ 2 / 2) * Real.exp (-(1 / 2) * ‖z‖ ^ 2 / 2))`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`.
+
+Conclude with `Real.exp_le_exp.2 (by nlinarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `hT : ∫ z : EuclideanSpace ℂ (Fin g), fa1K p (z - a) * Real.exp (-(1 / 2) * ‖z - a‖ ^ 2) = ∫ z : EuclideanSpace ℂ (Fin g), fa1K p z * Real.exp (-(1 / 2) * ‖z‖ ^ 2)` using `integral_sub_right_eq_self (fun z => fa1K p z * Real.exp (-(1 / 2) * ‖z‖ ^ 2)) a`. Rewrite using `[integral_const_mul, integral_const_mul, integral_div, integral_add (hi2p.comp_sub_right a) hi2q, hT, integral_monomialKernel_mul_gaussian_half, integral_monomialKernel_mul_gaussian_half]`. Establish `hpi : 0 < Real.pi ^ g` using `by positivity`.
+
+Establish `e : (Real.pi ^ g)⁻¹ * (Real.exp (-‖a‖ ^ 2 / 8) * (Real.sqrt (fa1N p) * Real.sqrt (fa1N q) * ((Real.pi ^ g * ∑ α ∈ p.support, (2 : ℝ) ^ (g + ∑ i, α i) + Real.pi ^ g * ∑ α ∈ q.support, (2 : ℝ) ^ (g + ∑ i, α i)) / 2))) = Real.exp (-‖a‖ ^ 2 / 8) * (Real.sqrt (fa1N p) * Real.sqrt (fa1 …`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (by linarith) hs) (Real.exp_pos _).le`. Take `⟨y, hy⟩ : ∃ y : ℝ, y = (2 : ℝ) ^ (((g : ℝ) + c) / 2)` from `⟨_, rfl⟩`.
+
+Establish `hy0 : 0 ≤ y`. Rewrite using `[hy]`. Check the signs of the components of the expression. Establish `hyT : y ^ 2 = (2 : ℝ) ^ (g + c)`. Rewrite using `[hy, ← Real.rpow_natCast, ← Real.rpow_mul (by norm_num), show ((g : ℝ) + c) / 2 * ((2 : ℕ) : ℝ) = ((g + c : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`.
+
+Establish `hR : (2 : ℝ) ^ (1 + 3 * ((g : ℝ) + c) / 2) = 2 * y ^ 3`. Rewrite using `[hy, ← Real.rpow_natCast, ← Real.rpow_mul (by norm_num), Real.rpow_add (by norm_num), Real.rpow_one, show 3 * ((g : ℝ) + c) / 2 = ((g : ℝ) + c) / 2 * ((3 : ℕ) : ℝ) by push_cast; ring]`. Establish `hE : Real.exp (-‖a‖ ^ 2 / 16) ^ 2 = Real.exp (-‖a‖ ^ 2 / 8)`. Rewrite using `[sq, ← Real.exp_add]`. Put the polynomial expressions in normal form.
+
+Establish `hX0` using `norm_nonneg (fockIP (fockU a F) G)`. Rewrite using `[hR]`. Establish `key : ‖fockIP (fockU a F) G‖ ^ 2 ≤ (2 * y ^ 3 * Real.exp (-‖a‖ ^ 2 / 16) * Real.sqrt (fa1N p) * Real.sqrt (fa1N q)) ^ 2`. Establish `h12` using `mul_le_mul hB1 hB2 hX0 (by positivity)`. Establish `e1 : Real.sqrt (fa1N p) * Real.sqrt (fa1N q) * 2 ^ (g + c) * (Real.exp (-‖a‖ ^ 2 / 8) * (Real.sqrt (fa1N p) * Real.sqrt (fa1N q) * (2 ^ (g + c) * 2 ^ (g + c)))) = Real.sqrt (fa1N p) ^ 2 * Real.sqrt (fa1N q) ^ 2 * y ^ 6 * Real.exp (-‖a‖ ^ 2 / 8)`.
+
+Rewrite using `[← hyT]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (2 * y ^ 3 * Real.exp (-‖a‖ ^ 2 / 16) * Real.sqrt (fa1N p) * Real.sqrt (fa1N q)) ^ 2 = 4 * (Real.sqrt (fa1N p) ^ 2 * Real.sqrt (fa1N q) ^ 2 * y ^ 6 * Real.exp (-‖a‖ ^ 2 / 8))`. Rewrite using `[← hE]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[sq, e2]`. Rewrite `h12` using `[e1]`. Establish `: 0 ≤ Real.sqrt (fa1N p) ^ 2 * Real.sqrt (fa1N q) ^ 2 * y ^ 6 * Real.exp (-‖a‖ ^ 2 / 8)`. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `(pow_le_pow_iff_left₀ hX0 (by positivity) two_ne_zero).1 key`.
+-/
 theorem fockU_coeff_le {g c : ℕ} (a : EuclideanSpace ℂ (Fin g)) (F G : EuclideanSpace ℂ (Fin g) → ℂ)
     (hF : IsPolyLE c F) (hG : IsPolyLE c G) :
     ‖fockIP (fockU a F) G‖ ≤ 2 ^ (1 + 3 * ((g : ℝ) + c) / 2) * Real.exp (-‖a‖ ^ 2 / 16) *

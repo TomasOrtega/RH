@@ -20,16 +20,25 @@ section General
 
 variable {X₁ X₂ B₁ B₂ H₁ H₂ : Scheme.{0}} {M₁ : LB B₁} {M₂ : LB B₂} {L₁ : LB H₁} {L₂ : LB H₂}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((coprod.inl : X₁ ⟶ X₁ ⨿ X₂) ≫ coprod.map f₁ f₂) x = _`. Rewrite using `[coprod.inl_map]`. Both sides reduce to the same expression.
+-/
 theorem map_inl_apply (f₁ : X₁ ⟶ B₁) (f₂ : X₂ ⟶ B₂) (x : X₁) :
     (coprod.map f₁ f₂) ((coprod.inl : X₁ ⟶ X₁ ⨿ X₂) x) = (coprod.inl : B₁ ⟶ B₁ ⨿ B₂) (f₁ x) := by
   change ((coprod.inl : X₁ ⟶ X₁ ⨿ X₂) ≫ coprod.map f₁ f₂) x = _
   rw [coprod.inl_map]; rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((coprod.inr : X₂ ⟶ X₁ ⨿ X₂) ≫ coprod.map f₁ f₂) x = _`. Rewrite using `[coprod.inr_map]`. Both sides reduce to the same expression.
+-/
 theorem map_inr_apply (f₁ : X₁ ⟶ B₁) (f₂ : X₂ ⟶ B₂) (x : X₂) :
     (coprod.map f₁ f₂) ((coprod.inr : X₂ ⟶ X₁ ⨿ X₂) x) = (coprod.inr : B₂ ⟶ B₁ ⨿ B₂) (f₂ x) := by
   change ((coprod.inr : X₂ ⟶ X₁ ⨿ X₂) ≫ coprod.map f₁ f₂) x = _
   rw [coprod.inr_map]; rfl
 
+/- English proof (translation)
+Rewrite using `[mem_pull, mem_pull, map_inl_apply]`. Conclude with `(isPart_inl M₁ M₂).mem _ _`.
+-/
 theorem mem_pull_inl (M₁ : LB B₁) (M₂ : LB B₂) (f₁ : X₁ ⟶ B₁) (f₂ : X₂ ⟶ B₂) (x : X₁)
     (J : PUnit → (join M₁ M₂).ι) :
     (coprod.inl : X₁ ⟶ X₁ ⨿ X₂) x ∈ ((join M₁ M₂).pull (coprod.map f₁ f₂)).U J ↔
@@ -37,6 +46,9 @@ theorem mem_pull_inl (M₁ : LB B₁) (M₂ : LB B₂) (f₁ : X₁ ⟶ B₁) (f
   rw [mem_pull, mem_pull, map_inl_apply]
   exact (isPart_inl M₁ M₂).mem _ _
 
+/- English proof (translation)
+Rewrite using `[mem_pull, mem_pull, map_inr_apply]`. Conclude with `(isPart_inr M₁ M₂).mem _ _`.
+-/
 theorem mem_pull_inr (M₁ : LB B₁) (M₂ : LB B₂) (f₁ : X₁ ⟶ B₁) (f₂ : X₂ ⟶ B₂) (x : X₂)
     (J : PUnit → (join M₁ M₂).ι) :
     (coprod.inr : X₂ ⟶ X₁ ⨿ X₂) x ∈ ((join M₁ M₂).pull (coprod.map f₁ f₂)).U J ↔
@@ -51,6 +63,13 @@ section Glue
 variable {X₁ X₂ B₁ B₂ H₁ H₂ : Scheme.{0}} {M₁ : LB B₁} {M₂ : LB B₂} {L₁ : LB H₁} {L₂ : LB H₂}
   {p₁ : X₁ ⟶ B₁} {p₂ : X₂ ⟶ B₂} {f₁ : X₁ ⟶ H₁} {f₂ : X₂ ⟶ H₂}
 
+/- English proof (translation)
+Take `⟨I₁, K₁⟩` from `i`. Take `⟨I₂, K₂⟩` from `j`. Establish `a₁` using `mem_pull.1 hi.1`. Establish `a₂` using `mem_pull.1 hj.1`. Establish `b₁` using `mem_pull.1 hi.2`.
+
+Establish `b₂` using `mem_pull.1 hj.2`. Rewrite `a₁`, `a₂`, `b₁`, `b₂` using `[map_inl_apply]`. Establish `a₁'` using `((isPart_inl M₁ M₂).mem _ _).1 a₁`. Establish `a₂'` using `((isPart_inl M₁ M₂).mem _ _).1 a₂`. Establish `b₁'` using `((isPart_inl L₁ L₂).mem _ _).1 b₁`.
+
+Establish `b₂'` using `((isPart_inl L₁ L₂).mem _ _).1 b₂`. Establish `d` using `gm_div_g (L := join M₁ M₂) (F := coprod.map p₁ p₂) (L' := (join L₁ L₂).pull (coprod.map f₁ f₂)) coprod.inl x (I₁ PUnit.unit) (I₂ PUnit.unit) K₁ K₂ (mem_pull.1 hi.1) (mem_pull.1 hj.1) hi.2 hj.2`. Establish `d₁` using `gm_div_g (L := M₁) (F := p₁) (L' := L₁.pull f₁) (𝟙 X₁) x (I₁ PUnit.unit).1 (I₂ PUnit.unit).1 (fun _ => (K₁ PUnit.unit).1) (fun _ => (K₂ PUnit.unit).1) a₁' a₂' (mem_pull.2 b₁') (mem_pull.2 b₂')`. Use `d.trans (Eq.trans ?_ d₁.symm)` and prove the remaining obligations. Rewrite using `[gm_pull_g (join L₁ L₂) (coprod.map f₁ f₂) coprod.inl x K₁ K₂ hi.2 hj.2, gm_pull_g L₁ f₁ (𝟙 X₁) x _ _ (mem_pull.2 b₁') (mem_pull.2 b₂'), coprod.inl_map, coprod.inl_map, (isPart_inl M₁ M₂).g _ p₁ x _ _ a₁' a₂', (isPart_inl L₁ L₂).g _ f₁ x _ _ b₁' b₂', Category.id_comp, Category.id …`.
+-/
 theorem gm_div_inl (x : X₁) (i j : (PUnit → (join M₁ M₂).ι) × (PUnit → (join L₁ L₂).ι))
     (hi : (coprod.inl : X₁ ⟶ X₁ ⨿ X₂) x ∈
       (LB.div ((join M₁ M₂).pull (coprod.map p₁ p₂)) ((join L₁ L₂).pull (coprod.map f₁ f₂))).U i)
@@ -82,6 +101,13 @@ theorem gm_div_inl (x : X₁) (i j : (PUnit → (join M₁ M₂).ι) × (PUnit �
     (isPart_inl M₁ M₂).g _ p₁ x _ _ a₁' a₂', (isPart_inl L₁ L₂).g _ f₁ x _ _ b₁' b₂', Category.id_comp,
     Category.id_comp]
 
+/- English proof (translation)
+Take `⟨I₁, K₁⟩` from `i`. Take `⟨I₂, K₂⟩` from `j`. Establish `a₁` using `mem_pull.1 hi.1`. Establish `a₂` using `mem_pull.1 hj.1`. Establish `b₁` using `mem_pull.1 hi.2`.
+
+Establish `b₂` using `mem_pull.1 hj.2`. Rewrite `a₁`, `a₂`, `b₁`, `b₂` using `[map_inr_apply]`. Establish `a₁'` using `((isPart_inr M₁ M₂).mem _ _).1 a₁`. Establish `a₂'` using `((isPart_inr M₁ M₂).mem _ _).1 a₂`. Establish `b₁'` using `((isPart_inr L₁ L₂).mem _ _).1 b₁`.
+
+Establish `b₂'` using `((isPart_inr L₁ L₂).mem _ _).1 b₂`. Establish `d` using `gm_div_g (L := join M₁ M₂) (F := coprod.map p₁ p₂) (L' := (join L₁ L₂).pull (coprod.map f₁ f₂)) coprod.inr x (I₁ PUnit.unit) (I₂ PUnit.unit) K₁ K₂ (mem_pull.1 hi.1) (mem_pull.1 hj.1) hi.2 hj.2`. Establish `d₁` using `gm_div_g (L := M₂) (F := p₂) (L' := L₂.pull f₂) (𝟙 X₂) x (I₁ PUnit.unit).2 (I₂ PUnit.unit).2 (fun _ => (K₁ PUnit.unit).2) (fun _ => (K₂ PUnit.unit).2) a₁' a₂' (mem_pull.2 b₁') (mem_pull.2 b₂')`. Use `d.trans (Eq.trans ?_ d₁.symm)` and prove the remaining obligations. Rewrite using `[gm_pull_g (join L₁ L₂) (coprod.map f₁ f₂) coprod.inr x K₁ K₂ hi.2 hj.2, gm_pull_g L₂ f₂ (𝟙 X₂) x _ _ (mem_pull.2 b₁') (mem_pull.2 b₂'), coprod.inr_map, coprod.inr_map, (isPart_inr M₁ M₂).g _ p₂ x _ _ a₁' a₂', (isPart_inr L₁ L₂).g _ f₂ x _ _ b₁' b₂', Category.id_comp, Category.id …`.
+-/
 theorem gm_div_inr (x : X₂) (i j : (PUnit → (join M₁ M₂).ι) × (PUnit → (join L₁ L₂).ι))
     (hi : (coprod.inr : X₂ ⟶ X₁ ⨿ X₂) x ∈
       (LB.div ((join M₁ M₂).pull (coprod.map p₁ p₂)) ((join L₁ L₂).pull (coprod.map f₁ f₂))).U i)
@@ -113,6 +139,19 @@ theorem gm_div_inr (x : X₂) (i j : (PUnit → (join M₁ M₂).ι) × (PUnit �
     (isPart_inr M₁ M₂).g _ p₂ x _ _ a₁' a₂', (isPart_inr L₁ L₂).g _ f₂ x _ _ b₁' b₂', Category.id_comp,
     Category.id_comp]
 
+/- English proof (translation)
+Establish `key : ∀ p : (PUnit → (join M₁ M₂).ι) × (PUnit → (join L₁ L₂).ι), ∃ a : Γ(X₁ ⨿ X₂, (LB.div ((join M₁ M₂).pull (coprod.map p₁ p₂)) ((join L₁ L₂).pull (coprod.map f₁ f₂))).U p)ˣ, (∀ (Z : Scheme.{0}) (ψ : Z ⟶ X₁) (z : Z), (coprod.inl : X₁ ⟶ X₁ ⨿ X₂) (ψ z) ∈ (LB.div ((join M₁ M₂).pull …` using `fun p => exists_glue ((LB.div ((join M₁ M₂).pull (coprod.map p₁ p₂)) ((join L₁ L₂).pull (coprod.map f₁ f₂))).U p) ((LB.div (M₁.pull p₁) (L₁.pull f₁)).U (fun _ => (p.1 PUnit.unit).1, fun _ => (p.2 PUnit.unit).1)) ((LB.div (M₂.pull p₂) (L₂.pull f₂)).U (fun _ => (p.1 PUnit.unit).2, …`. Use `choose s hs₁ hs₂ using key`. Set `W : LB.Iso ((join L₁ L₂).pull (coprod.map f₁ f₂)) ((join M₁ M₂).pull (coprod.map p₁ p₂))` to `⟨s⟩`. Use `⟨W, fun i j => unit_ext_coprod (fun x hx => ?_) (fun x hx => ?_), fun Z r z j k hj hk => ?_, fun Z r z j k hj hk => ?_⟩` and prove the remaining obligations. Establish `e₁` using `hs₁ i X₁ (𝟙 _) x hx.1`.
+
+Establish `e₂` using `hs₁ j X₁ (𝟙 _) x hx.2`. Rewrite `e₁`, `e₂` using `[Category.id_comp]`. Establish `m₁ : x ∈ (LB.div (M₁.pull p₁) (L₁.pull f₁)).U (fun _ => (i.1 PUnit.unit).1, fun _ => (i.2 PUnit.unit).1)` using `⟨(mem_pull_inl M₁ M₂ p₁ p₂ x _).1 hx.1.1, (mem_pull_inl L₁ L₂ f₁ f₂ x _).1 hx.1.2⟩`. Establish `m₂ : x ∈ (LB.div (M₁.pull p₁) (L₁.pull f₁)).U (fun _ => (j.1 PUnit.unit).1, fun _ => (j.2 PUnit.unit).1)` using `⟨(mem_pull_inl M₁ M₂ p₁ p₂ x _).1 hx.2.1, (mem_pull_inl L₁ L₂ f₁ f₂ x _).1 hx.2.2⟩`. Establish `h` using `congrArg (gm (𝟙 X₁) x _) (hw₁ (fun _ => (i.1 PUnit.unit).1, fun _ => (i.2 PUnit.unit).1) (fun _ => (j.1 PUnit.unit).1, fun _ => (j.2 PUnit.unit).1))`.
+
+Establish `m : x ∈ (LB.div (M₁.pull p₁) (L₁.pull f₁)).U (fun _ => (i.1 PUnit.unit).1, fun _ => (i.2 PUnit.unit).1) ⊓ (LB.div (M₁.pull p₁) (L₁.pull f₁)).U (fun _ => (j.1 PUnit.unit).1, fun _ => (j.2 PUnit.unit).1)` using `⟨m₁, m₂⟩`. Rewrite `h` using `[map_mul, gm_res _ x _ m, gm_res _ x _ m]`. Rewrite using `[map_mul, gm_res _ x _ hx, gm_res _ x _ hx, gm_div_inl x i j hx.1 hx.2]`. Conclude with `e₁.trans (h.trans (congrArg _ e₂.symm))`. Establish `e₁` using `hs₂ i X₂ (𝟙 _) x hx.1`.
+
+Establish `e₂` using `hs₂ j X₂ (𝟙 _) x hx.2`. Rewrite `e₁`, `e₂` using `[Category.id_comp]`. Establish `m₁ : x ∈ (LB.div (M₂.pull p₂) (L₂.pull f₂)).U (fun _ => (i.1 PUnit.unit).2, fun _ => (i.2 PUnit.unit).2)` using `⟨(mem_pull_inr M₁ M₂ p₁ p₂ x _).1 hx.1.1, (mem_pull_inr L₁ L₂ f₁ f₂ x _).1 hx.1.2⟩`. Establish `m₂ : x ∈ (LB.div (M₂.pull p₂) (L₂.pull f₂)).U (fun _ => (j.1 PUnit.unit).2, fun _ => (j.2 PUnit.unit).2)` using `⟨(mem_pull_inr M₁ M₂ p₁ p₂ x _).1 hx.2.1, (mem_pull_inr L₁ L₂ f₁ f₂ x _).1 hx.2.2⟩`. Establish `h` using `congrArg (gm (𝟙 X₂) x _) (hw₂ (fun _ => (i.1 PUnit.unit).2, fun _ => (i.2 PUnit.unit).2) (fun _ => (j.1 PUnit.unit).2, fun _ => (j.2 PUnit.unit).2))`.
+
+Establish `m : x ∈ (LB.div (M₂.pull p₂) (L₂.pull f₂)).U (fun _ => (i.1 PUnit.unit).2, fun _ => (i.2 PUnit.unit).2) ⊓ (LB.div (M₂.pull p₂) (L₂.pull f₂)).U (fun _ => (j.1 PUnit.unit).2, fun _ => (j.2 PUnit.unit).2)` using `⟨m₁, m₂⟩`. Rewrite `h` using `[map_mul, gm_res _ x _ m, gm_res _ x _ m]`. Rewrite using `[map_mul, gm_res _ x _ hx, gm_res _ x _ hx, gm_div_inr x i j hx.1 hx.2]`. Conclude with `e₁.trans (h.trans (congrArg _ e₂.symm))`. Conclude with `hs₁ (fun _ => j, fun _ => k) Z r z ⟨(mem_pull_inl M₁ M₂ p₁ p₂ _ _).2 (mem_pull.2 hj), (mem_pull_inl L₁ L₂ f₁ f₂ _ _).2 (mem_pull.2 hk)⟩`.
+
+Conclude with `hs₂ (fun _ => j, fun _ => k) Z r z ⟨(mem_pull_inr M₁ M₂ p₁ p₂ _ _).2 (mem_pull.2 hj), (mem_pull_inr L₁ L₂ f₁ f₂ _ _).2 (mem_pull.2 hk)⟩`.
+-/
 theorem exists_iso_glue (w₁ : LB.Iso (L₁.pull f₁) (M₁.pull p₁)) (w₂ : LB.Iso (L₂.pull f₂) (M₂.pull p₂))
     (hw₁ : w₁.IsGen) (hw₂ : w₂.IsGen) :
     ∃ W : LB.Iso ((join L₁ L₂).pull (coprod.map f₁ f₂)) ((join M₁ M₂).pull (coprod.map p₁ p₂)), W.IsGen ∧
@@ -179,6 +218,9 @@ theorem exists_iso_glue (w₁ : LB.Iso (L₁.pull f₁) (M₁.pull p₁)) (w₂ 
 
 end Glue
 
+/- English proof (translation)
+Introduce `R _ _ I D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ U₁ U₂ e`. Conclude with `exists_iso_glue (U₁.w e) (U₂.w e) (U₁.w_gen e) (U₂.w_gen e)`.
+-/
 theorem exists_iso_level : ∀ {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D₁ D₂ : DegData R I} {A₁ A₂ : PolAV (Sp (FractionRing R))} {G₁ G₂ : Over (Sp R)} [GrpObj G₁] [IsCommMonObj G₁] [GrpObj G₂] [IsCommMonObj G₂] (U₁ : UnifPre I D₁ A₁ G₁) (U₂ : UnifPre I D₂ A₂ G₂) (e : ℕ), ∃ W : LB.Iso ((join U₁.LG.L U₂.LG.L).pull (coprod.map (fstG I e G₁).left (fstG I e G₂).left)) ((JN D₁.toPre D₂.toPre).pull (coprod.map (U₁.gt e).pG.left (U₂.gt e).pG.left)), W.IsGen ∧ (∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G₁).left) (z : Z) (j : (JN D₁.toPre D₂.toPre).ι) (k : (join U₁.LG.L U₂.LG.L).ι), (U₁.gt e).pG.left (r z) ∈ D₁.toPre.P.L.U j.1 → (fstG I e G₁).left (r z) ∈ U₁.LG.L.U k.1 → gw W (r ≫ coprod.inl) z j (fun _ => k) = gw (U₁.w e) r z j.1 (fun _ => k.1)) ∧ (∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G₂).left) (z : Z) (j : (JN D₁.toPre D₂.toPre).ι) (k : (join U₁.LG.L U₂.LG.L).ι), (U₂.gt e).pG.left (r z) ∈ D₂.toPre.P.L.U j.2 → (fstG I e G₂).left (r z) ∈ U₂.LG.L.U k.2 → gw W (r ≫ coprod.inr) z j (fun _ => k) = gw (U₂.w e) r z j.2 (fun _ => k.2)) := by
   intro R _ _ I D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ U₁ U₂ e
   exact exists_iso_glue (U₁.w e) (U₂.w e) (U₁.w_gen e) (U₂.w_gen e)

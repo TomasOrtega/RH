@@ -10,5 +10,8 @@ open PositivityTheory.RgBcC
 open GlobalTheory.CompanionTheory.ConeHaar
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ConeLin.cone_lin | exact GlobalTheory.CompanionTheory.ConeLin.cone_lin | (intros; apply GlobalTheory.CompanionTheory.ConeLin.cone_lin <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.congruence_action_determinant : ∀ (n : ℕ) (g : Mat n), g.det ≠ 0 → ∃ T : (Fin n × Fin n → ℝ) →ₗ[ℝ] (Fin n × Fin n → ℝ), (∀ v, hOf (T v) = g * hOf v * gᴴ) ∧ LinearMap.det T = ‖g.det‖ ^ (2 * n) := by
   first | exact @GlobalTheory.CompanionTheory.ConeLin.cone_lin | exact GlobalTheory.CompanionTheory.ConeLin.cone_lin | (intros; apply GlobalTheory.CompanionTheory.ConeLin.cone_lin <;> assumption)

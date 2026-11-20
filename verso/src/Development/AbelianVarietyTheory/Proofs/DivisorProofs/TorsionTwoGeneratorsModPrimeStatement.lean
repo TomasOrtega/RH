@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionTwoGenerator
 import Mathlib
 open NumberField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.torsionBy_two_generators_mod_prime | exact GlobalTheory.torsionBy_two_generators_mod_prime | (intros; apply GlobalTheory.torsionBy_two_generators_mod_prime <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.torsion_two_generators_mod_prime : ∀ (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M] [Module (𝓞 F) M] (N : ℕ), 1 ≤ N → Finite {x : M // N • x = 0} →
     ∀ 𝔭 : Ideal (𝓞 F), 𝔭.IsMaximal → (N : 𝓞 F) ∈ 𝔭 →
     Nat.card {x : M // ∀ a ∈ 𝔭, a • x = 0} ≤ Ideal.absNorm 𝔭 ^ 2 →

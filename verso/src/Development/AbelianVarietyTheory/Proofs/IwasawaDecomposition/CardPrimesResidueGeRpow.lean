@@ -11,6 +11,9 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.Mem.An
 
+/- English proof (translation)
+Introduce `h eps h0 h1`. Take `⟨C₀, Cr, cr, c, hC₀, hCr, hcr, hc, hP⟩` from `GlobalTheory.Mem.An.primesAPInterval_of_tzRat h`. Conclude with `Formalism.HermitianLattices.GL2PrimeSums.primesInProgressionCountLowerBound C₀ Cr cr c hC₀ hCr hcr hc hP eps h0 (by linarith)`.
+-/
 theorem card_primes_residue_ge_rpow :
     GlobalTheory.Mem.An.TZRat → ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → ∀ m₀ a₀ : ℕ, 3 ≤ m₀ → Nat.Coprime a₀ m₀ → ∀ X : ℝ, 0 < X → (1 / 4) * Real.log x ^ 2 * Real.log m₀ ≤ Real.log X → x ^ (eps / 6) ≤ Real.log X → X ^ ((9 : ℝ) / 10) ≤ ((Formalism.HermitianLattices.GL2PrimeSums.PP m₀ a₀ X).card : ℝ) := by
   intro h eps h0 h1

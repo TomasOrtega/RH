@@ -23,8 +23,14 @@ def ccSpan : Submodule ℂ (GA E a → ℂ) :=
   Submodule.span ℂ {F | ∃ (r : ℕ) (f : SchwartzMap (Fin a → Cinf E) ℂ) (G : GA E a → ℂ),
     Good G ∧ F = GlobalTheory.JSW.colConv r f G}
 
+/- English proof (translation)
+Introduce `_` and use `⟨0, 0, fun _ => by simp⟩`.
+-/
 theorem Growth.zero : Growth (0 : GA E a → ℂ) := fun _ => ⟨0, 0, fun _ => by simp⟩
 
+/- English proof (translation)
+Introduce `g` and use `by obtain ⟨C, N, h⟩ := hF g obtain ⟨C', N', h'⟩ := hG g refine ⟨|C| + |C'|, max N N', fun y => ?_⟩ have h1 := one_le_height y have p1 : height y ^ N ≤ height y ^ max N N' := pow_le_pow_right₀ h1 (le_max_left _ _) have p2 : height y ^ N' ≤ height y ^ max N N' := pow_le_pow_right₀ …`.
+-/
 theorem Growth.add {F G : GA E a → ℂ} (hF : Growth F) (hG : Growth G) : Growth (F + G) := fun g => by
   obtain ⟨C, N, h⟩ := hF g
   obtain ⟨C', N', h'⟩ := hG g
@@ -42,26 +48,47 @@ theorem Growth.add {F G : GA E a → ℂ} (hF : Growth F) (hG : Growth G) : Grow
             (mul_le_mul_of_nonneg_left p2 (abs_nonneg C')))
     _ = (|C| + |C'|) * height y ^ max N N' := by ring
 
+/- English proof (translation)
+Introduce `g` and use `by obtain ⟨C, N, h⟩ := hF g refine ⟨‖z‖ * C, N, fun y => ?_⟩ rw [Pi.smul_apply, norm_smul, mul_assoc] exact mul_le_mul_of_nonneg_left (h y) (norm_nonneg _)`.
+-/
 theorem Growth.smul {F : GA E a → ℂ} (hF : Growth F) (z : ℂ) : Growth (z • F) := fun g => by
   obtain ⟨C, N, h⟩ := hF g
   refine ⟨‖z‖ * C, N, fun y => ?_⟩
   rw [Pi.smul_apply, norm_smul, mul_assoc]
   exact mul_le_mul_of_nonneg_left (h y) (norm_nonneg _)
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem Good.mem_Sm {F : GA E a → ℂ} (h : Good F) : F ∈ Sm E a := h.1
 
+/- English proof (translation)
+The claim follows from `(h.2 []).1`.
+-/
 theorem Good.decays {F : GA E a → ℂ} (h : Good F) : GlobalTheory.ShortVecDecay.Decays F := (h.2 []).1
 
+/- English proof (translation)
+The claim follows from `(h.2 []).2`.
+-/
 theorem Good.growth {F : GA E a → ℂ} (h : Good F) : Growth F := (h.2 []).2
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.GLFin.word, Module.End.mul_apply]`.
+-/
 theorem word_cons (X : Lie E a) (l : List (Lie E a)) (φ : Sm E a) :
     GlobalTheory.GLFin.word (X :: l) φ = lie E a X (GlobalTheory.GLFin.word l φ) := by
   simp [GlobalTheory.GLFin.word, Module.End.mul_apply]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.GLFin.word, List.prod_append, Module.End.mul_apply]`.
+-/
 theorem word_append_single (l : List (Lie E a)) (X : Lie E a) (φ : Sm E a) :
     GlobalTheory.GLFin.word (l ++ [X]) φ = GlobalTheory.GLFin.word l (lie E a X φ) := by
   simp [GlobalTheory.GLFin.word, List.prod_append, Module.End.mul_apply]
 
+/- English proof (translation)
+Take `⟨hF, hl⟩` from `h`. Use `⟨lieD_mem_Sm X hF, fun l => ?_⟩` and prove the remaining obligations. Establish `e : (⟨lieD X F, lieD_mem_Sm X hF⟩ : Sm E a) = lie E a X ⟨F, hF⟩` using `rfl`. Rewrite using `[e, ← word_append_single]`. Conclude with `hl _`.
+-/
 theorem Good.derivative {F : GA E a → ℂ} (h : Good F) (X : Lie E a) : Good (lieD X F) := by
   obtain ⟨hF, hl⟩ := h
   refine ⟨lieD_mem_Sm X hF, fun l => ?_⟩
@@ -69,12 +96,20 @@ theorem Good.derivative {F : GA E a → ℂ} (h : Good F) (X : Lie E a) : Good (
   rw [e, ← word_append_single]
   exact hl _
 
+/- English proof (translation)
+Use `⟨zero_mem _, fun l => ?_⟩` and prove the remaining obligations. Establish `e : (⟨0, zero_mem _⟩ : Sm E a) = 0` using `rfl`. Rewrite using `[e, map_zero]`. Conclude with `⟨GlobalTheory.ShortVecDecay.Decays.zero, Growth.zero⟩`.
+-/
 theorem good_zero : Good (0 : GA E a → ℂ) := by
   refine ⟨zero_mem _, fun l => ?_⟩
   have e : (⟨0, zero_mem _⟩ : Sm E a) = 0 := rfl
   rw [e, map_zero]
   exact ⟨GlobalTheory.ShortVecDecay.Decays.zero, Growth.zero⟩
 
+/- English proof (translation)
+Take `⟨hF1, hF2⟩` from `hF`. Take `⟨hG1, hG2⟩` from `hG`. Use `⟨add_mem hF1 hG1, fun l => ?_⟩` and prove the remaining obligations. Establish `e : (⟨F + G, add_mem hF1 hG1⟩ : Sm E a) = ⟨F, hF1⟩ + ⟨G, hG1⟩` using `rfl`. Rewrite using `[e, map_add, Submodule.coe_add]`.
+
+Conclude with `⟨(hF2 l).1.add (hG2 l).1, (hF2 l).2.add (hG2 l).2⟩`.
+-/
 theorem Good.add {F G : GA E a → ℂ} (hF : Good F) (hG : Good G) : Good (F + G) := by
   obtain ⟨hF1, hF2⟩ := hF
   obtain ⟨hG1, hG2⟩ := hG
@@ -83,6 +118,9 @@ theorem Good.add {F G : GA E a → ℂ} (hF : Good F) (hG : Good G) : Good (F + 
   rw [e, map_add, Submodule.coe_add]
   exact ⟨(hF2 l).1.add (hG2 l).1, (hF2 l).2.add (hG2 l).2⟩
 
+/- English proof (translation)
+Take `⟨hF1, hF2⟩` from `hF`. Use `⟨Submodule.smul_mem _ z hF1, fun l => ?_⟩` and prove the remaining obligations. Establish `e : (⟨z • F, Submodule.smul_mem _ z hF1⟩ : Sm E a) = z • ⟨F, hF1⟩` using `rfl`. Rewrite using `[e, map_smul, Submodule.coe_smul]`. Conclude with `⟨(hF2 l).1.smul z, (hF2 l).2.smul z⟩`.
+-/
 theorem Good.smul {F : GA E a → ℂ} (hF : Good F) (z : ℂ) : Good (z • F) := by
   obtain ⟨hF1, hF2⟩ := hF
   refine ⟨Submodule.smul_mem _ z hF1, fun l => ?_⟩
@@ -90,6 +128,9 @@ theorem Good.smul {F : GA E a → ℂ} (hF : Good F) (z : ℂ) : Good (z • F) 
   rw [e, map_smul, Submodule.coe_smul]
   exact ⟨(hF2 l).1.smul z, (hF2 l).2.smul z⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨φ.2, fun l => ⟨GlobalTheory.ShortVecDecay.decays_of_mem hπ (GlobalTheory.ShortVecDecay.word_mem l hφ), (π.cusp _ (GlobalTheory.ShortVecDecay.word_mem l hφ)).1.growth⟩⟩`.
+-/
 theorem good_of_mem {π : CuspSub E a} (hπ : π.IsUnitary) {φ : Sm E a} (hφ : φ ∈ π.V) : Good φ.1 :=
   ⟨φ.2, fun l => ⟨GlobalTheory.ShortVecDecay.decays_of_mem hπ (GlobalTheory.ShortVecDecay.word_mem l hφ),
     (π.cusp _ (GlobalTheory.ShortVecDecay.word_mem l hφ)).1.growth⟩⟩

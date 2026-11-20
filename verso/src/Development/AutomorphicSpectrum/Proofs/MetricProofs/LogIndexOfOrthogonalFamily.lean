@@ -14,6 +14,9 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree
 
 variable {E L V : Type} [Field E] [NumberField E] [Field L] [AddCommGroup V] [Module L V]
 
+/- English proof (translation)
+Use `congrArg (fun T : Module.End L V => T y) (HT.ProjEig.rho_mul_eigProj ρ t o)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem rho_eigProj (ρ : 𝓞 E →+* Module.End L V) (t : E →+* L) (o : 𝓞 E) (y : V) :
     ρ o (HT.eigProj ρ t y) = t (o : E) • HT.eigProj ρ t y := by
   have := congrArg (fun T : Module.End L V => T y) (HT.ProjEig.rho_mul_eigProj ρ t o)
@@ -29,6 +32,9 @@ def theta (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) :
   map_smul' c z := by
     simp only [Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem theta_apply (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) (z : (E →+* L) → Fin r → L) :
     theta ρ v z = ∑ t, ∑ a, z t a • HT.eigProj ρ t (v a) := rfl
 
@@ -37,14 +43,23 @@ def emb {r : ℕ} : (Fin r → E) →+ ((E →+* L) → Fin r → L) where
   map_zero' := by ext; simp
   map_add' x y := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_apply {r : ℕ} (x : Fin r → E) (t : E →+* L) (a : Fin r) : emb x t a = t (x a) := rfl
 
 def psi (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) : (Fin r → E) →+ V :=
   (theta ρ v).toAddMonoidHom.comp emb
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psi_apply (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) (x : Fin r → E) :
     psi ρ v x = ∑ t, ∑ a, t (x a) • HT.eigProj ρ t (v a) := rfl
 
+/- English proof (translation)
+Simplify using `only [psi_apply, map_sum, map_smul, rho_eigProj, Pi.smul_apply, smul_smul]`. Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Algebra.smul_def, map_mul, mul_comm]`.
+-/
 theorem psi_smul (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) (o : 𝓞 E) (x : Fin r → E) :
     psi ρ v (o • x) = ρ o (psi ρ v x) := by
   simp only [psi_apply, map_sum, map_smul, rho_eigProj, Pi.smul_apply, smul_smul]
@@ -54,6 +69,9 @@ theorem psi_smul (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) 
 
 variable [CharZero L]
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun T : Module.End L V => T (ρ o y)) (HT.sum_eigProj_eq_one L V E ρ hcard)`. Simplify using `only [LinearMap.sum_apply, Module.End.one_apply] at h`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← rho_eigProj, ← Module.End.mul_apply, ← Module.End.mul_apply, (HT.ProjEig.eigProj_spec L V E ρ t).2.2.2]`.
+-/
 theorem rho_eq_sum (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) (o : 𝓞 E) (y : V) :
     ρ o y = ∑ t : E →+* L, t (o : E) • HT.eigProj ρ t y := by
@@ -64,6 +82,9 @@ theorem rho_eq_sum (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
   rw [← rho_eigProj, ← Module.End.mul_apply, ← Module.End.mul_apply,
     (HT.ProjEig.eigProj_spec L V E ρ t).2.2.2]
 
+/- English proof (translation)
+Simplify using `only [psi_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => (rho_eq_sum hcard ρ _ _).symm`.
+-/
 theorem psi_int (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) (c : Fin r → 𝓞 E) :
     psi ρ v (fun a => (c a : E)) = ∑ a, ρ (c a) (v a) := by
@@ -72,6 +93,17 @@ theorem psi_int (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
   exact Finset.sum_congr rfl fun a _ => (rho_eq_sum hcard ρ _ _).symm
 
 omit [Fintype (E →+* L)] [CharZero L] in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨o, i, rfl⟩` from `hy`.
+
+Use `⟨Pi.single i o, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`.
+
+Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨c, rfl⟩` from `hy`. Take `⟨d, rfl⟩` from `hz`.
+
+Conclude with `⟨c + d, by simp [Finset.sum_add_distrib]⟩`. Consider the case `neg y _ hy`. Take `⟨c, rfl⟩` from `hy`. Conclude with `⟨-c, by simp⟩`. Introduce and unpack `⟨c, rfl⟩`.
+
+Conclude with `sum_mem fun a _ => AddSubgroup.subset_closure ⟨c a, a, rfl⟩`.
+-/
 theorem mem_oSpan_iff (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) (y : V) :
     y ∈ oSpan ρ v ↔ ∃ c : Fin r → 𝓞 E, y = ∑ a, ρ (c a) (v a) := by
   classical
@@ -97,6 +129,15 @@ theorem mem_oSpan_iff (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r �
   · rintro ⟨c, rfl⟩
     exact sum_mem fun a _ => AddSubgroup.subset_closure ⟨c a, a, rfl⟩
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 E)) x`. Use `choose c hc using hb`. Establish `hcx : (fun a => (c a : E)) = (b : 𝓞 E) • x`. Use function extensionality and compare the values at `a`.
+
+Conclude with `hc a`. Establish `h1 : psi ρ v (fun a => (c a : E)) = 0`. Rewrite using `[hcx, psi_smul, hx, map_zero]`. Rewrite `h1` using `[psi_int hcard]`. Establish `h2` using `hind c h1`.
+
+Establish `hb0 : ((b : 𝓞 E) : E) ≠ 0`. Use `nonZeroDivisors.ne_zero b.2` as an intermediate fact. Conclude with `this` after adjusting the coercions. Use function extensionality and compare the values at `a`. Establish `h3` using `hc a`.
+
+Rewrite `h3` using `[h2]`. Simplify using `only [Pi.zero_apply, map_zero] at h3`. Rewrite `h3` using `[Algebra.smul_def]`. Conclude with `(mul_eq_zero.1 h3.symm).resolve_left hb0`.
+-/
 theorem psi_injective (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V)
     (hind : ∀ a : Fin r → 𝓞 E, ∑ i, ρ (a i) (v i) = 0 → a = 0) : Function.Injective (psi ρ v) := by
@@ -120,6 +161,15 @@ theorem psi_injective (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
   rw [Algebra.smul_def] at h3
   exact (mul_eq_zero.1 h3.symm).resolve_left hb0
 
+/- English proof (translation)
+Use `set m := (oSpan ρ v).relIndex I with hm`. Establish `hm0 : m ≠ 0` using `hv.2.2`. Establish `h1 : m • y ∈ oSpan ρ v`. Establish `h` using `AddSubgroup.nsmul_index_mem ((oSpan ρ v).addSubgroupOf I) ⟨y, hy⟩`. Rewrite `h` using `[AddSubgroup.mem_addSubgroupOf]`.
+
+Conclude with `h`. Take `⟨c, hc⟩` from `(mem_oSpan_iff ρ v _).1 h1`. Establish `hmE : (m : E) ≠ 0` using `by exact_mod_cast hm0`. Establish `hmL : (m : L) ≠ 0` using `by exact_mod_cast hm0`. Use `⟨fun a => (m : E)⁻¹ * c a, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : m • (fun a => (m : E)⁻¹ * c a) = fun a => (c a : E)`. Use function extensionality and compare the values at `a`. Simplify using `[nsmul_eq_mul, hmE]`. Establish `h3 : m • psi ρ v (fun a => (m : E)⁻¹ * c a) = m • y`. Rewrite using `[← map_nsmul, h2, psi_int hcard, hc]`.
+
+Rewrite `h3` using `[← Nat.cast_smul_eq_nsmul L, ← Nat.cast_smul_eq_nsmul L]`. Conclude with `smul_right_injective V hmL h3`.
+-/
 theorem exists_psi (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) {I : AddSubgroup V} {r : ℕ} {v : Fin r → V} (hv : IsOFamily ρ I v)
     {y : V} (hy : y ∈ I) : ∃ x, psi ρ v x = y := by
@@ -153,10 +203,18 @@ def lat (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) (I : AddS
     exact hst c _ hx
 
 omit [CharZero L] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_lat {ρ : 𝓞 E →+* Module.End L V} {r : ℕ} {v : Fin r → V} {I : AddSubgroup V}
     {hst : ∀ a, ∀ x ∈ I, ρ a x ∈ I} {x : Fin r → E} : x ∈ lat ρ v I hst ↔ psi ρ v x ∈ I := Iff.rfl
 
 omit [Fintype (E →+* L)] [CharZero L] [NumberField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using `[Algebra.smul_def]`. Introduce `a _ hab`.
+
+Simplify using `[Pi.single_eq_of_ne hab.symm]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_smul_single {r : ℕ} (c : Fin r → 𝓞 E) :
     ∑ a, c a • (Pi.single a 1 : Fin r → E) = fun b => (c b : E) := by
   funext b
@@ -167,6 +225,13 @@ theorem sum_smul_single {r : ℕ} (c : Fin r → 𝓞 E) :
     simp [Pi.single_eq_of_ne hab.symm]
   · simp
 
+/- English proof (translation)
+Establish `h` using `psi_int hcard ρ v (Pi.single a 1)`. Establish `e : (fun b => (((Pi.single a 1 : Fin r → 𝓞 E) b : 𝓞 E) : E)) = Pi.single a 1`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hb]`. Rewrite `h` using `[e]`. Rewrite using `[h, Finset.sum_eq_single a]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules.
+-/
 theorem psi_single (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) (a : Fin r) :
     psi ρ v (Pi.single a 1) = v a := by
@@ -185,6 +250,11 @@ theorem psi_single (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     simp [Pi.single_eq_of_ne hb]
   · simp
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce `hy`.
+
+Take `⟨x, rfl⟩` from `exists_psi hcard ρ hv hy`. Conclude with `⟨x, hy, rfl⟩`.
+-/
 theorem map_psi_lat (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) {I : AddSubgroup V} {r : ℕ} {v : Fin r → V} (hv : IsOFamily ρ I v)
     (hst : ∀ a, ∀ x ∈ I, ρ a x ∈ I) : (lat ρ v I hst).toAddSubgroup.map (psi ρ v) = I := by
@@ -196,6 +266,13 @@ theorem map_psi_lat (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     obtain ⟨x, rfl⟩ := exists_psi hcard ρ hv hy
     exact ⟨x, hy, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 hx`. Rewrite using `[sum_smul_single]`.
+
+Express the relevant statement in the definitionally equal form `psi ρ v (fun b => (c b : E)) ∈ _`. Rewrite using `[psi_int hcard]`. Conclude with `(mem_oSpan_iff ρ v _).2 ⟨c, rfl⟩`. Introduce `hy`. Take `⟨c, rfl⟩` from `(mem_oSpan_iff ρ v _).1 hy`.
+
+Use `⟨fun b => (c b : E), ?_, psi_int hcard ρ v c⟩` and prove the remaining obligations. Conclude with `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).2 ⟨c, sum_smul_single c⟩`.
+-/
 theorem map_psi_span (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) :
     (Submodule.span (𝓞 E) (Set.range fun a : Fin r => (Pi.single a 1 : Fin r → E))).toAddSubgroup.map
@@ -213,6 +290,13 @@ theorem map_psi_span (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     refine ⟨fun b => (c b : E), ?_, psi_int hcard ρ v c⟩
     exact (Submodule.mem_span_range_iff_exists_fun (𝓞 E)).2 ⟨c, sum_smul_single c⟩
 
+/- English proof (translation)
+Establish `hidx : familyIndex (lat ρ v I hst) (fun a => Pi.single a 1) = (oSpan ρ v).relIndex I`. Rewrite using `[familyIndex, ← AddSubgroup.relIndex_map_map_of_injective _ _ (psi_injective hcard ρ v hv.2.1), map_psi_span hcard, map_psi_lat hcard ρ hv]`. Use `⟨⟨hr, fun a => ?_, ?_, ?_⟩, hidx⟩` and prove the remaining obligations. Rewrite using `[mem_lat, psi_single hcard]`. Conclude with `hv.1 a`.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc a`. Rewrite `hc` using `[sum_smul_single]`. Use `congrFun hc a` as an intermediate fact. Simplify using `using this`.
+
+Establish `h : familyIndex (lat ρ v I hst) (fun a => Pi.single a 1) ≠ 0`. Rewrite using `[hidx]`. Conclude with `hv.2.2`. Conclude with `h`.
+-/
 theorem isNzFamily_lat (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) {I : AddSubgroup V} {r : ℕ} {v : Fin r → V} (hr : 1 ≤ r)
     (hv : IsOFamily ρ I v) (hst : ∀ a, ∀ x ∈ I, ρ a x ∈ I) :
@@ -236,6 +320,13 @@ theorem isNzFamily_lat (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
 
 omit [Fintype (E →+* L)] [CharZero L] in
 
+/- English proof (translation)
+Set `ρ' : 𝓞 E →+* Module.End L L` to `(algebraMap L (Module.End L L)).comp (u.comp (algebraMap (𝓞 E) E))`. Establish `hρ : ∀ (o : 𝓞 E) (y : L), ρ' o y = u (o : E) * y` using `fun o y => by`. Simplify using `[ρ', Module.algebraMap_end_apply]`. Establish `h1 : (1 : L) ∈ HT.eigSp ρ' u`. Rewrite using `[HT.ProjEig.mem_eigSp_iff_apply]`.
+
+Introduce `a`. Simplify using `[hρ]`. Establish `h2 : HT.eigProj ρ' t 1 = ∑ k, t (HT.dualInt E k) * u ((RingOfIntegers.basis E k : 𝓞 E) : E)`. Simplify using `[HT.eigProj, LinearMap.sum_apply, hρ]`. Rewrite using `[← h2]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `HT.LatBasic.eigProj_of_mem h1`. Conclude with `HT.LatBasic.eigProj_of_ne h h1`.
+-/
 theorem sum_dual_mul [DecidableEq (E →+* L)] (t u : E →+* L) :
     ∑ k, t (HT.dualInt E k) * u ((RingOfIntegers.basis E k : 𝓞 E) : E) = if t = u then 1 else 0 := by
   let ρ' : 𝓞 E →+* Module.End L L :=
@@ -256,6 +347,11 @@ theorem sum_dual_mul [DecidableEq (E →+* L)] (t u : E →+* L) :
   · exact HT.LatBasic.eigProj_of_ne h h1
 
 omit [NumberField E] [Fintype (E →+* L)] [CharZero L] in
+/- English proof (translation)
+Set `b` to `Module.Basis.span he`. Take `⟨G, hG⟩` from `LinearMap.exists_extend (b.constr L g)`. Use `⟨G, fun j => ?_⟩` and prove the remaining obligations. Establish `h1 : (b j : V) = e j` using `congrArg Subtype.val (Module.Basis.span_apply he j)`. Rewrite using `[← h1]`.
+
+Establish `h2` using `LinearMap.congr_fun hG (b j)`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at h2`. Rewrite using `[h2, Module.Basis.constr_basis]`.
+-/
 theorem exists_linearMap_of_independent {W : Type} [AddCommGroup W] [Module L W] {n : ℕ} {e : Fin n → V}
     (he : LinearIndependent L e) (g : Fin n → W) : ∃ G : V →ₗ[L] W, ∀ j, G (e j) = g j := by
   let b := Module.Basis.span he
@@ -267,6 +363,35 @@ theorem exists_linearMap_of_independent {W : Type} [AddCommGroup W] [Module L W]
   simp only [LinearMap.comp_apply, Submodule.subtype_apply] at h2
   rw [h2, Module.Basis.constr_basis]
 
+/- English proof (translation)
+Take `⟨n, e, hli, hcl⟩` from `hI`. Establish `hinj` using `psi_injective hcard ρ v hv.2.1`. Establish `he : ∀ j, e j ∈ I` using `fun j => hcl ▸ AddSubgroup.subset_closure ⟨j, rfl⟩`. Use `choose x hx using fun j => exists_psi hcard ρ hv (he j)`. Take `⟨G, hG⟩` from `exists_linearMap_of_independent hli (fun j => (emb (x j) : (E →+* L) → Fin r → L))`.
+
+Establish `hGI : ∀ y ∈ I, ∀ x', psi ρ v x' = y → G y = emb x'`. Introduce `y hy`. Rewrite `hy` using `[← hcl]`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+
+Take `⟨j, rfl⟩` from `hy`. Introduce `x' h`. Rewrite using `[hinj (h.trans (hx j).symm), hG]`. Consider the case `zero`. Introduce `x' h`.
+
+Rewrite using `[hinj (h.trans (map_zero _).symm)]`. Simplify using the standard rewrite rules. Consider the case `add y z hy hz ihy ihz`. Introduce `x' h`. Take `⟨xy, hxy⟩` from `exists_psi hcard ρ hv (hcl ▸ hy)`.
+
+Take `⟨xz, hxz⟩` from `exists_psi hcard ρ hv (hcl ▸ hz)`. Establish `: x' = xy + xz` using `hinj (by rw [h, map_add, hxy, hxz])`. Rewrite using `[map_add, ihy xy hxy, ihz xz hxz, this, map_add]`. Consider the case `neg y hy ih`. Introduce `x' h`.
+
+Take `⟨xy, hxy⟩` from `exists_psi hcard ρ hv (hcl ▸ hy)`. Establish `: x' = -xy` using `hinj (by rw [h, map_neg, hxy])`. Rewrite using `[map_neg, ih xy hxy, this, map_neg]`. Establish `hGP : ∀ (t : E →+* L) (a : Fin r), G (HT.eigProj ρ t (v a)) = Pi.single t (Pi.single a 1)`. Introduce `t a`.
+
+Establish `h1 : ∀ k, G (ρ (RingOfIntegers.basis E k) (v a)) = emb ((RingOfIntegers.basis E k : 𝓞 E) • (Pi.single a 1 : Fin r → E))`. Introduce `k`. Use `hGI _ (hst _ _ (hv.1 a)) _ ?_` and prove the remaining obligations. Rewrite using `[psi_smul, psi_single hcard]`. Simplify using `only [HT.eigProj, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, h1]`.
+
+Use function extensionality and compare the values at `u b`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, emb_apply, smul_eq_mul]`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `only [Pi.single_eq_same, Algebra.smul_def, mul_one]`.
+
+Use `sum_dual_mul t u` as an intermediate fact. Distinguish the cases in `htu : u = t`. Substitute `htu` using the available equality. Simplify using `using this`. Rewrite `this` using `[if_neg (Ne.symm htu)]`.
+
+Rewrite using `[Pi.single_eq_of_ne htu]`. Simplify using `using this`. Establish `h0 : (Pi.single a 1 : Fin r → E) b = 0` using `Pi.single_eq_of_ne hb 1`. Simplify using `only [h0, smul_zero, map_zero, mul_zero, Finset.sum_const_zero]`. Distinguish the cases in `htu : u = t`.
+
+Substitute `htu` using the available equality. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using `[Pi.single_eq_of_ne htu]`. Establish `hleft : Function.LeftInverse G (theta ρ v)`. Introduce `z`.
+
+Simplify using `only [theta_apply, map_sum, map_smul, hGP]`. Use function extensionality and compare the values at `u b`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single u, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules.
+
+Introduce `a _ hab`. Simplify using `[Pi.single_eq_of_ne hab.symm]`. Simplify using the standard rewrite rules. Introduce `t _ htu`. Simplify using `[Pi.single_eq_of_ne htu.symm]`.
+
+Simplify using the standard rewrite rules. Conclude with `hleft.injective`.
+-/
 theorem theta_injective (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) {I : AddSubgroup V} {r : ℕ} {v : Fin r → V} (hv : IsOFamily ρ I v)
     (hst : ∀ a, ∀ x ∈ I, ρ a x ∈ I)
@@ -350,9 +475,17 @@ variable [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V]
 def thetaO (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) :
     ((E →+* L) → Fin r → L) →ₗ[𝓞 L] V := (theta ρ v).restrictScalars (𝓞 L)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thetaO_apply (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V)
     (z : (E →+* L) → Fin r → L) : thetaO ρ v z = theta ρ v z := rfl
 
+/- English proof (translation)
+Rewrite using `[baseChangeLat, Submodule.map_span, ← Set.image_comp]`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Conclude with `hx`. Introduce `hy`. Take `⟨x, rfl⟩` from `exists_psi hcard ρ hv hy`. Conclude with `⟨x, hy, rfl⟩`.
+-/
 theorem map_baseChangeLat (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) {I : AddSubgroup V} {r : ℕ} {v : Fin r → V} (hv : IsOFamily ρ I v)
     (hst : ∀ a, ∀ x ∈ I, ρ a x ∈ I) [NumberField L] :
@@ -369,6 +502,9 @@ theorem map_baseChangeLat (hcard : Fintype.card (E →+* L) = Module.finrank ℚ
 
 open Classical in
 omit [Fintype (E →+* L)] [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] in
+/- English proof (translation)
+Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `HT.LatBasic.eigProj_of_mem (HT.LatBasic.eigProj_mem ρ u y)`. Conclude with `HT.LatBasic.eigProj_of_ne (Ne.symm h) (HT.LatBasic.eigProj_mem ρ u y)`.
+-/
 theorem eigProj_eigProj (ρ : 𝓞 E →+* Module.End L V) {t u : E →+* L} (y : V) :
     HT.eigProj ρ t (HT.eigProj ρ u y) = if u = t then HT.eigProj ρ u y else 0 := by
   split_ifs with h
@@ -382,6 +518,11 @@ def phi (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) (t : E �
     (Fin r → L) →ₗ[𝓞 L] V :=
   (thetaO ρ v).comp (LinearMap.single (𝓞 L) (fun _ : E →+* L => Fin r → L) t)
 
+/- English proof (translation)
+Simplify using `only [phi, LinearMap.comp_apply, thetaO_apply, theta_apply, LinearMap.coe_single]`. Rewrite using `[Finset.sum_eq_single t]`. Simplify using the standard rewrite rules. Introduce `u _ hu`. Simplify using `[Pi.single_eq_of_ne hu]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem phi_apply (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) (t : E →+* L)
     (w : Fin r → L) : phi ρ v t w = ∑ a, w a • HT.eigProj ρ t (v a) := by
   classical
@@ -392,6 +533,21 @@ theorem phi_apply (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V)
     simp [Pi.single_eq_of_ne hu]
   · simp
 
+/- English proof (translation)
+Establish `hinj` using `theta_injective hcard ρ hv hst hI`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_baseChangeLat hcard ρ hv hst]`. Conclude with `⟨_, hw, rfl⟩`. Express the relevant statement in the definitionally equal form `phi ρ v t w ∈ HT.eigSp ρ t`. Rewrite using `[phi_apply]`. Conclude with `sum_mem fun a _ => Submodule.smul_mem _ _ (HT.LatBasic.eigProj_mem ρ t _)`.
+
+Introduce and unpack `⟨h1, h2⟩`. Rewrite `h1` using `[SetLike.mem_coe, ← map_baseChangeLat hcard ρ hv hst]`. Take `⟨z, hz, rfl⟩` from `h1`. Establish `h3 : thetaO ρ v z ∈ HT.eigSp ρ t` using `h2`. Establish `h4` using `HT.LatBasic.eigProj_of_mem h3`.
+
+Establish `h5 : HT.eigProj ρ t (thetaO ρ v z) = phi ρ v t (z t)`. Rewrite using `[phi_apply, thetaO_apply, theta_apply, map_sum, Finset.sum_eq_single t]`. Simplify using `only [map_sum, map_smul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[eigProj_eigProj, if_pos rfl]`.
+
+Introduce `u _ hu`. Simplify using `only [map_sum, map_smul]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[eigProj_eigProj, if_neg hu, smul_zero]`. Simplify using the standard rewrite rules.
+
+Establish `h6 : z = Pi.single t (z t)`. Apply `hinj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `thetaO ρ v z = phi ρ v t (z t)`. Rewrite using `[← h5, h4]`. Use `⟨z t, ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `LinearMap.single (𝓞 L) (fun _ : E →+* L => Fin r → L) t (z t) ∈ baseChangeLat L _`. Rewrite using `[LinearMap.coe_single, ← h6]`. Conclude with `hz`. Rewrite using `[← h5, h4]`.
+-/
 theorem map_eigenLat [NumberField L] (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) {I : AddSubgroup V} {r : ℕ} {v : Fin r → V} (hv : IsOFamily ρ I v)
     (hst : ∀ a, ∀ x ∈ I, ρ a x ∈ I)
@@ -435,6 +591,11 @@ theorem map_eigenLat [NumberField L] (hcard : Fintype.card (E →+* L) = Module.
       exact hz
     · rw [← h5, h4]
 
+/- English proof (translation)
+Rewrite using `[familyLat, Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `a`. Simplify using `only [Function.comp_apply, phi_apply]`. Rewrite using `[Finset.sum_eq_single a]`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules.
+-/
 theorem map_familyLat [NumberField L] (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) {r : ℕ} (v : Fin r → V) (t : E →+* L) :
     (familyLat t (fun a => (Pi.single a 1 : Fin r → E))).map (phi ρ v t) =
@@ -451,10 +612,16 @@ theorem map_familyLat [NumberField L] (hcard : Fintype.card (E →+* L) = Module
   · simp
 
 omit [Fintype (E →+* L)] [CharZero L] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_toAddSubgroup {M N : Type} [AddCommGroup M] [AddCommGroup N] [Module (𝓞 L) M]
     [Module (𝓞 L) N] (f : M →ₗ[𝓞 L] N) (P : Submodule (𝓞 L) M) :
     (P.map f).toAddSubgroup = P.toAddSubgroup.map f.toAddMonoidHom := rfl
 
+/- English proof (translation)
+Introduce `w w' h`. Use `theta_injective hcard ρ hv hst hI h` as an intermediate fact. Conclude with `Pi.single_injective t this`.
+-/
 theorem phi_injective (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) {I : AddSubgroup V} {r : ℕ} {v : Fin r → V} (hv : IsOFamily ρ I v)
     (hst : ∀ a, ∀ x ∈ I, ρ a x ∈ I)
@@ -470,12 +637,32 @@ end Index
 section Final
 
 omit [Fintype (E →+* L)] [CharZero L] in
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[HT.ProjEig.mem_eigSp_iff_apply]`. Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem eigSp_comp (ρ : 𝓞 E →+* Module.End L V) (t : E →+* L) :
     eigSp ρ (t.comp (algebraMap (𝓞 E) E)) = HT.eigSp ρ t := by
   ext x
   rw [HT.ProjEig.mem_eigSp_iff_apply]
   simp [eigSp, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Use `set σ := t.comp (algebraMap (𝓞 E) E) with hσ`. Establish `hres : ∀ u : E →+* L, u ≠ t → u.comp (algebraMap (𝓞 E) E) ≠ σ`. Introduce `u hu h`. Conclude with `hu (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h)`. Establish `hker : ∀ y ∈ ⨆ σ' ∈ {σ' : 𝓞 E →+* L | σ' ≠ σ}, eigSp ρ σ', HT.eigProj ρ t y = 0`.
+
+Introduce `y hy`. Establish `hle : (⨆ σ' ∈ {σ' : 𝓞 E →+* L | σ' ≠ σ}, eigSp ρ σ') ≤ LinearMap.ker (HT.eigProj ρ t)`. Use `iSup₂_le fun σ' hσ' z hz => ?_` and prove the remaining obligations. Take `⟨u, rfl⟩` from `hsur σ'`. Rewrite `hz` using `[eigSp_comp]`.
+
+Establish `hut : t ≠ u`. Introduce and unpack `rfl`. Conclude with `hσ' rfl`. Conclude with `HT.LatBasic.eigProj_of_ne hut hz`. Conclude with `hle hy`.
+
+Establish `hex : ∃ p ∈ eigSp ρ σ, x - p ∈ ⨆ σ' ∈ {σ' : 𝓞 E →+* L | σ' ≠ σ}, eigSp ρ σ'`. Use `⟨HT.eigProj ρ t x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hσ, eigSp_comp]`. Conclude with `HT.LatBasic.eigProj_mem ρ t x`. Establish `h1` using `congrArg (fun T : Module.End L V => T x) (HT.sum_eigProj_eq_one L V E ρ hcard)`.
+
+Simplify using `only [LinearMap.sum_apply, Module.End.one_apply] at h1`. Establish `h2 : x - HT.eigProj ρ t x = ∑ u ∈ Finset.univ.erase t, HT.eigProj ρ u x` using `sub_eq_of_eq_add' ((Finset.add_sum_erase Finset.univ (fun u => HT.eigProj ρ u x) (Finset.mem_univ t)).trans h1).symm`. Rewrite using `[h2]`. Use `sum_mem fun u hu => ?_` and prove the remaining obligations. Establish `hut` using `(Finset.mem_erase.1 hu).1`.
+
+Establish `hmem : HT.eigProj ρ u x ∈ eigSp ρ (u.comp (algebraMap (𝓞 E) E))`. Rewrite using `[eigSp_comp]`. Conclude with `HT.LatBasic.eigProj_mem ρ u x`. Conclude with `Submodule.mem_iSup_of_mem _ (Submodule.mem_iSup_of_mem (hres u hut) hmem)`. Unfold `eigComp`.
+
+Rewrite using `[dif_pos hex]`. Take `⟨h1, h2⟩` from `hex.choose_spec`. Establish `h3` using `hker _ h2`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Establish `h1' : hex.choose ∈ HT.eigSp ρ t` using `(eigSp_comp ρ t).le h1`.
+
+Rewrite using `[h3, HT.LatBasic.eigProj_of_mem h1']`.
+-/
 theorem eigComp_comp (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (hsur : ∀ σ' : 𝓞 E →+* L, ∃ u : E →+* L, u.comp (algebraMap (𝓞 E) E) = σ')
     (ρ : 𝓞 E →+* Module.End L V) (t : E →+* L) (x : V) :
@@ -523,6 +710,11 @@ theorem eigComp_comp (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
 variable [NumberField L] [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V]
 
 omit [CharZero L] [AddCommGroup V] [Module L V] [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] in
+/- English proof (translation)
+Establish `hbij : Function.Bijective (fun t : E →+* L => ι.comp t)`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨fun a b h => ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `ι.injective (DFunLike.congr_fun h x)`.
+
+Rewrite using `[hcard, NumberField.Embeddings.card]`. Conclude with `hbij.2 σ`.
+-/
 theorem exists_split {V : Type} (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E) (ι : L →+* ℂ) (σ : E →+* ℂ) :
     ∃ t : E →+* L, ι.comp t = σ := by
   have hbij : Function.Bijective (fun t : E →+* L => ι.comp t) := by
@@ -533,6 +725,11 @@ theorem exists_split {V : Type} (hcard : Fintype.card (E →+* L) = Module.finra
     · rw [hcard, NumberField.Embeddings.card]
   exact hbij.2 σ
 
+/- English proof (translation)
+Set `ι : L →+* ℂ` to `(IsAlgClosed.lift : L →ₐ[ℚ] ℂ).toRingHom`. Take `⟨hnz, hidx⟩` from `isNzFamily_lat hcard ρ hr hv hst`. Establish `hT` using `TorusIndex.proof hE DifferentLatIndex.proof E L ι (exists_split (V := V) hcard ι) r (lat ρ v I hst) r _ hnz t`. Rewrite `hT` using `[hidx]`. Rewrite using `[← hT, ← map_eigenLat hcard ρ hv hst hI, ← map_familyLat hcard ρ v t, genIndex, genIndex, map_toAddSubgroup, map_toAddSubgroup]`.
+
+Establish `hinj : Function.Injective (phi ρ v t).toAddMonoidHom` using `phi_injective hcard ρ hv hst hI t`. Rewrite using `[AddSubgroup.relIndex_map_map_of_injective _ _ hinj, AddSubgroup.relIndex_map_map_of_injective _ _ hinj]`.
+-/
 theorem genIndex_tor (hE : EigenLatDifferent.Statement)
     (hcard : Fintype.card (E →+* L) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End L V) {I : AddSubgroup V} {r : ℕ} {v : Fin r → V} (hr : 1 ≤ r)
@@ -560,6 +757,33 @@ end TorPart
 
 open NumberField GlobalTheory.CompanionTheory.Ar GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.NineStatements TorPart in
 
+/- English proof (translation)
+Introduce `E L Ψ _ _ _ _ _ V _ _ _ _ A r v hΨ hv s`. Establish `hres : Function.Bijective (fun t : E →+* L => t.comp (algebraMap (𝓞 E) E))`. Use `⟨fun a b h => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h, fun g => ?_⟩` and prove the remaining obligations. Take `⟨q, rfl⟩` from `A.σ_bij.2 g`. Conclude with `⟨IsFractionRing.lift (A.σ_inj q), RingHom.ext fun x => IsFractionRing.lift_algebraMap (A.σ_inj q) x⟩`.
+
+Establish `hfin1 : Finite (𝓞 E →+* L)` using `Finite.of_surjective A.σ A.σ_bij.2`. Establish `hfin2 : Finite (E →+* L)` using `Finite.of_injective _ hres.1`. Use `letI : Fintype (E →+* L) := Fintype.ofFinite _`. Establish `hcard : Fintype.card (E →+* L) = Module.finrank ℚ E`. Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr (Equiv.ofBijective _ hres), ← Nat.card_congr (Equiv.ofBijective _ A.σ_bij), ← hΨ, Nat.card_eq_fintype_card, Fintype.card_sum]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨t, ht⟩` from `hres.2 (A.σ s)`. Express the relevant statement in the definitionally equal form `t.comp (algebraMap (𝓞 E) E) = A.σ s at ht`. Establish `hsur : ∀ σ' : 𝓞 E →+* L, ∃ u : E →+* L, u.comp (algebraMap (𝓞 E) E) = σ'` using `hres.2`. Establish `hcomp : (fun a => eigComp A.ρ (A.σ s) (v a)) = fun a => HT.eigProj A.ρ t (v a)`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[← ht, eigComp_comp hcard hsur]`. Establish `htor : A.tor s = Submodule.span (𝓞 L) (A.I : Set V) ⊓ (HT.eigSp A.ρ t).restrictScalars (𝓞 L)`. Rewrite using `[LinPt.tor, ← ht, eigSp_comp]`. Establish `hnL : (Module.finrank ℚ L : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`.
+
+Establish `hnE : (Module.finrank ℚ E : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Establish `hd : |(discr E : ℝ)| ≠ 0` using `abs_ne_zero.2 (by exact_mod_cast discr_ne_zero E)`. Establish `hdp : 0 < |(discr E : ℝ)|` using `lt_of_le_of_ne (abs_nonneg _) hd.symm`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Establish `hI0 : A.I = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Take `⟨x, rfl⟩` from `exists_psi hcard A.ρ hv hy`. Rewrite using `[Subsingleton.elim x 0, map_zero]`. Conclude with `AddSubgroup.zero_mem _`.
+
+Establish `hO : oSpan A.ρ v = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Take `⟨c, rfl⟩` from `(mem_oSpan_iff A.ρ v y).1 hy`. Simplify using the standard rewrite rules.
+
+Establish `hF : A.tor s = ⊥`. Rewrite using `[htor, hI0, eq_bot_iff]`. Introduce and unpack `y ⟨hy, -⟩`. Simplify using `using hy`. Simplify using `[logIdx, hF, hO, hI0]`.
+
+Establish `hg` using `genIndex_tor GlobalTheory.T.eigen_lattices_different_statement_holds hcard A.ρ hr hv A.I_stable A.I_basis t`. Establish `hi : (((oSpan A.ρ v).relIndex A.I : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast hv.2.2`. Establish `hip : 0 < (((oSpan A.ρ v).relIndex A.I : ℕ) : ℝ)` using `lt_of_le_of_ne (Nat.cast_nonneg _) hi.symm`. Establish `hbase : 0 < (((oSpan A.ρ v).relIndex A.I : ℕ) : ℝ) / |(discr E : ℝ)| ^ r` using `div_pos hip (pow_pos hdp r)`. Establish `key : ∀ p q : ℕ, (p : ℝ) / q = ((((oSpan A.ρ v).relIndex A.I : ℕ) : ℝ) / |(discr E : ℝ)| ^ r) ^ ((Module.finrank ℚ L : ℝ) / Module.finrank ℚ E) → (Real.log p - Real.log q) / Module.finrank ℚ L = -(r * Real.log (|(discr E : ℝ)| ^ (1 / (Module.finrank ℚ E : ℝ)))) + Real.log (((oSpa …`.
+
+Introduce `p q h`. Establish `hR` using `Real.rpow_pos_of_pos hbase ((Module.finrank ℚ L : ℝ) / Module.finrank ℚ E)`. Rewrite `hR` using `[← h]`. Establish `hp : (p : ℝ) ≠ 0`. Introduce `h0`.
+
+Rewrite `hR` using `[h0, zero_div]`. Conclude with `lt_irrefl _ hR`. Establish `hq : (q : ℝ) ≠ 0`. Introduce `h0`. Rewrite `hR` using `[h0, div_zero]`.
+
+Conclude with `lt_irrefl _ hR`. Establish `hlog` using `congrArg Real.log h`. Rewrite `hlog` using `[Real.log_div hp hq, Real.log_rpow hbase, Real.log_div hi (pow_ne_zero _ hd), Real.log_pow]`. Rewrite using `[Real.log_rpow hdp, hlog]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hcomp, htor, logIdx]`. Conclude with `key _ _ hg`.
+-/
 theorem torusPartDegree : ∀ (E L Ψ : Type) [Field E] [NumberField E] [Field L] [NumberField L] [Fintype Ψ] (V : Type) [AddCommGroup V] [Module L V] [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] (A : LinPt E L Ψ V) (r : ℕ) (v : Fin r → V), 2 * Fintype.card Ψ = Module.finrank ℚ E → IsOFamily A.ρ A.I v → ∀ s, logIdx (A.tor s) (fun a => eigComp A.ρ (A.σ s) (v a)) / Module.finrank ℚ L = -(r * Real.log (|(discr E : ℝ)| ^ (1 / (Module.finrank ℚ E : ℝ)))) + Real.log (((oSpan A.ρ v).relIndex A.I : ℕ) : ℝ) / Module.finrank ℚ E := by
   intro E L Ψ _ _ _ _ _ V _ _ _ _ A r v hΨ hv s
   classical

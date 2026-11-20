@@ -8,5 +8,8 @@ open scoped TensorProduct InnerProductSpace ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.IndefR.principalLevelFrame.instCMHostI
 open GlobalTheory.Mem GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mem.R3.Rw.SpOfMat.exists_complexification_of_definiteGroupForms | exact GlobalTheory.Mem.R3.Rw.SpOfMat.exists_complexification_of_definiteGroupForms | (intros; apply GlobalTheory.Mem.R3.Rw.SpOfMat.exists_complexification_of_definiteGroupForms <;> assum …`.
+-/
 theorem _root_.GlobalTheory.T.exists_complexification_of_definiteGroupForms' : ∀ (K O : Type) [Field K] [NumberField K] [StarRing K] [CommRing O] (o : O →+* K) (σ : K →+* ℂ) (G : Type) [Group G] [Fintype G] (m : Mat1 K G) (e : MonoidAlgebra K G), (∀ x, σ (star x) = starRingEnd ℂ (σ x)) → (∀ y, IsIntegral ℤ (o y)) → m.Laws σ e → ∃ s : Sp1 O (σ.comp o) G, Nonempty (Tie1 σ m s) := by
   first | exact @GlobalTheory.Mem.R3.Rw.SpOfMat.exists_complexification_of_definiteGroupForms | exact GlobalTheory.Mem.R3.Rw.SpOfMat.exists_complexification_of_definiteGroupForms | (intros; apply GlobalTheory.Mem.R3.Rw.SpOfMat.exists_complexification_of_definiteGroupForms <;> assumption)

@@ -28,16 +28,25 @@ namespace GlobalTheory.ThetaSquareIntegrable
 variable {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ Sp k} {σ σ' : k →+* ℂ} {A : Over S}
   {g D : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[per, vecMul, dotProduct, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem per_add (t : Matrix (Fin g) (Fin g) ℂ) (x y : Fl g) : per t (x + y) = per t x + per t y := by
   ext i
   simp [per, vecMul, dotProduct, add_mul, Finset.sum_add_distrib]
   ring
 
+/- English proof (translation)
+Rewrite using `[stdLat, Module.Basis.mem_span_iff_repr_mem]`. Conclude with `forall_congr' fun i => ⟨fun ⟨n, hn⟩ => ⟨n, by simpa using hn.symm⟩, fun ⟨n, hn⟩ => ⟨n, by simpa using hn.symm⟩⟩`.
+-/
 theorem mem_stdLat {x : Fl g} : x ∈ stdLat g ↔ ∀ i, ∃ n : ℤ, x i = n := by
   rw [stdLat, Module.Basis.mem_span_iff_repr_mem]
   exact forall_congr' fun i => ⟨fun ⟨n, hn⟩ => ⟨n, by simpa using hn.symm⟩,
     fun ⟨n, hn⟩ => ⟨n, by simpa using hn.symm⟩⟩
 
+/- English proof (translation)
+Use `contDiffOn_fst.prodMk (contDiffOn_pi.2 fun a => ?_)` and prove the remaining obligations. Establish `c (i) : ContDiffOn ℝ ∞ (fun Q : V D × Fl g => (Q.2 i : ℂ)) (B ×ˢ univ)` using `(Complex.ofRealCLM.contDiff.comp ((contDiff_apply ℝ ℝ i).comp contDiff_snd)).contDiffOn`. Simplify using `only [per, vecMul, dotProduct, Pi.add_apply]`. Conclude with `(ContDiffOn.sum fun i _ => (c _).mul ((ChartGlue.contDiffOn_real h.1 (h.2.1 i a)).comp contDiffOn_fst fun _ hQ => hQ.1)).add (c _)`.
+-/
 theorem contDiffOn_per {B : Set (V D)} {τ : V D → Matrix (Fin g) (Fin g) ℂ} (h : IsPeriodMap B τ) :
     ContDiffOn ℝ ∞ (fun Q : V D × Fl g => ((Q.1, per (τ Q.1) Q.2) : Pt (V D) g)) (B ×ˢ univ) := by
   refine contDiffOn_fst.prodMk (contDiffOn_pi.2 fun a => ?_)
@@ -47,6 +56,11 @@ theorem contDiffOn_per {B : Set (V D)} {τ : V D → Matrix (Fin g) (Fin g) ℂ}
   exact (ContDiffOn.sum fun i _ => (c _).mul ((ChartGlue.contDiffOn_real h.1 (h.2.1 i a)).comp
     contDiffOn_fst fun _ hQ => hQ.1)).add (c _)
 
+/- English proof (translation)
+Rewrite using `[continuousOn_iff_continuous_domRestrict, CxPts.continuous_iff]`. Introduce `U`. Use `⟨?_, fun f => ?_⟩` and prove the remaining obligations. Use `(h U 0).1.preimage (continuous_subtype_val (p := (· ∈ B))) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `b`.
+
+Conclude with `⟨fun hb => ⟨b.2, hb⟩, fun hb => hb.2⟩`. Conclude with `(h U f).2.continuousOn.comp continuous_subtype_val.continuousOn fun b hb => ⟨b.2, hb⟩`.
+-/
 theorem continuousOn_of_isHolTo {X : Scheme.{0}} {q : X ⟶ Sp k} {W : Type} [NormedAddCommGroup W]
     [NormedSpace ℂ W] {B : Set W} {y : W → CxPts q σ} (h : IsHolTo B fun b => (y b).1) :
     ContinuousOn y B := by
@@ -58,6 +72,9 @@ theorem continuousOn_of_isHolTo {X : Scheme.{0}} {q : X ⟶ Sp k} {W : Type} [No
     exact ⟨fun hb => ⟨b.2, hb⟩, fun hb => hb.2⟩
   · exact (h U f).2.continuousOn.comp continuous_subtype_val.continuousOn fun b hb => ⟨b.2, hb⟩
 
+/- English proof (translation)
+Take `⟨U, J, _, u, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `hf`. Establish `hg : ContDiffAt ℝ ∞ (fun w a => ev q σ U (u a) (y w)) b` using `contDiffAt_pi.2 fun a => (SCV.contDiffAt_of_differentiableOn (h U (u a)).2 ((h U (u a)).1.mem_nhds ⟨hb, h₁⟩) _).restrict_scalars ℝ`. Conclude with `((h₄.contDiffAt (h₂.mem_nhds h₃)).comp b hg).congr_of_eventuallyEq (((continuousOn_of_isHolTo h).continuousAt (hB.mem_nhds hb)).eventually h₅)`.
+-/
 theorem contDiffAt_of_isHolTo {X : Scheme.{0}} {q : X ⟶ Sp k} {W : Type} [NormedAddCommGroup W]
     [NormedSpace ℂ W] [FiniteDimensional ℂ W] {B : Set W} (hB : IsOpen B) {y : W → CxPts q σ}
     (h : IsHolTo B fun b => (y b).1) {b : W} (hb : b ∈ B) {f : CxPts q σ → ℂ} (hf : VInfAt f (y b)) :
@@ -72,6 +89,17 @@ theorem contDiffAt_of_isHolTo {X : Scheme.{0}} {q : X ⟶ Sp k} {W : Type} [Norm
 variable [GrpObj A] {h : VMetric p (omega A) g} {c : AlgChart p σ D}
   {τ : V D → Matrix (Fin g) (Fin g) ℂ} {ex : Pt (V D) g → CxPts (A.hom ≫ p) σ} {v : V D}
 
+/- English proof (translation)
+Take `⟨h₁, h₂, h₃, h₄, -⟩` from `H.2.2 v hv`. Establish `hu : IsUnit ((τ v).map Complex.im).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (H.1.2.2 v hv).2.isUnit`. Set `E : Fl g → (Over.mk (c.e.symm v).1 ⟶ A)` to `fun x => Over.homMk (ex (v, per (τ v) x)).1 (h₁ _)`. Establish `ha (x y) : E (x + y) = E x * E y` using `Over.OverMorphism.ext (by`. Rewrite using `[h₂ _ _ (E x) (E y) rfl rfl, ← per_add]`.
+
+Use the proof step `rfl)`. Use `⟨E, fun _ => rfl, ha, fun x => ?_, fun x y => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `h₃ x`. Conclude with `⟨IndefiniteRowSideFullHecke.SiegelReframe.flatOf (τ v) z, Over.OverMorphism.ext (by`. Rewrite using `[hz, ← SympFlatChange.per_flatOf hu z]`.
+
+Simplify using `only [SympFlatChange.flatOf_per hu]`. Use the proof step `rfl)⟩`. Establish `e : E x = E (x - y) * E y` using `by rw [← ha, sub_add_cancel]`. Establish `e₁ : (1 : Over.mk (c.e.symm v).1 ⟶ A).left = (c.e.symm v).1 ≫ unitSec A`. Rewrite using `[Hom.one_def]`.
+
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite using `[e, mul_eq_right]`. Use `Iff.trans ⟨fun e => (congrArg (·.left) e).trans e₁, fun e => Over.OverMorphism.ext (e.trans e₁.symm)⟩ ((h₄ _).trans ⟨fun ⟨l, hl, e⟩ => ?_, fun e => ⟨_, mem_stdLat.2 e, rfl⟩⟩)` and prove the remaining obligations. Use `congrArg (IndefiniteRowSideFullHecke.SiegelReframe.flatOf (τ v)) e` as an intermediate fact.
+
+Rewrite `this` using `[SympFlatChange.flatOf_per hu, SympFlatChange.flatOf_per hu]`. Conclude with `mem_stdLat.1 (this.symm ▸ hl : x - y ∈ stdLat g)`.
+-/
 theorem exists_par (H : IsPeriodChart h c τ ex) (hv : v ∈ c.e.target) :
     ∃ E : Fl g → (Over.mk (c.e.symm v).1 ⟶ A), (∀ x, (E x).left = (ex (v, per (τ v) x)).1) ∧
       (∀ x y, E (x + y) = E x * E y) ∧ Function.Surjective E ∧
@@ -98,6 +126,9 @@ theorem exists_par (H : IsPeriodChart h c τ ex) (hv : v ∈ c.e.target) :
     rw [SympFlatChange.flatOf_per hu, SympFlatChange.flatOf_per hu] at this
     exact mem_stdLat.1 (this.symm ▸ hl : x - y ∈ stdLat g)
 
+/- English proof (translation)
+The claim follows from `continuousOn_univ.1 (((continuousOn_of_isHolTo H.2.1).comp (contDiffOn_per H.1).continuousOn fun _ hQ => ⟨hQ.1, trivial⟩).comp (f := fun x => (v, x)) (by fun_prop) fun _ _ => ⟨hv, trivial⟩)`.
+-/
 theorem continuous_par (H : IsPeriodChart h c τ ex) (hv : v ∈ c.e.target) :
     Continuous fun x => ex (v, per (τ v) x) :=
   continuousOn_univ.1 (((continuousOn_of_isHolTo H.2.1).comp (contDiffOn_per H.1).continuousOn
@@ -105,12 +136,28 @@ theorem continuous_par (H : IsPeriodChart h c τ ex) (hv : v ∈ c.e.target) :
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Establish `: ⊤ ≤ y.1 ⁻¹ᵁ U` using `hy`. Rewrite `this` using `[← e]`. Conclude with `this`.
+-/
 theorem mem_pre {z : CxPts (A.hom ≫ p) σ} {y : CxPts p σ} (e : z.1 ≫ A.hom = y.1) {U : S.Opens}
     (hy : y ∈ ptsIn p σ U) : z ∈ ptsIn (A.hom ≫ p) σ (A.hom ⁻¹ᵁ U) := by
   have : ⊤ ≤ y.1 ⁻¹ᵁ U := hy
   rw [← e] at this
   exact this
 
+/- English proof (translation)
+Take `⟨E, e₁, e₂, e₃, e₄⟩` from `exists_par H hv`. Take `⟨E', e₁', e₂', e₃', e₄'⟩` from `exists_par H' hv'`. Set `K : Over.mk (c'.e.symm v').1 ⟶ Over.mk (c.e.symm v).1` to `Over.homMk κ e.symm`. Set `K' : Over.mk (c.e.symm v).1 ⟶ Over.mk (c'.e.symm v').1` to `Over.homMk κ (by simp [e, ← Category.assoc, hκ])`. Establish `k₁ : K ≫ K' = 𝟙 _` using `Over.OverMorphism.ext hκ`.
+
+Establish `k₂ : K' ≫ K = 𝟙 _` using `Over.OverMorphism.ext hκ`. Establish `a (x x') : m (ex (v, per (τ v) x)) = ex' (v', per (τ' v') x') ↔ K ≫ E x = E' x'`. Rewrite using `[Subtype.ext_iff, hm', ← e₁, ← e₁']`. Conclude with `⟨fun e => Over.OverMorphism.ext e, fun e => congrArg (·.left) e⟩`. Establish `hr : range (fun x => m (ex (v, per (τ v) x))) = range fun x => ex' (v', per (τ' v') x)`.
+
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Take `⟨x', hx⟩` from `e₃' (K ≫ E x)`. Conclude with `⟨x', ((a x x').2 hx.symm).symm⟩`.
+
+Introduce and unpack `⟨x', rfl⟩`. Take `⟨x, hx⟩` from `e₃ (K' ≫ E' x')`. Conclude with `⟨x, (a x x').2 (by rw [hx, ← Category.assoc, k₁, Category.id_comp])⟩`. Use `T.torus_integral_change_of_parametrization _ _ (fun x => m (ex (v, per (τ v) x))) _ (hm.comp (continuous_par H hv)) (continuous_par H' hv') (fun x y => ?_) (fun x y => ?_) hr (fun x x' y y' hx hy => ?_) F (hF.mono ?_)` and prove the remaining obligations. Rewrite using `[← e₄, Subtype.ext_iff, hm', hm', ← e₁, ← e₁]`.
+
+Use `⟨fun e => Over.OverMorphism.ext ?_, fun e => by rw [e]⟩` and prove the remaining obligations. Use `congrArg (κ ≫ ·) e` as an intermediate fact. Simplify `this` using `only [← Category.assoc, hκ, Category.id_comp]`. Rewrite using `[← e₄', Subtype.ext_iff, ← e₁', ← e₁']`. Conclude with `⟨fun e => Over.OverMorphism.ext e, fun e => by rw [e]⟩`.
+
+Rewrite `hx`, `hy`, the goal using `[a]`. Rewrite using `[e₂, e₂', comp_mul, hx, hy]`. Rewrite using `[hr]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `mem_pre ((H'.2.2 v' hv').1 _) hU`.
+-/
 theorem integral_eq [IsSeparated (A.hom ≫ p)] (H : IsPeriodChart h c τ ex) (hv : v ∈ c.e.target)
     {c' : AlgChart p σ' D} {τ' : V D → Matrix (Fin g) (Fin g) ℂ}
     {ex' : Pt (V D) g → CxPts (A.hom ≫ p) σ'} {v' : V D} (H' : IsPeriodChart h c' τ' ex')
@@ -154,6 +201,9 @@ theorem integral_eq [IsSeparated (A.hom ≫ p)] (H : IsPeriodChart h c τ ex) (h
     rintro _ ⟨x, rfl⟩
     exact mem_pre ((H'.2.2 v' hv').1 _) hU
 
+/- English proof (translation)
+Use `T.smooth_integral_over_unit_cube _ _ _ (fun Q => F (ex (Q.1, per (τ Q.1) Q.2))) (ChartGlue.isOpen_over c.e (isOpen_ptsIn U)) fun Q hQ => ?_` and prove the remaining obligations. Establish `ho : IsOpen (cov c.e.target g)` using `c.e.open_target.prod isOpen_univ`. Use `(contDiffAt_of_isHolTo ho H.2.1 (b := (Q.1, per (τ Q.1) Q.2)) ⟨hQ.1.1, trivial⟩ (hF _ (mem_pre ((H.2.2 _ hQ.1.1).1 _) hQ.1.2))).comp_contDiffWithinAt Q (contDiffOn_per H.1 Q ⟨hQ.1.1, trivial⟩)` as an intermediate fact. Conclude with `this.mono fun _ hR => ⟨hR.1.1, trivial⟩`.
+-/
 theorem contDiffOn_integral (H : IsPeriodChart h c τ ex) {U : S.Opens}
     {F : CxPts (A.hom ≫ p) σ → ℂ} (hF : ∀ z ∈ ptsIn _ σ (A.hom ⁻¹ᵁ U), VInfAt F z) :
     ContDiffOn ℝ ∞ (fun v => ∫ x in Icc (0 : Fl g) 1, F (ex (v, per (τ v) x)))
@@ -166,6 +216,9 @@ theorem contDiffOn_integral (H : IsPeriodChart h c τ ex) {U : S.Opens}
     (contDiffOn_per H.1 Q ⟨hQ.1.1, trivial⟩)
   exact this.mono fun _ hR => ⟨hR.1.1, trivial⟩
 
+/- English proof (translation)
+Take `⟨E, e₁, -, e₃, e₄⟩` from `exists_par H hv`. Use `T.periodic_nonneg_integral_pos _ _ (hF.comp_continuous (continuous_par H hv) fun x => mem_pre ((H.2.2 v hv).1 _) hU) (fun _ => h₀ _) (fun x n => congrArg F (Subtype.ext ?_)) ?_` and prove the remaining obligations. Rewrite using `[← e₁, ← e₁, (e₄ _ x).2 fun i => ⟨n i, by simp⟩]`. Take `⟨x, hx⟩` from `e₃ (Over.homMk z.1 hz)`. Conclude with `⟨x, by rwa [show ex (v, per (τ v) x) = z from Subtype.ext (by rw [← e₁, hx]; rfl)]⟩`.
+-/
 theorem integral_pos (H : IsPeriodChart h c τ ex) (hv : v ∈ c.e.target) {U : S.Opens}
     (hU : c.e.symm v ∈ ptsIn p σ U) {F : CxPts (A.hom ≫ p) σ → ℝ}
     (hF : ContinuousOn F (ptsIn _ σ (A.hom ⁻¹ᵁ U))) (h₀ : ∀ z, 0 ≤ F z)
@@ -182,16 +235,25 @@ section Norm
 
 variable {X : Scheme.{0}} {q : X ⟶ Sp k} {E : X.Modules} {r : ℕ} (m : Met q σ E r) {W : X.Opens}
 
+/- English proof (translation)
+Distinguish the cases in `e : (m.isVB.pick y).crd q σ s y = 0`. Simplify using `[Met.form, e, HermFrame.form]`. Conclude with `((HermFrame.posDef_iff.1 (m.posDef _ y (m.isVB.mem_pick y))).2 _ e).le`.
+-/
 theorem form_self_nonneg (s : Γ(E, W)) (y : CxPts q σ) : 0 ≤ m.form s s y := by
   by_cases e : (m.isVB.pick y).crd q σ s y = 0
   · simp [Met.form, e, HermFrame.form]
   · exact ((HermFrame.posDef_iff.1 (m.posDef _ y (m.isVB.mem_pick y))).2 _ e).le
 
+/- English proof (translation)
+Rewrite using `[m.form_smul_left, ← m.conj_form (a • s) s, m.form_smul_left, map_mul, m.conj_form, ← _root_.mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+-/
 theorem form_smul_self (a : Γ(X, W)) (s : Γ(E, W)) (y : CxPts q σ) :
     m.form (a • s) (a • s) y = (‖ev q σ W a y‖ ^ 2 : ℝ) * m.form s s y := by
   rw [m.form_smul_left, ← m.conj_form (a • s) s, m.form_smul_left, map_mul, m.conj_form,
     ← _root_.mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Establish `hW` using `mem_ptsIn_inf.2 ⟨hy, hi⟩`. Establish `e` using `(Met.ofWeight φ).form_frame (Chart.ofLB φ.isLB i) hi 0 0`. Rewrite `e` using `[Met.ofWeight_G φ hi]`. Rewrite using `[← Met.form_resM _ s s inf_le_left hW, ← (LB.chartEquiv φ.isLB i inf_le_right).symm_apply_apply (resM _ inf_le_left s), LB.chartEquiv_symm_apply, form_smul_self, LB.chartEquiv_apply, ev_res _ hW, LB.coord_map, ev_res _ (mem_ptsIn_inf.2 ⟨hW, hi⟩)]`. Conclude with `congrArg _ ((Met.form_resM _ _ _ inf_le_right hW).trans (e.trans (by simp)))`.
+-/
 theorem form_ofWeight {N : LB X} (φ : Weight q σ N) (s : Γ(toMod N, W)) {i : N.ι} {y : CxPts q σ}
     (hy : y ∈ ptsIn q σ W) (hi : y ∈ ptsIn q σ (N.U i)) :
     (Met.ofWeight φ).form s s y =
@@ -214,18 +276,32 @@ variable (L : HermLB (A.hom ≫ p)) {M : LB S}
 def nrm (s : Γ(toMod M, U)) (z : CxPts (A.hom ≫ p) σ) : ℂ :=
   ((VMetric.ofLB L).met σ).form (V := A.hom ⁻¹ᵁ U) (ψ.app U s) (ψ.app U s) z
 
+/- English proof (translation)
+The claim follows from `Complex.ext rfl (Complex.nonneg_iff.1 (form_self_nonneg _ _ z)).2`.
+-/
 theorem ofReal_re_nrm (s : Γ(toMod M, U)) (z : CxPts (A.hom ≫ p) σ) :
     ((nrm L ψ s z).re : ℂ) = nrm L ψ s z :=
   Complex.ext rfl (Complex.nonneg_iff.1 (form_self_nonneg _ _ z)).2
 
+/- English proof (translation)
+Introduce `_ hz` and use `(VMetric.isCInf_ofLB L σ).gram (U := A.hom ⁻¹ᵁ U) (fun _ : Unit => ψ.app U s) hz () ()`.
+-/
 theorem vInfAt_nrm (s : Γ(toMod M, U)) :
     ∀ z ∈ ptsIn _ σ (A.hom ⁻¹ᵁ U), VInfAt (nrm L ψ s) z := fun _ hz =>
   (VMetric.isCInf_ofLB L σ).gram (U := A.hom ⁻¹ᵁ U) (fun _ : Unit => ψ.app U s) hz () ()
 
+/- English proof (translation)
+Introduce `z hz` and use `(vInfAt_nrm L ψ s z hz).continuousAt.continuousWithinAt`.
+-/
 theorem continuousOn_nrm (s : Γ(toMod M, U)) :
     ContinuousOn (nrm L ψ s) (ptsIn _ σ (A.hom ⁻¹ᵁ U)) := fun z hz =>
   (vInfAt_nrm L ψ s z hz).continuousAt.continuousWithinAt
 
+/- English proof (translation)
+Establish `hW` using `mem_ptsIn_inf.2 ⟨hy, hi⟩`. Establish `hz` using `mem_pre e hW`. Establish `r {U' : S.Opens} (h' : U ⊓ M.U i ≤ U') (t : Γ(toMod M, U')) : nrm L ψ (resM _ h' t) z = nrm L ψ t z`. Rewrite using `[nrm, app_resM]`. Conclude with `Met.form_resM _ _ _ (A.hom.preimage_mono h') hz`.
+
+Establish `e' : PtsOver.map A.hom rfl _ z = y` using `Subtype.ext e`. Rewrite using `[← r inf_le_left, ← r inf_le_right, ← (LB.chartEquiv hM i inf_le_right).symm_apply_apply (resM _ inf_le_left s), LB.chartEquiv_symm_apply, nrm, Scheme.Modules.Hom.app_smul]`. Use `(form_smul_self _ (A.hom.app _ _) _ z).trans ?_` and prove the remaining obligations. Rewrite using `[ev_app A.hom rfl, e', LB.chartEquiv_apply, ev_res _ hW, LB.coord_map, ev_res _ (mem_ptsIn_inf.2 ⟨hW, hi⟩)]`. Both sides reduce to the same expression.
+-/
 theorem nrm_eq (hM : M.IsLB) (s : Γ(toMod M, U)) {i : M.ι} {y : CxPts p σ} (hy : y ∈ ptsIn p σ U)
     (hi : y ∈ ptsIn p σ (M.U i)) {z : CxPts (A.hom ≫ p) σ} (e : z.1 ≫ A.hom = y.1) :
     nrm L ψ s z = (‖ev p σ _ (LB.coord s i) y‖ ^ 2 : ℝ) * nrm L ψ (LB.chartSec hM i) z := by
@@ -243,6 +319,11 @@ theorem nrm_eq (hM : M.IsLB) (s : Γ(toMod M, U)) {i : M.ι} {y : CxPts p σ} (h
     ev_res _ (mem_ptsIn_inf.2 ⟨hW, hi⟩)]
   rfl
 
+/- English proof (translation)
+Set `t` to `Limits.pullback.snd A.hom y.1`. Set `u` to `Limits.pullback.fst A.hom y.1`. Use `LocallyOfFiniteType.jacobsonSpace t` as an intermediate fact. Take `⟨w, hw, -⟩` from `Scheme.Pullback.exists_preimage_pullback a _ e`. Take `⟨x, hx, hc'⟩` from `nonempty_inter_closedPoints (Z := u ⁻¹' W) ⟨w, show u w ∈ W from hw ▸ ha⟩ (W.isOpen.preimage u.continuous).isLocallyClosed`.
+
+Establish `hc : IsClosed ({x} : Set _)` using `hc'`. Establish `e₁ : (pointOfClosedPoint t x hc ≫ u) ≫ A.hom = y.1`. Rewrite using `[Category.assoc, Limits.pullback.condition, pointOfClosedPoint_comp_assoc]`. Conclude with `⟨⟨pointOfClosedPoint t x hc ≫ u, by rw [← Category.assoc, e₁, y.2]⟩, e₁, mem_ptsIn.2 ((congrArg (u · ∈ W) (pointOfClosedPoint_apply t x hc _)).mpr hx)⟩`.
+-/
 theorem exists_pt [LocallyOfFiniteType A.hom] (y : CxPts p σ) {W : A.left.Opens} {a : A.left}
     (ha : a ∈ W) (e : A.hom a = y.1 (IsLocalRing.closedPoint ℂ)) :
     ∃ z : CxPts (A.hom ≫ p) σ, z.1 ≫ A.hom = y.1 ∧ z ∈ ptsIn _ σ W := by
@@ -258,6 +339,13 @@ theorem exists_pt [LocallyOfFiniteType A.hom] (y : CxPts p σ) {W : A.left.Opens
   exact ⟨⟨pointOfClosedPoint t x hc ≫ u, by rw [← Category.assoc, e₁, y.2]⟩, e₁,
     mem_ptsIn.2 ((congrArg (u · ∈ W) (pointOfClosedPoint_apply t x hc _)).mpr hx)⟩
 
+/- English proof (translation)
+Take `⟨W, hW, θ, hθ, -, H⟩` from `hP (y.1 (IsLocalRing.closedPoint ℂ))`. Take `⟨a, j, e, ha⟩` from `H _ hW`. Take `⟨z, hz, hz'⟩` from `exists_pt y ha e`. Use `⟨z, hz, fun h0 => ?_⟩` and prove the remaining obligations. Establish `h₁` using `ptsIn_mono (A.left.basicOpen_le _) hz'`.
+
+Establish `h₂` using `nrm_eq L ψ hM ((inv ψ).app W (LB.mkSec θ hθ)) (mem_ptsIn.2 hW) hi hz`. Establish `h₃ : ψ.app W ((inv ψ).app W (LB.mkSec θ hθ)) = LB.mkSec θ hθ` using `congr(($(IsIso.inv_hom_id ψ)).app W (LB.mkSec θ hθ))`. Rewrite `h₂` using `[← ofReal_re_nrm L ψ (LB.chartSec hM i), h0, Complex.ofReal_zero, mul_zero, nrm, h₃]`. Establish `h₄` using `(form_ofWeight (L.φ σ) (LB.mkSec θ hθ) (mem_ptsIn_inf.1 h₁).1 (mem_ptsIn_inf.1 h₁).2).symm.trans h₂`. Simplify using `only [LB.coord_mkSec, mul_eq_zero, Complex.ofReal_eq_zero, Real.exp_ne_zero, or_false, pow_eq_zero_iff two_ne_zero, norm_eq_zero] at h₄`.
+
+Conclude with `(mem_ptsIn_basicOpen h₁ _).1 hz' h₄`.
+-/
 theorem exists_nrm_ne_zero [LocallyOfFiniteType A.hom] (hP : PushInvertible A L.B) (hM : M.IsLB)
     [IsIso ψ] {i : M.ι} {y : CxPts p σ} (hi : y ∈ ptsIn p σ (M.U i)) :
     ∃ z : CxPts (A.hom ≫ p) σ, z.1 ≫ A.hom = y.1 ∧ (nrm L ψ (LB.chartSec hM i) z).re ≠ 0 := by
@@ -280,6 +368,9 @@ def fib (s : Γ(toMod M, U)) (τ : V D → Matrix (Fin g) (Fin g) ℂ)
     (ex : Pt (V D) g → CxPts (A.hom ≫ p) σ) (v : V D) : ℝ :=
   ∫ x in Icc (0 : Fl g) 1, (nrm L ψ s (ex (v, per (τ v) x))).re
 
+/- English proof (translation)
+Rewrite using `[fib, ← integral_complex_ofReal]`. Simplify using `only [ofReal_re_nrm]`.
+-/
 theorem ofReal_fib (s : Γ(toMod M, U)) : (fib L ψ s τ ex v : ℂ) =
     ∫ x in Icc (0 : Fl g) 1, nrm L ψ s (ex (v, per (τ v) x)) := by
   rw [fib, ← integral_complex_ofReal]
@@ -287,6 +378,9 @@ theorem ofReal_fib (s : Γ(toMod M, U)) : (fib L ψ s τ ex v : ℂ) =
 
 variable [GrpObj A] {h : VMetric p (omega A) g}
 
+/- English proof (translation)
+Rewrite using `[fib, fib, ← integral_const_mul]`. Simplify using `only [fun x => nrm_eq L ψ hM s hy hi ((H.2.2 v hv).1 (per (τ v) x)), Complex.re_ofReal_mul]`.
+-/
 theorem fib_eq (H : IsPeriodChart h c τ ex) (hv : v ∈ c.e.target) (hM : M.IsLB) (s : Γ(toMod M, U))
     {i : M.ι} (hy : c.e.symm v ∈ ptsIn p σ U) (hi : c.e.symm v ∈ ptsIn p σ (M.U i)) :
     fib L ψ s τ ex v = ‖ev p σ _ (LB.coord s i) (c.e.symm v)‖ ^ 2 *
@@ -298,6 +392,29 @@ end GlobalTheory.ThetaSquareIntegrable
 
 namespace GlobalTheory.ThetaSquareIntegrable
 
+/- English proof (translation)
+Introduce `k _ S p hS P h hh L hL M hM ψ`. Use `choose c τ ex hc _ H using T.exists_period_chart_dual_riemann k S p hS P h hh`. Use `hS.isLocallyNoetherian` as an intermediate fact. Use `P.isAb.proper` as an intermediate fact. Establish `: IsSeparated p`.
+
+Take `⟨N, j, _, hj⟩` from `hS.isProjOver`. Use `isProper_str k N` as an intermediate fact. Conclude with `hj ▸ inferInstance`. Establish `hP : PushInvertible P.A L.B` using `PushInv.pushInvertible abelianSchemeLaws_all.1.secBaseChange S hL.polAV`. Establish `hv (σ y) : (c σ y).e y ∈ (c σ y).e.target` using `(c σ y).e.map_source (hc σ y)`.
+
+Establish `hl (σ y) : (c σ y).e.symm ((c σ y).e y) = y` using `(c σ y).e.left_inv (hc σ y)`. Set `N (σ) (i : M.ι) (y : CxPts p σ) : ℝ` to `fib L ψ.hom (LB.chartSec hM i) (τ σ y) (ex σ y) ((c σ y).e y)`. Establish `hN (σ y i) {v} (hv' : v ∈ (c σ y).e.target) (hi : (c σ y).e.symm v ∈ ptsIn p σ (M.U i)) : N σ i ((c σ y).e.symm v) = fib L ψ.hom (LB.chartSec hM i) (τ σ y) (ex σ y) v`. Use `Complex.ofReal_injective ?_` and prove the remaining obligations. Rewrite using `[ofReal_fib, ofReal_fib]`.
+
+Conclude with `integral_eq (H σ _) (hv σ _) (H σ y) hv' (𝟙 _) (Category.id_comp _) (by rw [hl, Category.id_comp]) id continuous_id (fun _ => (Category.id_comp _).symm) hi (continuousOn_nrm L ψ.hom _)`. Establish `hpos (σ i y) (hi : y ∈ ptsIn p σ (M.U i)) : 0 < N σ i y`. Take `⟨z, hz, hz'⟩` from `exists_nrm_ne_zero L ψ.hom hP hM hi`. Conclude with `integral_pos (H σ y) (hv σ y) (by rwa [hl]) (Complex.continuous_re.comp_continuousOn (continuousOn_nrm L ψ.hom _)) (fun z => (Complex.nonneg_iff.1 (form_self_nonneg _ _ z)).1) (by rwa [hl]) hz'`. Establish `hπ : 0 < ((2 * π) ^ P.g)⁻¹` using `by positivity`.
+
+Set `φ (σ) : Weight p σ M` to `⟨hM, fun i y => -Real.log (((2 * π) ^ P.g)⁻¹ * N σ i y), fun i j y hi hj => by`. Establish `e` using `fib_eq L ψ.hom (H σ y) (hv σ y) hM (LB.chartSec hM j) (i := i) (by rwa [hl]) (by rwa [hl])`. Rewrite `e` using `[hl, LB.coord_chartSec, ev_res _ (mem_ptsIn_inf.2 ⟨hj, hi⟩)]`. Establish `h0 : ‖gv p σ M i j y‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 (gv_ne_zero hi hj))`. Rewrite using `[show N σ j y = ‖gv p σ M i j y‖ ^ 2 * N σ i y from e, mul_left_comm, Real.log_mul h0 (mul_pos hπ (hpos σ i y hi)).ne']`.
+
+Use the proof step `ring⟩`. Use `⟨φ, fun σ i y hi => cInfAt_of_chart (isOpen_ptsIn _) (c σ y) ?_ (hc σ y) hi, fun σ σ' i y y' e hi => ?_, fun σ y => ⟨_, _, _, hc σ y, H σ y, fun v hv' U s hU => ?_⟩⟩` and prove the remaining obligations. Use `Complex.reCLM.contDiff.comp_contDiffOn (contDiffOn_integral (H σ y) (vInfAt_nrm L ψ.hom (LB.chartSec hM i)))` as an intermediate fact. Establish `e (v) (hv' : v ∈ (c σ y).e.target ∩ (c σ y).e.symm ⁻¹' ptsIn p σ (M.U i)) : N σ i ((c σ y).e.symm v) = _` using `(hN σ y i hv'.1 hv'.2).trans (congrArg Complex.re (ofReal_fib L ψ.hom (LB.chartSec hM i)))`. Conclude with `((contDiffOn_const.mul (this.congr e)).log fun v hv' => (mul_pos hπ (hpos σ i _ hv'.2)).ne').neg`.
+
+Take `rfl` from `eq_conj_of_conj e`. Establish `e₀ : spMap ((starRingEnd ℂ).comp σ) = spMap (starRingEnd ℂ) ≫ spMap σ`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Set `m : CxPts (P.A.hom ≫ p) σ → CxPts (P.A.hom ≫ p) ((starRingEnd ℂ).comp σ)` to `fun z => ⟨spMap (starRingEnd ℂ) ≫ z.1, by rw [Category.assoc, z.2, e₀]⟩`.
+
+Establish `hκ : spMap (starRingEnd ℂ) ≫ spMap (starRingEnd ℂ) = 𝟙 (Sp ℂ)`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Use extensionality with `z`. Conclude with `Complex.conj_conj z`.
+
+Establish `e₁` using `integral_eq (H σ y) (hv σ y) (H _ y') (hv _ y') _ hκ (by rw [hl, hl, e]) m (((conjHomeomorph _).continuous.comp continuous_subtype_val).subtype_mk _) (fun _ => rfl) (by rw [hl]; exact (mem_ptsIn_iff_of_conj e).2 hi) (continuousOn_nrm L ψ.hom (LB.chartSec hM i))`. Use `congrArg (fun t => -Real.log (((2 * π) ^ P.g)⁻¹ * t)) (Complex.ofReal_injective ?_)` and prove the remaining obligations. Rewrite using `[ofReal_fib, ofReal_fib, ← e₁]`. Use `congrArg _ (funext fun x => ?_)` and prove the remaining obligations. Use `(((VMetric.ofLB L).conj _ _).form_eq _ _ rfl (mem_pre (((H σ y).2.2 _ (hv σ y)).1 _) (by rwa [hl]))).trans ?_` and prove the remaining obligations.
+
+Conclude with `Met.conj_form _ _ _ _`. Establish `hi` using `mem_pick hM ((c σ y).e.symm v)`. Use `(form_ofWeight (φ σ) s hU hi).trans (Eq.trans ?_ (congrArg _ (ofReal_fib L ψ.hom s)))` and prove the remaining obligations. Rewrite using `[fib_eq L ψ.hom (H σ y) hv' hM s hU hi, ← hN σ y _ hv' hi, neg_neg, Real.exp_log (mul_pos hπ (hpos σ _ _ hi))]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_l2Weight : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p →
     ∀ (P : PPAS S) (h : VMetric p (omega P.A) P.g), P.IsDualRiemann (1 / 2) h →
     ∀ L : HermLB (P.A.hom ≫ p), IsTheta P L.B → ∀ (M : LB S) (hM : M.IsLB)

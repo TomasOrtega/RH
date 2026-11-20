@@ -19,15 +19,26 @@ section Grp
 def jAdj (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   Jm ε * gᴴ * Jm ε
 
+/- English proof (translation)
+Unfold `jAdj`. Unfold `inUJ at hg`. Rewrite using `[show Jm ε * gᴴ * Jm ε * g = Jm ε * (gᴴ * Jm ε * g) by simp only [Matrix.mul_assoc], hg, SmDerA.Jm_mul_Jm]`.
+-/
 lemma jAdj_mul {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : jAdj ε g * g = 1 := by
   unfold jAdj
   unfold inUJ at hg
   rw [show Jm ε * gᴴ * Jm ε * g = Jm ε * (gᴴ * Jm ε * g) by simp only [Matrix.mul_assoc], hg,
     SmDerA.Jm_mul_Jm]
 
+/- English proof (translation)
+The claim follows from `mul_eq_one_comm.mp (jAdj_mul hg)`.
+-/
 lemma mul_jAdj {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : g * jAdj ε g = 1 :=
   mul_eq_one_comm.mp (jAdj_mul hg)
 
+/- English proof (translation)
+Establish `h1` using `mul_jAdj hg`. Unfold `jAdj at h1 ⊢`. Unfold `inUJ`. Establish `h2 : g * (Jm ε * (gᴴ * Jm ε)) = 1` using `by simpa only [Matrix.mul_assoc] using h1`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, SmDerA.Jm_conjTranspose, Matrix.conjTranspose_conjTranspose]`.
+
+Simplify using `only [Matrix.mul_assoc, LemK.ta_Jm_Jm]`. Rewrite using `[h2, Matrix.mul_one]`.
+-/
 lemma inUJ_jAdj {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     inUJ ε (jAdj ε g) := by
   have h1 := mul_jAdj hg
@@ -39,10 +50,16 @@ lemma inUJ_jAdj {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inU
   simp only [Matrix.mul_assoc, LemK.ta_Jm_Jm]
   rw [h2, Matrix.mul_one]
 
+/- English proof (translation)
+Unfold `inUJ`. Simplify using the standard rewrite rules.
+-/
 lemma inUJ_one (ε : Fin n → Bool) : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ) := by
   unfold inUJ
   simp
 
+/- English proof (translation)
+Use `LemK.ta_inUJ_mul_exp ε (inUJ_one ε) hX t` as an intermediate fact. Simplify using `using this`.
+-/
 lemma inUJ_exp (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (t : ℝ) :
     inUJ ε (NormedSpace.exp ((t : ℂ) • X)) := by
   have := LemK.ta_inUJ_mul_exp ε (inUJ_one ε) hX t
@@ -55,21 +72,35 @@ section Unit
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Set `T : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ g : H →ₗ[ℂ] H), norm_map' := fun v => hσ.2.1 g hg v }`. Conclude with `T.inner_map_map x y`.
+-/
 lemma inner_sig_sig (hσ : IsURepOn (UJset ε) σ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g)
     (x y : H) : ⟪σ g x, σ g y⟫_ℂ = ⟪x, y⟫_ℂ := by
   let T : H →ₗᵢ[ℂ] H := { toLinearMap := (σ g : H →ₗ[ℂ] H), norm_map' := fun v => hσ.2.1 g hg v }
   exact T.inner_map_map x y
 
+/- English proof (translation)
+Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 g hg _ (inUJ_jAdj hg), mul_jAdj hg, hσ.1.1]`. Both sides reduce to the same expression.
+-/
 lemma sig_sig_jAdj (hσ : IsURepOn (UJset ε) σ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (y : H) :
     σ g (σ (jAdj ε g) y) = y := by
   rw [← ContinuousLinearMap.comp_apply, ← hσ.1.2 g hg _ (inUJ_jAdj hg), mul_jAdj hg, hσ.1.1]
   rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sig_sig_jAdj hσ hg y]`. Conclude with `inner_sig_sig hσ hg _ _`.
+-/
 lemma inner_sig_left (hσ : IsURepOn (UJset ε) σ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g)
     (x y : H) : ⟪σ g x, y⟫_ℂ = ⟪x, σ (jAdj ε g) y⟫_ℂ := by
   conv_lhs => rw [← sig_sig_jAdj hσ hg y]
   exact inner_sig_sig hσ hg _ _
 
+/- English proof (translation)
+Establish `e : (fun t : ℝ => ⟪y, σ (g * NormedSpace.exp ((t : ℂ) • X)) (x : H)⟫_ℂ) = fun t : ℝ => (((innerSL ℂ y).comp (σ g)).restrictScalars ℝ) (σ (NormedSpace.exp ((t : ℂ) • X)) (x : H))`. Use function extensionality and compare the values at `t`. Rewrite using `[hσ.1.2 g hg _ (inUJ_exp ε hX t)]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `(((innerSL ℂ y).comp (σ g)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 (hD.deriv X hX x)`.
+-/
 lemma hasDerivAt_coef (hσ : IsURepOn (UJset ε) σ) {D : Submodule ℂ H}
     {E : Fin n → Fin n → Module.End ℂ D} (hD : IsDerivedOn ε σ D E) {g X : Matrix (Fin n) (Fin n) ℂ}
     (hg : inUJ ε g) (hX : inG ε X) (y : H) (x : D) :
@@ -102,16 +133,25 @@ def opC (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (ι : V ≃ₗ[ℂ
 
 variable (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (ι : V ≃ₗ[ℂ] W)
 
+/- English proof (translation)
+Simplify using `only [opC, LinearMap.add_apply, Submodule.coe_add, map_add, inner_add_right, add_smul, Finset.sum_add_distrib]`.
+-/
 lemma opC_add (h : Matrix (Fin n) (Fin n) ℂ) (B₁ B₂ : Module.End ℂ D) :
     opC σ ι h (B₁ + B₂) = opC σ ι h B₁ + opC σ ι h B₂ := by
   simp only [opC, LinearMap.add_apply, Submodule.coe_add, map_add, inner_add_right, add_smul,
     Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [opC, LinearMap.smul_apply, Submodule.coe_smul, map_smul, inner_smul_right, smul_smul, Finset.smul_sum]`.
+-/
 lemma opC_smul (h : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (B : Module.End ℂ D) :
     opC σ ι h (c • B) = c • opC σ ι h B := by
   simp only [opC, LinearMap.smul_apply, Submodule.coe_smul, map_smul, inner_smul_right, smul_smul,
     Finset.smul_sum]
 
+/- English proof (translation)
+Simplify using `using opC_smul σ ι h (0 : ℂ) 0`.
+-/
 lemma opC_zero (h : Matrix (Fin n) (Fin n) ℂ) : opC σ ι h (0 : Module.End ℂ D) = 0 := by
   simpa using opC_smul σ ι h (0 : ℂ) 0
 
@@ -120,16 +160,25 @@ def opL (h : Matrix (Fin n) (Fin n) ℂ) : Module.End ℂ D →ₗ[ℂ] (W →L[
   map_add' := opC_add σ ι h
   map_smul' := opC_smul σ ι h
 
+/- English proof (translation)
+Use `conv_lhs => rw [← ι.symm_apply_apply v, ← (ob W).sum_repr' (ι v)]`. Simplify using `only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul]`.
+-/
 lemma vec_expand (v : V) :
     ((v : D) : H) = ∑ j, ⟪ob W j, ι v⟫_ℂ • (((ι.symm (ob W j) : V) : D) : H) := by
   conv_lhs => rw [← ι.symm_apply_apply v, ← (ob W).sum_repr' (ι v)]
   simp only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← ι.symm_apply_apply v, ← (ob W).sum_repr' (ι v)]`. Simplify using `only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul]`.
+-/
 lemma vec_expandD (v : V) :
     (v : D) = ∑ j, ⟪ob W j, ι v⟫_ℂ • ((ι.symm (ob W j) : V) : D) := by
   conv_lhs => rw [← ι.symm_apply_apply v, ← (ob W).sum_repr' (ι v)]
   simp only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul]
 
+/- English proof (translation)
+Rewrite using `[vec_expandD ι v, vec_expand ι v']`. Simplify using `only [opC, map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_sum, sum_inner, inner_smul_left, inner_smul_right, in …`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+-/
 lemma opC_coef (h : Matrix (Fin n) (Fin n) ℂ) (B : Module.End ℂ D) (v v' : V) :
     ⟪ι v', opC σ ι h B (ι v)⟫_ℂ = ⟪((v' : D) : H), σ h ((B v : D) : H)⟫_ℂ := by
   rw [vec_expandD ι v, vec_expand ι v']
@@ -153,6 +202,11 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 include hσ hD
 
+/- English proof (translation)
+Unfold `opC`. Apply `HasDerivAt.fun_sum` to reduce the goal to its premises. Introduce `i _`. Apply `HasDerivAt.fun_sum` to reduce the goal to its premises. Introduce `j _`.
+
+Conclude with `(hasDerivAt_coef hσ hD hg hX _ _).smul_const _`.
+-/
 lemma hasDerivAt_opC {g X : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hX : inG ε X)
     (B : Module.End ℂ D) :
     HasDerivAt (fun t : ℝ => opC σ ι (g * NormedSpace.exp ((t : ℂ) • X)) B)
@@ -164,6 +218,9 @@ lemma hasDerivAt_opC {g X : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hX : i
   intro j _
   exact (hasDerivAt_coef hσ hD hg hX _ _).smul_const _
 
+/- English proof (translation)
+Establish `e : (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X))) = fun t : ℝ => opC σ ι (g * NormedSpace.exp ((t : ℂ) • X)) B`. Use function extensionality and compare the values at `fun t => hF _ (LemK.ta_inUJ_mul_exp ε hg hX t)`. Use `show deriv (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X))) 0 = _`. Rewrite using `[e]`. Conclude with `(hasDerivAt_opC hσ hD ι hg hX B).deriv`.
+-/
 lemma rdV_opC {F : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {B : Module.End ℂ D}
     (hF : ∀ h, inUJ ε h → F h = opC σ ι h B) {g X : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g)
     (hX : inG ε X) : Formalism.REAL.RdV X F g = opC σ ι g (actM E X * B) := by
@@ -174,6 +231,9 @@ lemma rdV_opC {F : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {B : Module.E
   rw [e]
   exact (hasDerivAt_opC hσ hD ι hg hX B).deriv
 
+/- English proof (translation)
+Establish `h1 : inG ε (Formalism.REAL.cpart1 ε (Matrix.single a b 1))` using `LemK.ta_inG_cpart1 ε _`. Establish `h2 : inG ε (Formalism.REAL.cpart2 ε (Matrix.single a b 1))` using `LemK.ta_inG_cpart2 ε _`. Establish `hs : Formalism.REAL.cpart1 ε (Matrix.single a b 1) + Complex.I • Formalism.REAL.cpart2 ε (Matrix.single a b 1) = Matrix.single a b 1` using `LemK.ta_cpart_sum ε _`. Use `show Formalism.REAL.RdV (Formalism.REAL.cpart1 ε (Matrix.single a b 1)) F g + Complex.I • Formalism.REAL.RdV (Formalism.REAL.cpart2 ε (Matrix.single a b 1)) F g = _`. Rewrite using `[rdV_opC hσ hD ι hF hg h1, rdV_opC hσ hD ι hF hg h2, ← opC_smul, ← opC_add, ← smul_mul_assoc, ← add_mul, ← SmDerA.actM_smul, ← SmDerA.actM_add, hs, SmDerA.actM_single]`.
+-/
 lemma eabV_opC {F : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {B : Module.End ℂ D}
     (hF : ∀ h, inUJ ε h → F h = opC σ ι h B) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g)
     (a b : Fin n) : Formalism.REAL.EabV ε a b F g = opC σ ι g (E a b * B) := by
@@ -186,6 +246,9 @@ lemma eabV_opC {F : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {B : Module.
   rw [rdV_opC hσ hD ι hF hg h1, rdV_opC hσ hD ι hF hg h2, ← opC_smul, ← opC_add, ← smul_mul_assoc,
     ← add_mul, ← SmDerA.actM_smul, ← SmDerA.actM_add, hs, SmDerA.actM_single]
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.Top Capelli.capEntry`. Rewrite using `[eabV_opC hσ hD ι hF hg, hF g hg, add_mul, opC_add]`. Use `split_ifs`. Rewrite using `[Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, opC_smul, add_comm]`. Rewrite using `[zero_mul, opC_zero, zero_add, add_zero]`.
+-/
 lemma top_opC {F : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {B : Module.End ℂ D}
     (hF : ∀ h, inUJ ε h → F h = opC σ ι h B) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g)
     (u : ℂ) (a b : Fin n) :
@@ -196,6 +259,11 @@ lemma top_opC {F : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {B : Module.E
   · rw [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, opC_smul, add_comm]
   · rw [zero_mul, opC_zero, zero_add, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Introduce `F B hF g hg`. Simplify using `[hF g hg]`. Consider the case `cons p l ih`.
+
+Introduce `F B hF g hg`. Simplify using `only [List.map_cons, List.foldr_cons, List.prod_cons]`. Apply the tactic sequence `rw [top_opC hσ hD ι (B := (l.map fun p => Capelli.capEntry E p.1 p.2.1 p.2.2).prod * B) (fun h hh => ih F B hF h hh) hg, mul_assoc]`.
+-/
 lemma foldr_opC (l : List (ℂ × Fin n × Fin n)) :
     ∀ (F : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)) (B : Module.End ℂ D),
       (∀ h, inUJ ε h → F h = opC σ ι h B) → ∀ g, inUJ ε g →
@@ -211,6 +279,13 @@ lemma foldr_opC (l : List (ℂ × Fin n × Fin n)) :
     rw [top_opC hσ hD ι (B := (l.map fun p => Capelli.capEntry E p.1 p.2.1 p.2.2).prod * B)
       (fun h hh => ih F B hF h hh) hg, mul_assoc]
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.qdetOp Formalism.QuantumDeterminants.qminorOp Capelli.capelliC Capelli.cminor`. Rewrite using `[Finset.sum_apply, Finset.sum_mul]`. Express the relevant statement in the definitionally equal form `_ = opL σ ι g _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.smul_apply, smul_mul_assoc, ← Int.cast_smul_eq_zsmul ℂ, map_smul]`. Use `congr 1`. Establish `e1 : (List.ofFn fun k : Fin n => Formalism.QuantumDeterminants.Top (Formalism.REAL.EabV (E` using `W →L[ℂ] W) ε) (u - ((k : ℕ) : ℂ)) (id (s k)) (id k)) = (List.ofFn fun k : Fin n => (u - ((k : ℕ) : ℂ), s k, k)).map fun p => Formalism.QuantumDeterminants.Top (Formalism.REAL.EabV (E := W →L[ℂ] W) ε) p.1 p.2.1 p.2.2 := by`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression.
+
+Apply the tactic sequence `have e2 : (List.ofFn fun j : Fin n => Capelli.capEntry E (u - ((j : ℕ) : ℂ)) (id (s j)) (id j)) = (List.ofFn fun k : Fin n => (u - ((k : ℕ) : ℂ), s k, k)).map fun p => Capelli.capEntry E p.1 p.2.1 p.2.2 := by`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Conclude with `foldr_opC hσ hD ι _ F B hF g hg`.
+-/
 lemma qdet_opC {F : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {B : Module.End ℂ D}
     (hF : ∀ h, inUJ ε h → F h = opC σ ι h B) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (u : ℂ) :
     Formalism.QuantumDeterminants.qdetOp (Formalism.REAL.EabV ε) u F g = opC σ ι g (Capelli.capelliC E u * B) := by

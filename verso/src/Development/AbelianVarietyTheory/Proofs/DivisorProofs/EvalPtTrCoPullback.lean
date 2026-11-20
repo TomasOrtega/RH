@@ -19,6 +19,11 @@ namespace GlobalTheory.PairCov
 
 open GlobalTheory.ShFam.Pad.Guard GlobalTheory.TangentOrigin GlobalTheory.FlagSec GlobalTheory.FlagCls
 
+/- English proof (translation)
+Substitute `hz` using the available equality. Establish `h'' : π ⁻¹ᵁ V ⊓ π ⁻¹ᵁ V' ≤ π ⁻¹ᵁ (V ⊓ V')` using `fun p hp => hp`. Rewrite using `[← evalPt_appLE π y _ _ h'' hy hzz]`. Use `congr 1`. Establish `e : Twist.resM _ (inf_le_right : π ⁻¹ᵁ V ⊓ π ⁻¹ᵁ V' ≤ _) (QCoh.pullbackSections π M le_rfl (f' a)) = QCoh.pullbackSections π M h'' (Twist.resM M inf_le_right (f' a))` using `((QCoh.pullbackSections_res π M h'' inf_le_right _).trans (QCoh.res_pullbackSections π M _ _ _).symm).symm`.
+
+Unfold `trCo`. Rewrite using `[e]`. Conclude with `hf.pullback_basis_repr π inf_le_left h'' _ b`.
+-/
 theorem evalPt_trCo_pullback {K : Type} [CommRing K] {Bs Y : Scheme.{0}} {M : Bs.Modules} [M.IsQuasicoherent] {m : ℕ}
     (π : Y ⟶ Bs) {V V' : Bs.Opens} {f : Fin m → Γ(M, V)} {f' : Fin m → Γ(M, V')} (hf : IsFrame f)
     (y : Sp K ⟶ Y) (z : Sp K ⟶ Bs) (hz : z = y ≫ π) (hy : ⊤ ≤ y ⁻¹ᵁ (π ⁻¹ᵁ V ⊓ π ⁻¹ᵁ V'))
@@ -38,6 +43,31 @@ theorem evalPt_trCo_pullback {K : Type} [CommRing K] {Bs Y : Scheme.{0}} {M : Bs
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D O c Bs Bg jB πB Y X Gs _ _ π ρ j πG φ jG hgen h1 h2 σ M hM t ht F hA i`. Use `hM.isQuasicoherent` as an intermediate fact. Use `(hM.pullback π).isQuasicoherent` as an intermediate fact. Take `⟨hu1, hu2, -⟩` from `ht`. Establish `hφ' : genPt Gs ≫ πG = spMap φ ≫ genericPt (O.var c)` using `hgen`.
+
+Establish `hx0 : genPt Gs ≫ jG ≫ πB ≫ genι O.s.T.Z = spMap φ ≫ genericPt (O.Φ.C c).Y ≫ (O.Φ.C c).π ≫ genι O.s.T.Z`. Rewrite using `[reassoc_of% h2]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) hgen).trans (Category.assoc _ _ _))`. Establish `hz : (genPt Gs ≫ jG) ≫ jB = ((genPt Gs ≫ j) ≫ ρ) ≫ π` using `by simp only [Category.assoc, h1]`. Establish `hχ : (genPt Gs ≫ jG) ≫ πB ≫ genStr O.s.T.Z = spMap (φ.comp (constF O.κ.e (O.var c)))`.
+
+Establish `e1 : (genPt Gs ≫ jG) ≫ πB ≫ genStr O.s.T.Z = spMap φ ≫ (genericPt (O.var c) ≫ (O.Φ.C c).π) ≫ genStr O.s.T.Z`. Rewrite using `[Category.assoc, reassoc_of% h2]`. Simplify using `only [← Category.assoc]`. Rewrite using `[hφ']`. Rewrite using `[e1, GlobalTheory.ShFam.TieBase.genericPt_str O.κ.e (O.var c) (O.Φ.C c).π (O.Φ.C c).π_str]`.
+
+Conclude with `(Spec.map_comp _ _).symm`. Take `⟨g, hg⟩` from `GlobalTheory.ShFam.EigFrame.exists_isMap (O.Φ.C c).f0 φ (φ' := φ.comp (constF O.κ.e (O.var c))) (x' := genPt Gs ≫ jG ≫ πB ≫ genι O.s.T.Z) rfl (by rw [hx0])`. Establish `hvg : (fun l => spMap (dualMap φ) ≫ (O.Φ.C c).f0.v σ l) = g.v σ` using `funext fun l => (hg _ l).symm`. Establish `hvb : IsEigBasis O.s.T.Z _ _ σ (g.v σ)` using `⟨fun k => ⟨g.tan _ k, g.eig _ k⟩, fun w hw => g.basis _ w hw.1 hw.2⟩`. Rewrite `hvb` using `[← hvg]`.
+
+Establish `hv` using `fun k => (hvb.1 k).1`. Establish `hvi` using `indep_of_isEigBasis hvb`. Establish `hb` using `fun V f hf hxV => hu1 V f hf Gs.functionField (genPt Gs ≫ jG) hxV ((φ.comp (constF O.κ.e (O.var c))).comp O.κ.e.toRingHom) (by`. Rewrite using `[← Category.assoc πB, ← Category.assoc, hχ, ← Spec.map_comp]`. Use the proof step `rfl)`.
+
+Establish `h3 : ((φ.comp (constF O.κ.e (O.var c))).comp O.κ.e.toRingHom).comp O.κ.e.symm.toRingHom = φ.comp (constF O.κ.e (O.var c))` using `RingHom.ext fun z => congrArg (φ.comp (constF O.κ.e (O.var c))) (O.κ.e.apply_symm_apply z)`. Establish `hT` using `fun V V' f f' hf hf' hx hx' hxx => hu2 V V' f f' hf hf' Gs.functionField (genPt Gs ≫ jG) hx hx' hxx`. Rewrite `hb` using `[h3]`. Rewrite `hb`, `hT` using `[Category.assoc _ jG (πB ≫ genι _)]`. Establish `hut` using `fun V f hf hxV k => ((hb V f hf hxV).1 k).1`.
+
+Establish `key (V : Bs.Opens) (f : Fin (O.S.Dw.mult σ) → Γ(M, V)) (hf : IsFrame f) (hxV : ⊤ ≤ ((genPt Gs ≫ jG) ≫ jB) ⁻¹ᵁ V) : ∃ d : Matrix (Fin (O.S.Dw.mult σ)) (Fin (O.S.Dw.mult σ)) Gs.functionField, (∀ i, IsCombAtG O.s.T.Z.t (genPt Gs ≫ jG ≫ πB ≫ genι O.s.T.Z) (t V f hf Gs.functionField ( …` using `by choose d hd _ using fun l => (hb V f hf hxV).2 _ (hvb.1 l)`. Conclude with `⟨Matrix.of d, hd, hA V f hf hxV _ hd⟩`. Establish `hA1 (k : Fin (O.S.Dw.mult σ + 1)) (V : Bs.Opens) (f : Fin (O.S.Dw.mult σ) → Γ(M, V)) (hf : IsFrame f) (W : X.Opens) (hWV : W ≤ ρ ⁻¹ᵁ (π ⁻¹ᵁ V)) (s : Γ(F.F k, W)) (hx : ⊤ ≤ (genPt Gs ≫ j) ⁻¹ᵁ W) (hxV : ⊤ ≤ ((genPt Gs ≫ jG) ≫ jB) ⁻¹ᵁ V) : ∃ (w : Sp (DualNumber Gs.functionField) ⟶ O …`. Take `⟨d, hd, hF⟩` from `key V f hf hxV`. Take `⟨cf, hc1, hc2⟩` from `hF.2 k W hWV s hx`.
+
+Take `⟨w, hw1, hw2⟩` from `exists_comb_comb _ _ rfl (hut V f hf hxV) hv hd cf`. Conclude with `⟨w, cf, hc2 ▸ hw1, hw2, hc1, d, hF, hc2⟩`. Establish `key'` using `fun ch : ((F.root i).pull j).ι => exists_unit (fun val : Gs.functionField => ∃ (V : Bs.Opens) (f : _ → Γ(M, V)) (hf : IsFrame f) (W : X.Opens) (hW : W ≤ (ch PUnit.unit).U) (hWV : W ≤ ρ ⁻¹ᵁ (π ⁻¹ᵁ V)) (s : Γ(F.F i.succ, W)) (_ : (F.π i).app W s = Twist.resM _ hW ((ch PUnit.unit).e …`. Introduce and unpack `_ ⟨V, f, hf, W, hW, hWV, s, hs, hx, hxV, w, cf, hw, hc, rfl⟩`. Take `⟨w', cf', hw', hc', -, d, hF, hd⟩` from `hA1 i.succ V f hf W hWV s hx hxV`.
+
+Take `rfl` from `comb_unique (hut V f hf hxV) hw hw'`. Rewrite using `[hvi _ _ _ hc hc']`. Conclude with `FlagMat.coeff_ne_zero _ _ _ _ _ ρ F _ _ _ _ _ _ hF i (ch PUnit.unit) W hW hWV s hs hx cf' hd)`. Use the proof step `(by`. Introduce and unpack `_ _ ⟨V, f, hf, W, hW, hWV, s, hs, hx, hxV, w, cf, hw, hc, rfl⟩ ⟨V', f', hf', W', hW', hWV', s', hs', hx', hxV', w', cf', hw', hc', rfl⟩`.
+
+Establish `hx'' : ⊤ ≤ (genPt Gs ≫ j) ⁻¹ᵁ (W ⊓ W')` using `fun p hp => ⟨hx hp, hx' hp⟩`. Establish `hxx : ⊤ ≤ ((genPt Gs ≫ jG) ≫ jB) ⁻¹ᵁ (V ⊓ V')` using `fun p hp => ⟨hxV hp, hxV' hp⟩`. Establish `hyy : ⊤ ≤ ((genPt Gs ≫ j) ≫ ρ) ⁻¹ᵁ (π ⁻¹ᵁ V ⊓ π ⁻¹ᵁ V')` using `fun p hp => ⟨hWV (hx hp), hWV' (hx' hp)⟩`. Take `⟨s₀, hs₀⟩` from `coord_rel ρ F _ _ rfl i _ (hf.pullback π) (hf'.pullback π) hW hW' hWV hWV' s s' hs hs' hx hx' hx'' hyy`. Simplify using `only [evalPt_trCo_pullback π hf _ _ hz hyy hxx] at hs₀`.
+
+Take `⟨w₀, d, hw₀, hd, h0, -⟩` from `hA1 i.castSucc V f hf _ (inf_le_left.trans hWV) s₀ hx'' hxV`. Rewrite using `[coeff_eq (hut V f hf hxV) hv hvi (hT V V' f f' hf hf' hxV hxV' hxx) hs₀ hw hc hw' hc' hw₀ hd, Pi.add_apply, h0 i le_rfl, add_zero])`. Use `choose r hr' using key'`. Use `⟨r, fun ch V f hf W hW hWV s hs hx hxV => ?_⟩` and prove the remaining obligations. Take `⟨w, cf, hw, hc, h0, -⟩` from `hA1 i.succ V f hf W hWV s hx hxV`.
+
+Conclude with `⟨w, cf, hw, hc, hr' ch _ ⟨V, f, hf, W, hW, hWV, s, hs, hx, hxV, w, cf, hw, hc, rfl⟩, fun k hk => h0 k hk⟩`.
+-/
 theorem exists_isFrameSecX : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (Bs Bg : Scheme.{0}) (jB : Bg ⟶ Bs) (πB : Bg ⟶ gen O.s.T.Z)
     (Y X Gs : Scheme.{0}) [IsIntegral X] [IsIntegral Gs] (π : Y ⟶ Bs) (ρ : X ⟶ Y) (j : Gs ⟶ X)
     (πG : Gs ⟶ (O.var c).X) (φ : (O.var c).Fn →+* Gs.functionField) (jG : Gs ⟶ Bg),

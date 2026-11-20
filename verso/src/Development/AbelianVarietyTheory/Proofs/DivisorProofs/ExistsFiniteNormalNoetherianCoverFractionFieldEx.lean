@@ -10,6 +10,27 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.LocExt
 
+/- English proof (translation)
+Introduce `R _ _ _ _ hcomp K' _ _ _`. Establish `hnorm : IsIntegrallyClosed R` using `(GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing R).2`. Establish `hCN : IsCN R` using `⟨inferInstance, hnorm, hcomp, inferInstance⟩`. Set `K` to `FractionRing R`. Use `letI : Algebra R K' := ((algebraMap K K').comp (algebraMap R K)).toAlgebra`.
+
+Use `haveI : IsScalarTower R K K' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (IsFractionRing.injective R K)`. Use `haveI : Algebra.IsSeparable K K' := inferInstance`. Set `C` to `integralClosure R K'`. Use `haveI hCf : Module.Finite R C := IsIntegralClosure.finite R K K' C`.
+
+Use `haveI : IsFractionRing C K' := integralClosure.isFractionRing_of_finite_extension K K'`. Establish `hRK' : Function.Injective (algebraMap R K')`. Rewrite using `[IsScalarTower.algebraMap_eq R K K']`. Conclude with `(algebraMap K K').injective.comp (IsFractionRing.injective R K)`. Establish `hRC : Function.Injective (algebraMap R C)` using `fun x y h => hRK' (congrArg Subtype.val h)`.
+
+Take `⟨R', _, _, _, ρ, σ, hCN', hρ, hρf, -, hσρ⟩` from `GlobalTheory.LocExt.exists_isCN_cover_of_finite R C (algebraMap R C) hCN hRC (RingHom.finite_algebraMap.2 hCf)`. Take `⟨hnoeth', hnorm', -, -⟩` from `hCN'`. Use `letI : Algebra C R' := σ.toAlgebra`. Use `letI : Algebra R R' := ρ.toAlgebra`. Use `haveI : IsScalarTower R C R' := IsScalarTower.of_algebraMap_eq (fun r => (RingHom.congr_fun hσρ r).symm)`.
+
+Use `haveI : Algebra.IsIntegral R C := Algebra.IsIntegral.of_finite R C`. Establish `hσ : Function.Injective σ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Establish `hker : RingHom.ker σ = ⊥`.
+
+Apply `Ideal.eq_bot_of_comap_eq_bot (R := R)` to reduce the goal to its premises. Use extensionality with `r`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, Ideal.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Apply `hρ` to reduce the goal to its premises. Rewrite using `[map_zero, ← h]`. Conclude with `(RingHom.congr_fun hσρ r).symm`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+
+Establish `: c ∈ RingHom.ker σ` using `hc`. Rewrite `this` using `[hker]`. Conclude with `this`. Establish `hσ' : Function.Injective ((algebraMap R' (FractionRing R')).comp σ)` using `(IsFractionRing.injective R' (FractionRing R')).comp hσ`. Set `τ : K' →+* FractionRing R'` to `IsFractionRing.lift (A := C) hσ'`.
+
+Use `⟨R', inferInstance, inferInstance, hnoeth', hnorm', inferInstance, ρ, τ, hρ, hρf, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply]`. Establish `h1 : algebraMap K K' (algebraMap R K r) = algebraMap C K' (algebraMap R C r)` using `rfl`. Rewrite using `[h1]`.
+
+Simplify using `only [τ, IsFractionRing.lift_algebraMap, RingHom.comp_apply]`. Rewrite using `[← RingHom.comp_apply σ, hσρ]`.
+-/
 theorem exists_finite_normal_cover_of_finiteDimensional : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R] [IsDomain R] [CharZero R], IsAdicComplete (maximalIdeal R) R → ∀ (K' : Type) [Field K'] [Algebra (FractionRing R) K'] [FiniteDimensional (FractionRing R) K'], ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsNoetherianRing R') (_ : IsIntegrallyClosed R') (_ : IsLocalRing R') (ρ : R →+* R') (τ : K' →+* FractionRing R'), Function.Injective ρ ∧ ρ.Finite ∧ ((τ.comp (algebraMap (FractionRing R) K')).comp (algebraMap R (FractionRing R))) = (algebraMap R' (FractionRing R')).comp ρ := by
   intro R _ _ _ _ hcomp K' _ _ _
   have hnorm : IsIntegrallyClosed R := (GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing R).2

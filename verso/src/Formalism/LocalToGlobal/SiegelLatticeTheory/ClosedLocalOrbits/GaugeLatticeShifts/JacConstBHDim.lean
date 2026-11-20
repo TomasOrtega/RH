@@ -14,6 +14,9 @@ open Formalism.QuantumDeterminants Formalism.L2.SG.Pf Formalism.L2.SG.Pf.BH Form
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `h : Formalism.MainNotions.S.lieOf (UH (Hpk k r)) = ((uH k r : Submodule ℝ (Mat k r)) : Set (Mat k r))` using `BH.lieG k r`. Unfold `Formalism.MainNotions.S.lieE`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `Submodule.span ℝ (⇑(RL (k := k) (r := r)) '' ↑(uH k r)) = _`. Rewrite using `[Submodule.span_image, Submodule.span_eq]`.
+-/
 theorem lieE_G : Formalism.MainNotions.S.lieE (UH (Hpk k r)) = (uH k r).map RL := by
   have h : Formalism.MainNotions.S.lieOf (UH (Hpk k r)) = ((uH k r : Submodule ℝ (Mat k r)) : Set (Mat k r)) := BH.lieG k r
   unfold Formalism.MainNotions.S.lieE
@@ -21,11 +24,22 @@ theorem lieE_G : Formalism.MainNotions.S.lieE (UH (Hpk k r)) = (uH k r).map RL :
   change Submodule.span ℝ (⇑(RL (k := k) (r := r)) '' ↑(uH k r)) = _
   rw [Submodule.span_image, Submodule.span_eq]
 
+/- English proof (translation)
+Introduce `k r` and use `lieE_G`.
+-/
 theorem lieG' : LieG := fun k r => lieE_G
 
+/- English proof (translation)
+Simplify using `[Formalism.QuantumDeterminants.bvec, Matrix.mulVec_single_one]`.
+-/
 theorem mulVec_bvec (X : Mat k r) (j i : Fin (2 * r + k + 1)) : (X *ᵥ bvec j) i = X i j := by
   simp [Formalism.QuantumDeterminants.bvec, Matrix.mulVec_single_one]
 
+/- English proof (translation)
+Simplify using `only [Mid, not_and_or, not_le] at h`. Break down `h with h | h` into its components or cases. Conclude with `Or.inl ⟨⟨j, h⟩, Fin.ext rfl⟩`. Use `Or.inr ⟨⟨2 * r + k - j, by omega⟩, Fin.ext ?_⟩` and prove the remaining obligations. Establish `hj` using `j.isLt`.
+
+Use `show (j : ℕ) = 2 * r + k - (2 * r + k - j)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mid_or (j : Fin (2 * r + k + 1)) (h : ¬ Mid k r j) :
     (∃ a : Fin r, j = eI k r a) ∨ (∃ a : Fin r, j = esI k r a) := by
   simp only [Mid, not_and_or, not_le] at h
@@ -36,6 +50,11 @@ theorem mid_or (j : Fin (2 * r + k + 1)) (h : ¬ Mid k r j) :
     show (j : ℕ) = 2 * r + k - (2 * r + k - j)
     omega
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Repeatedly rewrite using `[Formalism.QuantumDeterminants.WeylGroupFacts.hpk_row]`. Rewrite using `[Finset.sum_eq_single (tau k r j)]`. Rewrite using `[tau_tau, if_pos rfl, sgn_tau]`. Introduce `m _ hm`.
+
+Rewrite using `[if_neg (fun h => hm (by rw [h, tau_tau])), mul_zero]`. Simplify using the standard rewrite rules.
+-/
 private theorem mul_hpk_apply_lemma (A : Mat k r) (i j : Fin (2 * r + k + 1)) :
     (A * Hpk k r) i j = A i (tau k r j) * sgn k r j := by
   rw [Matrix.mul_apply]
@@ -46,10 +65,32 @@ private theorem mul_hpk_apply_lemma (A : Mat k r) (i j : Fin (2 * r + k + 1)) :
     rw [if_neg (fun h => hm (by rw [h, tau_tau])), mul_zero]
   · simp
 
+/- English proof (translation)
+Rewrite using `[mul_hpk_apply_lemma, Formalism.QuantumDeterminants.WeylGroupFacts.hpk_mul_apply, Matrix.conjTranspose_apply]`.
+-/
 private theorem adjH_apply_lemma_2 (X : Mat k r) (i j : Fin (2 * r + k + 1)) :
     (Hpk k r * Xᴴ * Hpk k r) i j = sgn k r i * star (X (tau k r j) (tau k r i)) * sgn k r j := by
   rw [mul_hpk_apply_lemma, Formalism.QuantumDeterminants.WeylGroupFacts.hpk_mul_apply, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Rewrite using `[BH.lieWb k r]`. Use extensionality with `X`. Express the relevant statement in the definitionally equal form `_ ↔ (adjH X + X = 0 ∧ ∀ i j, ¬(Mid k r i ∧ Mid k r j) → X i j = 0)`. Rewrite using `[adjH_def]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hX, hc⟩`. Establish `hcol : ∀ i j, ¬ Mid k r j → X i j = 0`. Introduce `i j hj`. Break down `mid_or j hj with ⟨a, rfl⟩ | ⟨a, rfl⟩` into its components or cases. Rewrite using `[← mulVec_bvec X (eI k r a) i, (hc a).1]`.
+
+Both sides reduce to the same expression. Rewrite using `[← mulVec_bvec X (esI k r a) i, (hc a).2]`. Both sides reduce to the same expression. Use `⟨hX, fun i j hij => ?_⟩` and prove the remaining obligations. Break down `not_and_or.1 hij with hi | hj` into its components or cases.
+
+Establish `h` using `congrFun (congrFun hX i) j`. Simplify using `only [Matrix.add_apply, Matrix.zero_apply] at h`. Rewrite `h` using `[adjH_apply_lemma_2]`. Establish `htau : ¬ Mid k r (tau k r i)`. Use `tau_out i (by simp only [Mid, not_and_or, not_le] at hi; exact hi)` as an intermediate fact.
+
+Simplify using `only [Mid, not_and_or, not_le]`. Conclude with `this`. Rewrite `h` using `[hcol _ _ htau, star_zero, mul_zero, zero_mul, zero_add]`. Conclude with `h`. Conclude with `hcol i j hj`.
+
+Introduce and unpack `⟨hX, hz⟩`. Use `⟨hX, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[mulVec_bvec]`. Apply `hz` to reduce the goal to its premises.
+
+Introduce `h`. Establish `h1 : r ≤ (a : ℕ)` using `h.2.1`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[mulVec_bvec]`. Apply `hz` to reduce the goal to its premises. Introduce `h`. Establish `h2 : 2 * r + k - (a : ℕ) ≤ r + k` using `h.2.2`. Use `a.isLt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem lieWb_set : Formalism.MainNotions.S.lieOf (Formalism.FourierDecayAlt.B2.UWb k r) = (uWb k r : Set (Mat k r)) := by
   rw [BH.lieWb k r]
   ext X
@@ -90,6 +131,11 @@ theorem lieWb_set : Formalism.MainNotions.S.lieOf (Formalism.FourierDecayAlt.B2.
       have := a.isLt
       omega
 
+/- English proof (translation)
+Introduce `k r`. Use `⟨fun Z hZ => ?_, ?_⟩` and prove the remaining obligations. Establish `h : Z ∈ Formalism.MainNotions.S.lieOf (Formalism.FourierDecayAlt.B2.UWb k r)` using `by rw [lieWb_set]; exact hZ`. Simplify using `using h 1`. Unfold `Formalism.MainNotions.S.lieE`.
+
+Rewrite using `[lieWb_set]`. Establish `: (fun X => (WithLp.equiv 2 _).symm (Formalism.MainNotions.S.realifyFun X)) '' (uWb k r : Set (Mat k r)) = (RL : Mat k r → _) '' (uWb k r : Set (Mat k r))` using `rfl`. Rewrite using `[this, Submodule.span_image, Submodule.span_eq]`.
+-/
 theorem lieWb' : LieWb := by
   intro k r
   refine ⟨fun Z hZ => ?_, ?_⟩
@@ -110,11 +156,17 @@ def prodEquiv {R M N : Type*} [CommRing R] [AddCommGroup M] [Module R M] [AddCom
   left_inv x := rfl
   right_inv y := rfl
 
+/- English proof (translation)
+Rewrite using `[(prodEquiv p q).finrank_eq, Module.finrank_prod]`.
+-/
 theorem finrank_prodS {R M N : Type*} [Field R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (p : Submodule R M) (q : Submodule R N) [FiniteDimensional R p] [FiniteDimensional R q] :
     Module.finrank R ↥(p.prod q) = Module.finrank R p + Module.finrank R q := by
   rw [(prodEquiv p q).finrank_eq, Module.finrank_prod]
 
+/- English proof (translation)
+Rewrite `h` using `[RL_sq]`. Use extensionality with `i j`. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => Finset.sum_nonneg (fun j _ => sq_nonneg ‖M i j‖))).1 h i (Finset.mem_univ _)`. Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => sq_nonneg ‖M i j‖)).1 h1 j (Finset.mem_univ _)`. Simplify using `using h2`.
+-/
 private theorem eq_zero_of_RL_lemma_3 (M : Mat k r) (h : ‖RL (k := k) (r := r) M‖ ^ 2 = 0) : M = 0 := by
   rw [RL_sq] at h
   ext i j
@@ -123,6 +175,13 @@ private theorem eq_zero_of_RL_lemma_3 (M : Mat k r) (h : ‖RL (k := k) (r := r)
   have h2 := (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => sq_nonneg ‖M i j‖)).1 h1 j (Finset.mem_univ _)
   simpa using h2
 
+/- English proof (translation)
+Establish `hn` using `lm_norm hv`. Rewrite `hn` using `[h, map_zero, norm_zero]`. Establish `h1` using `sq_nonneg ‖RL (k := k) (r := r) v.1‖`. Establish `h2 : 0 ≤ ∑ a : Fin r, ‖v.2.1 a‖ ^ 2` using `Finset.sum_nonneg (fun a _ => sq_nonneg _)`. Establish `h3` using `sq_nonneg ‖RL (k := k) (r := r) v.2.2.1‖`.
+
+Establish `h4` using `sq_nonneg ‖RL (k := k) (r := r) v.2.2.2‖`. Establish `e1 : ‖RL (k` using `k) (r := r) v.1‖ ^ 2 = 0 := by nlinarith`. Establish `e2 : ∑ a : Fin r, ‖v.2.1 a‖ ^ 2 = 0` using `by nlinarith`. Establish `e3 : ‖RL (k` using `k) (r := r) v.2.2.1‖ ^ 2 = 0 := by nlinarith`. Establish `e4 : ‖RL (k` using `k) (r := r) v.2.2.2‖ ^ 2 = 0 := by nlinarith`.
+
+Establish `hx : v.2.1 = 0`. Use function extensionality and compare the values at `a`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun a _ => sq_nonneg ‖v.2.1 a‖)).1 e2 a (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`. Conclude with `Prod.ext (eq_zero_of_RL_lemma_3 _ e1) (Prod.ext hx (Prod.ext (eq_zero_of_RL_lemma_3 _ e3) (eq_zero_of_RL_lemma_3 _ e4)))`.
+-/
 theorem lm_inj {v : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r} (hv : v ∈ Vs k r) (h : Lm k r v = 0) : v = 0 := by
   have hn := lm_norm hv
   rw [h, map_zero, norm_zero] at hn
@@ -153,6 +212,13 @@ def lmEquiv (k r : ℕ) : ↥(Vs k r) ≃ₗ[ℝ] ↥(uH k r) :=
       obtain ⟨v, hv, hvy⟩ := lm_surj y.2
       exact ⟨⟨v, hv⟩, Subtype.ext hvy⟩⟩
 
+/- English proof (translation)
+Introduce `k r`. Establish `eG : Module.finrank ℝ ↥(Formalism.MainNotions.S.lieE (UH (Hpk k r))) = Module.finrank ℝ ↥(uH k r)`. Rewrite using `[lieE_G]`. Conclude with `((Submodule.equivMapOfInjective _ RL_injective (uH k r)).finrank_eq).symm`. Establish `eN : Module.finrank ℝ ↥(Formalism.MainNotions.S.lieE (Nset k r)) = Module.finrank ℝ ↥(lieNS k r)`.
+
+Rewrite using `[lieE_N]`. Conclude with `((Submodule.equivMapOfInjective _ RL_injective (lieNS k r)).finrank_eq).symm`. Establish `eW : Module.finrank ℝ ↥(Formalism.MainNotions.S.lieE (Formalism.FourierDecayAlt.B2.UWb k r)) = Module.finrank ℝ ↥(uWb k r)`. Rewrite using `[(lieWb' k r).2]`. Conclude with `((Submodule.equivMapOfInjective _ RL_injective (uWb k r)).finrank_eq).symm`.
+
+Rewrite using `[eG, eN, eW, ← (lmEquiv k r).finrank_eq]`. Unfold `Vs`. Rewrite using `[finrank_prodS, finrank_prodS, finrank_prodS, finrank_top, Module.finrank_pi_fintype]`. Simplify using `only [Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dimG : Formalism.L2.SG.Pf.BH.DimG := by
   intro k r
   have eG : Module.finrank ℝ ↥(Formalism.MainNotions.S.lieE (UH (Hpk k r))) = Module.finrank ℝ ↥(uH k r) := by

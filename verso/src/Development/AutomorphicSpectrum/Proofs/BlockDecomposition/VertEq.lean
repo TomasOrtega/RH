@@ -23,6 +23,29 @@ open GlobalTheory.CompanionTheory.MPDict GlobalTheory.CompanionTheory.MixZ Globa
 
 namespace GlobalTheory.CompanionTheory.MixZ.Vert
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero`. Introduce `Z _ f _ _ hd L hL _`. Rewrite using `[topSelf_zero]`. Conclude with `GlobalTheory.T.euler_characteristic_dimension_zero m n Z f p hd _`.
+
+Consider the case `succ d ih`. Introduce `Z _ f _ _ hd L hL hc`. Establish `hp : IsProjOver (strHom (ZMod p) Z)` using `VertProj.isProjOver_strHom_zmod ℤ _ (mpStr ℤ m n) _ (isArithVar_mpStr m n) Z f p`. Establish `hf` using `algebraMap_eq_strHom (ZMod p) Z`. Establish `: AlgebraicGeometry.IsNoetherian Z` using `isNoetherian_of_isProjOver hp`.
+
+Establish `hDV` using `diffVanish_chiPic_of_isProjOver hf (structureModule Z) hp (d := d + 1) (by rw [QCoh.suppDim_structureModule, hd])`. Establish `red : ∀ w : Z, Order.coheight w = 1 → interNumRed (ZMod p) (⟨closure {w}, isClosed_closure⟩ : Closeds Z) (fun _ : Fin d => L) = geoNum d (ptIdeal (f w)) (fun _ => a)`. Introduce `w hw`. Set `C : Closeds Z` to `⟨closure {w}, isClosed_closure⟩`. Establish `hirr : IsIrreducible (C : Set Z)` using `isIrreducible_singleton.closure`.
+
+Use `haveI := isIntegral_red hirr`. Use `letI : Algebra (ZMod p) Γ((Scheme.IdealSheafData.vanishingIdeal C).subscheme, ⊤) := algebraΓOfHom (redι C ≫ strHom (ZMod p) Z)`. Establish `hfZ : ∀ r : ZMod p, (redι C).appTop (algebraMap (ZMod p) Γ(Z, ⊤) r) = algebraMap (ZMod p) Γ((Scheme.IdealSheafData.vanishingIdeal C).subscheme, ⊤) r` using `fun r => by`. Rewrite using `[hf r]`. Both sides reduce to the same expression.
+
+Establish `hdim : topologicalKrullDim (Scheme.IdealSheafData.vanishingIdeal C).subscheme = d`. Rewrite using `[topologicalKrullDim_red]`. Conclude with `VdmRec.CutSec.dim_closure_of_coheight (isArithVar_mpStr m n) f hd hw`. Establish `hcl : cls (L.pull (redι C)) (pull_isLB hL _) = ∑ k, a k • cls (pullO ((redι C ≫ f) ≫ prB n k) 1) (isLB_pullO _ 1)`. Rewrite using `[cls_pull hL, hc, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Category.assoc, GlobalTheory.T.cls_pullO_one_comp_eq_pull (redι C) (f ≫ prB n k)]`. Establish `e` using `ih _ (redι C ≫ f) hdim _ (pull_isLB hL _) hcl`. Rewrite using `[interNumRed_def, interNumSub_def, interNumOn_def, interNum_pushforward_of_isClosedImmersion hfZ _ (fun _ => hL)]`. Rewrite `e` using `[topSelf_def]`.
+
+Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, PullVanish.redι_genericPoint w]`. Establish `hrel` using `(isMultiProjPrime_ptIdeal m n (f (genericPoint Z))).2.2`. Establish `e` using `hDV.interNum_update_of_cls_eq_sum (ι := Fin (d + 1)) (L := fun _ => L) (by simp) (fun _ => hL) 0 (Finset.univ) (P := fun k => pullO (f ≫ prB n k) 1) (fun k => isLB_pullO _ 1) a hL hc`. Establish `upd : ∀ N : LB Z, Function.update (fun _ : Fin (d + 1) => L) 0 N = Fin.cons N (fun _ : Fin d => L)`.
+
+Introduce `N`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne (Fin.succ_ne_zero i)]`.
+
+Simplify using `only [upd] at e`. Establish `e0 : (Fin.cons L (fun _ : Fin d => L) : Fin (d + 1) → LB Z) = fun _ => L`. Use function extensionality and compare the values at `i`. Use `Fin.cases rfl (fun _ => rfl) i` and prove the remaining obligations. Rewrite `e` using `[e0]`.
+
+Rewrite using `[topSelf_def, e, geoNum, dif_pos hrel]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congrArg (a k * ·) ?_` and prove the remaining obligations. Establish `hl` using `(hrel k).choose_spec`. Establish `hs` using `GlobalTheory.T.generic_point_nonvanishing_coordinate_section m n Z f k _ hl`.
+
+Rewrite using `[GlobalTheory.CompanionTheory.Ar.IntersectionMultiplicitySection.interNum_cons_eq_finsum_mult (ZMod p) Z hp d (by rw [hd]) _ (isLB_pullO _ 1) (fun _ => L) (fun _ => hL) _ hs]`. Use `Eq.trans (finsum_congr fun w => ?_) (GlobalTheory.T.coordinate_divisor_multiplicity_sum m n Z f k _ hs (fun W => geoNum d W (fun _ => a)))` and prove the remaining obligations. Distinguish the cases in `hw : (divOfSec (isLB_pullO _ 1) _ hs).mult w = 0`. Rewrite using `[hw, zero_mul, zero_mul]`. Rewrite using `[red w (CartierDiv.coheight_eq_one_of_mult_ne_zero hw)]`.
+-/
 theorem key (p : ℕ) [Fact p.Prime] {m : ℕ} {n : Fin (m + 1) → ℕ} (a : Fin (m + 1) → ℤ) (d : ℕ) :
     ∀ (Z : Scheme.{0}) [IsIntegral Z] (f : Z ⟶ MP ℤ m n) [IsClosedImmersion f] [Algebra (ZMod p) Γ(Z, ⊤)],
       topologicalKrullDim Z = d → ∀ (L : LB Z) (hL : L.IsLB),
@@ -93,6 +116,9 @@ theorem key (p : ℕ) [Fact p.Prime] {m : ℕ} {n : Fin (m + 1) → ℕ} (a : Fi
     · rw [hw, zero_mul, zero_mul]
     · rw [red w (CartierDiv.coheight_eq_one_of_mult_ne_zero hw)]
 
+/- English proof (translation)
+Introduce `m n M A hA X i _ Z _ j _ p _ _ d hd`. Use `key p A.a d Z (j ≫ i) hd _ (pull_isLB (pull_isLB M.isLB _) _) ?_` and prove the remaining obligations. Rewrite using `[cls_pull (pull_isLB M.isLB _), cls_pull M.isLB, GlobalTheory.T.hermRep_class_decomposition m n M A hA, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul, Category.assoc, GlobalTheory.T.cls_pullO_one_comp_eq_pull, GlobalTheory.T.cls_pullO_one_comp_eq_pull]`.
+-/
 theorem vertEq : VertEq := by
   intro m n M A hA X i _ Z _ j _ p _ _ d hd
   refine key p A.a d Z (j ≫ i) hd _ (pull_isLB (pull_isLB M.isLB _) _) ?_

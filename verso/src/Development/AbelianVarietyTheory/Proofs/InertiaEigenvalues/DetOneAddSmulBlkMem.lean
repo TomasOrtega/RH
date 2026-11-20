@@ -18,6 +18,19 @@ def splitIdx (g n : ℕ) : Fin n ⊕ (Fin g × Fin n) ≃ Fin (g + 1) × Fin n w
     rintro ⟨p, a⟩
     refine Fin.cases ?_ (fun p => ?_) p <;> simp
 
+/- English proof (translation)
+Proceed by induction on `g with`. Consider the case `zero => intro Θ _`. Rewrite using `[Matrix.det_isEmpty]`. Conclude with `S.one_mem`. Consider the case `succ g ih`.
+
+Introduce `Θ hΘ`. Establish `hnil : IsNilpotent (⟨e • Θ 0 0, heA _ (hΘ 0 0)⟩ : A)`. Take `⟨k, hk⟩` from `he`. Use `⟨k, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[_root_.smul_pow, hk]`.
+
+Take `⟨w, hw⟩` from `hnil.isUnit_one_add`. Use `set u : Matrix (Fin n) (Fin n) B := ((w⁻¹ : Aˣ) : A).1 with hu`. Establish `huA : u ∈ A` using `((w⁻¹ : Aˣ) : A).2`. Establish `hw' : ((w : A) : Matrix (Fin n) (Fin n) B) = 1 + e • Θ 0 0` using `by rw [hw]; rfl`. Use `letI : Invertible (1 + e • Θ 0 0) := ⟨u, by rw [← hw', hu, ← Subring.coe_mul]; simp, by rw [← hw', hu, ← Subring.coe_mul]; simp⟩`.
+
+Establish `hinv : ⅟(1 + e • Θ 0 0) = u` using `rfl`. Set `Bm : Matrix (Fin n) (Fin g × Fin n) B` to `Matrix.of fun a qb => Θ 0 qb.1.succ a qb.2`. Set `Cm : Matrix (Fin g × Fin n) (Fin n) B` to `Matrix.of fun pa b => Θ pa.1.succ 0 pa.2 b`. Establish `h1 : (1 + e • blk Θ).submatrix (splitIdx g n) (splitIdx g n) = Matrix.fromBlocks (1 + e • Θ 0 0) (e • Bm) (e • Cm) (1 + e • blk (fun p q => Θ p.succ q.succ))`. Apply the tactic sequence `ext (a | ⟨p, a⟩) (b | ⟨q, b⟩) <;>`.
+
+Simplify using `[splitIdx, blk, Bm, Cm, Matrix.one_apply, (Fin.succ_ne_zero _).symm]`. Establish `h2 : (1 + e • blk (fun p q => Θ p.succ q.succ)) - (e • Cm) * u * (e • Bm) = 1 + e • blk (fun p q => Θ p.succ q.succ - e • (Θ p.succ 0 * u * Θ 0 q.succ))`. Rewrite using `[Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, add_sub_assoc, ← smul_sub]`. Use `congr 2`. Rewrite using `[← Matrix.det_submatrix_equiv_self (splitIdx g n), h1, Matrix.det_fromBlocks₁₁, hinv, h2]`.
+
+Use `S.mul_mem (hdet _ (A.add_mem A.one_mem (heA _ (hΘ 0 0)))) (ih _ fun p q => ?_)` and prove the remaining obligations. Conclude with `A.sub_mem (hΘ _ _) (heA _ (A.mul_mem (A.mul_mem (hΘ _ _) huA) (hΘ _ _)))`.
+-/
 theorem det_one_add_smul_blk_mem {B : Type} [CommRing B] {n : ℕ} (S : Subring B)
     (A : Subring (Matrix (Fin n) (Fin n) B)) (hdet : ∀ a ∈ A, a.det ∈ S) (e : B)
     (he : IsNilpotent e) (heA : ∀ a ∈ A, e • a ∈ A) (g : ℕ) :
@@ -57,6 +70,15 @@ def swapM {O X : Type} {n : ℕ} (a : X → Matrix (Fin n) (Fin n) O) :
     Matrix (Fin n) (Fin n) (X → O) :=
   Matrix.of fun i j x => a x i j
 
+/- English proof (translation)
+Use `set D : MvPolynomial (Fin m) (X → O) := Matrix.det (∑ k, (MvPolynomial.X k : MvPolynomial (Fin m) (X → O)) • (swapM (a k)).map MvPolynomial.C) with hD`. Establish `hco : ∀ d, MvPolynomial.coeff d D ∈ T`. Introduce `d`. Use `h d using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+
+Establish `: MvPolynomial.coeff d D x = MvPolynomial.coeff d (MvPolynomial.map (Pi.evalRingHom (fun _ : X => O) x) D)`. Rewrite using `[MvPolynomial.coeff_map]`. Both sides reduce to the same expression. Rewrite using `[this, hD, RingHom.map_det]`. Use `congr 2`.
+
+Use extensionality with `i j : 1`. Simplify using `[swapM, Matrix.sum_apply]`. Establish `hev : (∑ k, c k • (swapM (a k)).map ι).det = MvPolynomial.eval₂Hom ι c D`. Rewrite using `[hD, RingHom.map_det]`. Use `congr 1`.
+
+Use extensionality with `i j : 1`. Simplify using `[Matrix.sum_apply]`. Rewrite using `[hev, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_eq]`. Conclude with `S.sum_mem fun d _ => S.mul_mem (hS _ (hco d)) (S.prod_mem fun k _ => S.pow_mem (hc k) _)`.
+-/
 theorem det_sum_smul_mem {O X B : Type} [CommRing O] [CommRing B] (T : Subalgebra O (X → O))
     {n : ℕ} (ι : (X → O) →+* B) (S : Subring B) (hS : ∀ t ∈ T, ι t ∈ S) {m : ℕ}
     (a : Fin m → X → Matrix (Fin n) (Fin n) O)
@@ -86,6 +108,29 @@ theorem det_sum_smul_mem {O X B : Type} [CommRing O] [CommRing B] (T : Subalgebr
   rw [hev, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_eq]
   exact S.sum_mem fun d _ => S.mul_mem (hS _ (hco d)) (S.prod_mem fun k _ => S.pow_mem (hc k) _)
 
+/- English proof (translation)
+Introduce `O X _ T n R hR g Θ hΘ`. Use `set N := Fintype.card (Fin g × Fin n) with hN`. Set `I : Ideal (X → O)[X]` to `Ideal.span {Polynomial.X ^ (N + 1)}`. Set `π : (X → O)[X] →+* (X → O)[X] ⧸ I` to `Ideal.Quotient.mk I`. Set `ι : (X → O) →+* (X → O)[X] ⧸ I` to `π.comp Polynomial.C`.
+
+Set `S : Subring ((X → O)[X] ⧸ I)` to `(π.comp (Polynomial.mapRingHom T.val.toRingHom)).range`. Establish `hS : ∀ t ∈ T, ι t ∈ S` using `fun t ht => ⟨Polynomial.C ⟨t, ht⟩, by simp [ι]⟩`. Establish `heS : π Polynomial.X ∈ S` using `⟨Polynomial.X, by simp⟩`. Establish `he : IsNilpotent (π Polynomial.X)` using `⟨N + 1, by rw [← map_pow]; exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)⟩`. Set `G : Set (Matrix (Fin n) (Fin n) ((X → O)[X] ⧸ I))` to `{M | ∃ a ∈ R, (swapM a).map ι = M}`.
+
+Establish `hone : (1 : Matrix (Fin n) (Fin n) ((X → O)[X] ⧸ I)) ∈ G`. Use `⟨1, R.one_mem, ?_⟩` and prove the remaining obligations. Establish `: swapM (1 : X → Matrix (Fin n) (Fin n) O) = 1`. Use extensionality with `i j x`. Simplify using `[swapM, Matrix.one_apply, apply_ite (fun f : X → O => f x)]`.
+
+Rewrite using `[this, Matrix.map_one _ (map_zero ι) (map_one ι)]`. Establish `hmul : ∀ M ∈ G, ∀ M' ∈ G, M * M' ∈ G`. Introduce and unpack `_ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩`. Use `⟨a * b, R.mul_mem ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul]`.
+
+Use `congr 1`. Use extensionality with `i j x`. Simplify using `[swapM, Matrix.mul_apply]`. Set `A : Subalgebra S (Matrix (Fin n) (Fin n) ((X → O)[X] ⧸ I))` to `(Submodule.span S G).toSubalgebra (Submodule.subset_span hone) (by`. Introduce `x y hx hy`.
+
+Use `Submodule.mul_mem_mul hx hy` as an intermediate fact. Rewrite `this` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨M, hM, M', hM', rfl⟩`. Conclude with `hmul M hM M' hM')`.
+
+Establish `hdet : ∀ a ∈ A.toSubring, a.det ∈ S`. Introduce `a ha`. Take `⟨m, c, f, rfl⟩` from `Submodule.mem_span_set'.1 (show a ∈ Submodule.span S G from ha)`. Use `choose b hb hbf using fun k => (f k).2`. Use `det_sum_smul_mem T ι S hS b (hR m b hb) (fun k => c k) (fun k => (c k).2)` as an intermediate fact.
+
+Simplify using `only [hbf] at this`. Conclude with `this`. Establish `key` using `det_one_add_smul_blk_mem S A.toSubring hdet (π Polynomial.X) he (fun a ha => A.smul_mem ha (⟨_, heS⟩ : S)) g (fun p q => (swapM (Θ p q)).map ι) (fun p q => Submodule.subset_span (R := S) (s := G) ⟨_, hΘ p q, rfl⟩)`. Use `set M : Matrix (Fin g × Fin n) (Fin g × Fin n) (X → O) := blk fun p q => swapM (Θ p q) with hM`. Use `set F : (X → O)[X] := Matrix.det ((Polynomial.X : (X → O)[X]) • M.map Polynomial.C + (1 : Matrix (Fin g × Fin n) (Fin g × Fin n) (X → O)).map Polynomial.C) with hF`.
+
+Establish `hπ : (1 + π Polynomial.X • blk fun p q => (swapM (Θ p q)).map ι).det = π F`. Rewrite using `[hF, RingHom.map_det, Matrix.map_one _ (map_zero _) (map_one _), map_add, map_one, add_comm]`. Use `congr 2`. Rewrite `key` using `[hπ]`. Take `⟨t, ht⟩` from `key`.
+
+Establish `hdvd : Polynomial.X ^ (N + 1) ∣ t.map T.val.toRingHom - F` using `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 ht)`. Establish `hc` using `Polynomial.X_pow_dvd_iff.1 hdvd N (Nat.lt_succ_self N)`. Rewrite `hc` using `[Polynomial.coeff_sub, Polynomial.coeff_map, hF, hN, Polynomial.coeff_det_X_add_C_card, sub_eq_zero]`. Establish `hmem : M.det ∈ T` using `by rw [← hc]; exact (t.coeff _).2`. Use `hmem using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Conclude with `((Pi.evalRingHom (fun _ : X => O) x).map_det M).symm`.
+-/
 theorem main : ∀ {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (n : ℕ) (R : Subalgebra O (X → Matrix (Fin n) (Fin n) O)), (∀ (m : ℕ) (a : Fin m → X → Matrix (Fin n) (Fin n) O), (∀ k, a k ∈ R) → ∀ d : Fin m →₀ ℕ, (fun x => MvPolynomial.coeff d (Matrix.det (∑ k, (MvPolynomial.X k : MvPolynomial (Fin m) O) • (a k x).map MvPolynomial.C))) ∈ T) → ∀ (g : ℕ) (Θ : Fin g → Fin g → X → Matrix (Fin n) (Fin n) O), (∀ p q, Θ p q ∈ R) → (fun x => Matrix.det (Matrix.of fun (pa qb : Fin g × Fin n) => Θ pa.1 qb.1 x pa.2 qb.2)) ∈ T := by
   intro O X _ T n R hR g Θ hΘ
   set N := Fintype.card (Fin g × Fin n) with hN

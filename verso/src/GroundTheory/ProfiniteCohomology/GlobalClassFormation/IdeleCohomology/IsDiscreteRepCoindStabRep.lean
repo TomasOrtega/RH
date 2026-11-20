@@ -15,6 +15,11 @@ section Product
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [DiscreteTopology G]
   {ι : Type*} {P : Rep.{u} k G} {A : ι → Rep.{u} k G}
 
+/- English proof (translation)
+Use `homologyMap_pi_bijective (fun i => cochainsMapAlong (MonoidHom.id G) continuous_id (p i)) (fun m => ⟨fun f f' h => ?_, fun F => ?_⟩) n` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Apply `hp.1` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Conclude with `congrFun (congrArg Subtype.val (congrFun h i)) g`. Use `⟨⟨fun g => Function.surjInv hp.2 (fun i => (F i).1 g), IsLocallyConstant.of_discrete _⟩,` and prove the remaining obligations. Use function extensionality and compare the values at `fun i => Subtype.ext (funext fun g => ?_)⟩`. Conclude with `congrFun (Function.surjInv_eq hp.2 (fun i => (F i).1 g)) i`.
+-/
 theorem cohomology_pi_bijective (p : ∀ i, P ⟶ A i)
     (hp : Function.Bijective fun (x : P) (i : ι) => (p i).hom x) (n : ℕ) :
     Function.Bijective fun (x : cohomology P n) (i : ι) =>
@@ -38,6 +43,9 @@ noncomputable def cohomologyPiEquiv (p : ∀ i, P ⟶ A i)
     (cohomology_pi_bijective p hp n)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cohomologyPiEquiv_apply (p : ∀ i, P ⟶ A i)
     (hp : Function.Bijective fun (x : P) (i : ι) => (p i).hom x) (n : ℕ)
     (x : cohomology P n) (i : ι) :
@@ -56,6 +64,9 @@ variable {k G X : Type u} [CommRing k] [Group G] [MulAction G X]
 
 include hρ in
 
+/- English proof (translation)
+Use `hρ.apply_eq g h` as an intermediate fact. Rewrite `this` using `[hg]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GroundTheory.Global.PermutesFactors.apply_base_eq {g : G} (hg : g • x₀ = x₀) {f f' : ∀ x, M x}
     (h : f x₀ = f' x₀) : ρ g f x₀ = ρ g f' x₀ := by
   have := hρ.apply_eq g h
@@ -77,10 +88,16 @@ noncomputable def stabRep : Representation k D (M x₀) where
     exact hρ.apply_base_eq ((hD d).1 d.2) (Pi.single_eq_same x₀ _).symm
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stabRep_apply (d : D) (a : M x₀) :
     stabRep ρ hρ x₀ D hD d a = ρ d (Pi.single x₀ a) x₀ :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[stabRep_apply]`. Conclude with `hρ.apply_base_eq ((hD d).1 d.2) (Pi.single_eq_same x₀ _).symm`.
+-/
 theorem apply_base_eq_stabRep (d : D) (f : ∀ x, M x) :
     ρ d f x₀ = stabRep ρ hρ x₀ D hD d (f x₀) := by
   classical
@@ -93,6 +110,9 @@ noncomputable def orbitProj :
     apply_base_eq_stabRep hρ hD d f⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem orbitProj_hom_apply (f : ∀ x, M x) : (orbitProj hρ hD).hom f = f x₀ :=
   rfl
 
@@ -111,12 +131,28 @@ noncomputable def toCoindLinear :
     simp only [map_smul, Pi.smul_apply, RingHom.id_apply, Submodule.coe_smul]
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toCoindLinear_apply (f : ∀ x, M x) (h : G) :
     (toCoindLinear hρ hD f).1 h = ρ h f x₀ :=
   rfl
 
 variable [MulAction.IsPretransitive G X]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `f hf`. Use function extensionality and compare the values at `y`. Take `⟨g, rfl⟩` from `MulAction.exists_smul_eq G x₀ y`.
+
+Establish `h0 : ρ g⁻¹ f x₀ = 0` using `congrFun (congrArg Subtype.val hf) g⁻¹`. Use `hρ g (ρ g⁻¹ f) x₀ h0` as an intermediate fact. Rewrite `this` using `[Representation.self_inv_apply]`. Then use the resulting hypothesis. Introduce `F classical`. Set `r : X → G` to `fun y => (MulAction.exists_smul_eq G x₀ y).choose`.
+
+Use `⟨fun y => ρ (r y) (Pi.single x₀ (F.1 (r y)⁻¹)) y, Subtype.ext (funext fun h => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ h (fun y => ρ (r y) (Pi.single x₀ (F.1 (r y)⁻¹)) y) x₀ = F.1 h`. Use `set y := h⁻¹ • x₀ with hy`. Establish `hry : r y • x₀ = y` using `(MulAction.exists_smul_eq G x₀ y).choose_spec`. Establish `hhy : h • y = x₀` using `by rw [hy, smul_inv_smul]`.
+
+Establish `key : ∀ {z : X} (hz : h • y = z) {f f' : ∀ x, M x}, f y = f' y → ρ h f z = ρ h f' z`. Introduce `z hz f f' hff'`. Substitute `hz` using the available equality. Conclude with `hρ.apply_eq h hff'`. Use `(key hhy (f := fun z => ρ (r z) (Pi.single x₀ (F.1 (r z)⁻¹)) z) (f' := ρ (r y) (Pi.single x₀ (F.1 (r y)⁻¹))) rfl).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Establish `hd : h * r y ∈ D` using `(hD _).2 (by rw [mul_smul, hry, hhy])`. Establish `h1` using `apply_base_eq_stabRep hρ hD ⟨h * r y, hd⟩ (Pi.single x₀ (F.1 (r y)⁻¹))`. Simplify using `only [Pi.single_eq_same] at h1`. Rewrite using `[h1, ← F.2 ⟨h * r y, hd⟩ (r y)⁻¹]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem toCoindLinear_bijective : Function.Bijective (toCoindLinear hρ hD) := by
   constructor
   · rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -156,6 +192,9 @@ noncomputable def orbitCoindIso :
       rw [map_mul, Module.End.mul_apply]))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem orbitCoindIso_hom_apply (f : ∀ x, M x) (h : G) :
     ((orbitCoindIso hρ hD).hom.hom f).1 h = ρ h f x₀ :=
   rfl
@@ -175,6 +214,11 @@ instance isDiscreteRep_coind_stabRep :
     IsDiscreteRep (Rep.coind (U : Subgroup G).subtype (Rep.of (stabRep ρ hρ x₀ (U : Subgroup G) hU))) :=
   isDiscreteRep_coind U _
 
+/- English proof (translation)
+Establish `h : orbitProj hρ hU = (Rep.resFunctor (U : Subgroup G).subtype).map (orbitCoindIso hρ hU).hom ≫ coindEvalOne (U : Subgroup G) (Rep.of (stabRep ρ hρ x₀ (U : Subgroup G) hU))`. Use extensionality with `f`. Express the relevant statement in the definitionally equal form `f x₀ = ρ 1 f x₀`. Rewrite using `[map_one, Module.End.one_apply]`. Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap, shapiroMap_eq, ← cohomologyMapAlong_comp, ← h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem orbitProj_eq_shapiroMap (n : ℕ) :
     cohomologyMapAlong (U : Subgroup G).subtype (continuous_subgroup_subtype _)
       (orbitProj hρ hU) n =
@@ -205,6 +249,9 @@ noncomputable def orbitShapiroIso (n : ℕ) :
     (orbitProj hρ hU) n)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem orbitShapiroIso_hom (n : ℕ) :
     (orbitShapiroIso hρ U hU n).hom =
       cohomologyMapAlong (U : Subgroup G).subtype (continuous_subgroup_subtype _)

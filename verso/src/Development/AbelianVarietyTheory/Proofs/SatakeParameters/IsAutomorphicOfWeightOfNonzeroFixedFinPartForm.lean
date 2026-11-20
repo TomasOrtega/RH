@@ -16,6 +16,15 @@ open GlobalTheory.DefU
 
 namespace GlobalTheory.Cong
 
+/- English proof (translation)
+Introduce `E _ _ _ n π W K f hf hf0 hK`. Use `⟨π.isAut, fun τ => ?_, ?_⟩` and prove the remaining obligations. Establish `h : (AU.mk π).HasWt (InfinitePlace.mk τ).embedding (W (InfinitePlace.mk τ))` using `hasWeightAt_of_finPart π W hf hf0 (InfinitePlace.mk τ)`. Break down `InfinitePlace.embedding_mk_eq τ with e | e` into its components or cases. Establish `h'` using `h`.
+
+Rewrite `h'` using `[← Wt.at_embedding W (InfinitePlace.mk τ), e]`. Conclude with `h'`. Establish `h2` using `h.conjugate`. Rewrite `h2` using `[← Wt.at_embedding W (InfinitePlace.mk τ), ← Wt.at_conjugate, e, ComplexEmbedding.involutive_conjugate E τ]`. Conclude with `h2`.
+
+Establish `hne : f.1 ≠ 0` using `fun h => hf0 (Subtype.ext h)`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, f.1 v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hne (LinearMap.ext hc)`.
+
+Use `⟨f.1 v, AutSub.mem_finPart.1 hf v, hv, fun x hx => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Rewrite using `[RU_apply]`. Conclude with `hK x hx v g`.
+-/
 theorem ofType_of_finPart_fixed : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (π : AutSub E n) (W : Wt E n)
     (K : Subgroup (UA E n)) (f : algForms W), f ∈ π.finPart W → f ≠ 0 → (∀ k ∈ K, ∀ v g, f.1 v (g * k) = f.1 v g) →
     OfType (fun τ => W.at τ) K π.V := by
@@ -40,6 +49,9 @@ theorem ofType_of_finPart_fixed : ∀ (E : Type) [Field E] [NumberField E] [IsCM
     rw [RU_apply]
     exact hK x hx v g
 
+/- English proof (translation)
+The claim follows from `ofType_of_finPart_fixed`.
+-/
 example : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (π : AutSub E n) (W : Wt E n) (K : Subgroup (UA E n)) (f : algForms W), f ∈ π.finPart W → f ≠ 0 → (∀ k ∈ K, ∀ v g, f.1 v (g * k) = f.1 v g) → OfType (fun τ => W.at τ) K π.V := ofType_of_finPart_fixed
 
 end GlobalTheory.Cong

@@ -20,6 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.RowStart
 
+/- English proof (translation)
+Use `haveI := hμ`. Conclude with `h1.setIntegral_eq h2 fun γ g => by`. Simplify using `only [Subgroup.smul_def, smul_eq_mul]`. Conclude with `hf γ γ.2 g`.
+-/
 theorem setIntegral_fd_eq {D : D7} (V : HSp D) (μ : Measure (GA D V)) (hμ : μ.IsHaarMeasure) (𝓕 𝓕' : Set (GA D V))
     (h1 : IsFundamentalDomain (GQ V) 𝓕 μ) (h2 : IsFundamentalDomain (GQ V) 𝓕' μ) (f : GA D V → ℂ)
     (hf : ∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g) : ∫ g in 𝓕, f g ∂μ = ∫ g in 𝓕', f g ∂μ := by
@@ -30,11 +33,20 @@ theorem setIntegral_fd_eq {D : D7} (V : HSp D) (μ : Measure (GA D V)) (hμ : μ
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+The claim follows from `h.1.toIsAutFun.left`.
+-/
 theorem IsCuspListed.left {θ : InfFam D} {X : Node} {F : Fn G X} (h : IsCuspListed θ X F) :
     ∀ γ ∈ GQ (G.V X), ∀ g, F (γ * g) = F g := h.1.toIsAutFun.left
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.gridVertexMeasure_eq_of_same_normalisation`.
+-/
 theorem measEq : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (M M' : Vol G) (X : Node) (K : Subgroup (GL (Fin (G.V X).rank) (Lev.EAf D))), M.IsAt X K → M'.IsAt X K → M.ν X = M'.ν X := GlobalTheory.T.gridVertexMeasure_eq_of_same_normalisation
 
+/- English proof (translation)
+Introduce `γ hγ g h`. Establish `H` using `(GlobalTheory.thetaKO_continuous_and_rat_invariant W.ψ _ _ _ _ (W.om (.chi i 0)) (W.om_is (.chi i 0) ⟨hi, Nat.zero_le _⟩) f hf).2 1 (Subgroup.one_mem _) γ hγ (negGA _ h) g`. Rewrite `H` using `[one_mul]`. Conclude with `H`.
+-/
 theorem kerA_right_rat (W : G.Weil) {i : ℕ} (hi : i < D.R.m) {f : Sch G (.right i 0)}
     (hf : IsThetaFunO W.ψ (G.pS (.chi i 0)) (G.pT (.chi i 0)) f) :
     ∀ γ ∈ GQ (G.V (.grid i 0)), ∀ g h, W.kerA (.right i 0) f (γ * g) h = W.kerA (.right i 0) f g h := by
@@ -44,6 +56,11 @@ theorem kerA_right_rat (W : G.Weil) {i : ℕ} (hi : i < D.R.m) {f : Sch G (.righ
   rw [one_mul] at H
   exact H
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `e` using `measEq M M' _ _ h h'`. Rewrite using `[liftA_apply, liftA_apply]`. Establish `h1` using `h.haar_fund`. Establish `h2` using `h'.haar_fund`.
+
+Simplify using `only [Arrow.src] at h1 h2 e ⊢`. Rewrite `h1`, the goal using `[e]`. Conclude with `setIntegral_fd_eq _ _ h2.1 _ _ h1.2 h2.2 _ fun γ hγ g => hinv γ hγ g x`.
+-/
 theorem liftA_right_eq (W : G.Weil) (M M' : Vol G) {i : ℕ} {K : Subgroup (GL (Fin (G.V (.grid i 0)).rank) (Lev.EAf D))}
     (h : M.IsAt (.grid i 0) K) (h' : M'.IsAt (.grid i 0) K) (f : Sch G (.right i 0)) (F : Fn G (.grid i 0))
     (hinv : ∀ γ ∈ GQ (G.V (.grid i 0)), ∀ g x, W.kerA (.right i 0) f (γ * g) x * F (γ * g) = W.kerA (.right i 0) f g x * F g) :
@@ -63,6 +80,9 @@ namespace GlobalTheory.RowStart
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+The claim follows from `| 0, _ => ⟨trivial, hu, rfl⟩ | n + 1, hn => by obtain ⟨c, hc, e⟩ := rowCore W M₀ M ρm t ρ Φ hstep hloc hth h₀ h₁ u hu n (by omega) set F := liftP W M (rowPath T 0 n) (rowFam 0 n fun i : Fin n => W.datum ρ Φ (Fin.castLE (by omega) i)) u with hF let k : Fin D.R.m := ⟨n, by omega⟩ o …`.
+-/
 theorem rowCore (W : G.Weil) (M₀ M : Vol G) (ρm : RealMatch W) (t : T) (ρ : G.RealVec) (Φ : G.Datum)
     (hstep : CuspStep W M ρm t)
     (hloc : ∀ (i : Fin D.R.m) (κ : G.CosAt i), ∃ e, IsIdemSum e (locPl G t) ∧
@@ -94,6 +114,11 @@ end GlobalTheory.RowStart
 
 namespace GlobalTheory.RowStart
 
+/- English proof (translation)
+Introduce `hP hLC`. Use `((cuspStep_big hLC hP).and ((GlobalTheory.T.lifted_cusp_forms_listed hP hLC).and (GlobalTheory.T.firstRow_cosetVectors_isLocalThetaVector.and GlobalTheory.T.firstRowSchwartzData_isThetaFunction_largeDepth))).imp fun CF0 h ε CF hC => ?_` and prove the remaining obligations. Take `⟨x₀, h⟩` from `h ε CF hC`. Use `⟨x₀, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch hsc t Φ M hM y => ?_⟩` and prove the remaining obligations. Take `⟨hstep, hcusp, hloc, hth⟩` from `h D large₂ e hx Γ Pl0 T A Ks R F s ch hch hsc`.
+
+Establish `H` using `rowCore ch.W ch.M M ch.rm t ch.ρ Φ (hstep t M hM) (hloc t) (fun i => hth Φ i) hch.vol hM.isRow (ch.cv.lift t y) (hcusp t y) D.R.m le_rfl`. Conclude with `⟨H.1, H.2.2⟩`.
+-/
 theorem rowStart : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (Φ : ch.G.Datum) (M : Vol ch.G), M.Is t → ∀ y : (R.HX t).H, PathConv ch.W M (rowPath T 0 D.R.m) (rowDatum ch.W ch.ρ Φ) (ch.cv.lift t y) ∧ thetaChi ch.W ch.M ch.ρ Φ (ch.cv.lift t y) = liftP ch.W M (rowPath T 0 D.R.m) (rowDatum ch.W ch.ρ Φ) (ch.cv.lift t y) := by
   intro hP hLC
   refine ((cuspStep_big hLC hP).and ((GlobalTheory.T.lifted_cusp_forms_listed hP hLC).and (GlobalTheory.T.firstRow_cosetVectors_isLocalThetaVector.and GlobalTheory.T.firstRowSchwartzData_isThetaFunction_largeDepth))).imp fun CF0 h ε CF hC => ?_

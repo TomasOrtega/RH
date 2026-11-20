@@ -23,6 +23,11 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 
 namespace GlobalTheory.SumW
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨Tw.out x, hx, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Conclude with `hy`.
+-/
 theorem tw_sub_eq_map {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (c : Bool) (V : Submodule ℂ E) :
     Tw.sub c V = V.map (Tw.mkL c E) := by
   ext x
@@ -30,14 +35,23 @@ theorem tw_sub_eq_map {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E
   · intro hx; exact ⟨Tw.out x, hx, rfl⟩
   · rintro ⟨y, hy, rfl⟩; exact hy
 
+/- English proof (translation)
+Simplify using `only [tw_sub_eq_map, Submodule.map_iSup]`.
+-/
 theorem tw_sub_iSup {E ι : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (c : Bool) (U : ι → Submodule ℂ E) :
     Tw.sub c (⨆ p, U p) = ⨆ p, Tw.sub c (U p) := by
   simp only [tw_sub_eq_map, Submodule.map_iSup]
 
+/- English proof (translation)
+Rewrite using `[Tw.inner_eq, h, map_zero]`.
+-/
 theorem inner_tw_eq_zero {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (c : Bool) (x y : Tw c E)
     (h : inner ℂ (Tw.out x) (Tw.out y) = 0) : inner ℂ x y = 0 := by
   rw [Tw.inner_eq, h, map_zero]
 
+/- English proof (translation)
+Use `GlobalTheory.iSup_stable_inf_typeSpace ρ P ((Units.map σ.toMonoidHom).comp ψ) U (fun _ => True) hU` as an intermediate fact. Simplify `this` using `only [iSup_pos trivial, MonoidHom.comp_apply, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`.
+-/
 theorem iSup_inf_typeSp {G E C K : Type} [Group G] [Fintype G] [Field K] [AddCommGroup E] [Module ℂ E] (σ : K →+* ℂ)
     (ρ : Representation ℂ G E) (P : Subgroup G) (ψ : P →* Kˣ) (U : C → Submodule ℂ E)
     (hU : ∀ c g, (U c).map (ρ g) ≤ U c) :
@@ -46,6 +60,9 @@ theorem iSup_inf_typeSp {G E C K : Type} [Group G] [Fintype G] [Field K] [AddCom
   have := GlobalTheory.iSup_stable_inf_typeSpace ρ P ((Units.map σ.toMonoidHom).comp ψ) U (fun _ => True) hU
   simpa only [iSup_pos trivial, MonoidHom.comp_apply, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe] using this
 
+/- English proof (translation)
+Establish `hle : ∀ c, U c ≤ R0` using `fun c => hsum ▸ le_iSup U c`. Establish `h1` using `iSup_inf_typeSp σ ρ P ψ U hU`. Use `set Kt := ⨅ h : P, LinearMap.ker (ρ (h : G) - (σ ((ψ h : Kˣ) : K)) • LinearMap.id) with hKt`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem iSup_inf_inf_typeSp {G E C K : Type} [Group G] [Fintype G] [Field K] [AddCommGroup E] [Module ℂ E] (σ : K →+* ℂ)
     (ρ : Representation ℂ G E) (P : Subgroup G) (ψ : P →* Kˣ) (U : C → Submodule ℂ E) (R0 : Submodule ℂ E)
     (hU : ∀ c g, (U c).map (ρ g) ≤ U c) (hsum : (⨆ c, U c) = R0) :
@@ -59,6 +76,17 @@ theorem iSup_inf_inf_typeSp {G E C K : Type} [Group G] [Fintype G] [Field K] [Ad
     _ = (⨆ c, U c) ⊓ Kt := h1.symm
     _ = R0 ⊓ Kt := by rw [hsum]
 
+/- English proof (translation)
+Introduce `hCRD hHowe D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hLI hOk hW hEx hInert hGS hCD hME hOkH hPG hPos hkap hB hU`. Establish `hS : SchurAll R.toRealDat` using `GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCRD R.toRealDat`. Take `⟨hCore, hSF, -, hWc⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hW hEx`. Establish `hirr : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hOk.ok2.irr`. Establish `hcar` using `GlobalTheory.T.thetaLift_carrying_of_base_tuple_rows hCRD hHowe R F hLI hOk hW hEx hInert hPG hPos`.
+
+Establish `hspan` using `GlobalTheory.T.cuspidal_multiplicity_carriers R F hOk hW hEx hS hGS hCD hME hcar`. Establish `horth` using `GlobalTheory.T.W_forms_parts_of_distinct_types_orthogonal R F hOk hW hEx hS hOkH hkap hB`. Introduce `j`. Establish `htype` using `GlobalTheory.T.range_goodProjector_baseLevel_twistedModel R F hOk hW hEx hU j`. Use `⟨fun p q hpq w hw w' hw' => ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `inner_tw_eq_zero (E := (R.HW j (sg0 D A3.A)).H) (twAt D.what₂.embLL A3.A.v0) w w' (horth j p q hpq _ hw.1 _ hw'.1)`. Take `⟨-, -, -, -, -, hst, -⟩` from `GlobalTheory.T.sphericalOperators_forms_on_rank_space_normal R.toRealDat F.lv2 hCore hS hirr R.SF hSF j`. Establish `hstab : ∀ p g, (R.Wp3 j p).map (R.gW j (sg0 D A3.A) g) ≤ R.Wp3 j p`. Introduce `p g`. Unfold `RealDat3.Wp3`.
+
+Simplify using `only [Submodule.map_iSup]`. Conclude with `iSup₂_mono fun c _ => by rw [hWc]; exact hst c g`. Establish `hstabX : ∀ p g, ((R.toCx3 F).Wp j p).map (R.gWx F j g) ≤ (R.toCx3 F).Wp j p`. Introduce and unpack `p g _ ⟨y, hy, rfl⟩`. Conclude with `hstab p g (Submodule.mem_map_of_mem hy)`.
+
+Establish `hsumX : (⨆ p, (R.toCx3 F).Wp j p) = Tw.sub (twAt D.what₂.embLL A3.A.v0) (LinearMap.range (eH R.toRealDat j))` using `(tw_sub_iSup (twAt D.what₂.embLL A3.A.v0) (R.Wp3 j)).symm.trans (congrArg (Tw.sub (twAt D.what₂.embLL A3.A.v0)) (hspan j))`. Rewrite using `[htype]`. Unfold `typeSubspace`. Conclude with `iSup_inf_inf_typeSp _ (R.gWx F j) F.P0 F.ψ0⁻¹ ((R.toCx3 F).Wp j) _ hstabX hsumX`.
+-/
 theorem partsW_base : GlobalTheory.Published.CuspRapidDecay → HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, GlobalTheory.Chain.LiftInteg D → A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → ((∀ t (k : A3.okI t × List ℕ), A3.heckeRI t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.R t).n y ∧ A3.heckeRI t k = A3.heckeRI t (k.1, y)) ∧ ∀ j t (k : A3.okI t × List ℕ), A3.heckeLI j t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.L j t).n y ∧ A3.heckeLI j t k = A3.heckeLI j t (k.1, y)) → GoodStable A3.A.X → GlobalTheory.CuspMult.CuspDecomp D → GlobalTheory.CuspMult.MultEq R.toRealDat → (∀ t, (A3.A.fam.R t).OkH ∧ (A3.rowI t).InertRationalAdjoint) → R.PGEquiv F → (∀ b, (lv (F.fc (R.toCx3 F).zs) b).Pos) → (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → R.PThmB → R.toRealDat.LUnif → (R.toCx3 F).PartsW false := by
   intro hCRD hHowe D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hLI hOk hW hEx hInert hGS hCD hME hOkH hPG hPos hkap hB hU
   have hS : SchurAll R.toRealDat := GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCRD R.toRealDat

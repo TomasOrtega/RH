@@ -25,6 +25,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 open ReciprocityTheory.ChartRestriction.G.PullbackSections MonoidalCategory CartesianMonoidalCategory MonObj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Take `⟨w, hw, hc⟩` from `FlagEmb.exists_comb t hu c`. Take `rfl : w = v` from `FlagEmb.comb_unique t hu hc h`. Take `⟨Φ, hΦ⟩` from `TanPair.exists_tanM_equiv _ _ _ t k _ V hV n m hm`. Establish `e` using `(LieMet.isComb_iff (fun i => LieMet.tanOf (hu i)) c (LieMet.tanOf hw)).1 h`. Use `⟨hw, fun b => (hΦ (LieMet.tanOf hw) b).symm.trans ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, hΦ]`. Both sides reduce to the same expression.
+-/
 theorem exists_tanEv_comb {k : Type} [CommRing k] {x : Sp k ⟶ X} {V : X.Opens} (hV : ⊤ ≤ x ⁻¹ᵁ V) {n : ℕ}
     {m : Fin n → Γ(omega t.G, V)} (hm : VB.IsFrame m) {r : ℕ} {u : Fin r → (Sp (DualNumber k) ⟶ t.G.left)}
     (hu : ∀ i, IsTanAtG t x (u i)) {c : Fin r → k} {v : Sp (DualNumber k) ⟶ t.G.left} (h : IsCombAtG t x u c v) :
@@ -42,6 +47,15 @@ theorem exists_tanEv_comb {k : Type} [CommRing k] {x : Sp k ⟶ X} {V : X.Opens}
 open ReciprocityTheory.ChartRestriction.G.PullbackSections MonoidalCategory CartesianMonoidalCategory MonObj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨xO', hx', vO, hvO, rfl⟩ b`. Take `rfl` from `HTPres.ext_uniq hX C _ _ hx'`. Rewrite using `[GlobalTheory.LocM.tanEv_baseChange _ _ _ t _ _ V hO vO hvO C (intO C).subtype hv hV]`.
+
+Conclude with `Subtype.property _`. Introduce `hb`. Take `⟨Φ, hΦ⟩` from `TanPair.exists_tanM_equiv _ _ _ t _ _ V hO n m hm`. Take `⟨Ψ, hΨ⟩` from `TanPair.exists_tanM_equiv _ _ _ t _ _ V hV n m hm`. Take `⟨q, hq⟩` from `Φ.surjective fun b => ⟨_, hb b⟩`.
+
+Establish `hq'` using `LieMet.isTan_map (intO C).subtype rfl (LieMet.isTan_tv q)`. Use `⟨xO, rfl, _, LieMet.isTan_tv q, ?_⟩` and prove the remaining obligations. Establish `e : LieMet.tanOf hq' = LieMet.tanOf hv` using `Ψ.injective (funext fun b => by`. Rewrite using `[hΨ, hΨ]`. Use `(GlobalTheory.LocM.tanEv_baseChange _ _ _ t _ _ V hO _ (LieMet.isTan_tv q) C (intO C).subtype hq' hV _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← hΦ, hq]`. Use the proof step `rfl)`. Conclude with `congrArg (fun z => (PullbackSections.tv z).left) e`.
+-/
 theorem mem_latDR_iff_tanEv (hX : X.IsSeparated) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     {xO : Sp ↥(intO C) ⟶ X} {x : Sp C ⟶ X} (hx : spMap (intO C).subtype ≫ xO = x) {V : X.Opens} (hO : ⊤ ≤ xO ⁻¹ᵁ V)
     (hV : ⊤ ≤ x ⁻¹ᵁ V) {n : ℕ} {m : Fin n → Γ(omega t.G, V)} (hm : VB.IsFrame m)
@@ -68,6 +82,11 @@ theorem mem_latDR_iff_tanEv (hX : X.IsSeparated) {C : Type} [NontriviallyNormedF
 
 end Tan
 
+/- English proof (translation)
+Use `⟨fun b l' => (hε.basis hT).repr (hμ.dual.basis hT' b) l', fun l l' => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun s => (hε.basis hT).repr s l') ((hμ.dual.basis hT').sum_repr (hε.basis hT l))`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, Module.Basis.repr_self, Finsupp.single_apply, IsFrame.dual_basis_repr] at e`. Rewrite using `[← e]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[IsFrame.basis_apply hε, dualApp_res]`.
+-/
 theorem exists_inv_pairing {X : Scheme.{0}} {P : X.Modules} {r n : ℕ} {V V' T : X.Opens} {ε : Fin r → Γ(dual P, V)}
     (hε : VB.IsFrame ε) {μ : Fin n → Γ(P, V')} (hμ : VB.IsFrame μ) (hT : T ≤ V) (hT' : T ≤ V') :
     ∃ B : Fin n → Fin r → Γ(X, T), ∀ l l', ∑ b, dualApp (ε l) hT (resM P hT' (μ b)) * B b l' =
@@ -80,6 +99,13 @@ theorem exists_inv_pairing {X : Scheme.{0}} {P : X.Modules} {r n : ℕ} {V V' T 
   refine Finset.sum_congr rfl fun b _ => ?_
   rw [IsFrame.basis_apply hε, dualApp_res]
 
+/- English proof (translation)
+Use `⟨fun H l => ?_, fun H b => O.sum_mem fun l _ => O.mul_mem (H l) (A l b).2⟩` and prove the remaining obligations. Establish `h' (l l' : Fin r) : ∑ b, (A l b : K) * B b l' = if l = l' then 1 else 0`. Use `congrArg O.subtype (h l l')` as an intermediate fact. Rewrite `this` using `[map_sum, apply_ite O.subtype, map_one, map_zero]`. Conclude with `this`.
+
+Establish `e : d l = ∑ b, (∑ l', d l' * (A l' b : K)) * B b l`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc, ← Finset.mul_sum, h']`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e]`. Conclude with `O.sum_mem fun b _ => O.mul_mem (H b) (B b l).2`.
+-/
 theorem forall_mem_iff {K : Type} [CommRing K] (O : Subring K) {r n : ℕ} (A : Fin r → Fin n → O) (B : Fin n → Fin r → O)
     (h : ∀ l l', ∑ b, A l b * B b l' = if l = l' then 1 else 0) (d : Fin r → K) :
     (∀ b, ∑ l, d l * (A l b : K) ∈ O) ↔ ∀ l, d l ∈ O := by
@@ -96,6 +122,37 @@ theorem forall_mem_iff {K : Type} [CommRing K] (O : Subring K) {r n : ℕ} (A : 
   rw [e]
   exact O.sum_mem fun b _ => O.mul_mem (H b) (B b l).2
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ Z X h r x _ hfr y w hw a φ hφ V e he hV cf v hv`. Use `(Y Z.i).t.semi` as an intermediate fact. Use `(Y Z.i).t.semi.smooth` as an intermediate fact. Use `LatDRFree.intO_isLocalRing ↥y.C.S` as an intermediate fact. Establish `hsep : (Y Z.i).X.IsSeparated`.
+
+Use `CommonModel.isProper_of_isProjOver (Y Z.i).proj` as an intermediate fact. Conclude with `⟨by rw [← terminal.comp_from (Y Z.i).s]; infer_instance⟩`. Set `ι` to `(intO ↥y.C.S).subtype`. Set `g : Sp ↥y.C.S ⟶ X` to `spMap ι ≫ w`. Establish `hg : g ≫ h = y.gen` using `by rw [Category.assoc, hw]; rfl`.
+
+Establish `hx : spMap ι ≫ w ≫ h ≫ Z.π = y.gen ≫ Z.π` using `by rw [← hg]; simp only [g, Category.assoc]`. Establish `htan (i : Fin r) : IsTanAtG (Y Z.i).t (y.gen ≫ Z.π) ((Z.fr a).bc φ (x i).1 (x i).2)` using `LieMet.isTan_map φ (by rw [← Category.assoc, hφ]) ((Z.frame a).1 _ _).1`. Take `⟨V₀, n, m, hx₀, hm⟩` from `exists_isFrame_omega (Y Z.i).t.G ((w ≫ h ≫ Z.π) (IsLocalRing.closedPoint _))`. Establish `hO : ⊤ ≤ (w ≫ h ≫ Z.π) ⁻¹ᵁ V₀` using `((IsLocalRing.closedPoint_mem_iff _).1 hx₀).ge`. Establish `hC : ⊤ ≤ (y.gen ≫ Z.π) ⁻¹ᵁ V₀` using `hx ▸ fun q _ => hO (Set.mem_univ (spMap ι q))`.
+
+Take `⟨hv', hev⟩` from `exists_tanEv_comb _ hC hm htan hv`. Use `(mem_latDR_iff_tanEv _ hsep hx hO hC hm hv').trans ?_` and prove the remaining obligations. Establish `hom : ∀ z : Z.X, ∃ (U : Z.X.Opens) (n : ℕ) (s : Fin n → Γ(om Z, U)), z ∈ U ∧ VB.IsFrame s` using `fun z => by`. Take `⟨U, n, s, hz, hs⟩` from `exists_isFrame_omega (Y Z.i).t.G (Z.π z)`. Conclude with `⟨_, n, _, hz, hs.pullback Z.π⟩`.
+
+Use `OmegaGlobal.isQuasicoherent_of_frames hom` as an intermediate fact. Establish `hθ` using `Glue.isIso_theta_om Z h`. Set `μ₀ : Fin n → Γ(om Z, Z.π ⁻¹ᵁ V₀)` to `fun b => pullbackSections Z.π _ le_rfl (m b)`. Establish `hμ₀ : VB.IsFrame μ₀` using `hm.pullback Z.π`. Establish `hμ` using `hμ₀.pullback h`.
+
+Establish `hε` using `@IsFrame.map_iso _ _ _ _ _ _ _ he (theta h (om Z)) hθ`. Set `T₁ : X.Opens` to `V ⊓ h ⁻¹ᵁ Z.π ⁻¹ᵁ V₀`. Establish `hw₁ : ⊤ ≤ w ⁻¹ᵁ T₁` using `le_inf hV hO`. Take `⟨B, hB⟩` from `exists_inv_pairing hε hμ (T := T₁) inf_le_left inf_le_right`. Set `ρ : Γ(X, T₁) →+* ↥(intO ↥y.C.S)` to `(Scheme.ΓSpecIso (.of ↥(intO ↥y.C.S))).hom.hom.comp (w.appLE T₁ ⊤ hw₁).hom`.
+
+Set `A : Fin r → Fin n → Γ(X, T₁)` to `fun l b => dualApp ((theta h (om Z)).app V (e l)) inf_le_left (resM _ inf_le_right (pullbackSections h (om Z) le_rfl (μ₀ b)))`. Establish `hAB (l l' : Fin r) : ∑ b, ρ (A l b) * ρ (B b l') = if l = l' then 1 else 0`. Use `congrArg ρ (hB l l')` as an intermediate fact. Rewrite `this` using `[map_sum, apply_ite ρ, map_one, map_zero]`. Simplify using `only [map_mul] at this`.
+
+Conclude with `this`. Use `Iff.trans (forall_congr' fun b => ?_) (forall_mem_iff (intO ↥y.C.S) _ _ hAB _)` and prove the remaining obligations. Use `iff_of_eq (congrArg (· ∈ intO ↥y.C.S) ?_)` and prove the remaining obligations. Set `T : Z.X.Opens` to `(Z.U a).1 ⊓ Z.π ⁻¹ᵁ V₀`. Establish `hgT : ⊤ ≤ y.gen ⁻¹ᵁ T`.
+
+Use `fun q hq => ⟨?_, hC hq⟩` and prove the remaining obligations. Rewrite using `[← hφ]`. Conclude with `(chart_image_top Z a).le ⟨spMap φ q, trivial, rfl⟩`. Set `T₂ : X.Opens` to `V ⊓ h ⁻¹ᵁ T`. Establish `hg₂ : ⊤ ≤ g ⁻¹ᵁ T₂` using `fun q hq => ⟨hV (Set.mem_univ (spMap ι q)), (le_preimage_of_comp hg).2 hgT hq⟩`.
+
+Establish `h₂ : T₂ ≤ V ⊓ h ⁻¹ᵁ (Z.U a).1` using `inf_le_inf_left _ (h.preimage_mono inf_le_left)`. Establish `h₂₁ : T₂ ≤ T₁` using `inf_le_inf_left _ (h.preimage_mono inf_le_right)`. Set `μ : Γ(om Z, T)` to `pullbackSections Z.π _ inf_le_right (m b)`. Set `ν : Γ((Scheme.Modules.pullback h).obj (om Z), T₂)` to `pullbackSections h (om Z) inf_le_right μ`. Establish `hL (i : Fin r) : (Scheme.ΓSpecIso (.of ↥y.C.S)).hom (g.appLE T₂ ⊤ hg₂ (dualApp ((theta h (om Z)).app _ (resM (lieX Z h) inf_le_right (secX Z h x a i))) h₂ ν)) = tanEv _ (htan i) hC (m b)`.
+
+Establish `e : resM _ (inf_le_right : V ⊓ h ⁻¹ᵁ (Z.U a).1 ≤ _) (secX Z h x a i) = pullbackSections h _ inf_le_right (TanSec.sec Z a (Z.fr a (x i).1 (x i).2))` using `res_pullbackSections h _ _ _ _`. Rewrite using `[e]`. Use `Eq.trans (congrArg (Scheme.ΓSpecIso (.of ↥y.C.S)).hom ?_) (Glue.appLE_dualApp_sec Z a ((Z.frame a).1 _ _).1 φ hφ rfl (htan i) hC (m b) inf_le_left inf_le_right hgT)` and prove the remaining obligations. Conclude with `(congrArg (g.appLE _ ⊤ hg₂) (dualApp_theta h _ inf_le_left inf_le_right h₂ inf_le_right μ)).trans (appLE_appLE hg _ _ _ _)`. Establish `hA (l : Fin r) : (Scheme.ΓSpecIso (.of ↥y.C.S)).hom (g.appLE T₂ ⊤ hg₂ (dualApp ((theta h (om Z)).app _ (resM (lieX Z h) inf_le_left (e l))) h₂ ν)) = (ρ (A l b) : ↥y.C.S)`.
+
+Establish `e₁ : ν = resM _ h₂₁ (resM _ inf_le_right (pullbackSections h (om Z) le_rfl (μ₀ b)))`. Establish `e₀ : μ = resM _ inf_le_right (μ₀ b)` using `(res_pullbackSections Z.π _ _ _ _).symm`. Rewrite using `[resM_resM]`. Use `Eq.trans ?_ (res_pullbackSections h _ _ _ _).symm` and prove the remaining obligations. Conclude with `(congrArg _ e₀).trans (pullbackSections_res h _ _ _ _)`.
+
+Establish `e₂ : dualApp ((theta h (om Z)).app _ (resM (lieX Z h) inf_le_left (e l))) h₂ ν = resG X h₂₁ (A l b)`. Use `(congrArg (fun s => dualApp s h₂ ν) (app_resM (theta h (om Z)) inf_le_left (e l))).trans ?_` and prove the remaining obligations. Rewrite using `[e₁]`. Conclude with `dualApp_resM _ inf_le_left h₂₁ _`. Rewrite using `[e₂, appLE_resG, ← appLE_appLE (f := spMap ι) (g := w) rfl hw₁ (le_preimage_top _ _)]`.
+
+Use `(congrArg (Scheme.ΓSpecIso (.of ↥y.C.S)).hom (appLE_top (spMap ι) _)).trans ?_` and prove the remaining obligations. Conclude with `congr($(Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ι)) _)`. Rewrite using `[hev b]`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `(congrArg (cf i * ·) ((hL i).symm.trans (Glue.val_eq_sum_coef (F := lieX Z h) (theta h (om Z)) he (hfr a) g h₂ hg₂ ν i))).trans ?_` and prove the remaining obligations. Use `(Finset.mul_sum _ _ _).trans (Finset.sum_congr rfl fun l _ => ?_)` and prove the remaining obligations. Conclude with `(congrArg (cf i * ·) (congrArg (_ * ·) (hA l))).trans (mul_assoc _ _ _).symm`.
+-/
 theorem mem_lat_iff_coef : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (Z : GlobalTheory.LocM.Mdl Y i₀) (X : Scheme.{0}) (h : X ⟶ Z.X) (r : ℕ) (x : Fin r → Letter Dw), Function.Bijective x → ∀ (hfr : ∀ a, GlobalTheory.VB.IsFrame (GlobalTheory.TanSec.secX Z h x a)) (y : Z.Pt) (w : Sp ↥(intO ↥y.C.S) ⟶ X), w ≫ h = y.z → ∀ (a : Fin Z.m) (φ : Γ(Z.X, (Z.U a).1) →+* ↥y.C.S), spMap φ ≫ Z.chart a = y.gen → ∀ (V : X.Opens) (e : Fin r → Γ(GlobalTheory.TanSec.lieX Z h, V)) (he : GlobalTheory.VB.IsFrame e), ⊤ ≤ w ⁻¹ᵁ V → ∀ (cf : Fin r → ↥y.C.S) (v : Sp (DualNumber ↥y.C.S) ⟶ (Y Z.i).t.G.left), IsCombAtG (Y Z.i).t (y.gen ≫ Z.π) (fun i => (Z.fr a).bc φ (x i).1 (x i).2) cf v → (v ∈ lat (Y Z.i).t p (y.gen ≫ Z.π) false ↔ ∀ l, ‖∑ i, cf i * valF (spMap (intO ↥y.C.S).subtype ≫ w) _ (GlobalTheory.ChainPts.coef false he (hfr a) l i)‖ ≤ 1) := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z X h r x _ hfr y w hw a φ hφ V e he hV cf v hv
   have := (Y Z.i).t.semi

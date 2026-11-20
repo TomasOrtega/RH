@@ -6,6 +6,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 
 namespace Formalism.L2.SG.Pf.Cnt
 
+/- English proof (translation)
+The claim follows from `glueProd_of jordan_splitting_exists jordan_invariants_holds jordan_isometry_holds local_gluing_holds`.
+-/
 theorem gluing_product_holds : GlueProd :=
   glueProd_of jordan_splitting_exists jordan_invariants_holds jordan_isometry_holds local_gluing_holds
 

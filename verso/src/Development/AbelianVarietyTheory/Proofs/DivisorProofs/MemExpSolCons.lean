@@ -31,8 +31,14 @@ def solStep (c : ℂ) (V : Submodule ℂ (ℝ → ℂ)) : Submodule ℂ (ℝ →
 
 def expSol (l : List ℂ) : Submodule ℂ (ℝ → ℂ) := l.foldr solStep ⊥
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_bot ℂ`.
+-/
 theorem mem_expSol_nil {f : ℝ → ℂ} : f ∈ expSol [] ↔ f = 0 := Submodule.mem_bot ℂ
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_expSol_cons {c : ℂ} {l : List ℂ} {f : ℝ → ℂ} :
     f ∈ expSol (c :: l) ↔ Differentiable ℝ f ∧ (deriv f - c • f) ∈ expSol l := Iff.rfl
 
@@ -45,10 +51,16 @@ abbrev scalD : Module.End ℂ (Sm E a) := lie E a (Central.scL a 1)
 
 variable {E a}
 
+/- English proof (translation)
+Unfold `expCurve`. Rewrite using `[add_smul, expU_add, map_mul, map_mul]`.
+-/
 theorem expCurve_add (s t : ℝ) : expCurve E a (s + t) = expCurve E a s * expCurve E a t := by
   unfold expCurve
   rw [add_smul, expU_add, map_mul, map_mul]
 
+/- English proof (translation)
+Unfold `expCurve`. Rewrite using `[zero_smul, expU_zero, map_one, map_one]`.
+-/
 theorem expCurve_zero : expCurve E a 0 = 1 := by
   unfold expCurve
   rw [zero_smul, expU_zero, map_one, map_one]

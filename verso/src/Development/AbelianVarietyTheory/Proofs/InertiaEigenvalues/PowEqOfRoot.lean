@@ -15,10 +15,16 @@ namespace GlobalTheory.AinfK
 
 variable {l : ℕ} [hl : Fact l.Prime] (K : FinExt l)
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (residue ↥(OL K))]`. Conclude with `(residue_eq_zero_iff _).mpr (l_mem_max K)`.
+-/
 theorem l_res : ((l : ℕ) : ResidueField ↥(OL K)) = 0 := by
   rw [← map_natCast (residue ↥(OL K))]
   exact (residue_eq_zero_iff _).mpr (l_mem_max K)
 
+/- English proof (translation)
+Use `OL_resFinite K` as an intermediate fact. Use `Fintype.ofFinite (ResidueField ↥(OL K))` as an intermediate fact. Establish `: CharP (ResidueField ↥(OL K)) l` using `(CharP.charP_iff_prime_eq_zero hl.out).2 (l_res K)`. Take `⟨n, -, hn⟩` from `FiniteField.card (ResidueField ↥(OL K)) l`. Conclude with `⟨n, n.ne_zero, by rw [Nat.card_eq_fintype_card, hn]⟩`.
+-/
 theorem exists_card : ∃ a : ℕ, a ≠ 0 ∧ Nat.card (ResidueField ↥(OL K)) = l ^ a := by
   have := OL_resFinite K
   have := Fintype.ofFinite (ResidueField ↥(OL K))
@@ -30,11 +36,21 @@ variable {K} {a : ℕ} [NeZero a]
 
 omit [NeZero a] in
 
+/- English proof (translation)
+Use `OL_resFinite K` as an intermediate fact. Use `Fintype.ofFinite (ResidueField ↥(OL K))` as an intermediate fact. Rewrite using `[← h, Nat.card_eq_fintype_card, FiniteField.pow_card]`.
+-/
 theorem res_pow (h : Nat.card (ResidueField ↥(OL K)) = l ^ a) (x : ResidueField ↥(OL K)) : x ^ l ^ a = x := by
   have := OL_resFinite K
   have := Fintype.ofFinite (ResidueField ↥(OL K))
   rw [← h, Nat.card_eq_fintype_card, FiniteField.pow_card]
 
+/- English proof (translation)
+Take `⟨_, hc, -⟩` from `GlobalTheory.FinExtIntegers.dvr_complete K`. Establish `h1` using `one_lt_pow_l l a`. Establish `hm : (X ^ l ^ a - X : (↥(OL K))[X]).Monic` using `monic_X_pow_sub (by rw [degree_X]; exact_mod_cast h1)`. Take `⟨w, hw, hx⟩` from `HenselianRing.is_henselian (I := maximalIdeal ↥(OL K)) _ hm x (by`. Rewrite using `[← residue_eq_zero_iff]; simp [res_pow h]) (by`.
+
+Express the relevant statement in the definitionally equal form `IsUnit (residue _ _)`. Establish `: ((l : ResidueField ↥(OL K))) ^ a = 0` using `by rw [l_res, zero_pow (NeZero.ne a)]`. Simplify using `[derivative_X_pow, this])`. Use `⟨w, by simpa [sub_eq_zero] using hw, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`.
+
+Conclude with `hx`.
+-/
 theorem exists_teich (h : Nat.card (ResidueField ↥(OL K)) = l ^ a) (x : ↥(OL K)) :
     ∃ w : ↥(OL K), w ^ l ^ a = w ∧ residue _ w = residue _ x := by
   obtain ⟨_, hc, -⟩ := GlobalTheory.FinExtIntegers.dvr_complete K
@@ -50,6 +66,15 @@ theorem exists_teich (h : Nat.card (ResidueField ↥(OL K)) = l ^ a) (x : ↥(OL
   rw [← sub_eq_zero, ← map_sub, residue_eq_zero_iff]
   exact hx
 
+/- English proof (translation)
+Use `OL_resFinite K` as an intermediate fact. Use `Fintype.ofFinite (ResidueField ↥(OL K))` as an intermediate fact. Establish `h1` using `one_lt_pow_l l a`. Use `choose r hr using residue_surjective (R := ↥(OL K))`. Use `choose s hs hs' using fun y => exists_teich h (r y)`.
+
+Establish `hinj : Function.Injective fun y => toOm K (s y)` using `fun y z e => by`. Rewrite using `[← hr y, ← hr z, ← hs', ← hs', toOm_injective K e]`. Establish `hm : (X ^ l ^ a - X : (Om l)[X]).Monic` using `monic_X_pow_sub (by rw [degree_X]; exact_mod_cast h1)`. Establish `hmem : ∀ y : Om l, y ∈ (X ^ l ^ a - X : (Om l)[X]).roots.toFinset ↔ y ^ l ^ a = y` using `fun y => by`. Simplify using `[mem_roots hm.ne_zero, sub_eq_zero]`.
+
+Establish `hsub : Finset.univ.image (fun y => toOm K (s y)) = (X ^ l ^ a - X : (Om l)[X]).roots.toFinset`. Use `Finset.eq_of_subset_of_card_le (fun y hy => ?_) ?_` and prove the remaining obligations. Take `⟨z, -, rfl⟩` from `Finset.mem_image.1 hy`. Rewrite using `[hmem, ← map_pow, hs]`. Rewrite using `[Finset.card_image_of_injective _ hinj, Finset.card_univ, ← Nat.card_eq_fintype_card, h]`.
+
+Use `(Multiset.toFinset_card_le _).trans ((card_roots' _).trans ?_)` and prove the remaining obligations. Rewrite using `[FiniteField.X_pow_card_sub_X_natDegree_eq _ h1]`. Take `⟨z, -, hz⟩` from `Finset.mem_image.1 (hsub ▸ (hmem x).2 hx)`. Conclude with `⟨_, hz⟩`.
+-/
 theorem exists_toOm (h : Nat.card (ResidueField ↥(OL K)) = l ^ a) (x : Om l) (hx : x ^ l ^ a = x) :
     ∃ w : ↥(OL K), toOm K w = x := by
   classical
@@ -74,11 +99,25 @@ theorem exists_toOm (h : Nat.card (ResidueField ↥(OL K)) = l ^ a) (x : Om l) (
   obtain ⟨z, -, hz⟩ := Finset.mem_image.1 (hsub ▸ (hmem x).2 hx)
   exact ⟨_, hz⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IntermediateField.adjoin_le_iff.2 fun x hx => by obtain ⟨w, rfl⟩ := exists_toOm h x hx exact (w : ↥K.1).2⟩`.
+-/
 theorem hasUnr (h : Nat.card (ResidueField ↥(OL K)) = l ^ a) : HasUnr a K :=
   ⟨IntermediateField.adjoin_le_iff.2 fun x hx => by
     obtain ⟨w, rfl⟩ := exists_toOm h x hx
     exact (w : ↥K.1).2⟩
 
+/- English proof (translation)
+Establish `h2 : (⟨x, hx⟩ : ↥K.1) ∈ OL K` using `IsIntegral.of_pow h0 (by`. Rewrite using `[show (⟨x, hx⟩ : ↥K.1) ^ m = 1 from Subtype.ext h1]`. Conclude with `isIntegral_one)`. Use `set y : ↥(OL K) := ⟨_, h2⟩`. Establish `hy : y ^ m = 1` using `Subtype.ext (Subtype.ext h1)`.
+
+Take `⟨k, hk⟩ : ∃ k, l ^ a = k + 1` from `⟨l ^ a - 1, by have := one_lt_pow_l l a; omega⟩`. Establish `hr0 : residue _ y ≠ 0` using `((IsUnit.of_pow_eq_one hy h0.ne').map _).ne_zero`. Establish `hr : residue _ (y ^ k) = 1`. Use `res_pow h (residue _ y)` as an intermediate fact. Rewrite `this` using `[hk, pow_succ]`.
+
+Rewrite using `[map_pow]`. Conclude with `mul_right_cancel₀ hr0 (by rw [this, one_mul])`. Establish `hg` using `mul_geom_sum (y ^ k) m`. Rewrite `hg` using `[← pow_mul, mul_comm k, pow_mul, hy, one_pow, sub_self]`. Establish `: CharP (ResidueField ↥(OL K)) l` using `(CharP.charP_iff_prime_eq_zero hl.out).2 (l_res K)`.
+
+Establish `hs : ∑ i ∈ Finset.range m, (y ^ k) ^ i ≠ 0` using `fun e => hm (by`. Use `congrArg (residue _) e` as an intermediate fact. Simplify using `only [map_sum, map_pow (residue _) (y ^ k), hr, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, map_zero] at this`. Conclude with `(CharP.cast_eq_zero_iff _ l m).1 this)`. Establish `h3 : y ^ k = 1` using `sub_eq_zero.1 ((mul_eq_zero.1 hg).resolve_right hs)`.
+
+Establish `h4 : x ^ k = 1` using `congrArg (toOm K) h3`. Rewrite using `[hk, pow_succ, h4, one_mul]`.
+-/
 theorem pow_eq_of_root (h : Nat.card (ResidueField ↥(OL K)) = l ^ a) {x : Om l} (hx : x ∈ K.1) {m : ℕ}
     (h0 : 0 < m) (hm : ¬ l ∣ m) (h1 : x ^ m = 1) : x ^ l ^ a = x := by
   have h2 : (⟨x, hx⟩ : ↥K.1) ∈ OL K := IsIntegral.of_pow h0 (by
@@ -104,6 +143,11 @@ theorem pow_eq_of_root (h : Nat.card (ResidueField ↥(OL K)) = l ^ a) {x : Om l
   have h4 : x ^ k = 1 := congrArg (toOm K) h3
   rw [hk, pow_succ, h4, one_mul]
 
+/- English proof (translation)
+Use `le_antisymm (le_inf (hasUnr h).le (Kunr_le_Kur l a)) ?_` and prove the remaining obligations. Establish `key : ∀ c ∈ K0 K, ‖c‖ ≤ 1 → c ∈ Kunr l a` using `fun c hc h1 => by`. Take `⟨n, z, ω, hω, rfl⟩` from `GlobalTheory.UnramSpan.exists_sum_rootsOfUnity l K c hc h1`. Use `sum_mem fun i _ => mul_mem (IntermediateField.algebraMap_mem _ _) ?_` and prove the remaining obligations. Take `⟨h2, m, h0, hm, h3⟩` from `hω i`.
+
+Conclude with `IntermediateField.subset_adjoin _ _ (pow_eq_of_root h h2.1 h0 hm h3)`. Introduce `c hc`. Break down `le_total ‖c‖ 1 with h1 | h1` into its components or cases. Conclude with `key c hc h1`. Conclude with `inv_mem_iff.1 (key _ (inv_mem hc) (by rw [norm_inv]; exact inv_le_one_of_one_le₀ h1))`.
+-/
 theorem Kunr_eq (h : Nat.card (ResidueField ↥(OL K)) = l ^ a) : Kunr l a = K0 K := by
   refine le_antisymm (le_inf (hasUnr h).le (Kunr_le_Kur l a)) ?_
   have key : ∀ c ∈ K0 K, ‖c‖ ≤ 1 → c ∈ Kunr l a := fun c hc h1 => by
@@ -118,6 +162,11 @@ theorem Kunr_eq (h : Nat.card (ResidueField ↥(OL K)) = l ^ a) : Kunr l a = K0 
 
 variable (l a) in
 
+/- English proof (translation)
+Use `GlobalTheory.TameFrob.finite_Wq l a` as an intermediate fact. Establish `: FaithfulSMul ℤ_[l] (Wq l a)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 fun u v h => by`. Use `congrArg (GlobalTheory.TameFrob.iotaO l a) h` as an intermediate fact. Simplify using `only [GlobalTheory.TameFrob.iotaO_algebraMap] at this`. Conclude with `Subtype.val_injective ((algebraMap ℚ_[l] (Om l)).injective this)`.
+
+Use `infer_instance`.
+-/
 theorem free_Wq : Module.Free ℤ_[l] (Wq l a) := by
   have := GlobalTheory.TameFrob.finite_Wq l a
   have : FaithfulSMul ℤ_[l] (Wq l a) := (faithfulSMul_iff_algebraMap_injective _ _).2 fun u v h => by
@@ -128,6 +177,9 @@ theorem free_Wq : Module.Free ℤ_[l] (Wq l a) := by
 
 variable (l a) in
 
+/- English proof (translation)
+Use `free_Wq l a` as an intermediate fact. Establish `h` using `(splitEquiv (AlgHom.id ℤ_[l] (Wq l a))).toLinearEquiv.finrank_eq`. Rewrite `h` using `[Module.finrank_baseChange]`. Simplify using `using h`.
+-/
 theorem finrank_Wq : Module.finrank ℤ_[l] (Wq l a) = a := by
   have := free_Wq l a
   have h := (splitEquiv (AlgHom.id ℤ_[l] (Wq l a))).toLinearEquiv.finrank_eq
@@ -137,12 +189,22 @@ theorem finrank_Wq : Module.finrank ℤ_[l] (Wq l a) = a := by
 attribute [local instance] GlobalTheory.TameFrob.algK GlobalTheory.TameFrob.isFractionRing in
 variable (l a) in
 
+/- English proof (translation)
+Use `GlobalTheory.TameFrob.finite_Wq l a` as an intermediate fact. Establish `: IsScalarTower ℤ_[l] (Wq l a) ↥(Kunr l a)` using `IsScalarTower.of_algebraMap_eq fun u => Subtype.ext (GlobalTheory.TameFrob.iotaO_algebraMap l a u).symm`. Rewrite using `[Algebra.IsAlgebraic.finrank_of_isFractionRing ℤ_[l] ℚ_[l] (Wq l a) ↥(Kunr l a), finrank_Wq]`.
+-/
 theorem finrank_Kunr : Module.finrank ℚ_[l] ↥(Kunr l a) = a := by
   have := GlobalTheory.TameFrob.finite_Wq l a
   have : IsScalarTower ℤ_[l] (Wq l a) ↥(Kunr l a) := IsScalarTower.of_algebraMap_eq fun u =>
     Subtype.ext (GlobalTheory.TameFrob.iotaO_algebraMap l a u).symm
   rw [Algebra.IsAlgebraic.finrank_of_isFractionRing ℤ_[l] ℚ_[l] (Wq l a) ↥(Kunr l a), finrank_Wq]
 
+/- English proof (translation)
+Take `⟨y, hy, hx⟩` from `exists_teich h x`. Rewrite using `[← hx]`. Break down `eq_or_ne y 0 with rfl | h0` into its components or cases. Conclude with `⟨0, by rw [map_zero]⟩`. Take `⟨z, ω, hω, hz, -⟩` from `exists_gen l a`.
+
+Establish `h1` using `one_lt_pow_l l a`. Establish `: NeZero (l ^ a - 1)` using `⟨by omega⟩`. Establish `h2 : y ^ (l ^ a - 1) = 1` using `mul_right_cancel₀ h0 (by rw [← pow_succ, Nat.sub_add_cancel h1.le, hy, one_mul])`. Take `⟨k, -, hk⟩` from `hω.eq_pow_of_pow_eq_one (ξ := toOm K y) (by rw [← map_pow, h2, map_one])`. Use `⟨WittVector.teichmuller l z ^ k, congrArg _ (intToOC_injective K (Subtype.ext ?_))⟩` and prove the remaining obligations.
+
+Rewrite using `[intToOC_thetaW, map_pow, map_pow, wA_teich, WittVector.fontaineTheta_teichmuller, SubmonoidClass.coe_pow, GlobalTheory.MemLoc.IsTiltOf.untilt_eq hz]`. Conclude with `(map_pow (algebraMap (Om l) ℂ_[l]) ω k).symm.trans (congrArg _ hk)`.
+-/
 theorem exists_thetaW [HasUnr a K] (h : Nat.card (ResidueField ↥(OL K)) = l ^ a) (x : ↥(OL K)) :
     ∃ w : Wq l a, residue _ (thetaW a K w) = residue _ x := by
   obtain ⟨y, hy, hx⟩ := exists_teich h x
@@ -164,6 +226,9 @@ variable (K)
 
 def fK : ℕ := Module.finrank ℚ_[l] ↥(K0 K)
 
+/- English proof (translation)
+Take `⟨a, ha, h⟩` from `exists_card K`. Establish `: NeZero a` using `⟨ha⟩`. Establish `e : fK K = a` using `by rw [fK, ← Kunr_eq h, finrank_Kunr]`. Rewrite using `[e]`. Conclude with `⟨ha, h⟩`.
+-/
 theorem card_res' : fK K ≠ 0 ∧ Nat.card (ResidueField ↥(OL K)) = l ^ fK K := by
   obtain ⟨a, ha, h⟩ := exists_card K
   have : NeZero a := ⟨ha⟩
@@ -173,10 +238,16 @@ theorem card_res' : fK K ≠ 0 ∧ Nat.card (ResidueField ↥(OL K)) = l ^ fK K 
 
 instance : NeZero (fK K) := ⟨(card_res' K).1⟩
 
+/- English proof (translation)
+The claim follows from `(card_res' K).2`.
+-/
 theorem card_res : Nat.card (ResidueField ↥(OL K)) = l ^ fK K := (card_res' K).2
 
 instance : HasUnr (fK K) K := hasUnr (card_res K)
 
+/- English proof (translation)
+The claim follows from `Kunr_eq (card_res K)`.
+-/
 theorem Kunr_fK : Kunr l (fK K) = K0 K := Kunr_eq (card_res K)
 
 end GlobalTheory.AinfK

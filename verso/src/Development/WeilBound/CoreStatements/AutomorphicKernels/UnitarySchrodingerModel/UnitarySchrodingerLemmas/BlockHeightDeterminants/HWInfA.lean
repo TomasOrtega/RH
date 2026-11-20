@@ -19,44 +19,76 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `blk4`. Rewrite using `[← Matrix.submatrix_map, Matrix.fromBlocks_map]`.
+-/
 theorem blk4_map_alt {R S : Type} {n : ℕ} (f : R → S) (a b c d : Matrix (Fin n) (Fin n) R) :
     (blk4 a b c d).map f = blk4 (a.map f) (b.map f) (c.map f) (d.map f) := by
   unfold blk4
   rw [← Matrix.submatrix_map, Matrix.fromBlocks_map]
 
+/- English proof (translation)
+Unfold `blk4`. Rewrite using `[Matrix.conjTranspose_submatrix, Matrix.fromBlocks_conjTranspose]`.
+-/
 theorem block_matrix_conjTranspose {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) ℂ) :
     (blk4 a b c d)ᴴ = blk4 aᴴ cᴴ bᴴ dᴴ := by
   unfold blk4
   rw [Matrix.conjTranspose_submatrix, Matrix.fromBlocks_conjTranspose]
 
+/- English proof (translation)
+Unfold `blk4`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+-/
 theorem block_matrix_mul_comm_ring {R : Type} [CommRing R] {n : ℕ} (a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R) :
     blk4 a b c d * blk4 a' b' c' d' =
       blk4 (a * a' + b * c') (a * b' + b * d') (c * a' + d * c') (c * b' + d * d') := by
   unfold blk4
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Use `congrArg (fun M => Matrix.submatrix M finSumFinEquiv finSumFinEquiv) h` as an intermediate fact. Simplify `this` using `[blk4, Matrix.fromBlocks_inj]`.
+-/
 theorem block_matrix_injective {R : Type} {n : ℕ} {a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R}
     (h : blk4 a b c d = blk4 a' b' c' d') : a = a' ∧ b = b' ∧ c = c' ∧ d = d' := by
   have := congrArg (fun M => Matrix.submatrix M finSumFinEquiv finSumFinEquiv) h
   simpa [blk4, Matrix.fromBlocks_inj] using this
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := (θ τ).comp (infPart D))`.
+-/
 theorem compAt_mul (θ : InfFam D) (τ : D.what₂.Tau) {k m n : ℕ} (x : Mx D k m) (y : Mx D m n) :
     compAt θ τ (x * y) = compAt θ τ x * compAt θ τ y :=
   Matrix.map_mul (f := (θ τ).comp (infPart D))
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero ((θ τ).comp (infPart D))) (map_one ((θ τ).comp (infPart D)))`.
+-/
 theorem compAt_one (θ : InfFam D) (τ : D.what₂.Tau) {k : ℕ} : compAt θ τ (1 : Mx D k k) = 1 :=
   Matrix.map_one _ (map_zero ((θ τ).comp (infPart D))) (map_one ((θ τ).comp (infPart D)))
 
+/- English proof (translation)
+The claim follows from `Matrix.map_zero _ (map_zero ((θ τ).comp (infPart D)))`.
+-/
 theorem compAt_zero (θ : InfFam D) (τ : D.what₂.Tau) {k m : ℕ} : compAt θ τ (0 : Mx D k m) = 0 :=
   Matrix.map_zero _ (map_zero ((θ τ).comp (infPart D)))
 
+/- English proof (translation)
+The claim follows from `Matrix.map_neg _ (map_neg ((θ τ).comp (infPart D))) x`.
+-/
 theorem compAt_neg (θ : InfFam D) (τ : D.what₂.Tau) {k m : ℕ} (x : Mx D k m) : compAt θ τ (-x) = -compAt θ τ x :=
   Matrix.map_neg _ (map_neg ((θ τ).comp (infPart D))) x
 
+/- English proof (translation)
+The claim follows from `blk4_map_alt _ a b c d`.
+-/
 theorem component_block_matrix (θ : InfFam D) (τ : D.what₂.Tau) {n : ℕ} (a b c d : Mx D n n) :
     compAt θ τ (blk4 a b c d) = blk4 (compAt θ τ a) (compAt θ τ b) (compAt θ τ c) (compAt θ τ d) :=
   blk4_map_alt _ a b c d
 
+/- English proof (translation)
+Establish `e1 : compAt θ τ (mat k) = Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig (Jst D n) (θ τ) k` using `rfl`. Establish `e2 : θ τ = GlobalTheory.AdelicU.infProj (embOverOf D τ)` using `GlobalTheory.AdelicU.eq_infProj hθ (embOverOf D τ) rfl`. Establish `hk' : k ∈ GlobalTheory.AdelicU.levelAll D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n)) 1` using `hk`. Establish `hw` using `(GlobalTheory.AdelicU.mem_levelAll.1 hk').2 (placeOf D τ)`. Establish `hunit` using `(GlobalTheory.Doubling.mem_stabArch_iff_unitary (isCMExt_host D) (embOverOf D τ) (Jst D n) 1 k).1 hw`.
+
+Rewrite `hunit` using `[inv_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `only [Matrix.one_mul, Matrix.mul_one] at hunit`. Rewrite `hunit` using `[← e2, ← e1]`. Conclude with `hunit`.
+-/
 theorem compAt_K_unitary (θ : InfFam D) (hθ : IsInfFam θ) (n : ℕ) (k : G D n) (hk : k ∈ K D n) (τ : D.what₂.Tau) :
     (compAt θ τ (mat k))ᴴ * compAt θ τ (mat k) = 1 := by
   have e1 : compAt θ τ (mat k) = Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig (Jst D n) (θ τ) k := rfl
@@ -70,6 +102,17 @@ theorem compAt_K_unitary (θ : InfFam D) (hθ : IsInfFam θ) (n : ℕ) (k : G D 
   rw [← e2, ← e1] at hunit
   exact hunit
 
+/- English proof (translation)
+Establish `hU' : U * Uᴴ = 1` using `mul_eq_one_comm.1 hU`. Establish `hM : (blk4 0 1 (-1) 0 * blk4 1 β 0 1 : Matrix (Fin (n + n)) (Fin (n + n)) ℂ) = blk4 0 1 (-1) (-β)`. Rewrite using `[block_matrix_mul_comm_ring]`. Simplify using the standard rewrite rules. Establish `hL : (blk4 α 0 0 aiᴴ * blk4 1 β0 0 1 : Matrix (Fin (n + n)) (Fin (n + n)) ℂ) = blk4 α (α * β0) 0 aiᴴ`.
+
+Rewrite using `[block_matrix_mul_comm_ring]`. Simplify using the standard rewrite rules. Rewrite `h` using `[hM, hL]`. Establish `hMM : blk4 0 1 (-1) (-β) * (blk4 0 1 (-1) (-β))ᴴ = blk4 α (α * β0) 0 aiᴴ * (blk4 α (α * β0) 0 aiᴴ)ᴴ`. Rewrite using `[h, Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc U, hU', Matrix.one_mul]`.
+
+Rewrite `hMM` using `[block_matrix_conjTranspose, block_matrix_conjTranspose, block_matrix_mul_comm_ring, block_matrix_mul_comm_ring]`. Establish `h22` using `(block_matrix_injective hMM).2.2.2`. Establish `h22' : 1 + β * β = aiᴴ * ai`. Simplify `h22` using `[hβ]`. Establish `hd : (1 + β * β).det = star ai.det * ai.det`.
+
+Rewrite using `[h22', Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `hdet : α.det * ai.det = 1` using `by rw [← Matrix.det_mul, hα, Matrix.det_one]`. Establish `hre : (1 + β * β).det.re = ‖ai.det‖ ^ 2`. Rewrite using `[hd, Complex.star_def, Complex.conj_mul']`. Use `norm_cast`.
+
+Rewrite using `[hre, ← mul_pow, ← norm_mul, hdet, norm_one, one_pow]`.
+-/
 theorem local_det {n : ℕ} (α ai β β0 : Matrix (Fin n) (Fin n) ℂ) (U : Matrix (Fin (n + n)) (Fin (n + n)) ℂ)
     (hU : Uᴴ * U = 1) (hα : α * ai = 1) (hβ : βᴴ = β)
     (h : blk4 0 1 (-1) 0 * blk4 1 β 0 1 = blk4 α 0 0 aiᴴ * blk4 1 β0 0 1 * U) :

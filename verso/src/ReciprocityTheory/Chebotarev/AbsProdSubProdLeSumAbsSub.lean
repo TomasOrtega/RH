@@ -6,17 +6,34 @@ namespace ReciprocityTheory.Cheb
 
 noncomputable def tent (t : ℝ) : ℝ := max 0 (1 - |t|)
 
+/- English proof (translation)
+The claim follows from `le_max_left _ _`.
+-/
 theorem tent_nonneg (t : ℝ) : 0 ≤ tent t := le_max_left _ _
 
+/- English proof (translation)
+The claim follows from `max_le zero_le_one (by linarith [abs_nonneg t])`.
+-/
 theorem tent_le_one (t : ℝ) : tent t ≤ 1 :=
   max_le zero_le_one (by linarith [abs_nonneg t])
 
+/- English proof (translation)
+The claim follows from `max_eq_right (by linarith)`.
+-/
 theorem tent_of_abs_le {t : ℝ} (h : |t| ≤ 1) : tent t = 1 - |t| :=
   max_eq_right (by linarith)
 
+/- English proof (translation)
+The claim follows from `max_eq_left (by linarith)`.
+-/
 theorem tent_of_one_le_abs {t : ℝ} (h : 1 ≤ |t|) : tent t = 0 :=
   max_eq_left (by linarith)
 
+/- English proof (translation)
+Unfold `tent`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[max_comm 0, max_comm 0]`. Conclude with `abs_max_sub_max_le_abs _ _ _`. Use `_ = |(|t| - |s|)| := by ring_nf`.
+
+Use `_ ≤ |t - s| := abs_abs_sub_abs_le_abs_sub t s`. Use `_ = |s - t| := abs_sub_comm t s`.
+-/
 theorem abs_tent_sub_tent_le (s t : ℝ) : |tent s - tent t| ≤ |s - t| := by
   unfold tent
   calc |max 0 (1 - |s|) - max 0 (1 - |t|)| ≤ |(1 - |s|) - (1 - |t|)| := by
@@ -25,10 +42,18 @@ theorem abs_tent_sub_tent_le (s t : ℝ) : |tent s - tent t| ≤ |s - t| := by
     _ ≤ |t - s| := abs_abs_sub_abs_le_abs_sub t s
     _ = |s - t| := abs_sub_comm t s
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h'`. Conclude with `h (tent_of_one_le_abs (not_lt.mp h'))`.
+-/
 theorem abs_lt_one_of_tent_ne_zero {t : ℝ} (h : tent t ≠ 0) : |t| < 1 := by
   by_contra h'
   exact h (tent_of_one_le_abs (not_lt.mp h'))
 
+/- English proof (translation)
+Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hn`. Apply `tent_of_one_le_abs` to reduce the goal to its premises. Establish `h1` using `Int.floor_le t`. Establish `h2` using `Int.lt_floor_add_one t`. Break down `lt_or_gt_of_ne hn.1 with h | h` into its components or cases.
+
+Establish `: n ≤ -⌊t⌋ - 2` using `by omega`. Establish `: (n : ℝ) ≤ -⌊t⌋ - 2` using `by exact_mod_cast this`. Rewrite using `[abs_of_neg (by linarith)]; linarith`. Establish `: (n : ℝ) ≥ -⌊t⌋ + 1` using `by exact_mod_cast (show n ≥ -⌊t⌋ + 1 by omega)`. Rewrite using `[abs_of_nonneg (by linarith)]; linarith`.
+-/
 theorem tent_add_int_eq_zero_of_notMem (t : ℝ) {n : ℤ} (hn : n ∉ ({-⌊t⌋, -⌊t⌋ - 1} : Finset ℤ)) :
     tent (t + n) = 0 := by
   simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hn
@@ -42,6 +67,11 @@ theorem tent_add_int_eq_zero_of_notMem (t : ℝ) {n : ℤ} (hn : n ∉ ({-⌊t�
   · have : (n : ℝ) ≥ -⌊t⌋ + 1 := by exact_mod_cast (show n ≥ -⌊t⌋ + 1 by omega)
     rw [abs_of_nonneg (by linarith)]; linarith
 
+/- English proof (translation)
+Establish `hne : (-⌊t⌋ : ℤ) ≠ -⌊t⌋ - 1` using `by omega`. Rewrite using `[Finset.sum_pair hne]`. Establish `h1` using `Int.floor_le t`. Establish `h2` using `Int.lt_floor_add_one t`. Use `push_cast`.
+
+Rewrite using `[tent_of_abs_le, tent_of_abs_le]`. Rewrite using `[abs_of_nonneg (by linarith), abs_of_neg (by linarith)]; ring`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`.
+-/
 theorem sum_tent_add_int_pair (t : ℝ) :
     ∑ n ∈ ({-⌊t⌋, -⌊t⌋ - 1} : Finset ℤ), tent (t + n) = 1 := by
   have hne : (-⌊t⌋ : ℤ) ≠ -⌊t⌋ - 1 := by omega
@@ -56,6 +86,9 @@ theorem sum_tent_add_int_pair (t : ℝ) :
 
 section Product
 
+/- English proof (translation)
+The claim follows from `|∏ i ∈ s, a i - ∏ i ∈ s, b i| ≤ ∑ i ∈ s, |a i - b i| := by classical induction s using Finset.induction_on with | empty => simp | insert j s hj ih => rw [prod_insert hj, prod_insert hj, sum_insert hj] have hP : |∏ i ∈ s, b i| ≤ 1 := by rw [Finset.abs_prod] exact prod_le_one (fun …`.
+-/
 theorem abs_prod_sub_prod_le_sum_abs_sub {κ : Type*} (s : Finset κ) (a b : κ → ℝ)
     (ha : ∀ i ∈ s, |a i| ≤ 1) (hb : ∀ i ∈ s, |b i| ≤ 1) :
     |∏ i ∈ s, a i - ∏ i ∈ s, b i| ≤ ∑ i ∈ s, |a i - b i| := by
@@ -83,14 +116,28 @@ variable {ι : Type*} [Fintype ι]
 
 noncomputable def Tent (y : ι → ℝ) : ℝ := ∏ i, tent (y i)
 
+/- English proof (translation)
+The claim follows from `prod_nonneg fun _ _ => tent_nonneg _`.
+-/
 theorem Tent_nonneg (y : ι → ℝ) : 0 ≤ Tent y := prod_nonneg fun _ _ => tent_nonneg _
 
+/- English proof (translation)
+The claim follows from `prod_le_one (fun _ _ => tent_nonneg _) (fun _ _ => tent_le_one _)`.
+-/
 theorem Tent_le_one (y : ι → ℝ) : Tent y ≤ 1 :=
   prod_le_one (fun _ _ => tent_nonneg _) (fun _ _ => tent_le_one _)
 
+/- English proof (translation)
+The claim follows from `abs_lt_one_of_tent_ne_zero fun h' => h (prod_eq_zero (mem_univ i) h')`.
+-/
 theorem abs_lt_one_of_Tent_ne_zero {y : ι → ℝ} (h : Tent y ≠ 0) (i : ι) : |y i| < 1 :=
   abs_lt_one_of_tent_ne_zero fun h' => h (prod_eq_zero (mem_univ i) h')
 
+/- English proof (translation)
+Unfold `Tent`. Use `(abs_prod_sub_prod_le_sum_abs_sub univ _ _ (fun i _ => ?_) (fun i _ => ?_)).trans (sum_le_sum fun i _ => abs_tent_sub_tent_le (y i) (y' i))` and prove the remaining obligations. Rewrite using `[abs_of_nonneg (tent_nonneg _)]`. Conclude with `tent_le_one _`. Rewrite using `[abs_of_nonneg (tent_nonneg _)]`.
+
+Conclude with `tent_le_one _`.
+-/
 theorem abs_Tent_sub_Tent_le (y y' : ι → ℝ) : |Tent y - Tent y'| ≤ ∑ i, |y i - y' i| := by
   unfold Tent
   refine (abs_prod_sub_prod_le_sum_abs_sub univ _ _ (fun i _ => ?_) (fun i _ => ?_)).trans
@@ -98,6 +145,9 @@ theorem abs_Tent_sub_Tent_le (y y' : ι → ℝ) : |Tent y - Tent y'| ≤ ∑ i,
   · rw [abs_of_nonneg (tent_nonneg _)]; exact tent_le_one _
   · rw [abs_of_nonneg (tent_nonneg _)]; exact tent_le_one _
 
+/- English proof (translation)
+Rewrite `hn` using `[Fintype.mem_piFinset]`. Use `push Not at hn`. Take `⟨i, hi⟩` from `hn`. Conclude with `prod_eq_zero (mem_univ i) (tent_add_int_eq_zero_of_notMem (y i) hi)`.
+-/
 theorem Tent_add_int_eq_zero_of_notMem [DecidableEq ι] (y : ι → ℝ) {n : ι → ℤ}
     (hn : n ∉ Fintype.piFinset fun i => ({-⌊y i⌋, -⌊y i⌋ - 1} : Finset ℤ)) :
     Tent (fun i => y i + n i) = 0 := by
@@ -106,6 +156,9 @@ theorem Tent_add_int_eq_zero_of_notMem [DecidableEq ι] (y : ι → ℝ) {n : ι
   obtain ⟨i, hi⟩ := hn
   exact prod_eq_zero (mem_univ i) (tent_add_int_eq_zero_of_notMem (y i) hi)
 
+/- English proof (translation)
+Use `show ∑ n ∈ Fintype.piFinset (fun i => ({-⌊y i⌋, -⌊y i⌋ - 1} : Finset ℤ)), ∏ i, tent (y i + n i) = 1`. Rewrite using `[← Finset.prod_univ_sum (fun i => ({-⌊y i⌋, -⌊y i⌋ - 1} : Finset ℤ)) (fun i n => tent (y i + n))]`. Conclude with `prod_eq_one fun i _ => sum_tent_add_int_pair (y i)`.
+-/
 theorem sum_Tent_add_int_piFinset [DecidableEq ι] (y : ι → ℝ) :
     ∑ n ∈ Fintype.piFinset (fun i => ({-⌊y i⌋, -⌊y i⌋ - 1} : Finset ℤ)), Tent (fun i => y i + n i) = 1 := by
   classical
@@ -113,6 +166,9 @@ theorem sum_Tent_add_int_piFinset [DecidableEq ι] (y : ι → ℝ) :
   rw [← Finset.prod_univ_sum (fun i => ({-⌊y i⌋, -⌊y i⌋ - 1} : Finset ℤ)) (fun i n => tent (y i + n))]
   exact prod_eq_one fun i _ => sum_tent_add_int_pair (y i)
 
+/- English proof (translation)
+Establish `h : HasSum (fun n : ι → ℤ => Tent (fun i => y i + n i)) (∑ n ∈ Fintype.piFinset (fun i => ({-⌊y i⌋, -⌊y i⌋ - 1} : Finset ℤ)), Tent (fun i => y i + n i))` using `hasSum_sum_of_ne_finset_zero fun n hn => Tent_add_int_eq_zero_of_notMem y hn`. Rewrite `h` using `[sum_Tent_add_int_piFinset]`. Then use the resulting hypothesis.
+-/
 theorem hasSum_Tent_add_int (y : ι → ℝ) : HasSum (fun n : ι → ℤ => Tent (fun i => y i + n i)) 1 := by
   classical
   have h : HasSum (fun n : ι → ℤ => Tent (fun i => y i + n i))

@@ -17,11 +17,17 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.B.gN`. Conclude with `Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i)))`.
+-/
 theorem gN_cont : Continuous (Formalism.FourierDecayAlt.B.gN : Mx k r → ℝ) := by
   unfold Formalism.FourierDecayAlt.B.gN
   exact Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
     Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i)))
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun x : Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of x))` using `gN_cont.comp PI.WUN.continuous_of`. Establish `h0 : ∀ x : Mt k r, 0 ≤ Formalism.FourierDecayAlt.B.gN (Matrix.of x) ^ (-A)` using `fun x => Real.rpow_nonneg (Real.sqrt_nonneg _) _`. Use `⟨(h1.measurable.pow_const _).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (ae_of_all _ h0)]`. Conclude with `h`.
+-/
 theorem intG_of_lint {μ : Measure (Mt k r)} {A : ℝ}
     (h : ∫⁻ x : Mt k r, ENNReal.ofReal (Formalism.FourierDecayAlt.B.gN (Matrix.of x) ^ (-A)) ∂μ < ∞) :
     Integrable (fun x : Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of x) ^ (-A)) μ := by
@@ -32,6 +38,11 @@ theorem intG_of_lint {μ : Measure (Mt k r)} {A : ℝ}
   rw [hasFiniteIntegral_iff_ofReal (ae_of_all _ h0)]
   exact h
 
+/- English proof (translation)
+Establish `hm : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mx k r) * Matrix.of p.2)` using `(continuous_fst : Continuous (fun p : Mt k r × Mt k r => p.1)).matrix_mul continuous_snd`. Establish `h1 : Continuous (fun p : Mt k r × Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2))` using `gN_cont.comp hm`. Establish `h0 : ∀ p : Mt k r × Mt k r, 0 ≤ Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2) ^ (-A)` using `fun p => Real.rpow_nonneg (Real.sqrt_nonneg _) _`. Use `⟨(h1.measurable.pow_const _).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (ae_of_all _ h0)]`.
+
+Conclude with `h`.
+-/
 theorem intS_of_lint {μ : Measure (Mt k r × Mt k r)} {A : ℝ}
     (h : ∫⁻ p : Mt k r × Mt k r, ENNReal.ofReal (Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2) ^ (-A)) ∂μ < ∞) :
     Integrable (fun p : Mt k r × Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2) ^ (-A)) μ := by
@@ -48,6 +59,9 @@ theorem intS_of_lint {μ : Measure (Mt k r × Mt k r)} {A : ℝ}
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
   {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.complete ℂ Wp Integrable (fun x : Mt k r => ‖(∫ p, Formalism.MainNotions.DoubleDerivativeSmoothness.FI z c π σ (σ (Matrix.of x) u) v p ∂(μW.prod (haarLie (Nset k r) κ))) ξ‖ ^ 2) νq ∧ l2SG νq (fun g => (∫ p, Formalism.MainNotions.DoubleDerivativeSmoothness.FI z c …`.
+-/
 theorem normIdSm_DD (hHW : Cv.HaarWAll) (hHN : Cv.HaarNAll)
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
     (hlam : IsHCParam lam) (hds : IsDSHpk k r ε lam σ) {μG : Measure (Mt k r)} (hHaar : IsHaarOn (UH (Hpk k r)) μG)
@@ -83,6 +97,9 @@ theorem normIdSm_DD (hHW : Cv.HaarWAll) (hHN : Cv.HaarNAll)
   unfold l2SG
   exact hl
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.complete ℂ Wp Integrable (fun x : Mt k r => ‖(∫ p, Formalism.MainNotions.DoubleDerivativeSmoothness.FI z c π σ (σ (Matrix.of x) u) v p ∂(μW.prod (haarLie (Nset k r) κ))) ξ‖ ^ 2) νq ∧ l2SG νq (fun g => (∫ p, Formalism.MainNotions.DoubleDerivativeSmoothness.FI z c …`.
+-/
 theorem normIdSm_K (hHW : Cv.HaarWAll) (hHN : Cv.HaarNAll)
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
     (hlam : IsHCParam lam) (hds : IsDSHpk k r ε lam σ) {μG : Measure (Mt k r)} (hHaar : IsHaarOn (UH (Hpk k r)) μG)
@@ -118,6 +135,9 @@ theorem normIdSm_K (hHW : Cv.HaarWAll) (hHN : Cv.HaarNAll)
   unfold l2SG
   exact hl
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.complete ℂ Wp Integrable (fun x : Mt k r => ‖(∫ p, Formalism.MainNotions.DoubleDerivativeSmoothness.FI z c π σ (σ (Matrix.of x) u) v p ∂(μW.prod (haarLie (Nset k r) κ))) ξ‖ ^ 2) νq ∧ l2SG νq (fun g => (∫ p, Formalism.MainNotions.DoubleDerivativeSmoothness.FI z c …`.
+-/
 theorem normId_DD_set (hHW : Cv.HaarWAll) (hHN : Cv.HaarNAll)
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
     (hlam : IsHCParam lam) (hds : IsDSHpk k r ε lam σ) {μG : Measure (Mt k r)} (hHaar : IsHaarOn (UH (Hpk k r)) μG)

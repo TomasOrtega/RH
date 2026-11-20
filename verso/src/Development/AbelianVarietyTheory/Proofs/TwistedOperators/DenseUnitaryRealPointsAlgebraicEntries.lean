@@ -31,6 +31,21 @@ noncomputable section
 
 namespace GlobalTheory.RealAlgDense
 
+/- English proof (translation)
+Introduce `D θ hθ V`. Take `⟨e, he⟩` from `GlobalTheory.Mem.VolSplit.exists_adelic_split D.host.F D.host.E D.sp.cm.sig V.rank V.gram`. Establish `hfin : ∀ h : GA D V, h ∈ GinfC V ↔ (e h).2 = 1` using `fun h => ⟨fun H => Subtype.ext (Units.ext ((he h).1.trans (congrArg Units.val (MonoidHom.mem_ker.1 H)))), fun H => MonoidHom.mem_ker.2 (Units.ext ((he h).1.symm.trans (by rw [H]; rfl)))⟩`. Establish `hne : ∃ z, D.sp.cm.sig z ≠ z`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Establish `hs : Function.Surjective (algebraMap D.host.F D.host.E)` using `fun z => (D.sp.cm.fixed z).1 (h z)`. Establish `h1 : Module.finrank D.host.F D.host.E = 1` using `Algebra.finrank_eq_one_iff_bijective_algebraMap.2 ⟨(algebraMap D.host.F D.host.E).injective, hs⟩`. Establish `h2` using `D.sp.cm.deg2`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hd` using `GlobalTheory.RealApprox.dense_inf D.host.F D.host.E D.sp.cm.sig (fun x => star_star x) hne V.gram (GlobalTheory.AutFunCounterexample.gram_herm V) (GlobalTheory.AutFunCounterexample.gram_det_ne V)`. Set `Φ : HA (Ainf D.host.F) D.sp.cm.sig V.gram → GinfC V` to `fun x => ⟨e.symm (x, 1), (hfin _).2 (by rw [e.apply_symm_apply])⟩`. Establish `hΦc : Continuous Φ` using `Continuous.subtype_mk (e.symm.continuous.comp (continuous_id.prodMk continuous_const)) _`. Establish `hΦs : Function.Surjective Φ`. Introduce `g`.
+
+Use `⟨(e g.1).1, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.symm ((e g.1).1, 1) = g.1`. Rewrite using `[← (hfin g.1).1 g.2]`. Conclude with `e.symm_apply_apply g.1`. Use `Dense.mono ?_ (hΦs.denseRange.dense_image hΦc hd)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, ⟨γ₀, hγ₀, hx⟩, rfl⟩ τ a b`. Establish `hm` using `(he (e.symm (x, 1))).2`. Rewrite `hm` using `[e.apply_symm_apply]`. Establish `key : compAt θ τ (Formalism.L2.Theta.mt V (Φ x).1) a b = tauE D τ (γ₀.1 a b)`. Express the relevant statement in the definitionally equal form `infMat D.sp.cm.sig V.gram (θ τ) (e.symm (x, 1)) a b = _`.
+
+Unfold `infMat`. Rewrite using `[← hm, ← hx]`. Conclude with `(hθ τ).1 _`. Rewrite using `[key]`. Establish `h0 : IsAlgebraic ℚ (γ₀.1 a b)` using `Algebra.IsAlgebraic.isAlgebraic (R := ℚ) (γ₀.1 a b)`.
+
+Use `first`. Consider the case `exact h0.algHom (tauE D τ).toRatAlgHom`. Consider the case `exact IsAlgebraic.map (tauE D τ).toRatAlgHom h0`. Consider the case `exact (isAlgebraic_algHom_iff (tauE D τ).toRatAlgHom (tauE D τ).injective).2 h0`.
+-/
 theorem dense_alg : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ V : HSp D, Dense {g : GinfC V | ∀ τ a b, IsAlgebraic ℚ (compAt θ τ (Formalism.L2.Theta.mt V g.1) a b)} := by
   intro D θ hθ V
   obtain ⟨e, he⟩ := GlobalTheory.Mem.VolSplit.exists_adelic_split D.host.F D.host.E D.sp.cm.sig V.rank V.gram

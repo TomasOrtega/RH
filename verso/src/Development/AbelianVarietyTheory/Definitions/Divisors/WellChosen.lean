@@ -108,6 +108,9 @@ def Extension : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (G : Geo K) (s : Fin G.D → Fin G.N → K) (hs : G.IsGood s), (∀ i, s i ≠ 0) →
     ∀ (σ : K →+* ℂ) (j : ℕ), G.D ≤ j → ExtensionBound σ hs j
 
+/- English proof (translation)
+The claim follows from `H.2.1`.
+-/
 example (X : Data F) (C h J : ℝ) (H : Claim X C h J) : X.z ≤ 1 := H.2.1
 
 end GlobalTheory.HSCore

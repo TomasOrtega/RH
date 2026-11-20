@@ -26,15 +26,30 @@ section Grp
 
 variable {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] {e : Γ' →* Γ} {δ : Γ →* kˣ}
 
+/- English proof (translation)
+Use `(h _).1 ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, (h _).2 ⟨g, rfl⟩, mul_one, ← map_mul, inv_mul_cancel, map_one]`.
+-/
 private theorem conj_mem (h : ∀ s, δ s = 1 ↔ s ∈ e.range) (g : Γ') (t : Γ) : ∃ g', e g' = t⁻¹ * e g * t := by
   refine (h _).1 ?_
   rw [map_mul, map_mul, (h _).2 ⟨g, rfl⟩, mul_one, ← map_mul, inv_mul_cancel, map_one]
 
+/- English proof (translation)
+Use `(h _).1 ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Apply the tactic sequence `rcases h' t with h1 | h1 <;> simp [h1]`.
+-/
 private theorem sq_mem (h : ∀ s, δ s = 1 ↔ s ∈ e.range) (h' : ∀ s, δ s = 1 ∨ δ s = -1) (t : Γ) : ∃ g, e g = t * t := by
   refine (h _).1 ?_
   rw [map_mul]
   rcases h' t with h1 | h1 <;> simp [h1]
 
+/- English proof (translation)
+Establish `hs1 : r s = 1` using `hs 1 s (by simp)`. Establish `key : ∀ g, (R (e s * g) : Matrix (Fin 4) (Fin 4) k).charpoly = (R g : Matrix (Fin 4) (Fin 4) k).charpoly`. Introduce `g`. Distinguish the cases in `hg : g ∈ e.range`. Take `⟨g, rfl⟩` from `hg`.
+
+Take `⟨g', hg'⟩` from `conj_mem h g t`. Take `⟨s', hs'⟩` from `conj_mem h s t`. Rewrite using `[← map_mul e, (H t ht).1 (s * g) (s' * g') (by rw [map_mul, map_mul, hg', hs']; group), (H t ht).1 g g' hg', map_mul, map_mul, hs1, hs t s' hs', one_mul, one_mul]`. Take `⟨g2, hg2⟩` from `sq_mem h h' g`. Take `⟨s', hs'⟩` from `conj_mem h s g⁻¹`.
+
+Establish `hg' : e s * g ∉ e.range` using `fun h0 => hg ((Subgroup.mul_mem_cancel_left _ (MonoidHom.mem_range.2 ⟨s, rfl⟩)).1 h0)`. Rewrite using `[(H _ hg').2 (s * s' * g2) (by rw [map_mul, map_mul, hg2, hs']; group), (H g hg).2 g2 hg2, map_mul, map_mul, hs1, hs _ s' hs', one_mul, one_mul]`. Establish `h0` using `GlobalTheory.isSSRep_trace_nondegenerate Γ k 4 R hR ((R (e s) : Matrix (Fin 4) (Fin 4) k) - (R 1 : GL (Fin 4) k)) (Submodule.sub_mem _ (Submodule.subset_span ⟨_, rfl⟩) (Submodule.subset_span ⟨_, rfl⟩)) fun g => by`. Rewrite using `[sub_mul, Matrix.trace_sub, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul, one_mul, Matrix.trace_eq_neg_charpoly_coeff, Matrix.trace_eq_neg_charpoly_coeff, key, sub_self]`. Rewrite using `[← map_one R]`.
+
+Conclude with `Units.ext (sub_eq_zero.1 h0)`.
+-/
 private theorem ker_ind [CharZero k] (h : ∀ s, δ s = 1 ↔ s ∈ e.range) (h' : ∀ s, δ s = 1 ∨ δ s = -1) {t : Γ}
     (ht : t ∉ e.range) {r : Γ' →* GL (Fin 2) k} {R : Γ →* GL (Fin 4) k} (hR : IsSSRep R) (H : IndCh e r R) (s : Γ')
     (hs : ∀ u s', e s' = u⁻¹ * e s * u → r s' = 1) : R (e s) = 1 := by
@@ -67,16 +82,27 @@ variable {F E Ω : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Fi
   [IsScalarTower F E Ω]
 
 omit [NumberField F] in
+/- English proof (translation)
+Establish `hm : ∀ x, x ∈ t⁻¹ • A ↔ t x ∈ A` using `fun x => ValuationSubring.mem_inv_pointwise_smul_iff`. Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', hm, hm, map_inv₀, map_eq_zero_iff _ t.injective]`.
+-/
 private theorem val_lt (A : ValuationSubring Ω) (t : G F Ω) (y : Ω) :
     (t⁻¹ • A).valuation y < 1 ↔ A.valuation (t y) < 1 := by
   have hm : ∀ x, x ∈ t⁻¹ • A ↔ t x ∈ A := fun x => ValuationSubring.mem_inv_pointwise_smul_iff
   rw [valuation_lt_one_iff', valuation_lt_one_iff', hm, hm, map_inv₀, map_eq_zero_iff _ t.injective]
 
+/- English proof (translation)
+Introduce `x` and use `by rw [val_lt, AlgEquiv.commutes] exact h x`.
+-/
 private theorem place_conj {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (h : IsPlaceOver A v) (t : G F Ω) :
     IsPlaceOver (t⁻¹ • A) v := fun x => by
   rw [val_lt, AlgEquiv.commutes]
   exact h x
 
+/- English proof (translation)
+Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : σ • A = A` using `hσ.1 show (t⁻¹ * σ * t) • t⁻¹ • A = t⁻¹ • A`. Rewrite using `[mul_smul, mul_smul, smul_inv_smul, h1]`. Establish `h1` using `hσ.2 (t x) (by`. Rewrite using `[ValuationSubring.valuation_le_one_iff, ← AlgEquiv.smul_def, ← ValuationSubring.mem_inv_pointwise_smul_iff, ← ValuationSubring.valuation_le_one_iff])` and apply the resulting hypothesis.
+
+Rewrite using `[val_lt, map_sub, map_pow, AlgEquiv.mul_apply, AlgEquiv.mul_apply, mul_inv_apply]` and apply the resulting hypothesis.
+-/
 private theorem frob_conj {A : ValuationSubring Ω} {q : ℕ} {σ : G F Ω} (hσ : IsFrob (F := F) A q σ) (t : G F Ω) :
     IsFrob (F := F) (t⁻¹ • A) q (t⁻¹ * σ * t) := by
   refine ⟨?_, fun x hx => ?_⟩
@@ -88,14 +114,29 @@ private theorem frob_conj {A : ValuationSubring Ω} {q : ℕ} {σ : G F Ω} (hσ
         ← ValuationSubring.valuation_le_one_iff])
     rwa [val_lt, map_sub, map_pow, AlgEquiv.mul_apply, AlgEquiv.mul_apply, mul_inv_apply]
 
+/- English proof (translation)
+Simplify using `only [IsFrob, pow_one]`. Both sides reduce to the same expression.
+-/
 private theorem ine_iff {A : ValuationSubring Ω} {σ : G F Ω} : σ ∈ Ine (F := F) A ↔ IsFrob (F := F) A 1 σ := by
   simp only [IsFrob, pow_one]
   rfl
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2⟩`.
+-/
 private theorem frob_emb {A : ValuationSubring Ω} {q : ℕ} {g : G E Ω} (h : IsFrob (F := F) A q (galEmb F E Ω g)) :
     IsFrob (F := E) A q g := ⟨h.1, h.2⟩
 
+/- English proof (translation)
+Establish `hint : ∀ x : 𝓞 E, algebraMap E Ω (x : E) ∈ A` using `fun x => by`. Establish `h : IsIntegral A (algebraMap E Ω (x : E))` using `(x.isIntegral_coe.map (algebraMap E Ω).toIntAlgHom).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+
+Set `f : 𝓞 E →+* A` to `((algebraMap E Ω).comp (algebraMap (𝓞 E) E)).codRestrict A hint`. Set `P : Ideal (𝓞 E)` to `(IsLocalRing.maximalIdeal A).comap f`. Establish `hP : ∀ x : 𝓞 E, A.valuation (algebraMap E Ω (x : E)) < 1 ↔ x ∈ P` using `fun x => (A.valuation_lt_one_iff (f x)).symm`. Establish `hu : v.asIdeal = P.under (𝓞 F)`. Use extensionality with `x`.
+
+Rewrite using `[← hA x, Ideal.under, Ideal.mem_comap, ← hP, IsScalarTower.algebraMap_apply F E Ω]`. Both sides reduce to the same expression. Establish `hne : P ≠ ⊥`. Introduce `h`. Apply `v.ne_bot` to reduce the goal to its premises.
+
+Rewrite using `[hu, h]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)`. Conclude with `⟨⟨P, inferInstance, hne⟩, hP, HeightOneSpectrum.ext hu.symm⟩`.
+-/
 private theorem place_between {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A v) :
     ∃ w : HeightOneSpectrum (𝓞 E), IsPlaceOver A w ∧ w.under (𝓞 F) = v := by
   have hint : ∀ x : 𝓞 E, algebraMap E Ω (x : E) ∈ A := fun x => by
@@ -118,6 +159,9 @@ private theorem place_between {A : ValuationSubring Ω} {v : HeightOneSpectrum (
     exact Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)
   exact ⟨⟨P, inferInstance, hne⟩, hP, HeightOneSpectrum.ext hu.symm⟩
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[Filter.eventually_cofinite]`. Use `(h.image fun w => w.under (𝓞 F)).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `hv fun w hw => not_not.1 fun hP => h0 ⟨w, hP, hw⟩`.
+-/
 private theorem ev_over {P : HeightOneSpectrum (𝓞 E) → Prop} (h : ∀ᶠ w in Filter.cofinite, P w) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → P w := by
   rw [Filter.eventually_cofinite] at h ⊢
@@ -125,11 +169,21 @@ private theorem ev_over {P : HeightOneSpectrum (𝓞 E) → Prop} (h : ∀ᶠ w 
   by_contra h0
   exact hv fun w hw => not_not.1 fun hP => h0 ⟨w, hP, hw⟩
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {a} ≠ 0` using `by rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`.
+-/
 private theorem ev_notMem {a : 𝓞 E} (ha : a ≠ 0) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 E) in Filter.cofinite, a ∉ v.asIdeal := by
   have h0 : Ideal.span {a} ≠ 0 := by rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
   exact (Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)
 
+/- English proof (translation)
+Establish `: w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 F)).isMaximal` as an intermediate fact. Establish `e : normV w = normV (w.under (𝓞 F)) ^ w.asIdeal.inertiaDeg (𝓞 F)` using `(Ideal.absNorm_pow_inertiaDeg (w.under (𝓞 F)).asIdeal w.asIdeal).symm`. Establish `h1 : 1 < normV w` using `NumberField.HeightOneSpectrum.one_lt_absNorm w`.
+
+Establish `h3 : w.asIdeal.inertiaDeg (𝓞 F) ≤ 2` using `by haveI : NoZeroSMulDivisors (𝓞 F) (𝓞 E) := ⟨fun {c x} h => by`. Rewrite using `[Algebra.smul_def, mul_eq_zero, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective _ _)] at h⟩` and apply the resulting hypothesis. Rewrite using `[← h2, ← Ideal.inertiaDeg'_eq_inertiaDeg (w.under (𝓞 F)).asIdeal]`. Conclude with `Ideal.inertiaDeg_le_finrank (𝓞 E) F E w.asIdeal (w.under (𝓞 F)).ne_bot`. Generalize the expression as in `w.asIdeal.inertiaDeg (𝓞 F) = f at e h3`.
+
+Use `interval_cases f`. Simplify using `[e] at h1`. Conclude with `absurd (by simpa using e) h`. Conclude with `e`.
+-/
 private theorem normV_sq (h2 : Module.finrank F E = 2) (w : HeightOneSpectrum (𝓞 E)) (h : normV w ≠ normV (w.under (𝓞 F))) :
     normV w = normV (w.under (𝓞 F)) ^ 2 := by
   have : w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal := ⟨rfl⟩
@@ -149,6 +203,9 @@ private theorem normV_sq (h2 : Module.finrank F E = 2) (w : HeightOneSpectrum (�
   · exact absurd (by simpa using e) h
   · exact e
 
+/- English proof (translation)
+Establish `: Finite (𝓞 E ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Establish `hi : Function.Injective (Ideal.quotientMap (I` using `(w.under (𝓞 F)).asIdeal) w.asIdeal (algebraMap (𝓞 F) (𝓞 E)) le_rfl) := Ideal.quotientMap_injective`. Take `⟨c, hc⟩` from `(hi.bijective_of_nat_card_le h.le).2 (Ideal.Quotient.mk _ x)`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Conclude with `⟨c, Ideal.Quotient.eq.1 hc.symm⟩`.
+-/
 private theorem res_surj (w : HeightOneSpectrum (𝓞 E)) (h : normV w = normV (w.under (𝓞 F))) (x : 𝓞 E) :
     ∃ c : 𝓞 F, x - algebraMap (𝓞 F) (𝓞 E) c ∈ w.asIdeal := by
   have : Finite (𝓞 E ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot
@@ -158,6 +215,13 @@ private theorem res_surj (w : HeightOneSpectrum (𝓞 E)) (h : normV w = normV (
   obtain ⟨c, rfl⟩ := Ideal.Quotient.mk_surjective c
   exact ⟨c, Ideal.Quotient.eq.1 hc.symm⟩
 
+/- English proof (translation)
+Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h1 : ∀ x : 𝓞 E, t (algebraMap E Ω x) = algebraMap E Ω x` using `fun x => by`. Establish `e : algebraMap E Ω ((AlgEquiv.restrictNormalHom E t • x : 𝓞 E) : E) = t (algebraMap E Ω (x : E))` using `AlgEquiv.restrictNormal_commutes t E (x : E)`.
+
+Assume the negation of the conclusion as `h0`. Use `h x _ (fun h3 => h0 ?_) e.symm` and prove the remaining obligations. Rewrite using `[← e, sub_eq_zero.1 h3]`. Use `ht fun x => ?_` and prove the remaining obligations. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`.
+
+Rewrite using `[map_div₀, map_div₀]`. Conclude with `congrArg₂ _ (h1 a) (h1 b)`.
+-/
 private theorem exists_moved (h2 : Module.finrank F E = 2) {t : G F Ω} (ht : t ∉ galOf F E Ω) :
     ∃ x y : 𝓞 E, y - x ≠ 0 ∧ t (algebraMap E Ω x) = algebraMap E Ω y := by
   haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩
@@ -174,6 +238,11 @@ private theorem exists_moved (h2 : Module.finrank F E = 2) {t : G F Ω} (ht : t 
   rw [map_div₀, map_div₀]
   exact congrArg₂ _ (h1 a) (h1 b)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `res_surj w h x`. Establish `e : ∀ z : 𝓞 E, algebraMap E Ω ((z - algebraMap (𝓞 F) (𝓞 E) c : 𝓞 E) : E) = algebraMap E Ω z - algebraMap F Ω c` using `fun z => by`. Rewrite using `[IsScalarTower.algebraMap_apply F E Ω, ← map_sub]`. Both sides reduce to the same expression. Establish `h1` using `(hA' _).2 hc`.
+
+Rewrite `h1` using `[val_lt, e, map_sub, hxy, AlgEquiv.commutes, ← e, hA]`. Simplify using `using w.asIdeal.sub_mem h1 hc`.
+-/
 private theorem place_ne {t : G F Ω} {x y : 𝓞 E} (hxy : t (algebraMap E Ω x) = algebraMap E Ω y) {A : ValuationSubring Ω}
     {w : HeightOneSpectrum (𝓞 E)} (h : normV w = normV (w.under (𝓞 F))) (hA : IsPlaceOver A w) (hA' : IsPlaceOver (t⁻¹ • A) w) :
     y - x ∈ w.asIdeal := by
@@ -187,10 +256,18 @@ private theorem place_ne {t : G F Ω} {x y : 𝓞 E} (hxy : t (algebraMap E Ω x
 
 end Places
 
+/- English proof (translation)
+Simplify using `[algSat, Multiset.bind_singleton, Multiset.map_map]`.
+-/
 private theorem algSat_eq (n q : ℕ) (B : Multiset ℂˣ) :
     algSat n q B = B.map fun α : ℂˣ => (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ) := by
   simp [algSat, Multiset.bind_singleton, Multiset.map_map]
 
+/- English proof (translation)
+Establish `e : (q : ℝ) ^ ((((4 : ℕ) : ℝ) - 1) / 2) = (q : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2) * q`. Rewrite using `[← Real.rpow_add_one' (Nat.cast_nonneg q) (by norm_num)]`. Evaluate the numerical expressions. Simplify using `only [algSat_eq, Multiset.map_map, e]`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem algSat_four (q : ℕ) (B : Multiset ℂˣ) : algSat 4 q B = (algSat 2 q B).map (· * (q : ℂ)) := by
   have e : (q : ℝ) ^ ((((4 : ℕ) : ℝ) - 1) / 2) = (q : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2) * q := by
     rw [← Real.rpow_add_one' (Nat.cast_nonneg q) (by norm_num)]
@@ -201,6 +278,11 @@ private theorem algSat_four (q : ℕ) (B : Multiset ℂˣ) : algSat 4 q B = (alg
   push_cast
   ring
 
+/- English proof (translation)
+Establish `e : ((q ^ 2 : ℕ) : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2) = ((q : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2)) ^ 2`. Rewrite using `[Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg q), ← Real.rpow_mul (Nat.cast_nonneg q), mul_comm]`. Simplify using `only [algSat_eq, e, Multiset.map_add, Multiset.map_map, Multiset.prod_add, ← Multiset.prod_map_mul, multiset_prod_comp]`. Use `congrArg _ (Multiset.map_congr rfl fun b _ => ?_)` and prove the remaining obligations. Generalize the expression as in `(q : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2) = c`.
+
+Simplify using `only [Function.comp_apply, sub_comp, mul_comp, pow_comp, X_comp, C_comp, Complex.ofReal_pow, Units.val_pow_eq_pow_val, Units.val_neg, map_mul, map_pow, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem prod_inert (q : ℕ) (B : Multiset ℂˣ) :
     ((algSat 2 (q ^ 2) (B.map (· ^ 2))).map fun b => X - C b).prod.comp (X ^ 2) =
       ((algSat 2 q (B + B.map fun b => -b)).map fun b => X - C b).prod := by
@@ -214,6 +296,27 @@ private theorem prod_inert (q : ℕ) (B : Multiset ℂˣ) :
     map_pow, map_neg]
   ring
 
+/- English proof (translation)
+Establish `h1 : ∀ s, δ s = 1 ↔ s ∈ (galEmb F E Ω).range` using `hδ.1`. Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `(h1 s).1 (ha A hA s hs)`. Use `ker_ind h1 hδ.2 ht hR H s fun u s' hs' => ?_` and prove the remaining obligations. Take `⟨w, hw, hwv⟩` from `place_between (E := E) (place_conj hA u)`.
+
+Take `⟨B, -, hB⟩` from `hb w hwv`. Conclude with `(hB _ hw).1 s' (ine_iff.2 (frob_emb (F := F) (hs' ▸ frob_conj (ine_iff.1 hs) u)))`. Take `⟨w, hw, rfl⟩` from `place_between (E := E) hA`. Establish `hsg : ∀ w' : HeightOneSpectrum (𝓞 E), w'.under (𝓞 F) = w.under (𝓞 F) → (δ σ⁻¹ = 1 ↔ normV w' = normV (w.under (𝓞 F)))` using `fun w' hw' => by`. Establish `h3` using `UpperTheory.frobenius_sign_compatibility F E Ω l ι δ hδ w' (hw' ▸ ha)`.
+
+Rewrite `h3` using `[hw']`. Establish `h4` using `(h3 A hA).2 σ hσ`. Use `⟨fun h5 => ?_, fun h5 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h6`. Rewrite `h4` using `[if_neg h6, h5]`.
+
+Evaluate the numerical expressions using `at h4`. Rewrite `h4` using `[if_pos h5]`. Conclude with `Units.ext (ι.injective (by rw [h4]; simp))`. Take `⟨B, hB, hE⟩` from `hb w rfl`. Distinguish the cases in `hs : δ σ⁻¹ = 1`.
+
+Establish `hs' : δ σ = 1` using `by rwa [map_inv, inv_eq_one] at hs`. Take `⟨g, rfl⟩` from `(h1 σ).1 hs'`. Take `⟨g', hg'⟩` from `conj_mem h1 g t`. Take `⟨w', hw', hwv⟩` from `place_between (E := E) (place_conj hA t)`. Establish `hq` using `(hsg w rfl).1 hs`.
+
+Establish `hq'` using `(hsg w' hwv).1 hs`. Establish `hne : w' ≠ w`. Introduce and unpack `rfl`. Conclude with `hd w' rfl (place_ne hxy hq hw hw')`. Take `⟨B', hB', hE'⟩` from `hb w' hwv`.
+
+Take `⟨B₁, B₂, k1, k2, k3⟩` from `(hc w rfl).1 w' hne hwv`. Take `rfl` from `hu _ _ _ k1 hB`. Take `rfl` from `hu _ _ _ k2 hB'`. Use `⟨_, k3, ?_⟩` and prove the remaining obligations. Establish `e1` using `(hE A hw).2 g (hq ▸ frob_emb (F := F) hσ)`.
+
+Establish `e2` using `(hE' _ hw').2 g' (hq' ▸ frob_emb (F := F) (hg' ▸ frob_conj hσ t))`. Rewrite using `[← map_inv (galEmb F E Ω), (H t ht).1 g⁻¹ g'⁻¹ (by rw [map_inv, map_inv, hg']; group), Polynomial.map_mul, e1, e2, hq, hq']`. Simplify using `only [algSat_eq, Multiset.map_add, Multiset.prod_add]`. Establish `hq` using `normV_sq h2 w fun h => hs ((hsg w rfl).2 h)`. Take `⟨_, B', k1, rfl, k3⟩` from `(hc w rfl).2 hq`.
+
+Take `rfl` from `hu _ _ _ k1 hB`. Use `⟨_, k3, ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `sq_mem h1 hδ.2 σ`. Establish `hf` using `GlobalTheory.FrobRestrict.isFrob_pow hσ 2`. Rewrite `hf` using `[pow_two σ, ← hg, ← hq]`.
+
+Establish `e1` using `(hE A hw).2 g (frob_emb (F := F) hf)`. Rewrite using `[(H σ⁻¹ fun h => hs ((h1 _).2 h)).2 g⁻¹ (by rw [map_inv, hg, mul_inv_rev]), Polynomial.map_comp, e1, hq, Polynomial.map_pow, map_X, prod_inert]`.
+-/
 private theorem loc {F E Ω : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Field Ω] [Algebra F E] [Algebra F Ω]
     [Algebra E Ω] [IsScalarTower F E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
     (h2 : Module.finrank F E = 2) {δ : G F Ω →* (Qbar l)ˣ} (hδ : IsSign E δ) {t : G F Ω} (ht : t ∉ (galEmb F E Ω).range)
@@ -283,6 +386,11 @@ private theorem loc {F E Ω : Type} [Field F] [NumberField F] [Field E] [NumberF
     rw [(H σ⁻¹ fun h => hs ((h1 _).2 h)).2 g⁻¹ (by rw [map_inv, hg, mul_inv_rev]), Polynomial.map_comp, e1, hq,
       Polynomial.map_pow, map_X, prod_inert]
 
+/- English proof (translation)
+Introduce `A hA`. Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `h1 : cycZ F Ω l s = 1` using `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => by`. Rewrite using `[cycZ_toZModPow_eq hw hA (q := 1) (fun x hx => by simpa using hs.2 x hx) n]`. Use the proof step `simp)`.
+
+Rewrite using `[MonoidHom.inv_apply, cycBar, MonoidHom.comp_apply, h1, map_one, inv_one]`. Establish `h2 : ((cycBar F Ω l σ : (Qbar l)ˣ) : Qbar l) = (normV w : ℕ)`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] (Qbar l) (PadicInt.Coe.ringHom ((cycZ F Ω l σ : ℤ_[l]ˣ) : ℤ_[l])) = _`. Rewrite using `[cycZ_of_isFrob hw hA hσ, map_natCast, map_natCast]`. Rewrite using `[MonoidHom.inv_apply, map_inv, inv_inv, h2, map_natCast]`.
+-/
 private theorem charEig_cyc_inv {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
     [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (w : HeightOneSpectrum (𝓞 F)) (hw : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal) :
     CharEig ι (cycBar F Ω l)⁻¹ w (normV w : ℂ) := by
@@ -297,11 +405,19 @@ private theorem charEig_cyc_inv {F Ω : Type} [Field F] [NumberField F] [Field �
       rw [cycZ_of_isFrob hw hA hσ, map_natCast, map_natCast]
     rw [MonoidHom.inv_apply, map_inv, inv_inv, h2, map_natCast]
 
+/- English proof (translation)
+Establish `e : (((2 : ℕ) : ℂ) - 1) / 2 = 1 / 2` using `by norm_num`. Rewrite using `[infOf, e]`. Both sides reduce to the same expression.
+-/
 private theorem infOf_two (m : Fin 2 → ℤ) : infOf m = {1 / 2 + (m 0 : ℂ), 1 / 2 + (m 1 : ℂ)} := by
   have e : (((2 : ℕ) : ℂ) - 1) / 2 = 1 / 2 := by norm_num
   rw [infOf, e]
   rfl
 
+/- English proof (translation)
+Establish `e : infOf m + infOf m' = Finset.univ.val.map fun i => 1 / 2 + ((![m 0, m 1, m' 0, m' 1] i : ℤ) : ℂ)`. Rewrite using `[infOf_two, infOf_two]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `⟨Finset.univ.nodup.map fun i j hij => h (Int.cast_injective (add_left_cancel hij)), fun z hz => ?_⟩` and prove the remaining obligations.
+
+Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hz`. Conclude with `⟨![m 0, m 1, m' 0, m' 1] i - 1, by push_cast; ring⟩`.
+-/
 private theorem infOf_add {m m' : Fin 2 → ℤ} (h : Function.Injective ![m 0, m 1, m' 0, m' 1]) :
     (infOf m + infOf m').Nodup ∧ ∀ z ∈ infOf m + infOf m', ∃ n : ℤ, z = (n : ℂ) + (((4 : ℕ) : ℂ) - 1) / 2 := by
   have e : infOf m + infOf m' = Finset.univ.val.map fun i => 1 / 2 + ((![m 0, m 1, m' 0, m' 1] i : ℤ) : ℂ) := by
@@ -312,6 +428,21 @@ private theorem infOf_add {m m' : Fin 2 → ℤ} (h : Function.Injective ![m 0, 
   obtain ⟨i, -, rfl⟩ := Multiset.mem_map.1 hz
   exact ⟨![m 0, m 1, m' 0, m' 1] i - 1, by push_cast; ring⟩
 
+/- English proof (translation)
+Introduce `hP hQ E Ω _ _ _ _ _ _ _ h2 l _ ι π r m m' hatt ⟨v, v', hvv, hv, hv'⟩ hinj R hR H`. Use `haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) E⟩`. Take `⟨hnd, hint⟩` from `infOf_add hinj`. Break down `hQ ℚ E h2 2 one_le_two π with ⟨h, -⟩ | ⟨P, hinf, hfin⟩` into its components or cases. Establish `e` using `(h v v' _ (Subsingleton.elim _ _) hv).unique hv'`.
+
+Rewrite `hnd` using `[← e, Multiset.nodup_add]`. Conclude with `(Multiset.disjoint_left.1 hnd.2.2 (show 1 / 2 + (m 0 : ℂ) ∈ _ by simp [infOf_two]) (by simp [infOf_two])).elim`. Take `⟨δ, -, hδ1, hδ, hδu⟩` from `UpperTheory.exists_quadratic_sign_character ℚ E Ω l h2`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, t ∉ (galEmb ℚ E Ω).range := by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hδ1 (MonoidHom.ext fun s => (hδ.1 s).2 (not_not.1 fun hs => h ⟨s, hs⟩))`. Take `⟨x, y, hne, hxy⟩` from `exists_moved h2 (range_galEmb ℚ E Ω ▸ ht)`. Establish `H' : IndCh (galEmb ℚ E Ω) r R` using `fun u hu => H u (range_galEmb ℚ E Ω ▸ hu)`. Establish `key : IsAutR ι (tw R (cycBar ℚ Ω l)⁻¹)`. Use `⟨P, fun u => ⟨_, ?_, hnd, hint⟩, (UpperTheory.galoisRep_irreducibility_criterion.1 _ (G ℚ Ω) _ 4 R).2.2 _ hR, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Subsingleton.elim u (v.comap (algebraMap ℚ E))]`. Conclude with `hinf v v' _ _ hvv (Subsingleton.elim _ _) hv hv'`. Use `filter_upwards [hδu, ev_over (F := ℚ) hatt.2, ev_over (F := ℚ) hfin, ev_over (F := ℚ) (ev_notMem hne), ev_notMem (E := ℚ) (a := (l : 𝓞 ℚ)) (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)] with u ha hb hc hd hl`. Establish `h3` using `loc ι h2 hδ ht hxy hR H' (sat := π.HasSat) (fun _ _ _ => TR.CuspSub.HasSat.unique) (satP := P.HasSat) ha hb hc hd`. Take `⟨A₀, hA₀⟩` from `exists_isPlaceOver Ω u`.
+
+Take `⟨σ₀, hσ₀⟩` from `ReciprocityTheory.Gal.exists_isFrob hA₀`. Take `⟨B, hB, -⟩` from `(h3 A₀ hA₀).2 σ₀ hσ₀`. Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Rewrite using `[algSat_four]`. Use `UpperTheory.frobenius_eigenvalues_twist ℚ Ω l ι 4 _ _ u _ _ (fun A hA => ⟨(h3 A hA).1, fun σ hσ => ?_⟩) (charEig_cyc_inv ι u hl)` and prove the remaining obligations.
+
+Take `⟨B', hB', e⟩` from `(h3 A hA).2 σ hσ`. Rewrite using `[hB.unique hB', e]`. Establish `h4` using `UpperTheory.V.Sd.twR hP ℚ Ω l ι 4 _ _ ((UpperTheory.V.Sd.algCyc hP ℚ Ω l ι).1 1 1 (by simp)) key`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Use `MonoidHom.ext fun s => Units.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[tw_val, tw_val, smul_smul, ← Units.val_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Sd.indAut :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Published.QuadInduction → UpperTheory.V.Sd.IndAut := by
   intro hP hQ E Ω _ _ _ _ _ _ _ h2 l _ ι π r m m' hatt ⟨v, v', hvv, hv, hv'⟩ hinj R hR H

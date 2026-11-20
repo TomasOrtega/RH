@@ -15,6 +15,21 @@ open ReciprocityTheory.GeometryOfNumbersTheory (stdLat)
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨⟨Y, hY, hka⟩, h2, h3, h4⟩` from `principal_torus_of_selfDual T (stdLat E n) stdLat_fg (fun _ hx => mem_stdLat_iff_herm.1 hx) (fun _ hx => mem_stdLat_iff_herm.2 hx) w₀ hw`. Take `⟨-, h2', -, -⟩` from `principal_torus_of_selfDual T Λ' hfg hint hdual w₀ hw`. Take `⟨hFm, hFl⟩` from `(h3 heps Y hY hka).2 F hF`. Use `set U : ℕ → EuclideanSpace ℂ (Fin n × Idx T.dim) → (EuclideanSpace ℂ (Fin n × Idx T.dim) → ℂ) → EuclideanSpace ℂ (Fin n × Idx T.dim) → ℂ := fun q a G v => cexp (q * Real.pi * Hf v a - q * Real.pi * Hf a a / 2) * G (v - a) with hUdef`. Establish `hU : ∀ (q : ℕ) a G v, U q a G v = cexp (q * Real.pi * Hf v a - q * Real.pi * Hf a a / 2) * G (v - a)` using `fun _ _ _ _ => rfl`.
+
+Set `e : (Fin n → Vsp T.dim) ↪ EuclideanSpace ℂ (Fin n × Idx T.dim)` to `⟨flat, (flat (n := n) (ι := Idx T.dim)).injective⟩`. Establish `he : ∀ y, e y = flat y` using `fun _ => rfl`. Establish `key` using `isogeny_sum_mem_and_norm U hU Y Y' (h2 Y hY hka).2 (h2' Y' hY' hka').2 (fun x _ _ => by`. Take `⟨γ, rfl⟩` from `(flat (n := n) (ι := Idx T.dim)).surjective x`. Rewrite using `[hka, hka'])`.
+
+Use the proof step `(R.map e)`. Use the proof step `(fun y hy => by`. Take `⟨γ, hγ, rfl⟩` from `Finset.mem_map.1 hy`. Conclude with `(hY' γ).2 (hR γ hγ))`. Use the proof step `(fun y hy => by`.
+
+Take `⟨γ, rfl⟩` from `(flat (n := n) (ι := Idx T.dim)).surjective y`. Take `⟨r, ⟨hr, hr'⟩, hu⟩` from `hR' γ ((hY' γ).1 hy)`. Use `⟨flat r, ⟨Finset.mem_map.2 ⟨r, hr, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_sub, hY, mem_tensorLat_stdLat]`. Conclude with `hr'`.
+
+Introduce and unpack `z ⟨hz, hz'⟩`. Take `⟨r', hr2, rfl⟩` from `Finset.mem_map.1 hz`. Rewrite `hz'` using `[he, ← map_sub, hY, mem_tensorLat_stdLat]`. Rewrite using `[he, hu r' ⟨hr2, hz'⟩])`. Use the proof step `(F ∘ flat.symm) hFm`.
+
+Establish `e1 : (∑ y ∈ R.map e, Y'.ka y • U 1 y (F ∘ flat.symm)) = (∑ y ∈ R, tensorEps w₀ y • T.U 1 y F) ∘ flat.symm`. Rewrite using `[Finset.sum_map]`. Use function extensionality and compare the values at `v`. Simplify using `only [he, hka', h4 U hU, Finset.sum_apply, Function.comp_apply, Pi.smul_apply]`. Rewrite `key` using `[e1, Finset.card_map, hFl]`.
+
+Conclude with `key`.
+-/
 theorem isogeny_sum_tensorLat (T : PT E) (w₀ : 𝓞 E) (hw : (w₀ : E) + cc (w₀ : E) = 1)
     (heps : ∀ x ∈ T.L, (T.eps x : ℝ) = Real.cos (Real.pi * (Hf x (act w₀ x)).im))
     (Λ' : Submodule (𝓞 E) (Fin n → E)) (hfg : Λ'.FG)
@@ -68,6 +83,15 @@ theorem isogeny_sum_tensorLat (T : PT E) (w₀ : 𝓞 E) (hw : (w₀ : E) + cc (
   rw [e1, Finset.card_map, hFl] at key
   exact key
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨1, one_pos, fun γ _ h => absurd (Subsingleton.elim γ 0) h, by simp⟩`. Establish `hf : (0 : ℝ) < fdeg E`. Establish `h1` using `ShortVectors.finrank_eq (E := E)`. Establish `h2 : 0 < Module.finrank ℚ E` using `Module.finrank_pos`.
+
+Conclude with `(by omega : 0 < fdeg E)` after adjusting the coercions. Establish `hr : 0 < rdE E` using `Real.rpow_pos_of_pos (abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero E)) _`. Establish `hρ : 0 < 2 * (fdeg E : ℝ) ^ ((3 : ℝ) / 2) * n ^ 2 * rdE E` using `by positivity`. Establish `hpi : 0 < Real.sqrt Real.pi` using `Real.sqrt_pos.mpr Real.pi_pos`. Use `set ρ := 2 * (fdeg E : ℝ) ^ ((3 : ℝ) / 2) * n ^ 2 * rdE E with hρdef`.
+
+Use `⟨lam / ρ, by positivity, fun γ hγ h0 => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_iff₀' hρ]`. Conclude with `le_mul_norm_flat_of_selfDual T Λ' hfg hint hdual hmin hγ h0`. Rewrite using `[Fintype.card_prod, Fintype.card_fin, mul_comm n, Nat.cast_mul, ← mul_assoc]`. Use `congr 2`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_min_period (T : PT E) (Λ' : Submodule (𝓞 E) (Fin n → E)) (hfg : Λ'.FG)
     (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y))
     (hdual : ∀ x, (∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y)) → x ∈ Λ')
@@ -98,6 +122,13 @@ theorem exists_min_period (T : PT E) (Λ' : Submodule (𝓞 E) (Fin n → E)) (h
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨Y', hY', hka'⟩` from `exists_tensorTorus (X := T) hfg hint hdual w₀`. Take `⟨hm, hl⟩` from `isogeny_sum_tensorLat T w₀ hw heps Λ' hfg hint hdual R hR hR' F hF Y' hY' hka'`. Take `⟨lam', hlam', hmin', hC⟩` from `exists_min_period T Λ' hfg hint hdual hlam hmin`. Use `set U : ℕ → EuclideanSpace ℂ (Fin n × Idx T.dim) → (EuclideanSpace ℂ (Fin n × Idx T.dim) → ℂ) → EuclideanSpace ℂ (Fin n × Idx T.dim) → ℂ := fun q a G v => cexp (q * Real.pi * Hf v a - q * Real.pi * Hf a a / 2) * G (v - a) with hUdef`. Establish `hU : ∀ (q : ℕ) a G v, U q a G v = cexp (q * Real.pi * Hf v a - q * Real.pi * Hf a a / 2) * G (v - a)` using `fun _ _ _ _ => rfl`.
+
+Establish `key` using `theta_value_bound sup_le_l2_principal_torus U hU Y' _ hm lam' hlam' (fun x hx h0 => by`. Take `⟨γ, rfl⟩` from `(flat (n := n) (ι := Idx T.dim)).surjective x`. Conclude with `hmin' γ ((hY' γ).1 hx) fun h => h0 (by rw [h, map_zero]))`. Use `J c hc (fun j => flat (y j)) P a hP`. Rewrite `key` using `[hl, hC]`.
+
+Use `le_of_eq_of_le ?_ (key.trans_eq (by ring))` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[translate_comp_flat_symm T U hU, ← polyDeriv_comp_flat_symm, map_zero]`. Use `congr!`.
+-/
 theorem norm_sum_jet_isogeny_sum_le (T : PT E) (w₀ : 𝓞 E) (hw : (w₀ : E) + cc (w₀ : E) = 1)
     (heps : ∀ x ∈ T.L, (T.eps x : ℝ) = Real.cos (Real.pi * (Hf x (act w₀ x)).im))
     (Λ' : Submodule (𝓞 E) (Fin n → E)) (hfg : Λ'.FG)
@@ -143,6 +174,15 @@ open NumberField Complex ReciprocityTheory.ChartRestriction.G.I2 ReciprocityTheo
 
 open Classical in
 
+/- English proof (translation)
+Establish `hl : 0 < T.l2 1 s` using `ThetaBound.l2_pos_of_mem_sec_of_ne_zero T le_rfl hs hs0`. Establish `hRpos : 0 < R.card`. Take `⟨r, ⟨hr, -⟩, -⟩` from `hR' 0 (Submodule.zero_mem _)`. Conclude with `Finset.card_pos.2 ⟨r, hr⟩`. Establish `hβ0 : β ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hβ` using `[norm_zero, zero_pow two_ne_zero]`. Conclude with `hRpos.ne (by exact_mod_cast hβ)`. Use `⟨hβ0, hl, ?_⟩` and prove the remaining obligations. Establish `key` using `norm_sum_jet_isogeny_sum_le T w₀ hw heps Λ' hfg hint hdual R hR hR' (ReciprocityTheory.ChartRestriction.G.I2.tens T fun _ => s) (tens_mem T fun _ => hs) lam hlam hmin J c hc y P a hP`.
+
+Establish `hsq : Real.sqrt (R.card * T.l2 1 (ReciprocityTheory.ChartRestriction.G.I2.tens T fun _ : Fin n => s)) = ‖β‖ * Real.sqrt (T.l2 1 s) ^ n`. Rewrite using `[l2_tens_eq_prod, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← hβ, Real.sqrt_eq_iff_mul_self_eq (by positivity) (by positivity), mul_mul_mul_comm, ← mul_pow, Real.mul_self_sqrt hl.le, sq]`. Establish `hb : 0 < ‖β‖` using `norm_pos_iff.2 hβ0`. Establish `hs' : 0 < Real.sqrt (T.l2 1 s) ^ n` using `pow_pos (Real.sqrt_pos.2 hl) n`. Rewrite `key` using `[hsq]`.
+
+Rewrite using `[norm_mul, norm_inv, div_le_iff₀ hs', inv_mul_le_iff₀ hb]`. Conclude with `key.trans_eq (by ring)`.
+-/
 theorem normalised_theta_value_bound {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     (T : PT E) (w₀ : 𝓞 E) (hw : (w₀ : E) + cc (w₀ : E) = 1)
     (heps : ∀ x ∈ T.L, (T.eps x : ℝ) = Real.cos (Real.pi * (Hf x (act w₀ x)).im))
@@ -186,6 +226,9 @@ theorem normalised_theta_value_bound {E : Type} [Field E] [NumberField E] [IsCMF
   rw [norm_mul, norm_inv, div_le_iff₀ hs', inv_mul_le_iff₀ hb]
   exact key.trans_eq (by ring)
 
+/- English proof (translation)
+Use `⟨fun y hy => by rw [Finset.mem_singleton.1 hy]; exact Submodule.zero_mem _, fun y hy => ⟨0, ⟨Finset.mem_singleton_self _, fun k => ?_⟩, fun r hr => Finset.mem_singleton.1 hr.1⟩⟩` and prove the remaining obligations. Simplify using `using mem_tensorLat_stdLat.1 hy k`.
+-/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (T : PT E) :
     (∀ y ∈ ({0} : Finset (Fin n → Vsp T.dim)), y ∈ tensorLat T (ReciprocityTheory.GeometryOfNumbersTheory.stdLat E n)) ∧
       ∀ y ∈ tensorLat T (ReciprocityTheory.GeometryOfNumbersTheory.stdLat E n),

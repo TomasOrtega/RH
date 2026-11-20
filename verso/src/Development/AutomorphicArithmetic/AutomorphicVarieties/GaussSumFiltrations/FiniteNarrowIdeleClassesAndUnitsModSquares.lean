@@ -8,6 +8,15 @@ noncomputable section
 
 namespace GlobalTheory.HilbertThetaSeries.NarrowCls
 
+/- English proof (translation)
+Set `H : Subgroup G` to `(powMonoidHom 2 : G →* G).range`. Establish `hfin : Finite (G ⧸ H)`. Apply `CommGroup.finite_of_fg_torsion` to reduce the goal to its premises. Introduce `q`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`.
+
+Use `(isOfFinOrder_iff_pow_eq_one).2 ⟨2, by norm_num, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`. Conclude with `⟨g, rfl⟩`. Use `haveI := Fintype.ofFinite (G ⧸ H)`. Use `⟨Finset.univ.image (fun q : G ⧸ H => q.out), fun g => ?_⟩` and prove the remaining obligations.
+
+Use `⟨(g : G ⧸ H).out, Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩` and prove the remaining obligations. Establish `h1 : ((g : G ⧸ H).out : G ⧸ H) = (g : G ⧸ H)` using `Quotient.out_eq' _`. Rewrite `h1` using `[QuotientGroup.eq]`. Take `⟨h, hh⟩` from `h1`. Use `⟨h, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [powMonoidHom_apply] at hh`. Rewrite using `[hh, mul_inv_cancel_left]`.
+-/
 theorem exists_finset_mod_sq {G : Type} [CommGroup G] [Group.FG G] :
     ∃ E : Finset G, ∀ g : G, ∃ e ∈ E, ∃ h : G, g = e * h ^ 2 := by
   classical
@@ -39,6 +48,13 @@ def finIdele : (Af F)ˣ →* Ideles F :=
 
 def finClass : (Af F)ˣ →* ClassGroup (𝓞 F) := (ReciprocityTheory.Neutral.Bridge.HCFR.classOf F).comp finIdele
 
+/- English proof (translation)
+Take `⟨k, u', hu', he⟩` from `(ReciprocityTheory.Neutral.Bridge.HCFR.classOf_eq_one_iff F (finIdele z)).1 hz`. Establish `hsnd` using `congrArg (ReciprocityTheory.Neutral.Bridge.HCFR.sndU F) he`. Rewrite `hsnd` using `[map_mul]`. Establish `hinv : ReciprocityTheory.Neutral.Bridge.HCFR.sndU F u' * ReciprocityTheory.Neutral.Bridge.HCFR.sndU F u'⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`.
+
+Establish `hinv' : ReciprocityTheory.Neutral.Bridge.HCFR.sndU F u'⁻¹ * ReciprocityTheory.Neutral.Bridge.HCFR.sndU F u' = 1`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Use `⟨k, ⟨_, _, hinv, hinv'⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Conclude with `(ReciprocityTheory.Neutral.Bridge.HCFR.rayUnits_top_iff F u').1 hu' w`.
+
+Use `ext1`. Conclude with `hsnd`.
+-/
 theorem eq_of_finClass_eq_one (z : (Af F)ˣ) (hz : finClass z = 1) :
     ∃ (k : Fˣ) (u : (Af F)ˣ), (∀ w, Valued.v (pLoc F w (u : Af F)) = 1) ∧
       z = Units.map (algebraMap F (Af F)).toMonoidHom k * u := by
@@ -57,6 +73,9 @@ theorem eq_of_finClass_eq_one (z : (Af F)ˣ) (hz : finClass z = 1) :
 
 variable [IsTotallyReal F]
 
+/- English proof (translation)
+Rewrite using `[reAt, ← InfinitePlace.embedding_of_isReal_apply]`. Conclude with `Complex.ofReal_re _`.
+-/
 theorem reAt_eq (v : InfinitePlace F) (x : F) :
     reAt v x = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) x := by
   rw [reAt, ← InfinitePlace.embedding_of_isReal_apply]
@@ -66,6 +85,13 @@ open Classical in
 
 def sgn (k : Fˣ) : InfinitePlace F → Bool := fun v => decide (0 < reAt v (k : F))
 
+/- English proof (translation)
+Introduce `v`. Establish `hv` using `congrFun h v`. Simplify using `only [sgn, decide_eq_decide] at hv`. Rewrite `hv`, the goal using `[reAt_eq]`. Use `set e := InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v)`.
+
+Establish `hk : e (k : F) ≠ 0` using `(map_ne_zero e).2 k.ne_zero`. Establish `hs : e (σ : F) ≠ 0` using `(map_ne_zero e).2 σ.ne_zero`. Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Break down `lt_or_gt_of_ne hs with h1 | h1` into its components or cases. Establish `h2 : e (k : F) < 0`.
+
+Break down `lt_or_gt_of_ne hk with h3 | h3` into its components or cases. Conclude with `h3`. Conclude with `absurd (hv.1 h3) (not_lt.2 h1.le)`. Conclude with `mul_pos_of_neg_of_neg h2 (inv_lt_zero.2 h1)`. Conclude with `mul_pos (hv.2 h1) (inv_pos.2 h1)`.
+-/
 theorem tp_of_sgn_eq (k σ : Fˣ) (h : sgn k = sgn σ) : TP ((k * σ⁻¹ : Fˣ) : F) := by
   intro v
   have hv := congrFun h v
@@ -83,6 +109,19 @@ theorem tp_of_sgn_eq (k σ : Fˣ) (h : sgn k = sgn σ) : TP ((k * σ⁻¹ : Fˣ)
     exact mul_pos_of_neg_of_neg h2 (inv_lt_zero.2 h1)
   · exact mul_pos (hv.2 h1) (inv_pos.2 h1)
 
+/- English proof (translation)
+Introduce `F _ _ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Set `Y0 : Finset (Af F)ˣ` to `Finset.univ.image (fun c : ClassGroup (𝓞 F) => if h : ∃ y, finClass y = c then h.choose else 1)`. Set `S : Finset Fˣ` to `Finset.univ.image (fun b : InfinitePlace F → Bool => if h : ∃ σ : Fˣ, sgn σ = b then h.choose else 1)`. Set `ι` to `Units.map (algebraMap F (Af F)).toMonoidHom`.
+
+Use `⟨(S ×ˢ Y0).image (fun p => ι p.1 * p.2), fun z => ?_⟩` and prove the remaining obligations. Establish `hc : ∃ y, finClass y = finClass z` using `⟨z, rfl⟩`. Use `set y0 := hc.choose with hy0`. Establish `hy0c : finClass y0 = finClass z` using `hc.choose_spec`. Establish `hy0m : y0 ∈ Y0`.
+
+Use `Finset.mem_image.2 ⟨finClass z, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[dif_pos hc]`. Take `⟨k, u, hu, hk⟩` from `eq_of_finClass_eq_one (z * y0⁻¹) (by rw [map_mul, map_inv, hy0c, mul_inv_cancel])`. Establish `hs : ∃ σ : Fˣ, sgn σ = sgn k` using `⟨k, rfl⟩`. Use `set σ := hs.choose with hσ`.
+
+Establish `hσs : sgn σ = sgn k` using `hs.choose_spec`. Establish `hσm : σ ∈ S`. Use `Finset.mem_image.2 ⟨sgn k, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[dif_pos hs]`. Use `⟨ι σ * y0, Finset.mem_image.2 ⟨(σ, y0), Finset.mem_product.2 ⟨hσm, hy0m⟩, rfl⟩, k * σ⁻¹, u, tp_of_sgn_eq k σ hσs.symm, hu, ?_⟩` and prove the remaining obligations.
+
+Establish `hz : z = ι k * u * y0` using `by rw [← hk, inv_mul_cancel_right]`. Use `show z = ι (k * σ⁻¹) * (ι σ * y0) * u`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel_right, mul_right_comm]`. Conclude with `hz`. Use `haveI : Group.FG (𝓞 F)ˣ := Group.fg_iff_monoid_fg.2 inferInstance`.
+
+Conclude with `exists_finset_mod_sq`.
+-/
 theorem narrowClass_unitsSq_finite : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F],
     (∃ Y : Finset (Af F)ˣ, ∀ z : (Af F)ˣ, ∃ y ∈ Y, ∃ (ξ : Fˣ) (u : (Af F)ˣ), TP (ξ : F) ∧
       (∀ w, Valued.v (pLoc F w (u : Af F)) = 1) ∧ z = Units.map (algebraMap F (Af F)).toMonoidHom ξ * y * u) ∧
@@ -123,5 +162,8 @@ end GlobalTheory.HilbertThetaSeries.NarrowCls
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd GlobalTheory.HilbertThetaSeries
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.NarrowCls.narrowClass_unitsSq_finite | exact GlobalTheory.HilbertThetaSeries.NarrowCls.narrowClass_unitsSq_finite | (intros; apply GlobalTheory.HilbertThetaSeries.NarrowCls.narrowClass_unitsSq_finite <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_narrowIdeleClasses_and_units_mod_squares : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], (∃ Y : Finset (Af F)ˣ, ∀ z : (Af F)ˣ, ∃ y ∈ Y, ∃ (ξ : Fˣ) (u : (Af F)ˣ), TP (ξ : F) ∧ (∀ w, Valued.v (pLoc F w (u : Af F)) = 1) ∧ z = Units.map (algebraMap F (Af F)).toMonoidHom ξ * y * u) ∧ ∃ E : Finset (𝓞 F)ˣ, ∀ ε : (𝓞 F)ˣ, ∃ e ∈ E, ∃ η : (𝓞 F)ˣ, ε = e * η ^ 2 := by
   first | exact @GlobalTheory.HilbertThetaSeries.NarrowCls.narrowClass_unitsSq_finite | exact GlobalTheory.HilbertThetaSeries.NarrowCls.narrowClass_unitsSq_finite | (intros; apply GlobalTheory.HilbertThetaSeries.NarrowCls.narrowClass_unitsSq_finite <;> assumption)

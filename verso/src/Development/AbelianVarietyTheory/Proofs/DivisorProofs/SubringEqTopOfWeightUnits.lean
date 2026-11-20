@@ -16,6 +16,23 @@ namespace GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `R _ _ D Y i hi hk κ bs V hV u hu S hS hSu`. Take `⟨hsm, haff, hsurj⟩` from `Y.q_props`. Establish `hmon : IsMonHom Y.q` using `Y.isMonHom_q`. Set `m : Multiplicative D.X →* Γ(Y.H.left, Y.q.left ⁻¹ᵁ V)ˣ` to `AddMonoidHom.toMultiplicativeLeft (bs.constr ℤ (fun k => Additive.ofMul (u k))).toAddMonoidHom`. Establish `hm : ∀ k, m (Multiplicative.ofAdd (bs k)) = u k` using `fun k => congrArg Additive.toMul (bs.constr_basis ℤ (fun k => Additive.ofMul (u k)) k)`.
+
+Establish `key : ∀ χ : D.X, GlobalTheory.UU.IsWt i _ (m (Multiplicative.ofAdd χ)).val χ ∧ (m (Multiplicative.ofAdd χ)).val ∈ S ∧ (m (Multiplicative.ofAdd χ))⁻¹.val ∈ S`. Introduce `χ`. Establish `hχ : χ ∈ AddSubgroup.closure (Set.range bs)`. Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure, bs.span_eq]`. Discharge the goal by the elementary cases of `trivial`.
+
+Use `AddSubgroup.closure_induction (p := fun x _ => GlobalTheory.UU.IsWt i _ (m (Multiplicative.ofAdd x)).val x ∧ (m (Multiplicative.ofAdd x)).val ∈ S ∧ (m (Multiplicative.ofAdd x))⁻¹.val ∈ S) ?_ ?_ ?_ ?_ hχ` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[hm]`. Conclude with `⟨hu k, hSu k⟩`. Rewrite using `[ofAdd_zero, map_one]; exact ⟨GlobalTheory.UU.isWt_one, S.one_mem, by simpa using S.one_mem⟩`.
+
+Introduce `x y _ _ hx hy`. Rewrite using `[ofAdd_add, map_mul]`. Use `⟨hx.1.mul hy.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul]`. Conclude with `S.mul_mem hx.2.1 hy.2.1`.
+
+Rewrite using `[mul_inv, Units.val_mul]`. Conclude with `S.mul_mem hx.2.2 hy.2.2`. Introduce `x _ hx`. Rewrite using `[ofAdd_neg, map_inv]`. Conclude with `⟨hx.1.inv, hx.2.2, by rw [inv_inv]; exact hx.2.1⟩`.
+
+Establish `hbij` using `(isAffineOpen_and_bijective_of_weight_units (Sp R) D.X Y.H D.P.A Y.q i hmon hi inferInstance hsurj inferInstance hk V hV m (fun χ => (key χ).1)).2`. Use `(Subring.eq_top_iff' S).2 fun f => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hbij.2 f`. Proceed by induction on `x using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `S.zero_mem`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `S.add_mem ha hb`. Consider the case `single χ c`. Express the relevant statement in the definitionally equal form `AddMonoidAlgebra.liftNC _ _ _ ∈ S`.
+
+Rewrite using `[AddMonoidAlgebra.liftNC_single]`. Conclude with `S.mul_mem (hS c) (key χ).2.1`.
+-/
 theorem subring_eq_top_of_weight_units : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (Y : Ext D) (i : splitTorus (Sp R) D.X ⟶ Y.H), IsMonHom i → IsPullback i (toUnit _) Y.q η[D.P.A] → ∀ {κ : Type} (bs : Module.Basis κ ℤ D.X) (V : D.P.A.left.Opens), IsAffineOpen V → ∀ (u : κ → Γ(Y.H.left, Y.q.left ⁻¹ᵁ V)ˣ), (∀ c, GlobalTheory.UU.IsWt i _ (u c).val (bs c)) → ∀ S : Subring Γ(Y.H.left, Y.q.left ⁻¹ᵁ V), (∀ c, (Y.q.left.app V).hom c ∈ S) → (∀ c, (u c).val ∈ S ∧ ((u c)⁻¹).val ∈ S) → S = ⊤ := by
   intro R _ _ D Y i hi hk κ bs V hV u hu S hS hSu
   obtain ⟨hsm, haff, hsurj⟩ := Y.q_props

@@ -20,6 +20,55 @@ end Quad
 
 end UpperTheory.V.Pa.Det
 
+/- English proof (translation)
+Introduce `F G _ _ n D m κ la s ph hK hT c c' hc hc' hRc hRc' i j _`. Establish `hP : ∀ (g : G) (X : Matrix (Fin n) (Fin n) F), D.r g⁻¹ * (D.r g * X) = X` using `fun g X => by`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel, map_one, one_mul]`. Establish `hχ : ∀ g ∈ D.G', D.χF g = 1` using `fun g hg => by simp [DetFr.χF, D.χ_triv g hg]`. Establish `eK : ∀ k g h, κ k (g * h) = κ k g + D.r g * κ k h * D.r g⁻¹` using `fun k g h => by`.
+
+Establish `e` using `(hK.coc k) g (Set.mem_univ g) h (Set.mem_univ h)`. Simplify using `using e`. Establish `eL : ∀ g ∈ D.G', ∀ k h, la k (g * h) = la k g + D.r g * la k h * D.r g⁻¹` using `fun g hg k h => by`. Establish `e` using `(hT.coc k) g (Set.mem_univ g) h (Set.mem_univ h)`. Rewrite `e` using `[hχ g hg, one_smul]`.
+
+Conclude with `e`. Establish `pK : ∀ k g h, κ k (g * h) * D.r (g * h) = κ k g * D.r g * D.r h + D.r g * (κ k h * D.r h)`. Introduce `k g h`. Rewrite using `[eK, map_mul]`. Simplify using `only [add_mul, mul_assoc, hP]`.
+
+Establish `pL : ∀ g ∈ D.G', ∀ k h, la k (g * h) * D.r (g * h) = la k g * D.r g * D.r h + D.r g * (la k h * D.r h)`. Introduce `g hg k h`. Rewrite using `[eL g hg, map_mul]`. Simplify using `only [add_mul, mul_assoc, hP]`. Establish `pQ : ∀ g ∈ D.G', ∀ h, ph (g * h) * D.r (g * h) + ∑ k, la k (g * h) * κ k (g * h) * D.r (g * h) = (ph g * D.r g + ∑ k, la k g * κ k g * D.r g) * D.r h + D.r g * (ph h * D.r h + ∑ k, la k h * κ k h * D.r h) + ∑ k, (κ k g * D.r g * (la k h * D.r h) + la k g * D.r g * (κ k h * D.r h) …`.
+
+Introduce `g hg h`. Establish `e` using `hT.ph_mul g h`. Rewrite `e` using `[hχ g hg, one_smul]`. Rewrite using `[e, map_mul]`. Simplify using `only [eK, eL g hg]`.
+
+Simplify using `only [add_mul, mul_add, sub_mul, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_mul, Finset.mul_sum, mul_assoc, hP]`. Normalize the expressions using the abelian group laws. Set `pr : (G →₀ F) → (G →₀ F) → (G →₀ F)` to `fun c d => c.sum fun g a => d.sum fun h b => Finsupp.single (g * h) (a * b)`. Establish `gen : ∀ (v : G → Matrix (Fin n) (Fin n) F) (c d : G →₀ F), Finsupp.linearCombination F v (pr c d) = c.sum fun g a => d.sum fun h b => (a * b) • v (g * h)`. Introduce `v c d`.
+
+Simplify using `only [pr, map_finsuppSum, Finsupp.linearCombination_single]`. Establish `lcMul : ∀ (v w : G → Matrix (Fin n) (Fin n) F) (c d : G →₀ F), Finsupp.linearCombination F v c * Finsupp.linearCombination F w d = c.sum fun g a => d.sum fun h b => (a * b) • (v g * w h)`. Introduce `v w c d`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.linearCombination_apply, Finsupp.sum_mul]`. Use `Finsupp.sum_congr fun g _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun h _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm]`. Establish `dK : ∀ (W : Fin m → G → G → Matrix (Fin n) (Fin n) F) (c d : G →₀ F), (∑ k, c.sum fun g a => d.sum fun h b => (a * b) • W k g h) = c.sum fun g a => d.sum fun h b => (a * b) • ∑ k, W k g h`. Introduce `W c d`.
+
+Simplify using `only [Finsupp.sum, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Establish `memS : ∀ (p : G →₀ F), p ∈ Finsupp.supported F F (D.G' : Set G) → ∀ g ∈ p.support, g ∈ D.G'` using `fun p hp g hg => (Finsupp.mem_supported F p).1 hp (Finset.mem_coe.2 hg)`.
+
+Establish `prS : ∀ c ∈ Finsupp.supported F F (D.G' : Set G), ∀ d ∈ Finsupp.supported F F (D.G' : Set G), pr c d ∈ Finsupp.supported F F (D.G' : Set G)`. Introduce `c hc d hd`. Use `Submodule.finsuppSum_mem F _ c _ fun g hg => Submodule.finsuppSum_mem F _ d _ fun h hh => ?_` and prove the remaining obligations. Conclude with `Finsupp.single_mem_supported F _ (D.G'.mul_mem (memS c hc g (Finsupp.mem_support_iff.2 hg)) (memS d hd h (Finsupp.mem_support_iff.2 hh)))`. Establish `mR : ∀ c d, Finsupp.linearCombination F D.r (pr c d) = Finsupp.linearCombination F D.r c * Finsupp.linearCombination F D.r d`.
+
+Introduce `c d`. Rewrite using `[gen, lcMul]`. Simplify using `only [map_mul]`. Establish `mK : ∀ k, ∀ c d, Finsupp.linearCombination F (fun g => κ k g * D.r g) (pr c d) = Finsupp.linearCombination F (fun g => κ k g * D.r g) c * Finsupp.linearCombination F D.r d + Finsupp.linearCombination F D.r c * Finsupp.linearCombination F (fun g => κ k g * D.r g) d`. Introduce `k c d`.
+
+Rewrite using `[gen, lcMul, lcMul, ← Finsupp.sum_add]`. Use `Finsupp.sum_congr fun g _ => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.sum_add]`. Use `Finsupp.sum_congr fun h _ => ?_` and prove the remaining obligations. Rewrite using `[pK, smul_add]`.
+
+Establish `mL : ∀ c ∈ Finsupp.supported F F (D.G' : Set G), ∀ k d, Finsupp.linearCombination F (fun g => la k g * D.r g) (pr c d) = Finsupp.linearCombination F (fun g => la k g * D.r g) c * Finsupp.linearCombination F D.r d + Finsupp.linearCombination F D.r c * Finsupp.linearCombination F ( …`. Introduce `c hc k d`. Rewrite using `[gen, lcMul, lcMul, ← Finsupp.sum_add]`. Use `Finsupp.sum_congr fun g hg => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.sum_add]`.
+
+Use `Finsupp.sum_congr fun h _ => ?_` and prove the remaining obligations. Rewrite using `[pL g (memS c hc g hg), smul_add]`. Establish `mQ : ∀ c ∈ Finsupp.supported F F (D.G' : Set G), ∀ d, Finsupp.linearCombination F (fun g => ph g * D.r g + ∑ k, la k g * κ k g * D.r g) (pr c d) = Finsupp.linearCombination F (fun g => ph g * D.r g + ∑ k, la k g * κ k g * D.r g) c * Finsupp.linearCombination F D.r d + Finsupp.lin …`. Introduce `c hc d`. Establish `hs : (∑ k, (Finsupp.linearCombination F (fun g => κ k g * D.r g) c * Finsupp.linearCombination F (fun g => la k g * D.r g) d + Finsupp.linearCombination F (fun g => la k g * D.r g) c * Finsupp.linearCombination F (fun g => κ k g * D.r g) d)) = c.sum fun g a => d.sum fun h b => (a …`.
+
+Use `Eq.trans ?_ (dK _ c d)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[lcMul, lcMul, ← Finsupp.sum_add]`. Use `Finsupp.sum_congr fun g _ => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.sum_add]`.
+
+Use `Finsupp.sum_congr fun h _ => ?_` and prove the remaining obligations. Rewrite using `[smul_add]`. Rewrite using `[gen, hs, lcMul, lcMul, ← Finsupp.sum_add, ← Finsupp.sum_add]`. Use `Finsupp.sum_congr fun g hg => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.sum_add, ← Finsupp.sum_add]`.
+
+Use `Finsupp.sum_congr fun h _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_add, ← smul_add, pQ g (memS c hc g hg) h]`. Establish `trQ : ∀ p ∈ Finsupp.supported F F (D.G' : Set G), (Finsupp.linearCombination F (fun g => ph g * D.r g + ∑ k, la k g * κ k g * D.r g) p).trace = 0`. Introduce `p hp`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, Matrix.trace_sum]`.
+
+Use `Finset.sum_eq_zero fun g hg => ?_` and prove the remaining obligations. Rewrite using `[Matrix.trace_smul, Matrix.trace_add, Matrix.trace_sum, hT.ell g (memS p hp g hg), smul_zero]`. Establish `hEv : ∀ t : Fin n, Matrix.single t t (1 : F) ∈ Submodule.span F (D.r '' (D.G' : Set G))`. Introduce `t`. Rewrite using `[D.span]`.
+
+Introduce `i' j'`. Use `⟨fun _ => trivial, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot, Matrix.single_apply]`. Use `split_ifs with e`. Take `⟨rfl, rfl⟩` from `e`.
+
+Conclude with `absurd Iff.rfl h`. Both sides reduce to the same expression. Establish `hS : c ∈ Finsupp.supported F F (D.G' : Set G)` using `(Finsupp.mem_supported F c).2 fun g hg => hc g (Finset.mem_coe.1 hg)`. Establish `hS' : c' ∈ Finsupp.supported F F (D.G' : Set G)` using `(Finsupp.mem_supported F c').2 fun g hg => hc' g (Finset.mem_coe.1 hg)`. Take `⟨dj, hdj, hj⟩` from `(Finsupp.mem_span_image_iff_linearCombination F).1 (hEv j)`.
+
+Take `⟨di, hdi, hi⟩` from `(Finsupp.mem_span_image_iff_linearCombination F).1 (hEv i)`. Establish `hR0 : Finsupp.linearCombination F D.r c = 0`. Rewrite using `[Finsupp.linearCombination_apply]`. Conclude with `hRc`. Establish `hR0' : Finsupp.linearCombination F D.r c' = 0`.
+
+Rewrite using `[Finsupp.linearCombination_apply]`. Conclude with `hRc'`. Establish `tr : ∀ A B : Matrix (Fin n) (Fin n) F, (A * Matrix.single j j 1 * (B * Matrix.single i i 1)).trace = A i j * B j i`. Introduce `A B`. Rewrite using `[← mul_assoc, Matrix.trace_mul_single]`.
+
+Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', ite_mul]`. Establish `key` using `trQ _ (prS _ (prS c hS dj hdj) _ (prS c' hS' di hdi))`. Rewrite `key` using `[mQ _ (prS c hS dj hdj)]`. Simplify using `only [mR, mK, mL c hS, mL c' hS', hR0, hR0', hi, hj, zero_mul, mul_zero, add_zero, zero_add] at key`. Rewrite `key` using `[Matrix.trace_sum]`.
+
+Simplify using `only [Matrix.trace_add, tr] at key`. Simplify `key` using `only [Finsupp.linearCombination_apply]`.
+-/
 theorem UpperTheory.V.Pa.Det.relPair :
     ∀ {F G : Type} [Field F] [Group G] {n : ℕ} (D : DetFr F G n) {m : ℕ} (κ la : Fin m → G → Matrix (Fin n) (Fin n) F) (s : F) (ph : G → Matrix (Fin n) (Fin n) F), D.IsKap κ → D.IsTw κ s ph la → ∀ (c c' : G →₀ F), (∀ g ∈ c.support, g ∈ D.G') → (∀ g ∈ c'.support, g ∈ D.G') → c.sum (fun g x => x • D.r g) = 0 → c'.sum (fun g x => x • D.r g) = 0 → ∀ i j : Fin n, ¬ (((i : ℕ) < D.a) ↔ ((j : ℕ) < D.a)) → ∑ k, ((c.sum fun g x => x • (κ k g * D.r g)) i j * (c'.sum fun g x => x • (la k g * D.r g)) j i + (c.sum fun g x => x • (la k g * D.r g)) i j * (c'.sum fun g x => x • (κ k g * D.r g)) j i) = 0 := by
   intro F G _ _ n D m κ la s ph hK hT c c' hc hc' hRc hRc' i j _

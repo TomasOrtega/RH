@@ -6,6 +6,19 @@ open scoped Pointwise Topology
 
 namespace GlobalTheory.CompanionTheory.TwoSidedUnif
 
+/- English proof (translation)
+Introduce `X φ ε hφ hε`. Take `⟨hc, hs⟩` from `hφ`. Take `⟨N, hNc, hN1⟩` from `exists_compact_mem_nhds (1 : X.G)`. Establish `hS : IsCompact (tsupport φ)` using `hs`. Establish `hK : IsCompact (N⁻¹ * tsupport φ * N⁻¹)` using `(hNc.inv.mul hS).mul hNc.inv`.
+
+Establish `h1N : (1 : X.G) ∈ N` using `mem_of_mem_nhds hN1`. Establish `hf : Continuous fun q : (X.G × X.G) × X.G => ‖φ (q.1.1 * q.2 * q.1.2) - φ q.2‖`. Establish `: Continuous fun q : (X.G × X.G) × X.G => q.1.1 * q.2 * q.1.2` using `by fun_prop`. Conclude with `((hc.comp this).sub (hc.comp continuous_snd)).norm`. Establish `hev : ∀ᶠ p : X.G × X.G in 𝓝 ((1 : X.G), (1 : X.G)), ∀ y ∈ N⁻¹ * tsupport φ * N⁻¹, ‖φ (p.1 * y * p.2) - φ y‖ < ε`.
+
+Use `hK.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `h0 : ‖φ ((((1 : X.G), (1 : X.G)), y).1.1 * (((1 : X.G), (1 : X.G)), y).2 * (((1 : X.G), (1 : X.G)), y).1.2) - φ (((1 : X.G), (1 : X.G)), y).2‖ < ε`. Simplify using `using hε`. Conclude with `hf.continuousAt.eventually (Iio_mem_nhds h0)`. Take `⟨U, hU, V, hV, hUV⟩` from `mem_nhds_prod_iff.1 hev`.
+
+Use `⟨U ∩ V ∩ N, Filter.inter_mem (Filter.inter_mem hU hV) hN1, ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨⟨hzU, -⟩, hzN⟩ w ⟨⟨-, hwV⟩, hwN⟩ y`. Distinguish the cases in `hy : y ∈ N⁻¹ * tsupport φ * N⁻¹`. Conclude with `(hUV (Set.mk_mem_prod hzU hwV) y hy).le`. Establish `hy0 : φ y = 0`.
+
+Use `image_eq_zero_of_notMem_tsupport fun hys => hy ?_` and prove the remaining obligations. Use `Set.mem_mul.2 ⟨1 * y, Set.mem_mul.2 ⟨1, ?_, y, hys, rfl⟩, 1, ?_, by simp⟩` and prove the remaining obligations. Simplify using `using h1N`. Simplify using `using h1N`. Establish `hzy0 : φ (z * y * w) = 0`.
+
+Use `image_eq_zero_of_notMem_tsupport fun hys => hy ?_` and prove the remaining obligations. Use `Set.mem_mul.2 ⟨z⁻¹ * (z * y * w), Set.mem_mul.2 ⟨z⁻¹, ?_, z * y * w, hys, rfl⟩, w⁻¹, ?_, by group⟩` and prove the remaining obligations. Conclude with `Set.inv_mem_inv.2 hzN`. Conclude with `Set.inv_mem_inv.2 hwN`. Simplify `hε.le` using `[hy0, hzy0]`.
+-/
 theorem twoUnif : TwoUnif := by
   intro X φ ε hφ hε
   obtain ⟨hc, hs⟩ := hφ

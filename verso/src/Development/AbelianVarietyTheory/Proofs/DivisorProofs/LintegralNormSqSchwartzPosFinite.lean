@@ -8,6 +8,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ _ _ a d Φ hΦ h0 ν hν`. Use `letI : MeasurableSpace (Matrix (Fin a) (Fin d) k) := borel _`. Use `haveI : BorelSpace (Matrix (Fin a) (Fin d) k) := ⟨rfl⟩`. Take `⟨hlc, hcs⟩ : IsLocallyConstant Φ ∧ HasCompactSupport Φ` from `hΦ`. Establish `hc : Continuous Φ` using `hlc.continuous`.
+
+Establish `hcont : Continuous fun Y => ‖Φ Y‖ₑ ^ 2` using `(ENNReal.continuous_pow 2).comp hc.enorm`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[lintegral_eq_zero_iff hcont.measurable]`. Establish `h'` using `(Continuous.ae_eq_iff_eq ν hcont continuous_zero).1 h`.
+
+Apply `h0` to reduce the goal to its premises. Use function extensionality and compare the values at `Y`. Use `congrFun h' Y` as an intermediate fact. Simplify using `using this`. Take `⟨C, hC⟩` from `hc.bounded_above_of_compact_support hcs`.
+
+Establish `hle : ∫⁻ Y, ‖Φ Y‖ₑ ^ 2 ∂ν ≤ ∫⁻ Y, (tsupport Φ).indicator (fun _ => ENNReal.ofReal C ^ 2) Y ∂ν`. Use `lintegral_mono fun Y => ?_` and prove the remaining obligations. Distinguish the cases in `hY : Y ∈ tsupport Φ`. Rewrite using `[Set.indicator_of_mem hY] gcongr`. Rewrite using `[← ofReal_norm_eq_enorm]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal (hC Y)`. Simplify using `[image_eq_zero_of_notMem_tsupport hY]`. Use `ne_top_of_le_ne_top ?_ hle` and prove the remaining obligations. Rewrite using `[lintegral_indicator_const (isClosed_tsupport Φ).measurableSet]`. Conclude with `ENNReal.mul_ne_top (ENNReal.pow_ne_top ENNReal.ofReal_ne_top) (IsCompact.measure_lt_top hcs).ne`.
+-/
 theorem schwartzBruhat_matrix_lintegral_sq_ne_zero_ne_top : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {a d : ℕ}
     (Φ : Matrix (Fin a) (Fin d) k → ℂ), Φ ∈ SB (Matrix (Fin a) (Fin d) k) → Φ ≠ 0 →
     ∀ ν : @Measure (Matrix (Fin a) (Fin d) k) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) ν →

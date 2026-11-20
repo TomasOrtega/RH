@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Introduce `n k E ι _ _ _ _ _ _ h r hss x`. Rewrite using `[Det.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨e, he, hI⟩` from `IsSemisimpleRing.ideal_eq_span_idempotent (Ideal.span {(⟨r x, x, rfl⟩ : r.range)})`.
+
+Establish `h1 : e ∈ Ideal.span {(⟨r x, x, rfl⟩ : r.range)}` using `hI ▸ Ideal.subset_span rfl`. Establish `h2 : (⟨r x, x, rfl⟩ : r.range) ∈ Ideal.span {e}` using `hI ▸ Ideal.subset_span rfl`. Take `⟨⟨a, u, rfl⟩, ha⟩` from `Ideal.mem_span_singleton'.1 h1`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 h2`. Establish `ha' : r u * r x = (e : Matrix ι ι k)` using `congrArg Subtype.val ha`.
+
+Establish `hb' : (b : Matrix ι ι k) * (e : Matrix ι ι k) = r x` using `congrArg Subtype.val hb`. Establish `he' : (e : Matrix ι ι k) * e = e` using `congrArg Subtype.val he`. Establish `h3 : (Det.repS r k (1 + (1 ⊗ₜ (-u)) * (1 ⊗ₜ x) * 1)).det = (Det.repS r k 1).det` using `hx k 1 (1 ⊗ₜ (-u)) 1`. Establish `h4 : Det.repS r k (1 + (1 ⊗ₜ (-u)) * (1 ⊗ₜ x) * 1) = 1 - (e : Matrix ι ι k)`. Rewrite using `[map_add, map_mul, map_mul, map_one, Det.repS_tmul, Det.repS_tmul, ← ha']`.
+
+Simplify using `[sub_eq_add_neg]`. Rewrite `h3` using `[h4, map_one, Matrix.det_one]`. Establish `h5 : IsUnit (1 - (e : Matrix ι ι k))`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, h3]`. Conclude with `isUnit_one`.
+
+Establish `h6 : (e : Matrix ι ι k) = 0`. Apply `h5.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[sub_mul, one_mul, he', sub_self, mul_zero]`. Rewrite using `[← hb', h6, mul_zero]`. Introduce `hx S _ _ y u v show (Det.repS r S (y + u * (1 ⊗ₜ x) * v)).det = (Det.repS r S y).det`.
+
+Rewrite using `[map_add, map_mul, map_mul, Det.repS_tmul, hx]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.CA.d_ker_ss :
     ∀ {n : ℕ} {k E ι : Type} [Field k] [IsAlgClosed k] [Ring E] [Algebra k E] [Fintype ι] [DecidableEq ι] (h : Fintype.card ι = n) (r : E →ₐ[k] Matrix ι ι k), IsSemisimpleRing r.range → ∀ x, x ∈ (Det.ofRep h r).ker ↔ r x = 0 := by
   intro n k E ι _ _ _ _ _ _ h r hss x

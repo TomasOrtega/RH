@@ -26,6 +26,19 @@ namespace GlobalTheory.Mean4O.ModelHt
 
 open GlobalTheory.TrueGeo.FinSum in
 
+/- English proof (translation)
+Use `hZ.isNoetherian` as an intermediate fact. Use `T.arithmetic_variety_dim_zero_finite _ Z q hZ` as an intermediate fact. Establish `: IsAffine Z` using `isAffine_of_isAffineHom q`. Establish `key (v : HeightOneSpectrum (𝓞 F)) : ∑ᶠ y, l v y = -∑ᶠ (z : Z) (_ : (q z).asIdeal = v.asIdeal), (D.mult z : ℝ) * Real.log (Nat.card (Z.residueField z))`. Take `⟨t, ht⟩` from `T.cartier_local_equation_common Z hZ.dim_eq.le D (q ⁻¹' {⟨v.asIdeal, v.isPrime⟩}) (q.finite_preimage_singleton _)`.
+
+Establish `ht' (z : Z) (hz : (q z).asIdeal = v.asIdeal) : D.IsEqn z t` using `ht z (PrimeSpectrum.ext hz)`. Establish `hv (y) : l v y = Real.log ((e v).w (valAt y.1 (t : Z.functionField)))`. Take `⟨yt, h₁, h₂⟩` from `exists_ext (e v) y.1 y.2`. Take `⟨g, hg, h₃⟩` from `hl v y yt h₁`. Establish `hb : below y.1 = genericPoint Z` using `SmallSecHeight.eq_genericPoint hZ (Scheme.SpecToEquivOfField _ Z y.1).2.hom.charZero`.
+
+Rewrite using `[h₃, ← div_mul_cancel₀ (g : Z.functionField) t.ne_zero, OfModel.valAt_mul _ (hb ▸ regAt_genericPoint _) (hb ▸ regAt_genericPoint _), map_mul, w_valAt _ _ yt h₁ ((ht' _ h₂).iff_unitAt.1 hg), one_mul]`. Rewrite using `[finsum_congr hv]`. Establish `h3` using `T.product_formula_order F Z q hZ v (e v) t`. Establish `h4 : ∑ᶠ (z : Z) (_ : (q z).asIdeal = v.asIdeal), (D.mult z : ℝ) * Real.log (Nat.card (Z.residueField z)) = ∑ᶠ (z : Z) (_ : (q z).asIdeal = v.asIdeal), (Scheme.ord (t : Z.functionField) z : ℝ) * Real.log (Nat.card (Z.residueField z))` using `finsum_congr fun z => finsum_congr fun hz => by rw [(ht' z hz).mult_eq]`. Rewrite using `[h4, h3, neg_neg]`.
+
+Use `(Set.Finite.preimage (f := fun v : HeightOneSpectrum (𝓞 F) => v.asIdeal) (fun a _ b _ hab => HeightOneSpectrum.ext hab) (D.finite_support_mult.image fun z => (q z).asIdeal)).subset ?_` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hn`. Apply `hv` to reduce the goal to its premises. Use `show ∑ᶠ y, l v y = 0`.
+
+Rewrite using `[key, neg_eq_zero]`. Use `finsum_eq_zero_of_forall_eq_zero fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : (q z).asIdeal = v.asIdeal`. Establish `h0 : D.mult z = 0`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `hn ⟨z, h0, hz⟩`. Simplify using `[h0]`. Simplify using `[hz]`.
+-/
 theorem finite_support_finsum {F : Type} [Field F] [NumberField F] (Z : Scheme.{0}) [IsIntegral Z] [IsLocallyNoetherian Z]
     (q : Z ⟶ Sp (𝓞 F)) (hZ : IsArithVar q 0) (D : CartierDiv Z) (e : ∀ v : HeightOneSpectrum (𝓞 F), Ext v)
     (l : HeightOneSpectrum (𝓞 F) → {y : Sp (AlgebraicClosure F) ⟶ Z // y ≫ q = spMap (algebraMap (𝓞 F) (AlgebraicClosure F))} → ℝ)
@@ -72,10 +85,18 @@ theorem finite_support_finsum {F : Type} [Field F] [NumberField F] (Z : Scheme.{
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp (𝓞 F)}
   {G : Scheme.{0}} [IsIntegral G] {j : G ⟶ X} {π : G ⟶ Y.X} [IsFinite π]
 
+/- English proof (translation)
+The claim follows from `have h : IsPreimmersion (spMap (algebraMap (𝓞 F) F)) := IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F)) MorphismProperty.of_isPullback (P := @IsPreimmersion) pb.flip h`.
+-/
 theorem isPreimmersion_j (pb : IsPullback j (π ≫ Y.str) p (spMap (algebraMap (𝓞 F) F))) : IsPreimmersion j :=
   have h : IsPreimmersion (spMap (algebraMap (𝓞 F) F)) := IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F))
   MorphismProperty.of_isPullback (P := @IsPreimmersion) pb.flip h
 
+/- English proof (translation)
+Set `ι : F →ₐ[ℚ] AlgebraicClosure ℚ` to `IsAlgClosed.lift`. Use `letI : Algebra F (AlgebraicClosure ℚ) := ι.toRingHom.toAlgebra`. Take `⟨⟨⟨y, hy⟩, hyx⟩⟩` from `(ExtConj.closed_point_geometric_fibres_finite (K := AlgebraicClosure ℚ) (π ≫ Y.str) w hw).1`. Establish `h : (y ≫ j) ≫ p = spMap ((algebraMap F (AlgebraicClosure ℚ)).comp (algebraMap (𝓞 F) F))`. Rewrite using `[Category.assoc, pb.w, ← Category.assoc, hy]`.
+
+Conclude with `(Spec.map_comp _ _).symm`. Establish `h2` using `GeomPt.isAlgPt ar (⟨y ≫ j, h⟩ : GeomPt p ((algebraMap F (AlgebraicClosure ℚ)).comp (algebraMap (𝓞 F) F)))`. Substitute `hyx` using the available equality. Conclude with `h2`.
+-/
 theorem isAlgPt (ar : IsArithVar p Y.dim) (pb : IsPullback j (π ≫ Y.str) p (spMap (algebraMap (𝓞 F) F))) (w : G) (hw : IsClosed ({w} : Set G)) : IsAlgPt (j w) := by
   let ι : F →ₐ[ℚ] AlgebraicClosure ℚ := IsAlgClosed.lift
   letI : Algebra F (AlgebraicClosure ℚ) := ι.toRingHom.toAlgebra
@@ -88,6 +109,17 @@ theorem isAlgPt (ar : IsArithVar p Y.dim) (pb : IsPullback j (π ≫ Y.str) p (s
   subst hyx
   exact h2
 
+/- English proof (translation)
+Establish `: CharZero K` using `charZero_of_injective_ringHom σ.injective`. Establish `hgen (y : Sp K ⟶ Z) : below y = genericPoint Z` using `SmallSecHeight.eq_genericPoint hZ (Scheme.SpecToEquivOfField K Z y).2.hom.charZero`. Establish `hj` using `isPreimmersion_j pb`. Establish `hs : spMap (σ.comp (algebraMap (𝓞 F) F)) = spMap σ ≫ spMap (algebraMap (𝓞 F) F)`. Rewrite using `[← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Establish `hw (y : {y : Sp K ⟶ Z // y ≫ (i ≫ p) = spMap (σ.comp (algebraMap (𝓞 F) F))}) : (y.1 ≫ i) ≫ p = spMap σ ≫ spMap (algebraMap (𝓞 F) F)`. Rewrite using `[Category.assoc, y.2, hs]`. Set `f : {y : Sp K ⟶ Z // y ≫ (i ≫ p) = spMap (σ.comp (algebraMap (𝓞 F) F))} → {y : {y : Sp K ⟶ G // y ≫ π ≫ Y.str = spMap σ} // below y.1 = w}` to `fun y => ⟨⟨pb.lift (y.1 ≫ i) (spMap σ) (hw y), pb.lift_snd _ _ _⟩, by`. Apply `j.isEmbedding.injective` to reduce the goal to its premises.
+
+Rewrite using `[← hx, ← hgen y.1]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun t : Sp K ⟶ X => below t) (pb.lift_fst _ _ (hw y))).trans (Scheme.Hom.comp_apply _ _ _))⟩`. Establish `hf (y) : (f y).1.1 ≫ j = y.1 ≫ i` using `pb.lift_fst _ _ _`. Use `⟨Equiv.ofBijective f ⟨fun a b h => ?_, ?_⟩, fun y => ⟨hf y, hgen y.1⟩⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[← cancel_mono i, ← hf, ← hf, h]`. Introduce and unpack `⟨⟨y, hy⟩, hyx⟩`. Take `⟨y', hy'⟩` from `ClosurePts.lift_closed i (genericPoint Z) (y ≫ j) ((Scheme.Hom.comp_apply _ _ _).trans ((congrArg j hyx).trans hx.symm))`. Establish `h1 : y' ≫ (i ≫ p) = spMap (σ.comp (algebraMap (𝓞 F) F))`. Rewrite using `[← Category.assoc, hy', Category.assoc, pb.w, ← Category.assoc, hy, hs]`.
+
+Use `⟨⟨y', h1⟩, Subtype.ext (Subtype.ext (pb.hom_ext ((hf _).trans hy') ?_))⟩` and prove the remaining obligations. Conclude with `(f ⟨y', h1⟩).1.2.trans hy.symm`.
+-/
 theorem exists_equiv (pb : IsPullback j (π ≫ Y.str) p (spMap (algebraMap (𝓞 F) F))) (w : G) (Z : Scheme.{0}) [IsIntegral Z] (i : Z ⟶ X) [IsClosedImmersion i]
     (hZ : IsArithVar (i ≫ p) 0) (hx : i (genericPoint Z) = j w) (K : Type) [Field K] (σ : F →+* K) :
     ∃ E : {y : Sp K ⟶ Z // y ≫ (i ≫ p) = spMap (σ.comp (algebraMap (𝓞 F) F))} ≃
@@ -123,6 +155,13 @@ theorem exists_equiv (pb : IsPullback j (π ≫ Y.str) p (spMap (algebraMap (�
     refine ⟨⟨y', h1⟩, Subtype.ext (Subtype.ext (pb.hom_ext ((hf _).trans hy') ?_))⟩
     exact (f ⟨y', h1⟩).1.2.trans hy.symm
 
+/- English proof (translation)
+Use `isPreimmersion_j pb` as an intermediate fact. Establish `hx : IsClosed ({π w} : Set Y.X)`. Use `π.isClosedMap _ hw` as an intermediate fact. Rewrite `this` using `[Set.image_singleton]`. Then use the resulting hypothesis. Establish `h` using `CoverHt.finsum_lifts (algebraMap F (AlgebraicClosure F)) π Y.str w hw fun _ => 1`.
+
+Establish `h₁` using `(ExtConj.closed_point_geometric_fibres_finite (K := AlgebraicClosure F) (π ≫ Y.str) w hw).2`. Establish `h₂` using `(ExtConj.closed_point_geometric_fibres_finite (K := AlgebraicClosure F) Y.str _ hx).2`. Establish `e (α : Type) [Finite α] : ∑ᶠ _ : α, (1 : ℝ) = Nat.card α`. Use `Fintype.ofFinite α` as an intermediate fact. Simplify using `[finsum_eq_sum_of_fintype]`.
+
+Rewrite `h` using `[e, e]`. Rewrite using `[ResidueCard.card_ringHom_eq, ResidueCard.card_parity_sign_length_of_eq (π ≫ Y.str) w hw, Nat.cast_mul, h]`. Both sides reduce to the same expression.
+-/
 theorem card_emb (pb : IsPullback j (π ≫ Y.str) p (spMap (algebraMap (𝓞 F) F))) (w : G) (hw : IsClosed ({w} : Set G)) :
     (Nat.card (X.residueField (j w) →+* ℂ) : ℝ) =
       Module.finrank ℚ F * (π.residueDegree w * Nat.card {y : AlgPt Y // below y.1 = π w}) := by
@@ -142,6 +181,53 @@ theorem card_emb (pb : IsPullback j (π ≫ Y.str) p (spMap (algebraMap (𝓞 F)
 
 open Classical in
 
+/- English proof (translation)
+Establish `hx : IsClosed ({π w} : Set Y.X)`. Use `π.isClosedMap _ hw` as an intermediate fact. Rewrite `this` using `[Set.image_singleton]`. Then use the resulting hypothesis. Take `⟨Z, i, _, _, hi⟩` from `exists_isClosedImmersion_genericPoint (j w)`. Use `ar.isNoetherian_sub i` as an intermediate fact.
+
+Take `⟨hc, hd⟩` from `isAlgPt ar pb w hw`. Establish `hri : Set.range i = closure {j w}`. Establish `h₁` using `(genericPoint_spec Z).image i.continuous`. Rewrite `h₁` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq, hi]`. Conclude with `h₁.def.symm`.
+
+Rewrite `hd` using `[topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hri]`. Rewrite `hc` using `[← hi]`. Establish `hc' : CharZero (Z.residueField (genericPoint Z))` using `charZero_of_injective_ringHom (i.residueFieldMap (genericPoint Z)).hom.injective`. Establish `hcΓ : CharZero Γ(Z, ⊤)` using `(Z.Γevaluation (genericPoint Z)).hom.charZero`. Establish `hZ : IsArithVar (i ≫ p) 0` using `ar.of_isClosedImmersion i hcΓ hd`.
+
+Use `isPreimmersion_j pb` as an intermediate fact. Set `u : G.functionFieldˣ` to `Units.map φ.toMonoidHom (eqn A.D (π w))⁻¹ ^ k`. Establish `hue (c) : ((u * r c : G.functionFieldˣ) : G.functionField) = φ (genAt A.D (π w)) ^ k * r c`. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression.
+
+Establish `hu (c) (hc : w ∈ (L.B.pull j).U c) : UnitAt w ((u * r c : G.functionFieldˣ) : G.functionField)`. Rewrite using `[hue]`. Conclude with `hun c w hc`. Take `⟨s, hs, hval⟩` from `RestrictRatSec.exists_restriction X G Z j i w hi L.B L.isLB r hr _ hu`. Establish `hdeg` using `H.point Z i hcΓ hd s hs`.
+
+Establish `hne` using `(ExtConj.main F).1`. Take `⟨E, hE⟩` from `exists_equiv pb w Z i hZ hi (AlgebraicClosure F) (algebraMap F _)`. Establish `hS` using `finite_support_finsum Z (i ≫ p) hZ ((L.restr i).div hs) (fun v => (hne v).some) (fun v y => k * A.lg v (hne v).some ⟨(E y).1.1 ≫ π, (Category.assoc _ _ _).trans (E y).1.2⟩) (fun v y yt hyt => by`. Take `⟨c, hc⟩` from `exists_chart L.isLB (i (yt (IsLocalRing.closedPoint _)))`. Establish `hU : ⊤ ≤ (yt ≫ i) ⁻¹ᵁ L.B.U c` using `(Scheme.preimage_eq_top_of_closedPoint_mem (yt ≫ i) hc).ge`.
+
+Establish `e₁ : spMap (hne v).some.O.subtype ≫ yt ≫ i = (E y).1.1 ≫ j`. Rewrite using `[← Category.assoc, hyt, (hE y).1]`. Use `⟨s fun _ => c, (presents_divOfRatSec _ hs).isEqn _ _ (Set.mem_iInter.2 fun _ => hc), ?_⟩` and prove the remaining obligations. Establish `hxc : j w ∈ L.B.U c`. Establish `e₂ : j w = (yt ≫ i) (below (spMap (hne v).some.O.subtype))`.
+
+Rewrite using `[← (E y).2]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun t : Sp (AlgebraicClosure F) ⟶ X => below t) e₁.symm).trans (Scheme.Hom.comp_apply _ _ _))`. Rewrite using `[e₂]`. Conclude with `hU trivial`. Establish `hb : below ((E y).1.1 ≫ π) = π w` using `(Scheme.Hom.comp_apply _ _ _).trans (congrArg π (E y).2)`.
+
+Use `(hfin v (hne v).some ⟨(E y).1.1 ≫ π, (Category.assoc _ _ _).trans (E y).1.2⟩ (E y).1.1 (yt ≫ i) (fun _ => c) rfl e₁ hU).trans (congrArg (fun t => Real.log ((hne v).some.w t)) ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (hval _ _ _ c (hE y).1 (E y).2 (hE y).2 hxc).symm` and prove the remaining obligations. Conclude with `congrArg (valAt (E y).1.1) ((congrArg (fun x => φ (genAt A.D x) ^ k * _) hb).trans (hue _).symm))`. Establish `h₁` using `FinSum.main F Z (i ≫ p) hZ ((L.restr i).div hs) (fun v => (hne v).some) (fun v y => k * A.lg v (hne v).some ⟨(E y).1.1 ≫ π, (Category.assoc _ _ _).trans (E y).1.2⟩) (fun v y yt hyt => by`. Take `⟨c, hc⟩` from `exists_chart L.isLB (i (yt (IsLocalRing.closedPoint _)))`.
+
+Establish `hU : ⊤ ≤ (yt ≫ i) ⁻¹ᵁ L.B.U c` using `(Scheme.preimage_eq_top_of_closedPoint_mem (yt ≫ i) hc).ge`. Establish `e₁ : spMap (hne v).some.O.subtype ≫ yt ≫ i = (E y).1.1 ≫ j`. Rewrite using `[← Category.assoc, hyt, (hE y).1]`. Use `⟨s fun _ => c, (presents_divOfRatSec _ hs).isEqn _ _ (Set.mem_iInter.2 fun _ => hc), ?_⟩` and prove the remaining obligations. Establish `hxc : j w ∈ L.B.U c`.
+
+Establish `e₂ : j w = (yt ≫ i) (below (spMap (hne v).some.O.subtype))`. Rewrite using `[← (E y).2]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun t : Sp (AlgebraicClosure F) ⟶ X => below t) e₁.symm).trans (Scheme.Hom.comp_apply _ _ _))`. Rewrite using `[e₂]`. Conclude with `hU trivial`.
+
+Establish `hb : below ((E y).1.1 ≫ π) = π w` using `(Scheme.Hom.comp_apply _ _ _).trans (congrArg π (E y).2)`. Use `(hfin v (hne v).some ⟨(E y).1.1 ≫ π, (Category.assoc _ _ _).trans (E y).1.2⟩ (E y).1.1 (yt ≫ i) (fun _ => c) rfl e₁ hU).trans (congrArg (fun t => Real.log ((hne v).some.w t)) ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (hval _ _ _ c (hE y).1 (E y).2 (hE y).2 hxc).symm` and prove the remaining obligations. Conclude with `congrArg (valAt (E y).1.1) ((congrArg (fun x => φ (genAt A.D x) ^ k * _) hb).trans (hue _).symm))`. Establish `h₂ (v) : ∑ᶠ y, (k : ℝ) * A.lg v (hne v).some ⟨(E y).1.1 ≫ π, (Category.assoc _ _ _).trans (E y).1.2⟩ = (k * π.residueDegree w : ℝ) * if h : Nonempty (Ext v) then ∑ᶠ (y : AlgPt Y) (_ : below y.1 = π w), A.lg v h.some y else 0`.
+
+Rewrite using `[dif_pos (hne v), ← mul_finsum, ← finsum_subtype_eq_finsum_cond, mul_assoc]`. Use `congrArg _ (Eq.trans ?_ (CoverHt.finsum_lifts (algebraMap F _) π Y.str w hw (A.lg v (hne v).some)))` and prove the remaining obligations. Conclude with `finsum_comp_equiv E (f := fun z => A.lg v (hne v).some ⟨z.1.1 ≫ π, (Category.assoc _ _ _).trans z.1.2⟩)`. Establish `hS' : k ≠ 0 → (Function.support fun v : HeightOneSpectrum (𝓞 F) => if hv : Nonempty (Ext v) then ∑ᶠ (y : AlgPt Y) (_ : below y.1 = π w), A.lg v hv.some y else 0).Finite` using `fun hk => by`. Establish `hd : π.residueDegree w ≠ 0`.
+
+Set `` to `(π.residueFieldMap w).hom.toAlgebra`. Establish `: Module.Finite (Y.X.residueField (π w)) (G.residueField w)` using `residueFieldMap_finite_of_locallyQuasiFinite π _`. Conclude with `Module.finrank_pos.ne'`. Use `hS.subset fun v hv => ?_` and prove the remaining obligations. Rewrite `hv`, the goal using `[Function.mem_support]`.
+
+Introduce `h0`. Establish `h3` using `(h₂ v).symm.trans h0`. Conclude with `hv ((mul_eq_zero.1 h3).resolve_left (mul_ne_zero (Nat.cast_ne_zero.2 hk) (Nat.cast_ne_zero.2 hd)))`. Use `replace h₁ := h₁.trans (congrArg (- ·) (finsum_congr h₂))`. Establish `h₃ (σ : F →+* ℂ) : ∑ᶠ y : CxPts (i ≫ p) (σ.comp (algebraMap (𝓞 F) F)), logNorm ((L.restr i).φ _) s y = (k * π.residueDegree w : ℝ) * ∑ᶠ (z : Pts Y σ) (_ : under z = π w), (Real.log (C.pn Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D (π w))⁻¹ : Y.Fnˣ)) z) / 2 - (A.n : ℕ) * A.ci (InfinitePla …`.
+
+Take `⟨E, hE⟩` from `exists_equiv pb w Z i hZ hi ℂ σ`. Rewrite using `[← finsum_subtype_eq_finsum_cond, mul_assoc]`. Use `Eq.trans ?_ (congrArg _ (CoverHt.finsum_lifts σ π Y.str w hw fun z : Pts Y σ => Real.log (C.pn Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D (π w))⁻¹ : Y.Fnˣ)) z) / 2 - (A.n : ℕ) * A.ci (InfinitePlace.mk σ)))` and prove the remaining obligations. Rewrite using `[mul_finsum]`. Use `finsum_eq_of_bijective E E.bijective fun y => ?_` and prove the remaining obligations.
+
+Establish `hp` using `CxPts.mem_ptsIn.1 (CxPts.mem_pick ((L.restr i).φ (σ.comp (algebraMap (𝓞 F) F))).isLB y)`. Unfold `logNorm`. Generalize the expression as in `CxPts.pick ((L.restr i).φ (σ.comp (algebraMap (𝓞 F) F))).isLB y = c at hp ⊢`. Establish `hxc : j w ∈ L.B.U (c PUnit.unit)`. Use `Set.mem_iInter.1 hp PUnit.unit` as an intermediate fact.
+
+Rewrite using `[← hi, ← (hE y).2]`. Conclude with `this`. Establish `hx' : under (E y).1 = w` using `(E y).2`. Establish `hxc' : w ∈ (L.B.pull j).U c` using `Set.mem_iInter.2 fun _ => hxc`. Use `set y₀ : Pts Y σ := ⟨(E y).1.1 ≫ π, (Category.assoc _ _ _).trans (E y).1.2⟩ with hy₀`.
+
+Establish `hb : under y₀ = π w` using `(Scheme.Hom.comp_apply _ _ _).trans (congrArg π (E y).2)`. Establish `e₁` using `hinf σ (E y).1 y₀ (Points.PtsOver.map i rfl _ y) c rfl (hE y).1.symm (hx'.symm ▸ hxc')`. Rewrite `e₁` using `[hb, ← hue c]`. Establish `h0 : ‖ratVal ((u * r c : G.functionFieldˣ) : G.functionField) (E y).1‖ ≠ 0` using `norm_ne_zero_iff.2 (ratVal_ne_zero (by rw [hx']; exact hu c hxc'))`. Establish `e₂` using `congrArg Real.log e₁`.
+
+Establish `h0' : C.pn Y σ A.D (A.m σ) (C.cx Y σ (genAt A.D (π w))) y₀ ^ k ≠ 0` using `right_ne_zero_of_mul (((mul_pow _ _ _).symm.trans e₁).trans_ne (mul_ne_zero (pow_ne_zero _ h0) (Real.exp_ne_zero _)))`. Rewrite `e₂` using `[mul_pow, Real.log_mul (pow_ne_zero _ (Real.exp_ne_zero _)) h0', Real.log_mul (pow_ne_zero _ h0) (Real.exp_ne_zero _), Real.log_pow, Real.log_pow, Real.log_pow, Real.log_exp, Real.log_exp, HtModel.ratVal_eq_valAt]`. Establish `e₃` using `hval ℂ _ _ (c PUnit.unit) (hE y).1 (E y).2 (hE y).2 hxc`. Establish `e₄` using `(L.φ _).pull_φ i rfl c y`. Rewrite using `[HtModel.ratVal_eq_valAt]`.
+
+Use `(congrArg₂ (fun a b => Real.log ‖a‖ - b / 2) e₃ e₄).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Real.log ‖valAt (E y).1.1 ((u * r c : G.functionFieldˣ) : G.functionField)‖ - _ = _`. Rewrite `e₂` using `[Nat.cast_ofNat]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `HermLB.curveDeg at hdeg`.
+
+Rewrite `hdeg` using `[h₁, ← finsum_eq_of_bijective _ (HtModel.bijective_comp F) fun σ => (h₃ σ).symm, hi, ← mul_finsum, ← mul_finsum, finsum_eq_sum_of_fintype (α := F →+* ℂ)]`. Take `⟨_, _⟩` from `ExtConj.pts Y _ hx`. Establish `hN : (Nat.card {y : AlgPt Y // below y.1 = π w} : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `hF : (Module.finrank ℚ F : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 A.n.ne_zero`.
+
+Use `⟨?_, hS'⟩` and prove the remaining obligations. Rewrite using `[hdeg, card_emb pb w hw, Adl.ht]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem height_eq (ar : IsArithVar p Y.dim) (pb : IsPullback j (π ≫ Y.str) p (spMap (algebraMap (𝓞 F) F))) (φ : Y.Fn →+* G.functionField) {C : CxSt F}
     {A : Adl C Y} {L : HermLB p} {k : ℕ} (r : (L.B.pull j).ι → G.functionFieldˣ) (hr : IsRatSec (L.B.pull j) r)
     (hun : ∀ i, ∀ x ∈ (L.B.pull j).U i, UnitAt x (φ (genAt A.D (π x)) ^ k * r i))
@@ -297,6 +383,19 @@ theorem height_eq (ar : IsArithVar p Y.dim) (pb : IsPullback j (π ≫ Y.str) p 
 
 omit [IsIntegral X] [IsIntegral G] [IsFinite π] in
 
+/- English proof (translation)
+Take `⟨hN0, hNf⟩` from `ExtConj.pts Y x hx`. Use `Fintype.ofFinite {y : AlgPt Y // below y.1 = x}` as an intermediate fact. Use `set N : ℝ := (Nat.card {y : AlgPt Y // below y.1 = x} : ℝ) with hNdef`. Establish `hsum (g : AlgPt Y → ℝ) (c : ℝ) : ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), (g y + c) = (∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), g y) + N * c`. Rewrite using `[← finsum_subtype_eq_finsum_cond, ← finsum_subtype_eq_finsum_cond (f := g), finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, Finset.card_univ, hNdef, Nat.card_eq_fintype_card]`.
+
+Set `SA : HeightOneSpectrum (𝓞 F) → ℝ` to `fun v => if hv : Nonempty (Ext v) then ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), A.lg v hv.some y else 0`. Establish `hT (v : HeightOneSpectrum (𝓞 F)) : (if hv : Nonempty (Ext v) then ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), (A.twist 0 (-cf)).lg v hv.some y else 0) = SA v + N * ((A.n : ℕ) * cf v)`. Establish `hne : Nonempty (Ext v)` using `inferInstance`. Simplify using `only [SA, dif_pos hne]`. Simplify using `only [Adl.twist, Pi.neg_apply, mul_neg, sub_neg_eq_add]`.
+
+Conclude with `hsum _ _`. Establish `hc : (Function.support fun v => N * ((A.n : ℕ) * cf v)).Finite` using `hcf.subset fun v hv h0 => hv (by simp [h0])`. Establish `hSA : (Function.support SA).Finite`. Use `(hS.union hc).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at h`. Apply `hv` to reduce the goal to its premises. Establish `h3` using `(hT v).symm.trans h.1`. Rewrite `h3` using `[h.2, add_zero]`. Conclude with `h3`.
+
+Establish `hF : (Module.finrank ℚ F : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `hN : N ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 A.n.ne_zero`. Establish `hsplit : ∑ᶠ v, (if hv : Nonempty (Ext v) then ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), (A.twist 0 (-cf)).lg v hv.some y else 0) = ∑ᶠ v, SA v + N * (A.n : ℕ) * ∑ᶠ v, cf v`. Rewrite using `[finsum_congr hT, finsum_add_distrib hSA hc, mul_assoc, mul_finsum, mul_finsum]`.
+
+Rewrite using `[Adl.ht, hsplit, Adl.ht]`. Simplify using `only [Adl.twist, Pi.add_apply, Pi.zero_apply, add_zero]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ht_twist_neg {C : CxSt F} (A : Adl C Y) {cf : HeightOneSpectrum (𝓞 F) → ℝ} (hcf : (Function.support cf).Finite)
     {x : Y.X} (hx : IsClosed ({x} : Set Y.X))
     (hS : (Function.support fun v : HeightOneSpectrum (𝓞 F) => if hv : Nonempty (Ext v) then
@@ -342,6 +441,21 @@ theorem ht_twist_neg {C : CxSt F} (A : Adl C Y) {cf : HeightOneSpectrum (𝓞 F)
   field_simp
   ring
 
+/- English proof (translation)
+Introduce `HE F _ _ C Y A P L k cf hI y hy`. Use `P.ar.isIntegral` as an intermediate fact. Take `⟨h, H⟩` from `(HE _ P.X P.p _ P.ar).1 L`. Establish `hcf` using `hI.1`. Establish `hI' : (A.twist 0 (-cf)).Induced P L k 0`.
+
+Establish `h2` using `hI.twist_fin (c := -cf) (by rwa [Function.support_neg])`. Rewrite `h2` using `[add_neg_cancel]`. Then use the resulting hypothesis. Take `⟨-, r, hr, h₁, h₂⟩` from `hI'`. Establish `pb : IsPullback P.j (𝟙 Y.X ≫ Y.str) P.p (spMap (algebraMap (𝓞 F) F))` using `by simpa using P.pb`. Establish `hg (x : Y.X) : ((k : ℕ) • (A.twist 0 (-cf)).D).GeneratesAt x (genAt (A.twist 0 (-cf)).D x ^ (k : ℕ))`.
+
+Use `CartierDiv.isEqn_iff_generatesAt_inv.1 ((Base.isEqn_eqn (A.twist 0 (-cf)).D x).nsmul k)` as an intermediate fact. Rewrite `this` using `[Units.val_pow_eq_pow_val, ← inv_pow, ← Units.val_inv_eq_inv_val]`. Then use the resulting hypothesis. Take `⟨he, hS⟩` from `height_eq P.ar pb (RingHom.id _) (A := A.twist 0 (-cf)) (k := (k : ℕ)) r hr.isRatSec (fun i x hx => (hr.isEqn i x hx).generatesAt_iff.1 (hg x)) (fun σ z y y' i e₁ e₂ hi => by`. Take `rfl : y = z` from `Subtype.ext (e₁.trans (Category.comp_id _))`. Use `h₁ σ y y' i _ e₂ hi (hg _).regularAt` as an intermediate fact.
+
+Rewrite `this` using `[C.pn_mPow Y σ (A.twist 0 (-cf)).D k _ _ y (generatesAt_genAt _ _)]`. Rewrite using `[mul_pow, ← Real.exp_nat_mul]`. Use `Eq.trans ?_ this` and prove the remaining obligations. Use `congr 2`. Use the proof step `ring)`.
+
+Use the proof step `(fun v e y z yt i e₁ e₂ hi => by`. Take `rfl : z = y.1` from `(Category.comp_id _).symm.trans e₁`. Use `h₂ v e y yt i e₂ hi` as an intermediate fact. Rewrite `this` using `[Pi.zero_apply, mul_zero, sub_zero, Units.val_mul, Units.val_pow_eq_pow_val]`. Conclude with `this) hy H`.
+
+Establish `e (x : Y.X) : (𝟙 Y.X : Y.X ⟶ Y.X) x = x` using `rfl`. Simplify using `only [e] at he hS`. Establish `hn : (A.twist 0 (-cf)).n = A.n` using `rfl`. Rewrite `he` using `[hn, ht_twist_neg A hcf hy (hS (PNat.ne_zero k))]`. Use `⟨h, H, he.trans ?_⟩` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main : GlobalTheory.Published.ArExists → ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y)
     (P : TrueGeo.Model Y) (L : HermLB P.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ), A.Induced P L k cf →
     ∀ y : Y.X, IsClosed ({y} : Set Y.X) → IsPtHt L (P.j y) (((k : ℕ) : ℝ) * ((A.n : ℕ) : ℝ) * A.ht y -

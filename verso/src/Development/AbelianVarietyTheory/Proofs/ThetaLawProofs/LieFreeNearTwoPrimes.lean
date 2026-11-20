@@ -29,6 +29,9 @@ variable {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
   {n : ℕ} {S T : Type} [CommRing S] [Algebra R S] [CommRing T] [Algebra R T]
   {v w u : Fin n → (epsR R ⟶ G)}
 
+/- English proof (translation)
+Rewrite using `[← lieExp_add hw _ _ _ _ (fun _ => TrivSqZeroExt.inr_mul_inr _ _ _) (fun _ => by rw [← TrivSqZeroExt.inr_add]; exact TrivSqZeroExt.inr_mul_inr _ _ _)]`. Conclude with `lieExp_congr _ (fun i => TrivSqZeroExt.inr_add _ _ _) _ _`.
+-/
 theorem tanExp_add (hw : ∀ i, IsTangent (w i)) (c c' : Fin n → S) :
     tanExp w (c + c') = tanExp w c * tanExp w c' := by
   rw [← lieExp_add hw _ _ _ _ (fun _ => TrivSqZeroExt.inr_mul_inr _ _ _)
@@ -36,6 +39,9 @@ theorem tanExp_add (hw : ∀ i, IsTangent (w i)) (c c' : Fin n → S) :
   exact lieExp_congr _ (fun i => TrivSqZeroExt.inr_add _ _ _) _ _
 
 omit [GrpObj G] [IsCommMonObj G] in
+/- English proof (translation)
+Rewrite using `[scl, res, ← Category.assoc, spMap_comp]`. Use `congr 2`. Use `DualNumber.algHom_ext ?_` and prove the remaining obligations. Rewrite using `[epsTo_eps]`. Apply the tactic sequence `ext <;> simp`.
+-/
 theorem epsTo_inr_comp (s : S) (x : epsR R ⟶ G) :
     spMap (epsTo R (inr s : DualNumber S) (TrivSqZeroExt.inr_mul_inr _ _ _)) ≫ x =
       scl s (res (Algebra.ofId R S) x) := by
@@ -45,6 +51,13 @@ theorem epsTo_inr_comp (s : S) (x : epsR R ⟶ G) :
   rw [epsTo_eps]
   ext <;> simp
 
+/- English proof (translation)
+Set `F : (Fin n → S) →+ Additive (sp (R₀` to `R) (DualNumber S) ⟶ G) := AddMonoidHom.mk' (fun c => Additive.ofMul (tanExp w c)) (fun c c' => by`. Rewrite using `[← ofMul_mul, tanExp_add hw])`. Rewrite using `[Matrix.vecMul_eq_sum]`. Express the relevant statement in the definitionally equal form `_ = (F (∑ i, c i • M i)).toMul`. Rewrite using `[map_sum, toMul_sum, tanExp, lieExp]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[epsTo_inr_comp, hM, scl_tanExp]`. Express the relevant statement in the definitionally equal form `_ = tanExp w (c i • M i)`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[mul_comm]`.
+-/
 theorem tanExp_eq_vecMul (hw : ∀ i, IsTangent (w i)) {M : Matrix (Fin n) (Fin n) S}
     (hM : ∀ i, res (Algebra.ofId R S) (v i) = tanExp w (M i)) (c : Fin n → S) :
     tanExp v c = tanExp w (Matrix.vecMul c M) := by
@@ -61,6 +74,11 @@ theorem tanExp_eq_vecMul (hw : ∀ i, IsTangent (w i)) {M : Matrix (Fin n) (Fin 
   funext j
   simp [mul_comm]
 
+/- English proof (translation)
+Rewrite `hdet` using `[← Matrix.isUnit_iff_isUnit_det]`. Use `⟨fun s s' e => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `e` using `[tanExp_eq_vecMul hw hM, tanExp_eq_vecMul hw hM]`. Conclude with `Matrix.vecMul_injective_of_isUnit hdet (h.1 _ _ e)`. Take `⟨d, rfl⟩` from `h.2 x hx`.
+
+Take `⟨c, hc⟩` from `Matrix.vecMul_surjective_iff_isUnit.2 hdet d`. Conclude with `⟨c, by rw [tanExp_eq_vecMul hw hM]; exact congrArg _ hc.symm⟩`.
+-/
 theorem isLieBasisOver_of_det (hw : ∀ i, IsTangent (w i)) (h : IsLieBasisOver S w)
     {M : Matrix (Fin n) (Fin n) S}
     (hM : ∀ i, res (Algebra.ofId R S) (v i) = tanExp w (M i)) (hdet : IsUnit M.det) :
@@ -73,6 +91,11 @@ theorem isLieBasisOver_of_det (hw : ∀ i, IsTangent (w i)) (h : IsLieBasisOver 
     obtain ⟨c, hc⟩ := Matrix.vecMul_surjective_iff_isUnit.2 hdet d
     exact ⟨c, by rw [tanExp_eq_vecMul hw hM]; exact congrArg _ hc.symm⟩
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `h (RingHom.ker (fstS R S)) (ker_fst_sq (R := R) (S := S) S)`. Use `⟨fun c c' h => funext fun i => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `congrArg TrivSqZeroExt.snd (congrFun (h₁ _ _ (fun i => (rfl : fstS R S (inr (c i)) = 0)) (fun i => (rfl : fstS R S (inr (c' i)) = 0)) _ _ h) i)`. Take `⟨c, hc, hcJ, e⟩` from `h₂ y (mem_redKer_of_section _ (inlS R S) (fun _ => rfl) hy)`. Establish `hc' : ∀ i, c i = inr (c i).snd` using `fun i =>`.
+
+Establish `h0 : (c i).fst = 0` using `hcJ i`. Use the proof step `TrivSqZeroExt.ext h0 rfl`. Conclude with `⟨fun i => (c i).snd, e.trans (lieExp_congr v hc' _ _)⟩`.
+-/
 theorem isLieBasisOver_of_expBij (h : ExpBij (DualNumber S) v) : IsLieBasisOver S v := by
   obtain ⟨h₁, h₂⟩ := h (RingHom.ker (fstS R S)) (ker_fst_sq (R := R) (S := S) S)
   refine ⟨fun c c' h => funext fun i => ?_, fun y hy => ?_⟩
@@ -85,6 +108,11 @@ theorem isLieBasisOver_of_expBij (h : ExpBij (DualNumber S) v) : IsLieBasisOver 
       TrivSqZeroExt.ext h0 rfl
     exact ⟨fun i => (c i).snd, e.trans (lieExp_congr v hc' _ _)⟩
 
+/- English proof (translation)
+Use `⟨fun h => ⟨fun s s' e => ?_, fun x hx => ?_⟩, fun h => isLieBasis_bcVec_of hv h.1 fun y hy => h.2 y (comp_eq_one_of_mem_redKer hy _ fun a ha => ha)⟩` and prove the remaining obligations. Use `(isLieBasisOver_self h).1 s s' (pushR_inj G ?_)` and prove the remaining obligations. Rewrite using `[tanExp, tanExp, ← prodPts_eq_lieExp, ← prodPts_eq_lieExp, pushR_prodPts, pushR_prodPts]`. Conclude with `e`. Take `⟨c, hc, -⟩` from `h.2 (pullR (R' := S) G x) ((isTan_iff _).1 ((isTan_iff_mem G _).2 (by`.
+
+Rewrite using `[pushR_pullR]`. Conclude with `mem_redKer_of_section _ (inlS R S) (fun _ => rfl) hx)))`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[tanExp, ← pushR_prodPts, ← (isLieComb_iff _ _ _).1 hc, pushR_pullR]`.
+-/
 theorem isLieBasis_bcVec_iff (hv : ∀ i, IsTangent (v i)) :
     IsLieBasis (bcVec S v) ↔ IsLieBasisOver S v := by
   refine ⟨fun h => ⟨fun s s' e => ?_, fun x hx => ?_⟩, fun h => isLieBasis_bcVec_of hv h.1
@@ -100,6 +128,11 @@ theorem isLieBasis_bcVec_iff (hv : ∀ i, IsTangent (v i)) :
 
 variable [Smooth G.hom]
 
+/- English proof (translation)
+Use `expBij_of_span (s := α '' {g : S | UnitInChart G (Localization.Away g)}) ?_ ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_span, span_unitInChart, Ideal.map_top]`. Introduce and unpack `_ ⟨g, hg, rfl⟩ T' _ _ φ hφ`. Establish `hρ` using `isAway_awayHom (R := R) g`. Take `⟨β, -⟩` from `hρ.lift (φ.comp α) hφ`.
+
+Conclude with `expBij_of_unitInChart hv hg (h.away hv hρ) β`.
+-/
 theorem expBij_of_isLieBasisOver (hv : ∀ i, IsTangent (v i)) (h : IsLieBasisOver S v)
     (α : S →ₐ[R] T) : ExpBij T v := by
   refine expBij_of_span (s := α '' {g : S | UnitInChart G (Localization.Away g)}) ?_ ?_
@@ -109,11 +142,25 @@ theorem expBij_of_isLieBasisOver (hv : ∀ i, IsTangent (v i)) (h : IsLieBasisOv
     obtain ⟨β, -⟩ := hρ.lift (φ.comp α) hφ
     exact expBij_of_unitInChart hv hg (h.away hv hρ) β
 
+/- English proof (translation)
+Take `⟨α, -⟩` from `(isAway_awayHom (R := R) a).lift (Algebra.ofId R T) ha`. Conclude with `expBij_of_isLieBasisOver hv h α`.
+-/
 theorem expBij_of_isUnit (hv : ∀ i, IsTangent (v i)) {a : R}
     (h : IsLieBasisOver (Localization.Away a) v) (ha : IsUnit (algebraMap R T a)) : ExpBij T v := by
   obtain ⟨α, -⟩ := (isAway_awayHom (R := R) a).lift (Algebra.ofId R T) ha
   exact expBij_of_isLieBasisOver hv h α
 
+/- English proof (translation)
+Establish `hρ` using `isAway_awayHom (R := R) a`. Use `choose N w hw hres using fun i => exists_res_eq hρ (w' := pushR G (e i)) (comp_eq_one_of_mem_redKer ((isTan_iff_mem G _).1 ((isTan_iff _).2 (he.1 i))) _ fun a ha => ha)`. Establish `hw' : ∀ i, IsTangent (G` using `G) (w i) := fun i => (isTan_iff _).1 (hw i)`. Use `⟨w, hw', (isLieBasis_bcVec_iff hw').1 ?_⟩` and prove the remaining obligations. Establish `key` using `(LieComb.isLieBasis_iff_isUnit_det he (Matrix.diagonal fun i => awayHom R a a ^ N i)).2 (by`.
+
+Rewrite using `[Matrix.det_diagonal]`. Conclude with `IsUnit.prod_univ_iff.2 fun i => hρ.unit.pow _)`. Use `key using 2 with i` and compare the differences between its conclusion and the goal. Establish `e₁ : (Matrix.diagonal fun i => awayHom R a a ^ N i) i = fun j => (Pi.single i (1 : Localization.Away a) : Fin n → Localization.Away a) j * awayHom R a a ^ N i`. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply_ne' _ hj, Pi.single_eq_of_ne hj]`. Rewrite using `[e₁, ← scl_tanExp, LieComb.tanExp_single he.1]`.
+
+Use `pushR_inj G ?_` and prove the remaining obligations. Rewrite using `[pushR_bcVec, scl, pushR_spMap]`. Use `Eq.trans ?_ ((hres i).trans ?_)` and prove the remaining obligations. Use `congr 2`. Use `DualNumber.algHom_ext ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapA, ReciprocityTheory.ChartRestriction.G.Chart.dualMapR]`. Use `congr 2`.
+-/
 theorem exists_global {a : R} {e : Fin n → (epsR (Localization.Away a) ⟶
       (Over.pullback (fB R (Localization.Away a))).obj G)} (he : IsLieBasis e) :
     ∃ w : Fin n → (epsR R ⟶ G), (∀ i, IsTangent (w i)) ∧
@@ -143,6 +190,25 @@ theorem exists_global {a : R} {e : Fin n → (epsR (Localization.Away a) ⟶
     ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapA, ReciprocityTheory.ChartRestriction.G.Chart.dualMapR]
   · congr 2
 
+/- English proof (translation)
+Establish `hρ` using `isAway_awayHom (R := R) a`. Use `choose M hM using fun i => h.2 (res (Algebra.ofId R (Localization.Away a)) (u i)) (IsTanOver.res ((isTan_iff _).2 (hu i)) _)`. Set `A : Matrix (Fin n) (Fin n) (Localization.Away a)` to `algebraMap R (Localization.Away a) a • (1 : Matrix (Fin n) (Fin n) (Localization.Away a)) + algebraMap R (Localization.Away a) b • Matrix.of M`. Establish `hA : ∀ i, res (Algebra.ofId R (Localization.Away a)) (v i) = tanExp w (A i)`. Introduce `i`.
+
+Establish `e₁ : res (Algebra.ofId R (Localization.Away a)) (w i) = tanExp w (Pi.single i 1)` using `by conv_lhs => rw [← LieComb.tanExp_single hw i, res_tanExp]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `by_cases hj : j = i <;> simp [hj]`. Rewrite using `[hv, res, MonObj.comp_mul]`.
+
+Express the relevant statement in the definitionally equal form `res (Algebra.ofId R (Localization.Away a)) (scl (R := R) (S := R) (G := G) a (w i)) * res (Algebra.ofId R (Localization.Away a)) (scl (R := R) (S := R) (G := G) b (u i)) = tanExp w (A i)`. Rewrite using `[res_scl, res_scl, e₁, hM, scl_tanExp, scl_tanExp, ← tanExp_add hw]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[-algebraMap_smul, A, Matrix.one_apply, Pi.single_apply, mul_comm, eq_comm]`.
+
+Take `⟨N, d, hd⟩` from `hρ.surj A.det`. Establish `hdp : d ∉ p.asIdeal`. Establish `ha' : algebraMap R p.asIdeal.ResidueField a ≠ 0`. Rewrite using `[Ne, Ideal.algebraMap_residueField_eq_zero]` and apply the resulting hypothesis. Establish `hb' : algebraMap R p.asIdeal.ResidueField b = 0`.
+
+Rewrite using `[Ideal.algebraMap_residueField_eq_zero]` and apply the resulting hypothesis. Take `⟨φ, -⟩` from `hρ.lift (Algebra.ofId R p.asIdeal.ResidueField) ha'.isUnit`. Establish `e₁ : φ.mapMatrix A = algebraMap R p.asIdeal.ResidueField a • 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [-algebraMap_smul, A, hb', Matrix.one_apply, hij]`.
+
+Establish `e₂` using `congrArg φ hd`. Rewrite `e₂` using `[map_mul, AlgHom.map_det, e₁, Matrix.det_smul, Matrix.det_one, mul_one, map_pow]`. Simplify using `only [IsScalarTower.coe_toAlgHom', AlgHom.commutes] at e₂`. Rewrite using `[← Ideal.algebraMap_residueField_eq_zero, ← e₂]`. Conclude with `mul_ne_zero (pow_ne_zero _ ha') (pow_ne_zero _ ha')`.
+
+Use `⟨a * d, fun hc => (p.isPrime.mem_or_mem hc).elim ha hdp, ?_⟩` and prove the remaining obligations. Establish `hc` using `(isAway_awayHom (R := R) (a * d)).unit`. Rewrite `hc` using `[map_mul]`. Take `⟨α, -⟩` from `hρ.lift (awayHom R (a * d)) (isUnit_of_mul_isUnit_left hc)`. Use `isLieBasisOver_of_det hw (isLieBasisOver_of_expBij (expBij_of_isLieBasisOver hw h ((inlS R _).comp α))) (M := α.mapMatrix A) (fun i => ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[Subsingleton.elim (Algebra.ofId R (Localization.Away (a * d))) (α.comp (Algebra.ofId R (Localization.Away a))), ← res_res, hA, res_tanExp]`. Both sides reduce to the same expression. Rewrite using `[← AlgHom.map_det]`. Establish `e₂` using `congrArg α hd`. Rewrite `e₂` using `[map_mul]`.
+
+Use `isUnit_of_mul_isUnit_left (y := α (awayHom R a a ^ N)) ?_` and prove the remaining obligations. Rewrite using `[e₂]`. Simplify `isUnit_of_mul_isUnit_right hc` using `only [IsScalarTower.coe_toAlgHom', AlgHom.commutes]`.
+-/
 theorem exists_away_comb (hw : ∀ i, IsTangent (w i)) (hu : ∀ i, IsTangent (u i)) {a b : R}
     (p : PrimeSpectrum R) (ha : a ∉ p.asIdeal) (hb : b ∈ p.asIdeal)
     (h : IsLieBasisOver (Localization.Away a) w)
@@ -200,6 +266,15 @@ theorem exists_away_comb (hw : ∀ i, IsTangent (w i)) (hu : ∀ i, IsTangent (u
     rw [e₂]
     simpa only [IsScalarTower.coe_toAlgHom', AlgHom.commutes] using isUnit_of_mul_isUnit_right hc
 
+/- English proof (translation)
+Distinguish the cases in `haq : a ∈ q.asIdeal`. Use `swap`. Conclude with `⟨a, ha, haq, h₁⟩`. Distinguish the cases in `hbp : b ∈ p.asIdeal`. Use `swap`.
+
+Conclude with `⟨b, hbp, hb, h₂⟩`. Use `⟨a + b, fun h => ha ((Ideal.add_mem_iff_left _ hbp).1 h), fun h => hb ((Ideal.add_mem_iff_right _ haq).1 h), isLieBasisOver_of_expBij ?_⟩` and prove the remaining obligations. Use `expBij_of_span (s := {algebraMap R _ a, algebraMap R _ b}) ?_ ?_` and prove the remaining obligations. Use `Ideal.eq_top_of_isUnit_mem _ (x := algebraMap R _ (a + b)) ?_ ?_` and prove the remaining obligations. Rewrite using `[map_add]`.
+
+Conclude with `add_mem (Ideal.subset_span (by simp)) (Ideal.subset_span (by simp))`. Use `((isAway_awayHom (R := R) (a + b)).unit).map (inlS R (Localization.Away (a + b)))` as an intermediate fact. Simplify `this` using `only [IsScalarTower.coe_toAlgHom', AlgHom.commutes]`. Apply the tactic sequence `rintro _ (rfl | rfl) T _ _ φ hφ <;> rw [AlgHom.commutes] at hφ`. Conclude with `expBij_of_isUnit hv h₁ hφ`.
+
+Conclude with `expBij_of_isUnit hv h₂ hφ`.
+-/
 theorem exists_away_two (hv : ∀ i, IsTangent (v i)) (p q : PrimeSpectrum R) {a b : R}
     (ha : a ∉ p.asIdeal) (hb : b ∉ q.asIdeal) (h₁ : IsLieBasisOver (Localization.Away a) v)
     (h₂ : IsLieBasisOver (Localization.Away b) v) :
@@ -222,6 +297,13 @@ theorem exists_away_two (hv : ∀ i, IsTangent (v i)) (p q : PrimeSpectrum R) {a
     · exact expBij_of_isUnit hv h₁ hφ
     · exact expBij_of_isUnit hv h₂ hφ
 
+/- English proof (translation)
+Distinguish the cases in `haq : a ∈ q.asIdeal`. Use `swap`. Conclude with `⟨a, ha, haq, w, hw, h₁⟩`. Distinguish the cases in `hbp : b ∈ p.asIdeal`. Use `swap`.
+
+Conclude with `⟨b, hbp, hb, u, hu, h₂⟩`. Set `v : Fin n → (epsR R ⟶ G)` to `fun i => scl (R := R) a (w i) * scl (R := R) b (u i)`. Establish `hv : ∀ i, IsTangent (v i)` using `fun i => (isTan_iff _).1 (by`. Express the relevant statement in the definitionally equal form `IsTanOver (R := R) (S := R) (v i)`. Rewrite using `[IsTanOver, MonObj.comp_mul, IsTanOver.scl ((isTan_iff _).2 (hw i)) a, IsTanOver.scl ((isTan_iff _).2 (hu i)) b, mul_one])`.
+
+Take `⟨c, hc, h₃⟩` from `exists_away_comb (v := v) hw hu p ha hbp h₁ fun _ => rfl`. Take `⟨d, hd, h₄⟩` from `exists_away_comb (v := v) hu hw q hb haq h₂ fun _ => mul_comm _ _`. Take `⟨r, h₅, h₆, h₇⟩` from `exists_away_two hv p q hc hd h₃ h₄`. Conclude with `⟨r, h₅, h₆, v, hv, h₇⟩`.
+-/
 theorem exists_global_two (hw : ∀ i, IsTangent (w i)) (hu : ∀ i, IsTangent (u i))
     (p q : PrimeSpectrum R) {a b : R} (ha : a ∉ p.asIdeal) (hb : b ∉ q.asIdeal)
     (h₁ : IsLieBasisOver (Localization.Away a) w) (h₂ : IsLieBasisOver (Localization.Away b) u) :
@@ -250,6 +332,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `R _ G _ _ n h p q`. Establish `: Smooth G.hom` using `SmoothOfRelativeDimension.smooth n G.hom`. Take `⟨a, ha, e, he⟩` from `LieLoc.lie_locally_free R G n h p`. Take `⟨b, hb, f, hf⟩` from `LieLoc.lie_locally_free R G n h q`. Take `⟨w, hw, h₁⟩` from `exists_global he`.
+
+Take `⟨u, hu, h₂⟩` from `exists_global hf`. Take `⟨r, h₃, h₄, v, hv, h₅⟩` from `exists_global_two hw hu p q ha hb h₁ h₂`. Conclude with `⟨r, h₃, h₄, _, (isLieBasis_bcVec_iff hv).2 h₅⟩`.
+-/
 theorem lie_free_near_two_primes :
     ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (n : ℕ),
       SmoothOfRelativeDimension n G.hom → ∀ p q : PrimeSpectrum R,

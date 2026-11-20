@@ -25,6 +25,11 @@ variable (B : BX R₀)
 def ev {R' : LAlg R₀} (h : B.gg →ₗ[R₀] R') (v : B.gg ⊗[R₀] (R' : Type u)) : R' :=
   LinearMap.mul' R₀ R' (TensorProduct.map h LinearMap.id v)
 
+/- English proof (translation)
+Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp [evK, ev]`. Consider the case `tmul g r`. Simplify using `only [evK, ev, TensorProduct.map_tmul, LinearMap.id_apply, LinearMap.mul'_apply, Submodule.subtype_apply]`. Use `show h g * (ξ * r) = ξ * (h g * r)`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy`. Simplify using `only [evK, ev, map_add] at hx hy ⊢`. Rewrite using `[hx, hy, mul_add]`.
+-/
 lemma evK_ξmul {R' R : LAlg R₀} (π : LHom R' R) (ξ : (R' : Type u)) (hξ : ξ ∈ π.ker)
     (h : B.gg →ₗ[R₀] R') (v : B.gg ⊗[R₀] (R' : Type u)) :
     B.evK π h (TensorProduct.map LinearMap.id (ξmul π ξ hξ) v) = ξ * B.ev h v := by
@@ -56,6 +61,11 @@ def ThmALevelStatement (B : BX R₀) : Prop :=
       (zh : (R' : Type u)) ^ N = 1 + e₀ * c * ξ →
       π.1 (e₀ * c) = π.1 (B.ev ht v) - π.1 (B.ev hs w)
 
+/- English proof (translation)
+Introduce `R' R π ξ hξ Dp N hsurj hker hsq hann hN sh th v w hs ht zh z c e₀ hsh hth hhs hht hpair hzh hzN`. Establish `h3` using `hB3 R' R π ξ Dp N hsurj hker hsq hann hN sh th (TensorProduct.map LinearMap.id (ξmul π ξ hξ) v) (TensorProduct.map LinearMap.id (ξmul π ξ hξ) w) hs ht zh z hsh hth hhs hht hpair hzh`. Rewrite `h3` using `[B.evK_ξmul, B.evK_ξmul, hzN]`. Establish `h4 : ((e₀ : (R' : Type u)) * c - (B.ev ht v - B.ev hs w)) * ξ = 0`. Take the linear combination `h3`.
+
+Establish `h5` using `hann _ h4`. Rewrite `h5` using `[← hker, RingHom.mem_ker, map_sub, map_sub]`. Conclude with `sub_eq_zero.mp h5`.
+-/
 theorem thmA_level (B : BX R₀) (hB3 : TangentPairingStatement B) : ThmALevelStatement B := by
   intro R' R π ξ hξ Dp N hsurj hker hsq hann hN sh th v w hs ht zh z c e₀ hsh hth hhs hht hpair
     hzh hzN

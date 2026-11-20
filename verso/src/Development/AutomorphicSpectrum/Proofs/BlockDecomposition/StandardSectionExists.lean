@@ -12,12 +12,20 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.StdChart
 
+/- English proof (translation)
+Rewrite using `[Psi_val]`. Conclude with `bdet_eq D _ a h`.
+-/
 theorem bdet_Psi (D : D7) {n : ℕ} (χ : (AE D)ˣ →* Circle) (g : GlobalTheory.StdUnn.G D n) (a : GL (Fin n) (AE D))
     (h : GlobalTheory.StdUnn.blkA (GlobalTheory.StdUnn.mat g) = a.1) :
     bdet (Sum.inl '' (Set.univ : Set (Fin n))) (Psi D χ n g).1 = Matrix.GeneralLinearGroup.det a := by
   rw [Psi_val]
   exact bdet_eq D _ a h
 
+/- English proof (translation)
+Introduce `hD hI D χ n`. Use `⟨Psi D χ n, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mem_GF D χ`. Conclude with `mem_P D χ`. Conclude with `mem_K D χ hD hI`.
+
+Conclude with `bdet_Psi D χ`.
+-/
 theorem tStd : TStd := by
   intro hD hI D χ n
   refine ⟨Psi D χ n, ?_, ?_, ?_, ?_⟩

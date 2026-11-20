@@ -6,6 +6,17 @@ open UpperTheory.V.Lit.Dr
 open Set ContinuousAlternatingMap
 open scoped ContDiff
 
+/- English proof (translation)
+Introduce `V F _ _ _ _ _ _ Y hY hconv q w hw hd`. Break down `Y.eq_empty_or_nonempty with rfl | ⟨p₀, hp₀⟩` into its components or cases. Conclude with `⟨0, contDiffOn_empty, fun p hp => hp.elim⟩`. Establish `hseg : ContDiff ℝ ∞ (fun z : V × ℝ => p₀ + z.2 • (z.1 - p₀))` using `by fun_prop`. Use `set U : Set (V × ℝ) := (fun z : V × ℝ => p₀ + z.2 • (z.1 - p₀)) ⁻¹' Y with hU`.
+
+Establish `hUo : IsOpen U` using `hY.preimage hseg.continuous`. Establish `hmem : ∀ p ∈ Y, ∀ t ∈ Icc (0 : ℝ) 1, p₀ + t • (p - p₀) ∈ Y` using `fun p hp t ht => hconv.add_smul_sub_mem hp₀ hp ht`. Set `Φ : V × ℝ → V [⋀^Fin q]→L[ℝ] F` to `fun z => z.2 ^ q • (w (p₀ + z.2 • (z.1 - p₀))).curryLeft (z.1 - p₀)`. Establish `hΦ : ContDiffOn ℝ ∞ Φ U`. Establish `h1 : ContDiffOn ℝ ∞ (fun z : V × ℝ => w (p₀ + z.2 • (z.1 - p₀))) U` using `hw.comp hseg.contDiffOn fun z hz => hz`.
+
+Establish `h2 : ContDiffOn ℝ ∞ (fun z : V × ℝ => (w (p₀ + z.2 • (z.1 - p₀))).curryLeft) U` using `(curryLeftLI (𝕜 := ℝ) (E := V) (F := F) (n := q)).toContinuousLinearMap.contDiff.comp_contDiffOn h1`. Conclude with `(contDiff_snd.pow q).contDiffOn.smul (h2.clm_apply (contDiff_fst.sub contDiff_const).contDiffOn)`. Use `⟨fun p => ∫ t in (0 : ℝ)..1, Φ (p, t), paramSmooth V _ Y U Φ hY hUo (fun z hz => hmem z.1 hz.1 z.2 hz.2) hΦ, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨hc, hD⟩` from `paramDeriv V _ p U Φ hUo (hmem p hp) hΦ`. Establish `hI` using `hc.intervalIntegrable_of_Icc (μ := MeasureTheory.volume) zero_le_one`.
+
+Establish `hI'` using `((alternatizeUncurryFinCLM ℝ V F).continuous.comp_continuousOn hc).intervalIntegrable_of_Icc (μ := MeasureTheory.volume) zero_le_one`. Establish `hder : ∀ t ∈ uIcc (0 : ℝ) 1, HasDerivAt (fun r : ℝ => r ^ (q + 1) • w (p₀ + r • (p - p₀))) (alternatizeUncurryFinCLM ℝ V F (fderiv ℝ (fun x => Φ (x, t)) p)) t`. Introduce `t ht`. Rewrite `ht` using `[uIcc_of_le zero_le_one]`. Establish `hm` using `hmem p hp t ht`.
+
+Conclude with `poinPt V F q w p₀ p t ((hw.contDiffAt (hY.mem_nhds hm)).differentiableAt (by simp)) (hd _ hm)`. Establish `h3` using `intervalIntegral.integral_eq_sub_of_hasDerivAt hder hI'`. Rewrite `h3` using `[(alternatizeUncurryFinCLM ℝ V F).intervalIntegral_comp_comm hI, ← hD.fderiv]`. Use `Eq.trans h3 ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Lit.Dr.poincare :
     Poincare := by
   intro V F _ _ _ _ _ _ Y hY hconv q w hw hd

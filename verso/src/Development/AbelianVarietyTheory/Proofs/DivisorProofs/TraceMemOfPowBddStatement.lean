@@ -7,6 +7,9 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.trace_mem_of_pow_bdd | exact GlobalTheory.trace_mem_of_pow_bdd | (intros; apply GlobalTheory.trace_mem_of_pow_bdd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.trace_mem_of_mul_pow_entries_mem : ∀ (E : Type) [Field E] [NumberField E] (w : Pl E) (n : ℕ)
     (y : Matrix (Fin n) (Fin n) (w.adicCompletion E)) (a : w.adicCompletion E), a ≠ 0 →
     (∀ k : ℕ, ∀ i j, a * (y ^ k) i j ∈ Ov E w) → y.trace ∈ Ov E w := by

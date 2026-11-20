@@ -60,6 +60,9 @@ structure Factor (D D' : DegPre R) where
 
 attribute [instance] Factor.ring Factor.star Factor.mod
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨F.O, _, _, _, F.o, F.e, F.f, F.inc, F.pr, F.xi, F.xp, F.w, F.idem, F.inc_hom, F.pr_hom, F.inc_pr, F.pr_inc, F.xp_xi, F.xi_xp, F.c_xi, ⟨F.inj, F.onto⟩, F.w_gen, F.tau⟩`.
+-/
 theorem Factor.isFactor {D D' : DegPre R} (F : Factor D D') : IsFactor D D' :=
   ⟨F.O, _, _, _, F.o, F.e, F.f, F.inc, F.pr, F.xi, F.xp, F.w, F.idem, F.inc_hom, F.pr_hom, F.inc_pr, F.pr_inc, F.xp_xi,
     F.xi_xp, F.c_xi, ⟨F.inj, F.onto⟩, F.w_gen, F.tau⟩
@@ -135,6 +138,9 @@ def Emb.Theta {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π : S �
   ∃ (θ : L.Sec) (O : E.Y.left.Opens), (O : Set E.Y.left).Nonempty ∧ ∀ (g : E.H.toScheme) (y : E.Y.left), y ∈ O →
     π (G.hom (E.H.ι g)) = closedPoint R → E.f g = E.j y → ∃ i : L.ι, E.H.ι g ∈ G.left.basicOpen (θ.f i)
 
+/- English proof (translation)
+Set `m : (Over.pullback (s ≫ p)).mapMon.obj (Mon.mk G) ≅ (Over.pullback s).mapMon.obj ((Over.pullback p).mapMon.obj (Mon.mk G))` to `(Functor.mapMonNatIso (Over.pullbackComp s p) ≪≫ Functor.mapMonCompIso).app (Mon.mk G)`. Establish `h : IsMonHom m.hom.hom` using `inferInstance`. Establish `e : m.hom.hom = (Over.pullbackComp s p).hom.app G` using `Category.comp_id _`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem Wit.isMonHom_pullbackComp {S S' S'' : Scheme.{0}} (s : S'' ⟶ S') (p : S' ⟶ S) (G : Over S) [GrpObj G] :
     IsMonHom (M := (Over.pullback (s ≫ p)).obj G)
       (N := (Over.pullback s).obj ((Over.pullback p).obj G))
@@ -147,6 +153,9 @@ theorem Wit.isMonHom_pullbackComp {S S' S'' : Scheme.{0}} (s : S'' ⟶ S') (p : 
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Simplify using `[Over.pullbackComp, Over.mapComp, pullback.lift_fst_assoc, pullback.lift_fst]`.
+-/
 theorem Wit.pullbackComp_fst {S S' S'' : Scheme.{0}} (s : S'' ⟶ S') (p : S' ⟶ S) (G : Over S) :
     ((Over.pullbackComp s p).hom.app G).left ≫ pullback.fst _ s ≫ pullback.fst G.hom p = pullback.fst G.hom (s ≫ p) := by
   simp [Over.pullbackComp, Over.mapComp, pullback.lift_fst_assoc, pullback.lift_fst]
@@ -183,6 +192,13 @@ def Emb.ofImm {R : Type} [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj 
 def Wit.toL (R : Type) [CommRing R] : MvPolynomial {j : Fin 3 // j ≠ 0} R →ₐ[R] LaurentPolynomial R :=
   MvPolynomial.aeval fun j => if j.1 = 1 then LaurentPolynomial.T 1 else LaurentPolynomial.T (-1)
 
+/- English proof (translation)
+Rewrite using `[← AlgHom.range_eq_top, eq_top_iff]`. Introduce and unpack `p -`. Establish `h1 : LaurentPolynomial.T 1 ∈ (Wit.toL R).range` using `⟨MvPolynomial.X ⟨1, by decide⟩, by simp [Wit.toL]⟩`. Establish `h2 : LaurentPolynomial.T (-1) ∈ (Wit.toL R).range` using `⟨MvPolynomial.X ⟨2, by decide⟩, by simp [Wit.toL]⟩`. Establish `hT : ∀ n : ℤ, LaurentPolynomial.T n ∈ (Wit.toL R).range` using `fun n => by`.
+
+Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => exact one_mem _`. Consider the case `succ n ih => rw [LaurentPolynomial.T_add]`. Conclude with `mul_mem ih h1`. Consider the case `pred n ih => rw [sub_eq_add_neg, LaurentPolynomial.T_add]`.
+
+Conclude with `mul_mem ih h2`. Proceed by induction on `p using LaurentPolynomial.induction_on' with`. Consider the case `add p q hp hq => exact add_mem hp hq`. Consider the case `C_mul_T n a => exact mul_mem (Subalgebra.algebraMap_mem _ a) (hT n)`.
+-/
 theorem Wit.toL_surj (R : Type) [CommRing R] : Function.Surjective (Wit.toL R) := by
   rw [← AlgHom.range_eq_top, eq_top_iff]
   rintro p -
@@ -229,10 +245,19 @@ def tate2 : DegPre InhTate.R :=
     psi := fun n => cg _ _ (pi0 ^ (n.1 ^ 2 + n.2 ^ 2))
     psi_gen := fun _ => cg_isGen _ _ _ }
 
+/- English proof (translation)
+The claim follows from `cg_isConst _ _ _`.
+-/
 theorem psi2 (n : ℤ × ℤ) : IsConst (tate2.psi n) (pi0 ^ (n.1 ^ 2 + n.2 ^ 2)) := cg_isConst _ _ _
 
+/- English proof (translation)
+The claim follows from `((isConst_pullGen (cg_isConst _ _ 1) _).of_eq (map_one _))`.
+-/
 theorem tateProduct_rigidification_trivial : IsConst tate2.rigK 1 := ((isConst_pullGen (cg_isConst _ _ 1) _).of_eq (map_one _))
 
+/- English proof (translation)
+Unfold `DegPre.tau`. Use `(isConst_mulGen (isConst_mulGen (isConst_mulGen (psi2 (a + b)) (isConst_invGen (psi2 a))) (isConst_invGen (psi2 b))) (isConst_invGen tateProduct_rigidification_trivial)).of_eq ?_` and prove the remaining obligations. Rewrite using `[inv_one, _root_.mul_one, ← zpow_neg, ← zpow_neg, ← zpow_add, ← zpow_add, Prod.fst_add, Prod.snd_add]`. Apply the tactic sequence `congr 1 <;> ring`.
+-/
 theorem tau2 (a b : ℤ × ℤ) : IsConst (tate2.tau a b) (pi0 ^ (2 * a.1 * b.1 + 2 * a.2 * b.2)) := by
   unfold DegPre.tau
   refine (isConst_mulGen (isConst_mulGen (isConst_mulGen (psi2 (a + b))
@@ -243,6 +268,9 @@ theorem tau2 (a b : ℤ × ℤ) : IsConst (tate2.tau a b) (pi0 ^ (2 * a.1 * b.1 
 
 instance : Module (ℤ × ℤ) tate2.X := inferInstanceAs (Module (ℤ × ℤ) (ℤ × ℤ))
 
+/- English proof (translation)
+Unfold `val`. Use `erw [tau2]`. Conclude with `gm_res _ z _ (hJ.mem _ _) _`.
+-/
 theorem tateProduct_period_value (a b : ℤ × ℤ) (z J) (hJ : Good tate2.P.L z J) :
     val (tate2.tau a b) (𝟙 _) z J = gm (𝟙 _) z ⊤ (pi0 ^ (2 * a.1 * b.1 + 2 * a.2 * b.2)) := by
   unfold val
@@ -304,12 +332,21 @@ def fac : Factor tatePre tate2 where
     ring
 end Wit
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => one_ne_zero (congrArg Prod.fst (h : ((1, 0) : ℤ × ℤ) = 0)), fun h => zero_ne_one (congrArg Prod.snd (h : ((1, 0) : ℤ × ℤ) = 1))⟩`.
+-/
 theorem Wit.fac_e : Wit.fac.e ≠ 0 ∧ Wit.fac.e ≠ 1 :=
   ⟨fun h => one_ne_zero (congrArg Prod.fst (h : ((1, 0) : ℤ × ℤ) = 0)), fun h => zero_ne_one (congrArg Prod.snd (h : ((1, 0) : ℤ × ℤ) = 1))⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, _, GlobalTheory.PolDeg.Wit.refines_ofDeg D h, GlobalTheory.PolDeg.Wit.refines_ofDeg D h⟩`.
+-/
 theorem SamePol.refl {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (h : D.TauBimult) : SamePol D D :=
   ⟨_, _, _, GlobalTheory.PolDeg.Wit.refines_ofDeg D h, GlobalTheory.PolDeg.Wit.refines_ofDeg D h⟩
 
+/- English proof (translation)
+Use `⟨⟨fun _ => 1, fun i j => ?_⟩, ⊤, ⟨(η[E.Y]).left (closedPoint (ResidueField R)), trivial⟩, fun g y _ _ _ => ⟨PUnit.unit, ?_⟩⟩` and prove the remaining obligations. Conclude with `(map_one _).trans ((_root_.one_mul _).trans (map_one _)).symm`. Rewrite using `[Scheme.basicOpen_one]`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem Emb.theta_triv {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π : S ⟶ Sp R} {G : Over S} [GrpObj G]
     (E : Emb π G) : E.Theta (Inh.trivLB G.left) := by
   refine ⟨⟨fun _ => 1, fun i j => ?_⟩, ⊤, ⟨(η[E.Y]).left (closedPoint (ResidueField R)), trivial⟩,

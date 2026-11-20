@@ -6,6 +6,9 @@ namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 
 open MvPolynomial
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `only [coeff_homogeneousComponent, coeff_map]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem LocalizeSubvar.homogeneousComponent_map {R A σ : Type*} [CommSemiring R] [CommSemiring A]
     (f : R →+* A) (d : ℕ) (g : MvPolynomial σ R) :
     homogeneousComponent d (map f g) = map f (homogeneousComponent d g) := by
@@ -13,6 +16,19 @@ theorem LocalizeSubvar.homogeneousComponent_map {R A σ : Type*} [CommSemiring R
   simp only [coeff_homogeneousComponent, coeff_map]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `set φ := Ideal.quotientMap pp' (MvPolynomial.map (algebraMap S O) : Kleiman.Poly S N →+* Kleiman.Poly O N) le_rfl with hφ`. Establish `key : ∀ q : Kleiman.Poly O N, Ideal.Quotient.mk pp' q ∈ φ.range`. Introduce `q`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C o`.
+
+Take `⟨⟨s, t⟩, rfl⟩` from `IsLocalization.mk'_surjective 𝔪.primeCompl o`. Take `⟨y, i, hi, hyi⟩` from `Ideal.IsMaximal.exists_inv (inferInstance : 𝔪.IsMaximal) t.2`. Use `⟨Ideal.Quotient.mk _ (C (s * y)), ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.quotientMap_mk, map_C, Ideal.Quotient.eq]`. Use `set v : O := IsLocalization.mk' O (1 : S) t`.
+
+Establish `h1 : algebraMap S O t * v = 1` using `by rw [IsLocalization.mk'_spec', map_one]`. Establish `h2 : algebraMap S O y * algebraMap S O t + algebraMap S O i = 1`. Rewrite using `[← map_mul, ← map_add, hyi, map_one]`. Establish `ho : IsLocalization.mk' O s t = algebraMap S O s * v` using `IsLocalization.mk'_eq_mul_mk'_one s t`. Establish `hd : algebraMap S O (s * y) - IsLocalization.mk' O s t = -(algebraMap S O i * (algebraMap S O s * v))`.
+
+Rewrite using `[ho, map_mul]`. Take the linear combination `(-(algebraMap S O y * algebraMap S O s)) * h1 + (algebraMap S O s * v) * h2`. Rewrite using `[← map_sub, hd, map_neg, map_mul]`. Use `neg_mem (Ideal.mul_mem_right _ _ (hle ?_))` and prove the remaining obligations. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ hi)`.
+
+Consider the case `add p q hp hq => rw [map_add]`. Conclude with `Subring.add_mem _ hp hq`. Consider the case `mul_X p j hp`. Rewrite using `[map_mul]`. Use `Subring.mul_mem _ hp ⟨Ideal.Quotient.mk _ (X j), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Ideal.quotientMap_mk, map_X]`. Introduce `z`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Conclude with `key q`.
+-/
 theorem LocalizeSubvar.quotientMap_surjective (S : Type) [CommRing S] (𝔪 : Ideal S) [𝔪.IsMaximal]
     (O : Type) [CommRing O] [Algebra S O] [IsLocalization.AtPrime O 𝔪] (N : ℕ)
     (pp' : Ideal (Kleiman.Poly O N))
@@ -51,6 +67,15 @@ theorem LocalizeSubvar.quotientMap_surjective (S : Type) [CommRing S] (𝔪 : Id
   obtain ⟨q, rfl⟩ := Ideal.Quotient.mk_surjective z
   exact key q
 
+/- English proof (translation)
+Introduce `S _ 𝔪 _ O _ _ _ Ω _ _ _ _ N x pp' e hle h`. Use `h.isPrime` as an intermediate fact. Use `{ isPrime := Ideal.comap_isPrime _ _ homog := ?_ le := ?_ relevant := ?_ dim := ?_ }` and prove the remaining obligations. Introduce `g hg d`. Rewrite using `[Ideal.mem_comap, ← LocalizeSubvar.homogeneousComponent_map]`.
+
+Conclude with `h.homog _ hg d`. Introduce `g hg`. Rewrite `hg` using `[Kleiman.primeOf_eq, RingHom.mem_ker]`. Rewrite using `[Ideal.mem_comap]`. Apply `h.le` to reduce the goal to its premises.
+
+Rewrite using `[Kleiman.primeOf_eq, RingHom.mem_ker, Kleiman.cone_eq, Kleiman.coneGen, aeval_map_algebraMap]`. Rewrite `hg` using `[Kleiman.cone_eq, Kleiman.coneGen]`. Conclude with `hg`. Take `⟨i, hi⟩` from `h.relevant`. Conclude with `⟨i, by rw [Ideal.mem_comap, map_X]; exact hi⟩`.
+
+Rewrite using `[← h.dim]`. Conclude with `ringKrullDim_eq_of_ringEquiv (RingEquiv.ofBijective _ ⟨Ideal.quotientMap_injective, LocalizeSubvar.quotientMap_surjective S 𝔪 O N pp' hle⟩)`.
+-/
 theorem LocalizeSubvar.proof : LocalizeSubvar.Statement := by
   intro S _ 𝔪 _ O _ _ _ Ω _ _ _ _ N x pp' e hle h
   have := h.isPrime

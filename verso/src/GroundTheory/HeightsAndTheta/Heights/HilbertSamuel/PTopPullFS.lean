@@ -16,6 +16,11 @@ namespace TopPullFS
 
 variable {κ : Type} [Fintype κ] {D : ℕ}
 
+/- English proof (translation)
+Simplify using `only [linApply, projMat]`. Rewrite using `[Finset.sum_eq_single (e k).2]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[Ne.symm hi]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem linApply_projMat (e : Fin (D + 1) → Ix κ) (z : Ix κ → ℂ) (k : Fin (D + 1)) :
     linApply (ι := GlobalTheory κ) (ι₂ := GlobalTheory (Fin (D + 1))) (projMat e) z ⟨(), k⟩ = z (e k) := by
   classical
@@ -26,12 +31,18 @@ theorem linApply_projMat (e : Fin (D + 1) → Ix κ) (z : Ix κ → ℂ) (k : Fi
     simp [Ne.symm hi]
   · simp
 
+/- English proof (translation)
+Use `hm.mono fun z hz => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz ()`. Conclude with `fun h0 => hi (congrFun h0 _)`.
+-/
 theorem isSmoothHerm_ofCone {m : ConeMetric ℂ (Ix κ)} (hm : IsSmoothMetric m) :
     IsSmoothHerm (HermLine.ofCone m) := by
   refine hm.mono fun z hz => ?_
   obtain ⟨i, hi⟩ := hz ()
   exact fun h0 => hi (congrFun h0 _)
 
+/- English proof (translation)
+Simplify using `only [HermLine.ofCone, fsMetric, EuclideanSpace.norm_eq]`. Use `congr 1`. Rewrite using `[Fintype.sum_sigma, Fintype.sum_unique]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[linApply_projMat]`.
+-/
 theorem fs_linApply (e : Fin (D + 1) → Ix κ) (z : Ix κ → ℂ) :
     (HermLine.ofCone (fsMetric (Ix (Fin (D + 1))))).h
         (linApply (ι := GlobalTheory κ) (ι₂ := GlobalTheory (Fin (D + 1))) (projMat e) z) =
@@ -46,6 +57,11 @@ end TopPullFS
 
 open TopPullFS in
 
+/- English proof (translation)
+Introduce `D Ω _ _ κ _ I x m e hI hP hm hfr hFS`. Take `⟨G, J, hJ, hJe⟩` from `hDeg D Ω κ x e hP hfr`. Establish `himg` using `hIm D Ω κ x e hfr`. Establish `key` using `hCM I hI Unit (GlobalTheory κ) (GlobalTheory (Fin (D + 1))) (coordIdeal ℤ x) (D + 1) (projMat e) G J (fun _ => HermLine.ofCone (fsMetric (Ix (Fin (D + 1))))) (fun _ => HermLine.ofCone m) hP (hBP D Ω κ x e hfr) (by rw [himg]; exact IndefiniteRowSideFullHecke.Inter.isArithVar_bot D …`. Rewrite using `[fs_linApply]`.
+
+Conclude with `hFS z ⟨fun h0 => by obtain ⟨i, hi⟩ := hz.1 (); exact hi (congrFun h0 _), hz.2⟩)`. Rewrite `key` using `[himg, hJe]`. Simplify `key` using `[top, hhOf]`.
+-/
 theorem TopPullFS.proof (hCM : ChangeOfModelStatement) (hBP : ProjFrameBasePtFree.Statement)
     (hIm : ProjFrameImage.Statement) (hDeg : ProjFrameGraphDeg.Statement) : TopPullFS.Statement := by
   intro D Ω _ _ κ _ I x m e hI hP hm hfr hFS

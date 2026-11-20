@@ -16,6 +16,31 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound GlobalTheory.C
 
 namespace GlobalTheory.ColPeriodTies
 
+/- English proof (translation)
+Take `⟨-, hTied, -, hsel⟩` from `hCT`. Take `⟨ξ, cst, I, hI, b, hY, hK, hF, hP, eM, jA, -, -, hrat, hcol, hrow, hper⟩` from `hCh`. Introduce and unpack `φ hφ F ⟨c, hc⟩`. Establish `hX` using `hH.2.2.2.1.ok`. Establish `hPr` using `hH.2.2.2.2`.
+
+Take `⟨hne, hloss⟩` from `vG_loss_le L EX hPr i w hw u`. Use `choose! x hx using hrow.2.2.1`. Establish `hxF : jA (∑ v ∈ (D.what₂.Mtilde μ).gen, D.what₂.OtoLL (c v) • x v) = F`. Rewrite using `[hc, map_sum]`. Conclude with `Finset.sum_congr rfl fun v hv => by rw [LinearMap.map_smulₛₗ, hx v hv]; rfl`.
+
+Establish `hxM` using `(hrow.2.2.2 _).2 ⟨fun v => ⟨D.what₂.OtoLL (c v), D.O_int _⟩, hxF.trans hc⟩`. Use `⟨_, (hxF ▸ hper φ _).symm, ?_⟩` and prove the remaining obligations. Establish `hw' : D.what₂.places.resChar w = D.host.g i` using `hw`. Establish `hg : ((D.host.g i : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal`. Use `mem_of_vAdd_pos _ ?_` and prove the remaining obligations.
+
+Establish `h1` using `D.what₂.places.val_resChar w`. Rewrite `h1` using `[hw', D.val_eq w _ (Nat.cast_ne_zero.2 (hPr.g_prime i).ne_zero)]`. Establish `h2 : vAdd (D.plEq w) (D.host.g i : D.what₂.LL) = (D.what₂.places.ramIdx w : ℤ)` using `by exact_mod_cast h1`. Establish `h3 : (((D.host.g i : ℕ) : 𝓞 D.what₂.LL) : D.what₂.LL) = (D.host.g i : D.what₂.LL)` using `map_natCast (algebraMap _ _) _`. Rewrite using `[h3, h2]`.
+
+Conclude with `D.what₂.places.ramIdx_pos w` after adjusting the coercions. Establish `hTS : (recPrimes EX).T u ∈ badS D` using `Or.inr (Or.inl ⟨u, rfl⟩)`. Apply the tactic sequence `have hgS : ∀ k, (recPrimes EX).g k ∈ badS D := fun k => by fin_cases k <;> simp [badS, hostS]`. Establish `hb : 2 * (recFields D).f * D.R.N D.R.m + 1 < D.host.g i`. Rewrite using `[show (recFields D).f = D.R.f from D.what₂.card_Tau]`.
+
+Conclude with `hS.1`. Establish `hdeg : ∀ j < D.R.m, (∑ τ, ∑ a, ((recWts EX).nuW u (j + 1) τ).w a) + 1 < (D.host.g i : ℤ)`. Introduce `j hj`. Establish `h1` using `(hS.2 u (j + 1) (Finset.mem_Icc.2 ⟨by omega, hj⟩)).1`. Establish `h2 : LiftErrorLocal.Dpi D u (j + 1) = ((∑ τ, ∑ a, ((recWts EX).nuW u (j + 1) τ).w a : ℤ) : ℝ)`.
+
+Rewrite using `[Int.cast_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => partitionSize D EX u j hj τ`. Establish `h3` using `Finset.sum_nonneg fun τ (_ : τ ∈ Finset.univ) => sum_nuW_nonneg (Pr := recPrimes EX) (recWts EX) u hj τ`. Rewrite `h1` using `[h2]`. Establish `h4 : 2 * (∑ τ, ∑ a, ((recWts EX).nuW u (j + 1) τ).w a) + 2 < (D.host.g i : ℤ)` using `by exact_mod_cast h1`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hcolb` using `colMu_bound_all (recWts EX) Ch sel ξ cst I _ (hJ hH hsel hA) GlobalTheory.JetOpWeylLat.jetOpWeyl chainWeights stdMove levelPrimes (scalarUnit_of levelPrimes heckeUnit twistUnit) entryAtG (EntQ.entryAtQ volumeAtQ) TopTwist.topAtQ hX hPr hsel u hTS hgS hI hTied b hY (Formalism.L2.C …`. Establish `hm` using `GlobalTheory.BranchMembers.members _ _ _ (recWts EX) (recWts_ok EX) u`. Establish `hval` using `valuation_PtilE_le_one (recWts EX) Ch sel ξ hX hPr hsel u hTS (hB _ _ _ _ _ _ _) (fun τ => (hm τ).1) (fun τ => (hm τ).2) (Formalism.L2.Col.rPsymF Ch) hP (hPr.g_prime i) (hPr.T_ne_g u i) hb (D.plEq w) hg ((∏ j ∈ Finset.range D.R.m, lossAt (Pr := recPrimes EX) (recWts EX) i u j) • …`. Rewrite `hval` using `[map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+
+It suffices to establish `key : ∀ y : D.what₂.LL, (D.plEq w).valuation D.what₂.LL ((∏ j ∈ Finset.range D.R.m, lossAt (Pr` using `recPrimes EX) (recWts EX) i u j) * y) ≤ 1 → y = 0 ∨ -(∑ j ∈ LiftErrorLocal.lifts D, vNN EX i u j w) - C1 * LiftErrorLocal.errC D L ≤ LiftErrorLocal.vG D w y from key _ hval`. Introduce `y hval`. Distinguish the cases in `hy : y = 0`. Conclude with `Or.inl hy`. Use `right`.
+
+Establish `hc0` using `Finset.prod_ne_zero_iff.2 fun j (_ : j ∈ Finset.range D.R.m) => hne j`. Establish `h1` using `vAdd_nonneg_of_le _ (mul_ne_zero hc0 hy) hval`. Rewrite `h1` using `[vAdd_mul_of_ne _ hc0 hy]`. Establish `he : (0 : ℝ) < D.what₂.places.ramIdx w` using `by exact_mod_cast D.what₂.places.ramIdx_pos w`. Establish `h2 : 0 ≤ LiftErrorLocal.vG D w (∏ j ∈ Finset.range D.R.m, lossAt (Pr` using `recPrimes EX) (recWts EX) i u j) + LiftErrorLocal.vG D w y := by`.
+
+Unfold `LiftErrorLocal.vG`. Rewrite using `[← add_div]`. Conclude with `div_nonneg (by exact_mod_cast h1) he.le`. Establish `h3 : 0 ≤ LiftErrorLocal.errC D L`. Use `L.etaSz_pos.le` as an intermediate fact.
+
+Unfold `LiftErrorLocal.errC`. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem boundAt_of_chainTie (D : D7) (L : SizeData₂ D) (EX : ErrX D) (Dx : DivX D)
     (Ch : Chars (recFields D) (recPrimes EX) D.R.m) (mu0 : Fin D.R.m → Formalism.L2.Host.HChar D.host.E)
     (eta : Formalism.L2.Host.HChar D.host.E) (sel : HeightOneSpectrum (𝓞 D.host.F) → HeightOneSpectrum (𝓞 D.host.E))
@@ -93,6 +118,9 @@ theorem boundAt_of_chainTie (D : D7) (L : SizeData₂ D) (EX : ErrX D) (Dx : Div
     positivity
   nlinarith
 
+/- English proof (translation)
+Introduce `hJS D L EX Dx μ ⟨Ch, mu0, eta, sel, δ, B, χ, cD, hH, hCT, hA, hCh⟩ i hS w hw u _`. Establish `hJ : JetLossAll D EX sel B χ cD` using `GlobalTheory.T.thetaJetIntegrality_typePrime_of_splitTableBound hJS D EX sel δ B χ cD`. Conclude with `boundAt_of_chainTie D L EX Dx Ch mu0 eta sel B χ cD 1 (GlobalTheory.BranchFormula.integrality Formalism.L2.DIV.BrJ.branching_interlacing_pairs) hJ le_rfl hH hCT hA i hS w hw u μ (hCh u)`.
+-/
 theorem boundAt_of_ties : JetSplitAmb → ∀ (D : D7) (L : SizeData₂ D) (EX : ErrX D) (Dx : DivX D) (μ : D.what₂.Tup),
     TiesAt D EX Dx μ → ∀ i : Fin 2, GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound.SizeAt D i → ∀ w, LiftErrorLocal.Over D i w → ∀ u : D.what₂.Word,
       D.what₂.places.resChar w ≠ (D.mem u).A.T → GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound.BoundAt L EX 1 i w u μ := by

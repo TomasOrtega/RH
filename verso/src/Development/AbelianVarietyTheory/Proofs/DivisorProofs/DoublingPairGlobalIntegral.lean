@@ -20,6 +20,15 @@ noncomputable section
 
 namespace GlobalTheory.DblKFin
 
+/- English proof (translation)
+Set `e₀ : AF F` to `((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F))`. Establish `h₁ : evI F e₀ = 0` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : InfiniteAdeleRing F) = 0`. Conclude with `map_zero _`. Establish `h₂ : sndA F (1 - e₀) = 0` using `by show (1 - e₀).2 = 0 show (1 : FiniteAdeleRing (𝓞 F) F) - 1 = 0`. Conclude with `sub_self _`.
+
+Establish `hx : e₀ • (mat a - 1) = 0` using `ha e₀ h₁`. Establish `hy : (1 - e₀) • (mat f - 1) = 0` using `hf _ h₂`. Establish `hx' : mat a - 1 = (1 - e₀) • (mat a - 1)` using `by rw [sub_smul, one_smul, hx, sub_zero]`. Establish `hy' : mat f - 1 = e₀ • (mat f - 1)`. Rewrite `hy` using `[sub_smul, one_smul, sub_eq_zero]`.
+
+Conclude with `hy`. Establish `hxy : (mat a - 1) * (mat f - 1) = 0`. Rewrite using `[hx', smul_mul_assoc, ← mul_smul_comm, hy, mul_zero]`. Establish `hyx : (mat f - 1) * (mat a - 1) = 0`. Rewrite using `[hy', smul_mul_assoc, ← mul_smul_comm, hx, mul_zero]`.
+
+Establish `hm : mat a * mat f = mat f * mat a`. Establish `e1 : mat a * mat f = 1 + (mat a - 1) + (mat f - 1) + (mat a - 1) * (mat f - 1)` using `by noncomm_ring`. Establish `e2 : mat f * mat a = 1 + (mat a - 1) + (mat f - 1) + (mat f - 1) * (mat a - 1)` using `by noncomm_ring`. Rewrite using `[e1, e2, hxy, hyx]`. Conclude with `Subtype.ext (Units.ext hm)`.
+-/
 theorem comm_of_at {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {X : Spc F E n} (a f : UA σ X.J) (ha : a ∈ UAt σ X (evI F)) (hf : f ∈ UAt σ X (sndA F)) : a * f = f * a := by
   let e₀ : AF F := ((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F))
@@ -46,6 +55,21 @@ theorem comm_of_at {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
     rw [e1, e2, hxy, hyx]
   exact Subtype.ext (Units.ext hm)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ hJ hL hθ i _hi co hrat hdiag hanti om₂ hW e hbij hadm hint K₂ hK Φ₁ hΦ₁ Φ₂ hΦ₂`. Take `⟨m, f, g, hfg, hsum⟩` from `GlobalTheory.T.doubling_pair_unfolding_lattice F E σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ hJ hL hθ co hrat hdiag hanti e hbij hadm hint Φ₁ hΦ₁ Φ₂ hΦ₂`. Establish `hsch : e (boxC Φ₁ Φ₂) ∈ schA F (Fin n × Fin (d + d))`. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f i, g i, (hfg i).2, rfl⟩`.
+
+Establish `hmul : ∀ (x y : UA σ W₂.J) Ψ, om₂ (1, x * y) Ψ = om₂ (1, x) (om₂ (1, y) Ψ)`. Introduce `x y Ψ`. Rewrite using `[show ((1 : UA σ Xs.J), x * y) = (1, x) * (1, y) by simp, map_mul, Module.End.mul_apply]`. Establish `hSA : FiniteDimensional ℂ (Submodule.span ℂ {Ψ | ∃ a ∈ KInf σ W₂ B.emb, Ψ = om₂ (1, a) (e (boxC Φ₁ Φ₂))})`. Establish `hle : Submodule.span ℂ {Ψ | ∃ a ∈ KInf σ W₂ B.emb, Ψ = om₂ (1, a) (e (boxC Φ₁ Φ₂))} ≤ ⨆ j : Fin m, Submodule.span ℂ {Ψ | ∃ a ∈ KInf σ W₂ B.emb, Ψ = om₂ (1, a) (pureA F (f j) (g j))}`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Rewrite using `[hsum, map_sum]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.mem_iSup_of_mem j (Submodule.subset_span ⟨a, ha, rfl⟩)`. Use `haveI : ∀ j : Fin m, FiniteDimensional ℂ (Submodule.span ℂ {Ψ | ∃ a ∈ KInf σ W₂ B.emb, Ψ = om₂ (1, a) (pureA F (f j) (g j))}) := fun j => GlobalTheory.T.doubling_pair_unfolding_orbit F E σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ hJ hL hθ co hrat hdiag hanti om₂ hW (f j) (hfg j).1 …`.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`. Take `⟨N, hN, hfix⟩` from `GlobalTheory.T.doubling_pair_unfolding_measure F E σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ hJ hL hθ co hrat hdiag hanti om₂ hW _ hsch`. Take `⟨S, hS, hcov⟩` from `GlobalTheory.T.doubling_pair_stabiliser_integral F E σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ hJ hL K₂ hK N hN`. Establish `hle : Submodule.span ℂ {Ψ | ∃ k ∈ K₂, Ψ = om₂ (1, k) (e (boxC Φ₁ Φ₂))} ≤ ⨆ j : S, (Submodule.span ℂ {Ψ | ∃ a ∈ KInf σ W₂ B.emb, Ψ = om₂ (1, a) (e (boxC Φ₁ Φ₂))}).map (om₂ (1, j.1))`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨k, hk, rfl⟩`. Take `⟨a, ha, f', hf', hf'fin, rfl⟩` from `GlobalTheory.T.stabiliser_arch_finite_decomposition F E σ B (d + d) W₂ K₂ hK k hk`. Take `⟨j, hj, hjN, hjfin⟩` from `hcov f' hf' hf'fin`. Establish `hcomm : a * j = j * a` using `comm_of_at a j ha.1 (hS j hj).2`. Establish `key : om₂ (1, a * f') (e (boxC Φ₁ Φ₂)) = om₂ (1, j) (om₂ (1, a) (e (boxC Φ₁ Φ₂)))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show a * j * (j⁻¹ * f') = a * f' by group]`. Use `_ = om₂ (1, a * j) (om₂ (1, j⁻¹ * f') (e (boxC Φ₁ Φ₂))) := hmul _ _ _`. Use `_ = om₂ (1, j * a) (e (boxC Φ₁ Φ₂)) := by rw [hfix _ hjN hjfin, hcomm]`. Use `_ = _ := hmul _ _ _`.
+
+Rewrite using `[key]`. Conclude with `Submodule.mem_iSup_of_mem ⟨j, hj⟩ (Submodule.mem_map_of_mem (Submodule.subset_span ⟨a, ha, rfl⟩))`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem doubled_kfin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ →

@@ -37,19 +37,38 @@ def ChainVecs (ch : Choice R) (t : T) (f : ∀ j : Fin D.R.m, Sch ch.G (.down t 
 def ChainPols (ch : Choice R) (q : ∀ j : ℕ, PolF D (ch.G.V (.grid 0 (j + 1))).rank (ch.G.V (.grid 0 j)).rank) : Prop :=
   ∀ j : ℕ, (j + 1 < D.R.m → HEq (q j) (ch.cv.polY j)) ∧ (j + 1 = D.R.m → HEq (q j) ch.cv.polX)
 
+/- English proof (translation)
+Substitute `hY hY'` using the available equality. Conclude with `⟨f, HEq.rfl⟩`.
+-/
 theorem exists_heq_fun (Y Y' : LSp D) (S S' : HSp D) (Λ Λ') (hY : Y = ⟨S, Λ⟩) (hY' : Y' = ⟨S', Λ'⟩) (f : WO S S' → ℂ) :
     ∃ f' : WO Y.sp Y'.sp → ℂ, HEq f' f := by
   subst hY hY'; exact ⟨f, HEq.rfl⟩
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Conclude with `⟨P, HEq.rfl⟩`.
+-/
 theorem exists_heq_pol {a b a' b' : ℕ} (ha : a' = a) (hb : b' = b) (P : PolF D a b) : ∃ P' : PolF D a' b', HEq P' P := by
   subst ha hb; exact ⟨P, HEq.rfl⟩
 
+/- English proof (translation)
+Rewrite using `[colY_lt L h]`.
+-/
 theorem rank_col_lt (L : LevCh D T) {j : ℕ} (h : j < D.R.m) : (columnBlock L j).sp.rank = (Yc D j).rank := by
   rw [colY_lt L h]
 
+/- English proof (translation)
+Rewrite using `[colY_m L]`.
+-/
 theorem rank_col_m (L : LevCh D T) : (columnBlock L D.R.m).sp.rank = D.sp.X'.rank := by
   rw [colY_m L]
 
+/- English proof (translation)
+Establish `H : ∀ j : Fin D.R.m, ∃ f : Sch ch.G (.down t 0 j), ((j : ℕ) + 1 < D.R.m → HEq f (R.vY t j)) ∧ ((j : ℕ) + 1 = D.R.m → HEq f (R.vX t))` using `fun ⟨j, hj⟩ => by`. Distinguish the cases in `h : j + 1 < D.R.m`. Take `⟨f, e⟩` from `exists_heq_fun (columnBlock R.toLevCh j) (columnBlock R.toLevCh (j + 1)) _ _ _ _ (colY_lt _ (by omega)) (colY_lt _ h) (R.vY t j)`. Conclude with `⟨f, fun _ => e, fun h' => by simp at h'; omega⟩`. Establish `e1 : j = D.R.m - 1` using `by omega`.
+
+Substitute `e1` using the available equality. Establish `e2 : columnBlock R.toLevCh (D.R.m - 1 + 1) = ⟨D.sp.X', R.ΛX⟩`. Rewrite using `[Nat.sub_add_cancel (by omega)]; exact colY_m _`. Take `⟨f, e⟩` from `exists_heq_fun (columnBlock R.toLevCh (D.R.m - 1)) (columnBlock R.toLevCh (D.R.m - 1 + 1)) _ _ _ _ (colY_lt _ (by omega)) e2 (R.vX t)`. Conclude with `⟨f, fun h' => absurd h' h, fun _ => e⟩`.
+
+Use `choose f hf using H`. Conclude with `⟨f, hf⟩`.
+-/
 theorem exists_chainVecs (ch : Choice R) (t : T) : ∃ f, ChainVecs ch t f := by
   have H : ∀ j : Fin D.R.m, ∃ f : Sch ch.G (.down t 0 j),
       ((j : ℕ) + 1 < D.R.m → HEq f (R.vY t j)) ∧ ((j : ℕ) + 1 = D.R.m → HEq f (R.vX t)) := fun ⟨j, hj⟩ => by
@@ -67,6 +86,13 @@ theorem exists_chainVecs (ch : Choice R) (t : T) : ∃ f, ChainVecs ch t f := by
   choose f hf using H
   exact ⟨f, hf⟩
 
+/- English proof (translation)
+Establish `H : ∀ j : ℕ, ∃ q : PolF D (ch.G.V (.grid 0 (j + 1))).rank (ch.G.V (.grid 0 j)).rank, (j + 1 < D.R.m → HEq q (ch.cv.polY j)) ∧ (j + 1 = D.R.m → HEq q ch.cv.polX)` using `fun j => by`. Distinguish the cases in `h : j + 1 < D.R.m`. Take `⟨q, e⟩` from `exists_heq_pol (rank_col_lt R.toLevCh h) (rank_col_lt R.toLevCh (by omega)) (ch.cv.polY j)`. Conclude with `⟨q, fun _ => e, fun h' => by omega⟩`. Distinguish the cases in `h' : j + 1 = D.R.m`.
+
+Establish `e1 : j = D.R.m - 1` using `by omega`. Substitute `e1` using the available equality. Establish `e2 : (columnBlock R.toLevCh (D.R.m - 1 + 1)).sp.rank = D.sp.X'.rank`. Rewrite using `[Nat.sub_add_cancel (by omega)]; exact rank_col_m _`. Take `⟨q, e⟩` from `exists_heq_pol e2 (rank_col_lt R.toLevCh (by omega)) ch.cv.polX`.
+
+Conclude with `⟨q, fun h'' => absurd h'' h, fun _ => e⟩`. Conclude with `⟨0, fun h'' => absurd h'' h, fun h'' => absurd h'' h'⟩`. Use `choose q hq using H`. Conclude with `⟨q, hq⟩`.
+-/
 theorem exists_chainPols (ch : Choice R) : ∃ q, ChainPols ch q := by
   have H : ∀ j : ℕ, ∃ q : PolF D (ch.G.V (.grid 0 (j + 1))).rank (ch.G.V (.grid 0 j)).rank,
       (j + 1 < D.R.m → HEq q (ch.cv.polY j)) ∧ (j + 1 = D.R.m → HEq q ch.cv.polX) := fun j => by

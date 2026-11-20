@@ -4,6 +4,19 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveReso
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendChainMapAlongQuasiIsoKInjectiveStatement
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Introduce `R _ F G T ε _`. Take `⟨hKI, -, hGE, -, hι, -⟩` from `GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R G`. Use `haveI := hKI`. Use `haveI := hGE`. Establish `key` using `GlobalTheory.T.extend_chainMap_along_quasiIso_kInjective R F T (res R G) ε`.
+
+Use `⟨fun a => ?_, fun m m' h U i n k hin hnk y hy => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `key.1 ((CochainComplex.singleFunctor (Shv R) 0).map a ≫ resAug G)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `h0 : ε.f 0 ≫ m.f 0 = ((CochainComplex.singleFunctor (Shv R) 0).map a).f 0 ≫ (resAug G).f 0`. Rewrite using `[← HomologicalComplex.comp_f, hm, HomologicalComplex.comp_f]`.
+
+Rewrite using `[h0, ← hι]`. Express the relevant statement in the definitionally equal form `(HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 F).inv ≫ ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).map a).f 0 ≫ (resAug G).f 0 = a ≫ (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 G).inv ≫ (resAug G).f 0`. Rewrite using `[HomologicalComplex.single_map_f_self]`. Conclude with `(congrArg (_ ≫ ·) (Category.assoc _ _ _)).trans ((Iso.inv_hom_id_assoc _ _).trans (Category.assoc _ _ _))`. Establish `hε : ε ≫ m = ε ≫ m'`.
+
+Use `HomologicalComplex.from_single_hom_ext (j := 0) ?_` and prove the remaining obligations. Rewrite using `[HomologicalComplex.comp_f, HomologicalComplex.comp_f]`. Conclude with `(Iso.cancel_iso_inv_left (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 F) _ _).1 h`. Take `⟨H⟩` from `key.2 m m' hε`. Establish `hc` using `H.comm n`.
+
+Rewrite `hc` using `[dNext_eq _ (show (ComplexShape.up ℤ).Rel n k from hnk), prevD_eq _ (show (ComplexShape.up ℤ).Rel i n from hin)]`. Establish `e1 : Sec.map (T.d n k ≫ H.hom k n) y = 0`. Express the relevant statement in the definitionally equal form `Sec.map (H.hom k n) (Sec.map (T.d n k) y) = 0`. Rewrite using `[hy]`. Conclude with `map_zero _`.
+
+Establish `e2 : Sec.map (H.hom n i ≫ (res R G).d i n) y = Sec.map ((res R G).d i n) (Sec.map (H.hom n i) y)` using `rfl`. Establish `e3 : ∀ {A B : Shv R} (f g : A ⟶ B) (x : Sec A U), Sec.map (f + g) x = Sec.map f x + Sec.map g x` using `fun _ _ _ => rfl`. Use `⟨Sec.map (H.hom n i) y, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, e3, e3, e1, e2, zero_add, add_sub_cancel_right]`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.extRes_of :
     ExtRes := by
   intro R _ F G T ε _

@@ -15,6 +15,19 @@ open GlobalTheory.FlatTors GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGe
 open scoped TensorProduct
 open GlobalTheory.TorusModel GlobalTheory.FormalPoint GlobalTheory.AdicColimit GlobalTheory.TorsionFormCompare
 
+/- English proof (translation)
+Establish `: IsAffine T.left` using `isAffine_of_isAffineHom T.hom`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (T.left.isoSpec.inv ≫ T.hom)`. Establish `hf : IsFinite (Spec.map φ)` using `by rw [hφ]; infer_instance`. Rewrite `hf` using `[IsFinite.SpecMap_iff]`. Use `letI : Algebra R Γ(T.left, ⊤) := φ.hom.toAlgebra`.
+
+Establish `: Module.Finite R Γ(T.left, ⊤)` using `hf`. Take `⟨a, ha⟩` from `Spec.map_surjective (T.left.isoSpec.inv ≫ f ≫ X.isoSpec.hom)`. Take `⟨b, hb⟩` from `Spec.map_surjective (T.left.isoSpec.inv ≫ g ≫ X.isoSpec.hom)`. It suffices to establish `a = b by`. Rewrite `ha` using `[this, hb, cancel_epi, cancel_mono]`.
+
+Conclude with `ha.symm`. Use extensionality with `s`. Rewrite using `[← sub_eq_zero, ← Submodule.mem_bot R, ← Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := Γ(T.left, ⊤)) (maximalIdeal R) (maximalIdeal.isMaximal R).ne_top, Submodule.mem_iInf]`. Introduce `e`. Set `J : Ideal Γ(T.left, ⊤)` to `(maximalIdeal R ^ (e + 1)).map φ.hom`.
+
+Set `q : Γ(T.left, ⊤) ⟶ CommRingCat.of (Γ(T.left, ⊤) ⧸ J)` to `CommRingCat.ofHom (Ideal.Quotient.mk J)`. Set `σ : CommRingCat.of (R ⧸ maximalIdeal R ^ (e + 1)) ⟶ CommRingCat.of (Γ(T.left, ⊤) ⧸ J)` to `CommRingCat.ofHom (Ideal.quotientMap J φ.hom Ideal.le_comap_map)`. Establish `w : (Spec.map q ≫ T.left.isoSpec.inv) ≫ T.hom = Spec.map σ ≫ thick R (maximalIdeal R) e`. Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp]`. Conclude with `(congrArg Spec.map (by ext x; rfl)).trans (Spec.map_comp _ _)`.
+
+Establish `hl : pullback.lift _ _ w ≫ thickι (maximalIdeal R) e T = Spec.map q ≫ T.left.isoSpec.inv` using `pullback.lift_fst _ _ _`. Establish `e₁ : a ≫ q = b ≫ q`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_comp, ha, hb, ← reassoc_of% hl, ← reassoc_of% hl, reassoc_of% h e]`. Establish `e₂ : a.hom s - b.hom s ∈ J` using `Ideal.Quotient.eq.1 (congrArg (fun u => u.hom s) e₁)`.
+
+Use `Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_succ e)) ?_` and prove the remaining obligations. Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `e₂`.
+-/
 theorem hom_ext_of_isFinite {R : Type} [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (T : Over (Sp R))
     [IsFinite T.hom] {X : Scheme.{0}} [IsAffine X] {f g : T.left ⟶ X}
     (h : ∀ e, thickι (maximalIdeal R) e T ≫ f = thickι (maximalIdeal R) e T ≫ g) : f = g := by
@@ -50,6 +63,21 @@ theorem hom_ext_of_isFinite {R : Type} [CommRing R] [IsLocalRing R] [IsNoetheria
   rw [Ideal.smul_top_eq_map]
   exact e₂
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ _ hR t P W _ _ ψW k _ N g₀ x₀ hN hg hu hF`. Use `hR.1` as an intermediate fact. Take `⟨Gt, _, _, Φ, hΦ, -⟩` from `exists_represents P.D.toPre`. Take `⟨c₀, rfl⟩` from `(Φ N).surjective g₀`. Establish `hc₀` using `(tors_iff hΦ k c₀).1 hg`.
+
+Establish `hp` using `(formalEq_iff _ _ _).1 hF`. Establish `univ : ∀ {T} (x : T ⟶ Gt), x ^ k = 1 → ∃! h : T ⟶ N, h ≫ c₀ = x` using `fun {T} x hx => (existsUnique_congr fun h => isPull_iff_comp hΦ h c₀ x).1 (hu T _ ((tors_iff hΦ k x).2 hx))`. Establish `tz : ∀ {T} (h : T ⟶ N), (h ≫ c₀) ^ k = 1` using `fun h => by rw [← MonObj.comp_pow, hc₀, MonObj.comp_one]`. Establish `canc : ∀ {T} {h h' : T ⟶ N}, h ≫ c₀ = h' ≫ c₀ → h = h'` using `fun {T h h'} e => (univ _ (tz h')).unique e rfl`. Establish `pt : ∀ {T} (h : T ⟶ N), IsPointOf P.U.toUnifPre (Φ T (h ≫ c₀)) (h ≫ x₀)` using `fun h => hp.pull h (hΦ.1 _ _ h c₀)`.
+
+Establish `: IsAffine N.left` using `isAffine_of_isAffineHom N.hom`. Establish `: IsSeparated t.G.hom` using `t.semi.separated`. Establish `: IsFinite x₀.left`. Establish `: IsFinite (x₀.left ≫ t.G.hom)` using `by rw [Over.w]; exact hN`. Conclude with `IsFinite.of_comp _ t.G.hom`.
+
+Set `Q : Over (Sp R)` to `Over.mk (pullback.fst x₀.left x₀.left ≫ N.hom)`. Establish `: IsFinite Q.hom` using `inferInstanceAs (IsFinite (pullback.fst x₀.left x₀.left ≫ N.hom))`. Set `p₁ : Q ⟶ N` to `Over.homMk (pullback.fst x₀.left x₀.left) rfl`. Set `p₂ : Q ⟶ N` to `Over.homMk (pullback.snd x₀.left x₀.left) (by show _ = pullback.fst x₀.left x₀.left ≫ N.hom`. Rewrite using `[← Over.w x₀, pullback.condition_assoc])`.
+
+Establish `hx : p₁ ≫ x₀ = p₂ ≫ x₀` using `Over.OverMorphism.ext pullback.condition`. Establish `key : p₁.left = p₂.left` using `hom_ext_of_isFinite Q fun e => by`. Establish `pl : ∀ w : Q ⟶ N, HasCoords P.U.toUnifPre e (Φ _ (fstG (maximalIdeal R) e Q ≫ w ≫ c₀)) (𝟙 _) (thickHom (maximalIdeal R) e (w ≫ x₀))` using `fun w => by`. Rewrite using `[← hasCoords_pull (hΦ.1 _ _ (fstG (maximalIdeal R) e Q) (w ≫ c₀)), Category.id_comp]`. Conclude with `(isPointOf_iff_thick _ _ _).1 (pt w) e`.
+
+Establish `e₁` using `(Φ _).injective (eq_of_hasCoords (pl p₁) (hx ▸ pl p₂))`. Rewrite `e₁` using `[← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (·.left) (canc e₁)`. Establish `key' : pullback.fst x₀.left x₀.left = pullback.snd x₀.left x₀.left` using `key`. Use `⟨fun h h' e => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations.
+
+Establish `e' : h.left ≫ x₀.left = h'.left ≫ x₀.left` using `congrArg (·.left) e`. Rewrite using `[← pullback.lift_fst _ _ e', key', pullback.lift_snd]`.
+-/
 theorem mono_torsion : AllFlat fun {E} _ _ _ {H} {R} _ _ _ {t} P {W} ψW k => ∀ (N : Over (Sp R)) (g₀ : GtPt P.D.toPre N) (x₀ : N ⟶ t.G), IsFinite N.hom → GtTors k g₀ → (∀ (T : Over (Sp R)) (g : GtPt P.D.toPre T), GtTors k g → ∃! h : T ⟶ N, GtPt.IsPull h.left g₀ g) → FormalEq P.U.toUnifPre x₀ g₀ → Mono x₀ := by
   intro E _ _ _ H R _ _ _ _ hR t P W _ _ ψW k _ N g₀ x₀ hN hg hu hF
   have := hR.1

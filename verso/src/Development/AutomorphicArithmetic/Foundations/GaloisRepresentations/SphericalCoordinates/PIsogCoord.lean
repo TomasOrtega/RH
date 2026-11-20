@@ -13,6 +13,19 @@ namespace UpperTheory.Gal.W2.IsogenyReduction
 
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p}
 
+/- English proof (translation)
+Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Set `b` to `Module.Free.chooseBasis ℤ D.La`. Set `S : Set (AfP p)` to `Set.range (fun ij : Module.Free.ChooseBasisIndex ℤ D.La × Module.Free.ChooseBasisIndex ℤ D.La => (KNLevel.bA b).repr (k (KNLevel.bA b ij.2)) ij.1)`. Establish `hS : IsCompact S` using `(Set.finite_range _).isCompact`.
+
+Take `⟨c, hc, hcS⟩` from `GlobalTheory.T.exists_common_pos_denominator_of_isCompact_finiteAdeleAway p S hS`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hB : ∀ j, inAf D (b j) = KNLevel.bA b j`. Introduce `j`. Simplify using `[KNLevel.bA, inAf, Algebra.TensorProduct.basis_apply]`.
+
+Establish `hgen : ∀ j, c • k (inAf D (b j)) ∈ LaHat D`. Introduce `j`. Apply `KNLevel.mem_laHat_of_repr b` to reduce the goal to its premises. Introduce `i`. Rewrite using `[hB j, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul]`.
+
+Conclude with `hcS _ ⟨(i, j), rfl⟩`. Establish `hall : ∀ x : D.La, (c • k) (inAf D x) ∈ LaHat D`. Introduce `x`. Set `f : D.La →+ (AfP p ⊗[ℚ] VQ D)` to `((c • k).toAddMonoidHom).comp (AddMonoidHom.mk' (inAf D) GammaUniq.inAf_add)`. Establish `hf : ∀ y, f y = (c • k) (inAf D y)` using `fun y => rfl`.
+
+Rewrite using `[← hf, ← b.sum_repr x, map_sum]`. Use `AddSubgroup.sum_mem _ (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Conclude with `AddSubgroup.zsmul_mem _ (hgen j) _`. Introduce `z hz`.
+
+Conclude with `GammaUniq.map_mem (c • k) hall hz`.
+-/
 private theorem exists_bound (k : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)) :
     ∃ c : ℕ, 0 < c ∧ ∀ z ∈ LaHat D, c • k z ∈ LaHat D := by
   haveI := D.freeLa
@@ -44,6 +57,15 @@ private theorem exists_bound (k : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)) :
   intro z hz
   exact GammaUniq.map_mem (c • k) hall hz
 
+/- English proof (translation)
+Apply `GammaUniq.end_ext` to reduce the goal to its premises. Introduce `a`. Take `⟨c, hc, hcb⟩` from `exists_bound k`. Establish `hz : c • (k (inAf D a) - T (inAf D a)) = 0`. Apply `GammaUniq.eq_zero_of_dvd_laHat` to reduce the goal to its premises.
+
+Introduce `n hn hnp`. Take `⟨w, hw, w', hw', he⟩` from `h a n hn hnp`. Use `⟨c • w + c • k w', add_mem (AddSubgroup.nsmul_mem _ hw c) (hcb w' hw'), ?_⟩` and prove the remaining obligations. Establish `hd : k (inAf D a) - T (inAf D a) = n • w + n • k w'`. Rewrite using `[he]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[hd, smul_add, smul_add, smul_comm c n w, smul_comm c n (k w')]`. Establish `hX : k (inAf D a) - T (inAf D a) = 0`. Rewrite `hz` using `[← Nat.cast_smul_eq_nsmul ℚ]`. Conclude with `(smul_eq_zero.mp hz).resolve_left (by exact_mod_cast hc.ne')`.
+
+Conclude with `sub_eq_zero.mp hX`.
+-/
 private theorem end_eq (k T : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D))
     (h : ∀ (a : D.La) (n : ℕ), 0 < n → n.Coprime p → ∃ w ∈ LaHat D, ∃ w' ∈ LaHat D,
       k (inAf D a) = T (inAf D a) + n • w + n • k w') : k = T := by
@@ -66,10 +88,16 @@ private theorem end_eq (k T : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D))
 
 variable (L : Link D G)
 
+/- English proof (translation)
+Simplify using `only [rd, TensorProduct.tmul_add, map_add]`.
+-/
 private theorem rd_add (x : (AfP p ⊗[ℚ] G.C)ˣ) (g : G.GAf) (u w : VQ D) :
     rd L x g (u + w) = rd L x g u + rd L x g w := by
   simp only [rd, TensorProduct.tmul_add, map_add]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Simplify using `only [zero_smul, UpperTheory.Gal.W2.rd, TensorProduct.tmul_zero, map_zero]`. Consider the case `succ n ih`. Rewrite using `[succ_nsmul, rd_add, ih, succ_nsmul]`.
+-/
 private theorem rd_nsmul (x : (AfP p ⊗[ℚ] G.C)ˣ) (g : G.GAf) (n : ℕ) (w : VQ D) :
     rd L x g (n • w) = n • rd L x g w := by
   induction n with
@@ -78,11 +106,19 @@ private theorem rd_nsmul (x : (AfP p ⊗[ℚ] G.C)ˣ) (g : G.GAf) (n : ℕ) (w :
   | succ n ih =>
     rw [succ_nsmul, rd_add, ih, succ_nsmul]
 
+/- English proof (translation)
+Unfold `UpperTheory.Gal.W2.rd`. Rewrite using `[← Module.End.mul_apply (L.actG (h⁻¹ * g)), ← map_mul, mul_inv_cancel_right]`.
+-/
 private theorem rd_eq (x : (AfP p ⊗[ℚ] G.C)ˣ) (g h : G.GAf) (w : VQ D) :
     rd L x h w = L.actG (h⁻¹ * g) (rd L x g w) := by
   unfold UpperTheory.Gal.W2.rd
   rw [← Module.End.mul_apply (L.actG (h⁻¹ * g)), ← map_mul, mul_inv_cancel_right]
 
+/- English proof (translation)
+Use `⟨hc.1, fun a => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, he⟩` from `hc.2 a`. Take `⟨u, hu⟩` from `h a`. Establish `hmem : rd L x g (j u) ∈ LaHat D` using `(hc.1 (j u)).mp ⟨0, u, by simp⟩`. Use `⟨w - rd L x g (j u), sub_mem hw hmem, ?_⟩` and prove the remaining obligations.
+
+Rewrite `he` using `[hu, map_add, map_nsmul, rd_add, rd_nsmul]`. Rewrite using `[smul_sub, ← add_sub_assoc, ← he, add_sub_cancel_right]`.
+-/
 private theorem coord_of (x : (AfP p ⊗[ℚ] G.C)ˣ) {N : ℕ} {D' : PLat D.O D.inv} {t t₀ : D.La → D'.La}
     {j : D'.La →+ VQ D} {g : G.GAf} (hc : IsCoordA L x N D' t₀ j g) (h : ∀ a, ∃ u, t₀ a = t a + N • u) :
     IsCoordA L x N D' t j g := by
@@ -97,6 +133,45 @@ private theorem coord_of (x : (AfP p ⊗[ℚ] G.C)ˣ) {N : ℕ} {D' : PLat D.O D
 end UpperTheory.Gal.W2.IsogenyReduction
 
 open UpperTheory.Gal.W2.IsogenyReduction in
+/- English proof (translation)
+Introduce `hAd hCo hIf hRd p _ D G L B N N' hN hNp hN' hN'p h hconj ρ D' t D'' t'' P P'' inc d hP hP'' hPP hdp hd f nu f'' nu'' hf hf'' hft hft'' hiff j h₁ M hpl hco hloc`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`. Conclude with `(Fact.out : p.Prime).one_lt.ne' (Nat.coprime_zero_left _ |>.mp hdp)`. Establish `hd' : (d : ℚ) ≠ 0` using `by exact_mod_cast hd0`.
+
+Establish `hinc : Function.Injective inc` using `fun u1 u2 he => hP.2.1 (by rw [← hPP u1, ← hPP u2, he])`. Take `⟨lift, hlift⟩ : ∃ lift : D''.La → D'.La, ∀ u'', inc (lift u'') = d • u''` from `⟨fun u'' => (hd u'').choose, fun u'' => (hd u'').choose_spec⟩`. Establish `hlift_add : ∀ a b, lift (a + b) = lift a + lift b` using `fun a b => hinc (by rw [map_add, hlift, hlift, hlift, smul_add])`. Establish `hlift_inc : ∀ u, lift (inc u) = d • u` using `fun u => hinc (by rw [hlift, map_nsmul])`. Take `⟨j'', hj''⟩ : ∃ j'' : D''.La →+ VQ D, ∀ u'', j'' u'' = (d : ℚ)⁻¹ • j (lift u'')` from `⟨AddMonoidHom.mk' (fun u'' => (d : ℚ)⁻¹ • j (lift u'')) (fun a b => by simp only [hlift_add, map_add, smul_add]), fun _ => rfl⟩`.
+
+Establish `hj''d : ∀ u'', (d : ℚ) • j'' u'' = j (lift u'')`. Introduce `u''`. Rewrite using `[hj'', smul_smul, mul_inv_cancel₀ hd', one_smul]`. Establish `hj''inc : ∀ u, j'' (inc u) = j u`. Introduce `u`.
+
+Rewrite using `[hj'', hlift_inc, map_nsmul, ← Nat.cast_smul_eq_nsmul ℚ, smul_smul, inv_mul_cancel₀ hd', one_smul]`. Establish `hpl'' : IsPlace L B.β D'' j''`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Establish `h1 : j (lift a) = j (lift b)` using `by rw [← hj''d, ← hj''d, hab]`.
+
+Establish `h2` using `hpl.1 h1`. Establish `h3 : d • a = d • b` using `by rw [← hlift, ← hlift, h2]`. Use `haveI := D''.free`. Establish `h4 : (d : ℤ) • a = (d : ℤ) • b` using `by rw [natCast_zsmul, natCast_zsmul]; exact h3`. Conclude with `smul_right_injective D''.La (by exact_mod_cast hd0 : (d : ℤ) ≠ 0) h4`.
+
+Introduce `c u`. Establish `hl : lift (c • u) = c • lift u` using `hinc (by`. Rewrite using `[hlift, map_smul, hlift]`. Conclude with `smul_comm d c u)`. Rewrite using `[hj'', hj'', hl, hpl.2.1, map_smul]`.
+
+Introduce `w`. Take `⟨m, u, hm, hmw⟩` from `hpl.2.2.1 w`. Conclude with `⟨m, inc u, hm, by rw [hj''inc]; exact hmw⟩`. Take `⟨r, hr, hrEF⟩` from `hIf p D G L h ρ D' D'' P P'' inc hP hP'' hPP f nu f'' nu'' hf hf'' hiff`. Take `⟨s, hs, hsEF⟩` from `hpl.2.2.2`.
+
+Use `⟨r * s, mul_pos hr hs, fun u1 u2 => ?_⟩` and prove the remaining obligations. Establish `key : ((D''.EF (d • u1) (d • u2) : ℤ) : ℚ) = (d : ℚ) * d * (D''.EF u1 u2)`. Simplify using `only [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hform : ∀ (c : ℚ) (x y : VQ D), formB L B.β (c • x) (c • y) = c * c * formB L B.β x y`. Introduce `c x y`. Simplify using `only [formB, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[key]`. Clear the denominators using the available nonvanishing facts. Use `_ = ((d : ℚ) * d)⁻¹ * (D''.EF (inc (lift u1)) (inc (lift u2)) : ℤ) := by rw [hlift, hlift]`. Use `_ = ((d : ℚ) * d)⁻¹ * (r * (D'.EF (lift u1) (lift u2) : ℤ)) := by rw [hrEF]`. Use `_ = ((d : ℚ) * d)⁻¹ * (r * (s * formB L B.β (j (lift u1)) (j (lift u2)))) := by rw [hsEF]`.
+
+Use `_ = r * s * formB L B.β (j'' u1) (j'' u2) := by`. Rewrite using `[← hj''d u1, ← hj''d u2, hform]`. Clear the denominators using the available nonvanishing facts. Establish `hloc'' : IsLocP D'' j'' M`. Introduce `w`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, u'', hm, hmw⟩`. Use `(hloc w).mp ⟨d * m, lift u'', Nat.Coprime.mul hdp hm, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, hmw, ← hj''d, Nat.cast_smul_eq_nsmul]`. Introduce `hw`.
+
+Take `⟨m, u, hm, hmw⟩` from `(hloc w).mpr hw`. Conclude with `⟨m, inc u, hm, by rw [hj''inc]; exact hmw⟩`. Take `⟨h₂, hR₂⟩` from `hAd p D G L B D'' j'' hpl'' f'' nu'' hf''`. Take `⟨h₃, hR₃⟩` from `hAd p D G L B D' j hpl f nu hf`. Establish `hc₂ : IsCoordA L (trivX B) N D'' t'' j'' h₂` using `coord_of L (trivX B) (hR₂ N hN hNp) hft''`.
+
+Establish `hc₃ : IsCoordA L (trivX B) N' D' t j h₃` using `coord_of L (trivX B) (hR₃ N' hN' hN'p) hft`. Establish `hk₃ : h₃⁻¹ * h₁ ∈ L.KN N'` using `(hCo p D G L (trivX B) N' hN' hN'p D' t j h₁ h₃ hco).mp hc₃`. Establish `hkey : h₂⁻¹ * h₃ = h`. Apply `GammaUniq.actG_injective L` to reduce the goal to its premises. Apply `end_eq` to reduce the goal to its premises.
+
+Introduce `a n hn hnp`. Take `⟨w₃, hw₃m, hw₃⟩` from `(hR₃ n hn hnp).2 a`. Take `⟨b, e, he⟩` from `(hf''.2 n hn hnp).2.2.2.1 (inc (f n a))`. Take `⟨wT, hwTm, hT⟩` from `(hiff n hn hnp a b).mp ⟨e, he⟩`. Take `⟨w₂, hw₂m, hw₂⟩` from `(hR₂ n hn hnp).2 b`.
+
+Establish `hrm : rd L (trivX B) h₂ (j'' e) ∈ LaHat D` using `((hR₂ n hn hnp).1 (j'' e)).mp ⟨0, e, by simp⟩`. Use `⟨w₂ + rd L (trivX B) h₂ (j'' e) - wT, sub_mem (add_mem hw₂m hrm) hwTm, -w₃, neg_mem hw₃m, ?_⟩` and prove the remaining obligations. Establish `eA : rd L (trivX B) h₂ (j (f n a)) = L.actG (h₂⁻¹ * h₃) (inAf D a) + n • L.actG (h₂⁻¹ * h₃) w₃`. Rewrite using `[rd_eq L (trivX B) h₃ h₂, hw₃, map_add, map_nsmul]`. Establish `eB : rd L (trivX B) h₂ (j (f n a)) = inAf D b + n • w₂ + n • rd L (trivX B) h₂ (j'' e)`.
+
+Rewrite using `[← hj''inc, he, map_add, map_nsmul, rd_add, rd_nsmul, hw₂]`. Establish `e1` using `eA.symm.trans eB`. Rewrite using `[eq_sub_of_add_eq e1, hT]`. Simplify using `only [smul_add, smul_sub, map_neg, smul_neg]`. Normalize the expressions using the abelian group laws.
+
+Establish `hh₂ : h₂ = h₃ * h⁻¹`. Rewrite using `[← hkey, mul_inv_rev, inv_inv, mul_inv_cancel_left]`. Use `⟨j'', hj''inc, hpl'', ?_, hloc''⟩` and prove the remaining obligations. Apply `(hCo p D G L (trivX B) N hN hNp D'' t'' j'' h₂ (h₁ * h⁻¹) hc₂).mpr` to reduce the goal to its premises. Establish `hx : (h₁ * h⁻¹)⁻¹ * h₂ = h * (h₃⁻¹ * h₁)⁻¹ * h⁻¹`.
+
+Rewrite using `[hh₂]`. Use `group`. Rewrite using `[hx]`. Conclude with `hconj _ (inv_mem hk₃)`.
+-/
 theorem UpperTheory.Gal.W2.isogCoord_of :
     UpperTheory.Gal.W2.AdOfWit → UpperTheory.Gal.W2.CoordKN → UpperTheory.Gal.W2.IsogForm → UpperTheory.Gal.W2.RdDense → UpperTheory.Gal.W2.IsogCoord := by
   intro hAd hCo hIf hRd p _ D G L B N N' hN hNp hN' hN'p h hconj ρ D' t D'' t'' P P'' inc d hP hP'' hPP

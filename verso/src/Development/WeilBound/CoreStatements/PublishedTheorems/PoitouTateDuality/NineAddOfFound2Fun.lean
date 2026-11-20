@@ -14,6 +14,15 @@ attribute [local instance 2000] Rep.hV2
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨i0, x1, x2, x3, x4, x5, x6, x7, s7⟩` from `hx`. Establish `hL : ∀ {r : ℕ} {H : Type} [AddCommGroup H] [Module (ZMod N) H] {L : κ → Type} [∀ k, AddCommGroup (L k)] [∀ k, Module (ZMod N) (L k)] (res : ∀ k, H →ₗ[ZMod N] L k) (f : H →ₗ[ZMod N] ∀ k, L k) (hf : ∀ x k, f x k = res k x) (E : H ≃+ cohomology M r) (Ev : ∀ k, L k ≃+ cohomology (Rep …`. Introduce `r H _ _ L _ _ res f hf E Ev sq x`. Rewrite using `[Units.val_one, one_smul]`. Rewrite using `[locSq_reindex φ e M r (fun k => (res k).toAddMonoidHom) E Ev sq x]`.
+
+Rewrite using `[AddEquiv.trans_apply]`. Use `congrArg _ (funext fun k => ?_)` and prove the remaining obligations. Rewrite using `[AddEquiv.piCongrRight_apply, hf]`. Both sides reduce to the same expression. Establish `hT : ∀ {r s : ℕ} (h : r + s = 2) {L : κ → Type} [∀ k, AddCommGroup (L k)] [∀ k, Module (ZMod N) (L k)] {Y : Type} [AddCommGroup Y] [Module (ZMod N) Y] {W : κ → Type} [∀ k, AddCommGroup (W k)] [∀ k, Module (ZMod N) (W k)] (rs : ∀ k, Y →ₗ[ZMod N] W k) (P : ∀ k, L k → W k → ZMod N) …`.
+
+Introduce `r s h L _ _ Y _ _ W _ _ rs P f hf Ev F Fv tq ε hQ x`. Use `AddMonoidHom.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[AddEquiv.trans_apply]`. Express the relevant statement in the definitionally equal form `ptLocalDualMap φ D M inv h (reindexAdd (fun v => cohomology (Rep.res (φ v).toMonoidHom M) r) e (fun k => Ev k (x k))) y = _`. Rewrite using `[ptLocalDualMap_reindex, AddMonoidHom.smul_apply, dualQZ_apply, hf, map_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hQ, tq, AddEquiv.apply_symm_apply, ptLocalPairing_apply]`. Conclude with `nineAdd_intro (ptGlobalToLocal φ M 0).hom.toAddMonoidHom (ptLocalDualMap φ D M inv (show 0 + 2 = 2 from rfl)) δ₁ (ptGlobalToLocal φ M 1).hom.toAddMonoidHom (ptLocalDualMap φ D M inv (show 1 + 1 = 2 from rfl)) δ₂ (ptGlobalToLocal φ M 2).hom.toAddMonoidHom (ptLocalDualMap φ D M inv …`.
+-/
 theorem nineAdd_of_found2 {N : ℕ} [NeZero N]
     {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {ι : Type} [Fintype ι] {Hv : ι → Type} [∀ v, Group (Hv v)] [∀ v, TopologicalSpace (Hv v)]

@@ -53,15 +53,24 @@ def TransvTrivial (D : D7) : Prop :=
 
 def TransvLemma (D : D7) : Prop := TransvUnitary D ∧ TransvConj D ∧ TransvTrivial D
 
+/- English proof (translation)
+Use `mt_injective S (Matrix.ext_of_mulVec_single fun i => ?_)` and prove the remaining obligations. Conclude with `(hg _).trans (hh _).symm`.
+-/
 theorem IsTransv.unique {S : HSp D} {w v : VA S} {g h : GA D S} (hg : IsTransv S w v g) (hh : IsTransv S w v h) :
     g = h := by
   refine mt_injective S (Matrix.ext_of_mulVec_single fun i => ?_)
   exact (hg _).trans (hh _).symm
 
+/- English proof (translation)
+Introduce `y`. Simplify using `[act, transv, form]`.
+-/
 example (S : HSp D) (w : VA S) : IsTransv S w 0 1 := by
   intro y
   simp [act, transv, form]
 
+/- English proof (translation)
+Rewrite using `[form, form, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 example (S : HSp D) (s : AE D) (u v : VA S) : form S (s • u) v = s * form S u v := by
   rw [form, form, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 

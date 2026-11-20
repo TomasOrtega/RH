@@ -8,6 +8,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
+/- English proof (translation)
+Introduce `k _ n p hp`. Take `⟨h, f, hfp, hspan, hind⟩` from `hBasis (MvPolynomial (Fin n) k) p`. Take `⟨D, hD⟩` from `hMinor (MvPolynomial (Fin n) k) p h f hfp hind (fun g hg hDg => hDetect k n p g hg hDg)`. Take `⟨s, hs, hsp⟩` from `hClear (MvPolynomial (Fin n) k) p h f hfp hspan`. Conclude with `⟨h, f, D, s, hfp, hs, hsp, hD⟩`.
+-/
 theorem JacobianPrimeDerivations.proof (hDetect : PolyDerivationsDetectSquare.Statement)
     (hBasis : CotangentBasisInPrime.Statement) (hMinor : DerivationMinorOfDetection.Statement)
     (hClear : LocalGeneratorsClearDenominators.Statement) : JacobianPrimeDerivations.Statement := by

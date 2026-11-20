@@ -5,6 +5,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz.G.PX
 
+/- English proof (translation)
+Introduce `K _ W Z Y q i π D d B V a x`. Take `⟨U, α, a₁, hx, ha⟩` from `sigmaLocal (fun α : B.ι => (oW B α : Scheme.{0})) a x`. Use `⟨U, α, α, a₁, a₁, hx, ha, ha, ?_⟩` and prove the remaining obligations. Establish `hc : U.ι ≫ a ≫ cP B = a₁ ≫ (oW B α).ι`. Establish `h : wI B α ≫ cP B = (oW B α).ι`.
+
+Simplify using `[wI, cP]`. Rewrite using `[← Category.assoc, show U.ι ≫ a = a₁ ≫ wI B α from ha, Category.assoc, h]`. Establish `h1 : (1 : Matrix (Fin d) (Fin d) Γ(V, ⊤)).map U.ι.appTop.hom = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[h1]`. Use `locMatOne B α _ fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[hc, Category.assoc, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`. Conclude with `(a₁ y).2`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.gMatOne :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) {V : Scheme.{0}} (a : V ⟶ WP B), GMat B a a 1 := by
   intro K _ W Z Y q i π D d B V a x

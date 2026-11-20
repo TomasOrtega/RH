@@ -7,6 +7,13 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ConnOpen
 
+/- English proof (translation)
+Use `set C := connectedComponent y`. Establish `key : ∀ t, t ∉ C → irreducibleComponent t ⊆ Cᶜ`. Introduce `t ht s hs hsC`. Establish `h1 : irreducibleComponent t ⊆ connectedComponent s` using `_root_.IsPreconnected.subset_connectedComponent (isIrreducible_irreducibleComponent (x := t)).isConnected.isPreconnected hs`. Rewrite `h1` using `[← connectedComponent_eq hsC]`.
+
+Conclude with `ht (h1 mem_irreducibleComponent)`. Establish `hC : Cᶜ = ⋃ Z ∈ {Z ∈ irreducibleComponents Y | Z ⊆ Cᶜ}, Z`. Use extensionality with `t`. Use `⟨fun ht => Set.mem_biUnion ⟨irreducibleComponent_mem_irreducibleComponents t, key t ht⟩ mem_irreducibleComponent, fun ht => ?_⟩` and prove the remaining obligations. Take `⟨Z, ⟨-, hZ⟩, htZ⟩` from `Set.mem_iUnion₂.1 ht`.
+
+Conclude with `hZ htZ`. Establish `hcl : IsClosed Cᶜ`. Rewrite using `[hC]`. Conclude with `(NoetherianSpace.finite_irreducibleComponents.subset fun _ h => h.1).isClosed_biUnion fun Z h => isClosed_of_mem_irreducibleComponents Z h.1`. Conclude with `isClosed_compl_iff.1 hcl`.
+-/
 theorem isOpen_connectedComponent_noetherian {Y : Type*} [TopologicalSpace Y] [NoetherianSpace Y] (y : Y) :
     IsOpen (connectedComponent y) := by
   set C := connectedComponent y
@@ -31,6 +38,13 @@ theorem isOpen_connectedComponent_noetherian {Y : Type*} [TopologicalSpace Y] [N
 
 end GlobalTheory.ConnOpen
 
+/- English proof (translation)
+Introduce `X hX x`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `y hy`. Take `⟨U, hU, hyU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := y) trivial`. Use `haveI : IsNoetherianRing Γ(X, U) := IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`.
+
+Use `haveI : NoetherianSpace (U : Set X) := noetherianSpace_of_isAffineOpen U hU`. Set `y' : (U : Set X)` to `⟨y, hyU⟩`. Use `⟨Subtype.val '' connectedComponent y', ?_, U.isOpen.isOpenEmbedding_subtypeVal.isOpenMap _ (GlobalTheory.ConnOpen.isOpen_connectedComponent_noetherian y'), ⟨y', mem_connectedComponent, rfl⟩⟩` and prove the remaining obligations. Establish `hc : _root_.IsPreconnected (Subtype.val '' connectedComponent y' : Set X)` using `isPreconnected_connectedComponent.image _ continuous_subtype_val.continuousOn`. Use `hc.subset_connectedComponent ⟨y', mem_connectedComponent, rfl⟩` as an intermediate fact.
+
+Rewrite `this` using `[← connectedComponent_eq hy]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.isOpen_connectedComponent_of_isLocallyNoetherian :
     ∀ (X : Scheme.{0}), IsLocallyNoetherian X → ∀ x : X, IsOpen (connectedComponent x) := by
   intro X hX x

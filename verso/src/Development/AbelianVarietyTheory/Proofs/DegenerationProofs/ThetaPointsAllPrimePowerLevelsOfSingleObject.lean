@@ -14,6 +14,17 @@ open GlobalTheory GlobalTheory.Ex
 
 namespace GlobalTheory.Ex.AllLevels
 
+/- English proof (translation)
+Take `⟨C, _, _, _, _, _, gam, u, h₁, h₂, h₃, h₄⟩` from `GlobalTheory.T.exists_complete_algClosed_field_powerSeries_extension O' K`. Take `⟨A, ρ, -, -, hρ, hv⟩` from `S.val C gam u h₁ h₂ h₃ h₄`. Establish `hR : Roots u ρ` using `⟨Units.ext ((hρ 1).trans ((congrArg gam S.r_one).trans h₃.symm)), fun n k hn hk => Units.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, hρ, hρ, ← map_pow, ← Units.val_pow_eq_pow_val, S.roots.2 n k hn hk])⟩`. Take `⟨b₁, -, b₃, -, b₅⟩` from `GlobalTheory.T.torus_torsion_points_correspond_values O' a.D₀ a.even a.bimult C A.N A.ν`.
+
+Take `⟨q₁, q₂⟩` from `GlobalTheory.T.qval_add_of_tower E H D O' a.D₀ a.oa a.even a.bimult C A.I A.N A.ν A.q b₁ b₃ (fun k => ⟨(b₅ k).1, (b₅ k).2.2⟩) A.hq`. Establish `hrm : Odd (r * m)` using `hr.mul hm`. Use `choose p hp _ using fun x => existsUnique_twRel A.be u (ρ (m ^ 2)) (hR.pow (pow_pos hm.pos 2)) (A.q _ x)`. Use `choose p' hp' _ using fun x => existsUnique_twRel A.be u (ρ ((r * m) ^ 2)) (hR.pow (pow_pos hrm.pos 2)) (A.q _ x)`. Take `⟨s, hs⟩` from `(hv m hm p hp).1`.
+
+Take `⟨s', hs'⟩` from `(hv _ hrm p' hp').1`. Establish `key : ∀ x, gam (S.v (r * m) (r • x)) = (s' * s⁻¹ : Cˣ) * gam (S.v m x)` using `fun x => by`. Rewrite using `[hs, hs', GlobalTheory.T.twist_tx_nsmul_eq_of_odd C A.N D.La A.q q₁ q₂ _ A.be u ρ hR r m hr hm x _ _ (hp' _) (hp x), Units.val_mul, _root_.mul_assoc, Units.inv_mul_cancel_left]`. Distinguish the cases in `h : ∃ x, S.v m x ≠ 0`. Take `⟨x₀, h₀⟩` from `h`.
+
+Establish `e : gam (S.v (r * m) (r • x₀) / S.v m x₀) = (s' * s⁻¹ : Cˣ)`. Rewrite using `[map_div₀, key, mul_div_cancel_right₀ _ ((map_ne_zero gam).2 h₀)]`. Use `⟨Units.mk0 (S.v (r * m) (r • x₀) / S.v m x₀) fun h => (s' * s⁻¹).ne_zero (by rw [← e, h, map_zero]), fun x => gam.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mk0, e, key]`. Simplify using `only [not_exists, not_not] at h`.
+
+Conclude with `⟨1, fun x => gam.injective (by rw [key, h, mul_zero, map_zero, mul_zero])⟩`.
+-/
 theorem ser_nested {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H}
     {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'}
     {a : ArcIn D l β O' b} {K : Type} [Field K] [IsAlgClosed K] [Algebra (FractionRing O') K] [Algebra (PowerSeries O') K]
@@ -44,6 +55,9 @@ theorem ser_nested {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
   · simp only [not_exists, not_not] at h
     exact ⟨1, fun x => gam.injective (by rw [key, h, mul_zero, map_zero, mul_zero])⟩
 
+/- English proof (translation)
+Introduce `hV _ _ _ h₁ h₂ _ E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a _ K _ _ _ _ _ _ _ S n hn ho h`. Conclude with `exists_full_all hV.1.1 h₁ h₂ S.A.ρ S.A.I.ζ S.A.I.ζ_pow S.v (ser_nested S) hn ho h`.
+-/
 theorem one_object : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.LN.HomExtSt → ThetaPtDeterminesSt → EndDeterminedOnTorsionSt → ThetaUnifAV → AllA fun {E} _ _ _ {H} {D} {l} {Xo} {c} {W₀} Y {O'} _ _ {b} a => ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra (FractionRing O') K] [Algebra (PowerSeries O') K] [FaithfulSMul (PowerSeries O') K] [Algebra.IsAlgebraic (PowerSeries O') K], (∀ x, algebraMap (FractionRing O') K (algebraMap O' _ x) = algebraMap (PowerSeries O') K (PowerSeries.C x)) → ∀ (S : Ser a K (algebraMap _ K)) (n : ℕ), n.Prime → Odd n → (∀ j, 2 ≤ j → ∃ o : Full D K, o.ρ = S.A.ρ ∧ o.I.ζ ((n ^ j) ^ 2) = S.A.I.ζ ((n ^ j) ^ 2) ∧ o.Theta (n ^ j) (S.v (n ^ j))) → ∃ o : Full D K, o.ρ = S.A.ρ ∧ ∀ j, o.I.ζ (n ^ j) = S.A.I.ζ (n ^ j) ∧ o.Theta (n ^ j) (S.v (n ^ j)) := by
   intro hV _ _ _ h₁ h₂ _ E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a _ K _ _ _ _ _ _ _ S n hn ho h
   exact exists_full_all hV.1.1 h₁ h₂ S.A.ρ S.A.I.ζ S.A.I.ζ_pow S.v (ser_nested S) hn ho h

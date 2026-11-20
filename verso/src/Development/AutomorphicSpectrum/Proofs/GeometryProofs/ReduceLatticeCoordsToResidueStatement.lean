@@ -11,6 +11,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalFrame.values_basis | exact GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalFrame.values_basis | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalFrame.values_basis <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.reduce_lattice_coords_to_residue : ∀ (E : Type) [Field E] [NumberField E] (Ω Vs C : Type) [Field Ω] [CharZero Ω] [AddCommGroup Vs] [Module Ω Vs]
     [FiniteDimensional Ω Vs] [Field C] [CharZero C] (ρ : 𝓞 E →+* Module.End Ω Vs) (R' : Subring Ω) (g n : ℕ)
     (ℓ : Fin g → Vs) (ψ : R' →+* C) (ρC : 𝓞 E →+* Module.End C (Fin g → C)) (σ : E →+* Ω) (σC : E →+* C)

@@ -6,6 +6,9 @@ namespace GlobalTheory.GenEigenFinOrbit
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Proceed by induction on `zs with`. Consider the case `nil => simp`. Consider the case `cons z zs ih => simp [ih, Module.End.mul_apply]`.
+-/
 theorem foldr_eq_prod (χ : End ℂ V → ℂ) (zs : List (End ℂ V)) (v : V) :
     zs.foldr (fun z f => z f - χ z • f) v =
       (zs.map (fun z => z - algebraMap ℂ (End ℂ V) (χ z))).prod v := by
@@ -13,6 +16,11 @@ theorem foldr_eq_prod (χ : End ℂ V → ℂ) (zs : List (End ℂ V)) (v : V) :
   | nil => simp
   | cons z zs ih => simp [ih, Module.End.mul_apply]
 
+/- English proof (translation)
+Use `lt_of_le_of_ne hg fun h => hN ?_` and prove the remaining obligations. Establish `hk : ∀ k : ℕ, N.map (g ^ k) = N`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [Module.End.one_eq_id]`.
+
+Consider the case `succ k ih => rw [pow_succ, Module.End.mul_eq_comp, Submodule.map_comp, h, ih]`. Rewrite using `[← hk K, eq_bot_iff]`. Introduce and unpack `_ ⟨n, hn, rfl⟩`. Simplify using `[hK n hn]`.
+-/
 theorem map_lt_of_pow_eq_zero {N : Submodule ℂ V} (g : End ℂ V) (K : ℕ)
     (hg : N.map g ≤ N) (hK : ∀ n ∈ N, (g ^ K) n = 0) (hN : N ≠ ⊥) : N.map g < N := by
   refine lt_of_le_of_ne hg fun h => hN ?_
@@ -31,6 +39,9 @@ variable (G : Set (End ℂ V)) (N : Submodule ℂ V) (K : ℕ)
   (hst : ∀ g ∈ G, N.map g ≤ N) (hnil : ∀ g ∈ G, ∀ n ∈ N, (g ^ K) n = 0)
 
 include hst in
+/- English proof (translation)
+Proceed by induction on `gs with`. Consider the case `nil => simp [Module.End.one_eq_id]`. Consider the case `cons g gs ih`. Rewrite using `[List.prod_cons, Module.End.mul_eq_comp, Submodule.map_comp]`. Conclude with `(Submodule.map_mono (ih fun x hx => hgs x (by simp [hx]))).trans (hst g (hgs g (by simp)))`.
+-/
 theorem map_prod_le (gs : List (End ℂ V)) (hgs : ∀ g ∈ gs, g ∈ G) : N.map gs.prod ≤ N := by
   induction gs with
   | nil => simp [Module.End.one_eq_id]
@@ -40,6 +51,15 @@ theorem map_prod_le (gs : List (End ℂ V)) (hgs : ∀ g ∈ gs, g ∈ G) : N.ma
       (hst g (hgs g (by simp)))
 
 include hcomm hst hnil in
+/- English proof (translation)
+Proceed by induction on `gs with`. Consider the case `nil => rw [List.prod_nil, Module.End.one_eq_id, Submodule.map_id]`. Simplify using the standard rewrite rules. Consider the case `cons g gs ih`. Establish `hgs' : ∀ x ∈ gs, x ∈ G` using `fun x hx => hgs x (by simp [hx])`.
+
+Establish `hg : g ∈ G` using `hgs g (by simp)`. Specialize `ih hgs'`. Use `set M := N.map gs.prod with hM`. Establish `hMN : M ≤ N` using `map_prod_le G N hst gs hgs'`. Use `haveI : FiniteDimensional ℂ M := Submodule.finiteDimensional_of_le hMN`.
+
+Establish `hc : Commute g gs.prod` using `Commute.list_prod_right _ _ fun x hx => hcomm g hg x (hgs' x hx)`. Establish `hMst : M.map g ≤ M`. Rewrite using `[hM, ← Submodule.map_comp, ← Module.End.mul_eq_comp, hc.eq, Module.End.mul_eq_comp, Submodule.map_comp]`. Conclude with `Submodule.map_mono (hst g hg)`. Rewrite using `[List.prod_cons, Module.End.mul_eq_comp, Submodule.map_comp, ← hM, List.length_cons]`.
+
+Distinguish the cases in `h0 : M = ⊥`. Rewrite using `[h0, Submodule.map_bot]`. Simplify using the standard rewrite rules. Establish `hlt` using `Submodule.finrank_lt_finrank_of_lt (map_lt_of_pow_eq_zero g K hMst (fun n hn => hnil g hg n (hMN hn)) h0)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_map_prod_le [FiniteDimensional ℂ N] (gs : List (End ℂ V))
     (hgs : ∀ g ∈ gs, g ∈ G) :
     finrank ℂ (N.map gs.prod) ≤ finrank ℂ N - gs.length := by
@@ -66,6 +86,9 @@ theorem finrank_map_prod_le [FiniteDimensional ℂ N] (gs : List (End ℂ V))
       omega
 
 include hcomm hst hnil in
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℂ (N.map gs.prod) := Submodule.finiteDimensional_of_le (map_prod_le G N hst gs hgs)`. Rewrite using `[← Submodule.finrank_eq_zero]`. Use `finrank_map_prod_le G N K hcomm hst hnil gs hgs` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem map_prod_eq_bot [FiniteDimensional ℂ N] (gs : List (End ℂ V))
     (hgs : ∀ g ∈ gs, g ∈ G) (hlen : finrank ℂ N ≤ gs.length) : N.map gs.prod = ⊥ := by
   haveI : FiniteDimensional ℂ (N.map gs.prod) :=
@@ -75,6 +98,17 @@ theorem map_prod_eq_bot [FiniteDimensional ℂ N] (gs : List (End ℂ V))
   omega
 
 include hcomm hst hnil in
+/- English proof (translation)
+Set `Pr : ℕ → Prop` to `fun l => ∃ gs : List (End ℂ V), (∀ g ∈ gs, g ∈ G) ∧ gs.length = l ∧ N.map gs.prod ≠ ⊥`. Establish `hex : ∃ l, ¬ Pr l` using `⟨finrank ℂ N, fun ⟨gs, hgs, hl, hne⟩ => hne (map_prod_eq_bot G N K hcomm hst hnil gs hgs hl.ge)⟩`. Establish `h0 : Pr 0` using `⟨[], by simp, rfl, by simpa [Module.End.one_eq_id] using hN⟩`. Establish `hpos : 0 < Nat.find hex`. Break down `Nat.eq_zero_or_pos (Nat.find hex) with h | h` into its components or cases.
+
+Conclude with `absurd (h ▸ Nat.find_spec hex) (not_not.2 h0)`. Conclude with `h`. Take `⟨gs, hgs, hl, hne⟩ : Pr (Nat.find hex - 1)` from `not_not.1 (Nat.find_min hex (by omega))`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨n, hn, rfl⟩` from `hx`.
+
+Use `⟨gs.prod n, map_prod_le G N hst gs hgs ⟨n, hn, rfl⟩, hx0, fun g hg => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne'`. Apply `Nat.find_spec hex` to reduce the goal to its premises. Use `⟨g :: gs, ?_, by simp [hl]; omega, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Simplify using `at hx`. Break down `hx with rfl | hx` into its components or cases. Use `exacts [hg, hgs x hx]`. Introduce `hbot`. Apply `hne'` to reduce the goal to its premises.
+
+Establish `: (g :: gs).prod n ∈ N.map (g :: gs).prod` using `⟨n, hn, rfl⟩`. Rewrite `this` using `[hbot]`. Simplify `this` using `[Module.End.mul_apply]`.
+-/
 theorem exists_common_kernel [FiniteDimensional ℂ N] (hN : N ≠ ⊥) :
     ∃ n ∈ N, n ≠ 0 ∧ ∀ g ∈ G, g n = 0 := by
   classical
@@ -104,6 +138,9 @@ theorem exists_common_kernel [FiniteDimensional ℂ N] (hN : N ≠ ⊥) :
 
 end Family
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, ← ih]`. Simplify using `[hF]`.
+-/
 theorem sub_pow_coe {U : Submodule ℂ V} (z : End ℂ V) (F : End ℂ U)
     (hF : ∀ u : U, (F u : V) = z u) (c : ℂ) (k : ℕ) (u : U) :
     (((F - c • 1) ^ k) u : V) = ((z - algebraMap ℂ (End ℂ V) c) ^ k) (u : V) := by
@@ -119,6 +156,39 @@ namespace GlobalTheory
 
 open GenEigenFinOrbit in
 
+/- English proof (translation)
+Introduce `V _ _ A hA X' D ψ hfin hD hX`. Use `set U := Submodule.span ℂ ((fun z : Module.End ℂ V => z ψ) '' A) with hU`. Establish `hUst : ∀ z ∈ A, Set.MapsTo z U U`. Introduce `z hz`. Establish `: U.map z ≤ U`.
+
+Rewrite using `[hU, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨w, hw, rfl⟩, rfl⟩`. Conclude with `Submodule.subset_span ⟨z * w, A.mul_mem hz hw, rfl⟩`. Conclude with `fun u hu => this ⟨u, hu, rfl⟩`. Establish `hψU : ψ ∈ U` using `Submodule.subset_span ⟨1, A.one_mem, rfl⟩`.
+
+Take `⟨f, hf⟩ : ∃ f : A → End ℂ U, ∀ (i : A) (u : U), (f i u : V) = (i : End ℂ V) u` from `⟨fun i => (i : End ℂ V).restrict (hUst i i.2), fun _ _ => rfl⟩`. Establish `hcommAll : ∀ i j, Commute (f i) (f j)`. Introduce `i j`. Use `show f i * f j = f j * f i`. Use extensionality with `u`.
+
+Use `congrArg (fun T : End ℂ V => T (u : V)) (hA i i.2 j j.2)` as an intermediate fact. Simplify `this` using `[Module.End.mul_apply, hf]`. Establish `htop` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute f (fun i j _ => hcommAll i j) (fun i => Module.End.iSup_maxGenEigenspace_eq_top _)`. Use `set T := {ψ' | ψ' ∈ U ∧ ∃ χ ∈ X', ∀ zs : List (Module.End ℂ V), zs.length = D → (∀ z ∈ zs, z ∈ A) → zs.foldr (fun z f => z f - χ z • f) ψ' = 0} with hT`. Establish `key : ∀ χ : A → ℂ, ∀ x ∈ ⨅ i, (f i).maxGenEigenspace (χ i), (x : V) ∈ Submodule.span ℂ T` using `by classical`.
+
+Introduce `χ x hx`. Use `set N := (⨅ i, (f i).maxGenEigenspace (χ i)).map U.subtype with hNdef`. Establish `hxN : (x : V) ∈ N` using `⟨x, hx, rfl⟩`. Establish `hNU : N ≤ U`. Introduce and unpack `_ ⟨y, _, rfl⟩`.
+
+Conclude with `y.2`. Use `haveI : FiniteDimensional ℂ N := Submodule.finiteDimensional_of_le hNU`. Take `⟨χ', hχ'⟩ : ∃ χ' : End ℂ V → ℂ, ∀ z (hz : z ∈ A), χ' z = χ ⟨z, hz⟩` from `⟨fun y => if h : y ∈ A then χ ⟨y, h⟩ else 0, fun z hz => dif_pos hz⟩`. Use `set G : Set (End ℂ V) := {g | ∃ z ∈ A, g = z - algebraMap ℂ _ (χ' z)} with hG`. Establish `hGA : ∀ g ∈ G, g ∈ A`.
+
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `A.sub_mem hz (A.algebraMap_mem _)`. Establish `hcommG : ∀ a ∈ G, ∀ b ∈ G, a * b = b * a` using `fun a ha b hb => hA a (hGA a ha) b (hGA b hb)`. Establish `hNst : ∀ z ∈ A, N.map z ≤ N`. Introduce and unpack `z hz _ ⟨_, ⟨y, hy, rfl⟩, rfl⟩`.
+
+Use `⟨f ⟨z, hz⟩ y, ?_, hf ⟨z, hz⟩ y⟩` and prove the remaining obligations. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf] at hy ⊢`. Introduce `i`. Conclude with `Module.End.mapsTo_maxGenEigenspace_of_comm (hcommAll i ⟨z, hz⟩) (χ i) (hy i)`. Establish `hstG : ∀ g ∈ G, N.map g ≤ N`.
+
+Introduce and unpack `_ ⟨z, hz, rfl⟩ _ ⟨v, hv, rfl⟩`. Simplify using `only [LinearMap.sub_apply, Module.algebraMap_end_apply]`. Conclude with `N.sub_mem (hNst z hz ⟨v, hv, rfl⟩) (N.smul_mem _ hv)`. Establish `hnil : ∀ g ∈ G, ∀ n ∈ N, (g ^ finrank ℂ U) n = 0`. Introduce and unpack `_ ⟨z, hz, rfl⟩ _ ⟨y, hy, rfl⟩`.
+
+Establish `hy'` using `(Submodule.mem_iInf _).1 (SetLike.mem_coe.1 hy) ⟨z, hz⟩`. Rewrite `hy'` using `[Module.End.maxGenEigenspace_eq_genEigenspace_finrank, Module.End.mem_genEigenspace_nat, LinearMap.mem_ker]`. Rewrite using `[hχ' z hz, Submodule.subtype_apply, ← sub_pow_coe z (f ⟨z, hz⟩) (hf ⟨z, hz⟩), hy']`. Both sides reduce to the same expression. Distinguish the cases in `hN : N = ⊥`.
+
+Rewrite `hxN` using `[hN, Submodule.mem_bot]`. Rewrite using `[hxN]`. Conclude with `zero_mem _`. Take `⟨n, hnN, hn0, hnker⟩` from `exists_common_kernel G N (finrank ℂ U) hcommG hstG hnil hN`. Establish `heig : ∀ z ∈ A, z n = χ' z • n`.
+
+Introduce `z hz`. Use `hnker _ ⟨z, hz, rfl⟩` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Take `⟨χ0, hχ0X, hχ0⟩` from `hX χ' n (hNU hnN) hn0 heig`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `⟨hNU hxN, χ0, hχ0X, fun zs hlen hzs => ?_⟩` and prove the remaining obligations. Rewrite using `[foldr_eq_prod]`. Establish `hmap : zs.map (fun z => z - algebraMap ℂ (End ℂ V) (χ0 z)) = zs.map (fun z => z - algebraMap ℂ (End ℂ V) (χ' z))` using `List.map_congr_left fun z hz => by rw [hχ0 z (hzs z hz)]`. Rewrite using `[hmap]`. Establish `hbot` using `map_prod_eq_bot G N (finrank ℂ U) hcommG hstG hnil (zs.map fun z => z - algebraMap ℂ (End ℂ V) (χ' z)) (by`.
+
+Introduce `g hg`. Take `⟨z, hz, rfl⟩` from `List.mem_map.1 hg`. Conclude with `⟨z, hzs z hz, rfl⟩)`. Use the proof step `(by rw [List.length_map, hlen]; exact (Submodule.finrank_mono hNU).trans hD)`. Establish `hmem : (zs.map fun z => z - algebraMap ℂ (End ℂ V) (χ' z)).prod (x : V) ∈ N.map (zs.map fun z => z - algebraMap ℂ (End ℂ V) (χ' z)).prod` using `⟨_, hxN, rfl⟩`.
+
+Rewrite `hmem` using `[hbot, Submodule.mem_bot]`. Conclude with `hmem`. Establish `hmem : (⟨ψ, hψU⟩ : U) ∈ ⨆ χ : A → ℂ, ⨅ i, (f i).maxGenEigenspace (χ i)`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`.
+
+Conclude with `Submodule.iSup_induction _ (motive := fun x : U => (x : V) ∈ Submodule.span ℂ T) hmem key (by simp) (fun x y hx hy => by simpa using add_mem hx hy)`.
+-/
 theorem mem_span_genEigen_of_finiteDimensional_orbit :
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (A : Subalgebra ℂ (Module.End ℂ V)),
     (∀ x ∈ A, ∀ y ∈ A, x * y = y * x) → ∀ (X' : Set (Module.End ℂ V → ℂ)) (D : ℕ) (ψ : V),

@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [gMat, Matrix.add_apply]`. Simplify using `only [kMat, pmat, Prod.fst_add, Prod.snd_add, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> (try simp only [Complex.ofReal_add, star_add, mul_add, neg_add, add_zero]) <;> (try ring)`.
+-/
 theorem gMat_add {ε : Fin n → Bool} (s t : GCo ε) : gMat (s + t) = gMat s + gMat t := by
   ext a b
   simp only [gMat, Matrix.add_apply]
@@ -18,6 +21,9 @@ theorem gMat_add {ε : Fin n → Bool} (s t : GCo ε) : gMat (s + t) = gMat s + 
   split_ifs <;> (try simp only [Complex.ofReal_add, star_add, mul_add, neg_add, add_zero]) <;>
     (try ring)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [gMat, RingHom.id_apply, Matrix.add_apply, Matrix.smul_apply]`. Simplify using `only [kMat, pmat, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply]`. Apply the tactic sequence `split_ifs <;> (try simp only [Complex.real_smul, Complex.ofReal_mul, star_mul', Complex.star_def, Complex.conj_ofReal, smul_add, smul_zero, smul_neg, add_zero, mul_neg]) <;> (try simp only [smul_eq_mul, Complex.ofReal_mul]) <;> (try ring_nf)`.
+-/
 theorem gMat_smul {ε : Fin n → Bool} (c : ℝ) (s : GCo ε) : gMat (c • s) = (RingHom.id ℝ c) • gMat s := by
   ext a b
   simp only [gMat, RingHom.id_apply, Matrix.add_apply, Matrix.smul_apply]
@@ -31,6 +37,9 @@ def gL (ε : Fin n → Bool) : GCo ε →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ whe
   map_add' := gMat_add
   map_smul' := gMat_smul
 
+/- English proof (translation)
+Introduce `s t h`. Establish `h' : gMat s = gMat t` using `h`. Rewrite using `[← gCo_gMat s, ← gCo_gMat t, h']`.
+-/
 theorem gL_injective (ε : Fin n → Bool) : Function.Injective (gL ε) := by
   intro s t h
   have h' : gMat s = gMat t := h
@@ -40,17 +49,40 @@ abbrev gV (ε : Fin n → Bool) : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ) := 
 
 def gE (ε : Fin n → Bool) : GCo ε ≃ₗ[ℝ] gV ε := LinearEquiv.ofInjective (gL ε) (gL_injective ε)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gE_apply (ε : Fin n → Bool) (s : GCo ε) : ((gE ε s : gV ε) : Matrix (Fin n) (Fin n) ℂ) = gMat s := rfl
 
 def ujMat (ε : Fin n → Bool) : UJ ε →* Matrix (Fin n) (Fin n) ℂ :=
   (Units.coeHom _).comp (UJ ε).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ujMat_apply (ε : Fin n → Bool) (g : UJ ε) : ujMat ε g = toM g := rfl
 
 section Normed
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Unfold `inG`. Establish `hd : HasStrictFDerivAt (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) (1 : Matrix (Fin n) (Fin n) ℂ →L[ℂ] Matrix (Fin n) (Fin n) ℂ) 0` using `hasStrictFDerivAt_exp_zero`. Take `⟨s, hs, hap⟩` from `hd.approximates_deriv_on_nhds (c := 1 / 2) (Or.inr (by norm_num))`. Establish `hinj : ∀ x ∈ s, ∀ y ∈ s, NormedSpace.exp x = NormedSpace.exp y → x = y`. Introduce `x hx y hy hxy`.
+
+Establish `h` using `hap x hx y hy`. Rewrite `h` using `[hxy, sub_self]`. Express the relevant statement in the definitionally equal form `‖0 - (x - y)‖ ≤ ((1 / 2 : NNReal) : ℝ) * ‖x - y‖ at h`. Rewrite `h` using `[zero_sub, norm_neg, NNReal.coe_div, NNReal.coe_one, NNReal.coe_two]`. Establish `h0 : ‖x - y‖ = 0` using `le_antisymm (by linarith [norm_nonneg (x - y)]) (norm_nonneg _)`.
+
+Conclude with `sub_eq_zero.mp (norm_eq_zero.mp h0)`. Establish `hJJ : Jm ε * Jm ε = 1`. Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hJi : (Jm ε)⁻¹ = Jm ε` using `Matrix.inv_eq_left_inv hJJ`. Establish `hJu : IsUnit (Jm ε)` using `⟨⟨Jm ε, Jm ε, hJJ, hJJ⟩, rfl⟩`. Establish `hc1 : Tendsto (fun Z : Matrix (Fin n) (Fin n) ℂ => Jm ε * Zᴴ * Jm ε) (𝓝 0) (𝓝 0)`.
+
+Establish `hcont : Continuous (fun Z : Matrix (Fin n) (Fin n) ℂ => Jm ε * Zᴴ * Jm ε)` using `(continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const`. Simplify using `using hcont.tendsto 0`. Establish `hc2 : Tendsto (fun Z : Matrix (Fin n) (Fin n) ℂ => -Z) (𝓝 0) (𝓝 0)`. Simplify using `using (continuous_neg.tendsto (0 : Matrix (Fin n) (Fin n) ℂ))`. Use `filter_upwards [hc1.eventually hs, hc2.eventually hs] with Z h1 h2 hU`.
+
+Unfold `inUJ at hU`. Establish `hE : NormedSpace.exp (Jm ε * Zᴴ * Jm ε) = NormedSpace.exp (-Z)`. Establish `hL : Jm ε * (NormedSpace.exp Z)ᴴ * Jm ε * NormedSpace.exp Z = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [hU, hJJ]`. Rewrite using `[show Jm ε * Zᴴ * Jm ε = Jm ε * Zᴴ * (Jm ε)⁻¹ by rw [hJi], Matrix.exp_conj _ _ hJu, hJi, Matrix.exp_conjTranspose, Matrix.exp_neg]`. Conclude with `(Matrix.inv_eq_left_inv hL).symm`. Establish `hZ` using `hinj _ h1 _ h2 hE`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Use `_ = 0 := by rw [hZ, Matrix.mul_neg, neg_add_cancel]`.
+-/
 theorem exp_inUJ_small (ε : Fin n → Bool) : ∀ᶠ Z in 𝓝 (0 : Matrix (Fin n) (Fin n) ℂ),
     inUJ ε (NormedSpace.exp Z) → inG ε Z := by
   unfold inG

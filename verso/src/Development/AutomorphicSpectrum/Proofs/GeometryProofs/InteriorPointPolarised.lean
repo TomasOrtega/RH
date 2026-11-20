@@ -14,6 +14,11 @@ open scoped Matrix ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.Ar.HodgeMetric
 
+/- English proof (translation)
+Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := ℤ)` to reduce the goal to its premises. Establish `h : Ideal.comap (algebraMap ℤ (𝓞 F)) (RingHom.ker g) = RingHom.ker (g.comp (algebraMap ℤ (𝓞 F)))` using `RingHom.comap_ker _ _`. Rewrite using `[h, (RingHom.injective_iff_ker_eq_bot _).1]`. Establish `e : g.comp (algebraMap ℤ (𝓞 F)) = Int.castRingHom ℂ` using `RingHom.ext_int _ _`.
+
+Rewrite using `[e]`. Conclude with `Int.cast_injective`.
+-/
 theorem injective_ringOfIntegers_toComplex {F : Type} [Field F] [NumberField F] (g : 𝓞 F →+* ℂ) :
     Function.Injective g := by
   rw [RingHom.injective_iff_ker_eq_bot]
@@ -25,12 +30,18 @@ theorem injective_ringOfIntegers_toComplex {F : Type} [Field F] [NumberField F] 
   rw [e]
   exact Int.cast_injective
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsFractionRing.lift (injective_ringOfIntegers_toComplex g), by ext a simp⟩`.
+-/
 theorem exists_comp_eq_of_ringOfIntegers {F : Type} [Field F] [NumberField F] (g : 𝓞 F →+* ℂ) :
     ∃ g' : F →+* ℂ, g'.comp (algebraMap (𝓞 F) F) = g :=
   ⟨IsFractionRing.lift (injective_ringOfIntegers_toComplex g), by
     ext a
     simp⟩
 
+/- English proof (translation)
+Take `⟨g', hg'⟩` from `exists_comp_eq_of_ringOfIntegers (Spec.preimage (u ≫ s)).hom`. Use `⟨g', ?_⟩` and prove the remaining obligations. Rewrite using `[← spMap_comp, hg']`. Conclude with `(Spec.map_preimage (u ≫ s)).symm`.
+-/
 theorem exists_spMap_of_ringOfIntegers {F : Type} [Field F] [NumberField F] {X : Scheme.{0}} (s : X ⟶ Sp (𝓞 F))
     (u : Sp ℂ ⟶ X) : ∃ g' : F →+* ℂ, u ≫ s = spMap g' ≫ spMap (algebraMap (𝓞 F) F) := by
   obtain ⟨g', hg'⟩ := exists_comp_eq_of_ringOfIntegers (Spec.preimage (u ≫ s)).hom
@@ -38,6 +49,23 @@ theorem exists_spMap_of_ringOfIntegers {F : Type} [Field F] [NumberField F] {X :
   rw [← spMap_comp, hg']
   exact (Spec.map_preimage (u ≫ s)).symm
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω _ _ K _ J _ y 𝔐 z hz`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := { to_charZero := inferInstance, to_finiteDimensional := c.fin }`. Set `p : Sp ℂ` to `IsLocalRing.closedPoint ℂ`. Establish `hsub : Subsingleton (Sp ℂ)` using `inferInstanceAs (Subsingleton (PrimeSpectrum ℂ))`.
+
+Establish `h₁ : (z ≫ 𝔐.f) p ∈ abLocus Y.t.G`. Use `(abLocus_pullback abLocusOne Y.t.semi 𝔐.m.cart.1 (z p)).2 hz` as an intermediate fact. Simplify using `using this`. Take `⟨g', hg'⟩` from `exists_spMap_of_ringOfIntegers Y.s (z ≫ 𝔐.f)`. Set `w : Sp ℂ ⟶ pullback Y.s (spMap (algebraMap (𝓞 c.F) c.F))` to `pullback.lift (z ≫ 𝔐.f) (spMap g') hg'`.
+
+Establish `hw : w ≫ pullback.fst _ _ = z ≫ 𝔐.f` using `pullback.lift_fst _ _ _`. Establish `h₂ : w p ∈ Set.range Y.jQ`. Rewrite using `[← Y.ab_gen]`. Use `show (pullback.fst Y.s _) (w p) ∈ abLocus Y.t.G`. Establish `: (pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F))) (w p) = (z ≫ 𝔐.f) p`.
+
+Rewrite using `[← hw]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `h₁`. Establish `h₃ : Set.range w ⊆ Set.range Y.jQ`.
+
+Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Subsingleton.elim q p]` and apply the resulting hypothesis. Use `haveI := Y.jQ_open`. Set `v : Sp ℂ ⟶ Xo.XF c` to `IsOpenImmersion.lift Y.jQ w h₃`. Establish `hv : v ≫ Y.jQ ≫ pullback.fst _ _ = z ≫ 𝔐.f`.
+
+Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac, hw]`. Take `⟨t', ⟨m₁⟩⟩` from `exists_sab z 𝔐.t`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ 𝔐.m m₁`. Establish `cancel : ∀ (q : Sp ℂ ⟶ Y.X) (_ : q = v ≫ Y.jQ ≫ pullback.fst _ _) (_ : SABMap t' Y.t q), Nonempty (SABMap t' Y.oF.t v)`. Introduce `q hq n`.
+
+Substitute `hq` using the available equality. Conclude with `⟨(sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ Y.m n).choose⟩`. Take `⟨m₃⟩` from `cancel _ hv.symm n`. Take `⟨w₂, g₂, -⟩` from `m₃.lin`. Take `⟨am, -⟩` from `amplePt _ _ v _ _ m₃.φ m₃.cart _ _ Y.oF.t.PP.isLB t'.PP.isLB ⟨w₂, g₂⟩ Y.oF.ample Y.oF.ktriv`.
+
+Conclude with `⟨t', m₁, MorphismProperty.of_isPullback (P := @IsProper) m₃.cart.1 Y.oF.proper, am⟩`.
+-/
 theorem polarisedAt_of_interior : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type)
     [Field Ω] [CharZero Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω)

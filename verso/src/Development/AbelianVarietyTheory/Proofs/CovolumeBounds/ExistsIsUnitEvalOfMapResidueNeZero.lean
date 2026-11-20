@@ -14,20 +14,35 @@ def IsPolynomialFunction (P : M → K) : Prop :=
 
 variable {K}
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨φ, rfl⟩`.
+-/
 theorem IsPolynomialFunction.linear (φ : Module.Dual K M) : IsPolynomialFunction K φ :=
   Algebra.subset_adjoin ⟨φ, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Subalgebra.algebraMap_mem _ c`.
+-/
 theorem IsPolynomialFunction.const (c : K) : IsPolynomialFunction K (fun _ : M => c) :=
   Subalgebra.algebraMap_mem _ c
 
+/- English proof (translation)
+The claim follows from `Subalgebra.add_mem _ hP hQ`.
+-/
 theorem IsPolynomialFunction.add {P Q : M → K} (hP : IsPolynomialFunction K P)
     (hQ : IsPolynomialFunction K Q) : IsPolynomialFunction K (fun x => P x + Q x) :=
   Subalgebra.add_mem _ hP hQ
 
+/- English proof (translation)
+The claim follows from `Subalgebra.mul_mem _ hP hQ`.
+-/
 theorem IsPolynomialFunction.mul {P Q : M → K} (hP : IsPolynomialFunction K P)
     (hQ : IsPolynomialFunction K Q) : IsPolynomialFunction K (fun x => P x * Q x) :=
   Subalgebra.mul_mem _ hP hQ
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => simpa using IsPolynomialFunction.const c`. Consider the case `add p q hp hq => simpa using hp.add hq`. Consider the case `mul_X p i hp => simpa using hp.mul (IsPolynomialFunction.linear (L i))`.
+-/
 theorem IsPolynomialFunction.eval {σ : Type*} (L : σ → Module.Dual K M) (p : MvPolynomial σ K) :
     IsPolynomialFunction K (fun x => MvPolynomial.eval (fun i => L i x) p) := by
   induction p using MvPolynomial.induction_on with
@@ -35,6 +50,11 @@ theorem IsPolynomialFunction.eval {σ : Type*} (L : σ → Module.Dual K M) (p :
   | add p q hp hq => simpa using hp.add hq
   | mul_X p i hp => simpa using hp.mul (IsPolynomialFunction.linear (L i))
 
+/- English proof (translation)
+Proceed by induction on `hP using Algebra.adjoin_induction with`. Consider the case `mem f hf`. Take `⟨φ, rfl⟩` from `hf`. Conclude with `IsPolynomialFunction.linear (φ ∘ₗ L)`. Consider the case `algebraMap c => exact IsPolynomialFunction.const c`.
+
+Consider the case `add f g _ _ hf hg => exact hf.add hg`. Consider the case `mul f g _ _ hf hg => exact hf.mul hg`.
+-/
 theorem IsPolynomialFunction.comp {N : Type*} [AddCommMonoid N] [Module K N] {P : M → K}
     (hP : IsPolynomialFunction K P) (L : N →ₗ[K] M) : IsPolynomialFunction K (fun y => P (L y)) := by
   induction hP using Algebra.adjoin_induction with
@@ -45,6 +65,11 @@ theorem IsPolynomialFunction.comp {N : Type*} [AddCommMonoid N] [Module K N] {P 
   | add f g _ _ hf hg => exact hf.add hg
   | mul f g _ _ hf hg => exact hf.mul hg
 
+/- English proof (translation)
+Proceed by induction on `hP using Algebra.adjoin_induction with`. Consider the case `mem f hf`. Take `⟨φ, rfl⟩` from `hf`. Conclude with `φ.continuous_of_finiteDimensional`. Consider the case `algebraMap c => exact continuous_const`.
+
+Consider the case `add f g _ _ hf hg => exact hf.add hg`. Consider the case `mul f g _ _ hf hg => exact hf.mul hg`.
+-/
 theorem IsPolynomialFunction.continuous {𝕜 E : Type*} [NontriviallyNormedField 𝕜] [CompleteSpace 𝕜]
     [AddCommGroup E] [Module 𝕜 E] [TopologicalSpace E] [IsTopologicalAddGroup E]
     [ContinuousSMul 𝕜 E] [T2Space E] [FiniteDimensional 𝕜 E] {P : E → 𝕜}
@@ -71,6 +96,9 @@ variable [CommSemiring K] [∀ s, AddCommMonoid (V s)] [∀ s, Module K (V s)]
 def frameMul (x : ∀ s, m s → V s) (b : ∀ s, Matrix (m s) (n s) K) : ∀ s, n s → V s :=
   fun s j => ∑ i, b s i j • x s i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s j`. Simplify using `only [frameMul, Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+-/
 theorem frameMul_frameMul (x : ∀ s, l s → V s) (b : ∀ s, Matrix (l s) (m s) K)
     (c : ∀ s, Matrix (m s) (n s) K) :
     frameMul (frameMul x b) c = frameMul x (fun s => b s * c s) := by
@@ -79,6 +107,9 @@ theorem frameMul_frameMul (x : ∀ s, l s → V s) (b : ∀ s, Matrix (l s) (m s
   rw [Finset.sum_comm]
   simp only [mul_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s j`. Simplify using `[frameMul, Matrix.diagonal_apply, ite_smul]`.
+-/
 theorem frameMul_diagonal [∀ s, DecidableEq (m s)] (x : ∀ s, m s → V s) (d : ∀ s, m s → K) :
     frameMul x (fun s => Matrix.diagonal (d s)) = fun s j => d s j • x s j := by
   funext s j
@@ -93,18 +124,30 @@ def ofEntries {α : Type*} (ξ : EntryIndex m n → α) : ∀ s, Matrix (m s) (n
   fun s => Matrix.of fun i j => ξ ⟨s, i, j⟩
 
 omit [∀ s, Fintype (m s)] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem entries_apply {α : Type*} (b : ∀ s, Matrix (m s) (n s) α) (s : ι) (i : m s)
     (j : n s) : entries b ⟨s, i, j⟩ = b s i j := rfl
 
 omit [∀ s, Fintype (m s)] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofEntries_apply {α : Type*} (ξ : EntryIndex m n → α) (s : ι) (i : m s)
     (j : n s) : ofEntries ξ s i j = ξ ⟨s, i, j⟩ := rfl
 
 omit [∀ s, Fintype (m s)] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem entries_ofEntries {α : Type*} (ξ : EntryIndex m n → α) :
     entries (ofEntries ξ) = ξ := rfl
 
 omit [∀ s, Fintype (m s)] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofEntries_entries {α : Type*} (b : ∀ s, Matrix (m s) (n s) α) :
     ofEntries (entries b) = b := rfl
 
@@ -130,6 +173,9 @@ def HasTriangularWeight (a : ∀ s, Fin (r s) → ℕ) (P : (∀ s, Fin (r s) �
     (∀ s, (b s).IsUpperTriangular) → (∀ s i, b s i i ≠ 0) →
       P (frameMul x b) = (∏ s, ∏ i, b s i i ^ a s i) • P x
 
+/- English proof (translation)
+Rewrite using `[← frameMul_diagonal, hP x _ (fun s => Matrix.blockTriangular_diagonal _) (fun s i => by simpa using hd s i)]`. Simplify using the standard rewrite rules.
+-/
 theorem HasTriangularWeight.smul {a : ∀ s, Fin (r s) → ℕ} {P : (∀ s, Fin (r s) → V s) → W}
     (hP : HasTriangularWeight K a P) (x : ∀ s, Fin (r s) → V s) (d : ∀ s, Fin (r s) → K)
     (hd : ∀ s i, d s i ≠ 0) :
@@ -145,6 +191,15 @@ section Hadamard
 variable {ι : Type*} [Fintype ι] {r : ι → ℕ} {𝕜 : Type*} [RCLike 𝕜] {V : ι → Type*}
   {W : Type*} [NormedAddCommGroup W] [NormedSpace 𝕜 W]
 
+/- English proof (translation)
+Set `c : 𝕜 → ∀ s, Matrix (Fin (r s)) (Fin (r s)) 𝕜` to `fun t s => b s + Matrix.diagonal fun _ => t`. Establish `hcc : Continuous c`. Use `continuous_pi fun s => continuous_const.add ?_` and prove the remaining obligations. Conclude with `Continuous.matrix_diagonal (continuous_pi fun _ => continuous_id)`. Establish `hfin : (Set.range fun k : Σ s, Fin (r s) => -b k.1 k.2 k.2).Finite` using `Set.finite_range _`.
+
+Establish `hd : Dense (Set.range fun k : Σ s, Fin (r s) => -b k.1 k.2 k.2)ᶜ` using `hfin.countable.dense_compl 𝕜`. Establish `h1 : Continuous fun t => P (frameMul x (c t))` using `hc.comp hcc`. Establish `h2 : Continuous fun t => (∏ s, ∏ i, c t s i i ^ a s i) • P x`. Use `Continuous.smul ?_ continuous_const` and prove the remaining obligations. Use `continuous_finset_prod _ fun s _ => continuous_finset_prod _ fun i _ => ?_` and prove the remaining obligations.
+
+Conclude with `(((continuous_apply s).comp hcc).matrix_elem i i).pow _`. Establish `h3` using `Continuous.ext_on hd h1 h2 (fun t ht => by`. Use `hP x (c t) (fun s => (hb s).add (Matrix.blockTriangular_diagonal _)) fun s i h => ht ?_` and prove the remaining obligations. Use `⟨⟨s, i⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [c, Matrix.add_apply, Matrix.diagonal_apply_eq] at h`.
+
+Conclude with `neg_eq_of_add_eq_zero_right h)`. Simplify `congrFun h3 0` using `[c]`.
+-/
 theorem HasTriangularWeight.of_continuous [∀ s, AddCommGroup (V s)] [∀ s, Module 𝕜 (V s)]
     {a : ∀ s, Fin (r s) → ℕ} {P : (∀ s, Fin (r s) → V s) → W} (hP : HasTriangularWeight 𝕜 a P)
     (x : ∀ s, Fin (r s) → V s)
@@ -174,6 +229,11 @@ section Inner
 variable [∀ s, NormedAddCommGroup (V s)] [∀ s, InnerProductSpace 𝕜 (V s)]
   [∀ s, FiniteDimensional 𝕜 (V s)]
 
+/- English proof (translation)
+Establish `h : ∀ s, finrank 𝕜 (V s) = Fintype.card (Fin (r s))` using `fun s => by simp [hV]`. Set `e` to `fun s => InnerProductSpace.gramSchmidtOrthonormalBasis (h s) (x s)`. Use `⟨fun s => e s, fun s => (e s).toBasis.toMatrix (x s), fun s => (e s).orthonormal, fun s => InnerProductSpace.gramSchmidtOrthonormalBasis_inv_isUpperTriangular (h s) (x s), fun s i => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(e s).toBasis.toMatrix (x s) i i‖ ≤ _`. Rewrite using `[Basis.toMatrix_apply, OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.repr_apply_apply]`.
+
+Use `(norm_inner_le_norm _ _).trans ?_` and prove the remaining obligations. Rewrite using `[(e s).orthonormal.1 i, one_mul]`. Use function extensionality and compare the values at `s j`. Conclude with `(e s).toBasis.sum_toMatrix_smul_self (x s) j`.
+-/
 theorem exists_orthonormal_frameMul_eq (hV : ∀ s, finrank 𝕜 (V s) = r s)
     (x : ∀ s, Fin (r s) → V s) :
     ∃ (y : ∀ s, Fin (r s) → V s) (b : ∀ s, Matrix (Fin (r s)) (Fin (r s)) 𝕜),
@@ -192,6 +252,11 @@ theorem exists_orthonormal_frameMul_eq (hV : ∀ s, finrank 𝕜 (V s) = r s)
   · funext s j
     exact (e s).toBasis.sum_toMatrix_smul_self (x s) j
 
+/- English proof (translation)
+Take `⟨y, b, hy, hb, hbx, rfl⟩` from `exists_orthonormal_frameMul_eq hV x`. Rewrite using `[hP.of_continuous y (hc.comp (by unfold frameMul; fun_prop)) b hb, norm_smul, mul_comm]`. Use `mul_le_mul (hC y hy) ?_ (norm_nonneg _) ((norm_nonneg _).trans (hC y hy))` and prove the remaining obligations. Simplify using `only [norm_prod, norm_pow]`. Use `gcongr with s _ i _`.
+
+Conclude with `hbx s i`.
+-/
 theorem HasTriangularWeight.norm_le_prod (hV : ∀ s, finrank 𝕜 (V s) = r s)
     {a : ∀ s, Fin (r s) → ℕ} {P : (∀ s, Fin (r s) → V s) → W} (hP : HasTriangularWeight 𝕜 a P)
     (hc : Continuous P) {C : ℝ} (hC : ∀ y, (∀ s, Orthonormal 𝕜 (y s)) → ‖P y‖ ≤ C)
@@ -203,6 +268,11 @@ theorem HasTriangularWeight.norm_le_prod (hV : ∀ s, finrank 𝕜 (V s) = r s)
   gcongr with s _ i _
   exact hbx s i
 
+/- English proof (translation)
+Establish `hC0 : 0 ≤ C`. Take `⟨y, -, hy, -⟩` from `exists_orthonormal_frameMul_eq hV x`. Conclude with `(norm_nonneg _).trans (hC y hy)`. Use `(hP.norm_le_prod hV hc hC x).trans ?_` and prove the remaining obligations. Simplify using `only [← Finset.prod_pow_eq_pow_sum]`.
+
+Use `gcongr with s _ i _`. Conclude with `hx s i`.
+-/
 theorem HasTriangularWeight.norm_le_prod_pow (hV : ∀ s, finrank 𝕜 (V s) = r s)
     {a : ∀ s, Fin (r s) → ℕ} {P : (∀ s, Fin (r s) → V s) → W} (hP : HasTriangularWeight 𝕜 a P)
     (hc : Continuous P) {C : ℝ} (hC : ∀ y, (∀ s, Orthonormal 𝕜 (y s)) → ‖P y‖ ≤ C)
@@ -231,6 +301,9 @@ def HasTriangularWeightPoly (a : ∀ s, Fin (r s) → ℕ)
       MvPolynomial.eval (entries fun s => x s * b s) p =
         (∏ s, ∏ i, b s i i ^ a s i) * MvPolynomial.eval (entries x) p
 
+/- English proof (translation)
+Introduce `x b hb hb0`. Rewrite using `[← hp, ← hp, ← frameMul_frameMul, hP _ b hb hb0, smul_eq_mul]`.
+-/
 theorem HasTriangularWeight.poly {V : ι → Type*} [∀ s, AddCommGroup (V s)] [∀ s, Module K (V s)]
     {a : ∀ s, Fin (r s) → ℕ} {P : (∀ s, Fin (r s) → V s) → K} (hP : HasTriangularWeight K a P)
     (w : ∀ s, Fin (r s) → V s)
@@ -240,6 +313,11 @@ theorem HasTriangularWeight.poly {V : ι → Type*} [∀ s, AddCommGroup (V s)] 
   intro x b hb hb0
   rw [← hp, ← hp, ← frameMul_frameMul, hP _ b hb hb0, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `y b hb hb0`. Establish `: (fun s => Matrix.of fun i j => L s i (frameMul y b s j)) = fun s => (Matrix.of fun i j => L s i (y s j)) * b s`. Use function extensionality and compare the values at `s`. Use extensionality with `i j`. Simplify using `[frameMul, Matrix.mul_apply, mul_comm]`.
+
+Conclude with `(congrArg (fun z => MvPolynomial.eval (entries z) p) this).trans (hp _ b hb hb0)`.
+-/
 theorem HasTriangularWeightPoly.hasTriangularWeight {V : ι → Type*} [∀ s, AddCommGroup (V s)]
     [∀ s, Module K (V s)] {a : ∀ s, Fin (r s) → ℕ}
     {p : MvPolynomial (EntryIndex (fun s => Fin (r s)) (fun s => Fin (r s))) K}
@@ -258,6 +336,11 @@ noncomputable def detProdPoly (R : Type*) [CommRing R] (n : ι → Type*) [∀ s
     [∀ s, DecidableEq (n s)] : MvPolynomial (EntryIndex n n) R :=
   ∏ s, (ofEntries MvPolynomial.X s).det
 
+/- English proof (translation)
+Rewrite using `[detProdPoly, map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem eval₂Hom_detProdPoly {R S : Type*} [CommRing R] [CommRing S] {n : ι → Type*}
     [∀ s, Fintype (n s)] [∀ s, DecidableEq (n s)] (f : R →+* S) (ξ : EntryIndex n n → S) :
     MvPolynomial.eval₂Hom f ξ (detProdPoly R n) = ∏ s, (ofEntries ξ s).det := by
@@ -268,6 +351,9 @@ theorem eval₂Hom_detProdPoly {R S : Type*} [CommRing R] [CommRing S] {n : ι �
   ext i j
   simp
 
+/- English proof (translation)
+The claim follows from `eval₂Hom_detProdPoly (RingHom.id R) ξ`.
+-/
 theorem eval_detProdPoly {R : Type*} [CommRing R] {n : ι → Type*}
     [∀ s, Fintype (n s)] [∀ s, DecidableEq (n s)] (ξ : EntryIndex n n → R) :
     MvPolynomial.eval ξ (detProdPoly R n) = ∏ s, (ofEntries ξ s).det :=
@@ -279,6 +365,13 @@ section HadamardPolynomial
 
 variable {ι : Type*} [Fintype ι] {r : ι → ℕ} {𝕜 : Type*} [RCLike 𝕜]
 
+/- English proof (translation)
+Set `L : ∀ s, Fin (r s) → Module.Dual 𝕜 (EuclideanSpace 𝕜 (Fin (r s)))` to `fun s i => EuclideanSpace.projₗ i`. Establish `hw` using `hp.hasTriangularWeight L`. Establish `hc : Continuous fun y : ∀ s, Fin (r s) → EuclideanSpace 𝕜 (Fin (r s)) => MvPolynomial.eval (entries fun s => Matrix.of fun i j => L s i (y s j)) p`. Use `(MvPolynomial.continuous_eval p).comp (continuous_pi fun k => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun y : ∀ s, Fin (r s) → EuclideanSpace 𝕜 (Fin (r s)) => y k.1 k.2.2 k.2.1`.
+
+Use `fun_prop`. Use `hw.norm_le_prod_pow (fun s => by simp) hc (fun y hy => hC _ fun s => ?_) (x := fun s j => WithLp.toLp 2 fun i => x s i j) fun s j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Use extensionality with `i j`. Use `orthonormal_iff_ite.1 (hy s) i j` as an intermediate fact.
+
+Rewrite `this` using `[PiLp.inner_apply]`. Simplify `this` using `[L, Matrix.mul_apply, Matrix.one_apply, mul_comm]`. Use `(sq_le_sq₀ (norm_nonneg _) (hR s)).1 ?_` and prove the remaining obligations. Rewrite using `[EuclideanSpace.norm_sq_eq]`. Conclude with `hx s j`.
+-/
 theorem HasTriangularWeightPoly.norm_eval_le {a : ∀ s, Fin (r s) → ℕ}
     {p : MvPolynomial (EntryIndex (fun s => Fin (r s)) (fun s => Fin (r s))) 𝕜}
     (hp : HasTriangularWeightPoly a p) {C : ℝ}

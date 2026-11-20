@@ -11,10 +11,20 @@ namespace ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.Nab
 variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 variable {k : Type} [CommRing k] [Algebra ℚ k] [Algebra R k]
 
+/- English proof (translation)
+Use `show constantCoeff (MvPowerSeries.map (algebraMap R k) (B.A.act a l)) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, B.A.const a l, map_zero]`.
+-/
 theorem const_actK' (B : FB R d O) (a : O) (l : Fin d) : constantCoeff (B.actK k a l) = 0 := by
   show constantCoeff (MvPowerSeries.map (algebraMap R k) (B.A.act a l)) = 0
   rw [MvPowerSeries.constantCoeff_map, B.A.const a l, map_zero]
 
+/- English proof (translation)
+Establish `hb : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin d => (X ((0 : Fin 2), q.2) : PS k 2 d))` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun q => by simp)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun q => by simp)`. Establish `h1 : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin d => (![pt k d 0, 0] : Fin 2 → Pt k 1 d) p.1 p.2)` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => by rcases p with ⟨i, j⟩; fin_cases i <;> simp [pt])`.
+
+Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun p => by rcases p with ⟨i, j⟩; fin_cases i <;> simp [pt])`. Establish `key : (fun p : Fin 2 × Fin d => (![pt k d 0, 0] : Fin 2 → Pt k 2 d) p.1 p.2) = fun p => MvPowerSeries.subst (fun q : Fin 1 × Fin d => (X ((0 : Fin 2), q.2) : PS k 2 d)) ((![pt k d 0, 0] : Fin 2 → Pt k 1 d) p.1 p.2)`. Use function extensionality and compare the values at `⟨i, j⟩`. Use `fin_cases i`. Use `show (X ((0 : Fin 2), j) : PS k 2 d) = MvPowerSeries.subst _ (X ((0 : Fin 1), j) : PS k 1 d)`.
+
+Rewrite using `[MvPowerSeries.subst_X hb]`. Use `show (0 : PS k 2 d) = MvPowerSeries.subst _ (0 : PS k 1 d)`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hb, map_zero]`. Unfold `ev at hg ⊢`. Rewrite using `[key, ← MvPowerSeries.subst_comp_subst_apply h1 hb, hg, MvPowerSeries.subst_X hb]`.
+-/
 theorem eval_first_axis_of_identity (g : PS k 2 d) (c : Fin d) (hg : ev (n := 1) ![pt k d 0, 0] g = X ((0 : Fin 1), c)) :
     ev (n := 2) ![pt k d 0, 0] g = X ((0 : Fin 2), c) := by
   have hb : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin d => (X ((0 : Fin 2), q.2) : PS k 2 d)) :=
@@ -40,6 +50,29 @@ theorem eval_first_axis_of_identity (g : PS k 2 d) (c : Fin d) (hg : ev (n := 1)
   unfold ev at hg ⊢
   rw [key, ← MvPowerSeries.subst_comp_subst_apply h1 hb, hg, MvPowerSeries.subst_X hb]
 
+/- English proof (translation)
+Establish `c02 : CZ (![pt k (n` using `3) d 0, pt k d 2] : Fin 2 → Pt k 3 d) := CZ.cons (cc_pt 0) (CZ.cons (cc_pt 2) CZ.nil)`. Establish `cA : CZ (![addOf (B.FK k) (pt k (n` using `3) d 0) (pt k d 1), pt k d 2] : Fin 2 → Pt k 3 d) := CZ.cons (constantCoeff_add_first_second B) (CZ.cons (cc_pt 2) CZ.nil)`. Establish `hH0 : constantCoeff (ev (n` using `3) ![pt k d 0, pt k d 2] h + ev (n := 3) ![pt k d 1, pt k d 2] h - ev (n := 3) ![addOf (B.FK k) (pt k d 0) (pt k d 1), pt k d 2] h) = 0 := by`. Rewrite using `[map_sub, map_add, cc_ev' c02, cc_ev' cz12, cc_ev' cA, cc_h hc]`. Simplify using the standard rewrite rules.
+
+Establish `hH` using `ig_dlog B.ph1 (constantCoeff_first_factor B) _ hH0 hc.ph1 ((1 : Fin 3), b)`. Establish `h2` using `ig_ev cz0z integral_family_first_zero_second hH`. Apply the tactic sequence `have t1 : pderiv k ((1 : Fin 3), b) (ev (n := 3) ![pt k d 0, pt k d 2] h) = 0 := pderiv_ev_zero c02 _ _ (fun j l => by fin_cases j <;> simp [pderiv_pt])`. Establish `dd : pderiv k ((1 : Fin 3), b) (ev (n` using `3) ![pt k d 1, pt k d 2] h) = ev (n := 3) ![pt k d 1, pt k d 2] (pderiv k ((0 : Fin 2), b) h) := by`. Rewrite using `[d2 cz12]`.
+
+Simplify using `[pderiv_pt]`. Establish `t2 : ev (n` using `2) ![pt k d 0, 0, pt k d 1] (pderiv k ((1 : Fin 3), b) (ev (n := 3) ![pt k d 1, pt k d 2] h)) = ev (n := 2) ![0, pt k d 1] (pderiv k ((0 : Fin 2), b) h) := by`. Rewrite using `[dd, ev_ev cz0z cz12]`. Use `congr 1`. Use function extensionality and compare the values at `j c`.
+
+Apply the tactic sequence `fin_cases j <;> simp [pt_apply, ev_X cz0z]`. Establish `z2 : ∀ c, pderiv k ((1 : Fin 3), b) (pt k (n` using `3) d 2 c) = 0 := fun c => by simp [pderiv_pt]`. Establish `dA : ∀ c, pderiv k ((1 : Fin 3), b) (addOf (B.FK k) (pt k (n` using `3) d 0) (pt k d 1) c) = ev (n := 3) ![pt k d 0, pt k d 1] (pderiv k ((1 : Fin 2), b) (B.FK k c)) := by`. Introduce `c`. Use `show pderiv k ((1 : Fin 3), b) (ev (n := 3) ![pt k d 0, pt k d 1] (B.FK k c)) = _`.
+
+Rewrite using `[d2 cz01]`. Simplify using `[pderiv_pt]`. Establish `eB : ∀ g : PS k 2 d, ev (n` using `2) ![pt k d 0, 0, pt k d 1] (ev (n := 3) ![pt k d 0, pt k d 1] g) = ev (n := 2) ![pt k d 0, 0] g := by`. Introduce `g`. Rewrite using `[ev_ev cz0z cz01]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j c`. Apply the tactic sequence `fin_cases j <;> simp [pt_apply, ev_X cz0z]`. Establish `eA : ∀ g : PS k 2 d, ev (n` using `2) ![pt k d 0, 0, pt k d 1] (ev (n := 3) ![addOf (B.FK k) (pt k (n := 3) d 0) (pt k d 1), pt k d 2] g) = g := by`. Introduce `g`.
+
+Rewrite using `[ev_ev cz0z cA]`. Use `conv_rhs => rw [← ev_pt g]`. Use `congr 1`. Use function extensionality and compare the values at `j c`. Use `fin_cases j`.
+
+Use `show ev (n := 2) ![pt k d 0, 0, pt k d 1] (ev (n := 3) ![pt k d 0, pt k d 1] (B.FK k c)) = X ((0 : Fin 2), c)`. Rewrite using `[eB]`. Use `eval_first_axis_of_identity _ c ?_` and prove the remaining obligations. Use `formalGroupLaw_ev_x_zero (lawK k B) c` as an intermediate fact. Rewrite `this` using `[lawK_F]`. Then use the resulting hypothesis.
+
+Simplify using `[pt_apply, ev_X cz0z]`. Establish `t3 : ev (n` using `2) ![pt k d 0, 0, pt k d 1] (pderiv k ((1 : Fin 3), b) (ev (n := 3) ![addOf (B.FK k) (pt k (n := 3) d 0) (pt k d 1), pt k d 2] h)) = ∑ c, pderiv k ((0 : Fin 2), c) h * ev (n := 2) ![pt k d 0] (Jac (lawK k B) c b) := by`. Rewrite using `[d2 cA]`. Simplify using `only [z2, mul_zero, Finset.sum_const_zero, add_zero, dA]`. Rewrite using `[ev_sum cz0z]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[ev_mul cz0z, eA, eB, ← eval_first_axis_restrict]`. Both sides reduce to the same expression. Rewrite `h2` using `[map_sub, map_add, ev_sub cz0z, ev_add cz0z, t1, ev_zero' cz0z, t2, t3]`. Establish `e : ∑ c, pderiv k ((0 : Fin 2), c) h * ev (n` using `2) ![pt k d 0] (Jac (lawK k B) c b) - ev (n := 2) ![0, pt k d 1] (pderiv k ((0 : Fin 2), b) h) = -(0 + ev (n := 2) ![0, pt k d 1] (pderiv k ((0 : Fin 2), b) h) - ∑ c, pderiv k ((0 : Fin 2), c) h * ev (n := 2) ![pt k d 0] (Jac (lawK k B) c b)) := by ring`.
+
+Rewrite using `[e]`. Conclude with `neg_mem h2`.
+-/
 theorem first_derivative_shift_integral {B : FB R d O} {h : PS k 2 d} (hc : B.IsCanonGauge k h) (b : Fin d) :
     ∑ c, pderiv k ((0 : Fin 2), c) h * ev (n := 2) ![pt k d 0] (Jac (lawK k B) c b) -
       ev (n := 2) ![0, pt k d 1] (pderiv k ((0 : Fin 2), b) h) ∈ Ig R k (Fin 2 × Fin d) := by
@@ -108,6 +141,17 @@ theorem first_derivative_shift_integral {B : FB R d O} {h : PS k 2 d} (hc : B.Is
   rw [e]
   exact neg_mem h2
 
+/- English proof (translation)
+Establish `czSw : CZ (![pt k (n` using `2) d 1, pt k d 0] : Fin 2 → Pt k 2 d) := CZ.cons (cc_pt 1) (CZ.cons (cc_pt 0) CZ.nil)`. Establish `hH0 : constantCoeff (ev (n` using `2) ![pt k d 1, pt k d 0] h - h) = 0 := by`. Rewrite using `[map_sub, cc_ev' czSw, sub_self]`. Establish `hH` using `ig_dlog B.sy (cc_sy B) _ hH0 hc.sy ((0 : Fin 2), b)`. Establish `h2` using `ig_ev zero_constant_zero_second ig_fam_0z hH`.
+
+Establish `dd : pderiv k ((0 : Fin 2), b) (ev (n` using `2) ![pt k d 1, pt k d 0] h) = ev (n := 2) ![pt k d 1, pt k d 0] (pderiv k ((1 : Fin 2), b) h) := by`. Rewrite using `[d2 czSw]`. Simplify using `[pderiv_pt]`. Establish `es2 : ∀ g : PS k 2 d, ev (n` using `2) ![0, pt k d 1] (ev (n := 2) ![pt k d 1, pt k d 0] g) = ev (n := 2) ![pt k d 1, 0] g := by`. Introduce `g`.
+
+Rewrite using `[ev_ev zero_constant_zero_second czSw]`. Use `congr 1`. Use function extensionality and compare the values at `j c`. Apply the tactic sequence `fin_cases j <;> simp [pt_apply, ev_X zero_constant_zero_second]`. Rewrite `h2` using `[map_sub, ev_sub zero_constant_zero_second, dd, es2, ← formal_ev_second_point_of_x_zero]`.
+
+Establish `e : ev (n` using `2) ![pt k d 1] (sgOf k h b) = -ev (n := 2) ![pt k d 1] (ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), b) h)) := by`. Rewrite using `[← ev_neg czY]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `neg_mem h2` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rel_sy {B : FB R d O} {h : PS k 2 d} (hc : B.IsCanonGauge k h) (b : Fin d) :
     ev (n := 2) ![pt k d 1] (sgOf k h b) + ev (n := 2) ![0, pt k d 1] (pderiv k ((0 : Fin 2), b) h) ∈
       Ig R k (Fin 2 × Fin d) := by
@@ -135,6 +179,29 @@ theorem rel_sy {B : FB R d O} {h : PS k 2 d} (hc : B.IsCanonGauge k h) (b : Fin 
   convert this using 1
   ring
 
+/- English proof (translation)
+Establish `cA0 : CZ (![comp1 (B.actK k a) (pt k (n` using `2) d 0), pt k d 1] : Fin 2 → Pt k 2 d) := CZ.cons (fun l => constantCoeff_ev zero_constant_first_point (const_actK' B a l)) (CZ.cons (cc_pt 1) CZ.nil)`. Establish `cA1 : CZ (![pt k (n` using `2) d 0, comp1 (B.actK k (star a)) (pt k (n := 2) d 1)] : Fin 2 → Pt k 2 d) := CZ.cons (cc_pt 0) (CZ.cons (fun l => constantCoeff_ev czY (const_actK' B (star a) l)) CZ.nil)`. Establish `cAk : CZ (![B.actK k a] : Fin 1 → Pt k 1 d)` using `CZ.cons (const_actK' B a) CZ.nil`. Establish `hH0 : constantCoeff (ev (n` using `2) ![comp1 (B.actK k a) (pt k d 0), pt k d 1] h - ev (n := 2) ![pt k d 0, comp1 (B.actK k (star a)) (pt k d 1)] h) = 0 := by`. Rewrite using `[map_sub, cc_ev' cA0, cc_ev' cA1, sub_self]`.
+
+Establish `hH` using `ig_dlog (B.ad a) (cc_ad B a) _ hH0 (hc.ad a) ((1 : Fin 2), b)`. Establish `h2` using `ig_ev cz1 integral_family_point_zero hH`. Establish `z0 : ∀ c, pderiv k ((1 : Fin 2), b) (comp1 (B.actK k a) (pt k (n` using `2) d 0) c) = 0 := fun c => pderiv_ev_zero zero_constant_first_point _ _ (fun j l => by fin_cases j; simp [pderiv_pt])`. Establish `d1 : pderiv k ((1 : Fin 2), b) (ev (n` using `2) ![comp1 (B.actK k a) (pt k (n := 2) d 0), pt k d 1] h) = ev (n := 2) ![comp1 (B.actK k a) (pt k (n := 2) d 0), pt k d 1] (pderiv k ((1 : Fin 2), b) h) := by`. Rewrite using `[d2 cA0]`.
+
+Simplify using `[z0, pderiv_pt]`. Establish `e1 : ∀ g : PS k 2 d, ev (n` using `1) ![pt k d 0, 0] (ev (n := 2) ![comp1 (B.actK k a) (pt k (n := 2) d 0), pt k d 1] g) = ev (n := 1) ![B.actK k a, 0] g := by`. Introduce `g`. Rewrite using `[ev_ev cz1 cA0]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j c`. Use `fin_cases j`. Use `show ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 0] (B.actK k a c)) = B.actK k a c`. Rewrite using `[ev_ev cz1 zero_constant_first_point]`. Establish `: (fun j c => ev (n` using `1) ![pt k d 0, 0] ((![pt k (n := 2) d 0] : Fin 1 → Pt k 2 d) j c)) = (![pt k (n := 1) d 0] : Fin 1 → Pt k 1 d) := by`.
+
+Use function extensionality and compare the values at `j c`. Use `fin_cases j`. Simplify using `[pt_apply, ev_X cz1]`. Rewrite using `[this, gt_ev_pt_self]`. Simplify using `[pt_apply, ev_X cz1]`.
+
+Establish `e2 : ∀ g : PS k 2 d, ev (n` using `1) ![B.actK k a] (ev (n := 1) ![pt k d 0, 0] g) = ev (n := 1) ![B.actK k a, 0] g := by`. Introduce `g`. Rewrite using `[ev_ev cAk cz1]`. Use `congr 1`. Use function extensionality and compare the values at `j c`.
+
+Apply the tactic sequence `fin_cases j <;> simp [pt_apply, ev_X cAk, ev_zero' cAk]`. Establish `z1 : ∀ c, pderiv k ((1 : Fin 2), b) (pt k (n` using `2) d 0 c) = 0 := fun c => by simp [pderiv_pt]`. Establish `zA : ∀ c, pderiv k ((1 : Fin 2), b) (comp1 (B.actK k (star a)) (pt k (n` using `2) d 1) c) = ev (n := 2) ![pt k d 1] (pderiv k ((0 : Fin 1), b) (B.actK k (star a) c)) := fun c => d_y _ b`. Establish `e3 : ∀ g : PS k 2 d, ev (n` using `1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 0, comp1 (B.actK k (star a)) (pt k (n := 2) d 1)] g) = ev (n := 1) ![pt k d 0, 0] g := by`. Introduce `g`.
+
+Rewrite using `[ev_ev cz1 cA1]`. Use `congr 1`. Use function extensionality and compare the values at `j c`. Use `fin_cases j`. Simplify using `[pt_apply, ev_X cz1]`.
+
+Use `show ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 1] (B.actK k (star a) c)) = 0`. Rewrite using `[ez_y, const_actK', map_zero]`. Establish `e4 : ∀ c, ev (n` using `1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 1] (pderiv k ((0 : Fin 1), b) (B.actK k (star a) c))) = C (dAct k B (star a) c b) := fun c => by`. Rewrite using `[ez_y, cc_pderiv']`. Both sides reduce to the same expression.
+
+Rewrite `h2` using `[map_sub, ev_sub cz1, d1, e1, d2 cA1]`. Simplify using `only [z1, mul_zero, Finset.sum_const_zero, zero_add, zA, ev_sum cz1, ev_mul cz1, e3, e4] at h2`. Establish `e5 : ev (n` using `1) ![B.actK k a] (sgOf k h b) = -ev (n := 1) ![B.actK k a, 0] (pderiv k ((1 : Fin 2), b) h) := by`. Rewrite using `[← e2, ← ev_neg cAk]`. Both sides reduce to the same expression.
+
+Rewrite using `[e5]`. Simplify using `only [sgOf]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rel_ad {B : FB R d O} {h : PS k 2 d} (hc : B.IsCanonGauge k h) (a : O) (b : Fin d) :
     ∑ c, sgOf k h c * C (dAct k B (star a) c b) - ev (n := 1) ![B.actK k a] (sgOf k h b) ∈
       Ig R k (Fin 1 × Fin d) := by

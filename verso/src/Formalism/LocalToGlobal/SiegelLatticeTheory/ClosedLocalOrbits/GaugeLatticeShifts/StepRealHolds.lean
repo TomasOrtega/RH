@@ -4,6 +4,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 
 namespace Formalism.L2.SG.RealObj.InfCut.ProductExactness
 
+/- English proof (translation)
+The claim follows from `stepReal_of_witt (fun _ _ ε x y hG hnd => Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries.witt_of_gram ε x y hG hnd)`.
+-/
 theorem StepReal_holds : StepReal :=
   stepReal_of_witt (fun _ _ ε x y hG hnd => Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries.witt_of_gram ε x y hG hnd)
 

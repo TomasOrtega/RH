@@ -14,6 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l}
 
+/- English proof (translation)
+Establish `h` using `Xo.univ.t.act.add 0 0`. Rewrite `h` using `[add_zero]`. Use `first`. Consider the case `exact mul_eq_left.mp h.symm`. Consider the case `exact mul_right_eq_self.mp h.symm`.
+
+Consider the case `exact self_eq_mul_right.mp h`. Consider the case `simpa using h`.
+-/
 theorem act_zero : Xo.univ.t.act.act 0 = 1 := by
   have h := Xo.univ.t.act.add 0 0
   rw [add_zero] at h
@@ -23,6 +28,13 @@ theorem act_zero : Xo.univ.t.act.act 0 = 1 := by
     | exact self_eq_mul_right.mp h
     | simpa using h
 
+/- English proof (translation)
+Unfold `psum`. Generalize the expression as in `(List.finRange n).filter (· ∈ S) = L`. Proceed by induction on `L with`. Consider the case `nil`. Simplify using `only [List.foldr_nil, pzero]`.
+
+Use `first`. Consider the case `simp`. Consider the case `rw [← Category.assoc, CartesianMonoidalCategory.comp_toUnit]`. Consider the case `cons k L ih`. Simplify using `only [List.foldr_cons]`.
+
+Rewrite using `[← ih]`. Simplify using `only [padd]`. Use `first`. Consider the case `rw [CartesianMonoidalCategory.comp_lift_assoc]`. Consider the case `simp`.
+-/
 private theorem comp_psum_lemma {T T' : Over Xo.X} (f : T' ⟶ T) {n : ℕ} (xs : Fin n → (T ⟶ Xo.univ.t.G))
     (S : Finset (Fin n)) :
     f ≫ psum Xo.univ.t.G xs S = psum Xo.univ.t.G (fun i => f ≫ xs i) S := by
@@ -42,23 +54,42 @@ private theorem comp_psum_lemma {T T' : Over Xo.X} (f : T' ⟶ T) {n : ℕ} (xs 
       | rw [CartesianMonoidalCategory.comp_lift_assoc]
       | simp
 
+/- English proof (translation)
+Simplify using `only [cφ]`. Rewrite using `[← Over.comp_left, comp_psum_lemma]`.
+-/
 theorem comp_cφ {T T' : Over Xo.X} (f : T' ⟶ T) {n : ℕ} (xs : Fin n → (T ⟶ Xo.univ.t.G)) (I : ULift (Finset (Fin n))) :
     f.left ≫ cφ xs I = cφ (fun i => f ≫ xs i) I := by
   simp only [cφ]
   rw [← Over.comp_left, comp_psum_lemma]
 
+/- English proof (translation)
+Simplify using `only [thφ]`. Rewrite using `[← Over.comp_left, comp_psum_lemma]`.
+-/
 theorem comp_thφ {T T' : Over Xo.X} (f : T' ⟶ T) (xs : Fin 3 → (T ⟶ Xo.univ.t.G)) (I : thK) :
     f.left ≫ thφ Xo.univ.t.G xs I = thφ Xo.univ.t.G (fun i => f ≫ xs i) I := by
   simp only [thφ]
   rw [← Over.comp_left, comp_psum_lemma]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem padd_eq_lemma_2 {T : Over Xo.X} (a b : T ⟶ Xo.univ.t.G) :
     padd Xo.univ.t.G a b = a * b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem pzero_eq_lemma_3 (T : Over Xo.X) : pzero Xo.univ.t.G T = 1 := rfl
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hsum : ∀ F : ULift (Finset (Fin 2)) → U, ∏ I : ULift (Finset (Fin 2)), F I = ∏ s : Finset (Fin 2), F (ULift.up s)` using `fun F => Fintype.prod_equiv Equiv.ulift _ _ (fun _ => rfl)`. Establish `hU : (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}}` using `by decide`. Establish `f0 : (List.finRange 2).filter (· ∈ (∅ : Finset (Fin 2))) = []` using `by decide`. Establish `f1 : (List.finRange 2).filter (· ∈ ({0} : Finset (Fin 2))) = [0]` using `by decide`. Establish `f2 : (List.finRange 2).filter (· ∈ ({1} : Finset (Fin 2))) = [1]` using `by decide`.
+
+Establish `f3 : (List.finRange 2).filter (· ∈ ({0, 1} : Finset (Fin 2))) = [0, 1]` using `by decide`. Establish `c3 : ({0, 1} : Finset (Fin 2)).card = 2` using `by decide`. Rewrite using `[hsum, hU, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Simplify using `only [cφ, cε, psum, f0, f1, f2, f3, c3, List.foldr_cons, List.foldr_nil, padd_eq_lemma_2, pzero_eq_lemma_3, Finset.card_empty, Finset.card_singleton]`. Use `clear hsum hU f0 f1 f2 f3 c3`.
+
+Apply the tactic sequence `try norm_num only`. Apply the tactic sequence `try simp only [zpow_one, zpow_neg, zpow_neg_one]`. Rewrite using `[mul_assoc (h (Over.Hom.left (1 : T ⟶ Xo.univ.t.G))), mul_assoc (h (Over.Hom.left (1 : T ⟶ Xo.univ.t.G))), mul_assoc (h (xs 0 * 1).left)⁻¹]`.
+-/
 theorem prod_cφ2 {T : Over Xo.X} {U : Type} [CommGroup U] (h : (T.left ⟶ Xo.univ.t.G.left) → U)
     (xs : Fin 2 → (T ⟶ Xo.univ.t.G)) :
     ∏ I : ULift (Finset (Fin 2)), h (cφ xs I) ^ cε 2 I =
@@ -84,6 +115,19 @@ theorem prod_cφ2 {T : Over Xo.X} {U : Type} [CommGroup U] (h : (T.left ⟶ Xo.u
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hsum : ∀ F : thK → U, ∏ I : thK, F I = ∏ s : Finset (Fin 3), F (ULift.up s)` using `fun F => Fintype.prod_equiv (Equiv.ulift : thK ≃ Finset (Fin 3)) _ _ (fun _ => rfl)`. Establish `hU : (Finset.univ : Finset (Finset (Fin 3))) = {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}}` using `by decide`. Establish `f0 : (List.finRange 3).filter (· ∈ (∅ : Finset (Fin 3))) = []` using `by decide`. Establish `f1 : (List.finRange 3).filter (· ∈ ({0} : Finset (Fin 3))) = [0]` using `by decide`. Establish `f2 : (List.finRange 3).filter (· ∈ ({1} : Finset (Fin 3))) = [1]` using `by decide`.
+
+Establish `f3 : (List.finRange 3).filter (· ∈ ({2} : Finset (Fin 3))) = [2]` using `by decide`. Establish `f4 : (List.finRange 3).filter (· ∈ ({0, 1} : Finset (Fin 3))) = [0, 1]` using `by decide`. Establish `f5 : (List.finRange 3).filter (· ∈ ({0, 2} : Finset (Fin 3))) = [0, 2]` using `by decide`. Establish `f6 : (List.finRange 3).filter (· ∈ ({1, 2} : Finset (Fin 3))) = [1, 2]` using `by decide`. Establish `f7 : (List.finRange 3).filter (· ∈ ({0, 1, 2} : Finset (Fin 3))) = [0, 1, 2]` using `by decide`.
+
+Establish `c4 : ({0, 1} : Finset (Fin 3)).card = 2` using `by decide`. Establish `c5 : ({0, 2} : Finset (Fin 3)).card = 2` using `by decide`. Establish `c6 : ({1, 2} : Finset (Fin 3)).card = 2` using `by decide`. Establish `c7 : ({0, 1, 2} : Finset (Fin 3)).card = 3` using `by decide`. Rewrite using `[hsum, hU, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`.
+
+Simplify using `only [thφ, thε, psum, f0, f1, f2, f3, f4, f5, f6, f7, c4, c5, c6, c7, List.foldr_cons, List.foldr_nil, padd_eq_lemma_2, pzero_eq_lemma_3, Finset.card_empty, Finset.card_singleton]`. Use `clear hsum hU f0 f1 f2 f3 f4 f5 f6 f7 c4 c5 c6 c7`. Apply the tactic sequence `try norm_num only`. Apply the tactic sequence `try simp only [zpow_one, zpow_neg, zpow_neg_one]`. Repeat the step `rw [mul_assoc (h (1 : T ⟶ Xo.univ.t.G).left)⁻¹]` while it applies.
+
+Repeat the step `rw [mul_assoc (h (xs 0 * 1).left)]` while it applies. Repeat the step `rw [mul_assoc (h (xs 1 * 1).left)]` while it applies. Repeat the step `rw [mul_assoc (h (xs 2 * 1).left)]` while it applies. Repeat the step `rw [mul_assoc (h (xs 0 * (xs 1 * 1)).left)⁻¹]` while it applies. Repeat the step `rw [mul_assoc (h (xs 0 * (xs 2 * 1)).left)⁻¹]` while it applies.
+
+Apply the tactic sequence `all_goals exact (rfl : (0 : ℕ) = 0)`.
+-/
 theorem cocycle_product_three {T : Over Xo.X} {U : Type} [CommGroup U] (h : (T.left ⟶ Xo.univ.t.G.left) → U)
     (xs : Fin 3 → (T ⟶ Xo.univ.t.G)) :
     ∏ I : thK, h (thφ Xo.univ.t.G xs I) ^ thε I =
@@ -151,6 +195,9 @@ def Bq (wP : PrimTy H Xo) (a : 𝓞 E) (wLa : AdTy Xo a) (wLb : AdTy Xo (H.bar a
       (LB.mulGen Xo.univ.t.PP.L _ _ _ _ (LB.pullGen Xo.univ.t.PP.L _ _ wLa (lift (A 1) (A (a * H.w0))).left)
         (LB.invGen Xo.univ.t.PP.L _ _ (LB.pullGen Xo.univ.t.PP.L _ _ wLb (lift (A a) (A H.w0)).left))))
 
+/- English proof (translation)
+Establish `hP` using `fun c => ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen Xo.univ.t.PP.L _ _ wP hwP (Xo.univ.t.act.act c).left`. Establish `hC` using `fun (p q r : Xo.univ.t.G ⟶ Xo.univ.t.G) => ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen Xo.univ.t.PP.L _ _ _ Xo.univ.t.cub.isGen (lift p (lift q r)).left`. Unfold `Bq`. Use `ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen _ _ _ _ _ _ _ (ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen _ _ _ _ _ _ _ (ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen _ _ _ _ _ _ _ (hP _) (ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen _ _ _ _ _ _ …` and prove the remaining obligations.
+-/
 theorem Bq_isGen (wP : PrimTy H Xo) (hwP : wP.IsGen) (a : 𝓞 E) (wLa : AdTy Xo a) (hwa : wLa.IsGen)
     (wLb : AdTy Xo (H.bar a)) (hwb : wLb.IsGen) : (Bq wP a wLa wLb).IsGen := by
   have hP := fun c => ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen Xo.univ.t.PP.L _ _ wP hwP (Xo.univ.t.act.act c).left
@@ -171,6 +218,13 @@ theorem Bq_isGen (wP : PrimTy H Xo) (hwP : wP.IsGen) (a : 𝓞 E) (wLa : AdTy Xo
         (ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ hwa _)
         (ReciprocityTheory.ChartRestriction.G.DVR.invGen_isGen _ _ _ _ (ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ hwb _))))
 
+/- English proof (translation)
+Establish `hL` using `Xo.univ.t.PP.isLB`. Use `exists_gen hL ?_ _ (Bq_isGen wP hwP a wLa hwa wLb hwb)` and prove the remaining obligations. Introduce `U _ hU`. Unfold `betaφ betaε`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_one, Fin.prod_univ_four, comp_cφ, comp_thφ, Category.comp_id, zpow_neg, zpow_one, neg_neg, Finset.prod_inv_distrib, prod_cφ2, cocycle_product_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_t …`.
+
+Establish `h1 : ∀ p q : 𝓞 E, Xo.univ.t.act.act p * Xo.univ.t.act.act q = Xo.univ.t.act.act (p + q)` using `fun p q => (Xo.univ.t.act.add p q).symm`. Establish `h2 : ∀ p q : 𝓞 E, Xo.univ.t.act.act p ≫ Xo.univ.t.act.act q = Xo.univ.t.act.act (p * q)` using `fun p q => (Xo.univ.t.act.mul p q).symm`. Establish `h3 : (1 : Xo.univ.t.G ⟶ Xo.univ.t.G) = Xo.univ.t.act.act 0` using `act_zero.symm`. Establish `h4 : 𝟙 Xo.univ.t.G = Xo.univ.t.act.act 1` using `Xo.univ.t.act.one.symm`. Establish `h5 : 𝟙 Xo.univ.t.G.left = (Xo.univ.t.act.act 1).left` using `by rw [Xo.univ.t.act.one]; rfl`.
+
+Simplify using `only [h3, h1, h2, hbb, h4, h5]`. Put the polynomial expressions in normal form. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_betaRaw (wP : PrimTy H Xo) (hwP : wP.IsGen) (a : 𝓞 E) (hbb : H.bar (H.bar a) = a)
     (wLa : AdTy Xo a) (hwa : wLa.IsGen) (wLb : AdTy Xo (H.bar a)) (hwb : wLb.IsGen) :
     ∃ β : LB.Gen (LB.LinComb Xo.univ.t.PP.L (betaφ (Xo := Xo) a) betaε), β.IsGen ∧

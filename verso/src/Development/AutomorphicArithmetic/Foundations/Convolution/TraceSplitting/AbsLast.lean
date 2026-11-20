@@ -14,6 +14,13 @@ namespace UpperTheory.ConvolutionTheory.T.AbsoluteValueFixed
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ} {v : Pl K}
 
+/- English proof (translation)
+Establish `h` using `PositivityTheory.Exh.irreducibleAdmissibleGL (v.adicCompletion K) n σ.V σ.ρ σ.smooth σ.irred`. Establish `h2` using `h.2 U hU.2 hU.1`. Establish `e : GlobalTheory.PRep.fixed σ.ρ U = fixedVectors σ.ρ U`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx g hg`. Simplify using `using hx ⟨g, hg⟩`. Introduce `hx g`. Simplify using `using hx g g.2`. Rewrite using `[← e]`.
+
+Conclude with `h2`.
+-/
 private theorem fixed_fd (U : Subgroup (Gw n v)) (hU : CO U) (σ : SmIrr (Gw n v)) :
     FiniteDimensional ℂ (fixedVectors σ.ρ U) := by
   have h := PositivityTheory.Exh.irreducibleAdmissibleGL (v.adicCompletion K) n σ.V σ.ρ σ.smooth σ.irred
@@ -28,6 +35,9 @@ private theorem fixed_fd (U : Subgroup (Gw n v)) (hU : CO U) (σ : SmIrr (Gw n v
   rw [← e]
   exact h2
 
+/- English proof (translation)
+Use `haveI : TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) (v.adicCompletion K)) := inferInstanceAs (TotallyDisconnectedSpace (Fin n → Fin n → v.adicCompletion K))`. Conclude with `⟨isTotallyDisconnected_of_image Units.continuous_val.continuousOn Units.val_injective (isTotallyDisconnected_of_totallyDisconnectedSpace _)⟩`.
+-/
 private theorem td : TotallyDisconnectedSpace (Gw n v) := by
   haveI : TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) (v.adicCompletion K)) :=
     inferInstanceAs (TotallyDisconnectedSpace (Fin n → Fin n → v.adicCompletion K))
@@ -37,6 +47,25 @@ private theorem td : TotallyDisconnectedSpace (Gw n v) := by
 end UpperTheory.ConvolutionTheory.T.AbsoluteValueFixed
 
 open UpperTheory.ConvolutionTheory.T.AbsoluteValueFixed in
+/- English proof (translation)
+Introduce `K _ _ n v _ _ m _ U hU ι _ τ a Z τ₀ c Z₀ hc hZ₀ h0 hZ hfix hid`. Assume the negation of the conclusion as `hno`. Take `⟨ζ, hζ⟩` from `Multiset.exists_mem_of_ne_zero hZ₀`. Establish `hk : ((Multiset.filter (· = ζ) Z₀).card : ℂ) ≠ 0`. Establish `: 0 < (Multiset.filter (· = ζ) Z₀).card` using `Multiset.card_pos_iff_exists_mem.2 ⟨ζ, Multiset.mem_filter.2 ⟨hζ, rfl⟩⟩`.
+
+Conclude with `this.ne'` after adjusting the coercions. Set `σ : Option ι → SmIrr (Gw n v)` to `fun o => o.elim τ₀ τ`. Set `C : Option ι → ℂ` to `fun o => o.elim (c * ((Multiset.filter (· = ζ) Z₀).card : ℂ)) (fun i => -(a i * ((Multiset.filter (· = ζ) (Z i)).card : ℂ)))`. Use `haveI : m.IsMulRightInvariant := GroundTheory.Automorphic.Measures.isMulRightInvariant_GL (v.adicCompletion K) n m`. Use `haveI : LocallyCompactSpace (Gw n v) := hU.1.locallyCompactSpace_of_mem_nhds_of_group (hU.2.mem_nhds U.one_mem)`.
+
+Use `haveI : T2Space (Gw n v) := Units.isEmbedding_embedProduct.t2Space`. Use `haveI : TotallyDisconnectedSpace (Gw n v) := td`. Establish `key` using `UpperTheory.ConvolutionTheory.C.charIndep (Gw n v) m U hU (Option ι) σ C (fun o => fixed_fd U hU (σ o)) ?_ none hfix`. Establish `hset : {o : Option ι | Nonempty ((σ o).ρ.Equiv (σ none).ρ)} = {none}`. Use extensionality with `o`.
+
+Consider the cases of `o with`. Consider the case `none => exact ⟨fun _ => rfl, fun _ => ⟨Representation.Equiv.refl (σ none).ρ⟩⟩`. Consider the case `some i`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff, reduceCtorEq, iff_false]`. Conclude with `fun h => hno ⟨i, h⟩`.
+
+Rewrite `key` using `[hset, finsum_mem_singleton]`. Conclude with `(mul_ne_zero hc hk) key`. Introduce `φ s hφ hinv hs`. Establish `e` using `hid φ (s none) (fun i => s (some i)) hφ hinv (hs none) (fun i => hs (some i))`. Establish `p` using `UpperTheory.ConvolutionTheory.C.powIndep (Option ι) (fun o => o.elim (c * s none) (fun i => -(a i * s (some i)))) (fun o => o.elim Z₀ Z) (fun o => by cases o with`.
+
+Consider the case `none => exact h0`. Consider the case `some i => exact hZ i)`. Use the proof step `(by filter_upwards [e] with j hj`. Rewrite using `[Fintype.sum_option]`. Simplify using `only [Option.elim]`.
+
+Establish `: ∑ i, -(a i * s (some i)) * ((Z i).map (· ^ j)).sum = -∑ i, a i * ((Z i).map (· ^ j)).sum * s (some i)`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl (fun i _ => by ring)`. Rewrite using `[this, ← hj]`. Use the proof step `ring) ζ`.
+
+Rewrite `p`, the goal using `[Fintype.sum_option]`. Simplify using `only [Option.elim] at p`. Establish `: ∑ i, C (some i) * s (some i) = ∑ i, -(a i * s (some i)) * ((Multiset.filter (· = ζ) (Z i)).card : ℂ)` using `Finset.sum_congr rfl (fun i _ => by simp only [C, Option.elim]; ring)`. Rewrite using `[this]`. Establish `h1 : C none = c * ((Multiset.filter (· = ζ) Z₀).card : ℂ)` using `rfl`.
+
+Rewrite using `[h1]`. Take the linear combination `p`.
+-/
 theorem UpperTheory.ConvolutionTheory.T.absLast :
     UpperTheory.ConvolutionTheory.T.AbsLast := by
   intro K _ _ n v _ _ m _ U hU ι _ τ a Z τ₀ c Z₀ hc hZ₀ h0 hZ hfix hid

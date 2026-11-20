@@ -10,6 +10,15 @@ open MeasureTheory Module
 
 open scoped ENNReal
 
+/- English proof (translation)
+Introduce `E F _ _ _ _ _ _ _ _ _ _ k hk U A f g hU hf hAU hA hinj hg`. Set `f' : E → F` to `U.piecewise f (fun _ => 0)`. Establish `hf'm : Measurable f'` using `hf.continuousOn.measurable_piecewise continuousOn_const hU.measurableSet`. Establish `hEq : ∀ x ∈ A, f' x = f x` using `fun x hx => Set.piecewise_eq_of_mem _ _ _ (hAU hx)`. Establish `hJ : Measurable fun x : E => ENNReal.ofReal (areaJacobian (fderiv ℝ f x : E →ₗ[ℝ] F))` using `ENNReal.measurable_ofReal.comp (continuous_areaJacobian.measurable.comp (measurable_fderiv ℝ f))`.
+
+Set `ρ : Measure E` to `((μH[(k : ℝ)] : Measure E).restrict A).withDensity fun x : E => ENNReal.ofReal (areaJacobian (fderiv ℝ f x : E →ₗ[ℝ] F))`. Establish `hmap : ρ.map f' = (μH[(k : ℝ)] : Measure F).restrict (f '' A)`. Use extensionality with `S hS`. Establish `hpre : MeasurableSet (f' ⁻¹' S)` using `hf'm hS`. Rewrite using `[Measure.map_apply hf'm hS, withDensity_apply _ hpre, Measure.restrict_restrict hpre, Measure.restrict_apply hS, ← h E F k hk U _ f hU hf (fun x hx => hAU hx.2) (hpre.inter hA) (hinj.mono fun x hx => hx.2)]`.
+
+Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hyS, hyA⟩, rfl⟩`. Conclude with `⟨by simpa [Set.mem_preimage, hEq y hyA] using hyS, y, hyA, rfl⟩`.
+
+Introduce and unpack `⟨hzS, y, hyA, rfl⟩`. Conclude with `⟨y, ⟨by simpa [Set.mem_preimage, hEq y hyA] using hzS, hyA⟩, rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem AreaFormulaInj.proof (h : AreaFormulaInjSet.Statement) : AreaFormulaInj.Statement := by
   classical
   intro E F _ _ _ _ _ _ _ _ _ _ k hk U A f g hU hf hAU hA hinj hg

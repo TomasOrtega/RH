@@ -16,14 +16,27 @@ def tenOp (C : Fin k → Fin k → ℂ) (A : V →L[ℂ] V) :
   (PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin k => V)).symm.toContinuousLinearMap ∘L
     ContinuousLinearMap.pi fun c => ∑ d, C c d • (A ∘L PiLp.proj 2 (fun _ : Fin k => V) d)
 
+/- English proof (translation)
+Simplify using `[tenOp]`.
+-/
 theorem tenOp_apply (C : Fin k → Fin k → ℂ) (A : V →L[ℂ] V) (y : PiLp 2 (fun _ : Fin k => V)) (c : Fin k) :
     tenOp C A y c = ∑ d, C c d • A (y d) := by
   simp [tenOp]
 
+/- English proof (translation)
+The claim follows from `(⟨A.toLinearMap, hA⟩ : V →ₗᵢ[ℂ] V).inner_map_map u w`.
+-/
 private lemma inner_map_of_norm_eq (A : V →L[ℂ] V) (hA : ∀ v, ‖A v‖ = ‖v‖) (u w : V) :
     inner ℂ (A u) (A w) = inner ℂ u w :=
   (⟨A.toLinearMap, hA⟩ : V →ₗᵢ[ℂ] V).inner_map_map u w
 
+/- English proof (translation)
+Establish `key : inner ℂ (tenOp C A y) (tenOp C A y) = inner ℂ y y`. Simplify using `only [PiLp.inner_apply, tenOp_apply, sum_inner, inner_sum, inner_smul_left, inner_smul_right, inner_map_of_norm_eq A hA]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Establish `hterm : ∀ e, ∑ c, C c d * ((starRingEnd ℂ) (C c e) * inner ℂ (y e) (y d)) = (if d = e then 1 else 0) * inner ℂ (y e) (y d)`. Introduce `e`. Rewrite using `[← hC e d, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hterm, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ), key]`.
+-/
 theorem tenOp_norm (C : Fin k → Fin k → ℂ) (A : V →L[ℂ] V)
     (hC : ∀ d e, ∑ c, C c e * star (C c d) = if e = d then 1 else 0) (hA : ∀ v, ‖A v‖ = ‖v‖)
     (y : PiLp 2 (fun _ : Fin k => V)) : ‖tenOp C A y‖ = ‖y‖ := by
@@ -50,16 +63,39 @@ namespace GlobalTheory
 
 open TensorStd
 
+/- English proof (translation)
+Simplify using `[herm, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul]`.
+-/
 private lemma herm_sum_smul_left' {n m : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (a : Fin m → ℂ)
     (w : Fin m → Fin n → ℂ) (u : Fin n → ℂ) :
     herm H (∑ c, a c • w c) u = ∑ c, a c * herm H (w c) u := by
   simp [herm, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul]
 
+/- English proof (translation)
+Simplify using `[herm, star_sum, sum_dotProduct, star_smul, smul_dotProduct]`.
+-/
 private lemma herm_sum_smul_right' {n m : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (a : Fin m → ℂ)
     (w : Fin m → Fin n → ℂ) (v : Fin n → ℂ) :
     herm H v (∑ c, a c • w c) = ∑ c, star (a c) * herm H v (w c) := by
   simp [herm, star_sum, sum_dotProduct, star_smul, smul_dotProduct]
 
+/- English proof (translation)
+Introduce `V _ _ _ k r z π B hz hT hπ hiso hB`. Take `⟨hcomp, hgrp⟩` from `GlobalTheory.FrameExpansion.frame_expansion_uw_group k r z B hz hT hB`. Establish `hexp : ∀ h ∈ UWset k r z, ∀ d, h *ᵥ B d = ∑ e, herm (Hpk k r) (h *ᵥ B d) (B e) • B e`. Introduce `h hh d`. Take `⟨h1, h2⟩` from `(hgrp h hh).1 (B d) (hB.1 d) (hB.2.2 d z (List.mem_singleton_self z))`.
+
+Conclude with `hcomp _ h1 h2`. Use `⟨fun h => tenOp (fun c d => herm (Hpk k r) (h *ᵥ B d) (B c)) (π h), ⟨⟨?_, ?_⟩, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun y => PiLp.ext fun c => ?_` and prove the remaining obligations. Rewrite using `[tenOp_apply, hπ.1.1]`. Simplify using `[hB.2.1]`.
+
+Introduce `a ha b hb`. Use `ContinuousLinearMap.ext fun y => PiLp.ext fun c => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.comp_apply, tenOp_apply, hπ.1.2 a ha b hb, map_sum, map_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Use `conv_lhs => rw [← Matrix.mulVec_mulVec, hexp b hb d, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul]`. Rewrite using `[herm_sum_smul_left']`.
+
+Conclude with `Finset.sum_congr rfl fun e _ => mul_comm _ _`. Rewrite using `[continuousOn_clm_apply]`. Introduce `y`. Establish `hrepr : ∀ h, tenOp (fun c d => herm (Hpk k r) (h *ᵥ B d) (B c)) (π h) y = (PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin k => V)).symm (fun c => ∑ d, herm (Hpk k r) (h *ᵥ B d) (B c) • π h (y d))`. Introduce `h`.
+
+Conclude with `PiLp.ext fun c => by rw [tenOp_apply]; rfl`. Simplify using `only [hrepr]`. Use `(PiLp.continuousLinearEquiv 2 ℂ _).symm.continuous.comp_continuousOn ?_` and prove the remaining obligations. Use `continuousOn_pi.2 fun c => continuousOn_finsetSum _ fun d _ => ?_` and prove the remaining obligations. Use `ContinuousOn.smul ?_ (hπ.2.clm_apply continuousOn_const)` and prove the remaining obligations.
+
+Conclude with `Continuous.continuousOn (by unfold herm; fun_prop)`. Introduce `h hh y`. Use `tenOp_norm _ _ (fun d e => ?_) (hiso h hh) y` and prove the remaining obligations. Establish `hpres` using `(hgrp h hh).2.1 (B e) (B d)`. Rewrite `hpres` using `[hB.2.1 e d]`.
+
+Rewrite using `[← hpres]`. Use `conv_rhs => rw [hexp h hh d, herm_sum_smul_right']`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`. Introduce `h hh y c`. Conclude with `tenOp_apply _ _ _ _`.
+-/
 theorem exists_tensor_standard_rep :
     ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (k r : ℕ) (z : (Fin (2 * r + k + 1) → ℂ)) (π : Mx k r → (V →L[ℂ] V)) (B : Fin k → (Fin (2 * r + k + 1) → ℂ)), inWb k r z → 0 < Tz k r z → IsRepW k r z π → (∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖) → IsFrameOf k r [z] B → ∃ πt : Mx k r → ((PiLp 2 (fun _ : Fin k => V)) →L[ℂ] (PiLp 2 (fun _ : Fin k => V))), IsRepW k r z πt ∧ (∀ h ∈ UWset k r z, ∀ v, ‖πt h v‖ = ‖v‖) ∧ (∀ h ∈ UWset k r z, ∀ y c, πt h y c = ∑ d, herm (Hpk k r) (h *ᵥ B d) (B c) • π h (y d)) := by
   intro V _ _ _ k r z π B hz hT hπ hiso hB

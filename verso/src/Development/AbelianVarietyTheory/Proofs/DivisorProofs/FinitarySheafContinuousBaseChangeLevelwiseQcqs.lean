@@ -10,6 +10,23 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Take `⟨e, -⟩` from `GlobalTheory.EtC.bc_sch_iso S X r`. Set `H : Over S ⥤ Scheme.{0}` to `Over.pullback r ⋙ Over.forget X`. Establish `hl : IsLimit (H.mapCone c)` using `isLimitOfPreserves H hc`. Establish `hcomp : ∀ i, CompactSpace ((G ⋙ H).obj i)`. Introduce `i`.
+
+Use `haveI := hG i`. Use `haveI : QuasiCompact (pullback.fst (G.obj i).hom r) := MorphismProperty.of_isPullback (P := @QuasiCompact) (IsPullback.of_hasPullback (G.obj i).hom r).flip hqc`. Establish `hc'` using `QuasiCompact.compactSpace_of_compactSpace (pullback.fst (G.obj i).hom r)`. Conclude with `hc'`. Establish `hqsp : ∀ i, QuasiSeparatedSpace ((G ⋙ H).obj i)`.
+
+Introduce `i`. Use `haveI := hG i`. Use `haveI : QuasiSeparated (pullback.fst (G.obj i).hom r) := MorphismProperty.of_isPullback (P := @QuasiSeparated) (IsPullback.of_hasPullback (G.obj i).hom r).flip hqs`. Establish `hs'` using `quasiSeparatedSpace_of_quasiSeparated (pullback.fst (G.obj i).hom r)`. Conclude with `hs'`.
+
+Establish `haff : ∀ (i j : I) (f : i ⟶ j), IsAffineHom ((G ⋙ H).map f)`. Introduce `i j f`. Use `haveI := hG i`. Use `haveI := hG j`. Establish `hsq : IsPullback ((G ⋙ H).map f) (pullback.fst (G.obj i).hom r) (pullback.fst (G.obj j).hom r) (G.map f).left`.
+
+Use `IsPullback.of_right (h₁₂ := pullback.snd (G.obj j).hom r) (h₂₂ := (G.obj j).hom) (v₁₃ := r) ?_ ?_ ?_` and prove the remaining obligations. Establish `e1 : (G ⋙ H).map f ≫ pullback.snd (G.obj j).hom r = pullback.snd (G.obj i).hom r`. Conclude with `pullback.lift_snd _ _ _`. Establish `e2 : (G.map f).left ≫ (G.obj j).hom = (G.obj i).hom` using `Over.w (G.map f)`. Establish `key : ∀ {P₁ P₂ P₃ P₄ : Scheme.{0}} {l : P₁ ⟶ P₃} {rr : P₂ ⟶ P₄} {a a' : P₁ ⟶ P₂} {b b' : P₃ ⟶ P₄}, a = a' → b = b' → IsPullback a' l rr b' → IsPullback a l rr b`.
+
+Introduce and unpack `_ _ _ _ _ _ _ _ _ _ rfl rfl h`. Conclude with `h`. Conclude with `key e1 e2 (IsPullback.of_hasPullback (G.obj i).hom r).flip`. Conclude with `pullback.lift_fst _ _ _`. Conclude with `(IsPullback.of_hasPullback (G.obj j).hom r).flip`.
+
+Conclude with `MorphismProperty.of_isPullback (P := @IsAffineHom) hsq.flip (isAffineHom_of_isAffine _)`. Establish `h1 : ContCone R F (sch.mapCone (H.mapCone c))` using `GlobalTheory.T.contCone_of_isLimit_of_qcqs_affine_transitions R F hF I (G ⋙ H) (H.mapCone c) hl hcomp hqsp haff`. Establish `hb` using `GlobalTheory.EtC.eqv_basic R F`. Use `(GlobalTheory.EtC.ContCone.iff_of_eqv R F I (G ⋙ H ⋙ sch) (G ⋙ bc (sch.map r)) (sch.mapCone (H.mapCone c)) ((bc (sch.map r)).mapCone c) (Functor.whiskerLeft G e.hom) (e.hom.app c.pt) ?_ ?_ ?_).1 h1` and prove the remaining obligations. Introduce `i`.
+
+Conclude with `e.hom.naturality (c.π.app i)`. Introduce `i`. Conclude with `hb.1 _ _ _ inferInstance`. Conclude with `hb.1 _ _ _ inferInstance`.
+-/
 theorem contCone_bc_sch_qcqs (R : Type) [CommRing R] (F : Shv R) (hF : Finitary F) (S X : Scheme.{0})
     (r : X ⟶ S) (hqc : QuasiCompact r) (hqs : QuasiSeparated r) (I : Type) [SmallCategory I] [IsCofiltered I]
     (G : I ⥤ Over S) (c : Cone G) (hc : IsLimit c) (hG : ∀ i, IsAffine (G.obj i).left) :
@@ -57,6 +74,9 @@ theorem contCone_bc_sch_qcqs (R : Type) [CommRing R] (F : Shv R) (hF : Finitary 
     exact hb.1 _ _ _ inferInstance
   · exact hb.1 _ _ _ inferInstance
 
+/- English proof (translation)
+Introduce `R _ F hF S E p hp I _ _ G c hc hG`. Use `GlobalTheory.T.cohomologyContinuous_base_change_of_levels R F S E p I G c ?_` and prove the remaining obligations. Introduce `k`. Take `⟨X, r, e, hqc, hqs, he⟩` from `hp k`. Conclude with `⟨X, r, e, he, contCone_bc_sch_qcqs R F hF S X r hqc hqs I G c hc hG⟩`.
+-/
 theorem contCone_bc_qcqsOver : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F → ∀ (S : Scheme.{0}) (E : Spc) (p : E ⟶ sch.obj S), QcqsOver p → (∀ (I : Type) [SmallCategory I] [IsCofiltered I] (G : I ⥤ Over S) (c : Cone G), IsLimit c → (∀ i, IsAffine (G.obj i).left) → ContCone R F ((bc p).mapCone c)) := by
   intro R _ F hF S E p hp I _ _ G c hc hG
   refine GlobalTheory.T.cohomologyContinuous_base_change_of_levels R F S E p I G c ?_

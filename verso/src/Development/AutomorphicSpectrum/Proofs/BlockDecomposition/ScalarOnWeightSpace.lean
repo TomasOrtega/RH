@@ -19,10 +19,18 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.DYlb8.main hS a`.
+-/
 theorem mem_down {S : Finset (Fin n)} (hS : ∀ a b, b ≤ a → a ∈ S → b ∈ S) (a : Fin n) :
     a ∈ S ↔ (a : ℕ) < S.card :=
   _root_.UpperTheory.Reformulated.B.DYlb8.main hS a
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`. Rewrite using `[← add_assoc, Finset.sum_Ico_succ_top (by omega), mul_add, ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem twice_sum_Ico (m d : ℕ) :
     2 * ∑ k ∈ Finset.Ico m (m + d), (k : ℝ) = 2 * (d : ℝ) * m + d * ((d : ℝ) - 1) := by
   induction d with
@@ -32,6 +40,25 @@ theorem twice_sum_Ico (m d : ℕ) :
     push_cast
     ring
 
+/- English proof (translation)
+Use `set d := (univ.filter fun a => lev a = c).card with hd`. Use `set m := (univ.filter fun a => lev a < c).card with hmm`. Establish `hlow : ∀ a, lev a < c ↔ (a : ℕ) < m` using `fun a => by`. Use `mem_down (S := univ.filter fun a => lev a < c) (fun x y hyx hx => by` as an intermediate fact. Rewrite `hx`, the goal using `[mem_filter]`.
+
+Conclude with `⟨mem_univ _, lt_of_le_of_lt (hm hyx) hx.2⟩) a`. Simplify using `using this`. Establish `hcard : (univ.filter fun a => lev a < c + 1).card = m + d`. Rewrite using `[hmm, hd, ← Finset.card_union_of_disjoint]`. Use `congr 1`.
+
+Use extensionality with `a`. Simplify using `only [mem_filter, mem_univ, true_and, mem_union]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.disjoint_left]`. Introduce `a h1 h2`.
+
+Use `(mem_filter.1 h1).2` as an intermediate fact. Use `(mem_filter.1 h2).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hup : ∀ a, lev a < c + 1 ↔ (a : ℕ) < m + d` using `fun a => by`. Use `mem_down (S := univ.filter fun a => lev a < c + 1) (fun x y hyx hx => by` as an intermediate fact.
+
+Rewrite `hx`, the goal using `[mem_filter]`. Conclude with `⟨mem_univ _, lt_of_le_of_lt (hm hyx) hx.2⟩) a`. Rewrite `this` using `[hcard]`. Simplify using `using this`. Establish `hle : m + d ≤ n`.
+
+Rewrite using `[← hcard]`. Conclude with `(card_le_univ _).trans_eq (Fintype.card_fin n)`. Establish `hmap : (univ.filter fun a => lev a = c).map Fin.valEmbedding = Finset.Ico m (m + d)`. Use extensionality with `k`. Simplify using `only [mem_map, mem_filter, mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_Ico]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Establish `h1` using `hlow a`. Establish `h2` using `hup a`. Use linear arithmetic over natural numbers and integers.
+
+Introduce and unpack `⟨k1, k2⟩`. Use `⟨⟨k, by omega⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `h1` using `hlow ⟨k, by omega⟩`. Establish `h2` using `hup ⟨k, by omega⟩`. Simplify using `only at h1 h2`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[← twice_sum_Ico, ← hmap, Finset.sum_map]`. Both sides reduce to the same expression.
+-/
 theorem level_sum (lev : Fin n → ℕ) (hm : Monotone lev) (c : ℕ) :
     2 * ∑ a ∈ univ.filter (fun a => lev a = c), ((a : ℕ) : ℝ) =
       2 * ((univ.filter fun a => lev a = c).card : ℝ) * ((univ.filter fun a => lev a < c).card : ℝ) +

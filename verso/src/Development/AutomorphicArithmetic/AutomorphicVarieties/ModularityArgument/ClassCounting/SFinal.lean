@@ -7,6 +7,15 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Tota
 
 open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `@of_subsingleton M' _ _ _`. Use `⟨0, Module.length_eq_zero, ?_⟩` and prove the remaining obligations. Use `haveI := uniqueOfSubsingleton (0 : M')`. Simplify using the standard rewrite rules.
+
+Consider the case `@of_simple_quotient M _ _ N _ _ ih`. Take `⟨k, hk, hc⟩` from `ih`. Take `⟨m, hm, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp ‹IsSimpleModule ℤ_[l] (M ⧸ N)›`. Rewrite `e` using `[IsLocalRing.eq_maximalIdeal hm]`. Establish `hq : Nat.card (M ⧸ N) = l`.
+
+Rewrite using `[Nat.card_congr e.toEquiv]`. Conclude with `(Nat.card_congr PadicInt.residueField.toEquiv).trans (Nat.card_zmod l)`. Use `⟨k + 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.length_eq_add_of_exact N.subtype N.mkQ N.injective_subtype N.mkQ_surjective (LinearMap.exact_subtype_mkQ N), hk, Module.length_eq_one]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `h2` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup N.toAddSubgroup`. Rewrite using `[h2]`. Express the relevant statement in the definitionally equal form `Nat.card (M ⧸ N) * Nat.card N = _`. Rewrite using `[hq, hc, pow_succ, mul_comm]`.
+-/
 private theorem sf_card (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module ℤ_[l] M]
     (h : IsFiniteLength ℤ_[l] M) : ∃ k : ℕ, Module.length ℤ_[l] M = k ∧ Nat.card M = l ^ k := by
   induction h with
@@ -32,6 +41,19 @@ private theorem sf_card (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Mo
       rw [hq, hc, pow_succ, mul_comm]
 
 open KStar.TotallyRealRoots in
+/- English proof (translation)
+Establish `hp : Prime (l : ℤ_[l])` using `PadicInt.prime_p`. Establish `hunit : IsUnit (1 + (l : ℤ_[l]) ^ 2)`. Rewrite using `[PadicInt.isUnit_iff]`. Establish `h1 : ‖((l : ℤ_[l]) ^ 2)‖ < 1`. Rewrite using `[norm_pow, PadicInt.norm_p]`.
+
+Establish `h2 : (1:ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `h3 : (0:ℝ) < (l:ℝ)⁻¹` using `by positivity`. Establish `h4 : (l:ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ h2`. Use the polynomial consequences of the given equalities and inequalities. Apply the tactic sequence `rw [PadicInt.norm_add_eq_max_of_ne] <;> simp_all [ne_of_gt, le_of_lt]`.
+
+Establish `hmem : hunit.unit ^ U.index ∈ U` using `U.pow_index_mem hunit.unit`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hle : (((2 + padicValNat l U.index + padicValNat l e + 1 : ℕ)) : ℕ∞) ≤ nu l U e`. Use `Order.add_one_le_of_lt hcon` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Establish `hdvd` using `(KStar.TotallyRealRoots.le_nu_iff.1 hle) _ hmem`. Establish `hw : ((hunit.unit ^ U.index : ℤ_[l]ˣ) : ℤ_[l]) ^ e = (1 + (l:ℤ_[l]) ^ 2) ^ (U.index * e)`. Rewrite using `[Units.val_pow_eq_pow_val, IsUnit.unit_spec, pow_mul]`. Rewrite `hdvd` using `[hw]`.
+
+Establish `hm` using `KStar.TotallyRealRoots.emultiplicity_pow_sub_one_sq (l := l) (u := 1 + (l:ℤ_[l]) ^ 2) (by simp) (U.index * e)`. Rewrite `hm` using `[add_sub_cancel_left, emultiplicity_pow_self hp.ne_zero hp.not_unit, ← padicValNat_eq_emultiplicity (Nat.mul_ne_zero h0 he), padicValNat.mul h0 he]`. Establish `h5` using `(pow_dvd_iff_le_emultiplicity).1 hdvd`. Rewrite `h5` using `[hm]`. Normalize the coercions in `at h5`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem sf_nu {l : ℕ} [Fact l.Prime] (U : Subgroup ℤ_[l]ˣ) (h0 : U.index ≠ 0) {e : ℕ} (he : e ≠ 0) :
     nu l U e ≤ ((2 + padicValNat l U.index + padicValNat l e : ℕ) : ℕ∞) := by
   have hp : Prime (l : ℤ_[l]) := PadicInt.prime_p
@@ -62,6 +84,17 @@ private theorem sf_nu {l : ℕ} [Fact l.Prime] (U : Subgroup ℤ_[l]ˣ) (h0 : U.
   norm_cast at h5
   omega
 
+/- English proof (translation)
+Rewrite using `[LDataCardLeFinrank.local_H0_length_eq_sum]`. Use `set n := Module.finrank ℚ L with hn`. Establish `hv : ∀ v : D.S, KStar.TotallyRealRoots.nu l (LDataCardLeFinrank.decImage L l (D.A v)) ((e : ℤ).natAbs) ≤ ((2 + Nat.log l n + e : ℕ) : ℕ∞)`. Introduce `v`. Take `⟨_, hi0, hin⟩` from `LDataCardLeFinrank.ineOpen L Ω l v (D.A v) (LDataCardLeFinrank.above_of_mem D v) (D.hA v)`.
+
+Establish `hdvd : (LDataCardLeFinrank.decImage L l (D.A v)).index ∣ (LDataCardLeFinrank.ineImage L l (D.A v)).index` using `Subgroup.index_dvd_of_le (LDataCardLeFinrank.ineImage_le_decImage L l (D.A v))`. Establish `hd0 : (LDataCardLeFinrank.decImage L l (D.A v)).index ≠ 0`. Introduce `h`. Rewrite `hdvd` using `[h]`. Conclude with `hi0 (Nat.eq_zero_of_zero_dvd hdvd)`.
+
+Establish `hdn : (LDataCardLeFinrank.decImage L l (D.A v)).index ≤ n` using `le_trans (Nat.le_of_dvd (Nat.pos_of_ne_zero hi0) hdvd) hin`. Establish `hne : (e : ℤ).natAbs ≠ 0` using `by simpa using he`. Use `le_trans (sf_nu _ hd0 hne) ?_` and prove the remaining obligations. Establish `a1 : padicValNat l (LDataCardLeFinrank.decImage L l (D.A v)).index ≤ Nat.log l n` using `le_trans (padicValNat_le_nat_log _) (Nat.log_mono_right hdn)`. Establish `a2 : padicValNat l e ≤ e`.
+
+Establish `hp` using `(Fact.out : l.Prime)`. Establish `b1 : l ^ padicValNat l e ≤ e` using `Nat.le_of_dvd (Nat.pos_of_ne_zero he) pow_padicValNat_dvd`. Establish `b2 : padicValNat l e < l ^ padicValNat l e` using `Nat.lt_pow_self hp.one_lt`. Use linear arithmetic over natural numbers and integers. Establish `hea : (e : ℤ).natAbs = e` using `rfl`.
+
+Rewrite using `[hea]`. Conclude with `(by omega : 2 + padicValNat l (LDataCardLeFinrank.decImage L l (D.A v)).index + padicValNat l e ≤ 2 + Nat.log l n + e)` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_coe, nsmul_eq_mul, ← Nat.cast_mul]`. Conclude with `Nat.mul_le_mul_right _ (LDataCardLeFinrank.cardAbove L Ω l D)` after adjusting the coercions.
+-/
 private theorem sf_loc {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (D : LData L Ω l) {e : ℕ} (he : e ≠ 0) :
     sumLocalH0TwistLength D e ≤ ((Module.finrank ℚ L * (2 + Nat.log l (Module.finrank ℚ L) + e) : ℕ) : ℕ∞) := by
@@ -97,6 +130,29 @@ private theorem sf_loc {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberF
       rw [Finset.sum_const, Finset.card_univ, Fintype.card_coe, nsmul_eq_mul, ← Nat.cast_mul]
       exact_mod_cast Nat.mul_le_mul_right _ (LDataCardLeFinrank.cardAbove L Ω l D)
 
+/- English proof (translation)
+Rewrite using `[SFinal.eq_1]`. Introduce and unpack `hPT hLF hLTD ⟨C, hC⟩`. Take `⟨CK, _, hCK⟩` from `K.numFin C`. Use `⟨CK, ?_⟩` and prove the remaining obligations. Rewrite using `[LemmaK.eq_1]`.
+
+Introduce `l _ L Ω _ _ _ _ _ D htc hmu e he`. Rewrite `hC` using `[ShaK.eq_1]`. Take `⟨s, hs, hslog⟩` from `hC l L htc hmu e he`. Use `set n := Module.finrank ℚ L with hn`. Establish `hV` using `LDataCardLeFinrank.VLen_le_shaLen_add hPT hLF hLTD (LDataCardLeFinrank.ptCase_of_isTotallyComplex L l) D (e : ℤ)`.
+
+Rewrite `hV` using `[VLen.eq_1, LDataCardLeFinrank.shaLen_eq_shaInv, hs]`. Establish `hloc` using `sf_loc D (e := e) (by omega)`. Establish `hlen : Module.length ℤ_[l] (H2 (zlTw D ((e : ℤ) + 1))) ≤ ((s + n * (2 + Nat.log l n + e) : ℕ) : ℕ∞)`. Rewrite using `[Nat.cast_add]`. Rewrite `hloc` using `[← hn]`.
+
+Conclude with `le_trans hV (add_le_add le_rfl hloc)`. Establish `hfl : IsFiniteLength ℤ_[l] (H2 (zlTw D ((e : ℤ) + 1)))`. Rewrite using `[← Module.length_ne_top_iff]`. Conclude with `ne_top_of_le_ne_top (ENat.coe_ne_top _) hlen`. Take `⟨k, hk, hcard⟩` from `sf_card l _ hfl`.
+
+Establish `hkK : k ≤ s + n * (2 + Nat.log l n + e)`. Rewrite `hlen` using `[hk]`. Conclude with `hlen` after adjusting the coercions. Establish `hfin : Finite (H2 (zlTw D ((e : ℤ) + 1)))` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ (Fact.out : l.Prime).ne_zero)`. Use `⟨hfin, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hcard, Nat.cast_pow, Real.log_pow]`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hlogl : 0 ≤ Real.log l` using `Real.log_nonneg hl1.le`. Establish `hn1 : 1 ≤ n` using `Module.finrank_pos`. Establish `hD1 : 1 ≤ (discr L).natAbs` using `Int.natAbs_pos.2 (discr_ne_zero L)`.
+
+Establish `hnR : (1 : ℝ) ≤ n` using `by exact_mod_cast hn1`. Establish `heR : (1 : ℝ) ≤ e` using `by exact_mod_cast he`. Establish `hDR : (1 : ℝ) ≤ (discr L).natAbs` using `by exact_mod_cast hD1`. Establish `hln : (l : ℝ) ≤ n + 1` using `by exact_mod_cast K.primeLe l L hmu`. Establish `hX : Real.log l ≤ Real.log ((n : ℝ) + 1)` using `Real.log_le_log (by linarith) hln`.
+
+Establish `hX0 : 0 ≤ Real.log ((n : ℝ) + 1)` using `Real.log_nonneg (by linarith)`. Establish `hLog : (Nat.log l n : ℝ) * Real.log l ≤ Real.log ((n : ℝ) + 1)`. Rewrite using `[← Real.log_pow]`. Establish `hpl : ((l : ℝ) ^ Nat.log l n) ≤ n` using `by exact_mod_cast Nat.pow_log_le_self l (by omega)`. Conclude with `Real.log_le_log (by positivity) (by linarith)`.
+
+Establish `hY : 1 / 2 ≤ Real.log (2 * ((discr L).natAbs : ℝ))`. Establish `h2` using `Real.log_two_gt_d9`. Establish `h3 : Real.log 2 ≤ Real.log (2 * ((discr L).natAbs : ℝ))` using `Real.log_le_log (by norm_num) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnum` using `hCK e n (discr L).natAbs he hn1 hD1`.
+
+Establish `hk' : (k : ℝ) ≤ s + n * (2 + Nat.log l n + e)` using `by exact_mod_cast hkK`. Establish `e1 : (k : ℝ) * Real.log l ≤ (s + n * (2 + Nat.log l n + e)) * Real.log l` using `mul_le_mul_of_nonneg_right hk' hlogl`. Establish `e2 : (n : ℝ) * (2 + e) * Real.log l ≤ n * (2 + e) * Real.log ((n : ℝ) + 1)` using `mul_le_mul_of_nonneg_left hX (by positivity)`. Establish `e3 : (n : ℝ) * ((Nat.log l n : ℝ) * Real.log l) ≤ n * Real.log ((n : ℝ) + 1)` using `mul_le_mul_of_nonneg_left hLog (by positivity)`. Establish `hcoef : (3 + e : ℝ) ≤ 4 * (2 * e * (2 * e + 3)) * Real.log (2 * ((discr L).natAbs : ℝ))`.
+
+Establish `q1 : (3 + e : ℝ) ≤ 4 * (2 * e * (2 * e + 3)) * (1 / 2)` using `by nlinarith`. Establish `q2 : 4 * (2 * e * (2 * e + 3)) * (1 / 2 : ℝ) ≤ 4 * (2 * e * (2 * e + 3)) * Real.log (2 * ((discr L).natAbs : ℝ))` using `mul_le_mul_of_nonneg_left hY (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e4 : (n : ℝ) * (3 + e) * Real.log ((n : ℝ) + 1) ≤ n * (4 * (2 * e * (2 * e + 3)) * Real.log (2 * ((discr L).natAbs : ℝ))) * Real.log ((n : ℝ) + 1)` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hcoef (by positivity)) hX0`. Combine the linear relations using `[e1, e2, e3, e4, hnum, hslog]`.
+-/
 theorem UpperTheory.V.ZK.sFinal :
     UpperTheory.V.ZK.SFinal := by
   rw [SFinal.eq_1]

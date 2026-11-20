@@ -9,10 +9,16 @@ open ReciprocityTheory.ChartRestriction.G.Geo
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+The claim follows from `ContDiffOn.mul hA hB`.
+-/
 theorem isSmoothHerm_tensor {A B : HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) :
     IsSmoothHerm (A.tensor B) :=
   ContDiffOn.mul hA hB
 
+/- English proof (translation)
+Introduce `i`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Simplify using `using hX`. Simplify `hL i` using `[Function.update_of_ne h]`.
+-/
 theorem allSmooth_update {n : ℕ} {L : Fin n → HermLine ι} (hL : AllSmooth L) (j : Fin n)
     {X : HermLine ι} (hX : IsSmoothHerm X) : AllSmooth (Function.update L j X) := by
   intro i
@@ -20,6 +26,9 @@ theorem allSmooth_update {n : ℕ} {L : Fin n → HermLine ι} (hL : AllSmooth L
   · simpa using hX
   · simpa [Function.update_of_ne h] using hL i
 
+/- English proof (translation)
+Introduce `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hA`. Simplify using `using hL i`.
+-/
 theorem allSmooth_snoc {n : ℕ} {L : Fin n → HermLine ι} (hL : ∀ j, IsSmoothHerm (L j))
     {A : HermLine ι} (hA : IsSmoothHerm A) : AllSmooth (Fin.snoc L A : Fin (n + 1) → HermLine ι) := by
   intro i
@@ -27,6 +36,9 @@ theorem allSmooth_snoc {n : ℕ} {L : Fin n → HermLine ι} (hL : ∀ j, IsSmoo
   · simpa using hA
   · simpa using hL i
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, hs, ha, hP⟩`. Conclude with `⟨a, fun k => (ha k).symm, hs, hP⟩`. Introduce and unpack `⟨a, ha, hs, hP⟩`. Conclude with `⟨a, hs, fun k => (ha k).symm, hP⟩`.
+-/
 theorem isSec_iff (P : Ideal (MRing ι)) (A : HermLine ι) (s : MRing ι) :
     IsSec P A s ↔ ∃ a : K → ℕ, (∀ k, A.a k = a k) ∧ IsMultiHomog s a ∧ s ∉ P := by
   constructor
@@ -35,6 +47,21 @@ theorem isSec_iff (P : Ideal (MRing ι)) (A : HermLine ι) (s : MRing ι) :
   · rintro ⟨a, ha, hs, hP⟩
     exact ⟨a, hs, fun k => (ha k).symm, hP⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hsym, hadd, hrec⟩`. Use `⟨fun P n L σ hP hL => hsym P n L σ trivial hP hL, ?_, ?_⟩` and prove the remaining obligations. Introduce `P n L A B hP hL hA hB`. Establish `hLA : AllSmooth (Fin.snoc L A : Fin (n + 1) → HermLine ι)` using `allSmooth_snoc hL hA`.
+
+Establish `h` using `hadd P (n + 1) (Fin.snoc L A) (Fin.last n) A B trivial hP hLA hA hB`. Simplify `h` using `only [Fin.update_snoc_last]`. Introduce `P n L A s a hP hL hA ha hs hsP`. Establish `h` using `hrec P n (Fin.snoc L A) s trivial hP (allSmooth_snoc hL hA) (by simpa only [Fin.snoc_last] using (isSec_iff P A s).2 ⟨a, ha, hs, hsP⟩)`. Rewrite using `[h, Fin.init_snoc, Fin.snoc_last, hR]`.
+
+Introduce and unpack `⟨hsym, hadd, hrec⟩`. Use `⟨fun P n L σ _ hP hL => hsym P n L σ hP hL, ?_, ?_⟩` and prove the remaining obligations. Introduce `P n L j A B _ hP hL hA hB`. Consider the cases of `n with`. Consider the case `zero => exact j.elim0`.
+
+Consider the case `succ m => set σ : Equiv.Perm (Fin (m + 1)) := Equiv.swap j (Fin.last m) with hσ`. Establish `key : ∀ X : HermLine ι, IsSmoothHerm X → I P (m + 1) (Function.update L j X) = I P (m + 1) (Fin.snoc (Fin.init (L ∘ σ)) X)`. Introduce `X hX`. Establish `e : Function.update L j X ∘ σ = Fin.snoc (Fin.init (L ∘ σ)) X`. Rewrite using `[Function.update_comp_equiv, hσ, Equiv.symm_swap, Equiv.swap_apply_left]`.
+
+Use `conv_lhs => rw [← Fin.snoc_init_self (L ∘ ⇑(Equiv.swap j (Fin.last m)))]`. Conclude with `Fin.update_snoc_last _ _ _`. Rewrite using `[← e, hsym P (m + 1) _ σ hP (allSmooth_update hL j hX)]`. Establish `hL' : ∀ i, IsSmoothHerm (Fin.init (L ∘ σ) i)` using `fun i => hL _`. Rewrite using `[key _ (isSmoothHerm_tensor hA hB), key A hA, key B hB]`.
+
+Conclude with `hadd P m _ A B hP hL' hA hB`. Introduce `P n L s _ hP hL hs`. Take `⟨a, ha, hsm, hsP⟩` from `(isSec_iff P _ s).1 hs`. Establish `h` using `hrec P n (Fin.init L) (L (Fin.last n)) s a hP (fun i => hL _) (hL _) ha hsm hsP`. Rewrite `h` using `[Fin.snoc_init_self]`.
+
+Rewrite using `[h, hR]`.
+-/
 theorem IsFamily.equiv_of_rhsR (I : Family ι)
     (hR : ∀ (P : Ideal (MRing ι)) (n : ℕ) (L : Fin n → HermLine ι) (A : HermLine ι) (s : MRing ι),
       rhsR I P L A s = recR I P L A s) :
@@ -74,6 +101,9 @@ theorem IsFamily.equiv_of_rhsR (I : Family ι)
       rw [Fin.snoc_init_self] at h
       rw [h, hR]
 
+/- English proof (translation)
+The claim follows from `IsFamily.equiv_of_rhsR I fun P _ L A s => rhsR.equiv I P L A s`.
+-/
 theorem IsFamily.equiv (I : Family ι) : IsFamily I ↔ IsIntersectionFamily I :=
   IsFamily.equiv_of_rhsR I fun P _ L A s => rhsR.equiv I P L A s
 

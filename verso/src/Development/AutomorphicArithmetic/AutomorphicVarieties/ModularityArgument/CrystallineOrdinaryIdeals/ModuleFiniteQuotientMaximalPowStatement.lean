@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.T
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `K A _ _ _ _ m hm k`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Rewrite using `[pow_zero, Ideal.one_eq_top] infer_instance`. Establish `hle : m ^ k ≤ m` using `Ideal.pow_le_self (Nat.pos_iff_ne_zero.mp hk)`. Set `f : (A ⧸ m ^ k) →ₐ[K] A ⧸ m` to `Ideal.Quotient.factorₐ K hle`.
+
+Establish `hsurj : Function.Surjective f` using `Ideal.Quotient.factor_surjective hle`. Use `Module.finite_of_surjective_of_ker_le_nilradical f hsurj ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `ha : a ∈ m`.
+
+Rewrite `hx` using `[RingHom.mem_ker]`. Establish `: Ideal.Quotient.mk m a = 0` using `hx`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp this`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, Ideal.zero_eq_bot, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `Ideal.pow_mem_pow ha k`. Conclude with `IsNoetherian.noetherian _`.
+-/
 theorem _root_.GlobalTheory.T.module_finite_quotient_maximal_pow : ∀ {K A : Type} [Field K] [CommRing A] [Algebra K A] [IsNoetherianRing A] (m : Ideal A), Module.Finite K (A ⧸ m) → ∀ k : ℕ, Module.Finite K (A ⧸ m ^ k) := by
   intro K A _ _ _ _ m hm k
   rcases Nat.eq_zero_or_pos k with rfl | hk

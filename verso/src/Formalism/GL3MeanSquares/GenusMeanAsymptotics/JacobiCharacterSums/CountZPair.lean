@@ -12,6 +12,13 @@ def mulLevel (p p' : PC) : DirichletCharacter ℂ ((p.1 + 1) * (p'.1 + 1)) :=
   DirichletCharacter.changeLevel (dvd_mul_right (p.1 + 1) (p'.1 + 1)) p.2 *
     (DirichletCharacter.changeLevel (dvd_mul_left (p'.1 + 1) (p.1 + 1)) p'.2)⁻¹
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `mul_inv_eq_one.mp h`. Establish `hc` using `congrArg DirichletCharacter.conductor h1`. Rewrite `hc` using `[DirichletCharacter.conductor_changeLevel, DirichletCharacter.conductor_changeLevel, hp, hp']`. Take `⟨N, χ⟩` from `p`.
+
+Take `⟨N', χ'⟩` from `p'`. Simplify using `only [add_left_inj] at hc`. Substitute `hc` using the available equality. Apply `hne` to reduce the goal to its premises. Use `DirichletCharacter.changeLevel_injective (dvd_mul_right (N + 1) (N + 1)) h1` as an intermediate fact.
+
+Conclude with `congrArg (Sigma.mk N) this`.
+-/
 theorem mulLevel_ne_one (p p' : PC) (hp : p.2.IsPrimitive) (hp' : p'.2.IsPrimitive) (hne : p ≠ p') :
     mulLevel p p' ≠ 1 := by
   intro h
@@ -27,6 +34,17 @@ theorem mulLevel_ne_one (p p' : PC) (hp : p.2.IsPrimitive) (hp' : p'.2.IsPrimiti
   have := DirichletCharacter.changeLevel_injective (dvd_mul_right (N + 1) (N + 1)) h1
   exact congrArg (Sigma.mk N) this
 
+/- English proof (translation)
+Distinguish the cases in `hu : IsUnit (n : ZMod ((p.1 + 1) * (p'.1 + 1)))`. Take `⟨u, hu⟩` from `hu`. Establish `e1 : DirichletCharacter.changeLevel (dvd_mul_right (p.1 + 1) (p'.1 + 1)) p.2 (n : ZMod ((p.1 + 1) * (p'.1 + 1))) = cv p n`. Rewrite using `[← hu, DirichletCharacter.changeLevel_eq_cast_of_dvd, hu, ZMod.cast_natCast (dvd_mul_right _ _)]`. Both sides reduce to the same expression.
+
+Establish `e2 : DirichletCharacter.changeLevel (dvd_mul_left (p'.1 + 1) (p.1 + 1)) p'.2 (n : ZMod ((p.1 + 1) * (p'.1 + 1))) = cv p' n`. Rewrite using `[← hu, DirichletCharacter.changeLevel_eq_cast_of_dvd, hu, ZMod.cast_natCast (dvd_mul_left _ _)]`. Both sides reduce to the same expression. Establish `hn : ‖DirichletCharacter.changeLevel (dvd_mul_left (p'.1 + 1) (p.1 + 1)) p'.2 (n : ZMod ((p.1 + 1) * (p'.1 + 1)))‖ = 1`. Rewrite using `[← hu]`.
+
+Conclude with `DirichletCharacter.unit_norm_eq_one _ u`. Unfold `mulLevel`. Rewrite using `[MulChar.mul_apply, MulChar.inv_apply_eq_inv', e1, Complex.inv_eq_conj hn, e2]`. Rewrite using `[MulChar.map_nonunit _ hu]`. Rewrite `hu` using `[ZMod.isUnit_iff_coprime]`.
+
+Distinguish the cases in `h1 : n.Coprime (p.1 + 1)`. Establish `h2 : ¬ n.Coprime (p'.1 + 1)` using `fun h2 => hu (Nat.Coprime.mul_right h1 h2)`. Establish `h3 : cv p' n = 0` using `MulChar.map_nonunit _ (by rwa [ZMod.isUnit_iff_coprime])`. Rewrite using `[h3, map_zero, mul_zero]`. Establish `h3 : cv p n = 0` using `MulChar.map_nonunit _ (by rwa [ZMod.isUnit_iff_coprime])`.
+
+Rewrite using `[h3, zero_mul]`.
+-/
 theorem mulLevel_apply (p p' : PC) (n : ℕ) :
     mulLevel p p' (n : ZMod ((p.1 + 1) * (p'.1 + 1))) = cv p n * (starRingEnd ℂ) (cv p' n) := by
   by_cases hu : IsUnit (n : ZMod ((p.1 + 1) * (p'.1 + 1)))
@@ -56,6 +74,11 @@ theorem mulLevel_apply (p p' : PC) (n : ℕ) :
     · have h3 : cv p n = 0 := MulChar.map_nonunit _ (by rwa [ZMod.isUnit_iff_coprime])
       rw [h3, zero_mul]
 
+/- English proof (translation)
+Use `Finset.sum_nbij (fun n : ℕ => (n : ZMod Q)) (fun _ _ => Finset.mem_univ _) ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `a ha b hb hab`. Establish `ha' : a < Q` using `Finset.mem_range.mp ha`. Establish `hb' : b < Q` using `Finset.mem_range.mp hb`. Establish `h` using `congrArg ZMod.val hab`.
+
+Simplify using `only at h`. Rewrite `h` using `[ZMod.val_natCast_of_lt ha', ZMod.val_natCast_of_lt hb']`. Then use the resulting hypothesis. Introduce `x _`. Conclude with `⟨x.val, Finset.mem_range.mpr (ZMod.val_lt x), ZMod.natCast_zmod_val x⟩`.
+-/
 private lemma sum_range_natCast_zmod_eq_sum_univ {Q : ℕ} [NeZero Q] (f : ZMod Q → ℂ) :
     ∑ n ∈ Finset.range Q, f (n : ZMod Q) = ∑ x : ZMod Q, f x := by
   refine Finset.sum_nbij (fun n : ℕ => (n : ZMod Q)) (fun _ _ => Finset.mem_univ _) ?_ ?_
@@ -69,6 +92,9 @@ private lemma sum_range_natCast_zmod_eq_sum_univ {Q : ℕ} [NeZero Q] (f : ZMod 
   · intro x _
     exact ⟨x.val, Finset.mem_range.mpr (ZMod.val_lt x), ZMod.natCast_zmod_val x⟩
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `[Nat.cast_add]`. Use `_ = ∑ x : ZMod Q, ψ ((M : ZMod Q) + x) := sum_range_natCast_zmod_eq_sum_univ (fun x => ψ ((M : ZMod Q) + x))`. Use `_ = ∑ x : ZMod Q, ψ x := Equiv.sum_comp (Equiv.addLeft (M : ZMod Q)) ψ`. Use `_ = 0 := MulChar.sum_eq_zero_of_ne_one hψ`.
+-/
 private lemma sum_range_modulus_shift_eq_zero_of_ne_one {Q : ℕ} [NeZero Q] (ψ : DirichletCharacter ℂ Q) (hψ : ψ ≠ 1) (M : ℕ) :
     ∑ n ∈ Finset.range Q, ψ ((M + n : ℕ) : ZMod Q) = 0 := by
   calc ∑ n ∈ Finset.range Q, ψ ((M + n : ℕ) : ZMod Q)
@@ -78,6 +104,11 @@ private lemma sum_range_modulus_shift_eq_zero_of_ne_one {Q : ℕ} [NeZero Q] (ψ
     _ = ∑ x : ZMod Q, ψ x := Equiv.sum_comp (Equiv.addLeft (M : ZMod Q)) ψ
     _ = 0 := MulChar.sum_eq_zero_of_ne_one hψ
 
+/- English proof (translation)
+Establish `hQ : 0 < Q` using `NeZero.pos Q`. Use `Nat.strong_induction_on M ?_` and prove the remaining obligations. Introduce `M ih`. Distinguish the cases in `hM : M < Q`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨K, hK⟩ : ∃ K, M = K + Q` from `⟨M - Q, by omega⟩`. Substitute `hK` using the available equality. Rewrite using `[Finset.sum_range_add, sum_range_modulus_shift_eq_zero_of_ne_one ψ hψ K, add_zero]`. Conclude with `ih K (by omega)`.
+-/
 private lemma norm_charSum_range_le_modulus_of_ne_one {Q : ℕ} [NeZero Q] (ψ : DirichletCharacter ℂ Q) (hψ : ψ ≠ 1) (M : ℕ) :
     ‖∑ n ∈ Finset.range M, ψ (n : ZMod Q)‖ ≤ (Q : ℝ) := by
   have hQ : 0 < Q := NeZero.pos Q
@@ -95,6 +126,9 @@ private lemma norm_charSum_range_le_modulus_of_ne_one {Q : ℕ} [NeZero Q] (ψ :
     rw [Finset.sum_range_add, sum_range_modulus_shift_eq_zero_of_ne_one ψ hψ K, add_zero]
     exact ih K (by omega)
 
+/- English proof (translation)
+Introduce `p p' hp hp' hne M`. Establish `h` using `norm_charSum_range_le_modulus_of_ne_one (mulLevel p p') (mulLevel_ne_one p p' hp hp' hne) M`. Simplify `h` using `only [mulLevel_apply]`.
+-/
 theorem pair_sum_bound : PairSum := by
   intro p p' hp hp' hne M
   have h := norm_charSum_range_le_modulus_of_ne_one (mulLevel p p') (mulLevel_ne_one p p' hp hp' hne) M

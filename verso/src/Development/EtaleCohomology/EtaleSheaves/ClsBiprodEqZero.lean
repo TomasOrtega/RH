@@ -8,6 +8,13 @@ namespace LateralTheory.E.BinPf
 universe v u
 variable {C : Type u} [Category.{v} C] [Preadditive C] [HasBinaryBiproducts C]
 
+/- English proof (translation)
+Take `⟨α, rfl⟩` from `x.mk_surjective`. Rewrite `h₁`, `h₂` using `[cpre_mk, CohomologyClass.mk_eq_zero_iff]`. Take `⟨m, hm, β₁, hβ₁⟩` from `h₁`. Take `⟨m', hm', β₂, hβ₂⟩` from `h₂`. Establish `hmm : m' = m` using `by omega`.
+
+Substitute `hmm` using the available equality. Rewrite using `[CohomologyClass.mk_eq_zero_iff]`. Use `⟨m', hm', (Cochain.ofHom (biprod.fst : K₁ ⊞ K₂ ⟶ K₁)).comp β₁ (zero_add m') + (Cochain.ofHom (biprod.snd : K₁ ⊞ K₂ ⟶ K₂)).comp β₂ (zero_add m'), ?_⟩` and prove the remaining obligations. Rewrite using `[δ_add, δ_ofHom_comp, δ_ofHom_comp, hβ₁, hβ₂]`. Express the relevant statement in the definitionally equal form `(Cochain.ofHom (biprod.fst : K₁ ⊞ K₂ ⟶ K₁)).comp ((Cochain.ofHom biprod.inl).comp α.1 (zero_add n)) (zero_add n) + (Cochain.ofHom (biprod.snd : K₁ ⊞ K₂ ⟶ K₂)).comp ((Cochain.ofHom biprod.inr).comp α.1 (zero_add n)) (zero_add n) = α.1`.
+
+Rewrite using `[← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.add_comp, ← Cochain.ofHom_comp, ← Cochain.ofHom_comp, ← Cochain.ofHom_add, biprod.total, Cochain.id_comp]`.
+-/
 theorem cls_biprod_eq_zero {K₁ K₂ L : CochainComplex C ℤ} {n : ℤ} (x : CohomologyClass (K₁ ⊞ K₂) L n)
     (h₁ : cpre (Cocycle.ofHom (biprod.inl : K₁ ⟶ K₁ ⊞ K₂)) L n n (zero_add n) x = 0)
     (h₂ : cpre (Cocycle.ofHom (biprod.inr : K₂ ⟶ K₁ ⊞ K₂)) L n n (zero_add n) x = 0) : x = 0 := by
@@ -27,12 +34,18 @@ theorem cls_biprod_eq_zero {K₁ K₂ L : CochainComplex C ℤ} {n : ℤ} (x : C
     ← Cochain.add_comp, ← Cochain.ofHom_comp, ← Cochain.ofHom_comp, ← Cochain.ofHom_add, biprod.total,
     Cochain.id_comp]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[HK.pull, HK.pre, cpre_mk, zcomp, Cochain.ofHom_comp]`.
+-/
 theorem hkpull_comp {R : Type} [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (F : Shv R) (n : ℤ)
     (x : HK R M F n) : HK.pull R (f ≫ g) F n x = HK.pull R f F n (HK.pull R g F n x) := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
   refine congrArg CohomologyClass.mk (Cocycle.ext ?_)
   simp [HK.pull, HK.pre, cpre_mk, zcomp, Cochain.ofHom_comp]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[HK.pull, HK.pre, cpre_mk, zcomp]`.
+-/
 theorem hkpull_id {R : Type} [CommRing R] {K : Cx R} (F : Shv R) (n : ℤ)
     (x : HK R K F n) : HK.pull R (𝟙 K) F n x = x := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
@@ -44,6 +57,17 @@ def ChainsCoprod : Prop := ∀ (R : Type) [CommRing R] (U V : Spc),
 
 def CoprodAcyc : Prop := ∀ (q : ℕ) (U V : Spc), Acyc q U → Acyc q V → Acyc q (U ⨿ V)
 
+/- English proof (translation)
+Introduce `q U V hU hV n i hn`. Establish `hI` using `hC (ZMod q) U V`. Use `set φ := biprod.desc ((chains (ZMod q)).map (coprod.inl : U ⟶ U ⨿ V)) ((chains (ZMod q)).map (coprod.inr : V ⟶ U ⨿ V))`. Establish `h0 : ∀ x : Ht q (U ⨿ V) n i, x = 0`. Introduce `x`.
+
+Establish `hy : HK.pull _ φ _ n x = 0`. Apply `cls_biprod_eq_zero` to reduce the goal to its premises. Establish `e` using `hkpull_comp (biprod.inl) φ (tw q i) n x`. Rewrite `e` using `[biprod.inl_desc]`. Establish `: HK.pull _ ((chains (ZMod q)).map (coprod.inl : U ⟶ U ⨿ V)) (tw q i) n x = 0` using `(hU n i hn).elim _ _`.
+
+Rewrite `e` using `[this]`. Conclude with `e.symm`. Establish `e` using `hkpull_comp (biprod.inr) φ (tw q i) n x`. Rewrite `e` using `[biprod.inr_desc]`. Establish `: HK.pull _ ((chains (ZMod q)).map (coprod.inr : V ⟶ U ⨿ V)) (tw q i) n x = 0` using `(hV n i hn).elim _ _`.
+
+Rewrite `e` using `[this]`. Conclude with `e.symm`. Establish `e` using `hkpull_comp (inv φ) φ (tw q i) n x`. Rewrite `e` using `[IsIso.inv_hom_id, hkpull_id, hy, map_zero]`. Conclude with `e`.
+
+Conclude with `⟨fun x y => by rw [h0 x, h0 y]⟩`.
+-/
 theorem coprodAcyc_of (hC : ChainsCoprod) : CoprodAcyc := by
   intro q U V hU hV n i hn
   have hI := hC (ZMod q) U V
@@ -75,6 +99,9 @@ def DescEqv : Prop := LateralTheory.E.t_E2Cut.Hyp → ∀ (q : ℕ) (A R0 R1 : T
 
 end LateralTheory.E.BinPf
 
+/- English proof (translation)
+Introduce `H q A R0 R1 _ _ _ ⟨e⟩ h0 h1 n i hn`. Establish `hb` using `(hD H q A R0 R1 e i n).1`. Establish `hs` using `LateralTheory.E.BinPf.coprodAcyc_of hC q _ _ h0 h1 n i hn`. Conclude with `⟨fun x y => hb (Subsingleton.elim _ _)⟩`.
+-/
 theorem LateralTheory.E.ProdAcycPf.Bin_of (hD : LateralTheory.E.BinPf.DescEqv) (hC : LateralTheory.E.BinPf.ChainsCoprod) :
     LateralTheory.E.ProdAcycPf.Bin := by
   intro H q A R0 R1 _ _ _ ⟨e⟩ h0 h1 n i hn

@@ -18,12 +18,49 @@ open scoped ComplexConjugate RealInnerProductSpace
 
 variable {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} {B : Base F E}
 
+/- English proof (translation)
+Simplify using `using bA_smul J a 1 x y`.
+-/
 theorem bA_l (J : Matrix (Fin n) (Fin n) E) (a : AE F E) (x y : Fin n → AE F E) : bA σ J (a • x) y = a * bA σ J x y := by
   simpa using bA_smul J a 1 x y
 
+/- English proof (translation)
+Simplify using `using bA_smul J 1 a x y`.
+-/
 theorem bA_r (J : Matrix (Fin n) (Fin n) E) (a : AE F E) (x y : Fin n → AE F E) : bA σ J x (a • y) = cA σ a * bA σ J x y := by
   simpa using bA_smul J 1 a x y
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `cfg : Cfg B M M₁ H H' e (shiftA H H')` using `⟨hP.base, ⟨_, _, hP.herm⟩, ⟨_, _, hP.skew⟩, ⟨_, _, hP₁.herm⟩, ⟨_, _, hP₁.skew⟩, hP.good, hP₁.good, ⟨_, _, hH⟩, ⟨_, _, hH'⟩, Or.inl ⟨he, rfl⟩⟩`. Take `⟨lift, hlf⟩` from `archDict_of F E σ B hP.base`. Take `⟨hcp, hin, hsl⟩` from `hS F E σ B n d n₁ d₁ X W X₁ W₁ M M₁ H H' e _ ei ev cfg hv lift hlf K m hK hm' _ _ om _ _ _ _ hP`.
+
+Take `⟨f₀, hf₀⟩` from `hE F E σ B n d n₁ d₁ X W X₁ W₁ M M₁ H H' e _ ei ev cfg hv l hl0`. Take `⟨-, i1, i2⟩` from `PositivityTheory.ThKEst.lcsc_UA σ X.J`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI : CompactSpace (kAt K (evI F)) := isCompact_iff_compactSpace.1 hcp`. Use `haveI := hm'.ki`.
+
+Take `⟨c₀, hc₀, hcv⟩` from `conv hlf hν m.xi hm'.xi`. Establish `hU : ∀ k ∈ kAt K (evI F), k ∈ UAt σ X (evI F)` using `fun k hk => (hin k hk).1`. Establish `hG` using `hP.good`. Establish `hG₁` using `hP₁.good`. Establish `sch` using `(archHeis_of F E σ B n d X W M hP.base).1`.
+
+Establish `yx : form σ X.J H.y H.x = 1` using `by simpa using form_yx hP.base (ε := 1) (by simpa using hP.herm.herm) hH.xy`. Establish `yx' : form σ W.J H'.y H'.x = -1` using `by simpa using form_yx hP.base (ε := -1) (by simpa using hP.skew.skew) hH'.xy`. Establish `hprp` using `prp_pim (cont_xi hlf H.x (kAt K (evI F))) (xi_ne hlf hH.xy) 1`. Establish `val : ∀ (u) (_ : At (evI F) u) (k : kAt K (evI F)) f, l (ei (opI (fun Φ => M.co.rho B.ψ u (om (k.1, 1) Φ)) f)) = unp M₁ l (e (M.co.rho B.ψ u (om (k.1, 1) (PV M f))))` using `fun u hu k f => by`. Rewrite using `[← pv_opI hA hP hu (hU _ k.2), un_e hG hG₁ hv]`.
+
+Establish `omv : ∀ (k : kAt K (evI F)) f, ∃ g, om (k.1, 1) (PV M f) = PV M g` using `fun k f => ⟨_, ((pv_opI hA hP (u := 0) (fun a _ => smul_zero a) (hU _ k.2) f).trans (rho_zero _ _ _)).symm⟩`. Establish `om1 : ∀ Φ, om (((1 : kAt K (evI F)) : UA σ X.J), 1) Φ = Φ` using `fun Φ => by`. Express the relevant statement in the definitionally equal form `om 1 Φ = Φ`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+
+Establish `sh : ∀ c, lift c • shiftA H H' 1 = Matrix.vecMulVec (lift c • incV F H.x) (incV F H'.y)` using `fun c => by`. Rewrite using `[shiftA, Units.val_one, one_smul, Matrix.smul_vecMulVec]`. Set `a : SInf F _ → kAt K (evI F) × (InfinitePlace F → ℂ) → ℂ` to `fun f p => l (ei (opI (fun Φ => M.co.rho B.ψ (lift p.2 • shiftA H H' 1) (om (p.1.1, 1) Φ)) f))`. Establish `ha : ∀ f k c, a f (k, c) = unp M₁ l (e (M.co.rho B.ψ (Matrix.vecMulVec (lift c • incV F H.x) (incV F H'.y)) (om (k.1, 1) (PV M f))))` using `fun f k c => by rw [← sh]; exact val _ (at_smul2 (hlf.supp c) _) k f`. Establish `zero : ∀ f, ∫ k, ∫ c, a f (k, c) * r0 κ z c ∂volume ∂m.ki = 0` using `fun f => by`.
+
+Establish `h1` using `(hsl f l).2.2 ν (z + 1) hc (by omega) L hL`. Rewrite `h1` using `[hn]`. Establish `h2 : ∀ k : kAt K (evI F), _ = c₀ * ∫ c, a f (k, c) * r0 κ z c` using `fun k => hcv z (fun c => a f (k, c)) (fun t => l (ei (opI (fun Φ => M.co.rho B.ψ (realAd F 1 • shiftA H H' t) (om (k.1, 1) Φ)) f))) fun t => by`. Simplify using `only [a, shiftA, Units.val_one, one_smul]`. Rewrite using `[← smul_assoc, hlf.eq (hlf.part t.1).1 (hlf.part t.1).2]`.
+
+Simplify using `only [h2] at h1`. Rewrite `h1` using `[integral_const_mul]`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left hc₀`. Take `⟨f, hf⟩` from `pv_rho hP.base hG (u := Matrix.vecMulVec ((-lift 1) • incV F H.x) (incV F H'.y)) (at_vv (by rw [neg_smul, ← zero_sub]; exact at_sub (fun a _ => smul_zero a) (at_smul2 (hlf.supp 1) _)) _) f₀`. Establish `h11 : a f (1, 1) ≠ 0`.
+
+Rewrite using `[ha, om1, ← hf, ← heisenberg_action_add_of_orthogonal M B.ψ (by rw [sy_vv, bA_smul, bA_inc, hH.xx]; simp), ← Matrix.add_vecMulVec, ← add_smul, add_neg_cancel, zero_smul, Matrix.zero_vecMulVec, rho_zero, un_e hG hG₁ hv]`. Conclude with `hf₀`. Use `coreA m.ki hprp κ z (hsl f l).1 (hsl f l).2.1 (a f (1, 1))⁻¹ (fun p hp => ?_) fun η => ?_` and prove the remaining obligations. Take `⟨hne, t, ht, ht', hk⟩` from `sig_pt hlf hH.xy hU p hp`. Take `⟨e1, e2⟩` from `nu_eq hlf hν ht`.
+
+Simplify using `only [ht'] at e1 e2`. Establish `k1 : lift p.2 • incV F H.x = mat p.1.1 *ᵥ (lift 1 • incV F H.x)`. Rewrite using `[Matrix.mulVec_smul, hk, smul_smul, ← hlf.eq (at_mul (hlf.supp 1) t.1) fun w => by rw [map_mul, hlf.pi, ht']; simp]`. Establish `k2 : a f p = (χW t : ℂ) * (((absE F E t : ℝ) ^ rX : ℝ) : ℂ) * a f (1, 1)`. Rewrite using `[ha f p.1 p.2, ha, k1, ← om_rho hP _ _ _ (pv_sch hG f), om1]`.
+
+Conclude with `(mix_un hA hP hP₁ hH hv hm hl (hU _ p.1.2) hk).1 _ ((pv_rho hP.base hG (at_vv (at_smul2 (hlf.supp 1) _) _) f))`. Establish `k3 : a f p * r0 κ z p.2 * (a f (1, 1))⁻¹ = (((nm p.2) ^ rX * nm p.2 ^ z : ℝ) : ℂ)`. Rewrite using `[k2, rationalWeight_eq_mul_norm_pow, ← e1, e2]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `((((nm p.2) ^ rX : ℝ) : ℂ) * ((nm p.2 : ℝ) : ℂ) ^ z) * hχ t`. Express the relevant statement in the definitionally equal form `0 < (a f p * _ * _).re`. Rewrite using `[k3, Complex.ofReal_re]`. Use `nm_pos hne` as an intermediate fact. Check the signs of the components of the expression.
+
+Take `⟨g, hg⟩` from `pv_rho hP.base hG (at_vv (at_Yv hlf (X := X) (-η)) (incV F H'.x)) f`. Use `Eq.trans ?_ (zero g)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `k`. Use `congr 1`.
+
+Use function extensionality and compare the values at `c`. Use `congr 1`. Take `⟨f₁, hf₁⟩` from `omv k f`. Express the relevant statement in the definitionally equal form `_ * a f (k, c) = _`. Rewrite using `[ha, ha, ← hg, om_rho hP _ _ _ (pv_sch hG f), rho_comm, hf₁]`.
+
+Take `⟨f₂, hf₂⟩` from `pv_rho hP.base hG (at_vv (at_smul2 (hlf.supp c) (incV F H.x)) (incV F H'.y)) f₁`. Rewrite using `[hf₂, un_e_smul hG hG₁ hv l _ (pv_rho hP.base hG (at_vv (at_mulVec (at_Yv hlf _)) _) f₂), he.inv _ (Or.inl ⟨_, rfl⟩) _ (pv_sch hG f₂)]`. Use `congr 1`. Rewrite using `[sy_vv, bA_l, bA_inc, yx', map_neg (inclR (F := F) (E := E) (AF F)), map_one, mul_neg_one, neg_neg, hlf.ch (hlf.supp c) (x := bet (xi B H.x) (k, -η)) (y := c) fun w => by rw [map_mul, hlf.pi, pi_beta hlf hP.herm, mul_comm], pr_bet, inner_neg_left, neg_neg]`.
+-/
 theorem genA (hA : ArchOp) (hE : EiDense) (hS : ArchSlice) {M : Model σ X W} {M₁ : Model σ X₁ W₁} {χX χW om om₁ r s r' s' r₁ s₁ r₁' s₁'}
     (hP : IsPair B M χX χW om r s r' s') (hP₁ : IsPair B M₁ χX χW om₁ r₁ s₁ r₁' s₁') {H : Plane E n n₁} {H' : Plane E d d₁} {i j i' j'}
     (hH : H.IsAdapted σ B X X₁ i j) (hH' : H'.IsAdapted σ B W W₁ i' j') {e ei ev} (he : IsEv B M M₁ H.ι H'.ι (isoA H H') e)
@@ -115,6 +152,55 @@ theorem genA (hA : ArchOp) (hE : EiDense) (hS : ArchSlice) {M : Model σ X W} {M
       pr_bet, inner_neg_left, neg_neg]
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `cfg : Cfg B M M₁ H H' e (shiftB σ H H')` using `⟨hP.base, ⟨_, _, hP.herm⟩, ⟨_, _, hP.skew⟩, ⟨_, _, hP₁.herm⟩, ⟨_, _, hP₁.skew⟩, hP.good, hP₁.good, ⟨_, _, hH⟩, ⟨_, _, hH'⟩, Or.inr ⟨he, rfl⟩⟩`. Take `⟨lift, hlf⟩` from `archDict_of F E σ B hP.base`. Take `⟨hcp, hin, hsl⟩` from `hS F E σ B n d n₁ d₁ X W X₁ W₁ M M₁ H H' e _ ei ev cfg hv lift hlf K m hK hm' _ _ om _ _ _ _ hP`.
+
+Take `⟨f₀, hf₀⟩` from `hE F E σ B n d n₁ d₁ X W X₁ W₁ M M₁ H H' e _ ei ev cfg hv l hl0`. Take `⟨-, i1, i2⟩` from `PositivityTheory.ThKEst.lcsc_UA σ X.J`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI : CompactSpace (kAt K (evI F)) := isCompact_iff_compactSpace.1 hcp`. Use `haveI := hm'.ki`.
+
+Take `⟨c₀, hc₀, hcv⟩` from `conv hlf hν m.xi hm'.xi`. Establish `hU : ∀ k ∈ kAt K (evI F), k ∈ UAt σ X (evI F)` using `fun k hk => (hin k hk).1`. Establish `hG` using `hP.good`. Establish `hG₁` using `hP₁.good`. Establish `sch` using `(archHeis_of F E σ B n d X W M hP.base).1`.
+
+Establish `yx : form σ X.J H.y H.x = 1` using `by simpa using form_yx hP.base (ε := 1) (by simpa using hP.herm.herm) hH.xy`. Establish `yx' : form σ W.J H'.y H'.x = -1` using `by simpa using form_yx hP.base (ε := -1) (by simpa using hP.skew.skew) hH'.xy`. Establish `hprp` using `prp_pim (cont_xi hlf H.x (kAt K (evI F))) (xi_ne hlf hH.xy) 1`. Establish `val : ∀ (u) (_ : At (evI F) u) (k : kAt K (evI F)) f, l (ei (opI (fun Φ => M.co.rho B.ψ u (om (k.1, 1) Φ)) f)) = unp M₁ l (e (M.co.rho B.ψ u (om (k.1, 1) (PV M f))))` using `fun u hu k f => by`. Rewrite using `[← pv_opI hA hP hu (hU _ k.2), un_e hG hG₁ hv]`.
+
+Establish `omv : ∀ (k : kAt K (evI F)) f, ∃ g, om (k.1, 1) (PV M f) = PV M g` using `fun k f => ⟨_, ((pv_opI hA hP (u := 0) (fun a _ => smul_zero a) (hU _ k.2) f).trans (rho_zero _ _ _)).symm⟩`. Establish `om1 : ∀ Φ, om (((1 : kAt K (evI F)) : UA σ X.J), 1) Φ = Φ` using `fun Φ => by`. Express the relevant statement in the definitionally equal form `om 1 Φ = Φ`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+
+Establish `sh : ∀ c, lift c • shiftB σ H H' 1 = Matrix.vecMulVec (lift c • incV F H.y) (incV F H'.x)` using `fun c => by`. Rewrite using `[shiftB, Units.val_one, map_one, one_smul, Matrix.smul_vecMulVec]`. Establish `cj : Continuous fun p : kAt K (evI F) × (InfinitePlace F → ℂ) => (p.1, star p.2)` using `by fun_prop`. Set `a : SInf F _ → kAt K (evI F) × (InfinitePlace F → ℂ) → ℂ` to `fun f p => l (ei (opI (fun Φ => M.co.rho B.ψ (lift (star p.2) • shiftB σ H H' 1) (om (p.1.1, 1) Φ)) f))`. Establish `hac : ∀ f, Continuous (a f)` using `fun f => by`.
+
+Use `(hsl f l).1.comp cj` as an intermediate fact. Conclude with `this`. Establish `had : ∀ f, Dec (a f)` using `fun f N => let ⟨C, hC⟩ := (hsl f l).2.1 N; ⟨C, fun k c => by have := hC k (star c); rw [norm_star] at this; exact this⟩`. Establish `ha : ∀ f k c, a f (k, c) = unp M₁ l (e (M.co.rho B.ψ (Matrix.vecMulVec (lift (star c) • incV F H.y) (incV F H'.x)) (om (k.1, 1) (PV M f))))` using `fun f k c => by rw [← sh]; exact val _ (at_smul2 (hlf.supp _) _) k f`. Establish `zero : ∀ f, ∫ k, ∫ c, a f (k, c) * r0 κ z c ∂volume ∂m.ki = 0` using `fun f => by`.
+
+Establish `h1` using `(hsl f l).2.2 ν (z + 1) hc (by omega) L hL`. Rewrite `h1` using `[hn]`. Establish `h2 : ∀ k : kAt K (evI F), _ = c₀ * ∫ c, a f (k, c) * r0 κ z c` using `fun k => hcv z (fun c => a f (k, c)) (fun t => l (ei (opI (fun Φ => M.co.rho B.ψ (realAd F 1 • shiftB σ H H' t) (om (k.1, 1) Φ)) f))) fun t => by`. Simplify using `only [a, shiftB, Units.val_one, map_one, one_smul]`. Rewrite using `[← smul_assoc, hlf.eq (hlf.part _).1 (c := star fun w => piInf (B.emb w) t.1) fun w => by`.
+
+Rewrite using `[(hlf.part _).2, hlf.conj]`. Use the proof step `rfl]`. Simplify using `only [h2] at h1`. Rewrite `h1` using `[integral_const_mul]`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left hc₀`.
+
+Use `clear_value a`. Use `clear hsl val hcv`. Establish `hac1 : ∀ f, Continuous fun c => a f (1, c)` using `fun f => (hac f).comp (Continuous.prodMk_right 1)`. Establish `sy0 : ∀ x x' : Fin n → AE F E, sy σ X W (Matrix.vecMulVec x (incV F H'.x)) (Matrix.vecMulVec x' (incV F H'.x)) = 0` using `fun x x' => by`. Rewrite using `[sy_vv, bA_inc, hH'.xx]`.
+
+Simplify using the standard rewrite rules. Establish `kill : ∀ U (b : AE F E) y, ∀ Φ ∈ schA F _, e (M.co.rho B.ψ (Matrix.vecMulVec (incM F H.ι *ᵥ U + b • incV F H.x + y) (incV F H'.x)) Φ) = e (M.co.rho B.ψ (Matrix.vecMulVec y (incV F H'.x)) Φ)` using `fun U b y Φ hΦ => by`. Rewrite using `[Matrix.add_vecMulVec, Matrix.add_vecMulVec, add_assoc, ← Matrix.add_vecMulVec, heisenberg_action_add_of_orthogonal M B.ψ (sy0 _ _), he.inv _ (Or.inr ⟨_, rfl⟩) _ (sch _ _ hΦ), Matrix.add_vecMulVec, heisenberg_action_add_of_orthogonal M B.ψ (sy0 _ _), he.inv _ (Or.inl ⟨b • incV F …`. Establish `l0 : lift 0 = 0` using `(hlf.eq (fun u _ => smul_zero u) fun w => map_zero _).symm`. Take `⟨t₀, ht₀⟩` from `exists_FT_ne (a := fun c => a f₀ (1, c)) (hac1 f₀) ((had f₀).integrable 1 (hac1 f₀)) (by`.
+
+Rewrite using `[ha, om1, star_zero, l0, zero_smul, Matrix.zero_vecMulVec, rho_zero, un_e hG hG₁ hv]`. Conclude with `hf₀)`. Take `⟨f, hf⟩` from `pv_rho hP.base hG (at_vv (at_smul2 (hlf.supp (1 - t₀)) (incV F H.x)) (incV F H'.y)) f₀`. Establish `h11 : FT (fun c => a f (1, c)) 1 ≠ 0`. Use `fun h => ht₀ (Eq.trans ?_ h)` and prove the remaining obligations.
+
+Rewrite using `[FT, FT]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Take `⟨f₂, hf₂⟩` from `pv_rho hP.base hG (at_vv (at_smul2 (hlf.supp (star c)) (incV F H.y)) (incV F H'.x)) f₀`. Rewrite using `[ha, ha, om1, om1, ← hf, rho_comm, hf₂, un_e_smul hG hG₁ hv l _ (pv_rho hP.base hG (at_vv (at_smul2 (hlf.supp _) _) _) f₂), he.inv _ (Or.inl ⟨lift (1 - t₀) • incV F H'.y, by rw [Matrix.smul_vecMulVec, Matrix.vecMulVec_smul]⟩) _ (pv_sch hG f₂), ← mul_assoc]`.
+
+Use `congr 1`. Rewrite using `[sy_vv, bA_smul, bA_inc, bA_inc, yx, hH'.xy, map_one, mul_one, mul_one, ← mul_neg, hlf.ch (hlf.supp _) (x := c) (y := t₀ - 1) fun w => by`. Apply the tactic sequence `rw [map_mul, map_neg, hlf.conj, hlf.pi, hlf.pi]; simp <;> ring, ← ch_add]`. Use `congr 1`. Simplify using `only [pr, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun w _ => by simp; ring`. Use `haveI : SecondCountableTopology (kAt K (evI F)) := Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Use `haveI : FirstCountableTopology (kAt K (evI F)) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Take `⟨D, hD⟩` from `bet_le (cont_xi hlf H.x (kAt K (evI F)))`. Use `coreB m.ki hprp κ z hκ (hac f) (had f) (FT (fun c => a f (1, c)) 1)⁻¹ _ (cont_bet (cont_xi hlf H.x _)) D hD (pr_bet _) (fun p hp => ?_) fun η => ?_` and prove the remaining obligations.
+
+Take `⟨hne, t, ht, ht', hk⟩` from `sig_pt hlf hH.xy hU p hp`. Take `⟨e1, e2⟩` from `nu_eq hlf hν ht`. Simplify using `only [ht'] at e1 e2`. Take `⟨hmx, U, b, hy⟩` from `mix_un hA hP hP₁ hH hv hm hl (hU _ p.1.2) hk`. Establish `k2 : ∀ c, a f (p.1, c) = (χW t : ℂ) * (((absE F E t : ℝ) ^ rX : ℝ) : ℂ) * a f (1, p.2 * c)` using `fun c => by`.
+
+Rewrite using `[ha, ha, ← mat_cancel' p.1.1 (lift (star c) • incV F H.y), ← om_rho hP _ _ _ (pv_sch hG f), om1, hmx _ (pv_rho hP.base hG (at_vv (at_mulVec (at_smul2 (hlf.supp _) _)) _) f), Matrix.mulVec_smul, hy, smul_add, smul_add, ← Matrix.mulVec_smul, smul_smul, smul_smul, kill _ _ _ _ (pv_s …`. Rewrite using `[map_mul, hlf.pi, hlf.conj, ht']`. Simplify using `[mul_comm]]`. Establish `k4 : FT (fun c => a f (p.1, c)) p.2 = (χW t : ℂ) * (((absE F E t : ℝ) ^ rX : ℝ) : ℂ) * (((nm p.2 : ℝ) : ℂ)⁻¹ * FT (fun c => a f (1, c)) 1)`. Use `FT_scale ((had f).integrable 1 (hac1 f)) hne p.2` as an intermediate fact.
+
+Rewrite `this` using `[show p.2 * p.2⁻¹ = 1 from funext fun w => mul_inv_cancel₀ (hne w)]`. Rewrite using `[← this, FT, FT, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Rewrite using `[k2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hp'` using `nm_pos hne`. Establish `hp'' : ((nm p.2 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hp'.ne'`. Establish `hr` using `rationalWeight_ne_zero κ 0 hne`. Establish `k3 : FT (fun c => a f (p.1, c)) p.2 * ((r0 κ z p.2)⁻¹ * ((nm p.2 : ℝ) : ℂ)⁻¹) * (FT (fun c => a f (1, c)) 1)⁻¹ = (((nm p.2) ^ rX * (nm p.2 ^ (z + 2))⁻¹ : ℝ) : ℂ)`.
+
+Rewrite using `[k4, rationalWeight_eq_mul_norm_pow κ z p.2, hχ, e1, e2]`. Express the relevant statement in the definitionally equal form `r0 κ 0 p.2 * (((nm p.2) ^ rX : ℝ) : ℂ) * _ * _ * _ = _`. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_inv, Complex.ofReal_pow]`. Establish `h11' : FT (fun c => a f (1, c)) 1 * (FT (fun c => a f (1, c)) 1)⁻¹ = 1` using `mul_inv_cancel₀ h11`. Establish `hr' : r0 κ 0 p.2 * (r0 κ 0 p.2)⁻¹ = 1` using `mul_inv_cancel₀ hr`.
+
+Generalize the expression as in `(((nm p.2) ^ rX : ℝ) : ℂ) = A`. Generalize the expression as in `FT (fun c => a f (1, c)) 1 = T at h11'`. Rewrite using `[mul_inv, pow_add, mul_inv, ← inv_pow _ 2]`. Take the linear combination `(A * ((nm p.2 : ℝ) : ℂ)⁻¹ ^ 2 * (((nm p.2 : ℝ) : ℂ) ^ z)⁻¹) * (T * T⁻¹ * hr' + h11')`. Rewrite using `[k3, Complex.ofReal_re]`.
+
+Check the signs of the components of the expression. Take `⟨g, hg⟩` from `pv_rho hP.base hG (at_vv (at_Yv hlf (X := X) η) (incV F H'.x)) f`. Use `Eq.trans ?_ (zero g)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Use `congr 1`. Use function extensionality and compare the values at `c`. Use `congr 1`. Take `⟨U, b, hy⟩` from `decomp hP.base hP.herm hH (mat k.1 *ᵥ Yv X B lift η)`. Establish `hat : At (evI F) (cA σ (bA σ X.J (incV F H.x) (mat k.1 *ᵥ Yv X B lift η)))`.
+
+Rewrite using `[← at_iff.1 (at_mulVec (g := mat k.1) (at_Yv hlf (X := X) η)), ← algebraMap_smul (AE F E), bA_r, map_mul, PositivityTheory.ThKG.Tow.Levi.cA_cA hP.base.cm, ← Algebra.smul_def]`. Conclude with `(hlf.part _).1`. Rewrite using `[ha, ha, ← hg, om_rho hP _ _ _ (pv_sch hG f), ← heisenberg_action_add_of_orthogonal M B.ψ (sy0 _ _), ← Matrix.add_vecMulVec, hy, add_comm (lift _ • _), add_assoc, kill _ _ _ _ (om_sch hP _ (pv_sch hG f)), ← add_smul, ← hlf.eq (at_add hat (hlf.supp (star c))) (c := star (c + bet ( …`. Rewrite using `[map_add, hlf.pi, hlf.conj, pi_beta hlf hP.herm]`. Simplify using `[add_comm]]`.
+-/
 theorem genB (hA : ArchOp) (hE : EiDense) (hS : ArchSlice) {M : Model σ X W} {M₁ : Model σ X₁ W₁} {χX χW om om₁ r s r' s' r₁ s₁ r₁' s₁'}
     (hP : IsPair B M χX χW om r s r' s') (hP₁ : IsPair B M₁ χX χW om₁ r₁ s₁ r₁' s₁') {H : Plane E n n₁} {H' : Plane E d d₁} {i j i' j'}
     (hH : H.IsAdapted σ B X X₁ i j) (hH' : H'.IsAdapted σ B W W₁ i' j') {e ei ev} (he : IsEv B M M₁ H.ι H'.ι (isoB H H') e)
@@ -253,6 +339,11 @@ theorem genB (hA : ArchOp) (hE : EiDense) (hS : ArchSlice) {M : Model σ X W} {M
       ← hlf.eq (at_add hat (hlf.supp (star c))) (c := star (c + bet (xi B H.x) (k, η))) fun w => by
         rw [map_add, hlf.pi, hlf.conj, pi_beta hlf hP.herm]; simp [add_comm]]
 
+/- English proof (translation)
+Use `⟨fun w => (B.mα w - B.mβ w).toNat, fun w => by have := t.geo.kappa w; beta_reduce; omega, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨lift, h⟩` from `archDict_of F E σ B t.base`. Rewrite using `[Chars.ν, MonoidHom.div_apply, Circle.coe_div, t.chars.expα z hz, t.chars.expβ z hz, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `h0 : piInf (B.emb w) (z : AE F E) ≠ 0` using `(z.isUnit.map _).ne_zero`.
+
+Rewrite using `[← zpow_sub₀ (by simpa using h0)]`. Use `congr 1`. Use `t.geo.kappa w` as an intermediate fact. Use `beta_reduce`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem kap_ex {a a' : ℕ} {G : Geo σ a a'} {Y : Chars F E} {om om'} (t : IsTriple B G Y om om') :
     ∃ κ : InfinitePlace F → ℕ, (∀ w, a + a' < κ w) ∧ HasExp B.emb Y.ν fun w => κ w := by
   refine ⟨fun w => (B.mα w - B.mβ w).toNat, fun w => by have := t.geo.kappa w; beta_reduce; omega, fun z hz => ?_⟩
@@ -264,9 +355,19 @@ theorem kap_ex {a a' : ℕ} {G : Geo σ a a'} {Y : Chars F E} {om om'} (t : IsTr
   congr 1
   have := t.geo.kappa w; beta_reduce; omega
 
+/- English proof (translation)
+Substitute `h1 h2 h3 h4` using the available equality. Conclude with `h`.
+-/
 theorem pcast {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' a b a' b' : ℕ} (h : IsPair B M χX χW om r s r' s')
     (h1 : r = a) (h2 : s = b) (h3 : r' = a') (h4 : s' = b') : IsPair B M χX χW om a b a' b' := by subst h1 h2 h3 h4; exact h
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' c e ei ev he hv K m hK hm X om om' om₁ om₁' t t₁ L hL l hl0 hl`. Take `⟨κ, -, hκ⟩` from `kap_ex t`. Establish `h1` using `t.geo.eBig`. Establish `h2` using `t₁.geo.eBig`. Establish `h3` using `c.ep`.
+
+Establish `h4` using `c.q0`. Establish `h5` using `c.q1`. Take `⟨z, hz⟩ : ∃ z, (b + 2 - a') / 2 = z + 1` from `⟨(b + 2 - a') / 2 - 1, by omega⟩`. Rewrite `hL` using `[hz]`. Use `genA hA hE hS (pairV t) (pairV t₁) c.hH c.hH' he hv ((hM F E σ B _ _ _ _ _ _ _ _ H H' _ _ _ _ _ _ _ _ _ _ c.hH c.hH' _ _ om om₁ (pcast (pairV t) (by omega) (by omega) (by omega) (by omega)) (pairV t₁)).1 e he) hK hm (isHecke_div t.chars.heckeα t.chars.heckeβ).1 hκ (fun x => ?_) h …` and prove the remaining obligations.
+
+Simplify using `[Chars.ν]`.
+-/
 theorem bumpA_of (hA : ArchOp) (hE : EiDense) (hS : ArchSlice) (hM : MixAB) : BumpA := by
   intro F E _ _ _ _ _ σ B b a' G G₁ H H' c e ei ev he hv K m hK hm X om om' om₁ om₁' t t₁ L hL l hl0 hl
   obtain ⟨κ, -, hκ⟩ := kap_ex t
@@ -278,6 +379,11 @@ theorem bumpA_of (hA : ArchOp) (hE : EiDense) (hS : ArchSlice) (hM : MixAB) : Bu
     (isHecke_div t.chars.heckeα t.chars.heckeβ).1 hκ (fun x => ?_) hL hl0 hl
   simp [Chars.ν]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' c e ei ev he hv K m hK hm X om om' om₁ om₁' t t₁ L hL l hl0 hl`. Take `⟨κ, hκ', hκ⟩` from `kap_ex t`. Establish `h1` using `t.geo.aBig`. Establish `h2` using `t₁.geo.aBig`. Establish `h3` using `c.ep`.
+
+Establish `h4` using `c.eq`. Establish `h5` using `t.geo.lt`. Conclude with `genB hA hE hS (pairV' t) (pairV' t₁) c.hH c.hH' he hv ((hM F E σ B _ _ _ _ _ _ _ _ H H' _ _ _ _ _ _ _ _ _ _ c.hH c.hH' _ _ om' om₁' (pcast (pairV' t) (by omega) (by omega) (by omega) (by omega)) (pairV' t₁)).2 e he) hK hm (isHecke_div t.chars.heckeα t.chars.heckeβ).1 hκ (fun x => …`.
+-/
 theorem bumpB_of (hA : ArchOp) (hE : EiDense) (hS : ArchSlice) (hM : MixAB) : BumpB := by
   intro F E _ _ _ _ _ σ B a b G G₁ H H' c e ei ev he hv K m hK hm X om om' om₁ om₁' t t₁ L hL l hl0 hl
   obtain ⟨κ, hκ', hκ⟩ := kap_ex t

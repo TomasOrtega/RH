@@ -12,6 +12,13 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Automorphic.
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 open scoped ComplexConjugate
 
+/- English proof (translation)
+Establish `h1 : ∀ c : G ⧸ J, (J : Set G).indicator (1 : G → ℂ) (c.out⁻¹ * g) = if (QuotientGroup.mk g : G ⧸ J) = c then 1 else 0` using `fun c => by`. Establish `: c.out⁻¹ * g ∈ (J : Set G) ↔ (QuotientGroup.mk g : G ⧸ J) = c`. Rewrite using `[SetLike.mem_coe, ← QuotientGroup.eq, QuotientGroup.out_eq']`. Conclude with `eq_comm`. Simplify using `only [Set.indicator_apply, this, Pi.one_apply]`.
+
+Establish `h2 : (QuotientGroup.mk g : G ⧸ J) ∈ t ↔ ∃ a ∈ J, ∃ b ∈ J, g = a * x * b`. Rewrite using `[ht]`. Use `exists_congr fun a => and_congr_right fun _ => ⟨fun e => ⟨(a * x)⁻¹ * g, QuotientGroup.eq.1 e.symm, by group⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `QuotientGroup.mk_mul_of_mem _ hb`.
+
+Simplify using `only [h1, Finset.sum_ite_eq, h2, Set.indicator_apply, Set.mem_setOf_eq, Pi.one_apply]`.
+-/
 private theorem ind_sum {G : Type*} [Group G] (J : Subgroup G) (x : G) (t : Finset (G ⧸ J))
     (ht : ∀ c, c ∈ t ↔ ∃ k ∈ J, c = QuotientGroup.mk (k * x)) (g : G) :
     ∑ c ∈ t, (J : Set G).indicator (1 : G → ℂ) (c.out⁻¹ * g) = {g : G | ∃ a ∈ J, ∃ b ∈ J, g = a * x * b}.indicator 1 g := by
@@ -28,12 +35,18 @@ private theorem ind_sum {G : Type*} [Group G] (J : Subgroup G) (x : G) (t : Fins
     exact QuotientGroup.mk_mul_of_mem _ hb
   simp only [h1, Finset.sum_ite_eq, h2, Set.indicator_apply, Set.mem_setOf_eq, Pi.one_apply]
 
+/- English proof (translation)
+Simplify using `only [Set.indicator_apply, h, Pi.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem conj_ind {G : Type*} (A B : Set G) (g g' : G) (h : g ∈ A ↔ g' ∈ B) :
     conj (A.indicator (1 : G → ℂ) g) = B.indicator 1 g' := by
   classical
   simp only [Set.indicator_apply, h, Pi.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite `s2` using `[← a0, ← a1]`. Establish `s3` using `congrArg ContinuousLinearMap.adjoint s2`. Rewrite `s3` using `[ContinuousLinearMap.adjoint_comp, ContinuousLinearMap.adjoint_adjoint, ContinuousLinearMap.adjoint_adjoint, a]`. Conclude with `s1.symm.trans s3`.
+-/
 private theorem commute_of_adjoint_factorisations {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (A A' E₀ E₁ F₀ F₁ : H →L[ℂ] H)
     (s1 : E₁ = A ∘L E₀) (s2 : F₁ = A' ∘L F₀) (a0 : ContinuousLinearMap.adjoint E₀ = F₀) (a1 : ContinuousLinearMap.adjoint E₁ = F₁)
     (a : ContinuousLinearMap.adjoint A' = A) : Commute A E₀ := by
@@ -43,6 +56,23 @@ private theorem commute_of_adjoint_factorisations {H : Type*} [NormedAddCommGrou
   exact s1.symm.trans s3
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `K _ _ n hn μ _ m _ w J hJ hc x r hr e₀ h0`. Take `⟨-, l1, -, -, l2⟩` from `UpperTheory.ConvolutionTheory.Tf.locEmb K n w`. Establish `cm : ∀ a b : AdelicGLn.FiniteAdelicGL K n, cf w (a * b) = cf w a * cf w b` using `fun a b => by`. Unfold `cf`. Rewrite using `[map_mul, finAt_mul]`.
+
+Establish `cl : ∀ a, cf w (AdelicGLn.localEmbedding w a) = a` using `l1`. Establish `c1 : cf w (1 : AdelicGLn.FiniteAdelicGL K n) = 1` using `by simpa using cl 1`. Establish `ci : ∀ a : AdelicGLn.FiniteAdelicGL K n, cf w a⁻¹ = (cf w a)⁻¹` using `fun a => eq_inv_of_mul_eq_one_left (by rw [← cm, inv_mul_cancel, c1])`. Establish `hr' : ∀ y a, r (y * AdelicGLn.localEmbedding w a) = r y` using `fun y a => by`. Establish `h1 : cf w (AdelicGLn.localEmbedding w (cf w y)⁻¹ * y) = 1` using `by rw [cm, cl, inv_mul_cancel]`.
+
+Rewrite using `[← hr (cf w y)⁻¹, ← mul_assoc, ← l2 _ h1 a, hr, hr]`. Establish `hfin` using `(UpperTheory.ConvolutionTheory.Tf.hopBasic K n μ w J x hJ hc).1`. Set `tr : AdelicGLn.FiniteAdelicGL K n → TF K n` to `fun a => ⟨⟨fun y => e₀ (a * y), e₀.continuous.comp (continuous_const_mul a)⟩, e₀.hasCompactSupport.comp_homeomorph (Homeomorph.mulLeft a)⟩`. Set `e₁ : TF K n` to `∑ c ∈ hfin.toFinset, tr (AdelicGLn.localEmbedding w c.out⁻¹)`. Establish `h1 : ∀ y, e₁ y = r y * {g : GL (Fin n) (w.adicCompletion K) | ∃ a ∈ J, ∃ b ∈ J, g = a * x * b}.indicator 1 (cf w y)` using `fun y => by`.
+
+Rewrite using `[← ind_sum J x hfin.toFinset (fun c => hfin.mem_toFinset), Finset.mul_sum, CompactlySupportedContinuousMap.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `show e₀ (_ * y) = _`. Rewrite using `[h0, hr, cm, cl]`. Set `st : TF K n → TF K n` to `fun e => ⟨⟨fun y => conj (e y⁻¹), Complex.continuous_conj.comp (e.continuous.comp continuous_inv)⟩, (e.hasCompactSupport.comp_homeomorph (Homeomorph.inv _)).comp_left (g := fun z : ℂ => conj z) (map_zero _)⟩`.
+
+Establish `hst : ∀ e y, st e y = conj (e y⁻¹)` using `fun _ _ => rfl`. Establish `s1` using `UpperTheory.Ofin_doubleCoset_indicator_eq_Hop K n hn μ m w J x hJ hc r hr e₀ e₁ h0 h1`. Establish `s2` using `UpperTheory.Ofin_doubleCoset_indicator_eq_Hop K n hn μ m w J x⁻¹ hJ hc (fun y => conj (r y⁻¹)) (fun a y => by show conj (r _) = conj (r _)`. Rewrite using `[mul_inv_rev, ← map_inv, hr']) (st e₀) (st e₁)`. Use the proof step `(fun y => by`.
+
+Rewrite using `[hst, h0, map_mul, ci]`. Conclude with `congrArg _ (conj_ind _ _ _ _ J.inv_mem_iff))`. Use the proof step `(fun y => by`. Rewrite using `[hst, h1, map_mul, ci]`. Use `congrArg _ (conj_ind _ _ _ _ ⟨?_, ?_⟩)` and prove the remaining obligations.
+
+Introduce and unpack `⟨a, ha, b, hb, e⟩`. Conclude with `⟨b⁻¹, J.inv_mem hb, a⁻¹, J.inv_mem ha, by rw [← inv_inv (cf w y), e]; group⟩`. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Conclude with `⟨b⁻¹, J.inv_mem hb, a⁻¹, J.inv_mem ha, by rw [e]; group⟩)`. Establish `ad` using `(UpperTheory.ConvolutionTheory.Tf.opAlg K n μ Measure.haar m).2.2.2.2.1`.
+
+Conclude with `commute_of_adjoint_factorisations _ _ _ _ _ _ s1 s2 (ad e₀ _ (hst e₀)) (ad e₁ _ (hst e₁)) (UpperTheory.heckeOperator_adjoint_inv_eq_heckeOperator K n μ w J hJ hc x)`.
+-/
 theorem UpperTheory.commute_heckeOperator_finiteConvolution_of_free_indicator :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure]
           (w : Pl K) (J : Subgroup (GL (Fin n) (w.adicCompletion K))), IsOpen (J : Set (GL (Fin n) (w.adicCompletion K))) → IsCompact (J : Set (GL (Fin n) (w.adicCompletion K))) →

@@ -7,12 +7,22 @@ open NumberField IsDedekindDomain Matrix Formalism.L2.Host GlobalTheory.CuspRep 
 open UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V.Cj
 open scoped TensorProduct
 
+/- English proof (translation)
+Rewrite using `[Subgroup.coe_inf]`. Conclude with `⟨h1.inter h3, h2.inter_right (U'.isClosed_of_isOpen h3)⟩`.
+-/
 private theorem oc_inf {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {U U' : Subgroup G}
     (h1 : IsOpen (U : Set G)) (h2 : IsCompact (U : Set G)) (h3 : IsOpen (U' : Set G)) :
     IsOpen ((U ⊓ U' : Subgroup G) : Set G) ∧ IsCompact ((U ⊓ U' : Subgroup G) : Set G) := by
   rw [Subgroup.coe_inf]
   exact ⟨h1.inter h3, h2.inter_right (U'.isClosed_of_isOpen h3)⟩
 
+/- English proof (translation)
+Use `⟨U.comap (MulAut.conj x⁻¹).toMonoidHom, ?_, ?_, fun u hu => by simpa using hu⟩` and prove the remaining obligations. Establish `: ((U.comap (MulAut.conj x⁻¹).toMonoidHom : Subgroup G) : Set G) = (fun u => x⁻¹ * u * x) ⁻¹' U`. Use extensionality with `u`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `h1.preimage (by fun_prop)`. Establish `: ((U.comap (MulAut.conj x⁻¹).toMonoidHom : Subgroup G) : Set G) = (fun u => x * u * x⁻¹) '' U`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+
+Conclude with `⟨x⁻¹ * u * x, by simpa using hu, by group⟩`. Introduce and unpack `⟨v, hv, rfl⟩`. Simplify `hv` using `[mul_assoc]`. Rewrite using `[this]`. Conclude with `h2.image (by fun_prop)`.
+-/
 private theorem oc_conj {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {U : Subgroup G}
     (h1 : IsOpen (U : Set G)) (h2 : IsCompact (U : Set G)) (x : G) :
     ∃ U' : Subgroup G, IsOpen (U' : Set G) ∧ IsCompact (U' : Set G) ∧ ∀ u ∈ U', x⁻¹ * u * x ∈ U := by
@@ -31,6 +41,19 @@ private theorem oc_conj {G : Type} [Group G] [TopologicalSpace G] [IsTopological
     rw [this]
     exact h2.image (by fun_prop)
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha σ Ξ Ξ' h hσ q`. Establish `mono : ∀ U U' : Subgroup (GL (Fin a) (Af E)), U' ≤ U → ∀ (α : Co Ξ q) (β : Co Ξ' q), RelAt U σ h α β → RelAt U' σ h α β` using `fun U U' hU α β hr => by`. Use `relPull E a U U' 1 (fun u hu => by simpa using hU hu) σ Ξ Ξ' h q α β hr` as an intermediate fact. Rewrite `this` using `[trans_one, trans_one]`. Then use the resulting hypothesis. Establish `L` using `(levSub E a Ξ q).2.1`.
+
+Establish `L'` using `(levSub E a Ξ' q).2.1`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `s α α' β β' ⟨U, u1, u2, u3⟩ ⟨V, v1, -, v3⟩`. Take `⟨w1, w2⟩` from `oc_inf u1 u2 v1`. Conclude with `⟨U ⊓ V, w1, w2, relLin E a _ σ Ξ Ξ' h q s α α' β β' (mono _ _ inf_le_left _ _ u3) (mono _ _ inf_le_right _ _ v3)⟩`.
+
+Introduce and unpack `x α β ⟨U, u1, u2, u3⟩`. Take `⟨V, v1, v2, v3⟩` from `oc_conj u1 u2 x`. Conclude with `⟨V, v1, v2, relPull E a U V x v3 σ Ξ Ξ' h q α β u3⟩`. Introduce and unpack `α β ⟨U, u1, u2, u3⟩`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨V, v1, -, v3⟩`. Take `⟨w1, w2⟩` from `oc_inf u1 u2 v1`. Conclude with `⟨U ⊓ V, w1, w2, ((relKer E a ha _ w2 σ Ξ Ξ' h hσ q α β).1 (mono _ _ inf_le_left _ _ u3)).1 ((L _ _ inf_le_right α).2 v3)⟩`. Introduce and unpack `⟨V, v1, -, v3⟩`. Take `⟨w1, w2⟩` from `oc_inf u1 u2 v1`.
+
+Conclude with `⟨U ⊓ V, w1, w2, ((relKer E a ha _ w2 σ Ξ Ξ' h hσ q α β).1 (mono _ _ inf_le_left _ _ u3)).2 ((L' _ _ inf_le_right β).2 v3)⟩`. Introduce and unpack `α β ⟨U, u1, u2, u3⟩ ⟨V, v1, -, v3⟩ d1 d2 ⟨X, x1, -, x3⟩ ⟨Y, y1, -, y3⟩`. Take `⟨w1, w2⟩` from `oc_inf u1 u2 v1`. Take `⟨w3, w4⟩` from `oc_inf w1 w2 x1`. Take `⟨w5, w6⟩` from `oc_inf w3 w4 y1`.
+
+Conclude with `⟨_, w5, w6, (relKer E a ha _ w6 σ Ξ Ξ' h hσ q α β).2 ((L _ _ (inf_le_left.trans (inf_le_left.trans inf_le_left)) α).1 u3) ((L' _ _ (inf_le_left.trans (inf_le_left.trans inf_le_right)) β).1 v3) d1 d2 ((L _ _ (inf_le_left.trans inf_le_right) α).2 x3) ((L' _ _ inf_le_right β).2 y3)⟩`.
+-/
 theorem UpperTheory.V.Cj.relFacts :
     UpperTheory.V.Cj.RelFacts := by
   intro E _ _ _ a ha σ Ξ Ξ' h hσ q

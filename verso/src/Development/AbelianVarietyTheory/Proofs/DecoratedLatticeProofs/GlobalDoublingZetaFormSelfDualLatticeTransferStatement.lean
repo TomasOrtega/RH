@@ -11,5 +11,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.GlobMove.globalFormAt_move | exact GlobalTheory.Core.Rk.GlobMove.globalFormAt_move | (intros; apply GlobalTheory.Core.Rk.GlobMove.globalFormAt_move <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.global_doubling_zeta_form_selfDual_lattice_transfer : ∀ (D : D7) (A : HSp D) (L L' : Lat A), IsSelfDualC A L → IsSelfDualC A L' → GlobalFormAt A L → GlobalFormAt A L' := by
   first | exact @GlobalTheory.Core.Rk.GlobMove.globalFormAt_move | exact GlobalTheory.Core.Rk.GlobMove.globalFormAt_move | (intros; apply GlobalTheory.Core.Rk.GlobMove.globalFormAt_move <;> assumption)

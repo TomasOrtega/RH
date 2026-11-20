@@ -11,6 +11,13 @@ open Polynomial IntermediateField
 
 namespace GlobalTheory.ShapeNeg
 
+/- English proof (translation)
+Use `set E := K⟮x⟯`. Use `haveI : FiniteDimensional K E := adjoin.finiteDimensional hx`. Use `haveI : FiniteDimensional ℚ_[p] E := Module.Finite.trans K E`. Establish `h1 : Module.finrank ℚ_[p] K * Module.finrank K E = Module.finrank ℚ_[p] E` using `Module.finrank_mul_finrank ℚ_[p] K E`. Rewrite `h1` using `[adjoin.finrank hx]`.
+
+Establish `hxE : x ∈ E` using `mem_adjoin_simple_self K x`. Use `haveI : IsScalarTower ℚ_[p] E (PadicAlgCl p) := IsScalarTower.of_algebraMap_eq (fun a => rfl)`. Establish `h2 : minpoly ℚ_[p] (⟨x, hxE⟩ : E) = minpoly ℚ_[p] x` using `(minpoly.algebraMap_eq (algebraMap E (PadicAlgCl p)).injective (⟨x, hxE⟩ : E)).symm`. Establish `h3` using `minpoly.natDegree_le (A := ℚ_[p]) (⟨x, hxE⟩ : E)`. Rewrite `h3` using `[h2]`.
+
+Rewrite using `[mul_comm]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem natDegree_minpoly_le_mul {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
     (hK : FiniteDimensional ℚ_[p] K) (x : PadicAlgCl p) (hx : IsIntegral K x) :
     (minpoly ℚ_[p] x).natDegree ≤ (minpoly K x).natDegree * Module.finrank ℚ_[p] K := by
@@ -29,6 +36,19 @@ theorem natDegree_minpoly_le_mul {p : ℕ} [Fact p.Prime] {K : IntermediateField
   rw [mul_comm]
   omega
 
+/- English proof (translation)
+Establish `hint : IsIntegral K ζ` using `(hζ.isIntegral (NeZero.pos N)).tower_top`. Establish `hirr : Irreducible (minpoly K ζ)` using `minpoly.irreducible hint`. Establish `hsep : (minpoly K ζ).Separable` using `hirr.separable`. Establish `hspl : Splits ((minpoly K ζ).map (algebraMap K (PadicAlgCl p)))` using `IsAlgClosed.splits _`. Rewrite using `[← card_rootSet_eq_natDegree hsep hspl, ← Nat.card_eq_fintype_card]`.
+
+Establish `hχ : ∀ σ : Formalism.GaloisCohomology.GK p K, ((hζ.autToPow K σ : ZMod N)) ^ k = 1`. Introduce `σ`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow]`. Establish `h1` using `hζ.autToPow_spec K (σ ^ k)`. Rewrite `h1` using `[hfix σ]`.
+
+Establish `h0 : ζ ^ (1 % N) = ζ` using `by rw [hζ.eq_orderOf, pow_mod_orderOf, pow_one]`. Establish `h2 : ζ ^ (hζ.autToPow K (σ ^ k) : ZMod N).val = ζ ^ (1 % N)` using `h1.trans h0.symm`. Establish `h3` using `hζ.pow_inj (ZMod.val_lt _) (Nat.mod_lt _ (NeZero.pos N)) h2`. Rewrite `h3` using `[← ZMod.val_one_eq_one_mod]`. Conclude with `ZMod.val_injective N h3`.
+
+Establish `horb : ∀ y : (minpoly K ζ).rootSet (PadicAlgCl p), ∃ σ : Formalism.GaloisCohomology.GK p K, σ ζ = y`. Introduce `y`. Establish `hy : aeval (y : PadicAlgCl p) (minpoly K ζ) = 0` using `(mem_rootSet.1 y.2).2`. Establish `he : minpoly K ζ = minpoly K (y : PadicAlgCl p)` using `minpoly.eq_of_irreducible_of_monic hirr hy (minpoly.monic hint)`. Take `⟨σ, hσ⟩` from `(Normal.minpoly_eq_iff_mem_orbit (F := K) (PadicAlgCl p)).1 he.symm`.
+
+Conclude with `⟨σ, hσ⟩`. Use `choose σ hσ using horb`. Use `Nat.card_le_card_of_injective (fun y => ⟨(hζ.autToPow K (σ y) : ZMod N), hχ (σ y)⟩) ?_` and prove the remaining obligations. Introduce `y y' hyy`. Establish `h : (hζ.autToPow K (σ y) : ZMod N) = (hζ.autToPow K (σ y') : ZMod N)` using `congrArg Subtype.val hyy`.
+
+Establish `h' : (σ y) ζ = (σ y') ζ`. Rewrite using `[← hζ.autToPow_spec K (σ y), ← hζ.autToPow_spec K (σ y'), h]`. Conclude with `Subtype.ext (by rw [← hσ y, ← hσ y']; exact h')`.
+-/
 theorem natDegree_minpoly_le_card_pow_eq_one {p : ℕ} [Fact p.Prime]
     {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {N : ℕ} [NeZero N] {ζ : PadicAlgCl p}
     (hζ : IsPrimitiveRoot ζ N) (k : ℕ) (hfix : ∀ σ : Formalism.GaloisCohomology.GK p K, (σ ^ k) ζ = ζ) :
@@ -66,6 +86,19 @@ theorem natDegree_minpoly_le_card_pow_eq_one {p : ℕ} [Fact p.Prime]
     rw [← hζ.autToPow_spec K (σ y), ← hζ.autToPow_spec K (σ y'), h]
   exact Subtype.ext (by rw [← hσ y, ← hσ y']; exact h')
 
+/- English proof (translation)
+Introduce `p _ K hK k hk`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hp : p.Prime` using `Fact.out`. Use `set d := Module.finrank ℚ_[p] K with hd`.
+
+Take `⟨n, hn⟩ : ∃ n, 2 * k * d < p ^ n` from `⟨2 * k * d, Nat.lt_pow_self hp.one_lt⟩`. Use `haveI : NeZero (p ^ (n + 1)) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Use `haveI : NeZero ((p ^ (n + 1) : ℕ) : PadicAlgCl p) := ⟨Nat.cast_ne_zero.2 (pow_ne_zero _ hp.ne_zero)⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (PadicAlgCl p) (p ^ (n + 1))`. Establish `hfix : ∀ σ : Formalism.GaloisCohomology.GK p K, (σ ^ k) ζ = ζ` using `fun σ => hcon σ (n + 1) ζ hζ.pow_eq_one`.
+
+Establish `hB` using `natDegree_minpoly_le_card_pow_eq_one hζ k hfix`. Establish `hC : Nat.card {x : ZMod (p ^ (n + 1)) // x ^ k = 1} ≤ 2 * k`. Distinguish the cases in `h2 : p = 2`. Substitute `h2` using the available equality. Conclude with `GlobalTheory.card_pow_eq_one_two_pow_le (n + 1) (by omega) hk`.
+
+Use `haveI : IsCyclic (ZMod (p ^ (n + 1)))ˣ := ZMod.isCyclic_units_of_prime_pow p hp h2 (n + 1)`. Use `GlobalTheory.card_pow_eq_one_le_of_isCyclic_units (p ^ (n + 1)) hk` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hint : IsIntegral K ζ` using `(hζ.isIntegral (NeZero.pos _)).tower_top`. Establish `hA` using `natDegree_minpoly_le_mul hK ζ hint`.
+
+Establish `hcyc : cyclotomic (p ^ (n + 1)) ℚ_[p] = minpoly ℚ_[p] ζ`. Use `minpoly.eq_of_irreducible_of_monic (GlobalTheory.Cyc.Model.cyc_irred n) ?_ (cyclotomic.monic _ _)` and prove the remaining obligations. Rewrite using `[aeval_def, eval₂_eq_eval_map, map_cyclotomic]`. Conclude with `hζ.isRoot_cyclotomic (NeZero.pos _)`. Rewrite `hA` using `[← hcyc, natDegree_cyclotomic, Nat.totient_prime_pow_succ hp]`.
+
+Rewrite `hA` using `[← hd]`. Establish `hp1 : 1 ≤ p - 1` using `by have := hp.two_le; omega`. Establish `h1 : p ^ n ≤ p ^ n * (p - 1)` using `Nat.le_mul_of_pos_right _ hp1`. Establish `h2 : (minpoly K ζ).natDegree * d ≤ 2 * k * d` using `Nat.mul_le_mul_right _ (hB.trans hC)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_pow_ne_rootOfUnity : ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)},
     FiniteDimensional ℚ_[p] K →
     ∀ k : ℕ, 0 < k → ∃ (σ : Formalism.GaloisCohomology.GK p K) (n : ℕ) (ζ : PadicAlgCl p), ζ ^ (p ^ n) = 1 ∧ (σ ^ k) ζ ≠ ζ := by

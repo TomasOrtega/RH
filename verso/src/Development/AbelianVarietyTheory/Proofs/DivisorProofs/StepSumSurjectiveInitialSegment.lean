@@ -6,6 +6,29 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `w : ℕ → ℝ` to `fun n => if h : n < r then v ⟨n, h⟩ else 0`. Use `⟨fun k => w k.val - w (k.val + 1), ?_⟩` and prove the remaining obligations. Establish `key : ∀ d : ℕ, ∀ i : Fin r, r - i.val = d → stepSum S (fun k => w k.val - w (k.val + 1)) i = v i`. Introduce `d`. Proceed by induction on `d with`.
+
+Consider the case `zero => intro i hi`. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider the case `succ d ih`. Introduce `i hi`.
+
+Unfold `stepSum`. Distinguish the cases in `hiS : i ∈ S`. Distinguish the cases in `h : i.val + 1 < r`. Use `set j : Fin r := ⟨i.val + 1, h⟩ with hj`. Establish `hset : S.filter (fun k => i ≤ k) = insert i (S.filter (fun k => j ≤ k))`.
+
+Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Fin.le_def, hj, Fin.ext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hk, hik⟩`. Distinguish the cases in `hki : k.val = i.val`.
+
+Conclude with `Or.inl hki`. Conclude with `Or.inr ⟨hk, by omega⟩`. Introduce and unpack `(hki | ⟨hk, hjk⟩)`. Establish `: k = i` using `Fin.ext hki`. Substitute `this` using the available equality.
+
+Conclude with `⟨hiS, le_refl _⟩`. Conclude with `⟨hk, by omega⟩`. Establish `hnot : i ∉ S.filter (fun k => j ≤ k)`. Simplify using `[Fin.le_def, hj]`. Establish `hj'` using `ih j (by simp [hj]; omega)`.
+
+Unfold `stepSum at hj'`. Rewrite using `[hset, Finset.sum_insert hnot, hj']`. Simplify using `only [w, dif_pos i.2, dif_pos h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hset : S.filter (fun k => i ≤ k) = {i}`.
+
+Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_singleton, Fin.le_def]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hk, hik⟩; exact Fin.ext (by have := k.2; omega)`. Introduce and unpack `rfl`.
+
+Conclude with `⟨hiS, le_refl _⟩`. Rewrite using `[hset, Finset.sum_singleton]`. Simplify using `only [w, dif_pos i.2, dif_neg h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hv i hiS]`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_filter]`. Conclude with `absurd (hS k hk.1 i hk.2) hiS`. Use function extensionality and compare the values at `i`.
+
+Conclude with `key _ i rfl`.
+-/
 theorem stepSum_surj_of_initial {r : ℕ} {S : Finset (Fin r)} (hS : ∀ k ∈ S, ∀ i, i ≤ k → i ∈ S)
     (v : Fin r → ℝ) (hv : ∀ i ∉ S, v i = 0) : ∃ u, stepSum S u = v := by
   classical

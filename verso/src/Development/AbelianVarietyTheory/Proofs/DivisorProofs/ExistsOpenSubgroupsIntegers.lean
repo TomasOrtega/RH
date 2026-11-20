@@ -9,6 +9,25 @@ noncomputable section
 
 namespace GlobalTheory.SBBox
 
+/- English proof (translation)
+Establish `hW : ∀ x : X, ∃ W ∈ nhds (0 : X), ∀ a ∈ W, ∀ b ∈ W, g (x + (a + b)) = g x`. Introduce `x`. Establish `h1 : (fun u => x + u) ⁻¹' {y | g y = g x} ∈ nhds (0 : X)`. Use `(hg.isOpen_fiber (g x)).preimage (continuous_const.add continuous_id) |>.mem_nhds ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Take `⟨W, hW, hWW⟩` from `exists_nhds_zero_half h1`. Conclude with `⟨W, hW, fun a ha b hb => hWW a ha b hb⟩`. Use `choose W hW0 hWg using hW`. Set `V : X → Set X` to `fun x => W x ∩ Neg.neg ⁻¹' W x`. Establish `hV0 : ∀ x, V x ∈ nhds (0 : X)` using `fun x => Filter.inter_mem (hW0 x) (neg_mem_nhds_zero X (hW0 x))`.
+
+Establish `hcov : tsupport g ⊆ ⋃ x : X, (fun y => y - x) ⁻¹' interior (V x)`. Introduce `x _`. Use `Set.mem_iUnion.2 ⟨x, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, sub_self]`. Conclude with `mem_interior_iff_mem_nhds.2 (hV0 x)`.
+
+Take `⟨t, ht⟩` from `hc.isCompact.elim_finite_subcover (fun x => (fun y => y - x) ⁻¹' interior (V x)) (fun x => isOpen_interior.preimage (continuous_id.sub continuous_const)) hcov`. Use `⟨⋂ x ∈ t, V x, (Filter.biInter_finset_mem t).2 fun x _ => hV0 x, fun y u hu => ?_⟩` and prove the remaining obligations. Establish `hu' : ∀ x ∈ t, u ∈ W x ∧ -u ∈ W x` using `fun x hx => by`. Use `Set.mem_iInter₂.1 hu x hx` as an intermediate fact. Conclude with `⟨this.1, this.2⟩`.
+
+Establish `h0 : ∀ x, (0 : X) ∈ W x` using `fun x => mem_of_mem_nhds (hW0 x)`. Distinguish the cases in `hy : y ∈ tsupport g`. Take `⟨x, hx, hyx⟩` from `Set.mem_iUnion₂.1 (ht hy)`. Establish `hyx' : y - x ∈ W x` using `(interior_subset hyx : y - x ∈ V x).1`. Establish `e1 : g (y + u) = g x`.
+
+Use `hWg x (y - x) hyx' u (hu' x hx).1` as an intermediate fact. Rewrite `this` using `[show x + (y - x + u) = y + u by abel]`. Then use the resulting hypothesis. Establish `e2 : g y = g x`. Use `hWg x (y - x) hyx' 0 (h0 x)` as an intermediate fact. Rewrite `this` using `[show x + (y - x + 0) = y by abel]`. Then use the resulting hypothesis.
+
+Rewrite using `[e1, e2]`. Distinguish the cases in `hyu : y + u ∈ tsupport g`. Take `⟨x, hx, hyx⟩` from `Set.mem_iUnion₂.1 (ht hyu)`. Establish `hyx' : y + u - x ∈ W x` using `(interior_subset hyx : y + u - x ∈ V x).1`. Establish `e1 : g y = g x`.
+
+Use `hWg x (y + u - x) hyx' (-u) (hu' x hx).2` as an intermediate fact. Rewrite `this` using `[show x + (y + u - x + -u) = y by abel]`. Then use the resulting hypothesis. Establish `e2 : g (y + u) = g x`. Use `hWg x (y + u - x) hyx' 0 (h0 x)` as an intermediate fact. Rewrite `this` using `[show x + (y + u - x + 0) = y + u by abel]`. Then use the resulting hypothesis.
+
+Rewrite using `[e1, e2]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hyu]`.
+-/
 theorem exists_nhds_zero_add_eq {X : Type} [TopologicalSpace X] [AddCommGroup X] [IsTopologicalAddGroup X] {Y : Type}
     [Zero Y] {g : X → Y} (hg : IsLocallyConstant g) (hc : HasCompactSupport g) :
     ∃ N ∈ nhds (0 : X), ∀ y, ∀ u ∈ N, g (y + u) = g y := by
@@ -62,9 +81,19 @@ variable {F : Type} [Field F] [NumberField F]
 def ballR (r : 𝓞 F) (v : HeightOneSpectrum (𝓞 F)) : AddSubgroup (v.adicCompletion F) :=
   Valued.v.leAddSubgroup (v.intValuation r)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ballR {r : 𝓞 F} {v : HeightOneSpectrum (𝓞 F)} {x : v.adicCompletion F} :
     x ∈ ballR r v ↔ Valued.v x ≤ v.intValuation r := Iff.rfl
 
+/- English proof (translation)
+Use `set c : v.adicCompletion F := algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F r)`. Establish `hcv : Valued.v c = v.intValuation r` using `PI.UnipApproxD.IntegersDenseFiniteAdeles.val_R v r`. Establish `hc : c ≠ 0`. Introduce `h`. Rewrite `hcv` using `[h, map_zero]`.
+
+Conclude with `(v.intValuation_ne_zero r hr) hcv.symm`. Establish `e : (ballR r v : Set (v.adicCompletion F)) = (fun x => x / c) ⁻¹' (v.adicCompletionIntegers F : Set (v.adicCompletion F))`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `Valued.v x ≤ v.intValuation r ↔ Valued.v (x / c) ≤ 1`. Rewrite using `[map_div₀, ← hcv, div_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hc))]`.
+
+Rewrite using `[e]`. Conclude with `(Valued.isOpen_valuationSubring _).preimage (continuous_id.div_const c)`.
+-/
 theorem isOpen_ballR {r : 𝓞 F} (hr : r ≠ 0) (v : HeightOneSpectrum (𝓞 F)) :
     IsOpen (ballR r v : Set (v.adicCompletion F)) := by
   set c : v.adicCompletion F := algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F r)
@@ -81,11 +110,19 @@ theorem isOpen_ballR {r : 𝓞 F} (hr : r ≠ 0) (v : HeightOneSpectrum (𝓞 F)
   rw [e]
   exact (Valued.isOpen_valuationSubring _).preimage (continuous_id.div_const c)
 
+/- English proof (translation)
+Introduce `x hx` and use `by rw [SetLike.mem_coe, HeightOneSpectrum.mem_adicCompletionIntegers] exact (mem_ballR.1 hx).trans (v.intValuation_le_one r)`.
+-/
 theorem ballR_subset (r : 𝓞 F) (v : HeightOneSpectrum (𝓞 F)) :
     (ballR r v : Set (v.adicCompletion F)) ⊆ v.adicCompletionIntegers F := fun x hx => by
   rw [SetLike.mem_coe, HeightOneSpectrum.mem_adicCompletionIntegers]
   exact (mem_ballR.1 hx).trans (v.intValuation_le_one r)
 
+/- English proof (translation)
+Establish `h : (Ideal.span {r} : Ideal (𝓞 F)) ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hr`. Use `Filter.eventually_cofinite.2 ((Ideal.finite_factors h).subset fun v hv => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hv ⊢`.
+
+Rewrite using `[← HeightOneSpectrum.intValuation_lt_one_iff_dvd]`. Use `lt_of_le_of_ne (v.intValuation_le_one r) fun h1 => hv ?_` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, SetLike.mem_coe, mem_ballR, h1, HeightOneSpectrum.mem_adicCompletionIntegers]`.
+-/
 theorem eventually_ballR_eq {r : 𝓞 F} (hr : r ≠ 0) :
     ∀ᶠ v in Filter.cofinite, (ballR r v : Set (v.adicCompletion F)) = v.adicCompletionIntegers F := by
   have h : (Ideal.span {r} : Ideal (𝓞 F)) ≠ 0 := by
@@ -101,6 +138,15 @@ end GlobalTheory.SBBox
 
 namespace GlobalTheory.SBBox
 
+/- English proof (translation)
+Introduce `F _ _ κ _ g hg`. Take `⟨N, hN, hNg⟩` from `exists_nhds_zero_add_eq hg.1 hg.2`. Rewrite `hN` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hIt⟩` from `hN`. Establish `hr : ∀ i, ∃ r : 𝓞 F, r ≠ 0 ∧ ∀ y : FiniteAdeleRing (𝓞 F) F, (∀ v : HeightOneSpectrum (𝓞 F), Valued.v (y v) ≤ v.intValuation r) → y ∈ t i` using `fun i => GlobalTheory.OpenSubAdele.exists_small_of_mem_nhds (ht i)`.
+
+Use `choose r hr0 hrt using hr`. Use `set R : 𝓞 F := ∏ i, r i`. Establish `hR0 : R ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hr0 i`. Establish `hle : ∀ i (v : HeightOneSpectrum (𝓞 F)), v.intValuation R ≤ v.intValuation (r i)`. Introduce `i v`.
+
+Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem r (Finset.mem_univ i)`. Rewrite using `[show R = r i * c from hc, map_mul]`. Conclude with `mul_le_of_le_one_right' (v.intValuation_le_one c)`. Use `⟨ballR R, isOpen_ballR hR0, ballR_subset R, eventually_ballR_eq hR0, fun y u hu => ?_⟩` and prove the remaining obligations. Use `hNg y u (hIt fun i _ => hrt i (u i) fun v => ?_)` and prove the remaining obligations.
+
+Conclude with `(mem_ballR.1 (hu i v)).trans (hle i v)`.
+-/
 theorem exists_box_invariant : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ),
     g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F) →
     ∃ B : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), AddSubgroup (v.adicCompletion F),

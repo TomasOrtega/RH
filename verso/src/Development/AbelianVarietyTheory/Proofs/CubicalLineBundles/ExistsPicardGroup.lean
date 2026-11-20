@@ -16,8 +16,18 @@ open Classical in
 def cl {X : Scheme.{0}} (L : LB X) : Multiplicative (CechPic.Pic X) :=
   if h : L.IsLB then Multiplicative.ofAdd (CechPic.cls L h) else 1
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem cl_eq {X : Scheme.{0}} {L : LB X} (h : L.IsLB) : cl L = Multiplicative.ofAdd (CechPic.cls L h) := dif_pos h
 
+/- English proof (translation)
+Use `⟨fun X => Multiplicative (CechPic.Pic X), fun X => inferInstance, cl, fun f => AddMonoidHom.toMultiplicative (CechPic.pull f), fun X L M hL hM => ?_, fun X L hL => ?_, fun X c => CechPic.pull_id c.toAdd, fun X Y Z f g c => CechPic.pull_comp g f c.toAdd, fun X Y L hL I _ φ ε => ⟨L …` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[cl_eq hL, cl_eq hM]`. Conclude with `CechPic.cls_eq_iff hL hM`. Use `beta_reduce`.
+
+Rewrite using `[cl_eq hL]`. Conclude with `CechPic.cls_eq_zero_iff hL`. Use `beta_reduce`. Rewrite using `[cl_eq (LB.isLB_linComb hL φ ε), cl_eq hL, CechPic.cls_linComb hL, ofAdd_sum]`. Both sides reduce to the same expression.
+
+Use `beta_reduce`. Rewrite using `[cl_eq (LB.isLB_div hM hL), cl_eq hL, cl_eq hM, CechPic.cls_div hM hL]`. Both sides reduce to the same expression.
+-/
 theorem exists_picardGroup : ∃ (Pic : Scheme.{0} → Type 1) (_ : ∀ X, CommGroup (Pic X)) (cl : ∀ {X : Scheme.{0}}, LB X → Pic X) (pl : ∀ {X Y : Scheme.{0}}, (Y ⟶ X) → (Pic X →* Pic Y)),
   (∀ (X : Scheme.{0}) (L M : LB X), L.IsLB → M.IsLB → (cl L = cl M ↔ LBIso L M)) ∧ (∀ (X : Scheme.{0}) (L : LB X), L.IsLB → (cl L = 1 ↔ ∃ t : LB.Gen L, t.IsGen)) ∧
   (∀ (X : Scheme.{0}) (c : Pic X), pl (𝟙 X) c = c) ∧ (∀ (X Y Z : Scheme.{0}) (f : Y ⟶ X) (g : Z ⟶ Y) (c : Pic X), pl (g ≫ f) c = pl g (pl f c)) ∧

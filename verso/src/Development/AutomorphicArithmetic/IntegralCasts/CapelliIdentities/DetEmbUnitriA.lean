@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `R _ n`. Conclude with `Matrix.fromBlocks_one`.
+-/
 theorem UpperTheory.Reformulated.B.Qe13.aux1 :
     ∀ (R : Type) [inst : CommRing R] (n : ℕ),
       Matrix.fromBlocks (1 : Matrix (Fin n) (Fin n) R) (0 : Matrix (Fin n) (Fin (1 : ℕ)) R)
@@ -8,6 +11,9 @@ theorem UpperTheory.Reformulated.B.Qe13.aux1 :
   intro R _ n
   exact Matrix.fromBlocks_one
 
+/- English proof (translation)
+Introduce `R _ n A B`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.Reformulated.B.Qe13.aux2 :
     ∀ (R : Type) [inst : CommRing R] (n : ℕ) (A B : Matrix (Fin n) (Fin n) R),
       Matrix.fromBlocks (A * B) (0 : Matrix (Fin n) (Fin (1 : ℕ)) R) (0 : Matrix (Fin (1 : ℕ)) (Fin n) R)
@@ -40,6 +46,11 @@ noncomputable def UpperTheory.Reformulated.B.Qe13.embGL :
               Matrix (Fin n ⊕ Fin (1 : ℕ)) (Fin n ⊕ Fin (1 : ℕ)) R →* Matrix (Fin N) (Fin N) R).comp
           (UpperTheory.Reformulated.B.Qe13.blkHom R n))
 
+/- English proof (translation)
+Introduce `n g hlow hdiag`. Establish `htri : (↑g : Matrix (Fin n) (Fin n) ℂ).BlockTriangular id` using `fun i j hij => hlow i j hij`. Establish `hg : (↑g : Matrix (Fin n) (Fin n) ℂ).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular htri]`. Conclude with `Finset.prod_eq_one fun i _ => hdiag i`.
+
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Matrix.det (Matrix.reindex (finSumFinEquiv.trans (finCongr rfl)) (finSumFinEquiv.trans (finCongr rfl)) (Matrix.fromBlocks (↑g : Matrix (Fin n) (Fin n) ℂ) (0 : Matrix (Fin n) (Fin 1) ℂ) (0 : Matrix (Fin 1) (Fin n) ℂ) (1 : Matrix (Fin 1) (Fin 1) ℂ))) = 1`. Rewrite using `[Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁, hg, Matrix.det_one, mul_one]`.
+-/
 theorem UpperTheory.Reformulated.B.Qe13.det_emb_unitri_A :
     ∀ {n : ℕ} (g : GL (Fin n) ℂ),
       (∀ (i j : Fin n), j < i → (↑g : Matrix (Fin n) (Fin n) ℂ) i j = (0 : ℂ)) →

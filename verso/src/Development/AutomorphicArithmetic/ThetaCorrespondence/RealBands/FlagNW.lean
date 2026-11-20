@@ -5,6 +5,9 @@ open MeasureTheory Filter Matrix Formalism.REAL Formalism.MainNotions.S GlobalTh
 open GlobalTheory.Dec (IsHaarSub IsIsoC NW IsSqIntIrr)
 open scoped Topology InnerProductSpace
 
+/- English proof (translation)
+Establish `e : Formalism.QuantumDeterminants.herm (Jm ε) x y = star (star x ⬝ᵥ (Jm ε *ᵥ y))`. Simplify using `only [Formalism.QuantumDeterminants.herm, Jm, dotProduct, Matrix.mulVec_diagonal, star_sum, Pi.star_apply, star_mul', star_star]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases ε i <;> simp <;> ring`. Rewrite using `[e, star_eq_zero]`.
+-/
 private theorem herm_eq_zero_iff {n : ℕ} (ε : Fin n → Bool) (x y : Fin n → ℂ) :
     Formalism.QuantumDeterminants.herm (Jm ε) x y = 0 ↔ star x ⬝ᵥ (Jm ε *ᵥ y) = 0 := by
   have e : Formalism.QuantumDeterminants.herm (Jm ε) x y = star (star x ⬝ᵥ (Jm ε *ᵥ y)) := by
@@ -13,11 +16,27 @@ private theorem herm_eq_zero_iff {n : ℕ} (ε : Fin n → Bool) (x y : Fin n �
     cases ε i <;> simp <;> ring
   rw [e, star_eq_zero]
 
+/- English proof (translation)
+Simplify using `only [Formalism.QuantumDeterminants.herm]`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`.
+-/
 private theorem herm_keep {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hg : gᴴ * H * g = H) (x y : Fin n → ℂ) :
     Formalism.QuantumDeterminants.herm H (g *ᵥ x) (g *ᵥ y) = Formalism.QuantumDeterminants.herm H x y := by
   simp only [Formalism.QuantumDeterminants.herm]
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]
 
+/- English proof (translation)
+Introduce `n ε W hW`. Establish `hl : (![⊥, W] : Fin (1 + 1) → Submodule ℂ (Fin n → ℂ)) (Fin.last 1) = W` using `rfl`. Use `⟨⟨rfl, ?_, ?_, ?_⟩, ?_, ?_, GlobalTheory.Dec.nwSub ε W, rfl⟩` and prove the remaining obligations. Apply the tactic sequence `intro i j hij fin_cases i <;> fin_cases j <;> simp_all`. Introduce `i fin_cases i show Module.finrank ℂ W = Module.finrank ℂ (⊥ : Submodule ℂ (Fin n → ℂ)) + Module.finrank ℂ W`.
+
+Rewrite using `[finrank_bot, zero_add]`. Rewrite using `[hl]`. Introduce `x hx y hy`. Conclude with `(herm_eq_zero_iff ε x y).1 (hW.2 x hx y hy)`. Conclude with `Submodule.one_le_finrank_iff.2 hW.1`.
+
+Use extensionality with `g`. Establish `e : ∀ y, (umat g - 1) *ᵥ y = uMat g *ᵥ y - y` using `fun y => by`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Simplify using `only [flagN, NW, Set.mem_setOf_eq, hl, e]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Establish `h1' : ∀ x ∈ W, uMat g *ᵥ x - x = 0` using `fun x hx => (Submodule.mem_bot ℂ).1 (h1 0 x hx)`. Use `⟨h1', fun y hy => h2 y fun x hx => (herm_eq_zero_iff ε x y).1 (hy x hx), fun y x hx => ?_⟩` and prove the remaining obligations. Establish `hg : (uMat g)ᴴ * Jm ε * uMat g = Jm ε` using `g.2`. Establish `k` using `herm_keep hg x y`.
+
+Rewrite `k` using `[sub_eq_zero.1 (h1' x hx)]`. Simplify using `only [Formalism.QuantumDeterminants.herm, star_sub, sub_dotProduct] at k ⊢`. Rewrite using `[k, sub_self]`. Introduce and unpack `⟨h1, h2, -⟩`. Use `⟨fun i y hy => ?_, fun y hy => h2 y fun x hx => (herm_eq_zero_iff ε x y).2 (hy x hx)⟩` and prove the remaining obligations.
+
+Use `fin_cases i`. Conclude with `(Submodule.mem_bot ℂ).2 (h1 y hy)`.
+-/
 theorem UpperTheory.Lit.Cusp.flagN_eq_NW :
     ∀ (n : ℕ) (ε : Fin n → Bool) (W : Submodule ℂ (Fin n → ℂ)), IsIsoC ε W →
       IsIsoFlag ε ![Module.finrank ℂ W] ![⊥, W] ∧ 1 ≤ Module.finrank ℂ W ∧ flagN ε ![⊥, W] = NW ε W ∧

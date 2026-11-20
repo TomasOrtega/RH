@@ -10,6 +10,9 @@ namespace PI.UnitaryGroupMassFormula.CntFormula.R6
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [gram, Matrix.of_apply, hx, Matrix.mul_apply, Matrix.conjTranspose_apply, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem gram_comb {K V ι κ : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [Fintype ι]
     (h : V →ₗ⋆[K] V →ₗ[K] K) (v : ι → V) (A : Matrix ι κ K) (x : κ → V)
     (hx : ∀ j, x j = ∑ i, A i j • v i) : gram h x = A.conjTranspose * gram h v * A := by
@@ -19,6 +22,13 @@ theorem gram_comb {K V ι κ : Type} [Field K] [StarRing K] [AddCommGroup V] [Mo
     starRingEnd_apply, Finset.sum_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `hv : Matrix.mulVec (gram h x) c = 0`. Use function extensionality and compare the values at `j`. Establish `hj` using `congrArg (h (x j)) hc`.
+
+Simplify using `only [map_sum, map_smul, smul_eq_mul, map_zero] at hj`. Simplify using `only [Matrix.mulVec, dotProduct, gram, Matrix.of_apply, Pi.zero_apply]`. Rewrite using `[← hj]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `h0` using `Matrix.eq_zero_of_mulVec_eq_zero hd hv`.
+
+Introduce `i`. Conclude with `congrFun h0 i`.
+-/
 theorem linearIndependent_of_det_gram {K V ι : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     [Fintype ι] [DecidableEq ι] (h : V →ₗ⋆[K] V →ₗ[K] K) (x : ι → V) (hd : (gram h x).det ≠ 0) :
     LinearIndependent K x := by
@@ -37,6 +47,11 @@ theorem linearIndependent_of_det_gram {K V ι : Type} [Field K] [StarRing K] [Ad
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Establish `hs : ∀ x y, (VS D).hT y x = star ((VS D).hT x y)` using `fun x y => ((VS D).herm.eq x y).symm`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨i, rfl⟩ | rfl <;>`. Break down `Fin.eq_castSucc_or_eq_last b with ⟨j, rfl⟩ | rfl` into its components or cases. Simplify using `[FlagG.fvec, F.e_iso, Fin.castSucc_ne_last]`. Simplify using `[FlagG.fvec, F.z_orth, Fin.castSucc_ne_last]`.
+
+Simplify using `[FlagG.fvec, Fin.castSucc_ne_last]`. Rewrite using `[hs (F.e j) F.z, F.z_orth j, star_zero]`. Simplify using `[FlagG.fvec, F.z_norm]`.
+-/
 theorem flag_gram {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (a b : Fin (D.R.rS + 1)) :
     (VS D).hT (F.fvec a) (F.fvec b) = if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then -T else 0 := by
   have hs : ∀ x y, (VS D).hT y x = star ((VS D).hT x y) := fun x y => ((VS D).herm.eq x y).symm
@@ -48,6 +63,11 @@ theorem flag_gram {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (a b : Fin (D.R.rS 
     rw [hs (F.e j) F.z, F.z_orth j, star_zero]
   · simp [FlagG.fvec, F.z_norm]
 
+/- English proof (translation)
+Establish `hs : ∀ x y, (VS D).hT y x = star ((VS D).hT x y)` using `fun x y => ((VS D).herm.eq x y).symm`. Substitute `hZ` using the available equality. Use extensionality with `(a | a) (b | b)`. Simplify using `[gram, Ga, flag_gram]`. Simplify using `[gram, Ga, ZhatL, Zhat, brS]`.
+
+Simplify using `[gram, Ga, ZhatL, Zhat, brS, Matrix.conjTranspose_apply, hs (F'.fl.fvec a)]`. Simplify using `[gram, Ga, flag_gram]`.
+-/
 theorem gram_pair {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (Z : MatZ D) (hZ : ZhatL (lf D F0) F' = Z) :
     gram (VS D).hT (Sum.elim F0.fvec F'.fl.fvec) = Ga T T' Z := by
@@ -64,6 +84,9 @@ def flagDifferenceMatrix (D : Formalism.BasicNotions.D7) :
   Matrix.fromBlocks 1 (-(((gS D : D.host.E))⁻¹ • (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E))) 0
     (((gS D : D.host.E))⁻¹ • (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E))
 
+/- English proof (translation)
+Introduce `j`. Break down `j with b | b` into its components or cases. Simplify using `[flagDifferenceVectors, flagDifferenceMatrix, Fintype.sum_sum_type, Matrix.one_apply]`. Simplify using `[flagDifferenceVectors, flagDifferenceMatrix, Fintype.sum_sum_type, Matrix.one_apply, sub_eq_add_neg, add_comm]`.
+-/
 theorem flagDifference_comb {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') :
     ∀ j, flagDifferenceVectors D F0 F' j = ∑ i, flagDifferenceMatrix D i j • Sum.elim F0.fvec F'.fl.fvec i := by
   intro j
@@ -71,13 +94,22 @@ theorem flagDifference_comb {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' :
   · simp [flagDifferenceVectors, flagDifferenceMatrix, Fintype.sum_sum_type, Matrix.one_apply]
   · simp [flagDifferenceVectors, flagDifferenceMatrix, Fintype.sum_sum_type, Matrix.one_apply, sub_eq_add_neg, add_comm]
 
+/- English proof (translation)
+Rewrite using `[flagDifferenceMatrix, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`.
+-/
 theorem det_flagDifference_matrix (D : Formalism.BasicNotions.D7) : (flagDifferenceMatrix D).det = ((gS D : D.host.E))⁻¹ ^ (D.R.rS + 1) := by
   rw [flagDifferenceMatrix, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, Matrix.det_smul, Matrix.det_one,
     mul_one, Fintype.card_fin]
 
+/- English proof (translation)
+Rewrite using `[star_inv₀, star_natCast]`.
+-/
 theorem star_gS (D : Formalism.BasicNotions.D7) : star ((gS D : D.host.E))⁻¹ = ((gS D : D.host.E))⁻¹ := by
   rw [star_inv₀, star_natCast]
 
+/- English proof (translation)
+Rewrite using `[gram_comb (VS D).hT _ (flagDifferenceMatrix D) _ (flagDifference_comb F0 F'), gram_pair F0 F' Z hZ, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, det_flagDifference_matrix, star_pow, star_gS]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_gram_flagDifference {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (Z : MatZ D) (hZ : ZhatL (lf D F0) F' = Z) :
     (gram (VS D).hT (flagDifferenceVectors D F0 F')).det = ((gS D : D.host.E))⁻¹ ^ (2 * (D.R.rS + 1)) * (Ga T T' Z).det := by
@@ -85,6 +117,15 @@ theorem det_gram_flagDifference {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (
     Matrix.det_mul, Matrix.det_conjTranspose, det_flagDifference_matrix, star_pow, star_gS]
   ring
 
+/- English proof (translation)
+Establish `hg : ((gS D : D.host.E)) ≠ 0`. Establish `h0` using `(D.host.g_prime 0).ne_zero`. Establish `h1` using `(D.host.g_prime 1).ne_zero`. Rewrite using `[gS]`. Conclude with `mul_ne_zero h0 h1` after adjusting the coercions.
+
+Unfold `UPair`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Break down `j with b | b` into its components or cases.
+
+Conclude with `Submodule.subset_span (Or.inl ⟨b, rfl⟩)`. Simplify using `only [flagDifferenceVectors, Sum.elim_inr]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (Submodule.subset_span (Or.inr ⟨b, rfl⟩)) (Submodule.subset_span (Or.inl ⟨b, rfl⟩)))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ (⟨b, rfl⟩ | ⟨b, rfl⟩)`.
+
+Conclude with `Submodule.subset_span ⟨Sum.inl b, rfl⟩`. Establish `h1 : F'.fl.fvec b = (gS D : D.host.E) • flagDifferenceVectors D F0 F' (Sum.inr b) + flagDifferenceVectors D F0 F' (Sum.inl b)`. Simplify using `only [flagDifferenceVectors, Sum.elim_inr, Sum.elim_inl, smul_smul, mul_inv_cancel₀ hg, one_smul, sub_add_cancel]`. Rewrite using `[h1]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)) (Submodule.subset_span ⟨_, rfl⟩)`.
+-/
 theorem span_flagDifferenceBasis {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') :
     Submodule.span D.host.E (Set.range (flagDifferenceVectors D F0 F')) = UPair D F0 F' := by
   have hg : ((gS D : D.host.E)) ≠ 0 := by

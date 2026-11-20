@@ -8,6 +8,23 @@ namespace ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hne : a ≠ b` using `hab.ne`. Establish `hΛ : lowK ε (lam - root a b) = lowK ε lam - root a b`. Unfold `lowK`. Normalize the expressions using the abelian group laws. Establish `hW' : IsKIrrHW ε E (lowK ε (lam - root a b)) W` using `by rw [hΛ]; exact hW`.
+
+Establish `hmono'` using `ssh_strictAnti hmono hh h2 hE a b hW'`. Take `⟨z, hzW, -, hz0, hzK⟩` from `lowFock_exists ε hE hmono' hW'`. Establish `hzK' : IsKHWVec ε (diagE ε (eT E) cpT cmT) ((lam - root a b - rhoC ε) + rhoHol ε) z` using `hzK`. Establish `hcas : casimir (eT E) z = ((casVal lam : ℝ) : ℂ) • z`. Take `⟨z0, hz0eq⟩` from `LinearMap.mem_range.mp hzW`.
+
+Rewrite using `[ssh_casimir_eT, ← hz0eq]`. Use `clear hz0eq`. Proceed by induction on `z0 using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m f => simp [TensorProduct.map_tmul, hc _ m.2, TensorProduct.smul_tmul']`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`. Establish `hD2` using `two_D_sq_khw (eT_isGlRep hE) cpT_cmT_isCAR (eT_commutesCAR E) hzK' hcas`. Establish `hval : nsq (lam - root a b - rhoC ε + rhoC ε) - nsq (rho n) - casVal lam = 2 - 2 * (lam a - lam b)`. Rewrite using `[sub_add_cancel, ssh_nsq_sub_root lam hne]`. Unfold `casVal`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hgap : h ≤ lam a - lam b`. Use `hh a b hε` as an intermediate fact. Rewrite `this` using `[abs_of_pos (sub_pos.mpr (hmono hab))]`. Then use the resulting hypothesis. Use `set D := dOp ε (eT E) cpT + dOp' ε (eT E) cmT with hDdef`.
+
+Establish `key : tform z ((2 : ℂ) • (D * D) z) = ((2 - 2 * (lam a - lam b) : ℝ) : ℂ) * tform z z`. Rewrite using `[hD2, tform_smul_right, ← hval]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[tform_smul_right, Module.End.mul_apply, ← tform_D hU]`.
+
+Establish `hre` using `congrArg Complex.re key`. Rewrite `hre` using `[Complex.re_ofReal_mul]`. Simplify using `only [Complex.mul_re, Complex.re_ofNat, Complex.im_ofNat, zero_mul, sub_zero] at hre`. Establish `p1` using `tform_self_re_nonneg (D z)`. Establish `p2` using `tform_self_re_pos hz0`.
+
+Establish `hneg : (2 - 2 * (lam a - lam b)) < 0` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem sch_sharp {ε : Fin n → Bool} {lam : Fin n → ℝ} (hmono : StrictAnti lam) {h : ℝ}
     (hh : GapAtLeast ε lam h) (h2 : 2 < h)
     {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {E : Fin n → Fin n → Module.End ℂ M}

@@ -10,6 +10,25 @@ noncomputable section
 
 namespace GlobalTheory.UPel.HT.LevPull
 
+/- English proof (translation)
+Introduce `p _ D N H AH _ _ actH Y u hadd hlin htor`. Set `AE : Over Y.left` to `(Over.pullback Y.hom).obj AH`. Use `letI iG : GrpObj AE := Functor.grpObjObj`. Use `letI iC : IsCommMonObj AE := Functor.isCommMonObj_obj`. Set `φE : AE.left ⟶ AH.left` to `pullback.fst AH.hom Y.hom`.
+
+Establish `hg : IsGrpPullback AE AH Y.hom φE` using `isGrpPullback_pullback AH Y.hom`. Establish `inj : ∀ {T : Over Y.left} {x y : T ⟶ AE}, x.left ≫ φE = y.left ≫ φE → x = y` using `fun {T x y} h => Over.OverMorphism.ext (hg.1.hom_ext h (by rw [Over.w, Over.w]))`. Establish `pm : ∀ {T : Over Y.left} (x y : T ⟶ AE), (x * y).left ≫ φE = (pushPt hg.1.w x * pushPt hg.1.w y).left` using `fun x y => (hg.2 _ x y _ _ rfl rfl).symm`. Set `act' : D.O → (AE ⟶ AE)` to `fun a => Over.homMk (hg.1.lift (φE ≫ (actH.act a).left) AE.hom (by rw [Category.assoc, Over.w, hg.1.w])) (hg.1.lift_snd _ _ _)`. Establish `ha : ∀ a, (act' a).left ≫ φE = φE ≫ (actH.act a).left` using `fun a => hg.1.lift_fst _ _ _`.
+
+Establish `pa : ∀ {T : Over Y.left} (x : T ⟶ AE) a, pushPt hg.1.w (x ≫ act' a) = pushPt hg.1.w x ≫ actH.act a` using `fun x a => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, ha, Category.assoc])`. Establish `injP : ∀ {T : Over Y.left} {x y : T ⟶ AE}, pushPt hg.1.w x = pushPt hg.1.w y → x = y` using `fun h => inj (congrArg (fun q => q.left) h)`. Establish `pm' : ∀ {T : Over Y.left} (x y : T ⟶ AE), pushPt hg.1.w (x * y) = pushPt hg.1.w x * pushPt hg.1.w y` using `fun x y => map_mul (pushHom hg _) x y`. Set `actE : OActN D.O AE` to `{ act := act' hom := fun a => isMonHom_of_mul _ fun T x y => injP (by`.
+
+Use `actH.hom a` as an intermediate fact. Rewrite using `[pa, pm', pm', pa, pa, MonObj.mul_comp])`. Use `one := injP (by rw [← Category.id_comp (act' 1), pa, actH.one, Category.comp_id])`. Use `mul := fun a b => injP (by`. Rewrite using `[← Category.id_comp (act' (a * b)), pa, pa, actH.mul, ← Category.id_comp (act' b), pa, Category.assoc])`.
+
+Use `add := fun a b => injP (by`. Use `Eq.trans ?_ (pm' (act' a) (act' b)).symm` and prove the remaining obligations. Rewrite using `[← Category.id_comp (act' (a + b)), ← Category.id_comp (act' a), ← Category.id_comp (act' b), pa, pa, pa, actH.add]`. Conclude with `MonObj.comp_mul _ _ _) }`. Set `ηE : D.La → (𝟙_ (Over Y.left) ⟶ AE)` to `fun y => Over.homMk (hg.1.lift (u y).left (𝟙_ (Over Y.left)).hom (by rw [Over.w (u y)]; simp)) (hg.1.lift_snd _ _ _)`.
+
+Establish `hη : ∀ y, (ηE y).left ≫ φE = (u y).left` using `fun y => hg.1.lift_fst _ _ _`. Establish `hT : (𝟙_ (Over Y.left)).hom ≫ Y.hom = Y.hom` using `by simp`. Establish `one_congr : ∀ {a b : Y.left ⟶ H}, a = b → (1 : Over.mk a ⟶ AH).left = (1 : Over.mk b ⟶ AH).left`. Introduce `a b h`. Substitute `h` using the available equality.
+
+Both sides reduce to the same expression. Use `⟨AE, inferInstance, inferInstance, φE, actE, ηE, hg, ha, ⟨fun x y => inj ?_, fun c x => inj ?_, fun x => inj ?_⟩, hη⟩` and prove the remaining obligations. Rewrite using `[hη, pm, hadd]`. Conclude with `(mul_left_congr hT (pushPt hg.1.w (ηE x)) (pushPt hg.1.w (ηE y)) (u x : Over.mk Y.hom ⟶ AH) (u y) (hη x) (hη y)).symm`. Use `show (ηE (c • x)).left ≫ φE = ((ηE x).left ≫ (act' c).left) ≫ φE`.
+
+Rewrite using `[hη, hlin, Category.assoc, ha, ← Category.assoc, hη]`. Both sides reduce to the same expression. Rewrite using `[hη, htor]`. Establish `e` using `congrArg (fun q => q.left) (map_one (pushHom hg (𝟙_ (Over Y.left))))`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations.
+
+Conclude with `(one_congr hT).symm`.
+-/
 theorem exists_pull_level : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (N : ℕ) (H : Scheme.{0}) (AH : Over H) [GrpObj AH] [IsCommMonObj AH] (actH : OActN D.O AH) (Y : Over H) (u : D.La → (Y ⟶ AH)), (∀ x y, u (x + y) = u x * u y) → (∀ (c : D.O) x, u (c • x) = u x ≫ actH.act c) → (∀ x, u (N • x) = 1) → ∃ (AE : Over Y.left) (_ : GrpObj AE) (_ : IsCommMonObj AE) (φE : AE.left ⟶ AH.left) (actE : OActN D.O AE) (ηE : D.La → (𝟙_ (Over Y.left) ⟶ AE)), IsGrpPullback AE AH Y.hom φE ∧ (∀ a : D.O, (actE.act a).left ≫ φE = φE ≫ (actH.act a).left) ∧ EtaOK D N actE ηE ∧ ∀ y, (ηE y).left ≫ φE = (u y).left := by
   intro p _ D N H AH _ _ actH Y u hadd hlin htor
   let AE : Over Y.left := (Over.pullback Y.hom).obj AH

@@ -6,5 +6,8 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportion
 open AlgebraicGeometry CategoryTheory NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Conj.m2Model_of_m2Curve | exact GlobalTheory.CompanionTheory.Ar.Conj.m2Model_of_m2Curve | (intros; apply GlobalTheory.CompanionTheory.Ar.Conj.m2Model_of_m2Curve <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rootLineDeRhamModel_of_curveSemiAbelian : CurveSemiAbelianConjecture → RootLineDeRhamModel := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Conj.m2Model_of_m2Curve | exact GlobalTheory.CompanionTheory.Ar.Conj.m2Model_of_m2Curve | (intros; apply GlobalTheory.CompanionTheory.Ar.Conj.m2Model_of_m2Curve <;> assumption)

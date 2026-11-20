@@ -12,5 +12,8 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.lc_pri | exact GlobalTheory.CompanionTheory.FexTheta.lc_pri | (intros; apply GlobalTheory.CompanionTheory.FexTheta.lc_pri <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_component_rational_idele : ∀ (v : Pl) (α : ℚˣ), ((Ad3.R.lc v (pri α) : (Qv v)ˣ) : Qv v) = (((α : ℚˣ) : ℚ) : Qv v) := by
   first | exact @GlobalTheory.CompanionTheory.FexTheta.lc_pri | exact GlobalTheory.CompanionTheory.FexTheta.lc_pri | (intros; apply GlobalTheory.CompanionTheory.FexTheta.lc_pri <;> assumption)

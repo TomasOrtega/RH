@@ -30,12 +30,24 @@ private def eG {H : Type} [Group H] (E : H ≃* ↥(finU L 2 ⊓ SUA L)) : H ≃
 
 private def psi {H : Type} [Group H] (E : H ≃* ↥(finU L 2 ⊓ SUA L)) {V : Type} (ψ : H → V) (s : ↥((SUA L).subgroupOf (finU L 2))) : V := ψ ((eG E).symm s)
 
+/- English proof (translation)
+Use `show ψ ((eG E).symm (eG E g)) = _`. Rewrite using `[MulEquiv.symm_apply_apply]`.
+-/
 private theorem psi_e {H : Type} [Group H] (E : H ≃* ↥(finU L 2 ⊓ SUA L)) {V : Type} (ψ : H → V) (g : H) : psi E ψ (eG E g) = ψ g := by
   show ψ ((eG E).symm (eG E g)) = _
   rw [MulEquiv.symm_apply_apply]
 
 private instance : (finU L 2).Normal := by unfold finU; infer_instance
 
+/- English proof (translation)
+Establish `hroot : ∀ γ : ratU L 2, ∀ u ∈ U₁.subgroupOf (finU L 2), (p.comp (ratU L 2).subtype) γ * u ∈ (SUA L).subgroupOf (finU L 2) → (p.comp (ratU L 2).subtype) γ ∈ (SUA L).subgroupOf (finU L 2)`. Introduce `γ u hu h`. Take `⟨k, hk, hγ⟩` from `hp2 γ.1`. Establish `hr : (p γ.1 : UA L 2) * k ∈ ratU L 2` using `by rw [← hγ]; exact γ.2`. Conclude with `Subgroup.mem_subgroupOf.2 (detRoot L m hm U hU _ (p γ.1).2 k hk hr u (hU₁ (Subgroup.mem_subgroupOf.1 hu)) (Subgroup.mem_subgroupOf.1 h)).1`.
+
+Take `⟨Φ, hΦ1, hΦ2, hΦ3, hΦ4⟩` from `extF (ratU L 2) (finU L 2) (Wt.VD (InfinitePlace L) n) (p.comp (ratU L 2).subtype) ((repE n (0 : InfinitePlace L → ℤ)).comp ((infC L 2).comp (ratU L 2).subtype)) ((SUA L).subgroupOf (finU L 2)) (U₁.subgroupOf (finU L 2)) comm_mem hroot (psi E ψ) hleft hright`. Take `⟨φ, hAF, hφ2, hφ3⟩` from `finToAF L 2 (Wt.VD (InfinitePlace L) n) (repE n (0 : InfinitePlace L → ℤ)) U₁ hfin Φ (by`. Introduce `f k hk hr g`. Establish `h₁` using `hΦ2 ⟨_, hr⟩ g`. Establish `e₁ : (p.comp (ratU L 2).subtype) ⟨_, hr⟩ = f` using `hp1 f k hk`.
+
+Rewrite `h₁` using `[e₁]`. Rewrite using `[h₁]`. Use `show repE n (0 : InfinitePlace L → ℤ) (infC L 2 ((f : UA L 2) * k)) _ = _`. Rewrite using `[map_mul, infC_fin f.2, one_mul])`. Use the proof step `(fun u hu g => hΦ3 u (Subgroup.mem_subgroupOf.2 hu) g)`.
+
+Use `⟨φ, hAF, fun g => ?_, fun a c h₁ h₂ h₃ h₄ => hφ3 a c h₁ (hΦ4 a c h₂ h₃ h₄)⟩` and prove the remaining obligations. Conclude with `(hφ2 (eG E g : finU L 2)).trans ((hΦ1 (eG E g)).trans (psi_e E ψ g))`.
+-/
 private theorem out_gen {H : Type} [Group H] (E : H ≃* ↥(finU L 2 ⊓ SUA L)) (p : UA L 2 →* finU L 2)
     (hp1 : ∀ f : finU L 2, ∀ k ∈ infU L 2, p ((f : UA L 2) * k) = f)
     (hp2 : ∀ x : UA L 2, ∃ k ∈ infU L 2, x = (p x : UA L 2) * k)
@@ -74,6 +86,17 @@ private theorem out_gen {H : Type} [Group H] (E : H ≃* ↥(finU L 2 ⊓ SUA L)
   refine ⟨φ, hAF, fun g => ?_, fun a c h₁ h₂ h₃ h₄ => hφ3 a c h₁ (hΦ4 a c h₂ h₃ h₄)⟩
   exact (hφ2 (eG E g : finU L 2)).trans ((hΦ1 (eG E g)).trans (psi_e E ψ g))
 
+/- English proof (translation)
+Establish `hUfin : lev U S₁ iw ≤ finU L 2` using `fun x hx => (hFull.1 hx.1).1`. Establish `hFw : Full U {w}` using `⟨hFull.1, fun w' h' => hFull.2 w' (by rw [Finset.mem_singleton.1 h']; exact hw)⟩`. Establish `hdc` using `dcAt L 2 U S₁ iw hpl₁ w hw hFw d₀`. Establish `hfo` using `hdc.1`. Use `(hdc.2 _ φ hφi _).2 ?_` and prove the remaining obligations.
+
+Rewrite `hfo`, the goal using `[← hsec]`. Establish `hz : ∀ u ∈ ((lev U S₁ iw).subgroupOf (finU L 2)), ∃ z ∈ ((lev U S₁ iw).subgroupOf (finU L 2)), z * (eG E g : finU L 2) = (eG E g : finU L 2) * z ∧ u * z⁻¹ ∈ ((SUA L).subgroupOf (finU L 2)) ∧ z⁻¹ * u ∈ ((SUA L).subgroupOf (finU L 2))`. Introduce `u hu`. Take `⟨c₀, hc₀, h₁, h₂, h₃⟩` from `torUA L U S₁ iw hpl₁ hFull u (Subgroup.mem_subgroupOf.1 hu)`. Establish `hcm` using `h₃ (E g : UA L 2) d ⟨(E g).2.1, fun u' hu' => hoff u' (hu' w hw)⟩ hcl`.
+
+Conclude with `⟨⟨c₀, hUfin hc₀⟩, Subgroup.mem_subgroupOf.2 hc₀, Subtype.ext hcm, Subgroup.mem_subgroupOf.2 h₁.2, Subgroup.mem_subgroupOf.2 h₂.2⟩`. Establish `hfo' : AlgebraTools.FinOrb ((lev U S₁ iw).subgroupOf (finU L 2)) ((lev U S₁ iw).subgroupOf (finU L 2)) (eG E g : finU L 2)` using `(dcSub (UA L 2) ℂ (finU L 2) (lev U S₁ iw) (eG E g : finU L 2) hfo (fun u hu => ⟨1, one_mem _, by rw [mul_one, one_mul], by rw [inv_one, mul_one]; exact hUfin hu, by rw [inv_one, one_mul]; exact hUfin hu⟩) inferInstance).1`. Establish `hfo''` using `(dcSub (finU L 2) ℂ ((SUA L).subgroupOf (finU L 2)) ((lev U S₁ iw).subgroupOf (finU L 2)) (eG E g) hfo' hz inferInstance).1`. Use `hφ (eG E g) _ hfo hfo' hz ?_` and prove the remaining obligations. Establish `hmp` using `(dcMap H ↥((SUA L).subgroupOf (finU L 2)) (Wt.VD (InfinitePlace L) n) (eG E).toMonoidHom (eG E).bijective (((lev U S₁ iw).subgroupOf (finU L 2)).subgroupOf ((SUA L).subgroupOf (finU L 2))) g g).2.2.2 hfo'' (psi E ψ) (fun u hu g' => hright u (Subgroup.mem_subgroupOf.1 hu) g')`.
+
+Establish `hψE : psi E ψ ∘ (eG E).toMonoidHom = ψ` using `funext fun g' => psi_e E ψ g'`. Establish `hcmp : (((lev U S₁ iw).subgroupOf (finU L 2)).subgroupOf ((SUA L).subgroupOf (finU L 2))).comap (eG E).toMonoidHom = ((lev U S₁ iw).subgroupOf (finU L 2 ⊓ SUA L)).comap E.toMonoidHom` using `Subgroup.ext fun _ => Iff.rfl`. Rewrite `hmp` using `[hψE, hcmp, hE]`. Use function extensionality and compare the values at `s`. Take `⟨g', rfl⟩` from `(eG E).surjective s`.
+
+Establish `h₅` using `congrFun hmp g'`. Use `h₅.symm.trans ?_` and prove the remaining obligations. Use `show c • ψ g' = c • psi E ψ (eG E g')`. Rewrite using `[psi_e]`.
+-/
 private theorem eig_gen {H : Type} [Group H] (E : H ≃* ↥(finU L 2 ⊓ SUA L)) {S₁ : Finset (Plc L)} (hpl₁ : Places (S₁ : Set (Plc L)))
     {U : Subgroup (UA L 2)} (hFull : Full U S₁) {n : ℕ} (ψ : H → Wt.VD (InfinitePlace L) n)
     (hright : ∀ u : ↥((SUA L).subgroupOf (finU L 2)), (u : finU L 2) ∈ ((lev U S₁ iw).subgroupOf (finU L 2)) → ∀ g, psi E ψ (g * u) = psi E ψ g)
@@ -118,6 +141,15 @@ private theorem eig_gen {H : Type} [Group H] (E : H ≃* ↥(finU L 2 ⊓ SUA L)
   show c • ψ g' = c • psi E ψ (eG E g')
   rw [psi_e]
 
+/- English proof (translation)
+Establish `hUle : lev U S₁ iw ≤ U` using `fun x hx => hx.1`. Establish `hUfin : lev U S₁ iw ≤ finU L 2` using `fun x hx => (hFull.1 hx.1).1`. Establish `hright : ∀ u : ↥((SUA L).subgroupOf (finU L 2)), (u : finU L 2) ∈ ((lev U S₁ iw).subgroupOf (finU L 2)) → ∀ g, psi E ψ (g * u) = psi E ψ g`. Introduce `u hu g`. Use `show ψ ((eG E).symm (g * u)) = ψ ((eG E).symm g)`.
+
+Rewrite using `[map_mul]`. Use `hlv _ ?_ _` and prove the remaining obligations. Use `show (((eG E ((eG E).symm u) : ↥((SUA L).subgroupOf (finU L 2))) : finU L 2) : UA L 2) ∈ lev U S₁ iw`. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `Subgroup.mem_subgroupOf.1 hu`.
+
+Take `⟨φ, hAF, hval, hφ⟩` from `out_gen E p hp1 hp2 hm hU (lev U S₁ iw) hUle hUfin ψ hleft hright`. Establish `hne : φ ≠ 0`. Take `⟨g, hg⟩` from `Function.ne_iff.1 hψ`. Introduce `h`. Conclude with `hg (by rw [← hval, h]; rfl)`.
+
+Use `⟨φ, hne, hAF, fun w hw t ht => ?_⟩` and prove the remaining obligations. Take `⟨g, d, h1, h2, h3, h4⟩` from `hel w hw t ht`. Conclude with `eig_gen E hpl₁ hFull ψ hright φ hAF.level hφ hw _ _ g h1 h2 d h3 h4`.
+-/
 private theorem all_gen {H : Type} [Group H] (E : H ≃* ↥(finU L 2 ⊓ SUA L)) {S₁ : Finset (Plc L)} (hpl₁ : Places (S₁ : Set (Plc L)))
     {m : ℕ} (hm : 3 ≤ m) {U : Subgroup (UA L 2)} (hU : IsCong m U) (hFull : Full U S₁) {n : ℕ} (ψ : H → Wt.VD (InfinitePlace L) n) (hψ : ψ ≠ 0)
     (p : UA L 2 →* finU L 2) (hp1 : ∀ f : finU L 2, ∀ k ∈ infU L 2, p ((f : UA L 2) * k) = f)
@@ -156,6 +188,13 @@ attribute [local irreducible] DX KD RP SA
 
 open UpperTheory.V.Z.Sym.So.OS in
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `L _ _ _ B hB T S VL A hA hF S₁ hS₁ hiw m U hm hU hFull n e a b hab ι hι y hy hlev ψ hψ hSF`. Take `⟨p, hp1, hp2⟩` from `exFin (L := L) 2`. Establish `hpl₁ : Places (S₁ : Set (Plc L))` using `⟨fun w' hw' => hF.pl.split w' (hS₁ hw'), hF.pl.inj.mono (by exact_mod_cast hS₁)⟩`. Establish `h1` using `left_eq B hB p hp1 hp2 hm hU ι hι (e := e) ψ hSF.left`. Use `all_gen B.bS hpl₁ hm hU hFull ψ hψ p hp1 hp2 h1 (fun u hu => hSF.level u (hlev u hu)) a fun w hw t ht => ?_` and prove the remaining obligations.
+
+Establish `hwS` using `hS₁ hw`. Establish `h` using `hF.pl.split w hwS`. Establish `hFw : Full U {w}` using `⟨hFull.1, fun w' h' => hFull.2 w' (by rw [Finset.mem_singleton.1 h']; exact hw)⟩`. Use `(place_el hB T hA hF hab hwS h t ht).elim fun t' H1 => H1.elim fun g H => ?_` and prove the remaining obligations. Establish `hsl` using `sLev L B hB T S VL A hA hF w hwS h S₁ hw hS₁ (hiw w hw) U hFw y hy hlev _ ψ hSF.level g ![t, t⁻¹] H.2.2.2.1`.
+
+Establish `he` using `hSF.eig t' g H.2.1 H.1`. Conclude with `⟨g, fun w' => if h' : IsSplitAt w' then fun i => iu T w' h' (SD.dS t' (un w') i) else 1, H.2.2.2.1, H.2.2.2.2.1, fun w' hw' => (H.2.2.2.2.2 w' (hS₁ hw') (hF.pl.split w' (hS₁ hw'))).trans (by beta_reduce; rw [dif_pos (hF.pl.split w' (hS₁ hw'))]), hsl.trans (he.trans (congrArg (· • …`.
+-/
 theorem UpperTheory.V.Z.Sym.So.outS :
     UpperTheory.V.Z.Sym.So.OutS := by
   intro L _ _ _ B hB T S VL A hA hF S₁ hS₁ hiw m U hm hU hFull n e a b hab ι hι y hy hlev ψ hψ hSF

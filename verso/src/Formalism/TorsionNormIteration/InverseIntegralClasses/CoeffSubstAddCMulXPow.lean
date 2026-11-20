@@ -15,6 +15,11 @@ section Ring
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[coeff_subst' (HasSubst.of_constantCoeff_zero' ha)]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.range (N + 1))]`. Simplify using `[smul_eq_mul]`. Introduce `n hn`. Simplify using `only [Function.mem_support] at hn`.
+
+Simplify using `only [Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `h`. Apply `hn` to reduce the goal to its premises. Take `⟨b, rfl⟩` from `X_dvd_iff.mpr ha`. Rewrite using `[mul_pow, coeff_X_pow_mul', if_neg (by omega), smul_zero]`.
+-/
 lemma coeff_subst_range (f a : PowerSeries R) (ha : constantCoeff a = 0) (N : ℕ) :
     coeff N (f.subst a) = ∑ n ∈ Finset.range (N + 1), coeff n f * coeff N (a ^ n) := by
   rw [coeff_subst' (HasSubst.of_constantCoeff_zero' ha)]
@@ -28,11 +33,17 @@ lemma coeff_subst_range (f a : PowerSeries R) (ha : constantCoeff a = 0) (N : �
     obtain ⟨b, rfl⟩ := X_dvd_iff.mpr ha
     rw [mul_pow, coeff_X_pow_mul', if_neg (by omega), smul_zero]
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_coe_trunc_of_lt (Nat.succ_pos N), coeff_zero_eq_constantCoeff_apply, ha]`.
+-/
 lemma constantCoeff_trunc_succ (a : PowerSeries R) (ha : constantCoeff a = 0) (N : ℕ) :
     constantCoeff (trunc (N + 1) a : PowerSeries R) = 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_coe_trunc_of_lt (Nat.succ_pos N),
     coeff_zero_eq_constantCoeff_apply, ha]
 
+/- English proof (translation)
+Rewrite using `[coeff_subst_range f _ (constantCoeff_trunc_succ a ha N), coeff_subst_range f a ha]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← coeff_coe_trunc_of_lt (Nat.lt_succ_self N) (f := (trunc (N + 1) a : PowerSeries R) ^ n), trunc_trunc_pow, coeff_coe_trunc_of_lt (Nat.lt_succ_self N)]`.
+-/
 lemma coeff_subst_trunc (f a : PowerSeries R) (ha : constantCoeff a = 0) (N : ℕ) :
     coeff N (f.subst (trunc (N + 1) a : PowerSeries R)) = coeff N (f.subst a) := by
   rw [coeff_subst_range f _ (constantCoeff_trunc_succ a ha N), coeff_subst_range f a ha]
@@ -41,6 +52,9 @@ lemma coeff_subst_trunc (f a : PowerSeries R) (ha : constantCoeff a = 0) (N : �
   rw [← coeff_coe_trunc_of_lt (Nat.lt_succ_self N) (f := (trunc (N + 1) a : PowerSeries R) ^ n),
     trunc_trunc_pow, coeff_coe_trunc_of_lt (Nat.lt_succ_self N)]
 
+/- English proof (translation)
+Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_range_succ']`. Simplify using `only [pow_succ, mul_zero, zero_mul, Finset.sum_const_zero, zero_add, pow_zero, one_mul]`. Apply the tactic sequence `rcases n with _ | n <;> simp`.
+-/
 lemma sum_zero_pow_mul (n : ℕ) :
     ∑ i ∈ Finset.range n, (0 : R) ^ i * (0 : R) ^ (n - 1 - i) = if n = 1 then 1 else 0 := by
   rcases n with _ | n
@@ -49,6 +63,17 @@ lemma sum_zero_pow_mul (n : ℕ) :
     simp only [pow_succ, mul_zero, zero_mul, Finset.sum_const_zero, zero_add, pow_zero, one_mul]
     rcases n with _ | n <;> simp
 
+/- English proof (translation)
+Establish `he : constantCoeff (C c * X ^ N : PowerSeries R) = 0`. Rewrite using `[map_mul, map_pow, constantCoeff_X, zero_pow (by omega), mul_zero]`. Establish `hbe : constantCoeff (b + C c * X ^ N) = 0` using `by rw [map_add, hb, he, add_zero]`. Establish `key : ∀ n : ℕ, coeff N ((b + C c * X ^ N) ^ n) = coeff N (b ^ n) + if n = 1 then c else 0`. Introduce `n`.
+
+Establish `hg` using `geom_sum₂_mul (b + C c * X ^ N) b n`. Establish `hx : (b + C c * X ^ N) ^ n = b ^ n + X ^ N * (C c * ∑ i ∈ Finset.range n, (b + C c * X ^ N) ^ i * b ^ (n - 1 - i))`. Rewrite using `[← sub_eq_iff_eq_add', ← hg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx, map_add, coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, coeff_zero_eq_constantCoeff_apply, map_mul, constantCoeff_C, map_sum]`.
+
+Simplify using `only [map_mul, map_pow, hbe, hb]`. Rewrite using `[sum_zero_pow_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[coeff_subst_range f _ hbe, coeff_subst_range f b hb]`. Repeatedly rewrite using `[key, mul_add, Finset.sum_add_distrib, mul_ite, mul_zero]`.
+
+Use `congr 1`. Rewrite using `[Finset.sum_eq_single 1]`. Simplify using the standard rewrite rules. Introduce `n _ hn`. Simplify using `[hn]`.
+
+Introduce `h`. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 lemma coeff_subst_add_C_mul_X_pow (f b : PowerSeries R) (hb : constantCoeff b = 0) (c : R)
     {N : ℕ} (hN : 1 ≤ N) :
     coeff N (f.subst (b + C c * X ^ N)) = coeff N (f.subst b) + coeff 1 f * c := by
@@ -81,21 +106,42 @@ section Norm
 
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Use `conv_lhs => rw [Finsupp.unique_single d]`. Both sides reduce to the same expression.
+-/
 lemma mv_coeff_eq (φ : PowerSeries K) (d : Unit →₀ ℕ) :
     MvPowerSeries.coeff d φ = coeff (d ()) φ := by
   conv_lhs => rw [Finsupp.unique_single d]
   rfl
 
+/- English proof (translation)
+Introduce `d` and use `by rw [mv_coeff_eq]; exact h _`.
+-/
 lemma integralMv_of (φ : PowerSeries K) (h : IntegralPS φ) : IntegralMv φ := fun d => by
   rw [mv_coeff_eq]; exact h _
 
+/- English proof (translation)
+Introduce `d` and use `by rw [mv_coeff_eq]; exact h _`.
+-/
 lemma divByMv_of (x : K) (φ : PowerSeries K) (h : DivBy x φ) : DivByMv x φ := fun d => by
   rw [mv_coeff_eq]; exact h _
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Simplify using `using IsUltrametricDist.norm_add_le_max a (-b)`.
+-/
 lemma norm_sub_le_max' (a b : K) : ‖a - b‖ ≤ max ‖a‖ ‖b‖ := by
   rw [sub_eq_add_neg]
   simpa using IsUltrametricDist.norm_add_le_max a (-b)
 
+/- English proof (translation)
+Introduce `N`. Rewrite using `[map_sub, coeff_subst_range f α hα0, coeff_subst_range f β hβ0, ← Finset.sum_sub_distrib]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _)` to reduce the goal to its premises. Introduce `n _`. Rewrite using `[← mul_sub, ← map_sub, norm_mul]`.
+
+Take `⟨k, ⟨m, hm⟩, hk⟩` from `h5 K p q σ hS f hf0 hfe n`. Take `⟨h, hh0, hq⟩` from `hS.2.1`. Establish `hp1 : ‖(p : K)‖ ≤ 1` using `hS.2.2.1.le`. Establish `hpc` using `h6 K Unit p hS.1 α β (integralMv_of α hα) (integralMv_of β hβ) r hr (divByMv_of _ _ hd) (h * k) m (Finsupp.single () N)`. Establish `hn : n = p ^ (h * k) * m` using `by rw [hm, hq, pow_mul]`.
+
+Rewrite `hpc` using `[mv_coeff_eq, ← hn]`. Simplify using `only [Finsupp.single_eq_same, norm_pow] at hpc`. Establish `hkk : ‖(p : K)‖ ^ (r + h * k) ≤ ‖(p : K)‖ ^ k * ‖(p : K)‖ ^ r`. Rewrite using `[pow_add, mul_comm]`. Apply `mul_le_mul_of_nonneg_right _ (pow_nonneg (norm_nonneg _) _)` to reduce the goal to its premises.
+
+Conclude with `pow_le_pow_of_le_one (norm_nonneg _) hp1 (Nat.le_mul_of_pos_left k hh0)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fwd (h5 : Formalism.LT.CoeffBound.{u}) (h6 : Formalism.LT.PowCongr.{u, 0}) [CharZero K]
     {p q : ℕ} {σ : K →+* K} (hS : FunctionalEquationSetting K p q σ) {f : PowerSeries K}
     (hf0 : constantCoeff f = 0) (hfe : IsFunEqType p q σ f) {α β : PowerSeries K}
@@ -132,6 +178,9 @@ section Back
 
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Introduce `n` and use `by rw [Polynomial.coeff_coe, coeff_trunc] split_ifs · exact ha n · simp`.
+-/
 lemma integralPS_trunc {a : PowerSeries K} (ha : IntegralPS a) (M : ℕ) :
     IntegralPS (trunc M a : PowerSeries K) := fun n => by
   rw [Polynomial.coeff_coe, coeff_trunc]
@@ -139,6 +188,25 @@ lemma integralPS_trunc {a : PowerSeries K} (ha : IntegralPS a) (M : ℕ) :
   · exact ha n
   · simp
 
+/- English proof (translation)
+Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Rewrite using `[coeff_zero_eq_constantCoeff_apply, map_sub, hα0, hβ0, sub_zero, norm_zero]`.
+
+Conclude with `norm_nonneg _`. Use `set c := coeff N (α - β) with hc`. Establish `hc1 : ‖c‖ ≤ 1`. Rewrite using `[hc, map_sub]`. Conclude with `(norm_sub_le_max' _ _).trans (max_le (hα N) (hβ N))`.
+
+Use `set β₁ : PowerSeries K := β + C c * X ^ N with hβ₁`. Establish `hcoeffβ₁ : ∀ n, coeff n β₁ = coeff n β + if n = N then c else 0`. Introduce `n`. Rewrite using `[hβ₁, map_add, coeff_C_mul, coeff_X_pow]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hβ₁0 : constantCoeff β₁ = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, hcoeffβ₁, if_neg (by omega), add_zero, coeff_zero_eq_constantCoeff_apply, hβ0]`. Establish `hβ₁i : IntegralPS β₁` using `fun n => by`. Rewrite using `[hcoeffβ₁]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hβ n) ?_)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `hc1`. Simplify using the standard rewrite rules. Establish `hdt : DivBy ((p : K) ^ r) ((trunc (N + 1) α : PowerSeries K) - (trunc (N + 1) β₁ : PowerSeries K))`. Introduce `n`.
+
+Rewrite using `[map_sub, Polynomial.coeff_coe, Polynomial.coeff_coe, coeff_trunc, coeff_trunc]`. Distinguish the cases in `hn : n < N + 1`. Rewrite using `[if_pos hn, if_pos hn, hcoeffβ₁]`. Distinguish the cases in `hnN : n = N`. Substitute `hnN` using the available equality.
+
+Rewrite using `[if_pos rfl, hc, map_sub]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hnN, add_zero, ← map_sub]`. Conclude with `ih n (by omega)`. Rewrite using `[if_neg hn, if_neg hn, sub_zero, norm_zero]`.
+
+Conclude with `norm_nonneg _`. Establish `hf` using `fwd h5 h6 hS hf0 hfe (constantCoeff_trunc_succ α hα0 N) (constantCoeff_trunc_succ β₁ hβ₁0 N) (integralPS_trunc hα _) (integralPS_trunc hβ₁i _) hr hdt N`. Rewrite `hf` using `[map_sub, coeff_subst_trunc f α hα0, coeff_subst_trunc f β₁ hβ₁0]`. Establish `hkey` using `coeff_subst_add_C_mul_X_pow f β hβ0 c (N := N) hN`. Rewrite `hkey` using `[← hβ₁, hf1, one_mul]`.
+
+Establish `hA` using `hd N`. Rewrite `hA` using `[map_sub]`. Establish `: c = (coeff N (f.subst α) - coeff N (f.subst β)) - (coeff N (f.subst α) - coeff N (f.subst β₁))` using `by rw [hkey]; ring`. Rewrite using `[this]`. Conclude with `(norm_sub_le_max' _ _).trans (max_le hA hf)`.
+-/
 theorem bwd (h5 : Formalism.LT.CoeffBound.{u}) (h6 : Formalism.LT.PowCongr.{u, 0}) [CharZero K]
     {p q : ℕ} {σ : K →+* K} (hS : FunctionalEquationSetting K p q σ) {f : PowerSeries K}
     (hf0 : constantCoeff f = 0) (hf1 : coeff 1 f = 1) (hfe : IsFunEqType p q σ f)
@@ -198,6 +266,9 @@ theorem bwd (h5 : Formalism.LT.CoeffBound.{u}) (h6 : Formalism.LT.PowCongr.{u, 0
 
 end Back
 
+/- English proof (translation)
+Introduce `K _ _ _ p q σ hS f hf0 hf1 hfe α β hα0 hβ0 hα hβ r hr`. Conclude with `⟨fwd h5 h6 hS hf0 hfe hα0 hβ0 hα hβ hr, bwd h5 h6 hS hf0 hf1 hfe hα0 hβ0 hα hβ hr⟩`.
+-/
 theorem funEqCongr (h5 : Formalism.LT.CoeffBound.{u}) (h6 : Formalism.LT.PowCongr.{u, 0}) :
     Formalism.G.FunEqCongr.{u} := by
   intro K _ _ _ p q σ hS f hf0 hf1 hfe α β hα0 hβ0 hα hβ r hr
@@ -205,5 +276,8 @@ theorem funEqCongr (h5 : Formalism.LT.CoeffBound.{u}) (h6 : Formalism.LT.PowCong
 
 end Formalism.LT.CongrP
 
+/- English proof (translation)
+The claim follows from `Formalism.LT.CongrP.funEqCongr h5 h6`.
+-/
 theorem Formalism.LT.FunEqCongr_of (h5 : Formalism.LT.CoeffBound.{u}) (h6 : Formalism.LT.PowCongr.{u, 0}) :
     Formalism.G.FunEqCongr.{u} := Formalism.LT.CongrP.funEqCongr h5 h6

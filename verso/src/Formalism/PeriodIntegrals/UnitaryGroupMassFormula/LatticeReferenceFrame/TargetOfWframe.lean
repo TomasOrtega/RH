@@ -10,6 +10,9 @@ namespace PI.ScRefExists.Top
 
 open PI.ScRefExists.Sk
 
+/- English proof (translation)
+The claim follows from `target_of_steps PI.ScRefExists.GlueC.glue_holds_var PI.ScRefExists.TH.theta_series_existence PI.ScRefExists.Id.idemLift PI.ScRefExists.LG.local_global_principle_alt (PI.ScRefExists.GWG.globW_of (gwpp_of h PI.ScRefExists.PPA.local_assembly_principal) PI.ScRefExists.GWG.chinese_rem …`.
+-/
 theorem target_of_wframe (h : WFrame) : PI.ScRefExists.Target :=
   target_of_steps PI.ScRefExists.GlueC.glue_holds_var PI.ScRefExists.TH.theta_series_existence
     PI.ScRefExists.Id.idemLift PI.ScRefExists.LG.local_global_principle_alt

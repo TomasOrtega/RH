@@ -7,6 +7,33 @@ namespace GlobalTheory.LinearPhase
 
 open Complex GlobalTheory.CharFormDeriv
 
+/- English proof (translation)
+Introduce `V _ _ L c f k n`. Use `set L' : V →L[ℝ] ℝ := (-(2 * Real.pi)) • L with hL'`. Establish `hL'x : ∀ x, ((L' x : ℝ) : ℂ) = -(2 * Real.pi) * (L x : ℂ)` using `fun x => by`. Simplify using `[hL']`. Use `set K := 3 * 2 ^ n * (1 + ‖L'‖) ^ (n + 2) * (2 ^ (k + 2) * ((Finset.Iic (k + 2, n)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) f) with hK`.
+
+Establish `hgt : Function.HasTemperateGrowth (fun x : V => ((L x : ℝ) : ℂ))` using `(Complex.ofRealCLM.comp L).hasTemperateGrowth`. Use `set g : 𝓢(V, ℂ) := SchwartzMap.smulLeftCLM ℂ (fun x => ((L x : ℝ) : ℂ)) f with hgdef`. Establish `hg : ∀ x, g x = (L x : ℂ) * f x` using `fun x => by`. Rewrite using `[hgdef, SchwartzMap.smulLeftCLM_apply_apply hgt, smul_eq_mul]`. Use `⟨K + 2 * |2 * Real.pi * c| * (SchwartzMap.seminorm ℂ k n f + 2 * Real.pi * SchwartzMap.seminorm ℂ k n g), fun t ht1 => ?_⟩` and prove the remaining obligations.
+
+Use `set a : ℂ := Complex.exp (((-(2 * Real.pi * c * t ^ 2) : ℝ) : ℂ) * I) with ha`. Establish `hfun : (fun x : V => Complex.exp (-(2 * Real.pi * Complex.I) * ((t * L x + t ^ 2 * c : ℝ) : ℂ))) = fun x : V => a * Complex.exp ((I * t) * (L' x : ℂ))`. Use function extensionality and compare the values at `x`. Rewrite using `[ha, ← Complex.exp_add, hL'x]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `het : Function.HasTemperateGrowth fun x : V => a * Complex.exp ((I * t) * (L' x : ℂ))` using `(Function.HasTemperateGrowth.const a).mul (hasTemperateGrowth_char L' t)`. Rewrite using `[hfun]`. Use `set A : 𝓢(V, ℂ) := SchwartzMap.smulLeftCLM ℂ (fun x : V => Complex.exp ((I * t) * (L' x : ℂ))) f with hAdef`.
+
+Establish `hA : ∀ x, A x = Complex.exp ((I * t) * (L' x : ℂ)) * f x` using `fun x => by`. Rewrite using `[hAdef, SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_char L' t), smul_eq_mul]`. Use `set E : 𝓢(V, ℂ) := SchwartzMap.smulLeftCLM ℂ (fun x : V => a * Complex.exp ((I * t) * (L' x : ℂ))) f with hEdef`. Establish `hE : ∀ x, E x = a * Complex.exp ((I * t) * (L' x : ℂ)) * f x` using `fun x => by`. Rewrite using `[hEdef, SchwartzMap.smulLeftCLM_apply_apply het, smul_eq_mul]`.
+
+Break down `eq_or_ne t 0 with ht0 | ht0` into its components or cases. Establish `h0 : E - f + ((t : ℂ) * (2 * Real.pi * Complex.I)) • g = 0`. Use extensionality with `x`. Simplify using `only [SchwartzMap.add_apply, SchwartzMap.sub_apply, SchwartzMap.smul_apply, hE, ha, ht0]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h0, map_zero, ht0]`. Simplify using the standard rewrite rules. Establish `ht : (t : ℂ) ≠ 0` using `by exact_mod_cast ht0`. Use `set u : 𝓢(V, ℂ) := (t : ℂ)⁻¹ • (A - f) + (2 * Real.pi * I : ℂ) • g with hudef`. Establish `hu : ∀ x, u x = rem t (L' x) * f x` using `fun x => by`.
+
+Simplify using `only [hudef, SchwartzMap.add_apply, SchwartzMap.sub_apply, SchwartzMap.smul_apply, hA, hg, rem, smul_eq_mul, hL'x]`. Expand and normalize the polynomial expressions, which then agree. Establish `hub : SchwartzMap.seminorm ℂ k n u ≤ |t| * K` using `seminorm_rem_mul_le L' f u ht0 ht1 hu k n`. Establish `hid : E - f + ((t : ℂ) * (2 * Real.pi * Complex.I)) • g = (a * t) • u + ((a - 1) • f + (-((a - 1) * t * (2 * Real.pi * I))) • g)`. Use extensionality with `x`.
+
+Simplify using `only [hudef, SchwartzMap.add_apply, SchwartzMap.sub_apply, SchwartzMap.smul_apply, hA, hE, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hna : ‖a‖ = 1` using `Complex.norm_exp_ofReal_mul_I _`. Establish `hna1 : ‖a - 1‖ ≤ 2 * |2 * Real.pi * c| * t ^ 2`.
+
+Use `(norm_cexp_mul_I_sub_one_le _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[abs_neg, abs_mul (2 * Real.pi * c), abs_of_nonneg (sq_nonneg t)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpf` using `apply_nonneg (SchwartzMap.seminorm ℂ k n) f`. Establish `hpg` using `apply_nonneg (SchwartzMap.seminorm ℂ k n) g`.
+
+Establish `hpi` using `Real.pi_pos`. Establish `hn1 : ‖a * t‖ = |t|` using `by rw [norm_mul, hna, one_mul, Complex.norm_real, Real.norm_eq_abs]`. Establish `hn2 : ‖-((a - 1) * t * (2 * Real.pi * I))‖ ≤ 2 * |2 * Real.pi * c| * t ^ 2 * (2 * Real.pi)`. Establish `h2 : ‖(2 * Real.pi * I : ℂ)‖ = 2 * Real.pi`. Simplify using `[abs_of_pos hpi]`.
+
+Rewrite using `[norm_neg, norm_mul, norm_mul, h2, Complex.norm_real, Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hid]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_smul_eq_mul, map_smul_eq_mul, map_smul_eq_mul, hn1]`.
+
+Use `_ ≤ |t| * (|t| * K) + (2 * |2 * Real.pi * c| * t ^ 2 * SchwartzMap.seminorm ℂ k n f + 2 * |2 * Real.pi * c| * t ^ 2 * (2 * Real.pi) * SchwartzMap.seminorm ℂ k n g) := by gcongr`. Use `_ = _ := by`. Rewrite using `[← mul_assoc, ← sq, sq_abs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem seminorm_phase_sub_le : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (L : V →L[ℝ] ℝ) (c : ℝ) (f : 𝓢(V, ℂ)) (k n : ℕ), ∃ C : ℝ, ∀ t : ℝ, |t| ≤ 1 → SchwartzMap.seminorm ℂ k n (SchwartzMap.smulLeftCLM ℂ (fun x => Complex.exp (-(2 * Real.pi * Complex.I) * ((t * L x + t ^ 2 * c : ℝ) : ℂ))) f - f + ((t : ℂ) * (2 * Real.pi * Complex.I)) • SchwartzMap.smulLeftCLM ℂ (fun x => ((L x : ℝ) : ℂ)) f) ≤ C * t ^ 2 := by
   intro V _ _ L c f k n
   set L' : V →L[ℝ] ℝ := (-(2 * Real.pi)) • L with hL'

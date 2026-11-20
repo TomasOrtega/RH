@@ -11,6 +11,17 @@ noncomputable section
 
 namespace GlobalTheory.MixedLocalChains
 
+/- English proof (translation)
+Use `set N := M.transpose`. Establish `hinj : Function.Injective N.mulVecLin`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Conclude with `hM`. Establish `hrank : N.rank = r`.
+
+Rewrite using `[Matrix.rank, LinearMap.finrank_range_of_inj hinj, Module.finrank_fin_fun]`. Establish `hspan : Submodule.span K (Set.range N.row) = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[← Matrix.rank_eq_finrank_span_row, hrank, Module.finrank_fin_fun]`. Take `⟨κ, a, ha, hsp, hli⟩` from `exists_linearIndependent' K N.row`.
+
+Establish `: Finite κ` using `Finite.of_injective a ha`. Use `haveI : Fintype κ := Fintype.ofFinite κ`. Set `B` to `Module.Basis.mk hli (by rw [hsp, hspan])`. Establish `hcard : Fintype.card κ = r`. Rewrite using `[← Module.finrank_eq_card_basis B, Module.finrank_fin_fun]`.
+
+Set `e : Fin r ≃ κ` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `⟨a ∘ e, ?_⟩` and prove the remaining obligations. Establish `hli' : LinearIndependent K (N.submatrix (a ∘ e) id).row` using `hli.comp e e.injective`. Establish `hu` using `Matrix.linearIndependent_rows_iff_isUnit.mp hli'`. Establish `h` using `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero`.
+
+Rewrite `h` using `[show N.submatrix (a ∘ e) id = (M.submatrix id (a ∘ e)).transpose from rfl, Matrix.det_transpose]`. Then use the resulting hypothesis.
+-/
 theorem exists_cols_det_ne_zero {K : Type*} [Field K] {r m : ℕ} (M : Matrix (Fin r) (Fin m) K)
     (hM : ∀ c : Fin r → K, M.transpose.mulVec c = 0 → c = 0) :
     ∃ J : Fin r → Fin m, (M.submatrix id J).det ≠ 0 := by
@@ -38,6 +49,13 @@ theorem exists_cols_det_ne_zero {K : Type*} [Field K] {r m : ℕ} (M : Matrix (F
   rwa [show N.submatrix (a ∘ e) id = (M.submatrix id (a ∘ e)).transpose from rfl,
     Matrix.det_transpose] at h
 
+/- English proof (translation)
+Set `e` to `Scheme.Modules.restrictFunctorIsoPullback U.ι`. Establish `hψ : (Scheme.Modules.restrictFunctor U.ι).map φ = e.hom.app F ≫ (Scheme.Modules.pullback U.ι).map φ ≫ e.inv.app G` using `(NatIso.naturality_2 e φ).symm`. Use `haveI : Epi ((Scheme.Modules.restrictFunctor U.ι).map φ) := by rw [hψ]; infer_instance`. Set `y : U` to `⟨x, hx⟩`. Establish `hs` using `stalkLinear_surjective ((Scheme.Modules.restrictFunctor U.ι).map φ) y`.
+
+Set `N` to `Scheme.Modules.restrictStalkNatIso U.ι y`. Establish `hn` using `N.hom.naturality φ`. Introduce `t`. Take `⟨t', rfl⟩` from `(N.app G).addCommGroupIsoToAddEquiv.surjective t`. Take `⟨s', rfl⟩` from `hs t'`.
+
+Use `⟨N.hom.app F s', ?_⟩` and prove the remaining obligations. Use `ConcreteCategory.congr_hom hn s'` as an intermediate fact. Simplify using `only [ConcreteCategory.comp_apply] at this`. Conclude with `this.symm`.
+-/
 theorem surjective_stalkLinear_of_epi_pullback_ι {X : Scheme.{0}} {F G : X.Modules} (φ : F ⟶ G)
     (U : X.Opens) [Epi ((Scheme.Modules.pullback U.ι).map φ)] (x : X) (hx : x ∈ U) :
     Function.Surjective (stalkLinear φ x) := by
@@ -64,6 +82,23 @@ namespace GlobalTheory.MixedLocalChains
 
 open GlobalTheory.VB in
 
+/- English proof (translation)
+Introduce `O _ _ _ B r m E F φ hE hF hφ x`. Take `⟨U, eE₀, -, hxU, -, heE₀⟩` from `hE.exists_affine (V := ⊤) (x := x) trivial`. Take `⟨V, eF, hV, hxV, hVU, heF⟩` from `hF.exists_affine hxU`. Set `eE : Fin r → Γ(E, V)` to `fun i => GlobalTheory.Twist.resM E hVU (eE₀ i)`. Establish `heE : IsFrame eE` using `heE₀.res hVU`.
+
+Set `a : Matrix (Fin r) (Fin m) Γ(B.X, V)` to `fun k j => (heE.basis le_rfl).repr (φ.app V (eF j)) k`. Establish `ha : ∀ j, φ.app V (eF j) = ∑ k, a k j • eE k`. Introduce `j`. Use `conv_lhs => rw [← (heE.basis le_rfl).sum_repr (φ.app V (eF j))]`. Simplify using `only [IsFrame.basis_apply, GlobalTheory.Twist.resM_self]`.
+
+Both sides reduce to the same expression. Use `⟨V, eF, eE, a, hxV, hV, heF, heE, ha, ?_⟩` and prove the remaining obligations. Establish `hη : genericPoint B.X ∈ V` using `(genericPoint_specializes x).mem_open V.isOpen hxV`. Establish `hsurj : Function.Surjective (stalkLinear φ (genericPoint B.X))` using `surjective_stalkLinear_of_epi_pullback_ι φ B.gen _ B.genericPoint_mem_gen`. Set `g : Γ(B.X, V) →+* B.X.functionField` to `(B.X.presheaf.germ V _ hη).hom`.
+
+Set `a' : Matrix (Fin r) (Fin m) B.X.functionField` to `a.map g`. Set `bE` to `heE.stalkBasis _ hη`. Set `bF` to `heF.stalkBasis _ hη`. Establish `hmul : ∀ v : Fin r → B.X.functionField, ∃ w, a'.mulVec w = v`. Introduce `v`.
+
+Take `⟨s, hs⟩` from `hsurj (bE.equivFun.symm v)`. Use `⟨bF.repr s, bE.equivFun.symm.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Use `conv_rhs => rw [← bF.sum_repr s]`. Simplify using `only [Module.Basis.equivFun_symm_apply, map_sum, map_smul, bF, bE, IsFrame.stalkBasis_apply, stalkLinear_germ, ha, QCoh.germ_smul, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Take `⟨J, hJ⟩` from `exists_cols_det_ne_zero a' fun c hc => by`.
+
+Use function extensionality and compare the values at `k`. Take `⟨w, hw⟩` from `hmul (Pi.single k 1)`. Establish `h0 : c ⬝ᵥ a'.mulVec w = 0`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hc, zero_dotProduct]`. Rewrite `h0` using `[hw, dotProduct_single, mul_one]`. Then use the resulting hypothesis.
+
+Use `⟨J, fun h0 => hJ ?_⟩` and prove the remaining obligations. Rewrite using `[show a'.submatrix id J = g.mapMatrix (a.submatrix id J) from rfl, ← RingHom.map_det, h0, map_zero]`.
+-/
 theorem exists_frames_maximal_minor_ne_zero : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B : GlobalTheory.Vert.Model O) (r m : ℕ) (E F : B.X.Modules) (φ : F ⟶ E), GlobalTheory.VB.IsVB E r → GlobalTheory.VB.IsVB F m → Epi (B.genRes.map φ) → ∀ x : B.X, ∃ (V : B.X.Opens) (eF : Fin m → Γ(F, V)) (eE : Fin r → Γ(E, V)) (a : Matrix (Fin r) (Fin m) Γ(B.X, V)), x ∈ V ∧ IsAffineOpen V ∧ GlobalTheory.VB.IsFrame eF ∧ GlobalTheory.VB.IsFrame eE ∧ (∀ j, φ.app V (eF j) = ∑ k, a k j • eE k) ∧ ∃ J : Fin r → Fin m, (a.submatrix id J).det ≠ 0 := by
   intro O _ _ _ B r m E F φ hE hF hφ x
   obtain ⟨U, eE₀, -, hxU, -, heE₀⟩ := hE.exists_affine (V := ⊤) (x := x) trivial

@@ -16,6 +16,13 @@ open scoped CategoryTheory.Obj ComplexOrder
 open GlobalTheory GlobalTheory.CubeFib GlobalTheory.LieMet GlobalTheory.LieHt GlobalTheory.LocM.Frm GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.ShFam.Hor GlobalTheory.ShFam.Hor.LogCh GlobalTheory.Toroidal GlobalTheory.HeightParts GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.BdFib
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Use `letI := T.addCommGroup`. Use `letI := T.grpB`. Use `haveI := T.free`. Use `haveI := T.finite`. Use `haveI := T.q_hom`.
+
+Use `haveI := T.i_hom`. Use `haveI : IsIso e.inv.left := ⟨⟨e.hom.left, by rw [← Over.comp_left, e.inv_hom_id, Over.id_left], by rw [← Over.comp_left, e.hom_inv_id, Over.id_left]⟩⟩`. Establish `h1 : Flat (e.inv ≫ T.q).left` using `by have := T.q_flat; rw [Over.comp_left]; infer_instance`. Establish `h2 : Surjective (e.inv ≫ T.q).left` using `by have := T.q_surjective; rw [Over.comp_left]; infer_instance`. Establish `h3 : QuasiCompact (e.inv ≫ T.q).left` using `by have := T.q_quasiCompact; rw [Over.comp_left]; infer_instance`.
+
+Establish `h4 : IsPullback (T.i ≫ e.hom) (toUnit _) (e.inv ≫ T.q) (η : 𝟙_ _ ⟶ T.B)` using `T.isKernel.of_iso (Iso.refl _) e (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp) (by simp)`. Conclude with `⟨TorusExtension.mk T.X T.B T.isAbelian (e.inv ≫ T.q) inferInstance h1 h2 h3 (T.i ≫ e.hom) inferInstance h4, rfl⟩`.
+-/
 theorem GlobalTheory.TorusSpread.torusExtension_of_iso {K : Type} [Field K] {G₁ G₂ : Over (Sp K)} [GrpObj G₁] [GrpObj G₂]
     (e : G₁ ≅ G₂) [IsMonHom e.hom] (T : TorusExtension G₁) :
     ∃ T' : TorusExtension G₂, @Module.finrank ℤ T'.X _ T'.addCommGroup.toAddCommMonoid _ =
@@ -31,6 +38,11 @@ theorem GlobalTheory.TorusSpread.torusExtension_of_iso {K : Type} [Field K] {G�
     T.isKernel.of_iso (Iso.refl _) e (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp) (by simp)
   exact ⟨TorusExtension.mk T.X T.B T.isAbelian (e.inv ≫ T.q) inferInstance h1 h2 h3 (T.i ≫ e.hom) inferInstance h4, rfl⟩
 
+/- English proof (translation)
+Use `letI := T.grpB`. Use `letI := T.addCommGroup`. Use `haveI := T.isAbelian.proper`. Establish `hη : IsClosedImmersion (η[T.B] : 𝟙_ _ ⟶ T.B).left` using `GlobalTheory.isClosedImmersion_of_section_of_isSeparated T.B.hom _ (by simpa using Over.w η[T.B])`. Establish `hpb : IsPullback T.i.left (toUnit _ : splitTorus _ T.X ⟶ 𝟙_ _).left T.q.left (η[T.B] : 𝟙_ _ ⟶ T.B).left` using `T.isKernel.map (Over.forget _)`.
+
+Conclude with `MorphismProperty.of_isPullback (P := @IsClosedImmersion) hpb.flip hη`.
+-/
 theorem GlobalTheory.TorusSpread.isClosedImmersion_torus {K : Type} [Field K] {G : Over (Sp K)} [GrpObj G]
     (T : TorusExtension G) : IsClosedImmersion T.i.left := by
   letI := T.grpB; letI := T.addCommGroup
@@ -41,6 +53,25 @@ theorem GlobalTheory.TorusSpread.isClosedImmersion_torus {K : Type} [Field K] {G
     T.isKernel.map (Over.forget _)
   exact MorphismProperty.of_isPullback (P := @IsClosedImmersion) hpb.flip hη
 
+/- English proof (translation)
+Introduce `hP E _ _ _ H X t F _ _ Y p f hp y₀`. Use `haveI : LocallyOfFiniteType p := inferInstance`. Use `haveI : QuasiCompact p := inferInstance`. Set `κ` to `Y.residueField y₀`. Set `x₀ : Sp κ ⟶ Y` to `Y.fromSpecResidueField y₀`.
+
+Set `G₀` to `(Over.pullback (x₀ ≫ f)).obj t.G`. Establish `hG₀ : IsSemiAbelian G₀` using `IsSemiAbelian.pullback _ _ t.semi`. Take `⟨k', _, _, _, -, ⟨T⟩⟩` from `GlobalTheory.exists_finite_separable_torusExtension κ G₀ hG₀`. Take `⟨W, _, π, j, hπ, _, hWn, hj, hjπ⟩` from `GlobalTheory.T.exists_finite_normal_cover_residue_point F Y p y₀ k'`. Set `s : Sp k' ⟶ Sp κ` to `spMap (algebraMap κ k')`.
+
+Set `G` to `(Over.pullback (π ≫ f)).obj t.G`. Establish `hG : IsSemiAbelian G` using `IsSemiAbelian.pullback _ _ t.semi`. Set `H'` to `(Over.pullback s).obj G₀`. Establish `h1 : IsGrpPullback H' t.G (j ≫ π ≫ f) (pullback.fst G₀.hom s ≫ pullback.fst t.G.hom (x₀ ≫ f))` using `((isGrpPullback_pullback G₀ s).comp (isGrpPullback_pullback t.G (x₀ ≫ f))).congr (by rw [← Category.assoc j π f, hjπ]; rfl) rfl`. Establish `w₀ : (pullback.fst G₀.hom s ≫ pullback.fst t.G.hom (x₀ ≫ f)) ≫ t.G.hom = (H'.hom ≫ j) ≫ π ≫ f`.
+
+Rewrite using `[Category.assoc]`. Conclude with `h1.1.w.trans (Category.assoc _ _ _).symm`. Set `a : H'.left ⟶ G.left` to `pullback.lift _ _ w₀`. Establish `ha : IsGrpPullback H' G j a` using `(isGrpPullback_pullback t.G (π ≫ f)).cancel (h1.congr rfl (pullback.lift_fst _ _ _).symm) (pullback.lift_snd _ _ _)`. Use `letI := T.addCommGroup`.
+
+Use `haveI := T.free`. Use `haveI := T.finite`. Use `haveI := T.i_hom`. Set `r` to `Module.finrank ℤ T.X`. Take `⟨e⟩ : Nonempty (T.X ≃+ (Fin r → ℤ))` from `⟨(Module.finBasis ℤ T.X).equivFun.toAddEquiv⟩`.
+
+Set `i' : splitTorus (Sp k') (Fin r → ℤ) ⟶ H'` to `GlobalTheory.SplitTorus.torusMap (Sp k') e.toAddMonoidHom ≫ T.i`. Establish `hi' : IsMonHom i'` using `inferInstance`. Establish `hc : IsClosedImmersion i'.left`. Establish `hT` using `GlobalTheory.TorusSpread.isClosedImmersion_torus T`. Use `haveI : IsIso (GlobalTheory.SplitTorus.torusMap (Sp k') e.toAddMonoidHom) := ⟨⟨GlobalTheory.SplitTorus.torusMap (Sp k') e.symm.toAddMonoidHom, by`.
+
+Rewrite using `[← GlobalTheory.SplitTorus.torusMap_comp, show e.toAddMonoidHom.comp e.symm.toAddMonoidHom = AddMonoidHom.id _ from AddMonoidHom.ext fun x => e.apply_symm_apply x, GlobalTheory.SplitTorus.torusMap_id], by`. Rewrite using `[← GlobalTheory.SplitTorus.torusMap_comp, show e.symm.toAddMonoidHom.comp e.toAddMonoidHom = AddMonoidHom.id _ from AddMonoidHom.ext fun x => e.symm_apply_apply x, GlobalTheory.SplitTorus.torusMap_id]⟩⟩`. Use `haveI : IsIso (GlobalTheory.SplitTorus.torusMap (Sp k') e.toAddMonoidHom).left := inferInstanceAs (IsIso ((Over.forget _).map (GlobalTheory.SplitTorus.torusMap (Sp k') e.toAddMonoidHom)))`. Rewrite using `[Over.comp_left]`. Use `infer_instance`.
+
+Take `⟨u, ⟨hu, hu'⟩, -⟩` from `hP.generic_of_isGrpPullback hWn hj (G := splitTorus W (Fin r → ℤ)) (H := G) inferInstance hG (GlobalTheory.SplitTorus.isGrpPullback_bcMap j _) ha i'`. Establish `hgen : π (genericPoint W) = y₀`. Take `⟨z, hz⟩ : genericPoint W ∈ Set.range j` from `by rw [hj.range_eq]; rfl`. Rewrite using `[← hz, ← Scheme.Hom.comp_apply, hjπ, Scheme.Hom.comp_apply]`. Conclude with `Y.fromSpecResidueField_apply y₀ _`.
+
+Take `⟨eT, heT, -⟩` from `grpPullback_iso (((isGrpPullback_pullback G₀ s).comp (isGrpPullback_pullback t.G (x₀ ≫ f))).congr (Category.assoc _ _ _).symm rfl) (isGrpPullback_pullback t.G ((s ≫ x₀) ≫ f))`. Take `⟨T', hT'⟩` from `GlobalTheory.TorusSpread.torusExtension_of_iso eT T`. Use `⟨W, inferInstance, π, r, u, hπ, inferInstance, hgen, hu, fun k _ g hg => GlobalTheory.T.pullback_closed_immersion_generic_fibre hj u i' (GlobalTheory.SplitTorus.isGrpPullback_bcMap j _).1 ha.1 hu' hc k g hg, k', inferInstance, s ≫ x₀, T', ?_, hT'⟩` and prove the remaining obligations. Use `show x₀ (s _) = y₀`. Conclude with `Y.fromSpecResidueField_apply y₀ _`.
+-/
 theorem GlobalTheory.BdFib.exists_splitTorus_hom_normal_cover : GlobalTheory.Published.SemiAbelianHomExtension → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (F : Type) [Field F] [NumberField F] (Y : Scheme.{0}) (p : Y ⟶ Sp F) (f : Y ⟶ X), IsProper p → ∀ y₀ : Y, ∃ (W : Scheme.{0}) (_ : IsIntegral W) (π : W ⟶ Y) (r : ℕ) (u : splitTorus W (Fin r → ℤ) ⟶ (Over.pullback (π ≫ f)).obj t.G), IsFinite π ∧ IsLocallyNoetherian W ∧ π (genericPoint W) = y₀ ∧ IsMonHom u ∧ (∀ (k : Type) [Field k] (g : Sp k ⟶ W), g (IsLocalRing.closedPoint k) = genericPoint W → IsClosedImmersion ((Over.pullback g).map u).left) ∧ ∃ (k : Type) (_ : Field k) (g : Sp k ⟶ Y) (T : TorusExtension ((Over.pullback (g ≫ f)).obj t.G)), g (IsLocalRing.closedPoint k) = y₀ ∧ @Module.finrank ℤ T.X _ T.addCommGroup.toAddCommMonoid _ = r := by
   intro hP E _ _ _ H X t F _ _ Y p f hp y₀
   haveI : LocallyOfFiniteType p := inferInstance

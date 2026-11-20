@@ -4,6 +4,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 
 namespace Formalism.L2.SG.LocalCountModules
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.LocalCountModules.LocCnt0GWork.locCnt0G_of_theta (by intro F _ _ _ E _ _ _ _ M _ r n; exact thetaMbe0_true M r n)`.
+-/
 theorem localCountZeroGlobal_holds : Formalism.L2.SG.LocalCountModules.LocCnt0G.LocCnt0G :=
   Formalism.L2.SG.LocalCountModules.LocCnt0GWork.locCnt0G_of_theta (by intro F _ _ _ E _ _ _ _ M _ r n; exact thetaMbe0_true M r n)
 

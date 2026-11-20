@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 
 open Matrix Polynomial IsLocalRing UpperTheory.V.U3 UpperTheory.V.Pr
 
+/- English proof (translation)
+Establish `hc : Commute (scalar (Fin m) (X : A[X])) ((C : A →+* A[X]).mapMatrix M)` using `scalar_commute _ (fun _ => Commute.all _ _) _`. Establish `key : (expand A n : A[X] →+* A[X]).mapMatrix (charmatrix (M ^ n)) = charmatrix M * ∑ i ∈ Finset.range n, (scalar (Fin m) (X : A[X])) ^ i * ((C : A →+* A[X]).mapMatrix M) ^ (n - 1 - i)`. Rewrite using `[show charmatrix M = scalar (Fin m) (X : A[X]) - (C : A →+* A[X]).mapMatrix M from rfl, hc.mul_geom_sum₂, ← map_pow, ← map_pow]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [charmatrix_apply, h]`.
+
+Unfold `Matrix.charpoly`. Use `RingHom.map_det (expand A n : A[X] →+* A[X]) (charmatrix (M ^ n))` as an intermediate fact. Rewrite `this` using `[RingHom.coe_coe]`. Rewrite using `[this, key, det_mul]`. Conclude with `dvd_mul_right _ _`.
+-/
 private theorem charpoly_dvd_expand {A : Type} [CommRing A] {m : ℕ} (M : Matrix (Fin m) (Fin m) A) (n : ℕ) :
     M.charpoly ∣ expand A n (M ^ n).charpoly := by
   have hc : Commute (scalar (Fin m) (X : A[X])) ((C : A →+* A[X]).mapMatrix M) :=
@@ -24,6 +29,15 @@ private theorem charpoly_dvd_expand {A : Type} [CommRing A] {m : ℕ} (M : Matri
   exact dvd_mul_right _ _
 
 set_option linter.overlappingInstances false in
+/- English proof (translation)
+Establish `hmon : (expand k n N₀.charpoly).Monic` using `(charpoly_monic N₀).expand hn`. Establish `hdvd : M.charpoly ∣ (expand k n N₀.charpoly).map (algebraMap k A)`. Rewrite using `[map_expand, ← charpoly_map, ← hp]`. Conclude with `charpoly_dvd_expand M n`. Establish `hint` using `isIntegral_coeff_of_dvd _ _ hmon (charpoly_monic M) hdvd`.
+
+Establish `hres : M.map (IsLocalRing.residue A) = (M₀.map (algebraMap k A)).map (IsLocalRing.residue A)`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply]`. Apply `Ideal.Quotient.eq.mpr` to reduce the goal to its premises. Simplify using `using h a b`.
+
+Establish `hcp` using `congrArg Matrix.charpoly hres`. Simplify using `only [charpoly_map] at hcp`. Use extensionality with `i`. Rewrite using `[Polynomial.coeff_map]`. Apply `UpperTheory.V.Pr.constOfAlg k A _ _ (hint i).isAlgebraic` to reduce the goal to its premises.
+
+Establish `hi` using `congrArg (fun p => p.coeff i) hcp`. Simplify using `only [Polynomial.coeff_map] at hi`. Conclude with `Ideal.Quotient.eq.mp hi`.
+-/
 private theorem charpoly_const {k A : Type} [Field k] [CommRing A] [IsDomain A] [IsLocalRing A] [Algebra k A]
     {m : ℕ} (M : Matrix (Fin m) (Fin m) A) (M₀ N₀ : Matrix (Fin m) (Fin m) k) (n : ℕ) (hn : 0 < n)
     (h : EntIn (maximalIdeal A) (M - M₀.map (algebraMap k A)))
@@ -50,6 +64,9 @@ private theorem charpoly_const {k A : Type} [Field k] [CommRing A] [IsDomain A] 
   exact Ideal.Quotient.eq.mp hi
 
 set_option linter.overlappingInstances false in
+/- English proof (translation)
+Apply `UpperTheory.V.Pr.constOfAlg k A` to reduce the goal to its premises. Use `⟨M₀.charpoly, (charpoly_monic M₀).ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, ← Polynomial.eval_map, ← hp, Matrix.eval_charpoly]`. Conclude with `ha`. Simplify using `using h a a`.
+-/
 private theorem diag_const {k A : Type} [Field k] [CommRing A] [IsDomain A] [IsLocalRing A] [Algebra k A]
     {m : ℕ} (M : Matrix (Fin m) (Fin m) A) (M₀ : Matrix (Fin m) (Fin m) k)
     (h : EntIn (maximalIdeal A) (M - M₀.map (algebraMap k A)))
@@ -62,10 +79,16 @@ private theorem diag_const {k A : Type} [Field k] [CommRing A] [IsDomain A] [IsL
     exact ha
   · simpa using h a a
 
+/- English proof (translation)
+Simplify using `only [zmat, Matrix.sub_apply, MonoidHom.comp_apply, GG.map_mat, Matrix.map_apply, map_sub]`.
+-/
 private theorem zmat_map {G R S : Type} [Group G] [CommRing R] [CommRing S] (f : R →+* S) (c g₁ : G)
     (r : G →* GG 3 R) (i j : Fin 3) : zmat c g₁ ((GG.map f).comp r) i j = f (zmat c g₁ r i j) := by
   simp only [zmat, Matrix.sub_apply, MonoidHom.comp_apply, GG.map_mat, Matrix.map_apply, map_sub]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[GG.map_mat, h.atc]`. Rewrite using `[zmat_map, h.z12, map_zero]`. Rewrite using `[zmat_map, h.z21, map_zero]`.
+-/
 private theorem normalised_map {G R S : Type} [Group G] [CommRing R] [CommRing S] (f : R →+* S) {c g₁ : G}
     {r : G →* GG 3 R} (h : Normalised c g₁ r) : Normalised c g₁ ((GG.map f).comp r) := by
   refine ⟨?_, ?_, ?_⟩
@@ -73,15 +96,24 @@ private theorem normalised_map {G R S : Type} [Group G] [CommRing R] [CommRing S
   · rw [zmat_map, h.z12, map_zero]
   · rw [zmat_map, h.z21, map_zero]
 
+/- English proof (translation)
+Simplify using `[GG.mat, unitaryThreeReflection_left, tor_val, charpoly_diagonal, Fin.prod_univ_three, wt1]`.
+-/
 private theorem charpoly_diagonal_character_rep {G k : Type} [Group G] [Field k] (η : G →* ℤˣ) (Ψ : G →* kˣ) (g : G) :
     (r0 η Ψ g).mat.charpoly = (X - C (Ψ g : k)) * (X - C 1) * (X - C ((Ψ g)⁻¹ : kˣ).1) := by
   simp [GG.mat, unitaryThreeReflection_left, tor_val, charpoly_diagonal, Fin.prod_univ_three, wt1]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> rfl`.
+-/
 private theorem corner_eq {κ : Type} [CommRing κ] (M : Matrix (Fin 3) (Fin 3) κ) :
     corner M = !![M 0 0, M 0 2; M 2 0, M 2 2] := by
   ext i j
   fin_cases i <;> fin_cases j <;> rfl
 
+/- English proof (translation)
+Simplify using `only [Matrix.charpoly, Matrix.det_fin_three, Matrix.det_fin_two]`. Simplify using `[corner_eq, Matrix.charmatrix_apply, h1, h2, h3, h4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem charpoly_block {κ : Type} [CommRing κ] (M : Matrix (Fin 3) (Fin 3) κ) (h1 : M 0 1 = 0)
     (h2 : M 1 0 = 0) (h3 : M 1 2 = 0) (h4 : M 2 1 = 0) :
     M.charpoly = (corner M).charpoly * (X - C (M 1 1)) := by
@@ -89,12 +121,18 @@ private theorem charpoly_block {κ : Type} [CommRing κ] (M : Matrix (Fin 3) (Fi
   simp [corner_eq, Matrix.charmatrix_apply, h1, h2, h3, h4]
   ring
 
+/- English proof (translation)
+Rewrite using `[corner_eq, corner_eq, corner_eq, Matrix.mul_fin_two]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three, h1, h4]`.
+-/
 private theorem corner_mul {κ : Type} [CommRing κ] (M N : Matrix (Fin 3) (Fin 3) κ) (h1 : M 0 1 = 0)
     (h4 : M 2 1 = 0) : corner (M * N) = corner M * corner N := by
   rw [corner_eq, corner_eq, corner_eq, Matrix.mul_fin_two]
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three, h1, h4]
 
+/- English proof (translation)
+Introduce `h`. Use `notIrrOfChar η.ker κ 3 (by norm_num) (glPart η r hm) ![Φ.comp η.ker.subtype, 1, (Φ.comp η.ker.subtype)⁻¹] (fun g => ?_) fun W hW => h W fun g hg => hW ⟨g, hg⟩ trivial` and prove the remaining obligations. Rewrite using `[chPoly, Fin.prod_univ_three]`. Conclude with `hp g g.2`.
+-/
 private theorem not_typeI {G κ : Type} [Group G] [Field κ] (η : G →* ℤˣ) (Φ : G →* κˣ) (r : G →* GG 3 κ)
     (hm : HasMult η r)
     (hp : ∀ g ∈ η.ker, (r g).mat.charpoly = (X - C (Φ g : κ)) * (X - C 1) * (X - C ((Φ g)⁻¹ : κˣ).1)) :
@@ -105,6 +143,13 @@ private theorem not_typeI {G κ : Type} [Group G] [Field κ] (η : G →* ℤˣ)
   rw [chPoly, Fin.prod_univ_three]
   exact hp g g.2
 
+/- English proof (translation)
+Establish `hmul : ∀ g h : η.ker, (r (g * h : η.ker)).mat = (r g).mat * (r h).mat`. Introduce `g h`. Establish `hr : (r g).right = 1` using `by rw [hm]; exact g.2`. Rewrite using `[Subgroup.coe_mul, map_mul]`. Use `show (((r g * r h).left : GL (Fin 3) κ) : Matrix (Fin 3) (Fin 3) κ) = ((r g).left : Matrix (Fin 3) (Fin 3) κ) * (r h).left`.
+
+Rewrite using `[SemidirectProduct.mul_left, hr, map_one, MulAut.one_apply, Units.val_mul]`. Set `μ : η.ker →* Matrix (Fin 2) (Fin 2) κ` to `{ toFun := fun g => corner (r g).mat map_one' := by`. Rewrite using `[OneMemClass.coe_one, map_one, corner_eq]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [GG.mat]`.
+
+Use the proof step `map_mul' := fun g h => by show corner (r (g * h : η.ker)).mat = corner (r g).mat * corner (r h).mat`. Rewrite using `[hmul g h]`. Conclude with `corner_mul _ _ (hB g g.2 0 1 ⟨0, by simp [wt, wt1]⟩) (hB g g.2 2 1 ⟨-1, by simp [wt, wt1]⟩) }`. Conclude with `⟨μ.toHomUnits, fun g => rfl⟩`.
+-/
 private theorem exists_corner_rep_of_block {G κ : Type} [Group G] [Field κ] (η : G →* ℤˣ) (r : G →* GG 3 κ)
     (hm : HasMult η r) (hB : Block η r) :
     ∃ ρ : η.ker →* GL (Fin 2) κ, ∀ g, (ρ g : Matrix (Fin 2) (Fin 2) κ) = corner (r g).mat := by
@@ -127,6 +172,13 @@ private theorem exists_corner_rep_of_block {G κ : Type} [Group G] [Field κ] (�
         exact corner_mul _ _ (hB g g.2 0 1 ⟨0, by simp [wt, wt1]⟩) (hB g g.2 2 1 ⟨-1, by simp [wt, wt1]⟩) }
   exact ⟨μ.toHomUnits, fun g => rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨-, hirr⟩`. Take `⟨ρ, hρ⟩` from `exists_corner_rep_of_block η r hm hB`. Set `χ : Fin 2 → η.ker →* κˣ` to `![Φ.comp η.ker.subtype, (Φ.comp η.ker.subtype)⁻¹]`. Apply `UpperTheory.V.Pr.notIrrOfChar η.ker κ 2 le_rfl ρ χ` to reduce the goal to its premises. Introduce `g`.
+
+Establish `hcp` using `charpoly_block (r g).mat (hB g g.2 0 1 ⟨0, by simp [wt, wt1]⟩) (hB g g.2 1 0 ⟨-1, by simp [wt, wt1]⟩) (hB g g.2 1 2 ⟨0, by simp [wt, wt1]⟩) (hB g g.2 2 1 ⟨-1, by simp [wt, wt1]⟩)`. Rewrite `hcp` using `[hp g g.2, h11 g g.2]`. Establish `hc2 : (corner (r g).mat).charpoly = (X - C (Φ g : κ)) * (X - C ((Φ g)⁻¹ : κˣ).1)`. Apply `mul_right_cancel₀ (Polynomial.X_sub_C_ne_zero (1 : κ))` to reduce the goal to its premises. Rewrite using `[← hcp]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show UpperTheory.V.Pr.gm ρ g = corner (r g).mat from hρ g, hc2]`. Simplify using `[chPoly, Fin.prod_univ_two, χ]`. Introduce `W hW`. Conclude with `hirr W (fun g hg v hv => by simpa [hρ] using hW ⟨g, hg⟩ trivial v hv)`.
+-/
 private theorem not_typeII {G κ : Type} [Group G] [Field κ] (η : G →* ℤˣ) (Φ : G →* κˣ) (r : G →* GG 3 κ)
     (hm : HasMult η r)
     (hp : ∀ g ∈ η.ker, (r g).mat.charpoly = (X - C (Φ g : κ)) * (X - C 1) * (X - C ((Φ g)⁻¹ : κˣ).1))
@@ -149,12 +201,20 @@ private theorem not_typeII {G κ : Type} [Group G] [Field κ] (η : G →* ℤˣ
   · intro W hW
     exact hirr W (fun g hg v hv => by simpa [hρ] using hW ⟨g, hg⟩ trivial v hv)
 
+/- English proof (translation)
+Establish `hc : (r c).left = 1` using `Units.ext h`. Rewrite using `[map_mul]`. Simplify using `[GG.mat, SemidirectProduct.mul_left, hc]`.
+-/
 private theorem mat_mul_eq_of_mat_eq_one {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (c g : G)
     (h : (r c).mat = 1) : (r (g * c)).mat = (r g).mat := by
   have hc : (r c).left = 1 := Units.ext h
   rw [map_mul]
   simp [GG.mat, SemidirectProduct.mul_left, hc]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [GG.mat]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, map_mul, pow_succ, ← ih]`. Establish `hr : (r (g ^ n)).right = 1` using `by rw [hm, map_pow, hg, one_pow]`.
+
+Use `show (((r (g ^ n) * r g).left : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) = ((r (g ^ n)).left : Matrix (Fin 3) (Fin 3) R) * (r g).left`. Rewrite using `[SemidirectProduct.mul_left, hr, map_one, MulAut.one_apply, Units.val_mul]`.
+-/
 private theorem mat_pow_of_mult_one {G R : Type} [Group G] [CommRing R] (η : G →* ℤˣ) (r : G →* GG 3 R)
     (hm : HasMult η r) (g : G) (hg : η g = 1) (n : ℕ) : (r (g ^ n)).mat = (r g).mat ^ n := by
   induction n with
@@ -166,6 +226,9 @@ private theorem mat_pow_of_mult_one {G R : Type} [Group G] [CommRing R] (η : G 
       ((r (g ^ n)).left : Matrix (Fin 3) (Fin 3) R) * (r g).left
     rw [SemidirectProduct.mul_left, hr, map_one, MulAut.one_apply, Units.val_mul]
 
+/- English proof (translation)
+Establish `h10` using `hM 1 0 (by simp [wt, wt1])`. Establish `h20` using `hM 2 0 (by simp [wt, wt1])`. Establish `h21` using `hM 2 1 (by simp [wt, wt1])`. Rewrite using `[det_fin_three]`. Apply the tactic sequence `fin_cases a <;> simp [h10, h20, h21]`.
+-/
 private theorem det_up_lemma_3 {A : Type} [CommRing A] (M : Matrix (Fin 3) (Fin 3) A)
     (hM : ∀ a b, wt a b < 0 → M a b = 0) (a : Fin 3) : (scalar (Fin 3) (M a a) - M).det = 0 := by
   have h10 := hM 1 0 (by simp [wt, wt1])
@@ -174,6 +237,9 @@ private theorem det_up_lemma_3 {A : Type} [CommRing A] (M : Matrix (Fin 3) (Fin 
   rw [det_fin_three]
   fin_cases a <;> simp [h10, h20, h21]
 
+/- English proof (translation)
+Establish `h01` using `hM 0 1 (by simp [wt, wt1])`. Establish `h02` using `hM 0 2 (by simp [wt, wt1])`. Establish `h12` using `hM 1 2 (by simp [wt, wt1])`. Rewrite using `[det_fin_three]`. Apply the tactic sequence `fin_cases a <;> simp [h01, h02, h12]`.
+-/
 private theorem det_scalar_diag_sub_triangular_eq_zero {A : Type} [CommRing A] (M : Matrix (Fin 3) (Fin 3) A)
     (hM : ∀ a b, 0 < wt a b → M a b = 0) (a : Fin 3) : (scalar (Fin 3) (M a a) - M).det = 0 := by
   have h01 := hM 0 1 (by simp [wt, wt1])
@@ -182,6 +248,49 @@ private theorem det_scalar_diag_sub_triangular_eq_zero {A : Type} [CommRing A] (
   rw [det_fin_three]
   fin_cases a <;> simp [h01, h02, h12]
 
+/- English proof (translation)
+Introduce `G k A _ _ _ _ _ _ _ h2 η Ψ c g₁ hMk r hm hent hN U hU hchar`. Establish `hcp : ∀ g, η g = 1 → (r g).mat.charpoly = ((r0 η Ψ g).mat).charpoly.map (algebraMap k A)`. Introduce `g hg`. Take `⟨n, hn, -, hgn⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (Subgroup.FiniteIndex.index_ne_zero (H := U)) g`. Apply `charpoly_const (r g).mat (r0 η Ψ g).mat (r0 η Ψ (g ^ n)).mat n hn (hent g)` to reduce the goal to its premises.
+
+Rewrite using `[← mat_pow_of_mult_one η r hm g hg n]`. Conclude with `hchar _ hgn (by rw [map_pow, hg, one_pow])`. Establish `hdiagK : ∀ g, η g = 1 → ∀ a, ((scalar (Fin 3) ((r g).mat a a)) - (r g).mat).det = 0 → (r g).mat a a = algebraMap k A ((r0 η Ψ g).mat a a)` using `fun g hg a ha => diag_const _ _ (hent g) (hcp g hg) a ha`. Establish `hzu : IsUnit (zeta c g₁ r)`. Establish `hsub : zeta c g₁ r - algebraMap k A (zeta c g₁ (r0 η Ψ)) ∈ maximalIdeal A`.
+
+Establish `e1` using `hent g₁ 0 0`. Establish `e2` using `hent (gstar c g₁) 0 0`. Establish `he : zeta c g₁ r - algebraMap k A (zeta c g₁ (r0 η Ψ)) = ((r g₁).mat - (r0 η Ψ g₁).mat.map (algebraMap k A)) 0 0 - ((r (gstar c g₁)).mat - (r0 η Ψ (gstar c g₁)).mat.map (algebraMap k A)) 0 0`. Simplify using `[zeta, zmat]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[he]`. Conclude with `Ideal.sub_mem _ e1 e2`. Establish `hu : IsUnit (algebraMap k A (zeta c g₁ (r0 η Ψ)))` using `(zeta_reducible_rep_eq_sub_inv_and_isUnit η Ψ c g₁ hMk).2.map _`. Assume the negation of the conclusion as `hnu`. Establish `hm1` using `Ideal.sub_mem _ ((IsLocalRing.mem_maximalIdeal _).2 hnu) hsub`.
+
+Rewrite `hm1` using `[sub_sub_cancel]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hm1 hu`. Set `f : A →+* FractionRing A` to `algebraMap A (FractionRing A)`. Establish `hf : Function.Injective f` using `IsFractionRing.injective A (FractionRing A)`. Set `r' : G →* GG 3 (FractionRing A)` to `(GG.map f).comp r`.
+
+Establish `hm' : HasMult η r'` using `fun g => hm g`. Establish `hN' : Normalised c g₁ r'` using `normalised_map f hN`. Establish `hmat' : ∀ g, (r' g).mat = (r g).mat.map f` using `fun g => GG.map_mat f (r g)`. Establish `hz' : zeta c g₁ r' ≠ 0` using `by show zmat c g₁ r' 0 0 ≠ 0`. Rewrite using `[zmat_map]`.
+
+Introduce `h0`. Conclude with `hzu.ne_zero (hf (h0.trans (map_zero f).symm))`. Establish `h2A : (2 : A) ≠ 0`. Introduce `h0`. Apply `h2` to reduce the goal to its premises.
+
+Apply `(algebraMap k A).injective` to reduce the goal to its premises. Rewrite using `[map_ofNat, map_zero]`. Conclude with `h0`. Establish `h2' : (2 : FractionRing A) ≠ 0`. Introduce `h0`.
+
+Apply `h2A` to reduce the goal to its premises. Apply `hf` to reduce the goal to its premises. Rewrite using `[map_ofNat, map_zero]`. Conclude with `h0`. Set `Φ : G →* (FractionRing A)ˣ` to `(Units.map (f.comp (algebraMap k A)).toMonoidHom).comp Ψ`.
+
+Establish `hp' : ∀ g ∈ η.ker, (r' g).mat.charpoly = (X - C (Φ g : FractionRing A)) * (X - C 1) * (X - C ((Φ g)⁻¹ : (FractionRing A)ˣ).1)`. Introduce `g hg`. Rewrite using `[hmat', Matrix.charpoly_map, hcp g hg, charpoly_diagonal_character_rep, Polynomial.map_map]`. Simplify using `[Φ, Polynomial.map_mul, Polynomial.map_sub]`. Establish `hUpT : Upper η r' → Upper η r`.
+
+Introduce `h g hg a b hab`. Apply `hf` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `h g hg a b hab` as an intermediate fact. Rewrite `this` using `[hmat']`.
+
+Conclude with `this`. Establish `hLoT : Lower η r' → Lower η r`. Introduce `h g hg a b hab`. Apply `hf` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Use `h g hg a b hab` as an intermediate fact. Rewrite `this` using `[hmat']`. Conclude with `this`. Establish `hUL : Upper η r ∨ Lower η r`. Break down `shape_cases η r' c g₁ h2' hm' hMk.ηc hMk.ηg hN' hz' with hI | hUp' | hLo' | hII` into its components or cases.
+
+Conclude with `absurd hI (not_typeI η Φ r' hm' hp')`. Conclude with `Or.inl (hUpT hUp')`. Conclude with `Or.inr (hLoT hLo')`. It suffices to derive a contradiction. Apply `not_typeII η Φ r' hm' hp' hII.1 _ hII` to reduce the goal to its premises.
+
+Introduce `g hg`. Establish `hB : ∀ a b, Odd (wt a b) → (r g).mat a b = 0`. Introduce `a b hab`. Apply `hf` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Use `hII.1 g hg a b hab` as an intermediate fact. Rewrite `this` using `[hmat']`. Conclude with `this`. Establish `hcpb` using `charpoly_block (r g).mat (hB 0 1 ⟨0, by simp [wt, wt1]⟩) (hB 1 0 ⟨-1, by simp [wt, wt1]⟩) (hB 1 2 ⟨0, by simp [wt, wt1]⟩) (hB 2 1 ⟨-1, by simp [wt, wt1]⟩)`. Establish `hdet : (scalar (Fin 3) ((r g).mat 1 1) - (r g).mat).det = 0`.
+
+Rewrite using `[← Matrix.eval_charpoly, hcpb]`. Simplify using the standard rewrite rules. Rewrite using `[hmat', Matrix.map_apply, hdiagK g hg 1 hdet]`. Simplify using `[GG.mat, unitaryThreeReflection_left, tor_val, wt1]`. Establish `hdk : ∀ g, η g = 1 → ∀ a, (r g).mat a a = algebraMap k A ((r0 η Ψ g).mat a a)`.
+
+Introduce `g hg a`. Apply `hdiagK g hg a` to reduce the goal to its premises. Break down `hUL with hu | hl` into its components or cases. Conclude with `det_up_lemma_3 _ (fun a b hab => hu g hg a b hab) a`. Conclude with `det_scalar_diag_sub_triangular_eq_zero _ (fun a b hab => hl g hg a b hab) a`.
+
+Use `⟨hUL, fun g a => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hg : η g = 1`. Conclude with `hdk g hg a`. Establish `hneg : η g = -1` using `(Int.units_eq_one_or (η g)).resolve_left hg`. Establish `hgc : η (g * c) = 1`.
+
+Rewrite using `[map_mul, hneg, hMk.ηc]`. Both sides reduce to the same expression. Establish `hrc : (r0 η Ψ c).mat = 1`. Simplify using `[GG.mat, unitaryThreeReflection_left, hMk.Ψc]`. Rewrite using `[← mat_mul_eq_of_mat_eq_one r c g hN.atc, ← mat_mul_eq_of_mat_eq_one (r0 η Ψ) c g hrc]`.
+
+Conclude with `hdk _ hgc a`.
+-/
 theorem UpperTheory.V.Pr.constOfChar :
     UpperTheory.V.Pr.ConstOfChar := by
   intro G k A _ _ _ _ _ _ _ h2 η Ψ c g₁ hMk r hm hent hN U hU hchar

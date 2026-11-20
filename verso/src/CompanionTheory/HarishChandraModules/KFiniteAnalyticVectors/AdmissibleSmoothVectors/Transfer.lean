@@ -30,6 +30,9 @@ def conjRep (ρ : G →* Matrix ι ι ℂ) : G →* Matrix ι ι ℂ where
 
 variable [TopologicalSpace G] {st : G → G} {S : Set G} {ρ : G →* Matrix ι ι ℂ} {ρ' : G →* Matrix ι' ι' ℂ}
 
+/- English proof (translation)
+The claim follows from `Continuous.matrix_fromBlocks h.cont continuous_const continuous_const h'.cont adj g := by change fromBlocks (ρ (st g)) 0 0 (ρ' (st g)) = (fromBlocks (ρ g) 0 0 (ρ' g))ᴴ simp [fromBlocks_conjTranspose, h.adj, h'.adj] tri := by obtain ⟨a, ha, ha'⟩ := h.tri obtain ⟨b, hb, hb'⟩ := h'. …`.
+-/
 theorem isGood_sum (h : IsGood st S ρ) (h' : IsGood st S ρ') : IsGood st S (sumRep ρ ρ') where
   cont := Continuous.matrix_fromBlocks h.cont continuous_const continuous_const h'.cont
   adj g := by
@@ -52,6 +55,11 @@ theorem isGood_sum (h : IsGood st S ρ) (h' : IsGood st S ρ') : IsGood st S (su
       · rfl
       · exact hb' s hs (show b j < b i by omega)
 
+/- English proof (translation)
+Establish `h1 : Nat.pair a b ≤ Nat.pair c b`. Break down `h.eq_or_lt with rfl | h` into its components or cases. Conclude with `le_rfl`. Conclude with `(Nat.pair_lt_pair_left b h).le`. Establish `h2 : Nat.pair c b ≤ Nat.pair c d`.
+
+Break down `h'.eq_or_lt with rfl | h'` into its components or cases. Conclude with `le_rfl`. Conclude with `(Nat.pair_lt_pair_right c h').le`. Conclude with `h1.trans h2`.
+-/
 theorem pair_mono {a b c d : ℕ} (h : a ≤ c) (h' : b ≤ d) : Nat.pair a b ≤ Nat.pair c d := by
   have h1 : Nat.pair a b ≤ Nat.pair c b := by
     rcases h.eq_or_lt with rfl | h
@@ -63,6 +71,15 @@ theorem pair_mono {a b c d : ℕ} (h : a ≤ c) (h' : b ≤ d) : Nat.pair a b �
     · exact (Nat.pair_lt_pair_right c h').le
   exact h1.trans h2
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `(h.cont.matrix_elem i.1 j.1).mul (h'.cont.matrix_elem i.2 j.2)`. Use `adj g := by`. Express the relevant statement in the definitionally equal form `ρ (st g) ⊗ₖ ρ' (st g) = (ρ g ⊗ₖ ρ' g)ᴴ`. Rewrite using `[conjTranspose_kronecker, h.adj, h'.adj]`.
+
+Use `tri := by`. Take `⟨a, ha, ha'⟩` from `h.tri`. Take `⟨b, hb, hb'⟩` from `h'.tri`. Use `⟨fun p => Nat.pair (a p.1) (b p.2), ?_, ?_⟩` and prove the remaining obligations. Introduce `p q hpq`.
+
+Take `⟨h1, h2⟩` from `Nat.pair_eq_pair.1 hpq`. Conclude with `Prod.ext (ha h1) (hb h2)`. Introduce `s hs p q hpq`. Express the relevant statement in the definitionally equal form `ρ s p.1 q.1 * ρ' s p.2 q.2 = 0`. Distinguish the cases in `h1 : a q.1 < a p.1`.
+
+Rewrite using `[ha' s hs h1, zero_mul]`. Distinguish the cases in `h2 : b q.2 < b p.2`. Rewrite using `[hb' s hs h2, mul_zero]`. Conclude with `absurd (pair_mono (not_lt.1 h1) (not_lt.1 h2)) (not_le.2 hpq)`.
+-/
 theorem isGood_tens (h : IsGood st S ρ) (h' : IsGood st S ρ') : IsGood st S (tensRep ρ ρ') where
   cont := by
     refine continuous_matrix fun i j => ?_
@@ -85,6 +102,13 @@ theorem isGood_tens (h : IsGood st S ρ) (h' : IsGood st S ρ') : IsGood st S (t
       · rw [hb' s hs h2, mul_zero]
       exact absurd (pair_mono (not_lt.1 h1) (not_lt.1 h2)) (not_le.2 hpq)
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `Complex.continuous_conj.comp (h.cont.matrix_elem i j)`. Use `adj g := by`. Express the relevant statement in the definitionally equal form `(ρ (st g)).map (starRingEnd ℂ) = ((ρ g).map (starRingEnd ℂ))ᴴ`. Rewrite using `[h.adj]`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Use `tri := by`. Take `⟨a, ha, ha'⟩` from `h.tri`. Use `⟨a, ha, fun s hs i j hij => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `starRingEnd ℂ (ρ s i j) = 0`. Rewrite using `[ha' s hs hij, map_zero]`.
+-/
 theorem isGood_conj (h : IsGood st S ρ) : IsGood st S (conjRep ρ) where
   cont := by
     refine continuous_matrix fun i j => ?_
@@ -100,12 +124,20 @@ theorem isGood_conj (h : IsGood st S ρ) : IsGood st S (conjRep ρ) where
     change starRingEnd ℂ (ρ s i j) = 0
     rw [ha' s hs hij, map_zero]
 
+/- English proof (translation)
+The claim follows from `continuous_const adj g := by simp tri := ⟨fun _ => 0, fun _ _ _ => rfl, fun _ _ _ _ h => absurd h (lt_irrefl _)⟩`.
+-/
 theorem isGood_one : IsGood st S (1 : G →* Matrix Unit Unit ℂ) where
   cont := continuous_const
   adj g := by simp
   tri := ⟨fun _ => 0, fun _ _ _ => rfl, fun _ _ _ _ h => absurd h (lt_irrefl _)⟩
 
 omit [DecidableEq ι] [DecidableEq ι'] in
+/- English proof (translation)
+Establish `: ((A ⊗ₖ B) *ᵥ fun p : ι × ι' => b p.1 * b' p.2) = fun p => (A *ᵥ b) p.1 * (B *ᵥ b') p.2`. Use function extensionality and compare the values at `p`. Simplify using `only [mulVec, dotProduct, Fintype.sum_prod_type, Finset.sum_mul_sum, kroneckerMap_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[this]`.
+
+Simplify using `only [dotProduct, Fintype.sum_prod_type, Finset.sum_mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem coef_kronecker (A : Matrix ι ι ℂ) (B : Matrix ι' ι' ℂ) (a b : ι → ℂ) (a' b' : ι' → ℂ) :
     (fun p : ι × ι' => a p.1 * a' p.2) ⬝ᵥ ((A ⊗ₖ B) *ᵥ fun p : ι × ι' => b p.1 * b' p.2) =
       (a ⬝ᵥ (A *ᵥ b)) * (a' ⬝ᵥ (B *ᵥ b')) := by
@@ -143,6 +175,11 @@ def coefAlg (st : G → G) (S : Set G) (C : Set G) : StarSubalgebra ℂ C(C, ℂ
     change _ = star a ⬝ᵥ ((τ x).map (starRingEnd ℂ) *ᵥ star b)
     simp [dotProduct, mulVec, mul_comm]
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `: ρ x ≠ ρ y` using `fun e => hxy (Subtype.ext (hi e))`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, ρ x i j ≠ ρ y i j := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Conclude with `this (Matrix.ext hc)`. Use `⟨fun z : C => ρ z i j, ⟨⟨fun z : C => ρ z i j, (h.cont.matrix_elem i j).comp continuous_subtype_val⟩, ?_, rfl⟩, hij⟩` and prove the remaining obligations. Use `⟨ι, inferInstance, inferInstance, ρ, Pi.single i 1, Pi.single j 1, h, fun z => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem coefAlg_separates (h : IsGood st S ρ) (hi : Function.Injective ρ) (C : Set G) :
     (coefAlg st S C).SeparatesPoints := by
   intro x y hxy
@@ -156,6 +193,13 @@ theorem coefAlg_separates (h : IsGood st S ρ) (hi : Function.Injective ρ) (C :
   refine ⟨ι, inferInstance, inferInstance, ρ, Pi.single i 1, Pi.single j 1, h, fun z => ?_⟩
   simp
 
+/- English proof (translation)
+Establish `: CompactSpace C` using `isCompact_iff_compactSpace.1 hC`. Establish `htop` using `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints _ (coefAlg_separates h hi C)`. Set `F : C(C, ℂ)` to `⟨fun x => Φ x, hΦ.comp continuous_subtype_val⟩`. Establish `hF : F ∈ closure (coefAlg st S C : Set C(C, ℂ))`. Establish `: F ∈ (coefAlg st S C).topologicalClosure` using `by rw [htop]; trivial`.
+
+Conclude with `this`. Take `⟨f, ⟨κ, _, _, τ, a, b, hτ, hf⟩, hd⟩` from `Metric.mem_closure_iff.1 hF δ hδ`. Use `⟨κ, inferInstance, inferInstance, τ, a, b, hτ, fun x hx => ?_⟩` and prove the remaining obligations. Use `(ContinuousMap.dist_apply_le_dist (f := F) (g := f) ⟨x, hx⟩).trans hd.le` as an intermediate fact. Rewrite `this` using `[dist_eq_norm, hf]`.
+
+Conclude with `this`.
+-/
 theorem exists_approx (h : IsGood st S ρ) (hi : Function.Injective ρ) {C : Set G} (hC : IsCompact C)
     {Φ : G → ℂ} (hΦ : Continuous Φ) {δ : ℝ} (hδ : 0 < δ) :
     ∃ (κ : Type) (_ : Fintype κ) (_ : DecidableEq κ) (τ : G →* Matrix κ κ ℂ) (a b : κ → ℂ),
@@ -190,10 +234,16 @@ structure IsFam (Φ : G → ℂ) (F : List G → G → ℂ) : Prop where
 variable {μ e}
 
 omit [IsTopologicalGroup G] in
+/- English proof (translation)
+The claim follows from `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`.
+-/
 theorem integrable_of_cont {V : Type} [NormedAddCommGroup V] [SecondCountableTopology K] {f : K → V}
     (hf : Continuous f) : Integrable f μ :=
   hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)
 
+/- English proof (translation)
+The claim follows from `h.cont₀.sub h'.cont₀ cont l := (h.cont l).sub (h'.cont l) nil x := by have h1 := h.cont₀ have h2 := h'.cont₀ rw [h.nil, h'.nil, ← integral_sub (integrable_of_cont (by fun_prop)) (integrable_of_cont (by fun_prop))] simp only [mul_sub] cons a l x := by have h1 := h.cont l have h2 : …`.
+-/
 theorem IsFam.sub [SecondCountableTopology K] (he : Continuous e) {Φ Φ' : G → ℂ} {F F' : List G → G → ℂ}
     (h : IsFam μ e Φ F) (h' : IsFam μ e Φ' F') :
     IsFam μ e (fun x => Φ x - Φ' x) (fun l x => F l x - F' l x) where
@@ -211,6 +261,9 @@ theorem IsFam.sub [SecondCountableTopology K] (he : Continuous e) {Φ Φ' : G �
     simp only [mul_sub]
 
 omit [IsTopologicalGroup G] in
+/- English proof (translation)
+Rewrite using `[← integral_mul_const]`. Use `norm_integral_le_of_norm_le (integrable_of_cont (by fun_prop)) (ae_of_all _ fun k => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hf k) (norm_nonneg _)`.
+-/
 theorem norm_avg_le [SecondCountableTopology K] (he : Continuous e) {f : K → ℂ} {δ : ℝ} (hf : ∀ k, ‖f k‖ ≤ δ) :
     ‖∫ k, e k * f k ∂μ‖ ≤ (∫ k, ‖e k‖ ∂μ) * δ := by
   rw [← integral_mul_const]
@@ -218,6 +271,13 @@ theorem norm_avg_le [SecondCountableTopology K] (he : Continuous e) {f : K → �
   rw [norm_mul]
   exact mul_le_mul_of_nonneg_left (hf k) (norm_nonneg _)
 
+/- English proof (translation)
+Establish `hK : IsCompact (K : Set G)` using `isCompact_iff_compactSpace.2 ‹_›`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `C hC`. Use `⟨C * (K : Set G), hC.mul hK, fun Φ F h δ hδ x hx => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h.nil]`. Simplify using `using norm_avg_le (μ := μ) he fun k => hδ _ (Set.mul_mem_mul hx k.2)`. Consider the case `cons a l ih`. Introduce `C hC`. Take `⟨C', hC', H⟩` from `ih (C * (K : Set G) * {a}) ((hC.mul hK).mul isCompact_singleton)`.
+
+Use `⟨C', hC', fun Φ F h δ hδ x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[h.cons, List.length_cons, pow_succ', mul_assoc]`. Conclude with `norm_avg_le he fun k => H Φ F h δ hδ _ (Set.mul_mem_mul (Set.mul_mem_mul hx k.2) rfl)`.
+-/
 theorem exists_bound [SecondCountableTopology K] (he : Continuous e) (l : List G) :
     ∀ C : Set G, IsCompact C → ∃ C' : Set G, IsCompact C' ∧ ∀ Φ F, IsFam μ e Φ F → ∀ δ : ℝ,
       (∀ y ∈ C', ‖Φ y‖ ≤ δ) → ∀ x ∈ C, ‖F l x‖ ≤ (∫ k, ‖e k‖ ∂μ) ^ (l.length + 1) * δ := by
@@ -236,6 +296,13 @@ theorem exists_bound [SecondCountableTopology K] (he : Continuous e) (l : List G
     exact norm_avg_le he fun k => H Φ F h δ hδ _ (Set.mul_mem_mul (Set.mul_mem_mul hx k.2) rfl)
 
 omit [IsTopologicalGroup G] in
+/- English proof (translation)
+Establish `key : ∀ x w, ℓ (τ x (E w)) = ∫ k : K, e k * ℓ (τ (x * k) w) ∂μ`. Introduce `x w`. Establish `hw` using `h2 w`. Use `(ℓ.comp ⟨τ x, h1 x⟩).integral_comp_comm (μ := μ) (φ := fun k : K => e k • τ k w) (integrable_of_cont (he.smul (hw.comp continuous_subtype_val)))` as an intermediate fact. Rewrite using `[hE]`.
+
+Use `Eq.trans this.symm ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `⟨ℓ.continuous.comp (h2 u), fun l => ℓ.continuous.comp (h2 _), fun x => key x u, fun a l x => ?_⟩` and prove the remaining obligations. Simplify using `only [List.map_cons, word_cons, Module.End.mul_apply]`. Rewrite using `[key]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isFam_rep [SecondCountableTopology K] (he : Continuous e) {V : Type} [NormedAddCommGroup V]
     [NormedSpace ℂ V] [CompleteSpace V] (τ : G →* Module.End ℂ V) (h1 : ∀ x, Continuous (τ x))
     (h2 : ∀ v, Continuous fun x => τ x v) (E : Module.End ℂ V) (hE : ∀ u, E u = ∫ k : K, e k • τ k u ∂μ)
@@ -256,6 +323,9 @@ theorem isFam_rep [SecondCountableTopology K] (he : Continuous e) {V : Type} [No
 
 end Bound
 
+/- English proof (translation)
+Simplify using `only [stdPoly, LinearMap.sum_apply, map_sum, List.map_ofFn, Function.comp_def, Module.End.mul_apply, Module.End.intCast_apply, map_zsmul, zsmul_eq_mul]`.
+-/
 theorem apply_stdPoly {G V : Type} [AddCommGroup V] [Module ℂ V] (τ : G → Module.End ℂ V) (E : Module.End ℂ V)
     {M : ℕ} (g : Fin M → G) (ℓ : V →ₗ[ℂ] ℂ) (u : V) :
     ℓ (stdPoly E (fun i => τ (g i)) u) = ∑ π : Equiv.Perm (Fin M),
@@ -267,6 +337,29 @@ end PrismTransfer
 
 open PrismTransfer
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ K _ _ _ μ _ st S ι₀ _ _ ρ₀ hρ₀ hi e he M g hgood H _ _ _ σ hσ E hE`. Establish `: SecondCountableTopology K` using `TopologicalSpace.Subtype.secondCountableTopology (K : Set G)`. Use `set B : ℝ := ∫ k, ‖e k‖ ∂μ with hB`. Use `choose C hC hbd using fun π : Equiv.Perm (Fin M) => exists_bound (μ := μ) he (List.ofFn fun i => g (π i)) {1} isCompact_singleton`. Establish `hCU : IsCompact (⋃ π, C π)` using `isCompact_iUnion hC`.
+
+Set `φ : (H →L[ℂ] H) →+* Module.End ℂ H` to `ContinuousLinearMap.toLinearMapRingHom`. Set `σ' : G →* Module.End ℂ H` to `φ.toMonoidHom.comp σ`. Use extensionality with `v`. Use `SeparatingDual.eq_zero_of_forall_dual_eq_zero (R := ℂ) fun ℓ => ?_` and prove the remaining obligations. Establish `hF` using `isFam_rep (μ := μ) he σ' (fun x => (σ x).continuous) hσ (φ E) hE ℓ v`.
+
+Establish `hmap : stdPoly E (fun i => σ (g i)) v = stdPoly (φ E) (fun i => σ' (g i)) v`. Express the relevant statement in the definitionally equal form `φ (stdPoly E fun i => σ (g i)) v = _`. Rewrite using `[map_stdPoly]`. Both sides reduce to the same expression. Rewrite using `[hmap]`.
+
+Establish `main : ∀ δ : ℝ, 0 < δ → ‖ℓ (stdPoly (φ E) (fun i => σ' (g i)) v)‖ ≤ (Fintype.card (Equiv.Perm (Fin M)) * B ^ (M + 1)) * δ`. Introduce `δ hδ`. Take `⟨κ, _, _, τ, a, b, hτ, hap⟩` from `exists_approx hρ₀ hi hCU hF.cont₀ hδ`. Set `τ' : G →* Module.End ℂ (κ → ℂ)` to `(Matrix.toLinAlgEquiv' : Matrix κ κ ℂ ≃ₐ[ℂ] _).toMonoidHom.comp τ`. Establish `hc : ∀ u : κ → ℂ, Continuous fun x => τ x *ᵥ u` using `fun u => hτ.cont.matrix_mulVec continuous_const`.
+
+Establish `hint : ∀ u : κ → ℂ, Integrable (fun k : K => e k • (τ k *ᵥ u)) μ` using `fun u => integrable_of_cont (he.smul ((hc u).comp continuous_subtype_val))`. Set `E' : Module.End ℂ (κ → ℂ)` to `{ toFun := fun u => ∫ k : K, e k • (τ k *ᵥ u) ∂μ map_add' := fun u w => by`. Rewrite using `[← integral_add (hint u) (hint w)]`. Simplify using `only [mulVec_add, smul_add]`. Use the proof step `map_smul' := fun c u => by`.
+
+Rewrite using `[RingHom.id_apply, ← integral_smul]`. Simplify using `only [mulVec_smul, smul_comm c] }`. Set `ℓ' : (κ → ℂ) →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (dotProductBilin ℂ ℂ a)`. Establish `hF'` using `isFam_rep (μ := μ) he τ' (fun x => (τ' x).continuous_of_finiteDimensional) hc E' (fun _ => rfl) ℓ' b`. Establish `hz : stdPoly E' (fun i => τ' (g i)) = 0` using `hgood κ τ hτ E' fun _ => rfl`.
+
+Establish `e1` using `apply_stdPoly σ' (φ E) g (ℓ : H →ₗ[ℂ] ℂ) v`. Establish `e2` using `apply_stdPoly τ' E' g (ℓ' : (κ → ℂ) →ₗ[ℂ] ℂ) b`. Rewrite `e2` using `[hz, LinearMap.zero_apply, map_zero]`. Establish `e3 : ℓ (stdPoly (φ E) (fun i => σ' (g i)) v) = ∑ π : Equiv.Perm (Fin M), ((Equiv.Perm.sign π : ℤ) : ℂ) * (ℓ (word (φ E) ((List.ofFn fun i => g (π i)).map σ') v) - ℓ' (word E' ((List.ofFn fun i => g (π i)).map τ') b))`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`.
+
+Conclude with `e1.trans (by rw [← sub_zero (Finset.sum _ _), e2]; rfl)`. Rewrite using `[e3]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← nsmul_eq_mul, ← Finset.card_univ]`. Use `Finset.sum_le_card_nsmul _ _ _ fun π _ => ?_` and prove the remaining obligations.
+
+Establish `hs : ‖((Equiv.Perm.sign π : ℤ) : ℂ)‖ = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign π) with h | h <;> simp [h]`. Rewrite using `[norm_mul, hs, one_mul]`. Use `hbd π _ _ (hF.sub he hF') δ (fun y hy => hap y (Set.mem_iUnion.2 ⟨π, hy⟩)) 1 rfl` as an intermediate fact. Simplify `this` using `only [map_one, Module.End.one_apply, List.length_ofFn]`.
+
+Rewrite using `[← norm_le_zero_iff]`. Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations. Use `set D : ℝ := Fintype.card (Equiv.Perm (Fin M)) * B ^ (M + 1)`. Establish `hD : 0 ≤ D` using `mul_nonneg (Nat.cast_nonneg _) (pow_nonneg (integral_nonneg fun _ => norm_nonneg _) _)`. Use `(main (ε / (D + 1)) (by positivity)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[zero_add, mul_div_assoc', div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem transfer_holds : Transfer := by
   intro G _ _ _ _ _ K _ _ _ μ _ st S ι₀ _ _ ρ₀ hρ₀ hi e he M g hgood H _ _ _ σ hσ E hE
   have : SecondCountableTopology K := TopologicalSpace.Subtype.secondCountableTopology (K : Set G)

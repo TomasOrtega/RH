@@ -18,9 +18,15 @@ namespace GlobalTheory.Amp.DegSide
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Simplify `(WUnfold.measurableSet_not_GG (k := k) (r := r)).compl` using `[Set.compl_setOf]`.
+-/
 theorem measurableSet_GG : MeasurableSet {x : Mt k r | Matrix.of x ∈ GG k r} := by
   simpa [Set.compl_setOf] using (WUnfold.measurableSet_not_GG (k := k) (r := r)).compl
 
+/- English proof (translation)
+Establish `h : ContinuousOn (fun x : Mt k r => f (Matrix.of x)) {x : Mt k r | Matrix.of x ∈ GG k r}` using `hf`. Use `h.measurable_piecewise (g := fun _ => (0 : β)) continuousOn_const measurableSet_GG` as an intermediate fact. Rewrite using `[← Set.piecewise_eq_indicator]` and apply the resulting hypothesis.
+-/
 theorem measurable_indicator_GG {β : Type} [TopologicalSpace β] [MeasurableSpace β] [BorelSpace β] [Zero β]
     {f : Mat k r → β} (hf : ContinuousOn f (GG k r)) :
     Measurable (Set.indicator {x : Mt k r | Matrix.of x ∈ GG k r} fun x => f (Matrix.of x)) := by
@@ -29,16 +35,31 @@ theorem measurable_indicator_GG {β : Type} [TopologicalSpace β] [MeasurableSpa
   have := h.measurable_piecewise (g := fun _ => (0 : β)) continuousOn_const measurableSet_GG
   rwa [← Set.piecewise_eq_indicator]
 
+/- English proof (translation)
+Establish `: Continuous fun p : Mat k r × Mat k r => p.1 * p.2` using `continuous_fst.matrix_mul continuous_snd`. Establish `h : Continuous fun p : Mt k r × Mt k r => lmulM (Matrix.of p.1) p.2` using `this`. Conclude with `h.measurable`.
+-/
 theorem measurable_mulP : Measurable fun p : Mt k r × Mt k r => lmulM (Matrix.of p.1) p.2 := by
   have : Continuous fun p : Mat k r × Mat k r => p.1 * p.2 := continuous_fst.matrix_mul continuous_snd
   have h : Continuous fun p : Mt k r × Mt k r => lmulM (Matrix.of p.1) p.2 := this
   exact h.measurable
 
+/- English proof (translation)
+Establish `: Continuous fun x : Mat k r => h * x * h⁻¹` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Establish `h' : Continuous (conjM h : Mt k r → Mt k r)` using `this`. Conclude with `h'.measurable`.
+-/
 theorem measurable_conjM (h : Mat k r) : Measurable (conjM h : Mt k r → Mt k r) := by
   have : Continuous fun x : Mat k r => h * x * h⁻¹ := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
   have h' : Continuous (conjM h : Mt k r → Mt k r) := this
   exact h'.measurable
 
+/- English proof (translation)
+Use `haveI := hN.1`. Establish `hconj : ∀ h ∈ UWset k r z, μN.map (conjM h) = μN` using `(GlobalTheory.UnipotentRadicalHaar.unimodular_normal k r z μW μN hz hT hW hN).2.2.2.2`. Establish `hm : Measurable (A.indicator (1 : Mt k r → ℝ≥0∞))` using `measurable_one.indicator hA`. Rewrite using `[← lintegral_indicator_one hA, hq _ hm]`. Use `(lintegral_congr fun x => ?_).trans lintegral_zero` and prove the remaining obligations.
+
+Establish `hx : Measurable fun s : Mt k r => A.indicator (1 : Mt k r → ℝ≥0∞) (rmulM (Matrix.of x) s)` using `hm.comp (continuous_rmulM _).measurable`. Use `show ∫⁻ s, A.indicator (1 : Mt k r → ℝ≥0∞) (rmulM (Matrix.of x) s) ∂(muProd μW μN) = 0`. Unfold `muProd`. Rewrite using `[lintegral_map hx measurable_mulP, lintegral_prod (fun p : Mt k r × Mt k r => A.indicator (1 : Mt k r → ℝ≥0∞) (rmulM (Matrix.of x) (lmulM (Matrix.of p.1) p.2))) (hx.comp measurable_mulP).aemeasurable]`. Establish `haeW : ∀ᵐ h ∂μW, Matrix.of h ∈ UWset k r z` using `hW.2.2.1`.
+
+Use `(lintegral_congr_ae (haeW.mono fun h hh => ?_)).trans lintegral_zero` and prove the remaining obligations. Establish `hg : Measurable fun s : Mt k r => A.indicator (1 : Mt k r → ℝ≥0∞) (rmulM (Matrix.of h * Matrix.of x) s)` using `hm.comp (continuous_rmulM _).measurable`. Establish `e : ∀ n : Mt k r, rmulM (Matrix.of x) (lmulM (Matrix.of h) n) = rmulM (Matrix.of h * Matrix.of x) (conjM (Matrix.of h) n)`. Introduce `n`. Use `show (Matrix.of h * Matrix.of n * Matrix.of x : Mat k r) = Matrix.of h * Matrix.of n * (Matrix.of h)⁻¹ * (Matrix.of h * Matrix.of x)`.
+
+Rewrite using `[Matrix.mul_assoc (Matrix.of h * Matrix.of n : Mat k r), Matrix.nonsing_inv_mul_cancel_left _ _ (isUnit_det_of_mem_GG hh.1)]`. Use `show ∫⁻ n, A.indicator (1 : Mt k r → ℝ≥0∞) (rmulM (Matrix.of x) (lmulM (Matrix.of h) n)) ∂μN = 0`. Simplify using `only [e]`. Rewrite using `[← lintegral_map hg (measurable_conjM _), hconj _ hh, ← h0 (Matrix.of h * Matrix.of x), ← lintegral_indicator_one ((continuous_rmulM _).measurable hA)]`. Both sides reduce to the same expression.
+-/
 theorem null_of_fibres {z : Fin (2 * r + k + 1) → ℂ} {μG μW μN ν : Measure (Mt k r)} (hz : inWb k r z) (hT : 0 < Tz k r z)
     (hW : IsHaarOn (UWset k r z) μW) (hN : IsHaarOn (Nset k r) μN) (hq : IsQuotMeas μG (muProd μW μN) ν)
     {A : Set (Mt k r)} (hA : MeasurableSet A) (h0 : ∀ g : Mat k r, μN (rmulM g ⁻¹' A) = 0) : μG A = 0 := by
@@ -71,14 +92,31 @@ theorem null_of_fibres {z : Fin (2 * r + k + 1) → ℂ} {μG μW μN ν : Measu
     ← lintegral_indicator_one ((continuous_rmulM _).measurable hA)]
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, (isClosedSub_UWset z).2.2.1, n, hn, (Matrix.one_mul n).symm⟩`.
+-/
 theorem mem_Sset_of_mem_Nset (z : Fin (2 * r + k + 1) → ℂ) {n : Mat k r} (hn : n ∈ Nset k r) : n ∈ Sset k r z :=
   ⟨1, (isClosedSub_UWset z).2.2.1, n, hn, (Matrix.one_mul n).symm⟩
 
+/- English proof (translation)
+Use `(GlobalTheory.T.two_sided_size_function_pos_invariant_continuous k r z hz hT).2.1 x hx s hs 1 ⟨isClosedSub_GG.2.2.1, one_mem _⟩` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis.
+-/
 theorem Sg2_left {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) {s x : Mat k r}
     (hs : s ∈ Sset k r z) (hx : x ∈ GG k r) : Sg2 k r z (s * x) = Sg2 k r z x := by
   have := (GlobalTheory.T.two_sided_size_function_pos_invariant_continuous k r z hz hT).2.1 x hx s hs 1 ⟨isClosedSub_GG.2.2.1, one_mem _⟩
   rwa [Matrix.mul_one] at this
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos i with rfl | hi` into its components or cases. Use `(setLIntegral_le_lintegral _ _).trans (le_mul_of_one_le_left zero_le ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.one_le_ofReal]`. Establish `: (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Simplify using `only [pow_zero, one_pow, inv_one]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (0 : ℝ) < 2 ^ i` using `by positivity`. Establish `h` using `ht (2 ^ i) h2`. Establish `e : 2 * (2 * r + 2 : ℝ) * (2 ^ i : ℝ) ^ (-(2 * (q : ℝ))) = (4 * r + 4) * ((2 ^ i : ℝ) ^ (2 * q))⁻¹`. Rewrite using `[Real.rpow_neg h2.le, ← Real.rpow_natCast (2 ^ i : ℝ) (2 * q)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Use `le_trans ?_ h` and prove the remaining obligations. Rewrite using `[← lintegral_indicator hQ]`.
+
+Use `lintegral_mono (Set.indicator_le_indicator_of_subset (fun x hx => ?_) fun _ => zero_le)` and prove the remaining obligations. Establish `hx'` using `(hsub x hx).resolve_left hi.ne'`. Establish `h1 : (1 : ℝ) ≤ 2 ^ i` using `one_le_pow₀ one_le_two`. Break down `((GlobalTheory.T.two_sided_size_function_pos_invariant_continuous k r z hz hT).2.2.2 (Matrix.of x)).2.2.2 with h' | ⟨a, ha⟩` into its components or cases. It suffices to derive a contradiction.
+
+Rewrite `hx'` using `[h']`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `⟨a, ha ▸ hx'.le⟩`.
+-/
 theorem tail {Wq : Type} [NormedAddCommGroup Wq] {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     {ν : Measure (Mt k r)} {Φ : Mat k r → Wq} {q : ℕ} {H₁ : ℝ} (hH : 1 ≤ H₁) (ht : TailBd z ν Φ q H₁) (i : ℕ)
     {Q : Set (Mt k r)} (hQ : MeasurableSet Q) (hsub : ∀ x ∈ Q, i = 0 ∨ 2 ^ i * H₁ < Sg2 k r z (Matrix.of x)) :
@@ -108,6 +146,49 @@ theorem tail {Wq : Type} [NormedAddCommGroup Wq] {z : Fin (2 * r + k + 1) → �
       nlinarith
     · exact ⟨a, ha ▸ hx'.le⟩
 
+/- English proof (translation)
+Introduce `k r j hj z z' Wq _ _ _ π' ψ' μG μW' νS' μR νR Φ' γ c κ s H₁ De q hj1 hjk hκ hs hH hO ht hDe hNR hqR`. Establish `hO'` using `hO`. Take `⟨hz', hT', hnt, hπ, -, hG, hW, -, hN, hqS, hψ, hΦ, hΦc, hc, hl2⟩` from `hO'`. Establish `hz` using `hNR.1`. Establish `hT` using `hNR.2.2.1`.
+
+Take `⟨hγ, hRc, hRh, hRu, -⟩` from `GlobalTheory.T.stabilizer_measure_normalisation_symm k r j hj z z' γ s μR hs hNR`. Take `⟨hoff, hnull, φ, hφ, hcut⟩` from `GlobalTheory.T.cutoff_computes_besselQuotientIntegral k r _ μG μR νR hRc hG hRh hRu hqR`. Establish `hV` using `GlobalTheory.T.fibreVolume_normalFormStabiliser k r j hj z z' γ De s μR hj1 hjk hDe hs hNR`. Take `⟨hYm, hEm⟩` from `GlobalTheory.T.measurable_flagGramNumberNormalized_indicator k r j hj z z' γ hz hz' hT hT' hγ`. Establish `hYi : ∀ ρ ∈ Rset k r γ, ∀ x ∈ GG k r, Yj k r hj z z' γ (ρ * x) = Yj k r hj z z' γ x` using `fun ρ hρ x hx => (GlobalTheory.T.flagGramNumberNormalized_invariance k r j hj z z' γ hz hz' hγ x hx).2.2 ρ hρ`.
+
+Establish `hmul : ∀ a ∈ GG k r, ∀ b ∈ GG k r, a * b ∈ GG k r` using `isClosedSub_GG.2.2.2.1`. Use `⟨?_, fun w hw i R₀ y hR hy => ?_⟩` and prove the remaining obligations. Use `set A : Set (Mt k r) := {x | Matrix.of x ∈ GG k r ∧ Yj k r hj z z' γ (Matrix.of x) = 0} with hAdef`. Establish `hA : MeasurableSet A`. Use `measurableSet_GG.inter (hYm (measurableSet_singleton 0))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Use `and_congr_right fun hx => ?_` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, Set.indicator_of_mem (s := {x : Mt k r | Matrix.of x ∈ GG k r}) (a := x) hx]`. Both sides reduce to the same expression.
+
+Establish `hA0 : μG A = 0`. Use `null_of_fibres hz' hT' hW hN hqS hA fun g => ?_` and prove the remaining obligations. Distinguish the cases in `hg : g ∈ GG k r`. Rewrite using `[Measure.smul_apply, measure_mono_null (t := {n | Yj k r hj z z' γ (Matrix.of n * g) = 0}) (fun n hn => hn.2) (hV g hg).1, smul_zero]`. Use `measure_mono_null (t := {x | Matrix.of x ∉ Nset k r}) (fun n hn hn' => hg ?_) hN.2.2.1` and prove the remaining obligations.
+
+Conclude with `(WUnfold.mul_mem_GG_iff hn'.1).1 hn.1`. Establish `hA1 : νR A = 0`. Use `hnull A hA (fun ρ hρ x hx => ?_) hA0` and prove the remaining obligations. Use `show (ρ * Matrix.of x ∈ GG k r ∧ Yj k r hj z z' γ (ρ * Matrix.of x) = 0) ↔ (_ ∧ _)`. Rewrite using `[hYi ρ hρ _ hx]`.
+
+Conclude with `⟨fun h => ⟨hx, h.2⟩, fun h => ⟨hmul _ hρ.1.1 _ hx, h.2⟩⟩`. Use `measure_mono_null (fun x hx => ?_) (measure_union_null hoff hA1)` and prove the remaining obligations. Distinguish the cases in `hx' : Matrix.of x ∈ GG k r`. Conclude with `Or.inr ⟨hx', hx.resolve_left (not_not.2 hx')⟩`. Conclude with `Or.inl hx'`.
+
+Use `set E := Eset0 k r hj z z' γ R₀ y with hE set Q : Set (Mt k r) := {x | Matrix.of x ∈ GG k r ∧ (i = 0 ∨ 2 ^ i * H₁ < Sg2 k r z' (Matrix.of x))} with hQdef`. Establish `hQ : MeasurableSet Q`. Establish `h1` using `measurable_indicator_GG (GlobalTheory.T.two_sided_size_function_pos_invariant_continuous k r z' hz' hT').2.2.1`. Establish `h2` using `measurableSet_GG.inter ((MeasurableSet.const (i = 0)).union (measurableSet_lt (measurable_const (a := 2 ^ i * H₁)) h1))`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `x`. Use `and_congr_right fun hx => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_union, Set.mem_setOf_eq]`. Rewrite using `[Set.indicator_of_mem (s := {x : Mt k r | Matrix.of x ∈ GG k r}) (a := x) hx]`. Establish `hEQ : E ∩ {x | i = 0 ∨ 2 ^ i * H₁ < Sg2 k r z' (Matrix.of x)} = E ∩ Q`.
+
+Use extensionality with `x`. Conclude with `and_congr_right fun hx => ⟨fun h => ⟨hx.1, h⟩, fun h => h.2⟩`. Establish `hQi : ∀ s ∈ Sset k r z', ∀ x, Matrix.of x ∈ GG k r → (lmulM s x ∈ Q ↔ x ∈ Q)`. Introduce `s hs x hx`. Use `show (s * Matrix.of x ∈ GG k r ∧ (i = 0 ∨ 2 ^ i * H₁ < Sg2 k r z' (s * Matrix.of x))) ↔ (_ ∧ _)`.
+
+Rewrite using `[Sg2_left hz' hT' hs hx]`. Conclude with `⟨fun h => ⟨hx, h.2⟩, fun h => ⟨hmul _ (WUnfold.Sset_subset _ hs) _ hx, h.2⟩⟩`. Establish `hEi : ∀ ρ ∈ Rset k r γ, ∀ x, Matrix.of x ∈ GG k r → (lmulM ρ x ∈ E ↔ x ∈ E)`. Introduce `ρ hρ x hx`. Use `show (ρ * Matrix.of x ∈ GG k r ∧ Sg2 k r z' (ρ * Matrix.of x) ≤ R₀ ∧ Sg2 k r z (γ * (ρ * Matrix.of x)) ≤ R₀ ∧ y < Yj k r hj z z' γ (ρ * Matrix.of x) ∧ Yj k r hj z z' γ (ρ * Matrix.of x) ≤ 2 * y) ↔ (_ ∧ _)`.
+
+Establish `e : γ * (ρ * Matrix.of x) = γ * ρ * γ⁻¹ * (γ * Matrix.of x)`. Rewrite using `[Matrix.mul_assoc (γ * ρ), Matrix.nonsing_inv_mul_cancel_left _ _ (isUnit_det_of_mem_GG hγ), Matrix.mul_assoc]`. Rewrite using `[hYi ρ hρ _ hx, Sg2_left hz' hT' (mem_Sset_of_mem_Nset _ hρ.1) hx, e, Sg2_left hz hT (mem_Sset_of_mem_Nset _ hρ.2) (hmul _ hγ _ hx)]`. Conclude with `⟨fun h => ⟨hx, h.2⟩, fun h => ⟨hmul _ hρ.1.1 _ hx, h.2⟩⟩`. Use `set g : Mt k r → ℝ≥0∞ := fun x => (‖⟪w, Φ' (Matrix.of x)⟫_ℂ‖₊ : ℝ≥0∞) ^ 2 with hg`.
+
+Establish `hgi : ∀ ρ ∈ Nset k r, ∀ x, Matrix.of x ∈ GG k r → g (lmulM ρ x) = g x`. Introduce `ρ hρ x hx`. Establish `h1` using `hΦ 1 (isClosedSub_UWset z').2.2.1 ρ hρ _ hx`. Rewrite `h1` using `[Matrix.one_mul, hπ.1.1]`. Establish `h2 : ‖ψ' ρ‖₊ = 1` using `NNReal.eq (hψ ρ hρ)`.
+
+Use `show (‖⟪w, Φ' (ρ * Matrix.of x)⟫_ℂ‖₊ : ℝ≥0∞) ^ 2 = _`. Rewrite using `[h1, inner_smul_right, nnnorm_mul, h2, one_mul]`. Both sides reduce to the same expression. Establish `hFm : Measurable ((E ∩ Q).indicator g)`. Establish `h1 : ContinuousOn (fun x : Mat k r => (‖⟪w, Φ' x⟫_ℂ‖₊ : ℝ≥0∞) ^ 2) (GG k r)` using `(ENNReal.continuous_pow 2).comp_continuousOn (ENNReal.continuous_coe.comp_continuousOn (ContinuousOn.inner (𝕜 := ℂ) continuousOn_const hΦc).nnnorm)`.
+
+Establish `h2` using `(measurable_indicator_GG h1).indicator ((hEm R₀ y).inter hQ)`. Rewrite `h2` using `[Set.indicator_indicator, Set.inter_eq_left.2 (fun x hx => hx.2.1)]`. Then use the resulting hypothesis. Establish `hFi : ∀ ρ ∈ Rset k r γ, ∀ x, Matrix.of x ∈ GG k r → (E ∩ Q).indicator g (lmulM ρ x) = (E ∩ Q).indicator g x`. Introduce `ρ hρ x hx`. Establish `hiff : lmulM ρ x ∈ E ∩ Q ↔ x ∈ E ∩ Q` using `and_congr (hEi ρ hρ x hx) (hQi ρ (mem_Sset_of_mem_Nset _ hρ.1) x hx)`.
+
+Distinguish the cases in `h : x ∈ E ∩ Q`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (hiff.2 h), hgi ρ hρ.1 x hx]`. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (mt hiff.1 h)]`. Establish `hP` using `GlobalTheory.T.amplitude_one_side_unfolding k r z' π' ψ' μG μW' _ νS' Φ' c hO (fun x => φ x * E.indicator 1 x) Q (ENNReal.ofReal κ * ENNReal.ofReal (fibVol0 k r j R₀ De y / s)) (hφ.1.mul (measurable_one.indicator (hEm R₀ y))) hQ hQi (fun g hg => by`. Rewrite using `[lintegral_smul_measure, smul_eq_mul]`.
+
+Conclude with `mul_le_mul_right ((hV g hg).2 φ hφ R₀ y hR hy) _) w hw`. Establish `hTl` using `tail hz' hT' hH ht i hQ fun x hx => hx.2`. Establish `hfib : 0 ≤ fibVol0 k r j R₀ De y`. Use `hDe.1` as an intermediate fact. Unfold `fibVol0`.
+
+Check the signs of the components of the expression. Establish `hd : (0 : ℝ) < Module.finrank ℂ Wq` using `Nat.cast_pos.2 Module.finrank_pos`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hEQ, lintegral_indicator ((hEm R₀ y).inter hQ)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Both sides reduce to the same expression. Use `_ = ∫⁻ x in Q, φ x * E.indicator 1 x * g x ∂μG := by`. Rewrite using `[hcut _ hFm hFi, ← lintegral_indicator hQ]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `by_cases h1 : x ∈ E <;> by_cases h2 : x ∈ Q <;> simp [h1, h2]`. Use `_ ≤ ENNReal.ofReal κ * ENNReal.ofReal (fibVol0 k r j R₀ De y / s) * (Module.finrank ℂ Wq : ℝ≥0∞)⁻¹ * (ENNReal.ofReal ((4 * r + 4) * ((2 ^ i : ℝ) ^ (2 * q))⁻¹) * l2SG νS' Φ') := hP.trans (mul_le_mul_right hTl _)`. Use `_ = _ := by`. Rewrite using `[hl2, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_inv_of_pos hd, ← ENNReal.ofReal_mul hκ.le, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem side_bound : ∀ (k r j : ℕ) (hj : j ≤ r) (z z' : (Fin (2 * r + k + 1) → ℂ)), ∀ {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (π' : Mat k r → (Wq →L[ℂ] Wq)) (ψ' : Mat k r → ℂ) (μG μW' νS' μR νR : Measure (Mt k r)) (Φ' : Mat k r → Wq) (γ : Mat k r) (c κ s H₁ De : ℝ) (q : ℕ), 1 ≤ j → j + 2 ≤ k → 0 < κ → 0 < s → 1 ≤ H₁ → OneSide z' π' ψ' μG μW' (ENNReal.ofReal κ • lebN k r) νS' Φ' c → TailBd z' νS' Φ' q H₁ → DeOK k r z z' γ De → IsNormalFormStabilizerMeasure k r hj z z' γ s μR → IsQuotMeas μG μR νR → νR {x | Matrix.of x ∉ GG k r ∨ Yj k r hj z z' γ (Matrix.of x) = 0} = 0 ∧ ∀ w : Wq, ‖w‖ = 1 → ∀ (i : ℕ) (R₀ y : ℝ), 1 ≤ R₀ → 0 < y → ∫⁻ x in Eset0 k r hj z z' γ R₀ y ∩ {x | i = 0 ∨ 2 ^ i * H₁ < Sg2 k r z' (Matrix.of x)}, ENNReal.ofReal (‖⟪w, Φ' (Matrix.of x)⟫_ℂ‖ ^ 2) ∂νR ≤ ENNReal.ofReal (κ / s * fibVol0 k r j R₀ De y * ((4 * r + 4) * ((2 ^ i : ℝ) ^ (2 * q))⁻¹) * c) := by
   intro k r j hj z z' Wq _ _ _ π' ψ' μG μW' νS' μR νR Φ' γ c κ s H₁ De q hj1 hjk hκ hs hH hO ht hDe hNR hqR
   have hO' := hO

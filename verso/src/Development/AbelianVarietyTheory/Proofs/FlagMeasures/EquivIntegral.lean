@@ -11,15 +11,24 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.GramHeight
 
+/- English proof (translation)
+Establish `hy : 1 ≤ max 1 y` using `le_max_left _ _`. Use `max_le ?_ ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Conclude with `mul_le_mul_of_nonneg_left (le_max_right _ _) (by linarith)`.
+-/
 theorem max_mul_le {c y : ℝ} (hc : 1 ≤ c) : max 1 (c * y) ≤ c * max 1 y := by
   have hy : 1 ≤ max 1 y := le_max_left _ _
   refine max_le ?_ ?_
   · nlinarith
   · exact mul_le_mul_of_nonneg_left (le_max_right _ _) (by linarith)
 
+/- English proof (translation)
+Conclude with `Finset.prod_induction _ (fun t => 1 ≤ t) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl h`.
+-/
 theorem one_le_prod' {ι : Type} (s : Finset ι) (x : ι → ℝ) (h : ∀ i ∈ s, 1 ≤ x i) : 1 ≤ ∏ i ∈ s, x i := by
   exact Finset.prod_induction _ (fun t => 1 ≤ t) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl h
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_sdiff hst]`. Establish `h1 : 1 ≤ ∏ i ∈ t \ s, x i` using `one_le_prod' _ _ (fun i _ => h i)`. Establish `h2 : 0 ≤ ∏ i ∈ s, x i` using `Finset.prod_nonneg (fun i _ => le_trans zero_le_one (h i))`. Conclude with `le_mul_of_one_le_left h2 h1`.
+-/
 theorem prod_subset_le {ι : Type} {s t : Finset ι} (hst : s ⊆ t) (x : ι → ℝ) (h : ∀ i, 1 ≤ x i) :
     ∏ i ∈ s, x i ≤ ∏ i ∈ t, x i := by
   rw [← Finset.prod_sdiff hst]
@@ -31,9 +40,23 @@ variable (D : D7)
 
 noncomputable def PP (x : D.host.E) : ℝ := ∏ τ, max 1 ‖embS D τ x‖
 
+/- English proof (translation)
+Conclude with `one_le_prod' _ _ (fun τ _ => le_max_left _ _)`.
+-/
 theorem one_le_PP (x : D.host.E) : 1 ≤ PP D x := by
   exact one_le_prod' _ _ (fun τ _ => le_max_left _ _)
 
+/- English proof (translation)
+Distinguish the cases in `h0 : x = 0`. Substitute `h0` using the available equality. Establish `: (∏ τ, max (1:ℝ) ‖embS D τ (0 : D.host.E)‖⁻¹) = 1` using `by simp`. Rewrite using `[this]`. Conclude with `one_le_PP D 0`.
+
+Establish `hpos : ∀ τ, 0 < ‖embS D τ x‖` using `fun τ => norm_pos_iff.mpr ((map_ne_zero _).mpr h0)`. Establish `hint : (1:ℝ) ≤ |((Algebra.norm ℚ x : ℚ) : ℝ)|`. Set `y : 𝓞 D.host.E` to `⟨x, hx⟩`. Establish `hy : (y : D.host.E) = x` using `rfl`. Establish `hy0 : y ≠ 0` using `fun h => h0 (by rw [← hy, h]; rfl)`.
+
+Establish `hn : ((Algebra.norm ℤ y : ℤ) : ℚ) = Algebra.norm ℚ x` using `by rw [← hy]; exact Algebra.coe_norm_int y`. Establish `hn0 : Algebra.norm ℤ y ≠ 0` using `(Algebra.norm_ne_zero_iff).mpr hy0`. Rewrite using `[← hn]`. Establish `: (1:ℤ) ≤ |Algebra.norm ℤ y|` using `Int.one_le_abs hn0`. Use `push_cast`.
+
+Conclude with `this` after adjusting the coercions. Establish `hN : 1 ≤ ∏ τ, ‖embS D τ x‖`. Establish `hsq` using `GlobalTheory.RealPlaces.prod_norm D x`. Establish `hp0 : 0 ≤ ∏ τ, ‖embS D τ x‖` using `Finset.prod_nonneg (fun τ _ => norm_nonneg _)`. Rewrite `hsq` using `[Finset.prod_pow]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Use `hpos τ` as an intermediate fact. Rewrite using `[max_mul_of_nonneg _ _ this.le, one_mul, inv_mul_cancel₀ this.ne', max_comm])`. Use `_ = PP D x := rfl`.
+-/
 theorem PP_inv_le {x : D.host.E} (hx : IsIntegral ℤ x) : ∏ τ, max 1 ‖embS D τ x‖⁻¹ ≤ PP D x := by
   by_cases h0 : x = 0
   · subst h0
@@ -64,6 +87,13 @@ theorem PP_inv_le {x : D.host.E} (hx : IsIntegral ℤ x) : ∏ τ, max 1 ‖embS
           rw [max_mul_of_nonneg _ _ this.le, one_mul, inv_mul_cancel₀ this.ne', max_comm])
       _ = PP D x := rfl
 
+/- English proof (translation)
+Establish `hlt : (a : ℕ) < n` using `a.2`. Take `⟨k, hk⟩ : ∃ k : ℕ, ((n : ℤ) - (a : ℕ)) = (k : ℤ)` from `⟨n - a, by omega⟩`. Rewrite using `[hk, _root_.zpow_neg, zpow_natCast]`. Establish `hI : (Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F)) : Ideal (𝓞 D.host.E)) ≠ ⊥`. Rewrite using `[Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]`.
+
+Conclude with `differentIdeal_ne_bot`. Establish `: ddS D ^ k = ((Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F)) ^ k : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`. Rewrite using `[FractionalIdeal.coeIdeal_pow]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `FractionalIdeal.one_mem_inv_coe_ideal (pow_ne_zero _ hI)`.
+-/
 theorem one_mem_dd (n : ℕ) (a : Fin n) :
     (1 : D.host.E) ∈ (ddS D ^ (-((n : ℤ) - (a : ℕ))) :
       FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) := by
@@ -78,6 +108,11 @@ theorem one_mem_dd (n : ℕ) (a : Fin n) :
   rw [this]
   exact FractionalIdeal.one_mem_inv_coe_ideal (pow_ne_zero _ hI)
 
+/- English proof (translation)
+Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Simplify using `only [FlagG.fvec, Fin.snoc_last]`. Conclude with `hz.1`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`. Establish `hmem : F.fl.e i ∈ XS D F.fl` using `Submodule.subset_span ⟨i, 1, one_mem_dd D D.R.rS i, (one_smul _ _).symm⟩`.
+
+Rewrite `hmem` using `[← hX]`. Conclude with `(Submodule.mem_inf.mp hmem).1`.
+-/
 theorem fvec_mem {T : D.host.E} (Λ : LatV D) (F : LFlag (hS D) D.R.rS T) (hz : IsLift Λ F)
     (hX : XLam Λ F = XS D F.fl) (a : Fin (D.R.rS + 1)) : F.fl.fvec a ∈ Λ := by
   refine Fin.lastCases ?_ (fun i => ?_) a
@@ -89,6 +124,13 @@ theorem fvec_mem {T : D.host.E} (Λ : LatV D) (F : LFlag (hS D) D.R.rS T) (hz : 
     rw [← hX] at hmem
     exact (Submodule.mem_inf.mp hmem).1
 
+/- English proof (translation)
+Establish `hu : Formalism.HermitianLatticesTheory.IsUnimodular (hS D).hT Λ` using `hΛ.2.1.2.1`. Establish `hx : F'.fl.fvec b ∈ Λ` using `fvec_mem D Λ F' hF.1.1 hF.2.2 b`. Establish `hy : (lf D F0).fl.fvec a ∈ Λ` using `fvec_mem D Λ (lf D F0) hΛ.2.1.2.2.1 hΛ.2.2 a`. Establish `hx' : F'.fl.fvec b ∈ Formalism.HermitianLatticesTheory.dual (hS D).hT Λ` using `by rw [hu]; exact hx`. Establish `hmem : (hS D).hT ((lf D F0).fl.fvec a) (F'.fl.fvec b) ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`.
+
+Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply] at hx'`. Conclude with `hx' _ hy`. Take `⟨o, ho⟩` from `Submodule.mem_one.mp hmem`. Use `show IsIntegral ℤ ((hS D).hT ((lf D F0).fl.fvec a) (F'.fl.fvec b))`. Rewrite using `[← ho]`.
+
+Conclude with `o.isIntegral_coe`.
+-/
 theorem zhat_integral {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : LatV D) (hΛ : IsRowLat D F0 Λ)
     (F' : LFlag (hS D) D.R.rS T') (hF : IsTermF D Λ (lf D F0) F') (a b : Fin (D.R.rS + 1)) :
     IsIntegral ℤ (ZhatL (lf D F0) F' a b) := by
@@ -105,6 +147,11 @@ theorem zhat_integral {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : LatV 
   rw [← ho]
   exact o.isIntegral_coe
 
+/- English proof (translation)
+Unfold `leadMinorE`. Use `split_ifs with hl`. Set `S` to `integralClosure ℤ D.host.E`. Set `M : Matrix (Fin l) (Fin l) S` to `fun i j => ⟨Z (Fin.castLE hl i) (Fin.castLE hl j), h _ _⟩`. Establish `hM : (algebraMap S D.host.E).mapMatrix M = Z.submatrix (Fin.castLE hl) (Fin.castLE hl)`.
+
+Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[← hM, ← RingHom.map_det]`. Conclude with `(M.det).2`. Conclude with `isIntegral_zero`.
+-/
 theorem lead_integral {N : ℕ} (Z : Matrix (Fin N) (Fin N) D.host.E) (h : ∀ a b, IsIntegral ℤ (Z a b)) (l : ℕ) :
     IsIntegral ℤ (leadMinorE Z l) := by
   unfold leadMinorE
@@ -117,6 +164,11 @@ theorem lead_integral {N : ℕ} (Z : Matrix (Fin N) (Fin N) D.host.E) (h : ∀ a
     exact (M.det).2
   · exact isIntegral_zero
 
+/- English proof (translation)
+Take `⟨A, B, -, -, -, -, rfl⟩` from `he`. Establish `hA : ∀ i j, IsIntegral ℤ ((A i j : 𝓞 D.host.E) : D.host.E)` using `fun i j => (A i j).isIntegral_coe`. Establish `hB : ∀ i j, IsIntegral ℤ ((B i j : 𝓞 D.host.E) : D.host.E)` using `fun i j => (B i j).isIntegral_coe`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply]`. Use `IsIntegral.sum _ (fun j _ => IsIntegral.mul (IsIntegral.sum _ (fun i _ => ?_)) (hB _ _))` and prove the remaining obligations.
+
+Conclude with `IsIntegral.mul (hA _ _) (h _ _)`.
+-/
 theorem equiv_integral {N : ℕ} {Z Z₂ : Matrix (Fin N) (Fin N) D.host.E} (h : ∀ a b, IsIntegral ℤ (Z a b))
     (he : ZEquiv Z Z₂) (a b : Fin N) : IsIntegral ℤ (Z₂ a b) := by
   obtain ⟨A, B, -, -, -, -, rfl⟩ := he
@@ -126,17 +178,26 @@ theorem equiv_integral {N : ℕ} {Z Z₂ : Matrix (Fin N) (Fin N) D.host.E} (h :
   refine IsIntegral.sum _ (fun j _ => IsIntegral.mul (IsIntegral.sum _ (fun i _ => ?_)) (hB _ _))
   exact IsIntegral.mul (hA _ _) (h _ _)
 
+/- English proof (translation)
+Unfold `frameExp`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem frameExp_le (r l : ℕ) (hl : l ≤ r + 1) : frameExp r l ≤ (r + 1) ^ 2 := by
   unfold frameExp
   calc ∑ a ∈ Finset.Icc 1 l, (r + 1 - a) ≤ ∑ a ∈ Finset.Icc 1 l, (r + 1) := Finset.sum_le_sum (fun _ _ => Nat.sub_le _ _)
     _ = l * (r + 1) := by simp
     _ ≤ (r + 1) ^ 2 := by rw [sq]; exact Nat.mul_le_mul_right _ hl
 
+/- English proof (translation)
+Unfold `frameExp`. Rewrite using `[Finset.sum_Icc_succ_top (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem frameExp_succ (r : ℕ) : frameExp r (r + 1) = frameExp r r := by
   unfold frameExp
   rw [Finset.sum_Icc_succ_top (by omega)]
   simp
 
+/- English proof (translation)
+Establish `h1 : 0 ≤ D.host.rdE` using `le_trans zero_le_one (GlobalTheory.RealPlaces.one_le_rdE D)`. Simplify using `only [absDl, absReal]`. Rewrite using `[Real.rpow_neg h1, show (2 * (frameExp D.R.rS l : ℝ)) = ((2 * frameExp D.R.rS l : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`.
+-/
 theorem absDl_eq (Z : GramM D) (l : ℕ) (τ : D.what₂.Tau) :
     absDl D Z l τ = ‖embS D τ (leadMinorE Z l)‖ * (D.host.rdE ^ (2 * frameExp D.R.rS l))⁻¹ := by
   have h1 : 0 ≤ D.host.rdE := le_trans zero_le_one (GlobalTheory.RealPlaces.one_le_rdE D)
@@ -146,9 +207,23 @@ theorem absDl_eq (Z : GramM D) (l : ℕ) (τ : D.what₂.Tau) :
 
 noncomputable def QQ (Z : GramM D) : ℝ := ∏ l ∈ Finset.Icc 1 (D.R.rS + 1), PP D (leadMinorE Z l)
 
+/- English proof (translation)
+Conclude with `one_le_prod' _ _ (fun l _ => one_le_PP D _)`.
+-/
 theorem one_le_QQ (Z : GramM D) : 1 ≤ QQ D Z := by
   exact one_le_prod' _ _ (fun l _ => one_le_PP D _)
 
+/- English proof (translation)
+Establish `hrd : 1 ≤ D.host.rdE` using `GlobalTheory.RealPlaces.one_le_rdE D`. Establish `hY1 : 1 ≤ Y` using `le_trans (one_le_pow₀ hrd) hY`. Establish `hH0 : 0 < b ^ (C * (D.R.m : ℝ) ^ 2)` using `by linarith`. Establish `hc : 1 ≤ Y * b ^ (C * (D.R.m : ℝ) ^ 2)` using `one_le_mul_of_one_le_of_one_le hY1 hH`. Establish `key : ∀ l ∈ Finset.Icc 1 (D.R.rS + 1), ∀ τ, max 1 ‖embS D τ (leadMinorE Z l)‖ ≤ (Y * b ^ (C * (D.R.m : ℝ) ^ 2)) * max 1 (absDl D Z l τ / b ^ (C * (D.R.m : ℝ) ^ 2))`.
+
+Introduce `l hl τ`. Establish `hl' : l ≤ D.R.rS + 1` using `(Finset.mem_Icc.mp hl).2`. Establish `hp : D.host.rdE ^ (2 * frameExp D.R.rS l) ≤ Y`. Use `le_trans (pow_le_pow_right₀ hrd ?_) hY` and prove the remaining obligations. Use `frameExp_le D.R.rS l hl'` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hpos : 0 < D.host.rdE ^ (2 * frameExp D.R.rS l)` using `pow_pos (by linarith) _`. Establish `heq : ‖embS D τ (leadMinorE Z l)‖ = absDl D Z l τ * D.host.rdE ^ (2 * frameExp D.R.rS l)`. Rewrite using `[absDl_eq, mul_assoc, inv_mul_cancel₀ hpos.ne', mul_one]`. Establish `h0 : 0 ≤ absDl D Z l τ` using `by rw [absDl_eq]; positivity`.
+
+Use `le_trans (max_le_max le_rfl ?_) (max_mul_le hc)` and prove the remaining obligations. Rewrite using `[heq, show Y * b ^ (C * (D.R.m : ℝ) ^ 2) * (absDl D Z l τ / b ^ (C * (D.R.m : ℝ) ^ 2)) = absDl D Z l τ * Y by field_simp]`. Conclude with `mul_le_mul_of_nonneg_left hp h0`. Establish `hcard : Fintype.card D.what₂.Tau = D.R.f` using `(GlobalTheory.real_places_facts D).1`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hcard, Nat.card_Icc, add_tsub_cancel_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem QQ_le (Z : GramM D) {b C Y : ℝ} (hH : 1 ≤ b ^ (C * (D.R.m : ℝ) ^ 2))
     (hY : D.host.rdE ^ (2 * (D.R.rS + 1) ^ 2) ≤ Y) :
     QQ D Z ≤ (Y * b ^ (C * (D.R.m : ℝ) ^ 2)) ^ ((D.R.rS + 1) * D.R.f) * sizeZ D b C Z := by
@@ -184,6 +259,15 @@ theorem QQ_le (Z : GramM D) {b C Y : ℝ} (hH : 1 ≤ b ^ (C * (D.R.m : ℝ) ^ 2
           add_tsub_cancel_right]
         ring
 
+/- English proof (translation)
+Establish `hrd : 1 ≤ D.host.rdE` using `GlobalTheory.RealPlaces.one_le_rdE D`. Establish `key : ∀ τ, max 1 (Gz D T T' Z τ) ≤ (max 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖) ^ 2`. Introduce `τ`. Establish `hp : 1 ≤ D.host.rdE ^ (2 * frameExp D.R.rS (D.R.rS + 1))` using `one_le_pow₀ hrd`. Establish `habs : absDl D Z (D.R.rS + 1) τ ≤ ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖`.
+
+Rewrite using `[absDl_eq]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (inv_le_one_of_one_le₀ hp)`. Establish `h0 : 0 ≤ absDl D Z (D.R.rS + 1) τ` using `by rw [absDl_eq]; positivity`. Establish `hG : Gz D T T' Z τ ≤ absDl D Z (D.R.rS + 1) τ ^ 2`. Simplify using `only [Gz]`.
+
+Use polynomial arithmetic with `[sq_nonneg (absDl D Z D.R.rS τ), mul_nonneg hT hT']`. Establish `hm` using `le_max_right 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖`. Use `max_le (one_le_pow₀ (le_max_left _ _)) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : PP D (leadMinorE Z (D.R.rS + 1)) ≤ QQ D Z`.
+
+Use `prod_subset_le (s := {D.R.rS + 1}) (t := Finset.Icc 1 (D.R.rS + 1)) (Finset.singleton_subset_iff.mpr (Finset.mem_Icc.mpr ⟨by omega, le_rfl⟩)) (fun l => PP D (leadMinorE Z l)) (fun l => one_le_PP D _)` as an intermediate fact. Rewrite `this` using `[Finset.prod_singleton]`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem G_le (Z : GramM D) {T T' : ℝ} (hT : 0 ≤ T) (hT' : 0 ≤ T') :
     ∏ τ, max 1 (Gz D T T' Z τ) ≤ QQ D Z ^ 2 := by
   have hrd : 1 ≤ D.host.rdE := GlobalTheory.RealPlaces.one_le_rdE D
@@ -211,6 +295,35 @@ theorem G_le (Z : GramM D) {T T' : ℝ} (hT : 0 ≤ T) (hT' : 0 ≤ T') :
     _ = PP D (leadMinorE Z (D.R.rS + 1)) ^ 2 := by rw [Finset.prod_pow]; rfl
     _ ≤ QQ D Z ^ 2 := pow_le_pow_left₀ (le_trans zero_le_one (one_le_PP D _)) h1 2
 
+/- English proof (translation)
+Establish `hrd : 1 ≤ D.host.rdE` using `GlobalTheory.RealPlaces.one_le_rdE D`. Establish `hcard : Fintype.card D.what₂.Tau = D.R.f` using `(GlobalTheory.real_places_facts D).1`. Establish `hstar : ∀ τ (a : D.host.E), embS D τ (star a) = starRingEnd ℂ (embS D τ a)` using `(GlobalTheory.real_places_facts D).2.2.2.2.2.1`. Establish `hint : ∀ l, IsIntegral ℤ (leadMinorE Z l)` using `fun l => lead_integral D Z h l`. Establish `hstarint : ∀ x : D.host.E, IsIntegral ℤ x → IsIntegral ℤ (star x)` using `fun x hx => hx.map (starRingEnd D.host.E).toIntAlgHom`.
+
+Establish `hnat : ∀ k : ℕ, IsIntegral ℤ (k : D.host.E)` using `fun k => (integralClosure ℤ D.host.E).natCast_mem k`. Establish `hGint : IsIntegral ℤ (leadMinorE Z (D.R.rS + 1) * star (leadMinorE Z (D.R.rS + 1)) - ((T : D.host.E) * (T' : D.host.E)) * (leadMinorE Z D.R.rS * star (leadMinorE Z D.R.rS)))` using `IsIntegral.sub (IsIntegral.mul (hint _) (hstarint _ (hint _))) (IsIntegral.mul (IsIntegral.mul (hnat T) (hnat T')) (IsIntegral.mul (hint _) (hstarint _ (hint _))))`. Establish `hτG : ∀ τ, ‖embS D τ (leadMinorE Z (D.R.rS + 1) * star (leadMinorE Z (D.R.rS + 1)) - ((T : D.host.E) * (T' : D.host.E)) * (leadMinorE Z D.R.rS * star (leadMinorE Z D.R.rS)))‖ = |(‖embS D τ (leadMinorE Z (D.R.rS + 1))‖ ^ 2 - (T : ℝ) * (T' : ℝ) * ‖embS D τ (leadMinorE Z D.R.rS)‖ ^ …`. Introduce `τ`. Establish `: embS D τ (leadMinorE Z (D.R.rS + 1) * star (leadMinorE Z (D.R.rS + 1)) - ((T : D.host.E) * (T' : D.host.E)) * (leadMinorE Z D.R.rS * star (leadMinorE Z D.R.rS))) = (((‖embS D τ (leadMinorE Z (D.R.rS + 1))‖ ^ 2 - (T : ℝ) * (T' : ℝ) * ‖embS D τ (leadMinorE Z D.R.rS)‖ ^ 2) : ℝ) : …`.
+
+Simplify using `only [map_sub, map_mul, map_natCast, hstar, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Apply the tactic sequence `try ring`. Rewrite using `[this, Complex.norm_real, Real.norm_eq_abs]`. Establish `hρY : D.host.rdE ^ (2 * frameExp D.R.rS D.R.rS) ≤ Y`.
+
+Use `le_trans (pow_le_pow_right₀ hrd ?_) hY` and prove the remaining obligations. Use `frameExp_le D.R.rS D.R.rS (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hρ1 : 1 ≤ D.host.rdE ^ (2 * frameExp D.R.rS D.R.rS)` using `one_le_pow₀ hrd`. Establish `key : ∀ τ, max 1 (Gz D T T' Z τ)⁻¹ ≤ Y ^ 2 * max 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1) * star (leadMinorE Z (D.R.rS + 1)) - ((T : D.host.E) * (T' : D.host.E)) * (leadMinorE Z D.R.rS * star (leadMinorE Z D.R.rS)))‖⁻¹`.
+
+Introduce `τ`. Establish `hGz : Gz D T T' Z τ = (‖embS D τ (leadMinorE Z (D.R.rS + 1))‖ ^ 2 - (T : ℝ) * (T' : ℝ) * ‖embS D τ (leadMinorE Z D.R.rS)‖ ^ 2) * ((D.host.rdE ^ (2 * frameExp D.R.rS D.R.rS)) ^ 2)⁻¹`. Simplify using `only [Gz, absDl_eq, frameExp_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hGz, hτG τ]`.
+
+Establish `hρ0 : 0 < D.host.rdE ^ (2 * frameExp D.R.rS D.R.rS)` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Apply `max_le_max le_rfl` to reduce the goal to its premises. Rewrite using `[mul_inv, inv_inv, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left ((le_abs_self _).trans (abs_inv _).le) (by positivity)`.
+
+Use `_ ≤ (D.host.rdE ^ (2 * frameExp D.R.rS D.R.rS)) ^ 2 * max 1 |(‖embS D τ (leadMinorE Z (D.R.rS + 1))‖ ^ 2 - (T : ℝ) * (T' : ℝ) * ‖embS D τ (leadMinorE Z D.R.rS)‖ ^ 2)|⁻¹ := max_mul_le (one_le_pow₀ hρ1)`. Use `_ ≤ Y ^ 2 * max 1 |(‖embS D τ (leadMinorE Z (D.R.rS + 1))‖ ^ 2 - (T : ℝ) * (T' : ℝ) * ‖embS D τ (leadMinorE Z D.R.rS)‖ ^ 2)|⁻¹ := mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hρ0.le hρY 2) (le_trans zero_le_one (le_max_left _ _))`. Establish `hsub : PP D (leadMinorE Z (D.R.rS + 1)) * PP D (leadMinorE Z D.R.rS) ≤ QQ D Z`. Use `prod_subset_le (s := {D.R.rS + 1, D.R.rS}) (t := Finset.Icc 1 (D.R.rS + 1)) (by intro l hl; simp only [Finset.mem_insert, Finset.mem_singleton] at hl; simp only [Finset.mem_Icc]; omega) (fun l => PP D (leadMinorE Z l)) (fun l => one_le_PP D _)` as an intermediate fact. Rewrite `this` using `[Finset.prod_pair (by omega)]`.
+
+Conclude with `this`. Establish `hT1 : (1 : ℝ) ≤ T` using `by exact_mod_cast hT`. Establish `hT1' : (1 : ℝ) ≤ T'` using `by exact_mod_cast hT'`. Establish `hTT : (1 : ℝ) ≤ (T : ℝ) * T'` using `one_le_mul_of_one_le_of_one_le hT1 hT1'`. Establish `hPPG : PP D (leadMinorE Z (D.R.rS + 1) * star (leadMinorE Z (D.R.rS + 1)) - ((T : D.host.E) * (T' : D.host.E)) * (leadMinorE Z D.R.rS * star (leadMinorE Z D.R.rS))) ≤ (2 * T * T') ^ D.R.f * QQ D Z ^ 2`.
+
+Establish `hτ : ∀ τ, max 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1) * star (leadMinorE Z (D.R.rS + 1)) - ((T : D.host.E) * (T' : D.host.E)) * (leadMinorE Z D.R.rS * star (leadMinorE Z D.R.rS)))‖ ≤ (2 * T * T') * ((max 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖) ^ 2 * (max 1 ‖embS D τ (leadMinorE …`. Introduce `τ`. Rewrite using `[hτG τ]`. Establish `a1` using `le_max_left 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖`. Establish `a2` using `le_max_right 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖`.
+
+Establish `b1` using `le_max_left 1 ‖embS D τ (leadMinorE Z D.R.rS)‖`. Establish `b2` using `le_max_right 1 ‖embS D τ (leadMinorE Z D.R.rS)‖`. Establish `n1` using `norm_nonneg (embS D τ (leadMinorE Z (D.R.rS + 1)))`. Establish `n0` using `norm_nonneg (embS D τ (leadMinorE Z D.R.rS))`. Establish `hx2 : ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖ ^ 2 ≤ (max 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖) ^ 2` using `pow_le_pow_left₀ n1 a2 2`.
+
+Establish `hy2 : ‖embS D τ (leadMinorE Z D.R.rS)‖ ^ 2 ≤ (max 1 ‖embS D τ (leadMinorE Z D.R.rS)‖) ^ 2` using `pow_le_pow_left₀ n0 b2 2`. Establish `hx1 : 1 ≤ (max 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖) ^ 2` using `one_le_pow₀ a1`. Establish `hy1 : 1 ≤ (max 1 ‖embS D τ (leadMinorE Z D.R.rS)‖) ^ 2` using `one_le_pow₀ b1`. Establish `hP1 : 1 ≤ (max 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖) ^ 2 * (max 1 ‖embS D τ (leadMinorE Z D.R.rS)‖) ^ 2` using `one_le_mul_of_one_le_of_one_le hx1 hy1`. Establish `hxP : (max 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖) ^ 2 ≤ (max 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖) ^ 2 * (max 1 ‖embS D τ (leadMinorE Z D.R.rS)‖) ^ 2` using `le_mul_of_one_le_right (by positivity) hy1`.
+
+Establish `hyP : (max 1 ‖embS D τ (leadMinorE Z D.R.rS)‖) ^ 2 ≤ (max 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖) ^ 2 * (max 1 ‖embS D τ (leadMinorE Z D.R.rS)‖) ^ 2` using `le_mul_of_one_le_left (by positivity) hx1`. Establish `hTP` using `mul_le_mul_of_nonneg_left (hy2.trans hyP) (by positivity : (0:ℝ) ≤ (T : ℝ) * T')`. Establish `hTP'` using `mul_le_mul_of_nonneg_left hP1 (by positivity : (0:ℝ) ≤ (T : ℝ) * T')`. Establish `hn0' : 0 ≤ (T : ℝ) * T' * ‖embS D τ (leadMinorE Z D.R.rS)‖ ^ 2` using `by positivity`. Use `max_le (by nlinarith) (abs_le.mpr ⟨by nlinarith, by nlinarith⟩)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hcard, Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_pow]`. Simplify using `only [PP]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (2 * T * T') ^ D.R.f * QQ D Z ^ 2 := mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (mul_nonneg (le_trans zero_le_one (one_le_PP D _)) (le_trans zero_le_one (one_le_PP D _))) hsub 2) (by positivity)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hcard]`. Use `_ ≤ (Y ^ 2) ^ D.R.f * ((2 * T * T') ^ D.R.f * QQ D Z ^ 2) := mul_le_mul_of_nonneg_left ((PP_inv_le D hGint).trans hPPG) (by positivity)`. Use `_ = (Y ^ 2 * (2 * T * T')) ^ D.R.f * QQ D Z ^ 2 := by rw [mul_pow]; ring`.
+-/
 theorem G_inv_le (Z : GramM D) (h : ∀ a b, IsIntegral ℤ (Z a b)) (hr : 1 ≤ D.R.rS) {T T' : ℕ} (hT : 1 ≤ T)
     (hT' : 1 ≤ T') {Y : ℝ} (hY : D.host.rdE ^ (2 * (D.R.rS + 1) ^ 2) ≤ Y) :
     ∏ τ, max 1 (Gz D T T' Z τ)⁻¹ ≤ (Y ^ 2 * (2 * T * T')) ^ D.R.f * QQ D Z ^ 2 := by
@@ -306,6 +419,11 @@ theorem G_inv_le (Z : GramM D) (h : ∀ a b, IsIntegral ℤ (Z a b)) (hr : 1 ≤
         mul_le_mul_of_nonneg_left ((PP_inv_le D hGint).trans hPPG) (by positivity)
     _ = (Y ^ 2 * (2 * T * T')) ^ D.R.f * QQ D Z ^ 2 := by rw [mul_pow]; ring
 
+/- English proof (translation)
+Establish `h1 : 1 ≤ D.host.rdE` using `GlobalTheory.RealPlaces.one_le_rdE D`. Establish `ha : (a : ℕ) ≤ D.R.rS` using `Nat.lt_succ_iff.mp a.2`. Establish `ha' : ((a : ℕ) : ℝ) ≤ D.R.rS` using `by exact_mod_cast ha`. Use `⟨Real.rpow_pos_of_pos (by linarith) _, Real.rpow_le_one_of_one_le_of_nonpos h1 (by linarith), ?_⟩` and prove the remaining obligations. Rewrite using `[rhoF, Real.rpow_neg (by linarith), inv_inv, ← Real.rpow_natCast]`.
+
+Apply `Real.rpow_le_rpow_of_exponent_le h1` to reduce the goal to its premises. Use `push_cast`. Establish `: (0 : ℝ) ≤ ((a : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rho_bounds (a : Fin (D.R.rS + 1)) :
     0 < rhoF D a ∧ rhoF D a ≤ 1 ∧ (rhoF D a)⁻¹ ≤ D.host.rdE ^ (D.R.rS + 1) := by
   have h1 : 1 ≤ D.host.rdE := GlobalTheory.RealPlaces.one_le_rdE D
@@ -318,6 +436,33 @@ theorem rho_bounds (a : Fin (D.R.rS + 1)) :
   have : (0 : ℝ) ≤ ((a : ℕ) : ℝ) := Nat.cast_nonneg _
   linarith
 
+/- English proof (translation)
+Establish `hrd : 1 ≤ D.host.rdE` using `GlobalTheory.RealPlaces.one_le_rdE D`. Establish `hY1 : 1 ≤ Y` using `le_trans (one_le_pow₀ hrd) hY`. Establish `hcard : Fintype.card D.what₂.Tau = D.R.f` using `(GlobalTheory.real_places_facts D).1`. Establish `hint : ∀ l, IsIntegral ℤ (leadMinorE Z l)` using `fun l => lead_integral D Z h l`. Establish `hZ2 : ∀ a b, IsIntegral ℤ (Z₂ a b)` using `equiv_integral D h he`.
+
+Establish `hμ : IsIntegral ℤ (Z₂.submatrix I J).det`. Set `S` to `integralClosure ℤ D.host.E`. Set `M : Matrix (Fin j) (Fin j) S` to `fun a b => ⟨Z₂ (I a) (J b), hZ2 _ _⟩`. Establish `hM : (algebraMap S D.host.E).mapMatrix M = Z₂.submatrix I J` using `by ext a b; rfl`. Rewrite using `[← hM, ← RingHom.map_det]`.
+
+Conclude with `(M.det).2`. Establish `hX1 : ∀ τ, 1 ≤ (∏ l ∈ Finset.Icc 1 (D.R.rS + 1), (max 1 ‖embS D τ (leadMinorE Z l)‖ * max 1 ‖embS D τ (leadMinorE Z l)‖⁻¹))` using `fun τ => one_le_prod' _ _ (fun l _ => one_le_mul_of_one_le_of_one_le (le_max_left _ _) (le_max_left _ _))`. Establish `hXprod : ∏ τ, (∏ l ∈ Finset.Icc 1 (D.R.rS + 1), (max 1 ‖embS D τ (leadMinorE Z l)‖ * max 1 ‖embS D τ (leadMinorE Z l)‖⁻¹)) ≤ QQ D Z ^ 2`. Rewrite using `[Finset.prod_comm]`. Simplify using `only [Finset.prod_mul_distrib]`.
+
+Establish `h2 : ∏ l ∈ Finset.Icc 1 (D.R.rS + 1), ∏ τ, max 1 ‖embS D τ (leadMinorE Z l)‖⁻¹ ≤ QQ D Z` using `Finset.prod_le_prod (fun l _ => Finset.prod_nonneg (fun τ _ => le_trans zero_le_one (le_max_left _ _))) (fun l _ => PP_inv_le D (hint l))`. Rewrite using `[sq]`. Conclude with `mul_le_mul (le_of_eq rfl) h2 (Finset.prod_nonneg (fun l _ => Finset.prod_nonneg (fun τ _ => le_trans zero_le_one (le_max_left _ _)))) (le_trans zero_le_one (one_le_QQ D Z))`. Establish `hPPμ : PP D (Z₂.submatrix I J).det ≤ c ^ D.R.f * QQ D Z ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hcard]`. Use `_ ≤ c ^ D.R.f * QQ D Z ^ 2 := mul_le_mul_of_nonneg_left hXprod (by positivity)`. Establish `hR0 : 0 < (∏ a, (rhoF D (I a) * rhoF D (J a)))` using `Finset.prod_pos (fun a _ => mul_pos (rho_bounds D _).1 (rho_bounds D _).1)`. Establish `hR1 : (∏ a, (rhoF D (I a) * rhoF D (J a))) ≤ 1`. Use `Finset.prod_le_one (fun a _ => mul_nonneg (rho_bounds D _).1.le (rho_bounds D _).1.le) (fun a _ => ?_)` and prove the remaining obligations.
+
+Establish `h1` using `rho_bounds D (I a)`. Establish `h2` using `rho_bounds D (J a)`. Use polynomial arithmetic with `[h1.1, h1.2.1, h2.1, h2.2.1]`. Establish `hj : j ≤ D.R.rS + 1` using `by simpa using Fintype.card_le_of_embedding I.toEmbedding`. Establish `hRinv : (∏ a, (rhoF D (I a) * rhoF D (J a)))⁻¹ ≤ Y`.
+
+Rewrite using `[← Finset.prod_inv_distrib]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun a _ => ?_) (fun a _ => ?_)` and prove the remaining obligations. Conclude with `inv_nonneg.mpr (mul_nonneg (rho_bounds D _).1.le (rho_bounds D _).1.le)`. Rewrite using `[mul_inv]`.
+
+Conclude with `mul_le_mul (rho_bounds D _).2.2 (rho_bounds D _).2.2 (inv_nonneg.mpr (rho_bounds D _).1.le) (by positivity)`. Use `_ = D.host.rdE ^ (2 * (D.R.rS + 1) * j) := by`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_add, ← pow_mul]`. Put the polynomial expressions in normal form. Use `_ ≤ D.host.rdE ^ (2 * (D.R.rS + 1) ^ 2) := pow_le_pow_right₀ hrd (by nlinarith)`.
+
+Use `_ ≤ Y := hY`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun τ _ => le_trans zero_le_one (le_max_left _ _)) (fun τ _ => max_le_max le_rfl ?_)` and prove the remaining obligations. Simplify using `only [UnitaryVolumeMass.absMinor]`.
+
+Conclude with `mul_le_of_le_one_right (norm_nonneg _) hR1`. Use `_ = PP D (Z₂.submatrix I J).det := rfl`. Use `_ ≤ c ^ D.R.f * QQ D Z ^ 2 := hPPμ`. Use `_ ≤ (Y * c) ^ D.R.f * QQ D Z ^ 2 := by`. Rewrite using `[mul_pow]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (le_mul_of_one_le_left (by positivity) (one_le_pow₀ hY1)) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun τ _ => le_trans zero_le_one (le_max_left _ _)) (fun τ _ => ?_)` and prove the remaining obligations. Simplify using `only [UnitaryVolumeMass.absMinor]`. Rewrite using `[mul_inv, mul_comm]`.
+
+Use `le_trans (max_mul_le ((one_le_inv₀ hR0).mpr hR1)) ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right hRinv (le_trans zero_le_one (le_max_left _ _))`. Use `_ = Y ^ D.R.f * ∏ τ, max 1 ‖embS D τ (Z₂.submatrix I J).det‖⁻¹ := by`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hcard]`. Use `_ ≤ Y ^ D.R.f * (c ^ D.R.f * QQ D Z ^ 2) := mul_le_mul_of_nonneg_left ((PP_inv_le D hμ).trans hPPμ) (by positivity)`.
+
+Use `_ = (Y * c) ^ D.R.f * QQ D Z ^ 2 := by rw [mul_pow]; ring`.
+-/
 theorem minors_le (Z Z₂ : GramM D) (h : ∀ a b, IsIntegral ℤ (Z a b)) (he : ZEquiv Z Z₂) {c Y : ℝ} (hc : 1 ≤ c)
     (hY : D.host.rdE ^ (2 * (D.R.rS + 1) ^ 2) ≤ Y) {j : ℕ} (I J : Fin j ↪o Fin (D.R.rS + 1))
     (hb : ∀ τ, ‖embS D τ (Z₂.submatrix I J).det‖ ≤ c * ∏ l ∈ Finset.Icc 1 (D.R.rS + 1),
@@ -395,6 +540,17 @@ theorem minors_le (Z Z₂ : GramM D) (h : ∀ a b, IsIntegral ℤ (Z a b)) (he :
           mul_le_mul_of_nonneg_left ((PP_inv_le D hμ).trans hPPμ) (by positivity)
       _ = (Y * c) ^ D.R.f * QQ D Z ^ 2 := by rw [mul_pow]; ring
 
+/- English proof (translation)
+Establish `hm : D.R.m = 2 * D.R.rS + 2` using `(GlobalTheory.real_places_facts D).2.2.2.1`. Establish `hb0 : 0 < b` using `by linarith`. Establish `hm2 : 2 ≤ D.R.m` using `by omega`. Establish `eC2 : ((2 * n + 7 : ℕ) : ℝ) * (D.R.m : ℝ) ^ 2 = (((2 * n + 7) * D.R.m ^ 2 : ℕ) : ℝ)` using `by push_cast; ring`. Establish `eC2f : ((2 * n + 7 : ℕ) : ℝ) * (D.R.m : ℝ) ^ 2 * (D.R.f : ℝ) = (((2 * n + 7) * D.R.m ^ 2 * D.R.f : ℕ) : ℝ)` using `by push_cast; ring`.
+
+Establish `eCm : ((2 * n + 7 : ℕ) : ℝ) * (D.R.m : ℝ) = (((2 * n + 7) * D.R.m : ℕ) : ℝ)` using `by push_cast; ring`. Establish `hH : 1 ≤ b ^ (((2 * n + 7 : ℕ) : ℝ) * (D.R.m : ℝ) ^ 2)` using `Real.one_le_rpow hb (by positivity)`. Establish `hQ` using `QQ_le D Z hH hY`. Rewrite `hQ` using `[eC2, Real.rpow_natCast]`. Establish `hs1 : 1 ≤ sizeZ D b ((2 * n + 7 : ℕ) : ℝ) Z` using `one_le_prod' _ _ (fun τ _ => one_le_prod' _ _ (fun l _ => le_max_left _ _))`.
+
+Establish `h0 : 0 ≤ QQ D Z` using `le_trans zero_le_one (one_le_QQ D Z)`. Unfold `HHZ`. Rewrite using `[eC2f, Real.rpow_natCast, eCm, Real.rpow_natCast, ← pow_mul]`. Establish `hs0 : 0 ≤ sizeZ D b ((2 * n + 7 : ℕ) : ℝ) Z` using `le_trans zero_le_one hs1`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `mul_le_mul (pow_le_pow_right₀ hb ?_) (pow_le_pow_right₀ hs1 (by norm_num)) (pow_nonneg hs0 2) (pow_nonneg hb0.le _)` and prove the remaining obligations. Establish `hexp : (2 * n + 5) + (1 + (2 * n + 7)) * D.R.m ≤ (2 * n + 7) * (2 * n + 7) * D.R.m`. Use polynomial arithmetic with `[Nat.mul_le_mul_left n hm2, Nat.zero_le (n * n * D.R.m), Nat.zero_le (n * D.R.m)]`. Use `Nat.mul_le_mul_left (D.R.m ^ 2 * D.R.f) hexp` as an intermediate fact. Establish `e2 : (D.R.rS + 1) * 2 = D.R.m` using `by omega`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem final_le (Z : GramM D) {b : ℝ} (hb : 1 ≤ b) (n : ℕ)
     (hY : D.host.rdE ^ (2 * (D.R.rS + 1) ^ 2) ≤ b ^ (D.R.m ^ 2)) {W : ℝ} (hW0 : 0 ≤ W)
     (hW : W ≤ (b ^ (D.R.m ^ 2)) ^ (2 * n + 5)) :
@@ -435,6 +591,13 @@ theorem final_le (Z : GramM D) {b : ℝ} (hb : 1 ≤ b) (n : ℕ)
           _ ≤ D.R.m ^ 2 * D.R.f * ((2 * n + 7) * (2 * n + 7) * D.R.m) := this
           _ = (2 * n + 7) * D.R.m ^ 2 * D.R.f * ((2 * n + 7) * D.R.m) := by ring
 
+/- English proof (translation)
+Establish `hb1 : (1:ℝ) ≤ b` using `by linarith`. Establish `h1 : ρ ^ (2 * (r + 1)) ≤ b ^ ((n + 2) * (2 * (r + 1)))`. Rewrite using `[pow_mul b (n + 2)]`. Conclude with `pow_le_pow_left₀ h0 hρ _`. Establish `h2 : (4:ℝ) ^ (r + 1) ≤ b ^ (2 * (r + 1))`.
+
+Rewrite using `[pow_mul]; exact pow_le_pow_left₀ (by norm_num) (by nlinarith) _`. Establish `h3 : ((((r + 1).factorial : ℕ) : ℝ)) ^ 2 ≤ b ^ (2 * (r + 1) ^ 2)`. Establish `hf : (((r + 1).factorial : ℕ) : ℝ) ≤ ((r + 1 : ℕ) : ℝ) ^ (r + 1)`. Conclude with `Nat.factorial_le_pow (r + 1)` after adjusting the coercions. Establish `hs2 : ((r + 1 : ℕ) : ℝ) ≤ b ^ (r + 1)`.
+
+Establish `: ((r + 1 : ℕ) : ℝ) ≤ (2:ℝ) ^ (r + 1)` using `by exact_mod_cast (Nat.lt_two_pow_self (n := r + 1)).le`. Conclude with `this.trans (pow_le_pow_left₀ (by norm_num) hb _)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem const_le {b ρ : ℝ} (hb : 2 ≤ b) (r n : ℕ) (h0 : 0 ≤ ρ) (hρ : ρ ≤ b ^ (n + 2)) :
     4 ^ (r + 1) * (((r + 1).factorial : ℕ) : ℝ) ^ 2 * ρ ^ (2 * (r + 1)) ≤ (b ^ ((2 * r + 2) ^ 2)) ^ (n + 4) := by
   have hb1 : (1:ℝ) ≤ b := by linarith
@@ -458,6 +621,47 @@ theorem const_le {b ρ : ℝ} (hb : 2 ≤ b) (r n : ℕ) (h0 : 0 ≤ ρ) (hρ : 
     _ ≤ b ^ ((2 * r + 2) ^ 2 * (n + 4)) := pow_le_pow_right₀ hb1 (by nlinarith [Nat.zero_le (r * n)])
     _ = (b ^ ((2 * r + 2) ^ 2)) ^ (n + 4) := by rw [pow_mul]
 
+/- English proof (translation)
+Introduce `Cg cb Cu cT CT C0 A`. Take `⟨N, hN⟩ : ∃ N : ℕ, |CT| + |Cg| + 1 ≤ (N : ℝ)` from `⟨⌈|CT| + |Cg| + 1⌉₊, Nat.le_ceil _⟩`. Establish `hCT : CT ≤ (N : ℝ)` using `by linarith [le_abs_self CT, abs_nonneg Cg]`. Establish `hCg : Cg ≤ (N : ℝ)` using `by linarith [le_abs_self Cg, abs_nonneg CT]`. Use `⟨((2 * N + 7 : ℕ) : ℝ), by push_cast; linarith [(N.cast_nonneg : (0:ℝ) ≤ N)], ?_⟩` and prove the remaining obligations.
+
+Introduce `D large₂ u u' C' Cl hCl`. Unfold `Formalism.MainNotions.S.UnitaryVolumeMass.stHH`. Introduce `hyp F0 hF0e hF0z Λ hΛ F' hF' hrel`. Establish `hS0` using `hyp.1.1`. Take `⟨hr1, -, -, hTu3, hTu3', -⟩` from `hyp.2.1`.
+
+Take `⟨-, -, hmf, hfk, -, -, -, -, -, -, hlrd, hkb, hg1, -, -, -, -, -, -, -, -, -, hTr, -, -⟩` from `hS0`. Establish `hm : D.R.m = 2 * D.R.rS + 2` using `(GlobalTheory.real_places_facts D).2.2.2.1`. Establish `hrd1 : 1 ≤ D.host.rdE` using `GlobalTheory.RealPlaces.one_le_rdE D`. Establish `hL1 : 1 < large₂.sc.L` using `Real.one_lt_rpow large₂.sc.one_lt_alt large₂.sc.eps_pos`. Establish `hb2 : 2 ≤ large₂.sc.b`.
+
+Use `Real.add_one_le_exp large₂.sc.L` as an intermediate fact. Use `show 2 ≤ Real.exp large₂.sc.L`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb1 : 1 ≤ large₂.sc.b` using `by linarith`. Establish `hb0 : 0 < large₂.sc.b` using `by linarith`.
+
+Establish `hrdb : D.host.rdE ≤ large₂.sc.b`. Establish `h1 : Real.log D.host.rdE ≤ large₂.sc.L` using `hlrd.trans (div_le_self (by linarith) hCl)`. Conclude with `(Real.log_le_iff_le_exp (by linarith)).mp h1`. Establish `hY : D.host.rdE ^ (2 * (D.R.rS + 1) ^ 2) ≤ (large₂.sc.b ^ (D.R.m ^ 2))`. Use `(pow_le_pow_left₀ (by linarith) hrdb _).trans (pow_le_pow_right₀ hb1 ?_)` and prove the remaining obligations.
+
+Rewrite using `[hm]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hB1 : 1 ≤ (large₂.sc.b ^ (D.R.m ^ 2))` using `one_le_pow₀ hb1`. Establish `hB0 : 0 ≤ (large₂.sc.b ^ (D.R.m ^ 2))` using `by linarith`. Establish `hZint : ∀ a b, IsIntegral ℤ ((ZhatL (lf D F0) F') a b)` using `fun a b => zhat_integral D F0 Λ hΛ F' hF' a b`.
+
+Establish `hm2 : (2:ℝ) ≤ D.R.m` using `by rw [hm]; push_cast; linarith [(D.R.rS.cast_nonneg : (0:ℝ) ≤ D.R.rS)]`. Establish `hTB : ∀ w, ((D.mem w).A.T : ℝ) ≤ (large₂.sc.b ^ (D.R.m ^ 2)) ^ N` using `fun w => by`. Establish `h1` using `(hTr w).2`. Use `(show ((D.mem w).A.T : ℝ) ≤ _ from h1).trans ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, ← Real.rpow_natCast]`.
+
+Apply `Real.rpow_le_rpow_of_exponent_le hb1` to reduce the goal to its premises. Use `push_cast`. Establish `e1 : CT * (D.R.m : ℝ) ≤ (N : ℝ) * D.R.m` using `mul_le_mul_of_nonneg_right hCT (by linarith)`. Establish `e2 : (N : ℝ) * D.R.m ≤ (N : ℝ) * (D.R.m : ℝ) ^ 2` using `mul_le_mul_of_nonneg_left (by nlinarith) (N.cast_nonneg)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hfin` using `final_le D (ZhatL (lf D F0) F') hb1 N hY zero_le_one (one_le_pow₀ hB1)`. Rewrite `hfin` using `[one_pow, one_mul]`. Conclude with `(G_le D (ZhatL (lf D F0) F') (Nat.cast_nonneg _) (Nat.cast_nonneg _)).trans hfin`.
+
+Establish `hg` using `G_inv_le D (ZhatL (lf D F0) F') hZint hr1 (T := Tu D u) (T' := Tu D u') (by omega) (by omega) hY`. Use `hg.trans (final_le D (ZhatL (lf D F0) F') hb1 N hY (by positivity) ?_)` and prove the remaining obligations. Establish `hm0 : D.R.m ^ 2 ≠ 0` using `by rw [hm]; positivity`. Establish `h2B : (2:ℝ) ≤ (large₂.sc.b ^ (D.R.m ^ 2))` using `hb2.trans (le_self_pow₀ hb1 hm0)`. Establish `hT1 : ((Tu D u : ℕ) : ℝ) ≤ (large₂.sc.b ^ (D.R.m ^ 2)) ^ N` using `hTB u`.
+
+Establish `hT2 : ((Tu D u' : ℕ) : ℝ) ≤ (large₂.sc.b ^ (D.R.m ^ 2)) ^ N` using `hTB u'`. Establish `hTT : 2 * ((Tu D u : ℕ) : ℝ) * ((Tu D u' : ℕ) : ℝ) ≤ (large₂.sc.b ^ (D.R.m ^ 2)) * (large₂.sc.b ^ (D.R.m ^ 2)) ^ N * (large₂.sc.b ^ (D.R.m ^ 2)) ^ N` using `mul_le_mul (mul_le_mul h2B hT1 (Nat.cast_nonneg _) hB0) hT2 (Nat.cast_nonneg _) (mul_nonneg hB0 (pow_nonneg hB0 _))`. Combine the equalities or inequalities in the displayed calculation. Establish `hcx : ∀ w : InfinitePlace D.host.E, w.IsComplex`. Introduce `w`.
+
+Take `⟨τ, hτ, -⟩` from `GlobalTheory.RealPlaces.existsUnique_place D w`. Rewrite using `[← hτ, InfinitePlace.isComplex_mk_iff, ComplexEmbedding.isReal_iff]`. Conclude with `fun h => GlobalTheory.RealPlaces.ne_conj D τ τ h.symm`. Take `⟨p, hp⟩` from `hrel`. Take `⟨Z₂, hZ2, hbd⟩` from `GlobalTheory.T.exists_zEquiv_gram_bounded_minors D.host.E hcx D.R.rS (ZhatL (lf D F0) F') p hp`.
+
+Use `⟨Z₂, hZ2, fun j I J _ => ?_⟩` and prove the remaining obligations. Establish `hfr : finrank ℚ D.host.E = 2 * D.R.f` using `GlobalTheory.RealPlaces.finrank_E D`. Establish `hf1 : 1 ≤ D.R.f` using `le_trans (Nat.one_le_pow _ _ (by omega)) hmf`. Establish `hrdE : |(discr D.host.E : ℝ)| ^ (1 / (finrank ℚ D.host.E : ℝ)) = D.host.rdE` using `rfl`. Establish `hρ0 : 0 ≤ (Real.sqrt (finrank ℚ D.host.E) * |(discr D.host.E : ℝ)| ^ (1 / (finrank ℚ D.host.E : ℝ)))` using `by positivity`.
+
+Establish `hρ1 : 1 ≤ (Real.sqrt (finrank ℚ D.host.E) * |(discr D.host.E : ℝ)| ^ (1 / (finrank ℚ D.host.E : ℝ)))`. Rewrite using `[hrdE]`. Use `one_le_mul_of_one_le_of_one_le (Real.one_le_sqrt.mpr ?_) hrd1` and prove the remaining obligations. Rewrite using `[hfr]`. Use `push_cast`.
+
+Establish `: (1:ℝ) ≤ D.R.f` using `by exact_mod_cast hf1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfb : (D.R.f : ℝ) ≤ large₂.sc.b ^ N`. Establish `hk1 : (1 : ℝ) ≤ D.R.k` using `by exact_mod_cast (hf1.trans hfk)`. Establish `hfk' : (D.R.f : ℝ) ≤ D.R.k` using `by exact_mod_cast hfk`.
+
+Establish `h1 : (D.R.f : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b` using `by nlinarith`. Establish `h2 : (D.R.k : ℝ) * large₂.sc.b ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8` using `le_self_pow₀ (one_le_mul_of_one_le_of_one_le hk1 hb1) (by norm_num)`. Establish `h3 : ((D.R.k : ℝ) * large₂.sc.b) ^ 8 ≤ large₂.sc.b ^ Cg` using `hkb.trans hg1`. Establish `h4 : large₂.sc.b ^ Cg ≤ large₂.sc.b ^ N`. Rewrite using `[← Real.rpow_natCast]`.
+
+Conclude with `Real.rpow_le_rpow_of_exponent_le hb1 hCg`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsq : Real.sqrt (finrank ℚ D.host.E) ≤ large₂.sc.b ^ (N + 1)`. Establish `h1 : ((finrank ℚ D.host.E : ℕ) : ℝ) ≤ (large₂.sc.b ^ (N + 1)) ^ 2`. Rewrite using `[hfr]`.
+
+Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hρb : (Real.sqrt (finrank ℚ D.host.E) * |(discr D.host.E : ℝ)| ^ (1 / (finrank ℚ D.host.E : ℝ))) ≤ large₂.sc.b ^ (N + 2)`. Rewrite using `[hrdE]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hc1 : 1 ≤ (4 ^ (D.R.rS + 1) * (((D.R.rS + 1).factorial : ℕ) : ℝ) ^ 2 * (Real.sqrt (finrank ℚ D.host.E) * |(discr D.host.E : ℝ)| ^ (1 / (finrank ℚ D.host.E : ℝ))) ^ (2 * (D.R.rS + 1)))` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_pow₀ (by norm_num)) (one_le_pow₀ (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero _)))) (one_le_pow₀ hρ1)`. Establish `hcB` using `const_le hb2 D.R.rS N hρ0 hρb`. Take `⟨hmA, hmB⟩` from `minors_le D (ZhatL (lf D F0) F') Z₂ hZint hZ2 hc1 hY I J (fun τ => hbd (embS D τ) j I J)`. Establish `hW : (large₂.sc.b ^ (D.R.m ^ 2)) * (4 ^ (D.R.rS + 1) * (((D.R.rS + 1).factorial : ℕ) : ℝ) ^ 2 * (Real.sqrt (finrank ℚ D.host.E) * |(discr D.host.E : ℝ)| ^ (1 / (finrank ℚ D.host.E : ℝ))) ^ (2 * (D.R.rS + 1))) ≤ (large₂.sc.b ^ (D.R.m ^ 2)) ^ (2 * N + 5)`.
+
+Establish `e : (2 * D.R.rS + 2) ^ 2 = D.R.m ^ 2` using `by rw [hm]`. Combine the equalities or inequalities in the displayed calculation. Establish `hfW` using `final_le D (ZhatL (lf D F0) F') hb1 N hY (mul_nonneg hB0 (by linarith)) hW`. Conclude with `⟨hmA.trans hfW, hmB.trans hfW⟩`.
+-/
 theorem height_bounds : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, 1 ≤ C ∧ ∀ (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl : ℝ), 1 ≤ Cl → Formalism.MainNotions.S.UnitaryVolumeMass.stHH D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C := by
   intro Cg cb Cu cT CT C0 A
   obtain ⟨N, hN⟩ : ∃ N : ℕ, |CT| + |Cg| + 1 ≤ (N : ℝ) := ⟨⌈|CT| + |Cg| + 1⌉₊, Nat.le_ceil _⟩

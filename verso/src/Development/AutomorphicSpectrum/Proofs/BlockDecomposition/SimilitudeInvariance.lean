@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.MassSimil
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.CompanionTheory.SW.HIsom.JR_conj, hγ]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `inclR R (algebraMap F E l * J i j) = algebraMap R (R ⊗[F] E) (algebraMap F R l) * inclR R (J i j)`. Rewrite using `[map_mul]`. Use `congr 1`.
+
+Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E).commutes l`.
+-/
 theorem JR_sim {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (γ : GL (Fin M) E) (l : F)
     (hγ : cT (σ : E →+* E) (γ : Matrix (Fin M) (Fin M) E) * J * (γ : Matrix (Fin M) (Fin M) E) = (algebraMap F E l) • J) :
@@ -27,6 +32,27 @@ theorem JR_sim {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRi
   rw [← IsScalarTower.algebraMap_apply]
   exact (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E).commutes l
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ _ hli hlam hμ h𝓕 hmi hm β β' hβ hβ' hs hs' c hc`. Establish `hl0 : β' / β ≠ 0` using `div_ne_zero hβ' hβ`. Take `⟨γ, hγ⟩` from `GlobalTheory.T.similitude_between_nonempty_spheres F E σ hcm J hJ β β' hβ hβ' hs hs'`. Take `⟨μ', 𝓕', hμ', h𝓕', hth⟩` from `GlobalTheory.T.theta_measure_similitude F E σ hcm 2 J hJ μ 𝓕 hμ h𝓕 γ (β' / β) hl0 hγ`. Establish `hT : (fun _ _ => algebraMap F E β' : Matrix (Fin 1) (Fin 1) E) = (algebraMap F E (β' / β)) • (fun _ _ => algebraMap F E β : Matrix (Fin 1) (Fin 1) E)`.
+
+Use function extensionality and compare the values at `a b'`. Express the relevant statement in the definitionally equal form `algebraMap F E β' = algebraMap F E (β' / β) * algebraMap F E β`. Rewrite using `[← map_mul, div_mul_cancel₀ _ hβ]`. Establish `hth1` using `hth 1 _ _ hT`. Establish `hind` using `GlobalTheory.T.theta_measure_independent_choices F E σ hcm 2 J hJ μ μ' 𝓕 𝓕' hμ h𝓕 hμ' h𝓕' 1 (fun _ _ => algebraMap F E β)`.
+
+Express the relevant statement in the definitionally equal form `(thetaMeas σ J μ' 𝓕' (PositivityTheory.Rg.Mass.sph σ J β)).map _ = thetaMeas σ J μ 𝓕 (PositivityTheory.Rg.Mass.sph σ J β') at hth1`. Express the relevant statement in the definitionally equal form `thetaMeas σ J μ 𝓕 (PositivityTheory.Rg.Mass.sph σ J β) = thetaMeas σ J μ' 𝓕' (PositivityTheory.Rg.Mass.sph σ J β) at hind`. Take `⟨ai, a, hau, hai, hav⟩` from `GlobalTheory.T.haar_modulus_gl_action_product_formula F E σ hcm 1 2 γ`. Take `⟨ci, cv, hcu, hci, hcv⟩` from `GlobalTheory.T.similitude_scaling_hermitian_measure F E σ hcm (β' / β) hl0`. Take `⟨-, -, -, -, hq, -⟩` from `PositivityTheory.PlacePermOperatorBicommutantSpan.up_alg F ai ci a cv hau hcu`.
+
+Take `⟨⟨i1, i2, i3⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Establish `hLi : IsLocR (Ainf F)` using `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hcm.1`. Establish `hLv : ∀ v, IsLocR (Fv F v)` using `fun v => GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI : ∀ v, BorelSpace (Fv F v) := fun _ => ⟨rfl⟩`.
+
+Establish `hWi` using `SWIsom.haar_of_loc σ hcm (Ainf F) hLi b li hli.1 1 2`. Establish `hWv` using `fun v => SWIsom.haar_of_loc σ hcm (Fv F v) (hLv v) b (lam v) (hlam v).1 1 2`. Establish `hJR : ∀ (R : Type) [CommRing R] [Algebra F R], cT (sigR R σ) ((bc (inclR R) γ : GL (Fin 2) (R ⊗[F] E)) : Matrix (Fin 2) (Fin 2) (R ⊗[F] E)) * JR R J * ((bc (inclR R) γ : GL (Fin 2) (R ⊗[F] E)) : Matrix (Fin 2) (Fin 2) (R ⊗[F] E)) = (algebraMap R (R ⊗[F] E) (algebraMap F R (β' / β …` using `fun R _ _ => JR_sim R σ J γ _ hγ`. Establish `hunit : ∀ (R : Type) [CommRing R] [Algebra F R] [Nontrivial R], IsUnit (algebraMap F R (β' / β))` using `fun R _ _ _ => (IsUnit.mk0 _ hl0).map _`. Establish `sInf` using `GlobalTheory.T.gram_fibre_measure_local F E σ hcm 2 J hJ (Ainf F) hLi 1 _ _ mi hWi.1 hWi.2 hmi _ _ (hunit _) (hJR _) ai ci (hai _ hWi.1) (hci _ hWi.2)`.
+
+Establish `sV` using `fun v => GlobalTheory.T.gram_fibre_measure_local F E σ hcm 2 J hJ (Fv F v) (hLv v) 1 _ _ (m v) (hWv v).1 (hWv v).2 (hm v) _ _ (hunit _) (hJR _) (a v) (cv v) (hav v _ (hWv v).1) (hcv v _ (hWv v).2)`. Establish `hS : ∀ (R : Type) [CommRing R] [Algebra F R], scalH R σ (algebraMap F R (β' / β)) (hermScal R σ (algebraMap F R β)) = hermScal R σ (algebraMap F R β')` using `fun R _ _ => by`. Rewrite using `[scalH_hermScal, ← map_mul, div_mul_cancel₀ _ hβ]`. Establish `hproj : ∀ X : Fin 1 → Fin 2 → AF F ⊗[F] E, projInf (actTup (AF F) (bc (inclR (AF F)) γ) X) = actTup (Ainf F) (bc (inclR (Ainf F)) γ) (projInf X) ∧ ∀ v, projV v (projFin (actTup (AF F) (bc (inclR (AF F)) γ) X)) = actTup (Fv F v) (bc (inclR (Fv F v)) γ) (projV v (projFin X))`. Introduce `X`.
+
+Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a i`. Conclude with `SWIsom.map_actTup (fstA F) γ X a i`. Establish `h1 : projFin (actTup (AF F) (bc (inclR (AF F)) γ) X) = actTup (Af F) (bc (inclR (Af F)) γ) (projFin X)`. Use function extensionality and compare the values at `a i`.
+
+Conclude with `SWIsom.map_actTup (sndA F) γ X a i`. Rewrite using `[h1]`. Use function extensionality and compare the values at `a i`. Conclude with `SWIsom.map_actTup (evalV F v) γ (projFin X) a i`. Establish `hfin : ∀ v, m v (hermScal (Fv F v) σ (algebraMap F _ β')) (latV b v) < ⊤`.
+
+Introduce `v`. Use `haveI := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hcm 2 J hJ (Fv F v) (hLv v) 1 _ _ (m v) (hWv v).1 (hWv v).2 (hm v) (hermScal (Fv F v) σ (algebraMap F _ β'))).1`. Conclude with `((GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 2).2.2.2.1 v).1.measure_lt_top`. Establish `key` using `euler_move_c F E σ hcm d b 1 2 (thetaMeas σ J μ' 𝓕' (PositivityTheory.Rg.Mass.sph σ J β)) (mi (hermScal (Ainf F) σ (algebraMap F _ β))) (mi (hermScal (Ainf F) σ (algebraMap F _ β'))) (fun v => m v (hermScal (Fv F v) σ (algebraMap F _ β))) (fun v => m v (hermScal (Fv F v) σ (algeb …`. Unfold `PositivityTheory.Rg.Mass.EP at hc ⊢`.
+
+Rewrite `hc` using `[hind]`. Rewrite using `[← hth1]`. Conclude with `key hc`.
+-/
 theorem simil : PositivityTheory.Rg.Mass.Simil := by
   intro F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ _ hli hlam hμ h𝓕 hmi hm β β' hβ hβ' hs hs' c hc
   have hl0 : β' / β ≠ 0 := div_ne_zero hβ' hβ

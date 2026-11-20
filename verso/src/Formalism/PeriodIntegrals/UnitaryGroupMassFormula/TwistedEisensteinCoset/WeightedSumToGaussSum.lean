@@ -20,6 +20,11 @@ def QT (T : (ι → E) → (ι → E)) (c : K) : Prop :=
 
 variable {P}
 
+/- English proof (translation)
+Introduce `a b`. Take `⟨a1, b1, h1'⟩` from `h1 a b`. Take `⟨a2, b2, h2'⟩` from `h2 a1 b1`. Use `⟨a2, b2, fun H hH => ?_⟩` and prove the remaining obligations. Take `⟨g1, r1⟩` from `h1' H hH`.
+
+Take `⟨g2, r2⟩` from `h2' (fun t => H (T1 t)) g1`. Conclude with `⟨g2, r2.trans (by rw [r1]; ring)⟩`.
+-/
 theorem qt_comp {T1 T2 : (ι → E) → (ι → E)} {c1 c2 : K} (h1 : QT P T1 c1) (h2 : QT P T2 c2) :
     QT P (fun t => T1 (T2 t)) (c2 * c1) := by
   intro a b
@@ -30,6 +35,9 @@ theorem qt_comp {T1 T2 : (ι → E) → (ι → E)} {c1 c2 : K} (h1 : QT P T1 c1
   obtain ⟨g2, r2⟩ := h2' (fun t => H (T1 t)) g1
   exact ⟨g2, r2.trans (by rw [r1]; ring)⟩
 
+/- English proof (translation)
+Establish `hTT : T' = T` using `funext hT`. Substitute `hTT` using the available equality. Substitute `hc` using the available equality. Conclude with `h`.
+-/
 theorem qt_congr {T T' : (ι → E) → (ι → E)} {c c' : K} (h : QT P T c) (hT : ∀ t, T' t = T t) (hc : c' = c) :
     QT P T' c' := by
   have hTT : T' = T := funext hT
@@ -47,6 +55,9 @@ variable {P : HeightOneSpectrum (𝓞 E)} (hN : NTAll) (hp : (Ideal.absNorm P.as
     (hq : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (hK : ((qOf P : ℕ) : K) ≠ 0)
 include hN hp hq hK
 
+/- English proof (translation)
+Establish `hq0 : ((qOf P : K) ^ N)⁻¹ ≠ 0` using `inv_ne_zero (pow_ne_zero _ hK)`. Unfold `W1 at h`. Apply `mul_left_cancel₀ hq0` to reduce the goal to its premises. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weighted_sum_to_gauss_sum {N : ℕ} {f g : E → K} {c : K} (h : W1 P N N f = c * W1 P N N g) :
     Sg P N N f = c * Sg P N N g := by
   have hq0 : ((qOf P : K) ^ N)⁻¹ ≠ 0 := inv_ne_zero (pow_ne_zero _ hK)
@@ -55,6 +66,51 @@ theorem weighted_sum_to_gauss_sum {N : ℕ} {f g : E → K} {c : K} (h : W1 P N 
   rw [h]
   ring
 
+/- English proof (translation)
+Establish `hq0` using `qE_ne P hp`. Introduce `a b`. Take `⟨gc, hgc⟩` from `ia_bound P hN hp hq c`. Take `⟨gβ, hgβ⟩` from `ia_bound P hN hp hq β`. Take `⟨gd, hgd⟩` from `ia_bound P hN hp hq d`.
+
+Take `⟨gi, hgi⟩` from `ia_bound P hN hp hq d⁻¹`. Take `⟨a2, b2, hsc⟩` from `weighted_sum_scaling hN hp hq hK hd (a + gc + gβ) b`. Establish `hcl : ∀ t : ι → E, (∀ j, IntAt P ((qOf P : E) ^ a * t j)) → IntAt P ((qOf P : E) ^ (a + gc + gβ) * (c * t l + β))`. Introduce `t ht`. Establish `e : (qOf P : E) ^ (a + gc + gβ) * (c * t l + β) = (qOf P : E) ^ gβ * (((qOf P : E) ^ gc * c) * ((qOf P : E) ^ a * t l)) + (qOf P : E) ^ (a + gc) * ((qOf P : E) ^ gβ * β)`.
+
+Rewrite using `[pow_add, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `ia_add P (ia_mul P (ia_qpow P _) (ia_mul P hgc (ht l))) (ia_mul P (ia_qpow P _) hgβ)`. Establish `hcl' : ∀ t : ι → E, (∀ j, j ≠ k → IntAt P ((qOf P : E) ^ a * t j)) → IntAt P ((qOf P : E) ^ (a + gc + gβ) * (c * t l + β))`.
+
+Introduce `t ht`. Break down `hkl with hlk | hc0` into its components or cases. Establish `e : (qOf P : E) ^ (a + gc + gβ) * (c * t l + β) = (qOf P : E) ^ gβ * (((qOf P : E) ^ gc * c) * ((qOf P : E) ^ a * t l)) + (qOf P : E) ^ (a + gc) * ((qOf P : E) ^ gβ * β)`. Rewrite using `[pow_add, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `ia_add P (ia_mul P (ia_qpow P _) (ia_mul P hgc (ht l hlk))) (ia_mul P (ia_qpow P _) hgβ)`. Establish `e : (qOf P : E) ^ (a + gc + gβ) * (c * t l + β) = (qOf P : E) ^ (a + gc) * ((qOf P : E) ^ gβ * β)`. Rewrite using `[hc0, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `ia_mul P (ia_qpow P _) hgβ`. Establish `hupd : ∀ (t : ι → E) (u : E), c * update t k u l = c * t l`. Introduce `t u`. Break down `hkl with hlk | hc0` into its components or cases.
+
+Rewrite using `[update_of_ne hlk]`. Rewrite using `[hc0, zero_mul, zero_mul]`. Use `⟨a + gc + gβ + gi, b + gd + gc, fun H hH => ?_⟩` and prove the remaining obligations. Establish `hgood : Good P (a + gc + gβ + gi) (b + gd + gc) (fun t => H (em k l d c β t))`. Use `⟨fun t ht j => ?_, fun t δ hδ => ?_⟩` and prove the remaining obligations.
+
+Establish `hs` using `hH.1 _ ht`. Establish `hoth : ∀ j, j ≠ k → IntAt P ((qOf P : E) ^ a * t j)`. Introduce `j hj`. Use `hs j` as an intermediate fact. Rewrite `this` using `[em, update_of_ne hj]`. Then use the resulting hypothesis.
+
+Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Establish `hx` using `hs j`. Rewrite `hx` using `[em, update_self]`. Establish `e : (qOf P : E) ^ (a + gc + gβ + gi) * t j = ((qOf P : E) ^ gi * d⁻¹) * ((qOf P : E) ^ (gc + gβ) * ((qOf P : E) ^ a * (d * t j + c * t l + β)) - (qOf P : E) ^ (a + gc + gβ) * (c * t l + β))`.
+
+Rewrite using `[pow_add, pow_add, pow_add, pow_add]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `ia_mul P hgi (ia_sub P (ia_mul P (ia_qpow P _) hx) (hcl' t hoth))`.
+
+Conclude with `ia_up P (by omega) (hoth j hj)`. Establish `e : em k l d c β (t + δ) = em k l d c β t + update δ k (d * δ k + c * δ l)`. Use extensionality with `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality.
+
+Simplify using `only [em, update_self, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [em, update_of_ne hj, Pi.add_apply]`. Use `show H (em k l d c β (t + δ)) = H (em k l d c β t)`. Rewrite using `[e]`.
+
+Apply `hH.2` to reduce the goal to its premises. Introduce `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Rewrite using `[update_self]`.
+
+Establish `e2 : (d * δ j + c * δ l) / (qOf P : E) ^ b = ((qOf P : E) ^ gd * d) * (δ j / (qOf P : E) ^ (b + gd)) + ((qOf P : E) ^ gc * c) * (δ l / (qOf P : E) ^ (b + gc))`. Rewrite using `[pow_add, pow_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2]`. Conclude with `ia_add P (ia_mul P hgd (ia_div_down P hp (by omega) (hδ j))) (ia_mul P hgc (ia_div_down P hp (by omega) (hδ l)))`.
+
+Rewrite using `[update_of_ne hj]`. Conclude with `ia_div_down P hp (by omega) (hδ j)`. Use `⟨hgood, ?_⟩` and prove the remaining obligations. Use `set N := max (max (a + gc + gβ + gi) (b + gd + gc)) (max (max a2 b2) (a + gc + gβ + b)) with hNdef`. Rewrite using `[← rs_stab hN hp hq hK (A := N) (B := N) (by omega) (by omega) hgood, ← rs_stab hN hp hq hK (A := N) (B := N) (by omega) (by omega) hH]`.
+
+Establish `key : ∑ t ∈ Fintype.piFinset (fun _ : ι => valsQ E (qOf P) N N), H (em k l d c β t) = (qOf P : K) ^ vq P d * ∑ t ∈ Fintype.piFinset (fun _ : ι => valsQ E (qOf P) N N), H t`. Establish `h0` using `sum_slice_eq k (fun _ : ι => valsQ E (qOf P) N N) (valsQ E (qOf P) N N) (valsQ E (qOf P) N N) (fun t => H (em k l d c β t)) H ((qOf P : K) ^ vq P d) ?_`. Rewrite `h0` using `[update_eq_self k (fun _ : ι => valsQ E (qOf P) N N)]`. Then use the resulting hypothesis. Introduce `t`. Establish `e1 : ∀ u, em k l d c β (update t k u) = update t k (d * u + (c * t l + β))`.
+
+Introduce `u`. Rewrite using `[em, update_idem, update_self, hupd, add_assoc]`. Simplify using `only [e1]`. Distinguish the cases in `hz : ∀ u, H (update t k u) = 0`. Rewrite using `[Finset.sum_eq_zero (fun u _ => hz _), Finset.sum_eq_zero (fun u _ => hz _), mul_zero]`.
+
+Simplify using `only [not_forall] at hz`. Take `⟨u0, hu0⟩` from `hz`. Establish `hs` using `hH.1 _ hu0`. Establish `hβ' : IntAt P ((qOf P : E) ^ (a + gc + gβ) * (c * t l + β))`. Apply `hcl'` to reduce the goal to its premises.
+
+Introduce `j hj`. Use `hs j` as an intermediate fact. Rewrite `this` using `[update_of_ne hj]`. Then use the resulting hypothesis. Take `⟨gψ, eψ⟩` from `sg_transl hN hp hq (good_function_mono (by omega) (good_slice hH t k)) hβ'`. Take `⟨gs, es⟩` from `hsc _ gψ`.
+
+Establish `s1 : ∑ u ∈ valsQ E (qOf P) N N, H (update t k (d * u + (c * t l + β))) = Sg P N N (fun u => H (update t k (d * u + (c * t l + β))))` using `sum_vals hp N N _`. Establish `s2 : ∑ u ∈ valsQ E (qOf P) N N, H (update t k u) = Sg P N N (fun u => H (update t k u))` using `sum_vals hp N N _`. Rewrite using `[s1, s2]`. Apply `weighted_sum_to_gauss_sum hN hp hq hK` to reduce the goal to its premises. Establish `w1 : W1 P N N (fun u => H (update t k (d * u + (c * t l + β)))) = W1 P a2 b2 (fun u => H (update t k (d * u + (c * t l + β))))` using `weighted_sum_stable hN hp hq hK (by omega) (by omega) gs`.
+
+Establish `w2 : W1 P N N (fun u => H (update t k u)) = W1 P (a + gc + gβ) b (fun u => H (update t k u))` using `weighted_sum_stable hN hp hq hK (by omega) (by omega) (good_function_mono (by omega) (good_slice hH t k))`. Rewrite using `[w1, es, w2]`. Unfold `W1`. Rewrite using `[eψ]`. Unfold `RS`.
+
+Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qt_em {ι : Type} [Fintype ι] [DecidableEq ι] (k l : ι) {d : E} (hd : d ≠ 0) (c β : E)
     (hkl : l ≠ k ∨ c = 0) : QT P (em k l d c β) ((qOf P : K) ^ vq P d) := by
   have hq0 := qE_ne P hp

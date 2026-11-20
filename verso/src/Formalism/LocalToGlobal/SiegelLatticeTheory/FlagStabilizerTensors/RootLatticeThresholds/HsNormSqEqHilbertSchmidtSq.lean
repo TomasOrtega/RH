@@ -14,6 +14,11 @@ namespace Formalism.L2.SG.Pf.OOCoreHilbertSchmidt
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.hsNormSq Formalism.MainNotions.S.hsInner Formalism.L2.SG.RealObj.hs2`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `first`. Consider the case `exact inner_self_eq_norm_sq _`.
+
+Consider the case `(rw [inner_self_eq_norm_sq_to_K]; norm_cast)`. Consider the case `(rw [inner_self_eq_norm_sq_to_K]; simp [sq])`.
+-/
 theorem hsNormSq_eq_hilbertSchmidt_sq {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup V']
     [InnerProductSpace ℂ V'] [FiniteDimensional ℂ V'] (A : V' →L[ℂ] V) :
     Formalism.MainNotions.S.hsNormSq A = Formalism.L2.SG.RealObj.hs2 A := by
@@ -27,6 +32,11 @@ theorem hsNormSq_eq_hilbertSchmidt_sq {V V' : Type*} [NormedAddCommGroup V] [Inn
 
 variable {D : D7} {X : HidaSetting D} (u u' : D.what₂.Word)
 
+/- English proof (translation)
+Take `⟨hon, hsp⟩` from `Formalism.L2.SG.RealObj.EnergyCut.tens_onb X u'`. Set `B` to `OrthonormalBasis.mk hon hsp`. Establish `hB : ∀ i, B i = X.tensU u' (fun v => stdOrthonormalBasis ℂ (X.Vloc u' v) (i v))` using `fun i => by simp [B]`. Establish `hF` using `hQ w hw hG`. Rewrite using `[hsNormSq_eq_hilbertSchmidt_sq]`.
+
+Simplify using `only [hsNormSq_eq_hilbertSchmidt_sq]`. Unfold `Formalism.L2.SG.Pf.OOCore.OOP hs2`. Rewrite using `[Formalism.L2.SG.RealObj.InfCut.hsb_indep (stdOrthonormalBasis ℂ (X.Vpi u')) B]`. Simplify using `only [hB, hF, Formalism.L2.SG.RealObj.RankOneTensors.norm_tens (X.tensU u) (X.tensU_inner u), ← Finset.prod_pow]`. Rewrite using `[Fintype.prod_sum]`.
+-/
 theorem hsNormSq_OOP_quot (ν : X.B.I.Ginf → Measure X.B.I.Ginf)
     (νl : Point D.host.E (D.R.rS + 1) → ∀ v : InfinitePlace X.B.I.F, Measure (Formalism.REAL.UJ (X.B.I.ε v)))
     (hQ : Formalism.L2.SG.Pf.Carrier.JointPf.OOQuot X u u' ν νl) (w : Point D.host.E (D.R.rS + 1))
@@ -65,11 +75,23 @@ section GX
 
 variable {D : D7} {X : HidaSetting D}
 
+/- English proof (translation)
+Unfold `frm famSc`. Simplify using `only [Complex.ofReal_one, one_pow, inv_one, one_smul, Complex.ofReal_inv, Complex.ofReal_pow]`.
+-/
 theorem frm_sc (u : D.what₂.Word) (sc : ℝ) (v : InfinitePlace X.B.I.F) (a : Fin (D.R.rS + 1)) :
     frm X u sc v a = (((sc ^ (D.R.rS - a.val))⁻¹ : ℝ) : ℂ) • frm X u 1 v a := by
   unfold frm famSc
   simp only [Complex.ofReal_one, one_pow, inv_one, one_smul, Complex.ofReal_inv, Complex.ofReal_pow]
 
+/- English proof (translation)
+Establish `hρ : ∀ c : Fin (D.R.rS + 1), rhoF D c = (D.host.rdE ^ (D.R.rS - (c : ℕ)))⁻¹`. Introduce `c`. Establish `hc` using `c.isLt`. Unfold `rhoF`. Establish `h1` using `Real.rpow_intCast D.host.rdE (-((D.R.rS - (c : ℕ) : ℕ) : ℤ))`.
+
+Rewrite `h1` using `[zpow_neg, zpow_natCast]`. Rewrite using `[← h1]`. Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub (Nat.lt_succ_iff.mp hc)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hρ a, hρ b]`. Unfold `ZX Formalism.L2.SG.RealObj.Zhat`. Rewrite using `[frm_sc u D.host.rdE v a, frm_sc u' D.host.rdE v b, Matrix.mulVec_smul]`. Unfold `hJ`. Simplify using `only [Matrix.mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, Complex.star_def, Complex.conj_ofReal]`.
+
+Use `clear hρ`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zx_rd (u u' : D.what₂.Word) (γ : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) (a b : Fin (D.R.rS + 1)) :
     ZX X u u' D.host.rdE γ v a b = ((rhoF D a * rhoF D b : ℝ) : ℂ) * ZX X u u' 1 γ v a b := by
   have hρ : ∀ c : Fin (D.R.rS + 1), rhoF D c = (D.host.rdE ^ (D.R.rS - (c : ℕ)))⁻¹ := by
@@ -92,6 +114,19 @@ theorem zx_rd (u u' : D.what₂.Word) (γ : X.B.I.Ginf) (v : InfinitePlace X.B.I
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hrep : IsPtRep X u u' w (gamW X u u' w)`. Unfold `gamW`. Rewrite using `[dif_pos hw]`. Conclude with `hw.choose_spec`. Establish `hZ : ∀ a b, ZX X u u' D.host.rdE (gamW X u u' w) (vOf X τ) a b = (-1 : ℂ) ^ (D.R.rS - b.val) * ptMat (Formalism.MainNotions.S.ThB.ptLoc D τ w) a b`.
+
+Introduce `a b`. Establish `h1` using `congrFun (congrFun (hrep (vOf X τ)) a) b`. Unfold `Formalism.L2.SG.RealObj.ZhatO Formalism.L2.SG.RealObj.ptC at h1`. Simplify using `only [Matrix.map_apply] at h1`. Rewrite `h1` using `[X.φ_eq, X.ιE.apply_symm_apply, show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ]`.
+
+Establish `hs : ((-1 : ℂ) ^ (D.R.rS - b.val)) * (-1 : ℂ) ^ (D.R.rS - b.val) = 1`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Evaluate the numerical expressions. Rewrite using `[zx_rd, Formalism.L2.SG.Pf.RelPtR.ptMat_ptLoc τ w a b]`. Establish `h2 : ZX X u u' 1 (gamW X u u' w) (vOf X τ) a b = (-1 : ℂ) ^ (D.R.rS - b.val) * embS D τ (ptMat w a b)`.
+
+Rewrite using `[← h1, ← mul_assoc, hs, one_mul]`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : ∀ l (hl : l ≤ D.R.rS + 1), Complex.normSq (Formalism.L2.SG.RealObj.Dl (ZX X u u' D.host.rdE (gamW X u u' w) (vOf X τ)) l) = Complex.normSq (leadMinor (ptMat (Formalism.MainNotions.S.ThB.ptLoc D τ w)) l hl)`. Introduce `l hl`.
+
+Unfold `Formalism.L2.SG.RealObj.Dl leadMinor`. Rewrite using `[dif_pos hl]`. Establish `hM : (ZX X u u' D.host.rdE (gamW X u u' w) (vOf X τ)).submatrix (Fin.castLE hl) (Fin.castLE hl) = (ptMat (Formalism.MainNotions.S.ThB.ptLoc D τ w)).submatrix (Fin.castLE hl) (Fin.castLE hl) * Matrix.diagonal (fun b : Fin l => (-1 : ℂ) ^ (D.R.rS - (Fin.castLE hl b).val))`. Use extensionality with `i j`. Simplify using `[Matrix.mul_diagonal, hZ, mul_comm]`.
+
+Rewrite using `[hM, Matrix.det_mul, Matrix.det_diagonal, map_mul, map_prod]`. Simplify using `[Complex.normSq_neg]`. Unfold `GX Gv Formalism.MainNotions.S.ThB.Gpt`. Rewrite using `[← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq, hD (D.R.rS + 1) le_rfl, hD D.R.rS (Nat.le_succ _)]`.
+-/
 theorem gx_eq (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) (hw : ∃ γ, IsPtRep X u u' w γ)
     (τ : D.what₂.Tau) :
     GX X u u' D.host.rdE (gamW X u u' w) (vOf X τ) =
@@ -129,6 +164,9 @@ theorem gx_eq (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) (hw : �
   unfold GX Gv Formalism.MainNotions.S.ThB.Gpt
   rw [← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq, hD (D.R.rS + 1) le_rfl, hD D.R.rS (Nat.le_succ _)]
 
+/- English proof (translation)
+Introduce `w hb hw v`. Establish `hv : v = vOf X (X.pl v)` using `(X.pl.symm_apply_apply v).symm`. Rewrite using `[hv, gx_eq u u' w hw (X.pl v)]`. Conclude with `hb.2 (X.pl v)`.
+-/
 theorem gxPos_holds (u u' : D.what₂.Word) : GXPos (X := X) u u' := by
   intro w hb hw v
   have hv : v = vOf X (X.pl v) := (X.pl.symm_apply_apply v).symm

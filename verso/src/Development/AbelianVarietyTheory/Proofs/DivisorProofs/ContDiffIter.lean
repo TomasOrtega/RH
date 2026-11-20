@@ -11,14 +11,25 @@ namespace GlobalTheory.PsCo.Pc1.Homot
 
 noncomputable def scF (G : ℝ → ℝ) (j : ℕ) (s y : ℝ) : ℝ := s ^ j * iteratedDeriv (j + 1) G (s * y)
 
+/- English proof (translation)
+Rewrite using `[iteratedDeriv_eq_iterate]`. Conclude with `hG.iterate_deriv k`.
+-/
 lemma contDiff_iter {G : ℝ → ℝ} (hG : ContDiff ℝ ∞ G) (k : ℕ) : ContDiff ℝ ∞ (iteratedDeriv k G) := by
   rw [iteratedDeriv_eq_iterate]
   exact hG.iterate_deriv k
 
+/- English proof (translation)
+Establish `h` using `contDiff_iter hG (j + 1)`. Conclude with `(contDiff_fst.pow j).mul (h.comp (contDiff_fst.mul contDiff_snd))`.
+-/
 lemma scF_contDiff {G : ℝ → ℝ} (hG : ContDiff ℝ ∞ G) (j : ℕ) : ContDiff ℝ ∞ (Function.uncurry (scF G j)) := by
   have h := contDiff_iter hG (j + 1)
   exact (contDiff_fst.pow j).mul (h.comp (contDiff_fst.mul contDiff_snd))
 
+/- English proof (translation)
+Establish `h` using `(contDiff_iter hG (j + 1)).differentiable (by simp)`. Establish `h1 : HasDerivAt (fun y => s * y) s y` using `by simpa using (hasDerivAt_id y).const_mul s`. Establish `h2` using `((h (s * y)).hasDerivAt.comp y h1).const_mul (s ^ j)`. Establish `h3 : deriv (scF G j s) y = _` using `h2.deriv`. Rewrite using `[h3, scF, iteratedDeriv_succ (n := j + 1)]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma deriv_scF {G : ℝ → ℝ} (hG : ContDiff ℝ ∞ G) (j : ℕ) (s y : ℝ) : deriv (scF G j s) y = scF G (j + 1) s y := by
   have h := (contDiff_iter hG (j + 1)).differentiable (by simp)
   have h1 : HasDerivAt (fun y => s * y) s y := by simpa using (hasDerivAt_id y).const_mul s
@@ -27,20 +38,50 @@ lemma deriv_scF {G : ℝ → ℝ} (hG : ContDiff ℝ ∞ G) (j : ℕ) (s y : ℝ
   rw [h3, scF, iteratedDeriv_succ (n := j + 1)]
   ring
 
+/- English proof (translation)
+Rewrite using `[iteratedDeriv_comp_const_mul (hG.of_le (by exact_mod_cast le_top)) s, scF]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma iter_scale {G : ℝ → ℝ} (hG : ContDiff ℝ ∞ G) (j : ℕ) (s y : ℝ) :
     iteratedDeriv (j + 1) (fun y => G (s * y)) y = s * scF G j s y := by
   rw [iteratedDeriv_comp_const_mul (hG.of_le (by exact_mod_cast le_top)) s, scF]
   ring
 
+/- English proof (translation)
+Establish `: G =ᶠ[nhds x] fun _ => (0 : ℝ)` using `by filter_upwards [Ioi_mem_nhds hx] with y hy using h0 y (le_of_lt hy)`. Rewrite using `[this.iteratedDeriv_eq k]`. Simplify using the standard rewrite rules.
+-/
 lemma iter_zero {G : ℝ → ℝ} (h0 : ∀ x, 1 ≤ x → G x = 0) (k : ℕ) {x : ℝ} (hx : 1 < x) : iteratedDeriv k G x = 0 := by
   have : G =ᶠ[nhds x] fun _ => (0 : ℝ) := by
     filter_upwards [Ioi_mem_nhds hx] with y hy using h0 y (le_of_lt hy)
   rw [this.iteratedDeriv_eq k]
   simp
 
+/- English proof (translation)
+The claim follows from `(scF_contDiff hG j).continuous.comp (continuous_id.prodMk continuous_const)`.
+-/
 lemma scF_cont {G : ℝ → ℝ} (hG : ContDiff ℝ ∞ G) (j : ℕ) (y : ℝ) : Continuous fun s => scF G j s y :=
   (scF_contDiff hG j).continuous.comp (continuous_id.prodMk continuous_const)
 
+/- English proof (translation)
+Introduce `n ε G p q hP hK t ht`. Take `⟨hG, h0, -, -⟩` from `hP`. Establish `hI : ∀ j, IsCutFn (fun y => ∫ s in (1:ℝ)..t, scF G j s y) ∧ ∀ y, deriv (fun y => ∫ s in (1:ℝ)..t, scF G j s y) y = ∫ s in (1:ℝ)..t, deriv (scF G j s) y`. Introduce `j`. Use `GlobalTheory.T.isSmoothEventuallyZeroCutoff_intervalIntegral_deriv (scF G j) 1 t (scF_contDiff hG j) ⟨2, ?_⟩` and prove the remaining obligations.
+
+Introduce `s hs y hy`. Rewrite `hs` using `[Set.uIcc_of_le ht]`. Establish `: 1 < s * y` using `by nlinarith [hs.1]`. Simplify using `[scF, iter_zero h0 _ this]`. Establish `key : famF ε G p 1 - famF ε G p t = -∑ x : Mode ε, ∑ j ∈ Finset.range (nMode ε + 1), adBas ε (Matrix.single x.1.2 x.1.1 1) (fun y => ∫ s in (1:ℝ)..t, scF G j s y) (q x j)`.
+
+Use function extensionality and compare the values at `g`. Use `set D : ℝ → ℂ := fun s => ∑ x : Mode ε, ∑ j ∈ Finset.range (nMode ε + 1), ((scF G (j + 1) s (rM ε g) : ℂ) * ev g (dZ ε (Matrix.single x.1.2 x.1.1 1) (rP ε) * q x j) + (scF G j s (rM ε g) : ℂ) * ev g (dZ ε (Matrix.single x.1.2 x.1.1 1) (q x j))) with hD`. Establish `hc : ∀ j, Continuous fun s => (scF G j s (rM ε g) : ℂ)` using `fun j => Complex.continuous_ofReal.comp (scF_cont hG j _)`. Establish `hder : ∀ s ∈ Set.uIcc (1:ℝ) t, HasDerivAt (fun s : ℝ => famF ε G p s g) (D s) s`. Introduce `s hs`.
+
+Rewrite `hs` using `[Set.uIcc_of_le ht]`. Establish `hs0 : 0 < s` using `by linarith [hs.1]`. Establish `h` using `GlobalTheory.T.scaledKoszulTestFamily_hasDerivAt_scale ε G p q hG hK s hs0 g`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hD, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hsc : (s : ℂ) ≠ 0` using `by exact_mod_cast hs0.ne'`. Simplify using `only [adBas, bas]`.
+
+Rewrite using `[← iteratedDeriv_succ, iter_scale hG, iter_scale hG]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hDc : Continuous D`. Rewrite using `[hD]`.
+
+Use `continuous_finset_sum _ fun x _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `((hc _).mul continuous_const).add ((hc _).mul continuous_const)`. Establish `hftc` using `intervalIntegral.integral_eq_sub_of_hasDerivAt hder (hDc.intervalIntegrable _ _)`. Establish `hint : ∫ s in (1:ℝ)..t, D s = ∑ x : Mode ε, ∑ j ∈ Finset.range (nMode ε + 1), adBas ε (Matrix.single x.1.2 x.1.1 1) (fun y => ∫ s in (1:ℝ)..t, scF G j s y) (q x j) g`. Rewrite using `[hD, intervalIntegral.integral_finset_sum]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[intervalIntegral.integral_finset_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[intervalIntegral.integral_add (((hc _).mul_const _).intervalIntegrable _ _) (((hc _).mul_const _).intervalIntegrable _ _), intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const, intervalIntegral.integral_ofReal, intervalIntegral.integral_ofReal]`. Simplify using `only [adBas, bas, (hI j).2, deriv_scF hG]`.
+
+Introduce `j _`. Conclude with `(((hc _).mul continuous_const).add ((hc _).mul continuous_const)).intervalIntegrable _ _`. Introduce `x _`. Use `(continuous_finset_sum _ fun j _ => ?_).intervalIntegrable _ _` and prove the remaining obligations. Conclude with `((hc _).mul continuous_const).add ((hc _).mul continuous_const)`.
+
+Simplify using `only [Pi.sub_apply, Pi.neg_apply, Finset.sum_apply]`. Rewrite using `[← hint, hftc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `neg_mem (Submodule.sum_mem _ fun x _ => Submodule.sum_mem _ fun j _ => GlobalTheory.T.conjugationDerivCutoffPolynomial_mem_unitarySpan ε _ _ _ (hI j).1)`.
+-/
 theorem stHomot : GlobalTheory.PsCo.Pc1.StHomot := by
   intro n ε G p q hP hK t ht
   obtain ⟨hG, h0, -, -⟩ := hP

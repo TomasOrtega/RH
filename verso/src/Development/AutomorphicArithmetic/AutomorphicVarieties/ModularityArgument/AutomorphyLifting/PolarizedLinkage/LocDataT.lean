@@ -23,6 +23,17 @@ section Loc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : torusChar ψ (Pi.mulSingle i x) = ψ i x`. Rewrite using `[torusChar_apply, Finset.prod_eq_single i, Pi.mulSingle_eq_same]`. Introduce `j _ hj`. Rewrite using `[Pi.mulSingle_eq_of_ne hj, map_one]`. Simplify using the standard rewrite rules.
+
+Establish `hd : ∀ (t : Fin n → kˣ) j, Matrix.GeneralLinearGroup.det (leviTorus k (Fin n) t j) = t j` using `fun t => congrFun ((leviTorus k (Fin n)).left_inv t)`. Establish `h2 : deltaHalf k (fun _ : Fin n => Unit) (leviTorus k (Fin n) (Pi.mulSingle i x)) = absPow k ((modExp (fun _ : Fin n => Unit) i : ℂ) / 2) x`. Rewrite using `[deltaHalf_apply, Finset.prod_eq_single i, hd, Pi.mulSingle_eq_same]`. Introduce `j _ hj`. Rewrite using `[hd, Pi.mulSingle_eq_of_ne hj, map_one]`.
+
+Simplify using the standard rewrite rules. Establish `h3 : (modExp (fun _ : Fin n => Unit) i : ℂ) / 2 = -((i : ℕ) : ℂ) + ((n : ℂ) - 1) / 2`. Rewrite using `[modExp_fin _ (fun _ => by simp)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h4` using `absPow_neg_nat k (i : ℕ) x`. Rewrite using `[← h1, hχ]`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.comp_apply, Units.val_mul]`. Use `erw [h2]`. Rewrite using `[h3, absPow_add, MonoidHom.mul_apply, Units.val_mul, h4]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem psi_val (ψ : Fin n → kˣ →* ℂˣ) (χ : (Fin n → kˣ) →* ℂˣ)
     (hχ : torusChar ψ = χ * ((deltaHalf k fun _ : Fin n => Unit).comp (leviTorus k (Fin n)).toMonoidHom))
     (x : kˣ) (i : Fin n) :
@@ -51,6 +62,21 @@ private theorem psi_val (ψ : Fin n → kˣ →* ℂˣ) (χ : (Fin n → kˣ) �
   rw [h3, absPow_add, MonoidHom.mul_apply, Units.val_mul, h4]
   ring
 
+/- English proof (translation)
+Establish `hq2 : 2 ≤ resCard k` using `Finite.one_lt_card (α := 𝓀[k])`. Establish `hq0 : (resCard k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hq1 : (resCard k : ℂ) ≠ 1` using `fun e => by`. Establish `: resCard k = 1` using `by exact_mod_cast e`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hab : (absPow k 1 x : ℂ) * (resCard k : ℂ) = 1`. Rewrite using `[val_absPow, GlobalTheory.LGrp.nabs_eq_zpow, hx, Complex.cpow_one]`. Simplify using `[hq0]`. Introduce `y hy z hz e`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hy`.
+
+Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 hz`. Rewrite `e` using `[IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]`. Establish `e1 : (ψ i x : ℂ) = ψ j x * (absPow k ((1 : ℂ)) x : ℂ)`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+
+Rewrite `e1` using `[psi_val ψ χ hχ x i, psi_val ψ χ hχ x j, hx, mul_one, mul_one, zpow_natCast, zpow_natCast, ← hα, ← hα]`. Establish `hu : (absPow k (((n : ℂ) - 1) / 2) x : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `e2 : α i = α j * (absPow k ((1 : ℂ)) x : ℂ)`. Apply `mul_right_cancel₀ hu` to reduce the goal to its premises. Rewrite using `[e1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e3 : α j = (resCard k : ℂ) * α i`. Rewrite using `[e2]`. Take the linear combination `(-α j) * hab`. Establish `hne : α i ≠ 0`.
+
+Rewrite using `[hα]`. Conclude with `mul_ne_zero (pow_ne_zero _ hq0) (Units.ne_zero _)`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Establish `: (1 : ℂ) = resCard k` using `mul_right_cancel₀ hne ((one_mul _).trans e3)`.
+
+Conclude with `hq1 this.symm`. Conclude with `(hgen j i hij).2 e3`.
+-/
 private theorem unlinked_of_gen (ψ : Fin n → kˣ →* ℂˣ) (hψ : ∀ i, IsSmoothChar (ψ i)) (χ : (Fin n → kˣ) →* ℂˣ)
     (hχ : torusChar ψ = χ * ((deltaHalf k fun _ : Fin n => Unit).comp (leviTorus k (Fin n)).toMonoidHom))
     (x : kˣ) (hx : ord k x = 1) (α : Fin n → ℂ)
@@ -105,12 +131,18 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {ε : EpsFamily A}
   {rc : IrrGL (w.adicCompletion E) → WD h} {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `(hasSupport_of_isCuspSupport (GlobalTheory.TameIwahori.isCuspSupport_of_prinSeries (k := w.adicCompletion E) ⟨σ.V, σ.ρ, σ.smooth, σ.irred⟩ hψ hs)).of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred)`.
+-/
 private theorem support_chars (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (ψ : Fin n → (w.adicCompletion E)ˣ →* ℂˣ)
     (hψ : ∀ i, IsSmoothChar (ψ i)) (hs : IsSubquotient σ.ρ (prinSeries ψ)) :
     HasSupport (IrrGL.of σ.ρ σ.smooth σ.irred).rep (GlobalTheory.RoadU.chars ψ hψ) :=
   (hasSupport_of_isCuspSupport (GlobalTheory.TameIwahori.isCuspSupport_of_prinSeries (k := w.adicCompletion E)
     ⟨σ.V, σ.ρ, σ.smooth, σ.irred⟩ hψ hs)).of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred)
 
+/- English proof (translation)
+Rewrite using `[L.supp _ _ (support_chars σ ψ hψ hs) g, GlobalTheory.RoadU.chars, Multiset.map_map, Finset.prod_eq_multiset_prod]`. Use `congrArg Multiset.prod (Multiset.map_congr rfl fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[L.one, WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`. Simplify using the standard rewrite rules.
+-/
 private theorem jqRecV (L : LawsV a ha ε rc) (σ : SmIrr (GL (Fin n) (w.adicCompletion E)))
     (ψ : Fin n → (w.adicCompletion E)ˣ →* ℂˣ) (hψ : ∀ i, IsSmoothChar (ψ i)) (hs : IsSubquotient σ.ρ (prinSeries ψ))
     (g : Weil h) :
@@ -121,6 +153,13 @@ private theorem jqRecV (L : LawsV a ha ε rc) (σ : SmIrr (GL (Fin n) (w.adicCom
   rw [L.one, WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]
   simp
 
+/- English proof (translation)
+Establish `H` using `jqRecV L σ ψ hψ hs g`. Rewrite using `[algNorm, L.nu_eq]`. Generalize the expression as in `rc (IrrGL.of σ.ρ σ.smooth σ.irred) = x at H ⊢`. Take `⟨m, b, rfl⟩` from `x.exists_rep`. Rewrite `H` using `[WD.charPol_mk]`.
+
+Rewrite using `[WD.lpTw_mk, WD.charPol_mk, WDRep.tw_ρ, ← GlobalTheory.SatChar.absPow_art ha ((1 - (n : ℝ)) / 2) g, charpoly_smul_prod _ _ (Units.ne_zero _) _ H]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Establish `e1 : ((n : ℂ) - 1) / 2 + (((1 - (n : ℝ)) / 2 : ℝ) : ℂ) = 0`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (absPow (w.adicCompletion E) (((n : ℂ) - 1) / 2) (a g) : ℂ) * (absPow (w.adicCompletion E) (((1 - (n : ℝ)) / 2 : ℝ) : ℂ) (a g) : ℂ) = 1`. Rewrite using `[← Units.val_mul, ← MonoidHom.mul_apply, ← absPow_add, e1, val_absPow, Complex.cpow_zero]`. Rewrite using `[psi_val ψ χ hχ (a g) i]`. Take the linear combination `((resCard (w.adicCompletion E) : ℂ) ^ (((i : ℕ) : ℤ) * ord (w.adicCompletion E) (a g)) * (χ (Pi.mulSingle i (a g)) : ℂ)) * e2`.
+-/
 private theorem nuCharV (L : LawsV a ha ε rc) (σ : SmIrr (GL (Fin n) (w.adicCompletion E)))
     (ψ : Fin n → (w.adicCompletion E)ˣ →* ℂˣ) (χ : (Fin n → (w.adicCompletion E)ˣ) →* ℂˣ) (hψ : ∀ i, IsSmoothChar (ψ i))
     (hχ : torusChar ψ = χ * ((deltaHalf (w.adicCompletion E) fun _ : Fin n => Unit).comp
@@ -152,6 +191,33 @@ end WD
 end UpperTheory.V.Z.Win.LocalCharacterData
 
 open UpperTheory.V.Z.Win.LocalCharacterData in
+/- English proof (translation)
+Introduce `hP l _ E Ω _ _ _ _ _ Bq w hB hl fr τ hfr hF hτ`. Take `⟨rc, hrc⟩` from `recTExists E Ω Bq w hB`. Take `⟨a, ha, ε, L⟩` from `UpperTheory.V.Z.Win.extraV E Ω Bq w hB rc hrc`. Take `⟨hq, h1, h2, hx, hδ, hk, hrel⟩` from `artinEl hP.tame l E Ω Bq w hB hl a ha fr τ hfr hF hτ`. Use `⟨hq, _, _, hx, hδ, fun n ι r σ H C hC θ hθ χ hχ α hα => ?_⟩` and prove the remaining obligations.
+
+Take `⟨ψ, hψ, hψC, hψχ, hsub⟩` from `jqEmbed hP.bz _ n C σ.V σ.ρ σ.smooth σ.irred θ hθ χ hχ`. Establish `hν` using `nuCharV L σ ψ χ hψ hψχ hsub`. Establish `hord1 : ord (w.adicCompletion E) (a ⟨fr, h1⟩) = 1`. Establish `h2 : deg (⟨fr, h1⟩ : Weil hB)⁻¹ = 1` using `deg_eq_one_iff.2 hF`. Rewrite using `[ha.ord_eq, ← deg_inv, h2]`.
+
+Establish `hgen : (∀ i i', i ≠ i' → α i ≠ α i' ∧ α i ≠ (resCard (w.adicCompletion E) : ℂ) * α i') → UpperTheory.V.Z.Win.Gd (rc (algNorm σ))` using `fun hg => UpperTheory.V.Z.Win.Gu.plainGd E Ω Bq w hB rc hrc n σ ⟨_, support_chars σ ψ hψ hsub, fun y hy => by`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hy`. Use the proof step `rfl, unlinked_of_gen ψ hψ χ hψχ _ hord1 α hα hg⟩`. Establish `hsph : IsSpherical σ.ρ → UpperTheory.V.Z.Win.Gd (rc (algNorm σ))` using `fun hs => by`. Establish `G` using `UpperTheory.V.Z.Win.Gu.gdLaws E Ω Bq w hB`.
+
+Rewrite using `[algNorm, L.nu_eq]`. Conclude with `(G.2.1 _ _).2 (G.2.2.2 _ ((L.sph _).1 (fixed_ne_bot_of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred) hs)))`. Establish `core : UpperTheory.V.Z.Win.Gd (rc (algNorm σ)) → (((r fr : Matrix (Fin n) (Fin n) (Qbar l)).map ι).charpoly = ∏ i, (Polynomial.X - Polynomial.C (α i))) ∧ ((∀ i i', i ≠ i' → α i ≠ α i' ∧ α i ≠ (resCard (w.adicCompletion E) : ℂ) * α i') → ∀ i, (List.ofFn fun i' => if i' = i then 1 …` using `fun hgd => by`. Establish `hx0` using `(H rc hrc).isWDOf hgd`. Take `⟨hw1, hw2⟩` from `wdChar l E Ω Bq w hB hl n ι r _ hx0`.
+
+Establish `hq2 : 2 ≤ resCard (w.adicCompletion E)` using `Finite.one_lt_card (α := 𝓀[w.adicCompletion E])`. Establish `hq0 : (resCard (w.adicCompletion E) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Set `c : Fin n → Weil hB →* ℂ` to `fun i => { toFun := fun g => (resCard (w.adicCompletion E) : ℂ) ^ (((i : ℕ) : ℤ) * ord (w.adicCompletion E) (a g)) * (χ (Pi.mulSingle i (a g)) : ℂ) map_one' := by`. Rewrite using `[map_one, Pi.mulSingle_one, map_one, ord_eq_zero (by simp)]`. Simplify using the standard rewrite rules.
+
+Use the proof step `map_mul' := fun g g' => by`. Rewrite using `[map_mul, ord_mul, Pi.mulSingle_mul, map_mul, mul_add, zpow_add₀ hq0, Units.val_mul]`. Use `ring }`. Set `R : Weil hB →* GL (Fin n) ℂ` to `((Matrix.GeneralLinearGroup.map ι.toRingHom).comp r).comp (Weil hB).subtype`. Establish `hR : ∀ g, (R g : Matrix (Fin n) (Fin n) ℂ).charpoly = ∏ i, (Polynomial.X - Polynomial.C (c i g))` using `fun g => (hw1 g).trans (hν g)`.
+
+Establish `hord : ∀ g : Weil hB, (g : G E Ω) ∈ Ine (F` using `E) Bq → ord (w.adicCompletion E) (a g) = 0 := fun g hg => by`. Rewrite using `[ha.ord_eq, deg_eq_zero_iff.2 hg, neg_zero]`. Establish `hf : ∀ i, α i = c i ⟨fr, h1⟩` using `fun i => by`. Rewrite using `[hα]`. Express the relevant statement in the definitionally equal form `_ = (resCard (w.adicCompletion E) : ℂ) ^ (((i : ℕ) : ℤ) * ord (w.adicCompletion E) (a ⟨fr, h1⟩)) * _`.
+
+Rewrite using `[hord1, mul_one, zpow_natCast]`. Establish `ht : ∀ i, (χ (Pi.mulSingle i (a ⟨τ, h2⟩)) : ℂ) = c i ⟨τ, h2⟩` using `fun i => by`. Express the relevant statement in the definitionally equal form `_ = (resCard (w.adicCompletion E) : ℂ) ^ (((i : ℕ) : ℤ) * ord (w.adicCompletion E) (a ⟨τ, h2⟩)) * _`. Rewrite using `[hord _ hτ.1, mul_zero, zpow_zero, one_mul]`. Establish `hαc : α = fun i => c i ⟨fr, h1⟩` using `funext hf`.
+
+Use `⟨hαc ▸ hR ⟨fr, h1⟩, fun hg i => ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`. Rewrite `hg`, the goal using `[hαc]`. Use `set g : Weil hB := ((⟨τ, h2⟩ : Weil hB) ^ resCard (w.adicCompletion E))⁻¹ * ((⟨fr, h1⟩ : Weil hB)⁻¹ * ⟨τ, h2⟩ * ⟨fr, h1⟩) with hg'`. Establish `hgk : (g : G E Ω) ∈ GlobalTheory.TameQuot.ineKer E Bq l`.
+
+Rewrite `hrel` using `[← hq]`. Conclude with `hrel`. Establish `hcg : ∀ i, c i g = 1` using `fun i => by`. Establish `e` using `hord g (GlobalTheory.TameQuot.ineKer_le_Ine Bq l hgk)`. Establish `e2 : a g ∈ unitsC _ C` using `Subgroup.map_mono (Subgroup.comap_mono hC) (hk g g.2 hgk)`.
+
+Express the relevant statement in the definitionally equal form `(resCard (w.adicCompletion E) : ℂ) ^ (((i : ℕ) : ℤ) * ord (w.adicCompletion E) (a g)) * (χ (Pi.mulSingle i (a g)) : ℂ) = 1`. Rewrite using `[e, chi_unit ψ χ hψχ i _ e (hψC i _ e2)]`. Simplify using the standard rewrite rules. Establish `hRg : R g = 1`. Establish `e : r g = 1` using `hw2 g hgk (((hw1 g).trans (hν g)).trans (by`.
+
+Express the relevant statement in the definitionally equal form `∏ i, (Polynomial.X - Polynomial.C (c i g)) = _`. Simplify using `[hcg]))`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map ι.toRingHom (r g) = 1`. Rewrite using `[e, map_one]`. Conclude with `rel_of_chars hq2 R c hR ⟨fr, h1⟩ ⟨τ, h2⟩ hRg hcg hg i`.
+
+Conclude with `⟨fun hc => (core (hc.elim hsph hgen)).1, fun hg => (core (hgen hg)).2 hg⟩`.
+-/
 theorem UpperTheory.V.Z.Win.locDataT :
     UpperTheory.V.Z.Win.LocDataT := by
   intro hP l _ E Ω _ _ _ _ _ Bq w hB hl fr τ hfr hF hτ

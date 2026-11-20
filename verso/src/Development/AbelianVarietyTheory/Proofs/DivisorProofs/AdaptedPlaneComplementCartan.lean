@@ -9,14 +9,39 @@ noncomputable section
 
 namespace GlobalTheory.SkewPlane
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum]`.
+-/
 theorem star_mulVec' {m k : ℕ} (A : Matrix (Fin m) (Fin k) ℂ) (x : Fin k → ℂ) :
     star (A *ᵥ x) = A.map star *ᵥ star x := by
   ext i; simp [Matrix.mulVec, dotProduct, star_sum]
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := starRingEnd ℂ)`.
+-/
 theorem map_star_mul {a b c : ℕ} (A : Matrix (Fin a) (Fin b) ℂ) (C : Matrix (Fin b) (Fin c) ℂ) :
     (A * C).map star = A.map star * C.map star :=
   Matrix.map_mul (f := starRingEnd ℂ)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB n n₁ W W₁ H i₀ i₁ r s hW hH P hP w`. Use `set τ : E →+* ℂ := (B.emb w).1 with hτ`. Establish `hcm : ∀ z : E, τ (σ z) = star (τ z)` using `fun z => hB.cm.2.2.2 τ z`. Use `set ι' : Matrix (Fin n) (Fin n₁) ℂ := H.ι.map τ with hι'`. Use `set P' : Matrix (Fin n₁) (Fin n) ℂ := P.map τ with hP'`.
+
+Establish `hPι : P' * ι' = 1`. Rewrite using `[hP', hι', ← Matrix.map_mul, hP, Matrix.map_one τ (map_zero τ) (map_one τ)]`. Use `set M : Matrix (Fin n) (Fin n) ℂ := Complex.I • W.J.map τ with hM`. Establish `hσ : (H.ι.map σ).map τ = ι'.map star`. Use extensionality with `i j`.
+
+Simplify using `[hι', hcm]`. Establish `hM₁ : Complex.I • W₁.J.map τ = ι'ᵀ * M * ι'.map star`. Rewrite using `[← hH.gram, Matrix.map_mul, Matrix.map_mul, hσ, hM, Matrix.transpose_map, ← hι', Matrix.mul_smul, Matrix.smul_mul]`. Take `⟨c1, c2, c3⟩` from `hW.cartan w`. Use `set θ := W.θ w`.
+
+Use `set θ₁ := W₁.θ w`. Establish `hc : θ * ι' = ι' * θ₁` using `(hH.cartan w).1`. Rewrite using `[hM₁]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e0 : θ * θ * ι' = ι' * θ₁ * θ₁`.
+
+Rewrite using `[Matrix.mul_assoc θ θ ι', hc, ← Matrix.mul_assoc, hc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc ι', ← Matrix.mul_assoc P', hPι, Matrix.one_mul]`. Use `_ = 1 := by rw [← e0, c1, Matrix.one_mul, hPι]`. Establish `e1 : θ₁ᵀ * (ι'ᵀ * M * ι'.map star) * θ₁.map star = (θ * ι')ᵀ * M * (θ * ι').map star`.
+
+Rewrite using `[hc, Matrix.transpose_mul, map_star_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, Matrix.transpose_mul, map_star_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [c2]`. Introduce `x hx`. Establish `hx' : ι' *ᵥ x ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises.
+
+Use `congrArg (P' *ᵥ ·) h0` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hPι]`. Establish `key : (θ₁ *ᵥ x) ⬝ᵥ (ι'ᵀ * M * ι'.map star) *ᵥ star x = (θ *ᵥ (ι' *ᵥ x)) ⬝ᵥ M *ᵥ star (ι' *ᵥ x)`. Establish `h : θ *ᵥ (ι' *ᵥ x) = ι' *ᵥ (θ₁ *ᵥ x)`. Rewrite using `[Matrix.mulVec_mulVec, hc, ← Matrix.mulVec_mulVec]`.
+
+Rewrite using `[star_mulVec', h, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (θ₁ *ᵥ x) ι'ᵀ, Matrix.vecMul_transpose]`. Rewrite using `[key]`. Conclude with `c3 _ hx'`.
+-/
 theorem cartan_compl : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁) (i₀ i₁ r s : ℕ),
     W.IsSkew σ B r s → H.IsAdapted σ B W W₁ i₀ i₁ → ∀ P : Matrix (Fin n₁) (Fin n) E, P * H.ι = 1 →

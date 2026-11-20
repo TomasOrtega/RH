@@ -17,6 +17,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [incM, Matrix.smul_apply, Matrix.map_apply, Matrix.vecMulVec_apply, Pi.smul_apply, map_mul, mul_smul_comm]`.
+-/
 theorem smul_incM_vecMulVec (a : AF F) (x : Fin n → E) (y : Fin d → E) :
     a • incM F (Matrix.vecMulVec x y) =
       Matrix.vecMulVec (fun i => inclR (AF F) (x i)) (a • fun j => inclR (AF F) (y j)) := by
@@ -26,6 +29,15 @@ theorem smul_incM_vecMulVec (a : AF F) (x : Fin n → E) (y : Fin d → E) :
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hint, y, hy, rfl⟩` from `hz`. Rewrite using `[← smul_incM_vecMulVec]`.
+
+Conclude with `AddSubgroup.subset_closure ⟨a, ha, hint, x, hx, y, hy, rfl⟩`. Consider the case `zero`. Establish `h0 : Matrix.vecMulVec (fun i => inclR (AF F) (x i)) (0 : Fin d → AE F E) = 0`. Use extensionality with `i j`. Conclude with `mul_zero _`.
+
+Rewrite using `[h0]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [Matrix.vecMulVec_add]`. Conclude with `add_mem hu hv`. Consider the case `neg u _ hu => rw [Matrix.vecMulVec_neg]`.
+
+Conclude with `neg_mem hu`.
+-/
 theorem vecMulVec_mem (V : Spc F E n) (W : Spc F E d) (w : Pl F) {x : Fin n → E} (hx : x ∈ V.L) :
     ∀ z ∈ GlobalTheory.InertSph.latAt W w, Matrix.vecMulVec (fun i => inclR (AF F) (x i)) z ∈ latAtV V W w := by
   intro z hz
@@ -45,6 +57,13 @@ theorem vecMulVec_mem (V : Spc F E n) (W : Spc F E d) (w : Pl F) {x : Fin n → 
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Introduce `γ hγ`. Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hint, x, hx, y, hy, rfl⟩` from `hz`. Rewrite using `[smul_incM_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMul_transpose]`.
+
+Conclude with `vecMulVec_mem V W w hx _ (hN _ (AddSubgroup.subset_closure ⟨a, ha, hint, y, hy, rfl⟩))`. Consider the case `zero => rw [Matrix.zero_mul]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [Matrix.add_mul]`. Conclude with `add_mem hu hv`.
+
+Consider the case `neg u _ hu => rw [Matrix.neg_mul]`. Conclude with `neg_mem hu`.
+-/
 theorem mul_transpose_mem (V : Spc F E n) (W : Spc F E d) (w : Pl F) (N : Matrix (Fin d) (Fin d) (AE F E))
     (hN : ∀ z ∈ GlobalTheory.InertSph.latAt W w, N *ᵥ z ∈ GlobalTheory.InertSph.latAt W w) :
     ∀ γ ∈ latAtV V W w, γ * Nᵀ ∈ latAtV V W w := by
@@ -58,6 +77,9 @@ theorem mul_transpose_mem (V : Spc F E n) (W : Spc F E d) (w : Pl F) (N : Matrix
   | add u v _ _ hu hv => rw [Matrix.add_mul]; exact add_mem hu hv
   | neg u _ hu => rw [Matrix.neg_mul]; exact neg_mem hu
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d V W k hk w γ`. Establish `hk'` using `(GlobalTheory.ThKLevel.mem_latLevel.1 hk).2 w`. Use `⟨fun h => ?_, mul_transpose_mem V W w _ (fun z hz => (hk' z hz).1) γ⟩` and prove the remaining obligations. Establish `h1` using `mul_transpose_mem V W w _ (fun z hz => (hk' z hz).2) _ h`. Rewrite `h1` using `[Matrix.mul_assoc, ← Matrix.transpose_mul, show mat k⁻¹ * mat k = mat (k⁻¹ * k) from rfl, inv_mul_cancel, show mat (1 : UA σ W.J) = 1 from rfl, Matrix.transpose_one, Matrix.mul_one]`. Then use the resulting hypothesis.
+-/
 theorem mul_transpose_mem_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ) (V : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d) (k : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ W.J), k ∈ GlobalTheory.ThKLevel.latLevel σ W → ∀ (w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (γ : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)), γ * Matrix.transpose (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat k) ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV V W w ↔ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV V W w := by
   intro F E _ _ _ _ _ σ n d V W k hk w γ
   have hk' := (GlobalTheory.ThKLevel.mem_latLevel.1 hk).2 w

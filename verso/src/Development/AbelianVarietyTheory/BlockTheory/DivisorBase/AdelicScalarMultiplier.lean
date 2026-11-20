@@ -214,9 +214,15 @@ def LevelGroupStatement : Prop :=
 
 def Statement : Prop := IdeleNormStatement ∧ LevelGroupStatement
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_mem _, by simp⟩`.
+-/
 example (K : Type) [Field K] [NumberField K] : NormUnitCond (1 : Idele K) 1 :=
   ⟨1, one_mem _, by simp⟩
 
+/- English proof (translation)
+Introduce and unpack `g ⟨hg, h1, h2⟩`. Use `⟨hg, h1, fun x hx => AddSubgroup.closure_mono ?_ (h2 x hx)⟩` and prove the remaining obligations. Introduce and unpack `t ⟨z, hz, y, hy, rfl⟩`. Conclude with `⟨z, hz, y, Submodule.smul_mono_left hIJ hy, rfl⟩`.
+-/
 theorem simLevel_mono {E : Type} [Field E] [NumberField E]
     {W : Type} [AddCommGroup W] [Module ℚ W] [Module E W] [IsScalarTower ℚ E W]
     [Module (𝓞 E) W] (h : LinearMap.BilinMap ℚ W E) (ξ : E) (Λ : Submodule (𝓞 E) W)

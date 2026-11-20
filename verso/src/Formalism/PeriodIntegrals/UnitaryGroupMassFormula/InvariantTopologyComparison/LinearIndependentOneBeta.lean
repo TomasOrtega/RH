@@ -22,6 +22,11 @@ instance instContinuousSMulT :
     ContinuousSMul (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) :=
   IsModuleTopology.toContinuousSMul _ _
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hs : Function.Surjective (Algebra.linearMap I.F I.E)` using `fun x => by`. Take `⟨a, ha⟩` from `h x`. Conclude with `⟨a, ha⟩`.
+
+Establish `e` using `(LinearEquiv.ofBijective (Algebra.linearMap I.F I.E) ⟨(algebraMap I.F I.E).injective, hs⟩).finrank_eq`. Rewrite `e` using `[I.cm.deg2]`. Rewrite `e` using `[Module.finrank_self]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_not_mem_range : ∃ x : I.E, x ∉ Set.range (algebraMap I.F I.E) := by
   by_contra h
   push_neg at h
@@ -34,6 +39,13 @@ theorem exists_not_mem_range : ∃ x : I.E, x ∉ Set.range (algebraMap I.F I.E)
   rw [Module.finrank_self] at e
   omega
 
+/- English proof (translation)
+Establish `H : ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ ((y : E) * x)`. Establish `hq : IsIntegral ℚ x` using `Algebra.IsIntegral.isIntegral x`. Take `⟨m, hm⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (nonZeroDivisors ℤ) x hq`. Conclude with `⟨m, nonZeroDivisors.coe_ne_zero m, by rw [← zsmul_eq_mul]; exact hm⟩`. Take `⟨y, hy0, hint⟩` from `H`.
+
+Establish `hmem : (y : E) * x ∈ Formalism.UG.intOE E` using `RingHom.mem_range.2 ((IsIntegralClosure.isIntegral_iff (A := 𝓞 E)).1 hint)`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg y`. Use `⟨n, Nat.one_le_iff_ne_zero.2 (by rintro rfl; simp at hy0), ?_⟩` and prove the remaining obligations. Simplify using `using hmem`. Use `⟨n, Nat.one_le_iff_ne_zero.2 (by rintro rfl; simp at hy0), ?_⟩` and prove the remaining obligations.
+
+Simplify using `using hmem`.
+-/
 private theorem exists_nat_mul_lemma {E : Type} [Field E] [NumberField E] (x : E) :
     ∃ d : ℕ, 1 ≤ d ∧ (d : E) * x ∈ Formalism.UG.intOE E := by
   have H : ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ ((y : E) * x) := by
@@ -49,6 +61,11 @@ private theorem exists_nat_mul_lemma {E : Type} [Field E] [NumberField E] (x : E
   · refine ⟨n, Nat.one_le_iff_ne_zero.2 (by rintro rfl; simp at hy0), ?_⟩
     simpa using hmem
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `exists_not_mem_range I`. Take `⟨d, hd, hdx⟩` from `exists_nat_mul_lemma x`. Establish `hd0 : (d : I.E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Use `⟨(d : I.E) * x, hdx, fun ⟨a, ha⟩ => hx ⟨a / d, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_natCast, ha]`.
+
+Conclude with `mul_div_cancel_left₀ x hd0`.
+-/
 theorem exists_beta : ∃ β : I.E, β ∈ Formalism.UG.intOE I.E ∧ β ∉ Set.range (algebraMap I.F I.E) := by
   obtain ⟨x, hx⟩ := exists_not_mem_range I
   obtain ⟨d, hd, hdx⟩ := exists_nat_mul_lemma x
@@ -59,10 +76,23 @@ theorem exists_beta : ∃ β : I.E, β ∈ Formalism.UG.intOE I.E ∧ β ∉ Set
 
 def beta : I.E := (exists_beta I).choose
 
+/- English proof (translation)
+The claim follows from `(exists_beta I).choose_spec.1`.
+-/
 theorem beta_mem : beta I ∈ Formalism.UG.intOE I.E := (exists_beta I).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(exists_beta I).choose_spec.2`.
+-/
 theorem beta_not_mem : beta I ∉ Set.range (algebraMap I.F I.E) := (exists_beta I).choose_spec.2
 
+/- English proof (translation)
+Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `at hst`.
+
+Conclude with `⟨hst, rfl⟩`. It suffices to derive a contradiction. Apply `beta_not_mem I` to reduce the goal to its premises. Use `⟨-s / t, ?_⟩` and prove the remaining obligations. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`.
+
+Establish `ht' : algebraMap I.F I.E t ≠ 0` using `(map_ne_zero _).2 ht`. Rewrite using `[map_div₀, map_neg, div_eq_iff ht']`. Take the linear combination `-hst`.
+-/
 theorem linearIndependent_one_beta : LinearIndependent I.F ![(1 : I.E), beta I] := by
   rw [LinearIndependent.pair_iff]
   intro s t hst
@@ -82,9 +112,15 @@ def basisE : Module.Basis (Fin 2) I.F I.E :=
   basisOfLinearIndependentOfCardEqFinrank (linearIndependent_one_beta I)
     (by rw [Fintype.card_fin, I.cm.deg2])
 
+/- English proof (translation)
+Simplify using `[basisE]`.
+-/
 theorem basisE_apply (k : Fin 2) : basisE I k = ![(1 : I.E), beta I] k := by
   simp [basisE]
 
+/- English proof (translation)
+Rewrite using `[basisE_apply]`. Use `fin_cases k`. Conclude with `one_mem _`. Conclude with `beta_mem I`.
+-/
 theorem basisE_mem (k : Fin 2) : basisE I k ∈ Formalism.UG.intOE I.E := by
   rw [basisE_apply]
   fin_cases k
@@ -99,16 +135,25 @@ def coord (k : Fin 2) :
     (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) →ₗ[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F :=
   (basisT I).coord k
 
+/- English proof (translation)
+Use `conv_rhs => rw [← (basisT I).sum_repr t]`. Simplify using `[coord, basisT, Module.Basis.coord_apply, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`.
+-/
 theorem sum_coord (t : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) :
     ∑ k, coord I k t ⊗ₜ[I.F] basisE I k = t := by
   conv_rhs => rw [← (basisT I).sum_repr t]
   simp [coord, basisT, Module.Basis.coord_apply, Algebra.TensorProduct.basis_apply,
     TensorProduct.smul_tmul']
 
+/- English proof (translation)
+Use `haveI : Module.Finite (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) := Module.Finite.of_basis (basisT I)`. Conclude with `IsModuleTopology.continuous_of_linearMap (coord I k)`.
+-/
 theorem continuous_coord (k : Fin 2) : Continuous (coord I k) := by
   haveI : Module.Finite (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) := Module.Finite.of_basis (basisT I)
   exact IsModuleTopology.continuous_of_linearMap (coord I k)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_coord I t]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem thetaV_eq (v : InfinitePlace I.F) (t : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) :
     thetaV I v t = ∑ k, evV I v (coord I k t) * I.φ v (basisE I k) := by
   conv_lhs => rw [← sum_coord I t]
@@ -116,6 +161,11 @@ theorem thetaV_eq (v : InfinitePlace I.F) (t : Formalism.MainNotions.GlobalTheor
   refine Finset.sum_congr rfl fun k _ => ?_
   rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_coord I t]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show (1 : I.E) ⊗ₜ[I.F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA I.F (coord I k t) * (basisE I k ⊗ₜ[I.F] (1 : Formalism.MainNotions.S.Af I.F)) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem tauF_eq (t : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) :
     tauF I t = ∑ k, basisE I k ⊗ₜ[I.F] (coord I k t).2 := by
   conv_lhs => rw [← sum_coord I t]

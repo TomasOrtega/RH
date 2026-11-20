@@ -214,12 +214,23 @@ def p2 : K.T2 →+ K'.T2 where
   map_zero' := by ext <;> simp
   map_add' a b := by ext <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [p0, p1, Cx.D0, m.compDegreeZero_natural, m.comp_commutes_diffZero]`.
+-/
 theorem pullback_firstDifferential (g : K.M0.c0) : m.p1 (K.D0 g) = K'.D0 (m.p0 g) := by
   ext <;> simp [p0, p1, Cx.D0, m.compDegreeZero_natural, m.comp_commutes_diffZero]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [p1, p2, Cx.D1, m.compDegreeZero_natural, m.compDegreeOne_natural, m.comp_commutes_diffZero, m.comp_commutes_diffOne]`.
+-/
 theorem pullback_secondDifferential (c : K.T1) : m.p2 (K.D1 c) = K'.D1 (m.p1 c) := by
   ext <;> simp [p1, p2, Cx.D1, m.compDegreeZero_natural, m.compDegreeOne_natural, m.comp_commutes_diffZero, m.comp_commutes_diffOne]
 
+/- English proof (translation)
+Use `⟨fun T T' T'' T''' φ ψ χ ↦ ?_, fun T T' T'' φ ψ ↦ ?_, fun T T' φ ↦ ?_, fun T ↦ ?_⟩` and prove the remaining obligations. Use `congrArg (m.a0 T''') (h.1 _ _ _ _ (m.G.map φ) (m.G.map ψ) (m.G.map χ))` as an intermediate fact. Simplify `this` using `[p2, m.compDegreeZero_natural]`. Use `congrArg (m.a1 T'') (h.2.1 _ _ _ (m.G.map φ) (m.G.map ψ))` as an intermediate fact. Simplify `this` using `[p2, m.compDegreeOne_natural, m.comp_commutes_diffZero]`.
+
+Use `congrArg (m.a2 T') (h.2.2.1 _ _ (m.G.map φ))` as an intermediate fact. Simplify `this` using `[p2, m.compDegreeTwo_natural, m.comp_commutes_diffOne]`. Use `congrArg (m.a3 T) (h.2.2.2 (m.G.obj T))` as an intermediate fact. Simplify `this` using `[p2, m.comp_commutes_diffTwo]`.
+-/
 theorem p2_mem_Z2_of_mem_Z2 {c : K.T2} (h : c ∈ K.Z2) : m.p2 c ∈ K'.Z2 := by
   refine ⟨fun T T' T'' T''' φ ψ χ ↦ ?_, fun T T' T'' φ ψ ↦ ?_, fun T T' φ ↦ ?_, fun T ↦ ?_⟩
   · have := congrArg (m.a0 T''') (h.1 _ _ _ _ (m.G.map φ) (m.G.map ψ) (m.G.map χ))
@@ -264,11 +275,20 @@ def comp (n : CxMap K' K'') : CxMap K K'' where
   comp_commutes_diffOne T x := (congrArg (n.a2 _) (m.comp_commutes_diffOne _ x)).trans (n.comp_commutes_diffOne T _)
   comp_commutes_diffTwo T x := (congrArg (n.a3 _) (m.comp_commutes_diffTwo _ x)).trans (n.comp_commutes_diffTwo T _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cohomZero_pullback_comp (n : CxMap K' K'') (c : K.H0) : (m.comp n).h0 c = n.h0 (m.h0 c) := rfl
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Both sides reduce to the same expression.
+-/
 theorem cohomOne_pullback_comp (n : CxMap K' K'') (c : K.H1) : (m.comp n).h1 c = n.h1 (m.h1 c) := by
   obtain ⟨a, rfl⟩ := QuotientAddGroup.mk_surjective c; rfl
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Both sides reduce to the same expression.
+-/
 theorem cohomTwo_pullback_comp (n : CxMap K' K'') (c : K.H2) : (m.comp n).h2 c = n.h2 (m.h2 c) := by
   obtain ⟨a, rfl⟩ := QuotientAddGroup.mk_surjective c; rfl
 

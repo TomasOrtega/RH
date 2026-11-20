@@ -16,6 +16,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.V.Af
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `hN : ¬ l ∣ normV w`. Introduce `hdvd`. Use `letI := Ideal.Quotient.field w.asIdeal`. Use `haveI : Finite (𝓞 F ⧸ w.asIdeal) := w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot`.
+
+Use `letI := Fintype.ofFinite (𝓞 F ⧸ w.asIdeal)`. Take `⟨p, hchar⟩` from `CharP.exists (𝓞 F ⧸ w.asIdeal)`. Establish `hp : p.Prime` using `CharP.char_is_prime (𝓞 F ⧸ w.asIdeal) p`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨n, -, hn⟩` from `FiniteField.card (𝓞 F ⧸ w.asIdeal) p`.
+
+Establish `hcard : normV w = p ^ (n : ℕ)` using `by rw [normV, Nat.card_eq_fintype_card, hn]`. Rewrite `hdvd` using `[hcard]`. Establish `hlp : l = p` using `(Nat.prime_dvd_prime_iff_eq hl hp).1 (hl.dvd_of_dvd_pow hdvd)`. Apply `hw` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, hlp]`.
+
+Conclude with `CharP.cast_eq_zero _ p`. Establish `h1 : ‖((normV w : ℕ) : ℚ_[l])‖ = 1`. Rewrite using `[Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hl).2 hN`. Rewrite using `[← h1, ← map_natCast (algebraMap ℚ_[l] (Qbar l))]`.
+
+Conclude with `norm_algebraMap' _ _`.
+-/
 private theorem norm_normV {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) (l : ℕ) [Fact l.Prime]
     (hw : (l : 𝓞 F) ∉ w.asIdeal) : ‖((normV w : ℕ) : Qbar l)‖ = 1 := by
   classical
@@ -41,6 +52,13 @@ private theorem norm_normV {F : Type} [Field F] [NumberField F] (w : HeightOneSp
   rw [← h1, ← map_natCast (algebraMap ℚ_[l] (Qbar l))]
   exact norm_algebraMap' _ _
 
+/- English proof (translation)
+Introduce `b hb`. Establish `hA` using `isPlaceOver_placeOf Ω w`. Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_isFrob hA`. Establish `e` using `(h _ hA).2 σ hσ`. Establish `: IsGalois F Ω` using `IsAlgClosure.isGalois F Ω`.
+
+Use `Lib.norm_root_eq_one r hr σ⁻¹ _ ?_` and prove the remaining obligations. Apply `ι.injective` to reduce the goal to its premises. Establish `h2 : ((r σ⁻¹ : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.map ι.toRingHom).eval b = 0`. Rewrite using `[e, Polynomial.eval_multiset_prod, Multiset.prod_eq_zero_iff, Multiset.map_map]`. Conclude with `Multiset.mem_map.2 ⟨b, hb, by simp⟩`.
+
+Establish `h3` using `Polynomial.eval₂_at_apply (p := (r σ⁻¹ : Matrix (Fin n) (Fin n) (Qbar l)).charpoly) ι.toRingHom (ι.symm b)`. Rewrite using `[map_zero]`. Rewrite `h2` using `[Polynomial.eval_map]`. Use `h3.symm.trans ?_` and prove the remaining obligations. Rewrite using `[show ι.toRingHom (ι.symm b) = b from ι.apply_symm_apply b]` and apply the resulting hypothesis.
+-/
 private theorem frob_unit {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
     {n : ℕ} (ι : Qbar l ≃+* ℂ) (r : G F Ω →* GL (Fin n) (Qbar l)) (hr : Continuous r) (w : HeightOneSpectrum (𝓞 F))
     (B : Multiset ℂ) (h : FrobEig ι r w B) : ∀ b ∈ B, ‖ι.symm b‖ = 1 := by
@@ -60,6 +78,19 @@ private theorem frob_unit {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Al
   refine h3.symm.trans ?_
   rwa [show ι.toRingHom (ι.symm b) = b from ι.apply_symm_apply b]
 
+/- English proof (translation)
+Establish `hK` using `GlobalTheory.SmGL.SphCompletion.KO_completion w n`. Take `⟨x, hx0, hx, -⟩` from `hB.exists_vec`. Establish `hfix : ∀ U, U ≤ GlobalTheory.LFun.KGL w n → GlobalTheory.PRep.fixed σ.ρ U ≠ ⊥` using `fun U hU => (Submodule.ne_bot_iff _).2 ⟨x, GlobalTheory.LGrp.mem_fixed.2 fun k hk => GlobalTheory.LGrp.mem_fixed.1 hx k (hU hk), hx0⟩`. Establish `hsph : GlobalTheory.SmGL.IsSpherical σ.ρ` using `hfix _ hK.le`. Establish `hiw` using `hfix _ ((GlobalTheory.SmGL.iwahori_le_KO _ _).trans hK.le)`.
+
+Establish `key : ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ), ∀ b ∈ algSat n (normV w) B, (∀ a : ℤ, (∀ i, -a ≤ m i) → ‖ι.symm ((normV w : ℂ) ^ a * b⁻¹)‖ ≤ 1) ∧ ∀ a : ℤ, (∀ i, m i ≤ a) → ‖ι.symm ((normV w : ℂ) ^ a * b)‖ ≤ 1`. Introduce `l _ ι`. Take `⟨r, hr, h1, h2⟩` from `H l ι`. Distinguish the cases in `hl : (l : 𝓞 F) ∈ w.asIdeal`. Choose the witnesses or unpack the hypotheses as in `rfl : l = p := by`.
+
+Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime (l : 𝓞 F) (p : 𝓞 F)` using `Nat.Coprime.cast ((Nat.coprime_primes Fact.out hp).2 hne)`. Take `⟨a, b, e⟩` from `hc`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ add_mem (Ideal.mul_mem_left _ _ hl) (Ideal.mul_mem_left _ _ hw)))`. Establish `hA` using `isPlaceOver_placeOf (AlgebraicClosure F) w`.
+
+Take `⟨j, L0, hj, hLL⟩` from `GlobalTheory.PlaceBridge.exists_locBridge l F (AlgebraicClosure F) w _ hl hA`. Take `⟨Bw, hBj, -⟩` from `hLL L0 le_rfl`. Establish `hI : Induces Bw` using `fun x => by rw [hBj]; exact hj x`. Take `⟨c1, c2, c3⟩` from `h2 _ hA _ Bw hI`. Establish `L` using `hP.litN.loc`.
+
+Take `⟨rc, hrc⟩` from `L.llc F _ _ w hA`. Establish `hrc'` using `GlobalTheory.LocLanglands.isRec_of_isRecLit L.dzc L.dzi L.exh L.multi L.cos L.zel L.geo L.bz F _ _ w hA rc hrc`. Conclude with `crysSlopes hP F _ l hd ι n m r hr w _ hA _ Bw hI (c1 hsph) c2 σ B hB rc hrc' (c3 hiw rc hrc')`. Introduce `b hb`. Establish `hu` using `frob_unit ι r hr w _ (satFrob hP F _ l ι n r hr w hl σ B hB (h1 hl)) b hb`.
+
+Establish `hq` using `norm_normV w l hl`. Apply the tactic sequence `constructor <;> intro a _ <;> simp [hu, hq]`. Introduce `b hb`. Conclude with `⟨fun a ha => Lib.isIntegral_of_norm_le _ fun l _ ι => (key l ι b hb).1 a ha, fun a ha => Lib.isIntegral_of_norm_le _ fun l _ ι => (key l ι b hb).2 a ha⟩`.
+-/
 theorem slopesOf (hP : Hypotheses₂) {F : Type} [Field F] [NumberField F] {n : ℕ} (m : Fin n → ℤ) {p : ℕ} (hp : p.Prime)
     (w : HeightOneSpectrum (𝓞 F)) (hw : (p : 𝓞 F) ∈ w.asIdeal) (hd : ¬ (p : ℤ) ∣ discr F)
     (σ : SmIrr (GL (Fin n) (w.adicCompletion F))) (B : Multiset ℂˣ) (hB : GlobalTheory.LFun.HasSatGL w σ.ρ B)

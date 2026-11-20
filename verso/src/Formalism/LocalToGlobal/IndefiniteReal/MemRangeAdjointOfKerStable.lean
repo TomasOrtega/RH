@@ -10,6 +10,11 @@ namespace Formalism.IndefR.Cx
 
 open Formalism.L2.Indef
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `hy`. Rewrite using `[← Submodule.orthogonal_orthogonal (LinearMap.range (LinearMap.adjoint Θ)), Submodule.mem_orthogonal]`. Introduce `v hv`. Establish `hΘv : Θ v = 0`. Establish `h` using `(Submodule.mem_orthogonal _ _).1 hv (LinearMap.adjoint Θ (Θ v)) ⟨Θ v, rfl⟩`.
+
+Rewrite `h` using `[LinearMap.adjoint_inner_left]`. Conclude with `inner_self_eq_zero.1 h`. Rewrite using `[← LinearMap.adjoint_inner_left, ← hT', LinearMap.adjoint_inner_right, hker v hΘv, inner_zero_left]`.
+-/
 theorem mem_range_adjoint_of_ker_stable {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [FiniteDimensional ℂ E] [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F]
     (Θ : E →ₗ[ℂ] F) (T T' : E →ₗ[ℂ] E) (hT' : T' = LinearMap.adjoint T)
@@ -24,6 +29,9 @@ theorem mem_range_adjoint_of_ker_stable {E F : Type*} [NormedAddCommGroup E] [In
     exact inner_self_eq_zero.1 h
   rw [← LinearMap.adjoint_inner_left, ← hT', LinearMap.adjoint_inner_right, hker v hΘv, inner_zero_left]
 
+/- English proof (translation)
+Establish `h` using `b.ext (f₁ := j.comp f) (f₂ := ((Basis.mk hli hsp).constr ℂ (fun i => j (f (b i)))).comp j) (fun i => by`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[show j (b i) = Basis.mk hli hsp i from (Basis.mk_apply hli hsp i).symm, Basis.constr_basis])`. Conclude with `LinearMap.congr_fun h x`.
+-/
 theorem semilin_comp_eq_constr {ι k V W : Type*} [Field k] [AddCommGroup V] [Module k V] [AddCommGroup W] [Module ℂ W]
     {σ : k →+* ℂ} (b : Basis ι k V) (j : V →ₛₗ[σ] W) (hli : LinearIndependent ℂ fun i => j (b i))
     (hsp : ⊤ ≤ Submodule.span ℂ (Set.range fun i => j (b i))) (f : V →ₗ[k] V) (x : V) :
@@ -40,18 +48,31 @@ namespace CxData
 
 variable {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A)
 
+/- English proof (translation)
+Unfold `opC`. Rewrite using `[dif_pos (hR t)]`. Conclude with `semilin_comp_eq_constr _ (X.jR t) (hR t).1 (hR t).2.ge (A.opR t i) x`.
+-/
 theorem jR_opR (hR : X.KFormR) (t : Bs.Tup) (i : A.OpR t) (x : A.FR t) :
     X.jR t (A.opR t i x) = X.opC t i (X.jR t x) := by
   unfold opC
   rw [dif_pos (hR t)]
   exact semilin_comp_eq_constr _ (X.jR t) (hR t).1 (hR t).2.ge (A.opR t i) x
 
+/- English proof (translation)
+Unfold `opLC`. Rewrite using `[dif_pos (hL j t)]`. Conclude with `semilin_comp_eq_constr _ (X.jL j t) (hL j t).1 (hL j t).2.ge (A.opL j t i) x`.
+-/
 theorem jL_opL (hL : X.KFormL) (j : Bs.J) (t : Bs.Tup) (i : A.OpL j t) (x : A.FL j t) :
     X.jL j t (A.opL j t i x) = X.opLC j t i (X.jL j t x) := by
   unfold opLC
   rw [dif_pos (hL j t)]
   exact semilin_comp_eq_constr _ (X.jL j t) (hL j t).1 (hL j t).2.ge (A.opL j t i) x
 
+/- English proof (translation)
+Introduce `hR hL hkR hkL haR haL`. Unfold `DefSub.Stable`. Use `⟨fun t i => ?_, fun j t i => ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`.
+
+Use `show X.jR t (A.opR t i x) ∈ LinearMap.range (LinearMap.adjoint (X.Θ t))`. Rewrite using `[jR_opR X hR]`. Take `⟨i', hi'⟩` from `haR t i`. Conclude with `mem_range_adjoint_of_ker_stable (X.Θ t) (X.opC t i) (X.opC t i') hi' (fun u hu => hkR t i' u hu) (y := X.jR t x) hx`. Introduce `y hy`.
+
+Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`. Use `show X.jL j t (A.opL j t i x) ∈ LinearMap.range (LinearMap.adjoint (X.θ' j t))`. Rewrite using `[jL_opL X hL]`. Take `⟨i', hi'⟩` from `haL j t i`. Conclude with `mem_range_adjoint_of_ker_stable (X.θ' j t) (X.opLC j t i) (X.opLC j t i') hi' (fun u hu => hkL j t i' u hu) (y := X.jL j t x) hx`.
+-/
 theorem cutStable : X.CutStable := by
   intro hR hL hkR hkL haR haL
   unfold DefSub.Stable

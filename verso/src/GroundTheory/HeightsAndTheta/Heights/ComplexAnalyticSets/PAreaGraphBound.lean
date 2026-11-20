@@ -11,12 +11,18 @@ open MeasureTheory
 
 open scoped ENNReal NNReal
 
+/- English proof (translation)
+Introduce `x y hxy`. Use extensionality with `i`. Simplify `congrArg (fun z : EuclideanSpace ℝ (Fin k ⊕ Fin m) => z (Sum.inl i)) hxy` using `[realGraphPt]`.
+-/
 theorem realGraphPt_injective {k m : ℕ} (F : EuclideanSpace ℝ (Fin k) → EuclideanSpace ℝ (Fin m)) :
     Function.Injective (realGraphPt F) := by
   intro x y hxy
   ext i
   simpa [realGraphPt] using congrArg (fun z : EuclideanSpace ℝ (Fin k ⊕ Fin m) => z (Sum.inl i)) hxy
 
+/- English proof (translation)
+Unfold `realGraphPt`. Use `(PiLp.continuous_toLp 2 _).comp_continuousOn (continuousOn_pi.2 fun i => ?_)` and prove the remaining obligations. Break down `i with i | i` into its components or cases. Conclude with `(PiLp.continuous_apply 2 _ i).continuousOn`. Conclude with `(PiLp.continuous_apply 2 _ i).comp_continuousOn hF`.
+-/
 theorem realGraphPt_continuousOn {k m : ℕ} {F : EuclideanSpace ℝ (Fin k) → EuclideanSpace ℝ (Fin m)}
     {s : Set (EuclideanSpace ℝ (Fin k))} (hF : ContinuousOn F s) : ContinuousOn (realGraphPt F) s := by
   unfold realGraphPt
@@ -25,6 +31,25 @@ theorem realGraphPt_continuousOn {k m : ℕ} {F : EuclideanSpace ℝ (Fin k) →
   · exact (PiLp.continuous_apply 2 _ i).continuousOn
   · exact (PiLp.continuous_apply 2 _ i).comp_continuousOn hF
 
+/- English proof (translation)
+Introduce `k m U F hU hF A hAU hA δ hδ0 hδ1`. Use `set J : (EuclideanSpace ℝ (Fin k) →L[ℝ] EuclideanSpace ℝ (Fin m)) → ℝ≥0∞ := fun B => ENNReal.ofReal (graphJac (B : EuclideanSpace ℝ (Fin k) →ₗ[ℝ] EuclideanSpace ℝ (Fin m))) with hJ`. Use `set c : ℝ≥0∞ := ((1 + δ : ℝ≥0) : ℝ≥0∞) with hc`. Use `choose r₃ hr₃0 hr₃ using fun B => h₃ k m B δ (by exact_mod_cast hδ0)`. Take `⟨t, An, hdisj, htm, -, hcov, happrox, hder⟩` from `h₂ k m U F hU hF (fun B => min δ (r₃ B).toNNReal) (fun B => (lt_min hδ0 (Real.toNNReal_pos.2 (hr₃0 B))).ne')`.
+
+Use `set p : ℕ → Set (EuclideanSpace ℝ (Fin k)) := fun n => A ∩ t n with hp`. Establish `hpm : ∀ n, MeasurableSet (p n)` using `fun n => hA.inter (htm n)`. Establish `hpd : Pairwise (Function.onFun Disjoint p)` using `fun i j hij => (hdisj hij).mono Set.inter_subset_right Set.inter_subset_right`. Establish `hAp : A = ⋃ n, p n`. Rewrite using `[← Set.inter_iUnion]`.
+
+Conclude with `(Set.inter_eq_left.2 (hAU.trans hcov)).symm`. Establish `hcmp : ∀ n, ∀ x ∈ p n, J (fderiv ℝ F x) ≤ c * J (An n) ∧ J (An n) ≤ c * J (fderiv ℝ F x)`. Introduce `n x hx`. Establish `hle : ‖fderiv ℝ F x - An n‖ ≤ r₃ (An n)`. Use `(hder n x hx.2).trans (min_le_right _ _)` as an intermediate fact.
+
+Establish `h' : ((‖fderiv ℝ F x - An n‖₊ : ℝ≥0) : ℝ) ≤ ((r₃ (An n)).toNNReal : ℝ)` using `by exact_mod_cast this`. Simplify `h'` using `[Real.coe_toNNReal _ (hr₃0 (An n)).le]`. Take `⟨h1, h2⟩` from `hr₃ (An n) (fderiv ℝ F x) hle`. Establish `e : ∀ y : ℝ, ENNReal.ofReal ((1 + δ) * y) = c * ENNReal.ofReal y` using `fun y => by`. Rewrite using `[ENNReal.ofReal_mul (by positivity), hc]; congr 1`.
+
+Rewrite using `[← ENNReal.ofReal_coe_nnreal]`. Use `push_cast`. Both sides reduce to the same expression. Conclude with `⟨(ENNReal.ofReal_le_ofReal h1).trans (e _).le, (ENNReal.ofReal_le_ofReal h2).trans (e _).le⟩`. Establish `hpiece : ∀ n, μH[(k : ℝ)] (realGraphPt F '' p n) ≤ c ^ (k + 1) * ∫⁻ x in p n, J (fderiv ℝ F x) ∂(μH[(k : ℝ)]) ∧ ((1 - δ : ℝ≥0) : ℝ≥0∞) ^ k * ∫⁻ x in p n, J (fderiv ℝ F x) ∂(μH[(k : ℝ)]) ≤ c * μH[(k : ℝ)] (realGraphPt F '' p n)`.
+
+Introduce `n`. Take `⟨u, l⟩` from `h₁ k m F (An n) δ (p n) hδ1 (((happrox n).mono_set Set.inter_subset_right).mono_num (min_le_left _ _))`. Establish `i₁ : J (An n) * μH[(k : ℝ)] (p n) ≤ c * ∫⁻ x in p n, J (fderiv ℝ F x) ∂(μH[(k : ℝ)])`. Rewrite using `[← setLIntegral_const, ← lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Conclude with `setLIntegral_mono' (hpm n) fun x hx => (hcmp n x hx).2`.
+
+Establish `i₂ : ∫⁻ x in p n, J (fderiv ℝ F x) ∂(μH[(k : ℝ)]) ≤ c * (J (An n) * μH[(k : ℝ)] (p n))`. Rewrite using `[← setLIntegral_const, ← lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Conclude with `setLIntegral_mono' (hpm n) fun x hx => (hcmp n x hx).1`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hG : ∀ n, MeasurableSet (realGraphPt F '' p n)` using `fun n => (hpm n).image_of_continuousOn_injOn (realGraphPt_continuousOn (hF.continuousOn.mono (Set.inter_subset_left.trans hAU))) (realGraphPt_injective F).injOn`. Establish `hGd : Pairwise (Function.onFun Disjoint fun n => realGraphPt F '' p n)` using `fun i j hij => (Set.disjoint_image_iff (realGraphPt_injective F)).2 (hpd hij)`. Establish `hS : μH[(k : ℝ)] (realGraphPt F '' A) = ∑' n, μH[(k : ℝ)] (realGraphPt F '' p n)`. Rewrite using `[hAp, Set.image_iUnion, measure_iUnion hGd hG]`.
+
+Establish `hI : ∫⁻ x in A, J (fderiv ℝ F x) ∂(μH[(k : ℝ)]) = ∑' n, ∫⁻ x in p n, J (fderiv ℝ F x) ∂(μH[(k : ℝ)])`. Rewrite using `[hAp, lintegral_iUnion hpm hpd]`. Express the relevant statement in the definitionally equal form `μH[(k : ℝ)] (realGraphPt F '' A) ≤ c ^ (k + 1) * ∫⁻ x in A, J (fderiv ℝ F x) ∂(μH[(k : ℝ)]) ∧ ((1 - δ : ℝ≥0) : ℝ≥0∞) ^ k * ∫⁻ x in A, J (fderiv ℝ F x) ∂(μH[(k : ℝ)]) ≤ c * μH[(k : ℝ)] (realGraphPt F '' A)`. Rewrite using `[hS, hI, ← ENNReal.tsum_mul_left, ← ENNReal.tsum_mul_left, ← ENNReal.tsum_mul_left]`. Conclude with `⟨ENNReal.tsum_le_tsum fun n => (hpiece n).1, ENNReal.tsum_le_tsum fun n => (hpiece n).2⟩`.
+-/
 theorem AreaGraphBound.proof (h₁ : AreaGraphPiece.Statement) (h₂ : AreaGraphPartition.Statement)
     (h₃ : GraphJacContinuous.Statement) : AreaGraphBound.Statement := by
   intro k m U F hU hF A hAU hA δ hδ0 hδ1

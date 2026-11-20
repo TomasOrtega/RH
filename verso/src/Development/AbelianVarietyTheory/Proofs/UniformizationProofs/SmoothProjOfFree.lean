@@ -15,6 +15,11 @@ open GlobalTheory.UU
 
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Use `Q.q_hom` as an intermediate fact. Use `Q.q_flat` as an intermediate fact. Use `Q.q_surj` as an intermediate fact. Use `Q.q_affine` as an intermediate fact. Use `(H1.torus_dim S X).smooth` as an intermediate fact.
+
+Use `MorphismProperty.of_isPullback_of_descendsAlong (P := @Smooth) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) ((H1.torsor_pullback Q.i Q.q Q.isKernel).map (Over.forget _)).flip ⟨⟨‹_›, ‹_›⟩, inferInstanceAs (QuasiCompact Q.q.left)⟩ ?_` and prove the remaining obligations. Conclude with `smooth_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _) this`.
+-/
 theorem TQ.smooth_proj_of_free {S : Scheme.{0}} {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     {G : Over S} [GrpObj G] (Q : TQ G X) : Smooth Q.q.left := by
   have := Q.q_hom
@@ -27,6 +32,13 @@ theorem TQ.smooth_proj_of_free {S : Scheme.{0}} {X : Type} [AddCommGroup X] [Mod
     ⟨⟨‹_›, ‹_›⟩, inferInstanceAs (QuasiCompact Q.q.left)⟩ ?_
   exact smooth_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _) this
 
+/- English proof (translation)
+Introduce `S hS X _ _ _ G _ Q g g' dG dB`. Take `⟨y⟩` from `hS`. Use `Q.i_hom` as an intermediate fact. Use `Q.smooth_proj_of_free` as an intermediate fact. Take `⟨m, W, hW, d₁⟩` from `H1.exists_dim Q.q.left (eSec G y)`.
+
+Establish `g₂ : m = Module.finrank ℤ X` using `H1.dim_base (Q.isKernel.map (Over.forget _)) d₁ (H1.torus_dim S X) (eSec _ y) ((congrArg (fun k => k.left y ∈ W) (IsMonHom.one_hom Q.i)).mpr hW)`. Establish `d₂ : SmoothOfRelativeDimension (m + g') (W.ι ≫ G.hom)`. Rewrite using `[← Over.w Q.q, ← Category.assoc]`. Use `infer_instance`. Establish `d₃ : SmoothOfRelativeDimension (0 + g) (W.ι ≫ G.hom)` using `inferInstance`.
+
+Use `H1.dim_unique _ d₂ d₃ ⟨_, hW⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem TQ.dim_eq_add_finrank :
     (∀ (S : Scheme.{0}) [Nonempty S] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (G : Over S) [GrpObj G] (Q : TQ G X) (g g' : ℕ), SmoothOfRelativeDimension g G.hom → SmoothOfRelativeDimension g' Q.B.hom → g = g' + Module.finrank ℤ X) := by
   intro S hS X _ _ _ G _ Q g g' dG dB

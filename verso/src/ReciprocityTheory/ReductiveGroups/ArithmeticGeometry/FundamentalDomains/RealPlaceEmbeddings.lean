@@ -17,6 +17,11 @@ instance free_int : Module.Free ℤ X.Λ := inferInstance
 
 noncomputable def zb : Basis (Fin (finrank ℤ X.Λ)) ℤ X.Λ := Module.finBasis ℤ X.Λ
 
+/- English proof (translation)
+Establish `hα : α = ∑ k, (integralBasis E).repr α k • integralBasis E k` using `((integralBasis E).sum_repr α).symm`. Rewrite using `[hα, Finset.sum_smul]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations.
+
+Rewrite using `[integralBasis_apply]`. Conclude with `X.Λ.smul_of_tower_mem (RingOfIntegers.basis E k) hl`.
+-/
 theorem smul_mem_spanQ (α : E) {l : Fin r → E} (hl : l ∈ X.Λ) :
     α • l ∈ span ℚ (X.Λ : Set (Fin r → E)) := by
   have hα : α = ∑ k, (integralBasis E).repr α k • integralBasis E k :=
@@ -28,6 +33,21 @@ theorem smul_mem_spanQ (α : E) {l : Fin r → E} (hl : l ∈ X.Λ) :
   rw [integralBasis_apply]
   exact X.Λ.smul_of_tower_mem (RingOfIntegers.basis E k) hl
 
+/- English proof (translation)
+Use `set S := span ℚ (Set.range fun i => (g i : Fin r → E)) with hS`. Establish `hΛ : ∀ l ∈ X.Λ, l ∈ S`. Introduce `l hl`. Establish `h1 : (⟨l, hl⟩ : X.Λ) = ∑ i, g.repr ⟨l, hl⟩ i • g i` using `(g.sum_repr ⟨l, hl⟩).symm`. Establish `h2 : l = ∑ i, ((g.repr ⟨l, hl⟩ i : ℤ) : ℚ) • (g i : Fin r → E)`.
+
+Use `(congrArg Subtype.val h1).trans ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`. Both sides reduce to the same expression.
+
+Rewrite using `[h2]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hspanΛ : span ℚ (X.Λ : Set (Fin r → E)) ≤ S` using `Submodule.span_le.mpr fun l hl => hΛ l hl`. Establish `hE : ∀ α : E, ∀ w ∈ S, α • w ∈ S`. Introduce `α w hw`.
+
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Conclude with `hspanΛ (smul_mem_spanQ X α (g i).2)`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `S.add_mem hy hz`. Consider the case `smul q y _ hy => rw [smul_comm]`. Conclude with `S.smul_mem q hy`. Use `eq_top_iff.mpr ?_` and prove the remaining obligations.
+
+Introduce and unpack `v -`. Establish `hv : v ∈ span E (X.Λ : Set (Fin r → E))` using `by rw [X.Λ_span]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy => exact hΛ y hy`. Consider the case `zero => exact S.zero_mem`.
+
+Consider the case `add y z _ _ hy hz => exact S.add_mem hy hz`. Consider the case `smul α y _ hy => exact hE α y hy`.
+-/
 theorem spanQ_eq_top {ι : Type} [Fintype ι] (g : Basis ι ℤ X.Λ) :
     span ℚ (Set.range fun i => (g i : Fin r → E)) = ⊤ := by
   set S := span ℚ (Set.range fun i => (g i : Fin r → E)) with hS
@@ -61,6 +81,9 @@ theorem spanQ_eq_top {ι : Type} [Fintype ι] (g : Basis ι ℤ X.Λ) :
   | add y z _ _ hy hz => exact S.add_mem hy hz
   | smul α y _ hy => exact hE α y hy
 
+/- English proof (translation)
+Establish `hZ : LinearIndependent ℤ fun i => (g i : Fin r → E)` using `g.linearIndependent.map' (X.Λ.toAddSubgroup.subtype.toIntLinearMap) (LinearMap.ker_eq_bot.mpr Subtype.val_injective)`. Conclude with `(LinearIndependent.iff_fractionRing ℤ ℚ).mp hZ`.
+-/
 theorem linIndQ {ι : Type} [Fintype ι] (g : Basis ι ℤ X.Λ) :
     LinearIndependent ℚ fun i => (g i : Fin r → E) := by
   have hZ : LinearIndependent ℤ fun i => (g i : Fin r → E) :=
@@ -71,15 +94,30 @@ theorem linIndQ {ι : Type} [Fintype ι] (g : Basis ι ℤ X.Λ) :
 noncomputable def qb {ι : Type} [Fintype ι] (g : Basis ι ℤ X.Λ) : Basis ι ℚ (Fin r → E) :=
   Basis.mk (linIndQ X g) (spanQ_eq_top X g).ge
 
+/- English proof (translation)
+Unfold `qb`. Conclude with `Basis.mk_apply _ _ _`.
+-/
 theorem qb_apply {ι : Type} [Fintype ι] (g : Basis ι ℤ X.Λ) (i : ι) : qb X g i = (g i : Fin r → E) := by
   unfold qb
   exact Basis.mk_apply _ _ _
 
+/- English proof (translation)
+Rewrite using `[← Module.finrank_eq_card_basis (qb X g), Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules.
+-/
 theorem card_qb {ι : Type} [Fintype ι] (g : Basis ι ℤ X.Λ) :
     Fintype.card ι = r * finrank ℚ E := by
   rw [← Module.finrank_eq_card_basis (qb X g), Module.finrank_pi_fintype]
   simp
 
+/- English proof (translation)
+Rewrite using `[← NumberField.Embeddings.card E ℂ]`. Establish `h1 : (X.Ψᶜ).card = X.Ψ.card`. Use `Finset.card_bij (fun τ _ => ComplexEmbedding.conjugate τ) ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ hτ`. Rewrite `hτ` using `[Finset.mem_compl]`.
+
+Conclude with `(X.cmType _).mpr (by rw [TraceIntegralBasis.conj_conj]; exact hτ)`. Introduce `a _ b _ h`. Use `congrArg ComplexEmbedding.conjugate h` as an intermediate fact. Rewrite `this` using `[TraceIntegralBasis.conj_conj, TraceIntegralBasis.conj_conj]`. Then use the resulting hypothesis. Introduce `τ hτ`.
+
+Use `⟨ComplexEmbedding.conjugate τ, ?_, TraceIntegralBasis.conj_conj τ⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_compl]`. Introduce `h`. Conclude with `((X.cmType _).mp h) (by rw [TraceIntegralBasis.conj_conj]; exact hτ)`. Establish `h2` using `Finset.card_add_card_compl X.Ψ`.
+
+Rewrite using `[Fintype.card_coe]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_card_Psi : 2 * Fintype.card X.Ψ = finrank ℚ E := by
   classical
   rw [← NumberField.Embeddings.card E ℂ]
@@ -117,6 +155,11 @@ noncomputable def Tm : TraceIntegralBasis.VS E →ₗ[ℝ] (X.Ψ → ℂ) where
     split_ifs <;> simp [Complex.real_smul]
 
 open scoped Classical in
+/- English proof (translation)
+Simplify using `only [Tm, LinearMap.coe_mk, AddHom.coe_mk, TraceIntegralBasis.iota_apply]`. Use `split_ifs with h`. Rewrite using `[h]`. Break down `InfinitePlace.embedding_mk_eq τ.1 with h' | h'` into its components or cases. Conclude with `absurd h' h`.
+
+Express the relevant statement in the definitionally equal form `conj ((InfinitePlace.mk τ.1).embedding x) = τ.1 x`. Rewrite using `[h', ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`.
+-/
 theorem Tm_iota (x : E) (τ : X.Ψ) : Tm X (TraceIntegralBasis.iota E x) τ = τ.1 x := by
   simp only [Tm, LinearMap.coe_mk, AddHom.coe_mk, TraceIntegralBasis.iota_apply]
   split_ifs with h
@@ -127,6 +170,13 @@ theorem Tm_iota (x : E) (τ : X.Ψ) : Tm X (TraceIntegralBasis.iota E x) τ = τ
       rw [h', ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]
 
 open scoped Classical in
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`. Use extensionality with `w`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ : X.Ψ, plc X τ = w := by`. Distinguish the cases in `h : w.1.embedding ∈ X.Ψ`.
+
+Conclude with `⟨⟨_, h⟩, Subtype.ext (InfinitePlace.mk_embedding w.1)⟩`. Establish `h2 : ComplexEmbedding.conjugate w.1.embedding ∈ X.Ψ` using `(X.cmType _).mpr (by rw [TraceIntegralBasis.conj_conj]; exact h)`. Conclude with `⟨⟨_, h2⟩, Subtype.ext ((InfinitePlace.mk_conjugate_eq _).trans (InfinitePlace.mk_embedding w.1))⟩`. Establish `h3` using `congrFun hz τ`. Simplify using `only [Tm, LinearMap.coe_mk, AddHom.coe_mk, Pi.zero_apply] at h3`.
+
+Substitute `hτ` using the available equality. Use `split_ifs at h3`. Simplify using `using h3`. Simplify using `using h3`.
+-/
 theorem Tm_injective : Function.Injective (Tm X) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
   intro z hz
@@ -145,12 +195,24 @@ theorem Tm_injective : Function.Injective (Tm X) := by
   · simpa using h3
   · simpa using h3
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `only [Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, smul_eq_mul]`. Rewrite using `[← two_card_Psi X]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finrank_Psi : finrank ℝ (X.Ψ → ℂ) = finrank ℚ E := by
   rw [Module.finrank_pi_fintype]
   simp only [Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, smul_eq_mul]
   rw [← two_card_Psi X]
   ring
 
+/- English proof (translation)
+Establish `hs : span ℝ (Set.range (TraceIntegralBasis.iota E)) = ⊤`. Use `eq_top_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[← (TraceIntegralBasis.bas E).span_eq]`. Conclude with `span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨_, (TraceIntegralBasis.bas_apply i).symm⟩)`. Establish `hdim : finrank ℝ (TraceIntegralBasis.VS E) = finrank ℝ (X.Ψ → ℂ)`.
+
+Rewrite using `[TraceIntegralBasis.finrank_VS, finrank_Psi]`. Establish `hsurj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp (Tm_injective X)`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Take `⟨y, rfl⟩` from `hsurj z`.
+
+Establish `hy : y ∈ span ℝ (Set.range (TraceIntegralBasis.iota E))` using `by rw [hs]; trivial`. Establish `h1` using `Submodule.mem_map_of_mem (f := Tm X) hy`. Rewrite `h1` using `[Submodule.map_span]`. Use `span_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`.
+
+Conclude with `⟨x, funext fun τ => (Tm_iota X x τ).symm⟩`.
+-/
 theorem span_real_embeddings_eq_top : span ℝ (Set.range fun x : E => fun τ : X.Ψ => τ.1 x) = ⊤ := by
   have hs : span ℝ (Set.range (TraceIntegralBasis.iota E)) = ⊤ := by
     refine eq_top_iff.mpr ?_
@@ -180,6 +242,19 @@ noncomputable def Ja (a : Fin r) : (X.Ψ → ℂ) →ₗ[ℝ] (X.Ψ → Fin r �
     simp only [Pi.smul_apply, RingHom.id_apply]
     split_ifs <;> simp
 
+/- English proof (translation)
+Use `set S := span ℝ (Set.range fun i => X.embV (g i : Fin r → E)) with hS`. Establish `h1 : ∀ v : Fin r → E, X.embV v ∈ S`. Introduce `v`. Establish `hv : X.embV v = ∑ i, (((qb X g).repr v i : ℚ) : ℝ) • X.embV (g i : Fin r → E)` using `by conv_lhs => rw [← (qb X g).sum_repr v]`. Use function extensionality and compare the values at `τ a`.
+
+Simplify using `only [Data.embV, Data.emb, qb_apply, Finset.sum_apply, Pi.smul_apply, Rat.smul_def, map_sum, map_mul, map_ratCast, Complex.real_smul, Complex.ofReal_ratCast]`. Rewrite using `[hv]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (subset_span ⟨i, rfl⟩)`. Rewrite using `[eq_top_iff]`. Introduce `w _`.
+
+Establish `hw : w = ∑ a : Fin r, Ja X a (fun τ => w τ a)`. Use function extensionality and compare the values at `τ b`. Simplify using `[Ja, Finset.sum_apply]`. Rewrite using `[hw]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations.
+
+Establish `hz : (fun τ : X.Ψ => w τ a) ∈ span ℝ (Set.range fun x : E => fun τ : X.Ψ => τ.1 x)`. Rewrite using `[span_real_embeddings_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Establish `h2` using `Submodule.mem_map_of_mem (f := Ja X a) hz`. Rewrite `h2` using `[Submodule.map_span]`.
+
+Use `(span_le.mpr ?_) h2` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`. Establish `h3 : Ja X a (fun τ : X.Ψ => τ.1 x) = X.embV (Pi.single a x)`. Use function extensionality and compare the values at `τ b`. Simplify using `only [Ja, LinearMap.coe_mk, AddHom.coe_mk, Data.embV, Data.emb, Pi.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h3]`. Conclude with `h1 _`.
+-/
 theorem span_embV {ι : Type} [Fintype ι] (g : Basis ι ℤ X.Λ) :
     span ℝ (Set.range fun i => X.embV (g i : Fin r → E)) = ⊤ := by
   set S := span ℝ (Set.range fun i => X.embV (g i : Fin r → E)) with hS
@@ -212,6 +287,9 @@ theorem span_embV {ι : Type} [Fintype ι] (g : Basis ι ℤ X.Λ) :
   rw [h3]
   exact h1 _
 
+/- English proof (translation)
+Use `linearIndependent_of_top_le_span_of_card_eq_finrank (span_embV X g).ge ?_` and prove the remaining obligations. Rewrite using `[card_qb X g, Module.finrank_pi_fintype]`. Simplify using `only [Module.finrank_pi_fintype, Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Rewrite using `[← two_card_Psi X]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem linIndR {ι : Type} [Fintype ι] (g : Basis ι ℤ X.Λ) :
     LinearIndependent ℝ fun i => X.embV (g i : Fin r → E) := by
   refine linearIndependent_of_top_le_span_of_card_eq_finrank (span_embV X g).ge ?_

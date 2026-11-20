@@ -13,6 +13,9 @@ namespace GlobalTheory.FieldPair.Place
 
 variable {k K : Type} [Field k] [Field K] {c : k →+* K}
 
+/- English proof (translation)
+Rewrite using `[← E.ord_nonneg_iff hf, ← E.ord_nonneg_iff (inv_ne_zero hf), E.ord_inv]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ord_eq_zero_iff (E : Place c) {f : K} (hf : f ≠ 0) :
     E.ord f = 0 ↔ f ∈ E.ring ∧ f⁻¹ ∈ E.ring := by
   rw [← E.ord_nonneg_iff hf, ← E.ord_nonneg_iff (inv_ne_zero hf), E.ord_inv]

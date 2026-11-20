@@ -13,6 +13,11 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
   {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
+/- English proof (translation)
+Introduce `s`. Apply the tactic sequence `by_cases h1 : c ∈ s <;> by_cases h0 : (0 : ℂ) ∈ s`. Use `isOpen_univ using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext x; by_cases hx : x ∈ S <;> simp [Set.indicator, hx, h1, h0]`. Use `hS.isOpen using 1` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `ext x; by_cases hx : x ∈ S <;> simp [Set.indicator, hx, h1, h0]`. Use `hS.isClosed.isOpen_compl using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext x; by_cases hx : x ∈ S <;> simp [Set.indicator, hx, h1, h0]`. Use `isOpen_empty using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext x; by_cases hx : x ∈ S <;> simp [Set.indicator, hx, h1, h0]`.
+-/
 theorem lc_indicator {X : Type*} [TopologicalSpace X] {S : Set X} (hS : IsClopen S) (c : ℂ) :
     IsLocallyConstant (S.indicator fun _ => c) := by
   intro s
@@ -26,6 +31,33 @@ theorem lc_indicator {X : Type*} [TopologicalSpace X] {S : Set X} (hS : IsClopen
   · convert isOpen_empty using 1
     ext x; by_cases hx : x ∈ S <;> simp [Set.indicator, hx, h1, h0]
 
+/- English proof (translation)
+Use `haveI : TotallyDisconnectedSpace k := totallyDisconnectedSpace_localField`. Use `haveI : T2Space k := GlobalTheory.SplitWeil.t2Space k`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) k) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → k))`. Use `haveI : TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) k) := inferInstanceAs (TotallyDisconnectedSpace (Fin n → Fin n → k))`. Use `haveI : T2Space (Matrix (Fin n) (Fin n) k) := inferInstanceAs (T2Space (Fin n → Fin n → k))`.
+
+Establish `hUU : IsOpen (UU : Set (Sp k n))` using `isOpen_ne_fun continuous_snd continuous_const`. Establish `hOU : OO Z ⊆ UU` using `fun p hp => hp.2`. Establish `hhl : IsLocallyConstant h` using `(GroundTheory.Automorphic.mem_locallyConstantCompactSupport.1 hh.1).1`. Establish `hhc : HasCompactSupport h` using `(GroundTheory.Automorphic.mem_locallyConstantCompactSupport.1 hh.1).2`. Establish `hg1 : Continuous (fun p : OO Z => zpart Z (p : Sp k n).1)` using `(continuousOn_zpart hZ).comp_continuous (continuous_fst.comp continuous_subtype_val) fun p => p.2.1`.
+
+Establish `hg2 : Continuous (fun p : OO Z => (((p : Sp k n).1 - zpart Z (p : Sp k n).1, (p : Sp k n).2) : Sp k n))` using `((continuous_fst.comp continuous_subtype_val).sub hg1).prodMk (continuous_snd.comp continuous_subtype_val)`. Use `set S : Set (OO Z) := {p | zpart Z (p : Sp k n).1 ∈ A} with hSdef`. Establish `hSc : IsClosed S` using `hAc.isClosed.preimage hg1`. Establish `hSo : IsOpen S`. Rewrite using `[isOpen_iff_forall_mem_open]`.
+
+Introduce `p hp`. Take `⟨U, hU, hpU, hUA⟩` from `hAo _ hp`. Use `⟨(fun q : OO Z => zpart Z (q : Sp k n).1) ⁻¹' U, fun q hq => hUA ⟨hq, (zpart_spec q.2.1).1⟩, hU.preimage hg1, hpU⟩` and prove the remaining obligations. Establish `hphi : (fun p : OO Z => psi Z A h p) = fun p => S.indicator (fun _ => (1 : ℂ)) p * h (((p : Sp k n).1 - zpart Z (p : Sp k n).1, (p : Sp k n).2))`. Use function extensionality and compare the values at `p`.
+
+Rewrite using `[psi_of_mem p.2.1]`. Distinguish the cases in `hp : p ∈ S`. Rewrite using `[Set.indicator_of_mem hp, Set.indicator_of_mem (show zpart Z (p : Sp k n).1 ∈ A from hp)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hp, Set.indicator_of_notMem (show zpart Z (p : Sp k n).1 ∉ A from hp)]`.
+
+Establish `hsupp_cl : IsClosed (Function.support h)`. Establish `: Function.support h = (h ⁻¹' {0})ᶜ` using `by ext x; simp [Function.mem_support]`. Rewrite using `[this]`. Conclude with `(hhl.isOpen_fiber 0).isClosed_compl`. Establish `hts : tsupport h ⊆ UU`.
+
+Rewrite using `[tsupport, hsupp_cl.closure_eq]`. Conclude with `hh.2`. Use `set K : Set (Matrix (Fin n) (Fin n) k × Sp k n) := A ×ˢ (tsupport h ∩ (NB Z ×ˢ Set.univ)) with hK`. Establish `hKc : IsCompact K` using `hAc.prod (hhc.inter_right ((isClosed_NB Z).prod isClosed_univ))`. Use `set Φ : Matrix (Fin n) (Fin n) k × Sp k n → Sp k n := fun aq => (aq.1 + aq.2.1, aq.2.2) with hΦ`.
+
+Establish `hΦc : Continuous Φ` using `(continuous_fst.add (continuous_fst.comp continuous_snd)).prodMk (continuous_snd.comp continuous_snd)`. Establish `hΦO : Φ '' K ⊆ OO Z`. Introduce and unpack `_ ⟨⟨a, q⟩, ⟨ha, hq, hqN⟩, rfl⟩`. Establish `h2 : q.2 ≠ 0` using `hts hq`. Conclude with `⟨(cc_of_NB hZ (hAZ ha) hqN.1).1, h2⟩`.
+
+Use `set Kc : Set (OO Z) := (Subtype.val : OO Z → Sp k n) ⁻¹' (Φ '' K) with hKcdef`. Establish `hKcc : IsCompact Kc`. Rewrite using `[Subtype.isCompact_iff, Set.image_preimage_eq_inter_range, Subtype.range_coe, Set.inter_eq_left.2 hΦO]`. Conclude with `hKc.image hΦc`. Establish `hsub : Function.support (fun p : OO Z => psi Z A h p) ⊆ Kc`.
+
+Introduce `p hp`. Rewrite `hp` using `[hphi, Function.mem_support]`. Establish `hpS : p ∈ S`. Assume the negation of the conclusion as `hn`. Rewrite `hp` using `[Set.indicator_of_notMem hn, zero_mul]`.
+
+Conclude with `hp rfl`. Establish `hq : h (((p : Sp k n).1 - zpart Z (p : Sp k n).1, (p : Sp k n).2)) ≠ 0`. Rewrite `hp` using `[Set.indicator_of_mem hpS, one_mul]`. Conclude with `hp`. Use `⟨(zpart Z (p : Sp k n).1, (((p : Sp k n).1 - zpart Z (p : Sp k n).1, (p : Sp k n).2))), ⟨hpS, subset_tsupport _ hq, sub_mem_NB hZ p.2.1, Set.mem_univ _⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hΦ, add_sub_cancel]`. Take `⟨f, hf, hfe⟩` from `GroundTheory.Automorphic.Whittaker.exists_lift hUU hOU (φ := fun p : OO Z => psi Z A h p) (by`. Rewrite using `[GroundTheory.Automorphic.mem_locallyConstantCompactSupport]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hphi]`.
+
+Conclude with `IsLocallyConstant.comp₂ (lc_indicator ⟨hSc, hSo⟩ 1) (hhl.comp_continuous hg2) (· * ·)`. Conclude with `IsCompact.of_isClosed_subset hKcc isClosed_closure (closure_minimal hsub hKcc.isClosed))`. Conclude with `⟨f, hf, fun p hp => hfe ⟨p, hp⟩⟩`.
+-/
 theorem psi_lift (hZ : CR Z) {A : Set (Matrix (Fin n) (Fin n) k)} (hAZ : A ⊆ Z) (hAc : IsCompact A)
     (hAo : ∀ a ∈ A, ∃ U : Set (Matrix (Fin n) (Fin n) k), IsOpen U ∧ a ∈ U ∧ U ∩ Z ⊆ A)
     {h : Sp k n → ℂ} (hh : h ∈ supportedIn (UU : Set (Sp k n))) :

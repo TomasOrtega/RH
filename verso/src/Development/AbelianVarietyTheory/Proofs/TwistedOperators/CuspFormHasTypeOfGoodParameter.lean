@@ -14,12 +14,18 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.CuspValueTypeAt
 
+/- English proof (translation)
+Introduce `hP D θ N τ hθ hN _ F hF w`. Conclude with `GlobalTheory.CuspValueType.hasTypeAt_cusp hP θ hθ N hN F hF w τ`.
+-/
 theorem hasTypeAt_value : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : InfFam D) (N : GlobalTheory.Grid.Node D) (τ : D.what₂.Tau),
     IsInfFam θ → N.V.SigOK → GoodPar N.V.rank (N.V.sig (tauE D τ)).1 (N.V.sig (tauE D τ)).2 (N.S τ) →
     ∀ F ∈ N.Cusp θ, ∀ w, GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.HasTypeAt θ N.V τ (N.S τ) (F w) := by
   intro hP D θ N τ hθ hN _ F hF w
   exact GlobalTheory.CuspValueType.hasTypeAt_cusp hP θ hθ N hN F hF w τ
 
+/- English proof (translation)
+The claim follows from `@hasTypeAt_value`.
+-/
 example : (GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : InfFam D) (N : GlobalTheory.Grid.Node D) (τ : D.what₂.Tau), IsInfFam θ → N.V.SigOK → GoodPar N.V.rank (N.V.sig (tauE D τ)).1 (N.V.sig (tauE D τ)).2 (N.S τ) → ∀ F ∈ N.Cusp θ, ∀ w, GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.HasTypeAt θ N.V τ (N.S τ) (F w)) := @hasTypeAt_value
 
 end GlobalTheory.CuspValueTypeAt

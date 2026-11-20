@@ -24,6 +24,25 @@ variable {Ω : Type} [Field Ω] [IsAlgClosed Ω]
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hGA : IsAbelianScheme ((Over.pullback s).obj A)` using `GlobalTheory.isAbelianScheme_pullback_obj s A hA`. Use `haveI : IsProper ((Over.pullback s).obj A).hom := hGA.proper`. Establish `hAA : IsAbelianScheme (A ⊗ A)` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `hAB : IsAbelianScheme (A ⊗ B)` using `AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB`. Establish `h4A : IsAbelianScheme (G4 (A ⊗ A))` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAA (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAA (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAA hAA))`.
+
+Establish `h4B : IsAbelianScheme (G4 (A ⊗ B))` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAB (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAB (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAB hAB))`. Establish `hY : IsAbelianScheme ((Over.pullback s).obj (G4 (A ⊗ A)))` using `GlobalTheory.isAbelianScheme_pullback_obj s _ h4A`. Establish `hG : IsAbelianScheme ((Over.pullback s).obj (G4 (A ⊗ B)))` using `GlobalTheory.isAbelianScheme_pullback_obj s _ h4B`. Use `haveI : IsProper ((Over.pullback s).obj (G4 (A ⊗ A))).hom := hY.proper`. Use `haveI : IsProper ((Over.pullback s).obj (G4 (A ⊗ B))).hom := hG.proper`.
+
+Establish `hL' : (L.LinComb ![𝟙 _, Over.Hom.left (𝟙 ((Over.pullback s).obj A))⁻¹] ![1, 1]).IsLB` using `LB.isLB_linComb hL _ _`. Establish `ha'` using `XB.relAmple_sym hL ha`. Use `haveI hpr : ∀ j, IsMonHom (XB.pr8 A j) := by`. Introduce `j`. Apply the tactic sequence `fin_cases j <;> simp only [XB.pr8] <;> infer_instance`.
+
+Set `p : Out.IsPowGrp ((Over.pullback s).obj (G4 (A ⊗ A))) ((Over.pullback s).obj A) 8` to `{ pr := fun j => (Over.pullback s).map (XB.pr8 A j) hom := fun j => inferInstance lim := (isLimitMapConeFanMkEquiv (Over.pullback s) _ _).1 (isLimitOfPreserves _ (XB.lim8 A)) }`. Establish `hbox` using `GlobalTheory.relAmple_boxLB _ _ _ 8 p _ hL' ha'`. Establish `hboxLB : (Out.boxLB (L.LinComb ![𝟙 _, Over.Hom.left (𝟙 ((Over.pullback s).obj A))⁻¹] ![1, 1]) p.pr).IsLB` using `LB.isLB_linComb hL' _ _`. Establish `hid : IsFinite ((Over.pullback s).map (𝟙 A)).left`. Establish `e1 : (Over.pullback s).map (𝟙 A) = 𝟙 _` using `(Over.pullback s).map_id A`.
+
+Rewrite using `[e1, Over.id_left]`. Use `infer_instance`. Establish `hΦ : IsFinite ((Over.pullback s).map (XB.fourfoldProductMap (𝟙 A ⊗ₘ mu))).left` using `XB.isFinite_map_g4map s _ (XB.isFinite_map_tensorHom s _ _ hid hmu)`. Use `haveI := hΦ`. Establish `h2` using `GlobalTheory.PosDefAmple.relAmple_pull_of_isAffineHom ((Over.pullback s).map (XB.fourfoldProductMap (𝟙 A ⊗ₘ mu))) hboxLB hbox`.
+
+Establish `hlpLB : (lPart mu s L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hq : ∀ i : Fin 4, XB.fourfoldProductMap (𝟙 A ⊗ₘ mu) ≫ prj (A ⊗ A) i = prj (A ⊗ B) i ≫ (𝟙 A ⊗ₘ mu)`. Introduce `i`. Apply the tactic sequence `fin_cases i <;> simp [XB.fourfoldProductMap, prj]`. Establish `hinv : ∀ {X : Over (Sp Ω)} (f : X ⟶ (Over.pullback s).obj A), (pull (Over.Hom.left f⁻¹)) (cls L hL) = (pull (Over.Hom.left f)) ((pull (Over.Hom.left (𝟙 ((Over.pullback s).obj A))⁻¹)) (cls L hL))`.
+
+Introduce `X f`. Rewrite using `[← pull_comp, ← Over.comp_left, GrpObj.comp_inv, Category.comp_id]`. Use `GlobalTheory.PosDefAmple.relAmple_of_nsmul hlpLB (LB.isLB_pull hboxLB _) le_rfl ?_ h2` and prove the remaining obligations. Rewrite using `[one_smul, cls_pull hboxLB, GlobalTheory.PosDefAmple.pull_cls_boxLB p.pr hL']`. Simplify using `only [lPart]`.
+
+Simplify using `only [cls_linComb hL, Fintype.sum_prod_type, Fin.sum_univ_four, Fin.sum_univ_eight, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, one_smul, map_add, Over.id_left, pull_id]`. Simplify using `only [p, ← Functor.map_comp, XB.pr8]`. Simplify using `only [← Category.assoc, hq]`. Simplify using `only [Category.assoc, tensorHom_fst, tensorHom_snd, Category.comp_id, phiL]`. Simplify using `only [hinv (pA s 0), hinv (pA s 1), hinv (pA s 2), hinv (pA s 3), hinv (pM mu s 0), hinv (pM mu s 1), hinv (pM mu s 2), hinv (pM mu s 3)]`.
+
+Simplify using `only [pA, pM]`. Normalize the expressions using the abelian group laws.
+-/
 theorem relAmple_lPart (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) (mu : B ⟶ A) [IsMonHom mu]
     (s : Sp Ω ⟶ S) (L : LB ((Over.pullback s).obj A).left) (hL : L.IsLB)
     (ha : Out.RelAmple ((Over.pullback s).obj A) L) (hmu : IsFinite ((Over.pullback s).map mu).left) :

@@ -2,6 +2,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `K K' _ _ j hi hl hf`. Use `letI : Algebra (PowerSeries K) (PowerSeries K') := j.toAlgebra`. Use `haveI : Module.Finite (PowerSeries K) (PowerSeries K') := hf`. Use `haveI : FaithfulSMul (PowerSeries K) (PowerSeries K') := (faithfulSMul_iff_algebraMap_injective _ _).mpr hi`. Use `haveI : Module.Free (PowerSeries K) (PowerSeries K') := Module.free_of_finite_type_torsion_free'`.
+
+Set `B` to `Module.finBasis (PowerSeries K) (PowerSeries K')`. Establish `hsm : ∀ (a : PowerSeries K) (y : PowerSeries K'), j a * y = a • y` using `fun a y => rfl`. Establish `hX : ∃ (e : ℕ) (u : (PowerSeries K')ˣ), 0 < e ∧ j PowerSeries.X = (u : PowerSeries K') * (PowerSeries.X : PowerSeries K') ^ e`. Establish `h0 : j PowerSeries.X ≠ 0`. Introduce `h`.
+
+Conclude with `PowerSeries.X_ne_zero (hi (h.trans (map_zero j).symm))`. Take `⟨e, v, hv⟩` from `IsDiscreteValuationRing.associated_pow_irreducible h0 (PowerSeries.X_irreducible (R := K'))`. Use `⟨e, v⁻¹, ?_, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos e with h | h` into its components or cases. It suffices to derive a contradiction.
+
+Rewrite `hv` using `[h, pow_zero]`. Establish `hu : IsUnit (j PowerSeries.X)` using `IsUnit.of_mul_eq_one _ hv`. Conclude with `(PowerSeries.X_irreducible (R := K)).not_isUnit (isUnit_of_map_unit j _ hu)`. Conclude with `h`. Rewrite using `[← hv, mul_left_comm, Units.inv_mul, mul_one]`.
+
+Take `⟨e, u, he, hu⟩` from `hX`. Use `⟨Module.finrank (PowerSeries K) (PowerSeries K'), fun i => B i, fun i => (B.coord i).toAddMonoidHom, Module.finrank_pos, ?_, ?_, ?_, ?_, e, u, he, hu⟩` and prove the remaining obligations. Introduce `y conv_lhs => rw [← B.sum_repr y]`. Both sides reduce to the same expression. Introduce `i a y show B.coord i (j a * y) = a * B.coord i y`.
+
+Rewrite using `[hsm, LinearMap.map_smul, smul_eq_mul]`. Introduce `i i' show B.repr (B i') i = _`. Rewrite using `[B.repr_self_apply]`. Distinguish the cases in `h : i = i'`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Introduce `N`. Use `⟨e * N, fun y hy i => ?_⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+
+Take `⟨z, rfl⟩` from `hy`. Establish `hu1 : (u : PowerSeries K') ^ N * ((u⁻¹ : (PowerSeries K')ˣ) : PowerSeries K') ^ N = 1`. Rewrite using `[← mul_pow, Units.mul_inv, one_pow]`. Establish `hz : (PowerSeries.X : PowerSeries K') ^ (e * N) * z = j (PowerSeries.X ^ N) * (((u⁻¹ : (PowerSeries K')ˣ) : PowerSeries K') ^ N * z)`. Rewrite using `[map_pow, hu, pow_mul]`.
+
+Take the linear combination `(-(((PowerSeries.X : PowerSeries K') ^ e) ^ N * z)) * hu1`. Use `⟨B.coord i (((u⁻¹ : (PowerSeries K')ˣ) : PowerSeries K') ^ N * z), ?_⟩` and prove the remaining obligations. Use `show B.coord i _ = _`. Rewrite using `[hz, hsm, LinearMap.map_smul, smul_eq_mul]`.
+-/
 theorem UpperTheory.V.Pa.Det.extFree :
     ∀ {K K' : Type} [Field K] [Field K'] (j : PowerSeries K →+* PowerSeries K'), Function.Injective j → IsLocalHom j → j.Finite → ∃ (m : ℕ) (b : Fin m → PowerSeries K') (p : Fin m → PowerSeries K' →+ PowerSeries K), 0 < m ∧ (∀ y, y = ∑ i, j (p i y) * b i) ∧ (∀ i a y, p i (j a * y) = a * p i y) ∧ (∀ i i', p i (b i') = if i = i' then (1 : PowerSeries K) else 0) ∧ (∀ N : ℕ, ∃ N' : ℕ, ∀ y ∈ Ideal.span {(PowerSeries.X : PowerSeries K')} ^ N', ∀ i, p i y ∈ Ideal.span {(PowerSeries.X : PowerSeries K)} ^ N) ∧ ∃ (e : ℕ) (u : (PowerSeries K')ˣ), 0 < e ∧ j PowerSeries.X = (u : PowerSeries K') * (PowerSeries.X : PowerSeries K') ^ e := by
   intro K K' _ _ j hi hl hf

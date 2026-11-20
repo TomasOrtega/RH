@@ -10,6 +10,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Cyc
 
 namespace GlobalTheory.CycEigen
 
+/- English proof (translation)
+Establish `h1 : ∀ k, (Polynomial.aeval A P).mulVec (e k) = 0`. Introduce `k`. Establish `h2 : Matrix.toLinAlgEquiv' (Polynomial.aeval A P) (e k) = P.eval (c k) • e k`. Rewrite using `[← Polynomial.aeval_algHom_apply]`. Conclude with `Module.End.aeval_apply_of_mem_apply_eq_smul (by simpa using hc k)`.
+
+Rewrite `h2` using `[hP, zero_smul]`. Simplify using `using h2`. Establish `hsp : Submodule.span C (Set.range e) = ⊤` using `he.span_eq_top_of_card_eq_finrank' (by simp)`. Establish `h3 : Matrix.toLin' (Polynomial.aeval A P) = 0` using `LinearMap.ext_on_range hsp fun k => by simpa using h1 k`. Simplify using `using h3`.
+-/
 theorem aeval_eq_zero_of_eigenbasis {C : Type} [Field C] {r : ℕ} (A : Matrix (Fin r) (Fin r) C)
     (e : Fin r → Fin r → C) (he : LinearIndependent C e) (c : Fin r → C)
     (hc : ∀ k, A.mulVec (e k) = c k • e k) (P : Polynomial C) (hP : ∀ k, P.eval (c k) = 0) :
@@ -29,33 +34,70 @@ theorem aeval_eq_zero_of_eigenbasis {C : Type} [Field C] {r : ℕ} (A : Matrix (
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `IntermediateField.fixingSubgroup_antitone (sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ fun (x : Om l) (hx : x ^ (l ^ s) = 1) => (⟨s, hx⟩ : ∃ j : ℕ, x ^ (l ^ j) = 1)) _ : Ks K s ≤ Kinf K)`.
+-/
 theorem hinf_le_gj (K : FinExt l) (s : ℕ) : Hinf K ≤ Gj K s :=
   IntermediateField.fixingSubgroup_antitone
     (sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ fun (x : Om l) (hx : x ^ (l ^ s) = 1) =>
       (⟨s, hx⟩ : ∃ j : ℕ, x ^ (l ^ j) = 1)) _ : Ks K s ≤ Kinf K)
 
+/- English proof (translation)
+The claim follows from `IntermediateField.fixingSubgroup_antitone (show K0 K ≤ Ks K s from le_sup_left)`.
+-/
 theorem gj_le (K : FinExt l) (s : ℕ) : Gj K s ≤ (K0 K).fixingSubgroup :=
   IntermediateField.fixingSubgroup_antitone (show K0 K ≤ Ks K s from le_sup_left)
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicComplex l)), norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+-/
 theorem norm_l_lt : ‖(l : PadicComplex l)‖ < 1 := by
   rw [← map_natCast (algebraMap ℚ_[l] (PadicComplex l)), norm_algebraMap']
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Rewrite using `[chiC, norm_algebraMap', Units.val_zpow_eq_zpow_val, norm_zpow, (GlobalTheory.Cyc.cyc_basic l χ hχ).1, one_zpow]`.
+-/
 theorem norm_chiC {χ : GQ l →* ℚ_[l]ˣ} (hχ : IsCyc χ) (j : ℤ) (g : GQ l) : ‖chiC χ j g‖ = 1 := by
   rw [chiC, norm_algebraMap', Units.val_zpow_eq_zpow_val, norm_zpow,
     (GlobalTheory.Cyc.cyc_basic l χ hχ).1, one_zpow]
 
+/- English proof (translation)
+Establish `: χ h = 1` using `((GlobalTheory.Cyc.cyc_basic l χ hχ).2.2 K h (gj_le K 0 (hinf_le_gj K 0 hh))).2.1 hh`. Simplify using `[chiC, this]`.
+-/
 theorem chiC_hinf {χ : GQ l →* ℚ_[l]ˣ} (hχ : IsCyc χ) (K : FinExt l) (j : ℤ) {h : GQ l}
     (hh : h ∈ Hinf K) : chiC χ j h = 1 := by
   have : χ h = 1 :=
     ((GlobalTheory.Cyc.cyc_basic l χ hχ).2.2 K h (gj_le K 0 (hinf_le_gj K 0 hh))).2.1 hh
   simp [chiC, this]
 
+/- English proof (translation)
+Rewrite using `[chiC, chiC, ← map_mul, ← Units.val_mul, ← zpow_add]`. Simplify using the standard rewrite rules.
+-/
 theorem chiC_neg_mul (χ : GQ l →* ℚ_[l]ˣ) (j : ℤ) (g : GQ l) :
     chiC χ (-j) g * chiC χ j g = 1 := by
   rw [chiC, chiC, ← map_mul, ← Units.val_mul, ← zpow_add]
   simp
 
+/- English proof (translation)
+Take `⟨hg, -, hU, -, hH, hU1⟩` from `hF`. Take `⟨hdec, hdir, -, hmul, hstab, -⟩` from `GlobalTheory.TateDecomp.tate_decomposition l act χ hact hχ K m hm.1`. Establish `hO : ∀ a, y a ∈ Ohat K`. Introduce `a`. Use `(GlobalTheory.T.cyclotomicTower_fixed_iff_mem_completedIntegers l act hact K (y a) (hy1 a)).1 fun h hh => ?_` and prove the remaining obligations.
+
+Use `congrFun (hy h (hinf_le_gj K m hh)) a` as an intermediate fact. Simplify `this` using `[twAct, chiC_hinf hχ K u hh, hH h hh]`. Use `choose y0 hy0 x hx hsum using fun a => hdec (y a) (hO a)`. Establish `hfix : (fun a => act g (y0 a)) = y0` using `funext fun a => act_inC hact hg.1 (hy0 a).1`. Establish `hyx : y = y0 + x` using `funext hsum`.
+
+Establish `hadd : twAct act χ u U g y = twAct act χ u U g y0 + twAct act χ u U g x`. Establish `e : (fun a => act g (y a)) = (fun a => act g (y0 a)) + fun a => act g (x a)`. Use function extensionality and compare the values at `a`. Rewrite using `[hsum a, map_add]`. Both sides reduce to the same expression.
+
+Simplify using `only [twAct]`. Rewrite using `[e, Matrix.mulVec_add, smul_add]`. Establish `hc : chiC χ u g ∈ intC (Ks K m)` using `⟨chiC_mem_inC χ u g _, (norm_chiC hχ u g).le⟩`. Establish `hX : ∀ a, twAct act χ u U g x a ∈ Xj K m`. Introduce `a`.
+
+Simplify using `only [twAct, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct]`. Conclude with `hmul _ hc _ ((Xj K m).sum_mem fun b _ => hmul _ (hU g hg.1 a b) _ (hstab g (gj_le K m hg.1) _ (hx b)))`. Establish `hK : ∀ a, twAct act χ u U g y0 a - y0 a ∈ inC (Ks K m)`. Introduce `a`. Rewrite using `[mem_inC_iff]`.
+
+Simplify using `only [twAct, hfix, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct]`. Conclude with `sub_mem (mul_mem ((mem_inC_iff _ _).1 hc.1) (sum_mem fun b _ => mul_mem ((mem_inC_iff _ _).1 (hU g hg.1 a b).1) ((mem_inC_iff _ _).1 (hy0 b).1))) ((mem_inC_iff _ _).1 (hy0 a).1)`. Establish `hrel : ∀ a, twAct act χ u U g y0 a - y0 a = x a - twAct act χ u U g x a`. Introduce `a`. Establish `h1` using `congrFun (hadd.symm.trans (hy g hg.1)) a`.
+
+Rewrite `h1` using `[Pi.add_apply, hsum a]`. Take the linear combination `h1`. Establish `hzero : ∀ a, twAct act χ u U g y0 a - y0 a = 0` using `fun a => hdir _ (hK a) _ ((Xj K m).sub_mem (hx a) (hX a)) 0 (by rw [pow_zero, one_mul]; exact hrel a)`. Establish `hx0 : x = 0`. Use `twAct_fixed_eq_zero hact hχ hm hg U (hU g hg.1) hU1 u x hx ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a`. Conclude with `(sub_eq_zero.1 ((hrel a).symm.trans (hzero a))).symm`. Rewrite `hyx` using `[hx0, add_zero]`. Establish `h2` using `hy g hg.1`. Rewrite `h2`, the goal using `[hyx]`.
+
+Rewrite `h2` using `[twAct, hfix]`. Then use the resulting hypothesis.
+-/
 theorem eigen_of_norm_le {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)}
     {χ : GQ l →* ℚ_[l]ˣ} (hact : IsActC act) (hχ : IsCyc χ) {K : FinExt l} {m r : ℕ}
     (hm : Lev l m) {U : GQ l → Matrix (Fin r) (Fin r) (PadicComplex l)} {g : GQ l}
@@ -105,6 +147,15 @@ theorem eigen_of_norm_le {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)}
   rw [hyx] at h2 ⊢
   rwa [twAct, hfix] at h2
 
+/- English proof (translation)
+Establish `hl0 : (l : PadicComplex l) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one (x := (‖y‖ + 1)⁻¹) (by positivity) (norm_l_lt (l := l))`. Establish `h1 : ∀ a, ‖(((l : PadicComplex l) ^ N) • y) a‖ ≤ 1`. Introduce `a`. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, norm_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `eigen_of_norm_le hact hχ hm hF u _ h1 (by`. Introduce `σ hσ`. Establish `e : (fun a => act σ ((((l : PadicComplex l) ^ N) • y) a)) = ((l : PadicComplex l) ^ N) • fun a => act σ (y a)`. Use function extensionality and compare the values at `a`.
+
+Simplify using the standard rewrite rules. Use `hy σ hσ` as an intermediate fact. Rewrite `this`, the goal using `[twAct]`. Rewrite using `[e, Matrix.mulVec_smul, smul_comm, this])`. Rewrite `h2` using `[Matrix.mulVec_smul, smul_comm]`.
+
+Establish `h3` using `smul_right_injective _ (pow_ne_zero N hl0) h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[chiC_neg_mul, one_smul]`. Use `_ = _ := by rw [mul_smul, h3]`.
+-/
 theorem eigen_of_fixed {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)}
     {χ : GQ l →* ℚ_[l]ˣ} (hact : IsActC act) (hχ : IsCyc χ) {K : FinExt l} {m r : ℕ}
     (hm : Lev l m) {U : GQ l → Matrix (Fin r) (Fin r) (PadicComplex l)} {g : GQ l}
@@ -133,6 +184,9 @@ theorem eigen_of_fixed {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)}
         rw [chiC_neg_mul, one_smul]
     _ = _ := by rw [mul_smul, h3]
 
+/- English proof (translation)
+Introduce `l _ act χ hact hχ K m r hm U g hF J ⟨e, u, he, hu, hfix⟩`. Use `aeval_eq_zero_of_eigenbasis (U g) e he (fun k => chiC χ (-(u k)) g) (fun k => eigen_of_fixed hact hχ hm hF (u k) (e k) fun σ hσ => hfix σ hσ k) _ fun k => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_coe.1 (hu k)) (by simp)`.
+-/
 theorem aeval_prod_eq_zero : ∀ (l : ℕ) [Fact l.Prime] (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : GQ l →* ℚ_[l]ˣ), IsActC act → IsCyc χ → ∀ (K : FinExt l), ∀ (m r : ℕ), Lev l m → ∀ (U : GQ l → Matrix (Fin r) (Fin r) (PadicComplex l)) (g : GQ l), Frame χ K m U g → ∀ J : Finset ℤ, HTBasis act χ (Gj K m) U (J : Set ℤ) → Polynomial.aeval (U g) (∏ u ∈ J, (Polynomial.X - Polynomial.C (chiC χ (-u) g))) = 0 := by
   intro l _ act χ hact hχ K m r hm U g hF J ⟨e, u, he, hu, hfix⟩
   refine aeval_eq_zero_of_eigenbasis (U g) e he (fun k => chiC χ (-(u k)) g)

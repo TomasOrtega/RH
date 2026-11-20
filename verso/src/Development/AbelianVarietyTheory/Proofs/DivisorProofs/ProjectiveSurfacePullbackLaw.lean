@@ -21,6 +21,15 @@ open GlobalTheory
 
 namespace GlobalTheory.PullCh
 
+/- English proof (translation)
+Introduce `k _ T _ _ hT T' _ _ hT' ρ d hc hd E r hE`. Take `⟨-, L, hL⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver hT'.isProjOver`. Take `⟨θ, -, -, hθ⟩` from `GlobalTheory.DualPull.exists_dual_pullback T T' ρ`. Use `hθ E r hE` as an intermediate fact. Establish `hG` using `hE.pullback ρ`.
+
+Establish `hD` using `hE.dual.pullback ρ`. Use `GlobalTheory.T.second_chern_degree_of_euler_char k T' hT' _ _ r hG ⟨asIso (θ E)⟩ L hL.isLB _ ?_` and prove the remaining obligations. Establish `e₁` using `GlobalTheory.T.finite_pushforward_euler_char_twist k T T' hT hT' ρ hc L hL _ hG.isFiniteQC`. Establish `e₂` using `GlobalTheory.T.finite_pushforward_euler_char_twist k T T' hT hT' ρ hc L hL _ hD.isFiniteQC`. Establish `e₃` using `GlobalTheory.T.finite_pushforward_euler_char_twist k T T' hT hT' ρ hc L hL _ (isVB_structureModule T').isFiniteQC`.
+
+Use `filter_upwards [e₁, e₂, e₃] with n h₁ h₂ h₃`. Establish `hM` using `isLB_lbPow hL.isLB n`. Take `⟨⟨φ₁⟩, ⟨φ₂⟩⟩` from `GlobalTheory.T.pushforward_twist_hom_dual_iso T T' ρ E r hE _ hM`. Establish `hA` using `GlobalTheory.T.riemann_roch_hom_dual_average k T hT E r hE _ h₃.1`. Rewrite `hA` using `[GlobalTheory.T.gen_rank_pushforward_ample_twist k T T' hT hT' ρ hc d hd _ hM]`.
+
+Rewrite using `[← h₁.2, ← h₂.2, ← h₃.2, chi_congr k φ₁, chi_congr k φ₂, hA]`.
+-/
 theorem pullbackLaw : ∀ (k : Type) [Field k] (T : Scheme.{0}) [Algebra k Γ(T, ⊤)] [IsIntegral T],
     IsProjSurface k T → PullbackLaw k T := by
   intro k _ T _ _ hT T' _ _ hT' ρ d hc hd E r hE

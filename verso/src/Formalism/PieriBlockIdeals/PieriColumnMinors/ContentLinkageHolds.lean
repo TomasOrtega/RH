@@ -9,6 +9,11 @@ namespace Formalism.CohomologicalDescent
 
 open Classical
 
+/- English proof (translation)
+Establish `h : (∏ a, (X + C (f a))) = ((Multiset.map (fun a => -f a) Finset.univ.val).map fun x => X - C x).prod`. Rewrite using `[Multiset.map_map, Finset.prod_eq_multiset_prod]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+
+Simplify using `[sub_eq_add_neg]`. Rewrite using `[h, Polynomial.roots_multiset_prod_X_sub_C]`.
+-/
 theorem comb_roots_prod {K : Type} [Field K] {N : ℕ} (f : Fin N → K) :
     (∏ a, (X + C (f a))).roots = Multiset.map (fun a => -f a) Finset.univ.val := by
   have h : (∏ a, (X + C (f a))) =
@@ -20,6 +25,15 @@ theorem comb_roots_prod {K : Type} [Field K] {N : ℕ} (f : Fin N → K) :
     simp [sub_eq_add_neg]
   rw [h, Polynomial.roots_multiset_prod_X_sub_C]
 
+/- English proof (translation)
+Introduce `l K _ _ N U U' c hl hprod`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Establish `hr` using `congrArg Polynomial.roots hprod`. Establish `hU` using `comb_roots_prod (fun a => (((U a + c : ℤ)) : K))`. Establish `hU'` using `comb_roots_prod (fun a => (((U' a + c : ℤ)) : K))`.
+
+Rewrite `hr` using `[hU, hU']`. Set `ψ : ZMod l →+* K` to `ZMod.castHom (dvd_refl l) K`. Establish `hψ : Function.Injective ψ` using `ψ.injective`. Establish `key : ∀ V : Fin N → ℤ, Multiset.map (fun a => -(((V a + c : ℤ)) : K)) Finset.univ.val = Multiset.map ψ (Multiset.map (fun a => -(((V a + c : ℤ)) : ZMod l)) Finset.univ.val)`. Introduce `V`.
+
+Rewrite using `[Multiset.map_map]`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `a _`. Simplify using `[ψ, map_intCast]`. Rewrite `hr` using `[key U, key U']`.
+
+Establish `h2` using `Multiset.map_injective hψ hr`. Establish `h3` using `congrArg (Multiset.map fun z : ZMod l => -z - (c : ZMod l)) h2`. Simplify using `only [Multiset.map_map] at h3`. Apply the tactic sequence `convert h3 using 2 <;> (try simp only [Function.comp_apply]; push_cast; ring)`.
+-/
 theorem contentLinkage_holds : Linkage := by
   intro l K _ _ N U U' c hl hprod
   haveI : Fact l.Prime := ⟨hl⟩

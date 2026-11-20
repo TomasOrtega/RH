@@ -13,6 +13,9 @@ open GlobalTheory.RowsOrb.Uniq
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Establish `hle : latSpanS aa v ≤ (Submodule.span D.host.E (Set.range v)).restrictScalars (𝓞 D.host.E)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, x, -, rfl⟩`. Conclude with `Submodule.smul_mem _ x (Submodule.subset_span ⟨a, rfl⟩)`. Conclude with `hle hy`.
+-/
 theorem lsS_le {r : ℕ} (aa : Fin r → FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)
     (v : Fin r → (VS D).V) {y : (VS D).V} (hy : y ∈ latSpanS aa v) :
     y ∈ Submodule.span D.host.E (Set.range v) := by
@@ -22,13 +25,32 @@ theorem lsS_le {r : ℕ} (aa : Fin r → FractionalIdeal (nonZeroDivisors (𝓞 
     exact Submodule.smul_mem _ x (Submodule.subset_span ⟨a, rfl⟩)
   exact hle hy
 
+/- English proof (translation)
+Use `show Submodule.span D.host.E (Set.range (X.Fu u).e) = _`. Rewrite using `[X.Fu_e]`.
+-/
 theorem Xsp_eq (u : D.what₂.Word) : Xsp (lf D (X.Fu u)) = Submodule.span D.host.E (Set.range X.eX) := by
   show Submodule.span D.host.E (Set.range (X.Fu u).e) = _
   rw [X.Fu_e]
 
+/- English proof (translation)
+Simplify using `only [XS, latSpanS, aaD, X.Fu_e]`.
+-/
 theorem XS_eq (u : D.what₂.Word) : XS D (X.Fu u) = latSpanS (fun a => aaD D a) X.eX := by
   simp only [XS, latSpanS, aaD, X.Fu_e]
 
+/- English proof (translation)
+Rewrite using `[XS_eq]`. Use `show _ ⊓ toO (VS D) (Xsp (lf D (X.Fu u))) = _`. Rewrite using `[Xsp_eq]`. Use `le_antisymm ?_ (le_inf (le_sup_left.trans le_sup_left) fun y hy => lsS_le _ _ hy)` and prove the remaining obligations. Introduce and unpack `y ⟨hyΛ, hyX⟩`.
+
+Establish `hyX' : y ∈ Submodule.span D.host.E (Set.range X.eX)` using `hyX`. Take `⟨y1, hy1, b, hb, rfl⟩` from `Submodule.mem_sup.mp hyΛ`. Take `⟨a, ha, m, hm, rfl⟩` from `Submodule.mem_sup.mp hy1`. Establish `haX` using `lsS_le _ _ ha`. Establish `hbY` using `lsS_le _ _ hb`.
+
+Establish `hb0 : b = 0`. Establish `hpair : ∀ c, (VS D).hT (X.eX c) b = 0`. Introduce `c`. Establish `h1` using `orth_span (fun d => X.ee c d) hyX'`. Establish `h2` using `orth_span (fun d => X.ee c d) haX`.
+
+Rewrite `h1` using `[map_add, map_add, h2, (hM m hm c).1, zero_add, zero_add]`. Conclude with `h1`. Rewrite using `[coord X.ef hbY]`. Simplify using `[hpair]`. Substitute `hb0` using the available equality.
+
+Rewrite `hyX'`, the goal using `[add_zero]`. Establish `hmX : m ∈ Submodule.span D.host.E (Set.range X.eX)`. Use `Submodule.sub_mem _ hyX' haX` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_left]`. Then use the resulting hypothesis. Establish `hm0 : m = 0`.
+
+Rewrite using `[coord (dual_symm GlobalTheory.RowsOrb.Uniq.hh X.ef) hmX]`. Simplify using `[(hM m hm _).2]`. Rewrite using `[hm0, add_zero]`. Conclude with `ha`.
+-/
 theorem xlam_split (u : D.what₂.Word) (M : Submodule (𝓞 D.host.E) (VS D).V)
     (hM : ∀ x ∈ M, ∀ a, (VS D).hT (X.eX a) x = 0 ∧ (VS D).hT (X.fY a) x = 0) :
     XLam (latSpanS (fun a => aaD D a) X.eX ⊔ M ⊔ latSpanS (fun a => (aaD D a)⁻¹) X.fY) (lf D (X.Fu u)) =
@@ -65,6 +87,9 @@ theorem xlam_split (u : D.what₂.Word) (M : Submodule (𝓞 D.host.E) (VS D).V)
   rw [hm0, add_zero]
   exact ha
 
+/- English proof (translation)
+Introduce `x hx a`. Take `⟨w, -, rfl⟩` from `Submodule.mem_map.mp hx`. Conclude with `(GlobalTheory.RowsOrb.mem_Wb X (w : (VS D).V)).mp w.2 a`.
+-/
 theorem map_perp (L : Submodule (𝓞 D.host.E) (GlobalTheory.RowsOrb.Wb X)) :
     ∀ x ∈ L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)), ∀ a,
       (VS D).hT (X.eX a) x = 0 ∧ (VS D).hT (X.fY a) x = 0 := by
@@ -72,6 +97,13 @@ theorem map_perp (L : Submodule (𝓞 D.host.E) (GlobalTheory.RowsOrb.Wb X)) :
   obtain ⟨w, -, rfl⟩ := Submodule.mem_map.mp hx
   exact (GlobalTheory.RowsOrb.mem_Wb X (w : (VS D).V)).mp w.2 a
 
+/- English proof (translation)
+Use extensionality with `w`. Rewrite using `[lmap_char X u (latSpanS (fun a => aaD D a) X.eX ⊔ L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)) ⊔ latSpanS (fun a => (aaD D a)⁻¹) X.fY) (fun a => aaD D a) (fun a => (aaD D a)⁻¹) X.ef (map_perp X L)`. Use `rfl w]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, hP⟩`.
+
+Take `⟨w', hw', rfl⟩` from `Submodule.mem_map.mp hl`. Establish `hfix : P (VS D).hT X.eX X.fY (w' : (VS D).V) = w'`. Rewrite using `[P_apply]`. Simplify using `[((GlobalTheory.RowsOrb.mem_Wb X (w' : (VS D).V)).mp w'.2 _).2]`. Establish `: w' = w` using `Subtype.ext (hfix.symm.trans hP)`.
+
+Conclude with `this ▸ hw'`. Introduce `hw`. Use `⟨(w : (VS D).V), Submodule.mem_map_of_mem hw, ?_⟩` and prove the remaining obligations. Rewrite using `[P_apply]`. Simplify using `[((GlobalTheory.RowsOrb.mem_Wb X (w : (VS D).V)).mp w.2 _).2]`.
+-/
 theorem lmap_eq (u : D.what₂.Word) (L : Submodule (𝓞 D.host.E) (GlobalTheory.RowsOrb.Wb X)) :
     GlobalTheory.RowsOrb.Lmap X u (latSpanS (fun a => aaD D a) X.eX ⊔
       L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)) ⊔
@@ -98,6 +130,11 @@ end GlobalTheory.RowsOrb.Parts
 
 open GlobalTheory.RowsOrb.Parts in
 
+/- English proof (translation)
+Introduce `D X u L`. Use `⟨xlam_split X u _ (map_perp X L), ?_, lmap_eq X u L, ?_⟩` and prove the remaining obligations. Rewrite using `[X.Lam_split]`. Conclude with `xlam_split X u X.Lb X.Lb_perp`. Introduce `w hw`.
+
+Rewrite `hw` using `[Lsub, Submodule.mem_inf]`. Establish `hX : toO (VS D) (Xsp (lf D (X.Fu u))) = GlobalTheory.HermLat.rs (𝓞 D.host.E) (GlobalTheory.TypeAsm.F0 X u).X`. Rewrite using `[GlobalTheory.RowsOrb.Uniq.fixedFrameOfWord_isotropicSpan_eq, Xsp_eq]`. Establish `hmem : w ∈ GlobalTheory.RowsOrb.Lmap X u (latSpanS (fun a => aaD D a) X.eX ⊔ L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)) ⊔ latSpanS (fun a => (aaD D a)⁻¹) X.fY)` using `(GlobalTheory.RowsOrb.mem_Lmap X u _ w).mpr ((sup_le_sup inf_le_left hX.le) hw.1)`. Rewrite `hmem` using `[lmap_eq X u L]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.RowsOrb.parts_of_lat : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (L : Submodule (𝓞 D.host.E) (GlobalTheory.RowsOrb.Wb X)), XLam (latSpanS (fun a => aaD D a) X.eX ⊔ L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)) ⊔ latSpanS (fun a => (aaD D a)⁻¹) X.fY) (lf D (X.Fu u)) = XS D (X.Fu u) ∧ XLam (VS D).L0 (lf D (X.Fu u)) = XS D (X.Fu u) ∧ GlobalTheory.RowsOrb.Lmap X u (latSpanS (fun a => aaD D a) X.eX ⊔ L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)) ⊔ latSpanS (fun a => (aaD D a)⁻¹) X.fY) = L ∧ ∀ w : GlobalTheory.RowsOrb.Wb X, (w : (VS D).V) ∈ Lsub (latSpanS (fun a => aaD D a) X.eX ⊔ L.map ((GlobalTheory.RowsOrb.Wb X).subtype.restrictScalars (𝓞 D.host.E)) ⊔ latSpanS (fun a => (aaD D a)⁻¹) X.fY) (lf D (X.Fu u)) → w ∈ L := by
   intro D X u L
   refine ⟨xlam_split X u _ (map_perp X L), ?_, lmap_eq X u L, ?_⟩

@@ -76,6 +76,9 @@ structure AllIn (μ₀ : T) : Prop where
 
 variable {σ S} in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.chars, h.root.1, h.root.2.1, h.phase, h.root.2.2, h.jet, h.ratios, fun i j _ => h.bot i j⟩`.
+-/
 theorem AllIn.numbersIn {μ₀ : T} (h : AllIn σ S μ₀) : NumbersIn σ S μ₀ :=
   ⟨h.chars, h.root.1, h.root.2.1, h.phase, h.root.2.2, h.jet, h.ratios, fun i j _ => h.bot i j⟩
 

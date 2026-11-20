@@ -7,6 +7,11 @@ open scoped Pointwise
 
 namespace GlobalTheory.CompanionTheory.TorusCh.Signs
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Unfold `sMeet`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `h1 : (Pi.single k y : Fin m → SignType) i = 0` using `Pi.single_eq_of_ne hjk _`.
+
+Rewrite using `[h1, Pi.single_eq_same]`. Apply the tactic sequence `by_cases hx : x = 0 <;> simp [hx]`. Establish `h1 : (Pi.single j x : Fin m → SignType) i = 0` using `Pi.single_eq_of_ne hij _`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+-/
 theorem sMeet_single_single {m : ℕ} {j k : Fin m} (hjk : j ≠ k) (x y : SignType) :
     sMeet (Pi.single j x) (Pi.single k y) = (0 : Fin m → SignType) := by
   funext i
@@ -20,6 +25,9 @@ theorem sMeet_single_single {m : ℕ} {j k : Fin m} (hjk : j ≠ k) (x y : SignT
     rw [h1]
     simp
 
+/- English proof (translation)
+Introduce `i hi`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Conclude with `absurd (Pi.single_eq_of_ne hij _) hi`.
+-/
 theorem sLe_single {m : ℕ} (e : Fin m → SignType) (j : Fin m) : SLe (Pi.single j (e j)) e := by
   intro i hi
   by_cases hij : i = j
@@ -27,6 +35,11 @@ theorem sLe_single {m : ℕ} (e : Fin m → SignType) (j : Fin m) : SLe (Pi.sing
     simp
   · exact absurd (Pi.single_eq_of_ne hij _) hi
 
+/- English proof (translation)
+Introduce `i hi`. Establish `h1` using `congrFun h i`. Unfold `sMeet at h1`. Distinguish the cases in `h2 : e i = e' i`. Conclude with `h2.symm`.
+
+Rewrite `h1` using `[if_neg h2]`. Conclude with `absurd h1.symm hi`.
+-/
 theorem sLe_of_sMeet {m : ℕ} {e e' : Fin m → SignType} (h : sMeet e e' = e) : SLe e e' := by
   intro i hi
   have h1 := congrFun h i
@@ -36,12 +49,36 @@ theorem sLe_of_sMeet {m : ℕ} {e e' : Fin m → SignType} (h : sMeet e e' = e) 
   · rw [if_neg h2] at h1
     exact absurd h1.symm hi
 
+/- English proof (translation)
+Use `revert x`. Evaluate the decidable proposition.
+-/
 theorem eq_neg_one_of {x : SignType} : x ≠ 0 → x ≠ 1 → x = -1 := by
   revert x
   decide
 
 variable {R : Type} [CommRing R] (σ : R →+* R) {m : ℕ} (P : (Fin m → SignType) → R)
 
+/- English proof (translation)
+Use `set a : Fin m → Fin m → SignType := fun j => Pi.single j (e j) with ha`. Establish `h2 : ∀ j k, j ≠ k → P (a j) * P (a k) = 0`. Introduce `j k hjk`. Rewrite using `[← hmeet, ha]`. Simplify using `only`.
+
+Rewrite using `[sMeet_single_single hjk, hP0]`. Establish `h4 : ∀ j, P (a j) * P e = P (a j)` using `fun j => hle _ _ (sLe_single e j)`. Use `set q : R := ∑ j, P (a j) with hq`. Establish `h5 : ∀ j, P (a j) * q = P (a j)`. Introduce `j`.
+
+Rewrite using `[hq, Finset.mul_sum, Finset.sum_eq_single j (fun k _ hk => h2 j k hk.symm) (fun h => absurd (Finset.mem_univ j) h), hP2]`. Establish `hqq : q * q = q` using `by conv_lhs => rw [hq, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => h5 j`. Establish `hqe : q * P e = q` using `by conv_lhs => rw [hq, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => h4 j`.
+
+Establish `hPe` using `hP2 e`. Use `set r : R := P e - q with hr`. Establish `hrr : r * r = r`. Rewrite using `[hr]`. Take the linear combination `hPe - 2 * hqe + hqq`.
+
+Establish `hre : r * P e = r`. Rewrite using `[hr]`. Take the linear combination `hPe - hqe`. Establish `hrs : r * σ r = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨e', he'⟩` from `hsurj r hrr hrs`. Establish `hm : sMeet e' e = e'` using `hinj (by rw [hmeet, he', hre])`. Establish `hse : SLe e' e` using `sLe_of_sMeet hm`. Establish `he0 : e' = 0`. Use function extensionality and compare the values at `j`.
+
+Assume the negation of the conclusion as `hne`. Establish `hne' : e' j ≠ 0` using `hne`. Establish `hej : e j = e' j` using `hse j hne'`. Establish `hs : SLe (a j) e'`. Introduce `i hi`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[ha, hej]`. Conclude with `absurd (Pi.single_eq_of_ne hij _) hi`. Establish `h6 : P (a j) * r = P (a j)`.
+
+Rewrite using `[← he']`. Conclude with `hle _ _ hs`. Establish `h7 : P (a j) * r = 0`. Rewrite using `[hr, mul_sub, h4, h5, sub_self]`. Establish `h8 : a j = 0` using `hinj (by rw [hP0, ← h6, h7])`.
+
+Establish `h9` using `congrFun h8 j`. Simplify using `only [ha, Pi.single_eq_same, Pi.zero_apply] at h9`. Conclude with `hne' (hej ▸ h9)`. Establish `hr0 : r = 0` using `by rw [← he', he0, hP0]`. Conclude with `sub_eq_zero.1 hr0`.
+-/
 theorem additive (hP2 : ∀ e, P e * P e = P e) (hiso : ∀ e, P e * σ (P e) = 0)
     (hsurj : ∀ p, p * p = p → p * σ p = 0 → ∃ e, P e = p) (hinj : Function.Injective P) (hP0 : P 0 = 0)
     (hmeet : ∀ e e', P (sMeet e e') = P e * P e') (hle : ∀ e e', SLe e e' → P e * P e' = P e)
@@ -102,6 +139,35 @@ theorem additive (hP2 : ∀ e, P e * P e = P e) (hiso : ∀ e, P e * σ (P e) = 
   have hr0 : r = 0 := by rw [← he', he0, hP0]
   exact sub_eq_zero.1 hr0
 
+/- English proof (translation)
+Use `set δ : Fin m → SignType := Pi.single j 1 with hδ`. Establish `hδ0 : δ ≠ 0`. Introduce `h`. Establish `h1` using `congrFun h j`. Simplify using `[hδ] at h1`.
+
+Use `set p : R := P δ with hp`. Use `set s : R := σ p with hs`. Establish `hpp : p * p = p` using `hP2 δ`. Establish `hps : p * s = 0` using `hiso δ`. Establish `hss : s * s = s` using `by rw [hs, ← map_mul, hpp]`.
+
+Establish `hsp : σ s = p` using `hσ p`. Establish `hsσ : s * σ s = 0` using `by rw [hsp, mul_comm, hps]`. Take `⟨e'', he''⟩` from `hsurj s hss hsσ`. Establish `hsupp : ∀ k, k ≠ j → e'' k = 0`. Introduce `k hkj`.
+
+Assume the negation of the conclusion as `hne`. Use `set β : Fin m → SignType := Pi.single k (e'' k) with hβ`. Use `set c : Fin m → SignType := Function.update δ k (e'' k) with hc`. Establish `hδc : SLe δ c`. Introduce `i hi`.
+
+Establish `hik : i ≠ k`. Introduce and unpack `rfl`. Conclude with `hi (Pi.single_eq_of_ne hkj _)`. Conclude with `Function.update_of_ne hik _ _`. Establish `hβc : SLe β c`.
+
+Introduce `i hi`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality. Simplify using `[hβ, hc]`. Conclude with `absurd (Pi.single_eq_of_ne hik _) hi`.
+
+Establish `h1 : p * σ (P β) = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : P β * s = P β`. Rewrite using `[← he'']`. Conclude with `hle _ _ (sLe_single e'' k)`.
+
+Establish `h3 : σ (P β) * p = σ (P β)`. Use `congrArg σ h2` as an intermediate fact. Rewrite `this` using `[map_mul, hsp]`. Then use the resulting hypothesis. Establish `h4 : σ (P β) = 0`. Rewrite using `[← h3, mul_comm, h1]`.
+
+Establish `h5 : P β = 0`. Rewrite using `[← hσ (P β), h4, map_zero]`. Establish `h6 : β = 0` using `hinj (by rw [h5, hP0])`. Establish `h7` using `congrFun h6 k`. Simplify using `only [hβ, Pi.single_eq_same, Pi.zero_apply] at h7`.
+
+Conclude with `hne h7`. Establish `hform : e'' = Pi.single j (e'' j)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne hij, hsupp i hij]`. Establish `hne0 : e'' j ≠ 0`. Introduce `h0`. Establish `h1 : e'' = 0`.
+
+Rewrite using `[hform, h0]`. Simplify using the standard rewrite rules. Establish `h2 : s = 0` using `by rw [← he'', h1, hP0]`. Establish `h3 : p = 0` using `by rw [← hsp, h2, map_zero]`. Conclude with `hδ0 (hinj (by rw [hP0, ← hp, h3]))`.
+
+Establish `hne1 : e'' j ≠ 1`. Introduce `h1`. Establish `h2 : e'' = δ` using `by rw [hform, h1]`. Establish `h3 : s = p` using `by rw [← he'', h2]`. Establish `h4 : p = 0`.
+
+Establish `h5` using `hps`. Rewrite `h5` using `[h3, hpp]`. Then use the resulting hypothesis. Conclude with `hδ0 (hinj (by rw [hP0, ← hp, h4]))`. Establish `hm1` using `eq_neg_one_of hne0 hne1`. Rewrite using `[← hm1, ← hform, he'']`.
+-/
 theorem conj_single (hσ : ∀ x, σ (σ x) = x) (hP2 : ∀ e, P e * P e = P e) (hiso : ∀ e, P e * σ (P e) = 0)
     (hsurj : ∀ p, p * p = p → p * σ p = 0 → ∃ e, P e = p) (hinj : Function.Injective P) (hP0 : P 0 = 0)
     (hle : ∀ e e', SLe e e' → P e * P e' = P e) (j : Fin m) :
@@ -183,6 +249,9 @@ end GlobalTheory.CompanionTheory.TorusCh.Signs
 
 namespace GlobalTheory.CompanionTheory.TorusCh
 
+/- English proof (translation)
+Introduce `R _ hc σ hσ m P hP2 hiso hsurj hinj hP0 hmeet hle`. Use `letI : CommRing R := { (inferInstance : Ring R) with mul_comm := hc }`. Conclude with `⟨fun e => Signs.additive σ P hP2 hiso hsurj hinj hP0 hmeet hle e, fun j => Signs.conj_single σ P hσ hP2 hiso hsurj hinj hP0 hle j⟩`.
+-/
 theorem isotropicIdempotent_signs : ∀ (R : Type) [Ring R], (∀ x y : R, x * y = y * x) → ∀ (σ : R →+* R), (∀ x, σ (σ x) = x) →
     ∀ (m : ℕ) (P : (Fin m → SignType) → R), (∀ e, P e * P e = P e) → (∀ e, P e * σ (P e) = 0) →
     (∀ p, p * p = p → p * σ p = 0 → ∃ e, P e = p) → Function.Injective P → P 0 = 0 →

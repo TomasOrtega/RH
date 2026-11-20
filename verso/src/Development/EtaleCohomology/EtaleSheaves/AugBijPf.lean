@@ -28,13 +28,22 @@ def LocInj : Prop := ∀ (q : ℕ) (φ : ∀ T : Scheme.{0}, Sec (tw q 0) T →+
   ∃ (ι : Type) (V : ι → Scheme.{0}) (g : ∀ i, V i ⟶ T), (∀ i, Etale (g i)) ∧ (∀ t : T, ∃ i, ∃ v : V i, (g i).base v = t) ∧
     ∀ i, Sec.res (g i) x = 0
 
+/- English proof (translation)
+Simplify using `using h.map g.appTop.hom`.
+-/
 theorem unit_res {q : ℕ} {V T : Scheme.{0}} (g : V ⟶ T) (h : IsUnit (q : Γ(T, ⊤))) : IsUnit (q : Γ(V, ⊤)) := by
   simpa using h.map g.appTop.hom
 
+/- English proof (translation)
+Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+-/
 theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res f (Sec.res g x) = Sec.res (f ≫ g) x := by
   simp only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
+/- English proof (translation)
+Establish `h1 : Presheaf.IsSheaf Scheme.etaleTopology.{0} (F.obj ⋙ forget (ModuleCat.{1} (ULift.{1} R)))` using `(Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget (ModuleCat.{1} (ULift.{1} R)))).1 F.property`. Establish `h2` using `(isSheaf_iff_isSheaf_of_type _ _).1 h1`. Use `Presieve.IsSheaf.isSheafFor_of_mem_precoverage (J := Scheme.precoverage @Etale) h2 ?_` and prove the remaining obligations. Conclude with `(Scheme.ofArrows_mem_precoverage_iff (P := @Etale)).2 ⟨fun x => by obtain ⟨i, v, hv⟩ := hs x; exact ⟨i, v, hv⟩, he⟩`.
+-/
 theorem sheafFor {R : Type} [CommRing R] (F : Shv R) {T : Scheme.{0}} {ι : Type} {V : ι → Scheme.{0}} (g : ∀ i, V i ⟶ T)
     (he : ∀ i, Etale (g i)) (hs : ∀ t : T, ∃ i, ∃ v : V i, (g i).base v = t) :
     (Presieve.ofArrows V g).IsSheafFor (F.obj ⋙ forget (ModuleCat.{1} (ULift.{1} R))) := by
@@ -44,6 +53,11 @@ theorem sheafFor {R : Type} [CommRing R] (F : Shv R) {T : Scheme.{0}} {ι : Type
   refine Presieve.IsSheaf.isSheafFor_of_mem_precoverage (J := Scheme.precoverage @Etale) h2 ?_
   exact (Scheme.ofArrows_mem_precoverage_iff (P := @Etale)).2 ⟨fun x => by obtain ⟨i, v, hv⟩ := hs x; exact ⟨i, v, hv⟩, he⟩
 
+/- English proof (translation)
+Introduce `R _ F T ι V g he hs x y hxy`. Establish `h` using `(Presieve.isSheafFor_arrows_iff_pullbacks _ _).1 (sheafFor F g he hs) (fun i => Sec.res (g i) y) (by`. Introduce `i j`. Express the relevant statement in the definitionally equal form `Sec.res _ (Sec.res _ y) = Sec.res _ (Sec.res _ y)`. Rewrite using `[res_comp, res_comp, pullback.condition])`.
+
+Conclude with `h.unique (fun i => hxy i) (fun i => rfl)`.
+-/
 theorem Sep_holds : Sep := by
   intro R _ F T ι V g he hs x y hxy
   have h := (Presieve.isSheafFor_arrows_iff_pullbacks _ _).1 (sheafFor F g he hs) (fun i => Sec.res (g i) y) (by
@@ -52,6 +66,9 @@ theorem Sep_holds : Sep := by
     rw [res_comp, res_comp, pullback.condition])
   exact h.unique (fun i => hxy i) (fun i => rfl)
 
+/- English proof (translation)
+Introduce `R _ F T ι V g he hs x hx`. Take `⟨y, hy, -⟩` from `(Presieve.isSheafFor_arrows_iff_pullbacks _ _).1 (sheafFor F g he hs) x hx`. Conclude with `⟨y, hy⟩`.
+-/
 theorem Glue_holds : Glue := by
   intro R _ F T ι V g he hs x hx
   obtain ⟨y, hy, -⟩ := (Presieve.isSheafFor_arrows_iff_pullbacks _ _).1 (sheafFor F g he hs) x hx
@@ -60,6 +77,17 @@ theorem Glue_holds : Glue := by
 def Root : Prop := ∀ (q : ℕ) (U : Scheme.{0}), IsUnit (q : Γ(U, ⊤)) →
   ∃ (W : Scheme.{0}) (h : W ⟶ U), Etale h ∧ (∀ u : U, ∃ w : W, h.base w = u) ∧ Nonempty (Prim q Γ(W, ⊤))
 
+/- English proof (translation)
+Introduce `q φ hnat hgen T hT f`. Set `O : ZMod q → T.Opens` to `fun c => ⟨{t | f t = c}, f.isLocallyConstant.isOpen_fiber c⟩`. Use `choose W h he hs hζ using fun c => hR q (O c) (unit_res (O c).ι hT)`. Use `⟨ZMod q, W, fun c => h c ≫ (O c).ι, fun c => by haveI := he c; infer_instance, ?_, ?_⟩` and prove the remaining obligations. Introduce `t`.
+
+Establish `ht : t ∈ Set.range (O (f t)).ι.base` using `by rw [Scheme.Opens.range_ι]; exact (rfl : f t = f t)`. Take `⟨u, hu⟩` from `ht`. Take `⟨w, hw⟩` from `hs (f t) u`. Conclude with `⟨f t, w, by rw [Scheme.Hom.comp_apply, hw, hu]⟩`. Introduce `c`.
+
+Use `⟨((c.cast : ℤ)) • twGen 0 (hζ c).some, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, hgen]`. Use extensionality with `w`. Establish `hm : ((O c).ι.base (h c w)) ∈ O c`. Establish `hr : ((O c).ι.base (h c w)) ∈ Set.range (O c).ι.base` using `⟨_, rfl⟩`.
+
+Rewrite `hr` using `[Scheme.Opens.range_ι]`. Conclude with `hr`. Establish `hm' : f ((O c).ι.base (h c w)) = c` using `hm`. Establish `e1 : ((c.cast : ℤ) • (1 : LocallyConstant (W c) (ZMod q))) w = c`. Express the relevant statement in the definitionally equal form `(c.cast : ℤ) • (1 : ZMod q) = c`.
+
+Rewrite using `[zsmul_eq_mul, mul_one, ZMod.intCast_cast, ZMod.cast_id', id_eq]`. Rewrite using `[e1, LocallyConstant.coe_comap, Function.comp_apply]`. Use `erw [Scheme.Hom.comp_apply]`. Conclude with `hm'.symm`.
+-/
 theorem LocSurj_of (hR : Root) : LocSurj := by
   intro q φ hnat hgen T hT f
   let O : ZMod q → T.Opens := fun c => ⟨{t | f t = c}, f.isLocallyConstant.isOpen_fiber c⟩
@@ -85,6 +113,17 @@ theorem LocSurj_of (hR : Root) : LocSurj := by
     erw [Scheme.Hom.comp_apply]
     exact hm'.symm
 
+/- English proof (translation)
+Introduce `q φ hnat hgen`. Establish `inj : ∀ T : Scheme.{0}, IsUnit (q : Γ(T, ⊤)) → Function.Injective (φ T)`. Introduce `T hT`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+
+Take `⟨ι, V, g, he, hs, h0⟩` from `hI q φ hnat hgen T hT x hx`. Conclude with `hS _ _ T ι V g he hs x 0 (fun i => by rw [h0 i]; exact (map_zero ((tw q 0).obj.map (g i).op).hom).symm)`. Introduce `T hT`. Use `⟨inj T hT, fun f => ?_⟩` and prove the remaining obligations. Take `⟨ι, V, g, he, hs, hy⟩` from `hSu q φ hnat hgen T hT f`.
+
+Use `choose y hy using hy`. Take `⟨z, hz⟩` from `hG _ _ T ι V g he hs y (fun i j => by`. Apply `inj _ (unit_res (pullback.fst (g i) (g j) ≫ g i) hT)` to reduce the goal to its premises. Rewrite using `[hnat, hnat, hy i, hy j]`. Use extensionality with `t`.
+
+Simplify using `only [LocallyConstant.coe_comap, Function.comp_apply]`. Use `erw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.condition]`. Use the proof step `rfl)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Use extensionality with `t`.
+
+Take `⟨i, v, rfl⟩` from `hs t`. Use `congrArg (fun k : LocallyConstant (V i) (ZMod q) => k v) ((hnat (g i) z).symm.trans ((congrArg (φ (V i)) (hz i)).trans (hy i)))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem AugBij_of_loc (hS : Sep) (hG : Glue) (hSu : LocSurj) (hI : LocInj) : LateralTheory.E.TateTwistZeroAugmentationBijective.AugBij := by
   intro q φ hnat hgen
   have inj : ∀ T : Scheme.{0}, IsUnit (q : Γ(T, ⊤)) → Function.Injective (φ T) := by
@@ -116,6 +155,17 @@ def SecLoc : Prop := ∀ (R : Type) [CommRing R] (M : CommRingCat.{0} ⥤ Module
 
 def GenEq : Prop := ∀ (q : ℕ) (U : Scheme.{0}) (ξ ζ : Prim q Γ(U, ⊤)), twGen 0 ξ = twGen 0 ζ
 
+/- English proof (translation)
+Proceed by induction on `a using Submodule.Quotient.induction_on with`. Consider the case `H a`. Proceed by induction on `a using Finsupp.induction_linear with`. Consider the case `zero => exact ⟨0, by rw [zero_smul]; exact map_zero ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q 0)).app _).hom⟩`. Consider the case `add a b ha hb`.
+
+Take `⟨m, hm⟩` from `ha`. Take `⟨n, hn⟩` from `hb`. Use `⟨m + n, ?_⟩` and prove the remaining obligations. Rewrite using `[add_smul, ← hm, ← hn, Submodule.Quotient.mk_add]`. Conclude with `map_add ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q 0)).app _).hom _ _`.
+
+Consider the case `single ξ c`. Use `⟨(c.down.cast : ℤ), ?_⟩` and prove the remaining obligations. Establish `h1 : Finsupp.single ξ c = c • Finsupp.single ξ (1 : ULift.{1} (ZMod q))`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[h1, Submodule.Quotient.mk_smul]`.
+
+Establish `h2 : ofRings.sec (twF q 0) U (c • Submodule.Quotient.mk (Finsupp.single ξ 1)) = c • twGen 0 ξ` using `map_smul ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q 0)).app _).hom _ _`. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[hE q U ξ ζ, ← Int.cast_smul_eq_zsmul (ULift.{1} (ZMod q))]`. Use `congr 1`. Apply `ULift.ext` to reduce the goal to its premises.
+
+Rewrite using `[ULift.down_intCast, ZMod.intCast_cast, ZMod.cast_id', id_eq]`.
+-/
 theorem secEq (hE : GenEq) {q : ℕ} {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) (a : (twF q 0).obj Γ(U, ⊤)) :
     ∃ m : ℤ, ofRings.sec (twF q 0) U a = m • twGen 0 ζ := by
   induction a using Submodule.Quotient.induction_on with
@@ -141,6 +191,17 @@ theorem secEq (hE : GenEq) {q : ℕ} {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) (
     apply ULift.ext
     rw [ULift.down_intCast, ZMod.intCast_cast, ZMod.cast_id', id_eq]
 
+/- English proof (translation)
+Introduce `q φ hnat hgen T hT x hx`. Take `⟨W, h, he, hs, ⟨ζ⟩⟩` from `hR q T hT`. Take `⟨ι, V, g, hge, hgs, ha⟩` from `hL (ZMod q) (twF q 0) W (Sec.res h x)`. Use `choose a ha using ha`. Use `⟨{i // Nonempty (V i)}, fun i => V i.1, fun i => g i.1 ≫ h, fun i => by haveI := hge i.1; haveI := he; infer_instance, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `t`. Take `⟨w, rfl⟩` from `hs t`. Take `⟨i, v, rfl⟩` from `hgs w`. Conclude with `⟨⟨i, ⟨v⟩⟩, v, by rw [Scheme.Hom.comp_apply]⟩`. Introduce and unpack `⟨i, ⟨v⟩⟩`.
+
+Take `⟨m, hm⟩` from `secEq hE (ζ.map (g i).appTop.hom) (a i)`. Establish `hx' : Sec.res (g i ≫ h) x = m • twGen 0 (ζ.map (g i).appTop.hom)` using `(res_comp (g i) h x).symm.trans ((ha i).trans hm)`. Establish `h0 : φ (V i) (Sec.res (g i ≫ h) x) = 0` using `by rw [hnat, hx]; rfl`. Rewrite `h0` using `[hx', map_zsmul, hgen]`. Establish `h3 : (m : ZMod q) = 0`.
+
+Use `congrArg (fun k : LocallyConstant (V i) (ZMod q) => k v) h0` as an intermediate fact. Express the relevant statement in the definitionally equal form `m • (1 : ZMod q) = 0 at this`. Rewrite `this` using `[zsmul_eq_mul, mul_one]`. Then use the resulting hypothesis. Use `show Sec.res (g i ≫ h) x = 0`. Rewrite using `[hx', ← Int.cast_smul_eq_zsmul (ULift.{1} (ZMod q))]`.
+
+Establish `h4 : ((m : ULift.{1} (ZMod q))) = 0` using `by apply ULift.ext; simpa using h3`. Rewrite using `[h4, zero_smul]`.
+-/
 theorem LocInj_of (hR : Root) (hL : SecLoc) (hE : GenEq) : LocInj := by
   intro q φ hnat hgen T hT x hx
   obtain ⟨W, h, he, hs, ⟨ζ⟩⟩ := hR q T hT
@@ -167,6 +228,11 @@ theorem LocInj_of (hR : Root) (hL : SecLoc) (hE : GenEq) : LocInj := by
     have h4 : ((m : ULift.{1} (ZMod q))) = 0 := by apply ULift.ext; simpa using h3
     rw [h4, zero_smul]
 
+/- English proof (translation)
+Introduce `R _ M T x`. Establish `hmem` using `Presheaf.imageSieve_mem Scheme.etaleTopology.{0} (toSheafify Scheme.etaleTopology.{0} (Scheme.Γ ⋙ M)) (U := Opposite.op T) x`. Take `⟨𝒰, h𝒰⟩` from `Scheme.exists_cover_of_mem_grothendieckTopology hmem`. Establish `hc` using `(Scheme.ofArrows_mem_precoverage_iff (P := @Etale)).1 𝒰.mem₀`. Use `⟨𝒰.I₀, 𝒰.X, 𝒰.f, hc.2, fun t => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨i, v, hv⟩` from `hc.1 t`. Conclude with `⟨i, v, hv⟩`. Take `⟨a, ha⟩` from `@h𝒰 _ (𝒰.f i) (by exact Presieve.ofArrows.mk i)`. Conclude with `⟨a, ha.symm⟩`.
+-/
 theorem secLoc' : SecLoc := by
   intro R _ M T x
   have hmem := Presheaf.imageSieve_mem Scheme.etaleTopology.{0} (toSheafify Scheme.etaleTopology.{0} (Scheme.Γ ⋙ M)) (U := Opposite.op T) x
@@ -177,6 +243,9 @@ theorem secLoc' : SecLoc := by
   · obtain ⟨a, ha⟩ := @h𝒰 _ (𝒰.f i) (by exact Presieve.ofArrows.mk i)
     exact ⟨a, ha.symm⟩
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun k => (ModuleCat.Hom.hom k) (Submodule.Quotient.mk (Finsupp.single ζ (1 : ULift.{1} (ZMod q))))) ((toSheafify Scheme.etaleTopology.{0} (Scheme.Γ ⋙ twF q 0)).naturality g.op)`. Use `h.symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((toSheafify Scheme.etaleTopology.{0} (Scheme.Γ ⋙ twF q 0)).app (Opposite.op V)).hom (Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map g.appTop.hom) (Finsupp.single ζ 1))) = _`. Rewrite using `[Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+-/
 theorem twGen_res {q : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (twGen 0 ζ) = twGen 0 (ζ.map g.appTop.hom) := by
   have h := congrArg (fun k => (ModuleCat.Hom.hom k) (Submodule.Quotient.mk (Finsupp.single ζ (1 : ULift.{1} (ZMod q)))))
@@ -187,6 +256,11 @@ theorem twGen_res {q : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, 
   rw [Finsupp.mapDomain_single]
   rfl
 
+/- English proof (translation)
+Unfold `twGen`. Use `congr 1`. Apply `(Submodule.Quotient.eq _).2` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨ζ, ξ, a, h, ?_⟩` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem twGen_eq_of_pow {q : ℕ} {U : Scheme.{0}} (ξ ζ : Prim q Γ(U, ⊤)) (a : (ZMod q)ˣ) (h : ξ.1 = ζ.1 ^ (a : ZMod q).val) :
     twGen 0 ξ = twGen 0 ζ := by
   unfold twGen
@@ -200,6 +274,11 @@ theorem twGen_eq_of_pow {q : ℕ} {U : Scheme.{0}} (ξ ζ : Prim q Γ(U, ⊤)) (
 def ZarPow : Prop := ∀ (q : ℕ) (U : Scheme.{0}) (ξ ζ : Prim q Γ(U, ⊤)) (u : U),
   ∃ (O : U.Opens) (a : (ZMod q)ˣ), u ∈ O ∧ (ξ.map O.ι.appTop.hom).1 = (ζ.map O.ι.appTop.hom).1 ^ (a : ZMod q).val
 
+/- English proof (translation)
+Introduce `q U ξ ζ`. Use `choose O a hu ha using hZ q U ξ ζ`. Use `Sep_holds (ZMod q) (tw q 0) U U (fun u => (O u : Scheme.{0})) (fun u => (O u).ι) (fun u => inferInstance) ?_ _ _ ?_` and prove the remaining obligations. Introduce `t`. Establish `ht : t ∈ Set.range (O t).ι.base` using `by rw [Scheme.Opens.range_ι]; exact hu t`.
+
+Take `⟨v, hv⟩` from `ht`. Conclude with `⟨t, v, hv⟩`. Introduce `u`. Rewrite using `[twGen_res, twGen_res]`. Conclude with `twGen_eq_of_pow _ _ (a u) (ha u)`.
+-/
 theorem GenEq_of (hZ : ZarPow) : GenEq := by
   intro q U ξ ζ
   choose O a hu ha using hZ q U ξ ζ
@@ -215,6 +294,13 @@ theorem GenEq_of (hZ : ZarPow) : GenEq := by
 def LocPow : Prop := ∀ (q : ℕ) (A : Type) [CommRing A] [IsLocalRing A] (ξ ζ : Prim q A),
   ∃ a : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (a : ZMod q).val
 
+/- English proof (translation)
+Introduce `q U ξ ζ u`. Take `⟨a, ha⟩` from `hL q (U.presheaf.stalk u) (ξ.map (U.presheaf.germ ⊤ u trivial).hom) (ζ.map (U.presheaf.germ ⊤ u trivial).hom)`. Establish `h : U.presheaf.germ ⊤ u trivial ξ.1 = U.presheaf.germ ⊤ u trivial (ζ.1 ^ (a : ZMod q).val)`. Rewrite using `[map_pow]`. Conclude with `ha`.
+
+Take `⟨W, hW, i1, i2, he⟩` from `U.presheaf.germ_eq (U := ⊤) (V := ⊤) u trivial trivial _ _ h`. Use `⟨W, a, hW, ?_⟩` and prove the remaining obligations. Use `show (Scheme.Opens.ι (X := U) W).appTop.hom ξ.1 = ((Scheme.Opens.ι (X := U) W).appTop.hom ζ.1) ^ _`. Rewrite using `[← map_pow, Scheme.Opens.ι_appTop]`. Establish `hle : (Scheme.Opens.ι (X` using `U) W) ''ᵁ ⊤ ≤ W := by simp`.
+
+Use `congrArg (U.presheaf.map (homOfLE hle).op).hom he` as an intermediate fact. Simplify using `only [← CommRingCat.comp_apply, ← Functor.map_comp, ← op_comp] at this`. Conclude with `(congrArg (fun k => (U.presheaf.map (Quiver.Hom.op k)).hom ξ.1) (Subsingleton.elim _ _)).trans (this.trans (congrArg (fun k => (U.presheaf.map (Quiver.Hom.op k)).hom (ζ.1 ^ (a : ZMod q).val)) (Subsingleton.elim _ _)))`.
+-/
 theorem ZarPow_of (hL : LocPow) : ZarPow := by
   intro q U ξ ζ u
   obtain ⟨a, ha⟩ := hL q (U.presheaf.stalk u) (ξ.map (U.presheaf.germ ⊤ u trivial).hom) (ζ.map (U.presheaf.germ ⊤ u trivial).hom)

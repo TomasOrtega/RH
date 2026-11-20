@@ -19,8 +19,16 @@ def twist {R A : Type} [CommRing R] [CommRing A] (ρ : R →+* A) (D : Derivatio
 
 def epsIdeal (A : Type) [CommRing A] : Ideal (DualNumber A) := RingHom.ker (TrivSqZeroExt.fstHom A A A).toRingHom
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_epsIdeal {A : Type} [CommRing A] (x : DualNumber A) : x ∈ epsIdeal A ↔ x.fst = 0 := Iff.rfl
 
+/- English proof (translation)
+Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff]`. Use `Ideal.mul_le.2 fun x hx y hy => ?_` and prove the remaining obligations. Rewrite `hx`, `hy` using `[mem_epsIdeal]`. Rewrite using `[Ideal.mem_bot]`.
+
+Apply the tactic sequence `ext <;> simp [hx, hy]`.
+-/
 theorem isNilpotent_epsIdeal (A : Type) [CommRing A] : IsNilpotent (epsIdeal A) := by
   refine ⟨2, ?_⟩
   rw [pow_two, Ideal.zero_eq_bot, eq_bot_iff]
@@ -29,6 +37,13 @@ theorem isNilpotent_epsIdeal (A : Type) [CommRing A] : IsNilpotent (epsIdeal A) 
   rw [Ideal.mem_bot]
   ext <;> simp [hx, hy]
 
+/- English proof (translation)
+Establish `hg : ((Ideal.Quotient.mk (epsIdeal A)).comp (algebraMap A (DualNumber A))).comp ρ = (Ideal.Quotient.mk (epsIdeal A)).comp (twist ρ D)`. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[Ideal.Quotient.eq, mem_epsIdeal]`. Simplify using `[twist, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Take `⟨F, hF1, hF2⟩` from `GlobalTheory.DI.exists_ringHom_lift_of_formallySmooth ρ hρ (twist ρ D) (epsIdeal A) (isNilpotent_epsIdeal A) _ hg`. Use `⟨F, fun a => ?_, fun r => ?_⟩` and prove the remaining obligations. Establish `h` using `hF1 a`. Simplify using `only [RingHom.comp_apply] at h`. Rewrite `h` using `[Ideal.Quotient.eq, mem_epsIdeal]`.
+
+Simplify `h` using `[sub_eq_zero, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[hF2]`. Simplify using `[twist]`.
+-/
 theorem exists_lift {R A : Type} [CommRing R] [CommRing A] (ρ : R →+* A) (hρ : ρ.FormallySmooth)
     (D : Derivation ℤ R R) : ∃ σ : A →+* DualNumber A, (∀ a, (σ a).fst = a) ∧ ∀ r, (σ (ρ r)).snd = ρ (D r) := by
   have hg : ((Ideal.Quotient.mk (epsIdeal A)).comp (algebraMap A (DualNumber A))).comp ρ =
@@ -46,6 +61,15 @@ theorem exists_lift {R A : Type} [CommRing R] [CommRing A] (ρ : R →+* A) (hρ
     simpa [sub_eq_zero, TrivSqZeroExt.algebraMap_eq_inl] using h
   · rw [hF2]; simp [twist]
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t U D`. Establish `key : ∀ (V : t.G.left.affineOpens) (h : V.1 ≤ t.G.hom ⁻¹ᵁ U.1), ∃ d : ∀ O : t.G.left.Opens, Γ(t.G.left, O) → Γ(t.G.left, O), IsField V.1 d ∧ ∀ r, d V.1 ((t.G.hom.appLE U.1 V.1 h).hom r) = (t.G.hom.appLE U.1 V.1 h).hom (D r)`. Introduce `V h`. Establish `hsm : (t.G.hom.appLE U.1 V.1 h).hom.Smooth` using `t.semi.smooth.smooth_appLE U.2 V.2 h`. Take `⟨σ, hσ1, hσ2⟩` from `exists_lift _ hsm.formallySmooth D`.
+
+Take `⟨d', hd'1, hd'2⟩` from `LA _ σ hσ1`. Take `⟨d, hd1, hd2⟩` from `LB t.G.left V.1 V.2 (fun a => (σ a).snd) d' hd'1 hd'2`. Conclude with `⟨d, hd1, fun r => by rw [hd2, hσ2]⟩`. Use `choose dd hdd1 hdd2 using key`. Set `J` to `{p : t.G.left.affineOpens × t.PP.L.ι // p.1.1 ≤ t.G.hom ⁻¹ᵁ U.1 ⊓ t.PP.L.U p.2}`.
+
+Use `⟨J, fun i => i.1.1.1, fun i => i.1.2, fun i => dd i.1.1 (i.2.trans inf_le_left), fun i => i.1.1.2, ?_, fun i => i.2.trans inf_le_right, fun i => hdd1 _ _, fun i h r => hdd2 _ _ r⟩` and prove the remaining obligations. Use `le_antisymm (iSup_le fun i => i.2.trans inf_le_left) fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x ∈ (⨆ k, t.PP.L.U k)` using `by rw [t.PP.isLB.cover]; trivial`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx'`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVle⟩` from `t.G.left.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ t.G.hom ⁻¹ᵁ U.1 ⊓ t.PP.L.U k from ⟨hx, hk⟩) (t.G.hom ⁻¹ᵁ U.1 ⊓ t.PP.L.U k).2`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨(⟨V, hV⟩, k), hVle⟩, hxV⟩`.
+-/
 theorem main (LA : ∀ (A : Type) [CommRing A] (σ : A →+* DualNumber A), (∀ a, (σ a).fst = a) → ∃ d : ∀ O : (Sp A).Opens, Γ(Sp A, O) → Γ(Sp A, O), IsField ⊤ d ∧ ∀ a : A, d ⊤ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a) = (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom (σ a).snd) (LB : ∀ (Z : Scheme.{0}) (W : Z.Opens) (hW : IsAffineOpen W) (δ : Γ(Z, W) → Γ(Z, W)) (d' : ∀ O : (Spec Γ(Z, W)).Opens, Γ(Spec Γ(Z, W), O) → Γ(Spec Γ(Z, W), O)), IsField ⊤ d' → (∀ a, d' ⊤ ((Scheme.ΓSpecIso Γ(Z, W)).inv.hom a) = (Scheme.ΓSpecIso Γ(Z, W)).inv.hom (δ a)) → ∃ d : ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O), IsField W d ∧ ∀ a, d W a = δ a) : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (U : X.affineOpens) (D : Derivation ℤ Γ(X, U.1) Γ(X, U.1)), ∃ (J : Type) (W : J → t.G.left.Opens) (j : J → t.PP.L.ι) (d : J → ∀ O : t.G.left.Opens, Γ(t.G.left, O) → Γ(t.G.left, O)), (∀ i, IsAffineOpen (W i)) ∧ ⨆ i, W i = t.G.hom ⁻¹ᵁ U.1 ∧ (∀ i, W i ≤ t.PP.L.U (j i)) ∧ (∀ i, IsField (W i) (d i)) ∧ ∀ i (h : W i ≤ t.G.hom ⁻¹ᵁ U.1) (r : Γ(X, U.1)), d i (W i) ((t.G.hom.appLE U.1 (W i) h).hom r) = (t.G.hom.appLE U.1 (W i) h).hom (D r) := by
   intro E _ _ _ H X t U D
   have key : ∀ (V : t.G.left.affineOpens) (h : V.1 ≤ t.G.hom ⁻¹ᵁ U.1),
@@ -68,6 +92,9 @@ theorem main (LA : ∀ (A : Type) [CommRing A] (σ : A →+* DualNumber A), (∀
     (show x ∈ t.G.hom ⁻¹ᵁ U.1 ⊓ t.PP.L.U k from ⟨hx, hk⟩) (t.G.hom ⁻¹ᵁ U.1 ⊓ t.PP.L.U k).2
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨(⟨V, hV⟩, k), hVle⟩, hxV⟩
 
+/- English proof (translation)
+The claim follows from `main GlobalTheory.T.exists_spec_vectorField_of_dualNumber_section GlobalTheory.T.exists_vectorField_affineOpen_transport`.
+-/
 theorem exists_lifts : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (U : X.affineOpens) (D : Derivation ℤ Γ(X, U.1) Γ(X, U.1)), ∃ (J : Type) (W : J → t.G.left.Opens) (j : J → t.PP.L.ι) (d : J → ∀ O : t.G.left.Opens, Γ(t.G.left, O) → Γ(t.G.left, O)), (∀ i, IsAffineOpen (W i)) ∧ ⨆ i, W i = t.G.hom ⁻¹ᵁ U.1 ∧ (∀ i, W i ≤ t.PP.L.U (j i)) ∧ (∀ i, IsField (W i) (d i)) ∧ ∀ i (h : W i ≤ t.G.hom ⁻¹ᵁ U.1) (r : Γ(X, U.1)), d i (W i) ((t.G.hom.appLE U.1 (W i) h).hom r) = (t.G.hom.appLE U.1 (W i) h).hom (D r) :=
   main GlobalTheory.T.exists_spec_vectorField_of_dualNumber_section GlobalTheory.T.exists_vectorField_affineOpen_transport
 

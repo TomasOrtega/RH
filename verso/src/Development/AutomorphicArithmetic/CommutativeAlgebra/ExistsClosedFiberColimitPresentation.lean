@@ -6,10 +6,16 @@ open LateralTheory.E.E4 LateralTheory.E.LeafGhostCut LateralTheory.E.EtaleTopolo
 
 namespace UpperTheory.PushoutColimitSpec
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a b h => Spec.map_injective ((cancel_mono (Spec.map q)).1 (by rw [← Spec.map_comp, ← Spec.map_comp, h]))⟩`.
+-/
 private theorem epi_of_closed {R S : CommRingCat.{0}} (q : R ⟶ S) [IsClosedImmersion (Spec.map q)] : Epi q :=
   ⟨fun a b h => Spec.map_injective ((cancel_mono (Spec.map q)).1 (by
     rw [← Spec.map_comp, ← Spec.map_comp, h]))⟩
 
+/- English proof (translation)
+Establish `hw : f ≫ inl = g ≫ inr` using `Spec.map_injective (by simpa using h.w)`. Establish `h' : IsPullback inl.op inr.op f.op g.op` using `IsPullback.of_map Scheme.Spec (by rw [← op_comp, ← op_comp, hw]) h`. Conclude with `h'.unop.flip`.
+-/
 private theorem isPushout_of_Spec {A B C P : CommRingCat.{0}} (f : A ⟶ B) (g : A ⟶ C) (inl : B ⟶ P) (inr : C ⟶ P)
     (h : IsPullback (Spec.map inl) (Spec.map inr) (Spec.map f) (Spec.map g)) : IsPushout f g inl inr := by
   have hw : f ≫ inl = g ≫ inr := Spec.map_injective (by simpa using h.w)
@@ -40,6 +46,9 @@ private def colimOfPushout {J : Type} [SmallCategory J] {D D' : J ⥤ CommRingCa
         rw [← Category.assoc, hqi, Category.assoc, hm, hf]
       · rw [hp.inr_desc, hm] }
 
+/- English proof (translation)
+Use `⟨{ obj := fun j => Γ(Z j, ⊤) map := fun {j j'} g => Spec.preimage ((Z j').isoSpec.inv ≫ r g ≫ (Z j).isoSpec.hom) map_id := fun j => Spec.map_injective (by simp [hid]) map_comp := fun {j j' j''} g g' => Spec.map_injective (by simp [hcomp]) }, fun j => (Z j).isoSpec, fun {j j'} g = …` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 private theorem ring_system {J : Type} [SmallCategory J] (Z : J → Scheme.{0}) [∀ j, IsAffine (Z j)]
     (r : ∀ {j j' : J} (_ : j ⟶ j'), Z j' ⟶ Z j) (hid : ∀ j, r (𝟙 j) = 𝟙 _)
     (hcomp : ∀ {j j' j'' : J} (g : j ⟶ j') (g' : j' ⟶ j''), r (g ≫ g') = r g' ≫ r g) :
@@ -52,6 +61,17 @@ private theorem ring_system {J : Type} [SmallCategory J] (Z : J → Scheme.{0}) 
     fun j => (Z j).isoSpec, fun {j j'} g => ?_⟩
   simp
 
+/- English proof (translation)
+Set `q : ∀ j, D.obj j ⟶ D'.obj j` to `fun j => Spec.preimage ((ez j).inv ≫ φ j)`. Establish `hqs : ∀ j, Spec.map (q j) = (ez j).inv ≫ φ j` using `fun j => Spec.map_preimage _`. Set `c' : Cocone D'` to `{ pt := Γ(Zi, ⊤) ι := { app := fun j => Spec.preimage (Zi.isoSpec.inv ≫ l j ≫ (ez j).hom) naturality := fun j j' g => Spec.map_injective (by`. Simplify using `only [Functor.const_obj_obj, Functor.const_obj_map, Category.comp_id, Spec.map_comp, Spec.map_preimage, ← hr g, Category.assoc, Iso.hom_inv_id_assoc]`. Rewrite using `[← Category.assoc (l j'), hl g, ← Category.assoc]) } }`.
+
+Establish `hcs : ∀ j, Spec.map (c'.ι.app j) = Zi.isoSpec.inv ≫ l j ≫ (ez j).hom` using `fun j => Spec.map_preimage _`. Set `qi : c.pt ⟶ c'.pt` to `Spec.preimage (Zi.isoSpec.inv ≫ φi)`. Establish `hqis : Spec.map qi = Zi.isoSpec.inv ≫ φi` using `Spec.map_preimage _`. Establish `hepi : ∀ j, Epi (q j)` using `fun j => by`. Establish `: IsClosedImmersion (Spec.map (q j))` using `by rw [hqs]; infer_instance`.
+
+Conclude with `epi_of_closed _`. Establish `hq : ∀ {j j' : J} (g : j ⟶ j'), D.map g ≫ q j' = q j ≫ D'.map g` using `fun {j j'} g => Spec.map_injective (by`. Simplify using `only [Spec.map_comp, hqs, ← hr g, Category.assoc, Iso.hom_inv_id_assoc, hφ g])`. Establish `hqi : ∀ j, c.ι.app j ≫ qi = q j ≫ c'.ι.app j` using `fun j => Spec.map_injective (by`. Simplify using `only [Spec.map_comp, hqs, hcs, hqis, Category.assoc, Iso.hom_inv_id_assoc, hlφ])`.
+
+Take `⟨j0⟩` from `‹Nonempty J›`. Establish `hp : IsPushout (c.ι.app j0) (q j0) qi (c'.ι.app j0)`. Apply `isPushout_of_Spec` to reduce the goal to its premises. Use `IsPullback.of_iso (hpb j0).flip Zi.isoSpec (Iso.refl _) (ez j0) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[hqis]`.
+
+Simplify using `[hcs]`. Simplify using the standard rewrite rules. Simplify using `[hqs]`. Conclude with `⟨c', colimOfPushout hc c' q hq hepi qi hqi j0 hp, Zi.isoSpec, fun j => (hcs j).symm⟩`.
+-/
 private theorem cocone_system {J : Type} [SmallCategory J] [Nonempty J] (Z : J → Scheme.{0})
     (r : ∀ {j j' : J} (_ : j ⟶ j'), Z j' ⟶ Z j) (D D' : J ⥤ CommRingCat.{0})
     (ez : ∀ j, Z j ≅ Spec (D'.obj j))
@@ -97,6 +117,29 @@ private theorem cocone_system {J : Type} [SmallCategory J] [Nonempty J] (Z : J �
 end UpperTheory.PushoutColimitSpec
 
 open UpperTheory.PushoutColimitSpec in
+/- English proof (translation)
+Introduce `B W ι _ U x S zl h1 h2`. Establish `rfst : ∀ {j j' : S.J} (g : j ⟶ j'), resBW ι (S.tr g) ≫ pullback.fst _ _ = pullback.fst _ _ ≫ (S.tr g).left` using `fun g => pullback.lift_fst _ _ _`. Establish `rsnd : ∀ {j j' : S.J} (g : j ⟶ j'), resBW ι (S.tr g) ≫ pullback.snd _ _ = pullback.snd _ _` using `fun g => (pullback.lift_snd _ _ _).trans (Category.comp_id _)`. Establish `htr : ∀ {j j' : S.J} (g : j ⟶ j'), (S.tr g).left = (S.e j').hom ≫ Spec.map (S.D.map g) ≫ (S.e j).inv` using `fun g => by`. Rewrite using `[← S.tr_spec g]`.
+
+Simplify using the standard rewrite rules. Establish `hid : ∀ j, resBW ι (S.tr (𝟙 j)) = 𝟙 _` using `fun j => by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[rfst, htr]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[rsnd]`. Simplify using the standard rewrite rules. Establish `hcomp : ∀ {j j' j'' : S.J} (g : j ⟶ j') (g' : j' ⟶ j''), resBW ι (S.tr (g ≫ g')) = resBW ι (S.tr g') ≫ resBW ι (S.tr g)` using `fun g g' => by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, rfst, rfst, reassoc_of% (rfst g'), htr, htr, htr]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, rsnd, rsnd, rsnd]`. Establish `hVa : ∀ j, IsAffine (S.V j).left` using `fun j => .of_isIso (S.e j).hom`. Set `φ : ∀ j, pullback (S.V j).hom ι ⟶ Spec (S.D.obj j)` to `fun j => pullback.fst _ _ ≫ (S.e j).hom`. Establish `hφc : ∀ j, IsClosedImmersion (φ j)` using `fun j => inferInstance`.
+
+Establish `hZa : ∀ j, IsAffine (pullback (S.V j).hom ι)` using `fun j => by`. Establish `h` using `(IsClosedImmersion.isAffine_surjective_of_isAffine (φ j)).1`. Conclude with `h`. Establish `hZi : IsAffine (pullback (S.t ≫ U.hom) ι)` using `(IsClosedImmersion.isAffine_surjective_of_isAffine (pullback.fst (S.t ≫ U.hom) ι)).1`. Take `⟨D', ez, hr⟩` from `ring_system (fun j => pullback (S.V j).hom ι) (fun g => resBW ι (S.tr g)) hid hcomp`.
+
+Establish `hφ : ∀ {j j' : S.J} (g : j ⟶ j'), resBW ι (S.tr g) ≫ φ j = φ j' ≫ Spec.map (S.D.map g)` using `fun {j j'} g => by`. Simplify using `only [φ]`. Rewrite using `[reassoc_of% (rfst g), htr]`. Simplify using the standard rewrite rules. Establish `hl : ∀ {j j' : S.J} (g : j ⟶ j'), zl j' ≫ resBW ι (S.tr g) = zl j` using `fun {j j'} g => by`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, rfst, reassoc_of% (h1 j'), h1, htr]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc]`. Rewrite using `[← Spec.map_comp_assoc, S.c.w]`. Rewrite using `[Category.assoc, rsnd, h2, h2]`.
+
+Establish `hlφ : ∀ j, zl j ≫ φ j = pullback.fst _ _ ≫ Spec.map (S.c.ι.app j)` using `fun j => by`. Simplify using `only [φ]`. Rewrite using `[reassoc_of% (h1 j)]`. Simplify using the standard rewrite rules. Establish `hpb : ∀ j, IsPullback (zl j) (pullback.fst (S.t ≫ U.hom) ι) (φ j) (Spec.map (S.c.ι.app j))` using `fun j => by`.
+
+Establish `hw : (S.a j).left ≫ U.hom = (S.V j).hom` using `by simpa using (S.a j).w`. Establish `hb : (Spec.map (S.c.ι.app j) ≫ (S.e j).inv) ≫ (S.V j).hom = S.t ≫ U.hom`. Rewrite using `[S.ht j, ← hw]`. Simplify using the standard rewrite rules. Establish `big : IsPullback (zl j ≫ pullback.snd _ _) (pullback.fst (S.t ≫ U.hom) ι) ι ((Spec.map (S.c.ι.app j) ≫ (S.e j).inv) ≫ (S.V j).hom)`.
+
+Rewrite using `[h2, hb]`. Conclude with `(IsPullback.of_hasPullback _ _).flip`. Establish `sq` using `IsPullback.of_right big (h1 j) (IsPullback.of_hasPullback (S.V j).hom ι).flip`. Conclude with `IsPullback.of_iso sq (Iso.refl _) (Iso.refl _) (Iso.refl _) (S.e j) (by simp) (by simp) (by simp [φ]) (by simp)`. Establish `: Nonempty S.J` using `IsFiltered.nonempty`.
+
+Take `⟨c', hc', ei, he⟩` from `cocone_system (fun j => pullback (S.V j).hom ι) (fun g => resBW ι (S.tr g)) S.D D' ez hr S.c S.hc φ hφ (pullback (S.t ≫ U.hom) ι) (pullback.fst _ _) zl hl hlφ hpb`. Conclude with `⟨D', c', hc', ez, ei, hr, he⟩`.
+-/
 theorem UpperTheory.exists_closedFiber_colimit_presentation :
     ∀ {B W : Scheme.{0}} (ι : W ⟶ B) [IsClosedImmersion ι] (U : B.Etale) (x : U.left) (S : SHSys U x)
         (zl : ∀ j, pullback (S.t ≫ U.hom) ι ⟶ pullback (S.V j).hom ι),

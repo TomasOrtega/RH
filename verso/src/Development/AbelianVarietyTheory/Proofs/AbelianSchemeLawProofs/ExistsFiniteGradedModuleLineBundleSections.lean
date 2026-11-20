@@ -16,6 +16,11 @@ open GlobalTheory GlobalTheory.AbLaw
 
 namespace GlobalTheory.AbLaw
 
+/- English proof (translation)
+Take `⟨r, d, g, hg, hsat⟩` from `exists_homogeneous_family_saturating ι R G 𝒢 fun i => exists_X_pow_smul_mem_span_of_finite_quot ι R G 𝒢 i (h i)`. Establish `hhom : (Submodule.span (MvPolynomial ι R) (Set.range g)).IsHomogeneous 𝒢` using `isHomogeneous_span_gr 𝒢 (by`. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `⟨d l, hg l⟩)`. Use `⟨_, hhom, Module.Finite.span_of_finite _ (Set.finite_range g), fun t I ⟨i, hi⟩ => ?_⟩` and prove the remaining obligations.
+
+Use `letI := grSubDecomposition 𝒢 hhom`. Conclude with `homLocMap_bijective_of_X _ hi (fun m hm => ⟨0, by`. Rewrite using `[(map_eq_zero_iff _ (Submodule.injective_subtype _)).1 hm, smul_zero]⟩)`. Use the proof step `(fun y => by simpa using hsat i y) t`.
+-/
 theorem exists_finite_grCube_hom_bijective (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type)
     [CommRing R] (G : Type) [AddCommGroup G] [Module R G] [Module (MvPolynomial ι R) G]
     [IsScalarTower R (MvPolynomial ι R) G] (𝒢 : ℤ → Submodule R G) [PolyGradedSMul ι 𝒢]
@@ -38,6 +43,13 @@ theorem exists_finite_grCube_hom_bijective (ι : Type) [LinearOrder ι] [Fintype
       rw [(map_eq_zero_iff _ (Submodule.injective_subtype _)).1 hm, smul_zero]⟩)
     (fun y => by simpa using hsat i y) t
 
+/- English proof (translation)
+Introduce `R _ Y f H m s M hH hM hs`. Establish `hx : ∀ V : Y.Opens, OperatorsCommute (ι` using `Fin (m + 1)) (A := fun t => SecOnR f (tw M H t) V) fun i t => SecOnR.mulSec f M t (s i) V := fun V i j t a => SecOn.mulSec_comm (s i) (s j) a`. Take `⟨K, hK, hfin, hb⟩` from `exists_finite_grCube_hom_bijective (Fin (m + 1)) R (GrSum (hx ⊤)) (GrSum.grading (hx ⊤)) fun i => by`. Take `⟨haff, r, hr, hsurj⟩` from `hs.2 i`. Take `⟨h1, ε, hε, hk, -⟩` from `GlobalTheory.T.exists_dehomogenisation_twisted_chart R Y f H m s M hH hM hs hx i r hr`.
+
+Use `letI := cstAlgebra f (nonzeroLocus (s i))`. Establish `hfp` using `(secOn_finitePresentation_projective Y (tw M H 0) _ (isLB_tw hM hH 0) haff).1`. Conclude with `(finite_quotSMulTop_X_sub_one_of_chart (Fin (m + 1)) R (GrSum (hx ⊤)) (GrSum.grading (hx ⊤)) i Γ(Y, nonzeroLocus (s i)) _ _ (MvPolynomial.aeval r) (SecOn (tw M H 0) (nonzeroLocus (s i))) _ _ ε ⟨hsurj, (MvPolynomial.aeval_X r i).trans h1, hε, hk⟩).1 inferInstance`. Use `⟨K, inferInstance, inferInstance, inferInstance, inferInstance, grSub (GrSum.grading (hx ⊤)) K, inferInstance, grSubDecomposition _ hK, hfin, fun t => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `GlobalTheory.T.exists_twistedSections_cube_bijective R Y f H m s M hH hM hs hx t`.
+
+Conclude with `⟨grCubeMap (isGradedMap_subtype _ K) t ≫ φ, fun I hI => (hφ I).comp (hb t I hI)⟩`.
+-/
 theorem exists_finite_graded_module_secCube : ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (H : LB Y) (m : ℕ) (s : Fin (m + 1) → LB.Sec H) (M : LB Y), H.IsLB → M.IsLB → VeryAmpleBy f H s → ∃ (N : Type) (_ : AddCommGroup N) (_ : Module R N) (_ : Module (MvPolynomial (Fin (m + 1)) R) N) (_ : IsScalarTower R (MvPolynomial (Fin (m + 1)) R) N) (𝒩 : ℤ → Submodule R N) (_ : PolyGradedSMul (Fin (m + 1)) 𝒩) (_ : Decomposition 𝒩), Module.Finite (MvPolynomial (Fin (m + 1)) R) N ∧ ∀ t : ℤ, ∃ φ : grCube (Fin (m + 1)) 𝒩 t ⟶ secCube f (tw M H t) (fun i => nonzeroLocus (s i)), ∀ I : Finset (Fin (m + 1)), I.Nonempty → Function.Bijective (φ.app I).hom := by
   intro R _ Y f H m s M hH hM hs
   have hx : ∀ V : Y.Opens, OperatorsCommute (ι := Fin (m + 1))

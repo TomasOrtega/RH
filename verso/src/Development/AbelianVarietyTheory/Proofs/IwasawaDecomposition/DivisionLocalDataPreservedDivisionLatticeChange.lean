@@ -110,6 +110,9 @@ def famT {G : DV.Geo D.what₂.LL} {Lev : Type} (F : ShimFam D G Lev) : ShimFam 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Substitute `hA hM hrk` using the available equality. Take `rfl` from `eq_of_heq hfg`. Both sides reduce to the same expression.
+-/
 theorem heq_mdlT {p : ℕ} [Fact p.Prime] {A A' : Type} {M M' : ℕ} {rk rk' : DV.Emb D p → ℕ}
     (f : A → DV.Mdl D p M rk) (g : A' → DV.Mdl D p M' rk') (hA : A = A') (hM : M = M') (hrk : rk = rk')
     (hfg : HEq f g) : HEq (fun z => mdlT N h (f z)) (fun z => mdlT N h (g z)) := by
@@ -119,6 +122,11 @@ theorem heq_mdlT {p : ℕ} [Fact p.Prime] {A A' : Type} {M M' : ℕ} {rk rk' : D
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Take `⟨F, ePl, eC, hT, hJ, hC, hI, hL⟩` from `hg`. Use `⟨famT N h F, ePl, eC, ⟨⟨hT.shv.lev, fun w hw => hT.shv.shv (datBk N h w) hw⟩, ⟨hT.pl.wt, hT.pl.jc, fun w hw => hT.pl.mp (datBk N h w) hw, ?_, fun w hw => hT.pl.curveM (datBk N h w) hw, fun w hw => hT.pl.degM (datBk N h w) hw, fun w hw => hT.pl.htMdl (datBk N h w) hw, fun w hw => …` and prove the remaining obligations. Introduce `w hw p _ la`. Establish `hS` using `hT.shv.shv (datBk N h w) hw`. Establish `hM : (X.shv w.S w.κ).N = (datBk N h w).N` using `by rw [show w.S = (datBk N h w).S from rfl, show w.κ = (datBk N h w).κ from rfl, hS]; rfl`.
+
+Establish `hj : (X.shv w.S w.κ).j = (datBk N h w).j` using `by rw [show w.S = (datBk N h w).S from rfl, show w.κ = (datBk N h w).κ from rfl, hS]; rfl`. Establish `hrk : DV.rkOf (DV.PsiOf D (X.jC p la)) (X.shv w.S w.κ).N (X.shv w.S w.κ).j = DV.rkOf (DV.PsiOf D (F.jC p (ePl p la))) (datBk N h w).N (datBk N h w).j`. Rewrite using `[hT.pl.jc p la, hM, hj]`. Conclude with `heq_mdlT N h _ _ (hT.pl.mp (datBk N h w) hw p la) hM hrk (tiedMd hT.pl (datBk N h w) hw p la)`.
+-/
 theorem geoTiedP_divTr {X : DivX D} {inK : X.Lev → ℕ → Prop} (hg : GeoTiedP X inK) :
     GeoTiedP (divTr N h X) inK := by
   obtain ⟨F, ePl, eC, hT, hJ, hC, hI, hL⟩ := hg
@@ -145,6 +153,9 @@ open GeoDivTr
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `B f T w Z Wt nch n Y N h d`. Use `⟨{ Qp := d.Qp, chr := { d.chr with }, loc := ?_, inK := d.inK, geo := geoTiedP_divTr (D := w.D Z) N h d.geo }⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `d.loc`. Conclude with `⟨h1, { h2 with }⟩`.
+-/
 theorem divT_setDiv : ∀ {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (Z : w.Lt) {Wt : Set B.places.Pl} {nch : NChoice (w.D Z)} (n : NchT w Z Wt nch) (Y : DivX (w.D Z)) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ), DivT n Y → Nonempty (DivT (nchTTr w Z N h n) (divTr (D := w.D Z) N h Y)) := by
   intro B f T w Z Wt nch n Y N h d
   refine ⟨{ Qp := d.Qp, chr := { d.chr with }, loc := ?_, inK := d.inK, geo := geoTiedP_divTr (D := w.D Z) N h d.geo }⟩

@@ -4,6 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GeometricSideEstim
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GeometricSideEstimates.AdmissibleFunctionClassClosureProperties
 open UpperTheory.V.Lit.Geo
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha L hL`. Take `⟨N, hN⟩` from `UpperTheory.geometry_of_numbers_lattice_estimate E a ha L hL`. Establish `hsum : ∀ g, Summable fun v : lat L g => gauss (pt (rt g) v.1)`. Introduce `g`. Use `((hN g).2 1 1 one_pos le_rfl).1` as an intermediate fact.
+
+Simplify `this` using `only [one_mul, gauss]`. Establish `h1 : ∀ g, 1 ≤ Th L g`. Introduce `g`. Establish `h` using `(hsum g).le_tsum (0 : lat L g) (fun j _ => (Real.exp_pos _).le)`. Establish `h0 : gauss (pt (rt g) (0 : lat L g).1) = 1`.
+
+Simplify using `[gauss, qf]`. Rewrite `h` using `[h0]`. Conclude with `h`. Use `⟨fun g => ⟨h1 g, ?_⟩, fun P hP => ?_⟩` and prove the remaining obligations. Simplify using `only [Th, gsum, pg, Pi.one_apply, one_mul]`.
+
+Conclude with `(Complex.ofReal_tsum _).symm`. Take `⟨-, ⟨C, k, hC⟩, -⟩` from `UpperTheory.admissibleFunctionClass_closure_properties E a P hP`. Take `⟨D, hD0, hD⟩` from `UpperTheory.moment_bound_of_pointwise_moments N k`. Establish `hb : ∀ x, ‖pg P x‖ ≤ |C| * ((1 + qf x) ^ k * Real.exp (-Real.pi * qf x))`. Introduce `x`.
+
+Establish `hq` using `qf_nonneg x`. Establish `hg : 0 ≤ gauss x` using `(Real.exp_pos _).le`. Rewrite using `[pg, norm_mul, Complex.norm_real, Real.norm_of_nonneg hg, ← mul_assoc]`. Use `mul_le_mul_of_nonneg_right ((hC x).trans ?_) hg` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity)`.
+
+Establish `hs : ∀ g, Summable fun v : lat L g => ‖pg P (pt (rt g) v.1)‖` using `fun g => Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun v => hb _) ((hD _ _ (hN g)).1.mul_left |C|)`. Use `⟨fun g => (hs g).of_norm, |C| * D, fun g => ?_⟩` and prove the remaining obligations. Establish `hT : 0 < Th L g` using `lt_of_lt_of_le one_pos (h1 g)`. Rewrite using `[mean, norm_div, Complex.norm_real, Real.norm_of_nonneg hT.le, div_le_iff₀ hT]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.hermitian_space_geometric_estimate :
     MeanBd := by
   intro E _ _ _ a ha L hL

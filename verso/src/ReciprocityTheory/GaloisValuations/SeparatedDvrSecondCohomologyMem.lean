@@ -25,6 +25,9 @@ def contMaps (X : Type*) [TopologicalSpace X] : Submodule R (X → M) where
 
 variable {R M}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_contMaps {X : Type*} [TopologicalSpace X] (f : X → M) :
     f ∈ contMaps R M X ↔ Continuous f := Iff.rfl
 
@@ -37,6 +40,9 @@ variable (rho : Representation R G M)
 
 def H0 : Submodule R M := rho.invariants
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_riemannRochSpace_iff_regularAt_everywhere (m : M) : m ∈ H0 rho ↔ ∀ g, rho g m = m := Iff.rfl
 
 def Z1 : Submodule R (G → M) where
@@ -47,15 +53,24 @@ def Z1 : Submodule R (G → M) where
   smul_mem' c f hf := ⟨hf.1.const_smul c, fun g h => by
     simp only [Pi.smul_apply, hf.2, map_smul, smul_add]⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Z1_iff_cocycle (f : G → M) :
     f ∈ Z1 rho ↔ Continuous f ∧ ∀ g h, f (g * h) = f g + rho g (f h) := Iff.rfl
 
 def d0 : M →ₗ[R] (G → M) := LinearMap.pi fun g => rho g - LinearMap.id
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem amitsur_d0_apply (m : M) (g : G) : d0 rho m g = rho g m - m := rfl
 
 def B1 : Submodule R (G → M) := LinearMap.range (d0 rho)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩`. Conclude with `⟨m, fun g => rfl⟩`. Introduce and unpack `⟨m, hm⟩`. Conclude with `⟨m, funext fun g => (hm g).symm⟩`.
+-/
 theorem mem_coboundaries1 (f : G → M) : f ∈ B1 rho ↔ ∃ m, ∀ g, f g = rho g m - m := by
   constructor
   · rintro ⟨m, rfl⟩
@@ -80,6 +95,9 @@ def Z2 : Submodule R (G × G → M) where
     simp only [Pi.smul_apply, map_smul]
     rw [← smul_sub, ← smul_add, ← smul_sub, e, smul_zero]⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_cocycles2 (f : G × G → M) :
     f ∈ Z2 rho ↔ Continuous f ∧
       ∀ g h k, rho g (f (h, k)) - f (g * h, k) + f (g, h * k) - f (g, h) = 0 := Iff.rfl
@@ -91,11 +109,17 @@ def d1 : (G → M) →ₗ[R] (G × G → M) where
   map_smul' r c := by
     funext p; simp only [Pi.smul_apply, map_smul, RingHom.id_apply, smul_sub, smul_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem d1_apply (c : G → M) (g h : G) :
     d1 rho c (g, h) = rho g (c h) - c (g * h) + c g := rfl
 
 def B2 : Submodule R (G × G → M) := (contMaps R M G).map (d1 rho)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem separated_dvr_second_cohomology_mem (f : G × G → M) :
     f ∈ B2 rho ↔ ∃ c : G → M, Continuous c ∧ d1 rho c = f := Iff.rfl
 
@@ -113,6 +137,9 @@ def dn (n : ℕ) : ((Fin n → G) → M) →ₗ[R] ((Fin (n + 1) → G) → M) w
     funext g
     simp [Finset.smul_sum, ← smul_assoc, mul_comm r]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dn_apply (n : ℕ) (f : (Fin n → G) → M) (g : Fin (n + 1) → G) :
     dn rho n f g = rho (g 0) (f fun i => g i.succ) + Finset.univ.sum fun j : Fin (n + 1) =>
       (-1 : R) ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) g) := rfl
@@ -142,6 +169,9 @@ def restrictCocycles1 : Z1 rho →ₗ[R] Z1 (rho.comp phi) where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem restrictCocycles1_apply (f : Z1 rho) (h : H) : (restrictCocycles1 rho phi hphi f).1 h = f.1 (phi h) := rfl
 
 def resH1 : H1 rho →ₗ[R] H1 (rho.comp phi) :=
@@ -156,6 +186,9 @@ def restrictCocycles2 : Z2 rho →ₗ[R] Z2 (rho.comp phi) where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem restrictCocycles2_apply (f : Z2 rho) (g h : H) :
     (restrictCocycles2 rho phi hphi f).1 (g, h) = f.1 (phi g, phi h) := rfl
 
@@ -229,6 +262,9 @@ def compatiblePairCocycles1 : Z1 rho →ₗ[R] Z1 rho' where
   map_add' f f' := Subtype.ext (funext fun g => map_add u _ _)
   map_smul' r f := Subtype.ext (funext fun g => map_smul u _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem compatiblePairCocycles1_apply (f : Z1 rho) (g : G') :
     (compatiblePairCocycles1 rho rho' phi hphi u hu hcompat f).1 g = u (f.1 (phi g)) := rfl
 
@@ -250,6 +286,9 @@ def compatiblePairCocycles2 : Z2 rho →ₗ[R] Z2 rho' where
   map_add' f f' := Subtype.ext (funext fun g => map_add u _ _)
   map_smul' r f := Subtype.ext (funext fun g => map_smul u _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem compatiblePairCocycles2_apply (f : Z2 rho) (g h : G') :
     (compatiblePairCocycles2 rho rho' phi hphi u hu hcompat f).1 (g, h) = u (f.1 (phi g, phi h)) := rfl
 
@@ -275,6 +314,11 @@ variable {M' : Type*} [AddCommGroup M'] [Module R M'] [TopologicalSpace M']
 
 end MapPair
 
+/- English proof (translation)
+Introduce `f hf`. Take `⟨m, hm⟩` from `(mem_coboundaries1 rho f).1 hf`. Take `rfl : f = fun g => rho g m - m` from `funext hm`. Use `⟨(h.comp (continuous_id.prodMk continuous_const)).sub continuous_const, fun g k => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, Module.End.mul_apply, map_sub]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem coboundaries_le_cocycles (h : ContAction rho) : B1 rho ≤ Z1 rho := by
   intro f hf
   obtain ⟨m, hm⟩ := (mem_coboundaries1 rho f).1 hf
@@ -283,6 +327,11 @@ theorem coboundaries_le_cocycles (h : ContAction rho) : B1 rho ≤ Z1 rho := by
   simp only [map_mul, Module.End.mul_apply, map_sub]
   abel
 
+/- English proof (translation)
+Introduce `f hf`. Take `⟨c, hc, rfl⟩` from `(separated_dvr_second_cohomology_mem rho f).1 hf`. Use `⟨?_, fun g k l => ?_⟩` and prove the remaining obligations. Establish `h1 : Continuous fun p : G × G => rho p.1 (c p.2)` using `h.comp (continuous_fst.prodMk (hc.comp continuous_snd))`. Establish `h2 : Continuous fun p : G × G => c (p.1 * p.2)` using `hc.comp continuous_mul`.
+
+Establish `h3 : Continuous fun p : G × G => c p.1` using `hc.comp continuous_fst`. Conclude with `(h1.sub h2).add h3`. Simplify using `only [d1_apply, map_mul, Module.End.mul_apply, map_sub, map_add, mul_assoc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem coboundaries2_le_cocycles2 [ContinuousMul G] (h : ContAction rho) : B2 rho ≤ Z2 rho := by
   intro f hf
   obtain ⟨c, hc, rfl⟩ := (separated_dvr_second_cohomology_mem rho f).1 hf

@@ -9,6 +9,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `O _ _ N _ χ x hx`. Establish `hn : 0 < orderOf χ` using `orderOf_pos χ`. Use `haveI : NeZero (orderOf χ) := ⟨hn.ne'⟩`. Use `haveI : Finite χ.toUnitHom.range := Finite.of_surjective χ.toUnitHom.rangeRestrict χ.toUnitHom.rangeRestrict_surjective`. Establish `hle : χ.toUnitHom.range ≤ rootsOfUnity (orderOf χ) O`.
+
+Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[mem_rootsOfUnity]`. Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, ← MulChar.pow_apply' χ hn.ne', pow_orderOf_eq_one, MulChar.one_apply_coe, Units.val_one]`. Establish `hcard : orderOf χ ≤ Nat.card χ.toUnitHom.range`.
+
+Establish `hpos : 0 < Nat.card χ.toUnitHom.range` using `Nat.card_pos`. Apply `orderOf_le_of_pow_eq_one hpos` to reduce the goal to its premises. Use `MulChar.ext fun a => ?_` and prove the remaining obligations. Rewrite using `[MulChar.pow_apply' χ hpos.ne', MulChar.one_apply_coe]`. Establish `h1` using `pow_card_eq_one' (G := χ.toUnitHom.range) (x := ⟨χ.toUnitHom a, a, rfl⟩)`.
+
+Establish `h2` using `congrArg (fun u : χ.toUnitHom.range => ((u : Oˣ) : O)) h1`. Simplify using `only [SubmonoidClass.coe_pow, Subgroup.coe_pow, Units.val_pow_eq_pow_val, OneMemClass.coe_one, Units.val_one] at h2`. Rewrite using `[← MulChar.coe_toUnitHom]`. Conclude with `h2`. Establish `heq : χ.toUnitHom.range = rootsOfUnity (orderOf χ) O` using `Subgroup.eq_of_le_of_card_ge hle ((card_rootsOfUnity O (orderOf χ)).trans hcard)`.
+
+Establish `hxmem : x ∈ rootsOfUnity (orderOf χ) O` using `(mem_rootsOfUnity _ _).2 hx`. Rewrite `hxmem` using `[← heq]`. Take `⟨b, hb⟩` from `hxmem`. Conclude with `⟨b, hb⟩`.
+-/
 theorem UpperTheory.V.Ws.large₂.imgRoots :
     ∀ {O : Type} [CommRing O] [IsDomain O] (N : ℕ) [NeZero N] (χ : DirichletCharacter O N) (x : Oˣ), x ^ orderOf χ = 1 → ∃ b : (ZMod N)ˣ, χ.toUnitHom b = x := by
   intro O _ _ N _ χ x hx

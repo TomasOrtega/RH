@@ -26,10 +26,18 @@ variable {K L V : Type} [Field K] [Field L] [Algebra K L] [AddCommGroup V] [Modu
 def coordMap (b : Basis ι L V) (φ : L →ₗ[K] K) : V →ₗ[K] V :=
   ∑ i, (φ ∘ₗ (b.coord i).restrictScalars K).smulRight (b i)
 
+/- English proof (translation)
+Simplify using `[coordMap, LinearMap.sum_apply, Basis.coord_apply]`.
+-/
 theorem coordMap_apply (b : Basis ι L V) (φ : L →ₗ[K] K) (x : V) :
     coordMap b φ x = ∑ i, φ (b.repr x i) • b i := by
   simp [coordMap, LinearMap.sum_apply, Basis.coord_apply]
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Rewrite using `[coordMap_apply, map_smul, Basis.repr_self]`. Rewrite using `[Finset.sum_eq_single j (fun i _ hi => by simp [Finsupp.single_apply, Ne.symm hi]) (by simp)]`.
+
+Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add, map_add, hx, hy, smul_add]`. Consider the case `smul c x _ hx => rw [smul_comm a c x, LinearMap.map_smul, hx, smul_comm]`.
+-/
 theorem coordMap_smul (b : Basis ι L V) (φ : L →ₗ[K] K) {w : V} (hw : w ∈ Submodule.span K (Set.range b)) (a : L) :
     coordMap b φ (a • w) = φ a • w := by
   induction hw using Submodule.span_induction with
@@ -42,6 +50,9 @@ theorem coordMap_smul (b : Basis ι L V) (φ : L →ₗ[K] K) {w : V} (hw : w �
   | add x y _ _ hx hy => rw [smul_add, map_add, hx, hy, smul_add]
   | smul c x _ hx => rw [smul_comm a c x, LinearMap.map_smul, hx, smul_comm]
 
+/- English proof (translation)
+Rewrite using `[coordMap_apply, map_sum]`. Use `conv_rhs => rw [← b.sum_repr x, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower T (φ (b.repr x i)) (b i), LinearMap.map_smul T (b.repr x i) (b i), coordMap_smul b φ (hT _ (Submodule.subset_span ⟨i, rfl⟩))]`.
+-/
 theorem coordMap_comm (b : Basis ι L V) (φ : L →ₗ[K] K) (T : V →ₗ[L] V)
     (hT : ∀ w ∈ Submodule.span K (Set.range b), T w ∈ Submodule.span K (Set.range b)) (x : V) :
     T (coordMap b φ x) = coordMap b φ (T x) := by
@@ -63,6 +74,19 @@ variable {W : (LL →+* ℂ) → Type} [∀ σ, NormedAddCommGroup (W σ)] [∀ 
 variable {G0 : Type} [Group G0] [Fintype G0]
 variable (A : FormsL LL Ks WL W G0)
 
+/- English proof (translation)
+Establish `smulK : ∀ (c : Ks) (y : WL), coordMap B φ (algebraMap Ks LL c • y) = algebraMap Ks LL c • coordMap B φ y`. Introduce `c y`. Rewrite using `[algebraMap_smul, algebraMap_smul, LinearMap.map_smul]`. Establish `hT : ∀ T : WL →ₗ[LL] WL, (∀ w ∈ A.WK, T w ∈ A.WK) → ∀ w ∈ Submodule.span Ks (Set.range B), T w ∈ Submodule.span Ks (Set.range B)`. Introduce `T hT w hw`.
+
+Rewrite `hw`, the goal using `[hWK]`. Conclude with `hT w hw`. Establish `hE : ∀ w ∈ A.WK, A.eOp eC w ∈ A.WK`. Introduce `w hw`. Use `show (∑ g, (eC g * ((A.chi g)⁻¹ : LLˣ)) • A.ρ g) w ∈ A.WK`.
+
+Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun g _ => ?_` and prove the remaining obligations. Take `⟨c1, hc1⟩` from `he g`. Take `⟨c2, hc2⟩` from `hχ g`. Establish `: (eC g * ((A.chi g)⁻¹ : LLˣ)) = algebraMap Ks LL (c1 * c2⁻¹)`.
+
+Rewrite using `[map_mul, map_inv₀, hc1, hc2, Units.val_inv_eq_inv_val]`. Rewrite using `[LinearMap.smul_apply, this, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (hρ g w hw)`. Take `⟨hy1, z, hz⟩` from `hy`. Use `⟨?_, coordMap B φ z, ?_⟩` and prove the remaining obligations.
+
+Introduce `p`. Establish `hp : ∀ q : J0, (y : WL) ∈ A.typeP J0 lam0 → A.ρ q y = ((A.chi q * lam0 q : LLˣ) : LL) • y` using `fun q h => h q`. Take `⟨c1, hc1⟩` from `hχ p`. Take `⟨c2, hc2⟩` from `(RingHom.mem_range).1 (hl p)`. Establish `hc : ((A.chi p * lam0 p : LLˣ) : LL) = algebraMap Ks LL (c1 * c2)`.
+
+Rewrite using `[Units.val_mul, map_mul, hc1, hc2]`. Rewrite using `[coordMap_comm B φ (A.ρ p) (hT _ (hρ p)), hp p hy1, hc, smulK]`. Rewrite using `[← hz]`. Conclude with `coordMap_comm B φ (A.eOp eC) (hT _ hE) z`.
+-/
 private theorem coordMap_mem_Wgood (hρ : ∀ g, ∀ f ∈ A.WK, A.ρ g f ∈ A.WK) (hχ : A.ChiKs)
     (J0 : Subgroup G0) (lam0 : J0 →* LLˣ) (eC : G0 → LL)
     (hl : ∀ p, ((lam0 p : LLˣ) : LL) ∈ (algebraMap Ks LL).range) (he : ∀ g, eC g ∈ (algebraMap Ks LL).range)
@@ -102,6 +126,61 @@ private theorem coordMap_mem_Wgood (hρ : ∀ g, ∀ f ∈ A.WK, A.ρ g f ∈ A.
 
 variable [Module (𝓞 LL) WL] [IsScalarTower (𝓞 LL) LL WL] [Module (𝓞 Ks) WL] [IsScalarTower (𝓞 Ks) Ks WL]
 
+/- English proof (translation)
+Take `⟨n, b, -, -, hspK, hbL, hspL⟩` from `hK`. Set `B : Basis (Fin n) LL WL` to `Basis.mk hbL (by rw [hspL])`. Establish `hB : (B : Fin n → WL) = b` using `Basis.coe_mk _ _`. Establish `hWK : Submodule.span Ks (Set.range B) = A.WK` using `by rw [hB, hspK]`. Establish `hMW : ∀ m ∈ A.MK, m ∈ A.WK`.
+
+Introduce `m hm`. Take `⟨h, -⟩` from `hm`. Conclude with `h`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `y ⟨hyM, hyT, hyG⟩`. Conclude with `⟨⟨Submodule.subset_span hyM, hyT⟩, hyG⟩`. Introduce and unpack `z ⟨⟨hzM, hzT⟩, hzG⟩`. Establish `hzW : z ∈ A.Wgood J0 lam0 eC` using `⟨hzT, hzG⟩`. Take `⟨r, a, g, rfl⟩` from `(Submodule.mem_span_set').1 hzM`.
+
+Establish `sOL : ∀ (c : 𝓞 LL) (w : WL), c • w = (c : LL) • w` using `fun c w => (algebraMap_smul LL c w).symm`. Establish `sOK : ∀ (c : 𝓞 Ks) (w : WL), c • w = algebraMap Ks LL (c : Ks) • w`. Introduce `c w`. Rewrite using `[algebraMap_smul LL (c : Ks) w]`. Conclude with `(algebraMap_smul Ks c w).symm`.
+
+Establish `sOKL : ∀ (c : 𝓞 Ks) (x : LL), c • x = algebraMap Ks LL (c : Ks) * x`. Introduce `c x`. Rewrite using `[Algebra.smul_def, IsScalarTower.algebraMap_apply (𝓞 Ks) Ks LL]`. Use `haveI : Module.Finite Ks LL := Module.Finite.of_restrictScalars_finite ℚ Ks LL`. Use `haveI : Module.Finite LL WL := Module.Finite.of_basis B`.
+
+Use `haveI : Module.Finite Ks WL := Module.Finite.trans LL WL`. Use `set Wg : Submodule Ks WL := (A.Wgood J0 lam0 eC).restrictScalars Ks with hWg`. Use `set v := Module.finBasis Ks (WL ⧸ Wg) with hv`. Use `set l := Module.finBasis Ks LL with hl'`. Use `set m : Fin r → WL := fun j => (g j : WL) with hm`.
+
+Establish `hmW : ∀ j, m j ∈ A.WK` using `fun j => hMW _ (g j).2`. Use `set q : Fin r → Fin (Module.finrank Ks (WL ⧸ Wg)) → Ks := fun j t => v.repr (Wg.mkQ (m j)) t with hq`. Establish `hrel : ∀ t, ∑ j, q j t • (a j : LL) = 0`. Introduce `t`. Use `l.ext_elem fun k => ?_` and prove the remaining obligations.
+
+Establish `hc` using `coordMap_mem_Wgood A hρ hχ J0 lam0 eC hl he B hWK (l.coord k) _ hzW`. Establish `hc' : coordMap B (l.coord k) (∑ j, a j • m j) = ∑ j, l.coord k (a j : LL) • m j`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[sOL, coordMap_smul B (l.coord k) (by rw [hWK]; exact hmW j)]`.
+
+Rewrite `hc` using `[hc']`. Establish `h0 : Wg.mkQ (∑ j, l.coord k (a j : LL) • m j) = 0` using `(Submodule.Quotient.mk_eq_zero Wg).2 hc`. Establish `h1` using `congrArg (fun u => v.repr u t) h0`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.coe_zero, Pi.zero_apply] at h1`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.coe_zero, Pi.zero_apply, Basis.coord_apply] at h1 ⊢`.
+
+Rewrite using `[← h1]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 Ks)) (fun p : Fin r × Fin (Module.finrank Ks (WL ⧸ Wg)) => q p.1 p.2)`. Establish `hd' : ∀ p : Fin r × Fin (Module.finrank Ks (WL ⧸ Wg)), ∃ c : 𝓞 Ks, algebraMap (𝓞 Ks) Ks c = (d : 𝓞 Ks) • q p.1 p.2` using `fun p => hd p`. Use `choose rr hrr using hd'`.
+
+Establish `hd0 : algebraMap (𝓞 Ks) Ks d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 Ks) Ks)).2 (nonZeroDivisors.coe_ne_zero d)`. Establish `hr : ∀ j t, algebraMap (𝓞 Ks) Ks (rr (j, t)) = algebraMap (𝓞 Ks) Ks d * q j t`. Introduce `j t`. Rewrite using `[hrr (j, t), Algebra.smul_def]`. Set `I : Submodule (𝓞 Ks) LL` to `Submodule.span (𝓞 Ks) (Set.range (fun c : 𝓞 LL => (c : LL)))`.
+
+Establish `hI : ∀ x ∈ I, IsIntegral ℤ x`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, rfl⟩` from `hx`.
+
+Conclude with `RingOfIntegers.isIntegral_coe c`. Consider the case `zero => exact isIntegral_zero`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx`. Rewrite using `[sOKL]`.
+
+Conclude with `((RingOfIntegers.isIntegral_coe c).algebraMap).mul hx`. Use `haveI : Module.IsTorsionFree (𝓞 Ks) I := ⟨fun c hc x y hxy => by`. Establish `hc0 : algebraMap (𝓞 Ks) Ks c ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 Ks) Ks)).2 hc.ne_zero`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h2` using `congrArg Subtype.val hxy`.
+
+Simplify using `only [Submodule.coe_smul, sOKL] at h2`. Conclude with `mul_left_cancel₀ ((map_ne_zero_iff _ (algebraMap Ks LL).injective).2 hc0) h2⟩`. Set `aI : Fin r → I` to `fun j => ⟨(a j : LL), Submodule.subset_span ⟨a j, rfl⟩⟩`. Set `X : (Fin r →₀ 𝓞 Ks) →ₗ[𝓞 Ks] I` to `Finsupp.linearCombination (𝓞 Ks) aI`. Set `F : (Fin (Module.finrank Ks (WL ⧸ Wg)) →₀ 𝓞 Ks) →ₗ[𝓞 Ks] (Fin r →₀ 𝓞 Ks)` to `Finsupp.linearCombination (𝓞 Ks) (fun t => ∑ j, rr (j, t) • Finsupp.single j (1 : 𝓞 Ks))`.
+
+Establish `hsum : ∀ t, ∑ j, rr (j, t) • aI j = 0`. Introduce `t`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum, Submodule.coe_zero]`. Simplify using `only [Submodule.coe_smul, sOKL, aI]`.
+
+Establish `h3` using `congrArg (fun u => algebraMap Ks LL (algebraMap (𝓞 Ks) Ks d) * u) (hrel t)`. Simplify using `only [mul_zero, Finset.mul_sum, Algebra.smul_def] at h3`. Rewrite using `[← h3]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul, ← hr j t]`.
+
+Establish `hXF : X ∘ₗ F = 0`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `t c`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply, F, X, Finsupp.linearCombination_single, map_smul, map_sum, one_smul]`. Rewrite using `[hsum t, smul_zero]`.
+
+Take `⟨k, Am, Y, hXY, hAF⟩` from `Module.Flat.exists_factorization_of_comp_eq_zero_of_free hXF`. Set `Aj : Fin r → Fin k → 𝓞 Ks` to `fun j κ => Am (Finsupp.single j 1) κ`. Set `yy : Fin k → 𝓞 LL` to `fun κ => ⟨(Y (Finsupp.single κ 1) : LL), hI _ (Y _).2⟩`. Set `w : Fin k → WL` to `fun κ => ∑ j, Aj j κ • m j`. Establish `ha : ∀ j, (a j : LL) = ∑ κ, Aj j κ • (Y (Finsupp.single κ 1) : LL)`.
+
+Introduce `j`. Establish `h1 : X (Finsupp.single j 1) = Y (Am (Finsupp.single j 1))` using `LinearMap.congr_fun hXY _`. Establish `h2 : (X (Finsupp.single j 1) : LL) = (a j : LL)` using `by simp [X, aI]`. Rewrite using `[← h2, h1]`. Use `conv_lhs => rw [← Finsupp.univ_sum_single (Am (Finsupp.single j 1))]`.
+
+Rewrite using `[map_sum, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[show Finsupp.single κ (Am (Finsupp.single j 1) κ) = Am (Finsupp.single j 1) κ • Finsupp.single κ 1 by simp, map_smul, Submodule.coe_smul]`. Establish `hA : ∀ t κ, ∑ j, algebraMap (𝓞 Ks) Ks (Aj j κ) * q j t = 0`. Introduce `t κ`.
+
+Establish `h1` using `congrArg (fun u => algebraMap (𝓞 Ks) Ks (u κ)) (LinearMap.congr_fun hAF (Finsupp.single t 1))`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply, F, Finsupp.linearCombination_single, one_smul, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, Finsupp.coe_zero, Pi.zero_apply, map_zero, map_mul, hr] at h1`. Establish `h2 : algebraMap (𝓞 Ks) Ks d * ∑ j, algebraMap (𝓞 Ks) Ks (Aj j κ) * q j t = 0`. Rewrite using `[Finset.mul_sum, ← h1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Aj]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_eq_zero.1 h2).resolve_left hd0`. Establish `sKs : ∀ (c : 𝓞 Ks) (u : WL), c • u = algebraMap (𝓞 Ks) Ks c • u` using `fun c u => (algebraMap_smul Ks c u).symm`. Establish `hwG : ∀ κ, w κ ∈ A.Wgood J0 lam0 eC`.
+
+Introduce `κ`. Establish `h0 : Wg.mkQ (w κ) = 0`. Use `v.repr.injective (Finsupp.ext fun t => ?_)` and prove the remaining obligations. Simplify using `only [w, map_sum, sKs, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Conclude with `hA t κ`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero Wg).1 h0`. Establish `hz : ∑ j, a j • m j = ∑ κ, yy κ • w κ`. Simplify using `only [w, Finset.smul_sum, sOL, sOK]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ha j, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[sOKL, smul_smul, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[hz]`.
+
+Use `Submodule.sum_mem _ fun κ _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨?_, hwG κ⟩)` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (g j).2`.
+-/
 theorem span_MK_good (hK : A.IsKsForm) (hρ : ∀ g, ∀ f ∈ A.WK, A.ρ g f ∈ A.WK) (hχ : A.ChiKs)
     (J0 : Subgroup G0) (lam0 : J0 →* LLˣ) (eC : G0 → LL)
     (hl : ∀ p, ((lam0 p : LLˣ) : LL) ∈ (algebraMap Ks LL).range) (he : ∀ g, eC g ∈ (algebraMap Ks LL).range) :
@@ -257,6 +336,11 @@ theorem span_MK_good (hK : A.IsKsForm) (hρ : ∀ g, ∀ f ∈ A.WK, A.ρ g f �
 
 omit [NumberField LL] [Module (𝓞 LL) WL] [IsScalarTower (𝓞 LL) LL WL] in
 
+/- English proof (translation)
+Take `⟨hfg, -⟩` from `hM`. Set `N : Submodule (𝓞 Ks) WL` to `A.MK ⊓ ((A.Wgood J0 lam0 eC).restrictScalars Ks).restrictScalars (𝓞 Ks)`. Establish `hN : N.FG` using `by haveI := isNoetherian_of_fg_of_noetherian A.MK hfg`. Establish `h1 : (N.comap A.MK.subtype).FG` using `IsNoetherian.noetherian _`. Establish `h2` using `h1.map A.MK.subtype`.
+
+Rewrite `h2` using `[Submodule.map_comap_subtype, inf_of_le_right inf_le_left]`. Then use the resulting hypothesis. Take `⟨S, hS⟩` from `hN`. Conclude with `⟨S, by rw [hS]; rfl⟩`.
+-/
 theorem fg_MK_good (hM : A.MKFull) (J0 : Subgroup G0) (lam0 : J0 →* LLˣ) (eC : G0 → LL) :
     ∃ S : Finset WL, (Submodule.span (𝓞 Ks) (S : Set WL) : Set WL) = {y | y ∈ A.MK ∧ y ∈ A.Wgood J0 lam0 eC} := by
   obtain ⟨hfg, -⟩ := hM

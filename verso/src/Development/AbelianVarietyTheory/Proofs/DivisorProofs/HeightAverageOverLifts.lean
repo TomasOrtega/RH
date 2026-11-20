@@ -13,6 +13,19 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 
 namespace GlobalTheory.Mean4O
 
+/- English proof (translation)
+Introduce `F _ _ Y e M I x d z g hx hL`. Take `⟨N, hN, hc⟩` from `HtTwist.exists_card Y.str x hx`. Establish `hA : Nat.card {y : AlgPt Y // below y.1 = x} = N` using `hc _ _`. Establish `hmem (a) (i : Fin (d + 1)) : under (I.pt a (z a i)) = x`. Establish `: z a i ∈ Set.range (z a)` using `⟨i, rfl⟩`.
+
+Rewrite `this` using `[(hL a).2]`. Conclude with `this`. Set `P (a) : Fin (d + 1) → {w : Pts Y (I.ε a) // under w = x}` to `fun i => ⟨I.pt a (z a i), hmem a i⟩`. Establish `hP (a) : Function.Bijective (P a)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `i j hij`. Conclude with `(hL a).1 ((I.pt a).injective (congrArg Subtype.val hij))`. Introduce and unpack `⟨w, hw⟩`. Establish `: (I.pt a).symm w ∈ {u | under (I.pt a u) = x}` using `by simpa using hw`. Rewrite `this` using `[← (hL a).2]`.
+
+Take `⟨i, hi⟩` from `this`. Conclude with `⟨i, Subtype.ext (by simp [P, hi])⟩`. Establish `hd : N = d + 1`. Establish `h1 : Nat.card {w : Pts Y (I.ε 0) // under w = x} = N` using `hc ℂ (I.ε 0)`. Rewrite using `[← h1, ← Nat.card_congr (Equiv.ofBijective _ (hP 0)), Nat.card_eq_fintype_card, Fintype.card_fin]`.
+
+Establish `hs (a) : ∑ᶠ (w : Pts Y (I.ε a)) (_ : under w = x), g (I.ε a) w = ∑ i, g (I.ε a) (I.pt a (z a i))`. Rewrite using `[← finsum_subtype_eq_finsum_cond, ← finsum_eq_sum_of_fintype]`. Conclude with `(finsum_eq_of_bijective (P a) (hP a) fun i => rfl).symm`. Establish `hF : (Module.finrank ℚ F : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `hd' : (d : ℝ) + 1 ≠ 0` using `by positivity`.
+
+Rewrite using `[I.κ_eq, hA, hd, ← Equiv.sum_comp I.ε, Finset.sum_congr rfl fun a _ => hs a, ← Finset.sum_div]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mean_listed_eq : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ) (M : Man e) (I : ManIs M Y) (x : Y.X)
     (d : ℕ) (z : ∀ a, Fin (d + 1) → M.X a) (g : ∀ σ, Pts Y σ → ℝ), IsClosed ({x} : Set Y.X) → I.Lists x z →
     M.κ * ∑ a, (∑ i, g (I.ε a) (I.pt a (z a i))) / ((d : ℝ) + 1) =

@@ -23,6 +23,23 @@ section OnW
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {W : (Spec (CommRingCat.of R)).Opens}
 
+/- English proof (translation)
+Establish `sep : D.P.A.left.IsSeparated`. Use `D.P.isAb.proper` as an intermediate fact. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← terminal.comp_from D.P.A.hom]`. Use `infer_instance`.
+
+Take `⟨lam, hl⟩ : ∃ lam : (TK R).left ⟶ (jK R ⁻¹ᵁ W).toScheme, lam ≫ (jK R ⁻¹ᵁ W).ι = 𝟙 _` from `⟨IsOpenImmersion.lift _ (𝟙 _) (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `jK_mem y W hW), IsOpenImmersion.lift_fac _ _ _⟩`. Establish `hκ : (lam ≫ jK R ∣_ W) ≫ W.ι = jK R`.
+
+Rewrite using `[Category.assoc, morphismRestrict_ι, ← Category.assoc, hl, Category.id_comp]`. Set `κ : TK R ⟶ TW W` to `Over.homMk (lam ≫ jK R ∣_ W) hκ`. Take `⟨z⟩ : Nonempty (TK R).left` from `inferInstanceAs (Nonempty (PrimeSpectrum (FractionRing R)))`. Establish `red : IsReduced (TW W).left` using `inferInstanceAs (IsReduced W.toScheme)`. Use `corr_of_dense D.P.isLB κ.left z (fun V hV => ?_) fun J hJ => ?_` and prove the remaining obligations.
+
+Establish `h₁ : jK R z ∈ W.ι ''ᵁ V` using `jK_mem z _ (hV.image _)`. Take `⟨y, hy, e⟩` from `h₁`. Establish `e' : W.ι y = W.ι (κ.left z)` using `e.trans (congrArg (fun q => q z) hκ).symm`. Rewrite using `[← W.ι.isOpenEmbedding.injective e']`. Conclude with `hy`.
+
+Establish `vψ : ∀ χ, val (ψW.psi χ) κ.left z J = val (D.psi χ) (𝟙 _) z J` using `fun χ => by`. Use `(val_pull hJ _ _ _).symm.trans ((val_corr hJ (ψW.psi_eq χ) lam).trans (val_pull hJ _ _ _))` as an intermediate fact. Rewrite `this` using `[hl]`. Conclude with `this`. Establish `vρ : val (D.rigW W) κ.left z J = val D.rigK (𝟙 _) z J`.
+
+Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `congrArg (fun q => val D.rig q z J) hκ`. Establish `vτ : ∀ a b, val (ψW.tau a b) κ.left z J = val (D.tau a b) (𝟙 _) z J` using `fun a b => by`. Rewrite using `[val_tauW ψW _ hJ, val_tau _ hJ, vψ, vψ, vψ, vρ]`.
+
+Establish `e` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ h (𝟙 _)).trans (val_mul hJ _ _ _))`. Use `(val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)` and prove the remaining obligations. Rewrite using `[vτ, vψ, vρ, ← e]`. Use `congrArg₂ (· * ·) rfl ((val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm))` and prove the remaining obligations. Use `congrArg (fun q => val u q z J) ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp]`. Conclude with `congrArg (fun q => q.left) (comp_cP D κ a)`.
+-/
 theorem rel_on (ψW : PsiOn D W) (hW : (W : Set (Spec (CommRingCat.of R))).Nonempty) {K : Type} [Fintype K]
     {φ : K → (D.P.A.left ⟶ D.P.A.left)} {ε : K → ℤ} (u : LB.Gen (LB.LinComb D.P.L φ ε)) (a b : D.X)
     (h : LB.Gen.Corr D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (D.tau a b) (LB.pullGen D.P.L _ _ u (D.xK a)))
@@ -71,6 +88,9 @@ theorem rel_on (ψW : PsiOn D W) (hW : (W : Set (Spec (CommRingCat.of R))).Nonem
 
 end OnW
 
+/- English proof (translation)
+Rewrite using `[Fin.prod_univ_four]`. Use `show k (x ≫ (𝟙 A * f)).left ^ (1 : ℤ) * k (x ≫ 𝟙 A).left ^ (-2 : ℤ) * k (x ≫ f).left ^ (-1 : ℤ) * k (x ≫ 1).left ^ (2 : ℤ) = _`. Rewrite using `[MonObj.comp_mul, MonObj.comp_one, Category.comp_id, zpow_one, zpow_neg_one, zpow_neg, zpow_ofNat, zpow_ofNat]`.
+-/
 theorem prod_four {S : Scheme.{0}} {A T : Over S} [GrpObj A] [IsCommMonObj A] (f : A ⟶ A) (x : T ⟶ A) {U : Type}
     [CommGroup U] (k : (T.left ⟶ A.left) → U) :
     ∏ i : Fin 4, k (x.left ≫ (![(padd A (𝟙 _) f).left, 𝟙 A.left, f.left, (toUnit A ≫ η[A]).left] : Fin 4 → _) i) ^
@@ -87,6 +107,37 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ
   {D' : DegPre R'}
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨u, hu, hn, hrel⟩` from `h`. Establish `gp` using `pull_grp hD`. Set `Φ` to `hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)`. Establish `ha : (ιD'.onB.act w0).left ≫ Φ = Φ ≫ (ιD.onB.act w0).left`. Establish `a₂ : ((Over.pullback (specOf φ)).map (ιD.onB.act w0)).left ≫ pullback.fst D.P.A.hom (specOf φ) = pullback.fst _ _ ≫ (ιD.onB.act w0).left` using `pullback.lift_fst _ _ _`.
+
+Use `show _ ≫ hD.e.hom.left ≫ _ = (hD.e.hom.left ≫ _) ≫ _`. Rewrite using `[← Category.assoc, ← Over.comp_left, hact, Over.comp_left, Category.assoc, a₂, Category.assoc]`. Establish `hψ : ∀ k : Fin 4, (![(padd D'.P.A (𝟙 _) (ιD'.onB.act w0)).left, 𝟙 D'.P.A.left, (ιD'.onB.act w0).left, (toUnit D'.P.A ≫ η[D'.P.A]).left] : Fin 4 → _) k ≫ Φ = Φ ≫ (![(padd D.P.A (𝟙 _) (ιD.onB.act w0)).left, 𝟙 D.P.A.left, (ιD.onB.act w0).left, (toUnit D.P.A ≫ η[D.P.A]).left] : Fin 4 …`. Establish `p1 : (pushPt gp.1.w (𝟙 D'.P.A)).left = Φ` using `Category.id_comp _`. Introduce `k`.
+
+Use `fin_cases k`. Establish `m : pushPt gp.1.w (𝟙 D'.P.A * ιD'.onB.act w0) = pushPt gp.1.w (𝟙 D'.P.A) * pushPt gp.1.w (ιD'.onB.act w0)` using `map_mul (pushHom gp D'.P.A) _ _`. Establish `q : pushPt gp.1.w (ιD'.onB.act w0) = pushPt gp.1.w (𝟙 D'.P.A) ≫ ιD.onB.act w0` using `Over.OverMorphism.ext (by rw [Over.comp_left, p1]; exact ha)`. Establish `m' : pushPt gp.1.w (𝟙 D'.P.A * ιD'.onB.act w0) = pushPt gp.1.w (𝟙 D'.P.A) ≫ (𝟙 D.P.A * ιD.onB.act w0)`. Rewrite using `[m, q, MonObj.comp_mul, Category.comp_id]`.
+
+Use `congrArg (fun q => q.left) m'` as an intermediate fact. Simplify using `only [Over.comp_left, p1] at this`. Conclude with `this`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Conclude with `ha`.
+
+Establish `m : pushPt gp.1.w (1 : D'.P.A ⟶ D'.P.A) = pushPt gp.1.w (𝟙 D'.P.A) ≫ (1 : D.P.A ⟶ D.P.A)`. Rewrite using `[MonObj.comp_one]`. Conclude with `map_one (pushHom gp D'.P.A)`. Use `congrArg (fun q => q.left) m` as an intermediate fact. Simplify using `only [Over.comp_left, p1] at this`.
+
+Conclude with `this`. Take `⟨u', hu', pmu⟩` from `exists_pmaps ((isGen_iff hD.w).1 hD.w_gen) D.P.isLB D'.P.isLB Φ hψ u hu`. Establish `vu : ∀ {T : Over (Spec (CommRingCat.of R'))} (x : T ⟶ D'.P.A) (z : T.left) J J', Good D.P.L z J → Good D'.P.L z J' → ∀ Ω : (T ⟶ D'.P.A) → (T.left.presheaf.stalk z)ˣ, (∀ x, Ω x = gw hD.w x.left z (J (x.left ≫ Φ)) (J' x.left)) → val u (x.left ≫ Φ) z J = Ω (x * (x ≫ ιD'.onB.act w0)) …` using `fun x z J J' hJ hJ' Ω hΩ => by`. Rewrite using `[hΩ, hΩ, hΩ, hΩ]`. Conclude with `(pmaps_val hψ pmu x.left z hJ hJ').trans (congrArg₂ (· * ·) (prod_four (ιD'.onB.act w0) x (fun q => gw hD.w q z (J (q ≫ Φ)) (J' q))) rfl)`.
+
+Use `⟨u', hu', corr_of_val D'.P.isLB fun y J' hJ' => ?_, fun a => corr_of_val D'.P.isLB fun y J' hJ' => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good' D.P.isLB y`. Use `ιD'.onB.hom w0` as an intermediate fact. Establish `e` using `vu (1 : 𝟙_ _ ⟶ D'.P.A) y J J' hJ hJ' _ (fun _ => rfl)`. Establish `e₁ : (1 : 𝟙_ (Over (Spec (CommRingCat.of R'))) ⟶ D'.P.A).left = eSec D'.P.A` using `Category.id_comp _`.
+
+Establish `b` using `val_corr hJ hn (specOf φ)`. Rewrite `b` using `[val_pull hJ, val_one, ← hD.he]`. Rewrite `e` using `[MonObj.one_comp, _root_.mul_one, e₁]`. Rewrite using `[val_pull hJ', val_one, Category.id_comp]`. Establish `e'` using `congrArg Additive.ofMul (b.symm.trans e)`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_one] at e' ⊢`. Take the linear combination `(norm := abel) -e'`. Take `⟨J, hJ⟩` from `exists_good' D.P.isLB y`. Set `Ω : (TK R' ⟶ D'.P.A) → ((TK R').left.presheaf.stalk y)ˣ` to `fun x => gw hD.w x.left y (J (x.left ≫ Φ)) (J' x.left)`.
+
+Establish `vψ : ∀ χ, val (hD.psiW.psi (hD.xe χ)) hD.g y J = (Ω (cP D' _ χ))⁻¹ * val (D'.psi χ) (𝟙 _) y J'` using `fun χ => val_psiW hD hJ hJ' χ`. Establish `vρ : val (D.rigW hD.W) hD.g y J = Ω 1 * val D'.rigK (𝟙 _) y J'`. Establish `pm` using `(maps_iff hD.w _ (fun _ => eSec D.P.A) _ D'.rig D.rig (specOf φ) _ (rigPull_le Φ (specOf φ) hD.he D.P.L) (fun _ => rfl)).1 hD.w_rig`. Establish `a₂ : ((TK R').hom ≫ specOf φ) ≫ eSec D.P.A = (1 : TK R' ⟶ D'.P.A).left ≫ Φ` using `congrArg (fun q => q.left) (map_one (pushHom gp (TK R'))).symm`. Establish `e` using `pm _ (TK R').hom y (fun _ => J ((1 : TK R' ⟶ D'.P.A).left ≫ Φ)) (fun _ => J' (1 : TK R' ⟶ D'.P.A).left) (fun _ => hJ _) (fun _ => hJ' _)`.
+
+Rewrite `e` using `[Fintype.prod_unique, zpow_one]`. Establish `b₁ : hD.g ≫ (toUnit (TW hD.W)).left = (TK R').hom ≫ specOf φ` using `hD.g_comm`. Establish `b₂ : 𝟙 _ ≫ (toUnit (TK R')).left = (TK R').hom` using `Category.id_comp _`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (congrArg₂ (· * ·) rfl (val_pull hJ' _ _ _).symm))` and prove the remaining obligations. Rewrite using `[b₁, b₂]`.
+
+Conclude with `(val_of _ _ y J _ (fun _ => congrArg J a₂)).trans e`. Establish `cW : hD.g ≫ (cP D (TW hD.W) (hD.xe a)).left = (cP D' (TK R') a).left ≫ Φ`. Establish `hx : (cP D' (TK R') a).left ≫ Φ = jK R' ≫ specOf φ ≫ (D.c (hD.xe a)).left`. Rewrite using `[← hD.c_pr a, ← Category.assoc]`. Both sides reduce to the same expression.
+
+Rewrite using `[hx, ← Category.assoc (jK R'), ← hD.g_comm, Category.assoc]`. Both sides reduce to the same expression. Establish `cl : cP D' (TK R') a ≫ ιD'.onB.act w0 = cP D' (TK R') (w0 • a)`. Rewrite using `[cP, cP, ιD'.c_lin, Category.assoc]`. Establish `key` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ (rel_on hD.psiW ⟨_, (hD.g y).2⟩ u _ _ (hrel (hD.xe a))) hD.g).trans (val_mul hJ _ _ _))`.
+
+Rewrite `key` using `[val_pull hJ, cW, vu (cP D' (TK R') a) y J J' hJ hJ' Ω (fun _ => rfl), cl, val_tauW _ _ hJ, ← hx, ← map_add, vψ, vψ, vψ, vρ, cPoint_add]`. Use `(val_mul hJ' _ _ _).trans (Eq.trans ?_ (val_mul hJ' _ _ _).symm)` and prove the remaining obligations. Establish `b : val (LB.pullGen D'.P.L _ _ u' (D'.xK a)) (𝟙 _) y J' = val u' (cP D' (TK R') a).left y J'`. Rewrite using `[val_pull hJ', Category.id_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[b, val_tau _ hJ']`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul key`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow] at e' ⊢`. Take the linear combination `(norm := abel) e'`.
+-/
 theorem traceFormTwistIso_of_pullback (hD : IsPullDeg φ D D') {O : Type} [CommRing O] [StarRing O] [Module O D.X] [Module O D'.X]
     (ιD : D.OAct O) (ιD' : D'.OAct O) (hx : ∀ (a : O) (y : D'.X), hD.xe (a • y) = a • hD.xe y)
     (hact : ∀ a, ιD'.onB.act a ≫ hD.e.hom = hD.e.hom ≫ (Over.pullback (specOf φ)).map (ιD.onB.act a))
@@ -186,6 +237,9 @@ end Pull
 
 end PsiWZeroPull
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ hD _ _ _ _ _ ιD ιD' hx hact w0 h` and use `PsiWZeroPull.traceFormTwistIso_of_pullback hD ιD ιD' hx hact w0 h`.
+-/
 theorem traceFormTwistIso_of_overPullback : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (φ : R →+* R')
     (D : DegPre R) (D' : DegPre R') (hD : IsPullDeg φ D D') (O : Type) [CommRing O] [StarRing O] [Module O D.X]
     [Module O D'.X] (ιD : D.OAct O) (ιD' : D'.OAct O), (∀ (a : O) (y : D'.X), hD.xe (a • y) = a • hD.xe y) →

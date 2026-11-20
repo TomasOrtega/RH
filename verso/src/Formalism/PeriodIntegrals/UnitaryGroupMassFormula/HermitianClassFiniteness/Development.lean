@@ -47,6 +47,15 @@ def Restrict (I : Formalism.MainNotions.S.AutInst) (S : Set (Fin I.n → I.E)) :
     ∀ g : ℕ, 1 ≤ g →
       (stdLevel I J' ⊓ (congS I S g).map Φ.toMonoidHom).relIndex (stdLevel I J') ≠ 0
 
+/- English proof (translation)
+Introduce `I S hS K g x hg hK`. Take `⟨g', hg', hg'K⟩` from `hTop I g x hg`. Establish `hCK : congS I S g' ≤ K`. Rewrite using `[Subgroup.closure_le]`. Introduce `h hh`.
+
+Conclude with `hK h (hg'K _ hh)`. Apply `hMono _ _ _ _ hCK` to reduce the goal to its premises. Take `⟨k, J', Φ, hH, hU, hD, hrat, hidx⟩` from `hR I S hS`. Apply `hMap _ _ Φ` to reduce the goal to its premises. Rewrite using `[hrat]`.
+
+Establish `hStd : Formalism.UG.CS.StdLatFull` using `by first`. Consider the case `exact Formalism.UG.P.standard_lattice_full_holds`. Consider the case `exact Formalism.UG.P.stdLatFull`. Consider the case `exact Formalism.UG.P.stdLatFull_holds`. Consider the case `exact Formalism.UG.P.CsEasy.stdLatFull`.
+
+Consider the case `exact Formalism.UG.Final.StdLatFull`. Take `⟨hfin, hspan⟩` from `hStd I.E (Fin k)`. Establish `hL` using `Formalism.UG.Final.ClassSetFiniteL I.F I.E (Fin k) I.cm.sig J' (hSig I) hH hU hD _ hfin hspan`. Establish `h2` using `hIdx _ _ _ _ inf_le_left (hidx g' hg') hL`. Conclude with `hMono _ _ _ _ inf_le_right h2`.
+-/
 theorem stabClassFinite_of (hMono : ClassSetMono) (hIdx : ClassSetFinIdx) (hMap : ClassSetMap)
     (hTop : KgNhd) (hSig : SigConj)
     (hR : ∀ (I : Formalism.MainNotions.S.AutInst) (S : Set (Fin I.n → I.E)), DefiniteCompl I S → Restrict I S) :
@@ -132,6 +141,13 @@ def LevelStep : Prop :=
           ((y : GL (Fin k) (I.E ⊗[I.F] FiniteAdeleRing (𝓞 I.F) I.F)) :
             Matrix (Fin k) (Fin k) (I.E ⊗[I.F] FiniteAdeleRing (𝓞 I.F) I.F)) → h ∈ I.Kg g
 
+/- English proof (translation)
+Take `⟨fr⟩` from `hE I S hS`. Take `⟨Φ, hΦ⟩` from `hIso I S fr`. Take `⟨hH, hU, hD⟩` from `hG I S fr hS`. Use `⟨fr.k, fr.J', Φ, hH, hU, hD, hRat I S fr Φ hΦ, ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+
+Take `⟨N, hNL, hNi, hNK⟩` from `hLev I fr.m fr.k fr.B fr.Bi fr.mul_inv fr.inv_mul fr.J' g hg`. Establish `hle : N ≤ stdLevel I fr.J' ⊓ (congS I S g).map Φ.toMonoidHom`. Introduce `y hy`. Use `Subgroup.mem_inf.mpr ⟨hNL hy, Subgroup.mem_map.mpr ⟨Φ.symm y, ?_, by simp⟩⟩` and prove the remaining obligations. Conclude with `Subgroup.subset_closure (hNK y hy _ (hΦ y))`.
+
+Conclude with `fun h0 => hNi (Subgroup.relIndex_eq_zero_of_le_left hle h0)`.
+-/
 theorem restrict_of (hE : FrameExists) (hIso : FrameIso) (hG : FrameGram) (hRat : FrameRat)
     (hLev : LevelStep) (I : Formalism.MainNotions.S.AutInst) (S : Set (Fin I.n → I.E)) (hS : DefiniteCompl I S) :
     Restrict I S := by
@@ -147,6 +163,9 @@ theorem restrict_of (hE : FrameExists) (hIso : FrameIso) (hG : FrameGram) (hRat 
     exact Subgroup.subset_closure (hNK y hy _ (hΦ y))
   exact fun h0 => hNi (Subgroup.relIndex_eq_zero_of_le_left hle h0)
 
+/- English proof (translation)
+The claim follows from `stabClassFinite_of hMono hIdx hMap hTop hSig (fun I S hS => restrict_of hE hIso hG hRat hLev I S hS)`.
+-/
 theorem stabClassFinite_of_steps (hMono : ClassSetMono) (hIdx : ClassSetFinIdx)
     (hMap : ClassSetMap) (hTop : KgNhd) (hSig : SigConj) (hE : FrameExists) (hIso : FrameIso)
     (hG : FrameGram) (hRat : FrameRat) (hLev : LevelStep) : StabClassFinite :=

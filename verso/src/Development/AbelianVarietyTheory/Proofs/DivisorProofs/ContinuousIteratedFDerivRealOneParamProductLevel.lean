@@ -7,6 +7,9 @@ noncomputable section
 
 namespace GlobalTheory.UAut.JointDer
 
+/- English proof (translation)
+Establish `e : (fun i => Fin.append δ γ i (Fin.append s t i)) = Fin.append (fun a => δ a (s a)) (fun i => γ i (t i))`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun j => ?_) i <;> simp [Fin.append_left, Fin.append_right]`. Rewrite using `[e, List.ofFn_fin_append, List.prod_append]`.
+-/
 theorem prod_ofFn_append {G : Type} [Monoid G] {d k : ℕ} (δ : Fin d → ℝ → G) (γ : Fin k → ℝ → G) (s : Fin d → ℝ)
     (t : Fin k → ℝ) :
     (List.ofFn fun i => Fin.append δ γ i (Fin.append s t i)).prod =
@@ -16,12 +19,20 @@ theorem prod_ofFn_append {G : Type} [Monoid G] {d k : ℕ} (δ : Fin d → ℝ �
     refine Fin.addCases (fun a => ?_) (fun j => ?_) i <;> simp [Fin.append_left, Fin.append_right]
   rw [e, List.ofFn_fin_append, List.prod_append]
 
+/- English proof (translation)
+Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.addCases (fun a => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left]`. Conclude with `(contDiff_apply ℝ ℝ a).comp contDiff_fst`. Simplify using `only [Fin.append_right]`.
+
+Conclude with `(contDiff_apply ℝ ℝ j).comp contDiff_snd`.
+-/
 theorem contDiff_append {d k : ℕ} : ContDiff ℝ ∞ fun q : (Fin d → ℝ) × (Fin k → ℝ) => Fin.append q.1 q.2 := by
   refine contDiff_pi.2 fun i => ?_
   refine Fin.addCases (fun a => ?_) (fun j => ?_) i
   · simp only [Fin.append_left]; exact (contDiff_apply ℝ ℝ a).comp contDiff_fst
   · simp only [Fin.append_right]; exact (contDiff_apply ℝ ℝ j).comp contDiff_snd
 
+/- English proof (translation)
+Establish `e : (fun t => H (a, t)) = (fun q => H ((a, 0) + q)) ∘ ContinuousLinearMap.inr ℝ A B`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Rewrite using `[e, ContinuousLinearMap.iteratedFDeriv_comp_right _ (show ContDiff ℝ ∞ fun q => H ((a, 0) + q) from hH.comp (contDiff_const.add contDiff_id)) _ (by exact_mod_cast le_top), iteratedFDeriv_comp_add_left]`. Simplify using the standard rewrite rules.
+-/
 theorem iteratedFDeriv_slice {A B : Type} [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] {H : A × B → ℂ} (hH : ContDiff ℝ ∞ H) (m : ℕ) (a : A) (t : B) :
     iteratedFDeriv ℝ m (fun t => H (a, t)) t =
@@ -36,6 +47,11 @@ theorem iteratedFDeriv_slice {A B : Type} [NormedAddCommGroup A] [NormedSpace �
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
   {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Use `Commute.list_prod_left _ _ fun x hx => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hx`. Take `⟨w, τ, Z, -, h⟩` from `hγ i`. Take `⟨y, e, -⟩` from `h (t i)`. Use `show Commute (γ i (t i)) u`.
+
+Rewrite using `[e]`. Conclude with `commute_embArch σ J y (mem_finPts_iff_forall.1 hu w)`.
+-/
 theorem commute_prod_realLine {k : ℕ} {γ : Fin k → ℝ → GAd σ J} (hγ : ∀ i, IsRealLine σ J (γ i)) (t : Fin k → ℝ)
     {u : GAd σ J} (hu : u ∈ finPts σ J) : Commute (List.ofFn fun i => γ i (t i)).prod u := by
   refine Commute.list_prod_left _ _ fun x hx => ?_
@@ -50,6 +66,23 @@ end GlobalTheory.UAut.JointDer
 
 open GlobalTheory.UAut.JointDer in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ n J _ d δ hδ hchart φ hlev hsm k γ hγ m`. Take `⟨U, hUo, hU⟩` from `hlev`. Take `⟨W, hW, s, hs, hWs⟩` from `hchart _ (hUo.mem_nhds U.one_mem)`. Use `set P : (Fin k → ℝ) → GAd σ J := fun t => (List.ofFn fun i => γ i (t i)).prod with hP`. Use `set Q : (Fin d → ℝ) → GAd σ J := fun s => (List.ofFn fun a => δ a (s a)).prod with hQ`.
+
+Use `continuous_iff_continuousAt.2 fun p₀ => ?_` and prove the remaining obligations. Take `⟨x₀, t₀⟩` from `p₀`. Set `H : (Fin d → ℝ) × (Fin k → ℝ) → ℂ` to `fun q => φ (x₀ * (Q q.1 * P q.2))`. Establish `hH : ContDiff ℝ ∞ H`. Establish `h1` using `hsm (d + k) (Fin.append δ γ) (fun i => Fin.addCases (fun a => by simpa [Fin.append_left] using hδ a) (fun j => by simpa [Fin.append_right] using hγ j) i) x₀`.
+
+Establish `h2` using `h1.comp contDiff_append`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Simplify using `only [Function.comp_apply, H, prod_ofFn_append, hP, hQ]`. Establish `key : ∀ x, x₀⁻¹ * x ∈ W → ∀ t, φ (x * P t) = H (s (x₀⁻¹ * x), t)`.
+
+Introduce `x hx t`. Take `⟨u, huU, huf, e⟩` from `hWs _ hx`. Establish `hc : Commute (P t) u` using `commute_prod_realLine hγ t huf`. Establish `hx' : x = x₀ * (Q (s (x₀⁻¹ * x)) * u)`. Simplify using `only [hQ]`.
+
+Rewrite using `[← e]`. Use `group`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[hc.eq]`. Use `_ = H (s (x₀⁻¹ * x), t) := hU u huU huf _`. Establish `hev : ∀ᶠ p : GAd σ J × (Fin k → ℝ) in 𝓝 (x₀, t₀), (iteratedFDeriv ℝ m H (s (x₀⁻¹ * p.1), p.2)).compContinuousLinearMap (fun _ => ContinuousLinearMap.inr ℝ (Fin d → ℝ) (Fin k → ℝ)) = iteratedFDeriv ℝ m (fun t => φ (p.1 * P t)) p.2`. Establish `hmem : {p : GAd σ J × (Fin k → ℝ) | x₀⁻¹ * p.1 ∈ W} ∈ 𝓝 (x₀, t₀)` using `(continuous_const.mul continuous_fst).continuousAt.preimage_mem_nhds (by simpa using hW)`. Use `filter_upwards [hmem] with p hp`.
+
+Rewrite using `[← iteratedFDeriv_slice hH, show (fun t => φ (p.1 * P t)) = fun t => H (s (x₀⁻¹ * p.1), t) from`. Use function extensionality and compare the values at `(key p.1 hp)]`. Use `ContinuousAt.congr ?_ hev` and prove the remaining obligations. Establish `hcont : Continuous fun q => (iteratedFDeriv ℝ m H q).compContinuousLinearMap (fun _ => ContinuousLinearMap.inr ℝ (Fin d → ℝ) (Fin k → ℝ))` using `(ContinuousMultilinearMap.continuous_precomp _).comp (hH.continuous_iteratedFDeriv (by exact_mod_cast le_top))`. Establish `hsx : ContinuousAt (fun p : GAd σ J × (Fin k → ℝ) => s (x₀⁻¹ * p.1)) (x₀, t₀)` using `hs.comp_of_eq (continuous_const.mul continuous_fst).continuousAt (by simp)`.
+
+Conclude with `hcont.continuousAt.comp (hsx.prodMk continuousAt_snd)`.
+-/
 theorem GlobalTheory.UAut.continuous_iteratedFDeriv_prod_realLine : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (d : ℕ) (δ : Fin d → ℝ → GAd σ J), (∀ a, IsRealLine σ J (δ a)) → (∀ U ∈ 𝓝 (1 : GAd σ J), ∃ W ∈ 𝓝 (1 : GAd σ J), ∃ s : GAd σ J → (Fin d → ℝ), ContinuousAt s 1 ∧ ∀ y ∈ W, ∃ u ∈ U, u ∈ finPts σ J ∧ y = (List.ofFn fun a => δ a (s y a)).prod * u) → ∀ φ : GAd σ J → ℂ, (∃ U : Subgroup (GAd σ J), IsOpen (U : Set (GAd σ J)) ∧ ∀ k ∈ U, k ∈ finPts σ J → ∀ g, φ (g * k) = φ g) → IsSm σ J φ → ∀ (k : ℕ) (γ : Fin k → ℝ → GAd σ J), (∀ i, IsRealLine σ J (γ i)) → ∀ m : ℕ, Continuous fun p : GAd σ J × (Fin k → ℝ) => iteratedFDeriv ℝ m (fun t : Fin k → ℝ => φ (p.1 * (List.ofFn fun i => γ i (t i)).prod)) p.2 := by
   intro F E _ _ _ _ _ σ _ n J _ d δ hδ hchart φ hlev hsm k γ hγ m
   obtain ⟨U, hUo, hU⟩ := hlev

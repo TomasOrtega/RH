@@ -20,6 +20,13 @@ variable [GrpObj G] [IsCommMonObj G] (L : RigLB G) (N : ℕ)
 
 omit [GrpObj G] [IsCommMonObj G] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h z`. Take `⟨n, hn, s, hs⟩` from `(isAmpleLB_of_relAmple_of_isAffine (Over.mk b) hA h).exists_affine z`. Take `⟨s', e, -⟩` from `exists_sec_oneTerm A (K' := Fin 1) (e' := (n : ℤ)) rfl s`. Conclude with `⟨n, s', hn, by rw [← e] at hs; exact hs⟩`.
+
+Introduce `hb h`. Establish `: IsProper (Over.mk b).hom` using `hb`. Establish `hc : CompactSpace S` using `QuasiCompact.compactSpace_of_compactSpace b`. Establish `ha : IsAmpleLB A` using `⟨hA, hc, fun z => by`. Take `⟨n, s, hn, hs⟩` from `h z`.
+
+Take `⟨s', e, -⟩` from `exists_sec_oneTerm A (K' := PUnit) (e' := (n : ℤ)) rfl s`. Conclude with `⟨n, hn, s', by rw [← e] at hs; exact hs⟩⟩`. Use `relAmple_of_isAmpleLB (Over.mk b) hA fun U hU => ?_` and prove the remaining obligations. Establish `: CompactSpace (b ⁻¹ᵁ U).toScheme` using `isCompact_iff_compactSpace.1 (QuasiCompact.isCompact_preimage (f := b) _ U.isOpen hU.isCompact)`. Conclude with `ha.pull_of_isOpenImmersion (b ⁻¹ᵁ U).ι`.
+-/
 theorem relAmple_iff {O : Type} [CommRing O] (b : S ⟶ Sp O) {A : LB S} (hA : A.IsLB) :
     (Out.RelAmple (Over.mk b) A →
       ∀ z : S, ∃ (d : ℕ) (s : Out.H0 A d), 1 ≤ d ∧ z ∈ Out.nonzeroLocus s ∧ IsAffineOpen (Out.nonzeroLocus s)) ∧

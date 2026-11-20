@@ -14,11 +14,17 @@ section Lin
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `B.hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 theorem hsVec_sub_rd (A A' : Wq →L[ℂ] Wp) : B.hsVec (A - A') = B.hsVec A - B.hsVec A' := by
   unfold B.hsVec
   ext i
   simp
 
+/- English proof (translation)
+Unfold `B.beta Formalism.QuantumDeterminants.betaBig`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Rewrite using `[map_mul, Complex.conj_ofReal, inner_conj_symm]`.
+-/
 theorem beta_conj_rd (D : B.RealPlaceData k r Wp Wq) (F F' : B.Mat k r → (Wq →L[ℂ] Wp)) :
     B.beta D F F' = starRingEnd ℂ (B.beta D F' F) := by
   unfold B.beta Formalism.QuantumDeterminants.betaBig

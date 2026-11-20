@@ -14,6 +14,15 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.ZM.GenericTrdeg
 
+/- English proof (translation)
+Use `letI : Algebra (R ⧸ RingHom.ker φ) K := (RingHom.kerLift φ).toAlgebra`. Use `haveI : FaithfulSMul (R ⧸ RingHom.ker φ) K := (faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.kerLift_injective φ)`. Use `haveI : IsFractionRing (R ⧸ RingHom.ker φ) K := by`. Use `IsFractionRing.of_field _ _ fun z => ?_` and prove the remaining obligations. Take `⟨a, b, h⟩` from `hs z`.
+
+Conclude with `⟨Ideal.Quotient.mk _ a, Ideal.Quotient.mk _ b, h⟩`. Set `g : (R ⧸ RingHom.ker φ) →+* K'` to `Ideal.Quotient.lift _ θ (fun a ha => by rw [← hk] at ha; exact ha)`. Establish `hg : Function.Injective g`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, ← hk]`. Conclude with `ha`. Use `⟨IsFractionRing.lift hg, ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
+
+Conclude with `IsFractionRing.lift_algebraMap (K := K) hg (Ideal.Quotient.mk _ a)`.
+-/
 theorem exists_hom_of_ker_eq {R K K' : Type} [CommRing R] [Field K] [Field K'] (φ : R →+* K) (θ : R →+* K')
     (hk : RingHom.ker θ = RingHom.ker φ) (hs : ∀ z : K, ∃ a b, z = φ a / φ b) :
     ∃ j : K →+* K', j.comp φ = θ := by
@@ -35,6 +44,15 @@ theorem exists_hom_of_ker_eq {R K K' : Type} [CommRing R] [Field K] [Field K'] (
   ext a
   exact IsFractionRing.lift_algebraMap (K := K) hg (Ideal.Quotient.mk _ a)
 
+/- English proof (translation)
+Set `e' : A ⧸ P →+* K` to `Ideal.Quotient.lift P e (fun a ha => hP ha)`. Use `haveI : (RingHom.ker e').IsPrime := RingHom.ker_isPrime e'`. Set `R'` to `Localization.AtPrime (RingHom.ker e')`. Establish `hu : ∀ y : (RingHom.ker e').primeCompl, IsUnit (e' y)` using `fun y => isUnit_iff_ne_zero.2 y.2`. Establish `hinj : Function.Injective (algebraMap (A ⧸ P) R')` using `IsLocalization.injective R' (RingHom.ker e').primeCompl_le_nonZeroDivisors`.
+
+Use `⟨R', inferInstance, inferInstance, (algebraMap (A ⧸ P) R').comp (Ideal.Quotient.mk P), IsLocalization.lift hu, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, map_eq_zero_iff _ hinj, Ideal.Quotient.eq_zero_iff_mem]`. Use extensionality with `a`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, IsLocalization.lift_eq]`.
+
+Both sides reduce to the same expression. Introduce `r hr`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (RingHom.ker e').primeCompl r`. Rewrite using `[IsLocalization.AtPrime.isUnit_mk'_iff R' (RingHom.ker e')]`. Introduce `ha`.
+
+Apply `hr` to reduce the goal to its premises. Rewrite using `[IsLocalization.lift_mk']`. Rewrite using `[show e' a = 0 from ha, zero_mul]`.
+-/
 theorem exists_local_domain {A K : Type} [CommRing A] [Field K] (e : A →+* K) (P : Ideal A) [P.IsPrime]
     (hP : P ≤ RingHom.ker e) :
     ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (ρ : A →+* R') (ψ : R' →+* K),
@@ -61,15 +79,30 @@ theorem exists_local_domain {A K : Type} [CommRing A] [Field K] (e : A →+* K) 
     rw [IsLocalization.lift_mk']
     rw [show e' a = 0 from ha, zero_mul]
 
+/- English proof (translation)
+Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (f' : R' →+* R'') :
     spMap f' ≫ spMap f = spMap (f'.comp f) := by
   unfold spMap
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Use `Spec.map_injective h` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+-/
 theorem spMap_inj {R R' : Type} [CommRing R] [CommRing R'] {f f' : R →+* R'} (h : spMap f = spMap f') : f = f' := by
   have := Spec.map_injective h
   exact congrArg CommRingCat.Hom.hom this
 
+/- English proof (translation)
+Establish `hr : Set.range x' ⊆ Set.range x`. Introduce and unpack `_ ⟨q, rfl⟩`. Set `pt : Sp K` to `(⊥ : PrimeSpectrum K)`. Establish `hsp : q ⤳ spMap ψ pt`. Use `(PrimeSpectrum.le_iff_specializes _ _).1 ?_` and prove the remaining obligations.
+
+Introduce `r hr`. Express the relevant statement in the definitionally equal form `ψ r ∈ (⊥ : Ideal K)`. Assume the negation of the conclusion as `hne`. Conclude with `q.2.ne_top (Ideal.eq_top_of_isUnit_mem _ hr (hψ r hne))`. Establish `hmem : x' (spMap ψ pt) ∈ Set.range x`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, h, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`. Conclude with `(hsp.map x'.continuous).mem_open x.isOpenEmbedding.isOpen_range hmem`. Establish `hχ : spMap (Spec.preimage (IsOpenImmersion.lift x x' hr)).hom ≫ x = x'`. Unfold `spMap`.
+
+Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage, IsOpenImmersion.lift_fac]`. Use `⟨_, hχ, spMap_inj ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono x, ← spMap_comp, Category.assoc, hχ, h]`.
+-/
 theorem exists_factor {X : Scheme.{0}} {R R' K : Type} [CommRing R] [CommRing R'] [Field K] (x : Sp R ⟶ X)
     [IsOpenImmersion x] (x' : Sp R' ⟶ X) (φ : R →+* K) (ψ : R' →+* K) (hψ : ∀ r, ψ r ≠ 0 → IsUnit r)
     (h : spMap ψ ≫ x' = spMap φ ≫ x) : ∃ χ : R →+* R', spMap χ ≫ x = x' ∧ ψ.comp χ = φ := by
@@ -92,6 +125,37 @@ theorem exists_factor {X : Scheme.{0}} {R R' K : Type} [CommRing R] [CommRing R'
   refine ⟨_, hχ, spMap_inj ?_⟩
   rw [← cancel_mono x, ← spMap_comp, Category.assoc, hχ, h]
 
+/- English proof (translation)
+Introduce `hL hL2 n g N' J Mat κ w w' o _ b em C d F hA hG R _ _ x hx hxs K _ _ φ hmin hsurj`. Establish `hη : (spMap φ.toRingHom ≫ x) ≫ F.s = spMap (algebraMap o K)`. Rewrite using `[Category.assoc, hxs, spMap_comp]`. Use `congr 1`. Conclude with `φ.comp_algebraMap`.
+
+Take `⟨v, hv, hvI⟩` from `F.loc K (algebraMap o K) _ hη`. Set `e : MvPolynomial (Ix g (N' ^ 2)) o →+* K` to `MvPolynomial.eval₂Hom (algebraMap o K) v`. Establish `hN : N' ≠ 0`. Introduce and unpack `rfl`. Use `b.unit.map (algebraMap o K)` as an intermediate fact.
+
+Simplify using `at this`. Take `⟨c₁, hc₁⟩` from `hvI.2 ⊥ Ideal.isPrime_bot 0`. Use `set a₁ := 0 + (N' / n) • c₁ with ha₁`. Establish `hva₁ : v a₁ ≠ 0` using `hc₁`. Take `⟨P, a₀, a, hP, hIP, hPp, -, hind⟩` from `GlobalTheory.ThetaPrime.exists_prime_independent_ratios hL hL2 g N' J Mat κ w w' o b em C d hA hG (RingHom.ker e) a₁ hN (RingHom.ker_isPrime e) (fun G hG => hvI.1 G hG) (by simpa [e, RingHom.mem_ker] using hva₁)`.
+
+Take `⟨R', _, _, ρ, ψ, hρ, hψρ, hψ⟩` from `exists_local_domain e P hPp`. Set `β' : o →+* R'` to `ρ.comp MvPolynomial.C`. Set `v' : Ix g (N' ^ 2) → R'` to `fun i => ρ (MvPolynomial.X i)`. Establish `hev : MvPolynomial.eval₂Hom β' v' = ρ`. Apply the tactic sequence `apply MvPolynomial.ringHom_ext <;> intro i <;> simp [β', v']`.
+
+Establish `hψv : (fun i => ψ (v' i)) = v`. Use function extensionality and compare the values at `i`. Use `RingHom.congr_fun hψρ (MvPolynomial.X i)` as an intermediate fact. Simplify `this` using `[e]`. Establish `hψβ : ψ.comp β' = algebraMap o K`.
+
+Use extensionality with `i`. Use `RingHom.congr_fun hψρ (MvPolynomial.C i)` as an intermediate fact. Simplify `this` using `[e, β']`. Establish `hI' : InMM n N' (thIdeal em C) β' v'`. Use `⟨fun G hG => ?_, fun q hq i => ?_⟩` and prove the remaining obligations.
+
+Establish `: ρ G = 0` using `by rw [← RingHom.mem_ker, hρ]; exact hIP hG`. Rewrite `this` using `[← hev]`. Conclude with `this`. Take `⟨c, hc⟩` from `hvI.2 ⊥ Ideal.isPrime_bot i`. Use `⟨c, fun hm => hq.ne_top (Ideal.eq_top_of_isUnit_mem _ hm (hψ _ ?_))⟩` and prove the remaining obligations.
+
+Rewrite using `[congrFun hψv]`. Conclude with `hc`. Take `⟨x', ⟨hx's, hx'v⟩, -⟩` from `F.pts R' β' v' hI'`. Establish `hcl : spMap ψ ≫ x' = spMap φ.toRingHom ≫ x`. Use `(F.pts K (algebraMap o K) v hvI).unique ⟨?_, ?_⟩ ⟨hη, hv⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hx's, spMap_comp, hψβ]`. Use `GlobalTheory.hasTh_baseChange hL2 o g N' J b _ _ F.univ R' K ψ x' v' hx'v` as an intermediate fact. Rewrite `this` using `[hψv]`. Then use the resulting hypothesis. Take `⟨χ, hχx, hψχ⟩` from `exists_factor x x' φ.toRingHom ψ hψ hcl`. Set `K'` to `FractionRing R'`.
+
+Set `lam : R' →+* K'` to `algebraMap R' K'`. Establish `hlam : Function.Injective lam` using `IsFractionRing.injective R' K'`. Establish `hker : RingHom.ker (lam.comp χ) = RingHom.ker φ.toRingHom`. Establish `hle : RingHom.ker (lam.comp χ) ≤ RingHom.ker φ.toRingHom`. Introduce `r hr`.
+
+Rewrite `hr` using `[RingHom.mem_ker, RingHom.comp_apply, map_eq_zero_iff _ hlam]`. Rewrite using `[RingHom.mem_ker, ← hψχ, RingHom.comp_apply, hr, map_zero]`. Conclude with `le_antisymm hle (hmin.2 ⟨RingHom.ker_isPrime _, bot_le⟩ hle)`. Take `⟨j, hj⟩` from `exists_hom_of_ker_eq φ.toRingHom (lam.comp χ) hker hsurj`. Establish `hpt : spMap j ≫ spMap φ.toRingHom ≫ x = spMap lam ≫ x'`.
+
+Rewrite using `[← Category.assoc, spMap_comp, hj, ← spMap_comp, Category.assoc, hχx]`. Establish `h1` using `GlobalTheory.hasTh_baseChange hL2 o g N' J b _ _ F.univ K K' j _ v hv`. Establish `h2` using `GlobalTheory.hasTh_baseChange hL2 o g N' J b _ _ F.univ R' K' lam _ v' hx'v`. Rewrite `h1` using `[hpt]`. Take `⟨u, hu⟩` from `GlobalTheory.hasTh_unique_unit hL hL2 o g N' J b _ _ F.univ K' _ _ _ h1 h2 (Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨a₁, rfl⟩) (isUnit_iff_ne_zero.2 ((map_ne_zero j).2 hva₁)))`.
+
+Establish `hjβ : j.comp (algebraMap o K) = lam.comp β'`. Apply `spMap_inj` to reduce the goal to its premises. Rewrite using `[← spMap_comp, ← hη, ← Category.assoc, hpt, Category.assoc, hx's, spMap_comp]`. Establish `hkP : RingHom.ker (MvPolynomial.eval₂Hom (lam.comp β') (fun i => lam (v' i))) = P`. Rewrite using `[← MvPolynomial.comp_eval₂Hom, hev, ← hρ]`.
+
+Use extensionality with `G`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, map_eq_zero_iff _ hlam, RingHom.mem_ker]`. Use `⟨fun i => v (a i) / v a₀, algebraicIndependent_iff.2 fun G hG => hind K' _ _ hkP G ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg j hG`. Rewrite `h3` using `[MvPolynomial.aeval_def, MvPolynomial.hom_eval₂, hjβ, map_zero]`.
+
+Rewrite using `[← h3]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hu, hu, mul_div_mul_left _ _ u.ne_zero, map_div₀]`.
+-/
 theorem exists_algebraicIndependent : Out.Laws → Out.Laws2 → ∀ (n : ℕ), ∀ (g N' : ℕ) (J : Type) (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ : ℕ) (w w' : J) (o : Type) [CommRing o] (b : TBase o (N' ^ 2)) (em : o →+* ℂ) (C : TObj g (N' ^ 2) J b (spMap em) → Prop) (d : ℕ) (F : ThetaFam n em C), ArBase em → GoodClass em C Mat κ w w' d → ∀ (R : Type) [CommRing R] [Algebra o R] (x : Sp R ⟶ F.MM), IsOpenImmersion x → x ≫ F.s = spMap (algebraMap o R) → ∀ (K : Type) [Field K] [Algebra o K] (φ : R →ₐ[o] K), RingHom.ker φ ∈ minimalPrimes R → (∀ z : K, ∃ a b, z = φ a / φ b) → ∃ y : Fin d → K, AlgebraicIndependent o y := by
   intro hL hL2 n g N' J Mat κ w w' o _ b em C d F hA hG R _ _ x hx hxs K _ _ φ hmin hsurj
   have hη : (spMap φ.toRingHom ≫ x) ≫ F.s = spMap (algebraMap o K) := by

@@ -17,6 +17,29 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 namespace GlobalTheory.Core.Deg
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `CH Ch Cp C hCH hCh hCp hC`. Use `set Cc : ℝ := 21 + 4 * |CH| with hCcdef`. Establish `hCc : 0 ≤ Cc` using `by positivity`. Establish `hC0 : 0 ≤ C` using `by linarith`. Use `⟨max 1 (k2C0 (k2Cf C Ch Cc)), fun C' Cl Cg cb Cw cT CT C0 D large₂ X Y u h2 hH hTie tAt => ?_⟩` and prove the remaining obligations.
+
+Establish `b1 : (1 : ℝ) ≤ Cl` using `le_trans (le_max_left _ _) h2`. Establish `b5 : k2C0 (k2Cf C Ch Cc) ≤ Cl` using `le_trans (le_max_right _ _) h2`. Establish `dAt : ∀ t ∈ relSet Y u, 0 < k2Del D (jT t) (labT t) ∧ k2Del D (jT t) (labT t) ≤ Hb large₂.sc.b C D.R.m D.R.f * k2S D (H1C large₂ CH) (jT t) (labT t) ^ 2` using `fun t ht => delta_pos_le_height_sq (PFHost_of_data D hH.1.2.1) large₂ hCH hC t ht`. Establish `cAt` using `GlobalTheory.Core.Deg.sum_labels_one_record CH C' Cl Cg cb Cw cT CT C0 D large₂ X Y u b1 hH`. Establish `pg` using `GlobalTheory.Core.Deg.pgC_le_two_at_record C' Cl Cg cb Cw cT CT C0 D large₂ X Y hH`.
+
+Take `⟨hΓ, hdim⟩` from `kappa_off_diagonal_dim_form_C D X Y u hTie`. Establish `hJ` using `JPosC_holds Cg cb Cw cT CT C0 C' Cl D large₂ X Y u hH hTie`. Take `⟨hL, -, -, -, hWd, -⟩` from `hTie`. Establish `hF` using `Formalism.L2.SG.Pf.fundExistsC_holds D X Y u u`. Establish `hI` using `Formalism.L2.SG.Closed.OOIntAllC_outright D X Y u u (Formalism.L2.SG.Closed.FoldOKC_outright D X Y u hL hWd) (Formalism.L2.SG.Closed.FoldOKC_outright D X Y u hL hWd) hF`.
+
+Establish `hIrr` using `IrrVecC_holds D X Y u hF hI`. Establish `hdpi : 0 ≤ dpiC X u` using `Nat.cast_nonneg _`. Establish `hmass : 0 ≤ massC Y u` using `Finset.sum_nonneg fun Λ _ => by unfold wRow; positivity`. Establish `hK : 0 ≤ dpiC X u * massC Y u` using `mul_nonneg hdpi hmass`. Use `set B := dpiC X u * massC Y u * (∑ j ∈ Finset.Icc 1 D.R.rS, k2A1 large₂ C Ch Cc j) ^ 2 with hB`.
+
+Use `set g : GTu Y u × GTu Y u → ℝ := ((Y.tO u u).allPairs (Y.tO u u).degSet).indicator (fun p => ‖(Y.tO u u).vec p.1‖ * ‖(Y.tO u u).vec p.2‖) with hg`. Establish `hg0 : ∀ p, 0 ≤ g p` using `fun p => Set.indicator_nonneg (fun p _ => by positivity) p`. Establish `hfin : ∀ s : Finset (GTu Y u × GTu Y u), ∑ p ∈ s, g p ≤ B`. Introduce `s`. Establish `: ∑ p ∈ s, g p = ∑ p ∈ s.filter (fun p => p ∈ (Y.tO u u).allPairs (Y.tO u u).degSet), ‖(Y.tO u u).vec p.1‖ * ‖(Y.tO u u).vec p.2‖`.
+
+Rewrite using `[Finset.sum_filter]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `fin_bound hC0 hCh (le_refl _) hK hIrr hJ tAt dAt cAt _ (fun p hp => (Finset.mem_filter.1 hp).2)`. Establish `hsum : Summable g` using `summable_of_sum_le hg0 hfin`.
+
+Establish `htsum : Formalism.L2.SG.RowsOther.ampSum (Y.tO u u) ((Y.tO u u).allPairs (Y.tO u u).degSet) ≤ B` using `tsum_le_of_sum_le' (mul_nonneg hK (sq_nonneg _)) hfin`. Use `⟨hsum, ?_⟩` and prove the remaining obligations. Establish `hPg0 : 0 ≤ PgC Y` using `Finset.prod_nonneg fun v _ => by positivity`. Establish `hdu : 0 ≤ duC X Y u` using `Nat.cast_nonneg _`. Establish `hCf : 1 ≤ k2Cf C Ch Cc` using `by unfold k2Cf; nlinarith [sq_nonneg C, sq_nonneg Ch, sq_nonneg Cc]`.
+
+Establish `hk : k2C0 (k2Cf C Ch Cc) * (D.R.m : ℝ) ^ 6 * large₂.sc.L ≤ (D.R.k : ℝ) * Real.log D.R.k`. Establish `hL0 : 0 ≤ large₂.sc.L`. Rewrite using `[← log_scale_eq_L]; exact Real.log_nonneg (by linarith [two_le_scale_b large₂ (D := D)])`. Establish `hm6 : 0 ≤ (D.R.m : ℝ) ^ 6 * large₂.sc.L` using `mul_nonneg (by positivity) hL0`. Use `hH.2.1` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hA : (∑ j ∈ Finset.Icc 1 D.R.rS, k2A1 large₂ C Ch Cc j) ^ 2 ≤ k2B D large₂ (k2Cf C Ch Cc)`. Unfold `k2B`. Conclude with `pow_le_pow_left₀ (Finset.sum_nonneg fun j _ => kloostermanTermA_nonneg large₂ hC0 hCh hCc j) (Finset.sum_le_sum fun j hj => rank_contribution_le large₂ hC0 j hj) 2`. Establish `hclose` using `final_bound_closes D large₂ (k2Cf C Ch Cc) hCf _ hdu hk`.
+
+Establish `hGB : (Y.tO u u).Gam1 * B ≤ duC X Y u * (∑ j ∈ Finset.Icc 1 D.R.rS, k2A1 large₂ C Ch Cc j) ^ 2`. Establish `e : (Y.tO u u).Gam1 * B = ((Y.tO u u).Gam1 * massC Y u * dpiC X u) * (∑ j ∈ Finset.Icc 1 D.R.rS, k2A1 large₂ C Ch Cc j) ^ 2`. Rewrite using `[hB]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `mul_le_mul_of_nonneg_right hdim (sq_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pairsDegOfType_holds : PairsDegOfType := by
   intro CH Ch Cp C hCH hCh hCp hC
   set Cc : ℝ := 21 + 4 * |CH| with hCcdef

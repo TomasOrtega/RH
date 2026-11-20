@@ -11,6 +11,29 @@ open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
 
 namespace GlobalTheory.SeqCx
 
+/- English proof (translation)
+Introduce `R _ s hs n hlow p u hu hpn c hc hcz`. Take `⟨f, hf⟩` from `hu`. Take `⟨w, hwu⟩ : ∃ w : Fin n → R, w ⬝ᵥ u = 1` from `⟨_, by simpa using hf ⟨0, by simp⟩ ⟨0, by simp⟩⟩`. Take `⟨hsc, -, hchar, -⟩` from `GlobalTheory.T.subClosed_splitSeq_and_uniSeq_with_mem_iff R n`. Establish `hγF : [(u, w)] ∈ splitSeq R n`.
+
+Rewrite using `[hchar]`. Simplify using `[hwu]`. Establish `hGeq : {σ | σ ∈ splitSeq R n ∧ ∀ y ∈ σ, ∀ v ∈ [u], y.2 ⬝ᵥ v = 0} = {x | x ∈ splitSeq R n ∧ ∀ y ∈ x, ∀ z ∈ [(u, w)], y.2 ⬝ᵥ z.1 = 0}`. Use extensionality with `σ`. Simplify using the standard rewrite rules.
+
+Rewrite `hc` using `[hGeq]`. Establish `hG'sc : SubClosed {x | x ∈ splitSeq R n ∧ ∀ y ∈ x, ∀ z ∈ [(u, w)], y.2 ⬝ᵥ z.1 = 0}`. Introduce `l hl l' hl'`. Conclude with `⟨hsc l hl.1 l' hl', fun y hy => hl.2 y (hl'.subset hy)⟩`. Establish `hlinks : ∀ τ ∈ {x | x ∈ splitSeq R n ∧ ∀ y ∈ x, ∀ z ∈ [(u, w)], y.2 ⬝ᵥ z.1 = 0}, ∀ (x : (Fin n → R) × (Fin n → R)), τ.getLast? = some x → x ∉ {y : (Fin n → R) × (Fin n → R) | ∀ z ∈ [(u, w)], z.2 ⬝ᵥ y.1 = 0} → τ.length ≤ p → ExactAt (linkIn {x | x ∈ splitSeq R n ∧ ∀ y ∈ x, ∀ z ∈ [ …`.
+
+Introduce `τ hτ x hlast hxS hlen`. Take `⟨ρ, hρ, hρlen, hlink⟩` from `GlobalTheory.T.exists_splitSeq_linkIn_orthogonal_eq_linkIn R n _ τ hγF hτ.1 hτ.2`. Rewrite using `[hlink]`. Establish `ht : 1 ≤ τ.length`. Consider the cases of `τ with`.
+
+Consider the case `nil => simp at hlast`. Consider the case `cons a t => simp`. Simplify using `only [List.length_singleton] at hρlen`. Use `GlobalTheory.T.exactAt_linkIn_splitSeq_of_exactAt_splitSeq R s hs n (n - ρ.length) (p - τ.length) ρ hρ ?_ ?_ ?_` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+
+Use linear arithmetic over natural numbers and integers. Apply `hlow` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Take `⟨b1, hb1, hc1, hz1⟩` from `GlobalTheory.T.exists_homologous_cycle_with_entries_in_of_exactAt_links _ _ _ hG'sc p hlinks c hc hcz`.
+
+Establish `hcone : ∀ l ∈ linkIn {x | x ∈ splitSeq R n ∧ ∀ y ∈ x, ∀ z ∈ [(u, w)], y.2 ⬝ᵥ z.1 = 0} {y : (Fin n → R) × (Fin n → R) | ∀ z ∈ [(u, w)], z.2 ⬝ᵥ y.1 = 0} [], (u, w) :: l ∈ splitSeq R n`. Introduce `l hl`. Take `⟨hlS, hlG⟩` from `hl`. Simplify using `only [List.nil_append] at hlG`. Take `⟨hlF, hlo⟩` from `hlG`.
+
+Rewrite `hlF`, the goal using `[hchar]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Break down `List.mem_cons.1 hy with rfl | hy` into its components or cases. Conclude with `hwu`.
+
+Conclude with `hlF.1 y hy`. Rewrite using `[List.pairwise_cons]`. Use `⟨fun z hz => ⟨?_, ?_⟩, hlF.2⟩` and prove the remaining obligations. Simplify using `using hlS z hz`. Simplify using `using hlo z hz`.
+
+Take `⟨b2, hb2, hbd2⟩` from `GlobalTheory.T.seqChain_cycle_bounded_by_cone _ (splitSeq R n) _ (u, w) hcone p _ hc1 hz1`. Use `⟨b1 + b2, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.add_mem _ ?_ hb2` and prove the remaining obligations. Use `Finsupp.supported_mono ?_ hb1` and prove the remaining obligations. Introduce `l hl`.
+
+Conclude with `⟨hl.1.1, hl.2⟩`. Rewrite using `[map_add, hbd2]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cycle_formsKill_bound_splitSeq : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ n : ℕ, (∀ n' < n, ∀ p' : ℕ, 2 * p' + s + 1 ≤ n' → ExactAt (splitSeq R n') p') → ∀ (p : ℕ) (u : Fin n → R), [u] ∈ uniSeq R n → 2 * p + s + 1 ≤ n → ∀ c ∈ chains {σ | σ ∈ splitSeq R n ∧ ∀ y ∈ σ, ∀ v ∈ [u], y.2 ⬝ᵥ v = 0} p, bd _ c = 0 → ∃ b ∈ chains (splitSeq R n) (p + 1), bd _ b = c := by
   intro R _ s hs n hlow p u hu hpn c hc hcz
   obtain ⟨f, hf⟩ := hu
@@ -77,6 +100,9 @@ end GlobalTheory.SeqCx
 
 section
 open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
+/- English proof (translation)
+Use `first`. Consider the case `exact @GlobalTheory.SeqCx.cycle_formsKill_bound_splitSeq`.
+-/
 theorem _root_.GlobalTheory.T.exists_bd_of_cycle_forms_kill_unimodular_vector : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ n : ℕ, (∀ n' < n, ∀ p' : ℕ, 2 * p' + s + 1 ≤ n' → ExactAt (splitSeq R n') p') → ∀ (p : ℕ) (u : Fin n → R), [u] ∈ uniSeq R n → 2 * p + s + 1 ≤ n → ∀ c ∈ chains {σ | σ ∈ splitSeq R n ∧ ∀ y ∈ σ, ∀ v ∈ [u], y.2 ⬝ᵥ v = 0} p, bd _ c = 0 → ∃ b ∈ chains (splitSeq R n) (p + 1), bd _ b = c := by
   first
   | exact @GlobalTheory.SeqCx.cycle_formsKill_bound_splitSeq

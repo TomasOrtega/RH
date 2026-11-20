@@ -35,6 +35,27 @@ include hf hg
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨v, hv, hm⟩` from `exists_gen_mul U e hf hg sj u hu h₀`. Use `(U.gt e).q_hom` as an intermediate fact. Use `(U.gt e).i_hom` as an intermediate fact. Establish `hM` using `D.toPre.P.isLB`. Establish `ti : ∀ {Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (t : Z ⟶ splitTorus _ D.toPre.X), push (U.gt e).pG (t ≫ (U.gt e).i) = 1` using `fun t => (TorusCoord.im_congr (U.gt e) (x' := 1) (by`.
+
+Rewrite using `[Category.assoc, (U.gt e).isKernel.w, MonObj.one_comp, comp_toUnit_assoc, Hom.one_def])).trans`. Use the proof step `(TorusCoord.im_one (U.gt e))`. Establish `unit : ∀ {T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (x y : T ⟶ thickObj R I e G), push (U.gt e).pG x = 1 ∨ push (U.gt e).pG y = 1 → ∃ ρ : Γ(T.left, ⊤)ˣ, ∀ (Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (r : Z ⟶ T) (z : Z.left) (J), Good D.toPre.P.L z J → gm r.left …` using `fun x y hxy => by`. Take `⟨ρ, hρ⟩` from `exists_unit_of_formal hM (fun V _ h => by`. Use `(Finset.prod_congr rfl fun k _ => congrArg (h · ^ rosatiε k) (ros_push (U.gt e).pG (TorusCoord.im_mul (U.gt e)) (push_pG U e hf) (push_pG U e hg) x y k).symm).trans ((prod_ros a b (push (U.gt e).pG x) (push (U.gt e).pG y) h).trans ?_)` and prove the remaining obligations.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Break down `hxy with h | h` into its components or cases. Rewrite using `[h, MonObj.one_comp, _root_.one_mul, _root_.one_mul]`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[h, MonObj.one_comp, _root_.mul_one, _root_.mul_one]`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Use the proof step `abel) (LB.pullGen D.toPre.P.L _ _ v (lift x y).left) (DVR.pullGen_isGen _ _ _ _ hv _)`. Use `⟨ρ, fun Z r z J hJ => (hρ _ r.left z J hJ).symm.trans ((val_pull hJ _ _ _).trans ?_)⟩` and prove the remaining obligations. Rewrite using `[← Over.comp_left, comp_lift]`.
+
+Establish `one : ∀ (T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (z : T.left) (J), Good D.toPre.P.L z J → ∀ y : T ⟶ thickObj R I e G, val v (lift 1 y).left z J = 1 ∧ val v (lift y 1).left z J = 1` using `fun T z J hJ y => by`. Use `hm T z J hJ 1 1 y (TorusCoord.im_one (U.gt e))` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `⟨left_eq_mul.1 this.1, left_eq_mul.1 this.2⟩`. Establish `gd : ∀ {Z : Scheme.{0}} (z : Z), ∃ J, Good D.toPre.P.L z J` using `fun {Z} z => by choose J hJ using fun χ : Z ⟶ D.toPre.P.A.left => Geo.Tor.exists_chart hM (χ z)`.
+
+Conclude with `⟨J, hJ⟩`. Take `⟨ρ₁, h₁⟩` from `unit (fst (splitTorus _ D.toPre.X) (thickObj R I e G) ≫ (U.gt e).i) (snd _ _) (Or.inl (ti _))`. Take `⟨ρ₂, h₂⟩` from `unit (snd _ _) (fst (splitTorus _ D.toPre.X) (thickObj R I e G) ≫ (U.gt e).i) (Or.inr (ti _))`. Establish `e₁` using `fun Z t y z J hJ => h₁ Z (lift t y) z J hJ`. Establish `e₂` using `fun Z t y z J hJ => h₂ Z (lift t y) z J hJ`.
+
+Simplify using `only [lift_fst_assoc, lift_snd] at e₁ e₂`. Establish `k₁` using `fun Z t y z => unit_eq_one ρ₁ (fun Z t t' y z => by`. Take `⟨J, hJ⟩` from `gd z`. Rewrite using `[e₁ Z _ y z J hJ, e₁ Z _ y z J hJ, e₁ Z _ y z J hJ, MonObj.mul_comp]`. Conclude with `(hm Z z J hJ _ _ y (ti t)).1) (fun Z t z => by`.
+
+Take `⟨J, hJ⟩` from `gd z`. Conclude with `(e₁ Z t 1 z J hJ).trans (one Z z J hJ _).2) (Z := Z) t y z`. Establish `k₂` using `fun Z t y z => unit_eq_one ρ₂ (fun Z t t' y z => by`. Take `⟨J, hJ⟩` from `gd z`. Rewrite using `[e₂ Z _ y z J hJ, e₂ Z _ y z J hJ, e₂ Z _ y z J hJ, MonObj.mul_comp]`.
+
+Conclude with `(hm Z z J hJ _ _ y (ti t)).2) (fun Z t z => by`. Take `⟨J, hJ⟩` from `gd z`. Conclude with `(e₂ Z t 1 z J hJ).trans (one Z z J hJ _).1) (Z := Z) t y z`. Use `⟨v, hv, fun T z J hJ x x' y y' hx hy => ?_⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `TorusCoord.exists_torus (U.gt e) x x' hx`.
+
+Take `⟨t', rfl⟩` from `TorusCoord.exists_torus (U.gt e) y y' hy`. Rewrite using `[(hm T z J hJ _ x' _ (ti t)).1, (hm T z J hJ _ y' x' (ti t')).2, ← e₁ T t _ z J hJ, ← e₂ T t' _ z J hJ, k₁, k₂, _root_.one_mul, _root_.one_mul]`.
+-/
 theorem exists_gen_invariant [ConnectedSpace (thickObj R I e G).left]
     (sj : Function.Surjective (G ⊗ G ⊗ G).hom.appTop.hom)
     (u : LB.Gen (LB.LinComb U.LG.L (rosatiφ G f g) rosatiε)) (hu : u.IsGen)
@@ -103,6 +124,21 @@ theorem exists_gen_invariant [ConnectedSpace (thickObj R I e G).left]
   rw [(hm T z J hJ _ x' _ (ti t)).1, (hm T z J hJ _ y' x' (ti t')).2, ← e₁ T t _ z J hJ, ← e₂ T t' _ z J hJ, k₁, k₂,
     _root_.one_mul, _root_.one_mul]
 
+/- English proof (translation)
+Take `⟨v, hv, hi⟩` from `exists_gen_invariant U e hf hg sj u hu h₀`. Establish `hM` using `D.toPre.P.isLB`. Use `(U.gt e).q_affine` as an intermediate fact. Set `m` to `(U.gt e).q ⊗ₘ (U.gt e).q`. Establish `: Flat m.left` using `MorphismProperty.pullbackMap (P := @Flat) (U.gt e).q_flat (U.gt e).q_flat (Over.w (U.gt e).q).symm (Over.w (U.gt e).q).symm`.
+
+Establish `: Surjective m.left`. Establish `: MorphismProperty.IsStableUnderComposition @Surjective.{0}` using `⟨fun _ _ _ _ => inferInstance⟩`. Use the proof step `MorphismProperty.pullbackMap (P := @Surjective) (U.gt e).q_surj (U.gt e).q_surj (Over.w (U.gt e).q).symm (Over.w (U.gt e).q).symm`. Establish `qc : QuasiCompact (U.gt e).q.left` using `inferInstance`. Establish `: QuasiCompact m.left` using `MorphismProperty.pullbackMap (P := @QuasiCompact) qc qc (Over.w (U.gt e).q).symm (Over.w (U.gt e).q).symm`.
+
+Set `Be` to `thickObj R I e D.toPre.P.A`. Set `π` to `lift (push (fstG I e D.toPre.P.A) (fst Be Be)) (push (fstG I e D.toPre.P.A) (snd Be Be))`. Establish `hπ : m.left ≫ π.left = (lift (push (U.gt e).pG (fst _ _)) (push (U.gt e).pG (snd _ _))).left`. Use `(lift_push (fstG I e D.toPre.P.A) (fst _ _ ≫ (U.gt e).q) (snd _ _ ≫ (U.gt e).q)).trans ?_` and prove the remaining obligations. Simplify using `only [push, Functor.map_comp, Category.assoc]`.
+
+Both sides reduce to the same expression. Take `⟨v', hv', vv⟩` from `exists_gen hM (φ' := fun k => m.left ≫ π.left ≫ rosatiφ D.toPre.P.A a b k) (ε' := rosatiε) (fun V _ h => Finset.prod_congr rfl fun k _ => congrArg (h · ^ rosatiε k) ((ros_push' (U.gt e).pG (TorusCoord.im_mul (U.gt e)) (push_pG U e hf) (push_pG U e hg) k).symm.trans ((congrArg (· …`. Take `⟨t, ht, -⟩` from `CoordCompare.exists_gen_of_val_eq hM _ _ m.left v' hv' fun Z r r' z J hJ h => by`. Establish `hw : r ≫ (thickObj R I e G ⊗ thickObj R I e G).hom = r' ≫ (thickObj R I e G ⊗ thickObj R I e G).hom`. Rewrite using `[← Over.w m, reassoc_of% h]`.
+
+Set `T` to `Over.mk (r' ≫ (thickObj R I e G ⊗ thickObj R I e G).hom)`. Set `s : T ⟶ thickObj R I e G ⊗ thickObj R I e G` to `Over.homMk r hw`. Set `s' : T ⟶ thickObj R I e G ⊗ thickObj R I e G` to `Over.homMk r' rfl`. Establish `hs : s ≫ m = s' ≫ m` using `Over.OverMorphism.ext h`. Use `hi T z J hJ (s ≫ fst _ _) (s' ≫ fst _ _) (s ≫ snd _ _) (s' ≫ snd _ _) (by simpa [m] using congrArg (· ≫ fst _ _) hs) (by simpa [m] using congrArg (· ≫ snd _ _) hs)` as an intermediate fact.
+
+Rewrite `this` using `[lift_comp_fst_snd, lift_comp_fst_snd]`. Conclude with `(vv _ r z J hJ).trans (this.trans (vv _ r' z J hJ).symm)`. Establish `hn : (lift ((Over.pullback (thick R I e)).map (fst D.toPre.P.A D.toPre.P.A)) ((Over.pullback (thick R I e)).map (snd D.toPre.P.A D.toPre.P.A))).left ≫ π.left = pullback.fst (D.toPre.P.A ⊗ D.toPre.P.A).hom (thick R I e)`. Use `(lift_push (fstG I e D.toPre.P.A) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[push_fstG, push_fstG, lift_comp_fst_snd]`.
+
+Both sides reduce to the same expression. Use `(gen_iff_sum hM _ _).1 ⟨_, DVR.pullGen_isGen _ _ _ _ ht (lift ((Over.pullback (thick R I e)).map (fst D.toPre.P.A D.toPre.P.A)) ((Over.pullback (thick R I e)).map (snd D.toPre.P.A D.toPre.P.A))).left⟩` as an intermediate fact. Use `(gen_iff_sum hM _ _).2 (Eq.trans (Finset.sum_congr rfl fun k _ => ?_) this)` and prove the remaining obligations. Rewrite using `[← hn, Category.assoc]`.
+-/
 theorem exists_gen_thick [ConnectedSpace (thickObj R I e G).left]
     (sj : Function.Surjective (G ⊗ G ⊗ G).hom.appTop.hom)
     (u : LB.Gen (LB.LinComb U.LG.L (rosatiφ G f g) rosatiε)) (hu : u.IsGen)
@@ -156,6 +192,15 @@ theorem exists_gen_thick [ConnectedSpace (thickObj R I e G).left]
 
 end Level
 
+/- English proof (translation)
+Use `U.gen_hom` as an intermediate fact. Set `κ : (Over.map (jK R)).obj ((Over.pullback (jK R)).obj G) ⟶ G` to `Over.homMk (pullback.fst G.hom (jK R)) pullback.condition`. Set `p : (Over.map (jK R)).obj A.A ⟶ G` to `push κ U.gen.inv`. Establish `hp : ∀ {f : G ⟶ G} {a : A.A ⟶ A.A}, (Over.pullback (jK R)).map f ≫ U.gen.hom = U.gen.hom ≫ a → push p a = p ≫ f` using `fun {f a} h => by`. Establish `e : a ≫ U.gen.inv = U.gen.inv ≫ (Over.pullback (jK R)).map f`.
+
+Rewrite using `[Iso.comp_inv_eq, Category.assoc, h, Iso.inv_hom_id_assoc]`. Establish `e' : push κ ((Over.pullback (jK R)).map f) = κ ≫ f` using `Over.OverMorphism.ext (pullback.lift_fst _ _ _)`. Conclude with `(Functor.map_comp_assoc _ _ _ _).symm.trans ((congrArg (push κ) e).trans (push_comp κ e' _))`. Establish `hc : pull p.left (cls _ U.LG.isLB) = cls _ A.isLB`. Establish `e` using `(cls_eq_iff (LB.isLB_pull A.isLB _) (LB.isLB_pull U.LG.isLB _)).2 U.ext`.
+
+Use `(pull_comp U.gen.inv.left (pullback.fst G.hom (jK R)) _).trans ((congrArg _ e.symm).trans ?_)` and prove the remaining obligations. Rewrite using `[cls_pull A.isLB, ← pull_comp, ← Over.comp_left, Iso.inv_hom_id]`. Conclude with `pull_id _`. Use `(gen_iff_sum U.LG.isLB _ _).1 ⟨_, DVR.pullGen_isGen _ _ _ _ hu (lift (push p (fst A.A A.A)) (push p (snd A.A A.A))).left⟩` as an intermediate fact. Take `⟨t, ht⟩` from `(gen_iff_sum A.isLB (rosatiφ A.A a b) rosatiε).2 (Eq.trans (Finset.sum_congr rfl fun k _ => congrArg (rosatiε k • ·) (by`.
+
+Use `Eq.trans ?_ (congrArg (pull · _) (ros_push' p (push_mul p U.gen.inv rfl) (hp hf) (hp hg) k).symm)` and prove the remaining obligations. Conclude with `(congrArg _ hc.symm).trans (pull_comp _ _ _).symm)) this)`. Conclude with `fun _ => ⟨⊤, trivial, LB.pullGen _ _ _ t _, DVR.pullGen_isGen _ _ _ _ ht _⟩`.
+-/
 theorem rosatiAdj_generic {f g : G ⟶ G} {a b : A.A ⟶ A.A}
     (hf : (Over.pullback (jK R)).map f ≫ U.gen.hom = U.gen.hom ≫ a)
     (hg : (Over.pullback (jK R)).map g ≫ U.gen.hom = U.gen.hom ≫ b)
@@ -183,6 +228,11 @@ theorem rosatiAdj_generic {f g : G ⟶ G} {a b : A.A ⟶ A.A}
       exact (congrArg _ hc.symm).trans (pull_comp _ _ _).symm)) this)
   exact fun _ => ⟨⊤, trivial, LB.pullGen _ _ _ t _, DVR.pullGen_isGen _ _ _ _ ht _⟩
 
+/- English proof (translation)
+Establish `e : ∀ (p : D.P.A ⟶ D.P.A) (χ : D.X), D.Oφ p χ = ![(p * (toUnit _ ≫ D.c χ)).left, (toUnit D.P.A ≫ D.c χ).left, p.left, (toUnit D.P.A ≫ η[D.P.A]).left]` using `fun _ _ => rfl`. Establish `key : ∀ (V : Type 1) [AddCommGroup V] (F : (D.P.A.left ⟶ D.P.A.left) → V), ∑ k, Sum.elim Oε Oinvε k • F (Sum.elim (D.Oφ (𝟙 _) χ') (D.Oφ a χ) k) = 0 → F (𝟙 D.P.A * (toUnit _ ≫ D.c χ')).left - F (toUnit D.P.A ≫ D.c χ').left - F (𝟙 D.P.A : D.P.A ⟶ D.P.A).left = F (a * (toUnit _ ≫ D. …` using `fun V _ F h => by`. Rewrite `h` using `[Fintype.sum_sum_type, Fin.sum_univ_four, Fin.sum_univ_four]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, e, Oε, Oinvε, Matrix.cons_val] at h`. Take the linear combination `(norm := abel) h`.
+
+Conclude with `key _ (fun ψ => pull ψ (cls _ D.P.isLB)) ((gen_iff_sum D.P.isLB _ _).1 ⟨u, hu⟩)`.
+-/
 theorem cls_of_gen (D : DegPre R) (a : D.P.A ⟶ D.P.A) (χ χ' : D.X)
     (u : LB.Gen (LB.LinComb D.P.L (Sum.elim (D.Oφ (𝟙 _) χ') (D.Oφ a χ)) (Sum.elim Oε Oinvε))) (hu : u.IsGen) :
     pull (𝟙 D.P.A * (toUnit _ ≫ D.c χ')).left (cls _ D.P.isLB) - pull (toUnit D.P.A ≫ D.c χ').left (cls _ D.P.isLB) -
@@ -200,6 +250,9 @@ theorem cls_of_gen (D : DegPre R) (a : D.P.A ⟶ D.P.A) (χ χ' : D.X)
     linear_combination (norm := abel) h
   exact key _ (fun ψ => pull ψ (cls _ D.P.isLB)) ((gen_iff_sum D.P.isLB _ _).1 ⟨u, hu⟩)
 
+/- English proof (translation)
+Establish `h` using `(gen_iff_sum hM _ _).1 ⟨_, DVR.pullGen_isGen _ _ _ _ hu (lift x y).left⟩`. Simplify using `only [ros_comp] at h`. Rewrite `h` using `[Fin.sum_univ_six]`. Express the relevant statement in the definitionally equal form `(1 : ℤ) • pull ((x ≫ a) * y).left (cls _ hM) + (-1 : ℤ) • pull (x ≫ a).left (cls _ hM) + (-1 : ℤ) • pull y.left (cls _ hM) + (-1 : ℤ) • pull (x * (y ≫ b)).left (cls _ hM) + (1 : ℤ) • pull x.left (cls _ hM) + (1 : ℤ) • pull (y ≫ b).left (cls _ hM) = 0 at h`. Take the linear combination `(norm := abel) h`.
+-/
 theorem cls_of_rosati {S : Scheme.{0}} {B : Over S} [GrpObj B] [IsCommMonObj B] {M : LB B.left} (hM : M.IsLB)
     {a b : B ⟶ B} (u : LB.Gen (LB.LinComb M (rosatiφ B a b) rosatiε)) (hu : u.IsGen) {T : Over S} (x y : T ⟶ B) :
     pull ((x ≫ a) * y).left (cls _ hM) - pull (x ≫ a).left (cls _ hM) - pull y.left (cls _ hM) =
@@ -216,6 +269,19 @@ end GlobalTheory.EndRosati
 
 open GlobalTheory.EndRosati in
 
+/- English proof (translation)
+Introduce `hLL R _ _ _ I hR D A G _ _ hG U E E' H`. Establish `hGF` using `hLL.1.globalFns`. Take `⟨-, -, -, hC⟩` from `hR`. Use `E.homG` as an intermediate fact. Use `E'.homG` as an intermediate fact.
+
+Use `E.homB` as an intermediate fact. Use `E'.homB` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Take `⟨u, hu, h₀⟩` from `(NormRos.normRos_of_lbIso _ G U.LG.L U.LG.isLB E.aG E'.aG H).1`. Establish `hP : AbLaw.IsProjBy D.toPre.P.A.hom` using `AbProj.isProjBy_of_isPullback D.toPre.P (IsPullback.id_horiz _)`.
+
+Establish `hB : RosatiAdj D.toPre.P.A D.toPre.P.L E.aB E'.aB` using `loc_gen_of_thickenings hGF I _ (AbelianSchemeGerms.isAbelianScheme_tensor _ _ D.toPre.P.isAb D.toPre.P.isAb) (AbLaw.isProjBy_tensor R _ _ hP hP) D.toPre.P.isLB _ _ fun e => by`. Use `EndTorus.connectedSpace_thickening I e` as an intermediate fact. Establish `: GeometricallyConnected (thickObj R I e G).hom` using `inferInstanceAs (GeometricallyConnected (pullback.snd G.hom (thick R I e)))`. Establish `: ConnectedSpace (thickObj R I e G).left` using `GroupConn.connectedSpace_of_section (thickObj R I e G).hom (η : 𝟙_ _ ⟶ thickObj R I e G).left (Over.w _)`. Conclude with `exists_gen_thick U.toUnifPre e (E.q_lin e) (E'.q_lin e) (FamGerm.surjective_appTop_sq_cube U.toUnifPre).2 u hu h₀`.
+
+Take `⟨r, hr, -⟩` from `exists_ros hGF D.toPre.P.isAb D.toPre.P.isLB E.aB E'.aB hB`. Use `⟨rosatiAdj_generic U.toUnifPre E.ext E'.ext u hu, hB, fun χ => ?_, fun χ => ?_⟩` and prove the remaining obligations. Establish `h₁` using `cls_of_gen D.toPre E.aB χ _ (E.u χ) (E.u_norm χ).1`. Establish `h₂` using `cls_of_rosati D.toPre.P.isLB r hr (𝟙 _) (toUnit _ ≫ D.toPre.c χ)`. Rewrite `h₂` using `[Category.id_comp, Category.assoc]`.
+
+Use `eq_of_translate_cls D.toPre.P.isLB D.toPre.P.ktriv _ _ ?_` and prove the remaining obligations. Take the linear combination `(norm := abel) h₁ + h₂`. Establish `h₁` using `cls_of_gen D.toPre E'.aB χ _ (E'.u χ) (E'.u_norm χ).1`. Establish `h₂` using `cls_of_rosati D.toPre.P.isLB r hr (toUnit _ ≫ D.toPre.c χ) (𝟙 _)`. Rewrite `h₂` using `[Category.id_comp, Category.assoc, mul_comm _ (𝟙 D.toPre.P.A), mul_comm _ E'.aB]`.
+
+Use `eq_of_translate_cls D.toPre.P.isLB D.toPre.P.ktriv _ _ ?_` and prove the remaining obligations. Take the linear combination `(norm := abel) h₁ - h₂`.
+-/
 theorem GlobalTheory.UT.rosatiAdj_and_c_linear_of_endU : LL → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ E E' : EndU U.toUnifPre, LBIso (cubeLB G ![fst G G ≫ E.aG, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ E'.aG] U.LG.L) → RosatiAdj A.A A.L E.aA E'.aA ∧ RosatiAdj D.toPre.P.A D.toPre.P.L E.aB E'.aB ∧ (∀ χ, D.toPre.c (E.h χ) = D.toPre.c χ ≫ E'.aB) ∧ ∀ χ, D.toPre.c (E'.h χ) = D.toPre.c χ ≫ E.aB := by
   intro hLL R _ _ _ I hR D A G _ _ hG U E E' H
   have hGF := hLL.1.globalFns

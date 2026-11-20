@@ -12,6 +12,9 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConeSlice.integrand_slice_schwartz | exact GlobalTheory.ConeSlice.integrand_slice_schwartz | (intros; apply GlobalTheory.ConeSlice.integrand_slice_schwartz <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.stabilizer_haar_local_factor_case_a : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →

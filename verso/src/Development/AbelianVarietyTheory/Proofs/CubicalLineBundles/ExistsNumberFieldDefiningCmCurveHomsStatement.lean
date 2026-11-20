@@ -5,6 +5,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory
 open scoped CategoryTheory.Obj UpperHalfPlane
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CommonField.exists_common_field | exact GlobalTheory.CommonField.exists_common_field | (intros; apply GlobalTheory.CommonField.exists_common_field <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_numberField_defining_cm_curve_homs : ThetaUnifAV → Out.PolBaseChangeSt → ∀ (K
     : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (σ₀
     : K →+* ℂ), ¬ ComplexEmbedding.IsReal σ₀ → ∀ (𝔟 : ClassGroup (𝓞 K) → nonZeroDivisors (Ideal (𝓞

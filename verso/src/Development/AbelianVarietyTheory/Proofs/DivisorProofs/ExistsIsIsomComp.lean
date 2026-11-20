@@ -16,6 +16,9 @@ noncomputable def stdInt (p : ℕ) [Fact p.Prime] : ℤ_[p] →+* 𝓞_ℂ_[p] :
         IsScalarTower.algebraMap_apply ℤ_[p] ℚ_[p] (PadicAlgCl p), norm_algebraMap']
       exact x.norm_le_one)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_stdInt (p : ℕ) [Fact p.Prime] (a : ℤ_[p]) :
     ((stdInt p a : 𝓞_ℂ_[p]) : ℂ_[p]) =
       algebraMap (PadicAlgCl p) ℂ_[p] (algebraMap ℤ_[p] (PadicAlgCl p) a) :=
@@ -23,6 +26,9 @@ theorem coe_stdInt (p : ℕ) [Fact p.Prime] (a : ℤ_[p]) :
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Use `haveI := isHausdorff p`. Establish `h` using `GlobalTheory.padicInt_ringHom_ext p 𝓞_ℂ_[p] (t.comp (algebraMap ℤ_[p] Λ)) (stdInt p)`. Rewrite using `[← coe_stdInt, ← h, RingHom.comp_apply]`.
+-/
 theorem apply_algebraMap {Λ : Type} [CommRing Λ] [Algebra ℤ_[p] Λ] (t : Λ →+* 𝓞_ℂ_[p])
     (a : ℤ_[p]) : ((t (algebraMap ℤ_[p] Λ a) : 𝓞_ℂ_[p]) : ℂ_[p]) =
       algebraMap (PadicAlgCl p) ℂ_[p] (algebraMap ℤ_[p] (PadicAlgCl p) a) := by
@@ -30,6 +36,11 @@ theorem apply_algebraMap {Λ : Type} [CommRing Λ] [Algebra ℤ_[p] Λ] (t : Λ 
   have h := GlobalTheory.padicInt_ringHom_ext p 𝓞_ℂ_[p] (t.comp (algebraMap ℤ_[p] Λ)) (stdInt p)
   rw [← coe_stdInt, ← h, RingHom.comp_apply]
 
+/- English proof (translation)
+Take `⟨f, hf, hfx⟩` from `Algebra.IsIntegral.isIntegral (R := ℤ_[p]) x`. Set `g : Λ →+* ℂ_[p]` to `(𝓞_ℂ_[p]).subtype.comp t`. Establish `hstd : g.comp (algebraMap ℤ_[p] Λ) = (algebraMap ℚ_[p] ℂ_[p]).comp (algebraMap ℤ_[p] ℚ_[p])`. Use extensionality with `a`. Use `(apply_algebraMap t a).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply ℤ_[p] ℚ_[p] (PadicAlgCl p), IsScalarTower.algebraMap_apply ℚ_[p] (PadicAlgCl p) ℂ_[p]]`. Use `⟨f.map (algebraMap ℤ_[p] ℚ_[p]), (hf.map _).ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map, ← hstd]`. Express the relevant statement in the definitionally equal form `Polynomial.eval₂ (g.comp (algebraMap ℤ_[p] Λ)) (g x) f = 0`. Rewrite using `[← Polynomial.hom_eval₂, hfx, map_zero]`.
+-/
 theorem isAlgebraic_coe {Λ : Type} [CommRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ]
     (t : Λ →+* 𝓞_ℂ_[p]) (x : Λ) : IsAlgebraic ℚ_[p] ((t x : 𝓞_ℂ_[p]) : ℂ_[p]) := by
   obtain ⟨f, hf, hfx⟩ := Algebra.IsIntegral.isIntegral (R := ℤ_[p]) x
@@ -45,6 +56,17 @@ theorem isAlgebraic_coe {Λ : Type} [CommRing Λ] [Algebra ℤ_[p] Λ] [Module.F
   change Polynomial.eval₂ (g.comp (algebraMap ℤ_[p] Λ)) (g x) f = 0
   rw [← Polynomial.hom_eval₂, hfx, map_zero]
 
+/- English proof (translation)
+Establish `hex : ∀ x : Λ, ∃ y : PadicAlgCl p, algebraMap (PadicAlgCl p) ℂ_[p] y = ((t x : 𝓞_ℂ_[p]) : ℂ_[p])` using `fun x => by`. Establish `h1 : IsIntegral (PadicAlgCl p) ((t x : 𝓞_ℂ_[p]) : ℂ_[p])` using `((isAlgebraic_coe t x).tower_top (PadicAlgCl p)).isIntegral`. Conclude with `minpoly.mem_range_of_degree_eq_one _ _ (IsAlgClosed.degree_eq_one_of_irreducible _ (minpoly.irreducible h1))`. Use `choose f hf using hex`. Establish `hinj : Function.Injective (algebraMap (PadicAlgCl p) ℂ_[p])` using `(algebraMap (PadicAlgCl p) ℂ_[p]).injective`.
+
+Use `⟨{ toFun := f, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, hf, ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hf]`. Simplify using the standard rewrite rules. Introduce `x y`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, hf, hf, hf]`. Simplify using the standard rewrite rules. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hf]`.
+
+Simplify using the standard rewrite rules. Introduce `x y`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_add, hf, hf, hf]`. Simplify using the standard rewrite rules.
+
+Use extensionality with `a`. Apply `hinj` to reduce the goal to its premises. Conclude with `(hf _).trans (apply_algebraMap t a)`.
+-/
 theorem exists_lift {Λ : Type} [CommRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ]
     (t : Λ →+* 𝓞_ℂ_[p]) : ∃ φ : Λ →+* PadicAlgCl p,
       (∀ x, algebraMap (PadicAlgCl p) ℂ_[p] (φ x) = ((t x : 𝓞_ℂ_[p]) : ℂ_[p])) ∧
@@ -67,6 +89,9 @@ theorem exists_lift {Λ : Type} [CommRing Λ] [Algebra ℤ_[p] Λ] [Module.Finit
     apply hinj
     exact (hf _).trans (apply_algebraMap t a)
 
+/- English proof (translation)
+Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := ℤ_[p])` to reduce the goal to its premises. Rewrite using `[RingHom.comap_ker, h, ← RingHom.injective_iff_ker_eq_bot, IsScalarTower.algebraMap_eq ℤ_[p] ℚ_[p] (PadicAlgCl p), RingHom.coe_comp]`. Conclude with `(algebraMap ℚ_[p] (PadicAlgCl p)).injective.comp (IsFractionRing.injective ℤ_[p] ℚ_[p])`.
+-/
 theorem injective_of_comp {Λ : Type} [CommRing Λ] [IsDomain Λ] [Algebra ℤ_[p] Λ]
     [Module.Finite ℤ_[p] Λ] (φ : Λ →+* PadicAlgCl p)
     (h : φ.comp (algebraMap ℤ_[p] Λ) = algebraMap ℤ_[p] (PadicAlgCl p)) :
@@ -77,6 +102,17 @@ theorem injective_of_comp {Λ : Type} [CommRing Λ] [IsDomain Λ] [Algebra ℤ_[
     IsScalarTower.algebraMap_eq ℤ_[p] ℚ_[p] (PadicAlgCl p), RingHom.coe_comp]
   exact (algebraMap ℚ_[p] (PadicAlgCl p)).injective.comp (IsFractionRing.injective ℤ_[p] ℚ_[p])
 
+/- English proof (translation)
+Establish `tf : ∀ φ : Λ →+* PadicAlgCl p, Function.Injective φ →`. Use `letI := φ.toAlgebra`. Use the proof step `Module.IsTorsionFree Λ (PadicAlgCl p) := fun φ hφ => by`. Use `letI := φ.toAlgebra`. Use `haveI : FaithfulSMul Λ (PadicAlgCl p) := (faithfulSMul_iff_algebraMap_injective _ _).2 hφ`.
+
+Use `infer_instance`. Establish `alg : letI` using `φ₀.toAlgebra Algebra.IsAlgebraic Λ (PadicAlgCl p) := by`. Use `letI := φ₀.toAlgebra`. Use `haveI : IsScalarTower ℤ_[p] Λ (PadicAlgCl p) := IsScalarTower.of_algebraMap_eq' h₀.symm`. Use `haveI : Algebra.IsAlgebraic ℤ_[p] (PadicAlgCl p) := ⟨fun x => (IsFractionRing.isAlgebraic_iff ℤ_[p] ℚ_[p] (PadicAlgCl p)).2 (Algebra.IsAlgebraic.isAlgebraic x)⟩`.
+
+Conclude with `Algebra.IsAlgebraic.extendScalars (R := ℤ_[p]) (FaithfulSMul.algebraMap_injective _ _)`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : PadicAlgCl p →+* PadicAlgCl p, ∀ x, g (φ₀ x) = φ₁ x := by`. Set `f` to `@IsAlgClosed.lift (PadicAlgCl p) _ _ Λ _ _ (PadicAlgCl p) _ _ φ₀.toAlgebra φ₁.toAlgebra (tf φ₀ (injective_of_comp φ₀ h₀)) (tf φ₁ (injective_of_comp φ₁ h₁)) alg`. Conclude with `⟨@AlgHom.toRingHom _ _ _ _ _ _ φ₀.toAlgebra φ₁.toAlgebra f, fun x => @AlgHom.commutes _ _ _ _ _ _ φ₀.toAlgebra φ₁.toAlgebra f x⟩`. Establish `hq : g.comp (algebraMap ℚ_[p] (PadicAlgCl p)) = algebraMap ℚ_[p] (PadicAlgCl p)`.
+
+Apply `IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[p])` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq ℤ_[p] ℚ_[p] (PadicAlgCl p)]`. Use extensionality with `a`. Conclude with `(congrArg g (RingHom.congr_fun h₀ a).symm).trans ((hg _).trans (RingHom.congr_fun h₁ a))`. Set `g' : PadicAlgCl p →ₐ[ℚ_[p]] PadicAlgCl p` to `{ g with commutes' := RingHom.congr_fun hq }`.
+
+Conclude with `⟨AlgEquiv.ofBijective g' (Algebra.IsAlgebraic.algHom_bijective g'), hg⟩`.
+-/
 theorem exists_algEquiv {Λ : Type} [CommRing Λ] [IsDomain Λ] [Algebra ℤ_[p] Λ]
     [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ] (φ₀ φ₁ : Λ →+* PadicAlgCl p)
     (h₀ : φ₀.comp (algebraMap ℤ_[p] Λ) = algebraMap ℤ_[p] (PadicAlgCl p))
@@ -110,6 +146,11 @@ theorem exists_algEquiv {Λ : Type} [CommRing Λ] [IsDomain Λ] [Algebra ℤ_[p]
   let g' : PadicAlgCl p →ₐ[ℚ_[p]] PadicAlgCl p := { g with commutes' := RingHom.congr_fun hq }
   exact ⟨AlgEquiv.ofBijective g' (Algebra.IsAlgebraic.algHom_bijective g'), hg⟩
 
+/- English proof (translation)
+Establish `hn : ∀ (g : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (x : PadicAlgCl p), ‖g x‖ = ‖x‖` using `fun g x => (spectralNorm_eq_of_equiv g x).symm`. Apply the tactic sequence `have hi : ∀ g : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p, Isometry (g : PadicAlgCl p → PadicAlgCl p) := fun g => AddMonoidHomClass.isometry_of_norm g (hn g)`. Set `γ : ℂ_[p] ≃+* ℂ_[p]` to `UniformSpace.Completion.mapRingEquiv σ.toRingEquiv (hi σ).continuous (hi σ.symm).continuous`. Establish `hc : ∀ y : PadicAlgCl p, γ (y : ℂ_[p]) = ((σ y : PadicAlgCl p) : ℂ_[p])` using `fun y => UniformSpace.Completion.map_coe (hi σ).uniformContinuous y`. Establish `hcont : Continuous γ` using `UniformSpace.Completion.continuous_map`.
+
+Use `⟨γ, hc, fun z => ?_⟩` and prove the remaining obligations. Proceed by induction on `z using UniformSpace.Completion.induction_on with`. Consider the case `hp => exact isClosed_eq hcont.norm continuous_norm`. Consider the case `ih x => rw [hc, PadicComplex.norm_extends, PadicComplex.norm_extends, hn]`.
+-/
 theorem exists_extension (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) :
     ∃ γ : ℂ_[p] ≃+* ℂ_[p], (∀ y : PadicAlgCl p, γ (y : ℂ_[p]) = ((σ y : PadicAlgCl p) : ℂ_[p])) ∧
       ∀ z, ‖γ z‖ = ‖z‖ := by
@@ -128,6 +169,13 @@ theorem exists_extension (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) :
   | hp => exact isClosed_eq hcont.norm continuous_norm
   | ih x => rw [hc, PadicComplex.norm_extends, PadicComplex.norm_extends, hn]
 
+/- English proof (translation)
+Introduce `p _ Λ _ _ _ _ _ t₀ t`. Take `⟨φ₀, e₀, h₀⟩` from `exists_lift t₀`. Take `⟨φ₁, e₁, h₁⟩` from `exists_lift t`. Take `⟨σ, hσ⟩` from `exists_algEquiv φ₀ φ₁ h₀ h₁`. Take `⟨γC, hc, hn⟩` from `exists_extension σ`.
+
+Establish `hn' : ∀ z, ‖γC.symm z‖ = ‖z‖` using `fun z => by rw [← hn, γC.apply_symm_apply]`. Set `γ : 𝓞_ℂ_[p] ≃+* 𝓞_ℂ_[p]` to `{ toFun := fun x => ⟨γC x, (mem_iff_norm p _).2 ((hn _).trans_le ((mem_iff_norm p _).1 x.2))⟩ invFun := fun x => ⟨γC.symm x, (mem_iff_norm p _).2 ((hn' _).trans_le ((mem_iff_norm p _).1 x.2))⟩ left_inv := fun x => Subtype.ext (γC.symm_apply_apply _) right_inv := fun x => Subtype. …`. Use `⟨γ, ⟨γC, fun x => rfl, fun z => ?_⟩, ?_⟩` and prove the remaining obligations. Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[valuation_coe_eq_norm, valuation_coe_eq_norm, hn]`.
+
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `((t x : 𝓞_ℂ_[p]) : ℂ_[p]) = γC ((t₀ x : 𝓞_ℂ_[p]) : ℂ_[p])`. Rewrite using `[← e₀, ← e₁, ← PadicComplex.coe_eq, ← PadicComplex.coe_eq, hc, hσ]`.
+-/
 theorem exists_isIsom_comp : ∀ (p : ℕ) [Fact p.Prime] (Λ : Type) [CommRing Λ] [IsDomain Λ]
     [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ] (t₀ t : Λ →+* 𝓞_ℂ_[p]),
     ∃ γ : 𝓞_ℂ_[p] ≃+* 𝓞_ℂ_[p], IsIsom ℂ_[p] (Valued.v : Valuation ℂ_[p] NNReal) γ ∧

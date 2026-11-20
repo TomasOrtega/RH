@@ -21,14 +21,25 @@ section Quadratic
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sigR_tmul (σ : E →ₐ[F] E) (x : E) (a : FiniteAdeleRing (𝓞 F) F) :
     sigR σ (FiniteAdeleRing (𝓞 F) F) (x ⊗ₜ[F] a) = σ x ⊗ₜ[F] a := rfl
 
+/- English proof (translation)
+Break down `GlobalTheory.AdLat.aut_eq_one_or_of_finrank_two c h2 hc (c * c) with h | h` into its components or cases. Simplify using `using congrArg (fun g : E ≃ₐ[F] E => g x) h`. Conclude with `absurd (by simpa using h) hc`.
+-/
 theorem conj_conj (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1) (x : E) : c (c x) = x := by
   rcases GlobalTheory.AdLat.aut_eq_one_or_of_finrank_two c h2 hc (c * c) with h | h
   · simpa using congrArg (fun g : E ≃ₐ[F] E => g x) h
   · exact absurd (by simpa using h) hc
 
+/- English proof (translation)
+Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩`. Establish `: x + c x ∈ Set.range (algebraMap F E)`. Rewrite using `[IsGalois.mem_range_algebraMap_iff_fixed]`. Introduce `g`. Break down `GlobalTheory.AdLat.aut_eq_one_or_of_finrank_two c h2 hc g with rfl | rfl` into its components or cases.
+
+Both sides reduce to the same expression. Rewrite using `[map_add, conj_conj g h2 hc, add_comm]`. Take `⟨t, ht⟩` from `this`. Conclude with `⟨t, ht.symm⟩`.
+-/
 theorem exists_trace (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1) (x : E) :
     ∃ t : F, x + c x = algebraMap F E t := by
   haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩
@@ -43,6 +54,9 @@ theorem exists_trace (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c �
 
 variable {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x a => rw [sigR_tmul, sigR_tmul, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigR_sigR (hσ : ∀ x, σ (σ x) = x) (z : AfE F E) :
     sigR σ _ (sigR σ _ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -50,6 +64,13 @@ theorem sigR_sigR (hσ : ∀ x, σ (σ x) = x) (z : AfE F E) :
   | tmul x a => rw [sigR_tmul, sigR_tmul, hσ]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul x a`. Take `⟨t, ht⟩` from `htr x`. Use `⟨(t / 2) • a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[sigR_tmul, ← TensorProduct.add_tmul, ht, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, two_mul, ← TensorProduct.tmul_add, ← add_smul, add_halves]`. Consider the case `add x y hx hy`. Take `⟨t, ht⟩` from `hx`. Take `⟨t', ht'⟩` from `hy`. Use `⟨t + t', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, TensorProduct.tmul_add, mul_add, ← ht, ← ht']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_half_trace (htr : ∀ x, ∃ t : F, x + σ x = algebraMap F E t) (z : AfE F E) :
     ∃ t : FiniteAdeleRing (𝓞 F) F, z + sigR σ _ z = 2 * (1 : E) ⊗ₜ[F] t := by
   induction z using TensorProduct.induction_on with
@@ -65,17 +86,34 @@ theorem exists_half_trace (htr : ∀ x, ∃ t : F, x + σ x = algebraMap F E t) 
     refine ⟨t + t', ?_⟩
     rw [map_add, TensorProduct.tmul_add, mul_add, ← ht, ← ht']; ring
 
+/- English proof (translation)
+Use `(IsUnit.mk0 (2 : E) two_ne_zero).map (Algebra.TensorProduct.includeLeftRingHom : E →+* AfE F E)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+-/
 theorem isUnit_two : IsUnit (2 : AfE F E) := by
   have := (IsUnit.mk0 (2 : E) two_ne_zero).map
     (Algebra.TensorProduct.includeLeftRingHom : E →+* AfE F E)
   rwa [map_ofNat] at this
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `exists_half_trace htr z`. Use `⟨t, isUnit_two.mul_left_cancel ?_⟩` and prove the remaining obligations. Rewrite using `[← ht, hz, two_mul]`.
+-/
 theorem exists_eq_tmul_of_fixed (htr : ∀ x, ∃ t : F, x + σ x = algebraMap F E t) (z : AfE F E)
     (hz : sigR σ _ z = z) : ∃ t : FiniteAdeleRing (𝓞 F) F, z = (1 : E) ⊗ₜ[F] t := by
   obtain ⟨t, ht⟩ := exists_half_trace htr z
   refine ⟨t, isUnit_two.mul_left_cancel ?_⟩
   rw [← ht, hz, two_mul]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `h : conjId σ (conjId σ x) = x` using `Units.ext (sigR_sigR hσ _)`. Express the relevant statement in the definitionally equal form `x / conjId σ x * conjId σ (x / conjId σ x) = 1`. Rewrite using `[map_div, h, div_mul_div_cancel, div_self']`.
+
+Introduce `u hu`. Establish `hu' : (u : AfE F E) * sigR σ _ (u : AfE F E) = 1` using `congrArg Units.val hu`. Take `⟨y, hy⟩` from `hne`. Take `⟨t, ht⟩` from `exists_half_trace htr (u : AfE F E)`. Take `⟨e, he, hun⟩` from `GlobalTheory.AdIdem.finite_part (𝓞 F) F t`.
+
+Set `κ : E →+* AfE F E` to `Algebra.TensorProduct.includeLeftRingHom`. Set `j : FiniteAdeleRing (𝓞 F) F →ₐ[F] AfE F E` to `Algebra.TensorProduct.includeRight`. Take `⟨x, hx⟩` from `GlobalTheory.AdLat.hilbert90_involution_of_idempotent_unit (sigR σ (FiniteAdeleRing (𝓞 F) F)) (sigR_sigR hσ) u (κ (y - σ y)) (j e) (j t) hu' (by`. Rewrite using `[← map_neg]`. Express the relevant statement in the definitionally equal form `sigR σ _ ((y - σ y) ⊗ₜ 1) = (-(y - σ y)) ⊗ₜ 1`.
+
+Rewrite using `[sigR_tmul, map_sub, hσ, neg_sub])`. Use the proof step `((IsUnit.mk0 _ (sub_ne_zero.2 hy.symm)).map κ) isUnit_two (by rw [← map_mul, he])`. Use the proof step `(by`. Express the relevant statement in the definitionally equal form `sigR σ _ (1 ⊗ₜ e) = 1 ⊗ₜ e`. Rewrite using `[sigR_tmul, map_one]) ht`.
+
+Use the proof step `(by simpa only [map_add, map_mul, map_sub, map_one] using hun.map j)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x / conjId σ x = u`. Rewrite using `[div_eq_iff_eq_mul]`. Conclude with `Units.ext hx`.
+-/
 theorem h90_range_eq_normOne_of_isQuad (hσ : ∀ x, σ (σ x) = x) (htr : ∀ x, ∃ t : F, x + σ x = algebraMap F E t)
     (hne : ∃ y, σ y ≠ y) : (h90 σ).range = U1 σ := by
   apply le_antisymm
@@ -111,10 +149,20 @@ section Approx
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+The claim follows from `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (natCast_mem (P.adicCompletionIntegers L) n)`.
+-/
 theorem valued_natCast_le (P : HeightOneSpectrum (𝓞 L)) (n : ℕ) :
     Valued.v (n : P.adicCompletion L) ≤ 1 :=
   (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (natCast_mem (P.adicCompletionIntegers L) n)
 
+/- English proof (translation)
+Establish `h1 : Valued.v ((Ideal.absNorm P.asIdeal : ℕ) : P.adicCompletion L) < 1`. Establish `h` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := L) P _).2 (Ideal.absNorm_mem P.asIdeal)`. Rewrite `h` using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Establish `e : ((algebraMap (𝓞 L) L (Ideal.absNorm P.asIdeal : ℕ) : L) : P.adicCompletion L) = ((Ideal.absNorm P.asIdeal : ℕ) : P.adicCompletion L)`. Rewrite using `[map_natCast]`.
+
+Conclude with `map_natCast (algebraMap L (P.adicCompletion L)) _`. Conclude with `e ▸ h`. Take `⟨n, hn⟩` from `exists_pow_lt₀ h1 (Units.mk0 γ hγ)`. Use `⟨Ideal.absNorm P.asIdeal ^ n, pow_pos (Nat.pos_of_ne_zero ?_) _, ?_⟩` and prove the remaining obligations. Conclude with `fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+
+Rewrite using `[Nat.cast_pow, map_pow]`. Conclude with `hn`.
+-/
 theorem exists_nat_valued_lt (P : HeightOneSpectrum (𝓞 L)) {γ : WithZero (Multiplicative ℤ)} (hγ : γ ≠ 0) :
     ∃ N : ℕ, 0 < N ∧ Valued.v (N : P.adicCompletion L) < γ := by
   have h1 : Valued.v ((Ideal.absNorm P.asIdeal : ℕ) : P.adicCompletion L) < 1 := by
@@ -130,6 +178,11 @@ theorem exists_nat_valued_lt (P : HeightOneSpectrum (𝓞 L)) {γ : WithZero (Mu
   · exact fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
   · rw [Nat.cast_pow, map_pow]; exact hn
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_pos, by simp⟩`. Consider the case `insert Q T _ ih`. Take `⟨N, hN, h⟩` from `ih`. Take `⟨M, hM, h'⟩` from `exists_nat_valued_lt Q (hγ Q)`.
+
+Use `⟨M * N, Nat.mul_pos hM hN, fun P hP => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, map_mul]`. Break down `Finset.mem_insert.1 hP with rfl | hP` into its components or cases. Conclude with `(mul_le_of_le_one_right' (valued_natCast_le _ N)).trans_lt h'`. Conclude with `(mul_le_of_le_one_left' (valued_natCast_le _ M)).trans_lt (h P hP)`.
+-/
 theorem exists_nat_valued_lt_finset (T : Finset (HeightOneSpectrum (𝓞 L)))
     (γ : HeightOneSpectrum (𝓞 L) → WithZero (Multiplicative ℤ)) (hγ : ∀ P, γ P ≠ 0) :
     ∃ N : ℕ, 0 < N ∧ ∀ P ∈ T, Valued.v (N : P.adicCompletion L) < γ P := by
@@ -150,10 +203,16 @@ def compAt (P : HeightOneSpectrum (𝓞 L)) : Ideles L →* P.adicCompletion L w
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+The claim follows from `((Group.isUnit a).map (compAt P)).ne_zero`.
+-/
 theorem compAt_ne_zero (P : HeightOneSpectrum (𝓞 L)) (a : Ideles L) : compAt P a ≠ 0 :=
   ((Group.isUnit a).map (compAt P)).ne_zero
 
 open Classical in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Function.update (fun w : HeightOneSpectrum (𝓞 L) => (1 : w.adicCompletion L)) Q (algebraMap L _ (k : L)) P = _`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Conclude with `Function.update_of_ne (Ne.symm h) _ _`.
+-/
 theorem compAt_localIdele (P Q : HeightOneSpectrum (𝓞 L)) (k : Lˣ) :
     compAt P (localIdele L Q (atFin Q k)) = if Q = P then algebraMap L _ (k : L) else 1 := by
   change Function.update (fun w : HeightOneSpectrum (𝓞 L) => (1 : w.adicCompletion L)) Q
@@ -165,6 +224,9 @@ theorem compAt_localIdele (P Q : HeightOneSpectrum (𝓞 L)) (k : Lˣ) :
 variable {F : Type} [Field F] [NumberField F] [Algebra F L]
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[locF, map_prod]`. Simplify using `only [compAt_localIdele, Finset.prod_ite_eq', aboveF, Set.Finite.mem_toFinset, Set.mem_setOf_eq, eq_comm (a := v)]`. Both sides reduce to the same expression.
+-/
 theorem compAt_locF (P : HeightOneSpectrum (𝓞 L)) (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) :
     compAt P (locF F v k) = if v = P.under (𝓞 F) then algebraMap L _ (algebraMap F L k) else 1 := by
   rw [locF, map_prod]
@@ -173,12 +235,20 @@ theorem compAt_locF (P : HeightOneSpectrum (𝓞 L)) (v : HeightOneSpectrum (�
   rfl
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[map_prod]`. Simplify using `only [compAt_locF, Finset.prod_ite_eq']`.
+-/
 theorem compAt_prod_locF (P : HeightOneSpectrum (𝓞 L)) (S : Finset (HeightOneSpectrum (𝓞 F))) (k : Fˣ) :
     compAt P (∏ v ∈ S, locF F v k) =
       if P.under (𝓞 F) ∈ S then algebraMap L _ (algebraMap F L k) else 1 := by
   rw [map_prod]
   simp only [compAt_locF, Finset.prod_ite_eq']
 
+/- English proof (translation)
+Establish `hy : y ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Establish `hv : w y = w x` using `Valuation.map_eq_of_sub_lt _ (by rwa [Valuation.map_sub_swap])`. Use `⟨hy, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[div_sub_one hy, map_div₀, div_lt_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hy)), hv]`. Conclude with `h`.
+-/
 theorem div_sub_one_lt {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] (w : Valuation K Γ) {x y : K}
     (h : w (x - y) < w x) : y ≠ 0 ∧ w (x / y - 1) < 1 := by
   have hy : y ≠ 0 := by
@@ -189,12 +259,26 @@ theorem div_sub_one_lt {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero 
   rw [div_sub_one hy, map_div₀, div_lt_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hy)), hv]
   exact h
 
+/- English proof (translation)
+Establish `hu : IsUnit ((a : AdeleRing (𝓞 L) L).2)` using `a.isUnit.map (MonoidHom.snd (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L))`. Conclude with `(FiniteAdeleRing.isUnit_iff.1 hu).2`.
+-/
 theorem finite_compAt_ne_one (a : Ideles L) :
     {P : HeightOneSpectrum (𝓞 L) | Valued.v (compAt P a) ≠ 1}.Finite := by
   have hu : IsUnit ((a : AdeleRing (𝓞 L) L).2) :=
     a.isUnit.map (MonoidHom.snd (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L))
   exact (FiniteAdeleRing.isUnit_iff.1 hu).2
 
+/- English proof (translation)
+Take `⟨S, hS⟩ : ∃ S : Finset (HeightOneSpectrum (𝓞 F)), ∀ P, P ∈ T₀ ∨ Valued.v (compAt P a) ≠ 1 → P.under (𝓞 F) ∈ S` from `⟨(hT₀.union (finite_compAt_ne_one a)).toFinset.image fun P => P.under (𝓞 F), fun P hP => Finset.mem_image.2 ⟨P, (Set.Finite.mem_toFinset _).2 hP, rfl⟩⟩`. Take `⟨N, hN, hlt⟩` from `exists_nat_valued_lt_finset (S.biUnion (aboveF (L := L) F)) (fun P => Valued.v (compAt P a)) fun P => (Valuation.ne_zero_iff _).2 (compAt_ne_zero P a)`. Take `⟨k, hk⟩` from `ha N hN`. Establish `h1 : ∀ P, P.under (𝓞 F) ∈ S → Valued.v (compAt P a - algebraMap L _ (algebraMap F L k)) < Valued.v (compAt P a)` using `fun P hP => (hk P).trans_lt (hlt P (Finset.mem_biUnion.2 ⟨_, hP, (Set.Finite.mem_toFinset _).2 rfl⟩))`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : Fˣ, k ≠ 0 → (u : F) = k := by`.
+
+Distinguish the cases in `h : k = 0`. Conclude with `⟨1, fun h' => absurd h h'⟩`. Conclude with `⟨Units.mk0 k h, fun _ => rfl⟩`. Establish `h2 : ∀ P, P.under (𝓞 F) ∈ S → Valued.v (compAt P (a / ∏ v ∈ S, locF F v u) - 1) < 1`. Introduce `P hP`.
+
+Take `⟨h, h'⟩` from `div_sub_one_lt _ (h1 P hP)`. Establish `hk0 : k ≠ 0` using `fun h0 => h (by rw [h0, map_zero, map_zero])`. Rewrite using `[map_div, compAt_prod_locF, if_pos hP, hu hk0]`. Conclude with `h'`. Establish `h3 : ∀ P, Valued.v (compAt P (a / ∏ v ∈ S, locF F v u)) = 1`.
+
+Introduce `P`. Distinguish the cases in `hP : P.under (𝓞 F) ∈ S`. Use `Valuation.map_one_add_of_lt _ (h2 P hP)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[map_div, compAt_prod_locF, if_neg hP, div_one]`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hP (hS P (Or.inr h))`. Conclude with `⟨S, u, a / ∏ v ∈ S, locF F v u, (div_mul_cancel _ _).symm, h3, fun P hP => h2 P (hS P (Or.inl hP))⟩`.
+-/
 theorem exists_locF_approx (a : Ideles L) (T₀ : Set (HeightOneSpectrum (𝓞 L))) (hT₀ : T₀.Finite)
     (ha : ∀ N : ℕ, 0 < N → ∃ k : F, ∀ P, Valued.v (compAt P a - algebraMap L _ (algebraMap F L k)) ≤
       Valued.v (N : P.adicCompletion L)) :
@@ -232,6 +316,13 @@ theorem exists_locF_approx (a : Ideles L) (T₀ : Set (HeightOneSpectrum (𝓞 L
   exact ⟨S, u, a / ∏ v ∈ S, locF F v u, (div_mul_cancel _ _).symm, h3,
     fun P hP => h2 P (hS P (Or.inl hP))⟩
 
+/- English proof (translation)
+Take `⟨k, r, hr, rfl⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat F N hN).1 t`. Use `⟨k, fun P => ?_⟩` and prove the remaining obligations. Establish `hr' : (1 : L) ⊗ₜ[F] r ∈ RInt F L` using `Subring.subset_closure (Or.inr ⟨⟨r, hr⟩, rfl⟩)`. Establish `e : (a : AdeleRing (𝓞 L) L).2 = algebraMap L _ (algebraMap F L k) + (N : FiniteAdeleRing (𝓞 L) L) * ι (1 ⊗ₜ[F] r)`. Rewrite using `[ha, TensorProduct.tmul_add, map_add, TensorProduct.tmul_smul, map_nsmul, nsmul_eq_mul, ← h1, Algebra.algebraMap_eq_smul_one k, Algebra.algebraMap_eq_smul_one k, TensorProduct.smul_tmul]`.
+
+Establish `e2 : compAt P a = algebraMap L (P.adicCompletion L) (algebraMap F L k) + (N : P.adicCompletion L) * ι (1 ⊗ₜ[F] r) P`. Express the relevant statement in the definitionally equal form `(a : AdeleRing (𝓞 L) L).2 P = _`. Rewrite using `[e]`. Both sides reduce to the same expression. Rewrite using `[e2, add_sub_cancel_left, map_mul]`.
+
+Conclude with `mul_le_of_le_one_right' ((h2 _).1 hr' P)`.
+-/
 theorem exists_approx_of_eq_tmul (ι : AfE F L ≃+* FiniteAdeleRing (𝓞 L) L)
     (h1 : ∀ x : L, ι (x ⊗ₜ[F] 1) = algebraMap L _ x)
     (h2 : ∀ z, z ∈ RInt F L ↔ ∀ Q : HeightOneSpectrum (𝓞 L), Valued.v (ι z Q) ≤ 1)
@@ -254,6 +345,17 @@ theorem exists_approx_of_eq_tmul (ι : AfE F L ≃+* FiniteAdeleRing (𝓞 L) L)
   rw [e2, add_sub_cancel_left, map_mul]
   exact mul_le_of_le_one_right' ((h2 _).1 hr' P)
 
+/- English proof (translation)
+Set `j : (AfE F L)ˣ →* Ideles L` to `Units.map ((MonoidHom.inr (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)).comp ι.toRingHom.toMonoidHom)`. Establish `hj : ∀ x, (j x : AdeleRing (𝓞 L) L).2 = ι (x : AfE F L)` using `fun _ => rfl`. Set `g : (AfE F L)ˣ →* Ideles L ⧸ K` to `(QuotientGroup.mk' K).comp j`. Establish `hg : ∀ (x : (AfE F L)ˣ) (a : Ideles L), (a : AdeleRing (𝓞 L) L).2 = ι (x : AfE F L) → g x = QuotientGroup.mk a`. Introduce `x a ha`.
+
+Use `QuotientGroup.eq.2 (hK _ 1 ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι ((x⁻¹ : (AfE F L)ˣ) : AfE F L) * (a : AdeleRing (𝓞 L) L).2 = _`. Rewrite using `[ha, ← map_mul, Units.inv_mul]`. Both sides reduce to the same expression. Set `p : (AfE F L)ˣ →* U1 σ` to `(h90 σ).codRestrict (U1 σ) fun x => hrange ▸ ⟨x, rfl⟩`.
+
+Establish `hp : Function.Surjective p`. Introduce and unpack `⟨u, hu⟩`. Rewrite `hu` using `[← hrange]`. Take `⟨x, rfl⟩` from `hu`. Conclude with `⟨x, rfl⟩`.
+
+Establish `hker : p.ker ≤ g.ker`. Introduce `x hx`. Establish `hx1 : x / conjId σ x = 1` using `congrArg Subtype.val hx`. Establish `hx2 : sigR σ _ (x : AfE F L) = x` using `(congrArg Units.val (div_eq_one.1 hx1)).symm`. Take `⟨t, ht⟩` from `exists_eq_tmul_of_fixed htr _ hx2`.
+
+Conclude with `(QuotientGroup.eq_one_iff _).2 (hK _ t (by rw [hj, ht]))`. Establish `hf : ∀ x, p.liftOfSurjective hp ⟨g, hker⟩ (p x) = g x` using `fun x => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ _`. Use `⟨p.liftOfSurjective hp ⟨g, hker⟩, fun d => ?_, fun x h a ha => (hf x).trans (hg x a ha)⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective d`. Conclude with `⟨p (Units.map ((ι.symm.toRingHom.toMonoidHom).comp (MonoidHom.snd (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L))) a), (hf _).trans (hg _ a (ι.apply_symm_apply _).symm)⟩`.
+-/
 theorem exists_lift {σ : L →ₐ[F] L} (htr : ∀ x, ∃ t : F, x + σ x = algebraMap F L t) (hrange : (h90 σ).range = U1 σ)
     (ι : AfE F L ≃+* FiniteAdeleRing (𝓞 L) L) (K : Subgroup (Ideles L))
     (hK : ∀ (a : Ideles L) (t : FiniteAdeleRing (𝓞 F) F), (a : AdeleRing (𝓞 L) L).2 = ι (1 ⊗ₜ[F] t) → a ∈ K) :
@@ -295,6 +397,11 @@ end Approx
 
 variable {R : Ranks} (H : Formalism.BasicNotions.Host R)
 
+/- English proof (translation)
+Establish `hfin : (⋃ k, {v | OverP H (H.g k) v}).Finite` using `Set.finite_iUnion fun k => by`. Establish `h0 : Ideal.span {((H.g k : ℕ) : 𝓞 H.E)} ≠ 0`. Simplify using `using (H.g_prime k).ne_zero`. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+
+Take `⟨S, k, b, rfl, hb, hb'⟩` from `exists_locF_approx (F := H.F) a _ hfin ha`. Conclude with `mul_mem (mem_KD_of_congG H ⟨hb, fun k v hv => hb' v (Set.mem_iUnion.2 ⟨k, hv⟩)⟩) (prod_mem fun v _ => locF_mem_KD H v k)`.
+-/
 theorem mem_KD_of_approx (a : Ideles H.E)
     (ha : ∀ N : ℕ, 0 < N → ∃ k : H.F, ∀ P, Valued.v (compAt P a - algebraMap H.E _ (algebraMap H.F H.E k)) ≤
       Valued.v (N : P.adicCompletion H.E)) : a ∈ KD H := by
@@ -309,6 +416,13 @@ theorem mem_KD_of_approx (a : Ideles H.E)
 
 open Classical in
 
+/- English proof (translation)
+Introduce `R H σ hσ ι h1 h2`. Take `⟨c, hc, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Establish `hσc : ∀ x, σ x = c x` using `fun x => (hσ x).trans (hc x).symm`. Establish `hσσ : ∀ x, σ (σ x) = x` using `fun x => by rw [hσc, hσc, conj_conj c hcm.rank hcm.ne]`. Establish `htr : ∀ x, ∃ t : H.F, x + σ x = algebraMap H.F H.E t` using `fun x => by`.
+
+Rewrite using `[hσc]`. Conclude with `exists_trace c hcm.rank hcm.ne x`. Establish `hne : ∃ y, σ y ≠ y`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Conclude with `hcm.ne (AlgEquiv.ext fun y => (hσc y).symm.trans (h y))`. Establish `hrange` using `h90_range_eq_normOne_of_isQuad hσσ htr hne`. Conclude with `⟨hrange, exists_lift htr hrange ι (KD H) fun a t ha => mem_KD_of_approx H a (exists_approx_of_eq_tmul ι h1 h2 a t ha)⟩`.
+-/
 theorem exists_detClass : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (σ : H.E →ₐ[H.F] H.E), (∀ x, σ x = H.conj x) → ∀ (ι : Formalism.L2.DIV.AfE H.F H.E ≃+* FiniteAdeleRing (𝓞 H.E) H.E), (∀ x : H.E, ι (TensorProduct.tmul H.F x 1) = algebraMap H.E _ x) → (∀ z, z ∈ Formalism.L2.DIV.RInt H.F H.E ↔ ∀ Q : HeightOneSpectrum (𝓞 H.E), Valued.v (ι z Q) ≤ 1) → (Formalism.L2.DIV.h90 σ).range = Formalism.L2.DIV.U1 σ ∧ ∃ f : Formalism.L2.DIV.U1 σ →* DtT H, Function.Surjective f ∧ ∀ (x : (Formalism.L2.DIV.AfE H.F H.E)ˣ) (h : Formalism.L2.DIV.h90 σ x ∈ Formalism.L2.DIV.U1 σ) (a : Ideles H.E), (a : AdeleRing (𝓞 H.E) H.E).2 = ι (x : Formalism.L2.DIV.AfE H.F H.E) → f ⟨_, h⟩ = QuotientGroup.mk a := by
   intro R H σ hσ ι h1 h2
   obtain ⟨c, hc, hcm, -⟩ := GlobalTheory.Mem.HostCM.host_cm R H

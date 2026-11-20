@@ -27,11 +27,25 @@ def combL (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c : WO S T →₀ ℂ)
     simp only [comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]
     exact Finset.sum_congr rfl fun u _ => by ring
 
+/- English proof (translation)
+Unfold `comb`. Rewrite using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`.
+-/
 theorem comb_single_one (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (y : WO S T) (f : WO S T → ℂ) :
     comb ψ S T (Finsupp.single y 1) f = heisO ψ S T y f := by
   unfold comb
   rw [Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]
 
+/- English proof (translation)
+Introduce `D ψ hψ σ S Q₀ c₁ c₂ hc₁ hc₂ ha₁ ha₂ f₁ f₂ _ _ hv`. Take `⟨hee, hec, -⟩` from `Q₀.q.split`. Establish `hce : cA D Q₀.q.e * Q₀.q.e = 0` using `by rw [mul_comm, hec]`. Establish `hcc : cA D Q₀.q.e * cA D Q₀.q.e = cA D Q₀.q.e` using `by rw [← map_mul, hee]`. Establish `hreal : cA D (Q₀.q.e + cA D Q₀.q.e) = Q₀.q.e + cA D Q₀.q.e`.
+
+Rewrite using `[map_add, Formalism.L2.Theta.cA_cA, add_comm]`. Establish `hidem : (Q₀.q.e + cA D Q₀.q.e) * (Q₀.q.e + cA D Q₀.q.e) = Q₀.q.e + cA D Q₀.q.e`. Rewrite using `[add_mul, mul_add, mul_add, hee, hec, hce, hcc, add_zero, zero_add]`. Establish `horth : (Q₀.q.e + cA D Q₀.q.e) * (1 - (Q₀.q.e + cA D Q₀.q.e)) = 0`. Rewrite using `[mul_sub, mul_one, hidem, sub_self]`.
+
+Establish `comm : ∀ {A B : HSp D} (c : WO A B →₀ ℂ), Q₀.Away c → ∀ (f : WO A B → ℂ) (y : WO A B), IsHalf (Q₀.q.e + cA D Q₀.q.e) y → comb ψ A B c (heisO ψ A B y f) = heisO ψ A B y (comb ψ A B c f)`. Introduce `A B c ha f y hy`. Establish `h` using `(GlobalTheory.HeisComb.main D ψ A B).2.1 (Finsupp.single y 1) c (fun x hx u hu => by`. Establish `hxy : x = y` using `Finset.mem_singleton.1 (Finsupp.support_single_subset hx)`. Substitute `hxy` using the available equality.
+
+Conclude with `GlobalTheory.HeisComb.symplO_half A B _ _ x u hreal horth hy (ha u hu)) f`. Rewrite `h` using `[comb_single_one, comb_single_one]`. Conclude with `h.symm`. Take `⟨⟨T₁, O₁, hT₁, hO₁, rfl⟩, ⟨T₂, O₂, hT₂, hO₂, rfl⟩⟩` from `hv`. Use `⟨⟨combL ψ _ _ c₁ ∘ₗ T₁, O₁, ?_, hO₁, rfl⟩, ⟨combL ψ _ _ c₂ ∘ₗ T₂, O₂, ?_, hO₂, rfl⟩⟩` and prove the remaining obligations.
+
+Conclude with `(GlobalTheory.LocModU.localModel_uniq_transport_exist D Q₀.k (ofSplit Q₀.q) _ _ _ _ Q₀.F.G₀ Q₀.F.G₁ ψ hψ).2.1 T₁ hT₁ (combL ψ _ _ c₁) (fun f hf => (GlobalTheory.HeisComb.main D ψ _ _).2.2.1 c₁ f hf hc₁ hψ) (fun f _ y hy => comm c₁ ha₁ f y hy)`. Conclude with `(GlobalTheory.LocModU.localModel_uniq_transport_exist D Q₀.k (ofSplit Q₀.q) _ _ _ _ Q₀.F.G₁ Q₀.F.G₂ ψ hψ).2.1 T₂ hT₂ (combL ψ _ _ c₂) (fun f hf => (GlobalTheory.HeisComb.main D ψ _ _).2.2.1 c₂ f hf hc₂ hψ) (fun f _ y hy => comm c₂ ha₂ f y hy)`.
+-/
 theorem vac_comb : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (σ : ℕ) (S : Dbl2 ψ σ) (Q₀ : QStep S) (c₁ : WO S.B.V S.J.W →₀ ℂ) (c₂ : WO S.J.W S.B'.V →₀ ℂ), IsFinComb c₁ → IsFinComb c₂ → Q₀.Away c₁ → Q₀.Away c₂ → ∀ f₁ f₂, IsThetaFunO ψ _ _ f₁ → IsThetaFunO ψ _ _ f₂ → Q₀.Vac f₁ f₂ → Q₀.Vac (comb ψ _ _ c₁ f₁) (comb ψ _ _ c₂ f₂) := by
   intro D ψ hψ σ S Q₀ c₁ c₂ hc₁ hc₂ ha₁ ha₂ f₁ f₂ _ _ hv
   obtain ⟨hee, hec, -⟩ := Q₀.q.split

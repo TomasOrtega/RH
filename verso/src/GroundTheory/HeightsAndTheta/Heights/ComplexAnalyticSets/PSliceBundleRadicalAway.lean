@@ -42,11 +42,17 @@ abbrev Tot := Localization.Away (uQuo J d q k)
 def toTot : MvPolynomial (Fin n) (MvPolynomial (Fin d × Fin n) ℂ) →+* Tot J d q k :=
   algebraMap _ _
 
+/- English proof (translation)
+The claim follows from `IsScalarTower.algebraMap_apply _ _ _ x`.
+-/
 theorem toTot_apply (x : MvPolynomial (Fin n) (MvPolynomial (Fin d × Fin n) ℂ)) :
     toTot J d q k x = algebraMap (Quo J d q) (Tot J d q k)
       (algebraMap (MvPolynomial (Fin n) (MvPolynomial (Fin d × Fin n) ℂ)) (Quo J d q) x) :=
   IsScalarTower.algebraMap_apply _ _ _ x
 
+/- English proof (translation)
+Rewrite using `[toTot_apply, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero]`.
+-/
 theorem toTot_eq_zero {x : MvPolynomial (Fin n) (MvPolynomial (Fin d × Fin n) ℂ)}
     (hx : x ∈ universalSliceIdeal J d q) : toTot J d q k x = 0 := by
   rw [toTot_apply, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero]
@@ -55,6 +61,9 @@ def quotToTot : (MvPolynomial (Fin n) ℂ ⧸ J) →+* Tot J d q k :=
   Ideal.Quotient.lift J ((toTot J d q k).comp (MvPolynomial.map C)) fun a ha =>
     toTot_eq_zero J d q k (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ ha))
 
+/- English proof (translation)
+Establish `e : MvPolynomial.map (C : ℂ →+* MvPolynomial (Fin d × Fin n) ℂ) (X k - C (q k)) = X k - C (C (q k))` using `by simp`. Rewrite using `[quotToTot, Ideal.Quotient.lift_mk, RingHom.comp_apply, e, toTot_apply]`. Conclude with `IsLocalization.Away.algebraMap_isUnit (S := Tot J d q k) (uQuo J d q k)`.
+-/
 theorem quotToTot_isUnit : IsUnit (quotToTot J d q k (Ideal.Quotient.mk J (X k - C (q k)))) := by
   have e : MvPolynomial.map (C : ℂ →+* MvPolynomial (Fin d × Fin n) ℂ) (X k - C (q k)) =
       X k - C (C (q k)) := by simp
@@ -65,6 +74,9 @@ def baseToTot : Base J q k →+* Tot J d q k :=
   IsLocalization.Away.lift (R := MvPolynomial (Fin n) ℂ ⧸ J) (S := Base J q k) (P := Tot J d q k)
     (Ideal.Quotient.mk J (X k - C (q k))) (g := quotToTot J d q k) (quotToTot_isUnit J d q k)
 
+/- English proof (translation)
+Simplify using `[baseToTot, toBase, quotToTot]`.
+-/
 theorem baseToTot_toBase (a : MvPolynomial (Fin n) ℂ) :
     baseToTot J d q k (toBase J q k a) = toTot J d q k (MvPolynomial.map C a) := by
   simp [baseToTot, toBase, quotToTot]
@@ -72,12 +84,22 @@ theorem baseToTot_toBase (a : MvPolynomial (Fin n) ℂ) :
 def backMap : MvPolynomial (Fin d × Fin n) (Base J q k) →+* Tot J d q k :=
   eval₂Hom (baseToTot J d q k) fun ij => toTot J d q k (C (X ij))
 
+/- English proof (translation)
+Simplify using `only [rowForm, map_sum, map_mul, backMap, eval₂Hom_X', eval₂Hom_C, baseToTot_toBase]`. Rewrite using `[← toTot_eq_zero J d q k (x := ∑ j, C (X (i, j)) * (X j - C (C (q j)))) (Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩))]`. Simplify using `[map_sum, map_mul, map_sub]`.
+-/
 theorem backMap_rowForm (i : Fin d) : backMap J d q k (rowForm J d q k i) = 0 := by
   simp only [rowForm, map_sum, map_mul, backMap, eval₂Hom_X', eval₂Hom_C, baseToTot_toBase]
   rw [← toTot_eq_zero J d q k (x := ∑ j, C (X (i, j)) * (X j - C (C (q j))))
     (Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩))]
   simp [map_sum, map_mul, map_sub]
 
+/- English proof (translation)
+Establish `hc : (backMap J d q k).comp (coeffMap J d q k) = (toTot J d q k).comp C`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[coeffMap, backMap, baseToTot_toBase]`. Introduce `ij`.
+
+Simplify using `only [RingHom.comp_apply, coeffMap, eval₂Hom_X', map_sub]`. Use `split_ifs`. Rewrite using `[map_mul, backMap_rowForm, mul_zero, sub_zero]`. Simplify using `[backMap]`. Simplify using `[backMap]`.
+
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify `RingHom.congr_fun hc a` using `[solveMap]`. Introduce `j`. Simplify using `[solveMap, backMap, baseToTot_toBase]`.
+-/
 theorem backMap_comp_solveMap : (backMap J d q k).comp (solveMap J d q k) = toTot J d q k := by
   have hc : (backMap J d q k).comp (coeffMap J d q k) = (toTot J d q k).comp C := by
     apply MvPolynomial.ringHom_ext
@@ -95,6 +117,9 @@ theorem backMap_comp_solveMap : (backMap J d q k).comp (solveMap J d q k) = toTo
   · intro j
     simp [solveMap, backMap, baseToTot_toBase]
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[solveMap, coeffMap]`. Introduce `j`. Simplify using `[solveMap]`.
+-/
 theorem coeffMap_comp_mapC :
     (solveMap J d q k).comp (MvPolynomial.map C) = C.comp (toBase J q k) := by
   apply MvPolynomial.ringHom_ext
@@ -103,6 +128,13 @@ theorem coeffMap_comp_mapC :
   · intro j
     simp [solveMap]
 
+/- English proof (translation)
+Establish `h : ∀ j, solveMap J d q k (C (X (i, j)) * (X j - C (C (q j)))) = (X (i, j) - if j = k then C (IsLocalization.Away.invSelf (Ideal.Quotient.mk J (X k - C (q k)))) * rowForm J d q k i else 0) * C (toBase J q k (X j - C (q j)))`. Introduce `j`. Use `RingHom.congr_fun (coeffMap_comp_mapC J d q k) (X j - C (q j))` as an intermediate fact. Establish `e : MvPolynomial.map (C : ℂ →+* MvPolynomial (Fin d × Fin n) ℂ) (X j - C (q j)) = X j - C (C (q j))` using `by simp`. Rewrite `this` using `[RingHom.comp_apply, RingHom.comp_apply, e]`.
+
+Rewrite using `[map_mul, this]`. Use `congr 1`. Rewrite using `[solveMap, eval₂Hom_C, coeffMap, eval₂Hom_X']`. Rewrite using `[map_sum, Finset.sum_congr rfl fun j _ => h j]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Rewrite using `[← rowForm, mul_assoc, mul_comm (rowForm J d q k i), ← mul_assoc, ← map_mul]`. Establish `hu : IsLocalization.Away.invSelf (Ideal.Quotient.mk J (X k - C (q k))) * toBase J q k (X k - C (q k)) = (1 : Base J q k)`. Rewrite using `[mul_comm]`. Conclude with `IsLocalization.Away.mul_invSelf (S := Base J q k) (Ideal.Quotient.mk J (X k - C (q k)))`. Rewrite using `[hu, map_one, one_mul, sub_self]`.
+-/
 theorem solveMap_gen (i : Fin d) :
     solveMap J d q k (∑ j, C (X (i, j)) * (X j - C (C (q j)))) = 0 := by
   have h : ∀ j, solveMap J d q k (C (X (i, j)) * (X j - C (C (q j)))) =
@@ -127,6 +159,11 @@ theorem solveMap_gen (i : Fin d) :
     exact IsLocalization.Away.mul_invSelf (S := Base J q k) (Ideal.Quotient.mk J (X k - C (q k)))
   rw [hu, map_one, one_mul, sub_self]
 
+/- English proof (translation)
+Apply `sup_le` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← RingHom.comp_apply, coeffMap_comp_mapC]`. Simplify using `[toBase, Ideal.Quotient.eq_zero_iff_mem.2 ha]`.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `solveMap_gen J d q k i`.
+-/
 theorem le_ker_solveMap : universalSliceIdeal J d q ≤ RingHom.ker (solveMap J d q k) := by
   apply sup_le
   · rw [Ideal.map_le_iff_le_comap]
@@ -139,6 +176,13 @@ theorem le_ker_solveMap : universalSliceIdeal J d q ≤ RingHom.ker (solveMap J 
 
 end SliceBundleRadicalAway
 
+/- English proof (translation)
+Introduce `n d J q hJ k f hf`. Establish `: IsReduced (MvPolynomial (Fin n) ℂ ⧸ J)` using `(Ideal.isRadical_iff_quotient_reduced J).1 hJ`. Take `⟨m, hm⟩` from `hf`. Establish `h0 : SliceBundleRadicalAway.solveMap J d q k f = 0`. Apply `IsNilpotent.eq_zero` to reduce the goal to its premises.
+
+Conclude with `⟨m, by rw [← map_pow]; exact SliceBundleRadicalAway.le_ker_solveMap J d q k hm⟩`. Establish `h1 : SliceBundleRadicalAway.toTot J d q k f = 0`. Rewrite using `[← SliceBundleRadicalAway.backMap_comp_solveMap J d q k, RingHom.comp_apply, h0, map_zero]`. Rewrite `h1` using `[SliceBundleRadicalAway.toTot_apply]`. Take `⟨⟨_, e, rfl⟩, he⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (SliceBundleRadicalAway.uQuo J d q k)) (SliceBundleRadicalAway.Tot J d q k) _).1 h1`.
+
+Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.Quotient.algebraMap_eq, map_mul, map_pow]`. Conclude with `he`.
+-/
 theorem SliceBundleRadicalAway.proof : SliceBundleRadicalAway.Statement := by
   intro n d J q hJ k f hf
   have : IsReduced (MvPolynomial (Fin n) ℂ ⧸ J) := (Ideal.isRadical_iff_quotient_reduced J).1 hJ

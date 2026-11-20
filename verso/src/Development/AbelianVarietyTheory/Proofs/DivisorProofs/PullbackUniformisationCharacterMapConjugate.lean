@@ -26,6 +26,11 @@ noncomputable section
 
 namespace GlobalTheory.EndPullChar
 
+/- English proof (translation)
+Introduce `R R' _ _ _ _ I I' hR hR' φ _hφ _hI D D' hD A A' G _ _ G' _ _ _hG _hG' U U' bc _hbc hU E E' hE`. Establish `hG : E'.aG ≫ bc.hom = bc.hom ≫ (Over.pullback (spMap φ)).map E.aG`. Use `GlobalTheory.PullLinear.ext_of_pullback (spMap φ) ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hE, Category.assoc, GlobalTheory.PullLinear.map_left_fst]`. Use `E'.homG` as an intermediate fact.
+
+Take `⟨E'', h₁, h₂, -⟩` from `GlobalTheory.UT.EndBaseChange.exists_end hD hU E E'.aG hG`. Establish `h₃` using `(GlobalTheory.EndCalc.congr_data hR' E'' E' h₁).2`. Introduce `χ`. Rewrite using `[← h₂ χ, h₃]`.
+-/
 theorem pull_char_eq : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (I : Ideal R) (I' : Ideal R'), AdmBase R I → AdmBase R' I' → ∀ (φ : R →+* R'), Function.Injective φ → I.map φ ≤ I' → ∀ (D : DegData R I) (D' : DegData R' I') (hD : IsPullDeg φ D.toPre D'.toPre) (A : PolAV (Sp (FractionRing R))) (A' : PolAV (Sp (FractionRing R'))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ (U : Unif I D A G) (U' : Unif I' D' A' G') (bc : G' ≅ (Over.pullback (spMap φ)).obj G), IsMonHom bc.hom → IsPullUnif φ hD bc U U' → ∀ (E : EndU U.toUnifPre) (E' : EndU U'.toUnifPre), E'.aG.left ≫ bc.hom.left ≫ pullback.fst G.hom (spMap φ) = bc.hom.left ≫ pullback.fst G.hom (spMap φ) ≫ E.aG.left → ∀ χ, hD.xe (E'.h χ) = E.h (hD.xe χ) := by
   intro R R' _ _ _ _ I I' hR hR' φ _hφ _hI D D' hD A A' G _ _ G' _ _ _hG _hG' U U' bc _hbc hU E E' hE
   have hG : E'.aG ≫ bc.hom = bc.hom ≫ (Over.pullback (spMap φ)).map E.aG := by

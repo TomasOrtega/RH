@@ -15,6 +15,11 @@ noncomputable section
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `W hW hPW`. Establish `h1 : 0 ≤ geomDeg W M 1` using `hN K ι P P0 M hP0 hs W hW hPW`. Establish `h2` using `hD K ι W 1 (fun _ => M) hW (fun _ => hs.1)`. Establish `h3 : geomDeg W M 1 = (genDeg W 1 M.a : ℝ)`. Rewrite using `[geomDeg, genDeg]`.
+
+Use `h2 using 2` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Conclude with `h3 ▸ h1` after adjusting the coercions.
+-/
 theorem nefOnGenericDeg_of_semipos (hN : NefOnGenericOfSemipos.Statement)
     (hD : GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement) {P P0 : Ideal (MRing ι)} {M : HermLine ι}
     (hP0 : P0 ≤ P) (hs : IsSemipositiveRel P0 P M) : NefOnGenericDeg P M.a := by
@@ -28,6 +33,9 @@ theorem nefOnGenericDeg_of_semipos (hN : NefOnGenericOfSemipos.Statement)
     rfl
   exact_mod_cast h3 ▸ h1
 
+/- English proof (translation)
+Establish `hH : ContinuousOn (fsH ι).h {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `(GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs (ι := ι) 1).continuousOn`. Conclude with `(hM.continuousOn.zpow₀ k fun z hz => Or.inl (M.pos z hz).ne').mul (hH.zpow₀ (-1) fun z hz => Or.inl ((fsH ι).pos z hz).ne')`.
+-/
 theorem continuousOn_zcomb_fsH {M : HermLine ι} (hM : IsSmoothHerm M) (k : ℤ) :
     ContinuousOn (HermLine.zcomb M (fsH ι) k (-1)).h {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   have hH : ContinuousOn (fsH ι).h {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} :=
@@ -35,6 +43,11 @@ theorem continuousOn_zcomb_fsH {M : HermLine ι} (hM : IsSmoothHerm M) (k : ℤ)
   exact (hM.continuousOn.zpow₀ k fun z hz => Or.inl (M.pos z hz).ne').mul
     (hH.zpow₀ (-1) fun z hz => Or.inl ((fsH ι).pos z hz).ne')
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ _ y D M P0 hD1 har hb hM`. Take `⟨k, e, hk, he0, heQ⟩` from `hK K ι Ω y D M.a hD1 har hb (nefOnGenericDeg_of_semipos hN hD hM.normalForm_baseLattice_le_dualSpan_sup_line hM.semipos) hM.big`. Take `⟨n, hn, hne⟩` from `hC K ι Ω y _ 1 e heQ`. Establish `ha : (HermLine.zcomb M (fsH ι) k (-1)).a = (k : ℤ) • M.a - 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[HermLine.zcomb, fsH, HermLine.ofMetrics]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨C, hC0, hB⟩` from `hS K ι Ω y (HermLine.zcomb M (fsH ι) k (-1)) 1 ((n : Ω) * e) (continuousOn_zcomb_fsH hM.semipos.1 k) (by rw [ha]; exact hne)`. Conclude with `⟨k, (n : Ω) * e, C, hk, hC0, mul_ne_zero (Nat.cast_ne_zero.mpr (by omega)) he0, hne, hB⟩`.
+-/
 theorem KodairaSection.proof (hN : NefOnGenericOfSemipos.Statement)
     (hD : GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement) (hK : KodairaGeneric.Statement)
     (hC : ChartDenominator.Statement) (hS : SectionSupBound.Statement) : KodairaSection.Statement := by

@@ -15,6 +15,9 @@ def ThmIUniquePosDim.Statement : Prop :=
     IsFamily I → IsFamily J → ∀ (P : Ideal (MRing ι)) (n : ℕ) (L : Fin n → HermLine ι),
       1 ≤ n → IsArithVar P n → AllSmooth L → I P n L = J P n L
 
+/- English proof (translation)
+The claim follows from `IsIntersectionFamily.isRFamily ((IsFamily.equiv I).1 h)`.
+-/
 theorem IsFamily.isRFamily {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {I : Family ι}
     (h : IsFamily I) : IsRFamily I :=
   IsIntersectionFamily.isRFamily ((IsFamily.equiv I).1 h)

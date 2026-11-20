@@ -16,6 +16,9 @@ open scoped Matrix
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.Mem.summable_norm_absNorm_cpow K (s := (r : ℂ)) (by simpa using hr))`. Use `h.congr fun I => ?_` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_natCast, ← Complex.ofReal_neg, ← Complex.ofReal_cpow (Nat.cast_nonneg _), Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (Nat.cast_nonneg _) _)]`.
+-/
 theorem summable_absNorm_rpow_neg (K : Type) [Field K] [NumberField K] {r : ℝ} (hr : 1 < r) :
     Summable (fun I : Ideal (𝓞 K) => (Ideal.absNorm I : ℝ) ^ (-r)) := by
   have h := (GlobalTheory.Mem.summable_norm_absNorm_cpow K (s := (r : ℂ)) (by simpa using hr))
@@ -23,6 +26,19 @@ theorem summable_absNorm_rpow_neg (K : Type) [Field K] [NumberField K] {r : ℝ}
   rw [← Complex.ofReal_natCast, ← Complex.ofReal_neg, ← Complex.ofReal_cpow (Nat.cast_nonneg _),
     Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (Nat.cast_nonneg _) _)]
 
+/- English proof (translation)
+Use `set τ : (Fin m → K) ⧸ L → Ideal (𝓞 K) := fun x => Ideal.torsionOf (𝓞 K) ((Fin m → K) ⧸ L) x with hτ`. Establish `hg` using `summable_absNorm_rpow_neg K hr`. Establish `hfib : ∀ 𝔞 ∈ S.image τ, ∑ x ∈ S.filter (fun x => τ x = 𝔞), (Ideal.absNorm (τ x) : ℝ) ^ (-((m : ℝ) + r)) ≤ (Ideal.absNorm 𝔞 : ℝ) ^ (-r)`. Introduce `𝔞 h𝔞`. Take `⟨x₀, -, rfl⟩` from `Finset.mem_image.mp h𝔞`.
+
+Establish `hne : τ x₀ ≠ ⊥` using `GlobalTheory.T.lattice_quotient_torsion_nonzero K m L hL x₀`. Take `⟨hfin, hcard⟩` from `GlobalTheory.T.torsion_card_le_absNorm_pow K m L hL (τ x₀) hne`. Establish `hN : (0 : ℝ) < (Ideal.absNorm (τ x₀) : ℝ)`. Establish `: Ideal.absNorm (τ x₀) ≠ 0` using `fun h => hne (Ideal.absNorm_eq_zero_iff.mp h)`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions.
+
+Establish `hc : ((S.filter (fun x => τ x = τ x₀)).card : ℝ) ≤ (Ideal.absNorm (τ x₀) : ℝ) ^ m`. Establish `hinj : (S.filter (fun x => τ x = τ x₀)).card ≤ Nat.card {x : (Fin m → K) ⧸ L // ∀ a ∈ τ x₀, a • x = 0}` using `by haveI := Fintype.ofFinite {x : (Fin m → K) ⧸ L // ∀ a ∈ τ x₀, a • x = 0}`. Rewrite using `[Nat.card_eq_fintype_card, ← Fintype.card_coe]`. Use `Fintype.card_le_of_injective (fun x => ⟨x.1, fun a ha => ?_⟩) (fun x y h => ?_)` and prove the remaining obligations. Establish `hx` using `(Finset.mem_filter.mp x.2).2`.
+
+Rewrite `ha` using `[← hx]`. Conclude with `(Ideal.mem_torsionOf_iff _ _).mp ha`. Establish `h' : (x : (Fin m → K) ⧸ L) = y` using `congrArg (fun z : {x : (Fin m → K) ⧸ L // ∀ a ∈ τ x₀, a • x = 0} => z.1) h`. Conclude with `Subtype.ext h'`. Conclude with `hinj.trans hcard` after adjusting the coercions.
+
+Establish `hsum : ∑ x ∈ S.filter (fun x => τ x = τ x₀), (Ideal.absNorm (τ x) : ℝ) ^ (-((m : ℝ) + r)) = ((S.filter (fun x => τ x = τ x₀)).card : ℝ) * (Ideal.absNorm (τ x₀) : ℝ) ^ (-((m : ℝ) + r))`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => (Ideal.absNorm (τ x₀) : ℝ) ^ (-((m : ℝ) + r))) (fun x hx => by rw [(Finset.mem_filter.mp hx).2])]`. Simplify using the standard rewrite rules. Rewrite using `[hsum]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hN]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_torsion_le (K : Type) [Field K] [NumberField K] (m : ℕ)
     (L : Submodule (𝓞 K) (Fin m → K)) (hL : IsLat L) {r : ℝ} (hr : 1 < r)
     (S : Finset ((Fin m → K) ⧸ L)) :
@@ -76,6 +92,9 @@ theorem sum_torsion_le (K : Type) [Field K] [NumberField K] (m : ℕ)
     _ ≤ zetaR K r :=
         hg.sum_le_tsum _ (fun I _ => Real.rpow_nonneg (Nat.cast_nonneg _) _)
 
+/- English proof (translation)
+Establish `hnn : ∀ x : (Fin m → K) ⧸ L, 0 ≤ (Ideal.absNorm (Ideal.torsionOf (𝓞 K) ((Fin m → K) ⧸ L) x) : ℝ) ^ (-((m : ℝ) + r))` using `fun x => Real.rpow_nonneg (Nat.cast_nonneg _) _`. Establish `hs` using `summable_of_sum_le hnn (sum_torsion_le K m L hL hr)`. Conclude with `⟨hs, hs.tsum_le_of_sum_le (sum_torsion_le K m L hL hr)⟩`.
+-/
 theorem sum_torsion (K : Type) [Field K] [NumberField K] (m : ℕ)
     (L : Submodule (𝓞 K) (Fin m → K)) (hL : IsLat L) (r : ℝ) (hr : 1 < r) :
     Summable (fun x : (Fin m → K) ⧸ L =>

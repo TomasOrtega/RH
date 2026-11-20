@@ -34,9 +34,15 @@ section transport
 
 variable {E Ω L : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [Field L] [NumberField L]
 
+/- English proof (translation)
+The claim follows from `(Valuation.valuationSubring.integers B.valuation).isIntegral_iff_v_le_one.mp (IsIntegral.tower_top hy)`.
+-/
 theorem val_le_one_of_isIntegral (B : ValuationSubring Ω) {y : Ω} (hy : IsIntegral ℤ y) : B.valuation y ≤ 1 :=
   (Valuation.valuationSubring.integers B.valuation).isIntegral_iff_v_le_one.mp (IsIntegral.tower_top hy)
 
+/- English proof (translation)
+Apply `val_le_one_of_isIntegral` to reduce the goal to its premises. Establish `hx : IsIntegral ℤ (x : AlgebraicClosure L)` using `x.2`. Conclude with `hx.map (k.toRingHom.toIntAlgHom)`.
+-/
 theorem val_k_le_one (k : AlgebraicClosure L ≃+* Ω) (B : ValuationSubring Ω) (x : 𝓞 (AlgebraicClosure L)) :
     B.valuation (k (x : AlgebraicClosure L)) ≤ 1 := by
   apply val_le_one_of_isIntegral
@@ -53,6 +59,11 @@ def primeOf (k : AlgebraicClosure L ≃+* Ω) (B : ValuationSubring Ω) : Ideal 
 instance primeOf_isPrime (k : AlgebraicClosure L ≃+* Ω) (B : ValuationSubring Ω) : (primeOf k B).IsPrime :=
   Ideal.comap_isPrime _ _
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, normV]`. Use `Nat.card_congr (Ideal.quotientEquiv w.asIdeal (mapPl j w).asIdeal (RingOfIntegers.mapRingEquiv j) ?_).toEquiv` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[Ideal.map_comap_of_equiv, Ideal.mem_comap]`. Take `⟨x, rfl⟩` from `(RingOfIntegers.mapRingEquiv j).surjective y`.
+
+Rewrite using `[mem_mapPl]`. Simplify using the standard rewrite rules.
+-/
 theorem normV_eq_absNorm (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) :
     normV w = Ideal.absNorm (mapPl j w).asIdeal := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply, normV]
@@ -69,11 +80,17 @@ section charpolyInv
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Establish `h1 : (1 : K[X]).reverse = 1` using `by simp only [reverse, natDegree_one, reflect_one, pow_zero]`. Establish `hX : (X : K[X]).reverse = 1` using `by simpa [h1] using reverse_X_mul (1 : K[X])`. Rewrite using `[sub_eq_add_neg, ← C_neg, reverse_add_C, hX, natDegree_X, pow_one, C_neg, neg_mul, ← sub_eq_add_neg]`.
+-/
 theorem reverse_X_sub_C (μ : K) : (X - C μ : K[X]).reverse = 1 - C μ * X := by
   have h1 : (1 : K[X]).reverse = 1 := by simp only [reverse, natDegree_one, reflect_one, pow_zero]
   have hX : (X : K[X]).reverse = 1 := by simpa [h1] using reverse_X_mul (1 : K[X])
   rw [sub_eq_add_neg, ← C_neg, reverse_add_C, hX, natDegree_X, pow_one, C_neg, neg_mul, ← sub_eq_add_neg]
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp only [Multiset.map_zero, Multiset.prod_zero, reverse, natDegree_one, reflect_one, pow_zero]`. Consider the case `cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, reverse_mul_of_domain, ih, reverse_X_sub_C, Multiset.map_cons, Multiset.prod_cons]`.
+-/
 theorem reverse_prod_X_sub_C (s : Multiset K) :
     (s.map fun μ => X - C μ).prod.reverse = (s.map fun μ => 1 - C μ * X).prod := by
   induction s using Multiset.induction_on with
@@ -82,10 +99,28 @@ theorem reverse_prod_X_sub_C (s : Multiset K) :
     rw [Multiset.map_cons, Multiset.prod_cons, reverse_mul_of_domain, ih, reverse_X_sub_C, Multiset.map_cons,
       Multiset.prod_cons]
 
+/- English proof (translation)
+Rewrite using `[C_neg, neg_mul, mul_sub, ← C_mul, mul_inv_cancel₀ h, C_1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem one_sub_C_mul_X (μ : K) (h : μ ≠ 0) : (1 - C μ * X : K[X]) = C (-μ) * (X - C μ⁻¹) := by
   rw [C_neg, neg_mul, mul_sub, ← C_mul, mul_inv_cancel₀ h, C_1]
   ring
 
+/- English proof (translation)
+Establish `hdet : M.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det M).mp hM).ne_zero`. Use `set c : K := (s.map fun μ => -μ).prod with hc`. Establish `hcoeff : M.charpoly.coeff 0 = c`. Rewrite using `[hs, coeff_zero_eq_eval_zero, eval_multiset_prod, Multiset.map_map, hc]`. Use `congr 1`.
+
+Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `μ _`. Simplify using the standard rewrite rules. Establish `hdetc : M.det = (-1) ^ n * c`. Rewrite using `[Matrix.det_eq_sign_charpoly_coeff, hcoeff, Fintype.card_fin]`.
+
+Establish `hc0 : c ≠ 0`. Introduce `h0`. Rewrite `hdetc` using `[h0, mul_zero]`. Conclude with `hdet hdetc`. Establish `hμ : ∀ μ ∈ s, μ ≠ 0`.
+
+Introduce `μ hμ h0`. Apply `hc0` to reduce the goal to its premises. Rewrite using `[hc]`. Apply `Multiset.prod_eq_zero` to reduce the goal to its premises. Rewrite using `[Multiset.mem_map]`.
+
+Conclude with `⟨μ, hμ, by rw [h0, neg_zero]⟩`. Establish `hrev : M.charpolyRev = C c * (s.map fun μ => X - C μ⁻¹).prod`. Rewrite using `[← Matrix.reverse_charpoly, hs, reverse_prod_X_sub_C]`. Rewrite using `[Multiset.map_congr rfl (fun μ hm => one_sub_C_mul_X μ (hμ μ hm)), Multiset.prod_map_mul, hc]`. Use `congr 1`.
+
+Rewrite using `[map_multiset_prod, Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[Matrix.charpoly_inv M hM, hrev, Ring.inverse_eq_inv, hdetc, Fintype.card_fin]`. Establish `hpm : ((-1 : K) ^ n) ≠ 0` using `pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)`. Establish `hscal : (-1 : K) ^ n * ((-1 : K) ^ n * c)⁻¹ * c = 1`.
+
+Rewrite using `[mul_inv, show (-1 : K) ^ n * (((-1 : K) ^ n)⁻¹ * c⁻¹) * c = ((-1 : K) ^ n * ((-1 : K) ^ n)⁻¹) * (c⁻¹ * c) by ring, mul_inv_cancel₀ hpm, inv_mul_cancel₀ hc0, one_mul]`. Establish `key : (-1 : K[X]) ^ n * C (((-1 : K) ^ n * c)⁻¹) * (C c * (s.map fun μ => X - C μ⁻¹).prod) = C ((-1 : K) ^ n * ((-1 : K) ^ n * c)⁻¹ * c) * (s.map fun μ => X - C μ⁻¹).prod`. Rewrite using `[map_mul, map_mul, map_pow, map_neg, C_1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, hscal, C_1, one_mul]`.
+-/
 theorem charpoly_inv_of_eq {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (hM : IsUnit M) (s : Multiset K)
     (hs : M.charpoly = (s.map fun μ => X - C μ).prod) :
     (M⁻¹).charpoly = (s.map fun μ => X - C μ⁻¹).prod := by
@@ -127,12 +162,20 @@ theorem charpoly_inv_of_eq {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (hM : IsUnit
     ring
   rw [key, hscal, C_1, one_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.coe_units_inv]`. Conclude with `charpoly_inv_of_eq _ (Units.isUnit g) s hs`.
+-/
 theorem charpoly_GL_inv {n : ℕ} (g : GL (Fin n) K) (s : Multiset K)
     (hs : (g : Matrix (Fin n) (Fin n) K).charpoly = (s.map fun μ => X - C μ).prod) :
     ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).charpoly = (s.map fun μ => X - C μ⁻¹).prod := by
   rw [Matrix.coe_units_inv]
   exact charpoly_inv_of_eq _ (Units.isUnit g) s hs
 
+/- English proof (translation)
+Set `g' : GL (Fin n) L` to `Units.map (f.mapMatrix : Matrix (Fin n) (Fin n) K →+* Matrix (Fin n) (Fin n) L).toMonoidHom g`. Establish `hg : g'⁻¹ = Units.map (f.mapMatrix : Matrix (Fin n) (Fin n) K →+* Matrix (Fin n) (Fin n) L).toMonoidHom g⁻¹` using `(map_inv _ g).symm`. Establish `h1 : ((g'⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).charpoly = (s.map fun μ => X - C μ).prod`. Rewrite using `[hg, Units.coe_map]`. Use `show (f.mapMatrix ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)).charpoly = _`.
+
+Rewrite using `[RingHom.mapMatrix_apply, Matrix.charpoly_map, hs]`. Establish `h2` using `charpoly_GL_inv g'⁻¹ s h1`. Rewrite `h2` using `[inv_inv]`. Rewrite using `[← h2, ← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+-/
 theorem charpoly_map_of_inv {L : Type} [Field L] {n : ℕ} (f : K →+* L) (g : GL (Fin n) K) (s : Multiset L)
     (hs : ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).charpoly.map f = (s.map fun μ => X - C μ).prod) :
     ((g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).charpoly.map f = (s.map fun μ => X - C μ⁻¹).prod := by
@@ -187,11 +230,19 @@ def PurityN : Prop :=
 
 end gal
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsAlgClosure.equivOfEquiv (AlgebraicClosure L) Ω j.symm, fun x => by rw [IsAlgClosure.equivOfEquiv_algebraMap, RingEquiv.symm_apply_apply]⟩`.
+-/
 theorem exists_frame {E Ω L : Type} [Field E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] [Field L] (j : E ≃+* L) :
     ∃ k : AlgebraicClosure L ≃+* Ω, FrameOver j k :=
   ⟨IsAlgClosure.equivOfEquiv (AlgebraicClosure L) Ω j.symm, fun x => by
     rw [IsAlgClosure.equivOfEquiv_algebraMap, RingEquiv.symm_apply_apply]⟩
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Use `show v.asIdeal ∣ _`.
+
+Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+-/
 theorem placesOver_finite (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p ≠ 0) : (placesOver E p).Finite := by
   have h0 : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0 := by
     rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
@@ -201,6 +252,9 @@ theorem placesOver_finite (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p
   rw [Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]
   exact hv
 
+/- English proof (translation)
+Simplify using `[Formalism.MainNotions.N.isoLoc, Formalism.MainNotions.N.spehLoc, D.naut.lpSum_zero, D.naut.lpTw_zero]`.
+-/
 theorem isoLoc_single (D : D7) {a : ℕ} (π : D.naut.CG a) (w : PlE D.host) :
     Formalism.MainNotions.N.isoLoc D.nd D.naut [⟨a, π, 1⟩] w = D.naut.locG π w := by
   simp [Formalism.MainNotions.N.isoLoc, Formalism.MainNotions.N.spehLoc, D.naut.lpSum_zero, D.naut.lpTw_zero]

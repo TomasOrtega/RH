@@ -17,6 +17,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.SymReadEx
 open GlobalTheory.LocMod.PinEx GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u hW _ a l`. Take `⟨ψ₀, hψ₀, -, π, hπ, hH, hχ⟩` from `W.Q.charW.base.grp.levels`. Establish `hlev` using `W.Q.charW.base.lev`. Establish `loc : ∀ PP : (_root_.GlobalTheory.Fam.pk_z W).Pg, ∃ S : SymData (l PP).k (l PP).s D.R.k, (ofSplit (l PP).q).IsChar (_root_.GlobalTheory.Fam.pk_z W).ψ S.ψ ∧ (∀ j, 1 ≤ j → j ≤ D.R.m → (ofSplit (l PP).q).IsComp (Lift.chrStep (_root_.GlobalTheory.Fam.pk_z W).mu0 (_root_.GlobalTheory. …`. Introduce `PP`.
+
+Take `⟨⟨ψk, hch, hcond⟩, -⟩` from `_root_.GlobalTheory.WeilCondUnif.cond_unif_alt W u hW a PP.1 (Or.inl PP.2) (l PP)`. Take `⟨ϖ, hϖ, hres⟩` from `exists_unif (l PP).q (l PP).idem hcond (hψ₀ PP.1 PP.2)`. Choose the witnesses or unpack the hypotheses as in `⟨ρ, hρ⟩ : ∃ ρ, (l PP).s + 1 = 2 * ρ + 1 := by`. Take `⟨b, hb⟩` from `D.R.m_even`. Use `(l PP).hs` as an intermediate fact.
+
+Conclude with `⟨b - 1, by omega⟩`. Take `⟨P, hP'⟩` from `GlobalTheory.SymLevelExists.exists_isSymLevel (l PP).k ψk hcond ϖ hϖ ρ D.R.k ((l PP).s + 1)`. Use `choose μ hμ using fun j => GlobalTheory.LocMod.Witness.exists_isComp (ofSplit (l PP).q) (Lift.chrStep (_root_.GlobalTheory.Fam.pk_z W).mu0 (_root_.GlobalTheory.Fam.pk_z W).eta j).1⁻¹`. Use `⟨⟨ψk, ϖ, ρ, P, fun j => if 1 ≤ j ∧ j ≤ D.R.m then μ j else 1, fun j => ?_, hcond, hϖ, hρ, hP'⟩, hch, fun j h1 h2 => ?_, hres⟩` and prove the remaining obligations. Use `split_ifs with h`.
+
+Conclude with `tame_step (_root_.GlobalTheory.Fam.pk_z W).toLevCh hlev (l PP).q PP.2 (l PP).idem h.1 h.2 (hμ j)`. Conclude with `fun _ _ => rfl`. Simplify using `only [if_pos (And.intro h1 h2)]`. Conclude with `hμ j`. Use `choose S h1 h2 h3 using loc`.
+
+Use `⟨S, h1, h2, fun x => (hH x).trans ?_, fun x hx y hxy => ?_⟩` and prove the remaining obligations. Conclude with `⟨fun h PP => (red_sym (l PP) (S PP) hπ (x PP) (reord π x PP) fun _ _ => rfl).1.2 (h PP (Set.mem_univ _)), fun h PP _ => (red_sym (l PP) (S PP) hπ (x PP) (reord π x PP) fun _ _ => rfl).1.1 (h PP)⟩`. Use `(hχ x hx ((hH _).1 hx)).trans ?_` and prove the remaining obligations. Use `(MonoidHom.finset_prod_apply _ _ _).trans (Finset.prod_congr rfl fun PP _ => Units.ext ?_)` and prove the remaining obligations. Conclude with `((red_sym (l PP) (S PP) hπ (x PP) (reord π x PP) fun _ _ => rfl).2 _ (h3 PP) _ (hxy PP)).symm`.
+-/
 theorem exists_symData_symRead : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word), _root_.GlobalTheory.Fam.PackageHypotheses W → GlobalTheory.Core.Mi.IsTypePlaces (_root_.GlobalTheory.Fam.pk_z W).Pg → ∀ (a : XGeo D) (l : ∀ PP : (_root_.GlobalTheory.Fam.pk_z W).Pg, LocX a (_root_.GlobalTheory.Fam.pk_z W).βX PP.1), ∃ S : ∀ PP, SymData (l PP).k (l PP).s D.R.k, _root_.GlobalTheory.Fam.SymReadAlt W l S := by
   intro D L hT Gi Gl Kc Yd cX ex W u hW _ a l
   obtain ⟨ψ₀, hψ₀, -, π, hπ, hH, hχ⟩ := W.Q.charW.base.grp.levels

@@ -18,14 +18,25 @@ namespace PositivityTheory.Rg.Rsw.L.LThBdd
 variable {D : D7} {n : ℕ} {W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D}
   {μ : Measure (Mx D W.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ W.rank n)}
 
+/- English proof (translation)
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem eval_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → schwartzA θ W.rank n) (X : Mx D W.rank n) :
     (∑ i ∈ s, c i • f i).1 X = ∑ i ∈ s, c i * (f i).1 X := by
   simp only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Conclude with `hω.unip (nb x) x.1 (hnb x) Φ X`.
+-/
 theorem omega_nb (hω : IsWeilSch ψ χ θ W μ ω) {nb : hermA D n → G D n} (hnb : IsNMap nb) (x : hermA D n)
     (Φ : schwartzA θ W.rank n) (X : Mx D W.rank n) : (ω (nb x) Φ).1 X = pch ψ x.1 (ip W X X) * Φ.1 X := by
   exact hω.unip (nb x) x.1 (hnb x) Φ X
 
+/- English proof (translation)
+Substitute `hΨ'` using the available equality. Simplify using `only [map_sum, map_smul]`. Rewrite using `[eval_sum, show cutF ψ C (ip W X X) = ∑ x ∈ C.s, C.co x * pch ψ x.1 (ip W X X) from rfl, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hcomm : nb x * g = g * nb x` using `PositivityTheory.Rg.Rsw.L.LThBdd.commute_of_atPts (PositivityTheory.Rg.Rsw.L.LThBdd.nb_mem_atPts hnb x (C.inf x hx) (C.off x hx)) hg`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, ← hcomm, map_mul, Module.End.mul_apply, omega_nb hω hnb x, mul_assoc]`.
+-/
 theorem omega_cut (hω : IsWeilSch ψ χ θ W μ ω) {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D}
     (C : Cut D n v) (Ψ Ψ' : schwartzA θ W.rank n) (hΨ' : Ψ' = ∑ x ∈ C.s, C.co x • ω (nb x) Ψ) {g : G D n}
     (hg : GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v g = 1) (X : Mx D W.rank n) :
@@ -41,6 +52,11 @@ theorem omega_cut (hω : IsWeilSch ψ χ θ W μ ω) {nb : hermA D n → G D n} 
   rw [← Module.End.mul_apply, ← map_mul, ← hcomm, map_mul, Module.End.mul_apply,
     omega_nb hω hnb x, mul_assoc]
 
+/- English proof (translation)
+Establish `hk` using `PositivityTheory.Rg.Rsw.L.LThBdd.nb_mem_KAt hnb o ho`. Establish `hfix : ω (nb o) (ω g Ψ) = ω g Ψ`. Rewrite using `[← Module.End.mul_apply, ← map_mul, PositivityTheory.Rg.Rsw.L.LThBdd.commute_of_atPts (Subgroup.mem_inf.mp hk).2 hg, map_mul, Module.End.mul_apply, hΨ _ hk]`. Establish `h` using `omega_nb hω hnb o (ω g Ψ) X`. Rewrite `h` using `[hfix]`.
+
+Conclude with `mul_right_cancel₀ hX (h.symm.trans (one_mul _).symm)`.
+-/
 theorem pch_eq_one (hω : IsWeilSch ψ χ θ W μ ω) {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D}
     (Ψ : schwartzA θ W.rank n) (hΨ : ∀ k ∈ KAt D n v, ω k Ψ = Ψ) {g : G D n}
     (hg : GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v g = 1) (X : Mx D W.rank n) (hX : (ω g Ψ).1 X ≠ 0)
@@ -54,6 +70,9 @@ theorem pch_eq_one (hω : IsWeilSch ψ χ θ W μ ω) {nb : hermA D n → G D n}
   rw [hfix] at h
   exact mul_right_cancel₀ hX (h.symm.trans (one_mul _).symm)
 
+/- English proof (translation)
+Rewrite using `[show GlobalTheory.StdUnn.inner W (rat ξ : Mx D W.rank n) (rat ξ) = GlobalTheory.MixModel.adj (rat ξ) * (GlobalTheory.MixModel.rat (Formalism.BasicNotions.HSpace.gram W) * rat ξ) from rfl, ← GlobalTheory.MixModel.rat_conjTranspose, ← GlobalTheory.MixModel.rat_mul, ← GlobalTheory. …`. Both sides reduce to the same expression.
+-/
 theorem inner_rat' (ξ : Matrix (Fin W.rank) (Fin n) D.host.E) :
     GlobalTheory.StdUnn.inner W (rat ξ : Mx D W.rank n) (rat ξ) = rat (gramQ W ξ) := by
   rw [show GlobalTheory.StdUnn.inner W (rat ξ : Mx D W.rank n) (rat ξ) =
@@ -62,6 +81,11 @@ theorem inner_rat' (ξ : Matrix (Fin W.rank) (Fin n) D.host.E) :
     ← GlobalTheory.MixModel.cT_sig]
   rfl
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.MixModel.adj_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = GlobalTheory.StdUnn.inner W (rat ξ : Mx D W.rank n) (rat ξ) := by`. Rewrite using `[GlobalTheory.MixModel.mt_unitary]`.
+
+Both sides reduce to the same expression. Use `_ = rat (gramQ W ξ) := inner_rat' ξ`.
+-/
 theorem ip_mt_rat (h : GA D W) (ξ : Matrix (Fin W.rank) (Fin n) D.host.E) :
     ip W (mm (mt W h⁻¹) (rat ξ)) (mm (mt W h⁻¹) (rat ξ)) = rat (gramQ W ξ) := by
   calc ip W (mm (mt W h⁻¹) (rat ξ)) (mm (mt W h⁻¹) (rat ξ))
@@ -75,9 +99,19 @@ theorem ip_mt_rat (h : GA D W) (ξ : Matrix (Fin W.rank) (Fin n) D.host.E) :
         rfl
     _ = rat (gramQ W ξ) := inner_rat' ξ
 
+/- English proof (translation)
+Conclude with `(Matrix.rank_mul_le_right _ _).trans (Matrix.rank_mul_le_right _ _)`.
+-/
 theorem rank_gramQ_le (ξ : Matrix (Fin W.rank) (Fin n) D.host.E) : (gramQ W ξ).rank ≤ ξ.rank := by
   exact (Matrix.rank_mul_le_right _ _).trans (Matrix.rank_mul_le_right _ _)
 
+/- English proof (translation)
+Rewrite using `[omega_cut hω hnb C Ψ Ψ' hΨ' hg, ip_mt_rat]`. Distinguish the cases in `h0 : (ω g Ψ).1 (mm (mt W h⁻¹) (rat ξ)) = 0`. Rewrite using `[h0, mul_zero]`. Establish `hq : gramQ W ξ = ξᴴ * (Formalism.BasicNotions.HSpace.gram W * ξ)`. Rewrite using `[← GlobalTheory.MixModel.cT_sig]`.
+
+Both sides reduce to the same expression. Establish `hherm : ((gramQ W ξ).map ⇑(D.sp.cm.sig)).transpose = gramQ W ξ`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (gramQ W ξ) = gramQ W ξ`. Rewrite using `[GlobalTheory.MixModel.cT_sig, hq, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, GlobalTheory.MixModel.gram_conjTranspose, Matrix.mul_assoc]`. Establish `hlt : (gramQ W ξ).rank < W.rank` using `(rank_gramQ_le ξ).trans_lt (lt_of_le_of_ne (Matrix.rank_le_height ξ) hξ)`.
+
+Establish `hcut` using `hC (⟨gramQ W ξ, hherm⟩ : PositivityTheory.GramSchwartzFunctions.HermE D n) hlt (fun o ho => by`. Use `pch_eq_one hω hnb Ψ hΨ hg _ h0 o ho` as an intermediate fact. Rewrite using `[ip_mt_rat] at this)` and apply the resulting hypothesis. Rewrite using `[show cutF ψ C (rat (gramQ W ξ)) = 0 from hcut, zero_mul]`.
+-/
 theorem term_zero (hω : IsWeilSch ψ χ θ W μ ω) {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D}
     (C : Cut D n v) (hC : C.Kills ψ W.rank) (Ψ Ψ' : schwartzA θ W.rank n) (hΨ : ∀ k ∈ KAt D n v, ω k Ψ = Ψ)
     (hΨ' : Ψ' = ∑ x ∈ C.s, C.co x • ω (nb x) Ψ) {g : G D n} (hg : GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v g = 1)
@@ -100,6 +134,13 @@ theorem term_zero (hω : IsWeilSch ψ χ θ W μ ω) {nb : hermA D n → G D n} 
       rwa [ip_mt_rat] at this)
     rw [show cutF ψ C (rat (gramQ W ξ)) = 0 from hcut, zero_mul]
 
+/- English proof (translation)
+Establish `hfun : ∀ ξ : Matrix (Fin W.rank) (Fin n) D.host.E, ((ω (nb x * g)) Ψ').1 (mm (mt W h⁻¹) (rat ξ)) = pch ψ x.1 (ip W (mm (mt W h⁻¹) (rat ξ)) (mm (mt W h⁻¹) (rat ξ))) * (ω g Ψ').1 (mm (mt W h⁻¹) (rat ξ))`. Introduce `ξ`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `omega_nb hω hnb x _ _`. Establish `hsub : Function.support (fun ξ : Matrix (Fin W.rank) (Fin n) D.host.E => pch ψ x.1 (ip W (mm (mt W h⁻¹) (rat ξ)) (mm (mt W h⁻¹) (rat ξ))) * (ω g Ψ').1 (mm (mt W h⁻¹) (rat ξ))) ⊆ {y | y.rank = W.rank}`.
+
+Introduce `ξ hξ`. Assume the negation of the conclusion as `hne`. Apply `hξ` to reduce the goal to its premises. Use `show _ * _ = 0`. Rewrite using `[term_zero hω hnb C hC Ψ Ψ' hΨ hΨ' hg h ξ hne, mul_zero]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem theta_nb (hω : IsWeilSch ψ χ θ W μ ω) {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D}
     (C : Cut D n v) (hC : C.Kills ψ W.rank) (Ψ Ψ' : schwartzA θ W.rank n) (hΨ : ∀ k ∈ KAt D n v, ω k Ψ = Ψ)
     (hΨ' : Ψ' = ∑ x ∈ C.s, C.co x • ω (nb x) Ψ) (x : hermA D n) {g : G D n}
@@ -129,6 +170,11 @@ theorem theta_nb (hω : IsWeilSch ψ χ θ W μ ω) {nb : hermA D n → G D n} (
             (ω g Ψ').1 (mm (mt W h⁻¹) (rat ξ)) := tsum_congr hfun
     _ = _ := (tsum_subtype_eq_of_support_subset hsub).symm
 
+/- English proof (translation)
+Substitute `hΨ'` using the available equality. Simplify using `only [map_sum, map_smul]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hc` using `PositivityTheory.Rg.Rsw.L.LThBdd.conj_mem_KAt hnb C hk hkv hx`. Use `congr 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show nb x * ((nb x)⁻¹ * k * nb x) = k * nb x by group, map_mul, Module.End.mul_apply]`. Use `_ = ω (nb x) (ω ((nb x)⁻¹ * k * nb x) Ψ) := by rw [map_mul, Module.End.mul_apply]`. Use `_ = ω (nb x) Ψ := by rw [hΨ _ hc]`.
+-/
 theorem fix_open {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D} (C : Cut D n v) (Ψ Ψ' : schwartzA θ W.rank n)
     (hΨ : ∀ k ∈ KAt D n v, ω k Ψ = Ψ) (hΨ' : Ψ' = ∑ x ∈ C.s, C.co x • ω (nb x) Ψ) {k : G D n}
     (hk : k ∈ Ucut nb v C.s) (hkv : k ∈ atPts D.sp.cm.sig (Jst D n) {v}) : ω k Ψ' = Ψ' := by

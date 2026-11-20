@@ -19,6 +19,15 @@ section Val
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {z : Spec (CommRingCat.of ℂ) ⟶ X}
   {r : ℕ}
 
+/- English proof (translation)
+Use `choose _ s hs hs' using hv`. Set `S : Matrix (Fin r) (Fin r) (X.presheaf.stalk (centre z))` to `Matrix.of s`. Set `g : X.presheaf.stalk (centre z) →+* Ω` to `genMap ξ ⟨centre z, hz⟩`. Set `φ : X.presheaf.stalk (centre z) →+* ℂ` to `(Scheme.stalkClosedPointTo z).hom`. Establish `e1 : S.map g = A` using `by ext p q; exact hs p q`.
+
+Establish `e2 : S.map φ = h` using `by ext p q; exact hs' p q`. Establish `hu : IsUnit S.det` using `CxVal.isUnit (z := z) _ (by show φ S.det ≠ 0`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, e2]`. Conclude with `hd)`. Establish `i1 : (S⁻¹).map g * A = 1`.
+
+Rewrite using `[← e1, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `i2 : (S⁻¹).map φ * h = 1`. Rewrite using `[← e2, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `⟨(Matrix.isUnit_det_of_left_inverse i1).ne_zero, fun p q => ⟨hz, S⁻¹ p q, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.inv_eq_left_inv i1]`.
+
+Both sides reduce to the same expression. Rewrite using `[Matrix.inv_eq_left_inv i2]`. Both sides reduce to the same expression.
+-/
 theorem val_inv {A : Matrix (Fin r) (Fin r) Ω} {h : Matrix (Fin r) (Fin r) ℂ} (hz : genPt ξ ⤳ centre z)
     (hv : ∀ p q, ValAt ξ z (A p q) (h p q)) (hd : h.det ≠ 0) :
     A.det ≠ 0 ∧ ∀ p q, ValAt ξ z (A⁻¹ p q) (h⁻¹ p q) := by
@@ -39,6 +48,15 @@ theorem val_inv {A : Matrix (Fin r) (Fin r) Ω} {h : Matrix (Fin r) (Fin r) ℂ}
   · rw [Matrix.inv_eq_left_inv i1]; rfl
   · rw [Matrix.inv_eq_left_inv i2]; rfl
 
+/- English proof (translation)
+Use `choose s hs using hA`. Use `choose s' hs' using hA'`. Set `S : Matrix (Fin r) (Fin r) (X.presheaf.stalk (centre z))` to `Matrix.of s`. Set `S' : Matrix (Fin r) (Fin r) (X.presheaf.stalk (centre z))` to `Matrix.of s'`. Set `g : X.presheaf.stalk (centre z) →+* Ω` to `genMap ξ ⟨centre z, hz⟩`.
+
+Set `φ : X.presheaf.stalk (centre z) →+* ℂ` to `(Scheme.stalkClosedPointTo z).hom`. Establish `e1 : S.map g = A` using `by ext p q; exact hs p q`. Establish `e2 : S'.map g = A'` using `by ext p q; exact hs' p q`. Establish `e3 : S' * S = 1`. Establish `: (S' * S).map g = (1 : Matrix (Fin r) (Fin r) (X.presheaf.stalk (centre z))).map g`.
+
+Rewrite using `[Matrix.map_mul, e1, e2, e, Matrix.map_one _ (map_zero _) (map_one _)]`. Use extensionality with `p q`. Conclude with `hξ.inj ⟨centre z, hz⟩ (congrFun (congrFun this p) q)`. Establish `e4 : S'.map φ * S.map φ = 1`. Rewrite using `[← Matrix.map_mul, e3, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Conclude with `⟨S.map φ, (Matrix.isUnit_det_of_left_inverse e4).ne_zero, fun p q => ⟨hz, s p q, hs p q, rfl⟩⟩`.
+-/
 theorem val_of_reg {A A' : Matrix (Fin r) (Fin r) Ω} (hξ : IsCptGen ξ) (hz : genPt ξ ⤳ centre z)
     (hA : ∀ p q, A p q ∈ regAt ξ ⟨centre z, hz⟩) (hA' : ∀ p q, A' p q ∈ regAt ξ ⟨centre z, hz⟩) (e : A' * A = 1) :
     ∃ h : Matrix (Fin r) (Fin r) ℂ, h.det ≠ 0 ∧ ∀ p q, ValAt ξ z (A p q) (h p q) := by
@@ -65,11 +83,19 @@ section Lin
 
 variable {Ω : Type} [Field Ω] {V : Type} [AddCommGroup V] [Module Ω V] {r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `p q`. Conclude with `congrFun (GrNorm.coeff_eq_of_li hc (c := fun l => A l q) (d := fun l => B l q) (congrFun e q)) p`.
+-/
 theorem colFrame_inj {c : Fin r → V} (hc : LinearIndependent Ω c) {A B : Matrix (Fin r) (Fin r) Ω}
     (e : colFrame c A = colFrame c B) : A = B := by
   ext p q
   exact congrFun (GrNorm.coeff_eq_of_li hc (c := fun l => A l q) (d := fun l => B l q) (congrFun e q)) p
 
+/- English proof (translation)
+Use `Fintype.linearIndependent_iff.2 fun g hg => ?_` and prove the remaining obligations. Establish `h1 : ∑ l, (A *ᵥ g) l • c l = ∑ l, (0 : Fin r → Ω) l • c l`. Rewrite using `[show ∑ l, (0 : Fin r → Ω) l • c l = 0 by simp, ← hg]`. Simplify using `only [colFrame, Matrix.mulVec, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`. Establish `h2` using `GrNorm.coeff_eq_of_li hc h1`. Conclude with `congrFun (Matrix.eq_zero_of_mulVec_eq_zero hA h2)`.
+-/
 theorem colFrame_li {c : Fin r → V} (hc : LinearIndependent Ω c) {A : Matrix (Fin r) (Fin r) Ω} (hA : A.det ≠ 0) :
     LinearIndependent Ω (colFrame c A) := by
   refine Fintype.linearIndependent_iff.2 fun g hg => ?_
@@ -81,16 +107,27 @@ theorem colFrame_li {c : Fin r → V} (hc : LinearIndependent Ω c) {A : Matrix 
   have h2 := GrNorm.coeff_eq_of_li hc h1
   exact congrFun (Matrix.eq_zero_of_mulVec_eq_zero hA h2)
 
+/- English proof (translation)
+The claim follows from `Submodule.sum_mem _ fun l _ => (Submodule.span A (Set.range c)).smul_mem (⟨T l k, hT l k⟩ : A) (Submodule.subset_span ⟨l, rfl⟩)`.
+-/
 theorem colFrame_mem (A : Subring Ω) {c : Fin r → V} {T : Matrix (Fin r) (Fin r) Ω} (hT : ∀ p q, T p q ∈ A)
     (k : Fin r) : colFrame c T k ∈ Submodule.span A (Set.range c) :=
   Submodule.sum_mem _ fun l _ =>
     (Submodule.span A (Set.range c)).smul_mem (⟨T l k, hT l k⟩ : A) (Submodule.subset_span ⟨l, rfl⟩)
 
+/- English proof (translation)
+Use `choose t ht using fun k => (Submodule.mem_span_range_iff_exists_fun A).1 (h k)`. Conclude with `⟨Matrix.of fun p q => (t q p : Ω), fun p q => (t q p).2, funext fun k => (ht k).symm⟩`.
+-/
 theorem exists_colFrame (A : Subring Ω) {c b : Fin r → V} (h : ∀ k, b k ∈ Submodule.span A (Set.range c)) :
     ∃ T : Matrix (Fin r) (Fin r) Ω, (∀ p q, T p q ∈ A) ∧ b = colFrame c T := by
   choose t ht using fun k => (Submodule.mem_span_range_iff_exists_fun A).1 (h k)
   exact ⟨Matrix.of fun p q => (t q p : Ω), fun p q => (t q p).2, funext fun k => (ht k).symm⟩
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : k < l`. Rewrite using `[hU h, zero_smul]`.
+
+Conclude with `zero_mem _`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, lt_of_le_of_lt (show (l : ℕ) ≤ k from not_lt.1 h) hk, rfl⟩)`.
+-/
 theorem step_le {b : Fin r → V} {U : Matrix (Fin r) (Fin r) Ω} (hU : U.BlockTriangular id) (s : ℕ) :
     flagStep Ω (colFrame b U) s ≤ flagStep Ω b s := by
   refine Submodule.span_le.2 ?_
@@ -100,6 +137,9 @@ theorem step_le {b : Fin r → V} {U : Matrix (Fin r) (Fin r) Ω} (hU : U.BlockT
   · rw [hU h, zero_smul]; exact zero_mem _
   · exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, lt_of_le_of_lt (show (l : ℕ) ≤ k from not_lt.1 h) hk, rfl⟩)
 
+/- English proof (translation)
+Use `le_antisymm (step_le hU s) ?_` and prove the remaining obligations. Use `letI := Matrix.invertibleOfIsUnitDet U hd.isUnit`. Establish `h` using `step_le (b := colFrame b U) (blockTriangular_inv_of_blockTriangular hU) s`. Rewrite `h` using `[← colFrame_mul, Matrix.mul_nonsing_inv _ hd.isUnit, colFrame_one]`. Then use the resulting hypothesis.
+-/
 theorem step_eq {b : Fin r → V} {U : Matrix (Fin r) (Fin r) Ω} (hU : U.BlockTriangular id) (hd : U.det ≠ 0) (s : ℕ) :
     flagStep Ω (colFrame b U) s = flagStep Ω b s := by
   refine le_antisymm (step_le hU s) ?_
@@ -107,6 +147,11 @@ theorem step_eq {b : Fin r → V} {U : Matrix (Fin r) (Fin r) Ω} (hU : U.BlockT
   have h := step_le (b := colFrame b U) (blockTriangular_inv_of_blockTriangular hU) s
   rwa [← colFrame_mul, Matrix.mul_nonsing_inv _ hd.isUnit, colFrame_one] at h
 
+/- English proof (translation)
+Establish `e : colFrame b U k - U k k • b k = ∑ l ∈ Finset.univ.erase k, U l k • b l`. Rewrite using `[colFrame, ← Finset.add_sum_erase _ _ (Finset.mem_univ k)]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun l hl => ?_` and prove the remaining obligations.
+
+Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hl) with h | h` into its components or cases. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, h, rfl⟩)`. Rewrite using `[hU h, zero_smul]`. Conclude with `zero_mem _`.
+-/
 theorem sub_mem_step {b : Fin r → V} {U : Matrix (Fin r) (Fin r) Ω} (hU : U.BlockTriangular id) (k : Fin r) :
     colFrame b U k - U k k • b k ∈ flagStep Ω b k := by
   have e : colFrame b U k - U k k • b k = ∑ l ∈ Finset.univ.erase k, U l k • b l := by
@@ -118,6 +163,9 @@ theorem sub_mem_step {b : Fin r → V} {U : Matrix (Fin r) (Fin r) Ω} (hU : U.B
   · exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, h, rfl⟩)
   · rw [hU h, zero_smul]; exact zero_mem _
 
+/- English proof (translation)
+Establish `hm : ∀ k : Fin r, b k ∈ flagStep Ω b₀ (k + 1)` using `fun k => h _ ▸ Submodule.subset_span ⟨k, Nat.lt_succ_self _, rfl⟩`. Use `choose d hd hd' using fun k => GrNorm.exists_coeff_of_mem_flagStep (hm k)`. Conclude with `⟨Matrix.of fun p q => d q p, fun p q hpq => hd q p hpq, funext hd'⟩`.
+-/
 theorem exists_upper {b b₀ : Fin r → V} (h : ∀ s, flagStep Ω b s = flagStep Ω b₀ s) :
     ∃ U : Matrix (Fin r) (Fin r) Ω, U.BlockTriangular id ∧ b = colFrame b₀ U := by
   have hm : ∀ k : Fin r, b k ∈ flagStep Ω b₀ (k + 1) := fun k =>
@@ -125,6 +173,9 @@ theorem exists_upper {b b₀ : Fin r → V} (h : ∀ s, flagStep Ω b s = flagSt
   choose d hd hd' using fun k => GrNorm.exists_coeff_of_mem_flagStep (hm k)
   exact ⟨Matrix.of fun p q => d q p, fun p q hpq => hd q p hpq, funext hd'⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[colFrame, map_sum, hj]`.
+-/
 theorem map_colFrame {Ω' V' : Type} [Field Ω'] [AddCommGroup V'] [Module Ω' V'] {i : Ω →+* Ω'} {j : V →+ V'}
     (hj : ∀ (a : Ω) (e : V), j (a • e) = i a • j e) (c : Fin r → V) (T : Matrix (Fin r) (Fin r) Ω) :
     (fun k => j (colFrame c T k)) = colFrame (fun k => j (c k)) (T.map i) := by
@@ -138,6 +189,13 @@ section Frame
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {z : Spec (CommRingCat.of ℂ) ⟶ X}
   {r : ℕ} {V : Type} [AddCommGroup V] [Module Ω V]
 
+/- English proof (translation)
+Take `⟨hA, hi⟩` from `val_inv hz hv hd`. Establish `r1 : ∀ p q, A p q ∈ regAt ξ ⟨centre z, hz⟩` using `fun p q => let ⟨_, s, hs, _⟩ := hv p q`. Use the proof step `⟨s, hs⟩`. Establish `r2 : ∀ p q, A⁻¹ p q ∈ regAt ξ ⟨centre z, hz⟩` using `fun p q => let ⟨_, s, hs, _⟩ := hi p q`. Use the proof step `⟨s, hs⟩`.
+
+Use `⟨colFrame_li hc.1 hA, hc.2.trans (le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_))⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `colFrame_mem _ (c := colFrame c A) r2 k` as an intermediate fact. Rewrite `this` using `[← colFrame_mul, Matrix.mul_nonsing_inv _ hA.isUnit, colFrame_one]`. Then use the resulting hypothesis. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Conclude with `colFrame_mem _ r1 k`.
+-/
 theorem frame_change {L : Lat ξ V} (hz : genPt ξ ⤳ centre z) {c : Fin r → V} (hc : L.IsFrameAt c ⟨centre z, hz⟩)
     {A : Matrix (Fin r) (Fin r) Ω} {h : Matrix (Fin r) (Fin r) ℂ} (hv : ∀ p q, ValAt ξ z (A p q) (h p q))
     (hd : h.det ≠ 0) : L.IsFrameAt (colFrame c A) ⟨centre z, hz⟩ := by
@@ -151,6 +209,15 @@ theorem frame_change {L : Lat ξ V} (hz : genPt ξ ⤳ centre z) {c : Fin r → 
   · rintro _ ⟨k, rfl⟩
     exact colFrame_mem _ r1 k
 
+/- English proof (translation)
+Take `⟨W, hW, b, hflag, hb'⟩` from `hb ⟨centre z, hz⟩ trivial`. Establish `hfr` using `hb' ⟨centre z, hz⟩ trivial hW`. Take `⟨U, hU, eU⟩` from `exists_upper hflag`. Take `⟨A, rA, eA⟩` from `exists_colFrame (regAt ξ ⟨centre z, hz⟩) (c := c) (b := b) fun k => by`. Rewrite using `[← hc.2, hfr.2]`.
+
+Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Take `⟨A', rA', eA'⟩` from `exists_colFrame (regAt ξ ⟨centre z, hz⟩) (c := b) (b := c) fun k => by`. Rewrite using `[← hfr.2, hc.2]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Establish `e1 : A' * A = 1` using `colFrame_inj hfr.1 (by rw [colFrame_mul, ← eA', ← eA, colFrame_one])`.
+
+Establish `e2 : A = Q * U` using `colFrame_inj hc.1 (by rw [colFrame_mul, ← hQ, ← eU, ← eA])`. Take `⟨h, hd, hv⟩` from `val_of_reg hξ hz rA rA' e1`. Use `⟨U, h, hU, fun h0 => ?_, hd, e2 ▸ hv⟩` and prove the remaining obligations. Use `(Matrix.isUnit_det_of_left_inverse e1).ne_zero` as an intermediate fact. Rewrite `this` using `[e2, Matrix.det_mul, h0, mul_zero]`.
+
+Conclude with `this rfl`.
+-/
 theorem exists_adapt {L : Lat ξ V} (hξ : IsCptGen ξ) (hz : genPt ξ ⤳ centre z) {c b₀ : Fin r → V}
     (hc : L.IsFrameAt c ⟨centre z, hz⟩) (hb : L.IsFlagVBOn Set.univ b₀) {Q : Matrix (Fin r) (Fin r) Ω}
     (hQ : b₀ = colFrame c Q) : ∃ (U : Matrix (Fin r) (Fin r) Ω) (h : Matrix (Fin r) (Fin r) ℂ),
@@ -179,6 +246,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {K K' : Type} [Fintype K] [Fintype K'] {J : K → Type} {J' : K' → Type}
   {x : (Σ k, J k) → Ω} {x' : (Σ k, J' k) → Ω'}
 
+/- English proof (translation)
+Take `⟨V, _, _, ⟨Mz⟩⟩` from `lieModel_exists A.X A.t.G ℂ z`. Take `⟨v, hv', hΓ⟩` from `hG`. Use `choose u hu using fun p => Mz.onto (v p) (GrNorm.tan_of_valAt (hv' p))`. Use `⟨fun q => Mz.pt (∑ p, h p q • u p), fun q => ?_, fun p q => ?_⟩` and prove the remaining obligations. Conclude with `HodgeMetric.valAt_sum_smul A.M Mz (A.all _) Finset.univ b u (fun p => by rw [hu]; exact hv' p) (fun p => T p q) (fun p => h p q) (fun p => hv p q)`.
+
+Conclude with `HodgePull.gram_comb Mz u Γ p (fun p q => by rw [hu, hu]; exact hΓ p q) (HodgePull.hodgeInnerProduct_unique A.m) h p q`.
+-/
 theorem gram_change (A : HodgeCpt Y S x) {z : Spec (CommRingCat.of ℂ) ⟶ A.X} {r : ℕ} {b : Fin r → A.Li}
     {Γ : Matrix (Fin r) (Fin r) ℂ} (hG : A.M.GramAt A.t.PP.L z b Γ) {T : Matrix (Fin r) (Fin r) Ω}
     {h : Matrix (Fin r) (Fin r) ℂ} (hv : ∀ p q, ValAt A.ξ z (T p q) (h p q)) :
@@ -191,6 +263,19 @@ theorem gram_change (A : HodgeCpt Y S x) {z : Spec (CommRingCat.of ℂ) ⟶ A.X}
       (fun p => T p q) (fun p => h p q) (fun p => hv p q)
   · exact HodgePull.gram_comb Mz u Γ p (fun p q => by rw [hu, hu]; exact hΓ p q) (HodgePull.hodgeInnerProduct_unique A.m) h p q
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `Chg.exists_sabMap A A' pr ho.2.1`. Establish `hpt : ∀ e, (A'.M.pt (j e)).left ≫ m.φ = Spec.map (CommRingCat.ofHom (dualMap i)) ≫ (A.M.pt e).left`. Introduce `e`. Establish `h1` using `ho.2.2.2.2 e`. Rewrite `h1` using `[hm]`.
+
+Use `A.m.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Simplify `h1` using `only [Category.assoc]`. Establish `w1` using `Over.w (A'.M.pt (j e))`. Establish `w2` using `Over.w (A.M.pt e)`. Establish `w3 : m.φ ≫ A.t.G.hom = A'.t.G.hom ≫ pr` using `m.cart.1.w`.
+
+Establish `hd : A'.ξ ≫ pr = Spec.map (CommRingCat.ofHom i) ≫ A.ξ` using `ho.1`. Rewrite using `[Category.assoc, Category.assoc, w3, ← Category.assoc, w1, w2]`. Simplify using `only [Over.mk_hom]`. Rewrite using `[Category.assoc, hd, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 2`.
+
+Conclude with `congrArg CommRingCat.ofHom (FlagPull.dualMap_algebraMap i).symm`. Take `⟨v, hv, hΓ⟩` from `hG`. Establish `hp : genPt A.ξ ⤳ pr (centre z)` using `A.all _`. Establish `hL : ∀ k, b k ∈ A.M.lat ⟨pr (centre z), hp⟩` using `fun k => by`. Take `⟨_, u, hu, -⟩` from `hv k`.
+
+Conclude with `Submodule.subset_span ⟨u, hu⟩`. Use `choose w w' hw hw' hww using fun k => HodgePull.value_pull (M' := A'.M) (j := j) ho.1 m.cart hpt (A'.all _) hp (hL k)`. Use `⟨w', hw', fun p q => ?_⟩` and prove the remaining obligations. Establish `e : ∀ k, w k = v k` using `fun k => (hw k).unique A.tie.gen (hv k)`. Use `((GlobalTheory.T.hodge_inner_product_pullback_unique E H A'.X A.X A'.t A.t pr m z (w' p) (w' q) (w p) (w q) (hww p) (hww q)).1 _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[e, e]`. Conclude with `hΓ p q`.
+-/
 theorem gram_pull {A : HodgeCpt Y S x} {A' : HodgeCpt Y S x'} {pr : A'.X ⟶ A.X} {i : Ω →+* Ω'} {j : A.Li →+ A'.Li}
     (ho : HodgeOver A' A pr i j) {z : Spec (CommRingCat.of ℂ) ⟶ A'.X} {r : ℕ} {b : Fin r → A.Li}
     {Γ : Matrix (Fin r) (Fin r) ℂ} (hG : A.M.GramAt A.t.PP.L (z ≫ pr) b Γ) :
@@ -224,6 +309,9 @@ theorem gram_pull {A : HodgeCpt Y S x} {A' : HodgeCpt Y S x'} {pr : A'.X ⟶ A.X
   rw [e, e]
   exact hΓ p q
 
+/- English proof (translation)
+Establish `e : colFrame b (Q * U) = colFrame b₀ U` using `by rw [colFrame_mul, ← hQ]`. Use `⟨A.all _, colFrame b₀ U, hᴴ * Γ * h, step_eq hU dU, e ▸ frame_change _ hb hv hd, sub_mem_step hU k, e ▸ gram_change A hG hv, hP.conjTranspose_mul_mul_same ?_, rfl⟩` and prove the remaining obligations. Conclude with `Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det h).2 hd.isUnit)`.
+-/
 theorem grNorm_of (A : HodgeCpt Y S x) {z : Spec (CommRingCat.of ℂ) ⟶ A.X} {r : ℕ} {L : Lat A.ξ A.Li}
     {b b₀ : Fin r → A.Li} (hb : L.IsFrameAt b ⟨centre z, A.all _⟩) {Γ : Matrix (Fin r) (Fin r) ℂ}
     (hG : A.M.GramAt A.t.PP.L z b Γ) (hP : Γ.PosDef) {Q U : Matrix (Fin r) (Fin r) Ω} (hQ : b₀ = colFrame b Q)

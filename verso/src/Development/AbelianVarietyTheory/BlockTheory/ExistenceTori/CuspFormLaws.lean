@@ -51,6 +51,9 @@ def autRt (V : HSpace E r) (h : GA F V) : AutQ F V → AutQ F V :=
     rw [QuotientGroup.rightRel_apply] at hab ⊢
     simpa [mul_assoc] using hab
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem autRt_mk (V : HSpace E r) (h g : GA F V) : autRt F V h (autMk F V g) = autMk F V (g * h) := rfl
 
 def IsAutProb (V : HSpace E r) (ν : Measure (AutQ F V)) : Prop :=
@@ -60,6 +63,9 @@ def FinVol (V : HSpace E r) : Prop := ∃ ν, IsAutProb F V ν
 
 def onQ (V : HSpace E r) (φ : GA F V → ℂ) (q : AutQ F V) : ℂ := φ (Quotient.out q)
 
+/- English proof (translation)
+Establish `e : (QuotientGroup.rightRel (ratG F V)) g (Quotient.out (autMk F V g))` using `Quotient.exact (Quotient.out_eq (autMk F V g)).symm`. Rewrite `e` using `[QuotientGroup.rightRel_apply]`. Rewrite using `[← h _ e g, inv_mul_cancel_right, onQ]`.
+-/
 theorem onQ_mk (V : HSpace E r) (φ : GA F V → ℂ) (h : ∀ γ ∈ ratG F V, ∀ g, φ (γ * g) = φ g) (g : GA F V) :
     onQ F V φ (autMk F V g) = φ g := by
   have e : (QuotientGroup.rightRel (ratG F V)) g (Quotient.out (autMk F V g)) :=
@@ -67,6 +73,11 @@ theorem onQ_mk (V : HSpace E r) (φ : GA F V → ℂ) (h : ∀ γ ∈ ratG F V, 
   rw [QuotientGroup.rightRel_apply] at e
   rw [← h _ e g, inv_mul_cancel_right, onQ]
 
+/- English proof (translation)
+Use `⟨Measure.dirac (autMk F _ 1), inferInstanceAs (IsProbabilityMeasure (Measure.dirac _)), fun h s _ => ?_⟩` and prove the remaining obligations. Establish `: autRt F (HSpace.std E 0) h = id`. Use function extensionality and compare the values at `q`. Take `⟨g, rfl⟩` from `Quotient.exists_rep q`. Establish `e : g * h = g` using `Prod.ext (Subtype.ext (Units.ext (Subsingleton.elim _ _))) (Subtype.ext (Units.ext (Subsingleton.elim _ _)))`.
+
+Conclude with `congrArg (autMk F _) e`. Rewrite using `[this, Set.preimage_id]`.
+-/
 example : FinVol F (HSpace.std E 0) := by
   refine ⟨Measure.dirac (autMk F _ 1), inferInstanceAs (IsProbabilityMeasure (Measure.dirac _)), fun h s _ => ?_⟩
   have : autRt F (HSpace.std E 0) h = id := by

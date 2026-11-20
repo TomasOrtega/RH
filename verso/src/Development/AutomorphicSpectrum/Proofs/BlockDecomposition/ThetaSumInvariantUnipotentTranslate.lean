@@ -14,16 +14,27 @@ namespace GlobalTheory.CompanionTheory.ThetaInv
 
 variable {D : D7}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Algebra.trace (AF D.host.F) (AE D) ((1 : AF D.host.F) ⊗ₜ[D.host.F] e) = _`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+-/
 theorem trA_incA (e : D.host.E) :
     trA (incA D e) = algebraMap D.host.F (AF D.host.F) (Algebra.trace D.host.F D.host.E e) := by
   change Algebra.trace (AF D.host.F) (AE D) ((1 : AF D.host.F) ⊗ₜ[D.host.F] e) = _
   rw [Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]
 
+/- English proof (translation)
+Rewrite using `[halfTr, trA_incA, map_mul]`.
+-/
 theorem halfTr_incA (e : D.host.E) :
     halfTr (incA D e) =
       algebraMap D.host.F (AF D.host.F) (1 / 2 * Algebra.trace D.host.F D.host.E e) := by
   rw [halfTr, trA_incA, map_mul]
 
+/- English proof (translation)
+Establish `h : (b.map (incA D) ⬝ inner V (ξ.map (incA D)) (ξ.map (incA D)) : Mx D n n) = (b * (ξᴴ * (V.gram * ξ))).map (incA D)`. Express the relevant statement in the definitionally equal form `(rat b ⬝ (adj (rat ξ) ⬝ (gA V ⬝ rat ξ)) : Mx D n n) = rat (b * (ξᴴ * (V.gram * ξ)))`. Rewrite using `[rat_mul, rat_mul, rat_mul, rat_conjTranspose, gA]`. Establish `ht : ∀ M : Matrix (Fin n) (Fin n) D.host.E, Matrix.trace (M.map (incA D)) = incA D (Matrix.trace M)` using `fun M => by`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]`.
+
+Rewrite using `[h, ht, halfTr_incA]`. Conclude with `hψ.2.2.1 _`.
+-/
 theorem psi_unip_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {n : ℕ} (V : HSp D)
     (b : Matrix (Fin n) (Fin n) D.host.E) (ξ : Matrix (Fin V.rank) (Fin n) D.host.E) :
     ψ (halfTr (Matrix.trace (b.map (incA D) ⬝ inner V (ξ.map (incA D)) (ξ.map (incA D)) : Mx D n n))) = 1 := by
@@ -37,6 +48,9 @@ theorem psi_unip_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F �
   rw [h, ht, halfTr_incA]
   exact hψ.2.2.1 _
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω hS g b hg Φ`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[hS.2.2.2.2.2.2.2.unip g (b.map (incA D)) hg Φ (ξ.map (incA D)), psi_unip_rat hS.2.2.1, one_mul]`.
+-/
 theorem theta_unip : ∀ (D : D7) (n : ℕ) (V : HSp D) ψ χ θ μ ω, HidaSetting D n V ψ χ θ μ ω →
     ∀ (g : G D n) (b : Matrix (Fin n) (Fin n) D.host.E), mat g = blk4 1 (b.map (incA D)) 0 1 →
     ∀ Φ : schwartzA θ V.rank n,

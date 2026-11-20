@@ -3,6 +3,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZMir.W
 
 namespace GlobalTheory.CompanionTheory.AdmDict
 
+/- English proof (translation)
+Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv h hh`. Simplify using `using hv ⟨h, hh⟩`. Introduce `hv h`.
+
+Simplify using `using hv h h.2`.
+-/
 theorem fixed_eq_fixedVectors {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (K : Subgroup G) :
     GlobalTheory.PRep.fixed ρ K = GroundTheory.Automorphic.fixedVectors ρ K := by
@@ -13,6 +18,13 @@ theorem fixed_eq_fixedVectors {G V : Type} [Group G] [AddCommGroup V] [Module �
   · intro hv h
     simpa using hv h h.2
 
+/- English proof (translation)
+Introduce `G V _ _ _ _ _ ρ`. Establish `hs : GlobalTheory.PRep.IsSmooth ρ ↔ GroundTheory.Automorphic.IsSmooth ρ` using `Iff.rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨hs.1 h1, fun K hc ho => ?_⟩` and prove the remaining obligations.
+
+Use `h2 K ho hc` as an intermediate fact. Rewrite `this` using `[fixed_eq_fixedVectors]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩`. Use `⟨hs.2 h1, fun K ho hc => ?_⟩` and prove the remaining obligations. Rewrite using `[fixed_eq_fixedVectors]`.
+
+Conclude with `h2 K hc ho`.
+-/
 theorem isAdmissible_iff : ∀ {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V), GlobalTheory.PRep.IsAdmissible ρ ↔ GroundTheory.Automorphic.IsAdmissible ρ := by
   intro G V _ _ _ _ _ ρ
   have hs : GlobalTheory.PRep.IsSmooth ρ ↔ GroundTheory.Automorphic.IsSmooth ρ := Iff.rfl

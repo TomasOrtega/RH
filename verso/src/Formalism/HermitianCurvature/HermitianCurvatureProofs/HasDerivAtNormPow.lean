@@ -8,6 +8,17 @@ namespace Formalism.FourierDecayAlt.P.GaugeNormPower
 
 open Formalism.QuantumDeterminants
 
+/- English proof (translation)
+Establish `hz' : ‖z‖ ≠ 0` using `norm_ne_zero_iff.mpr hz`. Establish `hline : HasDerivAt (fun t : ℝ => z + t • v) v 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const v).const_add z`. Establish `hsq : HasDerivAt (fun t : ℝ => ‖z + t • v‖ ^ 2) (2 * (v * conj z).re) 0`. Use `hline.norm_sq` as an intermediate fact.
+
+Simplify `this` using `[Complex.inner]`. Establish `h0 : (fun t : ℝ => ‖z + t • v‖ ^ 2) 0 ≠ 0` using `by simpa using pow_ne_zero 2 hz'`. Establish `hsqrt` using `hsq.sqrt h0`. Establish `hn : (fun t : ℝ => √(‖z + t • v‖ ^ 2)) = fun t => ‖z + t • v‖`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[Real.sqrt_sq (norm_nonneg _)]`. Rewrite `hsqrt` using `[hn]`. Establish `hv : (n : ℝ) * ‖z + (0 : ℝ) • v‖ ^ (n - 1) * (2 * (v * conj z).re / (2 * √(‖z + (0 : ℝ) • v‖ ^ 2))) = (n : ℝ) * ‖z‖ ^ n * ((v * conj z).re / ‖z‖ ^ 2)`. Simplify using `only [zero_smul, add_zero, Real.sqrt_sq (norm_nonneg _)]`. Break down `n with _ | m` into its components or cases.
+
+Simplify using the standard rewrite rules. Simplify using `only [Nat.add_sub_cancel]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hp` using `(hsqrt.pow n).congr_deriv hv`. Conclude with `hp`.
+-/
 theorem hasDerivAt_normPow (z v : ℂ) (hz : z ≠ 0) (n : ℕ) :
     HasDerivAt (fun t : ℝ => ‖z + t • v‖ ^ n)
       ((n : ℝ) * ‖z‖ ^ n * ((v * conj z).re / ‖z‖ ^ 2)) 0 := by
@@ -34,6 +45,13 @@ theorem hasDerivAt_normPow (z v : ℂ) (hz : z ≠ 0) (n : ℕ) :
   have hp := (hsqrt.pow n).congr_deriv hv
   exact hp
 
+/- English proof (translation)
+Establish `h` using `HasDerivAt.fun_finsetProd (u := Finset.univ) (f := fun a (t : ℝ) => ‖c a + t • (Pi.single l v : Fin r → ℂ) a‖ ^ n a) (fun a _ => hasDerivAt_normPow (c a) ((Pi.single l v : Fin r → ℂ) a) (hc a) (n a))`. Establish `hv : (∑ i, (∏ j ∈ Finset.univ.erase i, ‖c j + (0 : ℝ) • (Pi.single l v : Fin r → ℂ) j‖ ^ n j) • ((n i : ℝ) * ‖c i‖ ^ n i * (((Pi.single l v : Fin r → ℂ) i * conj (c i)).re / ‖c i‖ ^ 2))) = (n l : ℝ) * (∏ a, ‖c a‖ ^ n a) * ((v * conj (c l)).re / ‖c l‖ ^ 2)`. Rewrite using `[Finset.sum_eq_single l]`. Simplify using `only [Pi.single_eq_same, zero_smul, add_zero, smul_eq_mul]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun a => ‖c a‖ ^ n a) (Finset.mem_univ l)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ l) h`.
+
+Conclude with `h.congr_deriv hv`.
+-/
 theorem hasDerivAt_prodPow (r : ℕ) (n : Fin r → ℕ) (c : Fin r → ℂ) (hc : c ∈ OmX r) (l : Fin r) (v : ℂ) :
     HasDerivAt (fun t : ℝ => ∏ a, ‖(c + t • (Pi.single l v : Fin r → ℂ)) a‖ ^ n a)
       ((n l : ℝ) * (∏ a, ‖c a‖ ^ n a) * ((v * conj (c l)).re / ‖c l‖ ^ 2)) 0 := by
@@ -53,6 +71,13 @@ theorem hasDerivAt_prodPow (r : ℕ) (n : Fin r → ℕ) (c : Fin r → ℂ) (hc
     · intro h; exact absurd (Finset.mem_univ l) h
   exact h.congr_deriv hv
 
+/- English proof (translation)
+Establish `hd : DifferentiableAt ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c`. Use `HasFDerivAt.finsetProd (u := Finset.univ) (x := c) (g := fun a (x : Fin r → ℂ) => ‖x a‖ ^ n a) (fun a _ => (((differentiableAt_apply (𝕜 := ℝ) a c).norm ℂ (hc a)).pow (n a)).hasFDerivAt)` as an intermediate fact. Conclude with `this.differentiableAt`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Establish `hline : HasDerivAt (fun t : ℝ => c + t • (Pi.single l v : Fin r → ℂ)) (Pi.single l v) 0`.
+
+Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const (Pi.single l v : Fin r → ℂ)).const_add c`. Establish `hc0 : c + (0 : ℝ) • (Pi.single l v : Fin r → ℂ) = c` using `by simp`. Establish `h1 : HasDerivAt ((fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) ∘ fun t : ℝ => c + t • (Pi.single l v : Fin r → ℂ)) (fderiv ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c (Pi.single l v)) 0`. Establish `hd'` using `hd.hasFDerivAt`. Rewrite `hd'` using `[← hc0]`.
+
+Use `hd'.comp_hasDerivAt (0 : ℝ) hline` as an intermediate fact. Rewrite `this` using `[hc0]`. Then use the resulting hypothesis. Conclude with `h1.unique (hasDerivAt_prodPow r n c hc l v)`.
+-/
 theorem fderiv_prodPow (r : ℕ) (n : Fin r → ℕ) (c : Fin r → ℂ) (hc : c ∈ OmX r) (l : Fin r) (v : ℂ) :
     DifferentiableAt ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c ∧
     fderiv ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c (Pi.single l v) =
@@ -75,6 +100,13 @@ theorem fderiv_prodPow (r : ℕ) (n : Fin r → ℕ) (c : Fin r → ℂ) (hc : c
     rwa [hc0] at this
   exact h1.unique (hasDerivAt_prodPow r n c hc l v)
 
+/- English proof (translation)
+Establish `h1 : (1 * conj z).re = z.re` using `by simp`. Establish `h2 : (Complex.I * conj z).re = z.im` using `by simp`. Apply the tactic sequence `have hc : ((z.re : ℂ)) - Complex.I * (z.im : ℂ) = conj z := by apply Complex.ext <;> simp`. Establish `hzz : z * conj z = (‖z‖ : ℂ) ^ 2`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hN0 : (‖z‖ : ℂ) ^ 2 ≠ 0` using `by exact_mod_cast pow_ne_zero 2 (norm_ne_zero_iff.mpr hz)`. Rewrite using `[h1, h2]`. Use `push_cast`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hN1 : (‖z‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.mpr hz`. Rewrite using `[hc, hzz]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem gauge_scalar (z : ℂ) (hz : z ≠ 0) (m : ℕ) (P : ℝ) :
     z * ((1 / 2 : ℂ) * ((((m : ℝ) * P * ((1 * conj z).re / ‖z‖ ^ 2) : ℝ) : ℂ) -
       Complex.I * (((m : ℝ) * P * ((Complex.I * conj z).re / ‖z‖ ^ 2) : ℝ) : ℂ))) = (P : ℂ) * ((m : ℂ) / 2) := by
@@ -97,6 +129,15 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.P.GaugeNormPower
 
+/- English proof (translation)
+Introduce `E _ _ r n H c hc hH l`. Take `⟨hψ, hψ'⟩` from `fderiv_prodPow r n c hc l 1`. Take `⟨-, hψI⟩` from `fderiv_prodPow r n c hc l Complex.I`. Establish `hfun : (fun c' : Fin r → ℂ => ((∏ a, ‖c' a‖ ^ n a : ℝ) : ℂ) • H c') = (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) • H`. Use function extensionality and compare the values at `c'`.
+
+Conclude with `Complex.coe_smul _ _`. Rewrite using `[hfun]`. Establish `hD : ∀ w, fderiv ℝ ((fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) • H) c w = (∏ a, ‖c a‖ ^ n a) • fderiv ℝ H c w + fderiv ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c w • H c`. Introduce `w`. Rewrite using `[(hψ.hasFDerivAt.smul hH.hasFDerivAt).fderiv]`.
+
+Simplify using the standard rewrite rules. Establish `hs : c l * ((1 / 2 : ℂ) * (((fderiv ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c (Pi.single l 1) : ℝ) : ℂ) - Complex.I * ((fderiv ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c (Pi.single l Complex.I) : ℝ) : ℂ))) = ((∏ a, ‖c a‖ ^ n a : ℝ) : ℂ) * ((n l : ℂ) / 2)`. Rewrite using `[hψ', hψI]`. Conclude with `gauge_scalar (c l) (hc l) (n l) _`. Simplify using `only [pOp, if_pos hc, wirt]`.
+
+Rewrite using `[hD, hD]`. Simplify using `only [← Complex.coe_smul]`. Take the linear combination `(norm := module) hs • H c`.
+-/
 theorem gauge_positivity : PBN.GaugeP := by
   intro E _ _ r n H c hc hH l
   obtain ⟨hψ, hψ'⟩ := fderiv_prodPow r n c hc l 1

@@ -9,6 +9,13 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangent
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 
+/- English proof (translation)
+Introduce `R _ _ _ _ T _ _ Γ S G _ _ x N i hT hS L _ _ M χ`. Use `haveI : Smooth G.hom := hS`. Take `⟨s, hs⟩` from `(PositivityTheory.HtPt.Htat.ht_char_section_of hHenselian hBaseChange hRegular) R T Γ χ`. Take `⟨l, hl⟩` from `PositivityTheory.HtPt.Htat.ht_linear R T Γ S G x N i hT L M χ s hs`. Establish `hP` using `(PositivityTheory.HtPt.Htat.lie_proj S G R x L M).2.1`.
+
+Take `⟨w, hw⟩` from `Module.projective_lifting_property (Submodule.mkQ (Ideal.span {(N : R)})) l (Submodule.mkQ_surjective _)`. Use `⟨w, s, hs, fun e => ?_⟩` and prove the remaining obligations. Take `⟨v, ⟨hv1, hv2⟩, -⟩` from `GlobalTheory.T.existsUnique_tangent_dual_number R T Γ S G x N i hT L M e`. Use `⟨v, hv1, hv2, ?_⟩` and prove the remaining obligations. Rewrite using `[hl e v ⟨hv1, hv2⟩]`.
+
+Use `LinearMap.congr_fun hw e` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+-/
 theorem PositivityTheory.HtPt.Htat.ExistsHodgeTate.exists_isHT (hHenselian : type_of% @GlobalTheory.T.exists_henselian_flat_over_prime) (hBaseChange : type_of% @GlobalTheory.T.exists_base_change_group) (hRegular : type_of% @GlobalTheory.T.regular_at_base_change) : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → Smooth G.hom → ∀ (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) (χ : T →* Rˣ), ∃ w : Module.Dual R L, Γ.IsHT i M N χ w := by
   intro R _ _ _ _ T _ _ Γ S G _ _ x N i hT hS L _ _ M χ
   haveI : Smooth G.hom := hS
@@ -26,5 +33,8 @@ theorem PositivityTheory.HtPt.Htat.ExistsHodgeTate.exists_isHT (hHenselian : typ
   rw [← this]
   rfl
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.HtPt.Htat.ExistsHodgeTate.exists_isHT hHenselian hBaseChange hRegular`.
+-/
 theorem PositivityTheory.HtPt.Htat.ht_exists_of (hHenselian : type_of% @GlobalTheory.T.exists_henselian_flat_over_prime) (hBaseChange : type_of% @GlobalTheory.T.exists_base_change_group) (hRegular : type_of% @GlobalTheory.T.regular_at_base_change) : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → Smooth G.hom → ∀ (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) (χ : T →* Rˣ), ∃ w : Module.Dual R L, Γ.IsHT i M N χ w :=
   @PositivityTheory.HtPt.Htat.ExistsHodgeTate.exists_isHT hHenselian hBaseChange hRegular

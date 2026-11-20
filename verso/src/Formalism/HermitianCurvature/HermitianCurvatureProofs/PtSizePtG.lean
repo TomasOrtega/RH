@@ -20,6 +20,9 @@ def okG (m : ℕ) (Kc : Set ℂ) : (ℂ × ℂ) ⊕ ℂ → Prop
   | Sum.inl q => q.1 ≠ 0 ∧ q.2 * q.1 ^ (m + 1) ∈ Kc
   | Sum.inr z => ∃ D ∈ Kc, z ^ (m + 2) = (-1) ^ (m + 3) * D
 
+/- English proof (translation)
+Apply the tactic sequence `cases q <;> simp [ptG, D.ptSize, List.map_append, List.sum_append] <;> omega`.
+-/
 theorem ptSize_ptG (h' : C.LPt) (m : ℕ) (q : (ℂ × ℂ) ⊕ ℂ) : D.ptSize (ptG h' m q) = D.ptSize h' + (m + 2) := by
   cases q <;> simp [ptG, D.ptSize, List.map_append, List.sum_append] <;> omega
 

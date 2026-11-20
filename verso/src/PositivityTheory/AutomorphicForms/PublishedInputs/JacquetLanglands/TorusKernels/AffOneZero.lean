@@ -17,16 +17,28 @@ namespace UpperTheory.Esk.ArchimedeanConjugationLemmas
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [aff]`.
+-/
 theorem map_aff1 {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (x : R) :
     GeneralLinearGroup.map f (aff 1 x) = aff 1 (f x) := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [aff]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [aff]`.
+-/
 theorem aff_one_zero {R : Type} [CommRing R] : aff (1 : Rˣ) (0 : R) = 1 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [aff]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ]`.
+-/
 theorem aff_mul {R : Type} [CommRing R] (y y' : Rˣ) (x x' : R) : aff y x * aff y' x' = aff (y * y') (y * x' + x) := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Use `TR.ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[TR.pInf_infGL, map_aff1]`. Conclude with `congrArg _ ((TR.infEq F).symm_apply_apply x).symm`. Rewrite using `[TR.pFin_infGL, map_aff1]`. Conclude with `aff_one_zero.symm`.
+-/
 theorem infGL_aff (x : TR.Rinf F) : TR.infGL F 2 (aff 1 x) = aff 1 (TR.sInf F x) := by
   refine TR.ga_ext ?_ ?_
   · rw [TR.pInf_infGL, map_aff1]
@@ -34,11 +46,17 @@ theorem infGL_aff (x : TR.Rinf F) : TR.infGL F 2 (aff 1 x) = aff 1 (TR.sInf F x)
   · rw [TR.pFin_infGL, map_aff1]
     exact aff_one_zero.symm
 
+/- English proof (translation)
+The claim follows from `TR.ga_ext (by simp only [map_mul, map_inv, TR.pInf_infGL]; group) (by simp only [map_mul, map_inv, TR.pFin_infGL]; group)`.
+-/
 theorem infGL_left (a : GL (Fin 2) (TR.Rinf F)) (g : GA F 2) :
     TR.infGL F 2 a * g = g * TR.infGL F 2 ((GeneralLinearGroup.map (TR.pInf F) g)⁻¹ * a * GeneralLinearGroup.map (TR.pInf F) g) :=
   TR.ga_ext (by simp only [map_mul, map_inv, TR.pInf_infGL]; group) (by simp only [map_mul, map_inv, TR.pFin_infGL]; group)
 
 omit [IsTotallyReal F] in
+/- English proof (translation)
+The claim follows from `((TR.rmul (TR.toL h.val)).comp (TR.lmul (TR.toL (h⁻¹).val))).hasFDerivAt.comp_hasDerivAt (0 : ℝ) ha`.
+-/
 theorem conj_deriv (h : GL (Fin 2) (TR.Rinf F)) (a : ℝ → GL (Fin 2) (TR.Rinf F)) (X : Matrix (Fin 2) (Fin 2) (TR.Rinf F))
     (ha : HasDerivAt (fun t => TR.toL (a t).val) (TR.toL X) 0) :
     HasDerivAt (fun t => TR.toL (h⁻¹ * a t * h).val) (TR.toL ((h⁻¹).val * X * h.val)) 0 :=
@@ -46,6 +64,9 @@ theorem conj_deriv (h : GL (Fin 2) (TR.Rinf F)) (a : ℝ → GL (Fin 2) (TR.Rinf
 
 open Classical in
 omit [IsTotallyReal F] in
+/- English proof (translation)
+Use function extensionality and compare the values at `a b w`. Simplify using `only [← map_inv]`. Generalize the expression as in `h⁻¹ = h'`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Matrix.single_apply, Fin.sum_univ_two, Pi.single_apply, Finset.sum_apply] <;> ring`.
+-/
 theorem conj_dec (h : GL (Fin 2) (TR.Rinf F)) (i j : Fin 2) (u : TR.Rinf F) :
     TR.toL ((h⁻¹).val * Matrix.single i j u * h.val) = ∑ v, u v • ∑ a, ∑ b,
       ((((GeneralLinearGroup.map (Pi.evalRingHom (fun _ => ℝ) v) h)⁻¹).val * Matrix.single i j (1 : ℝ) *
@@ -58,6 +79,11 @@ theorem conj_dec (h : GL (Fin 2) (TR.Rinf F)) (i j : Fin 2) (u : TR.Rinf F) :
     simp [Matrix.mul_apply, Matrix.single_apply, Fin.sum_univ_two, Pi.single_apply, Finset.sum_apply] <;> ring
 
 omit [IsTotallyReal F] in
+/- English proof (translation)
+Use `⟨Units.continuous_iff.2 ⟨?_, ?_⟩, fun s t => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [aff] <;> fun_prop`. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [aff, -Matrix.coe_units_inv] <;> fun_prop`. Apply the tactic sequence `ext i j : 2 fin_cases i <;> fin_cases j <;> simp [aff, add_smul, add_comm]`. Apply the tactic sequence `refine hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_ fin_cases i <;> fin_cases j <;> simp [aff, hasDerivAt_const]`.
+
+Simplify using `using (hasDerivAt_id (0 : ℝ)).smul_const u`.
+-/
 theorem nil_curve (u : TR.Rinf F) :
     Continuous (fun t : ℝ => aff (1 : (TR.Rinf F)ˣ) (t • u)) ∧
     (∀ s t : ℝ, aff (1 : (TR.Rinf F)ˣ) ((s + t) • u) = aff 1 (s • u) * aff 1 (t • u)) ∧
@@ -74,6 +100,11 @@ theorem nil_curve (u : TR.Rinf F) :
     simpa using (hasDerivAt_id (0 : ℝ)).smul_const u
 
 omit [IsTotallyReal F] in
+/- English proof (translation)
+Establish `e : ∀ t, (y t).val = fun v => Real.exp (t * u v)` using `fun t => funext (hy t)`. Establish `e' : ∀ t, ((y t)⁻¹).val = fun v => Real.exp (-(t * u v))` using `fun t => Units.inv_eq_of_mul_eq_one_right (by funext v; simp [hy, ← Real.exp_add])`. Use `⟨Units.continuous_iff.2 ⟨?_, ?_⟩, fun s t => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [aff, e] <;> fun_prop`. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [aff, -Matrix.coe_units_inv, e'] <;> fun_prop`.
+
+Apply the tactic sequence `ext i j v fin_cases i <;> fin_cases j <;> simp [aff, hy, add_mul, Real.exp_add]`. Apply the tactic sequence `refine hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_ fin_cases i <;> fin_cases j <;> simp [aff, hasDerivAt_const]`. Use `hasDerivAt_pi.2 fun v => ?_` and prove the remaining obligations. Simplify `((hasDerivAt_id (0 : ℝ)).mul_const (u v)).exp` using `[hy]`.
+-/
 theorem tor_curve (u : TR.Rinf F) (y : ℝ → (TR.Rinf F)ˣ) (hy : ∀ t v, (y t).val v = Real.exp (t * u v)) :
     Continuous (fun t : ℝ => aff (y t) 0) ∧
     (∀ s t : ℝ, aff (y (s + t)) 0 = aff (y s) 0 * aff (y t) 0) ∧
@@ -93,6 +124,31 @@ theorem tor_curve (u : TR.Rinf F) (y : ℝ → (TR.Rinf F)ˣ) (hy : ∀ t v, (y 
     refine hasDerivAt_pi.2 fun v => ?_
     simpa [hy] using ((hasDerivAt_id (0 : ℝ)).mul_const (u v)).exp
 
+/- English proof (translation)
+Establish `hS` using `UpperTheory.eisenstein_smooth_continuous`. Establish `hB` using `UpperTheory.eisenstein_constantTerm_of_periodMean_of_upperBlock UpperTheory.periodic_integral_fundamentalDomain_invariant UpperTheory.eisenstein_constantTerm_upperBlock`. Establish `hL` using `UpperTheory.constant_term_automorphy UpperTheory.eisenstein_smooth_continuous UpperTheory.periodic_integral_fundamentalDomain_invariant UpperTheory.eisenstein_period_derivative UpperTheory.eisenstein_constantTerm_upperBlock`. Establish `hA` using `UpperTheory.eisenstein_lie_algebra_action`. Establish `hl` using `hL F μ D hD φ hφ.aut.left hφ.aut.level`.
+
+Establish `hb` using `hB F μ D hD φ.1 (hS F 2 φ hφ.aut.level) hφ.aut.left`. Establish `hi : ∀ X, IntegrableOn (fun x : NA F => (TR.lie F 2 X φ).1 (unip x * g)) D μ` using `fun X => (hB F μ D hD _ (hl X).1.2 (hl X).1.1).1 g`. Set `L : TR.Lie F 2 →ₗ[ℝ] ℂ` to `{ toFun := fun X => cterm μ D (TR.lie F 2 X φ).1 g map_add' := fun X Y => by`. Rewrite using `[map_add]`. Conclude with `integral_add (hi X) (hi Y)`.
+
+Use the proof step `map_smul' := fun r X => by`. Rewrite using `[map_smul]`. Conclude with `integral_smul r (fun x : NA F => (TR.lie F 2 X φ).1 (unip x * g)) }`. Establish `hsm : ∀ (X) (z : ℂ) (ψ : TR.Sm F 2), TR.lie F 2 X φ = z • ψ → L X = z * cterm μ D ψ.1 g` using `fun X z ψ e => by`. Express the relevant statement in the definitionally equal form `cterm μ D (TR.lie F 2 X φ).1 g = _`.
+
+Rewrite using `[e]`. Conclude with `integral_const_mul z (fun x : NA F => ψ.1 (unip x * g))`. Use `set h := GeneralLinearGroup.map (TR.pInf F) g with hh`. Establish `key : ∀ (a : ℝ → GL (Fin 2) (TR.Rinf F)) (X : Matrix (Fin 2) (Fin 2) (TR.Rinf F)), Continuous a → (∀ s t, a (s + t) = a s * a t) → HasDerivAt (fun t => TR.toL (a t).val) (TR.toL X) 0 → HasDerivAt (fun t => cterm μ D φ.1 (TR.infGL F 2 (a t) * g)) (L (TR.toL ((h⁻¹).val * X * h.val) …`. Introduce `a X h1 h2 h3`.
+
+Simplify using `only [infGL_left _ g]`. Conclude with `(hl _).2 (fun t => h⁻¹ * a t * h) (by fun_prop) (fun s t => by rw [h2]; group) (conj_deriv h a X h3) g`. Establish `hnil : ∀ x : TR.Rinf F, L (TR.toL ((h⁻¹).val * Matrix.single 0 1 x * h.val)) = 0` using `fun x => by`. Take `⟨h1, h2, h3⟩` from `nil_curve x`. Use `key _ _ h1 h2 h3` as an intermediate fact.
+
+Simplify using `only [infGL_aff, hb.2.1] at this`. Conclude with `this.unique (hasDerivAt_const _ _)`. Set `E : InfinitePlace F → Fin 2 → Fin 2 → TR.Lie F 2` to `fun v a b => TR.toL (Matrix.single a b (Pi.single v 1 : TR.Rinf F))`. Establish `hE : ∀ v a b, TR.lie F 2 (E v a b) = TR.Eop v a b` using `fun _ _ _ => by`. Simplify using `only [E, TR.Eop]`.
+
+Establish `hdec : ∀ (i j : Fin 2) (x : TR.Rinf F), L (TR.toL ((h⁻¹).val * Matrix.single i j x * h.val)) = ∑ v, (x v : ℂ) * ∑ a, ∑ b, ((((GeneralLinearGroup.map (Pi.evalRingHom (fun _ => ℝ) v) h)⁻¹).val * Matrix.single i j (1 : ℝ) * (GeneralLinearGroup.map (Pi.evalRingHom (fun _ => ℝ) v) h). …` using `fun i j x => by`. Rewrite using `[conj_dec]`. Simplify using `only [map_sum, map_smul, Complex.real_smul, E]`. Establish `hv` using `fun v : InfinitePlace F => hA (GeneralLinearGroup.map (Pi.evalRingHom (fun _ => ℝ) v) h) (fun a b => L (E v a b)) ((k v : ℂ) * cterm μ D φ.1 g) (by`. Rewrite using `[← map_add, hsm _ 0 φ, zero_mul]`.
+
+Rewrite using `[map_add, hE, hE, zero_smul]`. Conclude with `UpperTheory.V.Sd.Hm.trzero F ω hω φ hφ.cent v)`. Use the proof step `(by`. Rewrite using `[← map_sub, hsm _ (Complex.I * (k v : ℂ)) φ, mul_assoc]`. Rewrite using `[map_sub, hE, hE]`.
+
+Conclude with `hφ.wt v)`. Use the proof step `(by`. Rewrite using `[← map_sub, ← map_add, hsm _ Complex.I (TR.lie F 2 (E v 0 1 + E v 1 0) φ)]`. Both sides reduce to the same expression. Rewrite using `[map_sub, map_add, hE, hE, hE, hE]`.
+
+Conclude with `hφ.low v)`. Use the proof step `(by`. Use `hnil (Pi.single v 1)` as an intermediate fact. Rewrite `this` using `[hdec, Finset.sum_eq_single v (fun w _ hw => by simp [Pi.single_eq_of_ne hw]) (by simp)]`. Simplify `this)` using `only [Pi.single_eq_same, Complex.ofReal_one, one_mul]`.
+
+Take `⟨h1, h2, h3⟩` from `tor_curve u y hy`. Use `key _ _ h1 h2 h3` as an intermediate fact. Rewrite `this` using `[hdec]`. Simplify using `only [hv] at this`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ctLeftV [MeasurableSpace (NA F)] [BorelSpace (NA F)] (μ : Measure (NA F)) [μ.IsAddHaarMeasure] (D : Set (NA F))
     (hD : IsAddFundamentalDomain (ratN F 2 1) D μ) (k : InfinitePlace F → ℕ) (c : Pl F → ℕ) (ω : HChar F)
     (hω : IsOfFinOrder ω) (φ : TR.Sm F 2) (hφ : UpperTheory.Esk.IsHolV k c ω φ) (u : TR.Rinf F) (y : ℝ → (TR.Rinf F)ˣ)
@@ -169,6 +225,11 @@ theorem ctLeftV [MeasurableSpace (NA F)] [BorelSpace (NA F)] (μ : Measure (NA F
   refine Finset.sum_congr rfl fun v _ => ?_
   ring
 
+/- English proof (translation)
+Establish `h1 : ∀ t : ℝ, HasDerivAt (fun t : ℝ => Complex.exp (-κ * t) * f t) 0 t` using `fun t => by`. Use `(((Complex.ofRealCLM.hasDerivAt (x := t)).const_mul (-κ)).cexp).mul (h t)` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Complex.ofRealCLM_apply, Complex.ofReal_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2` using `is_const_of_deriv_eq_zero (fun t => (h1 t).differentiableAt) (fun t => (h1 t).deriv) 1 0`. Simplify using `only [Complex.ofReal_one, mul_one, Complex.ofReal_zero, mul_zero, Complex.exp_zero, one_mul] at h2`. Rewrite using `[← h2, ← mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+-/
 theorem ode {f : ℝ → ℂ} {κ : ℂ} (h : ∀ t, HasDerivAt f (κ * f t) t) : f 1 = Complex.exp κ * f 0 := by
   have h1 : ∀ t : ℝ, HasDerivAt (fun t : ℝ => Complex.exp (-κ * t) * f t) 0 t := fun t => by
     have := (((Complex.ofRealCLM.hasDerivAt (x := t)).const_mul (-κ)).cexp).mul (h t)
@@ -178,6 +239,13 @@ theorem ode {f : ℝ → ℂ} {κ : ℂ} (h : ∀ t, HasDerivAt f (κ * f t) t) 
   simp only [Complex.ofReal_one, mul_one, Complex.ofReal_zero, mul_zero, Complex.exp_zero, one_mul] at h2
   rw [← h2, ← mul_assoc, ← Complex.exp_add]; simp
 
+/- English proof (translation)
+Set `z : ℝ → (TR.Rinf F)ˣ` to `fun t => ⟨fun _ => Real.exp (t * T), fun _ => Real.exp (-(t * T)), by funext v; simp [← Real.exp_add], by funext v; simp [← Real.exp_add]⟩`. Establish `hz : ∀ s t, z (s + t) = z s * z t` using `fun s t => Units.ext (funext fun v => by simp [z, add_mul, Real.exp_add])`. Establish `h0 : z 0 = 1` using `Units.ext (funext fun v => by simp [z])`. Use `ode (f := fun t => cterm μ D φ.1 (TR.infGL F 2 (aff (z t) 0) * g)) (κ := ∑ v, (k v : ℂ) / 2 * ((T : ℝ) : ℂ)) fun t => by` as an intermediate fact. Establish `h2` using `ctLeftV μ D hD k c ω hω φ hφ (fun _ => T) z (fun _ _ => rfl) (TR.infGL F 2 (aff (z t) 0) * g)`.
+
+Establish `h3` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact h2)`. Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← mul_assoc, ← map_mul, aff_mul, ← hz]`. Simplify using the standard rewrite rules.
+
+Use `⟨_, this.trans ?_⟩` and prove the remaining obligations. Rewrite using `[h0, aff_one_zero, map_one, one_mul]`.
+-/
 theorem ct_grow [MeasurableSpace (NA F)] [BorelSpace (NA F)] (μ : Measure (NA F)) [μ.IsAddHaarMeasure] (D : Set (NA F))
     (hD : IsAddFundamentalDomain (ratN F 2 1) D μ) (k : InfinitePlace F → ℕ) (c : Pl F → ℕ) (ω : HChar F)
     (hω : IsOfFinOrder ω) (φ : TR.Sm F 2) (hφ : UpperTheory.Esk.IsHolV k c ω φ) (T : ℝ) (g : GA F 2) :
@@ -196,6 +264,19 @@ theorem ct_grow [MeasurableSpace (NA F)] [BorelSpace (NA F)] (μ : Measure (NA F
   refine ⟨_, this.trans ?_⟩
   rw [h0, aff_one_zero, map_one, one_mul]
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, hco, -, -⟩` from `UpperTheory.eisenstein_constantTerm_upperBlock F`. Establish `hfin : μ D ≠ ⊤` using `(UpperTheory.periodic_integral_fundamentalDomain_invariant (NA F) (ratN F 2 1) hco μ D hD).1`. Use `set M := C * μ.real D`. Establish `hb : ∀ h, ‖cterm μ D φ.1 h‖ ≤ M` using `fun h => norm_setIntegral_le_of_norm_le_const (lt_top_iff_ne_top.2 hfin) (fun x _ => hC _)`. Use `set s : ℝ := ∑ v, (k v : ℝ) / 2`.
+
+Take `⟨v₀⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hs : 0 < s`. Establish `: (k v₀ : ℝ) / 2 ≤ s` using `Finset.single_le_sum (f := fun v => (k v : ℝ) / 2) (fun v _ => by positivity) (Finset.mem_univ v₀)`. Establish `h1 : (1 : ℝ) ≤ k v₀` using `by exact_mod_cast hk v₀`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Assume the negation of the conclusion as `hne`. Establish `ha : 0 < ‖cterm μ D φ.1 g‖` using `norm_pos_iff.2 hne`. Use `set a := ‖cterm μ D φ.1 g‖`. Use `set T : ℝ := (|M| + 1) / (a * s)`. Take `⟨g', hg'⟩` from `ct_grow μ D hD k c ω hω φ hφ T g`.
+
+Establish `e : (∑ v, (k v : ℂ) / 2 * ((T : ℝ) : ℂ)) = ((s * T : ℝ) : ℂ)`. Simplify using `only [s, Finset.sum_mul]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h1` using `hb g'`.
+
+Rewrite `h1` using `[hg', e, norm_mul, Complex.norm_exp_ofReal]`. Establish `h2 : s * T + 1 ≤ Real.exp (s * T)` using `Real.add_one_le_exp _`. Establish `h3 : s * T * a = |M| + 1`. Simplify using `only [T]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h4 : M ≤ |M|` using `le_abs_self M`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem ct_zero [MeasurableSpace (NA F)] [BorelSpace (NA F)] (μ : Measure (NA F)) [μ.IsAddHaarMeasure] (D : Set (NA F))
     (hD : IsAddFundamentalDomain (ratN F 2 1) D μ) (k : InfinitePlace F → ℕ) (c : Pl F → ℕ) (ω : HChar F)
     (hω : IsOfFinOrder ω) (φ : TR.Sm F 2) (hφ : UpperTheory.Esk.IsHolV k c ω φ) (hk : ∀ v, 1 ≤ k v) (C : ℝ)
@@ -228,6 +309,11 @@ theorem ct_zero [MeasurableSpace (NA F)] [BorelSpace (NA F)] (μ : Measure (NA F
 
 end UpperTheory.Esk.ArchimedeanConjugationLemmas
 
+/- English proof (translation)
+Introduce `F _ _ _ k c ω φ hω hk hφ hC`. Take `⟨C, hC⟩` from `hC`. Use `⟨hφ.aut, ?_⟩` and prove the remaining obligations. Introduce `r h0 h1 _ _ μ D hμ hD g`. Take `rfl : r = 1` from `by omega`.
+
+Conclude with `UpperTheory.Esk.ArchimedeanConjugationLemmas.ct_zero μ D hD k c ω hω φ hφ hk C hC g`.
+-/
 theorem UpperTheory.Esk.pf_H2e : UpperTheory.Esk.H2e := by
   intro F _ _ _ k c ω φ hω hk hφ hC
   obtain ⟨C, hC⟩ := hC

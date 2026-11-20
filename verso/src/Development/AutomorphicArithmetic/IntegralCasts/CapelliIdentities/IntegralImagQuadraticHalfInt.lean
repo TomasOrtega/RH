@@ -2,6 +2,17 @@ import Mathlib
 
 open Polynomial
 
+/- English proof (translation)
+Establish `hint : IsIntegral ℚ s`. Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[hs]`. Conclude with `(isIntegral_natCast d).neg`. Establish `hz' : z ∈ Algebra.adjoin ℚ ({s} : Set E)`.
+
+Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic]`. Conclude with `hz`. Use `clear hz`. Proceed by induction on `hz' using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+
+Rewrite `hx` using `[Set.mem_singleton_iff]`. Conclude with `⟨0, 1, by simp [hx]⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, b, rfl⟩` from `hx`.
+
+Take `⟨c, e, rfl⟩` from `hy`. Conclude with `⟨a + c, b + e, by push_cast; ring⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, b, rfl⟩` from `hx`. Take `⟨c, e, rfl⟩` from `hy`.
+
+Use `⟨a * c - d * b * e, a * e + b * c, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(b : E) * e * hs`.
+-/
 private lemma coords {E : Type} [Field E] [CharZero E] (d : ℕ) (s : E) (hs : s ^ 2 = -(d : E))
     (z : E) (hz : z ∈ IntermediateField.adjoin ℚ ({s} : Set E)) :
     ∃ a b : ℚ, z = (a : E) + (b : E) * s := by
@@ -29,6 +40,17 @@ private lemma coords {E : Type} [Field E] [CharZero E] (d : ℕ) (s : E) (hs : s
     push_cast
     linear_combination (b : E) * e * hs
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C c => exact ⟨c, 0, by simp, by simp⟩`. Consider the case `add p q hp hq`. Take `⟨u, v, h1, h2⟩` from `hp`. Take `⟨u', v', h1', h2'⟩` from `hq`.
+
+Use `⟨u + u', v + v', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, h1, h1']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, h2, h2']`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `monomial n c h`. Take `⟨u, v, h1, h2⟩` from `h`. Use `⟨u * a - d * v * b, u * b + v * a, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_succ, ← mul_assoc, map_mul, h1, aeval_X]`. Use `push_cast`. Take the linear combination `(v : E) * b * hs`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, h2, aeval_X]`. Use `push_cast`.
+
+Take the linear combination `(v : E) * b * hs`.
+-/
 private lemma aeval_pair {E : Type} [Field E] [CharZero E] (d : ℕ) (s : E) (hs : s ^ 2 = -(d : E))
     (a b : ℚ) (p : ℤ[X]) :
     ∃ u v : ℚ, aeval ((a : E) + (b : E) * s) p = (u : E) + (v : E) * s ∧
@@ -51,6 +73,15 @@ private lemma aeval_pair {E : Type} [Field E] [CharZero E] (d : ℕ) (s : E) (hs
       push_cast
       linear_combination (v : E) * b * hs
 
+/- English proof (translation)
+Take `⟨p, hp, h0⟩` from `h`. Take `⟨u, v, h1, h2⟩` from `aeval_pair d s hs a b p`. Rewrite `h0` using `[← aeval_def, h1]`. Establish `hn : u ^ 2 + d * v ^ 2 = 0`. Establish `: (u : E) ^ 2 + d * (v : E) ^ 2 = 0`.
+
+Take the linear combination `((u : E) - v * s) * h0 + (v : E) ^ 2 * hs`. Conclude with `this` after adjusting the coercions. Establish `hd' : (0 : ℚ) < d` using `by exact_mod_cast hd`. Establish `hv2 : 0 ≤ (d : ℚ) * v ^ 2` using `by positivity`. Establish `hu : u = 0` using `by nlinarith [sq_nonneg u]`.
+
+Establish `hv : v = 0`. Rewrite `hn` using `[hu]`. Establish `: (d : ℚ) * v ^ 2 = 0` using `by simpa using hn`. Simplify `this` using `[hd'.ne']`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← aeval_def, h2, hu, hv]`. Simplify using the standard rewrite rules.
+-/
 private lemma conj_integral {E : Type} [Field E] [CharZero E] (d : ℕ) (s : E) (hd : 0 < d)
     (hs : s ^ 2 = -(d : E)) (a b : ℚ) (h : IsIntegral ℤ ((a : E) + (b : E) * s)) :
     IsIntegral ℤ ((a : E) - (b : E) * s) := by
@@ -72,6 +103,9 @@ private lemma conj_integral {E : Type} [Field E] [CharZero E] (d : ℕ) (s : E) 
   rw [← aeval_def, h2, hu, hv]
   simp
 
+/- English proof (translation)
+Establish `h' : IsIntegral ℤ q`. Use `(isIntegral_algebraMap_iff (R := ℤ) (A := ℚ) (B := E) (x := q) (algebraMap ℚ E).injective).1 (by simpa using h)` as an intermediate fact. Conclude with `this`. Simplify using `using (IsIntegrallyClosed.isIntegral_iff (R := ℤ) (K := ℚ)).1 h'`.
+-/
 private lemma rat_int {E : Type} [Field E] [CharZero E] (q : ℚ) (h : IsIntegral ℤ (q : E)) :
     ∃ n : ℤ, (n : ℚ) = q := by
   have h' : IsIntegral ℤ q := by
@@ -80,6 +114,13 @@ private lemma rat_int {E : Type} [Field E] [CharZero E] (q : ℚ) (h : IsIntegra
     exact this
   simpa using (IsIntegrallyClosed.isIntegral_iff (R := ℤ) (K := ℚ)).1 h'
 
+/- English proof (translation)
+Establish `h1 : q * q.den = q.num` using `Rat.mul_den_eq_num q`. Establish `h2 : (d : ℤ) * q.num ^ 2 = (q.den : ℤ) ^ 2 * m`. Establish `: (d : ℚ) * (q.num : ℚ) ^ 2 = (q.den : ℚ) ^ 2 * m`. Rewrite using `[← h1, h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `this` after adjusting the coercions. Establish `hc : IsCoprime ((q.den : ℤ) ^ 2) (q.num ^ 2)` using `(Rat.isCoprime_num_den q).symm.pow`. Establish `h3 : (q.den : ℤ) ^ 2 ∣ d` using `hc.dvd_of_dvd_mul_right ⟨m, h2⟩`. Establish `h4 : q.den * q.den ∣ d`. Rewrite using `[← sq]`.
+
+Conclude with `h3` after adjusting the coercions. Establish `h5 : q.den = 1` using `Nat.isUnit_iff.1 (hd _ h4)`. Conclude with `⟨q.num, by rw [← h1, h5]; simp⟩`.
+-/
 private lemma int_of_sqfree_mul_sq (d : ℕ) (hd : Squarefree d) (q : ℚ) (m : ℤ)
     (h : (m : ℚ) = d * q ^ 2) : ∃ n : ℤ, (n : ℚ) = q := by
   have h1 : q * q.den = q.num := Rat.mul_den_eq_num q
@@ -95,6 +136,23 @@ private lemma int_of_sqfree_mul_sq (d : ℕ) (hd : Squarefree d) (q : ℚ) (m : 
   have h5 : q.den = 1 := Nat.isUnit_iff.1 (hd _ h4)
   exact ⟨q.num, by rw [← h1, h5]; simp⟩
 
+/- English proof (translation)
+Introduce `E _ _ d s hd hs z hz hi`. Take `⟨a, b, rfl⟩` from `coords d s hs z hz`. Establish `hc` using `conj_integral d s (Nat.pos_of_ne_zero hd.ne_zero) hs a b hi`. Take `⟨x, hx⟩` from `rat_int (E := E) (2 * a) (by`. Establish `e : ((2 * a : ℚ) : E) = (a : E) + (b : E) * s + ((a : E) - (b : E) * s)` using `by push_cast; ring`.
+
+Rewrite using `[e]`. Conclude with `hi.add hc)`. Take `⟨n, hn⟩` from `rat_int (E := E) (a ^ 2 + d * b ^ 2) (by`. Establish `e : ((a ^ 2 + d * b ^ 2 : ℚ) : E) = ((a : E) + (b : E) * s) * ((a : E) - (b : E) * s)`. Use `push_cast`.
+
+Take the linear combination `(b : E) ^ 2 * hs`. Rewrite using `[e]`. Conclude with `hi.mul hc)`. Take `⟨y, hy⟩` from `int_of_sqfree_mul_sq d hd (2 * b) (4 * n - x ^ 2) (by`. Use `push_cast`.
+
+Rewrite using `[hx, hn]`. Use the proof step `ring)`. Establish `key : x ^ 2 + d * y ^ 2 = 4 * n`. Establish `: (x : ℚ) ^ 2 + d * (y : ℚ) ^ 2 = 4 * n`. Rewrite using `[hx, hy, hn]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Use `⟨x, y, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases Int.even_or_odd' x with ⟨k, rfl | rfl⟩ <;>`. Break down `Int.even_or_odd' y with ⟨l, rfl | rfl⟩` into its components or cases.
+
+Conclude with `⟨k - l, by ring⟩`. It suffices to derive a contradiction. Establish `h4 : (4 : ℤ) ∣ d` using `⟨n - k ^ 2 - d * (l ^ 2 + l), by linear_combination key⟩`. Establish `h5 : 2 * 2 ∣ d` using `by exact_mod_cast h4`. Simplify using `using hd 2 h5`.
+
+It suffices to derive a contradiction. Establish `h4 : 4 * (n - k ^ 2 - k - d * l ^ 2) = 1` using `by linear_combination -key`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨k - l, by ring⟩`. Establish `hx' : (x : E) = 2 * (a : E)` using `by exact_mod_cast congrArg (fun t : ℚ => (t : E)) hx`.
+
+Establish `hy' : (y : E) = 2 * (b : E)` using `by exact_mod_cast congrArg (fun t : ℚ => (t : E)) hy`. Rewrite using `[hx', hy']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.integral_imag_quadratic_half_int :
     ∀ (E : Type) [Field E] [CharZero E] (d : ℕ) (s : E), Squarefree d → s ^ 2 = -(d : E) → ∀ z : E, z ∈ IntermediateField.adjoin ℚ ({s} : Set E) → IsIntegral ℤ z → ∃ x y : ℤ, Even (x - y) ∧ z = ((x : E) + (y : E) * s) / 2 := by
   intro E _ _ d s hd hs z hz hi

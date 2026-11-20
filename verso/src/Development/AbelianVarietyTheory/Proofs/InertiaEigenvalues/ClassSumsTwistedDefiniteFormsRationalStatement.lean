@@ -14,6 +14,9 @@ open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ClassSumRat.sum_mem_range | exact GlobalTheory.ClassSumRat.sum_mem_range | (intros; apply GlobalTheory.ClassSumRat.sum_mem_range <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.class_sums_twisted_definite_forms_rational : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (rd : Rd ρ D.nexp i j b) (T : CellTie hρ D.nexp rd), RatTwist hρ rd → (∀ (k : Fin 2) (z : ℂ), z ^ (D.host.g k * (D.host.g k - 1)) = 1 → z ∈ (embLL0 D).fieldRange) →
   ∀ k Q ψ, TwOK i k Q ψ → ClsQ (D := D) Q → ∀ f, ρ.sum i j b k Q ψ (T.rdV k Q ψ f) ∈ Set.range (rdK rd hρ k) := by
   first | exact @GlobalTheory.ClassSumRat.sum_mem_range | exact GlobalTheory.ClassSumRat.sum_mem_range | (intros; apply GlobalTheory.ClassSumRat.sum_mem_range <;> assumption)

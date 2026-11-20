@@ -15,6 +15,9 @@ open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 
 namespace GlobalTheory.Mum.TensTor
 
+/- English proof (translation)
+The claim follows from `Vonto.of_exist_mul hT hdet (VExist.gtRelV_exists F N N' W φ e wv hT) (gtRelV_mul F N N' W φ e wv hT) v'`.
+-/
 theorem gtRelV_onto (F : Type) [Field F] (N N' : NumD F) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ)
     (φ : N'.A → Fin r → N.A) (e : N'.X → Fin r → N.X) (wv : N'.A → F) (hT : TensFacts W φ e wv)
     (hdet : IsUnit (W + W.transpose).det) (v' : N'.Gt) : ∃ vs : Fin r → N.Gt, GtRelV W φ e wv v' vs :=

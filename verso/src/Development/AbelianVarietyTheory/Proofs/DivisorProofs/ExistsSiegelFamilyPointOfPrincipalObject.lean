@@ -14,6 +14,15 @@ noncomputable section
 
 namespace GlobalTheory.LowChart
 
+/- English proof (translation)
+Set `p₀ : Sp V₁` to `⟨⊥, Ideal.isPrime_bot⟩`. Set `K` to `FractionRing V₁`. Establish `hinj : Function.Injective (algebraMap V₁ K)` using `IsFractionRing.injective V₁ K`. Use `haveI : CharZero K := charZero_of_injective_algebraMap hinj`. Establish `hmem : p₀ ∈ {x : Sp V₁ | (spMap b₁ x).asIdeal = ⊥}`.
+
+Set `q : Sp K` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `h` using `GlobalTheory.AbChart.asIdeal_eq_bot_of_charZero n K (spMap ((algebraMap V₁ K).comp b₁)) q`. Use `show Ideal.comap b₁ (⊥ : Ideal V₁) = ⊥`. Establish `hc : Ideal.comap (algebraMap V₁ K) (⊥ : Ideal K) = ⊥` using `(RingHom.ker_eq_bot_iff_eq_zero _).2 fun a ha => hinj (by rw [ha, map_zero])`. Rewrite using `[← hc, Ideal.comap_comap]`.
+
+Conclude with `h`. Establish `hcl : closure ({p₀} : Set (Sp V₁)) = Set.univ`. Rewrite using `[Set.eq_univ_iff_forall]`. Introduce `x`. Conclude with `(PrimeSpectrum.le_iff_mem_closure (R := V₁) p₀ x).1 bot_le`.
+
+Use `Dense.mono (Set.singleton_subset_iff.2 hmem) ?_` and prove the remaining obligations. Conclude with `dense_iff_closure_eq.2 hcl`.
+-/
 theorem dense_asIdeal_eq_bot_spMap (n : ℕ) (V₁ : Type) [CommRing V₁] [IsDomain V₁] [CharZero V₁]
     (b₁ : cycAway n →+* V₁) : Dense {x : Sp V₁ | (spMap b₁ x).asIdeal = ⊥} := by
   let p₀ : Sp V₁ := ⟨⊥, Ideal.isPrime_bot⟩
@@ -35,6 +44,11 @@ theorem dense_asIdeal_eq_bot_spMap (n : ℕ) (V₁ : Type) [CommRing V₁] [IsDo
   refine Dense.mono (Set.singleton_subset_iff.2 hmem) ?_
   exact dense_iff_closure_eq.2 hcl
 
+/- English proof (translation)
+Introduce `n hn hodd h V₁ _ _ _ b₁ s hs`. Choose the witnesses or unpack the hypotheses as in `⟨F⟩ : Nonempty (SFam h n (zetaAway n)) := by`. Break down `Nat.eq_zero_or_pos h with rfl | hh` into its components or cases. Conclude with `⟨zeroFam n hn⟩`. Conclude with `GlobalTheory.SiegelTor.exists_sFam_cycAway h n hh hn hodd`.
+
+Take `⟨x, hx, hpb⟩` from `F.rep (Sp V₁) (spMap b₁) s inferInstance (dense_asIdeal_eq_bot_spMap n V₁ b₁) hs`. Conclude with `⟨F, x, hx, hpb⟩`.
+-/
 theorem exists_sFam_point : ∀ (n : ℕ), 3 ≤ n → Odd n → ∀ (h : ℕ) (V₁ : Type) [CommRing V₁] [IsDomain V₁] [CharZero V₁]
     (b₁ : cycAway n →+* V₁) (s : SiegPre h n (zetaAway n) (spMap b₁)), s.Principal →
     ∃ (F : SFam h n (zetaAway n)) (x : Sp V₁ ⟶ F.X), x ≫ F.s = spMap b₁ ∧ SiegPB s F.univ x := by

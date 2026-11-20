@@ -13,5 +13,8 @@ open GlobalTheory.Heat GlobalTheory.FormalOrigin
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CoordsOrigin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CoordsOrigin.tanM_eq_of_tanDer | exact GlobalTheory.CoordsOrigin.tanM_eq_of_tanDer | (intros; apply GlobalTheory.CoordsOrigin.tanM_eq_of_tanDer <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tangentVector_eq_of_tangentDerivativeAtOrigin_eq : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (u v : TanM (𝟙 (Sp R)) G), (∀ f, tanDer G u f = tanDer G v f) → u = v := by
   first | exact @GlobalTheory.CoordsOrigin.tanM_eq_of_tanDer | exact GlobalTheory.CoordsOrigin.tanM_eq_of_tanDer | (intros; apply GlobalTheory.CoordsOrigin.tanM_eq_of_tanDer <;> assumption)

@@ -25,6 +25,9 @@ def prC : D.host.E →+* k := (p.pr.comp (cA D)).comp (incA D)
 
 def atW {n : ℕ} (u : Fin n → k) : Fin n → AE D := fun i => p.sec (u i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, rat, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, sec_mul_right, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem rat_sec {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (u : Fin n → k) :
     rat M *ᵥ (fun i => p.sec (u i)) = fun i => p.sec ((M.map (prE p) *ᵥ u) i) := by
   funext i
@@ -32,6 +35,9 @@ theorem rat_sec {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (u : Fin n →
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [mul_comm, sec_mul_right, mul_comm]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, rat, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (prC p _), show prC p (M i j) = p.pr (cA D (incA D (M i j))) from rfl, ← sec_mul_right, RingHom.map_mul, cA_cA, mul_comm]`.
+-/
 theorem rat_csec {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (z : Fin n → k) :
     rat M *ᵥ (fun i => cA D (p.sec (z i))) = fun i => cA D (p.sec ((M.map (prC p) *ᵥ z) i)) := by
   funext i
@@ -40,11 +46,21 @@ theorem rat_csec {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (z : Fin n �
   rw [mul_comm (prC p _), show prC p (M i j) = p.pr (cA D (incA D (M i j))) from rfl, ← sec_mul_right, RingHom.map_mul, cA_cA,
     mul_comm]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Matrix.map_apply, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem form_eq (S : HSp D) (a b : Fin S.rank → k) :
     ∑ i, ∑ j, a i * p.pr (cA D (incA D (S.gram i j))) * b j = a ⬝ᵥ (S.gram.map (prC p)) *ᵥ b := by
   simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, Matrix.map_apply, mul_assoc]
   rfl
 
+/- English proof (translation)
+Establish `e : y = (fun i => p.sec (p.pr (y i))) + fun i => cA D (p.sec (p.pr (cA D (y i))))`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, p.sec_pr, p.sec_pr, RingHom.map_mul, cA_cA, ← add_mul, (idem_iff p _).1 (latV_supp hy i)]`. Rewrite `hy`, the goal using `[e]`. Take `⟨h1, h2⟩` from `(decomp hL _ _).1 hy`.
+
+Rewrite using `[Matrix.mulVec_add, rat_sec, rat_csec]`. Use `add_mem (h _ h1) ((csec_mem_iff hL' _).2 fun x hx => ?_)` and prove the remaining obligations. Establish `h3` using `(csec_mem_iff hL _).1 h2 _ (h' x hx)`. Establish `hT : (M'ᴴ).map (prC p) = (M'.map (prE p))ᵀ`. Use extensionality with `i j`.
+
+Express the relevant statement in the definitionally equal form `p.pr (cA D (incA D (star (M' j i)))) = p.pr (incA D (M' j i))`. Rewrite using `[FrameLat.cA_incA, star_star]`. Rewrite `h3`, the goal using `[form_eq]`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, hadj, Matrix.map_mul, hT, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec x, Matrix.vecMul_transpose]` and apply the resulting hypothesis.
+-/
 theorem rat_mem {S S' : HSp D} {L : Lat S} {L' : Lat S'} (M : Matrix (Fin S'.rank) (Fin S.rank) D.host.E)
     (M' : Matrix (Fin S.rank) (Fin S'.rank) D.host.E) (hL : IsSelfDualC S L) (hL' : IsSelfDualC S' L')
     (hadj : S'.gram * M = M'ᴴ * S.gram)
@@ -71,9 +87,17 @@ def SplitW {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (L : Lat S) (L₀ 
   ∀ u : Fin S.rank → k, atW p u ∈ latV S L (· = p.v) ↔ (∀ i, (d.qX.map (prE p) *ᵥ u) i ∈ 𝒪[k]) ∧
     (∀ i, (d.qY.map (prE p) *ᵥ u) i ∈ 𝒪[k]) ∧ atW p (d.q0.map (prE p) *ᵥ u) ∈ latV S₀ L₀ (· = p.v)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `map_zero p.sec`.
+-/
 theorem atW_zero {n : ℕ} : atW p (0 : Fin n → k) = 0 := by
   funext i; exact map_zero p.sec
 
+/- English proof (translation)
+Use extensionality with `a l`. Establish `h : star ((fᴴ * S.gram) i a) = (S.gram * f) a i`. Rewrite using `[← Matrix.conjTranspose_apply, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, gram_conjTranspose]`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `only [colProj, Matrix.of_apply, Matrix.conjTranspose_apply, star_mul, h]`.
+
+Simplify using `only [← mul_assoc, ← Finset.sum_mul]`. Simplify using `only [mul_assoc, ← Finset.mul_sum]`. Both sides reduce to the same expression.
+-/
 theorem colProj_adj {S : HSp D} {ρ : ℕ} (f g : Matrix (Fin S.rank) (Fin ρ) D.host.E) (i : Fin ρ) :
     S.gram * colProj (gᴴ * S.gram) f i = (colProj (fᴴ * S.gram) g i)ᴴ * S.gram := by
   ext a l
@@ -85,6 +109,9 @@ theorem colProj_adj {S : HSp D} {ρ : ℕ} (f g : Matrix (Fin S.rank) (Fin ρ) D
   simp only [mul_assoc, ← Finset.mul_sum]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `only [colProj, Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.of_apply, Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.mul_sum, mul_assoc, RingHom.map_mul]`.
+-/
 theorem colProj_map {S : HSp D} {ρ m : ℕ} (q : Matrix (Fin ρ) (Fin m) D.host.E) (f : Matrix (Fin S.rank) (Fin ρ) D.host.E)
     (i : Fin ρ) (x : Fin m → k) :
     (colProj q f i).map (prE p) *ᵥ x = f.map (prE p) *ᵥ Pi.single i ((q.map (prE p) *ᵥ x) i) := by
@@ -92,19 +119,48 @@ theorem colProj_map {S : HSp D} {ρ m : ℕ} (q : Matrix (Fin ρ) (Fin m) D.host
   simp only [colProj, Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.of_apply, Pi.single_apply, mul_ite, mul_zero,
     Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.mul_sum, mul_assoc, RingHom.map_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.map_mul]`.
+-/
 theorem map_mulVec {l m n : ℕ} (A : Matrix (Fin l) (Fin m) D.host.E) (B : Matrix (Fin m) (Fin n) D.host.E) (x : Fin n → k) :
     A.map (prE p) *ᵥ (B.map (prE p) *ᵥ x) = (A * B).map (prE p) *ᵥ x := by
   rw [Matrix.mulVec_mulVec, Matrix.map_mul]
 
+/- English proof (translation)
+The claim follows from `Matrix.map_zero _ (map_zero _)`.
+-/
 theorem mz {m n : ℕ} : (0 : Matrix (Fin m) (Fin n) D.host.E).map (prE p) = 0 := Matrix.map_zero _ (map_zero _)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem mo {m : ℕ} : (1 : Matrix (Fin m) (Fin m) D.host.E).map (prE p) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `ha`. Rewrite using `[Pi.single_eq_of_ne h]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem single_int {ρ : ℕ} (i : Fin ρ) {a : k} (ha : a ∈ 𝒪[k]) (j : Fin ρ) : (Pi.single i a : Fin ρ → k) j ∈ 𝒪[k] := by
   by_cases h : j = i
   · subst h; rw [Pi.single_eq_same]; exact ha
   · rw [Pi.single_eq_of_ne h]; exact zero_mem _
 
+/- English proof (translation)
+Establish `hX : ∀ i u, atW p u ∈ latV S L (· = p.v) → atW p ((colProj d.qX d.e i).map (prE p) *ᵥ u) ∈ latV S L (· = p.v)`. Introduce `i u hu`. Rewrite using `[colProj_map, H, map_mulVec, map_mulVec, map_mulVec, SeeSaw.SplitLat.qX_e, SeeSaw.SplitLat.qY_e, SeeSaw.SplitLat.wittDecomposition_coreProj_mul_e_eq_zero, mo, mz, mz, Matrix.one_mulVec, Matrix.zero_mulVec, Matrix.zero_mulVec, atW_zero]`. Conclude with `⟨single_int i (((H u).1 hu).1 i), fun _ => zero_mem _, zero_mem _⟩`. Establish `hY : ∀ i u, atW p u ∈ latV S L (· = p.v) → atW p ((colProj d.qY d.e' i).map (prE p) *ᵥ u) ∈ latV S L (· = p.v)`.
+
+Introduce `i u hu`. Rewrite using `[colProj_map, H, map_mulVec, map_mulVec, map_mulVec, SeeSaw.SplitLat.qX_e', SeeSaw.SplitLat.qY_e', SeeSaw.SplitLat.wittZeroProjection_mul_dualBasis_eq_zero, mo, mz, mz, Matrix.one_mulVec, Matrix.zero_mulVec, Matrix.zero_mulVec, atW_zero]`. Conclude with `⟨fun _ => zero_mem _, single_int i (((H u).1 hu).2.1 i), zero_mem _⟩`. Establish `hq : ∀ u, atW p u ∈ latV S L (· = p.v) → atW p (d.q0.map (prE p) *ᵥ u) ∈ latV S₀ L₀ (· = p.v)` using `fun u hu => ((H u).1 hu).2.2`. Establish `hi : ∀ u, atW p u ∈ latV S₀ L₀ (· = p.v) → atW p (d.i₀.map (prE p) *ᵥ u) ∈ latV S L (· = p.v)`.
+
+Introduce `u hu`. Rewrite using `[H, map_mulVec, map_mulVec, map_mulVec, SeeSaw.SplitLat.qX_i₀, SeeSaw.SplitLat.qY_i₀, SeeSaw.SplitLat.wittDecomposition_coreProj_mul_core_eq_one, mo, mz, Matrix.one_mulVec, Matrix.zero_mulVec]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _, hu⟩`. Establish `a1 : S₀.gram * d.q0 = d.i₀ᴴ * S.gram` using `Matrix.mul_nonsing_inv_cancel_left _ _ (GlobalTheory.LatVac.gram_det_isUnit S₀)`. Establish `a2 : S.gram * d.i₀ = d.q0ᴴ * S₀.gram`.
+
+Use `congrArg Matrix.conjTranspose a1` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, gram_conjTranspose, gram_conjTranspose]`. Conclude with `this.symm`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Use `⟨fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `colMul (rat d.e) i ((rat d.qX *ᵥ y) i) ∈ _`. Rewrite using `[colMul_rat]`. Conclude with `rat_mem p _ _ hL hL (colProj_adj d.e d.e' i) (hX i) (hY i) hy`.
+
+Express the relevant statement in the definitionally equal form `colMul (rat d.e') i ((rat d.qY *ᵥ y) i) ∈ _`. Rewrite using `[colMul_rat]`. Conclude with `rat_mem p _ _ hL hL (colProj_adj d.e' d.e i) (hY i) (hX i) hy`. Conclude with `rat_mem p d.q0 d.i₀ hL hL₀ a1 hq hi hy`. Introduce and unpack `⟨h1, h3, h2⟩`.
+
+Establish `e : y = d.jX *ᵥ (d.pX *ᵥ y) + d.j0 *ᵥ (d.p0 *ᵥ y) + d.jY *ᵥ (d.pY *ᵥ y)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, ← Matrix.add_mulVec, d.sum_eq_one, Matrix.one_mulVec]`. Rewrite using `[e, mulVec_eq_sum_colMul d.jX, mulVec_eq_sum_colMul d.jY]`. Use `add_mem (add_mem (sum_mem fun i _ => h1 i) ?_) (sum_mem fun i _ => h3 i)` and prove the remaining obligations. Conclude with `rat_mem p d.i₀ d.q0 hL₀ hL a2 hi hq h2`.
+-/
 theorem monoAt_of_splitW {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {L₀ : Lat S₀} (hL : IsSelfDualC S L)
     (hL₀ : IsSelfDualC S₀ L₀) (H : SplitW p d L L₀) : MonoAt d L L₀ p.v := by
   have hX : ∀ i u, atW p u ∈ latV S L (· = p.v) → atW p ((colProj d.qX d.e i).map (prE p) *ᵥ u) ∈ latV S L (· = p.v) := by
@@ -148,9 +204,43 @@ theorem monoAt_of_splitW {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L :
     refine add_mem (add_mem (sum_mem fun i _ => h1 i) ?_) (sum_mem fun i _ => h3 i)
     exact rat_mem p d.i₀ d.q0 hL₀ hL a2 hi hq h2
 
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff, Valuation.mem_integer_iff, map_mul, ha, one_mul]`.
+-/
 theorem unit_mul_int {a x : k} (ha : valuation k a = 1) : a * x ∈ 𝒪[k] ↔ x ∈ 𝒪[k] := by
   rw [Valuation.mem_integer_iff, Valuation.mem_integer_iff, map_mul, ha, one_mul]
 
+/- English proof (translation)
+Establish `tri : ∀ j : Fin (2 * ρ + 1), (∃ i : Fin ρ, j.val = i.val) ∨ j.val = ρ ∨ ∃ i : Fin ρ, j.val + i.val = 2 * ρ`. Introduce `j`. Use `j.2` as an intermediate fact. Break down `lt_trichotomy j.val ρ with h | h | h` into its components or cases. Conclude with `Or.inl ⟨⟨j.val, h⟩, rfl⟩`.
+
+Conclude with `Or.inr (Or.inl h)`. Conclude with `Or.inr (Or.inr ⟨⟨2 * ρ - j.val, by omega⟩, by simp only; omega⟩)`. Establish `k1 : ∀ {m : ℕ} (Q : Matrix (Fin m) (Fin S.rank) D.host.E) t a, (Q.map (prE p) * F.β) t (Sum.inl a) = ((Q * d.i₀).map (prE p) * F₀.β) t (Sum.inl a)`. Introduce `m Q t a`. Rewrite using `[Matrix.map_mul, Matrix.mul_assoc, Matrix.mul_apply, Matrix.mul_apply]`.
+
+Simplify using `only [c1]`. Establish `k2 : ∀ {m : ℕ} (Q : Matrix (Fin m) (Fin S.rank) D.host.E) t (j : Fin (2 * ρ + 1)), j.val = ρ → (Q.map (prE p) * F.β) t (Sum.inr j) = ((Q * d.i₀).map (prE p) * F₀.β) t (Sum.inr ())`. Introduce `m Q t j hj`. Rewrite using `[Matrix.map_mul, Matrix.mul_assoc, Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `only [c2 j hj]`.
+
+Establish `k3 : ∀ {m : ℕ} (Q : Matrix (Fin m) (Fin S.rank) D.host.E) t (i : Fin ρ) (j : Fin (2 * ρ + 1)), j.val = i.val → (Q.map (prE p) * F.β) t (Sum.inr j) = lam i * (Q * d.e).map (prE p) t i`. Introduce `m Q t i j hj`. Rewrite using `[Matrix.map_mul, Matrix.mul_apply, Matrix.mul_apply, Finset.mul_sum]`. Simplify using `only [c3 i j hj, Matrix.map_apply, mul_left_comm]`. Establish `k4 : ∀ {m : ℕ} (Q : Matrix (Fin m) (Fin S.rank) D.host.E) t (i : Fin ρ) (j : Fin (2 * ρ + 1)), j.val + i.val = 2 * ρ → (Q.map (prE p) * F.β) t (Sum.inr j) = mu i * (Q * d.e').map (prE p) t i`.
+
+Introduce `m Q t i j hj`. Rewrite using `[Matrix.map_mul, Matrix.mul_apply, Matrix.mul_apply, Finset.mul_sum]`. Simplify using `only [c4 i j hj, Matrix.map_apply, mul_left_comm]`. Introduce `u`. Take `⟨c, rfl⟩ : ∃ c, u = F.β *ᵥ c` from `⟨F.γ *ᵥ u, by rw [Matrix.mulVec_mulVec, F.βγ, Matrix.one_mulVec]⟩`.
+
+Establish `hX : ∀ t : Fin ρ, (d.qX.map (prE p) *ᵥ (F.β *ᵥ c)) t = lam t * c (Sum.inr ⟨t.val, by omega⟩)`. Introduce `t`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec, dotProduct, Finset.sum_eq_single (Sum.inr ⟨t.val, by omega⟩), k3 _ t t _ rfl, SeeSaw.SplitLat.qX_e, mo, Matrix.one_apply_eq, mul_one]`. Introduce and unpack `(a | j) _ hne`. Rewrite using `[k1, SeeSaw.SplitLat.qX_i₀, mz, Matrix.zero_mul, Matrix.zero_apply, zero_mul]`.
+
+Break down `tri j with ⟨i, h⟩ | h | ⟨i, h⟩` into its components or cases. Rewrite using `[k3 _ t i j h, SeeSaw.SplitLat.qX_e, mo, Matrix.one_apply_ne, mul_zero, zero_mul]`. Introduce and unpack `rfl`. Conclude with `hne (congrArg Sum.inr (Fin.ext h))`. Rewrite using `[k2 _ t j h, SeeSaw.SplitLat.qX_i₀, mz, Matrix.zero_mul, Matrix.zero_apply, zero_mul]`.
+
+Rewrite using `[k4 _ t i j h, SeeSaw.SplitLat.qX_e', mz, Matrix.zero_apply, mul_zero, zero_mul]`. Conclude with `fun h => absurd (Finset.mem_univ _) h`. Establish `hY : ∀ t : Fin ρ, (d.qY.map (prE p) *ᵥ (F.β *ᵥ c)) t = mu t * c (Sum.inr ⟨2 * ρ - t.val, by omega⟩)`. Introduce `t`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec, dotProduct, Finset.sum_eq_single (Sum.inr ⟨2 * ρ - t.val, by omega⟩), k4 _ t t _ (by simp only; omega), SeeSaw.SplitLat.qY_e', mo, Matrix.one_apply_eq, mul_one]`.
+
+Introduce and unpack `(a | j) _ hne`. Rewrite using `[k1, SeeSaw.SplitLat.qY_i₀, mz, Matrix.zero_mul, Matrix.zero_apply, zero_mul]`. Break down `tri j with ⟨i, h⟩ | h | ⟨i, h⟩` into its components or cases. Rewrite using `[k3 _ t i j h, SeeSaw.SplitLat.qY_e, mz, Matrix.zero_apply, mul_zero, zero_mul]`. Rewrite using `[k2 _ t j h, SeeSaw.SplitLat.qY_i₀, mz, Matrix.zero_mul, Matrix.zero_apply, zero_mul]`.
+
+Rewrite using `[k4 _ t i j h, SeeSaw.SplitLat.qY_e', mo, Matrix.one_apply_ne, mul_zero, zero_mul]`. Introduce and unpack `rfl`. Conclude with `hne (congrArg Sum.inr (Fin.ext (by simp only; omega)))`. Conclude with `fun h => absurd (Finset.mem_univ _) h`. Establish `h0 : d.q0.map (prE p) *ᵥ (F.β *ᵥ c) = F₀.β *ᵥ Sum.elim (fun a => c (Sum.inl a)) (fun _ => c (Sum.inr ⟨ρ, by omega⟩))`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec, Matrix.mulVec, dotProduct, dotProduct, Fintype.sum_sum_type, Fintype.sum_sum_type, Finset.sum_eq_single (⟨ρ, by omega⟩ : Fin (2 * ρ + 1)), k2 _ t _ rfl]`. Simplify using `only [k1, SeeSaw.SplitLat.wittDecomposition_coreProj_mul_core_eq_one, mo, Matrix.one_mul, Sum.elim_inl, Sum.elim_inr, Finset.univ_unique, Finset.sum_singleton]`. Introduce `j _ hne`. Break down `tri j with ⟨i, h⟩ | h | ⟨i, h⟩` into its components or cases.
+
+Rewrite using `[k3 _ t i j h, SeeSaw.SplitLat.wittDecomposition_coreProj_mul_e_eq_zero, mz, Matrix.zero_apply, mul_zero, zero_mul]`. Conclude with `absurd (Fin.ext h) hne`. Rewrite using `[k4 _ t i j h, SeeSaw.SplitLat.wittZeroProjection_mul_dualBasis_eq_zero, mz, Matrix.zero_apply, mul_zero, zero_mul]`. Conclude with `fun h => absurd (Finset.mem_univ _) h`. Rewrite using `[h0]`.
+
+Use `(hF c).symm.trans (Iff.trans ?_ (and_congr Iff.rfl (and_congr Iff.rfl (hF₀ _))))` and prove the remaining obligations. Simplify using `only [hX, hY, unit_mul_int (hlam _), unit_mul_int (hmu _)]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply the tactic sequence `exact ⟨fun _ => h _, fun _ => h _, by rintro (a | a) <;> exact h _⟩`.
+
+Introduce and unpack `⟨h1, h2, h3⟩ (a | j)`. Conclude with `h3 (Sum.inl a)`. Break down `tri j with ⟨i, h⟩ | h | ⟨i, h⟩` into its components or cases. Use `h1 i` as an intermediate fact. Rewrite `this` using `[show (⟨i.val, _⟩ : Fin (2 * ρ + 1)) = j from Fin.ext h.symm]`. Then use the resulting hypothesis.
+
+Use `h3 (Sum.inr ())` as an intermediate fact. Rewrite using `[show j = (⟨ρ, by omega⟩ : Fin (2 * ρ + 1)) from Fin.ext h]` and apply the resulting hypothesis. Use `h2 i` as an intermediate fact. Rewrite `this` using `[show (⟨2 * ρ - i.val, _⟩ : Fin (2 * ρ + 1)) = j from Fin.ext (by simp only; omega)]`. Then use the resulting hypothesis.
+-/
 theorem splitW_of_frame {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {L₀ : Lat S₀} {n : Type} [Fintype n]
     [DecidableEq n] (F : GlobalTheory.LocMod.Frame k S.rank (n ⊕ Fin (2 * ρ + 1))) (F₀ : GlobalTheory.LocMod.Frame k S₀.rank (n ⊕ Unit))
     (lam mu : Fin ρ → k) (hlam : ∀ i, valuation k (lam i) = 1) (hmu : ∀ i, valuation k (mu i) = 1)
@@ -242,6 +332,13 @@ theorem splitW_of_frame {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : 
       · have := h2 i
         rwa [show (⟨2 * ρ - i.val, _⟩ : Fin (2 * ρ + 1)) = j from Fin.ext (by simp only; omega)] at this
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hU.1 p.e (e_mem_intAt p)`. Establish `key : ∀ a : D.host.E, incA D a * p.e ∈ intAt D (· = p.v) → valuation k (prE p a) ≤ 1` using `fun a ha => by`. Rewrite using `[← Valuation.mem_integer_iff]`. Use `(p.int_iff _).2 ?_` and prove the remaining obligations. Rewrite using `[show prE p a = p.pr (incA D a) from rfl, p.sec_pr, mul_comm]`.
+
+Conclude with `ha.2`. Use `le_antisymm (key _ h1) ?_` and prove the remaining obligations. Establish `h3 : valuation k (prE p D.host.xi0) * valuation k (prE p D.host.xi0⁻¹) = 1`. Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one, map_one]`. Rewrite using `[← h3]`.
+
+Conclude with `mul_le_of_le_one_right' (key _ h2)`.
+-/
 theorem xi_unit (hU : p.UnitAA) : valuation k (prE p D.host.xi0) = 1 := by
   obtain ⟨h1, h2⟩ := hU.1 p.e (e_mem_intAt p)
   have key : ∀ a : D.host.E, incA D a * p.e ∈ intAt D (· = p.v) → valuation k (prE p a) ≤ 1 := fun a ha => by

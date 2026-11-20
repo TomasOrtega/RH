@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.HeightCounting.FormsStep
 
+/- English proof (translation)
+Take `⟨n, bs, hb, -, hKs, hLi, hLs⟩` from `In.ks j h1 h2`. Establish `hW : WKr D S j = (S.A j).WK` using `WKr_of D S h1 h2`. Conclude with `GlobalTheory.T.exists_semilinear_descent_to_baseChange_of_form D.LL0 S.kKs S.kKs_spec (WKr D S j) bs (fun k => hW ▸ hb k) (hW ▸ hKs) hLi hLs (KT := KT D T i b) (readK D T i b) (fun s => rfl)`.
+-/
 theorem descend_exists (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool)
     (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     ∃ Φ : S.WL j →+ FmT D T S i j b, (∀ (c : ↥D.LL0) (x : S.WL j), Φ ((c : D.what₂.LL) • x) = readT D T i b c • Φ x) ∧
@@ -22,6 +25,11 @@ theorem descend_exists (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) (In : Ra
   exact GlobalTheory.T.exists_semilinear_descent_to_baseChange_of_form D.LL0 S.kKs S.kKs_spec (WKr D S j) bs (fun k => hW ▸ hb k) (hW ▸ hKs) hLi hLs
     (KT := KT D T i b) (readK D T i b) (fun s => rfl)
 
+/- English proof (translation)
+Establish `hcR : cR D S In.chi j (S.eG.symm g) = chiL S j (In.chi j h1 h2) (S.eG.symm g)`. Unfold `cR`. Rewrite using `[dif_pos ⟨h1, h2⟩]`. Express the relevant statement in the definitionally equal form `_ = ((readK D T i b (cR D S In.chi j (S.eG.symm g)))⁻¹ • Module.End.baseChangeHom S.Ks (KT D T i b) ↥(WKr D S j) (rhoR D S In.rho j (S.eG.symm g))) (Φ x)`. Rewrite using `[hcR]`.
+
+Establish `e1 : actL D S j g x = (((chiL S j (In.chi j h1 h2) (S.eG.symm g))⁻¹ : ↥D.LL0) : D.what₂.LL) • (S.A j).ρ (S.eG.symm g) x`. Simplify using `only [actL, chiL, IntermediateField.coe_inv, LinearMap.smul_apply]`. Rewrite using `[e1, hc, hf ((S.A j).ρ (S.eG.symm g)) (rhoR D S In.rho j (S.eG.symm g)) (fun w => rfl), map_inv₀]`. Both sides reduce to the same expression.
+-/
 theorem descend_actL (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool)
     (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (Φ : S.WL j →+ FmT D T S i j b)
     (hc : ∀ (c : ↥D.LL0) (x : S.WL j), Φ ((c : D.what₂.LL) • x) = readT D T i b c • Φ x)
@@ -41,6 +49,11 @@ theorem descend_actL (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) (In : RatI
   rw [e1, hc, hf ((S.A j).ρ (S.eG.symm g)) (rhoR D S In.rho j (S.eG.symm g)) (fun w => rfl), map_inv₀]
   rfl
 
+/- English proof (translation)
+Use `haveI : Fintype (G0g D.nd) := Fintype.ofFinite _`. Rewrite using `[finsum_eq_sum_of_fintype, LinearMap.sum_apply, map_sum]`. Unfold `eGT`. Rewrite using `[MonoidAlgebra.lift_apply]`. Simplify using `only [eAlgT, MonoidAlgebra.coeff_ofCoeff]`.
+
+Rewrite using `[Finsupp.sum_fintype _ _ (by intro; simp), LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hc, ha]`. Simplify using the standard rewrite rules.
+-/
 theorem descend_eSum (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool)
     (Φ : S.WL j →+ FmT D T S i j b)
     (hc : ∀ (c : ↥D.LL0) (x : S.WL j), Φ ((c : D.what₂.LL) • x) = readT D T i b c • Φ x)
@@ -58,6 +71,13 @@ theorem descend_eSum (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) (In : RatI
   rw [LinearMap.smul_apply, hc, ha]
   simp
 
+/- English proof (translation)
+Rewrite `hx` using `[goodL, Submodule.mem_inf, Submodule.mem_iInf]`. Take `⟨hx1, hx2⟩` from `hx`. Use `⟨Φ x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Fm0T, Submodule.mem_iInf]`. Introduce `u`.
+
+Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply]`. Establish `h` using `hx2 u`. Rewrite `h` using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[LinearEquiv.coe_coe, ← ha, h, hc]`. Simplify using `[psiUT]`.
+
+Rewrite `hx1` using `[Module.End.mem_eigenspace_iff, one_smul]`. Rewrite using `[← he, hx1]`.
+-/
 theorem descend_mem_V0T (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool)
     (Φ : S.WL j →+ FmT D T S i j b)
     (hc : ∀ (c : ↥D.LL0) (x : S.WL j), Φ ((c : D.what₂.LL) • x) = readT D T i b c • Φ x)
@@ -78,6 +98,11 @@ theorem descend_mem_V0T (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) (In : R
   · rw [Module.End.mem_eigenspace_iff, one_smul] at hx1
     rw [← he, hx1]
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[Module.End.mem_eigenspace_iff]`. Establish `hw : ∀ w : ↥(WKr D S j), (hLr D S In j k P w : S.WL j) = In.hL j k P w`. Introduce `w`. Unfold `hLr`. Use `split_ifs with h`.
+
+Both sides reduce to the same expression. Conclude with `absurd ⟨h1, h2⟩ h`. Express the relevant statement in the definitionally equal form `((show KT D T i b from algebraMap (T.O i) (FractionRing (T.O i)) (cHkT D T i b P : T.O i)) ^ k • LinearMap.baseChange (KT D T i b) (hLr D S In j k P) (Φ x) : KT D T i b ⊗[S.Ks] ↥(WKr D S j)) = _`. Rewrite using `[← hf _ _ hw, hx, hc]`. Conclude with `smul_smul _ _ _`.
+-/
 theorem descend_mem_eigenspace (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool)
     (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (Φ : S.WL j →+ FmT D T S i j b)
     (hc : ∀ (c : ↥D.LL0) (x : S.WL j), Φ ((c : D.what₂.LL) • x) = readT D T i b c • Φ x)
@@ -100,6 +125,21 @@ theorem descend_mem_eigenspace (D : D7) (T : TwR D.LL0 D.nd) (S : RatDat D.ntw) 
   rw [← hf _ _ hw, hx, hc]
   exact smul_smul _ _ _
 
+/- English proof (translation)
+Introduce `D cf jE A S In b0 b1 Sx T Sp hSb hstar i j b hj1 hj2`. Take `⟨Φ, hc, hf, hw⟩` from `descend_exists D T S In i j b hj1 hj2`. Establish `ha` using `descend_actL D T S In i j b hj1 hj2 Φ hc hf`. Establish `he` using `descend_eSum D T S In i j b Φ hc ha`. Use `(GlobalTheory.T.V0T_le_span_image_goodL D S In T i j b hj1 hj2 (eIdem_all D) Φ hc ha he hw).trans (Submodule.span_le.mpr ?_)` and prove the remaining obligations.
+
+Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Rewrite using `[SetLike.mem_coe]`. Use `Submodule.iSup_induction (motive := fun y => Φ y ∈ _) _ (In.span j hj1 hj2 hx) ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ y hy`.
+
+Use `Submodule.iSup_induction (motive := fun y => Φ y ∈ _) _ hy ?_ ?_ ?_` and prove the remaining obligations. Introduce `hσ z hz`. Use `Submodule.mem_iSup_of_mem σ (Submodule.mem_iSup_of_mem hσ ?_)` and prove the remaining obligations. Rewrite `hz`, the goal using `[Submodule.mem_inf]`. Use `⟨descend_mem_V0T D T S In i j b Φ hc ha he z hz.1, ?_⟩` and prove the remaining obligations.
+
+Establish `hz2` using `hz.2`. Simplify using `only [Submodule.mem_iInf] at hz2 ⊢`. Introduce `k P hkP`. Establish `hPb : P ∉ In.Sb` using `fun hP => hkP.2.2.2 (by`. Rewrite using `[← Finset.mem_coe, Sp.ringSpec_excludedPlaces_eq i]`.
+
+Conclude with `Or.inr (Finset.mem_coe.mpr (hSb hP)))`. Conclude with `descend_mem_eigenspace D T S In i j b hj1 hj2 Φ hc hf k P _ z (hz2 k P ⟨hkP.1, hkP.2.1, hkP.2.2.1, hPb⟩)`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `y z hy hz`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hy hz`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `y z hy hz`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hy hz`.
+-/
 theorem goodPart_le_iSup_eigen : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (S : RatDat D.ntw)
     (In : RatIn D S) (b0 b1 : Big D) (Sx : Finset (PlE D.host)) (T : TwR D.LL0 D.nd) (Sp : RingSpec D cf b0 b1 Sx T),
     In.Sb ⊆ Sx → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) →

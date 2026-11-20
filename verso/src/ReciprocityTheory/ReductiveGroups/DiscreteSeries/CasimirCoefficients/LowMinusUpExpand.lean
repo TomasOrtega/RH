@@ -26,6 +26,19 @@ namespace InfKH
 
 variable {Λ : Fin n → ℝ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hsum : (∑ a, ∑ b ∈ univ.filter (fun b => ε b = ε a ∧ b ≠ a), ((if b < a then (1 : ℂ) else -1) * B a b) • Matrix.single a b (1 : ℂ)) i j = ∑ a, ∑ b ∈ univ.filter (fun b => ε b = ε a ∧ b ≠ a), if a = i ∧ b = j then (if b < a then (1 : ℂ) else -1) * B a b else 0` using `by first`. Consider the case `simp only [Matrix.sum_apply, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Consider the case `(simp only [Matrix.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : a = i ∧ b = j`. Rewrite using `[if_pos h]`. Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h]`.
+
+Simplify using `[Matrix.single_apply, h])`. Rewrite using `[hsum]`. Rewrite using `[Finset.sum_eq_single i (fun a _ ha => Finset.sum_eq_zero fun b _ => if_neg fun h => ha h.1) (fun h => absurd (Finset.mem_univ i) h)]`. Distinguish the cases in `hj : ε j = ε i ∧ j ≠ i`. Rewrite using `[Finset.sum_eq_single j (fun b _ hb => if_neg fun h => hb h.2) (fun h => (h (Finset.mem_filter.2 ⟨Finset.mem_univ _, hj⟩)).elim)]`.
+
+Rewrite using `[if_pos ⟨rfl, rfl⟩]`. Simplify using `only [lowMinusUp, Matrix.of_apply]`. Break down `lt_trichotomy j i with h | h | h` into its components or cases. Simplify using `[h]`. Conclude with `absurd h hj.2`.
+
+Simplify using `[h, not_lt.2 h.le]`. Rewrite using `[Finset.sum_eq_zero fun b hb => if_neg fun h => hj (by`. Take `⟨-, rfl⟩` from `h`. Conclude with `(Finset.mem_filter.1 hb).2)]`. Simplify using `only [lowMinusUp, Matrix.of_apply]`.
+
+Distinguish the cases in `he : j = i`. Substitute `he` using the available equality. Simplify using the standard rewrite rules. Establish `hne : ε i ≠ ε j` using `fun h => hj ⟨h.symm, he⟩`. Simplify using `[hB i j hne]`.
+-/
 lemma lowMinusUp_expand {B : Matrix (Fin n) (Fin n) ℂ} (hB : IsBlock ε B) :
     lowMinusUp B = ∑ a, ∑ b ∈ univ.filter (fun b => ε b = ε a ∧ b ≠ a),
       ((if b < a then (1 : ℂ) else -1) * B a b) • Matrix.single a b (1 : ℂ) := by
@@ -67,6 +80,11 @@ lemma lowMinusUp_expand {B : Matrix (Fin n) (Fin n) ℂ} (hB : IsBlock ε B) :
     · have hne : ε i ≠ ε j := fun h => hj ⟨h.symm, he⟩
       simp [hB i j hne]
 
+/- English proof (translation)
+Introduce `a' b' hne`. Distinguish the cases in `h' : a = a' ∧ b = b'`. Take `⟨rfl, rfl⟩` from `h'`. Conclude with `absurd h.symm hne`. Use `first`.
+
+Consider the case `rw [Matrix.single_apply, if_neg h']`. Consider the case `simp [Matrix.single_apply, h']`. Consider the case `(simp only [Matrix.single_apply]`. Conclude with `if_neg h')`.
+-/
 lemma isBlock_single {a b : Fin n} (h : ε b = ε a) : IsBlock ε (Matrix.single a b (1 : ℂ)) := by
   intro a' b' hne
   by_cases h' : a = a' ∧ b = b'
@@ -78,6 +96,23 @@ lemma isBlock_single {a b : Fin n} (h : ε b = ε a) : IsBlock ε (Matrix.single
     | (simp only [Matrix.single_apply]
        exact if_neg h')
 
+/- English proof (translation)
+Establish `key : ∀ a, ((μ a : ℤ) : ℂ) = ((lowK ε lam a : ℝ) : ℂ) + 2 * ((rhoC ε a : ℝ) : ℂ)`. Introduce `a`. Establish `hgt1 : (univ.filter (fun b => a < b ∧ ε b = ε a)).card + (univ.filter (fun b => a < b ∧ ε b ≠ ε a)).card = (univ.filter (fun b => a < b)).card` using `by first`. Consider the case `(have h1 := Finset.filter_card_add_filter_neg_card_eq_card (s := univ.filter (fun b => a < b)) (fun b => ε b = ε a)`. Simplify `h1)` using `only [Finset.filter_filter, ne_eq]`.
+
+Consider the case `(have h1 := Finset.card_filter_add_card_filter_not (s := univ.filter (fun b => a < b)) (fun b => ε b = ε a)`. Simplify `h1)` using `only [Finset.filter_filter, ne_eq]`. Establish `hlt1 : (univ.filter (fun b => b < a ∧ ε b = ε a)).card + (univ.filter (fun b => b < a ∧ ε b ≠ ε a)).card = (univ.filter (fun b => b < a)).card` using `by first`. Consider the case `(have h1 := Finset.filter_card_add_filter_neg_card_eq_card (s := univ.filter (fun b => b < a)) (fun b => ε b = ε a)`. Simplify `h1)` using `only [Finset.filter_filter, ne_eq]`.
+
+Consider the case `(have h1 := Finset.card_filter_add_card_filter_not (s := univ.filter (fun b => b < a)) (fun b => ε b = ε a)`. Simplify `h1)` using `only [Finset.filter_filter, ne_eq]`. Establish `hc1 : (univ.filter (fun b : Fin n => a < b)).card + (a : ℕ) + 1 = n`. Establish `ha` using `a.isLt`. Use `first`.
+
+Consider the case `(rw [Finset.filter_lt_eq_Ioi, Fin.card_Ioi] omega)`. Consider the case `(simp only [Finset.filter_lt_eq_Ioi, Fin.card_Ioi] omega)`. Establish `hc2 : (univ.filter (fun b : Fin n => b < a)).card = (a : ℕ)` using `by first`. Consider the case `rw [Finset.filter_gt_eq_Iio, Fin.card_Iio]`. Consider the case `simp [Finset.filter_gt_eq_Iio]`.
+
+Establish `hr : ((μ a : ℤ) : ℝ) = lowK ε lam a + 2 * rhoC ε a`. Rewrite using `[hμ a]`. Use `delta lowK rhoC rhoN rho`. Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Establish `e1 : ((univ.filter (fun b => a < b ∧ ε b = ε a)).card : ℝ) + (univ.filter (fun b => a < b ∧ ε b ≠ ε a)).card + (a : ℕ) + 1 = n`.
+
+Conclude with `(hgt1.symm ▸ hc1 : _)` after adjusting the coercions. Establish `e2 : ((univ.filter (fun b => b < a ∧ ε b = ε a)).card : ℝ) + (univ.filter (fun b => b < a ∧ ε b ≠ ε a)).card = (a : ℕ)`. Conclude with `(hlt1.trans hc2)` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `congrArg (fun r : ℝ => (r : ℂ)) hr`.
+
+Move the coercions through the operations in `at h2 ⊢`. Take the linear combination `h2`. Establish `e : ∑ a, (μ a : ℂ) * B a a = ∑ a, ((lowK ε lam a : ℝ) : ℂ) * B a a + 2 * ∑ a, ((rhoC ε a : ℝ) : ℂ) * B a a`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[key a]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma scal (μ : Fin n → ℤ) (hμ : IsMu lam μ) (B : Matrix (Fin n) (Fin n) ℂ) :
     2 * ∑ a, (μ a : ℂ) * B a a =
       2 * ∑ a, ((lowK ε lam a : ℝ) : ℂ) * B a a + 4 * ∑ a, ((rhoC ε a : ℝ) : ℂ) * B a a := by
@@ -139,6 +174,11 @@ def Ssum (T : KType ε Λ) (μ : Fin n → ℤ) (x A : Matrix (Fin n) (Fin n) �
   ∑ a, ∑ b ∈ univ.filter (fun b => ε b = ε a ∧ b ≠ a),
     (if b < a then (1 : ℂ) else -1) • InfKA.Ek T μ x (InfKA.entryCLM a b) A (Matrix.single a b 1) k
 
+/- English proof (translation)
+Establish `hI : ∀ a b : Fin n, Integrable (fun k => (if b < a then (1 : ℂ) else -1) • InfKA.Ek T μ x (InfKA.entryCLM a b) A (Matrix.single a b 1) k) (muK ε)` using `fun a b => InfKA.integrable_of_cont ((InfKA.continuous_Ek T μ hx (InfKA.entryCLM a b) A (Matrix.single a b 1)).const_smul (if b < a then (1 : ℂ) else -1))`. Use `⟨integrable_finset_sum _ fun a _ => integrable_finset_sum _ fun b _ => hI a b, ?_⟩` and prove the remaining obligations. Unfold `Ssum`. Rewrite using `[integral_finset_sum _ fun a _ => integrable_finset_sum _ fun b _ => hI a b]`. Use `sum_eq_zero fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_finset_sum _ fun b _ => hI a b]`. Use `sum_eq_zero fun b hb => ?_` and prove the remaining obligations. Rewrite using `[integral_smul (if b < a then (1 : ℂ) else -1) (fun k => InfKA.Ek T μ x (InfKA.entryCLM a b) A (Matrix.single a b 1) k), InfKA.integral_Ek_block T μ hx _ A (isBlock_single (mem_filter.mp hb).2.1), smul_zero]`.
+-/
 lemma integral_Ssum [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ) {x : Matrix (Fin n) (Fin n) ℂ}
     (hx : x.PosDef) (A : Matrix (Fin n) (Fin n) ℂ) :
     Integrable (Ssum T μ x A) (muK ε) ∧ ∫ k, Ssum T μ x A k ∂(muK ε) = 0 := by
@@ -155,6 +195,27 @@ lemma integral_Ssum [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ
   rw [integral_smul (if b < a then (1 : ℂ) else -1)
     (fun k => InfKA.Ek T μ x (InfKA.entryCLM a b) A (Matrix.single a b 1) k), InfKA.integral_Ek_block T μ hx _ A (isBlock_single (mem_filter.mp hb).2.1), smul_zero]
 
+/- English proof (translation)
+Establish `hφ : ∀ (a b : Fin n) (M : Matrix (Fin n) (Fin n) ℂ), InfKA.entryCLM a b M = M a b` using `fun _ _ _ => rfl`. Simplify using `only [Ssum, InfKA.Ek, smul_add, Finset.sum_add_distrib, smul_smul, hφ]`. Use `set A' := toMK k⁻¹ * A * toMK k with hA'`. Establish `hl : ∀ a b, (A' * Matrix.single a b (1 : ℂ) - Matrix.single a b (1 : ℂ) * A') a b = A' a a - A' b b`. Introduce `a b`.
+
+Simplify using `[Matrix.sub_apply, Matrix.mul_apply, Matrix.single_apply]`. Use `congr 1`. Rewrite using `[lowMinusUp_expand hB, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Simplify using `only [← Finset.sum_smul]`. Use `congr 1`. Simplify using `only [hl, Finset.sum_filter]`.
+
+Establish `hsplit : ∀ a b : Fin n, (if ε b = ε a ∧ b ≠ a then (if b < a then (1 : ℂ) else -1) * (A' a a - A' b b) else 0) = (if ε b = ε a ∧ b ≠ a then (if b < a then (1 : ℂ) else -1) * A' a a else 0) + (if ε a = ε b ∧ a ≠ b then (if a < b then (1 : ℂ) else -1) * A' b b else 0)`. Introduce `a b`. Distinguish the cases in `h : ε b = ε a ∧ b ≠ a`. Establish `h' : ε a = ε b ∧ a ≠ b` using `⟨h.1.symm, Ne.symm h.2⟩`. Rewrite using `[if_pos h, if_pos h, if_pos h']`.
+
+Break down `lt_or_gt_of_ne h.2 with hab | hab` into its components or cases. Simplify using `only [if_pos hab, if_neg (not_lt.2 hab.le)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_pos hab, if_neg (not_lt.2 hab.le)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h' : ¬ (ε a = ε b ∧ a ≠ b)` using `fun h' => h ⟨h'.1.symm, Ne.symm h'.2⟩`. Rewrite using `[if_neg h, if_neg h, if_neg h', add_zero]`. Simplify using `only [hsplit, Finset.sum_add_distrib]`. Use `conv_lhs => arg 2`. Rewrite using `[Finset.sum_comm]`.
+
+Rewrite using `[← two_mul]`. Establish `hc : ∀ a, ∑ b, (if ε b = ε a ∧ b ≠ a then (if b < a then (1 : ℂ) else -1) * A' a a else 0) = -2 * ((rhoC ε a : ℝ) : ℂ) * A' a a`. Introduce `a`. Establish `hp : ∀ b, (if ε b = ε a ∧ b ≠ a then (if b < a then (1 : ℂ) else -1) * A' a a else 0) = ((if b < a ∧ ε b = ε a then (1 : ℂ) else 0) - (if a < b ∧ ε b = ε a then (1 : ℂ) else 0)) * A' a a`. Introduce `b`.
+
+Break down `lt_trichotomy b a with h | rfl | h` into its components or cases. Apply the tactic sequence `by_cases he : ε b = ε a <;> simp [h, he, ne_of_lt h, not_lt.2 h.le]`. Simplify using the standard rewrite rules. Apply the tactic sequence `by_cases he : ε b = ε a <;> simp [h, he, ne_of_gt h, not_lt.2 h.le]`. Simplify using `only [hp]`.
+
+Rewrite using `[← Finset.sum_mul, Finset.sum_sub_distrib, Finset.sum_boole, Finset.sum_boole]`. Use `delta rhoC`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hc]`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma Ssum_eq (T : KType ε Λ) (μ : Fin n → ℤ) (x A : Matrix (Fin n) (Fin n) ℂ) (k : KG ε)
     (hB : IsBlock ε (toMK k⁻¹ * A * toMK k)) :
     Ssum T μ x A k = InfKA.DkL T μ x k (lowMinusUp (toMK k⁻¹ * A * toMK k)) +
@@ -215,6 +276,21 @@ lemma Ssum_eq (T : KType ε Λ) (μ : Fin n → ℤ) (x A : Matrix (Fin n) (Fin 
     refine Finset.sum_congr rfl fun a _ => ?_
     ring
 
+/- English proof (translation)
+Establish `hmk : ∀ a b : KG ε, toMK (a * b) = toMK a * toMK b` using `fun _ _ => rfl`. Establish `hop : ∀ a b : KG ε, T.op (a * b) = T.op a * T.op b` using `fun a b => by simp [KType.op, map_mul]`. Establish `hop1 : T.op 1 = 1` using `by simp [KType.op]`. Establish `hkk : toMK k * toMK k⁻¹ = 1` using `by rw [← hmk, mul_inv_cancel]; rfl`. Establish `hok : T.op k * T.op k⁻¹ = 1` using `by rw [← hop, mul_inv_cancel, hop1]`.
+
+Establish `hok' : T.op k⁻¹ * T.op k = 1` using `by rw [← hop, inv_mul_cancel, hop1]`. Establish `hAJ : A * Jm ε = Jm ε * A` using `(kfa_comm_iff_block ε A).mpr hA`. Establish `hk1 : toMK k * Jm ε = Jm ε * toMK k` using `(show toMK k ∈ Kset ε from k.2).2`. Establish `hk2 : toMK k⁻¹ * Jm ε = Jm ε * toMK k⁻¹` using `(show toMK k⁻¹ ∈ Kset ε from (k⁻¹).2).2`. Establish `hH : toMK k⁻¹ * (A * x + x * A) * toMK k = (toMK k⁻¹ * A * toMK k) * (toMK k⁻¹ * x * toMK k) + (toMK k⁻¹ * x * toMK k) * (toMK k⁻¹ * A * toMK k)`.
+
+Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Simplify using `only [← Matrix.mul_assoc (toMK k) (toMK k⁻¹), hkk, Matrix.one_mul]`. Establish `hBJ : (toMK k⁻¹ * A * toMK k) * Jm ε = Jm ε * (toMK k⁻¹ * A * toMK k)`. Combine the equalities or inequalities in the displayed calculation. Establish `hBb : IsBlock ε (toMK k⁻¹ * A * toMK k)` using `(kfa_comm_iff_block ε _).mp hBJ`.
+
+Establish `hBh : (toMK k⁻¹ * A * toMK k)ᴴ = toMK k⁻¹ * A * toMK k`. Rewrite using `[InfKA.toMK_inv_eq]`. Simplify using `[Matrix.conjTranspose_mul, hAh, Matrix.mul_assoc]`. Establish `hdB : T.dτ (toMK k⁻¹ * A * toMK k) = T.op k⁻¹ * T.dτ A * T.op k`. Establish `h` using `dtau_conj T k⁻¹ hA`.
+
+Rewrite `h` using `[inv_inv]`. Conclude with `h.symm`. Establish `hk3 : ∀ X, T.op k * (T.op k⁻¹ * X) = X` using `fun X => by rw [← mul_assoc, hok, one_mul]`. Establish `hdA : T.dτ A * (T.op k * projW T * T.op k⁻¹) + (T.op k * projW T * T.op k⁻¹) * T.dτ A = T.op k * (T.dτ (toMK k⁻¹ * A * toMK k) * projW T + projW T * T.dτ (toMK k⁻¹ * A * toMK k)) * T.op k⁻¹`. Rewrite using `[hdB]`.
+
+Simplify using `only [mul_assoc, mul_add, add_mul, hk3, hok, mul_one]`. Establish `hconj : T.dτ A * Gint T μ x k + Gint T μ x k * T.dτ A = PhiM μ (toMK k⁻¹ * x * toMK k) • (T.op k * (T.dτ (lowMinusUp (toMK k⁻¹ * A * toMK k)) * projW T - projW T * T.dτ (lowMinusUp (toMK k⁻¹ * A * toMK k))) * T.op k⁻¹) + ((2 * ∑ a, ((lowK ε lam a : ℝ) : ℂ) * (toMK k⁻¹ * A * toMK …`. Simplify using `only [Gint]`. Rewrite using `[mul_smul_comm, smul_mul_assoc, ← smul_add, hdA, tau_part T hBb hBh]`. Simplify using `only [mul_add, add_mul, mul_smul_comm, smul_mul_assoc]`.
+
+Use `module`. Rewrite using `[hH, phiM_part μ (InfKA.conj_mem_omega hx k), Ssum_eq T μ x A k hBb, InfKA.DkL_apply, hconj, scal (ε := ε) μ hμ]`. Simplify using `only [Gint]`. Use `module`.
+-/
 lemma pt (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : IsMu lam μ) {x : Matrix (Fin n) (Fin n) ℂ}
     (hx : x.PosDef) {A : Matrix (Fin n) (Fin n) ℂ} (hA : IsBlock ε A) (hAh : Aᴴ = A) (k : KG ε) :
     fderiv ℂ (PhiM μ) (toMK k⁻¹ * x * toMK k) (toMK k⁻¹ * (A * x + x * A) * toMK k) •
@@ -266,6 +342,13 @@ lemma pt (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : IsMu lam μ) {
 
 end InfKH
 
+/- English proof (translation)
+Use `compactSpace_KG ε` as an intermediate fact. Take `⟨U, -, hPU, -, -, hder⟩` from `psM_holo T μ`. Rewrite using `[hder x (hPU hx)]`. Establish `hGI : Integrable (Gint T μ x) (muK ε)` using `InfKA.integrable_of_cont (InfKA.continuous_Gint T μ hx)`. Establish `hL : ∫ k, T.dτ A * Gint T μ x k ∂(muK ε) = T.dτ A * ∫ k, Gint T μ x k ∂(muK ε)` using `(ContinuousLinearMap.mul ℂ (T.V →L[ℂ] T.V) (T.dτ A)).integral_comp_comm hGI`.
+
+Establish `hR : ∫ k, Gint T μ x k * T.dτ A ∂(muK ε) = (∫ k, Gint T μ x k ∂(muK ε)) * T.dτ A` using `((ContinuousLinearMap.mul ℂ (T.V →L[ℂ] T.V)).flip (T.dτ A)).integral_comp_comm hGI`. Establish `hLI : Integrable (fun k => T.dτ A * Gint T μ x k) (muK ε)` using `(ContinuousLinearMap.mul ℂ (T.V →L[ℂ] T.V) (T.dτ A)).integrable_comp hGI`. Establish `hRI : Integrable (fun k => Gint T μ x k * T.dτ A) (muK ε)` using `((ContinuousLinearMap.mul ℂ (T.V →L[ℂ] T.V)).flip (T.dτ A)).integrable_comp hGI`. Take `⟨hSI, hS0⟩` from `InfKH.integral_Ssum T μ hx A`. Establish `hLR : Integrable (fun k => T.dτ A * Gint T μ x k + Gint T μ x k * T.dτ A) (muK ε)` using `hLI.add hRI`.
+
+Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall (InfKH.pt T μ hμ hx hA hAh)), integral_sub hSI hLR, hS0, zero_sub, integral_add hLI hRI, hL, hR]`. Establish `hps : psM T μ x = ((Module.finrank ℂ T.V : ℂ) / ((muK ε Set.univ).toReal : ℂ)) • ∫ k, Gint T μ x k ∂(muK ε)` using `rfl`. Rewrite using `[hps]`. Simplify using `only [smul_neg, smul_add, mul_smul_comm, smul_mul_assoc]`.
+-/
 theorem psM_inf_herm (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : IsMu lam μ) {x : Matrix (Fin n) (Fin n) ℂ}
     (hx : x.PosDef) {A : Matrix (Fin n) (Fin n) ℂ} (hA : IsBlock ε A) (hAh : Aᴴ = A) :
     fderiv ℂ (psM T μ) x (A * x + x * A) = -(T.dτ A * psM T μ x + psM T μ x * T.dτ A) := by

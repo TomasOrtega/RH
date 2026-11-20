@@ -34,6 +34,9 @@ section Meas
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : Mt k r => (Matrix.of x : Mx k r))` using `continuous_id`. Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv']`. Conclude with `hc.matrix_det.measurable.inv.mul (hc.matrix_adjugate.matrix_elem i j).measurable`.
+-/
 theorem measurable_matInv : Measurable (fun x : Mt k r => (fun i j => (Matrix.of x)⁻¹ i j : Mt k r)) := by
   have hc : Continuous (fun x : Mt k r => (Matrix.of x : Mx k r)) := continuous_id
   refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_
@@ -44,8 +47,14 @@ def minvM (x : Mt k r) : Mt k r := fun i j => (Matrix.of x)⁻¹ i j
 
 def tripleMatrixProduct (q : Mt k r × Mt k r × Mt k r) : Mt k r := fun i j => (Matrix.of q.1 * Matrix.of q.2.1 * Matrix.of q.2.2) i j
 
+/- English proof (translation)
+The claim follows from `measurable_matInv`.
+-/
 theorem measurable_minvM : Measurable (minvM (k := k) (r := r)) := measurable_matInv
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun q : Mt k r × Mt k r × Mt k r => (Matrix.of q.1 : Mx k r))` using `continuous_fst`. Establish `h2 : Continuous (fun q : Mt k r × Mt k r × Mt k r => (Matrix.of q.2.1 : Mx k r))` using `continuous_fst.comp continuous_snd`. Establish `h3 : Continuous (fun q : Mt k r × Mt k r × Mt k r => (Matrix.of q.2.2 : Mx k r))` using `continuous_snd.comp continuous_snd`. Conclude with `(h1.matrix_mul h2).matrix_mul h3`.
+-/
 theorem triple_matrix_product_continuous : Continuous (tripleMatrixProduct (k := k) (r := r)) := by
   have h1 : Continuous (fun q : Mt k r × Mt k r × Mt k r => (Matrix.of q.1 : Mx k r)) := continuous_fst
   have h2 : Continuous (fun q : Mt k r × Mt k r × Mt k r => (Matrix.of q.2.1 : Mx k r)) :=
@@ -54,12 +63,18 @@ theorem triple_matrix_product_continuous : Continuous (tripleMatrixProduct (k :=
     continuous_snd.comp continuous_snd
   exact (h1.matrix_mul h2).matrix_mul h3
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `h1 : (Hpk k r * aᴴ * Hpk k r) * a = 1`. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc aᴴ, ha', hpk_sq]`. Conclude with `Matrix.inv_eq_left_inv h1`.
+-/
 theorem uh_inv_eq {a : Mx k r} (ha : a ∈ UH (Hpk k r)) : a⁻¹ = Hpk k r * aᴴ * Hpk k r := by
   have ha' : aᴴ * Hpk k r * a = Hpk k r := ha
   have h1 : (Hpk k r * aᴴ * Hpk k r) * a = 1 := by
     rw [mul_assoc, mul_assoc, ← mul_assoc aᴴ, ha', hpk_sq]
   exact Matrix.inv_eq_left_inv h1
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : Mt k r => (Matrix.of x : Mx k r))` using `continuous_id`. Simplify using `only [UWset, UH, Set.mem_setOf_eq, Set.setOf_and, Set.setOf_forall]`. Use `(isClosed_eq ((hc.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hc) continuous_const).inter ((isClosed_iInter fun a => (isClosed_eq (hc.matrix_mulVec continuous_const) continuous_const).inter (isClosed_eq (hc.matrix_mulVec continuous_const) continuous_const)).inter …` and prove the remaining obligations.
+-/
 theorem isClosed_uw (z : Fin (2 * r + k + 1) → ℂ) : IsClosed {x : Mt k r | Matrix.of x ∈ UWset k r z} := by
   have hc : Continuous (fun x : Mt k r => (Matrix.of x : Mx k r)) := continuous_id
   simp only [UWset, UH, Set.mem_setOf_eq, Set.setOf_and, Set.setOf_forall]
@@ -69,6 +84,15 @@ theorem isClosed_uw (z : Fin (2 * r + k + 1) → ℂ) : IsClosed {x : Mt k r | M
       (hc.matrix_mulVec continuous_const) continuous_const)).inter
     (isClosed_eq (hc.matrix_mulVec continuous_const) continuous_const))
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : Mt k r => (Matrix.of x : Mx k r))` using `continuous_id`. Establish `hS : MeasurableSet {x : Mt k r | Matrix.of x ∈ UWset k r z}` using `(isClosed_uw z).measurableSet`. Establish `hμS : μW.restrict {x : Mt k r | Matrix.of x ∈ UWset k r z} = μW` using `Measure.restrict_eq_self_of_ae_mem (ae_iff.mpr hμ)`. Rewrite using `[← hμS]`. Establish `hπ' : ContinuousOn π (UWset k r z)` using `continuousOn_clm_apply.mpr hπc`.
+
+Establish `hcont : ContinuousOn (fun x : Mt k r => π (Hpk k r * (Matrix.of x)ᴴ * Hpk k r)) {x : Mt k r | Matrix.of x ∈ UWset k r z}`. Use `hπ'.comp (Continuous.continuousOn ((continuous_const.matrix_mul hc.matrix_conjTranspose).matrix_mul continuous_const)) ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : Matrix.of x ∈ UWset k r z` using `hx`. Use `show Hpk k r * (Matrix.of x)ᴴ * Hpk k r ∈ UWset k r z`.
+
+Rewrite using `[← uh_inv_eq hx'.1]`. Conclude with `uw_inv hx'`. Use `(hcont.aestronglyMeasurable hS).congr ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem hS] with x hx`. Establish `hx' : Matrix.of x ∈ UWset k r z` using `hx`.
+
+Use `show π (Hpk k r * (Matrix.of x)ᴴ * Hpk k r) = π (Matrix.of x)⁻¹`. Rewrite using `[uh_inv_eq hx'.1]`.
+-/
 theorem piInv_aesm {z : Fin (2 * r + k + 1) → ℂ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [FiniteDimensional ℂ Wp] {π : Mx k r → (Wp →L[ℂ] Wp)} (hπc : ∀ x : Wp, ContinuousOn (fun g => π g x) (UWset k r z))
     {μW : Measure (Mt k r)} (hμ : μW {x | Matrix.of x ∉ UWset k r z} = 0) :
@@ -94,6 +118,13 @@ theorem piInv_aesm {z : Fin (2 * r + k + 1) → ℂ} {Wp : Type} [NormedAddCommG
   show π (Hpk k r * (Matrix.of x)ᴴ * Hpk k r) = π (Matrix.of x)⁻¹
   rw [uh_inv_eq hx'.1]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, piInv_aesm hπc hW0⟩` and prove the remaining obligations. Establish `h1 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z` using `Measure.quasiMeasurePreserving_fst.ae (ae_iff.mpr hW0)`. Establish `h2 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae (ae_iff.mpr hN0)`. Use `filter_upwards [h1, h2] with p hp1 hp2 using ⟨hp1, hp2⟩`. Introduce `h hh m hm`.
+
+Conclude with `(hWr h hh).prod (hNc h hh m hm)`. Establish `hgm : Measurable (Function.uncurry fun (x : Mt k r) (y : Mt k r) => (fun i j => (Matrix.of x * (Matrix.of y)⁻¹ * (Matrix.of x)⁻¹) i j : Mt k r))`. Establish `e : (Function.uncurry fun (x : Mt k r) (y : Mt k r) => (fun i j => (Matrix.of x * (Matrix.of y)⁻¹ * (Matrix.of x)⁻¹) i j : Mt k r)) = tripleMatrixProduct ∘ (fun p : Mt k r × Mt k r => (p.1, minvM p.2, minvM p.1))`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `triple_matrix_product_continuous.measurable.comp (measurable_fst.prodMk ((measurable_minvM.comp measurable_snd).prodMk (measurable_minvM.comp measurable_fst)))`. Establish `hg : ∀ᵐ x ∂μW, Measure.map (fun (y : Mt k r) => (fun i j => (Matrix.of x * (Matrix.of y)⁻¹ * (Matrix.of x)⁻¹) i j : Mt k r)) μN = μN` using `by filter_upwards [ae_iff.mpr hW0] with x hx`. Conclude with `(hNi _ hx).map_eq`. Conclude with `hWi.skew_product hgm hg`.
+-/
 theorem measF_of {z : Fin (2 * r + k + 1) → ℂ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [FiniteDimensional ℂ Wp] {π : Mx k r → (Wp →L[ℂ] Wp)} {μW μN : Measure (Mt k r)} [SigmaFinite μW]
     [SFinite μN]

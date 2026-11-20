@@ -7,6 +7,9 @@ namespace Formalism.DimensionVariation
 
 open Formalism.LatticeIndexTer (ph)
 
+/- English proof (translation)
+Rewrite using `[← hS]`. Conclude with `liftOperatorBound Pl ι Cl Cl' A B r ν n s Th c Rc lam Om S γ γ' ε h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14`.
+-/
 theorem liftProduct
     (Pl ι Cl Cl' : Type) [Fintype Pl] [Fintype ι] [Fintype Cl] [Fintype Cl'] (A B : Type)
     [NormedAddCommGroup A] [NormedSpace ℂ A] [NormedAddCommGroup B] [NormedSpace ℂ B]

@@ -11,11 +11,22 @@ namespace ReciprocityTheory.ChartRestriction.L1
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `norm_l_Cl l`.
+-/
 theorem red_norm_l : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := norm_l_Cl l
 
+/- English proof (translation)
+The claim follows from `norm_natCast_Cl_of_not_dvd l h`.
+-/
 theorem red_norm_natCast {n : ℕ} (h : ¬ l ∣ n) : ‖(n : ℂ_[l])‖ = 1 :=
   norm_natCast_Cl_of_not_dvd l h
 
+/- English proof (translation)
+Take `⟨y, hy, hd⟩` from `kur_approx l hx ‖x‖ (norm_pos_iff.2 h0)`. Establish `h2 : ‖x‖ = ‖y‖` using `norm_eq_of_norm_sub_lt_max l (lt_of_lt_of_le hd (le_max_left _ _))`. Establish `hy0 : y ≠ 0`. Introduce `h`. Rewrite `h2` using `[h, norm_zero]`.
+
+Conclude with `h0 (norm_eq_zero.1 h2)`. Take `⟨m, a, -, b, -, ha, hb, e⟩` from `kmu_shape l hy hy0`. Use `⟨-m, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, e, norm_mul, norm_div, ha, hb, div_one, mul_one, norm_zpow, norm_l_Cl, inv_zpow, zpow_neg]`.
+-/
 theorem kur_val {x : ℂ_[l]} (hx : x ∈ MaximalUnramifiedExtension l) (h0 : x ≠ 0) : ∃ m : ℤ, ‖x‖ = (l : ℝ) ^ m := by
   obtain ⟨y, hy, hd⟩ := kur_approx l hx ‖x‖ (norm_pos_iff.2 h0)
   have h2 : ‖x‖ = ‖y‖ :=

@@ -5,6 +5,15 @@ open TensorProduct
 
 namespace LateralTheory.CohomologicalPurity.ChartCut
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← KaehlerDifferential.span_range_derivation, Submodule.span_le]`. Introduce and unpack `_ ⟨a', rfl⟩`. Take `⟨⟨a, s⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers f) a'`. Simplify using `only at hs`. Establish `hu : IsUnit (algebraMap A A' (s : A))` using `IsLocalization.map_units A' s`.
+
+Establish `h1 : algebraMap A A' (s : A) • KaehlerDifferential.D R A' a' ∈ N`. Establish `h` using `congrArg (KaehlerDifferential.D R A') hs`. Rewrite `h` using `[Derivation.leibniz]`. Establish `e : algebraMap A A' (s : A) • KaehlerDifferential.D R A' a' = KaehlerDifferential.D R A' (algebraMap A A' a) - a' • KaehlerDifferential.D R A' (algebraMap A A' s)`. Rewrite using `[← h]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `N.sub_mem (hN a) (N.smul_mem _ (hN s))`. Take `⟨u, hu'⟩` from `hu`. Establish `h2` using `N.smul_mem (↑u⁻¹ : A') h1`.
+
+Rewrite `h2` using `[← hu', smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+-/
 lemma kd_span {R A A' : Type} [CommRing R] [CommRing A] [CommRing A'] [Algebra R A] [Algebra A A']
     [Algebra R A'] [IsScalarTower R A A'] (f : A) [IsLocalization.Away f A'] (N : Submodule A' Ω[A'⁄R])
     (hN : ∀ a : A, KaehlerDifferential.D R A' (algebraMap A A' a) ∈ N) : N = ⊤ := by
@@ -24,6 +33,33 @@ lemma kd_span {R A A' : Type} [CommRing R] [CommRing A] [CommRing A'] [Algebra R
   have h2 := N.smul_mem (↑u⁻¹ : A') h1
   rwa [← hu', smul_smul, Units.inv_mul, one_smul] at h2
 
+/- English proof (translation)
+Introduce `e d R A _ _ φ I p hp hIp hstd`. Use `letI : Algebra R A := φ.toAlgebra`. Use `haveI h1 : Algebra.IsStandardSmoothOfRelativeDimension (e + d) R A := hstd.1`. Use `haveI h2 : Algebra.IsStandardSmoothOfRelativeDimension e R (A ⧸ I) := hstd.2`. Use `haveI : Algebra.IsStandardSmooth R A := h1.isStandardSmooth`.
+
+Use `haveI : Algebra.IsStandardSmooth R (A ⧸ I) := h2.isStandardSmooth`. Establish `hfg : I.FG`. Use `Algebra.FinitePresentation.ker_fG_of_surjective (Ideal.Quotient.mkₐ R I) (Ideal.Quotient.mkₐ_surjective R I)` as an intermediate fact. Simplify `this` using `[Ideal.Quotient.mkₐ_ker]`. Use `haveI : Module.Finite A I := Module.Finite.iff_fg.mpr hfg`.
+
+Use `haveI := hp`. Establish `hrank` using `hR e d R A I p hIp h1 h2`. Take `⟨x, f, hf, hx⟩` from `hP d A I p hrank`. Use `set x' : Fin d → A := fun j => (x j : A) with hx'`. Establish `hxI : ∀ j, x' j ∈ I` using `fun j => (x j).2`.
+
+Establish `hfx : ∀ a ∈ I, f * a ∈ Ideal.span (Set.range x')`. Introduce `a ha`. Establish `h` using `Submodule.mem_map_of_mem (f := I.subtype) (hx ⟨a, ha⟩)`. Rewrite `h` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h`.
+
+Take `⟨y, g, hg, hy⟩` from `hS e d R A I p hp hIp h2 x' f hxI hf hfx`. Use `⟨f * g, fun h => (hp.mem_or_mem h).elim hf hg, ?_⟩` and prove the remaining obligations. Introduce `A' _ _ _`. Use `letI : Algebra R A' := ((algebraMap A A').comp φ).toAlgebra`. Use `haveI : IsScalarTower R A A' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+
+Establish `hfgu : IsUnit (algebraMap A A' (f * g))` using `IsLocalization.Away.algebraMap_isUnit (f * g)`. Rewrite `hfgu` using `[map_mul]`. Establish `hfu : IsUnit (algebraMap A A' f)` using `isUnit_of_mul_isUnit_left hfgu`. Establish `hgu : IsUnit (algebraMap A A' g)` using `isUnit_of_mul_isUnit_right hfgu`. Use `⟨fun j => algebraMap A A' (x' j), fun k => algebraMap A A' (y k), ?_, ?_⟩` and prove the remaining obligations.
+
+Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension 0 A A' := Algebra.IsStandardSmoothOfRelativeDimension.localization_away (f * g)`. Establish `h3 : Algebra.IsStandardSmoothOfRelativeDimension (0 + (e + d)) R A'` using `Algebra.IsStandardSmoothOfRelativeDimension.trans (R := R) (S := A) (T := A') (n := e + d) (m := 0)`. Rewrite `h3` using `[zero_add]`. Use `hE (e + d) R A' (Fin d ⊕ Fin e) _ (by simp [add_comm]) h3 ?_` and prove the remaining obligations. Apply `kd_span (R := R) (A := A) (f * g)` to reduce the goal to its premises.
+
+Introduce `a`. Establish `hm` using `Submodule.mem_map_of_mem (f := KaehlerDifferential.map R R A A') (hy (KaehlerDifferential.D R A a))`. Rewrite `hm` using `[Submodule.map_span, LinearMap.map_smul, KaehlerDifferential.map_D]`. Establish `hle : Submodule.span A (KaehlerDifferential.map R R A A' '' Set.range fun k => KaehlerDifferential.D R A (Sum.elim x' y k)) ≤ (Submodule.span A' (Set.range fun k => KaehlerDifferential.D R A' (Sum.elim (fun j => algebraMap A A' (x' j)) (fun k => algebraMap A A' (y k)) k))).restri …`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`. Rewrite using `[KaehlerDifferential.map_D]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Apply the tactic sequence `exact ⟨k, by cases k <;> rfl⟩`. Establish `h5` using `hle hm`.
+
+Rewrite `h5` using `[Submodule.restrictScalars_mem, ← algebraMap_smul A']`. Take `⟨u, hu⟩` from `hgu`. Establish `h6` using `Submodule.smul_mem _ (↑u⁻¹ : A') h5`. Rewrite `h6` using `[← hu, smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap]`. Establish `h` using `Ideal.mem_map_of_mem (algebraMap A A') (hfx a ha)`. Rewrite `h` using `[Ideal.map_span, map_mul, ← Set.range_comp]`.
+
+Take `⟨u, hu⟩` from `hfu`. Establish `h6` using `Ideal.mul_mem_left _ (↑u⁻¹ : A') h`. Rewrite `h6` using `[← mul_assoc, ← hu, Units.inv_mul, one_mul]`. Conclude with `h6`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `Ideal.mem_map_of_mem _ (hxI j)`.
+-/
 theorem LeafCoord_of (hR : LeafRank) (hP : LeafPick) (hS : LeafSpan) (hE : LeafEt) : LeafCoord := by
   intro e d R A _ _ φ I p hp hIp hstd
   letI : Algebra R A := φ.toAlgebra

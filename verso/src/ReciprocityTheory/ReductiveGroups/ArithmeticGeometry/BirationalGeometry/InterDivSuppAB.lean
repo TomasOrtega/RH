@@ -7,12 +7,22 @@ noncomputable section
 
 namespace ReciprocityTheory.ChartRestriction.G.Geo.DimF
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_height_of_isMaximal_of_field k B`. Rewrite using `[hs M hM, hs N hN]`.
+-/
 theorem height_eq_of_isMaximal_of_field {k B : Type*} [Field k] [CommRing B] [IsDomain B]
     [Algebra k B] [Algebra.FiniteType k B] (M N : Ideal B) (hM : M.IsMaximal) (hN : N.IsMaximal) :
     M.height = N.height := by
   obtain ⟨s, hs⟩ := exists_height_of_isMaximal_of_field k B
   rw [hs M hM, hs N hN]
 
+/- English proof (translation)
+Take `⟨p, hpC⟩` from `CharP.exists B`. Establish `hdvd : (p : ℤ) ∣ n` using `by first`. Consider the case `exact (CharP.intCast_eq_zero_iff B p n).mp hnB`. Consider the case `exact (CharP.int_cast_eq_zero_iff B p n).mp hnB`. Establish `hp0 : p ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hdvd`. Conclude with `hn0 hdvd`. Establish `hp : p.Prime` using `(CharP.char_is_prime_or_zero B p).resolve_right hp0`. Use `haveI : Fact p.Prime := ⟨hp⟩`.
+
+Use `letI : Algebra (ZMod p) B := ZMod.algebra B p`. Use `haveI : Algebra.FiniteType (ZMod p) B := Algebra.FiniteType.of_restrictScalars_finiteType ℤ (ZMod p) B`. Conclude with `height_eq_of_isMaximal_of_field (k := ZMod p) M N hM hN`.
+-/
 theorem height_eq_of_isMaximal_of_intCast_eq_zero {B : Type*} [CommRing B] [IsDomain B]
     [Algebra.FiniteType ℤ B] (n : ℤ) (hn0 : n ≠ 0) (hnB : (n : B) = 0)
     (M N : Ideal B) (hM : M.IsMaximal) (hN : N.IsMaximal) : M.height = N.height := by
@@ -31,6 +41,15 @@ theorem height_eq_of_isMaximal_of_intCast_eq_zero {B : Type*} [CommRing B] [IsDo
   haveI : Algebra.FiniteType (ZMod p) B := Algebra.FiniteType.of_restrictScalars_finiteType ℤ (ZMod p) B
   exact height_eq_of_isMaximal_of_field (k := ZMod p) M N hM hN
 
+/- English proof (translation)
+Use `haveI := hM.isPrime`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Ideal.height_le_ringKrullDim_of_ne_top hM.ne_top`. Rewrite using `[ringKrullDim, Order.krullDim_eq_iSup_height]`. Use `iSup_le fun p => ?_` and prove the remaining obligations.
+
+Take `⟨N, hN, hpN⟩` from `Ideal.exists_le_maximal p.asIdeal p.isPrime.ne_top`. Use `haveI := hN.isPrime`. Establish `h1 : Order.height p ≤ Order.height (⟨N, hN.isPrime⟩ : PrimeSpectrum B)` using `Order.height_mono (show p ≤ ⟨N, hN.isPrime⟩ from hpN)`. Establish `h2 : N.height = Order.height (⟨N, hN.isPrime⟩ : PrimeSpectrum B)`. Establish `hmem : N ∈ N.minimalPrimes`.
+
+Rewrite using `[Ideal.minimalPrimes_eq_subsingleton_self]`. Conclude with `Set.mem_singleton N`. Unfold `Ideal.height`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iInf₂_le N hmem`.
+
+Conclude with `le_iInf₂ fun J hJ => Order.height_mono (show (⟨N, hN.isPrime⟩ : PrimeSpectrum B) ≤ ⟨J, hJ.1.1⟩ from hJ.1.2)`. Rewrite using `[hB M N hM hN, h2]`. Conclude with `h1` after adjusting the coercions.
+-/
 theorem height_eq_ringKrullDim_of_forall {B : Type*} [CommRing B]
     (hB : ∀ M N : Ideal B, M.IsMaximal → N.IsMaximal → M.height = N.height)
     (M : Ideal B) (hM : M.IsMaximal) : (M.height : WithBot ℕ∞) = ringKrullDim B := by
@@ -54,6 +73,11 @@ theorem height_eq_ringKrullDim_of_forall {B : Type*} [CommRing B]
     rw [hB M N hM hN, h2]
     exact_mod_cast h1
 
+/- English proof (translation)
+Rewrite using `[finiteRingKrullDim_iff_ne_bot_and_top]`. Use `⟨fun hb => ?_, ?_⟩` and prove the remaining obligations. Establish `h0` using `ringKrullDim_nonneg_of_nontrivial (R := MvPolynomial σ ℤ ⧸ P)`. Rewrite `h0` using `[hb]`. Conclude with `absurd h0 (by simp)`.
+
+Use `ne_top_of_le_ne_top ?_ (ringKrullDim_quotient_le P)` and prove the remaining obligations. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]`. Rewrite using `[← Nat.cast_one, ← Nat.cast_add]`. Rewrite using `[← WithBot.coe_natCast]`. Conclude with `ne_of_lt (WithBot.coe_lt_coe.mpr (ENat.natCast_lt_top _))`.
+-/
 theorem finiteRingKrullDim_mvPolynomialInt_quot {σ : Type*} [Finite σ]
     (P : Ideal (MvPolynomial σ ℤ)) [P.IsPrime] : FiniteRingKrullDim (MvPolynomial σ ℤ ⧸ P) := by
   rw [finiteRingKrullDim_iff_ne_bot_and_top]
@@ -68,6 +92,9 @@ theorem finiteRingKrullDim_mvPolynomialInt_quot {σ : Type*} [Finite σ]
   rw [← WithBot.coe_natCast]
   exact ne_of_lt (WithBot.coe_lt_coe.mpr (ENat.natCast_lt_top _))
 
+/- English proof (translation)
+Establish `hle : ringKrullDim (B ⧸ q) ≤ ringKrullDim B` using `ringKrullDim_quotient_le q`. Establish `htop : ringKrullDim B ≠ ⊤` using `(finiteRingKrullDim_iff_ne_bot_and_top.mp inferInstance).2`. Rewrite using `[finiteRingKrullDim_iff_ne_bot_and_top]`. Establish `hne : ringKrullDim (B ⧸ q) ≠ ⊥` using `(lt_of_lt_of_le (WithBot.bot_lt_coe (0 : ℕ∞)) ringKrullDim_nonneg_of_nontrivial).ne'`. Conclude with `⟨hne, ne_top_of_le_ne_top htop hle⟩`.
+-/
 theorem finiteRingKrullDim_quot {B : Type*} [CommRing B] [FiniteRingKrullDim B] (q : Ideal B)
     [q.IsPrime] : FiniteRingKrullDim (B ⧸ q) := by
   have hle : ringKrullDim (B ⧸ q) ≤ ringKrullDim B := ringKrullDim_quotient_le q
@@ -77,6 +104,11 @@ theorem finiteRingKrullDim_quot {B : Type*} [CommRing B] [FiniteRingKrullDim B] 
     (lt_of_lt_of_le (WithBot.bot_lt_coe (0 : ℕ∞)) ringKrullDim_nonneg_of_nontrivial).ne'
   exact ⟨hne, ne_top_of_le_ne_top htop hle⟩
 
+/- English proof (translation)
+Establish `hmem : N ∈ N.minimalPrimes`. Rewrite using `[Ideal.minimalPrimes_eq_subsingleton_self]`. Conclude with `Set.mem_singleton N`. Unfold `Ideal.height`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Conclude with `iInf₂_le N hmem`. Conclude with `le_iInf₂ fun J hJ => Order.height_mono (show (⟨N, hN⟩ : PrimeSpectrum R) ≤ ⟨J, hJ.1.1⟩ from hJ.1.2)`.
+-/
 private theorem ideal_height_eq_order_height_primeSpectrum {R : Type*} [CommRing R] (N : Ideal R) [hN : N.IsPrime] :
     N.height = Order.height (⟨N, hN⟩ : PrimeSpectrum R) := by
   have hmem : N ∈ N.minimalPrimes := by
@@ -87,6 +119,23 @@ private theorem ideal_height_eq_order_height_primeSpectrum {R : Type*} [CommRing
   · exact le_iInf₂ fun J hJ =>
       Order.height_mono (show (⟨N, hN⟩ : PrimeSpectrum R) ≤ ⟨J, hJ.1.1⟩ from hJ.1.2)
 
+/- English proof (translation)
+Use `haveI := hM.isPrime`. Rewrite using `[ideal_height_eq_order_height_primeSpectrum M]`. Establish `hMbot : M ≠ ⊥`. Introduce `h`. Substitute `h` using the available equality.
+
+Conclude with `Int.not_isField (Ring.isField_iff_maximal_bot.mpr hM)`. Establish `hmin : ∀ z : PrimeSpectrum ℤ, z < ⟨M, hM.isPrime⟩ → IsMin z`. Introduce `z hz`. Establish `hz' : z.asIdeal < M` using `hz`. Establish `hz0 : z.asIdeal = ⊥`.
+
+Assume the negation of the conclusion as `hne`. Establish `hmax : z.asIdeal.IsMaximal` using `by first`. Consider the case `exact z.isPrime.isMaximal hne`. Consider the case `exact Ring.DimensionLEOne.maximalOfPrime hne z.isPrime`. Consider the case `exact Ideal.IsPrime.to_maximal_ideal z.isPrime hne`.
+
+Conclude with `(ne_of_lt hz') (hmax.eq_of_le hM.ne_top (le_of_lt hz'))`. Introduce `w _`. Use `show z.asIdeal ≤ w.asIdeal`. Rewrite using `[hz0]`. Conclude with `bot_le`.
+
+Establish `hx : ¬ IsMin (⟨M, hM.isPrime⟩ : PrimeSpectrum ℤ)`. Introduce `h`. Establish `hlt : (⟨⊥, Ideal.bot_prime⟩ : PrimeSpectrum ℤ) < ⟨M, hM.isPrime⟩` using `show (⊥ : Ideal ℤ) < M from bot_lt_iff_ne_bot.mpr hMbot`. Conclude with `lt_irrefl _ (lt_of_lt_of_le hlt (h (le_of_lt hlt)))`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Use `first`. Consider the case `(rw [Order.height_eq_iSup_lt_height]`. Use `iSup₂_le fun z hz => ?_` and prove the remaining obligations. Rewrite using `[Order.height_eq_zero.mpr (hmin z hz)]`. Use the proof step `simp)`.
+
+Consider the case `(show Order.height _ ≤ ((1 : ℕ) : ℕ∞)`. Rewrite using `[Order.height_le_coe_iff]`. Introduce `z hz`. Rewrite using `[Order.height_eq_zero.mpr (hmin z hz)]`. Conclude with `zero_lt_one)`.
+
+Use `first`. Consider the case `exact Order.one_le_height_iff.mpr hx`. Consider the case `exact ENat.one_le_iff_ne_zero.mpr (fun h0 => hx (Order.height_eq_zero.mp h0))`.
+-/
 theorem height_int_of_isMaximal (M : Ideal ℤ) (hM : M.IsMaximal) : M.height = 1 := by
   haveI := hM.isPrime
   rw [ideal_height_eq_order_height_primeSpectrum M]
@@ -129,6 +178,9 @@ theorem height_int_of_isMaximal (M : Ideal ℤ) (hM : M.IsMaximal) : M.height = 
       | exact Order.one_le_height_iff.mpr hx
       | exact ENat.one_le_iff_ne_zero.mpr (fun h0 => hx (Order.height_eq_zero.mp h0))
 
+/- English proof (translation)
+The claim follows from `| 0, M, hM => by let e := MvPolynomial.isEmptyRingEquiv ℤ (Fin 0) have hM' : (M.map e).IsMaximal := Ideal.map_isMaximal_of_equiv e rw [← e.height_map M, height_int_of_isMaximal _ hM'] simp | n + 1, M, hM => by have := int_isJacobsonRing let e := (MvPolynomial.finSuccEquiv ℤ n).to …`.
+-/
 theorem height_mvPolynomial_int_fin_of_isMaximal :
     ∀ (n : ℕ) (M : Ideal (MvPolynomial (Fin n) ℤ)), M.IsMaximal → M.height = n + 1
   | 0, M, hM => by
@@ -145,6 +197,17 @@ theorem height_mvPolynomial_int_fin_of_isMaximal :
     push_cast
     ring
 
+/- English proof (translation)
+Establish `sm1 : StrictMono (PrimeSpectrum.comap (e.symm : B →+* A))`. Introduce `p q hpq`. Use `lt_of_le_of_ne (Ideal.comap_mono hpq.le) ?_` and prove the remaining obligations. Introduce `h`. Apply `hpq.ne` to reduce the goal to its premises.
+
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Conclude with `Ideal.comap_injective_of_surjective _ e.symm.surjective (congrArg PrimeSpectrum.asIdeal h)`. Establish `sm2 : StrictMono (PrimeSpectrum.comap (e : A →+* B))`. Introduce `p q hpq`. Use `lt_of_le_of_ne (Ideal.comap_mono hpq.le) ?_` and prove the remaining obligations.
+
+Introduce `h`. Apply `hpq.ne` to reduce the goal to its premises. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Conclude with `Ideal.comap_injective_of_surjective _ e.surjective (congrArg PrimeSpectrum.asIdeal h)`. Establish `hcomp : PrimeSpectrum.comap (e : A →+* B) (PrimeSpectrum.comap (e.symm : B →+* A) x) = x`.
+
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use extensionality with `a`. Simplify using the standard rewrite rules. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `Order.height_le_height_apply_of_strictMono _ sm1 x`.
+-/
 private theorem order_height_comap_ringEquiv_symm {A B : Type*} [CommRing A] [CommRing B] (e : A ≃+* B)
     (x : PrimeSpectrum A) :
     Order.height (PrimeSpectrum.comap (e.symm : B →+* A) x) = Order.height x := by
@@ -173,6 +236,13 @@ private theorem order_height_comap_ringEquiv_symm {A B : Type*} [CommRing A] [Co
       _ = Order.height x := by rw [hcomp]
   · exact Order.height_le_height_apply_of_strictMono _ sm1 x
 
+/- English proof (translation)
+Take `⟨n, ⟨eσ⟩⟩` from `Finite.exists_equiv_fin σ`. Set `e : MvPolynomial σ ℤ ≃+* MvPolynomial (Fin n) ℤ` to `(MvPolynomial.renameEquiv ℤ eσ).toRingEquiv`. Establish `key : ∀ I : Ideal (MvPolynomial σ ℤ), I.IsMaximal → I.height = n + 1`. Introduce `I hI`. Use `haveI := hI`.
+
+Use `haveI := hI.isPrime`. Establish `hJ : (Ideal.comap (e.symm : MvPolynomial (Fin n) ℤ →+* MvPolynomial σ ℤ) I).IsMaximal` using `Ideal.comap_isMaximal_of_surjective _ e.symm.surjective`. Use `haveI := hJ.isPrime`. Establish `h1` using `height_mvPolynomial_int_fin_of_isMaximal n _ hJ`. Rewrite `h1`, the goal using `[ideal_height_eq_order_height_primeSpectrum]`.
+
+Rewrite using `[← h1]`. Conclude with `(order_height_comap_ringEquiv_symm e _).symm`. Rewrite using `[key M hM, key N hN]`.
+-/
 theorem height_eq_of_isMaximal_mvPolynomial_int {σ : Type*} [Finite σ]
     (M N : Ideal (MvPolynomial σ ℤ)) (hM : M.IsMaximal) (hN : N.IsMaximal) :
     M.height = N.height := by
@@ -191,6 +261,11 @@ theorem height_eq_of_isMaximal_mvPolynomial_int {σ : Type*} [Finite σ]
     exact (order_height_comap_ringEquiv_symm e _).symm
   rw [key M hM, key N hN]
 
+/- English proof (translation)
+Establish `hA : ReciprocityTheory.CA.IsCM (Localization.AtPrime q)` using `ReciprocityTheory.CA.isCM_of_isRegularLocalRing _`. Establish `hdisj : Disjoint (q.primeCompl : Set R) (p : Set R)` using `Set.disjoint_left.mpr fun x hx hxp => hx (hpq hxp)`. Establish `: (p.map (algebraMap R (Localization.AtPrime q))).IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint q.primeCompl _ p inferInstance hdisj`. Establish `e` using `hA.height_add_ringKrullDim_quotient (p.map (algebraMap R (Localization.AtPrime q)))`. Rewrite `e` using `[IsLocalization.height_map_of_disjoint q.primeCompl p hdisj, ReciprocityTheory.CA.ringKrullDim_localization_quotient_eq_height p q hpq, IsLocalization.AtPrime.ringKrullDim_eq_height q (Localization.AtPrime q)]`.
+
+Conclude with `e.symm` after adjusting the coercions.
+-/
 theorem height_eq_height_add_of_isRegularRing {R : Type*} [CommRing R] [IsRegularRing R]
     (p q : Ideal R) [p.IsPrime] [q.IsPrime] (hpq : p ≤ q) :
     q.height = p.height + (q.map (Ideal.Quotient.mk p)).height := by
@@ -206,6 +281,15 @@ theorem height_eq_height_add_of_isRegularRing {R : Type*} [CommRing R] [IsRegula
     IsLocalization.AtPrime.ringKrullDim_eq_height q (Localization.AtPrime q)] at e
   exact_mod_cast e.symm
 
+/- English proof (translation)
+Use `lift a to ℕ∞ using ha`. Use `lift b to ℕ∞ using hb`. Substitute `h1` using the available equality. Establish `h2' : b + (x + c) = a + x` using `by exact_mod_cast h2`. Establish `hD' : a + x ≠ ⊤`.
+
+Apply the tactic sequence `intro h; apply hD; rw [← WithBot.coe_add, h] <;> rfl`. Establish `ha' : a ≠ ⊤` using `fun h => hD' (by rw [h, top_add])`. Establish `hb' : b ≠ ⊤` using `fun h => hD' (by rw [← h2', h, top_add])`. Establish `hc' : c ≠ ⊤` using `ne_top_of_le_ne_top (by simp) hc`. Use `lift a to ℕ using ha'`.
+
+Use `lift b to ℕ using hb'`. Use `lift x to ℕ using hx`. Use `lift c to ℕ using hc'`. Establish `hc2 : c ≤ 1` using `by exact_mod_cast hc`. Establish `h3 : b + (x + c) = a + x` using `by exact_mod_cast h2'`.
+
+Establish `h4 : a ≤ b + 1` using `by omega`. Conclude with `h4` after adjusting the coercions.
+-/
 theorem le_add_one_of_add_eq (a b D : WithBot ℕ∞) (x c : ℕ∞) (hx : x ≠ ⊤) (hc : c ≤ 1)
     (ha : a ≠ ⊥) (hb : b ≠ ⊥) (hD : D ≠ ⊤) (h1 : a + x = D) (h2 : b + ((x + c : ℕ∞) : WithBot ℕ∞) = D) :
     a ≤ b + 1 := by
@@ -227,6 +311,17 @@ theorem le_add_one_of_add_eq (a b D : WithBot ℕ∞) (x c : ℕ∞) (hx : x ≠
   have h4 : a ≤ b + 1 := by omega
   exact_mod_cast h4
 
+/- English proof (translation)
+Establish `hqp : q.IsPrime` using `hq.1.1`. Take `⟨Q, hQdef⟩ : ∃ Q : Ideal (MvPolynomial σ ℤ), Q = q.comap (Ideal.Quotient.mk P)` from `⟨_, rfl⟩`. Establish `hQp : Q.IsPrime` using `hQdef ▸ Ideal.comap_isPrime _ _`. Establish `hPQ : P ≤ Q` using `fun x hx => by`. Rewrite using `[hQdef, Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx]`.
+
+Conclude with `q.zero_mem`. Establish `hQq : Q.map (Ideal.Quotient.mk P) = q`. Rewrite using `[hQdef]`. Conclude with `Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective q`. Establish `: (Ideal.span {((ℓ : ℤ) : MvPolynomial σ ℤ ⧸ P)}).IsPrincipal` using `⟨⟨_, rfl⟩⟩`.
+
+Establish `hq1 : q.height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ q hq`. Establish `hcat` using `height_eq_height_add_of_isRegularRing P Q hPQ`. Rewrite `hcat` using `[hQq]`. Use `int_isJacobsonRing` as an intermediate fact. Establish `hfin : FiniteRingKrullDim (MvPolynomial σ ℤ)`.
+
+Establish `h0` using `finiteRingKrullDim_mvPolynomialInt_quot (⊥ : Ideal (MvPolynomial σ ℤ))`. Rewrite `h0`, the goal using `[finiteRingKrullDim_iff_ne_bot_and_top]`. Rewrite `h0` using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot (MvPolynomial σ ℤ))]`. Then use the resulting hypothesis. Establish `hdP` using `dim_quot_add_height height_eq_of_isMaximal_mvPolynomial_int P`. Establish `hdQ` using `dim_quot_add_height height_eq_of_isMaximal_mvPolynomial_int Q`.
+
+Rewrite `hdQ` using `[hcat]`. Establish `hAq : ringKrullDim ((MvPolynomial σ ℤ ⧸ P) ⧸ Q.map (Ideal.Quotient.mk P)) = ringKrullDim (MvPolynomial σ ℤ ⧸ Q)` using `ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hPQ)`. Rewrite `hAq` using `[hQq]`. Rewrite using `[hAq]`. Conclude with `le_add_one_of_add_eq _ _ _ _ _ Ideal.height_ne_top_of_isPrime hq1 (ne_bot_of_le_ne_bot (by simp) ringKrullDim_nonneg_of_nontrivial) (ne_bot_of_le_ne_bot (by simp) ringKrullDim_nonneg_of_nontrivial) ringKrullDim_ne_top hdP hdQ`.
+-/
 theorem specialFibre_dim_ge {σ : Type*} [Finite σ] (P : Ideal (MvPolynomial σ ℤ)) [P.IsPrime]
     (hP : P.comap MvPolynomial.C = ⊥) (ℓ : ℤ) (hℓ : Prime ℓ)
     (q : Ideal (MvPolynomial σ ℤ ⧸ P))
@@ -263,6 +358,25 @@ theorem specialFibre_dim_ge {σ : Type*} [Finite σ] (P : Ideal (MvPolynomial σ
     (ne_bot_of_le_ne_bot (by simp) ringKrullDim_nonneg_of_nontrivial)
     (ne_bot_of_le_ne_bot (by simp) ringKrullDim_nonneg_of_nontrivial) ringKrullDim_ne_top hdP hdQ
 
+/- English proof (translation)
+Use `set A := MvPolynomial σ ℤ ⧸ P`. Use `finiteRingKrullDim_mvPolynomialInt_quot P` as an intermediate fact. Establish `hAft : Algebra.FiniteType ℤ A` using `(inferInstance : Algebra.FiniteType ℤ (MvPolynomial σ ℤ)).of_surjective (Ideal.Quotient.mkₐ ℤ P) (Ideal.Quotient.mkₐ_surjective ℤ P)`. Use `le_antisymm (Ideal.height_le_ringKrullDim_of_ne_top hM.ne_top) ?_` and prove the remaining obligations. Establish `hcast : ∀ n : ℤ, ((n : ℤ) : A) = Ideal.Quotient.mk P (MvPolynomial.C n)` using `fun n => by`.
+
+Rewrite using `[← map_intCast (Ideal.Quotient.mk P), ← map_intCast (MvPolynomial.C : ℤ →+* _), Int.cast_id]`. Use `set Mz := M.comap (Int.castRingHom A)`. Establish `hMz : Mz ≠ ⊥`. Introduce `h0`. Establish `hb : M.comap ((Ideal.Quotient.mk P).comp MvPolynomial.C) = ⊥`.
+
+Rewrite using `[← h0]`. Use `congr 1`. Take `⟨q', hq', hlt⟩` from `exists_gt_of_comap_int_eq_bot (Ideal.Quotient.mk P) Ideal.Quotient.mk_surjective M hM.isPrime hb`. Conclude with `hlt.ne (hM.eq_of_le hq'.ne_top hlt.le)`. Take `⟨ℓ, hℓMz, hℓ⟩` from `Ideal.IsPrime.exists_mem_prime_of_ne_bot (Ideal.comap_isPrime _ _) hMz`.
+
+Establish `hℓM : ((ℓ : ℤ) : A) ∈ M` using `hℓMz`. Take `⟨q, hq, hqM⟩` from `Ideal.exists_minimalPrimes_le (I := Ideal.span {((ℓ : ℤ) : A)}) (J := M) (Ideal.span_le.mpr (Set.singleton_subset_iff.mpr hℓM))`. Establish `hqp : q.IsPrime` using `hq.1.1`. Establish `hℓq : ((ℓ : ℤ) : A) ∈ q` using `hq.1.2 (Ideal.subset_span rfl)`. Establish `hℓ0 : ((ℓ : ℤ) : A) ≠ 0`.
+
+Introduce `h`. Rewrite `h` using `[hcast, Ideal.Quotient.eq_zero_iff_mem, ← Ideal.mem_comap, hP, Ideal.mem_bot]`. Conclude with `hℓ.ne_zero h`. Establish `hq0 : q ≠ ⊥` using `fun h => hℓ0 (by rw [h, Ideal.mem_bot] at hℓq; exact hℓq)`. Establish `hqh : 1 ≤ q.height`.
+
+Rewrite using `[Order.one_le_iff_ne_zero, Ne, Ideal.height_eq_zero_iff_eq_bot]`. Conclude with `hq0`. Use `finiteRingKrullDim_quot q` as an intermediate fact. Establish `: @Algebra.FiniteType ℤ (A ⧸ q) _ _ (Ring.toIntAlgebra _)`. Use `hAft.of_surjective (Ideal.Quotient.mkₐ ℤ q) (Ideal.Quotient.mkₐ_surjective ℤ q)` and compare the differences between its conclusion and the goal.
+
+Conclude with `Subsingleton.elim _ _`. Establish `hEq : ∀ M N : Ideal (A ⧸ q), M.IsMaximal → N.IsMaximal → M.height = N.height` using `height_eq_of_isMaximal_of_intCast_eq_zero (B := A ⧸ q) ℓ hℓ.ne_zero (by`. Rewrite using `[← map_intCast (Ideal.Quotient.mk q), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hℓq)`. Establish `hMb : (M.map (Ideal.Quotient.mk q)).IsMaximal` using `Ideal.IsMaximal.map_of_surjective_of_ker_le Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hqM)`.
+
+Establish `h1` using `height_add_height_map_le (q := q) (M := M) hqM`. Establish `h2` using `height_eq_ringKrullDim_of_forall hEq _ hMb`. Establish `h3` using `specialFibre_dim_ge P hP ℓ hℓ q hq`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`.
+
+Both sides reduce to the same expression. Use `_ ≤ ((M.map (Ideal.Quotient.mk q)).height : WithBot ℕ∞) + (q.height : WithBot ℕ∞) := add_le_add le_rfl (WithBot.coe_le_coe.mpr hqh)`. Use `_ = ((q.height + (M.map (Ideal.Quotient.mk q)).height : ℕ∞) : WithBot ℕ∞) := by`. Rewrite using `[WithBot.coe_add, add_comm]`. Use `_ ≤ M.height := WithBot.coe_le_coe.mpr h1`.
+-/
 theorem height_eq_of_isMaximal_int_charZero {σ : Type*} [Finite σ]
     (P : Ideal (MvPolynomial σ ℤ)) [P.IsPrime] (hP : P.comap MvPolynomial.C = ⊥)
     (M : Ideal (MvPolynomial σ ℤ ⧸ P)) (hM : M.IsMaximal) :
@@ -319,6 +433,15 @@ theorem height_eq_of_isMaximal_int_charZero {σ : Type*} [Finite σ]
         rw [WithBot.coe_add, add_comm]
     _ ≤ M.height := WithBot.coe_le_coe.mpr h1
 
+/- English proof (translation)
+Distinguish the cases in `hP : P.comap MvPolynomial.C = ⊥`. Establish `h1` using `height_eq_of_isMaximal_int_charZero P hP M hM`. Establish `h2` using `height_eq_of_isMaximal_int_charZero P hP N hN`. Conclude with `h1.trans h2.symm` after adjusting the coercions. Take `⟨n, hnP, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hP`.
+
+Establish `hq : Algebra.FiniteType ℤ (MvPolynomial σ ℤ ⧸ P)` using `by first`. Consider the case `infer_instance`. Consider the case `exact Algebra.FiniteType.of_surjective inferInstance (Ideal.Quotient.mkₐ ℤ P) (Ideal.Quotient.mkₐ_surjective ℤ P)`. Use `@height_eq_of_isMaximal_of_intCast_eq_zero _ _ _ ?_ n hn0 ?_ M N hM hN` and prove the remaining obligations. Use `first`.
+
+Consider the case `exact hq`. Consider the case `(convert hq using 1 <;> first`. Consider the case `exact Subsingleton.elim _ _`. Consider the case `exact Algebra.algebra_ext _ _ fun r => (eq_intCast _ r).trans (eq_intCast _ r).symm)`. Establish `e1 : (MvPolynomial.C n : MvPolynomial σ ℤ) = (n : MvPolynomial σ ℤ)` using `eq_intCast MvPolynomial.C n`.
+
+Establish `e2 : ((n : ℤ) : MvPolynomial σ ℤ ⧸ P) = Ideal.Quotient.mk P (n : MvPolynomial σ ℤ)` using `(map_intCast _ n).symm`. Rewrite using `[e2, Ideal.Quotient.eq_zero_iff_mem, ← e1]`. Conclude with `hnP`.
+-/
 theorem height_eq_of_isMaximal_int {σ : Type*} [Finite σ] (P : Ideal (MvPolynomial σ ℤ))
     [P.IsPrime] (M N : Ideal (MvPolynomial σ ℤ ⧸ P)) (hM : M.IsMaximal) (hN : N.IsMaximal) :
     M.height = N.height := by

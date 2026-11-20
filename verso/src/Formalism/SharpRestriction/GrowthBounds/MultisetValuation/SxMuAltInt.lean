@@ -10,6 +10,37 @@ open Formalism.InvariantFactorPaths.G7.LogarithmEquivalence (altR)
 
 variable (p : ℕ) [hp : Fact p.Prime] (K' : Type) [Field K'] [Algebra (K0 p) K']
 
+/- English proof (translation)
+Use `haveI := charZero_K' p K'`. Establish `hp2 : 2 ≤ p` using `hp.out.two_le`. Establish `hq : 4 ≤ p ^ 2` using `by nlinarith`. Establish `hinj : Function.Injective (fun j : ℕ => (p ^ 2) ^ j)` using `Nat.pow_right_injective (by omega)`. Establish `hp0 : (p : K') ≠ 0` using `by exact_mod_cast hp.out.ne_zero`.
+
+Establish `hq1 : p ^ 2 ≠ 1` using `by omega`. Simplify using `only [lamF, lgF, PowerSeries.coeff_mk]`. Distinguish the cases in `hn : ∃ j, n = (p ^ 2) ^ j`. Take `⟨j, rfl⟩` from `hn`. Establish `hjlt : j < (p ^ 2) ^ j + 1`.
+
+Use `Nat.lt_pow_self (n := j) (show 1 < p ^ 2 by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hsum : (∑ i ∈ range ((p ^ 2) ^ j + 1), if (p ^ 2) ^ j = (p ^ 2) ^ i then ((p : K') ^ i)⁻¹ else 0) = ((p : K') ^ j)⁻¹`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb (hinj h).symm`. Introduce `hj`.
+
+Conclude with `absurd (Finset.mem_range.2 hjlt) hj`. Rewrite using `[hsum]`. Establish `key : ∀ m : ℕ, ∃ e : ℕ, vp ^ ((p ^ 2) ^ m - 1) = (p : K') ^ e ∧ m ≤ e ∧ (m ≤ 1 → e = m) ∧ (2 ≤ m → m + 1 ≤ e)`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => exact ⟨0, by simp, le_rfl, fun _ => rfl, fun h => by omega⟩`. Consider the case `succ m ih`. Take `⟨e, he, hme, h1, h2⟩` from `ih`. Establish `ha : 1 ≤ (p ^ 2) ^ m` using `Nat.one_le_pow _ _ (by omega)`. Establish `hexp : (p ^ 2) ^ (m + 1) - 1 = ((p ^ 2) ^ m - 1) * p ^ 2 + (p ^ 2 - 1)`.
+
+Rewrite using `[pow_succ]`. Establish `: 1 ≤ (p ^ 2) ^ m * p ^ 2` using `Nat.one_le_iff_ne_zero.2 (by positivity)`. Use `zify [ha, this, show 1 ≤ p ^ 2 by omega]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm4 : e * 4 ≤ e * p ^ 2` using `Nat.mul_le_mul_left _ hq`.
+
+Use `⟨e * p ^ 2 + 1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hexp, pow_add, pow_mul, he, hvp, ← pow_mul, ← pow_succ]`. Use linear arithmetic over natural numbers and integers. Introduce `hm`. Establish `hm0 : m = 0` using `by omega`.
+
+Substitute `hm0` using the available equality. Establish `he0` using `h1 (by omega)`. Substitute `he0` using the available equality. Simplify using the standard rewrite rules. Introduce `hm`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨e, he, hje, h1, h2⟩` from `key j`. Use `⟨(p : ℤ) ^ (e - j), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Use `push_cast`.
+
+Establish `hpe : (p : K') ^ e = (p : K') ^ (e - j) * (p : K') ^ j`. Rewrite using `[← pow_add, Nat.sub_add_cancel hje]`. Rewrite using `[hpe, mul_inv_cancel_right₀ (pow_ne_zero _ hp0)]`. Break down `Nat.lt_or_ge j 2 with hj | hj` into its components or cases. Use `interval_cases j`.
+
+Take `rfl` from `h1 (by norm_num)`. Simplify using `[hq1, Ne.symm hq1, hp.out.ne_one]`. Take `rfl` from `h1 (by norm_num)`. Simplify using `[hq1, Ne.symm hq1, hp.out.ne_one]`. Establish `hn1 : (p ^ 2) ^ j ≠ 1` using `fun h => by`.
+
+Use `hinj (show (p ^ 2) ^ j = (p ^ 2) ^ 0 by rw [h, pow_zero])` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hnq : (p ^ 2) ^ j ≠ p ^ 2` using `fun h => by`. Use `hinj (show (p ^ 2) ^ j = (p ^ 2) ^ 1 by rw [h, pow_one])` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[if_neg hn1, if_neg hnq]`. Simplify using `only [add_zero, sub_zero]`. Conclude with `dvd_pow_self _ (by omega)`. Establish `hsum : (∑ i ∈ range (n + 1), if n = (p ^ 2) ^ i then ((p : K') ^ i)⁻¹ else 0) = 0` using `Finset.sum_eq_zero fun i _ => if_neg fun h => hn ⟨i, h⟩`. Rewrite using `[hsum, mul_zero]`.
+
+Establish `hn1 : n ≠ 1` using `fun h => hn ⟨0, by simp [h]⟩`. Establish `hnq : n ≠ p ^ 2` using `fun h => hn ⟨1, by simp [h]⟩`. Conclude with `⟨0, by simp, by simp [hn1, hnq]⟩`.
+-/
 theorem sx_lam_int (vp : K') (hvp : vp ^ (p ^ 2 - 1) = (p : K')) (n : ℕ) :
     ∃ z : ℤ, PowerSeries.coeff n (lamF p vp) = (z : K') ∧
       (p : ℤ) ∣ z - ((if n = 1 then 1 else 0) + (if n = p ^ 2 then 1 else 0)) := by
@@ -90,6 +121,13 @@ theorem sx_lam_int (vp : K') (hvp : vp ^ (p ^ 2 - 1) = (p : K')) (n : ℕ) :
     have hnq : n ≠ p ^ 2 := fun h => hn ⟨1, by simp [h]⟩
     exact ⟨0, by simp, by simp [hn1, hnq]⟩
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (fun j : ℕ => q ^ j)` using `Nat.pow_right_injective (by omega)`. Establish `hlt : l < q ^ l + 1`. Use `Nat.lt_pow_self (n := l) hq` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_eq_single l]`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb (hinj h).symm`.
+
+Introduce `hl`. Conclude with `absurd (Finset.mem_range.2 hlt) hl`.
+-/
 private theorem sum_sign_if_eq_pow_at_pow (q : ℕ) (hq : 1 < q) (l : ℕ) :
     (∑ i ∈ range (q ^ l + 1), if q ^ l = q ^ i then ((-1 : ℤ)) ^ i else 0) = (-1) ^ l := by
   have hinj : Function.Injective (fun j : ℕ => q ^ j) := Nat.pow_right_injective (by omega)
@@ -105,10 +143,24 @@ private theorem sum_sign_if_eq_pow_at_pow (q : ℕ) (hq : 1 < q) (l : ℕ) :
   · intro hl
     exact absurd (Finset.mem_range.2 hlt) hl
 
+/- English proof (translation)
+The claim follows from `Finset.sum_eq_zero fun i _ => if_neg (hm i)`.
+-/
 private theorem sum_sign_if_eq_pow_eq_zero_of_ne_pow (q m : ℕ) (hm : ∀ l, m ≠ q ^ l) :
     (∑ i ∈ range (m + 1), if m = q ^ i then ((-1 : ℤ)) ^ i else 0) = 0 :=
   Finset.sum_eq_zero fun i _ => if_neg (hm i)
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (fun j : ℕ => q ^ j)` using `Nat.pow_right_injective (by omega)`. Distinguish the cases in `hn : ∃ l, n = q ^ l`. Take `⟨l, rfl⟩` from `hn`. Rewrite using `[sum_sign_if_eq_pow_at_pow q hq l]`. Break down `l with _ | l` into its components or cases.
+
+Establish `: ¬ q ∣ 1` using `fun h => by have := Nat.le_of_dvd one_pos h; omega`. Simplify using `[this]`. Establish `hd : q ∣ q ^ (l + 1)` using `dvd_pow_self q (by omega)`. Establish `hdiv : q ^ (l + 1) / q = q ^ l`. Rewrite using `[pow_succ, Nat.mul_div_cancel _ (by omega)]`.
+
+Establish `hne : q ^ (l + 1) ≠ 1` using `fun h => by`. Use `hinj (show q ^ (l + 1) = q ^ 0 by rw [h, pow_zero])` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos hd, hdiv, sum_sign_if_eq_pow_at_pow q hq l, if_neg hne, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `push_neg at hn`. Rewrite using `[sum_sign_if_eq_pow_eq_zero_of_ne_pow q n hn]`. Establish `hn1 : n ≠ 1` using `fun h => hn 0 (by simp [h])`. Rewrite using `[if_neg hn1, zero_add]`. Use `split_ifs with hd`.
+
+Apply `sum_sign_if_eq_pow_eq_zero_of_ne_pow` to reduce the goal to its premises. Introduce `l hl`. Apply `hn (l + 1)` to reduce the goal to its premises. Rewrite using `[pow_succ, ← hl, Nat.div_mul_cancel hd]`. Both sides reduce to the same expression.
+-/
 private theorem sum_sign_if_eq_pow_add_div_eq_indicator_one (q : ℕ) (hq : 1 < q) (n : ℕ) :
     (∑ i ∈ range (n + 1), if n = q ^ i then ((-1 : ℤ)) ^ i else 0) +
       (if q ∣ n then (∑ i ∈ range (n / q + 1), if n / q = q ^ i then ((-1 : ℤ)) ^ i else 0)
@@ -139,6 +191,17 @@ private theorem sum_sign_if_eq_pow_add_div_eq_indicator_one (q : ℕ) (hq : 1 < 
       rw [pow_succ, ← hl, Nat.div_mul_cancel hd]
     · rfl
 
+/- English proof (translation)
+Break down `Nat.lt_or_ge d 2 with h | h` into its components or cases. Use `interval_cases d`. Simplify using the standard rewrite rules. Conclude with `absurd rfl hd`. Establish `h1 : PowerSeries.X ^ n ∣ a - b`.
+
+Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`. Rewrite using `[map_sub, hab m hm, sub_self]`. Establish `h2 : PowerSeries.X ∣ ∑ i ∈ range d, a ^ i * b ^ (d - 1 - i)`. Apply `Finset.dvd_sum` to reduce the goal to its premises.
+
+Introduce `i hi`. Break down `Nat.eq_zero_or_pos i with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Apply `Dvd.dvd.mul_left` to reduce the goal to its premises. Conclude with `dvd_pow hb (by omega)`.
+
+Conclude with `Dvd.dvd.mul_right (dvd_pow ha (by omega)) _`. Establish `h3 : PowerSeries.X ^ (n + 1) ∣ a ^ d - b ^ d`. Establish `he : a ^ d - b ^ d = (a - b) * ∑ i ∈ range d, a ^ i * b ^ (d - 1 - i)`. Rewrite using `[← geom_sum₂_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[he, pow_succ]`. Conclude with `mul_dvd_mul h1 h2`. Establish `h4` using `(PowerSeries.X_pow_dvd_iff.1 h3) n (by omega)`. Rewrite `h4` using `[map_sub, sub_eq_zero]`. Conclude with `h4`.
+-/
 private theorem coeff_pow_eq_of_lower_coeff_eq {R : Type} [CommRing R] (a b : PowerSeries R)
     (ha : PowerSeries.X ∣ a) (hb : PowerSeries.X ∣ b) (n : ℕ)
     (hab : ∀ m < n, PowerSeries.coeff m a = PowerSeries.coeff m b) (d : ℕ) (hd : d ≠ 1) :
@@ -169,6 +232,11 @@ private theorem coeff_pow_eq_of_lower_coeff_eq {R : Type} [CommRing R] (a b : Po
     rw [map_sub, sub_eq_zero] at h4
     exact h4
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.coeff_subst' (PowerSeries.HasSubst.of_constantCoeff_zero' h0)]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := range (n + 1)) ?_]`. Both sides reduce to the same expression. Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`.
+
+Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hlt`. Apply `hd` to reduce the goal to its premises. Take `⟨r, hr⟩` from `PowerSeries.X_dvd_iff.2 h0`. Rewrite using `[hr, mul_pow, PowerSeries.coeff_X_pow_mul', if_neg (by omega), smul_zero]`.
+-/
 private theorem coeff_subst_eq_sum_coeff_mul_coeff_pow {K : Type} [Field K] (μ f : PowerSeries K)
     (h0 : PowerSeries.constantCoeff μ = 0) (n : ℕ) :
     PowerSeries.coeff n (PowerSeries.subst μ f) =
@@ -184,6 +252,53 @@ private theorem coeff_subst_eq_sum_coeff_mul_coeff_pow {K : Type} [Field K] (μ 
     obtain ⟨r, hr⟩ := PowerSeries.X_dvd_iff.2 h0
     rw [hr, mul_pow, PowerSeries.coeff_X_pow_mul', if_neg (by omega), smul_zero]
 
+/- English proof (translation)
+Use `haveI := charZero_K' p K'`. Establish `hp2 : 2 ≤ p` using `hp.out.two_le`. Establish `hq : 1 < p ^ 2` using `by nlinarith`. Establish `hq1 : p ^ 2 ≠ 1` using `by omega`. Use `choose z hz1 hz2 using sx_lam_int p K' vp hvp`.
+
+Establish `hX : PowerSeries.X ∣ μ` using `PowerSeries.X_dvd_iff.2 h0`. Establish `hl1 : PowerSeries.coeff 1 (lamF p vp) = 1`. Simplify using `[lamF, lgF, Finset.sum_range_succ, Ne.symm hq1, hp.out.ne_one]`. Establish `halt : ∀ m, PowerSeries.coeff m (altF K' p) = ((∑ i ∈ range (m + 1), if m = (p ^ 2) ^ i then ((-1 : ℤ)) ^ i else 0 : ℤ) : K')`. Introduce `m`.
+
+Simplify using `only [altF, PowerSeries.coeff_mk]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hPk : ∀ (Q : Polynomial ℤ) (m : ℕ), PowerSeries.coeff m ((Q.map (Int.castRingHom K') : Polynomial K') : PowerSeries K') = (Q.coeff m : K')`. Introduce `Q m`.
+
+Rewrite using `[Polynomial.coeff_coe, Polynomial.coeff_map, eq_intCast]`. Establish `hQq : ∀ (R : Polynomial (ZMod p)) (n : ℕ), (R ^ (p ^ 2)).coeff n = if p ^ 2 ∣ n then R.coeff (n / p ^ 2) else 0`. Introduce `R n`. Rewrite using `[sq, pow_mul, ← ZMod.expand_card, ← ZMod.expand_card, ← Polynomial.expand_mul, Polynomial.coeff_expand (by positivity)]`. Establish `key : ∀ n, 1 ≤ n → ∃ P : Polynomial ℤ, P.coeff 0 = 0 ∧ (∀ m, n ≤ m → P.coeff m = 0) ∧ (∀ m < n, PowerSeries.coeff m μ = (P.coeff m : K')) ∧ (∀ m < n, (p : ℤ) ∣ P.coeff m - ∑ i ∈ range (m + 1), if m = (p ^ 2) ^ i then ((-1 : ℤ)) ^ i else 0)`.
+
+Introduce `n hn`. Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base`. Use `⟨0, by simp, fun m _ => by simp, fun m hm => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Establish `: m = 0` using `by omega`.
+
+Substitute `this` using the available equality. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, h0]`. Simplify using the standard rewrite rules. Establish `: m = 0` using `by omega`. Substitute `this` using the available equality.
+
+Simplify using the standard rewrite rules. Consider the case `succ n hn ih`. Take `⟨P, hP0, hPz, hPμ, hPd⟩` from `ih`. Establish `hXP : PowerSeries.X ∣ ((P.map (Int.castRingHom K') : Polynomial K') : PowerSeries K')`. Rewrite using `[PowerSeries.X_dvd_iff, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, hPk, hP0, Int.cast_zero]`.
+
+Establish `hcμ : PowerSeries.coeff n μ = (((if n = 1 then 1 else 0) - ∑ d ∈ (range (n + 1)).erase 1, z d * (P ^ d).coeff n : ℤ) : K')`. Establish `e1` using `congrArg (PowerSeries.coeff n) h1`. Rewrite `e1` using `[coeff_subst_eq_sum_coeff_mul_coeff_pow μ _ h0 n, PowerSeries.coeff_X, ← Finset.add_sum_erase _ _ (Finset.mem_range.2 (by omega : 1 < n + 1)), hl1, pow_one, one_mul]`. Establish `hS : ∑ d ∈ (range (n + 1)).erase 1, PowerSeries.coeff d (lamF p vp) * PowerSeries.coeff n (μ ^ d) = ∑ d ∈ (range (n + 1)).erase 1, (z d : K') * ((P ^ d).coeff n : K')`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `d hd`. Rewrite using `[hz1 d, coeff_pow_eq_of_lower_coeff_eq μ _ hX hXP n (fun m hm => by rw [hPμ m hm, hPk]) d (Finset.ne_of_mem_erase hd), ← Polynomial.coe_pow, ← Polynomial.map_pow, hPk]`. Rewrite `e1` using `[hS]`. Simplify using `only [Int.cast_sub, Int.cast_sum, Int.cast_mul, Int.cast_ite, Int.cast_one, Int.cast_zero]`. Take the linear combination `e1`.
+
+Establish `hcd : (p : ℤ) ∣ ((if n = 1 then 1 else 0) - ∑ d ∈ (range (n + 1)).erase 1, z d * (P ^ d).coeff n) - ∑ i ∈ range (n + 1), if n = (p ^ 2) ^ i then ((-1 : ℤ)) ^ i else 0`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Establish `hQ : ∀ m, (P.map (Int.castRingHom (ZMod p))).coeff m = if m < n then (((∑ i ∈ range (m + 1), if m = (p ^ 2) ^ i then ((-1 : ℤ)) ^ i else 0 : ℤ)) : ZMod p) else 0`. Introduce `m`. Rewrite using `[Polynomial.coeff_map, eq_intCast]`.
+
+Use `split_ifs with hm`. Rewrite using `[← sub_eq_zero, ← Int.cast_sub, ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `hPd m hm`. Rewrite using `[hPz m (by omega), Int.cast_zero]`. Establish `hzb : ∀ d ∈ (range (n + 1)).erase 1, ((z d : ℤ) : ZMod p) = if d = p ^ 2 then 1 else 0`.
+
+Introduce `d hd`. Establish `h` using `hz2 d`. Rewrite `h` using `[if_neg (Finset.ne_of_mem_erase hd), zero_add]`. Use `split_ifs at h ⊢ with hdq`. Establish `h'` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ p).2 h`.
+
+Move the coercions through the operations in `at h'`. Conclude with `sub_eq_zero.1 h'`. Rewrite `h` using `[sub_zero]`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ p).2 h`. Establish `hS : ((∑ d ∈ (range (n + 1)).erase 1, z d * (P ^ d).coeff n : ℤ) : ZMod p) = if p ^ 2 ∣ n then (((∑ i ∈ range (n / p ^ 2 + 1), if n / p ^ 2 = (p ^ 2) ^ i then ((-1 : ℤ)) ^ i else 0 : ℤ)) : ZMod p) else 0`.
+
+Rewrite using `[Int.cast_sum]`. Rewrite using `[Finset.sum_congr rfl (g := fun d => if d = p ^ 2 then ((P.map (Int.castRingHom (ZMod p))) ^ (p ^ 2)).coeff n else 0)]`. Rewrite using `[Finset.sum_ite_eq', hQq] split_ifs with h1 h2 h2`. Rewrite using `[hQ, if_pos (Nat.div_lt_self (by omega) hq)]`. Both sides reduce to the same expression.
+
+It suffices to derive a contradiction. Apply `h1` to reduce the goal to its premises. Use `Nat.le_of_dvd (by omega) h2` as an intermediate fact. Rewrite using `[Finset.mem_erase, Finset.mem_range]`. Conclude with `⟨hq1, by omega⟩`.
+
+Both sides reduce to the same expression. Introduce `d hd`. Rewrite using `[Int.cast_mul, hzb d hd]`. Use `split_ifs with hdq`. Substitute `hdq` using the available equality.
+
+Rewrite using `[one_mul, ← Polynomial.map_pow, Polynomial.coeff_map, eq_intCast]`. Rewrite using `[zero_mul]`. Establish `hr` using `congrArg (Int.cast : ℤ → ZMod p) (sum_sign_if_eq_pow_add_div_eq_indicator_one (p ^ 2) hq n)`. Rewrite `hr` using `[Int.cast_add]`. Rewrite using `[Int.cast_sub, Int.cast_sub, hS]`.
+
+Apply the tactic sequence `split_ifs at hr ⊢ <;> push_cast at hr ⊢ <;> linear_combination (-1 : ZMod p) * hr`. Use `⟨P + Polynomial.C ((if n = 1 then 1 else 0) - ∑ d ∈ (range (n + 1)).erase 1, z d * (P ^ d).coeff n) * Polynomial.X ^ n, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_C_mul_X_pow, if_neg (by omega), hP0, add_zero]`. Introduce `m hm`. Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_C_mul_X_pow, if_neg (by omega), hPz m (by omega), add_zero]`.
+
+Introduce `m hm`. Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_C_mul_X_pow]`. Break down `Nat.lt_or_ge m n with h | h` into its components or cases. Rewrite using `[if_neg (by omega), add_zero]`. Conclude with `hPμ m h`.
+
+Establish `hmn : m = n` using `by omega`. Substitute `hmn` using the available equality. Rewrite using `[if_pos rfl, hPz m le_rfl, zero_add]`. Conclude with `hcμ`. Introduce `m hm`.
+
+Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_C_mul_X_pow]`. Break down `Nat.lt_or_ge m n with h | h` into its components or cases. Rewrite using `[if_neg (by omega), add_zero]`. Conclude with `hPd m h`. Establish `hmn : m = n` using `by omega`.
+
+Substitute `hmn` using the available equality. Rewrite using `[if_pos rfl, hPz m le_rfl, zero_add]`. Conclude with `hcd`. Take `⟨P, -, -, hPμ, hPd⟩` from `key (n + 1) (by omega)`. Take `⟨y, hy⟩` from `hPd n (by omega)`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[hPμ n (by omega), halt n, ← Int.cast_sub, hy]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sx_mu_alt_int (vp : K') (hvp : vp ^ (p ^ 2 - 1) = (p : K')) (μ : PowerSeries K')
     (h0 : PowerSeries.constantCoeff μ = 0)
     (h1 : (PowerSeries.subst μ (lamF p vp) : PowerSeries K') = PowerSeries.X) (n : ℕ) :
@@ -329,6 +444,9 @@ theorem sx_mu_alt_int (vp : K') (hvp : vp ^ (p ^ 2 - 1) = (p : K')) (μ : PowerS
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `sx_mu_alt_int p K' vp hvp μ h0 h1 n`. Conclude with `⟨(y : K'), intCast_mem _ y, hy⟩`.
+-/
 theorem sx_mu_alt (vp : K') (hvp : vp ^ (p ^ 2 - 1) = (p : K')) (μ : PowerSeries K')
     (h0 : PowerSeries.constantCoeff μ = 0)
     (h1 : (PowerSeries.subst μ (lamF p vp) : PowerSeries K') = PowerSeries.X) (n : ℕ) :

@@ -7,6 +7,13 @@ open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
 attribute [local instance 100] LieRing.ofAssociativeRing in
+/- English proof (translation)
+Use `Subalgebra.mem_center_iff.2 fun u => ?_` and prove the remaining obligations. Proceed by induction on `u using GroundTheory.Automorphic.AutomorphicForm.UEnv.induction with`. Consider the case `halg r => exact Algebra.commutes r _`. Consider the case `hι Y`. Establish `h : ⁅Y, UpperTheory.V.Cm.lieEq E a (oneL E a)⁆ = 0`.
+
+Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[LieSubalgebra.coe_bracket, UpperTheory.V.Cm.lieEq_oneL, Ring.lie_def, mul_one, one_mul, sub_self]`. Both sides reduce to the same expression. Rewrite using `[← sub_eq_zero, ← Ring.lie_def, ← LieHom.map_lie, h, map_zero]`. Consider the case `hmul x y hx hy => rw [mul_assoc, hy, ← mul_assoc, hx, mul_assoc]`.
+
+Consider the case `hadd x y hx hy => rw [add_mul, mul_add, hx, hy]`.
+-/
 private theorem one_mem_centerU (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) :
     UniversalEnvelopingAlgebra.ι ℝ (UpperTheory.V.Cm.lieEq E a (oneL E a)) ∈ (isExpLieAlgebra E a).centerU := by
   refine Subalgebra.mem_center_iff.2 fun u => ?_
@@ -21,6 +28,13 @@ private theorem one_mem_centerU (E : Type) [Field E] [NumberField E] [IsTotallyC
   | hmul x y hx hy => rw [mul_assoc, hy, ← mul_assoc, hx, mul_assoc]
   | hadd x y hx hy => rw [add_mul, mul_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem z hz`. Take `⟨t, u, rfl⟩` from `hz`. Conclude with `⟨_, fun φ hφ => (mem_CI.1 hφ).2 t u⟩`. Consider the case `algebraMap r => exact ⟨r, fun φ _ => rfl⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨c, hc⟩` from `hx`. Take `⟨d, hd⟩` from `hy`. Conclude with `⟨c + d, fun φ hφ => by rw [LinearMap.add_apply, hc φ hφ, hd φ hφ, add_smul]⟩`. Consider the case `mul x y _ _ hx hy`.
+
+Take `⟨c, hc⟩` from `hx`. Take `⟨d, hd⟩` from `hy`. Conclude with `⟨d * c, fun φ hφ => by rw [Module.End.mul_apply, hd φ hφ, map_smul, hc φ hφ, mul_smul]⟩`.
+-/
 private theorem scalar_of_mem_Zalg {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     (m : (E →+* ℂ) → Multiset ℂ) {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
     ∃ c : ℂ, ∀ φ ∈ CI a m, z φ = c • φ := by
@@ -38,6 +52,11 @@ private theorem scalar_of_mem_Zalg {E : Type} [Field E] [NumberField E] [IsTotal
     obtain ⟨d, hd⟩ := hy
     exact ⟨d * c, fun φ hφ => by rw [Module.End.mul_apply, hd φ hφ, map_smul, hc φ hφ, mul_smul]⟩
 
+/- English proof (translation)
+Introduce `hc E _ _ _ a m`. Use `⟨fun o φ hφ => mem_CI.2 ⟨UpperTheory.V.Cm.isCuspForm_act o (mem_CI.1 hφ).1, fun t u => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun ((hc E a t u).2.1 o).eq φ`. Rewrite `h` using `[Module.End.mul_apply, Module.End.mul_apply, (mem_CI.1 hφ).2 t u, map_smul]`. Conclude with `h`.
+
+Rewrite using `[← UpperTheory.V.Cm.uTC_ι]`. Conclude with `scalar_of_mem_Zalg m (UpperTheory.V.Cm.uTC_mem_Zalg (one_mem_centerU E a))`.
+-/
 theorem UpperTheory.V.Cj.S.ciBasic :
     UpperTheory.V.Cj.S.CapAct → UpperTheory.V.Cj.S.CiBasic := by
   intro hc E _ _ _ a m

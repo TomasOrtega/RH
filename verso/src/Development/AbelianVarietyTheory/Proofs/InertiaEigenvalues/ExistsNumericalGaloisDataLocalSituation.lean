@@ -19,6 +19,17 @@ open TensorProduct
 
 namespace GlobalTheory.TopWindow
 
+/- English proof (translation)
+Introduce `l _ P H K LL hA lam hlam h5 t h w η typ U T χ hyp hc`. Establish `hp : (P.PD K).p = l` using `P.PD_p K`. Establish `hS : Standing P K LL (H.W K 1 LL hA.2.2).emb lam` using `(GlobalTheory.SenCompare.standing_iff P H lam).2 ⟨hp ▸ h5, hA, hlam⟩`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing.letters_ne_zero hS⟩`. Take `⟨ht, hposition, -, hcrys, hmult, hchi⟩` from `hyp`.
+
+Rewrite `hposition` using `[hp]`. Take `⟨D, hDt, hD, t1, t2, t3⟩` from `GlobalTheory.TopWindow.exists_topData_of_positionHyps l _ t _ h w η typ U (Fact.out : l.Prime).two_le ht hc hposition`. Take `⟨-, hcont1, hcrys1, hjump1⟩` from `hchi 1 (Finset.mem_Icc.2 ⟨le_rfl, ht⟩)`. Establish `hcyc : ∀ g, tableLineDegreeTwo.charL (LL` using `↥LL.1) (GlobalTheory.AdmLoc.CycWitness.cycO P K LL) g = Formalism.MainNotions.N.cycLL (P.PD K) ↥LL.1 g := fun g => Units.ext (GlobalTheory.AdmLoc.CycWitness.cycO_val P K LL g)`. Use `⟨_, D, GlobalTheory.AdmLoc.CycWitness.cycO P K LL, ⟨hS, ⟨rfl, ⟨hcrys, fun i τ hτ a => ?_⟩, ⟨hcont1, hcrys1, fun i τ hτ a => ?_⟩, GlobalTheory.AdmLoc.CycWitness.cycO_val P K LL⟩, t1, t2, t3⟩, hDt, fun i a => (hD i).2.2 a, fun c hc' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[(hD i).2.1]`. Conclude with `hmult i τ (AlgHom.ext fun x => hτ x) a`. Use `(hjump1 i τ (AlgHom.ext fun x => hτ x) a).trans ?_ show _ = ((Multiset.count a {D.w i} : ℕ) : ℤ)` and prove the remaining obligations. Rewrite using `[(hD i).1, Multiset.count_singleton]`. Use `push_cast`.
+
+Simplify using `only [add_sub_cancel_right]`. Take `⟨hχc, -⟩` from `hchi c hc'`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Apply `Units.map_injective (f := (algebraMap ↥(OL LL) ↥LL.1).toMonoidHom) Subtype.val_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `tableLineDegreeTwo.charL (LL := ↥LL.1) (χ 1 * GlobalTheory.AdmLoc.CycWitness.cycO P K LL ^ (-((c : ℤ) - 1))) g = tableLineDegreeTwo.charL (LL := ↥LL.1) (χ c) g`.
+
+Rewrite using `[hχc g, ← hcyc g]`. Simplify using `[tableLineDegreeTwo.charL, map_zpow]`.
+-/
 theorem exists_topData_galData : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (H : LocHW l P) (K LL : FinExt l)
     (hA : CaseA K LL) (lam : ↥(OL LL)), Irreducible lam → 5 ≤ (P.PD K).p →
     ∀ (t : ℕ) (h w η : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ℕ) (typ : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → Bool)

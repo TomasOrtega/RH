@@ -4,6 +4,11 @@ namespace GlobalTheory.ResidueSpanLift
 
 open IsLocalRing
 
+/- English proof (translation)
+Rewrite using `[Matrix.matrix_eq_sum_single X]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `: Matrix.single i j (X i j) = X i j • Matrix.single i j (1 : O)`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem_smul (h i j) Submodule.mem_top`.
+-/
 theorem mem_smul_top_of_entries {O : Type} [CommRing O] {a : ℕ} (I : Ideal O)
     (X : Matrix (Fin a) (Fin a) O) (h : ∀ i j, X i j ∈ I) :
     X ∈ I • (⊤ : Submodule O (Matrix (Fin a) (Fin a) O)) := by
@@ -14,6 +19,13 @@ theorem mem_smul_top_of_entries {O : Type} [CommRing O] {a : ℕ} (I : Ideal O)
   rw [this]
   exact Submodule.smul_mem_smul (h i j) Submodule.mem_top
 
+/- English proof (translation)
+Proceed by induction on `hY using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Conclude with `⟨M g, Submodule.subset_span ⟨g, rfl⟩, rfl⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by ext i j; simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨Z, hZ, rfl⟩` from `hx`. Take `⟨W, hW, rfl⟩` from `hy`. Conclude with `⟨Z + W, Submodule.add_mem _ hZ hW, by ext i j; simp⟩`. Consider the case `smul c x _ hx`.
+
+Take `⟨Z, hZ, rfl⟩` from `hx`. Take `⟨d, rfl⟩` from `residue_surjective c`. Use `⟨d • Z, Submodule.smul_mem _ _ hZ, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`.
+-/
 theorem exists_lift {O ι : Type} [CommRing O] [IsLocalRing O] {a : ℕ}
     (M : ι → Matrix (Fin a) (Fin a) O) (Y : Matrix (Fin a) (Fin a) (ResidueField O))
     (hY : Y ∈ Submodule.span (ResidueField O)
@@ -35,6 +47,11 @@ theorem exists_lift {O ι : Type} [CommRing O] [IsLocalRing O] {a : ℕ}
     ext i j
     simp only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]
 
+/- English proof (translation)
+Use `top_le_iff.mp ?_` and prove the remaining obligations. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := maximalIdeal O) Module.Finite.fg_top (maximalIdeal_le_jacobson _) ?_` and prove the remaining obligations. Introduce `X _`. Take `⟨Z, hZ, hZX⟩` from `exists_lift M (X.map (residue O)) (h ▸ Submodule.mem_top)`. Establish `hX : X = Z + (X - Z)` using `by abel`.
+
+Rewrite using `[hX]`. Use `Submodule.add_mem_sup hZ (mem_smul_top_of_entries _ _ fun i j => ?_)` and prove the remaining obligations. Use `congrFun (congrFun hZX i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Rewrite using `[← residue_eq_zero_iff, Matrix.sub_apply, map_sub, this, sub_self]`.
+-/
 theorem span_eq_top_of_span_residue_eq_top {O ι : Type} [CommRing O] [IsLocalRing O] {a : ℕ}
     (M : ι → Matrix (Fin a) (Fin a) O)
     (h : Submodule.span (ResidueField O)

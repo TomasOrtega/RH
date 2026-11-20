@@ -78,6 +78,9 @@ structure Hypotheses₂ : Prop where
   p25 : GlobalTheory.Published.RegularisedSiegelWeilFirstTerm
   p26 : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Published.siegelEisensteinContinuation_of_doublingMethod h.p14`.
+-/
 theorem Hypotheses₂.eisenstein (h : Hypotheses₂) : GlobalTheory.Published.SiegelEisensteinContinuation :=
   GlobalTheory.Published.siegelEisensteinContinuation_of_doublingMethod h.p14
 
@@ -132,9 +135,15 @@ variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst
   {Spf : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (Dcf Zs)} {Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3}
   {S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc}
 
+/- English proof (translation)
+Introduce `k` and use `⟨_, Rc.T.n.types.O k, Rc.T.n.types.eSer_def k⟩`.
+-/
 theorem serClause_of_rec (Rc : Formalism.L2.RecT ex) : SerClause D :=
   fun k => ⟨_, Rc.T.n.types.O k, Rc.T.n.types.eSer_def k⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ok, Q.charW, hex, Q.host, ⟨L, par⟩, cc, hP.qGuard, ty, serClause_of_rec Rc, junk, Q.trSem, Q.stdChar, hP.phsOne, w1, nV⟩`.
+-/
 theorem TiesA.of_real {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Q : RealT Rc P Dcf Spf Zscf S Ks)
     (hP : RealPins Q) (ok : P.A3.fam3.Ok3 1) (hex : Q.Rl.toRealDat.ExAt) (par : Nonempty (ParameterChoice' D L))
     (cc : D.host.ccK = ⊤) (ty : GlobalTheory.IndefiniteRowSideFullHecke.CommutingLevelOperators.GoodTypes Q.Rl.toRealDat) (junk : GlobalTheory.Hk3.InertJunk P.A3)
@@ -142,6 +151,9 @@ theorem TiesA.of_real {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what
     (nV : 8 * D.R.f * D.R.r + 4 ≤ D.R.nV) : TiesA Q.Rl Q.F :=
   ⟨ok, Q.charW, hex, Q.host, ⟨L, par⟩, cc, hP.qGuard, ty, serClause_of_rec Rc, junk, Q.trSem, Q.stdChar, hP.phsOne, w1, nV⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨B.fw, B.bar⟩, B.pins, B.phase, hU, hB.ioExt, hB.oneMap, hC⟩`.
+-/
 theorem TiesG.of_real (B : RealTB Rc P Dcf Spf Zscf S) (hB : RowsB B) (hU : B.Q.Rl.toRealDat.LUnif)
     (hC : GlobalTheory.TwistField.CoverField B.T B.Q.Rl.toRealDat) : TiesG B.T B.Q.Rl B.κ B.v₀ B.O :=
   ⟨⟨B.fw, B.bar⟩, B.pins, B.phase, hU, hB.ioExt, hB.oneMap, hC⟩
@@ -152,14 +164,29 @@ section Api
 
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3}
 
+/- English proof (translation)
+The claim follows from `h.w1`.
+-/
 theorem TiesA.twistedPlaces_of_condition (h : TiesA R F) (C CH : ℝ) : ∀ w, (R.toCx3 F).W1 F.cr (R.num F C CH) w → w ∈ R.twPl := h.w1
 
+/- English proof (translation)
+The claim follows from `RealDat3.characterisation_of_weak h.char h.ex`.
+-/
 theorem TiesA.char3 (h : TiesA R F) : R.Char3 F := RealDat3.characterisation_of_weak h.char h.ex
 
+/- English proof (translation)
+The claim follows from `le_trans (Nat.le_add_left _ _) h.nV`.
+-/
 example (h : TiesA R F) : 4 ≤ D.R.nV := le_trans (Nat.le_add_left _ _) h.nV
 
+/- English proof (translation)
+Introduce `h` and use `hi (h.phs i)`.
+-/
 example (i : Fin D.R.m) (hi : R.phs i ≠ 1) : ¬ TiesA R F := fun h => hi (h.phs i)
 
+/- English proof (translation)
+The claim follows from `h.phase i h.unif`.
+-/
 theorem TiesG.phaseTie {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat3 D A3 T.Q.c.F}
     {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.toRealDat.MW i σ).Vec}
     {O : ∀ i, OMDat T.toCore R.toRealDat i Unit (fun _ => A3.A.μ0)} (h : TiesG T R κ v₀ O) (i : Fin D.R.m) :

@@ -7,6 +7,11 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Rows
 
+/- English proof (translation)
+Rewrite using `[jacobiSym.neg _ hp]`. Establish `hdo : Odd d` using `Nat.odd_iff.mpr (by omega)`. Break down `Nat.odd_mod_four_iff.mp (Nat.odd_iff.mp hp) with h | h` into its components or cases. Rewrite using `[ZMod.χ₄_nat_one_mod_four h, one_mul, jacobiSym.quadratic_reciprocity_one_mod_four' hdo h]`. Rewrite using `[ZMod.χ₄_nat_three_mod_four h, jacobiSym.quadratic_reciprocity_three_mod_four hd4 h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jacobiSym_neg_eq_of_mod_four {p d : ℕ} (hp : Odd p) (hd4 : d % 4 = 3) :
     jacobiSym (-(d : ℤ)) p = jacobiSym p d := by
   rw [jacobiSym.neg _ hp]
@@ -16,6 +21,13 @@ theorem jacobiSym_neg_eq_of_mod_four {p d : ℕ} (hp : Odd p) (hd4 : d % 4 = 3) 
   · rw [ZMod.χ₄_nat_three_mod_four h, jacobiSym.quadratic_reciprocity_three_mod_four hd4 h]
     ring
 
+/- English proof (translation)
+Introduce `d _ hsq hd4 χ hχ K _ _ hK ⟨x, hx⟩ s hs`. Establish `: Algebra.IsQuadraticExtension ℚ K` using `{ finrank_eq_two' := hK }`. Establish `hdisc : NumberField.discr K = -(d : ℤ)` using `h₁ d hsq hd4 K hK x hx`. Establish `hD : (NumberField.discr K).natAbs = d` using `by rw [hdisc]; simp`. Rewrite using `[GroundTheory.Global.Quadratic.dedekindZeta_eq_mul K hs, ← GroundTheory.Global.Quadratic.LFunction_kroneckerChar K s, ← GroundTheory.Global.Quadratic.LFunction_changeLevel_of_eq hD]`.
+
+Use `congr 2`. Use `MulChar.ext fun a => ?_` and prove the remaining obligations. Take `⟨p, hp_gt, hpp, hpa⟩` from `Nat.forall_exists_prime_gt_and_eq_mod a.isUnit (2 * d)`. Use `Fact.mk hpp` as an intermediate fact. Establish `hp2 : p ≠ 2` using `by omega`.
+
+Rewrite using `[← hpa, GroundTheory.Global.Quadratic.changeLevel_of_eq_apply hD, GroundTheory.Global.Quadratic.kroneckerChar_apply_prime K p hp2, hdisc, hχ p, jacobiSym.legendreSym.to_jacobiSym, jacobiSym_neg_eq_of_mod_four (hpp.odd_of_ne_two hp2) hd4]`.
+-/
 theorem SqfZetaFactor.proof (h₁ : SqfDiscr.Statement) : SqfZetaFactor.Statement := by
   intro d _ hsq hd4 χ hχ K _ _ hK ⟨x, hx⟩ s hs
   have : Algebra.IsQuadraticExtension ℚ K := { finrank_eq_two' := hK }

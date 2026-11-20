@@ -129,6 +129,11 @@ structure IsVerticalDivisorAt (P : Ideal (MRing ι)) (p : ℕ) (b : K → ℤ) (
     (C (p : ℤ) : MRing ι) ∉ W → ∃ u v : MRing ι, u ∉ W ∧ v ∉ W ∧ u * f - v * g ∈ P
 
 omit [Fintype K] in
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[mem_support_iff, coeff_C]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Conclude with `absurd rfl hm`.
+-/
 theorem isMultiHomog_C_zero (a : ℤ) : IsMultiHomog (C a : MRing ι) 0 := by
   classical
   intro m hm k
@@ -138,6 +143,9 @@ theorem isMultiHomog_C_zero (a : ℤ) : IsMultiHomog (C a : MRing ι) 0 := by
     simp
   · exact absurd rfl hm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 0, isMultiHomog_C_zero _, by simpa using isMultiHomog_C_zero (ι := ι) 1, by funext k; simp⟩ num_not_mem := fun h => by have : (p : ℤ) ∈ P.comap (C : ℤ →+* MRing ι) := h rw [hP, Ideal.mem_bot] at this exact hp (by exact_mod_cast this) den_not_mem := fun h => by have : (1 : ℤ) …`.
+-/
 theorem IsVerticalDivisorAt.ofPrime {P : Ideal (MRing ι)} (hP : IsHorizontal P) {p : ℕ}
     (hp : p ≠ 0) : IsVerticalDivisorAt P p 0 (C (p : ℤ)) 1 where
   degrees := ⟨0, 0, isMultiHomog_C_zero _, by simpa using isMultiHomog_C_zero (ι := ι) 1, by
@@ -236,6 +244,9 @@ def j' : ℕ := D.N - D.j
 
 def n : ℕ := Fintype.card Ψ * D.j * (D.N - D.j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem n_eq : D.n = D.f * D.j * D.j' := rfl
 
 def PX : Ideal (MRing ι) := mCoordIdeal D.y

@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.LiftBrg
 
+/- English proof (translation)
+Establish `h` using `X.B.R.m_add_three_le_k`. Unfold `Ranks.nV Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nV_pos (X : Stages) : 0 < X.B.R.nV := by
   have h := X.B.R.m_add_three_le_k
   unfold Ranks.nV Ranks.r
@@ -17,6 +20,9 @@ theorem nV_pos (X : Stages) : 0 < X.B.R.nV := by
 
 instance nV_neZero (X : Stages) : NeZero X.B.R.nV := ⟨(nV_pos X).ne'⟩
 
+/- English proof (translation)
+The claim follows from `(X.toD7.sp.V_rank _ (by omega) i.2).symm`.
+-/
 theorem rkEq (X : Stages) (i : Fin X.toD7.R.m) : X.B.R.nV = (Vc X.toD7 i).rank :=
   (X.toD7.sp.V_rank _ (by omega) i.2).symm
 

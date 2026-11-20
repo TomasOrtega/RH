@@ -16,6 +16,11 @@ open GlobalTheory.LocM.MapComp
 
 namespace GlobalTheory.LocM.LatCover
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ Z B g L σ r U U' hU hU' hle V n m a hs k _ φ v hv h hin j hj`. Establish `e : spMap (φ.comp (Z.X.presheaf.map (homOfLE hle).op).hom) ≫ hU.fromSpec = spMap φ ≫ hU'.fromSpec`. Rewrite using `[← sp_comp, Category.assoc, StepFrame.spMap_resR hU hU' hle]`. Establish `key` using `hs k (φ.comp (Z.X.presheaf.map (homOfLE hle).op).hom)`. Rewrite `key` using `[e]`.
+
+Conclude with `key v hv h hin j hj`.
+-/
 theorem stepAt_res : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (Z B : Mdl Y i₀) (g : Z.X ⟶ B.X) (L : Lat B) (σ : E →+* ℂ) (r : ℕ) (U U' : Z.X.Opens) (hU : IsAffineOpen U) (hU' : IsAffineOpen U') (hle : U' ≤ U) (V : B.X.Opens) (n : ℕ) (m : Fin n → Γ(L.N.toMod, V)) (a : GL (Fin n) Γ(Z.X, U)), LatCover.StepAt Z B g L σ r hU m a → LatCover.StepAt Z B g L σ r hU' m (Matrix.GeneralLinearGroup.map (Z.X.presheaf.map (homOfLE hle).op).hom a) := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z B g L σ r U U' hU hU' hle V n m a hs k _ φ v hv h hin j hj
   have e : spMap (φ.comp (Z.X.presheaf.map (homOfLE hle).op).hom) ≫ hU.fromSpec = spMap φ ≫ hU'.fromSpec := by
@@ -24,6 +29,17 @@ theorem stepAt_res : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
   rw [e] at key
   exact key v hv h hin j hj
 
+/- English proof (translation)
+Introduce `R K _ _ φ n g hg A`. Set `κ : Fin n → Fin (g + 1)` to `fun i => ⟨min (i + 1) g, by omega⟩`. Set `col : Fin (g + 1) → Fin n → Fin n → R` to `fun r j l => ((A r)⁻¹ : GL (Fin n) R) l j`. Establish `hind : ∀ r, LinearIndependent K fun j => fun l => φ (col r j l)`. Introduce `r`.
+
+Establish `hu : IsUnit (Matrix.transpose ((((A r)⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).map φ))`. Use `(Matrix.isUnit_transpose _).2 ?_` and prove the remaining obligations. Use `(Matrix.GeneralLinearGroup.map φ (A r)⁻¹).isUnit` as an intermediate fact. Conclude with `this`. Conclude with `Matrix.linearIndependent_rows_of_isUnit hu`.
+
+Establish `hκ : ∀ i : Fin n, (i : ℕ) + 1 ≤ n` using `fun i => i.2`. Take `⟨s, hs⟩` from `StepFrame.exists_choice (k := K) n (fun i j => fun l => φ (col (κ i) (Fin.castLE (hκ i) j) l)) fun i => (hind (κ i)).comp _ (Fin.castLE_injective (hκ i))`. Set `M : Matrix (Fin n) (Fin n) R` to `fun i l => col (κ i) (Fin.castLE (hκ i) (s i)) l`. Use `⟨M, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (M.map φ)` using `(Matrix.linearIndependent_rows_iff_isUnit).1 hs`.
+
+Rewrite using `[RingHom.map_det]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 hu).ne_zero`. Establish `e : κ (Fin.castLE hg i) = i.succ` using `Fin.ext (by simp [κ])`. Establish `: ∀ r (_ : r = i.succ) (j : Fin n), (j : ℕ) < i + 1 → ∃ j' : Fin n, (j' : ℕ) < i + 1 ∧ ∀ l, col r j l = ((A i.succ)⁻¹ : GL (Fin n) R) l j'`. Introduce and unpack `_ rfl j hj`.
+
+Conclude with `⟨j, hj, fun l => rfl⟩`. Conclude with `this _ e _ (s _).2`.
+-/
 theorem exists_rows : ∀ (R K : Type) [CommRing R] [Field K] (φ : R →+* K) (n g : ℕ) (hg : g ≤ n) (A : Fin (g + 1) → GL (Fin n) R), ∃ M : Matrix (Fin n) (Fin n) R, φ M.det ≠ 0 ∧ ∀ i : Fin g, ∃ j : Fin n, (j : ℕ) < i + 1 ∧ ∀ l, M (Fin.castLE hg i) l = ((A i.succ)⁻¹ : GL (Fin n) R) l j := by
   intro R K _ _ φ n g hg A
   classical
@@ -52,6 +68,21 @@ theorem exists_rows : ∀ (R K : Type) [CommRing R] [Field K] (φ : R →+* K) (
       exact ⟨j, hj, fun l => rfl⟩
     exact this _ e _ (s _).2
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W hp hW Y i₀ Z B L hty h`. Use `⟨hty, fun x => ?_⟩` and prove the remaining obligations. Take `⟨-, g, hg, -⟩` from `h _ (mem_allSteps.2 ⟨Classical.arbitrary _, 0, Nat.zero_le _, rfl⟩)`. Take `⟨V, n, m, hxV, hm⟩` from `L.free (g x)`. Use `choose U₀ hU₀ a₀ hx₀ hle₀ hst₀ using fun σ (r : Fin (Dw.mult σ + 1)) => GlobalTheory.T.lattice_step_frame_fiber E H Dw Xo p W hp hW Y i₀ Z B L σ r (Nat.lt_succ_iff.1 r.2) g hg (h _ (mem_allSteps.2 ⟨σ, r, _, rfl⟩)) V n m hm x hxV`.
+
+Establish `ho : IsOpen (⋂ q : Σ σ : E →+* ℂ, Fin (Dw.mult σ + 1), (U₀ q.1 q.2 : Set Z.X))` using `isOpen_iInter_of_finite fun q => (U₀ q.1 q.2).2`. Take `⟨_, ⟨U, hU, rfl⟩, hx, hle⟩` from `Z.X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_iInter.2 fun q : Σ σ : E →+* ℂ, Fin (Dw.mult σ + 1) => hx₀ q.1 q.2) ho`. Establish `hU : IsAffineOpen U` using `hU`. Establish `hle' : ∀ σ r, U ≤ U₀ σ r` using `fun σ r => fun y hy => Set.mem_iInter.1 (hle hy) ⟨σ, r⟩`. Set `a : ∀ σ (r : Fin (Dw.mult σ + 1)), GL (Fin n) Γ(Z.X, U)` to `fun σ r => Matrix.GeneralLinearGroup.map (Z.X.presheaf.map (homOfLE (hle' σ r)).op).hom (a₀ σ r)`.
+
+Establish `hst : ∀ σ (r : Fin (Dw.mult σ + 1)), StepAt Z B g L σ r hU m (a σ r)` using `fun σ r => stepAt_res E H Dw Xo p W Y i₀ Z B g L σ r _ U (hU₀ σ r) hU (hle' σ r) V n m (a₀ σ r) (hst₀ σ r)`. Establish `hUV : U ≤ g ⁻¹ᵁ V` using `(hle' (Classical.arbitrary _) 0).trans (hle₀ _ _)`. Establish `hmn : ∀ σ, Dw.mult σ ≤ n` using `fun σ => GlobalTheory.T.lattice_frame_fiber_injective (GlobalTheory.T.lattice_frame_fiber_rank) E H Dw Xo p W hp hW Y i₀ Z B L g hg U hU V hUV n m hm σ _ (hst σ (Fin.last _)) x hx`. Use `choose M hM hrow using fun σ => exists_rows Γ(Z.X, U) (Z.X.residueField x) (Z.X.evaluation U x hx).hom n (Dw.mult σ) (hmn σ) (a σ)`. Set `f` to `∏ σ, (M σ).det`.
+
+Establish `hU'` using `hU.basicOpen f`. Establish `hle₂` using `Z.X.basicOpen_le f`. Set `ρ` to `(Z.X.presheaf.map (homOfLE hle₂).op).hom`. Establish `hu : ∀ σ, IsUnit (ρ (M σ).det)` using `fun σ => isUnit_of_dvd_unit (map_dvd _ (Finset.dvd_prod_of_mem (fun σ => (M σ).det) (Finset.mem_univ σ))) (Z.X.toRingedSpace.isUnit_res_basicOpen f)`. Set `Mu : ∀ σ : E →+* ℂ, GL (Fin n) Γ(Z.X, Z.X.basicOpen f)` to `fun σ => Matrix.nonsingInvUnit ((M σ).map ρ) (by show IsUnit (ρ.mapMatrix (M σ)).det; rw [← RingHom.map_det]; exact hu σ)`.
+
+Set `c : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → Fin n → Γ(Z.X, Z.X.basicOpen f)` to `fun σ i l => ρ (M σ (Fin.castLE (hmn σ) i) l)`. Establish `hext : ∀ σ, ∃ (M : GL (Fin n) Γ(Z.X, Z.X.basicOpen f)) (e : Fin (Dw.mult σ) ↪ Fin n), ∀ i l, M (e i) l = c σ i l` using `fun σ => ⟨Mu σ, Fin.castLEEmb (hmn σ), fun i l => rfl⟩`. Set `a' : ∀ σ (r : Fin (Dw.mult σ + 1)), GL (Fin n) Γ(Z.X, Z.X.basicOpen f)` to `fun σ r => Matrix.GeneralLinearGroup.map ρ (a σ r)`. Establish `hst' : ∀ σ (r : Fin (Dw.mult σ + 1)), StepAt Z B g L σ r hU' m (a' σ r)` using `fun σ r => stepAt_res E H Dw Xo p W Y i₀ Z B g L σ r U _ hU hU' hle₂ V n m (a σ r) (hst σ r)`. Establish `hrow' : ∀ σ (i : Fin (Dw.mult σ)), ∃ j : Fin n, (j : ℕ) < i + 1 ∧ ∀ l, c σ i l = ((a' σ i.succ)⁻¹ : GL (Fin n) Γ(Z.X, Z.X.basicOpen f)) l j`.
+
+Introduce `σ i`. Take `⟨j, hj, e⟩` from `hrow σ i`. Use `⟨j, hj, fun l => ?_⟩` and prove the remaining obligations. Simplify using `only [c, a', e, ← map_inv]`. Both sides reduce to the same expression.
+
+Establish `hUV' : Z.X.basicOpen f ≤ g ⁻¹ᵁ V` using `hle₂.trans hUV`. Use `⟨⟨g, hg, _, hU', V, hUV', n, m, hm, c, hext, fun k _ y hy hyo => GlobalTheory.T.lattice_frame_fiber_basis (GlobalTheory.T.lattice_frame_fiber_rank) E H Dw Xo p W hp hW Y i₀ Z B L g hg _ hU' V hUV' n m hm a' hst' c hext hrow' k y hy hyo⟩, ?_⟩` and prove the remaining obligations. Use `show x ∈ Z.X.basicOpen f`. Rewrite using `[← Scheme.evaluation_ne_zero_iff_mem_basicOpen _ x hx, map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun σ _ => hM σ`.
+-/
 theorem hasLatFlags_of_allSteps : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Y : LocalSystem Xo p W) (i₀ : Idx H p), ∀ (Z B : Mdl Y i₀) (L : Lat B), (∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) → (∀ t ∈ allSteps L, Step.Holds t Z) → HasLatFlags Z L := by
   intro E _ _ _ H Dw Xo p W hp hW Y i₀ Z B L hty h
   classical

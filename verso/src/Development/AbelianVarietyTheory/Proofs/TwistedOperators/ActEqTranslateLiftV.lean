@@ -14,6 +14,15 @@ namespace GlobalTheory.RationalFormsAction
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
+/- English proof (translation)
+Establish `hred` using `hr i t`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TranslateRepresentations.IsTranslate`. Prove the components needed by the constructor for the conclusion. Take `⟨q, hq⟩` from `(R.B.L i t).act_tie.red_surj g`. Establish `hq'` using `hred q`.
+
+Rewrite `hq'` using `[hq]`. Conclude with `⟨q, hq'.symm⟩`. Introduce `κ hκ h`. Establish `hg : (R.B.L i t).act_tie.red κ = g`. Apply `R.eG.injective` to reduce the goal to its premises.
+
+Rewrite using `[hred κ]`. Conclude with `hκ`. Establish `key` using `congrFun ((R.B.L i t).act_tie.act_eq g κ hg x) h`. Establish `e1` using `hj i t ((A.fam.L i t).r g x)`. Establish `e2` using `hj i t x`.
+
+Use `(congrFun e1 h).trans (key.trans ?_)` and prove the remaining obligations. Conclude with `congrArg (fun w => ((((levEnv (Vc D i) (R.βV i) (R.datVt i t)).ch κ)⁻¹ : ℂˣ) : ℂ) • w) (congrFun e2 (h * (κ : Bridge.Gf (Vc D i)))).symm`.
+-/
 theorem isTranslate_act_V (hr : R.grp_red_L) (hj : R.models_jV) (i : Fin D.R.m) (t : T0) (g : G)
     (x : (A.fam.L i t).S.Forms) :
     GlobalTheory.IndefiniteRowSideFullHecke.TranslateRepresentations.IsTranslate (Vc D i) (R.βV i) (R.datVt i t) (R.eG g) ((R.HV i t).e (R.jV i t x))
@@ -44,6 +53,9 @@ theorem isTranslate_act_V (hr : R.grp_red_L) (hj : R.models_jV) (i : Fin D.R.m) 
 
 end GlobalTheory.RationalFormsAction
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hr hj i t g x`. Establish `htr` using `GlobalTheory.RationalFormsAction.isTranslate_act_V R hr hj i t g x`. Establish `hex` using `GlobalTheory.LiftEquivariance.exists_adelic_lift htr`. Conclude with `hex`.
+-/
 theorem GlobalTheory.RationalFormsAction.act_eq_translate_lift_V : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.grp_red_L → R.models_jV → ∀ i t (g : G) (x : (A.fam.L i t).S.Forms), ∃ κ, IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) (R.eG g) κ ∧ ∀ h, (R.HV i t).e (R.jV i t ((A.fam.L i t).r g x)) h = (levChi _ (R.βV i) (flagL (R.datVt i t)) κ)⁻¹ • (R.HV i t).e (R.jV i t x) (h * (finHom _).rangeRestrict κ) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R hr hj i t g x
 

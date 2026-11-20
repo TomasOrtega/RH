@@ -20,6 +20,9 @@ def unitAt {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (ρ : Matrix (Fin n) (F
 def Before {r : ℕ} (S : Finset (Fin r)) (n : ℕ) (p q : Fin n) : Prop :=
   ∃ k ∈ S, (p.val ≤ k.val ∧ k.val < q.val) ∨ (p.val + k.val + 1 < n ∧ n ≤ q.val + k.val + 1)
 
+/- English proof (translation)
+Take `⟨k, hk, h⟩` from `h`. Take `⟨k', -, h'⟩` from `h'`. Conclude with `⟨k, hk, by omega⟩`.
+-/
 theorem Before.trans {r : ℕ} {S : Finset (Fin r)} {n : ℕ} {p q s : Fin n} (h : Before S n p q) (h' : Before S n q s) :
     Before S n p s := by
   obtain ⟨k, hk, h⟩ := h
@@ -53,6 +56,9 @@ def rtU (h : IsCMExt F E σ) (a : GAd σ J) : Module.End ℂ (SmU σ J) where
 
 variable {σ J} {w : InfinitePlace F}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rtU_apply (h : IsCMExt F E σ) (a x : GAd σ J) (f : SmU σ J) : (rtU J h a f).1 x = f.1 (x * a) := rfl
 
 end GlobalTheory.ULie

@@ -7,6 +7,11 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology MeasureTh
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSAmp
 
+/- English proof (translation)
+Introduce `X T i M _ hs σ`. Take `⟨u', hu'⟩` from `hs ((LB.globalEquiv (M.pull i)).symm σ)`. Use `⟨LB.globalEquiv M u', ?_⟩` and prove the remaining obligations. Apply `LB.f_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+
+Establish `key` using `LB.globalEquiv_pullSec_f i (LB.globalEquiv M u') j`. Rewrite `key` using `[← LB.globalEquiv_symm_apply, LinearEquiv.symm_apply_apply, ← LB.toPushforward_app, hu', LinearEquiv.apply_symm_apply]`. Rewrite using `[key]`. Conclude with `chartSec_f _ _ _`.
+-/
 theorem GlobalTheory.LB.exists_secPull_eq_of_surjective_toPushforward : ∀ (X T : Scheme.{0}) (i : T ⟶ X) (M : LB X), M.IsLB → Function.Surjective ((GlobalTheory.LB.toPushforward M i).app ⊤) → ∀ σ : (M.pull i).Sec, ∃ u : M.Sec, GlobalTheory.secPull u i = σ := by
   intro X T i M _ hs σ
   obtain ⟨u', hu'⟩ := hs ((LB.globalEquiv (M.pull i)).symm σ)

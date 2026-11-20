@@ -13,6 +13,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 open GlobalTheory.TorusRM.LamAdd GlobalTheory.ProdUnifSq in
 
+/- English proof (translation)
+Introduce `g A _ hA hP M M' u u' Hm χ χ' h1 h2 he f1 f2`. Use `haveI : IsCommMonObj A := hA.comm`. Establish `hl1 : (abelian₂ A M).IsLB` using `LB.isLB_linComb h1 _ _`. Establish `hl2 : (abelian₂ A M').IsLB` using `LB.isLB_linComb h2 _ _`. Establish `hPP : IsProjOver (A ⊗ A).hom` using `GlobalTheory.ProjSpace.isProjOver_pullback hP hP`.
+
+Use `GlobalTheory.HolUnifSec.hasGen_of_periodic (A ⊗ A) (AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA) hPP _ (LB.isLB_div hl2 hl1) (g + g) (GlobalTheory.SameFactor.divUnif (lamUnif u u rfl) (lamUnif u u' he) rfl) (fun _ => 1) (differentiable_const _) (fun _ => one_ne_zero) ?_` and prove the remaining obligations. Introduce `l hl p z hz`. Take `⟨hz2, hz1⟩` from `(GlobalTheory.top_le_preimage_inf _ _ _).1 hz`. Establish `hexl : (sqUnif A u).ex (z + l) = (sqUnif A u).ex z`. Rewrite using `[(sqUnif A u).ex_add, ((sqUnif A u).ker l).2 hl, _root_.mul_one]`.
+
+Establish `e1` using `lam_shift u u rfl h1 f1 p.2 z l hl hz1`. Establish `e2` using `lam_shift u u' he h2 f2 p.1 z l hl hz2`. Establish `n1` using `(lamUnif u u rfl).fr_ne p.2 (z + l) (by rw [lamUnif_ex, hexl]; exact hz1)`. Establish `n2` using `(lamUnif u u' he).fr_ne p.1 (z + l) (by rw [lamUnif_ex, hexl]; exact hz2)`. Use `show 1 * ((lamUnif u u' he).fr p.1 (z + l) * ((lamUnif u u rfl).fr p.2 (z + l))⁻¹) = 1 * ((lamUnif u u' he).fr p.1 z * ((lamUnif u u rfl).fr p.2 z)⁻¹)`.
+
+Rewrite using `[e1, e2]`. Establish `q1` using `Complex.exp_ne_zero (Q Hm z l)`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem GlobalTheory.TorusRM.lbIso_lam_of_same_form : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → IsProjOver A.hom →
     ∀ (M M' : LB A.left) (u : HolUnif A M g) (u' : HolUnif A M' g) (Hm : Matrix (Fin g) (Fin g) ℂ)
       (χ : u.Λ → ℂ) (χ' : u'.Λ → ℂ), M.IsLB → M'.IsLB → u'.ex = u.ex →

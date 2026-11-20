@@ -19,6 +19,11 @@ namespace GlobalTheory.AmpleFiniteOrder
 
 open GlobalTheory.CechPic GlobalTheory.EffBound
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.twoStepInduction with`. Consider the case `zero => simp [q1]`. Consider the case `one => simp [two_zsmul]`. Consider the case `more n h0 h1`. Establish `h` using `hq (ψ ^ (n + 1)) ψ`.
+
+Rewrite `h` using `[← pow_succ, pow_succ ψ n, mul_inv_cancel_right, ← pow_succ]`. Move the coercions through the operations in `at h1 ⊢`. Take the linear combination `(norm := module) (2 : ℤ) • h - h0 + (2 : ℤ) • h1`.
+-/
 theorem two_smul_pow {G M : Type*} [Group G] [AddCommGroup M] (q : G → M) (q1 : q 1 = 0)
     (hq : ∀ x y : G, q (x * y) + q (x * y⁻¹) = q x + q x + q y + q y⁻¹) (ψ : G) (n : ℕ) :
     (2 : ℤ) • q (ψ ^ n) = ((n : ℤ) * (n + 1)) • q ψ + ((n : ℤ) * (n - 1)) • q ψ⁻¹ := by
@@ -31,11 +36,17 @@ theorem two_smul_pow {G M : Type*} [Group G] [AddCommGroup M] (q : G → M) (q1 
     push_cast at h1 ⊢
     linear_combination (norm := module) (2 : ℤ) • h - h0 + (2 : ℤ) • h1
 
+/- English proof (translation)
+Establish `h0 : pull (η[A]).left c = 0` using `GlobalTheory.cechPic_sp_field_eq_zero K _`. Rewrite using `[Hom.one_def, Over.comp_left, pull_comp, h0, map_zero]`.
+-/
 theorem pull_one_eq_zero {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] (c : Pic A.left) :
     pull (1 : A ⟶ A).left c = 0 := by
   have h0 : pull (η[A]).left c = 0 := GlobalTheory.cechPic_sp_field_eq_zero K _
   rw [Hom.one_def, Over.comp_left, pull_comp, h0, map_zero]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact pull_id c`. Consider the case `succ m ih`. Express the relevant statement in the definitionally equal form `pull ((GlobalTheory.SerreField.iter σ m).hom.left ≫ σ.hom.left) c = c`. Rewrite using `[pull_comp, h, ih]`.
+-/
 theorem pull_iter {S : Scheme.{0}} {A : Over S} (σ : A ≅ A) (c : Pic A.left)
     (h : pull σ.hom.left c = c) (m : ℕ) : pull (GlobalTheory.SerreField.iter σ m).hom.left c = c := by
   induction m with
@@ -44,17 +55,42 @@ theorem pull_iter {S : Scheme.{0}} {A : Over S} (σ : A ≅ A) (c : Pic A.left)
     change pull ((GlobalTheory.SerreField.iter σ m).hom.left ≫ σ.hom.left) c = c
     rw [pull_comp, h, ih]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using ha`. Consider the case `succ k ih => rw [succ_nsmul, ← add_assoc]`. Conclude with `eff_add _ _ ih hb`.
+-/
 theorem eff_add_nsmul {X : Scheme.{0}} [IsIntegral X] {a b : Pic X} (ha : Eff a) (hb : Eff b) (k : ℕ) :
     Eff (a + k • b) := by
   induction k with
   | zero => simpa using ha
   | succ k ih => rw [succ_nsmul, ← add_assoc]; exact eff_add _ _ ih hb
 
+/- English proof (translation)
+Distinguish the cases in `h : (t : K) = 0`. Conclude with `⟨t + 1, by omega, by simp [h]⟩`. Conclude with `⟨t, le_rfl, h⟩`.
+-/
 theorem exists_ge_cast_ne_zero (K : Type) [Field K] (t : ℕ) : ∃ n : ℕ, t ≤ n ∧ (n : K) ≠ 0 := by
   by_cases h : (t : K) = 0
   · exact ⟨t + 1, by omega, by simp [h]⟩
   · exact ⟨t, le_rfl, h⟩
 
+/- English proof (translation)
+Introduce `hConst hCube K _ _ A _ _ hA L hL hAmp σ hσ hfix`. Use `haveI : IsIntegral A.left := GlobalTheory.SS.isIntegral_of_abelian A hA`. Set `q : (A ⟶ A) → Pic A.left` to `fun u => pull u.left (cls L hL)`. Establish `q1 : q 1 = 0` using `pull_one_eq_zero A _`. Establish `hq : ∀ x y : A ⟶ A, q (x * y) + q (x * y⁻¹) = q x + q x + q y + q y⁻¹`.
+
+Introduce `x y`. Establish `h : q (x * y * y⁻¹) + q x + q y + q y⁻¹ = q (x * y) + q (x * y⁻¹) + q (y * y⁻¹) + q 1` using `hCube K A hA L hL hAmp (cls L hL) x y y⁻¹`. Rewrite `h` using `[mul_inv_cancel_right, mul_inv_cancel, q1, add_zero, add_zero]`. Conclude with `h.symm`. Take `⟨d, hd, r, s, hs⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy K A L hL).1 hAmp`.
+
+Establish `heff : ∀ u : A ⟶ A, Eff ((d : ℤ) • q u)` using `fun u => by`. Establish `h` using `eff_pull_of_veryAmpleBy K A.hom _ r s (GlobalTheory.AbLaw.isLB_pw hL d) hs u.left inferInstance`. Rewrite `h` using `[cls_pw hL, map_zsmul]`. Then use the resulting hypothesis. Take `⟨t₀, ht₀⟩` from `hConst K A hA L hL hAmp ((2 * d : ℤ) • (q (𝟙 A) + q (𝟙 A) + q (𝟙 A) + q (𝟙 A)⁻¹))`. Take `⟨n, hn, hnK⟩` from `exists_ge_cast_ne_zero K t₀`.
+
+Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `Nat.exists_eq_succ_of_ne_zero (by rintro rfl; simp at hnK)`. Take `⟨hfin, hdiv⟩` from `GlobalTheory.TorsionDivisible.finite_torsion_and_divisible K A hA (k + 1) hnK`. Take `⟨m, hm0, hm⟩` from `GlobalTheory.SerreField.exists_iter_fix σ (𝟙_ (Over (Sp K))) (k + 1)`. Use `⟨m, hm0, ?_⟩` and prove the remaining obligations. Establish `hx : q (GlobalTheory.SerreField.iter σ m).hom = q (𝟙 A)` using `(pull_iter σ _ hfix m).trans (pull_id _).symm`.
+
+Establish `hxm : IsMonHom (GlobalTheory.SerreField.iter σ m).hom` using `inferInstance`. Generalize the expression as in `(GlobalTheory.SerreField.iter σ m).hom = x at hm hx hxm ⊢`. Establish `hu : IsMonHom (x * (𝟙 A)⁻¹)`. Rewrite using `[Hom.mul_def, Hom.inv_def]`. Use `infer_instance`.
+
+Take `⟨ψ, hψ, e⟩` from `hdiv _ hu (fun y hy => by`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, hm y hy, Category.comp_id, mul_inv_cancel])`. Establish `h1` using `hq x (𝟙 A)`. Rewrite `h1` using `[hx, e]`. Establish `h2` using `two_smul_pow q q1 hq ψ (k + 1)`.
+
+Establish `hψ1 : ψ = 1`. Use `ht₀ (d * ((k + 1) * (k + 2))) (hn.trans ?_) ψ hψ ?_` and prove the remaining obligations. Use polynomial arithmetic with `[Nat.zero_le k, Nat.mul_le_mul_right ((k + 1) * (k + 2)) hd]`. Establish `h3` using `eff_add_nsmul (eff_add _ _ (heff (x * 𝟙 A)) (heff (x * 𝟙 A))) (heff ψ⁻¹) ((k + 1) * k)`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+
+Express the relevant statement in the definitionally equal form `_ - _ • q ψ = _`. Rewrite using `[← natCast_zsmul, ← natCast_zsmul]`. Move the coercions through the operations in `at h2 ⊢`. Take the linear combination `(norm := module) (d : ℤ) • h2 - (2 * d : ℤ) • h1`. Rewrite `e` using `[hψ1, one_pow]`.
+
+Conclude with `mul_inv_eq_one.1 e`.
+-/
 theorem finiteOrder_of_const_of_cube :
     GlobalTheory.AmpleRigid.ConstSt → GlobalTheory.AmpleRigid.CubeSt → GlobalTheory.AmpleRigid.FiniteOrderSt := by
   intro hConst hCube K _ _ A _ _ hA L hL hAmp σ hσ hfix

@@ -16,6 +16,13 @@ namespace GlobalTheory.FlatRow.EigLocal
 
 open GlobalTheory.Serre
 
+/- English proof (translation)
+Set `q : ∀ p : PrimeSpectrum R, Sp (Localization.AtPrime p.asIdeal) ⟶ Sp R` to `fun p => spMap (algebraMap R _)`. Establish `: ∀ p, Flat (q p)` using `fun p => by`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat _ p.asIdeal.primeCompl)`. Establish `: Surjective (Sigma.desc q)` using `Surjective.sigmaDesc_of_union_range_eq_univ (by`.
+
+Use `Set.eq_univ_of_forall fun p : PrimeSpectrum R => Set.mem_iUnion.2 ⟨p, IsLocalRing.closedPoint _, ?_⟩` and prove the remaining obligations. Conclude with `PrimeSpectrum.ext (Localization.AtPrime.under_maximalIdeal (I := p.asIdeal)))`. Establish `: Epi (Sigma.desc q)` using `Flat.epi_of_flat_of_surjective _`. Rewrite using `[← cancel_epi (Sigma.desc q)]`. Use `Sigma.hom_ext _ _ fun p => ?_` and prove the remaining obligations.
+
+Rewrite using `[Sigma.ι_desc_assoc, Sigma.ι_desc_assoc]`. Conclude with `h p.asIdeal`.
+-/
 theorem hom_ext_of_loc {R : Type} [CommRing R] {X : Scheme.{0}} {f g : Sp R ⟶ X}
     (h : ∀ (p : Ideal R) [p.IsPrime], spMap (algebraMap R (Localization.AtPrime p)) ≫ f =
       spMap (algebraMap R (Localization.AtPrime p)) ≫ g) : f = g := by
@@ -37,6 +44,9 @@ section Res
 variable {R R' O : Type} [CommRing R] [CommRing R'] [CommRing O] {f : R →+* R'} {A : Over (Sp R)} {A' : Over (Sp R')}
   [GrpObj A] [GrpObj A'] {φ : A'.left ⟶ A.left}
 
+/- English proof (translation)
+Use `(spMap_comp_spMap _ _).trans (Eq.trans ?_ (spMap_comp_spMap _ _).symm)` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem fst_dual (f : R →+* R') :
     spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ spMap (Chart.dualMapR f) =
       spMap f ≫ spMap (TrivSqZeroExt.fstHom R R R).toRingHom := by
@@ -44,12 +54,20 @@ theorem fst_dual (f : R →+* R') :
   congr 1
   ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Use `(spMap_comp_spMap _ _).trans (Eq.trans ?_ (spMap_comp_spMap _ _).symm)` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem scale_dual (f : R →+* R') (c : R) :
     spMap (epsScaleR (f c)) ≫ spMap (Chart.dualMapR f) = spMap (Chart.dualMapR f) ≫ spMap (epsScaleR c) := by
   refine (spMap_comp_spMap _ _).trans (Eq.trans ?_ (spMap_comp_spMap _ _).symm)
   congr 1
   ext a <;> simp [Chart.dualMapR, epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Set `k : Over.mk ((epsR R').hom ≫ spMap f) ⟶ epsR R` to `Over.homMk (spMap (Chart.dualMapR f)) (by`. Use `(spMap_comp_spMap _ _).trans (Eq.trans ?_ (spMap_comp_spMap _ _).symm)` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl])`. Establish `e` using `h.2 (epsR R') v' w' (k ≫ v) (k ≫ w) hv.symm hw.symm`.
+
+Rewrite `e` using `[← MonObj.comp_mul]`. Conclude with `e.symm`.
+-/
 theorem isVecOver_mul (h : IsGrpPullback A' A (spMap f) φ) {v w : epsR R ⟶ A} {v' w' : epsR R' ⟶ A'}
     (hv : IsVecOver f φ v v') (hw : IsVecOver f φ w w') : IsVecOver f φ (v * w) (v' * w') := by
   let k : Over.mk ((epsR R').hom ≫ spMap f) ⟶ epsR R := Over.homMk (spMap (Chart.dualMapR f)) (by
@@ -62,6 +80,15 @@ theorem isVecOver_mul (h : IsGrpPullback A' A (spMap f) φ) {v w : epsR R ⟶ A}
 
 variable [IsCommMonObj A] [IsCommMonObj A']
 
+/- English proof (translation)
+Use `choose r hr hu using fun w : Lie a => existsUnique_isVecOver h.1 w.hom`. Take `⟨ρ, hρ⟩ : ∃ ρ : Lie a → Lie a', ∀ w, (ρ w).hom = r w` from `⟨fun w => Lie.mk a' (r w) ((hr w).isTangent h w.isTangent), fun _ => rfl⟩`. Establish `key : ∀ (w : Lie a) (w' : Lie a'), IsVecOver f φ w.hom w'.hom → ρ w = w'` using `fun w w' e => Lie.ext ((hρ w).trans (hu w _ e).symm)`. Use `replace hr : ∀ w, IsVecOver f φ w.hom (ρ w).hom := fun w => hρ w ▸ hr w`. Establish `h₁ : ∀ v w, ρ (v + w) = ρ v + ρ w` using `fun v w => key _ _ (by`.
+
+Rewrite using `[Lie.hom_add, Lie.hom_add]`. Conclude with `isVecOver_mul h (hr v) (hr w))`. Establish `h₂ : ∀ (c : R) w, ρ (c • w) = f c • ρ w` using `fun c w => key _ _ (by`. Establish `e` using `hr w`. Unfold `IsVecOver at e ⊢`.
+
+Rewrite using `[Lie.hom_smul_left, Lie.hom_smul_left]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (spMap (epsScaleR (f c)) ≫ ·) e).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ w.hom.left) (scale_dual f c)).trans (Category.assoc _ _ _)))))`. Establish `h₃ : ∀ (x : O) w, ρ (x • w) = x • ρ w` using `fun x w => key _ _ (by`. Establish `e` using `hr w`. Unfold `IsVecOver at e ⊢`.
+
+Rewrite using `[Lie.hom_act_smul, Lie.hom_act_smul, Over.comp_left, Over.comp_left, Category.assoc, ha, ← Category.assoc, e]`. Conclude with `Category.assoc _ _ _)`. Conclude with `⟨⟨⟨ρ, h₁⟩, h₂⟩, hr, h₃⟩`.
+-/
 theorem exists_res (h : IsGrpPullback A' A (spMap f) φ) (a : OAct O A) (a' : OAct O A')
     (ha : ∀ x, (a'.act x).left ≫ φ = φ ≫ (a.act x).left) :
     ∃ ρ : Lie a →ₛₗ[f] Lie a', (∀ w, IsVecOver f φ w.hom (ρ w).hom) ∧ ∀ (x : O) w, ρ (x • w) = x • ρ w := by
@@ -86,11 +113,17 @@ theorem exists_res (h : IsGrpPullback A' A (spMap f) φ) (a : OAct O A) (a' : OA
     exact Category.assoc _ _ _)
   exact ⟨⟨⟨ρ, h₁⟩, h₂⟩, hr, h₃⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h x => Lie.ext (Over.OverMorphism.ext (h.2 x)), fun h => ⟨w.isTangent, fun x => congrArg (fun u : Lie a => u.hom.left) (h x)⟩⟩`.
+-/
 theorem isEigVec_iff (a : OAct O A) (χ : O →+* R) (w : Lie a) :
     EigenvectorLieDegree.IsEigVec a χ w.hom ↔ ∀ x, x • w = χ x • w :=
   ⟨fun h x => Lie.ext (Over.OverMorphism.ext (h.2 x)),
     fun h => ⟨w.isTangent, fun x => congrArg (fun u : Lie a => u.hom.left) (h x)⟩⟩
 
+/- English proof (translation)
+Use `and_congr (forall_congr' fun i => isEigVec_iff a χ _) ⟨fun h w hw => ?_, fun h w hw => ?_⟩` and prove the remaining obligations. Conclude with `(existsUnique_congr fun c => (Lie.isLieComb_iff c v _).trans Lie.ext_iff.symm).1 (h w.hom ((isEigVec_iff a χ w).2 hw))`. Conclude with `(existsUnique_congr fun c => (Lie.isLieComb_iff c v _).trans (Lie.ext_iff (v := Lie.mk a w hw.1)).symm).2 (h (Lie.mk a w hw.1) ((isEigVec_iff a χ _).1 hw))`.
+-/
 theorem isEigBasis_iff (a : OAct O A) (χ : O →+* R) {m : ℕ} (v : Fin m → Lie a) :
     EigenvectorLieDegree.IsEigBasis a χ (fun i => (v i).hom) ↔ (∀ i x, x • v i = χ x • v i) ∧
       ∀ w : Lie a, (∀ x, x • w = χ x • w) → ∃! c : Fin m → R, w = ∑ i, c i • v i := by
@@ -102,6 +135,9 @@ theorem isEigBasis_iff (a : OAct O A) (χ : O →+* R) {m : ℕ} (v : Fin m → 
 
 end Res
 
+/- English proof (translation)
+Establish `: ∀ s : R, Smooth (Chart.Gs A s).hom` using `fun s => show Smooth (pullback.snd A.hom _) from inferInstance`. Take `⟨q, hq, hs⟩` from `Chart.tan_prime_uniq (G := A) p (w := w.hom) ((Chart.isTan_iff _).2 w.isTangent) (by`. Rewrite using `[← MonObj.comp_one (Chart.spMap (Chart.dualMapS (Algebra.ofId R (Localization.AtPrime p))))]`. Conclude with `Over.OverMorphism.ext h)`. Conclude with `⟨q, hq, Lie.ext (Over.OverMorphism.ext (congrArg (fun u => u.left) hs))⟩`.
+-/
 theorem exists_smul_eq_zero {R O : Type} [CommRing R] [CommRing O] {A : Over (Sp R)} [GrpObj A] [IsCommMonObj A]
     [Smooth A.hom] (a : OAct O A) (p : Ideal R) [p.IsPrime] (w : Lie a)
     (h : spMap (Chart.dualMapR (algebraMap R (Localization.AtPrime p))) ≫ w.hom.left =
@@ -113,6 +149,11 @@ theorem exists_smul_eq_zero {R O : Type} [CommRing R] [CommRing O] {A : Over (Sp
     exact Over.OverMorphism.ext h)
   exact ⟨q, hq, Lie.ext (Over.OverMorphism.ext (congrArg (fun u => u.left) hs))⟩
 
+/- English proof (translation)
+Establish `: (Submodule.span R {w}).annihilator = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨p, hp, hI⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨q, hq, e⟩` from `h p`. Conclude with `hq (hI ((Submodule.mem_annihilator_span_singleton _ _).2 e))`.
+
+Establish `h1 : (1 : R) ∈ (Submodule.span R {w}).annihilator` using `this ▸ Submodule.mem_top`. Conclude with `(one_smul R _).symm.trans ((Submodule.mem_annihilator_span_singleton _ _).1 h1)`.
+-/
 theorem eq_zero_of_loc {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {w : M}
     (h : ∀ (p : Ideal R) [p.IsPrime], ∃ q ∉ p, q • w = 0) : w = 0 := by
   have : (Submodule.span R {w}).annihilator = ⊤ := by
@@ -123,6 +164,17 @@ theorem eq_zero_of_loc {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {
   have h1 : (1 : R) ∈ (Submodule.span R {w}).annihilator := this ▸ Submodule.mem_top
   exact (one_smul R _).symm.trans ((Submodule.mem_annihilator_span_singleton _ _).1 h1)
 
+/- English proof (translation)
+Use `⟨fun i x => sub_eq_zero.1 (eq_zero_of_loc (R := R) fun p _ => ?_), fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨M', _, _, _, ρ, h₁, h₂, h₃, -⟩` from `loc p`. Conclude with `h₂ _ (by rw [map_sub, h₁, h₃, map_smulₛₗ, sub_self])`. Establish `ex : w ∈ Submodule.span R (Set.range u)`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`.
+
+Use `eq_zero_of_loc (R := R) fun p _ => ?_` and prove the remaining obligations. Take `⟨M', _, _, _, ρ, h₁, h₂, -, h₄⟩` from `loc p`. Take `⟨c, hc, -⟩` from `h₄ (ρ w) fun x => by rw [← h₁, hw, map_smulₛₗ]`. Take `⟨⟨q, hq⟩, hqi⟩` from `IsLocalization.exist_integer_multiples p.primeCompl (Finset.univ : Finset (Fin m)) c`. Use `choose b hb using fun i => hqi i (Finset.mem_univ _)`.
+
+Take `⟨r, hr, e⟩` from `h₂ (q • w - ∑ i, b i • u i) (by`. Rewrite using `[map_sub, map_smulₛₗ, hc, map_sum, Finset.smul_sum, sub_eq_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, hb, smul_smul, Algebra.smul_def])`. Use `⟨r * q, p.primeCompl.mul_mem hr hq, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, mul_smul, sub_eq_zero.1 ((smul_sub _ _ _).symm.trans e)]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 ex`. Use `⟨c, hc.symm, fun c' hc' => funext fun i => Chart.eq_of_loc fun p _ => ?_⟩` and prove the remaining obligations. Take `⟨M', _, _, _, ρ, h₁, -, -, h₄⟩` from `loc p`.
+
+Establish `k : ∀ c : Fin m → R, w = ∑ i, c i • u i → ρ w = ∑ i, algebraMap R (Localization.AtPrime p) (c i) • ρ (u i)` using `fun c e => by`. Rewrite using `[e, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_smulₛₗ _ _ _`. Conclude with `congrFun ((h₄ (ρ w) fun x => by rw [← h₁, hw, map_smulₛₗ]).unique (k _ hc') (k _ hc.symm)) i`.
+-/
 theorem eigBasis_of_loc {R O M : Type} [CommRing R] [AddCommGroup M] [Module R M] [SMul O M] (χ : O → R) {m : ℕ}
     (u : Fin m → M)
     (loc : ∀ (p : Ideal R) [p.IsPrime], ∃ (M' : Type) (_ : AddCommGroup M') (_ : Module (Localization.AtPrime p) M')
@@ -164,6 +216,15 @@ end GlobalTheory.FlatRow.EigLocal
 
 open GlobalTheory.Serre GlobalTheory.FlatRow.EigLocal in
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ t χ m v h`. Use `t.semi.smooth` as an intermediate fact. Establish `hT : ∀ i, IsTangent (v i)` using `fun i => hom_ext_of_loc fun p _ => by`. Take `⟨t', n, v', hv, hb⟩` from `h p`. Establish `e` using `PolBaseChange.eSec_comm n.cart`.
+
+Unfold `eSec at e`. Rewrite using `[← e, ← (hb.1 i).1, ← Category.assoc, ← fst_dual, Category.assoc, ← hv i, Category.assoc]`. Take `⟨u, rfl⟩ : ∃ u : Fin m → Lie t.act, v = fun i => (u i).hom` from `⟨fun i => Lie.mk _ _ (hT i), rfl⟩`. Use `(isEigBasis_iff t.act χ u).2 (eigBasis_of_loc χ u fun p _ => ?_)` and prove the remaining obligations. Take `⟨t', n, v', hv, hb⟩` from `h p`.
+
+Take `⟨ρ, hρ, hx⟩` from `exists_res n.cart t.act t'.act n.act`. Choose the witnesses or unpack the hypotheses as in `rfl : v' = fun i => (ρ (u i)).hom :=`. Use function extensionality and compare the values at `fun i => (existsUnique_isVecOver n.cart.1 _).unique (hv i) (hρ _)`. Establish `hb'` using `(isEigBasis_iff t'.act _ fun i => ρ (u i)).1 hb`. Use `⟨Lie t'.act, inferInstance, inferInstance, inferInstance, ρ, hx, fun w hw => exists_smul_eq_zero _ p w ?_, hb'⟩` and prove the remaining obligations.
+
+Establish `e` using `hρ w`. Establish `e₀` using `hρ 0`. Rewrite `e₀` using `[map_zero, Lie.hom_zero, Lie.hom_zero]`. Rewrite `e` using `[hw, Lie.hom_zero]`. Conclude with `e.symm.trans e₀`.
+-/
 theorem GlobalTheory.FlatRow.isEigBasis_of_local : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (R : Type) [CommRing R] (t : SAB H (Sp R)) (χ : 𝓞 E →+* R) (m : ℕ) (v : Fin m → (epsR R ⟶ t.G)), (∀ (p : Ideal R) [p.IsPrime], ∃ (t' : SAB H (Sp (Localization.AtPrime p))) (n : SABMap t' t (spMap (algebraMap R (Localization.AtPrime p)))) (v' : Fin m → (epsR (Localization.AtPrime p) ⟶ t'.G)), (∀ i, IsVecOver (algebraMap R (Localization.AtPrime p)) n.φ (v i) (v' i)) ∧ EigenvectorLieDegree.IsEigBasis t'.act ((algebraMap R (Localization.AtPrime p)).comp χ) v') → EigenvectorLieDegree.IsEigBasis t.act χ v := by
   intro E _ _ _ H R _ t χ m v h
   have := t.semi.smooth

@@ -14,9 +14,45 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 
 namespace GlobalTheory.Heat.ShiftGauge
 
+/- English proof (translation)
+Simplify using `using Over.w (toUnit T)`.
+-/
 theorem toUnit_left {R : Type} [CommRing R] (T : Over (Sp R)) : (toUnit T).left = T.hom := by
   simpa using Over.w (toUnit T)
 
+/- English proof (translation)
+Introduce `R _ _ Q O _ _ _ oa Y mu x hx ψ₀ hψ₀`. Establish `hL : Q.P.L.IsLB` using `Q.P.isLB`. Establish `hq : IsMonHom Y.q` using `Y.q_linear.isMonHom`. Use `set Tx : Y.H ⟶ Y.H := 𝟙 Y.H * (toUnit Y.H ≫ x) with hTx`. Establish `hTq : Tx ≫ Y.q = Y.q * (toUnit Y.H ≫ x ≫ Y.q)`.
+
+Rewrite using `[hTx, MonObj.mul_comp, Category.id_comp, Category.assoc]`. Establish `hcq : cP Q Y.H mu * (Tx ≫ Y.q) = Y.q`. Rewrite using `[hTq, cP, _root_.mul_comm, _root_.mul_assoc, ← MonObj.comp_mul (toUnit Y.H) (x ≫ Y.q) (Q.c mu), hx, MonObj.comp_one, _root_.mul_one]`. Establish `e₁ : (cP Q Y.H mu).left = Y.H.hom ≫ (Q.c mu).left` using `by rw [cP, Over.comp_left, toUnit_left]`. Establish `e₂ : (1 : Y.H ⟶ Q.P.A).left = Y.H.hom ≫ eSec Q.P.A` using `by rw [Hom.one_def, Over.comp_left, toUnit_left]; rfl`.
+
+Set `s` to `(Y.Φ Y.H Tx).s mu`. Set `w` to `LB.mulGen Q.P.L _ _ _ _ (LB.mulGen Q.P.L _ _ _ _ (LB.pullGen Q.P.L _ _ ψ₀ Y.H.hom) (LB.pullGen Q.P.L _ _ Q.rig Y.H.hom)) s`. Establish `hw : w.IsGen` using `mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ hψ₀ _) (pullGen_isGen _ _ _ _ Q.rig_gen _)) ((Y.Φ Y.H Tx).isGen mu)`. Establish `hF : FormEq (Sum.elim (Sum.elim (fun _ : PUnit => Y.H.hom ≫ (Q.c mu).left) (fun _ : PUnit => Y.H.hom ≫ eSec Q.P.A)) (DegPre.gtφT Q Y.H (Y.Φ Y.H Tx).b mu)) (fun k => - Sum.elim (Sum.elim (fun _ : PUnit => (-1 : ℤ)) (fun _ : PUnit => (1 : ℤ))) DegPre.gtε k) (![Y.q.left, Tx.left ≫ Y …`. Introduce `U _ h`.
+
+Simplify using `only [zpow_neg, Finset.prod_inv_distrib, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, Fin.prod_univ_two]`. Rewrite using `[GlobalTheory.TorusModel.prod_pt, Ray.Φ_b, hcq, e₁, e₂]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Over.comp_left]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`.
+
+Normalize the expressions using the abelian group laws. Take `⟨e, he, hve⟩` from `exists_gen hL hF (LB.invGen Q.P.L _ _ w) (invGen_isGen _ _ _ _ hw)`. Establish `hval : ∀ (T : Over (Sp R)) (y : T ⟶ Y.H) (z : T.left) (J : (T.left ⟶ Q.P.A.left) → Q.P.L.ι), Good Q.P.L z J → val e y.left z J = (val ψ₀ T.hom z J * val Q.rig T.hom z J * val ((Y.Φ T (y * (toUnit T ≫ x))).s mu) (𝟙 _) z J)⁻¹`. Introduce `T y z J hJ`. Establish `hy : y ≫ Tx = y * (toUnit T ≫ x)`.
+
+Rewrite using `[hTx, MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (y ≫ toUnit Y.H) (toUnit T)]`. Establish `hp` using `((GlobalTheory.TorusModel.isPull_iff y (Y.Φ Y.H Tx) (Y.Φ T (y ≫ Tx))).1 (Y.rep.1 T Y.H y Tx)).2 mu z J hJ`. Rewrite using `[hve _ _ z J hJ, val_inv, val_mul hJ, val_mul hJ, val_pull hJ, val_pull hJ, Over.w y, ← hy]`. Rewrite using `[show val ((Y.Φ T (y ≫ Tx)).s mu) (𝟙 _) z J = _ from hp]`. Use `⟨e, he, ?_, fun T y z J hJ => ?_⟩` and prove the remaining obligations.
+
+Introduce `j V hV S _ φ x₁ x₁' c a a' ha ha' hV₁ hV₂ hqq hc`. Substitute `ha ha'` using the available equality. Establish `hV' : Y.q.left ⁻¹ᵁ V ≤ (LB.LinComb Q.P.L (![Y.q.left, Tx.left ≫ Y.q.left] : Fin 2 → (Y.H.left ⟶ Q.P.A.left)) ![1, -1]).U j` using `hV`. Establish `germ : ∀ (b : Sp S ⟶ Y.H.left), ⊤ ≤ b ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V) → ∀ z, gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom (valR b (Y.q.left ⁻¹ᵁ V) (rsT (e.s j).val (Y.q.left ⁻¹ᵁ V)))) = gs b z (LB.wchart Q.P.L (![Y.q.left, Tx.left ≫ Y.q.left] : Fin 2 → (Y.H.left ⟶ Q.P.A.left)) …`. Introduce `b hb z`.
+
+Rewrite using `[valR, dif_pos hb, Iso.hom_inv_id_apply, rsT, dif_pos hV']`. Use `(gs_res (𝟙 _) z hb trivial _).trans ((gs_pull (𝟙 _) b z _ (hb trivial) _).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `gs_res b z hV (hb trivial) _`. Establish `hq' : x₁'.left ≫ Y.q.left = x₁.left ≫ Y.q.left` using `congrArg CommaMorphism.left hqq`.
+
+Establish `hu : ∀ u : Over.mk (spMap φ) ⟶ Y.H, u ≫ Tx ≫ Y.q = (u ≫ Y.q) * (toUnit _ ≫ x ≫ Y.q)` using `fun u => by`. Rewrite using `[hTq, MonObj.comp_mul, ← Category.assoc u (toUnit Y.H), toUnit_unique (u ≫ toUnit Y.H) (toUnit _)]`. Establish `hT₀ : x₁' ≫ Tx ≫ Y.q = x₁ ≫ Tx ≫ Y.q` using `by rw [hu, hu, hqq]`. Establish `hT : x₁'.left ≫ Tx.left ≫ Y.q.left = x₁.left ≫ Tx.left ≫ Y.q.left` using `congrArg CommaMorphism.left hT₀`. Establish `hk : ∀ k, x₁'.left ≫ (![Y.q.left, Tx.left ≫ Y.q.left] : Fin 2 → (Y.H.left ⟶ Q.P.A.left)) k = x₁.left ≫ (![Y.q.left, Tx.left ≫ Y.q.left] : Fin 2 → (Y.H.left ⟶ Q.P.A.left)) k` using `Fin.forall_fin_two.2 ⟨hq', hT⟩`.
+
+Apply `(Scheme.ΓSpecIso (CommRingCat.of S)).commRingCatIsoToRingEquiv.symm.injective` to reduce the goal to its premises. Use `fn_ext fun z _ => ?_` and prove the remaining obligations. Use `choose I hI using fun χ : (Over.mk (spMap φ)).left ⟶ Q.P.A.left => exists_chart hL (χ z)`. Establish `hJ : Good Q.P.L z I` using `hI`. Establish `hgv : ∀ (b : Sp S ⟶ Y.H.left) (hb : ⊤ ≤ b ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V)), gs b z (LB.wchart Q.P.L (![Y.q.left, Tx.left ≫ Y.q.left] : Fin 2 → (Y.H.left ⟶ Q.P.A.left)) j) (e.s j).val = (trF (![Y.q.left, Tx.left ≫ Y.q.left] : Fin 2 → (Y.H.left ⟶ Q.P.A.left)) ![1, -1] b z j (fun k => I (b ≫ ( …` using `fun b hb => (gs_unit b z _ (hV (hb trivial)) _).trans (congrArg Units.val (gen_trans he b z (hV (hb trivial)) (hJ.mem _ b)))`.
+
+Establish `htr : trF (![Y.q.left, Tx.left ≫ Y.q.left] : Fin 2 → (Y.H.left ⟶ Q.P.A.left)) ![1, -1] x₁'.left z j (fun k => I (x₁'.left ≫ (![Y.q.left, Tx.left ≫ Y.q.left] : Fin 2 → (Y.H.left ⟶ Q.P.A.left)) k)) = trF (![Y.q.left, Tx.left ≫ Y.q.left] : Fin 2 → (Y.H.left ⟶ Q.P.A.left)) ![1, -1] x …`. Unfold `trF`. Conclude with `Finset.prod_congr rfl fun k _ => congrArg (fun ψ => gm ψ z (Q.P.L.U (j k) ⊓ Q.P.L.U (I ψ)) (Q.P.L.g (j k) (I ψ)) ^ (![1, -1] : Fin 2 → ℤ) k) (hk k)`. Establish `ve : val e x₁'.left z I = gm (𝟙 (Over.mk (spMap φ)).left) z ⊤ (unitOn (c (-mu))) * val e x₁.left z I`. Establish `hb : (Y.Φ _ x₁').b = (Y.Φ _ x₁).b` using `by rw [Ray.Φ_b, Ray.Φ_b, hqq]`.
+
+Establish `h1` using `((GlobalTheory.TorusModel.isAdd_iff _ _ _).1 (Y.rep.2 _ x₁ (toUnit _ ≫ x))).2 mu z I hJ`. Establish `h2` using `((GlobalTheory.TorusModel.isAdd_iff _ _ _).1 (Y.rep.2 _ x₁' (toUnit _ ≫ x))).2 mu z I hJ`. Rewrite `h2` using `[hb]`. Establish `h3` using `hc mu z I hJ`. Establish `h4` using `GlobalTheory.TorusModel.cv_add (Y.Φ _ x₁) hJ mu (-mu)`.
+
+Establish `h5` using `GlobalTheory.TorusModel.cv_add (Y.Φ _ x₁') hJ mu (-mu)`. Rewrite `h4`, `h5` using `[add_neg_cancel, GlobalTheory.TorusModel.cv_zero _ hJ]`. Rewrite `h5` using `[hb]`. Establish `h6` using `hc (-mu) z I hJ`. Rewrite using `[hval _ x₁ z I hJ, hval _ x₁' z I hJ]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `g1` using `congrArg Additive.ofMul h1`. Establish `g2` using `congrArg Additive.ofMul h2`. Establish `g3` using `congrArg Additive.ofMul h3`. Establish `g4` using `congrArg Additive.ofMul h4`.
+
+Establish `g5` using `congrArg Additive.ofMul h5`. Establish `g6` using `congrArg Additive.ofMul h6`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one] at g1 g2 g3 g4 g5 g6 ⊢`. Take the linear combination `(norm := abel) g1 - g2 - g4 + g5 + g6`. Use `show gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom _) = gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom _)`.
+
+Rewrite using `[germ _ hV₂ z, map_mul, gs_mul (𝟙 _) z ⊤ trivial, germ _ hV₁ z, hgv _ hV₂, hgv _ hV₁, htr, ve, show (Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom (c (-mu) : S) = (unitOn (c (-mu))).val from rfl, gs_unit (𝟙 _) z ⊤ trivial, ← Units.val_mul]`. Conclude with `congrArg Units.val (_root_.mul_left_comm _ _ _)`. Rewrite using `[hval T y z J hJ]`. Simplify using `only [_root_.mul_assoc, inv_mul_cancel]`.
+-/
 theorem exists_gauge : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (mu : Q.X) (x : 𝟙_ (Over (Sp R)) ⟶ Y.H), (x ≫ Y.q) * Q.c mu = 1 → ∀ ψ₀ : LB.Gen (LB.LinComb Q.P.L (K := PUnit) (fun _ => (Q.c mu).left) fun _ => -1), ψ₀.IsGen → ∃ e : LB.Gen (LB.LinComb Q.P.L (K := Fin 2) ![Y.q.left, (𝟙 Y.H * (toUnit Y.H ≫ x)).left ≫ Y.q.left] ![1, -1]), e.IsGen ∧ (∀ (j : Fin 2 → Q.P.L.ι) (V : Q.P.A.left.Opens), Y.q.left ⁻¹ᵁ V ≤ LB.wchart Q.P.L ![Y.q.left, (𝟙 Y.H * (toUnit Y.H ≫ x)).left ≫ Y.q.left] j → IsWt Y (-mu) (Y.q.left ⁻¹ᵁ V) (rsT (e.s j).val (Y.q.left ⁻¹ᵁ V))) ∧ ∀ (T : Over (Sp R)) (y : T ⟶ Y.H) (z : T.left) (J : (T.left ⟶ Q.P.A.left) → Q.P.L.ι), Good Q.P.L z J → val e y.left z J * val ψ₀ T.hom z J * val Q.rig T.hom z J * val ((Y.Φ T (y * (toUnit T ≫ x))).s mu) (𝟙 _) z J = 1 := by
   intro R _ _ Q O _ _ _ oa Y mu x hx ψ₀ hψ₀
   have hL : Q.P.L.IsLB := Q.P.isLB

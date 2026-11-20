@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.FrameStep
 
+/- English proof (translation)
+Unfold `mapLF`. Rewrite using `[dif_pos hγ]`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [frame, FlagG.fvec, mapFlag]`. Consider the case `cast i => simp [frame, FlagG.fvec, mapFlag]`.
+-/
 theorem frame_mapLF {D : D7} {T : D.host.E} (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) (F : LFlag (VS D) D.R.rS T) (b : Fin (D.R.rS + 1)) :
     frame (mapLF γ F) b = γ (frame F b) := by
@@ -24,9 +27,17 @@ theorem frame_mapLF {D : D7} {T : D.host.E} (γ : (VS D).V ≃ₗ[D.host.E] (VS 
   | last => simp [frame, FlagG.fvec, mapFlag]
   | cast i => simp [frame, FlagG.fvec, mapFlag]
 
+/- English proof (translation)
+Introduce `i j` and use `⟨fun hij => h.1 i j hij, fun hij => by subst hij; exact h.2 i⟩`.
+-/
 theorem upUni_of_uni {N : ℕ} {K : Type} [Field K] {A : Matrix (Fin N) (Fin N) K} (h : GlobalTheory.LocOver.Uni A) :
     IsUpUni A := fun i j => ⟨fun hij => h.1 i j hij, fun hij => by subst hij; exact h.2 i⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.UpperUnipotentMulFlagMeasures.isUpUni_mul`. Consider the case `exact _root_.GlobalTheory.UpperUnipotentMulFlagMeasures.isUpUni_mul`. Consider the case `(apply _root_.GlobalTheory.UpperUnipotentMulFlagMeasures.isUpUni_mul <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UpperUnipotentMulFlagMeasures.isUpUni_mul <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.UpperUnipotentMulFlagMeasures.isUpUni_mul <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UpperUnipotentMulFlagMeasures.isUpUni_mul ..)`.
+-/
 theorem upUni_mul {N : ℕ} {K : Type} [Field K] {A B : Matrix (Fin N) (Fin N) K} (hA : IsUpUni A)
     (hB : IsUpUni B) : IsUpUni (A * B) := by
   first
@@ -37,6 +48,11 @@ theorem upUni_mul {N : ℕ} {K : Type} [Field K] {A B : Matrix (Fin N) (Fin N) K
   | (intros; apply @_root_.GlobalTheory.UpperUnipotentMulFlagMeasures.isUpUni_mul <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.UpperUnipotentMulFlagMeasures.isUpUni_mul ..)
 
+/- English proof (translation)
+Establish `hmap : ∀ a, (mapFlag n hn.1 F.fl).fvec a = n (F.fl.fvec a)`. Introduce `a`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => simp [FlagG.fvec, mapFlag]`. Consider the case `cast i => simp [FlagG.fvec, mapFlag]`.
+
+Take `⟨A, hA, hc⟩` from `GlobalTheory.FlagChange.tri_of_unip F.fl (mapFlag n hn.1 F.fl) n hn.2.1 hn.2.2 hmap`. Use `⟨A, upUni_of_uni hA, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[← hmap b]`. Conclude with `hc b`.
+-/
 theorem unip_tri {D : D7} {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (n : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hn : n ∈ NRat F) : ∃ A : Formalism.L2.SG.PairVal.MatR D, IsUpUni A ∧
       ∀ b, n (frame F b) = ∑ a, A a b • frame F a := by
@@ -50,6 +66,9 @@ theorem unip_tri {D : D7} {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (n : (VS D)
   rw [← hmap b]
   exact hc b
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_smul, hU, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem sum_change {D : D7} (g : (VS D).V ≃ₗ[D.host.E] (VS D).V) (f f0 : Fin (D.R.rS + 1) → (VS D).V)
     (U A : Formalism.L2.SG.PairVal.MatR D) (hU : ∀ b, g (f b) = ∑ a, U a b • f0 a) (b : Fin (D.R.rS + 1)) :
     g (∑ a, A a b • f a) = ∑ c, (U * A) c b • f0 c := by
@@ -58,6 +77,17 @@ theorem sum_change {D : D7} (g : (VS D).V ≃ₗ[D.host.E] (VS D).V) (f f0 : Fin
   refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => ?_
   rw [mul_comm]
 
+/- English proof (translation)
+Introduce `D X Y u u' F00 F'0 t₀ ρ U U' hM t n m ⟨hn, hm, ht⟩`. Take `⟨hρ, hU, hU', hf, hf'⟩` from `hM`. Take `⟨A, hA, hnA⟩` from `unip_tri _ n hn`. Take `⟨A', hA', hmA'⟩` from `unip_tri _ m hm`. Establish `ht0 : t₀.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t₀.rep.2.2.1`.
+
+Establish `ht1 : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Use `⟨A, A', hA, hA', hnA, hmA', Subgroup.mul_mem _ hρ hn.1, upUni_mul hU hA, upUni_mul hU' hA', ?_, ?_⟩` and prove the remaining obligations. Introduce `b`. Rewrite using `[LinearEquiv.mul_apply]`. Conclude with `(congrArg ρ (hnA b)).trans (sum_change ρ _ _ U A hf b)`.
+
+Introduce `b`. Establish `h0 : ∀ a, (ρ * t₀.lin) (frame (lf D (X.Fu u')) a) = ∑ c, U' c a • frame F'0 c`. Introduce `a`. Rewrite using `[LinearEquiv.mul_apply, ← hf' a]`. Use `show _ = ρ (frame (mapLF t₀.lin (lf D (X.Fu u'))) a)`.
+
+Rewrite using `[frame_mapLF _ ht0]`. Establish `e1 : frame t.frame b = t.lin (frame (lf D (X.Fu u')) b)` using `frame_mapLF _ ht1 _ b`. Rewrite using `[e1, ht]`. Simplify using `only [LinearEquiv.mul_apply, LinearEquiv.apply_symm_apply]`. Establish `hinv : ∀ x, n (n⁻¹ x) = x` using `fun x => by`.
+
+Rewrite using `[← LinearEquiv.mul_apply, mul_inv_cancel]`. Both sides reduce to the same expression. Rewrite using `[hinv, hmA' b]`. Use `sum_change (ρ * t₀.lin) _ _ U' A' h0 b` as an intermediate fact. Simplify `this` using `only [LinearEquiv.mul_apply]`.
+-/
 theorem step : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (t₀ : TauC Y u u') (ρ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → ∀ (t : TauC Y u u') n m, n ∈ NRat (lf D (X.Fu u)) ∧ m ∈ NRat (lf D (X.Fu u')) ∧ t.lin = n⁻¹ * t₀.lin * m → ∃ A A' : Formalism.L2.SG.PairVal.MatR D, IsUpUni A ∧ IsUpUni A' ∧ (∀ b, n (frame (lf D (X.Fu u)) b) = ∑ a, A a b • frame (lf D (X.Fu u)) a) ∧ (∀ b, m (frame (lf D (X.Fu u')) b) = ∑ a, A' a b • frame (lf D (X.Fu u')) a) ∧ MovesTo F00 F'0 (lf D (X.Fu u)) t.frame (ρ * n) (U * A) (U' * A') := by
   intro D X Y u u' F00 F'0 t₀ ρ U U' hM t n m ⟨hn, hm, ht⟩
   obtain ⟨hρ, hU, hU', hf, hf'⟩ := hM

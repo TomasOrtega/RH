@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.ConeSlices
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ x`. Use `choose Fm hFm using GlobalTheory.T.stabilizer_haar_local_factor_case_a hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ x`. Establish `hfun : ∀ k l, (⇑(Fm k l)) = fun s => (e (G.M.co.rho B.ψ (shiftA H H' l) (om (k.1, 1) Ψ)) (x + GlobalTheory.ThetaTransform.embR s) * (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ ((b + 2 - a') / 2))` using `fun k l => funext (hFm k l)`. Take `⟨hm1, hm2⟩` from `GlobalTheory.T.stabilizer_haar_local_factor_case_a_two hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ x`. Establish `hd` using `GlobalTheory.T.stabilizer_haar_local_factor_case_a_three hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ x`.
+
+Take `⟨g, hg⟩` from `GlobalTheory.T.schwartz_double_integral_exists μK μ Fm (fun m t k => by simp only [hfun]; exact hm1 m t k) (fun m t => by simp only [hfun]; exact hm2 m t) (fun n m => by simp only [hfun]; exact hd n m)`. Use `⟨g, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`. Simplify using `only [cone, hFm]`.
+-/
 theorem cone_slice_schwartz : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →

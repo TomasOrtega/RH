@@ -15,6 +15,17 @@ namespace GlobalTheory.UpMem
 variable {D : D7}
 open GlobalTheory.FinPl
 
+/- English proof (translation)
+Set `Ψ : (Fin S.rank → AE D) →+ (Fin S.rank → AE D)` to `AddMonoidHom.mk' (fun u => w • u) fun x y => smul_add w x y`. Establish `main : latMul S 𝔞 L P ≤ (latMul S 𝔞 L P).comap Ψ`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, hP, a, ha, x, hx, rfl⟩`. Set `Φ : Af D.host.F ⊗[D.host.F] D.host.E →+ (Fin S.rank → AE D)` to `AddMonoidHom.mk' (fun y => fun i => GlobalTheory.LatticeStable.liftMul D (α ⊗ₜ[D.host.F] (a * x i)) y) fun y y' => funext fun i => (GlobalTheory.LatticeStable.liftMul D _).map_add y y'`.
+
+Establish `hle : intAE D ≤ (latMul S 𝔞 L P).comap Φ`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨β, hβ, o, rfl⟩`. Use `AddSubgroup.subset_closure ⟨β * α, fun v => ?_, fun v hv => ?_, a, ha, o • x, L.smul_mem o hx, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `mul_mem (hβ v) (hα v)`. Rewrite using `[map_mul, hP v hv, mul_zero]`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `GlobalTheory.LatticeStable.liftFin D ((β ⊗ₜ[D.host.F] (o : D.host.E)) * (α ⊗ₜ[D.host.F] _)) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, GlobalTheory.LatticeStable.liftFin_tmul, Pi.smul_apply, Algebra.smul_def, show algebraMap _ _ o = (o : D.host.E) from rfl]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e : Ψ (fun i => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * x i)) = Φ (finPart D w)`. Use function extensionality and compare the values at `fun i => GlobalTheory.LatticeStable.mul_pair_tmul D w α _`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_comap, e]`.
+
+Conclude with `hle hw`. Conclude with `fun u hu => main hu`.
+-/
 theorem smul_mem_latMul (S : HSp D) (𝔞 : Set D.host.E) (L : Lat S) (P : Pl D → Prop) (w : AE D)
     (hw : finPart D w ∈ intAE D) : ∀ y ∈ latMul S 𝔞 L P, w • y ∈ latMul S 𝔞 L P := by
   let Ψ : (Fin S.rank → AE D) →+ (Fin S.rank → AE D) := AddMonoidHom.mk' (fun u => w • u) fun x y => smul_add w x y
@@ -44,6 +55,9 @@ theorem smul_mem_latMul (S : HSp D) (𝔞 : Set D.host.E) (L : Lat S) (P : Pl D 
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h` using `(q.int_iff 1).1 (one_mem _)`. Establish `h1 : q.sec 1 = q.e`. Use `q.sec_pr 1` as an intermediate fact. Rewrite `this` using `[map_one, mul_one]`. Then use the resulting hypothesis. Rewrite `h` using `[h1]`. Then use the resulting hypothesis.
+-/
 theorem finPart_e_int (q : SplitPt D k) : finPart D q.e ∈ intAE D := by
   have h := (q.int_iff 1).1 (one_mem _)
   have h1 : q.sec 1 = q.e := by
@@ -51,6 +65,15 @@ theorem finPart_e_int (q : SplitPt D k) : finPart D q.e ∈ intAE D := by
     rwa [map_one, mul_one] at this
   rwa [h1] at h
 
+/- English proof (translation)
+Take `⟨ε, ⟨α, rfl, h1, h0⟩, hsum⟩` from `q.above`. Establish `hα : α ∈ intAf D.host.F` using `fun u => by`. Distinguish the cases in `hu : u = q.v`. Substitute `hu` using the available equality. Rewrite using `[h1]`.
+
+Conclude with `one_mem _`. Rewrite using `[h0 u hu]`. Conclude with `zero_mem _`. Establish `hg : (fun j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * s j)) ∈ latV S L (· = q.v)` using `AddSubgroup.subset_closure ⟨α, hα, fun u hu => h0 u hu, 1, rfl, s, hs, rfl⟩`. Establish `he : q.e • (fun j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * s j)) ∈ latV S L (· = q.v)` using `smul_mem_latMul S {1} L (· = q.v) q.e (finPart_e_int q) _ hg`.
+
+Use `he using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Establish `hee : q.e * algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) = q.e`. Rewrite using `[← hsum, mul_add, q.split.1, q.split.2.1, add_zero]`. Rewrite using `[Pi.smul_apply, smul_eq_mul, one_mul]`.
+
+Establish `: pairA D.host.F 0 α ⊗ₜ[D.host.F] s j = algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) * incA D (s j)`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Express the relevant statement in the definitionally equal form `_ = (_ ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] s j)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[this, ← mul_assoc, hee]`.
+-/
 theorem e_mul_mem_latV (q : SplitPt D k) (S : HSp D) (L : Lat S) {s : Fin S.rank → D.host.E} (hs : s ∈ L) :
     (fun j => q.e * incA D (s j)) ∈ latV S L (· = q.v) := by
   obtain ⟨ε, ⟨α, rfl, h1, h0⟩, hsum⟩ := q.above
@@ -79,6 +102,11 @@ namespace GlobalTheory.UpMem
 variable {D : D7}
 open GlobalTheory.FinPl
 
+/- English proof (translation)
+Set `Φ : (Fin T.rank → AE D) →+ WO S T` to `AddMonoidHom.mk' (fun y => Matrix.of fun i j => y i * incA D (∑ l, star (s l) * S.gram l j)) fun y y' => Matrix.ext fun i j => add_mul (y i) (y' i) _`. Establish `main : latA T LT P ≤ (latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) P).comap Φ`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, hP, a, ha, t, ht, rfl⟩`. Use `AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, s, hs, t, ht, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i)) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] _) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Both sides reduce to the same expression. Conclude with `main hy`.
+-/
 theorem rankOne_mem_latO (S T : HSp D) (LS : Lat S) (LT : Lat T) (P : Pl D → Prop) {s : Fin S.rank → D.host.E}
     (hs : s ∈ LS) {y : Fin T.rank → AE D} (hy : y ∈ latA T LT P) :
     (Matrix.of fun i j => y i * incA D (∑ l, star (s l) * S.gram l j) : WO S T) ∈
@@ -98,6 +126,9 @@ theorem rankOne_mem_latO (S T : HSp D) (LS : Lat S) (LT : Lat T) (P : Pl D → P
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h1 : q.e * q.sec a = q.sec a` using `by rw [← q.sec_pr, q.pr_sec]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sec_mul (q : SplitPt D k) (a : k) (b : AE D) : q.sec a * b = q.sec (a * q.pr b) := by
   have h1 : q.e * q.sec a = q.sec a := by rw [← q.sec_pr, q.pr_sec]
   calc q.sec a * b = q.e * (q.sec a * b) := by rw [← mul_assoc, h1]
@@ -109,6 +140,25 @@ end GlobalTheory.UpMem
 namespace GlobalTheory.UpMem
 open GlobalTheory.FinPl
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ q hU Y Y' _ _ _ _ S T FS FT LS LT hS hT hFS hFT x hx`. Take `⟨n, s, s', hs, hss⟩` from `GlobalTheory.LatVacDual.dualFamily D S LS hS`. Use `set u := (ofSplit q).up FS FT x with hu_def`. Set `z : Fin n → Y' → k` to `fun c => FS.γ *ᵥ (fun m => q.pr (incA D (s c m)))`. Set `y : Fin n → Fin T.rank → AE D` to `fun c i => ∑ m, u i m * incA D (s c m)`.
+
+Establish `hz : ∀ c r, z c r ∈ 𝒪[k]`. Introduce `c`. Use `(hFS (z c)).2 ?_` and prove the remaining obligations. Establish `: (fun i => q.sec ((FS.β *ᵥ z c) i)) = fun j => q.e * incA D (s c j)`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [z, Matrix.mulVec_mulVec, FS.βγ, Matrix.one_mulVec]`. Conclude with `q.sec_pr _`. Rewrite using `[this]`. Conclude with `e_mul_mem_latV q S LS (hs c).1`. Establish `hy : ∀ c, y c ∈ latA T LT (· = q.v)`.
+
+Introduce `c`. Rewrite using `[hU.2 T LT]`. Establish `hint : ∀ r, (x *ᵥ z c) r ∈ 𝒪[k]` using `fun r => Subring.sum_mem _ fun m _ => Subring.mul_mem _ (hx r m) (hz c m)`. Use `(hFT (x *ᵥ z c)).1 hint using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `∑ m, q.sec ((FT.β * x * FS.γ) i m) * incA D (s c m) = _`. Repeatedly rewrite using `[sec_mul]`. Rewrite using `[← map_sum]`. Use `congr 1`. Simplify using `only [z, Matrix.mulVec_mulVec]`.
+
+Rewrite using `[← Matrix.mul_assoc]`. Both sides reduce to the same expression. Establish `hdec : u = ∑ c, (Matrix.of fun i j => y c i * incA D (∑ l, star (s' c l) * S.gram l j) : WO S T)`. Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply]`.
+
+Simplify using `only [Matrix.of_apply, y, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `key : ∀ m, ∑ c, u i m * incA D (s c m) * incA D (∑ l, star (s' c l) * S.gram l j) = u i m * incA D (if m = j then 1 else 0)`. Introduce `m`. Rewrite using `[← hss m j, map_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc]`. Rewrite using `[Finset.sum_congr rfl fun m _ => key m]`. Simplify using `[apply_ite]`. Rewrite using `[hdec]`.
+
+Conclude with `sum_mem fun c _ => rankOne_mem_latO S T LS LT _ (hs c).2 (hy c)`.
+-/
 theorem up_mem_latO : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k), q.UnitAA → ∀ (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (S T : HSp D) (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (LS : GlobalTheory.FinPl.Lat S) (LT : GlobalTheory.FinPl.Lat T), IsSelfDualC S LS → IsSelfDualC T LT → (∀ y : Y' → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((FS.β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV S LS (· = q.v)) → (∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((FT.β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV T LT (· = q.v)) → ∀ x : Matrix Y Y' k, (∀ r s, x r s ∈ 𝒪[k]) → (ofSplit q).up FS FT x ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = q.v) := by
   intro D k _ _ _ _ q hU Y Y' _ _ _ _ S T FS FT LS LT hS hT hFS hFT x hx
   obtain ⟨n, s, s', hs, hss⟩ := GlobalTheory.LatVacDual.dualFamily D S LS hS

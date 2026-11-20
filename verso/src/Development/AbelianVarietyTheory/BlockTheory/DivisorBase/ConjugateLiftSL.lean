@@ -22,6 +22,9 @@ variable (D) in
 def OverK (σ : D.what₂.LL →+* ℂ) : Prop :=
   ∀ a : D.host.K, σ (D.embE (algebraMap D.host.K D.host.E a)) = D.what₂.embLL (D.embE (algebraMap D.host.K D.host.E a))
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 example : OverK D D.what₂.embLL := fun _ => rfl
 
 def LabPerm (σ : D.what₂.LL →+* ℂ) : Prop :=
@@ -43,6 +46,9 @@ def IsCompUnit (V : HSp D) (J : Subgroup (GA D V)) (u : GA D V → ℂ) : Prop :
   (∀ g, ‖u g‖ = 1) ∧ (∀ γ ∈ GQ V, ∀ g, u (γ * g) = u g) ∧ (∀ k ∈ GinfC V, ∀ g, u (g * k) = u g) ∧
     ∀ k ∈ J, ∀ g, u (g * k) = u g
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => norm_one, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+-/
 example (V : HSp D) (J : Subgroup (GA D V)) : IsCompUnit V J fun _ => 1 :=
   ⟨fun _ => norm_one, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩
 
@@ -65,6 +71,9 @@ def ResAt (χ' : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (kP PP)ˣ →* ℂˣ) : 
 def datV (χ' : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (kP PP)ˣ →* ℂˣ) : Formalism.L2.DIV.LevDat D.host.E ℂ (Vc D i).rank :=
   datY _ D.R.r D.R.t 1 (r_le_V i) R.Pg (R.Q A.μ0) (LevelP.triv _ _ _) (fun _ => χ') (R.xiR A.μ0) Frm.A
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : datV R i (R.chi ((i : ℕ) + 1)) = R.datVt i A.μ0 := rfl
 
 def valAt (x : A.fam.amb.FL i A.μ0) (c : (A.MtCSD i A.μ0).Cl) : (A.MtCSD i A.μ0).V :=
@@ -200,6 +209,9 @@ def castSL {K X Z : Type} [Field K] [AddCommGroup X] [Module K X] [AddCommGroup 
   map_smul' a x := by rw [← h]; exact f.map_smulₛₗ a x
 
 include R in
+/- English proof (translation)
+The claim follows from `(sgAt_mk _ R.hv0).symm`.
+-/
 theorem sign_at_base_place_eq_embedding : D.what₂.embLL = sg0 D A := (sgAt_mk _ R.hv0).symm
 
 def base : ConjLift R i (sg0 D A) where

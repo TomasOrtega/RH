@@ -5,6 +5,17 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JGenSpeciali
 open CategoryTheory AlgebraicGeometry IsLocalRing GlobalTheory GlobalTheory.ValCount GlobalTheory.TrueGeo
 open scoped Classical
 
+/- English proof (translation)
+Introduce `X _ _ _ x W hx h f`. Establish `hW` using `h.isDiscreteValuationRing hx`. Establish `hS` using `IsNormalScheme.isDiscreteValuationRing_stalk hx`. Take `⟨e, he⟩` from `h.exists_ringEquiv hx`. Distinguish the cases in `hf : f = 0`.
+
+Substitute `hf` using the available equality. Rewrite using `[vord_eq, map_zero, Scheme.ord_zero]`. Simplify using the standard rewrite rules. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (X.presheaf.stalk x)`. Establish `hϖ' : Irreducible (e ϖ)` using `(MulEquiv.irreducible_iff e).2 hϖ`.
+
+Take `⟨n, u, hu, hu'⟩` from `exists_eq_unit_mul_zpow W hϖ' hf`. Take `⟨v, rfl⟩` from `e.surjective u`. Establish `hv : IsUnit v` using `(MulEquiv.isUnit_map (f := e)).1 hu`. Establish `h1 : ((e v : W) : X.functionField) ≠ 0` using `fun h => hu.ne_zero (Subtype.ext h)`. Establish `h2 : ((e ϖ : W) : X.functionField) ≠ 0` using `fun h => hϖ'.ne_zero (Subtype.ext h)`.
+
+Establish `h3 : vord W f = n`. Rewrite using `[hu', vord_mul _ h1 (zpow_ne_zero _ h2), vord_of_isUnit _ hu, vord_zpow, vord_irreducible _ hϖ']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, Scheme.ord_eq_iff hx hf]`. Express the relevant statement in the definitionally equal form `Ring.ordFrac (X.presheaf.stalk x) f = _`.
+
+Rewrite using `[hu', he, he, map_mul, map_zpow₀, Ring.ordFrac_of_isUnit hv, Ring.ordFrac_irreducible hϖ, one_mul, ← WithZero.exp_zsmul, smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.order_eq_valuation_codim_one :
     ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (x : X) (W : ValuationSubring X.functionField), Order.coheight x = 1 → DominatesStalk W x → ∀ f : X.functionField, Scheme.ord f x = vord W f := by
   intro X _ _ _ x W hx h f

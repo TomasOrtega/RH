@@ -29,6 +29,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AmpleKerFibre
 
+/- English proof (translation)
+Introduce `K _ _ B _ hB L₀ h₀ hA hK N hN hlam`. Use `hB.comm` as an intermediate fact. Take `⟨O, hO, eO⟩` from `CechPic.cls_surj (cls N hN - cls L₀ h₀)`. Establish `lamO : lam (cls O hO) (fst B B) (snd B B) = 0`. Rewrite using `[eO, GlobalTheory.PrimitiveOverField.lam_sub, hlam, sub_self]`.
+
+Take `⟨x, hx⟩` from `GlobalTheory.PointTranslate.exists_point_cls_eq_lam K B hB L₀ h₀ hK O hO lamO`. Establish `hR : (GlobalTheory.RigidTranslate.rigTransl L₀ x).IsLB` using `LB.isLB_linComb h₀ _ _`. Establish `hcls : cls _ hR = cls N hN`. Rewrite using `[CechPic.cls_linComb h₀, Fin.sum_univ_two]`. Establish `e1 : cls N hN = cls O hO + cls L₀ h₀` using `by rw [eO]; abel`.
+
+Rewrite using `[e1, hx, GlobalTheory.PrimitiveOverField.lam_const, Over.id_left, CechPic.pull_id]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, one_smul, neg_smul]`. Rewrite using `[GlobalTheory.PrimitiveOverField.pull_const, GlobalTheory.PolTranslate.transl, _root_.mul_comm (𝟙 B)]`. Normalize the expressions using the abelian group laws. Establish `hiso` using `(CechPic.cls_eq_iff hR hN).1 hcls`.
+
+Use `⟨?_, GlobalTheory.MulDescent.kTriv_of_lbIso hR hN hiso (GlobalTheory.RigidTranslate.kTriv_rigTransl_any _ B L₀ h₀ x hK)⟩` and prove the remaining obligations. Establish `hAR` using `GlobalTheory.RigidTranslate.relAmple_rigTransl_point K B hB L₀ h₀ x hA`. Take `⟨w, hw⟩ : LBIso N ((GlobalTheory.RigidTranslate.rigTransl L₀ x).pull (𝟙 B.left))` from `hiso.symm.chartPull (Geo.Tor.chartPullId N) (Geo.Tor.chartPullPull _ (𝟙 _) (𝟙 _) rfl)`. Conclude with `relAmple_pull (A' := B) (IsPullback.id_horiz B.hom) hR hN ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top _) (fun _ => trivial) hAR`.
+-/
 theorem relAmple_kTriv_of_lam_eq : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B → ∀ (L₀ : LB B.left) (h₀ : L₀.IsLB), Out.RelAmple B L₀ → Out.KTriv B L₀ → ∀ (N : LB B.left) (hN : N.IsLB), lam (cls N hN) (fst B B) (snd B B) = lam (cls L₀ h₀) (fst B B) (snd B B) → Out.RelAmple B N ∧ Out.KTriv B N := by
   intro K _ _ B _ hB L₀ h₀ hA hK N hN hlam
   have := hB.comm

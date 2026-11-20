@@ -38,6 +38,9 @@ def ThinH : Prop :=
     ((ordCompl[2] H.QS : ℕ) : ℝ) ≤ B → Real.log (H.condN : ℝ) ≤ 2 * x ^ (eps / 5) * Real.log x ^ 2 → RealBox H →
       H.ChebyshevCharacterBound x eps c
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.pair, h.coprime, fun ξ i j hij N _ χ hχ y a b => h.bounds ξ i j hij N χ hχ y a (b.trans hX), h.boxes⟩`.
+-/
 theorem PairGood.mono {M : ℕ} {eps Y X X' : ℝ} {q d : ℕ} (h : PairGood M eps Y X q d) (hX : X' ≤ X) : PairGood M eps Y X' q d :=
   ⟨h.pair, h.coprime, fun ξ i j hij N _ χ hχ y a b => h.bounds ξ i j hij N χ hχ y a (b.trans hX), h.boxes⟩
 

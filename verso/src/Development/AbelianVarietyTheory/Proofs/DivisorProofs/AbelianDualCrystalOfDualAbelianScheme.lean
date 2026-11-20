@@ -12,6 +12,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineSmoothLi
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `h` and use `GlobalTheory.abelianDualCrystal_of_dual_of_smoothLift h GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations`.
+-/
 theorem abelianDualCrystal_of_dualAbelianScheme :
     GlobalTheory.Published.DualAbelianScheme → GlobalTheory.Published.AbelianDualCrystal :=
   fun h => GlobalTheory.abelianDualCrystal_of_dual_of_smoothLift h GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations

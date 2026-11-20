@@ -19,10 +19,18 @@ namespace GlobalTheory.IndVac
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Conclude with `h (by simp only [GlobalTheory.LiftLevel.indL, hn, if_false])`.
+-/
 theorem mem_of_indL_ne {L : AddSubgroup (WO S T)} {t : WO S T} (h : GlobalTheory.LiftLevel.indL L t ≠ 0) : t ∈ L := by
   by_contra hn
   exact h (by simp only [GlobalTheory.LiftLevel.indL, hn, if_false])
 
+/- English proof (translation)
+Take `⟨m, hm, hm1⟩` from `h1`. Take `⟨n, hn, hn2⟩` from `h2`. Use `⟨fun t ht => hL t (mem_of_indL_ne ht), m * n, Nat.mul_pos hm hn, fun u hu hu' t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hk : (m * n) • u ∈ L`. Rewrite using `[← smul_smul]`.
+
+Conclude with `L.nsmul_mem (hn2 u hu hu') m`. Simplify using `only [GlobalTheory.LiftLevel.indL, L.add_mem_cancel_right hk]`. Rewrite using `[mul_comm, ← smul_smul]`. Conclude with `Λ.nsmul_mem (hm1 t (mem_of_indL_ne ht)) n`.
+-/
 theorem isSBHalf_indL (a : AE D) (Λ L : AddSubgroup (WO S T)) (hL : ∀ x ∈ L, IsHalf a x)
     (h1 : ∃ m : ℕ, 0 < m ∧ ∀ x ∈ L, m • x ∈ Λ) (h2 : ∃ m : ℕ, 0 < m ∧ ∀ x ∈ Λ, IsHalf a x → m • x ∈ L) :
     IsSBHalf a Λ (GlobalTheory.LiftLevel.indL L) := by
@@ -36,13 +44,26 @@ theorem isSBHalf_indL (a : AE D) (Λ L : AddSubgroup (WO S T)) (hL : ∀ x ∈ L
   · rw [mul_comm, ← smul_smul]
     exact Λ.nsmul_mem (hm1 t (mem_of_indL_ne ht)) n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem partAt_eq (a : AE D) (w : WO S T) : GlobalTheory.LiftLevel.partAt a w = a • w := rfl
 
+/- English proof (translation)
+Rewrite using `[← (GlobalTheory.PlaceModel.mem_half S T).1 hr, ← (GlobalTheory.PlaceModel.mem_half S T).1 hx, GlobalTheory.PlaceModel.symplO_smul, smul_smul, hab, zero_smul, GlobalTheory.PlaceModel.symplO_zero_right]`.
+-/
 theorem symplO_half_eq_zero {a b : AE D} (hab : cA D b * a = 0) {r x : WO S T}
     (hr : r ∈ GlobalTheory.PlaceModel.half S T b) (hx : x ∈ GlobalTheory.PlaceModel.half S T a) : symplO S T r x = 0 := by
   rw [← (GlobalTheory.PlaceModel.mem_half S T).1 hr, ← (GlobalTheory.PlaceModel.mem_half S T).1 hx, GlobalTheory.PlaceModel.symplO_smul,
     smul_smul, hab, zero_smul, GlobalTheory.PlaceModel.symplO_zero_right]
 
+/- English proof (translation)
+Establish `hc : ∀ w, symplO S T r w = 0 → ∀ g, heisO ψ S T r (heisO ψ S T w g) = heisO ψ S T w (heisO ψ S T r g)` using `fun w hw g => by`. Use `GlobalTheory.PlaceModel.heisL_comm S T ψ r w g` as an intermediate fact. Rewrite `this` using `[hw, AddChar.map_zero_eq_one, one_smul]`. Conclude with `this`. Establish `h' : IsPlaceModel ψ (symplO S T) (heisO ψ S T) a (latO S T ΛS ΛT fun _ => True) 1 f₀ ((GlobalTheory.PlaceModel.heisL S T ψ r).comp Tm)` using `{ trans := fun Φ hΦ x hxa => by`.
+
+Express the relevant statement in the definitionally equal form `heisO ψ S T r (Tm _) = heisO ψ S T x (heisO ψ S T r (Tm Φ))`. Rewrite using `[hTm.trans Φ hΦ x hxa, hc x (hx x hxa)]`. Use `modul := fun Φ hΦ y hya => by`. Express the relevant statement in the definitionally equal form `heisO ψ S T r (Tm _) = heisO ψ S T y (heisO ψ S T r (Tm Φ))`. Rewrite using `[hTm.modul Φ hΦ y hya, hc y (hy y hya)]`.
+
+Use `vac := by`. Express the relevant statement in the definitionally equal form `heisO ψ S T r (Tm _) = f₀`. Rewrite using `[hTm.vac, hr0] }`. Conclude with `GlobalTheory.PlaceVec.placeModel_unique hψ hS hT ha hinf h' hTm hΦ`.
+-/
 theorem heisO_fix {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
     (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {a : AE D} (ha : a * a = a) (hinf : infPart D a = 0)
@@ -69,6 +90,11 @@ theorem heisO_fix {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
         rw [hTm.vac, hr0] }
   exact GlobalTheory.PlaceVec.placeModel_unique hψ hS hT ha hinf h' hTm hΦ
 
+/- English proof (translation)
+Establish `e1` using `GlobalTheory.PlaceModel.heisL_heisL S T ψ y z f`. Establish `e2` using `GlobalTheory.PlaceModel.heisL_heisL S T ψ x (y + z) f`. Express the relevant statement in the definitionally equal form `heisO ψ S T y (heisO ψ S T z f) = _ • heisO ψ S T (y + z) f at e1`. Express the relevant statement in the definitionally equal form `heisO ψ S T x (heisO ψ S T (y + z) f) = _ • heisO ψ S T (x + (y + z)) f at e2`. Rewrite `e1` using `[hz, hy, p1, one_smul]`.
+
+Rewrite `e2` using `[← e1, hx, p2, one_smul]`. Conclude with `e2.symm`.
+-/
 theorem heisenbergTranslate_add_three_fixes_of_trivial_phase (ψ : AddChar (AF D.host.F) ℂ) {f : WO S T → ℂ} {x y z : WO S T}
     (hx : heisO ψ S T x f = f) (hy : heisO ψ S T y f = f) (hz : heisO ψ S T z f = f)
     (p1 : ψ (symplOH S T y z) = 1) (p2 : ψ (symplOH S T x (y + z)) = 1) : heisO ψ S T (x + (y + z)) f = f := by
@@ -83,6 +109,37 @@ theorem heisenbergTranslate_add_three_fixes_of_trivial_phase (ψ : AddChar (AF D
 set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D S T C B hB ΛT hT P e he f₀ hvac Tm hTm L hL hm1 hm2`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he`. Establish `hee : e * e = e` using `ho.idem`. Establish `hea : e * cA D e = 0` using `he.2`. Establish `ha : cA D e * cA D e = cA D e` using `ho.conj.idem`.
+
+Establish `hcc : cA D (cA D e) = e` using `cA_cA e`. Establish `hS` using `GlobalTheory.Ker.Base.selfDualC_stdL C.m.gS`. Establish `hψ` using `C.std`. Establish `hinf : infPart D (cA D e) = 0` using `ho.conj.infPart_eq`. Establish `hinf' : infPart D (cA D (cA D e)) = 0` using `ho.conj.conj.infPart_eq`.
+
+Establish `hSB` using `isSBHalf_indL (cA D e) _ L hL hm1 hm2`. Establish `hth : IsThetaAt C.ψ (symplO S T) (heisO C.ψ S T) (cA D e) (latO S T (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) 1 f₀ (GlobalTheory.LiftLevel.indL L) (Tm (GlobalTheory.LiftLevel.indL L))` using `⟨⟨Tm, hTm⟩, fun T' hT' => GlobalTheory.PlaceVec.placeModel_unique hψ hS hT ha hinf hTm hT' hSB⟩`. Establish `hθf` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hψ C.inf hth hvac.2.theta`. Use `⟨hSB, hθf, fun τ => GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hψ.1.1 C.inf hinf hinf' hth hvac.2.theta hθf (hvac.2.fock τ), ?_⟩` and prove the remaining obligations. Take `⟨b, hbd⟩ : ∃ b : AE D, b = 1 - e - cA D e` from `⟨_, rfl⟩`.
+
+Establish `hb : b * b = b` using `by rw [hbd]; linear_combination hee + ha + 2 * hea`. Establish `hcb : cA D b = b` using `by rw [hbd, map_sub, map_sub, map_one, hcc]; ring`. Establish `hba : cA D b * cA D e = 0` using `by rw [hcb, hbd]; linear_combination -hea - ha`. Establish `hbe : cA D b * e = 0` using `by rw [hcb, hbd]; linear_combination -hee - hea`. Establish `hfix_a : ∀ x ∈ L, heisO C.ψ S T x (Tm (GlobalTheory.LiftLevel.indL L)) = Tm (GlobalTheory.LiftLevel.indL L)` using `fun x hx => by`.
+
+Rewrite using `[← hTm.trans _ hSB x (hL x hx)]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [GlobalTheory.LiftLevel.indL, L.add_mem_cancel_right hx]`. Establish `hfix_e : ∀ y, IsHalf e y → (∀ t ∈ L, C.ψ (symplO S T t y) = 1) → heisO C.ψ S T y (Tm (GlobalTheory.LiftLevel.indL L)) = Tm (GlobalTheory.LiftLevel.indL L)` using `fun y hy ht => by`.
+
+Rewrite using `[← hTm.modul _ hSB y (by rw [hcc]; exact hy)]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Distinguish the cases in `h : t ∈ L`. Simplify using `only [GlobalTheory.LiftLevel.indL, h, if_true, ht t h, one_mul]`.
+
+Simplify using `only [GlobalTheory.LiftLevel.indL, h, if_false, mul_zero]`. Establish `hfix_r : ∀ r ∈ GlobalTheory.PlaceModel.half S T b, heisO C.ψ S T r f₀ = f₀ → heisO C.ψ S T r (Tm (GlobalTheory.LiftLevel.indL L)) = Tm (GlobalTheory.LiftLevel.indL L)` using `fun r hr hr0 => heisO_fix hψ hS hT ha hinf hTm r hr0 (fun x hx => symplO_half_eq_zero hba hr ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hx)) (fun y hy => symplO_half_eq_zero (by rw [hcc]; exact hbe) hr ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hy)) hSB`. Establish `hdec : ∀ u : WO S T, u = cA D e • u + (e • u + b • u)` using `fun u => by`. Rewrite using `[← add_smul, ← add_smul, show cA D e + (e + b) = 1 by rw [hbd]; ring, one_smul]`. Establish `hbmem : ∀ u : WO S T, b • u ∈ GlobalTheory.PlaceModel.half S T b` using `fun u => by show b • b • u = b • u`.
+
+Rewrite using `[smul_smul, hb]`. Establish `hemem : ∀ u : WO S T, e • u ∈ GlobalTheory.PlaceModel.half S T e` using `fun u => by show e • e • u = e • u`. Rewrite using `[smul_smul, hee]`. Establish `hamem : ∀ u : WO S T, cA D e • u ∈ GlobalTheory.PlaceModel.half S T (cA D e)` using `fun u => by show cA D e • cA D e • u = cA D e • u`. Rewrite using `[smul_smul, ha]`.
+
+Establish `hez : ∀ u : WO S T, symplO S T (e • u) (b • u) = 0` using `fun u => by`. Rewrite using `[GlobalTheory.PlaceModel.symplO_skew, symplO_half_eq_zero hbe (hbmem u) (hemem u), neg_zero]`. Establish `haz : ∀ u : WO S T, symplO S T (cA D e • u) (b • u) = 0` using `fun u => by`. Rewrite using `[GlobalTheory.PlaceModel.symplO_skew, symplO_half_eq_zero hba (hbmem u) (hamem u), neg_zero]`. Introduce `Λ'' hΛ''`.
+
+Use `⟨fun u hu => ?_, fun e' he' u hu hh => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hΛ'' u hu`. Rewrite `h1`, `h3` using `[partAt_eq]`. Simplify using `only [partAt_eq] at h2`. Rewrite `h3` using `[← hbd]`.
+
+Establish `e2u : 2 • u = 2 • (cA D e • u) + (2 • (e • u) + 2 • (b • u))` using `by conv_lhs => rw [hdec u]`. Rewrite using `[smul_add, smul_add]`. Rewrite using `[e2u]`. Establish `h2' : algebraMap D.host.F (AF D.host.F) (1 / 2) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]`.
+
+Evaluate the numerical expressions. Use `heisenbergTranslate_add_three_fixes_of_trivial_phase C.ψ (hfix_a _ (L.nsmul_mem h1 2)) (hfix_e _ ((GlobalTheory.PlaceModel.isHalf_iff S T).2 ((GlobalTheory.PlaceModel.half S T e).nsmul_mem (hemem u) 2)) fun t ht => by rw [two_nsmul, GlobalTheory.PlaceModel.symplO_add_right, AddCh …` and prove the remaining obligations. Simplify using `only [symplOH, two_nsmul, GlobalTheory.PlaceModel.symplO_add_left, GlobalTheory.PlaceModel.symplO_add_right, hez, add_zero, mul_zero, AddChar.map_zero_eq_one]`. Establish `hs : symplOH S T (2 • (cA D e • u)) (2 • (e • u) + 2 • (b • u)) = symplO S T (cA D e • u) (e • u) + symplO S T (cA D e • u) (e • u)`. Simplify using `only [symplOH, two_nsmul, GlobalTheory.PlaceModel.symplO_add_left, GlobalTheory.PlaceModel.symplO_add_right, haz, add_zero]`.
+
+Take the linear combination `(2 * symplO S T (cA D e • u) (e • u)) * h2'`. Rewrite using `[hs, AddChar.map_add_eq_mul, h2 _ h1, one_mul]`. Take `⟨h1, h2, h3⟩` from `hΛ'' u hu`. Rewrite `h1`, `h3` using `[partAt_eq]`. Simplify using `only [partAt_eq] at h2`.
+
+Rewrite `h3` using `[← hbd]`. Establish `hu' : u ∈ GlobalTheory.PlaceModel.half S T e'` using `(GlobalTheory.PlaceModel.isHalf_iff S T).1 hh`. Establish `hin : ∀ c : AE D, c • u ∈ GlobalTheory.PlaceModel.half S T e'` using `fun c => by`. Rewrite using `[GlobalTheory.PlaceModel.mem_half, smul_comm, (GlobalTheory.PlaceModel.mem_half S T).1 hu']`. Establish `hae : symplO S T (cA D e • u) (e • u) = 0` using `symplO_half_eq_zero (by rw [mul_comm]; exact he'.2.1) (hin _) (hin _)`.
+
+Rewrite using `[hdec u]`. Use `heisenbergTranslate_add_three_fixes_of_trivial_phase C.ψ (hfix_a _ h1) (hfix_e _ ((GlobalTheory.PlaceModel.isHalf_iff S T).2 (hemem u)) h2) (hfix_r _ (hbmem u) (hvac.2.lat.2 e' he' _ h3 ((GlobalTheory.PlaceModel.isHalf_iff S T).2 (hin _)))) ?_ ?_` and prove the remaining obligations. Rewrite using `[symplOH, hez, mul_zero, AddChar.map_zero_eq_one]`. Rewrite using `[symplOH, GlobalTheory.PlaceModel.symplO_add_right, hae, haz, add_zero, mul_zero, AddChar.map_zero_eq_one]`.
+-/
 theorem indL_theta_fock_latVac : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (B : C.Bas), C.IsB B → ∀ (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → ∀ (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e P → ∀ f₀ : WO S T → ℂ, IsVacO C.ψ C.θ S T (fun _ => 1) (C.sB B) (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) f₀ → ∀ Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ), IsPlaceModel C.ψ (symplO S T) (heisO C.ψ S T) (cA D e) (latO S T (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) 1 f₀ Tm → ∀ L : AddSubgroup (WO S T), (∀ x ∈ L, IsHalf (cA D e) x) → (∃ m : ℕ, 0 < m ∧ ∀ x ∈ L, m • x ∈ latO S T (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) → (∃ m : ℕ, 0 < m ∧ ∀ x ∈ latO S T (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True, IsHalf (cA D e) x → m • x ∈ L) → IsSBHalf (cA D e) (latO S T (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) (GlobalTheory.LiftLevel.indL L) ∧ C.IsTh (Tm (GlobalTheory.LiftLevel.indL L)) ∧ C.IsFock B (Tm (GlobalTheory.LiftLevel.indL L)) ∧ ∀ Λ'' : AddSubgroup (WO S T), (∀ u ∈ Λ'', GlobalTheory.LiftLevel.partAt (cA D e) u ∈ L ∧ (∀ t ∈ L, C.ψ (symplO S T t (GlobalTheory.LiftLevel.partAt e u)) = 1) ∧ GlobalTheory.LiftLevel.partAt (1 - e - cA D e) u ∈ latO S T (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) → IsLatVac (heisO C.ψ S T) Λ'' (Tm (GlobalTheory.LiftLevel.indL L)) := by
   intro D S T C B hB ΛT hT P e he f₀ hvac Tm hTm L hL hm1 hm2
   have ho := GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he

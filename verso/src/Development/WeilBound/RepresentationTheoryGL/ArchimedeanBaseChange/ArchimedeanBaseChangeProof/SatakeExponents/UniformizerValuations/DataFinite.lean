@@ -30,6 +30,13 @@ def DataFinite : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E],
 def RunAgree : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (π : Submodule ℂ (UA E n → ℂ))
   (S T : Finset (HeightOneSpectrum (𝓞 E))) (D D' : Pre E n), D.Agree D' → RunOut π S T D → RunOut π S T D'
 
+/- English proof (translation)
+Introduce `E _ _ _ hE n hn π hπ S hS`. Take `⟨k, L, hL⟩` from `h2 E hE n hn π hπ S hS`. Set `good : Fin k → Prop` to `fun j => ∃ T D, RunOut π S T D ∧ D.Agree (L j)`. Establish `hg : ∀ j, good j → RunOut π S ∅ (L j)` using `fun j ⟨T, D, hD, hA⟩ =>`. Set `h` to `h3 E n π S T D (L j) hA hD`.
+
+Use the proof step `⟨h.1, h.2.1, fun w hw => absurd hw (Finset.notMem_empty w)⟩`. Set `idx` to `{j : Fin k // good j}`. Take `⟨m, ⟨e⟩⟩` from `Finite.exists_equiv_fin idx`. Use `⟨m, fun i => L (e.symm i).1, fun i => ⟨(hg _ (e.symm i).2).1, (hg _ (e.symm i).2).2.1⟩, fun T => ?_⟩` and prove the remaining obligations. Take `⟨D, hD⟩` from `h1 E hE n hn π hπ S T hS`.
+
+Take `⟨j, hj⟩` from `hL T D hD`. Use `⟨e ⟨j, T, D, hD, hj⟩, ?_⟩` and prove the remaining obligations. Use `show ∀ w ∈ T, IsUnramU π w → ¬IsSplitAt w → InertAt π (L (e.symm (e ⟨j, T, D, hD, hj⟩)).1) w`. Rewrite using `[Equiv.symm_apply_apply]`. Conclude with `(h3 E n π S T D (L j) hj hD).2.2`.
+-/
 theorem runFin_of (h1 : RunOne) (h2 : DataFinite) (h3 : RunAgree) : RunFin := by
   intro E _ _ _ hE n hn π hπ S hS
   obtain ⟨k, L, hL⟩ := h2 E hE n hn π hπ S hS

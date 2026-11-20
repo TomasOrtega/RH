@@ -23,6 +23,21 @@ private def dblMat {K H : Type} [Field K] [TopologicalSpace K] [Group H] [Topolo
     · simp
     · simp
 
+/- English proof (translation)
+Introduce `K H _ _ _ _ _ _ n ρ hρ y hy`. Take `⟨hyc, hyco⟩` from `hy`. Set `D` to `dblMat ρ y hyco`. Establish `hρv : Continuous (fun g => (ρ g : Matrix (Fin n) (Fin n) K))` using `Units.continuous_val.comp hρ`. Establish `hblk : Continuous (fun g => Matrix.fromBlocks (ρ g : Matrix (Fin n) (Fin n) K) (y g * (ρ g : Matrix (Fin n) (Fin n) K)) 0 (ρ g : Matrix (Fin n) (Fin n) K))` using `Continuous.matrix_fromBlocks hρv (hyc.matrix_mul hρv) continuous_const hρv`.
+
+Establish `hDc : Continuous (fun g => D g)`. Establish `e : (fun g => D g) = fun g => (Matrix.fromBlocks (ρ g : Matrix (Fin n) (Fin n) K) (y g * (ρ g : Matrix (Fin n) (Fin n) K)) 0 (ρ g : Matrix (Fin n) (Fin n) K)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `hblk.matrix_submatrix _ _`. Use `⟨D.toHomUnits, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Units.continuous_iff.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hDc`. Establish `e : (fun g => ((D.toHomUnits g)⁻¹ : GL (Fin (n + n)) K).val) = fun g => D g⁻¹`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[← map_inv, MonoidHom.coe_toHomUnits]`. Rewrite using `[e]`. Conclude with `hDc.comp continuous_inv`. Introduce `g show (D g).charpoly = ((ρ g : Matrix (Fin n) (Fin n) K)).charpoly ^ 2`.
+
+Simplify using `only [D, dblMat, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.reindexAlgEquiv_apply, Matrix.charpoly_reindex, Matrix.charpoly_fromBlocks_zero₂₁, pow_two]`. Introduce `g hg`. Establish `h1 : D g = 1`. Rewrite using `[← MonoidHom.coe_toHomUnits D g, hg, Units.val_one]`. Establish `h2 : Matrix.fromBlocks (ρ g : Matrix (Fin n) (Fin n) K) (y g * (ρ g : Matrix (Fin n) (Fin n) K)) 0 (ρ g : Matrix (Fin n) (Fin n) K) = Matrix.fromBlocks 1 0 0 1`.
+
+Rewrite using `[Matrix.fromBlocks_one]`. Apply `(Matrix.reindexAlgEquiv K K finSumFinEquiv).injective` to reduce the goal to its premises. Rewrite using `[map_one]`. Conclude with `h1`. Take `⟨-, hB, -, -⟩` from `Matrix.fromBlocks_inj.mp h2`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `_ = 0 := by rw [hB, Matrix.zero_mul]`.
+-/
 theorem UpperTheory.V.Ws.Eb.dblRep :
     ∀ {K H : Type} [Field K] [TopologicalSpace K] [IsTopologicalRing K] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] {n : ℕ} (ρ : H →* GL (Fin n) K), Continuous ρ → ∀ y ∈ Z1 (Loc.adGL ρ),
         ∃ ρ₂ : H →* GL (Fin (n + n)) K, Continuous ρ₂ ∧ (∀ g, (W.mat ρ₂ g).charpoly = (W.mat ρ g).charpoly ^ 2) ∧ ∀ g, ρ₂ g = 1 → y g = 0 := by

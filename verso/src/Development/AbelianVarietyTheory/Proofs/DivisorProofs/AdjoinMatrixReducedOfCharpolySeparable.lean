@@ -3,6 +3,13 @@ open Matrix Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ n N hsep g hg m hm`. Break down `Nat.eq_zero_or_pos m with rfl | hmpos` into its components or cases. Rewrite `hm` using `[pow_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hg` using `[Algebra.adjoin_singleton_eq_range_aeval]`.
+
+Take `⟨P, rfl⟩` from `hg`. Establish `h1 : minpoly K N ∣ P ^ m` using `minpoly.dvd K N (by rw [map_pow]; exact hm)`. Establish `hs : (minpoly K N).Separable` using `hsep.of_dvd (Matrix.minpoly_dvd_charpoly N)`. Establish `h2 : minpoly K N ∣ P` using `(hs.squarefree.dvd_pow_iff_dvd hmpos.ne').mp h1`. Take `⟨q, hq⟩` from `h2`.
+
+Use `show aeval N P = 0`. Rewrite using `[hq, map_mul, minpoly.aeval, zero_mul]`.
+-/
 theorem adjoin_matrix_reduced_of_charpoly_separable :
     ∀ (K : Type) [Field K] (n : ℕ) (N : Matrix (Fin n) (Fin n) K), N.charpoly.Separable →
       ∀ g ∈ Algebra.adjoin K {N}, ∀ m : ℕ, g ^ m = 0 → g = 0 := by

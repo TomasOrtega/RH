@@ -11,11 +11,17 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite Limits GroundThe
 
 namespace GlobalTheory.CompanionTheory.OmCech
 
+/- English proof (translation)
+The claim follows from `Function.bijective_iff_has_inverse.2 ⟨res P h', fun x => by rw [res_res, res_refl], fun x => by rw [res_res, res_refl]⟩`.
+-/
 theorem res_bijective_of_le {T : TopCat.{0}} (P : (Opens T)ᵒᵖ ⥤ AddCommGrpCat.{0}) {V W : Opens T}
     (h : V ≤ W) (h' : W ≤ V) : Function.Bijective (res P h) :=
   Function.bijective_iff_has_inverse.2
     ⟨res P h', fun x => by rw [res_res, res_refl], fun x => by rw [res_res, res_refl]⟩
 
+/- English proof (translation)
+Establish `hb : ∀ i : Fin (n + 1) → ι, Function.Bijective (fun x => res (modulesAb (GlobalTheory.HodgeCoh.Omega q a)).obj (inter_le_capO U i) (toOm q a (Pb.capO U i) x))` using `fun i => (res_bijective_of_le _ (inter_le_capO U i) (le_of_eq (inter_eq_iInf U i).symm)).comp (GlobalTheory.HodgeCoh.toOm_bijective q a (hUaff n i))`. Use `⟨fun c c' h => funext fun i => (hb i).1 (congrFun h i), fun σ => ?_⟩` and prove the remaining obligations. Use `choose c hc using fun i => (hb i).2 (σ i)`. Conclude with `⟨c, funext hc⟩`.
+-/
 theorem formCoch_bijective {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     {ι : Type} (U : ι → X.Opens)
     (hUaff : ∀ (n : ℕ) (i : Fin (n + 1) → ι), IsAffineOpen (⨅ a, U (i a))) (a n : ℕ) :
@@ -29,6 +35,17 @@ theorem formCoch_bijective {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec
   choose c hc using fun i => (hb i).2 (σ i)
   exact ⟨c, funext hc⟩
 
+/- English proof (translation)
+Introduce `K _ X q ι U hUaff a j`. Establish `hB` using `formCoch_bijective q U hUaff a`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+
+Take `⟨⟨c, hc⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hc' : (Glob.formCos q U a).cx.d j c = 0` using `hc`. Establish `hx' : formToCO q U a j ((Glob.formCos q U a).cx.cls c hc') = 0` using `hx`. Rewrite `hx'` using `[formToCO_cls, GroundTheory.Arith.SchemeCoh.cls_eq_zero_iff]`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `c ∈ (Glob.formCos q U a).cx.B j`. Consider the cases of `j with`. Consider the case `zero`. Rewrite `hx'` using `[coboundaries_zero, AddSubgroup.mem_bot]`. Conclude with `(hB 0).1 (hx'.trans (map_zero _).symm)`.
+
+Consider the case `succ n`. Rewrite `hx'` using `[coboundaries_succ]`. Take `⟨τ, hτ⟩` from `hx'`. Take `⟨b, rfl⟩` from `(hB n).2 τ`. Conclude with `⟨b, (hB (n + 1)).1 ((formCoch_d q U a n b).trans hτ)⟩`.
+
+Introduce `y`. Take `⟨σ, hσ, rfl⟩` from `exists_cls (P := (modulesAb (GlobalTheory.HodgeCoh.Omega q a)).obj) (U := U) (n := j) y`. Take `⟨c, rfl⟩` from `(hB j).2 σ`. Establish `hc : (Glob.formCos q U a).cx.d j c = 0` using `(hB (j + 1)).1 (((formCoch_d q U a j c).trans hσ).trans (map_zero _).symm)`. Conclude with `⟨(Glob.formCos q U a).cx.cls c hc, formToCO_cls q U a c hc⟩`.
+-/
 theorem formToCO_bijective : ∀ {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) {ι : Type}
     (U : ι → X.Opens) (hUaff : ∀ (n : ℕ) (i : Fin (n + 1) → ι), IsAffineOpen (⨅ a, U (i a))) (a j : ℕ),
     Function.Bijective (formToCO q U a j) := by

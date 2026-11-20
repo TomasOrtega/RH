@@ -7,5 +7,8 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArLieBase.evalPt_trCo_self | exact GlobalTheory.ArLieBase.evalPt_trCo_self | (intros; apply GlobalTheory.ArLieBase.evalPt_trCo_self <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.transition_matrix_identity_at_point : ∀ {X : Scheme.{0}} {M : X.Modules} {r : ℕ} {U : X.Opens} {f : Fin r → Γ(M, U)} (hf : VB.IsFrame f) {K : Type} [CommRing K] (x : Sp K ⟶ X) (h : ⊤ ≤ x ⁻¹ᵁ (U ⊓ U)) (c a : Fin r), TangentOrigin.evalPt x _ h (trCo hf f c a) = if c = a then 1 else 0 := by
   first | exact @GlobalTheory.ArLieBase.evalPt_trCo_self | exact GlobalTheory.ArLieBase.evalPt_trCo_self | (intros; apply GlobalTheory.ArLieBase.evalPt_trCo_self <;> assumption)

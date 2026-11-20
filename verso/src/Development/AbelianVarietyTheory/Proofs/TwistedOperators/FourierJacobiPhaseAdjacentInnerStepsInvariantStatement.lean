@@ -9,6 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.TopLevelInv
 open GlobalTheory.FunObj.FiniteSupport
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TopLevelInv.phase_eq_of_two_steps | exact GlobalTheory.TopLevelInv.phase_eq_of_two_steps | (intros; apply GlobalTheory.TopLevelInv.phase_eq_of_two_steps <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fourierJacobiPhase_adjacentInnerSteps_invariant : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {Γ : Grid k} (j : ℕ) (hA : j + 2 < Γ.m) (x x' : ColArgs Γ) (e e' : Vars Γ),
     (∀ i, i ≠ j → i ≠ j + 1 → x' i = x i) → (∀ i : Fin (Γ.m - 1), i.val ≠ j → i.val ≠ j + 1 → e' i = e i) →
     ch (stepPt (x' j) (e' ⟨j, by omega⟩)) + ch (stepPt (x' (j + 1)) (e' ⟨j + 1, by omega⟩)) +

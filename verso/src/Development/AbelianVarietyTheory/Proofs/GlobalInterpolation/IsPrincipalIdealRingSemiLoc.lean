@@ -15,6 +15,9 @@ namespace GlobalTheory.SemiLocalFrame
 variable {F : Type} [Field F] [NumberField F] (E : Type) [Field E] [NumberField E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+The claim follows from `algebraMapSubmonoid_le_nonZeroDivisors_of_faithfulSMul _ v.asIdeal.primeCompl_le_nonZeroDivisors`.
+-/
 theorem algebraMapSubmonoid_le :
     Algebra.algebraMapSubmonoid (𝓞 E) v.asIdeal.primeCompl ≤ (𝓞 E)⁰ :=
   algebraMapSubmonoid_le_nonZeroDivisors_of_faithfulSMul _ v.asIdeal.primeCompl_le_nonZeroDivisors
@@ -37,6 +40,9 @@ instance isPrincipalIdealRing_semiLoc : IsPrincipalIdealRing (semiLoc E v) :=
 
 variable {E}
 
+/- English proof (translation)
+Rewrite using `[mem_span_localization_iff (semiLoc E v) (Algebra.algebraMapSubmonoid (𝓞 E) v.asIdeal.primeCompl)]`. Conclude with `⟨fun ⟨_, ⟨s, hs, rfl⟩, h⟩ => ⟨s, hs, h⟩, fun ⟨s, hs, h⟩ => ⟨_, ⟨s, hs, rfl⟩, h⟩⟩`.
+-/
 theorem mem_span_semiLoc_iff {V : Type*} [AddCommGroup V] [Module E V] [Module (𝓞 E) V]
     [IsScalarTower (𝓞 E) E V] (N : Submodule (𝓞 E) V) (x : V) :
     x ∈ Submodule.span (semiLoc E v) (N : Set V) ↔
@@ -45,6 +51,9 @@ theorem mem_span_semiLoc_iff {V : Type*} [AddCommGroup V] [Module E V] [Module (
     (Algebra.algebraMapSubmonoid (𝓞 E) v.asIdeal.primeCompl)]
   exact ⟨fun ⟨_, ⟨s, hs, rfl⟩, h⟩ => ⟨s, hs, h⟩, fun ⟨s, hs, h⟩ => ⟨_, ⟨s, hs, rfl⟩, h⟩⟩
 
+/- English proof (translation)
+Establish `h` using `mem_span_semiLoc_iff v (1 : Submodule (𝓞 E) E) z`. Rewrite `h` using `[Submodule.one_eq_span, Submodule.span_span_of_tower, Submodule.mem_span_singleton, ← Submodule.one_eq_span]`. Conclude with `h.1 ⟨⟨z, hz⟩, mul_one z⟩`.
+-/
 theorem exists_of_mem_semiLoc {z : E} (hz : z ∈ semiLoc E v) :
     ∃ s ∉ v.asIdeal, algebraMap (𝓞 F) (𝓞 E) s • z ∈ (1 : Submodule (𝓞 E) E) := by
   have h := mem_span_semiLoc_iff v (1 : Submodule (𝓞 E) E) z
@@ -52,6 +61,9 @@ theorem exists_of_mem_semiLoc {z : E} (hz : z ∈ semiLoc E v) :
     ← Submodule.one_eq_span] at h
   exact h.1 ⟨⟨z, hz⟩, mul_one z⟩
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite ι`. Use `choose s hs h using h`. Use `⟨∏ i, s i, (prod_mem (S := v.asIdeal.primeCompl) fun i _ => hs i), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ i), map_mul, mul_smul]`. Conclude with `N.smul_mem _ (h i)`.
+-/
 theorem exists_common {ι : Type*} [Finite ι] {V : Type*} [AddCommGroup V] [Module (𝓞 E) V]
     (N : Submodule (𝓞 E) V) (x : ι → V)
     (h : ∀ i, ∃ s ∉ v.asIdeal, algebraMap (𝓞 F) (𝓞 E) s • x i ∈ N) :
@@ -63,6 +75,11 @@ theorem exists_common {ι : Type*} [Finite ι] {V : Type*} [AddCommGroup V] [Mod
   rw [← Finset.prod_erase_mul _ _ (Finset.mem_univ i), map_mul, mul_smul]
   exact N.smul_mem _ (h i)
 
+/- English proof (translation)
+Use `haveI : Submodule.IsLattice E (Submodule.span (semiLoc E v) (L : Set (Fin k → E))) := by`. Prove the components needed by the constructor for the conclusion. Take `⟨s, rfl⟩` from `h1`. Conclude with `⟨s, (Submodule.span_span_of_tower (𝓞 E) _ _).symm⟩`. Rewrite using `[Submodule.span_span_of_tower, h2]`.
+
+Take `⟨g, hg⟩` from `exists_eq_frameLattice (Submodule.span (semiLoc E v) (L : Set (Fin k → E)))`. Use `⟨g, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← mem_span_semiLoc_iff, hg, mem_frameLattice_iff_inv]`. Conclude with `forall_congr' fun i => Submodule.mem_one.trans ⟨fun ⟨a, ha⟩ => ha ▸ a.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩`.
+-/
 theorem exists_frame {k : ℕ} (L : Submodule (𝓞 E) (Fin k → E)) (h1 : L.FG)
     (h2 : Submodule.span E (L : Set (Fin k → E)) = ⊤) :
     ∃ g : GL (Fin k) E, ∀ x, (∃ s ∉ v.asIdeal, algebraMap (𝓞 F) (𝓞 E) s • x ∈ L) ↔
@@ -78,10 +95,28 @@ theorem exists_frame {k : ℕ} (L : Submodule (𝓞 E) (Fin k → E)) (h1 : L.FG
   exact forall_congr' fun i =>
     Submodule.mem_one.trans ⟨fun ⟨a, ha⟩ => ha ▸ a.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem smul_eq (c : 𝓞 F) (z : E) :
     algebraMap (𝓞 F) (𝓞 E) c • z = algebraMap F E (c : F) * z := by
   rw [Algebra.smul_def]; rfl
 
+/- English proof (translation)
+Establish `hfg : Λ.FG` using `Module.Finite.iff_fg.1 hfin`. Take `⟨g, hg⟩` from `exists_frame v Λ hfg hspan`. Take `⟨S, hS⟩` from `hfg`. Establish `hone : (1 : 𝓞 F) ∉ v.asIdeal` using `(Ideal.ne_top_iff_one _).1 v.isPrime.ne_top`. Take `⟨a, ha, hA⟩` from `exists_common v (ι := S × Fin k) (1 : Submodule (𝓞 E) E) (fun p => (((g⁻¹ : GL (Fin k) E) : Matrix (Fin k) (Fin k) E) *ᵥ (p.1 : Fin k → E)) p.2) (fun p => exists_of_mem_semiLoc v ((hg _).1 ⟨1, hone, by`.
+
+Rewrite using `[map_one, one_smul, ← hS]`. Conclude with `Submodule.subset_span p.1.2⟩ p.2))`. Take `⟨b, hb, hB⟩` from `exists_common v Λ (fun j : Fin k => fun i => (g : Matrix (Fin k) (Fin k) E) i j) (fun j => by`. Use `(hg _).2 fun i => ?_` and prove the remaining obligations. Establish `: (((g⁻¹ : GL (Fin k) E) : Matrix (Fin k) (Fin k) E) *ᵥ (fun k => (g : Matrix _ _ E) k j)) i = (1 : Matrix (Fin k) (Fin k) E) i j`.
+
+Rewrite using `[← Units.inv_mul g]`. Both sides reduce to the same expression. Rewrite using `[this, Matrix.one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _])`.
+
+Use `⟨g, b * a, fun h => (v.isPrime.mem_or_mem h).elim hb ha, fun x hx i => ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `key : algebraMap (𝓞 F) (𝓞 E) a • (((g⁻¹ : GL (Fin k) E) : Matrix (Fin k) (Fin k) E) *ᵥ x) i ∈ (1 : Submodule (𝓞 E) E)`. Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hA (⟨y, hy⟩, i)`.
+
+Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [Matrix.mulVec_add, Pi.add_apply, smul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul r y _ hy`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ _ hy`. Use `Submodule.smul_mem _ (algebraMap (𝓞 F) (𝓞 E) b) key` as an intermediate fact. Rewrite `this` using `[← mul_smul, ← map_mul, smul_eq]`. Conclude with `Submodule.mem_one.1 this`. Use `Λ.smul_mem (algebraMap (𝓞 F) (𝓞 E) a) (hB j)` as an intermediate fact.
+
+Rewrite `this` using `[← mul_smul, ← map_mul, mul_comm a b]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq]`.
+-/
 theorem exists_frame_denominator (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (k : ℕ) (Λ : Submodule (𝓞 E) (Fin k → E)) (hfin : Module.Finite (𝓞 E) Λ)
     (hspan : Submodule.span E (Λ : Set (Fin k → E)) = ⊤) (v : HeightOneSpectrum (𝓞 F)) :

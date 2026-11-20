@@ -14,6 +14,17 @@ namespace WData
 
 variable (w : WData P D hP)
 
+/- English proof (translation)
+Use `w.isIso_off` as an intermediate fact. Take `⟨p, hzp, -⟩` from `exists_chart z hz.1`. Establish `hzc : ∀ h ∈ chartIdeal P p, eval (affCoord p z) h = 0` using `(mem_conePts_iff_chartIdeal hP p z hzp).1 hz`. Take `⟨y, hy, hyc, hyv⟩` from `exists_closed_of_chartIdeal (hP := hP) p (affCoord p z) hzc`. Establish `hyB : y ∈ projBCompl P D hP`.
+
+Introduce `hB`. Establish `h1` using `(mem_projB_iff_val hD p y hy hyc).1 hB`. Rewrite `h1` using `[funext hyv]`. Conclude with `hzD ((mem_conePts_iff_affCoord hD p z hzp).2 h1)`. Take `⟨x, ⟨hxc, -⟩, hxy⟩` from `(bijOn_closedPoints_of_isIso (sW := w.π ≫ toSpecC hP) (sX := toSpecC hP) w.π rfl (projBCompl P D hP)).2.2 ⟨hyc, hyB⟩`.
+
+Substitute `hxy` using the available equality. Establish `hxp : x ∈ w.π ⁻¹ᵁ (chartOpen hP p).1` using `hy`. Rewrite `hxp` using `[← w.iSup_pres p]`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hxp`. Use `⟨⟨p, i⟩, ⟨x, hxc⟩, hi, ?_⟩` and prove the remaining obligations.
+
+Establish `hl : (fun q => eval (w.coord ⟨p, i⟩ ⟨x, hxc⟩) (w.lift ⟨p, i⟩ q)) = affCoord p z`. Use function extensionality and compare the values at `q`. Rewrite using `[w.lift_eval_eq_val ⟨p, i⟩ ⟨x, hxc⟩ hi q]`. Conclude with `hyv q`. Rewrite using `[hl]`.
+
+Conclude with `sameOrbit_symm' (sameOrbit_affCoord p z hzp)`.
+-/
 theorem surj' (hD : IsMultiHomogIdeal D) (z : (Σ k, ι k) → ℂ) (hz : z ∈ conePts P)
     (hzD : z ∉ conePts D) :
     ∃ c, ∃ x ∈ w.src c, SameOrbit (fun q => eval (w.coord c x) (w.lift c q)) z := by
@@ -41,6 +52,15 @@ theorem surj' (hD : IsMultiHomogIdeal D) (z : (Σ k, ι k) → ℂ) (hz : z ∈ 
   rw [hl]
   exact sameOrbit_symm' (sameOrbit_affCoord p z hzp)
 
+/- English proof (translation)
+Use `w.isIso_off` as an intermediate fact. Take `⟨a, ha0, ha⟩` from `ho`. Establish `hxc : w.π.base x.1 ∈ (chartOpen hP c.1).1` using `w.le_pres c.1 c.2 hx`. Establish `hone : ∀ k, eval (w.coord c x) (w.lift c ⟨k, c.1 k⟩) = 1` using `fun k => by simp [lift]`. Establish `hx'c : ∀ k, eval (w.coord c' x') (w.lift c' ⟨k, c.1 k⟩) ≠ 0`.
+
+Introduce `k h0`. Use `congrFun ha ⟨k, c.1 k⟩` as an intermediate fact. Simplify using `only [hone k, h0, mul_zero] at this`. Conclude with `one_ne_zero this`. Establish `hpx' : w.π.base x'.1 ∈ (chartOpen hP c.1).1` using `(w.mem_chartOpen_iff c' x' hx' c.1).2 hx'c`.
+
+Establish `heq : w.π.base x.1 = w.π.base x'.1`. Use `eq_of_val_chartCoord c.1 _ _ hxc hpx' (w.isClosed_image c x hx) (w.isClosed_image c' x' hx') fun q => ?_` and prove the remaining obligations. Rewrite using `[w.val_chartCoord c x hx c.1 hxc q, w.val_chartCoord c' x' hx' c.1 hpx' q, affCoord_eq_of_sameOrbit c.1 ⟨a, ha0, ha⟩]`. Establish `hxU : w.π.base x.1 ∈ projBCompl P D hP` using `fun h => hxD ((w.mem_projB_iff_lift hD c x hx).1 h)`. Establish `hbij` using `bijOn_closedPoints_of_isIso (sW := w.π ≫ toSpecC hP) (sX := toSpecC hP) w.π rfl (projBCompl P D hP)`.
+
+Conclude with `Subtype.ext (hbij.injOn ⟨x.2, hxU⟩ ⟨x'.2, heq ▸ hxU⟩ heq)`.
+-/
 theorem inj' (hD : IsMultiHomogIdeal D) (c c' : w.Idx) (x : w.M) (hx : x ∈ w.src c) (x' : w.M)
     (hx' : x' ∈ w.src c') (hxD : (fun q => eval (w.coord c x) (w.lift c q)) ∉ conePts D)
     (ho : SameOrbit (fun q => eval (w.coord c x) (w.lift c q))

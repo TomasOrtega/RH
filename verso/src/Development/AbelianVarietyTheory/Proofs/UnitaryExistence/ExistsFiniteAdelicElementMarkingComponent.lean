@@ -23,6 +23,13 @@ open GlobalTheory.Member
 
 namespace GlobalTheory.Member
 
+/- English proof (translation)
+Use `choose P hP hg using X.signature`. Apply the tactic sequence `have hs : ∀ a : ℕ, sgn X.p0 a ≠ 0 := fun a => by unfold sgn; split_ifs <;> norm_num`. Use `⟨fun τ => P τ, fun τ => ⟨hP τ, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `e : dmin X.Gm (fun τ => P τ) τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Unfold `dmin lminor`.
+
+Rewrite using `[show gram τ.1 X.Gm (mat (fun τ => P τ) τ) = gram τ.1 X.Gm (P τ) from rfl, hg τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Unfold `psgn`. Use `push_cast`. Conclude with `Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ)) (i : ℕ)`. Rewrite using `[e, Complex.ofReal_re]`.
+
+Establish `h0 : psgn X.p0 i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hs a`. Conclude with `mul_self_pos.2 h0`.
+-/
 theorem onto_dom_nonempty {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) : ∃ x, x ∈ X.dom := by
   choose P hP hg using X.signature
@@ -39,6 +46,33 @@ theorem onto_dom_nonempty {E : Type} [Field E] [NumberField E] [IsCMField E] {r 
   have h0 : psgn X.p0 i ≠ 0 := Finset.prod_ne_zero_iff.2 fun a _ => hs a
   exact mul_self_pos.2 h0
 
+/- English proof (translation)
+Set `f' : ℕ → (L →ₗ[𝓞 E] Λ)` to `fun N => φ.toLinearMap ∘ₗ f N ∘ₗ ι.symm.toLinearMap`. Establish `hf' : ∀ N a, f' N (ι a) = φ (f N a)` using `fun N a => by simp [f']`. Establish `hlin : ∀ (s : 𝓞 E) (x y : Fin n → E), (s : E) * ∑ a, ∑ b, x a * G a b * c (y b) = ∑ a, ∑ b, (s • x) a * G a b * c (y b)`. Introduce `s x y`. Simplify using `only [Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ((s : E) * x a) * _ * _`. Expand and normalize the polynomial expressions, which then agree. Take `⟨g, hg1, hg2, hg3⟩` from `GlobalTheory.AdLat.exists_adelic_matrix_of_tower F E n L Λ f' hL hLs hΛ hΛs (fun N m hN hm a => by`. Take `⟨a, rfl⟩` from `ι.surjective a`.
+
+Take `⟨e, he⟩` from `h1 N m hN hm a`. Conclude with `⟨φ e, by rw [hf', hf', he, map_add, map_nsmul]⟩)`. Use the proof step `(fun N hN => ⟨fun a => by`. Take `⟨a, rfl⟩` from `ι.surjective a`. Rewrite using `[hf']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Take `⟨e, he⟩` from `((h2 N hN).1 a).1 ⟨φ.symm v, by rw [← map_nsmul, ← hv, LinearEquiv.symm_apply_apply]⟩`. Conclude with `⟨ι e, by rw [he, map_nsmul]⟩`. Introduce and unpack `⟨v, hv⟩`.
+
+Take `⟨e, he⟩` from `((h2 N hN).1 a).2 ⟨ι.symm v, by rw [← map_nsmul, ← hv, LinearEquiv.symm_apply_apply]⟩`. Conclude with `⟨φ e, by rw [he, map_nsmul]⟩, fun a' => by`. Take `⟨a', rfl⟩` from `φ.surjective a'`. Take `⟨a, e, he⟩` from `(h2 N hN).2 a'`. Conclude with `⟨ι a, φ e, by rw [hf', he, map_add, map_nsmul]⟩⟩)`.
+
+Use `⟨g, hg1, fun N hN a => by rw [← hf']; exact hg2 N hN (ι a), hg3 c G J ?_ ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`. Take `⟨x', hx'⟩` from `φ.surjective ⟨x, hx⟩`. Take `⟨y', hy'⟩` from `φ.surjective ⟨y, hy⟩`. Rewrite using `[hJ]`.
+
+Introduce `s`. Use `⟨-EB (s • x') y', ?_⟩` and prove the remaining obligations. Rewrite using `[hlin, Int.cast_neg, ← hB, map_smul, hx', hy']`. Both sides reduce to the same expression. Introduce `N hN x y`.
+
+Take `⟨x, rfl⟩` from `ι.surjective x`. Take `⟨y, rfl⟩` from `ι.surjective y`. Establish `hN0 : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hNq : (N : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Rewrite using `[hf', hf']`.
+
+Use `⟨(N : E)⁻¹ * ((∑ a, ∑ b, (φ (f N x) : Fin n → E) a * G a b * c ((φ (f N y) : Fin n → E) b)) - ∑ a, ∑ b, (ι x : Fin n → E) a * G a b * c ((ι y : Fin n → E) b)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ]`. Introduce `s`. Take `⟨m, hm⟩` from `h3 N hN (s • x) y`. Use `⟨-m, ?_⟩` and prove the remaining obligations.
+
+Establish `e1` using `hA (s • x) y`. Establish `e2` using `hB (f N (s • x)) (f N y)`. Rewrite `e1` using `[map_smul, Submodule.coe_smul, ← hlin]`. Rewrite using `[show (φ (f N (s • x)) : Fin n → E) = s • (φ (f N x) : Fin n → E) by`. Rewrite `e2` using `[map_smul, map_smul, Submodule.coe_smul], ← hlin]`.
+
+Establish `hm' : (EB (f N (s • x)) (f N y) : ℚ) - EA (s • x) y = N * m` using `by exact_mod_cast hm`. Generalize the expression as in `(∑ a, ∑ b, (φ (f N x) : Fin n → E) a * G a b * c ((φ (f N y) : Fin n → E) b)) = u at e2 ⊢`. Generalize the expression as in `(∑ a, ∑ b, (ι x : Fin n → E) a * G a b * c ((ι y : Fin n → E) b)) = v at e1 ⊢`. Establish `e3 : ξ * ((s : E) * ((N : E)⁻¹ * (u - v))) = (N : ℚ)⁻¹ • (ξ * (s * u) - ξ * (s * v))`. Rewrite using `[Algebra.smul_def, map_inv₀, map_natCast]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3, map_smul, map_sub, e1, e2, smul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hm'`.
+
+Rewrite using `[nsmul_eq_mul, mul_inv_cancel_left₀ hN0, add_sub_cancel]`.
+-/
 theorem onto_adelic_of_tower (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (L Λ : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) (hLs : Submodule.span E (L : Set (Fin n → E)) = ⊤)
     (hΛ : Λ.FG) (hΛs : Submodule.span E (Λ : Set (Fin n → E)) = ⊤)
@@ -125,12 +159,38 @@ theorem onto_adelic_of_tower (F E : Type) [Field F] [NumberField F] [Field E] [N
       linear_combination -hm'
     · rw [nsmul_eq_mul, mul_inv_cancel_left₀ hN0, add_sub_cancel]
 
+/- English proof (translation)
+Rewrite using `[hz, h, GlobalTheory.AdLat.cap_fv_add, GlobalTheory.AdLat.cap_fv_nsmul, smul_neg, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem onto_marking_sub (F : Type) {E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n N : ℕ}
     {u v e : Fin n → E} {z w : Fin n → GlobalTheory.AdLat.RA F E} (h : u = v + N • e)
     (hz : z = GlobalTheory.AdLat.fv F u + N • w) : GlobalTheory.AdLat.fv F v - z = N • -(GlobalTheory.AdLat.fv F e + w) := by
   rw [hz, h, GlobalTheory.AdLat.cap_fv_add, GlobalTheory.AdLat.cap_fv_nsmul, smul_neg, smul_add]
   abel
 
+/- English proof (translation)
+Introduce `D H Dw l Xo c σ V r C hC k`. Take `rfl : V.rank = r` from `C.hr`. Establish `hneg` using `(GlobalTheory.T.exists_memberDictionaryContext_goodEmbedding D H Dw l Xo c σ V _ rfl C.ι hC.iota hC.pos hC.lA hC.good).2.1 C hC`. Take `⟨Pf, -, -, hPf, -⟩` from `GlobalTheory.exists_framePeriods D.host.E H Dw l Xo c σ C.g C.e C.F _ C.M hC.good hC.base hneg k`. Take `⟨x, hx⟩` from `onto_dom_nonempty (C.M.X k)`.
+
+Take `⟨f, h1, h2, h3, h4⟩` from `GlobalTheory.familyUnif_lattice_genus D.host.E H Dw l Xo _ C.g _ C.F k (Pf x) (hPf x hx)`. Take `⟨-, hfv, -, -, -, hcc, -, -, -, hT, -⟩` from `GlobalTheory.T.completedLattice_eq_adelicCompletion_and_gram D V`. Take `⟨hL, hLs, -⟩` from `GlobalTheory.T.adelicElementLattice_full_and_completion D V 1`. Set `ι : Dw.La ≃ₗ[𝓞 D.host.E] latG V 1` to `(LinearEquiv.ofInjective C.ι hC.iota.emb.1).trans (LinearEquiv.ofEq _ _ hC.iota.emb.2)`. Establish `hι : ∀ a, (ι a : Fin V.rank → D.host.E) = C.ι a` using `fun a => rfl`.
+
+Establish `hherm : ∀ x y : Fin V.rank → D.host.E, (∑ a, ∑ b, x a * V.gramᵀ a b * cF D (y b)) = -herm (-V.gramᵀ) x y`. Introduce `x y`. Simplify using `only [herm, hcc, Matrix.neg_apply, mul_neg, neg_mul, Finset.sum_neg_distrib, neg_neg]`. Establish `hGm : (C.M.X k).Gm = -V.gramᵀ` using `(hC.modelW k).1`. Establish `hxi : (C.M.X k).ξ0 = -D.host.xi0` using `(hC.modelW k).2`.
+
+Take `⟨g, hg1, hg2, hg3⟩` from `onto_adelic_of_tower D.host.F D.host.E V.rank (latG V 1) (C.M.X k).Λ hL hLs (C.M.X k).Λ_fg (C.M.X k).Λ_span ι (C.M.φ k) (fun a b => Dw.EF a b) (fun a b => (C.F.Di k).EF a b) f (cF D) V.gramᵀ D.host.xi0 _ (GlobalTheory.T.adelicUnitaryLattice_selfDual_traceForm D V 1 _ rfl).1 (fun …`. Establish `halt : Dw.EF y x = -Dw.EF x y`. Use `Dw.alt (x + y)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, Dw.alt] at this`. Take the linear combination `this`.
+
+Rewrite using `[hherm, hι, hι, ← hT, ← hC.iota.isom, halt, Int.cast_neg])`. Use the proof step `(fun x y => by`. Rewrite using `[hherm, hC.base.ef k x y, hGm, hxi, neg_neg, mul_neg, map_neg])`. Use `h1 h2 h3`. Take `⟨h, hh, rfl⟩` from `(GlobalTheory.T.adelicUnitary_eq_real_mul_finite_split D V).2.2.2.1 g hg3`.
+
+Take `⟨-, -, hlat, hhat, -⟩` from `GlobalTheory.T.adelicElementLattice_full_and_completion D V h`. Establish `hcap` using `(GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank (C.M.X k).Λ (C.M.X k).Λ_fg (C.M.X k).Λ_span).1`. Rewrite `hhat` using `[hg1]`. Use `⟨h, hh, one_mem _, ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, hlat]`.
+
+Use extensionality with `v`. Rewrite using `[SetLike.mem_coe, ← hcap, ← SetLike.mem_coe, ← hg1]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Conclude with `⟨v, hv, rfl⟩`.
+
+Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `hv`. Rewrite using `[one_mul]`. Take `⟨e, he⟩` from `h4 a ha`. Take `⟨w, hw, hw'⟩` from `hg2 l.M (lt_of_lt_of_le (by norm_num) l.three_le) a`.
+
+Use `⟨-(GlobalTheory.AdLat.fv D.host.F (C.M.φ k e : Fin V.rank → D.host.E) + w), ?_, ?_⟩` and prove the remaining obligations. Establish `h0` using `(hcap _).2 (C.M.φ k e).2`. Establish `h5` using `AddSubgroup.neg_mem _ (AddSubgroup.add_mem _ h0 hw)`. Rewrite `h5` using `[← SetLike.mem_coe, ← hhat]`. Conclude with `h5`.
+
+Rewrite using `[hfv, hfv, ← hι]`. Express the relevant statement in the definitionally equal form `GlobalTheory.AdLat.fv D.host.F (C.M.φ k (C.F.t k a) : Fin V.rank → D.host.E) - _ = _`. Establish `he' : (C.M.φ k (f l.M a) : Fin V.rank → D.host.E) = (C.M.φ k (C.F.t k a) : Fin V.rank → D.host.E) + l.M • (C.M.φ k e : Fin V.rank → D.host.E)`. Rewrite using `[he, (C.M.φ k).map_add, map_nsmul (C.M.φ k)]`. Both sides reduce to the same expression.
+
+Conclude with `onto_marking_sub D.host.F he' hw'`.
+-/
 theorem exists_finite_mark : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ k, ∃ h ∈ GfC V, C.Mark h k 1 := by
   intro D H Dw l Xo c σ V r C hC k
   obtain rfl : V.rank = r := C.hr

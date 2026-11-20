@@ -17,6 +17,25 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.GenTors
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ t P _ hR F _ _ _ k hk`. Use `letI := H.starRing`. Take `⟨f₀, h1, h2, -, h4, -, h6⟩` from `GlobalTheory.FlatTors.torsionIso_holds E H R (maximalIdeal R) hR t P F k hk`. Take `⟨g₁, g₂, -⟩` from `GlobalTheory.Ex.GenericFibre.unif_generic P`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv g₁ (TFK (R := R) F) (jFK (R := R) F ≫ jK R) rfl`.
+
+Establish `hpow : ∀ q, f₀ q ^ k = 1` using `fun q => by`. Take `⟨w, hw⟩` from `P.U.toUnifPre.ext`. Conclude with `((h1 q (f₀ q)).2 rfl w hw).1`. Establish `hpow' : ∀ q, e (f₀ q) ^ k = 1` using `fun q => by rw [← map_pow, hpow, map_one]`. Use `⟨fun q => e (f₀ q), ?_, hpow', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `q v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, hq⟩`. Rewrite `ha` using `[(h1 q a).1 hq]`. Rewrite using `[← ha, he]`.
+
+Introduce `hv`. Conclude with `⟨f₀ q, by rw [hv, he], (h1 q (f₀ q)).2 rfl⟩`. Introduce `x hx`. Take `⟨q, hq⟩` from `h2 (e.symm x) (by rw [← map_pow, hx, map_one])`. Conclude with `⟨q, by simp only [hq, MulEquiv.apply_symm_apply]⟩`.
+
+Introduce `p p' p'' h`. Simplify using `only [h4 p p' p'' h, map_mul]`. Introduce `p p' τ hy hτ`. Establish `hw : WeilIs P.A.A P.A.L k (f₀ p) (f₀ p') (unitOn (τ (Multiplicative.ofAdd p'.y)))` using `(h6 p p' _).1 (GlobalTheory.ZH.TorusPerp.weilQkIs_tor GlobalTheory.firstFiveLaws.1.globalFns p p' hy hτ)`. Establish `hpr : IsProper (pullback.snd t.G.hom (jK R))`.
+
+Use `P.A.isAb.proper` as an intermediate fact. Use `isIso_inv_left P.U.gen.symm` as an intermediate fact. Establish `h : IsProper ((Over.pullback (jK R)).obj t.G).hom`. Rewrite using `[← Over.w P.U.gen.symm.inv]`. Use `infer_instance`.
+
+Conclude with `h`. Establish `one : ∀ c : Fˣ, GlobalTheory.UU.CubWeil t.cub k (e (f₀ p)) (e (f₀ p')) (unitOn c) → WeilIs P.A.A P.A.L (k : ℤ) (f₀ p) (f₀ p') (unitOn c)` using `fun c h => (GlobalTheory.weilIs_iff_of_isGrpPullback_comm _ _ t.G P.A.A (jK R) _ t.PP.L P.A.L t.PP.isLB P.A.isLB g₁ g₂ (TFK (R := R) F) k (f₀ p) (f₀ p') (e (f₀ p)) (e (f₀ p')) (unitOn c) (he _) (he _)).2 (GlobalTheory.FlatTors.weilIs_of_cubWeil_of_proper (jK R) t.G t.semi hpr t.c …`. Take `⟨ζ, hζ, -⟩` from `(GlobalTheory.UU.cubWeil_basic _ t.G t.PP t.cub k _).1 (e (f₀ p)) (e (f₀ p')) (hpow' p) (hpow' p')`. Take `⟨c, rfl⟩ : ∃ c : Fˣ, unitOn c = ζ` from `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom.toMonoidHom ζ, Units.ext ((Scheme.ΓSpecIso (CommRingCat.of F)).hom_inv_id_apply _)⟩`. Establish `ec : c = τ (Multiplicative.ofAdd p'.y)` using `GlobalTheory.weilIs_unique_fieldPoint _ P.A.A P.A.L P.A.isLB F _ k (f₀ p) (f₀ p') c _ (one c hζ) hw`.
+
+Conclude with `ec ▸ hζ`. Introduce `σ p p' hpp'`. Take `⟨-, hx, hiff⟩` from `GlobalTheory.UT.Cl.galois_holds R (maximalIdeal R) hR P.D P.A t.G t.semi P.U F F σ k hk p`. Take `⟨x', hx'⟩` from `hx (f₀ p)`. Establish `e' : x' = f₀ p'` using `(h1 p' x').1 ((hiff p' (f₀ p) x' hpp' hx').1 ((h1 p (f₀ p)).2 rfl))`.
+
+Substitute `e'` using the available equality. Rewrite using `[he, he, hx', Category.assoc]`.
+-/
 theorem exists_torsMap_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) [CharZero R], AdmBase R (maximalIdeal R) →
     ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (k : ℕ), 1 ≤ k →
     ∃ f : QkPt P.D.toPre F k → (TF (R := R) F ⟶ t.G),

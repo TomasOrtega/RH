@@ -9,6 +9,19 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 namespace GlobalTheory.CompanionTheory.IwaDbl
 
+/- English proof (translation)
+Establish `hlift : ∀ {m n : Type} (f : I → Matrix m n K), ∃ X : Matrix m n B, ∀ i, X.map (π i) = f i`. Introduce `m n f`. Use `choose g hg using fun p : m × n => hsurj fun i => f i p.1 p.2`. Conclude with `⟨Matrix.of fun a b => g (a, b), fun i => Matrix.ext fun a b => by simp [hg]⟩`. Establish `hext : ∀ {m n : Type} (X Y : Matrix m n B), (∀ i, X.map (π i) = Y.map (π i)) → X = Y`.
+
+Introduce `m n X Y h`. Conclude with `Matrix.ext fun a b => hinj _ _ fun i => by simpa using congrFun (congrFun (h i) a) b`. Establish `hmem : ∀ {m n : Type} (X : Matrix m n B) (Y : I → Matrix m n O), (∀ i, X.map (π i) = (Y i).map (algebraMap O K)) → ∀ a b, X a b ∈ A`. Introduce `m n X Y h a b`. Use `(hA _).2 fun i => RingHom.mem_range.2 ⟨Y i a b, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using (congrFun (congrFun (h i) a) b).symm`. Introduce `C N hNC`. Establish `hleft : ∀ i, ∃ L : Matrix β (β ⊕ β) K, L * C.map (π i) = 1` using `fun i => ⟨N.map (π i), by rw [← Matrix.map_mul, hNC]; simp⟩`. Use `choose t C₀ D htC hdet using fun i => GlobalTheory.CompanionTheory.MatSat.exists_saturation (O := O) (C.map (π i)) (hleft i)`. Take `⟨T, hT⟩` from `hlift fun i => Units.val (t i)`.
+
+Take `⟨T', hT'⟩` from `hlift fun i => Units.val (t i)⁻¹`. Take `⟨Dl, hDl⟩` from `hlift fun i => (D i).map (algebraMap O K)`. Take `⟨Ml, hMl⟩` from `hlift fun i => ((Matrix.fromCols (C₀ i) (D i))⁻¹).map (algebraMap O K)`. Establish `hCT : ∀ i, (C * T).map (π i) = (C₀ i).map (algebraMap O K)` using `fun i => by`. Rewrite using `[Matrix.map_mul, hT]`.
+
+Conclude with `htC i`. Use `⟨T, T', Dl, Ml, ?_, hmem _ C₀ hCT, hmem _ D hDl, hmem _ (fun i => (Matrix.fromCols (C₀ i) (D i))⁻¹) hMl, ?_⟩` and prove the remaining obligations. Use `hext _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, hT, hT', Units.mul_inv]`. Simplify using the standard rewrite rules.
+
+Use `hext _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, Matrix.fromCols_map, hMl, hCT, hDl, ← Matrix.fromCols_map, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ (hdet i)]`. Simplify using the standard rewrite rules.
+-/
 theorem hasSat_of_family {B K O I : Type} [CommRing B] [Field K] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra O K] [IsFractionRing O K] (π : I → B →+* K) (hinj : ∀ y z : B, (∀ i, π i y = π i z) → y = z)
     (hsurj : ∀ f : I → K, ∃ y : B, ∀ i, π i y = f i) (A : Subring B)

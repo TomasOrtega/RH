@@ -9,6 +9,11 @@ namespace GlobalTheory.TraceChar
 
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
+/- English proof (translation)
+Use `set w := algebraMap F E (1 / 2) * z with hw`. Establish `hcw : L.cj w = -w`. Rewrite using `[hw, map_mul, AlgEquiv.commutes, hz, mul_neg]`. Establish `hzw : z = w + w`. Rewrite using `[hw, ← add_mul, ← map_add]`.
+
+Evaluate the numerical expressions. Establish `h1 : L.psi0 w = L.psi0 (-w)` using `by rw [← hcw, _root_.Formalism.MainNotions.S.Loc.LocE.local_additive_char_conj]`. Rewrite using `[hzw, AddChar.map_add_eq_mul]`. Use `nth_rewrite 2 [h1]`. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`.
+-/
 private theorem psi0_eq_one_of_conj_eq_neg {F : Type} [Field F] [ValuativeRel F]
     [TopologicalSpace F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
     (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {z : E} (hz : L.cj z = -z) : L.psi0 z = 1 := by
@@ -26,6 +31,9 @@ private theorem psi0_eq_one_of_conj_eq_neg {F : Type} [Field F] [ValuativeRel F]
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, LinearMap.mulLeft_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton]`. Rewrite using `[pow_add, mul_comm (ϖ ^ n), mul_dvd_mul_iff_left (pow_ne_zero _ hϖ.ne_zero)]`.
+-/
 private theorem ker_mkQ_comp_mulLeft_pow_eq_span' {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (n k : ℕ) :
     ((Submodule.mkQ (Ideal.span {ϖ ^ (n + k)})).comp (LinearMap.mulLeft 𝒪[F] (ϖ ^ k))).ker =
       Ideal.span {ϖ ^ n} := by
@@ -37,6 +45,17 @@ private theorem ker_mkQ_comp_mulLeft_pow_eq_span' {ϖ : 𝒪[F]} (hϖ : Irreduci
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Rewrite using `[add_comm n 1]`. Use `set f := (Submodule.mkQ (Ideal.span {ϖ ^ (1 + n)})).comp (LinearMap.mulLeft 𝒪[F] (ϖ ^ n))`. Establish `hS : Nat.card (LinearMap.range f) = _root_.GlobalTheory.HL.resQ ϖ`. Unfold `_root_.GlobalTheory.HL.resQ`. Establish `hk` using `ker_mkQ_comp_mulLeft_pow_eq_span' hϖ 1 n`.
+
+Rewrite `hk` using `[pow_one]`. Rewrite using `[← hk]`. Conclude with `(Nat.card_congr (f.quotKerEquivRange).toEquiv).symm`. Use `set g := (Submodule.mkQ (LinearMap.range f)).comp (Submodule.mkQ (Ideal.span {ϖ ^ (1 + n)}))`. Establish `hg : Function.Surjective g` using `(Submodule.mkQ_surjective _).comp (Submodule.mkQ_surjective _)`.
+
+Establish `hker : g.ker = Ideal.span {ϖ ^ n}`. Use extensionality with `y`. Simplify using `only [g, f, LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, LinearMap.mem_range, LinearMap.mulLeft_apply, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`.
+
+Rewrite `hz` using `[Submodule.Quotient.eq, Ideal.mem_span_singleton]`. Establish `h2 : ϖ ^ n ∣ ϖ ^ (1 + n)` using `pow_dvd_pow _ (by omega)`. Establish `h4 : ϖ ^ n ∣ ϖ ^ n * z` using `dvd_mul_right _ _`. Simplify using `using (dvd_sub h4 (h2.trans hz))`. Introduce and unpack `⟨z, rfl⟩`.
+
+Conclude with `⟨z, rfl⟩`. Establish `e` using `(g.quotKerEquivOfSurjective hg).toEquiv`. Rewrite `e` using `[hker]`. Rewrite using `[Submodule.card_eq_card_quotient_mul_card (LinearMap.range f), hS, Nat.card_congr e]`.
+-/
 private theorem card_quotient_span_pow_succ_eq_resQ_mul {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (n : ℕ) :
     Nat.card (𝒪[F] ⧸ Ideal.span {ϖ ^ (n + 1)}) =
       _root_.GlobalTheory.HL.resQ ϖ * Nat.card (𝒪[F] ⧸ Ideal.span {ϖ ^ n}) := by
@@ -71,6 +90,9 @@ private theorem card_quotient_span_pow_succ_eq_resQ_mul {ϖ : 𝒪[F]} (hϖ : Ir
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Simplify using `only [pow_zero, Ideal.span_singleton_one]`. Conclude with `Nat.card_unique`. Consider the case `succ n ih => rw [card_quotient_span_pow_succ_eq_resQ_mul hϖ, ih, pow_succ, mul_comm]`.
+-/
 private theorem card_quotient_span_pow_eq_resQ_pow {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (n : ℕ) :
     Nat.card (𝒪[F] ⧸ Ideal.span {ϖ ^ n}) = _root_.GlobalTheory.HL.resQ ϖ ^ n := by
   induction n with
@@ -82,6 +104,9 @@ private theorem card_quotient_span_pow_eq_resQ_pow {ϖ : 𝒪[F]} (hϖ : Irreduc
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HL.resQ`. Establish `h` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Rewrite using `[← h]`. Conclude with `Nat.card_pos (α := 𝓀[F])`.
+-/
 private theorem resQ_pos' {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) :
     0 < _root_.GlobalTheory.HL.resQ ϖ := by
   unfold _root_.GlobalTheory.HL.resQ
@@ -92,6 +117,9 @@ private theorem resQ_pos' {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) :
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+The claim follows from `Nat.finite_of_card_ne_zero (by rw [card_quotient_span_pow_eq_resQ_pow hϖ]; exact pow_ne_zero _ (resQ_pos' hϖ).ne')`.
+-/
 private theorem finite_quotient_span_pow_flag_measures {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (n : ℕ) :
     Finite (𝒪[F] ⧸ Ideal.span {ϖ ^ n}) :=
   Nat.finite_of_card_ne_zero (by rw [card_quotient_span_pow_eq_resQ_pow hϖ]; exact pow_ne_zero _ (resQ_pos' hϖ).ne')
@@ -99,6 +127,23 @@ private theorem finite_quotient_span_pow_flag_measures {ϖ : 𝒪[F]} (hϖ : Irr
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ 𝒪[F]`. Conclude with `⟨1, one_pos, by simpa using hx⟩`. Establish `hx0 : x ≠ 0` using `by rintro rfl; exact hx (zero_mem _)`. Establish `hinv : x⁻¹ ∈ 𝒪[F]`. Rewrite `hx`, the goal using `[Valuation.mem_integer_iff]`.
+
+Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ (le_of_lt (not_le.1 hx))`. Use `set b : 𝒪[F] := ⟨x⁻¹, hinv⟩ with hbdef`. Establish `hb0 : b ≠ 0`. Introduce `h`.
+
+Establish `: (b : F) = 0` using `by rw [h]; rfl`. Conclude with `inv_ne_zero hx0 this`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Take `⟨n, u, hb⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hϖ`. Use `⟨Nat.card (𝒪[F] ⧸ Ideal.span {ϖ ^ n}), ?_, ?_⟩` and prove the remaining obligations.
+
+Use `haveI := finite_quotient_span_pow_flag_measures hϖ n`. Conclude with `Nat.card_pos`. Establish `hmem : ((Nat.card (𝒪[F] ⧸ Ideal.span {ϖ ^ n}) : ℕ) : 𝒪[F]) ∈ Ideal.span {ϖ ^ n}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ← nsmul_one]`. Conclude with `card_nsmul_eq_zero'`.
+
+Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 hmem`. Establish `hxb : x * (b : F) = 1` using `mul_inv_cancel₀ hx0`. Rewrite `hxb` using `[hb]`. Establish `hu : ((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) * (u : 𝒪[F]) = 1` using `Units.inv_mul u`. Establish `hu' : (((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F) * ((u : 𝒪[F]) : F) = 1`.
+
+Rewrite using `[← Subring.coe_mul, hu]`. Both sides reduce to the same expression. Establish `hN : ((Nat.card (𝒪[F] ⧸ Ideal.span {ϖ ^ n}) : ℕ) : F) = ((w : 𝒪[F]) : F) * ((ϖ : 𝒪[F]) : F) ^ n`. Rewrite using `[← map_natCast (𝒪[F]).subtype, ← hw]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `: (Nat.card (𝒪[F] ⧸ Ideal.span {ϖ ^ n}) : F) * x = ((w * ((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : 𝒪[F]) : F)`. Rewrite using `[hN]`. Move the coercions through the operations in `at hxb ⊢`. Take the linear combination `((w : F) * (((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F)) * hxb - ((w : F) * ((ϖ : 𝒪[F]) : F) ^ n * x) * hu'`.
+
+Rewrite using `[this]`. Conclude with `(w * ((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F])).2`.
+-/
 private theorem exists_nat_mul_mem_integer (x : F) : ∃ N : ℕ, 0 < N ∧ (N : F) * x ∈ 𝒪[F] := by
   by_cases hx : x ∈ 𝒪[F]
   · exact ⟨1, one_pos, by simpa using hx⟩
@@ -138,6 +183,25 @@ private theorem exists_nat_mul_mem_integer (x : F) : ∃ N : ℕ, 0 < N ∧ (N :
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L`. Set `ψ : AddChar F ℂ` to `L.psi0.compAddMonoidHom ((algebraMap F E).toAddMonoidHom.comp (AddMonoidHom.mulLeft (1 / 2 : F)))`. Establish `hψ : ∀ c, ψ c = L.psi0 (algebraMap F E (1 / 2 * c))` using `fun c => rfl`. Establish `hcomp : ∀ (y : E) (c : F), y + L.cj y = algebraMap F E c → L.psi0 y = ψ c`. Introduce `y c h`.
+
+Establish `hz : L.cj (y - algebraMap F E (1 / 2 * c)) = -(y - algebraMap F E (1 / 2 * c))`. Rewrite using `[map_sub, AlgEquiv.commutes]`. Establish `: L.cj y = algebraMap F E c - y` using `by rw [← h]; ring`. Rewrite using `[this]`. Establish `: algebraMap F E c = algebraMap F E (1 / 2 * c) + algebraMap F E (1 / 2 * c)`.
+
+Rewrite using `[← map_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `psi0_eq_one_of_conj_eq_neg L hz` as an intermediate fact. Rewrite using `[hψ, ← one_mul (L.psi0 (algebraMap F E _)), ← this, ← AddChar.map_add_eq_mul, sub_add_cancel]`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Establish `hint : ∀ c : 𝒪[F], ψ c = 1`. Introduce `c`.
+
+Take `⟨e, he, htr⟩` from `(_root_.GlobalTheory.UnramOrder.order_facts L ϖ hϖ).1 c`. Rewrite using `[← hcomp e c htr, ← one_mul e]`. Conclude with `(_root_.Formalism.MainNotions.S.Loc.LocE.additive_character_dual_ring L 1).2 (one_mem _) e he`. Use `⟨ψ, ?_, ?_, hcomp⟩` and prove the remaining obligations. Introduce `x`.
+
+Take `⟨N, hN, hNx⟩` from `exists_nat_mul_mem_integer x`. Establish `h1 : ψ x ^ N = 1`. Rewrite using `[← AddChar.map_nsmul_eq_pow, nsmul_eq_mul]`. Conclude with `hint ⟨_, hNx⟩`. Establish `h2 : ‖ψ x‖ ^ N = 1` using `by rw [← norm_pow, h1, norm_one]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hN.ne').1 h2`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite using `[← _root_.GlobalTheory.UnramOrder.algebraMap_mem_iff L]`.
+
+Use `(_root_.Formalism.MainNotions.S.Loc.LocE.additive_character_dual_ring L _).1 fun e he => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `_root_.GlobalTheory.UnramOrder.exists_trace L he`. Establish `htr : algebraMap F E x * e + L.cj (algebraMap F E x * e) = algebraMap F E (x * c)`. Rewrite using `[map_mul, AlgEquiv.commutes, ← mul_add, hc, map_mul]`. Rewrite using `[hcomp _ _ htr]`.
+
+Conclude with `hx c`. Introduce `hx y`. Conclude with `hint ⟨x * y, mul_mem hx y.2⟩`.
+-/
 theorem _root_.GlobalTheory.TraceChar.exists_trace_char : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E), ∃ ψ : AddChar F ℂ, (∀ x : F, ‖ψ x‖ = 1) ∧ (∀ x : F, (∀ y : 𝒪[F], ψ (x * y) = 1) ↔ x ∈ 𝒪[F]) ∧ ∀ (y : E) (c : F), y + L.cj y = algebraMap F E c → L.psi0 y = ψ c := by
   intro F _ _ _ _ _ E _ _ _ L
   let ψ : AddChar F ℂ := L.psi0.compAddMonoidHom

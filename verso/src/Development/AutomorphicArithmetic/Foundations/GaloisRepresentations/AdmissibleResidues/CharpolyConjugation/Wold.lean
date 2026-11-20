@@ -19,6 +19,15 @@ section
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Rewrite `ht` using `[WD.lpTw_mk, WD.tempered_mk]`. Rewrite `h0` using `[WD.monodromyZero_ofWeilDeligneRepClass_iff]`. Rewrite `hα` using `[WD.lpTw_mk, WD.eig_mk]`.
+
+Establish `top` using `ht.norm_eq_one (by simpa using h0) hg`. Establish `hroot` using `(mem_roots (LinearMap.charpoly_monic _).ne_zero).mp hα`. Establish `hev : Module.End.HasEigenvalue ((a.tw t).ρ g) α` using `(Module.End.hasEigenvalue_iff_isRoot_charpoly _ _).mpr hroot`. Assume the negation of the conclusion as `hne`. Take `⟨v, hv⟩` from `hev.exists_hasEigenvector`.
+
+Establish `hind` using `Module.End.eigenspaces_iSupIndep ((a.tw t).ρ g)`. Establish `hle : absSpace ((a.tw t).ρ g) 1 ≤ ⨆ (μ : ℂ) (_ : μ ≠ α), Module.End.eigenspace ((a.tw t).ρ g) μ`. Use `iSup_le fun μ => iSup_le fun hμ => ?_` and prove the remaining obligations. Conclude with `le_iSup₂_of_le μ (fun e => hne (e ▸ hμ)) le_rfl`. Rewrite `hle` using `[top]`.
+
+Establish `hd` using `(hind α).le_bot ⟨hv.1, hle Submodule.mem_top⟩`. Conclude with `hv.2 (by simpa using hd)`.
+-/
 private theorem norm_one {x : WD h} {t : ℝ} (ht : (x.lpTw t).tempered) (h0 : x.mono0) {g : ↥(Weil h)}
     (hg : deg g = 1) {α : ℂ} (hα : α ∈ (x.lpTw t).eig g) : ‖α‖ = 1 := by
   induction x using WD.ind with
@@ -40,6 +49,15 @@ private theorem norm_one {x : WD h} {t : ℝ} (ht : (x.lpTw t).tempered) (h0 : x
     have hd := (hind α).le_bot ⟨hv.1, hle Submodule.mem_top⟩
     exact hv.2 (by simpa using hd)
 
+/- English proof (translation)
+Use `set c : ℂ := ((normV w : ℕ) : ℂ) ^ ((t : ℝ) : ℂ) with hc`. Establish `mem : ∀ z ∈ x.eig g, ‖z‖ * ‖c‖ = 1` using `fun z hz => by`. Rewrite using `[← norm_mul]`. Conclude with `norm_one ht h0 hg (by rw [GlobalTheory.RowTie.EigTwist.eig_lpTw _ hg]; exact Multiset.mem_map_of_mem _ hz)`. Establish `e1` using `mem α hα`.
+
+Establish `e2` using `mem β hβ`. Establish `hc0 : ‖c‖ ≠ 0` using `fun e => by rw [e, mul_zero] at e1; exact zero_ne_one e1`. Establish `heq : ‖α‖ = ‖β‖` using `mul_right_cancel₀ hc0 (e1.trans e2.symm)`. Establish `hb : 0 < ‖β‖`. Break down `(norm_nonneg β).eq_or_lt with e | e` into its components or cases.
+
+Rewrite `e2` using `[← e, zero_mul]`. Conclude with `absurd e2 zero_ne_one`. Conclude with `e`. Establish `hq : (1 : ℝ) < ((normV w : ℕ) : ℝ)` using `by exact_mod_cast one_lt_normV w`. Rewrite using `[heq]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem win {x : WD h} {t : ℝ} (ht : (x.lpTw t).tempered) (h0 : x.mono0) {g : ↥(Weil h)}
     (hg : deg g = 1) {α β : ℂ} (hα : α ∈ x.eig g) (hβ : β ∈ x.eig g) : ‖α‖ < ((normV w : ℕ) : ℝ) * ‖β‖ := by
   set c : ℂ := ((normV w : ℕ) : ℂ) ^ ((t : ℝ) : ℂ) with hc
@@ -60,6 +78,13 @@ private theorem win {x : WD h} {t : ℝ} (ht : (x.lpTw t).tempered) (h0 : x.mono
 
 end
 
+/- English proof (translation)
+Introduce `P F Ω _ _ _ _ _ _ l _ ι n hn r π hr hreg ⟨χ, hpol⟩ ha`. Take `⟨R, wt, HT, H⟩` from `P.litN.aut.gal F Ω l ι n hn π χ hreg hpol`. Establish `hiso : RepIso r R`. Use `isoOfFrob P F Ω l ι n r R hr H.cont ha.1 H.ss ((ha.2.and (eventually_not_mem F l)).mono ?_)` and prove the remaining obligations. Introduce and unpack `w ⟨⟨B, h1, h2⟩, hw⟩`.
+
+Take `⟨⟨σ, hσ⟩, hi⟩` from `locCompC P F n π w`. Conclude with `⟨_, h2, satFrob P F Ω l ι n R H.cont w hw σ B (((satLoc P F n w σ).2 _ π.finPart (hi σ hσ) B).1 h1) fun A h rc hrc => H.away w hw A h rc hrc σ hσ⟩`. Use `UpperTheory.GalN.V.L.wiso F Ω l n R r hiso.symm' ?_` and prove the remaining obligations. Introduce `w hl A hA hfin`. Use `UpperTheory.GalN.V.L.wwd F Ω l n R ι w A hA hl H.cont ?_` and prove the remaining obligations.
+
+Introduce `g hg α hα β hβ`. Conclude with `win (H.tempered_wdOf hl hA) ((weilDeligneParam_monodromy_eq_zero_iff hl ι (Units.continuous_val.comp H.cont)).2 hfin) hg hα hβ`.
+-/
 theorem UpperTheory.GalN.V.L.wold :
     Hypotheses₂ → ∀ (F Ω : Type) [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ), 1 ≤ n → ∀ (r : G F Ω →* GL (Fin n) (Qbar l)) (π : CuspSub F n), Continuous r → (CG.mk π).IsRegAlg → (∃ χ, GlobalTheory.ContraPair.PolarizedPair π χ) → AttC ι r π → Unlinked r := by
   intro P F Ω _ _ _ _ _ _ l _ ι n hn r π hr hreg ⟨χ, hpol⟩ ha

@@ -20,6 +20,17 @@ open GlobalTheory.TestFibre
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S F _ ζ hζ H _ a ha`. Establish `hN` using `S.N_ge`. Establish `hr` using `S.r_pos`. Establish `: NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by omega) (by omega)⟩`. Establish `: NeZero ((S.r * S.N) ^ 2)` using `⟨pow_ne_zero _ (NeZero.ne _)⟩`.
+
+Establish `hω : IsPrimitiveRoot (ζ ^ (S.r * S.N)) (S.r * S.N)` using `hζ.pow (NeZero.pos _) (by ring)`. Set `χ : AddChar (ZMod (S.r * S.N)) F` to `AddChar.zmodChar _ hω.pow_eq_one`. Establish `hχ : ∀ b, χ b = 1 → b = 0` using `fun b hb => ((AddChar.zmodChar_primitive_of_primitive_root _ hω).zmod_char_eq_one_iff _ b).mp hb`. Set `f : S.perp H →+ ZMod (S.r * S.N)` to `{ toFun := fun t => eStd S.g _ (t : S.Gam) a map_zero' := by simp [eStd] map_add' := fun x y => by`. Simplify using `only [eStd, AddSubgroup.coe_add, Pi.add_apply, ← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring }`. Establish `hne : χ.compAddMonoidHom f ≠ 1`. Introduce `h`. Apply `ha` to reduce the goal to its premises. Rewrite using `[← (thetaSys_FF_mem_finite_perp_proj o Ω S).2.2.1 H]`.
+
+Introduce `t ht`. Establish `h1 : f ⟨t, ht⟩ = 0` using `hχ _ (DFunLike.congr_fun h ⟨t, ht⟩)`. Establish `h2 : eStd S.g _ t a = 0` using `h1`. Rewrite using `[ThetaProj.eStd_swap, h2, neg_zero]`. Establish `h0 : ∑ t : S.perp H, χ (f t) = 0` using `AddChar.sum_eq_zero_of_ne_one hne`.
+
+Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[pow_mul]`. Both sides reduce to the same expression.
+-/
 theorem thetaSys_sum_perp_char_eq_zero :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (F : Type) [Field F] (ζ : F), IsPrimitiveRoot ζ ((S.r * S.N) ^ 2) → ∀ (H : AddSubgroup S.Gam) [Fintype (S.perp H)] (a : S.Gam), a ∉ H → ∑ t : S.perp H, ζ ^ (S.r * S.N * (eStd S.g _ (t : S.Gam) a).val) = 0 := by
   intro o Ω _ _ _ _ S F _ ζ hζ H _ a ha

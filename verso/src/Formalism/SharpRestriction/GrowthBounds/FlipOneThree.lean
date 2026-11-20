@@ -80,6 +80,15 @@ instance Inst.fact (X : Inst) : Fact X.p.Prime := ⟨X.std.1.prime⟩
 instance Inst.neZero (X : Inst) : NeZero X.L.m := ⟨X.hm⟩
 instance Inst.neZeroLA (X : Inst) (aT' : Fin X.L.n' → ℕ) : NeZero (X.LA aT').m := ⟨X.hm⟩
 
+/- English proof (translation)
+Use `⟨h.1.prime, h.1.five_le, h.1.two_le, h.1.even, ?_⟩` and prove the remaining obligations. Establish `hmax : (Ideal.span {(p : W)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible h.1.p_unif`. Set `_ : Field (W ⧸ Ideal.span {(p : W)})` to `Ideal.Quotient.field _`. Establish `hp : (p : O) ∈ IsLocalRing.maximalIdeal O` using `(dvrOfStd h).p_mem`. Set `f : W →+* FF O` to `(IsLocalRing.residue O).comp j`.
+
+Establish `hf : ∀ a ∈ Ideal.span {(p : W)}, f a = 0`. Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Establish `: f (p : W) = 0`. Simplify using `only [f, map_natCast]`.
+
+Use `(IsLocalRing.residue_eq_zero_iff (p : O)).2 hp` as an intermediate fact. Simplify using `using this`. Rewrite using `[map_mul, this, mul_zero]`. Set `g : (W ⧸ Ideal.span {(p : W)}) →+* FF O` to `Ideal.Quotient.lift _ f hf`. Use `⟨g.fieldRange, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h.1.res_card]`. Conclude with `(Nat.card_congr (Equiv.ofInjective g g.injective)).symm`.
+-/
 theorem admissible_dvr_of_unramified_quadratic_setting {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq]
     [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
     {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O} (h : UnramifiedQuadraticSetting p n' W Qq O Kf ι σ j w) :
@@ -102,6 +111,9 @@ theorem admissible_dvr_of_unramified_quadratic_setting {p n' : ℕ} {W Qq O Kf :
   rw [← h.1.res_card]
   exact (Nat.card_congr (Equiv.ofInjective g g.injective)).symm
 
+/- English proof (translation)
+The claim follows from `admissible_dvr_of_unramified_quadratic_setting X.std`.
+-/
 theorem Inst.instance_ring_standard (X : Inst) : AdmissibleDVR X.L.p X.L.n' X.O := admissible_dvr_of_unramified_quadratic_setting X.std
 
 def HI (C0 CYb Cde Ck CD Cb Cc : ℝ) (X : Inst) : Prop :=

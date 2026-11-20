@@ -2,6 +2,19 @@ import Mathlib
 
 namespace Bl.SecondBlockLemmaK
 
+/- English proof (translation)
+Introduce `R F X _ _ _ _ _ _ _ _ _ S x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact S.zero_mem⟩`. Consider the case `add y z _ _ hy hz`.
+
+Take `⟨a, ha, hay⟩` from `hy`. Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `S.add_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `S.smul_mem b hay`. Rewrite using `[mul_smul]`. Conclude with `S.smul_mem a hbz`. Consider the case `smul c y _ hy`.
+
+Take `⟨d, hd, hdy⟩` from `hy`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R) c`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbF : algebraMap R F b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Use `⟨d * b, mul_ne_zero hd hb0, ?_⟩` and prove the remaining obligations.
+
+Establish `key : (d * b) • ((algebraMap R F a / algebraMap R F b) • y) = a • (d • y)`. Rewrite using `[← algebraMap_smul F (d * b), ← algebraMap_smul F a, ← algebraMap_smul F d, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[key]`. Conclude with `S.smul_mem a hdy`.
+-/
 theorem goal1 :
   ∀ {R F X : Type} [inst : CommRing.{0} R] [IsDomain.{0} R] [inst_2 : Field.{0} F] [inst_3 : Algebra.{0, 0} R F]
   [IsFractionRing.{0, 0} R F] [inst_5 : AddCommGroup.{0} X] [inst_6 : Module.{0, 0} F X] [inst_7 : Module.{0, 0} R X]

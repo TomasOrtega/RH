@@ -11,6 +11,25 @@ open MeasureTheory Metric
 
 namespace Formalism.L2.SG.Pf.Tau
 
+/- English proof (translation)
+Introduce `d hd`. Establish `hfr : Module.finrank ℝ (EuclideanSpace ℝ (Fin d)) = d` using `by simp`. Use `haveI : Nontrivial (EuclideanSpace ℝ (Fin d)) := Module.nontrivial_of_finrank_pos (by rw [hfr]; omega)`. Use `set v1 : ℝ := (volume (ball (0 : EuclideanSpace ℝ (Fin d)) 1)).toReal with hv1_def`. Establish `hv1ne : volume (ball (0 : EuclideanSpace ℝ (Fin d)) 1) ≠ ⊤` using `measure_ball_lt_top.ne`.
+
+Establish `hv1pos : 0 < v1` using `ENNReal.toReal_pos (measure_ball_pos _ _ one_pos).ne' hv1ne`. Use `⟨4 / v1 ^ ((2 : ℝ) / d), by positivity, ?_⟩` and prove the remaining obligations. Introduce `L _ _`. Set `b` to `Module.Free.chooseBasis ℤ L`. Establish `hF` using `ZLattice.isAddFundamentalDomain b (volume : Measure (EuclideanSpace ℝ (Fin d)))`.
+
+Use `set F := ZSpan.fundamentalDomain (Module.Basis.ofZLatticeBasis ℝ L b) with hF_def`. Establish `hcov : ZLattice.covolume L = volume.real F` using `ZLattice.covolume_eq_measure_fundamentalDomain L volume hF`. Establish `hcov0 : 0 ≤ ZLattice.covolume L` using `by rw [hcov]; exact measureReal_nonneg`. Establish `hFfin : volume F ≠ ⊤` using `(ZSpan.fundamentalDomain_isBounded _).measure_lt_top.ne`. Use `set r : ℝ := 2 * (ZLattice.covolume L / v1) ^ ((1 : ℝ) / d) with hr_def`.
+
+Establish `hr0 : 0 ≤ r` using `by positivity`. Establish `hdpos : (0 : ℝ) < d` using `by exact_mod_cast hd`. Establish `hq0 : 0 ≤ ZLattice.covolume L / v1` using `by positivity`. Establish `key : ∀ t : ℝ, 0 ≤ t → (t ^ ((1 : ℝ) / d)) ^ d = t` using `fun t ht => by`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul ht, one_div_mul_cancel hdpos.ne', Real.rpow_one]`.
+
+Establish `key2 : ∀ t : ℝ, 0 ≤ t → (t ^ ((1 : ℝ) / d)) ^ 2 = t ^ ((2 : ℝ) / d)` using `fun t ht => by`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul ht]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hrd : r ^ d = 2 ^ d * (ZLattice.covolume L / v1)`. Rewrite using `[hr_def, mul_pow, key _ hq0]`. Establish `hvol : volume F * 2 ^ Module.finrank ℝ (EuclideanSpace ℝ (Fin d)) ≤ volume (closedBall (0 : EuclideanSpace ℝ (Fin d)) r)`. Rewrite using `[Measure.addHaar_closedBall volume 0 hr0, hfr, hrd, ← ENNReal.ofReal_toReal hv1ne, ← hv1_def, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_toReal hFfin]`. Establish `: (volume F).toReal = ZLattice.covolume L` using `by rw [hcov]; rfl`.
+
+Establish `e : (2 : ℝ) ^ d * (ZLattice.covolume L / v1) * v1 = ZLattice.covolume L * 2 ^ d`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, e, ENNReal.ofReal_mul hcov0, ENNReal.ofReal_pow (by norm_num : (0 : ℝ) ≤ 2), ENNReal.ofReal_ofNat]`. Use `haveI hcL : Countable L := Countable.of_equiv _ b.repr.toEquiv.symm`. Use `haveI : Countable L.toAddSubgroup := hcL`.
+
+Use `haveI : DiscreteTopology L.toAddSubgroup := inferInstanceAs (DiscreteTopology L)`. Take `⟨x, hx0, hxs⟩` from `MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure (L := L.toAddSubgroup) hF (fun y hy => by simpa using hy) (convex_closedBall _ _) (isCompact_closedBall _ _) hvol`. Use `⟨x, x.2, fun h => hx0 (Subtype.ext h), ?_⟩` and prove the remaining obligations. Establish `hxr : ‖(x : EuclideanSpace ℝ (Fin d))‖ ≤ r` using `by simpa using hxs`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hr_def, mul_pow, key2 _ hq0, Real.div_rpow hcov0 hv1pos.le]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `le_rfl`.
+-/
 theorem t8m : MinkowskiFirstTheorem := by
   intro d hd
   have hfr : Module.finrank ℝ (EuclideanSpace ℝ (Fin d)) = d := by simp

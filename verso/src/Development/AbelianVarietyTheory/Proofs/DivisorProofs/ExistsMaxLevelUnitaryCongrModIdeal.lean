@@ -12,6 +12,15 @@ noncomputable section
 
 namespace GlobalTheory.MaxLevelLift
 
+/- English proof (translation)
+Introduce `D 𝔪 _ hcop N g hg`. Establish `hcc : D.host.conj * D.host.conj = 1` using `AlgEquiv.ext fun z => GlobalTheory.NormSum.UnramHecke.conj_conj D z`. Establish `e : D.host.conj • D.host.conj • 𝔪 = 𝔪` using `by rw [smul_smul, hcc, one_smul]`. Establish `hdet : (g.map (Ideal.Quotient.mk 𝔪)).det = Ideal.Quotient.mk 𝔪 g.det` using `((Ideal.Quotient.mk 𝔪).map_det g).symm`. Rewrite `hg` using `[hdet]`.
+
+Take `⟨v, hv⟩` from `hg.exists_right_inv`. Take `⟨u, rfl⟩` from `Ideal.Quotient.mk_surjective v`. Rewrite `hv` using `[← map_mul, ← map_one (Ideal.Quotient.mk 𝔪), Ideal.Quotient.eq]`. Establish `key : inc D ((g.det * u : 𝓞 D.host.E) : D.host.E) - 1 ∈ hatId D (D.host.conj • D.host.conj • 𝔪)`. Rewrite using `[e]`.
+
+Conclude with `AddSubgroup.subset_closure ⟨g.det * u - 1, hv, 1, one_mem _, by simp⟩`. Take `⟨f, hf, w, hw, hff, hfs, hfw, h1f⟩` from `GlobalTheory.BotPairSmall.IdemChoice.exists_idem_of_limit GlobalTheory.AlgIntIdem.idem D (D.host.conj • 𝔪) (by rw [e, sup_comm]; exact hcop) _ _ key`. Rewrite `h1f` using `[e]`. Take `⟨k, hk, hkc⟩` from `GlobalTheory.GlueUnitary.glue_unitary D 𝔪 N g f w hf hw hff hfs hfw h1f`. Use `⟨k⁻¹, inv_mem hk, fun i j => ?_⟩` and prove the remaining obligations.
+
+Use `neg_mem (hkc i j)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, neg_sub, Matrix.map_apply]`. Then use the resulting hypothesis.
+-/
 theorem exists_intG_cong : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → 𝔪 ⊔ D.host.conj • 𝔪 = ⊤ → ∀ (N : ℕ)
     (g : Matrix (Fin N) (Fin N) (𝓞 D.host.E)), IsUnit (g.map (Ideal.Quotient.mk 𝔪)).det →
       ∃ k : GA D N, k ∈ intG D N ∧ ∀ i j : Fin N,

@@ -13,6 +13,9 @@ section SMul
 
 variable (σ : K →+* ℂ) (E : Type*) [AddCommGroup E] [Module (𝓞 K) E]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero]`. Consider the case `tmul z e => rw [smul_tmul', smul_tmul', complex_smul_def, smul_eq_mul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [smul_add, smul_add, hx, hy]`.
+-/
 theorem fibre_smul_eq (a : ComplexAt σ) (x : Fibre σ E) :
     a • x = (ofComplex σ).symm a • x := by
   induction x using TensorProduct.induction_on with
@@ -56,6 +59,9 @@ instance : InnerProductSpace ℂ (FibreSpace h σ) := InnerProductSpace.ofCore _
 
 def equiv : Fibre σ E ≃ₗ[ℂ] FibreSpace h σ := LinearEquiv.refl ℂ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inner_equiv (x y : Fibre σ E) :
     inner ℂ (equiv h σ x) (equiv h σ y) = (h.form σ).inner x y := rfl
 
@@ -70,6 +76,9 @@ def tensorCoord (hE : HermitianMetric K E) (hF : HermitianMetric K F) (σ : K �
     ((equivOfCompatibleSMul ℂ (ComplexAt σ) ℂ (Fibre σ E) (Fibre σ F)).trans
       (TensorProduct.congr (FibreSpace.equiv hE σ) (FibreSpace.equiv hF σ)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensorCoord_tmul (hE : HermitianMetric K E) (hF : HermitianMetric K F) (σ : K →+* ℂ)
     (z : ComplexAt σ) (e : E) (f : F) :
     tensorCoord hE hF σ (z ⊗ₜ (e ⊗ₜ f)) =
@@ -77,12 +86,24 @@ theorem tensorCoord_tmul (hE : HermitianMetric K E) (hF : HermitianMetric K F) (
 
 variable (hE : HermitianMetric K E) (hF : HermitianMetric K F)
 
+/- English proof (translation)
+Rewrite using `[tensorCoord_tmul, tensorCoord_tmul, TensorProduct.inner_tmul]`. Both sides reduce to the same expression.
+-/
 theorem tensorCoord_inner_tmul (σ : K →+* ℂ) (z w : ComplexAt σ) (e e' : E) (f f' : F) :
     inner ℂ (tensorCoord hE hF σ (z ⊗ₜ (e ⊗ₜ f))) (tensorCoord hE hF σ (w ⊗ₜ (e' ⊗ₜ f'))) =
       (hE.form σ).inner (z ⊗ₜ e) (w ⊗ₜ e') * (hF.form σ).inner (1 ⊗ₜ f) (1 ⊗ₜ f') := by
   rw [tensorCoord_tmul, tensorCoord_tmul, TensorProduct.inner_tmul]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, inner_zero_left]`. Consider the case `add x x' hx hx' => simp only [map_add, inner_add_left, hx, hx']`. Consider the case `tmul z t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp only [tmul_zero, map_zero, inner_zero_left]`. Consider the case `add t t' ht ht' => simp only [tmul_add, map_add, inner_add_left, ht, ht']`. Consider the case `tmul e f`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, inner_zero_right]`.
+
+Consider the case `add y y' hy hy' => simp only [map_add, inner_add_right, hy, hy']`. Consider the case `tmul w s`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp only [tmul_zero, map_zero, inner_zero_right]`. Consider the case `add s s' hs hs' => simp only [tmul_add, map_add, inner_add_right, hs, hs']`.
+
+Consider the case `tmul e' f'`. Rewrite using `[conjMap_tmul, conjMap_tmul, tensorCoord_inner_tmul, tensorCoord_inner_tmul, map_mul, ← hE.form_conj, ← hF.form_conj, conjMap_tmul, conjMap_tmul, conjMap_tmul, conjMap_tmul, map_one]`.
+-/
 theorem tensorCoord_inner_conjMap (σ : K →+* ℂ) (x y : Fibre σ (E ⊗[𝓞 K] F)) :
     inner ℂ (tensorCoord hE hF (conjugate σ) (conjMap σ _ x))
         (tensorCoord hE hF (conjugate σ) (conjMap σ _ y)) =
@@ -114,6 +135,9 @@ def HermitianMetric.tensor : HermitianMetric K (E ⊗[𝓞 K] F) where
 def HermitianBundle.tensor (A B : HermitianBundle K) : HermitianBundle K :=
   ⟨A.carrier ⊗[𝓞 K] B.carrier, A.metric.tensor B.metric⟩
 
+/- English proof (translation)
+The claim follows from `(gaussianStandard 2).tensor (gaussianStandard 3)`.
+-/
 example : HermitianBundle GaussianField := (gaussianStandard 2).tensor (gaussianStandard 3)
 
 end

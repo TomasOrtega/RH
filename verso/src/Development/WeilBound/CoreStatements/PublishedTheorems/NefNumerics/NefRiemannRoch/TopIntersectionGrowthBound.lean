@@ -21,6 +21,47 @@ noncomputable section
 
 namespace GlobalTheory.MorseNum
 
+/- English proof (translation)
+Introduce `k _ _ X _ hproj d hd A N L M hA hN hL hM hnef htop q b c hq1 hqb hbc hLcls hMcls hlt`. Establish `hD : DiffVanish (d + 1 + 1) (chiPic k (GlobalTheory.structureModule X))`. Use `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom (k := k) (X := X)) _ hproj ?_` and prove the remaining obligations. Rewrite using `[suppDim_structureModule]`. Conclude with `hd`.
+
+Use `set F := GlobalTheory.structureModule X with hF`. Set `Lv : Fin 2 → LB X` to `![A, N]`. Establish `hLv : ∀ j, (Lv j).IsLB`. Introduce `j`. Use `fin_cases j`.
+
+Conclude with `hA.isLB`. Conclude with `hN.isLB`. Establish `hLvnef : ∀ j, IsNef k (Lv j)`. Introduce `j`. Use `fin_cases j`.
+
+Conclude with `hA.isNef`. Conclude with `hN`. Set `nL : Fin (d + 1) → Fin 2 → ℤ` to `Fin.cons ![1, 0] (fun _ => ![(b : ℤ), (q : ℤ)])`. Set `nM : Fin (d + 1) → Fin 2 → ℤ` to `Fin.cons ![1, 0] (fun _ => ![(c : ℤ), 1])`. Establish `hQL : ∀ i, ((Fin.cons A (fun _ : Fin d => L) : Fin (d + 1) → LB X) i).IsLB`.
+
+Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hA.isLB`. Simplify using `using hL.isLB`. Establish `hQM : ∀ i, ((Fin.cons A (fun _ : Fin d => M) : Fin (d + 1) → LB X) i).IsLB`.
+
+Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hA.isLB`. Simplify using `using hM`. Establish `eL` using `DiffVanish.interNum_of_cls_eq_sum hD hLv hQL nL (by`.
+
+Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[nL, Lv, Fin.sum_univ_two]`. Simplify using `only [nL, Lv, Fin.sum_univ_two, Fin.cons_succ, Fin.cons_zero]`. Simplify using `[hLcls, natCast_zsmul, add_comm])`.
+
+Establish `eM` using `DiffVanish.interNum_of_cls_eq_sum hD hLv hQM nM (by`. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[nM, Lv, Fin.sum_univ_two]`. Simplify using `only [nM, Lv, Fin.sum_univ_two, Fin.cons_succ, Fin.cons_zero]`.
+
+Simplify using `[hMcls, natCast_zsmul, add_comm])`. Establish `hbq : (b : ℤ) ≤ (q : ℤ) * c`. Establish `: b ≤ q * c` using `by rw [mul_comm]; exact hbc`. Conclude with `this` after adjusting the coercions. Establish `hent0 : ∀ j : Fin 2, 0 ≤ (![(b : ℤ), (q : ℤ)] : Fin 2 → ℤ) j`.
+
+Apply the tactic sequence `intro j; fin_cases j <;> simp`. Establish `hent1 : ∀ j : Fin 2, (![(b : ℤ), (q : ℤ)] : Fin 2 → ℤ) j ≤ (q : ℤ) * (![(c : ℤ), 1] : Fin 2 → ℤ) j`. Introduce `j`. Use `fin_cases j`. Simplify using `using hbq`.
+
+Simplify using the standard rewrite rules. Establish `key : interNum k F (Fin.cons A (fun _ : Fin d => L) : Fin (d + 1) → LB X) ≤ (q : ℤ) ^ d * interNum k F (Fin.cons A (fun _ : Fin d => M) : Fin (d + 1) → LB X)`. Rewrite using `[eL, eM, Finset.mul_sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a _`.
+
+Establish `h01 : a 0 = 0 ∨ a 0 = 1`. Generalize the expression as in `a 0 = j`. Apply the tactic sequence `fin_cases j <;> simp`. Break down `h01 with h0 | h0` into its components or cases. Establish `hJ : 0 ≤ interNum k F (Lv ∘ a)`.
+
+Establish `hc : Lv ∘ a = Fin.cons A (fun i : Fin d => Lv (a i.succ))`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[h0, Lv]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hc]`. Conclude with `hnef _ (fun i => hLvnef _)`. Establish `hc : (∏ i, nL i (a i)) ≤ (q : ℤ) ^ d * ∏ i, nM i (a i)`. Rewrite using `[Fin.prod_univ_succ, Fin.prod_univ_succ]`. Simplify using `only [nL, nM, Fin.cons_zero, Fin.cons_succ, h0]`.
+
+Simplify using `only [Matrix.cons_val_zero, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Combine the equalities or inequalities in the displayed calculation. Establish `hz1 : (∏ i, nL i (a i)) = 0`.
+
+Rewrite using `[Fin.prod_univ_succ]`. Simplify using `[nL, h0]`. Establish `hz2 : (∏ i, nM i (a i)) = 0`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `[nM, h0]`.
+
+Rewrite using `[hz1, hz2]`. Simplify using the standard rewrite rules. Establish `h2 : interNum k F (Fin.cons (lbPow A 2) (fun _ : Fin d => L) : Fin (d + 1) → LB X) = 2 * interNum k F (Fin.cons A (fun _ : Fin d => L) : Fin (d + 1) → LB X)`. Establish `hA2 : (lbPow A 2).IsLB` using `isLB_lbPow hA.isLB 2`. Rewrite using `[DiffVanish.interNum_cons_of_cls_eq_add hD (le_refl _) (fun _ => hL.isLB) hA2 hA.isLB hA.isLB (by rw [cls_lbPow hA.isLB 2 hA2, two_nsmul])]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hq : (0 : ℤ) < (q : ℤ) ^ d`. Establish `: (0 : ℤ) < q` using `by exact_mod_cast hq1`. Check the signs of the components of the expression. Establish `hlow` using `NefLower.topSelf_lower k X hproj d hd A N L hA hN hL hnef q b hLcls`.
+
+Establish `hqb' : (q : ℤ) ^ (d + 1) ≤ (b : ℤ) ^ (d + 1)` using `pow_le_pow_left₀ (by positivity) (by exact_mod_cast hqb) _`. Establish `htop1 : (1 : ℤ) ≤ topSelfIntersection k A (d + 1)` using `htop`. Establish `s4 : (b : ℤ) ^ (d + 1) ≤ (b : ℤ) ^ (d + 1) * topSelfIntersection k A (d + 1)` using `le_mul_of_one_le_right (by positivity) htop1`. Establish `s1 : ((d : ℤ) + 1) * (2 * interNum k F (Fin.cons A (fun _ : Fin d => L) : Fin (d + 1) → LB X)) ≤ (q : ℤ) ^ d * (2 * ((d : ℤ) + 1) * interNum k F (Fin.cons A (fun _ : Fin d => M) : Fin (d + 1) → LB X))`. Use `mul_le_mul_of_nonneg_left key (show (0 : ℤ) ≤ 2 * ((d : ℤ) + 1) by positivity)` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `s2` using `mul_lt_mul_of_pos_left hlt hq`. Establish `s3 : (q : ℤ) ^ d * q = (q : ℤ) ^ (d + 1)` using `by ring`. Rewrite using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem morse_A_sq : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ d : ℕ, topologicalKrullDim X ≤ (d + 1 : ℕ) → ∀ (A N L M : LB X) (hA : IsAmpleLB A) (hN : IsNef k N) (hL : IsAmpleLB L) (hM : M.IsLB), (∀ P : Fin d → LB X, (∀ i, IsNef k (P i)) → 0 ≤ interNum k (GlobalTheory.structureModule X) (Fin.cons A P : Fin (d + 1) → LB X)) → 0 < topSelfIntersection k A (d + 1) → ∀ q b c : ℕ, 1 ≤ q → q ≤ b → b ≤ c * q → cls L hL.isLB = q • cls N hN.isLB + b • cls A hA.isLB → cls M hM = cls N hN.isLB + c • cls A hA.isLB → 2 * ((d : ℤ) + 1) * interNum k (GlobalTheory.structureModule X) (Fin.cons A (fun _ : Fin d => M) : Fin (d + 1) → LB X) < q → ((d : ℤ) + 1) * interNum k (GlobalTheory.structureModule X) (Fin.cons (lbPow A 2) (fun _ : Fin d => L) : Fin (d + 1) → LB X) < topSelfIntersection k L (d + 1) := by
   intro k _ _ X _ hproj d hd A N L M hA hN hL hM hnef htop q b c hq1 hqb hbc hLcls hMcls hlt
   have hD : DiffVanish (d + 1 + 1) (chiPic k (GlobalTheory.structureModule X)) := by

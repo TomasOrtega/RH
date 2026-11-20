@@ -21,6 +21,11 @@ section Abs
 variable {k D M : Type} [Field k] [Group D] [TopologicalSpace D] [AddCommGroup M] [Module k M] [Module.Finite k M]
   [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation k D M)
 
+/- English proof (translation)
+Establish `h : LinearMap.ker (d0 ρ) = H0 ρ`. Use extensionality with `m`. Rewrite using `[LinearMap.mem_ker, mem_riemannRochSpace_iff_regularAt_everywhere, funext_iff]`. Simplify using `[sub_eq_zero]`. Rewrite using `[← h]`.
+
+Conclude with `LinearMap.finrank_range_add_finrank_ker (d0 ρ)`.
+-/
 private theorem rank_coboundaries_invariants : finrank k (B1 ρ) + finrank k (H0 ρ) = finrank k M := by
   have h : LinearMap.ker (d0 ρ) = H0 ρ := by
     ext m
@@ -29,6 +34,11 @@ private theorem rank_coboundaries_invariants : finrank k (B1 ρ) + finrank k (H0
   rw [← h]
   exact LinearMap.finrank_range_add_finrank_ker (d0 ρ)
 
+/- English proof (translation)
+Establish `e` using `Submodule.comapSubtypeEquivOfLe (coboundaries_le_cocycles ρ h)`. Use `haveI : Module.Finite k (B1 ρ) := Module.Finite.range (d0 ρ)`. Use `haveI : Module.Finite k ((B1 ρ).comap (Z1 ρ).subtype) := Module.Finite.equiv e.symm`. Use `haveI : Module.Finite k (Z1 ρ) := Module.Finite.of_submodule_quotient ((B1 ρ).comap (Z1 ρ).subtype)`. Rewrite using `[← Submodule.finrank_quotient_add_finrank ((B1 ρ).comap (Z1 ρ).subtype), e.finrank_eq, ← rank_coboundaries_invariants ρ]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem rank_cocycles_formula (h : ContAction ρ) [Module.Finite k (H1 ρ)] :
     finrank k (Z1 ρ) + finrank k (H0 ρ) = finrank k (H1 ρ) + finrank k M := by
   have e := Submodule.comapSubtypeEquivOfLe (coboundaries_le_cocycles ρ h)
@@ -38,6 +48,9 @@ private theorem rank_cocycles_formula (h : ContAction ρ) [Module.Finite k (H1 �
   rw [← Submodule.finrank_quotient_add_finrank ((B1 ρ).comap (Z1 ρ).subtype), e.finrank_eq, ← rank_coboundaries_invariants ρ]
   ring
 
+/- English proof (translation)
+Rewrite using `[Submodule.finrank_eq_zero, Submodule.eq_bot_iff]`. Introduce `m hm`. Establish `h : (a - 1) • m = 0` using `by rw [sub_smul, ← hx, hm x, one_smul, sub_self]`. Conclude with `(smul_eq_zero.1 h).resolve_left (sub_ne_zero.2 ha)`.
+-/
 private theorem invariants_zero_of_scalar {x : D} {a : k} (hx : ∀ m, ρ x m = a • m) (ha : a ≠ 1) : finrank k (H0 ρ) = 0 := by
   rw [Submodule.finrank_eq_zero, Submodule.eq_bot_iff]
   intro m hm
@@ -46,11 +59,29 @@ private theorem invariants_zero_of_scalar {x : D} {a : k} (hx : ∀ m, ρ x m = 
 
 end Abs
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qe18.hc_avg ρ N hN z hz h0`.
+-/
 private theorem hc_avg {k D M : Type} [Field k] [Group D] [AddCommGroup M] [Module k M] (ρ : Representation k D M)
     (N : Subgroup D) (hN : ((N.index : ℕ) : k) ≠ 0) (z : D → M) (hz : ∀ g h, z (g * h) = z g + ρ g (z h))
     (h0 : ∀ s ∈ N, z s = 0) : ∃ m, ∀ g, z g = ρ g m - m :=
   _root_.UpperTheory.Reformulated.B.Qe18.hc_avg ρ N hN z hz h0
 
+/- English proof (translation)
+Introduce `k D M _ _ _ _ _ _ _ _ _ ρ I N W hρ hI hφ hNI _ hidx hN hW`. Set `r : W →ₗ[k] (I → M)` to `(LinearMap.funLeft k M I.subtype).comp W.subtype`. Establish `hr : LinearMap.range r = B1 (ρ.comp I.subtype : Representation k I M)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨z, rfl⟩`. Take `⟨z1, z2⟩` from `(hW _).1 z.2`. Conclude with `(mem_coboundaries1 _ _).2 (hc_avg (ρ.comp I.subtype) (N.subgroupOf I) hidx _ (fun g h => z1.2 g h) fun s hs => z2 s hs)`. Introduce and unpack `⟨m, rfl⟩`. Conclude with `⟨⟨d0 ρ m, (hW _).2 ⟨coboundaries_le_cocycles ρ hρ ⟨m, rfl⟩, fun s hs => by rw [amitsur_d0_apply, hN s hs, sub_self]⟩⟩, rfl⟩`.
+
+Establish `hk` using `UpperTheory.finrank_unramified_cocycles_eq_finrank_invariants ρ I ((LinearMap.ker r).map W.subtype) hρ hI hφ fun y => ⟨by rintro ⟨z, hz, rfl⟩; exact ⟨((hW _).1 z.2).1, fun s hs => congrFun hz ⟨s, hs⟩⟩, fun h => ⟨⟨y, (hW _).2 ⟨h.1, fun s hs => h.2 s (hNI hs)⟩⟩, funext fun s => h.2 …`. Rewrite `hk` using `[Submodule.finrank_map_subtype_eq]`. Take `⟨φ, hφ, -⟩` from `hφ`. Use `haveI : Module.Finite k (B1 (ρ.comp I.subtype : Representation k I M)) := Module.Finite.range _`. Use `haveI : Module.Finite k W := by`.
+
+Set `r' : W →ₗ[k] B1 (ρ.comp I.subtype : Representation k I M)` to `r.codRestrict _ fun z => hr ▸ ⟨z, rfl⟩`. Use `Module.Finite.of_injective (r'.prod ((LinearMap.proj φ).comp W.subtype)) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Establish `z1` using `((hW _).1 z.2).1`.
+
+Establish `e1 : r z = 0` using `congrArg (fun p => p.1.1) hz`. Establish `e2 : z.1 φ = 0` using `congrArg Prod.snd hz`. Establish `o : z.1 1 = 0` using `by simpa using z1.2 1 1`. Set `K : Subgroup D` to `{ carrier := {g | z.1 g = 0} one_mem' := o mul_mem' := fun {a b} ha hb => by show z.1 _ = 0`. Rewrite using `[z1.2, show z.1 a = 0 from ha, show z.1 b = 0 from hb, map_zero, add_zero]`.
+
+Use the proof step `inv_mem' := fun {a} ha => by`. Use `z1.2 a⁻¹ a` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, o, show z.1 a = 0 from ha, map_zero, add_zero]`. Conclude with `this.symm }`. Establish `hK` using `Subgroup.topologicalClosure_minimal (I ⊔ Subgroup.zpowers φ) (t := K) (sup_le (fun s hs => congrFun e1 ⟨s, hs⟩) (Subgroup.zpowers_le.2 e2)) (isClosed_eq z1.1 continuous_const)`.
+
+Rewrite `hK` using `[hφ]`. Conclude with `Subtype.ext (funext fun g => hK (Subgroup.mem_top g))`. Rewrite using `[← LinearMap.finrank_range_add_finrank_ker r, hr, hk]`. Conclude with `rank_coboundaries_invariants _`.
+-/
 private theorem hc_tame :
     ∀ {k D M : Type} [Field k] [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [AddCommGroup M] [Module k M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation k D M) (I N : Subgroup D) (W : Submodule k (D → M)), ContAction ρ → I.Normal → (∃ φ : D, (I ⊔ Subgroup.zpowers φ).topologicalClosure = ⊤ ∧ ∀ n : ℕ, 0 < n → ∃ d : D →* Multiplicative (ZMod n), IsLocallyConstant d ∧ (∀ s ∈ I, d s = 1) ∧ d φ = Multiplicative.ofAdd 1) →
     N ≤ I → (N.subgroupOf I).Normal → ((N.relIndex I : ℕ) : k) ≠ 0 → (∀ s ∈ N, ∀ m, ρ s m = m) →
@@ -97,8 +128,16 @@ private theorem hc_tame :
   rw [← LinearMap.finrank_range_add_finrank_ker r, hr, hk]
   exact rank_coboundaries_invariants _
 
+/- English proof (translation)
+The claim follows from `Subtype.ext h`.
+-/
 private theorem hc_val {k : Type} [CommRing k] {j : ℤ} {X Y : Gb k j} (h : X.val = Y.val) : X = Y := Subtype.ext h
 
+/- English proof (translation)
+Use `hc_val ?_` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[gRep_val, adRep_baseLift_apply, if_pos hg]`. Use `show _ = ((Ψ g ^ j : kˣ) : k) * X.val a b`. Distinguish the cases in `h : wt a b = j`.
+
+Rewrite using `[h]`. Establish `: X.val a b = 0` using `X.2 a b h`. Simplify using `[this]`.
+-/
 private theorem hc_scal {k D : Type} [CommRing k] [Group D] (η : D →* ℤˣ) (Ψ : D →* kˣ) (j : ℤ) {g : D} (hg : η g = 1)
     (X : Gb k j) : gRep η Ψ j g X = ((Ψ g ^ j : kˣ) : k) • X := by
   refine hc_val ?_
@@ -110,6 +149,13 @@ private theorem hc_scal {k D : Type} [CommRing k] [Group D] (η : D →* ℤˣ) 
   · have : X.val a b = 0 := X.2 a b h
     simp [this]
 
+/- English proof (translation)
+Break down `Int.units_eq_one_or (η g) with h1 | h1` into its components or cases. Rewrite using `[hc_scal η Ψ j h1, hc_scal η Ψ j (h ▸ h1), h']`. Use `hc_val ?_` and prove the remaining obligations. Use extensionality with `a b`. Establish `h2 : ¬ η g = 1` using `by rw [h1]; decide`.
+
+Rewrite using `[gRep_val, gRep_val, adRep_baseLift_apply, adRep_baseLift_apply, if_neg h2, if_neg (h ▸ h2)]`. Distinguish the cases in `e : wt a b = j`. Rewrite using `[e, h']`. Establish `: X.val b.rev a.rev = 0` using `X.2 _ _ (by`. Apply the tactic sequence `have : wt b.rev a.rev = wt a b := by fin_cases a <;> fin_cases b <;> rfl`.
+
+Rewrite using `[this])` and apply the resulting hypothesis. Simplify using `[this]`.
+-/
 private theorem hc_congr {k D : Type} [CommRing k] [Group D] (η : D →* ℤˣ) (Ψ : D →* kˣ) (j : ℤ) {g g' : D}
     (h : η g = η g') (h' : Ψ g ^ j = Ψ g' ^ j) (X : Gb k j) : gRep η Ψ j g X = gRep η Ψ j g' X := by
   rcases Int.units_eq_one_or (η g) with h1 | h1
@@ -125,6 +171,13 @@ private theorem hc_congr {k D : Type} [CommRing k] [Group D] (η : D →* ℤˣ)
         rwa [this])
       simp [this]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : a ^ j = 1` using `Units.ext h`. Establish `h3 : a ^ (2 : ℤ) = 1`. Establish `: j ∣ 2`. Rewrite `h2` using `[abs_le]`.
+
+Take `⟨h2, h3⟩` from `h2`. Apply the tactic sequence `interval_cases j <;> first | decide | exact absurd rfl h0`. Take `⟨c, hc⟩` from `this`. Rewrite using `[hc, _root_.zpow_mul, h1, _root_.one_zpow]`. Apply `ha` to reduce the goal to its premises.
+
+Rewrite using `[sub_eq_zero]`. Establish `h4 : a ^ 2 = 1` using `by exact_mod_cast h3`. Rewrite using `[← Units.val_pow_eq_pow_val, h4, Units.val_one]`.
+-/
 private theorem hc_pow {k : Type} [Field k] {a : kˣ} (ha : (a : k) ^ 2 - 1 ≠ 0) {j : ℤ} (h0 : j ≠ 0) (h2 : |j| ≤ 2) :
     ((a ^ j : kˣ) : k) ≠ 1 := by
   intro h
@@ -146,13 +199,24 @@ section Fr
 variable {O : Type} [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] {G Γ ι : Type} [Group G] [TopologicalSpace G]
   [IsTopologicalGroup G] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] {F : Frame O G Γ ι}
 
+/- English proof (translation)
+Establish `h` using `hF.two.map (residue O)`. Rewrite `h` using `[map_ofNat]`. Conclude with `h.ne_zero`.
+-/
 private theorem hc_two (hF : F.Ok) : (2 : ResidueField O) ≠ 0 := by
   have h := hF.two.map (residue O)
   rw [map_ofNat] at h
   exact h.ne_zero
 
+/- English proof (translation)
+Simplify using `[Frame.Ψbar, hF.Ψc]`.
+-/
 private theorem hc_c (hF : F.Ok) : F.Ψbar F.c = 1 := by simp [Frame.Ψbar, hF.Ψc]
 
+/- English proof (translation)
+Establish `h1 : IsLocallyConstant F.Ψbar`. Use `IsLocallyConstant.desc _ Units.val ?_ Units.val_injective` and prove the remaining obligations. Use `(hF.Ψ_cont 1).comp (Ideal.Quotient.factor (le_of_eq (pow_one (maximalIdeal O))))` as an intermediate fact. Conclude with `this`. Establish `h2` using `(hF.η_cont.prodMk h1).comp_continuous (continuous_fst (Y := Gb (ResidueField O) j))`.
+
+Establish `h3 : IsLocallyConstant (Prod.snd : Γ × Gb (ResidueField O) j → _)` using `(IsLocallyConstant.iff_continuous _).2 continuous_snd`. Establish `h4` using `(h2.prodMk h3).comp fun q => gRep (MonoidHom.fst ℤˣ (ResidueField O)ˣ) (MonoidHom.snd _ _) j q.1 q.2`. Conclude with `h4.continuous`.
+-/
 private theorem hc_cont (hF : F.Ok) (j : ℤ) : ContAction (F.gbar j) := by
   have h1 : IsLocallyConstant F.Ψbar := by
     refine IsLocallyConstant.desc _ Units.val ?_ Units.val_injective
@@ -164,6 +228,11 @@ private theorem hc_cont (hF : F.Ok) (j : ℤ) : ContAction (F.gbar j) := by
   have h4 := (h2.prodMk h3).comp fun q => gRep (MonoidHom.fst ℤˣ (ResidueField O)ˣ) (MonoidHom.snd _ _) j q.1 q.2
   exact h4.continuous
 
+/- English proof (translation)
+Distinguish the cases in `h : |j| ≤ 2`. Use `⟨_, hc_scal _ _ j h1, hc_pow ?_ hj h⟩` and prove the remaining obligations. Use `(h2.map (residue O)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_sub, map_pow, map_one]`. Conclude with `this`.
+
+Take `⟨f, e, -⟩` from `UpperTheory.finrank_gradedPiece_and_complexConjugation_invariants F.η F.Ψbar F.c (hc_two hF) hF.ηc (hc_c hF) j`. Establish `: Subsingleton (Gb (ResidueField O) j)`. Rewrite using `[← Module.finrank_zero_iff (R := ResidueField O), e]`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨0, fun m => Subsingleton.elim _ _, zero_ne_one⟩`.
+-/
 private theorem exists_scalar_action_nontrivial (hF : F.Ok) {j : ℤ} (hj : j ≠ 0) {x : Γ} (h1 : F.η x = 1) (h2 : IsUnit ((F.Ψ x : O) ^ 2 - 1)) :
     ∃ a : ResidueField O, (∀ m, F.gbar j x m = a • m) ∧ a ≠ 1 := by
   by_cases h : |j| ≤ 2
@@ -176,17 +245,26 @@ private theorem exists_scalar_action_nontrivial (hF : F.Ok) {j : ℤ} (hj : j �
       rw [← Module.finrank_zero_iff (R := ResidueField O), e]; omega
     exact ⟨0, fun m => Subsingleton.elim _ _, zero_ne_one⟩
 
+/- English proof (translation)
+Establish `h : F.Ψbar (F.loc v s) = 1` using `hs.2`. Use `hc_scal F.η F.Ψbar j (g := F.loc v s) hs.1.2 m` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `using this`.
+-/
 private theorem hc_N (j : ℤ) (v : ι) (s : F.D v) (hs : s ∈ F.Nv v) (m : Gb (ResidueField O) j) : F.gloc j v s m = m := by
   have h : F.Ψbar (F.loc v s) = 1 := hs.2
   have := hc_scal F.η F.Ψbar j (g := F.loc v s) hs.1.2 m
   rw [h] at this
   simpa using this
 
+/- English proof (translation)
+Use `hc_scal F.η F.Ψbar 0 (g := F.loc _ s) (hF.η_I _ (Or.inl rfl) s hs) m` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem hc_I (hF : F.Ok) (s : F.D F.vl) (hs : s ∈ F.Iv F.vl) (m : Gb (ResidueField O) 0) :
     F.gloc 0 F.vl s m = m := by
   have := hc_scal F.η F.Ψbar 0 (g := F.loc _ s) (hF.η_I _ (Or.inl rfl) s hs) m
   simpa using this
 
+/- English proof (translation)
+Establish `h : Continuous fun p : F.D v × Gb (ResidueField O) j => (F.loc v p.1, p.2)` using `((hF.π_cont.comp continuous_subtype_val).comp continuous_fst).prodMk continuous_snd`. Establish `h2 : Continuous fun p : Γ × Gb (ResidueField O) j => F.gbar j p.1 p.2` using `hc_cont hF j`. Establish `h3` using `h2.comp h`. Conclude with `h3`.
+-/
 private theorem hc_contv (hF : F.Ok) (j : ℤ) (v : ι) : ContAction (F.gloc j v) := by
   have h : Continuous fun p : F.D v × Gb (ResidueField O) j => (F.loc v p.1, p.2) :=
     ((hF.π_cont.comp continuous_subtype_val).comp continuous_fst).prodMk continuous_snd
@@ -194,6 +272,11 @@ private theorem hc_contv (hF : F.Ok) (j : ℤ) (v : ι) : ContAction (F.gloc j v
   have h3 := h2.comp h
   exact h3
 
+/- English proof (translation)
+Introduce `y hy`. Use `⟨coboundaries_le_cocycles _ (hc_contv hF j v) hy, fun _ s hs => ?_, fun _ _ => hy, fun e e' s hs => ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩` from `hy`. Rewrite using `[amitsur_d0_apply, hc_N j v s hs, sub_self]`. Substitute `e e'` using the available equality.
+
+Take `⟨m, rfl⟩` from `hy`. Rewrite using `[amitsur_d0_apply, hc_I hF s hs, sub_self]`.
+-/
 private theorem hc_B (hF : F.Ok) (j : ℤ) (v : ι) : B1 (F.gloc j v) ≤ F.ZL j v := by
   intro y hy
   refine ⟨coboundaries_le_cocycles _ (hc_contv hF j v) hy, fun _ s hs => ?_, fun _ _ => hy, fun e e' s hs => ?_⟩
@@ -203,6 +286,13 @@ private theorem hc_B (hF : F.Ok) (j : ℤ) (v : ι) : B1 (F.gloc j v) ≤ F.ZL j
     obtain ⟨m, rfl⟩ := hy
     rw [amitsur_d0_apply, hc_I hF s hs, sub_self]
 
+/- English proof (translation)
+Establish `e : (F.Nv v).subgroupOf (F.Iv v) = (((F.η.prod F.Ψbar).comp (F.loc v)).comp (F.Iv v).subtype).ker`. Use extensionality with `s`. Conclude with `⟨fun h => Prod.ext h.1.2 h.2, fun h => ⟨⟨s.2, congrArg Prod.fst h⟩, congrArg Prod.snd h⟩⟩`. Rewrite using `[Subgroup.relIndex, e]`. Use `⟨inferInstance, fun h => ?_⟩` and prove the remaining obligations.
+
+Rewrite `h` using `[Subgroup.index_ker]`. Take `⟨t, ht⟩` from `Subgroup.card_subgroup_dvd_card (((F.η.prod F.Ψbar).comp (F.loc v)).comp (F.Iv v).subtype).range`. Establish `h2` using `congrArg (Nat.cast (R := ResidueField O)) ht`. Use `letI := Fintype.ofFinite (ResidueField O)`. Rewrite `h2` using `[Nat.cast_mul, h, zero_mul, Nat.card_prod, Nat.card_units (ResidueField O), Nat.cast_mul, Nat.cast_sub Nat.card_pos, Nat.card_eq_fintype_card (α := ResidueField O), FiniteField.cast_card_eq_zero, Nat.card_eq_fintype_card, Fintype.card_units_int]`.
+
+Conclude with `hc_two hF (by simpa using h2)`.
+-/
 private theorem hc_idx (hF : F.Ok) (v : ι) : ((F.Nv v).subgroupOf (F.Iv v)).Normal ∧
     (((F.Nv v).relIndex (F.Iv v) : ℕ) : ResidueField O) ≠ 0 := by
   have e : (F.Nv v).subgroupOf (F.Iv v) = (((F.η.prod F.Ψbar).comp (F.loc v)).comp (F.Iv v).subtype).ker := by
@@ -219,6 +309,25 @@ private theorem hc_idx (hF : F.Ok) (v : ι) : ((F.Nv v).subgroupOf (F.Iv v)).Nor
     Nat.card_eq_fintype_card, Fintype.card_units_int] at h2
   exact hc_two hF (by simpa using h2)
 
+/- English proof (translation)
+Take `⟨f, d1, d2⟩` from `UpperTheory.finrank_gradedPiece_and_complexConjugation_invariants F.η F.Ψbar F.c (hc_two hF) hF.ηc (hc_c hF) j`. Use `haveI : Finite (Gb (ResidueField O) j) := Module.finite_of_finite (ResidueField O)`. Take `⟨c1, c2, c3⟩` from `UpperTheory.selmerComplex_finite_and_euler_characteristic F j hF.π_cont (hc_cont hF j) f (hc_B hF j) g1 g2 l1 l2 hs`. Use `⟨c1, c2, ?_⟩` and prove the remaining obligations. Establish `z` using `fun v => rank_cocycles_formula _ (hc_contv hF j v)`.
+
+Rewrite using `[c3, Finset.sum_eq_single F.vl (fun v _ hv => ?_) (fun h => (h (Finset.mem_univ _)).elim)]`. Use `swap`. Use `hc_tame (F.gloc j v) (F.Iv v) (F.Nv v) (F.ZL j v) (hc_contv hF j v) (hF.I_normal v) (hF.frob v) (fun s hs => hs.1.1) (hc_idx hF v).1 (hc_idx hF v).2 (hc_N j v) (fun y => ⟨fun h => ⟨h.1, h.2.1 hv⟩, fun h => ⟨h.1, fun _ => h.2, fun e => (hv e).elim, fun e => (hv e).elim⟩⟩)` as an intermediate fact. Use `z v` as an intermediate fact. Use `l4 v hv` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `zl` using `z F.vl`. Establish `d3 : finrank (ResidueField O) (LinearMap.ker (F.gbar j F.c - LinearMap.id)) = if |j| ≤ 1 then 1 else 0` using `d2`. Take `⟨x, x1, x2⟩` from `hF.x F.vl (Or.inl rfl)`. Establish `h0 : j ≠ 0 → finrank (ResidueField O) (H0 (F.gbar j)) = 0 ∧ finrank (ResidueField O) (H0 (F.gloc j F.vl)) = 0` using `fun hj => by`.
+
+Take `⟨a, a1, a2⟩` from `exists_scalar_action_nontrivial hF hj x1 x2`. Conclude with `⟨invariants_zero_of_scalar _ a1 a2, invariants_zero_of_scalar (F.gloc j F.vl) (x := x) a1 a2⟩`. Unfold `Frame.defect`. Break down `lt_trichotomy j 0 with hj | rfl | hj` into its components or cases. Establish `e : F.ZL j F.vl = B1 (F.gloc j F.vl)` using `le_antisymm (fun y hy => hy.2.2.1 rfl hj) (hc_B hF j _)`.
+
+Use `rank_coboundaries_invariants (F.gloc j F.vl)` as an intermediate fact. Use `h0 hj.ne` as an intermediate fact. Rewrite using `[e]`. Rewrite `d3` using `[abs_of_neg hj]`. Apply the tactic sequence `split_ifs at d3 ⊢ <;> omega`.
+
+Use `hc_tame (F.gloc 0 F.vl) (F.Iv _) (F.Iv _) (F.ZL 0 F.vl) (hc_contv hF 0 _) (hF.I_normal _) (hF.frob _) le_rfl (by rw [Subgroup.subgroupOf_self]; infer_instance) (by simp) (hc_I hF) (fun y => ⟨fun h => ⟨h.1, h.2.2.2 rfl rfl⟩, fun h => ⟨h.1, fun e => (e rfl).elim, fun _ e => (lt_irr …` as an intermediate fact. Establish `e : H0 (F.gbar 0) = LinearMap.ker (F.gbar 0 F.c - LinearMap.id)`. Use extensionality with `m`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, mem_riemannRochSpace_iff_regularAt_everywhere]`. Use `⟨fun h => h _, fun h g => ?_⟩` and prove the remaining obligations.
+
+Break down `Int.units_eq_one_or (F.η g) with h1 | h1` into its components or cases. Simplify using `using hc_scal F.η F.Ψbar 0 h1 m`. Conclude with `(hc_congr F.η F.Ψbar 0 (h1.trans hF.ηc.symm) (by simp) m).trans h`. Rewrite `g3` using `[e]`. Simplify using `only [show ¬ (0 : ℤ) = -1 by decide, show ¬ ((0 : ℤ) = 1 ∨ (0 : ℤ) = 2) by decide, if_false]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `e : F.ZL j F.vl = Z1 (F.gloc j F.vl)` using `le_antisymm (fun y hy => hy.1) fun y hy => ⟨hy, fun e => (e rfl).elim, fun _ e => (lt_asymm hj e).elim, fun _ e => (hj.ne' e).elim⟩`. Use `hV.h2 F.vl (Or.inl rfl) j hj.ne'` as an intermediate fact. Establish `: finrank (ResidueField O) (H2 (F.gloc j F.vl)) = 0` using `Module.finrank_zero_of_subsingleton`. Use `h0 hj.ne'` as an intermediate fact.
+
+Rewrite using `[e]`. Rewrite `d1`, `d3` using `[abs_of_pos hj]`. Apply the tactic sequence `split_ifs at d3 ⊢ <;> omega`.
+-/
 private theorem hc_count [Fintype ι] (hF : F.Ok) (hV : F.LocVan) (j : ℤ)
     (g1 : Module.Finite (ResidueField O) (H1 (F.gbar j))) (g2 : Module.Finite (ResidueField O) (H2 (F.gbar j)))
     (g3 : finrank (ResidueField O) (H1 (F.gbar j)) + finrank (ResidueField O) (LinearMap.ker (F.gbar j F.c - LinearMap.id)) =
@@ -285,6 +394,29 @@ private theorem hc_count [Fintype ι] (hF : F.Ok) (hV : F.LocVan) (j : ℤ)
 
 end Fr
 
+/- English proof (translation)
+Introduce `hLF hLT hLE hGF hGE hPT Ω _ _ _ l hl c N _ e ψ o₁ hd S A F hF j`. Establish `hO` using `hostFrame_ok Ω c e ψ o₁ hd S A F hF`. Establish `hV` using `hostFrame_locVan hLF hLT hLE Ω c e ψ o₁ hd S A F hF`. Take `⟨x, x1, x2, x3⟩` from `exists_sigma Ω c e ψ o₁ hd S A F hF F.vl (Or.inl rfl)`. Establish `hS : ContainsAbove S l` using `fun v hv => (hF.mem v).2 (by`.
+
+Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hv)`. Use `haveI : Finite (ResidueField c.O) := by haveI : IsLocalHom (algebraMap ℤ_[l] c.O) := (UpperTheory.V.Base.dvrFacts l c.O).2.2.1 haveI : Finite (ResidueField ℤ_[l]) := Finite.of_equiv _ (PadicInt.residueField (p := l)).symm.toEquiv`. Conclude with `Module.finite_of_finite (ResidueField ℤ_[l])`. Use `haveI : CharP (ResidueField c.O) l := by`.
+
+Use `(CharP.charP_iff_prime_eq_zero hl.out).2 ?_` and prove the remaining obligations. Use `haveI : IsLocalHom (algebraMap ℤ_[l] c.O) := (UpperTheory.V.Base.dvrFacts l c.O).2.2.1`. Rewrite using `[← map_natCast (residue c.O), residue_eq_zero_iff, ← map_natCast (algebraMap ℤ_[l] c.O), mem_maximalIdeal, mem_nonunits_iff, isUnit_map_iff, PadicInt.isUnit_iff, PadicInt.norm_p]`. Conclude with `(inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.out.one_lt)).ne`. Take `⟨f, -⟩` from `UpperTheory.finrank_gradedPiece_and_complexConjugation_invariants F.η F.Ψbar F.c (hc_two hO) hO.ηc (hc_c hO) j`.
+
+Use `haveI : Finite (Gb (ResidueField c.O) j) := Module.finite_of_finite (ResidueField c.O)`. Establish `hσ : ∃ (σ : Formalism.ConjugateSelfDual.G ℚ Ω) (a : ResidueField c.O) (n : ℕ), (∀ m, F.gbar j (F.π σ) m = a • m) ∧ (n : ZMod (l ^ 1)) = (cycMod ℚ Ω l 1 σ : (ZMod (l ^ 1))ˣ) ∧ a ≠ (n : ResidueField c.O)`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Take `⟨σ, s1, s2⟩` from `UpperTheory.exists_absGalois_fixing_sqrt_neg_one_cyclotomic_ne_one Ω l hd.l_odd`.
+
+Use `haveI : NeZero (l ^ 1) := ⟨pow_ne_zero _ hl.out.ne_zero⟩`. Use `⟨σ, 1, _, fun m => ?_, ZMod.natCast_zmod_val _, fun h => s2 (Units.ext ?_)⟩` and prove the remaining obligations. Simplify using `using hc_scal F.η F.Ψbar 0 ((DFunLike.congr_fun hF.η σ).trans s1) m`. Rewrite `h` using `[← Nat.cast_one, CharP.natCast_eq_natCast _ l]`. Rewrite using `[← ZMod.natCast_zmod_val (cycMod ℚ Ω l 1 σ : (ZMod (l ^ 1))ˣ).val, Units.val_one, ← Nat.cast_one (R := ZMod (l ^ 1)), ZMod.natCast_eq_natCast_iff]`.
+
+Simplify `h.symm` using `only [pow_one]`. Take `⟨a, a1, a2⟩` from `exists_scalar_action_nontrivial hO hj x1 x2`. Conclude with `⟨x, a, 1, a1, by rw [x3]; simp, by simpa using a2⟩`. Establish `hv : ∀ v : S, ((l : ℕ) : NumberField.RingOfIntegers ℚ) ∈ v.1.asIdeal → v = F.vl` using `fun v hv => by`. Establish `h : Prime ((l : ℕ) : ℤ)` using `Nat.prime_iff_prime_int.mp hl.out`.
+
+Establish `e : ((l : ℕ) : NumberField.RingOfIntegers ℚ) = Rat.ringOfIntegersEquiv.symm ((l : ℕ) : ℤ)` using `by simp`. Establish `hp : Prime ((l : ℕ) : NumberField.RingOfIntegers ℚ)`. Rewrite using `[e]`. Conclude with `(MulEquiv.prime_iff Rat.ringOfIntegersEquiv.symm.toMulEquiv).mpr h`. Establish `hm : (Ideal.span {((l : ℕ) : NumberField.RingOfIntegers ℚ)}).IsMaximal` using `((Ideal.span_singleton_prime hp.ne_zero).2 hp).isMaximal (by simpa using hl.out.ne_zero)`.
+
+Use `Subtype.ext (IsDedekindDomain.HeightOneSpectrum.ext ?_)` and prove the remaining obligations. Rewrite using `[← hm.eq_of_le v.1.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hv), ← hm.eq_of_le F.vl.1.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hF.vl)]`. Take `⟨σ, hcc, hc⟩` from `hF.cc`. Establish `hcont` using `hc_cont hO j`. Establish `hcv` using `hc_contv hO j`.
+
+Establish `key` using `hc_count hO hV j`. Establish `hvl` using `hF.vl`. Establish `hA` using `hF.isOver`. Establish `hπ` using `hF.π`. Establish `hD : F.D = fun v => Dec (F` using `ℚ) (A v) := funext hF.D`.
+
+Rewrite `key` using `[← hc]`. Use `clear hO hV x1 x2 x3 x hF hc`. Take `⟨π, η, Ψ, cc, D, I, vl, Sb⟩` from `F`. Simplify using `only at hπ hD`. Substitute `hπ hD` using the available equality.
+
+Take `⟨g1, g2, g3⟩` from `UpperTheory.global_euler_characteristic_rationals_odd_prime hGF hGE Ω l hd.l_odd _ _ S _ hS hcont σ hcc`. Establish `L` using `fun v : S => UpperTheory.local_euler_characteristic_rationals hLF hLE Ω l _ _ (A v) v.1 _ (hA v) (hcv v)`. Conclude with `key g1 g2 g3 (fun v => (L v).1) (fun v => (L v).2.1) ((L vl).2.2.1 hvl) (fun v h => (L v).2.2.2 fun h' => h (hv v h')) (UpperTheory.global_cohomology_finite_set hPT Ω l hd.l_odd _ _ S A _ hS hA hcont hσ)`.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.hostFrame_count :
     LocalFiniteness → LocalTateDuality → LocalEulerChar → GlobalFiniteness → GlobalEulerChar → GlobalTheory.Published.PoitouTateNormalised → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (c : Coef l) {N : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (o₁ : ℕ), HostData l e ψ o₁ →
     ∀ (S : Finset Pl) (A : S → ValuationSubring Ω) (F : Frame c.O (Formalism.ConjugateSelfDual.G ℚ Ω) (Gam Ω S) S), IsHostFrame Ω c e ψ S A F →

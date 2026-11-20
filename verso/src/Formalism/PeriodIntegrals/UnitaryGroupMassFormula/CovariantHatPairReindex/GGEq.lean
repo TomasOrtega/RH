@@ -6,6 +6,11 @@ namespace PI.QnCovHat2W
 
 open Formalism.REAL Formalism.FourierDecayAlt.Q
 
+/- English proof (translation)
+Rewrite using `[sum_two id F hF, ← reindex_pairs F β β', Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Simplify using `only [id, smul_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem one_side {m : ℕ} {M : Type*} [AddCommGroup M] [Module ℂ M]
     (F : (Fin m → Fin (m + 2)) → M)
     (hF : ∀ (x : Fin m → Fin (m + 2)) (π : Equiv.Perm (Fin m)),
@@ -29,6 +34,21 @@ noncomputable def GG {m : ℕ} {M : Type*} [AddCommGroup M] [Module ℂ M]
     (sgnL c id * sgnL d id * (β (c 0) * β' (c 1)) * (a (d 0) * a' (d 1))) •
       F (fun k => c k.succ.succ) (fun k => d k.succ.succ)
 
+/- English proof (translation)
+Set `Φ : (Fin m → Fin (m + 2)) → M` to `fun x => ∑ d : Fin (m + 2) → Fin (m + 2), sgnL d id • ((a (d 0) * a' (d 1)) • F x (fun k => d k.succ.succ))`. Establish `hΦ : ∀ (x : Fin m → Fin (m + 2)) (π : Equiv.Perm (Fin m)), Φ (x ∘ π) = ((Equiv.Perm.sign π : ℤ) : ℂ) • Φ x`. Introduce `x π`. Simplify using `only [Φ, hR, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_comm _ (sgnL d id), smul_comm ((Equiv.Perm.sign π : ℤ) : ℂ) (a (d 0) * a' (d 1))]`. Establish `h1 : GG F β β' a a' = ∑ c : Fin (m + 2) → Fin (m + 2), sgnL c id • ((β (c 0) * β' (c 1)) • Φ (fun k => c k.succ.succ))`. Unfold `GG`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Φ, Finset.smul_sum, smul_smul]`.
+
+Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ i i' : Fin (m + 2), Φ (skip2 i i') = (m.factorial : ℂ) • ∑ j : Fin (m + 2), ∑ j' : Fin (m + 2), if j < j' then ((-1 : ℂ) ^ ((j : ℕ) + (j' : ℕ)) * (a j' * a' j - a j * a' j')) • F (skip2 i i') (skip2 j j') else 0`. Introduce `i i'`.
+
+Conclude with `one_side (fun y => F (skip2 i i') y) (fun y π => hC _ y π) a a'`. Rewrite using `[h1, one_side Φ hΦ β β', Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hi : i < i'`. Simplify using `only [hi, if_true, true_and, h2, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j < j'`.
+
+Simplify using `only [hj, if_true, smul_smul]`. Use `congr 1`. Rewrite using `[pow_add, pow_add, pow_add, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hj]`.
+
+Simplify using `[hi]`.
+-/
 theorem GG_eq {m : ℕ} {M : Type*} [AddCommGroup M] [Module ℂ M]
     (F : (Fin m → Fin (m + 2)) → (Fin m → Fin (m + 2)) → M)
     (hR : ∀ (x y : Fin m → Fin (m + 2)) (π : Equiv.Perm (Fin m)),

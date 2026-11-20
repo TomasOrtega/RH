@@ -25,6 +25,13 @@ open GlobalTheory.LatVac
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `GlobalTheory.ThetaMove.mem_of_locP fun Q => ?_` and prove the remaining obligations. Establish `h : ((c : E) ^ (-expS SS Q))⁻¹ • x ∈ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal M` using `(Submodule.mem_iInf _).1 hx Q`. Establish `hc' : (c : E) ≠ 0` using `Nat.cast_ne_zero.2 hc.ne'`. Establish `key : ∀ k : ℕ, (c : E) = (c : E) ^ k * ((c : E) ^ (-expS SS Q))⁻¹ → (c : E) • x ∈ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal M` using `fun k hk => by`. Use `nsmul_mem h (c ^ k)` as an intermediate fact.
+
+Rewrite `this` using `[← Nat.cast_smul_eq_nsmul E, smul_smul, Nat.cast_pow, ← hk]`. Then use the resulting hypothesis. Unfold `expS at key`. Use `split_ifs at key`. Conclude with `key 0 (by simp)`. Conclude with `key 2 (by rw [neg_neg, zpow_one]; field_simp)`.
+
+Conclude with `key 1 (by simp)`.
+-/
 theorem natCast_smul_mem_of_halfAO {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ}
     {SS : Finset (HeightOneSpectrum (𝓞 E))} {M : Submodule (𝓞 E) (Formalism.L2.Col.HomE E a b)} {c : ℕ} (hc : 0 < c)
     {x : Formalism.L2.Col.HomE E a b} (hx : x ∈ halfAO SS M c) : (c : E) • x ∈ M := by
@@ -41,11 +48,17 @@ theorem natCast_smul_mem_of_halfAO {E : Type} [Field E] [NumberField E] [StarRin
   · exact key 2 (by rw [neg_neg, zpow_one]; field_simp)
   · exact key 1 (by simp)
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `r`. Rewrite using `[Formalism.L2.Col.mem_conjP, Formalism.L2.Col.mem_conjP, Formalism.L2.Col.cO_cO]`.
+-/
 theorem conjP_conjP (Q : HeightOneSpectrum (𝓞 D.host.E)) : Formalism.L2.Col.conjPrime₂ (Formalism.L2.Col.conjPrime₂ Q) = Q := by
   apply HeightOneSpectrum.ext
   ext r
   rw [Formalism.L2.Col.mem_conjP, Formalism.L2.Col.mem_conjP, Formalism.L2.Col.cO_cO]
 
+/- English proof (translation)
+Introduce `h'` and use `GlobalTheory.ChainOnto.FlagAct.not_isConjPl_of_idemSum h PP hPP _ h' fun r hr => ⟨Formalism.L2.Col.cO D.host.E r, by rw [Formalism.L2.Col.mem_conjP, Formalism.L2.Col.cO_cO]; exact hr, rfl⟩`.
+-/
 theorem conjP_not_mem {e : AE D} {SS : Finset (Formalism.L2.DIV.Pl D.host.E)} (h : IsIdemSum e SS)
     {PP : HeightOneSpectrum (𝓞 D.host.E)} (hPP : PP ∈ SS) : Formalism.L2.Col.conjPrime₂ PP ∉ SS := fun h' =>
   GlobalTheory.ChainOnto.FlagAct.not_isConjPl_of_idemSum h PP hPP _ h' fun r hr =>
@@ -58,14 +71,23 @@ open GlobalTheory.LatVac
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SplitScalar.adele_ext (by rw [RingHom.map_mul, RingHom.map_mul, ha, zero_mul, zero_mul]) (by rw [RingHom.map_mul, RingHom.map_mul]; rfl)`.
+-/
 theorem smul_tmul_fin {a : AE D} (ha : infPart D a = 0) (r : D.host.E) :
     a * ((pairA D.host.F 0 1) ⊗ₜ[D.host.F] r) = a * incA D r :=
   GlobalTheory.SplitScalar.adele_ext (by rw [RingHom.map_mul, RingHom.map_mul, ha, zero_mul, zero_mul])
     (by rw [RingHom.map_mul, RingHom.map_mul]; rfl)
 
+/- English proof (translation)
+Rewrite using `[symplOH, symplOH, GlobalTheory.SplitScalar.symplO_smul]`.
+-/
 theorem symplOH_smul (a : AE D) (x y : WO S T) : symplOH S T (a • x) y = symplOH S T x (cA D a • y) := by
   rw [symplOH, symplOH, GlobalTheory.SplitScalar.symplO_smul]
 
+/- English proof (translation)
+Establish `hXt : (X.map fun r => e * incA D r : WO S T) = e • (X.map (incA D) : WO S T)` using `by ext i j; rfl`. Establish `hF : cA D e • GlobalTheory.VacUnique.finRat S T X = cA D e • (X.map (incA D) : WO S T)`. Use extensionality with `i j`. Conclude with `smul_tmul_fin hinf _`. Rewrite using `[hXt, symplOH_smul, smul_sub, hF, smul_smul, mul_comm, hec, zero_smul, sub_zero]`.
+-/
 theorem lhs_eq {e : AE D} (hinf : infPart D (cA D e) = 0) (hec : e * cA D e = 0)
     (X : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     symplOH S T (X.map fun r => e * incA D r) (GlobalTheory.VacUnique.finRat S T X - X.map fun r => e * incA D r) =
@@ -75,12 +97,18 @@ theorem lhs_eq {e : AE D} (hinf : infPart D (cA D e) = 0) (hec : e * cA D e = 0)
     ext i j; exact smul_tmul_fin hinf _
   rw [hXt, symplOH_smul, smul_sub, hF, smul_smul, mul_comm, hec, zero_smul, sub_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `show e * ((pairA D.host.F 0 1) ⊗ₜ[D.host.F] ((c : D.host.E) * X i j)) = (e * incA D (c : D.host.E)) * incA D (X i j)`. Rewrite using `[smul_tmul_fin hinf, map_mul, mul_assoc]`.
+-/
 theorem smul_finRat_natCast {e : AE D} (hinf : infPart D e = 0) (c : ℕ) (X : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     e • GlobalTheory.VacUnique.finRat S T ((c : D.host.E) • X) = (e * incA D (c : D.host.E)) • (X.map (incA D) : WO S T) := by
   ext i j
   show e * ((pairA D.host.F 0 1) ⊗ₜ[D.host.F] ((c : D.host.E) * X i j)) = (e * incA D (c : D.host.E)) * incA D (X i j)
   rw [smul_tmul_fin hinf, map_mul, mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `show cA D e * (cA D e * incA D ((c : D.host.E)⁻¹ * X i j)) = (cA D e * incA D ((c : D.host.E)⁻¹)) * incA D (X i j)`. Rewrite using `[map_mul, ← mul_assoc, hcc, mul_assoc]`.
+-/
 theorem smul_map_inv {e : AE D} (hcc : cA D e * cA D e = cA D e) (c : ℕ) (X : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     cA D e • (((c : D.host.E)⁻¹ • X).map fun r => cA D e * incA D r : WO S T) =
       (cA D e * incA D ((c : D.host.E)⁻¹)) • (X.map (incA D) : WO S T) := by
@@ -88,10 +116,16 @@ theorem smul_map_inv {e : AE D} (hcc : cA D e * cA D e = cA D e) (c : ℕ) (X : 
   show cA D e * (cA D e * incA D ((c : D.host.E)⁻¹ * X i j)) = (cA D e * incA D ((c : D.host.E)⁻¹)) * incA D (X i j)
   rw [map_mul, ← mul_assoc, hcc, mul_assoc]
 
+/- English proof (translation)
+Use `show incA D (star (c : D.host.E)) = _`. Rewrite using `[star_natCast]`.
+-/
 theorem cA_incA_natCast (c : ℕ) : cA D (incA D (c : D.host.E)) = incA D (c : D.host.E) := by
   show incA D (star (c : D.host.E)) = _
   rw [star_natCast]
 
+/- English proof (translation)
+Establish `hcE : (c : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hc.ne'`. Establish `hs : cA D e * incA D (c : D.host.E) * (cA D e * incA D ((c : D.host.E)⁻¹)) = cA D e`. Rewrite using `[mul_mul_mul_comm, hcc, ← map_mul, mul_inv_cancel₀ hcE, map_one, mul_one]`. Rewrite using `[smul_finRat_natCast hinf, smul_map_inv hcc, symplOH_smul, smul_smul, RingHom.map_mul, cA_incA_natCast, hs]`.
+-/
 theorem rhs_eq {e : AE D} (hinf : infPart D e = 0) (hcc : cA D e * cA D e = cA D e) {c : ℕ} (hc : 0 < c)
     (X : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     symplOH S T (e • GlobalTheory.VacUnique.finRat S T ((c : D.host.E) • X))
@@ -102,6 +136,9 @@ theorem rhs_eq {e : AE D} (hinf : infPart D e = 0) (hcc : cA D e * cA D e = cA D
     rw [mul_mul_mul_comm, hcc, ← map_mul, mul_inv_cancel₀ hcE, map_one, mul_one]
   rw [smul_finRat_natCast hinf, smul_map_inv hcc, symplOH_smul, smul_smul, RingHom.map_mul, cA_incA_natCast, hs]
 
+/- English proof (translation)
+Establish `e1 : GlobalTheory.VacUnique.finRat S T (LinearMap.toMatrix' ((c : D.host.E) • x')) = finTens 1 (LinearMap.toMatrix' ((c : D.host.E) • x'))` using `by ext i j; rfl`. Rewrite using `[e1]`. Conclude with `finTens_mem_latO (one_mem_intAf _) (GlobalTheory.AdForm.HalfPairing.toMatrix_mem_latRat hcc hN (natCast_smul_mem_of_halfAO hc hx))`.
+-/
 theorem finRat_mem {N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {N' : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
     (hcc : D.host.ccK = ⊤) (hN : IsSelfDualC S N) {SS : Finset (HeightOneSpectrum (𝓞 D.host.E))} {c : ℕ} (hc : 0 < c)
     {x' : Formalism.L2.Col.HomE D.host.E S.rank T.rank}
@@ -114,6 +151,15 @@ theorem finRat_mem {N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {N'
   exact finTens_mem_latO (one_mem_intAf _)
     (GlobalTheory.AdForm.HalfPairing.toMatrix_mem_latRat hcc hN (natCast_smul_mem_of_halfAO hc hx))
 
+/- English proof (translation)
+Establish `hno : ∀ PP ∈ SS, Formalism.L2.Col.conjPrime₂ PP ∉ SS` using `fun PP hPP => conjP_not_mem hE hPP`. Take `⟨⟨es, hes, rfl⟩, -⟩` from `hE`. Establish `e1 : ((LinearMap.toMatrix' ((c : D.host.E)⁻¹ • x')).map fun r => cA D (∑ PP ∈ SS, es PP) * incA D r : WO S T) = ∑ PP ∈ SS, ((LinearMap.toMatrix' ((c : D.host.E)⁻¹ • x')).map fun r => cA D (es PP) * incA D r : WO S T)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.sum_apply, map_sum, Finset.sum_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1]`. Use `sum_mem fun PP hPP => GlobalTheory.AdForm.HalfPairing.conj_comp_mem hcc hN (hes PP hPP) ?_ ?_` and prove the remaining obligations. Use `GlobalTheory.PlaceVec.idemSum_infPart (P := {PP}) ⟨⟨es, fun Q hQ => ?_, (Finset.sum_singleton _ _).symm⟩, (hes PP hPP).1.2.1⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.1 hQ]`.
+
+Conclude with `hes PP hPP`. Establish `h : ((c : D.host.E) ^ (-expS SS (Formalism.L2.Col.conjPrime₂ PP)))⁻¹ • x' ∈ Formalism.HermitianLatticesTheory.localization₂ (Formalism.L2.Col.conjPrime₂ PP).asIdeal (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N')` using `(Submodule.mem_iInf _).1 hx _`. Establish `hexp : expS SS (Formalism.L2.Col.conjPrime₂ PP) = -1`. Unfold `expS`. Rewrite using `[if_neg (hno PP hPP), conjP_conjP, if_pos hPP]`.
+
+Rewrite `h` using `[hexp, neg_neg, zpow_one]`. Conclude with `h`.
+-/
 theorem conjHalf_mem {N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {N' : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
     (hcc : D.host.ccK = ⊤) (hN : IsSelfDualC S N) {e : AE D} {SS : Finset (Formalism.L2.DIV.Pl D.host.E)} (hE : IsIdemSum e SS)
     {c : ℕ} {x' : Formalism.L2.Col.HomE D.host.E S.rank T.rank}
@@ -141,6 +187,11 @@ theorem conjHalf_mem {N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {
     rw [hexp, neg_neg, zpow_one] at h
     exact h
 
+/- English proof (translation)
+Introduce `D ψ θ S T δ sc hP e SS hE h2 N N' hN hN' c hc _hodd x' hx`. Establish `hinf : infPart D e = 0` using `GlobalTheory.PlaceDatum.infPart_idemSum hE`. Establish `hinfc : infPart D (cA D e) = 0` using `GlobalTheory.PlaceDatum.infPart_cA hinf`. Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self hE`. Establish `hcc : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, hee]`.
+
+Establish `H` using `GlobalTheory.HalfCocycle.char_symplOH_idem_conj D ψ θ S T δ sc hP e SS hE h2 N N' hN hN' _ (finRat_mem hP.cc hN hc hx) _ (conjHalf_mem hP.cc hN hE hx)`. Establish `e1 : ∀ r : D.host.E, (LinearMap.toMatrix' (r • x') : Matrix (Fin T.rank) (Fin S.rank) D.host.E) = r • LinearMap.toMatrix' x'` using `fun r => LinearEquiv.map_smul LinearMap.toMatrix' r x'`. Rewrite `H` using `[e1, e1, rhs_eq hinf hcc hc]`. Rewrite using `[lhs_eq hinfc hE.2]`. Conclude with `H`.
+-/
 theorem cocycle_trivial : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → (∀ Q ∈ SS, ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal) → ∀ (N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S N → IsSelfDualC T N' → ∀ (c : ℕ), 0 < c → Odd c → ∀ x' ∈ halfAO SS (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') c, ψ (symplOH S T ((LinearMap.toMatrix' x').map fun r => e * incA D r) ((GlobalTheory.VacUnique.finRat S T (LinearMap.toMatrix' x')) - ((LinearMap.toMatrix' x').map fun r => e * incA D r))) = 1 := by
   intro D ψ θ S T δ sc hP e SS hE h2 N N' hN hN' c hc _hodd x' hx
   have hinf : infPart D e = 0 := GlobalTheory.PlaceDatum.infPart_idemSum hE

@@ -8,6 +8,15 @@ namespace UpperTheory.ConvolutionTheory.C
 
 section SlopeTestRemainingChoices
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact fun h h1 h2 => base h h1 fun v => h2 v (Finset.notMem_empty v)`. Consider the case `insert a s has ih`. Introduce `h h1 h2`. Rewrite using `[← RestrictedTensor.single_mul_eraseAt a h]`.
+
+Use `H.mul_mem (hL a _ (h1 a)) (ih _ (fun v => ?_) (fun v hv => ?_))` and prove the remaining obligations. Distinguish the cases in `hva : v = a`. Substitute `hva` using the available equality. Rewrite using `[RestrictedTensor.eraseAt_apply_self]`. Conclude with `one_mem _`.
+
+Rewrite using `[RestrictedTensor.eraseAt_apply_of_ne _ hva]`. Conclude with `h1 v`. Distinguish the cases in `hva : v = a`. Substitute `hva` using the available equality. Rewrite using `[RestrictedTensor.eraseAt_apply_self]`.
+
+Conclude with `one_mem _`. Rewrite using `[RestrictedTensor.eraseAt_apply_of_ne _ hva]; exact h2 v (by simp [hva, hv])`.
+-/
 private theorem mem_of_finite_places {ι : Type*} {G : ι → Type*} [∀ v, Group (G v)] {A : ∀ v, Subgroup (G v)}
     (H : Subgroup (Πʳ v, [G v, A v])) (L C : ∀ v, Subgroup (G v))
     (hL : ∀ v, ∀ x ∈ L v, RestrictedTensor.singleHom A v x ∈ H)
@@ -28,11 +37,17 @@ private theorem mem_of_finite_places {ι : Type*} {G : ι → Type*} [∀ v, Gro
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [rhoF, _root_.map_mul]`. Conclude with `UnitaryRep.map_mul_apply _ _ _ _`.
+-/
 private theorem rhoF_mul (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (a b : AdelicGLn.FiniteAdelicGL K n) (x : LL μ) :
     rhoF μ (a * b) x = rhoF μ a (rhoF μ b x) := by
   simp only [rhoF, _root_.map_mul]
   exact UnitaryRep.map_mul_apply _ _ _ _
 
+/- English proof (translation)
+Simplify using `only [rhoF, _root_.map_one]`. Conclude with `UnitaryRep.map_one_apply _ _`.
+-/
 private theorem rhoF_one (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (x : LL μ) : rhoF μ 1 x = x := by
   simp only [rhoF, _root_.map_one]
   exact UnitaryRep.map_one_apply _ _
@@ -48,24 +63,39 @@ private def stab (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (x : LL μ) :
     conv_lhs => rw [← ha]
     rw [← rhoF_mul, inv_mul_cancel, rhoF_one]
 
+/- English proof (translation)
+The claim follows from `isClosed_eq (((rightRegularRep (rationalGLOne K n) μ).continuous_orbit x).comp MultiplicityOne.continuous_finProj) continuous_const`.
+-/
 private theorem isClosed_stab (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (x : LL μ) :
     IsClosed (stab μ x : Set (AdelicGLn.FiniteAdelicGL K n)) :=
   isClosed_eq (((rightRegularRep (rationalGLOne K n) μ).continuous_orbit x).comp MultiplicityOne.continuous_finProj)
     continuous_const
 
+/- English proof (translation)
+Simplify using `[fixF, Submodule.mem_iInf, LinearMap.mem_eqLocus]`.
+-/
 private theorem mem_fixF (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (W : Subgroup (AdelicGLn.FiniteAdelicGL K n)) (x : LL μ) :
     x ∈ fixF μ W ↔ ∀ u ∈ W, rhoF μ u x = x := by
   simp [fixF, Submodule.mem_iInf, LinearMap.mem_eqLocus]
 
+/- English proof (translation)
+Simplify using `[fixL, mem_fixF]`.
+-/
 private theorem mem_fixL (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) (J : Subgroup (Gw n w)) (x : LL μ) :
     x ∈ fixL μ w J ↔ ∀ g ∈ J, rhoF μ (AdelicGLn.localEmbedding w g) x = x := by
   simp [fixL, mem_fixF]
 
+/- English proof (translation)
+Use `show (AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (finEmb K n h)).2) v = _`. Rewrite using `[prodEquiv_finEmb]`.
+-/
 private theorem finAt_finEmb' (h : AdelicGLn.FiniteAdelicGL K n) (v : Pl K) :
     finAt v (finEmb K n h) = AdelicGLn.finiteRestrictedEquiv K n h v := by
   show (AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (finEmb K n h)).2) v = _
   rw [prodEquiv_finEmb]
 
+/- English proof (translation)
+The claim follows from `ContinuousMulEquiv.apply_symm_apply _ _`.
+-/
 private theorem equiv_localEmbedding (w : Pl K) (g : Gw n w) :
     AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.localEmbedding w g) =
       RestrictedTensor.singleHom (fun v : Pl K => GLnLocal.integralGL (v.adicCompletion K) n) w g :=
@@ -75,6 +105,39 @@ end SlopeTestRemainingChoices
 
 end UpperTheory.ConvolutionTheory.C
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ P U`. Set `e` to `AdelicGLn.finiteRestrictedEquiv K n`. Set `I : ∀ v : Pl K, Subgroup (Gw n v)` to `fun v => GLnLocal.integralGL (v.adicCompletion K) n`. Set `lev : ∀ v : Pl K, Subgroup (Gw n v)` to `fun v => if v ∈ P then U v else I v`. Establish `hmem : ∀ h, h ∈ levOn P U ↔ ∀ v, e h v ∈ lev v` using `fun h => by show (∀ v, finAt v (finEmb K n h) ∈ _) ↔ _`.
+
+Simplify using `only [finAt_finEmb']`. Both sides reduce to the same expression. Establish `hloc : ∀ (v : Pl K) (g : Gw n v), g ∈ lev v → AdelicGLn.localEmbedding v g ∈ levOn P U` using `fun v g hg => by`. Use `(hmem _).2 fun w => ?_` and prove the remaining obligations. Use `show e (AdelicGLn.localEmbedding v g) w ∈ lev w`.
+
+Rewrite using `[equiv_localEmbedding]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[RestrictedTensor.singleHom_apply_self]`. Conclude with `hg`.
+
+Rewrite using `[RestrictedTensor.singleHom_apply_of_ne _ hw]`. Conclude with `one_mem _`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[mem_fixF]`.
+
+Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `Submodule.mem_iInf _ |>.2 fun v => Submodule.mem_iInf _ |>.2 fun hv => ?_` and prove the remaining obligations. Use `(mem_fixL μ v _ x).2 fun g hg => hx _ (hloc v g ?_)` and prove the remaining obligations. Simplify `hg` using `[lev, hv, I]`. Use `Submodule.mem_iInf _ |>.2 fun v => Submodule.mem_iInf _ |>.2 fun hv => ?_` and prove the remaining obligations.
+
+Use `(mem_fixL μ v _ x).2 fun g hg => hx _ (hloc v g ?_)` and prove the remaining obligations. Simplify `hg` using `[lev, hv]`. Introduce `x hx`. Take `⟨h1, h2⟩` from `Submodule.mem_inf.1 hx`. Establish `hfix : ∀ (v : Pl K) (g : Gw n v), g ∈ lev v → rhoF μ (AdelicGLn.localEmbedding v g) x = x` using `fun v g hg => by`.
+
+Distinguish the cases in `hv : v ∈ P`. Use `(Submodule.mem_iInf _ |>.1 (Submodule.mem_iInf _ |>.1 h2 v) hv)` as an intermediate fact. Conclude with `(mem_fixL μ v _ x).1 this g (by simpa [lev, hv] using hg)`. Use `(Submodule.mem_iInf _ |>.1 (Submodule.mem_iInf _ |>.1 h1 v) hv)` as an intermediate fact. Conclude with `(mem_fixL μ v _ x).1 this g (by simpa [lev, hv, I] using hg)`.
+
+Set `H : Subgroup (Πʳ v : Pl K, [Gw n v, I v])` to `(stab μ x).comap e.symm.toMulEquiv.toMonoidHom`. Establish `hHc : IsClosed (H : Set (Πʳ v : Pl K, [Gw n v, I v]))` using `(isClosed_stab μ x).preimage e.symm.continuous`. Establish `hL : ∀ v, ∀ g ∈ lev v, RestrictedTensor.singleHom I v g ∈ H` using `fun v g hg => by show rhoF μ (e.symm _) x = x`. Establish `: e.symm (RestrictedTensor.singleHom I v g) = AdelicGLn.localEmbedding v g`. Rewrite using `[ContinuousMulEquiv.symm_apply_eq]`.
+
+Conclude with `(equiv_localEmbedding v g).symm`. Rewrite using `[this]`. Conclude with `hfix v g hg`. Establish `hfin` using `mem_of_finite_places H lev (fun _ => ⊥) hL (fun h _ hb => by`. Establish `: h = 1` using `DFunLike.ext _ _ fun v => Subgroup.mem_bot.1 (hb v)`.
+
+Rewrite using `[this]`. Conclude with `one_mem _)`. Establish `hint` using `mem_of_finite_places H lev I hL (fun h ha hb => by`. Set `x0 : ∀ v : Pl K, (I v : Set (Gw n v))` to `fun v => ⟨h v, hb v⟩`. Set `y : Finset (Pl K) → ∀ v : Pl K, (I v : Set (Gw n v))` to `fun S v => if v ∈ S then x0 v else ⟨1, one_mem _⟩`.
+
+Set `f : (∀ v : Pl K, (I v : Set (Gw n v))) → Πʳ v : Pl K, [Gw n v, I v]` to `RestrictedProduct.structureMap _ _ Filter.cofinite`. Establish `hf : Continuous f` using `RestrictedProduct.isEmbedding_structureMap.continuous`. Establish `hy : Tendsto y atTop (𝓝 x0)` using `tendsto_pi_nhds.2 fun v => tendsto_const_nhds.congr' ((eventually_ge_atTop ({v} : Finset (Pl K))).mono fun S hS => by`. Establish `: v ∈ S` using `hS (Finset.mem_singleton_self v)`. Simplify using `[y, this])`.
+
+Establish `hlim` using `(hf.tendsto x0).comp hy`. Establish `hx0 : f x0 = h` using `DFunLike.ext _ _ fun v => rfl`. Rewrite `hlim` using `[hx0]`. Use `hHc.mem_of_tendsto hlim (Eventually.of_forall fun S => ?_)` and prove the remaining obligations. Use `hfin S _ (fun v => ?_) (fun v hv => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hv : v ∈ S`. Use `show ((y S v : _) : Gw n v) ∈ lev v`. Simplify using `only [y, hv, if_true]`. Conclude with `ha v`. Use `show ((y S v : _) : Gw n v) ∈ lev v`.
+
+Simplify using `only [y, hv, if_false]`. Conclude with `one_mem _`. Use `show ((y S v : _) : Gw n v) ∈ (⊥ : Subgroup (Gw n v))`. Simplify using `only [y, hv, if_false]`. Conclude with `one_mem _) P`.
+
+Use `(mem_fixF μ _ x).2 fun u hu => ?_` and prove the remaining obligations. Use `hint (e u) ((hmem u).1 hu) (fun v hv => by` as an intermediate fact. Use `(hmem u).1 hu v` as an intermediate fact. Simplify `this)` using `[lev, hv]`. Use `show u ∈ stab μ x`.
+
+Establish `h3 : e.symm (e u) ∈ stab μ x` using `this`. Simplify using `using h3`.
+-/
 theorem UpperTheory.ConvolutionTheory.C.fixLev :
     UpperTheory.ConvolutionTheory.C.FixLev := by
   intro K _ _ n μ _ P U

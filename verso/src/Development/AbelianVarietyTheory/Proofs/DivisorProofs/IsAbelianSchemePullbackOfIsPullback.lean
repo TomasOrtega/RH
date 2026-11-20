@@ -18,6 +18,11 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.Desc
 
+/- English proof (translation)
+Introduce `S T S' G _ t A _ a g hG hA sq`. Use `exact`. Use the proof step `{ comm := by have := hG.comm; infer_instance smooth := by have := hG.smooth; change Smooth (pullback.snd G.hom t); infer_instance proper := by`. Use `hA.proper` as an intermediate fact. Express the relevant statement in the definitionally equal form `IsProper (pullback.snd G.hom t)`.
+
+Conclude with `MorphismProperty.of_isPullback (P := @IsProper) sq inferInstance`. Use `geomConnected := by`. Use `hA.geomConnected` as an intermediate fact. Express the relevant statement in the definitionally equal form `GeometricallyConnected (pullback.snd G.hom t)`. Conclude with `MorphismProperty.of_isPullback (P := @GeometricallyConnected) sq inferInstance }`.
+-/
 theorem isAbelianScheme_pullback_of_isPullback : ∀ (S T S' : Scheme.{0}) (G : Over S) [GrpObj G] (t : T ⟶ S) (A : Over S') [GrpObj A] (a : pullback G.hom t ⟶ A.left) (g : T ⟶ S'), IsSemiAbelian G → IsAbelianScheme A → IsPullback a (pullback.snd G.hom t) A.hom g → IsAbelianScheme ((Over.pullback t).obj G) := by
   intro S T S' G _ t A _ a g hG hA sq
   exact
@@ -30,6 +35,19 @@ theorem isAbelianScheme_pullback_of_isPullback : ∀ (S T S' : Scheme.{0}) (G : 
       have := hA.geomConnected; change GeometricallyConnected (pullback.snd G.hom t)
       exact MorphismProperty.of_isPullback (P := @GeometricallyConnected) sq inferInstance }
 
+/- English proof (translation)
+Introduce `R₀ _ _ f A _ _ hA D hD hsym R _ _ _ _ hR ρ hflat hρf G _ _ hG V φ θ D₁ hV hsq y α hα hcomp hff hpp`. Take `⟨g, l, hl, sq⟩` from `GlobalTheory.GenericFibreChart.exists_isPullback_generic R₀ f A R ρ hρf G V φ hV hsq`. Establish `hGK : IsAbelianScheme ((Over.pullback (jK R)).obj G)` using `isAbelianScheme_pullback_of_isPullback _ _ _ G (jK R) A (l ≫ φ) g hG hA sq`. Use `haveI : IsProper ((Over.pullback (jK R)).obj G).hom := hGK.proper`. Use `haveI : IsProper A.hom := hA.proper`.
+
+Use `haveI : CompactSpace A.left := QuasiCompact.compactSpace_of_compactSpace A.hom`. Establish `hAD : IsAmpleLB (toLB D)` using `(ampleDiv_iff_isAmpleLB A.left D).1 hD`. Establish `h1 : IsAmpleLB ((toLB D).pull (l ≫ φ))` using `hAD.pull_of_isPullback sq`. Establish `h3 : LBIso ((toLB D₁).pull V.ι) ((toLB D).pull φ)` using `GlobalTheory.Desc.PullOpen.lbIso_pull _ _ V φ θ D D₁ hff hpp`. Establish `hL₁` using `isLB_toLB D₁`.
+
+Establish `h4 : LBIso ((toLB D₁).pull (pullback.fst G.hom (jK R))) ((toLB D).pull (l ≫ φ))`. Rewrite using `[← hl]`. Conclude with `LBIso.trans (LB.isLB_pull hL₁ _) (LB.isLB_pull (LB.isLB_pull hL₁ _) _) (LB.isLB_pull (isLB_toLB D) _) (GlobalTheory.OriginCohom.lbIso_pull_pull_comp hL₁ V.ι l).symm (LBIso.trans (LB.isLB_pull (LB.isLB_pull hL₁ _) _) (LB.isLB_pull (LB.isLB_pull (isLB_toLB D) _) _) (LB.isLB_pull (i …`. Establish `h5 : IsAmpleLB ((toLB D₁).pull (pullback.fst G.hom (jK R)))` using `h1.of_lbIso (LB.isLB_pull hL₁ _) h4`. Establish `h6` using `(relAmple_iff_isAmpleLB_of_isAffine ((Over.pullback (jK R)).obj G) (LB.isLB_pull hL₁ _)).2 h5`.
+
+Establish `hlα : α = l ≫ φ`. Use `hcomp _ (𝟙 _) l (by rw [Category.id_comp, hl])` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `hs1` using `GlobalTheory.T.symmetric_lineBundle_pullback_grpPullback _ _ A ((Over.pullback (jK R)).obj G) y α hα (toLB D) (isLB_toLB D) hsym`. Rewrite `hs1` using `[hlα]`.
+
+Establish `hK₁` using `LB.isLB_pull hL₁ (pullback.fst G.hom (jK R))`. Establish `hK` using `LB.isLB_pull (isLB_toLB D) (l ≫ φ)`. Establish `hs2 : LBIso (((toLB D₁).pull (pullback.fst G.hom (jK R))).pull (GrpObj.inv : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G).left) ((toLB D₁).pull (pullback.fst G.hom (jK R)))` using `LBIso.trans (LB.isLB_pull hK₁ _) (LB.isLB_pull hK _) hK₁ (GlobalTheory.Mum.UExt.lbIso_pull h4 _) (LBIso.trans (LB.isLB_pull hK _) hK hK₁ hs1 h4.symm)`. Use `haveI : IsIntegrallyClosed R := (GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing R).2`. Establish `hs3` using `GlobalTheory.T.lineBundle_symmetric_of_symmetric_generic_fibre R G hG (toLB D₁) hL₁ hs2`.
+
+Establish `h7` using `GlobalTheory.T.raynaud_lineBundle_relAmple_of_generic_semiAbelian R hR G hG hGK (toLB D₁) hL₁ h6 hs3`. Use `haveI : QuasiCompact G.hom := hG.quasiCompact`. Use `haveI : CompactSpace G.left := QuasiCompact.compactSpace_of_compactSpace G.hom`. Conclude with `(ampleDiv_iff_isAmpleLB G.left D₁).2 h7`.
+-/
 theorem ampleDiv_closure_on_chart : ∀ (R₀ : Type) [CommRing R₀] [IsDomain R₀] (f : R₀) (A : Over (Sp (Localization.Away f))) [GrpObj A] [IsIntegral A.left], IsAbelianScheme A → ∀ D : CartierDiv A.left, AmpleDiv D → LBIso ((toLB D).pull (GrpObj.inv : A ⟶ A).left) (toLB D) → ∀ (R : Type) [CommRing R] [IsRegularLocalRing R] [IsDomain R] [CharZero R], IsAdicComplete (maximalIdeal R) R → ∀ (ρ : R₀ →+* R), ρ.Flat → ρ f ≠ 0 → ∀ (G : Over (Sp R)) [GrpObj G] [IsIntegral G.left], IsSemiAbelian G → ∀ (V : G.left.Opens) (φ : V.toScheme ⟶ A.left) (θ : A.left.functionField →+* G.left.functionField) (D₁ : CartierDiv G.left), (∀ z : G.left, z ∈ V ↔ ρ f ∉ (G.hom z).asIdeal) → IsPullback φ (V.ι ≫ G.hom) (A.hom ≫ awayMap f) (spMap ρ) → ∀ (y : Sp (FractionRing R) ⟶ Sp (Localization.Away f)) (α : pullback G.hom (jK R) ⟶ A.left), IsGrpPullback ((Over.pullback (jK R)).obj G) A y α → (∀ (T : Scheme.{0}) (t : T ⟶ pullback G.hom (jK R)) (t' : T ⟶ V.toScheme), t ≫ pullback.fst _ _ = t' ≫ V.ι → t ≫ α = t' ≫ φ) → PFF V.ι φ θ → PPull V.ι φ θ D D₁ → AmpleDiv D₁ := by
   intro R₀ _ _ f A _ _ hA D hD hsym R _ _ _ _ hR ρ hflat hρf G _ _ hG V φ θ D₁ hV hsq y α hα hcomp hff hpp
   obtain ⟨g, l, hl, sq⟩ := GlobalTheory.GenericFibreChart.exists_isPullback_generic R₀ f A R ρ hρf G V φ hV hsq

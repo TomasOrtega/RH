@@ -12,15 +12,26 @@ namespace GlobalTheory.HolDict.VKill
 
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.exp_conj P _ hP, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem conj_exp {P : Mt n} (hP : IsUnit P) (X : Mt n) (t : ℝ) :
     P * NormedSpace.exp (t • X) * P⁻¹ = NormedSpace.exp (t • (P * X * P⁻¹)) := by
   rw [← Matrix.exp_conj P _ hP, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Unfold `dRep`. Simplify using `only [conj_exp hP]`.
+-/
 theorem dRep_conj {P : Mt n} (hP : IsUnit P) (σ : Mt n → (H →L[ℂ] H)) (X : Mt n) (v : H) :
     dRep (fun g => σ (P * g * P⁻¹)) X v = dRep σ (P * X * P⁻¹) v := by
   unfold dRep
   simp only [conj_exp hP]
 
+/- English proof (translation)
+Establish `hd : IsUnit Pᴴ.det`. Rewrite using `[det_conjTranspose]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 hP).star`. Establish `h1 : (Pᴴ)⁻¹ * Pᴴ = 1` using `Matrix.nonsing_inv_mul _ hd`. Establish `h2 : ∀ Y : Mt n, (Pᴴ)⁻¹ * (Pᴴ * Y) = Y` using `fun Y => by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+
+Unfold `conjH`. Simplify using `only [Matrix.mul_inv_rev, conjTranspose_mul, conjTranspose_nonsing_inv, Matrix.mul_assoc, h2, Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem conjH_conj {P : Mt n} (hP : IsUnit P) (J Z : Mt n) :
     conjH (Pᴴ * J * P) (P⁻¹ * Z * P) = P⁻¹ * conjH J Z * P := by
   have hd : IsUnit Pᴴ.det := by
@@ -31,6 +42,9 @@ theorem conjH_conj {P : Mt n} (hP : IsUnit P) (J Z : Mt n) :
   simp only [Matrix.mul_inv_rev, conjTranspose_mul, conjTranspose_nonsing_inv, Matrix.mul_assoc, h2, Matrix.mul_neg,
     Matrix.neg_mul]
 
+/- English proof (translation)
+Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hP)`. Establish `h2 : ∀ (c : ℂ) (Y : Mt n), P * (c • (P⁻¹ * Y * P)) * P⁻¹ = c • Y` using `fun c Y => by`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one]`. Unfold `dRepC`. Rewrite using `[dRep_conj hP, dRep_conj hP, conjH_conj hP, ← Matrix.add_mul, ← Matrix.mul_add, ← Matrix.sub_mul, ← Matrix.mul_sub, h2, h2]`.
+-/
 theorem dRepC_conj {P : Mt n} (hP : IsUnit P) (J : Mt n) (σ : Mt n → (H →L[ℂ] H)) (Z : Mt n) (v : H) :
     dRepC (Pᴴ * J * P) (fun g => σ (P * g * P⁻¹)) (P⁻¹ * Z * P) v = dRepC J σ Z v := by
   have h1 : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hP)
@@ -41,6 +55,11 @@ theorem dRepC_conj {P : Mt n} (hP : IsUnit P) (J : Mt n) (σ : Mt n → (H →L[
   rw [dRep_conj hP, dRep_conj hP, conjH_conj hP, ← Matrix.add_mul, ← Matrix.mul_add, ← Matrix.sub_mul, ← Matrix.mul_sub,
     h2, h2]
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hP`. Proceed by induction on `l with`. Consider the case `nil => simp [Matrix.mul_nonsing_inv _ hd]`. Consider the case `cons a l ih`. Rewrite using `[List.map_cons, List.prod_cons, List.prod_cons, ← ih]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc P⁻¹ P, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]`.
+-/
 theorem conj_prod {P : Mt n} (hP : IsUnit P) (l : List (Mt n)) :
     P * l.prod * P⁻¹ = (l.map fun g => P * g * P⁻¹).prod := by
   have hd := (Matrix.isUnit_iff_isUnit_det _).1 hP
@@ -51,6 +70,15 @@ theorem conj_prod {P : Mt n} (hP : IsUnit P) (l : List (Mt n)) :
     simp only [Matrix.mul_assoc]
     rw [← Matrix.mul_assoc P⁻¹ P, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hP)`. Establish `h2 : ∀ Y : Mt n, P * (P⁻¹ * Y) = Y` using `fun Y => by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `hd : IsUnit Pᴴ.det`. Rewrite using `[det_conjTranspose]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 hP).star`.
+
+Establish `h3 : (Pᴴ)⁻¹ * Pᴴ = 1` using `Matrix.nonsing_inv_mul _ hd`. Establish `h4 : ∀ Y : Mt n, (Pᴴ)⁻¹ * (Pᴴ * Y) = Y` using `fun Y => by rw [← Matrix.mul_assoc, h3, Matrix.one_mul]`. Introduce `k Xs hX`. Use `h k (fun i => P⁻¹ * Xs i * P) (fun i => by` as an intermediate fact. Establish `e : (Xs i)ᴴ * J + J * Xs i = 0` using `hX i`.
+
+Use `show (P⁻¹ * Xs i * P)ᴴ * (Pᴴ * J * P) + (Pᴴ * J * P) * (P⁻¹ * Xs i * P) = 0`. Establish `e2 : (P⁻¹ * Xs i * P)ᴴ * (Pᴴ * J * P) + (Pᴴ * J * P) * (P⁻¹ * Xs i * P) = Pᴴ * ((Xs i)ᴴ * J + J * Xs i) * P`. Simplify using `only [conjTranspose_mul, conjTranspose_nonsing_inv, Matrix.mul_assoc, h2, h4, Matrix.mul_add, Matrix.add_mul]`. Rewrite using `[e2, e, Matrix.mul_zero, Matrix.zero_mul])`. Simplify using `only [conj_prod hP, List.map_ofFn, Function.comp_def, conj_exp hP] at this`.
+
+Simplify using `only [Matrix.mul_assoc, h2, h1, Matrix.mul_one] at this`. Conclude with `this`.
+-/
 theorem smooth_conj {P : Mt n} (hP : IsUnit P) (J : Mt n) (σ : Mt n → (H →L[ℂ] H)) (v : H)
     (h : SmoothVec (lieH (Pᴴ * J * P)) (fun g => σ (P * g * P⁻¹)) v) : SmoothVec (lieH J) σ v := by
   have h1 : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hP)
@@ -71,18 +99,49 @@ theorem smooth_conj {P : Mt n} (hP : IsUnit P) (J : Mt n) (σ : Mt n → (H →L
   simp only [Matrix.mul_assoc, h2, h1, Matrix.mul_one] at this
   exact this
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm`. Use `Matrix.isHermitian_diagonal_of_self_adjoint _ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : ε a <;> simp [h]`.
+-/
 theorem jm_herm (ε : Fin n → Bool) : (Formalism.REAL.Jm ε).IsHermitian := by
   unfold Formalism.REAL.Jm
   refine Matrix.isHermitian_diagonal_of_self_adjoint _ ?_
   funext a
   by_cases h : ε a <;> simp [h]
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm`. Rewrite using `[det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : ε a <;> simp [h]`.
+-/
 theorem jm_det (ε : Fin n → Bool) : (Formalism.REAL.Jm ε).det ≠ 0 := by
   unfold Formalism.REAL.Jm
   rw [det_diagonal]
   refine Finset.prod_ne_zero_iff.2 fun a _ => ?_
   by_cases h : ε a <;> simp [h]
 
+/- English proof (translation)
+Take `⟨hc, hU, -, hx⟩` from `GlobalTheory.T.discreteSeriesModel_unitary_irreducible_orthonormal D V S M τ`. Take `⟨-, hx⟩` from `hx hM`. Take `⟨hHC, p, hp, hε⟩` from `hM τ`. Take `⟨-, hlow, hwt⟩` from `hv τ`. Establish `hP` using `M.fr_unit τ`.
+
+Establish `hPd` using `(Matrix.isUnit_iff_isUnit_det _).1 hP`. Establish `hG` using `M.fr_gram τ`. Establish `hH : (gramAt D V τ).IsHermitian`. Rewrite using `[← hG]`. Conclude with `Matrix.isHermitian_conjTranspose_mul_mul _ (jm_herm _)`.
+
+Establish `hD : (gramAt D V τ).det ≠ 0`. Rewrite using `[← hG, det_mul, det_mul, det_conjTranspose]`. Conclude with `mul_ne_zero (mul_ne_zero hPd.star.ne_zero (jm_det _)) hPd.ne_zero`. Establish `hs : SmoothVec (lieH (gramAt D V τ)) (M.rep τ) (v τ : M.H τ)` using `(GlobalTheory.UnitarySmVec.smoothVec_basic _ _ _ _ hH hD hU).1 _ (v τ).2`. Use `⟨hs, fun a c hac => ?_⟩` and prove the remaining obligations.
+
+Establish `hs' : SmoothVec (lieH (Formalism.REAL.Jm (M.ε τ))) (M.σ τ) (v τ : M.H τ)`. Use `smooth_conj hP _ _ _ ?_` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `hs`. Establish `hl : (v τ : M.H τ) ∈ lowKSub (M.ε τ) (M.lam τ) (M.σ τ)` using `hlow`.
+
+Establish `hB` using `GlobalTheory.T.extremal_lowest_Ktype_killed_by_compact_roots _ _ _ _ _ (M.ds τ) _ hl hs' hwt`. Establish `hm` using `GlobalTheory.T.lowest_Ktype_holomorphic_killed_by_lowering_roots _ p _ _ _ _ hHC hε (M.ds τ) _ hl hs'`. Establish `e : dRepC (gramAt D V τ) (M.rep τ) (x0Mat M τ * Matrix.single a c 1 * (x0Mat M τ)⁻¹) (v τ : M.H τ) = dRepC (Formalism.REAL.Jm (M.ε τ)) (M.σ τ) (Matrix.single (arr (nNeg (M.ε τ)) a) (arr (nNeg (M.ε τ)) c) 1) (v τ : M.H τ)`. Rewrite using `[hx a c, ← hG]`. Conclude with `dRepC_conj hP _ _ _ _`.
+
+Rewrite using `[e]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[hB.1]`. Use `hw τ a` as an intermediate fact.
+
+Unfold `extWt at this`. Rewrite using `[← this]`. Simplify using the standard rewrite rules. Establish `hlt : (a : ℕ) < c` using `lt_of_le_of_ne hac fun h' => h (Fin.ext h')`. Establish `hq` using `nNeg_shape hp hε`.
+
+Establish `hcn` using `c.2`. Establish `hsg : ∀ b : Fin V.rank, M.ε τ (arr (nNeg (M.ε τ)) b) = decide (¬ (b : ℕ) < V.rank - p)`. Introduce `b`. Use `b.2` as an intermediate fact. Rewrite using `[hε, hq]`.
+
+Unfold `arr`. Use `split_ifs with hb`. Simplify using `only [hb, not_true_eq_false, decide_false, decide_eq_false_iff_not]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [hb, not_false_eq_true, decide_true, decide_eq_true_eq]`.
+
+Use linear arithmetic over natural numbers and integers. Distinguish the cases in `ha : (a : ℕ) < V.rank - p`. Distinguish the cases in `hc' : (c : ℕ) < V.rank - p`. Use `hB.2 _ _ (by rw [hsg, hsg]; simp [ha, hc']) ?_` and prove the remaining obligations. Rewrite using `[Fin.lt_def, revNeg_arr hp hε, revNeg_arr hp hε, if_pos ha, if_pos hc']`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `hm _ _ (by rw [hsg]; simp [hc']) (by rw [hsg]; simp [ha])`. Establish `hc' : ¬ (c : ℕ) < V.rank - p` using `by omega`. Use `hB.2 _ _ (by rw [hsg, hsg]; simp [ha, hc']) ?_` and prove the remaining obligations. Rewrite using `[Fin.lt_def, revNeg_arr hp hε, revNeg_arr hp hε, if_neg ha, if_neg hc']`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem borel_extVec (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S)
     (w : D.what₂.Tau → Fin V.rank → ℤ) (v : M.Vec) (_hθ : IsInfFam θ) (hM : HolShape M) (hw : WtIs M w) (hv : IsExtVec M v)
     (τ : D.what₂.Tau) :

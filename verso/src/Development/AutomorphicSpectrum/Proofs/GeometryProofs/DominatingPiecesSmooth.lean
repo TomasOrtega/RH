@@ -7,6 +7,15 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar GlobalTheo
 
 namespace GlobalTheory.CompanionTheory.Ar.FlagBun.Sm
 
+/- English proof (translation)
+Establish `hfq : f (genPt ξ') ∈ U` using `e hW`. Establish `hp : genPt ξ ⤳ f (genPt ξ')` using `by rw [RegAtDom.map_genPt hd]`. Establish `h` using `RegAtDom.genMap_stalkMap hd (genPt ξ') specializes_rfl hp ((X.presheaf.germ U (f (genPt ξ')) hfq).hom t)`. Establish `l1 : X.presheaf.germ U (f (genPt ξ')) hfq ≫ f.stalkMap (genPt ξ') = f.appLE U W e ≫ X'.presheaf.germ W (genPt ξ') hW`. Rewrite using `[Scheme.Hom.germ_stalkMap, Scheme.Hom.appLE, Category.assoc, TopCat.Presheaf.germ_res]`.
+
+Establish `l2 : X'.presheaf.germ W (genPt ξ') hW ≫ X'.presheaf.stalkSpecializes specializes_rfl = X'.presheaf.germ W (genPt ξ') hW` using `TopCat.Presheaf.germ_stalkSpecializes _ _ _`. Establish `l3 : X.presheaf.germ U (f (genPt ξ')) hfq ≫ X.presheaf.stalkSpecializes hp = X.presheaf.germ U (genPt ξ) hU` using `TopCat.Presheaf.germ_stalkSpecializes _ _ _`. Establish `a1 : (f.stalkMap (genPt ξ')).hom ((X.presheaf.germ U (f (genPt ξ')) hfq).hom t) = (X'.presheaf.germ W (genPt ξ') hW).hom ((f.appLE U W e).hom t)` using `congrArg (fun g => g.hom t) l1`. Establish `a2 : ∀ s, (X'.presheaf.stalkSpecializes specializes_rfl).hom ((X'.presheaf.germ W (genPt ξ') hW).hom s) = (X'.presheaf.germ W (genPt ξ') hW).hom s` using `fun s => congrArg (fun g => g.hom s) l2`. Establish `a3 : (X.presheaf.stalkSpecializes hp).hom ((X.presheaf.germ U (f (genPt ξ')) hfq).hom t) = (X.presheaf.germ U (genPt ξ) hU).hom t` using `congrArg (fun g => g.hom t) l3`.
+
+Rewrite `h` using `[a1]`. Establish `b1 : genMap ξ' ⟨genPt ξ', specializes_rfl⟩ ((X'.presheaf.germ W (genPt ξ') hW).hom ((f.appLE U W e).hom t)) = (X'.presheaf.germ W (genPt ξ') hW ≫ Scheme.stalkClosedPointTo ξ').hom ((f.appLE U W e).hom t)`. Conclude with `congrArg (Scheme.stalkClosedPointTo ξ').hom (a2 _)`. Establish `b2 : genMap ξ ⟨f (genPt ξ'), hp⟩ ((X.presheaf.germ U (f (genPt ξ')) hfq).hom t) = (X.presheaf.germ U (genPt ξ) hU ≫ Scheme.stalkClosedPointTo ξ).hom t`. Conclude with `congrArg (Scheme.stalkClosedPointTo ξ).hom a3`.
+
+Rewrite using `[← b1, h, b2]`.
+-/
 theorem val_appLE_of_dominates {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω']
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} {f : X' ⟶ X} {i : Ω →+* Ω'}
     (hd : Dominates ξ' ξ f i) {U : X.Opens} {W : X'.Opens} (e : W ≤ f ⁻¹ᵁ U) (hW : genPt ξ' ∈ W)
@@ -41,6 +50,17 @@ theorem val_appLE_of_dominates {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [F
     exact congrArg (Scheme.stalkClosedPointTo ξ).hom a3
   rw [← b1, h, b2]
 
+/- English proof (translation)
+Introduce `X X' Ω Ω' _ _ ξ ξ' f i hg hg' hd h`. Use `(HasRingHomProperty.iff_exists_appLE (P := @Smooth) (Q := RingHom.Smooth) (RingHom.Smooth.stableUnderComposition.stableUnderCompositionWithLocalizationAway RingHom.Smooth.holdsForLocalizationAway).1).2 fun p' => ?_` and prove the remaining obligations. Take `⟨U, W, R, C, hRC, hU, hW, e, hp, hs⟩` from `h p'`. Use `⟨⟨U, hU.affine⟩, ⟨W, hW.affine⟩, hp, e, ?_⟩` and prove the remaining obligations. Establish `hWg : genPt ξ' ∈ W` using `(hW.spec p' hp).mem_open W.isOpen hp`.
+
+Establish `hUg : genPt ξ ∈ U`. Establish `h1 : f (genPt ξ') ∈ U` using `e hWg`. Rewrite `h1` using `[RegAtDom.map_genPt hd]`. Then use the resulting hypothesis. Take `⟨injU, ranU⟩` from `GlobalTheory.T.germ_genPt_injective_range_regAt X Ω ξ hg U hUg hU.spec`. Take `⟨injW, ranW⟩` from `GlobalTheory.T.germ_genPt_injective_range_regAt X' Ω' ξ' hg' W hWg hW.spec`.
+
+Establish `memR : ∀ t, (X.presheaf.germ U (genPt ξ) hUg ≫ Scheme.stalkClosedPointTo ξ).hom t ∈ R` using `fun t => (hU.ring _).2 ((ranU _).1 ⟨t, rfl⟩)`. Establish `memC : ∀ t, (X'.presheaf.germ W (genPt ξ') hWg ≫ Scheme.stalkClosedPointTo ξ').hom t ∈ C` using `fun t => (hW.ring _).2 ((ranW _).1 ⟨t, rfl⟩)`. Set `eU : Γ(X, U) ≃+* R` to `RingEquiv.ofBijective ((X.presheaf.germ U (genPt ξ) hUg ≫ Scheme.stalkClosedPointTo ξ).hom.codRestrict R memR) ⟨fun a b hab => injU (congrArg Subtype.val hab), fun r => by`. Take `⟨t, ht⟩` from `(ranU r.1).2 ((hU.ring r.1).1 r.2)`. Conclude with `⟨t, Subtype.ext ht⟩⟩`.
+
+Set `eW : Γ(X', W) ≃+* C` to `RingEquiv.ofBijective ((X'.presheaf.germ W (genPt ξ') hWg ≫ Scheme.stalkClosedPointTo ξ').hom.codRestrict C memC) ⟨fun a b hab => injW (congrArg Subtype.val hab), fun r => by`. Take `⟨t, ht⟩` from `(ranW r.1).2 ((hW.ring r.1).1 r.2)`. Conclude with `⟨t, Subtype.ext ht⟩⟩`. Establish `hval : ∀ t, eW ((f.appLE U W e).hom t) = ((i.comp R.subtype).codRestrict C (fun a => hRC a a.2)) (eU t)` using `fun t => Subtype.ext (val_appLE_of_dominates hd e hWg hUg t)`. Establish `key : (f.appLE U W e).hom = (eW.symm : C →+* Γ(X', W)).comp (((i.comp R.subtype).codRestrict C (fun a => hRC a a.2)).comp (eU : Γ(X, U) →+* R))` using `RingHom.ext fun t => (eW.symm_apply_eq.2 (hval t).symm).symm`.
+
+Use `show RingHom.Smooth (f.appLE U W e).hom`. Rewrite using `[key]`. Conclude with `RingHom.Smooth.comp (RingHom.Smooth.comp (RingHom.Smooth.of_bijective eU.bijective) hs) (RingHom.Smooth.of_bijective eW.symm.bijective)`.
+-/
 theorem smooth_of_pieces : ∀ (X X' : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Field Ω']
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (f : X' ⟶ X) (i : Ω →+* Ω'),
     IsCptGen ξ → IsCptGen ξ' → Dominates ξ' ξ f i →

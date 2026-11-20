@@ -12,6 +12,11 @@ open NumberField IsDedekindDomain GlobalTheory.WeilM GlobalTheory.AdelicU Global
 open MeasureTheory
 open GlobalTheory.EmbChart (atPlace evFin_atPlace atPlace_mul_right tensAt tensAt_tmul compFin_tensAt tensAt_mul_right)
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `LinearMap.exists_extend (LinearMap.id : S →ₗ[ℂ] S)`. Set `P : Module.End ℂ V` to `S.subtype ∘ₗ π`. Establish `h1 : ∀ φ ∈ S, P φ = φ` using `fun φ hφ => congrArg Subtype.val (LinearMap.congr_fun hπ ⟨φ, hφ⟩)`. Establish `h2 : ∀ x, P x ∈ S` using `fun x => (π x).2`. Use `⟨{ toFun := fun g => T g * P + (1 - P), map_one' := ?_, map_mul' := fun g g' => ?_ }, fun g φ hφ => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Simplify using `[one _ (h2 x)]`. Use extensionality with `x`. Simplify using `[mul _ _ _ (h2 x), h1 _ (h2 x), h1 _ (pres _ _ (h2 x))]`. Simplify using `[h1 φ hφ]`.
+-/
 theorem exists_ext {G V : Type} [Monoid G] [AddCommGroup V] [Module ℂ V] (S : Submodule ℂ V) (T : G → Module.End ℂ V)
     (pres : ∀ g, ∀ φ ∈ S, T g φ ∈ S) (one : ∀ φ ∈ S, T 1 φ = φ) (mul : ∀ g g', ∀ φ ∈ S, T (g * g') φ = T g (T g' φ)) :
     ∃ ρ : G →* Module.End ℂ V, ∀ g, ∀ φ ∈ S, ρ g φ = T g φ := by
@@ -27,6 +32,13 @@ theorem exists_ext {G V : Type} [Monoid G] [AddCommGroup V] [Module ℂ V] (S : 
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {v : Pl F}
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (AdeleRing (𝓞 F) F) := GroundTheory.Global.measurableSpace_adeleRing F`. Use `haveI : BorelSpace (AdeleRing (𝓞 F) F) := inferInstance`. Establish `: (GroundTheory.Global.adeleMeasure F).Regular`. Take `⟨K⟩` from `(inferInstance : Nonempty (TopologicalSpace.PositiveCompacts (AdeleRing (𝓞 F) F)))`. Conclude with `Measure.regular_of_isAddLeftInvariant K.isCompact K.interior_nonempty K.isCompact.measure_lt_top.ne`.
+
+Establish `h0` using `(GroundTheory.Global.IdeleGroup.ideleModule F u).2`. Establish `key : distribHaarChar (AdeleRing (𝓞 F) F) u = NNReal.mk _ h0.le`. Use `distribHaarChar_eq_of_measure_smul_eq_mul (μ := GroundTheory.Global.adeleMeasure F) (s := GroundTheory.Global.fundamentalSet F) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[GroundTheory.Global.adeleMeasure_fundamentalSet]`. Conclude with `one_ne_zero`.
+
+Rewrite using `[GroundTheory.Global.adeleMeasure_fundamentalSet]`. Conclude with `ENNReal.one_ne_top`. Rewrite using `[← ENNReal.ofReal_eq_coe_nnreal h0.le]`. Conclude with `GroundTheory.Global.adeleMeasure_smul (K := F) u (GroundTheory.Global.fundamentalSet F)`. Conclude with `congrArg NNReal.toReal key`.
+-/
 theorem modu_eq (u : (AF F)ˣ) : ((distribHaarChar (AF F) u : NNReal) : ℝ) = GroundTheory.Global.IdeleGroup.ideleModule F u := by
   letI : MeasurableSpace (AdeleRing (𝓞 F) F) := GroundTheory.Global.measurableSpace_adeleRing F
   haveI : BorelSpace (AdeleRing (𝓞 F) F) := inferInstance
@@ -43,6 +55,15 @@ theorem modu_eq (u : (AF F)ˣ) : ((distribHaarChar (AF F) u : NNReal) : ℝ) = G
       exact GroundTheory.Global.adeleMeasure_smul (K := F) u (GroundTheory.Global.fundamentalSet F)
   exact congrArg NNReal.toReal key
 
+/- English proof (translation)
+Rewrite using `[modu_eq, GroundTheory.Global.IdeleGroup.ideleModule_apply]`. Establish `h1 : ∀ w, (u : AF F).1 w = 1` using `fun w => by`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `(1 : Ainf F) w - (0 : Ainf F) w + (0 : Ainf F) w = 1`. Rewrite using `[sub_add_cancel]`.
+
+Both sides reduce to the same expression. Establish `h2 : ∀ w, (u : AF F).2 w = 1 - Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w (singleFin v 1) + Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w (singleFin v x)` using `fun w => by rw [h]; rfl`. Establish `h3 : GroundTheory.Global.IdeleGroup.infiniteModule u = 1` using `Finset.prod_eq_one fun w _ => by`. Express the relevant statement in the definitionally equal form `‖(u : AF F).1 w‖ ^ _ = 1`. Rewrite using `[h1, norm_one, one_pow]`.
+
+Establish `h4 : GroundTheory.Global.IdeleGroup.finiteModule u = ‖(x : Fv F v)‖`. Express the relevant statement in the definitionally equal form `∏ᶠ w, ‖(u : AF F).2 w‖ = _`. Rewrite using `[finprod_eq_single _ v fun w hw => by rw [h2, evalV_singleFin_ne hw, evalV_singleFin_ne hw, sub_add_cancel, norm_one], h2, evalV_singleFin_self, evalV_singleFin_self, sub_self, zero_add]`. Rewrite using `[h3, h4, one_mul]`. Use `GlobalTheory.CompanionTheory.SW.ProdFormula.distribHaarChar_eq_nnnorm v (x : Fv F v) x.ne_zero` as an intermediate fact.
+
+Rewrite `this` using `[Units.mk0_val]`. Conclude with `(congrArg NNReal.toReal this).symm`.
+-/
 theorem modu_single [LocallyCompactSpace (Fv F v)] (u : (AF F)ˣ) (x : (Fv F v)ˣ)
     (h : (u : AF F) = 1 - atPlace v 1 + atPlace v x) :
     ((distribHaarChar (AF F) u : NNReal) : ℝ) = (distribHaarChar (Fv F v) x : NNReal) := by
@@ -71,14 +92,23 @@ section Fun
 
 variable {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ}
 
+/- English proof (translation)
+Introduce `e` and use `GlobalTheory.PsiNontriv.psiV_ne_one ψ h v (by rw [e]; rfl)`.
+-/
 theorem std_ne (h : IsStd ψ) (v : Pl F) : ψ ≠ 1 := fun e => GlobalTheory.PsiNontriv.psiV_ne_one ψ h v (by rw [e]; rfl)
 
+/- English proof (translation)
+Introduce `r hr` and use `GlobalTheory.SchrLoc.schr_tens_of_at ψ v w (fun i a ha => congrFun (congrArg Prod.fst (hw a ha)) i) (fun i a ha => congrFun (congrArg Prod.snd (hw a ha)) i) φ r hr.1`.
+-/
 theorem acts_schr (ψ : AddChar (AF F) ℂ) {w : (κ → AF F) × (κ → AF F)} (hw : At (evFin F v) w) (φ : (κ → Fv F v) → ℂ) :
     Acts (evFin F v) (schr ψ w) φ (schr (GlobalTheory.VacAny.psiV ψ v) (locW v w) φ) := fun r hr =>
   GlobalTheory.SchrLoc.schr_tens_of_at ψ v w (fun i a ha => congrFun (congrArg Prod.fst (hw a ha)) i)
     (fun i a ha => congrFun (congrArg Prod.snd (hw a ha)) i) φ r hr.1
 
 omit [Fintype κ] in
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Use `congrFun h (putA v x₀ y)` as an intermediate fact. Express the relevant statement in the definitionally equal form `φ (evA κ v (putA v x₀ y)) * r (putA v x₀ y) = φ' (evA κ v (putA v x₀ y)) * r (putA v x₀ y) at this`. Rewrite `this` using `[ev_put (evA_inA v), inv_putA v hr, h₁, mul_one, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem tens_inj {r : (κ → AF F) → ℂ} (hr : ∀ x z, At (evFin F v) z → r (x + z) = r x) {x₀ : κ → AF F} (h₁ : r x₀ = 1)
     {φ φ' : (κ → Fv F v) → ℂ} (h : tens (evFin F v) φ r = tens (evFin F v) φ' r) : φ = φ' := by
   funext y
@@ -92,6 +122,11 @@ def IsLocOm {G : Type} [Monoid G] (om : G →* Module.End ℂ ((κ → AF F) →
     (omv : G →* Module.End ℂ ((κ → Fv F v) → ℂ)) : Prop :=
   ∀ g, ∀ φ ∈ SB _, omv g φ ∈ SB _ ∧ Acts (evFin F v) (om g) φ (omv g φ)
 
+/- English proof (translation)
+Take `⟨r₀, x₀, h₀, h₁⟩` from `exists_base κ v`. Set `T : G → Module.End ℂ ((κ → Fv F v) → ℂ)` to `fun g => res v x₀ ∘ₗ om g ∘ₗ tensL v r₀`. Establish `hT : ∀ g φ, T g φ = res v x₀ (om g (tens (evFin F v) φ r₀))` using `fun _ _ => rfl`. Establish `pres : ∀ g, ∀ φ ∈ SB _, T g φ ∈ SB _` using `fun g φ hφ => res_mem v x₀ (hp g _ (h₀ φ hφ).2)`. Establish `acts : ∀ g, ∀ φ ∈ SB _, Acts (evFin F v) (om g) φ (T g φ)` using `fun g φ hφ => acts_res v hψ.1 (std_ne hψ v) hψ.2.1 (hp g) (ha g) (fun w h1 h2 => hc g w (by`.
+
+Rewrite using `[← in_locW, locW, h1, h2, map_zero]`. Use the proof step `rfl)) h₁ hφ (h₀ φ hφ)`. Take `⟨ρ, hρ⟩` from `exists_ext (SB _) T pres (fun φ hφ => (eq_of_acts v h₁ (h₀ φ hφ) (T := om 1) fun r _ => by rw [map_one]; rfl).symm) (fun g g' φ hφ => by rw [hT, hT g, ← acts g' φ hφ r₀ (h₀ φ hφ), map_mul]; rfl)`. Conclude with `⟨ρ, fun g φ hφ => by rw [hρ g φ hφ]; exact ⟨pres g φ hφ, acts g φ hφ⟩⟩`.
+-/
 theorem exists_locOm (hψ : IsStd ψ) {G : Type} [Monoid G] (om : G →* Module.End ℂ ((κ → AF F) → ℂ))
     (hp : ∀ g, ∀ Φ ∈ schA F κ, om g Φ ∈ schA F κ)
     (ha : ∀ g, ∀ l ∈ (adeleClass F).adm κ, l ∘ₗ om g ∈ (adeleClass F).adm κ)
@@ -110,10 +145,16 @@ theorem exists_locOm (hψ : IsStd ψ) {G : Type} [Monoid G] (om : G →* Module.
   exact ⟨ρ, fun g φ hφ => by rw [hρ g φ hφ]; exact ⟨pres g φ hφ, acts g φ hφ⟩⟩
 
 omit [Fintype κ] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[putA_apply, Pi.zero_apply, map_zero, add_zero, Pi.smul_apply, smul_eq_mul, sub_mul, one_mul]`.
+-/
 theorem putA_zero (x : κ → AF F) : putA v x 0 = (1 - atPlace v (1 : Fv F v)) • x := by
   funext i
   rw [putA_apply, Pi.zero_apply, map_zero, add_zero, Pi.smul_apply, smul_eq_mul, sub_mul, one_mul]
 
+/- English proof (translation)
+Use `extF v ?_ ?_` and prove the remaining obligations. Rewrite using `[evFin_atPlace, map_add, map_mul, map_sub, ev_dot, ev_dot, ev_dot, evA_inA, ev_put (evA_inA v), GlobalTheory.VacAny.evFin_invOf_two, zero_dotProduct, sub_zero]`. Both sides reduce to the same expression. Establish `e : ∀ i, awF v (inA κ v a i) = 0` using `fun i => awF_at v _`. Simplify using `[awF_at, putA_zero, dotProduct, e]`.
+-/
 theorem arg_eq (a : κ → Fv F v) (w : (κ → AF F) × (κ → AF F)) :
     inA κ v a ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2 - putA v w.1 0 ⬝ᵥ putA v w.2 0) =
       atPlace v (a ⬝ᵥ (locW v w).2 + ⅟(2 : Fv F v) * ((locW v w).1 ⬝ᵥ (locW v w).2)) := by
@@ -124,6 +165,19 @@ theorem arg_eq (a : κ → Fv F v) (w : (κ → AF F) × (κ → AF F)) :
   · have e : ∀ i, awF v (inA κ v a i) = 0 := fun i => awF_at v _
     simp [awF_at, putA_zero, dotProduct, e]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨φ₀, hφ₀, y₀, Ψ, hΨ, hne⟩ : ∃ φ₀ ∈ SB (κ → Fv F v), ∃ y₀, ∃ Ψ ∈ schA F κ, L (PA v φ₀ y₀ Ψ) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Take `⟨Φ, hΦ, hn⟩` from `h0`. Conclude with `hn (schA_le v (LinearMap.ker L) h hΦ)`.
+
+Set `sl : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → Fv F v) → ℂ` to `LinearMap.pi fun y => L ∘ₗ PA v φ₀ y`. Establish `hsl : ∀ φ₁ y₁ Φ, sl (PA v φ₁ y₁ Φ) = L (PA v φ₀ y₁ Φ) • φ₁` using `fun φ₁ y₁ Φ => by`. Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `L (PA v φ₀ y (PA v φ₁ y₁ Φ)) = _`. Rewrite using `[Pm_Pm (evA_inA v), map_smul, smul_eq_mul, mul_comm]`.
+
+Both sides reduce to the same expression. Establish `hm : ∀ Φ ∈ schA F κ, sl Φ ∈ SB _` using `fun Φ hΦ => schA_le v ((SB _).comap sl) (fun φ hφ y Ψ _ => by`. Rewrite using `[Submodule.mem_comap, hsl]`. Conclude with `Submodule.smul_mem _ _ hφ) hΦ`. Use `⟨lv ∘ₗ sl, admissible_of_integral_conj_le v _ fun φ hφ y => ?_, fun w hw Φ hΦ => ?_, fun x => Ψ (putA v x y₀), L (PA v φ₀ y₀ Ψ), hne, fun φ hφ => ⟨fun x z hz => by simp only [putA_add v hz], PA_mem v hφ y₀ hΨ⟩, fun φ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show (lv ∘ₗ sl) ∘ₗ PA v φ y = lv φ • (L ∘ₗ PA v φ₀ y) from LinearMap.ext fun Φ => by`. Simplify using `only [LinearMap.comp_apply, hsl, map_smul, LinearMap.smul_apply, smul_eq_mul, mul_comm]]`. Introduce `g hg`. Take `⟨T, hT⟩` from `PA_adm v hφ₀ y hL g hg`. Conclude with `⟨lv φ • T, fun f => congrArg (lv φ • ·) (hT f)⟩`.
+
+Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, ← hv w hw _ (hm Φ hΦ)]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `L (PA v φ₀ a (schr ψ w Φ)) = _`. Establish `e : (putA v w.1 0, putA v w.2 0) = (1 - atPlace v (1 : Fv F v)) • w` using `by rw [putA_zero, putA_zero]; rfl`.
+
+Rewrite using `[PA_schr, map_smul, arg_eq, e, hi _ (hΛ w hw) _ (PA_mem v hφ₀ _ hΦ)]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `lv (sl (PA v φ y₀ Ψ)) = _`. Rewrite using `[hsl, map_smul, smul_eq_mul]`.
+-/
 theorem exists_form (Λ : Set ((κ → AF F) × (κ → AF F))) (hΛ : ∀ w ∈ Λ, (1 - atPlace v (1 : Fv F v)) • w ∈ Λ)
     {L : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ} (hL : L ∈ (adeleClass F).adm κ)
     (hi : ∀ w ∈ Λ, ∀ Φ ∈ schA F κ, L (schr ψ w Φ) = L Φ) (h0 : ∃ Φ ∈ schA F κ, L Φ ≠ 0)

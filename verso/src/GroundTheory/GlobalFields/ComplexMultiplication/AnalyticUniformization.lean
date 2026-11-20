@@ -27,6 +27,9 @@ section Lattice
 
 variable (L : PeriodPair)
 
+/- English proof (translation)
+Establish `h` using `meromorphicOrderAt_deriv_eq_sub_one (f := ℘[L]) (x := z) (n := -2) (by norm_num) (by rw [L.order_weierstrassP z hz]; rfl)`. Rewrite `h` using `[L.deriv_weierstrassP]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem meromorphicOrderAt_derivWeierstrassP {z : ℂ} (hz : z ∈ L.lattice) :
     meromorphicOrderAt ℘'[L] z = -3 := by
   have h := meromorphicOrderAt_deriv_eq_sub_one (f := ℘[L]) (x := z) (n := -2)
@@ -35,6 +38,9 @@ theorem meromorphicOrderAt_derivWeierstrassP {z : ℂ} (hz : z ∈ L.lattice) :
   rw [h]
   rfl
 
+/- English proof (translation)
+Establish `hf : MeromorphicAt f z`. Assume the negation of the conclusion as `h`. Rewrite `ho` using `[meromorphicOrderAt_of_not_meromorphicAt h]`. Conclude with `lt_irrefl _ ho`. Conclude with `tendsto_nhds_unique (tendsto_limPunctured hf ho.le) (tendsto_zero_of_meromorphicOrderAt_pos ho)`.
+-/
 theorem limPunctured_eq_zero_of_pos {f : ℂ → ℂ} {z : ℂ}
     (ho : 0 < meromorphicOrderAt f z) : limPunctured f z = 0 := by
   have hf : MeromorphicAt f z := by
@@ -43,6 +49,9 @@ theorem limPunctured_eq_zero_of_pos {f : ℂ → ℂ} {z : ℂ}
     exact lt_irrefl _ ho
   exact tendsto_nhds_unique (tendsto_limPunctured hf ho.le) (tendsto_zero_of_meromorphicOrderAt_pos ho)
 
+/- English proof (translation)
+The claim follows from `toPoint_eq_zero_iff surjective := toPoint_surjective analyticAt_affine z hz := by have hz' : z ∉ L.lattice := fun h ↦ hz (toPoint_of_mem h) refine ⟨℘[L], fun w ↦ ℘'[L] w / 2, L.analyticOnNhd_weierstrassP z hz', (L.analyticOnNhd_derivWeierstrassP z hz').div_const, ?_⟩ filter_upwar …`.
+-/
 theorem isAnalyticUniformization_toPointHom :
     IsAnalyticUniformization L.lattice (toPointHom L) where
   map_eq_zero_iff z := toPoint_eq_zero_iff
@@ -115,6 +124,9 @@ end Lattice
 
 section VariableChange
 
+/- English proof (translation)
+Substitute `ex` using the available equality. Substitute `ey` using the available equality. Conclude with `⟨h, rfl⟩`.
+-/
 theorem exists_point_some_eq {W : WeierstrassCurve ℂ} {x y x' y' : ℂ} (h : W.toAffine.Nonsingular x y)
     (ex : x' = x) (ey : y' = y) :
     ∃ h' : W.toAffine.Nonsingular x' y', (Affine.Point.some x y h : W.toAffine.Point) = .some x' y' h' := by
@@ -122,6 +134,27 @@ theorem exists_point_some_eq {W : WeierstrassCurve ℂ} {x y x' y' : ℂ} (h : W
 
 variable {Λ : Submodule ℤ ℂ} {E E' : WeierstrassCurve ℂ} {f : ℂ →+ E.toAffine.Point}
 
+/- English proof (translation)
+Rewrite using `[AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, vcPointEquiv_apply, vcPoint_eq_zero_iff, hf.map_eq_zero_iff]`. Use `surjective := (vcPointEquiv C h).surjective.comp hf.surjective`. Use `analyticAt_affine z hz := by`. Establish `hz' : f z ≠ 0` using `fun h0 ↦ hz (by`. Rewrite using `[AddMonoidHom.comp_apply, h0, map_zero])`.
+
+Take `⟨X, Y, hX, hY, hev⟩` from `hf.analyticAt_affine z hz'`. Use `⟨fun w ↦ vcX C (X w), fun w ↦ vcY C (X w) (Y w), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [vcX]`. Use `fun_prop`. Simplify using `only [vcY]`.
+
+Use `fun_prop`. Use `filter_upwards [hev] with w ⟨hw, e⟩`. Rewrite using `[AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, vcPointEquiv_apply, e, vcPoint_some]`. Conclude with `⟨_, rfl⟩`. Use `analyticAt_infinity z hz := by`.
+
+Establish `hz' : f z = 0`. Rewrite `hz` using `[AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, vcPointEquiv_apply, vcPoint_eq_zero_iff]`. Conclude with `hz`. Take `⟨U, V, hU, hV, hev⟩` from `hf.analyticAt_infinity z hz'`. Establish `h0 : U z = 0 ∧ V z = 0`.
+
+Break down `hev.self_of_nhds with ⟨-, hU0, hV0⟩ | ⟨-, h1, e⟩` into its components or cases. Conclude with `⟨hU0, hV0⟩`. Conclude with `absurd (e.symm.trans hz') (Affine.Point.some_ne_zero _)`. Use `set v : ℂ := ((C.u⁻¹ : ℂˣ) : ℂ)`. Establish `hv : v ≠ 0` using `Units.ne_zero _`.
+
+Use `set D : ℂ → ℂ := fun w ↦ 1 - C.s * U w + C.s * C.r * V w - C.t * V w`. Establish `hD : AnalyticAt ℂ D z` using `by simp only [D]; fun_prop`. Establish `hDz : D z = 1` using `by simp only [D, h0.1, h0.2]; ring`. Establish `hDne : ∀ᶠ w in 𝓝 z, D w ≠ 0` using `hD.continuousAt.eventually_ne (by rw [hDz]; exact one_ne_zero)`. Use `⟨fun w ↦ (U w - C.r * V w) / (v * D w), fun w ↦ V w / (v ^ 3 * D w), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hU.sub (analyticAt_const.mul hV)).div (analyticAt_const.mul hD) (mul_ne_zero hv (by rw [hDz]; exact one_ne_zero))`. Conclude with `hV.div (analyticAt_const.mul hD) (mul_ne_zero (pow_ne_zero 3 hv) (by rw [hDz]; exact one_ne_zero))`. Use `filter_upwards [hev, hDne] with w hw hDw`. Rewrite using `[AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, vcPointEquiv_apply]`. Break down `hw with ⟨hf0, hU0, hV0⟩ | ⟨hV0, hw, e⟩` into its components or cases.
+
+Use `left`. Rewrite using `[hf0]`. Conclude with `⟨rfl, by rw [hU0, hV0]; simp, by rw [hV0]; simp⟩`. Use `right`. Use `⟨div_ne_zero hV0 (mul_ne_zero (pow_ne_zero 3 hv) hDw), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, vcPoint_some]`. Apply `exists_point_some_eq` to reduce the goal to its premises. Simplify using `only [vcX]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [vcY, D]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsAnalyticUniformization.vcPoint (hf : IsAnalyticUniformization Λ f) (C : VariableChange ℂ)
     (h : C • E = E') : IsAnalyticUniformization Λ ((vcPointEquiv C h).toAddMonoidHom.comp f) where
   map_eq_zero_iff z := by
@@ -178,6 +211,15 @@ theorem IsAnalyticUniformization.vcPoint (hf : IsAnalyticUniformization Λ f) (C
 
 end VariableChange
 
+/- English proof (translation)
+Rewrite using `[AddMonoidHom.comp_apply, AddMonoidHom.coe_mulLeft, hf.map_eq_zero_iff, hΛ]`. Use `surjective P := by`. Take `⟨y, rfl⟩` from `hf.surjective P`. Conclude with `⟨c⁻¹ * y, by rw [AddMonoidHom.comp_apply, AddMonoidHom.coe_mulLeft, mul_inv_cancel_left₀ hc]⟩`. Use `analyticAt_affine z hz := by`.
+
+Take `⟨X, Y, hX, hY, hev⟩` from `hf.analyticAt_affine (c * z) hz`. Establish `ht : Tendsto (fun w ↦ c * w) (𝓝 z) (𝓝 (c * z))` using `(continuous_const_mul c).tendsto z`. Use `⟨fun w ↦ X (c * w), fun w ↦ Y (c * w), hX.comp_of_eq (by fun_prop) rfl, hY.comp_of_eq (by fun_prop) rfl, ?_⟩` and prove the remaining obligations. Use `filter_upwards [ht.eventually hev] with w hw`. Conclude with `hw`.
+
+Use `analyticAt_infinity z hz := by`. Take `⟨U, V, hU, hV, hev⟩` from `hf.analyticAt_infinity (c * z) hz`. Establish `ht : Tendsto (fun w ↦ c * w) (𝓝 z) (𝓝 (c * z))` using `(continuous_const_mul c).tendsto z`. Use `⟨fun w ↦ U (c * w), fun w ↦ V (c * w), hU.comp_of_eq (by fun_prop) rfl, hV.comp_of_eq (by fun_prop) rfl, ?_⟩` and prove the remaining obligations. Use `filter_upwards [ht.eventually hev] with w hw`.
+
+Conclude with `hw`.
+-/
 theorem IsAnalyticUniformization.comp_mul {Λ Λ' : Submodule ℤ ℂ} {E : WeierstrassCurve ℂ}
     {f : ℂ →+ E.toAffine.Point} (hf : IsAnalyticUniformization Λ f) {c : ℂ} (hc : c ≠ 0)
     (hΛ : ∀ z, z ∈ Λ' ↔ c * z ∈ Λ) :
@@ -220,6 +262,9 @@ def latticeScaleEquiv (hc : c ≠ 0) (h : (L'.lattice : Set ℂ) = (c * ·) '' L
     left_inv := fun l ↦ by ext; simp [hc]
     right_inv := fun l ↦ by ext; simp [hc] }
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Conclude with `(by simpa [latticeScaleEquiv, hc] using ((latticeScaleEquiv hc h).symm ⟨c * z, hz⟩).2 : z ∈ L.lattice)`. Introduce `hz`. Conclude with `((latticeScaleEquiv hc h) ⟨z, hz⟩).2`.
+-/
 theorem mem_lattice_iff_of_scale (hc : c ≠ 0) (h : (L'.lattice : Set ℂ) = (c * ·) '' L.lattice)
     (z : ℂ) : c * z ∈ L'.lattice ↔ z ∈ L.lattice := by
   constructor
@@ -229,6 +274,9 @@ theorem mem_lattice_iff_of_scale (hc : c ≠ 0) (h : (L'.lattice : Set ℂ) = (c
   · intro hz
     exact ((latticeScaleEquiv hc h) ⟨z, hz⟩).2
 
+/- English proof (translation)
+Rewrite using `[PeriodPair.weierstrassP, PeriodPair.weierstrassP, ← (latticeScaleEquiv hc h).tsum_eq, ← tsum_mul_left]`. Use `tsum_congr fun l ↦ ?_` and prove the remaining obligations. Use `show 1 / (c * z - c * (l : ℂ)) ^ 2 - 1 / (c * (l : ℂ)) ^ 2 = (c ^ 2)⁻¹ * (1 / (z - l) ^ 2 - 1 / (l : ℂ) ^ 2)`. Rewrite using `[← mul_sub, mul_pow, mul_pow, one_div, one_div, one_div, one_div, mul_inv, mul_inv, mul_sub]`.
+-/
 theorem weierstrassP_scale (hc : c ≠ 0) (h : (L'.lattice : Set ℂ) = (c * ·) '' L.lattice) (z : ℂ) :
     ℘[L'] (c * z) = (c ^ 2)⁻¹ * ℘[L] z := by
   rw [PeriodPair.weierstrassP, PeriodPair.weierstrassP, ← (latticeScaleEquiv hc h).tsum_eq,
@@ -237,6 +285,11 @@ theorem weierstrassP_scale (hc : c ≠ 0) (h : (L'.lattice : Set ℂ) = (c * ·)
   show 1 / (c * z - c * (l : ℂ)) ^ 2 - 1 / (c * (l : ℂ)) ^ 2 = (c ^ 2)⁻¹ * (1 / (z - l) ^ 2 - 1 / (l : ℂ) ^ 2)
   rw [← mul_sub, mul_pow, mul_pow, one_div, one_div, one_div, one_div, mul_inv, mul_inv, mul_sub]
 
+/- English proof (translation)
+Rewrite using `[PeriodPair.derivWeierstrassP, PeriodPair.derivWeierstrassP, ← (latticeScaleEquiv hc h).tsum_eq, mul_neg, ← tsum_mul_left]`. Use `congr 1`. Use `tsum_congr fun l ↦ ?_` and prove the remaining obligations. Use `show 2 / (c * z - c * (l : ℂ)) ^ 3 = (c ^ 3)⁻¹ * (2 / (z - l) ^ 3)`. Rewrite using `[← mul_sub, mul_pow, div_eq_mul_inv, div_eq_mul_inv, mul_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem derivWeierstrassP_scale (hc : c ≠ 0) (h : (L'.lattice : Set ℂ) = (c * ·) '' L.lattice)
     (z : ℂ) : ℘'[L'] (c * z) = (c ^ 3)⁻¹ * ℘'[L] z := by
   rw [PeriodPair.derivWeierstrassP, PeriodPair.derivWeierstrassP, ← (latticeScaleEquiv hc h).tsum_eq,
@@ -249,6 +302,11 @@ theorem derivWeierstrassP_scale (hc : c ≠ 0) (h : (L'.lattice : Set ℂ) = (c 
 
 def scaleVC (hc : c ≠ 0) : VariableChange ℂ := ⟨Units.mk0 c hc, 0, 0, 0⟩
 
+/- English proof (translation)
+Establish `h4` using `G_eq_of_lattice_eq_smul hc h 4`. Establish `h6` using `G_eq_of_lattice_eq_smul hc h 6`. Use `ext`. Simplify using `[scaleVC, variableChange_a₁]`. Simplify using `[scaleVC, variableChange_a₂]`.
+
+Simplify using `[scaleVC, variableChange_a₃]`. Simplify using `only [variableChange_a₄, scaleVC, weierstrassCurve_a₄, weierstrassCurve_a₁, weierstrassCurve_a₂, weierstrassCurve_a₃, PeriodPair.g₂, h4, Units.val_inv_eq_inv_val, Units.val_mk0]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [variableChange_a₆, scaleVC, weierstrassCurve_a₆, weierstrassCurve_a₄, weierstrassCurve_a₁, weierstrassCurve_a₂, weierstrassCurve_a₃, PeriodPair.g₃, h6, Units.val_inv_eq_inv_val, Units.val_mk0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scaleVC_smul (hc : c ≠ 0) (h : (L'.lattice : Set ℂ) = (c * ·) '' L.lattice) :
     scaleVC hc • weierstrassCurve L = weierstrassCurve L' := by
   have h4 := G_eq_of_lattice_eq_smul hc h 4
@@ -266,6 +324,11 @@ theorem scaleVC_smul (hc : c ≠ 0) (h : (L'.lattice : Set ℂ) = (c * ·) '' L.
       Units.val_inv_eq_inv_val, Units.val_mk0]
     ring
 
+/- English proof (translation)
+Distinguish the cases in `hz : z ∈ L.lattice`. Rewrite using `[toPoint_of_mem hz, toPoint_of_mem ((mem_lattice_iff_of_scale hc h z).2 hz)]`. Both sides reduce to the same expression. Establish `hz' : c * z ∉ L'.lattice` using `fun h' ↦ hz ((mem_lattice_iff_of_scale hc h z).1 h')`. Rewrite using `[toPoint_of_notMem hz, toPoint_of_notMem hz', vcPoint_some]`.
+
+Apply `point_some_congr` to reduce the goal to its premises. Simplify using `only [vcX, scaleVC, weierstrassP_scale hc h, Units.val_inv_eq_inv_val, Units.val_mk0, sub_zero]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [vcY, scaleVC, derivWeierstrassP_scale hc h, Units.val_inv_eq_inv_val, Units.val_mk0, sub_zero, zero_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vcPoint_scaleVC_toPoint (hc : c ≠ 0) (h : (L'.lattice : Set ℂ) = (c * ·) '' L.lattice)
     (z : ℂ) : vcPoint (scaleVC hc) (scaleVC_smul hc h) (toPoint L z) = toPoint L' (c * z) := by
   by_cases hz : z ∈ L.lattice

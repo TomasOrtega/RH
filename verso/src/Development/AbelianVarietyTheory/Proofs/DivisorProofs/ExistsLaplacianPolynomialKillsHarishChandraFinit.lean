@@ -19,10 +19,16 @@ namespace GlobalTheory.GLPoly
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Rewrite using `[lieS_apply]`. Conclude with `hz _`.
+-/
 theorem commute_lieS' {z : Module.End ℂ (Sm E a)} (hz : ∀ X, Commute z (lie E a X)) (i j : Fin a) (x : Cinf E) :
     Commute z (lieS E a i j x) := by
   rw [lieS_apply]; exact hz _
 
+/- English proof (translation)
+Unfold `casKOp`. Use `Commute.sum_right _ _ _ fun τ _ => Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => ?_` and prove the remaining obligations. Use `Commute.smul_right (Commute.add_right (Commute.pow_right ?_ 2) (Commute.pow_right ?_ 2)) _` and prove the remaining obligations. Conclude with `(commute_lieS' hz _ _ _).sub_right (commute_lieS' hz _ _ _)`. Conclude with `(commute_lieS' hz _ _ _).add_right (commute_lieS' hz _ _ _)`.
+-/
 theorem commute_casKOp' {z : Module.End ℂ (Sm E a)} (hz : ∀ X, Commute z (lie E a X)) :
     Commute z (casKOp E a) := by
   unfold casKOp
@@ -31,6 +37,9 @@ theorem commute_casKOp' {z : Module.End ℂ (Sm E a)} (hz : ∀ X, Commute z (li
   · exact (commute_lieS' hz _ _ _).sub_right (commute_lieS' hz _ _ _)
   · exact (commute_lieS' hz _ _ _).add_right (commute_lieS' hz _ _ _)
 
+/- English proof (translation)
+Establish `hE : ∀ i j, Commute z (Eop τ i j)` using `fun i j => Commute.smul_right ((commute_lieS' hz _ _ _).sub_right ((commute_lieS' hz _ _ _).smul_right _)) _`. Unfold `Formalism.REAL.Cas`. Conclude with `Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => (hE i j).mul_right (hE j i)`.
+-/
 theorem commute_cas' {z : Module.End ℂ (Sm E a)} (hz : ∀ X, Commute z (lie E a X)) (τ : E →+* ℂ) :
     Commute z (Formalism.REAL.Cas (Eop (a := a) τ)) := by
   have hE : ∀ i j, Commute z (Eop τ i j) := fun i j =>
@@ -38,6 +47,9 @@ theorem commute_cas' {z : Module.End ℂ (Sm E a)} (hz : ∀ X, Commute z (lie E
   unfold Formalism.REAL.Cas
   exact Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => (hE i j).mul_right (hE j i)
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[List.replicate_succ, List.foldr_cons, ih, pow_succ', map_mul, Module.End.mul_apply]`. Simplify using `[sub_smul, Polynomial.aeval_X, Polynomial.aeval_C]`.
+-/
 theorem foldr_replicate' (z : Module.End ℂ (Sm E a)) (χ : Module.End ℂ (Sm E a) → ℂ) (N : ℕ) (φ : Sm E a) :
     (List.replicate N z).foldr (fun z f => z f - χ z • f) φ =
       Polynomial.aeval z ((Polynomial.X - Polynomial.C (χ z)) ^ N) φ := by
@@ -49,6 +61,19 @@ theorem foldr_replicate' (z : Module.End ℂ (Sm E a)) (χ : Module.End ℂ (Sm 
 
 variable (E a) in
 
+/- English proof (translation)
+Take `⟨q, hq0, hq⟩` from `GlobalTheory.T.exists_poly_maximalCompactCasimir_kills_KType E a W hW`. Set `A : Option (E →+* ℂ) → Module.End ℂ (Sm E a)` to `fun o => o.elim (casKOp E a) fun τ => Formalism.REAL.Cas (Eop τ)`. Set `c : Option (E →+* ℂ) → ℂ` to `fun o => o.elim 2 fun _ => 4`. Set `P : Option (E →+* ℂ) → Polynomial ℂ` to `fun o => o.elim q fun τ => (Polynomial.X - Polynomial.C (χ (Formalism.REAL.Cas (Eop (a := a) τ)))) ^ N`. Establish `hZ : ∀ τ : E →+* ℂ, ∀ X, Commute (Formalism.REAL.Cas (Eop (a` using `a) τ)) (lie E a X) := fun τ X => GlobalTheory.CuspRep.Zalg_mul_lie E a X _ (GlobalTheory.CasCentre.cas_Eop_mem_Zalg E a τ)`.
+
+Establish `hc : ∀ i j, Commute (A i) (A j)`. Introduce and unpack `(_ | τ) (_ | τ')`. Conclude with `Commute.refl _`. Conclude with `(commute_casKOp' (hZ τ')).symm`. Conclude with `commute_casKOp' (hZ τ)`.
+
+Conclude with `commute_cas' (hZ τ) τ'`. Establish `hP : ∀ i, P i ≠ 0`. Introduce and unpack `(_ | τ)`. Conclude with `hq0`. Conclude with `pow_ne_zero _ (Polynomial.X_sub_C_ne_zero _)`.
+
+Take `⟨p, hp0, hp⟩` from `GlobalTheory.CommutingPoly.exists_poly_annihilates_linear_combination A hc c P hP`. Use `⟨p, hp0, fun φ hK hN => ?_⟩` and prove the remaining obligations. Establish `e : ∑ i, c i • A i = lapOp E a`. Rewrite using `[GlobalTheory.HCAlpha.lapOp_eq_casKOp_add_cas E a, Fintype.sum_option]`. Both sides reduce to the same expression.
+
+Rewrite using `[← e]`. Use `hp φ ?_` and prove the remaining obligations. Introduce and unpack `(_ | τ)`. Conclude with `hq φ hK`. Establish `h` using `hN (List.replicate N (Formalism.REAL.Cas (Eop τ))) (List.length_replicate ..) (fun z hz => (List.eq_of_mem_replicate hz) ▸ GlobalTheory.CasCentre.cas_Eop_mem_Zalg E a τ)`.
+
+Rewrite `h` using `[foldr_replicate']`. Conclude with `h`.
+-/
 theorem exists_poly_one (W : Submodule ℂ (Kinf E a → ℂ)) (hW : FiniteDimensional ℂ W)
     (χ : Module.End ℂ (Sm E a) → ℂ) (N : ℕ) :
     ∃ p : Polynomial ℂ, p ≠ 0 ∧ ∀ φ : Sm E a,
@@ -84,6 +109,11 @@ theorem exists_poly_one (W : Submodule ℂ (Kinf E a → ℂ)) (hW : FiniteDimen
     rw [foldr_replicate'] at h
     exact h
 
+/- English proof (translation)
+Introduce `E _ _ _ a L W hW X hX N`. Use `choose pχ hpχ0 hpχ using fun χ => exists_poly_one E a W hW χ N`. Use `⟨∏ χ ∈ hX.toFinset, pχ χ, Finset.prod_ne_zero_iff.mpr fun χ _ => hpχ0 χ, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨χ, hχX, hN⟩` from `hφ.2.2.2`. Establish `hmem : χ ∈ hX.toFinset` using `hX.mem_toFinset.mpr hχX`.
+
+Rewrite using `[← Finset.mul_prod_erase _ _ hmem, mul_comm, map_mul, Module.End.mul_apply, hpχ χ φ hφ.2.2.1 hN, map_zero]`.
+-/
 theorem exists_poly_formsGL : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ),
     ∀ (L : Subgroup (GL (Fin a) (Af E))) (W : Submodule ℂ (Kinf E a → ℂ)), FiniteDimensional ℂ W →
     ∀ X : Set (Module.End ℂ (Sm E a) → ℂ), X.Finite → ∀ N : ℕ, ∃ p : Polynomial ℂ, p ≠ 0 ∧

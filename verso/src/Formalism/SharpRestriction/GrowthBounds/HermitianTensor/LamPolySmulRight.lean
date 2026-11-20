@@ -32,6 +32,9 @@ section Gen
 
 variable {K : Type} [Field K] {S α : Type} [Fintype S]
 
+/- English proof (translation)
+Simplify using `only [Algebra.smul_def, map_mul, AlgHom.commutes, Finset.prod_mul_distrib, map_prod]`.
+-/
 theorem prod_bE_smul {k n : ℕ} (a : S → K) (f : S → MvPolynomial (Fin k × Fin n) K) :
     ∏ s, blockEmb K s (a s • f s) = (∏ s, a s) • ∏ s, blockEmb K s (f s) := by
   simp only [Algebra.smul_def, map_mul, AlgHom.commutes, Finset.prod_mul_distrib, map_prod]
@@ -39,6 +42,9 @@ theorem prod_bE_smul {k n : ℕ} (a : S → K) (f : S → MvPolynomial (Fin k ×
 def renB (K : Type) [Field K] (S α : Type) (b : Bool) : MvPolynomial (S × α) K →ₐ[K] MvPolynomial (S × (Bool × α)) K :=
   rename fun x => (x.1, (b, x.2))
 
+/- English proof (translation)
+Simplify using `only [map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [renB, blockEmb, map_mul, rename_rename]`. Apply the tactic sequence `try rfl`.
+-/
 theorem renB_prod {k n : ℕ} (v t : S → MvPolynomial (Fin k × Fin n) K) :
     renB K S (Fin k × Fin n) true (∏ s, blockEmb K s (v s)) * renB K S (Fin k × Fin n) false (∏ s, blockEmb K s (t s)) =
       ∏ s, rename (fun x : Bool × (Fin k × Fin n) => (s, x)) (blockEmb K true (v s) * blockEmb K false (t s)) := by
@@ -59,25 +65,43 @@ def lamPoly (T : MvPolynomial (S × (Bool × (Fin k × Fin n))) K →ₗ[K] MvPo
 
 variable (T : MvPolynomial (S × (Bool × (Fin k × Fin n))) K →ₗ[K] MvPolynomial (S × (Fin k × Fin n)) K)
 
+/- English proof (translation)
+Unfold `lamPoly`. Rewrite using `[map_add, add_mul, map_add]`.
+-/
 theorem lamPoly_add_left (V V' W) : lamPoly T (V + V') W = lamPoly T V W + lamPoly T V' W := by
   unfold lamPoly
   rw [map_add, add_mul, map_add]
 
+/- English proof (translation)
+Unfold `lamPoly`. Rewrite using `[map_add, mul_add, map_add]`.
+-/
 theorem lamPoly_add_right (V W W') : lamPoly T V (W + W') = lamPoly T V W + lamPoly T V W' := by
   unfold lamPoly
   rw [map_add, mul_add, map_add]
 
+/- English proof (translation)
+Unfold `lamPoly`. Rewrite using `[map_smul, smul_mul_assoc, map_smul]`.
+-/
 theorem lamPoly_smul_left (c : K) (V W) : lamPoly T (c • V) W = c • lamPoly T V W := by
   unfold lamPoly
   rw [map_smul, smul_mul_assoc, map_smul]
 
+/- English proof (translation)
+Unfold `lamPoly`. Rewrite using `[map_smul, mul_smul_comm, map_smul]`.
+-/
 theorem lamPoly_smul_right (c : K) (V W) : lamPoly T V (c • W) = c • lamPoly T V W := by
   unfold lamPoly
   rw [map_smul, mul_smul_comm, map_smul]
 
+/- English proof (translation)
+Simplify using `[lamPoly]`.
+-/
 theorem lamPoly_zero_left (W) : lamPoly T 0 W = 0 := by
   simp [lamPoly]
 
+/- English proof (translation)
+Simplify using `[lamPoly]`.
+-/
 theorem lamPoly_zero_right (V) : lamPoly T V 0 = 0 := by
   simp [lamPoly]
 
@@ -86,6 +110,9 @@ variable (L : S → MvPolynomial (Bool × (Fin k × Fin n)) K →ₗ[K] MvPolyno
     T (∏ s, rename (fun x => (s, x)) (Q s)) = ∏ s, blockEmb K s (L s (Q s)))
 
 include hT in
+/- English proof (translation)
+Unfold `lamPoly`. Rewrite using `[renB_prod, hT]`.
+-/
 theorem lamPoly_prod (v t : S → MvPolynomial (Fin k × Fin n) K) :
     lamPoly T (∏ s, blockEmb K s (v s)) (∏ s, blockEmb K s (t s)) =
       ∏ s, blockEmb K s (L s (blockEmb K true (v s) * blockEmb K false (t s))) := by
@@ -94,6 +121,17 @@ theorem lamPoly_prod (v t : S → MvPolynomial (Fin k × Fin n) K) :
 
 include hT in
 
+/- English proof (translation)
+Introduce `V hV W hW`. Proceed by induction on `hV using Submodule.span_induction with`. Consider the case `mem V hV0`. Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem W hW0`.
+
+Take `⟨F, hF, rfl⟩` from `hV0`. Take `⟨G, hG, rfl⟩` from `hW0`. Rewrite using `[lamPoly_prod T L hT]`. Conclude with `Submodule.subset_span ⟨fun s => L s (blockEmb K true (F s) * blockEmb K false (G s)), fun s => h s _ (hF s) _ (hG s), rfl⟩`. Consider the case `zero => rw [lamPoly_zero_right]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add W W' _ _ h1 h2 => rw [lamPoly_add_right]`. Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a W _ h1`. Rewrite using `[← algebraMap_smul K a W, lamPoly_smul_right, algebraMap_smul]`.
+
+Conclude with `Submodule.smul_mem _ a h1`. Consider the case `zero => rw [lamPoly_zero_left]`. Conclude with `Submodule.zero_mem _`. Consider the case `add V V' _ _ h1 h2 => rw [lamPoly_add_left]`. Conclude with `Submodule.add_mem _ h1 h2`.
+
+Consider the case `smul a V _ h1`. Rewrite using `[← algebraMap_smul K a V, lamPoly_smul_left, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ a h1`.
+-/
 theorem lamPoly_mem {A : Type} [CommRing A] [Algebra A K] (Mv Mt Mr : S → Submodule A (MvPolynomial (Fin k × Fin n) K))
     (h : ∀ s, ∀ v ∈ Mv s, ∀ t ∈ Mt s, L s (blockEmb K true v * blockEmb K false t) ∈ Mr s) :
     ∀ V ∈ tensorLat A K Mv, ∀ W ∈ tensorLat A K Mt, lamPoly T V W ∈ tensorLat A K Mr := by
@@ -120,6 +158,9 @@ theorem lamPoly_mem {A : Type} [CommRing A] [Algebra A K] (Mv Mt Mr : S → Subm
 
 end LamPoly
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `only [nuOf, Pi.add_apply]`. Establish `h1 : a (Fin.last m) ≤ a t` using `ha (Fin.le_last t)`. Establish `h2 : b (Fin.last m) ≤ b t` using `hb (Fin.le_last t)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cbNuOf_add {m : ℕ} (a b : Fin (m + 1) → ℤ) (ha : Antitone a) (hb : Antitone b) :
     nuOf (a + b) = nuOf a + nuOf b := by
   funext t
@@ -128,6 +169,11 @@ theorem cbNuOf_add {m : ℕ} (a b : Fin (m + 1) → ℤ) (ha : Antitone a) (hb :
   have h2 : b (Fin.last m) ≤ b t := hb (Fin.le_last t)
   omega
 
+/- English proof (translation)
+Unfold `Ar`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single_of_mem (0 : Fin (m + 1)) (by simp)]`. Introduce `b hb hb0`. It suffices to derive a contradiction.
+
+Apply `hb0` to reduce the goal to its premises. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Conclude with `Fin.ext (by rw [Fin.val_zero]; omega)`.
+-/
 theorem Ar_one {n' m : ℕ} (X : Fin n' → Fin (m + 1) → ℤ) : Ar 1 X = ∑ s, lamAt X s 0 := by
   unfold Ar
   refine Finset.sum_congr rfl fun s _ => ?_
@@ -138,6 +184,9 @@ theorem Ar_one {n' m : ℕ} (X : Fin n' → Fin (m + 1) → ℤ) : Ar 1 X = ∑ 
   simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hb
   exact Fin.ext (by rw [Fin.val_zero]; omega)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gs s * lb_D k 1 c, by rw [Matrix.det_mul]; exact (hgs s).mul (lb_D_det k 1 c hc), rfl⟩`.
+-/
 theorem famD_lat (O : Type) {Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] {n' k : ℕ}
     (gs : Fin n' → Matrix (Fin k) (Fin k) Kf) (hgs : ∀ s, IsUnit (gs s).det) (c : Kf) (hc : c ≠ 0) (s : Fin n') :
     IsLattice O (famD O gs c s) :=

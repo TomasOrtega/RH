@@ -7,6 +7,9 @@ namespace GlobalTheory
 
 open CategoryTheory Limits AlgebraicGeometry in
 
+/- English proof (translation)
+Introduce `X Y Y' f g hs hf hq h`. Use `haveI := _root_.GlobalTheory.isAffineHom_descendsAlong_fpqc`. Conclude with `MorphismProperty.DescendsAlong.of_isPullback (P := @IsAffineHom) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) (IsPullback.of_hasPullback f g).flip ⟨⟨hs, hf⟩, hq⟩ h`.
+-/
 theorem _root_.GlobalTheory.isAffineHom_of_isAffineHom_pullback_snd_of_fpqc :
     ∀ (X Y Y' : Scheme.{0}) (f : X ⟶ Y) (g : Y' ⟶ Y), Surjective g → Flat g → QuasiCompact g →
       IsAffineHom (pullback.snd f g) → IsAffineHom f := by

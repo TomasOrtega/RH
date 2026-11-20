@@ -26,6 +26,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Establish `hrelV : (t * aX * L ^ b₁) • Φ = (B' * L ^ (κ₀ + σ₁ + E + w + S)) • Φ` using `by rw [hrel]`. Take the linear combination `(norm := module) (g₁ * t * L ^ (κ₁' + b₁)) • h₂ - (g₂ * B' * L ^ (κ₂ + κ₀)) • h₃ + (g₁ * g₂ * L ^ (κ₁' + κ₂) * L ^ σ) • hrelV`.
+-/
 theorem frobenius_relation_combination {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (L q g₁ g₂ t B' aX : R)
     (κ₂ κ₁' κ₀ κ b₁ σ σ₁ E w S : ℕ) (V FY Φ y₂ y₃ : M)
     (h₂ : L ^ κ₂ • g₂ • (L ^ (κ₀ + κ) • V - L ^ σ • aX • Φ) = q • y₂)
@@ -37,6 +40,81 @@ theorem frobenius_relation_combination {R M : Type} [CommRing R] [AddCommGroup M
   linear_combination (norm := module) (g₁ * t * L ^ (κ₁' + b₁)) • h₂ - (g₂ * B' * L ^ (κ₂ + κ₀)) • h₃ +
     (g₁ * g₂ * L ^ (κ₁' + κ₂) * L ^ σ) • hrelV
 
+/- English proof (translation)
+Take `⟨hσ₁, hy₁P, hy₁I, hy₁N, g₁, hg₁, κ₁', hY⟩` from `hy₁`. Establish `hn₂ : ∀ s : W.EE, algebraMap (LetA O n) W.EE (qA W ^ size (c - 1)) * s = algebraMap (LetA O n) W.EE (ps W 1 ^ (size (c - 2) + S)) → Formalism.MainNotions.LiftingTheory.InNΔi W T₂ (c - 1) (s • lam)` using `fun s h => (hmap s h).1`. Take `⟨hv₂P, g₂, hg₂, κ₂, hV⟩` from `arc_length_three_inFP_smul_phi_lambda W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf Pt hP3 hP4 hPtEx hC4 hP5 Cb hCb halt hsm hlen hD hOK hσ hy f₂ hf₂ κ₀ X₀ hX₀ lam h …`. Take `⟨⟨a₀, ha₀, hΛf⟩, hφl, hrep⟩` from `arc_length_three_representation W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf Pt hP3 hP4 hPtEx hC4 hP5 Cb hCb halt hsm hlen hD hOK hσ hy f₂ hf₂ lam hlam hlamγ κ Hh h …`. Establish `hB'` using `hB`.
+
+Take `⟨hl11, hSet, -, hη20, hS20, -⟩` from `hB'`. Establish `hthick : ∀ d : ℕ, 1 ≤ d → d < 3 → Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)`. Introduce `d hd1 hd3`. Assume the negation of the conclusion as `hnt`. Establish `hmem : d ∈ {d : ℕ | 1 ≤ d ∧ ¬ Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)}` using `⟨hd1, hnt⟩`.
+
+Establish `hle` using `Nat.sInf_le hmem`. Establish `hlen' : (arcOf b w S η up size).len c = sInf {d : ℕ | 1 ≤ d ∧ ¬ Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)}` using `rfl`. Rewrite `hlen` using `[hlen']`. Use linear arithmetic over natural numbers and integers. Establish `ht1 : Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - 1)`.
+
+Establish `h` using `hthick 2 (by norm_num) (by norm_num)`. Establish `e2 : c - ((2 : ℕ) : ZMod n) + 1 = c - 1` using `by push_cast; ring`. Rewrite `h` using `[e2]`. Then use the resulting hypothesis. Establish `ht0 : Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size c`. Establish `h` using `hthick 1 le_rfl (by norm_num)`.
+
+Establish `e1 : c - ((1 : ℕ) : ZMod n) + 1 = c` using `by push_cast; ring`. Rewrite `h` using `[e1]`. Then use the resulting hypothesis. Establish `hhB : Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size = b + η + S`. Unfold `Formalism.MainNotions.TruncatedSeriesCountingBounds.hB`. Rewrite using `[if_pos ⟨c - 1, ht1⟩]`.
+
+Establish `hSgEq : Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size = Formalism.MainNotions.N.FrobeniusPowerSeries.Sg PD.p (b + η + S) w S η`. Unfold `Formalism.MainNotions.N.Ln17.Sg Formalism.MainNotions.N.FrobeniusPowerSeries.Sg`. Rewrite using `[hhB]`. Establish `hp : (11 : ℝ) ≤ (PD.p : ℝ)` using `by exact_mod_cast hl11`. Use `set σ := (arcOf b w S η up size).σ PD.p with hσdef`.
+
+Use `set D₁ : ℕ := κ₀ + σ₁ + E + size (c - 2) + S with hD₁`. Establish `hvp : v ((PD.p : ℕ) : LL) = 1` using `by exact_mod_cast W.v_l`. Establish `hp0 : ((PD.p : ℕ) : LL) ≠ 0`. Introduce `h0`. Rewrite `hvp` using `[h0, AddValuation.map_zero]`.
+
+Conclude with `WithTop.top_ne_coe hvp`. Choose the witnesses or unpack the hypotheses as in `⟨t₃, B', hrel, r₃, hr₃, hr₃b⟩ : ∃ t₃ B' : O, t₃ * X₀ * ((PD.p : ℕ) : O) ^ size (c - 1) = B' * ((PD.p : ℕ) : O) ^ D₁ ∧ ∃ r : ℚ, v (algebraMap O LL t₃) = ((r : ℚ) : WithTop ℚ) ∧ (r : ℝ) ≤ 14 * Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size := by`. Establish `hvcalc : ∀ (k : ℕ) (x : LL) (r : ℚ), v x = ((r : ℚ) : WithTop ℚ) → v (((PD.p : ℕ) : LL) ^ k * x⁻¹) = ((((k : ℚ) - r) : ℚ) : WithTop ℚ)`. Introduce `k x r hr`. Rewrite using `[AddValuation.map_mul, AddValuation.map_pow, AddValuation.map_inv, hvp, hr]`.
+
+Rewrite using `[← WithTop.coe_one, ← WithTop.coe_nsmul, ← WithTop.LinearOrderedAddCommGroup.coe_neg, ← WithTop.coe_add, nsmul_one, sub_eq_add_neg]`. Establish `hσ0 : (0 : ℝ) ≤ Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size`. Establish `: (0 : ℝ) ≤ (σ : ℝ)` using `Nat.cast_nonneg _`. Combine the linear relations using `[hσ]`. Distinguish the cases in `hX : X₀ = 0`.
+
+Use `⟨1, 0, by rw [hX]; ring, 0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, AddValuation.map_one, WithTop.coe_zero]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hXLL : algebraMap O LL X₀ ≠ 0` using `fun h => hX (hinj (by rw [h, map_zero]))`.
+
+Establish `hne : v (algebraMap O LL X₀) ≠ ⊤`. Introduce `h`. Conclude with `hXLL ((AddValuation.top_iff v).1 h)`. Take `⟨rX, hrX⟩` from `WithTop.ne_top_iff_exists.1 hne`. Establish `hrX0 : (0 : ℚ) ≤ rX`.
+
+Establish `h0` using `hO X₀`. Rewrite `h0` using `[← hrX]`. Conclude with `h0` after adjusting the coercions. Establish `hx0'` using `hx0 rX hrX.symm`. Distinguish the cases in `hlt : rX < ((D₁ + σ : ℕ) : ℚ) - (size (c - 1) : ℚ)`.
+
+Establish `hk : size (c - 1) ≤ D₁ + σ`. Establish `: ((size (c - 1) : ℕ) : ℚ) ≤ ((D₁ + σ : ℕ) : ℚ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `hv1` using `hvcalc (D₁ + σ - size (c - 1)) (algebraMap O LL X₀) rX hrX.symm`. Take `⟨t₃, ht₃⟩` from `hOv (((PD.p : ℕ) : LL) ^ (D₁ + σ - size (c - 1)) * (algebraMap O LL X₀)⁻¹) (by`.
+
+Rewrite using `[hv1]`. Establish `: (0 : ℚ) ≤ ((D₁ + σ - size (c - 1) : ℕ) : ℚ) - rX`. Rewrite using `[Nat.cast_sub hk]`. Move the coercions through the operations in `at hlt ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `this)` after adjusting the coercions. Use `⟨t₃, ((PD.p : ℕ) : O) ^ σ, ?_, ((D₁ + σ - size (c - 1) : ℕ) : ℚ) - rX, by rw [ht₃, hv1], ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Simplify using `only [map_mul, map_pow, map_natCast, ht₃]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[← pow_add, ← pow_add, Nat.sub_add_cancel hk, add_comm]`. Establish `hb1 : 1 ≤ b`. Establish `hh1 : 1 ≤ Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size` using `hOK.2.2.2.2.2.2.1`. Establish `hlog : 0 ≤ Real.logb PD.p (2 * ((Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℕ) : ℝ))` using `Real.logb_nonneg (by linarith) (by`. Establish `: (1 : ℝ) ≤ ((Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℕ) : ℝ)` using `by exact_mod_cast hh1`.
+
+Use the proof step `linarith)`. Establish `hSg1 : 1 ≤ Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size`. Unfold `Formalism.MainNotions.N.Ln17.Sg`. Establish `h1 : (0 : ℝ) ≤ ((Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℕ) : ℝ) / (PD.p : ℝ) ^ 2` using `by positivity`. Establish `h2 : (0 : ℝ) ≤ ((w : ℝ) + S + η) / PD.p` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (160 : ℝ) ≤ b` using `by linarith [hsm]`. Conclude with `(by linarith : (1 : ℝ) ≤ b)` after adjusting the coercions. Establish `hAh : ((arcOf b w S η up size).h : ℕ) = b + η + S` using `hhB`. Establish `hBle : ((size c + S : ℕ) : ℝ) ≤ ((b + η + S : ℕ) : ℝ)`.
+
+Use `ht0.2` as an intermediate fact. Conclude with `(by omega : size c + S ≤ b + η + S)` after adjusting the coercions. Establish `hv' : ((size (c - 2) : ℝ) + S - size (c - 1)) + ((size c + S : ℕ) : ℝ) / PD.p - ((size c + S : ℕ) : ℝ) / (PD.p : ℝ) ^ 2 - 2 - Real.logb PD.p (2 * ((b + η + S : ℕ) : ℝ)) ≤ (rX : ℝ) - κ₀`. Rewrite `hx0'` using `[hAh]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hE' : (E : ℝ) ≤ 8 * Formalism.MainNotions.N.FrobeniusPowerSeries.Sg PD.p (b + η + S) w S η` using `by rw [← hSgEq]; exact hE`. Establish `hσ' : (σ : ℝ) ≤ 3 * Formalism.MainNotions.N.FrobeniusPowerSeries.Sg PD.p (b + η + S) w S η` using `by rw [← hSgEq]; exact hσ`. Establish `h10` using `Formalism.MainNotions.N.FrobeniusPowerSeries.sub_le_fourteen_mul_errorScale PD.p hl11 b w S η hb1 (σ₁ : ℝ) (E : ℝ) (σ : ℝ) ((size c + S : ℕ) : ℝ) (size (c - 2) : ℝ) (size (c - 1) : ℝ) ((rX : ℝ) - κ₀) (Nat.cast_nonneg _) hBle hσ₁ hE' hσ' hv'`. Rewrite using `[hSgEq]`. Establish `hcast : ((D₁ + σ - size (c - 1) : ℕ) : ℝ) = (κ₀ : ℝ) + σ₁ + E + size (c - 2) + S + σ - size (c - 1)`.
+
+Rewrite using `[Nat.cast_sub hk, hD₁]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hq : ((((D₁ + σ - size (c - 1) : ℕ) : ℚ) - rX : ℚ) : ℝ) = ((D₁ + σ - size (c - 1) : ℕ) : ℝ) - (rX : ℝ)` using `by push_cast; ring`. Rewrite using `[hq, hcast]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hv2 : v (algebraMap O LL X₀ * ((PD.p : ℕ) : LL) ^ size (c - 1) * (((PD.p : ℕ) : LL) ^ D₁)⁻¹) = (((rX + size (c - 1) - D₁ : ℚ)) : WithTop ℚ)`. Rewrite using `[AddValuation.map_mul, AddValuation.map_mul, AddValuation.map_pow, AddValuation.map_inv, AddValuation.map_pow, hvp, ← hrX]`. Rewrite using `[← WithTop.coe_one, ← WithTop.coe_nsmul, ← WithTop.coe_nsmul, ← WithTop.LinearOrderedAddCommGroup.coe_neg, ← WithTop.coe_add, ← WithTop.coe_add, nsmul_one, nsmul_one]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨B', hB'⟩` from `hOv (algebraMap O LL X₀ * ((PD.p : ℕ) : LL) ^ size (c - 1) * (((PD.p : ℕ) : LL) ^ D₁)⁻¹) (by`. Rewrite using `[hv2]`. Establish `: (0 : ℚ) ≤ rX + size (c - 1) - D₁`. Move the coercions through the operations in `at hlt`.
+
+Use `push Not at hlt`. Establish `: (0 : ℚ) ≤ (σ : ℚ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this)` after adjusting the coercions. Use `⟨1, B', ?_, 0, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `hinj` to reduce the goal to its premises. Simplify using `only [map_mul, map_pow, map_natCast, map_one, hB']`. Clear the denominators using the available nonvanishing facts. Rewrite using `[map_one, AddValuation.map_one, WithTop.coe_zero]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set V : W.DD T₂ := f₂ • W.φD T₂ lam with hVdef`. Use `set Φ : W.DD T₂ := ((W.φD T₂) ^ 3) Hh with hΦdef`. Use `set De : W.DD T₂ := algebraMap O (LetA O n) t₃ • V - algebraMap O (LetA O n) B' • W.map F y₁ with hDedef`. Establish `hDeP : InFP W T₂ (c - 1) 1 1 De` using `inMultiple_sub W (inMultiple_smul W (algebraMap_mem_invariants W t₃) hv₂P) (inMultiple_smul W (algebraMap_mem_invariants W B') (arc_length_three_map_lattice W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr …`.
+
+Establish `hPsA : ∀ g ∈ Submonoid.closure {x : LetA O n | ∃ k ≥ 1, x = ps W k}, g ∈ W.AΔ`. Introduce `g hg`. Use `(Submonoid.closure_le (S := W.AΔ.toSubmonoid)).2 ?_ hg` and prove the remaining obligations. Introduce and unpack `_ ⟨k, -, rfl⟩`. Conclude with `ps_mem W k`.
+
+Establish `hDe0 : ∃ k : ℕ, InFP W T₂ (c - 1) 1 (qA W ^ (size c + S)) (lA W ^ k • (g₁ * g₂) • De)`. Take `⟨y₂, hy₂, hy₂e⟩` from `hV`. Take `⟨y₃, hy₃, hy₃e⟩` from `hY`. Establish `hrelL : algebraMap O (LetA O n) t₃ * algebraMap O (LetA O n) X₀ * lA W ^ size (c - 1) = algebraMap O (LetA O n) B' * lA W ^ D₁`. Use `congrArg (algebraMap O (LetA O n)) hrel` as an intermediate fact.
+
+Simplify `this` using `only [map_mul, map_pow, map_natCast, lA]`. Establish `hrelL' : algebraMap O (LetA O n) t₃ * algebraMap O (LetA O n) X₀ * lA W ^ size (c - 1) = algebraMap O (LetA O n) B' * lA W ^ (κ₀ + σ₁ + E + size (c - 2) + S)`. Rewrite using `[hrelL, hD₁]`. Rewrite `hy₂e` using `[← algebraMap_smul_eq_smul W X₀ Φ]`. Use `⟨κ₂ + κ₁' + κ₀ + κ + size (c - 1), (g₁ * algebraMap O (LetA O n) t₃ * lA W ^ (κ₁' + size (c - 1))) • y₂ - (g₂ * algebraMap O (LetA O n) B' * lA W ^ (κ₂ + κ₀)) • y₃, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `sub_mem (Pp_smul W (W.AΔ.mul_mem (W.AΔ.mul_mem (hPsA g₁ hg₁) (algebraMap_mem_invariants W t₃)) (lA_pow_mem W _)) hy₂) (Pp_smul W (W.AΔ.mul_mem (W.AΔ.mul_mem (hPsA g₂ hg₂) (algebraMap_mem_invariants W B')) (lA_pow_mem W _)) hy₃)`. Rewrite using `[hDedef]`. Conclude with `frobenius_relation_combination (lA W) (qA W ^ (size c + S)) g₁ g₂ (algebraMap O (LetA O n) t₃) (algebraMap O (LetA O n) B') (algebraMap O (LetA O n) X₀) κ₂ κ₁' κ₀ κ (size (c - 1)) σ σ₁ E (size (c - 2)) S V (W.map F y₁) Φ y₂ y₃ hy₂e hy₃e hrelL'`. Establish `hDeq` using `q_pow_mem_of_generator W hcase hP9 hSatP hO hOv hinj hW₂.1 (c - 1) (size c + S) (g₁ * g₂) (Submonoid.mul_mem _ hg₁ hg₂) De hDeP hDe0`. Establish `hDeN` using `inFNc_of_inFP_of_arc_sigma_le W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf Pt hP3 hP4 hPtEx hC4 hP5 Cb hCb halt hsm hlen hD hOK hσ hy De hDeq`.
+
+Take `⟨De₁, hDe₁N, hDe₁I, hFDe₁⟩` from `arc_length_three_annihilate W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf Pt hP3 hP4 hPtEx hC4 hP5 Cb hCb halt hsm hlen hD hOK hσ hy De hDeN`. Use `set tt : O := ((PD.p : ℕ) : O) ^ rr * B' with htt`. Establish `hFw : W.map F (De₁ + algebraMap O (LetA O n) tt • y₁) = algebraMap O (LetA O n) (((PD.p : ℕ) : O) ^ rr * t₃) • V`. Establish `hlA : lA W = algebraMap O (LetA O n) ((PD.p : ℕ) : O)` using `by simp [lA]`. Rewrite using `[map_add, map_smulA W F, hFDe₁, hDedef, htt, map_mul, map_mul, map_pow, ← hlA]`.
+
+Simplify using `only [smul_sub, mul_smul]`. Normalize the expressions using the abelian group laws. Use `⟨rr + σ, t₃, ?_, ⟨r₃, hr₃, hr₃b⟩, ?_⟩` and prove the remaining obligations. Use `push_cast`. Combine the linear relations using `[hrr, hσ]`.
+
+Establish `h0 : ps W 0 = qA W` using `by simp [ps]`. Establish `hqA : qA W ∈ W.AΔ` using `h0 ▸ ps_mem W 0`. Establish `hΛV : abelian₂ W (arcOf b w S η up size) c ((arcOf b w S η up size).len c) • V = a₀ • W.φD T₂ lam`. Rewrite using `[hVdef, ← algebraMap_smul W.EE (abelian₂ W (arcOf b w S η up size) c ((arcOf b w S η up size).len c)) (f₂ • W.φD T₂ lam), smul_smul, hΛf, algebraMap_smul]`. Unfold `LiftsAt`.
+
+Use `⟨De₁ + algebraMap O (LetA O n) tt • y₁, 0, InI_add W hDe₁I (inI_algebraMap_smul W tt hy₁I), ⟨qA W ^ (size c + S), ?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h0]`. Conclude with `Submonoid.pow_mem _ (Submonoid.subset_closure (Set.mem_range_self (f := ps W) 0)) _`. Rewrite using `[smul_add]`. Use `InFNc_add W (InFNc_smul W (W.AΔ.pow_mem hqA _) hDe₁N) ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_comm]`. Conclude with `InFNc_smul W (algebraMap_mem_invariants W tt) hy₁N`. Rewrite using `[hFw, smul_comm, hΛV]`. Conclude with `inMultiple_smul W (algebraMap_mem_invariants W _) (inMultiple_smul W ha₀ hφl)`. Conclude with `⟨0, zero_mem _, smul_zero _, (smul_zero _).symm⟩`.
+
+Rewrite using `[sub_zero, hFw]`. Establish `h6` using `repVV_smul_invariant W (algebraMap O (LetA O n) (((PD.p : ℕ) : O) ^ rr * t₃)) (algebraMap_mem_invariants W _) hrep`. Use `RepVV_congr W h6 rfl fun k => ?_` and prove the remaining obligations. Use `split_ifs`. Simplify using `only [lE, ← IsScalarTower.algebraMap_apply, map_mul, map_pow, map_natCast]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero]`.
+-/
 theorem arc_length_three_final_bound [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

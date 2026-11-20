@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.IwDcosFin
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hC.elim_finite_subcover (fun g : G => (fun x => g * x) '' (H : Set G)) (fun g => (Homeomorph.mulLeft g).isOpenMap _ hH) (fun x _ => Set.mem_iUnion.2 ⟨x, 1, H.one_mem, mul_one x⟩)`. Use `(s.finite_toSet.image (QuotientGroup.mk : G → G ⧸ H)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg, hy⟩ : ∃ g ∈ s, g⁻¹ * x ∈ H := by`. Simplify using `using hs hx`.
+
+Conclude with `⟨g, hg, QuotientGroup.eq.2 hy⟩`.
+-/
 theorem finite_image_mk_of_isCompact {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {H : Subgroup G} (hH : IsOpen (H : Set G)) {C : Set G} (hC : IsCompact C) :
     ((QuotientGroup.mk : G → G ⧸ H) '' C).Finite := by
@@ -22,6 +27,11 @@ theorem finite_image_mk_of_isCompact {G : Type} [Group G] [TopologicalSpace G] [
     simpa using hs hx
   exact ⟨g, hg, QuotientGroup.eq.2 hy⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ w a t`. Establish `hIo : IsOpen (iwGL a w : Set (GLw a w))` using `GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin a)`. Establish `hIc : IsCompact (iwGL a w : Set (GLw a w))` using `GlobalTheory.SmGL.IwahoriOnto.isCompact_iwahori (w.adicCompletion E) (Fin a)`. Use `⟨?_, hIo, hIc, GlobalTheory.CompanionTheory.IwLevels.iwGL_le_KGL w a, GlobalTheory.CompanionTheory.IwLevels.relIndex_ne_zero hIo (GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w a)⟩` and prove the remaining obligations. Use `(finite_image_mk_of_isCompact hIo (GlobalTheory.CompanionTheory.IwFacts.isCompact_support_dcos w a t)).subset ?_` and prove the remaining obligations.
+
+Introduce `q hq`. Conclude with `⟨q.out, hq, QuotientGroup.out_eq' q⟩`.
+-/
 theorem dcos_finite_support_iwGL : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E) (a : ℕ) (t : GLw a w),
     (Function.support fun q : GLw a w ⧸ iwGL a w => dcos a w t q.out).Finite ∧ IsOpen (iwGL a w : Set (GLw a w)) ∧
       IsCompact (iwGL a w : Set (GLw a w)) ∧ iwGL a w ≤ GlobalTheory.LFun.KGL w a ∧

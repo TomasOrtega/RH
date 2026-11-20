@@ -17,6 +17,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.TupHaar
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ e τ Θ hco n M`. Establish `hΘ : IsHomeomorph Θ` using `hco.1`. Establish `hΘc : Continuous Θ` using `hΘ.continuous`. Establish `hs : Continuous (Θ.symm : (InfinitePlace F → ℂ) → Ainf F ⊗[F] E)`. Establish `h` using `(IsHomeomorph.homeomorph (⇑Θ) hΘ).symm.continuous`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Apply `Θ.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `((IsHomeomorph.homeomorph (⇑Θ) hΘ).apply_symm_apply y).symm`.
+
+Set `Φ : (Fin n → Fin M → Ainf F ⊗[F] E) ≃+ (InfinitePlace F → Fin n → Fin M → ℂ)` to `{ toFun := fun X w a i => Θ (X a i) w invFun := fun Y a i => Θ.symm (fun w => Y w a i) left_inv := fun X => by funext a i; simp right_inv := fun Y => by funext w a i; simp map_add' := fun X X' => by funext w a i; simp }`. Establish `hc' : Continuous (fun (X : Fin n → Fin M → Ainf F ⊗[F] E) (w : InfinitePlace F) (a : Fin n) (i : Fin M) => Θ (X a i) w)` using `by fun_prop`. Establish `hcs' : Continuous (fun (Y : InfinitePlace F → Fin n → Fin M → ℂ) (a : Fin n) (i : Fin M) => Θ.symm (fun w => Y w a i))` using `by fun_prop`. Establish `hc : Continuous Φ` using `hc'`. Establish `hcs : Continuous Φ.symm` using `hcs'`.
+
+Use `⟨Φ, fun X => rfl, hc, hcs, fun μ hμ => ?_⟩` and prove the remaining obligations. Use `haveI := hμ`. Use `⟨AddEquiv.isAddHaarMeasure_map μ Φ hc hcs, fun g => ?_⟩` and prove the remaining obligations. Set `h : (Fin n → Fin M → Ainf F ⊗[F] E) ≃ₜ (InfinitePlace F → Fin n → Fin M → ℂ)` to `⟨Φ.toEquiv, hc, hcs⟩`. Conclude with `(h.measurableEmbedding.integral_map g).symm`.
+-/
 theorem tup_coord_haar : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   IsCMExt F E σ → ∀ (e : Ainf F ≃+* (InfinitePlace F → ℝ)) (τ : InfinitePlace F → (E →+* ℂ))
   (Θ : Ainf F ⊗[F] E ≃+* (InfinitePlace F → ℂ)), IsCoord σ e τ Θ →

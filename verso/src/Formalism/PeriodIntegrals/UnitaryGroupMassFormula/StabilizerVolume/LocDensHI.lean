@@ -8,6 +8,23 @@ namespace PI.VolStabS
 open scoped TensorProduct
 open NumberField IsDedekindDomain MeasureTheory Topology Filter Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes PI.VolFromSW
 
+/- English proof (translation)
+Establish `emb : MeasurableEmbedding ((↑) : L → V)` using `MeasurableEmbedding.subtype_coe hL`. Establish `hadd : ∀ g : L, Measurable (fun x : L => g + x)` using `fun g => ((measurable_const_add (g : V)).comp measurable_subtype_coe).subtype_mk`. Establish `: MeasurableAdd L` using `⟨hadd, fun g => ((measurable_add_const (g : V)).comp measurable_subtype_coe).subtype_mk⟩`. Establish `: (Λ.addSubgroupOf L).FiniteIndex` using `⟨hfin⟩`. Establish `: (μ.comap ((↑) : L → V)).IsAddLeftInvariant`.
+
+Use `⟨fun g => ?_⟩` and prove the remaining obligations. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply (hadd g) hs, emb.comap_apply, emb.comap_apply]`. Establish `e : ((↑) : L → V) '' ((fun x : L => g + x) ⁻¹' s) = (fun x : V => (g : V) + x) ⁻¹' (((↑) : L → V) '' s)`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_image, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨g + y, hy, rfl⟩`. Introduce and unpack `⟨z, hz, hzx⟩`.
+
+Establish `hxL : x ∈ L`. Establish `: x = (z : V) - g` using `by rw [hzx]; abel`. Rewrite using `[this]`. Conclude with `L.sub_mem z.2 g.2`. Use `⟨⟨x, hxL⟩, ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `: g + (⟨x, hxL⟩ : L) = z` using `Subtype.ext (by simp [hzx])`. Rewrite using `[this]`. Conclude with `hz`. Rewrite using `[e, measure_preimage_add]`. Establish `key` using `AddSubgroup.index_mul_measure (Λ.addSubgroupOf L) (measurable_subtype_coe hΛ) (μ.comap ((↑) : L → V))`.
+
+Rewrite `key` using `[emb.comap_apply, emb.comap_apply, Set.image_univ, Subtype.range_coe]`. Establish `e2 : ((↑) : L → V) '' ((Λ.addSubgroupOf L : AddSubgroup L) : Set L) = Λ`. Use extensionality with `x`. Simplify using `only [Set.mem_image, SetLike.mem_coe, AddSubgroup.mem_addSubgroupOf]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hx`. Conclude with `⟨⟨x, hΛL hx⟩, hx, rfl⟩`. Rewrite `key` using `[e2]`.
+
+Rewrite using `[← key]`. Both sides reduce to the same expression.
+-/
 theorem measure_eq_relIndex_mul {V : Type} [AddCommGroup V] [MeasurableSpace V] [MeasurableAdd V]
     (μ : Measure V) [μ.IsAddLeftInvariant] (Λ L : AddSubgroup V) (hΛL : Λ ≤ L)
     (hL : MeasurableSet (L : Set V)) (hΛ : MeasurableSet (Λ : Set V)) (hfin : Λ.relIndex L ≠ 0) :
@@ -54,6 +71,11 @@ theorem measure_eq_relIndex_mul {V : Type} [AddCommGroup V] [MeasurableSpace V] 
   rw [← key]
   rfl
 
+/- English proof (translation)
+Establish `hS' : ∀ i j k, (Algebra.TensorProduct.basis (Fv F v) b).repr ((S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j) k ∈ v.adicCompletionIntegers F` using `hS`. Use `show ∀ i j k, (Algebra.TensorProduct.basis (Fv F v) b).repr (((s • S : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j) k ∈ v.adicCompletionIntegers F`. Introduce `i j k`. Rewrite using `[coe_hermSMul]`. Simplify using `only [Matrix.smul_apply, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+
+Conclude with `mul_mem hs (hS' i j k)`.
+-/
 theorem smul_mem_hermO {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d : ℕ}
     (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (a : ℕ)
     {s : Fv F v} (hs : s ∈ v.adicCompletionIntegers F) {S : HermR (Fv F v) σ a}
@@ -84,6 +106,17 @@ def IdxH : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
     ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v in cofinite,
       (hF b v σ a 0).relIndex (hermO b v σ a) = Nat.card (𝓞 F ⧸ v.asIdeal) ^ (a ^ 2)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ hSa hSc a ha1 ha2 X0 hT hdet d b`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Use `filter_upwards [hH F E σ hCM M J hJ hSa hSc a ha1 ha2 X0 hT hdet d b] with v hv`. Introduce `μ ν hμ hν`. Use `secondCountable_Fv F v` as an intermediate fact.
+
+Use `locallyCompact_Fv F v` as an intermediate fact. Take `⟨l1, -, -, l4, l5, -, -⟩` from `latFacts_holds F E σ d b a M v`. Establish `hq : Nat.card (𝓞 F ⧸ v.asIdeal) ≠ 0`. Establish `: Finite (𝓞 F ⧸ v.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Conclude with `Nat.card_pos.ne'`.
+
+Establish `hLi` using `hL F E σ hCM M J hJ hSa hSc a ha1 ha2 X0 hT hdet d b v`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e` using `measure_eq_relIndex_mul μ (lamF b v a M 0) (latSub b v a M) l4 (PositiveNearLattice.isClopen_latV b v a M).isOpen.measurableSet (l1 0).measurableSet (by rw [hLi]; exact pow_ne_zero _ hq)`. Rewrite `e` using `[hLi, Nat.cast_pow]`. Conclude with `e`.
+
+Establish `e` using `measure_eq_relIndex_mul ν (hF b v σ a 0) (hermO b v σ a) (by intro x hx`. Simplify using `only [hF, mem_smulSub] at hx`. Take `⟨p, hp, rfl⟩` from `hx`. Conclude with `smul_mem_hermO b v σ a (pow_mem (unifV_spec v).2.2 _) hp)`. Use the proof step `(LatFactsW.isOpen_hermO b v σ a).measurableSet (l5 0).measurableSet`.
+
+Use the proof step `(by rw [hv]; exact pow_ne_zero _ hq)`. Rewrite `e` using `[hv, Nat.cast_pow]`. Conclude with `e`.
+-/
 theorem idxAA_of (hL : IdxL) (hH : IdxH) : IdxAA := by
   intro F E _ _ _ _ _ σ hCM M J hJ hSa hSc a ha1 ha2 X0 hT hdet d b
   have : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)

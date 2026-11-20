@@ -7,6 +7,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
+/- English proof (translation)
+Introduce and unpack `⟨II, hII, -⟩`. Conclude with `⟨II, hII⟩`.
+-/
 theorem exists_family_of_system :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.AI.I2.ExistsStatement := by
   rintro ⟨II, hII, -⟩

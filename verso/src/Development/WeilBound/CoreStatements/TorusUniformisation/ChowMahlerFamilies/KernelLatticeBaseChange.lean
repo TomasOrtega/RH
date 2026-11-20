@@ -10,9 +10,17 @@ section Span
 variable {o C : Type} [CommRing o] [Field C] [Algebra o C] {RC : Subalgebra o C}
   {A B : Type} [AddCommGroup A] [Module C A] [AddCommGroup B] [Module C B]
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, RC.one_mem, e, he, (one_smul _ _).symm⟩`.
+-/
 theorem mem_span {S : Set A} {e : A} (he : e ∈ S) : e ∈ spanOver RC S :=
   AddSubgroup.subset_closure ⟨1, RC.one_mem, e, he, (one_smul _ _).symm⟩
 
+/- English proof (translation)
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, e, he, rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨a * c, RC.mul_mem ha hc, e, he, (mul_smul _ _ _).symm⟩`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `AddSubgroup.add_mem _ hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `AddSubgroup.neg_mem _ hx`.
+-/
 theorem smul_mem {S : Set A} {a : C} (ha : a ∈ RC) {x : A} (hx : x ∈ spanOver RC S) :
     a • x ∈ spanOver RC S := by
   induction hx using AddSubgroup.closure_induction with
@@ -23,6 +31,11 @@ theorem smul_mem {S : Set A} {a : C} (ha : a ∈ RC) {x : A} (hx : x ∈ spanOve
   | add x y _ _ hx hy => rw [smul_add]; exact AddSubgroup.add_mem _ hx hy
   | neg x _ hx => rw [smul_neg]; exact AddSubgroup.neg_mem _ hx
 
+/- English proof (translation)
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, e, he, rfl⟩` from `hx`. Rewrite using `[map_smul]`. Conclude with `smul_mem hc (h e he)`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `AddSubgroup.add_mem _ hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `AddSubgroup.neg_mem _ hx`.
+-/
 theorem map_mem (T : A →ₗ[C] B) {S : Set A} {S' : Set B} (h : ∀ e ∈ S, T e ∈ spanOver RC S')
     {x : A} (hx : x ∈ spanOver RC S) : T x ∈ spanOver RC S' := by
   induction hx using AddSubgroup.closure_induction with
@@ -36,6 +49,13 @@ theorem map_mem (T : A →ₗ[C] B) {S : Set A} {S' : Set B} (h : ∀ e ∈ S, T
 
 end Span
 
+/- English proof (translation)
+Set `L : Submodule R V` to `{ M with smul_mem' := fun a e he => hM.1 a a.2 e he }`. Take `⟨k, φ, v, hφ, hv⟩` from `LocFreeProj.exists_dualBasis (L := L) (r := N) hM`. Take `⟨ρ, h1, h2, h3⟩` from `hU`. Establish `hz : ∀ i, ∃ z : Z, (ρ (v i : V), z) ∈ Δ` using `fun i => hs _ (h3 _ (v i).2) (h1 _)`. Use `choose z hz using hz`.
+
+Use `⟨∑ i, (φ i).smulRight (z i), fun e he heU => ?_⟩` and prove the remaining obligations. Establish `h4` using `congrArg ρ (hv e)`. Rewrite `h4` using `[h2 e heU, map_sum]`. Simplify using `only [map_smul] at h4`. Establish `: (e, (∑ i, (φ i).smulRight (z i)) e) = ∑ i, φ i e • (ρ (v i : V), z i)`.
+
+Use `ext`. Simplify using `[Prod.fst_sum, h4]`. Simplify using `[Prod.snd_sum]`. Rewrite using `[this]`. Conclude with `AddSubgroup.sum_mem _ fun i _ => hΔ _ (hφ i e he) _ (hz i)`.
+-/
 theorem exists_section {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω)
     {V Z : Type} [AddCommGroup V] [Module Ω V] [AddCommGroup Z] [Module Ω Z]
     (Δ : AddSubgroup (V × Z)) (M : AddSubgroup V) (U : Submodule Ω V) (N : ℕ)
@@ -62,8 +82,14 @@ section BC
 
 variable {Ω C : Type} [Field Ω] [Field C] [Algebra Ω C]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bc_apply {ι : Type} (x : ι → Ω) (j : ι) : bcMap Ω C ι x j = algebraMap Ω C (x j) := rfl
 
+/- English proof (translation)
+Use `⟨Fintype.linearCombination C fun x => bcMap Ω C κ (T (Pi.single x 1)), fun v => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [pi_eq_sum_univ' v]`. Rewrite using `[Fintype.linearCombination_apply, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, bc_apply, algebraMap_smul]`.
+-/
 theorem exists_lift {ι κ : Type} [Fintype ι] (T : (ι → Ω) →ₗ[Ω] (κ → Ω)) :
     ∃ S : (ι → C) →ₗ[C] (κ → C), ∀ v, S (bcMap Ω C ι v) = bcMap Ω C κ (T v) := by
   classical
@@ -73,6 +99,17 @@ theorem exists_lift {ι κ : Type} [Fintype ι] (T : (ι → Ω) →ₗ[Ω] (κ 
   refine Finset.sum_congr rfl fun x _ => ?_
   rw [map_smul, map_smul, bc_apply, algebraMap_smul]
 
+/- English proof (translation)
+Take `⟨ρ, h1, h2, h3⟩` from `hU`. Take `⟨ρc, hρc⟩` from `exists_lift (C := C) ρ`. Take `⟨σc, hσc⟩` from `exists_lift (C := C) σ`. Establish `a2 : ∀ y ∈ Submodule.span C (bcMap Ω C ι '' U), ρc y = y`. Introduce `y hy`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Rewrite using `[hρc, h2 u hu]`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul c x _ hx => rw [map_smul, hx]`. Set `T : ((ι → C) × (κ → C)) →ₗ[C] ((ι → C) × (κ → C))` to `LinearMap.prod (ρc ∘ₗ LinearMap.fst C _ _) (LinearMap.snd C _ _ - σc ∘ₗ LinearMap.fst C _ _ + σc ∘ₗ ρc ∘ₗ LinearMap.fst C _ _)`. Establish `hT : ∀ y, T y = (ρc y.1, y.2 - σc y.1 + σc (ρc y.1))` using `fun y => rfl`. Establish `hTx : T x = x`.
+
+Rewrite using `[hT, a2 _ hxU, sub_add_cancel]`. Rewrite using `[← hTx]`. Use `map_mem T ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨g, m⟩, hgm, rfl⟩`. Take `⟨hg, hg'⟩` from `hσ' _ hgm`.
+
+Use `mem_span ⟨(ρ g, m - σ g + σ (ρ g)), ⟨?_, h1 g⟩, ?_⟩` and prove the remaining obligations. Use `Δ.add_mem (Δ.sub_mem hgm hg') (hσ _ (h3 g hg) (h1 g))` as an intermediate fact. Simplify using `using this`. Rewrite using `[hT]`. Simplify using `only [Prod.map, hρc, hσc, map_add, map_sub]`.
+-/
 theorem key {o : Type} [CommRing o] [Algebra o C] (RC : Subalgebra o C) {ι κ : Type} [Fintype ι]
     (Δ : AddSubgroup ((ι → Ω) × (κ → Ω))) (M : AddSubgroup (ι → Ω)) (U : Submodule Ω (ι → Ω))
     (hU : Summand M U) (σ : (ι → Ω) →ₗ[Ω] (κ → Ω)) (hσ : ∀ v ∈ M, v ∈ U → (v, σ v) ∈ Δ)
@@ -110,10 +147,18 @@ theorem key {o : Type} [CommRing o] [Algebra o C] (RC : Subalgebra o C) {ι κ :
 
 variable {F : Type} [Zero F] {n : ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_van {i : ℕ} {g : (Fin n → F) → Ω} :
     g ∈ vanSub Ω F n i ↔ ∀ x : Fin n → F, (∀ j : Fin n, i ≤ (j : ℕ) → x j = 0) → g x = 0 :=
   Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[charSub, Submodule.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, v, hv, rfl⟩`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hv`. Conclude with `⟨c, by simpa using hu⟩`.
+
+Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨_, Submodule.neg_mem _ hc, _, Submodule.smul_mem _ c (Submodule.mem_span_singleton_self _), by simp⟩`.
+-/
 theorem mem_char {χ : F → Ω} {i : Fin n} {g : (Fin n → F) → Ω} :
     g ∈ charSub χ i ↔ ∃ c : Ω, c • (fun x : Fin n → F => χ (x i)) - g ∈ vanSub Ω F n ((i : ℕ) + 1) := by
   rw [charSub, Submodule.mem_sup]
@@ -125,6 +170,15 @@ theorem mem_char {χ : F → Ω} {i : Fin n} {g : (Fin n → F) → Ω} :
     exact ⟨_, Submodule.neg_mem _ hc, _,
       Submodule.smul_mem _ c (Submodule.mem_span_singleton_self _), by simp⟩
 
+/- English proof (translation)
+Introduce `g hg`. Rewrite using `[pi_eq_sum_univ' g]`. Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : ∀ j : Fin n, i ≤ (j : ℕ) → x j = 0`. Rewrite using `[mem_van.1 hg x hx, zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨Pi.single x 1, mem_van.2 fun y hy => ?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[Pi.single_eq_of_ne]`. Introduce and unpack `rfl`. Conclude with `hx hy`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[bc_apply]`. Distinguish the cases in `h : y = x`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h]`.
+-/
 theorem van_le [Fintype F] (i : ℕ) :
     vanSub C F n i ≤ Submodule.span C (bcMap Ω C _ '' vanSub Ω F n i) := by
   classical
@@ -144,6 +198,9 @@ theorem van_le [Fintype F] (i : ℕ) :
       · subst h; simp
       · simp [h]
 
+/- English proof (translation)
+Use `sup_le ((van_le (Ω := Ω) _).trans (Submodule.span_mono (Set.image_mono ?_))) ?_` and prove the remaining obligations. Conclude with `fun g hg => Submodule.mem_sup_left hg`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `⟨_, Submodule.mem_sup_right (Submodule.mem_span_singleton_self _), rfl⟩`.
+-/
 theorem char_le [Fintype F] (χ : F → Ω) (i : Fin n) :
     charSub (fun a => algebraMap Ω C (χ a)) i ≤ Submodule.span C (bcMap Ω C _ '' charSub χ i) := by
   refine sup_le ((van_le (Ω := Ω) _).trans (Submodule.span_mono (Set.image_mono ?_))) ?_
@@ -152,10 +209,16 @@ theorem char_le [Fintype F] (χ : F → Ω) (i : Fin n) :
     rintro _ rfl
     exact ⟨_, Submodule.mem_sup_right (Submodule.mem_span_singleton_self _), rfl⟩
 
+/- English proof (translation)
+The claim follows from `mem_van.2 fun x hx => by rw [bc_apply, mem_van.1 hg x hx, map_zero]`.
+-/
 theorem bc_van {i : ℕ} {g : (Fin n → F) → Ω} (hg : g ∈ vanSub Ω F n i) :
     bcMap Ω C _ g ∈ vanSub C F n i :=
   mem_van.2 fun x hx => by rw [bc_apply, mem_van.1 hg x hx, map_zero]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `mem_char.1 hg`. Use `mem_char.2 ⟨algebraMap Ω C c, mem_van.2 fun x hx => ?_⟩` and prove the remaining obligations. Use `congrArg (algebraMap Ω C) (mem_van.1 hc x hx)` as an intermediate fact. Rewrite `this` using `[Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_mul, map_zero]`. Conclude with `this`.
+-/
 theorem bc_char {χ : F → Ω} {i : Fin n} {g : (Fin n → F) → Ω} (hg : g ∈ charSub χ i) :
     bcMap Ω C _ g ∈ charSub (fun a => algebraMap Ω C (χ a)) i := by
   obtain ⟨c, hc⟩ := mem_char.1 hg
@@ -166,6 +229,9 @@ theorem bc_char {χ : F → Ω} {i : Fin n} {g : (Fin n → F) → Ω} (hg : g �
 
 variable {Sg : Type} {r s : Sg → ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨g, m⟩, ⟨h1, h2, -⟩, rfl⟩`. Conclude with `⟨g, h1, h2⟩`. Introduce and unpack `⟨g, h1, h2⟩`. Conclude with `⟨(g, m), ⟨h1, h2, trivial⟩, rfl⟩`.
+-/
 theorem mem_kk (D : LieLatticeData Ω F n Sg r s) (τ : Sg) (i : ℕ) (m : Fin (r τ) → Ω) :
     m ∈ D.kk τ i ↔ ∃ g, (g, m) ∈ D.Th τ ∧ g ∈ vanSub Ω F n i := by
   constructor
@@ -174,6 +240,19 @@ theorem mem_kk (D : LieLatticeData Ω F n Sg r s) (τ : Sg) (i : ℕ) (m : Fin (
   · rintro ⟨g, h1, h2⟩
     exact ⟨(g, m), ⟨h1, h2, trivial⟩, rfl⟩
 
+/- English proof (translation)
+Establish `he : ∀ j : Fin n, (i : ℕ) + 1 ≤ (j : ℕ) → (Pi.single i 1 : Fin n → F) j = 0`. Introduce `j hj`. Rewrite using `[Pi.single_eq_of_ne]`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hev : ∀ (d : Ω) (g : (Fin n → F) → Ω), d • (fun x : Fin n → F => χ (x i)) - g ∈ vanSub Ω F n ((i : ℕ) + 1) → g (Pi.single i 1) = d`. Introduce `d g h`. Use `mem_van.1 h _ he` as an intermediate fact. Simplify using `only [Pi.sub_apply, Pi.smul_apply, Pi.single_eq_same, h1, smul_eq_mul, mul_one] at this`. Conclude with `(sub_eq_zero.1 this).symm`.
+
+Establish `h0 : (c, m) ∈ D.stepGraph τ χ i ↔ (c • (fun x : Fin n → F => χ (x i)), m) ∈ D.Th τ ⊔ (vanSub Ω F n ((i : ℕ) + 1)).toAddSubgroup.prod ⊥` using `Iff.rfl`. Rewrite using `[h0, AddSubgroup.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨g, m'⟩, hy, ⟨u, z⟩, ⟨hu, hz⟩, h⟩`. Establish `hz' : z = 0` using `hz`.
+
+Substitute `hz'` using the available equality. Simplify using `only [Prod.mk_add_mk, add_zero, Prod.mk.injEq] at h`. Take `⟨h, rfl⟩` from `h`. Establish `hv : c • (fun x : Fin n → F => χ (x i)) - g ∈ vanSub Ω F n ((i : ℕ) + 1)`. Rewrite using `[← h, add_sub_cancel_left]`.
+
+Conclude with `hu`. Conclude with `⟨g, hy, mem_char.2 ⟨c, hv⟩, hev _ _ hv⟩`. Introduce and unpack `⟨g, hy, hg, hc⟩`. Take `⟨d, hd⟩` from `mem_char.1 hg`. Take `rfl : d = c` from `(hev _ _ hd).symm.trans hc`.
+
+Conclude with `⟨(g, m), hy, (_, 0), ⟨hd, AddSubgroup.zero_mem _⟩, by simp⟩`.
+-/
 theorem mem_step [One F] (D : LieLatticeData Ω F n Sg r s) (τ : Sg) {χ : F → Ω} (h1 : χ 1 = 1) (i : Fin n)
     (c : Ω) (m : Fin (r τ) → Ω) :
     (c, m) ∈ D.stepGraph τ χ i ↔
@@ -212,6 +291,23 @@ end BC
 end PositivityTheory.Xgn.KernelLatticeBaseChange
 
 open PositivityTheory.Xgn.KernelLatticeBaseChange in
+/- English proof (translation)
+Introduce `o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hχ hB hG C _ _ _ _ RC _ τ`. Take `⟨-, -, -, -, hχ⟩` from `hχ`. Take `⟨hχ0, hχ1, -⟩` from `hχ τ`. Establish `hth` using `(hB.th τ).1`. Establish `hv0 : ∀ g : (Fin n → F) → Ω, g ∈ vanSub Ω F n 0 ↔ g 0 = 0` using `fun g => ⟨fun h => mem_van.1 h 0 fun _ _ => rfl, fun h => mem_van.2 fun x hx => by`.
+
+Rewrite using `[show x = 0 from funext fun j => hx j (Nat.zero_le _)]`. Conclude with `h⟩`. Take `⟨σ, hσ⟩` from `exists_section R (D.Th τ) D.M (vanSub Ω F n 0) _ (fun a ha => (hB.stable τ a ha).2.2) hB.freeM (hG.van 0) (fun g hg hg' => (hth g).2 ⟨hg, (hv0 g).1 hg'⟩)`. Establish `hσ' : ∀ x ∈ D.Th τ, x.1 ∈ D.M ∧ (x.1, σ x.1) ∈ D.Th τ` using `fun x hx => by`. Take `⟨h1, h2⟩` from `(hth x.1).1 ⟨x.2, hx⟩`.
+
+Conclude with `⟨h1, hσ _ h1 ((hv0 _).2 h2)⟩`. Establish `hχ1' : algebraMap Ω C (χ τ 1) = 1` using `by rw [hχ1, map_one]`. Use `⟨fun i => le_antisymm ?_ ?_, fun i => le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce `m hm`. Take `⟨g, h1, h2⟩` from `(mem_kk _ _ _ _).1 hm`.
+
+Establish `h3` using `key RC (D.Th τ) D.M (vanSub Ω F n i) (hG.van i) σ (fun v hv hv' => hσ v hv ((hv0 v).2 (mem_van.1 hv' 0 fun _ _ => rfl))) hσ' h1 (van_le i h2)`. Use `map_mem (LinearMap.snd C _ _) ?_ h3` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨g', m'⟩, ⟨h4, h5⟩, rfl⟩`. Conclude with `mem_span ⟨m', (mem_kk _ _ _ _).2 ⟨g', h4, h5⟩, rfl⟩`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, ha, _, ⟨m, hm, rfl⟩, rfl⟩`. Take `⟨g, h1, h2⟩` from `(mem_kk _ _ _ _).1 hm`. Conclude with `(mem_kk _ _ _ _).2 ⟨a • bcMap Ω C _ g, AddSubgroup.subset_closure ⟨a, ha, _, ⟨(g, m), h1, rfl⟩, rfl⟩, Submodule.smul_mem _ _ (bc_van h2)⟩`. Introduce and unpack `⟨c, m⟩ hm`. Take `⟨g, h1, h2, rfl⟩` from `(mem_step (D.bc RC) τ (χ := fun a => algebraMap Ω C (χ τ a)) hχ1' i c m).1 hm`.
+
+Establish `hc0 : ∀ v ∈ charSub (χ τ) i, v 0 = 0` using `fun v hv => by`. Take `⟨d, hd⟩` from `mem_char.1 hv`. Simplify `mem_van.1 hd 0 fun _ _ => rfl` using `[hχ0]`. Establish `h3` using `key RC (D.Th τ) D.M (charSub (χ τ) i) (hG.char τ i) σ (fun v hv hv' => hσ v hv ((hv0 v).2 (hc0 v hv'))) hσ' h1 (char_le _ i h2)`. Use `map_mem ((LinearMap.proj (R := C) (φ := fun _ : Fin n → F => C) (Pi.single i 1)).prodMap LinearMap.id) ?_ h3` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨⟨g', m'⟩, ⟨h4, h5⟩, rfl⟩`. Conclude with `mem_span ⟨(g' (Pi.single i 1), m'), (mem_step D τ hχ1 i _ _).2 ⟨g', h4, h5, rfl⟩, rfl⟩`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, _, ⟨⟨c, m⟩, hm, rfl⟩, rfl⟩`. Take `⟨g, h1, h2, rfl⟩` from `(mem_step D τ hχ1 i c m).1 hm`.
+
+Conclude with `(mem_step (D.bc RC) τ (χ := fun a => algebraMap Ω C (χ τ a)) hχ1' i _ _).2 ⟨a • bcMap Ω C _ g, AddSubgroup.subset_closure ⟨a, ha, _, ⟨(g, m), h1, rfl⟩, rfl⟩, Submodule.smul_mem _ _ (bc_char h2), rfl⟩`.
+-/
 theorem PositivityTheory.Xgn.kernel_lattice_base_change : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (w : Ω) (χ : Sg → F → Ω), CharData R p w χ → D.Base R p w → D.Good₁ R p χ → ∀ (C : Type) [Field C] [Algebra o C] [Algebra Ω C] [IsScalarTower o Ω C] (RC : Subalgebra o C), (∀ a ∈ R, algebraMap Ω C a ∈ RC) → ∀ τ, (∀ i, (D.bc RC).kk τ i = spanOver RC (bcMap Ω C _ '' D.kk τ i)) ∧ ∀ i, (D.bc RC).stepGraph τ (fun a => algebraMap Ω C (χ τ a)) i = spanOver RC (Prod.map (algebraMap Ω C) (bcMap Ω C _) '' D.stepGraph τ (χ τ) i) := by
   intro o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hχ hB hG C _ _ _ _ RC _ τ
   obtain ⟨-, -, -, -, hχ⟩ := hχ

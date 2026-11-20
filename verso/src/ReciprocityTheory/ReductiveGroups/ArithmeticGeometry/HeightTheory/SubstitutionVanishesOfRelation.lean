@@ -13,6 +13,11 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
   [∀ c, Algebra (𝓞 K) (A c)]
   {𝒜 : (c : ι) → WT → Submodule (Ω c) (A c)}
 
+/- English proof (translation)
+Establish `hex : ∃ a : Ω, f = a • f` using `⟨1, (one_smul Ω f).symm⟩`. Unfold `ratio`. Rewrite using `[dif_pos hex]`. Establish `hs` using `hex.choose_spec`. Establish `h0 : (hex.choose - 1) • f = 0` using `by rw [sub_smul, ← hs, one_smul, sub_self]`.
+
+Break down `smul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `sub_eq_zero.mp h`. Conclude with `absurd h hf`.
+-/
 theorem ratio_self' {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V] {f : V} (hf : f ≠ 0) :
     ratio (Ω := Ω) f f = 1 := by
   have hex : ∃ a : Ω, f = a • f := ⟨1, (one_smul Ω f).symm⟩
@@ -35,6 +40,19 @@ noncomputable def pluckerSubstitution (c : ι) :
     MvPolynomial (TVar d.D d.N) (Ω c) →ₐ[Ω c] MvPolynomial (Fin (d.D + 2) × Fin (d.N + 1)) (Ω c) :=
   aeval fun t => d.affineRowCombination c 0 * X (t.1.succ, t.2) - d.affineRowCombination c t.1.succ * X (0, t.2)
 
+/- English proof (translation)
+Establish `hy : d.affineCoord c (d.jc c) = 1` using `ratio_self' (hd.w_base c)`. Establish `hs : ∀ a, d.affineRowCombination c a = ∑ k, X (a, k) * C (d.affineCoord c k)` using `fun a => rfl`. Establish `hphi_inl : ∀ p, d.linearSubstitution c (X (Sum.inl p)) = X p`. Introduce `p`. Simplify using `[Data.linearSubstitution]`.
+
+Establish `hphi_inr : ∀ i, d.linearSubstitution c (X (Sum.inr i)) = d.affineRowCombination c i`. Introduce `i`. Simplify using `[Data.linearSubstitution, Data.affineRowCombination]`. Establish `hrho : ∀ t : TVar d.D d.N, d.pluckerSubstitution c (X t) = d.affineRowCombination c 0 * X (t.1.succ, t.2) - d.affineRowCombination c t.1.succ * X (0, t.2)`. Introduce `t`.
+
+Simplify using `[Data.pluckerSubstitution]`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `t`. Simplify using `only [AlgHom.comp_apply, aeval_X, map_sub, map_mul, hphi_inl, hphi_inr, AlgHom.restrictScalars_apply]`. Simplify using `only [Data.relationEliminateColumn, aeval_X]`.
+
+Use `split_ifs with ht`. Rewrite using `[map_neg, map_sum]`. Simplify using `only [map_mul, hrho, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq]`. Establish `htot : ∑ k, (d.affineRowCombination c 0 * X (t.1.succ, k) - d.affineRowCombination c t.1.succ * X (0, k)) * C (d.affineCoord c k) = 0`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, mul_assoc, ← Finset.mul_sum, ← hs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `htot` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (d.jc c)), hy, map_one, mul_one]`. Establish `hC : ∀ r, d.pluckerSubstitution c (C r) = C r` using `fun r => by simp [Data.pluckerSubstitution]`. Establish `hyd : ∀ k, ratio (Ω` using `Ω c) (d.w k c) (d.w (d.jc c) c) = d.affineCoord c k := fun k => rfl`. Simplify using `only [hC, hyd]`.
+
+Rewrite using `[ht]`. Take the linear combination `htot`. Rewrite using `[hrho]`.
+-/
 theorem substitution_comp_relation (hd : d.AxH 𝒜) (c : ι) :
     (d.linearSubstitution c).comp (MvPolynomial.aeval (fun t : TVar d.D d.N =>
       (MvPolynomial.X (Sum.inr 0) * MvPolynomial.X (Sum.inl (t.1.succ, t.2)) -
@@ -74,12 +92,18 @@ theorem substitution_comp_relation (hd : d.AxH 𝒜) (c : ι) :
     linear_combination htot
   · rw [hrho]
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun φ => φ Q) (d.substitution_comp_relation hd c)`. Simplify using `only [AlgHom.comp_apply, AlgHom.restrictScalars_apply, hQ, map_zero] at h`. Conclude with `h`.
+-/
 theorem substitution_vanishes_of_relation (hd : d.AxH 𝒜) (c : ι) (Q : KTp K d.D d.N) (hQ : d.relationEliminateColumn c Q = 0) :
     d.linearSubstitution c (bilinearSubstitution Q) = 0 := by
   have h := congrArg (fun φ => φ Q) (d.substitution_comp_relation hd c)
   simp only [AlgHom.comp_apply, AlgHom.restrictScalars_apply, hQ, map_zero] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `d.substitution_split_irreducible_of c F0 hirr d0 hmh hker`.
+-/
 theorem substitution_split_irreducible (hd : d.AxH 𝒜) (c : ι) (F0 : KTp K d.D d.N) (hirr : Irreducible F0) (d0 : ℕ)
     (hmh : ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous (fun _ => d0) F0)
     (hker : ∀ Q : KTp K d.D d.N, d.relationEliminateColumn c Q = 0 ↔ F0 ∣ Q) :

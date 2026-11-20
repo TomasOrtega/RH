@@ -21,12 +21,20 @@ namespace PositivityTheory.PfWsf.Hand.TupleUntupling
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.PfWsf.Jab.WsInteg.integrable_of_hermE lam hlam db hdb f hf`.
+-/
 theorem integrable_of_hermE {r : ℕ} (lam : Measure (hermA D r)) (hlam : lam.IsAddHaarMeasure)
     (db : Measure (HermR (AF D.host.F) D.sp.cm.sig r)) (hdb : db.IsAddHaarMeasure)
     (f : HermR (AF D.host.F) D.sp.cm.sig r → ℂ) (hf : Integrable (fun b => f (hermE D r b)) lam) :
     Integrable f db :=
   PositivityTheory.PfWsf.Jab.WsInteg.integrable_of_hermE lam hlam db hdb f hf
 
+/- English proof (translation)
+Establish `hφ` using `mem_schwartzA_of_sb θ hθ Φ hΦ`. Take `⟨𝓖, h𝓖⟩` from `hlam`. Establish `hJ : Integrable (Jt ψ V μ fun y => Φ (untup y)) lam` using `(GlobalTheory.T.poisson_summation_hermitian_lattice D r ψ hψ lam 𝓖 h𝓖 _ (GlobalTheory.T.theta_integral_continuous D r V ψ θ μ _ hψ hθ hμ hφ) (GlobalTheory.T.theta_integral_locally_summable_bound D r V ψ θ μ _ hr hψ hθ hμ hφ)).1`. Take `⟨c, hc⟩` from `starN_hermE V ψ μ hμ.choose_spec.1 dx hdx`. Use `integrable_of_hermE lam h𝓖.1 db hdb _ ?_` and prove the remaining obligations.
+
+Simplify using `only [hc]`. Conclude with `hJ.const_mul c`.
+-/
 theorem hermitian_unfolding_integral (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (θ : InfFam D)
     (hθ : IsInfFam θ) (μ : Measure (Mx D V.rank r)) (hμ : ∃ 𝓕, IsCovolOne (ratMx D V.rank r) μ 𝓕)
     (lam : Measure (hermA D r)) (hlam : ∃ 𝓖, IsCovolOneH lam 𝓖) (hr : 2 * r < V.rank)

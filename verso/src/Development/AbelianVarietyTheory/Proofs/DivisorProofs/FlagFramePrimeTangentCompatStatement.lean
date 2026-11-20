@@ -14,6 +14,9 @@ open Formalism.MainNotions.DIV.Cons (intO)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HtGen.FlagPoint.pairDet_values | exact GlobalTheory.HtGen.FlagPoint.pairDet_values | (intros; apply GlobalTheory.HtGen.FlagPoint.pairDet_values <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_frame_prime_tangent_compat : ∀ (E : Type) [Field E] [NumberField
     E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X
     : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X), X.IsSeparated → ∀ (F : Type) [Field

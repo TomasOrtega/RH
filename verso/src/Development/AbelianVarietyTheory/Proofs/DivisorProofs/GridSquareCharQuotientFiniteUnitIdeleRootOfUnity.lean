@@ -19,6 +19,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SquareCharUnit
 
+/- English proof (translation)
+Establish `hmem : ((c x : Circle) : ℂ) ∈ σ.fieldRange`. Take `⟨j, j1, j2, j3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨N, hN, hprod⟩` from `GlobalTheory.CharLocProd.char_eq_prod_locK D j j1 j2 (GlobalTheory.PlaceIdem.exists_isPlIdem D j j1 j2 j3) c χ h`. Take `⟨S, k, hS, hS'⟩` from `GlobalTheory.finiteIdele_exists_local_approx D.host.E N hN (Units.map ((j : _ →+* _).comp (finPart D)).toMonoidHom x)`. Rewrite using `[hprod x hx.1 S k (fun P hP => ⟨(hS P hP).1, (hS P hP).2.1⟩) hS']`.
+
+Conclude with `prod_mem fun P _ => hL P _`. Take `⟨ζ, hζ⟩` from `hmem`. Take `⟨-, -, -, m, hm, hpow⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D c h.1.1`. Use `⟨ζ, ⟨m, hm, σ.injective ?_⟩, hζ⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_one, hζ, ← Circle.coe_pow, hpow x hx, Circle.coe_one]`.
+-/
 theorem exists_root_of_locIn {D : D7} {K : Type} [Field K] (σ : K →+* ℂ) (c : (AE D)ˣ →* Circle) (χ : HChar D.host.E)
     (h : ChrEq c χ) (hL : LocIn σ χ) (x : (AE D)ˣ) (hx : Formalism.L2.Pj.FinUnit x) :
     ∃ ζ : K, (∃ n : ℕ, 0 < n ∧ ζ ^ n = 1) ∧ σ ζ = ((c x : Circle) : ℂ) := by
@@ -34,6 +39,13 @@ theorem exists_root_of_locIn {D : D7} {K : Type} [Field K] (σ : K →+* ℂ) (c
   refine ⟨ζ, ⟨m, hm, σ.injective ?_⟩, hζ⟩
   rw [map_pow, map_one, hζ, ← Circle.coe_pow, hpow x hx, Circle.coe_one]
 
+/- English proof (translation)
+Introduce `D T Lc sc G μ₀ hL hC i j t x hx`. Establish `hi` using `i.2`. Take `⟨a, ⟨n₁, h₁, e₁⟩, ha⟩` from `exists_root_of_locIn D.what₂.embLL _ _ (hL.mu0 j) (hC.mu0 j) x hx`. Take `⟨b, ⟨n₂, h₂, e₂⟩, hb⟩` from `exists_root_of_locIn D.what₂.embLL _ _ (hL.xi t) (hC.xi t) x hx`. Take `⟨c, ⟨n₃, h₃, e₃⟩, hc⟩` from `exists_root_of_locIn D.what₂.embLL _ _ (G.ch.chi_eq (D.R.m - i) (by omega) (by omega)) (hC.chi (D.R.m - i) (by omega) (by omega)) x hx`.
+
+Use `⟨a * b / c, ⟨n₁ * n₂ * n₃, by positivity, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[div_pow, mul_pow]`. Establish `f₁ : a ^ (n₁ * n₂ * n₃) = 1` using `by rw [mul_assoc, pow_mul, e₁, one_pow]`. Establish `f₂ : b ^ (n₁ * n₂ * n₃) = 1` using `by rw [mul_right_comm, mul_comm, pow_mul, e₂, one_pow]`. Establish `f₃ : c ^ (n₁ * n₂ * n₃) = 1` using `by rw [mul_comm, pow_mul, e₃, one_pow]`.
+
+Rewrite using `[f₁, f₂, f₃, one_mul, div_one]`. Rewrite using `[mul_div_mul_right_eq_div, map_div₀, map_mul, ha, hb, hc, MonoidHom.div_apply, Circle.coe_div]`. Use `congr 1`.
+-/
 theorem nu_finUnit_root : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData Lc sc} (μ₀ : T), Lc.Is μ₀ →
     CharsIn G D.what₂.embLL → ∀ (i j : Fin D.R.m) (t : T) (x : (AE D)ˣ), Formalism.L2.Pj.FinUnit x →
     ∃ ζ : D.what₂.LL, (∃ n : ℕ, 0 < n ∧ ζ ^ n = 1) ∧

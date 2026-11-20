@@ -2,6 +2,15 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `K _ _ Y g _ _`. Use `haveI : IsAffine Y := isAffine_of_isAffineHom g`. Take `⟨y, -⟩` from `g.surjective (IsLocalRing.closedPoint K)`. Take `⟨x, -, hx⟩` from `(isClosed_univ (X := Y)).exists_closed_singleton ⟨y, trivial⟩`. Use `haveI : IsIntegralHom (Y.fromSpecResidueField x ≫ g) := by`.
+
+Rewrite `hx` using `[isClosed_singleton_iff_isClosedImmersion]`. Use `infer_instance`. Take `⟨φ, hφ⟩ : ∃ φ, Spec.map φ = Y.fromSpecResidueField x ≫ g` from `⟨_, Spec.map_preimage _⟩`. Use `haveI : IsIso φ := by`. Rewrite using `[ConcreteCategory.isIso_iff_bijective]`.
+
+Use `IsAlgClosed.ringHom_bijective_of_isIntegral _ ?_` and prove the remaining obligations. Rewrite using `[← IsIntegralHom.SpecMap_iff, hφ]`. Use `infer_instance`. Use `⟨Spec.map (inv φ) ≫ Y.fromSpecResidueField x, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.exists_section_of_integral_surjective_algClosed :
     ∀ (K : Type) [Field K] [IsAlgClosed K] {Y : Scheme.{0}} (g : Y ⟶ Spec (CommRingCat.of K)) [IsIntegralHom g] [Surjective g], ∃ s : Spec (CommRingCat.of K) ⟶ Y, s ≫ g = 𝟙 _ := by
   intro K _ _ Y g _ _

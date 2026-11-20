@@ -2,6 +2,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Crys
 
 open UpperTheory.V.Af
 
+/- English proof (translation)
+Introduce `Γ k _ _ n r hirr S hS`. Establish `hn : 0 < n`. Break down `Nat.eq_zero_or_pos n with rfl | h` into its components or cases. Conclude with `absurd (Submodule.eq_bot_of_subsingleton) hirr.1`. Conclude with `h`.
+
+Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Use `choose! g hg using hS`. Establish `key : ∀ δ ∈ S, ∀ s, ((g δ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * (r s : Matrix (Fin n) (Fin n) k) = ((δ s : kˣ) : k) • ((r s : Matrix (Fin n) (Fin n) k) * (g δ : Matrix (Fin n) (Fin n) k))`. Introduce `δ hδ s`. Establish `h1` using `congrArg (fun A : GL (Fin n) k => (A : Matrix (Fin n) (Fin n) k) * (g δ : Matrix (Fin n) (Fin n) k)) (hg δ hδ s)`.
+
+Simplify using `only [tw_val, Units.val_mul, mul_assoc, Units.inv_mul, mul_one] at h1`. Rewrite using `[← h1, smul_mul_assoc]`. Establish `hli : LinearIndependent k (fun δ : S => ((g δ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc δ0`.
+
+Establish `hsum : ∀ s, ∑ δ : S, (c δ * ((δ.1 s : kˣ) : k)) • ((g δ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = 0`. Introduce `s`. Establish `h2 : (r s : Matrix (Fin n) (Fin n) k) * ∑ δ : S, (c δ * ((δ.1 s : kˣ) : k)) • ((g δ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = 0`. Rewrite using `[Finset.mul_sum]`. Establish `e : ∑ δ : S, (r s : Matrix (Fin n) (Fin n) k) * ((c δ * ((δ.1 s : kˣ) : k)) • ((g δ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) = (∑ δ : S, c δ • ((g δ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) * (r s : Matrix (Fin n) (Fin n) k)`.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, key δ.1 δ.2 s, mul_smul_comm, mul_smul]`. Rewrite using `[e, hc, zero_mul]`. Establish `h3` using `congrArg (fun A => (((r s)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * A) h2`.
+
+Simplify `h3` using `[← mul_assoc]`. Establish `hD` using `(linearIndependent_monoidHom Γ k).comp (fun δ : S => (Units.coeHom k).comp δ.1) (fun a b hab => Subtype.ext (MonoidHom.ext fun s => Units.ext (DFunLike.congr_fun hab s)))`. Rewrite `hD` using `[Fintype.linearIndependent_iff]`. Establish `hz : ∀ i j, ∀ δ : S, c δ * ((g δ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = 0`. Introduce `i j`.
+
+Apply `hD` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Establish `e` using `congrFun (congrFun (hsum s) i) j`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply] at e`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply, MonoidHom.coe_comp, Units.coeHom_apply, Pi.zero_apply]`.
+
+Rewrite using `[← e]`. Conclude with `Finset.sum_congr rfl fun δ _ => by ring`. Assume the negation of the conclusion as `hc0`. Establish `h0 : ((g δ0 : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = 0`. Use extensionality with `i j`.
+
+Conclude with `(mul_eq_zero.mp (hz i j δ0)).resolve_left hc0`. Conclude with `(g δ0).ne_zero h0`. Establish `hcard` using `hli.fintype_card_le_finrank`. Rewrite `hcard` using `[Module.finrank_matrix, Fintype.card_fin, Module.finrank_self, mul_one, Fintype.card_coe]`. Rewrite using `[sq]`.
+
+Conclude with `hcard`.
+-/
 theorem UpperTheory.V.Br.twCard :
     UpperTheory.V.Br.TwCard := by
   intro Γ k _ _ n r hirr S hS

@@ -10,6 +10,9 @@ noncomputable section
 
 namespace Formalism.MainNotions.G.ColumnFamilies
 
+/- English proof (translation)
+The claim follows from `Formalism.InvariantFactorPaths.ColumnFamilies.filtration_theorem_of_clauses (Formalism.InvariantFactorPaths.ColumnFamilies.filtration_standard_span_of Formalism.InvariantFactorPaths.ColumnFamilies.Top.lemmaA) (Formalism.InvariantFactorPaths.ColumnFamilies.filtration_type_intersec …`.
+-/
 theorem thm_B2_transfer : Formalism.InvariantFactorPaths.ColumnFamilies.ColumnFamilyFiltrationProperties :=
   Formalism.InvariantFactorPaths.ColumnFamilies.filtration_theorem_of_clauses (Formalism.InvariantFactorPaths.ColumnFamilies.filtration_standard_span_of Formalism.InvariantFactorPaths.ColumnFamilies.Top.lemmaA)
     (Formalism.InvariantFactorPaths.ColumnFamilies.filtration_type_intersection_of Formalism.InvariantFactorPaths.ColumnFamilies.Top.lemmaA Formalism.InvariantFactorPaths.ColumnFamilies.Top.sBasis) Formalism.InvariantFactorPaths.ColumnFamilies.filtration_coaction_stable
@@ -17,6 +20,9 @@ theorem thm_B2_transfer : Formalism.InvariantFactorPaths.ColumnFamilies.ColumnFa
     (Formalism.InvariantFactorPaths.ColumnFamilies.filtration_maximal_quotient_of Formalism.InvariantFactorPaths.ColumnFamilies.Top.lemmaA Formalism.InvariantFactorPaths.ColumnFamilies.Top.sBasis)
     (Formalism.InvariantFactorPaths.ColumnFamilies.highest_vectors_eq_lattice_of Formalism.InvariantFactorPaths.ColumnFamilies.Top.lemmaA)
 
+/- English proof (translation)
+Introduce `n _ M CF` and use `thm_B2_transfer n (br_toC M) (br_cfToC CF)`.
+-/
 theorem admissible_thm_B2 (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.ColumnFamilyLowerSet D :=
   fun n _ M CF => thm_B2_transfer n (br_toC M) (br_cfToC CF)
 

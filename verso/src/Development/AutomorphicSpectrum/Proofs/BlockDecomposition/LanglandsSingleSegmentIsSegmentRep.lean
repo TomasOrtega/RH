@@ -8,6 +8,15 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.LocGL
 
+/- English proof (translation)
+Introduce `k _ _ _ _ Δ N V _ _ π h`. Take `⟨h', x, hd, ⟨Δ', ⟨hm, -⟩, hL⟩, hc⟩` from `h`. Establish `hcard : h' = 1`. Use `congrArg Multiset.card hm` as an intermediate fact. Simplify using `using this`.
+
+Substitute `hcard` using the available equality. Establish `hΔ : Δ' 0 = Δ`. Establish `hmem : Δ' 0 ∈ Finset.univ.val.map Δ'` using `Multiset.mem_map_of_mem _ (Finset.mem_univ_val _)`. Rewrite `hmem` using `[hm]`. Simplify using `using hmem`.
+
+Establish `hL0 : IsLSeg Δ (x 0).rep` using `hΔ ▸ hL 0`. Take `⟨y, rfl⟩ : ∃ y, x = fun _ => y` from `⟨x 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Establish `hN : y.1 = N` using `by simpa using hd`. Substitute `hN` using the available equality. Take `⟨ψ⟩` from `nonempty_equiv_prodIrr_one y hd`.
+
+Take `⟨φ⟩` from `hc.unique ((isCosocle_self y.2.rep.irr).of_equiv (.refl _) ψ)`. Conclude with `hL0.of_equiv φ`.
+-/
 theorem isLSeg_of_isL_singleton : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (Δ : Segment k) (N : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V), IsL {Δ} π → IsLSeg Δ π := by

@@ -18,6 +18,9 @@ def doublyAntisymmetrizedProduct {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (
   ∑ τ : Equiv.Perm (Fin n), ∑ σ : Equiv.Perm (Fin n),
     ((Equiv.Perm.sign τ : ℤ) : A) * (((Equiv.Perm.sign σ : ℤ) : A) * orderedTermProduct E arg σ τ)
 
+/- English proof (translation)
+Simplify using `only [Tm, Algebra.algebraMap_eq_smul_one]`. Apply the tactic sequence `split_ifs <;>`. Apply the tactic sequence `simp only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, zero_add, zero_mul, mul_zero, add_zero, smul_smul, smul_zero, zero_smul] <;>`. Use `module`.
+-/
 theorem term_two_by_two_exchange {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (x y : ℂ) (p q c d : Fin n) :
     Tm E x p c * Tm E y q d - Tm E x q c * Tm E y p d - Tm E x p d * Tm E y q c + Tm E x q d * Tm E y p c =
     Tm E y p c * Tm E x q d - Tm E y q c * Tm E x p d - Tm E y p d * Tm E x q c + Tm E y q d * Tm E x p c := by
@@ -27,6 +30,15 @@ theorem term_two_by_two_exchange {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (
       mul_zero, add_zero, smul_smul, smul_zero, zero_smul] <;>
     module
 
+/- English proof (translation)
+Establish `hg : ∀ k : Fin t, (k : ℕ) ≠ i → (k : ℕ) ≠ i + 1 → g k = f k` using `h`. Establish `htake : (List.ofFn g).take i = (List.ofFn f).take i`. Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `j h1 h2`.
+
+Simplify using `only [List.getElem_take, List.getElem_ofFn]`. Simplify using `only [List.length_take, List.length_ofFn] at h1`. Conclude with `hg _ (by simp; omega) (by simp; omega)`. Establish `hdrop : (List.ofFn g).drop (i + 2) = (List.ofFn f).drop (i + 2)`. Apply `List.ext_getElem` to reduce the goal to its premises.
+
+Simplify using the standard rewrite rules. Introduce `j h1 h2`. Simplify using `only [List.getElem_drop, List.getElem_ofFn]`. Conclude with `hg _ (by simp; omega) (by simp; omega)`. Rewrite using `[← List.take_append_drop i (List.ofFn g), List.drop_eq_getElem_cons (by simp; omega), List.drop_eq_getElem_cons (by simp; omega), htake, List.getElem_ofFn, List.getElem_ofFn, show i + 1 + 1 = i + 2 from rfl, hdrop]`.
+
+Simplify using `only [List.prod_append, List.prod_cons, mul_assoc]`.
+-/
 theorem list_prod_ofFn_update_adjacent {A : Type} [Ring A] {t : ℕ} (f g : Fin t → A) (i : ℕ) (hi : i + 1 < t)
     (h : ∀ k : Fin t, (k : ℕ) ≠ i → (k : ℕ) ≠ i + 1 → g k = f k) :
     (List.ofFn g).prod = ((List.ofFn f).take i).prod * (g ⟨i, by omega⟩ * g ⟨i + 1, hi⟩) *
@@ -50,10 +62,22 @@ theorem list_prod_ofFn_update_adjacent {A : Type} [Ring A] {t : ℕ} (f g : Fin 
     show i + 1 + 1 = i + 2 from rfl, hdrop]
   simp only [List.prod_append, List.prod_cons, mul_assoc]
 
+/- English proof (translation)
+Use `noncomm_ring`.
+-/
 theorem mul_signed_four_sum_mul_eq {A : Type} [Ring A] (L R a1 a2 a3 a4 : A) :
     L * a1 * R - L * a2 * R - L * a3 * R + L * a4 * R = L * (a1 - a2 - a3 + a4) * R := by
   noncomm_ring
 
+/- English proof (translation)
+Establish `hi : (i : ℕ) + 1 < m + 1` using `by omega`. Establish `hfix : ∀ k : Fin (m + 1), (k : ℕ) ≠ i → (k : ℕ) ≠ i + 1 → Equiv.swap i.castSucc i.succ k = k`. Introduce `k h1 h2`. Use `Equiv.swap_apply_of_ne_of_ne (fun h => h1 ?_) (fun h => h2 ?_)` and prove the remaining obligations. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `hM : ∀ (a : Fin (m + 1) → ℂ) (σ' τ' : Equiv.Perm (Fin (m + 1))), (∀ k : Fin (m + 1), (k : ℕ) ≠ i → (k : ℕ) ≠ i + 1 → a k = arg k ∧ σ' k = σ k ∧ τ' k = τ k) → orderedTermProduct E a σ' τ' = ((List.ofFn fun k => Tm E (arg k) (σ k) (τ k)).take i).prod * (Tm E (a ⟨i, by omega⟩) (σ' ⟨ …`. Introduce `a σ' τ' hk`.
+
+Unfold `orderedTermProduct`. Conclude with `list_prod_ofFn_update_adjacent (fun k => Tm E (arg k) (σ k) (τ k)) (fun k => Tm E (a k) (σ' k) (τ' k)) i hi (fun k h1 h2 => by obtain ⟨e1, e2, e3⟩ := hk k h1 h2; rw [e1, e2, e3])`. Establish `hc : ∀ k : Fin (m + 1), (k : ℕ) ≠ i → (k : ℕ) ≠ i + 1 → (arg ∘ Equiv.swap i.castSucc i.succ) k = arg k ∧ (σ * Equiv.swap i.castSucc i.succ) k = σ k ∧ (τ * Equiv.swap i.castSucc i.succ) k = τ k`. Introduce `k h1 h2`. Simplify using `[Equiv.Perm.mul_apply, hfix k h1 h2]`.
+
+Rewrite using `[hM arg σ τ (fun k _ _ => ⟨rfl, rfl, rfl⟩), hM arg (σ * Equiv.swap i.castSucc i.succ) τ (fun k h1 h2 => ⟨rfl, (hc k h1 h2).2.1, rfl⟩), hM arg σ (τ * Equiv.swap i.castSucc i.succ) (fun k h1 h2 => ⟨rfl, rfl, (hc k h1 h2).2.2⟩), hM arg (σ * Equiv.swap i.castSucc i.succ) (τ * Equiv.s …`. Establish `e0 : (⟨i, by omega⟩ : Fin (m + 1)) = i.castSucc` using `Fin.ext rfl`. Establish `e1 : (⟨i + 1, hi⟩ : Fin (m + 1)) = i.succ` using `Fin.ext rfl`. Simplify using `only [e0, e1, Equiv.Perm.mul_apply, Function.comp_apply, Equiv.swap_apply_left, Equiv.swap_apply_right]`. Rewrite using `[mul_signed_four_sum_mul_eq, mul_signed_four_sum_mul_eq, term_two_by_two_exchange]`.
+-/
 theorem orderedProduct_adjacent_swap_identity {A : Type} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin (m + 1) → Fin (m + 1) → A) (i : Fin m)
     (arg : Fin (m + 1) → ℂ) (σ τ : Equiv.Perm (Fin (m + 1))) :
     orderedTermProduct E arg σ τ - orderedTermProduct E arg (σ * Equiv.swap i.castSucc i.succ) τ - orderedTermProduct E arg σ (τ * Equiv.swap i.castSucc i.succ)
@@ -105,6 +129,25 @@ theorem orderedProduct_adjacent_swap_identity {A : Type} [Ring A] [Algebra ℂ A
     Equiv.swap_apply_right]
   rw [mul_signed_four_sum_mul_eq, mul_signed_four_sum_mul_eq, term_two_by_two_exchange]
 
+/- English proof (translation)
+Establish `hne : i.castSucc ≠ i.succ` using `(Fin.castSucc_lt_succ (i := i)).ne`. Establish `key` using `orderedProduct_adjacent_swap_identity E i arg`. Generalize the expression as in `hs : Equiv.swap i.castSucc i.succ = s at key ⊢`. Establish `hsg : Equiv.Perm.sign s = -1` using `by rw [← hs]; exact Equiv.Perm.sign_swap hne`. Establish `hre : ∀ F : Equiv.Perm (Fin (m + 1)) → A, ∑ σ, ((Equiv.Perm.sign σ : ℤ) : A) * F (σ * s) = -∑ σ, ((Equiv.Perm.sign σ : ℤ) : A) * F σ`.
+
+Introduce `F`. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight s) (fun σ => ((Equiv.Perm.sign σ : ℤ) : A) * F σ)]`. Simplify using `[Equiv.Perm.sign_mul, hsg]`. Establish `q1 : ∀ a : Fin (m + 1) → ℂ, ∑ τ, ∑ σ, ((Equiv.Perm.sign τ : ℤ) : A) * (((Equiv.Perm.sign σ : ℤ) : A) * orderedTermProduct E a (σ * s) τ) = -doublyAntisymmetrizedProduct E a`. Introduce `a`.
+
+Simplify using `only [doublyAntisymmetrizedProduct, ← Finset.mul_sum]`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h` using `hre (fun σ => orderedTermProduct E a σ τ)`. Rewrite using `[h, mul_neg]`.
+
+Establish `q2 : ∀ a : Fin (m + 1) → ℂ, ∑ τ, ∑ σ, ((Equiv.Perm.sign τ : ℤ) : A) * (((Equiv.Perm.sign σ : ℤ) : A) * orderedTermProduct E a σ (τ * s)) = -doublyAntisymmetrizedProduct E a`. Introduce `a`. Simplify using `only [doublyAntisymmetrizedProduct, ← Finset.mul_sum]`. Establish `h` using `hre (fun τ => ∑ σ, ((Equiv.Perm.sign σ : ℤ) : A) * orderedTermProduct E a σ τ)`. Conclude with `h`.
+
+Establish `q3 : ∀ a : Fin (m + 1) → ℂ, ∑ τ, ∑ σ, ((Equiv.Perm.sign τ : ℤ) : A) * (((Equiv.Perm.sign σ : ℤ) : A) * orderedTermProduct E a (σ * s) (τ * s)) = doublyAntisymmetrizedProduct E a`. Introduce `a`. Simplify using `only [← Finset.mul_sum]`. Establish `h1 : ∀ τ, ∑ σ, ((Equiv.Perm.sign σ : ℤ) : A) * orderedTermProduct E a (σ * s) (τ * s) = -∑ σ, ((Equiv.Perm.sign σ : ℤ) : A) * orderedTermProduct E a σ (τ * s)`. Introduce `τ`.
+
+Establish `h` using `hre (fun σ => orderedTermProduct E a σ (τ * s))`. Conclude with `h`. Simplify using `only [h1, mul_neg, Finset.sum_neg_distrib]`. Establish `h` using `hre (fun τ => ∑ σ, ((Equiv.Perm.sign σ : ℤ) : A) * orderedTermProduct E a σ τ)`. Rewrite using `[h, neg_neg]`.
+
+Simplify using `only [doublyAntisymmetrizedProduct, Finset.mul_sum]`. Establish `T_eq : ∀ a : Fin (m + 1) → ℂ, ∑ τ, ∑ σ, ((Equiv.Perm.sign τ : ℤ) : A) * (((Equiv.Perm.sign σ : ℤ) : A) * (orderedTermProduct E a σ τ - orderedTermProduct E a (σ * s) τ - orderedTermProduct E a σ (τ * s) + orderedTermProduct E a (σ * s) (τ * s))) = 4 • doublyAntisymmetrizedProduct …`. Introduce `a`. Simplify using `only [mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Rewrite using `[q1 a, q2 a, q3 a]`.
+
+Simplify using `only [doublyAntisymmetrizedProduct]`. Normalize the expressions using the abelian group laws. Establish `h4 : 4 • doublyAntisymmetrizedProduct E arg = 4 • doublyAntisymmetrizedProduct E (arg ∘ s)`. Rewrite using `[← T_eq arg, ← T_eq (arg ∘ s)]`. Conclude with `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun σ _ => by rw [key σ τ]`.
+
+Establish `h4' : (4 : ℂ) • doublyAntisymmetrizedProduct E arg = (4 : ℂ) • doublyAntisymmetrizedProduct E (arg ∘ s)`. Rewrite using `[show (4 : ℂ) = ((4 : ℕ) : ℂ) by norm_num, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Conclude with `h4`. Conclude with `(smul_right_injective A (by norm_num : (4 : ℂ) ≠ 0) h4').symm`.
+-/
 theorem antisymmetrizedProduct_adjacent_swap {A : Type} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin (m + 1) → Fin (m + 1) → A) (i : Fin m)
     (arg : Fin (m + 1) → ℂ) : doublyAntisymmetrizedProduct E (arg ∘ Equiv.swap i.castSucc i.succ) = doublyAntisymmetrizedProduct E arg := by
   have hne : i.castSucc ≠ i.succ := (Fin.castSucc_lt_succ (i := i)).ne
@@ -160,6 +203,17 @@ theorem antisymmetrizedProduct_adjacent_swap {A : Type} [Ring A] [Algebra ℂ A]
     exact h4
   exact (smul_right_injective A (by norm_num : (4 : ℂ) ≠ 0) h4').symm
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Establish `h : arg ∘ π = arg` using `funext fun k => k.elim0`. Rewrite using `[h]`. Consider the case `succ m`.
+
+Establish `hπ : π ∈ Submonoid.closure (Set.range fun i : Fin m => Equiv.swap i.castSucc i.succ)`. Rewrite using `[Equiv.Perm.mclosure_swap_castSucc_succ]`. Discharge the goal by the elementary cases of `trivial`. Use `revert arg`. Proceed by induction on `hπ using Submonoid.closure_induction with`.
+
+Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Introduce `arg`. Conclude with `antisymmetrizedProduct_adjacent_swap E i arg`. Consider the case `one`.
+
+Introduce `arg`. Both sides reduce to the same expression. Consider the case `mul x y _ _ hx hy`. Introduce `arg`. Use `show doublyAntisymmetrizedProduct E ((arg ∘ x) ∘ y) = _`.
+
+Rewrite using `[hy (arg ∘ x), hx arg]`.
+-/
 theorem antisymmetrizedProduct_perm_invariant {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (π : Equiv.Perm (Fin n))
     (arg : Fin n → ℂ) : doublyAntisymmetrizedProduct E (arg ∘ π) = doublyAntisymmetrizedProduct E arg := by
   cases n with
@@ -184,6 +238,23 @@ theorem antisymmetrizedProduct_perm_invariant {A : Type} [Ring A] [Algebra ℂ A
       show doublyAntisymmetrizedProduct E ((arg ∘ x) ∘ y) = _
       rw [hy (arg ∘ x), hx arg]
 
+/- English proof (translation)
+Establish `hcol : ∀ (b : Fin n → Fin n) (τ : Equiv.Perm (Fin n)), qminor E id (b ∘ τ) u = ((Equiv.Perm.sign τ : ℤ) : A) * qminor E id b u`. Consider the cases of `n with`. Consider the case `zero`. Introduce `b τ`. Rewrite using `[Subsingleton.elim τ 1]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ m`. Introduce `b τ`. Establish `hτ : τ ∈ Submonoid.closure (Set.range fun i : Fin m => Equiv.swap i.castSucc i.succ)`. Rewrite using `[Equiv.Perm.mclosure_swap_castSucc_succ]`.
+
+Discharge the goal by the elementary cases of `trivial`. Use `revert b`. Proceed by induction on `hτ using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+
+Introduce `b`. Rewrite using `[quantumMinor_adjacent_col_swap E hE id b i u, Equiv.Perm.sign_swap (Fin.castSucc_lt_succ (i := i)).ne]`. Simplify using the standard rewrite rules. Consider the case `one`. Introduce `b`.
+
+Simplify using the standard rewrite rules. Consider the case `mul x y _ _ hx hy`. Introduce `b`. Use `show qminor E id ((b ∘ x) ∘ y) u = _`. Rewrite using `[hy (b ∘ x), hx b]`.
+
+Simplify using `only [Equiv.Perm.sign_mul, Units.val_mul, Int.cast_mul, ← mul_assoc]`. Use `congr 1`. Conclude with `(Int.cast_commute _ _).eq`. Simplify using `only [doublyAntisymmetrizedProduct, ← Finset.mul_sum]`. Establish `hin : ∀ τ : Equiv.Perm (Fin n), ∑ σ, ((Equiv.Perm.sign σ : ℤ) : A) * orderedTermProduct E (fun k => u - (k : ℂ)) σ τ = qminor E id (id ∘ τ) u` using `fun τ => rfl`.
+
+Establish `hsq : ∀ τ : Equiv.Perm (Fin n), ((Equiv.Perm.sign τ : ℤ) : A) * (((Equiv.Perm.sign τ : ℤ) : A) * qminor E id id u) = qminor E id id u`. Introduce `τ`. Rewrite using `[← mul_assoc, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one, one_mul]`. Simplify using `only [hin, hcol, hsq, Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem antisymmetrizedProduct_eq_factorial_smul_qdet {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E) (u : ℂ) :
     doublyAntisymmetrizedProduct E (fun k => u - (k : ℂ)) = (n.factorial : ℂ) • qdet E u := by
 
@@ -228,6 +299,11 @@ theorem antisymmetrizedProduct_eq_factorial_smul_qdet {A : Type} [Ring A] [Algeb
   rw [← Nat.cast_smul_eq_nsmul ℂ]
   rfl
 
+/- English proof (translation)
+Simplify using `only [Tm]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, map_neg]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[if_neg h, if_neg (Ne.symm h)]`. Simplify using the standard rewrite rules.
+-/
 theorem term_neg_transpose {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (y : ℂ) (a b : Fin n) :
     Tm (fun a b => -E b a) y a b = -Tm E (-y) b a := by
   simp only [Tm]
@@ -238,6 +314,9 @@ theorem term_neg_transpose {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fi
   · rw [if_neg h, if_neg (Ne.symm h)]
     simp
 
+/- English proof (translation)
+Simplify using `only [orderedTermProduct]`. Establish `h : (fun k : Fin n => Tm (fun a b => -E b a) (arg k) (σ k) (τ k)) = fun k => -(Tm E (-arg k) (τ k) (σ k))` using `funext fun k => term_neg_transpose E (arg k) (σ k) (τ k)`. Rewrite using `[h, show (List.ofFn fun k => -(Tm E (-arg k) (τ k) (σ k))) = (List.ofFn fun k => Tm E (-arg k) (τ k) (σ k)).map Neg.neg by rw [List.map_ofFn]; rfl, List.prod_map_neg, List.length_ofFn]`.
+-/
 theorem orderedTermProduct_neg_transpose {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (arg : Fin n → ℂ)
     (σ τ : Equiv.Perm (Fin n)) :
     orderedTermProduct (fun a b => -E b a) arg σ τ = (-1) ^ n * orderedTermProduct E (fun k => -arg k) τ σ := by
@@ -248,6 +327,11 @@ theorem orderedTermProduct_neg_transpose {A : Type} [Ring A] [Algebra ℂ A] {n 
       (List.ofFn fun k => Tm E (-arg k) (τ k) (σ k)).map Neg.neg by rw [List.map_ofFn]; rfl,
     List.prod_map_neg, List.length_ofFn]
 
+/- English proof (translation)
+Simplify using `only [doublyAntisymmetrizedProduct, orderedTermProduct_neg_transpose]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[show ((-1 : A)) ^ n = (((-1 : ℤ) ^ n : ℤ) : A) by push_cast; rfl]`. Simplify using `only [← zsmul_eq_mul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem antisymmetrizedProduct_neg_transpose {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (arg : Fin n → ℂ) :
     doublyAntisymmetrizedProduct (fun a b => -E b a) arg = (-1) ^ n * doublyAntisymmetrizedProduct E (fun k => -arg k) := by
   simp only [doublyAntisymmetrizedProduct, orderedTermProduct_neg_transpose]
@@ -261,6 +345,19 @@ theorem antisymmetrizedProduct_neg_transpose {A : Type} [Ring A] [Algebra ℂ A]
   congr 1
   ring
 
+/- English proof (translation)
+Establish `hE' : GlRel (fun a b => -E b a)`. Introduce `a b c d`. Establish `h` using `hE b a d c`. Simplify using `only [neg_mul_neg]`. Rewrite using `[h]`.
+
+Apply the tactic sequence `by_cases h1 : a = d <;> by_cases h2 : c = b`. Substitute `h1 h2` using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Substitute `h1` using the available equality.
+
+Simplify using `[h2, Ne.symm h2]`. Substitute `h2` using the available equality. Simplify using `[h1, Ne.symm h1]`. Simplify using `[h1, h2, Ne.symm h1, Ne.symm h2]`. Establish `h1` using `antisymmetrizedProduct_eq_factorial_smul_qdet (fun a b => -E b a) hE' x`.
+
+Establish `h2` using `antisymmetrizedProduct_neg_transpose E (fun k => x - (k : ℂ))`. Establish `h3 : (fun k : Fin n => -(x - (k : ℂ))) = (fun k : Fin n => ((n : ℂ) - 1 - x) - (k : ℂ)) ∘ Fin.revPerm`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply, Fin.revPerm_apply, Fin.val_rev]`. Rewrite using `[Nat.cast_sub (Nat.succ_le_of_lt k.isLt)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h4` using `antisymmetrizedProduct_perm_invariant E Fin.revPerm (fun k : Fin n => ((n : ℂ) - 1 - x) - (k : ℂ))`. Establish `h5` using `antisymmetrizedProduct_eq_factorial_smul_qdet E hE ((n : ℂ) - 1 - x)`. Use `smul_right_injective A (by exact_mod_cast n.factorial_ne_zero : ((n.factorial : ℕ) : ℂ) ≠ 0) ?_` and prove the remaining obligations.
+
+Use `show ((n.factorial : ℕ) : ℂ) • qdet (fun a b => -E b a) x = ((n.factorial : ℕ) : ℂ) • (((-1 : ℂ) ^ n) • qdet E ((n : ℂ) - 1 - x))`. Rewrite using `[← h1, h2, h3, h4, h5, smul_comm, Algebra.smul_def ((-1 : ℂ) ^ n)]`. Simplify using the standard rewrite rules.
+-/
 theorem quantumDet_neg_transpose {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E) (x : ℂ) :
     qdet (fun a b => -E b a) x = ((-1 : ℂ) ^ n) • qdet E ((n : ℂ) - 1 - x) := by
   have hE' : GlRel (fun a b => -E b a) := by

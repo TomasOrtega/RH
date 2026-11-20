@@ -12,6 +12,11 @@ open scoped TensorProduct
 
 variable {F E : Type} {_iF : Field F} [NumberField F] {_iE : Field E} [NumberField E] {_iA : Algebra F E} {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← map_inv, Units.val_mul, Matrix.map_mul]`. Use `congr 1`. Use `show (γ.1.map (Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F))).map (adAt F P) = _`. Rewrite using `[Matrix.map_map]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Conclude with `adAt_inclE F P x`.
+-/
 theorem comp_mul_rat (P : HeightOneSpectrum (𝓞 E)) (k : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (γ : GL (Fin n) E) :
     ((k⁻¹ * GlobalTheory.TwU.ratA F γ : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin n) (Fin n) _).map (adAt F P) =
       ((Formalism.UG.bc (adAt F P) k)⁻¹ : GL (Fin n) (P.adicCompletion E)).1 * γ.1.map (algebraMap E (P.adicCompletion E)) := by
@@ -23,6 +28,11 @@ theorem comp_mul_rat (P : HeightOneSpectrum (𝓞 E)) (k : GL (Fin n) (E ⊗[F] 
   funext x
   exact adAt_inclE F P x
 
+/- English proof (translation)
+Rewrite using `[← map_inv, Units.val_mul, Matrix.map_mul]`. Use `congr 1`. Use `show ((γ⁻¹).1.map (Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F))).map (adAt F P) = _`. Rewrite using `[Matrix.map_map]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Conclude with `adAt_inclE F P x`.
+-/
 theorem comp_rat_mul (P : HeightOneSpectrum (𝓞 E)) (k : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (γ : GL (Fin n) E) :
     (((GlobalTheory.TwU.ratA F γ)⁻¹ * k : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin n) (Fin n) _).map (adAt F P) =
       (γ⁻¹).1.map (algebraMap E (P.adicCompletion E)) * (Formalism.UG.bc (adAt F P) k : GL (Fin n) (P.adicCompletion E)).1 := by
@@ -38,6 +48,17 @@ end GlobalTheory.Mem.Col2.AdT.Approx
 
 namespace GlobalTheory.Mem.Col2.AdT
 
+/- English proof (translation)
+Introduce `B X I hOk l Z a n k`. Establish `key : ∀ P : SBof I a, ∃ γ : GL (Fin n) (I.rec7 l Z).host.E, GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) ((I.cst a).D P) (k⁻¹ * GlobalTheory.TwU.ratA (I.rec7 l Z).host.F γ) ∧ GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) ((I.cst a).D P) ((Glob …`. Introduce `P`. Take `⟨γ, hγ⟩` from `GlobalTheory.T.numberFieldGL_dense_in_completionGL_two_sided B.fields.E P.1 n ((I.cst a).D P) (Formalism.UG.bc (adAt B.host.F P.1) k)`. Use `⟨γ, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[(GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a n ((I.cst a).D P) P _).2.2]`. Introduce `r s`. Establish `h1` using `congrArg (fun M : Matrix (Fin n) (Fin n) _ => M r s) (Approx.comp_mul_rat P.1 k γ)`. Simplify using `only [Matrix.map_apply] at h1`. Establish `h2` using `(hγ r s).1`.
+
+Rewrite `h2` using `[Matrix.sub_apply]`. Use `h2 using 3` and compare the differences between its conclusion and the goal. Conclude with `h1`. Rewrite using `[(GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a n ((I.cst a).D P) P _).2.2]`. Introduce `r s`.
+
+Establish `h1` using `congrArg (fun M : Matrix (Fin n) (Fin n) _ => M r s) (Approx.comp_rat_mul P.1 k γ)`. Simplify using `only [Matrix.map_apply] at h1`. Establish `h2` using `(hγ r s).2`. Rewrite `h2` using `[Matrix.sub_apply]`. Use `h2 using 3` and compare the differences between its conclusion and the goal.
+
+Conclude with `h1`. Use `choose fb hfb using key`. Conclude with `⟨fb, hfb⟩`.
+-/
 theorem frNear_exists : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (a : I.ι) (n : ℕ) (k : GL (Fin n) (AfE (I.rec7 l Z).host.F (I.rec7 l Z).host.E)), ∃ fb : SBof I a → GL (Fin n) (I.rec7 l Z).host.E, FrNear I l Z a k fb := by
   intro B X I hOk l Z a n k
   have key : ∀ P : SBof I a, ∃ γ : GL (Fin n) (I.rec7 l Z).host.E,

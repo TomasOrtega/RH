@@ -23,6 +23,9 @@ section SlopeTestRemainingChoices
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `infEmb τ (compInf F E w ((1 : AF F) ⊗ₜ[F] J i j)) = τ.1 (J i j)`. Simplify using `[compInf, infEmb_tmul]`.
+-/
 theorem incM_map_piInf {n m : Type} (J : Matrix n m E) {w : InfinitePlace F} (τ : EmbOver E w) :
     (incM F J).map (piInf τ) = J.map τ.1 := by
   ext i j
@@ -30,6 +33,11 @@ theorem incM_map_piInf {n m : Type} (J : Matrix n m E) {w : InfinitePlace F} (τ
   change infEmb τ (compInf F E w ((1 : AF F) ⊗ₜ[F] J i j)) = τ.1 (J i j)
   simp [compInf, infEmb_tmul]
 
+/- English proof (translation)
+Introduce `z hz`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, h z hz, h' z hz, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `h0 : piInf (τ w) (z : AE F E) ≠ 0` using `(z.isUnit.map (piInf (τ w))).ne_zero`. Establish `hne : piInf (τ w) (z : AE F E) / (‖piInf (τ w) (z : AE F E)‖ : ℂ) ≠ 0` using `div_ne_zero h0 (Complex.ofReal_ne_zero.mpr (norm_ne_zero_iff.mpr h0))`.
+
+Rewrite using `[zpow_sub₀ hne]`.
+-/
 theorem hasExp_div (τ : ∀ w : InfinitePlace F, EmbOver E w) {χ χ' : Chr F E} {m m' : InfinitePlace F → ℤ}
     (h : HasExp τ χ m) (h' : HasExp τ χ' m') : HasExp τ (χ / χ') (fun w => m w - m' w) := by
   intro z hz
@@ -43,6 +51,17 @@ theorem hasExp_div (τ : ∀ w : InfinitePlace F, EmbOver E w) {χ χ' : Chr F E
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Take `⟨hbase, hgeo, hchars, hweil, -⟩` from `h`. Establish `hDer` using `GlobalTheory.T.archHeisenbergDerivatives_exist`. Establish `hFock` using `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives hDer`. Establish `hVac` using `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hDer`. Establish `hPol` using `GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws actsLaws hDer hVac`.
+
+Establish `hFirst` using `LieFirstPf.lieFirst_of_lieSecond (GlobalTheory.T.lieSecond_of_prints_derEx_fockEx_vacLine_lieScalar hP hDer hFock hVac (GlobalTheory.T.lieScalar_of_prints_derEx_vacLine hP hDer hVac))`. Establish `hA : ∀ w, ∃ A : Matrix (Fin a) (Ix (a - G.p) G.p) ℂ, IsFrame (G.V.J.map (B.emb w).1) A ∧ G.V.θ w * A = A * Jm (a - G.p) G.p` using `fun w => frameEx_holds _ _ _ _ _ (hgeo.hV.sig w) (hgeo.hV.cartan w)`. Use `choose A hAf hAθ using hA`. Establish `hC : ∀ w, ∃ C : Matrix (Fin (a + a')) (Ix (a + a' - (G.p + G.q)) (G.p + G.q)) ℂ, IsFrame (Complex.I • G.W.J.map (B.emb w).1) C ∧ G.W.θ w * C = C * Jm (a + a' - (G.p + G.q)) (G.p + G.q)` using `fun w => frameEx_holds _ _ _ _ _ (hgeo.hW.sig w) (hgeo.hW.cartan w)`. Use `choose C hCf hCθ using hC`.
+
+Establish `hFr : Framed B.emb (incM F G.V.J) (incM F G.W.J) 1 Complex.I A C`. Use `⟨one_mul _, fun w => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[incM_map_piInf, one_smul]`. Conclude with `hAf w`. Rewrite using `[incM_map_piInf]`.
+
+Conclude with `hCf w`. Take `⟨Φ, hΦ⟩` from `hFock F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C hbase.cm hbase.std hFr`. Establish `hRange : LinearMap.range Φ = G.M.Pol B.ψ B.emb` using `hPol F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ hbase.cm hbase.std hFr hAθ hCθ hΦ`. Take `⟨-, ⟨d', hd', hB⟩, -⟩` from `hweil`. Establish `hActs` using `hFirst F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co d' 1 Complex.I A C Φ _ _ _ hbase.cm hbase.std hFr hΦ hd' hB (hasExp_div B.emb hchars.expβ hchars.expα)`.
+
+Conclude with `⟨A, Φ, _, hFr.2.1, hAθ, hRange, hActs⟩`.
+-/
 theorem exists_fockMap_first (hP : GlobalTheory.FunPr.Hypotheses₂) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W)
     (om' : Rep σ G.V' G.W) (h : IsTriple B G X om om') :

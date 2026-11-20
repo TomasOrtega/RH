@@ -15,10 +15,16 @@ variable {K L : OpenSubgroup G}
 
 omit [IsTopologicalGroup G] in
 
+/- English proof (translation)
+The claim follows from `L.isOpen.preimage continuous_subtype_val`.
+-/
 theorem isOpen_subgroupOf (K L : OpenSubgroup G) :
     IsOpen (((L : Subgroup G).subgroupOf K : Subgroup (K : Subgroup G)) : Set (K : Subgroup G)) :=
   L.isOpen.preimage continuous_subtype_val
 
+/- English proof (translation)
+The claim follows from `Subgroup.topologicalClosure_minimal _ hL.commutator_le (Subgroup.isClosed_of_isOpen _ (isOpen_subgroupOf K L))`.
+-/
 theorem IsAbelianExtension.topologicalClosure_commutator_le (hL : IsAbelianExtension K L) :
     (commutator (K : Subgroup G)).topologicalClosure ≤ (L : Subgroup G).subgroupOf K :=
   Subgroup.topologicalClosure_minimal _ hL.commutator_le
@@ -30,6 +36,9 @@ noncomputable def abelianizationRestrict (hL : IsAbelianExtension K L)
   QuotientGroup.map _ _ (MonoidHom.id _) hL.topologicalClosure_commutator_le
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem abelianizationRestrict_mk (hL : IsAbelianExtension K L)
     [((L : Subgroup G).subgroupOf K).Normal] (g : (K : Subgroup G)) :
     abelianizationRestrict hL (g : TopologicalAbelianization (K : Subgroup G)) =
@@ -38,6 +47,13 @@ theorem abelianizationRestrict_mk (hL : IsAbelianExtension K L)
 
 variable [CompactSpace G] [TotallyDisconnectedSpace G]
 
+/- English proof (translation)
+Use `⟨fun hx L hL => hL.topologicalClosure_commutator_le hx, fun h => ?_⟩` and prove the remaining obligations. Establish `key` using `ProfiniteGrp.closedSubgroup_eq_sInf_open (G := (K : Subgroup G)) ⟨(commutator (K : Subgroup G)).topologicalClosure, Subgroup.isClosed_topologicalClosure _⟩`. Establish `hx : x ∈ sInf {N : Subgroup (K : Subgroup G) | IsOpen (N : Set (K : Subgroup G)) ∧ (commutator (K : Subgroup G)).topologicalClosure ≤ N}`. Rewrite using `[Subgroup.mem_sInf]`. Introduce and unpack `N ⟨hNo, hCN⟩`.
+
+Set `M : OpenSubgroup G` to `{ toSubgroup := N.map (K : Subgroup G).subtype isOpen' := by`. Establish `h` using `K.isOpen.isOpenMap_subtype_val _ hNo`. Rewrite `h` using `[← Subgroup.coe_subtype, ← Subgroup.coe_map]`. Conclude with `h }`. Establish `hM : IsAbelianExtension K M` using `⟨fun _ ⟨y, _, hy⟩ => hy ▸ y.2, fun y hy => ⟨y, hCN (Subgroup.le_topologicalClosure _ hy), rfl⟩⟩`.
+
+Conclude with `(Subgroup.mem_map_iff_mem Subtype.val_injective).1 (h M hM)`. Rewrite `hx` using `[← key]`. Conclude with `hx`.
+-/
 theorem mem_topologicalClosure_commutator_iff (x : (K : Subgroup G)) :
     x ∈ (commutator (K : Subgroup G)).topologicalClosure ↔
       ∀ L : OpenSubgroup G, IsAbelianExtension K L → (x : G) ∈ (L : Subgroup G) := by
@@ -79,6 +95,9 @@ noncomputable def reciprocityAbelianEquiv (hL : IsAbelianExtension K L)
   haveI := hL.isMulCommutative
   MulEquiv.ofBijective _ (reciprocity_bijective_of_isMulCommutative (D := D) hL.le hax)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reciprocityAbelianEquiv_apply (hL : IsAbelianExtension K L) [((L : Subgroup G).subgroupOf K).Normal]
     (q : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) :
     D.reciprocityAbelianEquiv hax hL q = D.reciprocity hL.le hax q :=
@@ -90,6 +109,19 @@ section Limit
 
 variable (K : OpenSubgroup G)
 
+/- English proof (translation)
+Set `ι` to `{L : OpenSubgroup G // IsAbelianExtension K L}`. Establish `: Nonempty ι` using `⟨⟨K, isAbelianExtension_self K⟩⟩`. Set `t : ι → Set (K : Subgroup G)` to `fun L => haveI := L.2.normal {g | D.reciprocity L.2.le hax (g : (K : Subgroup G) ⧸ (L.1 : Subgroup G).subgroupOf K) = (a : tateZero A (K : Subgroup G) (L.1 : Subgroup G))}`. Establish `htn : ∀ L, (t L).Nonempty` using `fun L => by`. Use `L.2.normal` as an intermediate fact.
+
+Take `⟨x, hx⟩` from `D.exists_reciprocity_mk_eq hax L.2.le a`. Conclude with `⟨x, hx⟩`. Establish `htcl : ∀ L, IsClosed (t L)` using `fun L => by`. Use `L.2.normal` as an intermediate fact. Take `⟨x, hx⟩` from `htn L`.
+
+Establish `ht : t L = (fun g => x⁻¹ * g) ⁻¹' (((L.1 : Subgroup G).subgroupOf K : Subgroup (K : Subgroup G)) : Set (K : Subgroup G))`. Use extensionality with `g`. Express the relevant statement in the definitionally equal form `D.reciprocity L.2.le hax _ = _ ↔ _`. Rewrite using `[← show D.reciprocity L.2.le hax _ = _ from hx, (D.reciprocity_injective hax L.2).eq_iff, eq_comm, QuotientGroup.eq]`. Both sides reduce to the same expression.
+
+Rewrite using `[ht]`. Conclude with `(Subgroup.isClosed_of_isOpen _ (isOpen_subgroupOf K L.1)).preimage (continuous_const.mul continuous_id)`. Establish `htd : Directed (· ⊇ ·) t`. Introduce `L L'`. Use `⟨⟨L.1 ⊓ L'.1, L.2.inf L'.2⟩, fun g hg => ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Use `L.2.normal` as an intermediate fact. Use `(L.2.inf L'.2).normal` as an intermediate fact. Conclude with `D.reciprocity_mk_of_le hax (L.2.inf L'.2).le L.2.le inf_le_left g a hg`. Use `L'.2.normal` as an intermediate fact. Use `(L.2.inf L'.2).normal` as an intermediate fact.
+
+Conclude with `D.reciprocity_mk_of_le hax (L.2.inf L'.2).le L'.2.le inf_le_right g a hg`. Take `⟨g, hg⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed t htd htn (fun L => (htcl L).isCompact) htcl`. Use `⟨g, fun L hL _ => ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter.1 hg ⟨L, hL⟩`.
+-/
 theorem exists_forall_reciprocity_mk_eq (a : fixedModule A (K : Subgroup G)) :
     ∃ g : (K : Subgroup G), ∀ (L : OpenSubgroup G) (hL : IsAbelianExtension K L)
       [((L : Subgroup G).subgroupOf K).Normal],
@@ -132,6 +164,11 @@ theorem exists_forall_reciprocity_mk_eq (a : fixedModule A (K : Subgroup G)) :
   refine ⟨g, fun L hL _ => ?_⟩
   exact Set.mem_iInter.1 hg ⟨L, hL⟩
 
+/- English proof (translation)
+Rewrite using `[QuotientGroup.eq, mem_topologicalClosure_commutator_iff]`. Introduce `L hL`. Use `hL.normal` as an intermediate fact. Establish `h` using `(hg L hL).trans (hg' L hL).symm`. Rewrite `h` using `[(D.reciprocity_injective hax hL).eq_iff, QuotientGroup.eq]`.
+
+Conclude with `h`.
+-/
 theorem mk_eq_mk_of_forall_reciprocity_mk_eq {a : fixedModule A (K : Subgroup G)}
     {g g' : (K : Subgroup G)}
     (hg : ∀ (L : OpenSubgroup G) (hL : IsAbelianExtension K L) [((L : Subgroup G).subgroupOf K).Normal],
@@ -168,6 +205,9 @@ noncomputable def reciprocityLimit :
 
 variable {K}
 
+/- English proof (translation)
+The claim follows from `(D.exists_forall_reciprocity_mk_eq hax K a).choose_spec L hL`.
+-/
 theorem reciprocity_abelianizationRestrict_reciprocityLimit {L : OpenSubgroup G}
     (hL : IsAbelianExtension K L) [((L : Subgroup G).subgroupOf K).Normal]
     (a : fixedModule A (K : Subgroup G)) :
@@ -175,6 +215,9 @@ theorem reciprocity_abelianizationRestrict_reciprocityLimit {L : OpenSubgroup G}
       (a : tateZero A (K : Subgroup G) (L : Subgroup G)) :=
   (D.exists_forall_reciprocity_mk_eq hax K a).choose_spec L hL
 
+/- English proof (translation)
+Rewrite using `[MulEquiv.eq_symm_apply, reciprocityAbelianEquiv_apply, D.reciprocity_abelianizationRestrict_reciprocityLimit hax hL]`.
+-/
 theorem abelianizationRestrict_reciprocityLimit {L : OpenSubgroup G} (hL : IsAbelianExtension K L)
     [((L : Subgroup G).subgroupOf K).Normal] (a : fixedModule A (K : Subgroup G)) :
     abelianizationRestrict hL (D.reciprocityLimit hax K a) =
@@ -182,6 +225,11 @@ theorem abelianizationRestrict_reciprocityLimit {L : OpenSubgroup G} (hL : IsAbe
   rw [MulEquiv.eq_symm_apply, reciprocityAbelianEquiv_apply,
     D.reciprocity_abelianizationRestrict_reciprocityLimit hax hL]
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective σ`. Rewrite using `[QuotientGroup.eq_one_iff, mem_topologicalClosure_commutator_iff]`. Use `⟨fun h L hL _ => ?_, fun h L hL => ?_⟩` and prove the remaining obligations. Rewrite using `[abelianizationRestrict_mk, mk_eq_one_iff]`. Conclude with `h L hL`.
+
+Use `hL.normal` as an intermediate fact. Establish `h'` using `h L hL`. Rewrite `h'` using `[abelianizationRestrict_mk, mk_eq_one_iff]`. Then use the resulting hypothesis.
+-/
 theorem eq_one_iff_forall_abelianizationRestrict (σ : TopologicalAbelianization (K : Subgroup G)) :
     σ = 1 ↔ ∀ (L : OpenSubgroup G) (hL : IsAbelianExtension K L)
       [((L : Subgroup G).subgroupOf K).Normal], abelianizationRestrict hL σ = 1 := by
@@ -194,6 +242,9 @@ theorem eq_one_iff_forall_abelianizationRestrict (σ : TopologicalAbelianization
     have h' := h L hL
     rwa [abelianizationRestrict_mk, mk_eq_one_iff] at h'
 
+/- English proof (translation)
+Rewrite using `[← div_eq_one, eq_one_iff_forall_abelianizationRestrict]`. Introduce `L hL _`. Rewrite using `[map_div, h L hL, div_self']`.
+-/
 theorem ext_abelianizationRestrict {σ τ : TopologicalAbelianization (K : Subgroup G)}
     (h : ∀ (L : OpenSubgroup G) (hL : IsAbelianExtension K L)
       [((L : Subgroup G).subgroupOf K).Normal], abelianizationRestrict hL σ = abelianizationRestrict hL τ) :
@@ -202,6 +253,9 @@ theorem ext_abelianizationRestrict {σ τ : TopologicalAbelianization (K : Subgr
   intro L hL _
   rw [map_div, h L hL, div_self']
 
+/- English proof (translation)
+Use `ext_abelianizationRestrict fun L hL _ => D.reciprocity_injective hax hL ?_` and prove the remaining obligations. Rewrite using `[h L hL, D.reciprocity_abelianizationRestrict_reciprocityLimit hax hL]`.
+-/
 theorem eq_reciprocityLimit {a : fixedModule A (K : Subgroup G)}
     {σ : TopologicalAbelianization (K : Subgroup G)}
     (h : ∀ (L : OpenSubgroup G) (hL : IsAbelianExtension K L)
@@ -212,6 +266,11 @@ theorem eq_reciprocityLimit {a : fixedModule A (K : Subgroup G)}
   refine ext_abelianizationRestrict fun L hL _ => D.reciprocity_injective hax hL ?_
   rw [h L hL, D.reciprocity_abelianizationRestrict_reciprocityLimit hax hL]
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[MonoidHom.mem_ker, eq_one_iff_forall_abelianizationRestrict, Subgroup.mem_iInf]`. Use `⟨fun h L => ?_, fun h L hL _ => ?_⟩` and prove the remaining obligations. Use `L.2.normal` as an intermediate fact. Establish `h'` using `congrArg (D.reciprocity L.2.le hax) (h L.1 L.2)`.
+
+Rewrite `h'` using `[D.reciprocity_abelianizationRestrict_reciprocityLimit hax L.2, map_one, QuotientGroup.eq_one_iff]`. Conclude with `h'`. Apply `D.reciprocity_injective hax hL` to reduce the goal to its premises. Rewrite using `[D.reciprocity_abelianizationRestrict_reciprocityLimit hax hL, map_one, QuotientGroup.eq_one_iff]`. Conclude with `h ⟨L, hL⟩`.
+-/
 theorem ker_reciprocityLimit :
     (D.reciprocityLimit hax K).ker =
       ⨅ L : {L : OpenSubgroup G // IsAbelianExtension K L}, normGroup A K L.1 := by
@@ -228,6 +287,9 @@ theorem ker_reciprocityLimit :
       QuotientGroup.eq_one_iff]
     exact h ⟨L, hL⟩
 
+/- English proof (translation)
+Rewrite using `[ker_reciprocityLimit]`. Use `le_antisymm (le_iInf fun L => ?_) (le_iInf fun L => iInf_le_of_le ⟨L.1, L.2.le⟩ le_rfl)` and prove the remaining obligations. Rewrite using `[← D.normGroup_maxAbelian hax L.2]`. Conclude with `iInf_le_of_le ⟨maxAbelian L.2, isAbelianExtension_maxAbelian L.2⟩ le_rfl`.
+-/
 theorem ker_reciprocityLimit_eq_iInf :
     (D.reciprocityLimit hax K).ker = ⨅ L : {L : OpenSubgroup G // L ≤ K}, normGroup A K L.1 := by
   rw [ker_reciprocityLimit]
@@ -235,6 +297,21 @@ theorem ker_reciprocityLimit_eq_iInf :
   rw [← D.normGroup_maxAbelian hax L.2]
   exact iInf_le_of_le ⟨maxAbelian L.2, isAbelianExtension_maxAbelian L.2⟩ le_rfl
 
+/- English proof (translation)
+Rewrite using `[DenseRange, dense_iff_inter_open]`. Introduce and unpack `U hU ⟨σ, hσ⟩`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective σ`. Use `set C := (commutator (K : Subgroup G)).topologicalClosure`. Use `set V : Set (K : Subgroup G) := (fun y => ((g * y : (K : Subgroup G)) : TopologicalAbelianization (K : Subgroup G))) ⁻¹' U with hV`.
+
+Establish `hVo : IsOpen V` using `hU.preimage (QuotientGroup.continuous_mk.comp (continuous_const.mul continuous_id))`. Establish `hV1 : (1 : (K : Subgroup G)) ∈ V`. Simplify using `only [hV, Set.mem_preimage, mul_one]`. Conclude with `hσ`. Take `⟨N, hN⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hVo hV1`.
+
+Set `M : OpenSubgroup G` to `{ toSubgroup := ((N : Subgroup (K : Subgroup G)) ⊔ C).map (K : Subgroup G).subtype isOpen' := by`. Establish `ho : IsOpen (((N : Subgroup (K : Subgroup G)) ⊔ C : Subgroup (K : Subgroup G)) : Set (K : Subgroup G))` using `Subgroup.isOpen_mono (H₁ := (N : Subgroup (K : Subgroup G))) (H₂ := (N : Subgroup (K : Subgroup G)) ⊔ C) le_sup_left N.isOpen'`. Establish `h` using `K.isOpen.isOpenMap_subtype_val _ ho`. Rewrite `h` using `[← Subgroup.coe_subtype, ← Subgroup.coe_map]`. Conclude with `h }`.
+
+Establish `hMmem : ∀ x : (K : Subgroup G), (x : G) ∈ (M : Subgroup G) ↔ x ∈ (N : Subgroup (K : Subgroup G)) ⊔ C` using `fun x => Subgroup.mem_map_iff_mem Subtype.val_injective`. Establish `hM : IsAbelianExtension K M` using `⟨fun _ ⟨y, _, hy⟩ => hy ▸ y.2, fun y hy => (hMmem y).2 (Subgroup.mem_sup_right (Subgroup.le_topologicalClosure _ hy))⟩`. Use `hM.normal` as an intermediate fact. Take `⟨a, ha⟩` from `QuotientGroup.mk_surjective (D.reciprocity hM.le hax (g : (K : Subgroup G) ⧸ (M : Subgroup G).subgroupOf K))`. Use `⟨D.reciprocityLimit hax K a, ?_, a, rfl⟩` and prove the remaining obligations.
+
+Take `⟨h, hh⟩` from `QuotientGroup.mk_surjective (D.reciprocityLimit hax K a)`. Establish `e` using `D.reciprocity_abelianizationRestrict_reciprocityLimit hax hM a`. Rewrite `e` using `[← hh, abelianizationRestrict_mk, ha, (D.reciprocity_injective hax hM).eq_iff, eq_comm, QuotientGroup.eq]`. Establish `e' : g⁻¹ * h ∈ (N : Subgroup (K : Subgroup G)) ⊔ C` using `(hMmem _).1 e`. Take `⟨n, hn, c, hc, hnc⟩` from `Subgroup.mem_sup_of_normal_left.1 e'`.
+
+Establish `hnV : n ∈ V` using `hN hn`. Rewrite using `[← hh]`. Establish `hgh : h = g * n * c`. Rewrite using `[mul_assoc, hnc, mul_inv_cancel_left]`. Establish `hmk : ((h : (K : Subgroup G)) : TopologicalAbelianization (K : Subgroup G)) = ((g * n : (K : Subgroup G)) : TopologicalAbelianization (K : Subgroup G))`.
+
+Establish `hc' : (g * n * c)⁻¹ * (g * n) = c⁻¹` using `by group`. Rewrite using `[QuotientGroup.eq, hgh, hc']`. Conclude with `C.inv_mem hc`. Rewrite using `[hmk]`. Conclude with `hnV`.
+-/
 theorem denseRange_reciprocityLimit : DenseRange (D.reciprocityLimit hax K) := by
   rw [DenseRange, dense_iff_inter_open]
   rintro U hU ⟨σ, hσ⟩

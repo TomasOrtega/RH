@@ -27,11 +27,17 @@ section Grp
 
 variable {S S' : Scheme.{0}}
 
+/- English proof (translation)
+Substitute `e e'` using the available equality. Conclude with `h`.
+-/
 theorem IsGrpPullback.congr {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f f' : S' ⟶ S} {φ φ' : G'.left ⟶ G.left}
     (h : IsGrpPullback G' G f φ) (e : f = f') (e' : φ = φ') : IsGrpPullback G' G f' φ' := by
   subst e e'
   exact h
 
+/- English proof (translation)
+Establish `: IsIso e.hom.left` using `⟨⟨e.inv.left, by rw [← Over.comp_left, e.hom_inv_id, Over.id_left], by rw [← Over.comp_left, e.inv_hom_id, Over.id_left]⟩⟩`. Use `⟨IsPullback.of_horiz_isIso ⟨by rw [Over.w, Category.comp_id]⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.comp_left, MonObj.mul_comp]`. Take `⟨Tl, ⟨⟨⟩⟩, Th⟩` from `T`. Conclude with `mul_left_congr (Category.comp_id _) x₀ y₀ (x ≫ e.hom) (y ≫ e.hom) hx hy`.
+-/
 theorem isGrpPullback_of_iso {G₁ G₂ : Over S} [GrpObj G₁] [GrpObj G₂] (e : G₁ ≅ G₂) [IsMonHom e.hom] :
     IsGrpPullback G₁ G₂ (𝟙 S) e.hom.left := by
   have : IsIso e.hom.left := ⟨⟨e.inv.left, by rw [← Over.comp_left, e.hom_inv_id, Over.id_left],
@@ -41,6 +47,15 @@ theorem isGrpPullback_of_iso {G₁ G₂ : Over S} [GrpObj G₁] [GrpObj G₂] (e
   obtain ⟨Tl, ⟨⟨⟩⟩, Th⟩ := T
   exact mul_left_congr (Category.comp_id _) x₀ y₀ (x ≫ e.hom) (y ≫ e.hom) hx hy
 
+/- English proof (translation)
+Set `e : G₁ ≅ G₂` to `Over.isoMk (h₁.1.isoIsPullback _ _ h₂.1) (h₁.1.isoIsPullback_hom_snd _ _ h₂.1)`. Establish `he : e.hom.left ≫ φ₂ = φ₁` using `h₁.1.isoIsPullback_hom_fst _ _ h₂.1`. Establish `mul : ∀ (T : Over S') (x y : T ⟶ G₁), (x * y) ≫ e.hom = (x ≫ e.hom) * (y ≫ e.hom)`. Introduce `T x y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Apply `h₂.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, he, ← h₁.2 T x y (pushPt h₁.1.w x) (pushPt h₁.1.w y) rfl rfl]`. Conclude with `h₂.2 T _ _ _ _ (by show x.left ≫ φ₁ = (x.left ≫ _) ≫ φ₂; rw [Category.assoc, he]) (by show y.left ≫ φ₁ = (y.left ≫ _) ≫ φ₂; rw [Category.assoc, he])`. Rewrite using `[Over.w, Over.w]`. Use `⟨e, ⟨?_, ?_⟩, he⟩` and prove the remaining obligations.
+
+Establish `h` using `mul (𝟙_ _) 1 1`. Rewrite `h` using `[_root_.mul_one]`. Establish `h' : (1 : 𝟙_ (Over S') ⟶ G₁) ≫ e.hom = 1` using `mul_eq_left.1 h.symm`. Simplify `h'` using `[Hom.one_def]`. Establish `h` using `mul (G₁ ⊗ G₁) (fst _ _) (snd _ _)`.
+
+Rewrite `h` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[h]`. Use `congr 1`.
+-/
 theorem grpPullback_iso {G : Over S} {G₁ G₂ : Over S'} [GrpObj G] [GrpObj G₁] [GrpObj G₂] {f : S' ⟶ S}
     {φ₁ : G₁.left ⟶ G.left} {φ₂ : G₂.left ⟶ G.left} (h₁ : IsGrpPullback G₁ G f φ₁) (h₂ : IsGrpPullback G₂ G f φ₂) :
     ∃ e : G₁ ≅ G₂, IsMonHom e.hom ∧ e.hom.left ≫ φ₂ = φ₁ := by
@@ -91,6 +106,9 @@ def chartPullUnpull (L : LB X) (F : X ⟶ X) (e : F = 𝟙 X) : ChartPull L (L.p
     exact ((gm_pull_g L (𝟙 X) (𝟙 X) y (fun _ => i) (fun _ => j) (mem_pull.2 hi) (mem_pull.2 hj)).trans
       (by rw [Category.id_comp])).symm
 
+/- English proof (translation)
+Use `ext1`. Establish `e` using `congrArg (fun g => g.hom (u : Γ(A, U))) (A.presheaf.map_comp (homOfLE h2).op (homOfLE h1).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Simplify using `only [res, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Conclude with `e.symm`.
+-/
 private lemma res_res_toroidal_compactification {A : Scheme.{0}} {U V W : A.Opens} (h1 : W ≤ V) (h2 : V ≤ U) (u : Γ(A, U)ˣ) :
     res h1 (res h2 u) = res (h1.trans h2) u := by
   ext1
@@ -99,6 +117,9 @@ private lemma res_res_toroidal_compactification {A : Scheme.{0}} {U V W : A.Open
   simp only [res, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]
   exact e.symm
 
+/- English proof (translation)
+The claim follows from `top_le_iff.1 fun y _ => by obtain ⟨i, hi⟩ := exists_chart hL (F y) exact TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => i, mem_pull.2 hi⟩ g_self J := unit_ext fun y hy => by rw [gm_res (𝟙 Y) y _ hy, map_one, gm_pull_g L F (𝟙 Y) y J J hy hy] exact gm_self hL _ y (mem_pull.1 hy) cocyc …`.
+-/
 theorem pull_isLB {L : LB X} (hL : L.IsLB) (F : Y ⟶ X) : (L.pull F).IsLB where
   cover := top_le_iff.1 fun y _ => by
     obtain ⟨i, hi⟩ := exists_chart hL (F y)
@@ -111,16 +132,29 @@ theorem pull_isLB {L : LB X} (hL : L.IsLB) (F : Y ⟶ X) : (L.pull F).IsLB where
       gm_pull_g L F (𝟙 Y) y J K hy.1.2 hy.2, gm_pull_g L F (𝟙 Y) y I K hy.1.1 hy.2]
     exact gm_cocycle hL _ y (mem_pull.1 hy.1.1) (mem_pull.1 hy.1.2) (mem_pull.1 hy.2)
 
+/- English proof (translation)
+Rewrite using `[hx, map_mul, map_mul, map_inv]`.
+-/
 private lemma res_mul_inv_mul_of_eq {A : Scheme.{0}} {U V : A.Opens} (h : V ≤ U) (x y z w : Γ(A, U)ˣ)
     (hx : x = y * z⁻¹ * w) : res h x = res h y * (res h z)⁻¹ * res h w := by
   rw [hx, map_mul, map_mul, map_inv]
 
+/- English proof (translation)
+Rewrite using `[h]`. Simplify using `only [mul_inv_rev, inv_inv]`. Conclude with `mul_comm _ _`.
+-/
 private lemma inv_eq_mul_inv_mul_inv_of_eq_mul_inv_mul {G : Type*} [CommGroup G] (x a b y : G) (h : x = a * b⁻¹ * y) :
     x⁻¹ = b * a⁻¹ * y⁻¹ := by
   rw [h]
   simp only [mul_inv_rev, inv_inv]
   exact mul_comm _ _
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `H`. Use `⟨⟨fun p => (res (le_inf inf_le_right inf_le_left : A.U p.1 ⊓ B.U p.2 ≤ B.U p.2 ⊓ A.U p.1) (w.s (p.2, p.1)))⁻¹⟩, fun p q => ?_⟩` and prove the remaining obligations. Establish `hc : (A.U p.1 ⊓ B.U p.2 ⊓ (A.U q.1 ⊓ B.U q.2)) ≤ B.U p.2 ⊓ A.U p.1 ⊓ (B.U q.2 ⊓ A.U q.1)` using `le_inf (le_inf (inf_le_left.trans inf_le_right) (inf_le_left.trans inf_le_left)) (le_inf (inf_le_right.trans inf_le_right) (inf_le_right.trans inf_le_left))`. Establish `hg` using `hw (p.2, p.1) (q.2, q.1)`. Establish `e` using `res_mul_inv_mul_of_eq hc _ _ _ _ hg`.
+
+Establish `e2` using `inv_eq_mul_inv_mul_inv_of_eq_mul_inv_mul _ _ _ _ e`. Use `show res (inf_le_left : (A.U p.1 ⊓ B.U p.2 ⊓ (A.U q.1 ⊓ B.U q.2)) ≤ A.U p.1 ⊓ B.U p.2) (res (le_inf inf_le_right inf_le_left : A.U p.1 ⊓ B.U p.2 ≤ B.U p.2 ⊓ A.U p.1) (w.s (p.2, p.1)))⁻¹ = res (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left) : (A.U p.1 ⊓ B. …`. Rewrite using `[map_inv, map_inv]`. Use `(congrArg Inv.inv ((res_res_toroidal_compactification _ _ _).trans (res_res_toroidal_compactification _ _ _).symm)).trans (e2.trans ?_)` and prove the remaining obligations. Use `congrArg₂ (· * ·) (congrArg₂ (· * ·) (res_res_toroidal_compactification _ _ _) (congrArg Inv.inv (res_res_toroidal_compactification _ _ _))) ?_` and prove the remaining obligations.
+
+Conclude with `congrArg Inv.inv ((res_res_toroidal_compactification _ _ _).trans (res_res_toroidal_compactification _ _ _).symm)`.
+-/
 theorem LBIso.symm {A B : LB X} (H : LBIso A B) : LBIso B A := by
   obtain ⟨w, hw⟩ := H
   refine ⟨⟨fun p => (res (le_inf inf_le_right inf_le_left : A.U p.1 ⊓ B.U p.2 ≤ B.U p.2 ⊓ A.U p.1)
@@ -144,6 +178,9 @@ theorem LBIso.symm {A B : LB X} (H : LBIso A B) : LBIso B A := by
   refine congrArg₂ (· * ·) (congrArg₂ (· * ·) (res_res_toroidal_compactification _ _ _) (congrArg Inv.inv (res_res_toroidal_compactification _ _ _))) ?_
   exact congrArg Inv.inv ((res_res_toroidal_compactification _ _ _).trans (res_res_toroidal_compactification _ _ _).symm)
 
+/- English proof (translation)
+Take `⟨w', h'⟩` from `H.chartPull (chartPullId A) (chartPullPull B (𝟙 X) (𝟙 X) rfl)`. Take `⟨w, h⟩` from `H'.chartPull (chartPullId B) (chartPullPull C (𝟙 X) (𝟙 X) rfl)`. Take `⟨w'', T⟩` from `exists_comp hB w w' ((isGen_iff w).1 h) ((isGen_iff w').1 h') hC hA`. Conclude with `LBIso.chartPull (chartPullId A) (chartPullUnpull C _ (Category.id_comp _)) ⟨w'', (isGen_iff w'').2 (T.pgen_comp hB ((isGen_iff w).1 h) ((isGen_iff w').1 h'))⟩`.
+-/
 theorem LBIso.trans {A B C : LB X} (hA : A.IsLB) (hB : B.IsLB) (hC : C.IsLB) (H : LBIso A B) (H' : LBIso B C) :
     LBIso A C := by
   obtain ⟨w', h'⟩ := H.chartPull (chartPullId A) (chartPullPull B (𝟙 X) (𝟙 X) rfl)
@@ -152,6 +189,11 @@ theorem LBIso.trans {A B C : LB X} (hA : A.IsLB) (hB : B.IsLB) (hC : C.IsLB) (H 
   exact LBIso.chartPull (chartPullId A) (chartPullUnpull C _ (Category.id_comp _))
     ⟨w'', (isGen_iff w'').2 (T.pgen_comp hB ((isGen_iff w).1 h) ((isGen_iff w').1 h'))⟩
 
+/- English proof (translation)
+Establish `nat` using `congrArg (fun g => g.hom a) (Scheme.Hom.naturality f (homOfLE hVU).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at nat`. Rewrite using `[nat]`. Use `first`. Consider the case `exact TopCat.Presheaf.germ_res_apply _ _ _ _ _`.
+
+Consider the case `exact TopCat.Presheaf.germ_res_apply _ _ _ _ _ _`. Consider the case `(erw [TopCat.Presheaf.germ_res_apply])`. Consider the case `(simp; done)`.
+-/
 private lemma germ_app_presheaf_map_eq_germ_app {A B : Scheme.{0}} (f : A ⟶ B) (y : A) {U V : B.Opens} (hVU : V ≤ U)
     (hy : f y ∈ V) (a : Γ(B, U)) :
     (A.presheaf.germ (f ⁻¹ᵁ V) y hy).hom ((f.app V).hom ((B.presheaf.map (homOfLE hVU).op).hom a)) =
@@ -165,6 +207,9 @@ private lemma germ_app_presheaf_map_eq_germ_app {A B : Scheme.{0}} (f : A ⟶ B)
     | (erw [TopCat.Presheaf.germ_res_apply])
     | (simp; done)
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(simp only [Scheme.Hom.comp_app, CommRingCat.hom_comp, RingHom.comp_apply]; rfl)`. Consider the case `(simp [Scheme.Hom.comp_app]; done)`.
+-/
 private lemma germ_app_app_eq_germ_app_comp {A B C : Scheme.{0}} (r : A ⟶ B) (h : B ⟶ C) (y : A) (W : C.Opens)
     (hy : h (r y) ∈ W) (a : Γ(C, W)) :
     (A.presheaf.germ (r ⁻¹ᵁ h ⁻¹ᵁ W) y hy).hom ((r.app (h ⁻¹ᵁ W)).hom ((h.app W).hom a)) =
@@ -174,6 +219,9 @@ private lemma germ_app_app_eq_germ_app_comp {A B C : Scheme.{0}} (r : A ⟶ B) (
     | (simp only [Scheme.Hom.comp_app, CommRingCat.hom_comp, RingHom.comp_apply]; rfl)
     | (simp [Scheme.Hom.comp_app]; done)
 
+/- English proof (translation)
+Use `ext1`. Rewrite using `[gm, gm, dif_pos hy, dif_pos (hVU hy)]`. Simplify using `only [MonoidHom.comp_apply, Units.coe_map, res, pullU, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Conclude with `germ_app_presheaf_map_eq_germ_app f y hVU hy _`.
+-/
 private lemma gm_res_toroidal_compactification {A B : Scheme.{0}} (f : A ⟶ B) (y : A) {U V : B.Opens} (hVU : V ≤ U)
     (hy : f y ∈ V) (u : Γ(B, U)ˣ) : gm f y V (res hVU u) = gm f y U u := by
   ext1
@@ -181,6 +229,11 @@ private lemma gm_res_toroidal_compactification {A B : Scheme.{0}} (f : A ⟶ B) 
   simp only [MonoidHom.comp_apply, Units.coe_map, res, pullU, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]
   exact germ_app_presheaf_map_eq_germ_app f y hVU hy _
 
+/- English proof (translation)
+Establish `hC : ∀ (ψ : PUnit → (Y ⟶ X)) (j' : PUnit → L.ι), LB.Coh L ψ j'` using `fun _ j' k₁ k₂ _ => by`. Consider the cases of `k₁`. Consider the cases of `k₂`. Both sides reduce to the same expression. Establish `hc` using `h (fun _ => j) (fun _ => j) (hC _ _) (hC _ _) (fun _ _ _ => rfl)`.
+
+Establish `hW : r z ∈ LB.wchart L φ (fun _ => j) ⊓ LB.wchart L φ' (fun _ => j)` using `TopologicalSpace.Opens.mem_inf.2 ⟨h₁, h₂⟩`. Conclude with `((gm_res_toroidal_compactification r z inf_le_left hW _).symm.trans (congrArg (gm r z _) hc)).trans (gm_res_toroidal_compactification r z inf_le_right hW _)`.
+-/
 theorem gm_corr {Z : Scheme.{0}} (L : LB X) {φ φ' : PUnit → (Y ⟶ X)} {ε ε' : PUnit → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
     {t' : LB.Gen (LB.LinComb L φ' ε')} (h : LB.Gen.Corr L φ ε φ' ε' t t') (r : Z ⟶ Y) (z : Z) (j : L.ι)
     (h₁ : r z ∈ LB.wchart L φ (fun _ => j)) (h₂ : r z ∈ LB.wchart L φ' (fun _ => j)) :
@@ -193,6 +246,11 @@ theorem gm_corr {Z : Scheme.{0}} (L : LB X) {φ φ' : PUnit → (Y ⟶ X)} {ε �
   exact ((gm_res_toroidal_compactification r z inf_le_left hW _).symm.trans (congrArg (gm r z _) hc)).trans
     (gm_res_toroidal_compactification r z inf_le_right hW _)
 
+/- English proof (translation)
+Establish `hz' : h (r z) ∈ LB.wchart L φ j` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz k`. Establish `hle : LB.wchart L (fun k => h ≫ φ k) j ≤ h ⁻¹ᵁ LB.wchart L φ j` using `fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`. Use `ext1`. Rewrite using `[gm, gm, dif_pos hz, dif_pos (show (r ≫ h) z ∈ LB.wchart L φ j from hz')]`. Simplify using `only [LB.pullGen, MonoidHom.comp_apply, Units.coe_map, res, pullU, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`.
+
+Conclude with `(germ_app_presheaf_map_eq_germ_app r z hle hz _).trans (germ_app_app_eq_germ_app_comp r h z _ hz' _)`.
+-/
 theorem gm_pullGen {Z Z' : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (h : Z ⟶ Y) (r : Z' ⟶ Z) (z : Z') (j : K → L.ι)
     (hz : r z ∈ LB.wchart L (fun k => h ≫ φ k) j) :
@@ -215,6 +273,11 @@ variable {F : Type} [Field F] {X : Scheme.{0}}
 def toStk (z : Sp F) : F →+* (Sp F).presheaf.stalk z :=
   ((Sp F).presheaf.germ ⊤ z trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hle`. Conclude with `hle (show z ∈ (⊤ : (Sp F).Opens) from trivial)`. Introduce `hz w _`. Establish `hwz : w = z` using `by first`.
+
+Consider the case `exact Subsingleton.elim _ _`. Consider the case `exact PrimeSpectrum.ext ((Ideal.eq_bot_of_prime _).trans (Ideal.eq_bot_of_prime _).symm)`. Consider the case `exact PrimeSpectrum.ext (by simp)`. Substitute `hwz` using the available equality. Conclude with `hz`.
+-/
 theorem top_le_iff_mem (x : Sp F ⟶ X) (U : X.Opens) (z : Sp F) : ⊤ ≤ x ⁻¹ᵁ U ↔ x z ∈ U := by
   constructor
   · intro hle
@@ -228,6 +291,13 @@ theorem top_le_iff_mem (x : Sp F ⟶ X) (U : X.Opens) (z : Sp F) : ⊤ ≤ x ⁻
     subst hwz
     exact hz
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ x ⁻¹ᵁ U` using `(top_le_iff_mem x U z).2 h`. Establish `e1` using `congrArg (fun g => g.hom ((x.appLE U ⊤ h').hom a.val)) (Scheme.ΓSpecIso (CommRingCat.of F)).hom_inv_id`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_id, RingHom.id_apply] at e1`. Rewrite using `[valF, dif_pos h', gm, dif_pos h]`. Simplify using `only [toStk, RingHom.comp_apply, MonoidHom.comp_apply, Units.coe_map, pullU, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`.
+
+Rewrite using `[e1]`. Use `first`. Consider the case `(simp only [Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `TopCat.Presheaf.germ_res_apply _ _ _ _ _)`. Consider the case `(simp only [Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply] erw [TopCat.Presheaf.germ_res_apply])`.
+
+Consider the case `(simp only [Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `(TopCat.Presheaf.germ_res_apply _ _ _ _ _).trans rfl)`. Consider the case `(simp only [Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `Eq.refl _)`.
+-/
 theorem toStk_valF (x : Sp F ⟶ X) (U : X.Opens) (z : Sp F) (h : x z ∈ U) (a : Γ(X, U)ˣ) :
     toStk z (valF x U a.val) = (gm x z U a).val := by
   have h' : ⊤ ≤ x ⁻¹ᵁ U := (top_le_iff_mem x U z).2 h
@@ -250,6 +320,19 @@ theorem toStk_valF (x : Sp F ⟶ X) (U : X.Opens) (z : Sp F) (h : x z ∈ U) (a 
 
 variable {B B' B₀ : Scheme.{0}} {M : LB B} {M' : LB B'} {M₀ : LB B₀} {K : Type} [Fintype K] {ε : K → ℤ}
 
+/- English proof (translation)
+Use `and_congr_right fun hp => forall_congr' fun j => forall_congr' fun j₀ => ?_` and prove the remaining obligations. Establish `key : (∀ k, φ (pt k z) ∈ M₀.U (j₀ k)) → (∀ k, pt k z ∈ M.U (j k)) → (valF (𝟙 (Sp F)) _ (t.s j).val = x * (∏ k, valF (pt k) _ (w.s (fun _ => j₀ k, j k)).val ^ (-ε k)) * valF (𝟙 (Sp F)) _ (t₀.s j₀).val ↔ ((∏ k, gw w (pt k) z (j₀ k) (j k) ^ ε k) * gm (𝟙 _) z (LB.wchart M pt j) (t.s …`. Introduce `h₀ h₁`. Establish `a₁` using `toStk_valF (𝟙 (Sp F)) (LB.wchart M pt j) z (Set.mem_iInter.2 h₁) (t.s j)`. Establish `a₂` using `toStk_valF (𝟙 (Sp F)) (LB.wchart M₀ pt₀ j₀) z (Set.mem_iInter.2 fun k => by`.
+
+Use `h₀ k` as an intermediate fact. Rewrite using `[← hp k]`. Conclude with `this) (t₀.s j₀)`. Establish `a₃ : ∀ k, toStk z (valF (pt k) _ (w.s (fun _ => j₀ k, j k)).val) = (gw w (pt k) z (j₀ k) (j k)).val` using `fun k => toStk_valF (pt k) ((M₀.pull φ).U (fun _ => j₀ k) ⊓ M.U (j k)) z ⟨mem_pull.2 (h₀ k), h₁ k⟩ _`. Establish `a₄ : toStk z (∏ k, valF (pt k) _ (w.s (fun _ => j₀ k, j k)).val ^ (-ε k)) = ((∏ k, gw w (pt k) z (j₀ k) (j k) ^ ε k)⁻¹).val`.
+
+Establish `hu : ∀ k, valF (pt k) _ (w.s (fun _ => j₀ k, j k)).val ≠ 0` using `fun k h0 => by`. Use `a₃ k` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `(gw w (pt k) z (j₀ k) (j k)).ne_zero this.symm`. Rewrite using `[map_prod, ← Finset.prod_inv_distrib, Units.coe_prod]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e : Units.map (toStk z).toMonoidHom (Units.mk0 _ (hu k)) = gw w (pt k) z (j₀ k) (j k)` using `Units.ext (a₃ k)`. Rewrite using `[← e, ← zpow_neg, ← map_zpow]`. Use `show _ = toStk z _`. Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_mk0]`.
+
+Rewrite using `[← (toStk z).injective.eq_iff, map_mul, map_mul, a₄]`. Use `Iff.trans (Eq.congr a₁ (congrArg _ a₂)) ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, mul_comm (toStk z x), _root_.mul_assoc, Units.eq_inv_mul_iff_mul_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `H h₀ h₁`.
+
+Conclude with `(key h₀ h₁).1 (H fun k => (top_le_iff_mem _ _ z).2 ⟨mem_pull.2 (h₀ k), h₁ k⟩)`. Introduce `H h`. Establish `h₀` using `fun k => mem_pull.1 ((top_le_iff_mem _ _ z).1 (h k)).1`. Establish `h₁` using `fun k => ((top_le_iff_mem _ _ z).1 (h k)).2`. Conclude with `(key h₀ h₁).2 (H h₀ h₁)`.
+-/
 theorem genRel_iff {φ : B ⟶ B₀} (w : LB.Iso M (M₀.pull φ)) {pt : K → (Sp F ⟶ B)} {pt₀ : K → (Sp F ⟶ B₀)}
     (t : LB.Gen (LB.LinComb M pt ε)) (t₀ : LB.Gen (LB.LinComb M₀ pt₀ ε)) (x : F) (z : Sp F) :
     GenRel w t t₀ x ↔ (∀ k, pt k ≫ φ = pt₀ k) ∧ ∀ (j : K → M.ι) (j₀ : K → M₀.ι), (∀ k, φ (pt k z) ∈ M₀.U (j₀ k)) →
@@ -292,6 +375,15 @@ theorem genRel_iff {φ : B ⟶ B₀} (w : LB.Iso M (M₀.pull φ)) {pt : K → (
     have h₁ := fun k => ((top_le_iff_mem _ _ z).1 (h k)).2
     exact (key h₀ h₁).2 (H h₀ h₁)
 
+/- English proof (translation)
+Establish `z : Sp F` using `(default : PrimeSpectrum F)`. Establish `hc' : ∀ k, pt' k ≫ Φ = pt k` using `fun k => (hc k).trans (Category.id_comp _)`. Establish `pe : ∀ k, pt k z = Φ (pt' k z)` using `fun k => congrArg (fun g => g z) (hc' k).symm`. Establish `key : ∀ (j₀ : K → M₀.ι) (i : K → M.ι) (q : K → M'.ι), (∀ k, φ (Φ (pt' k z)) ∈ M₀.U (j₀ k)) → (∀ k, Φ (pt' k z) ∈ M.U (i k)) → (∀ k, pt' k z ∈ M'.U (q k)) → (∏ k, gw w' (pt' k) z (j₀ k) (q k) ^ ε k) * gm (𝟙 _) z (LB.wchart M' pt' q) (t'.s q) = (∏ k, gw w (pt k) z (j₀ k) (i k) ^ ε …`. Introduce `j₀ i q h₀ h₁ h₂`.
+
+Establish `a` using `T.prod (ε := ε) hc _ (𝟙 _) z j₀ i q h₀ h₁ h₂`. Establish `b` using `H _ (𝟙 _) z i q h₁ h₂`. Simplify using `only [Category.id_comp] at a b`. Rewrite using `[a, b, _root_.mul_assoc]`. Rewrite using `[genRel_iff w t t₀ x z, genRel_iff w' t' t₀ x z]`.
+
+Use `and_congr (forall_congr' fun k => by rw [← Category.assoc, hc']) ⟨fun H' q j₀ h₀ h₂ => ?_, fun H' i j₀ h₀ h₁ => ?_⟩` and prove the remaining obligations. Use `choose i hi using fun k => exists_chart hM (Φ (pt' k z))`. Rewrite using `[key j₀ i q h₀ hi h₂]`. Conclude with `H' i j₀ (fun k => by rw [pe]; exact h₀ k) (fun k => by rw [pe]; exact hi k)`. Use `choose q hq using fun k => exists_chart hM' (pt' k z)`.
+
+Establish `h₀' : ∀ k, φ (Φ (pt' k z)) ∈ M₀.U (j₀ k)` using `fun k => by rw [← pe]; exact h₀ k`. Rewrite using `[← key j₀ i q h₀' (fun k => by rw [← pe]; exact h₁ k) hq]`. Conclude with `H' q j₀ h₀' hq`.
+-/
 theorem genRel_transfer {φ : B ⟶ B₀} {Φ : B' ⟶ B} {w : LB.Iso M (M₀.pull φ)} {wD : LB.Iso M' (M.pull Φ)}
     {w' : LB.Iso M' (M₀.pull (Φ ≫ φ))} (T : Tri w wD w') (hM : M.IsLB) (hM' : M'.IsLB) {pt : K → (Sp F ⟶ B)}
     {pt' : K → (Sp F ⟶ B')} {pt₀ : K → (Sp F ⟶ B₀)} (hc : ∀ k, pt' k ≫ Φ = 𝟙 _ ≫ pt k)

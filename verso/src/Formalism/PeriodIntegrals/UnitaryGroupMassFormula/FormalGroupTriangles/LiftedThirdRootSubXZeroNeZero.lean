@@ -10,15 +10,28 @@ open PI.AddIntG.Wk (SerS mem_SerS mvsubst_mem_SerS lam nu wser wv Z3)
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hX` using `PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X (R := ℂ_[p]) i)`. Rewrite using `[wser, PowerSeries.subst_mul hX, PowerSeries.subst_pow hX, PowerSeries.subst_X hX]`.
+-/
 theorem wser_X {τ : Type*} (wq : PowerSeries ℂ_[p]) (i : τ) :
     PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries τ ℂ_[p]) (wser wq) =
       (MvPowerSeries.X i) ^ 3 * PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries τ ℂ_[p]) wq := by
   have hX := PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X (R := ℂ_[p]) i)
   rw [wser, PowerSeries.subst_mul hX, PowerSeries.subst_pow hX, PowerSeries.subst_X hX]
 
+/- English proof (translation)
+Simplify using `[wser]`.
+-/
 theorem cc_wser (wq : PowerSeries ℂ_[p]) : PowerSeries.constantCoeff (wser wq) = 0 := by
   simp [wser]
 
+/- English proof (translation)
+Apply the tactic sequence `have hb : MvPowerSeries.HasSubst (![x, y] : Fin 2 → MvPowerSeries τ ℂ_[p]) := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by fin_cases s <;> simp [hx, hy])`. Establish `hcomp : ∀ i : Fin 2, MvPowerSeries.subst ![x, y] (PI.AddIntG.Wk.wv wq i) = PowerSeries.subst ((![x, y] : Fin 2 → MvPowerSeries τ ℂ_[p]) i) (wser wq)`. Introduce `i`. Establish `hXi : PowerSeries.HasSubst (MvPowerSeries.X i : MvPowerSeries (Fin 2) ℂ_[p])` using `PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)`. Rewrite using `[PI.AddIntG.Wk.wv, PowerSeries.subst, MvPowerSeries.subst_comp_subst_apply hXi.const hb]`.
+
+Simplify using `only [MvPowerSeries.subst_X hb]`. Both sides reduce to the same expression. Establish `h` using `congrArg (MvPowerSeries.subst ![x, y]) (PI.AddIntG.Wk.lam_mul wq)`. Rewrite `h` using `[MvPowerSeries.subst_mul hb, MvPowerSeries.subst_sub hb, MvPowerSeries.subst_sub hb, hcomp 1, hcomp 0]`. Simplify using `only [MvPowerSeries.subst_X hb, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_zero] at h`.
+
+Conclude with `h`.
+-/
 theorem lam_pr {τ : Type*} (wq : PowerSeries ℂ_[p]) {x y : MvPowerSeries τ ℂ_[p]}
     (hx : MvPowerSeries.constantCoeff x = 0) (hy : MvPowerSeries.constantCoeff y = 0) :
     (y - x) * pr x y (lam wq) = PowerSeries.subst y (wser wq) - PowerSeries.subst x (wser wq) := by
@@ -46,6 +59,9 @@ def Lac (wq : PowerSeries ℂ_[p]) : MvPowerSeries (Fin 3) ℂ_[p] :=
 def s3 (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) : MvPowerSeries (Fin 3) ℂ_[p] :=
   pr (MvPowerSeries.X 0) (MvPowerSeries.X 1) (Z3 W wq)
 
+/- English proof (translation)
+Establish `hAB` using `lam_pr wq (x := (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p])) (y := MvPowerSeries.X 1) (MvPowerSeries.constantCoeff_X _) (MvPowerSeries.constantCoeff_X _)`. Establish `hAC` using `lam_pr wq (x := (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p])) (y := MvPowerSeries.X 2) (MvPowerSeries.constantCoeff_X _) (MvPowerSeries.constantCoeff_X _)`. Rewrite `hAB`, `hAC` using `[wser_X, wser_X]`. Simplify using `only [T, Lab, Lac]`. Take the linear combination `(MvPowerSeries.X 2 - MvPowerSeries.X 0) * hAB - (MvPowerSeries.X 1 - MvPowerSeries.X 0) * hAC`.
+-/
 theorem T_eq (wq : PowerSeries ℂ_[p]) :
     T wq = (MvPowerSeries.X 1 - MvPowerSeries.X 0) * (MvPowerSeries.X 2 - MvPowerSeries.X 0) * (Lac wq - Lab wq) := by
   have hAB := lam_pr wq (x := (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p])) (y := MvPowerSeries.X 1)
@@ -56,6 +72,11 @@ theorem T_eq (wq : PowerSeries ℂ_[p]) :
   simp only [T, Lab, Lac]
   linear_combination (MvPowerSeries.X 2 - MvPowerSeries.X 0) * hAB - (MvPowerSeries.X 1 - MvPowerSeries.X 0) * hAC
 
+/- English proof (translation)
+Use `⟨fun e => ⟨lam wq e, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show PowerSeries.coeff (e 0 + e 1 + 1) (wser wq) ∈ S`. Rewrite using `[wser, PowerSeries.coeff_X_pow_mul']`. Use `split_ifs`. Conclude with `hwq _`.
+
+Conclude with `S.zero_mem`. Use extensionality with `e`. Both sides reduce to the same expression.
+-/
 theorem lam_SerS {S : Subring ℂ_[p]} {wq : PowerSeries ℂ_[p]} (hwq : ∀ n, PowerSeries.coeff n wq ∈ S) :
     lam wq ∈ SerS S (Fin 2) := by
   refine ⟨fun e => ⟨lam wq e, ?_⟩, ?_⟩
@@ -67,6 +88,21 @@ theorem lam_SerS {S : Subring ℂ_[p]} {wq : PowerSeries ℂ_[p]} (hwq : ∀ n, 
   · ext e
     rfl
 
+/- English proof (translation)
+Apply the tactic sequence `have ha : MvPowerSeries.HasSubst (![MvPowerSeries.X i, MvPowerSeries.X j] : Fin 2 → MvPowerSeries (Fin 3) ℂ_[p]) := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by fin_cases s <;> simp)`. Establish `hprod : ∀ d : Fin 2 →₀ ℕ, (d.prod fun s k => (![MvPowerSeries.X i, MvPowerSeries.X j] s : MvPowerSeries (Fin 3) ℂ_[p]) ^ k) = MvPowerSeries.monomial (Finsupp.single i (d 0) + Finsupp.single j (d 1)) 1`. Introduce `d`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, MvPowerSeries.X_pow_eq, MvPowerSeries.monomial_mul_monomial, mul_one]`.
+
+Establish `hij' : j ≠ i` using `Ne.symm hij`. Unfold `pr`. Rewrite using `[MvPowerSeries.coeff_subst ha]`. Simplify using `only [hprod, MvPowerSeries.coeff_monomial, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Use `split_ifs with h`.
+
+Rewrite using `[finsum_eq_single _ (Finsupp.single 0 (e i) + Finsupp.single 1 (e j)) (fun d hd => by`. Rewrite using `[if_neg]`. Introduce `h'`. Apply `hd` to reduce the goal to its premises. Establish `hi` using `congrArg (fun f => f i) h'`.
+
+Establish `hj` using `congrArg (fun f => f j) h'`. Simplify using `[Finsupp.single_apply, hij, hij'] at hi hj`. Use extensionality with `k`. Use `fin_cases k`. Simplify using `[hi]`.
+
+Simplify using `[hj])]`. Establish `e0 : (Finsupp.single (0 : Fin 2) (e i) + Finsupp.single 1 (e j) : Fin 2 →₀ ℕ) 0 = e i` using `by simp`. Establish `e1 : (Finsupp.single (0 : Fin 2) (e i) + Finsupp.single 1 (e j) : Fin 2 →₀ ℕ) 1 = e j` using `by simp`. Rewrite using `[if_pos (by rw [e0, e1]; exact h)]`. Rewrite using `[finsum_eq_zero_of_forall_eq_zero]`.
+
+Introduce `d`. Rewrite using `[if_neg]`. Introduce `h'`. Apply `h` to reduce the goal to its premises. Rewrite using `[h']`.
+
+Simplify using `[Finsupp.single_apply, hij, hij']`.
+-/
 private theorem coeff_pr_X_X (i j : Fin 3) (hij : i ≠ j) (f : MvPowerSeries (Fin 2) ℂ_[p]) (e : Fin 3 →₀ ℕ) :
     MvPowerSeries.coeff e (pr (MvPowerSeries.X i : MvPowerSeries (Fin 3) ℂ_[p]) (MvPowerSeries.X j) f) =
       if e = Finsupp.single i (e i) + Finsupp.single j (e j) then
@@ -111,6 +147,25 @@ private theorem coeff_pr_X_X (i j : Fin 3) (hij : i ≠ j) (f : MvPowerSeries (F
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨μ, hμc⟩ : ∃ μ : MvPowerSeries (Fin 3) ℂ_[p], ∀ e, MvPowerSeries.coeff e μ = MvPowerSeries.coeff (Finsupp.single 0 (e 0) + Finsupp.single 1 (e 1 + e 2 + 1)) (lam wq)` from `⟨fun e => MvPowerSeries.coeff (Finsupp.single 0 (e 0) + Finsupp.single 1 (e 1 + e 2 + 1)) (lam wq), fun e => by simp only [MvPowerSeries.coeff_apply]; exact MvPowerSeries.coeff_apply _ _⟩`. Establish `hlam : ∀ d : Fin 2 →₀ ℕ, MvPowerSeries.coeff d (lam wq) = PowerSeries.coeff (d 0 + d 1 + 1) (wser wq)` using `fun d => by rw [MvPowerSeries.coeff_apply]; rfl`. Use `⟨μ, (mem_SerS S _).2 (fun e => ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[hμc]`. Conclude with `(mem_SerS S _).1 (lam_SerS hwq) _`.
+
+Use extensionality with `e`. Establish `h02 : (e = Finsupp.single 0 (e 0) + Finsupp.single 2 (e 2)) ↔ e 1 = 0`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`.
+
+Simplify using `[Finsupp.single_apply]`. Introduce `h`. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [Finsupp.single_apply, h]`. Establish `h01 : (e = Finsupp.single 0 (e 0) + Finsupp.single 1 (e 1)) ↔ e 2 = 0`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`. Simplify using `[Finsupp.single_apply]`. Introduce `h`.
+
+Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [Finsupp.single_apply, h]`. Establish `hX : ∀ k : Fin 3, (MvPowerSeries.X k : MvPowerSeries (Fin 3) ℂ_[p]) = MvPowerSeries.monomial (Finsupp.single k 1) 1` using `fun k => by`. Rewrite using `[← MvPowerSeries.X_pow_eq, pow_one]`. Rewrite using `[map_sub, Lac, Lab, coeff_pr_X_X 0 2 (by decide), coeff_pr_X_X 0 1 (by decide), sub_mul, map_sub, hX 2, hX 1, MvPowerSeries.coeff_monomial_mul, MvPowerSeries.coeff_monomial_mul, hμc, hμc, hlam, hlam, hlam, hlam]`.
+
+Simplify using `only [Finsupp.single_le_iff, h02, h01, one_mul]`. Establish `hidx : ∀ a b : ℕ, a = b → PowerSeries.coeff a (wser wq) = PowerSeries.coeff b (wser wq)` using `fun a b h => by rw [h]`. Apply the tactic sequence `by_cases h1 : e 1 = 0 <;> by_cases h2 : e 2 = 0`. Rewrite using `[if_pos h1, if_pos h2, if_neg (by omega), if_neg (by omega), sub_self, sub_eq_zero]`. Apply `hidx` to reduce the goal to its premises.
+
+Simplify using `[Finsupp.single_apply, h1, h2]`. Rewrite using `[if_pos h1, if_neg h2, if_pos (by omega), if_neg (by omega), sub_zero, sub_zero]`. Apply `hidx` to reduce the goal to its premises. Simplify using `[Finsupp.single_apply, Finsupp.tsub_apply, h1]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[if_neg h1, if_pos h2, if_neg (by omega), if_pos (by omega), zero_sub, zero_sub, neg_inj]`. Apply `hidx` to reduce the goal to its premises. Simplify using `[Finsupp.single_apply, Finsupp.tsub_apply, h2]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h1, if_neg h2, if_pos (by omega), if_pos (by omega), sub_self, eq_comm, sub_eq_zero]`.
+
+Apply `hidx` to reduce the goal to its premises. Simplify using `[Finsupp.single_apply, Finsupp.tsub_apply]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mu_exists {S : Subring ℂ_[p]} {wq : PowerSeries ℂ_[p]} (hwq : ∀ n, PowerSeries.coeff n wq ∈ S) :
     ∃ μ ∈ SerS S (Fin 3), Lac wq - Lab wq = (MvPowerSeries.X 2 - MvPowerSeries.X 1) * μ := by
   classical
@@ -165,6 +220,11 @@ theorem mu_exists {S : Subring ℂ_[p]} {wq : PowerSeries ℂ_[p]} (hwq : ∀ n,
       simp [Finsupp.single_apply, Finsupp.tsub_apply]
       omega
 
+/- English proof (translation)
+Apply the tactic sequence `have h3 : MvPowerSeries.HasSubst (![MvPowerSeries.X 0, MvPowerSeries.X 1, 0] : Fin 3 → MvPowerSeries (Fin 2) ℂ_[p]) := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by fin_cases s <;> simp)`. Apply the tactic sequence `have h2 : MvPowerSeries.HasSubst (![MvPowerSeries.X 0, MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 3) ℂ_[p]) := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by fin_cases s <;> simp)`. Rewrite using `[pr, MvPowerSeries.subst_comp_subst_apply h2 h3]`. Establish `e : (fun s => MvPowerSeries.subst (![MvPowerSeries.X 0, MvPowerSeries.X 1, 0] : Fin 3 → MvPowerSeries (Fin 2) ℂ_[p]) ((![MvPowerSeries.X 0, MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 3) ℂ_[p]) s)) = MvPowerSeries.X`. Use function extensionality and compare the values at `s`.
+
+Apply the tactic sequence `fin_cases s <;> simp [MvPowerSeries.subst_X h3]`. Rewrite using `[e, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+-/
 theorem subst_pairSubst_zero_one (g : MvPowerSeries (Fin 2) ℂ_[p]) :
     MvPowerSeries.subst ![MvPowerSeries.X 0, MvPowerSeries.X 1, (0 : MvPowerSeries (Fin 2) ℂ_[p])]
       (pr (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p]) (MvPowerSeries.X 1) g) = g := by
@@ -184,6 +244,9 @@ theorem subst_pairSubst_zero_one (g : MvPowerSeries (Fin 2) ℂ_[p]) :
   rw [e, MvPowerSeries.subst_self]
   rfl
 
+/- English proof (translation)
+Apply the tactic sequence `have h3 : MvPowerSeries.HasSubst (![MvPowerSeries.X 0, MvPowerSeries.X 1, 0] : Fin 3 → MvPowerSeries (Fin 2) ℂ_[p]) := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by fin_cases s <;> simp)`. Introduce `h`. Apply `hg` to reduce the goal to its premises. Rewrite using `[← subst_pairSubst_zero_one g, h, ← MvPowerSeries.coe_substAlgHom h3, map_zero]`.
+-/
 theorem pairSubst_zero_one_ne_zero {g : MvPowerSeries (Fin 2) ℂ_[p]} (hg : g ≠ 0) :
     pr (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p]) (MvPowerSeries.X 1) g ≠ 0 := by
   have h3 : MvPowerSeries.HasSubst
@@ -193,6 +256,9 @@ theorem pairSubst_zero_one_ne_zero {g : MvPowerSeries (Fin 2) ℂ_[p]} (hg : g �
   apply hg
   rw [← subst_pairSubst_zero_one g, h, ← MvPowerSeries.coe_substAlgHom h3, map_zero]
 
+/- English proof (translation)
+Apply the tactic sequence `have h2 : MvPowerSeries.HasSubst (![MvPowerSeries.X 0, MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 3) ℂ_[p]) := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by fin_cases s <;> simp)`. Apply the tactic sequence `exact MvPowerSeries.constantCoeff_subst_eq_zero h2 (fun i => by fin_cases i <;> simp) (PI.AddIntG.Wk.constantCoeff_thirdRoot W wq)`.
+-/
 theorem constantCoeff_liftedThirdRoot (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     MvPowerSeries.constantCoeff (s3 W wq) = 0 := by
   have h2 : MvPowerSeries.HasSubst
@@ -201,6 +267,9 @@ theorem constantCoeff_liftedThirdRoot (W : WeierstrassCurve ℂ_[p]) (wq : Power
   exact MvPowerSeries.constantCoeff_subst_eq_zero h2 (fun i => by fin_cases i <;> simp)
     (PI.AddIntG.Wk.constantCoeff_thirdRoot W wq)
 
+/- English proof (translation)
+Apply the tactic sequence `have h2 : MvPowerSeries.HasSubst (![MvPowerSeries.X 0, MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 3) ℂ_[p]) := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by fin_cases s <;> simp)`. Simplify using `only [s3, pr]`. Rewrite using `[MvPowerSeries.subst_sub h2, MvPowerSeries.subst_X h2]`. Apply the tactic sequence `fin_cases i <;> rfl`.
+-/
 theorem liftedThirdRoot_sub_X (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) (i : Fin 2) :
     s3 W wq - MvPowerSeries.X (Fin.castSucc i) = pr (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p])
       (MvPowerSeries.X 1) (Z3 W wq - MvPowerSeries.X i) := by
@@ -211,6 +280,9 @@ theorem liftedThirdRoot_sub_X (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries �
   rw [MvPowerSeries.subst_sub h2, MvPowerSeries.subst_X h2]
   fin_cases i <;> rfl
 
+/- English proof (translation)
+Introduce `h`. Apply `pairSubst_zero_one_ne_zero (PI.AddIntG.Wk.thirdRoot_sub_var_zero_ne_zero W wq)` to reduce the goal to its premises. Rewrite using `[← liftedThirdRoot_sub_X W wq 0]`. Conclude with `h`.
+-/
 theorem liftedThirdRoot_sub_X_zero_ne_zero (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     s3 W wq - MvPowerSeries.X 0 ≠ 0 := by
   intro h
@@ -218,6 +290,9 @@ theorem liftedThirdRoot_sub_X_zero_ne_zero (W : WeierstrassCurve ℂ_[p]) (wq : 
   rw [← liftedThirdRoot_sub_X W wq 0]
   exact h
 
+/- English proof (translation)
+Introduce `h`. Apply `pairSubst_zero_one_ne_zero (PI.AddIntG.Wk.thirdRoot_sub_var_one_ne_zero W wq)` to reduce the goal to its premises. Rewrite using `[← liftedThirdRoot_sub_X W wq 1]`. Conclude with `h`.
+-/
 theorem liftedThirdRoot_sub_X_one_ne_zero (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     s3 W wq - MvPowerSeries.X 1 ≠ 0 := by
   intro h

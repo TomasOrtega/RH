@@ -35,6 +35,9 @@ open GlobalTheory.KappaArith (AwayIm)
 
 variable {D : D7} {T : Type} {Lc : LevCh D T}
 
+/- English proof (translation)
+Take `⟨j, j1, j2, j3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨N, hN, hprod⟩` from `GlobalTheory.CharLocProd.char_eq_prod_locK D j j1 j2 (GlobalTheory.PlaceIdem.exists_isPlIdem D j j1 j2 j3) (Lc.xi t) (Lc.xiH t) (hL.xi t)`. Take `⟨S, k, hS, hS'⟩` from `GlobalTheory.finiteIdele_exists_local_approx D.host.E N hN (Units.map ((j : _ →+* _).comp (finPart D)).toMonoidHom u)`. Rewrite using `[hprod u hu S k (fun P hP => ⟨(hS P hP).1, (hS P hP).2.1⟩) hS']`. Conclude with `AwayIm.prod _ _ fun P _ => GlobalTheory.KappaArith.awayIm_val hL hx m P (Formalism.L2.Host.atFin P (k P))`.
+-/
 theorem xi_awayIm_of_infPart {μ₀ : T} (hL : Lc.Is μ₀) {t : T} (hx : LocIn D.what₂.embLL (Lc.xiH t)) (m : ℕ) (u : (AE D)ˣ)
     (hu : infPart D (u : AE D) = 1) : AwayIm D m ((Lc.xi t u : Circle) : ℂ) := by
   obtain ⟨j, j1, j2, j3⟩ := GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D
@@ -45,6 +48,11 @@ theorem xi_awayIm_of_infPart {μ₀ : T} (hL : Lc.Is μ₀) {t : T} (hx : LocIn 
   rw [hprod u hu S k (fun P hP => ⟨(hS P hP).1, (hS P hP).2.1⟩) hS']
   exact AwayIm.prod _ _ fun P _ => GlobalTheory.KappaArith.awayIm_val hL hx m P (Formalism.L2.Host.atFin P (k P))
 
+/- English proof (translation)
+Take `⟨v, hv1, hv2, hv3⟩` from `GlobalTheory.TameFinitePart.exists_lift D (Units.map (finPart D).toMonoidHom u)`. Take `⟨n, hn0, hn⟩` from `hL.xi_fin t`. Establish `h1 : Lc.xi t (u * v⁻¹) = 1` using `GlobalTheory.TupRoot.eq_one_of_finPart (hL.xi t) hn0 hn _ (by`. Rewrite using `[Units.val_mul, map_mul, hv3]`. Conclude with `Units.mul_inv (Units.map (finPart D).toMonoidHom u))`.
+
+Establish `h2 : Lc.xi t u = Lc.xi t v`. Use `congrArg (· * Lc.xi t v) h1` as an intermediate fact. Simplify `this` using `[map_mul, map_inv]`. Rewrite using `[h2]`. Conclude with `xi_awayIm_of_infPart hL hx m v hv1`.
+-/
 theorem xi_awayIm {μ₀ : T} (hL : Lc.Is μ₀) {t : T} (hx : LocIn D.what₂.embLL (Lc.xiH t)) (m : ℕ) (u : (AE D)ˣ) :
     AwayIm D m ((Lc.xi t u : Circle) : ℂ) := by
   obtain ⟨v, hv1, hv2, hv3⟩ := GlobalTheory.TameFinitePart.exists_lift D (Units.map (finPart D).toMonoidHom u)
@@ -62,6 +70,19 @@ end GlobalTheory.BotScal
 
 namespace GlobalTheory.BotScal
 
+/- English proof (translation)
+Introduce `D T Lc sc G μ₀ hL W S hN i j A A' WW Y hY g hg g' hg' h hh`. Establish `hI` using `hY.2.2.2.2.2.2.2`. Take `⟨x, hx⟩` from `GlobalTheory.RecDict.exists_isDetRoot D (GlobalTheory.Grid.neg A) ((GlobalTheory.Grid.ofSgn true A).symm g)`. Take `⟨x', hx'⟩` from `GlobalTheory.RecDict.exists_isDetRoot D A' g'`. Take `⟨y, hy⟩` from `GlobalTheory.RecDict.exists_isDetRoot D WW h`.
+
+Establish `hvac : IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW Y.vac` using `hI.isVac.2.theta`. Establish `hvac' : IsThetaFunO W.ψ A' WW Y.vac'` using `hI.isVac'.2.theta`. Establish `e` using `fun t => GlobalTheory.WeilChange.weilData_differ_by_splitFac D W.ψ (GlobalTheory.Grid.neg A) WW _ _ _ _ _ _ (hI.weil μ₀) (hI.weil t) _ h x y hx hy _ hvac`. Establish `e'` using `fun t => GlobalTheory.WeilChange.weilData_differ_by_splitFac D W.ψ A' WW _ _ _ _ _ _ (hI.weil' μ₀) (hI.weil' t) g' h x' y hx' hy _ hvac'`. Set `a : T → (AE D)ˣ →* Circle` to `fun t => Lc.mu t (↑j + 1) * Lc.eta ^ (rankV D ↑i ↑j % 2)`.
+
+Set `b : (AE D)ˣ →* Circle` to `G.ch.chi (D.R.m - ↑i) * Lc.eta ^ (rankV D ↑i ↑j % 2)`. Use `⟨fun t => ((splitFacO b (b / a t) x y : Circle) : ℂ) * ((splitFacO b (b / a μ₀) x y : Circle) : ℂ)⁻¹, fun t => ((splitFacO (a t) (a t / b) x' y : Circle) : ℂ) * ((splitFacO (a μ₀) (a μ₀ / b) x' y : Circle) : ℂ)⁻¹, fun t => ⟨?_, ?_⟩, fun t => ?_, fun t => ?_, ?_⟩` and prove the remaining obligations. Use `rotate_left 2`. Use `e t` as an intermediate fact. Simplify using `only [GlobalTheory.Grid.WRep.toSgn, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.prodMap, MonoidHom.prod_apply, MulEquiv.coe_toMonoidHom, MulEquiv.apply_symm_apply, MonoidHom.id_apply] at this`.
+
+Conclude with `this`. Conclude with `e' t`. Introduce `t`. Establish `hb : Lc.xi μ₀ = 1` using `MonoidHom.ext (GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one (hL.xi_base ▸ hL.xi μ₀))`. Take `⟨ζ, hζ, hζe⟩` from `xi_awayIm hL (hN.chars.xi t) (Qn G t) (x'⁻¹ * y * x⁻¹)`.
+
+Use `⟨ζ, hζ, ?_⟩` and prove the remaining obligations. Rewrite using `[hζe]`. Simplify using `only [splitFacO, a, b, LevCh.mu, Formalism.IndefR.Lift.tup, hb, Circle.coe_mul, Circle.coe_inv, MonoidHom.div_apply, MonoidHom.mul_apply, MonoidHom.one_apply, map_mul, map_inv, Circle.coe_div, mul_one]`. Clear denominators, using `[Circle.coe_ne_zero]` for the nonvanishing conditions. Conclude with `mul_ne_zero (Circle.coe_ne_zero _) (inv_ne_zero (Circle.coe_ne_zero _))`.
+
+Conclude with `mul_ne_zero (Circle.coe_ne_zero _) (inv_ne_zero (Circle.coe_ne_zero _))`.
+-/
 theorem moved_vacua_scal : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData Lc sc} (μ₀ : T), Lc.Is μ₀ →
     ∀ (W : G.Weil) (S : GridChoice W Set.univ), NumbersIn D.what₂.embLL S μ₀ →
     ∀ (i j : Fin D.R.m) {A A' WW : HSp D} (Y : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j 0 0 Y →

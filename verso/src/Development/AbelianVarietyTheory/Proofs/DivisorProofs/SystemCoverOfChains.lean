@@ -20,6 +20,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ChainPts.SysB
 
+/- English proof (translation)
+Introduce `_ _ hD hG hE hM` and use `sysCoverSt_of_steps (GlobalTheory.ChainPts.SysB.RingEx.ringExSt_of_existsSt hE) (GlobalTheory.ChainPts.SysB.RingRes.ringRes hM) (GlobalTheory.ChainPts.SysB.RingAct.ringAct hM) GlobalTheory.ChainPts.SysB.RingJ.ringJSt GlobalTheory.ChainPts.SysB.KerRho.ker_rho GlobalTheory.ChainPts …`.
+-/
 theorem sysCoverSt : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.PrismaticDieudonnePerfd →
     GlobalTheory.GroupBplus.GroupAllSt → GlobalTheory.RingChain.ExistsSt → GlobalTheory.RingChain.MapSt → GlobalTheory.ChainPts.SysCoverSt :=
   fun _ _ hD hG hE hM => sysCoverSt_of_steps (GlobalTheory.ChainPts.SysB.RingEx.ringExSt_of_existsSt hE) (GlobalTheory.ChainPts.SysB.RingRes.ringRes hM)

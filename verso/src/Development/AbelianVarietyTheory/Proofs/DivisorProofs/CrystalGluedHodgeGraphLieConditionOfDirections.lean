@@ -21,6 +21,25 @@ variable {k : Type} [Field k] {A₀ : Over (Sp k)} [GrpObj A₀]
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Rewrite `he` using `[push_sub_mem_glueFil_iff]`. Take `⟨he1, he2⟩` from `he`. Use `choose ee hee1 hee2 using fun j : Fin d ↦ exists_of_coords (V := k) hA (fstC A₀ e) (LinearMap.proj j ∘ₗ sndC A₀ e)`. Establish `hEj : ∀ j, push (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) (act ω) (ee j) - algebraMap k (TrivSqZeroExt k k) r • ee j ∈ E' j` using `fun j ↦ by`. Rewrite using `[push_sub_mem_iff (f j) (E' j) (hE j), hee1, hee2]`.
+
+Conclude with `⟨he1, he2 j⟩`. Use `choose W hW1 hW2 using fun j ↦ hlie j (ee j) (hEj j)`. Establish `hα` using `fun j i c ↦ (push_sub_mem_iff (f j) (E' j) (hE j) _ _ _).1 (hW1 j i c)`. Establish `hs : ∀ j, fstC A₀ e - ∑ i, fstC A₀ (W j i) ∈ Fil A₀ ∧ ((LinearMap.proj j ∘ₗ sndC A₀ e : HdR A₀) - ∑ i, (sndC A₀ (W j i) : HdR A₀)) - f j (fstC A₀ e - ∑ i, fstC A₀ (W j i)) ∈ Fil A₀` using `fun j ↦ by`. Use `(sub_sum_mem_iff (f j) (E' j) (hE j) _ _).1 (hW2 j)` as an intermediate fact.
+
+Rewrite `this` using `[hee1, hee2]`. Then use the resulting hypothesis. Establish `hfstab : ∀ j c, ∀ x ∈ Fil A₀, push (dp0 k) (𝟙 _) (act c) (f j x) - f j (push (dp0 k) (𝟙 _) (act c) x) ∈ Fil A₀`. Introduce `j c x hx`. Take `⟨e1, he1E, h1, h2⟩` from `hlift j x hx`. Use `((push_mem_iff (f j) (E' j) (hE j) (act c) e1).1 (hstab j c e1 he1E)).2` as an intermediate fact.
+
+Rewrite `this` using `[h1, h2]`. Then use the resulting hypothesis. Set `j₀ : Fin d` to `⟨0, hd⟩`. Establish `hFst : ∀ c, ∀ x ∈ Fil A₀, ρ' c x ∈ Fil A₀` using `fun c x hx ↦ by rw [hρ']; exact push_mem_Fil _ hx`. Establish `hglue : ∀ j i, fstC A₀ (W j i) - fstC A₀ (W j₀ i) ∈ Fil A₀` using `fun j ↦ GlobalTheory.T.components_mem_of_sum_mem_distinct_eigencharacters_mod k (HdR A₀) O ρ' (Fil A₀) hFst a χ hχ (fun i ↦ fstC A₀ (W j i) - fstC A₀ (W j₀ i)) (fun i c ↦ by`. Rewrite using `[hρ', map_sub, smul_sub, sub_sub_sub_comm]`.
+
+Conclude with `sub_mem (hα j i c).1 (hα j₀ i c).1)`. Use the proof step `(by`. Rewrite using `[Finset.sum_sub_distrib]`. Use `sub_mem (hs j₀).1 (hs j).1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use the proof step `abel)`. Use `choose w hw1 hw2 using fun i ↦ exists_of_coords (V := Fin d → k) hA (fstC A₀ (W j₀ i)) (LinearMap.pi fun j ↦ (sndC A₀ (W j i) : HdR A₀) + f j (fstC A₀ (W j₀ i) - fstC A₀ (W j i)))`. Use `⟨w, fun i c ↦ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[push_sub_mem_glueFil_iff, hw1, hw2]`. Use `⟨(hα j₀ i c).1, fun j ↦ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.proj_pi]`. Establish `hδ : fstC A₀ (W j₀ i) - fstC A₀ (W j i) ∈ Fil A₀`. Use `neg_mem (hglue j i)` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis. Use `add_mem (hα j i c).2 (hfstab j c _ hδ)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add, map_sub, map_smul, smul_add, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[sub_sum_mem_glueFil_iff]`. Simplify using `only [hw1, hw2, LinearMap.proj_pi]`.
+
+Use `⟨(hs j₀).1, fun j ↦ ?_⟩` and prove the remaining obligations. Use `(hs j).2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Finset.sum_add_distrib, map_sub, map_sum, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+-/
 theorem core (hA : IsAbelianScheme A₀) {O : Type} [CommRing O] (act : O → (A₀ ⟶ A₀)) [∀ c, IsMonHom (act c)]
     (ρ' : O →+* Module.End k (HdR A₀)) (hρ' : ∀ c h, ρ' c h = push (dp0 k) (𝟙 _) (act c) h)
     (ω : O) (r : k) {a : ℕ} (χ : Fin a → O → k) (hχ : ∀ i i', i ≠ i' → ∃ c, χ i c ≠ χ i' c)
@@ -103,6 +122,17 @@ end Core
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `p _ D R _ b N k _ _ tk s o₀ _ d hd f E' hcompl hred hlift hstab hlie e he`. Use `haveI hact : ∀ c : 𝓞 D.F, IsMonHom (o₀.act.act (algebraMap (𝓞 D.F) D.O c)) := fun c ↦ o₀.act.hom _`. Establish `L1j` using `fun j ↦ GlobalTheory.T.dualNumber_hodge_summand_eq_graph_coordinates k o₀.A o₀.ab (f j) (E' j) (hcompl j) (hred j) (hlift j)`. Establish `hχ : ∀ i i', i ≠ i' → ∃ c : 𝓞 D.F, tk (b.t i c) ≠ tk (b.t i' c)`. Introduce `i i' hii'`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hle : Ideal.span (Set.range fun x ↦ b.t i x - b.t i' x) ≤ RingHom.ker tk`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, map_sub, hcon x, sub_self]`. Establish `h1 : (1 : R) ∈ RingHom.ker tk` using `hle (b.comax i i' hii' ▸ Submodule.mem_top)`. Rewrite `h1` using `[RingHom.mem_ker, map_one]`. Conclude with `one_ne_zero h1`. Establish `hlift' : ∀ j, ∀ x ∈ Fil o₀.A, ∃ e ∈ E' j, fstC o₀.A e = x ∧ (sndC o₀.A e : HdR o₀.A) = f j x`.
+
+Introduce `j x hx`. Take `⟨e1, he1, h⟩` from `hlift j x hx`. Apply the tactic sequence `refine ⟨e1, he1, ?_, ?_⟩ <;> ext c`. Rewrite using `[fstC_apply, h c, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero]`. Rewrite using `[sndC_apply, h c, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`.
+
+Conclude with `core o₀.ab (fun c : 𝓞 D.F ↦ o₀.act.act (algebraMap (𝓞 D.F) D.O c)) ((GlobalTheory.HTCount.crysAct o₀).comp (algebraMap (𝓞 D.F) D.O)) (fun _ _ ↦ rfl) D.ω (tk b.ρ) (fun i c ↦ tk (b.t i c)) hχ hd f E' L1j hlift' (fun j c e he ↦ hstab j _ e he) hlie e he`.
+-/
 theorem lie_glueFil : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (k : Type) [Field k] [IsAlgClosed k] (tk : R →+* k) (s : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N s), s = spMap tk → ∀ (d : ℕ), 0 < d → ∀ (f : Fin d → (HdR o₀.A →ₗ[k] HdR o₀.A)), ∀ (E' : Fin d → Submodule (TrivSqZeroExt k k) (Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A)), (∀ j, ∃ M : Submodule (TrivSqZeroExt k k) (Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A), IsCompl (E' j) M) → (∀ j, ∀ y : HdR o₀.A, y ∈ Fil o₀.A ↔ ∃ e ∈ E' j, (GlobalTheory.Published.GrothendieckMessing.crysRedMor (divided₂ (GlobalTheory.FODef.sqZero k k)) rfl o₀.A).Corr e y) → (∀ j, ∀ x ∈ Fil o₀.A, ∃ e ∈ E' j, ∀ c, e ((GlobalTheory.FODef.constMorV k k o₀.A).pull c) = TrivSqZeroExt.inl (x c) + TrivSqZeroExt.inr (f j x c)) → (∀ j (c : D.O), ∀ e ∈ E' j, (haveI := o₀.act.hom (c); push (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) (o₀.act.act (c)) (e)) ∈ E' j) → (∀ j, ∀ e : Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A, (haveI := o₀.act.hom (algebraMap (𝓞 D.F) D.O D.ω); push (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) (o₀.act.act (algebraMap (𝓞 D.F) D.O D.ω)) (e)) - ((algebraMap k (TrivSqZeroExt k k)).comp tk) b.ρ • e ∈ E' j → ∃ w : Fin D.a → Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A, (∀ i (c : 𝓞 D.F), (haveI := o₀.act.hom (algebraMap (𝓞 D.F) D.O c); push (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) (o₀.act.act (algebraMap (𝓞 D.F) D.O c)) (w i)) - ((algebraMap k (TrivSqZeroExt k k)).comp tk) (b.t i c) • w i ∈ E' j) ∧ e - ∑ i, w i ∈ E' j) → ∀ e : Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) o₀.A, (haveI := o₀.act.hom (algebraMap (𝓞 D.F) D.O D.ω); push (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) (o₀.act.act (algebraMap (𝓞 D.F) D.O D.ω)) (e)) - ((algebraMap k (TrivSqZeroExt k (Fin d → k))).comp tk) b.ρ • e ∈ GlobalTheory.HTGlue.glueFil o₀.A f → ∃ w : Fin D.a → Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) o₀.A, (∀ i (c : 𝓞 D.F), (haveI := o₀.act.hom (algebraMap (𝓞 D.F) D.O c); push (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) (o₀.act.act (algebraMap (𝓞 D.F) D.O c)) (w i)) - ((algebraMap k (TrivSqZeroExt k (Fin d → k))).comp tk) (b.t i c) • w i ∈ GlobalTheory.HTGlue.glueFil o₀.A f) ∧ e - ∑ i, w i ∈ GlobalTheory.HTGlue.glueFil o₀.A f := by
   intro p _ D R _ b N k _ _ tk s o₀ _ d hd f E' hcompl hred hlift hstab hlie e he
   haveI hact : ∀ c : 𝓞 D.F, IsMonHom (o₀.act.act (algebraMap (𝓞 D.F) D.O c)) := fun c ↦ o₀.act.hom _

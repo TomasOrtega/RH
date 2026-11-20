@@ -10,6 +10,9 @@ variable {ι : Type} [Fintype ι]
 
 open Classical
 
+/- English proof (translation)
+Unfold `paD polyDeriv`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_add_apply (h1.contDiffAt.of_le (by exact_mod_cast le_top)) (h2.contDiffAt.of_le (by exact_mod_cast le_top))]`. Simplify using `[mul_add]`.
+-/
 theorem paD_add (α : ι →₀ ℕ) {H1 H2 : EuclideanSpace ℂ ι → ℂ} (h1 : ContDiff ℂ (⊤ : ℕ∞) H1)
     (h2 : ContDiff ℂ (⊤ : ℕ∞) H2) : paD α (H1 + H2) = paD α H1 + paD α H2 := by
   unfold paD polyDeriv
@@ -19,6 +22,11 @@ theorem paD_add (α : ι →₀ ℕ) {H1 H2 : EuclideanSpace ℂ ι → ℂ} (h1
     (h2.contDiffAt.of_le (by exact_mod_cast le_top))]
   simp [mul_add]
 
+/- English proof (translation)
+Unfold `paD polyDeriv`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_const_smul_apply (h.contDiffAt.of_le (by exact_mod_cast le_top))]`. Simplify using `only [ContinuousMultilinearMap.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem paD_smul (α : ι →₀ ℕ) (a : ℂ) {H : EuclideanSpace ℂ ι → ℂ}
     (h : ContDiff ℂ (⊤ : ℕ∞) H) : paD α (a • H) = a * paD α H := by
   unfold paD polyDeriv
@@ -28,13 +36,22 @@ theorem paD_smul (α : ι →₀ ℕ) (a : ℂ) {H : EuclideanSpace ℂ ι → �
   simp only [ContinuousMultilinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `[paD, polyDeriv, iteratedFDeriv_zero_fun]`.
+-/
 theorem paD_zero (α : ι →₀ ℕ) : paD α (0 : EuclideanSpace ℂ ι → ℂ) = 0 := by
   simp [paD, polyDeriv, iteratedFDeriv_zero_fun]
 
+/- English proof (translation)
+Unfold `paFact`. Conclude with `Nat.cast_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => Nat.factorial_ne_zero _)`.
+-/
 theorem paFact_ne (α : ι →₀ ℕ) : (paFact α : ℂ) ≠ 0 := by
   unfold paFact
   exact Nat.cast_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => Nat.factorial_ne_zero _)
 
+/- English proof (translation)
+Unfold `paJet`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[paD_add α h1 h2, add_div, add_smul]`.
+-/
 theorem paJet_add (c : ℕ) {H1 H2 : EuclideanSpace ℂ ι → ℂ} (h1 : ContDiff ℂ (⊤ : ℕ∞) H1)
     (h2 : ContDiff ℂ (⊤ : ℕ∞) H2) : paJet c (H1 + H2) = paJet c H1 + paJet c H2 := by
   unfold paJet
@@ -42,6 +59,9 @@ theorem paJet_add (c : ℕ) {H1 H2 : EuclideanSpace ℂ ι → ℂ} (h1 : ContDi
   refine Finset.sum_congr rfl fun α _ => ?_
   rw [paD_add α h1 h2, add_div, add_smul]
 
+/- English proof (translation)
+Unfold `paJet`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[paD_smul α r h, mul_div_assoc, smul_smul]`.
+-/
 theorem paJet_smul (c : ℕ) (r : ℂ) {H : EuclideanSpace ℂ ι → ℂ} (h : ContDiff ℂ (⊤ : ℕ∞) H) :
     paJet c (r • H) = r • paJet c H := by
   unfold paJet
@@ -49,10 +69,18 @@ theorem paJet_smul (c : ℕ) (r : ℂ) {H : EuclideanSpace ℂ ι → ℂ} (h : 
   refine Finset.sum_congr rfl fun α _ => ?_
   rw [paD_smul α r h, mul_div_assoc, smul_smul]
 
+/- English proof (translation)
+Unfold `paJet`. Simplify using `[paD_zero]`.
+-/
 theorem paJet_zero (c : ℕ) : paJet c (0 : EuclideanSpace ℂ ι → ℂ) = 0 := by
   unfold paJet
   simp [paD_zero]
 
+/- English proof (translation)
+Unfold `paJet`. Simplify using `only [paD_mono]`. Establish `e : ∀ α, ((if α = m then (paFact α : ℂ) else 0) / paFact α) • paMono α = if α = m then paMono m else 0` using `fun α => by split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[div_self (paFact_ne α), one_smul]`.
+
+Rewrite using `[zero_div, zero_smul]`. Simplify using `only [e]`. Rewrite using `[Finset.sum_ite_eq']`.
+-/
 theorem paJet_mono (c : ℕ) (m : ι →₀ ℕ) :
     paJet c (paMono m) = if m ∈ paS c then paMono m else 0 := by
   unfold paJet
@@ -66,12 +94,25 @@ theorem paJet_mono (c : ℕ) (m : ι →₀ ℕ) :
   simp only [e]
   rw [Finset.sum_ite_eq']
 
+/- English proof (translation)
+Simplify using `[paIP]`.
+-/
 theorem gaussianInner_zero_left (q : ℕ) (G : EuclideanSpace ℂ ι → ℂ) : paIP q 0 G = 0 := by
   simp [paIP]
 
+/- English proof (translation)
+Simplify using `[paIP]`.
+-/
 theorem gaussianInner_zero_right (q : ℕ) (F : EuclideanSpace ℂ ι → ℂ) : paIP q F 0 = 0 := by
   simp [paIP]
 
+/- English proof (translation)
+Establish `hmm : paMono m ∈ paPoly (ι` using `ι) (max c m.degree) := paMono_mem (mem_paS.2 (le_max_right _ _))`. Establish `hup : paPoly (ι` using `ι) c ≤ paPoly (max c m.degree) := paPoly_mono (le_max_left _ _)`. Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨β, hβ, rfl⟩` from `hx`.
+
+Conclude with `gaussianInner_monomial_orthogonal q (by rintro rfl; exact hm hβ)`. Consider the case `zero => exact gaussianInner_zero_right q _`. Consider the case `add x y hx hy ihx ihy`. Rewrite using `[gaussianInner_conj_symm q (x + y) (paMono m), gaussianInner_add_left hq (hup hx) (hup hy) hmm, map_add, ← gaussianInner_conj_symm, ← gaussianInner_conj_symm, ihx, ihy, add_zero]`. Consider the case `smul r x hx ihx`.
+
+Rewrite using `[gaussianInner_conj_symm q (r • x) (paMono m), gaussianInner_smul_left, map_mul, ← gaussianInner_conj_symm, ihx, mul_zero]`.
+-/
 theorem gaussianInner_monomial_high {q c : ℕ} (hq : 1 ≤ q) {m : ι →₀ ℕ} (hm : m ∉ paS c)
     {G : EuclideanSpace ℂ ι → ℂ} (hG : G ∈ paPoly c) : paIP q (paMono m) G = 0 := by
   have hmm : paMono m ∈ paPoly (ι := ι) (max c m.degree) :=
@@ -88,6 +129,13 @@ theorem gaussianInner_monomial_high {q c : ℕ} (hq : 1 ≤ q) {m : ι →₀ �
   | smul r x hx ihx =>
     rw [gaussianInner_conj_symm q (r • x) (paMono m), gaussianInner_smul_left, map_mul, ← gaussianInner_conj_symm, ihx, mul_zero]
 
+/- English proof (translation)
+Establish `hupd : paPoly (ι` using `ι) d ≤ paPoly (max d c) := paPoly_mono (le_max_left _ _)`. Establish `hupc : paPoly (ι` using `ι) c ≤ paPoly (max d c) := paPoly_mono (le_max_right _ _)`. Proceed by induction on `hS using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, hm, rfl⟩` from `hx`.
+
+Rewrite using `[paJet_mono]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[gaussianInner_monomial_high hq h hG, gaussianInner_zero_left]`. Consider the case `zero => rw [paJet_zero]`.
+
+Consider the case `add x y hx hy ihx ihy`. Rewrite using `[paJet_add c (paPoly_contDiff hx) (paPoly_contDiff hy), gaussianInner_add_left hq (hupd hx) (hupd hy) (hupc hG), gaussianInner_add_left hq (hupc (paJet_mem c x)) (hupc (paJet_mem c y)) (hupc hG), ihx, ihy]`. Consider the case `smul r x hx ihx`. Rewrite using `[paJet_smul c r (paPoly_contDiff hx), gaussianInner_smul_left, gaussianInner_smul_left, ihx]`.
+-/
 theorem gaussianInner_polynomial_jet {q c d : ℕ} (hq : 1 ≤ q) {S G : EuclideanSpace ℂ ι → ℂ} (hS : S ∈ paPoly d)
     (hG : G ∈ paPoly c) : paIP q S G = paIP q (paJet c S) G := by
   have hupd : paPoly (ι := ι) d ≤ paPoly (max d c) := paPoly_mono (le_max_left _ _)

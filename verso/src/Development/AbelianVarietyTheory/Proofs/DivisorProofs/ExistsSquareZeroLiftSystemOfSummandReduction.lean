@@ -32,6 +32,43 @@ def Sys.cocyclesInIdealExtensions {R R₀ : Type} [CommRing R] [CommRing R₀] {
     rw [Algebra.smul_def]
     exact Ideal.mul_mem_left _ _ (hz U V f)
 
+/- English proof (translation)
+Introduce `R R₀ _ _ I hI π hπ hk X₀ s₀ hG hR S' hF hN K hN' hsup`. Take `⟨N, hN⟩` from `hN`. Establish `lin` using `GlobalTheory.T.isCompl_of_agree_mod_sqZero_ideal R I hI (Cr hI π s₀) (S'.K hI) K N hN hsup`. Take `⟨hKinf, u, hu, hu0, hall⟩` from `lin.2 hN'`. Establish `hKN : IsCompl K N` using `lin.1 hKinf`.
+
+Establish `ksup` using `GlobalTheory.T.mem_liftSystemFiltration_sup_iff_hodgeFiltration R R₀ I hI π hπ hk X₀ s₀`. Establish `fadd : ∀ (c1 c2 : Cr hI π s₀) (w1 w2 : GlobForm s₀), FormOf hI hk c1 w1 → FormOf hI hk c2 w2 → FormOf hI hk (c1 + c2) (w1 + w2)`. Introduce and unpack `c1 c2 w1 w2 ⟨f1, h1, e1⟩ ⟨f2, h2, e2⟩`. Conclude with `⟨f1 + f2, by rw [map_add, map_add, h1, h2], by rw [map_add, Submodule.coe_add, e1, e2]⟩`. Establish `fsmul : ∀ (r : R) (c : Cr hI π s₀) (w : GlobForm s₀), FormOf hI hk c w → FormOf hI hk (r • c) (π r • w)`.
+
+Introduce and unpack `r c w ⟨f, h, e⟩`. Conclude with `⟨π r • f, by rw [map_smul, h, map_smulₛₗ], by rw [map_smul, Submodule.coe_smul, e]⟩`. Establish `fzero : FormOf hI hk (0 : Cr hI π s₀) 0` using `⟨0, by rw [map_zero, map_zero], by rw [map_zero]; rfl⟩`. Establish `hwd : ∀ (c1 c2 : S'.K hI) (w : GlobForm s₀), FormOf hI hk c1.1 w → FormOf hI hk c2.1 w → u c1 = u c2`. Introduce and unpack `c1 c2 w ⟨f1, h1, e1⟩ ⟨f2, h2, e2⟩`.
+
+Establish `hz : cmpForm s₀ (f1 - f2) = 0` using `Subtype.ext (by rw [map_sub, Submodule.coe_sub, e1, e2, sub_self]; rfl)`. Establish `hcl` using `(hG.inj _).2 hz`. Rewrite `hcl` using `[map_sub, h1, h2, ← map_sub]`. Establish `hm` using `(hR.2 _).1 hcl`. Use `hu0 (c1 - c2) (by rw [Submodule.coe_sub]; exact hm)` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hex : ∀ c ∈ S'.K hI, ∃ w : GlobForm s₀, FormOf hI hk c w`. Introduce `c hc`. Establish `h1` using `(ksup S' hR hF c).1 (Submodule.mem_sup_left hc)`. Rewrite `h1` using `[hodgeFiltration_eq_range]`.
+
+Take `⟨f, hf⟩` from `h1`. Conclude with `⟨(cmpForm s₀ f).1, f, hf, rfl⟩`. Establish `hexF : ∀ w : GlobForm s₀, ∃ c : S'.K hI, FormOf hI hk c.1 w`. Introduce `w`. Take `⟨f, hf⟩` from `hG.surj w`.
+
+Take `⟨c0, hc0⟩` from `hR.1 (Form.cl s₀ f)`. Establish `hm : c0 ∈ S'.K hI ⊔ I • (⊤ : Submodule R (Cr hI π s₀))` using `(ksup S' hR hF c0).2 (by rw [hc0, hodgeFiltration_eq_range]; exact ⟨f, rfl⟩)`. Take `⟨k, hk', i, hi, rfl⟩` from `Submodule.mem_sup.1 hm`. Use `⟨⟨k, hk'⟩, f, ?_, hf⟩` and prove the remaining obligations. Rewrite using `[← hc0, map_add, (hR.2 i).2 hi, add_zero]`.
+
+Use `choose cw hcw using hexF`. Set `v : GlobForm s₀ →+ CatCoh.H1 S'.F` to `{ toFun := fun w ↦ -S'.r hI (u (cw w)) map_zero' := by`. Rewrite using `[hwd (cw 0) 0 0 (hcw 0) fzero, map_zero, map_zero, neg_zero]`. Use the proof step `map_add' := fun a b ↦ by`. Rewrite using `[hwd (cw (a + b)) (cw a + cw b) (a + b) (hcw _) (fadd _ _ _ _ (hcw a) (hcw b)), map_add, map_add, neg_add] }`.
+
+Establish `hvdef : ∀ w, v w = -S'.r hI (u (cw w))` using `fun _ ↦ rfl`. Establish `hv : ∀ (r : R) w, v (π r • w) = r • v w`. Introduce `r w`. Rewrite using `[hvdef, hvdef, hwd (cw (π r • w)) (r • cw w) _ (hcw _) (fsmul r _ _ (hcw w)), map_smul, map_smul, smul_neg]`. Establish `hW : ∀ r, π r = 0 → ∀ m ∈ S'.cocyclesInIdealExtensions, r • m = 0`.
+
+Introduce `r hr m hm`. Establish `hrI : r ∈ I` using `by rw [← hk]; exact hr`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `U V a`. Express the relevant statement in the definitionally equal form `r • m.1 U V a = 0`.
+
+Rewrite using `[Algebra.smul_def]`. Use `Ideal.mul_mem_mul (Ideal.mem_map_of_mem (algebraMap R (S'.F.obj V)) hrI) (hm U V a)` as an intermediate fact. Rewrite `this` using `[← sq, map_sq hI, Ideal.zero_eq_bot, Ideal.mem_bot]`. Conclude with `this`. Establish `trans'` using `GlobalTheory.T.locIso_transport_cochains_in_ideal R R₀ I hI π hπ hk X₀ s₀`.
+
+Establish `hq : ∀ w, ∃ m ∈ S'.cocyclesInIdealExtensions, CatCoh.H1.mk S'.F m = v w`. Introduce `w`. Take `⟨z, z', hz, hmk, -, -⟩` from `(trans' S' S' (Sys.LocIso.refl S')).2.2 (-(u (cw w))) (neg_mem (hu (cw w)).1)`. Conclude with `⟨z, hz, by rw [hmk, map_neg]; rfl⟩`. Take `⟨u', hu's, hu'W, hu'q⟩` from `exists_semilinear_lift_of_projective R R₀ π hπ (GlobForm s₀) hG.proj (Z1 S'.F) (CatCoh.H1 S'.F) S'.cocyclesInIdealExtensions hW (CatCoh.H1.mk S'.F) v hv hq`.
+
+Take `⟨S'', Φ, θ, hdef, hθ⟩` from `GlobalTheory.T.exists_twist_squareZeroSmoothLiftSystem_by_derivationCocycle R R₀ I hI π hπ hk X₀ s₀ hG.par S' u' hu'W hu's`. Establish `hle : K ≤ S''.K hI`. Introduce `k hk'`. Take `⟨c, rfl⟩` from `hall k hk'`. Take `⟨w, hw⟩` from `hex c.1 c.2`.
+
+Take `⟨zw, -, hzw⟩` from `(trans' S' S'' Φ).1 (u' w) (hu'W w)`. Establish `hmain` using `GlobalTheory.T.crystallineClass_secondSystem_eq_neg_defect R R₀ I hI π hπ hk X₀ s₀ hG.const S' S'' Φ θ hdef c.1 c.2 w hw zw (fun U V a ↦ (hzw U V a).trans (hθ w U V a).symm)`. Take `⟨z, z2, hzI, hz1, hz2, hzz⟩` from `(trans' S' S'' Φ).2.2 (u c) (hu c).1`. Establish `heq : u c = u (cw w)` using `hwd c (cw w) w hw (hcw w)`. Establish `hsum : CatCoh.H1.mk S'.F (z + u' w) = 0`.
+
+Rewrite using `[map_add, hz1, hu'q w, hvdef, heq, add_neg_cancel]`. Take `⟨g, hgI, hg⟩` from `GlobalTheory.T.exists_ideal_cochain_of_coboundary_constants R R₀ I hI π hπ hk X₀ s₀ hG.const S' (z + u' w) (S'.cocyclesInIdealExtensions.add_mem hzI (hu'W w)) hsum`. Establish `h2 : CatCoh.H1.mk S''.F (z2 + zw) = 0`. Use `CatCoh.H1.mk_eq_zero.2 ⟨fun W ↦ Φ.φ W (g W), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `U V a`.
+
+Rewrite using `[(trans' S' S'' Φ).2.1 g hgI U V a, hg]`. Express the relevant statement in the definitionally equal form `Φ.φ V (z.1 U V a + (u' w).1 U V a) = z2.1 U V a + zw.1 U V a`. Rewrite using `[map_add, hzz, hzw]`. Rewrite `h2` using `[map_add]`. Establish `h3` using `eq_neg_of_add_eq_zero_left h2`.
+
+Rewrite using `[Sys.K, LinearMap.mem_ker, map_sub, hmain, ← hz2, h3, sub_neg_eq_add, neg_add_cancel]`. Establish `kinf` using `GlobalTheory.T.squareZeroLiftSystem_filtration_inf_eq_and_full R R₀ I hI π hπ hk X₀ s₀ hG.const`. Establish `hF'' : S''.Full hI` using `(kinf S' S'').2 hF`. Establish `hsup'' : S''.K hI ⊔ I • (⊤ : Submodule R (Cr hI π s₀)) = S'.K hI ⊔ I • ⊤`. Use extensionality with `c`.
+
+Rewrite using `[ksup S'' hR hF'' c, ksup S' hR hF c]`. Establish `hS''N : IsCompl (S''.K hI) N` using `(GlobalTheory.T.isCompl_of_agree_mod_sqZero_ideal R I hI (Cr hI π s₀) (S'.K hI) (S''.K hI) N hN hsup'').1 ((kinf S'' S').1)`. Use `⟨S'', le_antisymm ?_ hle⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_sys_of_summand : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀), Good s₀ → RhoBC hI hk s₀ → ∀ S' : Sys I π s₀, S'.Full hI → (∃ N, IsCompl (S'.K hI) N) → ∀ K : Submodule R (Cr hI π s₀), (∃ N, IsCompl K N) → K ⊔ I • (⊤ : Submodule R (Cr hI π s₀)) = S'.K hI ⊔ I • (⊤ : Submodule R (Cr hI π s₀)) → ∃ S : Sys I π s₀, S.K hI = K := by
   intro R R₀ _ _ I hI π hπ hk X₀ s₀ hG hR S' hF hN K hN' hsup
   obtain ⟨N, hN⟩ := hN

@@ -171,6 +171,9 @@ noncomputable def UpperTheory.Reformulated.B.BlockHomomorphism.glCongr :
               (@DivisionSemiring.toSemiring k (@Semifield.toDivisionSemiring k (@Field.toSemifield k inst)))
               (@Algebra.id k (@Semifield.toCommSemiring k (@Field.toSemifield k inst))) (@finCongr a b h))))
 
+/- English proof (translation)
+Introduce `k _ n r`. Conclude with `Matrix.fromBlocks_one`.
+-/
 theorem UpperTheory.Reformulated.B.BlockHomomorphism.aux3 :
     ∀ (k : Type) [inst : Field k] (n r : Nat),
       @Eq (Matrix (Sum (Fin n) (Fin r)) (Sum (Fin n) (Fin r)) k)
@@ -222,6 +225,9 @@ theorem UpperTheory.Reformulated.B.BlockHomomorphism.aux3 :
   intro k _ n r
   exact Matrix.fromBlocks_one
 
+/- English proof (translation)
+Introduce `k _ n r A B`. Simplify using `[Matrix.fromBlocks_multiply]`.
+-/
 theorem UpperTheory.Reformulated.B.BlockHomomorphism.aux4 :
     ∀ (k : Type) [inst : Field k] (n r : Nat) (A B : Matrix (Fin n) (Fin n) k),
       @Eq (Matrix (Sum (Fin n) (Fin r)) (Sum (Fin n) (Fin r)) k)
@@ -1162,6 +1168,9 @@ noncomputable def UpperTheory.Reformulated.B.BlockHomomorphism.FixK :
               v)
             v
 
+/- English proof (translation)
+Introduce `m N h a`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.Reformulated.B.BlockHomomorphism.aux9 :
     ∀ {m N : Nat}
       {h :
@@ -1176,6 +1185,13 @@ theorem UpperTheory.Reformulated.B.BlockHomomorphism.aux9 :
   intro m N h a
   omega
 
+/- English proof (translation)
+Establish `h1 : Continuous (UpperTheory.Reformulated.B.BlockHomomorphism.blkGL k n (N - n))`. Unfold `UpperTheory.Reformulated.B.BlockHomomorphism.blkGL`. Apply `Continuous.units_map` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Continuous fun A : Matrix (Fin n) (Fin n) k => Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks A 0 0 (1 : Matrix (Fin (N - n)) (Fin (N - n)) k))`. Conclude with `(Continuous.matrix_fromBlocks continuous_id continuous_const continuous_const continuous_const).matrix_reindex _ _`.
+
+Establish `h2 : ∀ {a b : ℕ} (e : a = b), Continuous (UpperTheory.Reformulated.B.BlockHomomorphism.glCongr k e)`. Introduce `a b e`. Unfold `UpperTheory.Reformulated.B.BlockHomomorphism.glCongr`. Apply `Continuous.units_map` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Continuous fun A : Matrix (Fin a) (Fin a) k => Matrix.reindex (finCongr e) (finCongr e) A`.
+
+Conclude with `continuous_id.matrix_reindex _ _`. Conclude with `(h2 _).comp h1`.
+-/
 private theorem UpperTheory.Reformulated.B.BlockHomomorphism.continuous_blkAt {k : Type} [Field k] [TopologicalSpace k]
     (n N : ℕ) (h : n ≤ N) : Continuous (UpperTheory.Reformulated.B.BlockHomomorphism.blkAt k n N h) := by
   have h1 : Continuous (UpperTheory.Reformulated.B.BlockHomomorphism.blkGL k n (N - n)) := by
@@ -1209,6 +1225,9 @@ private def UpperTheory.Reformulated.B.BlockHomomorphism.fixer {G V : Type} [Gro
     calc π a⁻¹ v = π a⁻¹ (π a v) := by rw [ha]
       _ = v := by rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ m N h V _ _ π hπ v w`. Establish `hle : m + 1 ≤ N` using `by omega`. Use `⟨(UpperTheory.Reformulated.B.BlockHomomorphism.fixer π v ⊓ UpperTheory.Reformulated.B.BlockHomomorphism.fixer π w).comap (UpperTheory.Reformulated.B.BlockHomomorphism.blkAt k (m + 1) N hle), ?_, fun g hg => hg.1, fun g hg => hg.2⟩` and prove the remaining obligations. Conclude with `((hπ v).inter (hπ w)).preimage (UpperTheory.Reformulated.B.BlockHomomorphism.continuous_blkAt (m + 1) N hle)`.
+-/
 theorem UpperTheory.Reformulated.B.BlockHomomorphism.exists_fixK :
     ∀ {k : Type} [inst : Field k]
       [inst_1 :

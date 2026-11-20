@@ -6,14 +6,29 @@ namespace GlobalTheory.DI
 
 variable {ι : Type} [LinearOrder ι] {E : Type} [AddCommGroup E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `only [delta, Pi.add_apply, smul_add, Finset.sum_add_distrib]`.
+-/
 theorem delta_add (c c' : Finset ι → E) : delta (c + c') = delta c + delta c' := by
   funext t
   simp only [delta, Pi.add_apply, smul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `only [delta, Pi.sub_apply, smul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem delta_sub (c c' : Finset ι → E) : delta (c - c') = delta c - delta c' := by
   funext t
   simp only [delta, Pi.sub_apply, smul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Set `f : ι × ι → E` to `fun q => (cubeSign t q.1 * cubeSign (t.erase q.1) q.2) • c ((t.erase q.1).erase q.2)`. Establish `h1 : delta (delta c) t = ∑ q ∈ t.offDiag, f q` using `by show ∑ i ∈ t, cubeSign t i • delta c (t.erase i) = _`. Rewrite using `[Finset.sum_finset_product t.offDiag t (fun i => t.erase i) (fun q => by simp only [Finset.mem_offDiag, Finset.mem_erase]; tauto)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `show cubeSign t i • ∑ j ∈ t.erase i, cubeSign (t.erase i) j • c ((t.erase i).erase j) = _`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [f, smul_smul]`. Rewrite using `[h1, Pi.zero_apply]`.
+
+Use `Finset.sum_involution (fun q _ => q.swap) (fun q hq => ?_) (fun q hq _ h => ?_) (fun q hq => ?_) (fun q _ => rfl)` and prove the remaining obligations. Rewrite `hq` using `[Finset.mem_offDiag]`. Simplify using `only [f, Prod.fst_swap, Prod.snd_swap]`. Rewrite using `[cubeSign_mul_erase hq.1 hq.2.1 hq.2.2, Finset.erase_right_comm (a := q.1) (b := q.2), neg_smul, neg_add_cancel]`. Rewrite `hq` using `[Finset.mem_offDiag]`.
+
+Conclude with `hq.2.2 (congrArg Prod.snd h)`. Rewrite `hq`, the goal using `[Finset.mem_offDiag]`. Conclude with `⟨hq.2.1, hq.1, hq.2.2.symm⟩`.
+-/
 theorem delta_delta (c : Finset ι → E) : delta (delta c) = 0 := by
   funext t
   let f : ι × ι → E := fun q =>
@@ -39,16 +54,29 @@ theorem delta_delta (c : Finset ι → E) : delta (delta c) = 0 := by
   · rw [Finset.mem_offDiag] at hq ⊢
     exact ⟨hq.2.1, hq.1, hq.2.2.symm⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `only [Dtot, delta_add, Pi.add_apply, map_add, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem Dtot_add (d : E →+ E) (c c' : Finset ι → E) : Dtot d (c + c') = Dtot d c + Dtot d c' := by
   funext t
   simp only [Dtot, delta_add, Pi.add_apply, map_add, smul_add]
   abel
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `only [Dtot, delta_sub, Pi.sub_apply, map_sub, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem Dtot_sub (d : E →+ E) (c c' : Finset ι → E) : Dtot d (c - c') = Dtot d c - Dtot d c' := by
   funext t
   simp only [Dtot, delta_sub, Pi.sub_apply, map_sub, smul_sub]
   abel
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Establish `hDt : ∀ s, Dtot d c s = delta c s + (-1 : ℤ) ^ s.card • d (c s)` using `fun s => rfl`. Establish `e1 : delta (Dtot d c) t = delta (delta c) t + ∑ i ∈ t, cubeSign t i • ((-1 : ℤ) ^ (t.erase i).card • d (c (t.erase i)))` using `by show ∑ i ∈ t, cubeSign t i • Dtot d c (t.erase i) = delta (delta c) t + _`. Simplify using `only [hDt, smul_add, Finset.sum_add_distrib]`. Both sides reduce to the same expression.
+
+Establish `e2 : d (delta c t) = ∑ i ∈ t, cubeSign t i • d (c (t.erase i))` using `by show d (∑ i ∈ t, cubeSign t i • c (t.erase i)) = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_zsmul d _ _`. Use `show delta (Dtot d c) t + (-1 : ℤ) ^ t.card • d (Dtot d c t) = 0`. Rewrite using `[e1, delta_delta, hDt, map_add, map_zsmul, hd, smul_zero, add_zero, e2, Finset.smul_sum, Pi.zero_apply, zero_add, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `hc : (-1 : ℤ) ^ (t.erase i).card = -(-1 : ℤ) ^ t.card`. Rewrite using `[← Finset.card_erase_add_one hi, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, neg_smul, smul_neg, smul_comm, neg_add_cancel]`.
+-/
 theorem Dtot_Dtot (d : E →+ E) (hd : ∀ x, d (d x) = 0) (c : Finset ι → E) :
     Dtot d (Dtot d c) = 0 := by
   funext t
@@ -70,6 +98,9 @@ theorem Dtot_Dtot (d : E →+ E) (hd : ∀ x, d (d x) = 0) (c : Finset ι → E)
     rw [← Finset.card_erase_add_one hi, pow_succ]; ring
   rw [hc, neg_smul, smul_neg, smul_comm, neg_add_cancel]
 
+/- English proof (translation)
+Introduce `d` and use `⟨delta_add, delta_sub, Dtot_add d, Dtot_sub d, delta_delta, fun hd => Dtot_Dtot d hd⟩`.
+-/
 theorem delta_Dtot_props : ∀ {ι : Type} [LinearOrder ι] {E : Type} [AddCommGroup E] (d : E →+ E),
     (∀ c c' : Finset ι → E, delta (c + c') = delta c + delta c') ∧
     (∀ c c' : Finset ι → E, delta (c - c') = delta c - delta c') ∧

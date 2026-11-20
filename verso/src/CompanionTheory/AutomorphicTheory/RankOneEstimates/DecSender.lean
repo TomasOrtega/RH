@@ -11,6 +11,9 @@ noncomputable section
 
 namespace CompanionTheory.FamilyDerivativeExpansion.DecS
 
+/- English proof (translation)
+The claim follows from `| [], _ => rfl | X :: W, v => by show Formalism.MainNotions.S.dsig (k := k) (r := r) σ X (Formalism.MainNotions.S.dsigW σ W v) = PI.UpqRep.dsig (k := k) (r := r) σ X (PI.UpqRep.dsigW σ W v) rw [dsigW_eq σ W v] rfl`.
+-/
 lemma dsigW_eq {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Mx k r → (H →L[ℂ] H)) :
     ∀ (W : List (Mx k r)) (v : H),
       Formalism.MainNotions.S.dsigW (k := k) (r := r) σ W v = PI.UpqRep.dsigW (k := k) (r := r) σ W v
@@ -20,6 +23,15 @@ lemma dsigW_eq {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace 
     rw [dsigW_eq σ W v]
     rfl
 
+/- English proof (translation)
+Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hp : (pOf ε : ℝ) ≤ n`. Establish `: pOf ε ≤ n` using `by simpa [pOf] using Finset.card_filter_le Finset.univ (fun a => ε a = true)`. Conclude with `this` after adjusting the coercions. Establish `hq : (qOf ε : ℝ) ≤ n`.
+
+Establish `: qOf ε ≤ n` using `by simpa [qOf] using Finset.card_filter_le Finset.univ (fun a => ε a = false)`. Conclude with `this` after adjusting the coercions. Establish `hq0 : (S7.q0 ε : ℝ) ≤ n` using `le_trans (by exact_mod_cast min_le_left _ _) hp`. Establish `h0 : (0 : ℝ) ≤ S7.q0 ε` using `Nat.cast_nonneg _`. Establish `hp0 : (0 : ℝ) ≤ pOf ε` using `Nat.cast_nonneg _`.
+
+Establish `hq1 : (0 : ℝ) ≤ qOf ε` using `Nat.cast_nonneg _`. Establish `e2 : (n : ℝ) ≤ n ^ 2` using `by nlinarith`. Establish `e3 : (n : ℝ) ^ 2 ≤ n ^ 3` using `by nlinarith`. Establish `h1 : (n : ℝ) * pOf ε * qOf ε ≤ n ^ 3`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h2 : √(2 * (S7.q0 ε : ℝ)) ≤ 2 * n`. Rewrite using `[Real.sqrt_le_left (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : (n : ℝ) * S7.q0 ε ≤ n ^ 2` using `by nlinarith`. Conclude with `max_le (by linarith) (by nlinarith)`.
+-/
 lemma thr_le {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) : thrStar ε ≤ 40 * (n : ℝ) ^ 3 := by
   have hn' : (1 : ℝ) ≤ n := by exact_mod_cast hn
   have hp : (pOf ε : ℝ) ≤ n := by
@@ -43,6 +55,9 @@ lemma thr_le {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) : thrStar ε ≤ 40 
   have h3 : (n : ℝ) * S7.q0 ε ≤ n ^ 2 := by nlinarith
   exact max_le (by linarith) (by nlinarith)
 
+/- English proof (translation)
+Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Use `thr_le hn ε` as an intermediate fact. Use `one_le_pow₀ (n := 3) hn'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma room {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) {h : ℝ} (hh : 120 * (n : ℝ) ^ 3 ≤ h) :
     thrStar ε + (h / 8 + 1) < h := by
   have hn' : (1 : ℝ) ≤ n := by exact_mod_cast hn
@@ -50,6 +65,13 @@ lemma room {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) {h : ℝ} (hh : 120 * 
   have := one_le_pow₀ (n := 3) hn'
   linarith
 
+/- English proof (translation)
+Take `⟨C, Ws, hW, hb⟩` from `ReciprocityTheory.ChartRestriction.DS.DecInf.decSm (k := k) (r := r) hl hg m hm (σ := σ) hσ`. Simplify using `only [dsigW_eq] at hb`. Use `⟨C * (Ws.map fun W => ‖PI.UpqRep.dsigW (k := k) (r := r) σ W v0‖).sum, Ws, fun W h1 X h2 => (hW W h1).2 X h2, fun b hba w hw x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hb w hw v0 hv0 x hx`. Establish `hN : 1 ≤ B.gN x` using `PI.PolynomialProperness.GN.gN_ge_one hx`.
+
+Establish `hp : B.gN x ^ b ≤ B.gN x ^ m`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hN hba`. Establish `hb0 : 0 < B.gN x ^ b` using `Real.rpow_pos_of_pos (by linarith) _`. Rewrite using `[Real.rpow_neg (by linarith), ← div_eq_mul_inv, le_div_iff₀ hb0]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right hp (norm_nonneg _)`. Use `_ ≤ _ := h1.trans (le_of_eq (by ring))`.
+-/
 theorem decayM {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {h : ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Mx k r → (H →L[ℂ] H)}
     (hl : Formalism.QuantumDeterminants.IsHCParam lam) (hσ : PI.UpqRep.IsDSHpk k r ε lam σ) (hg : Formalism.QuantumDeterminants.GapAtLeast ε lam h)
@@ -72,6 +94,13 @@ theorem decayM {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r
         rw [mul_comm]; exact mul_le_mul_of_nonneg_right hp (norm_nonneg _)
     _ ≤ _ := h1.trans (le_of_eq (by ring))
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ h` using `le_trans (by positivity) hh`. Establish `ha0 : 0 ≤ aOf r h` using `by unfold aOf; positivity`. Establish `ha : aOf r h ≤ h / 8`. Unfold `aOf`. Establish `hs : (1 : ℝ) ≤ √(2 * ((r : ℝ) + 1))` using `Real.one_le_sqrt.2 (by linarith [(Nat.cast_nonneg r : (0 : ℝ) ≤ r)])`.
+
+Conclude with `div_le_div_of_nonneg_left h0 (by norm_num) (by linarith)`. Establish `hm : thrStar ε + (⌈aOf r h⌉₊ : ℕ) < h`. Use `room (by omega) ε hh` as an intermediate fact. Use `Nat.ceil_lt_add_one ha0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨C, Ws, h1, h2⟩` from `decayM hl hσ hg _ hm v0 hv0`. Conclude with `⟨C, Ws, h1, fun b hb => h2 b (hb.trans (Nat.le_ceil _))⟩`.
+-/
 theorem decay {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {h : ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Mx k r → (H →L[ℂ] H)}
     (hl : Formalism.QuantumDeterminants.IsHCParam lam) (hσ : PI.UpqRep.IsDSHpk k r ε lam σ) (hg : Formalism.QuantumDeterminants.GapAtLeast ε lam h)
@@ -92,6 +121,9 @@ theorem decay {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r 
   obtain ⟨C, Ws, h1, h2⟩ := decayM hl hσ hg _ hm v0 hv0
   exact ⟨C, Ws, h1, fun b hb => h2 b (hb.trans (Nat.le_ceil _))⟩
 
+/- English proof (translation)
+Introduce `k r ε lam h H _ _ _ σ hl hσ hg hok v0 hv0`. Take `⟨C, Ws, h1, h2⟩` from `decay hl hσ hg hok.2.1 v0 (CompanionTheory.D.gk.admitted.k_finite_smooth k r ε lam H σ hl hσ v0 hv0)`. Use `⟨C, Ws, h1, fun w hw x hx => ?_⟩` and prove the remaining obligations. Use `h2 (aOf r h - 1) (by linarith) w hw x hx` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis.
+-/
 theorem decay_infinite_range : DecInf := by
   intro k r ε lam h H _ _ _ σ hl hσ hg hok v0 hv0
   obtain ⟨C, Ws, h1, h2⟩ := decay hl hσ hg hok.2.1 v0 (CompanionTheory.D.gk.admitted.k_finite_smooth k r ε lam H σ hl hσ v0 hv0)
@@ -99,6 +131,9 @@ theorem decay_infinite_range : DecInf := by
   have := h2 (aOf r h - 1) (by linarith) w hw x hx
   rwa [neg_sub] at this
 
+/- English proof (translation)
+Introduce `k r _ ε lam h H _ _ _ σ hl hσ hg hh P hP w₁ w₂ h₁ h₂`. Establish `s` using `fun w hw => CompanionTheory.D.gk.admitted.k_finite_smooth k r ε lam H σ hl hσ w (MainStatements.BetaInf.isKFinHpk_of_low (lam := lam) (σ := σ) hP (w := w) hw)`. Take `⟨C, Ws, -, h2⟩` from `decay hl hσ hg hh w₂ (s _ h₂)`. Conclude with `⟨_, fun x hx => h2 (aOf r h) le_rfl w₁ (s _ h₁) x hx⟩`.
+-/
 theorem decay_low_range : DecLow := by
   intro k r _ ε lam h H _ _ _ σ hl hσ hg hh P hP w₁ w₂ h₁ h₂
   have s := fun w hw => CompanionTheory.D.gk.admitted.k_finite_smooth k r ε lam H σ hl hσ w

@@ -12,29 +12,46 @@ def cgComb {L : Type} [Field L] {m n : ℕ} (Q : Matrix (Fin m) (Fin m) L) (X : 
     Fin m → Fin n → L :=
   fun i => ∑ k, Q i k • X k
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [cgComb, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem cg_comb_comb {L : Type} [Field L] {m n : ℕ} (P Q : Matrix (Fin m) (Fin m) L)
     (X : Fin m → Fin n → L) : cgComb P (cgComb Q X) = cgComb (P * Q) X := by
   funext i
   simp only [cgComb, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[cgComb, Matrix.one_apply, ite_smul]`.
+-/
 theorem cg_comb_one {L : Type} [Field L] {m n : ℕ} (X : Fin m → Fin n → L) :
     cgComb (1 : Matrix (Fin m) (Fin m) L) X = X := by
   funext i
   simp [cgComb, Matrix.one_apply, ite_smul]
 
+/- English proof (translation)
+Introduce `i`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hX k)`.
+-/
 theorem cg_mem {L : Type} [Field L] {m n : ℕ} (Q : Matrix (Fin m) (Fin m) L)
     (X : Fin m → Fin n → L) (W : Submodule L (Fin n → L)) (hX : ∀ i, X i ∈ W) :
     ∀ i, cgComb Q X i ∈ W := by
   intro i
   exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hX k)
 
+/- English proof (translation)
+Simplify using `only [cgComb, Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem cg_lincomb {L : Type} [Field L] {m n : ℕ} (Q : Matrix (Fin m) (Fin m) L)
     (X : Fin m → Fin n → L) (g : Fin m → L) :
     ∑ i, g i • cgComb Q X i = ∑ k, (Matrix.vecMul g Q) k • X k := by
   simp only [cgComb, Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Rewrite `hX`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Rewrite `hg` using `[cg_lincomb]`. Establish `h0 : Matrix.vecMul g Q = 0` using `funext (hX _ hg)`. Establish `hg' : g = Matrix.vecMul (Matrix.vecMul g Q) Q⁻¹`.
+
+Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hQ.isUnit, Matrix.vecMul_one]`. Rewrite using `[hg', h0, Matrix.zero_vecMul, Pi.zero_apply]`.
+-/
 theorem cg_indep {L : Type} [Field L] {m n : ℕ} (Q : Matrix (Fin m) (Fin m) L)
     (X : Fin m → Fin n → L) (hQ : Q.det ≠ 0) (hX : LinearIndependent L X) :
     LinearIndependent L (cgComb Q X) := by
@@ -46,6 +63,9 @@ theorem cg_indep {L : Type} [Field L] {m n : ℕ} (Q : Matrix (Fin m) (Fin m) L)
     rw [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hQ.isUnit, Matrix.vecMul_one]
   rw [hg', h0, Matrix.zero_vecMul, Pi.zero_apply]
 
+/- English proof (translation)
+Establish `e1 : ∀ a b, (∑ k, c k * x k a) * M a b * y b ^ q = ∑ k, c k * (x k a * M a b * y b ^ q)` using `fun a b => by`. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Simplify using `only [hf, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, e1, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cg_hf_left {L : Type} [Field L] {m n : ℕ} (q : ℕ) (M : Matrix (Fin n) (Fin n) L)
     (c : Fin m → L) (x : Fin m → Fin n → L) (y : Fin n → L) :
     hf q M (∑ k, c k • x k) y = ∑ k, c k * hf q M (x k) y := by
@@ -58,6 +78,15 @@ theorem cg_hf_left {L : Type} [Field L] {m n : ℕ} (q : ℕ) (M : Matrix (Fin n
         Finset.sum_congr rfl fun a _ => Finset.sum_comm
     _ = _ := Finset.sum_comm
 
+/- English proof (translation)
+Take `⟨p, hch⟩` from `CharP.exists K`. Take `⟨n, hp, hq⟩` from `FiniteField.card K p`. Use `haveI := Fact.mk hp`. Use `haveI : CharP L p := charP_of_injective_algebraMap (algebraMap K L).injective p`. Establish `hfr : ∀ (s : Finset (Fin m)) (f : Fin m → L), (∑ i ∈ s, f i) ^ Fintype.card K = ∑ i ∈ s, f i ^ Fintype.card K`.
+
+Introduce `s f`. Rewrite using `[hq]`. Use `first`. Consider the case `exact sum_pow_char_pow s f`. Consider the case `(haveI : ExpChar L p := ExpChar.prime hp`.
+
+Establish `h` using `map_sum (iterateFrobenius L p n) f s`. Simplify using `only [iterateFrobenius_def] at h`. Conclude with `h)`. Consider the case `(haveI : ExpChar L p := ExpChar.prime hp simp)`. Establish `hfrob : ∀ b, (∑ l, c l * y l b) ^ Fintype.card K = ∑ l, c l ^ Fintype.card K * y l b ^ Fintype.card K`.
+
+Introduce `b`. Rewrite using `[hfr]`. Simplify using `[mul_pow]`. Simplify using `only [hf, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hfrob, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cg_hf_right (K L : Type) [Field K] [Fintype K] [Field L] [Algebra K L] {m n : ℕ}
     (M : Matrix (Fin n) (Fin n) L) (c : Fin m → L) (x : Fin n → L) (y : Fin m → Fin n → L) :
     hf (Fintype.card K) M x (∑ l, c l • y l) =
@@ -91,6 +120,9 @@ theorem cg_hf_right (K L : Type) [Field K] [Fintype K] [Field L] [Algebra K L] {
     _ = _ := Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun a _ =>
         Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Use `show hf (Fintype.card K) M (∑ k, Q i k • X k) (∑ l, Q j l • X l) = _`. Rewrite using `[cg_hf_left]`. Simplify using `only [cg_hf_right K L, hX, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cg_gram (K L : Type) [Field K] [Fintype K] [Field L] [Algebra K L] {m n : ℕ}
     (M : Matrix (Fin n) (Fin n) L) (Q G : Matrix (Fin m) (Fin m) L) (X : Fin m → Fin n → L)
     (hX : ∀ k l, hf (Fintype.card K) M (X k) (X l) = G k l) (i j : Fin m) :
@@ -103,6 +135,15 @@ theorem cg_gram (K L : Type) [Field K] [Fintype K] [Field L] [Algebra K L] {m n 
   calc _ = ∑ l, ∑ k, Q i k * (Q j l ^ Fintype.card K * G k l) := Finset.sum_comm
     _ = _ := Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Take `⟨p, hch⟩` from `CharP.exists K`. Take `⟨n, hp, hq⟩` from `FiniteField.card K p`. Use `haveI := Fact.mk hp`. Use `haveI : CharP L p := charP_of_injective_algebraMap (algebraMap K L).injective p`. Establish `hfr : ∀ (s : Finset (Fin m)) (f : Fin m → L), (∑ i ∈ s, f i) ^ Fintype.card K = ∑ i ∈ s, f i ^ Fintype.card K`.
+
+Introduce `s f`. Rewrite using `[hq]`. Use `first`. Consider the case `exact sum_pow_char_pow s f`. Consider the case `(haveI : ExpChar L p := ExpChar.prime hp`.
+
+Establish `h` using `map_sum (iterateFrobenius L p n) f s`. Simplify using `only [iterateFrobenius_def] at h`. Conclude with `h)`. Consider the case `(haveI : ExpChar L p := ExpChar.prime hp simp)`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, Matrix.mul_apply]`. Rewrite using `[hfr]`. Simplify using `[mul_pow]`.
+-/
 theorem cg_map_mul (K L : Type) [Field K] [Fintype K] [Field L] [Algebra K L] {m : ℕ}
     (A C : Matrix (Fin m) (Fin m) L) :
     (A * C).map (fun y => y ^ Fintype.card K) =
@@ -128,6 +169,19 @@ theorem cg_map_mul (K L : Type) [Field K] [Fintype K] [Field L] [Algebra K L] {m
   rw [hfr]
   simp [mul_pow]
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ _ n M W m B P hP`. Establish `hdet : P.det ≠ 0` using `hP.ne_zero`. Establish `hq1 : 0 < Fintype.card K` using `Fintype.card_pos`. Establish `hmap1 : (1 : Matrix (Fin m) (Fin m) L).map (fun y => y ^ Fintype.card K) = 1`. Use extensionality with `i j`.
+
+Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h, zero_pow hq1.ne']`. Establish `hPinv : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hP`. Establish `hPinv' : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hP`. Establish `hinj : Function.Injective (fun X : Fin m → Fin n → L => cgComb P X)` using `fun X Y h => by`. Establish `h2` using `congrArg (cgComb P⁻¹) h`.
+
+Simplify `h2` using `[cg_comb_comb, hPinv', cg_comb_one]`. Establish `e : (P.map (fun y => y ^ Fintype.card K)).transpose * (P⁻¹.map (fun y => y ^ Fintype.card K)).transpose = 1`. Rewrite using `[← Matrix.transpose_mul, ← cg_map_mul K L, hPinv', hmap1, Matrix.transpose_one]`. Establish `e2 : P⁻¹ * (P * B * (P.map (fun y => y ^ Fintype.card K)).transpose) * (P⁻¹.map (fun y => y ^ Fintype.card K)).transpose = B`. Simplify using `only [Matrix.mul_assoc, e, Matrix.mul_one]`.
+
+Rewrite using `[← Matrix.mul_assoc, hPinv', Matrix.one_mul]`. Unfold `cntT`. Use `Set.ncard_image_of_injective _ hinj using 2` and compare the differences between its conclusion and the goal. Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hW, hI, hG⟩`. Use `⟨cgComb P⁻¹ Y, ⟨cg_mem _ _ _ hW, cg_indep _ _ (Matrix.isUnit_nonsing_inv_det P hP).ne_zero hI, fun i j => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[cg_gram K L M P⁻¹ _ Y hG, e2]`. Use `show cgComb P (cgComb P⁻¹ Y) = Y`. Rewrite using `[cg_comb_comb, hPinv, cg_comb_one]`.
+
+Introduce and unpack `⟨X, ⟨hW, hI, hG⟩, rfl⟩`. Conclude with `⟨cg_mem _ _ _ hW, cg_indep _ _ hdet hI, fun i j => cg_gram K L M P B X hG i j⟩`.
+-/
 theorem repCountCongruenceInvariant : Congr := by
   intro K L _ _ _ _ _ _ n M W m B P hP
   have hdet : P.det ≠ 0 := hP.ne_zero

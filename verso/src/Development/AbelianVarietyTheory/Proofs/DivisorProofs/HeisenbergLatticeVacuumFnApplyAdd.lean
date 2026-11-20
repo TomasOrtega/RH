@@ -20,6 +20,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 open scoped GlobalTheory.VacAny
 
+/- English proof (translation)
+Introduce `K κ _ _ _ ψ₀ Λ χ x₀ hcoc hχ0 u hu`. Establish `hex : ∃ v ∈ Λ, x₀ + u.1 = x₀ + v.1` using `⟨u, hu, rfl⟩`. Unfold `GlobalTheory.HeisLatVac.vacFn`. Rewrite using `[dif_pos hex]`. Establish `hspec` using `hex.choose_spec`.
+
+Generalize the expression as in `hex.choose = u' at hspec ⊢`. Take `⟨hu', heq⟩` from `hspec`. Establish `h1 : u.1 = u'.1` using `add_left_cancel heq`. Establish `hδ : ((0 : κ → K), u.2 - u'.2) ∈ Λ`. Establish `: u - u' = ((0 : κ → K), u.2 - u'.2)` using `Prod.ext (by simp [h1]) rfl`.
+
+Rewrite using `[← this]`. Conclude with `Λ.sub_mem hu hu'`. Establish `hsum : u' + ((0 : κ → K), u.2 - u'.2) = u` using `Prod.ext (by simp [h1]) (by simp)`. Establish `hc` using `hcoc u' hu' _ hδ`. Rewrite `hc` using `[hsum]`.
+
+Rewrite using `[hc, hχ0 _ hδ, mul_assoc, mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Simplify using `only [dotProduct_sub, zero_dotProduct, h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.HeisLatVac.vacFn_apply_add : ∀ {K κ : Type} [CommRing K] [Invertible (2 : K)] [Fintype κ] (ψ₀ : AddChar K ℂ)
     (Λ : AddSubgroup ((κ → K) × (κ → K))) (χ : (κ → K) × (κ → K) → ℂ) (x₀ : κ → K),
     (∀ u ∈ Λ, ∀ u' ∈ Λ, χ (u + u') = χ u * χ u' * ψ₀ (⅟(2 : K) * (u.1 ⬝ᵥ u'.2 - u'.1 ⬝ᵥ u.2))) →

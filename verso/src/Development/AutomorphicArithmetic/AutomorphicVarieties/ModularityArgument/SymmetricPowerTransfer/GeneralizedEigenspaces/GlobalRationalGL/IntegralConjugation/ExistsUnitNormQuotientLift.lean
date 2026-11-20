@@ -10,6 +10,9 @@ section H90
 
 variable {O K : Type} [CommRing O] [Field K] [Algebra O K] {Δ : K}
 
+/- English proof (translation)
+Establish `h1 : z * (algebraMap K (Lsq K Δ) (QuadraticAlgebra.norm z)⁻¹ * star z) = 1`. Rewrite using `[mul_left_comm, ← QuadraticAlgebra.algebraMap_norm_eq_mul_star, ← map_mul, inv_mul_cancel₀ h, map_one]`. Conclude with `⟨⟨z, _, h1, by rw [mul_comm]; exact h1⟩, rfl, rfl⟩`.
+-/
 private theorem unit_of_norm (z : Lsq K Δ) (h : QuadraticAlgebra.norm z ≠ 0) :
     ∃ c : (Lsq K Δ)ˣ, (c : Lsq K Δ) = z ∧
       ((c⁻¹ : (Lsq K Δ)ˣ) : Lsq K Δ) = algebraMap K (Lsq K Δ) (QuadraticAlgebra.norm z)⁻¹ * star z := by
@@ -24,9 +27,21 @@ private def starO : Lsq K Δ →ₐ[O] Lsq K Δ :=
       change star (algebraMap K (Lsq K Δ) _) = _
       ext <;> simp }
 
+/- English proof (translation)
+The claim follows from `h.map (starO (O := O) (K := K) (Δ := Δ))`.
+-/
 private theorem int_star {z : Lsq K Δ} (h : IsIntegral O z) : IsIntegral O (star z) :=
   h.map (starO (O := O) (K := K) (Δ := Δ))
 
+/- English proof (translation)
+Establish `ht : IsIntegral O (algebraMap K (Lsq K Δ) (2 * u.re))`. Establish `: algebraMap K (Lsq K Δ) (2 * u.re) = u + star u`. Apply the tactic sequence `ext <;> simp <;> ring`. Rewrite using `[this]`. Conclude with `hu.add (int_star hu)`.
+
+Establish `ht' : IsIntegral O (2 * u.re)` using `(isIntegral_algebraMap_iff (algebraMap K (Lsq K Δ)).injective).1 ht`. Use `haveI : IsDomain O := (IsFractionRing.injective O K).isDomain (algebraMap O K)`. Take `⟨τ, hτ⟩` from `IsIntegrallyClosed.isIntegral_iff.1 ht'`. Establish `h4 : IsUnit ((2 + τ) + (2 - τ) : O)`. Establish `: ((2 + τ) + (2 - τ) : O) = 2 * 2` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `h2.mul h2`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h4 with h | h` into its components or cases. Use `left`. Conclude with `⟨h.unit, by simp [hτ, map_ofNat]⟩`.
+
+Use `right`. Conclude with `⟨h.unit, by simp [hτ, map_ofNat]⟩`.
+-/
 private theorem dich [IsLocalRing O] [IsIntegrallyClosed O] [IsFractionRing O K] (h2 : IsUnit (2 : O))
     {u : Lsq K Δ} (hu : IsIntegral O u) :
     (∃ v : Oˣ, algebraMap O K v = 2 + 2 * u.re) ∨ (∃ v : Oˣ, algebraMap O K v = 2 - 2 * u.re) := by
@@ -49,6 +64,9 @@ private theorem dich [IsLocalRing O] [IsIntegrallyClosed O] [IsFractionRing O K]
   · right
     exact ⟨h.unit, by simp [hτ, map_ofNat]⟩
 
+/- English proof (translation)
+Use `⟨Polynomial.X ^ 2 - Polynomial.C d, Polynomial.monic_X_pow_sub_C d two_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_C, IsScalarTower.algebraMap_apply O K (Lsq K Δ), hd, pow_two, QuadraticAlgebra.omega_mul_omega_eq_mk]`. Apply the tactic sequence `ext <;> simp`.
+-/
 private theorem int_omega {d : O} (hd : algebraMap O K d = Δ) :
     IsIntegral O (QuadraticAlgebra.omega : Lsq K Δ) := by
   refine ⟨Polynomial.X ^ 2 - Polynomial.C d, Polynomial.monic_X_pow_sub_C d two_ne_zero, ?_⟩
@@ -57,6 +75,11 @@ private theorem int_omega {d : O} (hd : algebraMap O K d = Δ) :
     QuadraticAlgebra.omega_mul_omega_eq_mk]
   ext <;> simp
 
+/- English proof (translation)
+Take `⟨c, hc, hci⟩` from `unit_of_norm z hn`. Use `⟨c, by rw [hc]; exact hz, ?_⟩` and prove the remaining obligations. Introduce `_ _ _ h2 hΔ hu`. Take `⟨hzi, v, hv⟩` from `hi h2 hΔ hu`. Use `⟨by rw [hc]; exact hzi, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hci, ← hv, ← map_units_inv, ← IsScalarTower.algebraMap_apply]`. Conclude with `isIntegral_algebraMap.mul (int_star hzi)`.
+-/
 private theorem exists_unit_norm_quotient_lift (z u : Lsq K Δ) (hz : z = u * star z) (hn : QuadraticAlgebra.norm z ≠ 0)
     (hi : ∀ [IsLocalRing O] [IsIntegrallyClosed O] [IsFractionRing O K], IsUnit (2 : O) →
       (∃ v : Oˣ, algebraMap O K v = Δ) → IsIntegral O u →
@@ -73,6 +96,27 @@ private theorem exists_unit_norm_quotient_lift (z u : Lsq K Δ) (hz : z = u * st
   rw [hci, ← hv, ← map_units_inv, ← IsScalarTower.algebraMap_apply]
   exact isIntegral_algebraMap.mul (int_star hzi)
 
+/- English proof (translation)
+Establish `r1 : (1 : Lsq K Δ).re = 1` using `rfl`. Establish `i1 : (1 : Lsq K Δ).im = 0` using `rfl`. Establish `hN1 : QuadraticAlgebra.norm u = 1`. Apply `(algebraMap K (Lsq K Δ)).injective` to reduce the goal to its premises. Rewrite using `[QuadraticAlgebra.algebraMap_norm_eq_mul_star, hu, map_one]`.
+
+Establish `hN` using `hN1`. Rewrite `hN` using `[QuadraticAlgebra.norm_def]`. Distinguish the cases in `hcase : (2 + 2 * u.re ≠ 0) ∧ ¬ ∃ v : Oˣ, algebraMap O K v = 2 - 2 * u.re`. Establish `hn : QuadraticAlgebra.norm (1 + u) = 2 + 2 * u.re`. Rewrite using `[QuadraticAlgebra.norm_def, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, r1, i1]`.
+
+Take the linear combination `hN`. Apply `exists_unit_norm_quotient_lift (1 + u) u (by rw [star_add, star_one, mul_add, hu]; ring) (by rw [hn]; exact hcase.1)` to reduce the goal to its premises. Introduce `_ _ _ h2' _ hi`. Use `⟨isIntegral_one.add hi, ?_⟩` and prove the remaining obligations. Break down `dich h2' hi with ⟨v, hv⟩ | h` into its components or cases.
+
+Conclude with `⟨v, by rw [hn, hv]⟩`. Conclude with `absurd h hcase.2`. Establish `hsω : star (QuadraticAlgebra.omega : Lsq K Δ) = -QuadraticAlgebra.omega`. Apply the tactic sequence `ext <;> simp`. Establish `hn : QuadraticAlgebra.norm ((1 - u) * QuadraticAlgebra.omega) = (2 - 2 * u.re) * (-Δ)`.
+
+Rewrite using `[map_mul, QuadraticAlgebra.norm_def (1 - u), QuadraticAlgebra.norm_def QuadraticAlgebra.omega, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, r1, i1, QuadraticAlgebra.omega_re, QuadraticAlgebra.omega_im]`. Take the linear combination `(-Δ) * hN`. Establish `hne : 2 - 2 * u.re ≠ 0`. Introduce `h0`. Apply `hcase` to reduce the goal to its premises.
+
+Use `⟨fun h1 => h2 ?_, ?_⟩` and prove the remaining obligations. Establish `h4 : (2 : K) * 2 = 0` using `by linear_combination h0 + h1`. Conclude with `mul_self_eq_zero.mp h4`. Introduce and unpack `⟨v, hv⟩`. Rewrite `hv` using `[h0]`.
+
+Conclude with `(v.isUnit.map (algebraMap O K)).ne_zero hv`. Apply `exists_unit_norm_quotient_lift ((1 - u) * QuadraticAlgebra.omega) u (by` to reduce the goal to its premises. Rewrite using `[star_mul', star_sub, star_one, hsω]`. Take the linear combination `(-QuadraticAlgebra.omega) * hu)`. Use the proof step `(by rw [hn]; exact mul_ne_zero hne (neg_ne_zero.mpr hΔ))`.
+
+Introduce `_ _ _ h2' hΔ' hi`. Take `⟨d, hd⟩` from `hΔ'`. Use `⟨(isIntegral_one.sub hi).mul (int_omega hd), ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : Oˣ, algebraMap O K w = 2 - 2 * u.re := by`. Distinguish the cases in `hB : ∃ w : Oˣ, algebraMap O K w = 2 - 2 * u.re`.
+
+Conclude with `hB`. Establish `hA : 2 + 2 * u.re = 0`. Assume the negation of the conclusion as `hA`. Conclude with `hcase ⟨hA, hB⟩`. Use `⟨h2'.unit * h2'.unit, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, IsUnit.unit_spec, map_mul, map_ofNat]`. Take the linear combination `hA`. Conclude with `⟨-(w * d), by rw [hn, ← hw, ← hd]; simp⟩`.
+-/
 private theorem ex_c (h2 : (2 : K) ≠ 0) (hΔ : Δ ≠ 0) (u : Lsq K Δ) (hu : u * star u = 1) :
     ∃ c : (Lsq K Δ)ˣ, (c : Lsq K Δ) = u * star (c : Lsq K Δ) ∧
       ∀ [IsLocalRing O] [IsIntegrallyClosed O] [IsFractionRing O K], IsUnit (2 : O) →
@@ -132,6 +176,13 @@ private theorem ex_c (h2 : (2 : K) ≠ 0) (hΔ : Δ ≠ 0) (u : Lsq K Δ) (hu : 
         linear_combination hA
     exact ⟨-(w * d), by rw [hn, ← hw, ← hd]; simp⟩
 
+/- English proof (translation)
+Set `f : integralClosure O (Lsq K Δ) →+* Lsq K Δ` to `(integralClosure O (Lsq K Δ)).val`. Set `F` to `RingHom.mapMatrix (m := Fin 2) f`. Set `A : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))` to `Matrix.of fun i j => ⟨g.1 i j, h1 i j⟩`. Set `B : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))` to `Matrix.of fun i j => ⟨g.inv i j, h2 i j⟩`. Establish `hA : F A = g.1` using `Matrix.ext fun i j => rfl`.
+
+Establish `hB : F B = g.inv` using `Matrix.ext fun i j => rfl`. Establish `inj : Function.Injective F` using `fun M N e => Matrix.map_injective Subtype.val_injective e`. Establish `hAB : A * B = 1` using `inj (by rw [map_mul, hA, hB, g.val_inv, map_one])`. Establish `hBA : B * A = 1` using `inj (by rw [map_mul, hA, hB, g.inv_val, map_one])`. Use `MonoidHom.mem_range.mpr ⟨⟨A, B, hAB, hBA⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `hA`.
+-/
 private theorem mem_range (g : GL (Fin 2) (Lsq K Δ)) (h1 : ∀ i j, IsIntegral O (g.1 i j))
     (h2 : ∀ i j, IsIntegral O (g.inv i j)) :
     g ∈ (GeneralLinearGroup.map ((integralClosure O (Lsq K Δ)).val :
@@ -152,6 +203,9 @@ private theorem mem_range (g : GL (Fin 2) (Lsq K Δ)) (h1 : ∀ i j, IsIntegral 
   apply Units.ext
   exact hA
 
+/- English proof (translation)
+Rewrite using `[Matrix.eta_fin_two m]`. Simplify using `[Matrix.mul_fin_two]`.
+-/
 private theorem conj_two {A : Type} [CommRing A] (m : Matrix (Fin 2) (Fin 2) A) :
     !![0, -1; 1, 0] * m * !![0, 1; -1, 0] = !![m 1 1, -m 1 0; -m 0 1, m 0 0] := by
   rw [Matrix.eta_fin_two m]
@@ -159,6 +213,31 @@ private theorem conj_two {A : Type} [CommRing A] (m : Matrix (Fin 2) (Fin 2) A) 
 
 end H90
 
+/- English proof (translation)
+Introduce `O K _ _ _ Δ h2 hΔ x hx`. Distinguish the cases in `hx1 : x = 1`. Use `⟨1, 1, ?_, fun _ => rfl, fun _ _ _ => one_mem _⟩` and prove the remaining obligations. Substitute `hx1` using the available equality. Simplify using `[Glob.mt]`.
+
+Use `set u := x.det with hu_def`. Establish `hxx : x * star x = 1` using `mul_eq_one_comm.mp hx`. Establish `hu : u * star u = 1`. Establish `e` using `congrArg Matrix.det hx`. Rewrite `e` using `[Matrix.det_mul, Matrix.det_one, Matrix.star_eq_conjTranspose, Matrix.det_conjTranspose]`.
+
+Rewrite using `[mul_comm]`. Conclude with `e`. Take `⟨c, hc, hci⟩` from `ex_c (O := O) h2 hΔ u hu`. Use `set s : Lsq K Δ := ((c⁻¹ : (Lsq K Δ)ˣ) : Lsq K Δ) with hs_def`. Establish `hsc : s * c = 1` using `Units.inv_mul c`.
+
+Establish `hcs : (c : Lsq K Δ) * s = 1` using `Units.mul_inv c`. Establish `hss : star s = s * u`. Establish `e2 : star s * star (c : Lsq K Δ) = 1` using `by rw [← star_mul', hsc, star_one]`. Take the linear combination `(-star s) * hsc + (u * s) * e2 + (star s * s) * hc`. Establish `hM : u • star x = Matrix.adjugate x`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `r : ∀ i j, u * star (x j i) = Matrix.adjugate x i j` using `fun i j => by`. Establish `e` using `congrFun (congrFun hM i) j`. Simplify `e` using `[Matrix.star_apply]`. Establish `r00` using `r 0 0`.
+
+Establish `r01` using `r 0 1`. Establish `r10` using `r 1 0`. Establish `r11` using `r 1 1`. Simplify using `only [Matrix.adjugate_fin_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one] at r00 r01 r10 r11`. Set `Y : GL (Fin 2) (Lsq K Δ)` to `⟨s • x, (c : Lsq K Δ) • star x, by rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, hxx, hsc, one_smul], by rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, hx, hcs, one_smul]⟩`.
+
+Establish `hY : Y ∈ DX Δ` using `by show GeneralLinearGroup.map (starRingEnd (Lsq K Δ)) Y = MulEquiv.toMonoidHom (MulAut.conj (wJ Δ)⁻¹) Y`. Apply `Units.ext` to reduce the goal to its premises. Use `show (starRingEnd (Lsq K Δ)).mapMatrix (s • x) = !![0, -1; 1, 0] * (s • x) * !![0, 1; -1, 0]`. Rewrite using `[conj_two]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j`. Use `show star (s * x 0 0) = s * x 1 1`. Rewrite using `[star_mul']`. Take the linear combination `(star (x 0 0)) * hss + s * r00`. Use `show star (s * x 0 1) = -(s * x 1 0)`.
+
+Rewrite using `[star_mul']`. Take the linear combination `(star (x 0 1)) * hss + s * r10`. Use `show star (s * x 1 0) = -(s * x 0 1)`. Rewrite using `[star_mul']`. Take the linear combination `(star (x 1 0)) * hss + s * r01`.
+
+Use `show star (s * x 1 1) = s * x 0 0`. Rewrite using `[star_mul']`. Take the linear combination `(star (x 1 1)) * hss + s * r11`. Use `⟨⟨Y, hY⟩, c, ?_, fun h => absurd h hx1, ?_⟩` and prove the remaining obligations. Use `show x = (c : Lsq K Δ) • (s • x)`.
+
+Rewrite using `[smul_smul, hcs, one_smul]`. Introduce `_ _ _ h2' hΔ' hint`. Establish `hui : IsIntegral O u`. Rewrite using `[hu_def, Matrix.det_fin_two]`. Conclude with `((hint 0 0).mul (hint 1 1)).sub ((hint 0 1).mul (hint 1 0))`.
+
+Take `⟨hci1, hci2⟩` from `hci h2' hΔ' hui`. Rewrite using `[KD, Subgroup.mem_subgroupOf]`. Conclude with `mem_range Y (fun i j => hci2.mul (hint i j)) (fun i j => hci1.mul (int_star (hint j i)))`.
+-/
 theorem UpperTheory.V.Z.Sym.Dict.Br.h90 :
     ∀ (O K : Type) [CommRing O] [Field K] [Algebra O K] (Δ : K), (2 : K) ≠ 0 → Δ ≠ 0 → ∀ x : Matrix (Fin 2) (Fin 2) (Lsq K Δ), star x * x = 1 → ∃ (y : DX Δ) (c : (Lsq K Δ)ˣ), x = (c : Lsq K Δ) • mt y ∧ (x = 1 → y = 1) ∧ (∀ [IsLocalRing O] [IsIntegrallyClosed O] [IsFractionRing O K], IsUnit (2 : O) → (∃ u : Oˣ, algebraMap O K u = Δ) → (∀ i j, IsIntegral O (x i j)) → y ∈ KD Δ O) := by
   intro O K _ _ _ Δ h2 hΔ x hx

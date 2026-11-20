@@ -15,6 +15,9 @@ variable {F K Ω : Type*} [Field F] [NumberField F] [Field K] [NumberField K] [A
 
 omit [NumberField F] [NumberField K] in
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Both sides reduce to the same expression.
+-/
 theorem restrictScalars_smul (h : Ω ≃ₐ[K] Ω) (A : ValuationSubring Ω) :
     (h.restrictScalars F) • A = h • A := by
   ext x
@@ -24,6 +27,17 @@ theorem restrictScalars_smul (h : Ω ≃ₐ[K] Ω) (A : ValuationSubring Ω) :
 
 omit [NumberField K] [Field K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] in
 
+/- English proof (translation)
+Use `⟨hd, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hD : σ ∈ Dec (F` using `F) A := hd`. Take `⟨s, t, hs, ht, hs1, e⟩` from `exists_den F A hx`. Establish `hvt : A.valuation t ≤ 1` using `(A.valuation_le_one_iff _).mpr (mem_of_isIntegral_int A ht)`. Establish `hσs : A.valuation (σ s) = 1`.
+
+Use `le_antisymm ((A.valuation_le_one_iff _).mpr (mem_of_isIntegral_int A (hs.map ((σ : Ω ≃ₐ[F] Ω).toAlgHom.restrictScalars ℤ)))) ?_` and prove the remaining obligations. Use `not_lt.mp fun h => ?_` and prove the remaining obligations. Use `(valuation_apply_lt_one_iff hD s).1 h` as an intermediate fact. Rewrite `this` using `[hs1]`. Conclude with `lt_irrefl _ this`.
+
+Establish `he' : σ s * σ x = σ t` using `by rw [← map_mul, e]`. Establish `key : s * σ s * (σ x - x) = s * (σ t - t) + t * (s - σ s)`. Rewrite using `[← he', ← e]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv : A.valuation (s * σ s * (σ x - x)) < 1`.
+
+Rewrite using `[key]`. Apply `Valuation.map_add_lt` to reduce the goal to its premises. Rewrite using `[Valuation.map_mul, hs1, one_mul]`. Conclude with `hb t ht`. Rewrite using `[Valuation.map_mul, Valuation.map_sub_swap]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `hv` using `[Valuation.map_mul, Valuation.map_mul, hs1, hσs, one_mul, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem mem_inertia_of_integers [IsAlgClosure F Ω] {A : ValuationSubring Ω} {σ : Ω ≃ₐ[F] Ω}
     (hd : σ • A = A) (hb : ∀ b : Ω, IsIntegral ℤ b → A.valuation (σ b - b) < 1) :
     σ ∈ Inertia (F := F) A := by
@@ -64,6 +78,21 @@ noncomputable def actInt (g : Ω ≃ₐ[F] Ω) : IntCl K Ω ≃+* IntCl K Ω whe
   map_mul' a b := Subtype.ext (map_mul g (a : Ω) b)
   map_add' a b := Subtype.ext (map_add g (a : Ω) b)
 
+/- English proof (translation)
+Establish `: CharZero K` using `charZero_of_injective_algebraMap (algebraMap ℚ K).injective`. Establish `: IsGalois K Ω` using `{}`. Use `letI : TopologicalSpace (IntCl K Ω) := ⊥`. Use `haveI : DiscreteTopology (IntCl K Ω) := ⟨rfl⟩`. Use `haveI := continuousSMul_intCl K Ω`.
+
+Use `haveI := isInvariant_intCl K Ω`. Use `set P := primeBelow (F := K) A with hPdef`. Use `haveI : w.asIdeal.IsMaximal := w.isMaximal`. Use `haveI : P.LiesOver w.asIdeal := ⟨(under_primeBelow hA).symm⟩`. Use `haveI : P.IsMaximal := Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := 𝓞 K) P (by rw [show Ideal.comap (algebraMap (𝓞 K) (IntCl K Ω)) P = w.asIdeal from under_primeBelow hA]; exact w.isMaximal)`.
+
+Set `e : IntCl K Ω ≃+* IntCl K Ω` to `actInt σ₁`. Establish `hP : P = P.map (e : IntCl K Ω →+* IntCl K Ω)`. Rewrite using `[Ideal.map_comap_of_equiv]`. Use extensionality with `b`. Rewrite using `[Ideal.mem_comap, mem_primeBelow, mem_primeBelow]`.
+
+Conclude with `(valuation_apply_lt_one_iff ((Dec (F := F) A).inv_mem hd) _).symm`. Set `φr : (IntCl K Ω ⧸ P) ≃+* (IntCl K Ω ⧸ P)` to `Ideal.quotientEquiv P P e hP`. Set `φ : (IntCl K Ω ⧸ P) ≃ₐ[𝓞 K ⧸ w.asIdeal] (IntCl K Ω ⧸ P)` to `AlgEquiv.ofRingEquiv (f := φr) (by`. Introduce `r`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective r`.
+
+Use `show φr (Ideal.Quotient.mk P (algebraMap (𝓞 K) (IntCl K Ω) z)) = Ideal.Quotient.mk P (algebraMap (𝓞 K) (IntCl K Ω) z)`. Rewrite using `[Ideal.quotientEquiv_mk]`. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Conclude with `hz z)`. Take `⟨⟨h, hhP⟩, hh⟩` from `Ideal.Quotient.stabilizerHom_surjective_of_profinite (G := Ω ≃ₐ[K] Ω) w.asIdeal P φ`.
+
+Establish `hhP' : h • P = P` using `hhP`. Use `⟨h, ?_, fun b => ?_⟩` and prove the remaining obligations. Use `eq_of_valuation_lt_one_iff K fun b hb => ?_` and prove the remaining obligations. Set `b' : IntCl K Ω` to `⟨b, hb.tower_top⟩`. Express the relevant statement in the definitionally equal form `b' ∈ primeBelow (F := K) (h • A) ↔ b' ∈ P`.
+
+Rewrite using `[primeBelow_smul, hhP']`. Establish `h1 : Ideal.Quotient.mk P (h • b) = Ideal.Quotient.mk P (e b)` using `DFunLike.congr_fun hh (Ideal.Quotient.mk P b)`. Conclude with `Ideal.Quotient.eq.1 h1`.
+-/
 theorem exists_residue_correction [IsAlgClosure K Ω] {A : ValuationSubring Ω}
     (w : HeightOneSpectrum (𝓞 K))
     (hA : ∀ x : 𝓞 K, A.valuation (algebraMap K Ω (x : K)) < 1 ↔ x ∈ w.asIdeal)
@@ -109,6 +138,33 @@ theorem exists_residue_correction [IsAlgClosure K Ω] {A : ValuationSubring Ω}
       DFunLike.congr_fun hh (Ideal.Quotient.mk P b)
     exact Ideal.Quotient.eq.1 h1
 
+/- English proof (translation)
+Establish `: CharZero K` using `charZero_of_injective_algebraMap (algebraMap ℚ K).injective`. Establish `: CharZero F` using `charZero_of_injective_algebraMap (algebraMap ℚ F).injective`. Establish `: IsGalois K Ω` using `{}`. Establish `: IsGalois F Ω` using `{}`. Take `⟨A, hA⟩` from `exists_valuationSubring_over (Ω := Ω) w`.
+
+Set `σ₀ : Ω ≃ₐ[F] Ω` to `τ.liftNormal Ω`. Establish `hσ₀ : ∀ x : K, σ₀ (algebraMap K Ω x) = algebraMap K Ω (τ x)` using `fun x => AlgEquiv.liftNormal_commutes τ Ω x`. Establish `hτ' : ∀ z : 𝓞 K, τ • z - z ∈ w.asIdeal` using `fun z => AddSubgroup.mem_inertia.1 hτ z`. Establish `hτi : ∀ z : 𝓞 K, τ⁻¹ • z - z ∈ w.asIdeal` using `fun z => AddSubgroup.mem_inertia.1 (Subgroup.inv_mem _ hτ) z`. Establish `hσ₀i : ∀ x : K, (σ₀⁻¹ : Ω ≃ₐ[F] Ω) (algebraMap K Ω x) = algebraMap K Ω ((τ⁻¹ : K ≃ₐ[F] K) x)`.
+
+Introduce `x`. Establish `h1 : algebraMap K Ω x = σ₀ (algebraMap K Ω ((τ⁻¹ : K ≃ₐ[F] K) x))`. Rewrite using `[hσ₀]`. Use `congr 1`. Use `show x = (τ * τ⁻¹) x`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1]`. Use `show (σ₀⁻¹ * σ₀) _ = _`. Simplify using the standard rewrite rules. Establish `hA' : ∀ x : 𝓞 K, (σ₀ • A).valuation (algebraMap K Ω (x : K)) < 1 ↔ x ∈ w.asIdeal`.
+
+Introduce `x`. Rewrite using `[smul_valuation_lt_one_iff, hσ₀i]`. Use `hA (τ⁻¹ • x)` as an intermediate fact. Use `(Iff.trans (by exact this) ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `w.asIdeal.sub_mem h (hτi x)` as an intermediate fact. Simplify using `using this`. Introduce `h`. Use `w.asIdeal.add_mem (hτi x) h` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨h, hh⟩` from `exists_smul_eq_of_over hA' hA`. Set `σ₁ : Ω ≃ₐ[F] Ω` to `h.restrictScalars F * σ₀`. Establish `hσ₁ : ∀ x : K, σ₁ (algebraMap K Ω x) = algebraMap K Ω (τ x)`. Introduce `x`.
+
+Use `show (h.restrictScalars F) (σ₀ (algebraMap K Ω x)) = _`. Rewrite using `[hσ₀]`. Conclude with `h.commutes _`. Establish `hd : σ₁ ∈ Dec (F` using `F) A := by show σ₁ • A = A`. Rewrite using `[mul_smul, restrictScalars_smul, hh]`.
+
+Establish `hz : ∀ z : 𝓞 K, A.valuation (σ₁ (algebraMap K Ω (z : K)) - algebraMap K Ω (z : K)) < 1`. Introduce `z`. Rewrite using `[hσ₁, ← map_sub]`. Conclude with `(hA (τ • z - z)).2 (hτ' z)`. Take `⟨g, hgA, hg⟩` from `exists_residue_correction (F := F) w hA hd hz`.
+
+Set `g' : Ω ≃ₐ[F] Ω` to `g.restrictScalars F`. Establish `hgD : g' ∈ Dec (F` using `F) A := by show g' • A = A`. Rewrite using `[restrictScalars_smul, hgA]`. Use `⟨A, g'⁻¹ * σ₁, hA, ?_, fun x => ?_⟩` and prove the remaining obligations. Use `mem_inertia_of_integers ((Dec (F := F) A).mul_mem ((Dec (F := F) A).inv_mem hgD) hd) ?_` and prove the remaining obligations.
+
+Introduce `b hb`. Establish `e : (g'⁻¹ * σ₁) b - b = (g'⁻¹ : Ω ≃ₐ[F] Ω) (σ₁ b - g' b)`. Rewrite using `[map_sub]`. Establish `: (g'⁻¹ : Ω ≃ₐ[F] Ω) (g' b) = b` using `by show (g'⁻¹ * g') b = b`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Rewrite using `[e, valuation_apply_lt_one_iff ((Dec (F := F) A).inv_mem hgD), Valuation.map_sub_swap]`. Conclude with `hg ⟨b, hb.tower_top⟩`. Use `show (g'⁻¹ : Ω ≃ₐ[F] Ω) (σ₁ (algebraMap K Ω x)) = _`.
+
+Rewrite using `[hσ₁]`. Establish `: g' (algebraMap K Ω (τ x)) = algebraMap K Ω (τ x)` using `g.commutes _`. Use `conv_lhs => rw [← this]`. Use `show (g'⁻¹ * g') _ = _`. Simplify using the standard rewrite rules.
+-/
 theorem exists_inertia_lift [IsAlgClosure F Ω] [IsAlgClosure K Ω] [Normal F K]
     (w : HeightOneSpectrum (𝓞 K)) {τ : K ≃ₐ[F] K} (hτ : τ ∈ w.asIdeal.inertia (K ≃ₐ[F] K)) :
     ∃ (A : ValuationSubring Ω) (σ : Ω ≃ₐ[F] Ω),
@@ -187,6 +243,21 @@ theorem exists_inertia_lift [IsAlgClosure F Ω] [IsAlgClosure K Ω] [Normal F K]
 
 end
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ S`. Establish `: CharZero F` using `charZero_of_injective_algebraMap (algebraMap ℚ F).injective`. Establish `: IsGalois F Ω` using `{}`. Establish `key : IntermediateField.fixedField (NS Ω S) ≤ maxUnramifiedOutside F Ω S`. Introduce `x hx`.
+
+Take `⟨M, hxM⟩` from `exists_finiteGalois_mem (K := F) x`. Establish `hE : F⟮x⟯ ≤ M.toIntermediateField` using `IntermediateField.adjoin_simple_le_iff.2 hxM`. Establish `: FiniteDimensional F F⟮x⟯` using `finiteDimensional_of_le hE`. Establish `hEK : F⟮x⟯ ≤ IntermediateField.fixedField (NS Ω S)` using `IntermediateField.adjoin_simple_le_iff.2 hx`. Use `le_maxUnramifiedOutside S (E := F⟮x⟯) (fun v hv => ?_) (IntermediateField.mem_adjoin_simple_self F x)` and prove the remaining obligations.
+
+Rewrite using `[isUnramifiedIn_iff_inertia hE v]`. Introduce `Q hQ hQv τ hτ y hy`. Establish `: NumberField M.toIntermediateField` using `NumberField.of_module_finite F _`. Establish `: IsAlgClosure M.toIntermediateField Ω` using `⟨IsAlgClosure.isAlgClosed F, Algebra.IsAlgebraic.tower_top (K := F) _⟩`. Set `w : HeightOneSpectrum (𝓞 M.toIntermediateField)` to `⟨Q, hQ, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩`.
+
+Take `⟨A, σ, hA, hσ, hres⟩` from `exists_inertia_lift (Ω := Ω) w hτ`. Establish `hAv : IsPlaceOver A v`. Introduce `a`. Establish `h1` using `hA (algebraMap (𝓞 F) (𝓞 M.toIntermediateField) a)`. Use `Iff.trans (by exact h1) ?_` and prove the remaining obligations.
+
+Conclude with `(Ideal.mem_of_liesOver Q v.asIdeal a).symm`. Establish `hNS : σ ∈ NS Ω S`. Apply `Subgroup.le_topologicalClosure` to reduce the goal to its premises. Apply `Subgroup.subset_normalClosure` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion]`.
+
+Conclude with `⟨v, hv, A, hAv, hσ⟩`. Establish `hfix : σ y = y` using `(IntermediateField.mem_fixedField_iff (NS Ω S) y).1 (hEK hy) σ hNS`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hres ⟨y, hE hy⟩` as an intermediate fact. Conclude with `(this.symm.trans hfix)`.
+
+Establish `hc` using `InfiniteGalois.fixingSubgroup_fixedField (⟨NS Ω S, isClosed_NS Ω S⟩ : ClosedSubgroup (Ω ≃ₐ[F] Ω))`. Use `IntermediateField.fixingSubgroup_antitone key` as an intermediate fact. Rewrite `this` using `[show (IntermediateField.fixedField (NS Ω S)).fixingSubgroup = NS Ω S from hc]`. Conclude with `this`.
+-/
 theorem fixingSubgroup_le_NS : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (S : Set (HeightOneSpectrum (𝓞 F))),
     (maxUnramifiedOutside F Ω S).fixingSubgroup ≤ NS Ω S := by

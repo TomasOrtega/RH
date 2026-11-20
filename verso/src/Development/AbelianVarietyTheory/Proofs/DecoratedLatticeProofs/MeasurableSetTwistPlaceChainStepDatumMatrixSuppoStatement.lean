@@ -19,5 +19,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.LiftRows (Given)
 open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (FinPl IsBase onHalf phiQ rdQ)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NrmVol.measurableSet_suppQ | exact GlobalTheory.NrmVol.measurableSet_suppQ | (intros; apply GlobalTheory.NrmVol.measurableSet_suppQ <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.measurableSet_twistPlaceChainStepDatumMatrixSupport : ∀ (D : D7) (v : FinPl D) (a b r : ℕ), MeasurableSet (GlobalTheory.NrmVol.suppQ (a := a) (b := b) v r) := by
   first | exact @GlobalTheory.NrmVol.measurableSet_suppQ | exact GlobalTheory.NrmVol.measurableSet_suppQ | (intros; apply GlobalTheory.NrmVol.measurableSet_suppQ <;> assumption)

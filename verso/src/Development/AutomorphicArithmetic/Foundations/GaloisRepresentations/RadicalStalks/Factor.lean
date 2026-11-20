@@ -6,6 +6,21 @@ open CategoryTheory AlgebraicGeometry Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.ConjSeq GlobalTheory.UPel.HT GlobalTheory.UPel.HT.ES UpperTheory.Gal.Ord
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `p _ D R _ b N hN hNp S S' S'' s s' s'' o o' o'' f g hf hg m1 m2`. Establish `hw : m2.φ ≫ o.A.hom = (o''.A.hom ≫ g) ≫ f`. Rewrite using `[m2.cart.1.w, Category.assoc]`. Set `φ' : o''.A.left ⟶ o'.A.left` to `m1.cart.1.lift m2.φ (o''.A.hom ≫ g) hw`. Establish `h1 : φ' ≫ m1.φ = m2.φ` using `m1.cart.1.lift_fst _ _ _`.
+
+Establish `h2 : φ' ≫ o'.A.hom = o''.A.hom ≫ g` using `m1.cart.1.lift_snd _ _ _`. Set `φ₂' : (G2 o''.A).left ⟶ (G2 o'.A).left` to `pullback.lift (pullback.fst _ _ ≫ φ') (pullback.snd _ _ ≫ φ') (by simp only [Category.assoc, h2]; rw [pullback.condition_assoc])`. Establish `sq : Geo.Tor.IsSquare φ' φ₂'` using `⟨pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `h3 : φ₂' ≫ m1.φ₂ = m2.φ₂`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `φ₂' ≫ m1.φ₂ ≫ Over.Hom.left (fst o.A o.A) = m2.φ₂ ≫ Over.Hom.left (fst o.A o.A)`. Rewrite using `[m1.sq.1, m2.sq.1, ← Category.assoc, sq.1, Category.assoc, h1]`. Express the relevant statement in the definitionally equal form `φ₂' ≫ m1.φ₂ ≫ Over.Hom.left (snd o.A o.A) = m2.φ₂ ≫ Over.Hom.left (snd o.A o.A)`. Rewrite using `[m1.sq.2, m2.sq.2, ← Category.assoc, sq.2, Category.assoc, h1]`. Establish `cart : IsGrpPullback o''.A o'.A g φ'`.
+
+Use `IsGrpPullback.cancel m1.cart ?_ h2` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `m2.cart`. Establish `pol : LBIso o''.P (o'.P.pull φ₂')`. Rewrite using `[← GlobalTheory.CechPic.cls_eq_iff o''.isLB (pull_isLB o'.isLB φ₂'), GlobalTheory.CechPic.cls_pull o'.isLB, ← Rigid.pull_cls_P m1, ← GlobalTheory.CechPic.pull_comp, h3, Rigid.pull_cls_P m2]`.
+
+Establish `act : ∀ c : D.O, Over.Hom.left (o''.act.act c) ≫ φ' = φ' ≫ Over.Hom.left (o'.act.act c)`. Introduce `c`. Apply `m1.cart.1.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, reassoc_of% h1, h1, m1.act c, m2.act c]`. Simplify using `only [Category.assoc, h2, Over.w_assoc, Over.w]`.
+
+Establish `eta : ∀ y : D.La, Over.Hom.left (o''.eta y) ≫ φ' = g ≫ Over.Hom.left (o'.eta y)`. Introduce `y`. Apply `m1.cart.1.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, h1, m2.eta y, m1.eta y]`. Simplify using `[h2]`.
+
+Conclude with `⟨⟨φ', φ₂', cart, sq, act, pol, eta⟩⟩`.
+-/
 theorem UpperTheory.Gal.Ord.factor :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p →
       ∀ (S S' S'' : Scheme.{0}) (s : S ⟶ Sp R) (s' : S' ⟶ Sp R) (s'' : S'' ⟶ Sp R) (o : Obj b N s) (o' : Obj b N s') (o'' : Obj b N s'') (f : S' ⟶ S) (g : S'' ⟶ S'),

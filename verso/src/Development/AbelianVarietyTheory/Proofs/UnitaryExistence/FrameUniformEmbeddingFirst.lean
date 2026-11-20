@@ -30,6 +30,15 @@ namespace GlobalTheory.RecDict
 
 open scoped Matrix nonZeroDivisors
 
+/- English proof (translation)
+Establish `h1 : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `one_ne_zero`. Use `⟨FractionalIdeal.spanSingleton _ ξ⁻¹ * FractionalIdeal.dual ℤ ℚ 1, mul_ne_zero (FractionalIdeal.spanSingleton_ne_zero_iff.2 (inv_ne_zero hξ)) (FractionalIdeal.dual_ne_zero ℤ ℚ h1), fun z => ⟨fun hz s => ?_, fun hz => ?_⟩⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `FractionalIdeal.mem_singleton_mul.1 hz`. Rewrite `hy` using `[FractionalIdeal.mem_dual h1]`. Take `⟨k, hk⟩` from `hy (s : E) ((FractionalIdeal.mem_one_iff _).2 ⟨s, rfl⟩)`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite `hk` using `[Algebra.traceForm_apply, eq_intCast]`. Rewrite using `[hk]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Use `FractionalIdeal.mem_singleton_mul.2 ⟨ξ * z, ?_, by field_simp⟩` and prove the remaining obligations. Rewrite using `[FractionalIdeal.mem_dual h1]`. Introduce `a ha`. Take `⟨s, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Take `⟨k, hk⟩` from `hz s`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, eq_intCast, ← hk, mul_assoc]`.
+-/
 theorem genus_traceIdeal (E : Type) [Field E] [NumberField E] (ξ : E) (hξ : ξ ≠ 0) :
     ∃ J : FractionalIdeal (𝓞 E)⁰ E, J ≠ 0 ∧
       ∀ z : E, z ∈ J ↔ ∀ s : 𝓞 E, ∃ k : ℤ, Algebra.trace ℚ E (ξ * (z * (s : E))) = k := by
@@ -53,6 +62,11 @@ theorem genus_traceIdeal (E : Type) [Field E] [NumberField E] (ξ : E) (hξ : ξ
     refine ⟨k, ?_⟩
     rw [Algebra.traceForm_apply, eq_intCast, ← hk, mul_assoc]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Simplify using `using (hJ _).1 (h y hy) 1`. Introduce `h y hy`. Use `(hJ _).2 fun s => ?_` and prove the remaining obligations.
+
+Establish `hi : IsIntegral ℤ (cc (s : E))` using `s.isIntegral_coe.map ((IsCMField.complexConj E).toRingEquiv.toRingHom.toIntAlgHom)`. Establish `hcc : cc (cc (s : E)) = s` using `IsCMField.complexConj_apply_apply E _`. Use `h _ (L.smul_mem (⟨cc (s : E), hi⟩ : 𝓞 E) hy)` as an intermediate fact. Express the relevant statement in the definitionally equal form `∃ k : ℤ, Algebra.trace ℚ E (ξ * herm G v (cc (s : E) • y)) = k at this`. Rewrite `this` using `[GlobalTheory.HermModel.herm_smul_right, hcc]`. Then use the resulting hypothesis.
+-/
 theorem genus_trace_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (G : Matrix (Fin n) (Fin n) E)
     (ξ : E) (J : FractionalIdeal (𝓞 E)⁰ E)
     (hJ : ∀ z : E, z ∈ J ↔ ∀ s : 𝓞 E, ∃ k : ℤ, Algebra.trace ℚ E (ξ * (z * (s : E))) = k)
@@ -75,6 +89,9 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
   (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Simplify using `only [AdLat.hermA, Pi.add_apply, Pi.smul_apply, map_add, map_nsmul, smul_add, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem genus_hermA_shift (N : ℕ) (x y w w' : Fin n → AdLat.RA F E) :
     AdLat.hermA c G (x + N • w) (y + N • w') =
       AdLat.hermA c G x y + N • (AdLat.hermA c G w (y + N • w') + AdLat.hermA c G x w') := by
@@ -84,6 +101,9 @@ theorem genus_hermA_shift (N : ℕ) (x y w w' : Fin n → AdLat.RA F E) :
   simp only [nsmul_eq_mul]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (inclR (F := F) (Af F)) γ v i`.
+-/
 theorem genus_fv_mulVec (γ : Matrix (Fin n) (Fin n) E) (v : Fin n → E) :
     AdLat.fv F (γ *ᵥ v) = γ.map (inclR (F := F) (Af F)) *ᵥ AdLat.fv F v := by
   funext i
@@ -91,6 +111,23 @@ theorem genus_fv_mulVec (γ : Matrix (Fin n) (Fin n) E) (v : Fin n → E) :
 
 end
 
+/- English proof (translation)
+Take `⟨J, hJ0, hJ⟩` from `genus_traceIdeal E ξ hξ`. Establish `hh : ∀ x y : Fin n → E, (∑ a, ∑ b, x a * G a b * c (y b)) = herm G x y` using `fun x y => by`. Simplify using `only [hc, herm]`. Establish `hcc : ∀ x, c (c x) = x` using `fun x => by`. Rewrite using `[hc, hc]`.
+
+Conclude with `IsCMField.complexConj_apply_apply E _`. Establish `hG' : ∀ a b, c (G a b) = G b a` using `fun a b => by rw [hc, hG]`. Establish `hL : ∀ v : Fin n → E, (∀ y ∈ L, (∑ a, ∑ b, v a * G a b * c (y b)) ∈ J) ↔ v ∈ L` using `fun v => by`. Simplify using `only [hh]`. Rewrite using `[genus_trace_iff G ξ J hJ, hsd]`.
+
+Take `⟨Λ', h1, hΛfg, hΛsp, -⟩` from `AdLat.exists_lattice_latOf F E n L g hfg hsp`. Take `rfl : Λ = Λ'` from `SetLike.coe_injective (hΛ.trans h1.symm)`. Take `⟨f, hf1, hf2, hf3⟩` from `AdLat.exists_linear_approx_tower F E n L g Λ hfg hsp hΛ`. Use `⟨hΛfg, hΛsp, fun v => ?_, f, hf1, hf2, hf3, fun N hN a a' => ?_⟩` and prove the remaining obligations. Use `AdLat.latOf_selfDual F E n L c G J g hfg hsp hcc hG' hdet hJ0 hL hg v` as an intermediate fact.
+
+Simplify using `only [hh, ← hΛ, SetLike.mem_coe] at this`. Rewrite using `[← genus_trace_iff G ξ J hJ, this]`. Take `⟨w, hw, e⟩` from `hf1 N hN a`. Take `⟨w', hw', e'⟩` from `hf1 N hN a'`. Establish `hd` using `AdLat.hat_selfDual F E n L c G J hfg hsp hcc hG' hdet hJ0 hL`.
+
+Establish `hr` using `(AdLat.hat_rational_points_and_approx F E n L hfg hsp).1`. Establish `hm : ∀ z ∈ AdLat.hat F (L : Set (Fin n → E)), ∀ z' ∈ AdLat.hat F (L : Set (Fin n → E)), AdLat.hermA c G z z' ∈ AdLat.hat1 F (J : Set E)` using `fun z hz z' hz' => AdLat.adelicHermitianFormGalois_mem_of_mem_completion c G ((hd z).2 hz) hz'`. Establish `hs` using `add_mem (hm w hw _ (add_mem ((hr _).2 a'.2) (nsmul_mem hw' N))) (hm _ ((hr _).2 a.2) w' hw')`. Establish `key` using `genus_hermA_shift c G N (AdLat.fv F (a : Fin n → E)) (AdLat.fv F (a' : Fin n → E)) w w'`. Rewrite `key` using `[← hg, ← e, ← e', AdLat.hermA_fv_fv, AdLat.hermA_fv_fv, hh, hh]`.
+
+Establish `hN' : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hNF : (N : F) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Use `set t : E := (N : E)⁻¹ * (herm G (f N a) (f N a') - herm G a a') with ht`. Establish `ht' : N • t = herm G (f N a) (f N a') - herm G a a'`. Rewrite using `[nsmul_eq_mul, ht, mul_inv_cancel_left₀ hN']`.
+
+Establish `htJ : t ∈ J`. Rewrite using `[← (AdLat.adelicCompletion_fractionalIdeal_properties F E).2.1]`. Use `hs using 1` and compare the differences between its conclusion and the goal. Apply `smul_right_injective _ hNF` to reduce the goal to its premises. Simplify using `only [Nat.cast_smul_eq_nsmul]`.
+
+Rewrite using `[← TensorProduct.tmul_smul, ht', TensorProduct.tmul_sub, key, add_sub_cancel_left]`. Take `⟨k, hk⟩` from `(hJ t).1 htJ 1`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_sub, ← mul_sub, ← ht', ← hk, mul_smul_comm, map_nsmul, nsmul_eq_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem genus_translate (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsCMField E] [Algebra F E]
     (n : ℕ) (c : E ≃ₐ[F] E) (hc : ∀ x, c x = cc x) (G : Matrix (Fin n) (Fin n) E) (hG : ∀ a b, cc (G a b) = G b a)
     (hdet : G.det ≠ 0) (ξ : E) (hξ : ξ ≠ 0) (L Λ : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG)
@@ -150,6 +187,11 @@ theorem genus_translate (F E : Type) [Field F] [NumberField F] [Field E] [Number
     rw [← map_sub, ← mul_sub, ← ht', ← hk, mul_smul_comm, map_nsmul, nsmul_eq_mul]
     simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ _ * _ * _ = _`. Use extensionality with `i j`. Establish `h` using `h (Pi.single j 1) (Pi.single i 1)`. Simplify using `only [herm, ← hσ, Matrix.mulVec_single_one, Matrix.col_apply, Matrix.neg_apply, Matrix.transpose_apply, mul_neg, neg_mul, Finset.sum_neg_distrib, neg_inj] at h`. Simplify using `only [Pi.single_apply, apply_ite σ, map_one, map_zero, mul_ite, ite_mul, mul_one, mul_zero, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`.
+
+Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem genus_mem_UJ {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (σ : E →+* E) (hσ : ∀ x, σ x = cc x)
     (J : Matrix (Fin n) (Fin n) E) (γ : GL (Fin n) E)
     (h : ∀ u v, herm (-J.transpose) (γ.1 *ᵥ u) (γ.1 *ᵥ v) = herm (-J.transpose) u v) : γ ∈ Formalism.UG.UJ σ J := by
@@ -166,6 +208,11 @@ theorem genus_mem_UJ {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Establish `h0 : Formalism.UG.cT (σ : E →+* E) γ.1 * J * γ.1 = J` using `h`. Establish `h3 : (Formalism.UG.cT (σ : E →+* E) γ.1).map (inclR (F` using `F) R) = Formalism.UG.cT (sigR R σ) (γ.1.map (inclR (F := F) R)) := by`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, sigR, inclR]`. Establish `h4` using `congrArg (fun m => m.map (inclR (F := F) R)) h0`.
+
+Simplify using `only [Matrix.map_mul, h3] at h4`. Conclude with `h4`.
+-/
 theorem genus_bc_mem_HR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (γ : GL (Fin n) E)
     (h : γ ∈ Formalism.UG.UJ (σ : E →+* E) J) : Formalism.UG.bc (inclR (F := F) R) γ ∈ HR R σ J := by
@@ -180,6 +227,9 @@ theorem genus_bc_mem_HR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h1` using `genus_mem_UJ (D.sp.cm.sig : D.host.E →+* D.host.E) (fun _ => rfl) V.gram γ h`. Use `⟨(⟨_, genus_bc_mem_HR (AF D.host.F) D.sp.cm.sig V.gram γ h1⟩ : HR (AF D.host.F) D.sp.cm.sig V.gram), ⟨γ, h1, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem genus_exists_rat (D : D7) (V : HSp D) (γ : GL (Fin V.rank) D.host.E)
     (h : ∀ u v, herm (-V.gram.transpose) (γ.1 *ᵥ u) (γ.1 *ᵥ v) = herm (-V.gram.transpose) u v) :
     ∃ γ' ∈ GQ V, (finHom V γ').1 = γ.1.map (inclR (F := D.host.F) (Af D.host.F)) := by
@@ -189,17 +239,50 @@ theorem genus_exists_rat (D : D7) (V : HSp D) (γ : GL (Fin V.rank) D.host.E)
   ext i j
   rfl
 
+/- English proof (translation)
+Use `congrArg (fun t => (g⁻¹).1 *ᵥ t) h` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+-/
 theorem genus_mulVec_inj {A : Type} [CommRing A] {n : ℕ} (g : GL (Fin n) A) {u v : Fin n → A}
     (h : g.1 *ᵥ u = g.1 *ᵥ v) : u = v := by
   have := congrArg (fun t => (g⁻¹).1 *ᵥ t) h
   simpa only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] using this
 
+/- English proof (translation)
+Rewrite using `[smul_sub, sub_eq_sub_iff_add_eq_add, ← h, add_comm]`.
+-/
 theorem genus_sub_eq {A : Type} [AddCommGroup A] (N : ℕ) (x e y w : A) (h : y + N • w = x + N • e) :
     x - y = N • (w - e) := by
   rw [smul_sub, sub_eq_sub_iff_add_eq_add, ← h, add_comm]
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨hbase, hW, ⟨hinj, hrange⟩, hEF, -, -⟩` from `hR`. Take `⟨hfg, hsp, hlat⟩` from `comp_latG D V`. Rewrite `hfg`, `hsp`, `hlat` using `[← hrange]`. Set `X0` to `M.X ⟨0, F.n_pos⟩`.
+
+Establish `hGm : X0.Gm = -V.gram.transpose` using `(hW _).1`. Establish `hξ0 : X0.ξ0 = -D.host.xi0` using `(hW _).2`. Establish `hξ : -(-D.host.xi0) ≠ 0`. Rewrite using `[← hξ0]`. Conclude with `neg_ne_zero.2 X0.ξ0_ne`.
+
+Establish `hξ' : cc (-(-D.host.xi0)) = -(-(-D.host.xi0))`. Establish `h` using `X0.ξ0_im`. Rewrite `h` using `[hξ0]`. Unfold `cc at h ⊢`. Rewrite using `[map_neg, h]`.
+
+Establish `hφ : Function.Injective io ∧ Submodule.span D.host.E (Set.range io) = ⊤ ∧ (∀ a b, cc ((-V.gram.transpose) a b) = (-V.gram.transpose) b a) ∧ (-V.gram.transpose).det ≠ 0 ∧ ∀ x y, ((Dw.EF x y : ℤ) : ℚ) = Algebra.trace ℚ D.host.E (-(-D.host.xi0) * herm (-V.gram.transpose) (io x) (io …` using `⟨hinj, hsp, hGm ▸ X0.Gm_herm, hGm ▸ X0.Gm_det, hEF⟩`. Establish `hsd` using `(GlobalTheory.HermModel.rank_integral_selfDual _ H Dw V.rank _ _ io hξ' hφ).2.2.2`. Establish `hu : ∀ x y, AdLat.hermA (LevelHalf.conjEquiv D.sp.cm) (-V.gram.transpose) ((finHom V h).1 *ᵥ x) ((finHom V h).1 *ᵥ y) = AdLat.hermA (LevelHalf.conjEquiv D.sp.cm) (-V.gram.transpose) x y`. Introduce `x y`. Use `LevelHalf.hermA_unitary D.sp.cm V.gram _ (LevelHalf.finHom_mem V h) x y` as an intermediate fact.
+
+Simplify using `only [AdLat.hermA, Matrix.neg_apply, TensorProduct.tmul_neg, mul_neg, neg_mul, Finset.sum_neg_distrib, neg_inj] at this ⊢`. Conclude with `this`. Take `⟨hΛfg, hΛsp, hΛsd, f, hf1, hf2, hf3, hf4⟩` from `genus_translate D.host.F D.host.E V.rank (LevelHalf.conjEquiv D.sp.cm) (fun _ => rfl) (-V.gram.transpose) hφ.2.2.1 hφ.2.2.2.1 _ hξ (LinearMap.range io) (latG V h) hfg hsp (fun v => by`. Rewrite using `[← hsd v]`. Conclude with `⟨fun hv y => hv _ ⟨y, rfl⟩, by rintro hv _ ⟨y, rfl⟩; exact hv y⟩)`.
+
+Use the proof step `(finHom V h) hu (hlat h).1`. Set `ψ : Dw.La ≃ₗ[𝓞 D.host.E] LinearMap.range io` to `LinearEquiv.ofInjective io hinj`. Take `⟨k, γ, hγ1, hγ2, hγ3⟩` from `GlobalTheory.selfDual_lattice_occurs hH _ H Dw l Xo σ' g ty F V.rank M (-D.host.xi0) (-V.gram.transpose) io (latG V h) (fun N => f N ∘ₗ ψ.toLinearMap) hA hσ hty hbase hW hφ hΛfg hΛsp hΛsd (fun N m hN hm a => hf2 N m hN hm (ψ a)) (fun N hN => ⟨fun a => ((hf3 N hN).1 (ψ a)).trans ⟨ …`. Take `⟨a, v, hv⟩` from `(hf3 N hN).2 a'`. Take `⟨a, rfl⟩` from `ψ.surjective a`.
+
+Conclude with `⟨a, v, hv⟩⟩)`. Use the proof step `(fun N hN a a' => by`. Take `⟨z, hz⟩` from `hf4 N hN (ψ a) (ψ a')`. Conclude with `⟨z, by rw [hφ.2.2.2.2]; exact hz⟩)`. Take `⟨γ', hγ', hfin⟩` from `genus_exists_rat D V γ hγ1`.
+
+Establish `hmul : ∀ z, (finHom V (γ' * h)).1 *ᵥ z = γ.1.map (inclR (F` using `D.host.F) (Af D.host.F)) *ᵥ ((finHom V h).1 *ᵥ z) := fun z => by`. Rewrite using `[map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, hfin]`. Establish `hΛ : ∀ v, v ∈ (M.X k).Λ ↔ v ∈ AdLat.latOf D.host.F (finHom V (γ' * h)).1 (LinearMap.range io)`. Introduce `v`. Take `⟨v, rfl⟩ : ∃ u, γ.1 *ᵥ u = v` from `⟨(γ⁻¹).1 *ᵥ v, by rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]⟩`.
+
+Rewrite using `[← hγ2, ← SetLike.mem_coe, (hlat h).1]`. Use `exists_congr fun z => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[hmul, genus_fv_mulVec, ← hfin]`. Use `⟨fun e => by rw [e], fun e => ?_⟩` and prove the remaining obligations. Conclude with `genus_mulVec_inj (finHom V γ') e`.
+
+Use `⟨⟨k, fun τ => (Matrix.reindex (finCongr rfl) (finCongr rfl) (archM V (th k τ) (γ' * h)) * x₀ τ.1 : Matrix (Fin V.rank) (Fin V.rank) ℂ)⟩, γ', hγ', ?_, fun a ha => ?_, fun τ => rfl⟩` and prove the remaining obligations. Rewrite using `[(hlat _).1]`. Use `Eq.trans ?_ (Set.image_id _).symm` and prove the remaining obligations. Use extensionality with `v`. Conclude with `hΛ v`.
+
+Take `⟨w, hw, e⟩` from `hγ3 a ha`. Take `⟨w', hw', e'⟩` from `hf1 l.M (lt_of_lt_of_le (by norm_num) l.three_le) (ψ a)`. Establish `m1 : AdLat.fv D.host.F w ∈ latGHat V (γ' * h)`. Rewrite using `[← SetLike.mem_coe, (hlat _).2]`. Conclude with `(hΛ w).1 hw`.
+
+Establish `m2 : (finHom V (γ' * h)).1 *ᵥ w' ∈ latGHat V (γ' * h)`. Rewrite using `[← SetLike.mem_coe, (hlat _).2]`. Conclude with `⟨w', hw', rfl⟩`. Use `⟨_, sub_mem m2 m1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AdLat.fv D.host.F (M.φ k (F.t k a) : Fin V.rank → D.host.E) - (finHom V (γ' * h)).1 *ᵥ AdLat.fv D.host.F (io a) = _`.
+
+Apply `genus_sub_eq` to reduce the goal to its premises. Rewrite using `[← AdLat.Tower.mulVec_nsmul, ← Matrix.mulVec_add, hmul, ← AdLat.Tower.fv_nsmul, ← AdLat.Tower.fv_add, ← e, genus_fv_mulVec]`. Conclude with `congrArg _ e'.symm`.
+-/
 theorem genus_marked (hH : GlobalTheory.Published.HasseNormSt) (D : D7) (V : HSp D)
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (D.host.E →+* ℂ)} (F : FamilyUnif Xo σ' ty)
@@ -293,6 +376,9 @@ theorem genus_marked (hH : GlobalTheory.Published.HasseNormSt) (D : D7) (V : HSp
       genus_fv_mulVec]
     exact congrArg _ e'.symm
 
+/- English proof (translation)
+Introduce `hH D Q hQ j hj _ _ _ F hσ hty M io th x₀ hR h` and use `genus_marked hH D (D.sp.W j) F (level_good_and_sign D Q hQ).2.1 hσ hty (D.sp.W_rank j hj.1 hj.2) M io th x₀ hR h`.
+-/
 theorem exists_markSpec : GlobalTheory.Published.HasseNormSt → ∀ (D : D7) (Q : Par D), Q.Pins → ∀ (j : ℕ) (hj : InR D j) (σ' : KA Q.l →+* ℂ) (g : ℕ) (ty : Fin g → (D.host.E →+* ℂ)) (F : FamilyUnif (Q.Xo j) σ' ty), σ' (baseKA Q.l).ρ = Q.H.rt0 → IsTypeFn Q.H (Q.Dw j).p (Q.Dw j).q ty → ∀ (M : GlobalTheory.FrameUnif.ModelsOf F D.R.r) (io : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin (D.sp.W j).rank → D.host.E)) (th : ∀ k, (M.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ), RecOK M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ → ∀ h : GA D (D.sp.W j), ∃ p, MarkSpec M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ h p :=
   fun hH D Q hQ j hj _ _ _ F hσ hty M io th x₀ hR h =>
     genus_marked hH D (D.sp.W j) F (level_good_and_sign D Q hQ).2.1 hσ hty (D.sp.W_rank j hj.1 hj.2) M io th x₀ hR h

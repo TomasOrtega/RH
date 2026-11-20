@@ -10,6 +10,23 @@ namespace DiscreteGroups.sglob.LConv
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {m : ℕ}
   {ψ : AddChar k Circle}
 
+/- English proof (translation)
+Establish `hKc : CompactSpace K` using `isCompact_iff_compactSpace.1 hK.2.1`. Establish `hopen : IsOpen ((K'.subgroupOf K : Subgroup K) : Set K)` using `hK'.1.preimage continuous_subtype_val`. Establish `: Finite (K ⧸ K'.subgroupOf K)` using `Subgroup.quotient_finite_of_isOpen _ hopen`. Use `letI : Fintype (K ⧸ K'.subgroupOf K) := Fintype.ofFinite _`. Use `set P : WT (m := m) ψ := ∑ q : K ⧸ K'.subgroupOf K, rhoW ψ ((Quotient.out q : K) : GL (Fin m) k) (delta ψ K') with hP`.
+
+Establish `hrep : ∀ a b : K, b⁻¹ * a ∈ K'.subgroupOf K → rhoW ψ (a : GL (Fin m) k) (delta ψ K') = rhoW ψ (b : GL (Fin m) k) (delta ψ K')`. Introduce `a b hab`. Establish `e : (a : GL (Fin m) k) = b * ((b⁻¹ * a : K) : GL (Fin m) k)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply, rhoW_delta (Subgroup.mem_subgroupOf.1 hab)]`. Establish `hfix : ∀ κ ∈ K, rhoW ψ κ P = P`.
+
+Introduce `κ hκ`. Rewrite using `[hP, map_sum]`. Use `Fintype.sum_equiv (MulAction.toPerm (⟨κ, hκ⟩ : K)) _ _ fun q => ?_` and prove the remaining obligations. Rewrite using `[MulAction.toPerm_apply, ← Module.End.mul_apply, ← map_mul]`. Establish `e : (QuotientGroup.mk (Quotient.out ((⟨κ, hκ⟩ : K) • q)) : K ⧸ K'.subgroupOf K) = QuotientGroup.mk ((⟨κ, hκ⟩ : K) * Quotient.out q)`.
+
+Rewrite using `[QuotientGroup.out_eq', ← smul_eq_mul, ← MulAction.Quotient.smul_mk, QuotientGroup.out_eq']`. Use `hrep ((⟨κ, hκ⟩ : K) * Quotient.out q) (Quotient.out ((⟨κ, hκ⟩ : K) • q)) (QuotientGroup.eq.1 e)` as an intermediate fact. Simplify using `using this`. Establish `hL : ∀ L : WT (m` using `m) ψ →ₗ[ℂ] ℂ, (∀ κ ∈ K, ∀ x, L (rhoW ψ κ x) = L x) → L P = (Fintype.card (K ⧸ K'.subgroupOf K) : ℂ) * L (delta ψ K') := by`. Introduce `L hL`.
+
+Rewrite using `[hP, map_sum, Finset.sum_congr rfl fun q _ => hL _ (Quotient.out q).2 _, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `hs : ∀ g, (P : GL (Fin m) k → ℂ) g ≠ 0 → ∃ u ∈ unipB k (Fin m), ∃ κ ∈ K, g = u * κ`. Introduce `g hg`. Rewrite `hg` using `[hP, Submodule.coe_sum, Finset.sum_apply]`. Take `⟨q, -, hq⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hg`.
+
+Rewrite `hq` using `[rhoW_apply]`. Assume the negation of the conclusion as `hno`. Use `hq (delta_eq_zero ?_)` and prove the remaining obligations. Introduce and unpack `⟨u, hu, κ', hκ', he⟩`. Conclude with `hno ⟨u, hu, κ' * ((Quotient.out q : K) : GL (Fin m) k)⁻¹, K.mul_mem (hle hκ') (K.inv_mem (Quotient.out q).2), by rw [← mul_assoc, ← he, mul_inv_cancel_right]⟩`.
+
+Take `⟨s, hPs⟩ : ∃ s : ℂ, P = s • delta ψ K` from `⟨_, eq_smul_delta hK P hfix hs⟩`. Establish `a1` using `hL L₁ h₁`. Establish `a2` using `hL L₂ h₂`. Rewrite `a1`, `a2` using `[hPs, map_smul, smul_eq_mul]`. Establish `c0 : (Fintype.card (K ⧸ K'.subgroupOf K) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`.
+
+Apply `mul_left_cancel₀ c0` to reduce the goal to its premises. Take the linear combination `(-L₂ (delta ψ K)) * a1 + L₁ (delta ψ K) * a2`.
+-/
 theorem delta_avg {K K' : Subgroup (GL (Fin m) k)} (hK : Good ψ K) (hK' : Good ψ K') (hle : K' ≤ K)
     (L₁ L₂ : WT (m := m) ψ →ₗ[ℂ] ℂ) (h₁ : ∀ κ ∈ K, ∀ x, L₁ (rhoW ψ κ x) = L₁ x)
     (h₂ : ∀ κ ∈ K, ∀ x, L₂ (rhoW ψ κ x) = L₂ x) :
@@ -82,6 +99,9 @@ def formI (I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ) : WT (m := m) ψ →ₗ�
       rw [← map_smul]; congr 1; funext g
       simp only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formI_apply (I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ) (x y : WT (m := m) ψ) :
     formI ψ I x y = I fun g => (starRingEnd ℂ) ((x : GL (Fin m) k → ℂ) g) * (y : GL (Fin m) k → ℂ) g := rfl
 

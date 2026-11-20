@@ -9,6 +9,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompactVar
 
+/- English proof (translation)
+Use `⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun K _ x => ?_⟩` and prove the remaining obligations. Establish `h1 : ConnectedSpace ↥(pullback (g ≫ p) x)` using `GeometricallyConnected.geometrically_connectedSpace _ _ _ (.of_hasPullback _ _)`. Rewrite `h1` using `[← (pullbackRightPullbackFstIso p x g).hom.homeomorph.connectedSpace_iff]`. Establish `ho : UniversallyOpen x` using `inferInstance`. Establish `h2 : Dense (Set.range (pullback.snd g (pullback.fst p x)))`.
+
+Rewrite using `[Scheme.Pullback.range_snd]`. Conclude with `hg.preimage (pullback.fst p x).isOpenMap`. Rewrite using `[connectedSpace_iff_univ, ← h2.closure_eq]`. Conclude with `(isConnected_range (Scheme.Hom.continuous _)).closure`.
+-/
 theorem geometricallyConnected_of_denseRange {F : Type} [Field F] {U V : Scheme.{0}} (g : U ⟶ V) (p : V ⟶ Sp F)
     (hg : Dense (Set.range g)) [GeometricallyConnected (g ≫ p)] : GeometricallyConnected p := by
   refine ⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun K _ x => ?_⟩
@@ -22,6 +27,25 @@ theorem geometricallyConnected_of_denseRange {F : Type} [Field F] {U V : Scheme.
   rw [connectedSpace_iff_univ, ← h2.closure_eq]
   exact (isConnected_range (Scheme.Hom.continuous _)).closure
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Z U hsm _ hU`. Establish `hS : Smooth (genStr Z)` using `SmoothOfRelativeDimension.smooth D.dim _`. Use `isProper_genStr Z` as an intermediate fact. Establish `: IsLocallyNoetherian (gen Z)` using `LocallyOfFiniteType.isLocallyNoetherian (genStr Z)`. Establish `: CompactSpace (gen Z)` using `QuasiCompact.compactSpace_of_compactSpace (genStr Z)`.
+
+Establish `: IsNoetherian (gen Z)` using `{}`. Use `Z.jQ_open` as an intermediate fact. Establish `hcc` using `fun z : gen Z => GlobalTheory.ShFam.PtComp.connectedComponent_mem TopologicalSpace.NoetherianSpace.finite_irreducibleComponents (fun W hW W' hW' => GlobalTheory.ShFam.PtComp.disjoint_of_smooth (genStr Z) hS W W' hW hW') z`. Establish `hconn : ConnectedSpace U.toScheme` using `GeometricallyConnected.connectedSpace_of_subsingleton (U.ι ≫ toF Xo c)`. Set `π : U.toScheme ⟶ gen Z` to `U.ι ≫ Z.jQ`.
+
+Establish `hπ : Set.range π = Z.jQ '' U`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, Scheme.Opens.range_ι]`. Set `z : gen Z` to `π (Classical.arbitrary _)`. Set `V : (gen Z).Opens` to `⟨connectedComponent z, (hcc z).2⟩`. Establish `hred : IsReduced (gen Z)`.
+
+Use `GlobalTheory.isNormalScheme_of_smooth (genStr Z)` as an intermediate fact. Conclude with `GlobalTheory.IsNormalScheme.isReduced`. Establish `hproj : IsProjOver (genStr Z)` using `(GlobalTheory.ProjSpace.points_and_stability O 0).2.2.1 c.F β Z.X Z.s Z.proj`. Establish `: IrreducibleSpace V.toScheme` using `Subtype.irreducibleSpace (hcc z).1.1`. Establish `hcl : IsClosedImmersion V.ι` using `IsClosedImmersion.of_isPreimmersion _ (by`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `isClosed_connectedComponent)`. Establish `hp : IsProjOver (V.ι ≫ genStr Z)` using `(GlobalTheory.ProjSpace.points_and_stability c.F 0).2.2.2.1 _ _ _ _ hcl hproj`. Establish `hsd : SmoothOfRelativeDimension D.dim (V.ι ≫ genStr Z)`. Establish `h : SmoothOfRelativeDimension (0 + D.dim) (V.ι ≫ genStr Z)` using `inferInstance`.
+
+Simplify using `using h`. Establish `hr : Set.range π ⊆ Set.range V.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(isPreconnected_range π.continuous).subset_connectedComponent ⟨_, rfl⟩`. Set `g : U.toScheme ⟶ V.toScheme` to `IsOpenImmersion.lift V.ι π hr`.
+
+Establish `hg : g ≫ V.ι = π` using `IsOpenImmersion.lift_fac _ _ _`. Establish `: IsOpenImmersion (g ≫ V.ι)` using `by rw [hg]; infer_instance`. Establish `: IsOpenImmersion g` using `IsOpenImmersion.of_comp g V.ι`. Establish `hd : Dense (Set.range g)` using `g.isOpenEmbedding.isOpen_range.dense (Set.range_nonempty _)`. Establish `: GeometricallyConnected (g ≫ V.ι ≫ genStr Z)`.
+
+Rewrite using `[reassoc_of% hg, Category.assoc, Z.jQ_over]`. Conclude with `hU`. Establish `: GeometricallyConnected (V.ι ≫ genStr Z)` using `geometricallyConnected_of_denseRange g _ hd`. Take `⟨X, ε, -, hs⟩` from `GlobalTheory.ProjVar.Var.exists_iso _ D.dim hp`. Use `⟨X, ε.inv ≫ V.ι, inferInstance, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, ε.inv.surjective.range_eq, Set.image_univ, compactOf, ← hπ, ← hg, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, V.ι.isClosedEmbedding.closure_image_eq, hd.closure_eq, Set.image_univ]`. Rewrite using `[Category.assoc, ← hs, Iso.inv_hom_id_assoc]`.
+-/
 theorem exists_var : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : (Xo.XF c).Opens), SmoothOfRelativeDimension D.dim (genStr Y) → IsClosed (U : Set (Xo.XF c)) → GeometricallyConnected (U.ι ≫ toF Xo c) → ∃ (B : GlobalTheory.ProjVar.Var c.F) (io : B.X ⟶ gen Y), IsOpenImmersion io ∧ Set.range io = compactOf Y U ∧ io ≫ genStr Y = B.str := by
   intro E _ _ _ H D l Xo c O _ β Z U hsm _ hU
   have hS : Smooth (genStr Z) := SmoothOfRelativeDimension.smooth D.dim _

@@ -8,6 +8,9 @@ open MvPolynomial
 
 universe u
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.ker_map, IsLocalRing.ker_residue, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.map_span, Set.image_singleton]`.
+-/
 theorem ker_map_residue_eq_span {O : Type u} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {ϖ : O} (hϖ : Irreducible ϖ) {σ : Type*} :
     RingHom.ker (MvPolynomial.map (IsLocalRing.residue O) : MvPolynomial σ O →+* _) =
@@ -16,6 +19,17 @@ theorem ker_map_residue_eq_span {O : Type u} [CommRing O] [IsDomain O] [IsDiscre
     (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.map_span,
     Set.image_singleton]
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P W hW hϖW`. Take `⟨π, hπ⟩ : ∃ π : MRing ι O →+* MRing ι (IsLocalRing.ResidueField O), π = MvPolynomial.map (IsLocalRing.residue O)` from `⟨_, rfl⟩`. Establish `hsp : ∀ V : Ideal (MRing ι O), specialIdeal V = V.map π` using `fun V => by rw [hπ]; rfl`. Establish `hsurj : Function.Surjective π` using `hπ ▸ MvPolynomial.map_surjective _ IsLocalRing.residue_surjective`. Establish `hker : RingHom.ker π = Ideal.span {C ϖ}` using `hπ ▸ ker_map_residue_eq_span hϖ`.
+
+Establish `hle : ∀ {V : Ideal (MRing ι O)}, (C ϖ : MRing ι O) ∈ V → RingHom.ker π ≤ V` using `fun h => by`. Rewrite using `[hker, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `h`. Establish `hcm : ∀ {V : Ideal (MRing ι O)}, (C ϖ : MRing ι O) ∈ V → (V.map π).comap π = V` using `fun h => by`. Rewrite using `[Ideal.comap_map_of_surjective' π hsurj, sup_eq_left.mpr (hle h)]`.
+
+Simplify using `only [hsp]`. Use `⟨Ideal.map_isPrime_of_surjective hsurj (hle hϖW), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hJ : P ⊔ Ideal.span {C ϖ} = (P.map π).comap π`. Rewrite using `[Ideal.comap_map_of_surjective' π hsurj, hker]`. Rewrite using `[hJ, Ideal.comap_minimalPrimes_eq_of_surjective hsurj]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, hQ, rfl⟩`. Rewrite using `[Ideal.map_comap_of_surjective π hsurj]` and apply the resulting hypothesis. Introduce `h`. Conclude with `⟨_, h, hcm hϖW⟩`.
+
+Establish `hX : ∀ v, (X v : MRing ι O) ∈ W ↔ (X v : MRing ι (IsLocalRing.ResidueField O)) ∈ W.map π` using `fun v => by conv_lhs => rw [← hcm hϖW]`. Rewrite using `[Ideal.mem_comap, hπ, MvPolynomial.map_X]`. Simplify using `only [IsRelevant, hX]`. Introduce `W' _ hϖW' h`. Rewrite using `[← hcm hϖW', ← hcm hϖW, h]`.
+-/
 theorem SpecialIdealCorresp.proof : SpecialIdealCorresp.Statement := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P W hW hϖW
   obtain ⟨π, hπ⟩ : ∃ π : MRing ι O →+* MRing ι (IsLocalRing.ResidueField O),

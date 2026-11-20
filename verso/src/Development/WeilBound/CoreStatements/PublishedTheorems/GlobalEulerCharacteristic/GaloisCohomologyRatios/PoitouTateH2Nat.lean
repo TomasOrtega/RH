@@ -19,6 +19,9 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (�
   (hM : ∀ (g : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) (m : M), M.ρ g m = m)
   (hΓ : Nat.Coprime (Nat.card (L.1 ≃ₐ[K.1] L.1)) ℓ)
 
+/- English proof (translation)
+Conclude with `dMod_one_eq_pf hL hζ M hM hΓ`.
+-/
 theorem dMod_one_eq [Finite (ModN (AA hL 1) ℓ)] :
     dMod hL (dN hL hζ M hM hΓ) 1 =
       Module.finrank (ZMod ℓ) ((gsH1SUnitsModRep ℓ hL).tprod
@@ -29,6 +32,13 @@ theorem dMod_one_eq [Finite (ModN (AA hL 1) ℓ)] :
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hℓ : ℓ.Prime` using `Fact.out`. Use `haveI : NeZero ℓ := ⟨hℓ.ne_zero⟩`. Establish `hS' : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hℓS v h hv`.
+
+Use `haveI : Finite M := finite_of_moduleFinite M`. Establish `hPT` using `natCard_gs_cohomology_two_mul S ιs hS' hKK (gsBaseCase S ιs hS' hKK) (intRep M) (nsmul_intRep M)`. Apply `Nat.pow_right_injective hℓ.two_le` to reduce the goal to its premises. Simplify using `only [pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[card_H2_integral_module M hℓS, card_H0_dual_module M]`. Use `_ = Nat.card (ptSha (gsFinFamily S ιs) (intRep M) 2) * ∏ v : S, Nat.card (cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (dualRep (gsRoots S ℓ) (intRep M))) 0) := hPT`. Use `_ = ℓ ^ Module.finrank (ZMod ℓ) (shaSubmodule (gsFinFamily S ιs) M 2) * ∏ v : S, ℓ ^ Module.finrank (ZMod ℓ) (Representation.invariants ((dualRep (gsRootsZMod S ℓ) M).ρ.comp (gsFinFamily S ιs v).toMonoidHom)) := congrArg₂ (· * ·) (card_sha_int M hℓS ιs) (Finset.prod_congr rfl fun …`. Use `_ = _ := by rw [Finset.prod_pow_eq_pow_sum]`.
+-/
 theorem poitou_tate_H2_nat [Fintype S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (hKK : Odd ℓ ∨ IsTotallyComplex K.1)
     (ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) :
@@ -62,6 +72,13 @@ theorem poitou_tate_H2_nat [Fintype S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `hKK : Odd ℓ ∨ IsTotallyComplex K.1` using `odd_or_tc_base_pf hL hcop hK`. Establish `hKL : Odd ℓ ∨ IsTotallyComplex L.1` using `hK.imp_left fun h => hℓ.odd_of_ne_two h`. Establish `hn` using `poitou_tate_H2_nat M hℓS hKK ιs`. Establish `hsha` using `finrank_shaSubmodule_two_eq_finrank_invariants ℓ hL ιs hℓS hKL hcop (roots_trivial hL hζ) M hM`.
+
+Establish `e1` using `dMod_one_eq hL hζ M hM hΓ`. Establish `hz` using `congrArg (Nat.cast : ℕ → ℤ) hn`. Establish `hz2` using `congrArg (Nat.cast : ℕ → ℤ) hsha`. Simplify using `only [Nat.cast_add, Nat.cast_sum] at hz`. Rewrite using `[e1]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem poitou_tate_H2_int [Fintype S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (hcop : Nat.Coprime (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index ℓ)
     (hK : ℓ ≠ 2 ∨ IsTotallyComplex L.1) [Finite (ModN (AA hL 1) ℓ)]

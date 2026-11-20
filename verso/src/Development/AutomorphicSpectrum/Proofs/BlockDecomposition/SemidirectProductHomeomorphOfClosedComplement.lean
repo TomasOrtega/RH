@@ -4,6 +4,29 @@ open scoped NNReal ENNReal
 
 namespace GlobalTheory.CompanionTheory.TopGroup
 
+/- English proof (translation)
+Introduce `Q _ _ _ _ _ _ N M hN hM hprod hint`. Use `haveI : LocallyCompactSpace N := hN.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : LocallyCompactSpace M := hM.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology (N : Set Q)`. Use `haveI : SecondCountableTopology M := TopologicalSpace.Subtype.secondCountableTopology (M : Set Q)`.
+
+Use `haveI : SigmaCompactSpace (N × M) := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `letI act : MulAction (N × M) Q := { smul := fun p q => (p.1 : Q) * q * (p.2 : Q)⁻¹ one_smul := fun q => by`. Express the relevant statement in the definitionally equal form `((1 : N) : Q) * q * ((1 : M) : Q)⁻¹ = q`. Simplify using the standard rewrite rules. Use `mul_smul := fun p r q => by`.
+
+Express the relevant statement in the definitionally equal form `((p.1 * r.1 : N) : Q) * q * ((p.2 * r.2 : M) : Q)⁻¹ = (p.1 : Q) * ((r.1 : Q) * q * (r.2 : Q)⁻¹) * (p.2 : Q)⁻¹`. Simplify using `[mul_assoc] }`. Establish `hsmul : ∀ (p : N × M) (q : Q), p • q = (p.1 : Q) * q * (p.2 : Q)⁻¹` using `fun _ _ => rfl`. Use `haveI : ContinuousSMul (N × M) Q := ⟨by`. Establish `: (fun x : (N × M) × Q => x.1 • x.2) = fun x : (N × M) × Q => ((x.1.1 : Q)) * x.2 * ((x.1.2 : Q))⁻¹` using `rfl`.
+
+Rewrite using `[this]`. Use the proof step `fun_prop⟩`. Use `haveI : MulAction.IsPretransitive (N × M) Q := ⟨fun x y => by`. Take `⟨n₁, hn₁, m₁, hm₁, rfl⟩` from `hprod x`. Take `⟨n₂, hn₂, m₂, hm₂, rfl⟩` from `hprod y`.
+
+Use `⟨(⟨n₂ * n₁⁻¹, N.mul_mem hn₂ (N.inv_mem hn₁)⟩, ⟨m₂⁻¹ * m₁, M.mul_mem (M.inv_mem hm₂) hm₁⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[hsmul]`. Simplify using `[mul_assoc]⟩`. Establish `hopen₀ : IsOpenMap (fun g : N × M => g • (1 : Q))` using `isOpenMap_smul_of_sigmaCompact (1 : Q)`. Set `e : (N × M) ≃ₜ (N × M)` to `(Homeomorph.refl N).prodCongr (Homeomorph.inv M)`.
+
+Set `f : N × M → Q` to `fun p => (p.1 : Q) * (p.2 : Q)`. Establish `hf : f = (fun g : N × M => g • (1 : Q)) ∘ e`. Use function extensionality and compare the values at `p`. Express the relevant statement in the definitionally equal form `(p.1 : Q) * (p.2 : Q) = ((e p).1 : Q) * 1 * (((e p).2 : M) : Q)⁻¹`. Simplify using `[e]`.
+
+Establish `hopen : IsOpenMap f`. Rewrite using `[hf]`. Conclude with `hopen₀.comp e.isOpenMap`. Establish `hcont : Continuous f` using `by fun_prop`. Establish `hinj : Function.Injective f`.
+
+Introduce and unpack `⟨⟨n₁, hn₁⟩, ⟨m₁, hm₁⟩⟩ ⟨⟨n₂, hn₂⟩, ⟨m₂, hm₂⟩⟩ h`. Establish `h' : n₁ * m₁ = n₂ * m₂` using `h`. Establish `h1 : n₂⁻¹ * n₁ = m₂ * m₁⁻¹`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, eq_mul_inv_iff_mul_eq, h']`. Establish `h2 : n₂⁻¹ * n₁ = 1` using `hint _ (N.mul_mem (N.inv_mem hn₂) hn₁) (h1 ▸ M.mul_mem hm₂ (M.inv_mem hm₁))`.
+
+Establish `h3 : n₁ = n₂`. Rewrite `h2` using `[inv_mul_eq_one]`. Conclude with `h2.symm`. Establish `h4 : m₁ = m₂`. Substitute `h3` using the available equality.
+
+Conclude with `mul_left_cancel h'`. Substitute `h3` using the available equality. Substitute `h4` using the available equality. Both sides reduce to the same expression. Establish `hsurj : Function.Surjective f` using `fun q => by`.
+
+Take `⟨n, hn, m, hm, rfl⟩` from `hprod q`. Conclude with `⟨(⟨n, hn⟩, ⟨m, hm⟩), rfl⟩`. Conclude with `⟨(Equiv.ofBijective f ⟨hinj, hsurj⟩).toHomeomorphOfContinuousOpen hcont hopen, fun _ => rfl⟩`.
+-/
 theorem homeomorph_prod_of_closed_complements :
     ∀ (Q : Type) [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q] [LocallyCompactSpace Q]
       [T2Space Q] [SecondCountableTopology Q] (N M : Subgroup Q),

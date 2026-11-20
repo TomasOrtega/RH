@@ -12,6 +12,17 @@ noncomputable section
 
 universe u w
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x pp hpp _ hle ⟨i, hi⟩ D hD`. Establish `hxi : x i ≠ 0` using `fun h0 => hi (hle ((mem_primeOf_of_isHomogeneous x (isHomogeneous_X k i)).mpr (by rw [aeval_X, h0])))`. Use `not_forall_not.mp fun hcon => ?_` and prove the remaining obligations. Set `I : Chart x` to `singleChart hxi`. Establish `hsec : ∀ s ∈ D.toSubSystem.secs, s ∈ idealMod pp I * D.toSubSystem.sub I`.
+
+Introduce `s hs`. Assume the negation of the conclusion as `hs'`. Use `hcon s ⟨hs, I, ?_⟩` and prove the remaining obligations. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line]` and apply the resulting hypothesis. Take `⟨P, hP⟩` from `D.invertible I`.
+
+Establish `hsub : D.toSubSystem.sub I ≤ idealMod pp I * D.toSubSystem.sub I`. Rewrite using `[← hD I, Submodule.span_le]`. Introduce `s hs`. Rewrite using `[hD I]`. Conclude with `hsec s hs`.
+
+Establish `hone : (1 : Submodule (chartRing k x I) Ω) ≤ idealMod pp I`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (1 : Ω) ∈ idealMod pp I` using `hone (Submodule.mem_one.mpr ⟨1, map_one _⟩)`. Use `SectionCount.Drop.Term.one_not_mem_idealMod hpp hle (I := I) (fun j hj => ?_) h1` and prove the remaining obligations. Take `rfl : j = i` from `Finset.mem_singleton.mp hj`.
+
+Conclude with `hi`.
+-/
 theorem SectionNonvanish.proof : SectionNonvanish.Statement.{u, w} := by
   intro k _ Ω _ _ N x pp hpp _ hle ⟨i, hi⟩ D hD
   have hxi : x i ≠ 0 := fun h0 =>

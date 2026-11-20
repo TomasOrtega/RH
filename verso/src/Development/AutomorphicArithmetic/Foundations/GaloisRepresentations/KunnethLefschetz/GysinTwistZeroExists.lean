@@ -10,6 +10,9 @@ namespace UpperTheory.Gal.KunnethLefschetz
 section Tw
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Simplify using `only [twMul, map_add, cast_add]`.
+-/
 private theorem twMul_add (q : ℕ) {X : Scheme.{0}} (p : X ⟶ S k) {i j w : ℤ} (hw : i + j = w)
     (v : Ht q (sch.obj (S k)) 0 i) (n : ℤ) (a b : Ht q (sch.obj X) n j) :
     twMul q p hw v n (a + b) = twMul q p hw v n a + twMul q p hw v n b := by
@@ -19,17 +22,36 @@ private def twHom (q : ℕ) {X : Scheme.{0}} (p : X ⟶ S k) {i j w : ℤ} (hw :
     (v : Ht q (sch.obj (S k)) 0 i) (n : ℤ) : Ht q (sch.obj X) n j →+ Ht q (sch.obj X) n w :=
   AddMonoidHom.mk' (twMul q p hw v n) (twMul_add q p hw v n)
 
+/- English proof (translation)
+Simplify using `only [twMul, pull_cast, (h6 q).1, Functor.map_comp, pull_comp]`.
+-/
 private theorem twMul_pull (h6 : DivisorNaturality) (q : ℕ) [NeZero q] {Y X : Scheme.{0}} (f : Y ⟶ X) (p : X ⟶ S k)
     {i j w : ℤ} (hw : i + j = w) (v : Ht q (sch.obj (S k)) 0 i) (n : ℤ) (a : Ht q (sch.obj X) n j) :
     pull _ (sch.map f) _ n (twMul q p hw v n a) = twMul q (f ≫ p) hw v n (pull _ (sch.map f) _ n a) := by
   simp only [twMul, pull_cast, (h6 q).1, Functor.map_comp, pull_comp]
 
+/- English proof (translation)
+Simplify using `only [twMul, red_cast, ((h11 Q q hd (sch.obj X)).1), ← pull_red]`.
+-/
 private theorem twMul_red (h11 : A11) (Q q : ℕ) [NeZero Q] (hd : q ∣ Q) {X : Scheme.{0}} (p : X ⟶ S k)
     {i j w : ℤ} (hw : i + j = w) (v : Ht Q (sch.obj (S k)) 0 i) (n : ℤ) (a : Ht Q (sch.obj X) n j) :
     red Q q (sch.obj X) n w (twMul Q p hw v n a) =
       twMul q p hw (red Q q _ 0 i v) n (red Q q _ n j a) := by
   simp only [twMul, red_cast, ((h11 Q q hd (sch.obj X)).1), ← pull_red]
 
+/- English proof (translation)
+Establish `hc : ∀ {a b a' b' : ℤ} (h : a = a') (h' : b = b') (x : Ht q (sch.obj Z) a b), HEq (Ht.cast h h' x) x`. Introduce `a b a' b' h h' x`. Substitute `h` using the available equality. Substitute `h'` using the available equality. Both sides reduce to the same expression.
+
+Simplify using `only [twMul, cup_cast_right]`. Generalize the expression as in `(pull (ZMod q) (sch.map p) (tw q i) 0) v = v'`. Apply `eq_of_heq` to reduce the goal to its premises. Use `(hc _ _ _).trans ?_` and prove the remaining obligations. Use `HEq.trans ?_ (hc _ _ _).symm` and prove the remaining obligations.
+
+Use `(hc _ _ _).trans ?_` and prove the remaining obligations. Use `HEq.trans ?_ (hc _ _ _).symm` and prove the remaining obligations. Establish `hA` using `(h6 q (sch.obj Z)).2.1 v' c b`. Establish `hC` using `(h6 q (sch.obj Z)).2.2 v' c`. Establish `hA2` using `(h6 q (sch.obj Z)).2.1 c v' b`.
+
+Simplify using `only [zero_mul, Int.negOnePow_zero, one_smul] at hC`. Establish `e1 : HEq (cup q v' (cup q c b)) (cup q (cup q v' c) b)`. Rewrite using `[hA]`. Conclude with `(hc _ _ _).symm`. Establish `e2 : HEq (cup q (cup q v' c) b) (cup q (cup q c v') b)`.
+
+Rewrite using `[hC, cup_cast_left]`. Conclude with `hc _ _ _`. Establish `e3 : HEq (cup q (cup q c v') b) (cup q c (cup q v' b))`. Rewrite using `[hA2]`. Conclude with `hc _ _ _`.
+
+Conclude with `e1.trans (e2.trans e3)`.
+-/
 private theorem twMul_cup (h6 : DivisorRingCompatibility) (q : ℕ) [NeZero q] {Z : Scheme.{0}} (p : Z ⟶ S k) {n m r i : ℤ}
     (h1 : n + m = r) (hi : 0 + i = i) (v : Ht q (sch.obj (S k)) 0 i) (c : Ht q (sch.obj Z) n 0)
     (b : Ht q (sch.obj Z) m 0) :
@@ -68,6 +90,9 @@ private def gZ {l : ℕ} (GT : GysT k) (w : ∀ (i : ℤ) (j : ℕ), Ht (l ^ j) 
     Ht (l ^ j) (sch.obj Z) n 0 →+ Ht (l ^ j) (sch.obj X) m 0 :=
   (GT.g (l ^ j) h hn (neg_add_cancel (d : ℤ))).comp (twHom (l ^ j) (ι ≫ p) (add_zero (-(d : ℤ))) (w d j) n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem gZ_apply {l : ℕ} (GT : GysT k) (w : ∀ (i : ℤ) (j : ℕ), Ht (l ^ j) (sch.obj (S k)) 0 (-i)) (j : ℕ)
     {d e : ℕ} {Z X : Scheme.{0}} {p : X ⟶ S k} {ι : Z ⟶ X} (h : IsPair d e p ι) {n m : ℤ} (hn : n + 2 * d = m)
     (a : Ht (l ^ j) (sch.obj Z) n 0) :
@@ -111,6 +136,13 @@ private def mkGys0 (hIn : In) {l : ℕ} [Fact l.Prime] (GT : GysT k) (hu : ∀ j
 
 end Tw
 
+/- English proof (translation)
+Introduce `hI hB l _ k _ _ hl hT hG`. Take `⟨GT⟩` from `hG`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Use `choose u v huv using hT`. Establish `hu : ∀ j : ℕ, IsUnit (((l ^ j : ℕ)) : k)`.
+
+Introduce `j`. Rewrite using `[Nat.cast_pow]`. Conclude with `(isUnit_iff_ne_zero.mpr hl).pow j`. Use `⟨mkGys0 hI GT hu (fun i j => (v i).1 j) (fun i j => (v i).2 j) ?_⟩` and prove the remaining obligations. Introduce `i j X p n`.
+
+Conclude with `(hB hI k (l ^ j) (hu j) i ((u i).1 j) ((v i).1 j) (huv i j) p n 0 (-i)).1 (add_zero (-i))`.
+-/
 theorem gysinTwistZero_exists : GysinCondition := by
   intro hI hB l _ k _ _ hl hT hG
   obtain ⟨GT⟩ := hG

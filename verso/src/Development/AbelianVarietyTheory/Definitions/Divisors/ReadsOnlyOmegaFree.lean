@@ -20,11 +20,21 @@ open Classical
 
 def stdM (κ : Type) [Zero κ] [One κ] (b a : ℕ) : Matrix (Fin b) (Fin a) κ := fun i j => if i.val = j.val then 1 else 0
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi : i.val < b` using `lt_of_lt_of_le i.2 h`. Simplify using `[topL, stdM, hi, Matrix.one_apply, Fin.ext_iff]`.
+-/
 theorem topL_stdM {κ : Type} [Zero κ] [One κ] {b a : ℕ} (h : a ≤ b) : topL a (stdM κ b a) = 1 := by
   ext i j
   have hi : i.val < b := lt_of_lt_of_le i.2 h
   simp [topL, stdM, hi, Matrix.one_apply, Fin.ext_iff]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use extensionality with `i j`. Distinguish the cases in `hi : i.val < a`. Use `congrFun (congrFun h2 ⟨i.val, hi⟩) j` as an intermediate fact.
+
+Simplify `this` using `[topL, stdM, Matrix.one_apply, Fin.ext_iff]`. Establish `hne : i.val ≠ j.val` using `by have := j.2; omega`. Simplify using `[stdM, hne, h1 i j (by omega) j.2]`. Introduce and unpack `rfl`. Use `⟨fun i j hi hj => ?_, topL_stdM h⟩` and prove the remaining obligations.
+
+Establish `hne : i.val ≠ j.val` using `by omega`. Simplify using `[stdM, hne]`.
+-/
 theorem eq_stdM_iff {κ : Type} [Zero κ] [One κ] {b a : ℕ} (h : a ≤ b) (y : Matrix (Fin b) (Fin a) κ) :
     (LowZero a y ∧ topL a y = 1) ↔ y = stdM κ b a := by
   constructor
@@ -40,9 +50,19 @@ theorem eq_stdM_iff {κ : Type} [Zero κ] [One κ] {b a : ℕ} (h : a ≤ b) (y 
     have hne : i.val ≠ j.val := by omega
     simp [stdM, hne]
 
+/- English proof (translation)
+The claim follows from `(D.sp.W_rank _ (Nat.le_add_left _ _) i.2).le.trans (r_le_V i)`.
+-/
 theorem rank_W_le_V : (Wc D i).rank ≤ (Vc D i).rank :=
   (D.sp.W_rank _ (Nat.le_add_left _ _) i.2).le.trans (r_le_V i)
 
+/- English proof (translation)
+Introduce `y y' h`. Establish `hg : ∀ PP ∈ R.Pg, y PP = y' PP` using `fun PP hp => h PP (Finset.mem_union_left _ hp)`. Establish `hq : ∀ PP ∈ Q, y PP = y' PP` using `fun PP hp => h PP (Finset.mem_union_right _ hp)`. Unfold `omegaFree`. Use `congr 1`.
+
+Conclude with `if_congr ⟨fun H PP hp => (hg PP hp) ▸ H PP hp, fun H PP hp => (hg PP hp).symm ▸ H PP hp⟩ rfl rfl`. Distinguish the cases in `H : ∀ PP ∈ Q, IsUnit (topL (Wc D i).rank (y PP)).det`. Establish `H' : ∀ PP ∈ Q, IsUnit (topL (Wc D i).rank (y' PP)).det` using `fun PP hp => (hq PP hp) ▸ H PP hp`. Rewrite using `[dif_pos H, dif_pos H']`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations.
+
+Establish `: (H PP.1 PP.2).unit = (H' PP.1 PP.2).unit` using `by ext; simp [hq PP.1 PP.2]`. Rewrite using `[this]`. Establish `H' : ¬ ∀ PP ∈ Q, IsUnit (topL (Wc D i).rank (y' PP)).det` using `fun H' => H fun PP hp => (hq PP hp).symm ▸ H' PP hp`. Rewrite using `[dif_neg H, dif_neg H']`.
+-/
 theorem readsOnly_omegaFree (Q : Finset (Pl D.host.E)) (ξR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (y₀ : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP)) :
     ReadsOnly (R.Pg ∪ Q) (omegaFree R i Q ξR y₀) := by
@@ -63,6 +83,13 @@ theorem readsOnly_omegaFree (Q : Finset (Pl D.host.E)) (ξR : ∀ PP : Pl D.host
         H fun PP hp => (hq PP hp).symm ▸ H' PP hp
       rw [dif_neg H, dif_neg H']
 
+/- English proof (translation)
+Unfold `omegaFree omegaK omegaQ`. Simplify using `only [eq_stdM_iff (rank_W_le_V i)]`. Distinguish the cases in `h1 : ∀ PP ∈ Q, LowZero (Wc D i).rank (y PP)`. Rewrite using `[if_pos h1, one_mul]`. Use `congr 1`.
+
+Distinguish the cases in `H : ∀ PP ∈ Q, IsUnit (topL (Wc D i).rank (y PP)).det`. Rewrite using `[dif_pos H, dif_pos (fun PP hp => ⟨h1 PP hp, H PP hp⟩)]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[dif_neg H, dif_neg (fun H' => H fun PP hp => (H' PP hp).2)]`.
+
+Rewrite using `[if_neg h1, zero_mul, dif_neg (fun H' => h1 fun PP hp => (H' PP hp).1), mul_zero]`.
+-/
 theorem omegaK_mul_omegaQ (Q : Finset (Pl D.host.E)) (ξR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (y : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP)) :
     omegaK R.Pg y * omegaQ Q (Wc D i).rank ξR (-1) y =
@@ -79,6 +106,11 @@ theorem omegaK_mul_omegaQ (Q : Finset (Pl D.host.E)) (ξR : ∀ PP : Pl D.host.E
     · rw [dif_neg H, dif_neg (fun H' => H fun PP hp => (H' PP hp).2)]
   · rw [if_neg h1, zero_mul, dif_neg (fun H' => h1 fun PP hp => (H' PP hp).1), mul_zero]
 
+/- English proof (translation)
+Use `⟨fun PP => if PP ∈ Q then stdM (kP PP) _ _ else y₀ PP, ?_⟩` and prove the remaining obligations. Unfold `omegaFree`. Establish `h1 : ∀ PP ∈ R.Pg, (if PP ∈ Q then stdM (kP PP) _ _ else y₀ PP) = y₀ PP` using `fun PP hp => if_neg (Finset.disjoint_left.1 hd hp)`. Establish `h2 : ∀ PP ∈ Q, IsUnit (topL (Wc D i).rank (if PP ∈ Q then stdM (kP PP) _ _ else y₀ PP)).det` using `fun PP hp => by`. Rewrite using `[if_pos hp, topL_stdM (rank_W_le_V i)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_pos h1, dif_pos h2, one_mul]`. Conclude with `Finset.prod_ne_zero_iff.2 fun _ _ => Units.ne_zero _`.
+-/
 theorem omegaFree_ne_zero (Q : Finset (Pl D.host.E)) (hd : Disjoint R.Pg Q) (ξR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (y₀ : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP)) :
     ∃ y, omegaFree R i Q ξR y₀ y ≠ 0 := by
@@ -91,12 +123,20 @@ theorem omegaFree_ne_zero (Q : Finset (Pl D.host.E)) (hd : Disjoint R.Pg Q) (ξR
   rw [if_pos h1, dif_pos h2, one_mul]
   exact Finset.prod_ne_zero_iff.2 fun _ _ => Units.ne_zero _
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem phiOf_iff_phiIs (t : T0) {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
     (ι : La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)) (N : Submodule (𝓞 D.host.E) La)
     (φ : (Fin (Vc D i).rank → La ⧸ N) → ℂ) :
     PhiOf R i (R.Q t) (fun y => omegaK R.Pg y * omegaQ (R.Q t) (Wc D i).rank (R.xiR t) (-1) y) ι N φ ↔
       PhiIs R i (RingHom.id ℂ) t ι N φ := Iff.rfl
 
+/- English proof (translation)
+Take `⟨hv, e, he, hex, hall⟩` from `h`. Use `⟨hv, e, he, hex, fun T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[hall T hT, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem VecOf.smul {Q : Finset (Pl D.host.E)} {Ω : DatFn D i} {φ : WO (Vc D i) (Wc D i) → ℂ} (h : VecOf R i Q Ω φ) (c : ℂ) :
     VecOf R i Q (c • Ω) (c • φ) := by
   obtain ⟨hv, e, he, hex, hall⟩ := h

@@ -5,6 +5,13 @@ open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 AfQ Plc sim mat comp rat le
 open scoped TensorProduct
 open GroundTheory.Global.AdeleBaseChange (finiteAdeleMap below finiteAdeleMap_apply)
 
+/- English proof (translation)
+Introduce `p _ E _ _`. Set `e : AfQ` to `⟨fun v => if (p : 𝓞 ℚ) ∈ v.asIdeal then 1 else 0, Filter.Eventually.of_forall fun v => by`. Distinguish the cases in `h : (p : 𝓞 ℚ) ∈ v.asIdeal`. Simplify `one_mem (v.adicCompletionIntegers ℚ)` using `[h]`. Simplify `zero_mem (v.adicCompletionIntegers ℚ)⟩` using `[h]`.
+
+Establish `he : ∀ v : Plc ℚ, e v = if (p : 𝓞 ℚ) ∈ v.asIdeal then 1 else 0` using `fun v => rfl`. Use `⟨e, fun v => ⟨fun h => by rw [he, if_pos h], fun h => by rw [he, if_neg h]⟩, fun w => ?_⟩` and prove the remaining obligations. Establish `hiff : (p : 𝓞 ℚ) ∈ (below ℚ w).asIdeal ↔ (p : 𝓞 E) ∈ w.asIdeal` using `by show (p : 𝓞 ℚ) ∈ w.asIdeal.under (𝓞 ℚ) ↔ _`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, map_natCast]`. Establish `hl : pLoc E w (finiteAdeleMap ℚ E e) = GroundTheory.Global.SemiLocal.completionMap (below ℚ w) w (e (below ℚ w))` using `rfl`.
+
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[hl, he, if_pos (hiff.2 h), map_one]`. Rewrite using `[hl, he, if_neg (fun h' => h (hiff.1 h')), map_zero]`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pIdemP :
     IdemP := by
   classical

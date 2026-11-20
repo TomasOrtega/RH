@@ -14,6 +14,11 @@ open ReciprocityTheory.AnForm.M (FinHolAtlas)
 
 noncomputable section
 
+/- English proof (translation)
+Take `⟨δ, hδ, hsub⟩` from `hK.exists_cthickening_subset_open hW hKW`. Establish `hcont : ContinuousOn (fderiv ℝ f) W` using `ContDiffOn.continuousOn_fderiv_of_isOpen (fun y hy => (hf y hy).contDiffWithinAt) hW le_rfl`. Take `⟨L, hL⟩` from `(hK.cthickening (r := δ)).exists_bound_of_continuousOn (hcont.mono hsub)`. Use `⟨δ, hδ, L, fun z hz y hy => ⟨hsub (closedBall_subset_cthickening hz δ hy), ?_⟩⟩` and prove the remaining obligations. Establish `hB : closedBall z δ ⊆ W` using `(closedBall_subset_cthickening hz δ).trans hsub`.
+
+Conclude with `(convex_closedBall z δ).norm_image_sub_le_of_norm_fderiv_le (fun w hw => (hf w (hB hw)).differentiableAt one_ne_zero) (fun w hw => hL w (closedBall_subset_cthickening hz δ hw)) (mem_closedBall_self hδ.le) hy`.
+-/
 theorem exists_lipschitz_near_compact {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [ProperSpace E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {K W : Set E}
     (hK : IsCompact K) (hW : IsOpen W) (hKW : K ⊆ W) (hf : ∀ y ∈ W, ContDiffAt ℝ 1 f y) :
@@ -32,6 +37,19 @@ namespace PotentialCharts
 
 variable {D : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas D X} (P : PotentialCharts A)
 
+/- English proof (translation)
+Use `set K := (P.chart j) '' (closure (P.mid j) ∩ closure (P.mid k)) with hKdef`. Use `set W := (P.chart j).target ∩ (P.chart j).symm ⁻¹' (P.chart k).source with hWdef`. Establish `hK : IsCompact K` using `(isClosed_closure.inter isClosed_closure).isCompact.image_of_continuousOn ((P.chart j).continuousOn.mono (inter_subset_left.trans (P.closure_mid j)))`. Establish `hW : IsOpen W` using `(P.chart j).continuousOn_symm.isOpen_inter_preimage (P.chart j).open_target (P.chart k).open_source`. Establish `hKW : K ⊆ W`.
+
+Introduce and unpack `_ ⟨x, ⟨hxj, hxk⟩, rfl⟩`. Conclude with `⟨(P.chart j).map_source (P.closure_mid j hxj), by`. Simplify using `[(P.chart j).left_inv (P.closure_mid j hxj), P.closure_mid k hxk]⟩`. Establish `hτ : ∀ y ∈ W, ContDiffAt ℝ 1 (P.chart k ∘ (P.chart j).symm) y`. Introduce `y hy`.
+
+Establish `h` using `analyticAt_transition (P.compat j) (P.compat k) ((P.chart j).map_target hy.1) hy.2`. Rewrite `h` using `[(P.chart j).right_inv hy.1]`. Conclude with `(h.restrictScalars (𝕜 := ℝ)).contDiffAt`. Establish `hg : ∀ y ∈ W, ContDiffAt ℝ 1 (fun y => P.q j y - P.q k ((P.chart k ∘ (P.chart j).symm) y)) y`. Introduce `y hy`.
+
+Establish `h1 : ContDiffAt ℝ 1 (P.q j) y` using `((P.q_smooth j).contDiffAt ((P.chart j).open_target.mem_nhds hy.1)).of_le (by simp)`. Establish `h2 : ContDiffAt ℝ 1 (P.q k) ((P.chart k ∘ (P.chart j).symm) y)` using `((P.q_smooth k).contDiffAt ((P.chart k).open_target.mem_nhds ((P.chart k).map_source hy.2))).of_le (by simp)`. Conclude with `h1.sub (h2.comp y (hτ y hy))`. Take `⟨δ₁, hδ₁, L₁, h₁⟩` from `exists_lipschitz_near_compact hK hW hKW hτ`. Take `⟨δ₂, hδ₂, L₂, h₂⟩` from `exists_lipschitz_near_compact hK hW hKW hg`.
+
+Use `⟨min δ₁ δ₂, lt_min hδ₁ hδ₂, max L₁ L₂, fun x hx y hy => ?_⟩` and prove the remaining obligations. Establish `hxK : P.chart j x ∈ K` using `mem_image_of_mem _ ⟨subset_closure hx.1, subset_closure hx.2⟩`. Take `⟨hyW, e₁⟩` from `h₁ _ hxK y (closedBall_subset_closedBall (min_le_left _ _) hy)`. Take `⟨-, e₂⟩` from `h₂ _ hxK y (closedBall_subset_closedBall (min_le_right _ _) hy)`. Establish `hxj : (P.chart j).symm (P.chart j x) = x` using `(P.chart j).left_inv (P.mid_subset_source j hx.1)`.
+
+Simplify using `only [Function.comp_apply, hxj] at e₁ e₂`. Establish `hn : 0 ≤ ‖y - P.chart j x‖` using `norm_nonneg _`. Use `⟨hyW.1, hyW.2, e₁.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hn), ?_⟩` and prove the remaining obligations. Rewrite `e₂` using `[Real.norm_eq_abs]`. Conclude with `(le_abs_self _).trans (e₂.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) hn))`.
+-/
 theorem exists_transfer_pair [CompactSpace X] (j k : Fin P.N) :
     ∃ δ > 0, ∃ L : ℝ, ∀ x ∈ P.mid j ∩ P.mid k, ∀ y ∈ closedBall (P.chart j x) δ,
       y ∈ (P.chart j).target ∧ (P.chart j).symm y ∈ (P.chart k).source ∧
@@ -75,6 +93,13 @@ theorem exists_transfer_pair [CompactSpace X] (j k : Fin P.N) :
   rw [Real.norm_eq_abs] at e₂
   exact (le_abs_self _).trans (e₂.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) hn))
 
+/- English proof (translation)
+Use `choose δ hδ L hL using fun p : Fin P.N × Fin P.N => P.exists_transfer_pair p.1 p.2`. Distinguish the cases in `hN : Nonempty (Fin P.N × Fin P.N)`. Take `⟨p₀, hp₀⟩` from `Finite.exists_min δ`. Establish `hS : 0 ≤ ∑ p, |L p|` using `Finset.sum_nonneg fun p _ => abs_nonneg (L p)`. Use `⟨δ p₀, hδ p₀, 1 + ∑ p, |L p|, by linarith, fun j k x hx y hy => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h1, h2, h3, h4⟩` from `hL (j, k) x hx y (closedBall_subset_closedBall (hp₀ (j, k)) hy)`. Establish `hLp : L (j, k) ≤ 1 + ∑ p, |L p|`. Use `Finset.single_le_sum (fun p _ => abs_nonneg (L p)) (Finset.mem_univ (j, k))` as an intermediate fact. Combine the linear relations using `[le_abs_self (L (j, k))]`. Establish `hn` using `norm_nonneg (y - P.chart j x)`.
+
+Conclude with `⟨h1, h2, h3.trans (mul_le_mul_of_nonneg_right hLp hn), h4.trans (mul_le_mul_of_nonneg_right hLp hn)⟩`. Conclude with `⟨1, one_pos, 1, le_rfl, fun j k => (hN ⟨(j, k)⟩).elim⟩`.
+-/
 theorem exists_transfer [CompactSpace X] :
     ∃ δ > 0, ∃ L : ℝ, 1 ≤ L ∧ ∀ j k : Fin P.N, ∀ x ∈ P.mid j ∩ P.mid k,
       ∀ y ∈ closedBall (P.chart j x) δ,
@@ -98,6 +123,47 @@ theorem exists_transfer [CompactSpace X] :
 
 end PotentialCharts
 
+/- English proof (translation)
+Introduce `X _ _ _ D A B ρ`. Take `⟨δ, hδ, hmarg⟩` from `B.exists_margin`. Take `⟨Q, hQ⟩` from `B.exists_bound_q hmarg`. Take `⟨Cφ, hCφ⟩` from `B.bdd`. Take `⟨δ₁, hδ₁, L, hL, hT⟩` from `B.exists_transfer`.
+
+Take `⟨b, hb⟩` from `mollifier_exists_bound ρ`. Establish `hb0 : 0 ≤ b` using `(ρ.nonneg 0).trans (hb 0)`. Take `⟨c₀, hc₀⟩ : ∃ c : ℝ, c = Real.pi ^ D * (3 / 2 : ℝ) ^ (2 * D) * b` from `⟨_, rfl⟩`. Establish `hc₀0 : 0 ≤ c₀` using `by rw [hc₀]; positivity`. Take `⟨B₀, hB₀⟩ : ∃ c : ℝ, c = |Q| + |Cφ|` from `⟨_, rfl⟩`.
+
+Establish `hB₀0 : 0 ≤ B₀` using `by rw [hB₀]; positivity`. Establish `hball : ∀ k : Fin B.N, ∀ x ∈ B.mid k, ∀ r, r ≤ δ → closedBall (B.chart k x) r ⊆ (B.chart k).target` using `fun k x hx r hr => (closedBall_subset_closedBall hr).trans ((closedBall_subset_cthickening (mem_image_of_mem _ (subset_closure hx)) δ).trans (hmarg k))`. Establish `hbd : ∀ k : Fin B.N, ∀ x ∈ B.mid k, ∀ y ∈ closedBall (B.chart k x) δ, |B.u k y| ≤ B₀`. Introduce `k x hx y hy`. Establish `e1` using `hQ k y (closedBall_subset_cthickening (mem_image_of_mem _ (subset_closure hx)) δ hy)`.
+
+Establish `e2` using `hCφ ((B.chart k).symm y)`. Establish `e3 : |B.u k y| ≤ |B.q k y| + |B.ph ((B.chart k).symm y)|` using `abs_add_le _ _`. Rewrite using `[hB₀]`. Combine the linear relations using `[le_abs_self Q, le_abs_self Cφ]`. Establish `hpsh : ∀ k : Fin B.N, IsPsh (B.chart k).target (B.u k)` using `fun k => B.u_psh k`.
+
+Take `⟨C₁, hC₁⟩ : ∃ c : ℝ, c = L + 2` from `⟨_, rfl⟩`. Establish `hC₁3 : 3 ≤ C₁` using `by linarith`. Take `⟨a, ha⟩ : ∃ c : ℝ, c = |Real.log (δ / C₁)|` from `⟨_, rfl⟩`. Establish `ha0 : 0 ≤ a` using `ha ▸ abs_nonneg _`. Establish `hlog4 : 0 ≤ Real.log (4 * C₁ ^ 2)` using `Real.log_nonneg (by nlinarith)`.
+
+Take `⟨E, hE⟩ : ∃ c : ℝ, c = (1 + c₀) * (4 * Real.log (4 * C₁ ^ 2) * B₀)` from `⟨_, rfl⟩`. Take `⟨C, hC⟩ : ∃ c : ℝ, c = max E L` from `⟨_, rfl⟩`. Establish `hCE : E ≤ C` using `hC ▸ le_max_left _ _`. Establish `hCL : L ≤ C` using `hC ▸ le_max_right _ _`. Establish `hC₁2 : 0 < C₁ + 2` using `by linarith`.
+
+Use `⟨C, min δ₁ (min (δ / (C₁ + 2)) (Real.exp (-(Real.exp 1 + 2 * a)))), lt_min hδ₁ (lt_min (div_pos hδ hC₁2) (Real.exp_pos _)), ?_⟩` and prove the remaining obligations. Introduce `t ht ht₀`. Simplify using `only [lt_min_iff] at ht₀`. Take `⟨htδ₁, htδ, hte⟩` from `ht₀`. Establish `hCt : t * (C₁ + 2) < δ` using `(lt_div_iff₀ hC₁2).1 htδ`.
+
+Establish `hCt' : t * (C₁ + 2) = C₁ * t + 2 * t` using `by ring`. Establish `hC₁t : C₁ * t ≤ δ` using `by linarith`. Establish `hC₁tlt : C₁ * t < δ` using `by linarith`. Establish `htLt : t ≤ L * t` using `le_mul_of_one_le_left ht.le hL`. Establish `hLt : L * t ≤ C₁ * t` using `mul_le_mul_of_nonneg_right (by linarith) ht.le`.
+
+Establish `h2t : 2 * t ≤ C₁ * t` using `mul_le_mul_of_nonneg_right (by linarith) ht.le`. Take `⟨hℓa, -⟩` from `log_inv_facts ht ha0 hte`. Establish `hℓ0 : 0 < Real.log t⁻¹` using `by linarith [Real.exp_pos 1]`. Establish `hden : Real.log t⁻¹ / 2 ≤ Real.log (δ / (C₁ * t))`. Rewrite using `[show δ / (C₁ * t) = (δ / C₁) * t⁻¹ by field_simp, Real.log_mul (div_pos hδ (by linarith)).ne' (inv_pos.2 ht).ne']`.
+
+Use `neg_abs_le (Real.log (δ / C₁))` as an intermediate fact. Rewrite `this` using `[← ha]`. Combine the linear relations using `[Real.exp_pos 1]`. Establish `hden0 : 0 < Real.log (δ / (C₁ * t))` using `by linarith`. Establish `key : ∀ j k : Fin B.N, ∀ x ∈ B.mid j ∩ B.mid k, B.phReg ρ t j x - B.phReg ρ t k x ≤ E / Real.log t⁻¹ + L * t`.
+
+Introduce `j k x hx`. Establish `hpj` using `hpsh j`. Establish `hpk` using `hpsh k`. Establish `hi : molli ρ t (B.u j) (B.chart j x) ≤ polyMax (B.u j) (B.chart j x) t` using `(((mollify_thm D ρ _ (B.u j) (B.chart j).open_target hpj).1 t ht).2.2.2 (B.chart j x) (hball j x hx.1 t (by linarith))).2`. Establish `hii : polyMax (B.u j) (B.chart j x) t ≤ polyMax (B.u k) (B.chart k x) (L * t) + (B.q j (B.chart j x) - B.q k (B.chart k x)) + L * t`.
+
+Use `polyMax_le' ht.le fun y hy => ?_` and prove the remaining obligations. Take `⟨-, hyk, hτ, hg⟩` from `hT j k x hx y (closedBall_subset_closedBall htδ₁.le hy)`. Establish `hyt : ‖y - B.chart j x‖ ≤ t` using `by rw [← dist_eq_norm]; exact hy`. Establish `hLy` using `mul_le_mul_of_nonneg_left hyt (by linarith : (0 : ℝ) ≤ L)`. Establish `hτ' : B.chart k ((B.chart j).symm y) ∈ closedBall (B.chart k x) (L * t)`.
+
+Rewrite using `[mem_closedBall, dist_eq_norm]`. Conclude with `hτ.trans hLy`. Establish `hle` using `le_polyMax hpk.1 (hball k x hx.2 (L * t) (by linarith)) hτ'`. Establish `hu : B.u j y = B.u k (B.chart k ((B.chart j).symm y)) + (B.q j y - B.q k (B.chart k ((B.chart j).symm y)))`. Simplify using `only [BoundedPshData.u, PotentialCharts.chartFun, (B.chart k).left_inv hyk]`.
+
+Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish `mono : ∀ s s', 0 ≤ s → s ≤ s' → s' ≤ δ → polyMax (B.u k) (B.chart k x) s ≤ polyMax (B.u k) (B.chart k x) s'` using `fun s s' hs hss' hs' => polyMax_mono' hpk.1 hs hss' (hball k x hx.2 _ hs')`. Establish `e1` using `mono (L * t) (C₁ * t) (by linarith) hLt hC₁t`. Establish `h4C : 0 < 4 * C₁` using `by linarith`.
+
+Establish `hq : t / (4 * C₁) ≤ t / 4` using `div_le_div_of_nonneg_left ht.le (by norm_num) (by linarith)`. Establish `e2` using `mono (t / (4 * C₁)) (t / 4) (by positivity) hq (by linarith)`. Establish `e3` using `mono (t / 4) (2 * t) (by positivity) (by linarith) (by linarith)`. Establish `e4` using `mono (2 * t) (C₁ * t) (by positivity) h2t hC₁t`. Establish `hiv` using `h0 D ρ b _ (B.u k) (B.chart k x) t (B.chart k).open_target hpk ht (hball k x hx.2 _ (by linarith)) hb`.
+
+Rewrite `hiv` using `[← hc₀]`. Establish `hv` using `h1 D _ (B.u k) (B.chart k x) δ t C₁ (B.chart k).open_target hpk (hball k x hx.2 δ le_rfl) ht (by linarith) hC₁tlt`. Establish `hMδ : polyMax (B.u k) (B.chart k x) δ ≤ B₀` using `polyMax_le' hδ.le fun y hy => (le_abs_self _).trans (hbd k x hx.2 y hy)`. Establish `hMC : -B₀ ≤ polyMax (B.u k) (B.chart k x) (C₁ * t)` using `(neg_le_of_abs_le (hbd k x hx.2 _ (mem_closedBall_self hδ.le))).trans (le_polyMax hpk.1 (hball k x hx.2 _ hC₁t) (mem_closedBall_self (by positivity)))`. Establish `hN : polyMax (B.u k) (B.chart k x) δ - polyMax (B.u k) (B.chart k x) (C₁ * t) ≤ 2 * B₀`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hO : polyMax (B.u k) (B.chart k x) (C₁ * t) - polyMax (B.u k) (B.chart k x) (t / (4 * C₁)) ≤ 4 * Real.log (4 * C₁ ^ 2) * B₀ / Real.log t⁻¹`. Use `hv.trans ?_` and prove the remaining obligations. Rewrite using `[div_le_div_iff₀ hden0 hℓ0]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hc : c₀ * (polyMax (B.u k) (B.chart k x) (2 * t) - polyMax (B.u k) (B.chart k x) (t / 4)) ≤ c₀ * (polyMax (B.u k) (B.chart k x) (C₁ * t) - polyMax (B.u k) (B.chart k x) (t / (4 * C₁)))` using `mul_le_mul_of_nonneg_left (by linarith) hc₀0`. Establish `hfin : (1 + c₀) * (polyMax (B.u k) (B.chart k x) (C₁ * t) - polyMax (B.u k) (B.chart k x) (t / (4 * C₁))) ≤ E / Real.log t⁻¹`. Rewrite using `[hE, mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hO (by linarith)`. Establish `hsum : polyMax (B.u k) (B.chart k x) (L * t) - polyMax (B.u k) (B.chart k x) (2 * t) + c₀ * (polyMax (B.u k) (B.chart k x) (2 * t) - polyMax (B.u k) (B.chart k x) (t / 4)) ≤ (1 + c₀) * (polyMax (B.u k) (B.chart k x) (C₁ * t) - polyMax (B.u k) (B.chart k x) (t / (4 * C₁)))`.
+
+Establish `h' : polyMax (B.u k) (B.chart k x) (L * t) - polyMax (B.u k) (B.chart k x) (2 * t) ≤ polyMax (B.u k) (B.chart k x) (C₁ * t) - polyMax (B.u k) (B.chart k x) (t / (4 * C₁))`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [BoundedPshData.phReg, BoundedPshData.smoothed]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `j k x hx`. Establish `hEC : E / Real.log t⁻¹ + L * t ≤ C / Real.log t⁻¹ + C * t` using `add_le_add (div_le_div_of_nonneg_right hCE hℓ0.le) (mul_le_mul_of_nonneg_right hCL ht.le)`. Conclude with `abs_sub_le_iff.2 ⟨(key j k x hx).trans hEC, (key k j x ⟨hx.2, hx.1⟩).trans hEC⟩`.
+-/
 theorem BoundedChartComparison.proof (h0 : MollifiedLowerBound.Statement)
     (h1 : PolyMaxOscillation.Statement) : BoundedChartComparison.Statement := by
   intro X _ _ _ D A B ρ

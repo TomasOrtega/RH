@@ -9,6 +9,9 @@ noncomputable section
 variable {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {ιB : Type} [Fintype ιB]
   {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `k`. Simplify using the standard rewrite rules. Introduce `b`. Simplify using the standard rewrite rules.
+-/
 theorem eval₂Hom_comp (φ : Ω →+* ℂ) (y : ιB → Ω) :
     eval₂Hom (φ.comp (algebraMap K Ω)) (φ ∘ y) = φ.comp (aeval y : MvPolynomial ιB K →ₐ[K] Ω).toRingHom := by
   apply MvPolynomial.ringHom_ext
@@ -19,6 +22,13 @@ def coef (y : ιB → Ω) (a : Ω) (P : Polynomial (MvPolynomial ιB K)) (b : ι
   -(xTerm (aeval y : MvPolynomial ιB K →ₐ[K] Ω).toRingHom a b P) /
     (Polynomial.derivative P).eval₂ (aeval y : MvPolynomial ιB K →ₐ[K] Ω).toRingHom a
 
+/- English proof (translation)
+Use `set σ := φ.comp (algebraMap K Ω)`. Establish `hd` using `hasFDerivAt_eval₂ σ P hh hg`. Establish `hz : HasFDerivAt (fun z => P.eval₂ (eval₂Hom σ (h z)) (g z)) (0 : V →L[ℂ] ℂ) 0` using `(hasFDerivAt_const (0 : ℂ) (0 : V)).congr_of_eventuallyEq (hrel.mono fun z hz => hz)`. Establish `heq` using `hd.unique hz`. Rewrite `heq` using `[h0, g0, eval₂Hom_comp]`.
+
+Simplify using `only [← Polynomial.hom_eval₂, ← map_xTerm] at heq`. Use `set E := (Polynomial.derivative P).eval₂ (aeval y : MvPolynomial ιB K →ₐ[K] Ω).toRingHom a`. Establish `hE : φ E ≠ 0` using `(map_ne_zero φ).mpr hP'`. Apply `smul_right_injective (V →L[ℂ] ℂ) hE` to reduce the goal to its premises. Simplify using `only`.
+
+Rewrite using `[eq_neg_of_add_eq_zero_left heq, Finset.smul_sum]`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, coef, map_div₀, map_neg, mul_div_cancel₀ _ hE, neg_smul]`.
+-/
 theorem deriv_rel (φ : Ω →+* ℂ) {y : ιB → Ω} {a : Ω} (P : Polynomial (MvPolynomial ιB K))
     (hP' : (Polynomial.derivative P).eval₂ (aeval y : MvPolynomial ιB K →ₐ[K] Ω).toRingHom a ≠ 0)
     {h : V → ιB → ℂ} {g : V → ℂ} {Dh : ιB → V →L[ℂ] ℂ} {Dg : V →L[ℂ] ℂ}

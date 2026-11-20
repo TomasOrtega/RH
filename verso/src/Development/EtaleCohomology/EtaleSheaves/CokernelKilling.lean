@@ -22,6 +22,11 @@ def Assemble : Prop := Coprod → ∀ (q : ℕ) [NeZero q] (i : ℤ) {D Y' : Com
     Et e ∧ SpS e ∧ IsPushout φ' e u φ'' ∧
     pull _ (sch.map (Spec.map u)) (tw q i) m y ∈ Set.range (pull _ (sch.map (Spec.map φ'')) (tw q i) m)
 
+/- English proof (translation)
+Introduce `hH q _ i n A Y φ hq P _ het _ D d hD hpts Y' w φ' hpo m _ y`. Establish `hB1 : B1` using `hH.2.2.2.2.2.2.1`. Establish `hloc : ∀ r : Ideal D, r.IsPrime → ∃ (D₁ : CommRingCat.{0}) (e : D ⟶ D₁) (Q₁ : Ideal D₁), Et e ∧ Q₁.IsPrime ∧ Q₁.comap e.hom = r ∧ ∃ (Y₁ : CommRingCat.{0}) (u : Y' ⟶ Y₁) (φ₁ : D₁ ⟶ Y₁), IsPushout φ' e u φ₁ ∧ pull _ (sch.map (Spec.map u)) (tw q i) m y ∈ Set.range (pull _ (sch.map ( …`. Introduce `r hr`. Take `⟨O, o, Q, hIE, hQ, hQr, hBC⟩` from `hpts r hr`.
+
+Take `⟨D₁, e, Q₁, he, hQ₁, hc, rest⟩` from `hP hB1 q i φ hq D d O o hIE hBC Y' w φ' hpo m y Q hQ`. Conclude with `⟨D₁, e, Q₁, he, hQ₁, hc.trans hQr, rest⟩`. Take `⟨E, e, Y'', u, φ'', he, hs, hpo', hy⟩` from `hA hC q i φ' m y hloc`. Conclude with `⟨E, e, Y'', u, φ'', he, hs, het d e hD he, hpo', hy⟩`.
+-/
 theorem KillCok_of (hC : Coprod) (hP : Pointwise) (hA : Assemble) : LateralTheory.E.DescLocPf.Fine.KillCok := by
   intro hH q _ i n A Y φ hq P _ het _ D d hD hpts Y' w φ' hpo m _ y
   have hB1 : B1 := hH.2.2.2.2.2.2.1

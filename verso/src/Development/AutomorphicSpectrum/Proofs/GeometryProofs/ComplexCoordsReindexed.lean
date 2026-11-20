@@ -13,12 +13,20 @@ namespace GlobalTheory.CompanionTheory.Ar.CoordsDown
 
 variable {X X' : Scheme.{0}} {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Apply `isUnit_of_map_unit φ` to reduce the goal to its premises. Rewrite using `[map_natCast]`. Conclude with `isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 hr.ne_zero)`.
+-/
 theorem isUnit_natCast_of_local {A : Type*} [CommRing A] (φ : A →+* ℂ) [IsLocalHom φ] (r : ℕ) (hr : r.Prime) :
     IsUnit (r : A) := by
   apply isUnit_of_map_unit φ
   rw [map_natCast]
   exact isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 hr.ne_zero)
 
+/- English proof (translation)
+Establish `hz : IsLocalHom (Scheme.stalkClosedPointTo z).hom` using `inferInstance`. Establish `hu : IsUnit ((r : X'.presheaf.stalk (centre z)))` using `isUnit_natCast_of_local (Scheme.stalkClosedPointTo z).hom r hr`. Establish `hu' : IsUnit ((r : Ω))`. Use `hu.map (genMap ξ' ⟨centre z, h⟩)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+
+Take `⟨u, hu1⟩` from `hu.exists_right_inv`. Use `⟨hu'.ne_zero, ⟨(r : X'.presheaf.stalk (centre z)), map_natCast _ _⟩, ⟨u, ?_⟩⟩` and prove the remaining obligations. Establish `e` using `congrArg (genMap ξ' ⟨centre z, h⟩) hu1`. Rewrite `e` using `[map_mul, map_natCast, map_one]`. Conclude with `eq_inv_of_mul_eq_one_right e`.
+-/
 theorem unitAt_centre {ξ' : Spec (CommRingCat.of Ω) ⟶ X'} (z : Spec (CommRingCat.of ℂ) ⟶ X')
     (h : genPt ξ' ⤳ centre z) (r : ℕ) (hr : r.Prime) : unitAt ξ' ⟨centre z, h⟩ (r : Ω) := by
   have hz : IsLocalHom (Scheme.stalkClosedPointTo z).hom := inferInstance
@@ -32,6 +40,9 @@ theorem unitAt_centre {ξ' : Spec (CommRingCat.of Ω) ⟶ X'} (z : Spec (CommRin
   rw [map_mul, map_natCast, map_one] at e
   exact eq_inv_of_mul_eq_one_right e
 
+/- English proof (translation)
+Establish `e` using `Scheme.Hom.stalkSpecializes_stalkMap g _ _ q.2`. Establish `e2` using `congrArg (fun t => (t ≫ Scheme.stalkClosedPointTo ξ').hom s) e`. Establish `e3` using `Scheme.stalkClosedPointTo_comp ξ' g`. Establish `e4` using `congrArg (fun t => (X.presheaf.stalkSpecializes h ≫ t).hom s) e3`. Conclude with `e2.symm.trans e4.symm`.
+-/
 theorem genMap_stalkMap (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (g : X' ⟶ X) (q : Cpt ξ')
     (h : genPt (ξ' ≫ g) ⤳ g q.1) (s : X.presheaf.stalk (g q.1)) :
     genMap ξ' q ((g.stalkMap q.1).hom s) = genMap (ξ' ≫ g) ⟨g q.1, h⟩ s := by
@@ -41,6 +52,13 @@ theorem genMap_stalkMap (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (g : X' ⟶ X) (
   have e4 := congrArg (fun t => (X.presheaf.stalkSpecializes h ≫ t).hom s) e3
   exact e2.symm.trans e4.symm
 
+/- English proof (translation)
+Take `⟨h1, s, hs, rfl⟩` from `hv`. Establish `ha : a ∈ regAt (ξ' ≫ g) ⟨g (centre z), h⟩`. Rewrite using `[← hreg]`. Conclude with `⟨s, hs⟩`. Take `⟨s₀, hs₀⟩` from `ha`.
+
+Establish `e : (g.stalkMap (centre z)).hom s₀ = s`. Apply `hinj.inj ⟨centre z, h'⟩` to reduce the goal to its premises. Rewrite using `[genMap_stalkMap ξ' g ⟨centre z, h'⟩ h s₀]`. Conclude with `hs₀.trans hs.symm`. Substitute `e` using the available equality.
+
+Use `⟨h, s₀, hs₀, ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun t => t.hom s₀) (Scheme.stalkClosedPointTo_comp z g)`.
+-/
 theorem valAt_down {ξ' : Spec (CommRingCat.of Ω) ⟶ X'} (g : X' ⟶ X) (hinj : IsCptGen ξ')
     (z : Spec (CommRingCat.of ℂ) ⟶ X') (h' : genPt ξ' ⤳ centre z)
     (h : genPt (ξ' ≫ g) ⤳ g (centre z))
@@ -59,6 +77,13 @@ theorem valAt_down {ξ' : Spec (CommRingCat.of Ω) ⟶ X'} (g : X' ⟶ X) (hinj 
   refine ⟨h, s₀, hs₀, ?_⟩
   exact congrArg (fun t => t.hom s₀) (Scheme.stalkClosedPointTo_comp z g)
 
+/- English proof (translation)
+Introduce `X X' Ω _ ξ ξ' g K J y K' J' y' bk bx z w hall hall' hgen hcomp hy hreg hw`. Substitute `hcomp` using the available equality. Use `⟨fun k => ?_, fun k c hc => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hw.1 (bk k)`. Conclude with `⟨(bx k).symm c, by simpa using hc⟩`.
+
+Take `⟨hne, hv⟩` from `hw.2 (bk k) (bx k c) hc`. Use `⟨by rwa [hy] at hne, fun i => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, e⟩` from `hv (bx k i)`. Rewrite `hr` using `[hy, hy]`. Establish `h'` using `hall' (centre z)`.
+
+Establish `h` using `hall (g (centre z))`. Use `⟨r, valAt_down g hgen z h' h (hreg ⟨centre z, h'⟩ (fun p hp hf => hf (unitAt_centre z h' p hp)) h) hr, e⟩` and prove the remaining obligations.
+-/
 theorem coordsAt_down : ∀ (X X' : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (g : X' ⟶ X) (K : Type) (J : K → Type) (y : (Σ k, J k) → Ω) (K' : Type) (J' : K' → Type) (y' : (Σ k, J' k) → Ω) (bk : K → K') (bx : ∀ k, J k ≃ J' (bk k)) (z : Spec (CommRingCat.of ℂ) ⟶ X') (w : (Σ k, J' k) → ℂ), (∀ q : X, genPt ξ ⤳ q) → (∀ q : X', genPt ξ' ⤳ q) → IsCptGen ξ' → ξ' ≫ g = ξ → (∀ k a, y' ⟨bk k, bx k a⟩ = y ⟨k, a⟩) → (∀ q' : Cpt ξ', (∀ r : ℕ, r.Prime → ¬ InFibre ξ' r q') → ∀ h : genPt ξ ⤳ g q'.1, regAt ξ' q' = regAt ξ ⟨g q'.1, h⟩) → CoordsAt ξ' y' z w → CoordsAt ξ y (z ≫ g) (fun p : (Σ k, J k) => w ⟨bk p.1, bx p.1 p.2⟩) := by
   intro X X' Ω _ ξ ξ' g K J y K' J' y' bk bx z w hall hall' hgen hcomp hy hreg hw
   subst hcomp

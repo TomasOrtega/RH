@@ -6,5 +6,8 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open Formalism.MainNotions.DIV.Cons (SCF intO)
 open GlobalTheory.LocM GlobalTheory.LocM.Cht
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LocM.FrameBase.frameBase | exact GlobalTheory.LocM.FrameBase.frameBase | (intros; apply GlobalTheory.LocM.FrameBase.frameBase <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chart_frame_base_holds : GlobalTheory.LocM.Cht.FrameBaseSt := by
   first | exact @GlobalTheory.LocM.FrameBase.frameBase | exact GlobalTheory.LocM.FrameBase.frameBase | (intros; apply GlobalTheory.LocM.FrameBase.frameBase <;> assumption)

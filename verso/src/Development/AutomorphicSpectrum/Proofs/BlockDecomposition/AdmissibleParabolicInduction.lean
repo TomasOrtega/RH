@@ -5,6 +5,9 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.BernsteinUnitaryP
 
 namespace GlobalTheory.CompanionTheory.ProdAdm
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.PfBern.Props1.isAdmissible_parInd_of _ _ (GlobalTheory.ContraProd.isAdmissible_piTensor _ _ fun i => PositivityTheory.PfBern.Props1.irrSmoothAdmissible_holds k (N i) (σ i).V (σ i).ρ (σ i).smooth (σ i).irred)`.
+-/
 theorem isAdmissible_multiProd_smIrr (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {c n : ℕ} (N : Fin c → ℕ) (h : ∑ i, N i = n)
     (σ : ∀ i, GlobalTheory.CuspRep.SmIrr (GL (Fin (N i)) k)) :

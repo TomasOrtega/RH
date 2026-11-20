@@ -25,6 +25,25 @@ open GlobalTheory.Idele WithZero
 open scoped nonZeroDivisors
 open GlobalTheory.StdDual (codiff codiff_ne_zero)
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ v hU hdvd`. Establish `h0 : differentIdeal ℤ (𝓞 F) ≠ 0` using `differentIdeal_ne_bot`. Establish `hD : ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) = (codiff F)⁻¹` using `coeIdeal_differentIdeal ℤ ℚ F (𝓞 F)`. Establish `hcnt` using `FractionalIdeal.count_coe F v h0`. Rewrite `hcnt` using `[hD, FractionalIdeal.count_inv]`.
+
+Establish `hne` using `(Associates.count_ne_zero_iff_dvd h0 v.irreducible).2 hdvd`. Use `set c := FractionalIdeal.count F v (codiff F) with hc`. Establish `hc1 : c ≤ -1` using `by omega`. Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Use `set x : Fv F v := algebraMap F (Fv F v) (π ^ c) with hx`.
+
+Establish `hval : Valued.v x = WithZero.exp (-c)`. Rewrite using `[hx, valued_algebraMap, map_zpow₀, hπ, ← WithZero.exp_zsmul, smul_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : GlobalTheory.AdelicU.singleFin v x ∈ adelicIdeal (codiff F)`.
+
+Use `(mem_adelicIdeal_iff codiff_ne_zero).2 fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[show (GlobalTheory.AdelicU.singleFin u x) u = x from GlobalTheory.AdelicU.evalV_singleFin_self u x, hval]`. Rewrite using `[show (GlobalTheory.AdelicU.singleFin v x) u = 0 from GlobalTheory.AdelicU.evalV_singleFin_ne hu x, map_zero]`.
+
+Conclude with `zero_le'`. Rewrite `hmem` using `[GlobalTheory.SplitUnram.mem_adelicIdeal_codiff_iff hψ.1 (GlobalTheory.PsiNontriv.isStd_fin_rat hψ)]`. Establish `hint : x ∈ v.adicCompletionIntegers F`. Use `(hU x).1 fun y hy => ?_` and prove the remaining obligations. Establish `hα : ∀ u, (GlobalTheory.AdelicU.singleFin v y) u ∈ u.adicCompletionIntegers F`.
+
+Introduce `u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[show (GlobalTheory.AdelicU.singleFin u y) u = y from GlobalTheory.AdelicU.evalV_singleFin_self u y]`. Conclude with `hy`.
+
+Rewrite using `[show (GlobalTheory.AdelicU.singleFin v y) u = 0 from GlobalTheory.AdelicU.evalV_singleFin_ne hu y]`. Conclude with `zero_mem _`. Establish `e : GlobalTheory.AdelicU.singleFin v y * GlobalTheory.AdelicU.singleFin v x = GlobalTheory.AdelicU.singleFin v (x * y)`. Apply `GlobalTheory.AdelicU.af_ext` to reduce the goal to its premises. Introduce `u`.
+
+Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[map_mul, GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self, mul_comm]`. Rewrite using `[map_mul, GlobalTheory.AdelicU.evalV_singleFin_ne hu, GlobalTheory.AdelicU.evalV_singleFin_ne hu, GlobalTheory.AdelicU.evalV_singleFin_ne hu, mul_zero]`. Use `hmem _ hα` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Conclude with `this`. Rewrite `hint` using `[HeightOneSpectrum.mem_adicCompletionIntegers, hval, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_dvd_different_of_psiUnr : ∀ {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ},
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ → ∀ {v : HeightOneSpectrum (𝓞 F)}, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PsiUnr ψ v →
     ¬ v.asIdeal ∣ differentIdeal ℤ (𝓞 F) := by

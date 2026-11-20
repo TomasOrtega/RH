@@ -7,6 +7,19 @@ set_option maxHeartbeats 1000000
 
 namespace GlobalTheory.Pass.LocDirect
 
+/- English proof (translation)
+Introduce `O M _ _ _ S H N hdir hA`. Apply `GlobalTheory.Pass.LocDual.lenMod_span_le_of_finset` to reduce the goal to its premises. Introduce `F hF`. Break down `S.eq_empty_or_nonempty with hS | ⟨A0, hA0⟩` into its components or cases. Establish `hF0 : (↑F : Set M) = ∅`.
+
+Rewrite `hF` using `[hS, Set.sUnion_empty]`. Conclude with `Set.subset_empty_iff.mp hF`. Rewrite using `[hF0, Submodule.span_empty, GlobalTheory.Pass.LocDual.lenMod_eq_height_map, Submodule.map_bot, Order.height_bot]`. Conclude with `zero_le`. Establish `key : ∀ G : Finset M, (↑G : Set M) ⊆ ⋃₀ S → ∃ A ∈ S, (↑G : Set M) ⊆ A`.
+
+Introduce `G`. Proceed by induction on `G using Finset.induction_on with`. Consider the case `empty => intro _; exact ⟨A0, hA0, by simp⟩`. Consider the case `insert a G ha ih`. Introduce `hG`.
+
+Rewrite `hG` using `[Finset.coe_insert, Set.insert_subset_iff]`. Take `⟨B, hB, haB⟩` from `hG.1`. Take `⟨A, hA', hGA⟩` from `ih hG.2`. Take `⟨C, hC, hAC, hBC⟩` from `hdir A hA' B hB`. Use `⟨C, hC, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.coe_insert, Set.insert_subset_iff]`. Conclude with `⟨hBC haB, hGA.trans hAC⟩`. Take `⟨A, hAS, hFA⟩` from `key F hF`. Use `le_trans ?_ (hA A hAS)` and prove the remaining obligations. Rewrite using `[GlobalTheory.Pass.LocDual.lenMod_eq_height_map, GlobalTheory.Pass.LocDual.lenMod_eq_height_map]`.
+
+Conclude with `Order.height_mono (Submodule.map_mono (Submodule.span_mono hFA))`.
+-/
 theorem lenMod_span_sUnion_le_of_directed : ∀ {O M : Type} [CommRing O] [AddCommGroup M] [Module O M]
     (S : Set (Set M)) (H : Submodule O M) (N : ℕ∞),
     (∀ A ∈ S, ∀ B ∈ S, ∃ C ∈ S, A ⊆ C ∧ B ⊆ C) →

@@ -13,16 +13,25 @@ namespace UnitaryRep
 variable {G : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G] [OpensMeasurableSpace G]
   (μ : Measure G) [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+Unfold `ccToL1`. Rewrite using `[← MemLp.toLp_add]`. Both sides reduce to the same expression.
+-/
 theorem ccToL1_add (f g : CompactlySupportedContinuousMap G ℂ) :
     ccToL1 μ (f + g) = ccToL1 μ f + ccToL1 μ g := by
   unfold ccToL1
   rw [← MemLp.toLp_add]
   rfl
 
+/- English proof (translation)
+Unfold `ccToL1`. Conclude with `MemLp.toLp_zero _`.
+-/
 theorem ccToL1_zero : ccToL1 μ (0 : CompactlySupportedContinuousMap G ℂ) = 0 := by
   unfold ccToL1
   exact MemLp.toLp_zero _
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ccToL1_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ccToL1_add, ih]`.
+-/
 theorem ccToL1_sum {ι : Type*} (s : Finset ι) (f : ι → CompactlySupportedContinuousMap G ℂ) :
     ccToL1 μ (∑ i ∈ s, f i) = ∑ i ∈ s, ccToL1 μ (f i) := by
   classical
@@ -39,6 +48,11 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   (Γ : Subgroup G) [DiscreteTopology Γ] [CompactSpace (RightCosetSpace Γ)]
   (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
+/- English proof (translation)
+Rewrite using `[UnitaryRep.ccToL1_sum, map_sum]`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, isTraceClass_iff, traceNorm_zero]`. Conclude with `ENNReal.zero_lt_top`.
+
+Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(isTraceClass_integrated_conv Γ μ (φ a) (ψ a)).add ih`.
+-/
 theorem isTraceClass_integrated_sum_conv {ι : Type*} (s : Finset ι)
     (φ ψ : ι → CompactlySupportedContinuousMap G ℂ) :
     IsTraceClass ((rightRegularRep Γ μ).integrated μ
@@ -53,6 +67,9 @@ theorem isTraceClass_integrated_sum_conv {ι : Type*} (s : Finset ι)
     rw [Finset.sum_insert ha]
     exact (isTraceClass_integrated_conv Γ μ (φ a) (ψ a)).add ih
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Conclude with `traceFormula Γ μ _ (isTraceClass_integrated_sum_conv Γ μ t φ ψ) hinv hsum hirr r hr ν hν ρ hρ`.
+-/
 theorem traceFormula_sum_conv {ι : Type*} (t : Finset ι)
     (φ ψ : ι → CompactlySupportedContinuousMap G ℂ) (f : CompactlySupportedContinuousMap G ℂ)
     (hf : f = ∑ i ∈ t, conv μ (φ i) (ψ i))

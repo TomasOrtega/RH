@@ -25,6 +25,9 @@ namespace GlobalTheory.Mem.R3.FrameCaseLifts
 
 open Formalism.IndefR.Seed Formalism.IndefR.Seed.Frm in
 
+/- English proof (translation)
+Distinguish the cases in `h : FramesExistDiagonal D Pg`. Take `⟨ΛY, -, -, ΛW, βY, -, -, βW, ⟨h1, -, -, h4⟩, h2⟩` from `h`. Conclude with `⟨ΛY, ΛW, βY, βW, ⟨h1, FrmP.isSDFrame_std _ hX 1, fun i => FrmP.isSDFrame_std _ (hV _) 1, h4⟩, fun _ => h2⟩`. Conclude with `⟨fun j => FrmP.coordL (Yc D j), fun i => FrmP.coordL (Wc D i), fun _ => 1, fun _ => 1, ⟨fun j _ => FrmP.isSDFrame_std _ (hY _) _, FrmP.isSDFrame_std _ hX 1, fun i => FrmP.isSDFrame_std _ (hV _) 1, fun i => FrmP.isSDFrame_std _ (hW _ (by omega) i.2) 1⟩, fun h' => absurd h' h⟩`.
+-/
 theorem frames_by_cases_lifts {D : D7} (hY : ∀ j, FrmC.StdLat (D.sp.Y j)) (hX : FrmC.StdLat D.sp.X')
     (hV : ∀ j, FrmC.StdLat (D.sp.V j)) (hW : ∀ j, 1 ≤ j → j ≤ D.R.m → FrmC.StdLat (D.sp.W j)) (Pg : Finset (Pl D.host.E)) :
     ∃ (ΛY : ∀ j, Submodule (𝓞 D.host.E) (Fin (Yc D j).rank → D.host.E))
@@ -39,6 +42,23 @@ theorem frames_by_cases_lifts {D : D7} (hY : ∀ j, FrmC.StdLat (D.sp.Y j)) (hX 
       ⟨fun j _ => FrmP.isSDFrame_std _ (hY _) _, FrmP.isSDFrame_std _ hX 1, fun i => FrmP.isSDFrame_std _ (hV _) 1,
         fun i => FrmP.isSDFrame_std _ (hW _ (by omega) i.2) 1⟩, fun h' => absurd h' h⟩
 
+/- English proof (translation)
+Introduce `X px I hX T Wt hWf hWc hI hrng hsel hcc hYVW hX'`. Use `set U := usedOf I T Wt with hU`. Establish `htw : ∀ a, Chr.IsTwist X.B.host I.S (I.xi a)` using `fun a => (GlobalTheory.Mem.ReadTwist.isTwist_of_reads _ X.B.host _ _ _ (I.tup a) (I.xi a) (hI.xi_reads a)).1`. Establish `hram` using `GlobalTheory.Mem.Col2.RamQ.ram_iff X px I hI`. Establish `hQr : ∀ a, ∀ PP ∈ I.Q a, ¬ (I.xi a).UnrAt PP` using `fun a PP h => (hram a PP).2 (Or.inl h)`.
+
+Establish `hpl` using `fun a => GlobalTheory.Mem.TwistPlaces.twistPlaces X px I hI a (hQr a)`. Take `⟨L0, h1, h2, h3, -, h4⟩` from `GlobalTheory.LevelChoices.exists_levCh X.toD7 (Top.Fr.at X I.C) (TupU I U) (mu0F (X := X.B.fields) (tuOf I U)) (fun t => I.xi (ixOf I U t)) (fun t => I.Q (ixOf I U t)) (hI.xi_inj.comp (ixOf_injective I U)) (by simp only [ixOf_mu0F]; exact hI.trueColumnChoices_heckeChar_reference_ …`. Establish `hpp : p.Prime`. Break down `hp with rfl | rfl` into its components or cases. Use `exacts [X.B.host.pde_prime, X.B.host.pde'_prime]`.
+
+Take `⟨𝔭, h𝔭⟩` from `GlobalTheory.Mem.R3.Model.exists_under_of_selHalf I hsel p hpp`. Conclude with `⟨𝔭, fun t PP hPP hp' => h𝔭 _ PP hPP hp'⟩)`. Use the proof step `(fun t PP => hram _ PP)`. Establish `hPg : L0.Pg = (X.B.primes px).vGs`. Use `Finset.ext fun P => (h4.Pg P).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[h1]`. Conclude with `(GlobalTheory.Mem.R3.Model.mem_vGs_iff I hI P).symm`. Take `⟨ΛY, ΛW, βY, βW, hSD, hfr⟩` from `frames_by_cases_lifts (D := X.toD7) (fun j => (hYVW j).1) hX' (fun j => (hYVW j).2.1) (fun j => (hYVW j).2.2) (X.B.primes px).vGs`. Set `L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)` to `{ L0 with ΛY := ΛY ΛW := ΛW βY := βY βW := βW βX := 1 βV := (fun _ => 1) ΛX := Formalism.IndefR.Seed.FrmP.coordL _ ΛV := (fun _ => Formalism.IndefR.Seed.FrmP.coordL _) }`. Establish `hLC : L.C = Top.Fr.at X I.C` using `h1`.
+
+Establish `hLx : ∀ t, L.xiH t = I.xi (ixOf I U t)` using `fun t => congrFun h2 t`. Take `⟨mu, twPl, hmu, htup⟩` from `GlobalTheory.Mem.R3.tupL_of_twisted X px I hX T Wt L hWf hWc hI hrng hLC hLx`. Use `⟨L, mu, twPl, ⟨⟨h4.mu0, h4.eta, h4.xi, h4.xi_inj, h4.xi_base, h4.xi_fin, h4.xi_triv, h4.xi_tame, h4.Pg, h4.Q_pl, h4.Q_off, h4.Q_de, h4.Q_ram, h4.chi, h4.xiR, hSD.1, hSD.2.1, hSD.2.2.1, hSD.2.2.2⟩, h1, fun t => congrFun h2 t, hPg, fun t => congrFun h3 t, fun _ => rfl, rfl⟩, fun h …` and prove the remaining obligations. Rewrite using `[hPg]`. Conclude with `hfr (hPg ▸ h), hmu, htup, fun t P hP => ?_⟩`.
+
+Establish `hP' : P ∈ I.Q (ixOf I U t)` using `by rw [← congrFun h3 t]; exact hP`. Establish `hoff` using `((hpl (ixOf I U t)).2 P hP').1`. Introduce `hm`. Apply `hoff` to reduce the goal to its premises. Establish `e : Ideal.absNorm X.B.host.ccK = 1` using `by rw [hcc, Ideal.absNorm_top]`.
+
+Rewrite `hm` using `[e, mul_one]`. Establish `: ((X.toD7.host.QS * X.toD7.host.q * X.toD7.host.d * X.toD7.sp.T : ℕ) : 𝓞 X.toD7.host.E) = ((X.toD7.host.d * X.toD7.sp.T : ℕ) : 𝓞 X.toD7.host.E) * ((X.B.host.QS * X.B.host.q : ℕ) : 𝓞 X.toD7.host.E)`. Rewrite using `[← Nat.cast_mul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `X.B.host.QS * X.B.host.q * X.B.host.d * X.B.sp.T = X.B.host.d * X.B.sp.T * (X.B.host.QS * X.B.host.q)`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left P.asIdeal _ hm`.
+-/
 theorem exists_levCh_tuples_of_lifts : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (T : Top.TwDat X.B) (Wt : Set X.B.places.Pl), Wt.Finite → (∀ w ∈ Wt, X.B.places.conj w ∈ Wt) → I.Ok → Set.range I.xi = T.set I.C → SelHalf I → X.B.host.ccK = ⊤ → (∀ j, Seed.FrmC.StdLat (X.toD7.sp.Y j) ∧ Seed.FrmC.StdLat (X.toD7.sp.V j) ∧ (1 ≤ j → j ≤ X.toD7.R.m → Seed.FrmC.StdLat (X.toD7.sp.W j))) → Seed.FrmC.StdLat X.toD7.sp.X' → ∃ (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I (usedOf I T Wt))) (mu : HeightOneSpectrum (𝓞 X.toD7.what₂.LL) → TupU I (usedOf I T Wt)) (twPl : Finset (HeightOneSpectrum (𝓞 X.toD7.what₂.LL))), LevOf X I (usedOf I T Wt) L ∧ (Seed.Frm.FramesExistDiagonal X.toD7 L.Pg → Seed.Frm.NormalFrameConditionsDiagonal L.Pg L.βY L.βW) ∧ MuOf X I T Wt mu twPl ∧ (∀ Xg tr, Seed.TupL (famR X I hX (usedOf I T Wt) Xg tr) L mu twPl) ∧ ∀ t, ∀ P ∈ L.Q t, ((X.B.host.QS * X.B.host.q * Ideal.absNorm X.B.host.ccK : ℕ) : 𝓞 X.B.host.E) ∉ P.asIdeal := by
   intro X px I hX T Wt hWf hWc hI hrng hsel hcc hYVW hX'
   classical
@@ -102,6 +122,13 @@ theorem exists_levCh_tuples_of_lifts : ∀ (X : Stages) (px : PreX X.B.toPre) (I
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `X px I hX T Wt Ks' _ _ _ hDS hWf hWc hI hrng hsel hgrp hval hhost hYVW hX' hpos hKs hE hmuKs`. Take `⟨L, mu, twPl, hL, hfr, hmu, htup, hq⟩` from `exists_levCh_tuples_of_lifts X px I hX T Wt hWf hWc hI hrng hsel X.B.ccK_top hYVW hX'`. Take `⟨eG, cG, Xg, hid, hgood, hpsi, hc1, hc2, hrest⟩` from `GlobalTheory.T.exists_finite_group_goodSet_levels_characters X px I hX (usedOf I T Wt) L hI hgrp hL`. Take `⟨hidem, hlv, plg, iso, hp1, hp2, hp3⟩` from `hrest (fun _ g => g)`. Take `⟨hMY, hMW⟩` from `GlobalTheory.ChainModels.models_seed hDS X.toD7 hhost`.
+
+Take `⟨MW, hMW1, hMW2⟩` from `hMW Ks' hE`. Take `⟨ψ, hψ⟩` from `GlobalTheory.StdAdelicChar.exists_isStdChar X.toD7`. Take `⟨R, e1, e2, e3, e4, e5, e6, hpr, hpre, hin, htu, hall, hstd⟩` from `GlobalTheory.SeedChoices.seed_at_reading_keeping X.toD7 (Gc X.B px) (PlS X.B px) (PlI X.B px) (TupU I (usedOf I T Wt)) (famR X I hX (usedOf I T Wt) Xg (fun _ g => g)) Ks' (face0 X I hX (usedOf I T Wt) Xg (fun _ g => g)) L eG mu twPl ψ MW hL.is (htup _ _) ⟨eG.trans cG, plg, iso, h …`. Substitute `e1` using the available equality. Take `rfl` from `eq_of_heq e4`.
+
+Substitute `e3 e5 e6` using the available equality. Use `⟨Xg, fun _ g => g, R, cG, hL, hid, hgood, hmu, hidem, hpre, hin, htu, hall, ⟨hpre.std, GlobalTheory.SignsAtTypePrimes.signsAtG _ _ _ _ _ _ R.toRealDat _ cG hpre.std hpsi ⟨plg, iso, hp1, hp2, hp3⟩, hfr, hL.beta, hpr, ⟨plg, iso, hp1, hgood.2, hp2, hp3⟩, hpsi, ⟨fun t P hP P' hP' h = …` and prove the remaining obligations. Rewrite `hP`, `hP'` using `[hL.Q t]`. Conclude with `hsel _ _ P hP P' hP' h`.
+-/
 theorem exists_realDat_keep : ∀ (X : Stages) (px : PreX X.B.toPre) (I : ColIn X.B px) (hX : X.B.fields.Ok) (T : Top.TwDat X.B)
     (Wt : Set X.B.places.Pl) (Ks' : Type) [Field Ks'] [NumberField Ks'] [Algebra Ks' X.toD7.what₂.LL],
     GlobalTheory.Published.DiscreteSeriesExists → Wt.Finite → (∀ w ∈ Wt, X.B.places.conj w ∈ Wt) → I.Ok → Set.range I.xi = T.set I.C →

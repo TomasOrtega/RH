@@ -11,11 +11,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Conclude with `(Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map τ.1) (mat y τ) (mat b τ)).symm`.
+-/
 private theorem lact_rmul_torus_haar_measure {r : ℕ} {Ψ : Finset (E →+* ℂ)} (γ : GL (Fin r) E) (y b : Frame Ψ r) :
     lact γ (rmul y b) = rmul (lact γ y) b := by
   funext τ
   exact (Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map τ.1) (mat y τ) (mat b τ)).symm
 
+/- English proof (translation)
+Establish `hb0 : 0 ≤ bb` using `hbb.le`. Use `⟨fun x => δ x ^ bb, hm.pow_const bb, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨h1, h2⟩` from `hpos x hx`. Conclude with `⟨Real.rpow_pos_of_pos h1 bb, Real.rpow_le_one h1.le h2 hb0⟩`.
+
+Introduce `x hx b hb show δ (rmul x b) ^ bb = δ x ^ bb`. Rewrite using `[hinv x hx b hb]`. Introduce `z hz show δ (cpt X x0 z) ^ bb = kaF X x0 bb z`. Rewrite using `[hch z hz, kaF, ← Real.exp_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨C, hC, hCb⟩` from `hsum`. Use `⟨C, hC, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨x1, hx1, b, hb, rfl⟩` from `(ortho_holds (E := E)) r X x hx`. Establish `hd1 : x1 ∈ X.dom` using `IC.orth_mem_dom X hx1`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[lact_rmul_torus_haar_measure, hinv _ (OntoS.dom_lact X γ.2 hd1) b hb, Real.sqrt_eq_rpow, ← Real.rpow_mul (h0 _), show bb / 2 = bb * (1 / 2) by ring]`. Use `_ ≤ C := hCb x1 hx1`. Take `⟨ρ, C, hρ, hC⟩` from `hloc`.
+
+Use `⟨ρ, max C 0 ^ bb, hρ, fun x hx z hz => ?_⟩` and prove the remaining obligations. Establish `h1 : δ (cpt X x z) ≤ max C 0 * δ x` using `(hC x hx z hz).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (h0 x))`. Use `show δ (cpt X x z) ^ bb ≤ max C 0 ^ bb * δ x ^ bb`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem kaFrame_of_delta {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) (hbb : 0 < bb)
     (δ : Frame X.Ψ r → ℝ) (h0 : ∀ x, 0 ≤ δ x) (hm : Measurable δ)
     (hpos : ∀ x ∈ X.dom, 0 < δ x ∧ δ x ≤ 1)
@@ -61,6 +75,9 @@ theorem kaFrame_of_delta {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ)
     calc δ (cpt X x z) ^ bb ≤ (max C 0 * δ x) ^ bb := Real.rpow_le_rpow (h0 _) h1 hb0
       _ = max C 0 ^ bb * δ x ^ bb := Real.mul_rpow (le_max_right _ _) (h0 x)
 
+/- English proof (translation)
+Introduce `hM hL hS r X x0 hx0 hpd bb hbb`. Take `⟨h1, h2, h3, h4⟩` from `hM r X x0 hx0`. Establish `hc : 0 ≤ 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2` using `by positivity`. Use `kaFrame_of_delta X x0 bb (by linarith) _ (fun x => Finset.prod_nonneg fun τ _ => by positivity) h1 h2 h3 h4 (hL r X x0 hx0) (hS r X x0 hx0 hpd (bb / 2) (by linarith))` and prove the remaining obligations.
+-/
 theorem kaFrame : (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → Measurable (fun x : Frame X.Ψ r => (∏ τ : X.Ψ, ‖dmin X.Gm (x) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (x) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2)) ∧ (∀ x ∈ X.dom, 0 < (∏ τ : X.Ψ, ‖dmin X.Gm (x) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (x) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2) ∧ (∏ τ : X.Ψ, ‖dmin X.Gm (x) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (x) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2) ≤ 1) ∧ (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, (∏ τ : X.Ψ, ‖dmin X.Gm (rmul x b) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (rmul x b) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2) = (∏ τ : X.Ψ, ‖dmin X.Gm (x) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (x) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2)) ∧ ∀ z ∈ OmF X x0, (∏ τ : X.Ψ, ‖dmin X.Gm (cpt X x0 z) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (cpt X x0 z) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2) = Real.exp (-rhF X x0 z)) → (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → ∃ ρ C : ℝ, 0 < ρ ∧ ∀ x, IsOrth X x → ∀ z : V (nd X), ‖z‖ < ρ → (∏ τ : X.Ψ, ‖dmin X.Gm (cpt X x z) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (cpt X x z) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2) ≤ C * (∏ τ : X.Ψ, ‖dmin X.Gm (x) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (x) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2)) → (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → PropDisc X → ∀ s : ℝ, 2 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < s → ∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ x, IsOrth X x → ∑' γ : X.Γ, ENNReal.ofReal ((∏ τ : X.Ψ, ‖dmin X.Gm (lact γ.1 x) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (lact γ.1 x) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2) ^ s) ≤ C) → (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → PropDisc X → ∀ bb : ℝ, 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bb → ∃ κ : Frame X.Ψ r → ℝ, Measurable κ ∧ (∀ x ∈ X.dom, 0 < κ x ∧ κ x ≤ 1) ∧ (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, κ (rmul x b) = κ x) ∧ (∀ z ∈ OmF X x0, κ (cpt X x0 z) = kaF X x0 bb z) ∧ (∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ x ∈ X.dom, ∑' γ : X.Γ, ENNReal.ofReal (Real.sqrt (κ (lact γ.1 x))) ≤ C) ∧ ∃ ρ C : ℝ, 0 < ρ ∧ ∀ x, IsOrth X x → ∀ z : V (nd X), ‖z‖ < ρ → κ (cpt X x z) ≤ C * κ x) := by
   intro hM hL hS r X x0 hx0 hpd bb hbb
   obtain ⟨h1, h2, h3, h4⟩ := hM r X x0 hx0

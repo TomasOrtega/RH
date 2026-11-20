@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.HalfIntegralWeight
 
+/- English proof (translation)
+Rewrite using `[ofReal_exp, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Establish `h : I * I = -1` using `I_mul_I`. Take the linear combination `(2 * π * c * y : ℂ) * h`.
+-/
 lemma exp_split (c x y : ℝ) :
     cexp (2 * π * I * c * ((x : ℂ) + y * I)) =
       cexp (((2 * π * c * x : ℝ) : ℂ) * I) * (Real.exp (-(2 * π * c * y)) : ℂ) := by
@@ -19,15 +22,38 @@ lemma exp_split (c x y : ℝ) :
   have h : I * I = -1 := I_mul_I
   linear_combination (2 * π * c * y : ℂ) * h
 
+/- English proof (translation)
+Rewrite using `[exp_split, norm_mul, norm_exp_ofReal_mul_I, one_mul, norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`.
+-/
 lemma norm_exp_height (c x y : ℝ) :
     ‖cexp (2 * π * I * c * ((x : ℂ) + y * I))‖ = Real.exp (-(2 * π * c * y)) := by
   rw [exp_split, norm_mul, norm_exp_ofReal_mul_I, one_mul, norm_real, Real.norm_eq_abs,
     abs_of_pos (Real.exp_pos _)]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yra2.main j`.
+-/
 lemma integral_exp_int (j : ℤ) :
     ∫ x : ℝ in (0 : ℝ)..1, cexp (2 * π * I * j * x) = if j = 0 then 1 else 0 :=
   _root_.UpperTheory.Reformulated.B.Yra2.main j
 
+/- English proof (translation)
+Establish `key : HasSum (fun m : ℕ => ∫ x : ℝ in (0 : ℝ)..1, a m * cexp (2 * π * I * m * ((x : ℂ) + y * I)) * cexp (-(2 * π * I * q * x))) (∫ x : ℝ in (0 : ℝ)..1, F x * cexp (-(2 * π * I * q * x)))`. Use `intervalIntegral.hasSum_integral_of_dominated_convergence (fun m _ => ‖a m‖ * Real.exp (-(2 * π * m * y))) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `m`. Conclude with `Continuous.aestronglyMeasurable (by fun_prop)`. Introduce `m`.
+
+Use `Eventually.of_forall fun x _ => ?_` and prove the remaining obligations. Establish `h2 : ‖cexp (-(2 * π * I * q * x))‖ = 1`. Establish `: -(2 * π * I * q * x) = (((-(2 * π * q * x)) : ℝ) : ℂ) * I` using `by push_cast; ring`. Rewrite using `[this, norm_exp_ofReal_mul_I]`. Establish `h3` using `norm_exp_height (m : ℝ) x y`.
+
+Move the coercions through the operations in `at h3`. Rewrite using `[norm_mul, norm_mul, h2, h3, mul_one]`. Conclude with `Eventually.of_forall fun x _ => hsum`. Conclude with `intervalIntegrable_const`. Use `Eventually.of_forall fun x _ => ?_` and prove the remaining obligations.
+
+Conclude with `(hs x).mul_right _`. Establish `hval : ∀ m : ℕ, (∫ x : ℝ in (0 : ℝ)..1, a m * cexp (2 * π * I * m * ((x : ℂ) + y * I)) * cexp (-(2 * π * I * q * x))) = if m = q then a q * (Real.exp (-(2 * π * q * y)) : ℂ) else 0`. Introduce `m`. Establish `hfun : (fun x : ℝ => a m * cexp (2 * π * I * m * ((x : ℂ) + y * I)) * cexp (-(2 * π * I * q * x))) = fun x : ℝ => (a m * (Real.exp (-(2 * π * m * y)) : ℂ)) * cexp (2 * π * I * (((m : ℤ) - (q : ℤ) : ℤ) : ℂ) * x)`. Use function extensionality and compare the values at `x`.
+
+Establish `h3` using `exp_split (m : ℝ) x y`. Rewrite `h3` using `[ofReal_natCast]`. Establish `h4 : cexp (2 * π * I * (((m : ℤ) - (q : ℤ) : ℤ) : ℂ) * x) = cexp (((2 * π * m * x : ℝ) : ℂ) * I) * cexp (-(2 * π * I * q * x))`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, h4]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun, intervalIntegral.integral_const_mul, integral_exp_int]`.
+
+Distinguish the cases in `h : m = q`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `: ((m : ℤ) - (q : ℤ)) ≠ 0` using `by omega`. Simplify using `[h, this]`.
+
+Rewrite `key` using `[hval]`. Conclude with `key.unique (hasSum_ite_eq q _)`.
+-/
 lemma coeff_integral (F : ℝ → ℂ) (a : ℕ → ℂ) (y : ℝ)
     (hs : ∀ x : ℝ, HasSum (fun m : ℕ => a m * cexp (2 * π * I * m * ((x : ℂ) + y * I))) (F x))
     (hsum : Summable fun m : ℕ => ‖a m‖ * Real.exp (-(2 * π * m * y))) (q : ℕ) :
@@ -75,11 +101,55 @@ lemma coeff_integral (F : ℝ → ℂ) (a : ℕ → ℂ) (y : ℝ)
   simp_rw [hval] at key
   exact key.unique (hasSum_ite_eq q _)
 
+/- English proof (translation)
+Establish `h` using `MulChar.star_apply' ψ⁻¹ u`. Simplify using `using h`.
+-/
 lemma conj_inv_apply {M : ℕ} [NeZero M] (ψ : DirichletCharacter ℂ M) (u : ZMod M) :
     conj (ψ⁻¹ u) = ψ u := by
   have h := MulChar.star_apply' ψ⁻¹ u
   simpa using h
 
+/- English proof (translation)
+Introduce `hB k N M ν _ _ hM χ f a hf ψ hν hψ y hy`. Establish `: Fact (1 < M)` using `⟨hM⟩`. Establish `hz : ∀ x : ℝ, 0 < ((x : ℂ) + y * I).im` using `fun x => by simpa using hy`. Set `z : ℝ → UpperHalfPlane` to `fun x => ⟨(x : ℂ) + y * I, hz x⟩`. Set `F : ℝ → ℂ` to `fun x => f (z x)`.
+
+Set `P : ℤ → ℂ` to `fun n => ψ⁻¹ (n : ZMod M)`. Establish `hψ0 : ∀ φ : DirichletCharacter ℂ M, φ 0 = 0` using `fun φ => MulChar.map_nonunit φ not_isUnit_zero`. Establish `hP0 : P 0 = 0` using `by simp [P, hψ0]`. Establish `hP1 : ∀ n, ‖P n‖ ≤ 1` using `fun n => DirichletCharacter.norm_le_one _ _`. Take `⟨-, -, hsum, -⟩` from `hB P ν hν hP0 hP1`.
+
+Establish `hs : ∀ x : ℝ, HasSum (fun m : ℕ => a m * cexp (2 * π * I * m * ((x : ℂ) + y * I))) (F x)` using `fun x => hf.exp (z x)`. Establish `hnA : ∀ (m : ℕ) (x : ℝ), ‖a m * cexp (2 * π * I * m * ((x : ℂ) + y * I))‖ = ‖a m‖ * Real.exp (-(2 * π * m * y))`. Introduce `m x`. Establish `h3` using `norm_exp_height (m : ℝ) x y`. Move the coercions through the operations in `at h3`.
+
+Rewrite using `[norm_mul, h3]`. Establish `hsumA : Summable fun m : ℕ => ‖a m‖ * Real.exp (-(2 * π * m * y))`. Use `summable_norm_iff.mpr (hs 0).summable` as an intermediate fact. Simplify `this` using `only [hnA]`. Establish `hFc : Continuous F`.
+
+Establish `: F = fun x : ℝ => ∑' m : ℕ, a m * cexp (2 * π * I * m * ((x : ℂ) + y * I))`. Use function extensionality and compare the values at `fun x => (hs x).tsum_eq.symm`. Rewrite using `[this]`. Conclude with `continuous_tsum (fun m => by fun_prop) hsumA (fun m x => (hnA m x).le)`. Establish `hC : ∀ x, ‖F x‖ ≤ ∑' m : ℕ, ‖a m‖ * Real.exp (-(2 * π * m * y))` using `fun x => (hs x).norm_le_of_bounded hsumA.hasSum (fun m => (hnA m x).le)`.
+
+Use `set C := ∑' m : ℕ, ‖a m‖ * Real.exp (-(2 * π * m * y)) with hCdef`. Set `t : ℤ → ℝ → ℂ` to `fun n x => P n * (n : ℂ) ^ ν * ee ((n : ℂ) ^ 2 * ((x : ℂ) + y * I))`. Establish `htc : ∀ n, Continuous (t n)` using `fun n => by`. Simplify using `only [t, ee]`. Use `fun_prop`.
+
+Establish `hee : ∀ (n : ℤ) (x : ℝ), ee ((n : ℂ) ^ 2 * ((x : ℂ) + y * I)) = cexp (((2 * π * ((n : ℝ) ^ 2) * x : ℝ) : ℂ) * I) * (Real.exp (-(2 * π * ((n : ℝ) ^ 2) * y)) : ℂ)`. Introduce `n x`. Rewrite using `[← exp_split, ee]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hnt : ∀ n x, ‖t n x‖ = ‖t n 0‖`. Introduce `n x`. Simplify using `only [t, norm_mul, hee, norm_exp_ofReal_mul_I]`. Establish `hsum0 : Summable fun n => ‖t n 0‖` using `hsum (z 0)`.
+
+Establish `hHS : ∀ x : ℝ, HasSum (fun n => t n x) (th P ν ((x : ℂ) + y * I))` using `fun x => ((hsum (z x)).of_norm).hasSum`. Establish `key : HasSum (fun n : ℤ => ∫ x : ℝ in (0 : ℝ)..1, F x * conj (t n x)) (∫ x : ℝ in (0 : ℝ)..1, F x * conj (th P ν ((x : ℂ) + y * I)))`. Use `intervalIntegral.hasSum_integral_of_dominated_convergence (fun n _ => C * ‖t n 0‖) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `n`. Conclude with `(hFc.mul (continuous_conj.comp (htc n))).aestronglyMeasurable`.
+
+Introduce `n`. Use `Eventually.of_forall fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, RCLike.norm_conj, hnt n x]`. Conclude with `mul_le_mul_of_nonneg_right (hC x) (norm_nonneg _)`. Conclude with `Eventually.of_forall fun x _ => hsum0.mul_left C`.
+
+Conclude with `intervalIntegrable_const`. Use `Eventually.of_forall fun x _ => ?_` and prove the remaining obligations. Conclude with `((hHS x).map (starRingEnd ℂ) continuous_conj).mul_left (F x)`. Set `h : ℤ → ℂ` to `fun n => ψ (n : ZMod M) * (n : ℂ) ^ ν * (a (n.natAbs ^ 2) * (Real.exp (-(4 * π * (n : ℝ) ^ 2 * y)) : ℂ))`. Establish `hval : ∀ n : ℤ, (∫ x : ℝ in (0 : ℝ)..1, F x * conj (t n x)) = h n`.
+
+Introduce `n`. Establish `hqZ : ((n.natAbs ^ 2 : ℕ) : ℤ) = n ^ 2` using `by simp`. Establish `hqR : ((n.natAbs ^ 2 : ℕ) : ℝ) = (n : ℝ) ^ 2`. Rewrite using `[← Int.cast_natCast (R := ℝ), hqZ, Int.cast_pow]`. Establish `hqC : ((n.natAbs ^ 2 : ℕ) : ℂ) = (n : ℂ) ^ 2`.
+
+Rewrite using `[← Int.cast_natCast (R := ℂ), hqZ, Int.cast_pow]`. Establish `hco` using `coeff_integral F a y hs hsumA (n.natAbs ^ 2)`. Rewrite `hco` using `[hqC, hqR]`. Establish `hfun : (fun x : ℝ => F x * conj (t n x)) = fun x : ℝ => (ψ (n : ZMod M) * (n : ℂ) ^ ν * (Real.exp (-(2 * π * ((n : ℝ) ^ 2) * y)) : ℂ)) * (F x * cexp (-(2 * π * I * (n : ℂ) ^ 2 * x)))`. Use function extensionality and compare the values at `x`.
+
+Establish `hc : conj (cexp (((2 * π * ((n : ℝ) ^ 2) * x : ℝ) : ℂ) * I)) = cexp (-(2 * π * I * (n : ℂ) ^ 2 * x))`. Rewrite using `[← Complex.exp_conj]`. Use `congr 1`. Simplify using `only [map_mul, conj_ofReal, conj_I]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [t, hee, map_mul, map_pow, conj_ofReal, map_intCast, P, conj_inv_apply, hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun, intervalIntegral.integral_const_mul, hco]`. Simplify using `only [h]`.
+
+Establish `hR : (Real.exp (-(4 * π * (n : ℝ) ^ 2 * y)) : ℂ) = (Real.exp (-(2 * π * ((n : ℝ) ^ 2) * y)) : ℂ) * (Real.exp (-(2 * π * ((n : ℝ) ^ 2) * y)) : ℂ)`. Rewrite using `[← ofReal_mul, ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hR]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hval]`. Establish `h0 : h 0 = 0` using `by simp [h, hψ0]`. Establish `hfold` using `key.nat_add_neg`. Rewrite `hfold` using `[h0, add_zero]`.
+
+Use `hfold using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Establish `hneg : ψ (-(n : ZMod M)) = (-1) ^ ν * ψ (n : ZMod M)`. Rewrite using `[← hψ, ← map_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ((-1 : ℂ) ^ ν) * (-1) ^ ν = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules. Simplify using `only [h, Int.natAbs_neg, Int.natAbs_natCast, Int.cast_natCast, Int.cast_neg, hneg, even_two, Even.neg_pow]`.
+
+Rewrite using `[neg_pow (n : ℂ) ν]`. Take the linear combination `(-(ψ (n : ZMod M) * (n : ℂ) ^ ν * a (n ^ 2) * (Real.exp (-(4 * π * (n : ℝ) ^ 2 * y)) : ℂ))) * h1`.
+-/
 theorem unfolding_of_bound : B2 → HorizontalIntegralTwisted := by
   intro hB k N M ν _ _ hM χ f a hf ψ hν hψ y hy
   have : Fact (1 < M) := ⟨hM⟩

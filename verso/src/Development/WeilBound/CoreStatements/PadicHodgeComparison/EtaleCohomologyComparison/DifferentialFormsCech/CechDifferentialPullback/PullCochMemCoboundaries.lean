@@ -24,6 +24,9 @@ variable {X Y : TopCat.{0}} (f : X ⟶ Y) {P : (Opens Y)ᵒᵖ ⥤ AddCommGrpCat
 
 include hτ in
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[mem_inter_iff]`. Express the relevant statement in the definitionally equal form `f x ∈ inter V (τ ∘ t)`. Rewrite using `[mem_inter_iff]`. Conclude with `fun a => hτ (t a) (hx a)`.
+-/
 theorem inter_le_map {n : ℕ} (t : Fin n → ι) : inter U t ≤ (Opens.map f).obj (inter V (τ ∘ t)) := by
   intro x hx
   rw [mem_inter_iff] at hx
@@ -37,11 +40,19 @@ def pullCoch (n : ℕ) : Cochain P V n →+ Cochain Q U n where
   map_add' σ σ' := by funext t; simp
 
 omit hτ in
+/- English proof (translation)
+Simplify using `only [res, ← ConcreteCategory.comp_apply, φ.naturality]`. Both sides reduce to the same expression.
+-/
 theorem app_res_map {A B : Opens Y} (h : A ≤ B) (x : P.obj (op B)) :
     φ.app (op A) (res P h x) = res Q ((Opens.map f).monotone h) (φ.app (op B) x) := by
   simp only [res, ← ConcreteCategory.comp_apply, φ.naturality]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `only [pullCoch, AddMonoidHom.coe_mk, ZeroHom.coe_mk, d_apply, map_sum, map_zsmul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[app_res_map, res_res, res_res]`.
+
+Both sides reduce to the same expression.
+-/
 theorem pullCoch_d (n : ℕ) (σ : Cochain P V n) :
     pullCoch f φ V U τ hτ (n + 1) (d P V n σ) = d Q U n (pullCoch f φ V U τ hτ n σ) := by
   funext t
@@ -51,11 +62,19 @@ theorem pullCoch_d (n : ℕ) (σ : Cochain P V n) :
   rw [app_res_map, res_res, res_res]
   rfl
 
+/- English proof (translation)
+Rewrite `hσ`, the goal using `[mem_cocycles]`. Rewrite using `[← pullCoch_d, hσ, map_zero]`.
+-/
 theorem pullCoch_mem_cocycles {n : ℕ} {σ : Cochain P V n} (hσ : σ ∈ cocycles P V n) :
     pullCoch f φ V U τ hτ n σ ∈ cocycles Q U n := by
   rw [mem_cocycles] at hσ ⊢
   rw [← pullCoch_d, hσ, map_zero]
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Rewrite `hσ`, the goal using `[coboundaries_zero, AddSubgroup.mem_bot]`. Rewrite using `[hσ, map_zero]`. Consider the case `succ n`.
+
+Rewrite `hσ`, the goal using `[coboundaries_succ]`. Take `⟨ρ, rfl⟩` from `hσ`. Conclude with `⟨pullCoch f φ V U τ hτ n ρ, (pullCoch_d f φ V U τ hτ n ρ).symm⟩`.
+-/
 theorem pullCoch_mem_coboundaries {n : ℕ} {σ : Cochain P V n} (hσ : σ ∈ coboundaries P V n) :
     pullCoch f φ V U τ hτ n σ ∈ coboundaries Q U n := by
   cases n with
@@ -73,6 +92,9 @@ def cechPullH (n : ℕ) : cechH P V n →+ cechH Q U n :=
       rw [AddSubgroup.mem_comap, AddSubgroup.mem_addSubgroupOf]
       exact pullCoch_mem_coboundaries f φ V U τ hτ (AddSubgroup.mem_addSubgroupOf.1 hσ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cechPullH_cls {n : ℕ} (σ : Cochain P V n) (hσ : d P V n σ = 0) :
     cechPullH f φ V U τ hτ n (cls σ hσ) =
       cls (pullCoch f φ V U τ hτ n σ) (by rw [← pullCoch_d, hσ, map_zero]) := rfl

@@ -9,6 +9,11 @@ namespace Formalism.MainNotions.PairMembershipBlocks
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning Formalism.MainNotions.Pf14 Formalism.MainNotions.PlaneGramData Formalism.MainNotions.TestSideCounting Formalism.MainNotions.TestSideWords
 open Formalism.MainNotions.G.WittFrameLocaliserOrders
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons y l ih`. Establish `e : ∀ s, (((y :: l).filter fun z => f z = s).length : ℝ) = ((l.filter fun z => f z = s).length : ℝ) + if f y = s then 1 else 0`. Introduce `s`.
+
+Distinguish the cases in `h : f y = s`. Simplify using `[h]`. Simplify using `[h]`. Simplify using `only [List.map_cons, List.sum_cons, ih, e, Finset.sum_add_distrib, Finset.sum_ite_eq]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem sum_ite_mem {α β : Type*} [DecidableEq α] (f : β → α) (T : Finset α) (l : List β) :
     (l.map fun z => if f z ∈ T then (2 : ℝ) else 0).sum =
       2 * ∑ s ∈ T, ((l.filter fun z => f z = s).length : ℝ) := by
@@ -28,12 +33,18 @@ section Geo
 
 variable {n' r : ℕ} [NeZero n'] (Fr : Frames n' r)
 
+/- English proof (translation)
+Unfold `llPos`. Establish `hlen : ((Fr.LLset j).sort (· ≤ ·)).length = (Fr.LLset j).card` using `Finset.length_sort _`. Rewrite using `[List.getD_eq_getElem _ _ (by rw [hlen]; exact hl)]`. Conclude with `(Finset.mem_sort (· ≤ ·)).1 (List.getElem_mem _)`.
+-/
 theorem llPos_mem (j : ℤ) (l : ℕ) (hl : l < (Fr.LLset j).card) : llPos Fr j l ∈ Fr.LLset j := by
   unfold llPos
   have hlen : ((Fr.LLset j).sort (· ≤ ·)).length = (Fr.LLset j).card := Finset.length_sort _
   rw [List.getD_eq_getElem _ _ (by rw [hlen]; exact hl)]
   exact (Finset.mem_sort (· ≤ ·)).1 (List.getElem_mem _)
 
+/- English proof (translation)
+Unfold `Frames.LLset`. Simplify using `only [Finset.mem_filter, Finset.mem_Ioo]`.
+-/
 theorem mem_LLset (j x : ℤ) : x ∈ Fr.LLset j ↔
     (Fr.fr (j - 1) (r - 1) < x ∧ x < Fr.fr j 0) ∧ posOf n' x ∈ Fr.TT := by
   unfold Frames.LLset
@@ -41,6 +52,11 @@ theorem mem_LLset (j x : ℤ) : x ∈ Fr.LLset j ↔
 
 variable {Fr} {L₁ N₁ : ℕ}
 
+/- English proof (translation)
+Establish `h` using `(mem_LLset Fr _ _).1 hy`. Establish `h1` using `frame_row_monotone Fr L₁ N₁ hV (j - 1) (r - 1) (by omega)`. Establish `h2` using `frame_row_monotone Fr L₁ N₁ hV j (r - 1) (by omega)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `Frames.letters`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨by omega, by omega⟩, h.2⟩`. Unfold `Frames.IsW`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem LL_sub_letters (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j y : ℤ) (hy : y ∈ Fr.LLset j) :
     y ∈ Fr.letters j ∧ ¬ Fr.IsW j y := by
   have h := (mem_LLset Fr _ _).1 hy
@@ -53,6 +69,13 @@ theorem LL_sub_letters (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j y : ℤ) (hy 
   · unfold Frames.IsW
     omega
 
+/- English proof (translation)
+Unfold `posU`. Use `split_ifs with h`. Conclude with `LL_sub_letters hV hr j _ (llPos_mem Fr j u h)`. Establish `hi : u - (Fr.LLset j).card < r` using `by omega`. Establish `h1` using `hV.2.2.2.1 (j - 1)`.
+
+Rewrite `h1` using `[sub_add_cancel]`. Establish `h2` using `frame_row_monotone Fr L₁ N₁ hV (j - 1) (r - 1) (by omega)`. Establish `h3` using `frame_row_monotone Fr L₁ N₁ hV j _ hi`. Establish `h4` using `frame_entry_le_last Fr L₁ N₁ hV j _ hi`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `Frames.letters`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨by omega, h4⟩, (hV.2.2.2.2.1 j _ hi).1⟩`. Unfold `Frames.IsW`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem posU_mem (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (u : ℕ) (hu : u < (Fr.LLset j).card + r) :
     posU Fr (Fr.LLset j).card j u ∈ Fr.letters j ∧ ¬ Fr.IsW j (posU Fr (Fr.LLset j).card j u) := by
   unfold posU
@@ -71,6 +94,11 @@ theorem posU_mem (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (u : ℕ) (h
     · unfold Frames.IsW
       omega
 
+/- English proof (translation)
+Establish `hy` using `oldest_mem_segment_letters Fr L₁ N₁ hV hr j x hx hW`. Unfold `Frames.letters at hy`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at hy`. Establish `hp' : (1 : ℝ) ≤ (p : ℝ)` using `by exact_mod_cast hp`. Unfold `Bo levDeg`.
+
+Apply `div_le_div₀ (Nat.cast_nonneg _) (hdeg _ hy.2) (by positivity)` to reduce the goal to its premises. Apply `pow_le_pow_right₀ hp'` to reduce the goal to its premises. Unfold `Frames.dist`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Bo_ge (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (p : ℕ) (hp : 1 ≤ p) (deg : Fin n' → ℕ) (a : ℝ)
     (hdeg : ∀ s ∈ Fr.TT, a ≤ (deg s : ℝ)) (G : ℕ) (j x : ℤ) (hG : Fr.fr j (r - 1) - Fr.fr (j - 1) 0 ≤ G)
     (hx : x ∈ Fr.letters j) (hW : ¬ Fr.IsW j x) :
@@ -85,6 +113,17 @@ theorem Bo_ge (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (p : ℕ) (hp : 1 ≤ p) 
   unfold Frames.dist
   omega
 
+/- English proof (translation)
+Use `set T : Finset (Fin n') := (Fr.letters jz).image (posOf n') with hT`. Establish `h1 : wordLoss Fr l jz u ≤ (l.map fun z => if z.1 ∈ T then (2 : ℝ) else 0).sum`. Unfold `wordLoss`. Apply `List.sum_le_sum` to reduce the goal to its premises. Introduce `z _`.
+
+Unfold `opCost`. Distinguish the cases in `ht : touchT Fr jz u z.1`. Take `⟨x, hx, hxs, _⟩` from `ht`. Establish `hm : z.1 ∈ T`. Rewrite using `[hT]`.
+
+Conclude with `Finset.mem_image.2 ⟨x, hx, hxs⟩`. Rewrite using `[if_pos ⟨x, hx, hxs, by assumption⟩, if_pos hm]`. Apply the tactic sequence `rw [if_neg ht] split_ifs <;> norm_num`. Establish `h2` using `sum_ite_mem (fun z : Fin n' × (Fin k × Fin k) => z.1) T l`. Establish `h3 : ∑ s ∈ T, ((l.filter fun z => z.1 = s).length : ℝ) ≤ ∑ _s ∈ T, (c0 : ℝ)`.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `s _`. Conclude with `hc s` after adjusting the coercions. Establish `h4 : (T.card : ℝ) ≤ ((Fr.letters jz).card : ℝ)`. Conclude with `Finset.card_image_le` after adjusting the coercions.
+
+Rewrite `h3` using `[Finset.sum_const, nsmul_eq_mul]`. Establish `h5 : (T.card : ℝ) * c0 ≤ ((Fr.letters jz).card : ℝ) * c0` using `mul_le_mul_of_nonneg_right h4 (Nat.cast_nonneg _)`. Rewrite `h1` using `[h2]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem wordLoss_le {k : ℕ} (l : List (Fin n' × (Fin k × Fin k))) (c0 : ℕ)
     (hc : ∀ s, (l.filter fun z => z.1 = s).length ≤ c0) (jz : ℤ) (u : ℕ) :
     wordLoss Fr l jz u ≤ 2 * ((Fr.letters jz).card : ℝ) * c0 := by
@@ -117,6 +156,13 @@ theorem wordLoss_le {k : ℕ} (l : List (Fin n' × (Fin k × Fin k))) (c0 : ℕ)
 
 end Geo
 
+/- English proof (translation)
+Establish `a1 : k ^ 2 ≤ k ^ 3` using `pow_le_pow_right₀ hk (by norm_num)`. Establish `a2 : Q ≤ Q ^ 5` using `le_self_pow₀ hQ (by norm_num)`. Establish `a3 : (1 : ℝ) ≤ r ^ 2` using `one_le_pow₀ hr`. Establish `a4 : N1 * c0 ≤ cS + (r * N * c0 + e)`. Use `mul_le_mul_of_nonneg_right hN1' hc0` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `b1 : 16 * k ^ 2 ≤ C * k ^ 3` using `mul_le_mul hC a1 (by positivity) (by linarith)`. Establish `b2 : 16 * k ^ 2 ≤ C * k ^ 3 * r ^ 2` using `le_trans b1 (le_mul_of_one_le_right (by positivity) a3)`. Establish `b3 : 16 * k ^ 2 ≤ C * k ^ 3 * r ^ 2 * N` using `le_trans b2 (le_mul_of_one_le_right (by positivity) hN)`. Establish `b4 : 16 * k ^ 2 * Q ≤ C * k ^ 3 * r ^ 2 * N * Q ^ 5` using `mul_le_mul b3 a2 (by linarith) (by positivity)`.
+
+Establish `b5 : 16 * k ^ 2 * Q * (N1 * c0) ≤ C * k ^ 3 * r ^ 2 * N * Q ^ 5 * (cS + (r * N * c0 + e))` using `mul_le_mul b4 a4 (by positivity) (by positivity)`. Establish `b6` using `mul_le_mul_of_nonneg_right b5 hY`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem size_arith (C k r N Q cS c0 e Y N1 : ℝ) (hC : 16 ≤ C) (hk : 1 ≤ k) (hr : 1 ≤ r) (hN : 1 ≤ N) (hQ : 1 ≤ Q)
     (hcS : 0 ≤ cS) (hc0 : 0 ≤ c0) (he : 0 ≤ e) (hY : 0 ≤ Y) (hN1 : 0 ≤ N1) (hN1' : N1 ≤ r * N) :
     16 * N1 * c0 * (Y * k ^ 2) * Q ≤ C * k ^ 3 * r ^ 2 * N * Q ^ 5 * (cS + (r * N * c0 + e)) * Y := by
@@ -136,6 +182,25 @@ theorem size_arith (C k r N Q cS c0 e Y N1 : ℝ) (hC : 16 ≤ C) (hk : 1 ≤ k)
   calc 16 * N1 * c0 * (Y * k ^ 2) * Q = 16 * k ^ 2 * Q * (N1 * c0) * Y := by ring
     _ ≤ _ := b6
 
+/- English proof (translation)
+Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk F nb B hD l _ hc jz u hu`. Take `⟨_, H, hF, _⟩` from `hD`. Establish `hB` using `hyps_basic (by linarith : (1 : ℝ) ≤ C) H`. Take `⟨h1, h2, _, h4, h5, h6, _, _, _, _, _, h12⟩` from `H`. Take `⟨hTT, hV, hG, _⟩` from `hF`.
+
+Establish `hr1 : 1 ≤ r` using `by omega`. Establish `ha0 : (0 : ℝ) ≤ a` using `by linarith [hB.two_le_a]`. Take `⟨hx, hW⟩` from `posU_mem hV hr1 jz u hu`. Use `set xx := posU F (F.LLset jz).card jz u with hxx`. Establish `hw` using `wordLoss_le (Fr := F) l c0 hc jz u`.
+
+Establish `hcard : ((F.letters jz).card : ℝ) ≤ (orbitWindowCount r de h x : ℝ)` using `by exact_mod_cast hV.2.2.2.2.2.2.2.1 jz`. Establish `hw2 : wordLoss F l jz u ≤ 2 * (orbitWindowCount r de h x : ℝ) * c0`. Use `mul_le_mul_of_nonneg_right hcard (Nat.cast_nonneg c0 : (0 : ℝ) ≤ c0)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdeg : ∀ s ∈ F.TT, a ≤ (flatDeg lam0 s : ℝ)`.
+
+Introduce `s hs`. Rewrite `hs` using `[hTT]`. Conclude with `(flatDeg_bounds (by have := hB.m_ge; omega) ha0 h5 s hs).1`. Establish `hBo` using `Bo_ge hV hr1 p (by omega) (flatDeg lam0) a hdeg (goodG' r de h x) jz xx (le_of_lt (hG jz)) hx hW`. Establish `hp1 : (1 : ℝ) ≤ (p : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ p)`.
+
+Establish `hQ1 : (1 : ℝ) ≤ (p : ℝ) ^ goodG' r de h x` using `one_le_pow₀ hp1`. Establish `hk1 : (1 : ℝ) ≤ ((m + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ m + 1)`. Establish `hrr : (1 : ℝ) ≤ (r : ℝ)` using `by exact_mod_cast hr1`. Establish `hNN : (1 : ℝ) ≤ (TT.card : ℝ)` using `by exact_mod_cast hB.N_pos`. Establish `hY0 : (0 : ℝ) < Y` using `by linarith [hB.two_le_Y]`.
+
+Establish `hN1 : ((orbitWindowCount r de h x : ℕ) : ℝ) ≤ (r : ℝ) * TT.card`. Establish `: orbitWindowCount r de h x ≤ r * TT.card` using `le_trans (Nat.le_self_pow (by norm_num) _) h4`. Conclude with `this` after adjusting the coercions. Establish `hs` using `size_arith C ((m + 1 : ℕ) : ℝ) r TT.card ((p : ℝ) ^ goodG' r de h x) cStar c0 (2 * r * n' * cpp) Y (orbitWindowCount r de h x : ℝ) hC hk1 hrr hNN hQ1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) (by positivity) hY0.le (Nat.cast_nonneg _) hN1`. Establish `hsa` using `le_trans hs h12`.
+
+Establish `hkk : ((r + K : ℕ) : ℝ) = ((m + 1 : ℕ) : ℝ)` using `by rw [hk]`. Establish `hden : 0 < Y * ((r + K : ℕ) : ℝ) ^ 2` using `by rw [hkk]; positivity`. Establish `hQ0 : 0 < (p : ℝ) ^ goodG' r de h x` using `by linarith`. Establish `hfl : ((16 * orbitWindowCount r de h x * c0 : ℕ) : ℤ) ≤ sl p F (flatDeg lam0) Y (r + K) jz xx`. Unfold `sl`.
+
+Rewrite using `[Int.le_floor, le_div_iff₀ hden]`. Use `le_trans ?_ hBo` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hQ0, hkk]`. Use `push_cast`. Move the coercions through the operations in `at hsa`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfl' : ((16 * orbitWindowCount r de h x * c0 : ℕ) : ℝ) ≤ (sl p F (flatDeg lam0) Y (r + K) jz xx : ℝ)`. Conclude with `hfl` after adjusting the coercions. Move the coercions through the operations in `at hfl'`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem wordBoundStep (C CLa : ℝ) (hC : 16 ≤ C) : WordBoundStep C CLa := by
   intro p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk
     F nb B hD l _ hc jz u hu
@@ -189,6 +254,9 @@ theorem wordBoundStep (C CLa : ℝ) (hC : 16 ≤ C) : WordBoundStep C CLa := by
   push_cast at hfl'
   linarith
 
+/- English proof (translation)
+Introduce `_` and use `⟨16, by norm_num, fun C hC => wordBoundStep C CLa hC⟩`.
+-/
 theorem restWordBound (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : RestWordBound D CLa Ck Crk Cdeg :=
   fun _ => ⟨16, by norm_num, fun C hC => wordBoundStep C CLa hC⟩
 

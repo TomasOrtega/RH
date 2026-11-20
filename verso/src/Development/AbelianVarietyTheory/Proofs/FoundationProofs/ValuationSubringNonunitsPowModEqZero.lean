@@ -7,6 +7,43 @@ namespace GlobalTheory
 
 open Polynomial in
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Establish `hl0 : ((l : ℕ) : Ω) ≠ 0` using `by exact_mod_cast hl.out.ne_zero`. Establish `hvl : A.valuation (l : Ω) < 1` using `(A.mem_nonunits_iff).1 hlA`. Establish `hvx : A.valuation x < 1` using `(A.mem_nonunits_iff).1 hx`.
+
+Establish `hvl0 : A.valuation (l : Ω) ≠ 0` using `by simpa using hl0`. Establish `key : ∀ k : ℕ, A.valuation x ^ k ≤ A.valuation (l : Ω) → CgA A l 1 (x ^ k) 0`. Introduce `k hk`. Use `⟨x ^ k / l, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← A.valuation_le_one_iff, map_div₀, map_pow]`.
+
+Conclude with `(div_le_one₀ (zero_lt_iff.2 hvl0)).2 hk`. Rewrite using `[sub_zero, pow_one]`. Clear the denominators using the available nonvanishing facts. Assume the negation of the conclusion as `H`. Use `push_neg at H`.
+
+Establish `hlt : ∀ k : ℕ, A.valuation (l : Ω) < A.valuation x ^ k` using `fun k => not_le.1 (fun h => H k (key k h))`. Establish `hx0 : x ≠ 0`. Introduce `h`. Use `hlt 1` as an intermediate fact. Simplify using `[h] at this`.
+
+Establish `hvx0 : A.valuation x ≠ 0` using `by simpa using hx0`. Establish `hint : ∀ n : ℤ, A.valuation (n : Ω) ≤ 1` using `fun n => (A.valuation_le_one_iff _).2 (intCast_mem A n)`. Establish `hdvd : ∀ n : ℤ, (l : ℤ) ∣ n → A.valuation (n : Ω) ≤ A.valuation (l : Ω)`. Introduce and unpack `n ⟨m, rfl⟩`. Use `push_cast`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_le_of_le_one_right' (hint m)`. Establish `hpl : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl.out`. Establish `hunit : ∀ n : ℤ, ¬ (l : ℤ) ∣ n → A.valuation (n : Ω) = 1`. Introduce `n hn`.
+
+Use `le_antisymm (hint n) (not_lt.1 fun h => ?_)` and prove the remaining obligations. Take `⟨a, b, hab⟩` from `(Prime.coprime_iff_not_dvd hpl).2 hn`. Establish `h1 : ((a : Ω) * (l : Ω) + (b : Ω) * (n : Ω)) = 1` using `by exact_mod_cast hab`. Establish `h2 : A.valuation ((a : Ω) * (l : Ω) + (b : Ω) * (n : Ω)) < 1`. Apply `Valuation.map_add_lt` to reduce the goal to its premises.
+
+Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hint a)) hvl`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hint b)) h`. Rewrite `h2` using `[h1, map_one]`.
+
+Conclude with `lt_irrefl _ h2`. Take `⟨p, hp0, hpx⟩` from `(IsFractionRing.isAlgebraic_iff ℤ ℚ Ω).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Use `set q := p.primPart with hqdef`. Establish `hqprim : q.IsPrimitive` using `isPrimitive_primPart p`. Establish `hqx : aeval x q = 0`.
+
+Establish `hc : p.content ≠ 0`. Introduce `h`. Conclude with `hp0 ((content_eq_zero_iff).1 h)`. Establish `h` using `hpx`. Rewrite `h` using `[eq_C_content_mul_primPart p, map_mul, aeval_C]`.
+
+Break down `mul_eq_zero.1 h with h' | h'` into its components or cases. It suffices to derive a contradiction. Apply `hc` to reduce the goal to its premises. Simplify using `using h'`. Conclude with `h'`.
+
+Establish `hex : ∃ i, ¬ (l : ℤ) ∣ q.coeff i`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hu` using `hqprim (l : ℤ) ((C_dvd_iff_dvd_coeff _ _).2 h)`. Conclude with `hpl.not_unit hu`.
+
+Use `set i0 := Nat.find hex with hi0`. Establish `hi0spec : ¬ (l : ℤ) ∣ q.coeff i0` using `Nat.find_spec hex`. Establish `hi0min : ∀ i < i0, (l : ℤ) ∣ q.coeff i` using `fun i hi => by`. Simplify using `using Nat.find_min hex hi`. Establish `hi0deg : i0 < q.natDegree + 1`.
+
+Assume the negation of the conclusion as `h`. Apply `hi0spec` to reduce the goal to its premises. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by omega)]`. Conclude with `dvd_zero _`. Use `set f : ℕ → Ω := fun i => (q.coeff i : Ω) * x ^ i with hf`.
+
+Establish `hsum : aeval x q = ∑ i ∈ Finset.range (q.natDegree + 1), f i`. Rewrite using `[aeval_eq_sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[hf, zsmul_eq_mul]`. Establish `hfi0 : A.valuation (f i0) = A.valuation x ^ i0`.
+
+Simplify using `only [hf, map_mul, map_pow, hunit _ hi0spec, one_mul]`. Establish `hg : A.valuation x ^ i0 ≠ 0` using `pow_ne_zero _ hvx0`. Establish `hrest : A.valuation (∑ i ∈ (Finset.range (q.natDegree + 1)).erase i0, f i) < A.valuation x ^ i0`. Apply `Valuation.map_sum_lt _ hg` to reduce the goal to its premises. Introduce `i hi`.
+
+Establish `hne : i ≠ i0` using `Finset.ne_of_mem_erase hi`. Simplify using `only [hf, map_mul, map_pow]`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `htot : A.valuation (aeval x q) = A.valuation x ^ i0`. Rewrite using `[hsum, ← Finset.add_sum_erase _ _ (Finset.mem_range.2 hi0deg), Valuation.map_add_eq_of_lt_left _ (by rw [hfi0]; exact hrest), hfi0]`. Rewrite `htot` using `[hqx, map_zero]`. Conclude with `hg htot.symm`.
+-/
 theorem cgA_pow_of_mem_nonunits {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ)
     [hl : Fact l.Prime] (A : ValuationSubring Ω) (hlA : ((l : ℕ) : Ω) ∈ A.nonunits)
     (x : Ω) (hx : x ∈ A.nonunits) : ∃ k : ℕ, CgA A l 1 (x ^ k) 0 := by

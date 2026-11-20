@@ -12,6 +12,9 @@ namespace GlobalTheory.FlagData
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [FD.transvMat, FD.herm, Matrix.mulVec, dotProduct, Matrix.of_apply, add_mul, Finset.sum_add_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem transvMat_mulVec (G : Matrix (Fin r) (Fin r) E) (ξ x : Fin r → E) (α : E) :
     FD.transvMat G ξ α *ᵥ x = x + (α * FD.herm G x ξ) • ξ := by
   funext a
@@ -22,6 +25,9 @@ theorem transvMat_mulVec (G : Matrix (Fin r) (Fin r) E) (ξ x : Fin r → E) (α
   refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [FD.herm, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_add_smul_left (G : Matrix (Fin r) (Fin r) E) (x ξ y : Fin r → E) (c : E) :
     FD.herm G (x + c • ξ) y = FD.herm G x y + c * FD.herm G ξ y := by
   simp only [FD.herm, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum,
@@ -29,6 +35,9 @@ theorem herm_add_smul_left (G : Matrix (Fin r) (Fin r) E) (x ξ y : Fin r → E)
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [FD.herm, FD.cc, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, map_add, map_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_add_smul_right (G : Matrix (Fin r) (Fin r) E) (x ξ y : Fin r → E) (c : E) :
     FD.herm G x (y + c • ξ) = FD.herm G x y + FD.cc c * FD.herm G x ξ := by
   simp only [FD.herm, FD.cc, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, map_add,
@@ -36,6 +45,9 @@ theorem herm_add_smul_right (G : Matrix (Fin r) (Fin r) E) (x ξ y : Fin r → E
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hG' : ∀ a b, IsCMField.complexConj E (G a b) = G b a` using `hG`. Simplify using `only [FD.herm, FD.cc, map_sum, map_mul, hG', IsCMField.complexConj_apply_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cc_herm {G : Matrix (Fin r) (Fin r) E} (hG : ∀ a b, FD.cc (G a b) = G b a)
     (x y : Fin r → E) : FD.cc (FD.herm G x y) = FD.herm G y x := by
   have hG' : ∀ a b, IsCMField.complexConj E (G a b) = G b a := hG
@@ -44,6 +56,9 @@ theorem cc_herm {G : Matrix (Fin r) (Fin r) E} (hG : ∀ a b, FD.cc (G a b) = G 
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, Matrix.one_mulVec, transvMat_mulVec, transvMat_mulVec, herm_add_smul_left, hξ, mul_zero, add_zero, neg_mul, neg_smul, neg_add_cancel_right]`.
+-/
 theorem transvMat_mul_neg (G : Matrix (Fin r) (Fin r) E) {ξ : Fin r → E} (hξ : FD.herm G ξ ξ = 0)
     (α : E) : FD.transvMat G ξ α * FD.transvMat G ξ (-α) = 1 := by
   apply Matrix.toLin'.injective
@@ -59,6 +74,9 @@ noncomputable def transv (G : Matrix (Fin r) (Fin r) E) {ξ : Fin r → E} (hξ 
   val_inv := transvMat_mul_neg G hξ α
   inv_val := by simpa using transvMat_mul_neg G hξ (-α)
 
+/- English proof (translation)
+Establish `e : FD.cc (α * FD.herm G y ξ) = -α * FD.herm G ξ y`. Rewrite using `[← hα, ← cc_herm hG y ξ]`. Conclude with `map_mul (IsCMField.complexConj E) _ _`. Rewrite using `[transvMat_mulVec, transvMat_mulVec, herm_add_smul_left, herm_add_smul_right, herm_add_smul_right, hξ, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_transvMat {G : Matrix (Fin r) (Fin r) E} (hG : ∀ a b, FD.cc (G a b) = G b a)
     {ξ : Fin r → E} (hξ : FD.herm G ξ ξ = 0) {α : E} (hα : FD.cc α = -α) (x y : Fin r → E) :
     FD.herm G (FD.transvMat G ξ α *ᵥ x) (FD.transvMat G ξ α *ᵥ y) = FD.herm G x y := by
@@ -70,10 +88,30 @@ theorem herm_transvMat {G : Matrix (Fin r) (Fin r) E} (hG : ∀ a b, FD.cc (G a 
   ring
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+The claim follows from `Λ.smul_mem (⟨c, hc⟩ : 𝓞 E) hv`.
+-/
 theorem smul_mem_of_isIntegral (Λ : Submodule (𝓞 E) (Fin r → E)) {c : E} (hc : IsIntegral ℤ c)
     {v : Fin r → E} (hv : v ∈ Λ) : c • v ∈ Λ :=
   Λ.smul_mem (⟨c, hc⟩ : 𝓞 E) hv
 
+/- English proof (translation)
+Introduce `hMink E _ _ _ r p0 M m Ψ Gm Λ ξ0 κ0 hΨ hG hdet hp hsig hfg hsp hM hξ hξ0 hκ hκs hm hint`. Take `⟨Γ, hΓ, hidx⟩` from `GlobalTheory.CongruenceIndex.congruence_finiteIndex E r M Gm Λ hfg (by omega)`. Establish `hM0 : (M : E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hm0 : (m : E) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Apply the tactic sequence `have hκ0 : κ0 ≠ 0 := by rcases hκ with h | h <;> simp [h, hξ0]`.
+
+Establish `hξ' : IsCMField.complexConj E ξ0 = -ξ0` using `hξ`. Establish `hκc : IsCMField.complexConj E κ0 = -κ0`. Apply the tactic sequence `rcases hκ with h | h <;> simp [h, hξ', map_ofNat]`. Establish `halg : IsAlgebraic ℤ (((m : E) / (M : E) * κ0)⁻¹)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨k, hk, hki⟩` from `halg.exists_integral_multiple`.
+
+Use `⟨{ Ψ := Ψ, cmType := hΨ, Gm := Gm, Gm_herm := hG, Gm_det := hdet, p0 := p0, p0_le := hp signature := fun τ => hsig τ.1 τ.2 Λ := Λ, Λ_fg := hfg, Λ_span := hsp den := (k : 𝓞 E), den_ne := Int.cast_ne_zero.2 hk Λ_int := fun x hx y hy => ?_ Γ := Γ, Γ_stab := fun γ h => ((hΓ γ).1 h).1 …` and prove the remaining obligations. Establish `h` using `hki.mul (hint x hx y hy)`. Establish `e : k • ((m : E) / (M : E) * κ0)⁻¹ * ((m : E) / (M : E) * κ0 * FD.herm Gm x y) = (((k : 𝓞 E) : 𝓞 E) : E) * FD.herm Gm x y`. Rewrite using `[zsmul_eq_mul]`. Simplify using `only [map_intCast]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hs' : IsCMField.complexConj E s = s` using `hs`. Establish `hα : FD.cc ((m : E) * s * κ0) = -((m : E) * s * κ0)`. Simplify using `[FD.cc, hs', hκc]`.
+
+Establish `hMi : IsIntegral ℤ (M : E)` using `isIntegral_natCast M`. Establish `key : ∀ v ∈ Λ, (s * ((m : E) / (M : E) * κ0 * FD.herm Gm v ξ)) • ξ ∈ Λ` using `fun v hv => smul_mem_of_isIntegral Λ (hsi.mul (hint v hv ξ hξΛ)) hξΛ`. Establish `e : ∀ v, ((m : E) * s * κ0 * FD.herm Gm v ξ) • ξ = M • ((s * ((m : E) / (M : E) * κ0 * FD.herm Gm v ξ)) • ξ)`. Introduce `v`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Use `⟨transv Gm hiso ((m : E) * s * κ0), (hΓ _).2 ⟨⟨herm_transvMat hG hiso hα, fun x => ?_⟩, fun v hv => ⟨_, key v hv, ?_⟩⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x ∈ Λ ↔ FD.transvMat Gm ξ ((m : E) * s * κ0) *ᵥ x ∈ Λ`. Rewrite using `[transvMat_mulVec]`.
+
+Use `⟨fun hx => Λ.add_mem hx (by rw [e]; exact nsmul_mem (key x hx) M), fun hx => ?_⟩` and prove the remaining obligations. Establish `h` using `nsmul_mem (key _ hx) M`. Rewrite `h` using `[← e, herm_add_smul_left, hiso, mul_zero, add_zero]`. Simplify using `using Λ.sub_mem hx h`. Express the relevant statement in the definitionally equal form `FD.transvMat Gm ξ ((m : E) * s * κ0) *ᵥ v = _`.
+
+Rewrite using `[transvMat_mulVec, e]`.
+-/
 theorem exists_data : (∀ (Y : Type) [AddCommGroup Y] [Module.Free ℤ Y] [Module.Finite ℤ Y] (σ : Y ≃ₗ[ℤ] Y) (n M : ℕ), 0 < n → σ ^ n = 1 → 3 ≤ M → (∀ y, ∃ z, σ y = y + M • z) → σ = 1) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r p0 M m : ℕ) (Ψ : Finset (E →+* ℂ)) (Gm : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (ξ0 κ0 : E), (∀ τ : E →+* ℂ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ) → (∀ a b, FD.cc (Gm a b) = Gm b a) → Gm.det ≠ 0 → p0 ≤ r → (∀ τ ∈ Ψ, (∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ FD.gram τ Gm Q = Matrix.diagonal fun a : Fin r => ((FD.sgn p0 (a : ℕ) : ℝ) : ℂ))) → Λ.FG → Submodule.span E (Λ : Set (Fin r → E)) = ⊤ → 3 ≤ M → FD.cc ξ0 = -ξ0 → ξ0 ≠ 0 → (κ0 = 2 * ξ0 ∨ κ0 = -(2 * ξ0)) → (∀ τ ∈ Ψ, (τ κ0).im < 0) → 0 < m → (∀ x ∈ Λ, ∀ y ∈ Λ, IsIntegral ℤ ((m : E) / (M : E) * κ0 * FD.herm Gm x y)) → ∃ X : FD.Data E r, X.Ψ = Ψ ∧ X.Gm = Gm ∧ X.p0 = p0 ∧ X.Λ = Λ ∧ X.ξ0 = ξ0 ∧ X.κ0 = κ0 ∧ X.m = m ∧ (∀ γ, γ ∈ X.Γ ↔ FD.IsUStab Gm Λ γ ∧ (∀ v ∈ Λ, ∃ w ∈ Λ, (γ : Matrix (Fin r) (Fin r) E) *ᵥ v = v + M • w)) ∧ ∀ la γ, X.χ la γ = 1 := by
   intro hMink E _ _ _ r p0 M m Ψ Gm Λ ξ0 κ0 hΨ hG hdet hp hsig hfg hsp hM hξ hξ0 hκ hκs hm hint
   obtain ⟨Γ, hΓ, hidx⟩ :=

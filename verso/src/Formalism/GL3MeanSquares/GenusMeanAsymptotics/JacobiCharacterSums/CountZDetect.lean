@@ -7,6 +7,9 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.ZD
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp | J + 1 => by rw [sum_range_succ, ← sum_blocks f Y J] have h1 : Y ≤ Y * 2 ^ J := Nat.le_mul_of_pos_right Y (by positivity) have h2 : Y * 2 ^ J ≤ Y * 2 ^ (J + 1) := Nat.mul_le_mul_left Y (Nat.pow_le_pow_right (by norm_num) (by omega)) rw [show 2 * (Y * 2 ^ J) = Y * …`.
+-/
 lemma sum_blocks (f : ℕ → ℂ) (Y : ℕ) : ∀ J : ℕ,
     ∑ n ∈ Ioc Y (Y * 2 ^ J), f n = ∑ j ∈ range J, ∑ n ∈ Ioc (Y * 2 ^ j) (2 * (Y * 2 ^ j)), f n
   | 0 => by simp
@@ -17,6 +20,15 @@ lemma sum_blocks (f : ℕ → ℂ) (Y : ℕ) : ∀ J : ℕ,
     rw [show 2 * (Y * 2 ^ J) = Y * 2 ^ (J + 1) by ring]
     exact (Finset.sum_Ioc_consecutive _ h1 h2).symm
 
+/- English proof (translation)
+Use `le_trans (norm_sum_le _ _) ?_` and prove the remaining obligations. Establish `h1 : ∀ d ∈ Icc 1 Y, ‖(((μ d : ℤ)) : ℂ) * χ (d : ZMod q) * (d : ℂ) ^ (-s)‖ ≤ 1`. Introduce `d hd`. Establish `hd1 : 1 ≤ d` using `(Finset.mem_Icc.1 hd).1`. Rewrite using `[norm_mul, norm_mul]`.
+
+Establish `hμ : ‖(((μ d : ℤ)) : ℂ)‖ ≤ 1`. Rewrite using `[Complex.norm_intCast]`. Conclude with `ArithmeticFunction.abs_moebius_le_one` after adjusting the coercions. Establish `hχ : ‖χ (d : ZMod q)‖ ≤ 1` using `DirichletCharacter.norm_le_one χ _`. Establish `hp : ‖(d : ℂ) ^ (-s)‖ ≤ 1`.
+
+Rewrite using `[Complex.norm_natCast_cpow_of_pos (by omega)]`. Use `Real.rpow_le_one_of_one_le_of_nonpos (by exact_mod_cast hd1) ?_` and prove the remaining obligations. Simplify using `only [Complex.neg_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma mollM_norm_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (s : ℂ) (hs : 0 ≤ s.re) (Y : ℕ) :
     ‖∑ d ∈ Icc 1 Y, (((μ d : ℤ)) : ℂ) * χ (d : ZMod q) * (d : ℂ) ^ (-s)‖ ≤ Y := by
   refine le_trans (norm_sum_le _ _) ?_
@@ -40,6 +52,51 @@ lemma mollM_norm_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (s : �
     _ = Y := by simp
 
 attribute [local irreducible] q0 pY pJ pN in
+/- English proof (translation)
+Introduce `hM Q hQ p hp hp1 hpQ ρ hρ hρim hL`. Take `⟨N0, χ⟩` from `p`. Simplify using `only at hp hp1 hpQ hL`. Take `⟨X, hX⟩ : ∃ X : ℕ, q0 Q = X` from `⟨_, rfl⟩`. Establish `hXQ : Q ≤ (X : ℝ)` using `by rw [← hX]; unfold q0; exact Nat.le_ceil Q`.
+
+Establish `hX20 : (20 : ℝ) ≤ X` using `le_trans hQ hXQ`. Establish `hX1 : 1 ≤ X` using `by exact_mod_cast (show (1 : ℝ) ≤ X by linarith)`. Establish `hs0 : s0 = 399 / 400` using `by unfold s0; norm_num`. Establish `hre0 : 0 < ρ.re` using `by rw [hs0] at hρ; linarith`. Establish `hχ1 : χ ≠ 1`.
+
+Introduce `h`. Establish `hc : χ.conductor = N0 + 1` using `hp`. Rewrite `hc` using `[h, DirichletCharacter.conductor_one]`. Use linear arithmetic over natural numbers and integers. Establish `hJ8 : 8 ≤ pJ Q` using `by unfold pJ; omega`.
+
+Establish `hNX : X ^ 8 ≤ pN Q`. Establish `h` using `Nat.lt_pow_succ_log_self (by norm_num : 1 < 2) X`. Unfold `pN pJ`. Rewrite using `[hX, mul_comm 8, pow_mul]`. Conclude with `Nat.pow_le_pow_left h.le 8`.
+
+Establish `hY : pY Q = X ^ 4` using `by unfold pY; rw [hX]`. Establish `hYN : pY Q ≤ pN Q`. Rewrite using `[hY]; exact le_trans (Nat.pow_le_pow_right hX1 (by norm_num)) hNX`. Establish `hY1 : 1 ≤ pY Q` using `by rw [hY]; exact Nat.one_le_pow _ _ (by omega)`. Establish `hN1 : 1 ≤ pN Q` using `le_trans hY1 hYN`.
+
+Establish `hB` using `Formalism.ZeroFreeDirichlet.norm_character_sum_Icc_le χ hχ1`. Establish `hP` using `Formalism.FX.l_function_partial_sum (N0 + 1) χ hχ1 _ hB ρ hre0 (pN Q) hN1`. Rewrite `hP` using `[hL, zero_sub, norm_neg]`. Establish `hMI` using `hM (N0 + 1) χ ρ (pY Q) (pN Q) (pY Q * pN Q) hY1 hYN le_rfl`. Establish `hMo` using `mollM_norm_le χ ρ hre0.le (pY Q)`.
+
+Use `set P := ∑ n ∈ Icc 1 (pN Q), χ (n : ZMod (N0 + 1)) * (n : ℂ) ^ (-ρ) with hPdef`. Use `set Mo := ∑ d ∈ Icc 1 (pY Q), (((μ d : ℤ)) : ℂ) * χ (d : ZMod (N0 + 1)) * (d : ℂ) ^ (-ρ) with hMdef`. Use `set D := ∑ n ∈ Ioc (pY Q) (pY Q * pN Q), mco (pY Q) (pN Q) n * χ (n : ZMod (N0 + 1)) * (n : ℂ) ^ (-ρ) with hD`. Establish `hnum : ‖P‖ * (pY Q : ℝ) ≤ 1 / 2`. Establish `hq : ((N0 + 1 : ℕ) : ℝ) + 1 ≤ 2 * X`.
+
+Establish `: ((N0 + 1 : ℕ) : ℝ) ≤ Q` using `hpQ`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrho : 1 + ‖ρ‖ / ρ.re ≤ 3 * X`. Establish `h1 : ‖ρ‖ ≤ ρ.re + Q`. Use `(Complex.norm_le_abs_re_add_abs_im ρ).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[abs_of_pos hre0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ‖ρ‖ / ρ.re ≤ 1 + Q / ρ.re`. Rewrite using `[div_le_iff₀ hre0]`. Rewrite using `[add_mul, one_mul, div_mul_cancel₀ _ hre0.ne']`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : Q / ρ.re ≤ 2 * Q`. Rewrite using `[div_le_iff₀ hre0]`. Rewrite `hρ` using `[hs0]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hNpos : (0 : ℝ) < pN Q` using `by exact_mod_cast hN1`. Establish `hXpos : (0 : ℝ) < X` using `by linarith`. Establish `hpow : ((pN Q : ℕ) : ℝ) ^ (-ρ.re) ≤ ((pN Q : ℕ) : ℝ) ^ (-(15 / 16 : ℝ))` using `Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hN1) (by rw [hs0] at hρ; linarith)`. Establish `hN8 : (X : ℝ) ^ (8 : ℕ) ≤ (pN Q : ℝ)` using `by exact_mod_cast hNX`.
+
+Establish `hpow2 : 4 * (X : ℝ) ^ (7 : ℕ) ≤ ((pN Q : ℕ) : ℝ) ^ (15 / 16 : ℝ)`. Establish `e : ((X : ℝ) ^ (8 : ℕ)) ^ (15 / 16 : ℝ) = (X : ℝ) ^ (7 : ℕ) * Real.sqrt X`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hXpos.le, Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_add hXpos]`. Evaluate the numerical expressions. Establish `hs : (4 : ℝ) ≤ Real.sqrt X`.
+
+Rewrite using `[show (4 : ℝ) = Real.sqrt 16 by rw [show (16 : ℝ) = 4 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]]`. Conclude with `Real.sqrt_le_sqrt (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `: (0 : ℝ) ≤ (X : ℝ) ^ (7 : ℕ)` using `by positivity`. Rewrite using `[mul_comm]`.
+
+Conclude with `mul_le_mul_of_nonneg_left hs this`. Use `_ = ((X : ℝ) ^ (8 : ℕ)) ^ (15 / 16 : ℝ) := e.symm`. Use `_ ≤ _ := Real.rpow_le_rpow (by positivity) hN8 (by norm_num)`. Establish `hinv : ((pN Q : ℕ) : ℝ) ^ (-(15 / 16 : ℝ)) ≤ 1 / (4 * (X : ℝ) ^ (7 : ℕ))`. Rewrite using `[Real.rpow_neg hNpos.le, one_div]`.
+
+Conclude with `inv_anti₀ (by positivity) hpow2`. Establish `hYr : (pY Q : ℝ) = (X : ℝ) ^ (4 : ℕ)` using `by rw [hY, Nat.cast_pow]`. Establish `hPle : ‖P‖ ≤ 2 * (2 * X) * (3 * X) * (1 / (4 * (X : ℝ) ^ (7 : ℕ)))`. Use `hP.trans ?_` and prove the remaining obligations. Establish `hpos1 : (0 : ℝ) ≤ ((N0 + 1 : ℕ) : ℝ) + 1` using `by positivity`.
+
+Establish `hpos2 : (0 : ℝ) ≤ 1 + ‖ρ‖ / ρ.re` using `by positivity`. Establish `a1 : 2 * (((N0 + 1 : ℕ) : ℝ) + 1) ≤ 2 * (2 * X)` using `by linarith`. Establish `a12 : 2 * (((N0 + 1 : ℕ) : ℝ) + 1) * (1 + ‖ρ‖ / ρ.re) ≤ 2 * (2 * X) * (3 * X)` using `mul_le_mul a1 hrho hpos2 (by positivity)`. Establish `a3 : ((pN Q : ℕ) : ℝ) ^ (-ρ.re) ≤ 1 / (4 * (X : ℝ) ^ (7 : ℕ))` using `hpow.trans hinv`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hYr]`. Combine the equalities or inequalities in the displayed calculation. Establish `hX0 : (X : ℝ) ≠ 0` using `hXpos.ne'`. Rewrite using `[eq_div_iff hX0]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 1 / 2 := by rw [div_le_iff₀ hXpos]; linarith`. Establish `h1D : ‖1 + D‖ ≤ 1 / 2`. Rewrite using `[← hMI]`. Rewrite using `[norm_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hDge : 1 / 2 ≤ ‖D‖`. Use `norm_sub_le (1 + D) D` as an intermediate fact. Simplify using `only [add_sub_cancel_right, norm_one] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsplit : D = ∑ j ∈ range (pJ Q), blk (pY Q) (pN Q) (pY Q * 2 ^ j) ⟨N0, χ⟩ ρ`. Rewrite using `[hD, show pN Q = 2 ^ pJ Q by unfold pN; rfl, sum_blocks]`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Establish `hJpos : (0 : ℝ) < pJ Q` using `by exact_mod_cast (by omega : 0 < pJ Q)`. Establish `hlt : ‖D‖ < 1 / 2`. Rewrite using `[hsplit]`. Use `(norm_sum_le _ _).trans_lt ?_` and prove the remaining obligations. Establish `hne : (range (pJ Q)).Nonempty` using `nonempty_range_iff.mpr (by omega)`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem zero_detection : DetectOf := by
   intro hM Q hQ p hp hp1 hpQ ρ hρ hρim hL
   obtain ⟨N0, χ⟩ := p

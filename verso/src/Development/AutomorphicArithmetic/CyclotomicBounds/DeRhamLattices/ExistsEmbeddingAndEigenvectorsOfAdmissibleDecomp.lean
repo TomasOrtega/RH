@@ -6,6 +6,33 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pass GlobalTheory.Cut GlobalTheory.UseLoc Module TensorProduct GlobalTheory.UseLoc.Cases UpperTheory.KN
 
+/- English proof (translation)
+Establish `hs : ∀ {k : ℕ} (a : O) (M : Matrix (Fin k) (Fin k) O), (a • M).map (f.comp φ) = f (φ a) • (M.map φ).map f`. Introduce `k a M`. Use extensionality with `x y`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
+
+Use `set A : Matrix (Fin n) (Fin r) K := LinearMap.toMatrix' (e.symm.toLinearMap ∘ₗ LinearMap.inl K _ _) with hA set Bm : Matrix (Fin r) (Fin n) K := LinearMap.toMatrix' (LinearMap.fst K _ _ ∘ₗ e.toLinearMap) with hB`. Establish `hAv : ∀ v, A.mulVec v = e.symm (v, 0)`. Introduce `v`. Rewrite using `[hA, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression.
+
+Establish `hBv : ∀ v, Bm.mulVec v = (e v).1`. Introduce `v`. Rewrite using `[hB, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression. Establish `h1 : Bm * A = 1`.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, hAv, hBv]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ g, A * (P g).map φ = (R g).map φ * A`.
+
+Introduce `g`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hAv, hAv, LinearEquiv.symm_apply_eq, he]`. Simplify using `only [LinearEquiv.apply_symm_apply, Pi.zero_apply, mul_zero]`.
+
+Both sides reduce to the same expression. Use `⟨Matrix.toLin' (A.map f), ?_, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Establish `h3` using `congrArg (fun z => (Bm.map f).mulVec z) hxy`. Simplify using `only [Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← Matrix.map_mul, h1] at h3`.
+
+Simplify `h3` using `[Matrix.map_one]`. Introduce `g v`. Simplify using `only [Matrix.toLin'_apply, Matrix.mulVec_mulVec, hs, Matrix.mul_smul, Matrix.smul_mul, ← Matrix.map_mul, h2]`. Introduce `c hc`. Take `⟨hc1, hc2⟩` from `Finset.mem_Icc.1 hc`.
+
+Set `j : Fin t` to `⟨c - 1, by omega⟩`. Establish `hj : (j : ℕ) + 1 = c` using `by simp only [j]; omega`. Set `u : Fin n → K` to `e.symm (0, Pi.single j 1)`. Establish `hu : ∀ g, ((R g).map φ).mulVec u = φ (χ c g) • u`. Introduce `g`.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, map_smul]`. Simplify using `only [u, LinearEquiv.apply_symm_apply, Matrix.mulVec_zero, Prod.smul_mk, smul_zero]`. Use `congr 1`. Use function extensionality and compare the values at `d`.
+
+Distinguish the cases in `hd : d = j`. Substitute `hd` using the available equality. Simplify using `[hj]`. Simplify using `[Pi.single_eq_of_ne hd]`. Use `⟨f ∘ u, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Establish `hu0 : u = 0`. Use function extensionality and compare the values at `x`. Conclude with `f.injective (by simpa using congrFun h0 x)`. Establish `h4` using `congrArg (fun z => (e z).2 j) hu0`.
+
+Simplify using `[u] at h4`. Introduce `g`. Rewrite using `[hs, Matrix.smul_mulVec]`. Use function extensionality and compare the values at `x`. Rewrite using `[Pi.smul_apply, ← RingHom.map_mulVec, hu]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem emb_gen {O K L Γ : Type} [CommRing O] [Field K] [Field L] (φ : O →+* K) (f : K →+* L)
     {n r t : ℕ} (R : Γ → Matrix (Fin n) (Fin n) O) (P : Γ → Matrix (Fin r) (Fin r) O) (χ : ℕ → Γ → O) (s : Γ → O)
     (e : (Fin n → K) ≃ₗ[K] ((Fin r → K) × (Fin t → K)))
@@ -82,6 +109,9 @@ private theorem emb_gen {O K L Γ : Type} [CommRing O] [Field K] [Field L] (φ :
       simp only [Pi.smul_apply, smul_eq_mul, map_mul, Function.comp_apply]
       ring
 
+/- English proof (translation)
+Rewrite using `[RingHom.comp_apply, Br.toLLK_alg]`. Both sides reduce to the same expression.
+-/
 private theorem emb_alg {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (o : D.nd.O i) :
     (C.inc.comp (Br.toLLK (D.nbr i w hw))) (toK D.nd i o) =
@@ -89,6 +119,9 @@ private theorem emb_alg {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.h
   rw [RingHom.comp_apply, Br.toLLK_alg]
   rfl
 
+/- English proof (translation)
+Use extensionality with `a b : 1`. Conclude with `(emb_alg C _).symm`.
+-/
 private theorem emb_loc {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k : ℕ}
     (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw) :
@@ -98,6 +131,13 @@ private theorem emb_loc {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.h
   ext a b : 1
   exact (emb_alg C _).symm
 
+/- English proof (translation)
+Introduce `D i r ρ π w hw C hd`. Take `⟨e, he⟩` from `hd`. Take `⟨⟨iW, h1, h2⟩, h3⟩` from `emb_gen (toK D.nd i) (C.inc.comp (Br.toLLK (D.nbr i w hw))) (fun g => rO D.nd i r π g) (fun g => rhoO D.nd i ρ π g) (fun c g => ((chiU D.nd i c g : (D.nd.O i)ˣ) : D.nd.O i)) (fun g => (((chiU D.nd i 1)⁻¹ g : (D.nd.O i)ˣ) : D.nd.O i)) e he`. Use `⟨⟨iW, h1, fun g v => ?_⟩, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[emb_loc, emb_loc]`.
+
+Conclude with `h2 _ v`. Take `⟨u, hu, hg⟩` from `h3 c hc`. Use `⟨u, hu, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[emb_loc]`. Use `(hg _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[emb_alg, algebraMap_smul]`. Both sides reduce to the same expression.
+-/
 theorem _root_.UpperTheory.KN.exists_embedding_and_eigenvectors_of_admissible_decomposition :
     ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
       (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw), TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π →

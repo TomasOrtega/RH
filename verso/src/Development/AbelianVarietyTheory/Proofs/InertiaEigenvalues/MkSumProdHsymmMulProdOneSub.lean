@@ -7,6 +7,9 @@ open Finset PowerSeries
 
 namespace GlobalTheory.JSW
 
+/- English proof (translation)
+Use `Finset.sum_equiv Finsupp.equivFunOnFinite ?_ ?_` and prove the remaining obligations. Introduce `l`. Simplify using `[mem_finsuppAntidiag, Finset.Nat.mem_antidiagonalTuple]`. Introduce `l _`. Both sides reduce to the same expression.
+-/
 theorem sum_finsuppAntidiag_univ_fin {M : Type*} [AddCommMonoid M] {m : ℕ} (d : ℕ)
     (F : (Fin m → ℕ) → M) :
     ∑ l ∈ finsuppAntidiag (univ : Finset (Fin m)) d, F l =
@@ -17,12 +20,18 @@ theorem sum_finsuppAntidiag_univ_fin {M : Type*} [AddCommMonoid M] {m : ℕ} (d 
   · intro l _
     rfl
 
+/- English proof (translation)
+Rewrite using `[coeff_prod, sum_finsuppAntidiag_univ_fin d (fun k => ∏ j, coeff (k j) (PowerSeries.mk (f j)))]`. Simplify using `only [coeff_mk]`.
+-/
 theorem coeff_prod_mk_fin {m : ℕ} (f : Fin m → ℕ → ℂ) (d : ℕ) :
     coeff d (∏ j, PowerSeries.mk (f j)) =
       ∑ k ∈ Finset.Nat.antidiagonalTuple m d, ∏ j, f j (k j) := by
   rw [coeff_prod, sum_finsuppAntidiag_univ_fin d (fun k => ∏ j, coeff (k j) (PowerSeries.mk (f j)))]
   simp only [coeff_mk]
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, ih, ← Multiset.singleton_add, map_add, Multiset.toFinsupp_singleton, MvPolynomial.X, MvPolynomial.monomial_mul, one_mul]`.
+-/
 theorem prod_map_X_eq_monomial_toFinsupp {n : ℕ} (s : Multiset (Fin n)) :
     (s.map (MvPolynomial.X : Fin n → MvPolynomial (Fin n) ℤ)).prod =
       MvPolynomial.monomial (Multiset.toFinsupp s) 1 := by
@@ -32,10 +41,22 @@ theorem prod_map_X_eq_monomial_toFinsupp {n : ℕ} (s : Multiset (Fin n)) :
     rw [Multiset.map_cons, Multiset.prod_cons, ih, ← Multiset.singleton_add, map_add,
       Multiset.toFinsupp_singleton, MvPolynomial.X, MvPolynomial.monomial_mul, one_mul]
 
+/- English proof (translation)
+Simplify using `[Multiset.toFinsupp_apply, Multiset.sum_count_eq_card]`.
+-/
 theorem sum_toFinsupp_fin {n : ℕ} (s : Multiset (Fin n)) :
     ∑ i, Multiset.toFinsupp s i = Multiset.card s := by
   simp [Multiset.toFinsupp_apply, Multiset.sum_count_eq_card]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.hsymm]`. Use `Finset.sum_bij (fun s _ => Multiset.toFinsupp s.1) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `s _`. Rewrite using `[mem_finsuppAntidiag]`. Use `⟨?_, subset_univ _⟩` and prove the remaining obligations.
+
+Rewrite using `[sum_toFinsupp_fin, s.2]`. Introduce `a _ b _ h`. Conclude with `Sym.coe_injective (Multiset.toFinsupp.injective h)`. Introduce `l hl`. Rewrite `hl` using `[mem_finsuppAntidiag]`.
+
+Use `⟨⟨Finsupp.toMultiset l, ?_⟩, mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.card_toMultiset, Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Conclude with `hl.1`. Simplify using the standard rewrite rules. Introduce `s _`.
+
+Conclude with `prod_map_X_eq_monomial_toFinsupp s.1`.
+-/
 theorem hsymm_fin_eq_sum_monomial {n : ℕ} (k : ℕ) :
     MvPolynomial.hsymm (Fin n) ℤ k =
       ∑ l ∈ finsuppAntidiag (univ : Finset (Fin n)) k, MvPolynomial.monomial l 1 := by
@@ -56,6 +77,9 @@ theorem hsymm_fin_eq_sum_monomial {n : ℕ} (k : ℕ) :
   · intro s _
     exact prod_map_X_eq_monomial_toFinsupp s.1
 
+/- English proof (translation)
+Rewrite using `[hsymm_fin_eq_sum_monomial, MvPolynomial.eval₂_sum, ← sum_finsuppAntidiag_univ_fin k (fun l => ∏ i, α i ^ l i)]`. Use `sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂_monomial, map_one, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`.
+-/
 theorem eval₂_hsymm_fin {n : ℕ} (α : Fin n → ℂ) (k : ℕ) :
     MvPolynomial.eval₂ (Int.castRingHom ℂ) α (MvPolynomial.hsymm (Fin n) ℤ k) =
       ∑ l ∈ Finset.Nat.antidiagonalTuple n k, ∏ i, α i ^ l i := by
@@ -64,6 +88,9 @@ theorem eval₂_hsymm_fin {n : ℕ} (α : Fin n → ℂ) (k : ℕ) :
   refine sum_congr rfl fun l _ => ?_
   rw [MvPolynomial.eval₂_monomial, map_one, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]
 
+/- English proof (translation)
+Use extensionality with `k`. Rewrite using `[sub_mul, one_mul, map_sub, mul_assoc, coeff_C_mul]`. Consider the cases of `k with`. Consider the case `zero => simp`. Consider the case `succ k => simp [pow_succ, mul_comm]`.
+-/
 theorem one_sub_C_mul_X_mul_mk_pow (a : ℂ) :
     (1 - PowerSeries.C a * PowerSeries.X) * PowerSeries.mk (fun k => a ^ k) = 1 := by
   ext k
@@ -72,6 +99,11 @@ theorem one_sub_C_mul_X_mul_mk_pow (a : ℂ) :
   | zero => simp
   | succ k => simp [pow_succ, mul_comm]
 
+/- English proof (translation)
+Establish `h : PowerSeries.mk (fun k => MvPolynomial.eval₂ (Int.castRingHom ℂ) α (MvPolynomial.hsymm (Fin n) ℤ k) * u ^ k) = ∏ i, PowerSeries.mk (fun k => (α i * u) ^ k)`. Use extensionality with `k`. Rewrite using `[coeff_prod_mk_fin, coeff_mk, eval₂_hsymm_fin, sum_mul]`. Use `sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite `hl` using `[Finset.Nat.mem_antidiagonalTuple]`.
+
+Repeatedly rewrite using `[mul_pow, prod_mul_distrib, prod_pow_eq_pow_sum, hl]`. Rewrite using `[h, ← prod_mul_distrib]`. Conclude with `prod_eq_one fun i _ => by rw [mul_comm]; exact one_sub_C_mul_X_mul_mk_pow _`.
+-/
 theorem mk_hsymm_mul_prod_one_sub {n : ℕ} (α : Fin n → ℂ) (u : ℂ) :
     PowerSeries.mk (fun k => MvPolynomial.eval₂ (Int.castRingHom ℂ) α
         (MvPolynomial.hsymm (Fin n) ℤ k) * u ^ k) *
@@ -87,6 +119,13 @@ theorem mk_hsymm_mul_prod_one_sub {n : ℕ} (α : Fin n → ℂ) (u : ℂ) :
   rw [h, ← prod_mul_distrib]
   exact prod_eq_one fun i _ => by rw [mul_comm]; exact one_sub_C_mul_X_mul_mk_pow _
 
+/- English proof (translation)
+Introduce `m n α β T`. Establish `h1 : PowerSeries.mk (fun d => T ^ d * ∑ k ∈ Finset.Nat.antidiagonalTuple m d, ∏ j, MvPolynomial.eval₂ (Int.castRingHom ℂ) α (MvPolynomial.hsymm (Fin n) ℤ (k j)) * β j ^ (k j)) = ∏ j, PowerSeries.mk (fun k => MvPolynomial.eval₂ (Int.castRingHom ℂ) α (MvPolynomial.hsymm (Fin n) ℤ k …`. Use extensionality with `d`. Rewrite using `[coeff_mk, coeff_prod_mk_fin, mul_sum]`. Use `sum_congr rfl fun k hk => ?_` and prove the remaining obligations.
+
+Rewrite `hk` using `[Finset.Nat.mem_antidiagonalTuple]`. Repeatedly rewrite using `[mul_pow, ← mul_assoc, prod_mul_distrib, prod_pow_eq_pow_sum, hk]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∏ p : Fin n × Fin m, (1 - PowerSeries.C (α p.1 * β p.2 * T) * PowerSeries.X) = ∏ j, ∏ i, (1 - PowerSeries.C (α i * (β j * T)) * PowerSeries.X)`. Rewrite using `[Fintype.prod_prod_type, Finset.prod_comm]`.
+
+Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[h1, h2, ← prod_mul_distrib]`. Conclude with `prod_eq_one fun j _ => mk_hsymm_mul_prod_one_sub α (β j * T)`.
+-/
 theorem mk_sum_prod_hsymm_mul_prod_one_sub : ∀ {m n : ℕ} (α : Fin n → ℂ) (β : Fin m → ℂ) (T : ℂ),
     PowerSeries.mk (fun d => T ^ d * ∑ k ∈ Finset.Nat.antidiagonalTuple m d,
         ∏ j, MvPolynomial.eval₂ (Int.castRingHom ℂ) α (MvPolynomial.hsymm (Fin n) ℤ (k j)) * β j ^ (k j)) *

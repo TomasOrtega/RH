@@ -10,6 +10,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FlagPush
 
+/- English proof (translation)
+Introduce `Z V _ _ q _ E`. Take `⟨D, -, hD⟩` from `exists_pullback_cartierDiv V Z q E`. Conclude with `⟨D, fun y b hb x hx => hD x b (hx ▸ hb)⟩`.
+-/
 theorem exists_isPull : ∀ (Z V : Scheme.{0}) [IsIntegral Z] [IsIntegral V] (q : Z ⟶ V) [IsDominant q]
     (E : CartierDiv V), ∃ D : CartierDiv Z, IsPull q D E := by
   intro Z V _ _ q _ E

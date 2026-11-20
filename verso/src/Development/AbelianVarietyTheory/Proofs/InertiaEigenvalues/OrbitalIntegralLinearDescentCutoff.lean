@@ -14,12 +14,37 @@ noncomputable section
 
 namespace GlobalTheory.JR.LinDesc
 
+/- English proof (translation)
+Apply the tactic sequence `unfold eta; split_ifs <;> norm_num`.
+-/
 theorem valuationParitySign_mul_self {F : Type} [NormedField F] (x : F) : eta x * eta x = 1 := by
   unfold eta; split_ifs <;> norm_num
 
+/- English proof (translation)
+Unfold `eta; rw [if_pos ⟨1, by simp⟩]`.
+-/
 theorem valuationParitySign_one {F : Type} [NormedField F] : eta (1 : F) = 1 := by
   unfold eta; rw [if_pos ⟨1, by simp⟩]
 
+/- English proof (translation)
+Use `letI := M.mG`. Use `haveI := M.bG`. Use `haveI : M.μG.IsMulRightInvariant := GlobalTheory.T.generalLinear_haar_isMulRightInvariant_unramified F E r M`. Establish `hmul` using `(GlobalTheory.T.unramifiedValuationParitySign_character_kernel_norms F E).1`. Use `set Y := pt A hG lam 1 (a : A.K) with hY`.
+
+Use `set u : A.Kˣ := a * s⁻¹ with hu`. Establish `hpt : pt A hG lam ((a : A.K) * Ring.inverse (s : A.K)) (s : A.K) = act (tm A hG u) Y`. Rewrite using `[hY, act_tm, Ring.inverse_unit]`. Use `congr 1`. Rewrite using `[hu, Units.val_mul, mul_one]`.
+
+Rewrite using `[hu, _root_.mul_inv_rev, inv_inv, Units.val_mul, mul_assoc, Units.inv_mul, mul_one]`. Establish `h1 : desc A M hG lam α f' ((a : A.K) * Ring.inverse (s : A.K), (s : A.K)) = ∫ g, f' (act (g * tm A hG u) Y) * eta ((g : Matrix (Fin r) (Fin r) F).det) * (α g : ℂ) ∂M.μG`. Unfold `desc`. Simplify using `only [hpt, act_mul]`. Establish `h2 : (∫ g, f' (act (g * tm A hG u) Y) * eta ((g : Matrix (Fin r) (Fin r) F).det) * (α g : ℂ) ∂M.μG) = ∫ g, f' (act g Y) * eta (((g * (tm A hG u)⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F).det) * (α (g * (tm A hG u)⁻¹) : ℂ) ∂M.μG`.
+
+Use `integral_mul_right_eq_self (μ := M.μG) (fun h : GL (Fin r) F => f' (act h Y) * eta (((h * (tm A hG u)⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F).det) * (α (h * (tm A hG u)⁻¹) : ℂ)) (tm A hG u)` as an intermediate fact. Simplify using `only [mul_inv_cancel_right] at this`. Conclude with `this`. Rewrite using `[h1, h2, ← integral_mul_const, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+
+Establish `hui : (tm A hG u)⁻¹ = tm A hG a⁻¹ * tm A hG s`. Rewrite using `[← map_inv, ← map_mul, hu, _root_.mul_inv_rev, inv_inv, mul_comm]`. Establish `hdg : (g : Matrix (Fin r) (Fin r) F).det ≠ 0`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.ne_zero _`.
+
+Establish `hN : ∀ t : A.Kˣ, Algebra.norm F (t : A.K) ≠ 0` using `fun t => (IsUnit.map (Algebra.norm F) (Units.isUnit t)).ne_zero`. Establish `hdet : (((g * (tm A hG u)⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F).det) = (g : Matrix (Fin r) (Fin r) F).det * (Algebra.norm F ((a⁻¹ : A.Kˣ) : A.K) * Algebra.norm F (s : A.K))`. Rewrite using `[hui, Units.val_mul, Matrix.det_mul, ← map_mul, det_tm, Units.val_mul, map_mul]`. Establish `h12 : eta (Algebra.norm F (a : A.K)) * eta (Algebra.norm F ((a⁻¹ : A.Kˣ) : A.K)) = 1`. Rewrite using `[← hmul _ _ (hN a) (hN a⁻¹), ← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one, valuationParitySign_one]`.
+
+Establish `h11` using `valuationParitySign_mul_self (Algebra.norm F (a : A.K))`. Establish `h33` using `valuationParitySign_mul_self (Algebra.norm F (s : A.K))`. Simplify using `only []`. Rewrite using `[hdet, hmul _ _ hdg (mul_ne_zero (hN _) (hN _)), hmul _ _ (hN _) (hN _), hui, ← _root_.mul_assoc g (tm A hG a⁻¹) (tm A hG s)]`. Unfold `Et.etaK`.
+
+Use `set e1 := eta (Algebra.norm F (a : A.K))`. Use `set e2 := eta (Algebra.norm F ((a⁻¹ : A.Kˣ) : A.K))`. Use `set e3 := eta (Algebra.norm F (s : A.K))`. Use `set d := eta ((g : Matrix (Fin r) (Fin r) F).det)`. Use `set fv := f' (act g Y)`.
+
+Use `set al : ℂ := (α (g * tm A hG a⁻¹ * tm A hG s) : ℂ)`. Take the linear combination `(fv * d * al * e2) * h33 - (fv * d * al * e2) * h11 + (fv * d * al * e1) * h12`.
+-/
 theorem desc_unit_eq {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (A : Et F E) {r : ℕ} {τ : A.K} {p : Fin r → F} (hG : A.IsGen τ p) (lam : F)
     (M : Meas r F E) (α : GL (Fin r) F → ℝ) (f' : Gl r F → ℂ) (a s : A.Kˣ) :
@@ -78,6 +103,19 @@ end GlobalTheory.JR.LinDesc
 
 namespace GlobalTheory.JR.LinDesc
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ A r τ p hG lam M μK hμK α f' hf' hαlc hαcs hα0 hcut κ₀ hκ a ha`. Take `⟨a, rfl⟩` from `ha`. Use `letI := M.mG`. Use `set Y := pt A hG lam 1 (a : A.K) with hY`. Establish `hconv` using `(GlobalTheory.T.etaleUnitsHaarMeasureDivAbs_isHaarMeasure F E A μK hμK).2.2 (fun t => desc A M hG lam α f' ((a : A.K) * Ring.inverse t, t) * A.etaK t)`.
+
+Establish `hO : A.orbK μK (desc A M hG lam α f') (a : A.K) = ∫ s, desc A M hG lam α f' ((a : A.K) * Ring.inverse (s : A.K), (s : A.K)) * A.etaK s ∂(unitsMeas A μK)`. Rewrite using `[hconv]`. Both sides reduce to the same expression. Use `set Φ : GL (Fin r) F → ℂ := fun g => f' (act g Y) * omega (act g Y) with hΦ`. Establish `hΔ : Delta (inv Y) ≠ 0`.
+
+Rewrite using `[hY, pt_one, GlobalTheory.JR.NormalFormL.inv_sec']`. Conclude with `((GlobalTheory.T.jacquetRallis_invK_regular_iff_isUnit F E A r τ p lam hG).2 (a : A.K)).2.2 (Units.isUnit a)`. Establish `hΦt : IsTest Φ` using `(GlobalTheory.T.jacquetRallis_orbitalIntegrand_isLocallyConstantCompactSupport F E r M).1 f' hf' Y hΔ`. Establish `hinner : ∀ s : A.Kˣ, κ₀ * (desc A M hG lam α f' ((a : A.K) * Ring.inverse (s : A.K), (s : A.K)) * A.etaK s) = ∫ g, Φ g * (α (g * tm A hG a⁻¹ * tm A hG s) : ℂ) ∂M.μG`. Introduce `s`.
+
+Rewrite using `[desc_unit_eq, ← mul_assoc, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [hΦ]`. Rewrite using `[hκ (a : A.K) (Units.isUnit a) g]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hc : ∀ g, Φ g ≠ 0 → ∫ s, α (g * tm A hG a⁻¹ * tm A hG s) ∂(unitsMeas A μK) = 1`. Introduce `g hg`. Use `hcut g ⟨(act g Y).2.1, (act g Y).2.2.1, ?_⟩ a⁻¹` and prove the remaining obligations. Introduce `h0`. Apply `hg` to reduce the goal to its premises.
+
+Establish `h1 : f' (act g Y) = 0` using `h0`. Simplify using `only [hΦ, h1, zero_mul]`. Rewrite using `[hO, ← integral_const_mul]`. Repeatedly rewrite using `[hinner]`. Conclude with `((GlobalTheory.T.fubini_cutoff_integral_generalLinear_torus) F E A r τ p hG M μK hμK α Φ hΦt hαlc hαcs hα0 (tm A hG a⁻¹) hc).symm`.
+-/
 theorem orb_descent_unit : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (r : ℕ) (τ : A.K) (p : Fin r → F) (hG : A.IsGen τ p) (lam : F), ∀ (M : Meas r F E) (μK : Measure A.K), μK.IsAddHaarMeasure → ∀ (α : GL (Fin r) F → ℝ) (f' : Gl r F → ℂ), IsTest f' → IsLocallyConstant α → HasCompactSupport α → (∀ g, 0 ≤ α g) → (∀ g : GL (Fin r) F, (∃ v w : Fin r → F, f' ((g : Matrix (Fin r) (Fin r) F) * companion p * ((g⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F), v, w, lam) ≠ 0) → ∀ s₀ : A.Kˣ, ∫ s, α (g * LinDesc.tm A hG s₀ * LinDesc.tm A hG s) ∂(LinDesc.unitsMeas A μK) = 1) → ∀ κ₀ : ℂ, (∀ a : A.K, IsUnit a → ∀ g : GL (Fin r) F, omega (act g (LinDesc.pt A hG lam 1 a)) = κ₀ * eta ((g : Matrix (Fin r) (Fin r) F).det) * A.etaK a) → ∀ a : A.K, IsUnit a → orbG M f' (LinDesc.pt A hG lam 1 a) = κ₀ * A.orbK μK (LinDesc.desc A M hG lam α f') a := by
   intro F E _ _ _ _ _ A r τ p hG lam M μK hμK α f' hf' hαlc hαcs hα0 hcut κ₀ hκ a ha
   obtain ⟨a, rfl⟩ := ha

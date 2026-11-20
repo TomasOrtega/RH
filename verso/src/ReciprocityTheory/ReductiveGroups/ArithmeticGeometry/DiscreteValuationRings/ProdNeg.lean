@@ -20,10 +20,18 @@ variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R)
 
 def cQ (T : Over (Spec (CommRingCat.of R))) (χ : D.X) : T ⟶ D.P.A := toUnit T ≫ D.c χ
 
+/- English proof (translation)
+Unfold `cQ`. Rewrite using `[D.c_add, padd, ← Hom.mul_def, MonObj.comp_mul]`.
+-/
 theorem cQ_add (T : Over (Spec (CommRingCat.of R))) (a b : D.X) : cQ D T (a + b) = cQ D T a * cQ D T b := by
   unfold cQ
   rw [D.c_add, padd, ← Hom.mul_def, MonObj.comp_mul]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[zero_smul, pow_zero]`. Establish `h0 : cQ D T 0 * cQ D T 0 = cQ D T 0` using `by rw [← cQ_add, add_zero]`. Simplify using `using h0`.
+
+Consider the case `succ k ih => rw [succ_nsmul, cQ_add, ih, pow_succ]`.
+-/
 theorem cQ_nsmul (T : Over (Spec (CommRingCat.of R))) (k : ℕ) (a : D.X) : cQ D T (k • a) = cQ D T a ^ k := by
   induction k with
   | zero =>
@@ -32,10 +40,20 @@ theorem cQ_nsmul (T : Over (Spec (CommRingCat.of R))) (k : ℕ) (a : D.X) : cQ D
     simpa using h0
   | succ k ih => rw [succ_nsmul, cQ_add, ih, pow_succ]
 
+/- English proof (translation)
+Unfold `cQ`. Rewrite using `[← Category.assoc, toUnit_unique (ρ ≫ toUnit T) (toUnit T')]`.
+-/
 theorem comp_cQ {T T' : Over (Spec (CommRingCat.of R))} (ρ : T' ⟶ T) (a : D.X) : ρ ≫ cQ D T a = cQ D T' a := by
   unfold cQ
   rw [← Category.assoc, toUnit_unique (ρ ≫ toUnit T) (toUnit T')]
 
+/- English proof (translation)
+Establish `e1 : ρ.left ≫ (𝟙 D.P.A.left) = ρ.left` using `Category.comp_id _`. Establish `e2 : ρ.left ≫ (padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c χ)).left = (ρ * cQ D T χ).left`. Rewrite using `[← Over.comp_left]`. Use `congr 1`. Rewrite using `[padd, Hom.mul_def, comp_lift_assoc, Category.comp_id, cQ, ← Category.assoc, comp_toUnit]`.
+
+Establish `e3 : ρ.left ≫ (toUnit D.P.A ≫ D.c χ).left = (cQ D T χ).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, comp_toUnit]`. Both sides reduce to the same expression. Establish `e4 : ρ.left ≫ (toUnit D.P.A ≫ η[D.P.A]).left = (1 : T ⟶ D.P.A).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, comp_toUnit, Hom.one_def]`.
+
+Rewrite using `[Fin.prod_univ_four]`. Simplify using `only [DegPre.famφB, DegPre.famε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, zpow_one, zpow_neg, e1, e2, e3, e4]`.
+-/
 theorem prod_famB {T : Over (Spec (CommRingCat.of R))} (ρ : T ⟶ D.P.A) (χ : D.X) (k : ℕ) {U : Type} [CommGroup U]
     (h : (T.left ⟶ D.P.A.left) → U) : ∏ i, h (ρ.left ≫ D.famφB χ i) ^ DegPre.famε k i =
       h ρ.left ^ ((k : ℤ) - 1) * h (ρ * cQ D T χ).left * (h (cQ D T χ).left)⁻¹ * h (1 : T ⟶ D.P.A).left := by
@@ -53,14 +71,35 @@ theorem prod_famB {T : Over (Spec (CommRingCat.of R))} (ρ : T ⟶ D.P.A) (χ : 
   simp only [DegPre.famφB, DegPre.famε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
     Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, zpow_one, zpow_neg, e1, e2, e3, e4]
 
+/- English proof (translation)
+Simplify using `only [zpow_neg, Finset.prod_inv_distrib, h]`.
+-/
 theorem prod_neg' {K U : Type} [Fintype K] [CommGroup U] (f : K → U) (e : K → ℤ) {c : U} (h : ∏ i, f i ^ e i = c) :
     ∏ i, f i ^ (-e i) = c⁻¹ := by
   simp only [zpow_neg, Finset.prod_inv_distrib, h]
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_sum_type, h, h']`.
+-/
 theorem prod_sum₂' {K K' U : Type} [Fintype K] [Fintype K'] [CommGroup U] (f : K ⊕ K' → U) {c c' : U}
     (h : ∏ i, f (.inl i) = c) (h' : ∏ i, f (.inr i) = c') : ∏ i, f i = c * c' := by
   rw [Fintype.prod_sum_type, h, h']
 
+/- English proof (translation)
+Use `set a : D.P.A ⟶ D.P.A := cQ D _ α with ha`. Use `set m : D.P.A ⟶ D.P.A := cQ D _ mu with hm`. Establish `hα' : cQ D D.P.A (α + k • mu) = a * m ^ k` using `by rw [cQ_add, cQ_nsmul]`. Take `⟨N, hN, vN⟩` from `exists_cubN D.cub a m (𝟙 D.P.A) k`. Take `⟨e, he, ve⟩` from `exists_gen D.P.isLB (φ' := Sum.elim (D.famφB (α + k • mu)) (fun i => (𝟙 D.P.A * m).left ≫ D.famφB α i)) (ε' := DegPre.deltaε k) (fun U _ h => by`.
+
+Establish `p₁` using `prod_cub a (𝟙 D.P.A) m h`. Establish `p₂` using `hC U h`. Establish `p₃` using `prod_famB D (𝟙 _) (α + k • mu) k h`. Establish `p₄` using `prod_famB D (𝟙 D.P.A * m) α k h`. Establish `e₃ : ∀ i, Over.Hom.left (𝟙 D.P.A) ≫ D.famφB (α + k • mu) i = D.famφB (α + k • mu) i` using `fun i => by simp`.
+
+Simplify using `only [e₃] at p₃`. Rewrite `p₃` using `[hα']`. Rewrite `p₄` using `[← ha]`. Establish `q₁ : 𝟙 D.P.A * (a * m ^ k) = a * m ^ k * 𝟙 D.P.A` using `mul_comm _ _`. Establish `q₂ : 𝟙 D.P.A * m * a = a * 𝟙 D.P.A * m` using `by rw [mul_comm _ a, ← _root_.mul_assoc]`.
+
+Establish `q₃ : m * 𝟙 D.P.A = 𝟙 D.P.A * m` using `mul_comm _ _`. Rewrite `p₃` using `[q₁]`. Rewrite `p₄` using `[q₂]`. Establish `S : ∀ {K K' : Type} {_ : Fintype K} {_ : Fintype K'} (f : K ⊕ K' → U), ∏ i, f i = (∏ i, f (.inl i)) * ∏ i, f (.inr i)` using `fun f => Fintype.prod_sum_type f`. Rewrite using `[S, S]`.
+
+Use `erw [S]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, DegPre.deltaε]`. Use `erw [prod_neg' _ _ p₁]`. Rewrite using `[p₂, p₃, prod_neg' _ _ p₄]`. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, q₃]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, ofMul_one]`. Use the proof step `module)`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ N (LB.invGen D.P.L _ _ (LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (lift a (lift (𝟙 D.P.A) m)).left))) (LB.pullGen D.P.L _ _ w D.P.A.hom))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ hN (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ D.cub.isGen _))) (pullGen_isGen _ _ _ _ hw _))`.
+
+Use `⟨e, he, fun T ρ z J hJ => ?_⟩` and prove the remaining obligations. Establish `E` using `(ve _ _ z J hJ).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (vN T ρ z J hJ) ((val_inv _ _).trans (congrArg (·⁻¹) (val_cub D.cub ρ hJ _ _ _))))) (val_pull hJ _ _ _)))`. Use `E.trans ?_` and prove the remaining obligations. Rewrite using `[ha, hm, comp_cQ, comp_cQ, Category.comp_id]`.
+-/
 theorem exists_eB (k : ℕ) (α mu : D.X) {Ix : Type} [Fintype Ix]
     {φV : Ix → (Spec (CommRingCat.of R) ⟶ D.P.A.left)} {εV : Ix → ℤ}
     (w : LB.Gen (LB.LinComb D.P.L φV εV)) (hw : w.IsGen)

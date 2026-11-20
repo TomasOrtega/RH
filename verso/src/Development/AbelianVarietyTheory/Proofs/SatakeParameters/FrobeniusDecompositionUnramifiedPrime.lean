@@ -8,6 +8,27 @@ open scoped Pointwise
 
 namespace GlobalTheory.UnramifiedFrobenius
 
+/- English proof (translation)
+Introduce `E _ _ _ p hp hunr`. Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hpz : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Establish `: IsGaloisGroup (E ≃ₐ[ℚ] E) ℤ (𝓞 E)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ E`. Establish `: (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hpz.ne_zero).2 hpz`.
+
+Establish `hover : ∀ R : HeightOneSpectrum (𝓞 E), ((p : ℕ) : 𝓞 E) ∈ R.asIdeal → R.asIdeal.LiesOver (Ideal.span {(p : ℤ)})` using `fun R hR => (Ideal.liesOver_span_iff R.isPrime.ne_top hpz).mpr (by simpa using hR)`. Take `⟨Q, hQ⟩` from `GlobalTheory.CyclotomicCompletion.exists_place_above E hp`. Use `Q.isPrime` as an intermediate fact. Establish `hQo` using `hover Q hQ`. Establish `: Finite (𝓞 E ⧸ Q.asIdeal)` using `Ring.HasFiniteQuotients.finiteQuotient Q.ne_bot`.
+
+Take `⟨φ, hφ⟩` from `IsArithFrobAt.exists_of_isInvariant ℤ (E ≃ₐ[ℚ] E) Q.asIdeal`. Establish `he : Q.asIdeal.ramificationIdx ℤ = 1` using `hunr.ramificationIdx_eq_one hQo`. Establish `hin : Nat.card (Q.asIdeal.inertia (E ≃ₐ[ℚ] E)) = 1`. Rewrite using `[Ideal.card_inertia_eq_ramificationIdxIn (G := E ≃ₐ[ℚ] E) (Ideal.span {(p : ℤ)}) Q.asIdeal, Ideal.ramificationIdxIn_eq_ramificationIdx (Ideal.span {(p : ℤ)}) Q.asIdeal (E ≃ₐ[ℚ] E), he]`. Establish `hbot : Q.asIdeal.inertia (E ≃ₐ[ℚ] E) = ⊥` using `Subgroup.eq_bot_of_card_eq _ hin`.
+
+Establish `hstab : MulAction.stabilizer (E ≃ₐ[ℚ] E) Q.asIdeal = Subgroup.zpowers φ`. Use `le_antisymm (fun σ hσ => ?_) (Subgroup.zpowers_le.2 hφ.mem_stabilizer)` and prove the remaining obligations. Take `⟨k, ρ, hρ, rfl⟩` from `Formalism.FrobeniusOrbits.Decomp.stab_eq_inertia_mul p Q.asIdeal φ σ hφ hσ`. Establish `h1 : ρ ∈ Q.asIdeal.inertia (E ≃ₐ[ℚ] E)` using `hρ`. Rewrite `h1` using `[hbot, Subgroup.mem_bot]`.
+
+Rewrite using `[h1, one_mul]`. Conclude with `Subgroup.npow_mem_zpowers φ k`. Use `⟨Q, φ, hQ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h2`. Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(p : ℤ)}) = Ideal.span {((p : ℕ) : 𝓞 E)}`.
+
+Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Rewrite `he` using `[← Ideal.ramificationIdx'_eq_ramificationIdx (Ideal.span {(p : ℤ)}) Q.asIdeal (by simpa using hp.ne_zero)]`. Use `(Ideal.ramificationIdx'_ne_one_iff ?_).2 ?_ he` and prove the remaining obligations. Rewrite using `[hmap]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 hQ`.
+
+Rewrite using `[hmap]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 h2`. Introduce `x`. Establish `h1` using `hφ x`. Rewrite `h1` using `[Formalism.TwoAdicCyclotomicDecomposition.odd_card_under p Q.asIdeal]`.
+
+Conclude with `h1`. Establish `h1` using `Ideal.card_stabilizer_eq_card_inertia_mul_finrank (G := E ≃ₐ[ℚ] E) (Ideal.span {(p : ℤ)}) Q.asIdeal`. Rewrite `h1` using `[hin, one_mul, hstab, Nat.card_zpowers]`. Rewrite using `[h1, Ideal.pow_inertiaDeg p Q.asIdeal, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Introduce `g`.
+
+Rewrite using `[← hstab]`. Conclude with `⟨Formalism.FrobeniusOrbits.Decomp.mem_stab_of g Q.asIdeal, Formalism.FrobeniusOrbits.Decomp.smul_mem_iff_of_stab g Q.asIdeal⟩`. Introduce `Q' hQ'`. Use `Q'.isPrime` as an intermediate fact. Use `hover Q' hQ'` as an intermediate fact.
+
+Take `⟨g, hg⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup (Ideal.span {(p : ℤ)}) Q'.asIdeal Q.asIdeal (E ≃ₐ[ℚ] E)`. Use `⟨g, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hg]`. Conclude with `Ideal.smul_mem_pointwise_smul_iff.symm`.
+-/
 theorem exists_frobenius : ∀ (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (p : ℕ), p.Prime → Algebra.IsUnramifiedIn (𝓞 E) (Ideal.span {(p : ℤ)}) → ∃ (Q : HeightOneSpectrum (𝓞 E)) (φ : E ≃ₐ[ℚ] E), ((p : ℕ) : 𝓞 E) ∈ Q.asIdeal ∧ ((p : ℕ) : 𝓞 E) ∉ Q.asIdeal ^ 2 ∧ (∀ x : 𝓞 E, φ • x - x ^ p ∈ Q.asIdeal) ∧ Nat.card (𝓞 E ⧸ Q.asIdeal) = p ^ orderOf φ ∧ (∀ g : E ≃ₐ[ℚ] E, (∀ x : 𝓞 E, g • x ∈ Q.asIdeal ↔ x ∈ Q.asIdeal) ↔ g ∈ Subgroup.zpowers φ) ∧ ∀ Q' : HeightOneSpectrum (𝓞 E), ((p : ℕ) : 𝓞 E) ∈ Q'.asIdeal → ∃ g : E ≃ₐ[ℚ] E, ∀ x : 𝓞 E, x ∈ Q'.asIdeal ↔ g • x ∈ Q.asIdeal := by
   intro E _ _ _ p hp hunr
   have : Fact p.Prime := ⟨hp⟩

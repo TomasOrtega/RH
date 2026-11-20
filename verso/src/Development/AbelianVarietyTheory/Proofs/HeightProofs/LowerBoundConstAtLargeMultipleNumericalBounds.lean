@@ -22,6 +22,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.RunJoin
 
+/- English proof (translation)
+Establish `hf : 1 ≤ D.R.f`. Unfold `Ranks.f Ranks.n`. Conclude with `Nat.succ_le_of_lt (by positivity)`. Establish `hs : (D.R.sigW j).1 + (D.R.sigW j).2 = D.R.r` using `Formalism.L2.Geo.sigW_sum D hj.1 hj.2`. Unfold `WeightFamilies.dimY`.
+
+Generalize the expression as in `(D.R.sigW j).1 = a at hs ⊢`. Generalize the expression as in `(D.R.sigW j).2 = b at hs ⊢`. Establish `key : ∀ c : ℕ, 3 ≤ c → 3 ≤ c * (c - 1) / 2` using `fun c hc => by`. Establish `: 3 * 2 ≤ c * (c - 1)` using `Nat.mul_le_mul hc (by omega)`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h3 : 3 ≤ a * b + a * (a - 1) / 2 + b * (b - 1) / 2`. Break down `le_or_gt 3 a with h | h` into its components or cases. Use `key a h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `key b (by omega); omega` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem three_le_dimY_of_rank (D : D7) (j : ℕ) (hj : InR D j) (hr : 8 ≤ D.R.r) : 3 ≤ WeightFamilies.dimY D j := by
   have hf : 1 ≤ D.R.f := by
     unfold Ranks.f Ranks.n
@@ -40,12 +49,42 @@ theorem three_le_dimY_of_rank (D : D7) (j : ℕ) (hj : InR D j) (hr : 8 ≤ D.R.
   calc 3 = 1 * 3 := rfl
     _ ≤ _ := Nat.mul_le_mul hf h3
 
+/- English proof (translation)
+Unfold `WeightFamilies.Wt.size WeightAlgebra.DF degP`. Establish `h2 : 0 ≤ (D.R.f : ℝ) * ((max (D.R.sigW j).2 1 : ℕ) : ℝ) * (D.R.r : ℝ) * (w.n : ℝ)` using `by positivity`. Move the coercions through the operations in `at h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem DF_add_one_le_size {D : D7} {j : ℕ} (w : WeightFamilies.Wt D j) : (DF w : ℝ) + 1 ≤ w.size := by
   unfold WeightFamilies.Wt.size WeightAlgebra.DF degP
   have h2 : 0 ≤ (D.R.f : ℝ) * ((max (D.R.sigW j).2 1 : ℕ) : ℝ) * (D.R.r : ℝ) * (w.n : ℝ) := by positivity
   push_cast at h2 ⊢
   linarith
 
+/- English proof (translation)
+Introduce `D B P j X large₂ H C2 A2 CT ka wL wF Tn nP nW h0 CL N del hj hP hCL hN hdel hlN hld`. Establish `hL : 1 ≤ large₂.sc.L` using `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`. Establish `hf : 1 ≤ D.R.f`. Unfold `Ranks.f Ranks.n`. Conclude with `Nat.succ_le_of_lt (by positivity)`.
+
+Establish `hf' : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf`. Establish `hPO : 1 ≤ PO D large₂`. Unfold `PO`. Establish `h1 : 0 ≤ 19 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * large₂.sc.L` using `by positivity`. Establish `h2 : (1 : ℝ) ≤ (D.R.f : ℝ) ^ 2 * large₂.sc.L` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ hf') hL`.
+
+Use the polynomial consequences of the given equalities and inequalities. Take `⟨-, hS, h3, -⟩` from `hP.hyp`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, hIL, -, -, -, -, h40, -, h22, -⟩` from `hS`. Take `⟨-, -, -, hc, -⟩` from `h3`. Take `⟨-, -, t1, t2, t3, -⟩` from `hP.tie`.
+
+Rewrite `hc` using `[t1, t2, t3]`. Establish `hdf : (3 : ℝ) ≤ DF wL` using `by exact_mod_cast hP.df`. Establish `hsz` using `DF_add_one_le_size wL`. Establish `hn : wL.n = nW` using `hIL.1`. Use `⟨?_, three_le_dimY_of_rank D j hj hP.r8, hn, by omega, by linarith, by linarith, hPO, WeightFamilies.one_le_zBase large₂, ?_, le_max_right _ _⟩` and prove the remaining obligations.
+
+Use `set n : ℕ := 8 * ((WeightFamilies.dimY D j + 2) * N) ^ 2 * (WeightFamilies.dimY D j + 1) * del * (1 + ⌈PO D large₂⌉₊) with hndef`. Establish `hn1 : 1 ≤ n` using `Nat.succ_le_of_lt (by rw [hndef]; positivity)`. Establish `hn1' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn1`. Establish `hs1 : (wsmul n wL).size ≤ (n : ℝ) * wL.size` using `GlobalTheory.RunWeights.size_le_mul _ _ n hn1 (fun _ _ => le_rfl) (fun _ _ => le_rfl) le_rfl`. Establish `hs0 : 1 ≤ (wsmul n wL).size`.
+
+Use `DF_add_one_le_size (wsmul n wL)` as an intermediate fact. Establish `h0 : (0 : ℝ) ≤ DF (wsmul n wL)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hP0 : 0 ≤ WeightFamilies.PP0v D large₂ CL 2`. Unfold `WeightFamilies.PP0v`.
+
+Rewrite using `[Real.rpow_two]`. Check the signs of the components of the expression. Establish `hN' : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `hdel' : (0 : ℝ) < del` using `by exact_mod_cast hdel`. Establish `hceil : (1 : ℝ) + (⌈PO D large₂⌉₊ : ℝ) ≤ 2 + PO D large₂`.
+
+Use `Nat.ceil_lt_add_one (a := PO D large₂) (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd0 : (0 : ℝ) ≤ WeightFamilies.dimY D j` using `Nat.cast_nonneg _`. Establish `hnle : (n : ℝ) ≤ 8 * ((WeightFamilies.dimY D j : ℝ) + 2) ^ 3 * (2 + PO D large₂) * (N : ℝ) ^ 2 * del`. Rewrite using `[hndef]`.
+
+Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : (0 : ℝ) < 8 * ((WeightFamilies.dimY D j : ℝ) + 2) ^ 3 * (2 + PO D large₂)` using `by positivity`. Establish `hlogn` using `Real.log_le_log (by linarith) hnle`. Rewrite `hlogn` using `[Real.log_mul (by positivity) hdel'.ne', Real.log_mul hA.ne' (by positivity), Real.log_pow]`.
+
+Move the coercions through the operations in `at hlogn`. Establish `hlogs` using `Real.log_le_log (by linarith) hs1`. Rewrite `hlogs` using `[Real.log_mul (by linarith) (by linarith)]`. Establish `hl0 : 0 ≤ Real.log (wsmul n wL).size` using `Real.log_nonneg hs0`. Establish `hmain : WeightFamilies.PP0v D large₂ CL 2 * (1 + Real.log (wsmul n wL).size) ≤ lamR large₂ CL wL`.
+
+Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (by linarith) hP0`. Establish `hlam : 0 ≤ lamR large₂ CL wL` using `le_trans zero_le_one (le_max_left _ _)`. Unfold `LamConst`. Rewrite using `[mul_assoc (lamR large₂ CL wL)]`.
+
+Conclude with `mul_le_mul hmain hs1 (by linarith) hlam`. Establish `hT : (2 : ℝ) ≤ Tn`. Establish `: 2 ≤ Tn` using `by omega`. Conclude with `this` after adjusting the coercions. Rewrite `hc` using `[mul_assoc]`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem lamConst_lamR_rows : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 CL : ℝ) (N del : ℕ), InR D j → PageOK large₂ X H C2 A2 CT ka wL wF Tn nP nW h0 → 0 < CL → 0 < N → 0 < del → Real.log N ≤ nbR large₂ wL → Real.log del ≤ 1041 * Zb D large₂ ^ 3 → LamConst j large₂ CL 2 (wsmul (8 * ((WeightFamilies.dimY D j + 2) * N) ^ 2 * (WeightFamilies.dimY D j + 1) * del * (1 + ⌈PO D large₂⌉₊)) wL) (lamR large₂ CL wL) (8 * ((WeightFamilies.dimY D j + 2) * N) ^ 2 * (WeightFamilies.dimY D j + 1) * del * (1 + ⌈PO D large₂⌉₊)) wL.size ∧ 3 ≤ WeightFamilies.dimY D j ∧ wL.n = nW ∧ 0 < wL.n ∧ (DF wL : ℝ) ≤ wL.size ∧ 2 ≤ wL.size ∧ 1 ≤ PO D large₂ ∧ 1 ≤ zBase large₂ ∧ cc D large₂ C2 A2 7 wL * (g0 D : ℝ) ≤ 1 / 2 ∧ PI4 D j (1009 * Zb D large₂) (81 * Zb D large₂ ^ 2) ≤ max 1 (PI4 D j (1009 * Zb D large₂) (81 * Zb D large₂ ^ 2)) := by
   intro D B P j X large₂ H C2 A2 CT ka wL wF Tn nP nW h0 CL N del hj hP hCL hN hdel hlN hld
   have hL : 1 ≤ large₂.sc.L := Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le

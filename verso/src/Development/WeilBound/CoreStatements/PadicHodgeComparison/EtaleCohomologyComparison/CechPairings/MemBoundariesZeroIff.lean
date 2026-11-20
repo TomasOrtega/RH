@@ -8,46 +8,82 @@ universe w w' w'' t t' v u v' u' v'' u''
 namespace CrystallineSemistableComparison.CechClassBoundaries
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Unfold `Cx.cls`. Rewrite using `[Submodule.Quotient.eq]`. Conclude with `Iff.rfl`.
+-/
 theorem cls_eq {K : Cx.{w} R} {n : ℕ} (a b : K.X n) (ha : K.d n a = 0) (hb : K.d n b = 0) :
     K.cls a ha = K.cls b hb ↔ a - b ∈ K.B n := by
   unfold Cx.cls
   rw [Submodule.Quotient.eq]
   exact Iff.rfl
 
+/- English proof (translation)
+Unfold `Cx.cls`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `Iff.rfl`.
+-/
 theorem cls_eq_zero {K : Cx.{w} R} {n : ℕ} (a : K.X n) (ha : K.d n a = 0) :
     K.cls a ha = 0 ↔ a ∈ K.B n := by
   unfold Cx.cls
   rw [Submodule.Quotient.mk_eq_zero]
   exact Iff.rfl
 
+/- English proof (translation)
+Take `⟨⟨a, ha⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Conclude with `⟨a, ha, rfl⟩`.
+-/
 theorem clsSurj {K : Cx.{w} R} {n : ℕ} (z : K.H n) : ∃ a ha, z = K.cls a ha := by
   obtain ⟨⟨a, ha⟩, rfl⟩ := Submodule.Quotient.mk_surjective _ z
   exact ⟨a, ha, rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cls_add {K : Cx.{w} R} {n : ℕ} (a b : K.X n) (ha : K.d n a = 0) (hb : K.d n b = 0) (h) :
     K.cls (a + b) h = K.cls a ha + K.cls b hb := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cls_sub {K : Cx.{w} R} {n : ℕ} (a b : K.X n) (ha : K.d n a = 0) (hb : K.d n b = 0) (h) :
     K.cls (a - b) h = K.cls a ha - K.cls b hb := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cls_smul {K : Cx.{w} R} {n : ℕ} (r : R) (a : K.X n) (ha : K.d n a = 0) (h) :
     K.cls (r • a) h = r • K.cls a ha := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cls_zero' {K : Cx.{w} R} {n : ℕ} (h) : K.cls (n := n) 0 h = 0 := rfl
 
+/- English proof (translation)
+Use `show a ∈ (⊥ : Submodule R (K.X 0)) ↔ _`. Conclude with `Submodule.mem_bot R`.
+-/
 theorem mem_boundaries_zero_iff {K : Cx.{w} R} (a : K.X 0) : a ∈ K.B 0 ↔ a = 0 := by
   show a ∈ (⊥ : Submodule R (K.X 0)) ↔ _
   exact Submodule.mem_bot R
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Bs {K : Cx.{w} R} {n : ℕ} (a : K.X (n + 1)) : a ∈ K.B (n + 1) ↔ ∃ b, K.d n b = a := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[cls_eq_zero, mem_boundaries_zero_iff]`.
+-/
 theorem class_zero_eq_zero_iff {K : Cx.{w} R} (a : K.X 0) (ha : K.d 0 a = 0) : K.cls a ha = 0 ↔ a = 0 := by
   rw [cls_eq_zero, mem_boundaries_zero_iff]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mapH_cls' {R' : Type} [CommRing R'] {σ : R →+* R'} {K : Cx.{w} R} {L : Cx.{w'} R'}
     (φ : Cx.Hom K L σ) {n : ℕ} (a : K.X n) (ha : K.d n a = 0) (hb : L.d n (φ.f n a) = 0) :
     φ.mapH n (K.cls a ha) = L.cls (φ.f n a) hb := rfl
 
+/- English proof (translation)
+Rewrite using `[φ.comm, ha, map_zero]`.
+-/
 theorem cyc {R' : Type} [CommRing R'] {σ : R →+* R'} {K : Cx.{w} R} {L : Cx.{w'} R'}
     (φ : Cx.Hom K L σ) {n : ℕ} (a : K.X n) (ha : K.d n a = 0) : L.d n (φ.f n a) = 0 := by
   rw [φ.comm, ha, map_zero]
@@ -61,19 +97,31 @@ variable {R : Type} [CommRing R]
 section LES
 variable {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R}
 
+/- English proof (translation)
+The claim follows from `(hfg n _).2 ⟨x, rfl⟩`.
+-/
 theorem gf (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id R))
     (hfg : ∀ n, Function.Exact (f.f n) (g.f n)) {n : ℕ} (x : K.X n) : g.f n (f.f n x) = 0 :=
   (hfg n _).2 ⟨x, rfl⟩
 
+/- English proof (translation)
+The claim follows from `(hfg (n + 1) _).1 (by rw [← g.comm, hz])`.
+-/
 theorem conn_ex (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id R))
     (hfg : ∀ n, Function.Exact (f.f n) (g.f n)) {n : ℕ} (y : L.X n) (hz : M.d n (g.f n y) = 0) :
     ∃ x : K.X (n + 1), f.f (n + 1) x = L.d n y :=
   (hfg (n + 1) _).1 (by rw [← g.comm, hz])
 
+/- English proof (translation)
+Apply `hf (n + 2)` to reduce the goal to its premises. Rewrite using `[← f.comm, hx, L.dd, map_zero]`.
+-/
 theorem conn_cyc (f : Cx.Hom K L (RingHom.id R)) (hf : ∀ n, Function.Injective (f.f n)) {n : ℕ}
     (y : L.X n) (x : K.X (n + 1)) (hx : f.f (n + 1) x = L.d n y) : K.d (n + 1) x = 0 := by
   apply hf (n + 2); rw [← f.comm, hx, L.dd, map_zero]
 
+/- English proof (translation)
+Rewrite using `[cls_eq, mem_Bs]`. Take `⟨u, hu⟩` from `(hfg n (y - y')).1 (by rw [map_sub, e, sub_self])`. Use `⟨u, hf (n + 1) ?_⟩` and prove the remaining obligations. Rewrite using `[← f.comm, hu, map_sub, map_sub, h, h']`.
+-/
 theorem conn_wd (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id R))
     (hf : ∀ n, Function.Injective (f.f n)) (hfg : ∀ n, Function.Exact (f.f n) (g.f n)) {n : ℕ}
     (y y' : L.X n) (x x' : K.X (n + 1)) (hx : K.d (n + 1) x = 0) (hx' : K.d (n + 1) x' = 0)
@@ -84,6 +132,9 @@ theorem conn_wd (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id R))
   refine ⟨u, hf (n + 1) ?_⟩
   rw [← f.comm, hu, map_sub, map_sub, h, h']
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hg n m`. Take `⟨x, hx⟩` from `conn_ex f g hfg y hm`. Conclude with `⟨y, x, rfl, hx⟩`.
+-/
 theorem lift_ex (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id R))
     (hfg : ∀ n, Function.Exact (f.f n) (g.f n)) (hg : ∀ n, Function.Surjective (g.f n)) {n : ℕ}
     (m : M.X n) (hm : M.d n m = 0) : ∃ y : L.X n, ∃ x : K.X (n + 1), g.f n y = m ∧ f.f (n + 1) x = L.d n y := by
@@ -97,6 +148,9 @@ noncomputable def dfun (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.
   K.cls (lift_ex f g hfg hg m hm).choose_spec.choose
     (conn_cyc f hf _ _ (lift_ex f g hfg hg m hm).choose_spec.choose_spec.2)
 
+/- English proof (translation)
+The claim follows from `conn_wd f g hf hfg _ _ _ _ _ _ (by rw [(lift_ex f g hfg hg m hm).choose_spec.choose_spec.1, hy]) (lift_ex f g hfg hg m hm).choose_spec.choose_spec.2 h`.
+-/
 theorem dfun_spec (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id R))
     (hf : ∀ n, Function.Injective (f.f n)) (hfg : ∀ n, Function.Exact (f.f n) (g.f n))
     (hg : ∀ n, Function.Surjective (g.f n)) {n : ℕ} (m : M.X n) (hm : M.d n m = 0)
@@ -126,6 +180,13 @@ noncomputable def dZ (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id
         (by rw [map_smul, e]; rfl) (by rw [map_smul, map_smul, h])]
     rfl
 
+/- English proof (translation)
+Use `show dfun f g hf hfg hg m.1 m.2 = 0`. Consider the cases of `n with`. Consider the case `zero`. Rewrite `hm` using `[mem_boundaries_zero_iff]`. Rewrite using `[dfun_spec f g hf hfg hg _ _ 0 0 (map_zero _) (by rw [map_zero, hm]) (by rw [map_zero, map_zero])]`.
+
+Both sides reduce to the same expression. Consider the case `succ k`. Take `⟨m₀, hm₀⟩` from `(mem_Bs _).1 hm`. Take `⟨y₀, rfl⟩` from `hg k m₀`. Rewrite using `[dfun_spec f g hf hfg hg _ _ (L.d k y₀) 0 (map_zero _) (by rw [← g.comm, hm₀]) (by rw [map_zero, L.dd])]`.
+
+Both sides reduce to the same expression.
+-/
 theorem dZ_B (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id R))
     (hf : ∀ n, Function.Injective (f.f n)) (hfg : ∀ n, Function.Exact (f.f n) (g.f n))
     (hg : ∀ n, Function.Surjective (g.f n)) (n : ℕ) (m : M.Z n) (hm : m.1 ∈ M.B n) :
@@ -148,6 +209,9 @@ noncomputable def dH (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id
   Submodule.liftQ _ (dZ f g hf hfg hg n) (fun m hm => by
     rw [LinearMap.mem_ker]; exact dZ_B f g hf hfg hg n m hm)
 
+/- English proof (translation)
+The claim follows from `dfun_spec f g hf hfg hg _ hz y x hx rfl h`.
+-/
 theorem dH_char (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id R))
     (hf : ∀ n, Function.Injective (f.f n)) (hfg : ∀ n, Function.Exact (f.f n) (g.f n))
     (hg : ∀ n, Function.Surjective (g.f n)) (n : ℕ) (y : L.X n) (x : K.X (n + 1)) (hz : M.d n (g.f n y) = 0)
@@ -157,9 +221,15 @@ theorem dH_char (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id R))
 
 end LES
 
+/- English proof (translation)
+Simplify using `only [smul_smul, pow_succ, pow_zero, one_mul, mul_assoc]`.
+-/
 theorem pow3 {M : Type w} [AddCommGroup M] [Module R M] (s : R) (x : M) : s ^ 3 • x = s • s • s • x := by
   simp only [smul_smul, pow_succ, pow_zero, one_mul, mul_assoc]
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `clsSurj z`. Rewrite using `[mapH_cls' φ _ hx (cyc φ _ hx), mapH_cls' ψ _ _ (cyc ψ _ (cyc φ _ hx)), mapH_cls' φ' _ hx (cyc φ' _ hx), mapH_cls' ψ' _ _ (cyc ψ' _ (cyc φ' _ hx)), cls_eq, h, sub_self]`. Conclude with `zero_mem _`.
+-/
 theorem sqH {A : Cx.{w} R} {B : Cx.{w'} R} {C : Cx.{w''} R} {D : Cx.{t} R}
     (φ : Cx.Hom A B (RingHom.id R)) (ψ : Cx.Hom B D (RingHom.id R)) (φ' : Cx.Hom A C (RingHom.id R))
     (ψ' : Cx.Hom C D (RingHom.id R)) (h : ∀ n x, ψ.f n (φ.f n x) = ψ'.f n (φ'.f n x)) (n : ℕ) (z : A.H n) :
@@ -169,6 +239,13 @@ theorem sqH {A : Cx.{w} R} {B : Cx.{w'} R} {C : Cx.{w''} R} {D : Cx.{t} R}
     mapH_cls' φ' _ hx (cyc φ' _ hx), mapH_cls' ψ' _ _ (cyc ψ' _ (cyc φ' _ hx)), cls_eq, h, sub_self]
   exact zero_mem _
 
+/- English proof (translation)
+Take `⟨m, hm, rfl⟩` from `clsSurj w`. Take `⟨y, rfl⟩` from `hg n m`. Take `⟨x, hx⟩` from `conn_ex f g hfg y hm`. Establish `hxc` using `conn_cyc f hf y x hx`. Rewrite using `[hδ n y x hm hxc hx, mapH_cls' a _ hxc (cyc a _ hxc)]`.
+
+Establish `h2 : M'.d n (g'.f n (b.f n y)) = 0` using `by rw [← hbc]; exact cyc c _ hm`. Establish `e1 : c.mapH n (M.cls (g.f n y) hm) = M'.cls (g'.f n (b.f n y)) h2`. Rewrite using `[mapH_cls' c _ hm (cyc c _ hm), cls_eq, hbc, sub_self]`. Conclude with `zero_mem _`. Rewrite using `[e1]`.
+
+Conclude with `hδ' n (b.f n y) (a.f (n + 1) x) h2 _ (by rw [← hab, hx, b.comm])`.
+-/
 theorem dnat {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R} {K' : Cx.{t} R} {L' : Cx.{t'} R} {M' : Cx.{u} R}
     (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id R))
     (hf : ∀ n, Function.Injective (f.f n)) (hfg : ∀ n, Function.Exact (f.f n) (g.f n))
@@ -194,6 +271,11 @@ theorem dnat {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R} {K' : Cx.{t} R} {L'
   rw [e1]
   exact hδ' n (b.f n y) (a.f (n + 1) x) h2 _ (by rw [← hab, hx, b.comm])
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h z`. Take `⟨y, hy, rfl⟩` from `clsSurj z`. Take `⟨x, hx⟩` from `h y hy`. Rewrite using `[← cls_smul (h := by rw [map_smul, hy, smul_zero]), cls_eq_zero, mem_Bs]`.
+
+Conclude with `⟨x, hx⟩`. Introduce `h y hy`. Use `h (K.cls y hy)` as an intermediate fact. Rewrite `this` using `[← cls_smul (h := by rw [map_smul, hy, smul_zero]), cls_eq_zero, mem_Bs]`. Conclude with `this`.
+-/
 theorem kill_iff {K : Cx.{w} R} (s : R) (n : ℕ) :
     ExactUpTo s (K.d n) (K.d (n + 1)) ↔ ∀ z : K.H (n + 1), s • z = 0 := by
   constructor
@@ -209,6 +291,33 @@ theorem kill_iff {K : Cx.{w} R} (s : R) (n : ℕ) :
 
 end CrystallineSemistableComparison.CechClassBoundaries
 
+/- English proof (translation)
+Introduce `R _ K L M f g hf hfg hg`. Establish `char` using `dH_char f g hf hfg hg`. Use `⟨dH f g hf hfg hg, char, ?_, fun n => ?_, fun n => ?_, fun n => ?_⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_zero _).2 fun z hz => ?_` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `clsSurj z`.
+
+Rewrite `hz` using `[mapH_cls' f _ ha (cyc f _ ha), class_zero_eq_zero_iff]`. Rewrite using `[class_zero_eq_zero_iff]`. Conclude with `hf 0 (by rw [hz, map_zero])`. Introduce `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Take `⟨y, hy, rfl⟩` from `clsSurj z`. Rewrite `h` using `[mapH_cls' g _ hy (cyc g _ hy), cls_eq_zero]`. Consider the cases of `n with`. Consider the case `zero`.
+
+Rewrite `h` using `[mem_boundaries_zero_iff]`. Take `⟨x, rfl⟩` from `(hfg 0 y).1 h`. Establish `hxc : K.d 0 x = 0` using `hf 1 (by rw [← f.comm, hy, map_zero])`. Conclude with `⟨K.cls x hxc, rfl⟩`. Consider the case `succ k`.
+
+Take `⟨m₀, hm₀⟩` from `(mem_Bs _).1 h`. Take `⟨y₀, rfl⟩` from `hg k m₀`. Establish `e : g.f (k + 1) (y - L.d k y₀) = 0` using `by rw [map_sub, ← g.comm, hm₀, sub_self]`. Take `⟨x, hx⟩` from `(hfg _ _).1 e`. Establish `hxc : K.d (k + 1) x = 0` using `hf _ (by rw [← f.comm, hx, map_sub, hy, L.dd, sub_self, map_zero])`.
+
+Use `⟨K.cls x hxc, ?_⟩` and prove the remaining obligations. Rewrite using `[mapH_cls' f _ hxc (cyc f _ hxc), cls_eq, mem_Bs]`. Conclude with `⟨-y₀, by rw [hx, map_neg]; abel⟩`. Introduce and unpack `⟨z', rfl⟩`. Take `⟨x, hx, rfl⟩` from `clsSurj z'`.
+
+Rewrite using `[mapH_cls' f _ hx (cyc f _ hx), mapH_cls' g _ (cyc f _ hx) (cyc g _ (cyc f _ hx)), cls_eq_zero, gf f g hfg]`. Conclude with `zero_mem _`. Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Take `⟨m, hm, rfl⟩` from `clsSurj w`. Take `⟨y, rfl⟩` from `hg n m`. Take `⟨x, hx⟩` from `conn_ex f g hfg y hm`. Rewrite `h` using `[char n y x hm (conn_cyc f hf y x hx) hx, cls_eq_zero, mem_Bs]`. Take `⟨u, hu⟩` from `h`.
+
+Establish `hc : L.d n (y - f.f n u) = 0` using `by rw [map_sub, f.comm, hu, hx, sub_self]`. Use `⟨L.cls _ hc, ?_⟩` and prove the remaining obligations. Rewrite using `[mapH_cls' g _ hc (cyc g _ hc), cls_eq, map_sub, gf f g hfg, sub_zero, sub_self]`. Conclude with `zero_mem _`. Introduce and unpack `⟨z, rfl⟩`.
+
+Take `⟨y, hy, rfl⟩` from `clsSurj z`. Rewrite using `[mapH_cls' g _ hy (cyc g _ hy), char n y 0 _ (map_zero _) (by rw [map_zero, hy])]`. Both sides reduce to the same expression. Introduce `k`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Take `⟨x, hx, rfl⟩` from `clsSurj k`. Rewrite `h` using `[mapH_cls' f _ hx (cyc f _ hx), cls_eq_zero, mem_Bs]`. Take `⟨y, hy⟩` from `h`. Establish `hz : M.d n (g.f n y) = 0` using `by rw [g.comm, hy, gf f g hfg]`.
+
+Conclude with `⟨M.cls _ hz, char n y x hz hx hy.symm⟩`. Introduce and unpack `⟨w, rfl⟩`. Take `⟨m, hm, rfl⟩` from `clsSurj w`. Take `⟨y, rfl⟩` from `hg n m`. Take `⟨x, hx⟩` from `conn_ex f g hfg y hm`.
+
+Establish `hxc` using `conn_cyc f hf y x hx`. Rewrite using `[char n y x hm hxc hx, mapH_cls' f _ hxc (cyc f _ hxc), cls_eq_zero, mem_Bs]`. Conclude with `⟨y, hx.symm⟩`.
+-/
 theorem CrystallineSemistableComparison.P.les : ∀ {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R} (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id R)) (hf : ∀ n, Function.Injective (f.f n)) (hfg : ∀ n, Function.Exact (f.f n) (g.f n)) (hg : ∀ n, Function.Surjective (g.f n)), ∃ δ : ∀ n, M.H n →ₗ[R] K.H (n + 1), (∀ n (y : L.X n) (x : K.X (n + 1)) hz hx, f.f (n + 1) x = L.d n y → δ n (M.cls (g.f n y) hz) = K.cls x hx) ∧ Function.Injective (f.mapH 0) ∧ (∀ n, Function.Exact (f.mapH n) (g.mapH n)) ∧ (∀ n, Function.Exact (g.mapH n) (δ n)) ∧ ∀ n, Function.Exact (δ n) (f.mapH (n + 1)) := by
   intro R _ K L M f g hf hfg hg
   have char := dH_char f g hf hfg hg
@@ -275,6 +384,47 @@ theorem CrystallineSemistableComparison.P.les : ∀ {R : Type} [CommRing R] {K :
       rw [char n y x hm hxc hx, mapH_cls' f _ hxc (cyc f _ hxc), cls_eq_zero, mem_Bs]
       exact ⟨y, hx.symm⟩
 
+/- English proof (translation)
+Introduce `R _ K L M f g hf hfg hg K' L' M' f' g' hf' hfg' hg' a b c hab hbc s`. Take `⟨δ, hδ, i0, e1, e2, e3⟩` from `CrystallineSemistableComparison.P.les f g hf hfg hg`. Take `⟨δ', hδ', i0', e1', e2', e3'⟩` from `CrystallineSemistableComparison.P.les f' g' hf' hfg' hg'`. Establish `sq1 : ∀ n k, b.mapH n (f.mapH n k) = f'.mapH n (a.mapH n k)` using `sqH f b a f' hab`. Establish `sq2 : ∀ n z, c.mapH n (g.mapH n z) = g'.mapH n (b.mapH n z)` using `sqH g c b g' hbc`.
+
+Establish `sq3 : ∀ n w, δ' n (c.mapH n w) = a.mapH (n + 1) (δ n w)` using `dnat f g hf hfg hg f' g' a b c hab hbc δ δ' hδ hδ'`. Use `⟨fun ha hc n => ⟨fun z hz => ?_, fun z' => ?_⟩, fun hb hc n => ⟨fun k hk => ?_, fun k' => ?_⟩, fun ha hb n => ⟨fun w hw => ?_, fun w' => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : c.mapH n (g.mapH n z) = 0` using `by rw [sq2, hz, map_zero]`. Establish `h2` using `(hc n).1 _ h1`. Rewrite `h2` using `[← map_smul (g.mapH n)]`.
+
+Take `⟨k, hk⟩` from `(e1 n _).1 h2`. Establish `h3 : f'.mapH n (a.mapH n k) = 0` using `by rw [← sq1, hk, map_smul, hz, smul_zero]`. Consider the cases of `n with`. Consider the case `zero`. Establish `h4 : a.mapH 0 k = 0` using `(injective_iff_map_eq_zero _).1 i0' _ h3`.
+
+Establish `h5` using `(ha 0).1 _ h4`. Rewrite using `[pow3, ← hk, ← map_smul (f.mapH 0), ← map_smul (f.mapH 0), h5, smul_zero, map_zero]`. Consider the case `succ j`. Take `⟨w', hw'⟩` from `(e3' j _).1 h3`. Take `⟨w, hw⟩` from `(hc j).2 w'`.
+
+Establish `h6 : a.mapH (j + 1) (s • k - δ j w) = 0`. Rewrite using `[map_sub, map_smul, ← sq3, hw, map_smul, hw', sub_self]`. Establish `h7` using `(ha (j + 1)).1 _ h6`. Rewrite `h7` using `[smul_sub, sub_eq_zero]`. Establish `h8 : f.mapH (j + 1) (δ j w) = 0` using `(e3 j _).2 ⟨w, rfl⟩`.
+
+Rewrite using `[pow3, ← hk, ← map_smul (f.mapH (j + 1)), ← map_smul (f.mapH (j + 1)), h7, map_smul, h8, smul_zero]`. Take `⟨w, hw⟩` from `(hc n).2 (g'.mapH n z')`. Establish `h1 : a.mapH (n + 1) (δ n w) = 0` using `by rw [← sq3, hw, map_smul, (e2' n _).2 ⟨z', rfl⟩, smul_zero]`. Establish `h2` using `(ha (n + 1)).1 _ h1`. Rewrite `h2` using `[← map_smul (δ n)]`.
+
+Take `⟨z, hz⟩` from `(e2 n _).1 h2`. Establish `h3 : g'.mapH n (b.mapH n z - s ^ 2 • z') = 0`. Rewrite using `[map_sub, ← sq2, hz, map_smul, hw, map_smul, smul_smul, pow_two, sub_self]`. Take `⟨k', hk'⟩` from `(e1' n _).1 h3`. Take `⟨k, hk⟩` from `(ha n).2 k'`.
+
+Use `⟨s • z - f.mapH n k, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, sq1, hk, map_smul, hk', smul_sub, sub_sub_cancel, smul_smul, ← pow_succ']`. Establish `h1 : b.mapH n (f.mapH n k) = 0` using `by rw [sq1, hk, map_zero]`. Establish `h2` using `(hb n).1 _ h1`. Rewrite `h2` using `[← map_smul (f.mapH n)]`.
+
+Consider the cases of `n with`. Consider the case `zero`. Establish `h3 : s • k = 0` using `(injective_iff_map_eq_zero _).1 i0 _ h2`. Rewrite using `[pow3, h3, smul_zero, smul_zero]`. Consider the case `succ j`.
+
+Take `⟨w, hw⟩` from `(e3 j _).1 h2`. Establish `h3 : δ' j (c.mapH j w) = 0` using `by rw [sq3, hw, map_smul, hk, smul_zero]`. Take `⟨z', hz'⟩` from `(e2' j _).1 h3`. Take `⟨z, hz⟩` from `(hb j).2 z'`. Establish `h4 : c.mapH j (g.mapH j z - s • w) = 0`.
+
+Rewrite using `[map_sub, sq2, hz, map_smul, hz', map_smul, sub_self]`. Establish `h5` using `(hc j).1 _ h4`. Rewrite `h5` using `[smul_sub, sub_eq_zero]`. Rewrite using `[pow3, ← hw, ← map_smul (δ j), ← map_smul (δ j), ← h5, ← map_smul (g.mapH j), (e2 j _).2 ⟨_, rfl⟩]`. Take `⟨z, hz⟩` from `(hb n).2 (f'.mapH n k')`.
+
+Establish `h1 : c.mapH n (g.mapH n z) = 0`. Rewrite using `[sq2, hz, map_smul, (e1' n _).2 ⟨k', rfl⟩, smul_zero]`. Establish `h2` using `(hc n).1 _ h1`. Rewrite `h2` using `[← map_smul (g.mapH n)]`. Take `⟨k, hk⟩` from `(e1 n _).1 h2`.
+
+Establish `h3 : f'.mapH n (a.mapH n k - s ^ 2 • k') = 0`. Rewrite using `[map_sub, ← sq1, hk, map_smul, hz, map_smul, smul_smul, pow_two, sub_self]`. Consider the cases of `n with`. Consider the case `zero`. Establish `h4` using `(injective_iff_map_eq_zero _).1 i0' _ h3`.
+
+Rewrite `h4` using `[sub_eq_zero]`. Use `⟨s • k, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, h4, smul_smul, ← pow_succ']`. Consider the case `succ j`. Take `⟨w', hw'⟩` from `(e3' j _).1 h3`.
+
+Take `⟨w, hw⟩` from `(hc j).2 w'`. Use `⟨s • k - δ j w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, ← sq3, hw, map_smul, hw', smul_sub, sub_sub_cancel, smul_smul, ← pow_succ']`. Establish `h1 : a.mapH (n + 1) (δ n w) = 0` using `by rw [← sq3, hw, map_zero]`. Establish `h2` using `(ha (n + 1)).1 _ h1`.
+
+Rewrite `h2` using `[← map_smul (δ n)]`. Take `⟨z, hz⟩` from `(e2 n _).1 h2`. Establish `h3 : g'.mapH n (b.mapH n z) = 0` using `by rw [← sq2, hz, map_smul, hw, smul_zero]`. Take `⟨k', hk'⟩` from `(e1' n _).1 h3`. Take `⟨k, hk⟩` from `(ha n).2 k'`.
+
+Establish `h4 : b.mapH n (s • z - f.mapH n k) = 0`. Rewrite using `[map_sub, map_smul, sq1, hk, map_smul, hk', sub_self]`. Establish `h5` using `(hb n).1 _ h4`. Rewrite `h5` using `[smul_sub, sub_eq_zero]`. Rewrite using `[pow3, ← hz, ← map_smul (g.mapH n), ← map_smul (g.mapH n), h5, map_smul, (e1 n _).2 ⟨k, rfl⟩, smul_zero]`.
+
+Take `⟨k, hk⟩` from `(ha (n + 1)).2 (δ' n w')`. Establish `h1 : b.mapH (n + 1) (f.mapH (n + 1) k) = 0`. Rewrite using `[sq1, hk, map_smul, (e3' n _).2 ⟨w', rfl⟩, smul_zero]`. Establish `h2` using `(hb (n + 1)).1 _ h1`. Rewrite `h2` using `[← map_smul (f.mapH (n + 1))]`.
+
+Take `⟨w, hw⟩` from `(e3 n _).1 h2`. Establish `h3 : δ' n (c.mapH n w - s ^ 2 • w') = 0`. Rewrite using `[map_sub, sq3, hw, map_smul, hk, map_smul, smul_smul, pow_two, sub_self]`. Take `⟨z', hz'⟩` from `(e2' n _).1 h3`. Take `⟨z, hz⟩` from `(hb n).2 z'`.
+
+Use `⟨s • w - g.mapH n z, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, sq2, hz, map_smul, hz', smul_sub, sub_sub_cancel, smul_smul, ← pow_succ']`.
+-/
 theorem CrystallineSemistableComparison.P.five : ∀ {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R} (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id R)) (hf : ∀ n, Function.Injective (f.f n)) (hfg : ∀ n, Function.Exact (f.f n) (g.f n)) (hg : ∀ n, Function.Surjective (g.f n)) {K' : Cx.{t} R} {L' : Cx.{t'} R} {M' : Cx.{u} R} (f' : Cx.Hom K' L' (RingHom.id R)) (g' : Cx.Hom L' M' (RingHom.id R)) (hf' : ∀ n, Function.Injective (f'.f n)) (hfg' : ∀ n, Function.Exact (f'.f n) (g'.f n)) (hg' : ∀ n, Function.Surjective (g'.f n)) (a : Cx.Hom K K' (RingHom.id R)) (b : Cx.Hom L L' (RingHom.id R)) (c : Cx.Hom M M' (RingHom.id R)) (hab : ∀ n x, b.f n (f.f n x) = f'.f n (a.f n x)) (hbc : ∀ n x, c.f n (g.f n x) = g'.f n (b.f n x)) (s : R), ((∀ n, UpTo s (a.mapH n)) → (∀ n, UpTo s (c.mapH n)) → ∀ n, UpTo (s ^ 3) (b.mapH n)) ∧ ((∀ n, UpTo s (b.mapH n)) → (∀ n, UpTo s (c.mapH n)) → ∀ n, UpTo (s ^ 3) (a.mapH n)) ∧ ((∀ n, UpTo s (a.mapH n)) → (∀ n, UpTo s (b.mapH n)) → ∀ n, UpTo (s ^ 3) (c.mapH n)) := by
   intro R _ K L M f g hf hfg hg K' L' M' f' g' hf' hfg' hg' a b c hab hbc s
   obtain ⟨δ, hδ, i0, e1, e2, e3⟩ := CrystallineSemistableComparison.P.les f g hf hfg hg
@@ -382,6 +532,41 @@ theorem CrystallineSemistableComparison.P.five : ∀ {R : Type} [CommRing R] {K 
     refine ⟨s • w - g.mapH n z, ?_⟩
     rw [map_sub, map_smul, sq2, hz, map_smul, hz', smul_sub, sub_sub_cancel, smul_smul, ← pow_succ']
 
+/- English proof (translation)
+Introduce `R _ K L M f g hf hfg hg A B D _ _ _ _ _ _ i p hi hip hp a b c hab hbc hb s`. Take `⟨δ, hδ, i0, e1, e2, e3⟩` from `CrystallineSemistableComparison.P.les f g hf hfg hg`. Establish `ha0 : ∀ x, K.d 0 (a x) = 0` using `fun x => hf 1 (by rw [map_zero, ← f.comm, ← hab, hb])`. Establish `hc0 : ∀ x, M.d 0 (c x) = 0`. Introduce `x`.
+
+Take `⟨x', rfl⟩` from `hp x`. Rewrite using `[hbc, g.comm, hb, map_zero]`. Use `⟨fun ⟨_, ka1, ka2, ka3⟩ ⟨_, mc1, mc2, mc3⟩ => ⟨hb, fun x hx => ?_, fun y hy => ?_, fun n => (kill_iff _ _).2 fun z => ?_⟩, fun ⟨_, lb1, lb2, lb3⟩ ⟨_, mc1, mc2, mc3⟩ => ⟨ha0, fun x hx => ?_, fun k hk => ?_, fun n => (kill_iff _ _).2 fun z => ?_⟩, fun ⟨_, ka1, ka2, ka3⟩ ⟨_, lb1, lb …` and prove the remaining obligations. Establish `h1 : c (p x) = 0` using `by rw [hbc, hx, map_zero]`. Establish `h2` using `mc1 _ h1`.
+
+Rewrite `h2` using `[← map_smul p]`. Take `⟨y, hy⟩` from `(hip _).1 h2`. Establish `h3 : f.f 0 (a y) = 0` using `by rw [← hab, hy, map_smul, hx, smul_zero]`. Establish `h4 : a y = 0` using `(injective_iff_map_eq_zero _).1 (hf 0) _ h3`. Establish `h5` using `ka1 _ h4`.
+
+Rewrite using `[pow3, ← hy, ← map_smul i, h5, map_zero, smul_zero]`. Take `⟨e, he⟩` from `mc2 (g.f 0 y) (cyc g _ hy)`. Take `⟨x', rfl⟩` from `hp e`. Rewrite `he` using `[hbc]`. Take `⟨k, hk⟩` from `(hfg 0 (s • y - b x')).1 (by rw [map_sub, map_smul, he, sub_self])`.
+
+Establish `hkc : K.d 0 k = 0` using `hf 1 (by rw [map_zero, ← f.comm, hk, map_sub, map_smul, hy, hb, smul_zero, sub_zero])`. Take `⟨a0, ha0'⟩` from `ka2 k hkc`. Establish `e1 : b (i a0) = s • (s • y - b x')` using `by rw [hab, ha0', map_smul, hk]`. Use `⟨s • i a0 + s • s • x', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_smul]`.
+
+Rewrite using `[e1, pow3, smul_sub, smul_sub, sub_add_cancel]`. Establish `hMk` using `(kill_iff _ _).1 (mc3 n) (g.mapH (n + 1) z)`. Rewrite `hMk` using `[← map_smul (g.mapH (n + 1))]`. Take `⟨k, hk⟩` from `(e1 (n + 1) _).1 hMk`. Establish `h1` using `(kill_iff _ _).1 (ka3 n) k`.
+
+Rewrite using `[pow3, ← hk, ← map_smul (f.mapH (n + 1)), h1, map_zero, smul_zero]`. Establish `h1 : b (i x) = 0` using `by rw [hab, hx, map_zero]`. Establish `h2` using `lb1 _ h1`. Rewrite `h2` using `[← map_smul i]`. Establish `h3 : s • x = 0` using `(injective_iff_map_eq_zero _).1 hi _ h2`.
+
+Rewrite using `[pow3, h3, smul_zero, smul_zero]`. Take `⟨x, hx⟩` from `lb2 (f.f 0 k) (cyc f _ hk)`. Establish `h1 : c (p x) = 0` using `by rw [hbc, hx, map_smul, gf f g hfg, smul_zero]`. Establish `h2` using `mc1 _ h1`. Rewrite `h2` using `[← map_smul p]`.
+
+Take `⟨y, hy⟩` from `(hip _).1 h2`. Establish `e : f.f 0 (a y) = f.f 0 (s • s • k)`. Rewrite using `[← hab, hy]`. Simplify using `only [map_smul, hx]`. Use `⟨s • y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, hf 0 e, pow3]`. Establish `h1` using `(kill_iff _ _).1 (lb3 n) (f.mapH (n + 1) z)`. Rewrite `h1` using `[← map_smul (f.mapH (n + 1))]`. Take `⟨w, hw⟩` from `(e3 n _).1 h1`. Establish `h2 : δ n (s • w) = 0`.
+
+Consider the cases of `n with`. Consider the case `zero`. Take `⟨m, hm, rfl⟩` from `clsSurj w`. Take `⟨e, he⟩` from `mc2 m hm`. Take `⟨x, rfl⟩` from `hp e`.
+
+Establish `hsm : M.d 0 (s • m) = 0` using `by rw [map_smul, hm, smul_zero]`. Rewrite using `[← cls_smul (h := hsm)]`. Establish `e' : M.cls (s • m) hsm = M.cls (g.f 0 (b x)) (cyc g _ (hb x))` using `(cls_eq _ _ _ _).2 (by rw [← hbc, he, sub_self]; exact zero_mem _)`. Rewrite using `[e', hδ 0 (b x) 0 _ (map_zero _) (by rw [map_zero, hb])]`. Both sides reduce to the same expression.
+
+Consider the case `succ j`. Rewrite using `[(kill_iff _ _).1 (mc3 j) w, map_zero]`. Rewrite using `[pow3, ← hw, ← map_smul (δ n), h2, smul_zero]`. Take `⟨x, rfl⟩` from `hp e`. Rewrite `he` using `[hbc]`.
+
+Take `⟨k, hk⟩` from `(hfg 0 _).1 he`. Establish `hkc : K.d 0 k = 0` using `hf 1 (by rw [map_zero, ← f.comm, hk, hb])`. Take `⟨y, hy⟩` from `ka2 k hkc`. Establish `h1 : b (s • x - i y) = 0` using `by rw [map_sub, map_smul, hab, hy, map_smul, hk, sub_self]`. Establish `h2` using `lb1 _ h1`.
+
+Rewrite `h2` using `[smul_sub, sub_eq_zero]`. Rewrite using `[pow3, ← map_smul p, ← map_smul p, h2, map_smul, (hip _).2 ⟨y, rfl⟩, smul_zero, smul_zero]`. Establish `h1` using `(kill_iff _ _).1 (ka3 0) (δ 0 (M.cls m hm))`. Rewrite `h1` using `[← map_smul (δ 0)]`. Take `⟨z, hz⟩` from `(e2 0 _).1 h1`.
+
+Take `⟨y, hy, rfl⟩` from `clsSurj z`. Rewrite `hz` using `[mapH_cls' g _ hy (cyc g _ hy), ← cls_smul (h := by rw [map_smul, hm, smul_zero]), cls_eq, mem_boundaries_zero_iff, sub_eq_zero]`. Take `⟨x, hx⟩` from `lb2 y hy`. Use `⟨s • p x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hbc, hx, map_smul, hz, pow3]`.
+
+Establish `h1` using `(kill_iff _ _).1 (ka3 (n + 1)) (δ (n + 1) w)`. Rewrite `h1` using `[← map_smul (δ (n + 1))]`. Take `⟨z, hz⟩` from `(e2 (n + 1) _).1 h1`. Establish `h2` using `(kill_iff _ _).1 (lb3 n) z`. Rewrite using `[pow3, ← hz, ← map_smul (g.mapH (n + 1)), h2, map_zero, smul_zero]`.
+-/
 theorem CrystallineSemistableComparison.P.res_2of3 : ∀ {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R} (f : Cx.Hom K L (RingHom.id R)) (g : Cx.Hom L M (RingHom.id R)) (hf : ∀ n, Function.Injective (f.f n)) (hfg : ∀ n, Function.Exact (f.f n) (g.f n)) (hg : ∀ n, Function.Surjective (g.f n)) {A : Type t} {B : Type t'} {D : Type u} [AddCommGroup A] [AddCommGroup B] [AddCommGroup D] [Module R A] [Module R B] [Module R D] (i : A →ₗ[R] B) (p : B →ₗ[R] D) (hi : Function.Injective i) (hip : Function.Exact i p) (hp : Function.Surjective p) (a : A →ₗ[R] K.X 0) (b : B →ₗ[R] L.X 0) (c : D →ₗ[R] M.X 0) (hab : ∀ x, b (i x) = f.f 0 (a x)) (hbc : ∀ x, c (p x) = g.f 0 (b x)) (hb : ∀ x, L.d 0 (b x) = 0) (s : R), (K.ResUpTo s a → M.ResUpTo s c → L.ResUpTo (s ^ 3) b) ∧ (L.ResUpTo s b → M.ResUpTo s c → K.ResUpTo (s ^ 3) a) ∧ (K.ResUpTo s a → L.ResUpTo s b → M.ResUpTo (s ^ 3) c) := by
   intro R _ K L M f g hf hfg hg A B D _ _ _ _ _ _ i p hi hip hp a b c hab hbc hb s
   obtain ⟨δ, hδ, i0, e1, e2, e3⟩ := CrystallineSemistableComparison.P.les f g hf hfg hg
@@ -473,6 +658,29 @@ theorem CrystallineSemistableComparison.P.res_2of3 : ∀ {R : Type} [CommRing R]
     have h2 := (kill_iff _ _).1 (lb3 n) z
     rw [pow3, ← hz, ← map_smul (g.mapH (n + 1)), h2, map_zero, smul_zero]
 
+/- English proof (translation)
+Introduce `R _ K L φ M _ _ ε s s' hφ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h1, h2, h3⟩`. Use `⟨fun x => ?_, fun x hx => ?_, fun y hy => ?_, fun n y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`.
+
+Rewrite using `[φ.comm, h0, map_zero]`. Simplify using `only [LinearMap.comp_apply] at hx`. Establish `e1 : φ.mapH 0 (K.cls (ε x) (h0 x)) = 0`. Rewrite using `[mapH_cls' φ _ _ (cyc φ _ (h0 x)), class_zero_eq_zero_iff]`. Conclude with `hx`.
+
+Establish `e2` using `(hφ 0).1 _ e1`. Rewrite `e2` using `[← cls_smul (h := by rw [map_smul, h0, smul_zero]), class_zero_eq_zero_iff, ← map_smul]`. Rewrite using `[mul_smul]`. Conclude with `h1 _ e2`. Take `⟨z, hz⟩` from `(hφ 0).2 (L.cls y hy)`.
+
+Take `⟨a, ha, rfl⟩` from `clsSurj z`. Rewrite `hz` using `[mapH_cls' φ _ _ (cyc φ _ ha), ← cls_smul (h := by rw [map_smul, hy, smul_zero])]`. Establish `e` using `(cls_eq _ _ _ _).mp hz`. Rewrite `e` using `[mem_boundaries_zero_iff, sub_eq_zero]`. Take `⟨x, hx⟩` from `h2 a ha`.
+
+Use `⟨x, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hx, map_smul, e, mul_smul]`. Take `⟨z, hz⟩` from `(hφ (n + 1)).2 (L.cls y hy)`. Take `⟨a, ha, rfl⟩` from `clsSurj z`.
+
+Rewrite `hz` using `[mapH_cls' φ _ _ (cyc φ _ ha), ← cls_smul (h := by rw [map_smul, hy, smul_zero])]`. Take `⟨v, hv⟩` from `(mem_Bs _).mp ((cls_eq _ _ _ _).mp hz)`. Take `⟨u, hu⟩` from `h3 n a ha`. Use `⟨φ.f n u - s • v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, hv, φ.comm, hu, map_smul, smul_sub, mul_smul]`.
+
+Normalize the expressions using the abelian group laws. Introduce and unpack `hd0 ⟨h0, h1, h2, h3⟩`. Use `⟨hd0, fun x hx => ?_, fun y hy => ?_, fun n y hy => ?_⟩` and prove the remaining obligations. Use `h1 x (by simp only [LinearMap.comp_apply]; rw [hx, map_zero])` as an intermediate fact. Rewrite using `[mul_comm, mul_smul, this, smul_zero]`.
+
+Take `⟨x, hx⟩` from `h2 (φ.f 0 y) (cyc φ _ hy)`. Simplify using `only [LinearMap.comp_apply] at hx`. Establish `hc : K.d 0 (ε x - s • y) = 0` using `by rw [map_sub, map_smul, hd0, hy, smul_zero, sub_zero]`. Establish `e1 : φ.mapH 0 (K.cls (ε x - s • y) hc) = 0`. Rewrite using `[mapH_cls' φ _ hc (cyc φ _ hc), class_zero_eq_zero_iff, map_sub, map_smul, hx, sub_self]`.
+
+Establish `e2` using `(hφ 0).1 _ e1`. Rewrite `e2` using `[← cls_smul (h := by rw [map_smul, hc, smul_zero]), class_zero_eq_zero_iff, smul_sub, sub_eq_zero]`. Use `⟨s' • x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, e2, mul_comm, mul_smul]`. Take `⟨u, hu⟩` from `h3 n (φ.f (n + 1) y) (cyc φ _ hy)`.
+
+Establish `e1 : φ.mapH (n + 1) (K.cls (s • y) (by rw [map_smul, hy, smul_zero])) = 0`. Rewrite using `[mapH_cls' φ _ _ (cyc φ _ (by rw [map_smul, hy, smul_zero])), cls_eq_zero, mem_Bs, map_smul]`. Conclude with `⟨u, hu⟩`. Establish `e2` using `(hφ (n + 1)).1 _ e1`. Rewrite `e2` using `[← cls_smul (h := by rw [map_smul, map_smul, hy, smul_zero, smul_zero]), cls_eq_zero, mem_Bs]`.
+
+Take `⟨x, hx⟩` from `e2`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, mul_comm, mul_smul]`.
+-/
 theorem CrystallineSemistableComparison.P.res_transfer : ∀ {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} (φ : Cx.Hom K L (RingHom.id R)) {M : Type w''} [AddCommGroup M] [Module R M] (ε : M →ₗ[R] K.X 0) (s s' : R), (∀ n, UpTo s' (φ.mapH n)) → (K.ResUpTo s ε → L.ResUpTo (s * s') (φ.f 0 ∘ₗ ε)) ∧ ((∀ x, K.d 0 (ε x) = 0) → L.ResUpTo s (φ.f 0 ∘ₗ ε) → K.ResUpTo (s * s') ε) := by
   intro R _ K L φ M _ _ ε s s' hφ
   constructor
@@ -525,6 +733,21 @@ theorem CrystallineSemistableComparison.P.res_transfer : ∀ {R : Type} [CommRin
       refine ⟨x, ?_⟩
       rw [hx, mul_comm, mul_smul]
 
+/- English proof (translation)
+Introduce `R R' _ _ σ K L φ M _ _ M' _ _ ε ε' a s ha hφ hc`. Establish `inj : ∀ n (x : K.X n), φ.f n x = 0 ↔ x = 0` using `fun n x => map_eq_zero_iff _ (hφ n).1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h1, h2, h3⟩`. Use `⟨fun x' => ?_, fun x' hx => ?_, fun y' hy => ?_, fun n y' hy => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `ha.2 x'`. Rewrite using `[← hc, φ.comm, h0, map_zero]`. Take `⟨x, rfl⟩` from `ha.2 x'`. Rewrite `hx` using `[← hc, inj]`. Rewrite using `[← map_smulₛₗ, h1 x hx, map_zero]`.
+
+Take `⟨y, rfl⟩` from `(hφ 0).2 y'`. Rewrite `hy` using `[φ.comm, inj]`. Take `⟨x, hx⟩` from `h2 y hy`. Conclude with `⟨a x, by rw [← hc, hx, map_smulₛₗ]⟩`. Take `⟨y, rfl⟩` from `(hφ (n + 1)).2 y'`.
+
+Rewrite `hy` using `[φ.comm, inj]`. Take `⟨u, hu⟩` from `h3 n y hy`. Conclude with `⟨φ.f n u, by rw [φ.comm, hu, map_smulₛₗ]⟩`. Introduce and unpack `⟨h0, h1, h2, h3⟩`. Use `⟨fun x => ?_, fun x hx => ?_, fun y hy => ?_, fun n y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← inj, ← φ.comm, hc, h0]`. Establish `e : ε' (a x) = 0` using `by rw [← hc, hx, map_zero]`. Establish `e2` using `h1 _ e`. Rewrite `e2` using `[← map_smulₛₗ, map_eq_zero_iff _ ha.1]`. Conclude with `e2`.
+
+Establish `hy' : L.d 0 (φ.f 0 y) = 0` using `by rw [φ.comm, hy, map_zero]`. Take `⟨x', hx'⟩` from `h2 _ hy'`. Take `⟨x, rfl⟩` from `ha.2 x'`. Use `⟨x, (hφ 0).1 ?_⟩` and prove the remaining obligations. Rewrite using `[hc, hx', map_smulₛₗ]`.
+
+Establish `hy' : L.d (n + 1) (φ.f (n + 1) y) = 0` using `by rw [φ.comm, hy, map_zero]`. Take `⟨u', hu'⟩` from `h3 n _ hy'`. Take `⟨u, rfl⟩` from `(hφ n).2 u'`. Use `⟨u, (hφ (n + 1)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← φ.comm, hu', map_smulₛₗ]`.
+-/
 theorem CrystallineSemistableComparison.P.res_semilinear : ∀ {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {K : Cx.{w} R} {L : Cx.{w'} R'} (φ : Cx.Hom K L σ) {M : Type w''} [AddCommGroup M] [Module R M] {M' : Type t} [AddCommGroup M'] [Module R' M'] (ε : M →ₗ[R] K.X 0) (ε' : M' →ₗ[R'] L.X 0) (a : M →ₛₗ[σ] M') (s : R), Function.Bijective a → (∀ n, Function.Bijective (φ.f n)) → (∀ x, φ.f 0 (ε x) = ε' (a x)) → (K.ResUpTo s ε ↔ L.ResUpTo (σ s) ε') := by
   intro R R' _ _ σ K L φ M _ _ M' _ _ ε ε' a s ha hφ hc
   have inj : ∀ n (x : K.X n), φ.f n x = 0 ↔ x = 0 := fun n x => map_eq_zero_iff _ (hφ n).1
@@ -562,6 +785,13 @@ theorem CrystallineSemistableComparison.P.res_semilinear : ∀ {R R' : Type} [Co
       refine ⟨u, (hφ (n + 1)).1 ?_⟩
       rw [← φ.comm, hu', map_smulₛₗ]
 
+/- English proof (translation)
+Introduce `R _ C _ F₁ F₂ F₃ α β hi he hs`. Use `⟨fun n x y hxy => ?_, fun n y => ⟨fun hy => ?_, ?_⟩, fun n y => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Conclude with `hi _ (congrFun hxy s)`. Use `⟨fun s => ((he _ (y s)).1 (congrFun hy s)).choose, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `s`. Conclude with `((he _ (y s)).1 (congrFun hy s)).choose_spec`. Introduce and unpack `⟨x, rfl⟩`. Use function extensionality and compare the values at `s`. Conclude with `(he _ _).2 ⟨_, rfl⟩`.
+
+Conclude with `⟨fun s => (hs _ (y s)).choose, funext fun s => (hs _ (y s)).choose_spec⟩`.
+-/
 theorem CrystallineSemistableComparison.P.ses_cochains : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F₁ F₂ F₃ : C ⥤ ModuleCat.{w} R} (α : F₁ ⟶ F₂) (β : F₂ ⟶ F₃), (∀ T, Function.Injective (α.app T).hom) → (∀ T, Function.Exact (α.app T).hom (β.app T).hom) → (∀ T, Function.Surjective (β.app T).hom) → (∀ n, Function.Injective ((Mor.ofNatTrans α).hom.f n)) ∧ (∀ n, Function.Exact ((Mor.ofNatTrans α).hom.f n) ((Mor.ofNatTrans β).hom.f n)) ∧ ∀ n, Function.Surjective ((Mor.ofNatTrans β).hom.f n) := by
   intro R _ C _ F₁ F₂ F₃ α β hi he hs
   refine ⟨fun n x y hxy => ?_, fun n y => ⟨fun hy => ?_, ?_⟩, fun n y => ?_⟩
@@ -575,6 +805,13 @@ theorem CrystallineSemistableComparison.P.ses_cochains : ∀ {R : Type} [CommRin
     exact (he _ _).2 ⟨_, rfl⟩
   · exact ⟨fun s => (hs _ (y s)).choose, funext fun s => (hs _ (y s)).choose_spec⟩
 
+/- English proof (translation)
+Introduce `R _ C _ F S`. Use `⟨fun n x y hxy => ?_, fun n y => ⟨fun hy => ?_, ?_⟩, fun n y => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Conclude with `Subtype.val_injective (congrFun hxy s)`. Use `⟨fun s => ⟨y s, (Submodule.Quotient.mk_eq_zero _).1 (congrFun hy s)⟩, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `s`. Both sides reduce to the same expression. Introduce and unpack `⟨x, rfl⟩`. Use function extensionality and compare the values at `s`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (x _).2`.
+
+Conclude with `⟨fun s => (Submodule.Quotient.mk_surjective _ (y s)).choose,`. Use function extensionality and compare the values at `fun s => (Submodule.Quotient.mk_surjective _ (y s)).choose_spec⟩`.
+-/
 theorem CrystallineSemistableComparison.P.ses_sub : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F : C ⥤ ModuleCat.{w} R} (S : SubF F), (∀ n, Function.Injective (S.inc.hom.f n)) ∧ (∀ n, Function.Exact (S.inc.hom.f n) (S.proj.hom.f n)) ∧ ∀ n, Function.Surjective (S.proj.hom.f n) := by
   intro R _ C _ F S
   refine ⟨fun n x y hxy => ?_, fun n y => ⟨fun hy => ?_, ?_⟩, fun n y => ?_⟩

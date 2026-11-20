@@ -11,6 +11,13 @@ namespace GlobalTheory
 open Complex Matrix Filter Topology in
 open scoped BigOperators Real in
 
+/- English proof (translation)
+Introduce `H g τ hτ`. Take `⟨hd, hq⟩` from `(H g τ hτ 1 le_rfl).1 0`. Establish `e : ∀ z, _root_.ReciprocityTheory.PTheta.theta (fun i => (((0 : Fin g → Fin 1) i : ℕ) : ℝ) / ((1 : ℕ) : ℝ)) 0 (((1 : ℕ) : ℂ) • z) (((1 : ℕ) : ℂ) • τ) = _root_.ReciprocityTheory.PTheta.theta 0 0 z τ`. Introduce `z`. Simplify using `only [Pi.zero_apply, Fin.val_zero, Nat.cast_zero, zero_div, Nat.cast_one, one_smul]`.
+
+Both sides reduce to the same expression. Use `⟨⟨?_, ?_⟩, _root_.GlobalTheory.theta_ne_zero hτ 0 0⟩` and prove the remaining obligations. Simplify `hd` using `only [e]`. Introduce `n n' z`. Use `hq n n' z` as an intermediate fact.
+
+Use `beta_reduce at this`. Rewrite `this` using `[e, e, Nat.cast_one]`. Conclude with `this`.
+-/
 theorem _root_.GlobalTheory.riemannTheta_level_one_ne_zero :
     (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g) → ∀ N : ℕ, 1 ≤ N → (∀ c : Fin g → Fin N, (Differentiable ℂ (fun z => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) ∧ ∀ (n n' : Fin g → ℤ) z, (fun z => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) (z + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n') = _root_.ReciprocityTheory.PTheta.eC (-(N : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n) / 2 + _root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ z)) * (fun z => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) z)) ∧ LinearIndependent ℂ (fun (c : Fin g → Fin N) (z : Fin g → ℂ) => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ))) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g) → (Differentiable ℂ (fun z => _root_.ReciprocityTheory.PTheta.theta 0 0 z τ) ∧ ∀ (n n' : Fin g → ℤ) z, (fun z => _root_.ReciprocityTheory.PTheta.theta 0 0 z τ) (z + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n') = _root_.ReciprocityTheory.PTheta.eC (-(1 : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n) / 2 + _root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ z)) * (fun z => _root_.ReciprocityTheory.PTheta.theta 0 0 z τ) z) ∧ (fun z => _root_.ReciprocityTheory.PTheta.theta 0 0 z τ) ≠ 0) := by
   intro H g τ hτ

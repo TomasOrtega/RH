@@ -8,6 +8,19 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.AxLemma
 
+/- English proof (translation)
+Introduce `l _`. Take `⟨c, hc, hax⟩` from `ax_lemma l`. Use `⟨c + 1, by linarith, fun H y r hr hy => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨y₀, hy₀⟩ : ∃ y₀ : Om l, ‖y - (y₀ : ℂ_[l])‖ ≤ r := by`. Establish `hd : DenseRange ((↑) : PadicAlgCl l → ℂ_[l])` using `UniformSpace.Completion.denseRange_coe`.
+
+Take `⟨b, hb⟩` from `Metric.denseRange_iff.1 hd y r hr`. Conclude with `⟨b, by rw [← dist_eq_norm]; exact hb.le⟩`. Establish `hsub : ∀ a b : Om l, ((a - b : Om l) : ℂ_[l]) = (a : ℂ_[l]) - (b : ℂ_[l])`. Introduce `a b`. Rewrite using `[PadicComplex.coe_eq, map_sub, ← PadicComplex.coe_eq, ← PadicComplex.coe_eq]`.
+
+Take `⟨z, hz, hyz⟩` from `hax H y₀ r (fun g hg => by`. Rewrite using `[← PadicComplex.norm_extends l, hsub, ← GlobalTheory.RingBasics.σC_coe]`. Establish `e : Per.σC g (y₀ : ℂ_[l]) - (y₀ : ℂ_[l]) = Per.σC g ((y₀ : ℂ_[l]) - y) + ((Per.σC g y - y) + (y - (y₀ : ℂ_[l])))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.RingBasics.norm_σC, norm_sub_rev]`. Conclude with `hy₀`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hy g hg) hy₀))`.
+
+Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite `hyz` using `[← PadicComplex.norm_extends l, hsub]`. Establish `e : y - (z : ℂ_[l]) = (y - (y₀ : ℂ_[l])) + ((y₀ : ℂ_[l]) - (z : ℂ_[l]))` using `by ring`. Rewrite using `[e]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ax_lemma_complete : ∀ (l : ℕ) [Fact l.Prime], ∃ c : ℝ, 0 < c ∧ ∀ (H : Subgroup (GQ l)) (y : ℂ_[l]) (r : ℝ), 0 < r → (∀ g ∈ H, ‖Per.σC g y - y‖ ≤ r) → ∃ z : Om l, (∀ g ∈ H, g z = z) ∧ ‖y - (z : ℂ_[l])‖ ≤ c * r := by
   intro l _
   obtain ⟨c, hc, hax⟩ := ax_lemma l

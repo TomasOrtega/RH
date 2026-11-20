@@ -33,6 +33,11 @@ def OrbFinE : Prop :=
     (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (L U : PairVal.MatR D), HypE M δ u u' F0 what₂ γ w F' L U →
     (PairVal.orbT D u u' F0 what₂ γ (ZhatL (lf D F0) F')).Finite
 
+/- English proof (translation)
+Introduce `γ w F' L U hH`. Take `⟨X, inst, x, hstab, ⟨e⟩⟩` from `h2 γ w F' L U hH`. Establish `hidx : (PairVal.stabAut D u u' F0 what₂ γ F' L).relIndex (CZ M δ u u' (ZhatL (lf D F0) F') L) = (PairVal.orbT D u u' F0 what₂ γ (ZhatL (lf D F0) F')).ncard`. Rewrite using `[Subgroup.relIndex, ← hstab, MulAction.index_stabilizer, ← Nat.card_coe_set_eq, ← Nat.card_coe_set_eq]`. Conclude with `Nat.card_congr e`.
+
+Use `⟨h1 γ w F' L U hH, hidx, ?_⟩` and prove the remaining obligations. Establish `hne : (PairVal.orbT D u u' F0 what₂ γ (ZhatL (lf D F0) F')).Nonempty` using `⟨(e ⟨x, MulAction.mem_orbit_self x⟩).1, (e ⟨x, MulAction.mem_orbit_self x⟩).2⟩`. Conclude with `((Set.ncard_pos (h3 γ w F' L U hH)).2 hne).ne'`.
+-/
 theorem orbStabE_of (h1 : StabInCZ M δ u u' F0 what₂) (h2 : OrbActE M δ u u' F0 what₂) (h3 : OrbFinE M δ u u' F0 what₂) :
     OrbStabE M δ u u' F0 what₂ (CZ M δ u u') := by
   intro γ w F' L U hH

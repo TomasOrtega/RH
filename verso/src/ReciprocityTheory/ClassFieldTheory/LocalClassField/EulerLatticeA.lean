@@ -17,6 +17,13 @@ def OLaddEquiv : OLadd p K ≃+ OK p K where
   right_inv _ := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[AddSubgroup.mem_map, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Use `⟨OLaddEquiv p K x, ?_⟩` and prove the remaining obligations.
+
+Establish `: (zmultiplesHom (OLadd p K →+ OLadd p K) (AddMonoidHom.id _) z) x = z • x` using `rfl`. Rewrite using `[this]`. Use `show _ = OLaddEquiv p K (z • x)`. Rewrite using `[map_zsmul, zsmul_eq_mul, mul_comm]`. Introduce and unpack `⟨a, rfl⟩`.
+
+Use `⟨_, ⟨(OLaddEquiv p K).symm a, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `: (zmultiplesHom (OLadd p K →+ OLadd p K) (AddMonoidHom.id _) z) ((OLaddEquiv p K).symm a) = z • (OLaddEquiv p K).symm a` using `rfl`. Rewrite using `[this]`. Use `show OLaddEquiv p K (z • (OLaddEquiv p K).symm a) = _`. Rewrite using `[map_zsmul, zsmul_eq_mul, mul_comm, AddEquiv.apply_symm_apply]`.
+-/
 theorem map_range_OLaddEquiv (z : ℤ) :
     (zmultiplesHom (OLadd p K →+ OLadd p K) (AddMonoidHom.id _) z).range.map (OLaddEquiv p K : OLadd p K →+ OK p K) =
       (Ideal.span {(z : OK p K)}).toAddSubgroup := by
@@ -44,6 +51,11 @@ def quotOLaddEquiv (z : ℤ) :
 
 attribute [local instance] zpAlgOK
 
+/- English proof (translation)
+Use `isScalarTower_zp_OK p K` as an intermediate fact. Use `isIntegralClosure_OK p K` as an intermediate fact. Use `isTorsionFree_zp_K p K` as an intermediate fact. Establish `: Module.Free ℤ_[p] (OK p K)` using `IsIntegralClosure.module_free ℤ_[p] ℚ_[p] K _`. Establish `: Module.Finite ℤ_[p] (OK p K)` using `IsIntegralClosure.finite ℤ_[p] ℚ_[p] K _`.
+
+Establish `hr` using `IsIntegralClosure.rank ℤ_[p] ℚ_[p] K (OK p K)`. Establish `hn' : (n : OK p K) = algebraMap ℤ_[p] (OK p K) (n : ℕ)` using `(map_natCast _ _).symm`. Rewrite using `[hn', ReciprocityTheory.Neutral.Cmp.card_quot_span_algebraMap (Module.finBasis ℤ_[p] (OK p K)), ReciprocityTheory.Neutral.Cmp.card_quot_natCast_padicInt p hn, Fintype.card_fin, hr]`.
+-/
 theorem card_OK_quot_natCast (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : n ≠ 0) :
     Nat.card (OK p K ⧸ Ideal.span {(n : OK p K)}) = (p ^ padicValNat p n) ^ Module.finrank ℚ_[p] K := by
   have := isScalarTower_zp_OK p K

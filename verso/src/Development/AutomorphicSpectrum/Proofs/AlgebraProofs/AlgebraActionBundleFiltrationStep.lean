@@ -13,16 +13,27 @@ section Basic
 
 variable {K A V : Type} [Field K] [CommRing A] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_iSup_of_mem (⟨a, ha⟩ : J) (LinearMap.mem_range_self _ v)`.
+-/
 theorem apply_mem_idealV (τ : A →+* Module.End K V) {J : Ideal A} {a : A} (ha : a ∈ J) (v : V) :
     τ a v ∈ idealV τ J :=
   Submodule.mem_iSup_of_mem (⟨a, ha⟩ : J) (LinearMap.mem_range_self _ v)
 
+/- English proof (translation)
+The claim follows from `iSup_le fun a => by rintro _ ⟨v, rfl⟩ exact h a a.2 v`.
+-/
 theorem idealV_le (τ : A →+* Module.End K V) {J : Ideal A} {W : Submodule K V}
     (h : ∀ a ∈ J, ∀ v, τ a v ∈ W) : idealV τ J ≤ W :=
   iSup_le fun a => by
     rintro _ ⟨v, rfl⟩
     exact h a a.2 v
 
+/- English proof (translation)
+Establish `: idealV τ U ≤ (idealV τ J₁).comap (τ t)` using `idealV_le τ fun a ha v => by`. Rewrite using `[Submodule.mem_comap]`. Use `show τ t (τ a v) ∈ _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_comm]`. Conclude with `apply_mem_idealV τ (h a ha) v`.
+
+Conclude with `this hμ`.
+-/
 theorem apply_mem_of_mul_mem (τ : A →+* Module.End K V) {U J₁ : Ideal A} {t : A}
     (h : ∀ a ∈ U, a * t ∈ J₁) {μ : V} (hμ : μ ∈ idealV τ U) : τ t μ ∈ idealV τ J₁ := by
   have : idealV τ U ≤ (idealV τ J₁).comap (τ t) := idealV_le τ fun a ha v => by
@@ -39,6 +50,11 @@ section Coord
 variable {K A V k : Type} [Field K] [CommRing A] [AddCommGroup V] [Module K V] [Field k]
   [Algebra k K] [Algebra k A]
 
+/- English proof (translation)
+Establish `: idealV τ U ≤ LinearMap.ker (Θ s)` using `idealV_le τ fun u hu v => by`. Establish `h : Submodule.span K (Set.range fun q : A × Fin r => τ q.1 (x q.2)) ≤ (LinearMap.ker (Θ s)).comap (τ u)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨a, s'⟩, rfl⟩`. Use `show Θ s (τ u (τ a (x s'))) = 0`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, hΘ, hl _ (U.mul_mem_right a hu)]`. Simplify using the standard rewrite rules. Conclude with `h (hspan v)`. Conclude with `this hy`.
+-/
 theorem coord_vanish (τ : A →+* Module.End K V) {r : ℕ} (x : Fin r → V) (Θ : Fin r → V →ₗ[K] K)
     (l : A →ₗ[k] k)
     (hΘ : ∀ s s' a, Θ s (τ a (x s')) = if s = s' then algebraMap k K (l a) else 0)
@@ -56,6 +72,15 @@ theorem coord_vanish (τ : A →+* Module.End K V) {r : ℕ} (x : Fin r → V) (
     exact h (hspan v)
   exact this hy
 
+/- English proof (translation)
+Establish `h : Submodule.span K (Set.range fun q : A × Fin r => τ q.1 (x q.2)) ≤ Submodule.span K (Set.range x) ⊔ idealV τ (RingHom.ker χ)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨a, s⟩, rfl⟩`. Establish `ha : a - algebraMap k A (χ a) ∈ RingHom.ker χ`. Simplify using `[RingHom.mem_ker]`.
+
+Establish `e : τ a (x s) = algebraMap k K (χ a) • x s + τ (a - algebraMap k A (χ a)) (x s)`. Rewrite using `[map_sub, LinearMap.sub_apply, hc]`. Normalize the expressions using the abelian group laws. Use `show τ a (x s) ∈ _`. Rewrite using `[e]`.
+
+Conclude with `Submodule.add_mem_sup (Submodule.smul_mem _ _ (Submodule.subset_span ⟨s, rfl⟩)) (apply_mem_idealV τ ha _)`. Take `⟨p, hp, μ, hμ, e⟩` from `Submodule.mem_sup.1 (h (hspan v))`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hp`. Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[hd, ← e, add_sub_cancel_left]`.
+
+Conclude with `hμ`.
+-/
 theorem exists_coords (τ : A →+* Module.End K V) {r : ℕ} (x : Fin r → V) (χ : A →ₐ[k] k)
     (hc : ∀ (c : k) (y : V), τ (algebraMap k A c) y = algebraMap k K c • y)
     (hspan : ∀ y : V, y ∈ Submodule.span K (Set.range fun q : A × Fin r => τ q.1 (x q.2)))
@@ -79,6 +104,13 @@ theorem exists_coords (τ : A →+* Module.End K V) {r : ℕ} (x : Fin r → V) 
   rw [hd, ← e, add_sub_cancel_left]
   exact hμ
 
+/- English proof (translation)
+Establish `h : idealV τ J ≤ LinearMap.range (τ t) ⊔ idealV τ J₁` using `idealV_le τ fun a ha v => by`. Take `⟨c, hc'⟩` from `hJt a ha`. Establish `e : τ a v = τ t (algebraMap k K c • v) + τ (a - algebraMap k A c * t) v`. Rewrite using `[map_sub, map_mul, LinearMap.sub_apply, Module.End.mul_apply, hc, map_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup (LinearMap.mem_range_self _ _) (apply_mem_idealV τ hc' v)`. Take `⟨p, ⟨z, rfl⟩, w, hw, e⟩` from `Submodule.mem_sup.1 (h hy)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, add_sub_cancel_left]`.
+
+Conclude with `hw`.
+-/
 theorem exists_of_mem_idealV (τ : A →+* Module.End K V) {J₁ J : Ideal A} {t : A}
     (hc : ∀ (c : k) (y : V), τ (algebraMap k A c) y = algebraMap k K c • y)
     (hJt : ∀ a ∈ J, ∃ c : k, a - algebraMap k A c * t ∈ J₁) {y : V} (hy : y ∈ idealV τ J) :
@@ -102,6 +134,23 @@ section Local
 variable {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCommGroup V] [Module K V]
   {L : C.I → AddSubgroup V} {k A : Type} [Field k] [Algebra k K] [CommRing A] [Algebra k A]
 
+/- English proof (translation)
+Take `⟨x, Θ', hx, hΘ', hint, hspan⟩` from `hF`. Establish `hΘ` using `hΘ' l`. Use `set Θ := Θ' l with hΘdef`. Establish `hW1 : ∀ s, ∀ w ∈ idealV τ J₁, Θ s w = 0` using `fun s w hw => coord_vanish τ x Θ l hΘ hspan hl s hw`. Set `P : V →ₗ[K] V` to `∑ s, (Θ s).smulRight (x s)`.
+
+Establish `hPa : ∀ y, P y = ∑ s, Θ s y • x s` using `fun y => by`. Simplify using `[P, LinearMap.sum_apply]`. Establish `hΘT : ∀ s s', Θ s (τ t (x s')) = if s = s' then 1 else 0` using `fun s s' => by`. Rewrite using `[hΘ, hlt, map_one]`. Establish `hP0 : ∀ w ∈ idealV τ J₁, P w = 0` using `fun w hw => by`.
+
+Rewrite using `[hPa]`. Conclude with `Finset.sum_eq_zero fun s _ => by rw [hW1 s w hw, zero_smul]`. Establish `hPc : ∀ (d : Fin r → K) (y : V), y - ∑ s, d s • τ t (x s) ∈ idealV τ J₁ → P y = ∑ s, d s • x s` using `fun d y hy => by`. Establish `h1 : ∀ s, Θ s y = d s` using `fun s => by`. Establish `h2` using `hW1 s _ hy`.
+
+Rewrite `h2` using `[map_sub, map_sum, sub_eq_zero]`. Rewrite using `[h2]`. Simplify using `[hΘT]`. Rewrite using `[hPa]`. Conclude with `Finset.sum_congr rfl fun s _ => by rw [h1 s]`.
+
+Establish `hT : ∀ z, ∃ d : Fin r → K, z - ∑ s, d s • x s ∈ idealV τ (RingHom.ker χ) ∧ τ t z - ∑ s, d s • τ t (x s) ∈ idealV τ J₁` using `fun z => by`. Take `⟨d, hd⟩` from `exists_coords τ x χ hc hspan z`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Use `apply_mem_of_mul_mem τ hmt hd` as an intermediate fact. Simplify `this` using `[map_sub, map_sum]`.
+
+Establish `hPT : ∀ z, P (τ t z) - z ∈ idealV τ (RingHom.ker χ)` using `fun z => by`. Take `⟨d, h1, h2⟩` from `hT z`. Rewrite using `[hPc d _ h2, ← neg_sub]`. Conclude with `neg_mem h1`. Use `⟨P, fun y hy => ?_, hP0, hPT, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Take `⟨z, hz⟩` from `exists_of_mem_idealV τ hc hJt hy`. Take `⟨d, -, h2⟩` from `hT z`. Establish `h3 : y - ∑ s, d s • τ t (x s) ∈ idealV τ J₁`. Use `add_mem hz h2` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[hPc d _ h3]`. Simplify `h3` using `[map_sum]`. Rewrite using `[hPa]`. Conclude with `sum_mem fun s _ => smul_mem_of_isBun C hL i (hint l s y hy) (hx s)`.
+-/
 theorem exists_local (τ : A →+* Module.End K V) {r : ℕ} (χ : A →ₐ[k] k) {J₁ J : Ideal A} {t : A}
     (l : A →ₗ[k] k) (hL : IsBun C L)
     (hc : ∀ (c : k) (y : V), τ (algebraMap k A c) y = algebraMap k K c • y) {i : C.I}
@@ -158,6 +207,21 @@ theorem exists_local (τ : A →+* Module.End K V) {r : ℕ} (χ : A →ₐ[k] k
 
 end Local
 
+/- English proof (translation)
+Introduce `K _ C V _ _ _ L k A _ _ _ _ τ r χ J₁ J t l hL hτ hc _ hF hJ ht hJt hmt hl hlt`. Break down `isEmpty_or_nonempty C.I with hI | ⟨⟨i₀⟩⟩` into its components or cases. Simplify using `[subDeg, deg, finsum_of_isEmpty]`. Establish `hW : idealV τ J₁ ≤ idealV τ J` using `idealV_le τ fun a ha v => apply_mem_idealV τ (hJ ha) v`. Use `choose P hP1 hP2 hP3 hP4 using fun i => exists_local C τ χ l hL hc (hF i) hJt hmt hl hlt`.
+
+Set `g : idealV τ J →ₗ[K] V ⧸ idealV τ (RingHom.ker χ)` to `(idealV τ (RingHom.ker χ)).mkQ ∘ₗ P i₀ ∘ₗ (idealV τ J).subtype`. Establish `hg : ∀ y : idealV τ J, g y = Submodule.Quotient.mk (P i₀ y)` using `fun y => rfl`. Establish `hgT : ∀ z, g ⟨τ t z, apply_mem_idealV τ ht z⟩ = Submodule.Quotient.mk z` using `fun z => by`. Rewrite using `[hg]`. Conclude with `(Submodule.Quotient.eq _).2 (hP3 i₀ z)`.
+
+Establish `hS : ShortExact C (sub C L (idealV τ J₁)) (sub C L (idealV τ J)) (quot C L (idealV τ (RingHom.ker χ))) (Submodule.inclusion hW) g`. Use `⟨Submodule.inclusion_injective hW, fun y => ⟨fun h => ?_, ?_⟩, fun z => ?_, fun i x => Iff.rfl, fun i z => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite `h` using `[hg, Submodule.Quotient.mk_eq_zero]`. Establish `h2` using `hP1 i₀ y y.2`. Establish `h3` using `apply_mem_of_mul_mem τ hmt h`.
+
+Establish `h4 : (y : V) ∈ idealV τ J₁` using `by simpa using add_mem h2 h3`. Conclude with `⟨⟨y, h4⟩, rfl⟩`. Introduce and unpack `⟨w, rfl⟩`. Rewrite using `[hg]`. Use `show Submodule.Quotient.mk (P i₀ (w : V)) = 0`.
+
+Rewrite using `[hP2 i₀ w w.2]`. Simplify using the standard rewrite rules. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Conclude with `⟨_, hgT z⟩`. Introduce and unpack `⟨z, hz, rfl⟩`.
+
+Conclude with `⟨⟨τ t z, apply_mem_idealV τ ht z⟩, hτ t i z hz, hgT z⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨P i y, hP4 i y hy, ?_⟩` and prove the remaining obligations. Establish `h1 : P i₀ (y : V) = P i₀ (τ t (P i y))`. Use `hP2 i₀ _ (hP1 i y y.2)` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[hg, h1]`. Conclude with `((Submodule.Quotient.eq _).2 (hP3 i₀ (P i y))).symm`. Establish `hB` using `(SubQuot.isBun_sub_quot K C V L (idealV τ J) hL).1`. Conclude with `(deg_shortExact K C _ _ _ _ _ _ _ _ hB hS).2.2`.
+-/
 theorem subDeg_step : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V] (L : C.I → AddSubgroup V) (k A : Type) [Field k] [Algebra k K] [CommRing A] [Algebra k A] (τ : A →+* Module.End K V) (r : ℕ) (χ : A →ₐ[k] k) (J₁ J : Ideal A) (t : A) (l : A →ₗ[k] k), IsBun C L → (∀ a, IsHom C L L (τ a)) → (∀ (c : k) (x : V), τ (algebraMap k A c) x = algebraMap k K c • x) → (∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) → (∀ i, FreeAt C k τ L r i) → J₁ ≤ J → t ∈ J → (∀ a ∈ J, ∃ c : k, a - algebraMap k A c * t ∈ J₁) → (∀ a ∈ RingHom.ker χ, a * t ∈ J₁) → (∀ a ∈ J₁, l a = 0) → l t = 1 → subDeg C L (idealV τ J) = subDeg C L (idealV τ J₁) + deg C (quot C L (idealV τ (RingHom.ker χ))) := by
   intro K _ C V _ _ _ L k A _ _ _ _ τ r χ J₁ J t l hL hτ hc _ hF hJ ht hJt hmt hl hlt
   rcases isEmpty_or_nonempty C.I with hI | ⟨⟨i₀⟩⟩

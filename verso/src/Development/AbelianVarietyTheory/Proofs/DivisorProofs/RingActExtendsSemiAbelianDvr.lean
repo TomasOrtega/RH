@@ -18,6 +18,19 @@ namespace GlobalTheory
 
 open GlobalTheory.ExtUnique
 
+/- English proof (translation)
+Introduce `W L _ _ _ _ _ _ G _ A _ φ hG hφ O _ act hh h1 hmul hadd`. Take `⟨_, _⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian G hG`. Take `⟨_, _⟩` from `ExtUnique.spec_fractionRing W L`. Establish `hq : QuasiCompact (spMap (algebraMap W L))` using `‹_›`. Establish `hd : IsSchemeTheoreticallyDominant (spMap (algebraMap W L))` using `‹_›`.
+
+Take `⟨a, ha, ha'⟩` from `grpPullback_iso (isGrpPullback_pullback G (spMap (algebraMap W L))) hφ`. Take `⟨b, hb, hb'⟩` from `grpPullback_iso hφ (isGrpPullback_pullback G (spMap (algebraMap W L)))`. Establish `ext : ∀ x : O, ∃ F : G ⟶ G, (act x).left ≫ φ = φ ≫ F.left`. Introduce `x`. Use `hh x` as an intermediate fact.
+
+Take `⟨F, ⟨-, hF⟩, -⟩` from `GlobalTheory.semiAbelian_hom_extends_uniquely_dvr W L G G hG hG (a.hom ≫ act x ≫ b.hom) inferInstance`. Use `⟨F, ?_⟩` and prove the remaining obligations. Establish `h₁` using `pullback_map_left_fst (spMap (algebraMap W L)) F`. Rewrite `h₁` using `[hF, Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hb', ← ha', Category.assoc]`. Establish `: IsIso a.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map a.hom))`.
+
+Conclude with `(cancel_epi a.hom.left).1 h₁`. Use `choose f hf using ext`. Use `⟨f, ⟨fun x => ?_, ?_, fun x y => ?_, fun x y => ?_⟩, hf⟩` and prove the remaining obligations. Use `hh x` as an intermediate fact. Conclude with `isMonHom_of_isGrpPullback hφ hφ (act x) (f x) (hf x)`.
+
+Use `over_hom_ext_of_isPullback hφ.1 ?_` and prove the remaining obligations. Rewrite using `[← hf, h1, Over.id_left, Over.id_left, Category.id_comp, Category.comp_id]`. Use `over_hom_ext_of_isPullback hφ.1 ?_` and prove the remaining obligations. Rewrite using `[← hf, hmul, Over.comp_left, Over.comp_left, Category.assoc, hf, ← Category.assoc, hf, Category.assoc]`. Use `over_hom_ext_of_isPullback hφ.1 ?_` and prove the remaining obligations.
+
+Set `φ₀ : Over.mk (A.hom ≫ spMap (algebraMap W L)) ⟶ G` to `Over.homMk φ hφ.1.w`. Establish `h` using `hφ.2 A (act x) (act y) (φ₀ ≫ f x) (φ₀ ≫ f y) (hf x).symm (hf y).symm`. Rewrite `h` using `[← MonObj.comp_mul]`. Rewrite using `[← hf, hadd, ← h]`. Both sides reduce to the same expression.
+-/
 theorem ringAct_extends_semiAbelian_dvr : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G] (A : Over (Sp L)) [GrpObj A] (φ : A.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback A G (spMap (algebraMap W L)) φ → ∀ (O : Type) [Ring O] (act : O → (A ⟶ A)), (∀ a, IsMonHom (act a)) → act 1 = 𝟙 A → (∀ a b, act (a * b) = act a ≫ act b) → (∀ a b, act (a + b) = act a * act b) → ∃ act' : O → (G ⟶ G), ((∀ a, IsMonHom (act' a)) ∧ act' 1 = 𝟙 G ∧ (∀ a b, act' (a * b) = act' a ≫ act' b) ∧ (∀ a b, act' (a + b) = act' a * act' b)) ∧ ∀ a, (act a).left ≫ φ = φ ≫ (act' a).left := by
   intro W L _ _ _ _ _ _ G _ A _ φ hG hφ O _ act hh h1 hmul hadd
   obtain ⟨_, _⟩ := ExtUnique.flat_and_isSeparated_of_isSemiAbelian G hG

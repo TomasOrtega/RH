@@ -6,6 +6,11 @@ noncomputable section
 
 namespace GlobalTheory.JumpWin
 
+/- English proof (translation)
+Use `⟨(F.image fun q => ⌊q⌋).filter (fun u => -(N : ℤ) ≤ u ∧ u ≤ N), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Finset.card_filter_le _ _).trans (Finset.card_image_le.trans hF)`. Introduce `u hu`. Conclude with `(Finset.mem_filter.1 hu).2`. Introduce `a ha`.
+
+Take `⟨h1, h2⟩` from `hP a ha`. Use `Finset.mem_filter.2 ⟨Finset.mem_image.2 ⟨(a : ℚ), h1, Int.floor_intCast a⟩, h2⟩` and prove the remaining obligations.
+-/
 theorem finset_of_rat (F : Finset ℚ) (n N : ℕ) (P : ℤ → Prop) (hF : F.card ≤ n)
     (hP : ∀ a, P a → (a : ℚ) ∈ F ∧ -(N : ℤ) ≤ a ∧ a ≤ N) :
     ∃ U : Finset ℤ, U.card ≤ n ∧ (∀ u ∈ U, -(N : ℤ) ≤ u ∧ u ≤ N) ∧ ∀ a, P a → a ∈ U := by
@@ -22,11 +27,25 @@ variable {D : D7}
 
 open AdmissibleParameterJ
 
+/- English proof (translation)
+Introduce `q hq`. Apply the tactic sequence `cases up <;> simp only [JW, cloudT, lowT, JJ, Jp, Jm, reflS, Bool.false_eq_true, if_true, if_false, Set.mem_union, Set.mem_setOf_eq] at hq ⊢ <;> tauto`.
+-/
 theorem JW_sub_JJ (up : Bool) (j : ℕ) (ρ : D.what₂.Tau) : JW D up j ρ ⊆ JJ D up j ρ := by
   intro q hq
   cases up <;> simp only [JW, cloudT, lowT, JJ, Jp, Jm, reflS, Bool.false_eq_true, if_true, if_false,
     Set.mem_union, Set.mem_setOf_eq] at hq ⊢ <;> tauto
 
+/- English proof (translation)
+Set `cl : Finset ℚ` to `Finset.univ.image (fun a : Fin (D.R.k - 1) => sz D j ρ + (D.hc ρ).v a + c0 D)`. Set `lw : Finset ℚ` to `Finset.univ.image (fun a : Fin D.R.m => sz D j ρ - (D.hc ρ).b a + c0 D)`. Establish `hcard : (cl ∪ lw).card ≤ D.R.r`. Establish `h1 : cl.card ≤ D.R.k - 1` using `Finset.card_image_le.trans (by simp)`. Establish `h2 : lw.card ≤ D.R.m` using `Finset.card_image_le.trans (by simp)`.
+
+Establish `hk` using `D.R.m_add_three_le_k`. Establish `: (cl ∪ lw).card ≤ cl.card + lw.card` using `Finset.card_union_le _ _`. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hmem : ∀ q, q ∈ cloudJ D j ρ ∪ lowJ D j ρ → q ∈ cl ∪ lw`.
+
+Introduce `q hq`. Break down `hq with ⟨a, rfl⟩ | ⟨a, rfl⟩` into its components or cases. Conclude with `Finset.mem_union_left _ (Finset.mem_image.2 ⟨a, Finset.mem_univ _, rfl⟩)`. Conclude with `Finset.mem_union_right _ (Finset.mem_image.2 ⟨a, Finset.mem_univ _, rfl⟩)`. Consider the cases of `up`.
+
+Use `⟨(cl ∪ lw).image (AdmissibleParameterJ.refl D), Finset.card_image_le.trans hcard, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Establish `hq' : AdmissibleParameterJ.refl D q ∈ cloudJ D j ρ ∪ lowJ D j ρ`. Simplify `hq` using `only [JW, cloudT, lowT, reflS, Bool.false_eq_true, if_false, Set.mem_union, Set.mem_setOf_eq]`. Use `Finset.mem_image.2 ⟨AdmissibleParameterJ.refl D q, hmem _ hq', ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [AdmissibleParameterJ.refl]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨cl ∪ lw, hcard, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Conclude with `hmem q (by simpa only [JW, cloudT, lowT, if_true] using hq)`.
+-/
 theorem exists_finset_JW (up : Bool) (j : ℕ) (ρ : D.what₂.Tau) :
     ∃ F : Finset ℚ, F.card ≤ D.R.r ∧ ∀ q ∈ JW D up j ρ, q ∈ F := by
   classical
@@ -56,6 +75,13 @@ theorem exists_finset_JW (up : Bool) (j : ℕ) (ρ : D.what₂.Tau) :
     intro q hq
     exact hmem q (by simpa only [JW, cloudT, lowT, if_true] using hq)
 
+/- English proof (translation)
+Take `⟨hlow, -, hcl, h0⟩` from `hc j hj1 hj2 ρ`. Consider the cases of `up`. Introduce `h`. Simplify using `only [JW, cloudT, lowT, reflS, Bool.false_eq_true, if_false, Set.mem_union, Set.mem_setOf_eq] at h`. Establish `ht : (0 : ℚ) ≤ (D.R.t : ℚ)` using `Nat.cast_nonneg _`.
+
+Break down `h with h | h` into its components or cases. Use `hcl _ h` as an intermediate fact. Simplify using `only [AdmissibleParameterJ.refl] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `hlow _ h with ⟨-, h'⟩ | ⟨h', -⟩` into its components or cases.
+
+Simplify using `only [AdmissibleParameterJ.refl] at h'`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [AdmissibleParameterJ.refl] at h'`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify `h0` using `only [JW, cloudT, lowT, if_true]`.
+-/
 theorem zero_not_mem_JW (L : SizeData₂ D) (hc : jcCondition L) (up : Bool) (j : ℕ) (hj1 : 1 ≤ j) (hj2 : j ≤ D.R.m)
     (ρ : D.what₂.Tau) : (0 : ℚ) ∉ JW D up j ρ := by
   obtain ⟨hlow, -, hcl, h0⟩ := hc j hj1 hj2 ρ
@@ -75,6 +101,13 @@ theorem zero_not_mem_JW (L : SizeData₂ D) (hc : jcCondition L) (up : Bool) (j 
         linarith
   · simpa only [JW, cloudT, lowT, if_true] using h0
 
+/- English proof (translation)
+Establish `h1` using `he.1 j hj1 hj2 ρ up _ ha`. Establish `h2 : |((a : ℚ) : ℝ)| ≤ 2 * L.sc.b`. Use `he.2.1` as an intermediate fact. Use `he.2.2.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Apply `Nat.le_floor` to reduce the goal to its premises. Establish `: ((a.natAbs : ℕ) : ℝ) = |((a : ℚ) : ℝ)|`. Rewrite using `[Nat.cast_natAbs]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `h2`.
+-/
 theorem natAbs_le_of_mem_JJ (L : SizeData₂ D) (he : JumpAbsoluteBound L) (up : Bool) (j : ℕ) (hj1 : 1 ≤ j)
     (hj2 : j ≤ D.R.m) (ρ : D.what₂.Tau) (a : ℤ) (ha : (a : ℚ) ∈ JJ D up j ρ) :
     a.natAbs ≤ ⌊2 * L.sc.b⌋₊ := by
@@ -90,6 +123,17 @@ end GlobalTheory.JumpWin
 
 open GlobalTheory.JumpWin AdmissibleParameterJ in
 
+/- English proof (translation)
+Introduce `D L ep hA _hb hc he hf i r ρ π hr hπ hdec w hw C τ M hM`. Take `⟨g, ρ', -, -, hT⟩` from `hA i r hr w hw C τ`. Establish `hj` using `D.nd.j_range i`. Establish `hW` using `hT ρ π hπ hdec`. Generalize the expression as in `decide (TypeU D ep g) = up at hW`.
+
+Take `⟨F, hFc, hFm⟩` from `exists_finset_JW up (D.nd.j i) ρ'`. Break down `hM with rfl | rfl` into its components or cases. Use `⟨finset_of_rat F D.R.r (⌊2 * L.sc.b⌋₊ + 1) _ hFc ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Establish `hq` using `((hW a).1).1 ha`.
+
+Establish `hn` using `natAbs_le_of_mem_JJ L he up _ hj.1 hj.2 ρ' a (JW_sub_JJ up _ ρ' hq)`. Apply the tactic sequence `refine ⟨hFm _ hq, ?_, ?_⟩ <;> push_cast <;> omega`. Introduce `h0`. Use `((hW 0).1).1 h0` as an intermediate fact. Conclude with `zero_not_mem_JW L hc up _ hj.1 hj.2 ρ' (by simpa using this)`.
+
+Use `⟨finset_of_rat (F.image fun q => -q - 1) D.R.r (⌊2 * L.sc.b⌋₊ + 1) _ (Finset.card_image_le.trans hFc) ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Establish `hq : -(a : ℚ) - 1 ∈ JW D up (D.nd.j i) ρ'` using `((hW a).2.2.1).1 ha`. Establish `hq' : (((-a - 1 : ℤ)) : ℚ) ∈ JW D up (D.nd.j i) ρ'` using `by push_cast; exact hq`. Establish `hn` using `natAbs_le_of_mem_JJ L he up _ hj.1 hj.2 ρ' _ (JW_sub_JJ up _ ρ' hq')`.
+
+Apply the tactic sequence `refine ⟨Finset.mem_image.2 ⟨_, hFm _ hq, by ring⟩, ?_, ?_⟩ <;> push_cast <;> omega`. Introduce `h0`. Use `((hW 0).2.2.1).1 h0` as an intermediate fact. Conclude with `(hf _ hj.1 hj.2 ρ').2.2.1 up (by simpa using this)`.
+-/
 theorem GlobalTheory.jumps_WpO_T2O_window : ∀ (D : D7) (L : SizeData₂ D) (ep : Bool), AdmissibleParameterJ.hodgeTateJumpsAtModulesForSign D ep → AdmissibleParameterJ.CloudCentreDistance L → AdmissibleParameterJ.jcCondition L → AdmissibleParameterJ.JumpAbsoluteBound L → AdmissibleParameterJ.DualCloudSizes L → ∀ (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i), GoodR D.nd i r → π ∈ D.nd.Z i → TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π → ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (τ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] ↥C.LL.1), ∀ M : GE D.nd →* Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i), (M = WpO D.nd i ρ π ∨ M = T2O D.nd i ρ π) → (∃ U : Finset ℤ, U.card ≤ D.R.r ∧ (∀ u ∈ U, -((⌊2 * L.sc.b⌋₊ + 1 : ℕ) : ℤ) ≤ u ∧ u ≤ (⌊2 * L.sc.b⌋₊ + 1 : ℕ)) ∧ ∀ a, IsJumpV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C M)) τ a → a ∈ U) ∧ ¬ IsJumpV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C M)) τ 0 := by
   intro D L ep hA _hb hc he hf i r ρ π hr hπ hdec w hw C τ M hM
   classical

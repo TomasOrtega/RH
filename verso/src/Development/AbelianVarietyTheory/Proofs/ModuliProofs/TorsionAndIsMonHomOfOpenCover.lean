@@ -14,6 +14,13 @@ namespace GlobalTheory.CoverGlue
 variable {S : Scheme.{0}} {I : Type} {U : I → S.Opens} {A : Over S} [GrpObj A] {G : ∀ i, Over (U i).toScheme}
   [∀ i, GrpObj (G i)] {ψ : ∀ i, (G i).left ⟶ A.left}
 
+/- English proof (translation)
+Establish `hw : ((1 : T ⟶ H').left ≫ φ) ≫ H.hom = (Over.mk (T.hom ≫ g)).hom`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w]`. Both sides reduce to the same expression. Set `z : Over.mk (T.hom ≫ g) ⟶ H` to `Over.homMk ((1 : T ⟶ H').left ≫ φ) hw`. Establish `hz : z * z = z`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[h.2 T 1 1 z z rfl rfl, _root_.mul_one]`. Both sides reduce to the same expression. Establish `hz1 : z = 1` using `_root_.mul_eq_left.mp hz`. Rewrite using `[← hz1]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem isGrpPullback_one_left {X' X : Scheme.{0}} {H' : Over X'} [GrpObj H'] {H : Over X} [GrpObj H]
     {g : X' ⟶ X} {φ : H'.left ⟶ H.left} (h : IsGrpPullback H' H g φ) (T : Over X') :
     (1 : Over.mk (T.hom ≫ g) ⟶ H).left = (1 : T ⟶ H').left ≫ φ := by
@@ -29,6 +36,9 @@ private theorem isGrpPullback_one_left {X' X : Scheme.{0}} {H' : Over X'} [GrpOb
   rw [← hz1]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa only [_root_.pow_zero] using isGrpPullback_one_left h T`. Consider the case `succ n ih`. Rewrite using `[_root_.pow_succ, _root_.pow_succ]`. Conclude with `h.2 T _ _ _ _ ih hz`.
+-/
 private theorem pow_left_eq_pow_left_comp_of_isGrpPullback {X' X : Scheme.{0}} {H' : Over X'} [GrpObj H'] {H : Over X} [GrpObj H]
     {g : X' ⟶ X} {φ : H'.left ⟶ H.left} (h : IsGrpPullback H' H g φ) {T : Over X'} (y : T ⟶ H')
     (z : Over.mk (T.hom ≫ g) ⟶ H) (hz : z.left = y.left ≫ φ) (n : ℕ) :
@@ -39,6 +49,11 @@ private theorem pow_left_eq_pow_left_comp_of_isGrpPullback {X' X : Scheme.{0}} {
     rw [_root_.pow_succ, _root_.pow_succ]
     exact h.2 T _ _ _ _ ih hz
 
+/- English proof (translation)
+Use `over_ext hU fun i T' r => ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_pow, MonObj.comp_one]`. Establish `hr : r.left = T'.hom ≫ (U i).ι` using `by simpa using Over.w r`. Set `t : T' ⟶ Out.baseOver (U i).toScheme` to `Over.homMk T'.hom (by simp)`. Establish `hy : (t ≫ x' i) ^ k = 1` using `by rw [← MonObj.comp_pow, hk, MonObj.comp_one]`.
+
+Establish `key` using `pow_left_eq_pow_left_comp_of_isGrpPullback (hψ i) (t ≫ x' i) (r ≫ x) (by simp [t, hr, hx]) k`. Rewrite `key` using `[hy, ← isGrpPullback_one_left (hψ i) T']`. Conclude with `Over.OverMorphism.ext key`.
+-/
 theorem pow_eq_one_of_cover (hU : iSup U = ⊤) (hψ : ∀ i, IsGrpPullback (G i) A (U i).ι (ψ i)) (k : ℕ)
     (x : Out.baseOver S ⟶ A) (x' : ∀ i, Out.baseOver (U i).toScheme ⟶ G i)
     (hx : ∀ i, (x' i).left ≫ ψ i = (U i).ι ≫ x.left) (hk : ∀ i, x' i ^ k = 1) : x ^ k = 1 := by
@@ -51,6 +66,15 @@ theorem pow_eq_one_of_cover (hU : iSup U = ⊤) (hψ : ∀ i, IsGrpPullback (G i
   rw [hy, ← isGrpPullback_one_left (hψ i) T'] at key
   exact Over.OverMorphism.ext key
 
+/- English proof (translation)
+Use `over_ext hU fun i T' r => ?_` and prove the remaining obligations. Use `haveI := hm i`. Take `⟨a', ha⟩` from `exists_lift (hψ i).1 (r ≫ a)`. Take `⟨b', hb⟩` from `exists_lift (hψ i).1 (r ≫ b)`. Establish `e1` using `(hψ i).2 T' a' b' (r ≫ a) (r ≫ b) ha hb`.
+
+Establish `ha' : (r ≫ a ≫ f).left = (a' ≫ f' i).left ≫ ψ i`. Use `congrArg (· ≫ f.left) ha` as an intermediate fact. Simplify using `only [Over.comp_left, Category.assoc] at this ⊢`. Rewrite using `[this, hf]`. Establish `hb' : (r ≫ b ≫ f).left = (b' ≫ f' i).left ≫ ψ i`.
+
+Use `congrArg (· ≫ f.left) hb` as an intermediate fact. Simplify using `only [Over.comp_left, Category.assoc] at this ⊢`. Rewrite using `[this, hf]`. Establish `e2` using `(hψ i).2 T' (a' ≫ f' i) (b' ≫ f' i) (r ≫ a ≫ f) (r ≫ b ≫ f) ha' hb'`. Establish `e3 : (a' * b') ≫ f' i = (a' ≫ f' i) * (b' ≫ f' i)` using `MonObj.mul_comp _ _ _`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← Category.assoc, MonObj.comp_mul, MonObj.comp_mul, Over.comp_left, e1, e2, ← e3, Over.comp_left]`. Simplify using `only [Category.assoc, hf]`.
+-/
 private theorem mul_comp_of_cover_isGrpPullback_isMonHom (hU : iSup U = ⊤) (hψ : ∀ i, IsGrpPullback (G i) A (U i).ι (ψ i)) (f : A ⟶ A)
     (f' : ∀ i, G i ⟶ G i) (hf : ∀ i, (f' i).left ≫ ψ i = ψ i ≫ f.left) (hm : ∀ i, IsMonHom (f' i))
     {T : Over S} (a b : T ⟶ A) : (a * b) ≫ f = (a ≫ f) * (b ≫ f) := by
@@ -73,6 +97,13 @@ private theorem mul_comp_of_cover_isGrpPullback_isMonHom (hU : iSup U = ⊤) (h�
   rw [← Category.assoc, MonObj.comp_mul, MonObj.comp_mul, Over.comp_left, e1, e2, ← e3, Over.comp_left]
   simp only [Category.assoc, hf]
 
+/- English proof (translation)
+Establish `hmul : ∀ {T : Over S} (a b : T ⟶ A), (a * b) ≫ f = (a ≫ f) * (b ≫ f)` using `fun a b => mul_comp_of_cover_isGrpPullback_isMonHom hU hψ f f' hf hm a b`. Establish `hone : ∀ {T : Over S}, (1 : T ⟶ A) ≫ f = 1`. Introduce `T`. Establish `h1` using `hmul (1 : T ⟶ A) 1`. Rewrite `h1` using `[_root_.mul_one]`.
+
+Conclude with `_root_.mul_eq_left.mp h1.symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.one_eq_one]`. Conclude with `hone`. Rewrite using `[MonObj.mul_eq_mul, hmul, MonObj.comp_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isMonHom_of_cover (hU : iSup U = ⊤) (hψ : ∀ i, IsGrpPullback (G i) A (U i).ι (ψ i)) (f : A ⟶ A)
     (f' : ∀ i, G i ⟶ G i) (hf : ∀ i, (f' i).left ≫ ψ i = ψ i ≫ f.left) (hm : ∀ i, IsMonHom (f' i)) :
     IsMonHom f := by
@@ -89,6 +120,9 @@ theorem isMonHom_of_cover (hU : iSup U = ⊤) (hψ : ∀ i, IsGrpPullback (G i) 
   · rw [MonObj.mul_eq_mul, hmul, MonObj.comp_mul]
     simp
 
+/- English proof (translation)
+Introduce `S I U A _ G _ ψ hU hψ _ _`. Conclude with `⟨fun k x x' hx hk => pow_eq_one_of_cover hU hψ k x x' hx hk, fun f f' hf hm => isMonHom_of_cover hU hψ f f' hf hm⟩`.
+-/
 theorem tors_and_isMonHom_of_cover : ∀ (S : Scheme.{0}) (I : Type) (U : I → S.Opens) (A : Over S) [GrpObj A] (G : ∀ i, Over (U i).toScheme) [∀ i, GrpObj (G i)] (ψ : ∀ i, (G i).left ⟶ A.left), iSup U = ⊤ → (∀ i, IsGrpPullback (G i) A (U i).ι (ψ i)) → IsAbelianScheme A → (∀ i, IsAbelianScheme (G i)) → (∀ (k : ℕ) (x : Out.baseOver S ⟶ A) (x' : ∀ i, Out.baseOver (U i).toScheme ⟶ G i), (∀ i, (x' i).left ≫ ψ i = (U i).ι ≫ x.left) → (∀ i, x' i ^ k = 1) → x ^ k = 1) ∧ ∀ (f : A ⟶ A) (f' : ∀ i, G i ⟶ G i), (∀ i, (f' i).left ≫ ψ i = ψ i ≫ f.left) → (∀ i, IsMonHom (f' i)) → IsMonHom f := by
   intro S I U A _ G _ ψ hU hψ _ _
   exact ⟨fun k x x' hx hk => pow_eq_one_of_cover hU hψ k x x' hx hk,

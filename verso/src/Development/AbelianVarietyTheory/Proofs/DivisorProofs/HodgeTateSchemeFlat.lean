@@ -20,12 +20,18 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
   {R : Type} [CommRing R] {ξ : Sp R ⟶ X} {q : ℕ} (P' : GlobalTheory.HTMap.FP t ξ q)
   {O : Type} [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f))
 
+/- English proof (translation)
+Use `haveI : Module.Free (Localization.Away P'.f) P'.B := P'.fin.free`. Use `haveI : Module.Flat (OL P' x0 hu) (Bt P' x0 hu) := Module.Flat.baseChange _ _ _`. Use `haveI : Module.Flat O (OL P' x0 hu) := inferInstanceAs (Module.Flat O O)`. Conclude with `Module.Flat.trans O (OL P' x0 hu) (Bt P' x0 hu)`.
+-/
 theorem flat_Bt : Module.Flat O (Bt P' x0 hu) := by
   haveI : Module.Free (Localization.Away P'.f) P'.B := P'.fin.free
   haveI : Module.Flat (OL P' x0 hu) (Bt P' x0 hu) := Module.Flat.baseChange _ _ _
   haveI : Module.Flat O (OL P' x0 hu) := inferInstanceAs (Module.Flat O O)
   exact Module.Flat.trans O (OL P' x0 hu) (Bt P' x0 hu)
 
+/- English proof (translation)
+Use `haveI := flat_Bt P' x0 hu`. Express the relevant statement in the definitionally equal form `Flat (Spec.map (CommRingCat.ofHom (algebraMap O (Bt P' x0 hu))))`. Rewrite using `[Flat.SpecMap_iff]`. Conclude with `(RingHom.flat_algebraMap_iff).2 inferInstance`.
+-/
 theorem flat_Hs : Flat (Hs P' x0 hu).hom := by
   haveI := flat_Bt P' x0 hu
   change Flat (Spec.map (CommRingCat.ofHom (algebraMap O (Bt P' x0 hu))))
@@ -34,6 +40,9 @@ theorem flat_Hs : Flat (Hs P' x0 hu).hom := by
 
 end GlobalTheory.FinPartAt
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t R _ ξ q P' O _ x0 hu`. Conclude with `GlobalTheory.FinPartAt.flat_Hs P' x0 hu`.
+-/
 theorem GlobalTheory.FinPartAt.flat_main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (q : ℕ) (P' : GlobalTheory.HTMap.FP t ξ q) (O : Type) [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f)), Flat (Hs P' x0 hu).hom := by
   intro E _ _ _ H X t R _ ξ q P' O _ x0 hu
   exact GlobalTheory.FinPartAt.flat_Hs P' x0 hu

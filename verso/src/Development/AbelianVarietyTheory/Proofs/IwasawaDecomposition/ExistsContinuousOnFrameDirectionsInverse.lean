@@ -21,6 +21,13 @@ open ReciprocityTheory.ChartRestriction.G.Chart (IsUnivChart sp)
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Use `⟨ht'.2.trans e0.symm, fun U h f => ?_⟩` and prove the remaining obligations. Establish `hU : ∀ i, ⊤ ≤ v i ⁻¹ᵁ U` using `fun i => DerLin.le_of_fst_eq ((ht i).2.trans ht'.2.symm) h`. Set `b : Fin m → TanMod.TanSp x t.G` to `fun i => TanMod.TanSp.mk (Over.homMk (v i) (ht i).1) (TanMod.smT_zero_of x _ (ht i).2)`. Establish `key : (TanDeriv.evAt v' U h f).snd = ∑ i, a i * (TanDeriv.evAt (v i) U (hU i) f).snd`. Use `TanDeriv.derivAt_sum b a v' ?_ U h hU f` and prove the remaining obligations.
+
+Take `⟨u, hu, rfl⟩` from `hc`. Establish `hub : u = fun i => (a i • b i).pt` using `funext fun i => Over.OverMorphism.ext (hu i)`. Substitute `hub` using the available equality. Rewrite using `[List.prod_ofFn, ← TanMod.TanSp.pt_sum]`. Use `key.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `congrArg (a i * ·) ((hv i).2 U (hU i) f)`.
+-/
 theorem isDerivAt0_of_comb {X : Scheme.{0}} {t : SAB H X} {x : Sp ℂ ⟶ X} {g m : ℕ}
     {e : (Fin g → ℂ) → (Sp ℂ ⟶ t.G.left)} (e0 : e 0 = (1 : Over.mk x ⟶ t.G).left)
     {v : Fin m → (Sp (DualNumber ℂ) ⟶ t.G.left)} {w : Fin m → Fin g → ℂ} (ht : ∀ i, IsTanAtG t x (v i))
@@ -45,6 +52,19 @@ theorem isDerivAt0_of_comb {X : Scheme.{0}} {t : SAB H X} {x : Sp ℂ ⟶ X} {g 
 variable {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {Z : Model Xo c β} {σ : c.F →+* ℂ}
 
+/- English proof (translation)
+Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`. Take `⟨α, hinj, ⟨p, hp, hps⟩, hN⟩` from `exists_sepElt (E := E) (F := c.F) c.F.val.toRingHom (embK c) (fun τ a => embK_coe c τ a)`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Establish `hE : ∀ τ m, IsEigV (rho hx) (embK c τ) m ↔ ∀ a : 𝓞 E, vec Z.t x xc m ≫ (Z.t.act.act a).left = spMap (epsMul (σ (embK c τ a))) ≫ vec Z.t x xc m` using `fun τ m => by`. Rewrite using `[vec_eig_iff hx (fun a => σ (embK c τ a)), ReciprocityTheory.ChartRestriction.G.Chart.mem_eigLat_iff]`.
+
+Both sides reduce to the same expression. Establish `hv : ∀ τ, f.v τ = fun i => vec Z.t x xc (cc ⟨τ, i⟩)` using `fun τ => funext fun i => hcc ⟨τ, i⟩`. Establish `hb : ∀ τ m, IsEigV (rho hx) (embK c τ) m → ∃! a : Fin (Dw.mult τ) → ℂ, m = ∑ i, a i • cc ⟨τ, i⟩` using `fun τ m hm => by`. Use `f.basis τ _ (vec_tan hx m) ((hE τ m).1 hm)` as an intermediate fact. Rewrite `this` using `[hv]`.
+
+Simplify `this` using `only [LieLocBasis.comb_iff hx]`. Establish `he : ∀ τ (a : Fin (Dw.mult τ) → ℂ), IsEigV (rho hx) (embK c τ) (∑ i, a i • cc ⟨τ, i⟩)` using `fun τ a r => by`. Establish `h1 : ∀ i, IsEigV (rho hx) (embK c τ) (cc ⟨τ, i⟩)` using `fun i => (hE _ _).2 (hcc ⟨τ, i⟩ ▸ f.eig τ i)`. Rewrite using `[map_sum, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, h1 i r, smul_comm]`.
+
+Use `⟨Fintype.linearIndependent_iff.2 fun a ha z => ?_, fun m _ => ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[Fintype.sum_sigma]`. Establish `h1` using `proj_sum_eig (rho hx) (embK c) α hinj _ (fun τ => he τ fun i => a ⟨τ, i⟩) z.1`. Rewrite `h1` using `[ha, map_zero]`. Conclude with `congrFun ((hb z.1 0 fun r => by simp).unique h1 (y₂ := 0) (by simp)) z.2`.
+
+Establish `h1` using `LinearMap.congr_fun (sum_proj (rho hx) (embK c) α hinj) m`. Rewrite `h1` using `[LinearMap.sum_apply, Module.End.one_apply]`. Rewrite using `[← h1]`. Use `Submodule.sum_mem _ fun τ _ => ?_` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `hb τ _ (eig_of_alpha _ _ α hN τ (proj_eig_alpha (rho hx) _ α hinj p hp hps τ m))`.
+
+Rewrite using `[ha]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+-/
 theorem frame_basis {x : Sp ℂ ⟶ Z.X} (f : EigFrame Z σ x) {n : ℕ}
     {xc : ∀ m : ℕ, sp (R₀ := ℂ) (ReciprocityTheory.ChartRestriction.G.Chart.JetR ℂ (Fin n) m) ⟶ (Over.pullback x).obj Z.t.G}
     (hx : IsUnivChart _ n xc) (cc : Letter Dw → Fin n → ℂ) (hcc : ∀ z, f.v z.1 z.2 = vec Z.t x xc (cc z)) :
@@ -81,6 +101,15 @@ theorem frame_basis {x : Sp ℂ ⟶ Z.X} (f : EigFrame Z σ x) {n : ℕ}
     rw [ha]
     exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
+/- English proof (translation)
+Take `⟨n, xc, hx⟩` from `exists_chart Z.t x`. Use `choose cc hcc using fun z : Letter Dw => vec_exists hx _ (f.tan z.1 z.2)`. Take `⟨hli, hsp⟩` from `frame_basis f hx cc hcc`. Use `choose u hu using fun j : Fin n => (h2 _ (vec_tan hx (Pi.single j 1))).exists`. Set `T : (Fin n → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `Fintype.linearCombination ℂ u`.
+
+Establish `hT : ∀ m, IsDerivAt0 e (T m) (vec Z.t x xc m)` using `fun m => isDerivAt0_of_comb e0 (fun j => vec_tan hx _) hu (vec_tan hx m) ((LieLocBasis.comb_iff hx _ m m).2 (by`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]))`. Establish `hbij : Function.Bijective T`. Use `⟨fun m m' h => vec_inj hx ((h1 (T m)).unique ⟨vec_tan hx m, hT m⟩ ⟨vec_tan hx m', h ▸ hT m'⟩), fun w => ?_⟩` and prove the remaining obligations.
+
+Take `⟨v, ⟨hv, hd⟩, -⟩` from `h1 w`. Take `⟨m, rfl⟩` from `vec_exists hx v hv`. Conclude with `⟨m, (h2 _ hv).unique (hT m) hd⟩`. Use `⟨(Module.Basis.mk hli hsp).map (LinearEquiv.ofBijective T hbij), funext fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.map_apply, Module.Basis.mk_apply]`.
+
+Conclude with `(h2 _ (f.tan z.1 z.2)).unique (hcc z ▸ hT (cc z)) (hW z)`.
+-/
 theorem dirs_basis {x : Sp ℂ ⟶ Z.X} (f : EigFrame Z σ x) {g : ℕ} {e : (Fin g → ℂ) → (Sp ℂ ⟶ Z.t.G.left)}
     (e0 : e 0 = (1 : Over.mk x ⟶ Z.t.G).left) (h1 : ∀ w, ∃! v, IsTanAtG Z.t x v ∧ IsDerivAt0 e w v)
     (h2 : ∀ v, IsTanAtG Z.t x v → ∃! w, IsDerivAt0 e w v) {W : Letter Dw → Fin g → ℂ}
@@ -104,6 +133,19 @@ theorem dirs_basis {x : Sp ℂ ⟶ Z.X} (f : EigFrame Z σ x) {g : ℕ} {e : (Fi
   rw [Module.Basis.map_apply, Module.Basis.mk_apply]
   exact (h2 _ (f.tan z.1 z.2)).unique (hcc z ▸ hT (cc z)) (hW z)
 
+/- English proof (translation)
+Take `⟨-, h1, -, h3, h4, h5⟩` from `he`. Set `ε : CxPts (genStr Z) σ → (Fin g → ℂ) → (Sp ℂ ⟶ Z.t.G.left)` to `fun y w => (ex y w).left`. Establish `hz : DifferentiableAt ℂ (fun b => e (x b)) b₀` using `differentiableAt_pi.2 fun k => (h1 k V B x hB hx hs).differentiableAt (hB.mem_nhds hb₀)`. Establish `ht` using `e.map_source (hs b₀ hb₀)`. Establish `hl : ∀ b ∈ B, ε (e.symm (e (x b))) = ε (x b)` using `fun b hb => by rw [e.left_inv (hs b hb)]`.
+
+Use `HolLieFrame.differentiableAt_of_forms _ b₀ fun w hw => ?_` and prove the remaining obligations. Establish `hw' : ∀ (U : Z.t.G.left.Opens) (f : Γ(Z.t.G.left, U)), ⊤ ≤ ε (x b₀) 0 ⁻¹ᵁ U → fderiv ℂ (fun z => valAt' (ε (x b₀) z) U f) 0 w = 0`. Introduce `U f hU`. Establish `hU' : ⊤ ≤ ε (e.symm (e (x b₀))) 0 ⁻¹ᵁ U` using `by rwa [hl b₀ hb₀]`. Establish `d` using `(HolLieFrame.differentiableAt_fderiv (e := fun z => ε (e.symm z)) h4 ht U f hU').comp b₀ hz`.
+
+Establish `hn : ∀ᶠ b in 𝓝 b₀, b ∈ B ∧ ⊤ ≤ v b ⁻¹ᵁ U`. Establish `hc : ContinuousAt (fun b => (e (x b), (0 : Fin g → ℂ))) b₀` using `hz.continuousAt.prodMk continuousAt_const`. Use `filter_upwards [hB.mem_nhds hb₀, hc.preimage_mem_nhds ((h4 U f).1.mem_nhds ⟨⟨ht, trivial⟩, hU'⟩)] with b hb hb'`. Establish `h' : ⊤ ≤ ε (e.symm (e (x b))) 0 ⁻¹ᵁ U` using `hb'.2`. Rewrite `h'` using `[hl b hb]`.
+
+Conclude with `⟨hb, (TangentOrigin.top_le_preimage_iff _ U).2 (by rw [(hW b hb).1]; exact h')⟩`. Use `hw (fun b => fderiv ℂ (fun z => valAt' (ε (x b) z) U f) 0) (d.congr_of_eventuallyEq ?_) (((hv U f).differentiableAt hn).congr_of_eventuallyEq ?_)` and prove the remaining obligations. Use `filter_upwards [hB.mem_nhds hb₀] with b hb`. Simplify using `only [Function.comp_apply, hl b hb]`. Use `filter_upwards [hn] with b ⟨hb, h⟩`.
+
+Use `((hW b hb).2 U h f).symm.trans ?_` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.valR, dif_pos h]`. Establish `d₁` using `LocalLift.isDerivAt0_const (ε (x b₀)) w hw'`. Establish `d₀` using `LocalLift.isDerivAt0_const (ε (x b₀)) 0 fun _ _ _ => map_zero _`. Establish `e0 : ex (x b₀) 0 = 1` using `by simpa using h3 _ (hs b₀ hb₀) 0 0`.
+
+Conclude with `((h5 _ (hs b₀ hb₀)).2 _ ⟨(Category.assoc _ _ _).trans (congrArg (_ ≫ ·) (Over.w (ex (x b₀) 0))), d₁.1.trans (congrArg (·.left) e0)⟩).unique d₁ d₀`.
+-/
 theorem differentiableAt_dir {n g : ℕ} {e : OpenPartialHomeomorph (CxPts (genStr Z) σ) (Fin n → ℂ)}
     {ex : ExpMaps Z σ g} (he : IsExpChart e ex) {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     [FiniteDimensional ℂ V] {B : Set V} (hB : IsOpen B) {x : V → CxPts (genStr Z) σ}
@@ -141,6 +183,13 @@ theorem differentiableAt_dir {n g : ℕ} {e : OpenPartialHomeomorph (CxPts (genS
   exact ((h5 _ (hs b₀ hb₀)).2 _ ⟨(Category.assoc _ _ _).trans (congrArg (_ ≫ ·) (Over.w (ex (x b₀) 0))),
     d₁.1.trans (congrArg (·.left) e0)⟩).unique d₁ d₀
 
+/- English proof (translation)
+Use `⟨Matrix.of fun j z => b.repr (Pi.single j 1) z, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `z z'`. Establish `h : b z = ∑ j, b z j • (Pi.single j 1 : Fin g → ℂ)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Establish `h2` using `congrArg (fun w => b.repr w z') h`. Simplify using `only [map_sum, map_smul, Module.Basis.repr_self, Finsupp.single_apply, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul] at h2`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply, h2]`. Both sides reduce to the same expression. Use extensionality with `j k`.
+
+Establish `h` using `congrFun (b.sum_repr (Pi.single j 1)) k`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify `h` using `[Finset.sum_apply, Pi.single_apply, eq_comm]`.
+-/
 theorem exists_inverse {J : Type} [Fintype J] [DecidableEq J] {g : ℕ} (b : Module.Basis J ℂ (Fin g → ℂ)) :
     ∃ Wi : Matrix (Fin g) J ℂ, Matrix.of b * Wi = 1 ∧ Wi * Matrix.of b = 1 := by
   refine ⟨Matrix.of fun j z => b.repr (Pi.single j 1) z, ?_, ?_⟩
@@ -158,6 +207,17 @@ theorem exists_inverse {J : Type} [Fintype J] [DecidableEq J] {g : ℕ} (b : Mod
     rw [Matrix.mul_apply, Matrix.one_apply]
     simpa [Finset.sum_apply, Pi.single_apply, eq_comm] using h
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z σ n g e ex he V _ _ _ B a hB ha hs`. Establish `h5` using `fun b hb => he.2.2.2.2.2 _ (hs b hb)`. Use `choose! W hW using fun b hb (z : Letter Dw) => ((h5 b hb).2 _ ((a b).2.tan z.1 z.2)).exists`. Establish `hbas : ∀ b ∈ B, ∃ bs : Module.Basis (Letter Dw) ℂ (Fin g → ℂ), ⇑bs = W b` using `fun b hb => by`. Establish `e0 : ex (a b).1 0 = 1` using `by simpa using he.2.2.2.1 _ (hs b hb) 0 0`.
+
+Conclude with `dirs_basis (a b).2 (e := fun w => (ex (a b).1 w).left) (congrArg (·.left) e0) (h5 b hb).1 (h5 b hb).2 (hW b hb)`. Establish `hinv : ∀ b ∈ B, ∃ Wi : Matrix (Fin g) (Letter Dw) ℂ, Matrix.of (W b) * Wi = 1 ∧ Wi * Matrix.of (W b) = 1` using `fun b hb => by`. Take `⟨bs, h⟩` from `hbas b hb`. Rewrite using `[← h]`. Conclude with `exists_inverse bs`.
+
+Use `choose! Wi hWi using hinv`. Establish `hd : ∀ b ∈ B, ∀ z, DifferentiableAt ℂ (fun b => W b z) b` using `fun b hb z => differentiableAt_dir he hB ha.1 hs (ha.2 z.1 z.2) (fun b hb => hW b hb z) hb`. Use `⟨fun b => Matrix.of (W b), Wi, fun b hb => ContinuousAt.continuousWithinAt ?_, fun b hb => ContinuousAt.continuousWithinAt ?_, fun b hb => ⟨hW b hb, hWi b hb⟩⟩` and prove the remaining obligations. Conclude with `continuousAt_pi.2 fun z => (hd b hb z).continuousAt`. Take `⟨bs, -⟩` from `hbas b hb`.
+
+Set `q : Fin g ≃ Letter Dw` to `(Pi.basisFun ℂ (Fin g)).indexEquiv bs`. Use `continuousAt_pi.2 fun j => continuousAt_pi.2 fun z => ?_` and prove the remaining obligations. Use `HolFrameMatrix.differentiableAt_of_mul_eq_one (fun b => (Wi b).submatrix id q) (fun b => (Matrix.of (W b)).submatrix q id) b (fun i k => differentiableAt_pi.1 (hd b hb (q i)) k) (by filter_upwards [hB.mem_nhds hb] with b' hb'` as an intermediate fact. Rewrite using `[Matrix.submatrix_mul_equiv, (hWi b' hb').2]`. Use the proof step `rfl) j (q.symm z)`.
+
+Simplify using `using this.continuousAt`.
+-/
 theorem exists_dirs_continuousOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (n g : ℕ) (e : OpenPartialHomeomorph (CxPts (genStr Z) σ) (Fin n → ℂ)) (ex : ExpMaps Z σ g), IsExpChart e ex → ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] (B : Set V) (a : V → CxFr Z σ), IsOpen B → HolFam B a → (∀ b ∈ B, (a b).1 ∈ e.source) → ∃ (W : V → Matrix (Letter Dw) (Fin g) ℂ) (Wi : V → Matrix (Fin g) (Letter Dw) ℂ), ContinuousOn W B ∧ ContinuousOn Wi B ∧ ∀ b ∈ B, Dirs (a b) (fun w => (ex (a b).1 w).left) (W b) ∧ W b * Wi b = 1 ∧ Wi b * W b = 1 := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ n g e ex he V _ _ _ B a hB ha hs
   have h5 := fun b hb => he.2.2.2.2.2 _ (hs b hb)

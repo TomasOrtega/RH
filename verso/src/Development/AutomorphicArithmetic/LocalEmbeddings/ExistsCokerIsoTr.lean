@@ -28,6 +28,9 @@ variable {X Y : Scheme.{0}} {A A' F : X.Modules}
 
 def img (u : A ⟶ F) : Sub F := Sub.ker (cokernel.π u)
 
+/- English proof (translation)
+The claim follows from `same_of_range fun V => by ext t constructor · rintro ⟨s, rfl⟩ exact (cokernel_app_eq_zero_iff u V _).1 ((img u).incl_app_mem s) · rintro ⟨s, rfl⟩ exact (img u).mem_sec_iff.1 ((cokernel_app_eq_zero_iff u V _).2 ⟨s, rfl⟩)`.
+-/
 theorem same_img (u : A ⟶ F) [Mono u] : Same (img u).incl u := same_of_range fun V => by
   ext t
   constructor
@@ -36,6 +39,11 @@ theorem same_img (u : A ⟶ F) [Mono u] : Same (img u).incl u := same_of_range f
   · rintro ⟨s, rfl⟩
     exact (img u).mem_sec_iff.1 ((cokernel_app_eq_zero_iff u V _).2 ⟨s, rfl⟩)
 
+/- English proof (translation)
+Establish `key {N N' : Sub F} (h : Same N.incl N'.incl) (V : X.Opens) : N.sec V ≤ N'.sec V`. Take `⟨e, he⟩` from `h`. Introduce `s hs`. Conclude with `(N'.exists_comp_incl_iff N.incl).1 ⟨e.hom, he⟩ V (N.mkSec s hs)`. Take `⟨s, _, _⟩` from `N`.
+
+Take `⟨s', _, _⟩` from `N'`. Take `rfl : s = s'` from `funext fun V => le_antisymm (key h V) (key h.symm V)`. Both sides reduce to the same expression.
+-/
 theorem sub_ext {N N' : Sub F} (h : Same N.incl N'.incl) : N = N' := by
   have key {N N' : Sub F} (h : Same N.incl N'.incl) (V : X.Opens) : N.sec V ≤ N'.sec V := by
     obtain ⟨e, he⟩ := h
@@ -46,17 +54,26 @@ theorem sub_ext {N N' : Sub F} (h : Same N.incl N'.incl) : N = N' := by
   obtain rfl : s = s' := funext fun V => le_antisymm (key h V) (key h.symm V)
   rfl
 
+/- English proof (translation)
+Take `⟨e, rfl⟩` from `h`. Conclude with `⟨cokernelEpiComp e.hom v, by simp⟩`.
+-/
 theorem exists_cokerIso {u : A ⟶ F} {v : A' ⟶ F} (h : Same u v) :
     ∃ ψ : cokernel u ≅ cokernel v, cokernel.π u ≫ ψ.hom = cokernel.π v := by
   obtain ⟨e, rfl⟩ := h
   exact ⟨cokernelEpiComp e.hom v, by simp⟩
 
+/- English proof (translation)
+The claim follows from `have ⟨e, _⟩ := h have ⟨ψ, _⟩ := exists_cokerIso h ⟨h₁.of_iso e.symm, h₂.of_iso ψ.symm⟩`.
+-/
 theorem isVB_of_same {u : A ⟶ F} {v : A' ⟶ F} (h : Same u v) {m r : ℕ} (h₁ : IsVB A' m) (h₂ : IsVB (cokernel v) r) :
     IsVB A m ∧ IsVB (cokernel u) r :=
   have ⟨e, _⟩ := h
   have ⟨ψ, _⟩ := exists_cokerIso h
   ⟨h₁.of_iso e.symm, h₂.of_iso ψ.symm⟩
 
+/- English proof (translation)
+Take `⟨e, rfl⟩` from `h`. Use `infer_instance`.
+-/
 theorem mono_of_same {u : A ⟶ F} {v : A' ⟶ F} (h : Same u v) [Mono v] : Mono u := by
   obtain ⟨e, rfl⟩ := h
   infer_instance
@@ -65,6 +82,11 @@ end Basic
 
 variable {B : Scheme.{0}} {E : B.Modules} {m r : ℕ} {Z Z' Z'' : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[cmp_hom_app]`. Use `NatTrans.congr_app (Scheme.Modules.pseudofunctor_right_unitality g) E` as an intermediate fact. Simplify using `[Scheme.Modules.pullbackCongr] at this ⊢`. Rewrite `this` using `[← Iso.app_inv, Iso.inv_comp_eq, Iso.app_hom]`. Rewrite using `[this]`.
+
+Conclude with `(Category.comp_id _).symm`.
+-/
 theorem cmp_id (g : Z ⟶ B) (w : 𝟙 Z ≫ g = g) :
     (cmp (𝟙 Z) g w).hom.app E = (Scheme.Modules.pullbackId Z).hom.app ((Scheme.Modules.pullback g).obj E) := by
   rw [cmp_hom_app]
@@ -74,6 +96,9 @@ theorem cmp_id (g : Z ⟶ B) (w : 𝟙 Z ≫ g = g) :
   rw [this]
   exact (Category.comp_id _).symm
 
+/- English proof (translation)
+Substitute `w` using the available equality. Conclude with `PullPull.pullbackComp_hom_app a g E h₁ h₂ h s`.
+-/
 theorem cmp_app_sec (a : Z' ⟶ Z) (g : Z ⟶ B) {k : Z' ⟶ B} (w : a ≫ g = k) {U : B.Opens} {V : Z.Opens} {T : Z'.Opens}
     (h₁ : V ≤ g ⁻¹ᵁ U) (h₂ : T ≤ a ⁻¹ᵁ V) (h : T ≤ k ⁻¹ᵁ U) (s : Γ(E, U)) :
     ((cmp a g w).hom.app E).app T (pullbackSections a _ h₂ (pullbackSections g E h₁ s)) = pullbackSections k E h s := by
@@ -84,6 +109,9 @@ def tr (a : Z' ⟶ Z) {g : Z ⟶ B} {k : Z' ⟶ B} (w : a ≫ g = k) {A : Z.Modu
     (Scheme.Modules.pullback a).obj A ⟶ (Scheme.Modules.pullback k).obj E :=
   (Scheme.Modules.pullback a).map u ≫ (cmp a g w).hom.app E
 
+/- English proof (translation)
+Use `⟨PreservesCokernel.iso (Scheme.Modules.pullback a) u ≪≫ (cokernelCompIsIso ((Scheme.Modules.pullback a).map u) ((cmp a g w).hom.app E)).symm, ?_⟩` and prove the remaining obligations. Establish `: (Scheme.Modules.pullback a).map (cokernel.π u) ≫ (PreservesCokernel.iso (Scheme.Modules.pullback a) u).hom = cokernel.π _`. Rewrite using `[← Iso.eq_comp_inv, PreservesCokernel.iso_inv, π_comp_cokernelComparison]`. Rewrite using `[Iso.trans_hom, reassoc_of% this]`. Simplify using `[tr]`.
+-/
 theorem exists_cokerIso_tr (a : Z' ⟶ Z) {g : Z ⟶ B} {k : Z' ⟶ B} (w : a ≫ g = k) {A : Z.Modules}
     (u : A ⟶ (Scheme.Modules.pullback g).obj E) :
     ∃ ψ : (Scheme.Modules.pullback a).obj (cokernel u) ≅ cokernel (tr a w u),
@@ -96,6 +124,9 @@ theorem exists_cokerIso_tr (a : Z' ⟶ Z) {g : Z ⟶ B} {k : Z' ⟶ B} (w : a �
   rw [Iso.trans_hom, reassoc_of% this]
   simp [tr]
 
+/- English proof (translation)
+Use `(SubPull.isSubbundle_pullback _ _ a _ _ u m h₁ ⟨inferInstance, r, h₂⟩).mono` as an intermediate fact. Take `⟨ψ, -⟩` from `exists_cokerIso_tr a w u`. Conclude with `⟨by unfold tr; infer_instance, (h₂.pullback a).of_iso ψ⟩`.
+-/
 theorem tr_good (a : Z' ⟶ Z) {g : Z ⟶ B} {k : Z' ⟶ B} (w : a ≫ g = k) {A : Z.Modules}
     (u : A ⟶ (Scheme.Modules.pullback g).obj E) [Mono u] (h₁ : IsVB A m) (h₂ : IsVB (cokernel u) r) :
     Mono (tr a w u) ∧ IsVB (cokernel (tr a w u)) r := by
@@ -103,15 +134,24 @@ theorem tr_good (a : Z' ⟶ Z) {g : Z ⟶ B} {k : Z' ⟶ B} (w : a ≫ g = k) {A
   obtain ⟨ψ, -⟩ := exists_cokerIso_tr a w u
   exact ⟨by unfold tr; infer_instance, (h₂.pullback a).of_iso ψ⟩
 
+/- English proof (translation)
+The claim follows from `(h.pull a).comp _`.
+-/
 theorem Same.tr (a : Z' ⟶ Z) {g : Z ⟶ B} {k : Z' ⟶ B} (w : a ≫ g = k) {A A' : Z.Modules}
     {u : A ⟶ (Scheme.Modules.pullback g).obj E} {v : A' ⟶ (Scheme.Modules.pullback g).obj E} (h : Same u v) :
     Same (tr a w u) (tr a w v) := (h.pull a).comp _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Scheme.Modules.pullbackId Z).app A, by rw [tr, cmp_id]; exact ((Scheme.Modules.pullbackId Z).hom.naturality u).symm⟩`.
+-/
 theorem same_tr_id {g : Z ⟶ B} (w : 𝟙 Z ≫ g = g) {A : Z.Modules} (u : A ⟶ (Scheme.Modules.pullback g).obj E) :
     Same (tr (𝟙 Z) w u) u :=
   ⟨(Scheme.Modules.pullbackId Z).app A, by
     rw [tr, cmp_id]; exact ((Scheme.Modules.pullbackId Z).hom.naturality u).symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(cmp b a w₁).app A, by simp only [tr, Iso.app_hom, Functor.map_comp, Category.assoc] rw [cmp_assoc b a g w w₂ w₁ w₃, cmp_naturality_assoc]⟩`.
+-/
 theorem same_tr_tr (b : Z'' ⟶ Z') (a : Z' ⟶ Z) {g : Z ⟶ B} {k : Z' ⟶ B} (w : a ≫ g = k) {l : Z'' ⟶ B} (w₂ : b ≫ k = l)
     {c : Z'' ⟶ Z} (w₁ : b ≫ a = c) (w₃ : c ≫ g = l) {A : Z.Modules} (u : A ⟶ (Scheme.Modules.pullback g).obj E) :
     Same (tr b w₂ (tr a w u)) (tr c w₃ u) :=
@@ -140,10 +180,18 @@ def Pt.map (a : Z' ⟶ Z) (x : Pt E m r Z) : Pt E m r Z' :=
   haveI := (tr_good a rfl x.N.incl x.vbN x.vb).1
   Pt.ofMono (a ≫ x.g) (tr a rfl x.N.incl) (x.vbN.pullback a) (tr_good a rfl x.N.incl x.vbN x.vb).2
 
+/- English proof (translation)
+The claim follows from `haveI := (tr_good a rfl x.N.incl x.vbN x.vb).1 ⟨rfl, (same_img _).symm⟩`.
+-/
 theorem R_map (a : Z' ⟶ Z) (x : Pt E m r Z) : R a x (x.map a) :=
   haveI := (tr_good a rfl x.N.incl x.vbN x.vb).1
   ⟨rfl, (same_img _).symm⟩
 
+/- English proof (translation)
+Take `⟨g, N, _, _⟩` from `y`. Take `⟨g', N', _, _⟩` from `y'`. Take `⟨w, h⟩` from `h`. Take `⟨w', h'⟩` from `h'`. Take `rfl : g = g'` from `w.symm.trans w'`.
+
+Take `rfl : N = N'` from `sub_ext (h.symm.trans h')`. Both sides reduce to the same expression.
+-/
 theorem R.unique {a : Z' ⟶ Z} {x : Pt E m r Z} {y y' : Pt E m r Z'} (h : R a x y) (h' : R a x y') : y = y' := by
   obtain ⟨g, N, _, _⟩ := y
   obtain ⟨g', N', _, _⟩ := y'
@@ -153,11 +201,20 @@ theorem R.unique {a : Z' ⟶ Z} {x : Pt E m r Z} {y y' : Pt E m r Z'} (h : R a x
   obtain rfl : N = N' := sub_ext (h.symm.trans h')
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h ▸ R_map a x, (R_map a x).unique⟩`.
+-/
 theorem map_eq_iff {a : Z' ⟶ Z} {x : Pt E m r Z} {y : Pt E m r Z'} : x.map a = y ↔ R a x y :=
   ⟨fun h => h ▸ R_map a x, (R_map a x).unique⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Category.id_comp _, same_tr_id _ _⟩`.
+-/
 theorem R_id (x : Pt E m r Z) : R (𝟙 Z) x x := ⟨Category.id_comp _, same_tr_id _ _⟩
 
+/- English proof (translation)
+Take `⟨w, h⟩` from `h`. Take `⟨w', h'⟩` from `h'`. Establish `w₃ : (b ≫ a) ≫ x.g = z.g` using `by rw [Category.assoc, w, w']`. Conclude with `⟨w₃, ((same_tr_tr b a w w' rfl w₃ _).symm.trans (Same.tr b w' h)).trans h'⟩`.
+-/
 theorem R.comp {a : Z' ⟶ Z} {b : Z'' ⟶ Z'} {x : Pt E m r Z} {y : Pt E m r Z'} {z : Pt E m r Z''} (h : R a x y)
     (h' : R b y z) : R (b ≫ a) x z := by
   obtain ⟨w, h⟩ := h
@@ -177,12 +234,21 @@ def fct : Scheme.{0}ᵒᵖ ⥤ Type where
     ext x
     exact map_eq_iff.2 ((R_map _ x).comp (R_map _ _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fct_map (a : Z' ⟶ Z) (x : Pt E m r Z) : (fct E m r).map a.op x = x.map a := rfl
 
+/- English proof (translation)
+The claim follows from `congrArg (_ ≫ ·) (Category.comp_id _)`.
+-/
 theorem tr_rfl (a : Z' ⟶ Z) {g : Z ⟶ B} {A : Z.Modules} (u : A ⟶ (Scheme.Modules.pullback g).obj E) :
     tr a rfl u = (Scheme.Modules.pullback a).map u ≫ (Scheme.Modules.pullbackComp a g).hom.app E :=
   congrArg (_ ≫ ·) (Category.comp_id _)
 
+/- English proof (translation)
+Simplify using `only [tr, Functor.map_comp, Category.assoc]`. Rewrite using `[← cmp_assoc p a g w w₂ w₁ w₃, ← Functor.map_comp_assoc _ ((cmp a g w).inv.app E), Iso.inv_hom_id_app]`. Simplify using the standard rewrite rules.
+-/
 theorem tr_inv_comp (a : Z' ⟶ Z) {g : Z ⟶ B} {k : Z' ⟶ B} (w : a ≫ g = k) {A : Z'.Modules}
     (u : A ⟶ (Scheme.Modules.pullback k).obj E) (p : Z'' ⟶ Z') {c : Z'' ⟶ Z} (w₁ : p ≫ a = c) {l : Z'' ⟶ B}
     (w₃ : c ≫ g = l) (w₂ : p ≫ k = l) :
@@ -191,6 +257,21 @@ theorem tr_inv_comp (a : Z' ⟶ Z) {g : Z ⟶ B} {k : Z' ⟶ B} (w : a ≫ g = k
   rw [← cmp_assoc p a g w w₂ w₁ w₃, ← Functor.map_comp_assoc _ ((cmp a g w).inv.app E), Iso.inv_hom_id_app]
   simp
 
+/- English proof (translation)
+Rewrite using `[Precoverage.isSheaf_toGrothendieck_iff_of_isStableUnderBaseChange]`. Introduce and unpack `Y S hS`. Take `⟨(𝒰 : Scheme.OpenCover Y), rfl⟩` from `Scheme.exists_cover_of_mem_pretopology hS`. Rewrite using `[Presieve.isSheafFor_arrows_iff]`. Introduce `(x : ∀ j, Pt E m r (𝒰.X j)) hx`.
+
+Use `replace hx : ∀ i j (Z : Scheme.{0}) (a : Z ⟶ 𝒰.X i) (a' : Z ⟶ 𝒰.X j), a ≫ 𝒰.f i = a' ≫ 𝒰.f j → Pt.map a (x i) = Pt.map a' (x j) := hx`. Set `b : Y ⟶ B` to `𝒰.glueMorphisms (fun j => (x j).g) fun i j => congrArg Pt.g (hx i j _ _ _ pullback.condition)`. Establish `hb : ∀ j, 𝒰.f j ≫ b = (x j).g` using `fun j => 𝒰.ι_glueMorphisms _ _ j`. Use `clear_value b`. Establish `hc : ∀ y : Y, ∃ i z, 𝒰.f i z = y` using `fun y => 𝒰.exists_eq y`.
+
+Set `v (j) : (x j).N.toMod ⟶ (Scheme.Modules.pullback (𝒰.f j)).obj ((Scheme.Modules.pullback b).obj E)` to `(x j).N.incl ≫ (cmp (𝒰.f j) b (hb j)).inv.app E`. Establish `hmono (j) : Mono (v j)` using `inferInstanceAs (Mono (_ ≫ _))`. Establish `hv : Compat 𝒰.f v`. Introduce `i j S p q w`. Take `⟨w₂, h₂⟩` from `map_eq_iff.1 (hx i j S p q w)`.
+
+Take `⟨w₂', h₂'⟩` from `R_map q (x j)`. Establish `w₃ : (q ≫ 𝒰.f j) ≫ b = (Pt.map q (x j)).g` using `by rw [Category.assoc, hb, w₂']`. Rewrite using `[← same_comp_iff ((cmp (q ≫ 𝒰.f j) b w₃).hom.app E)]`. Establish `e₁` using `tr_inv_comp (𝒰.f i) (hb i) (x i).N.incl p w w₃ w₂`. Establish `e₂` using `tr_inv_comp (𝒰.f j) (hb j) (x j).N.incl q rfl w₃ w₂'`.
+
+Rewrite `h₂` using `[← e₁]`. Rewrite `h₂'` using `[← e₂, tr_rfl]`. Conclude with `h₂.trans h₂'.symm`. Establish `hs (j) : Same (tr (𝒰.f j) (hb j) (glueSub 𝒰.f v).incl) (x j).N.incl`. Simplify `(same_glueSub 𝒰.f v hv j).comp ((cmp (𝒰.f j) b (hb j)).hom.app E)` using `[v, tr]`.
+
+Set `y : Pt E m r Y` to `⟨b, glueSub 𝒰.f v, isVB_of_openImmersions 𝒰.f hc fun j => (isVB_of_same (hs j) (x j).vbN (x j).vb).1, isVB_of_openImmersions 𝒰.f hc fun j =>`. Establish `⟨ψ, _⟩` using `exists_cokerIso_tr (𝒰.f j) (hb j) (glueSub 𝒰.f v).incl`. Use the proof step `(isVB_of_same (hs j) (x j).vbN (x j).vb).2.of_iso ψ.symm⟩`. Use `⟨y, fun j => map_eq_iff.2 ⟨hb j, hs j⟩, fun (y' : Pt E m r Y) hy' => ?_⟩` and prove the remaining obligations. Use `replace hy' : ∀ j, R (𝒰.f j) y' (x j) := fun j => map_eq_iff.1 (hy' j)`.
+
+Take `⟨b', N', _, _⟩` from `y'`. Take `rfl : b' = b` from `𝒰.hom_ext _ _ fun j => (hy' j).1.trans (hb j).symm`. Take `rfl : N' = glueSub 𝒰.f v` from `sub_ext (same_of_cover 𝒰.f hc fun j => (same_comp_iff ((cmp (𝒰.f j) b' (hb j)).hom.app E)).1 ((hy' j).2.trans (hs j).symm))`. Both sides reduce to the same expression.
+-/
 theorem isSheaf_fct : Presieve.IsSheaf Scheme.zariskiTopology (fct E m r) := by
   rw [Precoverage.isSheaf_toGrothendieck_iff_of_isStableUnderBaseChange]
   rintro Y S hS
@@ -236,11 +317,19 @@ theorem isSheaf_fct : Presieve.IsSheaf Scheme.zariskiTopology (fct E m r) := by
 def qs (y : Pt E m r Z) {U : B.Opens} (s : Γ(E, U)) {V : Z.Opens} (h : V ≤ y.g ⁻¹ᵁ U) : Γ(cokernel y.N.incl, V) :=
   (cokernel.π y.N.incl).app V (pullbackSections y.g E h s)
 
+/- English proof (translation)
+Rewrite using `[qs, ← app_resM]`. Conclude with `congrArg _ (res_pullbackSections _ _ _ _ _)`.
+-/
 theorem resM_qs (y : Pt E m r Z) {U : B.Opens} (s : Γ(E, U)) {V V' : Z.Opens} (h : V ≤ y.g ⁻¹ᵁ U) (h' : V' ≤ V) :
     resM _ h' (qs y s h) = qs y s (h'.trans h) := by
   rw [qs, ← app_resM]
   exact congrArg _ (res_pullbackSections _ _ _ _ _)
 
+/- English proof (translation)
+Take `⟨w, H⟩` from `H`. Take `⟨ψ, hψ⟩` from `exists_cokerIso_tr a w x.N.incl`. Take `⟨χ, hχ⟩` from `exists_cokerIso H`. Use `⟨ψ ≪≫ χ, fun U s V h V' h' h'' => ?_⟩` and prove the remaining obligations. Rewrite using `[qs, qs, ← pullback_map_app_pullbackSections, QCoh.app_app, Iso.trans_hom, reassoc_of% hψ, hχ, ← cmp_app_sec a x.g w h h' h'', QCoh.app_app]`.
+
+Both sides reduce to the same expression.
+-/
 theorem R.exists_iso {a : Z' ⟶ Z} {x : Pt E m r Z} {y : Pt E m r Z'} (H : R a x y) :
     ∃ ψ : (Scheme.Modules.pullback a).obj (cokernel x.N.incl) ≅ cokernel y.N.incl,
       ∀ (U : B.Opens) (s : Γ(E, U)) (V : Z.Opens) (h : V ≤ x.g ⁻¹ᵁ U) (V' : Z'.Opens) (h' : V' ≤ a ⁻¹ᵁ V)
@@ -270,6 +359,13 @@ def FrAt (y : Pt E m r Z) (z : Z) : Prop :=
 def locus (y : Pt E m r Z) : Z.Opens :=
   ⟨{z | FrAt c y z}, isOpen_iff_forall_mem_open.2 fun _ ⟨V, h, hz, hf⟩ => ⟨V, fun _ hz' => ⟨V, h, hz', hf⟩, V.2, hz⟩⟩
 
+/- English proof (translation)
+Take `⟨ψ, hψ⟩` from `H.exists_iso`. Establish `w : y.g ⁻¹ᵁ c.U = a ⁻¹ᵁ x.g ⁻¹ᵁ c.U` using `by rw [← H.1, Scheme.Hom.comp_preimage]`. Use `x.vb.isQuasicoherent` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨V, h, hz, hf⟩`.
+
+Take `⟨W, hW, hzW, hf'⟩` from `UpperTheory.frame_extends_from_pullback Z Z' a _ r _ (fun k => qs x (c.e (.inr k)) le_rfl) V (h.trans w.le) z x.vb hz (by`. Use `hf.map_iso ψ.inv using 2 with k` and compare the differences between its conclusion and the goal. Rewrite using `[← hψ _ _ _ le_rfl _ (h.trans w.le), QCoh.app_app, Iso.hom_inv_id]`. Use the proof step `rfl)`. Conclude with `⟨W, hW, hzW, by simpa only [resM_qs] using hf'⟩`.
+
+Introduce and unpack `⟨V, h, hz, hf⟩`. Use `⟨a ⁻¹ᵁ V, (a.preimage_mono h).trans w.ge, hz, ?_⟩` and prove the remaining obligations. Use `(hf.pullback a).map_iso ψ.hom using 2 with k` and compare the differences between its conclusion and the goal. Rewrite using `[hψ]`.
+-/
 theorem R.frAt_iff {a : Z' ⟶ Z} {x : Pt E m r Z} {y : Pt E m r Z'} (H : R a x y) (z : Z') :
     FrAt c y z ↔ FrAt c x (a z) := by
   obtain ⟨ψ, hψ⟩ := H.exists_iso
@@ -291,6 +387,11 @@ theorem R.frAt_iff {a : Z' ⟶ Z} {x : Pt E m r Z} {y : Pt E m r Z'} (H : R a x 
 def Gr (y : Pt E m r Z) (h : ⊤ ≤ y.g ⁻¹ᵁ c.U) (α : Fin m → Fin r → Γ(Z, ⊤)) : Prop :=
   IsFrame (fun k => qs y (c.e (.inr k)) h) ∧ ∀ i, qs y (c.e (.inl i)) h = ∑ k, α i k • qs y (c.e (.inr k)) h
 
+/- English proof (translation)
+Use `⟨fun H => ?_, fun ⟨h, _, hf, _⟩ z => ⟨⊤, h, trivial, hf⟩⟩` and prove the remaining obligations. Establish `h : ⊤ ≤ y.g ⁻¹ᵁ c.U` using `fun z _ => have ⟨_, h, hz, _⟩ := H z`. Use `h hz`. Establish `hf : IsFrame fun k => qs y (c.e (.inr k)) h` using `isFrame_of_forall_exists fun V _ z hz => by`. Take `⟨V', h', hz', hf⟩` from `H z`.
+
+Use `⟨V ⊓ V', inf_le_left, ⟨hz, hz'⟩, ?_⟩` and prove the remaining obligations. Simplify `hf (V ⊓ V') inf_le_right` using `only [resM_qs]`. Use `⟨h, fun i k => (hf.basis le_rfl).repr (qs y (c.e (.inl i)) h) k, hf, fun i => ?_⟩` and prove the remaining obligations. Simplify `((hf.basis le_rfl).sum_repr (qs y (c.e (.inl i)) h)).symm` using `only [IsFrame.basis_apply, resM_self]`.
+-/
 theorem forall_frAt_iff (y : Pt E m r Z) : (∀ z, FrAt c y z) ↔ ∃ h α, Gr c y h α := by
   refine ⟨fun H => ?_, fun ⟨h, _, hf, _⟩ z => ⟨⊤, h, trivial, hf⟩⟩
   have h : ⊤ ≤ y.g ⁻¹ᵁ c.U := fun z _ => have ⟨_, h, hz, _⟩ := H z; h hz
@@ -301,12 +402,22 @@ theorem forall_frAt_iff (y : Pt E m r Z) : (∀ z, FrAt c y z) ↔ ∃ h α, Gr 
   refine ⟨h, fun i k => (hf.basis le_rfl).repr (qs y (c.e (.inl i)) h) k, hf, fun i => ?_⟩
   simpa only [IsFrame.basis_apply, resM_self] using ((hf.basis le_rfl).sum_repr (qs y (c.e (.inl i)) h)).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply `(H.1 ⊤ le_rfl).1` to reduce the goal to its premises. Simplify `(H.2 i).symm.trans (H'.2 i)` using `only [Fintype.linearCombination_apply, resM_self]`.
+-/
 theorem Gr.matrix_eq {y : Pt E m r Z} {h h' : ⊤ ≤ y.g ⁻¹ᵁ c.U} {α β : Fin m → Fin r → Γ(Z, ⊤)} (H : Gr c y h α)
     (H' : Gr c y h' β) : α = β := by
   funext i
   apply (H.1 ⊤ le_rfl).1
   simpa only [Fintype.linearCombination_apply, resM_self] using (H.2 i).symm.trans (H'.2 i)
 
+/- English proof (translation)
+Take `⟨ψ, hψ⟩` from `H.exists_iso`. Establish `w : y.g ⁻¹ᵁ c.U = a ⁻¹ᵁ x.g ⁻¹ᵁ c.U` using `by rw [← H.1, Scheme.Hom.comp_preimage]`. Use `x.vb.isQuasicoherent` as an intermediate fact. Establish `h' : ⊤ ≤ y.g ⁻¹ᵁ c.U` using `(a.preimage_mono h).trans w.ge`. Use `⟨h', ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← funext fun k => hψ _ (c.e (.inr k)) ⊤ h ⊤ le_rfl h']`. Conclude with `(G.1.pullback a).map_iso ψ.hom`. Establish `e : a.appLE ⊤ ⊤ le_rfl = a.appTop` using `(a.app_eq_appLE (U := ⊤)).symm`. Rewrite using `[← hψ _ _ ⊤ h ⊤ le_rfl, G.2, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[QCoh.pullbackSections_smul, Scheme.Modules.Hom.app_smul, hψ _ _ _ _ _ _ h', e]`.
+-/
 theorem R.gr {a : Z' ⟶ Z} {x : Pt E m r Z} {y : Pt E m r Z'} (H : R a x y) {h : ⊤ ≤ x.g ⁻¹ᵁ c.U}
     {α : Fin m → Fin r → Γ(Z, ⊤)} (G : Gr c x h α) : ∃ h', Gr c y h' fun i k => a.appTop (α i k) := by
   obtain ⟨ψ, hψ⟩ := H.exists_iso
@@ -321,11 +432,17 @@ theorem R.gr {a : Z' ⟶ Z} {x : Pt E m r Z} {y : Pt E m r Z'} (H : R a x y) {h 
     refine Finset.sum_congr rfl fun k _ => ?_
     rw [QCoh.pullbackSections_smul, Scheme.Modules.Hom.app_smul, hψ _ _ _ _ _ _ h', e]
 
+/- English proof (translation)
+Use `(c.he.pullback g).res h using 2 with i` and compare the differences between its conclusion and the goal. Conclude with `(res_pullbackSections _ _ _ _ _).symm`.
+-/
 theorem isFrame_pull [E.IsQuasicoherent] (g : Z ⟶ B) {V : Z.Opens} (h : V ≤ g ⁻¹ᵁ c.U) :
     IsFrame fun i => pullbackSections g E h (c.e i) := by
   convert (c.he.pullback g).res h using 2 with i
   exact (res_pullbackSections _ _ _ _ _).symm
 
+/- English proof (translation)
+Take `⟨g, N, _, _⟩` from `y`. Take `⟨g', N', _, _⟩` from `y'`. Take `rfl : g = g'` from `w`. Take `rfl : N = N'` from `sub_ext (UpperTheory.cokernel_frame_compat_mono Z _ _ _ N.incl N'.incl m r _ α inferInstance inferInstance (isFrame_pull c g h) H.1 H.2 H'.1 H'.2)`. Both sides reduce to the same expression.
+-/
 theorem Gr.eq [E.IsQuasicoherent] {y y' : Pt E m r Z} (w : y.g = y'.g) {h : ⊤ ≤ y.g ⁻¹ᵁ c.U} {h' : ⊤ ≤ y'.g ⁻¹ᵁ c.U}
     {α : Fin m → Fin r → Γ(Z, ⊤)} (H : Gr c y h α) (H' : Gr c y' h' α) : y = y' := by
   obtain ⟨g, N, _, _⟩ := y
@@ -335,6 +452,9 @@ theorem Gr.eq [E.IsQuasicoherent] {y y' : Pt E m r Z} (w : y.g = y'.g) {h : ⊤ 
     (isFrame_pull c g h) H.1 H.2 H'.1 H'.2)
   rfl
 
+/- English proof (translation)
+Use `hE.isQuasicoherent` as an intermediate fact. Take `⟨N, h₁, h₂⟩` from `UpperTheory.exists_subbundle_cokernel_frame Z _ m r _ α (isFrame_pull c g h)`. Establish `hQ : IsVB (cokernel N.incl) r` using `by simpa using h₁.isVB`. Conclude with `⟨⟨g, N, isVB_X₁_of_shortExact Z (.mk N.incl (cokernel.π _) (cokernel.condition _)) m r { exact := ShortComplex.exact_cokernel _ } (hE.pullback g) hQ, hQ⟩, rfl, h, h₁, h₂⟩`.
+-/
 theorem exists_gr (hE : IsVB E (m + r)) (g : Z ⟶ B) (h : ⊤ ≤ g ⁻¹ᵁ c.U) (α : Fin m → Fin r → Γ(Z, ⊤)) :
     ∃ (x : Pt E m r Z) (_ : x.g = g) (h' : ⊤ ≤ x.g ⁻¹ᵁ c.U), Gr c x h' α := by
   have := hE.isQuasicoherent
@@ -343,6 +463,11 @@ theorem exists_gr (hE : IsVB E (m + r)) (g : Z ⟶ B) (h : ⊤ ≤ g ⁻¹ᵁ c.
   exact ⟨⟨g, N, isVB_X₁_of_shortExact Z (.mk N.incl (cokernel.π _) (cokernel.condition _)) m r
     { exact := ShortComplex.exact_cokernel _ } (hE.pullback g) hQ, hQ⟩, rfl, h, h₁, h₂⟩
 
+/- English proof (translation)
+Use `hE.isQuasicoherent` as an intermediate fact. Take `⟨U, e, hz, he⟩` from `hE (y.g z)`. Set `c : Chart E m r` to `⟨U, _, he.comp_equiv finSumFinEquiv⟩`. Take `⟨σ, W, hW, hzW, hf⟩` from `UpperTheory.quotient_frame_from_permutation Z _ _ (cokernel.π y.N.incl) m r _ _ z inferInstance (isFrame_pull c y.g le_rfl) y.vb hz`. Use `⟨⟨U, _, c.he.comp_equiv σ⟩, W, hW, hzW, ?_⟩` and prove the remaining obligations.
+
+Use `hf using 2 with k` and compare the differences between its conclusion and the goal. Conclude with `(resM_qs y _ le_rfl hW).symm`.
+-/
 theorem exists_frAt (hE : IsVB E (m + r)) (y : Pt E m r Z) (z : Z) : ∃ c : Chart E m r, FrAt c y z := by
   have := hE.isQuasicoherent
   obtain ⟨U, e, hz, he⟩ := hE (y.g z)
@@ -353,6 +478,21 @@ theorem exists_frAt (hE : IsVB E (m + r)) (y : Pt E m r Z) (z : Z) : ∃ c : Cha
   convert hf using 2 with k
   exact (resM_qs y _ le_rfl hW).symm
 
+/- English proof (translation)
+Use `hE.isQuasicoherent` as an intermediate fact. Use `choose x hx h hG using fun c : Chart E m r => exists_gr c hE (𝔸(Fin m × Fin r; c.U.toScheme) ↘ c.U.toScheme ≫ c.U.ι) (by rw [Scheme.Hom.comp_preimage]; simp) fun i k => AffineSpace.coord _ (i, k)`. Use `GeneratorFunctor.isRepresentable_of_charts _ isSheaf_fct (fun c : Chart E m r => 𝔸(Fin m × Fin r; c.U.toScheme)) x (fun c _ y => locus c y) (fun c Z y Z' a => ?_) (fun c Z g g' e => ?_) fun Z y z => exists_frAt hE y z` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ ∃ g, Pt.map g (x c) = Pt.map a y`. Establish `h₁ : Set.range a ⊆ (locus c y : Set Z) ↔ ∀ z, FrAt c (Pt.map a y) z`.
+
+Simplify using `only [Set.range_subset_iff, (R_map a y).frAt_iff c]`. Both sides reduce to the same expression. Rewrite using `[h₁, forall_frAt_iff]`. Generalize the expression as in `Pt.map a y = y'`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h', α, H⟩`. Set `l` to `IsOpenImmersion.lift c.U.ι y'.g (by`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `h' trivial)`.
+
+Establish `hl : l ≫ c.U.ι = y'.g` using `IsOpenImmersion.lift_fac _ _ _`. Use `⟨AffineSpace.homOfVector l fun p => α p.1 p.2, ?_⟩` and prove the remaining obligations. Take `⟨h'', H'⟩` from `(R_map (AffineSpace.homOfVector l fun p : Fin m × Fin r => α p.1 p.2) (x c)).gr c (hG c)`. Simplify using `only [AffineSpace.homOfVector_appTop_coord] at H'`. Use `Gr.eq c ?_ H' H` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ ≫ (x c).g = _`. Rewrite using `[hx, AffineSpace.homOfVector_over_assoc, hl]`. Introduce and unpack `⟨g, rfl⟩`. Take `⟨h'', H'⟩` from `(R_map g (x c)).gr c (hG c)`. Conclude with `⟨h'', _, H'⟩`.
+
+Express the relevant statement in the definitionally equal form `Pt.map g (x c) = Pt.map g' (x c) at e`. Take `⟨_, H⟩` from `(map_eq_iff.1 e).gr c (hG c)`. Take `⟨_, H'⟩` from `(R_map g' (x c)).gr c (hG c)`. Establish `w : g ≫ (x c).g = g' ≫ (x c).g` using `congrArg Pt.g e`. Rewrite `w` using `[hx]`.
+
+Use `AffineSpace.hom_ext ?_ fun p => congrFun (congrFun (H.matrix_eq c H') p.1) p.2` and prove the remaining obligations. Rewrite using `[← cancel_mono c.U.ι, Category.assoc, Category.assoc, w]`.
+-/
 theorem isRepresentable (hE : IsVB E (m + r)) : (fct E m r).IsRepresentable := by
   have := hE.isQuasicoherent
   choose x hx h hG using fun c : Chart E m r =>
@@ -388,6 +528,11 @@ theorem isRepresentable (hE : IsVB E (m + r)) : (fct E m r).IsRepresentable := b
     refine AffineSpace.hom_ext ?_ fun p => congrFun (congrFun (H.matrix_eq c H') p.1) p.2
     rw [← cancel_mono c.U.ι, Category.assoc, Category.assoc, w]
 
+/- English proof (translation)
+Introduce `B E m r hE`. Use `isRepresentable hE` as an intermediate fact. Set `ρ` to `(fct E m r).representableBy`. Set `x : Pt E m r _` to `ρ.homEquiv (𝟙 _)`. Use `⟨_, x.g, _, x.N.incl, x.vbN, inferInstance, x.vb, fun T g P' j' _ hQ => ?_⟩` and prove the remaining obligations.
+
+Establish `hP : IsVB P' m` using `isVB_X₁_of_shortExact T (.mk j' (cokernel.π _) (cokernel.condition _)) m r { exact := ShortComplex.exact_cokernel _ } (hE.pullback g) hQ`. Establish `key (g' : T ⟶ _) : ρ.homEquiv g' = Pt.ofMono g j' hP hQ ↔ ∃ w : g' ≫ x.g = g, Same (tr g' w x.N.incl) j'`. Rewrite using `[ρ.homEquiv_eq]`. Conclude with `map_eq_iff.trans (exists_congr fun w => ⟨fun h => h.trans (same_img j'), fun h => h.trans (same_img j').symm⟩)`. Conclude with `⟨ρ.homEquiv.symm (Pt.ofMono g j' hP hQ), (key _).1 (ρ.homEquiv.apply_symm_apply _), fun g' hg' => ρ.homEquiv.eq_symm_apply.2 ((key g').2 hg')⟩`.
+-/
 theorem exists_grass : ∀ (B : Scheme.{0}) (E : B.Modules) (m r : ℕ), GlobalTheory.VB.IsVB E (m + r) →
       ∃ (G : Scheme.{0}) (γ : G ⟶ B) (P : G.Modules) (j : P ⟶ (Scheme.Modules.pullback γ).obj E),
         GlobalTheory.VB.IsVB P m ∧ Mono j ∧ GlobalTheory.VB.IsVB (Limits.cokernel j) r ∧

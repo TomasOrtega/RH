@@ -16,6 +16,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.ObjAt
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y X f t h Ω _ ξ x hx`. Set `tP : SAB H (Sp Ω)` to `ReciprocityTheory.ChartRestriction.G.PullbackSections.sabT ReciprocityTheory.ChartRestriction.G.Out.proved_CubePullSt x Y.oF.t`. Set `mP : SABMap tP Y.oF.t x` to `ReciprocityTheory.ChartRestriction.G.PullbackSections.sabM ReciprocityTheory.ChartRestriction.G.Out.proved_CubePullSt x Y.oF.t`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ Y.t Y.oF.t tP Y.j x Y.m mP`. Establish `n' : SABMap tP Y.t (ξ ≫ f)` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.sabMapCast n hx.symm`.
+
+Take `⟨k, -⟩` from `sabCancel pullCubCancel E H _ _ _ Y.t t tP f ξ h n'`. Conclude with `⟨_, GlobalTheory.ModelCompare.objOfSABMap Y.oF mP, ⟨k⟩⟩`.
+-/
 theorem exists_obj_at : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (X : Scheme.{0}) (f : X ⟶ Y.X) (t : SAB H X) (_ : SABMap t Y.t f) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (x : Sp Ω ⟶ Xo.XF c), ξ ≫ f = x ≫ Y.j → ∃ (s : Sp Ω ⟶ Sp (KA l)) (o : Obj D l (baseKA l) s), Nonempty (SABMap o.t t ξ) := by
   intro E _ _ _ H D l Xo c O _ β Y X f t h Ω _ ξ x hx
   let tP : SAB H (Sp Ω) := ReciprocityTheory.ChartRestriction.G.PullbackSections.sabT ReciprocityTheory.ChartRestriction.G.Out.proved_CubePullSt x Y.oF.t

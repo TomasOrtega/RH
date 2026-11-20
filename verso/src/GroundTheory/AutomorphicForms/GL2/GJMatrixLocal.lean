@@ -23,6 +23,9 @@ def localSchwartzBruhatPi : Submodule ℂ ((ι → F) → ℂ) where
   smul_mem' c _ hf := ⟨hf.1.comp (c • ·), hf.2.comp_left (smul_zero c)⟩
 
 omit [Field F] [ValuativeRel F] [IsNonarchimedeanLocalField F] [Fintype ι] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_localSchwartzBruhatPi {f : (ι → F) → ℂ} :
     f ∈ localSchwartzBruhatPi F ↔ IsLocallyConstant f ∧ HasCompactSupport f :=
   Iff.rfl
@@ -32,6 +35,11 @@ variable {F}
 def localTensor (g : ι → F → ℂ) : (ι → F) → ℂ :=
   fun x ↦ ∏ i, g i (x i)
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: localTensor g = ∏ i, fun x : ι → F ↦ g i (x i)`. Use function extensionality and compare the values at `x`. Simplify using `only [localTensor, Finset.prod_apply]`. Rewrite using `[this]`.
+
+Conclude with `Finset.prod_induction _ IsLocallyConstant (fun _ _ ha hb ↦ ha.mul hb) (IsLocallyConstant.const 1) fun i _ ↦ (hg i).1.comp_continuous (continuous_apply i)`. Use `HasCompactSupport.intro (isCompact_univ_pi fun i ↦ (hg i).2.isCompact) fun x hx ↦ ?_` and prove the remaining obligations. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, not_forall] at hx`. Take `⟨i, hi⟩` from `hx`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (image_eq_zero_of_notMem_tsupport hi)`.
+-/
 theorem localTensor_mem {g : ι → F → ℂ} (hg : ∀ i, g i ∈ schwartzBruhat F) :
     localTensor g ∈ localSchwartzBruhatPi F := by
   refine ⟨?_, ?_⟩
@@ -46,6 +54,11 @@ theorem localTensor_mem {g : ι → F → ℂ} (hg : ∀ i, g i ∈ schwartzBruh
     obtain ⟨i, hi⟩ := hx
     exact Finset.prod_eq_zero (Finset.mem_univ i) (image_eq_zero_of_notMem_tsupport hi)
 
+/- English proof (translation)
+Use `⟨isLocallyConstant_of_add_valBall (N := N) fun x h hh ↦ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cosetInd_apply, cosetInd_apply, add_sub_right_comm x h a, AddSubgroup.add_mem_cancel_right _ hh]`. Use `HasCompactSupport.intro ((isCompact_valBall N).image (continuous_const_add a)) fun x hx ↦ ?_` and prove the remaining obligations. Rewrite using `[cosetInd_apply, if_neg]`. Introduce `hxa`.
+
+Conclude with `hx ⟨x - a, hxa, add_sub_cancel a x⟩`.
+-/
 theorem cosetInd_valBall_mem (N : ℤ) (a : F) : cosetInd (valBall F N) a ∈ schwartzBruhat F := by
   classical
   refine ⟨isLocallyConstant_of_add_valBall (N := N) fun x h hh ↦ ?_, ?_⟩
@@ -57,6 +70,13 @@ theorem cosetInd_valBall_mem (N : ℤ) (a : F) : cosetInd (valBall F N) a ∈ sc
     intro hxa
     exact hx ⟨x - a, hxa, add_sub_cancel a x⟩
 
+/- English proof (translation)
+Use `le_antisymm (fun f hf ↦ ?_) (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Establish `hopen : ∀ H ∈ Set.range (valBall F), IsOpen (H : Set F)`. Introduce and unpack `_ ⟨N, rfl⟩`. Conclude with `isOpen_valBall N`. Establish `hbasis : ∀ W ∈ 𝓝 (0 : F), ∃ H ∈ Set.range (valBall F), (H : Set F) ⊆ W`.
+
+Introduce `W hW`. Take `⟨N, -, hN⟩` from `hasBasis_nhds_zero_valBall.mem_iff.mp hW`. Conclude with `⟨_, ⟨N, rfl⟩, hN⟩`. Take `⟨_, ⟨N, rfl⟩, s, hs⟩` from `exists_eq_sum_prod_cosetInd hopen hbasis hf.1 hf.2`. Rewrite using `[hs]`.
+
+Conclude with `Submodule.sum_mem _ fun a _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨(N, a), rfl⟩)`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `localTensor_mem fun i ↦ cosetInd_valBall_mem p.1 (p.2 i)`.
+-/
 theorem localSchwartzBruhatPi_eq_span :
     localSchwartzBruhatPi F (ι := ι) = Submodule.span ℂ (Set.range fun p : ℤ × (ι → F) ↦
       localTensor fun i ↦ cosetInd (valBall F p.1) (p.2 i)) := by
@@ -92,20 +112,34 @@ def localFourierPi (f : (ι → F) → ℂ) (y : ι → F) : ℂ :=
 
 variable {ψ}
 
+/- English proof (translation)
+The claim follows from `hf.1.continuous.integrable_of_hasCompactSupport hf.2`.
+-/
 theorem integrable_of_mem_localSchwartzBruhatPi {f : (ι → F) → ℂ}
     (hf : f ∈ localSchwartzBruhatPi F) : Integrable f (localMeasurePi ψ) :=
   hf.1.continuous.integrable_of_hasCompactSupport hf.2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [localFourierPi, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul c _`.
+-/
 theorem localFourierPi_smul (c : ℂ) (f : (ι → F) → ℂ) :
     localFourierPi ψ (c • f) = c • localFourierPi ψ f := by
   funext y
   simp only [localFourierPi, Pi.smul_apply, smul_eq_mul, mul_assoc]
   exact integral_const_mul c _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `[localFourierPi]`.
+-/
 theorem localFourierPi_zero : localFourierPi ψ (0 : (ι → F) → ℂ) = 0 := by
   funext y
   simp [localFourierPi]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `h` using `integral_fintype_prod_eq_prod (μ := fun _ : ι ↦ selfDualMeasure ψ) (fun i x ↦ g i x * (ψ (x * y i) : ℂ))`. Rewrite using `[localFourierPi, localTensor]`. Simplify using `only [localFourier]`. Rewrite using `[← h]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Simplify using `only [localTensor]`. Rewrite using `[addChar_sum ψ Finset.univ fun i ↦ x i * y i, ← Finset.prod_mul_distrib]`.
+-/
 theorem localFourierPi_localTensor (g : ι → F → ℂ) :
     localFourierPi ψ (localTensor g) =
       localTensor fun i ↦ localFourier (selfDualMeasure ψ) ψ (g i) := by
@@ -123,17 +157,26 @@ variable (hψ : Continuous ψ)
 include hψ
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.comp (hψ.comp (continuous_finsetSum _ fun i _ ↦ (continuous_apply i).mul continuous_const))`.
+-/
 theorem continuous_char_sum_mul (y : ι → F) :
     Continuous fun x : ι → F ↦ (ψ (∑ i, x i * y i) : ℂ) :=
   continuous_subtype_val.comp (hψ.comp
     (continuous_finsetSum _ fun i _ ↦ (continuous_apply i).mul continuous_const))
 
+/- English proof (translation)
+The claim follows from `hf.mono (hf.1.mul (continuous_char_sum_mul hψ y).aestronglyMeasurable) (Eventually.of_forall fun x ↦ by rw [norm_mul, Circle.norm_coe, mul_one])`.
+-/
 theorem integrable_mul_char_sum {f : (ι → F) → ℂ} (hf : Integrable f (localMeasurePi ψ))
     (y : ι → F) :
     Integrable (fun x ↦ f x * (ψ (∑ i, x i * y i) : ℂ)) (localMeasurePi ψ) :=
   hf.mono (hf.1.mul (continuous_char_sum_mul hψ y).aestronglyMeasurable)
     (Eventually.of_forall fun x ↦ by rw [norm_mul, Circle.norm_coe, mul_one])
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [localFourierPi, Pi.add_apply, add_mul]`. Conclude with `integral_add (integrable_mul_char_sum hψ hf y) (integrable_mul_char_sum hψ hg y)`.
+-/
 theorem localFourierPi_add {f g : (ι → F) → ℂ} (hf : Integrable f (localMeasurePi ψ))
     (hg : Integrable g (localMeasurePi ψ)) :
     localFourierPi ψ (f + g) = localFourierPi ψ f + localFourierPi ψ g := by
@@ -144,6 +187,13 @@ theorem localFourierPi_add {f g : (ι → F) → ℂ} (hf : Integrable f (localM
 variable (hψ1 : ψ ≠ 1)
 include hψ1
 
+/- English proof (translation)
+Rewrite `hf` using `[localSchwartzBruhatPi_eq_span]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨⟨N, a⟩, rfl⟩` from `hg`. Rewrite using `[localFourierPi_localTensor]`.
+
+Conclude with `localTensor_mem fun i ↦ localFourier_mem_schwartzBruhat _ hψ hψ1 (cosetInd_valBall_mem N (a i))`. Consider the case `zero => rw [localFourierPi_zero]`. Conclude with `zero_mem _`. Consider the case `add g h hg hh ihg ihh`. Rewrite `hg`, `hh` using `[← localSchwartzBruhatPi_eq_span]`.
+
+Rewrite using `[localFourierPi_add hψ (integrable_of_mem_localSchwartzBruhatPi hg) (integrable_of_mem_localSchwartzBruhatPi hh)]`. Conclude with `add_mem ihg ihh`. Consider the case `smul c g _ ih`. Rewrite using `[localFourierPi_smul]`. Conclude with `Submodule.smul_mem _ c ih`.
+-/
 theorem localFourierPi_mem {f : (ι → F) → ℂ} (hf : f ∈ localSchwartzBruhatPi F) :
     localFourierPi ψ f ∈ localSchwartzBruhatPi F := by
   rw [localSchwartzBruhatPi_eq_span] at hf
@@ -163,6 +213,15 @@ theorem localFourierPi_mem {f : (ι → F) → ℂ} (hf : f ∈ localSchwartzBru
     rw [localFourierPi_smul]
     exact Submodule.smul_mem _ c ih
 
+/- English proof (translation)
+Rewrite `hf` using `[localSchwartzBruhatPi_eq_span]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨⟨N, a⟩, rfl⟩` from `hg`. Rewrite using `[localFourierPi_localTensor, localFourierPi_localTensor]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [localTensor, Pi.neg_apply]`. Use `Finset.prod_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[localFourier_localFourier_selfDual hψ hψ1 (cosetInd_valBall_mem N (a i))]`. Consider the case `zero => funext x`.
+
+Simplify using `[localFourierPi_zero]`. Consider the case `add g h hg hh ihg ihh`. Rewrite `hg`, `hh` using `[← localSchwartzBruhatPi_eq_span]`. Rewrite using `[localFourierPi_add hψ (integrable_of_mem_localSchwartzBruhatPi hg) (integrable_of_mem_localSchwartzBruhatPi hh), localFourierPi_add hψ (integrable_of_mem_localSchwartzBruhatPi (localFourierPi_mem hψ hψ1 hg)) (integrable_of_mem_localSchwartzBruhatPi (localFourierPi_mem hψ hψ1 hh) …`. Both sides reduce to the same expression.
+
+Consider the case `smul c g _ ih`. Rewrite using `[localFourierPi_smul, localFourierPi_smul, ih]`. Both sides reduce to the same expression.
+-/
 theorem localFourierPi_localFourierPi {f : (ι → F) → ℂ} (hf : f ∈ localSchwartzBruhatPi F) :
     localFourierPi ψ (localFourierPi ψ f) = fun x ↦ f (-x) := by
   rw [localSchwartzBruhatPi_eq_span] at hf
@@ -195,6 +254,11 @@ variable {n : ℕ}
 
 omit [Field F] [ValuativeRel F] [IsNonarchimedeanLocalField F] in
 
+/- English proof (translation)
+Use `set e := matrixCoordHomeomorph (Fin n) F`. Establish `hΦ : Φ = (Φ ∘ e.symm) ∘ e`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Homeomorph.symm_apply_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hlc, hcs⟩`. Conclude with `⟨hlc.comp_continuous e.symm.continuous, hcs.comp_homeomorph e.symm⟩`. Introduce and unpack `⟨hlc, hcs⟩`. Rewrite using `[hΦ]`. Conclude with `⟨hlc.comp_continuous e.continuous, hcs.comp_homeomorph e⟩`.
+-/
 theorem isSchwartzBruhat_iff_comp_symm (Φ : Matrix (Fin n) (Fin n) F → ℂ) :
     IsSchwartzBruhat Φ ↔
       Φ ∘ (matrixCoordHomeomorph (Fin n) F).symm ∈ localSchwartzBruhatPi F := by
@@ -214,6 +278,9 @@ variable [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle)
 def localMatrixFourier (Φ : Matrix (Fin n) (Fin n) F → ℂ) (y : Matrix (Fin n) (Fin n) F) : ℂ :=
   ∫ x, Φ x * (ψ (trace (x * y)) : ℂ) ∂matrixMeasure (selfDualMeasure ψ)
 
+/- English proof (translation)
+Use `set e := matrixCoordHomeomorph (Fin n) F`. Rewrite using `[localFourierPi, localMeasurePi, ← (measurePreserving_matrixCoord (n := Fin n) (selfDualMeasure ψ)).integral_comp e.measurableEmbedding, localMatrixFourier]`. Use `integral_congr_ae (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, trace_mul_eq_sum]`. Both sides reduce to the same expression.
+-/
 theorem localMatrixFourier_eq (Φ : Matrix (Fin n) (Fin n) F → ℂ) (y : Matrix (Fin n) (Fin n) F) :
     localMatrixFourier ψ Φ y =
       localFourierPi ψ (Φ ∘ (matrixCoordHomeomorph (Fin n) F).symm) (matrixCoordT y) := by
@@ -224,6 +291,11 @@ theorem localMatrixFourier_eq (Φ : Matrix (Fin n) (Fin n) F → ℂ) (y : Matri
   simp only [Function.comp_apply, trace_mul_eq_sum]
   rfl
 
+/- English proof (translation)
+Establish `hG` using `localFourierPi_mem hψ hψ1 ((isSchwartzBruhat_iff_comp_symm Φ).mp hΦ)`. Establish `he : GJMatrix.localMatrixFourier ψ Φ = localFourierPi ψ (Φ ∘ (matrixCoordHomeomorph (Fin n) F).symm) ∘ matrixCoordTHomeomorph (Fin n) F`. Use function extensionality and compare the values at `y`. Rewrite using `[localMatrixFourier_eq]`. Both sides reduce to the same expression.
+
+Rewrite using `[he]`. Conclude with `⟨hG.1.comp_continuous (matrixCoordTHomeomorph (Fin n) F).continuous, hG.2.comp_homeomorph (matrixCoordTHomeomorph (Fin n) F)⟩`.
+-/
 theorem _root_.GroundTheory.Automorphic.GodementJacquet.IsSchwartzBruhat.localMatrixFourier
     {ψ : AddChar F Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) {Φ : Matrix (Fin n) (Fin n) F → ℂ}
     (hΦ : IsSchwartzBruhat Φ) : IsSchwartzBruhat (GJMatrix.localMatrixFourier ψ Φ) := by
@@ -238,6 +310,15 @@ theorem _root_.GroundTheory.Automorphic.GodementJacquet.IsSchwartzBruhat.localMa
   exact ⟨hG.1.comp_continuous (matrixCoordTHomeomorph (Fin n) F).continuous,
     hG.2.comp_homeomorph (matrixCoordTHomeomorph (Fin n) F)⟩
 
+/- English proof (translation)
+Use `set e := matrixCoordHomeomorph (Fin n) F`. Use `set eT := matrixCoordTHomeomorph (Fin n) F`. Use `set G := Φ ∘ e.symm`. Establish `hG : G ∈ localSchwartzBruhatPi F` using `(isSchwartzBruhat_iff_comp_symm Φ).mp hΦ`. Establish `h1 : localMatrixFourier ψ (localMatrixFourier ψ Φ) x = ∫ y, localFourierPi ψ G (matrixCoordT y) * (ψ (∑ p, matrixCoordT y p * matrixCoord x p) : ℂ) ∂matrixMeasure (selfDualMeasure ψ)`.
+
+Rewrite using `[localMatrixFourier]`. Use `integral_congr_ae (Eventually.of_forall fun y ↦ ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[localMatrixFourier_eq, trace_mul_comm, trace_mul_eq_sum]`. Simplify using `only [mul_comm (matrixCoord x _)]`.
+
+Both sides reduce to the same expression. Establish `h2` using `(measurePreserving_matrixCoordT (n := Fin n) (selfDualMeasure ψ)).integral_comp eT.measurableEmbedding (fun z ↦ localFourierPi ψ G z * (ψ (∑ p, z p * matrixCoord x p) : ℂ))`. Rewrite using `[h1, h2]`. Establish `h3` using `congrFun (localFourierPi_localFourierPi hψ hψ1 hG) (matrixCoord x)`. Rewrite `h3` using `[localFourierPi]`.
+
+Rewrite using `[← localMeasurePi, h3]`. Simplify using `only [G, Function.comp_apply]`. Use `congr 1`.
+-/
 theorem localMatrixFourier_localMatrixFourier {ψ : AddChar F Circle} (hψ : Continuous ψ)
     (hψ1 : ψ ≠ 1) {Φ : Matrix (Fin n) (Fin n) F → ℂ} (hΦ : IsSchwartzBruhat Φ)
     (x : Matrix (Fin n) (Fin n) F) :

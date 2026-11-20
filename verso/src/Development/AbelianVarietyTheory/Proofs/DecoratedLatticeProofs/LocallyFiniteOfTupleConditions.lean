@@ -19,16 +19,27 @@ namespace GlobalTheory.FirstCells
 
 variable {D : D7}
 
+/- English proof (translation)
+Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨α, hα, hvan, rest⟩`. Conclude with `⟨α, hα, fun v hv => hvan v fun hq => hv (h v hq), rest⟩`.
+-/
 theorem latO_mono' (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     {P Q : Pl D → Prop} (h : ∀ v, Q v → P v) : latO S T LS LT Q ≤ latO S T LS LT P := by
   apply AddSubgroup.closure_mono
   rintro w ⟨α, hα, hvan, rest⟩
   exact ⟨α, hα, fun v hv => hvan v fun hq => hv (h v hq), rest⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1, fun u hu => hf.2.1 u (latO_mono' S T _ _ h hu), fun e he u hu hh => hf.2.2 e he u (latO_mono' S T _ _ h hu) hh⟩`.
+-/
 theorem vac_mono {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {LS : Lat S} {LT : Lat T} {P Q : Pl D → Prop}
     {f : WO S T → ℂ} (hf : Vac ψ S T LS LT P f) (h : ∀ v, Q v → P v) : Vac ψ S T LS LT Q f :=
   ⟨hf.1, fun u hu => hf.2.1 u (latO_mono' S T _ _ h hu), fun e he u hu hh => hf.2.2 e he u (latO_mono' S T _ _ h hu) hh⟩
 
+/- English proof (translation)
+Simplify using `only [Pi.smul_apply, smul_eq_mul]; rw [hf.quasi γ w]; ring level := by`. Take `⟨U, hUo, hU⟩` from `hf.level`. Use `⟨U, hUo, fun u hu hi => ?_⟩` and prove the remaining obligations. Establish `e : heisO ψ S T u (c • f) = c • heisO ψ S T u f`. Use function extensionality and compare the values at `w`.
+
+Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hU u hu hi]`. Use `cont := continuous_const.mul hf.cont`. Use `smooth k L hL hfin w := (contDiff_const.mul (hf.smooth k L hL hfin w))`.
+-/
 theorem theta_smul' {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (c : ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     IsThetaFunO ψ S T (c • f) where
   quasi γ w := by simp only [Pi.smul_apply, smul_eq_mul]; rw [hf.quasi γ w]; ring
@@ -41,18 +52,33 @@ theorem theta_smul' {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (c : ℂ) {f 
   cont := continuous_const.mul hf.cont
   smooth k L hL hfin w := (contDiff_const.mul (hf.smooth k L hL hfin w))
 
+/- English proof (translation)
+Establish `e : ∀ u, heisO ψ S T u (c • f) = c • heisO ψ S T u f`. Introduce `u`. Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `⟨theta_smul' c hf.1, fun u hu => by rw [e, hf.2.1 u hu], fun e' he u hu hh => by rw [e, hf.2.2 e' he u hu hh]⟩`.
+-/
 theorem vac_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {LS : Lat S} {LT : Lat T} {P : Pl D → Prop}
     (c : ℂ) {f : WO S T → ℂ} (hf : Vac ψ S T LS LT P f) : Vac ψ S T LS LT P (c • f) := by
   have e : ∀ u, heisO ψ S T u (c • f) = c • heisO ψ S T u f := by
     intro u; funext w; simp only [heisO, Pi.smul_apply, smul_eq_mul]; ring
   exact ⟨theta_smul' c hf.1, fun u hu => by rw [e, hf.2.1 u hu], fun e' he u hu hh => by rw [e, hf.2.2 e' he u hu hh]⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem comb_smul' {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (c : WO S T →₀ ℂ) (a : ℂ) (f : WO S T → ℂ) :
     comb ψ S T c (a • f) = a • comb ψ S T c f := by
   funext w
   simp only [comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Unfold `congGrp`. Rewrite using `[MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `congrArg (fun x : GL (Fin V.rank) (AE D ⧸ I) => x.1 i j) h` as an intermediate fact.
+
+Rewrite using `[← Ideal.Quotient.eq]`. Simplify using `[Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢`. Conclude with `this`. Introduce `h`. Use extensionality with `i j`.
+
+Use `h i j` as an intermediate fact. Rewrite `this` using `[← Ideal.Quotient.eq]`. Simplify using `[Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢`. Conclude with `this`.
+-/
 theorem mem_cong {V : HSp D} {I : Ideal (AE D)} {g : GA D V} :
     g ∈ congGrp V I ↔ ∀ i j, Formalism.L2.Theta.mt V g i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j ∈ I := by
   unfold congGrp
@@ -70,6 +96,13 @@ theorem mem_cong {V : HSp D} {I : Ideal (AE D)} {g : GA D V} :
     simp [Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢
     exact this
 
+/- English proof (translation)
+Introduce `a ha`. Rewrite `ha` using `[GinfC, MonoidHom.mem_ker]`. Rewrite using `[grpOff, mem_cong]`. Introduce `i j`. Establish `h2 : finPart D (Formalism.L2.Theta.mt V a i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) _) i j` using `congrArg (fun x : GL (Fin V.rank) _ => x.1 i j) ha`.
+
+Rewrite using `[idOff, Ideal.mem_iInf]`. Introduce `w`. Rewrite using `[RingHom.mem_ker, GlobalTheory.FinPl.compAt, RingHom.comp_apply, RingHom.map_sub, h2]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one, sub_self, RingHom.map_zero]`. Rewrite using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne hij, RingHom.map_zero, sub_self, RingHom.map_zero]`.
+-/
 theorem real_le_off (V : HSp D) (P : Pl D → Prop) : GinfC V ≤ grpOff V P := by
   intro a ha
   rw [GinfC, MonoidHom.mem_ker] at ha
@@ -85,6 +118,11 @@ theorem real_le_off (V : HSp D) (P : Pl D → Prop) : GinfC V ≤ grpOff V P := 
     rw [Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one, sub_self, RingHom.map_zero]
   · rw [Matrix.one_apply_ne hij, Matrix.one_apply_ne hij, RingHom.map_zero, sub_self, RingHom.map_zero]
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨h1, h2⟩` from `Subgroup.mem_inf.1 hg`. Rewrite `h1`, `h2`, the goal using `[grpOff, mem_cong]`. Introduce `i j`. Establish `a1` using `h1 i j`.
+
+Establish `a2` using `h2 i j`. Rewrite `a1`, `a2`, the goal using `[idOff, Ideal.mem_iInf]`. Introduce and unpack `⟨w, hw | hw⟩`. Conclude with `a1 ⟨w, hw⟩`. Conclude with `a2 ⟨w, hw⟩`.
+-/
 theorem grpOff_inf_le (V : HSp D) (P P' : Pl D → Prop) :
     grpOff V P ⊓ grpOff V P' ≤ grpOff V (fun p => P p ∨ P' p) := by
   intro g hg
@@ -98,6 +136,11 @@ theorem grpOff_inf_le (V : HSp D) (P P' : Pl D → Prop) :
   · exact a1 ⟨w, hw⟩
   · exact a2 ⟨w, hw⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.CompactOpenIntegers.exists_level`. Consider the case `exact _root_.GlobalTheory.CompactOpenIntegers.exists_level`. Consider the case `(apply _root_.GlobalTheory.CompactOpenIntegers.exists_level <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CompactOpenIntegers.exists_level <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.CompactOpenIntegers.exists_level <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CompactOpenIntegers.exists_level ..)`.
+-/
 theorem exists_level (D : D7) (V : HSp D) (N : Lat V) (A B : Finset (Pl D)) (JA JB : Subgroup (GA D V)) (b : GA D V)
     (hAB : Disjoint B A) (hN : IsSelfDualC V N) (hb : b ∈ GfC V) (hA : JA ≤ grpAt V (· ∈ A)) (hAc : IsCompact (JA : Set (GA D V)))
     (hAo : IsOpen ((JA.subgroupOf (grpAt V (· ∈ A)) : Subgroup _) : Set (grpAt V (· ∈ A)))) (hB : JB ≤ grpAt V (· ∈ B))
@@ -114,6 +157,19 @@ theorem exists_level (D : D7) (V : HSp D) (N : Lat V) (A B : Finset (Pl D)) (JA 
   | (intros; apply @_root_.GlobalTheory.CompactOpenIntegers.exists_level <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.CompactOpenIntegers.exists_level ..)
 
+/- English proof (translation)
+Take `⟨-, -, -, ⟨e, he⟩, -⟩` from `GlobalTheory.AdelicSplit.adelic_split D V`. Take `⟨-, -, hf1, hf2, -, ⟨e', he'⟩, hO, hI, -⟩` from `GlobalTheory.T.unitaryFiniteAdelicGroup_split_finitePlaceSet D V B`. Establish `h1` using `he (e.symm z)`. Rewrite `h1` using `[e.apply_symm_apply]`. Establish `h2` using `he' (e'.symm (e.symm z).2)`.
+
+Rewrite `h2` using `[e'.apply_symm_apply]`. Generalize the expression as in `e'.symm (e.symm z).2 = p at h2`. Generalize the expression as in `e.symm z = q at h1 h2`. Take `⟨⟨y, hy⟩, ⟨x, hx⟩⟩` from `p`. Take `⟨⟨a, ha⟩, ⟨f, hf⟩⟩` from `q`.
+
+Simplify using `only at h1 h2`. Substitute `h2` using the available equality. Use `⟨a, ha, x, ?_, y, hy, by rw [h1, mul_assoc]⟩` and prove the remaining obligations. Establish `hxo : x ∈ grpOff V (fun p => p ∉ A ∧ p ∉ B)`. Establish `: x = y⁻¹ * (a⁻¹ * z)` using `by rw [h1]; group`.
+
+Rewrite using `[this]`. Conclude with `mul_mem (inv_mem (hO _ _ (fun p hp h => h.2 hp) hy)) (mul_mem (inv_mem (real_le_off V _ ha)) hz)`. Establish `hxB : x ∈ grpOff V (· ∈ B)` using `hO _ _ (fun p hp h => hp h) hx`. Establish `hx' : x ∈ GfC V ⊓ grpOff V (fun p => (p ∉ A ∧ p ∉ B) ∨ p ∈ B)` using `⟨hf2 hx, grpOff_inf_le V _ _ ⟨hxo, hxB⟩⟩`. Rewrite `hx'` using `[hI]`.
+
+Establish `hP : (fun p => ¬ ((p ∉ A ∧ p ∉ B) ∨ p ∈ B)) = (· ∈ A)`. Use function extensionality and compare the values at `p`. Use `fun h : p ∈ B => Finset.disjoint_left.1 hAB h` as an intermediate fact. Apply `propext` to reduce the goal to its premises. The claim follows by propositional logic.
+
+Rewrite `hx'` using `[hP]`. Then use the resulting hypothesis.
+-/
 theorem split_off (D : D7) (V : HSp D) (A B : Finset (Pl D)) (hAB : Disjoint B A) (z : GA D V)
     (hz : z ∈ grpOff V (fun p => p ∉ A ∧ p ∉ B)) :
     ∃ a ∈ GinfC V, ∃ x ∈ grpAt V (· ∈ A), ∃ y ∈ grpAt V (· ∈ B), z = a * y * x := by
@@ -145,6 +201,9 @@ theorem split_off (D : D7) (V : HSp D) (A B : Finset (Pl D)) (hAB : Disjoint B A
     tauto
   rwa [hP] at hx'
 
+/- English proof (translation)
+Take `⟨-, -, -, -, hcm, -, hO, hI, -⟩` from `GlobalTheory.T.unitaryFiniteAdelicGroup_split_finitePlaceSet D V B`. Use `hcm y hy x ?_` and prove the remaining obligations. Establish `hx' : x ∈ GfC V ⊓ grpOff V (· ∈ B)` using `⟨(GlobalTheory.T.unitaryFiniteAdelicGroup_split_finitePlaceSet D V A).2.2.1 hx, hO _ _ (fun p hp h => Finset.disjoint_left.1 hAB h hp) hx⟩`. Rewrite `hx'` using `[hI]`. Then use the resulting hypothesis.
+-/
 theorem comm_at (D : D7) (V : HSp D) (A B : Finset (Pl D)) (hAB : Disjoint B A) {x y : GA D V} (hx : x ∈ grpAt V (· ∈ A))
     (hy : y ∈ grpAt V (· ∈ B)) : y * x = x * y := by
   obtain ⟨-, -, -, -, hcm, -, hO, hI, -⟩ := GlobalTheory.T.unitaryFiniteAdelicGroup_split_finitePlaceSet D V B
@@ -155,6 +214,61 @@ theorem comm_at (D : D7) (V : HSp D) (A B : Finset (Pl D)) (hAB : Disjoint B A) 
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D c v t w hc hv ht hF hO hG hQ j σ h P₁ P₂`. Establish `hj1 : j + 1 < D.R.m` using `by omega`. Establish `hj2 : j + 1 + 1 < D.R.m` using `by omega`. Take `⟨KQ, TQ, hKQ, hKQc, hKQo, hTQ, hKQlaw, hTQsupp⟩` from `hQ j σ h`. Take `⟨hJG, hJGc, hJGo⟩` from `hv.JG (j + 1) hj1`.
+
+Take `⟨K, hKf, hKc, hKo, hKmem⟩` from `exists_level D (c.V (j + 1)) (v.N (j + 1)) v.gP w.Q (v.JG (j + 1)) KQ (v.b (j + 1)) hF.disjG (hv.sd (j + 1) hj1) (hv.b (j + 1)) hJG hJGc hJGo hKQ hKQc hKQo`. Establish `hone : InK (c.V (j + 1)) (v.N (j + 1)) (offP v w) 1` using `⟨one_mem _, fun y _ => by simp [Formalism.L2.Theta.mt]⟩`. Establish `VGQ` using `GlobalTheory.T.unitaryFiniteAdelicGroup_split_finitePlaceSet D (c.V (j + 1)) w.Q`. Establish `VGG` using `GlobalTheory.T.unitaryFiniteAdelicGroup_split_finitePlaceSet D (c.V (j + 1)) v.gP`. Establish `hQG : ∀ p, p ∈ w.Q → ¬ p ∈ v.gP` using `fun p hp hg => Finset.disjoint_left.1 hF.disjG hp hg`.
+
+Establish `hGQ : ∀ p, p ∈ v.gP → ¬ p ∈ w.Q` using `fun p hg hp => hQG p hp hg`. Establish `hQoff : ∀ p, p ∈ w.Q → ¬ offP v w p` using `fun p hp h' => h'.2 hp`. Establish `hGoff : ∀ p, p ∈ v.gP → ¬ offP v w p` using `fun p hp h' => h'.1 hp`. Establish `hoffQ : ∀ p, offP v w p → ¬ p ∈ w.Q` using `fun p h' => h'.2`. Establish `hoffG : ∀ p, offP v w p → ¬ p ∈ v.gP` using `fun p h' => h'.1`.
+
+Establish `hQf : grpAt (c.V (j + 1)) (· ∈ w.Q) ≤ GfC _` using `VGQ.2.2.1`. Establish `hGf : grpAt (c.V (j + 1)) (· ∈ v.gP) ≤ GfC _` using `VGG.2.2.1`. Establish `gO : ∀ (P P' : Pl D → Prop), (∀ p, P p → ¬ P' p) → grpAt (c.V (j + 1)) P ≤ grpOff (c.V (j + 1)) P'` using `VGQ.2.2.2.2.2.2.1`. Establish `W1` using `(t.sBF j (σ + 1) h).weil`. Rewrite `W1` using `[(ht.sBF j (σ + 1) h).1]`.
+
+Establish `W2` using `(t.sFB j σ h).weil`. Rewrite `W2` using `[(ht.sFB j σ h).1]`. Establish `hΨ1` using `hv.Ψ j hj1 P₁ 1 (one_mem _) 1 (one_mem _)`. Establish `hΨ2` using `hv.Ψ (j + 1) hj2 P₂ 1 (one_mem _) 1 (one_mem _)`. Establish `VC1` using `fun P P' hPP' => GlobalTheory.DisjComb.main D c.ψ hc.std (c.V j) (c.V (j + 1)) P P' hPP'`.
+
+Establish `VC2` using `fun P P' hPP' => GlobalTheory.DisjComb.main D c.ψ hc.std (c.V (j + 1)) (c.V (j + 1 + 1)) P P' hPP'`. Take `⟨hG1, -, -⟩` from `hv.atG j`. Take `⟨hG2, -, -⟩` from `hv.atG (j + 1)`. Take `⟨hQ1, -, -⟩` from `hF.atQ j`. Take `⟨hQ2, -, -⟩` from `hF.atQ (j + 1)`.
+
+Use `⟨K, TQ.image (· * v.b (j + 1)), hKf, hKc, hKo, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Take `⟨q', hq', rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `mul_mem (hQf (hTQ q' hq')) (hv.b (j + 1))`. Introduce `k hk`.
+
+Take `⟨κ, x, y, hκ, hx, hy, rfl⟩` from `(hKmem k).1 hk`. Take `⟨ax, hax, hx1, hx2, -⟩` from `hF.lawG j hj1 x hx`. Take `⟨ay, hay, hyl⟩` from `hKQlaw y hy`. Establish `hΨ1Q` using `vac_mono (Q := (· ∈ w.Q)) hΨ1 fun _ _ => trivial`. Establish `hΨ2Q` using `vac_mono (Q := (· ∈ w.Q)) hΨ2 fun _ _ => trivial`.
+
+Establish `hΨ1G` using `vac_mono (Q := (· ∈ v.gP)) hΨ1 fun _ _ => trivial`. Establish `hΨ2G` using `vac_mono (Q := (· ∈ v.gP)) hΨ2 fun _ _ => trivial`. Establish `hΨ1O` using `vac_mono (Q := offP v w) hΨ1 fun _ _ => trivial`. Establish `hΨ2O` using `vac_mono (Q := offP v w) hΨ2 fun _ _ => trivial`. Take `⟨hy1, hy2⟩` from `hyl _ _ hΨ1Q hΨ2Q`.
+
+Establish `hκG : κ ∈ grpOff _ (· ∈ v.gP)` using `gO _ _ hoffG hκ.1`. Establish `hκQ : κ ∈ grpOff _ (· ∈ w.Q)` using `gO _ _ hoffQ hκ.1`. Establish `hyG : y ∈ grpOff _ (· ∈ v.gP)` using `gO _ _ hQG (hKQ hy)`. Establish `hθ1 : IsThetaFunO c.ψ _ _ (comb c.ψ _ _ (w.eQ j) (v.Ψ j P₁ 1 1))` using `(((VC1 (· ∈ w.Q) (· ∈ v.gP) hQG).2.1 _ hQ1).2 _ _ _ hΨ1G).1`. Establish `hθ2 : IsThetaFunO c.ψ _ _ (comb c.ψ _ _ (w.eQ (j + 1)) (v.Ψ (j + 1) P₂ 1 1))` using `(((VC2 (· ∈ w.Q) (· ∈ v.gP) hQG).2.1 _ hQ2).2 _ _ _ hΨ2G).1`.
+
+Establish `hV1 : Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ v.gP) (comb c.ψ _ _ (w.eQ j) (v.Ψ j P₁ 1 1))` using `((VC1 (· ∈ w.Q) (· ∈ v.gP) hQG).2.1 _ hQ1).2 _ _ _ hΨ1G`. Establish `hV2 : Vac c.ψ _ _ (v.N (j + 1)) (v.N (j + 1 + 1)) (· ∈ v.gP) (comb c.ψ _ _ (w.eQ (j + 1)) (v.Ψ (j + 1) P₂ 1 1))` using `((VC2 (· ∈ w.Q) (· ∈ v.gP) hQG).2.1 _ hQ2).2 _ _ _ hΨ2G`. Establish `hO1` using `hO j σ h _ _ hΨ1O hΨ2O`. Establish `L1 : t.om j (1, κ * x * y) (comb c.ψ _ _ (v.eG j) (comb c.ψ _ _ (w.eQ j) (v.Ψ j P₁ 1 1))) = (ax * ay)⁻¹ • comb c.ψ _ _ (v.eG j) (comb c.ψ _ _ (w.eQ j) (v.Ψ j P₁ 1 1))`. Establish `e : ((1 : GA D (c.V j)), κ * x * y) = (1, κ) * (1, x) * (1, y)` using `by simp`.
+
+Rewrite using `[e, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[(VC1 (· ∈ v.gP) (fun _ => False) (fun _ _ h => h)).2.2.1 _ _ _ W1 _ hG1 1 (one_mem _) y hyG _ hθ1, hy1, comb_smul', map_smul, hx1 _ hV1, map_smul, map_smul, smul_smul, (VC1 (· ∈ v.gP) (fun _ => False) (fun _ _ h => h)).2.2.1 _ _ _ W1 _ hG1 1 (one_mem _) κ hκG _ hθ1, (VC1 (· ∈ w. …`. Establish `L2 : t.om (j + 1) (κ * x * y, 1) (comb c.ψ _ _ (v.eG (j + 1)) (comb c.ψ _ _ (w.eQ (j + 1)) (v.Ψ (j + 1) P₂ 1 1))) = (ax * ay) • comb c.ψ _ _ (v.eG (j + 1)) (comb c.ψ _ _ (w.eQ (j + 1)) (v.Ψ (j + 1) P₂ 1 1))`. Establish `e : (κ * x * y, (1 : GA D (c.V (j + 1 + 1)))) = (κ, 1) * (x, 1) * (y, 1)` using `by simp`. Rewrite using `[e, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]`.
+
+Rewrite using `[(VC2 (· ∈ v.gP) (fun _ => False) (fun _ _ h => h)).2.2.1 _ _ _ W2 _ hG2 y hyG 1 (one_mem _) _ hθ2, hy2, comb_smul', map_smul, hx2 hj2 _ hV2, map_smul, map_smul, smul_smul, (VC2 (· ∈ v.gP) (fun _ => False) (fun _ _ h => h)).2.2.1 _ _ _ W2 _ hG2 κ hκG 1 (one_mem _) _ hθ2, (VC2 (· …`. Establish `vf1` using `hF.vf j hj1 P₁ 1 (one_mem _) 1 (one_mem _)`. Establish `vf2` using `hF.vf (j + 1) hj2 P₂ 1 (one_mem _) 1 (one_mem _)`. Simplify using `only [one_mul] at vf1 vf2`. Establish `pt1 : t.pt j P₁ = t.om j ((v.b j)⁻¹, (v.b (j + 1))⁻¹) (w.sc j • comb c.ψ _ _ (v.eG j) (comb c.ψ _ _ (w.eQ j) (v.Ψ j P₁ 1 1)))`.
+
+Rewrite using `[← vf1, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel, ← Prod.one_eq_mk, map_one, Module.End.one_apply]`. Establish `pt2 : t.pt (j + 1) P₂ = t.om (j + 1) ((v.b (j + 1))⁻¹, (v.b (j + 1 + 1))⁻¹) (w.sc (j + 1) • comb c.ψ _ _ (v.eG (j + 1)) (comb c.ψ _ _ (w.eQ (j + 1)) (v.Ψ (j + 1) P₂ 1 1)))`. Rewrite using `[← vf2, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel, ← Prod.one_eq_mk, map_one, Module.End.one_apply]`. Use `⟨ax * ay, mul_ne_zero hax hay, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pt1, ← Module.End.mul_apply, ← map_mul]`.
+
+Establish `e : ((1 : GA D (c.V j)), (v.b (j + 1))⁻¹ * (κ * x * y) * v.b (j + 1)) * ((v.b j)⁻¹, (v.b (j + 1))⁻¹) = ((v.b j)⁻¹, (v.b (j + 1))⁻¹) * (1, κ * x * y)`. Simplify using `only [Prod.mk_mul_mk, one_mul, mul_one, mul_assoc, mul_inv_cancel]`. Rewrite using `[e, map_mul, Module.End.mul_apply, map_smul, L1, smul_comm, map_smul]`. Rewrite using `[pt2, ← Module.End.mul_apply, ← map_mul]`. Establish `e : ((v.b (j + 1))⁻¹ * (κ * x * y) * v.b (j + 1), (1 : GA D (c.V (j + 1 + 1)))) * ((v.b (j + 1))⁻¹, (v.b (j + 1 + 1))⁻¹) = ((v.b (j + 1))⁻¹, (v.b (j + 1 + 1))⁻¹) * (κ * x * y, 1)`.
+
+Simplify using `only [Prod.mk_mul_mk, one_mul, mul_one, mul_assoc, mul_inv_cancel]`. Rewrite using `[e, map_mul, Module.End.mul_apply, map_smul, L2, smul_comm, map_smul]`. Introduce `α g hg h₁ hne`. Take `⟨he, heQ⟩` from `hF.e j α`. Rewrite `hg` using `[he]`.
+
+Take `⟨ε, hε, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hg)`. Take `⟨-, -, hrf, -⟩` from `GlobalTheory.AdelicSplit.adelic_split D (c.V (j + 1))`. Establish `gO0 : ∀ (P P' : Pl D → Prop), (∀ p, P p → ¬ P' p) → grpAt (c.V j) P ≤ grpOff (c.V j) P'` using `(GlobalTheory.T.unitaryFiniteAdelicGroup_split_finitePlaceSet D (c.V j) w.Q).2.2.2.2.2.2.1`. Establish `hεG : ε ∈ grpOff _ (· ∈ v.gP)` using `gO0 _ _ hQG (heQ ε hε)`. Establish `hεO : ε ∈ grpOff _ (offP v w)` using `gO0 _ _ hQoff (heQ ε hε)`.
+
+Establish `omm : ∀ (a a' : GA D (c.V j)) (b b' : GA D (c.V (j + 1))) f, t.om j (a, b) (t.om j (a', b') f) = t.om j (a * a', b * b') f` using `fun a a' b b' f => by rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk]`. Establish `vf1` using `hF.vf j hj1 P₁ 1 (one_mem _) 1 (one_mem _)`. Rewrite `vf1` using `[one_mul, one_mul, ← comb_smul', ← comb_smul']`. Establish `hΨ` using `vac_smul (w.sc j) hΨ1`. Generalize the expression as in `w.sc j • v.Ψ j P₁ 1 1 = Ψ at vf1 hΨ`.
+
+Take `⟨x, rfl⟩ : ∃ x, h₁ = x * v.b (j + 1)` from `⟨h₁ * (v.b (j + 1))⁻¹, by group⟩`. Rewrite `hne` using `[← omm, vf1]`. Establish `hΨQ` using `vac_mono (Q := (· ∈ w.Q)) hΨ fun _ _ => trivial`. Establish `hΨG` using `vac_mono (Q := (· ∈ v.gP)) hΨ fun _ _ => trivial`. Establish `hΨO` using `vac_mono (Q := offP v w) hΨ fun _ _ => trivial`.
+
+Establish `hΨ2G` using `vac_mono (Q := (· ∈ v.gP)) hΨ2 fun _ _ => trivial`. Establish `hΨ2O` using `vac_mono (Q := offP v w) hΨ2 fun _ _ => trivial`. Establish `hVG : Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ v.gP) (comb c.ψ _ _ (w.eQ j) Ψ)` using `((VC1 (· ∈ w.Q) (· ∈ v.gP) hQG).2.1 _ hQ1).2 _ _ _ hΨG`. Establish `hVQ : Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ w.Q) (comb c.ψ _ _ (v.eG j) Ψ)` using `((VC1 (· ∈ v.gP) (· ∈ w.Q) hGQ).2.1 _ hG1).2 _ _ _ hΨQ`. Establish `hVO : Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (offP v w) (comb c.ψ _ _ (v.eG j) (comb c.ψ _ _ (w.eQ j) Ψ))` using `((VC1 (· ∈ v.gP) (offP v w) hGoff).2.1 _ hG1).2 _ _ _ (((VC1 (· ∈ w.Q) (offP v w) hQoff).2.1 _ hQ1).2 _ _ _ hΨO)`.
+
+Take `⟨r, hr, hrO, z, hz, κ, hκ, rfl⟩` from `(hO j σ h _ _ (GlobalTheory.OffPlaceWeil.vac_off W1 hVO hεO (one_mem _)) hΨ2O).2.2.1 x (by rwa [omm, one_mul, mul_one])`. Establish `hfix` using `((hO j σ h _ _ hVO hΨ2O).1 κ hκ).1`. Establish `hne2 : flatBF (t.sBF j (σ + 1) h) (t.om j (ε, z) (comb c.ψ _ _ (v.eG j) (comb c.ψ _ _ (w.eQ j) Ψ))) ≠ 0`. Introduce `h0`. Establish `hR` using `(GlobalTheory.T.flatMap_handedFunction_vanishing_period_invariant D c.ψ (offP v w)).1 (σ + 1) _ _ (t.sBF j (σ + 1) h) _ (W1.om_pres (ε, z) _ hVO.1) r hr hrO`.
+
+Rewrite `hR` using `[(ht.sBF j (σ + 1) h).1]`. Apply `hne` to reduce the goal to its premises. Establish `e` using `hR.2 h0`. Establish `e' : t.om j (ε, r * z * κ) (comb c.ψ _ _ (v.eG j) (comb c.ψ _ _ (w.eQ j) Ψ)) = t.om j (1, r) (t.om j (ε, z) (comb c.ψ _ _ (v.eG j) (comb c.ψ _ _ (w.eQ j) Ψ)))` using `by conv_rhs => rw [← hfix]`. Rewrite using `[omm, omm, one_mul, mul_one]`.
+
+Rewrite using `[e']`. Conclude with `e`. Take `⟨a, ha, xG, hxG, xQ, hxQ, rfl⟩` from `split_off D _ v.gP w.Q hF.disjG z hz`. Establish `cQG : ∀ {x y}, x ∈ grpAt (c.V (j + 1)) (· ∈ v.gP) → y ∈ grpAt (c.V (j + 1)) (· ∈ w.Q) → y * x = x * y` using `fun hx hy => comm_at D _ v.gP w.Q hF.disjG hx hy`. Establish `haQ : a * xQ ∈ grpOff _ (· ∈ v.gP)` using `mul_mem (real_le_off _ _ ha) (gO _ _ hQG hxQ)`.
+
+Take `⟨rG, hrG, hrGa, kG, hkG, hxG'⟩` from `(hG j σ h _ _ (GlobalTheory.OffPlaceWeil.vac_off W1 hVG hεG haQ) hΨ2G).1 xG hxG (by`. Rewrite using `[← (VC1 (· ∈ v.gP) (fun _ => False) (fun _ _ h => h)).2.2.1 _ _ _ W1 _ hG1 ε hεG _ haQ _ hVG.1, omm, one_mul, ← mul_assoc, ← hrf a ha xG (hGf hxG), mul_assoc, ← cQG hxG hxQ, ← mul_assoc]`. Conclude with `hne2)`. Establish `haG : a * xG ∈ grpOff _ (· ∈ w.Q)` using `mul_mem (real_le_off _ _ ha) (gO _ _ hGQ hxG)`. Take `⟨rQ, hrQ, hrQa, q, hq, kQ, hkQ, hxQ'⟩` from `hTQsupp _ (GlobalTheory.OffPlaceWeil.vac_off W1 hVQ (one_mem _) haG) α ε hε xQ hxQ (by`.
+
+Rewrite using `[← (VC1 (· ∈ w.Q) (fun _ => False) (fun _ _ h => h)).2.2.1 _ _ _ W1 _ hQ1 1 (one_mem _) _ haG _ hVQ.1, omm, mul_one, ← mul_assoc, ← hrf a ha xQ (hQf hxQ), ← (VC1 (· ∈ v.gP) (· ∈ w.Q) hGQ).1 _ _ hG1 hQ1]`. Conclude with `hne2)`. Use `⟨q * v.b (j + 1), Finset.mem_image_of_mem _ hq, r * rG * rQ, mul_mem (mul_mem hr hrG) hrQ, a, ha, (v.b (j + 1))⁻¹ * (kG * kQ * κ) * v.b (j + 1), ?_, ?_⟩` and prove the remaining obligations. Establish `m1` using `(hKmem _).2 ⟨1, kG, kQ, hone, hkG, hkQ, rfl⟩`. Establish `m2` using `(hKmem _).2 ⟨κ, 1, 1, hκ, one_mem _, one_mem _, rfl⟩`.
+
+Establish `m3` using `mul_mem m1 m2`. Establish `e : (v.b (j + 1))⁻¹ * (kG * kQ * κ) * v.b (j + 1) = (v.b (j + 1))⁻¹ * (1 * kG * kQ) * v.b (j + 1) * ((v.b (j + 1))⁻¹ * (κ * 1 * 1) * v.b (j + 1))`. Simplify using `only [mul_assoc, mul_inv_cancel_left, one_mul, mul_one]`. Rewrite using `[e]`. Conclude with `m3`.
+
+Establish `c1 : a * (rQ * q * kQ) * (rG * kG) = rG * rQ * a * q * (kG * kQ)`. Rewrite using `[← hxQ', mul_assoc a xQ, ← mul_assoc xQ, cQG hrGa hxQ, ← mul_assoc a, ← mul_assoc a, hrf a ha rG (hGf hrGa), hxQ', ← cQG (hJG hkG) (hKQ hkQ), mul_assoc rG rQ a, ← hrf a ha rQ (hQf hrQa)]`. Simplify using `only [mul_assoc]`. Rewrite using `[hxG', hxQ', c1]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`.
+-/
 theorem locFin : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t), c.Is → v.Is → t.Is → VForm v w → OffLaw v w → GSupp (t := t) v → QFin v w → t.LocFin := by
   classical
   intro D c v t w hc hv ht hF hO hG hQ j σ h P₁ P₂

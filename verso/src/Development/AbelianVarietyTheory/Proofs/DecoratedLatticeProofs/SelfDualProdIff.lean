@@ -17,6 +17,17 @@ end GlobalTheory.HermSD
 
 namespace GlobalTheory.HermSD
 
+/- English proof (translation)
+Use `hκ.1` as an intermediate fact. Establish `e : κ = Measure.addHaarScalarFactor κ P • P` using `Measure.isAddLeftInvariant_eq_smul κ P`. Use `set c : NNReal := Measure.addHaarScalarFactor κ P with hcdef`. Establish `hT : ∀ y, ∫ x, Φ x * χ x y ∂κ = (c : ℂ) * ∫ x, Φ x * χ x y ∂P`. Introduce `y`.
+
+Rewrite using `[e, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Establish `hI' : Integrable (fun y => ∫ x, Φ x * χ x y ∂κ) κ`. Simplify using `only [hT]`. Rewrite using `[e]`. Conclude with `(hI.const_mul (c : ℂ)).smul_measure_nnreal`.
+
+Establish `h2` using `hκ.2 Φ hc hs hI' z`. Simplify using `only [hT] at h2`. Rewrite `h2` using `[e, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Establish `h3 : ∫ y, ((c : ℂ) * ∫ x, Φ x * χ x y ∂P) * χ y z ∂P = (c : ℂ) * ∫ y, (∫ x, Φ x * χ x y ∂P) * χ y z ∂P`. Rewrite using `[← integral_const_mul]`.
+
+Conclude with `integral_congr_ae (ae_of_all _ fun y => by ring)`. Rewrite `h2` using `[h3, h1, ← mul_assoc]`. Establish `h4 : ((c : ℂ)) * (c : ℂ) = 1` using `mul_right_cancel₀ hz (by rw [h2, one_mul])`. Establish `h5 : c * c = 1` using `by exact_mod_cast h4`. Establish `h6 : c = 1`.
+
+Establish `: (c : ℝ) * c = 1` using `by exact_mod_cast h5`. Establish `h7 : (c : ℝ) = 1` using `by nlinarith [c.coe_nonneg]`. Conclude with `h7` after adjusting the coercions. Rewrite using `[e, h6, one_smul]`.
+-/
 theorem eq_of_test_haar {V : Type} [AddCommGroup V] [TopologicalSpace V]
     [IsTopologicalAddGroup V] [LocallyCompactSpace V] [SecondCountableTopology V]
     [MeasurableSpace V] [BorelSpace V] {κ P : Measure V} {χ : V → V → ℂ}
@@ -57,6 +68,9 @@ end GlobalTheory.HermSD
 
 namespace GlobalTheory.HermSD
 
+/- English proof (translation)
+Use `⟨fun i j => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify using the standard rewrite rules.
+-/
 theorem isHermND_one {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) :
     IsHermND σ (1 : Matrix (Fin 1) (Fin 1) E) := by
   refine ⟨fun i j => ?_, by simp⟩

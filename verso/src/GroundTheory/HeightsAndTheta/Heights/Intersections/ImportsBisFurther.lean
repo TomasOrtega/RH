@@ -12,6 +12,23 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ ι _ P p y hP hp hy`. Establish `hPp : P.IsPrime` using `hP.2.1.1`. Take `⟨c, hc0, hc⟩` from `RegularityDenominator.proof RegularityDivisorSupportClosed.proof LocRingPow.proof K ι P y hP`. Establish `hcR : c ∈ regRing P` using `fun W h1 h2 => (hc W h1 h2).1`. Establish `: Module.Finite ℤ (regRing P)` using `(h₁ K ι P hP).2.1`.
+
+Establish `hci : IsIntegral ℤ (⟨c, hcR⟩ : regRing P)` using `Algebra.IsIntegral.isIntegral _`. Establish `hne` using `Ideal.comap_ne_bot_of_integral_mem (I := Ideal.span {(⟨c, hcR⟩ : regRing P)}) (fun h => hc0 (congrArg Subtype.val h)) (Ideal.mem_span_singleton_self _) hci`. Take `⟨N, hN, hN0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 (Ideal.mem_comap.1 hN)`. Establish `hNF : ((N : funField P) : FractionRing (MRing ι ⧸ P)) = ((d : funField P) : FractionRing (MRing ι ⧸ P)) * (c : FractionRing (MRing ι ⧸ P))`.
+
+Establish `h` using `congrArg (fun z : regRing P => ((z : funField P) : FractionRing (MRing ι ⧸ P))) hd`. Simplify using `only [Subring.coe_mul, algebraMap_int_eq, eq_intCast, SubringClass.coe_intCast] at h`. Simplify using `only [SubringClass.coe_intCast]`. Conclude with `h.symm`. Establish `hpu : p.natAbs ≠ 1` using `fun h => hp.not_isUnit (Int.isUnit_iff_natAbs_eq.mpr h)`.
+
+Take `⟨m, hNm, hpm⟩` from `(Int.finiteMultiplicity_iff.mpr ⟨hpu, hN0⟩).exists_eq_pow_mul_and_not_dvd`. Generalize the expression as in `multiplicity p N = e at hNm`. Use `⟨m, hpm, fun W h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.coe_mul, SubringClass.coe_intCast]`. Distinguish the cases in `hpW : C p ∈ W`.
+
+Conclude with `mul_mem (intCast_mem _ m) (hy W h1 h2 hpW)`. Establish `hCp : algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P (C p)) = (p : _)`. Rewrite using `[eq_intCast C p, map_intCast, map_intCast]`. Establish `hp0 : (p : FractionRing (MRing ι ⧸ P)) ≠ 0`. Introduce `h`.
+
+Apply `hpW` to reduce the goal to its premises. Apply `h2` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← IsFractionRing.to_map_eq_zero_iff (K := FractionRing (MRing ι ⧸ P)), hCp, h]`. Establish `hq : (p : FractionRing (MRing ι ⧸ P))⁻¹ ∈ locRing P W` using `frac_mem_locRing h2 (RegularityDenominator.isMultiHomog_C 1) (RegularityDenominator.isMultiHomog_C p) hpW (by rw [hCp, map_one, map_one, map_one, inv_mul_cancel₀ hp0])`. Establish `hyc : (y : FractionRing (MRing ι ⧸ P)) * (c : FractionRing (MRing ι ⧸ P)) ∈ locRing P W`.
+
+Use `(hc W h1 h2).2` as an intermediate fact. Rewrite `this` using `[Subring.coe_mul]`. Then use the resulting hypothesis. Establish `hdW : ((d : funField P) : FractionRing (MRing ι ⧸ P)) ∈ locRing P W` using `d.2 W h1 h2`. Establish `key : (m : FractionRing (MRing ι ⧸ P)) * (y : FractionRing (MRing ι ⧸ P)) = (p : FractionRing (MRing ι ⧸ P))⁻¹ ^ e * (((d : funField P) : FractionRing (MRing ι ⧸ P)) * ((y : FractionRing (MRing ι ⧸ P)) * c))`. Establish `hN' : ((d : funField P) : FractionRing (MRing ι ⧸ P)) * ((y : FractionRing (MRing ι ⧸ P)) * c) = (p : FractionRing (MRing ι ⧸ P)) ^ e * m * y`.
+
+Rewrite using `[show ((d : funField P) : FractionRing (MRing ι ⧸ P)) * ((y : FractionRing (MRing ι ⧸ P)) * c) = ((N : funField P) : FractionRing (MRing ι ⧸ P)) * y by rw [hNF]; ring, SubringClass.coe_intCast, hNm, Int.cast_mul, Int.cast_pow]`. Rewrite using `[hN', inv_pow, ← mul_assoc, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hp0), one_mul]`. Rewrite using `[key]`. Conclude with `mul_mem (pow_mem hq _) (mul_mem hdW hyc)`.
+-/
 theorem RegularityLocalPrime.proof (h₁ : RegularityOrder.Statement) : RegularityLocalPrime.Statement := by
   intro K _ ι _ P p y hP hp hy
   have hPp : P.IsPrime := hP.2.1.1

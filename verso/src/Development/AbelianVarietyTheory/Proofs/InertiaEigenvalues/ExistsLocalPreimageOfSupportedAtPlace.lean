@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.RawLift
 
+/- English proof (translation)
+Introduce `D V v f hf k hk`. Take `⟨ε, hε, rfl⟩` from `hf`. Take `⟨a, ha⟩` from `(GlobalTheory.AdelicU.Supp.suppF_iff_mem_range V hε k).1 hk`. Conclude with `⟨a, ha⟩`.
+-/
 theorem suppF_finIdem_mem_range : ∀ (D : D7) (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (f : AE D), IsFinIdem D v f → ∀ k : GA D V, SuppF V f k → ∃ a : GlobalTheory.FinZeta.Gv V v, GlobalTheory.FinZeta.embV V v a = k := by
   intro D V v f hf k hk
   obtain ⟨ε, hε, rfl⟩ := hf

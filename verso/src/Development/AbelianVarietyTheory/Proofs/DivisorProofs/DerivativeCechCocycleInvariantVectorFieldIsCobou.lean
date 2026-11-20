@@ -18,18 +18,32 @@ variable {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {J : Type}
 def pairOpen (V : J → A.left.Opens) (t : J × J × J) : (A ⊗ A).left.Opens :=
   μ[A].left ⁻¹ᵁ V t.1 ⊓ (fst A A).left ⁻¹ᵁ V t.2.1 ⊓ (snd A A).left ⁻¹ᵁ V t.2.2
 
+/- English proof (translation)
+The claim follows from `fun _ h ↦ ⟨h.1.1.1, h.2.1.1⟩`.
+-/
 theorem pairOpen_le_mul (V : J → A.left.Opens) (t t' : J × J × J) :
     pairOpen V t ⊓ pairOpen V t' ≤ μ[A].left ⁻¹ᵁ (V t.1 ⊓ V t'.1) :=
   fun _ h ↦ ⟨h.1.1.1, h.2.1.1⟩
 
+/- English proof (translation)
+The claim follows from `fun _ h ↦ ⟨h.1.1.2, h.2.1.2⟩`.
+-/
 theorem pairOpen_le_fst (V : J → A.left.Opens) (t t' : J × J × J) :
     pairOpen V t ⊓ pairOpen V t' ≤ (fst A A).left ⁻¹ᵁ (V t.2.1 ⊓ V t'.2.1) :=
   fun _ h ↦ ⟨h.1.1.2, h.2.1.2⟩
 
+/- English proof (translation)
+The claim follows from `fun _ h ↦ ⟨h.1.2, h.2.2⟩`.
+-/
 theorem pairOpen_le_snd (V : J → A.left.Opens) (t t' : J × J × J) :
     pairOpen V t ⊓ pairOpen V t' ≤ (snd A A).left ⁻¹ᵁ (V t.2.2 ⊓ V t'.2.2) :=
   fun _ h ↦ ⟨h.1.2, h.2.2⟩
 
+/- English proof (translation)
+Establish `hm : ∀ y : A.left, ∃ a, y ∈ V a` using `fun y ↦ TopologicalSpace.Opens.mem_iSup.1 (show y ∈ ⨆ a, V a by rw [hV]; trivial)`. Use `eq_top_iff.2 fun z _ ↦ TopologicalSpace.Opens.mem_iSup.2 ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hm (μ[A].left z)`. Take `⟨b, hb⟩` from `hm ((fst A A).left z)`. Take `⟨c, hc⟩` from `hm ((snd A A).left z)`.
+
+Conclude with `⟨(a, b, c), ⟨⟨ha, hb⟩, hc⟩⟩`.
+-/
 theorem iSup_pairOpen (V : J → A.left.Opens) (hV : ⨆ a, V a = ⊤) : ⨆ t, pairOpen V t = ⊤ := by
   have hm : ∀ y : A.left, ∃ a, y ∈ V a := fun y ↦
     TopologicalSpace.Opens.mem_iSup.1 (show y ∈ ⨆ a, V a by rw [hV]; trivial)
@@ -65,21 +79,40 @@ def transSnd (P : GPt A) (v : epsR K ⟶ A) : transSrc P ⟶ A :=
 def transPair (P : GPt A) (v : epsR K ⟶ A) : Sp (DualNumber P.B) ⟶ (A ⊗ A).left :=
   (lift (transFst P) (transSnd P v)).left
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, rfl, rfl, by rw [transPair, ← Over.comp_left]; rfl⟩`.
+-/
 theorem transPair_isTransl (P : GPt A) (v : epsR K ⟶ A) :
     IsTransl (algebraMap K P.B) P.x v (transPair P v ≫ μ[A].left) :=
   ⟨_, _, rfl, rfl, by rw [transPair, ← Over.comp_left]; rfl⟩
 
+/- English proof (translation)
+The claim follows from `(transPair_isTransl P v).unique (P.isTransl_trx v)`.
+-/
 theorem transPair_mul (P : GPt A) (v : epsR K ⟶ A) : transPair P v ≫ μ[A].left = P.trx v :=
   (transPair_isTransl P v).unique (P.isTransl_trx v)
 
+/- English proof (translation)
+Rewrite using `[transPair, ← Over.comp_left, lift_fst]`. Both sides reduce to the same expression.
+-/
 theorem transPair_fst (P : GPt A) (v : epsR K ⟶ A) :
     transPair P v ≫ (fst A A).left = spMap (algebraMap P.B (DualNumber P.B)) ≫ P.x := by
   rw [transPair, ← Over.comp_left, lift_fst]; rfl
 
+/- English proof (translation)
+Rewrite using `[transPair, ← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem transPair_snd (P : GPt A) (v : epsR K ⟶ A) :
     transPair P v ≫ (snd A A).left = spMap (dualMap (algebraMap K P.B)) ≫ v.left := by
   rw [transPair, ← Over.comp_left, lift_snd]; rfl
 
+/- English proof (translation)
+Set `j : transSrc Q ⟶ transSrc P` to `Over.homMk (spMap (dualMap (φ.ρ : P.B →+* Q.B))) (by`. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ = spMap _`. Rewrite using `[← Cris.spMap_comp, ← RingHom.comp_assoc, dualMap_comp_algebraMap, RingHom.comp_assoc, φ.ρ.comp_algebraMap])`. Establish `h1 : j ≫ transFst P = transFst Q`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ ≫ P.x = spMap _ ≫ Q.x`. Rewrite using `[← φ.pt, ← Category.assoc, ← Category.assoc, ← Cris.spMap_comp, ← Cris.spMap_comp, dualMap_comp_algebraMap]`. Establish `h2 : j ≫ transSnd P v = transSnd Q v`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ ≫ v.left = spMap _ ≫ v.left`.
+
+Rewrite using `[← Category.assoc, ← Cris.spMap_comp, dualMap_comp_dualMap, φ.ρ.comp_algebraMap]`. Establish `h3 : j ≫ lift (transFst P) (transSnd P v) = lift (transFst Q) (transSnd Q v)`. Rewrite using `[comp_lift, h1, h2]`. Conclude with `congrArg Over.Hom.left h3`.
+-/
 theorem transPair_map {P Q : GPt A} (φ : P.Hom Q) (v : epsR K ⟶ A) :
     spMap (dualMap (φ.ρ : P.B →+* Q.B)) ≫ transPair P v = transPair Q v := by
   let j : transSrc Q ⟶ transSrc P := Over.homMk (spMap (dualMap (φ.ρ : P.B →+* Q.B))) (by
@@ -99,6 +132,15 @@ theorem transPair_map {P Q : GPt A} (φ : P.Hom Q) (v : epsR K ⟶ A) :
     rw [comp_lift, h1, h2]
   exact congrArg Over.Hom.left h3
 
+/- English proof (translation)
+Introduce `p _`. Establish `hs : Function.Surjective (spMap (TrivSqZeroExt.fstHom K K K).toRingHom)`. Introduce `q`. Use `⟨spMap (algebraMap K (DualNumber K)) q, ?_⟩` and prove the remaining obligations. Use `PrimeSpectrum.ext (Ideal.ext fun c ↦ ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap K (DualNumber K) c.fst ∈ q.asIdeal ↔ c ∈ q.asIdeal`. Establish `hn : c - algebraMap K (DualNumber K) c.fst ∈ q.asIdeal`. Use `q.isPrime.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Establish `: (c - algebraMap K (DualNumber K) c.fst) ^ 2 = 0`. Apply the tactic sequence `ext <;> simp [pow_two, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Rewrite using `[this]`. Conclude with `zero_mem _`. Conclude with `⟨fun hc ↦ by simpa using add_mem hn hc, fun hc ↦ by simpa using sub_mem hc hn⟩`. Take `⟨q, rfl⟩` from `hs p`. Use `h (Set.mem_univ q)` as an intermediate fact.
+
+Rewrite `this` using `[← hv]`. Conclude with `this`.
+-/
 theorem tangent_in {v : epsR K ⟶ A} (hv : IsTangent v) {U : A.left.Opens} (h : ⊤ ≤ η[A].left ⁻¹ᵁ U) :
     ⊤ ≤ v.left ⁻¹ᵁ U := by
   intro p _
@@ -118,6 +160,13 @@ theorem tangent_in {v : epsR K ⟶ A} (hv : IsTangent v) {U : A.left.Opens} (h :
   rw [← hv] at this
   exact this
 
+/- English proof (translation)
+Introduce `p _`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(ha.tr hv) (Set.mem_univ p)` as an intermediate fact. Express the relevant statement in the definitionally equal form `p ∈ (P.trx v) ⁻¹ᵁ V a at this`. Rewrite `this` using `[← transPair_mul]`.
+
+Conclude with `this`. Use `ha (Set.mem_univ ((spMap (algebraMap P.B (DualNumber P.B))).base p))` as an intermediate fact. Express the relevant statement in the definitionally equal form `p ∈ (transPair P v ≫ (fst A A).left) ⁻¹ᵁ V a`. Rewrite using `[transPair_fst]`. Conclude with `this`.
+
+Express the relevant statement in the definitionally equal form `p ∈ (transPair P v ≫ (snd A A).left) ⁻¹ᵁ V c`. Rewrite using `[transPair_snd]`. Conclude with `hc (Set.mem_univ _)`.
+-/
 theorem transPair_in (V : J → A.left.Opens) (P : GPt A) {v : epsR K ⟶ A} (hv : IsTangent v) {a c : J}
     (ha : P.In (V a)) (hc : ⊤ ≤ v.left ⁻¹ᵁ V c) : ⊤ ≤ transPair P v ⁻¹ᵁ pairOpen V (a, a, c) := by
   intro p _
@@ -140,6 +189,9 @@ theorem transPair_in (V : J → A.left.Opens) (P : GPt A) {v : epsR K ⟶ A} (hv
   w := (congrArg ((spMap (dualMap (algebraMap K P.B)) ≫ v.left) ≫ ·) (Category.comp_id A.hom)).trans
     (Over.w (transSnd P v))
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.Points.valR_eq x U h, map_sub]`.
+-/
 theorem valR_sub {C : Type} [CommRing C] {X : Scheme.{0}} (x : Sp C ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (f g : Γ(X, U)) : valR x U (f - g) = valR x U f - valR x U g := by
   simp only [GlobalTheory.Points.valR_eq x U h, map_sub]
@@ -148,6 +200,11 @@ end GlobalTheory.CechInv
 
 namespace GlobalTheory.CechInv
 
+/- English proof (translation)
+Use `X.IsSheaf.section_ext (U := Opposite.op U) fun p hp ↦ ?_` and prove the remaining obligations. Take `⟨W, hW, hpW, hWU⟩` from `exists_isAffineOpen_mem_and_subset hp`. Use `⟨W, hWU, hpW, ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.Points.le_preimage_specMap_fromSpec (C := Γ(X, W)) hW (𝟙 _)`. Establish `e` using `H Γ(X, W) _ (GlobalTheory.Points.le_preimage_mono _ hWU h)`.
+
+Rewrite `e` using `[← GlobalTheory.Points.valR_res _ hWU h, ← GlobalTheory.Points.valR_res _ hWU h, GlobalTheory.Points.valR_eq _ _ h, GlobalTheory.Points.valR_eq _ _ h, GlobalTheory.Points.valMap_specMap_fromSpec]`. Conclude with `e`.
+-/
 theorem ext_of_valR {X : Scheme.{0}} (U : X.Opens) (f g : Γ(X, U))
     (H : ∀ (C : Type) [CommRing C] (x : Sp C ⟶ X), ⊤ ≤ x ⁻¹ᵁ U → valR x U f = valR x U g) : f = g := by
   refine X.IsSheaf.section_ext (U := Opposite.op U) fun p hp ↦ ?_
@@ -161,6 +218,9 @@ theorem ext_of_valR {X : Scheme.{0}} (U : X.Opens) (f g : Γ(X, U))
 
 variable {K : Type} [Field K] {A : Over (Sp K)} {J : Type}
 
+/- English proof (translation)
+Use `letI : Algebra K C := (Spec.preimage (x ≫ A.hom)).hom.toAlgebra`. Conclude with `hφ a b c ⟨C, x, (congrArg (x ≫ ·) (Category.comp_id _)).trans (Spec.map_preimage _).symm⟩ ha hb hc`.
+-/
 theorem cocycle_at {V : J → A.left.Opens} {φ : ∀ a b, Γ(A.left, V a ⊓ V b)}
     (hφ : ∀ (a b c : J) (P : GPt A), P.In (V a) → P.In (V b) → P.In (V c) →
       valR P.x _ (φ a b) + valR P.x _ (φ b c) = valR P.x _ (φ a c))
@@ -171,6 +231,9 @@ theorem cocycle_at {V : J → A.left.Opens} {φ : ∀ a b, Γ(A.left, V a ⊓ V 
 
 variable [GrpObj A]
 
+/- English proof (translation)
+Rewrite using `[pairCocycle, valR_sub _ _ hz, valR_sub _ _ hz, GlobalTheory.Points.valR_appLE _ _ _ hz, GlobalTheory.Points.valR_appLE _ _ _ hz, GlobalTheory.Points.valR_appLE _ _ _ hz]`.
+-/
 theorem valR_pairCocycle (V : J → A.left.Opens) (φ : ∀ a b, Γ(A.left, V a ⊓ V b)) (t t' : J × J × J)
     {C : Type} [CommRing C] (z : Sp C ⟶ (A ⊗ A).left) (hz : ⊤ ≤ z ⁻¹ᵁ (pairOpen V t ⊓ pairOpen V t')) :
     valR z _ (pairCocycle V φ t t') = valR (z ≫ μ[A].left) _ (φ t.1 t'.1) -
@@ -178,6 +241,11 @@ theorem valR_pairCocycle (V : J → A.left.Opens) (φ : ∀ a b, Γ(A.left, V a 
   rw [pairCocycle, valR_sub _ _ hz, valR_sub _ _ hz, GlobalTheory.Points.valR_appLE _ _ _ hz,
     GlobalTheory.Points.valR_appLE _ _ _ hz, GlobalTheory.Points.valR_appLE _ _ _ hz]
 
+/- English proof (translation)
+Use `ext_of_valR _ _ _ fun C _ z hz ↦ ?_` and prove the remaining obligations. Establish `ha : ⊤ ≤ z ⁻¹ᵁ pairOpen V a` using `fun _ h ↦ (hz h).1.1`. Establish `hb : ⊤ ≤ z ⁻¹ᵁ pairOpen V b` using `fun _ h ↦ (hz h).1.2`. Establish `hd : ⊤ ≤ z ⁻¹ᵁ pairOpen V d` using `fun _ h ↦ (hz h).2`. Rewrite using `[GlobalTheory.Points.valR_add _ _ hz, GlobalTheory.Points.valR_res _ _ hz, GlobalTheory.Points.valR_res _ _ hz, GlobalTheory.Points.valR_res _ _ hz, valR_pairCocycle V φ a b z (fun _ h ↦ ⟨ha h, hb h⟩), valR_pairCocycle V φ b d z (fun _ h ↦ ⟨hb h, hd h⟩), valR_pairCocycle V φ a d …`.
+
+Establish `e1` using `cocycle_at hφ (z ≫ μ[A].left) (a := a.1) (b := b.1) (c := d.1) (fun _ h ↦ (ha h).1.1) (fun _ h ↦ (hb h).1.1) (fun _ h ↦ (hd h).1.1)`. Establish `e2` using `cocycle_at hφ (z ≫ (fst A A).left) (a := a.2.1) (b := b.2.1) (c := d.2.1) (fun _ h ↦ (ha h).1.2) (fun _ h ↦ (hb h).1.2) (fun _ h ↦ (hd h).1.2)`. Establish `e3` using `cocycle_at hφ (z ≫ (snd A A).left) (a := a.2.2) (b := b.2.2) (c := d.2.2) (fun _ h ↦ (ha h).2) (fun _ h ↦ (hb h).2) (fun _ h ↦ (hd h).2)`. Take the linear combination `e1 - e2 - e3`.
+-/
 theorem pairCocycle_cocycle (V : J → A.left.Opens) (φ : ∀ a b, Γ(A.left, V a ⊓ V b))
     (hφ : ∀ (a b c : J) (P : GPt A), P.In (V a) → P.In (V b) → P.In (V c) →
       valR P.x _ (φ a b) + valR P.x _ (φ b c) = valR P.x _ (φ a c)) (a b d : J × J × J) :
@@ -199,6 +267,11 @@ theorem pairCocycle_cocycle (V : J → A.left.Opens) (φ : ∀ a b, Γ(A.left, V
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Establish `h1 : ∀ t, W t ≤ V (p t) ⊓ V (q t)` using `fun t ↦ le_inf (hp t) (hq t)`. Establish `h2 : ∀ t, W t ≤ e ⁻¹ᵁ (V (r t) ⊓ V c₀)` using `fun t _ h ↦ ⟨hr t h, he trivial⟩`. Use `⟨fun t ↦ (A.left.presheaf.map (homOfLE (h1 t)).op).hom (φ (p t) (q t)) - (e.appLE _ _ (h2 t)).hom (φ (r t) c₀), fun t t' C _ x ht ht' ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[valR_sub _ _ ht, valR_sub _ _ ht', GlobalTheory.Points.valR_res _ _ ht, GlobalTheory.Points.valR_res _ _ ht', GlobalTheory.Points.valR_appLE _ _ _ ht, GlobalTheory.Points.valR_appLE _ _ _ ht']`. Establish `e1` using `cocycle_at hφ x (GlobalTheory.Points.le_preimage_mono x (hp t) ht) (GlobalTheory.Points.le_preimage_mono x (hp t') ht') (GlobalTheory.Points.le_preimage_mono x (hq t') ht')`.
+
+Establish `e2` using `cocycle_at hφ x (GlobalTheory.Points.le_preimage_mono x (hp t) ht) (GlobalTheory.Points.le_preimage_mono x (hq t) ht) (GlobalTheory.Points.le_preimage_mono x (hq t') ht')`. Establish `e3` using `cocycle_at hφ (x ≫ e) (GlobalTheory.Points.le_preimage_comp x e (hr t) ht) (GlobalTheory.Points.le_preimage_comp x e (hr t') ht') (GlobalTheory.Points.le_preimage_comp x e he (GlobalTheory.Points.le_preimage_top x))`. Take the linear combination `e1 - e2 - e3`.
+-/
 theorem axis_coboundary {I : Type} (V : J → A.left.Opens) (φ : ∀ a b, Γ(A.left, V a ⊓ V b))
     (hφ : ∀ (a b c : J) (P : GPt A), P.In (V a) → P.In (V b) → P.In (V c) →
       valR P.x _ (φ a b) + valR P.x _ (φ b c) = valR P.x _ (φ a c))
@@ -221,9 +294,19 @@ theorem axis_coboundary {I : Type} (V : J → A.left.Opens) (φ : ∀ a b, Γ(A.
     (GlobalTheory.Points.le_preimage_comp x e (hr t') ht') (GlobalTheory.Points.le_preimage_comp x e he (GlobalTheory.Points.le_preimage_top x))
   linear_combination e1 - e2 - e3
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Points.exists_le_preimage_of_iSup_eq_top (C := K) η[A].left hV`.
+-/
 theorem exists_one_in (V : J → A.left.Opens) (hV : ⨆ a, V a = ⊤) : ∃ c, ⊤ ≤ η[A].left ⁻¹ᵁ V c :=
   GlobalTheory.Points.exists_le_preimage_of_iSup_eq_top (C := K) η[A].left hV
 
+/- English proof (translation)
+Establish `k1 : ∀ t, i ⁻¹ᵁ pairOpen V t ≤ V t.1` using `fun t y h ↦ by`. Establish `: y ∈ (i ≫ μ[A].left) ⁻¹ᵁ V t.1` using `h.1.1`. Rewrite `this` using `[i1]`. Then use the resulting hypothesis. Establish `k2 : ∀ t, i ⁻¹ᵁ pairOpen V t ≤ V t.2.1` using `fun t y h ↦ by`. Establish `: y ∈ (i ≫ (fst A A).left) ⁻¹ᵁ V t.2.1` using `h.1.2`.
+
+Rewrite `this` using `[i2]`. Then use the resulting hypothesis. Establish `k3 : ∀ t, i ⁻¹ᵁ pairOpen V t ≤ e ⁻¹ᵁ V t.2.2` using `fun t y h ↦ by`. Establish `: y ∈ (i ≫ (snd A A).left) ⁻¹ᵁ V t.2.2` using `h.2`. Rewrite `this` using `[i3]`. Then use the resulting hypothesis. Take `⟨ψ, hψ⟩` from `axis_coboundary V φ hφ e c₀ he (fun t ↦ i ⁻¹ᵁ pairOpen V t) (fun t ↦ t.1) (fun t ↦ t.2.1) (fun t ↦ t.2.2) k1 k2 k3`.
+
+Use `⟨ψ, fun t t' ↦ ext_of_valR _ _ _ fun C _ x hx ↦ ?_⟩` and prove the remaining obligations. Establish `hx' : ⊤ ≤ (x ≫ i) ⁻¹ᵁ (pairOpen V t ⊓ pairOpen V t')` using `GlobalTheory.Points.le_preimage_comp x i le_rfl hx`. Rewrite using `[← GlobalTheory.Points.valR_comp x i, valR_pairCocycle V φ t t' (x ≫ i) hx', valR_sub _ _ hx, GlobalTheory.Points.valR_res _ _ hx, GlobalTheory.Points.valR_res _ _ hx, Category.assoc, Category.assoc, Category.assoc, i1, i2, i3, Category.comp_id]`. Conclude with `hψ t t' C x (fun _ h ↦ (hx h).1) (fun _ h ↦ (hx h).2)`.
+-/
 theorem pairCocycle_left (V : J → A.left.Opens) (φ : ∀ a b, Γ(A.left, V a ⊓ V b))
     (hφ : ∀ (a b c : J) (P : GPt A), P.In (V a) → P.In (V b) → P.In (V c) →
       valR P.x _ (φ a b) + valR P.x _ (φ b c) = valR P.x _ (φ a c))
@@ -252,6 +335,13 @@ theorem pairCocycle_left (V : J → A.left.Opens) (φ : ∀ a b, Γ(A.left, V a 
     GlobalTheory.Points.valR_res _ _ hx, Category.assoc, Category.assoc, Category.assoc, i1, i2, i3, Category.comp_id]
   exact hψ t t' C x (fun _ h ↦ (hx h).1) (fun _ h ↦ (hx h).2)
 
+/- English proof (translation)
+Establish `k1 : ∀ t, i ⁻¹ᵁ pairOpen V t ≤ V t.1` using `fun t y h ↦ by`. Establish `: y ∈ (i ≫ μ[A].left) ⁻¹ᵁ V t.1` using `h.1.1`. Rewrite `this` using `[i1]`. Then use the resulting hypothesis. Establish `k2 : ∀ t, i ⁻¹ᵁ pairOpen V t ≤ e ⁻¹ᵁ V t.2.1` using `fun t y h ↦ by`. Establish `: y ∈ (i ≫ (fst A A).left) ⁻¹ᵁ V t.2.1` using `h.1.2`.
+
+Rewrite `this` using `[i2]`. Then use the resulting hypothesis. Establish `k3 : ∀ t, i ⁻¹ᵁ pairOpen V t ≤ V t.2.2` using `fun t y h ↦ by`. Establish `: y ∈ (i ≫ (snd A A).left) ⁻¹ᵁ V t.2.2` using `h.2`. Rewrite `this` using `[i3]`. Then use the resulting hypothesis. Take `⟨ψ, hψ⟩` from `axis_coboundary V φ hφ e c₀ he (fun t ↦ i ⁻¹ᵁ pairOpen V t) (fun t ↦ t.1) (fun t ↦ t.2.2) (fun t ↦ t.2.1) k1 k3 k2`.
+
+Use `⟨ψ, fun t t' ↦ ext_of_valR _ _ _ fun C _ x hx ↦ ?_⟩` and prove the remaining obligations. Establish `hx' : ⊤ ≤ (x ≫ i) ⁻¹ᵁ (pairOpen V t ⊓ pairOpen V t')` using `GlobalTheory.Points.le_preimage_comp x i le_rfl hx`. Rewrite using `[← GlobalTheory.Points.valR_comp x i, valR_pairCocycle V φ t t' (x ≫ i) hx', valR_sub _ _ hx, GlobalTheory.Points.valR_res _ _ hx, GlobalTheory.Points.valR_res _ _ hx, Category.assoc, Category.assoc, Category.assoc, i1, i2, i3, Category.comp_id, sub_right_comm]`. Conclude with `hψ t t' C x (fun _ h ↦ (hx h).1) (fun _ h ↦ (hx h).2)`.
+-/
 theorem pairCocycle_right (V : J → A.left.Opens) (φ : ∀ a b, Γ(A.left, V a ⊓ V b))
     (hφ : ∀ (a b c : J) (P : GPt A), P.In (V a) → P.In (V b) → P.In (V c) →
       valR P.x _ (φ a b) + valR P.x _ (φ b c) = valR P.x _ (φ a c))
@@ -281,6 +371,9 @@ theorem pairCocycle_right (V : J → A.left.Opens) (φ : ∀ a b, Γ(A.left, V a
     sub_right_comm]
   exact hψ t t' C x (fun _ h ↦ (hx h).1) (fun _ h ↦ (hx h).2)
 
+/- English proof (translation)
+Rewrite using `[Over.comp_left, Scheme.Hom.comp_preimage]`. Conclude with `fun _ _ ↦ h trivial`.
+-/
 theorem const_in {U : A.left.Opens} (h : ⊤ ≤ η[A].left ⁻¹ᵁ U) : ⊤ ≤ (toUnit A ≫ η[A]).left ⁻¹ᵁ U := by
   rw [Over.comp_left, Scheme.Hom.comp_preimage]
   exact fun _ _ ↦ h trivial
@@ -289,6 +382,19 @@ end GlobalTheory.CechInv
 
 namespace GlobalTheory.CechInv
 
+/- English proof (translation)
+Introduce `K _ A _ hA J V hV φ hφ v hv`. Choose the witnesses or unpack the hypotheses as in `⟨c₀, hc₀⟩ : ∃ c, ⊤ ≤ η[A].left ⁻¹ᵁ V c := by`. Take `⟨p⟩ : Nonempty (Sp K)` from `inferInstance`. Take `⟨c, hc⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show η[A].left p ∈ ⨆ a, V a by rw [hV]; trivial)`. Conclude with `⟨c, fun q _ ↦ by`.
+
+Establish `e : q = p` using `Subsingleton.elim (α := ↥(Sp K)) q p`. Rewrite using `[e]`. Conclude with `hc⟩`. Establish `hvc : ⊤ ≤ v.left ⁻¹ᵁ V c₀` using `tangent_in hv hc₀`. Use `haveI := hA.proper`.
+
+Establish `hsep : IsSeparated A.hom` using `inferInstance`. Establish `hqc : QuasiCompact A.hom` using `inferInstance`. Take `⟨Ψ, hΨ⟩` from `GlobalTheory.KuennethOne.kuenneth_injective K A A η[A] η[A] hsep hqc hsep hqc (GlobalTheory.globalFns_holds _ A hA) (GlobalTheory.globalFns_holds _ A hA) (J × J × J) (pairOpen V) (iSup_pairOpen V hV) (pairCocycle V φ) (pairCocycle_cocycle V φ hφ) (pairCocycle_left V φ hφ _ c₀ (co …`. Use `⟨fun a P ↦ (valR (transPair P v) (pairOpen V (a, a, c₀)) (Ψ (a, a, c₀))).snd, fun a P Q f hP ↦ ?_, fun a b P ha hb ↦ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(valR (transPair Q v) _ _).snd = f.ρ (valR (transPair P v) _ _).snd`.
+
+Rewrite using `[← transPair_map f v, GlobalTheory.Points.valR_spMap_comp _ _ _ (transPair_in V P hv hP hvc)]`. Simplify using `[dualMap]`. Establish `hz` using `transPair_in V P hv ha hvc`. Establish `hz'` using `transPair_in V P hv hb hvc`. Establish `hzz : ⊤ ≤ transPair P v ⁻¹ᵁ (pairOpen V (a, a, c₀) ⊓ pairOpen V (b, b, c₀))` using `fun p hp ↦ ⟨hz hp, hz' hp⟩`.
+
+Establish `e` using `congrArg (valR (transPair P v) _) (hΨ (a, a, c₀) (b, b, c₀))`. Rewrite `e` using `[valR_sub _ _ hzz, GlobalTheory.Points.valR_res _ _ hzz, GlobalTheory.Points.valR_res _ _ hzz, pairCocycle, valR_sub _ _ hzz, valR_sub _ _ hzz, GlobalTheory.Points.valR_appLE _ _ _ hzz, GlobalTheory.Points.valR_appLE _ _ _ hzz, GlobalTheory.Points.valR_appLE _ _ _ hzz, transPair_ …`. Establish `hv' : (tanPt P v).In (V c₀)` using `fun p _ ↦ hvc (Set.mem_univ _)`. Establish `h0` using `hφ c₀ c₀ c₀ (tanPt P v) hv' hv' hv'`. Establish `h0' : valR (spMap (dualMap (algebraMap K P.B)) ≫ v.left) (V c₀ ⊓ V c₀) (φ c₀ c₀) = 0`.
+
+Establish `: ∀ x : DualNumber P.B, x + x = x → x = 0` using `fun x hx ↦ by linear_combination hx`. Conclude with `this _ h0`. Rewrite `e` using `[h0']`. Use `congrArg TrivSqZeroExt.snd e` as an intermediate fact. Simplify `this` using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem deriv_cocycle_isCoboundary : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (J : Type) (V : J → A.left.Opens), ⨆ a, V a = ⊤ → ∀ φ : ∀ a b, Γ(A.left, V a ⊓ V b), (∀ (a b c : J) (P : GPt A), P.In (V a) → P.In (V b) → P.In (V c) → valR P.x _ (φ a b) + valR P.x _ (φ b c) = valR P.x _ (φ a c)) → ∀ v : epsR K ⟶ A, IsTangent v → ∃ ψ : J → PtFn (A.hom ≫ 𝟙 (Sp K)), (∀ a, IsNat (V a) (ψ a)) ∧ ∀ (a b : J) (P : GPt A), P.In (V a) → P.In (V b) → (valR (P.trx v) _ (φ a b)).snd = ψ a P - ψ b P := by
   intro K _ A _ hA J V hV φ hφ v hv
   obtain ⟨c₀, hc₀⟩ : ∃ c, ⊤ ≤ η[A].left ⁻¹ᵁ V c := by

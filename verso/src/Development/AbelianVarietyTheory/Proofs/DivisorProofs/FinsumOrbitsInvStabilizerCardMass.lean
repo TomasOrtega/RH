@@ -5,6 +5,25 @@ namespace GlobalTheory
 
 open MulAction Function
 
+/- English proof (translation)
+Set `ρ : Z → orbitRel.Quotient K Z` to `fun z => Quotient.mk'' z`. Establish `hmem : ∀ (o : orbitRel.Quotient K Z) (a : Z), ρ a = o ↔ a ∈ orbit K (Quotient.out o)`. Introduce `o a`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `: ρ a = ρ (Quotient.out o)` using `by rw [h]; exact (Quotient.out_eq' o).symm`. Conclude with `Quotient.exact this`. Introduce `h`. Establish `: ρ a = ρ (Quotient.out o)` using `Quotient.sound h`. Rewrite using `[this]`.
+
+Conclude with `Quotient.out_eq' o`. Establish `hfib : ∀ o : orbitRel.Quotient K Z, (∑ᶠ a : {a // ρ a = o}, f a.1) = (Nat.card (orbit K (Quotient.out o)) : ℂ) * f (Quotient.out o)`. Introduce `o`. Set `e : {a // ρ a = o} ≃ orbit K (Quotient.out o)` to `Equiv.subtypeEquivRight (hmem o)`. Use `haveI : Finite (orbit K (Quotient.out o)) := (Set.finite_range fun k : K => k • Quotient.out o).to_subtype`.
+
+Use `haveI : Finite {a // ρ a = o} := Finite.of_equiv _ e.symm`. Use `letI : Fintype {a // ρ a = o} := Fintype.ofFinite _`. Establish `hc : ∀ a : {a // ρ a = o}, f a.1 = f (Quotient.out o)`. Introduce `a`. Take `⟨k, hk⟩` from `(hmem o a.1).1 a.2`.
+
+Rewrite using `[← hk]`. Conclude with `hf _ _`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_congr rfl (fun a _ => hc a), Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card, Nat.card_congr e]`. Establish `hcard : ∀ z : Z, Nat.card (orbit K z) * Nat.card (stabilizer K z) = Nat.card K`. Introduce `z`.
+
+Use `letI : Fintype K := Fintype.ofFinite K`. Rewrite using `[← (stabilizer K z).index_mul_card, MulAction.index_stabilizer, Nat.card_coe_set_eq]`. Rewrite using `[finsum_fiberwise_of_finite_support ρ f hs]`. Repeatedly rewrite using `[hfib]`. Rewrite using `[mul_finsum]`.
+
+Apply `finsum_congr` to reduce the goal to its premises. Introduce `o`. Establish `h` using `hcard (Quotient.out o)`. Use `haveI : Finite (orbit K (Quotient.out o)) := (Set.finite_range fun k : K => k • Quotient.out o).to_subtype`. Use `haveI : Nonempty (orbit K (Quotient.out o)) := ⟨⟨_, mem_orbit_self _⟩⟩`.
+
+Establish `h1 : (Nat.card (orbit K (Quotient.out o)) : ℂ) ≠ 0`. Conclude with `(Nat.card_pos (α := orbit K (Quotient.out o))).ne'` after adjusting the coercions. Establish `h2 : (Nat.card (stabilizer K (Quotient.out o)) : ℂ) ≠ 0`. Conclude with `(Nat.card_pos (α := stabilizer K (Quotient.out o))).ne'` after adjusting the coercions. Rewrite using `[← h]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem finsum_orbits_stabilizer_mass {K Z : Type} [Group K] [Finite K] [MulAction K Z]
     (f : Z → ℂ) (hf : ∀ (k : K) (z : Z), f (k • z) = f z) (hs : (Function.support f).Finite) :
     ∑ᶠ o : MulAction.orbitRel.Quotient K Z,

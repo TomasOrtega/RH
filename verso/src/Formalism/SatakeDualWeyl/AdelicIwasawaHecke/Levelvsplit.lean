@@ -11,10 +11,24 @@ section Gen
 
 variable {A R : Type} [CommRing A] [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levelvsplit_coe_bc (f : R →+* A) (u : GL n R) :
     ((bc (n := n) f u : GL n A) : Matrix n n A) = (u : Matrix n n R).map f := by
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨u, rfl⟩` from `MonoidHom.mem_range.mp hg`. Use `⟨fun i j => ⟨(u : Matrix n n R) i j, rfl⟩, fun i j => ⟨((u⁻¹ : GL n R) : Matrix n n R) i j, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← map_inv (bc (n := n) f) u]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨h1, h2⟩ choose M hM using h1 choose N hN using h2`. Establish `hinj : Function.Injective (f.mapMatrix : Matrix n n R →+* Matrix n n A)`. Introduce `X Y h`. Use extensionality with `i j`.
+
+Establish `h'` using `congrArg (fun Z : Matrix n n A => Z i j) h`. Conclude with `hf h'`. Establish `hMg : f.mapMatrix (Matrix.of M) = (g : Matrix n n A)`. Use extensionality with `i j`. Conclude with `hM i j`.
+
+Establish `hNg : f.mapMatrix (Matrix.of N) = ((g⁻¹ : GL n A) : Matrix n n A)`. Use extensionality with `i j`. Conclude with `hN i j`. Establish `e1 : Matrix.of M * Matrix.of N = 1` using `hinj (by rw [map_mul, map_one, hMg, hNg, Units.mul_inv])`. Establish `e2 : Matrix.of N * Matrix.of M = 1` using `hinj (by rw [map_mul, map_one, hMg, hNg, Units.inv_mul])`.
+
+Conclude with `MonoidHom.mem_range.mpr ⟨⟨Matrix.of M, Matrix.of N, e1, e2⟩, Units.ext hMg⟩`.
+-/
 theorem levelvsplit_mem_range_iff (f : R →+* A) (hf : Function.Injective f) (g : GL n A) :
     g ∈ (bc (n := n) f).range ↔
       (∀ i j, (g : Matrix n n A) i j ∈ Set.range f) ∧
@@ -49,6 +63,11 @@ section Split
 
 variable {B K : Type} [CommRing B] [CommRing K] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Establish `hh' : Formalism.UG.cT τ (h : Matrix n n B) * J' * (h : Matrix n n B) = J'` using `hh`. Establish `key : (Formalism.UG.cT τ (h : Matrix n n B)).map ((RingHom.fst K K).comp φ.toRingHom) = ((h : Matrix n n B).map ((RingHom.snd K K).comp φ.toRingHom))ᵀ`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hτ, Formalism.UG.swapR]`. Establish `h2` using `congrArg (fun M : Matrix n n B => M.map ((RingHom.fst K K).comp φ.toRingHom)) hh'`.
+
+Simplify using `only [Matrix.map_mul] at h2`. Rewrite `h2` using `[key]`. Conclude with `h2`.
+-/
 theorem levelvsplit_unitary (τ : B →+* B) (φ : B ≃+* K × K)
     (hτ : ∀ x, φ (τ x) = swapR K (φ x)) (J' : Matrix n n B) (h : GL n B) (hh : h ∈ UJ τ J') :
     ((h : Matrix n n B).map ((RingHom.snd K K).comp φ.toRingHom))ᵀ *
@@ -65,6 +84,9 @@ theorem levelvsplit_unitary (τ : B →+* B) (φ : B ≃+* K × K)
   rw [key] at h2
   exact h2
 
+/- English proof (translation)
+Establish `h1 : P2ᵀ * A = A * P1i`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : P2ᵀ = A * P1i * Ainv`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h2, Matrix.transpose_transpose]`.
+-/
 theorem levelvsplit_solve (A Ainv P1 P1i P2 : Matrix n n K) (hA : A * Ainv = 1)
     (hP : P1 * P1i = 1) (hrel : P2ᵀ * A * P1 = A) : P2 = (A * P1i * Ainv)ᵀ := by
   have h1 : P2ᵀ * A = A * P1i := by
@@ -77,6 +99,9 @@ theorem levelvsplit_solve (A Ainv P1 P1i P2 : Matrix n n K) (hA : A * Ainv = 1)
       _ = A * P1i * Ainv := by rw [h1]
   rw [← h2, Matrix.transpose_transpose]
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => mul_mem (hM i k) (hN k j)`.
+-/
 theorem levelvsplit_int_mul {S : Type} [SetLike S K] [SubringClass S K] (O : S)
     (M N : Matrix n n K) (hM : ∀ i j, M i j ∈ O) (hN : ∀ i j, N i j ∈ O) :
     ∀ i j, (M * N) i j ∈ O := by
@@ -86,6 +111,25 @@ theorem levelvsplit_int_mul {S : Type} [SetLike S K] [SubringClass S K] (O : S)
 
 end Split
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n _ _ σ J v φ hσ hS hu g hg`. Take `⟨u, huO, huA⟩` from `hu`. Establish `hOr : ∀ x : v.adicCompletion F, x ∈ Set.range (v.adicCompletionIntegers F).toSubring.subtype ↔ x ∈ v.adicCompletionIntegers F` using `fun x => ⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`. Establish `hSr : ∀ x, x ∈ Set.range (algebraMap ↥(tensInt (F` using `F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring) (E ⊗[F] v.adicCompletion F)) ↔ x ∈ tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring := fun x => ⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`. Establish `hinjS : Function.Injective (algebraMap ↥(tensInt (F` using `F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring) (E ⊗[F] v.adicCompletion F)) := Subtype.val_injective`.
+
+Establish `hinjO : Function.Injective (v.adicCompletionIntegers F).toSubring.subtype` using `Subtype.val_injective`. Rewrite `huO`, the goal using `[GLint, levelvsplit_mem_range_iff _ hinjO]`. Simplify using `only [hOr] at huO ⊢`. Take `⟨huO1, huO2⟩` from `huO`. Establish `hstab : g ∈ levelV σ J v ↔ g ∈ stabGL (stdLat (n` using `n) ↥(tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring)) := ⟨fun h => h.2, fun h => ⟨hg, h⟩⟩`.
+
+Rewrite using `[hstab, stabilizer_standard_lattice _ _ _ hinjS, levelvsplit_mem_range_iff _ hinjS]`. Simplify using `only [hSr, hS]`. Rewrite using `[← map_inv, levelvsplit_coe_bc, levelvsplit_coe_bc]`. Establish `hJu : (J.map (inclE (F` using `F) (v.adicCompletion F))).map ((RingHom.fst _ _).comp φ.toRingHom) = (u : Matrix n n (v.adicCompletion F)) := by`. Rewrite using `[huA]`.
+
+Use extensionality with `i j`. Both sides reduce to the same expression. Establish `rel1` using `levelvsplit_unitary _ φ hσ _ g hg`. Establish `rel2` using `levelvsplit_unitary _ φ hσ _ g⁻¹ (inv_mem hg)`. Rewrite `rel1`, `rel2` using `[hJu]`.
+
+Establish `hg1 : (g : Matrix n n _).map ((RingHom.fst _ _).comp φ.toRingHom) * ((g⁻¹ : GL n _) : Matrix n n _).map ((RingHom.fst _ _).comp φ.toRingHom) = 1`. Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hg2 : ((g⁻¹ : GL n _) : Matrix n n _).map ((RingHom.fst _ _).comp φ.toRingHom) * (g : Matrix n n _).map ((RingHom.fst _ _).comp φ.toRingHom) = 1`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hA : (u : Matrix n n (v.adicCompletion F)) * ((u⁻¹ : GL n _) : Matrix n n _) = 1` using `u.mul_inv`.
+
+Establish `s1` using `levelvsplit_solve _ _ _ _ _ hA hg1 rel1`. Establish `s2` using `levelvsplit_solve _ _ _ _ _ hA hg2 rel2`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun i j => (h1 i j).1, fun i j => (h2 i j).1⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i j => ⟨h1 i j, ?_⟩, fun i j => ⟨h2 i j, ?_⟩⟩` and prove the remaining obligations. Establish `e` using `congrFun (congrFun s1 i) j`. Establish `hint` using `levelvsplit_int_mul _ _ _ (levelvsplit_int_mul _ _ _ huO1 (fun a b => h2 a b)) huO2 j i`. Establish `: ((g : Matrix n n _).map ((RingHom.snd _ _).comp φ.toRingHom)) i j ∈ v.adicCompletionIntegers F`.
+
+Rewrite using `[e]`. Conclude with `hint`. Conclude with `this`. Establish `e` using `congrFun (congrFun s2 i) j`. Establish `hint` using `levelvsplit_int_mul _ _ _ (levelvsplit_int_mul _ _ _ huO1 (fun a b => h1 a b)) huO2 j i`.
+
+Establish `: (((g⁻¹ : GL n _) : Matrix n n _).map ((RingHom.snd _ _).comp φ.toRingHom)) i j ∈ v.adicCompletionIntegers F`. Rewrite using `[e]`. Conclude with `hint`. Conclude with `this`.
+-/
 theorem level_subgroup_split : Formalism.UG.LevelVSplit := by
   intro F E _ _ _ _ _ n _ _ σ J v φ hσ hS hu g hg
   obtain ⟨u, huO, huA⟩ := hu

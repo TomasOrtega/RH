@@ -15,6 +15,11 @@ section Valued
 
 variable {F : Type*} [Field F] {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] {N : Type*} [NormedField N]
 
+/- English proof (translation)
+Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Establish `hv : 0 < v a` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff v).mpr ha)`. Establish `hn : 0 < ‖κ a‖` using `norm_pos_iff.mpr ((map_ne_zero κ).mpr ha)`. Establish `e` using `h a⁻¹`.
+
+Rewrite `e` using `[map_inv₀, map_inv₀, norm_inv, inv_le_one₀ hv, inv_le_one₀ hn]`. Rewrite using `[← not_le, ← not_le, e]`.
+-/
 theorem val_lt_one_iff (v : Valuation F Γ) (κ : F →+* N) (h : ∀ a, v a ≤ 1 ↔ ‖κ a‖ ≤ 1) (a : F) :
     v a < 1 ↔ ‖κ a‖ < 1 := by
   by_cases ha : a = 0
@@ -25,6 +30,9 @@ theorem val_lt_one_iff (v : Valuation F Γ) (κ : F →+* N) (h : ∀ a, v a ≤
   rw [map_inv₀, map_inv₀, norm_inv, inv_le_one₀ hv, inv_le_one₀ hn] at e
   rw [← not_le, ← not_le, e]
 
+/- English proof (translation)
+Establish `hv : 0 < v b` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff v).mpr hb)`. Establish `hn : 0 < ‖κ b‖` using `norm_pos_iff.mpr ((map_ne_zero κ).mpr hb)`. Establish `e` using `(h (a / b)).mp (by rw [map_div₀]; exact div_le_one_of_le₀ hab zero_le)`. Rewrite `e` using `[map_div₀, norm_div]`. Conclude with `(div_le_one hn).mp e`.
+-/
 theorem norm_le_of_val_le (v : Valuation F Γ) (κ : F →+* N) (h : ∀ a, v a ≤ 1 ↔ ‖κ a‖ ≤ 1) {a b : F} (hb : b ≠ 0)
     (hab : v a ≤ v b) : ‖κ a‖ ≤ ‖κ b‖ := by
   have hv : 0 < v b := zero_lt_iff.mpr ((Valuation.ne_zero_iff v).mpr hb)
@@ -33,6 +41,9 @@ theorem norm_le_of_val_le (v : Valuation F Γ) (κ : F →+* N) (h : ∀ a, v a 
   rw [map_div₀, norm_div] at e
   exact (div_le_one hn).mp e
 
+/- English proof (translation)
+Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hab` using `[map_zero]`. Conclude with `(Valuation.ne_zero_iff v).mpr hb hab.symm`. Conclude with `le_antisymm (norm_le_of_val_le v κ h hb hab.le) (norm_le_of_val_le v κ h ha hab.ge)`.
+-/
 theorem norm_eq_of_val_eq (v : Valuation F Γ) (κ : F →+* N) (h : ∀ a, v a ≤ 1 ↔ ‖κ a‖ ≤ 1) {a b : F} (hb : b ≠ 0)
     (hab : v a = v b) : ‖κ a‖ = ‖κ b‖ := by
   have ha : a ≠ 0 := by
@@ -43,6 +54,11 @@ theorem norm_eq_of_val_eq (v : Valuation F Γ) (κ : F →+* N) (h : ∀ a, v a 
 
 end Valued
 
+/- English proof (translation)
+Establish `e : ‖(n : ℂ_[q])‖ = ‖(n : ℚ_[q])‖`. Establish `h1` using `PadicComplex.norm_extends (q : ℕ) ((n : ℚ_[q]) : PadicAlgCl q)`. Establish `h2` using `PadicAlgCl.norm_extends (q : ℕ) (n : ℚ_[q])`. Simplify using `using h1.trans h2`. Rewrite using `[e]`.
+
+Conclude with `Padic.norm_natCast_lt_one_iff`.
+-/
 theorem norm_natCast_lt_one_iff (q : Nat.Primes) (n : ℕ) : ‖(n : ℂ_[q])‖ < 1 ↔ (q : ℕ) ∣ n := by
   have e : ‖(n : ℂ_[q])‖ = ‖(n : ℚ_[q])‖ := by
     have h1 := PadicComplex.norm_extends (q : ℕ) ((n : ℚ_[q]) : PadicAlgCl q)
@@ -51,6 +67,9 @@ theorem norm_natCast_lt_one_iff (q : Nat.Primes) (n : ℕ) : ‖(n : ℂ_[q])‖
   rw [e]
   exact Padic.norm_natCast_lt_one_iff
 
+/- English proof (translation)
+Establish `h1 : ‖κ ((p : ℕ) : F)‖ < 1`. Rewrite using `[map_natCast, norm_natCast_lt_one_iff]`. Establish `h2 : ‖κ₀ ((p : ℕ) : F)‖ < 1` using `(val_lt_one_iff v κ₀ h₀ _).mp ((val_lt_one_iff v κ h _).mpr h1)`. Rewrite `h2` using `[map_natCast, norm_natCast_lt_one_iff]`. Conclude with `Subtype.ext (((Nat.prime_dvd_prime_iff_eq q.2 p.2).mp h2).symm)`.
+-/
 theorem prime_eq {F : Type*} [Field F] {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] (v : Valuation F Γ)
     {p q : Nat.Primes} (κ : F →+* ℂ_[p]) (κ₀ : F →+* ℂ_[q]) (h : ∀ a, v a ≤ 1 ↔ ‖κ a‖ ≤ 1)
     (h₀ : ∀ a, v a ≤ 1 ↔ ‖κ₀ a‖ ≤ 1) : p = q := by
@@ -63,6 +82,13 @@ theorem prime_eq {F : Type*} [Field F] {Γ : Type*} [LinearOrderedCommGroupWithZ
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `hs : ∀ z, ‖g.symm z‖ = ‖z‖` using `fun z => by`. Rewrite using `[← hg (g.symm z), RingEquiv.apply_symm_apply]`. Introduce `V K _ _ _ _ _ _ j β y v w T tK m m' hj hjβ hF hv hw`. Establish `e` using `h V K ((g.symm : ℂ_[p] →+* ℂ_[p]).comp j) β y v w T tK m m' (fun a => by`. Rewrite using `[← hj a]`.
+
+Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, hs])`. Use the proof step `(by`. Use extensionality with `a`. Establish `h1 : j (β a) = κ' a` using `by rw [← hjβ]; rfl`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, h1, ← hκ, RingEquiv.symm_apply_apply]) hF hv hw`.
+
+Simplify `e` using `only [RingHom.comp_apply, RingHom.coe_coe, hs]`.
+-/
 theorem hasFinNorm_of_isometry {U : Set (Xo.XF c)} {τ : E →+* ℂ} {φ : FrameFn Xo c} {p : Nat.Primes}
     {κ κ' : c.F →+* ℂ_[p]} {t : ℝ} (g : ℂ_[p] ≃+* ℂ_[p]) (hg : ∀ z, ‖g z‖ = ‖z‖) (hκ : ∀ a, g (κ a) = κ' a)
     (h : HasFinNorm U τ φ p κ t) : HasFinNorm U τ φ p κ' t := by
@@ -79,6 +105,17 @@ theorem hasFinNorm_of_isometry {U : Set (Xo.XF c)} {τ : E →+* ℂ} {φ : Fram
       simp only [RingHom.comp_apply, RingHom.coe_coe, h1, ← hκ, RingEquiv.symm_apply_apply]) hF hv hw
   simpa only [RingHom.comp_apply, RingHom.coe_coe, hs] using e
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ (p₀ : Nat.Primes) (κ₀ : c.F →+* ℂ_[p₀]) (π₀ : c.F), (∀ a : c.F, la.valuation c.F a ≤ 1 ↔ ‖κ₀ a‖ ≤ 1) ∧ la.valuation c.F π₀ = WithZero.exp (-1 : ℤ)`. Take `⟨p₀, κ₀, π₀, hκ₀, hπ₀⟩` from `hex`. Take `⟨t₀, ht₀⟩` from `hfin p₀ κ₀`. Establish `hne : π₀ ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hπ₀` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hπ₀.symm`. Establish `hlt : ‖κ₀ π₀‖ < 1` using `(val_lt_one_iff _ κ₀ hκ₀ π₀).mp (by`. Rewrite using `[hπ₀, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use the proof step `norm_num)`.
+
+Establish `hpos : 0 < ‖κ₀ π₀‖` using `norm_pos_iff.mpr ((map_ne_zero κ₀).mpr hne)`. Establish `hlog : Real.log ‖κ₀ π₀‖ ≠ 0` using `Real.log_ne_zero_of_pos_of_ne_one hpos hlt.ne`. Use `⟨t₀ / Real.log ‖κ₀ π₀‖, fun p κ π hκ hπ => ?_⟩` and prove the remaining obligations. Establish `hp : p = p₀` using `prime_eq (la.valuation c.F) κ κ₀ hκ hκ₀`. Substitute `hp` using the available equality.
+
+Take `⟨g, hg, hgκ⟩` from `GlobalTheory.T.padic_embeddings_conjugate_of_units c.F p κ₀ κ (fun a => (hκ₀ a).symm.trans (hκ a))`. Establish `e : ‖κ π‖ = ‖κ₀ π₀‖`. Rewrite using `[norm_eq_of_val_eq _ κ hκ hne (hπ.trans hπ₀.symm), ← hgκ, hg]`. Rewrite using `[e, div_mul_cancel₀ _ hlog]`. Apply the tactic sequence `exact hasFinNorm_of_isometry g hg hgκ ht₀`.
+
+Conclude with `⟨0, fun p κ π h1 h2 => (hex ⟨p, κ, π, h1, h2⟩).elim⟩`.
+-/
 theorem exists_rho_at (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ : FrameFn Xo c) [NumberField c.F]
     (hfin : ∀ (p : Nat.Primes) (κ : c.F →+* ℂ_[p]), ∃ t, HasFinNorm U τ φ p κ t)
     (la : HeightOneSpectrum (𝓞 c.F)) :
@@ -107,6 +144,9 @@ theorem exists_rho_at (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ : FrameFn Xo c)
     exact hasFinNorm_of_isometry g hg hgκ ht₀
   · exact ⟨0, fun p κ π h1 h2 => (hex ⟨p, κ, π, h1, h2⟩).elim⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c _ U τ φ hfin`. Use `choose ρ hρ using exists_rho_at U τ φ hfin`. Conclude with `⟨ρ, fun p κ la π h1 h2 => hρ la p κ π h1 h2⟩`.
+-/
 theorem exists_rho : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) [NumberField c.F] (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ : FrameFn Xo c), (∀ (p : Nat.Primes) (κ : c.F →+* ℂ_[p]), ∃ t, HasFinNorm U τ φ p κ t) → ∃ ρ : HeightOneSpectrum (𝓞 c.F) → ℝ, ∀ (p : Nat.Primes) (κ : c.F →+* ℂ_[p]) (la : HeightOneSpectrum (𝓞 c.F)) (π : c.F), (∀ a : c.F, la.valuation c.F a ≤ 1 ↔ ‖κ a‖ ≤ 1) → la.valuation c.F π = WithZero.exp (-1 : ℤ) → HasFinNorm U τ φ p κ (ρ la * Real.log ‖κ π‖) := by
   intro E _ _ _ H D l Xo c _ U τ φ hfin
   choose ρ hρ using exists_rho_at U τ φ hfin

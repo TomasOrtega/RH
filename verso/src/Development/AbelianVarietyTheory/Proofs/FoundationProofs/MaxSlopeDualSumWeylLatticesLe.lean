@@ -21,6 +21,25 @@ open scoped Matrix ComplexOrder
 
 namespace GlobalTheory.TestLat
 
+/- English proof (translation)
+Introduce `K _ _ _ _ v₀ hv ι _ n lam R hR hsp G hG C _ M hM N e X hX`. Establish `hGh : ∀ τ, (G τ)ᴴ = G τ` using `fun τ => (hG τ).1`. Establish `hdel : ∀ c, Submodule.IsLattice K (delK lam (M c))` using `fun c => (GlobalTheory.T.nablaDeltaOperator_lattice_preserved K ι n lam (M c) fun τ => (hM c τ).1).2`. Take `⟨hlat, hN, hdual⟩` from `GlobalTheory.T.orthogonalSumCoefficientLattice_isLattice_and_dual K ι n lam C N e (fun c => delK lam (M c)) hdel`. Use `haveI : Finite C := by`.
+
+Set `i₀ : VVIdx lam` to `(e ⟨0, hN⟩).2`. Use `Finite.of_injective (fun c : C => e.symm (c, i₀)) ?_` and prove the remaining obligations. Introduce `a b hab`. Conclude with `(Prod.ext_iff.1 (e.symm.injective hab)).1`. Use `letI : Fintype C := Fintype.ofFinite C`.
+
+Take `⟨hval, hH, hHi, hGu⟩` from `GlobalTheory.T.sumPairingGramMatrix_values_and_definite K ι n lam G hG C N e`. Establish `hHu : IsUnit (sumGram lam e G).det`. Establish `h1` using `(hH.2.2 v₀.embedding).isUnit`. Rewrite `h1` using `[Matrix.isUnit_iff_isUnit_det]`. Establish `h2 : ((sumGram lam e G).map v₀.embedding).det = v₀.embedding (sumGram lam e G).det` using `(RingHom.map_det v₀.embedding (sumGram lam e G)).symm`.
+
+Rewrite `h1` using `[h2]`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `h1` using `[h0, map_zero]`. Conclude with `not_isUnit_zero h1`. Establish `hnab : hdualFr (sumGram lam e G) (sumLat lam e fun c => delK lam (M c)) = sumLat lam e fun c => nabK lam (M c)`.
+
+Rewrite using `[hdual G hGh]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Rewrite using `[(GlobalTheory.T.transported_weylLattice_hermitianDuality K ι n lam G (M c) hGh hGu fun τ => (hM c τ).1).2]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `τ`. Conclude with `(hM c τ).2`. Take `⟨s, hs, hse, hsb⟩` from `GlobalTheory.T.pairing_normalising_constant_log_le_bound K ι n lam R hR hsp`. Establish `hint : ∀ x ∈ hdualFr (sumGram lam e G) (sumLat lam e fun c => delK lam (M c)), ∀ y ∈ hdualFr (sumGram lam e G) (sumLat lam e fun c => delK lam (M c)), (s : K) * (star x ⬝ᵥ sumGram lam e G *ᵥ y) ∈ (algebraMap (𝓞 K) K).range`. Introduce `x hx y hy`.
+
+Rewrite `hx`, `hy` using `[hnab]`. Rewrite using `[hval, Finset.mul_sum]`. Use `Subring.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← hse]`. Conclude with `GlobalTheory.T.extNorm_mul_weylPairing_integral_selfDual K ι n lam G (M c) hGh hGu (hM c) _ ((Submodule.mem_iInf _).1 hx c) _ ((Submodule.mem_iInf _).1 hy c)`.
+
+Establish `hint'` using `dualForm_integral_on_dualFr K N (sumGram lam e G) hH.1 hHu _ s hint`. Establish `hD` using `(GlobalTheory.T.dualLattice_isLattice_and_hermitianDual.1 K N (sumGram lam e G) _ hHu hlat).1`. Establish `hne : dualFr (sumLat lam e fun c => delK lam (M c)) ≠ ⊥`. Introduce `h0`. Establish `htop` using `hD.span_eq_top`.
+
+Rewrite `htop` using `[h0]`. Use `haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩`. Simplify using `at htop`. Use `⟨hD.fg, hne, fun v => (hX v).1, le_trans ?_ hsb⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.maxSlope_le_log_of_integral_hermitian_form K v₀ hv N _ X ⟨hHi.2.1, hX⟩ s hs _ hD.fg hne hint'`.
+-/
 theorem testLatticeCondition_dualFr_sumLat_delK : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (v₀ : InfinitePlace K), IsConjAt v₀ → ∀ (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (R : ℝ), 1 ≤ R → SpreadLe lam R → ∀ (G : ι → Matrix (Fin n) (Fin n) K), (∀ τ, IsDefGram (G τ)) → ∀ (C : Type) [Nonempty C] (M : C → ι → Submodule (𝓞 K) (Fin n → K)), (∀ c τ, IsSelfDualK (G τ) (M c τ)) → ∀ (N : ℕ) (e : Fin N ≃ C × VVIdx lam) (X : InfinitePlace K → Matrix (Fin N) (Fin N) ℂ), IsMetric ((sumGram lam e G)⁻¹)ᵀ X → TestLatticeCondition N X (dualFr (sumLat lam e fun c => delK lam (M c))) (bound (Fintype.card ι) n R) := by
   intro K _ _ _ _ v₀ hv ι _ n lam R hR hsp G hG C _ M hM N e X hX
   have hGh : ∀ τ, (G τ)ᴴ = G τ := fun τ => (hG τ).1

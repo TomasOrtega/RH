@@ -8,6 +8,13 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n hn V c r ι lam T _ _ D ψ Gd hsep hex`. Use `choose ρ hPU hD hfl using hex`. Take `⟨hP, hO, hI⟩` from `JEx.rels V.frame c.O T D ψ (X := {x // Gd x}) (Qbar l) (fun x => x.1) (fun x => ρ x.1 x.2) (fun a ha => hsep a fun x hx => ha ⟨x, hx⟩) (fun x => hD x.1 x.2) (fun x => (hPU x.1 x.2).form) (fun x => hfl x.1 x.2)`. Use `⟨(AlgebraTools.Det.polarIffLam _ _ _ _ D).1 hP, fun v g h => AlgebraTools.Det.killsLam D _ (hO v g) _ 1 le_rfl hn, fun u g hg h => AlgebraTools.Det.killsLam D _ (hI g fun x => ?_) _ 1 le_rfl hn⟩` and prove the remaining obligations. Take `⟨t, ht, ht1⟩` from `JEx.teich c r`.
+
+Take `⟨a, ha⟩` from `(hPU x.1 x.2).type t ht u`. Take `⟨hg1, hg2⟩` from `Subgroup.mem_inf.1 hg`. Establish `h1 : a * ρ x.1 x.2 g * a⁻¹ = 1`. Use `Units.ext ((ha g hg1).trans ?_)` and prove the remaining obligations. Establish `e : ∀ i, t i g = 1` using `fun i => ht1 i g (Subgroup.mem_iInf.1 hg2 i)`.
+
+Simplify using `only [e, Units.val_one, map_one, Matrix.diagonal_one]`. Conclude with `conj_eq_one_iff.1 h1`.
+-/
 theorem UpperTheory.V.Hi.heckeDeterminant_satisfies_deformation_relations :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n → ∀ (V : s.Lev) (c : Coef l) (r : Resid V.frame c.O n) (ι : Qbar l ≃+* ℂ) (lam : Wt L l n) (T : Type) [CommRing T] [Algebra c.O T] (D : W.GDet n T V.frame.G₀) (ψ : ∀ v : V.frame.Vl, Fin n → V.frame.Gv v →* Tˣ) (Gd : (T →ₐ[c.O] Qbar l) → Prop),
     (∀ t : T, (∀ x, Gd x → x t = 0) → t = 0) →

@@ -6,6 +6,25 @@ open scoped ENNReal NNReal
 
 namespace GlobalTheory.CompanionTheory.SW.FibreUniq
 
+/- English proof (translation)
+Establish `hO : IsOpen (g ⁻¹' B' ∩ W)` using `(hB'.preimage hg).inter hW`. Establish `hOU : g ⁻¹' B' ∩ W ⊆ g ⁻¹' B ∩ W` using `Set.inter_subset_inter_left _ (Set.preimage_mono hBB)`. Establish `hbB : b ∈ B` using `hBB hb`. Use `measure_eq_of_lintegral_eq (fib' b) (fib b) (g ⁻¹' B' ∩ W) hO ?_ ?_ ?_` and prove the remaining obligations. Use `measure_mono_null ?_ (h'.1 b)` and prove the remaining obligations.
+
+Introduce `v hv hv'`. Conclude with `hv hv'.2`. Use `measure_mono_null ?_ (h.1 b)` and prove the remaining obligations. Introduce `v hv hv'`. Establish `hgv : g v = b` using `hι (by rw [← hf v]; exact hv'.1)`.
+
+Conclude with `hv ⟨show g v ∈ B' from hgv ▸ hb, hv'.2.2⟩`. Introduce `φ hφc hφs hφO hφnn`. Establish `hφU : tsupport φ ⊆ g ⁻¹' B ∩ W` using `hφO.trans hOU`. Take `⟨hint', hcont'⟩` from `h'.2.2 φ hφc hφs hφO`. Take `⟨hint, hcont⟩` from `h.2.2 φ hφc hφs hφU`.
+
+Use `⟨hint' b hb, ?_⟩` and prove the remaining obligations. Establish `hψm : Measurable (fun v => ENNReal.ofReal (φ v))` using `hφc.measurable.ennreal_ofReal`. Establish `hψ0 : ∀ v, v ∉ g ⁻¹' B' ∩ W → ENNReal.ofReal (φ v) = 0`. Introduce `v hv`. Establish `hz : φ v = 0`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hv (hφO (subset_tsupport φ (Function.mem_support.mpr hne)))`. Simplify using `[hz]`. Establish `hF : ∀ c ∈ B, ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib c) = ENNReal.ofReal (∫ v, φ v ∂(fib c))` using `fun c hc => (ofReal_integral_eq_lintegral_ofReal (hint c hc) (ae_of_all _ hφnn)).symm`. Establish `hF' : ∀ c ∈ B', ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib' c) = ENNReal.ofReal (∫ v, φ v ∂(fib' c))` using `fun c hc => (ofReal_integral_eq_lintegral_ofReal (hint' c hc) (ae_of_all _ hφnn)).symm`.
+
+Establish `hset : ∀ S, MeasurableSet S → ∫⁻ c in S ∩ B', ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib c) ∂ν = ∫⁻ c in S ∩ B', ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib' c) ∂ν`. Introduce `S hS`. Establish `hS' : MeasurableSet (S ∩ B')` using `hS.inter hB'.measurableSet`. Establish `e1` using `lintegral_preimage hι hg hf hO hOU h (fun v => ENNReal.ofReal (φ v)) hψm hψ0 _ hS'`. Establish `e2` using `lintegral_preimage hι hg hf hO Set.Subset.rfl h' (fun v => ENNReal.ofReal (φ v)) hψm hψ0 _ hS'`.
+
+Conclude with `e1.symm.trans e2`. Establish `key : ∀ (k k' : X → ℝ≥0∞) (T : Set X), MeasurableSet T → (∀ c ∈ T, k c = k' c) → ∫⁻ c in T, k c ∂ν = ∫⁻ c in T, k' c ∂ν` using `fun k k' T hT hkk => lintegral_congr_ae ((ae_restrict_iff' hT).2 (Filter.Eventually.of_forall hkk))`. Establish `hae : (fun c => ENNReal.ofReal (∫ v, φ v ∂(fib c))) =ᵐ[ν.restrict B'] (fun c => ENNReal.ofReal (∫ v, φ v ∂(fib' c)))`. Use `ae_eq_of_forall_setLIntegral_eq_of_sigmaFinite₀ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `((hcont.mono hBB).aemeasurable hB'.measurableSet).ennreal_ofReal`.
+
+Conclude with `(hcont'.aemeasurable hB'.measurableSet).ennreal_ofReal`. Introduce `S hS _`. Rewrite using `[Measure.restrict_restrict hS]`. Establish `hT : MeasurableSet (S ∩ B')` using `hS.inter hB'.measurableSet`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `heq` using `Measure.eqOn_open_of_ae_eq hae hB' (ENNReal.continuous_ofReal.comp_continuousOn (hcont.mono hBB)) (ENNReal.continuous_ofReal.comp_continuousOn hcont') hb`. Rewrite using `[hF' b hb, hF b hbB]`. Conclude with `heq.symm`.
+-/
 theorem fibreFamily_eq_inter (V X Y : Type) [TopologicalSpace V] [LocallyCompactSpace V]
     [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V]
     [TopologicalSpace X] [LocallyCompactSpace X] [SecondCountableTopology X] [T2Space X]

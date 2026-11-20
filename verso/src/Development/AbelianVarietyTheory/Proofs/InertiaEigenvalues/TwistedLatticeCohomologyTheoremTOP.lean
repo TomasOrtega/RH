@@ -28,6 +28,11 @@ open scoped LaurentSeries PowerSeries
 
 namespace GlobalTheory.TopBridge
 
+/- English proof (translation)
+Introduce `heul l _ P S hV`. Take `⟨hs, ht, -, -, -⟩` from `S.hyp`. Take `⟨hDVR, -, -, hA, hF, hFr⟩` from `GlobalTheory.CoefInt.integers_laws l S.LL`. Use `haveI := hDVR`. Use `haveI := hFr`.
+
+Conclude with `GlobalTheory.FreeCoh.free_and_tensIso_gal S.Γ hs.2.2.2.2.2 hA hF (GlobalTheory.LocalIntegers.isOpen_integers l S.LL) (fun U hU => GlobalTheory.FreeCoh.pow_mul_mem_nhds S.LL S.Γ.lam hs.2.2.2.2.2 U hU) ht.2.2.1.1 (GlobalTheory.AdmClasses.not_isUnit_integers l S.LL) hV.1 hV.2 ht.1 h …`.
+-/
 theorem freeH_of_vanish_euler : Formalism.GaloisCohomology.LocalEulerCharK →
     ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P), S.Vanish → S.FreeH := by
   intro heul l _ P S hV
@@ -41,6 +46,13 @@ theorem freeH_of_vanish_euler : Formalism.GaloisCohomology.LocalEulerCharK →
     ht.2.2.1.1 (GlobalTheory.AdmClasses.not_isUnit_integers l S.LL) hV.1 hV.2 ht.1 hs.2.2.1
     (fun M _ _ _ π hlm hlc h0 h2 => GlobalTheory.T.card_H1_local_euler_formula heul l S.K S.O M π hlm hlc h0 h2)
 
+/- English proof (translation)
+Introduce `K LL n r _ emb D Γ hs ht h1 h2 h3`. Set `S : TopSit P` to `⟨K, LL, n, r, emb, D, Γ, ⟨hs, ht, h1, h2, h3⟩⟩`. Establish `hCC : S.CrysCalc` using `GlobalTheory.TopSteps.CrysRules.crysCalc AI htied S`. Establish `hR : S.Real` using `hreal S`. Establish `hV : S.Vanish` using `GlobalTheory.TopVanish.vanish_of_real hdual S hR`.
+
+Establish `hF : S.FreeH` using `freeH_of_vanish_euler heul S hV`. Establish `hCl : S.Closed` using `GlobalTheory.AdmClosure.admissible_closed S`. Establish `hStd : S.StdAdm` using `GlobalTheory.TopSteps.StdAdm.stdAdm S hCC hCl`. Establish `hL0 : S.Lem0 S.Γ.W₀` using `(GlobalTheory.AdmClasses.admissibleLocalSituation_admissible_classes S hCl hStd).1`. Establish `hFS : S.FSummand` using `GlobalTheory.TopSteps.FinSummandJumps.fSummand S (hbk K LL hs.2.1) hCC hV hF`.
+
+Establish `hFA : S.FinAdm` using `GlobalTheory.FiniteAdm.finAdm S hCC (GlobalTheory.FontaineExtensionCriteria.extCrys_of_tied P AI htied) hCl hStd hL0`. Establish `hPsi : GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.LemmaPsi` using `GlobalTheory.PsiShiftProof.lemmaPsi`. Establish `hRB : S.ResBound S.Γ.W₀ S.D.dsum` using `GlobalTheory.ResidueBound.resBound_dsum hPsi S hR hL0`. Use `⟨hV.1, hV.2, hF.1, hFS, fun X _ _ _ => ⟨hF.2 X, ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.AdmFinite.cls_eq_H1fX S hL0 hF hFS hFA hRB X`.
+-/
 theorem stmtAt_of_real (hdual : Formalism.GaloisCohomology.LocalTateDualityK) (heul : Formalism.GaloisCohomology.LocalEulerCharK)
     {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (htied : Nonempty (LocTied l P AI))
     (hreal : ∀ S : TopSit P, S.Real)
@@ -64,6 +76,11 @@ theorem stmtAt_of_real (hdual : Formalism.GaloisCohomology.LocalTateDualityK) (h
   refine ⟨hV.1, hV.2, hF.1, hFS, fun X _ _ _ => ⟨hF.2 X, ?_⟩⟩
   exact GlobalTheory.AdmFinite.cls_eq_H1fX S hL0 hF hFS hFA hRB X
 
+/- English proof (translation)
+Introduce `D HW F Cm hA l _ K LL hK lam hlam`. Establish `htied : Nonempty (LocTied l (D.loc l) (D.locA l))` using `⟨D.locT l⟩`. Establish `h18` using `hA.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `h19` using `hA.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hreal : ∀ S : TopSit (D.loc l), S.Real` using `fun S => GlobalTheory.BasePairs.real_of_presented (D.locA l) (HW l) (F l) S (GlobalTheory.RedFun.realD (D.locA l) (HW l) (F l) S) (GlobalTheory.T.wachLattice_usedProperties_of_admitted D HW F Cm hA l S.K S.LL S.hyp.1.2.1) (GlobalTheory.TopSteps.CrysRules.crysCalc (D.locA l) htied …`.
+
+Conclude with `GlobalTheory.T.exactLocalConditions_topCore (D.loc l) (D.locA l) htied (HW l) (stmtAt_of_real h18.1 h18.2 (D.loc l) (D.locA l) htied hreal (fun K' LL' hc => h19 l K' LL' hc)) (GlobalTheory.TopSteps.CharVanish.stmt_of_real (D.loc l) (D.locA l) htied hreal) (GlobalTheory.TopSteps.a …`.
+-/
 theorem twistedLatticeCohomology_theoremTOP : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F),
     tableLineDegreeTwo.Stmt D HW F Cm := by
   intro D HW F Cm hA l _ K LL hK lam hlam

@@ -25,6 +25,19 @@ def quotProj {W : Type} [AddCommGroup W] [Module ℂ W] (π : Representation ℂ
   toLinearMap := (LinearMap.range f.toLinearMap).mkQ
   isIntertwining' := fun _ => rfl
 
+/- English proof (translation)
+Establish `hbt : (⊥ : Subrepresentation π) ≠ ⊤`. Introduce `e`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `h2 : v ∈ (⊤ : Subrepresentation π).toSubmodule` using `trivial`. Rewrite `h2` using `[← e]`.
+
+Conclude with `hv h2`. Use `haveI : Nontrivial (Subrepresentation π) := ⟨⟨⊥, ⊤, hbt⟩⟩`. Use `⟨fun S => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Take `⟨hb, ht⟩` from `hc`. Establish `hinj : Function.Injective (subIncl π S)` using `Subtype.val_injective`. Establish `hSn : Nontrivial S.toSubmodule`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`.
+
+Use `hb (Subrepresentation.toSubmodule_injective ?_)` and prove the remaining obligations. Use `(Submodule.eq_bot_iff _).2 fun v hv => ?_` and prove the remaining obligations. Conclude with `congrArg Subtype.val (Subsingleton.elim (⟨v, hv⟩ : S.toSubmodule) 0)`. Establish `hrange : LinearMap.range (subIncl π S).toLinearMap = S.toSubmodule` using `Submodule.range_subtype _`. Establish `hQn : Nontrivial (V ⧸ LinearMap.range (subIncl π S).toLinearMap)`.
+
+Use `Submodule.Quotient.nontrivial_iff.2 ?_` and prove the remaining obligations. Rewrite using `[hrange]`. Introduce `e`. Conclude with `ht (Subrepresentation.toSubmodule_injective e)`. Establish `hσ` using `hsub _ S.toRepresentation (subIncl π S) hinj hSn`.
+
+Conclude with `GlobalTheory.CompanionTheory.BZSeg.TwoSeg.not_isGeneric_quotRep hψ h1 π _ (subIncl π S) hinj hπ hr hσ (hquo _ _ (quotProj π _ (subIncl π S)) (Submodule.mkQ_surjective _) hQn)`.
+-/
 theorem isIrreducible_of_generic {ψ : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1)
     (π : Representation ℂ (GL (Fin N) k) V) [Nontrivial V] (hπ : IsSmooth π)
     (hr : Module.rank ℂ (TwJacquet π (unipB k (Fin N)) (whitChar ψ N)) ≤ 1)
@@ -61,6 +74,9 @@ theorem isIrreducible_of_generic {ψ : AddChar k Circle} (hψ : Continuous ψ) (
   exact GlobalTheory.CompanionTheory.BZSeg.TwoSeg.not_isGeneric_quotRep hψ h1 π _ (subIncl π S) hinj hπ hr hσ
     (hquo _ _ (quotProj π _ (subIncl π S)) (Submodule.mkQ_surjective _) hQn)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hS hQ hR _ h N Δ x hd hun hL`. Take `⟨ψ, hψ, h1⟩` from `exists_continuous_addChar_ne_one k`. Use `haveI := GlobalTheory.CompanionTheory.AdjQuot.nontrivial_prodIrr x hd`. Conclude with `isIrreducible_of_generic hψ h1 (prodIrr x hd) (isSmooth_prodIrr x hd) (hR ψ hψ h1 h N x hd) (fun W _ _ σ f hf hW => hS h N Δ x hd hL (fun i j _ hp => hun i j hp.1) W σ f hf hW) (fun W _ _ τ f hf hW => hQ h N Δ x hd hL (fun i j _ hp => hun j i hp.1) W τ f hf hW)`.
+-/
 theorem lUnlinkedIrr : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.BZSeg.StdSubGeneric k → GlobalTheory.BZSeg.StdQuotGeneric k → GlobalTheory.BZSeg.WhitRankStd k →
     GlobalTheory.BZSeg.ProdIrrFiniteLength k → GlobalTheory.BZSeg.LUnlinkedIrr k := by

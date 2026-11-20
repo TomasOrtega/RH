@@ -10,6 +10,15 @@ namespace GlobalTheory.EtC.MultiplicativeGroupGlobalSections
 
 open LaurentPolynomial in
 
+/- English proof (translation)
+Establish `h1 : f (T 1) * f (T (-1)) = 1` using `by rw [← map_mul, ← T_add]; simp`. Establish `h2 : g (T 1) * g (T (-1)) = 1` using `by rw [← map_mul, ← T_add]; simp`. Establish `hTm : f (T (-1)) = g (T (-1))`. Combine the equalities or inequalities in the displayed calculation. Establish `hTn : ∀ n : ℤ, f (T n) = g (T n)`.
+
+Introduce `n`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simp [T_zero]`. Consider the case `succ n ih => rw [T_add, map_mul, map_mul, ih, hT]`. Consider the case `pred n ih => rw [sub_eq_add_neg, T_add, map_mul, map_mul, ih, hTm]`.
+
+Apply `AddMonoidAlgebra.ringHom_ext` to reduce the goal to its premises. Introduce `b`. Rewrite using `[single_eq_C]`. Conclude with `congrArg (fun φ : R →+* S => φ b) hC`. Introduce `n`.
+
+Conclude with `hTn n`.
+-/
 theorem laurent_ringHom_ext {R S : Type} [CommRing R] [CommRing S] {f g : LaurentPolynomial R →+* S}
     (hC : f.comp C = g.comp C) (hT : f (T 1) = g (T 1)) : f = g := by
   have h1 : f (T 1) * f (T (-1)) = 1 := by rw [← map_mul, ← T_add]; simp
@@ -31,6 +40,9 @@ theorem laurent_ringHom_ext {R S : Type} [CommRing R] [CommRing S] {f g : Lauren
   · intro n
     exact hTn n
 
+/- English proof (translation)
+Establish `h : spMap (RingHom.id A) = 𝟙 (sp A)`. Simplify using `only [spMap]`. Rewrite using `[show CommRingCat.ofHom (RingHom.id A) = 𝟙 (CommRingCat.of A) from rfl, Spec.map_id, CategoryTheory.Functor.map_id]`. Rewrite using `[h, pull_id]`.
+-/
 theorem pull_spMap_id (q : ℕ) (A : Type) [CommRing A] (n i : ℤ) (x : Ht q (sp A) n i) :
     pull _ (spMap (RingHom.id A)) _ n x = x := by
   have h : spMap (RingHom.id A) = 𝟙 (sp A) := by
@@ -40,6 +52,27 @@ theorem pull_spMap_id (q : ℕ) (A : Type) [CommRing A] (n i : ℤ) (x : Ht q (s
 
 open LaurentPolynomial GmPhiNat in
 
+/- English proof (translation)
+Set `ev₁ : LaurentPolynomial R →+* R` to `eval₂ (RingHom.id R) 1`. Establish `hev : ev₁.comp C = RingHom.id R` using `RingHom.ext fun a => eval₂_C _ _ a`. Use `⟨pull _ (spMap ev₁) _ 0 y, ?_⟩` and prove the remaining obligations. Use `symm`. Rewrite using `[← sub_eq_zero]`.
+
+Establish `hqL : IsUnit (q : LaurentPolynomial R)` using `by simpa using hq.map (C : R →+* LaurentPolynomial R)`. Apply `GlobalTheory.EtC.GeomZero.eq_zero_of_geom q (LaurentPolynomial R) hqL i` to reduce the goal to its premises. Introduce `K _ _ f`. Use `set y' := y - pull _ (spMap (C : R →+* LaurentPolynomial R)) _ 0 (pull _ (spMap ev₁) _ 0 y) with hy'`. Establish `h0 : pull _ (spMap ev₁) _ 0 y' = 0`.
+
+Rewrite using `[hy', map_sub, ← pull_spMap_comp, hev, pull_spMap_id, sub_self]`. Set `f₀ : R →+* K` to `f.comp C`. Establish `hT1 : IsUnit (f (T 1))`. Use `isUnit_iff_exists_inv.2 ⟨f (T (-1)), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← T_add]`.
+
+Simplify using the standard rewrite rules. Set `u : Kˣ` to `hT1.unit`. Set `evu : LaurentPolynomial K →+* K` to `eval₂ (RingHom.id K) u`. Establish `hf : f = evu.comp (laurentMap f₀)`. Apply `laurent_ringHom_ext` to reduce the goal to its premises.
+
+Rewrite using `[RingHom.comp_assoc, laurentMap_C, ← RingHom.comp_assoc]`. Use extensionality with `a`. Simplify using `[evu, f₀, eval₂_C]`. Simplify using `[evu, laurentMap_T, eval₂_T, u]`. Set `ev₁K : LaurentPolynomial K →+* K` to `eval₂ (RingHom.id K) 1`.
+
+Establish `hevK : ev₁K.comp C = RingHom.id K` using `RingHom.ext fun a => eval₂_C _ _ a`. Establish `hcomm : ev₁K.comp (laurentMap f₀) = f₀.comp ev₁`. Apply `laurent_ringHom_ext` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, laurentMap_C, ← RingHom.comp_assoc, hevK, RingHom.comp_assoc, hev]`. Both sides reduce to the same expression.
+
+Simplify using `[ev₁K, ev₁, laurentMap_T, eval₂_T]`. Establish `hqK : IsUnit (q : K)` using `by simpa using hq.map f₀`. Establish `hζ : ∃ ζ : K, Polynomial.aeval ζ (Polynomial.cyclotomic q ℤ) = 0`. Establish `hdeg : (Polynomial.cyclotomic q K).degree ≠ 0`. Rewrite using `[Polynomial.degree_cyclotomic]`.
+
+Conclude with `(Nat.totient_pos.2 (Nat.pos_of_ne_zero (NeZero.ne q))).ne'` after adjusting the coercions. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root _ hdeg`. Use `⟨ζ, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `hζ`.
+
+Establish `hbij` using `GlobalTheory.EtC.h_zero_pull_bijective q K (LaurentPolynomial K) (C : K →+* LaurentPolynomial K) hqK hζ inferInstance (fun e he => IsIdempotentElem.iff_eq_zero_or_one.1 he) (fun e he => IsIdempotentElem.iff_eq_zero_or_one.1 he) i`. Establish `hw : pull _ (spMap (laurentMap f₀)) _ 0 y' = 0`. Take `⟨v, hv⟩` from `hbij.2 (pull _ (spMap (laurentMap f₀)) _ 0 y')`. Establish `hv0 : v = 0`. Establish `e1 : pull _ (spMap ev₁K) _ 0 (pull _ (spMap (C : K →+* LaurentPolynomial K)) _ 0 v) = v`.
+
+Rewrite using `[← pull_spMap_comp, hevK, pull_spMap_id]`. Rewrite using `[← e1, hv, ← pull_spMap_comp, hcomm, pull_spMap_comp, h0, map_zero]`. Rewrite using `[← hv, hv0, map_zero]`. Rewrite using `[hf, pull_spMap_comp, hw, map_zero]`.
+-/
 theorem exists_ht_zero_pull_laurent_eq (q : ℕ) [NeZero q] (R : Type) [CommRing R] (hq : IsUnit (q : R)) (i : ℤ)
     (y : Ht q (sp (LaurentPolynomial R)) 0 i) :
     ∃ z : Ht q (sp R) 0 i, pull _ (spMap (LaurentPolynomial.C : R →+* LaurentPolynomial R)) _ 0 z = y := by

@@ -26,6 +26,9 @@ noncomputable section
 
 namespace GlobalTheory.SiegThQF
 
+/- English proof (translation)
+Use `hφ.1` as an intermediate fact. Take `⟨t, ht⟩` from `hφ.2`. Establish `h1 : LBIso Q'.L (Q.L.pull φ.hom.left)` using `LBIso.symm ⟨t, ht⟩`. Simplify using `using GlobalTheory.Poinc.sharpOver_pullback g n _ _ F W _ _ Q Q' y (𝟙 _) φ.hom.left h (isGrpPullback_of_iso φ) h1`.
+-/
 theorem sharpOver_of_polIso {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {K : Type} [Field K]
     {Q Q' : PolAV (Sp K)} {y : Sp K ⟶ F.X} (φ : Q'.A ≅ Q.A) (hφ : IsPolIso Q' Q φ) (h : GlobalTheory.Poinc.SharpOver F W Q y) :
     GlobalTheory.Poinc.SharpOver F W Q' y := by
@@ -34,6 +37,9 @@ theorem sharpOver_of_polIso {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix 
   have h1 : LBIso Q'.L (Q.L.pull φ.hom.left) := LBIso.symm ⟨t, ht⟩
   simpa using GlobalTheory.Poinc.sharpOver_pullback g n _ _ F W _ _ Q Q' y (𝟙 _) φ.hom.left h (isGrpPullback_of_iso φ) h1
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finite_siegelPoints_e8ThetaPower g n (by omega) F W hW K Q`.
+-/
 theorem finite_sharp (g n : ℕ) (hn : 2 ≤ n) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : IsE8 W)
     (K : Type) [Field K] [IsAlgClosed K] (Q : PolAV (Sp K)) :
     Set.Finite {y : Sp K ⟶ F.X | GlobalTheory.Poinc.SharpOver F W Q y} :=
@@ -44,6 +50,13 @@ def ThData {g n : ℕ} (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) �
   ∃ (Q : PolAV (Sp K)) (hg : Q.g = h) (lev : Out.Level Q (m ^ 2) ze),
     GlobalTheory.Poinc.SharpOver F W Q y ∧ IsThetaPt Q m (levelPoint lev hg) v
 
+/- English proof (translation)
+Distinguish the cases in `hne : ∃ y₀ : Sp K ⟶ F.X, ThData F W y₀ h (ℓ ^ j) ze v`. Take `⟨y₀, Q₀, hg₀, lev₀, -, hθ₀⟩` from `hne`. Use `(finite_sharp g n hn F W hW K Q₀).subset ?_` and prove the remaining obligations. Introduce and unpack `y ⟨Q, hg, lev, hS, hθ⟩`. Establish `hN' : ℓ ^ j = ℓ ^ (j - 4) * (ℓ ^ 2) ^ 2`.
+
+Rewrite using `[← pow_mul, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Take `⟨φ, hφ, -⟩` from `(GlobalTheory.thetaPtDetermines_and_endDeterminedOnTorsion).1 h ℓ 2 (j - 4) ((ℓ ^ 2) ^ 2) (ℓ ^ j) hℓ ho le_rfl rfl hN' hbig K hl Q₀ Q hg₀ hg ze lev₀ lev v hθ₀ hθ`. Conclude with `sharpOver_of_polIso φ hφ hS`.
+
+Use `Set.finite_empty` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun hy => hne ⟨y, hy⟩`.
+-/
 theorem finite_thData {g n : ℕ} (hn : 2 ≤ n) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : IsE8 W)
     (ℓ h j : ℕ) (hℓ : ℓ.Prime) (ho : Odd ℓ) (hj : 4 ≤ j) (hbig : ((ℓ ^ 2) ^ 2) ^ h * h.factorial < ℓ ^ j)
     (K : Type) [Field K] [IsAlgClosed K] (hl : ((ℓ : ℕ) : K) ≠ 0) (ze : Γ(Sp K, ⊤)ˣ)
@@ -63,6 +76,27 @@ theorem finite_thData {g n : ℕ} (hn : 2 ≤ n) (F : SFam g n (zetaAway n)) (W 
     simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
     exact fun hy => hne ⟨y, hy⟩
 
+/- English proof (translation)
+Introduce `ℓ hℓ ho g`. Use `⟨4 + ((ℓ ^ 2) ^ 2) ^ (8 * g) * (8 * g).factorial, fun j hj n _ hn3 _ F W hW _ P rig N f hth K _ _ x => ?_⟩` and prove the remaining obligations. Take `⟨hPg, hSh, hrig, hmo, -, hmu, hN, -, hmap⟩` from `hth`. Establish `hn : 2 ≤ n` using `by omega`. Establish `hj4 : 4 ≤ j` using `by omega`.
+
+Establish `hbig : ((ℓ ^ 2) ^ 2) ^ (8 * g) * (8 * g).factorial < ℓ ^ j` using `lt_of_lt_of_le (by omega : ((ℓ ^ 2) ^ 2) ^ (8 * g) * (8 * g).factorial < j) (Nat.lt_pow_self hℓ.one_lt).le`. Take `⟨β0, -⟩` from `GlobalTheory.ThetaQuasiFinite.exists_spMap (x ≫ F.s)`. Establish `hm0 : ((ℓ ^ j : ℕ) : K) ≠ 0`. Use `hmu.map β0` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+
+Conclude with `this.ne_zero`. Establish `hl0 : ((ℓ : ℕ) : K) ≠ 0` using `fun h0 => hm0 (by rw [Nat.cast_pow, h0, zero_pow (by omega)])`. Establish `hpos : 0 < (ℓ ^ j) ^ 2` using `pow_pos (pow_pos hℓ.pos _) _`. Use `haveI : NeZero (((ℓ ^ j) ^ 2 : ℕ) : K) := ⟨by rw [Nat.cast_pow]; exact pow_ne_zero _ hm0⟩`. Take `⟨z0, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot K ((ℓ ^ j) ^ 2)`.
+
+Set `eK` to `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.symm`. Establish `hz'` using `hz.map_of_injective eK.injective`. Use `set ze : Γ(Sp K, ⊤)ˣ := (hz'.isUnit hpos.ne').unit with hzedef`. Establish `hze : IsPrimitiveRoot ze ((ℓ ^ j) ^ 2)` using `hz'.isUnit_unit hpos.ne'`. Take `⟨⟨e, he⟩, -⟩` from `(GlobalTheory.T.projectiveHomogeneousCoords_basic_properties).2.2 (cycAway n) K N (x ≫ f)`.
+
+Take `⟨T, hT⟩` from `GlobalTheory.T.thetaSymmetricFunctionsDegreeFactorial_scaled_finite K (N + 1) e`. Use `haveI := P.isAb.comm`. Use `haveI : NeZero ((ℓ ^ j) ^ 2) := ⟨hpos.ne'⟩`. Use `(Set.finite_iUnion fun d : T × ((Fin (2 * (8 * g)) → ZMod ((ℓ ^ j) ^ 2)) → Fin (N + 1)) => finite_thData hn F W hW ℓ (8 * g) j hℓ ho hj4 hbig K hl0 ze (fun a => GlobalTheory.ZH.fn ((d.1 : Fin (N + 1) → K) (d.2 a)))).subset ?_` and prove the remaining obligations. Introduce `y hy`.
+
+Establish `hy' : y ≫ f = x ≫ f` using `hy`. Take `⟨Q, α, hQg, hpb, hQL⟩` from `GlobalTheory.PureType.exists_baseChange GlobalTheory.abelianSchemeLaws_all.1.polBaseChange y P`. Establish `hQg' : Q.g = 8 * g` using `hQg.trans hPg`. Establish `hfib : PolFib P.A P.L (8 * g) (y ≫ 𝟙 F.X)` using `⟨Q, α, hQg', by rwa [Category.comp_id], hQL⟩`. Take `⟨⟨θ, hθ⟩, -⟩` from `GlobalTheory.T.principallyPolarisedFibre_exists_generator_stable _ P.A P.L P.isLB (8 * g) K _ hfib`.
+
+Take `⟨pt, cy, hcy⟩` from `GlobalTheory.T.exists_thetaConstantList_algClosed _ P.A P.L rig P.isLB hrig (8 * g) (ℓ ^ j) (N + 1) K _ θ hmo hm0 hN hfib`. Establish `hH : HasTh P.A P.L rig (ℓ ^ j) (y ≫ 𝟙 F.X) cy` using `⟨θ, pt, hθ, hcy⟩`. Establish `hP1 : PCrd (y ≫ f) (symTup cy)` using `hmap.1 K y cy hH`. Rewrite `hP1` using `[hy']`. Take `⟨a, ha0, ha⟩` from `(GlobalTheory.T.projectiveHomogeneousCoords_field_determine_descend).2.1 (cycAway n) K N (x ≫ f) e (symTup cy) he hP1`.
+
+Take `⟨mu, hmu0, hmuT⟩` from `hT cy a ha0 ha`. Use `haveI := Q.isAb.comm`. Take `⟨rigQ, hrigQ⟩` from `Q.rigid`. Establish `hQ : HasTh Q.A Q.L rigQ (ℓ ^ j) (𝟙 (Sp K)) cy`. Rewrite `hH`, the goal using `[hasTh_iff]`.
+
+Use `(GlobalTheory.T.hasThetaConstantsTwoLevels_move_cartesian _ P.A P.L rig P.isLB hrig (Sp K) Q.A Q.L rigQ y α Q.isLB hrigQ hpb hQL (ℓ ^ j) (ℓ ^ j) (N + 1) (N + 1) K (𝟙 _) cy cy).2 ?_` and prove the remaining obligations. Simplify `hH` using `only [Category.id_comp, Category.comp_id]`. Take `⟨lev, β, hβ⟩` from `GlobalTheory.T.exists_level_thetaPoint_of_thetaConstants_level_square K Q rigQ (8 * g) (ℓ ^ j) (N + 1) hQg' cy ze hrigQ hmo hm0 hze hQ`. Establish `hSQ : GlobalTheory.Poinc.SharpOver F W Q y`. Simplify using `using GlobalTheory.Poinc.sharpOver_pullback g n _ _ F W _ _ P Q (𝟙 F.X) y α hSh hpb hQL`.
+
+Conclude with `Set.mem_iUnion.2 ⟨(⟨_, hmuT⟩, β), Q, hQg', lev, hSQ, hβ mu hmu0⟩`.
+-/
 theorem finite_fibres : ∀ (ℓ : ℕ), ℓ.Prime → Odd ℓ → ∀ (g : ℕ), ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ℓ ∣ n → ∀ (P : PolAV F.X) (rig : LB.Gen (P.L.pull (eSec P.A))) (N : ℕ) (f : F.X ⟶ PSpace (cycAway n) N), ThAt F W P rig (ℓ ^ j) f → QFin f := by
   intro ℓ hℓ ho g
   refine ⟨4 + ((ℓ ^ 2) ^ 2) ^ (8 * g) * (8 * g).factorial, fun j hj n _ hn3 _ F W hW _ P rig N f hth K _ _ x => ?_⟩

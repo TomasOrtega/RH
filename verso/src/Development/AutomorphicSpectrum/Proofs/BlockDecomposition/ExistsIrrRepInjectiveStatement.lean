@@ -6,6 +6,9 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Mirabol
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.GeometricLemmaFiltration
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZSeg GlobalTheory.BZMir Zc
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.IrrSub.exists_irrRep_injective | exact GlobalTheory.CompanionTheory.IrrSub.exists_irrRep_injective | (intros; apply GlobalTheory.CompanionTheory.IrrSub.exists_irrRep_injective <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_injective_irreducible_subrepresentation : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (A : Representation ℂ (GL (Fin n) k) V) (A₀ : Representation ℂ (GL (Fin n) k) W),

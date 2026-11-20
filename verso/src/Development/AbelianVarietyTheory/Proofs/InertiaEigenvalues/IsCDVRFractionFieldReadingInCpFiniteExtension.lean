@@ -18,18 +18,27 @@ open Classical
 variable {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
   [IsFractionRing V K]
 
+/- English proof (translation)
+Establish `: valV V (algebraMap V K u) = 1`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit`. Simplify using `[vV, this]`.
+-/
 theorem vV_unit' (u : Vˣ) : vV V (algebraMap V K u) = 0 := by
   have : valV V (algebraMap V K u) = 1 := by
     rw [valV, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]
     exact fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit
   simp [vV, this]
 
+/- English proof (translation)
+Establish `: valV V (algebraMap V K a) = WithZero.exp (-1 : ℤ)`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_singleton _ ha.ne_zero ha.maximalIdeal_eq`. Simplify using `[vV, this]`.
+-/
 theorem vV_irr' {a : V} (ha : Irreducible a) : vV V (algebraMap V K a) = 1 := by
   have : valV V (algebraMap V K a) = WithZero.exp (-1 : ℤ) := by
     rw [valV, HeightOneSpectrum.valuation_of_algebraMap]
     exact HeightOneSpectrum.intValuation_singleton _ ha.ne_zero ha.maximalIdeal_eq
   simp [vV, this]
 
+/- English proof (translation)
+Simplify using `[vV]`.
+-/
 theorem vV_pow' {x : K} (n : ℕ) : vV V (x ^ n) = n * vV V x := by
   simp [vV]
 
@@ -71,6 +80,9 @@ def absOfVal (c : ℝ) (hc0 : 0 < c) (hc1 : c ≤ 1) : AbsoluteValue K ℝ where
     · have := zpow_le_zpow_right_of_le_one₀ hc0 hc1 h
       linarith
 
+/- English proof (translation)
+Use `show (if x = 0 then 0 else c ^ (vV V x)) = _`. Simplify using `[hx]`.
+-/
 theorem absOfVal_of_ne (c : ℝ) (hc0 : 0 < c) (hc1 : c ≤ 1) {x : K} (hx : x ≠ 0) :
     absOfVal V K c hc0 hc1 x = c ^ (vV V x) := by
   show (if x = 0 then 0 else c ^ (vV V x)) = _
@@ -78,6 +90,19 @@ theorem absOfVal_of_ne (c : ℝ) (hc0 : 0 < c) (hc1 : c ≤ 1) {x : K} (hx : x �
 
 end Val
 
+/- English proof (translation)
+Establish `hu : ∀ u : T.Vˣ, ‖k (algebraMap T.V T.Fr u)‖ = 1`. Introduce `u`. Establish `h1` using `(hball (algebraMap T.V T.Fr u)).2 ⟨u, rfl⟩`. Establish `h2` using `(hball (algebraMap T.V T.Fr (u⁻¹ : T.Vˣ))).2 ⟨_, rfl⟩`. Establish `h3 : ‖k (algebraMap T.V T.Fr u)‖ * ‖k (algebraMap T.V T.Fr (u⁻¹ : T.Vˣ))‖ = 1`.
+
+Rewrite using `[← norm_mul, ← map_mul, ← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one, map_one, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (k (algebraMap T.V T.Fr u)), norm_nonneg (k (algebraMap T.V T.Fr (u⁻¹ : T.Vˣ)))]`. Establish `hπ0 : algebraMap T.V T.Fr π ≠ 0`. Simplify using `using hπ.ne_zero`. Establish `hρ0 : ‖k (algebraMap T.V T.Fr π)‖ ≠ 0`.
+
+Simplify using `using hπ0`. Establish `key : ∀ a : T.V, a ≠ 0 → ‖k (algebraMap T.V T.Fr a)‖ = ‖k (algebraMap T.V T.Fr π)‖ ^ vV T.V (algebraMap T.V T.Fr a)`. Introduce `a ha`. Take `⟨s, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hπ`. Establish `hu0 : algebraMap T.V T.Fr u ≠ 0` using `by simp`.
+
+Rewrite using `[map_mul, map_pow, vV_mul hu0 (pow_ne_zero _ hπ0), vV_pow', vV_unit', vV_irr' hπ, map_mul, norm_mul, hu, map_pow, norm_pow]`. Simplify using the standard rewrite rules. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := T.V) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hb1 : algebraMap T.V T.Fr b ≠ 0` using `by simpa using hb0`.
+
+Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hx`. Establish `hv` using `vV_mul (V := T.V) hx hb1`. Rewrite `hv` using `[div_mul_cancel₀ _ hb1]`. Rewrite using `[map_div₀, norm_div, key a ha0, key b hb0, ← zpow_sub₀ hρ0, hv]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_eq_zpow (T : CDVR) {C : Type} [NormedField C] (k : T.Fr →+* C)
     (hball : ∀ x, ‖k x‖ ≤ 1 ↔ InV T x) {π : T.V} (hπ : Irreducible π) (x : T.Fr) (hx : x ≠ 0) :
     ‖k x‖ = ‖k (algebraMap T.V T.Fr π)‖ ^ vV T.V x := by
@@ -111,6 +136,31 @@ theorem norm_eq_zpow (T : CDVR) {C : Type} [NormedField C] (k : T.Fr →+* C)
   congr 1
   ring
 
+/- English proof (translation)
+Introduce `p _ F _ _ φ T io k hk T' i hi j hj`. Establish `hji : ∀ y, j (i y) = k y` using `fun y => by rw [← hj]; rfl`. Use `⟨fun a => by rw [RingHom.comp_apply, hji]; exact hk.comp a, fun x => ?_⟩` and prove the remaining obligations. Take `⟨hfin, r, hr, hv⟩` from `hi`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`.
+
+Establish `hπ0 : algebraMap T.V T.Fr π ≠ 0` using `by simpa using hπ.ne_zero`. Use `set ρ := ‖k (algebraMap T.V T.Fr π)‖ with hρ`. Establish `hρ0 : 0 < ρ` using `norm_pos_iff.2 ((map_ne_zero k).2 hπ0)`. Establish `hρ1 : ρ < 1`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Establish `h1 : ‖k (algebraMap T.V T.Fr π)⁻¹‖ ≤ 1`. Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ hc`. Take `⟨v, hv'⟩` from `(hk.int _).1 h1`.
+
+Apply `hπ.not_isUnit` to reduce the goal to its premises. Use `IsUnit.of_mul_eq_one v ?_` and prove the remaining obligations. Apply `IsFractionRing.injective T.V T.Fr` to reduce the goal to its premises. Rewrite using `[map_mul, hv', map_one, mul_inv_cancel₀ hπ0]`. Establish `hr0 : (0 : ℝ) < r` using `by exact_mod_cast hr`.
+
+Use `set c : ℝ := ρ ^ ((1 : ℝ) / r) with hc`. Establish `hc0 : 0 < c` using `Real.rpow_pos_of_pos hρ0 _`. Establish `hc1 : c < 1` using `Real.rpow_lt_one hρ0.le hρ1 (by positivity)`. Establish `hcr : c ^ r = ρ`. Rewrite using `[hc, ← Real.rpow_natCast, ← Real.rpow_mul hρ0.le, one_div, inv_mul_cancel₀ hr0.ne', Real.rpow_one]`.
+
+Use `letI NF : NontriviallyNormedField T.Fr := { NormedField.induced T.Fr ℂ_[p] k k.injective with non_trivial := ⟨(algebraMap T.V T.Fr π)⁻¹, by show 1 < ‖k (algebraMap T.V T.Fr π)⁻¹‖`. Rewrite using `[map_inv₀, norm_inv]`. Conclude with `(one_lt_inv₀ hρ0).2 hρ1⟩ }`. Establish `hnk : ∀ y : T.Fr, ‖y‖ = ‖k y‖` using `fun y => rfl`. Use `haveI : IsUltrametricDist T.Fr := IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm fun x y => by`.
+
+Rewrite using `[hnk, hnk, hnk, map_add]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`. Use `haveI : CompleteSpace T.Fr := Formalism.MainNotions.ExistsIdealDenominator.complete_of_adic (O := T.V) (K := T.Fr) (fun y => hk.int y) inferInstance`. Use `letI := i.toAlgebra`. Use `haveI : FiniteDimensional T.Fr T'.Fr := hfin`.
+
+Establish `e1` using `spectralNorm_unique_field_norm_ext (K := T.Fr) (L := T'.Fr) (f := (NormedField.toAbsoluteValue ℂ_[p]).comp j.injective) (fun y => by show ‖j (i y)‖ = ‖y‖`. Rewrite using `[hji, hnk]) x`. Establish `e2` using `spectralNorm_unique_field_norm_ext (K := T.Fr) (L := T'.Fr) (f := absOfVal T'.V T'.Fr c hc0 hc1.le) (fun y => by show absOfVal T'.V T'.Fr c hc0 hc1.le (i y) = ‖y‖`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[absOfVal_of_ne _ _ _ ((map_ne_zero i).2 hy), hv, zpow_mul, zpow_natCast, hcr, hnk, norm_eq_zpow T k hk.int hπ y hy]) x`. Establish `hx : ‖j x‖ = absOfVal T'.V T'.Fr c hc0 hc1.le x` using `e1.trans e2.symm`. Rewrite using `[hx]`. Distinguish the cases in `hx0 : x = 0`.
+
+Substitute `hx0` using the available equality. Simplify using `only [map_zero, zero_le_one, true_iff]`. Conclude with `⟨0, map_zero _⟩`. Rewrite using `[absOfVal_of_ne _ _ _ hx0]`. Express the relevant statement in the definitionally equal form `_ ↔ ∃ a : T'.V, algebraMap T'.V T'.Fr a = x`.
+
+Rewrite using `[GlobalTheory.CompleteValExt.exists_algebraMap_eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`.
+
+Use `one_lt_zpow_of_neg₀ hc0 hc1 hn` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h`. Conclude with `zpow_le_one₀ hc0 hc1.le h`.
+-/
 theorem isReading_ext : ∀ (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [NumberField F] (φ : F →+* ℂ_[p]) (T : CDVR)
     (io : F →+* T.Fr) (k : T.Fr →+* ℂ_[p]), IsReading φ T io k → ∀ (T' : CDVR) (i : T.Fr →+* T'.Fr),
     GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot39.IsFinExt T T' i → ∀ j : T'.Fr →+* ℂ_[p], j.comp i = k → IsReading φ T' (i.comp io) j := by

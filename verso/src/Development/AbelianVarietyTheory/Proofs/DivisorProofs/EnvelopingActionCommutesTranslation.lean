@@ -19,17 +19,31 @@ def JointSm (σ : 𝔸 →ₗ[ℝ] 𝔸) (s : 𝔸 → G) (Ψ : ℝ → G → �
   ∀ (g : G) (P : Type) [NormedAddCommGroup P] [NormedSpace ℝ P] (c : P → 𝔸), ContDiff ℝ ∞ c →
     (∀ p, σ (c p) * c p = 1) → ContDiff ℝ ∞ fun q : ℝ × P => Ψ q.1 (g * s (c q.2))
 
+/- English proof (translation)
+Rewrite using `[H.anti, mul_assoc, ← mul_assoc (σ a), ha, one_mul, hb]`.
+-/
 theorem unit_mul (H : IsLieData σ j s) {a b : 𝔸} (ha : σ a * a = 1) (hb : σ b * b = 1) : σ (a * b) * (a * b) = 1 := by
   rw [H.anti, mul_assoc, ← mul_assoc (σ a), ha, one_mul, hb]
 
+/- English proof (translation)
+Establish `h` using `H.mul 1 1 (by rw [H.one, one_mul]) (by rw [H.one, one_mul])`. Rewrite `h` using `[one_mul]`. Conclude with `(mul_eq_left.1 h.symm)`.
+-/
 theorem s_one (H : IsLieData σ j s) : s 1 = 1 := by
   have h := H.mul 1 1 (by rw [H.one, one_mul]) (by rw [H.one, one_mul])
   rw [one_mul] at h
   exact (mul_eq_left.1 h.symm)
 
+/- English proof (translation)
+Simplify using `only [expMap, map_zero, NormedSpace.exp_zero, s_one H]`.
+-/
 theorem expMap_zero (H : IsLieData σ j s) : expMap j s 0 = 1 := by
   simp only [expMap, map_zero, NormedSpace.exp_zero, s_one H]
 
+/- English proof (translation)
+Use `haveI : CompleteSpace 𝔸 := FiniteDimensional.complete ℝ 𝔸`. Establish `hb : ∀ x : 𝔸, x ∈ Metric.eball (0 : 𝔸) (NormedSpace.expSeries ℝ 𝔸).radius` using `fun x => (NormedSpace.expSeries_radius_eq_top ℝ 𝔸).symm ▸ edist_lt_top _ _`. Simplify using `only [expMap]`. Rewrite using `[← H.mul _ _ (DerLinear.exp_unitary H _) (DerLinear.exp_unitary H _), add_smul, map_add, NormedSpace.exp_add_of_commute_of_mem_ball (𝕂 := ℝ) ?_ (hb _) (hb _)]`. Rewrite using `[map_smul, map_smul]`.
+
+Conclude with `((Commute.refl (j X)).smul_left t).smul_right h`.
+-/
 theorem expMap_add_smul (H : IsLieData σ j s) (X : L) (t h : ℝ) :
     expMap j s ((t + h) • X) = expMap j s (t • X) * expMap j s (h • X) := by
   haveI : CompleteSpace 𝔸 := FiniteDimensional.complete ℝ 𝔸
@@ -41,6 +55,11 @@ theorem expMap_add_smul (H : IsLieData σ j s) (X : L) (t h : ℝ) :
   rw [map_smul, map_smul]
   exact ((Commute.refl (j X)).smul_left t).smul_right h
 
+/- English proof (translation)
+Introduce `g`. Establish `hc : ContDiff ℝ ∞ fun Z : L => NormedSpace.exp (j Z) * b` using `(DerLinear.contDiff_exp H).mul contDiff_const`. Use `contDiff_family H hl (fun g => (hφ g).contDiffAt) hc (fun Z => unit_mul H (DerLinear.exp_unitary H Z) hb) g` as an intermediate fact. Use `this using 2 with Z` and compare the differences between its conclusion and the goal. Simplify using `only [expMap]`.
+
+Rewrite using `[H.mul _ _ (DerLinear.exp_unitary H Z) hb, mul_assoc]`.
+-/
 theorem sm_transl (H : IsLieData σ j s) (hl : HasLog σ j) {φ : G → ℂ} (hφ : Sm (expMap j s) φ) {b : 𝔸}
     (hb : σ b * b = 1) : Sm (expMap j s) (fun x => φ (x * s b)) := by
   intro g
@@ -50,6 +69,11 @@ theorem sm_transl (H : IsLieData σ j s) (hl : HasLog σ j) {φ : G → ℂ} (h�
   simp only [expMap]
   rw [H.mul _ _ (DerLinear.exp_unitary H Z) hb, mul_assoc]
 
+/- English proof (translation)
+Introduce `g P _ _ c hc hu`. Establish `hc' : ContDiff ℝ ∞ fun q : ℝ × P => c q.2 * NormedSpace.exp (j (q.1 • X))` using `(hc.comp contDiff_snd).mul ((DerLinear.contDiff_exp H).comp (contDiff_fst.smul contDiff_const))`. Use `contDiff_family H hl (fun g => (hφ g).contDiffAt) hc' (fun q => unit_mul H (hu q.2) (DerLinear.exp_unitary H _)) g` as an intermediate fact. Use `this using 2 with q` and compare the differences between its conclusion and the goal. Simplify using `only [expMap]`.
+
+Rewrite using `[mul_assoc, ← H.mul _ _ (hu q.2) (DerLinear.exp_unitary H _)]`.
+-/
 theorem jointSm_transl (H : IsLieData σ j s) (hl : HasLog σ j) {φ : G → ℂ} (hφ : Sm (expMap j s) φ) (X : L) :
     JointSm σ s (fun t x => φ (x * expMap j s (t • X))) := by
   intro g P _ _ c hc hu
@@ -61,6 +85,11 @@ theorem jointSm_transl (H : IsLieData σ j s) (hl : HasLog σ j) {φ : G → ℂ
   simp only [expMap]
   rw [mul_assoc, ← H.mul _ _ (hu q.2) (DerLinear.exp_unitary H _)]
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun h : ℝ => φ (x * expMap j s (t • X) * expMap j s (h • X))) (Der (expMap j s) X φ (x * expMap j s (t • X))) (t - t)`. Rewrite using `[sub_self]`. Conclude with `(Sm.differentiableAt hφ _ X).hasDerivAt`. Establish `h2` using `h1.comp_sub_const t t`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `φ (x * expMap j s (u • X)) = φ (x * expMap j s (t • X) * expMap j s ((u - t) • X))`. Rewrite using `[mul_assoc, ← expMap_add_smul H, add_sub_cancel]`.
+-/
 theorem hasDerivAt_transl (H : IsLieData σ j s) {φ : G → ℂ} (hφ : Sm (expMap j s) φ) (X : L) (t : ℝ) (x : G) :
     HasDerivAt (fun t => φ (x * expMap j s (t • X))) (Der (expMap j s) X φ (x * expMap j s (t • X))) t := by
   have h1 : HasDerivAt (fun h : ℝ => φ (x * expMap j s (t • X) * expMap j s (h • X)))
@@ -74,6 +103,9 @@ theorem hasDerivAt_transl (H : IsLieData σ j s) {φ : G → ℂ} (hφ : Sm (exp
 
 omit [FiniteDimensional ℝ 𝔸] in
 
+/- English proof (translation)
+Establish `e : ∀ q, deriv (fun r => K (q, r)) 0 = fderiv ℝ K (q, 0) ((0 : E), (1 : ℝ))` using `fun q => ((hK.differentiable (by simp) _).hasFDerivAt.comp_hasDerivAt (0 : ℝ) ((hasDerivAt_const (0 : ℝ) q).prodMk (hasDerivAt_id' (0 : ℝ)))).deriv`. Repeatedly rewrite using `[e]`. Conclude with `((hK.fderiv_right (m := ∞) (by simp)).comp (contDiff_id.prodMk contDiff_const)).clm_apply contDiff_const`.
+-/
 theorem contDiff_deriv_param {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {K : E × ℝ → ℂ}
     (hK : ContDiff ℝ ∞ K) : ContDiff ℝ ∞ fun q => deriv (fun r => K (q, r)) 0 := by
   have e : ∀ q, deriv (fun r => K (q, r)) 0 = fderiv ℝ K (q, 0) ((0 : E), (1 : ℝ)) := fun q =>
@@ -82,6 +114,11 @@ theorem contDiff_deriv_param {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ 
   simp_rw [e]
   exact ((hK.fderiv_right (m := ∞) (by simp)).comp (contDiff_id.prodMk contDiff_const)).clm_apply contDiff_const
 
+/- English proof (translation)
+Introduce `g P _ _ c hc hu`. Establish `hc' : ContDiff ℝ ∞ fun p : P × ℝ => c p.1 * NormedSpace.exp (j (p.2 • Y))` using `(hc.comp contDiff_fst).mul ((DerLinear.contDiff_exp H).comp (contDiff_snd.smul contDiff_const))`. Establish `hF` using `hΨ g (P × ℝ) _ hc' (fun p => unit_mul H (hu p.1) (DerLinear.exp_unitary H _))`. Establish `hK : ContDiff ℝ ∞ fun q : (ℝ × P) × ℝ => Ψ q.1.1 (g * s (c q.1.2 * NormedSpace.exp (j (q.2 • Y))))` using `hF.comp ((contDiff_fst.comp contDiff_fst).prodMk ((contDiff_snd.comp contDiff_fst).prodMk contDiff_snd))`. Use `contDiff_deriv_param hK using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `q`. Simplify using `only [Der, expMap]`. Use `congr 1`. Use function extensionality and compare the values at `r`. Rewrite using `[mul_assoc, H.mul _ _ (hu _) (DerLinear.exp_unitary H _)]`.
+-/
 theorem jointSm_der (H : IsLieData σ j s) (Y : L) {Ψ : ℝ → G → ℂ} (hΨ : JointSm σ s Ψ) :
     JointSm σ s (fun t => Der (expMap j s) Y (Ψ t)) := by
   intro g P _ _ c hc hu
@@ -98,6 +135,17 @@ theorem jointSm_der (H : IsLieData σ j s) (Y : L) {Ψ : ℝ → G → ℂ} (hΨ
   funext r
   rw [mul_assoc, H.mul _ _ (hu _) (DerLinear.exp_unitary H _)]
 
+/- English proof (translation)
+Establish `hc : ContDiff ℝ ∞ fun r : ℝ => NormedSpace.exp (j (r • Y))` using `(DerLinear.contDiff_exp H).comp (contDiff_id.smul contDiff_const)`. Use `set F : ℝ × ℝ → ℂ := fun q => Ψ q.1 (x * s (NormedSpace.exp (j (q.2 • Y)))) with hFdef`. Establish `hF : ContDiff ℝ ∞ F` using `hΨ x ℝ _ hc (fun r => DerLinear.exp_unitary H _)`. Establish `hdiff : Differentiable ℝ F` using `hF.differentiable (by simp)`. Establish `hdd : Differentiable ℝ (fderiv ℝ F)` using `(hF.fderiv_right (m := ∞) (by simp)).differentiable (by simp)`.
+
+Establish `e1 : ∀ t', Der (expMap j s) Y (Ψ t') x = fderiv ℝ F (t', 0) ((0 : ℝ), (1 : ℝ))` using `fun t' => ((hdiff _).hasFDerivAt.comp_hasDerivAt (0 : ℝ) ((hasDerivAt_const (0 : ℝ) t').prodMk (hasDerivAt_id' (0 : ℝ)))).deriv`. Establish `e2 : ∀ t' r, Ψ' t' (x * expMap j s (r • Y)) = fderiv ℝ F (t', r) ((1 : ℝ), (0 : ℝ))` using `fun t' r => (hd t' _).unique ((hdiff _).hasFDerivAt.comp_hasDerivAt t' ((hasDerivAt_id' t').prodMk (hasDerivAt_const t' r)))`. Establish `e3 : Der (expMap j s) Y (Ψ' t) x = fderiv ℝ (fderiv ℝ F) (t, 0) ((0 : ℝ), (1 : ℝ)) ((1 : ℝ), (0 : ℝ))`. Establish `: (fun r => Ψ' t (x * expMap j s (r • Y))) = fun r => fderiv ℝ F (t, r) ((1 : ℝ), (0 : ℝ))` using `funext (e2 t)`. Express the relevant statement in the definitionally equal form `deriv (fun r => Ψ' t (x * expMap j s (r • Y))) 0 = _`.
+
+Rewrite using `[this]`. Establish `h` using `(hdd _).hasFDerivAt.comp_hasDerivAt (0 : ℝ) ((hasDerivAt_const (0 : ℝ) t).prodMk (hasDerivAt_id' (0 : ℝ)))`. Establish `h2` using `h.clm_apply (hasDerivAt_const (0 : ℝ) ((1 : ℝ), (0 : ℝ)))`. Simplify using `using h2.deriv`. Establish `hL : HasDerivAt (fun t' => fderiv ℝ F (t', 0) ((0 : ℝ), (1 : ℝ))) (fderiv ℝ (fderiv ℝ F) (t, 0) ((1 : ℝ), (0 : ℝ)) ((0 : ℝ), (1 : ℝ))) t`.
+
+Establish `h` using `(hdd _).hasFDerivAt.comp_hasDerivAt t ((hasDerivAt_id' t).prodMk (hasDerivAt_const t (0 : ℝ)))`. Simplify using `using h.clm_apply (hasDerivAt_const t ((0 : ℝ), (1 : ℝ)))`. Establish `hsym` using `(hF.contDiffAt (x := (t, (0 : ℝ)))).isSymmSndFDerivAt (by`. Simplify using `only [minSmoothness_of_isRCLikeNormedField]`. Conclude with `WithTop.coe_le_coe.2 (le_top : (2:ℕ∞) ≤ ⊤))`.
+
+Rewrite using `[e3, ← hsym ((1 : ℝ), (0 : ℝ)) ((0 : ℝ), (1 : ℝ))]`. Conclude with `hL.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t' => e1 t')`.
+-/
 theorem hasDerivAt_der (H : IsLieData σ j s) (Y : L) {Ψ Ψ' : ℝ → G → ℂ} (hΨ : JointSm σ s Ψ)
     (hd : ∀ t x, HasDerivAt (fun t => Ψ t x) (Ψ' t x) t) (t : ℝ) (x : G) :
     HasDerivAt (fun t => Der (expMap j s) Y (Ψ t) x) (Der (expMap j s) Y (Ψ' t) x) t := by
@@ -133,15 +181,24 @@ def GoodOp (σ : 𝔸 →ₗ[ℝ] 𝔸) (j : L →ₗ[ℝ] 𝔸) (s : 𝔸 → G
     JointSm σ s (fun t => (A (Ψ t)).1) ∧ JointSm σ s (fun t => (A (Ψ' t)).1) ∧
       ∀ t x, HasDerivAt (fun t => (A (Ψ t)).1 x) ((A (Ψ' t)).1 x) t
 
+/- English proof (translation)
+Introduce `_ _ h1 h2 h3` and use `⟨jointSm_der H Y h1, jointSm_der H Y h2, hasDerivAt_der H Y h1 h3⟩`.
+-/
 theorem goodOp_derOp (H : IsLieData σ j s) (hl : HasLog σ j) (Y : L) : GoodOp σ j s (derOp H hl Y) :=
   fun _ _ h1 h2 h3 => ⟨jointSm_der H Y h1, jointSm_der H Y h2, hasDerivAt_der H Y h1 h3⟩
 
+/- English proof (translation)
+Introduce `Ψ Ψ' h1 h2 h3`. Simplify using `only [Module.algebraMap_end_apply, Submodule.coe_smul]`. Conclude with `⟨fun g P _ _ c' hc hu => (h1 g P c' hc hu).const_smul c, fun g P _ _ c' hc hu => (h2 g P c' hc hu).const_smul c, fun t x => (h3 t x).const_smul c⟩`.
+-/
 theorem goodOp_algebraMap (c : ℂ) : GoodOp σ j s (algebraMap ℂ (Module.End ℂ (smSub (expMap j s))) c) := by
   intro Ψ Ψ' h1 h2 h3
   simp only [Module.algebraMap_end_apply, Submodule.coe_smul]
   exact ⟨fun g P _ _ c' hc hu => (h1 g P c' hc hu).const_smul c, fun g P _ _ c' hc hu => (h2 g P c' hc hu).const_smul c,
     fun t x => (h3 t x).const_smul c⟩
 
+/- English proof (translation)
+Introduce `Ψ Ψ' h1 h2 h3`. Take `⟨a1, a2, a3⟩` from `hA Ψ Ψ' h1 h2 h3`. Take `⟨b1, b2, b3⟩` from `hB Ψ Ψ' h1 h2 h3`. Simplify using `only [LinearMap.add_apply, Submodule.coe_add]`. Conclude with `⟨fun g P _ _ c hc hu => (a1 g P c hc hu).add (b1 g P c hc hu), fun g P _ _ c hc hu => (a2 g P c hc hu).add (b2 g P c hc hu), fun t x => (a3 t x).add (b3 t x)⟩`.
+-/
 theorem goodOp_add {A B : Module.End ℂ (smSub (expMap j s))} (hA : GoodOp σ j s A) (hB : GoodOp σ j s B) :
     GoodOp σ j s (A + B) := by
   intro Ψ Ψ' h1 h2 h3
@@ -151,12 +208,20 @@ theorem goodOp_add {A B : Module.End ℂ (smSub (expMap j s))} (hA : GoodOp σ j
   exact ⟨fun g P _ _ c hc hu => (a1 g P c hc hu).add (b1 g P c hc hu),
     fun g P _ _ c hc hu => (a2 g P c hc hu).add (b2 g P c hc hu), fun t x => (a3 t x).add (b3 t x)⟩
 
+/- English proof (translation)
+Introduce `Ψ Ψ' h1 h2 h3`. Take `⟨b1, b2, b3⟩` from `hB Ψ Ψ' h1 h2 h3`. Conclude with `hA (fun t => B (Ψ t)) (fun t => B (Ψ' t)) b1 b2 b3`.
+-/
 theorem goodOp_mul {A B : Module.End ℂ (smSub (expMap j s))} (hA : GoodOp σ j s A) (hB : GoodOp σ j s B) :
     GoodOp σ j s (A * B) := by
   intro Ψ Ψ' h1 h2 h3
   obtain ⟨b1, b2, b3⟩ := hB Ψ Ψ' h1 h2 h3
   exact hA (fun t => B (Ψ t)) (fun t => B (Ψ' t)) b1 b2 b3
 
+/- English proof (translation)
+Proceed by induction on `hA using Algebra.adjoin_induction with`. Consider the case `mem x hx => obtain ⟨Y, rfl⟩ := hx`. Conclude with `goodOp_derOp H hl Y`. Consider the case `algebraMap c => exact goodOp_algebraMap c`. Consider the case `add x y _ _ hx hy => exact goodOp_add hx hy`.
+
+Consider the case `mul x y _ _ hx hy => exact goodOp_mul hx hy`.
+-/
 theorem goodOp_of_mem (H : IsLieData σ j s) (hl : HasLog σ j) {A : Module.End ℂ (smSub (expMap j s))}
     (hA : A ∈ Algebra.adjoin ℂ (Set.range (derOp H hl))) : GoodOp σ j s A := by
   induction hA using Algebra.adjoin_induction with
@@ -165,6 +230,15 @@ theorem goodOp_of_mem (H : IsLieData σ j s) (hl : HasLog σ j) {A : Module.End 
   | add x y _ _ hx hy => exact goodOp_add hx hy
   | mul x y _ _ hx hy => exact goodOp_mul hx hy
 
+/- English proof (translation)
+Establish `hG : GoodOp σ j s A` using `goodOp_of_mem H hl hA`. Use `LinearMap.ext fun φ => Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `mem : ∀ (ψ : smSub (expMap j s)) (t : ℝ), (fun x => ψ.1 (x * expMap j s (t • X))) ∈ smSub (expMap j s)` using `fun ψ t => sm_transl H hl ψ.2 (DerLinear.exp_unitary H (t • X))`. Set `Ψ : ℝ → smSub (expMap j s)` to `fun t => ⟨_, mem φ t⟩`. Set `Ψ' : ℝ → smSub (expMap j s)` to `fun t => ⟨_, mem (derOp H hl X φ) t⟩`.
+
+Establish `hd : ∀ t x, HasDerivAt (fun t => (Ψ t).1 x) ((Ψ' t).1 x) t` using `fun t x => hasDerivAt_transl H φ.2 X t x`. Take `⟨-, -, h3⟩` from `hG Ψ Ψ' (jointSm_transl H hl φ.2 X) (jointSm_transl H hl (derOp H hl X φ).2 X) hd`. Establish `h4` using `h3 0 g`. Establish `e0 : Ψ' 0 = derOp H hl X φ` using `Subtype.ext (funext fun x => by`. Express the relevant statement in the definitionally equal form `(derOp H hl X φ).1 (x * expMap j s ((0 : ℝ) • X)) = _`.
+
+Rewrite using `[zero_smul, expMap_zero H, mul_one])`. Rewrite `h4` using `[e0]`. Establish `h5 : (fun t => (A (Ψ t)).1 g) = fun t => (A φ).1 (g * expMap j s (t • X))`. Use function extensionality and compare the values at `fun t => congrFun (htr t φ (mem φ t)) g`. Rewrite `h4` using `[h5]`.
+
+Establish `h6 : HasDerivAt (fun t : ℝ => (A φ).1 (g * expMap j s (t • X))) ((derOp H hl X (A φ)).1 g) 0` using `(Sm.differentiableAt (A φ).2 g X).hasDerivAt`. Conclude with `h6.unique h4`.
+-/
 theorem comm_of_transl (H : IsLieData σ j s) (hl : HasLog σ j) (X : L) {A : Module.End ℂ (smSub (expMap j s))}
     (hA : A ∈ Algebra.adjoin ℂ (Set.range (derOp H hl)))
     (htr : ∀ (t : ℝ) (φ : smSub (expMap j s)) (h : (fun x => φ.1 (x * expMap j s (t • X))) ∈ smSub (expMap j s)),
@@ -203,6 +277,9 @@ variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E 
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[← envIncl_ι, envRepAll_envIncl]`. Establish `: c ⊗ₜ[ℝ] X = c • ((1 : ℂ) ⊗ₜ[ℝ] X)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, map_smul, envRep_ι]`.
+-/
 theorem envRepAll_ι_of_tmul (R : RealPoints θ V) (τ : D.what₂.Tau) (c : ℂ) (X : LieAt V τ) :
     envRepAll R (UniversalEnvelopingAlgebra.ι ℂ (DirectSum.of (fun τ => ℂ ⊗[ℝ] LieAt V τ) τ (c ⊗ₜ X))) =
       c • opInf R (atPlace V τ X) := by
@@ -211,6 +288,13 @@ theorem envRepAll_ι_of_tmul (R : RealPoints θ V) (τ : D.what₂.Tau) (c : ℂ
   rw [this, map_smul, map_smul, envRep_ι]
 
 open Classical in
+/- English proof (translation)
+Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `of τ y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `tmul c X => rw [envRepAll_ι_of_tmul]`. Conclude with `Subalgebra.smul_mem _ (Algebra.subset_adjoin (Set.mem_range_self _)) c`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add]`.
+
+Conclude with `add_mem ha hb`. Consider the case `add a b ha hb => rw [map_add, map_add]`. Conclude with `add_mem ha hb`.
+-/
 theorem envRepAll_ι_mem (R : RealPoints θ V) (x : GlobalTheory.AutFinLit.LieC V) :
     envRepAll R (UniversalEnvelopingAlgebra.ι ℂ x) ∈ Algebra.adjoin ℂ (Set.range (opInf R)) := by
   induction x using DirectSum.induction_on with
@@ -222,6 +306,13 @@ theorem envRepAll_ι_mem (R : RealPoints θ V) (x : GlobalTheory.AutFinLit.LieC 
     | add a b ha hb => rw [map_add, map_add, map_add]; exact add_mem ha hb
   | add a b ha hb => rw [map_add, map_add]; exact add_mem ha hb
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (UniversalEnvelopingAlgebra.mkAlgHom ℂ (GlobalTheory.AutFinLit.LieC V))` using `by unfold UniversalEnvelopingAlgebra.mkAlgHom; exact RingCon.mkₐ_surjective _`. Take `⟨w, rfl⟩` from `hs u`. Proceed by induction on `w using TensorAlgebra.induction with`. Consider the case `algebraMap r => rw [AlgHom.commutes, AlgHom.commutes]`. Conclude with `Subalgebra.algebraMap_mem _ r`.
+
+Consider the case `ι x => rw [← UniversalEnvelopingAlgebra.ι_apply]`. Conclude with `envRepAll_ι_mem R x`. Consider the case `mul a b ha hb => rw [map_mul, map_mul]`. Conclude with `mul_mem ha hb`. Consider the case `add a b ha hb => rw [map_add, map_add]`.
+
+Conclude with `add_mem ha hb`.
+-/
 theorem envRepAll_mem (R : RealPoints θ V) (u : GlobalTheory.AutFinLit.Env V) :
     envRepAll R u ∈ Algebra.adjoin ℂ (Set.range (opInf R)) := by
   have hs : Function.Surjective (UniversalEnvelopingAlgebra.mkAlgHom ℂ (GlobalTheory.AutFinLit.LieC V)) :=
@@ -239,6 +330,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 attribute [local instance 100] LieRing.ofAssociativeRing in
 
+/- English proof (translation)
+Introduce `D θ _ V R u hu x`. Establish `hcomm : ∀ τ (X : LieAt V τ), opInf R (atPlace V τ X) * envRepAll R u = envRepAll R u * opInf R (atPlace V τ X)` using `fun τ X => comm_of_transl (isLieData R) (hasLog R) (atPlace V τ X) (envRepAll_mem R u) fun t φ h => hu _ (isExpFam_expInf R (t • atPlace V τ X)).1 φ h`. Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of τ y`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c X => rw [envRepAll_ι_of_tmul, smul_mul_assoc, mul_smul_comm, hcomm]`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, add_mul, mul_add, ha, hb]`. Consider the case `add a b ha hb => rw [map_add, map_add, add_mul, mul_add, ha, hb]`.
+-/
 theorem envRepAll_comm_lie : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ →
     ∀ (V : HSp D) (R : RealPoints θ V) (u : GlobalTheory.AutFinLit.Env V), (∀ a ∈ GinfC V, ∀ (f : SmF θ V)
       (hfa : (fun x => f.1 (x * a)) ∈ SmF θ V), (envRepAll R u ⟨_, hfa⟩).1 = fun x => (envRepAll R u f).1 (x * a)) →

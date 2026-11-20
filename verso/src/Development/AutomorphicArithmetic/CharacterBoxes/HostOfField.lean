@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.ShortNorms.hostExOneOf
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.HC GlobalTheory.EX UpperTheory.Top HostParam.Seam
 
+/- English proof (translation)
+The claim follows from `UpperTheory.T3.hostOfFieldOf UpperTheory.T3.shortNorm UpperTheory.T3.smallOne`.
+-/
 theorem UpperTheory.Top.hostOfField :
     ∀ eps C0 : ℝ, 0 < eps → eps < 1 / 52 → 1 ≤ C0 → ∃ CT2 C8 c6 Cb x0 : ℝ, C0 ≤ C8 ∧ 0 < c6 ∧ 0 < Cb ∧
     ∀ (s : Scale) (R : Ranks) (H0 : HostAx R.toFrame) (M : ℕ) (Y : ℝ), s.eps = eps → x0 ≤ s.x → RankVal s R →
@@ -14,6 +17,9 @@ theorem UpperTheory.Top.hostOfField :
         R.toFrame.Shares H.TT (s.x ^ (-1 + s.eps)) :=
   UpperTheory.T3.hostOfFieldOf UpperTheory.T3.shortNorm UpperTheory.T3.smallOne
 
+/- English proof (translation)
+The claim follows from `UpperTheory.T3.supplyOfAdmOf UpperTheory.Top.hostOfField`.
+-/
 theorem UpperTheory.Top.supplyOfAdm :
     ∀ ψ : PChar, VWinAt ψ 401 →
     (∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ x0 : ℝ, ∀ (s : Scale) (φ : Frame) (H0 : HostAx φ), s.eps = eps → x0 ≤ s.x →

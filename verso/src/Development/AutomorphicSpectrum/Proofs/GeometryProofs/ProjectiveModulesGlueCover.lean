@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory.CompanionTheory.Ggeo
 
+/- English proof (translation)
+Introduce `R E _ _ _ J _ f hf F _ _ _ _ _ _ φ hφ`. Establish `hex : ∀ g : Set.range f, ∃ i, f i = g.1` using `fun g => g.2`. Use `choose idx hidx using hex`. Establish `hA : ∀ g : Set.range f, IsLocalization.Away g.1 (Localization.Away (f (idx g)))`. Introduce `g`.
+
+Rewrite using `[← hidx g]`. Use `infer_instance`. Establish `hL : ∀ g : Set.range f, IsLocalizedModule (Submonoid.powers g.1) (φ (idx g))`. Introduce `g`. Rewrite using `[← hidx g]`.
+
+Conclude with `hφ _`. Establish `hfp : Module.FinitePresentation R E` using `Module.FinitePresentation.of_localizationSpan' (Set.range f) hf (Mₚ := fun g => F (idx g)) (Rₚ := fun g => Localization.Away (f (idx g))) (fun g => φ (idx g)) (fun g => Module.finitePresentation_of_projective _ _)`. Establish `hflat : Module.Flat R E`. Use `Module.flat_of_isLocalized_span (R := R) R E (Set.range f) hf (fun g => F (idx g)) (fun g => φ (idx g)) (fun g => ?_)` and prove the remaining obligations. Establish `: Module.Flat R (Localization.Away (f (idx g)))` using `IsLocalization.flat _ (Submonoid.powers (f (idx g)))`.
+
+Conclude with `Module.Flat.trans R (Localization.Away (f (idx g))) (F (idx g))`. Conclude with `⟨inferInstance, Module.Flat.projective_of_finitePresentation⟩`.
+-/
 theorem finite_projective_of_isLocalizedModule_cover :
     ∀ (R E : Type) [CommRing R] [AddCommGroup E] [Module R E] (J : Type) [Finite J] (f : J → R), Ideal.span (Set.range f) = ⊤ →
   ∀ (F : J → Type) [∀ i, AddCommGroup (F i)] [∀ i, Module R (F i)] [∀ i, Module (Localization.Away (f i)) (F i)]

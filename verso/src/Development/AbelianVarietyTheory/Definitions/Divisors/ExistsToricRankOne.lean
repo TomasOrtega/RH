@@ -156,6 +156,11 @@ def Modif.ofSubalgebra {R : Type} [CommRing R] [IsDomain R] (B : Subalgebra R (F
   dominant := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical B.val.toRingHom).2 (by
     rw [(RingHom.injective_iff_ker_eq_bot _).1 Subtype.val_injective]; exact bot_le)⟩
 
+/- English proof (translation)
+Rewrite `h` using `[isIntegrallyClosed_iff (FractionRing R)]`. Use `push Not at h`. Take `⟨x, hx, hn⟩` from `h`. Establish `: Module.Finite R (Algebra.adjoin R {x})` using `Algebra.finite_adjoin_simple_of_isIntegral hx`. Use `⟨Modif.ofSubalgebra (Algebra.adjoin R {x}), fun hi => ?_⟩` and prove the remaining obligations.
+
+Establish `hi' : IsIso (Spec.map (CommRingCat.ofHom (algebraMap R (Algebra.adjoin R {x}))))` using `hi`. Establish `hb : Function.Bijective (algebraMap R (Algebra.adjoin R {x}))` using `(ConcreteCategory.isIso_iff_bijective (CommRingCat.ofHom (algebraMap R (Algebra.adjoin R {x})))).1 (isIso_SpecMap_iff.1 hi' |> fun e => (ConcreteCategory.isIso_iff_bijective _).2 e)`. Take `⟨y, hy⟩` from `hb.2 ⟨x, Algebra.self_mem_adjoin_singleton R x⟩`. Conclude with `hn y (congrArg Subtype.val hy)`.
+-/
 theorem Modif.exists_not_isIso {R : Type} [CommRing R] [IsDomain R] (h : ¬ IsIntegrallyClosed R) :
     ∃ M : Modif R, ¬ IsIso M.π := by
   rw [isIntegrallyClosed_iff (FractionRing R)] at h
@@ -170,6 +175,11 @@ theorem Modif.exists_not_isIso {R : Type} [CommRing R] [IsDomain R] (h : ¬ IsIn
   obtain ⟨y, hy⟩ := hb.2 ⟨x, Algebra.self_mem_adjoin_singleton R x⟩
   exact hn y (congrArg Subtype.val hy)
 
+/- English proof (translation)
+Establish `hns : Zsqrtd.Nonsquare 8` using `⟨fun n hn => by`. Establish `: n ≤ 2` using `by nlinarith`. Apply the tactic sequence `interval_cases n <;> omega⟩`. Use `⟨ℤ√((8 : ℕ) : ℤ), inferInstance, inferInstance, Modif.exists_not_isIso fun h => ?_⟩` and prove the remaining obligations. Establish `hd : (2 : ℤ√((8 : ℕ) : ℤ)) ^ 2 ∣ Zsqrtd.sqrtd ^ 2` using `⟨2, by decide⟩`.
+
+Take `⟨c, hc⟩` from `(IsIntegrallyClosed.pow_dvd_pow_iff two_ne_zero).1 hd`. Use `congrArg Zsqrtd.im hc` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Modif.exists_nontrivial : ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (M : Modif R), ¬ IsIso M.π := by
   have hns : Zsqrtd.Nonsquare 8 := ⟨fun n hn => by
     have : n ≤ 2 := by nlinarith
@@ -183,6 +193,17 @@ theorem Modif.exists_nontrivial : ∃ (R : Type) (_ : CommRing R) (_ : IsDomain 
 
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
 
+/- English proof (translation)
+Take `⟨G, iG, cG, A, hG, ⟨U⟩⟩` from `h`. Take `⟨hL, -, -, h4, h5⟩` from `GlobalTheory.firstFiveLaws`. Use `hR.2` as an intermediate fact. Establish `hk : ∀ j, 1 ≤ n ^ j` using `fun j => Nat.one_le_pow _ _ hn.pos`. Use `choose f hf using fun j => GlobalTheory.TorsionIso.torsion_clause R _ hR.1 D A G hG U (AlgebraicClosure (FractionRing R)) (n ^ j) (hk j)`.
+
+Establish `hgi : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Use `⟨{ toModif := Modif.self R G := G grp := iG comm := cG semi := hG P := GlobalTheory.ValueForm.modelCP U.toUnifPre hL.globalFns A := A α := U.gen.inv.left ≫ pullback.fst G.hom (jK R) α_cart := GlobalTheory.ThetaBaseChange.grp_generic U.toUnifPre α_lb := LBIso.chartPull (h := U.gen …` and prove the remaining obligations. Introduce `W _ _ _ hW φ ξ hφ hloc hξ`. Take `rfl : ξ = spMap φ` from `(Category.comp_id ξ).symm.trans hξ`.
+
+Use `hW.1` as an intermediate fact. Establish `hW' : AdmBase W (maximalIdeal W)` using `⟨inferInstance, inferInstance, inferInstance, hW.2.1⟩`. Take `⟨D', hD, A', U', hP⟩` from `GlobalTheory.UT.EndBaseChange.exists_pull hL.polBaseChange h4.unifBaseChange h5.psiOnExists hR.1 hW' φ hφ (map_maximalIdeal_le φ) hG U`. Establish `hb : (Iso.refl ((Over.pullback (specOf φ)).obj G)).hom.left ≫ pullback.fst G.hom (specOf φ) = pullback.fst G.hom (specOf φ)` using `Category.id_comp _`. Use `⟨W, _, inferInstance, inferInstance, RingHom.id W, (Over.pullback (specOf φ)).obj G, inferInstance, inferInstance, (Iso.refl ((Over.pullback (specOf φ)).obj G)).hom.left ≫ pullback.fst G.hom (specOf φ), D', A', U', hD, hW, Function.injective_id, RingHom.Finite.id W, ?_, ⟨hP.lg.ch …` and prove the remaining obligations.
+
+Use `(isGrpPullback_pullback G (spMap φ)).congr ?_ hb.symm show spMap φ = Spec.map (𝟙 _) ≫ spMap φ` and prove the remaining obligations. Rewrite using `[Spec.map_id, Category.id_comp]`. Introduce `F _ _ _ _ em hF j p p₁ p' x' h₁ h₂ h₃ h₄`. Take `⟨-, hx, hgal⟩` from `GlobalTheory.UT.Cl.galois_holds R _ hR.1 D A G hG U _ F em (n ^ j) (hk j) p`. Take `⟨x, hx⟩` from `hx (f j p)`.
+
+Use `h5.qkBaseChange R W _ _ hR.1 hW' φ D A G U _ (Iso.refl _) (by show IsMonHom (𝟙 _); infer_instance) A' D' hD U' hP F hF (n ^ j) (hk j) p₁ x p' x' h₂ h₃ ?_ ((hgal p₁ (f j p) x h₁ hx).1 (((hf j).1.1 p _).2 rfl))` and prove the remaining obligations. Rewrite using `[hx, Category.assoc]`. Conclude with `h₄`.
+-/
 theorem Has.labCover (hR : Base R) {D : DegData R (maximalIdeal R)} (h : Has D) (n : ℕ) (hn : n.Prime) (ho : Odd n)
     (hu : IsUnit (n : R)) : ∃ C : LabCover D, C.toModif = Modif.self R ∧ C.n = n := by
   obtain ⟨G, iG, cG, A, hG, ⟨U⟩⟩ := h
@@ -232,6 +253,9 @@ theorem Has.labCover (hR : Base R) {D : DegData R (maximalIdeal R)} (h : Has D) 
     rw [hx, Category.assoc]
     exact h₄
 
+/- English proof (translation)
+Use `hR.2` as an intermediate fact. Take `⟨G, iG, cG, A, hG, ⟨U⟩⟩` from `h`. Take `⟨hL, -, -, h4, h5⟩` from `GlobalTheory.firstFiveLaws`. Take `⟨D', hD, A', U', -⟩` from `GlobalTheory.UT.EndBaseChange.exists_pull hL.polBaseChange h4.unifBaseChange h5.psiOnExists hR.1 hR.1 (RingHom.id R) Function.injective_id (by simp) hG U`. Conclude with `⟨R, inferInstance, inferInstance, inferInstance, RingHom.id R, D', ⟨hR.1, Function.injective_id, RingHom.Finite.id R⟩, ⟨hD⟩, _, inferInstance, inferInstance, A', IsSemiAbelian.pullback _ G hG, ⟨U'⟩⟩`.
+-/
 theorem Has.hasFin (hR : Base R) {D : DegData R (maximalIdeal R)} (h : Has D) : HasFin D := by
   have := hR.2
   obtain ⟨G, iG, cG, A, hG, ⟨U⟩⟩ := h
@@ -241,11 +265,19 @@ theorem Has.hasFin (hR : Base R) {D : DegData R (maximalIdeal R)} (h : Has D) : 
   exact ⟨R, inferInstance, inferInstance, inferInstance, RingHom.id R, D', ⟨hR.1, Function.injective_id, RingHom.Finite.id R⟩,
     ⟨hD⟩, _, inferInstance, inferInstance, A', IsSemiAbelian.pullback _ G hG, ⟨U'⟩⟩
 
+/- English proof (translation)
+Establish `hc : IsAdicComplete (maximalIdeal (PowerSeries ℚ)) (PowerSeries ℚ)`. Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Use `infer_instance`. Conclude with `⟨⟨inferInstance, inferInstance, inferInstance, hc⟩, algebraRat.charZero _⟩`.
+-/
 theorem base_powerSeries : Base (PowerSeries ℚ) := by
   have hc : IsAdicComplete (maximalIdeal (PowerSeries ℚ)) (PowerSeries ℚ) := by
     rw [PowerSeries.maximalIdeal_eq_span_X]; infer_instance
   exact ⟨⟨inferInstance, inferInstance, inferInstance, hc⟩, algebraRat.charZero _⟩
 
+/- English proof (translation)
+Take `⟨A, G, _, _, D, U, hG, -, hr, -⟩` from `GlobalTheory.TateUnif.exists_unif_rank_one`. Establish `hu : IsUnit ((3 : ℕ) : PowerSeries ℚ)`. Rewrite using `[← map_natCast (algebraMap ℚ (PowerSeries ℚ))]`. Conclude with `(IsUnit.mk0 _ (by norm_num)).map _`. Establish `h : Has D` using `⟨G, _, _, A, hG, ⟨U⟩⟩`.
+
+Take `⟨C, -, h₂⟩` from `h.labCover base_powerSeries 3 Nat.prime_three (by decide) hu`. Conclude with `⟨D, hr, h, h.hasFin base_powerSeries, C, h₂⟩`.
+-/
 theorem LabCover.exists_toric_rank_one : ∃ D : DegData (PowerSeries ℚ) (maximalIdeal (PowerSeries ℚ)),
     Module.finrank ℤ D.toPre.X = 1 ∧ Has D ∧ HasFin D ∧ ∃ C : LabCover D, C.n = 3 := by
   obtain ⟨A, G, _, _, D, U, hG, -, hr, -⟩ := GlobalTheory.TateUnif.exists_unif_rank_one

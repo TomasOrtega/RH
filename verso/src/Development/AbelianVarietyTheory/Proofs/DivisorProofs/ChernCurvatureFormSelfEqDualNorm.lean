@@ -6,16 +6,31 @@ open GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram GlobalTheory.HermFr
 
 namespace GlobalTheory.CurvForm
 
+/- English proof (translation)
+Simplify using `only [form]`. Rewrite using `[← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec]`.
+-/
 theorem form_mulVec_left {g : ℕ} (K M : Matrix (Fin g) (Fin g) ℂ) (v w : Fin g → ℂ) :
     form K (M *ᵥ v) w = form (Mᵀ * K) v w := by
   simp only [form]
   rw [← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec]
 
+/- English proof (translation)
+Simplify using `only [form]`. Rewrite using `[star_mulVec, ← mulVec_transpose, mulVec_mulVec]`.
+-/
 theorem form_mulVec_right {g : ℕ} (K M : Matrix (Fin g) (Fin g) ℂ) (v w : Fin g → ℂ) :
     form K v (M *ᵥ w) = form (K * Mᴴᵀ) v w := by
   simp only [form]
   rw [star_mulVec, ← mulVec_transpose, mulVec_mulVec]
 
+/- English proof (translation)
+Introduce `n g H z h2 hu hs hh hdd ξ v`. Establish `hP : (mdel H z ξ)ᵀ = mdel H z ξ`. Rewrite using `[← mdel_transpose, mdel_congr (hs.mono fun x hx => hx.eq)]`. Establish `hQ : mdbar H z ξ = (mdel H z ξ)ᴴ` using `(conjTranspose_mdel hh ξ).symm`. Establish `hHt : (H z)ᵀ = H z` using `hs.self_of_nhds.eq`.
+
+Establish `hHi : (H z)⁻¹ᵀ = (H z)⁻¹` using `by rw [transpose_nonsing_inv, hHt]`. Rewrite using `[curv_eq h2 hu, hdd, transpose_zero, Matrix.mul_zero, sub_zero, hHt, hP, hQ]`. Use `set P := mdel H z ξ with hPdef`. Establish `hPc : Pᴴᵀ = Pᴴ`. Use extensionality with `i j`.
+
+Use `congrFun (congrFun hP i) j` as an intermediate fact. Simplify using `only [transpose_apply, conjTranspose_apply] at this ⊢`. Rewrite using `[this]`. Simplify using `only [form_mulVec_left, form_mulVec_right]`. Use `congr 1`.
+
+Rewrite using `[transpose_mul, transpose_mul, transpose_mul, hHi, hP, transpose_transpose, hPc, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.mul_one]`.
+-/
 theorem form_curv_self_eq : ∀ (n g : ℕ) (H : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ) (z : Fin n → ℂ),
     MContDiffAt 2 H z → IsUnit (H z).det → (∀ᶠ x in 𝓝 z, (H x).IsSymm) →
     (∀ᶠ x in 𝓝 z, (H x).IsHermitian) → (∀ ξ η, mddbar H z ξ η = 0) →

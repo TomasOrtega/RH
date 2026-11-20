@@ -16,6 +16,11 @@ namespace GlobalTheory.CuspRep.UnrSat
 
 open GlobalTheory.CuspRep GlobalTheory.LFun GlobalTheory.PRep
 
+/- English proof (translation)
+Introduce `hF E _ _ _ a π v hs`. Take `⟨σ, hσ, hadm⟩` from `LocEx.exists_isLocComp hF E a π v`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hs`. Take `⟨y, hy0, hy⟩` from `LocSph.exists_fixed_of_mem_iSup ((finRep E a).comp (locGL E a v)) σ.ρ σ.irred (fun f : LocSph.Maps π v σ => f.1) (fun f => f.2.2) (KGL v a : Set _) x.1 (fun e => hx0 (Subtype.ext e)) (fun k hk => congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hx k hk)) (by rw [LocSph.iSup_ra …`. Establish `hsph : GlobalTheory.LGrp.IsSpherical σ.ρ (KGL v a)` using `(Submodule.ne_bot_iff _).2 ⟨y, GlobalTheory.LGrp.mem_fixed.2 hy, hy0⟩`.
+
+Establish `hfin : FiniteDimensional ℂ (fixed σ.ρ (KGL v a))` using `hadm.2 _ (SatCompare.isOpen_isCompact_KGL v a).1 (SatCompare.isOpen_isCompact_KGL v a).2`. Take `⟨B, hB⟩` from `SatCompare.exists_hasSatGL ⟨σ.smooth, σ.irred⟩ hfin hsph`. Conclude with `⟨B, HeightCounting.Blocks.hasSatGL_locRep hσ hB⟩`.
+-/
 theorem exists_hasSatGL_locRep : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E] [NumberField E]
     [NumberField.IsTotallyComplex E] (a : ℕ) (π : GlobalTheory.CuspRep.CuspSub E a) (v : HeightOneSpectrum (𝓞 E)),
     GlobalTheory.LGrp.IsSpherical (π.locRep v) (GlobalTheory.LFun.KGL v a) → ∃ B : Multiset ℂˣ, GlobalTheory.LFun.HasSatGL v (π.locRep v) B := by

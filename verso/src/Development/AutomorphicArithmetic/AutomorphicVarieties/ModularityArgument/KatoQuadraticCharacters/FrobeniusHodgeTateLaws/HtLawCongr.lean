@@ -7,6 +7,11 @@ open scoped Matrix MatrixGroups
 
 namespace UpperTheory.V.Z.Kato.Joint
 
+/- English proof (translation)
+Take `⟨ζ, hζ, hm⟩` from `h`. Use `⟨ζ, hζ, fun m hm1 => ?_⟩` and prove the remaining obligations. Take `⟨ι, x, P, o, hP, hψ⟩` from `hm m (le_trans (le_max_left _ _) hm1)`. Use `⟨ι, x, P, o, hP, fun ψ hprim => ?_⟩` and prove the remaining obligations. Rewrite using `[← hR m (le_trans (le_max_right _ _) hm1)]`.
+
+Conclude with `hψ ψ hprim`.
+-/
 theorem htLaw_congr {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {c : Coef l}
     {Z : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l} {j : Ω →+* Qbar l} {m₀ c₀ : ℕ}
     {R R' : ∀ m : ℕ, DirichletCharacter (Qbar l) (l ^ m) → Qbar l → Qbar l} (h : HTLawCsOfCoef A c Z j m₀ c₀ R)

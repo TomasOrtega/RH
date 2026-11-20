@@ -23,6 +23,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.FilEig
 
+/- English proof (translation)
+Introduce `hPC hDR hDC E _ _ _ _ I _ d φ hφ 𝔣 h𝔣 l _ Q hQ hQl y hy lam 𝔠 R _ hR X₀ X U p cm hpull hrm hα j hj φK hφK n eH`. Use `choose α hαm hαp hαu using hα`. Establish `hcm : ∀ a, IsMonHom (cm.act a)` using `cm.hom`. Establish `hgrp : IsGrpPullback X.A X₀.A (spMap (algebraMap R ℂ)) p` using `hpull.grp`. Take `⟨hbc, hF1⟩` from `hDR.2.2.1 R X₀.A _ X₀.ab X₀.dim ℂ X.A p hgrp`.
+
+Take `⟨hfin, hproj, -⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim hDR.1 X₀.ab X₀.dim`. Take `⟨-, hcompl, -⟩` from `hDR.2.1 R X₀.A _ X₀.ab X₀.dim`. Establish `hcorr : ∀ (h : HdR X₀.A) c, hbc.bcMap h ((GlobalTheory.Published.AbelianDeRham.bcMor hgrp).pull c) = algebraMap R ℂ (h c)` using `fun h c ↦ (hbc.corr_iff.2 rfl) c`. Set `β : (Fin n → R) →ₛₗ[algebraMap R ℂ] HdR X.A` to `hbc.bcMap.comp eH.symm.toLinearMap`. Establish `hc0 : condQ 𝔣 Q ≠ ⊥`.
+
+Rewrite using `[condQ, Ne, Ideal.mul_eq_bot, not_or]`. Use `⟨h𝔣.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.zero_eq_bot, Finset.prod_eq_zero_iff]`. Use `push_neg`. Introduce `q _`.
+
+Rewrite using `[Ideal.zero_eq_bot]`. Conclude with `q.ne_bot`. Establish `hC` using `GlobalTheory.T.cm_order_uniformization_endomorphisms hPC hDR E I φ hφ.2.2.2.2.2.2.1 (condQ 𝔣 Q) hc0 𝔠 _ X U α hαu`. Use `GlobalTheory.T.lattice_basis_fraction_field_independent j hj β ?_ _ (fun a ↦ push (dp0 ℂ) (𝟙 _) (α a)) ?_ _ (fun i ↦ GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φK i)) ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.semilinear_dual_basis_base_change (GlobalTheory.Published.AbelianDeRham.bcMor hgrp).pull hbc eH _ (fun k c ↦ hcorr _ c)`.
+
+Introduce `a x`. Establish `e` using `GrpMor.Corr.push (GlobalTheory.Published.AbelianDeRham.bcMor hgrp) (cm.act a) (α a) (hαp a).symm (hbc.corr_iff.2 rfl : (GlobalTheory.Published.AbelianDeRham.bcMor hgrp).Corr (eH.symm x) (hbc.bcMap (eH.symm x)))`. Establish `e2` using `hbc.corr_iff.1 e`. Simplify using `only [β, LinearMap.comp_apply, LinearEquiv.coe_coe, RingEquiv.toRingHom_eq_coe, RingHom.coe_comp, RingHom.coe_coe, Function.comp_apply]`. Rewrite using `[act_apply]`.
+
+Simplify `e2` using `[LinearEquiv.conjRingEquiv, LinearEquiv.conj_apply]`. Establish `himg : β '' (Submodule.map eH.toLinearMap (Fil X₀.A) : Set (Fin n → R)) = hbc.bcMap '' (Fil X₀.A : Set (HdR X₀.A))`. Use extensionality with `v`. Simplify using `[β]`. Rewrite using `[himg, Fil, GlobalTheory.T.semilinear_filtration_base_change (GlobalTheory.Published.AbelianDeRham.bcMor hgrp).pull hbc _ hcompl _ hF1 hbc.bcMap hcorr]`.
+
+Express the relevant statement in the definitionally equal form `Fil X.A = _`. Rewrite using `[hC]`. Use `congr 1`. Use extensionality with `i : 1`. Use `congr 1`.
+
+Use extensionality with `a : 1`. Use `congr 1`. Use `show _ = j (φK i _)`. Rewrite using `[← RingHom.comp_apply, hφK i]`. Both sides reduce to the same expression.
+-/
 theorem fil_baseChange_eq_iSup_eigK : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I] (d : ℕ)
       (φ : I → E →+* ℂ), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → ∀ (𝔣 : Ideal (OF E)), IsBaseCond 𝔣 →

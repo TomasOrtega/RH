@@ -5,11 +5,19 @@ namespace GlobalTheory.CompanionTheory.EulerThree
 noncomputable def cubicFactor (p : ℕ) (a b c s : ℂ) : ℂ :=
   (1 - a * (p : ℂ) ^ (-s))⁻¹ * (1 - b * (p : ℂ) ^ (-s))⁻¹ * (1 - c * (p : ℂ) ^ (-s))⁻¹
 
+/- English proof (translation)
+Rewrite using `[norm_mul, ha, one_mul, Complex.norm_natCast_cpow_of_pos (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_param_mul {p : ℕ} (hp : 2 ≤ p) {a : ℂ} (ha : ‖a‖ = 1) (s : ℂ) :
     ‖a * (p : ℂ) ^ (-s)‖ = (p : ℝ) ^ (-s.re) := by
   rw [norm_mul, ha, one_mul, Complex.norm_natCast_cpow_of_pos (by omega)]
   simp
 
+/- English proof (translation)
+Establish `hp' : (2 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `h1 : (p : ℝ) ^ (-σ) ≤ (p : ℝ) ^ (-1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Establish `h2 : (p : ℝ) ^ (-1 : ℝ) ≤ 1 / 2`. Rewrite using `[Real.rpow_neg_one, one_div]`. Conclude with `inv_anti₀ (by norm_num) hp'`.
+
+Conclude with `h1.trans h2`.
+-/
 theorem rpow_neg_le_half {p : ℕ} (hp : 2 ≤ p) {σ : ℝ} (hσ : 1 ≤ σ) :
     (p : ℝ) ^ (-σ) ≤ 1 / 2 := by
   have hp' : (2 : ℝ) ≤ p := by exact_mod_cast hp
@@ -20,12 +28,22 @@ theorem rpow_neg_le_half {p : ℕ} (hp : 2 ≤ p) {σ : ℝ} (hσ : 1 ≤ σ) :
     exact inv_anti₀ (by norm_num) hp'
   exact h1.trans h2
 
+/- English proof (translation)
+Introduce `h`. Establish `: x = 1` using `(sub_eq_zero.1 h).symm`. Rewrite `hx` using `[this, norm_one]`. Evaluate the numerical expressions using `at hx`.
+-/
 theorem one_sub_ne_zero_of_le {x : ℂ} (hx : ‖x‖ ≤ 1 / 2) : 1 - x ≠ 0 := by
   intro h
   have : x = 1 := (sub_eq_zero.1 h).symm
   rw [this, norm_one] at hx
   norm_num at hx
 
+/- English proof (translation)
+Establish `hne` using `one_sub_ne_zero_of_le hx`. Establish `hlow : 1 / 2 ≤ ‖1 - x‖`. Use `norm_sub_norm_le (1 : ℂ) x` as an intermediate fact. Rewrite `this` using `[norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `e : (1 - x)⁻¹ - 1 = x * (1 - x)⁻¹`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, norm_inv]`. Establish `hinv : ‖1 - x‖⁻¹ ≤ 2`.
+
+Rewrite using `[inv_le_comm₀ (by linarith) (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use polynomial arithmetic with `[norm_nonneg x]`.
+-/
 theorem norm_inv_one_sub_sub_one_le {x : ℂ} (hx : ‖x‖ ≤ 1 / 2) :
     ‖(1 - x)⁻¹ - 1‖ ≤ 2 * ‖x‖ := by
   have hne := one_sub_ne_zero_of_le hx
@@ -42,6 +60,17 @@ theorem norm_inv_one_sub_sub_one_le {x : ℂ} (hx : ‖x‖ ≤ 1 / 2) :
     linarith
   nlinarith [norm_nonneg x]
 
+/- English proof (translation)
+Establish `ht0 : 0 ≤ t` using `by nlinarith [norm_nonneg y₁]`. Establish `e : (1 + y₁) * (1 + y₂) * (1 + y₃) - 1 = y₁ + y₂ + y₃ + y₁ * y₂ + y₁ * y₃ + y₂ * y₃ + y₁ * y₂ * y₃` using `by ring`. Establish `m₁₂ : ‖y₁ * y₂‖ ≤ 2 * t`. Rewrite using `[norm_mul]`. Use polynomial arithmetic with `[norm_nonneg y₁, norm_nonneg y₂]`.
+
+Establish `m₁₃ : ‖y₁ * y₃‖ ≤ 2 * t`. Rewrite using `[norm_mul]`. Use polynomial arithmetic with `[norm_nonneg y₁, norm_nonneg y₃]`. Establish `m₂₃ : ‖y₂ * y₃‖ ≤ 2 * t`. Rewrite using `[norm_mul]`.
+
+Use polynomial arithmetic with `[norm_nonneg y₂, norm_nonneg y₃]`. Establish `m₁₂₃ : ‖y₁ * y₂ * y₃‖ ≤ 2 * t`. Rewrite using `[norm_mul]`. Establish `: ‖y₃‖ ≤ 1` using `by linarith`. Use polynomial arithmetic with `[norm_nonneg (y₁ * y₂), norm_nonneg y₃]`.
+
+Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_add_le _ _).trans (add_le_add_left ?_ _)` and prove the remaining obligations. Use `(norm_add_le _ _).trans (add_le_add_left ?_ _)` and prove the remaining obligations. Use `(norm_add_le _ _).trans (add_le_add_left ?_ _)` and prove the remaining obligations.
+
+Use `(norm_add_le _ _).trans (add_le_add_left ?_ _)` and prove the remaining obligations. Use `(norm_add_le _ _).trans (add_le_add_left ?_ _)` and prove the remaining obligations. Conclude with `norm_add_le _ _`. Use `_ ≤ 14 * t := by linarith`.
+-/
 theorem norm_three_sub_one_le {y₁ y₂ y₃ : ℂ} {t : ℝ} (ht : t ≤ 1 / 2)
     (h₁ : ‖y₁‖ ≤ 2 * t) (h₂ : ‖y₂‖ ≤ 2 * t) (h₃ : ‖y₃‖ ≤ 2 * t) :
     ‖(1 + y₁) * (1 + y₂) * (1 + y₃) - 1‖ ≤ 14 * t := by
@@ -71,6 +100,11 @@ theorem norm_three_sub_one_le {y₁ y₂ y₃ : ℂ} {t : ℝ} (ht : t ≤ 1 / 2
         exact norm_add_le _ _
     _ ≤ 14 * t := by linarith
 
+/- English proof (translation)
+Establish `ht` using `rpow_neg_le_half hp hs`. Establish `key : ∀ {u : ℂ}, ‖u‖ = 1 → ‖(1 - u * (p : ℂ) ^ (-s))⁻¹ - 1‖ ≤ 2 * (p : ℝ) ^ (-s.re)` using `fun hu => by`. Establish `hn` using `norm_param_mul hp hu s`. Use `norm_inv_one_sub_sub_one_le (x := _) (hn.le.trans ht)` as an intermediate fact. Rewrite `this` using `[hn]`. Then use the resulting hypothesis.
+
+Use `norm_three_sub_one_le ht (key ha) (key hb) (key hc)` as an intermediate fact. Simplify `this` using `[cubicFactor]`.
+-/
 theorem norm_cubicFactor_sub_one_le {p : ℕ} (hp : 2 ≤ p) {a b c s : ℂ} (ha : ‖a‖ = 1)
     (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) (hs : 1 ≤ s.re) :
     ‖cubicFactor p a b c s - 1‖ ≤ 14 * (p : ℝ) ^ (-s.re) := by
@@ -83,6 +117,11 @@ theorem norm_cubicFactor_sub_one_le {p : ℕ} (hp : 2 ≤ p) {a b c s : ℂ} (ha
   have := norm_three_sub_one_le ht (key ha) (key hb) (key hc)
   simpa [cubicFactor] using this
 
+/- English proof (translation)
+Establish `hp0 : (p : ℂ) ≠ 0`. Establish `: p ≠ 0` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hpow : DifferentiableAt ℂ (fun z : ℂ => (p : ℂ) ^ (-z)) s` using `(differentiableAt_id.neg).const_cpow (Or.inl hp0)`. Establish `key : ∀ {u : ℂ}, ‖u‖ = 1 → DifferentiableAt ℂ (fun z : ℂ => (1 - u * (p : ℂ) ^ (-z))⁻¹) s` using `fun hu => by`.
+
+Use `((differentiableAt_const _).sub ((differentiableAt_const _).mul hpow)).inv ?_` and prove the remaining obligations. Conclude with `one_sub_ne_zero_of_le ((norm_param_mul hp hu s).le.trans (rpow_neg_le_half hp hs))`. Conclude with `((key ha).mul (key hb)).mul (key hc)`.
+-/
 theorem differentiableAt_cubicFactor {p : ℕ} (hp : 2 ≤ p) {a b c s : ℂ} (ha : ‖a‖ = 1)
     (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) (hs : 1 ≤ s.re) :
     DifferentiableAt ℂ (fun z => cubicFactor p a b c z) s := by
@@ -99,10 +138,16 @@ theorem differentiableAt_cubicFactor {p : ℕ} (hp : 2 ≤ p) {a b c s : ℂ} (h
 
 variable {ι : Type*} {p : ι → ℕ} {a b c : ι → ℂ}
 
+/- English proof (translation)
+The claim follows from `(Real.summable_nat_rpow.2 (by linarith)).comp_injective hinj`.
+-/
 theorem summable_rpow_neg (hinj : Function.Injective p) {σ : ℝ} (hσ : 1 < σ) :
     Summable fun i => (p i : ℝ) ^ (-σ) :=
   (Real.summable_nat_rpow.2 (by linarith)).comp_injective hinj
 
+/- English proof (translation)
+Establish `hsum : Summable fun i => cubicFactor (p i) (a i) (b i) (c i) s - 1` using `Summable.of_norm_bounded ((summable_rpow_neg hinj hs).mul_left 14) fun i => norm_cubicFactor_sub_one_le (hp i) (ha i) (hb i) (hc i) hs.le`. Simplify using `using multipliable_one_add_of_summable hsum.norm`.
+-/
 theorem multipliable_cubicFactor (hinj : Function.Injective p) (hp : ∀ i, 2 ≤ p i)
     (ha : ∀ i, ‖a i‖ = 1) (hb : ∀ i, ‖b i‖ = 1) (hc : ∀ i, ‖c i‖ = 1) {s : ℂ} (hs : 1 < s.re) :
     Multipliable fun i => cubicFactor (p i) (a i) (b i) (c i) s := by
@@ -111,6 +156,15 @@ theorem multipliable_cubicFactor (hinj : Function.Injective p) (hp : ∀ i, 2 �
       fun i => norm_cubicFactor_sub_one_le (hp i) (ha i) (hb i) (hc i) hs.le
   simpa using multipliable_one_add_of_summable hsum.norm
 
+/- English proof (translation)
+Introduce `s hs`. Establish `hs : 1 < s.re` using `hs`. Take `⟨σ₀, h1, h2⟩ : ∃ σ₀ : ℝ, 1 < σ₀ ∧ σ₀ < s.re` from `exists_between hs`. Set `K : Set ℂ` to `{z | σ₀ < z.re}`. Establish `hK : IsOpen K` using `isOpen_lt continuous_const Complex.continuous_re`.
+
+Establish `hKd : ∀ i, DifferentiableOn ℂ (fun z => cubicFactor (p i) (a i) (b i) (c i) z) K` using `fun i z hz => (differentiableAt_cubicFactor (hp i) (ha i) (hb i) (hc i) (by have : σ₀ < z.re := hz linarith)).differentiableWithinAt`. Establish `hprod` using `((summable_rpow_neg hinj h1).mul_left 14).hasProdLocallyUniformlyOn_one_add (f := fun i z => cubicFactor (p i) (a i) (b i) (c i) z - 1) hK (.of_forall fun i z hz => by`. Establish `hz' : σ₀ < z.re` using `hz`. Use `(norm_cubicFactor_sub_one_le (hp i) (ha i) (hb i) (hc i) (by linarith)).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (by norm_num)` and prove the remaining obligations.
+
+Establish `: (2 : ℝ) ≤ p i` using `by exact_mod_cast hp i`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith))`. Use the proof step `(fun i => ((hKd i).sub (differentiableOn_const _)).continuousOn)`. Establish `hd : DifferentiableOn ℂ (fun z => ∏' i, (1 + (cubicFactor (p i) (a i) (b i) (c i) z - 1))) K` using `hprod.differentiableOn (.of_forall fun _ => by`. Simplify `DifferentiableOn.finsetProd (fun i _ => hKd i)) hK` using `[Finset.prod_fn]`.
+
+Establish `h3` using `hd.differentiableAt (hK.mem_nhds h2)`. Simplify using `only [add_sub_cancel] at h3`. Conclude with `h3.differentiableWithinAt`.
+-/
 theorem differentiableOn_tprod_cubicFactor (hinj : Function.Injective p) (hp : ∀ i, 2 ≤ p i)
     (ha : ∀ i, ‖a i‖ = 1) (hb : ∀ i, ‖b i‖ = 1) (hc : ∀ i, ‖c i‖ = 1) :
     DifferentiableOn ℂ (fun s => ∏' i, cubicFactor (p i) (a i) (b i) (c i) s)

@@ -9,6 +9,11 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Use `⟨⟨LocalizedModule.mk (1 : R ⧸ J) 1, 0, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite `h` using `[← LocalizedModule.zero_mk (1 : W.primeCompl), LocalizedModule.mk_eq]`. Take `⟨v, hv⟩` from `h`. Establish `hv' : ((v : R) : R ⧸ J) = 0`. Simplify `hv` using `[Submonoid.smul_def, Algebra.smul_def]`.
+
+Conclude with `v.2 (hJW (Ideal.Quotient.eq_zero_iff_mem.mp hv'))`.
+-/
 theorem localizedModule_quot_nontrivial {R : Type u} [CommRing R] (J W : Ideal R) [W.IsPrime]
     (hJW : J ≤ W) : Nontrivial (LocalizedModule W.primeCompl (R ⧸ J)) := by
   refine ⟨⟨LocalizedModule.mk (1 : R ⧸ J) 1, 0, fun h => ?_⟩⟩
@@ -18,6 +23,13 @@ theorem localizedModule_quot_nontrivial {R : Type u} [CommRing R] (J W : Ideal R
     simpa [Submonoid.smul_def, Algebra.smul_def] using hv
   exact v.2 (hJW (Ideal.Quotient.eq_zero_iff_mem.mp hv'))
 
+/- English proof (translation)
+Introduce `R _ _ J W hW`. Establish `: W.IsPrime` using `hW.1.1`. Establish `hfin` using `ReciprocityTheory.ChartRestriction.G.AI.I1.locLen_ne_top hW`. Unfold `ReciprocityTheory.ChartRestriction.G.AI.locLen at hfin`. Use `localizedModule_quot_nontrivial J W hW.1.2` as an intermediate fact.
+
+Establish `hpos : 0 < Module.length (Localization.AtPrime W) (LocalizedModule W.primeCompl (R ⧸ J))` using `Module.length_pos`. Unfold `locCycle`. Rewrite using `[dif_pos hW]`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp hfin`. Simplify using `only at hn`.
+
+Rewrite `hpos`, the goal using `[← hn]`. Simplify using `only [ENat.toNat_natCast, Nat.cast_pos]`. Conclude with `hpos` after adjusting the coercions.
+-/
 theorem LocCyclePos.proof : LocCyclePos.Statement := by
   intro R _ _ J W hW
   have : W.IsPrime := hW.1.1

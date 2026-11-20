@@ -17,6 +17,43 @@ open Classical
 end
 set_option maxHeartbeats 1000000 in
 open Classical in
+/- English proof (translation)
+Introduce `_`. Unfold `TopSep All`. Introduce `D _ T L μ0 _ sc G W M hM S MB F' hF' Ψ hΨ`. Establish `hθ : IsInfFam W.θ` using `W.θ_is`. Use `set T' : MMap MB := PiTensorProduct.lift.symm F' with hT'`.
+
+Establish `hT'm : T' ∈ Mult W.θ MB ∅ 1` using `(mem_multT W.θ MB ∅ 1 F').1 hF'`. Take `⟨Ω, hΩc, hΩ⟩` from `GlobalTheory.T.exists_compact_meets_besselTopRationalOrbits W M hM`. Establish `hφ : ∀ ξ, pairVec (coefPlus G W.θ) ξ Ψ ∈ contLeft (G.V (.top 0))` using `fun ξ => ⟨GlobalTheory.RowBplus.pairVec_cont G W.θ hθ ξ hΨ, fun γ hγ g => GlobalTheory.RowBplus.pairVec_left G W.θ ξ hΨ hγ g⟩`. Establish `H` using `fun ξ => GlobalTheory.T.besselPeriodCorankOne_additive_bounded_compact W M hM Ω hΩc hΩ _ (hφ ξ)`. Use `choose C hC using H`.
+
+Establish `hadd` using `fun ξ => (hC ξ).1`. Establish `hadd'` using `fun ξ => (hC ξ).2.1`. Establish `hbd` using `fun ξ => (hC ξ).2.2`. Establish `hTt : ∀ u : MB.Vec, F' (PiTensorProduct.tprod ℂ u) = T' u`. Introduce `u`.
+
+Establish `: F' = PiTensorProduct.lift T'` using `by rw [hT']; exact (PiTensorProduct.lift.apply_symm_apply F').symm`. Rewrite using `[this, PiTensorProduct.lift.tprod]`. Establish `hmem : ∀ x : SmT MB, F' x ∈ contLeft (G.V (.grid D.R.m 0))`. Introduce `x`. Proceed by induction on `x using PiTensorProduct.induction_on with`.
+
+Consider the case `smul_tprod r u`. Rewrite using `[map_smul, hTt]`. Conclude with `(contLeft _).smul_mem r (GlobalTheory.Core.Mi.SepPer.mult_mem_contLeft W.θ MB ∅ 1 hT'm u)`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`.
+
+Conclude with `(contLeft _).add_mem hx hy`. Establish `pv_add : ∀ ξ ξ', pairVec (coefPlus G W.θ) (ξ + ξ') Ψ = pairVec (coefPlus G W.θ) ξ Ψ + pairVec (coefPlus G W.θ) ξ' Ψ`. Introduce `ξ ξ'`. Use function extensionality and compare the values at `h`. Simplify using `[pairVec_apply]`.
+
+Establish `pv_smul : ∀ (a : ℂ) ξ, pairVec (coefPlus G W.θ) (a • ξ) Ψ = a • pairVec (coefPlus G W.θ) ξ Ψ`. Introduce `a ξ`. Use function extensionality and compare the values at `h`. Simplify using `[pairVec_apply]`. Establish `hBadd : ∀ ξ ξ' F, F ∈ contLeft (G.V (.grid D.R.m 0)) → Bplus W M (pairVec (coefPlus G W.θ) (ξ + ξ') Ψ) F = Bplus W M (pairVec (coefPlus G W.θ) ξ Ψ) F + Bplus W M (pairVec (coefPlus G W.θ) ξ' Ψ) F`.
+
+Introduce `ξ ξ' F hF`. Rewrite using `[pv_add]`. Conclude with `hadd' ξ _ (hφ ξ') F hF`. Establish `hBsmul : ∀ (a : ℂ) ξ F, Bplus W M (pairVec (coefPlus G W.θ) (a • ξ) Ψ) F = a * Bplus W M (pairVec (coefPlus G W.θ) ξ Ψ) F`. Introduce `a ξ F`.
+
+Rewrite using `[pv_smul]`. Conclude with `Bplus_smul_left W M a _ F`. Establish `hBsmulR : ∀ (a : ℂ) φ F, Bplus W M φ (a • F) = a * Bplus W M φ F`. Introduce `a φ F`. Conclude with `Bplus_smul_right W M a φ F`.
+
+Use `⟨⟨LinearMap.mk₂ ℂ (fun ξ v => Bplus W M (pairVec (coefPlus G W.θ) ξ Ψ) (F' v)) (fun ξ ξ' v => hBadd ξ ξ' _ (hmem v)) (fun a ξ v => hBsmul a ξ _) (fun ξ v v' => (congrArg (Bplus W M (pairVec (coefPlus G W.θ) ξ Ψ)) (F'.map_add v v')).trans (hadd ξ _ (hmem v) _ (hmem v'))) (fun a ξ …` and prove the remaining obligations. Introduce `Wt _ _ π e he τ x v`. Establish `hE : ∀ (y y' : Wt τ), e (PiTensorProduct.tprod ℂ (Function.update x τ (y + y'))) = e (PiTensorProduct.tprod ℂ (Function.update x τ y)) + e (PiTensorProduct.tprod ℂ (Function.update x τ y'))`. Introduce `y y'`. Rewrite using `[MultilinearMap.map_update_add, map_add]`.
+
+Establish `hEs : ∀ (a : ℂ) (y : Wt τ), e (PiTensorProduct.tprod ℂ (Function.update x τ (a • y))) = a • e (PiTensorProduct.tprod ℂ (Function.update x τ y))`. Introduce `a y`. Rewrite using `[MultilinearMap.map_update_smul, map_smul]`. Establish `hV : ∀ (u u' : MB.sm τ), F' (PiTensorProduct.tprod ℂ (Function.update v τ (u + u'))) = F' (PiTensorProduct.tprod ℂ (Function.update v τ u)) + F' (PiTensorProduct.tprod ℂ (Function.update v τ u'))`. Introduce `u u'`.
+
+Rewrite using `[MultilinearMap.map_update_add, map_add]`. Establish `hVs : ∀ (a : ℂ) (u : MB.sm τ), F' (PiTensorProduct.tprod ℂ (Function.update v τ (a • u))) = a • F' (PiTensorProduct.tprod ℂ (Function.update v τ u))`. Introduce `a u`. Rewrite using `[MultilinearMap.map_update_smul, map_smul]`. Establish `hF1 : ∀ (g : Matrix (Fin (G.V (.grid D.R.m 0)).rank) (Fin (G.V (.grid D.R.m 0)).rank) ℂ), g ∈ Formalism.QuantumDeterminants.UH (gramAt D (G.V (.grid D.R.m 0)) τ) → ∀ (x₁ y₁ : MB.sm τ), (y₁ : MB.H τ) = MB.rep τ g x₁ → F' (PiTensorProduct.tprod ℂ (Function.update v τ y₁)) = rTr _ ( …`.
+
+Introduce `g hg x₁ y₁ hy`. Rewrite using `[hTt, hTt]`. Use `mult_equiv W.θ MB ∅ 1 hT'm τ hg (Function.update v τ x₁) y₁ (by simpa using hy)` as an intermediate fact. Simplify using `using this`. Take `⟨Lw, Cu, hL, hb⟩` from `GlobalTheory.Core.Mi.SepPer.mult_bound (θ := W.θ) hθ MB (∅ : Set (GA D (G.V (.grid D.R.m 0)))) 1 hT'm Ω hΩc τ v`.
+
+Use `⟨LinearMap.mk₂ ℂ (fun y u => Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) Ψ) (F' (PiTensorProduct.tprod ℂ (Function.update v τ u)))) (fun y y' u => (congrArg (fun ξ => Bplus W M (pairVec (coefPlus G W.θ) ξ Ψ) _) (hE y y')).trans (hBadd …` and prove the remaining obligations. Introduce `y`. Establish `hℓ0` using `fun (u u' : MB.sm τ) => (congrArg (Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) Ψ)) (hV u u')).trans (hadd _ _ (hmem _) _ (hmem _))`. Establish `hℓ1` using `fun (a : ℂ) (u : MB.sm τ) => (congrArg (Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) Ψ)) (hVs a u)).trans (hBsmulR a _ _)`. Set `ℓ₀ : MB.sm τ →ₗ[ℂ] ℂ` to `{ toFun := fun u => Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) Ψ) (F' (PiTensorProduct.tprod ℂ (Function.update v τ u))) map_add' := hℓ0 map_smul' := hℓ1 }`.
+
+Take `⟨ℓ, hℓ⟩` from `LinearMap.exists_extend ℓ₀`. Establish `hℓw : ∀ u : MB.sm τ, ℓ u = Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) Ψ) (F' (PiTensorProduct.tprod ℂ (Function.update v τ u)))` using `fun u => congrArg (fun m => m u) hℓ`. Use `⟨ℓ, ⟨Lw, C (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) * Cu, hL, fun w hw => ?_⟩, fun u => hℓw u⟩` and prove the remaining obligations. Establish `hw' : w ∈ MB.sm τ` using `Submodule.subset_span hw`. Establish `e1 : ℓ w = ℓ ((⟨w, hw'⟩ : MB.sm τ) : MB.H τ)` using `rfl`.
+
+Rewrite using `[e1, hℓw]`. Use `hbd (e (PiTensorProduct.tprod ℂ (Function.update x τ y))) _ (hmem _) _ (fun z hz => by rw [hTt]; exact hb ⟨w, hw'⟩ z hz)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Introduce `h hh g hg hEm w x₁ y₁ hy`. Establish `he1` using `he τ h hh (Function.update x τ w) (Function.update x τ (π τ h w)) (by simp) (fun τ' hτ' => by simp [hτ'])`.
+
+Establish `hp` using `pairVec_comp_rho (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ w))) Ψ (atTau_mem_GinfC' W.θ _ τ h)`. Establish `hemb : atTau W.θ (G.V (.grid D.R.m 0)) τ g = embTop G (atTau W.θ (G.V (.top 0)) τ h)` using `(embRel_iff _ _ _).1 (GlobalTheory.T.embRel_atRealPlace_of_unitaryEmbedding D W.θ hθ _ _ _ τ h g hh hg hEm)`. Use `show Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ (π τ h w)))) Ψ) (F' (PiTensorProduct.tprod ℂ (Function.update v τ y₁))) = Bplus W M (pairVec (coefPlus G W.θ) (e (PiTensorProduct.tprod ℂ (Function.update x τ w))) Ψ) (F' (PiTensorProduct.tp …`. Rewrite using `[he1, hp, hF1 g hg x₁ y₁ hy, hemb]`. Conclude with `GlobalTheory.T.besselPeriodCorankOne_simultaneous_rightTranslate W M hM _ (hφ _) _ (hmem _) _`.
+
+Introduce `u hu w x₁ y₁ hy show Bplus W M _ (F' (PiTensorProduct.tprod ℂ (Function.update v τ y₁))) = _ * Bplus W M _ (F' (PiTensorProduct.tprod ℂ (Function.update v τ x₁)))`. Rewrite using `[hF1 u hu.1 x₁ y₁ hy]`. Conclude with `GlobalTheory.T.besselPeriodCorankOne_rightTranslate_unipotent W M hM _ _ (hmem _) _ (GlobalTheory.T.atRealPlace_mem_unipotentFlag_adelic D W.θ hθ _ G.besTop.e τ u hu)`.
+-/
 theorem theta_lifts_separate_of_separating_data : _root_.GlobalTheory.FunPr.ThetaLocalInputs → TopSep := by
   intro _
   unfold TopSep All
@@ -140,6 +177,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SepRows.SepProof.theta_lifts_separate_of_separating_data | exact _root_.GlobalTheory.SepRows.SepProof.theta_lifts_separate_of_separating_data | (intros; apply _root_.GlobalTheory.SepRows.SepProof.theta_lifts_separate_of_separating_data <;> assum …`.
+-/
 theorem _root_.GlobalTheory.T.theta_lifts_separate_points : _root_.GlobalTheory.FunPr.ThetaLocalInputs → TopSep := by
   first | exact @_root_.GlobalTheory.SepRows.SepProof.theta_lifts_separate_of_separating_data | exact _root_.GlobalTheory.SepRows.SepProof.theta_lifts_separate_of_separating_data | (intros; apply _root_.GlobalTheory.SepRows.SepProof.theta_lifts_separate_of_separating_data <;> assumption)
 end

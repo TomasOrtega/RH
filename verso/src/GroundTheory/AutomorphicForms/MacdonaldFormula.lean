@@ -19,6 +19,11 @@ def vWeight (t : ℂ) (l : Fin n → ℤ) : ℂ :=
 
 def hallLittlewoodP (t : ℂ) (l : Fin n → ℤ) : LaurentRing n := (vWeight t l)⁻¹ • hlR t l
 
+/- English proof (translation)
+Use `Finset.prod_ne_zero_iff.2 fun k _ => div_ne_zero ?_ ?_` and prove the remaining obligations. Introduce `h`. Establish `h' : t ^ (k + 1) = t ^ 0` using `by rw [pow_zero]; exact (sub_eq_zero.1 h).symm`. Use `ht h'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Introduce `h`. Establish `h' : t ^ 1 = t ^ 0` using `by rw [pow_zero, pow_one]; exact (sub_eq_zero.1 h).symm`. Use `ht h'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vPoly_ne_zero {t : ℂ} (ht : Function.Injective fun k : ℕ => t ^ k) (m : ℕ) :
     vPoly m t ≠ 0 := by
   refine Finset.prod_ne_zero_iff.2 fun k _ => div_ne_zero ?_ ?_
@@ -31,10 +36,20 @@ theorem vPoly_ne_zero {t : ℂ} (ht : Function.Injective fun k : ℕ => t ^ k) (
     have := ht h'
     omega
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun _ _ => vPoly_ne_zero ht _`.
+-/
 theorem vWeight_ne_zero {t : ℂ} (ht : Function.Injective fun k : ℕ => t ^ k) (l : Fin n → ℤ) :
     vWeight t l ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun _ _ => vPoly_ne_zero ht _
 
+/- English proof (translation)
+Establish `hq : 1 < qF F` using `Finite.one_lt_card`. Establish `hpos : (0 : ℝ) < (qF F : ℝ)⁻¹` using `inv_pos.2 (by exact_mod_cast qF_pos)`. Establish `hne : (qF F : ℝ)⁻¹ ≠ 1`. Introduce `h`. Rewrite `h` using `[inv_eq_one]`.
+
+Establish `: (1 : ℝ) < qF F` using `by exact_mod_cast hq`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b hab`. Apply `pow_right_injective₀ hpos hne` to reduce the goal to its premises. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+
+Simplify using `only at hab ⊢`. Use `push_cast`. Conclude with `hab`.
+-/
 theorem injective_qInv_pow : Function.Injective fun k : ℕ => ((qF F : ℂ))⁻¹ ^ k := by
   have hq : 1 < qF F := Finite.one_lt_card
   have hpos : (0 : ℝ) < (qF F : ℝ)⁻¹ := inv_pos.2 (by exact_mod_cast qF_pos)
@@ -50,6 +65,11 @@ theorem injective_qInv_pow : Function.Injective fun k : ℕ => ((qF F : ℂ))⁻
   push_cast
   exact hab
 
+/- English proof (translation)
+Establish `h1 : evalAt z (esymmL n r) * evalAt z (Q l) = ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r, evalAt z (Q (l + lamS S))`. Rewrite using `[← map_mul, hQ, map_sum]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`.
+
+Rewrite using `[h1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Rewrite using `[halfModulus_add, ← kappa_mul_halfModulus hr (Finset.mem_powersetCard.1 hS).2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem halfModulus_mul_recursion (Q : (Fin n → ℤ) → LaurentRing n)
     (hQ : ∀ r l, esymmL n r * Q l = ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r, Q (l + lamS S))
     (z : Fin n → ℂˣ) {r : ℕ} (hr : r ≤ n) (l : Fin n → ℤ) :
@@ -67,12 +87,23 @@ theorem halfModulus_mul_recursion (Q : (Fin n → ℤ) → LaurentRing n)
         rw [halfModulus_add, ← kappa_mul_halfModulus hr (Finset.mem_powersetCard.1 hS).2]
         ring
 
+/- English proof (translation)
+Simplify using `only [rhoPair, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem rhoPair_add (a b : Fin n → ℤ) : rhoPair (a + b) = rhoPair a + rhoPair b := by
   simp only [rhoPair, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [rhoPair, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]`.
+-/
 theorem rhoPair_neg (a : Fin n → ℤ) : rhoPair (-a) = -rhoPair a := by
   simp only [rhoPair, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Establish `hne : i ≠ j` using `fun h => by rw [h] at hij; omega`. Establish `hs : μ ∘ Equiv.swap i j = μ + (Pi.single i 1 + -Pi.single j 1)`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Pi.add_apply, Pi.neg_apply, Pi.single_apply, Equiv.swap_apply_def]`. Apply the tactic sequence `split_ifs <;> subst_vars <;> omega`.
+
+Rewrite using `[hs, rhoPair_add, rhoPair_add, rhoPair_neg, rhoPair_single, rhoPair_single]`. Move the coercions through the operations in `[hij]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rhoPair_comp_swap {μ : Fin n → ℤ} {i j : Fin n} (hij : (j : ℕ) = i + 1)
     (hμ : μ j = μ i + 1) : rhoPair (μ ∘ Equiv.swap i j) = rhoPair μ + 2 := by
   have hne : i ≠ j := fun h => by rw [h] at hij; omega
@@ -85,6 +116,9 @@ theorem rhoPair_comp_swap {μ : Fin n → ℤ} {i j : Fin n} (hij : (j : ℕ) = 
   push_cast [hij]
   ring
 
+/- English proof (translation)
+Rewrite using `[hlR_swap _ hij hμ, map_smul, smul_eq_mul, halfModulus_eq, halfModulus_eq, rhoPair_comp_swap hij hμ, neg_add, zpow_add₀ sqrtQ_ne_zero, ← sqrtQ_sq]`. Rewrite using `[show (sqrtQ F) ^ (-2 : ℤ) = ((sqrtQ F) ^ 2)⁻¹ by rw [_root_.zpow_neg]; norm_cast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem halfModulus_hlR_swap (z : Fin n → ℂˣ) {μ : Fin n → ℤ} {i j : Fin n}
     (hij : (j : ℕ) = i + 1) (hμ : μ j = μ i + 1) :
     halfModulus F (μ ∘ Equiv.swap i j) * evalAt z (hlR ((qF F : ℂ))⁻¹ (μ ∘ Equiv.swap i j)) =
@@ -94,12 +128,18 @@ theorem halfModulus_hlR_swap (z : Fin n → ℂˣ) {μ : Fin n → ℤ} {i j : F
   rw [show (sqrtQ F) ^ (-2 : ℤ) = ((sqrtQ F) ^ 2)⁻¹ by rw [_root_.zpow_neg]; norm_cast]
   ring
 
+/- English proof (translation)
+Establish `hp : (Finset.univ : Finset (Fin n)).powersetCard n = {Finset.univ}`. Simplify using `using Finset.powersetCard_self (Finset.univ : Finset (Fin n))`. Rewrite using `[evalAt_esymmL, hp, Finset.sum_singleton, monomialChar_apply]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => Units.ne_zero _`.
+-/
 theorem evalAt_esymmL_self_ne_zero (z : Fin n → ℂˣ) : evalAt z (esymmL n n) ≠ 0 := by
   have hp : (Finset.univ : Finset (Fin n)).powersetCard n = {Finset.univ} := by
     simpa using Finset.powersetCard_self (Finset.univ : Finset (Fin n))
   rw [evalAt_esymmL, hp, Finset.sum_singleton, monomialChar_apply]
   exact Finset.prod_ne_zero_iff.2 fun i _ => Units.ne_zero _
 
+/- English proof (translation)
+Use `altQuot_eq_of_mul ?_` and prove the remaining obligations. Rewrite using `[mul_one, zero_add]`. Both sides reduce to the same expression.
+-/
 theorem schur_zero : schur (0 : Fin n → ℤ) = 1 := by
   refine altQuot_eq_of_mul ?_
   rw [mul_one, zero_add]
@@ -108,6 +148,19 @@ theorem schur_zero : schur (0 : Fin n → ℤ) = 1 := by
 variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
   {μ : Measure (GL (Fin n) F)} [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Use `set t : ℂ := ((qF F : ℂ))⁻¹`. Use `set f : (Fin n → ℤ) → ℂ := fun m => vPoly n t * zonalSpherical μ z (torusPow F n m) - halfModulus F m * evalAt z (hlR t m) with hf`. Establish `hswap : ∀ (m : Fin n → ℤ) (i j : Fin n), (j : ℕ) = i + 1 → m j = m i + 1 → f (m ∘ Equiv.swap i j) = f m`. Introduce `m i j hij hm`. Simplify using `only [hf]`.
+
+Rewrite using `[zonalSpherical_torusPow_comp, halfModulus_hlR_swap z hij hm]`. Establish `key` using `eq_zero_of_recursion (fun S => (kappa F S : ℝ)) (fun S => by exact_mod_cast kappa_pos S) (fun r => sqrtQ F ^ (r * (n - r)) * evalAt z (esymmL n r)) (by`. Rewrite using `[Nat.sub_self, mul_zero, pow_zero, one_mul]`. Conclude with `evalAt_esymmL_self_ne_zero z)`. Use `f`.
+
+Use the proof step `(by`. Introduce `m hm r hr`. Establish `h1` using `zonalSpherical_recursion (μ := μ) z hm hr`. Establish `h2` using `halfModulus_mul_recursion (F := F) (hlR t) (fun r l => esymmL_mul_hlR t r l) z hr m`. Simplify using `only [hf, Complex.ofReal_natCast]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, h2, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun S _ => by ring)`. Use the proof step `(fun m hm S => Or.inr (by`. Take `⟨σ, hσ, hfσ⟩` from `exists_perm_antitone f hswap hm S`.
+
+Conclude with `⟨σ, hσ, hfσ.symm⟩))`. Use the proof step `(by`. Simplify using `only [hf, torusPow_zero, zonalSpherical_one, halfModulus_zero, one_mul, mul_one]`. Rewrite using `[hlR_zero t injective_qInv_pow, AlgHom.commutes]`. Use the proof step `simp)`.
+
+Conclude with `sub_eq_zero.1 (key l hl)`.
+-/
 theorem macdonald_formula_hlR (z : Fin n → ℂˣ) {l : Fin n → ℤ} (hl : Antitone l) :
     vPoly n ((qF F : ℂ))⁻¹ * zonalSpherical μ z (torusPow F n l) =
       halfModulus F l * evalAt z (hlR ((qF F : ℂ))⁻¹ l) := by
@@ -146,6 +199,11 @@ theorem macdonald_formula_hlR (z : Fin n → ℂˣ) {l : Fin n → ℤ} (hl : An
       simp)
   exact sub_eq_zero.1 (key l hl)
 
+/- English proof (translation)
+Establish `h` using `macdonald_formula_hlR (μ := μ) z hl`. Establish `hv` using `vPoly_ne_zero (injective_qInv_pow (F := F)) n`. Establish `hw` using `vWeight_ne_zero (injective_qInv_pow (F := F)) l`. Establish `h' : zonalSpherical μ z (torusPow F n l) = halfModulus F l * evalAt z (hlR ((qF F : ℂ))⁻¹ l) / vPoly n ((qF F : ℂ))⁻¹`. Rewrite using `[eq_div_iff hv, mul_comm, h]`.
+
+Rewrite using `[hallLittlewoodP, map_smul, smul_eq_mul, h']`. Generalize the expression as in `((qF F : ℂ))⁻¹ = t at hv hw ⊢`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem macdonald_formula (z : Fin n → ℂˣ) {l : Fin n → ℤ} (hl : Antitone l) :
     zonalSpherical μ z (torusPow F n l) =
       halfModulus F l * (vWeight ((qF F : ℂ))⁻¹ l / vPoly n ((qF F : ℂ))⁻¹) *
@@ -160,6 +218,19 @@ theorem macdonald_formula (z : Fin n → ℂˣ) {l : Fin n → ℤ} (hl : Antito
   generalize ((qF F : ℂ))⁻¹ = t at hv hw ⊢
   field_simp
 
+/- English proof (translation)
+Use `set F' : (Fin n → ℤ) → ℂ := fun m => f (torusPow F n m) - f 1 * zonalSpherical μ z (torusPow F n m) with hF'`. Establish `hcomp : ∀ (m : Fin n → ℤ) (σ : Equiv.Perm (Fin n)), f (torusPow F n (m ∘ σ)) = f (torusPow F n m)`. Introduce `m σ`. Rewrite using `[← permGL_conj_torusPow, hfK _ _ (permGL_mem_integralGL F n σ), hfK' _ ((integralGL F n).inv_mem (permGL_mem_integralGL F n σ))]`. Establish `hswap : ∀ (m : Fin n → ℤ) (i j : Fin n), (j : ℕ) = i + 1 → m j = m i + 1 → F' (m ∘ Equiv.swap i j) = F' m`.
+
+Introduce `m i j _ _`. Simplify using `only [hF']`. Rewrite using `[hcomp, zonalSpherical_torusPow_comp]`. Establish `key` using `eq_zero_of_recursion (fun S => (kappa F S : ℝ)) (fun S => by exact_mod_cast kappa_pos S) (fun r => sqrtQ F ^ (r * (n - r)) * evalAt z (esymmL n r)) (by`. Rewrite using `[Nat.sub_self, mul_zero, pow_zero, one_mul]`.
+
+Conclude with `evalAt_esymmL_self_ne_zero z)`. Use the proof step `F'`. Use the proof step `(by`. Introduce `m hm r hr`. Establish `h1` using `zonalSpherical_recursion (μ := μ) z hm hr`.
+
+Establish `h2` using `recursion_of_integral_eq (μ := μ) z hfK (fun u hu g => hfK' u hu.2 g) hm hr (heig _ _)`. Simplify using `only [hF', Complex.ofReal_natCast]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, h2, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun S _ => by ring)`.
+
+Use the proof step `(fun m hm S => Or.inr (by`. Take `⟨σ, hσ, hfσ⟩` from `exists_perm_antitone F' hswap hm S`. Conclude with `⟨σ, hσ, hfσ.symm⟩))`. Use the proof step `(by simp only [hF', torusPow_zero, zonalSpherical_one, mul_one, sub_self])`. Take `⟨l, hl, k₁, hk₁, k₂, hk₂, rfl⟩` from `Cartan.exists_eq_mul_diagPow_mul F n g`.
+
+Rewrite using `[hfK _ _ hk₂, hfK' _ hk₁, zonalSpherical_mul_right z _ hk₂, zonalSpherical_mul_left z hk₁, diagPow_eq_torusPow]`. Conclude with `sub_eq_zero.1 (key l hl)`.
+-/
 theorem eq_smul_zonalSpherical (z : Fin n → ℂˣ) {f : GL (Fin n) F → ℂ}
     (hfK : ∀ g, ∀ k ∈ integralGL F n, f (g * k) = f g)
     (hfK' : ∀ k ∈ integralGL F n, ∀ g, f (k * g) = f g)
@@ -204,6 +275,21 @@ theorem eq_smul_zonalSpherical (z : Fin n → ℂˣ) {f : GL (Fin n) F → ℂ}
     diagPow_eq_torusPow]
   exact sub_eq_zero.1 (key l hl)
 
+/- English proof (translation)
+Use `split_ifs with hl`. Use `swap`. Conclude with `eq_zero_of_not_antitone hψ₁ hWN hWK hl`. Establish `hN : ∀ u ∈ unipotent F n ⊓ integralGL F n, ∀ g, W (u * g) = W g`. Introduce `u hu g`.
+
+Rewrite using `[hWN u hu.1, psiN_eq_one_of_mem hψ₀ hu, one_mul]`. Use `set f : (Fin n → ℤ) → ℂ := fun m => W (torusPow F n m) - W 1 * (halfModulus F m * evalAt z (schur m)) with hf`. Establish `key` using `eq_zero_of_recursion (fun S => (kappa F S : ℝ)) (fun S => by exact_mod_cast kappa_pos S) (fun r => sqrtQ F ^ (r * (n - r)) * evalAt z (esymmL n r)) (by`. Rewrite using `[Nat.sub_self, mul_zero, pow_zero, one_mul]`. Conclude with `evalAt_esymmL_self_ne_zero z)`.
+
+Use `f`. Use the proof step `(by`. Introduce `m hm r hr`. Establish `h1` using `recursion_of_integral_eq (μ := μ) z hWK hN hm hr (heig _ _)`. Establish `h2` using `halfModulus_mul_recursion (F := F) schur (fun r l => esymmL_mul_schur r l) z hr m`.
+
+Simplify using `only [hf, Complex.ofReal_natCast]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, h2, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun S _ => by ring)`. Use the proof step `(by`.
+
+Introduce `m hm S`. Distinguish the cases in `hant : Antitone (m + lamS S)`. Conclude with `Or.inr ⟨1, by simpa using hant, by simp⟩`. Use `left`. Take `⟨i, j, hij, hmij, hiS, hjS⟩` from `exists_ascent hm hant`.
+
+Establish `hasc : (m + lamS S) j = (m + lamS S) i + 1`. Simplify using `only [Pi.add_apply, lamS_apply, hiS, hjS, if_true, if_false, hmij]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hf]`. Rewrite using `[eq_zero_of_not_antitone hψ₁ hWN hWK hant, schur_eq_zero_of_ascent hij hasc, map_zero, mul_zero, mul_zero, sub_zero])`.
+
+Use the proof step `(by simp only [hf, torusPow_zero, halfModulus_zero, schur_zero, map_one, mul_one, sub_self])`. Use `key l hl` as an intermediate fact. Simplify using `only [hf] at this`. Rewrite using `[mul_assoc]`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem casselman_shalika (ψ₀ : AddChar F ℂ) (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (hψ₁ : ∃ x : F, (GLnLocal.uniformizer F : F) * x ∈ 𝒪[F] ∧ ψ₀ x ≠ 1) (z : Fin n → ℂˣ)
     {W : GL (Fin n) F → ℂ}

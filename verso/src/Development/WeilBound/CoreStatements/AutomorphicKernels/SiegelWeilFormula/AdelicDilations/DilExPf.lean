@@ -11,6 +11,19 @@ namespace PositivityTheory.SiegelWeilFormula.AStep
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `set D : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal fun j => (Real.exp (τ * X j) : ℂ) with hD`. Use `set D' : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal fun j => (Real.exp (-(τ * X j)) : ℂ) with hD'`. Establish `h1 : Dᴴ = D`. Rewrite using `[hD, Matrix.diagonal_conjTranspose]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Simplify using `only [Pi.star_apply]`. Conclude with `Complex.conj_ofReal _`. Establish `h2 : D'ᴴ = D'`. Rewrite using `[hD', Matrix.diagonal_conjTranspose]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.star_apply]`. Conclude with `Complex.conj_ofReal _`. Establish `h3 : D * D' = 1`.
+
+Rewrite using `[hD, hD', Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add, add_neg_cancel, Real.exp_zero, Complex.ofReal_one]`. Establish `h4 : D' * D = 1`.
+
+Rewrite using `[hD, hD', Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add, neg_add_cancel, Real.exp_zero, Complex.ofReal_one]`. Establish `hg : InG (Matrix.fromBlocks D 0 0 D')`.
+
+Unfold `InG JJ`. Rewrite using `[Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[h1, h2, h3, h4]`. Conclude with `⟨Krd.DM.mkG _ hg, rfl⟩`.
+-/
 theorem dilEx_pf (n : ℕ) (X : Fin n → ℝ) (τ : ℝ) : ∃ y : GR n, IsDil X τ y := by
   set D : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal fun j => (Real.exp (τ * X j) : ℂ) with hD
   set D' : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal fun j => (Real.exp (-(τ * X j)) : ℂ) with hD'
@@ -30,6 +43,9 @@ theorem dilEx_pf (n : ℕ) (X : Fin n → ℝ) (τ : ℝ) : ∃ y : GR n, IsDil 
     simp [h1, h2, h3, h4]
   exact ⟨Krd.DM.mkG _ hg, rfl⟩
 
+/- English proof (translation)
+Take `⟨x', y, h, hx⟩` from `KSplitW.decompW d R w x`. Conclude with `⟨x', y, h, KSplitW.commW d R w x' hx⟩`.
+-/
 theorem decW_pf {d : SD σ} (R : RD d) (w : InfinitePlace F) (x : d.G) :
     ∃ (x' : d.G) (y : GR d.n), x = x' * R.ι w y ∧ ∀ y' : GR d.n, x' * R.ι w y' = R.ι w y' * x' := by
   obtain ⟨x', y, h, hx⟩ := KSplitW.decompW d R w x

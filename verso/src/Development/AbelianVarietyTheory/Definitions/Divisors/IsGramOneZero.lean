@@ -17,6 +17,15 @@ variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [M
 
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
+/- English proof (translation)
+Establish `h : (exteriorPower.ιMulti K m).compLinearMap (Fintype.linearCombination K b) = (Matrix.detRowAlternating : (Fin m → K) [⋀^Fin m]→ₗ[K] K).smulRight (exteriorPower.ιMulti K m b)`. Use `(Pi.basisFun K (Fin m)).ext_alternating fun v hv => ?_` and prove the remaining obligations. Set `s : Equiv.Perm (Fin m)` to `Equiv.ofBijective v (Finite.injective_iff_bijective.1 hv)`. Establish `e : (fun i => Pi.basisFun K (Fin m) (v i)) = (fun i => Pi.basisFun K (Fin m) i) ∘ s` using `rfl`. Rewrite using `[e, AlternatingMap.map_perm, AlternatingMap.map_perm]`.
+
+Use `congr 1`. Establish `e1 : (Matrix.detRowAlternating : (Fin m → K) [⋀^Fin m]→ₗ[K] K) (fun i => Pi.basisFun K (Fin m) i) = 1`. Express the relevant statement in the definitionally equal form `Matrix.det (Matrix.of fun i => Pi.basisFun K (Fin m) i) = 1`. Rewrite using `[show (Matrix.of fun i => Pi.basisFun K (Fin m) i) = 1 from by`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm], Matrix.det_one]`. Rewrite using `[AlternatingMap.smulRight_apply, e1, one_smul, AlternatingMap.compLinearMap_apply]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Conclude with `AlternatingMap.congr_fun h c`.
+-/
 theorem ιMulti_comb {m : ℕ} (b : Fin m → V) (c : Matrix (Fin m) (Fin m) K) :
     exteriorPower.ιMulti K m (fun i => ∑ j, c i j • b j) = c.det • exteriorPower.ιMulti K m b := by
   have h : (exteriorPower.ιMulti K m).compLinearMap (Fintype.linearCombination K b) =
@@ -38,6 +47,11 @@ theorem ιMulti_comb {m : ℕ} (b : Fin m → V) (c : Matrix (Fin m) (Fin m) K) 
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Use `ιMulti_comb b (c.map (algebraMap (𝓞 K) K))` as an intermediate fact. Rewrite `this` using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Rewrite using `[← this]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => (algebraMap_smul K _ _).symm`.
+-/
 theorem ιMulti_comb_int {m : ℕ} (b : Fin m → V) (c : Matrix (Fin m) (Fin m) (𝓞 K)) :
     exteriorPower.ιMulti K m (fun i => ∑ j, c i j • b j) = algebraMap (𝓞 K) K c.det • exteriorPower.ιMulti K m b := by
   have := ιMulti_comb b (c.map (algebraMap (𝓞 K) K))
@@ -49,6 +63,11 @@ theorem ιMulti_comb_int {m : ℕ} (b : Fin m → V) (c : Matrix (Fin m) (Fin m)
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩ choose c hc using fun i => (Submodule.mem_span_range_iff_exists_fun (𝓞 K)).1 (hy i)`. Rewrite using `[show y = fun i => ∑ j, (Matrix.of c) i j • b j from funext fun i => (hc i).symm, ιMulti_comb_int]`. Conclude with `Submodule.mem_span_singleton.2 ⟨_, rfl⟩`. Introduce and unpack `_ rfl`.
+
+Conclude with `⟨b, fun i => Submodule.subset_span ⟨i, rfl⟩, rfl⟩`.
+-/
 theorem detSpan_span {m : ℕ} (b : Fin m → V) :
     detSpan K m (Submodule.span (𝓞 K) (Set.range b)) = Submodule.span (𝓞 K) {exteriorPower.ιMulti K m b} := by
   refine le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)
@@ -61,6 +80,15 @@ theorem detSpan_span {m : ℕ} (b : Fin m → V) :
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Use extensionality with `r`. Rewrite using `[idx, detSpan_span, detSpan_span, ιMulti_comb_int, Submodule.mem_colon, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 (h _ (Submodule.mem_span_singleton_self _))`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 K) K a • algebraMap (𝓞 K) K c.det • exteriorPower.ιMulti K m b = algebraMap (𝓞 K) K r • exteriorPower.ιMulti K m b at ha`. Rewrite `ha` using `[smul_smul, ← map_mul]`. Conclude with `RingOfIntegers.ext (smul_left_injective K hb ha)`. Introduce and unpack `⟨a, rfl⟩ w hw`.
+
+Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Use `Submodule.mem_span_singleton.2 ⟨a * s, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 K) K (a * s) • algebraMap (𝓞 K) K c.det • exteriorPower.ιMulti K m b = algebraMap (𝓞 K) K (a * c.det) • algebraMap (𝓞 K) K s • exteriorPower.ιMulti K m b`. Rewrite using `[smul_smul, smul_smul, ← map_mul, ← map_mul]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem idx_span {m : ℕ} (b : Fin m → V) (hb : exteriorPower.ιMulti K m b ≠ 0) (c : Matrix (Fin m) (Fin m) (𝓞 K)) :
     idx K m (Submodule.span (𝓞 K) (Set.range b)) (Submodule.span (𝓞 K) (Set.range fun i => ∑ j, c i j • b j)) =
       Ideal.span {c.det} := by
@@ -85,6 +113,11 @@ theorem idx_span {m : ℕ} (b : Fin m → V) (hb : exteriorPower.ιMulti K m b �
 
 omit [NumberField K] [IsScalarTower (𝓞 K) K V] in
 
+/- English proof (translation)
+Establish `: detSpan K 0 N = detSpan K 0 L`. Unfold `detSpan`. Use `congr 1`. Use extensionality with `w`. Conclude with `exists_congr fun y => and_congr_left fun _ => ⟨fun _ i => i.elim0, fun _ i => i.elim0⟩`.
+
+Rewrite using `[idx, this]`. Conclude with `(Ideal.eq_top_iff_one _).2 (Submodule.mem_colon.2 fun _ h => by simpa using h)`.
+-/
 theorem idx_zero (L N : Submodule (𝓞 K) V) : idx K 0 L N = ⊤ := by
   have : detSpan K 0 N = detSpan K 0 L := by
     unfold detSpan
@@ -99,18 +132,27 @@ end Index
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {K : Type} [Field K] [NumberField K]
   {ρ : 𝓞 K} {σ₁ : K →+* ℂ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a b => by obtain rfl := Subsingleton.elim a 0 obtain rfl := Subsingleton.elim b 0 exact X.weil (Sum.inl 0), fun a => a.elim0⟩`.
+-/
 theorem isGram_one_zero (X : CMObj H K ρ σ₁ 1 0) : IsGram X (fun _ _ => X.hh (Sum.inl 0)) 0 :=
   ⟨fun a b => by
     obtain rfl := Subsingleton.elim a 0
     obtain rfl := Subsingleton.elim b 0
     exact X.weil (Sum.inl 0), fun a => a.elim0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => a.elim0, fun a b => by obtain rfl := Subsingleton.elim a 0 obtain rfl := Subsingleton.elim b 0 exact X.weil (Sum.inr 0)⟩`.
+-/
 theorem isGram_zero_one (X : CMObj H K ρ σ₁ 0 1) : IsGram X 0 (fun _ _ => X.hh (Sum.inr 0)) :=
   ⟨fun a => a.elim0, fun a b => by
     obtain rfl := Subsingleton.elim a 0
     obtain rfl := Subsingleton.elim b 0
     exact X.weil (Sum.inr 0)⟩
 
+/- English proof (translation)
+Take `⟨FA, FB, -, -, M, -, -, -, hM, -⟩` from `NumInh.exists_data hU hL X`. Conclude with `⟨FA true, FA false, FB, fun a => M (Sum.inl a), fun a => M (Sum.inr a), fun a => hM (Sum.inl a), fun a => hM (Sum.inr a)⟩`.
+-/
 theorem exists_isDiffs (hU : ThetaUnifAV) (hL : Out.Laws) {p q : ℕ} (X : CMObj H K ρ σ₁ p q) :
     ∃ (FP : GenFib (X.A true).pol) (FQ : GenFib (X.A false).pol) (FB : GenFib X.B.pol)
       (MP : Fin p → ((Fin FP.P₀.g → K) →ₗ[K] (Fin FB.P₀.g → K)))
@@ -119,6 +161,11 @@ theorem exists_isDiffs (hU : ThetaUnifAV) (hL : Out.Laws) {p q : ℕ} (X : CMObj
   exact ⟨FA true, FA false, FB, fun a => M (Sum.inl a), fun a => M (Sum.inr a), fun a => hM (Sum.inl a),
     fun a => hM (Sum.inr a)⟩
 
+/- English proof (translation)
+Take `⟨𝔫, h1, h2⟩` from `h E H hH K ρ σ₁ 1 0 X _ _ (isGram_one_zero X)`. Use `⟨𝔫, by` and prove the remaining obligations. Rewrite using `[h1, Matrix.det_isEmpty, _root_.mul_one]`. Conclude with `congrArg (fun x => Ideal.span {x}) (Matrix.det_unique (Matrix.of fun _ _ : Fin 1 => X.hh (Sum.inl 0))), fun FP FB M hM FQ τ hτ => ?_⟩`. Use `h2 FP FQ FB (fun _ => M) (fun a => a.elim0) ⟨fun a => by obtain rfl := Subsingleton.elim a 0; exact hM, fun a => a.elim0⟩ τ hτ` as an intermediate fact.
+
+Rewrite `this` using `[idx_zero]`. Simplify using `using this`.
+-/
 theorem index_one_zero (h : IdealSt) (hH : GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H) (X : CMObj H K ρ σ₁ 1 0) :
     ∃ 𝔫 : Ideal (𝓞 E), 𝔫 * 𝔫.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {X.hh (Sum.inl 0)} ∧
       ∀ (FP : GenFib (X.A true).pol) (FB : GenFib X.B.pol) (M : (Fin FP.P₀.g → K) →ₗ[K] (Fin FB.P₀.g → K)),

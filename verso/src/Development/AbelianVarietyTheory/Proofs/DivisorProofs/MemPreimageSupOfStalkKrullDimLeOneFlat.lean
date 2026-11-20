@@ -9,6 +9,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CodimOne
 
+/- English proof (translation)
+Introduce `X S _ f _ _ V U hV hU z hz`. Assume the negation of the conclusion as `hzm`. Establish `hzU : f z ∉ U` using `fun h => hzm (Or.inl h)`. Establish `hzV : z ∉ V` using `fun h => hzm (Or.inr h)`. Use `set s := f z with hs`.
+
+Set `ξ : X` to `f.fiberι s (genericPoint (f.fiber s))`. Establish `hfξ : f ξ = s` using `(f.range_fiberι s).le ⟨_, rfl⟩`. Establish `hrange : ∀ y : X, f y = s → ξ ⤳ y`. Introduce `y hy`. Take `⟨w, rfl⟩ : y ∈ Set.range (f.fiberι s)` from `(f.range_fiberι s).ge hy`.
+
+Conclude with `(genericPoint_specializes w).map (f.fiberι s).continuous`. Take `⟨x, hxV, hxs⟩` from `hV s`. Establish `hξV : ξ ∈ V` using `(hrange x hxs).mem_open V.isOpen hxV`. Establish `hξz : ξ ⤳ z` using `hrange z rfl`. Establish `hξnez : ξ ≠ z` using `fun h => hzV (h ▸ hξV)`.
+
+Take `⟨u, huU⟩` from `hU`. Establish `hηU : genericPoint S ∈ U` using `(genericPoint_specializes u).mem_open U.isOpen huU`. Establish `hηs : genericPoint S ⤳ f ξ` using `hfξ ▸ genericPoint_specializes s`. Take `⟨ζ, hζξ, hfζ⟩` from `(Flat.generalizingMap f) hηs`. Establish `hζneξ : ζ ≠ ξ`.
+
+Introduce `h`. Apply `hzU` to reduce the goal to its premises. Rewrite using `[← hfξ, ← h, hfζ]`. Conclude with `hηU`. Establish `h1 : z < ξ` using `lt_of_le_not_ge hξz (fun h => hξnez (hξz.antisymm h).eq)`.
+
+Establish `h2 : ξ < ζ` using `lt_of_le_not_ge hζξ (fun h => hζneξ (hζξ.antisymm h).eq)`. Establish `hc : (2 : ℕ∞) ≤ Order.coheight z`. Establish `a` using `Order.coheight_add_one_le h1`. Establish `b` using `Order.coheight_add_one_le h2`. Establish `: (1 : ℕ∞) + 1 ≤ Order.coheight ζ + 1 + 1` using `by gcongr; exact le_add_self`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `hz` using `[ringKrullDim_stalk_eq_coheight]`. Establish `: Order.coheight z ≤ 1` using `by exact_mod_cast hz`. Conclude with `absurd (hc.trans this) (by norm_num)`.
+-/
 theorem mem_preimage_sup_of_ringKrullDim_stalk_le_one :
     ∀ (X S : Scheme.{0}) [IsIntegral S] (f : X ⟶ S) [Flat f] [GeometricallyIntegral f] (V : X.Opens) (U : S.Opens), (∀ s : S, ∃ x ∈ V, f x = s) → (U : Set S).Nonempty → (∀ z : X, ringKrullDim ((X).presheaf.stalk z) ≤ 1 → z ∈ f ⁻¹ᵁ U ⊔ V) := by
   intro X S _ f _ _ V U hV hU z hz

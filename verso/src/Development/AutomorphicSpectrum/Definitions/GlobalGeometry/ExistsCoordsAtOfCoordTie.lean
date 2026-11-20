@@ -17,12 +17,20 @@ def pr (p : Spec (CommRingCat.of A)) : PrimeSpectrum A := p
 def toSt (p : Spec (CommRingCat.of A)) : A →+* (Spec (CommRingCat.of A)).presheaf.stalk p :=
   ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (Spec (CommRingCat.of A)).presheaf.germ ⊤ p trivial).hom
 
+/- English proof (translation)
+The claim follows from `StructureSheaf.IsLocalization.to_stalk A (pr A p)`.
+-/
 theorem isLoc (p : Spec (CommRingCat.of A)) :
     letI := (toSt A p).toAlgebra
     IsLocalization.AtPrime ((Spec (CommRingCat.of A)).presheaf.stalk p) (pr A p).asIdeal :=
   StructureSheaf.IsLocalization.to_stalk A (pr A p)
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Establish `h1` using `(Spec (CommRingCat.of A)).presheaf.germ_stalkSpecializes (U := ⊤) (y := p.1) trivial p.2`. Establish `h2` using `Scheme.germ_stalkClosedPointTo_Spec (R := CommRingCat.of A) (S := CommRingCat.of Ω) (CommRingCat.ofHom (algebraMap A Ω))`. Establish `h3 : ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (Spec (CommRingCat.of A)).presheaf.germ ⊤ p.1 trivial) ≫ ((Spec (CommRingCat.of A)).presheaf.stalkSpecializes p.2 ≫ Scheme.stalkClosedPointTo (gen A Ω)) = CommRingCat.ofHom (algebraMap A Ω)`. Rewrite using `[Category.assoc, ← Category.assoc ((Spec (CommRingCat.of A)).presheaf.germ ⊤ p.1 trivial), h1]`. Use `erw [h2]`.
+
+Simplify using the standard rewrite rules. Conclude with `congrArg (fun f => f.hom a) h3`.
+-/
 theorem genMap_toSt (p : Cpt (gen A Ω)) (a : A) :
     genMap (gen A Ω) p (toSt A p.1 a) = algebraMap A Ω a := by
   have h1 := (Spec (CommRingCat.of A)).presheaf.germ_stalkSpecializes (U := ⊤) (y := p.1) trivial p.2
@@ -37,6 +45,15 @@ theorem genMap_toSt (p : Cpt (gen A Ω)) (a : A) :
     simp
   exact congrArg (fun f => f.hom a) h3
 
+/- English proof (translation)
+Use `letI := (toSt A p.1).toAlgebra`. Use `haveI := isLoc A p.1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Take `⟨⟨r, s⟩, h⟩` from `IsLocalization.surj ((pr A p.1).asIdeal).primeCompl t`.
+
+Use `⟨r, s, s.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← genMap_toSt A Ω p, ← genMap_toSt A Ω p, ← map_mul]`. Conclude with `congrArg _ h`. Introduce and unpack `⟨r, s, hs, h⟩`. Take `⟨u, hu⟩` from `IsLocalization.map_units ((Spec (CommRingCat.of A)).presheaf.stalk p.1) (⟨s, hs⟩ : ((pr A p.1).asIdeal).primeCompl)`.
+
+Use `⟨toSt A p.1 r * ↑u⁻¹, ?_⟩` and prove the remaining obligations. Establish `e : genMap (gen A Ω) p u = algebraMap A Ω s`. Rewrite using `[hu]`. Conclude with `genMap_toSt A Ω p s`. Establish `e2 : genMap (gen A Ω) p u * genMap (gen A Ω) p ↑u⁻¹ = 1`.
+
+Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite using `[map_mul, genMap_toSt, ← h, ← e, mul_assoc, e2, mul_one]`.
+-/
 theorem mem_regAt (p : Cpt (gen A Ω)) (a : Ω) :
     a ∈ regAt (gen A Ω) p ↔ ∃ r s : A, s ∉ (pr A p.1).asIdeal ∧ a * algebraMap A Ω s = algebraMap A Ω r := by
   letI := (toSt A p.1).toAlgebra
@@ -59,16 +76,29 @@ theorem mem_regAt (p : Cpt (gen A Ω)) (a : Ω) :
 
 variable [IsDomain A] [IsFractionRing A Ω]
 
+/- English proof (translation)
+Use extensionality with `a`. Express the relevant statement in the definitionally equal form `algebraMap A Ω a ∈ IsLocalRing.maximalIdeal Ω ↔ _`. Simplify using the standard rewrite rules.
+-/
 theorem genPt_asIdeal : (pr A (genPt (gen A Ω))).asIdeal = ⊥ := by
   ext a
   change algebraMap A Ω a ∈ IsLocalRing.maximalIdeal Ω ↔ _
   simp
 
+/- English proof (translation)
+Use `(PrimeSpectrum.le_iff_specializes (R := A) _ _).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(pr A (genPt (gen A Ω))).asIdeal ≤ (pr A q).asIdeal`. Rewrite using `[genPt_asIdeal]`. Conclude with `bot_le`.
+-/
 theorem spec_all (q : Spec (CommRingCat.of A)) : genPt (gen A Ω) ⤳ q := by
   refine (PrimeSpectrum.le_iff_specializes (R := A) _ _).1 ?_
   change (pr A (genPt (gen A Ω))).asIdeal ≤ (pr A q).asIdeal
   rw [genPt_asIdeal]; exact bot_le
 
+/- English proof (translation)
+Use `letI := (toSt A p.1).toAlgebra`. Use `haveI := isLoc A p.1`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Take `⟨⟨r, s⟩, h⟩` from `IsLocalization.surj ((pr A p.1).asIdeal).primeCompl t`.
+
+Establish `h'` using `congrArg (genMap (gen A Ω) p) h`. Rewrite `h'` using `[map_mul, ht, zero_mul]`. Establish `: algebraMap A Ω r = 0` using `by rw [← genMap_toSt A Ω p]; exact h'.symm`. Establish `hr : r = 0` using `by simpa using this`. Substitute `hr` using the available equality.
+
+Simplify using `only [map_zero] at h`. Conclude with `(IsLocalization.map_units _ s).mul_left_eq_zero.1 h`.
+-/
 theorem genMap_inj (p : Cpt (gen A Ω)) : Function.Injective (genMap (gen A Ω) p) := by
   letI := (toSt A p.1).toAlgebra
   haveI := isLoc A p.1
@@ -83,6 +113,15 @@ theorem genMap_inj (p : Cpt (gen A Ω)) : Function.Injective (genMap (gen A Ω) 
   simp only [map_zero] at h
   exact (IsLocalization.map_units _ s).mul_left_eq_zero.1 h
 
+/- English proof (translation)
+Use `⟨?_, genMap_inj A Ω⟩` and prove the remaining obligations. Establish `e : genMap (gen A Ω) ⟨genPt (gen A Ω), specializes_rfl⟩ = (Scheme.stalkClosedPointTo (gen A Ω)).hom`. Unfold `genMap`. Use `erw [TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp]`. Both sides reduce to the same expression.
+
+Establish `hb : Function.Bijective (genMap (gen A Ω) ⟨genPt (gen A Ω), specializes_rfl⟩)`. Use `⟨genMap_inj A Ω _, fun a => ?_⟩` and prove the remaining obligations. Take `⟨r, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := A) a`. Use `(mem_regAt A Ω ⟨genPt (gen A Ω), specializes_rfl⟩ _).2 ⟨r, s, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s ∉ (pr A (genPt (gen A Ω))).asIdeal`.
+
+Rewrite using `[genPt_asIdeal]`. Simplify using `using nonZeroDivisors.ne_zero hs`. Establish `: algebraMap A Ω s ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hs`. Clear the denominators using the available nonvanishing facts. Rewrite `hb` using `[e]`.
+
+Conclude with `hb`.
+-/
 theorem isCptGen : IsCptGen (gen A Ω) := by
   refine ⟨?_, genMap_inj A Ω⟩
   have e : genMap (gen A Ω) ⟨genPt (gen A Ω), specializes_rfl⟩ = (Scheme.stalkClosedPointTo (gen A Ω)).hom := by
@@ -101,6 +140,13 @@ theorem isCptGen : IsCptGen (gen A Ω) := by
   exact hb
 
 omit [IsDomain A] [IsFractionRing A Ω] in
+/- English proof (translation)
+Establish `key : ∀ a ∈ Ideal.span (Set.range x), algebraMap A Ω a / algebraMap A Ω (x c) ∈ S`. Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a h => obtain ⟨j, rfl⟩ := h`. Conclude with `hS j`.
+
+Consider the case `zero => simpa using S.zero_mem`. Consider the case `add a b _ _ ha hb => rw [map_add, add_div]`. Conclude with `S.add_mem ha hb`. Consider the case `smul r a _ ha => rw [smul_eq_mul, map_mul, mul_div_assoc]`. Conclude with `S.mul_mem (hA r) ha`.
+
+Simplify using `using key 1 (hx ▸ Submodule.mem_top)`.
+-/
 theorem inv_mem {κ : Type} {x : κ → A} (hx : Ideal.span (Set.range x) = ⊤) (c : κ) (S : Subring Ω)
     (hA : ∀ a, algebraMap A Ω a ∈ S) (hS : ∀ j, algebraMap A Ω (x j) / algebraMap A Ω (x c) ∈ S) :
     (algebraMap A Ω (x c))⁻¹ ∈ S := by
@@ -114,9 +160,19 @@ theorem inv_mem {κ : Type} {x : κ → A} (hx : Ideal.span (Set.range x) = ⊤)
   simpa using key 1 (hx ▸ Submodule.mem_top)
 
 omit [IsDomain A] [IsFractionRing A Ω] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, genMap_toSt A Ω p a⟩`.
+-/
 theorem algebraMap_mem_regAt (p : Cpt (gen A Ω)) (a : A) : algebraMap A Ω a ∈ regAt (gen A Ω) p :=
   ⟨_, genMap_toSt A Ω p a⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h⟩ hc`. Take `⟨r, s, hs, e⟩` from `(mem_regAt A Ω p _).1 (inv_mem A Ω hx c _ (algebraMap_mem_regAt A Ω p) h)`. Establish `: s = x c * r`. Apply `IsFractionRing.injective A Ω` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, ← e]`. Clear the denominators using the available nonvanishing facts. Conclude with `hs (this ▸ Ideal.mul_mem_right _ _ hc)`. Introduce `hc`. Establish `h0 : algebraMap A Ω (x c) ≠ 0`.
+
+Introduce `h`. Establish `: x c = 0` using `by simpa using h`. Conclude with `hc (this ▸ Ideal.zero_mem _)`. Conclude with `⟨h0, fun j => (mem_regAt A Ω p _).2 ⟨x j, x c, hc, by field_simp⟩⟩`.
+-/
 theorem inChart_iff {κ : Type} {x : κ → A} (hx : Ideal.span (Set.range x) = ⊤) (c : κ) (p : Cpt (gen A Ω)) :
     InChart (gen A Ω) (fun j => algebraMap A Ω (x j)) c p ↔ x c ∉ (pr A p.1).asIdeal := by
   constructor
@@ -133,6 +189,9 @@ theorem inChart_iff {κ : Type} {x : κ → A} (hx : Ideal.span (Set.range x) = 
       exact hc (this ▸ Ideal.zero_mem _)
     exact ⟨h0, fun j => (mem_regAt A Ω p _).2 ⟨x j, x c, hc, by field_simp⟩⟩
 
+/- English proof (translation)
+The claim follows from `isCptGen A Ω cover p := by by_contra h push Not at h refine (pr A p.1).isPrime.ne_top (top_le_iff.1 (hx ▸ Ideal.span_le.2 ?_)) rintro _ ⟨c, rfl⟩ by_contra hc exact h c ((inChart_iff A Ω hx c p).2 hc) affine c _ := by refine ⟨_, IsAffineOpen.Spec_basicOpen (R := CommRingCat.of A) …`.
+-/
 theorem coordTie (o : Type) [CommRing o] [Algebra o A] [Algebra o Ω] [IsScalarTower o A Ω]
     {κ : Type} {x : κ → A} (hx : Ideal.span (Set.range x) = ⊤)
     (hA : ∀ c, x c ≠ 0 → ∀ a : A, algebraMap A Ω a ∈
@@ -186,6 +245,9 @@ theorem coordTie (o : Type) [CommRing o] [Algebra o A] [Algebra o Ω] [IsScalarT
       rw [this]
       exact Subalgebra.mul_mem _ (hA c hc' r) (Subalgebra.pow_mem _ hi n)
 
+/- English proof (translation)
+Use `coordTie ℤ ℚ ℤ ?_ fun c _ a => Subalgebra.algebraMap_mem _ a` and prove the remaining obligations. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h` using `Ideal.sub_mem (Ideal.span (Set.range (![2, 3] : Fin 2 → ℤ))) (Ideal.subset_span ⟨1, rfl⟩) (Ideal.subset_span ⟨0, rfl⟩)`. Simplify using `using h`.
+-/
 theorem coordTie_two_three : CoordTie ℤ (gen ℤ ℚ) (fun j => algebraMap ℤ ℚ (![2, 3] j)) := by
   refine coordTie ℤ ℚ ℤ ?_ fun c _ a => Subalgebra.algebraMap_mem _ a
   rw [Ideal.eq_top_iff_one]
@@ -193,6 +255,13 @@ theorem coordTie_two_three : CoordTie ℤ (gen ℤ ℚ) (fun j => algebraMap ℤ
     (Ideal.subset_span ⟨1, rfl⟩) (Ideal.subset_span ⟨0, rfl⟩)
   simpa using h
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `(h.ring () one_ne_zero (1 / 2)).2 fun p _ => algebraMap_mem_regAt ℚ ℚ p (1 / 2)`. Establish `hle : Algebra.adjoin ℤ (Set.range fun _ : Unit => (1 : ℚ) / 1) ≤ ⊥`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨_, rfl⟩`.
+
+Simplify using `using Subalgebra.one_mem _`. Take `⟨n, hn⟩` from `Algebra.mem_bot.1 (hle h2)`. Establish `: (2 * n : ℤ) = 1`. Establish `h' : (n : ℚ) = 1 / 2` using `by simpa using hn`. Establish `: ((2 * n : ℤ) : ℚ) = 1` using `by push_cast; rw [h']; norm_num`.
+
+Conclude with `this` after adjusting the coercions. Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_coordTie_rat : ¬ CoordTie ℤ (gen ℚ ℚ) (fun _ : Unit => (1 : ℚ)) := by
   intro h
   have h2 := (h.ring () one_ne_zero (1 / 2)).2 fun p _ => algebraMap_mem_regAt ℚ ℚ p (1 / 2)
@@ -207,6 +276,15 @@ theorem not_coordTie_rat : ¬ CoordTie ℤ (gen ℚ ℚ) (fun _ : Unit => (1 : �
     exact_mod_cast this
   omega
 
+/- English proof (translation)
+Establish `hp : (p : Ω) = algebraMap A Ω p` using `by simp`. Unfold `InFibre unitAt`. Rewrite using `[hp, ← not_iff_not, not_not]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, -, h⟩ hc`.
+
+Take `⟨r, s, hs, e⟩` from `(mem_regAt A Ω q _).1 h`. Establish `: s = p * r`. Apply `IsFractionRing.injective A Ω` to reduce the goal to its premises. Rewrite using `[map_mul, ← e]`. Clear the denominators using the available nonvanishing facts.
+
+Conclude with `hs (this ▸ Ideal.mul_mem_right _ _ hc)`. Introduce `hc`. Establish `h0 : algebraMap A Ω p ≠ 0`. Introduce `h`. Establish `: (p : A) = 0` using `IsFractionRing.injective A Ω (by rw [h, map_zero])`.
+
+Conclude with `hc (this ▸ Ideal.zero_mem _)`. Conclude with `⟨h0, algebraMap_mem_regAt A Ω q _, (mem_regAt A Ω q _).2 ⟨1, p, hc, by rw [map_one]; field_simp⟩⟩`.
+-/
 theorem inFibre_iff (p : ℕ) (q : Cpt (gen A Ω)) : InFibre (gen A Ω) p q ↔ (p : A) ∈ (pr A q.1).asIdeal := by
   have hp : (p : Ω) = algebraMap A Ω p := by simp
   unfold InFibre unitAt
@@ -230,16 +308,27 @@ section General
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {R : Type} [CommRing R] [IsLocalRing R]
   {ξ : Spec (CommRingCat.of Ω) ⟶ X} {z : Spec (CommRingCat.of R) ⟶ X}
 
+/- English proof (translation)
+Take `⟨hz, s, rfl, rfl⟩` from `h`. Take `⟨_, s', e, rfl⟩` from `h'`. Rewrite using `[hξ.inj ⟨centre z, hz⟩ e]`.
+-/
 theorem valAt_unique (hξ : IsCptGen ξ) {a : Ω} {r r' : R} (h : ValAt ξ z a r) (h' : ValAt ξ z a r') : r = r' := by
   obtain ⟨hz, s, rfl, rfl⟩ := h
   obtain ⟨_, s', e, rfl⟩ := h'
   rw [hξ.inj ⟨centre z, hz⟩ e]
 
+/- English proof (translation)
+Take `⟨hz, t, rfl, rfl⟩` from `h`. Take `⟨_, t', rfl, rfl⟩` from `h'`. Conclude with `⟨hz, t * t', map_mul _ _ _, map_mul _ _ _⟩`.
+-/
 theorem valAt_mul {a b : Ω} {r s : R} (h : ValAt ξ z a r) (h' : ValAt ξ z b s) : ValAt ξ z (a * b) (r * s) := by
   obtain ⟨hz, t, rfl, rfl⟩ := h
   obtain ⟨_, t', rfl, rfl⟩ := h'
   exact ⟨hz, t * t', map_mul _ _ _, map_mul _ _ _⟩
 
+/- English proof (translation)
+Take `⟨hz, t, rfl, e⟩` from `h`. Establish `ht : IsUnit t` using `(Scheme.isLocalHom_stalkClosedPointTo' z).map_nonunit t (by have := r.isUnit; rw [← e] at this; exact this)`. Take `⟨u, rfl⟩` from `ht`. Use `⟨(u.isUnit.map (genMap ξ ⟨centre z, hz⟩)).ne_zero, hz, ↑u⁻¹, map_units_inv _ u, ?_⟩` and prove the remaining obligations. Use `(Units.inv_eq_of_mul_eq_one_right ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[← e]`. Conclude with `(map_mul _ _ _).symm.trans ((congrArg _ u.mul_inv).trans (map_one _))`.
+-/
 theorem valAt_inv {a : Ω} {r : Rˣ} (h : ValAt ξ z a r) : a ≠ 0 ∧ ValAt ξ z a⁻¹ ↑r⁻¹ := by
   obtain ⟨hz, t, rfl, e⟩ := h
   have ht : IsUnit t := (Scheme.isLocalHom_stalkClosedPointTo' z).map_nonunit t (by have := r.isUnit; rw [← e] at this; exact this)
@@ -249,6 +338,17 @@ theorem valAt_inv {a : Ω} {r : Rˣ} (h : ValAt ξ z a r) : a ≠ 0 ∧ ValAt ξ
   rw [← e]
   exact (map_mul _ _ _).symm.trans ((congrArg _ u.mul_inv).trans (map_one _))
 
+/- English proof (translation)
+Use `choose c hc using h`. Establish `hv : ∀ j : Σ k, ι k, ∃ r, ValAt ξ z (y j / y ⟨j.1, c j.1⟩) r`. Introduce and unpack `⟨k, i⟩`. Take `⟨s, hs⟩` from `(hc k).2 i`. Conclude with `⟨_, hz, s, hs, rfl⟩`.
+
+Use `choose w hw using hv`. Use `⟨w, fun k => ⟨c k, ?_⟩, fun k d hd => ?_⟩` and prove the remaining obligations. Establish `h1 : ValAt ξ z 1 1` using `⟨hz, 1, map_one _, map_one _⟩`. Establish `h2` using `hw ⟨k, c k⟩`. Rewrite `h2` using `[div_self (hc k).1]`.
+
+Rewrite using `[valAt_unique hξ h2 h1]`. Conclude with `isUnit_one`. Take `⟨u, hu⟩` from `hd`. Establish `h1` using `hw ⟨k, d⟩`. Rewrite `h1` using `[← hu]`.
+
+Take `⟨h0, h2⟩` from `valAt_inv h1`. Establish `hd0 : y ⟨k, d⟩ ≠ 0` using `fun e => h0 (by simp [e])`. Use `⟨hd0, fun i => ⟨w ⟨k, i⟩ * ↑u⁻¹, ?_, by rw [← hu]; simp⟩⟩` and prove the remaining obligations. Establish `h3` using `valAt_mul (hw ⟨k, i⟩) h2`. Establish `hc0 : y ⟨k, c k⟩ ≠ 0` using `(hc k).1`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_coordsAt {K : Type} {ι : K → Type} (y : (Σ k, ι k) → Ω) (hz : genPt ξ ⤳ centre z)
     (h : ∀ k, ∃ c, InChart ξ (fun i => y ⟨k, i⟩) c ⟨centre z, hz⟩) (hξ : IsCptGen ξ) :
     ∃ w, CoordsAt ξ y z w := by
@@ -274,6 +374,15 @@ theorem exists_coordsAt {K : Type} {ι : K → Type} (y : (Σ k, ι k) → Ω) (
     convert h3 using 1
     field_simp
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h.1 k`. Take `⟨d, hd⟩` from `h'.1 k`. Take `⟨hc0, hv⟩` from `h.2 k c hc`. Take `⟨hd0, hv'⟩` from `h'.2 k d hd`. Take `⟨r, hr, -⟩` from `hv d`.
+
+Take `⟨r', hr', e'⟩` from `hv' c`. Establish `h1 : ValAt ξ z 1 1` using `⟨hr.1, 1, map_one _, map_one _⟩`. Establish `h2` using `valAt_mul hr hr'`. Rewrite `h2` using `[show y ⟨k, d⟩ / y ⟨k, c⟩ * (y ⟨k, c⟩ / y ⟨k, d⟩) = 1 by field_simp]`. Establish `hu : IsUnit (w' ⟨k, c⟩)`.
+
+Rewrite using `[e']`. Conclude with `(IsUnit.of_mul_eq_one_right r (valAt_unique hξ h2 h1)).mul hd`. Take `⟨-, hv''⟩` from `h'.2 k c hu`. Use `⟨hu.unit * hc.unit⁻¹, fun i => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, es⟩` from `hv i`.
+
+Take `⟨s', hs', es'⟩` from `hv'' i`. Rewrite using `[es, es', valAt_unique hξ hs' hs, Units.val_mul, IsUnit.unit_spec, mul_assoc, mul_left_comm _ s, IsUnit.val_inv_mul, mul_one, mul_comm]`.
+-/
 theorem coordsAt_unique {K : Type} {ι : K → Type} {y : (Σ k, ι k) → Ω} (hξ : IsCptGen ξ) {w w' : (Σ k, ι k) → R}
     (h : CoordsAt ξ y z w) (h' : CoordsAt ξ y z w') (k : K) : ∃ u : Rˣ, ∀ i, w' ⟨k, i⟩ = u * w ⟨k, i⟩ := by
   obtain ⟨c, hc⟩ := h.1 k
@@ -295,11 +404,17 @@ theorem coordsAt_unique {K : Type} {ι : K → Type} {y : (Σ k, ι k) → Ω} (
   rw [es, es', valAt_unique hξ hs' hs, Units.val_mul, IsUnit.unit_spec, mul_assoc, mul_left_comm _ s,
     IsUnit.val_inv_mul, mul_one, mul_comm]
 
+/- English proof (translation)
+Introduce `h`. Take `⟨c, hc⟩` from `h.cover ⟨genPt ξ, specializes_rfl⟩`. Conclude with `hc.1 rfl`.
+-/
 theorem not_coordTie_zero (o : Type) [CommRing o] [Algebra o Ω] {κ : Type} : ¬ CoordTie o ξ (0 : κ → Ω) := by
   intro h
   obtain ⟨c, hc⟩ := h.cover ⟨genPt ξ, specializes_rfl⟩
   exact hc.1 rfl
 
+/- English proof (translation)
+The claim follows from `exists_coordsAt _ hz (fun _ => h.cover _) h.gen`.
+-/
 theorem exists_coordsAt_of_coordTie {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ → Ω}
     (h : CoordTie o ξ x) (hz : genPt ξ ⤳ centre z) :
     ∃ w, CoordsAt ξ (K := Unit) (ι := fun _ => κ) (fun j => x j.2) z w :=

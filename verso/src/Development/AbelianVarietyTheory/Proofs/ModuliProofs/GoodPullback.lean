@@ -15,6 +15,11 @@ open GlobalTheory.Models
 
 namespace GlobalTheory.Models
 
+/- English proof (translation)
+Introduce `hB E _ _ _ H X X' t t' f m hg`. Take `⟨hA, hS, hT⟩` from `hg`. Take `⟨cm, cart, base, act, lin⟩` from `m`. Establish `hpb` using `GlobalTheory.AbLocusPull.abLocus_sections_pull X X' f t.G t'.G cm.F t.semi cart`. Use `⟨hpb.1 hA, GlobalTheory.splitFibres_of_isGrpPullback hB X X' f t.G t'.G cm.F cart hS, hpb.2 t.PP.L t'.PP.L t.PP.isLB t'.PP.isLB ?_ hT⟩` and prove the remaining obligations.
+
+Take `⟨w, hw, -⟩` from `lin`. Conclude with `⟨w, hw⟩`.
+-/
 theorem good_pullback : Out.GtBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X X' : Scheme.{0}) (t : SAB H X) (t' : SAB H X') (f : X' ⟶ X) (_ : SABMap t' t f), Good t → Good t' := by
   intro hB E _ _ _ H X X' t t' f m hg
   obtain ⟨hA, hS, hT⟩ := hg

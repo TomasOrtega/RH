@@ -22,6 +22,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O₀ : Type} [CommRing O₀] {β : O₀ →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
   {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : ∀ i, ∃ w : 𝓞 E, x i - x' i = (n : 𝓞 E) * w`. Introduce `i`. Establish `h1` using `congrFun (Multiplicative.ofAdd.injective h) i`.
+
+Establish `h2` using `Ideal.Quotient.eq.1 h1`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton.1 h2`. Conclude with `⟨w, hw⟩`. Use `choose z hz using h'`. Use `⟨z, funext fun i => ?_⟩` and prove the remaining obligations.
+
+Use `hz i` as an intermediate fact. Use `show x i = x' i + n • z i`. Rewrite using `[nsmul_eq_mul, ← this]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨z, rfl⟩`.
+
+Use `congrArg Multiplicative.ofAdd (funext fun i => ?_)` and prove the remaining obligations. Use `Ideal.Quotient.eq.2 (Ideal.mem_span_singleton.2 ⟨z i, ?_⟩)` and prove the remaining obligations. Simplify using `[nsmul_eq_mul]`.
+-/
 theorem qmk_eq_iff {N : ℕ} (n : ℕ) (x x' : Fin N → 𝓞 E) :
     qmk n x = qmk n x' ↔ ∃ z : Fin N → 𝓞 E, x = x' + n • z := by
   constructor
@@ -42,15 +51,38 @@ theorem qmk_eq_iff {N : ℕ} (n : ℕ) (x x' : Fin N → 𝓞 E) :
     refine Ideal.Quotient.eq.2 (Ideal.mem_span_singleton.2 ⟨z i, ?_⟩)
     simp [nsmul_eq_mul]
 
+/- English proof (translation)
+Establish `h : ∀ i, ∃ a : 𝓞 E, Ideal.Quotient.mk _ a = Multiplicative.toAdd t i` using `fun i => Ideal.Quotient.mk_surjective _`. Use `choose x hx using h`. Conclude with `⟨x, congrArg Multiplicative.ofAdd (funext hx)⟩`.
+-/
 theorem qmk_surjective {N : ℕ} (n : ℕ) (t : TorsT E N n) : ∃ x : Fin N → 𝓞 E, qmk n x = t := by
   have h : ∀ i, ∃ a : 𝓞 E, Ideal.Quotient.mk _ a = Multiplicative.toAdd t i := fun i => Ideal.Quotient.mk_surjective _
   choose x hx using h
   exact ⟨x, congrArg Multiplicative.ofAdd (funext hx)⟩
 
+/- English proof (translation)
+Use `congrArg Multiplicative.ofAdd (funext fun i => ?_)` and prove the remaining obligations. Conclude with `map_add (Ideal.Quotient.mk _) (x i) (x' i)`.
+-/
 theorem qmk_add {N : ℕ} (n : ℕ) (x x' : Fin N → 𝓞 E) : qmk n (x + x') = qmk n x * qmk n x' := by
   refine congrArg Multiplicative.ofAdd (funext fun i => ?_)
   exact map_add (Ideal.Quotient.mk _) (x i) (x' i)
 
+/- English proof (translation)
+Establish `hsub : ∀ x x', T (x - x') = 1 → T x = T x'`. Introduce `x x' h`. Use `hadd (x - x') x'` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, h, _root_.one_mul]`. Conclude with `this`.
+
+Establish `hdep : ∀ x x', qmk n x = qmk n x' → T x = T x'`. Introduce `x x' h`. Take `⟨z, hz⟩` from `(qmk_eq_iff n x x').1 h`. Use `hsub _ _ ((hker _).2 ⟨z, ?_⟩)` and prove the remaining obligations. Rewrite using `[hz, add_sub_cancel_left]`.
+
+Use `choose s hs using qmk_surjective (E := E) (N := D.p + D.q) n`. Establish `hpt : ∀ x, T (s (qmk n x)) = T x` using `fun x => hdep _ _ (hs _)`. Set `pt : TorsT E (D.p + D.q) n →* (Over.mk 𝔐.ξ ⟶ 𝔐.t.G)` to `MonoidHom.mk' (fun t => T (s t)) (by`. Introduce `a b`. Take `⟨x, rfl⟩` from `qmk_surjective n a`.
+
+Take `⟨x', rfl⟩` from `qmk_surjective n b`. Rewrite using `[← qmk_add, hpt, hpt, hpt, hadd])`. Establish `hptq : ∀ x, pt (qmk n x) = T x` using `hpt`. Use `⟨⟨pt, ?_, ?_, ?_⟩, hptq⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_one pt).2 fun t ht => ?_` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `qmk_surjective n t`. Rewrite `ht` using `[hptq]`. Take `⟨z, hz⟩` from `(hker x).1 ht`. Establish `h0 : qmk n x = qmk n (0 : Fin (D.p + D.q) → 𝓞 E)` using `(qmk_eq_iff n _ _).2 ⟨z, by rw [zero_add]; exact hz⟩`. Rewrite using `[h0]`.
+
+Conclude with `congrArg Multiplicative.ofAdd (funext fun i => by simp)`. Introduce `g`. Rewrite using `[honto]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`.
+
+Conclude with `⟨qmk n x, hptq x⟩`. Introduce and unpack `⟨t, rfl⟩`. Take `⟨x, rfl⟩` from `qmk_surjective n t`. Conclude with `⟨x, (hptq x).symm⟩`. Introduce `a x`.
+
+Rewrite using `[hptq, hptq, hlin]`.
+-/
 theorem exists_genPts (𝔐 : HodgeCpt Y S y) (n : ℕ) (T : (Fin (D.p + D.q) → 𝓞 E) → (Over.mk 𝔐.ξ ⟶ 𝔐.t.G))
     (hadd : ∀ x x', T (x + x') = T x * T x') (hlin : ∀ (a : 𝓞 E) x, T (a • x) = T x ≫ 𝔐.t.act.act a)
     (hker : ∀ x, T x = 1 ↔ ∃ z, x = n • z) (honto : ∀ g, g ^ n = 1 ↔ ∃ x, T x = g) :
@@ -99,6 +131,15 @@ section gen
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h1 : ∀ u : F, _root_.IsIntegral Ω₀ ((1 : Ω₀) ⊗ₜ[O] u)`. Introduce `u`. Take `⟨a, ha', hi⟩` from `hF u`. Establish `h2 : _root_.IsIntegral O ((1 : Ω₀) ⊗ₜ[O] (a • u))` using `hi.map (Algebra.TensorProduct.includeRight : F →ₐ[O] Ω₀ ⊗[O] F)`. Establish `h3 : _root_.IsIntegral Ω₀ ((1 : Ω₀) ⊗ₜ[O] (a • u))` using `h2.tower_top`.
+
+Establish `e : (1 : Ω₀) ⊗ₜ[O] u = (algebraMap O Ω₀ a)⁻¹ • ((1 : Ω₀) ⊗ₜ[O] (a • u))`. Rewrite using `[TensorProduct.smul_tmul', ← TensorProduct.smul_tmul, smul_eq_mul, _root_.mul_one, Algebra.smul_def, mul_inv_cancel₀ ha']`. Rewrite using `[e]`. Conclude with `h3.smul _`. Use `⟨fun x => ?_⟩` and prove the remaining obligations.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact isIntegral_zero`. Consider the case `tmul a u`. Establish `e : a ⊗ₜ[O] u = a • ((1 : Ω₀) ⊗ₜ[O] u)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+
+Rewrite using `[e]`. Conclude with `(h1 u).smul a`. Consider the case `add x y hx hy => exact hx.add hy`.
+-/
 theorem isIntegral_tensor_of_ne {O Ω₀ F : Type} [CommRing O] [Field Ω₀] [Field F] [Algebra O Ω₀] [Algebra O F]
     (hF : ∀ u : F, ∃ a : O, algebraMap O Ω₀ a ≠ 0 ∧ _root_.IsIntegral O (a • u)) :
     Algebra.IsIntegral Ω₀ (Ω₀ ⊗[O] F) := by
@@ -123,6 +164,13 @@ theorem isIntegral_tensor_of_ne {O Ω₀ F : Type} [CommRing O] [Field Ω₀] [F
     exact (h1 u).smul a
   | add x y hx hy => exact hx.add hy
 
+/- English proof (translation)
+Use `letI := β.toAlgebra`. Establish `hQ : IsAlgebraic ℚ u` using `Algebra.IsAlgebraic.isAlgebraic u`. Establish `hZ : IsAlgebraic ℤ u` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 hQ`. Take `⟨n, hn, hi⟩` from `hZ.exists_integral_multiple`. Use `⟨(n : O), fun h => hn ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hk _ h`. Rewrite `h1` using `[map_intCast]`. Conclude with `h1` after adjusting the coercions. Establish `e : (n : O) • u = n • u`. Rewrite using `[Algebra.smul_def, zsmul_eq_mul]`.
+
+Use `congr 1`. Conclude with `map_intCast β n`. Rewrite using `[e]`. Conclude with `hi.tower_top`.
+-/
 theorem exists_integral_multiple_of_ker {O Ω₀ : Type} [CommRing O] [Field Ω₀] {F : IntermediateField ℚ ℂ}
     [FiniteDimensional ℚ F] (β : O →+* F) (g₀ : O →+* Ω₀) (hk : ∀ a, g₀ a = 0 → β a = 0) (u : F) :
     letI := β.toAlgebra
@@ -142,6 +190,19 @@ theorem exists_integral_multiple_of_ker {O Ω₀ : Type} [CommRing O] [Field Ω�
     rw [e]
     exact hi.tower_top
 
+/- English proof (translation)
+Use `letI := β.toAlgebra`. Use `letI := g₀.toAlgebra`. Establish `hy' : pullback.fst s (spMap β) y' = genPt ξ₀` using `GlobalTheory.CompanionTheory.Ar.CptInh.nogen ξ₀ h₀ _ (hy ▸ hyy.map (pullback.fst s (spMap β)).continuous)`. Establish `hsurj : SurjectiveOnStalks ξ₀`. Establish `: IsIso (Scheme.stalkClosedPointTo ξ₀)` using `(ConcreteCategory.isIso_iff_bijective _).2 h₀.bij`.
+
+Rewrite using `[← Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ₀]`. Use `infer_instance`. Establish `hemb` using `SurjectiveOnStalks.isEmbedding_pullback (pullback.fst s (spMap β)) ξ₀`. Take `⟨z, hz, hz₂⟩` from `Scheme.Pullback.exists_preimage_pullback (f := pullback.fst s (spMap β)) (g := ξ₀) y (IsLocalRing.closedPoint Ω₀) hy`. Take `⟨z', hz', hz₂'⟩` from `Scheme.Pullback.exists_preimage_pullback (f := pullback.fst s (spMap β)) (g := ξ₀) y' (IsLocalRing.closedPoint Ω₀) hy'`.
+
+Establish `hzz : z' ⤳ z`. Rewrite using `[← hemb.isInducing.specializes_iff, specializes_prod]`. Simplify using `only [hz, hz', hz₂, hz₂']`. Conclude with `⟨hyy, specializes_rfl⟩`. Establish `sq : IsPullback (pullback.snd (pullback.fst s (spMap β)) ξ₀) (pullback.fst (pullback.fst s (spMap β)) ξ₀ ≫ pullback.snd s (spMap β)) (spMap g₀) (spMap β)`.
+
+Rewrite using `[← hs]`. Conclude with `(IsPullback.of_hasPullback (pullback.fst s (spMap β)) ξ₀).flip.paste_vert (IsPullback.of_hasPullback s (spMap β))`. Set `e` to `sq.isoPullback ≪≫ pullbackSpecIso O Ω₀ F`. Establish `hint : Algebra.IsIntegral Ω₀ (Ω₀ ⊗[O] F)` using `isIntegral_tensor_of_ne hF`. Set `p' : PrimeSpectrum (Ω₀ ⊗[O] F)` to `e.hom z'`.
+
+Set `p : PrimeSpectrum (Ω₀ ⊗[O] F)` to `e.hom z`. Establish `hle : p' ≤ p` using `(PrimeSpectrum.le_iff_specializes _ _).2 (hzz.map e.hom.continuous)`. Establish `hcm : (Ideal.comap (algebraMap Ω₀ (Ω₀ ⊗[O] F)) p'.asIdeal).IsMaximal` using `Ideal.IsPrime.isMaximal' (Ideal.comap_isPrime _ _)`. Establish `hmax : p'.asIdeal.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := Ω₀) p'.asIdeal hcm`. Establish `heq : p' = p` using `PrimeSpectrum.ext (hmax.eq_of_le p.isPrime.ne_top hle)`.
+
+Establish `hzeq : z' = z`. Establish `h` using `congrArg e.inv heq`. Simplify `h` using `[p, p']`. Rewrite using `[← hz, ← hz', hzeq]`.
+-/
 theorem eq_of_specializes_of_fst_of_ne {X : Scheme.{0}} {O F Ω₀ : Type} [CommRing O] [Field F] [Field Ω₀] (s : X ⟶ Sp O)
     (β : O →+* F) (g₀ : O →+* Ω₀) (ξ₀ : Sp Ω₀ ⟶ X) (h₀ : IsCptGen ξ₀) (hs : ξ₀ ≫ s = spMap g₀)
     (hF : letI := β.toAlgebra; ∀ u : F, ∃ a : O, g₀ a ≠ 0 ∧ _root_.IsIntegral O (a • u))
@@ -187,6 +248,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O₀ : Type} [CommRing O₀] {β : O₀ →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
   {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Use `HodgeBasic.noetherianSpace_pullback Y.proj β` as an intermediate fact. Use `Y.jQ_open` as an intermediate fact. Use `c.fin` as an intermediate fact. Conclude with `HodgeBasic.mem_of_dense_of_maximal Y.jQ.isOpenEmbedding.isOpen_range Y.jQ_dense fun y' h' => eq_of_specializes_of_fst_of_ne Y.s β g₀ ξ₀ h₀ hs (exists_integral_multiple_of_ker β g₀ hk) hz h'`.
+-/
 theorem mem_range_jQ_of_ker (Y : Model Xo c β) {Ω₀ : Type} [Field Ω₀] (ξ₀ : Sp Ω₀ ⟶ Y.X) (h₀ : IsCptGen ξ₀)
     (g₀ : O₀ →+* Ω₀) (hs : ξ₀ ≫ Y.s = spMap g₀) (hk : ∀ a, g₀ a = 0 → β a = 0) (z : ↥(pullback Y.s (spMap β)))
     (hz : pullback.fst Y.s (spMap β) z = genPt ξ₀) : z ∈ Set.range Y.jQ := by
@@ -196,6 +260,21 @@ theorem mem_range_jQ_of_ker (Y : Model Xo c β) {Ω₀ : Type} [Field Ω₀] (ξ
   exact HodgeBasic.mem_of_dense_of_maximal Y.jQ.isOpenEmbedding.isOpen_range Y.jQ_dense fun y' h' =>
     eq_of_specializes_of_fst_of_ne Y.s β g₀ ξ₀ h₀ hs (exists_integral_multiple_of_ker β g₀ hk) hz h'
 
+/- English proof (translation)
+Establish `hcst : Function.Injective 𝔐.cst` using `𝔐.cst.injective`. Set `g₀ : O₀ →+* 𝔐.Ω₀` to `(Spec.preimage (𝔐.ξ₀ ≫ Y.s)).hom`. Establish `hs : 𝔐.ξ₀ ≫ Y.s = spMap g₀` using `by show _ = Spec.map (CommRingCat.ofHom (Spec.preimage (𝔐.ξ₀ ≫ Y.s)).hom)`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hfn : 𝔐.ξ ≫ 𝔐.f = spMap 𝔐.fn ≫ 𝔐.ξ₀` using `𝔐.fn_over`.
+
+Establish `hcomp : 𝔐.fn.comp g₀ = 𝔐.cst.comp β`. Establish `h1 : spMap (𝔐.fn.comp g₀) = spMap (𝔐.cst.comp β)`. Rewrite using `[← 𝔐.cst_over, ← Category.assoc, hfn, Category.assoc, hs]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `h2` using `Spec.map_injective h1`.
+
+Conclude with `congrArg CommRingCat.Hom.hom h2`. Establish `hk : ∀ a, g₀ a = 0 → β a = 0`. Introduce `a ha`. Apply `hcst` to reduce the goal to its premises. Use `RingHom.congr_fun hcomp a` as an intermediate fact.
+
+Simplify using `only [RingHom.comp_apply, ha, map_zero] at this`. Rewrite using `[map_zero]`. Conclude with `this.symm`. Establish `hw : (𝔐.ξ ≫ 𝔐.f) ≫ Y.s = spMap 𝔐.cst ≫ spMap β`. Rewrite using `[Category.assoc, 𝔐.cst_over]`.
+
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Set `g : Sp Ω ⟶ pullback Y.s (spMap β)` to `pullback.lift (𝔐.ξ ≫ 𝔐.f) (spMap 𝔐.cst) hw`. Establish `hgf : g ≫ pullback.fst _ _ = 𝔐.ξ ≫ 𝔐.f` using `pullback.lift_fst _ _ _`. Establish `hall : ∀ w : Sp Ω, pullback.fst Y.s (spMap β) (g w) = genPt 𝔐.ξ₀`. Introduce `w`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, hgf, hfn, Scheme.Hom.comp_apply]`. Conclude with `congrArg 𝔐.ξ₀ (Subsingleton.elim (α := PrimeSpectrum 𝔐.Ω₀) _ _)`. Establish `hran : Set.range g ⊆ Set.range Y.jQ`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `mem_range_jQ_of_ker Y 𝔐.ξ₀ 𝔐.gen₀ g₀ hs hk _ (hall w)`.
+
+Use `Y.jQ_open` as an intermediate fact. Use `⟨IsOpenImmersion.lift Y.jQ g hran, ?_⟩` and prove the remaining obligations. Rewrite using `[Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, hgf]`.
+-/
 theorem exists_point_of_hodgeCpt (𝔐 : HodgeCpt Y S y) : ∃ x : Sp Ω ⟶ Xo.XF c, 𝔐.ξ ≫ 𝔐.f = x ≫ Y.j := by
   have hcst : Function.Injective 𝔐.cst := 𝔐.cst.injective
   let g₀ : O₀ →+* 𝔐.Ω₀ := (Spec.preimage (𝔐.ξ₀ ≫ Y.s)).hom
@@ -239,12 +318,44 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O₀ : Type} [CommRing O₀] {β : O₀ →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
   {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h1 : m • x i = m • x' i` using `congrFun h i`. Rewrite `h1` using `[nsmul_eq_mul, nsmul_eq_mul]`. Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.2 hm.ne') h1`.
+-/
 theorem nsmul_vec_cancel {N m : ℕ} (hm : 0 < m) {x x' : Fin N → 𝓞 E} (h : m • x = m • x') : x = x' := by
   funext i
   have h1 : m • x i = m • x' i := congrFun h i
   rw [nsmul_eq_mul, nsmul_eq_mul] at h1
   exact mul_left_cancel₀ (Nat.cast_ne_zero.2 hm.ne') h1
 
+/- English proof (translation)
+Establish `hN0 : 0 < p ^ 𝔐.R p` using `pow_pos hp _`. Use `haveI : NeZero (p ^ 𝔐.R p) := ⟨hN0.ne'⟩`. Establish `hm0 : 0 < p ^ (𝔐.R p - 1)` using `pow_pos hp _`. Establish `hpow : p ^ (𝔐.R p - 1) * p = p ^ 𝔐.R p`. Rewrite using `[← pow_succ]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hτ0 : τ 0 = 1`. Establish `h` using `h1 0 0`. Rewrite `h` using `[add_zero]`.
+
+Conclude with `mul_eq_left.1 h.symm`. Establish `hτn : ∀ (m : ℕ) x, τ (m • x) = τ x ^ m`. Introduce `m x`. Proceed by induction on `m with`. Consider the case `zero => rw [zero_smul, pow_zero, hτ0]`.
+
+Consider the case `succ m ih => rw [succ_nsmul, h1, ih, pow_succ]`. Establish `hew1 : ∀ g, g ^ (p ^ 𝔐.R p) = 1 → ew 1 g = 1`. Introduce `g hg`. Establish `h` using `hew.mul_left 1 1 g (one_pow _) (one_pow _) hg`. Rewrite `h` using `[_root_.mul_one]`.
+
+Conclude with `mul_eq_left.1 h.symm`. Establish `hker : ∀ x, τ x = 1 ↔ ∃ z, x = (p ^ 𝔐.R p) • z`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Apply `h8` to reduce the goal to its premises. Use `AddMonoidHom.ext fun x' => ?_` and prove the remaining obligations. Establish `ht : (τ x') ^ (p ^ 𝔐.R p) = 1` using `(h3 _).2 ⟨x', rfl⟩`. Establish `h` using `h4 x x'`. Rewrite `h` using `[hx, hew1 _ ht]`.
+
+Establish `hd : p ^ 𝔐.R p ∣ (e x x').val` using `(hζ.pow_eq_one_iff_dvd _).1 h.symm`. Conclude with `(ZMod.val_eq_zero _).1 (Nat.eq_zero_of_dvd_of_lt hd (ZMod.val_lt _))`. Introduce and unpack `⟨z, rfl⟩`. Rewrite using `[hτn]`. Conclude with `(h3 _).2 ⟨z, rfl⟩`.
+
+Take `⟨P₂, hP₂⟩` from `exists_genPts 𝔐 _ τ h1 h2 hker h3`. Take `⟨P₁, hP₁⟩` from `exists_genPts 𝔐 p (fun x => τ (p ^ (𝔐.R p - 1) • x)) (fun x x' => by simp only [smul_add, h1]) (fun a x => by show τ (p ^ (𝔐.R p - 1) • a • x) = τ (p ^ (𝔐.R p - 1) • x) ≫ 𝔐.t.act.act a`. Rewrite using `[smul_comm, h2])`. Use the proof step `(fun x => by`. Rewrite using `[hker]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨z, nsmul_vec_cancel hm0 ?_⟩` and prove the remaining obligations. Rewrite using `[hz, ← hpow, mul_smul]`. Introduce and unpack `⟨z, rfl⟩`.
+
+Conclude with `⟨z, by rw [← hpow, mul_smul]⟩)`. Use the proof step `(fun g => by`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hg' : g ^ (p ^ 𝔐.R p) = 1`.
+
+Rewrite using `[← hpow, mul_comm, pow_mul, hg, one_pow]`. Take `⟨x₀, rfl⟩` from `(h3 g).1 hg'`. Rewrite `hg` using `[← hτn]`. Take `⟨z, hz⟩` from `(hker _).1 hg`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Establish `hx : x₀ = p ^ (𝔐.R p - 1) • z` using `nsmul_vec_cancel hp (by`. Rewrite using `[hz, ← hpow, mul_comm, mul_smul])`. Rewrite using `[hx]`. Introduce and unpack `⟨x, rfl⟩`. Rewrite using `[← hτn, smul_smul, mul_comm, hpow, hτn]`.
+
+Conclude with `(h3 _).2 ⟨x, rfl⟩)`. Establish `hζΩ : IsPrimitiveRoot (ζ : Ω) (p ^ 𝔐.R p)` using `hζ.map_of_injective (f := Units.coeHom Ω) Units.val_injective`. Use `⟨{ t₁ := P₁, t₂ := P₂, compat := fun x => ?_, ζ := ζ, ζ_prim := hζΩ, e := e, alt := h5, adj := h6, e_surj := h7, e_inj := h8, weil := ?_ }⟩` and prove the remaining obligations. Rewrite using `[hP₂, hP₁]`. Introduce `x x' k _ _ i g g' u hg hg'`.
+
+Establish `tx : τ x ^ (p ^ 𝔐.R p) = 1` using `(h3 _).2 ⟨x, rfl⟩`. Establish `tx' : τ x' ^ (p ^ 𝔐.R p) = 1` using `(h3 _).2 ⟨x', rfl⟩`. Establish `hw` using `hew.weil (τ x) (τ x') tx tx' k i g g' u (by rw [hg, hP₂]) (by rw [hg', hP₂])`. Rewrite `hw` using `[h4, Units.val_pow_eq_pow_val]`. Simplify `hw` using `only [Nat.cast_pow]`.
+-/
 theorem nonempty_genTors_of_data (𝔐 : HodgeCpt Y S y) (p : ℕ) (hp : 0 < p) (hR : 1 ≤ 𝔐.R p) (ζ : Ωˣ)
     (hζ : IsPrimitiveRoot ζ (p ^ 𝔐.R p))
     (ew : (Over.mk 𝔐.ξ ⟶ 𝔐.t.G) → (Over.mk 𝔐.ξ ⟶ 𝔐.t.G) → Ωˣ)
@@ -329,6 +440,21 @@ theorem nonempty_genTors_of_data (𝔐 : HodgeCpt Y S y) (p : ℕ) (hp : 0 < p) 
     rw [h4, Units.val_pow_eq_pow_val] at hw
     simpa only [Nat.cast_pow] using hw
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d _ hpq p _ hpS _ _ _`. Establish `hchar : CharZero Ω` using `charZero_of_injective_ringHom 𝔐.cst.injective`. Take `⟨y₀, hξ⟩` from `exists_point_of_hodgeCpt 𝔐`. Establish `hp0 : 0 < p` using `(Fact.out : p.Prime).pos`. Establish `hN0 : 0 < p ^ 𝔐.R p` using `pow_pos hp0 _`.
+
+Establish `hR : 1 ≤ 𝔐.R p` using `le_trans (by norm_num) (𝔐.R_ge p hpS)`. Establish `hFT0 : FullTorsion Y.t.G (y₀ ≫ Y.j) (p ^ 𝔐.R p)` using `HF.fullTorsion_push Y.t 𝔐.t 𝔐.f 𝔐.m 𝔐.ξ _ hξ.symm _ (𝔐.tors p hpS)`. Take `⟨o', ⟨pm⟩⟩` from `GlobalTheory.LevelGroup.pull_univ Y.oF y₀`. Take `⟨n, -⟩` from `GlobalTheory.Moduli.LevelAction.exists_comp_sabMap pm.toSABMap Y.m (h := y₀ ≫ Y.j) rfl`. Take `⟨ζ₀, hζ₀⟩` from `OmLink.root o' Y.t n hFT0 hN0 hpq`.
+
+Establish `hne : ζ₀ ≠ 0` using `hζ₀.ne_zero hN0.ne'`. Set `ζ : Ωˣ` to `Units.mk0 ζ₀ hne`. Establish `hζ : IsPrimitiveRoot ζ (p ^ 𝔐.R p)` using `IsPrimitiveRoot.coe_units_iff.1 hζ₀`. Take `⟨e₀, he₀⟩` from `WeilObj.genWeil_of_obj GlobalTheory.CompanionTheory.Ar.Link.weilSt E H D l (KA l) (baseKA l) (Xo.XF c) Y.X _ Y.oF Y.t Y.j Y.m Ω y₀ (p ^ 𝔐.R p) hN0 hFT0 ⟨ζ₀, hζ₀⟩`. Take `⟨ew, hew⟩` from `HF.genWeil_move Y.t 𝔐.t 𝔐.f 𝔐.m 𝔐.ξ (y₀ ≫ Y.j) hξ.symm _ e₀ he₀`.
+
+Set `iK : Ω →+* AlgebraicClosure Ω` to `algebraMap Ω (AlgebraicClosure Ω)`. Establish `hI : Nonempty (XR.TateIsoAt D 𝔐.t (spMap iK ≫ 𝔐.ξ))`. Set `s₀` to `pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s`. Set `β₀ : KA l →+* Ω` to `(Spec.preimage (y₀ ≫ s₀)).hom`. Establish `h1 : spMap β₀ = y₀ ≫ s₀`.
+
+Simplify using `only [β₀, spMap, CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hβ : (spMap iK ≫ y₀) ≫ s₀ = spMap (iK.comp β₀)`. Rewrite using `[Category.assoc, WeilObj.spMap_comp_of, h1]`. Take `⟨-, I₀, -, -, -⟩` from `Y.oF.geom (AlgebraicClosure Ω) (spMap iK ≫ y₀) (iK.comp β₀) hβ`. Take `⟨I₁, -, -⟩` from `(XR.tateIsoAt_move E H D Y.X (Xo.XF c) Y.t Y.oF.t Y.j Y.m (AlgebraicClosure Ω) (spMap iK ≫ y₀) (spMap iK ≫ y₀ ≫ Y.j) (Category.assoc _ _ _).symm).2 I₀`.
+
+Take `⟨I, -, -⟩` from `(XR.tateIsoAt_move E H D Y.X 𝔐.X Y.t 𝔐.t 𝔐.f 𝔐.m (AlgebraicClosure Ω) (spMap iK ≫ 𝔐.ξ) (spMap iK ≫ y₀ ≫ Y.j) (by rw [Category.assoc, hξ])).1 I₁`. Conclude with `⟨I⟩`. Take `⟨I⟩` from `hI`. Take `⟨τ, e, h1, h2, h3, h4, h5, h6, h7, h8⟩` from `HF.torsion_of_tate H D 𝔐.t 𝔐.ξ _ hN0 ζ hζ (AlgebraicClosure Ω) iK I (𝔐.tors p hpS) ew hew`. Use `nonempty_genTors_of_data 𝔐 p hp0 hR ζ hζ ew hew τ e h1 h2 h3 h4 h5 (fun a x x' => ?_) h7 h8` and prove the remaining obligations.
+
+Establish `hbar : RingOfIntegers.mapRingEquiv (HT.cmConj E) a = H.bar a`. Use `ext`. Rewrite using `[H.bar_eq]`. Both sides reduce to the same expression. Rewrite using `[h6, hbar]`.
+-/
 theorem nonempty_genTors : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → 0 < D.p + D.q → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → HT.HTFree 𝔐 p → p ≠ 2 → ¬ (p : ℤ) ∣ NumberField.discr E → Nonempty (GenTors 𝔐 p) := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d _ hpq p _ hpS _ _ _
   have hchar : CharZero Ω := charZero_of_injective_ringHom 𝔐.cst.injective

@@ -10,6 +10,11 @@ open MvPolynomial MeasureTheory Matrix ComplexSets
 
 noncomputable section
 
+/- English proof (translation)
+Unfold `gramVol`. Establish `hw : (Fin.cons 0 (fun _ => 0) : Fin (e + 1) → Fin n → ℂ) = 0`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) a <;> simp`. Establish `h0 : (Matrix.of fun (_ _ : Fin (e + 1)) => (0 : ℂ)).det = 0` using `Matrix.det_zero`.
+
+Simplify using `[hw, h0]`.
+-/
 theorem gramVol_const_zero {e n : ℕ} (y : Fin e → ℂ) :
     gramVol (fun _ : Fin e → ℂ => (0 : Fin n → ℂ)) y = 0 := by
   unfold gramVol
@@ -19,6 +24,9 @@ theorem gramVol_const_zero {e n : ℕ} (y : Fin e → ℂ) :
   have h0 : (Matrix.of fun (_ _ : Fin (e + 1)) => (0 : ℂ)).det = 0 := Matrix.det_zero
   simp [hw, h0]
 
+/- English proof (translation)
+Establish `h` using `ringKrullDim_quotient_le J`. Rewrite `h` using `[hdim, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem succ_le_of_ringKrullDim_quotient {n e : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ))
     (hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = ((e + 1 : ℕ) : WithBot ℕ∞)) : e + 1 ≤ n := by
   have h := ringKrullDim_quotient_le J
@@ -26,6 +34,13 @@ theorem succ_le_of_ringKrullDim_quotient {n e : ℕ} (J : Ideal (MvPolynomial (F
     Nat.card_eq_fintype_card, Fintype.card_fin, zero_add] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Introduce `n e h J ℓ A f hJ hdim hℓ hA hf`. Take `⟨hb0, -⟩` from `coordBall_mass (n := n) (m := e + 1) (succ_le_of_ringKrullDim_quotient J hdim)`. Rewrite using `[mul_setIntegral_eq_of_lintegral (ν := volume) (fun y => IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y) (fun y x => WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ sheetThrough (J ⊔ Ideal.span {linForm ℓ - 1}) A x y)) (fun y x t => ‖t‖ ^ (2 * e) * gramVol (fun y' => (h.matᵀ)⁻¹ *ᵥ sheetTh …`. Use `congr 1`. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations.
+
+Unfold `sheetSum`. Use `finsum_congr fun x => finsum_congr fun _ => ?_` and prove the remaining obligations. Unfold `sheetThrough`. Use `split_ifs with hs`. Both sides reduce to the same expression.
+
+Simplify using `[gramVol_const_zero]`.
+-/
 theorem ConeSheetGram.proof (hL : ConeSheetGramLintegral.Statement) : ConeSheetGram.Statement := by
   intro n e h J ℓ A f hJ hdim hℓ hA hf
   obtain ⟨hb0, -⟩ := coordBall_mass (n := n) (m := e + 1) (succ_le_of_ringKrullDim_quotient J hdim)

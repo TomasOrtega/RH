@@ -14,9 +14,19 @@ variable {D : D7}
 
 def fro {a b : ℕ} (A : Matrix (Fin a) (Fin b) ℂ) : ℝ := ∑ i, ∑ j, ‖A i j‖ ^ 2
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity`.
+-/
 theorem fro_nonneg {a b : ℕ} (A : Matrix (Fin a) (Fin b) ℂ) : 0 ≤ fro A :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity
 
+/- English proof (translation)
+Establish `key : ∀ i j, ‖(A * B) i j‖ ^ 2 ≤ (∑ k, ‖A i k‖ ^ 2) * (∑ k, ‖B k j‖ ^ 2)`. Introduce `i j`. Establish `h1 : ‖(A * B) i j‖ ≤ ∑ k, ‖A i k‖ * ‖B k j‖`. Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => (norm_mul _ _).le)` and prove the remaining obligations.
+
+Establish `h2` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun k => ‖A i k‖) (fun k => ‖B k j‖)`. Conclude with `(pow_le_pow_left₀ (norm_nonneg _) h1 2).trans h2`. Unfold `fro`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`.
+-/
 theorem fro_mul {a b c : ℕ} (A : Matrix (Fin a) (Fin b) ℂ) (B : Matrix (Fin b) (Fin c) ℂ) :
     fro (A * B) ≤ fro A * fro B := by
   have key : ∀ i j, ‖(A * B) i j‖ ^ 2 ≤ (∑ k, ‖A i k‖ ^ 2) * (∑ k, ‖B k j‖ ^ 2) := by
@@ -34,16 +44,27 @@ theorem fro_mul {a b c : ℕ} (A : Matrix (Fin a) (Fin b) ℂ) (B : Matrix (Fin 
         refine Finset.sum_congr rfl fun i _ => ?_
         rw [← Finset.mul_sum, Finset.sum_comm]
 
+/- English proof (translation)
+Unfold `fro`. Use `le_trans ?_ (Finset.single_le_sum (f := fun i => ∑ j, ‖A i j‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ i))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ‖A i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)`.
+-/
 theorem norm_entry_sq_le {a b : ℕ} (A : Matrix (Fin a) (Fin b) ℂ) (i : Fin a) (j : Fin b) :
     ‖A i j‖ ^ 2 ≤ fro A := by
   unfold fro
   refine le_trans ?_ (Finset.single_le_sum (f := fun i => ∑ j, ‖A i j‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ i))
   exact Finset.single_le_sum (f := fun j => ‖A i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)
 
+/- English proof (translation)
+Unfold `fro`. Use `fun_prop`.
+-/
 theorem continuous_fro {a b : ℕ} : Continuous (fro : Matrix (Fin a) (Fin b) ℂ → ℝ) := by
   unfold fro
   fun_prop
 
+/- English proof (translation)
+Unfold `fro`. Rewrite using `[Matrix.trace]`. Simplify using `only [Matrix.diag_apply, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[Finset.sum_comm]`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.conj_mul']`. Both sides reduce to the same expression.
+-/
 theorem trace_conjTranspose_mul_self {a b : ℕ} (A : Matrix (Fin a) (Fin b) ℂ) :
     Matrix.trace (Aᴴ * A) = ((fro A : ℝ) : ℂ) := by
   unfold fro
@@ -58,14 +79,25 @@ theorem trace_conjTranspose_mul_self {a b : ℕ} (A : Matrix (Fin a) (Fin b) ℂ
 def nrm {m : ℕ} {n : ℕ} (l : D.what₂.Tau → ℝ) (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) : ℝ :=
   ∑ τ, |l τ| * fro (z τ)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => mul_nonneg (abs_nonneg _) (fro_nonneg _)`.
+-/
 theorem nrm_nonneg {m n : ℕ} (l : D.what₂.Tau → ℝ) (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) : 0 ≤ nrm l z :=
   Finset.sum_nonneg fun _ _ => mul_nonneg (abs_nonneg _) (fro_nonneg _)
 
+/- English proof (translation)
+The claim follows from `|l τ| * ‖z τ i j‖ ^ 2 ≤ nrm l z := by refine le_trans (mul_le_mul_of_nonneg_left (norm_entry_sq_le _ i j) (abs_nonneg _)) ?_ exact Finset.single_le_sum (f := fun τ => |l τ| * fro (z τ)) (fun _ _ => mul_nonneg (abs_nonneg _) (fro_nonneg _)) (Finset.mem_univ τ)`.
+-/
 theorem entry_le_nrm {m n : ℕ} (l : D.what₂.Tau → ℝ) (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) (τ) (i j) :
     |l τ| * ‖z τ i j‖ ^ 2 ≤ nrm l z := by
   refine le_trans (mul_le_mul_of_nonneg_left (norm_entry_sq_le _ i j) (abs_nonneg _)) ?_
   exact Finset.single_le_sum (f := fun τ => |l τ| * fro (z τ)) (fun _ _ => mul_nonneg (abs_nonneg _) (fro_nonneg _)) (Finset.mem_univ τ)
 
+/- English proof (translation)
+Establish `hs : 0 < Real.sqrt d` using `Real.sqrt_pos.2 hd`. Establish `h1 : Real.sqrt d * ‖w‖ ≤ Real.exp (d * ‖w‖ ^ 2)`. Establish `h2 : d * ‖w‖ ^ 2 + 1 ≤ Real.exp (d * ‖w‖ ^ 2)` using `Real.add_one_le_exp _`. Establish `h3 : (Real.sqrt d * ‖w‖) ^ 2 = d * ‖w‖ ^ 2`. Rewrite using `[mul_pow, Real.sq_sqrt hd.le]`.
+
+Use polynomial arithmetic with `[sq_nonneg (Real.sqrt d * ‖w‖ - 1)]`. Rewrite using `[one_div, inv_mul_eq_div, le_div_iff₀ hs]`. Combine the linear relations using `[mul_comm (Real.sqrt d) ‖w‖]`.
+-/
 theorem norm_le_exp {w : ℂ} {d : ℝ} (hd : 0 < d) : ‖w‖ ≤ (1 / Real.sqrt d) * Real.exp (d * ‖w‖ ^ 2) := by
   have hs : 0 < Real.sqrt d := Real.sqrt_pos.2 hd
   have h1 : Real.sqrt d * ‖w‖ ≤ Real.exp (d * ‖w‖ ^ 2) := by
@@ -76,6 +108,23 @@ theorem norm_le_exp {w : ℂ} {d : ℝ} (hd : 0 < d) : ‖w‖ ≤ (1 / Real.sqr
   rw [one_div, inv_mul_eq_div, le_div_iff₀ hs]
   linarith [mul_comm (Real.sqrt d) ‖w‖]
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a`. Introduce `e he`. Use `⟨‖a‖, norm_nonneg _, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [evalPoly, MvPolynomial.eval_C]`.
+
+Establish `: 1 ≤ Real.exp (e * nrm l z)` using `Real.one_le_exp (mul_nonneg he.le (nrm_nonneg _ _))`. Use polynomial arithmetic with `[norm_nonneg a]`. Consider the case `add p q hp hq`. Introduce `e he`. Take `⟨C₁, h₁, b₁⟩` from `hp e he`.
+
+Take `⟨C₂, h₂, b₂⟩` from `hq e he`. Use `⟨C₁ + C₂, add_nonneg h₁ h₂, fun z => ?_⟩` and prove the remaining obligations. Establish `: evalPoly (p + q) z = evalPoly p z + evalPoly q z` using `by simp [evalPoly]`. Rewrite using `[this, add_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add (b₁ z) (b₂ z))`.
+
+Consider the case `mul_X p k hp`. Introduce `e he`. Take `⟨C₁, h₁, b₁⟩` from `hp (e / 2) (by positivity)`. Take `⟨τ, i, j, b⟩` from `k`. Establish `hlt : 0 < |l τ|` using `abs_pos.2 (hl τ)`.
+
+Use `set d : ℝ := e / 2 * |l τ| with hd`. Establish `hd0 : 0 < d` using `by positivity`. Use `⟨C₁ * (1 / Real.sqrt d), by positivity, fun z => ?_⟩` and prove the remaining obligations. Establish `hm : evalPoly (p * MvPolynomial.X (τ, i, j, b)) z = evalPoly p z * (if b then conj (z τ i j) else z τ i j)` using `by simp [evalPoly]`. Apply the tactic sequence `have hx : ‖(if b then conj (z τ i j) else z τ i j)‖ = ‖z τ i j‖ := by split_ifs <;> simp`.
+
+Rewrite using `[hm, norm_mul, hx]`. Establish `h1` using `norm_le_exp (w := z τ i j) hd0`. Establish `h2 : Real.exp (d * ‖z τ i j‖ ^ 2) ≤ Real.exp (e / 2 * nrm l z)`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use `entry_le_nrm l z τ i j` as an intermediate fact.
+
+Rewrite using `[hd, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left this (by positivity)`. Establish `h3 : ‖z τ i j‖ ≤ (1 / Real.sqrt d) * Real.exp (e / 2 * nrm l z)` using `h1.trans (mul_le_mul_of_nonneg_left h2 (by positivity))`. Combine the equalities or inequalities in the displayed calculation. Establish `: Real.exp (e * nrm l z) = Real.exp (e / 2 * nrm l z) * Real.exp (e / 2 * nrm l z)`.
+
+Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evalPoly_bound {m n : ℕ} (l : D.what₂.Tau → ℝ) (hl : ∀ τ, l τ ≠ 0)
     (q : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) :
     ∀ e : ℝ, 0 < e → ∃ C : ℝ, 0 ≤ C ∧ ∀ z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ,

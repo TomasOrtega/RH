@@ -38,6 +38,11 @@ def conj : Ideal (𝓞 E) := conjHalf a.l₂ ⊔ a.pId
 def SplitsCompletely : Prop :=
   ∀ 𝔮 : Ideal (𝓞 E), 𝔮.IsMaximal → (a.p : 𝓞 E) ∈ 𝔮 → Ideal.absNorm 𝔮 = a.p ∧ (a.p : 𝓞 E) ∉ 𝔮 ^ 2
 
+/- English proof (translation)
+Use `sup_le (fun x hx => ?_) ?_` and prove the remaining obligations. Conclude with `Ideal.mem_sup_left (bar_mem_of_mem_conjHalf a.l₂ hx)`. Rewrite using `[pId, Ideal.span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `(H.bar : 𝓞 E →+* 𝓞 E) (a.p : 𝓞 E) ∈ a.named`. Rewrite using `[map_natCast]`.
+
+Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`.
+-/
 theorem conj_le_comap : a.conj ≤ a.named.comap (H.bar : 𝓞 E →+* 𝓞 E) := by
   refine sup_le (fun x hx => ?_) ?_
   · exact Ideal.mem_sup_left (bar_mem_of_mem_conjHalf a.l₂ hx)
@@ -49,6 +54,9 @@ theorem conj_le_comap : a.conj ≤ a.named.comap (H.bar : 𝓞 E →+* 𝓞 E) :
 def barQuot : (𝓞 E ⧸ a.conj) →+* (𝓞 E ⧸ a.named) :=
   Ideal.quotientMap a.named (H.bar : 𝓞 E →+* 𝓞 E) a.conj_le_comap
 
+/- English proof (translation)
+Rewrite using `[KA, KA, a.A_eq]`.
+-/
 theorem KA_le : KA l ≤ KA a.l₂ := by rw [KA, KA, a.A_eq]
 
 def red (D : Datum H) : ConjCl D a.l₂ →ₗ[𝓞 E] ConjCl D l :=
@@ -63,6 +71,9 @@ def triv (l : Level H) : IsAuxiliarySplitSquarefreeLevel l where
   M_eq := (Nat.mul_one _).symm
   A_eq := rfl
 
+/- English proof (translation)
+Simplify using `[pId, triv]`.
+-/
 theorem triv_pId (l : Level H) : (triv l).pId = ⊤ := by simp [pId, triv]
 
 end IsAuxiliarySplitSquarefreeLevel
@@ -99,6 +110,11 @@ variable {F : Type} [Field F]
 def phiDelta (δ : DeltaChar a F) (v : Vol D a) {n : ℕ} (x : Fin n → ConjCl D a.l₂) : F :=
   δ.loc⁻¹ (a.barQuot (v.det₁ x))
 
+/- English proof (translation)
+Establish `h : v.det₁ (fun b => (Submodule.Quotient.mk (k (u b)) : ConjCl D a.l₂)) = d * v.det₁ (fun b => (Submodule.Quotient.mk (u b) : ConjCl D a.l₂))`. Unfold `Vol.det₁`. Use `split_ifs with h`. Conclude with `hd (v.ω.compLinearMap (Submodule.mkQ _)) fun i => u (Fin.castLE h i)`. Rewrite using `[mul_zero]`.
+
+Establish `hu : IsUnit (a.barQuot d)` using `d.isUnit.map _`. Rewrite using `[phiDelta, phiDelta, h, map_mul, map_mul, ← _root_.mul_assoc, ← MulChar.mul_apply, mul_inv_cancel, MulChar.one_apply hu, _root_.one_mul]`.
+-/
 theorem phiDelta_transform (δ : DeltaChar a F) (v : Vol D a) {n : ℕ} (k : D.La →ₗ[𝓞 E] D.La) (d : (𝓞 E ⧸ a.conj)ˣ)
     (hd : IsDetMod D a.conj k d) (u : Fin n → D.La) :
     phiDelta δ v (fun b => Submodule.Quotient.mk (u b)) =
@@ -142,13 +158,26 @@ structure Cover (Xo : Moduli D l) (c : Coeff l) (a : IsAuxiliarySplitSquarefreeL
   level : IsLevelMap Xo a Xo₂ r m
   bundle : IsBundleIso m w
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => Subtype.ext ((hj x).trans (IntermediateField.coe_inclusion a.KA_le x).symm)`.
+-/
 theorem eq_inclusion (a : IsAuxiliarySplitSquarefreeLevel l) (jK : KA l →+* KA a.l₂) (hj : ∀ x, ((jK x : KA a.l₂) : ℂ) = ((x : KA l) : ℂ)) :
     jK = (IntermediateField.inclusion a.KA_le).toRingHom :=
   RingHom.ext fun x => Subtype.ext ((hj x).trans (IntermediateField.coe_inclusion a.KA_le x).symm)
 
+/- English proof (translation)
+The claim follows from `m.lin`.
+-/
 theorem exists_bundleIso {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f) :
     ∃ w, IsBundleIso m w := m.lin
 
+/- English proof (translation)
+Take `⟨r, jK, m, hj, hs, he, hA, -⟩` from `h l a.l₂ Xo Xo₂ a.dvd`. Take `⟨w, hw⟩` from `exists_bundleIso m`. Establish `hM : 0 < l.M` using `by have := l.three_le; omega`. Establish `e₁ : a.l₂.M / l.M = a.p` using `by rw [a.M_eq, Nat.mul_div_cancel_left _ hM]`. Establish `e₂ : a.l₂.A / l.A = 1` using `by rw [a.A_eq, Nat.div_self l.A_pos]`.
+
+Establish `e₃ : jK = (IntermediateField.inclusion a.KA_le).toRingHom` using `eq_inclusion a jK hj`. Rewrite `hs` using `[e₃]`. Use `⟨⟨Xo₂, c₂, hF, r, m, w, ⟨hs, fun x => ?_, fun x => ?_⟩, hw⟩⟩` and prove the remaining obligations. Rewrite using `[← e₁]`. Conclude with `he x`.
+
+Use `hA x` as an intermediate fact. Rewrite `this` using `[e₂, pow_one]`. Then use the resulting hypothesis.
+-/
 theorem nonempty_cover (h : ToroidalLevelCompatibility (H := H) (D := D)) (Xo : Moduli D l) (c : Coeff l) (a : IsAuxiliarySplitSquarefreeLevel l)
     (Xo₂ : Moduli D a.l₂) (c₂ : Coeff a.l₂) (hF : c.F = c₂.F) : Nonempty (Cover Xo c a) := by
   obtain ⟨r, jK, m, hj, hs, he, hA, -⟩ := h l a.l₂ Xo Xo₂ a.dvd
@@ -370,6 +399,27 @@ def DeltaChar.triv (l : Level H) (F : Type) [Field F] : DeltaChar (IsAuxiliarySp
   real := fun 𝔟 h _ => if_neg fun e => h ((Ideal.map_eq_bot_iff_of_injective
     (FaithfulSMul.algebraMap_injective _ _)).1 e)
 
+/- English proof (translation)
+Introduce `S _ i₁ i₂ y₂ y h pm hpm k F₂ F hF α`. Take `rfl : i₁ = i₂` from `Algebra.algebra_ext _ _ fun r => RingHom.congr_fun h.1 r`. Establish `key : ∀ {x : Sp S ⟶ Xo.X} (pm : Gx x ⟶ Gx x), (Cover.triv Xo c).IsGroupMap (RingHom.id S) x x pm → ∀ (k : ℤ) (F₂ F : LB.Sec (Out.LPow Xo.univ.t.G Xo.univ.t.PP.L k (Over.mk x))), (Cover.triv Xo c).SecOver pm k F₂ F → F₂ = F`. Introduce `x pm hpm k F₂ F hF`. Choose the witnesses or unpack the hypotheses as in `rfl : pm = 𝟙 _ := by`.
+
+Establish `e : spMap (RingHom.id S) = 𝟙 _` using `Spec.map_id _`. Establish `h2` using `hpm.2`. Rewrite `h2` using `[e]`. Conclude with `pullback.hom_ext (h2.trans ((Category.comp_id _).trans (Category.id_comp _).symm)) (hpm.1.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Take `⟨f₂, c₂⟩` from `F₂`.
+
+Take `⟨f, c₁⟩` from `F`. Use `congr 1`. Use function extensionality and compare the values at `J`. Take `⟨i, rfl⟩ : ∃ i, J = fun _ => i` from `⟨J 0, funext fun a => congrArg J (Subsingleton.elim _ _)⟩`. Establish `hle : (Out.LPow Xo.univ.t.G Xo.univ.t.PP.L k (Over.mk x)).U (fun _ => i) ≤ (snd (Over.mk x) Xo.univ.t.G).left ⁻¹ᵁ Xo.univ.t.PP.L.U i` using `LB.wchart_le Xo.univ.t.PP.L (fun _ : Fin 1 => (snd (Over.mk x) Xo.univ.t.G).left) (fun _ => i) 0`.
+
+Establish `H` using `hF i i _ le_rfl le_rfl (fun z hz => ⟨mem_pull.2 (hle hz), hle hz⟩)`. Establish `hw : (Cover.triv Xo c).w.s (fun _ => i, i) = 1`. Establish `h0` using `congrArg (res (inf_le_right : (Xo.univ.t.PP.L.pull (𝟙 _)).U (fun _ => i) ⊓ Xo.univ.t.PP.L.U i ≤ Xo.univ.t.PP.L.U i)) (Xo.univ.t.PP.isLB.g_self i)`. Rewrite `h0` using `[map_one]`. Use `Eq.trans (Units.ext ?_) h0` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = (Xo.univ.t.G.left.presheaf.map _ ≫ Xo.univ.t.G.left.presheaf.map _).hom _`. Use `erw [← Functor.map_comp]`. Both sides reduce to the same expression. Establish `hid : ∀ (Y : Scheme.{0}) (U : Y.Opens) (z : Γ(Y, U)), (Y.presheaf.map (homOfLE (le_refl U)).op).hom z = z` using `fun Y U z => by`. Establish `: (homOfLE (le_refl U)).op = 𝟙 _` using `rfl`.
+
+Rewrite using `[this, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression. Rewrite `H` using `[hw, map_one, map_one, one_zpow, Units.val_one, _root_.one_mul]`. Conclude with `(hid _ _ _).symm.trans (H.symm.trans (hid _ _ _))`. Take `⟨x₂, hx₂, u₂, t₂, e₂, b₂, s₂, g₂⟩` from `y₂`.
+
+Take `⟨x, hx, u, t, e, b, s, g⟩` from `y`. Take `⟨-, h1, h2, pm', h3, h4⟩` from `h`. Establish `e : spMap (RingHom.id S) = 𝟙 _` using `Spec.map_id _`. Establish `e' : spMap (dualMap (RingHom.id S)) = 𝟙 _`. Establish `: dualMap (RingHom.id S) = RingHom.id _` using `RingHom.ext fun z => TrivSqZeroExt.inl_fst_add_inr_snd_eq z`.
+
+Rewrite using `[this]`. Conclude with `Spec.map_id _`. Choose the witnesses or unpack the hypotheses as in `rfl : x₂ = x := by`. Rewrite `h1` using `[e]`. Conclude with `(Category.comp_id _).symm.trans (h1.trans (Category.id_comp _))`.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : u₂ = u := by`. Use function extensionality and compare the values at `τ i`. Use `h2 τ i` as an intermediate fact. Rewrite `this` using `[e']`. Conclude with `(Category.comp_id _).symm.trans (this.trans (Category.id_comp _))`.
+
+Take `rfl : s₂ = s` from `key pm' h3 1 _ _ h4`. Take `rfl : F₂ = F` from `key pm hpm k _ _ hF`. Both sides reduce to the same expression.
+-/
 theorem Cover.triv_nabOver (Xo : Moduli D l) (c : Coeff l) (nab : NabV Xo c) :
     (Cover.triv Xo c).NabOver @nab @nab := by
   intro S _ i₁ i₂ y₂ y h pm hpm k F₂ F hF α
@@ -442,6 +492,9 @@ def DeltaDatum.triv (Xo : Moduli D l) (c : Coeff l) (nab : NabV Xo c) : DeltaDat
     rw [h1, h1, h2]
     simp [fnAt]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(1 : MulChar _ F)⁻¹ _ = 1`. Rewrite using `[inv_one, MulChar.one_apply (isUnit_of_subsingleton _)]`.
+-/
 theorem phiDelta_triv (F : Type) [Field F] (v : Vol D (IsAuxiliarySplitSquarefreeLevel.triv l)) {n : ℕ}
     (x : Fin n → ConjCl D (IsAuxiliarySplitSquarefreeLevel.triv l).l₂) : phiDelta (DeltaChar.triv l F) v x = 1 := by
   change (1 : MulChar _ F)⁻¹ _ = 1

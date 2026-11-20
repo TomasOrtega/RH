@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo.Cs
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.Lit.Dr Filter Topology
 
+/- English proof (translation)
+Introduce `E _ _ a p₀ hp`. Take `⟨τ, h1, h2⟩` from `locSec E a p₀ hp`. Establish `c1 : ContinuousAt (fun p => toL (τ p).val) p₀` using `h1.continuousAt`. Establish `c1' : ContinuousAt (fun p => ((τ p).val : Matrix (Fin a) (Fin a) (Cinf E))) p₀` using `c1`. Establish `hi : ContinuousAt (Inv.inv : Matrix (Fin a) (Fin a) (Cinf E) → _) (τ p₀).val`.
+
+Apply `continuousAt_matrix_inv` to reduce the goal to its premises. Use `NormedRing.inverse_continuousAt (GeneralLinearGroup.det (τ p₀))` as an intermediate fact. Simplify using `using this`. Establish `c2' : ContinuousAt (fun p => (((τ p)⁻¹).val : Matrix (Fin a) (Fin a) (Cinf E))) p₀`. Use `ContinuousAt.comp (f := fun p => ((τ p).val : Matrix (Fin a) (Fin a) (Cinf E))) hi c1'` as an intermediate fact.
+
+Simplify `this` using `only [Matrix.coe_units_inv, Function.comp_def]`. Establish `c2 : ContinuousAt (fun p => toL ((τ p)⁻¹).val) p₀` using `c2'`. Use `⟨max (‖toL (τ p₀).val‖ + 1) (‖toL ((τ p₀)⁻¹).val‖ + 1), ?_⟩` and prove the remaining obligations. Use `filter_upwards [h2, c1.norm.eventually_lt_const (lt_add_one _), c2.norm.eventually_lt_const (lt_add_one _)] with p e b1 b2`. Conclude with `⟨τ p, ⟨b1.le.trans (le_max_left _ _), b2.le.trans (le_max_right _ _)⟩, e⟩`.
+-/
 theorem UpperTheory.V.Lit.Geo.Cs.locBd :
     LocBd := by
   intro E _ _ a p₀ hp

@@ -7,12 +7,18 @@ open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 
 namespace GlobalTheory.LeviHC
 
+/- English proof (translation)
+Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul]`. Take the linear combination `(norm := module) Complex.I_mul_I • (v * v' - v' * v)`.
+-/
 theorem commutator_add_I_smul {R : Type} [Ring R] [Algebra ℂ R] (u v u' v' : R) :
     (u + Complex.I • v) * (u' + Complex.I • v') - (u' + Complex.I • v') * (u + Complex.I • v) =
       (u * u' - u' * u) + Complex.I • (u * v' - v' * u) + Complex.I • (v * u' - u' * v) - (v * v' - v' * v) := by
   simp only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul]
   linear_combination (norm := module) Complex.I_mul_I • (v * v' - v' * v)
 
+/- English proof (translation)
+Simplify using `only [smul_add, add_smul, smul_smul]`. Use `push_cast`. Take the linear combination `(norm := module) Complex.I_mul_I • ((-(b : ℂ)) • v)`.
+-/
 theorem re_im_smul_add_I_smul {M : Type} [AddCommGroup M] [Module ℂ M] (a b : ℝ) (u v : M) :
     (a : ℂ) • u + ((-b : ℝ) : ℂ) • v + Complex.I • ((a : ℂ) • v + (b : ℂ) • u) =
       ((a : ℂ) + b * Complex.I) • (u + Complex.I • v) := by
@@ -20,6 +26,37 @@ theorem re_im_smul_add_I_smul {M : Type} [AddCommGroup M] [Module ℂ M] (a b : 
   push_cast
   linear_combination (norm := module) Complex.I_mul_I • ((-(b : ℂ)) • v)
 
+/- English proof (translation)
+Introduce `n A hA hd B _ _ ρ hadd hr hbr`. Set `P : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ` to `fun X => (1 / 2 : ℂ) • (X - adj A X)`. Set `Q : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ` to `fun X => (-Complex.I / 2 : ℂ) • (X + adj A X)`. Establish `hP : ∀ X, (P X)ᴴ * A + A * P X = 0` using `fun X => (skew_parts hA hd X).1`. Establish `hQ : ∀ X, (Q X)ᴴ * A + A * Q X = 0` using `fun X => (skew_parts hA hd X).2.1`.
+
+Establish `hPQ : ∀ X, X = P X + Complex.I • Q X` using `fun X => (skew_parts hA hd X).2.2`. Establish `ssmul : ∀ (c : ℝ) Y, Yᴴ * A + A * Y = 0 → ((c : ℂ) • Y)ᴴ * A + A * ((c : ℂ) • Y) = 0`. Introduce `c Y h`. Rewrite using `[Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h, smul_zero]`. Establish `sbr : ∀ Y Y', Yᴴ * A + A * Y = 0 → Y'ᴴ * A + A * Y' = 0 → (Y * Y' - Y' * Y)ᴴ * A + A * (Y * Y' - Y' * Y) = 0`.
+
+Introduce `Y Y' h h'`. Establish `e : Yᴴ * A = -(A * Y)` using `eq_neg_of_add_eq_zero_left h`. Establish `e' : Y'ᴴ * A = -(A * Y')` using `eq_neg_of_add_eq_zero_left h'`. Establish `e1 : Y'ᴴ * Yᴴ * A = A * Y' * Y`. Rewrite using `[Matrix.mul_assoc, e, Matrix.mul_neg, ← Matrix.mul_assoc, e', Matrix.neg_mul, neg_neg]`.
+
+Establish `e2 : Yᴴ * Y'ᴴ * A = A * Y * Y'`. Rewrite using `[Matrix.mul_assoc, e', Matrix.mul_neg, ← Matrix.mul_assoc, e, Matrix.neg_mul, neg_neg]`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.sub_mul, e1, e2, Matrix.mul_sub, ← Matrix.mul_assoc, ← Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Establish `hr' : ∀ (c : ℝ) Y, Yᴴ * A + A * Y = 0 → ρ ((c : ℂ) • Y) = (c : ℂ) • ρ Y` using `fun c Y h => by`.
+
+Rewrite using `[Complex.coe_smul]`. Conclude with `hr c Y h`. Establish `adj_add : ∀ X X', adj A (X + X') = adj A X + adj A X'` using `fun X X' => by`. Simplify using `only [adj, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul]`. Establish `adj_smul : ∀ (c : ℂ) X, adj A (c • X) = star c • adj A X` using `fun c X => by`.
+
+Simplify using `only [adj, Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]`. Establish `Padd : ∀ X X', P (X + X') = P X + P X'` using `fun X X' => by`. Simplify using `only [P, adj_add]`. Use `module`. Establish `Qadd : ∀ X X', Q (X + X') = Q X + Q X'` using `fun X X' => by`.
+
+Simplify using `only [Q, adj_add]`. Use `module`. Establish `Psmul : ∀ (a b : ℝ) X, P (((a : ℂ) + b * Complex.I) • X) = (a : ℂ) • P X + ((-b : ℝ) : ℂ) • Q X`. Introduce `a b X`. Simplify using `only [P, Q, adj_smul]`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `Qsmul : ∀ (a b : ℝ) X, Q (((a : ℂ) + b * Complex.I) • X) = (a : ℂ) • Q X + (b : ℂ) • P X`. Introduce `a b X`.
+
+Simplify using `only [P, Q, adj_smul]`. Use extensionality with `i j`. Simplify using `[Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply]`. Put the polynomial expressions in normal form. Simplify using `only [Complex.I_sq]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `skew_zero : (0 : Matrix (Fin n) (Fin n) ℂ)ᴴ * A + A * 0 = 0` using `by simp`. Establish `ρ0 : ρ 0 = 0`. Use `hadd 0 0 skew_zero skew_zero` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+
+Simplify using `using this`. Establish `hsk : ∀ Y, Yᴴ * A + A * Y = 0 → adj A Y = -Y` using `fun Y h => by`. Rewrite using `[adj, Matrix.mul_assoc, eq_neg_of_add_eq_zero_left h, Matrix.mul_neg, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]`. Establish `PY : ∀ Y, Yᴴ * A + A * Y = 0 → P Y = Y` using `fun Y h => by`. Simplify using `only [P, hsk Y h]`.
+
+Use `module`. Establish `QY : ∀ Y, Yᴴ * A + A * Y = 0 → Q Y = 0` using `fun Y h => by`. Simplify using `only [Q, hsk Y h, add_neg_cancel, smul_zero]`. Set `D : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] B` to `{ toFun := fun X => ρ (P X) + Complex.I • ρ (Q X) map_add' := fun X X' => by`. Rewrite using `[Padd, Qadd, hadd _ _ (hP _) (hP _), hadd _ _ (hQ _) (hQ _), smul_add]`.
+
+Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := fun c X => by`. Take `⟨a, b, rfl⟩ : ∃ a b : ℝ, c = a + b * Complex.I` from `⟨c.re, c.im, (Complex.re_add_im c).symm⟩`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[Psmul, Qsmul, hadd _ _ (ssmul _ _ (hP _)) (ssmul _ _ (hQ _)), hadd _ _ (ssmul _ _ (hQ _)) (ssmul _ _ (hP _)), hr' _ _ (hP _), hr' _ _ (hQ _), hr' _ _ (hQ _), hr' _ _ (hP _)]`.
+
+Conclude with `re_im_smul_add_I_smul a b _ _ }`. Establish `hD : ∀ X, D X = ρ (P X) + Complex.I • ρ (Q X)` using `fun X => rfl`. Establish `hDs : ∀ Y, Yᴴ * A + A * Y = 0 → D Y = ρ Y` using `fun Y h => by`. Rewrite using `[hD, PY Y h, QY Y h, ρ0, smul_zero, add_zero]`. Establish `key : ∀ p q p' q', pᴴ * A + A * p = 0 → qᴴ * A + A * q = 0 → p'ᴴ * A + A * p' = 0 → q'ᴴ * A + A * q' = 0 → D ((p + Complex.I • q) * (p' + Complex.I • q') - (p' + Complex.I • q') * (p + Complex.I • q)) = D (p + Complex.I • q) * D (p' + Complex.I • q') - D (p' + Complex.I • q') * D …`.
+
+Introduce `p q p' q' hp hq hp' hq'`. Rewrite using `[commutator_add_I_smul, map_sub, map_add, map_add, map_smul, map_smul, hDs _ (sbr _ _ hp hp'), hDs _ (sbr _ _ hp hq'), hDs _ (sbr _ _ hq hp'), hDs _ (sbr _ _ hq hq'), hbr _ _ hp hp', hbr _ _ hp hq', hbr _ _ hq hp', hbr _ _ hq hq', map_add, map_add, map_smul, map_smul, hDs _ hp, h …`. Use `⟨D, fun X X' => ?_, hDs⟩` and prove the remaining obligations. Use `key _ _ _ _ (hP X) (hQ X) (hP X') (hQ X')` as an intermediate fact. Rewrite `this` using `[← hPQ X, ← hPQ X']`. Then use the resulting hypothesis.
+-/
 theorem exists_complexLinear_bracket_ext : ∀ (n : ℕ) (A : Matrix (Fin n) (Fin n) ℂ), Aᴴ = A → IsUnit A.det → ∀ (B : Type) [Ring B] [Algebra ℂ B]
     (ρ : Matrix (Fin n) (Fin n) ℂ → B),
     (∀ X X', Xᴴ * A + A * X = 0 → X'ᴴ * A + A * X' = 0 → ρ (X + X') = ρ X + ρ X') →

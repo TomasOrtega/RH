@@ -14,6 +14,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `R _ _ X s hP hF`. Use `haveI := hP`. Use `haveI := hF`. Use `letI := algebraΓOfHom s`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace s`.
+
+Use `isAffineHom_diagonal_of_isSeparated s` as an intermediate fact. Take `⟨m, D, hD, hc⟩` from `GlobalTheory.exists_fin_affine_cover (X := X) (V := ⊤) isCompact_univ`. Establish `hD'` using `GlobalTheory.isAffineOpen_finset_biInf hD`. Establish `hM : (LB.triv X).IsLB` using `LB.isLB_triv X`. Use `Twist.isFiniteQC_twist (F := structureModule X) hM` as an intermediate fact.
+
+Take `⟨K, φ, h1, h2, -, h4, -, -, h7⟩` from `GlobalTheory.exists_finite_projective_complex_quasiIso.{0, 0} (GlobalTheory.AbLaw.cechLB s (LB.triv X) D) m (fun p hp => GlobalTheory.AbLaw.isZero_cechLB_X s (LB.triv X) _ (by rw [Fintype.card_fin]; exact hp.le)) (GlobalTheory.AbLaw.flat_cechLB_X s hM hD') (fun n => by`. Take `⟨e⟩` from `GlobalTheory.FieldChangeInter.nonempty_coh_equiv s hM hc hD' n`. Use `GlobalTheory.ProperFinite.finite_coh_of_isProper s (twist (structureModule X) (LB.triv X)) n` as an intermediate fact. Conclude with `Module.Finite.equiv e.symm)`. Establish `hsep : IsSeparated s` using `inferInstance`.
+
+Establish `hDa : ∀ i, IsAffineOpen (D i)` using `fun i => hD i`. Take `⟨MC⟩` from `GlobalTheory.T.orderedCech_finiteAffineCover_models_structureSheafCohomology R X s (Fin m) D hsep hDa hc`. Conclude with `⟨K, fun p => ⟨h2 p, h4 p⟩, ⟨m, h1⟩, GlobalTheory.T.nonempty_structureSheafCohomologyModel_of_quasiIso R X s K _ φ (fun S _ _ => h7 S) MC⟩`.
+-/
 theorem exists_finite_projective_model : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (X : Scheme.{0})
     (s : X ⟶ Sp R), IsProper s → Flat s → ∃ (K : CochainComplex (ModuleCat.{0} R) ℕ),
       (∀ p, Module.Finite R (K.X p) ∧ Module.Projective R (K.X p)) ∧ (∃ n, ∀ p, n < p → IsZero (K.X p)) ∧

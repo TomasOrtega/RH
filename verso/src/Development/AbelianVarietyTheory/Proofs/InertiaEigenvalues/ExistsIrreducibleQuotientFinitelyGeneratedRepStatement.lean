@@ -7,5 +7,8 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgebraMapInte
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitaryAdmissibleMatrixCoefficient
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IrrQuot.main | exact GlobalTheory.IrrQuot.main | (intros; apply GlobalTheory.IrrQuot.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_irreducible_quotient_finitelyGenerated_rep : ∀ (G V : Type) [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (s : Finset V), Nontrivial V → Submodule.span ℂ {w | ∃ g : G, ∃ v ∈ s, w = ρ g v} = ⊤ → ∃ (W : Type) (_ : AddCommGroup W) (_ : Module ℂ W) (τ : Representation ℂ G W), τ.IsIrreducible ∧ ∃ f : ρ.IntertwiningMap τ, Function.Surjective f := by
   first | exact @GlobalTheory.IrrQuot.main | exact GlobalTheory.IrrQuot.main | (intros; apply GlobalTheory.IrrQuot.main <;> assumption)

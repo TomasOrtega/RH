@@ -10,6 +10,13 @@ namespace PI.VolStabSW
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub NumberField IsDedekindDomain MeasureTheory PI.VolFromSW
 open scoped TensorProduct
 
+/- English proof (translation)
+Take `⟨d, b, Φinf, Φf, Φv, hc, hcs, hpf, hprod⟩` from `hΦ`. Take `⟨μinf, h1⟩` from `hν.2.1`. Establish `k1` using `hν.2.2 μinf h1`. Take `⟨νinf, h2⟩` from `k1.1`. Establish `k2` using `k1.2 νinf h2`.
+
+Take `⟨μv, h3⟩` from `k2.1`. Establish `k3` using `k2.2 μv h3`. Take `⟨νv, h4⟩` from `k3.1`. Establish `k4` using `k3.2 νv h4`. Take `⟨fibInf, h5⟩` from `k4.1`.
+
+Establish `k5` using `k4.2 fibInf h5`. Take `⟨fibV, h6⟩` from `k5.1`. Conclude with `(k5.2 fibV h6 d b Φ Φinf Φf Φv hc hcs hpf hprod).1`.
+-/
 theorem integrable_of_isOmT {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} {ψ : AddChar (AF F) ℂ}
     {a : ℕ} {T : Matrix (Fin a) (Fin a) E} {hT : ∀ i j, σ (T j i) = T i j}
@@ -29,6 +36,21 @@ theorem integrable_of_isOmT {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   obtain ⟨fibV, h6⟩ := k5.1
   exact (k5.2 fibV h6 d b Φ Φinf Φf Φv hc hcs hpf hprod).1
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ _hψ μ hμ νX hν μ' _hμ' hC`. Take `⟨φ, hφ0, hadm, U, hUo, hUne, hUpos⟩` from `hN F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet`. Use `⟨φ, hφ0, hadm, fun hI0 => ?_⟩` and prove the remaining obligations. Establish `hint : Integrable (fun X => (φ X : ℂ)) νX` using `integrable_of_isOmT hν hadm`. Establish `hintR : Integrable φ νX` using `by simpa using hint.re`.
+
+Establish `hI : ∫ X, φ X ∂νX = 0`. Rewrite `hI0` using `[integral_complex_ofReal]`. Conclude with `hI0` after adjusting the coercions. Establish `hae : φ =ᵐ[νX] 0` using `(integral_eq_zero_iff_of_nonneg (fun X => hφ0 X) hintR).1 hI`. Take `⟨hnull, hform⟩` from `hC`.
+
+Set `s : (Fin a → Fin M → AF F ⊗[F] E) → HA (AF F) σ J` to `fun y => if h : ∃ g : HA (AF F) σ J, g • ratTup (AF F) X0 = y then h.choose else 1`. Establish `hs : ∀ y, (∃ g : HA (AF F) σ J, g • ratTup (AF F) X0 = y) → s y • ratTup (AF F) X0 = y`. Introduce `y h`. Simplify using `only [s, dif_pos h]`. Conclude with `h.choose_spec`.
+
+Establish `hf : Measurable (U.indicator (1 : HA (AF F) σ J → ENNReal))` using `measurable_one.indicator hUo.measurableSet`. Establish `e` using `hform _ hf s hs`. Establish `hL : ∫⁻ g, U.indicator (1 : HA (AF F) σ J → ENNReal) g ∂μ = μ U` using `lintegral_indicator_one hUo.measurableSet`. Establish `: μ.IsHaarMeasure` using `hμ`. Establish `hpos : 0 < μ U` using `hUo.measure_pos μ hUne`.
+
+Establish `hR : ∫⁻ y, ∫⁻ h', U.indicator (1 : HA (AF F) σ J → ENNReal) (s y * (h' : HA (AF F) σ J)) ∂μ' ∂νX = 0`. Use `(lintegral_congr_ae ?_).trans lintegral_zero` and prove the remaining obligations. Use `filter_upwards [hae, ae_iff.2 hnull] with y hy0 hyo`. Simplify using `only [Pi.zero_apply] at hy0`. Establish `hz : ∀ h' : stabT (AF F) σ J X0, U.indicator (1 : HA (AF F) σ J → ENNReal) (s y * (h' : HA (AF F) σ J)) = 0`.
+
+Introduce `h'`. Use `Set.indicator_apply_eq_zero.2 fun hm => ?_` and prove the remaining obligations. It suffices to derive a contradiction. Establish `hh : (h' : HA (AF F) σ J) • ratTup (AF F) X0 = ratTup (AF F) X0` using `h'.2`. Establish `h0` using `hUpos _ hm`.
+
+Rewrite `h0` using `[mul_smul, hh, hs y hyo, hy0]`. Conclude with `lt_irrefl _ h0`. Simplify using `only [hz, lintegral_zero]`. Rewrite `e` using `[hL, hR]`. Conclude with `hpos.ne' e`.
+-/
 theorem posTest_of (hN : TestNear) : PosTest := by
   intro F E _ _ _ _ _ σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ _hψ μ hμ νX hν μ' _hμ' hC
   obtain ⟨φ, hφ0, hadm, U, hUo, hUne, hUpos⟩ := hN F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet
@@ -73,6 +95,9 @@ theorem posTest_of (hN : TestNear) : PosTest := by
   rw [hL, hR] at e
   exact hpos.ne' e
 
+/- English proof (translation)
+The claim follows from `posTest_of testNear_holds`.
+-/
 theorem posTest_holds : PosTest := posTest_of testNear_holds
 
 end PI.VolStabSW

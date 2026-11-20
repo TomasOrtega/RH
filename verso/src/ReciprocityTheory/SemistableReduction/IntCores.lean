@@ -10,6 +10,15 @@ def blockSlice {B n : ℕ} (b : Fin B) (p : Fin B → Fin n → ℂ) :
     Fin B × Fin n → MvPolynomial (Fin n) ℂ :=
   fun q => if q.1 = b then X q.2 else C (p q.1 q.2)
 
+/- English proof (translation)
+Rewrite using `[f.as_sum, map_sum]`. Apply `IsHomogeneous.sum` to reduce the goal to its premises. Introduce `s hs`. Rewrite using `[bind₁_monomial]`. Establish `hdeg : ∀ q, (blockSlice b p q).IsHomogeneous (if q.1 = b then 1 else 0)`.
+
+Introduce `q`. Unfold `blockSlice`. Use `split_ifs`. Conclude with `isHomogeneous_X _ _`. Conclude with `isHomogeneous_C _ _`.
+
+Establish `hprod` using `IsHomogeneous.prod s.support (fun q => blockSlice b p q ^ s q) (fun q => (if q.1 = b then 1 else 0) * s q) (fun q _ => (hdeg q).pow (s q))`. Establish `hsum : ∑ q ∈ s.support, (if q.1 = b then 1 else 0) * s q = a b`. Rewrite using `[Finset.sum_subset (Finset.subset_univ _) (fun q _ hq => by simp [Finsupp.notMem_support_iff.1 hq])]`. Rewrite using `[← hf s hs b, Fintype.sum_prod_type]`. Simplify using `[ite_mul]`.
+
+Rewrite using `[← zero_add (a b), ← hsum]`. Conclude with `(isHomogeneous_C _ _).mul hprod`.
+-/
 theorem blockSlice_isHomogeneous {B n : ℕ} {a : Fin B → ℕ} {f : MvPolynomial (Fin B × Fin n) ℂ}
     (hf : IsMultiHomogeneous a f) (b : Fin B) (p : Fin B → Fin n → ℂ) :
     (bind₁ (blockSlice b p) f).IsHomogeneous (a b) := by
@@ -31,6 +40,11 @@ theorem blockSlice_isHomogeneous {B n : ℕ} {a : Fin B → ℕ} {f : MvPolynomi
   rw [← zero_add (a b), ← hsum]
   exact (isHomogeneous_C _ _).mul hprod
 
+/- English proof (translation)
+Establish `hφ : (fun q => eval₂Hom (RingHom.id ℂ) w (blockSlice b p q)) = fun q => Function.update p b w q.1 q.2`. Use function extensionality and compare the values at `q`. Distinguish the cases in `hq : q.1 = b`. Simplify using `[blockSlice, hq]`. Simplify using `[blockSlice, hq]`.
+
+Use `show eval₂Hom (RingHom.id ℂ) w (bind₁ _ f) = _`. Rewrite using `[eval₂Hom_bind₁, hφ]`. Both sides reduce to the same expression.
+-/
 theorem eval_blockSlice {B n : ℕ} (f : MvPolynomial (Fin B × Fin n) ℂ) (b : Fin B)
     (p : Fin B → Fin n → ℂ) (w : Fin n → ℂ) :
     eval w (bind₁ (blockSlice b p) f) = eval (fun q => Function.update p b w q.1 q.2) f := by
@@ -44,6 +58,13 @@ theorem eval_blockSlice {B n : ℕ} (f : MvPolynomial (Fin B × Fin n) ℂ) (b :
   rw [eval₂Hom_bind₁, hφ]
   rfl
 
+/- English proof (translation)
+Introduce `B n a f _ hf`. Use `set F : (Fin B → Fin n → ℂ) → ℂ := fun p => eval (fun q => p q.1 q.2) f with hFdef`. Establish `hF : BlockPoly B n a F`. Use `⟨(continuous_eval f).comp (continuous_pi fun q => (continuous_apply q.2).comp (continuous_apply q.1)), fun b p => ?_⟩` and prove the remaining obligations. Conclude with `⟨_, blockSlice_isHomogeneous hf b p, fun w => (eval_blockSlice f b p w).symm⟩`.
+
+Distinguish the cases in `hz : ∃ z0, onSpheres F z0 ≠ 0`. Take `⟨z0, hz0⟩` from `hz`. Conclude with `(blockPoly_claim hSJ n B a F hF z0 hz0).1`. Simplify using `only [not_exists, not_not] at hz`. Establish `: (fun z : BlockSphere B n => Real.log ‖eval (blockPoint z) f‖) = fun _ => 0`.
+
+Use function extensionality and compare the values at `z`. Establish `h0 : eval (blockPoint z) f = 0` using `hz z`. Rewrite using `[h0, norm_zero, Real.log_zero]`. Rewrite using `[this]`. Conclude with `integrable_zero _ _ _`.
+-/
 theorem sphereLogIntegrable_holds (hSJ : SJStatement) : SphereLogIntegrableStatement := by
   intro B n a f _ hf
   set F : (Fin B → Fin n → ℂ) → ℂ := fun p => eval (fun q => p q.1 q.2) f with hFdef

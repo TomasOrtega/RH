@@ -13,12 +13,20 @@ open scoped Classical
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Rewrite using `[Complex.ofReal_ratCast, show ((Algebra.trace ℚ E A : ℚ) : ℂ) = algebraMap ℚ ℂ (Algebra.trace ℚ E A) from (eq_ratCast _ _).symm, trace_eq_sum_embeddings]`. Conclude with `Fintype.sum_equiv (RingHom.equivRatAlgHom (R := E) (S := ℂ)).symm _ _ (fun σ => rfl)`.
+-/
 theorem trace_sum (A : E) : (((Algebra.trace ℚ E A : ℚ) : ℝ) : ℂ) = ∑ σ : E →+* ℂ, σ A := by
   rw [Complex.ofReal_ratCast,
     show ((Algebra.trace ℚ E A : ℚ) : ℂ) = algebraMap ℚ ℂ (Algebra.trace ℚ E A) from (eq_ratCast _ _).symm,
     trace_eq_sum_embeddings]
   exact Fintype.sum_equiv (RingHom.equivRatAlgHom (R := E) (S := ℂ)).symm _ _ (fun σ => rfl)
 
+/- English proof (translation)
+Establish `h1` using `congrArg Complex.re (trace_sum A)`. Rewrite `h1` using `[Complex.ofReal_re, Complex.re_sum, sum_split (H := H)]`. Rewrite using `[h1, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, Complex.conj_re]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trace_re (A : E) : ((Algebra.trace ℚ E A : ℚ) : ℝ) =
     ∑ σ ∈ Finset.univ.filter (fun σ : E →+* ℂ => σ (H.rt : E) = H.rt0), 2 * (σ A).re := by
   have h1 := congrArg Complex.re (trace_sum A)
@@ -32,11 +40,17 @@ variable {g : ℕ} {ty : Fin g → (E →+* ℂ)} {p q : ℕ} (hty : IsTypeFn H 
 variable (G : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) E)
 variable {D : Datum H} (c : D.La →ₗ[𝓞 E] (Fin p ⊕ Fin q →₀ 𝓞 E)) (n : ℕ)
 
+/- English proof (translation)
+Rewrite using `[per_apply, blk_inl hty σ h _ ((eP hty σ h).symm a).2, ((eP hty σ h).symm a).2]`. Simplify using the standard rewrite rules.
+-/
 theorem per_at_inl (σ : E →+* ℂ) (h : σ (H.rt : E) = H.rt0) (y : D.La) (a : Fin p) :
     per hty c n y ((eP hty σ h).symm a).1 = σ ((c y (.inl a) : 𝓞 E) : E) / n := by
   rw [per_apply, blk_inl hty σ h _ ((eP hty σ h).symm a).2, ((eP hty σ h).symm a).2]
   simp
 
+/- English proof (translation)
+Rewrite using `[per_apply, blk_inr hty σ h _ ((eQ hty σ h).symm a).2, ((eQ hty σ h).symm a).2]`. Simplify using the standard rewrite rules.
+-/
 theorem per_at_inr (σ : E →+* ℂ) (h : σ (H.rt : E) ≠ H.rt0) (y : D.La) (a : Fin q) :
     per hty c n y ((eQ hty σ h).symm a).1 = σ ((c y (.inr a) : 𝓞 E) : E) / n := by
   rw [per_apply, blk_inr hty σ h _ ((eQ hty σ h).symm a).2, ((eQ hty σ h).symm a).2]
@@ -48,6 +62,9 @@ def blkA (y y' : D.La) : E := ∑ a : Fin p, ∑ b : Fin p,
 def blkB (y y' : D.La) : E := ∑ a : Fin q, ∑ b : Fin q,
   ((c y (.inr a) : 𝓞 E) : E) * G (.inr a) (.inr b) * IsCMField.complexConj E ((c y' (.inr b) : 𝓞 E) : E)
 
+/- English proof (translation)
+Rewrite using `[Q_inl hty G σ h]`. Simplify using `only [per_at_inl, blkA, map_sum, map_mul, IsCMField.complexEmbedding_complexConj, map_div₀, map_natCast, Finset.mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Q_per_inl (σ : E →+* ℂ) (h : σ (H.rt : E) = H.rt0) (y y' : D.La) :
     Q hty G σ (per hty c n y) (per hty c n y') = Complex.I * (2 * σ (blkA G c y y') / ((n : ℂ) * n)) := by
   rw [Q_inl hty G σ h]
@@ -56,6 +73,9 @@ theorem Q_per_inl (σ : E →+* ℂ) (h : σ (H.rt : E) = H.rt0) (y y' : D.La) :
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[Q_inr hty G σ h]`. Simplify using `only [per_at_inr, blkB, map_sum, map_mul, IsCMField.complexEmbedding_complexConj, map_div₀, map_natCast, Finset.mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Q_per_inr (σ : E →+* ℂ) (h : σ (H.rt : E) ≠ H.rt0) (y y' : D.La) :
     Q hty G σ (per hty c n y) (per hty c n y') = Complex.I * (2 * σ (blkB G c y y') / ((n : ℂ) * n)) := by
   rw [Q_inr hty G σ h]
@@ -64,11 +84,19 @@ theorem Q_per_inr (σ : E →+* ℂ) (h : σ (H.rt : E) ≠ H.rt0) (y y' : D.La)
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Establish `e : (2 * z / ((n : ℂ) * n)) = ((2 / ((n : ℝ) * n) : ℝ) : ℂ) * z` using `by push_cast; ring`. Rewrite using `[e, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem im_I_mul_div_sq (z : ℂ) (n : ℕ) : (Complex.I * (2 * z / ((n : ℂ) * n))).im = 2 * z.re / ((n : ℝ) * n) := by
   have e : (2 * z / ((n : ℂ) * n)) = ((2 / ((n : ℝ) * n) : ℝ) : ℂ) * z := by push_cast; ring
   rw [e, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.re_ofReal_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[herm_split, Complex.im_sum, sum_split (H := H), ← Finset.sum_add_distrib, trace_re (H := H), Finset.sum_div]`. Use `Finset.sum_congr rfl fun σ hσ => ?_` and prove the remaining obligations. Establish `h : σ (H.rt : E) = H.rt0` using `(Finset.mem_filter.mp hσ).2`. Establish `h' : ComplexEmbedding.conjugate σ (H.rt : E) ≠ H.rt0` using `fun hc => (conjugate_rt σ).mp hc h`. Rewrite using `[Q_per_inl hty G c n σ h, Q_per_inr hty G c n _ h', im_I_mul_div_sq, im_I_mul_div_sq, ComplexEmbedding.conjugate_coe_eq, Complex.conj_re, map_add, Complex.add_re]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_im (y y' : D.La) :
     (hermForm (Hm hty G) (per hty c n y) (per hty c n y')).im =
       ((Algebra.trace ℚ E (blkA G c y y' + blkB G c y y') : ℚ) : ℝ) / ((n : ℝ) * n) := by
@@ -81,6 +109,15 @@ theorem herm_im (y y' : D.La) :
     ComplexEmbedding.conjugate_coe_eq, Complex.conj_re, map_add, Complex.add_re]
   ring
 
+/- English proof (translation)
+Take `⟨-, hl, hr, hsl, hsr, hsk, -⟩` from `sesq_sesquilinear_properties D`. Set `L : D.La → D.La →+ E` to `fun y' => AddMonoidHom.mk' (fun u => sesq D u y') (fun a b => hl a b y')`. Set `R : D.La → D.La →+ E` to `fun u => AddMonoidHom.mk' (fun v => sesq D u v) (fun a b => hr u a b)`. Establish `key : sesq D (n • y) (n • y') = (n : E) * n * sesq D y y'`. Establish `e1 : sesq D (n • y) (n • y') = n • sesq D y (n • y')` using `map_nsmul (L (n • y')) n y`.
+
+Establish `e2 : sesq D y (n • y') = n • sesq D y y'` using `map_nsmul (R y) n y'`. Rewrite using `[e1, e2, nsmul_eq_mul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← key, ← hc y, ← hc y']`. Establish `e3 : sesq D (∑ m, c y m • x m) (∑ m, c y' m • x m) = ∑ m, ∑ m', ((c y m : 𝓞 E) : E) * sesq D (x m) (x m') * IsCMField.complexConj E ((c y' m' : 𝓞 E) : E)`.
+
+Rewrite using `[show sesq D (∑ m, c y m • x m) (∑ m, c y' m • x m) = L (∑ m, c y' m • x m) (∑ m, c y m • x m) from rfl, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[show L (∑ m, c y' m • x m) (c y m • x m) = sesq D (c y m • x m) (∑ m, c y' m • x m) from rfl, hsl, show sesq D (x m) (∑ m', c y' m' • x m') = R (x m) (∑ m', c y' m' • x m') from rfl, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations. Rewrite using `[show R (x m) (c y' m' • x m') = sesq D (x m) (c y' m' • x m') from rfl, hsr]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `horth' : ∀ a b, sesq D (x (.inr b)) (x (.inl a)) = 0` using `fun a b => by`. Rewrite using `[hsk, horth, map_zero, neg_zero]`. Rewrite using `[e3]`. Simplify using `only [Fintype.sum_sum_type, blkA, blkB, gramE, Matrix.of_apply, horth, horth', mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add]`.
+-/
 theorem sesq_blocks (x : Fin p ⊕ Fin q → D.La) (hc : ∀ y, ∑ m, c y m • x m = n • y)
     (horth : ∀ a b, sesq D (x (.inl a)) (x (.inr b)) = 0) (y y' : D.La) :
     blkA (gramE D x) c y y' + blkB (gramE D x) c y y' = (n : E) * n * sesq D y y' := by
@@ -110,6 +147,11 @@ theorem sesq_blocks (x : Fin p ⊕ Fin q → D.La) (hc : ∀ y, ∑ m, c y m •
   simp only [Fintype.sum_sum_type, blkA, blkB, gramE, Matrix.of_apply, horth, horth', mul_zero,
     zero_mul, Finset.sum_const_zero, add_zero, zero_add]
 
+/- English proof (translation)
+Establish `hn' : (n : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr hn.ne'`. Establish `h1` using `trace_mul_sesq_eq_form D 1 y y'`. Rewrite `h1` using `[one_smul, show ((1 : 𝓞 E) : E) = 1 by simp, _root_.one_mul]`. Establish `ht : Algebra.trace ℚ E ((n : E) * n * sesq D y y') = ((n * n : ℕ) : ℚ) * (D.EF y y' : ℚ)`. Rewrite using `[show (n : E) * n * sesq D y y' = (n * n : ℕ) • sesq D y y' by rw [nsmul_eq_mul]; push_cast; ring, map_nsmul, h1, nsmul_eq_mul]`.
+
+Rewrite using `[herm_im, sesq_blocks c n x hc horth, ht]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem herm_EF (hn : 0 < n) (x : Fin p ⊕ Fin q → D.La) (hc : ∀ y, ∑ m, c y m • x m = n • y)
     (horth : ∀ a b, sesq D (x (.inl a)) (x (.inr b)) = 0) (y y' : D.La) :
     (hermForm (Hm hty (gramE D x)) (per hty c n y) (per hty c n y')).im = D.EF y y' := by

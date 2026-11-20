@@ -14,11 +14,25 @@ namespace GlobalTheory.ExpImage.Values
 
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K : FinExt l)
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_mul, ← add_assoc, P.ζQ_succ, ih]`.
+-/
 theorem zeta_pow (m i : ℕ) : P.ζQ (m + i) ^ (l ^ i) = P.ζQ m := by
   induction i with
   | zero => simp
   | succ k ih => rw [pow_succ', pow_mul, ← add_assoc, P.ζQ_succ, ih]
 
+/- English proof (translation)
+Establish `key : ∀ i ∈ Finset.range s, ∑ a ∈ primeTo l s, (((frK P K ^ i) ((μ a : ↥(K0 K)) * x) : ↥(K0 K)) : Om l) * P.ζQ s ^ (a * l ^ i) = (((frK P K ^ i) x : ↥(K0 K)) : Om l) * (if s - i = j then V else 0)`. Introduce `i hi`. Establish `hi'` using `Finset.mem_range.mp hi`. Rewrite using `[← hμ (s - i) (by omega) (by omega), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Establish `hz : P.ζQ s ^ (l ^ i) = P.ζQ (s - i)`. Use `zeta_pow P (s - i) i` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel hi'.le]`. Then use the resulting hypothesis. Rewrite using `[map_mul, map_intCast, mul_comm a, pow_mul, hz]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `cycVal`. Rewrite using `[Finset.sum_congr rfl fun i hi => by rw [key i hi], Finset.sum_eq_single (s - j)]`. Rewrite using `[if_pos (by omega)]`. Simplify using `[mul_assoc]`.
+
+Introduce `i hi hne`. Establish `hi'` using `Finset.mem_range.mp hi`. Rewrite using `[if_neg (by omega)]`. Simplify using the standard rewrite rules. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_range.mpr (by omega)) h`.
+-/
 theorem cycVal_single {s e j : ℕ} (hj : 1 ≤ j) (hjs : j ≤ s) (μ : ℕ → ℤ) (V : Om l)
     (hμ : ∀ i, 1 ≤ i → i ≤ s →
       ∑ a ∈ primeTo l s, (μ a : Om l) * P.ζQ i ^ a = if i = j then V else 0)
@@ -50,6 +64,9 @@ theorem cycVal_single {s e j : ℕ} (hj : 1 ≤ j) (hjs : j ≤ s) (μ : ℕ →
   · intro h
     exact absurd (Finset.mem_range.mpr (by omega)) h
 
+/- English proof (translation)
+Unfold `cycVal`. Simplify using `only [map_add, IntermediateField.coe_add, add_mul, Finset.sum_add_distrib, mul_add, IntermediateField.coe_zero, mul_zero, add_zero]`.
+-/
 theorem cycVal_add (s e : ℕ) (f g : ℕ → ↥(K0 K)) (d : ↥(K0 K)) :
     cycVal P K s e (fun a => f a + g a) d =
       cycVal P K s e f 0 + cycVal P K s e g 0 + (l : Om l) ^ (s * e) * (d : Om l) := by
@@ -57,6 +74,11 @@ theorem cycVal_add (s e : ℕ) (f g : ℕ → ↥(K0 K)) (d : ↥(K0 K)) :
   simp only [map_add, IntermediateField.coe_add, add_mul, Finset.sum_add_distrib, mul_add,
     IntermediateField.coe_zero, mul_zero, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing y with`. Consider the case `zero => exact ⟨y, rfl, rfl⟩`. Consider the case `succ k ih`. Take `⟨z, rfl⟩` from `(P.PD K).σ_bij.2 y`. Take `⟨x, hx, hn⟩` from `ih z`.
+
+Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', AlgHom.mul_apply, hx]`. Rewrite using `[hn]`. Conclude with `((GlobalTheory.T.norm_frK_eq_and_exists_sub_pow_smul_frK_eq l P K).1 z).symm`.
+-/
 theorem exists_pre (k : ℕ) (y : ↥(K0 K)) :
     ∃ x : ↥(K0 K), (frK P K ^ k) x = y ∧ ‖(x : Om l)‖ = ‖(y : Om l)‖ := by
   induction k generalizing y with
@@ -69,17 +91,28 @@ theorem exists_pre (k : ℕ) (y : ↥(K0 K)) :
     · rw [hn]
       exact ((GlobalTheory.T.norm_frK_eq_and_exists_sub_pow_smul_frK_eq l P K).1 z).symm
 
+/- English proof (translation)
+Use `push_cast`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (IsUltrametricDist.norm_intCast_le_one _ z) (norm_nonneg _) hx`.
+-/
 theorem norm_int_mul {z : ℤ} {x : ↥(K0 K)} (hx : ‖(x : Om l)‖ ≤ 1) :
     ‖(((z : ↥(K0 K)) * x : ↥(K0 K)) : Om l)‖ ≤ 1 := by
   push_cast
   rw [norm_mul]
   exact mul_le_one₀ (IsUltrametricDist.norm_intCast_le_one _ z) (norm_nonneg _) hx
 
+/- English proof (translation)
+Use `norm_int_mul K (z := (l : ℤ) ^ k) hx` as an intermediate fact. Simplify using `using this`.
+-/
 theorem norm_pow_mul (k : ℕ) {x : ↥(K0 K)} (hx : ‖(x : Om l)‖ ≤ 1) :
     ‖(((l : ↥(K0 K)) ^ k * x : ↥(K0 K)) : Om l)‖ ≤ 1 := by
   have := norm_int_mul K (z := (l : ℤ) ^ k) hx
   simpa using this
 
+/- English proof (translation)
+Establish `h1 : P.ζQ 1 ^ l = 1` using `(P.ζQ_succ 0).trans P.ζQ_zero`. Establish `h2` using `mul_geom_sum (P.ζQ 1) l`. Rewrite `h2` using `[h1, sub_self, mul_eq_zero]`. Establish `h3` using `h2.resolve_left (sub_ne_zero.mpr P.ζQ_one)`. Rewrite `h3` using `[Finset.range_eq_Ico, Finset.sum_eq_sum_Ico_succ_bot (Fact.out : l.Prime).pos]`.
+
+Simplify using `only [pow_zero, zero_add] at h3`. Take the linear combination `h3`.
+-/
 theorem sum_zeta : ∑ r ∈ Finset.Ico 1 l, P.ζQ 1 ^ r = -1 := by
   have h1 : P.ζQ 1 ^ l = 1 := (P.ζQ_succ 0).trans P.ζQ_zero
   have h2 := mul_geom_sum (P.ζQ 1) l
@@ -89,6 +122,15 @@ theorem sum_zeta : ∑ r ∈ Finset.Ico 1 l, P.ζQ 1 ^ r = -1 := by
   simp only [pow_zero, zero_add] at h3
   linear_combination h3
 
+/- English proof (translation)
+Establish `h : ∀ r : ℕ, ∃ μ : ℕ → ℤ, r ∈ Finset.Ico 1 l → (∑ a ∈ primeTo l s, μ a = (l : ℤ) ^ (s - 1) ∧ ∀ i, 1 ≤ i → i ≤ s → ∑ a ∈ primeTo l s, (μ a : Om l) * P.ζQ i ^ a = if i = 1 then (l : Om l) ^ (s - 1) * P.ζQ 1 ^ r else 0)`. Introduce `r`. Distinguish the cases in `hr : r ∈ Finset.Ico 1 l`. Establish `hr'` using `Finset.mem_Ico.mp hr`. Take `⟨μ, h1, h2⟩` from `GlobalTheory.T.exists_int_weights_compatibleRootsOfUnity_levels l P.ζQ P.ζQ_zero P.ζQ_one P.ζQ_succ s 1 r le_rfl hs (Nat.not_dvd_of_pos_of_lt hr'.1 hr'.2)`.
+
+Conclude with `⟨μ, fun _ => ⟨by simpa using h1, by simpa using h2⟩⟩`. Conclude with `⟨0, fun h => absurd h hr⟩`. Use `choose μ hμ using h`. Use `⟨fun a => ∑ r ∈ Finset.Ico 1 l, μ r a, ?_, fun i hi his => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun r hr => (hμ r hr).1, Finset.sum_const, Nat.card_Ico, nsmul_eq_mul, Nat.cast_sub (Fact.out : l.Prime).one_lt.le, Nat.cast_one]`.
+
+Use `push_cast`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun r hr => (hμ r hr).2 i hi his]`. Use `split_ifs`. Rewrite using `[← Finset.mul_sum, sum_zeta]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem exists_minus_one {s : ℕ} (hs : 1 ≤ s) : ∃ ν : ℕ → ℤ,
     ∑ a ∈ primeTo l s, ν a = ((l : ℤ) - 1) * (l : ℤ) ^ (s - 1) ∧ ∀ i, 1 ≤ i → i ≤ s →
       ∑ a ∈ primeTo l s, (ν a : Om l) * P.ζQ i ^ a =
@@ -116,6 +158,21 @@ theorem exists_minus_one {s : ℕ} (hs : 1 ≤ s) : ∃ ν : ℕ → ℤ,
       ring
     · simp
 
+/- English proof (translation)
+Take `⟨c, rfl⟩ : ∃ c' : ↥(K0 K), (c' : Om l) = c` from `⟨⟨c, hc⟩, rfl⟩`. Take `⟨μ, h1, h2⟩` from `GlobalTheory.T.exists_int_weights_compatibleRootsOfUnity_levels l P.ζQ P.ζQ_zero P.ζQ_one P.ζQ_succ s j n hj hjs hn`. Distinguish the cases in `hj1 : j = 1`. Substitute `hj1` using the available equality. Simplify using `only [if_true] at h1 h2`.
+
+Take `⟨ν, g1, g2⟩` from `exists_minus_one P hjs`. Take `⟨d, hd, hdc⟩` from `(GlobalTheory.T.norm_frK_eq_and_exists_sub_pow_smul_frK_eq l P K).2 (e + 1) (by omega) (frK P K c) (by rw [(GlobalTheory.T.norm_frK_eq_and_exists_sub_pow_smul_frK_eq l P K).1]; exact hc1)`. Take `⟨x, hx, hxn⟩` from `exists_pre P K (s - 1) c`. Take `⟨y, hy, hyn⟩` from `exists_pre P K (s - 1) ((l : ↥(K0 K)) ^ e * d)`. Take `⟨t, rfl⟩ : ∃ t, s = t + 1` from `⟨s - 1, by omega⟩`.
+
+Simplify using `only [Nat.add_sub_cancel] at *`. Use `⟨fun a => (μ a : ↥(K0 K)) * x + (ν a : ↥(K0 K)) * y, (l : ↥(K0 K)) ^ t * d, fun a => ?_, norm_pow_mul K t hd, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.coe_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (norm_int_mul K (hxn ▸ hc1)) (norm_int_mul K (hyn ▸ norm_pow_mul K e hd)))`. Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_mul, ← Finset.sum_mul, ← Int.cast_sum, ← Int.cast_sum, h1, g1, pow_succ' (frK P K), AlgHom.mul_apply, map_add, map_mul, map_mul, map_mul, map_intCast, map_intCast, hx, hy]`.
+
+Simplify using `only [map_add, map_mul, map_pow, map_natCast, map_intCast]`. Use `push_cast`. Take the linear combination `(l : ↥(K0 K)) ^ t * hdc`. Rewrite using `[cycVal_add, cycVal_single P K le_rfl hjs μ _ h2, cycVal_single P K le_rfl hjs ν _ g2]`. Simplify using `only [Nat.add_sub_cancel]`.
+
+Rewrite using `[hx, hy]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_neg hj1] at h1 h2`. Take `⟨k, rfl⟩ : ∃ k, j = k + 2` from `⟨j - 2, by omega⟩`.
+
+Take `⟨t, rfl⟩ : ∃ t, s = k + 2 + t` from `⟨s - (k + 2), by omega⟩`. Take `⟨x, hx, hxn⟩` from `exists_pre P K t ((l : ↥(K0 K)) ^ ((e + 1) * k + e) * c)`. Use `⟨fun a => (μ a : ↥(K0 K)) * x, 0, fun a => norm_int_mul K (hxn ▸ norm_pow_mul K _ hc1), by simp, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, ← Int.cast_sum, h1]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[cycVal_single P K hj hjs μ _ h2, Nat.add_sub_cancel_left, hx, show k + 2 + t - 1 = k + t + 1 by omega]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_cycVal_eq (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s e j n : ℕ)
     (hj : 1 ≤ j) (hjs : j ≤ s) (hn : ¬ l ∣ n) (c : Om l) (hc : c ∈ K0 K) (hc1 : ‖c‖ ≤ 1) :
     ∃ (lam : ℕ → ↥(K0 K)) (d : ↥(K0 K)), (∀ a, ‖(lam a : Om l)‖ ≤ 1) ∧ ‖(d : Om l)‖ ≤ 1 ∧

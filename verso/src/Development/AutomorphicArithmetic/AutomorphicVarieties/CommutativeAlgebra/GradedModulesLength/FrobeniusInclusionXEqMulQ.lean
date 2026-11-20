@@ -18,41 +18,71 @@ private def φ : AddMonoidAlgebra ℤ (ℤ × ℤ) →ₐ[ℤ] Module.End ℤ (�
 
 private def x (v : ℤ × ℤ) : AddMonoidAlgebra ℤ (ℤ × ℤ) := AddMonoidAlgebra.single v 1
 
+/- English proof (translation)
+Simplify using `[x, AddMonoidAlgebra.single_mul_single]`.
+-/
 private theorem x_add (v w : ℤ × ℤ) : x (v + w) = x v * x w := by
   simp [x, AddMonoidAlgebra.single_mul_single]
 
+/- English proof (translation)
+Simplify using `[φ, x, sh, LinearMap.funLeft]`.
+-/
 private theorem frobenius_inclusion_X_eq_mul_Q (v : ℤ × ℤ) (f : ℤ × ℤ → ℤ) (p : ℤ × ℤ) : φ (x v) f p = f (p - v) := by
   simp [φ, x, sh, LinearMap.funLeft]
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 private theorem φ_mul (a b : AddMonoidAlgebra ℤ (ℤ × ℤ)) (f : ℤ × ℤ → ℤ) : φ (a * b) f = φ a (φ b f) := by
   rw [map_mul]; rfl
 
+/- English proof (translation)
+Rewrite using `[map_sub, map_one, LinearMap.sub_apply, Pi.sub_apply, frobenius_inclusion_X_eq_mul_Q]`. Both sides reduce to the same expression.
+-/
 private theorem φ_sub (v : ℤ × ℤ) (f : ℤ × ℤ → ℤ) (p : ℤ × ℤ) : φ (1 - x v) f p = f p - f (p - v) := by
   rw [map_sub, map_one, LinearMap.sub_apply, Pi.sub_apply, frobenius_inclusion_X_eq_mul_Q]; rfl
 
+/- English proof (translation)
+Rewrite using `[map_add, map_one, LinearMap.add_apply, Pi.add_apply, frobenius_inclusion_X_eq_mul_Q]`. Both sides reduce to the same expression.
+-/
 private theorem φ_add (v : ℤ × ℤ) (f : ℤ × ℤ → ℤ) (p : ℤ × ℤ) : φ (1 + x v) f p = f p + f (p - v) := by
   rw [map_add, map_one, LinearMap.add_apply, Pi.add_apply, frobenius_inclusion_X_eq_mul_Q]; rfl
 
+/- English proof (translation)
+Introduce `h`. Use `φ_sub v (fun q => if q = 0 then 1 else 0) 0` as an intermediate fact. Simplify using `[h, hv] at this`.
+-/
 private theorem one_sub_x_ne {v : ℤ × ℤ} (hv : v ≠ 0) : 1 - x v ≠ 0 := by
   intro h
   have := φ_sub v (fun q => if q = 0 then 1 else 0) 0
   simp [h, hv] at this
 
+/- English proof (translation)
+Proceed by induction on `L generalizing d with`. Consider the case `nil => simp [dif]`. Consider the case `cons v L ih => rw [dif, List.map_cons, List.prod_cons, φ_mul, φ_sub, ih, ih, map_sub]`.
+-/
 private theorem dif_eq {k : ℕ} (l : Deg k →+ ℤ × ℤ) (f : ℤ × ℤ → ℤ) (L : List (Deg k)) (d : Deg k) :
     dif L (fun d => f (l d)) d = φ (L.map fun v => 1 - x (l v)).prod f (l d) := by
   induction L generalizing d with
   | nil => simp [dif]
   | cons v L ih => rw [dif, List.map_cons, List.prod_cons, φ_mul, φ_sub, ih, ih, map_sub]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `eventually_atTop.1 h`. Conclude with `eventually_atTop.2 ⟨a + v, fun p hp => ha _ (le_sub_iff_add_le.2 hp)⟩`.
+-/
 private theorem ev_sub {f : ℤ × ℤ → ℤ} {c : ℤ} (h : ∀ᶠ p in atTop, f p = c) (v : ℤ × ℤ) :
     ∀ᶠ p in atTop, f (p - v) = c := by
   obtain ⟨a, ha⟩ := eventually_atTop.1 h
   exact eventually_atTop.2 ⟨a + v, fun p hp => ha _ (le_sub_iff_add_le.2 hp)⟩
 
+/- English proof (translation)
+Simplify `ev_sub h v` using `only [frobenius_inclusion_X_eq_mul_Q]`.
+-/
 private theorem eventually_const_of_shift {f : ℤ × ℤ → ℤ} {c : ℤ} (h : ∀ᶠ p in atTop, f p = c) (v : ℤ × ℤ) :
     ∀ᶠ p in atTop, φ (x v) f p = c := by
   simpa only [frobenius_inclusion_X_eq_mul_Q] using ev_sub h v
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using h`. Consider the case `succ n ih => filter_upwards [ih, ev_sub ih v] with p h1 h2`. Rewrite using `[pow_succ', φ_mul, φ_add, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem ev_pow {f : ℤ × ℤ → ℤ} {c : ℤ} (h : ∀ᶠ p in atTop, f p = c) (v : ℤ × ℤ) (n : ℕ) :
     ∀ᶠ p in atTop, φ ((1 + x v) ^ n) f p = 2 ^ n * c := by
   induction n with
@@ -66,6 +96,19 @@ private def mons {τ : Type} (w : τ → ℤ × ℤ) (S : Finset τ) (p : ℤ ×
 
 private def N {τ : Type} (w : τ → ℤ × ℤ) (S : Finset τ) (p : ℤ × ℤ) : ℤ := (mons w S p).ncard
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Establish `h : mons w (insert i S) p = mons w S p ∪ (fun ν => ν + Finsupp.single i 1) '' mons w (insert i S) (p - w i)`. Use extensionality with `ν`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Distinguish the cases in `h0 : ν i = 0`. Use `left`. Use `⟨fun j hj => ?_, h2⟩` and prove the remaining obligations. Distinguish the cases in `hji : j = i`. Rewrite using `[hji, h0]`.
+
+Conclude with `h1 j (by simp [hj, hji])`. Use `right`. Establish `e1 : ν - Finsupp.single i 1 + Finsupp.single i 1 = ν` using `tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 h0))`. Use `⟨ν - Finsupp.single i 1, ⟨fun j hj => by simp [h1 j hj], ?_⟩, e1⟩` and prove the remaining obligations. Rewrite using `[← h2]`.
+
+Use `conv_rhs => rw [← e1, map_add, Finsupp.weight_single, one_smul, add_sub_cancel_right]`. Introduce and unpack `(⟨h1, h2⟩ | ⟨μ, ⟨h1, h2⟩, rfl⟩)`. Conclude with `⟨fun j hj => h1 j (fun h => hj (by simp [h])), h2⟩`. Use `⟨fun j hj => ?_, by simp [map_add, Finsupp.weight_single, h2]⟩` and prove the remaining obligations. Establish `: i ≠ j` using `by rintro rfl; simp at hj`.
+
+Simplify using `[h1 j hj, this]`. Rewrite using `[φ_sub, N, N, N, h, Set.ncard_union_eq _ (hfin _ _) ((hfin _ _).image _), Set.ncard_image_of_injective _ (add_left_injective _)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.disjoint_left]`.
+
+Introduce and unpack `ν ⟨h1, -⟩ ⟨μ, -, rfl⟩`. Simplify using `using h1 i hi`.
+-/
 private theorem N_insert {τ : Type} [DecidableEq τ] (w : τ → ℤ × ℤ) (hfin : ∀ S p, (mons w S p).Finite)
     (S : Finset τ) (i : τ) (hi : i ∉ S) : φ (1 - x (w i)) (N w (insert i S)) = N w S := by
   funext p
@@ -98,6 +141,9 @@ private theorem N_insert {τ : Type} [DecidableEq τ] (w : τ → ℤ × ℤ) (h
     rintro ν ⟨h1, -⟩ ⟨μ, -, rfl⟩
     simpa using h1 i hi
 
+/- English proof (translation)
+Proceed by induction on `U using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i U hi ih`. Rewrite `h` using `[Finset.disjoint_insert_left]`. Rewrite using `[Finset.prod_insert hi, mul_comm, φ_mul, Finset.insert_union, N_insert w hfin _ _ (by simp [hi, h.1]), ih h.2]`.
+-/
 private theorem N_prod {τ : Type} [DecidableEq τ] (w : τ → ℤ × ℤ) (hfin : ∀ S p, (mons w S p).Finite)
     (T U : Finset τ) (h : Disjoint U T) : φ (∏ i ∈ U, (1 - x (w i))) (N w (U ∪ T)) = N w T := by
   induction U using Finset.induction_on with
@@ -106,6 +152,9 @@ private theorem N_prod {τ : Type} [DecidableEq τ] (w : τ → ℤ × ℤ) (hfi
     rw [Finset.disjoint_insert_left] at h
     rw [Finset.prod_insert hi, mul_comm, φ_mul, Finset.insert_union, N_insert w hfin _ _ (by simp [hi, h.1]), ih h.2]
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_of_support_subset (s := {i, j}), Finset.sum_pair hij]`. Introduce `k hk`. Assume the negation of the conclusion as `hk'`. Conclude with `Finsupp.mem_support_iff.1 hk (h k hk')`. Simplify using the standard rewrite rules.
+-/
 private theorem weight_pair {τ : Type} [DecidableEq τ] (w : τ → ℤ × ℤ) {i j : τ} (hij : i ≠ j) (ν : τ →₀ ℕ)
     (h : ∀ k ∉ ({i, j} : Finset τ), ν k = 0) : Finsupp.weight w ν = ν i • w i + ν j • w j := by
   rw [Finsupp.weight_apply, Finsupp.sum_of_support_subset (s := {i, j}), Finset.sum_pair hij]
@@ -114,6 +163,17 @@ private theorem weight_pair {τ : Type} [DecidableEq τ] (w : τ → ℤ × ℤ)
     exact Finsupp.mem_support_iff.1 hk (h k hk')
   · simp
 
+/- English proof (translation)
+Establish `hij : i ≠ j` using `by rintro rfl; simp [hi] at hj`. Use `filter_upwards [eventually_ge_atTop (0 : ℤ × ℤ)] with p hp`. Take `⟨a, b⟩` from `p`. Take `⟨ha, hb⟩ : 0 ≤ a ∧ 0 ≤ b` from `hp`. Use `lift a to ℕ using ha`.
+
+Use `lift b to ℕ using hb`. Establish `: mons w {i, j} (a, b) = {Finsupp.single i a + Finsupp.single j b}`. Use extensionality with `ν`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Rewrite `h2` using `[weight_pair w hij ν h1, hi, hj]`. Simplify using `at h2`. Use extensionality with `k`. Distinguish the cases in `hki : k = i`. Simplify using `[hki, hij, h2.1]`.
+
+Distinguish the cases in `hkj : k = j`. Simplify using `[hkj, hij, h2.2]`. Simplify using `[h1 k (by simp [hki, hkj]), hki, hkj]`. Introduce and unpack `rfl`. Use `⟨fun k hk => ?_, by simp [map_add, Finsupp.weight_single, hi, hj]⟩` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hk`. Simplify using `[hk.1, hk.2]`. Simplify using `[N, this]`.
+-/
 private theorem N_one {τ : Type} [DecidableEq τ] (w : τ → ℤ × ℤ) {i j : τ} (hi : w i = (1, 0)) (hj : w j = (0, 1)) :
     ∀ᶠ p in atTop, N w {i, j} p = 1 := by
   have hij : i ≠ j := by rintro rfl; simp [hi] at hj
@@ -140,6 +200,11 @@ private theorem N_one {τ : Type} [DecidableEq τ] (w : τ → ℤ × ℤ) {i j 
       simp [hk.1, hk.2]
   simp [N, this]
 
+/- English proof (translation)
+Establish `hij : i ≠ j` using `by rintro rfl; simp [hi] at hj`. Use `filter_upwards [eventually_ge_atTop ((1, 1) : ℤ × ℤ)] with p hp`. Establish `: mons w {i, j} p = ∅`. Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce and unpack `ν ⟨h1, h2⟩`.
+
+Rewrite `h2` using `[weight_pair w hij ν h1, hi, hj]`. Use `hp.1` as an intermediate fact. Rewrite `this` using `[← h2]`. Simplify using `at this`. Simplify using `[N, this]`.
+-/
 private theorem N_zero {τ : Type} [DecidableEq τ] (w : τ → ℤ × ℤ) {i j : τ} (hi : w i = (0, 1)) (hj : w j = (0, 2)) :
     ∀ᶠ p in atTop, N w {i, j} p = 0 := by
   have hij : i ≠ j := by rintro rfl; simp [hi] at hj
@@ -153,6 +218,23 @@ private theorem N_zero {τ : Type} [DecidableEq τ] (w : τ → ℤ × ℤ) {i j
     simp at this
   simp [N, this]
 
+/- English proof (translation)
+Establish `h01 : i₀ ≠ i₁` using `by rintro rfl; simp [h₀] at h₁`. Establish `h12 : i₁ ≠ i₂` using `by rintro rfl; simp [h₁] at h₂`. Use `set C := (1 - x (1, 0)) ^ r * (1 - x (2, 0)) ^ s * (1 - x (0, 1)) ^ r' * (1 - x (0, 2)) ^ s' with hC`. Establish `hT : ∀ T : Finset τ, φ (∏ i ∈ Tᶜ, (1 - x (w i))) (N w Finset.univ) = N w T` using `fun T => by`. Rewrite using `[← N_prod w hfin T Tᶜ disjoint_compl_left, Finset.union_comm, Finset.union_compl]`.
+
+Establish `nX : 1 - x (1, 0) ≠ 0` using `one_sub_x_ne (by simp)`. Establish `nY : 1 - x (0, 1) ≠ 0` using `one_sub_x_ne (by simp)`. Establish `nY2 : 1 - x (0, 2) ≠ 0` using `one_sub_x_ne (by simp)`. Establish `e1 : ∏ i ∈ ({i₀, i₁} : Finset τ)ᶜ, (1 - x (w i)) = C * (1 - x (0, 2))`. Apply `mul_right_cancel₀ (mul_ne_zero nX nY)` to reduce the goal to its premises.
+
+Use `Finset.prod_compl_mul_prod ({i₀, i₁} : Finset τ) (fun i => 1 - x (w i))` as an intermediate fact. Rewrite `this` using `[Finset.prod_pair h01, h₀, h₁]`. Rewrite using `[this, hP, hC]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∏ i ∈ ({i₁, i₂} : Finset τ)ᶜ, (1 - x (w i)) = C * (1 - x (1, 0))`.
+
+Apply `mul_right_cancel₀ (mul_ne_zero nY nY2)` to reduce the goal to its premises. Use `Finset.prod_compl_mul_prod ({i₁, i₂} : Finset τ) (fun i => 1 - x (w i))` as an intermediate fact. Rewrite `this` using `[Finset.prod_pair h12, h₁, h₂]`. Rewrite using `[this, hP, hC]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hX2 : 1 - x (2, 0) = (1 + x (1, 0)) * (1 - x (1, 0))`. Rewrite using `[show ((2, 0) : ℤ × ℤ) = (1, 0) + (1, 0) from rfl, x_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hY2 : 1 - x (0, 2) = (1 + x (0, 1)) * (1 - x (0, 1))`. Rewrite using `[show ((0, 2) : ℤ × ℤ) = (0, 1) + (0, 1) from rfl, x_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h42 : 1 - x (4, 2) = (1 - x (0, 2)) + x (0, 2) * (1 + x (2, 0)) * ((1 + x (1, 0)) * (1 - x (1, 0)))`. Rewrite using `[← hX2, show ((4, 2) : ℤ × ℤ) = (2, 0) + (2, 0) + (0, 2) from rfl, x_add, x_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hop : (1 - x (2, 0)) ^ r * ((1 - x (2, 0)) ^ s * (1 - x (0, 2)) ^ r' * (1 - x (0, 2)) ^ s' * (1 - x (4, 2))) = (1 + x (1, 0)) ^ r * ((1 + x (0, 1)) ^ r' * (C * (1 - x (0, 2)) + x (0, 2) * ((1 + x (2, 0)) ^ 1 * ((1 + x (1, 0)) ^ 1 * (C * (1 - x (1, 0)))))))`.
+
+Establish `a1 : (1 - x (2, 0)) ^ r = (1 + x (1, 0)) ^ r * (1 - x (1, 0)) ^ r` using `by rw [hX2, mul_pow]`. Establish `a2 : (1 - x (0, 2)) ^ r' = (1 + x (0, 1)) ^ r' * (1 - x (0, 1)) ^ r'` using `by rw [hY2, mul_pow]`. Rewrite using `[a1, a2, h42, hC]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hop, φ_mul, φ_mul, pow_add, ← mul_one (2 ^ r')]`.
+
+Use `ev_pow (ev_pow ?_ _ _) _ _` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply, ← e1, ← e2, φ_mul, φ_mul, φ_mul, hT, hT]`. Use `filter_upwards [N_one w h₀ h₁, eventually_const_of_shift (ev_pow (ev_pow (N_zero w h₁ h₂) (1, 0) 1) (2, 0) 1) (0, 2)] with p a1 a2`. Rewrite using `[Pi.add_apply, a1, a2]`. Simplify using the standard rewrite rules.
+-/
 private theorem key {τ : Type} [Fintype τ] [DecidableEq τ] (w : τ → ℤ × ℤ) (hfin : ∀ S p, (mons w S p).Finite)
     (r s r' s' : ℕ) {i₀ i₁ i₂ : τ} (h₀ : w i₀ = (1, 0)) (h₁ : w i₁ = (0, 1)) (h₂ : w i₂ = (0, 2))
     (hP : ∏ i, (1 - x (w i)) =
@@ -203,6 +285,35 @@ private def lam : Deg 3 →+ ℤ × ℤ where
 end UpperTheory.V.Alg.M.NumericalFunctions
 
 open UpperTheory.V.Alg.M.NumericalFunctions in
+/- English proof (translation)
+Introduce `τ _ wt r s r' s' hr hc`. Take `⟨r, rfl⟩ : ∃ r₀, r = r₀ + 1` from `⟨r - 1, by omega⟩`. Establish `hc' : ∀ j, (Finset.univ.filter fun i => wt i = j).card = mDims (r + 1) s r' s' 0 j` using `fun j => by`. Rewrite using `[← hc j, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Establish `hex : ∀ j, mDims (r + 1) s r' s' 0 j ≠ 0 → ∃ i, wt i = j` using `fun j hj => by`.
+
+Rewrite `hj` using `[← hc']`. Take `⟨i, hi⟩` from `Finset.card_ne_zero.1 hj`. Conclude with `⟨i, (Finset.mem_filter.1 hi).2⟩`. Establish `hwt : ∀ i, wt i ∈ ({-1, -2, 1, 2} : Finset ℤ)` using `fun i => by`. Assume the negation of the conclusion as `h`.
+
+Establish `: (Finset.univ.filter fun i' => wt i' = wt i).card ≠ 0` using `Finset.card_ne_zero.2 ⟨i, by simp⟩`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at h`. Rewrite `this` using `[hc']`. Simplify using `[mDims, h] at this`. Set `w : τ → ℤ × ℤ` to `fun i => ((negW wt i : ℤ), (posW wt i : ℤ))`.
+
+Establish `hw : ∀ ν : τ →₀ ℕ, Finsupp.weight w ν = (((Finsupp.weight (negW wt) ν : ℕ) : ℤ), ((Finsupp.weight (posW wt) ν : ℕ) : ℤ))` using `fun ν => by`. Proceed by induction on `ν using Finsupp.induction_linear with`. Consider the case `zero => simp [Prod.ext_iff]`. Consider the case `add a b ha hb => simp [map_add, ha, hb]`. Consider the case `single i n => simp [Finsupp.weight_single, w]`.
+
+Establish `hfin : ∀ S p, (mons w S p).Finite` using `fun S p => by`. Use `(Finsupp.finite_of_nat_weight_le (fun i => negW wt i + posW wt i) (fun i => ?_) (p.1.toNat + p.2.toNat)).subset ?_` and prove the remaining obligations. Use `hwt i` as an intermediate fact. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at this`. Simplify using `only [negW, posW]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce and unpack `ν ⟨-, rfl⟩`. Establish `: Finsupp.weight (fun i => negW wt i + posW wt i) ν = Finsupp.weight (negW wt) ν + Finsupp.weight (posW wt) ν`. Simplify using `[Finsupp.weight_apply, Finsupp.sum, mul_add, Finset.sum_add_distrib]`. Simplify using `[hw, this]`.
+
+Establish `hcnt : (fun d : Deg 3 => cnt wt (2 * d 0 + 4 * d 2) (2 * d 1 + 2 * d 2)) = fun d => N w Finset.univ (lam d)`. Use function extensionality and compare the values at `d`. Rewrite using `[cnt, N, ← Nat.card_coe_set_eq]`. Use `congr 1`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun ν => ?_)` and prove the remaining obligations.
+
+Simplify using `[mons, hw, lam]`. Take `⟨i₀, h₀⟩` from `hex (-1) (by simp [mDims])`. Take `⟨i₁, h₁⟩` from `hex 1 (by simp [mDims])`. Take `⟨i₂, h₂⟩` from `hex 2 (by simp [mDims])`. Establish `hP : ∏ i, (1 - x (w i)) = (1 - x (1, 0)) ^ (r + 1) * (1 - x (2, 0)) ^ s * (1 - x (0, 1)) ^ (r' + 1) * (1 - x (0, 2)) ^ (s' + 1)`.
+
+Rewrite using `[← Finset.prod_fiberwise_of_maps_to (fun i _ => hwt i)]`. Establish `: ∀ j : ℤ, ∏ i ∈ Finset.univ.filter (fun i => wt i = j), (1 - x (w i)) = (1 - x (((-j).toNat : ℤ), (j.toNat : ℤ))) ^ mDims (r + 1) s r' s' 0 j` using `fun j => by`. Rewrite using `[← hc', ← Finset.prod_const]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[← (Finset.mem_filter.1 hi).2]`.
+
+Both sides reduce to the same expression. Simplify using `only [this]`. Rewrite using `[Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_pair (by decide), mul_assoc, mul_assoc]`. Both sides reduce to the same expression. Establish `hk` using `key w hfin r s r' s' (i₀ := i₀) (i₁ := i₁) (i₂ := i₂) (by simp [w, negW, posW, h₀]) (by simp [w, negW, posW, h₁]) (by simp [w, negW, posW, h₂]) hP`.
+
+Establish `l0 : lam (e 0) = (2, 0)` using `by simp [lam, e]`. Establish `l1 : lam (e 1) = (0, 2)` using `by simp [lam, e]`. Establish `l2 : lam (e 2) = (4, 2)` using `by simp [lam, e]`. Take `⟨a, ha⟩` from `eventually_atTop.1 hk`. Use `filter_upwards [eventually_ge_atTop (fun _ => |a.1| + |a.2| : Deg 3)] with d hd`.
+
+Rewrite using `[hcnt, dif_eq]`. Simplify using `only [List.map_append, List.map_replicate, List.prod_append, List.prod_replicate, List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one, l0, l1, l2, Nat.add_sub_cancel]`. Use `ha _ ?_` and prove the remaining obligations. Establish `d0 : |a.1| + |a.2| ≤ d 0` using `hd 0`. Establish `d1 : |a.1| + |a.2| ≤ d 1` using `hd 1`.
+
+Establish `d2 : |a.1| + |a.2| ≤ d 2` using `hd 2`. Use `le_abs_self a.1` as an intermediate fact. Use `le_abs_self a.2` as an intermediate fact. Use `abs_nonneg a.1` as an intermediate fact. Use `abs_nonneg a.2` as an intermediate fact.
+
+Conclude with `⟨show a.1 ≤ 2 * d 0 + 4 * d 2 by linarith, show a.2 ≤ 2 * d 1 + 2 * d 2 by linarith⟩`.
+-/
 theorem UpperTheory.V.Alg.M.num_holds :
     ∀ (τ : Type) [Fintype τ] (wt : τ → ℤ) (r s r' s' : ℕ), 1 ≤ r → (∀ j, Nat.card {i // wt i = j} = mDims r s r' s' 0 j) →
       ∀ᶠ d in atTop, dif (List.replicate (r - 1) (e 0) ++ (List.replicate s (e 0) ++ List.replicate r' (e 1) ++

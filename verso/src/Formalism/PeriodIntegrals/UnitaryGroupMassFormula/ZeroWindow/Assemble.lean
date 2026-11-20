@@ -4,10 +4,27 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ZeroWindow.RightOne
 
 namespace PI.ZW
 
+/- English proof (translation)
+The claim follows from `rightChi_of jensenCount`.
+-/
 theorem rightChi : RightChi := rightChi_of jensenCount
 
+/- English proof (translation)
+The claim follows from `rightOne_of jensenCount`.
+-/
 theorem rightOne : RightOne := rightOne_of jensenCount
 
+/- English proof (translation)
+Introduce `hL hZ hI`. Take `⟨C₁, h₁⟩` from `rightChi hL hI`. Take `⟨C₂, h₂⟩` from `rightOne hZ hI`. Establish `hlog : ∀ (N : ℕ) [NeZero N] (t : ℝ), 0 ≤ Real.log (↑N * (|t| + 2))`. Introduce `N _ t`.
+
+Apply `Real.log_nonneg` to reduce the goal to its premises. Establish `hN : (1 : ℝ) ≤ N` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)`. Use polynomial arithmetic with `[abs_nonneg t, mul_nonneg (sub_nonneg.mpr hN) (add_nonneg (abs_nonneg t) zero_le_two)]`. Establish `h₁' : RightChiWith (max C₁ 1)`. Unfold `RightChiWith at h₁ ⊢`.
+
+Introduce `N _ χ hχ t`. Take `⟨hf, hs⟩` from `h₁ N χ hχ t`. Conclude with `⟨hf, hs.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (hlog N t))⟩`. Establish `h₂' : RightOneWith (max C₂ 1)`. Unfold `RightOneWith at h₂ ⊢`.
+
+Introduce `N _ χ hχ t`. Take `⟨hf, hs⟩` from `h₂ N χ hχ t`. Conclude with `⟨hf, hs.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (hlog N t))⟩`. Establish `hw` using `zerosWindowWith_of _ (rightHalf_of _ _ h₁' h₂') hT`. Unfold `PI.ZerosWindow`.
+
+Conclude with `⟨_, mul_pos two_pos (lt_of_lt_of_le one_pos (le_trans (le_max_right C₁ 1) (le_max_left _ _))), hw⟩`.
+-/
 theorem zerosWindow_of_transfer (hT : Transfer) :
     PI.LBoundRight → PI.ZetaBoundRight → PI.LInvRight → PI.ZerosWindow := by
   intro hL hZ hI

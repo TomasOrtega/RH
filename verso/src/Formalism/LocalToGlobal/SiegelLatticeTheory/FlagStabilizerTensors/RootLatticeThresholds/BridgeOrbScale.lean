@@ -12,6 +12,13 @@ section Scale
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.D.IsNormCut`. Establish `hint : ∀ p, ∫ x, θ (Formalism.FourierDecayAlt.C6.actR γ (Matrix.of x) p) ∂(ENNReal.ofReal c • μ) = ∫ x, c * θ (Formalism.FourierDecayAlt.C6.actR γ (Matrix.of x) p) ∂μ` using `fun p => by`. Rewrite using `[integral_smul_measure, ENNReal.toReal_ofReal hc.le, integral_const_mul, smul_eq_mul]`. Simplify using `only [hint]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hm, hpos, hone⟩`. Conclude with `⟨hm.const_mul c, fun p => mul_nonneg hc.le (hpos p), hone⟩`. Introduce and unpack `⟨hm, hpos, hone⟩`. Use `⟨?_, fun p => ?_, hone⟩` and prove the remaining obligations. Establish `: θ = fun p => c⁻¹ * (c * θ p)` using `by funext p; field_simp`.
+
+Rewrite using `[this]`. Conclude with `hm.const_mul _`. Conclude with `(mul_nonneg_iff_of_pos_left hc).mp (hpos p)`.
+-/
 theorem isNormCut_smul (D : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (γ : Formalism.FourierDecayAlt.B.Mat k r) (μ : Measure (Formalism.QuantumDeterminants.Mt k r))
     {c : ℝ} (hc : 0 < c) (θ : Formalism.FourierDecayAlt.B.SS k r → ℝ) :
     Formalism.FourierDecayAlt.D.IsNormCut D γ (ENNReal.ofReal c • μ) θ ↔ Formalism.FourierDecayAlt.D.IsNormCut D γ μ (fun p => c * θ p) := by
@@ -29,6 +36,17 @@ theorem isNormCut_smul (D : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq)
       rw [this]; exact hm.const_mul _
     · exact (mul_nonneg_iff_of_pos_left hc).mp (hpos p)
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.D.orbJ`. Distinguish the cases in `h1 : ∃ θ, Formalism.FourierDecayAlt.D.IsNormCut D γ (ENNReal.ofReal c • μ) θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand D γ F p) D.μSS`. Establish `hc1` using `(isNormCut_smul D γ μ hc _).mp h1.choose_spec.1`. Establish `hi1 : Integrable (fun p => (c * h1.choose p) • Formalism.FourierDecayAlt.D.orbIntegrand D γ F p) D.μSS`. Simplify using `only [mul_smul]`.
+
+Conclude with `h1.choose_spec.2.smul c`. Establish `h2 : ∃ θ, Formalism.FourierDecayAlt.D.IsNormCut D γ μ θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand D γ F p) D.μSS` using `⟨_, hc1, hi1⟩`. Rewrite using `[dif_pos h1, dif_pos h2]`. Establish `hind` using `Formalism.FourierDecayAlt.P.orbital_integral_indep_choice k r Wp Wq D γ μ hrel hH F h2.choose (fun p => c * h1.choose p) h2.choose_spec.1 hc1 h2.choose_spec.2 hi1`. Rewrite using `[hind]`.
+
+Simplify using `only [mul_smul]`. Rewrite using `[integral_smul, ← Complex.coe_smul c, smul_smul, ← Complex.ofReal_mul, inv_mul_cancel₀ hc.ne', Complex.ofReal_one, one_smul]`. Establish `h2 : ¬ ∃ θ, Formalism.FourierDecayAlt.D.IsNormCut D γ μ θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand D γ F p) D.μSS`. Introduce and unpack `⟨θ, hθ, hi⟩`. Apply `h1` to reduce the goal to its premises.
+
+Use `⟨fun p => c⁻¹ * θ p, (isNormCut_smul D γ μ hc _).mpr ?_, ?_⟩` and prove the remaining obligations. Establish `: (fun p => c * (c⁻¹ * θ p)) = θ` using `by funext p; field_simp`. Rewrite using `[this]`. Conclude with `hθ`. Simplify using `only [mul_smul]`.
+
+Conclude with `hi.smul c⁻¹`. Rewrite using `[dif_neg h1, dif_neg h2, smul_zero]`.
+-/
 theorem orbJ_smul (D : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (γ : Formalism.FourierDecayAlt.B.Mat k r) (μ : Measure (Formalism.QuantumDeterminants.Mt k r))
     (F : Formalism.FourierDecayAlt.B.Mat k r → (Wq →L[ℂ] Wp)) (hrel : Formalism.FourierDecayAlt.C6.IsRelevant D γ)
     (hH : Formalism.FourierDecayAlt.B.IsHaarOn (Formalism.FourierDecayAlt.C6.Rset γ) μ) {c : ℝ} (hc : 0 < c) :

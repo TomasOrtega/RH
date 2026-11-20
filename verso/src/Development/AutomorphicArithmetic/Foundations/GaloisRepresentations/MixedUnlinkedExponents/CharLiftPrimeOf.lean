@@ -39,6 +39,9 @@ section
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `e : ∃ ζ : kˣ →* ℂˣ, ∃ hζ, IrrGL.ofChar ξ h = IrrGL.ofChar ζ hζ` using `⟨ξ, h, rfl⟩`. Use `Multiset.filterMap_cons_some _ _ _ ?_` and prove the remaining obligations. Rewrite using `[dif_pos e]`. Take `⟨_, h2⟩` from `e.choose_spec`. Conclude with `congrArg some (IrrGL.ofChar_inj.1 h2).symm`.
+-/
 theorem chs_cons (ξ : kˣ →* ℂˣ) (h : IsSmoothChar ξ) (s : Multiset (IrrGL k)) : chs (IrrGL.ofChar ξ h ::ₘ s) = ξ ::ₘ chs s := by
   have e : ∃ ζ : kˣ →* ℂˣ, ∃ hζ, IrrGL.ofChar ξ h = IrrGL.ofChar ζ hζ := ⟨ξ, h, rfl⟩
   refine Multiset.filterMap_cons_some _ _ _ ?_
@@ -46,15 +49,30 @@ theorem chs_cons (ξ : kˣ →* ℂˣ) (h : IsSmoothChar ξ) (s : Multiset (IrrG
   obtain ⟨_, h2⟩ := e.choose_spec
   exact congrArg some (IrrGL.ofChar_inj.1 h2).symm
 
+/- English proof (translation)
+The claim follows from `Multiset.filterMap_cons_none _ _ (dif_neg h)`.
+-/
 theorem chs_cons_of_not {y : IrrGL k} (h : ¬ ∃ ξ : kˣ →* ℂˣ, ∃ hξ, y = IrrGL.ofChar ξ hξ) (s : Multiset (IrrGL k)) :
     chs (y ::ₘ s) = chs s := Multiset.filterMap_cons_none _ _ (dif_neg h)
 
+/- English proof (translation)
+Proceed by induction on `t using Multiset.induction with`. Consider the case `empty => rfl`. Consider the case `cons a t ih => rw [Multiset.map_cons, chs_cons, ih, Multiset.map_cons]`.
+-/
 theorem chs_map {ι : Type} (t : Multiset ι) (ξ : ι → (kˣ →* ℂˣ)) (hξ : ∀ j, IsSmoothChar (ξ j)) :
     chs (t.map fun j => IrrGL.ofChar (ξ j) (hξ j)) = t.map ξ := by
   induction t using Multiset.induction with
   | empty => rfl
   | cons a t ih => rw [Multiset.map_cons, chs_cons, ih, Multiset.map_cons]
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction with`. Consider the case `empty => exact ⟨le_rfl, fun _ y hy => absurd hy (Multiset.notMem_zero _)⟩`. Consider the case `cons a s ih`. Take `⟨h1, h2⟩` from `ih fun y hy => h y (Multiset.mem_cons_of_mem hy)`. Establish `ha` using `h a (Multiset.mem_cons_self _ _)`.
+
+Rewrite using `[Multiset.map_cons, Multiset.sum_cons]`. Distinguish the cases in `c : ∃ ξ : kˣ →* ℂˣ, ∃ hξ, a = IrrGL.ofChar ξ hξ`. Take `⟨ξ, hξ, rfl⟩` from `c`. Establish `e : (IrrGL.ofChar ξ hξ).1 = 1` using `rfl`. Rewrite using `[chs_cons, Multiset.card_cons, e]`.
+
+Use `⟨by omega, fun H y hy => ?_⟩` and prove the remaining obligations. Break down `Multiset.mem_cons.1 hy with rfl | hy` into its components or cases. Conclude with `⟨ξ, hξ, rfl⟩`. Conclude with `h2 (by omega) y hy`. Rewrite using `[chs_cons_of_not c]`.
+
+Conclude with `⟨by omega, fun H => by omega⟩`.
+-/
 theorem card_chs_le (s : Multiset (IrrGL k)) (h : ∀ y ∈ s, 0 < y.1) :
     Multiset.card (chs s) ≤ (s.map Sigma.fst).sum ∧
       (Multiset.card (chs s) = (s.map Sigma.fst).sum → ∀ y ∈ s, ∃ ξ : kˣ →* ℂˣ, ∃ hξ, y = IrrGL.ofChar ξ hξ) := by
@@ -75,6 +93,11 @@ theorem card_chs_le (s : Multiset (IrrGL k)) (h : ∀ y ∈ s, 0 < y.1) :
     · rw [chs_cons_of_not c]
       exact ⟨by omega, fun H => by omega⟩
 
+/- English proof (translation)
+Establish `key : ∀ s : Multiset (IrrGL k), (∀ y ∈ s, ∃ ξ : kˣ →* ℂˣ, ∃ hξ, y = IrrGL.ofChar ξ hξ) → s = (chs s).map fun ξ => if h : IsSmoothChar ξ then IrrGL.ofChar ξ h else IrrGL.ofChar 1 isSmoothChar_one`. Introduce `s`. Proceed by induction on `s using Multiset.induction with`. Consider the case `empty => intro _`. Both sides reduce to the same expression.
+
+Consider the case `cons a s ih`. Introduce `H`. Take `⟨ξ, hξ, rfl⟩` from `H a (Multiset.mem_cons_self _ _)`. Rewrite using `[chs_cons, Multiset.map_cons, dif_pos hξ, ← ih fun y hy => H y (Multiset.mem_cons_of_mem hy)]`. Rewrite using `[key s hs, key t ht, h]`.
+-/
 theorem eq_of_chs {s t : Multiset (IrrGL k)} (hs : ∀ y ∈ s, ∃ ξ : kˣ →* ℂˣ, ∃ hξ, y = IrrGL.ofChar ξ hξ)
     (ht : ∀ y ∈ t, ∃ ξ : kˣ →* ℂˣ, ∃ hξ, y = IrrGL.ofChar ξ hξ) (h : chs s = chs t) : s = t := by
   have key : ∀ s : Multiset (IrrGL k), (∀ y ∈ s, ∃ ξ : kˣ →* ℂˣ, ∃ hξ, y = IrrGL.ofChar ξ hξ) →
@@ -90,6 +113,17 @@ theorem eq_of_chs {s t : Multiset (IrrGL k)} (hs : ∀ y ∈ s, ∃ ξ : kˣ →
 
 end
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ _ _ _ hp n hn π P hW v u hu τ T hτ hT ξ hξ hs`. Take `⟨⟨s', hs'⟩, huniq, hdeg, -⟩` from `h3 L n hn P u`. Establish `H` using `h1 K L hp n hn π P hW v ⟨u, hu⟩ _ s' ⟨τ, hτ, hs⟩ hs'`. Take `⟨-, hsum, hpos⟩` from `hdeg s' hs'`. Take `⟨c1, c2⟩` from `card_chs_le s' hpos`.
+
+Rewrite `H` using `[up, GlobalTheory.RoadU.chars, chs_map, h2 K L v ⟨u, hu⟩, Multiset.map_map]`. Establish `hc : Multiset.card ((chs s').filter (Thru (v` using `v) ⟨u, hu⟩)) = n := by rw [H]; simp`. Establish `hle` using `Multiset.filter_le (Thru (v := v) ⟨u, hu⟩) (chs s')`. Establish `hc'` using `Multiset.card_le_card hle`. Establish `e` using `Multiset.eq_of_le_of_card_le hle (by omega)`.
+
+Establish `es : s' = GlobalTheory.RoadU.chars (fun j => (ξ j).comp (GlobalTheory.BCChar.normU v u)) fun j => GlobalTheory.BCChar.isSmoothChar_comp_normU v u (hξ j)`. Use `eq_of_chs (c2 (by omega)) (fun y hy => ?_) ?_` and prove the remaining obligations. Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 hy`. Conclude with `⟨_, _, rfl⟩`. Rewrite using `[← e, H, GlobalTheory.RoadU.chars, chs_map]`.
+
+Both sides reduce to the same expression. Take `⟨T', hT', hs''⟩` from `hs'`. Establish `h1 : (CG.mk P).IsLoc u (Quotient.mk _ T)` using `hT`. Establish `h2 : (CG.mk P).IsLoc u (Quotient.mk _ T')` using `hT'`. Take `⟨φ⟩` from `Quotient.exact (CG.IsLoc.unique L n _ u _ _ h2 h1)`.
+
+Conclude with `es ▸ hs''.of_equiv φ`.
+-/
 theorem charSupp_of (h1 : GamMixed) (h2 : NmEq) (h3 : SuppFacts) : CharSupp := by
   intro K L _ _ _ _ _ _ _ _ hp n hn π P hW v u hu τ T hτ hT ξ hξ hs
   obtain ⟨⟨s', hs'⟩, huniq, hdeg, -⟩ := h3 L n hn P u
@@ -113,6 +147,11 @@ theorem charSupp_of (h1 : GamMixed) (h2 : NmEq) (h3 : SuppFacts) : CharSupp := b
   obtain ⟨φ⟩ := Quotient.exact (CG.IsLoc.unique L n _ u _ _ h2 h1)
   exact es ▸ hs''.of_equiv φ
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ _ _ _ hp a ha π P hL`. Use `⟨hL, fun v u _ => h K L hp a ha π P ?_ v u⟩` and prove the remaining obligations. Unfold `WeakBC`. Use `filter_upwards [(GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under K L).eventually (GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep GlobalTheory.automorphicFormsFiniteGL K a π)] with w hw`. Take `⟨B, hB⟩` from `hw`.
+
+Conclude with `fun f hf => ⟨B, hB, hL.sat w f B hf hB⟩`.
+-/
 theorem charLiftPrime_of (h : CharSupp) : CharLiftPrime := by
   intro K L _ _ _ _ _ _ _ _ hp a ha π P hL
   refine ⟨hL, fun v u _ => h K L hp a ha π P ?_ v u⟩

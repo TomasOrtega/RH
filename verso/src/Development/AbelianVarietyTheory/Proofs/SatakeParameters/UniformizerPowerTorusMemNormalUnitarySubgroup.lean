@@ -16,6 +16,11 @@ variable {L : Type} [Field L]
 def pm {n : ℕ} (f g : Fin n → L) : Matrix (Fin n) (Fin n) L :=
   Matrix.of fun i j => (if j = i then f i else 0) + (if j = Fin.rev i then g i else 0)
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `only [pm, Matrix.mul_apply, Matrix.of_apply, add_mul, Finset.sum_add_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Fin.rev_rev]`. Apply the tactic sequence `by_cases h1 : k = i <;> by_cases h2 : k = Fin.rev i <;> simp [h1, h2] <;>`. Apply the tactic sequence `by_cases h3 : i = Fin.rev i <;>`. Use `first`.
+
+Consider the case `(simp only [if_pos h3, if_pos h3.symm]; ring)`. Consider the case `(simp only [if_neg h3, if_neg (Ne.symm h3)]; ring)`.
+-/
 theorem pm_mul {n : ℕ} (f g f' g' : Fin n → L) :
     pm f g * pm f' g' = pm (fun i => f i * f' i + g i * g' (Fin.rev i))
       (fun i => f i * g' i + g i * f' (Fin.rev i)) := by
@@ -28,6 +33,13 @@ theorem pm_mul {n : ℕ} (f g f' g' : Fin n → L) :
     | (simp only [if_pos h3, if_pos h3.symm]; ring)
     | (simp only [if_neg h3, if_neg (Ne.symm h3)]; ring)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cT, pm, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, map_add]`. Establish `h2 : (i = Fin.rev j) ↔ (j = Fin.rev i)`. Apply the tactic sequence `constructor <;> rintro rfl <;> simp`. Distinguish the cases in `h1 : j = i`.
+
+Substitute `h1` using the available equality. Distinguish the cases in `h3 : j = Fin.rev j`. Rewrite using `[if_pos rfl, if_pos rfl, if_pos h3, if_pos h3, ← h3]`. Rewrite using `[if_pos rfl, if_pos rfl, if_neg h3, if_neg h3, map_zero]`. Rewrite using `[if_neg (Ne.symm h1), if_neg h1, map_zero]`.
+
+Distinguish the cases in `h3 : j = Fin.rev i`. Rewrite using `[if_pos (h2.2 h3), if_pos h3, h3]`. Rewrite using `[if_neg (fun h => h3 (h2.1 h)), if_neg h3, map_zero]`.
+-/
 theorem cT_pm {n : ℕ} (σ : L →+* L) (f g : Fin n → L) :
     cT σ (pm f g) = pm (fun i => σ (f i)) (fun i => σ (g (Fin.rev i))) := by
   ext i j
@@ -43,6 +55,9 @@ theorem cT_pm {n : ℕ} (σ : L →+* L) (f g : Fin n → L) :
     · rw [if_pos (h2.2 h3), if_pos h3, h3]
     · rw [if_neg (fun h => h3 (h2.1 h)), if_neg h3, map_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[fIwasawa_antiJ]`. Simplify using `[pm]`.
+-/
 theorem antiJ_pm {n : ℕ} : antiJ L n = pm 0 1 := by
   ext i j
   rw [fIwasawa_antiJ]
@@ -56,6 +71,11 @@ open Formalism.UG.P
 
 variable {L : Type} [Field L]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 h`. Establish `a` using `hsupp _ h1`. Establish `b` using `hsupp _ h2`. Rewrite `a` using `[Fin.val_rev]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem pm_supp_mul {n : ℕ} (u : Fin n → L) (hsupp : ∀ i, u i ≠ 0 → 2 * i.val + 1 < n) (i : Fin n) :
     u (Fin.rev i) * u i = 0 := by
   by_contra h
@@ -65,6 +85,9 @@ theorem pm_supp_mul {n : ℕ} (u : Fin n → L) (hsupp : ∀ i, u i ≠ 0 → 2 
   rw [Fin.val_rev] at a
   omega
 
+/- English proof (translation)
+Unfold `fIwasawaUn`. Rewrite using `[cT_pm, antiJ_pm, pm_mul, pm_mul]`. Apply the tactic sequence `congr 1 <;> funext i`. Simplify using `[hσ]`. Simplify using `[hσ, pm_supp_mul u hsupp i]`.
+-/
 theorem un_pm {n : ℕ} (σ : L →+* L) (u : Fin n → L) (hσ : ∀ i, σ (u i) = -u i)
     (hsupp : ∀ i, u i ≠ 0 → 2 * i.val + 1 < n) : fIwasawaUn σ (pm 1 u) := by
   unfold fIwasawaUn
@@ -73,6 +96,17 @@ theorem un_pm {n : ℕ} (σ : L →+* L) (u : Fin n → L) (hσ : ∀ i, σ (u i
   · simp [hσ]
   · simp [hσ, pm_supp_mul u hsupp i]
 
+/- English proof (translation)
+Use `⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[fIwasawa_mk_val]`. Simplify using `only [pm, Matrix.of_apply, Pi.one_apply]`. Rewrite using `[if_neg (ne_of_lt hji), zero_add]`. Use `split_ifs with h1`.
+
+Assume the negation of the conclusion as `hu`. Use `hsupp i hu` as an intermediate fact. Substitute `h1` using the available equality. Rewrite `hji` using `[Fin.lt_def, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+
+Both sides reduce to the same expression. Rewrite using `[fIwasawa_mk_val]`. Simplify using `only [pm, Matrix.of_apply, Pi.one_apply]`. Rewrite using `[if_pos trivial]`. Use `split_ifs with h1`.
+
+Establish `: u i = 0`. Assume the negation of the conclusion as `hu`. Use `hsupp i hu` as an intermediate fact. Establish `h'` using `congrArg Fin.val h1`. Rewrite `h'` using `[Fin.val_rev]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[this, add_zero]`. Rewrite using `[add_zero]`.
+-/
 theorem unip_pm {n : ℕ} (σ : L →+* L) (u : Fin n → L) (h : fIwasawaUn σ (pm 1 u))
     (hsupp : ∀ i, u i ≠ 0 → 2 * i.val + 1 < n) : IsUnipU (fIwasawaMk σ (pm 1 u) h) := by
   refine ⟨fun i j hji => ?_, fun i => ?_⟩
@@ -99,6 +133,11 @@ theorem unip_pm {n : ℕ} (σ : L →+* L) (u : Fin n → L) (h : fIwasawaUn σ 
       rw [this, add_zero]
     · rw [add_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.diagonal_apply, pm, Matrix.of_apply, Pi.zero_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg h, if_neg (Ne.symm h)]`. Simplify using the standard rewrite rules.
+-/
 theorem diagonal_pm {n : ℕ} (d : Fin n → L) : Matrix.diagonal d = pm d 0 := by
   ext i j
   simp only [Matrix.diagonal_apply, pm, Matrix.of_apply, Pi.zero_apply]
@@ -114,6 +153,13 @@ open Formalism.UG.P
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Rewrite using `[Fin.val_rev]`. Distinguish the cases in `h : 2 * i.val + 1 < n`. Use `left`. Use linear arithmetic over natural numbers and integers.
+
+Use `right`. Distinguish the cases in `h' : 2 * (n - (i.val + 1)) + 1 < n`. Use `left`. Use linear arithmetic over natural numbers and integers. Use `right`.
+
+Use `⟨h, h', ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.ext_iff, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem idx_cases {n : ℕ} (i : Fin n) :
     (2 * i.val + 1 < n ∧ ¬ 2 * (Fin.rev i).val + 1 < n) ∨
     (¬ 2 * i.val + 1 < n ∧ 2 * (Fin.rev i).val + 1 < n) ∨
@@ -128,6 +174,21 @@ theorem idx_cases {n : ℕ} (i : Fin n) :
     · right; refine ⟨h, h', ?_⟩
       rw [Fin.ext_iff, Fin.val_rev]; omega
 
+/- English proof (translation)
+Use `set u : Fin n → L := fun i => if 2 * i.val + 1 < n then y i else 0 with hu`. Use `set l : Fin n → L := fun i => if 2 * i.val + 1 < n then -(y i)⁻¹ else 0 with hl`. Establish `hu1 : ∀ i, σ (u i) = -u i`. Apply the tactic sequence `intro i; simp only [hu]; split_ifs <;> simp [hyσ]`. Establish `hu2 : ∀ i, u i ≠ 0 → 2 * i.val + 1 < n`.
+
+Introduce `i h`. Simplify using `only [hu] at h`. Use `split_ifs at h with h'`. Conclude with `h'`. Conclude with `absurd rfl h`.
+
+Establish `hl1 : ∀ i, σ (l i) = -l i`. Apply the tactic sequence `intro i; simp only [hl]; split_ifs <;> simp [hyσ, map_inv₀, inv_neg]`. Establish `hl2 : ∀ i, l i ≠ 0 → 2 * i.val + 1 < n`. Introduce `i h`. Simplify using `only [hl] at h`.
+
+Use `split_ifs at h with h'`. Conclude with `h'`. Conclude with `absurd rfl h`. Establish `hW : fIwasawaUn σ (antiJ L n)`. Unfold `fIwasawaUn`.
+
+Rewrite using `[antiJ_pm, cT_pm, pm_mul, pm_mul]`. Apply the tactic sequence `congr 1 <;> funext i <;> simp`. Establish `hWK : fIwasawaMk σ _ hW ∈ KU σ n`. Use `fIwasawa_mk_mem_K σ hσv _ hW fun i j => ?_` and prove the remaining obligations. Rewrite using `[fIwasawa_antiJ]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hA` using `hU _ (unip_pm σ u (un_pm σ u hu1 hu2) hu2)`. Establish `hB` using `hU _ (unip_pm σ l (un_pm σ l hl1 hl2) hl2)`. Use `⟨fIwasawaMk σ _ (un_pm σ u hu1 hu2) * fIwasawaMk σ _ hW * fIwasawaMk σ _ (un_pm σ l hl1 hl2) * fIwasawaMk σ _ hW * fIwasawaMk σ _ (un_pm σ u hu1 hu2), mul_mem (mul_mem (mul_mem (mul_mem hA (hK hWK)) hB) (hK hWK)) hA, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Units.val_mul, fIwasawa_mk_val]`.
+
+Rewrite using `[antiJ_pm, pm_mul, pm_mul, pm_mul, pm_mul]`. Apply the tactic sequence `congr 1 <;> funext i <;>`. Apply the tactic sequence `rcases idx_cases i with ⟨h1, h2⟩ | ⟨h1, h2⟩ | ⟨h1, h2, h3⟩ <;>`. Apply the tactic sequence `simp only [Fin.val_rev] at h1 h2 <;>`. Simplify using `[hu, hl, h1, h2, Fin.rev_rev, hy0]`.
+-/
 theorem exists_mem_pm (σ : L →+* L) {n : ℕ} (hσv : ∀ x, Valued.v (σ x) = Valued.v x)
     (N : Subgroup (GU σ n)) (hK : KU σ n ≤ N) (hU : ∀ u : GU σ n, IsUnipU u → u ∈ N)
     (y : Fin n → L) (hy0 : ∀ i, y i ≠ 0) (hyσ : ∀ i, σ (y i) = -y i) :
@@ -175,6 +236,23 @@ namespace GlobalTheory
 
 open Formalism.UG.P GlobalTheory.TorusNormal
 
+/- English proof (translation)
+Introduce `L _ _ ϖ σ q n hU N _ hK hUn c hc t ht`. Take `⟨hσσ, hσv, hσϖ, hvϖ, ⟨x, -, hx⟩, -⟩` from `hU`. Use `set δ := σ x - x with hδ`. Establish `hδ0 : δ ≠ 0`. Introduce `h`.
+
+Rewrite `hx` using `[h, map_zero]`. Conclude with `zero_ne_one hx`. Establish `hδσ : σ δ = -δ`. Rewrite using `[hδ, map_sub, hσσ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hvϖ` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe hvϖ`. Take `⟨g0, hg0, e0⟩` from `exists_mem_pm σ hσv N hK hUn (fun _ => δ) (fun _ => hδ0) (fun _ => hδσ)`.
+
+Take `⟨g1, hg1, e1⟩` from `exists_mem_pm σ hσv N hK hUn (fun i => ϖ ^ c i * δ) (fun i => mul_ne_zero (zpow_ne_zero _ hϖ0) hδ0) (fun i => by rw [map_mul, map_zpow₀, hσϖ, hδσ, mul_neg])`. Establish `key : t * g0 = g1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Units.val_mul]`.
+
+Rewrite using `[ht, e0, e1, diagonal_pm, pm_mul]`. Apply the tactic sequence `congr 1 <;> funext i <;>`. Break down `idx_cases i with ⟨h1, h2⟩ | ⟨h1, h2⟩ | ⟨h1, h2, h3⟩` into its components or cases. Simplify using `only [Fin.val_rev] at h1 h2`. Simplify using `[h1, h2]`.
+
+Simplify using `only [Fin.val_rev] at h1 h2`. Simplify using `[h1, h2]`. Establish `hc0 : c i = 0` using `by have := hc i; rw [h3] at this; omega`. Simplify using `only [Fin.val_rev] at h1 h2`. Simplify using `[h1, h2, hc0]`.
+
+Simplify using `only [Fin.val_rev] at h1 h2`. Simplify using `[h1, h2]`. Simplify using `only [Fin.val_rev] at h1 h2`. Simplify using `[h1, h2, hc i, _root_.zpow_neg]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [Fin.val_rev] at h1 h2`. Simplify using `[h1, h2]`. Rewrite using `[eq_mul_inv_of_mul_eq key]`. Conclude with `mul_mem hg1 (inv_mem hg0)`.
+-/
 theorem torus_mem_normal : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L)
     (σ : L →+* L) (q n : ℕ), Formalism.UG.IsUnramInv ϖ σ q → ∀ N : Subgroup (Formalism.UG.GU σ n), N.Normal →
     Formalism.UG.KU σ n ≤ N → (∀ u : Formalism.UG.GU σ n, Formalism.UG.IsUnipU u → u ∈ N) → ∀ (c : Fin n → ℤ),

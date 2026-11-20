@@ -13,6 +13,11 @@ attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toI
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Pr
 
+/- English proof (translation)
+Establish `hz : IsIntegral ℤ_[l] y.1` using `(Algebra.IsIntegral.isIntegral (R := ℤ_[l]) y).map c.O.val`. Establish `hq : IsIntegral ℚ_[l] y.1` using `Algebra.IsIntegral.isIntegral _`. Establish `h0 : ‖(y.1 : PadicAlgCl l)‖ = spectralValue (minpoly ℚ_[l] y.1)` using `rfl`. Rewrite using `[h0, spectralValue_le_one_iff (minpoly.monic hq), ]`. Introduce `n`.
+
+Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hz, Polynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one _`.
+-/
 private theorem xa_norm {l : ℕ} [Fact l.Prime] (c : Coef l) (y : c.O) : ‖(y.1 : PadicAlgCl l)‖ ≤ 1 := by
   have hz : IsIntegral ℤ_[l] y.1 := (Algebra.IsIntegral.isIntegral (R := ℤ_[l]) y).map c.O.val
   have hq : IsIntegral ℚ_[l] y.1 := Algebra.IsIntegral.isIntegral _
@@ -22,6 +27,11 @@ private theorem xa_norm {l : ℕ} [Fact l.Prime] (c : Coef l) (y : c.O) : ‖(y.
   rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hz, Polynomial.coeff_map]
   exact PadicInt.norm_le_one _
 
+/- English proof (translation)
+Establish `hl0 : (l : c.O) ≠ 0` using `fun h => by`. Establish `h1 : ((l : c.O) : PadicAlgCl l) = 0` using `congrArg Subtype.val h`. Establish `h2 : ((l : ℕ) : PadicAlgCl l) = 0` using `by simpa using h1`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast h2)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible c.O`.
+
+Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl0 hϖ`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, hu, Ideal.span_singleton_le_span_singleton]`. Conclude with `(Units.isUnit u).mul_left_dvd.2 dvd_rfl`.
+-/
 private theorem xa_pow {l : ℕ} [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] :
     ∃ e : ℕ, maximalIdeal c.O ^ e ≤ Ideal.span {(l : c.O)} := by
   have hl0 : (l : c.O) ≠ 0 := fun h => by
@@ -34,6 +44,9 @@ private theorem xa_pow {l : ℕ} [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] :
   rw [hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, hu, Ideal.span_singleton_le_span_singleton]
   exact (Units.isUnit u).mul_left_dvd.2 dvd_rfl
 
+/- English proof (translation)
+Establish `h` using `PadicAlgCl.norm_extends (p := l) ((l : ℕ) : ℚ_[l])`. Establish `h2 : (((l : ℕ) : ℚ_[l]) : PadicAlgCl l) = ((l : ℕ) : PadicAlgCl l)` using `by simp`. Rewrite `h` using `[h2]`. Rewrite using `[h]`. Conclude with `Padic.norm_p_lt_one`.
+-/
 private theorem xa_lnorm {l : ℕ} [Fact l.Prime] : ‖((l : ℕ) : PadicAlgCl l)‖ < 1 := by
   have h := PadicAlgCl.norm_extends (p := l) ((l : ℕ) : ℚ_[l])
   have h2 : (((l : ℕ) : ℚ_[l]) : PadicAlgCl l) = ((l : ℕ) : PadicAlgCl l) := by simp
@@ -41,6 +54,11 @@ private theorem xa_lnorm {l : ℕ} [Fact l.Prime] : ‖((l : ℕ) : PadicAlgCl l
   rw [h]
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Establish `h1 : x ∈ Ideal.span {(l : c.O) ^ N}`. Rewrite using `[← Ideal.span_singleton_pow]`. Rewrite `hx` using `[pow_mul]`. Conclude with `Ideal.pow_right_mono he N hx`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton.1 h1`.
+
+Establish `h2 : (((l : c.O) ^ N * y : c.O).1 : PadicAlgCl l) = ((l : ℕ) : PadicAlgCl l) ^ N * y.1`. Rewrite using `[Subalgebra.coe_mul, Subalgebra.coe_pow, show (((l : c.O)).1 : PadicAlgCl l) = ((l : ℕ) : PadicAlgCl l) from map_natCast c.O.val l]`. Rewrite using `[h2, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) (xa_norm c y)`.
+-/
 private theorem xa_key {l : ℕ} [Fact l.Prime] (c : Coef l) {e : ℕ} (he : maximalIdeal c.O ^ e ≤ Ideal.span {(l : c.O)})
     (N : ℕ) (x : c.O) (hx : x ∈ maximalIdeal c.O ^ (e * N)) :
     ‖(x.1 : PadicAlgCl l)‖ ≤ ‖((l : ℕ) : PadicAlgCl l)‖ ^ N := by
@@ -54,6 +72,9 @@ private theorem xa_key {l : ℕ} [Fact l.Prime] (c : Coef l) {e : ℕ} (he : max
   rw [h2, norm_mul, norm_pow]
   exact mul_le_of_le_one_right (by positivity) (xa_norm c y)
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Rewrite using `[Metric.continuousAt_iff']`. Introduce `ε hε`. Simplify `H g₀ ε hε` using `only [dist_eq_norm]`.
+-/
 private theorem xa_top {l : ℕ} [Fact l.Prime] {Γ : Type} [TopologicalSpace Γ] (u : Γ → PadicAlgCl l)
     (H : ∀ (g₀ : Γ) (ε : ℝ), 0 < ε → ∀ᶠ g in nhds g₀, ‖u g - u g₀‖ < ε) : Continuous u := by
   rw [continuous_iff_continuousAt]
@@ -62,6 +83,11 @@ private theorem xa_top {l : ℕ} [Fact l.Prime] {Γ : Type} [TopologicalSpace Γ
   intro ε hε
   simpa only [dist_eq_norm] using H g₀ ε hε
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `xa_pow c`. Use `xa_top _ fun g₀ ε hε => ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hε (xa_lnorm (l := l))`. Establish `h0` using `(h (e * N)).eventually_eq g₀`. Use `h0.mono fun g hg => ?_` and prove the remaining obligations.
+
+Establish `h1 : f g - f g₀ ∈ maximalIdeal c.O ^ (e * N)` using `Ideal.Quotient.eq.1 hg`. Establish `h2 : ((f g).1 : PadicAlgCl l) - (f g₀).1 = ((f g - f g₀ : c.O).1 : PadicAlgCl l)` using `(map_sub c.O.val (f g) (f g₀)).symm`. Rewrite using `[h2]`. Conclude with `lt_of_le_of_lt (xa_key c he N _ h1) hN`.
+-/
 private theorem xa_cont {l : ℕ} [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] {Γ : Type} [TopologicalSpace Γ]
     (f : Γ → c.O) (h : Alg.AdicCont (maximalIdeal c.O) f) : Continuous fun g => ((f g).1 : PadicAlgCl l) := by
   obtain ⟨e, he⟩ := xa_pow c
@@ -75,6 +101,11 @@ private theorem xa_cont {l : ℕ} [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] 
   rw [h2]
   exact lt_of_le_of_lt (xa_key c he N _ h1) hN
 
+/- English proof (translation)
+Establish `h0 : Continuous fun s => (tw r χ s : Matrix (Fin n) (Fin n) k)`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [tw_val, Matrix.smul_apply, smul_eq_mul]`. Conclude with `(Units.continuous_val.comp hχ).mul (hr i j)`. Use `Units.continuous_iff.2 ⟨h0, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (fun s => (((tw r χ s)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) = fun s => (tw r χ s⁻¹ : Matrix (Fin n) (Fin n) k)`. Use function extensionality and compare the values at `s`. Rewrite using `[map_inv]`. Rewrite using `[h1]`. Conclude with `h0.comp continuous_inv`.
+-/
 private theorem xa_gl {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Field k] [TopologicalSpace k]
     [IsTopologicalRing k] {n : ℕ} (r : Γ →* GL (Fin n) k) (χ : Γ →* kˣ) (hχ : Continuous χ)
     (hr : ∀ i j, Continuous fun s => (r s : Matrix (Fin n) (Fin n) k) i j) : Continuous (tw r χ) := by
@@ -90,6 +121,9 @@ private theorem xa_gl {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologi
   rw [h1]
   exact h0.comp continuous_inv
 
+/- English proof (translation)
+Introduce `N` and use `by have hm : ∀ x ∈ maximalIdeal R, ξ x ∈ maximalIdeal O := fun x hx => by have h1 := Alg.res_map ξ x rw [(Alg.res_eq_zero_iff O R x).2 hx] at h1 exact (Alg.res_eq_zero_iff O O _).1 h1 have hle : maximalIdeal R ^ N ≤ (maximalIdeal O ^ N).comap (ξ : R →+* O) := by rw [← Ideal.map_l …`.
+-/
 private theorem xa_adic {O R Γ : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
     [CommRing R] [Algebra O R] [Alg.IsCO O R] [TopologicalSpace Γ] (ξ : R →ₐ[O] O) {u : Γ → R}
     (h : Alg.AdicCont (maximalIdeal R) u) : Alg.AdicCont (maximalIdeal O) fun g => ξ (u g) := fun N => by
@@ -102,6 +136,13 @@ private theorem xa_adic {O R Γ : Type} [CommRing O] [IsLocalRing O] [IsNoetheri
     exact Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 hm) N
   exact (h N).comp (Ideal.quotientMap _ (ξ : R →+* O) hle)
 
+/- English proof (translation)
+Use `W.GDet.ext fun C _ _ x => ?_` and prove the remaining obligations. Use `letI : Algebra A C := ((algebraMap B C).comp f).toAlgebra`. Express the relevant statement in the definitionally equal form `(W.GDet.repAlg ρ C (MonoidAlgebra.mapDomainRingHom C p x)).det = (W.GDet.repAlg τ C x).det`. Use `congr 1`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r`. Use extensionality with `i j`. Simplify using `[W.GDet.repAlg, h]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem ap_det {n : ℕ} {A B G H : Type} [CommRing A] [CommRing B] [Group G] [Group H]
     (ρ : G →* Matrix (Fin n) (Fin n) A) (f : A →+* B) (p : H →* G) (τ : H →* Matrix (Fin n) (Fin n) B)
     (h : ∀ g, τ g = (ρ (p g)).map f) : ((W.GDet.ofRep ρ).map f).comap p = W.GDet.ofRep τ := by
@@ -117,6 +158,15 @@ private theorem ap_det {n : ℕ} {A B G H : Type} [CommRing A] [CommRing B] [Gro
     simp [W.GDet.repAlg, h]
     rfl
 
+/- English proof (translation)
+Take `⟨-, art, Y, a, hart, -, hY⟩` from `hka`. Use `⟨fun τ => -a ((ι.toRingHom.comp τ.1).comp (algebraMap L (w.adicCompletion L))), fun m χ hχ κ hκ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : ∃ b, GlobalTheory.LocLanglands.IsLocalArtin h b`. Use `swap`. Conclude with `⟨1, by simp, fun b hb => absurd ⟨b, hb⟩ hl⟩`.
+
+Take `⟨ph, h1⟩` from `Loc.laHecke h art hart ι Y a ka hY hl`. Establish `h2` using `(Loc.laMul h).2.1 _ _ _ m (Loc.laCyc hG h hw)`. Establish `h3` using `(Loc.laMul h).2.2 (χ.comp (Dec (F := L) A).subtype) (χ.comp (Ine (F := L) A).subtype)⁻¹ (Subgroup.isOpen_mono (H₁ := χ.ker.comap (Ine (F := L) A).subtype) (fun x hx => inv_eq_one.2 hx) (hχ.preimage continuous_subtype_val)) fun s => mul_inv_cancel _`. Establish `h4` using `((Loc.laMul h).1 _ _ _ _ _ _ ((Loc.laMul h).1 _ _ _ _ _ _ h2 h3).1 h1).1`. Use `⟨_, h4.1, fun b hb s => ?_⟩` and prove the remaining obligations.
+
+Establish `h5` using `h4.2 b hb s`. Rewrite using `[hκ _ s.2]`. Use `Eq.trans ?_ (h5.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Use `finprod_congr fun τ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem ap_locAlg (hG : GlobalTheory.Published.GlobalArtinReciprocity) {L Ω : Type} [Field L] [NumberField L] [Field Ω]
     [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (ka : G L Ω →* (Qbar l)ˣ)
     (hka : Sd.IsAlgChar ι ka) {A : ValuationSubring Ω} {w : W.Plc L} (h : IsPlaceOver A w)
@@ -146,6 +196,11 @@ private theorem ap_locAlg (hG : GlobalTheory.Published.GlobalArtinReciprocity) {
     simp only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Set `u : c.Oˣ →* (Qbar l)ˣ` to `Units.map c.O.val.toRingHom.toMonoidHom`. Use `⟨((u.comp (Chr.dirG ℚ Ω ψ)).comp (galEmb ℚ L Ω)) ^ m, ?_, fun g => ?_⟩` and prove the remaining obligations. Use `Subgroup.isOpen_mono (H₁ := (Chr.cls ℚ Ω N).ker.comap (galEmb ℚ L Ω)) (fun g hg => ?_) ((Chr.clsFacts ℚ Ω N).1.preimage (galEmbTop ℚ L Ω).1.continuous)` and prove the remaining obligations. Establish `h1 : Chr.cls ℚ Ω N (galEmb ℚ L Ω g) = 1` using `hg`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.zpow_apply, MonoidHom.comp_apply, MonoidHom.comp_apply, Chr.dirG, MonoidHom.comp_apply, h1, map_one, map_one, one_zpow]`.
+
+Establish `h1 : u (chiO ℚ Ω l c.O (galEmb ℚ L Ω g)) = cycBar L Ω l g` using `Units.ext rfl`. Express the relevant statement in the definitionally equal form `(u _).val = _`. Rewrite using `[map_zpow, Chr.Psi, MonoidHom.mul_apply, map_mul, MonoidHom.zpow_apply, map_zpow, h1, mul_zpow, ← zpow_mul]`. Both sides reduce to the same expression.
+-/
 private theorem ap_psi {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (c : Coef l)
     {N : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (L : Type) [Field L] [NumberField L] [Algebra L Ω]
     [IsAlgClosure L Ω] (m : ℤ) :
@@ -163,6 +218,25 @@ private theorem ap_psi {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
     rw [map_zpow, Chr.Psi, MonoidHom.mul_apply, map_mul, MonoidHom.zpow_apply, map_zpow, h1, mul_zpow, ← zpow_mul]
     rfl
 
+/- English proof (translation)
+Introduce `hG Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M H L _ _ _ _ _ Φ k c₁ _ f R hka φ hφ ξ r hr hirr hψ`. Take `⟨hD1, hP1⟩` from `hφ`. Establish `hD0 : R.B₀.u.D.map ((R.S.B.val.comp φ : R.B₀.B →ₐ[c₁.O] R.S.R) : R.B₀.B →+* R.S.R) = W.GDet.ofRep (R.K.tw R.S.ρ)` using `hD1`. Establish `hP0 : ∀ v i, W.pushCh ((R.S.B.val.comp φ : R.B₀.B →ₐ[c₁.O] R.S.R) : R.B₀.B →+* R.S.R) (R.B₀.u.ψ v i) = R.K.twψ R.S.ρ v i` using `hP1`. Set `F : R.B₀.B →ₐ[c₁.O] c₁.O` to `ξ.comp (R.S.B.val.comp φ)`.
+
+Set `j : c₁.O →ₐ[c₁.O] Qbar l` to `Algebra.ofId c₁.O (Qbar l)`. Set `ρ₂ : Fr.NRep (Φ.ext f) 3 c₁.O` to `R.S.ρ.map (ξ : R.S.R →+* c₁.O)`. Establish `hD : R.B₀.u.D.map (F : R.B₀.B →+* c₁.O) = W.GDet.ofRep (R.K.tw ρ₂)`. Rewrite using `[← R.K.ofRep_tw_map, ← hD0, (CA.d_gmap _).2.1]`. Both sides reduce to the same expression.
+
+Establish `hP : ∀ v i, W.pushCh (F : R.B₀.B →+* c₁.O) (R.B₀.u.ψ v i) = R.K.twψ ρ₂ v i` using `fun v i => by`. Rewrite using `[← R.K.twψ_map, ← hP0 v i]`. Both sides reduce to the same expression. Establish `hw : ∀ v : W.Vl l L, ((l : ℕ) : 𝓞 L) ∈ (R.s.w v).asIdeal` using `fun v => by`. Establish `h1` using `(R.s.hA v (l : ℕ)).2 v.2`.
+
+Use `(R.s.hw v (l : ℕ)).1 ?_` and prove the remaining obligations. Simplify using `using h1`. Use `choose wt hwt using fun v : W.Vl l L => ap_locAlg hG ι _ hka.alg (R.s.hw v) (hw v)`. Use `⟨⟨fun v i τ => wt v τ - (e : ℤ) * Fr.w 3 i, ⟨fun v τ a b hab => ?_, fun v i => ?_⟩⟩, tw r (cycBar L Ω l)⁻¹, ?_, ?_, (UpperTheory.isIrr_twist_and_repIso_of_twist_repIso _ _ 3 _).1 r hirr⟩` and prove the remaining obligations. Establish `h1 : Fr.w 3 b < Fr.w 3 a`.
+
+Establish `h2 : (a : ℕ) < b` using `hab`. Unfold `Fr.w`. Apply the tactic sequence `split_ifs <;> omega`. Establish `h3 : (0 : ℤ) < e` using `by exact_mod_cast H.e_pos`. Conclude with `sub_lt_sub_left (mul_lt_mul_of_pos_left h1 h3) _`.
+
+Take `⟨χ, hχ, h1⟩` from `ap_psi c e ψ L (Ω := Ω) (Fr.w 3 i)`. Use `hwt v _ χ hχ _ fun g hg => Units.ext ?_` and prove the remaining obligations. Establish `h2 : F (R.B₀.u.ψ v i g).val = (R.K.twψ ρ₂ v i g).val` using `congrArg (fun t => (t g).val) (hP v i)`. Establish `h3` using `hψ (R.K.e v) i (R.K.lam v g) ((R.K.lam_I v g).2 hg)`. Rewrite `h3` using `[R.lam_j]`.
+
+Rewrite using `[Units.val_mul, ← h1, ← R.κ_pr]`. Express the relevant statement in the definitionally equal form `j (F (R.B₀.u.ψ v i g).val) = _`. Rewrite using `[h2]`. Conclude with `congrArg (fun t : Qbar l => t * (R.K.κ (R.V.pr g)).val.1) h3`. Use `xa_gl r _ hka.alg.1 fun a b => ?_` and prove the remaining obligations.
+
+Establish `hp0 : Continuous k.p0` using `((k.p_cont.comp ((galEmbTop ℚ L Ω).1.continuous.subtype_mk _)).subtype_mk _)`. Establish `e1 : (fun s => (r s : Matrix (Fin 3) (Fin 3) (Qbar l)) a b) = fun s => (ξ (R.S.ρ.r (k.p0 s) a b)).1`. Use function extensionality and compare the values at `fun s => by rw [hr s]; rfl`. Rewrite using `[e1]`. Conclude with `xa_cont c₁ (fun s => ξ (R.S.ρ.r (k.p0 s) a b)) fun N => (xa_adic ξ (R.S.lift.1.1 a b) N).comp_continuous hp0`.
+
+Establish `h1 : W.UniversalOrdinaryDeterminantRing.Pt.D (j.comp F) = (W.GDet.ofRep (R.K.tw ρ₂)).map (j : c₁.O →+* Qbar l)` using `congrArg (fun D => D.map (j : c₁.O →+* Qbar l)) hD`. Use `(congrArg (fun D => D.comap R.V.pr) h1).trans (ap_det _ _ _ _ fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(tw r (cycBar L Ω l)⁻¹ g).val = _`. Rewrite using `[tw_val, hr, ← R.κ_pr, ← R.π_pr]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.J.xiArith :
     GlobalTheory.Published.GlobalArtinReciprocity → UpperTheory.V.J.XiArith := by
   intro hG Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M H L _ _ _ _ _ Φ k c₁ _ f R hka φ hφ ξ r hr hirr hψ

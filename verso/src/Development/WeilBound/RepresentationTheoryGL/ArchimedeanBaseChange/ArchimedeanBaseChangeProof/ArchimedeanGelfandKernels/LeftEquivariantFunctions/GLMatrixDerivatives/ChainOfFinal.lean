@@ -9,6 +9,9 @@ namespace PositivityTheory.RgBcC.LfSt.ChainPf
 
 open PositivityTheory.RgBcC
 
+/- English proof (translation)
+The claim follows from `Done.chainOf'_of Cdc.dCinCE Cwave.paramInt Cact.actDer Cact.ibpAct Cdc.kapEquiv hU hR hL`.
+-/
 theorem chain_identity_multiplier_kernels (hU : Unimod) (hR : RCalc) (hL : LgFacts) : ChainOf' :=
   Done.chainOf'_of Cdc.dCinCE Cwave.paramInt Cact.actDer Cact.ibpAct Cdc.kapEquiv hU hR hL
 

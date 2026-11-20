@@ -14,6 +14,11 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.UPel.HT.ES.CorrQF
 
+/- English proof (translation)
+Establish `h1 : ¬ IsUnit (X.presheaf.germ ⊤ u trivial ((p : ℕ) : Γ(X, ⊤)))` using `fun hh => hu ((X.mem_basicOpen ((p : ℕ) : Γ(X, ⊤)) u (Set.mem_univ u)).2 hh)`. Rewrite `h1` using `[map_natCast]`. Establish `h2 : IsLocalRing.residue (X.presheaf.stalk u) ((p : ℕ) : X.presheaf.stalk u) = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 ((IsLocalRing.mem_maximalIdeal _).2 h1)`. Rewrite `h2` using `[map_natCast]`. Establish `h3 : ((p : ℕ) : L) = 0`.
+
+Rewrite using `[← map_natCast h]`. Conclude with `(congrArg h h2).trans (map_zero h)`. Conclude with `(CharP.charP_iff_prime_eq_zero (Fact.out)).2 h3`.
+-/
 theorem charP_of_residueField_of_notMem_basicOpen (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) (u : X)
     (hu : u ∉ X.basicOpen ((p : ℕ) : Γ(X, ⊤))) (L : Type) [Field L] (h : X.residueField u →+* L) : CharP L p := by
   have h1 : ¬ IsUnit (X.presheaf.germ ⊤ u trivial ((p : ℕ) : Γ(X, ⊤))) :=
@@ -27,6 +32,15 @@ theorem charP_of_residueField_of_notMem_basicOpen (p : ℕ) [Fact p.Prime] (X : 
     exact (congrArg h h2).trans (map_zero h)
   exact (CharP.charP_iff_prime_eq_zero (Fact.out)).2 h3
 
+/- English proof (translation)
+Introduce `p _ D R _ b N hN hNp hm c M u hu L _ _ h`. Use `haveI : CharP L p := charP_of_residueField_of_notMem_basicOpen p M.X u hu L h`. Use `set ξ := spMap h ≫ M.X.fromSpecResidueField u with hξ`. Take `⟨o₀, ⟨m₀⟩⟩` from `HTPull.exists_objMap_pull p D R b N M.X (Sp L) M.s ξ M.univ`. Establish `hF` using `T.finite_kernels_pIsogenies_harrisTaylor_charP p D R b N hN hNp hm c L (ξ ≫ M.s) o₀`.
+
+Set `Rel : (Sp L ⟶ M.X) → ((T : Over (Sp L)) → (T ⟶ o₀.A) → Prop) → Prop` to `fun ζ P => ∃ (o' : Obj b N (ξ ≫ M.s)) (ψ₀ : o₀.A ⟶ o'.A), IsPIsog c o₀ o' ψ₀ ∧ (P = fun T x => x ≫ ψ₀ = 1) ∧ Nonempty (ObjMap o' M.univ ζ) ∧ ζ ≫ M.s = ξ ≫ M.s`. Establish `hsub : ∀ P, {ζ | Rel ζ P}.Subsingleton`. Introduce and unpack `P ζ₁ ⟨o₁, ψ₁, hψ₁, rfl, ⟨n₁⟩, hs₁⟩ ζ₂ ⟨o₂, ψ₂, hψ₂, he, ⟨n₂⟩, hs₂⟩`. Take `⟨m, -⟩` from `KerDet.exists_objMap_of_ker_eq p D R b N hN hNp c (Sp L) (ξ ≫ M.s) o₀ o₁ o₂ ψ₁ ψ₂ hψ₁ hψ₂ (fun T x => Iff.of_eq (congrFun (congrFun he T) x))`. Establish `e` using `(M.rep (Sp L) (ξ ≫ M.s) o₁).unique ⟨hs₁, ⟨n₁⟩⟩ ⟨by rw [Category.assoc, hs₂, Category.id_comp], ⟨m.comp n₂⟩⟩`.
+
+Rewrite `e` using `[Category.id_comp]`. Conclude with `e`. Use `(hF.biUnion fun P _ => (hsub P).finite).subset ?_` and prove the remaining obligations. Introduce `ζ hζ`. Take `⟨hs, o, o', ψ, ⟨mo⟩, ⟨mo'⟩, hψ⟩` from `hζ`.
+
+Take `⟨i₀, -⟩` from `IwLevel.exists_objMap_cancel (f := 𝟙 (Sp L)) (g := ξ) (cast (congrArg (ObjMap o₀ M.univ) (Category.id_comp ξ).symm) m₀) mo`. Take `⟨i₁, -⟩` from `IwLevel.exists_objMap_cancel (f := 𝟙 (Sp L)) (g := ζ) (cast (congrArg (ObjMap o' M.univ) (Category.id_comp ζ).symm) mo') mo'`. Take `⟨ψ₀, hψ₀, -⟩` from `ValExt.isPIsog_pull p D R b N c (Sp L) (Sp L) (ξ ≫ M.s) (ξ ≫ M.s) (𝟙 _) o o' o₀ o' i₀ i₁ ψ hψ`. Conclude with `Set.mem_biUnion (x := fun T x => x ≫ ψ₀ = 1) ⟨o', ψ₀, hψ₀, rfl⟩ ⟨o', ψ₀, hψ₀, rfl, ⟨mo'⟩, hs.symm⟩`.
+-/
 theorem finite_isogTarget : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → D.m = 1 → ∀ (c : ℕ) (M : Model b N) (u : M.X), u ∉ (M.X.basicOpen ((p : ℕ) : Γ(M.X, ⊤))) → ∀ (L : Type) [Field L] [IsAlgClosed L] (h : M.X.residueField u →+* L), {ζ : Sp L ⟶ M.X | CorrQF.IsogTarget M c (spMap h ≫ M.X.fromSpecResidueField u) ζ}.Finite := by
   intro p _ D R _ b N hN hNp hm c M u hu L _ _ h
   haveI : CharP L p := charP_of_residueField_of_notMem_basicOpen p M.X u hu L h

@@ -19,6 +19,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 variable {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Establish `i` using `P.weil.isUSplitting.impl (g, 1) u Φ h`. Rewrite `i` using `[h1, map_smul, show actAB (cA σ) (g, 1) u = mat g * u from (congrArg _ Matrix.transpose_one).trans (Matrix.mul_one _)]`. Establish `a1` using `schr_unit P.base.std ν hν (M.co.e (mat g * u)) (om (g, 1) Φ) Φ`. Establish `a2` using `schr_unit P.base.std ν hν (M.co.e (mat g * u)) Φ Φ`.
+
+Establish `k : ∀ (A : Fn F n d) (t : ℂ), ∫ x, (t • A) x * star ((c' • Φ) x) ∂ν = t * star c' * ∫ x, A x * star (Φ x) ∂ν` using `fun A t => by`. Rewrite using `[← integral_const_mul]`. Conclude with `integral_congr_ae (.of_forall fun x => by simp only [Pi.smul_apply, smul_eq_mul, star_mul']; ring)`. Rewrite `a1`, `a2` using `[show schr B.ψ (M.co.e (mat g * u)) Φ = _ from h2]`. Rewrite `a1` using `[show schr B.ψ (M.co.e (mat g * u)) (om (g, 1) Φ) = _ from i.symm, k]`.
+
+Rewrite `a2` using `[k]`. Establish `b1` using `(mul_eq_right₀ hn).1 a1`. Establish `b2` using `(mul_eq_right₀ (sq_ne ν hν h h0)).1 a2`. Conclude with `hc (mul_right_cancel₀ (right_ne_zero_of_mul_eq_one b1) (b1.trans b2.symm))`.
+-/
 theorem orth (P : IsPair B M χX χW om r s r' s') {ν} (hν : @Measure.IsAddHaarMeasure _ _ _ (borel _) ν) {Φ} (h : Φ ∈ schA F _)
     (h0 : Φ ≠ 0) {g u} {c c' : ℂ} (hc : c ≠ c') (h1 : M.co.rho B.ψ u Φ = c • Φ) (h2 : M.co.rho B.ψ (mat g * u) Φ = c' • Φ) :
     coef om ν Φ g = 0 := by
@@ -37,6 +44,13 @@ theorem orth (P : IsPair B M χX χW om r s r' s') {ν} (hν : @Measure.IsAddHaa
   have b2 := (mul_eq_right₀ (sq_ne ν hν h h0)).1 a2
   exact hc (mul_right_cancel₀ (right_ne_zero_of_mul_eq_one b1) (b1.trans b2.symm))
 
+/- English proof (translation)
+Establish `step : ∀ S : Finset (Pl F), om (partU (aS_mul_self S) g, 1) Φ = Φ` using `fun S => by`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rwa [show partU (aS_mul_self ∅) g = partU real_mul_self g from mat_inj (by rw [mat_partU, mat_partU, aS, Finset.sum_empty, add_zero])]`. Consider the case `insert v S hv ih`. Establish `e : partU (aS_mul_self (insert v S)) g = partU (idem_mul_self v) g * partU (aS_mul_self S) g`.
+
+Rewrite using `[← partU_add (idem_mul_self v) (aS_mul_self S) (idem_mul_aS hv) (aS_insert hv ▸ aS_mul_self (insert v S))]`. Conclude with `mat_inj (by rw [mat_partU, mat_partU, aS_insert hv])`. Rewrite using `[e, ← mul_one (1 : UA σ W.J), ← Prod.mk_mul_mk, map_mul, Module.End.mul_apply, ih, h2]`. Use function extensionality and compare the values at `x`. Establish `t` using `((P.weil.2.2 _ (ev_adm x) _ h).continuousAt (x := (g, 1))).tendsto.comp ((tendsto_partU g).prodMk_nhds tendsto_const_nhds)`.
+
+Conclude with `tendsto_nhds_unique t (tendsto_const_nhds.congr fun S => (congrFun (step S) x).symm)`.
+-/
 theorem fix_of_parts (P : IsPair B M χX χW om r s r' s') {Φ} (h : Φ ∈ schA F _) {g : UA σ X.J}
     (h1 : om (partU real_mul_self g, 1) Φ = Φ) (h2 : ∀ v, om (partU (idem_mul_self v) g, 1) Φ = Φ) : om (g, 1) Φ = Φ := by
   classical
@@ -54,8 +68,14 @@ theorem fix_of_parts (P : IsPair B M χX χW om r s r' s') {Φ} (h : Φ ∈ schA
     ((tendsto_partU g).prodMk_nhds tendsto_const_nhds)
   exact tendsto_nhds_unique t (tendsto_const_nhds.congr fun S => (congrFun (step S) x).symm)
 
+/- English proof (translation)
+The claim follows from `mat_inj (add_comm _ _)`.
+-/
 theorem prj_eq (v : Pl F) (g : UA σ X.J) : partU (idem_mul_self v) g = Euler.prj v g := mat_inj (add_comm _ _)
 
+/- English proof (translation)
+Establish `c : Continuous fun g => mat2 (e (g, 1))` using `(Euler.cont_mat.matrix_fromBlocks continuous_const continuous_const continuous_const).congr fun g => (he g 1).symm`. Use `continuous_induced_rng.2 (Units.continuous_iff.2 ⟨c, (c.comp continuous_inv).congr fun g => ?_⟩)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mat2 (e (g⁻¹, 1)) = mat2 (e (g, 1))⁻¹`. Rewrite using `[← map_inv, Prod.inv_mk, inv_one]`.
+-/
 theorem cont_emb {e : UA σ X.J × UA σ X.J →* G2 σ X} (he : ∀ g g', IsEmb g g' (e (g, g'))) : Continuous fun g => e (g, 1) := by
   have c : Continuous fun g => mat2 (e (g, 1)) :=
     (Euler.cont_mat.matrix_fromBlocks continuous_const continuous_const continuous_const).congr fun g => (he g 1).symm
@@ -63,15 +83,27 @@ theorem cont_emb {e : UA σ X.J × UA σ X.J →* G2 σ X} (he : ∀ g g', IsEmb
   change mat2 (e (g⁻¹, 1)) = mat2 (e (g, 1))⁻¹
   rw [← map_inv, Prod.inv_mk, inv_one]
 
+/- English proof (translation)
+The claim follows from `(Matrix.one_mul _).trans (Matrix.mul_one _).symm`.
+-/
 theorem par_one : IsPar (1 : G2 σ X) 1 := (Matrix.one_mul _).trans (Matrix.mul_one _).symm
 
+/- English proof (translation)
+Take `⟨p, t, hp, k', hk', rfl⟩` from `ha.iwa y`. Rewrite using `[mul_assoc, ha.val p t hp _ (mul_mem hk' hk), ha.val p t hp _ hk']`.
+-/
 theorem hgt_mul {K : Subgroup (G2 σ X)} {a : G2 σ X → ℝ} (ha : IsHgt K a) (y) {k} (hk : k ∈ K) : a (y * k) = a y := by
   obtain ⟨p, t, hp, k', hk', rfl⟩ := ha.iwa y
   rw [mul_assoc, ha.val p t hp _ (mul_mem hk' hk), ha.val p t hp _ hk']
 
+/- English proof (translation)
+Simplify using `using ha.val 1 1 par_one k hk`.
+-/
 theorem hgt_one {K : Subgroup (G2 σ X)} {a : G2 σ X → ℝ} (ha : IsHgt K a) {k} (hk : k ∈ K) : a k = 1 := by
   simpa using ha.val 1 1 par_one k hk
 
+/- English proof (translation)
+Introduce `p t x hp` and use `by have := hB.cm.1 beta_reduce rw [map_mul, Module.End.mul_apply, h.weil.2.2 l h.adm h.kill p t hp _ (h.weil.2.1.pres x Ψ hΨ), PositivityTheory.ThKF0.Chr.absE_eq, Complex.ofReal_cpow (NNReal.coe_nonneg _), Fintype.card_fin] push_cast rfl`.
+-/
 theorem law {dd om₂ S l} (hB : B.IsGood σ) (h : IsDbl (σ := σ) (A := W) (Y := X) (κ := (Fin n × Fin d) ⊕ (Fin n × Fin d)) B.ψ dd χW om₂ S l)
     {Ψ} (hΨ : Ψ ∈ schA F _) : Law χW (d / 2) fun x => l (om₂ x Ψ) := fun p t x hp => by
   have := hB.cm.1
@@ -81,6 +113,9 @@ theorem law {dd om₂ S l} (hB : B.IsGood σ) (h : IsDbl (σ := σ) (A := W) (Y 
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `t ht` and use `by have : t • (mat u - 1) = 0 := by rw [← Euler.mem_loc.1 hu, ← prj_eq]; exact partU_idem_mem v u t ht rw [he u 1, show mat (1 : UA σ X.J) = 1 from rfl, ← Matrix.fromBlocks_one, sub_eq_add_neg, Matrix.fromBlocks_neg, Matrix.fromBlocks_add, Matrix.fromBlocks_smul, ← sub_eq_add_neg …`.
+-/
 theorem at_emb {e : UA σ X.J × UA σ X.J →* G2 σ X} (he : ∀ g g', IsEmb g g' (e (g, g'))) {v} {u : UA σ X.J} (hu : u ∈ locGrp σ X v) :
     At (evFin F v) (mat2 (e (u, 1)) - 1) := fun t ht => by
   have : t • (mat u - 1) = 0 := by rw [← Euler.mem_loc.1 hu, ← prj_eq]; exact partU_idem_mem v u t ht
@@ -88,11 +123,53 @@ theorem at_emb {e : UA σ X.J × UA σ X.J →* G2 σ X} (he : ∀ g g', IsEmb g
     Matrix.fromBlocks_add, Matrix.fromBlocks_smul, ← sub_eq_add_neg, this]
   simp
 
+/- English proof (translation)
+Break down `eq_or_ne w v with rfl | hw` into its components or cases. Conclude with `h`. Rewrite using `[← mul_one u, Euler.int_mul_ne hw hu]`. Conclude with `(Euler.intGrp σ X w).one_mem`.
+-/
 theorem int_all {v} {u : UA σ X.J} (hu : u ∈ locGrp σ X v) (h : IntAt v u) (w) : IntAt w u := by
   rcases eq_or_ne w v with rfl | hw
   · exact h
   · rw [← mul_one u, Euler.int_mul_ne hw hu]; exact (Euler.intGrp σ X w).one_mem
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' P h0 _ hn _ T hT _ uW f₀ p0 n0 i0 K a e hK ha he ν hν`. Use `choose! β β1 β2 β3 using hB F E σ B n d X W M χX χW om r s r' s' P hn`. Set `φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun v => if v ∈ T then β v else M.vac v`. Establish `φ1 : ∀ v ∈ T, φ v = β v` using `fun v h => if_pos h`. Establish `φ2 : ∀ v ∉ T, φ v = M.vac v` using `fun v h => if_neg h`.
+
+Establish `hSB : ∀ v, φ v ∈ SB _` using `fun v => by`. Distinguish the cases in `h : v ∈ T`. Use `exacts [φ1 v h ▸ β1 v (hT h), φ2 v h ▸ (P.good.vac v).1]`. Establish `hne : ∀ v, φ v ≠ 0` using `fun v => by`. Distinguish the cases in `h : v ∈ T`.
+
+Use `exacts [φ1 v h ▸ β2 v (hT h), φ2 v h ▸ (P.good.vac v).2.1]`. Establish `hv : ∀ᶠ v in cofinite, φ v = M.vac v` using `T.eventually_cofinite_notMem.mono φ2`. Establish `hs` using `(hv.and P.good.std).mono fun v h => h.1.trans h.2`. Use `⟨pure f₀ φ, Submodule.subset_span ⟨f₀, p0, φ, hSB, hv, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `m` using `GlobalTheory.TensUniq.pure_mem_schA f₀ φ hSB hs`.
+
+Establish `m0` using `GlobalTheory.EvNonzero.pure_ne_zero f₀ n0 φ hne hs`. Take `⟨dd, om₂, S, l, d1, d2, d3, d4⟩` from `hD F E σ B n d X W M χX χW om r s r' s' P`. Take `⟨c, c0, hc⟩` from `d4 ν hν`. Establish `c1` using `Complex.ofReal_ne_zero.2 c0.ne'`. Establish `fx : ∀ v ∉ T, ∀ k ∈ K, At (evFin F v) (mat2 k - 1) → om₂ k (boxFun (pure f₀ φ) (star (pure f₀ φ))) = _` using `fun v h k hk h' => fix_box hSB hs (φ2 v h ▸ hV F E σ B n d X W M r s r' s' P.base P.herm P.skew P.good χW P.hW dd om₂ d3 d1.weil K hK v (fun w hw => uW w (by show ¬ w.under (𝓞 F) ∈ (T : Set (Pl F)); rw [hw]; exact h)) k hk h')`.
+
+Establish `e1` using `fun v (h : v ∈ T) S (c : ℂ) (h' : Acts (evFin F v) S (β v) (c • β v)) => eig (f := f₀) hSB hs (φ1 v h ▸ h')`. Establish `e2` using `fun S => fix_real (f := f₀) (S := S) hSB hs`. Generalize the expression as in `pure f₀ φ = Φ at *`. Establish `bx : ∀ g, om₂ (e (g, 1)) (boxFun Φ (star Φ)) = boxFun (om (g, 1) Φ) (star Φ)` using `fun g => by`. Simplify `((d2 Φ m Φ m).2 1 g 1 _ (he g 1)).2` using `[detInv, show ((1, 1) : UA σ X.J × UA σ W.J) = 1 from rfl]`.
+
+Establish `cf : ∀ g, l (om₂ (e (g, 1)) (boxFun Φ (star Φ))) = c * coef om ν Φ g` using `fun g => by`. Rewrite using `[bx, hc _ (P.weil.isUSplitting.pres _ _ m) _ m]`. Both sides reduce to the same expression. Establish `N : coef om ν Φ 1 ≠ 0`. Rewrite using `[coef, show ((1, 1) : UA σ X.J × UA σ W.J) = 1 from rfl, map_one]`.
+
+Conclude with `sq_ne ν hν m m0`. Establish `a0 : ∀ x, 0 < a x` using `fun x => by`. Take `⟨p, t, hp, k, hk, rfl⟩` from `ha.iwa x`. Rewrite using `[ha.val p t hp k hk]`. Conclude with `absE_pos _`.
+
+Use `⟨fun z v hvT => ?_, ?_⟩` and prove the remaining obligations. Use `set G := flat a (fun x => l (om₂ x (boxFun Φ (star Φ)))) (((d : ℂ) - n) / 2) z with hG`. Establish `L : Law χW (z + n / 2) G`. Use `(law P.base d1 (d2 Φ m Φ m).1).flat (s₀ := ((d : ℂ) - n) / 2) ha a0 z` as an intermediate fact. Rewrite `this` using `[show z - ((d : ℂ) - n) / 2 + d / 2 = z + n / 2 by ring]`. Then use the resulting hypothesis.
+
+Establish `R : ∀ k ∈ K, At (evFin F v) (mat2 k - 1) → ∀ y, G (y * k) = G y` using `fun k hk h y => by`. Simplify using `only [hG, flat, hgt_mul ha y hk, map_mul, Module.End.mul_apply, fx v hvT k hk h]`. Establish `Z : ∀ g, G (e (g, 1)) = c * zint om ν a e Φ z g` using `fun g => by rw [hG, flat, cf, zint]; ring`. Establish `G1 : G 1 ≠ 0`. Rewrite using `[← map_one e, show (1 : UA σ X.J × UA σ X.J) = (1, 1) from rfl, Z, zint, hgt_one ha (show e (1, 1) ∈ K from map_one e ▸ K.one_mem)]`.
+
+Simplify using `using ⟨c0.ne', N⟩`. Apply the tactic sequence `refine ⟨fun x => G x / G 1, fun p t hp _ k hk h => ?_, fun u hu => ⟨fun hi => ?_, fun g hg => ?_⟩⟩ <;> beta_reduce`. Rewrite using `[L p t k hp, ← one_mul k, R k hk h, mul_div_cancel_right₀ _ G1]`. Rewrite using `[← one_mul (e (u, 1)), R _ (emb_mem P.base P.herm h0 hK he (int_all hu hi)) (at_emb he hu), div_self G1]`. Take `⟨p, t, k, hp, hk, h, e'⟩` from `loc_iwa hK ha (at_emb he hu)`.
+
+Use `mul_left_cancel₀ c1 ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← Z, ← Z, show e (u * g, 1) = e (u, 1) * e (g, 1) by rw [← map_mul, Prod.mk_mul_mk, mul_one], e', mul_assoc, L p t _ hp, L p t _ hp, comm_off he hg h, R k hk h, ← one_mul k, R k hk h, mul_div_cancel_right₀ _ G1]`. Establish `key : ∀ g, (∀ v ∉ T, IntAt v g) → coef om ν Φ g ≠ 0 → (∀ v, IntAt v g) ∧ coef om ν Φ g = coef om ν Φ 1` using `fun g hg h => by`. Establish `b : ∀ v ∈ T, IntAt v g ∧ om (partU (idem_mul_self v) g, 1) Φ = Φ` using `fun v hv => by`. Break down `β3 v (hT hv) _ (partU_idem_mem v g) with ⟨b1, b2⟩ | ⟨u, c, c', b1, b2, b3, b4⟩` into its components or cases.
+
+Conclude with `⟨Euler.int_prj.1 (prj_eq v g ▸ b1), (e1 v hv _ 1 (by rwa [one_smul])).trans (one_smul _ _)⟩`. Use `absurd (orth P hν m m0 b2 (e1 v hv _ _ b3) (e1 v hv _ _ ?_)) h` and prove the remaining obligations. Rewrite `b4` using `[mat_partU, Matrix.add_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul, sub_smul, one_smul, idem_smul b1, sub_self, add_zero, ← Matrix.mul_smul, idem_smul b1]`. Then use the resulting hypothesis. Establish `hi : ∀ v, IntAt v g` using `fun v => (em (v ∈ T)).elim (fun h => (b v h).1) (hg v)`. Use `⟨hi, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[coef, coef, show ((1, 1) : UA σ X.J × UA σ W.J) = 1 from rfl, map_one, fix_of_parts P m (e2 _ (i0 _ ⟨partU_real_mem g, fun w => commute_theta P.base P.herm h0 w _⟩)) fun v => ?_]`. Both sides reduce to the same expression. Distinguish the cases in `h : v ∈ T`. Conclude with `(b v h).2`. Establish `l1 : partU (idem_mul_self v) g ∈ locGrp σ X v` using `Subgroup.subset_closure (partU_idem_mem v g)`.
+
+Use `fx v h _ (emb_mem P.base P.herm h0 hK he (int_all l1 (prj_eq v g ▸ Euler.int_prj.2 (hi v)))) (at_emb he l1)` as an intermediate fact. Take `⟨y, hy⟩` from `Function.ne_iff.1 m0`. Rewrite `this` using `[bx]`. Conclude with `funext fun x => mul_right_cancel₀ (star_ne_zero.2 hy) (congrFun this (Sum.elim x y))`. Establish `cl : IsClosed {g : UA σ X.J | ∀ v ∉ T, IntAt v g}`.
+
+Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun v => isClosed_iInter fun _ => Euler.isClosed_int P.herm.lat v`. Establish `ct : Continuous (coef om ν Φ)`. Use `(((d1.weil.2.1.cont l d1.adm _ (d2 Φ m Φ m).1).comp (cont_emb he)).div_const (c : ℂ)).congr fun g => ?_` and prove the remaining obligations. Conclude with `(congrArg (· / (c : ℂ)) (cf g)).trans (mul_div_cancel_left₀ _ c1)`.
+
+Establish `op : IsOpen {g | coef om ν Φ g ≠ 0}` using `isOpen_ne_fun ct continuous_const`. Establish `val : ∀ z, ∫ g in {g | ∀ v ∉ T, IntAt v g}, zint om ν a e Φ z g ∂M.μ = M.μ.real ({g | coef om ν Φ g ≠ 0} ∩ {g | ∀ v ∉ T, IntAt v g}) • coef om ν Φ 1` using `fun z => by`. Rewrite using `[← measureReal_restrict_apply op.measurableSet, ← integral_indicator_const _ op.measurableSet]`. Use `setIntegral_congr_fun cl.measurableSet fun g hg => ?_` and prove the remaining obligations. Distinguish the cases in `h : coef om ν Φ g = 0`.
+
+Rewrite using `[zint, h, mul_zero, Set.indicator_of_notMem (not_not.2 h)]`. Rewrite using `[zint, hgt_one ha (emb_mem P.base P.herm h0 hK he (key g hg h).1), (key g hg h).2, Set.indicator_of_mem h]`. Simplify using the standard rewrite rules. Simplify using `only [val]`. Use `⟨differentiable_const _, smul_ne_zero (ENNReal.toReal_ne_zero.2 ⟨?_, ?_⟩) N⟩` and prove the remaining obligations.
+
+Use `P.good.haar` as an intermediate fact. Use `(M.μ.measure_pos_of_mem_nhds (x := 1) (inter_mem (op.mem_nhds N) ?_)).ne'` and prove the remaining obligations. Conclude with `mem_of_superset (int_nhds P.herm.lat) fun g h v _ => h v`. Use `P.good.haar` as an intermediate fact. Take `⟨K₁, -, -, k1, k2, -⟩` from `hS F E σ B n X r s P.base P.herm`.
+
+Conclude with `((measure_mono fun g h => (stab_iff P.base P.herm h0 k1).2 (key g h.2 h.1).1).trans_lt k2.measure_lt_top).ne`.
+-/
 theorem _root_.GlobalTheory.ThK.Dbl.badFactor_of (hD : DblX) (hS : StabEx) (hV : VacFix2) (hB : Bump) : BadFactor := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' P h0 _ hn _ T hT _ uW f₀ p0 n0 i0 K a e hK ha he ν hν
   classical

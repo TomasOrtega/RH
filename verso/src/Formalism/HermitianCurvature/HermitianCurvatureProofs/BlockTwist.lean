@@ -28,19 +28,31 @@ structure WaveHyp (L : R.LevelData A r) (st : Fr.Start A) (f fi : A) (s : ℂ) :
   l : ∀ Y ∈ st.inv, fi * (L.l0 Y + L.ζb * L.ζi * L.GGi * st.ee Y) * f =
     L.l0 Y + L.ζb * L.ζi * L.GGi * st.ee Y - algebraMap ℂ A s
 
+/- English proof (translation)
+Simplify using `[Fr.zfns]`.
+-/
 theorem mem_zfns (L : R.LevelData A r) : L.ζ ∈ Fr.zfns L ∧ L.ζi ∈ Fr.zfns L ∧ L.ζb ∈ Fr.zfns L ∧
     L.ζbi ∈ Fr.zfns L ∧ L.GG ∈ Fr.zfns L ∧ L.GGi ∈ Fr.zfns L := by
   simp [Fr.zfns]
 
+/- English proof (translation)
+Simplify using `only [R.LevelData.l0, map_sub, map_add]`. Use `noncomm_ring`.
+-/
 theorem lowering_constant_sub (L : R.LevelData A r) (Y Y' : ℂ) :
     L.l0 Y - L.l0 Y' = algebraMap ℂ A (Y' - Y) * (L.ζb * L.GGi) := by
   simp only [R.LevelData.l0, map_sub, map_add]
   noncomm_ring
 
+/- English proof (translation)
+Simplify using `only [R.LevelData.l0, io_sub', io_neg', io_mul', io_algebraMap]`.
+-/
 theorem embed_lowering_constant (L : R.LevelData A r) (Y : ℂ) :
     (io (L.l0 Y) : SlopeTestRemainingChoices S A) = -io L.nab - ((Y + 1 / 2) • (1 : SlopeTestRemainingChoices S A)) * (io L.ζb * io L.GGi) := by
   simp only [R.LevelData.l0, io_sub', io_neg', io_mul', io_algebraMap]
 
+/- English proof (translation)
+Establish `h1 : L.ζbi * L.ζ = L.ζ * L.ζbi` using `L.fns_comm _ (by simp) _ (by simp)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = L.GG * (L.ζi * L.ζ) * (L.ζbi * L.ζb) * L.GGi := by rw [h1]; simp only [mul_assoc]`. Use `_ = 1 := by rw [L.ζi_ζ, L.ζbi_ζb, mul_one, mul_one, L.GG_GGi]`.
+-/
 theorem wti_wt (L : R.LevelData A r) : L.GG * L.ζi * L.ζbi * (L.ζ * L.ζb * L.GGi) = 1 := by
   have h1 : L.ζbi * L.ζ = L.ζ * L.ζbi := L.fns_comm _ (by simp) _ (by simp)
   calc L.GG * L.ζi * L.ζbi * (L.ζ * L.ζb * L.GGi) = L.GG * L.ζi * (L.ζbi * L.ζ) * L.ζb * L.GGi := by
@@ -48,6 +60,11 @@ theorem wti_wt (L : R.LevelData A r) : L.GG * L.ζi * L.ζbi * (L.ζ * L.ζb * L
     _ = L.GG * (L.ζi * L.ζ) * (L.ζbi * L.ζb) * L.GGi := by rw [h1]; simp only [mul_assoc]
     _ = 1 := by rw [L.ζi_ζ, L.ζbi_ζb, mul_one, mul_one, L.GG_GGi]
 
+/- English proof (translation)
+Establish `h2 : L.ζb * L.ζi = L.ζi * L.ζb` using `L.fns_comm _ (by simp) _ (by simp)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = L.ζ * (L.ζb * L.ζi) * L.ζbi := by rw [L.GGi_GG, mul_one]; simp only [mul_assoc]`. Use `_ = (L.ζ * L.ζi) * (L.ζb * L.ζbi) := by rw [h2]; simp only [mul_assoc]`.
+
+Use `_ = 1 := by rw [L.ζ_ζi, L.ζb_ζbi, mul_one]`.
+-/
 theorem wt_wti (L : R.LevelData A r) : L.ζ * L.ζb * L.GGi * (L.GG * L.ζi * L.ζbi) = 1 := by
   have h2 : L.ζb * L.ζi = L.ζi * L.ζb := L.fns_comm _ (by simp) _ (by simp)
   calc L.ζ * L.ζb * L.GGi * (L.GG * L.ζi * L.ζbi) = L.ζ * L.ζb * (L.GGi * L.GG) * L.ζi * L.ζbi := by
@@ -56,6 +73,13 @@ theorem wt_wti (L : R.LevelData A r) : L.ζ * L.ζb * L.GGi * (L.GG * L.ζi * L.
     _ = (L.ζ * L.ζi) * (L.ζb * L.ζbi) := by rw [h2]; simp only [mul_assoc]
     _ = 1 := by rw [L.ζ_ζi, L.ζb_ζbi, mul_one]
 
+/- English proof (translation)
+Establish `h1 : (Fr.wti L : SlopeTestRemainingChoices S A) * Fr.wt L = 1`. Rewrite using `[Fr.wti, Fr.wt, ← io_mul', wti_wt, io_one']`. Establish `h2 : (Fr.wt L : SlopeTestRemainingChoices S A) * Fr.wti L = 1`. Rewrite using `[Fr.wti, Fr.wt, ← io_mul', wt_wti, io_one']`. Establish `hc' : Commute (Fr.wti L : SlopeTestRemainingChoices S A) (Fr.wt L)` using `by show _ = _; rw [h1, h2]`.
+
+Establish `hp : (Fr.wti L : SlopeTestRemainingChoices S A) ^ fr.N * Fr.wt L ^ fr.N = 1`. Rewrite using `[← hc'.mul_pow, h1, one_pow]`. Unfold `Fr.FrameData.di Fr.FrameData.d`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`.
+
+Use `_ = 1 := by rw [hp, mul_one, hc]`.
+-/
 theorem di_d (L : R.LevelData A r) (fr : Fr.FrameData S A) (hc : fr.ci * fr.c = 1) : fr.di L * fr.d L = 1 := by
   have h1 : (Fr.wti L : SlopeTestRemainingChoices S A) * Fr.wt L = 1 := by
     rw [Fr.wti, Fr.wt, ← io_mul', wti_wt, io_one']
@@ -72,35 +96,60 @@ theorem di_d (L : R.LevelData A r) (fr : Fr.FrameData S A) (hc : fr.ci * fr.c = 
 
 variable {L : R.LevelData A r} {st : Fr.Start A} {f fi : A} {s : ℂ}
 
+/- English proof (translation)
+The claim follows from `commute_io_io (hW.fn g hg)`.
+-/
 theorem WaveHyp.io_fn (hW : WaveHyp L st f fi s) {g : A} (hg : g ∈ Fr.zfns L) :
     Commute (io f : SlopeTestRemainingChoices S A) (io g) :=
   commute_io_io (hW.fn g hg)
 
+/- English proof (translation)
+Take `⟨-, h1, h2, -, -, h5⟩` from `mem_zfns L`. Unfold `Fr.kapL`. Conclude with `commute_io_io (((hW.fn _ h2).mul_right (hW.fn _ h1)).mul_right (hW.fn _ h5))`.
+-/
 theorem WaveHyp.kap (hW : WaveHyp L st f fi s) : Commute (io f : SlopeTestRemainingChoices S A) (Fr.kapL L) := by
   obtain ⟨-, h1, h2, -, -, h5⟩ := mem_zfns L
   unfold Fr.kapL
   exact commute_io_io (((hW.fn _ h2).mul_right (hW.fn _ h1)).mul_right (hW.fn _ h5))
 
+/- English proof (translation)
+Take `⟨-, -, -, h3, -, -⟩` from `mem_zfns L`. Unfold `Fr.tz`. Conclude with `commute_io_io ((hW.fn _ h3).smul_right _)`.
+-/
 theorem WaveHyp.tz (hW : WaveHyp L st f fi s) : Commute (io f : SlopeTestRemainingChoices S A) (Fr.tz L) := by
   obtain ⟨-, -, -, h3, -, -⟩ := mem_zfns L
   unfold Fr.tz
   exact commute_io_io ((hW.fn _ h3).smul_right _)
 
+/- English proof (translation)
+Take `⟨h0, -, h2, -, -, h5⟩` from `mem_zfns L`. Unfold `Fr.wt`. Conclude with `commute_io_io (((hW.fn _ h0).mul_right (hW.fn _ h2)).mul_right (hW.fn _ h5))`.
+-/
 theorem WaveHyp.wt (hW : WaveHyp L st f fi s) : Commute (io f : SlopeTestRemainingChoices S A) (Fr.wt L) := by
   obtain ⟨h0, -, h2, -, -, h5⟩ := mem_zfns L
   unfold Fr.wt
   exact commute_io_io (((hW.fn _ h0).mul_right (hW.fn _ h2)).mul_right (hW.fn _ h5))
 
+/- English proof (translation)
+Take `⟨-, h1, -, h3, h4, -⟩` from `mem_zfns L`. Unfold `Fr.wti`. Conclude with `commute_io_io (((hW.fn _ h4).mul_right (hW.fn _ h1)).mul_right (hW.fn _ h3))`.
+-/
 theorem WaveHyp.wti (hW : WaveHyp L st f fi s) : Commute (io f : SlopeTestRemainingChoices S A) (Fr.wti L) := by
   obtain ⟨-, h1, -, h3, h4, -⟩ := mem_zfns L
   unfold Fr.wti
   exact commute_io_io (((hW.fn _ h4).mul_right (hW.fn _ h1)).mul_right (hW.fn _ h3))
 
+/- English proof (translation)
+Take `⟨-, -, h2, -, -, h5⟩` from `mem_zfns L`. Rewrite using `[TwistedTransfer.lowering_constant_sub L Y Y']`. Conclude with `(Algebra.commute_algebraMap_right _ f).mul_right ((hW.fn _ h2).mul_right (hW.fn _ h5))`.
+-/
 theorem WaveHyp.lowering_constant_sub (hW : WaveHyp L st f fi s) (Y Y' : ℂ) : Commute f (L.l0 Y - L.l0 Y') := by
   obtain ⟨-, -, h2, -, -, h5⟩ := mem_zfns L
   rw [TwistedTransfer.lowering_constant_sub L Y Y']
   exact (Algebra.commute_algebraMap_right _ f).mul_right ((hW.fn _ h2).mul_right (hW.fn _ h5))
 
+/- English proof (translation)
+Establish `hcent : ∀ z : SlopeTestRemainingChoices S A, ∀ i j, Commute z ((lift0 (Uinv (A` using `A) t) : M2 (SlopeTestRemainingChoices S A)) i j) := by`. Introduce `z i j`. Rewrite using `[lift_unipotent_inverse]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [commute_smul_one]`. Establish `hUf : Commute (io f) (ins a (lift0 (Uinv (A` using `A) t))) := Formalism.FourierDecayAlt.P.Wd1.ins_comm a _ _ (Formalism.FourierDecayAlt.P.Fr4.free_io a f) (hcent _)`.
+
+Establish `hUF : Commute Fw (ins a (lift0 (Uinv (A` using `A) t))) := Formalism.FourierDecayAlt.P.Wd1.ins_comm a _ _ hFw (hcent _)`. Establish `hins : ins a D * ins a (lift0 (Uinv (A` using `A) t)) = ins a (D * lift0 (Uinv (A := A) t)) := (Formalism.FourierDecayAlt.P.Wd1.ins_mul a D _ hD).symm`. Establish `hcj : ins a (D * lift0 (Uinv (A` using `A) t)) * io f = io f * ins a D := by`. Establish `h` using `cj_ins (f := f) (fi := fi) a (D * lift0 (Uinv (A := A) t))`. Rewrite `h` using `[hE]`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem frame_step (hW1 : f * fi = 1) (a : S) (t : ℂ) (D : M2 (SlopeTestRemainingChoices S A)) (Fw UU : SlopeTestRemainingChoices S A) (hD : FreeOf2 a D)
     (hFw : FreeOf a Fw) (hIH : Fw * (io f * UU) = io f * Fw)
     (hE : (D * lift0 (Uinv (A := A) t)).map (cj f fi) = D) :
@@ -130,6 +179,11 @@ theorem frame_step (hW1 : f * fi = 1) (a : S) (t : ℂ) (D : M2 (SlopeTestRemain
     _ = ins a (D * lift0 (Uinv (A := A) t)) * io f * Fw := by rw [hIH, hins]; simp only [mul_assoc]
     _ = io f * (ins a D * Fw) := by rw [hcj, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[lift_unipotent_inverse]`. Simplify using `only [Matrix.mul_fin_two, mul_one, mul_zero, zero_mul, add_zero, zero_add]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify using `[cj_of_comm hW2 hp]`.
+
+Simplify using `[cj_zero]`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Fin.mk_one, Fin.zero_eta]`. Unfold `Tw at hl`. Rewrite using `[cj_add, cj_mul hW1, cj_mul hW1, cj_mul hW1, cj_mul hW1, cj_of_comm hW2 hq, cj_of_comm hW2 hg, hl, cj_of_comm hW2 (commute_smul_one t _), mul_sub, mul_sub, mul_assoc q g, sub_add_cancel]`. Simplify using `[cj_of_comm hW2 (hq.mul_right hg)]`.
+-/
 theorem block_twist (hW1 : f * fi = 1) (hW2 : fi * f = 1) (t : ℂ) (p q g l : SlopeTestRemainingChoices S A) (hp : Commute (io f) p)
     (hq : Commute (io f) q) (hg : Commute (io f) g) (hl : Tw f fi t l) :
     ((!![p, 0; 0, q] * !![1, 0; g * l, g]) * lift0 (Uinv (A := A) t)).map (cj f fi) =

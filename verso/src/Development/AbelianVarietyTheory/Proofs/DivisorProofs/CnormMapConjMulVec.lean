@@ -31,6 +31,11 @@ variable {Hs : Type} [NormedAddCommGroup Hs] [InnerProductSpace ℂ Hs]
 
 def gramOf {n : ℕ} (w : Fin n → Hs) : Matrix (Fin n) (Fin n) ℂ := Matrix.of fun i j => ⟪w i, w j⟫_ℂ
 
+/- English proof (translation)
+Establish `h1 : ((‖∑ i, c i • w i‖ ^ 2 : ℝ) : ℂ) = ⟪∑ i, c i • w i, ∑ i, c i • w i⟫_ℂ`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`. Rewrite using `[h1]`. Simplify using `only [sum_inner, inner_sum, inner_smul_left, inner_smul_right, dotProduct, mulVec, gramOf, of_apply, Pi.star_apply, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_sum_sq {n : ℕ} (w : Fin n → Hs) (c : Fin n → ℂ) :
     ((‖∑ i, c i • w i‖ ^ 2 : ℝ) : ℂ) = star c ⬝ᵥ (gramOf w *ᵥ c) := by
   have h1 : ((‖∑ i, c i • w i‖ ^ 2 : ℝ) : ℂ) = ⟪∑ i, c i • w i, ∑ i, c i • w i⟫_ℂ := by
@@ -44,6 +49,11 @@ theorem norm_sum_sq {n : ℕ} (w : Fin n → Hs) (c : Fin n → ℂ) :
   rw [Complex.star_def]
   ring
 
+/- English proof (translation)
+Use `posDef_iff_dotProduct_mulVec.2 ⟨?_, fun c hc => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[gramOf, conjTranspose_apply]`. Rewrite using `[← norm_sum_sq]`. Establish `h0 : ∑ i, c i • w i ≠ 0` using `fun h => hc (funext fun i => Fintype.linearIndependent_iff.1 hw c h i)`.
+
+Conclude with `Complex.zero_lt_real.2 (by positivity)`.
+-/
 theorem gramOf_posDef {n : ℕ} {w : Fin n → Hs} (hw : LinearIndependent ℂ w) : (gramOf w).PosDef := by
   refine posDef_iff_dotProduct_mulVec.2 ⟨?_, fun c hc => ?_⟩
   · ext i j
@@ -52,6 +62,11 @@ theorem gramOf_posDef {n : ℕ} {w : Fin n → Hs} (hw : LinearIndependent ℂ w
     have h0 : ∑ i, c i • w i ≠ 0 := fun h => hc (funext fun i => Fintype.linearIndependent_iff.1 hw c h i)
     exact Complex.zero_lt_real.2 (by positivity)
 
+/- English proof (translation)
+Take `⟨B, hB, hG⟩` from `exists_unit_factor (gramOf_posDef hw)`. Use `⟨B, hB, fun c => ?_⟩` and prove the remaining obligations. Establish `key : star (B *ᵥ c) ⬝ᵥ (B *ᵥ c) = star c ⬝ᵥ ((Bᴴ * B) *ᵥ c)`. Establish `e0 : star c ⬝ᵥ (Bᴴ *ᵥ (B *ᵥ c)) = (star c ᵥ* Bᴴ) ⬝ᵥ (B *ᵥ c)` using `dotProduct_mulVec _ _ _`. Rewrite using `[← mulVec_mulVec, e0, star_mulVec]`.
+
+Establish `e : ((∑ i, ‖(B *ᵥ c) i‖ ^ 2 : ℝ) : ℂ) = ((‖∑ i, c i • w i‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[sum_norm_sq_eq, norm_sum_sq, hG, key]`. Simplify using `only [Formalism.HermitianLatticesTheory.cnorm, Complex.ofReal_injective e, Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem exists_frame {n : ℕ} {w : Fin n → Hs} (hw : LinearIndependent ℂ w) :
     ∃ B : Matrix (Fin n) (Fin n) ℂ, IsUnit B.det ∧ ∀ c, Formalism.HermitianLatticesTheory.cnorm (B *ᵥ c) = ‖∑ i, c i • w i‖ := by
   obtain ⟨B, hB, hG⟩ := exists_unit_factor (gramOf_posDef hw)
@@ -63,6 +78,9 @@ theorem exists_frame {n : ℕ} {w : Fin n → Hs} (hw : LinearIndependent ℂ w)
     rw [sum_norm_sq_eq, norm_sum_sq, hG, key]
   simp only [Formalism.HermitianLatticesTheory.cnorm, Complex.ofReal_injective e, Real.sqrt_sq (norm_nonneg _)]
 
+/- English proof (translation)
+Establish `e : B.map (starRingEnd ℂ) *ᵥ u = star (B *ᵥ star u)`. Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, star_sum, mul_comm]`. Rewrite using `[e]`. Simplify using `[Formalism.HermitianLatticesTheory.cnorm]`.
+-/
 theorem cnorm_map_conj_mulVec {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (u : Fin n → ℂ) :
     Formalism.HermitianLatticesTheory.cnorm (B.map (starRingEnd ℂ) *ᵥ u) = Formalism.HermitianLatticesTheory.cnorm (B *ᵥ star u) := by
   have e : B.map (starRingEnd ℂ) *ᵥ u = star (B *ᵥ star u) := by
@@ -75,6 +93,19 @@ end GlobalTheory.HSApp.GramFrame
 
 open GlobalTheory.HSApp.GramFrame Matrix Module in
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ N h`. Set `b` to `Module.finBasis K V`. Establish `key : ∀ v : InfinitePlace K, ∃ Y : Matrix (Fin (finrank K V)) (Fin (finrank K V)) ℂ, IsUnit Y.det ∧ ∀ x, Formalism.HermitianLatticesTheory.cnorm (Y *ᵥ Formalism.HermitianLatticesTheory.vecAt b v x) = N v.embedding x`. Introduce `v`. Take `⟨Hs, i1, i2, Φ, hlin, hN, hli⟩` from `h v`.
+
+Take `⟨B, hB, hBn⟩` from `exists_frame (hli _ b b.linearIndependent)`. Establish `hsum : ∀ x, Φ x = ∑ i, Φ (b.repr x i • b i)` using `fun x => by conv_lhs => rw [← b.sum_repr x]`. Conclude with `map_sum Φ _ _`. Break down `hlin with hl | hl` into its components or cases. Use `⟨B, hB, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hN, hBn, hsum]`. Simplify using `only [hl]`. Both sides reduce to the same expression. Use `⟨B.map (starRingEnd ℂ), ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `e` using `RingHom.map_det (starRingEnd ℂ) B`.
+
+Express the relevant statement in the definitionally equal form `IsUnit ((starRingEnd ℂ).mapMatrix B).det`. Rewrite using `[← e]`. Conclude with `hB.map _`. Rewrite using `[cnorm_map_conj_mulVec, hN, hBn, hsum]`. Simplify using `only [hl]`.
+
+Both sides reduce to the same expression. Use `choose Y hY hYn using key`. Use `GlobalTheory.AllWt.IsGram.hasGram (b := b) (X := fun v => (Y v)⁻¹) fun v => ⟨isUnit_nonsing_inv_det _ (hY v), fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.fcoord]`. Rewrite using `[nonsing_inv_nonsing_inv _ (hY v)]`.
+
+Conclude with `hYn v x`.
+-/
 theorem GlobalTheory.HSApp.hasGram_of_inner : ∀ (K V : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] (N : (K →+* ℂ) → V → ℝ), (∀ v : InfinitePlace K, ∃ (Hs : Type) (_ : NormedAddCommGroup Hs) (_ : InnerProductSpace ℂ Hs) (Φ : V →+ Hs), ((∀ (a : K) (x : V), Φ (a • x) = v.embedding a • Φ x) ∨ (∀ (a : K) (x : V), Φ (a • x) = starRingEnd ℂ (v.embedding a) • Φ x)) ∧ (∀ x, N v.embedding x = ‖Φ x‖) ∧ ∀ (n : ℕ) (e : Fin n → V), LinearIndependent K e → LinearIndependent ℂ (fun i => Φ (e i))) → GlobalTheory.AllWt.HasGram N := by
   intro K V _ _ _ _ _ N h
   classical

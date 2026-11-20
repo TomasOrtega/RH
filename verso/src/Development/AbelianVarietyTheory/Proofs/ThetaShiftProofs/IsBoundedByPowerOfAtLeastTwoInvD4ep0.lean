@@ -11,11 +11,22 @@ def PB (X : ℝ) (k : ℕ) (a : ℝ) : Prop := 2 ≤ X ∧ 0 ≤ a ∧ a ≤ X ^
 
 variable {X a b : ℝ} {i j : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.trans (pow_le_pow_right₀ (by linarith [h.1]) hij)⟩`.
+-/
 theorem PB.mono (h : PB X i a) (hij : i ≤ j) : PB X j a :=
   ⟨h.1, h.2.1, h.2.2.trans (pow_le_pow_right₀ (by linarith [h.1]) hij)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, hb, hba.trans h.2.2⟩`.
+-/
 theorem PB.of_le (h : PB X i a) (hb : 0 ≤ b) (hba : b ≤ a) : PB X i b := ⟨h.1, hb, hba.trans h.2.2⟩
 
+/- English proof (translation)
+Establish `h1` using `(h.mono (le_max_left i j)).2.2`. Establish `h2` using `(h'.mono (le_max_right i j)).2.2`. Establish `h3 : 0 ≤ X ^ max i j` using `pow_nonneg (by linarith [h.1]) _`. Use `⟨h.1, add_nonneg h.2.1 h'.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ]`.
+
+Use polynomial arithmetic with `[h.1]`.
+-/
 theorem PB.add (h : PB X i a) (h' : PB X j b) : PB X (max i j + 1) (a + b) := by
   have h1 := (h.mono (le_max_left i j)).2.2
   have h2 := (h'.mono (le_max_right i j)).2.2
@@ -24,38 +35,73 @@ theorem PB.add (h : PB X i a) (h' : PB X j b) : PB X (max i j + 1) (a + b) := by
   rw [pow_succ]
   nlinarith [h.1]
 
+/- English proof (translation)
+Use `⟨h.1, mul_nonneg h.2.1 h'.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add]`. Conclude with `mul_le_mul h.2.2 h'.2.2 h'.2.1 (h.2.1.trans h.2.2)`.
+-/
 theorem PB.mul (h : PB X i a) (h' : PB X j b) : PB X (i + j) (a * b) := by
   refine ⟨h.1, mul_nonneg h.2.1 h'.2.1, ?_⟩
   rw [pow_add]
   exact mul_le_mul h.2.2 h'.2.2 h'.2.1 (h.2.1.trans h.2.2)
 
+/- English proof (translation)
+Use `⟨h.1, pow_nonneg h.2.1 _, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul]`. Conclude with `pow_le_pow_left₀ h.2.1 h.2.2 _`.
+-/
 theorem PB.pow (h : PB X i a) (n : ℕ) : PB X (i * n) (a ^ n) := by
   refine ⟨h.1, pow_nonneg h.2.1 _, ?_⟩
   rw [pow_mul]
   exact pow_le_pow_left₀ h.2.1 h.2.2 _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hX, ha, h.trans (pow_le_pow_left₀ (by norm_num) hX _)⟩`.
+-/
 theorem PB.const (hX : 2 ≤ X) (k : ℕ) (ha : 0 ≤ a) (h : a ≤ 2 ^ k) : PB X k a :=
   ⟨hX, ha, h.trans (pow_le_pow_left₀ (by norm_num) hX _)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hX, ha, by simpa using h⟩`.
+-/
 theorem PB.base (hX : 2 ≤ X) (ha : 0 ≤ a) (h : a ≤ X) : PB X 1 a := ⟨hX, ha, by simpa using h⟩
 
+/- English proof (translation)
+Use `⟨h.1, Real.sqrt_nonneg _, ?_⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ X ^ i` using `one_le_pow₀ (by linarith [h.1])`. Rewrite using `[Real.sqrt_le_left (by linarith)]`. Use polynomial arithmetic with `[h.2.2]`.
+-/
 theorem PB.sqrt (h : PB X i a) : PB X i (Real.sqrt a) := by
   refine ⟨h.1, Real.sqrt_nonneg _, ?_⟩
   have h1 : 1 ≤ X ^ i := one_le_pow₀ (by linarith [h.1])
   rw [Real.sqrt_le_left (by linarith)]
   nlinarith [h.2.2]
 
+/- English proof (translation)
+The claim follows from `h.of_le (Real.log_nonneg ha) (by linarith [Real.log_le_sub_one_of_pos (show 0 < a by linarith)])`.
+-/
 theorem PB.log (h : PB X i a) (ha : 1 ≤ a) : PB X i (Real.log a) :=
   h.of_le (Real.log_nonneg ha) (by linarith [Real.log_le_sub_one_of_pos (show 0 < a by linarith)])
 
+/- English proof (translation)
+Use `Real.log_le_log ha h.2.2` as an intermediate fact. Rewrite `this` using `[Real.log_pow, Real.log_exp]`. Then use the resulting hypothesis.
+-/
 theorem PB.log_le {Z : ℝ} (h : PB (Real.exp Z) i a) (ha : 0 < a) : Real.log a ≤ i * Z := by
   have := Real.log_le_log ha h.2.2
   rwa [Real.log_pow, Real.log_exp] at this
 
+/- English proof (translation)
+Use `Real.rpow_le_rpow_of_exponent_le hd (show 1 / s ≤ 1 by rw [div_le_one (by linarith)]; exact hs)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem rpow_le_self {d s : ℝ} (hd : 1 ≤ d) (hs : 1 ≤ s) : d ^ (1 / s) ≤ d := by
   have := Real.rpow_le_rpow_of_exponent_le hd (show 1 / s ≤ 1 by rw [div_le_one (by linarith)]; exact hs)
   simpa using this
 
+/- English proof (translation)
+Establish `pg` using `PB.base hX (by linarith) hg'`. Establish `pd` using `PB.base hX (by linarith) hd'`. Establish `pf` using `PB.base hX (by linarith) hf'`. Establish `pNA` using `PB.base hX (by linarith) hNA'`. Establish `pNC` using `PB.base hX (by linarith) hNC'`.
+
+Establish `pc` using `PB.base hX hc.le hc'`. Establish `pw` using `PB.base hX (by linarith) hw'`. Establish `p1 : PB X 0 1` using `PB.const hX 0 (by norm_num) (by norm_num)`. Establish `p2 : PB X 1 2` using `PB.const hX 1 (by norm_num) (by norm_num)`. Establish `p4 : PB X 2 4` using `PB.const hX 2 (by norm_num) (by norm_num)`.
+
+Establish `prd : PB X 1 (d ^ (1 / (2 * f)))` using `pd.of_le (Real.rpow_nonneg (by linarith) _) (rpow_le_self hd (by linarith))`. Establish `pN0` using `pg.mul (pd.pow 2)`. Establish `pH` using `(pNC.pow 2).mul (p2.add (((p4.mul (pf.pow 4)).mul (prd.pow 2)).mul (pNA.pow 2)))`. Establish `pK'` using `(pN0.mul pH).mul ((p2.mul pc).add p1)`. Establish `pK` using `p1.add pK'`.
+
+Establish `pN2` using `p4.mul pf`. Establish `pl` using `((p2.mul pK).mul pN2).log (by nlinarith [pK'.2.1])`. Establish `pR` using `((pw.add (pN2.mul pl)).add pN2).add p2`. Establish `pD` using `((((pN0.pow 2).mul (pNC.pow 2)).mul pc).mul pR).mono (j := 50) (by norm_num)`. Unfold `flowEpsilonBound`.
+
+Simplify using `only []`. Apply the tactic sequence `rcases min_choice (1 : ℝ) _ with h | h <;> rw [h]`. Rewrite using `[inv_one]; exact p1.mono (by norm_num)`. Rewrite using `[inv_div]`. Use `pD.of_le (div_nonneg pD.2.1 (by positivity)) (div_le_self pD.2.1 (one_le_pow₀ hf))` and prove the remaining obligations.
+-/
 theorem isBoundedByPowerOfAtLeastTwo_inv_d4ep0 {g d f NA NC c w : ℝ} (hX : 2 ≤ X) (hg : 1 ≤ g) (hd : 1 ≤ d) (hf : 1 ≤ f) (hNA : 1 ≤ NA)
     (hNC : 1 ≤ NC) (hc : 0 < c) (hw : 1 ≤ w) (hg' : g ≤ X) (hd' : d ≤ X) (hf' : f ≤ X) (hNA' : NA ≤ X)
     (hNC' : NC ≤ X) (hc' : c ≤ X) (hw' : w ≤ X) : PB X 50 (flowEpsilonBound g d f NA NC c w)⁻¹ := by
@@ -86,6 +132,11 @@ theorem isBoundedByPowerOfAtLeastTwo_inv_d4ep0 {g d f NA NC c w : ℝ} (hX : 2 �
   · rw [inv_div]
     refine pD.of_le (div_nonneg pD.2.1 (by positivity)) (div_le_self pD.2.1 (one_le_pow₀ hf))
 
+/- English proof (translation)
+Establish `pc` using `PB.base hX hc.le hc'`. Establish `pw` using `PB.base hX (by linarith) hw'`. Establish `p12 : PB X 4 12` using `PB.const hX 4 (by norm_num) (by norm_num)`. Establish `ppi : PB X 2 Real.pi` using `PB.const hX 2 Real.pi_pos.le (by linarith [Real.pi_le_four])`. Unfold `d6rh`.
+
+Rewrite using `[one_div, inv_inv]`. Conclude with `((p12.mul ppi).mul (pc.add pw)).mono (by norm_num)`.
+-/
 theorem rh_inv {c w : ℝ} (hX : 2 ≤ X) (hc : 0 < c) (hw : 1 ≤ w) (hc' : c ≤ X) (hw' : w ≤ X) :
     PB X 8 (d6rh c w)⁻¹ := by
   have pc := PB.base hX hc.le hc'

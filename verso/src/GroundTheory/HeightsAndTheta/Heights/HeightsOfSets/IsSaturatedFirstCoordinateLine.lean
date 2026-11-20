@@ -148,9 +148,17 @@ section Inhabitants
 
 open NumberField
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨⟨⟩, a⟩ ⟨⟨⟩, b⟩ ↦ by rw [Subsingleton.elim a b]⟩`.
+-/
 theorem subsingleton_pt : Subsingleton (Σ _ : Unit, PBlk 1 ()) :=
   ⟨fun ⟨⟨⟩, a⟩ ⟨⟨⟩, b⟩ ↦ by rw [Subsingleton.elim a b]⟩
 
+/- English proof (translation)
+Use `⟨inferInstance, ⟨Ideal.isPrime_bot, ⟨∅, fun f hf ↦ absurd hf (Set.notMem_empty f), Ideal.span_empty.symm⟩, fun _ ↦ ⟨0, by rw [Submodule.mem_bot]; exact X_ne_zero _⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using `[Ideal.mem_comap]`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]`. Establish `hc : Nat.card ((_ : Unit) × PBlk 1 ()) = 1`.
+
+Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_sigma]`. Simplify using the standard rewrite rules. Rewrite using `[hc, Fintype.card_unit]`. Both sides reduce to the same expression.
+-/
 theorem isArithVar_pointZ : IsArithVar (⊥ : Ideal (MRing (PBlk 1))) 1 := by
   refine ⟨inferInstance, ⟨Ideal.isPrime_bot,
     ⟨∅, fun f hf ↦ absurd hf (Set.notMem_empty f), Ideal.span_empty.symm⟩,
@@ -168,6 +176,13 @@ theorem isArithVar_pointZ : IsArithVar (⊥ : Ideal (MRing (PBlk 1))) 1 := by
 
 def yPt : (Σ _ : Unit, PBlk 1 ()) → ℚ := fun _ ↦ 1
 
+/- English proof (translation)
+Establish `hf : ∀ f : MRing (PBlk 1), mConeMap yPt f = map (Int.castRingHom ℚ) (rename (fun p : Σ _ : Unit, PBlk 1 () ↦ p.1) f)`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => rw [map_add, hp, hq, map_add, map_add]`.
+
+Consider the case `mul_X p n hp => simp [mConeMap, yPt] at hp ⊢`. Rewrite using `[hp]`. Establish `hinj : Function.Injective (mConeMap (ι` using `PBlk 1) yPt) := by`. Introduce `f g hfg`. Rewrite `hfg` using `[hf, hf]`.
+
+Use `subsingleton_pt` as an intermediate fact. Conclude with `rename_injective _ (fun a b _ ↦ Subsingleton.elim a b) (map_injective _ Int.cast_injective hfg)`. Rewrite using `[mCoordIdeal]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).mp hinj`.
+-/
 theorem mCoordIdeal_yPt : mCoordIdeal (ι := PBlk 1) yPt = ⊥ := by
   have hf : ∀ f : MRing (PBlk 1), mConeMap yPt f =
       map (Int.castRingHom ℚ) (rename (fun p : Σ _ : Unit, PBlk 1 () ↦ p.1) f) := by
@@ -185,6 +200,11 @@ theorem mCoordIdeal_yPt : mCoordIdeal (ι := PBlk 1) yPt = ⊥ := by
   rw [mCoordIdeal]
   exact (RingHom.injective_iff_ker_eq_bot _).mp hinj
 
+/- English proof (translation)
+Use `subsingleton_pt` as an intermediate fact. Rewrite using `[eval₂_eq', map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm ↦ ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_subsingleton _ ⟨(), 0⟩]`. Use `hg m hm ()` as an intermediate fact.
+
+Simplify using `only [Fin.sum_univ_one] at this`. Rewrite using `[this]`.
+-/
 theorem eval₂_homog_pt {R : Type*} [CommRing R] (f : ℤ →+* R) (z : (Σ _ : Unit, PBlk 1 ()) → R)
     (g : MRing (PBlk 1)) (d : Unit → ℕ) (hg : IsMultiHomog g d) :
     eval₂ f z g = f (∑ m ∈ g.support, g.coeff m) * z ⟨(), 0⟩ ^ d () := by
@@ -196,10 +216,18 @@ theorem eval₂_homog_pt {R : Type*} [CommRing R] (f : ℤ →+* R) (z : (Σ _ :
   simp only [Fin.sum_univ_one] at this
   rw [this]
 
+/- English proof (translation)
+Simplify using `only [fsLine, HermLine.ofMetrics, fsMetric, Pi.one_apply, zpow_one, EuclideanSpace.norm_eq]`. Simplify using `[Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem fsLine_one_h (z : (Σ _ : Unit, PBlk 1 ()) → ℂ) : (fsLine 1).h z = ‖z ⟨(), 0⟩‖ := by
   simp only [fsLine, HermLine.ofMetrics, fsMetric, Pi.one_apply, zpow_one, EuclideanSpace.norm_eq]
   simp [Real.sqrt_sq (norm_nonneg _)]
 
+/- English proof (translation)
+Introduce `dg dh g h z hg hh hd hgh _`. Establish `hd' : dg () = dh () + 1`. Use `hd ()` as an intermediate fact. Simplify using `only [fsLine, HermLine.ofMetrics, Pi.one_apply] at this`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hgh` using `[aeval_def, aeval_def, eval₂_homog_pt _ _ g dg hg, eval₂_homog_pt _ _ h dh hh]`. Simplify using `only [yPt, one_pow, mul_one, one_mul, algebraMap_int_eq, eq_intCast, Int.cast_inj] at hgh`. Rewrite using `[eval_map, eval_map, eval₂_homog_pt _ _ g dg hg, eval₂_homog_pt _ _ h dh hh, hgh, hd', fsLine_one_h, Real.exp_zero, one_mul, pow_succ, ← mul_assoc, norm_mul (_ * _)]`.
+-/
 theorem isSectionBounded_one :
     IsSectionBounded (mCoordIdeal (ι := PBlk 1) yPt) yPt (fsLine 1) 1 (Real.exp 0) := by
   intro dg dh g h z hg hh hd hgh _
@@ -212,6 +240,15 @@ theorem isSectionBounded_one :
   rw [eval_map, eval_map, eval₂_homog_pt _ _ g dg hg, eval₂_homog_pt _ _ h dh hh, hgh, hd',
     fsLine_one_h, Real.exp_zero, one_mul, pow_succ, ← mul_assoc, norm_mul (_ * _)]
 
+/- English proof (translation)
+Introduce `z hz`. Use `⟨0, fun _ ↦ 1, fun _ ↦ 0, X ⟨(), 0⟩, 1, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m hm k`. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality.
+
+Simplify using the standard rewrite rules. Introduce `m hm k`. Rewrite `hm` using `[support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+
+Introduce `k`. Simplify using `[fsLine, HermLine.ofMetrics]`. Simplify using `[yPt]`. Take `⟨i, hi⟩` from `hz.1 ()`. Simplify `hi` using `[Subsingleton.elim i 0]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem noCommonZero_one :
     NoCommonZero (mCoordIdeal (ι := PBlk 1) yPt) yPt (fsLine 1).a ![(1 : ℚ)] := by
   intro z hz
@@ -231,11 +268,17 @@ theorem noCommonZero_one :
     simpa [Subsingleton.elim i 0] using hi
   · simp
 
+/- English proof (translation)
+Introduce `c _`. Simplify using `only [yPt, one_zpow, Finset.prod_const_one, mul_one]`. Conclude with `one_mem _`.
+-/
 theorem one_mem_chartLat : (1 : ℚ) ∈ chartLat yPt (fsLine 1).a 1 := by
   intro c _
   simp only [yPt, one_zpow, Finset.prod_const_one, mul_one]
   exact one_mem _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Inter.isSmoothHerm_fsLine 1, fun j ↦ by fin_cases j; exact one_mem_chartLat, fun j ↦ by fin_cases j; exact isSectionBounded_one, noCommonZero_one, mCoordIdeal_yPt ▸ isArithVar_pointZ, le_rfl⟩`.
+-/
 theorem HeightLowerBound.hyps_inhabited :
     IsSmoothHerm (fsLine 1) ∧ (∀ j, ![(1 : ℚ)] j ∈ chartLat yPt (fsLine 1).a 1) ∧
       (∀ j, IsSectionBounded (mCoordIdeal (ι := PBlk 1) yPt) yPt (fsLine 1) (![(1 : ℚ)] j)
@@ -250,6 +293,11 @@ theorem HeightLowerBound.hyps_inhabited :
 def fsLineScaled : HermLine (PBlk 1) :=
   (fsLine 1).tensor (HermLine.ofWeight (fun _ ↦ 1) fun _ _ _ ↦ rfl)
 
+/- English proof (translation)
+Use `⟨Inter.isSmoothHerm_fsLine 1, ?_, ?_, ?_, isArithVar_pointZ, le_rfl⟩` and prove the remaining obligations. Conclude with `(Inter.isSmoothHerm_fsLine 1).mul contDiffOn_const`. Simplify using `[fsLineScaled, HermLine.tensor, HermLine.ofWeight]`. Introduce `z hz`. Establish `hpos` using `(fsLine 1).pos z hz.1`.
+
+Simplify using `only [fsLineScaled, HermLine.tensor, HermLine.ofWeight]`. Rewrite using `[div_mul_cancel_left₀ hpos.ne', ← Real.exp_neg, neg_neg, Real.log_exp, abs_one]`.
+-/
 theorem HeightMetricChange.hyps_inhabited :
     IsSmoothHerm (fsLine 1) ∧ IsSmoothHerm fsLineScaled ∧ (fsLine 1).a = fsLineScaled.a ∧
       (∀ z ∈ mcPts (⊥ : Ideal (MRing (PBlk 1))),
@@ -263,6 +311,11 @@ theorem HeightMetricChange.hyps_inhabited :
     simp only [fsLineScaled, HermLine.tensor, HermLine.ofWeight]
     rw [div_mul_cancel_left₀ hpos.ne', ← Real.exp_neg, neg_neg, Real.log_exp, abs_one]
 
+/- English proof (translation)
+Establish `h1 : IsArithVar (mCoordIdeal (ι` using `PBlk 1) yPt) 1 := mCoordIdeal_yPt ▸ isArithVar_pointZ`. Use `⟨isBlockMap_id, h1, ?_, Inter.isSmoothHerm_fsLine 1, ⟨?_, fun _ ↦ rfl⟩, IntermediateField.relfinrank_self _⟩` and prove the remaining obligations. Establish `: imageZ (ι` using `PBlk 1) (ι' := PBlk 1) id (mCoordIdeal yPt) = mCoordIdeal yPt := by`. Simplify using `[imageZ, rename_id]`. Rewrite using `[this]`.
+
+Conclude with `h1`. Use function extensionality and compare the values at `k`. Unfold `pullDeg`. Conclude with `(Function.injective_id.extend_apply _ _ k).symm`.
+-/
 theorem HeightPullback.hyps_inhabited :
     IsBlockMap (ι := PBlk 1) (ι' := PBlk 1) id id ∧ IsArithVar (mCoordIdeal (ι := PBlk 1) yPt) 1 ∧
       IsArithVar (imageZ (ι := PBlk 1) (ι' := PBlk 1) id (mCoordIdeal yPt)) 1 ∧
@@ -279,10 +332,16 @@ theorem HeightPullback.hyps_inhabited :
     unfold pullDeg
     exact (Function.injective_id.extend_apply _ _ k).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Inter.isSmoothHerm_fsLine 1, rfl⟩`.
+-/
 theorem HeightComparison.hyps_inhabited :
     IsSmoothHerm (fsLine 1) ∧ (fsLine 1).a = 1 :=
   ⟨Inter.isSmoothHerm_fsLine 1, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isArithVar_pointZ, Inter.isSmoothHerm_fsLine 1, rfl⟩`.
+-/
 theorem DenseBoundedHeight.hyps_inhabited :
     IsArithVar (⊥ : Ideal (MRing (PBlk 1))) (0 + 1) ∧ IsSmoothHerm (fsLine 1) ∧ (fsLine 1).a = 1 :=
   ⟨isArithVar_pointZ, Inter.isSmoothHerm_fsLine 1, rfl⟩
@@ -290,6 +349,9 @@ theorem DenseBoundedHeight.hyps_inhabited :
 def firstCoordinateLine : Submodule (𝓞 ℚ) (Fin 2 → 𝓞 ℚ) :=
   LinearMap.ker (LinearMap.proj (R := 𝓞 ℚ) (φ := fun _ : Fin 2 ↦ 𝓞 ℚ) 1)
 
+/- English proof (translation)
+Introduce `a x ha hx`. Simplify using `only [firstCoordinateLine] at hx ⊢`. Express the relevant statement in the definitionally equal form `a * x 1 = 0 at hx`. Express the relevant statement in the definitionally equal form `x 1 = 0`. Conclude with `(mul_eq_zero.mp hx).resolve_left ha`.
+-/
 theorem isSaturated_firstCoordinateLine : IsSaturated (HermitianBundle.standard ℚ 2) firstCoordinateLine := by
   intro a x ha hx
   simp only [firstCoordinateLine] at hx ⊢
@@ -297,11 +359,17 @@ theorem isSaturated_firstCoordinateLine : IsSaturated (HermitianBundle.standard 
   change x 1 = 0
   exact (mul_eq_zero.mp hx).resolve_left ha
 
+/- English proof (translation)
+Introduce `a x ha hx`. Rewrite `hx`, the goal using `[Submodule.mem_bot]`. Conclude with `(smul_eq_zero.mp hx).resolve_left ha`.
+-/
 theorem isSaturated_bot : IsSaturated (HermitianBundle.standard ℚ 2) ⊥ := by
   intro a x ha hx
   rw [Submodule.mem_bot] at hx ⊢
   exact (smul_eq_zero.mp hx).resolve_left ha
 
+/- English proof (translation)
+The claim follows from `fun _ _ _ _ ↦ Submodule.mem_top`.
+-/
 theorem isSaturated_top : IsSaturated (HermitianBundle.standard ℚ 2) ⊤ :=
   fun _ _ _ _ ↦ Submodule.mem_top
 
@@ -320,14 +388,27 @@ def firstCoordinateLineEquiv : firstCoordinateLine ≃ₗ[𝓞 ℚ] 𝓞 ℚ whe
     · simp [hx]
   right_inv a := by simp
 
+/- English proof (translation)
+Rewrite using `[firstCoordinateLineEquiv.finrank_eq, Module.finrank_self]`.
+-/
 theorem finrank_firstCoordinateLine : Module.finrank (𝓞 ℚ) firstCoordinateLine = 1 := by
   rw [firstCoordinateLineEquiv.finrank_eq, Module.finrank_self]
 
+/- English proof (translation)
+The claim follows from `isSaturated_firstCoordinateLine`.
+-/
 theorem SlopeMaxExtension.hyps_inhabited : IsSaturated (HermitianBundle.standard ℚ 2) firstCoordinateLine :=
   isSaturated_firstCoordinateLine
 
 def flagE : Fin 3 → Submodule (𝓞 ℚ) (Fin 2 → 𝓞 ℚ) := ![⊥, firstCoordinateLine, ⊤]
 
+/- English proof (translation)
+Use `⟨Fin.monotone_iff_le_succ.mpr fun i ↦ ?_, fun i ↦ ?_, fun i ↦ ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Conclude with `bot_le`. Conclude with `le_top`. Use `fin_cases i`.
+
+Conclude with `isSaturated_bot`. Conclude with `isSaturated_firstCoordinateLine`. Conclude with `isSaturated_top`. Use `fin_cases i`. Express the relevant statement in the definitionally equal form `Module.finrank (𝓞 ℚ) (⊥ : Submodule (𝓞 ℚ) (Fin 2 → 𝓞 ℚ)) = 0`.
+
+Conclude with `finrank_bot _ _`. Conclude with `finrank_firstCoordinateLine`. Express the relevant statement in the definitionally equal form `Module.finrank (𝓞 ℚ) (⊤ : Submodule (𝓞 ℚ) (Fin 2 → 𝓞 ℚ)) = 2`. Rewrite using `[finrank_top, Module.finrank_fin_fun]`.
+-/
 theorem FlagDegreeBound.hyps_inhabited :
     Monotone flagE ∧ (∀ i, IsSaturated (HermitianBundle.standard ℚ 2) (flagE i)) ∧
       ∀ i : Fin (2 + 1), Module.finrank (𝓞 ℚ) (flagE i) = (i : ℕ) := by

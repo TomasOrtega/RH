@@ -9,22 +9,37 @@ namespace UpperTheory.LHMV
 
 variable {q : ℕ}
 
+/- English proof (translation)
+Substitute `h1 h2 h3 h4` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem cast_cast' {E : Spc} {n i n' i' n'' i'' : ℤ} (h1 : n = n') (h2 : i = i') (h3 : n' = n'') (h4 : i' = i'')
     (x : Ht q E n i) : (x.cast h1 h2).cast h3 h4 = x.cast (h1.trans h3) (h2.trans h4) := by
   subst h1 h2 h3 h4; rfl
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem pull_cast' {E E' : Spc} (s : E ⟶ E') {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') (x : Ht q E' n i) :
     pull _ s _ _ (x.cast h1 h2) = Ht.cast h1 h2 (pull _ s _ _ x) := by
   subst h1 h2; rfl
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem cast_add' {E : Spc} {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') (x y : Ht q E n i) :
     (x + y).cast h1 h2 = x.cast h1 h2 + y.cast h1 h2 := by
   subst h1 h2; rfl
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem cast_zero' {E : Spc} {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') :
     (0 : Ht q E n i).cast h1 h2 = 0 := by
   subst h1 h2; rfl
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem cup_cast_left {E : Spc} {n i n' i' m j : ℤ} (h1 : n = n') (h2 : i = i') (x : Ht q E n i) (y : Ht q E m j) :
     cup q (x.cast h1 h2) y = (cup q x y).cast (by rw [h1]) (by rw [h2]) := by
   subst h1 h2; rfl
@@ -33,32 +48,53 @@ private noncomputable def Phi (q : ℕ) {X E : Spc} (π : X ⟶ E) {m : ℕ} (d 
     (a : ∀ j, Ht q E (n - d j) (i - e j)) : Ht q X n i :=
   ∑ j, ((cup q (pull _ π _ _ (a j)) (c j)).cast (by ring) (by ring) : Ht q X n i)
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Conclude with `h`.
+-/
 private theorem IsMVd_cast {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) {n n' i i' : ℤ} (h1 : n = n') (h1' : n + 1 = n' + 1) (h2 : i = i')
     (c : Ht q (pullback f g) n i) (x : Ht q E (n + 1) i) (h : IsMVd f g (tw q i) n c x) :
     IsMVd f g (tw q i') n' (c.cast h1 h2) (x.cast h1' h2) := by
   subst h1 h2; exact h
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Conclude with `h`.
+-/
 private theorem cast_eq_zero' {E : Spc} {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') (x : Ht q E n i) (h : x.cast h1 h2 = 0) : x = 0 := by
   subst h1 h2; exact h
 
 end UpperTheory.LHMV
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem ht_cast_sub' (q : ℕ) {E : Spc} {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') (x y : Ht q E n i) :
     (x - y).cast h1 h2 = x.cast h1 h2 - y.cast h1 h2 := by
   subst h1 h2; rfl
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem ht_cast_finset_sum (q : ℕ) {E : Spc} {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') {ι : Type} (s : Finset ι)
     (x : ι → Ht q E n i) : (∑ j ∈ s, x j).cast h1 h2 = ∑ j ∈ s, (x j).cast h1 h2 := by
   subst h1 h2; rfl
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Conclude with `h`.
+-/
 private theorem ht_cast_injective (q : ℕ) {E : Spc} {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') (x y : Ht q E n i)
     (h : x.cast h1 h2 = y.cast h1 h2) : x = y := by
   subst h1 h2; exact h
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cup_hypercohomologyPullback _ _ s _ x y`.
+-/
 private theorem pull_cup_commutative_algebra (q : ℕ) {E E' : Spc} (s : E ⟶ E') {n m i j : ℤ} (x : Ht q E' n i) (y : Ht q E' m j) :
     pull _ s _ _ (cup q x y) = cup q (pull _ s _ _ x) (pull _ s _ _ y) :=
   GlobalTheory.T.cup_hypercohomologyPullback _ _ s _ x y
 
+/- English proof (translation)
+Unfold `UpperTheory.LHMV.Phi`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_add, AddMonoidHom.add_apply]`. Conclude with `UpperTheory.LHMV.cast_add' _ _ _ _`.
+-/
 private theorem lhmv_phi_add (q : ℕ) {X E : Spc} (π : X ⟶ E) {m : ℕ} (d e : Fin m → ℤ) (c : ∀ j, Ht q X (d j) (e j))
     (n i : ℤ) (a b : ∀ j, Ht q E (n - d j) (i - e j)) :
     UpperTheory.LHMV.Phi q π d e c n i (a + b) = UpperTheory.LHMV.Phi q π d e c n i a + UpperTheory.LHMV.Phi q π d e c n i b := by
@@ -68,6 +104,9 @@ private theorem lhmv_phi_add (q : ℕ) {X E : Spc} (π : X ⟶ E) {m : ℕ} (d e
   simp only [Pi.add_apply, map_add, AddMonoidHom.add_apply]
   exact UpperTheory.LHMV.cast_add' _ _ _ _
 
+/- English proof (translation)
+Unfold `UpperTheory.LHMV.Phi`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, map_sub, AddMonoidHom.sub_apply]`. Conclude with `ht_cast_sub' q _ _ _ _`.
+-/
 private theorem lhmv_phi_sub (q : ℕ) {X E : Spc} (π : X ⟶ E) {m : ℕ} (d e : Fin m → ℤ) (c : ∀ j, Ht q X (d j) (e j))
     (n i : ℤ) (a b : ∀ j, Ht q E (n - d j) (i - e j)) :
     UpperTheory.LHMV.Phi q π d e c n i (a - b) = UpperTheory.LHMV.Phi q π d e c n i a - UpperTheory.LHMV.Phi q π d e c n i b := by
@@ -77,11 +116,17 @@ private theorem lhmv_phi_sub (q : ℕ) {X E : Spc} (π : X ⟶ E) {m : ℕ} (d e
   simp only [Pi.sub_apply, map_sub, AddMonoidHom.sub_apply]
   exact ht_cast_sub' q _ _ _ _
 
+/- English proof (translation)
+Unfold `UpperTheory.LHMV.Phi`. Simplify using `only [Pi.zero_apply, map_zero, AddMonoidHom.zero_apply, UpperTheory.LHMV.cast_zero', Finset.sum_const_zero]`.
+-/
 private theorem lhmv_phi_zero (q : ℕ) {X E : Spc} (π : X ⟶ E) {m : ℕ} (d e : Fin m → ℤ) (c : ∀ j, Ht q X (d j) (e j))
     (n i : ℤ) : UpperTheory.LHMV.Phi q π d e c n i 0 = 0 := by
   unfold UpperTheory.LHMV.Phi
   simp only [Pi.zero_apply, map_zero, AddMonoidHom.zero_apply, UpperTheory.LHMV.cast_zero', Finset.sum_const_zero]
 
+/- English proof (translation)
+Unfold `UpperTheory.LHMV.Phi`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[UpperTheory.LHMV.pull_cast', pull_cup_commutative_algebra, ← pull_comp, ← pull_comp, h]`.
+-/
 private theorem pull_lhmv_phi_eq_of_square (q : ℕ) {Y Y' B B' : Spc} (p : Y ⟶ B) (p' : Y' ⟶ B') (s : Y' ⟶ Y) (t : B' ⟶ B)
     (h : s ≫ p = p' ≫ t) {m : ℕ} (d e : Fin m → ℤ) (c : ∀ j, Ht q Y (d j) (e j)) (n i : ℤ)
     (a : ∀ j, Ht q B (n - d j) (i - e j)) :
@@ -92,6 +137,13 @@ private theorem pull_lhmv_phi_eq_of_square (q : ℕ) {Y Y' B B' : Spc} (p : Y �
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [UpperTheory.LHMV.pull_cast', pull_cup_commutative_algebra, ← pull_comp, ← pull_comp, h]
 
+/- English proof (translation)
+Introduce `n i`. Establish `hP : Function.Bijective (UpperTheory.LHMV.Phi q p d e c n i)` using `hp n i`. Establish `hb : Function.Bijective (pull (ZMod q) φ (tw q i) n)`. Use `⟨fun x y hxy => ?_, fun y => ⟨pull _ ψ _ _ y, ?_⟩⟩` and prove the remaining obligations. Use `congrArg (pull (ZMod q) ψ (tw q i) n) hxy` as an intermediate fact.
+
+Rewrite `this` using `[← pull_comp, ← pull_comp, h2, pull_id, pull_id]`. Then use the resulting hypothesis. Rewrite using `[← pull_comp, h1, pull_id]`. Establish `key : UpperTheory.LHMV.Phi q (φ ≫ p) d e (fun j => pull _ φ _ _ (c j)) n i = (pull (ZMod q) φ (tw q i) n) ∘ UpperTheory.LHMV.Phi q p d e c n i`. Use function extensionality and compare the values at `a`. Rewrite using `[Function.comp_apply, pull_lhmv_phi_eq_of_square q p (φ ≫ p) φ (𝟙 B) (by simp) d e c n i a]`.
+
+Simplify using `only [pull_id]`. Use `show Function.Bijective (UpperTheory.LHMV.Phi q (φ ≫ p) d e (fun j => pull _ φ _ _ (c j)) n i)`. Rewrite using `[key]`. Conclude with `hb.comp hP`.
+-/
 private theorem lh_comp_iso (q : ℕ) {Y Y' B : Spc} (p : Y ⟶ B) (φ : Y' ⟶ Y) (ψ : Y ⟶ Y') (h1 : φ ≫ ψ = 𝟙 Y')
     (h2 : ψ ≫ φ = 𝟙 Y) {m : ℕ} (d e : Fin m → ℤ) (c : ∀ j, Ht q Y (d j) (e j)) (hp : LH q p d e c) :
     LH q (φ ≫ p) d e (fun j => pull _ φ _ _ (c j)) := by
@@ -111,6 +163,15 @@ private theorem lh_comp_iso (q : ℕ) {Y Y' B : Spc} (p : Y ⟶ B) (φ : Y' ⟶ 
   rw [key]
   exact hb.comp hP
 
+/- English proof (translation)
+Take `⟨P1, _, P3, P4, _, _⟩` from `(UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q i) (n - 1)).1 fX gX hX`. Establish `hterm : ∀ j, IsMVd fX gX (tw q i) (n - 1) ((cup q (pull _ (pullback.map fX gX f g pU pV π hu hv) _ _ (γ j)) (pull _ (pullback.fst fX gX ≫ fX) _ _ (c j))).cast (by ring) (by ring)) (((cup q (pull _ π _ _ (a j)) (c j)).cast (by ring) (by ring) : Ht q X n i).cast (by ring) rfl)`. Introduce `j`. Establish `h1` using `(UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q (i - e j)) (n - 1 - d j)).2 fX gX f g π pU pV hu hv hX hE _ _ (hγ j)`. Establish `h2` using `UpperTheory.mayerVietorisConnecting_cup_pullback q fX gX hX (n - 1 - d j) (d j) (i - e j) (e j) _ _ (c j) h1`.
+
+Establish `h3` using `UpperTheory.LHMV.IsMVd_cast fX gX (by ring : n - 1 - d j + d j = n - 1) (by ring) (by ring : i - e j + e j = i) _ _ h2`. Rewrite `h3` using `[UpperTheory.LHMV.pull_cast', UpperTheory.LHMV.cup_cast_left, UpperTheory.LHMV.cast_cast', UpperTheory.LHMV.cast_cast']`. Rewrite using `[UpperTheory.LHMV.cast_cast']`. Conclude with `h3`. Establish `h0 : IsMVd fX gX (tw q i) (n - 1) 0 0`.
+
+Take `⟨x, hx⟩` from `P1 0`. Establish `: x = 0` using `(P4 _ _ hx).2 ⟨0, 0, by simp⟩`. Rewrite `hx` using `[this]`. Then use the resulting hypothesis. Establish `hs` using `Finset.sum_induction (s := Finset.univ) (fun j => (((cup q (pull _ (pullback.map fX gX f g pU pV π hu hv) _ _ (γ j)) (pull _ (pullback.fst fX gX ≫ fX) _ _ (c j))).cast (by ring) (by ring) : Ht q (pullback fX gX) (n - 1) i), (((cup q (pull _ π _ _ (a j)) (c j)).cast (by ring) (by …`. Simplify using `only [Prod.fst_sum, Prod.snd_sum] at hs`.
+
+Unfold `UpperTheory.LHMV.Phi`. Rewrite using `[ht_cast_finset_sum]`. Conclude with `hs`.
+-/
 private theorem lerayHirsch_of_mayerVietoris_cover_lemma_10 (q : ℕ) [NeZero q] {U V E X XU XV : Spc} (f : U ⟶ E) (g : V ⟶ E) (π : X ⟶ E)
     (fX : XU ⟶ X) (gX : XV ⟶ X) (pU : XU ⟶ U) (pV : XV ⟶ V) (hu : fX ≫ π = pU ≫ f) (hv : gX ≫ π = pV ≫ g)
     (hE : Cover2 (ZMod q) f g) (hX : Cover2 (ZMod q) fX gX) {m : ℕ} (d e : Fin m → ℤ)
@@ -150,6 +211,21 @@ private theorem lerayHirsch_of_mayerVietoris_cover_lemma_10 (q : ℕ) [NeZero q]
   rw [ht_cast_finset_sum]
   exact hs
 
+/- English proof (translation)
+Establish `hφ : (pullback.fst (pullback.fst π f) (pullback.fst π g) ≫ pullback.fst π f) ≫ π = pullback.map (pullback.fst π f) (pullback.fst π g) f g (pullback.snd π f) (pullback.snd π g) π pullback.condition pullback.condition ≫ (pullback.fst f g ≫ f)`. Simplify using `only [Category.assoc, pullback.condition (f := π) (g := f), pullback.map, pullback.lift_fst_assoc]`. Establish `hψ1 : pullback.fst π (pullback.fst f g ≫ f) ≫ π = (pullback.snd π (pullback.fst f g ≫ f) ≫ pullback.fst f g) ≫ f`. Rewrite using `[pullback.condition (f := π) (g := pullback.fst f g ≫ f), Category.assoc]`. Establish `hψ2 : pullback.fst π (pullback.fst f g ≫ f) ≫ π = (pullback.snd π (pullback.fst f g ≫ f) ≫ pullback.snd f g) ≫ g`.
+
+Rewrite using `[hψ1, Category.assoc, Category.assoc, ← pullback.condition (f := f) (g := g)]`. Establish `hψ3 : pullback.lift _ _ hψ1 ≫ pullback.fst π f = pullback.lift _ _ hψ2 ≫ pullback.fst π g`. Rewrite using `[pullback.lift_fst, pullback.lift_fst]`. Establish `key` using `lh_comp_iso q (pullback.snd π (pullback.fst f g ≫ f)) (pullback.lift _ _ hφ) (pullback.lift (pullback.lift _ _ hψ1) (pullback.lift _ _ hψ2) hψ3) (by`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_snd, pullback.lift_snd_assoc, pullback.map]`. Simplify using `only [Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_snd, pullback.lift_snd_assoc, pullback.map]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_snd, pullback.lift_snd_assoc, pullback.map]`.
+
+Conclude with `pullback.condition`. Simplify using `only [Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_snd, pullback.lift_snd_assoc, pullback.map])`. Use the proof step `(by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_snd, pullback.lift_snd_assoc, pullback.map]`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_snd, pullback.lift_snd_assoc, pullback.map]`. Simplify using `only [Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_snd, pullback.lift_snd_assoc, pullback.map])`. Use `d e _ hUV`. Establish `e1 : pullback.lift _ _ hφ ≫ pullback.snd π (pullback.fst f g ≫ f) = pullback.map (pullback.fst π f) (pullback.fst π g) f g (pullback.snd π f) (pullback.snd π g) π pullback.condition pullback.condition` using `pullback.lift_snd _ _ _`.
+
+Establish `e2 : ∀ j, pull _ (pullback.lift _ _ hφ) _ _ (pull _ (pullback.fst π (pullback.fst f g ≫ f)) _ _ (c j)) = pull _ (pullback.fst (pullback.fst π f) (pullback.fst π g) ≫ pullback.fst π f) _ _ (c j)`. Introduce `j`. Rewrite using `[← pull_comp, pullback.lift_fst]`. Rewrite `key` using `[e1]`. Simplify using `only [e2] at key`.
+
+Conclude with `key`.
+-/
 private theorem lh_pullback_map_fst_snd_of_lh (q : ℕ) {U V E X : Spc} (f : U ⟶ E) (g : V ⟶ E) (π : X ⟶ E) {m : ℕ}
     (d e : Fin m → ℤ) (c : ∀ j, Ht q X (d j) (e j))
     (hUV : LH q (pullback.snd π (pullback.fst f g ≫ f)) d e
@@ -197,6 +273,39 @@ private theorem lh_pullback_map_fst_snd_of_lh (q : ℕ) {U V E X : Spc} (f : U �
   simp only [e2] at key
   exact key
 
+/- English proof (translation)
+Establish `hUb : ∀ n i, Function.Bijective (UpperTheory.LHMV.Phi q pU d e (fun j => pull _ fX _ _ (c j)) n i)` using `fun n i => hU n i`. Establish `hVb : ∀ n i, Function.Bijective (UpperTheory.LHMV.Phi q pV d e (fun j => pull _ gX _ _ (c j)) n i)` using `fun n i => hV n i`. Establish `hWb : ∀ n i, Function.Bijective (UpperTheory.LHMV.Phi q (pullback.map fX gX f g pU pV π hu hv) d e (fun j => pull _ (pullback.fst fX gX ≫ fX) _ _ (c j)) n i)` using `fun n i => hW n i`. Establish `rU : ∀ n i a, pull _ fX _ _ (UpperTheory.LHMV.Phi q π d e c n i a) = UpperTheory.LHMV.Phi q pU d e (fun j => pull _ fX _ _ (c j)) n i (fun j => pull _ f _ _ (a j))` using `fun n i a => pull_lhmv_phi_eq_of_square q π pU fX f hu d e c n i a`. Establish `rV : ∀ n i a, pull _ gX _ _ (UpperTheory.LHMV.Phi q π d e c n i a) = UpperTheory.LHMV.Phi q pV d e (fun j => pull _ gX _ _ (c j)) n i (fun j => pull _ g _ _ (a j))` using `fun n i a => pull_lhmv_phi_eq_of_square q π pV gX g hv d e c n i a`.
+
+Establish `sW1 : pullback.fst fX gX ≫ pU = pullback.map fX gX f g pU pV π hu hv ≫ pullback.fst f g`. Simplify using `only [pullback.map, pullback.lift_fst]`. Establish `sW2 : pullback.snd fX gX ≫ pV = pullback.map fX gX f g pU pV π hu hv ≫ pullback.snd f g`. Simplify using `only [pullback.map, pullback.lift_snd]`. Establish `rWU : ∀ n i b, pull _ (pullback.fst fX gX) _ _ (UpperTheory.LHMV.Phi q pU d e (fun j => pull _ fX _ _ (c j)) n i b) = UpperTheory.LHMV.Phi q (pullback.map fX gX f g pU pV π hu hv) d e (fun j => pull _ (pullback.fst fX gX ≫ fX) _ _ (c j)) n i (fun j => pull _ (pullback.fst f g) _ …`.
+
+Introduce `n i b`. Rewrite using `[pull_lhmv_phi_eq_of_square q pU _ _ _ sW1]`. Simplify using `only [pull_comp]`. Establish `rWV : ∀ n i b, pull _ (pullback.snd fX gX) _ _ (UpperTheory.LHMV.Phi q pV d e (fun j => pull _ gX _ _ (c j)) n i b) = UpperTheory.LHMV.Phi q (pullback.map fX gX f g pU pV π hu hv) d e (fun j => pull _ (pullback.fst fX gX ≫ fX) _ _ (c j)) n i (fun j => pull _ (pullback.snd f g) _ …`. Introduce `n i b`.
+
+Rewrite using `[pull_lhmv_phi_eq_of_square q pV _ _ _ sW2, pullback.condition (f := fX) (g := gX)]`. Simplify using `only [pull_comp]`. Introduce `n i`. Express the relevant statement in the definitionally equal form `Function.Bijective (UpperTheory.LHMV.Phi q π d e c n i)`. Establish `ker : ∀ a, UpperTheory.LHMV.Phi q π d e c n i a = 0 → a = 0`.
+
+Introduce `a ha`. Establish `haU : (fun j => pull _ f _ _ (a j)) = 0` using `(hUb n i).1 (by rw [← rU n i a, ha, map_zero, lhmv_phi_zero])`. Establish `haV : (fun j => pull _ g _ _ (a j)) = 0` using `(hVb n i).1 (by rw [← rV n i a, ha, map_zero, lhmv_phi_zero])`. Establish `hγ : ∀ j, ∃ γ : Ht q (pullback f g) (n - 1 - d j) (i - e j), IsMVd f g (tw q (i - e j)) (n - 1 - d j) γ ((a j).cast (by ring) rfl)`. Introduce `j`.
+
+Take `⟨_, _, _, _, P5, _⟩` from `(UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q (i - e j)) (n - 1 - d j)).1 f g hE`. Establish `hj1 : pull _ f _ _ (a j) = 0` using `congrFun haU j`. Establish `hj2 : pull _ g _ _ (a j) = 0` using `congrFun haV j`. Apply `(P5 _).1` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[UpperTheory.LHMV.pull_cast', hj1]`. Conclude with `UpperTheory.LHMV.cast_zero' _ _`. Rewrite using `[UpperTheory.LHMV.pull_cast', hj2]`. Conclude with `UpperTheory.LHMV.cast_zero' _ _`. Use `choose γ hγ using hγ`.
+
+Establish `hb` using `lerayHirsch_of_mayerVietoris_cover_lemma_10 q f g π fX gX pU pV hu hv hE hX d e c n i γ a hγ`. Rewrite `hb` using `[ha, UpperTheory.LHMV.cast_zero']`. Take `⟨_, _, _, P4X, _, _⟩` from `(UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q i) (n - 1)).1 fX gX hX`. Take `⟨a', b', hab⟩` from `(P4X _ _ hb).1 rfl`. Take `⟨α, rfl⟩` from `(hUb (n - 1) i).2 a'`.
+
+Take `⟨β, rfl⟩` from `(hVb (n - 1) i).2 b'`. Rewrite `hab` using `[rWU, rWV, ← lhmv_phi_sub]`. Establish `hγ'` using `(hWb (n - 1) i).1 hab`. Use function extensionality and compare the values at `j`. Take `⟨_, _, _, P4, _, _⟩` from `(UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q (i - e j)) (n - 1 - d j)).1 f g hE`.
+
+Conclude with `UpperTheory.LHMV.cast_eq_zero' _ _ _ ((P4 _ _ (hγ j)).2 ⟨α j, β j, congrFun hγ' j⟩)`. Use `⟨fun a b hab => ?_, fun y => ?_⟩` and prove the remaining obligations. Conclude with `sub_eq_zero.1 (ker (a - b) (by rw [lhmv_phi_sub, hab, sub_self]))`. Take `⟨α, hα⟩` from `(hUb n i).2 (pull _ fX _ _ y)`. Take `⟨β, hβ⟩` from `(hVb n i).2 (pull _ gX _ _ y)`.
+
+Establish `hαβ : (fun j => pull _ (pullback.fst f g) _ _ (α j)) = (fun j => pull _ (pullback.snd f g) _ _ (β j))`. Apply `(hWb n i).1` to reduce the goal to its premises. Rewrite using `[← rWU n i α, ← rWV n i β, hα, hβ, ← pull_comp, ← pull_comp, pullback.condition (f := fX) (g := gX)]`. Establish `hx : ∀ j, ∃ x : Ht q E (n - d j) (i - e j), pull _ f _ _ x = α j ∧ pull _ g _ _ x = β j`. Introduce `j`.
+
+Take `⟨_, _, _, _, _, P6⟩` from `(UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q (i - e j)) (n - d j)).1 f g hE`. Conclude with `(P6 _ _).1 (congrFun hαβ j)`. Use `choose x hx using hx`. Establish `hxα : (fun j => pull _ f _ _ (x j)) = α` using `funext fun j => (hx j).1`. Establish `hxβ : (fun j => pull _ g _ _ (x j)) = β` using `funext fun j => (hx j).2`.
+
+Establish `hzU : pull _ fX _ _ (y - UpperTheory.LHMV.Phi q π d e c n i x) = 0`. Rewrite using `[map_sub, rU, hxα, hα, sub_self]`. Establish `hzV : pull _ gX _ _ (y - UpperTheory.LHMV.Phi q π d e c n i x) = 0`. Rewrite using `[map_sub, rV, hxβ, hβ, sub_self]`. Take `⟨_, P2X, _, _, P5X, _⟩` from `(UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q i) (n - 1)).1 fX gX hX`.
+
+Take `⟨w, hw⟩` from `(P5X ((y - UpperTheory.LHMV.Phi q π d e c n i x).cast (by ring : n = n - 1 + 1) rfl)).1 ⟨by rw [UpperTheory.LHMV.pull_cast', hzU, UpperTheory.LHMV.cast_zero'], by rw [UpperTheory.LHMV.pull_cast', hzV, UpperTheory.LHMV.cast_zero']⟩`. Take `⟨γ, rfl⟩` from `(hWb (n - 1) i).2 w`. Establish `ha' : ∀ j, ∃ a' : Ht q E (n - d j) (i - e j), IsMVd f g (tw q (i - e j)) (n - 1 - d j) (γ j) (a'.cast (by ring) rfl)`. Introduce `j`. Take `⟨P1, _, _, _, _, _⟩` from `(UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q (i - e j)) (n - 1 - d j)).1 f g hE`.
+
+Take `⟨x'', hx''⟩` from `P1 (γ j)`. Use `⟨(Ht.cast (q := q) (by ring) rfl x'' : Ht q E (n - d j) (i - e j)), ?_⟩` and prove the remaining obligations. Rewrite using `[UpperTheory.LHMV.cast_cast']`. Conclude with `hx''`. Use `choose a' ha' using ha'`.
+
+Establish `hb` using `lerayHirsch_of_mayerVietoris_cover_lemma_10 q f g π fX gX pU pV hu hv hE hX d e c n i γ a' ha'`. Establish `heq` using `ht_cast_injective q _ _ _ _ (P2X _ _ _ hw hb)`. Use `⟨x + a', ?_⟩` and prove the remaining obligations. Rewrite using `[lhmv_phi_add, ← heq]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem lh_of_cover2_lh_pieces_and_overlap (q : ℕ) [NeZero q] {U V E X XU XV : Spc} (f : U ⟶ E) (g : V ⟶ E) (π : X ⟶ E)
     (fX : XU ⟶ X) (gX : XV ⟶ X) (pU : XU ⟶ U) (pV : XV ⟶ V) (hu : fX ≫ π = pU ≫ f) (hv : gX ≫ π = pV ≫ g)
     {m : ℕ} (d e : Fin m → ℤ) (c : ∀ j, Ht q X (d j) (e j))
@@ -303,6 +412,9 @@ private theorem lh_of_cover2_lh_pieces_and_overlap (q : ℕ) [NeZero q] {U V E X
     rw [lhmv_phi_add, ← heq]
     abel
 
+/- English proof (translation)
+Introduce `q _ U V E X f g π m d e c hE hX hU hV hUV`. Conclude with `lh_of_cover2_lh_pieces_and_overlap q f g π (pullback.fst π f) (pullback.fst π g) (pullback.snd π f) (pullback.snd π g) pullback.condition pullback.condition d e c hE hX hU hV (lh_pullback_map_fst_snd_of_lh q f g π d e c hUV)`.
+-/
 theorem UpperTheory.lerayHirsch_of_mayerVietoris_cover :
     ∀ (q : ℕ) [NeZero q] {U V E X : Spc} (f : U ⟶ E) (g : V ⟶ E) (π : X ⟶ E) {m : ℕ} (d e : Fin m → ℤ) (c : ∀ j, Ht q X (d j) (e j)),
         Cover2 (ZMod q) f g → Cover2 (ZMod q) (pullback.fst π f) (pullback.fst π g) →

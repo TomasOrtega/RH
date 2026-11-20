@@ -1,5 +1,16 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `R S K _ _ _ _ _ _ hinj f`. Establish `hP : (RingHom.ker f).IsPrime` using `RingHom.ker_isPrime f`. Establish `hle : Ideal.comap (algebraMap R S) (⊥ : Ideal S) ≤ RingHom.ker f`. Introduce `a ha`. Establish `h0 : algebraMap R S a = 0` using `by simpa using ha`.
+
+Establish `: a = 0` using `hinj (by rw [map_zero]; exact h0)`. Simplify using `[this]`. Take `⟨Q, -, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (RingHom.ker f) ⊥ hle`. Establish `hlies : Q.LiesOver (RingHom.ker f)` using `(Ideal.liesOver_iff _ _).2 hQc.symm`. Use `letI : Algebra (R ⧸ RingHom.ker f) K := (RingHom.kerLift f).toAlgebra`.
+
+Establish `hK : Module.IsTorsionFree (R ⧸ RingHom.ker f) K` using `Module.isTorsionFree_iff_algebraMap_injective.2 (RingHom.kerLift_injective f)`. Establish `hS : Module.IsTorsionFree (R ⧸ RingHom.ker f) (S ⧸ Q)`. Use `Module.isTorsionFree_iff_algebraMap_injective.2 ((injective_iff_map_eq_zero _).2 fun x hx => ?_)` and prove the remaining obligations. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `h2 : Ideal.Quotient.mk Q (algebraMap R S r) = 0` using `hx`.
+
+Rewrite `h2` using `[Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, ← hQc]`. Conclude with `h2`. Establish `hint : Algebra.IsIntegral (R ⧸ RingHom.ker f) (S ⧸ Q)` using `Ideal.Quotient.algebra_isIntegral_of_liesOver Q (RingHom.ker f)`. Establish `halg : Algebra.IsAlgebraic (R ⧸ RingHom.ker f) (S ⧸ Q)` using `Algebra.IsIntegral.isAlgebraic`.
+
+Set `φ : (S ⧸ Q) →ₐ[R ⧸ RingHom.ker f] K` to `IsAlgClosed.lift`. Use `⟨φ.toRingHom.comp (Ideal.Quotient.mk Q), fun r => ?_⟩` and prove the remaining obligations. Establish `h1 : φ (algebraMap (R ⧸ RingHom.ker f) (S ⧸ Q) (Ideal.Quotient.mk _ r)) = algebraMap (R ⧸ RingHom.ker f) K (Ideal.Quotient.mk _ r)` using `φ.commutes _`. Conclude with `h1`.
+-/
 theorem UpperTheory.Reformulated.B.RingHomExtensionOfIntegral.exists_ringHom_extend_of_isIntegral.{u_1, u_2, u_3} :
     ∀ {R : Type u_1} {S : Type u_2} {K : Type u_3} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Field K]
       [IsAlgClosed K] [inst_4 : Algebra R S] [Algebra.IsIntegral R S],

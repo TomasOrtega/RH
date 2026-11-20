@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.EtC.MVLeft
 
+/- English proof (translation)
+Rewrite using `[NatTrans.mono_iff_mono_app]`. Introduce `U`. Rewrite using `[ModuleCat.mono_iff_injective]`. Establish `hf : Function.Injective (f.app U)` using `(mono_iff_injective (f.app U)).1 inferInstance`. Establish `hu : Function.Injective (uliftFunctor.{1}.map (f.app U))`.
+
+Introduce `a b h`. Consider the cases of `a`. Consider the cases of `b`. Conclude with `congrArg ULift.up (hf (congrArg ULift.down h))`. Conclude with `Finsupp.mapDomain_injective hu`.
+-/
 theorem mono_freePresheaf_map (R : Type) [CommRing R] {P Q : PSh} (f : P ⟶ Q) [Mono f] : Mono ((freeP R).map f) := by
   rw [NatTrans.mono_iff_mono_app]
   intro U
@@ -17,10 +22,16 @@ theorem mono_freePresheaf_map (R : Type) [CommRing R] {P Q : PSh} (f : P ⟶ Q) 
     intro a b h; cases a; cases b; exact congrArg ULift.up (hf (congrArg ULift.down h))
   exact Finsupp.mapDomain_injective hu
 
+/- English proof (translation)
+Use `haveI := mono_freePresheaf_map R f`. Conclude with `(presheafToSheaf _ _).map_mono ((freeP R).map f)`.
+-/
 theorem free_mono (R : Type) [CommRing R] {P Q : PSh} (f : P ⟶ Q) [Mono f] : Mono ((free R).map f) := by
   haveI := mono_freePresheaf_map R f
   exact (presheafToSheaf _ _).map_mono ((freeP R).map f)
 
+/- English proof (translation)
+Introduce `R _ A A' _ _ _ f`. Use `haveI : IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap A' (Localization.Away (algebraMap A A' f))))) := inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap A' (Localization.Away (algebraMap A A' f))))))`. Use `haveI : Mono (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A' (Localization.Away (algebraMap A A' f)))))) := yoneda.map_mono _`. Use `haveI := free_mono R (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A' (Localization.Away (algebraMap A A' f))))))`. Conclude with `mono_of_mono_fac (biprod.lift_snd _ _)`.
+-/
 theorem left_mono : ∀ (R : Type) [CommRing R] (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'] (f : A), Mono (biprod.lift ((free R).map (yoneda.map (Spec.map (CommRingCat.ofHom (Localization.awayMap (algebraMap A A') f))))) (-(free R).map (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A' (Localization.Away (algebraMap A A' f)))))))) := by
   intro R _ A A' _ _ _ f
   haveI : IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap A' (Localization.Away (algebraMap A A' f))))) :=

@@ -14,6 +14,13 @@ namespace PDivGroup
 
 variable {p : ℕ} {R : Type} [CommRing R] (G : PDivGroup p R)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.transl_coaction_free_coassoc_counital G (n + 1)`. Take `⟨x', hx'⟩` from `GlobalTheory.T.exists_coaction_eq_add_of_primitive (G.transl (n + 1)) h1 h2 h3 b hb`. Establish `hr : G.transl n (G.res (n + 1) x') = G.res (n + 1) x' ⊗ₜ[R] 1 + 1 ⊗ₜ[R] b`. Rewrite using `[transl_res, hx', map_add, LinearMap.rTensor_tmul, LinearMap.rTensor_tmul]`. Simplify using the standard rewrite rules.
+
+Take `⟨e, he⟩` from `GlobalTheory.T.exists_mulP_eq_of_transl_invariant G n (G.res (n + 1) x' - x) (by`. Rewrite using `[map_sub, hr, hx, sub_tmul]`. Use the proof step `abel)`. Take `⟨e', rfl⟩` from `G.res_surjective n e`. Use `⟨x' - G.mulP (n + 1) e', ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub, hx', transl_mulP, sub_tmul]`. Normalize the expressions using the abelian group laws. Rewrite using `[map_sub, res_mulP, ← mulP_res, he, sub_sub_cancel]`.
+-/
 theorem exists_res_eq_of_transl_eq_add {b : G.A 1} (hb : cobOne R (G.A 1) b = 0) (n : ℕ)
     (x : G.A (n + 1)) (hx : G.transl n x = x ⊗ₜ[R] 1 + 1 ⊗ₜ[R] b) :
     ∃ y : G.A (n + 2), G.transl (n + 1) y = y ⊗ₜ[R] 1 + 1 ⊗ₜ[R] b ∧ G.res (n + 1) y = x := by
@@ -31,6 +38,13 @@ theorem exists_res_eq_of_transl_eq_add {b : G.A 1} (hb : cobOne R (G.A 1) b = 0)
     abel
   · rw [map_sub, res_mulP, ← mulP_res, he, sub_sub_cancel]
 
+/- English proof (translation)
+Use `choose f hf hres using G.exists_res_eq_of_transl_eq_add hb`. Establish `h0 : G.transl 0 b = b ⊗ₜ[R] 1 + 1 ⊗ₜ[R] b`. Establish `h : (G.resOne 0 : G.A 1 →ₗ[R] G.A 1) = LinearMap.id` using `rfl`. Rewrite using `[transl_apply, h, LinearMap.lTensor_id, LinearMap.id_apply]`. Rewrite `hb` using `[cobOne_apply, sub_sub, sub_eq_zero]`.
+
+Conclude with `hb`. Set `s : ∀ n, {x : G.A (n + 1) // G.transl n x = x ⊗ₜ[R] 1 + 1 ⊗ₜ[R] b}` to `fun n => Nat.rec (motive := fun n => {x : G.A (n + 1) // G.transl n x = x ⊗ₜ[R] 1 + 1 ⊗ₜ[R] b}) ⟨b, h0⟩ (fun n x => ⟨f n x.1 x.2, hf n x.1 x.2⟩) n`. Use `⟨⟨fun n => Nat.casesOn (motive := fun n => G.A n) n (G.res 0 b) fun n => (s n).1, ?_⟩, rfl, fun n => (s n).2⟩` and prove the remaining obligations. Introduce and unpack `(_ | n)`. Both sides reduce to the same expression.
+
+Conclude with `hres n (s n).1 (s n).2`.
+-/
 theorem exists_funs_transl_eq_add {p : ℕ} {R : Type} [CommRing R] (G : PDivGroup p R)
     (b : G.A 1) (hb : cobOne R (G.A 1) b = 0) :
     ∃ B : G.funs, B.1 1 = b ∧

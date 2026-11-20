@@ -22,12 +22,18 @@ namespace GlobalTheory.RefTauCoord
 
 open GlobalTheory.PeriodBalance GlobalTheory.PsiTauCoordRel
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `(gm_val (κ ≫ r) z U h a).trans (Eq.trans ?_ (congrArg (κ.stalkMap z).hom (gm_val r (κ z) U h a)).symm)` and prove the remaining obligations. Conclude with `(Scheme.Hom.germ_stalkMap_apply κ (r ⁻¹ᵁ U) z h _).symm`.
+-/
 theorem gm_stalk {X Y Z : Scheme.{0}} (κ : Z ⟶ Y) (r : Y ⟶ X) (z : Z) (U : X.Opens) (h : r (κ z) ∈ U) (a : Γ(X, U)ˣ) :
     gm (κ ≫ r) z U a = Units.map (κ.stalkMap z).hom.toMonoidHom (gm r (κ z) U a) := by
   apply Units.ext
   refine (gm_val (κ ≫ r) z U h a).trans (Eq.trans ?_ (congrArg (κ.stalkMap z).hom (gm_val r (κ z) U h a)).symm)
   exact (Scheme.Hom.germ_stalkMap_apply κ (r ⁻¹ᵁ U) z h _).symm
 
+/- English proof (translation)
+Rewrite using `[val_of t (κ ≫ r) z J (fun k => J (κ ≫ r ≫ φ k)) (fun k => by rw [Category.assoc])]`. Conclude with `gm_stalk κ r z _ (Set.mem_iInter.2 fun k => hJ (κ ≫ r ≫ φ k)) _`.
+-/
 theorem val_stalk {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y' ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (κ : Z ⟶ Y) (r : Y ⟶ Y') (z : Z) {J} (hJ : Good L z J) :
     val t (κ ≫ r) z J = Units.map (κ.stalkMap z).hom.toMonoidHom (val t r (κ z) fun ψ => J (κ ≫ ψ)) := by
@@ -36,6 +42,11 @@ theorem val_stalk {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ 
 
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
 
+/- English proof (translation)
+Use `haveI : IsDominant (jK R) := DVR.isDominant_jK`. Use `choose pick hpk using fun p : Spec (CommRingCat.of R) ⟶ X => exists_chart hL (p (closedPoint R))`. Take `⟨J, hJ, e⟩` from `exists_good L hL ξ (K := {p : Spec (CommRingCat.of R) ⟶ X // p ≫ s = f}) (fun p => jK R ≫ p.1) (fun p => pick p.1) (fun a b h => congrArg pick (ext_of_isDominant_of_isSeparated s (a.2.trans b.2.symm) (jK R) h)) (fun p => by`. Use `DVR.eq_top_of_closedPoint_mem (p.1 ⁻¹ᵁ L.U (pick p.1)) (hpk p.1)` as an intermediate fact. Establish `h2 : jK R ξ ∈ p.1 ⁻¹ᵁ L.U (pick p.1)` using `by rw [this]; trivial`.
+
+Conclude with `h2)`. Conclude with `⟨J, hJ, fun p hp => (e ⟨p, hp⟩).symm ▸ hpk p⟩`.
+-/
 theorem exists_good_over (ξ : Spec (CommRingCat.of (FractionRing R))) {X S : Scheme.{0}} {L : LB X} (hL : L.IsLB)
     (s : X ⟶ S) [IsSeparated s] (f : Spec (CommRingCat.of R) ⟶ S) :
     ∃ J, Good L ξ J ∧ ∀ p : Spec (CommRingCat.of R) ⟶ X, p ≫ s = f →
@@ -51,6 +62,9 @@ theorem exists_good_over (ξ : Spec (CommRingCat.of (FractionRing R))) {X S : Sc
       exact h2)
   exact ⟨J, hJ, fun p hp => (e ⟨p, hp⟩).symm ▸ hpk p⟩
 
+/- English proof (translation)
+Rewrite using `[gm_val _ ξ ⊤ trivial]`. Establish `hnat` using `congrArg (fun f => (CommRingCat.Hom.hom f) k.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom σ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at hnat`. Conclude with `(congrArg ((Spec (CommRingCat.of (FractionRing R))).presheaf.germ ⊤ ξ trivial).hom hnat).symm`.
+-/
 theorem gm_unitOn {A : Type} [CommRing A] (σ : A →+* FractionRing R) (ξ : Spec (CommRingCat.of (FractionRing R)))
     (k : Aˣ) : (gm (spMap σ) ξ ⊤ (unitOn k)).val = kst ξ (σ k) := by
   rw [gm_val _ ξ ⊤ trivial]
@@ -59,6 +73,29 @@ theorem gm_unitOn {A : Type} [CommRing A] (σ : A →+* FractionRing R) (ξ : Sp
   simp only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at hnat
   exact (congrArg ((Spec (CommRingCat.of (FractionRing R))).presheaf.germ ⊤ ξ trivial).hom hnat).symm
 
+/- English proof (translation)
+Introduce `R _ _ R' _ _ _ Q ρ D e hρ href a b k hk x hx`. Use `letI := D.P.isAb.comm`. Take `⟨β, β₂, w, h₁, h₂, -, -, h₅⟩` from `href`. Establish `hσ : ∀ r, IsFractionRing.lift (A` using `R) (K := FractionRing R) (g := (algebraMap R' (FractionRing R')).comp ρ) ((IsFractionRing.injective R' (FractionRing R')).comp hρ) (algebraMap R (FractionRing R) r) = algebraMap R' (FractionRing R') (ρ r) := fun r => IsFractionRing.lift_algebraMap _ r`. Generalize the expression as in `IsFractionRing.lift (A := R) (K := FractionRing R) (g := (algebraMap R' (FractionRing R')).comp ρ) ((IsFractionRing.injective R' (FractionRing R')).comp hρ) = σ at hσ ⊢`.
+
+Establish `hκ : spMap σ ≫ jK R = jK R' ≫ spMap ρ`. Establish `: σ.comp (algebraMap R (FractionRing R)) = (algebraMap R' (FractionRing R')).comp ρ` using `RingHom.ext hσ`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, this]`. Use `haveI : IsProper D.P.A.hom := D.P.isAb.proper`. Use `haveI : IsProper Q.B.hom := Q.isAb.proper`.
+
+Take `⟨ξ⟩ : Nonempty (Spec (CommRingCat.of (FractionRing R')))` from `⟨⟨⊥, Ideal.isPrime_bot⟩⟩`. Take `⟨J', hJ', hc'⟩` from `exists_good_integral ξ D.P.isLB D.P.A.hom`. Take `⟨J, hJ, hc⟩` from `exists_good_over ξ Q.M.isLB Q.B.hom (spMap ρ)`. Establish `E` using `h₅ (spMap σ) hκ a b ξ J J' hJ hJ'`. Take `⟨u₁, e₁⟩` from `GlobalTheory.TauShift.coord_val D ξ hJ' hc' hx`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨u₂, e₂⟩ : ∃ u : R'ˣ, (lamVal w (lift (toUnit (TK R') ≫ D.c a) (toUnit (TK R') ≫ D.c b)).left ξ J J').val = cst ξ u := by`. Establish `hp : (lift (toUnit (TK R') ≫ D.c a) (toUnit (TK R') ≫ D.c b)).left = jK R' ≫ (lift (D.c a) (D.c b)).left`. Simplify using `[← CartesianMonoidalCategory.comp_lift]`. Rewrite using `[hp]`. Use `unit_gm' ξ (lift (D.c a) (D.c b)).left _ ?_ _` and prove the remaining obligations.
+
+Use `And.intro (mem_pull.2 (Set.mem_iInter.2 fun I => ?_)) (Set.mem_iInter.2 fun I => ?_)` and prove the remaining obligations. Use `hc ((lift (D.c a) (D.c b)).left ≫ β₂ ≫ (psum Q.B (x2 Q.B) I.down).left) (by` as an intermediate fact. Rewrite using `[Category.assoc, Category.assoc, Over.w, ← Over.w (fst Q.B Q.B), reassoc_of% h₂.1, h₁.1.w, Over.w_assoc, Over.w_assoc]`. Conclude with `Category.id_comp _)`. Conclude with `this`.
+
+Use `hc' ((lift (D.c a) (D.c b)).left ≫ (psum D.P.A (x2 D.P.A) I.down).left) (by` as an intermediate fact. Rewrite using `[Category.assoc, Over.w, Over.w]`. Use the proof step `rfl)`. Conclude with `this`. Take `⟨u, -, hu⟩` from `hk`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨u₃, e₃⟩ : ∃ v : R'ˣ, (val u (jK R' ≫ spMap ρ) ξ J).val = cst ξ v := by`. Use `unit_gm' ξ _ _ (Set.mem_iInter.2 fun i => ?_) _` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨q, hq⟩ : ∃ q : 𝟙_ (Over (Sp R)) ⟶ Q.B, lamPts (Q.c (e a)) (Q.c (e b)) i = q.left := by fin_cases i <;> exact ⟨_, rfl⟩`. Use `hc (spMap ρ ≫ lamPts (Q.c (e a)) (Q.c (e b)) i) (by` as an intermediate fact. Rewrite using `[hq, Category.assoc, Over.w q]`.
+
+Conclude with `Category.comp_id _)`. Conclude with `this`. Establish `hT` using `congrArg (Units.map ((spMap σ).stalkMap ξ).hom.toMonoidHom) (hu (spMap σ ξ) (fun ψ => J (spMap σ ≫ ψ)) fun ψ => hJ (spMap σ ≫ ψ))`. Establish `v₁` using `val_stalk (Q.tau (e a) (e b)) (spMap σ) (𝟙 (TK R).left) ξ hJ`. Establish `v₂` using `val_stalk u (spMap σ) (toUnit (TK R)).left ξ hJ`.
+
+Establish `v₃` using `gm_stalk (spMap σ) (𝟙 (TK R).left) ξ ⊤ trivial (unitOn k)`. Establish `hh : spMap σ ≫ (toUnit (TK R)).left = jK R' ≫ spMap ρ`. Rewrite using `[show (toUnit (TK R)).left = jK R by simpa using Over.w (toUnit (TK R))]; exact hκ`. Establish `hT'` using `v₁.trans (hT.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) v₃.symm v₂.symm)))`. Rewrite `hT'` using `[hh]`.
+
+Rewrite `hT'` using `[show spMap σ ≫ 𝟙 (TK R).left = spMap σ from Category.comp_id _]`. Establish `F : (val (Q.tau (e a) (e b)) (spMap σ) ξ J).val = kst ξ (σ k) * cst ξ u₃` using `(congrArg Units.val hT').trans ((Units.val_mul _ _).trans (congrArg₂ (· * ·) (gm_unitOn σ ξ k) e₃))`. Establish `G : kst ξ x.val = cst ξ u₁ * (cst ξ u₂ * (kst ξ (σ k) * cst ξ u₃))` using `(congrArg Units.val e₁).trans ((Units.val_mul _ _).trans (congrArg (cst ξ u₁ * ·) ((congrArg Units.val E).trans ((Units.val_mul _ _).trans (congrArg₂ (· * ·) e₂ F)))))`. Use `⟨u₁ * u₂ * u₃, kst_injective ξ ?_⟩` and prove the remaining obligations. Rewrite using `[G, map_mul, kst_algebraMap, Units.val_mul, Units.val_mul, map_mul, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (R' : Type) [CommRing R'] [IsDomain R']
     [IsLocalRing R'] (Q : Data R) (ρ : R →+* R') (D : DegPre R') (e : D.X ≃+ Q.X) (hρ : Function.Injective ρ),
     Refines Q ρ D e → ∀ (a b : D.X) (k : (FractionRing R)ˣ), Q.TauCoord (e a) (e b) k →

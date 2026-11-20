@@ -30,16 +30,27 @@ namespace GlobalTheory.RowTest.BottomClassSum
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {i j : Fin D.R.m}
     {A A' WW : HSp D} {X : Tri T A A' WW}
 
+/- English proof (translation)
+The claim follows from `hX.is.weil' t`.
+-/
 theorem weil' (hX : IsBottomTri W i j X) (t : T) :
     IsWeilDatumO W.ψ A' WW (L.mu t (j + 1) * L.eta ^ (rankV D i j % 2))
       ((L.mu t (j + 1) * L.eta ^ (rankV D i j % 2)) / (G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2))) (X.ω' t) :=
   hX.is.weil' t
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Chain.InnerSteps.theta_pureTensorO hX.is.isVac'.1 hX.is.isVac'.2.inf X.rA'.s X.rA'.B X.rW.s X.rW.B (GlobalTheory.ConstRatio.theta_f hX.is t).2 P`.
+-/
 theorem theta' (hX : IsBottomTri W i j X) (t : T) (P : PolF D WW.rank A'.rank) :
     IsThetaFunO W.ψ A' WW (pureTensorO W.ψ W.θ A' WW X.rA'.s X.rW.s X.rA'.B X.rW.B (X.f' t) P) :=
   GlobalTheory.Chain.InnerSteps.theta_pureTensorO hX.is.isVac'.1 hX.is.isVac'.2.inf X.rA'.s X.rA'.B X.rW.s X.rW.B
     (GlobalTheory.ConstRatio.theta_f hX.is t).2 P
 
+/- English proof (translation)
+Introduce `γ hγ g`. Establish `hW` using `weil' hX t`. Establish `hF` using `theta' hX t P`. Use `show X.ω' t (γ * g, h) _ 0 = X.ω' t (g, h) _ 0`. Establish `e : ((γ * g, h) : GA D A' × GA D WW) = (γ, 1) * (g, h)` using `by simp`.
+
+Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hW.om_aut γ hγ 1 (one_mem _) _ (hW.om_pres _ _ hF)`.
+-/
 theorem ker'_left (hX : IsBottomTri W i j X) (t : T) (P : PolF D WW.rank A'.rank) (h : GA D WW) :
     ∀ γ ∈ GQ A', ∀ g, X.ker' W.ψ W.θ t P h (γ * g) = X.ker' W.ψ W.θ t P h g := by
   intro γ hγ g
@@ -50,12 +61,26 @@ theorem ker'_left (hX : IsBottomTri W i j X) (t : T) (P : PolF D WW.rank A'.rank
   rw [e, map_mul, Module.End.mul_apply]
   exact hW.om_aut γ hγ 1 (one_mem _) _ (hW.om_pres _ _ hF)
 
+/- English proof (translation)
+Establish `hW` using `weil' hX t`. Establish `hF` using `theta' hX t P`. Conclude with `(hW.om_cont _ hF 0).comp ((continuous_const.mul continuous_subtype_val).prodMk continuous_const)`.
+-/
 theorem ker'_cont (hX : IsBottomTri W i j X) (t : T) (P : PolF D WW.rank A'.rank) (h : GA D WW) (x : GA D A') :
     Continuous fun k : GinfC A' => X.ker' W.ψ W.θ t P h (x * k) := by
   have hW := weil' hX t
   have hF := theta' hX t P
   exact (hW.om_cont _ hF 0).comp ((continuous_const.mul continuous_subtype_val).prodMk continuous_const)
 
+/- English proof (translation)
+Use `choose K hK hinv using GlobalTheory.T.exists_openCompactLevel_thetaKernel_bottomTriple hX`. Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D A'`. Establish `hG` using `hT.2.2.2.2.1`. Use `⟨⨅ t, K t, ⟨?_, ?_⟩, fun t P h k hk g => hinv t P h k ?_ g⟩` and prove the remaining obligations. Establish `e : (((⨅ t, K t).comap (Lev.finE A') : Subgroup (GA D A')) : Set (GA D A')) = ⋂ t, (((K t).comap (Lev.finE A') : Subgroup (GA D A')) : Set (GA D A'))`.
+
+Use extensionality with `x`. Simplify using `[Subgroup.mem_iInf]`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun t => (hK t).1`. Establish `hcl : IsClosed ((((⨅ t, K t).comap (Lev.finE A') : Subgroup (GA D A')) : Set (GA D A')))`.
+
+Establish `e : (((⨅ t, K t).comap (Lev.finE A') : Subgroup (GA D A')) : Set (GA D A')) = ⋂ t, (((K t).comap (Lev.finE A') : Subgroup (GA D A')) : Set (GA D A'))`. Use extensionality with `x`. Simplify using `[Subgroup.mem_iInf]`. Rewrite using `[e]`. Conclude with `isClosed_iInter fun t => Subgroup.isClosed_of_isOpen _ (hK t).1`.
+
+Establish `e2 : ((Lev.levA A' (⨅ t, K t) : Subgroup (GA D A')) : Set (GA D A')) = (Lev.levA A' (K t₀) : Set (GA D A')) ∩ (((⨅ t, K t).comap (Lev.finE A') : Subgroup (GA D A')) : Set (GA D A'))`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Set.mem_inter_iff, Lev.mem_levA, Subgroup.mem_comap]`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨⟨h1, (Subgroup.mem_iInf.1 h2) t₀⟩, h2⟩, fun ⟨⟨h1, _⟩, h2⟩ => ⟨h1, h2⟩⟩`. Rewrite using `[e2]`.
+
+Conclude with `(hK t₀).2.inter_right hcl`. Take `⟨hk1, hk2⟩` from `Lev.mem_levA.1 hk`. Conclude with `Lev.mem_levA.2 ⟨hk1, (Subgroup.mem_iInf.1 hk2) t⟩`.
+-/
 theorem level_all [Finite T] (t₀ : T) (hX : IsBottomTri W i j X) :
     ∃ K : Subgroup (GL (Fin A'.rank) (Lev.EAf D)), GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.IsOpenCompactLevel A' K ∧
       ∀ (t : T) (P : PolF D WW.rank A'.rank) (h : GA D WW), ∀ k ∈ Lev.levA A' K, ∀ g,
@@ -85,6 +110,33 @@ theorem level_all [Finite T] (t₀ : T) (hX : IsBottomTri W i j X) :
   · obtain ⟨hk1, hk2⟩ := Lev.mem_levA.1 hk
     exact Lev.mem_levA.2 ⟨hk1, (Subgroup.mem_iInf.1 hk2) t⟩
 
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ hL hX`. Establish `hV : ∀ φ : D.host.E →+* ℂ, (A'.gram.map φ).PosDef` using `fun φ => by`. Rewrite using `[hX.std'.1, Matrix.map_one φ (map_zero φ) (map_one φ)]`. Conclude with `Matrix.PosDef.one`. Set `V' : HSp D` to `{ A' with sig := fun _ => (A'.rank, 0) }`.
+
+Establish `hS' : V'.SigOK` using `fun τ => GlobalTheory.Proof.GenusMassSignature.hasSignature_of_posDef (hV τ)`. Establish `hD' : V'.IsDefinite` using `fun τ => Or.inl rfl`. Establish `hGc : IsCompact (GinfC A' : Set (GA D A'))` using `Formalism.IndefR.Eqv.isCompact_GinfC (V := V') hS' hD'`. Use `haveI : CompactSpace (GinfC A') := isCompact_iff_compactSpace.1 hGc`. Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D A'`.
+
+Establish `hLC` using `hT.1`. Establish `hSC` using `hT.2.1`. Establish `hB` using `hT.2.2.2.1`. Establish `hG` using `hT.2.2.2.2.1`. Establish `hC` using `hT.2.2.2.2.2.2`.
+
+Take `⟨K'', hK'', hr⟩` from `level_all μ₀ hX`. Establish `hfin0 : Finite (FinCl A' K'')` using `(finite_finCl_and_gamOrd A' K'' hV hK'').1`. Set `μ` to `X.m'`. Use `haveI : μ.IsHaarMeasure := hX.is.meas'.1`. Establish `hfd : IsFundamentalDomain (GQ A') X.fd' μ` using `hX.is.meas'.2`.
+
+Set `J : Subgroup (GA D A')` to `K''.comap (Lev.finE A')`. Establish `hJo : IsOpen (J : Set (GA D A'))` using `hK''.1`. Establish `hJc : IsCompact (J : Set (GA D A'))`. Use `(hK''.2.mul hGc).of_isClosed_subset (Subgroup.isClosed_of_isOpen J hK''.1) ?_` and prove the remaining obligations. Introduce `k hk`.
+
+Conclude with `⟨finPart A' k, finPart_mem_levA A' hk, realPart A' k, realPart_mem A' k, finPart_mul_realPart A' k⟩`. Establish `hJtop : μ J ≠ ⊤` using `hJc.measure_lt_top.ne`. Establish `hJ0 : μ J ≠ 0` using `(hJo.measure_pos μ ⟨1, J.one_mem⟩).ne'`. Establish `hinfJ : GinfC A' ≤ J` using `by show GinfC A' ≤ K''.comap (Lev.finE A')`. Rewrite using `[GlobalTheory.Mass.Levels.comap_finE]`.
+
+Conclude with `le_sup_right`. Set `κ : Measure (GinfC A')` to `Measure.haarMeasure (⊤ : TopologicalSpace.PositiveCompacts (GinfC A'))`. Use `haveI hκH : κ.IsHaarMeasure := Measure.isHaarMeasure_haarMeasure _`. Establish `hκ1 : κ Set.univ = 1`. Use `Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts (GinfC A')))` as an intermediate fact.
+
+Simplify using `using this`. Use `haveI : IsProbabilityMeasure κ := ⟨hκ1⟩`. Set `e` to `finEquiv A'`. Establish `he : ∀ γ, e (((finPt A').comp (GQ A').subtype) γ) = Bridge.ratF A' γ` using `fun γ => e.apply_symm_apply _`. Establish `hJe : ∀ a, e a ∈ GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.levelFin A' K'' ↔ a ∈ K''.comap (finG A')` using `fun a => Iff.rfl`.
+
+Establish `hy` using `isReps_transfer _ _ e he _ _ hJe _ (isReps_out A' K'')`. Set `N` to `Nat.card (FinCl A' K'')`. Set `eq : FinCl A' K'' ≃ Fin N` to `Finite.equivFin _`. Set `y : FinCl A' K'' → Bridge.Gf A'` to `fun c => e (Quotient.out c)`. Set `zc : FinCl A' K'' → GA D A'` to `fun c => ((Quotient.out c : GfC A') : GA D A')`.
+
+Establish `hz : ∀ c, (finHom A').rangeRestrict (zc c) = y c` using `fun c => rfl`. Establish `hu0 : ∀ x : GA D A', ∃! c, ∃ γ ∈ GQ A', ∃ k ∈ J, x = γ * zc c * k` using `existsUnique_doubleCoset (finHom A').rangeRestrict (GQ A') (GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.levelFin A' K'') y hy zc hz`. Set `z : Fin N → GA D A'` to `fun l => zc (eq.symm l)`. Establish `hu : ∀ x : GA D A', ∃! l, ∃ γ ∈ GQ A', ∃ k ∈ J, x = γ * z l * k` using `fun x => (eq.existsUnique_congr_left (p := fun c => ∃ γ ∈ GQ A', ∃ k ∈ J, x = γ * zc c * k)).1 (hu0 x)`. Establish `hfinΓ : ∀ l, {γ : GQ A' | (z l)⁻¹ * (γ : GA D A') * z l ∈ J}.Finite` using `fun l => GlobalTheory.InnerClassSum.finite_stab_of_measure μ (GQ A') J hfd hJ0 hJtop (z l)`.
+
+Establish `him : ∀ l, {γ : GA D A' | γ ∈ GQ A' ∧ (z l)⁻¹ * γ * z l ∈ J} = Subtype.val '' {γ : GQ A' | (z l)⁻¹ * (γ : GA D A') * z l ∈ J}`. Introduce `l`. Use extensionality with `γ`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, Subtype.exists, exists_and_right, exists_eq_right]`. Conclude with `⟨fun h => ⟨h.1, h.2⟩, fun ⟨h, h'⟩ => ⟨h, h'⟩⟩`.
+
+Establish `hfin : ∀ l, {γ : GA D A' | γ ∈ GQ A' ∧ (z l)⁻¹ * γ * z l ∈ J}.Finite` using `fun l => him l ▸ (hfinΓ l).image _`. Establish `hdec : ∀ k ∈ J, ∃ k' ∈ Lev.levA A' K'', ∃ w : GinfC A', k = k' * (GinfC A').subtype w` using `fun k hk => ⟨finPart A' k, finPart_mem_levA A' hk, ⟨realPart A' k, realPart_mem A' k⟩, (finPart_mul_realPart A' k).symm⟩`. Establish `hcomm : ∀ k ∈ Lev.levA A' K'', ∀ w : GinfC A', k * (GinfC A').subtype w = (GinfC A').subtype w * k` using `fun k hk w => (Formalism.IndefR.Eqv.Act.comm_inf_fin w.2 (Subgroup.mem_inf.1 hk).1).symm`. Establish `hrt : ∀ w : GinfC A', MeasurePreserving (· * (GinfC A').subtype w) μ μ` using `fun w => measurePreserving_mul_right_of_mem μ J hJo hJ0 hJtop (hinfJ w.2)`. Use `⟨(μ J).toReal, N, z, fun l => {γ : GA D A' | γ ∈ GQ A' ∧ (z l)⁻¹ * γ * z l ∈ J}.ncard, κ, ENNReal.toReal_pos hJ0 hJtop, fun l => (Quotient.out (eq.symm l)).2, fun l => ?_, inferInstance, inferInstance, fun t P h _ => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Set.ncard_pos (hfin l)).2 ⟨1, (GQ A').one_mem, by simp [J.one_mem]⟩`. Establish `hcont : Continuous (X.ker' W.ψ W.θ t P h)` using `continuous_of_level A' K'' hK''.1 _ (fun k hk g => hr t P h k hk g) (ker'_cont hX t P h)`. Take `⟨-, heq⟩` from `integral_eq_sum_avg (GA D A') μ (GQ A') J (Lev.levA A' K'') X.fd' hfd hJo hJtop (GinfC A') κ (GinfC A').subtype continuous_subtype_val hrt hdec hcomm (Fin N) z hu hfin (X.ker' W.ψ W.θ t P h) hcont (ker'_left hX t P h) (fun k hk g => hr t P h k hk g)`. Conclude with `heq`.
+-/
 theorem integral_eq_classSum_bottom : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →

@@ -17,6 +17,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Rewrite using `[hE_eq_dot]`. Simplify using `only [Formalism.UG.cT, Matrix.mulVec, dotProduct, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by simp [mul_assoc]`.
+-/
 theorem mulVec_eq_hE {k : ℕ} (M : Matrix (Fin n) (Fin k) E) (z : Fin n → E) (i : Fin k) :
     ((Formalism.UG.cT (σ : E →+* E) M * J) *ᵥ z) i = hE σ J (fun a => M a i) z := by
   rw [hE_eq_dot]
@@ -27,12 +30,18 @@ theorem mulVec_eq_hE {k : ℕ} (M : Matrix (Fin n) (Fin k) E) (z : Fin n → E) 
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+The claim follows from `mulVec_eq_hE σ J M (fun a => N a j) i`.
+-/
 theorem mul_apply_eq_hE {k l : ℕ} (M : Matrix (Fin n) (Fin k) E) (N : Matrix (Fin n) (Fin l) E) (i : Fin k) (j : Fin l) :
     (Formalism.UG.cT (σ : E →+* E) M * J * N) i j = hE σ J (fun a => M a i) (fun a => N a j) :=
   mulVec_eq_hE σ J M (fun a => N a j) i
 
 variable {σ J}
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h` using `congrArg σ (congrFun₂ hW.xy j i)`. Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, RingHom.coe_coe, sigma_sigma hσ, hJ.1, Matrix.one_apply, apply_ite σ, map_one, map_zero, Finset.sum_mul] at h ⊢`. Rewrite using `[Finset.sum_comm, if_congr eq_comm rfl rfl, ← h]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem yx_eq_one {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E} (hσ : IsCMExt F E σ) (hJ : IsHermND σ J)
     (hW : IsWittFrame σ J X Y) : Formalism.UG.cT (σ : E →+* E) Y * J * X = 1 := by
   ext i j
@@ -42,6 +51,11 @@ theorem yx_eq_one {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E} (hσ : IsCMExt F E 
   rw [Finset.sum_comm, if_congr eq_comm rfl rfl, ← h]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Establish `yx` using `yx_eq_one hσ hJ hW`. Establish `e : ∀ (M N : Matrix (Fin n) (Fin (r + 1)) E), hE σ J (GlobalTheory.EisMidHt.firstColumn M) (fun k => N k j.succ) = (Formalism.UG.cT (σ : E →+* E) M * J * N) 0 j.succ` using `fun M N => (mul_apply_eq_hE σ J M N 0 j.succ).symm`. Establish `ne : (0 : Fin (r + 1)) ≠ j.succ` using `(Fin.succ_ne_zero j).symm`. Use `⟨(mem_invariant_forms σ J X Y).2 ⟨?_, ?_⟩, (mem_invariant_forms σ J X Y).2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e, hW.xx]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, yx, Matrix.one_apply_ne ne]`. Rewrite using `[e, hW.xy, Matrix.one_apply_ne ne]`. Rewrite using `[e, hW.yy]`. Both sides reduce to the same expression.
+-/
 theorem witt_frame_tail_mem_orthogonal {r : ℕ} {X Y : Matrix (Fin n) (Fin (r + 1)) E} (hσ : IsCMExt F E σ) (hJ : IsHermND σ J)
     (hW : IsWittFrame σ J X Y) (j : Fin r) :
     (fun k => X k j.succ) ∈ V0 σ J X Y ∧ (fun k => Y k j.succ) ∈ V0 σ J X Y := by
@@ -56,6 +70,17 @@ theorem witt_frame_tail_mem_orthogonal {r : ℕ} {X Y : Matrix (Fin n) (Fin (r +
   · rw [e, hW.xy, Matrix.one_apply_ne ne]
   · rw [e, hW.yy]; rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y hσ hJ hW L a hA z hz i`. Take `⟨hXi, hYi⟩` from `witt_frame_tail_mem_orthogonal hσ hJ hW i`. Establish `hX` using `ι_coordTail σ J X Y X i hXi`. Establish `hY` using `ι_coordTail σ J X Y Y i hYi`. Establish `hz' : ι σ J X Y z ∈ L` using `hz`.
+
+Establish `c1 : ((Formalism.UG.cT (σ : E →+* E) (Y0 σ J X Y) * J0 σ J X Y) *ᵥ z) i = ((Formalism.UG.cT (σ : E →+* E) Y * J) *ᵥ ι σ J X Y z) i.succ`. Rewrite using `[mulVec_eq_hE, mulVec_eq_hE, hE_J0]`. Conclude with `congrArg (hE σ J · _) hY`. Establish `c2 : ((Formalism.UG.cT (σ : E →+* E) (X0 σ J X Y) * J0 σ J X Y) *ᵥ z) i = ((Formalism.UG.cT (σ : E →+* E) X * J) *ᵥ ι σ J X Y z) i.succ`. Rewrite using `[mulVec_eq_hE, mulVec_eq_hE, hE_J0]`.
+
+Conclude with `congrArg (hE σ J · _) hX`. Take `⟨s1, s2⟩` from `hA.split _ hz' i.succ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ι σ J X Y _ ∈ L`. Rewrite using `[map_smul, c1]`.
+
+Use `s1 using 2` and compare the differences between its conclusion and the goal. Conclude with `hX`. Use `show ι σ J X Y _ ∈ L`. Rewrite using `[map_smul, c2]`. Use `s2 using 2` and compare the differences between its conclusion and the goal.
+
+Conclude with `hY`.
+-/
 theorem restrictedLattice_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),
     IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y →

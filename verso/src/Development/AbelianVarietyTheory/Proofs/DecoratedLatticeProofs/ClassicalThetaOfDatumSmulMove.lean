@@ -6,12 +6,22 @@ namespace GlobalTheory.Corev.ThCLin
 
 open Formalism.L2.Ker Formalism.L2.Th1.H
 
+/- English proof (translation)
+Simplify using `only [hatS, mul_assoc, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hatS_mul_left {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (vol : ℝ) (SA : Finset V)
     (Φ : V → ℂ) (p : ℂ) (y : V) :
     hatS H vol SA (fun s => p * Φ s) y = p * hatS H vol SA Φ y := by
   simp only [hatS, mul_assoc, ← Finset.mul_sum]
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ ι _ a b emb δ d sc AA SS N N' c p Ξ θ`. Establish `hon : onV emb δ (fun x => p * Ξ x) = fun v => p * onV emb δ Ξ v`. Use function extensionality and compare the values at `v`. Unfold `onV`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [thC, xiV, xiL, xiS, hon, hatS_mul_left, sumU, opU]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun y _ => ?_)` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thC_smul_move : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] {ι : Type} [Fintype ι] {a b : ℕ} (emb : ι → E →+* ℂ) (δ : ℂ) (d : ℕ) (sc : ℝ) (AA : Submodule (𝓞 E) E) (SS : Finset (IsDedekindDomain.HeightOneSpectrum (𝓞 E))) (N : Submodule (𝓞 E) (Formalism.L2.Col.Sp E a)) (N' : Submodule (𝓞 E) (Formalism.L2.Col.Sp E b)) (c : ℕ) (p : ℂ) (Ξ : Formalism.L2.Col.HomE E a b → ℂ) (θ : Formalism.L2.Ker.VV ι a b → ℂ), Formalism.L2.Ker.thC emb δ d sc AA SS N N' c (fun x => p * Ξ x) θ = Formalism.L2.Ker.thC emb δ d sc AA SS N N' c Ξ (fun z => p * θ z) := by
   intro E _ _ _ ι _ a b emb δ d sc AA SS N N' c p Ξ θ
   have hon : onV emb δ (fun x => p * Ξ x) = fun v => p * onV emb δ Ξ v := by

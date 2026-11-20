@@ -10,6 +10,13 @@ open GlobalTheory.ShFam.BdArc (IsHolPts)
 
 namespace GlobalTheory.CompHS.ChartBd
 
+/- English proof (translation)
+Take `⟨s, rfl⟩ : x ∈ Set.range U.2.fromSpec` from `by rw [U.2.range_fromSpec]; exact hx`. Establish `hcl : IsClosed (U.2.fromSpec ⁻¹' (C : Set X))` using `C.isClosed.preimage U.2.fromSpec.continuous`. Establish `hz : PrimeSpectrum.zeroLocus ((Scheme.IdealSheafData.vanishingIdeal C).ideal U : Set Γ(X, U.1)) = U.2.fromSpec ⁻¹' (C : Set X)`. Rewrite using `[Scheme.IdealSheafData.vanishingIdeal_ideal, PrimeSpectrum.zeroLocus_vanishingIdeal_eq_closure]`. Conclude with `hcl.closure_eq`.
+
+Establish `h1 : U.2.fromSpec s ∈ X.basicOpen g ↔ s ∈ PrimeSpectrum.basicOpen g`. Rewrite using `[← U.2.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression. Establish `h2 : U.2.fromSpec s ∈ C ↔ s ∈ U.2.fromSpec ⁻¹' (C : Set X)` using `Iff.rfl`. Establish `h3 : s ∈ PrimeSpectrum.basicOpen g ↔ g ∉ (s : PrimeSpectrum Γ(X, U.1)).asIdeal` using `PrimeSpectrum.mem_basicOpen g s`.
+
+Establish `h4 : s ∈ U.2.fromSpec ⁻¹' (C : Set X) ↔ g ∈ (s : PrimeSpectrum Γ(X, U.1)).asIdeal`. Rewrite using `[← hz, hD, PrimeSpectrum.zeroLocus_span]`. Conclude with `(PrimeSpectrum.mem_zeroLocus (s : PrimeSpectrum Γ(X, U.1)) {g}).trans Set.singleton_subset_iff`. Conclude with `h2.trans (h4.trans (not_not.symm.trans (h1.trans h3).not.symm))`.
+-/
 theorem mem_iff_not_mem_basicOpen {X : Scheme.{0}} (C : Closeds X) (U : X.affineOpens) (g : Γ(X, U.1))
     (hD : (Scheme.IdealSheafData.vanishingIdeal C).ideal U = Ideal.span {g}) (x : X) (hx : x ∈ U.1) :
     x ∈ C ↔ x ∉ X.basicOpen g := by
@@ -33,6 +40,21 @@ end GlobalTheory.CompHS.ChartBd
 
 namespace GlobalTheory.CompHS.ChartBd
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z la hV y`. Set `q : Y₀ TF.X Z ⟶ TF.Y.X` to `inc₀ TF.X Z ≫ TF.X.π`. Take `⟨-, U', hxU', n, f, J, -, hD⟩` from `TF.snc (q y)`. Set `g : Γ(TF.Y.X, U'.1)` to `∏ i ∈ J, f i`. Establish `hZ : ∀ x ∈ U'.1, x ∈ (LogKS.interior TF.Y).compl ↔ x ∉ TF.Y.X.basicOpen g` using `mem_iff_not_mem_basicOpen _ U' g hD`.
+
+Establish `hs : Smooth (str₀ TF.X Z)` using `by haveI := hV.1`. Conclude with `SmoothOfRelativeDimension.smooth (GlobalTheory.FlagTan.dimFlag Dw) (str₀ TF.X Z)`. Take `⟨-, hn, hl⟩` from `GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field c.F _ _ hs`. Use `GlobalTheory.IsNormalScheme.of_pred hn` as an intermediate fact. Take `⟨W₁, hyW₁, hW₁⟩` from `GlobalTheory.ModelChart.exists_open_isDomain (Y₀ TF.X Z) y`.
+
+Take `⟨i, hi⟩` from `exists_chart (isLB_L₀ TF.X Z la) y`. Set `O : (Y₀ TF.X Z).Opens` to `W₁ ⊓ (L₀ TF.X Z la).U i ⊓ q ⁻¹ᵁ U'.1`. Establish `hyO : y ∈ O` using `⟨⟨hyW₁, hi⟩, hxU'⟩`. Take `⟨W, hW, hyW, hWO⟩` from `exists_isAffineOpen_mem_and_subset (U := O) (x := y) hyO`. Establish `hWO' : W ≤ O` using `hWO`.
+
+Establish `hWq : W ≤ q ⁻¹ᵁ U'.1` using `hWO'.trans inf_le_right`. Set `p : Γ(Y₀ TF.X Z, W)` to `(Y₀ TF.X Z).presheaf.map (homOfLE hWq).op (q.app U'.1 g)`. Establish `hbo : (Y₀ TF.X Z).basicOpen p = W ⊓ q ⁻¹ᵁ TF.Y.X.basicOpen g`. Rewrite using `[Scheme.basicOpen_res, Scheme.preimage_basicOpen]`. Establish `key : ∀ y' ∈ W, (y' ∈ bd₀ TF.X Z ↔ y' ∉ (Y₀ TF.X Z).basicOpen p)`.
+
+Introduce `y' hy'`. Establish `e1 : y' ∈ bd₀ TF.X Z ↔ q y' ∈ (LogKS.interior TF.Y).compl` using `Iff.rfl`. Establish `e2 : y' ∈ (Y₀ TF.X Z).basicOpen p ↔ q y' ∈ TF.Y.X.basicOpen g`. Rewrite using `[hbo]`. Conclude with `⟨fun h => h.2, fun h => ⟨hy', h⟩⟩`.
+
+Rewrite using `[e1, e2]`. Conclude with `hZ _ (hWq hy')`. Use `⟨W, hW, i, p, hyW, hWO'.trans (inf_le_left.trans inf_le_right), hW₁ W hyW (hWO'.trans (inf_le_left.trans inf_le_left)), ?_, ?_, key⟩` and prove the remaining obligations. Establish `hφ : Spec.map (Spec.preimage ((show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec) ≫ str₀ TF.X Z)) = (show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec) ≫ str₀ TF.X Z` using `Spec.map_preimage _`. Conclude with `(HasRingHomProperty.Spec_iff (P := @Smooth)).mp (by rw [hφ]; infer_instance)`.
+
+Introduce `hp0`. Take `⟨y', hy'W, hy'U⟩` from `(dense_U₀ TF.X Z).inter_open_nonempty W W.isOpen ⟨y, hyW⟩`. Establish `h` using `(key y' hy'W).not.mp (not_not.mpr hy'U)`. Rewrite `h` using `[hp0, Scheme.basicOpen_zero]`. Conclude with `h (by simp)`.
+-/
 theorem exists_chart_bd : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (la : GlobalTheory.AllWt.Weight Dw), IsVariety₀ TF.X Z → ∀ y : Y₀ TF.X Z, ∃ (W : (Y₀ TF.X Z).Opens) (hW : IsAffineOpen W) (i : (L₀ TF.X Z la).ι) (p : Γ(Y₀ TF.X Z, W)), y ∈ W ∧ W ≤ (L₀ TF.X Z la).U i ∧ IsDomain Γ(Y₀ TF.X Z, W) ∧ RingHom.Smooth (Spec.preimage ((show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec) ≫ str₀ TF.X Z)).hom ∧ p ≠ 0 ∧ ∀ y' ∈ W, (y' ∈ bd₀ TF.X Z ↔ y' ∉ (Y₀ TF.X Z).basicOpen p) := by
   intro E _ _ _ H Dw l Xo c TF Z la hV y
 

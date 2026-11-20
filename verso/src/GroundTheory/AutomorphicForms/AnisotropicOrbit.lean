@@ -15,6 +15,13 @@ section Orbit
 
 variable {𝒢 W : Type*} [Group 𝒢]
 
+/- English proof (translation)
+Establish `hch : ∀ s ∈ hfin.toFinset, ∃ δ ∈ Γ, Φ δ = s` using `fun s hs => by`. Take `⟨-, δ, hδ, rfl⟩` from `hfin.mem_toFinset.1 hs`. Conclude with `⟨δ, hδ, rfl⟩`. Use `choose! f hfΓ hfΦ using hch`. Use `⟨hfin.toFinset.image f, fun δ hδ => ?_, fun g hg γ hγ c hc hgc => ?_⟩` and prove the remaining obligations.
+
+Take `⟨s, hs, rfl⟩` from `Finset.mem_image.1 hδ`. Conclude with `hfΓ s hs`. Establish `h1 : Φ γ⁻¹ = Φ c` using `(hΦ _ _).2 (by rw [inv_inv, ← hgc]; exact hg)`. Establish `hs : Φ c ∈ hfin.toFinset` using `hfin.mem_toFinset.2 ⟨⟨c, hc, rfl⟩, γ⁻¹, inv_mem hγ, h1⟩`. Use `⟨f (Φ c), Finset.mem_image_of_mem _ hs, ?_, (hΦ _ _).1 (hfΦ _ hs)⟩` and prove the remaining obligations.
+
+Use `(hΦ γ⁻¹ (f (Φ c))).1 (by rw [hfΦ _ hs, h1])` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem exists_finset_of_orbit (Φ : 𝒢 → W) (G Γ : Subgroup 𝒢)
     (hΦ : ∀ g g', Φ g = Φ g' ↔ g⁻¹ * g' ∈ G) (C : Set 𝒢)
     (hfin : (Φ '' C ∩ Φ '' (Γ : Set 𝒢)).Finite) :
@@ -34,6 +41,13 @@ theorem exists_finset_of_orbit (Φ : 𝒢 → W) (G Γ : Subgroup 𝒢)
     have := (hΦ γ⁻¹ (f (Φ c))).1 (by rw [hfΦ _ hs, h1])
     rwa [inv_inv] at this
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul]`. Establish `e1 : (↑g⁻¹ * ↑g' * x : R) = ↑g⁻¹ * (↑g' * x * ↑g'⁻¹) * ↑g'`. Simplify using `[mul_assoc]`. Establish `e2 : (x * (↑g⁻¹ * ↑g') : R) = ↑g⁻¹ * (↑g * x * ↑g⁻¹) * ↑g'`. Simplify using `[mul_assoc]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[e1, e2, h]`. Introduce `h`. Establish `e3 : (↑g' * x * ↑g'⁻¹ : R) = ↑g * (↑g⁻¹ * ↑g' * x) * ↑g'⁻¹`.
+
+Simplify using `[mul_assoc]`. Establish `e4 : (↑g * x * ↑g⁻¹ : R) = ↑g * (x * (↑g⁻¹ * ↑g')) * ↑g'⁻¹`. Simplify using `[mul_assoc]`. Rewrite using `[e3, e4, h]`.
+-/
 theorem conj_eq_conj_iff {R : Type*} [Ring R] (g g' : Rˣ) (x : R) :
     (g : R) * x * ↑g⁻¹ = g' * x * ↑g'⁻¹ ↔ ((g⁻¹ * g' : Rˣ) : R) * x = x * ((g⁻¹ * g' : Rˣ) : R) := by
   rw [Units.val_mul]
@@ -55,6 +69,11 @@ end Orbit
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `hd` using `GroundTheory.Global.discreteTopology_principalSubgroup K`. Establish `hc` using `GroundTheory.Global.isClosed_principalSubgroup K`. Use `set P : Set 𝔸[K] := (AdeleRing.principalSubgroup (𝓞 K) K : Set 𝔸[K]) with hP`. Establish `hXP : IsCompact (X ∩ P)` using `hX.inter_right hc`. Establish `hdP : DiscreteTopology P` using `hd`.
+
+Establish `hdisc : DiscreteTopology (X ∩ P : Set 𝔸[K])` using `DiscreteTopology.of_subset hdP Set.inter_subset_right`. Establish `hfin : (X ∩ P).Finite` using `hXP.finite ⟨hdisc⟩`. Use `(hfin.preimage (AdeleRing.algebraMap_injective (𝓞 K) K).injOn).subset ?_` and prove the remaining obligations. Introduce `k hk`. Conclude with `⟨hk, k, rfl⟩`.
+-/
 theorem finite_algebraMap_preimage {X : Set 𝔸[K]} (hX : IsCompact X) :
     (algebraMap K 𝔸[K] ⁻¹' X).Finite := by
   have hd := GroundTheory.Global.discreteTopology_principalSubgroup K
@@ -69,6 +88,9 @@ theorem finite_algebraMap_preimage {X : Set 𝔸[K]} (hX : IsCompact X) :
   intro k hk
   exact ⟨hk, k, rfl⟩
 
+/- English proof (translation)
+Establish `h : (Set.univ.pi fun j => algebraMap K 𝔸[K] ⁻¹' (π j '' X)).Finite` using `Set.Finite.pi fun j => finite_algebraMap_preimage (hX.image (hπ j))`. Use `Set.Finite.of_finite_image (h.subset ?_) hφ.injOn` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩ j -`. Conclude with `⟨ψ a, ha, hψ a j⟩`.
+-/
 theorem finite_of_isCompact_coords {α Y J : Type*} [Finite J] [TopologicalSpace Y] {X : Set Y}
     (hX : IsCompact X) (ψ : α → Y) (π : J → Y → 𝔸[K]) (hπ : ∀ j, Continuous (π j))
     (φ : α → J → K) (hφ : Function.Injective φ)
@@ -98,6 +120,9 @@ def adelicCentralizer (L : m → Matrix (Fin n) (Fin n) K) : Subgroup (AdelicGLn
       _ = ↑a⁻¹ * (↑a * M) * ↑a⁻¹ := by rw [h]
       _ = M * ↑a⁻¹ := by simp
 
+/- English proof (translation)
+Establish `hinj : Function.Injective fun M : Matrix (Fin n) (Fin n) K => M.map (algebraMap K 𝔸[K])` using `Matrix.map_injective (AdeleRing.algebraMap_injective (𝓞 K) K)`. Use `forall_congr' fun k => ?_` and prove the remaining obligations. Use `show (γ : Matrix (Fin n) (Fin n) K).map (algebraMap K 𝔸[K]) * (L k).map (algebraMap K 𝔸[K]) = (L k).map (algebraMap K 𝔸[K]) * (γ : Matrix (Fin n) (Fin n) K).map (algebraMap K 𝔸[K]) ↔ _`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `hinj.eq_iff`.
+-/
 theorem diagonal_mem_adelicCentralizer_iff {L : m → Matrix (Fin n) (Fin n) K}
     {γ : GL (Fin n) K} :
     AdelicGLn.diagonal K n γ ∈ adelicCentralizer L ↔
@@ -110,6 +135,21 @@ theorem diagonal_mem_adelicCentralizer_iff {L : m → Matrix (Fin n) (Fin n) K}
   rw [← Matrix.map_mul, ← Matrix.map_mul]
   exact hinj.eq_iff
 
+/- English proof (translation)
+Take `⟨C, hC, hC'⟩` from `Reduction.exists_isCompact_forall_of_pos_le_height (K := K) (n := n) hε`. Set `Lm : m → Matrix (Fin n) (Fin n) 𝔸[K]` to `fun k => (L k).map (algebraMap K 𝔸[K])`. Set `Φ : AdelicGLn.AdelicGL K n → m → Matrix (Fin n) (Fin n) 𝔸[K]` to `fun g k => (g : Matrix (Fin n) (Fin n) 𝔸[K]) * Lm k * ((g⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])`. Establish `hΦ : ∀ g g', Φ g = Φ g' ↔ g⁻¹ * g' ∈ adelicCentralizer L`. Introduce `g g'`.
+
+Rewrite using `[funext_iff]`. Conclude with `forall_congr' fun k => conj_eq_conj_iff g g' (Lm k)`. Establish `hΦc : Continuous Φ` using `continuous_pi fun k => ((Units.continuous_val.matrix_mul continuous_const).matrix_mul Units.continuous_coe_inv)`. Set `ψ : (m → Matrix (Fin n) (Fin n) K) → m → Matrix (Fin n) (Fin n) 𝔸[K]` to `fun r k => (r k).map (algebraMap K 𝔸[K])`. Establish `hψfin : {r | ψ r ∈ Φ '' C}.Finite`.
+
+Use `finite_of_isCompact_coords (hC.image hΦc) ψ (fun p : m × Fin n × Fin n => fun M => M p.1 p.2.1 p.2.2) (fun p => (continuous_apply p.1).matrix_elem p.2.1 p.2.2) (fun r p => r p.1 p.2.1 p.2.2) ?_ (fun r p => rfl)` and prove the remaining obligations. Introduce `r r' h`. Use function extensionality and compare the values at `k i j`. Conclude with `congrFun h (k, i, j)`. Establish `hfin : (Φ '' C ∩ Φ '' (AdelicGLn.rationalGL K n : Set (AdelicGLn.AdelicGL K n))).Finite`.
+
+Use `(hψfin.image ψ).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨hC1, _, ⟨γ, rfl⟩, rfl⟩`. Establish `e : Φ (AdelicGLn.diagonal K n γ) = ψ fun k => (γ : Matrix (Fin n) (Fin n) K) * L k * ((γ⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Use function extensionality and compare the values at `k`. Simplify using `only [ψ, Φ, Lm, ← map_inv]`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression. Rewrite `hC1`, the goal using `[e]`. Conclude with `⟨_, hC1, rfl⟩`. Take `⟨T, hTΓ, hT⟩` from `exists_finset_of_orbit Φ (adelicCentralizer L) (AdelicGLn.rationalGL K n) hΦ C hfin`.
+
+Use `⟨⋃ δ ∈ T, (fun c => δ⁻¹ * c) '' C, T.isCompact_biUnion fun δ _ => hC.image (continuous_const.mul continuous_id), ?_⟩` and prove the remaining obligations. Introduce `g hg`. Take `⟨_, ⟨γ₀, rfl⟩, c, hc, hgc⟩` from `hC' g (hG1 hg) (hh g hg)`. Take `⟨δ, hδT, hγδ, hδc⟩` from `hT g (hGL hg) _ ⟨γ₀, rfl⟩ c hc hgc.symm`. Take `⟨δ₀, rfl⟩` from `hTΓ δ hδT`.
+
+Use `⟨γ₀ * δ₀, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← diagonal_mem_adelicCentralizer_iff, map_mul]`. Conclude with `hγδ`. Use `Set.mem_biUnion hδT ⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← hgc, _root_.mul_inv_rev, mul_assoc, inv_mul_cancel_left]`.
+-/
 theorem exists_isCompact_centralizer_reduction [Finite m] (L : m → Matrix (Fin n) (Fin n) K)
     (G : Subgroup (AdelicGLn.AdelicGL K n)) (hG1 : G ≤ Reduction.normOneGL K n)
     (hGL : G ≤ adelicCentralizer L) {ε : ℝ} (hε : 0 < ε)

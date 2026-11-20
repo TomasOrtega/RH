@@ -12,6 +12,13 @@ open scoped Matrix
 
 namespace GlobalTheory.PELU
 
+/- English proof (translation)
+Introduce `R _ σ X X' s s' f H V _ _ B y hy`. Use `⟨fun h => GlobalTheory.HolFibre.isHolTo_comp h f, fun h => ?_⟩` and prove the remaining obligations. Establish `hB : IsOpen B`. Use `(h ⊤ 0).1` as an intermediate fact. Simplify using `using this`.
+
+Use `GlobalTheory.HolFibre.isHolTo_of_isPullback H h ?_` and prove the remaining obligations. Introduce `U g`. Establish `hc` using `GlobalTheory.HolFibre.isHolTo_const (E := V) hB (spMap (RingHom.id ℂ)) U g`. Establish `e : {b ∈ B | ⊤ ≤ (y b ≫ s') ⁻¹ᵁ U} = {b ∈ B | ⊤ ≤ (spMap (RingHom.id ℂ)) ⁻¹ᵁ U}`. Use extensionality with `b`.
+
+Conclude with `and_congr_right fun hb => by rw [hy b hb]`. Rewrite using `[e]`. Conclude with `⟨hc.1, hc.2.congr fun b hb => by simp only [hy b hb.1]⟩`.
+-/
 theorem isHolTo_bc_iff : ∀ (R : Type) [CommRing R] (σ : R →+* ℂ) (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp ℂ)
     (f : X' ⟶ X), IsPullback f s' s (spMap σ) → ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (B : Set V)
     (y : V → (Sp ℂ ⟶ X')), (∀ b ∈ B, y b ≫ s' = spMap (RingHom.id ℂ)) →

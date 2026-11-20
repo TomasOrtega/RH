@@ -17,6 +17,21 @@ namespace GlobalTheory.DiagThetaRatF
 
 open MeasureTheory
 
+/- English proof (translation)
+Set `h : G ≃ₜ G` to `.mk e.toEquiv he he'`. Set `m : G ≃ᵐ G` to `h.toMeasurableEquiv`. Use `haveI : (ν.map e).IsAddHaarMeasure := AddEquiv.isAddHaarMeasure_map ν e he he'`. Establish `hmp : MeasurePreserving m ν (ν.map e)` using `⟨he.measurable, rfl⟩`. Establish `hT : IsAddFundamentalDomain Γ (m.symm ⁻¹' 𝓕) (ν.map e)`.
+
+Use `h𝓕.preimage_of_equiv hmp.symm.quasiMeasurePreserving (e := fun γ : Γ => (⟨e γ, hΓ _ γ.2⟩ : Γ)) ⟨?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `a b hab`. Conclude with `Subtype.ext (e.injective (congrArg Subtype.val hab))`. Introduce `a`. Conclude with `⟨⟨e.symm a, hΓ' _ a.2⟩, Subtype.ext (e.apply_symm_apply _)⟩`.
+
+Introduce `γ x show e.symm (e γ + x) = γ + e.symm x`. Rewrite using `[map_add, e.symm_apply_apply]`. Take `⟨c, hc⟩ : ∃ c : NNReal, ν.map e = c • ν` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ ν⟩`. Establish `hac : ν.map e ≪ ν` using `hc ▸ Measure.smul_absolutelyContinuous`. Establish `hF' : IsAddFundamentalDomain Γ 𝓕 (ν.map e)` using `h𝓕.mono hac`.
+
+Establish `hpre : m ⁻¹' (m.symm ⁻¹' 𝓕) = 𝓕`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `h0 : ν 𝓕 ≠ 0` using `h𝓕.measure_ne_zero (NeZero.ne ν)`. Establish `h1 : ν 𝓕 ≠ ⊤` using `(GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact Γ hK hcov ν h𝓕).ne`.
+
+Establish `e1 : ν.map e (m.symm ⁻¹' 𝓕) = ν 𝓕`. Use `m.map_apply (μ := ν) (m.symm ⁻¹' 𝓕)` as an intermediate fact. Rewrite `this` using `[hpre]`. Conclude with `this`. Establish `hc1 : (c : ENNReal) = 1`.
+
+Establish `e2` using `hT.measure_eq hF'`. Rewrite `e2` using `[e1, hc, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Conclude with `((ENNReal.mul_left_inj h0 h1).1 ((one_mul _).trans e2)).symm`. Establish `hν : ν.map e = ν`. Rewrite using `[hc, ENNReal.coe_eq_one.1 hc1, one_smul]`.
+
+Establish `e3` using `hmp.setIntegral_preimage_emb m.measurableEmbedding φ (m.symm ⁻¹' 𝓕)`. Rewrite `e3` using `[hpre]`. Use `e3.trans ?_` and prove the remaining obligations. Rewrite using `[hT.setIntegral_eq hF' fun g x => hφ g g.2 x, hν]`.
+-/
 theorem setIntegral_comp_aut {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (Γ : AddSubgroup G)
     [Countable Γ] {K : Set G} (hK : IsCompact K) (hcov : ∀ x : G, ∃ γ ∈ Γ, γ + x ∈ K) (ν : Measure G)
@@ -69,9 +84,15 @@ section Adelic
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)`.
+-/
 theorem inclR_injective : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
   Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)
 
+/- English proof (translation)
+Introduce `h0` and use `by haveI : Nontrivial (AF F ⊗[F] E) := (inclR_injective (F := F) (E := E)).nontrivial have := (Matrix.GeneralLinearGroup.det g).ne_zero rw [Matrix.GeneralLinearGroup.val_det_apply, h] at this refine this ?_ have e : (incM F g₀).det = inclR (F := F) (AF F) g₀.det := by rw [RingHom …`.
+-/
 theorem det_ne_zero_of_unit {n : ℕ} (g : GL (Fin n) (AF F ⊗[F] E)) (g₀ : Matrix (Fin n) (Fin n) E)
     (h : g.1 = incM F g₀) : g₀.det ≠ 0 := fun h0 => by
   haveI : Nontrivial (AF F ⊗[F] E) := (inclR_injective (F := F) (E := E)).nontrivial

@@ -15,6 +15,13 @@ def _root_.UpperTheory.GalS.HeckeCharacterEqualityOfRealisationAlt : Prop :=
       UpperTheory.GalS.RelW D.nd D.naut (D.naut.wdOf i ρ w) (D.naut.lpTw (D.naut.locG χ w) s)) →
     (∀ w, w ∉ placesOver D.host.E (D.nd.l i) → D.naut.wdOf i ρ w = D.naut.lpTw (D.naut.locG χ' w) s) →
     χ = χ'
+/- English proof (translation)
+Introduce `D hA i χ χ' s ρ h h'`. Establish `hAN` using `hA.1.1.2.2.2.2.2.2.1`. Establish `hloc : ∀ w, w ∉ placesOver D.host.E (D.nd.l i) → D.naut.unr (D.naut.locG χ w) → D.naut.locG χ w = D.naut.locG χ' w`. Introduce `w hw hu`. Establish `e` using `congrArg (fun a => D.naut.lpTw a (-s)) (((h w hw).eq_of_unr ((D.naut.unr_tw _ _).2 hu)).symm.trans (h' w hw))`.
+
+Simplify `e` using `[D.naut.lpTw_add, D.naut.lpTw_zero]`. Establish `hp` using `hAN [⟨1, χ, 1⟩] [⟨1, χ', 1⟩] (by simp) (by simp) (by`. Establish `hfin` using `placesOver_finite_joint_conditions_zpowers D.host.E (D.nd.l i) (D.nd.lPrime i).out.ne_zero`. Use `filter_upwards [hfin.compl_mem_cofinite, D.naut.locG_unr_ae χ] with w hw hu`. Simplify using `only [isoLoc, spehLoc, List.foldr]`.
+
+Rewrite using `[hloc w hw hu])`. Use `List.perm_singleton.1 hp` as an intermediate fact. Simplify using `using this`.
+-/
 theorem hecke_character_equality_of_realisation : _root_.UpperTheory.GalS.HeckeCharacterEqualityOfRealisationAlt := by
   intro D hA i χ χ' s ρ h h'
   have hAN := hA.1.1.2.2.2.2.2.2.1

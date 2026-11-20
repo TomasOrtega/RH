@@ -12,6 +12,23 @@ open GlobalTheory.OrbitSep
 
 namespace GlobalTheory.FixStalk
 
+/- English proof (translation)
+Introduce `X _ b x hb`. Establish `hx : b.hom x = x`. Take `⟨p⟩ : Nonempty ↥(Spec (X.residueField x))` from `⟨IsLocalRing.closedPoint _⟩`. Establish `h2` using `Scheme.fromSpecResidueField_apply x p`. Establish `h3 : b.hom (X.fromSpecResidueField x p) = X.fromSpecResidueField x p`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, hb]`. Rewrite `h3` using `[h2]`. Then use the resulting hypothesis. Establish `hs : b.hom x ⤳ x` using `by rw [hx]`. Establish `hs' : x ⤳ b.hom x` using `by rw [hx]`. Set `st : X.presheaf.stalk x ⟶ X.presheaf.stalk x` to `X.presheaf.stalkSpecializes hs ≫ b.hom.stalkMap x`.
+
+Establish `h0 : X.fromSpecStalk x ≫ b.hom = Spec.map st ≫ X.fromSpecStalk x`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`. Establish `h1 : (show Sp (X.presheaf.stalk x) ⟶ X from X.fromSpecStalk x) ≫ b.hom = spMap st.hom ≫ X.fromSpecStalk x`. Simplify `h0` using `only [spMap, CommRingCat.ofHom_hom]`. Use `haveI : IsIso (X.presheaf.stalkSpecializes hs) := ⟨⟨X.presheaf.stalkSpecializes hs', by simp, by simp⟩⟩`.
+
+Use `haveI : IsLocalHom st.hom := by show IsLocalHom (X.presheaf.stalkSpecializes hs ≫ b.hom.stalkMap x).hom`. Rewrite using `[CommRingCat.hom_comp]`. Use `infer_instance`. Use `haveI : IsLocalHom (X.residue x).hom := inferInstanceAs (IsLocalHom (IsLocalRing.residue _))`. Use `haveI : IsLocalHom (st ≫ X.residue x).hom := by`.
+
+Rewrite using `[CommRingCat.hom_comp]`. Use `infer_instance`. Use `⟨st.hom, h1, ?_, ?_⟩` and prove the remaining obligations. Establish `e : Spec.map (X.residue x) ≫ X.fromSpecStalk x = Spec.map (st ≫ X.residue x) ≫ X.fromSpecStalk x`. Rewrite using `[Spec.map_comp, Category.assoc, ← h0, ← Category.assoc]`.
+
+Conclude with `hb.symm`. Establish `e2` using `(SpecToEquivOfLocalRing X (X.residueField x)).symm.injective (a₁ := ⟨x, ⟨X.residue x, inferInstance⟩⟩) (a₂ := ⟨x, ⟨st ≫ X.residue x, inferInstance⟩⟩) e`. Take `⟨_, e3⟩` from `SpecToEquivOfLocalRing_eq_iff.mp e2`. Simplify using `only [TopCat.Presheaf.stalkCongr_hom, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp] at e3`. Introduce `a`.
+
+Conclude with `(congr($e3 a)).symm`. Introduce `a`. Establish `e4 : algebraMap (X.presheaf.stalk x) X.functionField a = algebraMap (X.presheaf.stalk (b.hom x)) X.functionField (X.presheaf.stalkSpecializes hs a)`. Simplify using `only [RingHom.algebraMap_toAlgebra]`. Rewrite using `[← CommRingCat.comp_apply, TopCat.Presheaf.stalkSpecializes_comp]`.
+
+Rewrite using `[e4, GlobalTheory.functionFieldMap_algebraMap]`. Both sides reduce to the same expression.
+-/
 theorem fixes_stalk : ∀ (X : Scheme.{0}) [IsIntegral X] (b : X ≅ X) (x : X), X.fromSpecResidueField x ≫ b.hom = X.fromSpecResidueField x → ∃ st : X.presheaf.stalk x →+* X.presheaf.stalk x, (show Sp (X.presheaf.stalk x) ⟶ X from X.fromSpecStalk x) ≫ b.hom = spMap st ≫ X.fromSpecStalk x ∧ (∀ a, IsLocalRing.residue (X.presheaf.stalk x) (st a) = IsLocalRing.residue (X.presheaf.stalk x) a) ∧ ∀ a, GlobalTheory.functionFieldMap b.hom (algebraMap (X.presheaf.stalk x) X.functionField a) = algebraMap (X.presheaf.stalk x) X.functionField (st a) := by
   intro X _ b x hb
   have hx : b.hom x = x := by

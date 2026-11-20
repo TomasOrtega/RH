@@ -3,6 +3,9 @@ open MeasureTheory
 
 namespace GlobalTheory.CompanionTheory.HoloFamily
 
+/- English proof (translation)
+The claim follows from `|y| ≤ (Real.exp (δ * y) + Real.exp (-(δ * y))) / δ := by rw [le_div_iff₀ hδ] have h1 := Real.add_one_le_exp (δ * y) have h2 := Real.add_one_le_exp (-(δ * y)) have e1 := Real.exp_pos (δ * y) have e2 := Real.exp_pos (-(δ * y)) rcases abs_cases y with ⟨h, _⟩ | ⟨h, _⟩ <;> rw [h] <;> …`.
+-/
 theorem abs_le_exp_add_exp_neg (δ y : ℝ) (hδ : 0 < δ) :
     |y| ≤ (Real.exp (δ * y) + Real.exp (-(δ * y))) / δ := by
   rw [le_div_iff₀ hδ]
@@ -12,6 +15,11 @@ theorem abs_le_exp_add_exp_neg (δ y : ℝ) (hδ : 0 < δ) :
   have e2 := Real.exp_pos (-(δ * y))
   rcases abs_cases y with ⟨h, _⟩ | ⟨h, _⟩ <;> rw [h] <;> nlinarith
 
+/- English proof (translation)
+Break down `le_total 0 y with hy | hy` into its components or cases. Establish `: Real.exp (t * y) ≤ Real.exp (b * y)` using `Real.exp_le_exp.mpr (mul_le_mul_of_nonneg_right hb hy)`. Use `Real.exp_pos (a * y)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: Real.exp (t * y) ≤ Real.exp (a * y)` using `Real.exp_le_exp.mpr (mul_le_mul_of_nonpos_right ha hy)`.
+
+Use `Real.exp_pos (b * y)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exp_mul_le_add (a b t y : ℝ) (ha : a ≤ t) (hb : t ≤ b) :
     Real.exp (t * y) ≤ Real.exp (a * y) + Real.exp (b * y) := by
   rcases le_total 0 y with hy | hy
@@ -24,6 +32,9 @@ theorem exp_mul_le_add (a b t y : ℝ) (ha : a ≤ t) (hb : t ≤ b) :
     have := Real.exp_pos (b * y)
     linarith
 
+/- English proof (translation)
+The claim follows from `|y| * Real.exp (t * y) ≤ (4 / σ) * (Real.exp (σ / 2 * y) + 2 * Real.exp (σ * y) + Real.exp (3 * σ / 2 * y)) := by have hδ : 0 < σ / 4 := by positivity have hA := abs_le_exp_add_exp_neg (σ / 4) y hδ have hB := exp_mul_le_add (3 * σ / 4) (5 * σ / 4) t y h1 h2 have hm := mul_le_mul …`.
+-/
 theorem abs_mul_exp_le (σ t y : ℝ) (hσ : 0 < σ) (h1 : 3 * σ / 4 ≤ t) (h2 : t ≤ 5 * σ / 4) :
     |y| * Real.exp (t * y) ≤ (4 / σ) * (Real.exp (σ / 2 * y) + 2 * Real.exp (σ * y)
       + Real.exp (3 * σ / 2 * y)) := by
@@ -52,6 +63,21 @@ theorem abs_mul_exp_le (σ t y : ℝ) (hσ : 0 < σ) (h1 : 3 * σ / 4 ≤ t) (h2
   rw [this, e1, e2, e3, e4]
   ring
 
+/- English proof (translation)
+Introduce `u₀ hu₀`. Establish `hσ : 0 < u₀.re` using `hu₀`. Use `set σ := u₀.re with hσdef`. Establish `hLc : Measurable fun x => (L x : ℂ)` using `Complex.measurable_ofReal.comp hL`. Establish `hmeas : ∀ u : ℂ, AEStronglyMeasurable (fun x => G x * Complex.exp (u * (L x : ℂ))) μ` using `fun u => hG.mul ((Complex.measurable_exp.comp (hLc.const_mul u)).aestronglyMeasurable)`.
+
+Establish `hmeas' : ∀ u : ℂ, AEStronglyMeasurable (fun x => G x * (L x : ℂ) * Complex.exp (u * (L x : ℂ))) μ` using `fun u => (hG.mul hLc.aestronglyMeasurable).mul ((Complex.measurable_exp.comp (hLc.const_mul u)).aestronglyMeasurable)`. Establish `hnorm : ∀ (u : ℂ) (x : X), ‖Complex.exp (u * (L x : ℂ))‖ = Real.exp (u.re * L x)`. Introduce `u x`. Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules.
+
+Establish `hF_int : Integrable (fun x => G x * Complex.exp (u₀ * (L x : ℂ))) μ`. Use `(hI σ hσ).mono' (hmeas u₀) (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, hnorm]`. Set `bound : X → ℝ` to `fun x => (4 / σ) * (‖G x‖ * Real.exp (σ / 2 * L x) + 2 * (‖G x‖ * Real.exp (σ * L x)) + ‖G x‖ * Real.exp (3 * σ / 2 * L x))`. Establish `hbound : Integrable bound μ` using `(((hI (σ / 2) (by positivity)).add ((hI σ hσ).const_mul 2)).add (hI (3 * σ / 2) (by positivity))).const_mul (4 / σ)`.
+
+Establish `hmain` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (F := fun (u : ℂ) x => G x * Complex.exp (u * (L x : ℂ))) (F' := fun (u : ℂ) x => G x * (L x : ℂ) * Complex.exp (u * (L x : ℂ))) (x₀ := u₀) (s := Metric.ball u₀ (σ / 4)) (bound := bound) (Metric.ball_mem_nhds u₀ (by positi …`. Conclude with `hmain.2.differentiableAt.differentiableWithinAt`. Establish `hre : |u.re - σ| < σ / 4`. Establish `h1 : ‖u - u₀‖ < σ / 4` using `by simpa [dist_eq_norm] using hu`. Establish `h2 : |(u - u₀).re| ≤ ‖u - u₀‖` using `Complex.abs_re_le_norm _`.
+
+Rewrite `h2` using `[Complex.sub_re]`. Conclude with `lt_of_le_of_lt h2 h1`. Establish `hab` using `abs_lt.mp hre`. Establish `hb` using `abs_mul_exp_le σ u.re (L x) hσ (by linarith [hab.1]) (by linarith [hab.2])`. Establish `hnG` using `norm_nonneg (G x)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_mul, hnorm, Complex.norm_real, Real.norm_eq_abs, mul_assoc]`. Use `_ ≤ ‖G x‖ * ((4 / σ) * (Real.exp (σ / 2 * L x) + 2 * Real.exp (σ * L x) + Real.exp (3 * σ / 2 * L x))) := mul_le_mul_of_nonneg_left hb hnG`. Use `_ = bound x := by simp only [bound]; ring`. Establish `h1 : HasDerivAt (fun w : ℂ => w * (L x : ℂ)) (L x : ℂ) u`.
+
+Simplify using `using (hasDerivAt_id u).mul_const (L x : ℂ)`. Conclude with `((h1.cexp).const_mul (G x)).congr_deriv (by ring)`.
+-/
 theorem differentiableOn_integral_mul_cexp
     {X : Type} [MeasurableSpace X] (μ : Measure X) (G : X → ℂ) (L : X → ℝ)
     (hG : AEStronglyMeasurable G μ) (hL : Measurable L)

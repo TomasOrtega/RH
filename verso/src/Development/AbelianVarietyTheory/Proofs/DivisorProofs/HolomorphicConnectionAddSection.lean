@@ -12,15 +12,27 @@ open scoped Real ContDiff
 
 namespace GlobalTheory.TorsionForm
 
+/- English proof (translation)
+Apply the tactic sequence `funext S; simp only [wedge, Pi.add_apply]; split_ifs <;> ring`.
+-/
 theorem wedge_add {m : ℕ} (i : Fin m) (w w' : Ext m) : wedge i (w + w') = wedge i w + wedge i w' := by
   funext S; simp only [wedge, Pi.add_apply]; split_ifs <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `funext S; simp only [wedge, Pi.smul_apply, smul_eq_mul]; split_ifs <;> ring`.
+-/
 theorem wedge_smul {m : ℕ} (i : Fin m) (c : ℂ) (w : Ext m) : wedge i (c • w) = c • wedge i w := by
   funext S; simp only [wedge, Pi.smul_apply, smul_eq_mul]; split_ifs <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `funext S; simp only [contr, Pi.add_apply]; split_ifs <;> ring`.
+-/
 theorem contr_add {m : ℕ} (i : Fin m) (w w' : Ext m) : contr i (w + w') = contr i w + contr i w' := by
   funext S; simp only [contr, Pi.add_apply]; split_ifs <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `funext S; simp only [contr, Pi.smul_apply, smul_eq_mul]; split_ifs <;> ring`.
+-/
 theorem contr_smul {m : ℕ} (i : Fin m) (c : ℂ) (w : Ext m) : contr i (c • w) = c • contr i w := by
   funext S; simp only [contr, Pi.smul_apply, smul_eq_mul]; split_ifs <;> ring
 
@@ -32,7 +44,13 @@ def contrL {m : ℕ} (i : Fin m) : Ext m →L[ℂ] Ext m :=
   LinearMap.toContinuousLinearMap
     { toFun := contr i, map_add' := contr_add i, map_smul' := contr_smul i }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem wedgeL_apply {m : ℕ} (i : Fin m) (w : Ext m) : wedgeL i w = wedge i w := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem contrL_apply {m : ℕ} (i : Fin m) (w : Ext m) : contrL i w = contr i w := rfl
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ}
@@ -40,15 +58,24 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ}
 def baseD (β : Fin n → E) (φ : E → ℂ) (b : E) (w : Ext (n + n + g)) : Ext (n + n + g) :=
   ∑ i, (wedge (dt g i) (d10 φ b (β i) • w) + wedge (dtb g i) (d01 φ b (β i) • w))
 
+/- English proof (translation)
+Simplify using `only [superconn, nablaE, dbarV, dbarAdj, pointDifference, d10, d01, hs.fderiv_eq, hs.eq_of_nhds]`.
+-/
 theorem superconn_congr (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ)
     {s₁ s₂ : Pt E g → Ext (n + n + g)} {P : Pt E g} (hs : s₁ =ᶠ[𝓝 P] s₂) :
     superconn τ h β u s₁ P = superconn τ h β u s₂ P := by
   simp only [superconn, nablaE, dbarV, dbarAdj, pointDifference, d10, d01, hs.fderiv_eq, hs.eq_of_nhds]
 
+/- English proof (translation)
+Simplify using `only [connForm, contr_add, wedge_add, smul_add, Finset.sum_add_distrib]`.
+-/
 theorem connForm_add (τ : E → Matrix (Fin g) (Fin g) ℂ) (b v : E) (w w' : Ext (n + n + g)) :
     connForm τ b v (w + w') = connForm τ b v w + connForm τ b v w' := by
   simp only [connForm, contr_add, wedge_add, smul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [connForm, contr_smul, wedge_smul, Finset.smul_sum, smul_comm c]`.
+-/
 theorem connForm_smul (τ : E → Matrix (Fin g) (Fin g) ℂ) (b v : E) (c : ℂ) (w : Ext (n + n + g)) :
     connForm τ b v (c • w) = c • connForm τ b v w := by
   simp only [connForm, contr_smul, wedge_smul, Finset.smul_sum, smul_comm c]
@@ -57,6 +84,9 @@ section Add
 
 variable {m : ℕ} {s₁ s₂ : Pt E g → Ext m} {P : Pt E g}
 
+/- English proof (translation)
+Unfold `d10`. Rewrite using `[fderiv_fun_add h₁ h₂]`. Simplify using `only [ContinuousLinearMap.add_apply, smul_add, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem dz_add_vector (h₁ : DifferentiableAt ℝ s₁ P) (h₂ : DifferentiableAt ℝ s₂ P) (v : Pt E g) :
     d10 (fun Q => s₁ Q + s₂ Q) P v = d10 s₁ P v + d10 s₂ P v := by
   unfold d10
@@ -64,6 +94,9 @@ theorem dz_add_vector (h₁ : DifferentiableAt ℝ s₁ P) (h₂ : Differentiabl
   simp only [ContinuousLinearMap.add_apply, smul_add, smul_sub]
   abel
 
+/- English proof (translation)
+Unfold `d01`. Rewrite using `[fderiv_fun_add h₁ h₂]`. Simplify using `only [ContinuousLinearMap.add_apply, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem dbar_add_vector (h₁ : DifferentiableAt ℝ s₁ P) (h₂ : DifferentiableAt ℝ s₂ P) (v : Pt E g) :
     d01 (fun Q => s₁ Q + s₂ Q) P v = d01 s₁ P v + d01 s₂ P v := by
   unfold d01
@@ -77,6 +110,9 @@ section Add2
 
 variable {s₁ s₂ : Pt E g → Ext (n + n + g)} {P : Pt E g}
 
+/- English proof (translation)
+Unfold `pointDifference`. Rewrite using `[dz_add_vector h₁ h₂, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem holomorphicConnection_add_section (h : Pt E g → ℝ) (h₁ : DifferentiableAt ℝ s₁ P) (h₂ : DifferentiableAt ℝ s₂ P)
     (v : Pt E g) :
     pointDifference (n := n) h (fun Q => s₁ Q + s₂ Q) P v = pointDifference h s₁ P v + pointDifference h s₂ P v := by
@@ -84,6 +120,11 @@ theorem holomorphicConnection_add_section (h : Pt E g → ℝ) (h₁ : Different
   rw [dz_add_vector h₁ h₂, smul_add]
   abel
 
+/- English proof (translation)
+Establish `e1 : nablaE τ h β (fun Q => s₁ Q + s₂ Q) P = nablaE τ h β s₁ P + nablaE τ h β s₂ P`. Simplify using `only [nablaE, holomorphicConnection_add_section h h₁ h₂, dbar_add_vector h₁ h₂, connForm_add, wedge_add, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Normalize the expressions using the abelian group laws. Establish `e2 : dbarV (fun Q => s₁ Q + s₂ Q) P = dbarV s₁ P + dbarV s₂ P`.
+
+Simplify using `only [dbarV, dbar_add_vector h₁ h₂, wedge_add, ← Finset.sum_add_distrib]`. Establish `e3 : dbarAdj τ h (fun Q => s₁ Q + s₂ Q) P = dbarAdj τ h s₁ P + dbarAdj τ h s₂ P`. Simplify using `only [dbarAdj, holomorphicConnection_add_section h h₁ h₂, contr_add, smul_add, Finset.sum_add_distrib, neg_add]`. Simplify using `only [superconn, e1, e2, e3, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem superconn_add (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ)
     (h₁ : DifferentiableAt ℝ s₁ P) (h₂ : DifferentiableAt ℝ s₂ P) :
     superconn τ h β u (fun Q => s₁ Q + s₂ Q) P = superconn τ h β u s₁ P + superconn τ h β u s₂ P := by

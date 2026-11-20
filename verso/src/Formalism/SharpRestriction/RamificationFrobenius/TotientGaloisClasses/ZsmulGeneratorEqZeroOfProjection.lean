@@ -34,27 +34,48 @@ instance : DecidableEq φ.A := inferInstanceAs (DecidableEq (Idx φ.ord))
 
 def A.val {φ : Frame} (t : φ.A) : ℕ := Fin.val (n := φ.ord) t
 
+/- English proof (translation)
+Conclude with `Fin.is_lt (n := φ.ord) t`.
+-/
 theorem A.val_lt {φ : Frame} (t : φ.A) : t.val < φ.ord := by
   exact Fin.is_lt (n := φ.ord) t
 
+/- English proof (translation)
+Conclude with `fun s t h => Fin.ext h`.
+-/
 theorem A.val_injective (φ : Frame) : Function.Injective (A.val : φ.A → ℕ) := by
   exact fun s t h => Fin.ext h
 
 def A.ofVal {φ : Frame} (u : ℕ) (hu : u < φ.ord) : φ.A := (⟨u, hu⟩ : Fin φ.ord)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem A.val_ofVal {φ : Frame} (u : ℕ) (hu : u < φ.ord) : (A.ofVal u hu : φ.A).val = u := rfl
 
+/- English proof (translation)
+Conclude with `Fintype.card_fin φ.ord`.
+-/
 theorem card_A : Fintype.card φ.A = φ.ord := by
   exact Fintype.card_fin φ.ord
 
+/- English proof (translation)
+Rewrite using `[Nat.card_eq_fintype_card, card_A]`.
+-/
 theorem natCard_A : Nat.card φ.A = φ.ord := by
   rw [Nat.card_eq_fintype_card, card_A]
 
+/- English proof (translation)
+Conclude with `Fin.pos (n := φ.ord) (0 : φ.A)`.
+-/
 theorem ord_pos : 0 < φ.ord := by
   exact Fin.pos (n := φ.ord) (0 : φ.A)
 
 def h : φ.A →+ Additive (HGrp φ.e) := φ.h0
 
+/- English proof (translation)
+Conclude with `φ.projection_surjective_field`.
+-/
 theorem h_surj : Function.Surjective φ.h := by
   exact φ.projection_surjective_field
 
@@ -62,6 +83,9 @@ def a0 : φ.A := φ.gen0
 
 def A0 : AddSubgroup φ.A := AddSubgroup.zmultiples φ.a0
 
+/- English proof (translation)
+Conclude with `φ.zsmul_generator_eq_zero_of_projection k hk`.
+-/
 theorem zsmul_generator_eq_zero_of_image (k : ℤ) (hk : φ.h (k • φ.a0) = 0) : k • φ.a0 = 0 := by
   exact φ.zsmul_generator_eq_zero_of_projection k hk
 
@@ -71,15 +95,27 @@ def o : ℕ := φ.ord / φ.n0
 
 def dig (s : ℕ) : φ.A := s • φ.a0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dig_def (s : ℕ) : φ.dig s = s • φ.a0 := rfl
 
 def ofNat (u : ℕ) : φ.A := A.ofVal (u % φ.ord) (Nat.mod_lt _ φ.ord_pos)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_ofNat (u : ℕ) : (φ.ofNat u).val = u % φ.ord := rfl
 
+/- English proof (translation)
+Rewrite using `[φ.val_ofNat u, Nat.mod_eq_of_lt hu]`.
+-/
 theorem val_ofNat_of_lt {u : ℕ} (hu : u < φ.ord) : (φ.ofNat u).val = u := by
   rw [φ.val_ofNat u, Nat.mod_eq_of_lt hu]
 
+/- English proof (translation)
+Apply `A.val_injective φ` to reduce the goal to its premises. Rewrite using `[φ.val_ofNat, Nat.mod_eq_of_lt (A.val_lt t)]`.
+-/
 @[simp] theorem ofNat_val (t : φ.A) : φ.ofNat t.val = t := by
   apply A.val_injective φ
   rw [φ.val_ofNat, Nat.mod_eq_of_lt (A.val_lt t)]
@@ -111,6 +147,9 @@ def chC : φ.GG →* ℂˣ := (Units.map (Int.castRingHom ℂ).toMonoidHom).comp
 
 def Psi : Subgroup φ.GG := φ.chD.ker
 
+/- English proof (translation)
+Rewrite using `[Frame.Psi, MonoidHom.mem_ker]`. Both sides reduce to the same expression.
+-/
 theorem mem_Psi_iff {φ : Frame} (g : φ.GG) : g ∈ φ.Psi ↔ g.1.2 = 1 := by
   rw [Frame.Psi, MonoidHom.mem_ker]
   rfl
@@ -123,17 +162,37 @@ def tau2 (t : φ.A) : φ.GG := ((-1, 1), φ.iota t)
 
 def TwoGroup : Prop := ∃ j : ℕ, φ.ord = 2 ^ j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iota_add (s t : φ.A) : φ.iota (s + t) = φ.iota s * φ.iota t := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iota_zero : φ.iota 0 = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem iotaInv_iota (t : φ.A) : φ.iotaInv (φ.iota t) = t := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem iota_iotaInv (a : φ.MA) : φ.iota (φ.iotaInv a) = a := rfl
 
+/- English proof (translation)
+Conclude with `Multiplicative.ofAdd.bijective`.
+-/
 theorem iota_bijective : Function.Bijective φ.iota := by
   exact Multiplicative.ofAdd.bijective
 
+/- English proof (translation)
+Use `show Nat.card (G0 × φ.MA) = _`. Rewrite using `[Nat.card_prod]`. Establish `h0 : Nat.card G0 = 4` using `by show Nat.card (ℤˣ × ℤˣ) = 4`. Rewrite using `[Nat.card_prod, Nat.card_eq_fintype_card, Fintype.card_units_int]`. Establish `h2 : Nat.card φ.MA = φ.ord` using `φ.natCard_A`.
+
+Rewrite using `[h0, h2]`.
+-/
 theorem natCard_GG : Nat.card φ.GG = 4 * φ.ord := by
   show Nat.card (G0 × φ.MA) = _
   rw [Nat.card_prod]

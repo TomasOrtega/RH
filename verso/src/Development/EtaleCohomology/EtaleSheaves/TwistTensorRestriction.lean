@@ -16,6 +16,9 @@ def LeafInjSecInj : Prop := ∀ (q : ℕ) [NeZero q] (M : Shv (ZMod q)) [Injecti
 def LeafInjFlatZMod : Prop := ∀ (q : ℕ) [NeZero q] (M : Type 1) [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M],
   Module.Injective (ULift.{1} (ZMod q)) M → Module.Flat (ULift.{1} (ZMod q)) M
 
+/- English proof (translation)
+Use `⟨M.obj, 𝟙 M.obj, fun U y => ⟨⊤, (Scheme.etaleTopology).top_mem U, fun V g _ => ⟨Sec.res g y, rfl⟩⟩, fun U x hx => ⟨⊤, (Scheme.etaleTopology).top_mem U, fun V g _ => ?_⟩, fun U _ => h U⟩` and prove the remaining obligations. Establish `hx' : x = 0` using `hx`. Substitute `hx'` using the available equality. Conclude with `map_zero _`.
+-/
 theorem flatS_of_sec {R : Type} [CommRing R] (M : Shv R)
     (h : ∀ U : Scheme.{0}, Module.Flat (ULift.{1} R) (Sec M U)) : FlatS M := by
   refine ⟨M.obj, 𝟙 M.obj, fun U y => ⟨⊤, (Scheme.etaleTopology).top_mem U, fun V g _ => ⟨Sec.res g y, rfl⟩⟩,
@@ -28,6 +31,9 @@ instance resGE (q : ℕ) (i : ℤ) : (res (ZMod q) (tw q i)).IsStrictlyGE 0 := b
   unfold res InjectiveResolution.cochainComplex
   infer_instance
 
+/- English proof (translation)
+Use `⟨resGE q i, resAug (tw q i), ?_, fun U ζ => ?_⟩` and prove the remaining obligations. Unfold `resAug`. Conclude with `(inferInstance : QuasiIso (injectiveResolution (tw q i)).ι')`. Simplify using `only [resGen, resι, sglι, Sec.map]`. Both sides reduce to the same expression.
+-/
 theorem res_isTwRes (q : ℕ) [NeZero q] (i : ℤ) :
     IsTwRes q i (res (ZMod q) (tw q i)) (fun _ ζ => resGen i ζ) := by
   refine ⟨resGE q i, resAug (tw q i), ?_, fun U ζ => ?_⟩
@@ -36,6 +42,9 @@ theorem res_isTwRes (q : ℕ) [NeZero q] (i : ℤ) :
   · simp only [resGen, resι, sglι, Sec.map]
     rfl
 
+/- English proof (translation)
+Use `flatS_of_sec _ fun U => hB q _ ?_` and prove the remaining obligations. Establish `: Injective ((res (ZMod q) (tw q j)).X t)`. Unfold `res`. Use `infer_instance`. Conclude with `hA q _ U`.
+-/
 theorem res_flat (hA : LeafInjSecInj) (hB : LeafInjFlatZMod) (q : ℕ) [NeZero q] (j t : ℤ) :
     FlatS ((res (ZMod q) (tw q j)).X t) := by
   refine flatS_of_sec _ fun U => hB q _ ?_
@@ -46,6 +55,9 @@ theorem res_flat (hA : LeafInjSecInj) (hB : LeafInjFlatZMod) (q : ℕ) [NeZero q
 end LateralTheory.E.ZModFlatnessFromBaerCriterion
 
 open LateralTheory.E.ZModFlatnessFromBaerCriterion in
+/- English proof (translation)
+Introduce `q _ i j T τ hτ`. Conclude with `h97 q i j (i + j) rfl (fun _ ζ => resGen i ζ) (fun _ ζ => resGen j ζ) (res_isTwRes q i) (res_isTwRes q j) (res_flat hA hB q j) τ hτ`.
+-/
 theorem LateralTheory.E.LeafTwPairHtpyPf.LeafTwTensRes_of (h97 : TensTwRes) (hA : LeafInjSecInj) (hB : LeafInjFlatZMod) :
     LateralTheory.E.LeafTwPairHtpyPf.LeafTwTensRes := by
   intro q _ i j T τ hτ

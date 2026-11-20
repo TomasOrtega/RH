@@ -9,6 +9,9 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 
 namespace GlobalTheory.TraitStalk
 
+/- English proof (translation)
+Introduce `_ v J _ _ _ g _` and use `GlobalTheory.PolDiv.idlAlong_fromSpecStalk J v g`.
+-/
 theorem idlAlong_spMap_fromSpecStalk : ∀ (T : Scheme.{0}) (v : T) (J : T.IdealSheafData) (W : Type) [CommRing W] [IsLocalRing W]
     (g : T.presheaf.stalk v →+* W), IsLocalHom g → idlAlong J (spMap g ≫ T.fromSpecStalk v) = (FinalTheorems.stalkId J v).map g :=
   fun _ v J _ _ _ g _ => GlobalTheory.PolDiv.idlAlong_fromSpecStalk J v g

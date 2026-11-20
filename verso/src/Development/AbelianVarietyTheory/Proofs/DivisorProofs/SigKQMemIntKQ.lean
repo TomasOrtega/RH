@@ -5,6 +5,15 @@ open ReciprocityTheory.DiscreteGroups.LocalClassField Matrix GlobalTheory.LKRes
 
 namespace GlobalTheory.LKRes
 
+/- English proof (translation)
+Establish `hle : intKQ p K r ≤ (intKQ p K r).comap (sigKQ p K r).toRingHom`. Use `(Subring.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `x (⟨a, rfl⟩ | ⟨b, rfl⟩)`. Use `show sigKQ p K r (inclK p K r a) ∈ intKQ p K r`. Establish `: sigKQ p K r (inclK p K r a) = inclK p K r a`.
+
+Conclude with `DFunLike.congr_fun (Algebra.TensorProduct.map_comp_includeLeft (AlgHom.id ℚ_[p] K) (frobQ p r)) (a : K)`. Rewrite using `[this]`. Conclude with `Subring.subset_closure (Or.inl ⟨a, rfl⟩)`. Use `show sigKQ p K r (inclQ p K r b) ∈ intKQ p K r`. Establish `hb : GlobalTheory.LKLoc.frobR p (Q0 p) r b ∈ GlobalTheory.LKLoc.intR p (Q0 p) r` using `GlobalTheory.T.frobenius_preserves_integer_ring p (Q0 p) r b b.2`.
+
+Establish `: sigKQ p K r (inclQ p K r b) = inclQ p K r (⟨_, hb⟩ : GlobalTheory.LKLoc.intR p (Q0 p) r)`. Simplify using `[sigKQ, inclQ, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Subring.subset_closure (Or.inr ⟨_, rfl⟩)`.
+
+Conclude with `fun x hx => hle hx`.
+-/
 theorem sigKQ_mem_intKQ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ) :
     ∀ x ∈ intKQ p K r, sigKQ p K r x ∈ intKQ p K r := by
   have hle : intKQ p K r ≤ (intKQ p K r).comap (sigKQ p K r).toRingHom := by
@@ -25,6 +34,11 @@ theorem sigKQ_mem_intKQ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] 
       exact Subring.subset_closure (Or.inr ⟨_, rfl⟩)
   exact fun x hx => hle hx
 
+/- English proof (translation)
+Introduce `p _ K n r g hg`. Take `⟨h, rfl⟩` from `hg`. Set `f : intKQ p K r →+* intKQ p K r` to `(sigKQ p K r).toRingHom.restrict (intKQ p K r) (intKQ p K r) (sigKQ_mem_intKQ p K r)`. Use `⟨GeneralLinearGroup.map f h, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Both sides reduce to the same expression.
+-/
 theorem sigRes_mem_Kres : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (n r : ℕ),
     ∀ g ∈ Kres p K n r, sigRes p K n r g ∈ Kres p K n r := by
   intro p _ K n r g hg

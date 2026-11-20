@@ -14,6 +14,13 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 
 namespace GlobalTheory.LamF
 
+/- English proof (translation)
+Introduce `hL E _ _ _ _ H hs K _ _ T`. Establish `: IsCommMonObj T.pol.A` using `T.pol.isAb.comm`. Take `⟨ra, hra⟩` from `(ringAct_iff_oAct (𝓞 E) (Sp (𝓞 K)) T.pol.A).2 T.t.act`. Establish `hlam : ∀ a : 𝓞 E, LamEq T.pol.L (ra.act a) (𝟙 T.pol.A) T.pol.L (𝟙 T.pol.A) (ra.act (star a))`. Introduce `a`.
+
+Rewrite using `[hra, hs]`. Establish `h` using `T.t.adj a`. Simplify `h` using `[LamEq]`. Use `⟨⟨ra, fun a => (GlobalTheory.RosLam.rosatiAdj_iff_lamEq hL.globalFns _ T.pol _ _ (ra.hom a) (ra.hom _)).2 (hlam a)⟩, hra, ?_⟩` and prove the remaining obligations. Introduce `a Tb k x z c hk hx hz`.
+
+Establish `hp` using `points_sums_eq_products.1 (Sp (𝓞 K)) T.pol.A Tb`. Rewrite `hx`, `hz` using `[hp.2.2.1, hp.1]`. Use `GlobalTheory.T.commutatorPairings_eq_of_cubeLBPairingIso hL (𝓞 K) T.pol T.pol T.pol T.pol (ra.act a) (𝟙 _) (𝟙 _) (ra.act (star a)) (ra.hom a) inferInstance inferInstance (ra.hom _) (hlam a) Tb k x z c hk hx hz` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_oAct_rosatiConj : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] (H : Host E), (∀ a : 𝓞 E, star a = H.bar a) → ∀ (K : Type) [Field K] [NumberField K] (T : PAT H (Sp (𝓞 K))), ∃ oa : T.pol.OAct (𝓞 E), oa.act = T.t.act.act ∧ RosatiConj T.pol oa := by
   intro hL E _ _ _ _ H hs K _ _ T
   have : IsCommMonObj T.pol.A := T.pol.isAb.comm

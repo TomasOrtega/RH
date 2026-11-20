@@ -23,21 +23,33 @@ section Cone
 
 variable {X : Type} [AddCommGroup X] {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X}
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun f : X →ₗ[ℤ] X →ₗ[ℤ] ℝ => f a b) h`. Simplify `e` using `[toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`.
+-/
 theorem apply_of_cone {c : Fin m → ℝ} {x : LinearMap.BilinForm ℤ X} (h : toReal x = ∑ i, c i • toReal (γ i)) (a b : X) :
     (x a b : ℝ) = ∑ i, c i * (γ i a b : ℝ) := by
   have e := congrArg (fun f : X →ₗ[ℤ] X →ₗ[ℤ] ℝ => f a b) h
   simpa [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul] using e
 
+/- English proof (translation)
+Use `⟨0, fun _ => le_rfl, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `[toReal_apply]`.
+-/
 theorem cone_zero : InRCone γ 0 := by
   refine ⟨0, fun _ => le_rfl, ?_⟩
   ext a b
   simp [toReal_apply]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[toReal_apply, LinearMap.sum_apply, h a b]`.
+-/
 private theorem toReal_eq_sum_smul_of_coe_eq_sum {x : LinearMap.BilinForm ℤ X} {c : Fin m → ℝ}
     (h : ∀ a b, (x a b : ℝ) = ∑ i, c i * (γ i a b : ℝ)) : toReal x = ∑ i, c i • toReal (γ i) := by
   ext a b
   simp [toReal_apply, LinearMap.sum_apply, h a b]
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `hx`. Take `⟨d, hd, h'⟩` from `hy`. Use `⟨c + d, fun i => add_nonneg (hc i) (hd i), toReal_eq_sum_smul_of_coe_eq_sum fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, LinearMap.add_apply, Int.cast_add, apply_of_cone h a b, apply_of_cone h' a b, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [add_mul]`.
+-/
 theorem cone_add {x y : LinearMap.BilinForm ℤ X} (hx : InRCone γ x) (hy : InRCone γ y) : InRCone γ (x + y) := by
   obtain ⟨c, hc, h⟩ := hx
   obtain ⟨d, hd, h'⟩ := hy
@@ -46,6 +58,9 @@ theorem cone_add {x y : LinearMap.BilinForm ℤ X} (hx : InRCone γ x) (hy : InR
     ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun i _ => by simp [add_mul]
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on S (fun _ => by simpa using (cone_zero : InRCone γ 0)) ?_` and prove the remaining obligations. Introduce `a S ha ih h`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `cone_add (h a (Finset.mem_insert_self a S)) (ih fun x hx => h x (Finset.mem_insert_of_mem hx))`.
+-/
 theorem cone_sum {S : Finset (LinearMap.BilinForm ℤ X)} (h : ∀ x ∈ S, InRCone γ x) : InRCone γ (∑ x ∈ S, x) := by
   classical
   revert h
@@ -54,11 +69,23 @@ theorem cone_sum {S : Finset (LinearMap.BilinForm ℤ X)} (h : ∀ x ∈ S, InRC
   rw [Finset.sum_insert ha]
   exact cone_add (h a (Finset.mem_insert_self a S)) (ih fun x hx => h x (Finset.mem_insert_of_mem hx))
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[toReal_apply, LinearMap.sum_apply, h a b]`.
+-/
 private theorem toReal_eq_sum_smul_toReal_of_coe_eq {x : LinearMap.BilinForm ℤ X} {c : Fin m → ℝ}
     (h : ∀ a b, (x a b : ℝ) = ∑ i, c i * (γ i a b : ℝ)) : toReal x = ∑ i, c i • toReal (γ i) := by
   ext a b
   simp [toReal_apply, LinearMap.sum_apply, h a b]
 
+/- English proof (translation)
+Establish `hg' : (g : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr hg.ne'`. Establish `hv : ∀ a b, ((((g : ℤ) • x) a b : ℤ) : ℝ) = g * x a b` using `fun a b => by simp`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, h⟩`. Use `⟨fun i => c i / g, fun i => div_nonneg (hc i) (Nat.cast_nonneg g), toReal_eq_sum_smul_toReal_of_coe_eq fun a b => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `apply_of_cone h a b`. Rewrite `e` using `[hv]`. Establish `hs : ∑ i, c i / g * (γ i a b : ℝ) = (∑ i, c i * (γ i a b : ℝ)) / g`. Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+
+Rewrite using `[hs, ← e]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨c, hc, h⟩`. Use `⟨fun i => g * c i, fun i => mul_nonneg (Nat.cast_nonneg g) (hc i), toReal_eq_sum_smul_toReal_of_coe_eq fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[hv, apply_of_cone h a b, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem cone_smul_iff {g : ℕ} (hg : 0 < g) {x : LinearMap.BilinForm ℤ X} : InRCone γ ((g : ℤ) • x) ↔ InRCone γ x := by
   have hg' : (g : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hg.ne'
   have hv : ∀ a b, ((((g : ℤ) • x) a b : ℤ) : ℝ) = g * x a b := fun a b => by simp
@@ -77,6 +104,11 @@ theorem cone_smul_iff {g : ℕ} (hg : 0 < g) {x : LinearMap.BilinForm ℤ X} : I
     rw [hv, apply_of_cone h a b, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `hx`. Establish `e` using `apply_of_cone h y y`. Establish `hr : (0 : ℝ) ≤ x y y`. Rewrite using `[e]`. Conclude with `Finset.sum_nonneg fun i _ => mul_nonneg (hc i) (by exact_mod_cast hγ i y)`.
+
+Conclude with `hr` after adjusting the coercions.
+-/
 theorem cone_nonneg (hγ : ∀ i y, 0 ≤ γ i y y) {x : LinearMap.BilinForm ℤ X} (hx : InRCone γ x) (y : X) : 0 ≤ x y y := by
   obtain ⟨c, hc, h⟩ := hx
   have e := apply_of_cone h y y
@@ -85,6 +117,11 @@ theorem cone_nonneg (hγ : ∀ i y, 0 ≤ γ i y y) {x : LinearMap.BilinForm ℤ
     exact Finset.sum_nonneg fun i _ => mul_nonneg (hc i) (by exact_mod_cast hγ i y)
   exact_mod_cast hr
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `hx`. Establish `e` using `apply_of_cone h y y`. Establish `hr : (x y y : ℝ) = 0`. Rewrite using `[e]`. Simplify using `[hγ]`.
+
+Conclude with `hr` after adjusting the coercions.
+-/
 theorem cone_vanish {x : LinearMap.BilinForm ℤ X} (hx : InRCone γ x) {y : X} (hγ : ∀ i, γ i y y = 0) : x y y = 0 := by
   obtain ⟨c, hc, h⟩ := hx
   have e := apply_of_cone h y y
@@ -93,6 +130,13 @@ theorem cone_vanish {x : LinearMap.BilinForm ℤ X} (hx : InRCone γ x) {y : X} 
     simp [hγ]
   exact_mod_cast hr
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `hx`. Rewrite using `[mem_balForms]`. Use `⟨fun y z => ?_, fun a y z => ?_⟩` and prove the remaining obligations. Establish `hr : (x y z : ℝ) = x z y`. Rewrite using `[apply_of_cone h y z, apply_of_cone h z y]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [(mem_balForms.1 (hγ i)).1 y z]`. Conclude with `hr` after adjusting the coercions. Establish `hr : (x (a • y) z : ℝ) = x y (bar a • z)`. Rewrite using `[apply_of_cone h (a • y) z, apply_of_cone h y (bar a • z)]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [(mem_balForms.1 (hγ i)).2 a y z]`.
+
+Conclude with `hr` after adjusting the coercions.
+-/
 theorem cone_bal {O : Type} [CommRing O] {bar : O → O} [Module O X] (hγ : ∀ i, γ i ∈ balForms bar X)
     {x : LinearMap.BilinForm ℤ X} (hx : InRCone γ x) : x ∈ balForms bar X := by
   obtain ⟨c, hc, h⟩ := hx
@@ -107,6 +151,9 @@ theorem cone_bal {O : Type} [CommRing O] {bar : O → O} [Module O X] (hγ : ∀
       exact Finset.sum_congr rfl fun i _ => by rw [(mem_balForms.1 (hγ i)).2 a y z]
     exact_mod_cast hr
 
+/- English proof (translation)
+Use `LinearMap.ext₂ fun y z => ?_` and prove the remaining obligations. Establish `e` using `h (y + z)`. Simplify using `only [map_add, LinearMap.add_apply, h y, h z, hs z y] at e`. Rewrite using `[LinearMap.zero_apply, LinearMap.zero_apply]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_zero_of_diag {x : LinearMap.BilinForm ℤ X} (hs : ∀ y z, x y z = x z y) (h : ∀ y, x y y = 0) : x = 0 := by
   refine LinearMap.ext₂ fun y z => ?_
   have e := h (y + z)
@@ -121,6 +168,9 @@ section Label
 variable {O : Type} [CommRing O] {bar : O → O} {q : ℕ} {ψ lab : InvFun O}
   {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X]
 
+/- English proof (translation)
+Establish `hmem : genRank γ ∈ {k : ℕ | ∃ (n : ℕ) (τ : Fin n → LinearMap.BilinForm ℤ X), IsCell bar ψ τ ∧ InRCone τ x ∧ genRank τ = k}` using `⟨m, γ, hγ, hx, rfl⟩`. Rewrite using `[hl X hX x (cone_bal hγ.mem hx) (cone_nonneg hγ.nonneg hx)]`. Conclude with `Nat.sInf_le hmem` after adjusting the coercions.
+-/
 theorem lab_le (hl : IsCarrierDim bar q ψ lab) (hX : Module.finrank O X ≤ q) {m : ℕ}
     {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : IsCell bar ψ γ) {x : LinearMap.BilinForm ℤ X} (hx : InRCone γ x) :
     lab.evalZ x ≤ genRank γ := by
@@ -129,6 +179,9 @@ theorem lab_le (hl : IsCarrierDim bar q ψ lab) (hX : Module.finrank O X ≤ q) 
   rw [hl X hX x (cone_bal hγ.mem hx) (cone_nonneg hγ.nonneg hx)]
   exact_mod_cast Nat.sInf_le hmem
 
+/- English proof (translation)
+Establish `hS : {k : ℕ | ∃ (n : ℕ) (τ : Fin n → LinearMap.BilinForm ℤ X), IsCell bar ψ τ ∧ InRCone τ x ∧ genRank τ = k}.Nonempty` using `⟨genRank γ, ⟨m, γ, hγ, hx, rfl⟩⟩`. Take `⟨n, τ, hτ, hxτ, hr⟩` from `Nat.sInf_mem hS`. Use `⟨n, τ, hτ, hxτ, ?_⟩` and prove the remaining obligations. Rewrite using `[hl X hX x (cone_bal hγ.mem hx) (cone_nonneg hγ.nonneg hx)]`. Conclude with `hr` after adjusting the coercions.
+-/
 theorem exists_min (hl : IsCarrierDim bar q ψ lab) (hX : Module.finrank O X ≤ q) {m : ℕ}
     {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : IsCell bar ψ γ) {x : LinearMap.BilinForm ℤ X} (hx : InRCone γ x) :
     ∃ (n : ℕ) (τ : Fin n → LinearMap.BilinForm ℤ X), IsCell bar ψ τ ∧ InRCone τ x ∧ (genRank τ : ℝ) = lab.evalZ x := by
@@ -141,6 +194,9 @@ theorem exists_min (hl : IsCarrierDim bar q ψ lab) (hX : Module.finrank O X ≤
 
 omit [Module.Projective O X] in
 
+/- English proof (translation)
+Establish `e` using `φ.eval_comp (X := X) (X₁ := Fin 0 → O) (r := 0) (fun _ => ⟨0, Subsingleton.elim _ _⟩) (fun _ _ => (0 : ℝ))`. Rewrite `e` using `[φ.eval_of_subsingleton (X := Fin 0 → O)]`. Use `show φ.eval X (fun a b => (((0 : LinearMap.BilinForm ℤ X) a b : ℤ) : ℝ)) = 0`. Simplify using `using e`.
+-/
 theorem evalZ_zero' (φ : InvFun O) : φ.evalZ (0 : LinearMap.BilinForm ℤ X) = 0 := by
   have e := φ.eval_comp (X := X) (X₁ := Fin 0 → O) (r := 0) (fun _ => ⟨0, Subsingleton.elim _ _⟩)
     (fun _ _ => (0 : ℝ))
@@ -150,6 +206,11 @@ theorem evalZ_zero' (φ : InvFun O) : φ.evalZ (0 : LinearMap.BilinForm ℤ X) =
 
 omit [Module.Projective O X] in
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on S (fun _ => by simpa using evalZ_zero' (X := X) ψ) ?_` and prove the remaining obligations. Introduce `a S ha ih h`. Establish `ha'` using `h a (Finset.mem_insert_self a S)`. Establish `hS' : ∀ x ∈ S, InRCone γ x` using `fun x hx => h x (Finset.mem_insert_of_mem hx)`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, evalZ_add_of_linearOn_inRCone O ψ X m γ hγ a _ ha' (cone_sum hS'), ih hS']`.
+-/
 theorem evalZ_sum {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : ψ.LinearOn γ)
     (S : Finset (LinearMap.BilinForm ℤ X)) (h : ∀ x ∈ S, InRCone γ x) :
     ψ.evalZ (∑ x ∈ S, x) = ∑ x ∈ S, ψ.evalZ x := by
@@ -169,6 +230,15 @@ section Face
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {q : ℕ} {ψ lab : InvFun (𝓞 E)}
   {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X]
 
+/- English proof (translation)
+Unfold `InFace`. Establish `hβb` using `cone_bal hτ.mem hβ`. Establish `hβp` using `cone_nonneg hτ.nonneg hβ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxb, hxp, -, hadd, hlab⟩`.
+
+Conclude with `GlobalTheory.T.inRealCone_cell_of_inFace_of_cellForm_CMField E H q ψ lab hψ hl X hX hD m τ hτ β hβb hβp hβ x hxb hxp hadd hlab`. Introduce `hx`. Take `⟨c, hc, hcx⟩` from `id hx`. Establish `hbx` using `cone_add hβ hx`. Use `⟨cone_bal hτ.mem hx, cone_nonneg hτ.nonneg hx, fun y hy => cone_vanish hx fun j => GlobalTheory.T.cell_leastDim_vanishes_where_form_vanishes_diagonal E H q ψ lab hψ hl X hX hD m τ hτ β hβb hβp hβ hr j y hy, evalZ_add_of_linearOn_inRCone (𝓞 E) ψ X m τ hτ.linear β x hβ hx, ?_⟩` and prove the remaining obligations.
+
+Establish `hup : lab.evalZ (β + x) ≤ genRank τ` using `lab_le hl hX hτ hbx`. Establish `e : toReal (β + x) = (1 : ℝ) • toReal β + ∑ k, c k • toReal (τ k)`. Rewrite using `[one_smul, ← hcx]`. Use extensionality with `a b`. Simplify using `[toReal_apply]`.
+
+Establish `hdown : lab.evalZ β ≤ lab.evalZ (β + x)` using `carrierDim_le_of_add_cell (𝓞 E) H.bar q ψ lab hl X hX m τ hτ β hβb hβp (β + x) (cone_bal hτ.mem hbx) (cone_nonneg hτ.nonneg hbx) hβ 1 c one_pos hc e`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem inFace_iff (hψ : IsPolyFan H.bar q ψ) (hl : IsCarrierDim H.bar q ψ lab) (hX : Module.finrank (𝓞 E) X ≤ q)
     (hD : Dominates H.bar X) {m : ℕ} {τ : Fin m → LinearMap.BilinForm ℤ X} (hτ : IsCell H.bar ψ τ)
     {β : LinearMap.BilinForm ℤ X} (hβ : InRCone τ β) (hr : (genRank τ : ℝ) ≤ lab.evalZ β) (x : LinearMap.BilinForm ℤ X) :
@@ -195,6 +265,9 @@ theorem inFace_iff (hψ : IsPolyFan H.bar q ψ) (hl : IsCarrierDim H.bar q ψ la
         (cone_nonneg hτ.nonneg hbx) hβ 1 c one_pos hc e
     linarith
 
+/- English proof (translation)
+Unfold `IsIndec`. Simplify using `only [inFace_iff hψ hl hX hD hτ hβ hr]`.
+-/
 theorem isIndec_iff (hψ : IsPolyFan H.bar q ψ) (hl : IsCarrierDim H.bar q ψ lab) (hX : Module.finrank (𝓞 E) X ≤ q)
     (hD : Dominates H.bar X) {m : ℕ} {τ : Fin m → LinearMap.BilinForm ℤ X} (hτ : IsCell H.bar ψ τ)
     {β : LinearMap.BilinForm ℤ X} (hβ : InRCone τ β) (hr : (genRank τ : ℝ) ≤ lab.evalZ β) (x : LinearMap.BilinForm ℤ X) :
@@ -209,6 +282,43 @@ end Exist
 
 open _root_.GlobalTheory.PolFan.Mark.Exist in
 
+/- English proof (translation)
+Use `haveI : Module.Finite ℤ X := Module.Finite.trans (𝓞 E) X`. Establish `hD` using `hDom X`. Establish `hβ0 : β ≠ 0`. Introduce and unpack `rfl`. Rewrite `hlab` using `[evalZ_zero']`.
+
+Establish `: (0 : ℝ) < ((i + 1 : ℕ) : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨n, τ, hτ, hβτ, hrk⟩` from `exists_min hl hX hv hvβ`. Establish `hr : (genRank τ : ℝ) ≤ lab.evalZ β` using `hrk.le`. Take `⟨S, hSmem⟩ : ∃ S : Finset (LinearMap.BilinForm ℤ X), ∀ x, x ∈ S ↔ InRCone τ x ∧ x ≠ 0 ∧ ∀ y z, InRCone τ y → InRCone τ z → y ≠ 0 → z ≠ 0 → y + z ≠ x` from `⟨(finite_indec_inRCone X n τ).toFinset, fun x => Set.Finite.mem_toFinset _⟩`.
+
+Establish `hScone : ∀ x ∈ S, InRCone τ x` using `fun x hx => ((hSmem x).1 hx).1`. Establish `hστ : InRCone τ (∑ x ∈ S, x)` using `cone_sum hScone`. Establish `F` using `fun x => inFace_iff hψ hl hX hD hτ hβτ hr x`. Establish `hcl : β ∈ AddSubmonoid.closure {y | IsIndec H.bar ψ lab β y}`. Use `GlobalTheory.T.mem_closure_sum_indecomposable_face_of_additive (𝓞 E) H.bar ψ lab X β ?_ ?_ ?_ β ((F β).2 hβτ)` and prove the remaining obligations.
+
+Introduce `x y hx hy`. Conclude with `⟨(F _).2 (cone_add ((F x).1 hx) ((F y).1 hy)), evalZ_add_of_linearOn_inRCone (𝓞 E) ψ X n τ hτ.linear x y ((F x).1 hx) ((F y).1 hy)⟩`. Introduce `x hx`. Establish `hx'` using `(F x).1 hx`. Conclude with `(hψ X hX).integral x (cone_bal hτ.mem hx') (cone_nonneg hτ.nonneg hx')`.
+
+Introduce `x hx hx0`. Establish `hx'` using `(F x).1 hx`. Conclude with `(hψ X hX).pos x (cone_bal hτ.mem hx') (cone_nonneg hτ.nonneg hx') hx0`. Establish `key : ∀ z, z ∈ AddSubmonoid.closure {y | IsIndec H.bar ψ lab β y} → ∃ (N : ℕ) (w : LinearMap.BilinForm ℤ X), InRCone τ w ∧ N • (∑ x ∈ S, x) = z + w`. Introduce `z hz`.
+
+Proceed by induction on `hz using AddSubmonoid.closure_induction with`. Consider the case `mem z hz`. Establish `hzS : z ∈ S` using `(hSmem z).2 ((isIndec_iff hψ hl hX hD hτ hβτ hr z).1 hz)`. Use `⟨1, ∑ x ∈ S.erase z, x, cone_sum fun x hx => hScone x (Finset.mem_of_mem_erase hx), ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`.
+
+Conclude with `(Finset.add_sum_erase S (fun x => x) hzS).symm`. Consider the case `zero => exact ⟨0, 0, cone_zero, by simp⟩`. Consider the case `add z z' _ _ ih ih'`. Take `⟨N, w, hw, e⟩` from `ih`. Take `⟨N', w', hw', e'⟩` from `ih'`.
+
+Use `⟨N + N', w + w', cone_add hw hw', ?_⟩` and prove the remaining obligations. Rewrite using `[add_smul, e, e']`. Normalize the expressions using the abelian group laws. Take `⟨N, w, hw, hNw⟩` from `key β hcl`. Establish `hN : (N + 1) • (∑ x ∈ S, x) = β + (w + ∑ x ∈ S, x)`.
+
+Rewrite using `[add_smul, one_smul, hNw, add_assoc]`. Establish `hww : InRCone τ (w + ∑ x ∈ S, x)` using `cone_add hw hστ`. Establish `hσ0 : (∑ x ∈ S, x) ≠ 0`. Introduce `h0`. Rewrite `hN` using `[h0, smul_zero, add_zero]`.
+
+Apply `hβ0` to reduce the goal to its premises. Use `eq_zero_of_diag (mem_balForms.1 hb).1 fun y => le_antisymm ?_ (hp y)` and prove the remaining obligations. Establish `h1` using `congrArg (fun f : LinearMap.BilinForm ℤ X => f y y) hN`. Establish `h2` using `cone_nonneg hτ.nonneg hw y`. Simplify using `only [LinearMap.add_apply, LinearMap.zero_apply] at h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨g, β₀, hg, hgβ, hprim⟩` from `GlobalTheory.bilinForm_exists_primitive_of_ne_zero X _ hσ0`. Establish `hβ₀τ : InRCone τ β₀` using `(cone_smul_iff hg).1 (by rw [hgβ]; exact hστ)`. Establish `hβ₀b` using `cone_bal hτ.mem hβ₀τ`. Establish `hβ₀p` using `cone_nonneg hτ.nonneg hβ₀τ`.
+
+Establish `hle : lab.evalZ β₀ ≤ genRank τ` using `lab_le hl hX hτ hβ₀τ`. Establish `hge : lab.evalZ β ≤ lab.evalZ β₀`. Take `⟨c, hc, hcw⟩` from `hww`. Establish `hM : (0 : ℝ) < ((N : ℝ) + 1) * g` using `by positivity`. Use `carrierDim_le_of_add_cell (𝓞 E) H.bar q ψ lab hl X hX n τ hτ β hb hp β₀ hβ₀b hβ₀p hβτ (1 / (((N : ℝ) + 1) * g)) (fun k => c k / (((N : ℝ) + 1) * g)) (by positivity) (fun k => div_nonneg (hc k) hM.le) ?_` and prove the remaining obligations.
+
+Use extensionality with `a b`. Establish `e1` using `congrArg (fun f : LinearMap.BilinForm ℤ X => f a b) hN`. Establish `e3` using `congrArg (fun f : LinearMap.BilinForm ℤ X => f a b) hgβ`. Establish `e2` using `apply_of_cone hcw a b`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, nsmul_eq_mul] at e1 e3`.
+
+Simplify using `only [LinearMap.add_apply, Int.cast_add] at e2`. Establish `e1' : ((N : ℝ) + 1) * ((∑ x ∈ S, x) a b : ℤ) = (β a b : ℝ) + ((w a b : ℝ) + ((∑ x ∈ S, x) a b : ℤ))`. Conclude with `e1` after adjusting the coercions. Establish `e3' : (g : ℝ) * (β₀ a b : ℝ) = (((∑ x ∈ S, x) a b : ℤ) : ℝ)` using `by exact_mod_cast e3`. Establish `hs : ∑ k, c k / (((N : ℝ) + 1) * g) * (τ k a b : ℝ) = (∑ k, c k * (τ k a b : ℝ)) / (((N : ℝ) + 1) * g)`.
+
+Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Simplify using `only [toReal_apply, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.sum_apply, smul_eq_mul]`. Establish `hMne : ((N : ℝ) + 1) * g ≠ 0` using `hM.ne'`. Establish `hb0 : (β₀ a b : ℝ) = ((β a b : ℝ) + ((w a b : ℝ) + (((∑ x ∈ S, x) a b : ℤ) : ℝ))) / (((N : ℝ) + 1) * g)`.
+
+Rewrite using `[eq_div_iff hMne]`. Take the linear combination `((N : ℝ) + 1) * e3' + e1'`. Rewrite using `[hs, ← e2, hb0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlab0 : lab.evalZ β₀ = ((i + 1 : ℕ) : ℝ)` using `by linarith`.
+
+Establish `hr0 : (genRank τ : ℝ) ≤ lab.evalZ β₀` using `by linarith`. Establish `hface` using `(F β₀).2 hβ₀τ`. Unfold `InFace at hface`. Take `⟨-, -, -, hadd, hlabeq⟩` from `hface`. Establish `hv₀ : InRCone v β₀` using `GlobalTheory.T.inRealCone_cell_of_inFace_of_cellForm_CMField E H q ψ lab hψ hl X hX hD m v hv β hb hp hvβ β₀ hβ₀b hβ₀p hadd hlabeq`.
+
+Use `⟨β₀, ?_, hv₀⟩` and prove the remaining obligations. Unfold `IsMarked`. Use `⟨hβ₀b, hβ₀p, hprim, hlab0, S, fun x => ?_, g, hg, hgβ⟩` and prove the remaining obligations. Rewrite using `[hSmem x, isIndec_iff hψ hl hX hD hτ hβ₀τ hr0 x]`.
+-/
 theorem exists_isMarked_inRCone (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ)
     (ψ lab : InvFun (𝓞 E)) (i : ℕ)
     (hDom : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X],

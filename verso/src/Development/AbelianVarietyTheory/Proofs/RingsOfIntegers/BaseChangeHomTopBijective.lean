@@ -29,6 +29,31 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {Y Y' : Scheme.{0}}
   {f : Y ⟶ Spec (CommRingCat.of R)} {f' : Y' ⟶ Spec (CommRingCat.of R')} {π : Y' ⟶ Y} {M : LB Y}
 
+/- English proof (translation)
+Establish `e0 : (⊤ : Y'.Opens) ≤ π ⁻¹ᵁ ⊤` using `le_top`. Use `show Function.Bijective (SecOnR.baseChangeHom M H.w ⊤ ⊤ e0)`. Establish `: IsSeparated (terminal.from Y)`. Rewrite using `[← terminal.comp_from f]`. Use `infer_instance`.
+
+Take `⟨s, hs, hcov⟩` from `(isCompact_iff_finite_and_eq_biUnion_affineOpens (X := Y) (U := ⊤)).mp (by rw [TopologicalSpace.Opens.coe_top]; exact isCompact_univ)`. Set `t` to `hs.toFinset`. Set `D : Fin t.card → Y.Opens` to `fun k => ((t.equivFin.symm k : t) : Y.affineOpens)`. Establish `hDa : ∀ k, IsAffineOpen (D k)` using `fun k => ((t.equivFin.symm k : t) : Y.affineOpens).2`. Establish `hD : ∀ I : Finset (Fin t.card), I.Nonempty → IsAffineOpen (⨅ i ∈ I, D i)` using `fun I hI => IsAffineOpen.biInf (I : Set (Fin t.card)) I.finite_toSet hI (fun k _ => hDa k)`.
+
+Establish `hc : ⨆ k, D k = ⊤`. Use `top_unique ?_` and prove the remaining obligations. Rewrite using `[hcov]`. Use `iSup₂_le fun i hi => ?_` and prove the remaining obligations. Establish `hit : i ∈ t` using `hs.mem_toFinset.mpr hi`.
+
+Use `le_trans (le_of_eq ?_) (le_iSup D (t.equivFin ⟨i, hit⟩))` and prove the remaining obligations. Simplify using `[D]`. Establish `hc' : ⨆ k, π ⁻¹ᵁ D k = ⊤` using `iSup_preimage π hc`. Set `toC` to `CechOne.toCech M f D (fun _ => le_top)`. Set `toC'` to `CechOne.toCech (M.pull π) f' (fun k => π ⁻¹ᵁ D k) (fun _ => le_top)`.
+
+Establish `hinj' : Function.Injective toC'` using `CechOne.toCech_injective (M.pull π) f' (D := fun k => π ⁻¹ᵁ D k) (fun _ => le_top) hc'.ge`. Establish `hex' : Function.Exact toC' ((cechLB f' (M.pull π) fun k => π ⁻¹ᵁ D k).d 0 1).hom` using `CechOne.exact_toCech (M.pull π) f' (D := fun k => π ⁻¹ᵁ D k) (fun _ => le_top) hc'.ge`. Establish `hflat : Function.Injective (toC.baseChange R')`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ (CechOne.toCech_injective M f (D := D) (fun _ => le_top) hc.ge)`.
+
+Establish `hexR : Function.Exact (toC.baseChange R') (((cechLB f M D).d 0 1).hom.baseChange R')`. Rewrite using `[LinearMap.baseChange_eq_ltensor, LinearMap.baseChange_eq_ltensor]`. Conclude with `Module.Flat.lTensor_exact R' (CechOne.exact_toCech M f (D := D) (fun _ => le_top) hc.ge)`. Establish `compat : ∀ x, toC' (SecOnR.baseChangeHom M H.w ⊤ ⊤ e0 x) = termMap M D H.w 0 (toC.baseChange R' x)`. Introduce `x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul c s0`. Use function extensionality and compare the values at `u`. Rewrite using `[LinearMap.baseChange_tmul, SecOnR.baseChangeHom_tmul]`.
+
+Unfold `termMap`. Use `erw [secTermBaseChange_tmul, LinearMap.map_smul, Pi.smul_apply]`. Use `erw [CechOne.toCech_apply (M.pull π) f' (fun k => π ⁻¹ᵁ D k) (fun _ => le_top) _ u le_top]`. Use `erw [CechOne.toCech_apply M f D (fun _ => le_top) s0 u le_top]`. Use `congr 1`.
+
+Establish `h1` using `SecOnR.baseChangeHom_restrict H.w (le_top : (⨅ i ∈ u.1, D i) ≤ ⊤) (le_top : (⨅ i ∈ u.1, π ⁻¹ᵁ D i) ≤ ⊤) e0 (preimage_biInf D π u.1).ge ((1 : R') ⊗ₜ s0)`. Rewrite `h1` using `[LinearMap.baseChange_tmul, SecOnR.baseChangeHom_tmul, SecOnR.baseChangeHom_tmul, one_smul, one_smul]`. Establish `h2` using `secCubeBaseChange_app_tmul M D H.w u.1 (1 : R') (SecOnR.restrict f M le_top s0)`. Rewrite `h2` using `[one_smul]`. Use `erw [← h1, ← h2]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hbij` using `termMap_bijOn hM H hD`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Apply `hflat` to reduce the goal to its premises.
+
+Establish `hx : toC.baseChange R' x ∈ LinearMap.ker (((cechLB f M D).d 0 1).hom.baseChange R')` using `LinearMap.mem_ker.mpr (hexR.apply_apply_eq_zero x)`. Establish `hy : toC.baseChange R' y ∈ LinearMap.ker (((cechLB f M D).d 0 1).hom.baseChange R')` using `LinearMap.mem_ker.mpr (hexR.apply_apply_eq_zero y)`. Conclude with `hbij.injOn hx hy (by rw [← compat, ← compat, hxy])`. Introduce `z`. Establish `hz : toC' z ∈ LinearMap.ker ((cechLB f' (M.pull π) fun k => π ⁻¹ᵁ D k).d 0 1).hom` using `LinearMap.mem_ker.mpr (hex'.apply_apply_eq_zero z)`.
+
+Take `⟨u, hu, hu'⟩` from `hbij.surjOn hz`. Take `⟨x, rfl⟩` from `(hexR u).mp (LinearMap.mem_ker.mp hu)`. Conclude with `⟨x, hinj' (by rw [compat, hu'])⟩`.
+-/
 theorem baseChangeHom_top_bijective [Module.Flat R R'] [CompactSpace Y] [IsSeparated f] (hM : M.IsLB)
     (H : IsPullback π f' f (Spec.map (CommRingCat.ofHom (algebraMap R R')))) :
     Function.Bijective (SecOnR.baseChangeHom M H.w ⊤ ⊤ le_top) := by
@@ -103,6 +128,15 @@ theorem baseChangeHom_top_bijective [Module.Flat R R'] [CompactSpace Y] [IsSepar
     obtain ⟨x, rfl⟩ := (hexR u).mp (LinearMap.mem_ker.mp hu)
     exact ⟨x, hinj' (by rw [compat, hu'])⟩
 
+/- English proof (translation)
+Establish `key : ∀ i, (SecOnR.topEquiv f M (a • y)).f i = cst f (M.U i) a * (SecOnR.topEquiv f M y).f i`. Introduce `i`. Establish `hs : a • y = (cst f ⊤ a) • y` using `rfl`. Rewrite using `[hs, LinearEquiv.map_smul, ← rs_cst f (le_top : M.U i ≤ ⊤)]`. Both sides reduce to the same expression.
+
+Establish `hext : ∀ (σ τ : LB.Sec M), (∀ i, σ.f i = τ.f i) → σ = τ`. Introduce and unpack `⟨σf, _⟩ ⟨τf, _⟩ hh`. Establish `: σf = τf` using `funext hh`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl i`. Conclude with `key i`. Introduce `h`. Apply `(SecOnR.topEquiv f M).injective` to reduce the goal to its premises.
+
+Conclude with `hext _ _ (fun i => (h i).trans (key i).symm)`.
+-/
 theorem eq_smul_iff (x y : SecOnR f M ⊤) (a : R) : x = a • y ↔
     ∀ i, (SecOnR.topEquiv f M x).f i = cst f _ a * (SecOnR.topEquiv f M y).f i := by
   have key : ∀ i, (SecOnR.topEquiv f M (a • y)).f i = cst f (M.U i) a * (SecOnR.topEquiv f M y).f i := by
@@ -122,6 +156,27 @@ theorem eq_smul_iff (x y : SecOnR f M ⊤) (a : R) : x = a • y ↔
     apply (SecOnR.topEquiv f M).injective
     exact hext _ _ (fun i => (h i).trans (key i).symm)
 
+/- English proof (translation)
+Establish `e0 : (⊤ : Y'.Opens) ≤ π ⁻¹ᵁ ⊤` using `le_top`. Establish `hext : ∀ (σ τ : LB.Sec (M.pull π)), (∀ i, σ.f i = τ.f i) → σ = τ`. Introduce and unpack `⟨σf, _⟩ ⟨τf, _⟩ hh`. Establish `: σf = τf` using `funext hh`. Substitute `this` using the available equality.
+
+Both sides reduce to the same expression. Establish `hK : SecOnR.topEquiv f' (M.pull π) (SecOnR.pull M H.w ⊤ ⊤ e0 ((SecOnR.topEquiv f M).symm θ)) = Formalism.L2.Pj.thfPull M π θ`. Apply `hext` to reduce the goal to its premises. Introduce `J`. Unfold `Formalism.L2.Pj.thfPull SecOnR.topEquiv SecOnR.of SecOn.topEquiv LB.globalEquiv SecOnR.pull`.
+
+Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.coe_mk]`. Express the relevant statement in the definitionally equal form `(Y'.presheaf.map (homOfLE _).op).hom ((Y'.presheaf.map (homOfLE _).op).hom ((π.appLE _ _ _).hom ((Y.presheaf.map (homOfLE _).op).hom (θ.f (J PUnit.unit))))) = _`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply]`. Establish `gen : ∀ (U U' : Y.Opens) (V V₁ V₂ : Y'.Opens) (i : Opposite.op U' ⟶ Opposite.op U) (e : V ≤ π ⁻¹ᵁ U) (i2 : Opposite.op V ⟶ Opposite.op V₁) (i3 : Opposite.op V₁ ⟶ Opposite.op V₂) (e' : V₂ ≤ π ⁻¹ᵁ U'), Y.presheaf.map i ≫ π.appLE U V e ≫ Y'.presheaf.map i2 ≫ Y'.presheaf.map i3 = π.a …`. Use `intros`.
+
+Rewrite using `[Scheme.Hom.appLE_map_assoc, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`. Conclude with `congrArg (fun g : Γ(Y, M.U (J PUnit.unit)) ⟶ Γ(Y', (M.pull π).U J) => g.hom (θ.f (J PUnit.unit))) (gen _ _ _ _ _ _ _ _ _ _)`. Establish `hB : Function.Bijective (SecOnR.baseChangeHom M H.w ⊤ ⊤ e0)` using `baseChangeHom_top_bijective hM H`. Establish `hsec : Function.Bijective (LinearMap.toSpanSingleton R (SecOnR f M ⊤) ((SecOnR.topEquiv f M).symm θ))`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `a b hab`. Simplify using `only [LinearMap.toSpanSingleton_apply] at hab`. Take `⟨c, -, hc⟩` from `hθ (SecOnR.topEquiv f M (a • (SecOnR.topEquiv f M).symm θ))`. Establish `ha` using `(eq_smul_iff (a • (SecOnR.topEquiv f M).symm θ) ((SecOnR.topEquiv f M).symm θ) a).mp rfl`. Establish `hb` using `(eq_smul_iff (a • (SecOnR.topEquiv f M).symm θ) ((SecOnR.topEquiv f M).symm θ) b).mp hab`.
+
+Rewrite `ha`, `hb` using `[LinearEquiv.apply_symm_apply]`. Conclude with `(hc a ha).trans (hc b hb).symm`. Introduce `s`. Take `⟨a, ha, -⟩` from `hθ (SecOnR.topEquiv f M s)`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.toSpanSingleton_apply]`. Use `((eq_smul_iff s ((SecOnR.topEquiv f M).symm θ) a).mpr ?_).symm` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `ha`. Set `φL` to `LinearEquiv.ofBijective _ hsec`.
+
+Set `Φ : R' → SecOnR f' (M.pull π) ⊤` to `fun c => SecOnR.baseChangeHom M H.w ⊤ ⊤ e0 (LinearEquiv.lTensor R' φL ((TensorProduct.rid R R').symm c))`. Establish `hΦ : Function.Bijective Φ` using `hB.comp ((LinearEquiv.lTensor R' φL).bijective.comp (TensorProduct.rid R R').symm.bijective)`. Establish `hΦc : ∀ c, Φ c = c • SecOnR.pull M H.w ⊤ ⊤ e0 ((SecOnR.topEquiv f M).symm θ)`. Introduce `c`. Simplify using `only [Φ, TensorProduct.rid_symm_apply, LinearEquiv.lTensor_tmul, φL, LinearEquiv.ofBijective_apply, LinearMap.toSpanSingleton_apply, one_smul, SecOnR.baseChangeHom_tmul]`.
+
+Establish `key : ∀ c : R', (SecOnR.topEquiv f' (M.pull π)).symm σ = c • SecOnR.pull M H.w ⊤ ⊤ e0 ((SecOnR.topEquiv f M).symm θ) ↔ ∀ i, σ.f i = cst f' _ c * (Formalism.L2.Pj.thfPull M π θ).f i`. Introduce `c`. Rewrite using `[eq_smul_iff, LinearEquiv.apply_symm_apply, hK]`. Take `⟨c, hc⟩` from `hΦ.2 ((SecOnR.topEquiv f' (M.pull π)).symm σ)`. Use `⟨c, (key c).mp (by rw [← hc, hΦc]), fun c' hc' => hΦ.1 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hΦc, hΦc, ← (key c').mpr hc', ← hc, hΦc]`.
+-/
 theorem existsUnique_mul_pull [Module.Flat R R'] [CompactSpace Y] [IsSeparated f] (hM : M.IsLB)
     (H : IsPullback π f' f (Spec.map (CommRingCat.ofHom (algebraMap R R')))) (θ : LB.Sec M)
     (hθ : ∀ σ : LB.Sec M, ∃! a : R, ∀ i, σ.f i = cst f _ a * θ.f i) (σ : LB.Sec (M.pull π)) :
@@ -186,6 +241,21 @@ theorem existsUnique_mul_pull [Module.Flat R R'] [CompactSpace Y] [IsSeparated f
 
 open Geo.Tor Formalism.L2.Pj in
 
+/- English proof (translation)
+Establish `unitCancel1 : ∀ {S : Type} [CommRing S] (u : Sˣ) (c a b x y : S), x = c * y → y = ↑u * b → x = ↑u * a → a = c * b`. Introduce `S _ u c a b x y h1 h2 h3`. Combine the equalities or inequalities in the displayed calculation. Establish `unitCancel2 : ∀ {S : Type} [CommRing S] (u : Sˣ) (c a b x y : S), a = c * b → y = ↑u * b → x = ↑u * a → x = c * y`. Introduce `S _ u c a b x y h1 h2 h3`.
+
+Rewrite using `[h3, h1, h2, mul_left_comm]`. Establish `hMp : (M.pull π).IsLB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.pull_isLB hM π`. Take `⟨w', hw', hinv⟩` from `GlobalTheory.GenericSectionBasis.exists_inv_iso w hw`. Use `set σ : LB.Sec (M.pull π) := ReciprocityTheory.ChartRestriction.G.DVR.secOfIso σ' hw' hMp hL' with hσdef`. Establish `hrel : ∀ (y : Y') (J : (M.pull π).ι) (k : L'.ι), y ∈ (M.pull π).U J → y ∈ L'.U k → ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs (𝟙 Y') y _ (σ.f J) = (ReciprocityTheory.ChartRestriction.G.Geo.Tor.gw w (𝟙 Y') y (J PUnit.unit) k).val * ReciprocityTheory.ChartRestriction.G.Geo.Tor …`.
+
+Introduce `y J k hJ hk`. Prove the components needed by the constructor for the conclusion. Establish `hs` using `GlobalTheory.GenericGenerated.gs_secOfIso w' σ' hw' hMp hL' J k (𝟙 Y') y (TopologicalSpace.Opens.mem_inf.2 ⟨hJ, hk⟩)`. Rewrite `hs` using `[hinv Y' (𝟙 Y') y k J (TopologicalSpace.Opens.mem_inf.2 ⟨hk, hJ⟩), inv_inv]`. Conclude with `hs`.
+
+Conclude with `(GlobalTheory.ArcQ.FrUniq.isoMaps_iff w θ' θ).mp h Y' (𝟙 Y') y (J PUnit.unit) k ((ReciprocityTheory.ChartRestriction.G.Geo.Tor.mem_pull).mp hJ) hk`. Take `⟨a, ha, huniq⟩` from `hθ σ`. Establish `haP` using `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.sec_eq_iff f' σ θ a).mp ha`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Use `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.sec_eq_iff f' σ' θ' a).mpr ?_` and prove the remaining obligations.
+
+Introduce `k y hk`. Take `⟨j, hj⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hM (π y)`. Establish `hJ : y ∈ (M.pull π).U (fun _ => j)` using `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.mem_pull).mpr hj`. Take `⟨h3, h2⟩` from `hrel y (fun _ => j) k hJ hk`. Conclude with `unitCancel1 _ _ _ _ _ _ (haP (fun _ => j) y hJ) h2 h3`.
+
+Introduce `b hb`. Establish `hbP` using `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.sec_eq_iff f' σ' θ' b).mp hb`. Apply `huniq` to reduce the goal to its premises. Use `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.sec_eq_iff f' σ θ b).mpr ?_` and prove the remaining obligations. Introduce `J y hJ`.
+
+Take `⟨k, hk⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hL' y`. Take `⟨h3, h2⟩` from `hrel y J k hJ hk`. Conclude with `unitCancel2 _ _ _ _ _ _ (hbP k y hk) h2 h3`.
+-/
 theorem existsUnique_mul_of_isoMaps {L' : LB Y'} (hM : M.IsLB) (hL' : L'.IsLB) {w : LB.Iso L' (M.pull π)}
     (hw : w.IsGen) (θ' : LB.Sec L') (θ : LB.Sec (M.pull π)) (h : IsoMaps w θ' θ)
     (hθ : ∀ σ : LB.Sec (M.pull π), ∃! a : R', ∀ i, σ.f i = constFn f' _ a * θ.f i) (σ' : LB.Sec L') :
@@ -249,6 +319,47 @@ open scoped CategoryTheory.Obj
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Establish `isTan_iff : ∀ {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] (w : epsOver R R ⟶ G), ReciprocityTheory.ChartRestriction.G.Chart.IsTan w ↔ IsTan w`. Introduce `R _ G _ w`. Unfold `ReciprocityTheory.ChartRestriction.G.Chart.IsTan IsTan`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `congrArg (fun q => Over.Hom.left q) h`. Introduce `h`. Conclude with `Over.OverMorphism.ext h`. Establish `prod_tvec : ∀ {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {n : ℕ} {x : ∀ k : ℕ, ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀` using `R) (ReciprocityTheory.ChartRestriction.G.Chart.JetR R (Fin n) k) ⟶ G} (hx : ReciprocityTheory.ChartRestriction.G.Chart.IsUnivChart G n x) {m : ℕ} (c : Fin m → R) (b : Fin m → Fin n → R), (List.ofFn fun i => tvec (x := x) (c i • b i)).prod = tvec (x := x) (∑ i, c i • b i) := by`. Introduce `R _ G _ n x hx m c b`.
+
+Take `⟨h, hh⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.list_prod_tan' hx (fun i => tvec (x := x) (c i • b i)) (fun i => isTan_tvec hx _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hh]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl (fun i _ => ReciprocityTheory.ChartRestriction.G.Chart.tcoord_tvec hx _)`.
+
+Establish `comb_iff : ∀ {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {n : ℕ} {x : ∀ k : ℕ, ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀` using `R) (ReciprocityTheory.ChartRestriction.G.Chart.JetR R (Fin n) k) ⟶ G} (hx : ReciprocityTheory.ChartRestriction.G.Chart.IsUnivChart G n x) {m : ℕ} (b : Fin m → Fin n → R) (c : Fin m → R) (w : epsOver R R ⟶ G), IsComb (fun i => tvec (x := x) (b i)) c w ↔ w = tvec (x := x) (∑ i, c i …`. Introduce `R _ G _ n x hx m b c w`. Establish `hs : ∀ i, tvec (x` using `x) (c i • b i) = ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.scaleD (c i)) ≫ tvec (x := x) (b i) := fun i => ReciprocityTheory.ChartRestriction.G.Chart.tvec_smul hx (c i) (b i)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u', hu', rfl⟩`.
+
+Establish `e : u' = fun i => tvec (x` using `x) (c i • b i) := by`. Use function extensionality and compare the values at `i`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hu' i, hs i]`. Both sides reduce to the same expression.
+
+Substitute `e` using the available equality. Conclude with `prod_tvec hx c b`. Introduce `hw`. Use `⟨fun i => tvec (x := x) (c i • b i), fun i => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[hs i]`. Both sides reduce to the same expression. Rewrite using `[hw, prod_tvec hx c b]`. Establish `eig_iff : ∀ {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {n : ℕ} {x : ∀ k : ℕ, ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀` using `R) (ReciprocityTheory.ChartRestriction.G.Chart.JetR R (Fin n) k) ⟶ G} (hx : ReciprocityTheory.ChartRestriction.G.Chart.IsUnivChart G n x) (f : G ⟶ G) [IsMonHom f] (c : Fin n → R) (s : R), (tvec (x := x) c ≫ f).left = spMap (epsMul s) ≫ (tvec (x := x) c).left ↔ tmap hx f c = s • c …`. Introduce `R _ G _ n x hx f _ c s`.
+
+Rewrite using `[← ReciprocityTheory.ChartRestriction.G.Chart.tvec_eig_iff hx f c s]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Over.OverMorphism.ext h`. Introduce `h`.
+
+Conclude with `congrArg (fun q => Over.Hom.left q) h`. Establish `vecMul_eq : ∀ {A S : Type} [CommRing A] [CommRing S] [Algebra A S] {d : ℕ} (L : (Fin d → A) →ₗ[A] (Fin d → A)) (T : (Fin d → S) →ₗ[S] (Fin d → S)), (∀ c, T (algebraMap A S ∘ c) = algebraMap A S ∘ L c) → ∀ (w : Fin d → S), w ᵥ* (Matrix.of fun i k => L (fun j => if i = j then 1 els …`. Introduce `A S _ _ _ d L T hT w`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ T w]`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [Matrix.vecMul, dotProduct, Matrix.map_apply, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `e : (fun j => if i = j then (1 : S) else 0) = algebraMap A S ∘ (fun j => if i = j then (1 : A) else 0)`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h]`.
+
+Rewrite using `[e, hT]`. Both sides reduce to the same expression. Take `⟨d, x, hx⟩` from `univChartLoc G`. Take `⟨x', hx', hxx'⟩` from `tanBC_alg (R' := V') G d x hx`. Establish `htan : ∀ i, ReciprocityTheory.ChartRestriction.G.Chart.IsTan (u i)` using `fun i => (isTan_iff (u i)).2 (ht i)`.
+
+Take `⟨b, hu⟩ : ∃ b : Fin m → Fin d → V, u = fun i => tvec (x` from `x) (b i) := ⟨fun i => ReciprocityTheory.ChartRestriction.G.Chart.tcoord hx (u i) (htan i),`. Use function extensionality and compare the values at `fun i => ReciprocityTheory.ChartRestriction.G.Chart.tcoord_spec hx (u i) (htan i)⟩`. Substitute `hu` using the available equality. Establish `hbe : ∀ i a, tmap hx (act a) (b i) = χ a • b i` using `fun i a => (eig_iff hx (act a) (b i) (χ a)).1 (he i a)`. Set `M : O → Matrix (Fin d) (Fin d) V` to `fun a => Matrix.of fun i k => tmap hx (act a) (fun j => if i = j then 1 else 0) k`.
+
+Establish `hMV : ∀ a (w : Fin d → V), w ᵥ* (M a).map (algebraMap V V) = tmap hx (act a) w` using `fun a w => vecMul_eq (tmap hx (act a)) (tmap hx (act a)) (fun c => by ext; simp) w`. Establish `hM0 : ∀ a (w : Fin d → V), w ᵥ* M a = tmap hx (act a) w`. Introduce `a w`. Establish `e : (M a).map (algebraMap V V) = M a`. Use extensionality with `i k`.
+
+Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `hMV a w`. Establish `key` using `(GlobalTheory.commonEigenvectors_flat_baseChange V O d m M χ).1 V b (fun k a => (hM0 a (b k)).trans (hbe k a)) (fun w hw => by`. Establish `hw' : ∀ a, tmap hx (act a) w = χ a • w` using `fun a => (hMV a w).symm.trans (hw a)`.
+
+Take `⟨c, hc, huniq⟩` from `hb (tvec (x := x) w) ((isTan_iff _).1 (isTan_tvec hx w)) (fun a => (eig_iff hx (act a) w (χ a)).2 (hw' a))`. Use `⟨c, ?_, fun c' hc' => huniq c' ?_⟩` and prove the remaining obligations. Conclude with `tvec_inj hx ((comb_iff hx b c _).1 hc)`. Conclude with `(comb_iff hx b c' _).2 (congrArg (fun z => tvec (x := x) z) hc'))`. Establish `hT : ∀ a c, tmap hx' ((Over.pullback (fB V V')).map (act a)) (algebraMap V V' ∘ c) = algebraMap V V' ∘ tmap hx (act a) c`.
+
+Introduce `a c`. Apply `tvec_inj hx'` to reduce the goal to its premises. Rewrite using `[tvec_tmap hx' ((Over.pullback (fB V V')).map (act a))]`. Apply `pushR_inj G` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[pushR_map, Over.comp_left, pushR_left, pushR_left, hxx' c, hxx' (tmap hx (act a) c), tvec_tmap hx (act a) c, Over.comp_left, Category.assoc]`. Establish `hbe' : ∀ i a, tmap hx' ((Over.pullback (fB V V')).map (act a)) (algebraMap V V' ∘ b i) = algebraMap V V' (χ a) • (algebraMap V V' ∘ b i)`. Introduce `i a`. Rewrite using `[hT, hbe i a]`. Use function extensionality and compare the values at `j`.
+
+Simplify using the standard rewrite rules. Use `⟨fun i => tvec (x := x') (algebraMap V V' ∘ b i), fun i => (isTan_iff _).1 (isTan_tvec hx' _), fun i a => (eig_iff hx' _ _ _).2 (hbe' i a), ?_, fun i => hxx' (b i)⟩` and prove the remaining obligations. Introduce `w hw hwe`. Establish `hwc` using `(isTan_iff w).2 hw`. Take `⟨c', rfl⟩ : ∃ c', w = tvec (x` from `x') c' := ⟨_, ReciprocityTheory.ChartRestriction.G.Chart.tcoord_spec hx' w hwc⟩`.
+
+Establish `hce : ∀ a, tmap hx' ((Over.pullback (fB V V')).map (act a)) c' = algebraMap V V' (χ a) • c'` using `fun a => (eig_iff hx' _ c' _).1 (hwe a)`. Establish `hk` using `key V' c' (fun a => (vecMul_eq (tmap hx (act a)) (tmap hx' ((Over.pullback (fB V V')).map (act a))) (hT a) c').trans (hce a))`. Use `(existsUnique_congr fun cf => ?_).2 hk` and prove the remaining obligations. Rewrite using `[comb_iff hx' (fun i => algebraMap V V' ∘ b i) cf]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `tvec_inj hx' h`. Introduce `h`. Conclude with `congrArg (fun z => tvec (x := x') z) h`.
+-/
 theorem exists_eigenbasis_pullback {V V' : Type} [CommRing V] [IsLocalRing V] [IsNoetherianRing V] [CommRing V']
     [Algebra V V'] [Module.Flat V V'] (G : Over (Sp V)) [GrpObj G] [Smooth G.hom] {O : Type} (act : O → (G ⟶ G))
     [∀ a, IsMonHom (act a)] (χ : O → V) {m : ℕ} (u : Fin m → (epsOver V V ⟶ G)) (ht : ∀ i, IsTan (u i))
@@ -404,6 +515,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Establish `key : ∀ a : T.V, iT (algebraMap T.V T.Fr a) ∈ (algebraMap T'.V T'.Fr).range`. Introduce `a`. Distinguish the cases in `hx : iT (algebraMap T.V T.Fr a) = 0`. Rewrite using `[hx]`. Conclude with `zero_mem _`.
+
+Establish `ha : algebraMap T.V T.Fr a ≠ 0` using `fun h0 => hx (by rw [h0, map_zero])`. Establish `h1` using `h (algebraMap T.V T.Fr a)`. Unfold `vV valV at h1`. Establish `hle : (IsDiscreteValuationRing.maximalIdeal T.V).valuation (FractionRing T.V) (algebraMap T.V T.Fr a) ≤ 1` using `(IsDiscreteValuationRing.maximalIdeal T.V).valuation_le_one (K := FractionRing T.V) a`. Establish `hne : (IsDiscreteValuationRing.maximalIdeal T.V).valuation (FractionRing T.V) (algebraMap T.V T.Fr a) ≠ 0` using `(Valuation.ne_zero_iff _).mpr ha`.
+
+Establish `hne' : (IsDiscreteValuationRing.maximalIdeal T'.V).valuation (FractionRing T'.V) (iT (algebraMap T.V T.Fr a)) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`. Establish `hlog : WithZero.log ((IsDiscreteValuationRing.maximalIdeal T.V).valuation (FractionRing T.V) (algebraMap T.V T.Fr a)) ≤ 0` using `(WithZero.log_le_iff_le_exp hne).mpr hle`. Establish `hpos : (0 : ℤ) ≤ (e : ℤ) * -WithZero.log ((IsDiscreteValuationRing.maximalIdeal T.V).valuation (FractionRing T.V) (algebraMap T.V T.Fr a))` using `mul_nonneg (Int.natCast_nonneg e) (neg_nonneg.mpr hlog)`. Establish `hlog' : WithZero.log ((IsDiscreteValuationRing.maximalIdeal T'.V).valuation (FractionRing T'.V) (iT (algebraMap T.V T.Fr a))) ≤ 0` using `by linarith`. Establish `hle'` using `(WithZero.log_le_iff_le_exp hne').mp hlog'`.
+
+Take `⟨b, hb⟩` from `IsDiscreteValuationRing.exists_lift_of_le_one (A := T'.V) (K := FractionRing T'.V) hle'`. Conclude with `⟨b, hb⟩`. Set `g : T'.V →+* (algebraMap T'.V T'.Fr).range` to `(algebraMap T'.V T'.Fr).rangeRestrict`. Establish `hg : Function.Bijective g` using `⟨fun x y hxy => IsFractionRing.injective T'.V T'.Fr (congrArg Subtype.val hxy), (algebraMap T'.V T'.Fr).rangeRestrict_surjective⟩`. Set `eq` to `RingEquiv.ofBijective g hg`.
+
+Use `⟨eq.symm.toRingHom.comp ((iT.comp (algebraMap T.V T.Fr)).codRestrict _ key), fun a => ?_⟩` and prove the remaining obligations. Establish `h2 : g (eq.symm ⟨_, key a⟩) = ⟨_, key a⟩` using `eq.apply_symm_apply _`. Conclude with `congrArg Subtype.val h2`.
+-/
 theorem exists_restrict (T T' : CDVR) (iT : T.Fr →+* T'.Fr) (e : ℕ)
     (h : ∀ a : T.Fr, vV T'.V (iT a) = (e : ℤ) * vV T.V a) :
     ∃ φ : T.V →+* T'.V, ∀ a, algebraMap T'.V T'.Fr (φ a) = iT (algebraMap T.V T.Fr a) := by
@@ -446,6 +568,49 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 
 open GlobalTheory.ArcQ GlobalTheory.Frames GlobalTheory.Reg.ChartInhab GlobalTheory.Reg.LiftUnique in
 
+/- English proof (translation)
+Introduce `ψ y y' hψ hm hy`. Use `letI : Algebra c.F T.Fr := io.toAlgebra`. Use `letI : Algebra c.F T'.Fr := (iT.comp io).toAlgebra`. Establish `isoSec : ∀ {X Y : Scheme.{0}} {L : LB X} {L' : LB Y} {F : Y ⟶ X} (w : LB.Iso L' (L.pull F)) (hw : w.IsGen) (hA : L'.IsLB) (hB : (L.pull F).IsLB) (s : LB.Sec (L.pull F)), IsoMaps w (ReciprocityTheory.ChartRestriction.G.DVR.secOfIso s hw hA hB) s`. Introduce `X Y L L' F w hw hA hB s i k`.
+
+Establish `e` using `ReciprocityTheory.ChartRestriction.G.DVR.secOfIso_spec s hw hA hB k i`. Establish `hV : (L.pull F).U i ⊓ L'.U k ≤ L'.U k ⊓ (L.pull F).U i` using `le_of_eq (inf_comm _ _)`. Establish `e2` using `congrArg (ReciprocityTheory.ChartRestriction.G.DVR.rs hV) e`. Unfold `ReciprocityTheory.ChartRestriction.G.DVR.isoCand at e2`. Unfold `ReciprocityTheory.ChartRestriction.G.Semi.res at e2`.
+
+Unfold `ReciprocityTheory.ChartRestriction.G.DVR.rs at e2`. Establish `hcomp : ∀ {U V W : Y.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (a : Γ(Y, U)), (Y.presheaf.map (homOfLE h2).op).hom ((Y.presheaf.map (homOfLE h1).op).hom a) = (Y.presheaf.map (homOfLE (h2.trans h1)).op).hom a`. Introduce `U V W h1 h2 a`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE h1).op ≫ Y.presheaf.map (homOfLE h2).op).hom a = _`. Rewrite using `[← Functor.map_comp]`.
+
+Both sides reduce to the same expression. Establish `hid : ∀ {U : Y.Opens} (h : U ≤ U) (a : Γ(Y, U)), (Y.presheaf.map (homOfLE h).op).hom a = a`. Introduce `U h a`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (𝟙 (Opposite.op U))).hom a = a`. Rewrite using `[CategoryTheory.Functor.map_id]`.
+
+Both sides reduce to the same expression. Simplify using `only [map_mul, Units.coe_map_inv, MonoidHom.coe_coe, hcomp] at e2`. Use `erw [hid] at e2`. Rewrite using `[e2]`. Conclude with `(Units.mul_inv_cancel_left (w.s (i, k)) _).symm`.
+
+Take `⟨G, t', m1, m2, ⟨ub, htan, heig, hbas, hlift⟩, θ, hθ, htie⟩` from `hy`. Establish `hsq : (algebraMap T'.V T'.Fr).comp φ = iT.comp (algebraMap T.V T.Fr)` using `RingHom.ext hφ`. Establish `hsqS : spMap (algebraMap T'.V T'.Fr) ≫ spMap φ = spMap iT ≫ spMap (algebraMap T.V T.Fr)`. Rewrite using `[GlobalTheory.FramedBaseChange.spMap_spMap, GlobalTheory.FramedBaseChange.spMap_spMap, hsq]`. Establish `hcast : ∀ {S' S : Scheme.{0}} {t₁ : SAB H S'} {t₂ : SAB H S} {f g : S' ⟶ S} (h : f = g) (m : SABMap t₁ t₂ f), ∃ m' : SABMap t₁ t₂ g, m'.φ = m.φ`.
+
+Introduce `S' S t₁ t₂ f g h m`. Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`. Take `⟨PP', cub', sym', adj', prim', n2, hn2⟩` from `sabPull Out.CubePf.cubePull (spMap φ) G`. Set `G'` to `(fun {t : SAB H (Sp T'.V)} (_ : SABMap t G (spMap φ)) => t) n2`.
+
+Take `⟨PP'', cub'', sym'', adj'', prim'', m2', hm2'⟩` from `sabPull Out.CubePf.cubePull (spMap (algebraMap T'.V T'.Fr)) G'`. Set `t''` to `(fun {t : SAB H (Sp T'.Fr)} (_ : SABMap t G' (spMap (algebraMap T'.V T'.Fr))) => t) m2'`. Take `⟨k, hk⟩` from `sabComp pullCubComp E H _ _ _ G G' t'' (spMap φ) (spMap (algebraMap T'.V T'.Fr)) n2 m2'`. Take `⟨k', hk'⟩` from `hcast hsqS k`. Take `⟨n, hn⟩` from `sabCancel pullCubCancel E H _ _ _ G t' t'' (spMap (algebraMap T.V T.Fr)) (spMap iT) m2 k'`.
+
+Establish `hx' : spMap iT ≫ y.x = y'.x` using `by rw [hm.1, hψ]`. Take `⟨m1c, hm1c⟩` from `sabComp pullCubComp E H _ _ _ Xo.univ.t t' t'' y.x (spMap iT) m1 n`. Take `⟨m1', hm1'⟩` from `hcast hx' m1c`. Establish `hφinj : Function.Injective φ`. Introduce `a b h`.
+
+Apply `IsFractionRing.injective T.V T.Fr` to reduce the goal to its premises. Apply `iT.injective` to reduce the goal to its premises. Rewrite using `[← hφ, ← hφ, h]`. Use `letI : Algebra T.V T'.V := φ.toAlgebra`. Use `haveI : Module.IsTorsionFree T.V T'.V := ⟨fun r hr a b hab => by`.
+
+Establish `hr0 : φ r ≠ 0` using `fun h0 => hr.ne_zero (hφinj (by rw [h0, map_zero]))`. Conclude with `mul_left_cancel₀ hr0 hab⟩`. Use `haveI : Module.Flat T.V T'.V := inferInstance`. Take `⟨_, hsm, hsep, hqc, -, -⟩` from `G.semi`. Establish `hχ : ∀ (τ : E →+* ℂ) (a : 𝓞 E), ∃ z : T.V, algebraMap T.V T.Fr z = io (embK c τ a)` using `fun τ a => int_val (c := c) T io τ a`.
+
+Use `choose χ hχ using hχ`. Use `haveI : ∀ a, IsMonHom (G.act.act a) := G.act.hom`. Establish `hLie` using `fun τ => exists_eigenbasis_pullback (V' := T'.V) G.G (fun a => G.act.act a) (χ τ) (ub τ) (htan τ) (fun i a => heig τ i a (χ τ a) (hχ τ a)) (fun w hw he => hbas τ w hw (fun a z hz => by`. Establish `hz' : z = χ τ a` using `IsFractionRing.injective T.V T.Fr (by rw [hz, hχ])`. Rewrite using `[hz']`.
+
+Conclude with `he a))`. Use `choose ub' htan' heig' hbas' hpr' using hLie`. Establish `hpr'' : ∀ τ i, (ub' τ i).left ≫ pullback.fst G.G.hom (spMap φ) = spMap (dualMap φ) ≫ (ub τ i).left` using `hpr'`. Establish `hmono : Mono (spMap (algebraMap T.V T.Fr))` using `by haveI : Epi (CommRingCat.ofHom (algebraMap T.V T.Fr)) := IsLocalization.epi (nonZeroDivisors T.V) T.Fr`. Conclude with `Scheme.Spec.map_mono (CommRingCat.ofHom (algebraMap T.V T.Fr)).op`.
+
+Establish `hlift' : ∀ τ i, ∃ u'' : Sp (DualNumber T'.Fr) ⟶ t''.G.left, u'' ≫ m1'.φ = y'.u τ i ∧ u'' ≫ m2'.φ = spMap (dualMap (algebraMap T'.V T'.Fr)) ≫ (ub' τ i).left`. Introduce `τ i`. Take `⟨u0, hu1, hu2⟩` from `hlift τ i`. Establish `hw : (spMap (dualMap (algebraMap T'.V T'.Fr)) ≫ (ub' τ i).left) ≫ G'.G.hom = spMap (algebraMap T'.Fr (DualNumber T'.Fr)) ≫ spMap (algebraMap T'.V T'.Fr)`. Rewrite using `[Category.assoc, Over.w (ub' τ i), GlobalTheory.Reg.ChartInhab.eps_hom, GlobalTheory.ArcQ.FrBC.dual_alg]`.
+
+Establish `hb0 : u0 ≫ t'.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr))`. Apply `(cancel_mono (spMap (algebraMap T.V T.Fr))).1` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← m2.cart.1.w, ← Category.assoc, hu2, Category.assoc, Over.w (ub τ i), GlobalTheory.Reg.ChartInhab.eps_hom, GlobalTheory.ArcQ.FrBC.dual_alg]`. Establish `hkey : m2'.cart.1.lift _ _ hw ≫ n.φ = spMap (dualMap iT) ≫ u0`. Apply `m2.cart.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, ← hn, hk', hk, ← Category.assoc, m2'.cart.1.lift_fst, Category.assoc, hn2, hpr'' τ i, Category.assoc, hu2, ← Category.assoc, ← Category.assoc, ← GlobalTheory.ArcQ.FrBC.dual_comp, ← GlobalTheory.ArcQ.FrBC.dual_comp, hsq]`. Rewrite using `[Category.assoc, n.cart.1.w, ← Category.assoc, m2'.cart.1.lift_snd, Category.assoc, hb0, GlobalTheory.ArcQ.FrBC.dual_alg]`. Use `⟨m2'.cart.1.lift _ _ hw, ?_, m2'.cart.1.lift_fst _ _ _⟩` and prove the remaining obligations. Rewrite using `[hm1', hm1c, ← Category.assoc, hkey, Category.assoc, hu1, hm.2.1 τ i, hψ]`. Unfold `Integral`.
+
+Use `⟨G', t'', m1', m2', ⟨ub', htan', fun τ i a z hz => ?_, fun τ w hw he => ?_, hlift'⟩, ?_⟩` and prove the remaining obligations. Establish `hz' : z = φ (χ τ a)` using `IsFractionRing.injective T'.V T'.Fr (by rw [hz, hφ, hχ]; rfl)`. Rewrite using `[hz']`. Conclude with `heig' τ i a`. Conclude with `hbas' τ w hw (fun a => he a (φ (χ τ a)) (by rw [hφ, hχ]; rfl))`.
+
+Take `⟨wn, hwn⟩` from `GlobalTheory.Reg.ChartInhab.exists_rigIso n2`. Use `letI : GrpObj ((Over.pullback (spMap φ)).obj G.G) := G'.grp`. Establish `hAlb` using `G'.PP.isLB`. Establish `hBlb` using `pull_isLB G.PP.isLB n2.φ`. Set `θ'` to `ReciprocityTheory.ChartRestriction.G.DVR.secOfIso (thfPull G.PP.L n2.φ θ) hwn.1 hAlb hBlb`.
+
+Establish `hiso : IsoMaps wn θ' (thfPull G.PP.L n2.φ θ)` using `isoSec wn hwn.1 hAlb hBlb _`. Establish `hT : GlobalTheory.ArcQ.FrUniq.Comparison₂ m1 m2 θ y.s` using `(GlobalTheory.ArcQ.FrUniq.tie_iff m1 m2 θ y.s).1 htie`. Take `⟨-, -, pm, hps, hpb, hpm⟩` from `hm`. Establish `hT' : GlobalTheory.ArcQ.FrUniq.Comparison₂ m1' k' θ y'.s`. Use `GlobalTheory.ArcQ.FrUniq.tie_pull m1 m2 θ y.s n m1' k' hx'.symm rfl (hm1'.trans hm1c) hn y'.s pm hps (by rw [hpb, hψ]) (fun Z r z j hz => ?_) hT` and prove the remaining obligations.
+
+Rewrite using `[← hpm (fun _ => j) (GlobalTheory.FramedBaseChange.chart_le pm hps _)]`. Conclude with `GlobalTheory.EndDivisible.gs_appLE r pm z _ _ _ hz _`. Take `⟨w1, wk, σ, hr1, hrk, hsec, hpt⟩` from `hT'`. Take `⟨θk, hθk, hik⟩` from `(GlobalTheory.ArcQBC.through_iff (w := wk) θ σ).2 (fun z j kk hj hk => hpt _ (𝟙 _) z j kk hj hk)`. Take `⟨w', hw', hi'⟩` from `GlobalTheory.ArcQ.FrBC.exists_isoMaps_cancel n2 m2' k' hsqS.symm (hk'.trans hk) hwn hrk hiso (fun _ _ => rfl) hik hθk`.
+
+Use `⟨θ', ?_, (GlobalTheory.ArcQ.FrUniq.tie_iff m1' m2' θ' y'.s).2 ⟨w1, w', σ, hr1, hw', hsec, fun Z r z j kk hj hk => GlobalTheory.ArcQ.FrBC.gs_of_isoMaps hi' (fun _ _ => rfl) r z j kk hj hk⟩⟩` and prove the remaining obligations. Introduce `σ''`. Use `haveI : CompactSpace G.G.left := QuasiCompact.compactSpace_of_compactSpace G.G.hom`. Establish `hgen` using `existsUnique_mul_pull (f := G.G.hom) (f' := G'.G.hom) (π := n2.φ) G.PP.isLB n2.cart.1 θ (fun σ => hθ σ)`. Conclude with `existsUnique_mul_of_isoMaps (f' := G'.G.hom) G.PP.isLB hAlb hwn.1 θ' _ hiso hgen σ''`.
+-/
 theorem integral_of_frMap (T T' : CDVR) (io : c.F →+* T.Fr) (iT : T.Fr →+* T'.Fr) (φ : T.V →+* T'.V)
     (hφ : ∀ a, algebraMap T'.V T'.Fr (φ a) = iT (algebraMap T.V T.Fr a)) :
     letI := io.toAlgebra
@@ -593,6 +758,19 @@ open ReciprocityTheory.ChartRestriction.G.TB (dAct dLin)
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PlaceInt
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T T' io y iT e he hv`. Use `letI : Algebra c.F T.Fr := io.toAlgebra`. Use `letI : Algebra c.F T'.Fr := (iT.comp io).toAlgebra`. Set `ψ : T.Fr →ₐ[c.F] T'.Fr` to `{ iT with commutes' := fun _ => rfl }`. Establish `hψ : ψ.toRingHom = iT` using `rfl`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `Ext.exists_restrict T T' iT e hv`. Take `⟨z, hz⟩` from `GlobalTheory.FramedBaseChange.exists_frMap GlobalTheory.allSixLaws.1 E H Dw l Xo c T.Fr T'.Fr ψ y.1`. Take `⟨p, φ0, y0, h0⟩` from `y.2.1`. Conclude with `⟨⟨z, ⟨p, ψ.comp φ0, y0, GlobalTheory.FramedBaseChange.trans φ0 ψ h0 hz⟩, Ext.integral_of_frMap T T' io iT φ hφ ψ y.1 z hψ hz y.2.2⟩, he, hv, ψ, hψ, hz⟩`.
+
+Introduce `y' hy'`. Take `⟨_, _, φ1, hφ1, hm1⟩` from `hy'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show y'.1.x = spMap iT ≫ y.1.x`. Rewrite using `[hm1.1, hφ1]`.
+
+Introduce `T'' iT' e' y'' h2`. Use `letI : Algebra c.F T''.Fr := (iT'.comp (iT.comp io)).toAlgebra`. Take `⟨he', hv', φ2, hφ2, hm2⟩` from `h2`. Use `⟨Nat.mul_pos he' he, fun a => ?_, φ2.comp φ1, ?_, GlobalTheory.FramedBaseChange.trans φ1 φ2 hm1 hm2⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hv', hv a]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `a`. Establish `h1` using `congrArg (fun f : T.Fr →+* T'.Fr => f a) hφ1`. Establish `h2` using `congrArg (fun f : T'.Fr →+* T''.Fr => f (iT a)) hφ2`.
+
+Use `show φ2 (φ1 a) = iT' (iT a)`. Rewrite using `[← h2, ← h1]`. Both sides reduce to the same expression.
+-/
 theorem exists_isExt_and_trans : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T T' : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (iT : T.Fr →+* T'.Fr) (e : ℕ), 0 < e → (∀ a : T.Fr, vV T'.V (iT a) = (e : ℤ) * vV T.V a) → (∃ y' : IntFr Xo c T' (iT.comp io), IsExt y iT e y') ∧ ∀ y' : IntFr Xo c T' (iT.comp io), IsExt y iT e y' → xOf y' = spMap iT ≫ xOf y ∧ ∀ (T'' : CDVR) (iT' : T'.Fr →+* T''.Fr) (e' : ℕ) (y'' : IntFr Xo c T'' (iT'.comp (iT.comp io))), IsExt y' iT' e' y'' → IsExt y (iT'.comp iT) (e' * e) y'' := by
   intro E _ _ _ H Dw l Xo c T T' io y iT e he hv
   letI : Algebra c.F T.Fr := io.toAlgebra

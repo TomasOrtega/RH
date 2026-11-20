@@ -14,16 +14,29 @@ def LateralTheory.EtaleFoundations.EtaleTateTwistGeneratorRestrictionAndRootChan
     ∀ (U : Scheme.{0}) (ζ ξ : Prim q Γ(U, ⊤)), Loc U fun _ g => ∃ c : ℕ, Sec.res g (twGen j ξ) = c • twGen j (ζ.map g.appTop.hom)
 
 namespace LateralTheory.EtaleFoundations.GenIsoSurjPf
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 theorem res_nsmul {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (c : ℕ) (x : Sec F U) :
     Sec.res g (c • x) = c • Sec.res g x := by
   simp [Sec.res]
 
+/- English proof (translation)
+Simplify using `[Sec.map]`.
+-/
 theorem map_nsmul' {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (c : ℕ) (x : Sec F U) :
     Sec.map φ (c • x) = c • Sec.map φ x := by
   simp [Sec.map]
 end LateralTheory.EtaleFoundations.GenIsoSurjPf
 
 open LateralTheory.EtaleFoundations.GenIsoSurjPf in
+/- English proof (translation)
+Introduce `q _ i j k T μ hk φ hφ U a b`. Use `loc_bind' (loc_mono' (loc_and' (hl q i U a) (hl q j U b)) fun V g hab => ?_)` and prove the remaining obligations. Break down `hab with ⟨ha | ⟨ζ, c, ha⟩, hb | ⟨ξ, d, hb⟩⟩` into its components or cases. Conclude with `loc_top' fun W h => ⟨0, by rw [← res_res, ha]; simp⟩`. Conclude with `loc_top' fun W h => ⟨0, by rw [← res_res, ha]; simp⟩`.
+
+Conclude with `loc_top' fun W h => ⟨0, by rw [← res_res (F := tw q j), hb]; simp⟩`. Use `loc_mono' ((hr q j).2 V ζ ξ) fun W h ⟨e, he⟩ => ?_` and prove the remaining obligations. Use `⟨(c * (d * e)) • twGen k (ζ.map h.appTop.hom), ?_⟩` and prove the remaining obligations. Rewrite using `[← res_res, ← res_res (F := tw q j), ha, hb, res_nsmul, res_nsmul, he, (hr q i).1, smul_smul, map_nsmul', map_nsmul', map_nsmul', map_nsmul', hφ]`. Simplify using `only [map_nsmul, LinearMap.smul_apply, smul_smul]`.
+
+Put the polynomial expressions in normal form.
+-/
 theorem LateralTheory.EtaleFoundations.etale_tate_twist_generator_map_hits_products_locally (hl : LateralTheory.EtaleFoundations.EtaleTateTwistSectionsLocallyMultiplesOfGenerator)
     (hr : LateralTheory.EtaleFoundations.EtaleTateTwistGeneratorRestrictionAndRootChange) : LateralTheory.EtaleFoundations.EtaleTateTwistGeneratorMapHitsProductsLocally := by
   intro q _ i j k T μ hk φ hφ U a b
@@ -39,6 +52,9 @@ theorem LateralTheory.EtaleFoundations.etale_tate_twist_generator_map_hits_produ
     simp only [map_nsmul, LinearMap.smul_apply, smul_smul]
     ring_nf
 
+/- English proof (translation)
+The claim follows from `LateralTheory.EtaleFoundations.etale_tate_twist_generator_map_locally_surjective_of_pairs (LateralTheory.EtaleFoundations.etale_tate_twist_generator_map_hits_products_locally hl hr)`.
+-/
 theorem LateralTheory.EtaleFoundations.etale_tate_twist_generator_map_surjective_of_local_and_root (hl : LateralTheory.EtaleFoundations.EtaleTateTwistSectionsLocallyMultiplesOfGenerator)
     (hr : LateralTheory.EtaleFoundations.EtaleTateTwistGeneratorRestrictionAndRootChange) : LateralTheory.EtaleFoundations.EtaleTateTwistGeneratorMapLocallySurjective :=
   LateralTheory.EtaleFoundations.etale_tate_twist_generator_map_locally_surjective_of_pairs (LateralTheory.EtaleFoundations.etale_tate_twist_generator_map_hits_products_locally hl hr)

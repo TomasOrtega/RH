@@ -14,6 +14,11 @@ section Scale
 variable {O Kf X : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup X] [Module Kf X] [Module O X]
   [IsScalarTower O Kf X]
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `mem_scale.1 hx`. Use `mem_scale.2 ⟨w ^ (a - b).toNat • y, M.smul_mem _ hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul Kf (w ^ (a - b).toNat) y, smul_smul, map_pow, ← zpow_natCast, ← zpow_add₀ hw]`. Use `congr 2`.
+
+Rewrite using `[Int.toNat_of_nonneg (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scale_zpow_mono (w : O) (hw : algebraMap O Kf w ≠ 0) {a b : ℤ} (hab : b ≤ a) (M : Submodule O X) :
     scale (algebraMap O Kf w ^ a) M ≤ scale (algebraMap O Kf w ^ b) M := by
   intro x hx
@@ -24,6 +29,9 @@ theorem scale_zpow_mono (w : O) (hw : algebraMap O Kf w ≠ 0) {a b : ℤ} (hab 
   rw [Int.toNat_of_nonneg (by omega)]
   ring
 
+/- English proof (translation)
+The claim follows from `Submodule.map_mono h`.
+-/
 theorem scale_mono (c : Kf) {M N : Submodule O X} (h : M ≤ N) : scale c M ≤ scale c N :=
   Submodule.map_mono h
 
@@ -33,11 +41,17 @@ section Be
 
 variable {Kf : Type} [Field Kf] {n' m : ℕ}
 
+/- English proof (translation)
+Unfold `be`. Rewrite using `[smul_add, map_add]`.
+-/
 theorem be_add_left (p r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) (F F' : Vsp Kf lam0)
     (G : Module.Dual Kf (Vsp Kf lam0)) : be p r lam0 (F + F') G = be p r lam0 F G + be p r lam0 F' G := by
   unfold be
   rw [smul_add, map_add]
 
+/- English proof (translation)
+Unfold `be`. Rewrite using `[smul_comm, map_smul, smul_eq_mul]`.
+-/
 theorem be_smulK_left (p r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) (c : Kf) (F : Vsp Kf lam0)
     (G : Module.Dual Kf (Vsp Kf lam0)) : be p r lam0 (c • F) G = c * be p r lam0 F G := by
   unfold be
@@ -45,6 +59,31 @@ theorem be_smulK_left (p r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) (c : K
 
 end Be
 
+/- English proof (translation)
+Introduce `D hM hBP hInc p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS m r fl rest lam0 hnu h1 h2 e he nb n2 T oS tT D1 cStar c' hc' hD Fvb Sy sh hF1 hF2 hF3 hSy hsh hT`. Establish `hw` using `w_ne_zero hS`. Establish `hdom : IsDominant lam0`. Rewrite using `[hnu]`. Conclude with `isDominant_add h1 h2`.
+
+Set `eqv : Fin nb × Fin n2 ≃ Fin (nb * n2)` to `finProdFinEquiv`. Set `Fs : Fin nb × Fin n2 → Vsp Kf lam0` to `fun x => mulV hnu h1 h2 (Fvb x.1) (sh x.2)`. Set `Ss : Fin nb × Fin n2 → Vsp Kf lam0` to `fun x => mulV hnu h1 h2 (Sy x.1) (sh x.2)`. Establish `hdiff : ∀ x, Fs x - Ss x ∈ scale (algebraMap O Kf w ^ (c' : ℤ)) (Re p ι σ w r lam0 e)`. Introduce `x`.
+
+Establish `hz : ((Fs x - Ss x : Vsp Kf lam0) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) = ((Fvb x.1 - Sy x.1 : Vsp Kf fl) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) * ((sh x.2 : Vsp Kf rest) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf)`. Simplify using `only [Fs, Ss, AddSubgroupClass.coe_sub, mulV_coe, sub_mul]`. Establish `h0 : sh x.2 ∈ scale (algebraMap O Kf w ^ (0 : ℤ)) (Re p ι σ w r rest e)`. Rewrite using `[zpow_zero]`. Conclude with `mem_scale.2 ⟨_, (hsh x.2).1, one_smul _ _⟩`.
+
+Establish `h3` using `Re_mul D hM p ι σ w hw r hnu h1 h2 e (c' : ℤ) 0 hz (hF2 x.1) h0`. Rewrite `h3` using `[add_zero]`. Then use the resulting hypothesis. Establish `hSs : ∀ x, Ss x ∈ Re p ι σ w r lam0 e` using `fun x => edge_lattice_mul_of_weight_sum D hM p ι σ w hw r hnu h1 h2 e (z := Ss x) rfl (hSy x.1) (hsh x.2).1`. Use `⟨fun i => Fs (eqv.symm i), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+
+Prove the components needed by the constructor for the conclusion. Establish `h3` using `HL_mul (O := O) D hM ι σ hnu h1 h2 e.src (algebraMap O Kf w) hw (-(T : ℤ)) (-(oS : ℤ)) (z := Fs (eqv.symm i)) rfl (hF1 _) (hsh _).2`. Establish `e1 : (-(T : ℤ)) + (-(oS : ℤ)) = -((T + oS : ℕ) : ℤ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h3` using `[e1]`. Then use the resulting hypothesis. Establish `e2 : Fs (eqv.symm i) = Ss (eqv.symm i) + (Fs (eqv.symm i) - Ss (eqv.symm i))` using `by abel show Fs (eqv.symm i) ∈ Re p ι σ w r lam0 e`. Rewrite using `[e2]`. Conclude with `Submodule.add_mem _ (hSs _) (scale_pos_le w c' _ (hdiff _))`. Introduce `i e' he' hsrc hne`.
+
+Establish `hI` using `(hInc p n' W Qq O Kf ι σ j w hS m r rest h2 e' he').1`. Establish `hs : sh (eqv.symm i).2 ∈ scale (algebraMap O Kf w ^ (-(oS : ℤ))) (Re p ι σ w r rest e')`. Apply `scale_mono _ hI` to reduce the goal to its premises. Rewrite using `[hsrc]`. Conclude with `(hsh _).2`.
+
+Establish `h3` using `Re_mul D hM p ι σ w hw r hnu h1 h2 e' (c' : ℤ) (-(oS : ℤ)) (z := Fs (eqv.symm i)) rfl (hF3 _ e' he' hsrc hne) hs`. Conclude with `scale_zpow_mono w hw (by omega) _ h3`. Introduce and unpack `c ⟨i0, hi0⟩`. Take `⟨G, hG1, hG2, hG3, ⟨a, b, ha, hab⟩⟩` from `hT (fun x => c (eqv x)) ⟨eqv.symm i0, by simpa using hi0⟩`. Use `⟨G, hG1, hG2, hG3, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (∑ i, c i • Fs (eqv.symm i)) = (∑ x, c (eqv x) • Ss x) + ∑ x, c (eqv x) • (Fs x - Ss x)`. Rewrite using `[← Finset.sum_add_distrib, ← Equiv.sum_comp eqv]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply, ← smul_add]`. Use `congr 1`.
+
+Normalize the expressions using the abelian group laws. Establish `hE : (∑ x, c (eqv x) • (Fs x - Ss x)) ∈ scale (algebraMap O Kf w ^ (c' : ℤ)) (Re p ι σ w r lam0 e)` using `Submodule.sum_mem _ fun x _ => Submodule.smul_mem _ _ (hdiff x)`. Take `⟨y, hy, hyE⟩` from `mem_scale.1 hE`. Take `⟨z, hz⟩` from `((hBP p n' W Qq O Kf ι σ j w hS m r lam0 hdom e he).1 G).1 hG2 y hy`. Establish `hwc : w ^ c' = (p : O) ^ (D1 + 1) * w ^ (c' - 2 * (D1 + 1))`.
+
+Rewrite using `[← hS.w_sq, ← pow_mul, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Take `⟨b', hb'⟩` from `dvd_of_add (p : O) (p_nonunit hS) D1 a (w ^ (c' - 2 * (D1 + 1)) * z) ⟨b, hab.symm⟩`. Use `⟨a + (p : O) ^ (D1 + 1) * (w ^ (c' - 2 * (D1 + 1)) * z), b', ?_, hb'.symm⟩` and prove the remaining obligations.
+
+Use `show be p r lam0 (∑ i, c i • Fs (eqv.symm i)) G = _`. Rewrite using `[e1, be_add_left, ha, ← hyE, be_smulK_left, ← hz, zpow_natCast, ← map_pow, hwc]`. Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem edgeFamOf : EdgeFamOf := by
   intro D hM hBP hInc p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS m r fl rest lam0 hnu h1 h2 e he nb n2 T oS tT D1
     cStar c' hc' hD Fvb Sy sh hF1 hF2 hF3 hSy hsh hT

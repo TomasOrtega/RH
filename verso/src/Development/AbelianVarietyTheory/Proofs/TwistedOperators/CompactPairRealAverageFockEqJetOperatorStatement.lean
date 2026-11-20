@@ -19,6 +19,9 @@ open GlobalTheory.FockReal MvPolynomial
 open scoped ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RowHoweAvg.real_average_jet | exact GlobalTheory.RowHoweAvg.real_average_jet | (intros; apply GlobalTheory.RowHoweAvg.real_average_jet <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.compactPair_realAverage_fock_eq_jetOperator : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {μ0 : T},
     L.Is μ0 → ∀ (i : ℕ), i < D.R.m →
     ∀ (a b : D.what₂.Tau → ℚ), (∀ τ, HasInfExp D (G.chrS (.chi i D.R.m : Pair T)) τ (a τ)) → (∀ τ, HasInfExp D (G.chrT (.chi i D.R.m : Pair T)) τ (b τ)) →

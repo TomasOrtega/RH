@@ -22,6 +22,9 @@ def twistRep (ρ : Γ →* GL (Fin a) O) (ξ : Γ →* Oˣ) : Γ →* GL (Fin a)
       ((Matrix.scalar_commute (ξ h : O) (fun r => Commute.all _ r) _).eq).symm
     rw [mul_assoc, mul_assoc, ← mul_assoc (Matrix.scalar (Fin a) (ξ h : O)), ← hc, mul_assoc]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Matrix.scalar (Fin a) (ξ g : O) * _ = _`. Rewrite using `[Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul]`.
+-/
 theorem twistRep_val (ρ : Γ →* GL (Fin a) O) (ξ : Γ →* Oˣ) (g : Γ) :
     ((twistRep ρ ξ g : GL (Fin a) O) : Matrix (Fin a) (Fin a) O) =
       (ξ g : O) • ((ρ g : GL (Fin a) O) : Matrix (Fin a) (Fin a) O) := by
@@ -47,6 +50,9 @@ def IsRankPart (i : N.Loc) (x : N.X i) (ρ' : G H.E N.Om →* GL (Fin R.r) (N.O 
         ∏ c ∈ Finset.Icc 1 R.t, (X - C ((N.chi i c σ : (N.O i)ˣ) : N.O i)) =
       heckePol N i x w
 
+/- English proof (translation)
+Rewrite using `[hr.2.2 w hw B σ hB hσ, h.2.2 w hw B σ hB hσ]`.
+-/
 theorem IsRankPart.charpoly_frob {i : N.Loc} {x : N.X i} {ρ' : G H.E N.Om →* GL (Fin R.r) (N.O i)}
     (h : IsRankPart N i x ρ') {r : G H.E N.Om →* GL (Fin R.nV) (N.O i)} (hr : IsHeckeGalois N i x r)
     {w : PlE H} (hw : SplitOut N i w) {B : ValuationSubring N.Om} {σ : G H.E N.Om}
@@ -56,6 +62,9 @@ theorem IsRankPart.charpoly_frob {i : N.Loc} {x : N.X i} {ρ' : G H.E N.Om →* 
         ∏ c ∈ Finset.Icc 1 R.t, (X - C ((N.chi i c σ : (N.O i)ˣ) : N.O i)) := by
   rw [hr.2.2 w hw B σ hB hσ, h.2.2 w hw B σ hB hσ]
 
+/- English proof (translation)
+Take `⟨P, hP, hBC⟩` from `hx`. Use `⟨⟨P, hP, _, hBC, ?_⟩, Sig, ⟨P, hP, hBC⟩, hg⟩` and prove the remaining obligations. Simplify using `[twistIso, muPart]`.
+-/
 theorem mem_ZgoodN_of_param (A : NAut N) {i : N.Loc} {x : N.X i} {Sig : List (Part A.CG)}
     (hx : HasParamX N A i x Sig) (hg : goodSig N A Sig) : x ∈ ZgoodN N A i := by
   obtain ⟨P, hP, hBC⟩ := hx

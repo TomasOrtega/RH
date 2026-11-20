@@ -9,6 +9,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.BCT.TwClassCount
 
+/- English proof (translation)
+Introduce `E _ _ _ hU n S hS P hP y hy hint`. Take `⟨ι, _, K, L, _, _, _, _, _, _, x, hcard, hR, hC, hA, hsum, ⟨e⟩⟩` from `GlobalTheory.T.twisted_class_count_torus_decomposition E hU n S hS P hP y hy hint`. Rewrite using `[Nat.card_congr e, Nat.card_pi, ← hcard, ← hsum, ← Finset.prod_pow_eq_pow_sum, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => GlobalTheory.T.almost_norm_class_count (K i) (L i) (hR i) (hC i) (x i) (hA i)`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (S : Set (Pl E)), IsSection S → ∀ P ∈ Ell E n, ∀ y : ∀ w : Pl E, GLw n w, (∀ w, (nrmL n w (y w)).val.charpoly = atPl w P) → (∀ᶠ w in cofinite, y w ∈ GlobalTheory.LFun.KGL w n) → Nat.card {c : TwCl (thE E n) // (c.rep * thE E n c.rep).val.charpoly = P ∧ ∀ w ∈ S, ∃ g, locEl n w c.rep = g⁻¹ * y w * thL n w g} * 2 ^ nfac P = 2 ^ (n * Fintype.card (InfinitePlace E)) := by
   intro E _ _ _ hU n S hS P hP y hy hint
   obtain ⟨ι, _, K, L, _, _, _, _, _, _, x, hcard, hR, hC, hA, hsum, ⟨e⟩⟩ :=

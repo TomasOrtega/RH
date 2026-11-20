@@ -13,11 +13,19 @@ namespace Formalism.BasicNotions.Host
 
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Introduce `h` and use `by rcases (H.toHostRaw.dvd_condN_iff_small hp).1 ((H.dvd_discr_iff_dvd_condN hp).1 h) with h | h | h exacts [h2 h, hq h, hd h]`.
+-/
 theorem not_dvd_discr_of_not_small {p : ℕ} (hp : p.Prime) (h2 : p ∉ H.small) (hq : p ≠ H.q) (hd : p ≠ H.d) :
     ¬ (p : ℤ) ∣ discr H.E := fun h => by
   rcases (H.toHostRaw.dvd_condN_iff_small hp).1 ((H.dvd_discr_iff_dvd_condN hp).1 h) with h | h | h
   exacts [h2 h, hq h, hd h]
 
+/- English proof (translation)
+Establish `h0 : (discr H.E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero _)`. Rewrite using `[Formalism.HC.HostRaw.ramI, Finset.mem_erase, Formalism.HC.HostRaw.ram, Nat.mem_primeFactors, H.dvd_natAbs_discr_iff hp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hd, -, h, -⟩`. Conclude with `((Nat.Prime.dvd_mul hp).1 h).resolve_right fun h' => hd ((Nat.prime_dvd_prime_iff_eq hp H.toHostRaw.d_prime).1 h')`.
+
+Introduce `h`. Use `⟨?_, hp, h.mul_right _, h0⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `H.toHostRaw.d_not_dvd_QSq h`.
+-/
 theorem mem_ramI_iff {p : ℕ} (hp : p.Prime) : p ∈ H.toHostRaw.ramI ↔ p ∣ H.QS * H.q := by
   have h0 : (discr H.E).natAbs ≠ 0 := Int.natAbs_ne_zero.2 (discr_ne_zero _)
   rw [Formalism.HC.HostRaw.ramI, Finset.mem_erase, Formalism.HC.HostRaw.ram, Nat.mem_primeFactors, H.dvd_natAbs_discr_iff hp]
@@ -30,6 +38,9 @@ theorem mem_ramI_iff {p : ℕ} (hp : p.Prime) : p ∈ H.toHostRaw.ramI ↔ p ∣
     rintro rfl
     exact H.toHostRaw.d_not_dvd_QSq h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Ideal.IsMaximal.eq_of_le (PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hp).irreducible) (Ideal.IsPrime.ne_top inferInstance) (by rw [Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_natCast]; exact h)⟩`.
+-/
 private theorem liesOver_of_mem {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) (P : Ideal (𝓞 E)) [P.IsPrime]
     (h : (p : 𝓞 E) ∈ P) : P.LiesOver (span {(p : ℤ)}) :=
   ⟨Ideal.IsMaximal.eq_of_le
@@ -37,11 +48,17 @@ private theorem liesOver_of_mem {E : Type} [Field E] [NumberField E] {p : ℕ} (
     (Ideal.IsPrime.ne_top inferInstance) (by
       rw [Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_natCast]; exact h)⟩
 
+/- English proof (translation)
+Establish `: (p : ℤ) ∈ P.under ℤ` using `by rw [← h.over]; exact Ideal.mem_span_singleton_self _`. Simplify `this` using `[Ideal.mem_comap]`.
+-/
 private theorem mem_of_liesOver {E : Type} [Field E] [NumberField E] {p : ℕ} (P : Ideal (𝓞 E))
     (h : P.LiesOver (span {(p : ℤ)})) : (p : 𝓞 E) ∈ P := by
   have : (p : ℤ) ∈ P.under ℤ := by rw [← h.over]; exact Ideal.mem_span_singleton_self _
   simpa [Ideal.mem_comap] using this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Take `⟨u, v, huv⟩ : IsCoprime (p : 𝓞 E) ((absNorm J : ℕ) : 𝓞 E)` from `((Nat.Prime.coprime_iff_not_dvd hp).2 hn).cast`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one P).2 (huv ▸ P.add_mem (P.mul_mem_left u h) (P.mul_mem_left v (Ideal.le_of_dvd hJ (Ideal.absNorm_mem J)))))`.
+-/
 private theorem dvd_absNorm_of {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) (P J : Ideal (𝓞 E)) [hP : P.IsPrime]
     (h : (p : 𝓞 E) ∈ P) (hJ : P ∣ J) : p ∣ absNorm J := by
   by_contra hn
@@ -49,11 +66,27 @@ private theorem dvd_absNorm_of {E : Type} [Field E] [NumberField E] {p : ℕ} (h
   exact hP.ne_top ((Ideal.eq_top_iff_one P).2
     (huv ▸ P.add_mem (P.mul_mem_left u h) (P.mul_mem_left v (Ideal.le_of_dvd hJ (Ideal.absNorm_mem J)))))
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 := H.𝔟_spec.1 rw [h, Ideal.bot_mul] at h1 exact differentIdeal_ne_bot h1`.
+-/
 theorem half_ne_bot : H.𝔟 ≠ ⊥ := fun h => by
   have h1 := H.𝔟_spec.1
   rw [h, Ideal.bot_mul] at h1
   exact differentIdeal_ne_bot h1
 
+/- English proof (translation)
+Establish `hs` using `(UpperTheory.HF.half_supp H.toHostAx H.𝔟 H.𝔟_spec.1 H.𝔟_spec.2).1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨P, hP, hu, hd⟩` from `Ideal.exists_isMaximal_dvd_of_dvd_absNorm' hp _ h`. Use `haveI := hP.isPrime`.
+
+Take `⟨l, hl, ho⟩` from `(hs P).1.1 (Or.inl hd)`. Establish `hlp : l.Prime` using `Nat.prime_of_mem_primeFactors (Finset.mem_of_mem_erase hl)`. Establish `e : span {(l : ℤ)} = span {(p : ℤ)}` using `ho.over.trans hu`. Establish `: p ∣ l`. Use `Ideal.mem_span_singleton.1 (e ▸ Ideal.mem_span_singleton_self (l : ℤ))` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Rewrite using `[(Nat.prime_dvd_prime_iff_eq hp hlp).1 this]`. Conclude with `(H.mem_ramI_iff hlp).1 hl`. Introduce `h`. Establish `h1 : p ∣ absNorm (span {(p : 𝓞 H.E)})`.
+
+Rewrite using `[Ideal.absNorm_span_natCast]`. Conclude with `dvd_pow_self _ Module.finrank_pos.ne'`. Take `⟨P, hP, -, hd⟩` from `Ideal.exists_isMaximal_dvd_of_dvd_absNorm' hp _ h1`. Use `haveI := hP.isPrime`. Establish `hm : (p : 𝓞 H.E) ∈ P` using `Ideal.le_of_dvd hd (Ideal.mem_span_singleton_self _)`.
+
+Break down `(hs P).1.2 ⟨p, (H.mem_ramI_iff hp).2 h, liesOver_of_mem hp P hm⟩ with h2 | h2` into its components or cases. Conclude with `dvd_absNorm_of hp P _ hm h2`. Establish `hm' : (p : 𝓞 H.E) ∈ H.toHostRaw.conj • P`. Use `Ideal.smul_mem_pointwise_smul H.toHostRaw.conj _ _ hm` as an intermediate fact. Rewrite `this` using `[show H.toHostRaw.conj • (p : 𝓞 H.E) = p from map_natCast (MulSemiringAction.toRingHom _ (𝓞 H.E) H.toHostRaw.conj) p]`. Then use the resulting hypothesis.
+
+Conclude with `dvd_absNorm_of hp _ _ hm' h2`.
+-/
 theorem prime_dvd_absNorm_half_iff {p : ℕ} (hp : p.Prime) : p ∣ absNorm H.𝔟 ↔ p ∣ H.QS * H.q := by
   have hs := (UpperTheory.HF.half_supp H.toHostAx H.𝔟 H.𝔟_spec.1 H.𝔟_spec.2).1
   constructor
@@ -82,6 +115,11 @@ theorem prime_dvd_absNorm_half_iff {p : ℕ} (hp : p.Prime) : p ∣ absNorm H.�
         rwa [show H.toHostRaw.conj • (p : 𝓞 H.E) = p from map_natCast (MulSemiringAction.toRingHom _ (𝓞 H.E) H.toHostRaw.conj) p] at this
       exact dvd_absNorm_of hp _ _ hm' h2
 
+/- English proof (translation)
+Establish `h` using `UpperTheory.HF.cond_rd H.toHostAx`. Establish `h2` using `UpperTheory.HF.ram_eq H.toHostAx`. Use `h.2.2.2.2.2.2.trans (Nat.le_of_dvd (Nat.pos_of_ne_zero H.toHostRaw.condN_ne_zero) ?_)` and prove the remaining obligations. Rewrite using `[h2.2.2.2.1]`. Use `Nat.mul_dvd_mul_right (Nat.mul_dvd_mul h2.2.2.2.2.1 ?_) _` and prove the remaining obligations.
+
+Use `split_ifs`. Use `exacts [dvd_rfl, one_dvd _]`.
+-/
 theorem four_ord_le_condN : 4 * R.toFrame.ord ≤ H.QS * H.q * H.d := by
   have h := UpperTheory.HF.cond_rd H.toHostAx
   have h2 := UpperTheory.HF.ram_eq H.toHostAx
@@ -91,6 +129,9 @@ theorem four_ord_le_condN : 4 * R.toFrame.ord ≤ H.QS * H.q * H.d := by
   split_ifs
   exacts [dvd_rfl, one_dvd _]
 
+/- English proof (translation)
+Establish `h : (H.QS : ℝ) ≤ (R.n : ℝ) ^ 2` using `by exact_mod_cast H.QS_le`. Establish `h0 : (0 : ℝ) ≤ (R.n : ℝ) ^ 2` using `by positivity`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem condN_le_four_sq : ((H.QS : ℝ) * H.q * H.d) ≤ 4 * (R.n : ℝ) ^ 2 * H.q * H.d := by
   have h : (H.QS : ℝ) ≤ (R.n : ℝ) ^ 2 := by exact_mod_cast H.QS_le
   have h0 : (0 : ℝ) ≤ (R.n : ℝ) ^ 2 := by positivity

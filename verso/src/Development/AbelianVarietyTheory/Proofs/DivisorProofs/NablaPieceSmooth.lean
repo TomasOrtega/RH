@@ -15,6 +15,11 @@ namespace GlobalTheory.TorsionForm.Pullback.PieceSmooth
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
 
+/- English proof (translation)
+Use `contDiffOn_pi.2 fun S => ?_` and prove the remaining obligations. Distinguish the cases in `hS : i ∈ S`. Simplify using `only [wedge, hS, if_true]`. Conclude with `contDiffOn_const.mul (contDiffOn_pi.1 hF (S.erase i))`. Simplify using `only [wedge, hS, if_false]`.
+
+Conclude with `contDiffOn_const`.
+-/
 theorem wedge_contDiffOn {m : ℕ} (i : Fin m) {U : Set (Pt E g)} {F : Pt E g → Ext m}
     (hF : ContDiffOn ℝ ∞ F U) : ContDiffOn ℝ ∞ (fun Q => wedge i (F Q)) U := by
   refine contDiffOn_pi.2 fun S => ?_
@@ -24,6 +29,9 @@ theorem wedge_contDiffOn {m : ℕ} (i : Fin m) {U : Set (Pt E g)} {F : Pt E g �
   · simp only [wedge, hS, if_false]
     exact contDiffOn_const
 
+/- English proof (translation)
+Establish `hd : ContDiffOn ℝ ∞ (fun Q => fderiv ℝ f Q) U` using `hf.fderiv_of_isOpen hU (by simp)`. Unfold `d10`. Conclude with `((hd.clm_apply hw).sub ((hd.clm_apply (hw.const_smul Complex.I)).const_smul Complex.I)).const_smul _`.
+-/
 theorem d10_contDiffOn {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
     {U : Set (Pt E g)} (hU : IsOpen U) {f : Pt E g → W} (hf : ContDiffOn ℝ ∞ f U)
     {w : Pt E g → Pt E g} (hw : ContDiffOn ℝ ∞ w U) :
@@ -32,6 +40,9 @@ theorem d10_contDiffOn {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
   unfold d10
   exact ((hd.clm_apply hw).sub ((hd.clm_apply (hw.const_smul Complex.I)).const_smul Complex.I)).const_smul _
 
+/- English proof (translation)
+Establish `hd : ContDiffOn ℝ ∞ (fun Q => fderiv ℝ f Q) U` using `hf.fderiv_of_isOpen hU (by simp)`. Unfold `d01`. Conclude with `((hd.clm_apply hw).add ((hd.clm_apply (hw.const_smul Complex.I)).const_smul Complex.I)).const_smul _`.
+-/
 theorem d01_contDiffOn {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
     {U : Set (Pt E g)} (hU : IsOpen U) {f : Pt E g → W} (hf : ContDiffOn ℝ ∞ f U)
     {w : Pt E g → Pt E g} (hw : ContDiffOn ℝ ∞ w U) :
@@ -44,6 +55,13 @@ end GlobalTheory.TorsionForm.Pullback.PieceSmooth
 
 namespace GlobalTheory.TorsionForm.Pullback.PieceSmooth
 
+/- English proof (translation)
+Introduce `E _ _ _ g n B τ h s hτ hh hpos hs i v`. Establish `hU : IsOpen (cov B g)` using `hτ.1.prod isOpen_univ`. Establish `hhor : ContDiffOn ℝ ∞ (fun Q : Pt E g => hor τ Q v) (cov B g)` using `GlobalTheory.T.horizontal_lift_smooth B τ hτ v`. Establish `hcon : ContDiffOn ℝ ∞ (fun Q : Pt E g => connForm τ Q.1 v (s Q)) (cov B g)` using `GlobalTheory.T.connection_form_smooth B τ s hτ hs v`. Establish `hlog : ContDiffOn ℝ ∞ (fun Q => (Real.log (h Q) : ℂ)) (cov B g)` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (hh.log fun P hP => (hpos P hP).ne')`.
+
+Establish `hHol : ContDiffOn ℝ ∞ (fun Q => nabHol τ h s Q v) (cov B g)`. Unfold `nabHol pointDifference`. Conclude with `(d10_contDiffOn hU hs hhor).add ((d10_contDiffOn hU hlog hhor).smul hs)`. Establish `hAnti : ContDiffOn ℝ ∞ (fun Q => nabAnti τ s Q v) (cov B g)`. Unfold `nabAnti`.
+
+Conclude with `(d01_contDiffOn hU hs hhor).add hcon`. Unfold `nabPiece`. Conclude with `(wedge_contDiffOn _ hHol).add (wedge_contDiffOn _ hAnti)`.
+-/
 theorem nabPiece_contDiffOn : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g n : ℕ} (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (s : Pt E g → Ext (n + n + g)), IsPeriodMap B τ → ContDiffOn ℝ ∞ h (cov B g) → (∀ P ∈ cov B g, 0 < h P) → ContDiffOn ℝ ∞ s (cov B g) → ∀ (i : Fin n) (v : E), ContDiffOn ℝ ∞ (fun Q => nabPiece τ h s Q i v) (cov B g) := by
   intro E _ _ _ g n B τ h s hτ hh hpos hs i v
   have hU : IsOpen (cov B g) := hτ.1.prod isOpen_univ

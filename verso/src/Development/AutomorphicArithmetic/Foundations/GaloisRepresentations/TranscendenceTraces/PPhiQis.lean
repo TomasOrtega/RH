@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveReso
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Rewrite using `[HomologicalComplex.singleMapHomologicalComplex_inv_app_self]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 private theorem single_key {R : Type} [CommRing R] (Φ : Shv R ⥤ Shv R) [Φ.Additive] (F : Shv R) :
     (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (Φ.obj F)).inv ≫
       ((HomologicalComplex.singleMapHomologicalComplex Φ (ComplexShape.up ℤ) 0).inv.app F).f 0 =
@@ -12,6 +15,13 @@ private theorem single_key {R : Type} [CommRing R] (Φ : Shv R ⥤ Shv R) [Φ.Ad
   simp
   rfl
 
+/- English proof (translation)
+Introduce `R _ Φ _ hΦ F`. Take `⟨-, -, -, hq, hι, -, -, -⟩` from `GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R F`. Use `haveI : Φ.PreservesHomology := (Φ.exact_tfae.out 1 2).1 hΦ`. Set `e` to `(HomologicalComplex.singleMapHomologicalComplex Φ (ComplexShape.up ℤ) 0).app F`. Set `φ : (HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0 ⋙ Φ.mapHomologicalComplex (ComplexShape.up ℤ)).obj F ⟶ (Φ.mapHomologicalComplex (ComplexShape.up ℤ)).obj (res R F)` to `(Φ.mapHomologicalComplex (ComplexShape.up ℤ)).map (resAug F)`.
+
+Use `haveI hφ : QuasiIso φ := (inferInstance : QuasiIso ((Φ.mapHomologicalComplex (ComplexShape.up ℤ)).map (resAug F)))`. Use `haveI he : QuasiIso e.inv := inferInstance`. Use `⟨e.inv ≫ φ, quasiIso_comp e.inv φ, ?_⟩` and prove the remaining obligations. Use `erw [HomologicalComplex.comp_f]`. Rewrite using `[← Category.assoc]`.
+
+Use `erw [single_key]`. Conclude with `(Φ.map_comp _ _).symm.trans (congrArg Φ.map hι)`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.phiQis_of :
     PhiQis := by
   intro R _ Φ _ hΦ F

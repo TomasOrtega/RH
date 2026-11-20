@@ -17,6 +17,9 @@ section Halves
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `hO`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, GlobalTheory.DualPairCheck.cA_cA]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hO_cA_smul (S₁ S₂ : HSp D) (a : AE D) (z y : WO S₁ S₂) : hO S₁ S₂ z (cA D a • y) = hO S₁ S₂ (a • z) y := by
   unfold hO
   refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun r _ =>
@@ -24,20 +27,37 @@ theorem hO_cA_smul (S₁ S₂ : HSp D) (a : AE D) (z y : WO S₁ S₂) : hO S₁
   simp only [Matrix.smul_apply, smul_eq_mul, map_mul, GlobalTheory.DualPairCheck.cA_cA]
   ring
 
+/- English proof (translation)
+Unfold `symplO`. Rewrite using `[hO_cA_smul]`.
+-/
 theorem symplO_cA_smul (S₁ S₂ : HSp D) (a : AE D) (z y : WO S₁ S₂) :
     symplO S₁ S₂ z (cA D a • y) = symplO S₁ S₂ (a • z) y := by
   unfold symplO
   rw [hO_cA_smul]
 
+/- English proof (translation)
+Simplify using `[symplO, hO]`.
+-/
 theorem symplO_zero_right' (S₁ S₂ : HSp D) (z : WO S₁ S₂) : symplO S₁ S₂ z 0 = 0 := by
   simp [symplO, hO]
 
+/- English proof (translation)
+Introduce `p q` and use `by rw [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hb]`.
+-/
 theorem isHalf_smul_self {m n : ℕ} {b : AE D} (hb : b * b = b) (x : Matrix (Fin m) (Fin n) (AE D)) : IsHalf b (b • x) :=
   fun p q => by rw [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hb]
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun p q => hx p q`.
+-/
 theorem smul_of_isHalf {m n : ℕ} {b : AE D} {x : Matrix (Fin m) (Fin n) (AE D)} (hx : IsHalf b x) : b • x = x :=
   Matrix.ext fun p q => hx p q
 
+/- English proof (translation)
+Establish `h0 : c * GlobalTheory.LatVac.liftV v 1 = 0` using `GlobalTheory.LatVac.at_liftV v 1 c hc`. Use extensionality with `p q`. Rewrite using `[Matrix.smul_apply, Matrix.zero_apply, Algebra.smul_def]`. Establish `e : algebraMap (AF D.host.F) (AE D) c * x p q = b * algebraMap (AF D.host.F) (AE D) (c * GlobalTheory.LatVac.liftV v 1) * x p q` using `by conv_lhs => rw [← hx p q, ← hb]`. Rewrite using `[map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, h0, map_zero, mul_zero, zero_mul]`.
+-/
 theorem smul_eq_zero_of_isHalf (v : Pl D.host.F) {b : AE D}
     (hb : b * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1) = b) {m n : ℕ} {x : Matrix (Fin m) (Fin n) (AE D)}
     (hx : IsHalf b x) (c : AF D.host.F) (hc : evFin D.host.F v c = 0) : c • x = 0 := by
@@ -53,6 +73,9 @@ theorem smul_eq_zero_of_isHalf (v : Pl D.host.F) {b : AE D}
 
 variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {i j : ℕ}
 
+/- English proof (translation)
+Introduce `c hc`. Apply `(maps e).injective` to reduce the goal to its premises. Rewrite using `[map_smul, map_zero, maps_apply, Prod.smul_mk, smul_eq_zero_of_isHalf v hb hu.1 c hc, smul_eq_zero_of_isHalf v hb hu.2 c hc, Prod.mk_zero_zero]`.
+-/
 theorem at_of_mixHalf (e : Num G i j) (v : Pl D.host.F) {b : AE D}
     (hb : b * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1) = b) {u : Pt G i j} (hu : u ∈ mixHalf e b) :
     At (evFin D.host.F v) u := by
@@ -61,6 +84,11 @@ theorem at_of_mixHalf (e : Num G i j) (v : Pl D.host.F) {b : AE D}
   rw [map_smul, map_zero, maps_apply, Prod.smul_mk, smul_eq_zero_of_isHalf v hb hu.1 c hc,
     smul_eq_zero_of_isHalf v hb hu.2 c hc, Prod.mk_zero_zero]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show IsHalf b (mapV e (ofMaps e _))`. Rewrite using `[mapV_ofMaps]`. Conclude with `isHalf_smul_self hb _`. Use `show IsHalf b (mapW e (ofMaps e _))`.
+
+Rewrite using `[mapW_ofMaps]`. Conclude with `isHalf_smul_self hb _`.
+-/
 theorem ofMaps_smul_mem (e : Num G i j) {b : AE D} (hb : b * b = b) (x₁ : HomV G i j) (x₂ : HomW G i j) :
     ofMaps e (b • x₁, b • x₂) ∈ mixHalf e b := by
   refine ⟨?_, ?_⟩
@@ -71,6 +99,11 @@ theorem ofMaps_smul_mem (e : Num G i j) {b : AE D} (hb : b * b = b) (x₁ : HomV
     rw [mapW_ofMaps]
     exact isHalf_smul_self hb _
 
+/- English proof (translation)
+Establish `h1 : (1 - GlobalTheory.LatVac.liftV v 1) • u = 0` using `hu _ (by rw [map_sub, GlobalTheory.LatVac.evFin_liftV, map_one, sub_self])`. Establish `hℓu : GlobalTheory.LatVac.liftV v 1 • u = u`. Rewrite `h1` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h1.symm`. Apply `(maps e).injective` to reduce the goal to its premises.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show mapV e (_ + _) = mapV e u`. Rewrite using `[mapV_add, mapV_ofMaps, mapV_ofMaps, ← add_smul, hsum, algebraMap_smul, ← mapV_smul, hℓu]`. Use `show mapW e (_ + _) = mapW e u`. Rewrite using `[mapW_add, mapW_ofMaps, mapW_ofMaps, ← add_smul, hsum, algebraMap_smul, ← mapW_smul, hℓu]`.
+-/
 theorem ofMaps_add_ofMaps (e : Num G i j) (v : Pl D.host.F) {a : AE D}
     (hsum : a + cA D a = algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1)) {u : Pt G i j}
     (hu : At (evFin D.host.F v) u) :
@@ -87,16 +120,31 @@ theorem ofMaps_add_ofMaps (e : Num G i j) (v : Pl D.host.F) {a : AE D}
   · show mapW e (_ + _) = mapW e u
     rw [mapW_add, mapW_ofMaps, mapW_ofMaps, ← add_smul, hsum, algebraMap_smul, ← mapW_smul, hℓu]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LatVac.infPart_pair (GlobalTheory.AdelicU.singleFin v 1) 1`.
+-/
 theorem infPart_algebraMap_liftV (v : Pl D.host.F) :
     infPart D (algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1)) = 0 :=
   GlobalTheory.LatVac.infPart_pair (GlobalTheory.AdelicU.singleFin v 1) 1
 
+/- English proof (translation)
+Use extensionality with `p q`. Rewrite using `[Matrix.map_apply, Matrix.zero_apply, ← hx p q, ← hb, map_mul, map_mul, infPart_algebraMap_liftV, mul_zero, zero_mul]`.
+-/
 theorem map_infPart_of_isHalf (v : Pl D.host.F) {b : AE D}
     (hb : b * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1) = b) {m n : ℕ} {x : Matrix (Fin m) (Fin n) (AE D)}
     (hx : IsHalf b x) : x.map (infPart D) = 0 := by
   ext p q
   rw [Matrix.map_apply, Matrix.zero_apply, ← hx p q, ← hb, map_mul, map_mul, infPart_algebraMap_liftV, mul_zero, zero_mul]
 
+/- English proof (translation)
+Use `GlobalTheory.LatVac.mem_of_char hstd hS hT (map_infPart_of_isHalf v ha1 hx.1) fun l hl => ?_` and prove the remaining obligations. Establish `hy : ofMaps e (cA D a • l, (0 : HomW G i j)) ∈ mixHalf e (cA D a)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show IsHalf _ (mapV e (ofMaps e _))`. Rewrite using `[mapV_ofMaps]`.
+
+Conclude with `isHalf_smul_self hcc _`. Use `show IsHalf _ (mapW e (ofMaps e _))`. Rewrite using `[mapW_ofMaps]`. Conclude with `fun p q => mul_zero _`. Establish `hyl : ofMaps e (cA D a • l, (0 : HomW G i j)) ∈ latPt e v`.
+
+Use `⟨at_of_mixHalf e v hc1 hy, ?_, ?_⟩` and prove the remaining obligations. Use `show mapV e (ofMaps e _) ∈ latV G i j`. Rewrite using `[mapV_ofMaps]`. Conclude with `GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ _ hfc l hl`. Use `show mapW e (ofMaps e _) ∈ latW G i j`.
+
+Rewrite using `[mapW_ofMaps]`. Conclude with `zero_mem _`. Establish `h` using `hψ _ hyl hy`. Rewrite `h` using `[symp_eq e Γ hW hWW, mapV_ofMaps, mapW_ofMaps, symplO_cA_smul, smul_of_isHalf hx.1, symplO_zero_right', add_zero]`. Conclude with `h`.
+-/
 theorem mapV_mem_latV_of_char (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (hW : Γ.V.J = (1 : D.host.E) • (spW G i j).gram)
     (hWW : Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e) {ψ : AddChar (AF D.host.F) ℂ} (hstd : IsStdChar D ψ (-1))
     (hS : IsSelfDualC (negSp (spW G i j)) (G.Λ (.grid (i + 1) (j + 1))))
@@ -127,6 +175,15 @@ theorem mapV_mem_latV_of_char (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSi
     add_zero] at h
   exact h
 
+/- English proof (translation)
+Use `GlobalTheory.LatVac.mem_of_char hstd hS hT (map_infPart_of_isHalf v ha1 hx.2) fun l hl => ?_` and prove the remaining obligations. Establish `hy : ofMaps e ((0 : HomV G i j), cA D a • l) ∈ mixHalf e (cA D a)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show IsHalf _ (mapV e (ofMaps e _))`. Rewrite using `[mapV_ofMaps]`.
+
+Conclude with `fun p q => mul_zero _`. Use `show IsHalf _ (mapW e (ofMaps e _))`. Rewrite using `[mapW_ofMaps]`. Conclude with `isHalf_smul_self hcc _`. Establish `hyl : ofMaps e ((0 : HomV G i j), cA D a • l) ∈ latPt e v`.
+
+Use `⟨at_of_mixHalf e v hc1 hy, ?_, ?_⟩` and prove the remaining obligations. Use `show mapV e (ofMaps e _) ∈ latV G i j`. Rewrite using `[mapV_ofMaps]`. Conclude with `zero_mem _`. Use `show mapW e (ofMaps e _) ∈ latW G i j`.
+
+Rewrite using `[mapW_ofMaps]`. Conclude with `GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ _ hfc l hl`. Establish `h` using `hψ _ hyl hy`. Rewrite `h` using `[symp_eq e Γ hW hWW, mapV_ofMaps, mapW_ofMaps, symplO_cA_smul, smul_of_isHalf hx.2, symplO_zero_right', zero_add]`. Conclude with `h`.
+-/
 theorem mapW_mem_latW_of_char (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (hW : Γ.V.J = (1 : D.host.E) • (spW G i j).gram)
     (hWW : Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e) {ψ : AddChar (AF D.host.F) ℂ} (hstd : IsStdChar D ψ (-1))
     (hS : IsSelfDualC (spV₁ G i j) (G.Λ (.grid (i + 1) j)))
@@ -157,6 +214,17 @@ theorem mapW_mem_latW_of_char (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSi
     zero_add] at h
   exact h
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W i j e Γ hW hWW v a ha hsum`. Take `⟨haa, hac, -⟩` from `ha`. Establish `hcc : cA D a * cA D a = cA D a` using `by rw [← map_mul, haa]`. Establish `hca : cA D a * a = 0` using `by rw [mul_comm, hac]`. Establish `ha1 : a * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1) = a`.
+
+Rewrite using `[← hsum, mul_add, haa, hac, add_zero]`. Establish `hc1 : cA D a * algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1) = cA D a`. Rewrite using `[← hsum, mul_add, hca, hcc, zero_add]`. Establish `hfa : finPart D a ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, haa])`. Establish `hfc : finPart D (cA D a) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, hcc])`.
+
+Establish `hS : IsSelfDualC (negSp (spW G i j)) (G.Λ (.grid ((i : ℕ) + 1) ((j : ℕ) + 1)))` using `isSelfDualC_neg (node_isV G hL (X := .grid ((i : ℕ) + 1) ((j : ℕ) + 1)) ⟨i.2, j.2⟩).sd`. Establish `hT : IsSelfDualC (spV G i j) (G.Λ (.grid (i : ℕ) ((j : ℕ) + 1)))` using `(node_isV G hL (X := .grid (i : ℕ) ((j : ℕ) + 1)) ⟨i.2.le, j.2⟩).sd`. Establish `hS₁ : IsSelfDualC (spV₁ G i j) (G.Λ (.grid ((i : ℕ) + 1) (j : ℕ)))` using `(node_isV G hL (X := .grid ((i : ℕ) + 1) (j : ℕ)) ⟨i.2, j.2.le⟩).sd`. Establish `hT₁ : IsSelfDualC (spW G i j) (G.Λ (.grid ((i : ℕ) + 1) ((j : ℕ) + 1)))` using `(node_isV G hL (X := .grid ((i : ℕ) + 1) ((j : ℕ) + 1)) ⟨i.2, j.2⟩).sd`. Use `⟨fun u hu => at_of_mixHalf e v ha1 hu, fun u hu => at_of_mixHalf e v hc1 hu, fun u hu => ⟨_, ofMaps_smul_mem e haa _ _, _, ofMaps_smul_mem e hcc _ _, (ofMaps_add_ofMaps e v hsum hu).symm⟩, fun x hx hψ => ⟨at_of_mixHalf e v ha1 hx, mapV_mem_latV_of_char e Γ hW hWW W.ψ_std hS hT v …` and prove the remaining obligations.
+
+Use `⟨ofMaps_smul_mem e haa _ _, fun y hy => ?_, fun hV hW' => ?_⟩` and prove the remaining obligations. Rewrite using `[symp_eq e Γ hW hWW, symp_eq e Γ hW hWW, mapV_ofMaps, mapW_ofMaps, ← symplO_cA_smul, ← symplO_cA_smul, smul_of_isHalf hy.1, smul_of_isHalf hy.2]`. Use `⟨at_of_mixHalf e v ha1 (ofMaps_smul_mem e haa _ _), ?_, ?_⟩` and prove the remaining obligations. Use `show mapV e (ofMaps e _) ∈ latV G i j`. Rewrite using `[mapV_ofMaps]`.
+
+Conclude with `GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ _ hfa _ hV`. Use `show mapW e (ofMaps e _) ∈ latW G i j`. Rewrite using `[mapW_ofMaps]`. Conclude with `GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ _ hfa _ hW'`.
+-/
 theorem halves_split : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (i j : Fin D.R.m) (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j),
     Γ.V.J = (1 : D.host.E) • (spW G i j).gram → Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e → ∀ (v : Pl D.host.F) (a : AE D), IsSplitIdem D a →
     a + cA D a = algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1) →

@@ -5,6 +5,13 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL GlobalTheory.GalOfCusp GlobalTheory.HeckeGal UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Distinguish the cases in `h : Finite (MulAction.orbit K (x : G ⧸ K'))`. Use `letI := Fintype.ofFinite (MulAction.orbit K (x : G ⧸ K'))`. Use `⟨Finset.univ, fun M _ _ ρ v => ?_⟩` and prove the remaining obligations. Rewrite using `[Hi.dc, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`. Use `⟨∅, fun M _ _ ρ v => ?_⟩` and prove the remaining obligations.
+
+Break down `subsingleton_or_nontrivial M with hM | hM` into its components or cases. Conclude with `Subsingleton.elim _ _`. Establish `hs : (Function.support fun q : MulAction.orbit K (x : G ⧸ K') => ρ (q : G ⧸ K').out) = Set.univ`. Use `Set.eq_univ_of_forall fun q hq => ?_` and prove the remaining obligations. Establish `h1 : ρ ((q : G ⧸ K').out⁻¹ * (q : G ⧸ K').out) = 0` using `by rw [map_mul, show ρ (q : G ⧸ K').out = 0 from hq, mul_zero]`.
+
+Rewrite `h1` using `[inv_mul_cancel, map_one]`. Conclude with `one_ne_zero h1`. Rewrite using `[Hi.dc, finsum_of_infinite_support, Finset.sum_empty, LinearMap.zero_apply]`. Rewrite using `[hs]`. Conclude with `fun hf => h (Set.finite_univ_iff.1 hf)`.
+-/
 private theorem dc_common {G : Type} [Group G] (K K' : Subgroup G) (x : G) :
     ∃ s : Finset (MulAction.orbit K (x : G ⧸ K')), ∀ (M : Type) [AddCommGroup M] [Module ℂ M]
       (ρ : Representation ℂ G M) (v : M), Hi.dc ρ K K' x v = ∑ q ∈ s, ρ (q : G ⧸ K').out v := by
@@ -24,6 +31,19 @@ private theorem dc_common {G : Type} [Group G] (K K' : Subgroup G) (x : G) :
     rw [hs]
     exact fun hf => h (Set.finite_univ_iff.1 hf)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Submodule.mem_iSup_iff_exists_finset.1 hφ`. Establish `key : ∀ s : Finset ι, ∀ W : Submodule ℂ V, (∀ g, ∀ x ∈ W, ρ g x ∈ W) → φ ∉ W → φ ∈ W ⊔ ⨆ i ∈ s, LinearMap.range (f i) → ∃ v : U, v ≠ 0 ∧ ∀ j, S j v = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro W _ h1 h2; exact absurd (by simpa using h2) h1`.
+
+Consider the case `insert i s _ ih`. Introduce `W hW h1 h2`. Rewrite `h2` using `[Finset.iSup_insert, ← sup_assoc]`. Distinguish the cases in `h3 : φ ∈ W ⊔ LinearMap.range (f i)`. Take `⟨x, hx, _, ⟨v, rfl⟩, e⟩` from `Submodule.mem_sup.1 h3`.
+
+Establish `hv : f i v ∉ W` using `fun h => h1 (e ▸ add_mem hx h)`. Establish `hc : W.comap (f i) = ⊥`. Use `(((GlobalTheory.CuspRep.isIrreducible_iff σ).1 hσ).2 _ fun g u hu => ?_).resolve_right fun h => hv ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, hf]`. Conclude with `hW g _ hu`.
+
+Establish `: v ∈ W.comap (f i)` using `h ▸ Submodule.mem_top`. Conclude with `this`. Use `⟨v, fun h => hv (by rw [h, map_zero]; exact zero_mem _), fun j => ?_⟩` and prove the remaining obligations. Establish `h4 : S j v ∈ W.comap (f i)`. Establish `h5` using `hK j`.
+
+Rewrite `h5` using `[← e, map_add]`. Rewrite using `[Submodule.mem_comap, hTS, eq_neg_of_add_eq_zero_right h5]`. Conclude with `neg_mem (hT W hW j x hx)`. Rewrite `h4` using `[hc, Submodule.mem_bot]`. Then use the resulting hypothesis. Use `ih _ (fun g y hy => ?_) h3 h2` and prove the remaining obligations.
+
+Take `⟨x, hx, _, ⟨v, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[map_add, ← hf]`. Conclude with `Submodule.add_mem_sup (hW g x hx) ⟨_, rfl⟩`. Conclude with `key s ⊥ (fun g x hx => by simp_all) (by simpa using h0) (by simpa using hs)`.
+-/
 private theorem killed_of_mem_iSup {G V U ι J : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U]
     (ρ : Representation ℂ G V) (σ : Representation ℂ G U) (hσ : σ.IsIrreducible) (f : ι → U →ₗ[ℂ] V)
     (hf : ∀ i g u, f i (σ g u) = ρ g (f i u)) (T : J → V →ₗ[ℂ] V) (S : J → U →ₗ[ℂ] U)
@@ -62,6 +82,15 @@ private theorem killed_of_mem_iSup {G V U ι J : Type} [Group G] [AddCommGroup V
         exact Submodule.add_mem_sup (hW g x hx) ⟨_, rfl⟩
   exact key s ⊥ (fun g x hx => by simp_all) (by simpa using h0) (by simpa using hs)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `dc_common K K x`. Take `⟨v, hv0, hv⟩` from `killed_of_mem_iSup ρ σ hσ f hf (fun j : Option K => j.elim (Hi.dc ρ K K x - lam • LinearMap.id) fun k => ρ k - LinearMap.id) (fun j : Option K => j.elim (Hi.dc σ K K x - lam • LinearMap.id) fun k => σ k - LinearMap.id) (by`. Introduce and unpack `(_ | k) i u`. Simplify using `only [Option.elim, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, map_sub, map_smul, hs, map_sum, hf]`. Simplify using `only [Option.elim, LinearMap.sub_apply, LinearMap.id_apply, map_sub, hf])`.
+
+Use the proof step `(by`. Introduce and unpack `W hW (_ | k) y hy`. Simplify using `only [Option.elim, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hs]`. Conclude with `sub_mem (Submodule.sum_mem _ fun q _ => hW _ _ hy) (W.smul_mem _ hy)`. Simplify using `only [Option.elim, LinearMap.sub_apply, LinearMap.id_apply]`.
+
+Conclude with `sub_mem (hW _ _ hy) hy)`. Use `φ h0`. Use the proof step `(by`. Introduce and unpack `(_ | k)`. Simplify using `only [Option.elim, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hl, sub_self]`.
+
+Simplify using `only [Option.elim, LinearMap.sub_apply, LinearMap.id_apply]`. Conclude with `sub_eq_zero.2 (hK k k.2))`. Use `hφ`. Conclude with `⟨v, hv0, fun k hk => sub_eq_zero.1 (hv (some ⟨k, hk⟩)), sub_eq_zero.1 (hv none)⟩`.
+-/
 private theorem dc_eigen_descend {G V U ι : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U]
     (ρ : Representation ℂ G V) (σ : Representation ℂ G U) (hσ : σ.IsIrreducible) (f : ι → U →ₗ[ℂ] V)
     (hf : ∀ i g u, f i (σ g u) = ρ g (f i u)) (K : Subgroup G) (x : G) (lam : ℂ)
@@ -92,6 +121,9 @@ private theorem dc_eigen_descend {G V U ι : Type} [Group G] [AddCommGroup V] [M
     hφ
   exact ⟨v, hv0, fun k hk => sub_eq_zero.1 (hv (some ⟨k, hk⟩)), sub_eq_zero.1 (hv none)⟩
 
+/- English proof (translation)
+Introduce `F _ _ w V _ _ ρ σ ⟨_, htop⟩ c lam ⟨φ, h0, hK, hl⟩`. Conclude with `dc_eigen_descend (ρ.comp (locGL F 2 w)) σ.ρ σ.irred (fun f : {f : σ.V →ₗ[ℂ] V // ∀ g v, f (σ.ρ g v) = ρ (locGL F 2 w g) (f v)} => f.1) (fun f => f.2) (K1 w c) _ lam φ h0 hK hl (htop ▸ Submodule.mem_top)`.
+-/
 theorem UpperTheory.hasUEigenvalue_of_locIsotypic :
     ∀ (F : Type) [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin 2) (Af F)) V) (σ : SmIrr (GL (Fin 2) (w.adicCompletion F))), LocIsotypic ρ w σ → ∀ (c : ℕ) (lam : ℂ), HasU w (ρ.comp (locGL F 2 w)) c lam → HasU w σ.ρ c lam := by
   intro F _ _ w V _ _ ρ σ ⟨_, htop⟩ c lam ⟨φ, h0, hK, hl⟩

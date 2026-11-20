@@ -17,11 +17,17 @@ section Algebra
 
 variable {A : Type} [CommRing A] (σ : A →+* A)
 
+/- English proof (translation)
+Rewrite using `[cT, Matrix.map_mul, transpose_mul]`. Both sides reduce to the same expression.
+-/
 theorem cT_mul_rect {l m n : ℕ} (M : Matrix (Fin l) (Fin m) A) (N : Matrix (Fin m) (Fin n) A) :
     cT σ (M * N) = cT σ N * cT σ M := by
   rw [cT, Matrix.map_mul, transpose_mul]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[← h i j]`. Simplify using `only [hform, mulVec_single_one, Matrix.mul_apply, cT, transpose_apply, map_apply, col_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem gram_of_form {m n : ℕ} (J' : Matrix (Fin m) (Fin m) A) (J : Matrix (Fin n) (Fin n) A)
     (x : Matrix (Fin m) (Fin n) A)
     (h : ∀ i j, hform σ J' (x *ᵥ Pi.single i 1) (x *ᵥ Pi.single j 1) = J i j) :
@@ -31,10 +37,20 @@ theorem gram_of_form {m n : ℕ} (J' : Matrix (Fin m) (Fin m) A) (J : Matrix (Fi
   simp only [hform, mulVec_single_one, Matrix.mul_apply, cT, transpose_apply, map_apply, col_apply, Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `[hform, Pi.single_apply, apply_ite σ]`.
+-/
 theorem hform_single {n : ℕ} (J : Matrix (Fin n) (Fin n) A) (i j : Fin n) :
     hform σ J (Pi.single i 1) (Pi.single j 1) = J i j := by
   simp [hform, Pi.single_apply, apply_ite σ]
 
+/- English proof (translation)
+Establish `hu : IsUnit (x * y')`. Rewrite using `[← Matrix.mulVec_surjective_iff_isUnit]`. Introduce `v`. Take `⟨w, rfl⟩` from `hb v`. Conclude with `⟨y *ᵥ w, by rw [mulVec_mulVec, Matrix.mul_assoc, h2, Matrix.mul_one]⟩`.
+
+Use `⟨hu.unit, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hu.unit_spec, cT_mul_rect]`. Establish `e : cT σ y' * cT σ y = 1`. Rewrite using `[← cT_mul_rect, h1, cT, Matrix.map_one _ (map_zero σ) (map_one σ), transpose_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hu.unit_spec, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+-/
 theorem exists_unitary {m n : ℕ} (J' : Matrix (Fin m) (Fin m) A) (J : Matrix (Fin n) (Fin n) A)
     (x y : Matrix (Fin m) (Fin n) A) (y' : Matrix (Fin n) (Fin m) A) (h1 : y * y' = 1) (h2 : y' * y = 1)
     (hb : Function.Surjective x.mulVec) (hx : cT σ x * J' * x = J) (hy : cT σ y * J' * y = J) :
@@ -57,6 +73,11 @@ end Algebra
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `(GlobalTheory.Mass.swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram).surjective ⟨g, hg⟩`. Take `⟨h1, h2⟩` from `GlobalTheory.Mass.parts_spec D.sp.cm.sig V.gram`. Take `⟨k, k1, k2⟩` from `h2 1 b.1`. Use `⟨⟨k, (h1 k).2 ⟨k1 ▸ one_mem _, k2 ▸ b.2⟩⟩, k1, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg Subtype.val hb`.
+
+Establish `e2` using `GlobalTheory.Mass.coe_swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram b`. Use `Eq.trans ?_ (e2.symm.trans e)` and prove the remaining obligations. Conclude with `congrArg (Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D)) k2`.
+-/
 theorem exists_finE (V : HSp D) (g : GL (Fin V.rank) (EAf D)) (hg : g ∈ UA D.sp.cm V.gram) :
     ∃ k ∈ GfC V, finE V k = g := by
   obtain ⟨b, hb⟩ := (GlobalTheory.Mass.swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram).surjective ⟨g, hg⟩
@@ -68,13 +89,24 @@ theorem exists_finE (V : HSp D) (g : GL (Fin V.rank) (EAf D)) (hg : g ∈ UA D.s
   refine Eq.trans ?_ (e2.symm.trans e)
   exact congrArg (Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D)) k2
 
+/- English proof (translation)
+Rewrite using `[mA, mA, mA, ← Matrix.map_mul, frameMat, frameMat, frameMat, LinearMap.toMatrix_comp X.frame Y.frame Z.frame]`.
+-/
 theorem mA_mul (X Y Z : HSp D) (f : X.V →ₗ[D.host.E] Y.V) (g : Y.V →ₗ[D.host.E] Z.V) :
     mA Z Y g * mA Y X f = mA Z X (g.comp f) := by
   rw [mA, mA, mA, ← Matrix.map_mul, frameMat, frameMat, frameMat, LinearMap.toMatrix_comp X.frame Y.frame Z.frame]
 
+/- English proof (translation)
+Rewrite using `[mA, frameMat, LinearMap.toMatrix_id, Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _)]`.
+-/
 theorem mA_id (X : HSp D) : mA X X LinearMap.id = 1 := by
   rw [mA, frameMat, LinearMap.toMatrix_id, Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Establish `: Formalism.L2.Herm.crd X (X.frame i) j = X.frame.repr (X.frame i) j` using `rfl`. Rewrite using `[vA, this, Module.Basis.repr_self, Finsupp.single_apply, Pi.single_apply]`. Distinguish the cases in `h : i = j`. Rewrite using `[if_pos h, if_pos h.symm, RingHom.map_one]`.
+
+Rewrite using `[if_neg h, if_neg (Ne.symm h), RingHom.map_zero]`.
+-/
 theorem vA_frame (X : HSp D) (i : Fin X.rank) : vA X (X.frame i) = Pi.single i 1 := by
   funext j
   have : Formalism.L2.Herm.crd X (X.frame i) j = X.frame.repr (X.frame i) j := rfl
@@ -83,12 +115,20 @@ theorem vA_frame (X : HSp D) (i : Fin X.rank) : vA X (X.frame i) = Pi.single i 1
   · rw [if_pos h, if_pos h.symm, RingHom.map_one]
   · rw [if_neg h, if_neg (Ne.symm h), RingHom.map_zero]
 
+/- English proof (translation)
+Use `gram_of_form _ _ _ _ fun i j => ?_` and prove the remaining obligations. Rewrite using `[← vA_frame, ← vA_frame, mA_mulVec_vA, mA_mulVec_vA, ← hA_eq, hA_vA, HSpace.hD, hf]`. Both sides reduce to the same expression.
+-/
 theorem gram_mA (Y Y' : HSp D) (f : Y.V →ₗ[D.host.E] Y'.V) (hf : HSpace.IsIsomEmb Y Y' f) :
     HMul.hMul (HMul.hMul (cT (cjA D) (mA Y' Y f)) (Y'.gram.map (inc D))) (mA Y' Y f) = Y.gram.map (inc D) := by
   refine gram_of_form _ _ _ _ fun i j => ?_
   rw [← vA_frame, ← vA_frame, mA_mulVec_vA, mA_mulVec_vA, ← hA_eq, hA_vA, HSpace.hD, hf]
   rfl
 
+/- English proof (translation)
+Introduce `D hT Y Y' io hio Λ Λ' hΛ hΛ' S hS n be be' hbe hbe'`. Establish `hr : Y.rank = Y'.rank` using `by rw [← Y.rank_eq, ← Y'.rank_eq, io.finrank_eq]`. Take `⟨⟨x, hx⟩, -⟩` from `hT Y Y' hr Λ Λ' hΛ hΛ' S hS n be be' hbe hbe'`. Take `⟨g, hg, hgx⟩` from `exists_unitary (cjA D) (Y'.gram.map (inc D)) (Y.gram.map (inc D)) x (mA Y' Y io.toLinearMap) (mA Y Y' io.symm.toLinearMap) (by rw [mA_mul, LinearEquiv.comp_symm, mA_id]) (by rw [mA_mul, LinearEquiv.symm_comp, mA_id]) hx.1.1.2 (gram_of_form _ _ _ _ fun i j => (hx.1.2 _ _).trans (h …`. Take `⟨k, hk, e⟩` from `exists_finE Y' g hg`.
+
+Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[e, hgx]`. Conclude with `hx`.
+-/
 theorem correction_of_transport : ∀ D : D7, TransportSt D → CorrectionSt D := by
   intro D hT Y Y' io hio Λ Λ' hΛ hΛ' S hS n be be' hbe hbe'
   have hr : Y.rank = Y'.rank := by rw [← Y.rank_eq, ← Y'.rank_eq, io.finrank_eq]

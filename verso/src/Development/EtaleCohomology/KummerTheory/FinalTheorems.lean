@@ -152,10 +152,20 @@ def Glob : Prop := ∀ (Λ : Type) [CommRing Λ] {I J K : Cx Λ} (μ : Pair I J 
   ∀ {X S : Scheme.{0}} (p : X ⟶ S) (r : ℕ → ℕ) (M : ℕ) (γ : ∀ a : ℕ, Fin (r a) → Sec (I.X (a : ℤ)) X), Closed γ →
   ∀ N m : ℕ, (∀ j : ℤ, j < m → ConeLoc M μ p γ N j) → ∀ j : ℤ, j < m → ∀ U : Over S, ConeEx M μ p γ (N ^ (m + 1)) j U
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun n => by unfold res; infer_instance, fun n hn => (injectiveResolution F).cochainComplex.isZero_of_isStrictlyGE 0 n hn⟩`.
+-/
 theorem injPos_res (Λ : Type) [CommRing Λ] (F : Shv Λ) : InjPos (res Λ F) :=
   ⟨fun n => by unfold res; infer_instance,
    fun n hn => (injectiveResolution F).cochainComplex.isZero_of_isStrictlyGE 0 n hn⟩
 
+/- English proof (translation)
+Introduce `a2 a6 b1`. Use `⟨fun M => 2 * (M + 1), ?_⟩` and prove the remaining obligations. Introduce `q _ X R p _ _ hq i r c M N hS Y pY n hn`. Use `choose γ hγ using fun (a : ℕ) (s : Fin (r a)) => (hD _ (res _ (tw q i)) X a).2.1 (c a s)`. Establish `hc : Closed γ` using `fun a s => ((hD _ (res _ (tw q i)) X a).2.2.1 _ _ (hγ a s)).1`.
+
+Establish `hl : ∀ j : ℤ, j < M → ConeLoc M (mu q i) p γ (N ^ 2) j` using `fun j hj => h3 q p i r c γ hγ M N j (h1 a6 b1 q p hq i r c M N _ fun A s hA => hS A s hA _ (by omega)) (h2 a2 a6 b1 q p hq i r c M N _ fun A s hA => hS A s hA _ (by omega))`. Establish `hg` using `h4 _ (mu q i) (injPos_res _ _) (injPos_res _ _) p r M γ hc (N ^ 2) M hl`. Take `⟨j, rfl⟩ : ∃ j, n = j + 1` from `⟨n - 1, by omega⟩`. Use `h5 q p i r c γ hγ M _ j (Over.mk pY) (hg j (by omega) _) (hg (j + 1) hn _)` as an intermediate fact. Rewrite `this` using `[← pow_mul]`.
+
+Conclude with `this`.
+-/
 theorem goal_of (hD : Dict) (h1 : LocKer) (h2 : LocCok) (h3 : LocCone) (h4 : Glob) (h5 : ExIso) : LH := by
   intro a2 a6 b1
   refine ⟨fun M => 2 * (M + 1), ?_⟩

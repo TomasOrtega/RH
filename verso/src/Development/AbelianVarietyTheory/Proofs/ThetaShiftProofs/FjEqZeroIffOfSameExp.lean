@@ -19,6 +19,11 @@ namespace GlobalTheory.FrameMatch
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `key : X.flowMat ((gm : Matrix (Fin r) (Fin r) E) *ᵥ ξ) τ (s τ) * (gm : Matrix (Fin r) (Fin r) E).map τ.1 = (gm : Matrix (Fin r) (Fin r) E).map τ.1 * X.flowMat ξ τ (s τ)`. Use `Matrix.ext_of_mulVec_single fun i => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, EmbeddingHermitianPairs.flowMat_mulVec, EmbeddingHermitianPairs.flowMat_mulVec, GlobalTheory.PerMove.emb_mulVec, GlobalTheory.PerMove.hermC_unitary _ _ _ hgm, Matrix.mulVec_add, Matrix.mulVec_smul]`. Express the relevant statement in the definitionally equal form `X.flowMat _ τ (s τ) * ((gm : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ * mat b τ) = (gm : Matrix (Fin r) (Fin r) E).map τ.1 * (X.flowMat ξ τ (s τ) * mat x τ) * mat b τ`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, key, Matrix.mul_assoc (_ : Matrix (Fin r) (Fin r) ℂ) _ (mat x τ)]`.
+-/
 theorem flow_lact_rmul (X : Data E r) (gm : GL (Fin r) E)
     (hgm : ∀ u v, herm X.Gm ((gm : Matrix (Fin r) (Fin r) E) *ᵥ u) ((gm : Matrix (Fin r) (Fin r) E) *ᵥ v) =
       herm X.Gm u v) (ξ : Fin r → E) (s : X.Ψ → ℂ) (x b : Frame X.Ψ r) :
@@ -33,6 +38,11 @@ theorem flow_lact_rmul (X : Data E r) (gm : GL (Fin r) E)
     (gm : Matrix (Fin r) (Fin r) E).map τ.1 * (X.flowMat ξ τ (s τ) * mat x τ) * mat b τ
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, key, Matrix.mul_assoc (_ : Matrix (Fin r) (Fin r) ℂ) _ (mat x τ)]
 
+/- English proof (translation)
+Establish `h : ∀ s : X.Ψ → ℝ, P (X.flow ((gm : Matrix (Fin r) (Fin r) E) *ᵥ ξ) (fun τ => (s τ : ℂ)) (rmul (lact gm x) b)) = bchar la b * X.χ la gm * P (X.flow ξ (fun τ => (s τ : ℂ)) x)` using `fun s => by`. Establish `h1 : X.flow ξ (fun τ => (s τ : ℂ)) x ∈ X.dom` using `TransvectionPeriodicity.flow_real_mem_dom X hξ s x hx`. Rewrite using `[flow_lact_rmul X gm (X.Γ_stab gm hgm).1, hP.2.1 _ ((AR.Up.PairUnfoldPf.lact_mem_dom_iff X hgm _).2 h1) b hb, hP.2.2 gm hgm _ h1, _root_.mul_assoc]`. Unfold `Data.fj`. Use `split_ifs`.
+
+Simplify using `only [h, _root_.mul_assoc (bchar la b * X.χ la gm), MeasureTheory.integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem fj_lact_rmul (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec la P) {gm : GL (Fin r) E}
     (hgm : gm ∈ X.Γ) {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (ν : X.Ψ → ℝ) {x b : Frame X.Ψ r} (hx : x ∈ X.dom)
     (hb : b ∈ Bor X.Ψ r) :
@@ -50,6 +60,11 @@ theorem fj_lact_rmul (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} 
   · simp
   · simp
 
+/- English proof (translation)
+Take `⟨d, hd, hv⟩` from `HermitianTraceFormVanishing.exists_smul_mem (R := 𝓞 E) (F := E) X.Λ (x := Pi.single j 1) (by rw [X.Λ_span]; trivial)`. Establish `h2` using `h _ hv`. Establish `hemb : Data.emb τ (d • (Pi.single j 1 : Fin r → E)) = τ d • (Pi.single j 1 : Fin r → ℂ)`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `by_cases hk : k = j <;> simp [Data.emb, Algebra.smul_def, hk]`.
+
+Rewrite `h2` using `[hemb, Matrix.mulVec_smul, Matrix.mulVec_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.mulVec_single_one, Matrix.col_apply] at h2`. Use `mul_left_cancel₀ ?_ h2` and prove the remaining obligations. Simplify using `using hd`.
+-/
 theorem row_eq_of_lattice (X : Data E r) (τ : E →+* ℂ) (A B : Matrix (Fin r) (Fin r) ℂ) (a : Fin r)
     (h : ∀ v ∈ X.Λ, (A *ᵥ Data.emb τ v) a = (B *ᵥ Data.emb τ v) a) (j : Fin r) : A a j = B a j := by
   obtain ⟨d, hd, hv⟩ := HermitianTraceFormVanishing.exists_smul_mem (R := 𝓞 E) (F := E) X.Λ (x := Pi.single j 1)
@@ -63,6 +78,15 @@ theorem row_eq_of_lattice (X : Data E r) (τ : E →+* ℂ) (A B : Matrix (Fin r
   refine mul_left_cancel₀ ?_ h2
   simpa using hd
 
+/- English proof (translation)
+Use `⟨fun τ => ((mat y τ)⁻¹ * mat y' τ : Matrix (Fin r) (Fin r) ℂ), fun τ => ⟨?_, fun a c hca => ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((mat y τ)⁻¹ * mat y' τ).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (Matrix.isUnit_nonsing_inv_det _ (hy τ).1.isUnit).ne_zero (hy' τ).1`. Express the relevant statement in the definitionally equal form `((mat y τ)⁻¹ * mat y' τ) a c = 0`.
+
+Distinguish the cases in `ha : (a : ℕ) < q`. Establish `h3` using `congrFun (congrFun (Matrix.nonsing_inv_mul (mat y τ) (hy τ).1.isUnit) a) c`. Rewrite `h3` using `[Matrix.one_apply_ne hca.ne']`. Rewrite using `[← h3, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => congrArg _ (congrFun (h1 τ c (lt_trans hca ha)) j)`.
+
+Establish `h3` using `congrFun (congrFun (Matrix.nonsing_inv_mul (mat y' τ) (hy' τ).1.isUnit) a) c`. Rewrite `h3` using `[Matrix.one_apply_ne hca.ne']`. Rewrite using `[← h3, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [h2 τ a ha j]`. Use function extensionality and compare the values at `τ`.
+
+Express the relevant statement in the definitionally equal form `mat y' τ = mat y τ * ((mat y τ)⁻¹ * mat y' τ)`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ (hy τ).1.isUnit]`.
+-/
 theorem exists_bor (X : Data E r) {y y' : Frame X.Ψ r} (hy : y ∈ X.dom) (hy' : y' ∈ X.dom) (q : ℕ)
     (h1 : ∀ τ (a : Fin r), (a : ℕ) < q → FD.col (mat y' τ) a = FD.col (mat y τ) a)
     (h2 : ∀ τ (a : Fin r), ¬ (a : ℕ) < q → ∀ j, (mat y' τ)⁻¹ a j = (mat y τ)⁻¹ a j) :
@@ -87,6 +111,13 @@ theorem exists_bor (X : Data E r) {y y' : Frame X.Ψ r} (hy : y ∈ X.dom) (hy' 
 
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
 
+/- English proof (translation)
+Take `⟨h, gam, hh, hPh, hiso, hM, -⟩` from `GlobalTheory.familyUnif_exp_unique E H Dw l Xo σ' g ty F i i P P' hP hP' hu`. Use `haveI := hP'.2.2.1`. Establish `h1 : ∀ z, h z = z` using `fun z => sub_eq_zero.1 <| GlobalTheory.ExpUniqFamily.linear_eq_zero_of_discrete P'.range (h.toLinearMap - LinearMap.id) (fun z => (F.ex_ker i P' hP' _).1 <| (GlobalTheory.ExpUniqFamily.eq_iff_sub (F.ex i P') (F.ex_add i P' hP') _ _).1 (Over.OverMorphism.ext ((hh z).trans (hex z)) …`. Use `⟨gam, fun a => (hPh a).trans (h1 _), hiso, GlobalTheory.LevelHalf.trivial_mod_of_trivial_on_half E H (F.Di i) l gam hiso fun a ha => ?_⟩` and prove the remaining obligations. Use `Submodule.smul_induction_on ha ?_ ?_` and prove the remaining obligations.
+
+Introduce `v hv b _`. Take `⟨c, e, rfl⟩` from `F.t_surj i b`. Take `⟨e₁, he₁⟩` from `hM (v • c) (Submodule.smul_mem_smul hv Submodule.mem_top)`. Take `⟨m, hm⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Use `⟨e₁ + m • (gam (v • e) - v • e), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_add, ← map_smul, smul_comm v, map_add, he₁, map_nsmul, hm, smul_add, smul_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Introduce and unpack `x y ⟨e, he⟩ ⟨e', he'⟩`. Conclude with `⟨e + e', by rw [map_add, he, he', smul_add]; abel⟩`.
+-/
 theorem exists_isometry {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (F : FamilyUnif Xo σ' ty) (i : Fin F.n)
     (P P' : (F.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (F.Di i) ty P) (hP' : IsPeriod (F.Di i) ty P')
     (hu : F.u i P = F.u i P') (hex : ∀ z, (F.ex i P z).left = (F.ex i P' z).left) :
@@ -113,6 +144,11 @@ theorem exists_isometry {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+
 
 variable {c : Coeff l} {σ : c.F →+* ℂ} {U : Unf Xo c σ r} (Uw : UnfWit U)
 
+/- English proof (translation)
+Establish `hbor` using `GlobalTheory.CompInj.frBor_of_eq (U.un k x) (U.un k' x') (((Uw.lie k' x').1.trans hu.symm).trans (Uw.lie k x).1.symm) fun τ i => by`. Establish `h'` using `(Uw.lie k' x').2 τ i`. Simplify using `only [← hex] at h'`. Conclude with `((GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo _ _ _ Uw.F _ _ (Uw.period k x)).2.1 _).unique h' ((Uw.lie k x).2 τ i)`. Take `⟨gm, -, b, -, h⟩` from `(hU.2.2.2.1 k k' _ _).1 hbor`.
+
+Conclude with `congrArg Sigma.fst h`.
+-/
 theorem comp_eq (hU : IsUnf U) {k k' : U.Comp} (x : (U.X k).dom) (x' : (U.X k').dom)
     (hu : Uw.F.u (Uw.ik k) (Uw.Pm k x) = Uw.F.u (Uw.ik k') (Uw.Pm k' x'))
     (hex : ∀ z, (Uw.F.ex (Uw.ik k) (Uw.Pm k x) z).left = (Uw.F.ex (Uw.ik k') (Uw.Pm k' x') z).left) : k' = k := by
@@ -125,6 +161,23 @@ theorem comp_eq (hU : IsUnf U) {k k' : U.Comp} (x : (U.X k).dom) (x' : (U.X k').
   obtain ⟨gm, -, b, -, h⟩ := (hU.2.2.2.1 k k' _ _).1 hbor
   exact congrArg Sigma.fst h
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨gam, hP, hiso, hM⟩ := exists_isometry Uw.F _ _ _ (Uw.period k x) (Uw.period k x') hu hex`. Set `φ : (Uw.F.Di (Uw.ik k)).La →ₗ[𝓞 E] (Fin r → E)` to `(U.X k).Λ.subtype ∘ₗ (Uw.φ k).toLinearMap`. Establish `hrange : LinearMap.range φ = (U.X k).Λ`. Rewrite using `[LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Submodule.range_subtype]`. Establish `hφ : Function.Injective φ ∧ Submodule.span E (Set.range φ) = ⊤ ∧ _ ∧ _ ∧ _` using `⟨Subtype.val_injective.comp (Uw.φ k).injective, by rw [← LinearMap.coe_range, hrange]; exact (U.X k).Λ_span, (U.X k).Gm_herm, (U.X k).Gm_det, Uw.iso k⟩`.
+
+Apply the tactic sequence `obtain ⟨gm, hgm, hgmφ⟩ := GlobalTheory.IsoExt.exists_unitary_of_isometry E H _ _ r (-(U.X k).ξ0) (U.X k).Gm φ φ gam (by rw [HermitianTraceFormVanishing.cc_neg, (U.X k).ξ0_im]) hφ hφ hiso`. Establish `hg : ∀ a, (Uw.φ k (gam a) : Fin r → E) = (gm : Matrix (Fin r) (Fin r) E) *ᵥ (Uw.φ k a : Fin r → E)` using `hgmφ`. Establish `hs : ∀ w ∈ (U.X k).Λ, ∃ a, (Uw.φ k a : Fin r → E) = w` using `fun w hw => ⟨(Uw.φ k).symm ⟨w, hw⟩, by rw [LinearEquiv.apply_symm_apply]⟩`. Establish `hΓ : gm ∈ (U.X k).Γ`. Use `hpr k gm ⟨hgm, fun w => ⟨fun hw => ?_, fun hw => ?_⟩⟩ fun w hw => ?_` and prove the remaining obligations.
+
+Take `⟨a, rfl⟩` from `hs w hw`. Rewrite using `[← hg]`. Conclude with `(Uw.φ k _).2`. Take `⟨a, ha⟩` from `hs _ hw`. Take `⟨a, rfl⟩` from `gam.surjective a`.
+
+Rewrite `ha` using `[hg]`. Rewrite using `[← Matrix.mulVec_injective_iff_isUnit.2 gm.isUnit ha]`. Conclude with `(Uw.φ k _).2`. Take `⟨a, rfl⟩` from `hs w hw`. Take `⟨e, he⟩` from `hM a`.
+
+Use `⟨_, (Uw.φ k e).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, he, map_add, map_nsmul, Nat.cast_smul_eq_nsmul]`. Simplify using the standard rewrite rules. Establish `hy : lact gm x.1 ∈ (U.X k).dom` using `(AR.Up.PairUnfoldPf.lact_mem_dom_iff (U.X k) hΓ _).2 x.2`. Take `⟨idx, -, -, hper⟩` from `GlobalTheory.ArcFlow.exists_idx Uw hσ hU k`.
+
+Establish `key : ∀ w ∈ (U.X k).Λ, ∀ j, perFr (U.X k) x'.1 w (relab c σ (Uw.e j).1) (Uw.e j).2 = perFr (U.X k) (lact gm x.1) w (relab c σ (Uw.e j).1) (Uw.e j).2` using `fun w hw j => by`. Take `⟨a, rfl⟩` from `hs w hw`. Take `⟨a, rfl⟩` from `gam.surjective a`. Rewrite using `[← Uw.Pm_eq, hP, hg, GlobalTheory.PerGam.perFr_lact _ gm hgm, Uw.Pm_eq]`. Take `⟨b, hb, hxb⟩` from `exists_bor (U.X k) hy x'.2 Dw.q (fun τ a ha => GlobalTheory.ArcFlow.eq_of_hermC_lattice (U.X k) τ.1 _ _ fun w hw => by`.
+
+Establish `h1` using `key w hw (idx.symm (τ, a))`. Rewrite `h1` using `[hper, hper]`. Simplify `h1)` using `only [Equiv.apply_symm_apply, if_pos ha]`. Use the proof step `(fun τ a ha => row_eq_of_lattice (U.X k) τ.1 _ _ a fun w hw => by`. Establish `h1` using `key w hw (idx.symm (τ, a))`.
+
+Rewrite `h1` using `[hper, hper]`. Simplify `h1)` using `only [Equiv.apply_symm_apply, if_neg ha]`. Use `⟨gm, hΓ, b, hb, hxb, fun t t' ht => ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, (Uw.period k x').2.1 ((hP t).trans ht)]`.
+-/
 theorem exists_move (hσ : GoodEmb c σ) (hU : IsUnf U) (hpr : GlobalTheory.FrameNorm.HasPrinc U l.M) (k : U.Comp)
     (x x' : (U.X k).dom) (hu : Uw.F.u (Uw.ik k) (Uw.Pm k x) = Uw.F.u (Uw.ik k) (Uw.Pm k x'))
     (hex : ∀ z, (Uw.F.ex (Uw.ik k) (Uw.Pm k x) z).left = (Uw.F.ex (Uw.ik k) (Uw.Pm k x') z).left) :
@@ -176,6 +229,9 @@ theorem exists_move (hσ : GoodEmb c σ) (hU : IsUnf U) (hpr : GlobalTheory.Fram
   refine ⟨gm, hΓ, b, hb, hxb, fun t t' ht => ?_⟩
   rw [← hg, (Uw.period k x').2.1 ((hP t).trans ht)]
 
+/- English proof (translation)
+Introduce `_ E _ _ _ H Dw l Xo c σ r U Uw k k' x x' t t' a' n ν₀ hσ hU hpr hD hχ hiso hu hex ht F hF`. Take `rfl` from `comp_eq Uw hU x x' hu hex`. Take `⟨gm, hgm, b, hb, hxb, hφ⟩` from `exists_move Uw hσ hU hpr k' x x' hu hex`. Rewrite using `[hφ t t' ht, hxb, fj_lact_rmul (U.X k') (hU.2.2.2.2.1 a' n hD F hF k') hgm hiso.2.1 _ x.2 hb, hχ k' gm hgm, _root_.mul_one, mul_eq_zero, or_iff_right (AR.Up.PairUnfoldPf.bchar_ne (U.X k') hb _)]`.
+-/
 theorem fj_eq_zero_iff_of_same_exp : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (Uw : UnfWit U) (k k' : U.Comp) (x : (U.X k).dom) (x' : (U.X k').dom) (t : (Uw.F.Di (Uw.ik k)).La) (t' : (Uw.F.Di (Uw.ik k')).La) (a' : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (ν₀ : E), GoodEmb c σ → IsUnf U → GlobalTheory.FrameNorm.HasPrinc U l.M → Dom a' n → (∀ k, ∀ gm ∈ (U.X k).Γ, (U.X k).χ (laU U a' n k) gm = 1) → (U.X k).IsIso (Uw.φ k t : Fin r → E) → Uw.F.u (Uw.ik k) (Uw.Pm k x) = Uw.F.u (Uw.ik k') (Uw.Pm k' x') → (∀ z, (Uw.F.ex (Uw.ik k) (Uw.Pm k x) z).left = (Uw.F.ex (Uw.ik k') (Uw.Pm k' x') z).left) → Uw.Pm k x t = Uw.Pm k' x' t' → ∀ F ∈ sec Xo c a' n, ((U.X k).fj (laU U a' n k) (Uw.φ k t : Fin r → E) (fun τ => (τ.1 ν₀).re) (rdU U F k) x.1 = 0 ↔ (U.X k').fj (laU U a' n k') (Uw.φ k' t' : Fin r → E) (fun τ => (τ.1 ν₀).re) (rdU U F k') x'.1 = 0) := by
   intro _ E _ _ _ H Dw l Xo c σ r U Uw k k' x x' t t' a' n ν₀ hσ hU hpr hD hχ hiso hu hex ht F hF
   obtain rfl := comp_eq Uw hU x x' hu hex

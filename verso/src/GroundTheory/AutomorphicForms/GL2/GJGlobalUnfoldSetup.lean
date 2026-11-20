@@ -16,6 +16,17 @@ namespace UnfoldGL
 
 open Reduction AutomorphicForm RightCosetSpace RankDecomp CuspidalSpectrum
 
+/- English proof (translation)
+Establish `heq : ν.map φ = Measure.addHaarScalarFactor (ν.map φ) ν • ν` using `Measure.isAddLeftInvariant_eq_smul _ _`. Use `set c := Measure.addHaarScalarFactor (ν.map φ) ν with hcdef`. Establish `hqmp : Measure.QuasiMeasurePreserving φ ν ν` using `⟨(map_continuous φ).measurable, by rw [heq]; exact Measure.smul_absolutelyContinuous⟩`. Establish `hfd : IsAddFundamentalDomain L (φ ⁻¹' D) ν`. Use `hD.preimage_of_equiv hqmp (e := fun ξ : L => (⟨φ.symm ξ, hφ' _ ξ.2⟩ : L)) ?_ ?_` and prove the remaining obligations.
+
+Use `⟨fun a b hab => ?_, fun b => ⟨⟨φ b, hφ _ b.2⟩, ?_⟩⟩` and prove the remaining obligations. Use `congrArg (fun x : L => φ (x : V)) hab` as an intermediate fact. Simplify using `only [ContinuousAddEquiv.apply_symm_apply] at this`. Conclude with `Subtype.ext this`. Conclude with `Subtype.ext (φ.symm_apply_apply _)`.
+
+Introduce `ξ x`. Simplify using `[AddSubgroup.vadd_def, map_add]`. Establish `hmeas : ν (φ ⁻¹' D) = ν D` using `hfd.measure_eq hD`. Establish `hc : (c : ℝ≥0∞) * ν D = 1 * ν D`. Use `congrArg (fun m : Measure V => m D) heq` as an intermediate fact.
+
+Rewrite `this` using `[Measure.map_apply (map_continuous φ).measurable hDm, hmeas, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[one_mul]`. Conclude with `this.symm`. Establish `hc1 : c = 1`. Use `(ENNReal.mul_left_inj hD0 hDtop).1 hc` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Use `⟨(map_continuous φ).measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, hc1, one_smul]`.
+-/
 theorem measurePreserving_of_mapsTo_lattice {V : Type*} [AddCommGroup V] [TopologicalSpace V]
     [IsTopologicalAddGroup V] [LocallyCompactSpace V] [SecondCountableTopology V]
     [MeasurableSpace V] [BorelSpace V] (ν : Measure V) [ν.IsAddHaarMeasure]
@@ -52,11 +63,17 @@ theorem measurePreserving_of_mapsTo_lattice {V : Type*} [AddCommGroup V] [Topolo
 
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[unipMeasure_unipFundamentalDomain]`. Conclude with `one_ne_zero`.
+-/
 theorem unipMeasure_unipFundamentalDomain_ne_zero (k : ℕ) :
     unipMeasure K n k (unipFundamentalDomain K n k) ≠ 0 := by
   rw [unipMeasure_unipFundamentalDomain]
   exact one_ne_zero
 
+/- English proof (translation)
+Rewrite using `[unipMeasure_unipFundamentalDomain]`. Conclude with `ENNReal.one_ne_top`.
+-/
 theorem unipMeasure_unipFundamentalDomain_ne_top (k : ℕ) :
     unipMeasure K n k (unipFundamentalDomain K n k) ≠ ∞ := by
   rw [unipMeasure_unipFundamentalDomain]
@@ -73,6 +90,9 @@ instance isNegInvariant_unipMeasure (k : ℕ) : (unipMeasure K n k).IsNegInvaria
     (fun ξ hξ => (unipLattice K n k).neg_mem hξ) (fun ξ hξ => (unipLattice K n k).neg_mem hξ)
   exact ⟨h.map_eq⟩
 
+/- English proof (translation)
+Introduce `_ _ h` and use `unipGL_injective (congrArg Subtype.val h)`.
+-/
 theorem unipOne_injective (k : ℕ) : Injective (unipOne K n k) := fun _ _ h =>
   unipGL_injective (congrArg Subtype.val h)
 
@@ -82,12 +102,21 @@ def ratOne : GL (Fin n) K →* normOneGL K n :=
   (AdelicGLn.diagonal K n).codRestrict (normOneGL K n)
     (fun γ => rationalGL_le_normOneGL ⟨γ, rfl⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_ratOne (γ : GL (Fin n) K) :
     ((ratOne K n γ : normOneGL K n) : AdelicGLn.AdelicGL K n) = AdelicGLn.diagonal K n γ := rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `AdelicGLn.diagonal_injective K n (congrArg Subtype.val h)`.
+-/
 theorem ratOne_injective : Injective (ratOne K n) := fun _ _ h =>
   AdelicGLn.diagonal_injective K n (congrArg Subtype.val h)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ⟩`. Conclude with `⟨γ, Subtype.ext hγ⟩`. Introduce and unpack `⟨γ, rfl⟩`. Conclude with `⟨γ, rfl⟩`.
+-/
 theorem mem_rationalGLOne_iff {x : normOneGL K n} : x ∈ rationalGLOne K n ↔ ∃ γ, ratOne K n γ = x := by
   constructor
   · rintro ⟨γ, hγ⟩
@@ -95,6 +124,9 @@ theorem mem_rationalGLOne_iff {x : normOneGL K n} : x ∈ rationalGLOne K n ↔ 
   · rintro ⟨γ, rfl⟩
     exact ⟨γ, rfl⟩
 
+/- English proof (translation)
+The claim follows from `coe_diagonal γ`.
+-/
 theorem coe_ratOne_matrix (γ : GL (Fin n) K) :
     (((ratOne K n γ : normOneGL K n) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) =
       ratMat (γ : Matrix (Fin n) (Fin n) K) :=
@@ -111,6 +143,9 @@ variable (K n) in
 def parabolicOne (k : ℕ) : Subgroup (normOneGL K n) :=
   (parabolic (K := K) (n := n) k).map (ratOne K n)
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨γ, -, rfl⟩`. Conclude with `mem_rationalGLOne_iff.2 ⟨γ, rfl⟩`.
+-/
 theorem parabolicOne_le (k : ℕ) : parabolicOne K n k ≤ rationalGLOne K n := by
   rintro _ ⟨γ, -, rfl⟩
   exact mem_rationalGLOne_iff.2 ⟨γ, rfl⟩
@@ -125,10 +160,22 @@ instance discreteTopology_parabolicOne (k : ℕ) : DiscreteTopology (parabolicOn
   DiscreteTopology.of_subset (s := (rationalGLOne K n : Set (normOneGL K n)))
     discreteTopology_rationalGLOne (parabolicOne_le k)
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_map`.
+-/
 theorem mem_parabolicOne_iff {k : ℕ} {q : normOneGL K n} :
     q ∈ parabolicOne K n k ↔ ∃ p ∈ parabolic (K := K) (n := n) k, ratOne K n p = q :=
   Subgroup.mem_map
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[blockEntry_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[Matrix.mul_apply]`.
+
+Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hi : k ≤ (i : ℕ)`. Rewrite using `[Finset.sum_eq_zero, zero_mul]`. Introduce `a _`.
+
+Distinguish the cases in `ha : (a : ℕ) < k`. Rewrite using `[hA i a hi ha, zero_mul]`. Rewrite using `[blockEntry_apply, dif_neg (by omega), mul_zero]`. Establish `hj : (j : ℕ) < k` using `by omega`. Distinguish the cases in `hb : k ≤ (b : ℕ)`.
+
+Rewrite using `[hB b j hb hj, mul_zero]`. Rewrite using `[Finset.sum_eq_zero, zero_mul]`. Introduce `a _`. Rewrite using `[blockEntry_apply, dif_neg (by omega), mul_zero]`.
+-/
 theorem mul_blockEntry_mul {R : Type*} [CommRing R] {k : ℕ} {A B : Matrix (Fin n) (Fin n) R}
     (hA : ∀ i a : Fin n, k ≤ (i : ℕ) → (a : ℕ) < k → A i a = 0)
     (hB : ∀ b j : Fin n, k ≤ (b : ℕ) → (j : ℕ) < k → B b j = 0) (Z : UPos n k → R) :
@@ -153,6 +200,9 @@ theorem mul_blockEntry_mul {R : Type*} [CommRing R] {k : ℕ} {A B : Matrix (Fin
         intro a _
         rw [blockEntry_apply, dif_neg (by omega), mul_zero]
 
+/- English proof (translation)
+Introduce `X Y h`. Use function extensionality and compare the values at `p`. Use `congrFun (congrFun h p.1.1) p.1.2` as an intermediate fact. Simplify `this` using `[blockEntry_apply, p.2]`.
+-/
 theorem blockEntry_injective {R : Type*} [CommRing R] {k : ℕ} :
     Injective (blockEntry : (UPos n k → R) → Matrix (Fin n) (Fin n) R) := by
   intro X Y h
@@ -160,6 +210,9 @@ theorem blockEntry_injective {R : Type*} [CommRing R] {k : ℕ} :
   have := congrFun (congrFun h p.1.1) p.1.2
   simpa [blockEntry_apply, p.2] using this
 
+/- English proof (translation)
+Take `⟨p, hp, rfl⟩` from `mem_parabolicOne_iff.1 hq`. Rewrite using `[coe_ratOne_matrix]`. Simplify using `[ratMat, hp.1 i j hi hj]`.
+-/
 theorem entry_eq_zero_of_mem_parabolicOne {k : ℕ} {q : normOneGL K n} (hq : q ∈ parabolicOne K n k)
     {i j : Fin n} (hi : k ≤ (i : ℕ)) (hj : (j : ℕ) < k) :
     (((q : normOneGL K n) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) i j = 0 := by
@@ -174,6 +227,9 @@ def conjUnip (k : ℕ) (q : normOneGL K n) : (UPos n k → 𝔸[K]) →+ (UPos n
   map_zero' := by funext p; simp [blockEntry_zero]
   map_add' Z W := by funext p; simp [blockEntry_add, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+The claim follows from `(mul_blockEntry_mul (fun _ _ hi ha => entry_eq_zero_of_mem_parabolicOne (inv_mem hq) hi ha) (fun _ _ hb hj => entry_eq_zero_of_mem_parabolicOne hq hb hj) Z).symm`.
+-/
 theorem blockEntry_conjUnip {k : ℕ} {q : normOneGL K n} (hq : q ∈ parabolicOne K n k)
     (Z : UPos n k → 𝔸[K]) :
     blockEntry (conjUnip k q Z) =
@@ -182,22 +238,34 @@ theorem blockEntry_conjUnip {k : ℕ} {q : normOneGL K n} (hq : q ∈ parabolicO
   (mul_blockEntry_mul (fun _ _ hi ha => entry_eq_zero_of_mem_parabolicOne (inv_mem hq) hi ha)
     (fun _ _ hb hj => entry_eq_zero_of_mem_parabolicOne hq hb hj) Z).symm
 
+/- English proof (translation)
+Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, Units.val_one]`.
+-/
 theorem coe_inv_mul_coe (q : normOneGL K n) :
     (((q⁻¹ : normOneGL K n) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) *
       (((q : normOneGL K n) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) = 1 := by
   rw [← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, Units.val_one]
 
+/- English proof (translation)
+Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, Units.val_one]`.
+-/
 theorem coe_mul_coe_inv (q : normOneGL K n) :
     (((q : normOneGL K n) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) *
       (((q⁻¹ : normOneGL K n) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) = 1 := by
   rw [← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, Units.val_one]
 
+/- English proof (translation)
+Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Units.val_mul, coe_unipOne, coe_unipGL, unipMatrix]`. Rewrite using `[blockEntry_conjUnip hq, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, coe_inv_mul_coe]`.
+-/
 theorem conj_unipOne {k : ℕ} {q : normOneGL K n} (hq : q ∈ parabolicOne K n k) (Z : UPos n k → 𝔸[K]) :
     q⁻¹ * unipOne K n k Z * q = unipOne K n k (conjUnip k q Z) := by
   refine Subtype.ext (Units.ext ?_)
   simp only [Subgroup.coe_mul, Units.val_mul, coe_unipOne, coe_unipGL, unipMatrix]
   rw [blockEntry_conjUnip hq, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, coe_inv_mul_coe]
 
+/- English proof (translation)
+Apply `blockEntry_injective` to reduce the goal to its premises. Rewrite using `[blockEntry_conjUnip hq, blockEntry_conjUnip (inv_mem hq), inv_inv]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[coe_inv_mul_coe, Matrix.one_mul, Matrix.mul_assoc, coe_inv_mul_coe, Matrix.mul_one]`.
+-/
 theorem conjUnip_conjUnip_inv {k : ℕ} {q : normOneGL K n} (hq : q ∈ parabolicOne K n k)
     (Z : UPos n k → 𝔸[K]) : conjUnip k q (conjUnip k q⁻¹ Z) = Z := by
   apply blockEntry_injective
@@ -205,6 +273,13 @@ theorem conjUnip_conjUnip_inv {k : ℕ} {q : normOneGL K n} (hq : q ∈ paraboli
   simp only [← Matrix.mul_assoc]
   rw [coe_inv_mul_coe, Matrix.one_mul, Matrix.mul_assoc, coe_inv_mul_coe, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨p, -, rfl⟩` from `mem_parabolicOne_iff.1 hq`. Take `⟨ξ₀, rfl⟩` from `hξ`. Establish `hξe : (AddMonoidHom.compLeft (algebraMap K 𝔸[K]).toAddMonoidHom (UPos n k)) ξ₀ = fun x => algebraMap K 𝔸[K] (ξ₀ x)` using `rfl`. Rewrite using `[hξe]`. Apply the tactic sequence `have hb : blockEntry (fun x => algebraMap K 𝔸[K] (ξ₀ x)) = ratMat (blockEntry ξ₀) := by`.
+
+Use extensionality with `i j`. Simplify using `only [blockEntry_apply, ratMat, Matrix.map_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Apply the tactic sequence `refine ⟨fun x => ((p⁻¹ : GL (Fin n) K) * blockEntry ξ₀ * (p : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) x.1.1 x.1.2, funext fun x => ?_⟩`. Use `show algebraMap K 𝔸[K] _ = conjUnip k (ratOne K n p) (fun x => algebraMap K 𝔸[K] (ξ₀ x)) x`.
+
+Apply the tactic sequence `have e : conjUnip k (ratOne K n p) (fun x => algebraMap K 𝔸[K] (ξ₀ x)) x = (ratMat ((p⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * ratMat (blockEntry ξ₀) * ratMat ((p : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) x.1.1 x.1.2 := by show ((((ratOne K n p)⁻¹ : normOneGL K n) : Ad …`. Rewrite using `[← map_inv, coe_ratOne_matrix, coe_ratOne_matrix, hb]`. Rewrite using `[e, ← ratMat_mul, ← ratMat_mul]`. Both sides reduce to the same expression.
+-/
 theorem conjUnip_mem_unipLattice {k : ℕ} {q : normOneGL K n} (hq : q ∈ parabolicOne K n k)
     {ξ : UPos n k → 𝔸[K]} (hξ : ξ ∈ unipLattice K n k) : conjUnip k q ξ ∈ unipLattice K n k := by
   obtain ⟨p, -, rfl⟩ := mem_parabolicOne_iff.1 hq
@@ -228,6 +303,13 @@ theorem conjUnip_mem_unipLattice {k : ℕ} {q : normOneGL K n} (hq : q ∈ parab
   rw [e, ← ratMat_mul, ← ratMat_mul]
   rfl
 
+/- English proof (translation)
+Use `continuous_pi fun p => ?_` and prove the remaining obligations. Apply the tactic sequence `have hb : Continuous (blockEntry : (UPos n k → 𝔸[K]) → Matrix (Fin n) (Fin n) 𝔸[K]) := by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [blockEntry_apply]`. Use `split_ifs`.
+
+Conclude with `continuous_apply _`. Conclude with `continuous_const`. Use `set A₀ : Matrix (Fin n) (Fin n) 𝔸[K] := (((q⁻¹ : normOneGL K n) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])`. Use `set B₀ : Matrix (Fin n) (Fin n) 𝔸[K] := (((q : normOneGL K n) : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])`. Apply the tactic sequence `have hm : Continuous (fun Z : UPos n k → 𝔸[K] => A₀ * blockEntry Z * B₀) := ((continuous_const : Continuous fun _ : UPos n k → 𝔸[K] => A₀).matrix_mul hb).matrix_mul continuous_const`.
+
+Conclude with `(continuous_apply p.1.2).comp ((continuous_apply p.1.1).comp hm)`.
+-/
 theorem continuous_conjUnip (k : ℕ) (q : normOneGL K n) : Continuous (conjUnip (K := K) k q) := by
   refine continuous_pi fun p => ?_
   have hb : Continuous (blockEntry : (UPos n k → 𝔸[K]) → Matrix (Fin n) (Fin n) 𝔸[K]) := by
@@ -257,6 +339,9 @@ def conjUnipEquiv {k : ℕ} {q : normOneGL K n} (hq : q ∈ parabolicOne K n k) 
   continuous_toFun := continuous_conjUnip k q
   continuous_invFun := continuous_conjUnip k q⁻¹
 
+/- English proof (translation)
+The claim follows from `measurePreserving_of_mapsTo_lattice (unipMeasure K n k) isAddFundamentalDomain_unipFundamentalDomain measurableSet_unipFundamentalDomain (unipMeasure_unipFundamentalDomain_ne_zero k) (unipMeasure_unipFundamentalDomain_ne_top k) (conjUnipEquiv hq) (fun _ h => conjUnip_mem_unipLatt …`.
+-/
 theorem measurePreserving_conjUnip {k : ℕ} {q : normOneGL K n} (hq : q ∈ parabolicOne K n k) :
     MeasurePreserving (conjUnip k q) (unipMeasure K n k) (unipMeasure K n k) :=
   measurePreserving_of_mapsTo_lattice (unipMeasure K n k) isAddFundamentalDomain_unipFundamentalDomain
@@ -265,11 +350,19 @@ theorem measurePreserving_conjUnip {k : ℕ} {q : normOneGL K n} (hq : q ∈ par
     (fun _ h => conjUnip_mem_unipLattice hq h) (fun _ h => conjUnip_mem_unipLattice (inv_mem hq) h)
 
 omit [NumberField K] in
+/- English proof (translation)
+Introduce `i j hi hj`. Simplify using `only [unipMatrix, Matrix.add_apply, blockEntry_apply]`. Rewrite using `[Matrix.one_apply, if_neg (by intro h; subst h; omega), dif_neg (by omega), add_zero]`.
+-/
 theorem isBlockUpper_unipMatrix {k : ℕ} (X : UPos n k → K) : IsBlockUpper k (unipMatrix X) := by
   intro i j hi hj
   simp only [unipMatrix, Matrix.add_apply, blockEntry_apply]
   rw [Matrix.one_apply, if_neg (by intro h; subst h; omega), dif_neg (by omega), add_zero]
 
+/- English proof (translation)
+Take `⟨ξ₀, rfl⟩` from `hξ`. Use `mem_parabolicOne_iff.2 ⟨unipGL ξ₀, ⟨?_, ?_⟩, Subtype.ext (diagonal_unipGL ξ₀)⟩` and prove the remaining obligations. Rewrite using `[coe_unipGL]`. Conclude with `isBlockUpper_unipMatrix ξ₀`. Rewrite using `[coe_unipGL_inv]`.
+
+Conclude with `isBlockUpper_unipMatrix (-ξ₀)`.
+-/
 theorem unipOne_mem_parabolicOne {k : ℕ} {ξ : UPos n k → 𝔸[K]} (hξ : ξ ∈ unipLattice K n k) :
     unipOne K n k ξ ∈ parabolicOne K n k := by
   obtain ⟨ξ₀, rfl⟩ := hξ
@@ -279,6 +372,9 @@ theorem unipOne_mem_parabolicOne {k : ℕ} {ξ : UPos n k → 𝔸[K]} (hξ : ξ
   · rw [coe_unipGL_inv]
     exact isBlockUpper_unipMatrix (-ξ₀)
 
+/- English proof (translation)
+The claim follows from `unipOne_add k injective := unipOne_injective k measurable := (continuous_unipOne k).measurable isAddFundamentalDomain := isAddFundamentalDomain_unipFundamentalDomain measurableSet_D := measurableSet_unipFundamentalDomain measurableSet_E := measurableSet_fundamentalDomain _ exists …`.
+-/
 theorem hyp (k : ℕ) :
     Unfold.Hyp (unipMeasure K n k) (unipOne K n k) (unipLattice K n k) (unipFundamentalDomain K n k)
       (parabolicOne K n k) (fundamentalDomain (parabolicOne K n k)) (conjUnip k) where

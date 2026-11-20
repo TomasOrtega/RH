@@ -10,6 +10,13 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.Col2.TopCh
 
+/- English proof (translation)
+Substitute `hL hy` using the available equality. Establish `e1 : (y⁻¹ : GL (Fin n) (AfE F E)).1 *ᵥ (y.1 *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `e2 : ((y * k)⁻¹ : GL (Fin n) (AfE F E)).1 *ᵥ (y.1 *ᵥ x) = (k⁻¹ : GL (Fin n) (AfE F E)).1 *ᵥ x`. Establish `e : (y * k)⁻¹ * y = k⁻¹` using `by group`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, e]`. Establish `h1` using `hyl (y.1 *ᵥ x)`. Establish `h2` using `hl (y.1 *ᵥ x)`. Rewrite `h1` using `[e1]`. Rewrite `h2` using `[e2]`.
+
+Conclude with `h1.symm.trans h2`.
+-/
 theorem latS_mul_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     {Lb L L' S : Submodule (𝓞 E) (Fin n → E)} {y y' k : GL (Fin n) (AfE F E)}
     (hyl : ∀ w : Fin n → E ⊗[F] FiniteAdeleRing (𝓞 F) F, w ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) L ↔ (y⁻¹ : GL (Fin n) (AfE F E)).1 *ᵥ w ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Lb)
@@ -31,6 +38,35 @@ theorem latS_mul_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u a K k hR U Lb chi`. Establish `hQ0 : I.Q I.mu0 = ∅` using `ColIn.twistPrimes_reference_tuple_eq_empty I`. Establish `hG : (I.Tp a).levG B.R.m = (I.Tp I.mu0).levG B.R.m`. Rewrite using `[TC.Tp, TC.Tp, topLev_levG_m, topLev_levG_m]`. Take `⟨c₀⟩` from `(GlobalTheory.T.lastStep_tuple_group_classes_coordinates I u I.mu0).2.2.2`.
+
+Take `⟨e, he⟩` from `(GlobalTheory.T.lastStep_tuple_group_classes_coordinates I u I.mu0).1 c₀`. Establish `hp` using `(hR.pt c₀).of_extTo (I.Q_subset_SQ I.mu0) (by rw [hQ0]; exact Finset.disjoint_empty_right _)`. Take `⟨y₀, hy₀⟩ : ∃ y₀ : GA B (B.R.N B.R.m), y₀ = (K.y c₀).1` from `⟨_, rfl⟩`. Rewrite `hp` using `[← hy₀]`. Rewrite using `[hG]`.
+
+Establish `hθ : ∀ θ : ((I.Tp I.mu0).levQ B.R.m).grp, θ = 1` using `fun θ => Subtype.ext (funext fun P => (Finset.notMem_empty P.1 (hQ0 ▸ P.2)).elim)`. Establish `hD : ∀ q q' : DecoF B.host.E (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q I.mu0), q.deco = q'.deco → q = q'` using `fun q q' h => Subtype.ext (Prod.ext h (funext fun P => (Finset.notMem_empty P.1 (hQ0 ▸ P.2)).elim))`. Establish `hgam : ∀ γ : UF B.host.E (B.R.N B.R.m), ufGL B.host.E (B.R.N B.R.m) γ = 1 → γ = 1` using `fun γ h => Subtype.ext ((toGLm B.host.E (B.R.N B.R.m)).injective (by show _ = toGLm B.host.E (B.R.N B.R.m) 1; rw [map_one]; exact h))`. Establish `hmul : ∀ x : GA B (B.R.N B.R.m), y₀ * k () * ((k ())⁻¹ * x * k ()) = y₀ * x * k ()` using `fun x => by group`. Establish `hku : k () ∈ UAd B.sp.cm (B.R.N B.R.m)`.
+
+Take `⟨p₀, hp₀, -⟩` from `hR.k_std ()`. Conclude with `hp₀.uni`. Establish `hyu : y₀ ∈ UAd B.sp.cm (B.R.N B.R.m)`. Use `mul_mem hp.uni (inv_mem hku)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+
+Establish `hact : ∀ h : ((I.Tp I.mu0).levG B.R.m).grp, (I.stp u I.mu0 B.R.m).gam c₀.1 (e.symm (1, h, 1)) = 1 ∧ ((I.stp u I.mu0 B.R.m).act c₀.1 (e.symm (1, h, 1)) ((I.stp u I.mu0 B.R.m).rep c₀)).1.1 = ((1 : UF B.host.E (B.R.N B.R.m)), h.1, (1 : GLQ B.host.E (B.R.N B.R.m) (I.Q I.mu0))) • ((I. …` using `fun h => by`. Take `⟨-, h1, h2, h3, h4, -⟩` from `he (e.symm (1, h, 1))`. Rewrite `h1`, `h2`, `h3` using `[e.apply_symm_apply]`. Use `⟨by rw [h1]; exact map_one _, by rw [h3]; rfl, h4, by rw [h2, map_one, mul_one]⟩` and prove the remaining obligations. Use `⟨fun x hxu => ?_, fun x z h hz hred => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `hgu : y₀ * x * k () ∈ UAd B.sp.cm (B.R.N B.R.m)` using `mul_mem (mul_mem hyu hxu) hku`. Take `⟨q, hq⟩` from `(GlobalTheory.T.isPtOf_mul_J0_decoration B.host.F B.host.E B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q I.mu0) (y₀ * x * k ()) 1 ((I.stp u I.mu0 B.R.m).rep c₀).1.1 ((I.stp u I.mu0 B.R.m).rep c₀).1.1 1).2.2 hQ0 hgu`. Establish `H2` using `fun h => (GlobalTheory.T.isPtOf_mul_J0_decoration B.host.F B.host.E B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q I.mu0) (y₀ * k ()) ((k ())⁻¹ * x * k ()) ((I.stp u I.mu0 B.R.m).rep c₀).1.1 q h).1 hp (by rw [hmul]; exact hq)`. Establish `hq'` using `hq`. Rewrite `hq'` using `[hy₀]`.
+
+Rewrite using `[hR.lev c₀ x q hq', levU, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨κ, hκ1, hκq, -⟩`. Take `⟨-, hg, -, h3, -⟩` from `he κ`. Establish `e1 : (e κ).1 = 1` using `hgam _ (by rw [← hg]; exact hκ1)`.
+
+Establish `hq2 : q = ((1 : UF B.host.E (B.R.N B.R.m)), (e κ).2.1.1, (1 : GLQ B.host.E (B.R.N B.R.m) (I.Q I.mu0))) • ((I.stp u I.mu0 B.R.m).rep c₀).1.1`. Rewrite using `[← hκq, h3, e1, hθ (e κ).2.2]`. Both sides reduce to the same expression. Take `⟨hz, hred⟩` from `(H2 (e κ).2.1.1).2 (by rw [hq2]; rfl)`. Conclude with `⟨⟨_, hz⟩, by show redG B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs ⟨_, hz⟩ ∈ ((I.Tp I.mu0).levG B.R.m).grp; rw [hred]; exact inv_mem (e κ).2.1.2, rfl⟩`.
+
+Introduce and unpack `⟨w, hw, hwz⟩`. Establish `hz : (k ())⁻¹ * x * k () ∈ J0 B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u)` using `hwz ▸ w.2`. Establish `hw' : redG B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs w ∈ ((I.Tp I.mu0).levG B.R.m).grp` using `hw`. Establish `hd` using `(H2 (redG B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs w)⁻¹).1 ⟨hz, by rw [inv_inv]; congr 1; exact Subtype.ext hwz.symm⟩`. Establish `hq2 : q = ((1 : UF B.host.E (B.R.N B.R.m)), (redG B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs w)⁻¹, (1 : GLQ B.host.E (B.R.N B.R.m) (I.Q I.mu0))) • ((I.stp u I.mu0 B.R.m).rep c₀).1.1` using `hD _ _ hd`.
+
+Take `⟨g1, g2, g3, -⟩` from `hact ⟨_, inv_mem hw'⟩`. Use `⟨e.symm (1, ⟨_, inv_mem hw'⟩, 1), g1, ?_, g3⟩` and prove the remaining obligations. Rewrite using `[g2, hq2]`. Establish `hz' : (k ())⁻¹ * x.1 * k () ∈ J0 B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u)` using `hz ▸ z.2`. Establish `hred' : redG B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs ⟨_, hz'⟩ = h.1⁻¹`.
+
+Rewrite using `[← hred]`. Use `congr 1`. Conclude with `Subtype.ext hz.symm`. Establish `hpt` using `(GlobalTheory.T.isPtOf_mul_J0_decoration B.host.F B.host.E B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q I.mu0) (y₀ * k ()) ((k ())⁻¹ * x.1 * k ()) ((I.stp u I.mu0 B.R.m).rep c₀).1.1 ((I.stp u I.mu0 B.R.m).rep c₀).1.1 h.1).2.1 hQ0 hp hz' hred'`. Rewrite `hpt` using `[hmul]`.
+
+Take `⟨g1, g2, -, g4⟩` from `hact h`. Use `hR.chr c₀ x (e.symm (1, h, 1)) g1 (by rw [g2, ← hy₀]; exact hpt)` as an intermediate fact. Rewrite `this` using `[g4]`. Conclude with `Units.ext this`. Establish `hS : ∀ w : Fin (B.R.N B.R.m) → B.host.E ⊗[B.host.F] FiniteAdeleRing (𝓞 B.host.F) B.host.F, w ∈ latS (F` using `B.host.F) (FiniteAdeleRing (𝓞 B.host.F) B.host.F) (tensInt (F := B.host.F) (FiniteAdeleRing (𝓞 B.host.F) B.host.F) (intOE B.host.E) (intAd B.host.F)) (baseLb B.host.E (B.R.N B.R.m) ((B.primes X).vT u)) ↔ ((1 : GA B (B.R.N B.R.m))⁻¹ : GA B (B.R.N B.R.m)).1 *ᵥ w ∈ latS (F := B.host …`.
+
+Establish `e : ((1 : GA B (B.R.N B.R.m))⁻¹ : GA B (B.R.N B.R.m)).1 *ᵥ w = w` using `by rw [inv_one, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[e]`. Establish `hp1 : IsPtOf B.sp.cm (y₀ * k () * (1 * 1)) ((I.stp u I.mu0 B.R.m).rep c₀).1.1` using `by rw [mul_one, mul_one]; exact hp`. Establish `hl` using `GlobalTheory.T.pointLattice_iff_baseLattice_decorated B.host.F B.host.E B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q I.mu0) (baseLb B.host.E (B.R.N B.R.m) ((B.primes X).vT u)) 1 1 (y₀ * k ()) ((I.stp u I.mu0 B.R.m).rep c₀).1.1 (one_mem _) hS hp1`. Establish `hc` using `(((spaces_in_coordinates I hI hP l Z).2.2.2 B.R.m le_rfl).2.2 u I.mu0).1 c₀`.
+
+Conclude with `latS_mul_iff (K.y_lat c₀) hc hy₀.symm hl x`.
+-/
 theorem kread_member : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → Pins B X → ∀ (l : I.Laws) (Z : Later B (I.cols l)) (u : B.Word) (a : I.ι) (K : ClsTied (D := (I.rec7 l Z)) u B.R.m le_rfl) (k : Unit → GA B (B.R.N B.R.m)), I.Reads u I.mu0 B.R.m (fun _ => ()) (fun _ => K.lev.Lb) (fun _ => K.lev.U) (fun _ => K.lev.chi) (fun c => (K.y c).1) (fun c s => (K.stabI c s).1) k → let U : Subgroup (GA B (B.R.N B.R.m)) := K.lev.U; let Lb : Submodule (𝓞 B.host.E) (Fin (B.R.N B.R.m) → B.host.E) := K.lev.Lb; let chi : U →* ℂˣ := K.lev.chi; (∀ x ∈ UAd B.sp.cm (B.R.N B.R.m), x ∈ U ↔ (k ())⁻¹ * x * k () ∈ levU B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs ((I.Tp a).levG B.R.m).grp) ∧ (∀ (x : U) (z : J0 B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u)) (h : ((I.Tp a).levG B.R.m).grp), z.1 = (k ())⁻¹ * x.1 * k () → redG B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs z = h.1⁻¹ → chi x = Units.map (B.embLL : B.LL →* ℂ) (((I.Tp a).levG B.R.m).chr h)) ∧ ∀ x : Fin (B.R.N B.R.m) → B.host.E ⊗[B.host.F] FiniteAdeleRing (𝓞 B.host.F) B.host.F, x ∈ latS (F := B.host.F) (FiniteAdeleRing (𝓞 B.host.F) B.host.F) (tensInt (F := B.host.F) (FiniteAdeleRing (𝓞 B.host.F) B.host.F) (intOE B.host.E) (intAd B.host.F)) Lb ↔ ((k ())⁻¹ : GL (Fin (B.R.N B.R.m)) (AfE B.host.F B.host.E)).1 *ᵥ x ∈ latS (F := B.host.F) (FiniteAdeleRing (𝓞 B.host.F) B.host.F) (tensInt (F := B.host.F) (FiniteAdeleRing (𝓞 B.host.F) B.host.F) (intOE B.host.E) (intAd B.host.F)) (baseLb B.host.E (B.R.N B.R.m) ((B.primes X).vT u)) := by
   intro B X I hI hP l Z u a K k hR U Lb chi
   have hQ0 : I.Q I.mu0 = ∅ := ColIn.twistPrimes_reference_tuple_eq_empty I

@@ -24,12 +24,21 @@ def inflHom (ρ : Representation (ZMod l) (G ⧸ (Q : Subgroup G)) X) : G →* A
 abbrev infl (ρ : Representation (ZMod l) (G ⧸ (Q : Subgroup G)) X) : Rep.{0} (ULift.{0} ℤ) G :=
   Rep.of (intRep.{0} (inflHom Q ρ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infl_apply (ρ : Representation (ZMod l) (G ⧸ (Q : Subgroup G)) X) (g : G) (x : X) :
     (infl Q ρ).ρ g x = ρ (QuotientGroup.mk g) x := rfl
 
+/- English proof (translation)
+The claim follows from `‹Finite X›`.
+-/
 theorem finite_infl [Finite X] (ρ : Representation (ZMod l) (G ⧸ (Q : Subgroup G)) X) :
     Finite (infl Q ρ) := ‹Finite X›
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => Subgroup.isOpen_mono (H₁ := (Q : Subgroup G)) (fun q hq => by show (infl Q ρ).ρ q a = a rw [infl_apply, (QuotientGroup.eq_one_iff q).2 hq, map_one] rfl) Q.isOpen⟩`.
+-/
 theorem isDiscreteRep_infl [IsTopologicalGroup G] (ρ : Representation (ZMod l) (G ⧸ (Q : Subgroup G)) X) :
     IsDiscreteRep (infl Q ρ) :=
   ⟨fun a => Subgroup.isOpen_mono (H₁ := (Q : Subgroup G)) (fun q hq => by
@@ -39,6 +48,21 @@ theorem isDiscreteRep_infl [IsTopologicalGroup G] (ρ : Representation (ZMod l) 
 
 end Infl
 
+/- English proof (translation)
+Establish `hval : ∀ p : ℕ, p.Prime → padicValNat p q.num.natAbs = padicValNat p q.den`. Introduce `p hp`. Use `h p hp` as an intermediate fact. Simplify using `only [padicValRat, padicValInt] at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hn0 : q.num.natAbs ≠ 0`. Use `Rat.num_pos.2 hq` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hnum : ∀ p : ℕ, p.Prime → ¬ p ∣ q.num.natAbs`. Introduce `p hp hd`.
+
+Use `haveI := Fact.mk hp`. Establish `h1` using `one_le_padicValNat_of_dvd hn0 hd`. Establish `hd' : p ∣ q.den`. Assume the negation of the conclusion as `hnd`. Rewrite `h1` using `[hval p hp, padicValNat.eq_zero_of_not_dvd hnd]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `Nat.not_coprime_of_dvd_of_dvd hp.one_lt hd hd' q.reduced`. Establish `hden : ∀ p : ℕ, p.Prime → ¬ p ∣ q.den`. Introduce `p hp hd`. Use `haveI := Fact.mk hp`.
+
+Establish `h1` using `one_le_padicValNat_of_dvd q.den_nz hd`. Establish `hd' : p ∣ q.num.natAbs`. Assume the negation of the conclusion as `hnd`. Rewrite `h1` using `[← hval p hp, padicValNat.eq_zero_of_not_dvd hnd]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `Nat.not_coprime_of_dvd_of_dvd hp.one_lt hd' hd q.reduced`. Establish `h1 : q.num.natAbs = 1` using `Nat.eq_one_iff_not_exists_prime_dvd.2 hnum`. Establish `h2 : q.den = 1` using `Nat.eq_one_iff_not_exists_prime_dvd.2 hden`. Establish `h3 : q.num = 1`. Use `Rat.num_pos.2 hq` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `Rat.ext h3 h2`.
+-/
 theorem rat_eq_one_of_padicValRat {q : ℚ} (hq : 0 < q) (h : ∀ p : ℕ, p.Prime → padicValRat p q = 0) :
     q = 1 := by
   have hval : ∀ p : ℕ, p.Prime → padicValNat p q.num.natAbs = padicValNat p q.den := by
@@ -74,6 +98,9 @@ theorem rat_eq_one_of_padicValRat {q : ℚ} (hq : 0 < q) (h : ∀ p : ℕ, p.Pri
     omega
   exact Rat.ext h3 h2
 
+/- English proof (translation)
+Rewrite using `[← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{0} k G) (ModuleCat.{0} k)), ShortComplex.moduleCat_exact_iff]`. Conclude with `h2`. Use `mono_f := (Rep.mono_iff_injective _).2 h1`. Use `epi_g := (Rep.epi_iff_surjective _).2 h3`.
+-/
 theorem shortExact_of_fun {k G : Type} [CommRing k] [Group G] (T : ShortComplex (Rep.{0} k G))
     (h1 : Function.Injective T.f.hom) (h2 : ∀ y, T.g.hom y = 0 → ∃ x, T.f.hom x = y)
     (h3 : Function.Surjective T.g.hom) : T.ShortExact where
@@ -101,6 +128,9 @@ variable {l χ}
 
 attribute [local instance] isDiscreteRep_infl finite_infl
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod l), ZMod.natCast_self, zero_smul]`.
+-/
 theorem nsmul_eq_zero_of_zmod {X : Type} [AddCommGroup X] [Module (ZMod l) X] (x : X) : l • x = 0 := by
   rw [← Nat.cast_smul_eq_nsmul (ZMod l), ZMod.natCast_self, zero_smul]
 
@@ -127,6 +157,11 @@ noncomputable def valFun (hmult : MultKilled l χ) (hpos : PosKilled l χ) (p : 
     rw [hm]
     exact padicValRat.mul h1.ne' h3.ne'
 
+/- English proof (translation)
+Apply `rat_eq_one_of_padicValRat (hpos _ (fun m => nsmul_eq_zero_of_zmod (l := l) (X := X) m))` to reduce the goal to its premises. Introduce `p hp`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Conclude with `(valFun Q hmult hpos p).toFun_eq_zero_of_forall_isCyclic ρ (fun D hD => by show padicValRat p (χ (infl Q _)) = 0`. Rewrite using `[h D hD]`.
+
+Conclude with `padicValRat.one)`.
+-/
 theorem eq_one_of_forall_isCyclic (hmult : MultKilled l χ) (hpos : PosKilled l χ)
     [Finite (G ⧸ (Q : Subgroup G))] {X : Type} [AddCommGroup X] [Module (ZMod l) X] [Finite X]
     (ρ : Representation (ZMod l) (G ⧸ (Q : Subgroup G)) X)
@@ -145,6 +180,9 @@ end Artin
 
 section GSAux
 
+/- English proof (translation)
+Establish `hp : IsPGroup ℓ (Multiplicative X)` using `fun g => ⟨1, by show Multiplicative.toAdd (g ^ (ℓ ^ 1)) = Multiplicative.toAdd 1`. Rewrite using `[toAdd_pow, pow_one]`. Conclude with `h _⟩`. Take `⟨n, hn⟩` from `hp.exists_card_eq`. Conclude with `⟨n, by rw [← hn]; rfl⟩`.
+-/
 theorem exists_card_eq_pow' {ℓ : ℕ} [Fact ℓ.Prime] {X : Type*} [AddCommGroup X] [Finite X]
     (h : ∀ m : X, ℓ • m = 0) : ∃ n : ℕ, Nat.card X = ℓ ^ n := by
   have hp : IsPGroup ℓ (Multiplicative X) := fun g => ⟨1, by
@@ -153,6 +191,9 @@ theorem exists_card_eq_pow' {ℓ : ℕ} [Fact ℓ.Prime] {X : Type*} [AddCommGro
   obtain ⟨n, hn⟩ := hp.exists_card_eq
   exact ⟨n, by rw [← hn]; rfl⟩
 
+/- English proof (translation)
+The claim follows from `hS gsEulerRatio S T.X₂ ιr = gsEulerRatio S T.X₁ ιr * gsEulerRatio S T.X₃ ιr := PositivityTheory.Lit1.GEN.ratio_shortExact_l ℓ K S hS hSl ιr T hT hl`.
+-/
 theorem ratio_shortExact_l' (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (hS : S.Finite) (hSl : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal},
@@ -164,6 +205,9 @@ theorem ratio_shortExact_l' (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S
     gsEulerRatio S T.X₂ ιr = gsEulerRatio S T.X₁ ιr * gsEulerRatio S T.X₃ ιr :=
   PositivityTheory.Lit1.GEN.ratio_shortExact_l ℓ K S hS hSl ιr T hT hl
 
+/- English proof (translation)
+Introduce `T _ _ _ _ hT hl`. Conclude with `ratio_shortExact_l' ℓ K S hS hSl ιr T hT ⟨1, by simpa using hl⟩`.
+-/
 theorem gs_multKilled (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (hS : S.Finite) (hSl : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion) :
@@ -171,6 +215,11 @@ theorem gs_multKilled (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set
   intro T _ _ _ _ hT hl
   exact ratio_shortExact_l' ℓ K S hS hSl ιr T hT ⟨1, by simpa using hl⟩
 
+/- English proof (translation)
+Introduce `A _ _ hA`. Use `haveI : Finite S := hS`. Apply `gsEulerRatio_pos (S := S) (M := A) (ιr := ιr)` to reduce the goal to its premises. Introduce `v hv`. Take `⟨n, hn⟩` from `exists_card_eq_pow' (ℓ := ℓ) (X := A) hA`.
+
+Rewrite `hv` using `[hn, Nat.cast_pow]`. Conclude with `hSl v (v.isPrime.mem_of_pow_mem n hv)`.
+-/
 theorem gs_posKilled (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (hS : S.Finite) (hSl : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion) :
@@ -185,6 +234,19 @@ theorem gs_posKilled (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hUD : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) ≤ D.comap (QuotientGroup.mk' _)` using `fun u hu => by`. Rewrite using `[Subgroup.mem_comap, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff u).2 hu]`. Conclude with `D.one_mem`. Set `V : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S)` to `⟨D.comap (QuotientGroup.mk' _), Subgroup.isOpen_mono hUD (gsOpenSubgroup S hL).isOpen⟩`. Take `⟨L', hKL', hL', hV⟩` from `exists_gsOpenSubgroup_eq (K := K) (S := S) V`.
+
+Establish `hW : (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) = D.comap (QuotientGroup.mk' _)`. Rewrite using `[hV]`. Use `⟨L', hKL', hL', hW, fun u hu => (Subgroup.ext_iff.1 hW u).2 (hUD hu), ?_⟩` and prove the remaining obligations. Set `φ : (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) →* D` to `((QuotientGroup.mk' _).comp (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype).codRestrict D (fun w => (Subgroup.ext_iff.1 hW w).1 w.2)`. Establish `hsurj : Function.Surjective φ`.
+
+Introduce and unpack `⟨d, hd⟩`. Take `⟨g, hgd⟩` from `QuotientGroup.mk_surjective d`. Establish `hg : g ∈ (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))` using `(Subgroup.ext_iff.1 hW g).2 (by show QuotientGroup.mk g ∈ D`. Rewrite using `[hgd]`. Conclude with `hd)`.
+
+Conclude with `⟨⟨g, hg⟩, Subtype.ext hgd⟩`. Establish `hk : φ.ker = (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subgroupOf (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))`. Use extensionality with `w`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h'` using `congrArg Subtype.val h`. Conclude with `(QuotientGroup.eq_one_iff _).1 h'`. Introduce `h`. Conclude with `Subtype.ext ((QuotientGroup.eq_one_iff _).2 h)`.
+
+Set `e` to `(QuotientGroup.quotientMulEquivOfEq hk).symm.trans (QuotientGroup.quotientKerEquivOfSurjective φ hsurj)`. Conclude with `isCyclic_of_surjective e.symm.toMonoidHom e.symm.surjective`.
+-/
 theorem exists_field_of_cyclic (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
     (L : FiniteSubfield) [Fact (K ≤ L)]
@@ -226,6 +288,9 @@ theorem exists_field_of_cyclic (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield)
   let e := (QuotientGroup.quotientMulEquivOfEq hk).symm.trans (QuotientGroup.quotientKerEquivOfSurjective φ hsurj)
   exact isCyclic_of_surjective e.symm.toMonoidHom e.symm.surjective
 
+/- English proof (translation)
+Use `haveI := finiteIndex_gsOpenSubgroup S hL`. Conclude with `Subgroup.finite_quotient_of_finiteIndex`.
+-/
 theorem finite_quot_gs (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (L : FiniteSubfield) [Fact (K ≤ L)]
     (hL : ∀ x : L.1, algebraMap L.1 ℚ̄ x ∈ maxUnramifiedOutside K.1 ℚ̄ S) :

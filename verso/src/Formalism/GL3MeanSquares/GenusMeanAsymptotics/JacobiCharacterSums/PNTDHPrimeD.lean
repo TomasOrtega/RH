@@ -9,6 +9,23 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds Formalism.ZeroFreeDirichlet
 open LSeries ArithmeticFunction DirichletCharacter
 
+/- English proof (translation)
+Establish `hw : ∀ v : ℕ, ((v : ℝ) + 1) ^ (k + 1) * Real.exp (-(η * v)) ≤ Real.exp 1 * (((k : ℝ) + 1) * k.factorial) / η ^ (k + 1)`. Introduce `v`. Establish `h` using `dhpr_wsup (k + 1) hη hη1 v`. Rewrite `h` using `[Nat.factorial_succ]`. Move the coercions through the operations in `at h`.
+
+Conclude with `h`. Establish `hS : ∑ v ∈ Ico v0 V, ((v : ℝ) + 1) ^ (k + 1) * Real.exp (-(η * v)) ≤ 2 * Real.exp 2 * ((k : ℝ) + 2) * (((k : ℝ) + 1) * k.factorial) / η ^ (k + 2)`. Establish `h` using `dhpr_wsum (k + 1) hη hη1 v0 V`. Rewrite `h` using `[Nat.factorial_succ]`. Move the coercions through the operations in `at h`.
+
+Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hE` using `dhpr_esum v0 V`. Establish `hA2 : 0 ≤ 2 * A` using `mul_nonneg (by norm_num) hA`. Establish `hC2 : 0 ≤ 2 * CH * (M : ℝ)` using `mul_nonneg (mul_nonneg (by norm_num) hCH) (Nat.cast_nonneg _)`.
+
+Establish `hK : 0 ≤ Real.exp 1 * (((k : ℝ) + 1) * k.factorial) / η ^ (k + 1)` using `div_nonneg (by positivity) (pow_nonneg hη.le _)`. Rewrite using `[dhpr_blocks _ v0 V hV]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `v _`.
+
+Establish `h` using `dhpr_block χ₁ h1 k hσ v _ (hHyp v)`. Rewrite `h` using `[hση]`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = 2 * A * ∑ v ∈ Ico v0 V, (((v : ℝ) + 1) ^ (k + 1) * Real.exp (-(η * v))) + 2 * CH * M * ∑ v ∈ Ico v0 V, ((((v : ℝ) + 1) ^ (k + 1) * Real.exp (-(η * v))) * (((v : ℝ) + 1) * Real.exp (-((v : ℝ) / 2)))) := by`.
+
+Rewrite using `[Finset.sum_add_distrib, Finset.mul_sum, Finset.mul_sum]`. Use `_ ≤ _ := by`. Apply `add_le_add` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hS hA2`. Apply `mul_le_mul_of_nonneg_left _ hC2` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `v _`. Conclude with `mul_le_mul_of_nonneg_right (hw v) (by positivity)`. Use `_ = (Real.exp 1 * (((k : ℝ) + 1) * k.factorial) / η ^ (k + 1)) * ∑ v ∈ Ico v0 V, (((v : ℝ) + 1) * Real.exp (-((v : ℝ) / 2))) := by`.
+
+Rewrite using `[← Finset.mul_sum]`. Use `_ ≤ _ := mul_le_mul_of_nonneg_left hE hK`.
+-/
 lemma dhpr_large {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1 : χ₁ ^ 2 = 1) (k : ℕ)
     {σ η : ℝ} (hσ : 1 ≤ σ) (hση : σ - 1 = η) (hη : 0 < η) (hη1 : η ≤ 1) (v0 V : ℕ) (hV : v0 ≤ V)
     {A CH : ℝ} (hA : 0 ≤ A) (hCH : 0 ≤ CH)

@@ -8,6 +8,17 @@ open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
+/- English proof (translation)
+Introduce `F _ _ Y V v e z yt hy g hg`. Take `⟨W₀, hW₀, s, hs⟩` from `hg.exists_fnOf`. Establish `ht : ⊤ ≤ yt ⁻¹ᵁ W₀` using `GlobalTheory.HtGen.IntPt.top_le_of_closedPoint yt hW₀`. Establish `hb : below (z ≫ V.j) ∈ W₀`. Express the relevant statement in the definitionally equal form `(z ≫ V.j) (IsLocalRing.closedPoint (AlgebraicClosure F)) ∈ W₀`.
+
+Rewrite using `[← hy]`. Conclude with `ht trivial`. Establish `ht' : ⊤ ≤ (z ≫ V.j) ⁻¹ᵁ W₀` using `fun p _ => by`. Express the relevant statement in the definitionally equal form `(z ≫ V.j) p ∈ W₀`. Rewrite using `[← hy]`.
+
+Conclude with `ht (x := spMap e.O.subtype p) trivial`. Establish `hev` using `OfModel.eval_pull e.O.subtype (𝟙 V.X) (z ≫ V.j) yt (hy.trans (Category.comp_id _).symm) (U := W₀) (W := W₀) le_rfl ht' ht s`. Establish `hid : ((𝟙 V.X : V.X ⟶ V.X).appLE W₀ W₀ le_rfl).hom s = s`. Establish `: (𝟙 V.X : V.X ⟶ V.X).appLE W₀ W₀ le_rfl = 𝟙 _` using `(Category.id_comp _).trans (V.X.presheaf.map_id _)`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Rewrite `hev` using `[hid]`. Use `⟨hs ▸ regAt_fnOf hb _ s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, OfModel.valAt_fnOf _ hb ht', hev]`. Conclude with `(e.mem_O _).1 (Subtype.property _)`.
+
+Rewrite using `[← hs, OfModel.valAt_fnOf _ hb ht', hev, unitAt_fnOf_iff hW₀, ← RegCrit.isUnit_eval_iff yt ht s]`. Conclude with `GlobalTheory.HtGen.IntPt.w_eq_one_iff e _`.
+-/
 theorem UpperTheory.valuation_regular_function_at_point :
     ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (v : HeightOneSpectrum (𝓞 F)) (e : TrueGeo.Ext v) (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp e.O ⟶ V.X), spMap e.O.subtype ≫ yt = z ≫ V.j → ∀ g : V.X.functionField, RegAt (yt (IsLocalRing.closedPoint e.O)) g → RegAt (below (z ≫ V.j)) g ∧ e.w (TrueGeo.valAt (z ≫ V.j) g) ≤ 1 ∧ (e.w (TrueGeo.valAt (z ≫ V.j) g) = 1 ↔ UnitAt (yt (IsLocalRing.closedPoint e.O)) g) := by
   intro F _ _ Y V v e z yt hy g hg

@@ -10,6 +10,23 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory.CompanionTheory.HopfC.Prism
 
+/- English proof (translation)
+Establish `row : ∀ i, i ≤ N → ∑ j ∈ Finset.range (N + 2), ((-1 : R) ^ (i + j)) • a i j = ∑ j ∈ Finset.range i, ((-1 : R) ^ (i + j)) • a i j + (a i i - a i (i + 1)) + ∑ j ∈ Finset.Ico (i + 1) (N + 1), ((-1 : R) ^ (i + (j + 1))) • a i (j + 1)`. Introduce `i hi`. Establish `e1` using `Finset.sum_range_add_sum_Ico (fun j ↦ ((-1 : R) ^ (i + j)) • a i j) (show i ≤ N + 2 by omega)`. Establish `e2 : ∑ j ∈ Finset.Ico i (N + 2), ((-1 : R) ^ (i + j)) • a i j = ((-1 : R) ^ (i + i)) • a i i + ∑ j ∈ Finset.Ico i (N + 1), ((-1 : R) ^ (i + (j + 1))) • a i (j + 1)`. Rewrite using `[Finset.sum_eq_sum_Ico_succ_bot (by omega), Finset.sum_Ico_add' (fun j ↦ ((-1 : R) ^ (i + j)) • a i j) i (N + 1) 1]`.
+
+Establish `e3 : ∑ j ∈ Finset.Ico i (N + 1), ((-1 : R) ^ (i + (j + 1))) • a i (j + 1) = ((-1 : R) ^ (i + (i + 1))) • a i (i + 1) + ∑ j ∈ Finset.Ico (i + 1) (N + 1), ((-1 : R) ^ (i + (j + 1))) • a i (j + 1)` using `Finset.sum_eq_sum_Ico_succ_bot (by omega) _`. Establish `s1 : ((-1 : R) ^ (i + i)) = 1` using `Even.neg_one_pow ⟨i, rfl⟩`. Establish `s2 : ((-1 : R) ^ (i + (i + 1))) = -1` using `by rw [← add_assoc, pow_succ, s1]; simp`. Rewrite using `[← e1, e2, e3, s1, s2, one_smul, neg_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[Finset.sum_congr rfl (fun i hi ↦ row i (by have := Finset.mem_range.1 hi; omega))]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib]`. Establish `tL : ∑ i ∈ Finset.range (N + 1), ∑ j ∈ Finset.range i, ((-1 : R) ^ (i + j)) • a i j = - ∑ k ∈ Finset.range N, ∑ j ∈ Finset.range (k + 1), ((-1 : R) ^ (k + j)) • b k j`. Rewrite using `[Finset.sum_range_succ', Finset.range_zero, Finset.sum_empty, add_zero, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k hk ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j hj ↦ ?_` and prove the remaining obligations. Rewrite using `[h1 k j (Finset.mem_range.1 hk) (by have := Finset.mem_range.1 hj; omega), ← neg_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `tR : ∑ i ∈ Finset.range (N + 1), ∑ j ∈ Finset.Ico (i + 1) (N + 1), ((-1 : R) ^ (i + (j + 1))) • a i (j + 1) = - ∑ k ∈ Finset.range N, ∑ j ∈ Finset.Ico (k + 1) (N + 1), ((-1 : R) ^ (k + j)) • b k j`. Rewrite using `[Finset.sum_range_succ, Finset.Ico_self, Finset.sum_empty, add_zero, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k hk ↦ ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j hj ↦ ?_` and prove the remaining obligations.
+
+Use `Finset.mem_Ico.1 hj` as an intermediate fact. Rewrite using `[h2 k j (Finset.mem_range.1 hk) (by omega) (by omega), ← neg_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `tD : ∑ i ∈ Finset.range (N + 1), (a i i - a i (i + 1)) = a 0 0 - a N (N + 1)`.
+
+Rewrite using `[Finset.sum_range_succ, Finset.sum_congr rfl (fun k hk ↦ by rw [h3 k (Finset.mem_range.1 hk)]), Finset.sum_range_sub' (fun i ↦ a i i)]`. Normalize the expressions using the abelian group laws. Establish `tS : ∑ k ∈ Finset.range N, ∑ j ∈ Finset.range (N + 1), ((-1 : R) ^ (k + j)) • b k j = ∑ k ∈ Finset.range N, ∑ j ∈ Finset.range (k + 1), ((-1 : R) ^ (k + j)) • b k j + ∑ k ∈ Finset.range N, ∑ j ∈ Finset.Ico (k + 1) (N + 1), ((-1 : R) ^ (k + j)) • b k j`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k hk ↦ ?_` and prove the remaining obligations.
+
+Use `Finset.mem_range.1 hk` as an intermediate fact. Conclude with `(Finset.sum_range_add_sum_Ico _ (by omega)).symm`. Rewrite using `[tL, tR, tD, tS]`. Normalize the expressions using the abelian group laws.
+-/
 theorem prism_sum {R G : Type} [CommRing R] [AddCommGroup G] [Module R G] (N : ℕ) (a b : ℕ → ℕ → G)
     (h1 : ∀ k j, k < N → j ≤ k → a (k + 1) j = b k j)
     (h2 : ∀ k j, k < N → k < j → j < N + 1 → a k (j + 1) = b k j)
@@ -71,6 +88,11 @@ section
 
 variable {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
 
+/- English proof (translation)
+Use `show (((if i.castSucc < t then 1 else 0 : Fin (1 + 1))) : ℕ) = _`. Distinguish the cases in `h : i.1 < t.1`. Rewrite using `[if_pos (show i.castSucc < t from h), if_pos h]`. Both sides reduce to the same expression. Rewrite using `[if_neg (show ¬ i.castSucc < t from h), if_neg h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem val_sI {n : ℕ} (i : Fin (n + 1)) (t : Fin (n + 1 + 1)) :
     ((sI i t : Fin (1 + 1)) : ℕ) = if i.1 < t.1 then 1 else 0 := by
   show (((if i.castSucc < t then 1 else 0 : Fin (1 + 1))) : ℕ) = _
@@ -78,6 +100,11 @@ theorem val_sI {n : ℕ} (i : Fin (n + 1)) (t : Fin (n + 1 + 1)) :
   · rw [if_pos (show i.castSucc < t from h), if_pos h]; rfl
   · rw [if_neg (show ¬ i.castSucc < t from h), if_neg h]; rfl
 
+/- English proof (translation)
+Use `show ((Fin.predAbove i t : Fin (n + 1)) : ℕ) = _`. Rewrite using `[Fin.predAbove]`. Distinguish the cases in `h : i.1 < t.1`. Rewrite using `[dif_pos (show i.castSucc < t from h), if_pos h]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[dif_neg (show ¬ i.castSucc < t from h), if_neg h]`. Simplify using the standard rewrite rules.
+-/
 theorem val_pa {n : ℕ} (i : Fin (n + 1)) (t : Fin (n + 1 + 1)) :
     ((Fin.predAboveOrderHom i t : Fin (n + 1)) : ℕ) = if i.1 < t.1 then t.1 - 1 else t.1 := by
   show ((Fin.predAbove i t : Fin (n + 1)) : ℕ) = _
@@ -100,6 +127,11 @@ def bT {n : ℕ} (w : Cn (box F) (n + 1)) (k j : ℕ) : Bi F 1 (n + 1) :=
 
 variable {F}
 
+/- English proof (translation)
+Rewrite using `[aT, bT, dif_pos (by omega), dif_pos (by omega)]`. Use `bv_congr (fun t ↦ ?_) (fun t ↦ ?_) w` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [OrderHom.comp_coe, Function.comp_apply, val_sI, val_dl]`. Use `grind`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [OrderHom.comp_coe, Function.comp_apply, val_pa, val_dl]`. Use `grind`.
+-/
 theorem prism_term_lower_index {n : ℕ} (w : Cn (box F) (n + 1)) (k j : ℕ) (hk : k < n + 1) (hj : j ≤ k) :
     aT F w (k + 1) j = bT F w k j := by
   rw [aT, bT, dif_pos (by omega), dif_pos (by omega)]
@@ -111,6 +143,11 @@ theorem prism_term_lower_index {n : ℕ} (w : Cn (box F) (n + 1)) (k j : ℕ) (h
     simp only [OrderHom.comp_coe, Function.comp_apply, val_pa, val_dl]
     grind
 
+/- English proof (translation)
+Rewrite using `[aT, bT, dif_pos (by omega), dif_pos (by omega)]`. Use `bv_congr (fun t ↦ ?_) (fun t ↦ ?_) w` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [OrderHom.comp_coe, Function.comp_apply, val_sI, val_dl]`. Use `grind`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [OrderHom.comp_coe, Function.comp_apply, val_pa, val_dl]`. Use `grind`.
+-/
 theorem prism_term_upper_index {n : ℕ} (w : Cn (box F) (n + 1)) (k j : ℕ) (hk : k < n + 1) (hkj : k < j) (hj : j < n + 2) :
     aT F w k (j + 1) = bT F w k j := by
   rw [aT, bT, dif_pos (by omega), dif_pos (by omega)]
@@ -122,6 +159,11 @@ theorem prism_term_upper_index {n : ℕ} (w : Cn (box F) (n + 1)) (k j : ℕ) (h
     simp only [OrderHom.comp_coe, Function.comp_apply, val_pa, val_dl]
     grind
 
+/- English proof (translation)
+Rewrite using `[aT, aT, dif_pos (by omega), dif_pos (by omega)]`. Use `bv_congr (fun t ↦ ?_) (fun t ↦ ?_) w` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [OrderHom.comp_coe, Function.comp_apply, val_sI, val_dl]`. Use `grind`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [OrderHom.comp_coe, Function.comp_apply, val_pa, val_dl]`. Use `grind`.
+-/
 theorem prism_term_diagonal_equality {n : ℕ} (w : Cn (box F) (n + 1)) (k : ℕ) (hk : k < n + 1) :
     aT F w k (k + 1) = aT F w (k + 1) (k + 1) := by
   rw [aT, aT, dif_pos (by omega), dif_pos (by omega)]
@@ -133,6 +175,11 @@ theorem prism_term_diagonal_equality {n : ℕ} (w : Cn (box F) (n + 1)) (k : ℕ
     simp only [OrderHom.comp_coe, Function.comp_apply, val_pa, val_dl]
     grind
 
+/- English proof (translation)
+Rewrite using `[aT, dif_pos (by omega), S0, prA_bv]`. Use `bv_congr (fun t ↦ ?_) (fun t ↦ ?_) w` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [OrderHom.comp_coe, Function.comp_apply, val_sI, val_dl, cst_apply, Fin.val_zero]`. Use `grind`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [OrderHom.comp_coe, Function.comp_apply, val_pa, val_dl, Fin.val_zero, OrderHom.id_coe, id_eq]`. Use `grind`.
+-/
 theorem aT_first {n : ℕ} (w : Cn (box F) (n + 1)) : aT F w 0 0 = prA F (dl 0) (S0 F (n + 1) w) := by
   rw [aT, dif_pos (by omega), S0, prA_bv]
   refine bv_congr (fun t ↦ ?_) (fun t ↦ ?_) w
@@ -143,6 +190,11 @@ theorem aT_first {n : ℕ} (w : Cn (box F) (n + 1)) : aT F w 0 0 = prA F (dl 0) 
     simp only [OrderHom.comp_coe, Function.comp_apply, val_pa, val_dl, Fin.val_zero, OrderHom.id_coe, id_eq]
     grind
 
+/- English proof (translation)
+Rewrite using `[aT, dif_pos (by omega), S0, prA_bv]`. Use `bv_congr (fun t ↦ ?_) (fun t ↦ ?_) w` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [OrderHom.comp_coe, Function.comp_apply, val_sI, val_dl, cst_apply, Fin.val_zero, Fin.val_one]`. Use `grind`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [OrderHom.comp_coe, Function.comp_apply, val_pa, val_dl, OrderHom.id_coe, id_eq]`. Use `grind`.
+-/
 theorem aT_last {n : ℕ} (w : Cn (box F) (n + 1)) :
     aT F w (n + 1) (n + 2) = prA F (dl 1) (S0 F (n + 1) w) := by
   rw [aT, dif_pos (by omega), S0, prA_bv]
@@ -154,6 +206,11 @@ theorem aT_last {n : ℕ} (w : Cn (box F) (n + 1)) :
     simp only [OrderHom.comp_coe, Function.comp_apply, val_pa, val_dl, OrderHom.id_coe, id_eq]
     grind
 
+/- English proof (translation)
+Rewrite using `[dn_eq (n + 1)]`. Simplify using `only [Finset.sum_range, Sh, LinearMap.sum_apply, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_sum, map_smul, bv_pr, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[aT, dif_pos ⟨i.2, j.2⟩, pow_add, mul_comm]`.
+-/
 theorem Sh_dn_expand {n : ℕ} (w : Cn (box F) (n + 1)) :
     Sh F (n + 1) (dn (box F) (n + 1) w) =
       ∑ i ∈ Finset.range (n + 1 + 1), ∑ j ∈ Finset.range (n + 1 + 2), ((-1 : R) ^ (i + j)) • aT F w i j := by
@@ -167,6 +224,11 @@ theorem Sh_dn_expand {n : ℕ} (w : Cn (box F) (n + 1)) :
   intro j _
   rw [aT, dif_pos ⟨i.2, j.2⟩, pow_add, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [Finset.sum_range]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Simplify using `only [Sh, LinearMap.sum_apply, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_sum, map_smul, prB_bv]`. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[bT, dif_pos ⟨k.2, j.2⟩, smul_smul, pow_add, mul_comm]`.
+-/
 theorem prB_Sh_expand {n : ℕ} (w : Cn (box F) (n + 1)) :
     ∑ j : Fin (n + 1 + 1), ((-1 : R) ^ (j : ℕ)) • prB F (dl j) (Sh F n w) =
       ∑ k ∈ Finset.range (n + 1), ∑ j ∈ Finset.range (n + 1 + 1), ((-1 : R) ^ (k + j)) • bT F w k j := by
@@ -178,6 +240,9 @@ theorem prB_Sh_expand {n : ℕ} (w : Cn (box F) (n + 1)) :
   refine Finset.sum_congr rfl fun k _ ↦ ?_
   rw [bT, dif_pos ⟨k.2, j.2⟩, smul_smul, pow_add, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[Sh_dn_expand, prB_Sh_expand, ← aT_first, ← aT_last]`. Conclude with `prism_sum (n + 1) (aT F w) (bT F w) (fun k j hk hj ↦ prism_term_lower_index w k j hk hj) (fun k j hk hkj hj ↦ prism_term_upper_index w k j hk hkj hj) (fun k hk ↦ prism_term_diagonal_equality w k hk)`.
+-/
 theorem shuffle_coboundary_prism_identity {n : ℕ} (w : Cn (box F) (n + 1)) :
     Sh F (n + 1) (dn (box F) (n + 1) w) = prA F (dl 0) (S0 F (n + 1) w) - prA F (dl 1) (S0 F (n + 1) w) -
       ∑ j : Fin (n + 1 + 1), ((-1 : R) ^ (j : ℕ)) • prB F (dl j) (Sh F n w) := by
@@ -187,6 +252,9 @@ theorem shuffle_coboundary_prism_identity {n : ℕ} (w : Cn (box F) (n + 1)) :
 
 end
 
+/- English proof (translation)
+The claim follows from `fun _ _ w ↦ shuffle_coboundary_prism_identity w`.
+-/
 theorem Sh_dn : ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) (n : ℕ) (w : Cn (box F) (n + 1)), Sh F (n + 1) (dn (box F) (n + 1) w) = prA F (dl 0) (S0 F (n + 1) w) - prA F (dl 1) (S0 F (n + 1) w) - ∑ j : Fin (n + 1 + 1), ((-1 : R) ^ (j : ℕ)) • prB F (dl j) (Sh F n w) :=
   fun _ _ w ↦ shuffle_coboundary_prism_identity w
 

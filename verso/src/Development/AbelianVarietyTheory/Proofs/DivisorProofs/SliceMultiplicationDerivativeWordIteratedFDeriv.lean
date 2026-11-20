@@ -8,6 +8,13 @@ open scoped Classical
 
 namespace GlobalTheory.WeilL2Words
 
+/- English proof (translation)
+Proceed by induction on `vs with`. Consider the case `nil => exact ⟨rfl, hΦ⟩`. Consider the case `cons v vs ih`. Take `⟨h1, h2⟩` from `ih`. Establish `hd : Differentiable ℝ (fun x => word F ψ (vs.map fun v => (v, 0)) Φ (GlobalTheory.WeilCont.adeleJoin F x y))`.
+
+Rewrite using `[h1]; exact h2.differentiable (by simp)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [List.map_cons, List.foldr_cons]`. Rewrite using `[word_cons, GlobalTheory.T.schroedingerDerivative_slice_directional_add_phase F κ ψ ℓ hψ _ y hd (v, 0) x, h1]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [List.foldr_cons]`. Conclude with `(h2.fderiv_right (by simp)).clm_apply contDiff_const`.
+-/
 theorem slice_word_fderivs (F : Type) [Field F] [NumberField F] [Invertible (2 : AdeleRing (𝓞 F) F)] (κ : Type)
     [Fintype κ] (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ)
     (hψ : ∀ z, ψ (GlobalTheory.WeilL2Words.arch1 F z) = Complex.exp (2 * Real.pi * Complex.I * ℓ z))
@@ -32,6 +39,19 @@ theorem slice_word_fderivs (F : Type) [Field F] [NumberField F] [Invertible (2 :
     · simp only [List.foldr_cons]
       exact (h2.fderiv_right (by simp)).clm_apply contDiff_const
 
+/- English proof (translation)
+Introduce `F _ _ _ κ _ ψ ℓ hψ Φ y hΦ u i vs x`. Take `⟨h1, h2⟩` from `slice_word_fderivs F κ ψ ℓ hψ Φ y hΦ vs`. Establish `hL : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : κ → mixedEmbedding.mixedSpace F => ℓ (∑ k, x k * u k))`. Set `L : (κ → mixedEmbedding.mixedSpace F) →ₗ[ℝ] ℝ` to `ℓ ∘ₗ ∑ k, (LinearMap.mulRight ℝ (u k)) ∘ₗ LinearMap.proj k`. Establish `hLe : (fun x : κ → mixedEmbedding.mixedSpace F => ℓ (∑ k, x k * u k)) = L`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[L, LinearMap.sum_apply]`. Rewrite using `[hLe]`. Conclude with `(LinearMap.toContinuousLinearMap L).contDiff`. Establish `hc : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : κ → mixedEmbedding.mixedSpace F => 2 * Real.pi * Complex.I * (ℓ (∑ k, x k * u k) : ℂ))` using `contDiff_const.mul (Complex.ofRealCLM.contDiff.comp hL)`.
+
+It suffices to establish `H : ∀ i : ℕ, (fun x => word F ψ (List.replicate i (0, u) ++ vs.map fun v => (v, 0)) Φ (GlobalTheory.WeilCont.adeleJoin F x y)) = (fun x => (2 * Real.pi * Complex.I * (ℓ (∑ k, x k * u k) : ℂ)) ^ i * vs.foldr (fun v g' => fun z => fderiv ℝ g' z v) (fun x => Φ (GlobalTheory.WeilCont …`. Conclude with `congrFun (H i).1 x`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [List.replicate_zero, List.nil_append, pow_zero, one_mul]`. Conclude with `congrFun h1 x`. Simplify using `using h2`.
+
+Consider the case `succ i ih`. Take `⟨e1, e2⟩` from `ih`. Establish `hd : Differentiable ℝ (fun x => word F ψ (List.replicate i (0, u) ++ vs.map fun v => (v, 0)) Φ (GlobalTheory.WeilCont.adeleJoin F x y))`. Rewrite using `[e1]; exact e2.differentiable (by simp)`. Use `⟨?_, (hc.pow (i + 1)).mul h2⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[List.replicate_succ, List.cons_append, word_cons, GlobalTheory.T.schroedingerDerivative_slice_directional_add_phase F κ ψ ℓ hψ _ y hd (0, u) x]`. Establish `e1x` using `congrFun e1 x`. Simplify using `only [ContinuousLinearMap.map_zero, zero_add, e1x]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem slice_word_mul_fderivs : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : AdeleRing (𝓞 F) F)] (κ : Type) [Fintype κ]
     (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ),
     (∀ z, ψ (GlobalTheory.WeilL2Words.arch1 F z) = Complex.exp (2 * Real.pi * Complex.I * ℓ z)) →

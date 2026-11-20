@@ -15,6 +15,11 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.ConeSmallSerLine
 
+/- English proof (translation)
+Establish `key : mat g⁻¹ *ᵥ (mat g *ᵥ v) = v`. Rewrite using `[Matrix.mulVec_mulVec, GlobalTheory.ConeSmallCTReps.mat_inv_mul, Matrix.one_mulVec]`. Rewrite `key` using `[h, Matrix.mulVec_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`.
+
+Use `_ = (l⁻¹).1 • v := by rw [key]`.
+-/
 theorem inv_line {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) (v : Fin n → AE F E) (l : (AE F E)ˣ)
     (h : mat g *ᵥ v = l.1 • v) : mat g⁻¹ *ᵥ v = (l⁻¹).1 • v := by
@@ -25,6 +30,19 @@ theorem inv_line {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
         rw [smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]
     _ = (l⁻¹).1 • v := by rw [key]
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ'`. Use `⟨0, fun T hR s _ _ => ?_⟩` and prove the remaining obligations. Use `set f := GlobalTheory.ConeSmall.coneI B G G₁ H H' e' K μK μ X.ν om' om₁' Φ' (s + ((a : ℂ) + 1) / 2) with hf`. Take `⟨t₀, ⟨ht₀T, l, hl⟩, huniq⟩` from `hR.2 1 (one_mem _)`. Rewrite `hl` using `[one_mul]`.
+
+Establish `hstab : GlobalTheory.ConeSmallSer.StabLn H'.x t₀` using `⟨l⁻¹, by simpa using inv_line t₀⁻¹ _ l hl⟩`. Establish `hline : GlobalTheory.ConeSmallSer.lineSet H'.x T = {t₀}`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨htT, m, hm⟩`.
+
+Conclude with `huniq t ⟨htT, m⁻¹, by rw [one_mul]; exact inv_line t _ m hm⟩`. Introduce and unpack `rfl`. Conclude with `⟨ht₀T, hstab⟩`. Establish `hpart : ∀ h, GlobalTheory.ConeSmallSer.partSum f (GlobalTheory.ConeSmallSer.lineSet H'.x T) h = f (t₀ * h)`. Introduce `h`.
+
+Rewrite using `[hline]`. Unfold `GlobalTheory.ConeSmallSer.partSum`. Conclude with `tsum_singleton t₀ (fun t => f (t * h))`. Establish `hinv : ∀ u ∈ unip σ G.W H', ∀ h, f (t₀ * (u * h)) = f h`. Introduce `u hu h`.
+
+Rewrite using `[hf, GlobalTheory.T.seesaw_evaluation_haar_nonarchimedean hKP F E σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' _ t₀ (hR.1 ht₀T) hstab, GlobalTheory.T.seesaw_evaluation_haar_archimedean hKP F E σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ …`. Establish `hconst : ∀ (μ' : Measure (unip σ G.W H')) (h : UA σ G.W.J), (fun u : unip σ G.W H' => GlobalTheory.ConeSmallSer.partSum f (GlobalTheory.ConeSmallSer.lineSet H'.x T) (u.1 * h)) = fun _ => f h`. Introduce `_ h`. Use function extensionality and compare the values at `u`. Rewrite using `[hpart, hinv u.1 u.2]`.
+
+Use `⟨fun μ' 𝓕 _ _ h1 h => ?_, fun μ' 𝓕 _ _ h1 h => ?_⟩` and prove the remaining obligations. Rewrite using `[hconst μ' h]`. Conclude with `integrableOn_const (by simp [h1])`. Rewrite using `[hconst μ' h, setIntegral_const]`. Simplify using `[Measure.real, h1]`.
+-/
 theorem ctLine : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ e', IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ (K : Subgroup (UA σ G.V'.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ),

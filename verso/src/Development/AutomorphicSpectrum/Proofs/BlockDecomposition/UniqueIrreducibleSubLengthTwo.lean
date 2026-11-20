@@ -39,20 +39,34 @@ def FineJacZ (Δ : Segment k) : Prop :=
     ∀ (c : ℕ) (y : Fin c → IrrGL k) (hy : ∑ a, (y a).1 = N), (∀ a, (y a).IsCusp) → 1 ≤ jm y hy π →
       ∃ h : c = Δ.len, ∀ a, y a = Δ.term (Fin.cast h a)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.SegFine2.jm_perm_prod hA Δ 1 hd hd`.
+-/
 theorem jm_term_prod (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) {N : ℕ} (hd : ∑ a, (Δ.term a).1 = N) :
     jm Δ.term hd (prodIrr Δ.term hd) = 1 :=
   GlobalTheory.CompanionTheory.SegFine2.jm_perm_prod hA Δ 1 hd hd
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.SocleJm.exists_isSocle_of_jm_le_one hA Δ.term hd (jm_term_prod hA Δ hd).le`.
+-/
 theorem exists_isSocle (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) {N : ℕ} (hd : ∑ a, (Δ.term a).1 = N) :
     ∃ τ : IrrRep (GL (Fin N) k), IsSocle τ.ρ (prodIrr Δ.term hd) :=
   GlobalTheory.CompanionTheory.SocleJm.exists_isSocle_of_jm_le_one hA Δ.term hd (jm_term_prod hA Δ hd).le
 
+/- English proof (translation)
+Establish `hd : ∑ a, (Γ.term a).1 = Γ.deg` using `Γ.sum_term_fst`. Take `⟨τ, hc⟩` from `exists_isSocle hA Γ hd`. Conclude with `⟨IrrGL.of τ.ρ τ.smooth τ.irr, rfl, hd, hc.of_equiv (IrrGL.equivOf _ _ _) (Representation.Equiv.refl _)⟩`.
+-/
 theorem exists_class (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Γ : Segment k) :
     ∃ u : IrrGL k, u.1 = Γ.deg ∧ IsZSeg Γ u.rep := by
   have hd : ∑ a, (Γ.term a).1 = Γ.deg := Γ.sum_term_fst
   obtain ⟨τ, hc⟩ := exists_isSocle hA Γ hd
   exact ⟨IrrGL.of τ.ρ τ.smooth τ.irr, rfl, hd, hc.of_equiv (IrrGL.equivOf _ _ _) (Representation.Equiv.refl _)⟩
 
+/- English proof (translation)
+Take `⟨hd₀, hc⟩` from `hπ`. Establish `hsm : IsSmooth π` using `hc.isSubquotient.isSmooth (isSmooth_prodIrr _ _)`. Take `⟨f, hf⟩` from `hc.embeds`. Use `haveI := Model.nontrivial_of_isIrreducible hc.1`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`.
+
+Use `le_antisymm ((GlobalTheory.T.jacquet_multiplicity_subquotient_le Δ.term hd π _ (isSmooth_prodIrr _ hd) hc.isSubquotient).trans (jm_term_prod hA Δ hd).le) (GlobalTheory.CompanionTheory.FrobJm.one_le_jm hA Δ.term hd π hsm f ⟨v, fun e => hv (hf (e.trans (map_zero f).symm))⟩)` and prove the remaining obligations.
+-/
 theorem jm_term_eq_one (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) {N : ℕ} {V : Type} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (hπ : IsZSeg Δ π) (hd : ∑ a, (Δ.term a).1 = N) :
     jm Δ.term hd π = 1 := by
@@ -64,6 +78,13 @@ theorem jm_term_eq_one (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ
   refine le_antisymm ((GlobalTheory.T.jacquet_multiplicity_subquotient_le Δ.term hd π _ (isSmooth_prodIrr _ hd) hc.isSubquotient).trans
     (jm_term_prod hA Δ hd).le) (GlobalTheory.CompanionTheory.FrobJm.one_le_jm hA Δ.term hd π hsm f ⟨v, fun e => hv (hf (e.trans (map_zero f).symm))⟩)
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `hf`. Use `haveI : WellFoundedLT (Subrepresentation Q) := ((hasFiniteLength_iff_wellFounded _).1 hfl).2`. Use `haveI : IsAtomic (Subrepresentation Q) := isAtomic_of_orderBot_wellFounded_lt wellFounded_lt`. Establish `hnt : (⊤ : Subrepresentation Q) ≠ ⊥` using `fun hb => by`. Take `⟨u, hu⟩` from `exists_ne (0 : X)`.
+
+Establish `h1 : u ∈ (⊥ : Subrepresentation Q)` using `hb ▸ trivial`. Conclude with `hu h1`. Take `⟨S, hS, -⟩` from `(eq_bot_or_exists_atom_le (⊤ : Subrepresentation Q)).resolve_left hnt`. Establish `hirr` using `GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom S hS`. Set `ι : S.toRepresentation.IntertwiningMap Q` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`.
+
+Take `⟨E⟩` from `hc.equiv_of_embeds hirr ⟨f.comp ι, hf.comp Subtype.val_injective⟩`. Conclude with `⟨ι.comp E.symm.toIntertwiningMap, Subtype.val_injective.comp E.symm.toLinearEquiv.injective⟩`.
+-/
 theorem exists_embedding_of_isSocle {G V W X : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] [AddCommGroup X] [Module ℂ X] (σ : Representation ℂ G W) (P : Representation ℂ G V)
     (Q : Representation ℂ G X) (hc : IsSocle σ P) (hfl : HasFiniteLength Q)
@@ -82,6 +103,9 @@ theorem exists_embedding_of_isSocle {G V W X : Type} [Group G] [AddCommGroup V] 
   obtain ⟨E⟩ := hc.equiv_of_embeds hirr ⟨f.comp ι, hf.comp Subtype.val_injective⟩
   exact ⟨ι.comp E.symm.toIntertwiningMap, Subtype.val_injective.comp E.symm.toLinearEquiv.injective⟩
 
+/- English proof (translation)
+Establish `hι : Function.Injective (GlobalTheory.ParIndExact.extTensorMapRight σ g)` using `Module.Flat.lTensor_preserves_injective_linearMap g.toLinearMap hg`. Establish `hι' : Function.Injective (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ g) (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom)` using `hι`. Conclude with `⟨parIndMap (two (stdSum rfl)) (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ g) (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom), GlobalTheory.ParIndExact.parIndMap_injective _ _ hι'⟩`.
+-/
 theorem prod₂_map_injective_right {r t : ℕ} {U W W' : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup W'] [Module ℂ W'] (σ : Representation ℂ (GL (Fin r) k) U) {ρ : Representation ℂ (GL (Fin t) k) W}
     {ρ' : Representation ℂ (GL (Fin t) k) W'} (g : ρ.IntertwiningMap ρ') (hg : Function.Injective g) :
@@ -93,6 +117,9 @@ theorem prod₂_map_injective_right {r t : ℕ} {U W W' : Type} [AddCommGroup U]
   exact ⟨parIndMap (two (stdSum rfl)) (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ g)
     (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom), GlobalTheory.ParIndExact.parIndMap_injective _ _ hι'⟩
 
+/- English proof (translation)
+Take `⟨E⟩` from `E`. Take `⟨H⟩` from `H`. Take `⟨F, hF⟩` from `GlobalTheory.CompanionTheory.ProdInj.prod₂_map_injective k r t _ _ _ σ σ' ρ f hf`. Take `⟨G, hG⟩` from `prod₂_map_injective_right σ' g hg`. Conclude with `⟨H.toIntertwiningMap.comp ((G.comp F).comp E.symm.toIntertwiningMap), H.toLinearEquiv.injective.comp ((hG.comp hF).comp E.symm.toLinearEquiv.injective)⟩`.
+-/
 theorem exists_injective_of_prod₂_equiv {r t : ℕ} {U U' W W' A D : Type} [AddCommGroup U] [Module ℂ U]
     [AddCommGroup U'] [Module ℂ U'] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] [AddCommGroup A]
     [Module ℂ A] [AddCommGroup D] [Module ℂ D] {σ : Representation ℂ (GL (Fin r) k) U}
@@ -109,6 +136,9 @@ theorem exists_injective_of_prod₂_equiv {r t : ℕ} {U U' W W' A D : Type} [Ad
   exact ⟨H.toIntertwiningMap.comp ((G.comp F).comp E.symm.toIntertwiningMap),
     H.toLinearEquiv.injective.comp ((hG.comp hF).comp E.symm.toLinearEquiv.injective)⟩
 
+/- English proof (translation)
+Take `⟨F, hF⟩` from `F`. Take `⟨H⟩` from `H`. Conclude with `⟨H.toIntertwiningMap.comp F, H.toLinearEquiv.injective.comp hF⟩`.
+-/
 theorem exists_injective_of_equiv {G B C D : Type} [Group G] [AddCommGroup B]
     [Module ℂ B] [AddCommGroup C] [Module ℂ C] [AddCommGroup D] [Module ℂ D]
     {β : Representation ℂ G B} {γ : Representation ℂ G C} {δ : Representation ℂ G D}
@@ -118,6 +148,9 @@ theorem exists_injective_of_equiv {G B C D : Type} [Group G] [AddCommGroup B]
   obtain ⟨H⟩ := H
   exact ⟨H.toIntertwiningMap.comp F, H.toLinearEquiv.injective.comp hF⟩
 
+/- English proof (translation)
+The claim follows from `exists_injective_of_prod₂_equiv fu fv hfu hfv (nonempty_prod₂_equiv_prodIrr_pair u v hd) (GlobalTheory.T.product_irreducible_append_equiv k p q u.1 v.1 x y hx hy h)`.
+-/
 theorem exists_injective_append {p q : ℕ} (x : Fin p → IrrGL k) (y : Fin q → IrrGL k) (u v : IrrGL k)
     (hx : ∑ a, (x a).1 = u.1) (hy : ∑ a, (y a).1 = v.1) (h : ∑ a, (Fin.append x y a).1 = u.1 + v.1)
     (hd : ∑ i, (![u, v] i).1 = u.1 + v.1)
@@ -127,6 +160,13 @@ theorem exists_injective_append {p q : ℕ} (x : Fin p → IrrGL k) (y : Fin q �
   exists_injective_of_prod₂_equiv fu fv hfu hfv (nonempty_prod₂_equiv_prodIrr_pair u v hd)
     (GlobalTheory.T.product_irreducible_append_equiv k p q u.1 v.1 x y hx hy h)
 
+/- English proof (translation)
+Establish `hN : u.1 + v.1 = N` using `hd.symm ▸ (Fin.sum_univ_two (fun i => (![u, v] i).1)).symm`. Substitute `hN` using the available equality. Take `⟨hx, -, fu, hfu, -⟩` from `hu`. Take `⟨hy, -, fv, hfv, -⟩` from `hv`. Take `⟨hΔ, hc⟩` from `hπ`.
+
+Establish `hlen : (segLow Δ a h0).len + (segHigh Δ a h1).len = Δ.len` using `by show a + (Δ.len - a) = Δ.len`. Use linear arithmetic over natural numbers and integers. Establish `hsum : ∑ i, (Fin.append (segLow Δ a h0).term (segHigh Δ a h1).term i).1 = u.1 + v.1`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`.
+
+Conclude with `congrArg₂ (· + ·) hx hy`. Conclude with `exists_embedding_of_isSocle π _ _ hc (GlobalTheory.CompanionTheory.ProdFL.hasFiniteLength_prodIrr hA _ hd) (exists_injective_of_equiv (exists_injective_append _ _ u v hx hy hsum hd fu hfu fv hfv) (GlobalTheory.CompanionTheory.SegQuotTwo.nonempty_prodIrr_equiv_of_cast hlen _ Δ.ter …`.
+-/
 theorem subtwo (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) (hπ : IsZSeg Δ π) (a : ℕ) (h0 : 0 < a) (h1 : a < Δ.len) (u v : IrrGL k)
     (hu : IsZSeg (segLow Δ a h0) u.rep) (hv : IsZSeg (segHigh Δ a h1) v.rep) (hd : ∑ i, (![u, v] i).1 = N) :
@@ -149,6 +189,19 @@ theorem subtwo (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segme
         (GlobalTheory.CompanionTheory.SegQuotTwo.append_term Δ a h0 h1 hlen) hsum hΔ))
     (GlobalTheory.CompanionTheory.SegQuotTwo.nontrivial_prodIrr hA _ hd)
 
+/- English proof (translation)
+Establish `hsm : IsSmooth ρ` using `hsub.isSmooth (isSmooth_jac _ u.2.rep.smooth)`. Take `⟨σ, ⟨E⟩⟩` from `GlobalTheory.T.levi_irreducible_tensor_decomposition hA (fun i => (Γ.term i).1) (⟨X, ρ, hsm, hi⟩ : IrrRep _)`. Use `replace E : ρ.Equiv (piTensor fun a => (σ a).rep.ρ) := E`. It suffices to establish `hσ : σ = fun a => (Γ.term a).2 by`. Substitute `hσ` using the available equality.
+
+Conclude with `⟨E⟩`. Set `y : Fin Γ.len → IrrGL k` to `fun i => ⟨(Γ.term i).1, σ i⟩`. Establish `hy : ∑ a, (y a).1 = u.1` using `hs`. Establish `h1 : 1 ≤ jm y hy u.rep` using `Order.one_le_iff_ne_zero.2 (jhMult_ne_zero_iff.2 ((IsSubquotient.of_surjective E.toIntertwiningMap E.toLinearEquiv.surjective).trans hsub))`. Use `choose c x hd hcusp hpos using fun a => GlobalTheory.CompanionTheory.SegFineCons.exists_cusp_word hA (y a)`.
+
+Establish `hcat : ∑ i, (concat c x i).1 = u.1`. Rewrite using `[GlobalTheory.CompanionTheory.SegFineCons.sum_concat_fst, ← hy]`. Conclude with `Finset.sum_congr rfl fun a _ => hd a`. Establish `h2 : 1 ≤ jm (concat c x) hcat u.rep` using `h1.trans (GlobalTheory.CompanionTheory.JmTrans.jm_le_jm_concat hA y hy c x hd hcat hpos u.rep u.2.rep.smooth (hasFiniteLength_of_isIrreducible u.2.rep.irr))`. Take `⟨h, hcon⟩` from `(hF u.rep hu).2 _ (concat c x) hcat (fun a => hcusp _ _) h2`.
+
+Establish `hc0 : ∀ a, 1 ≤ c a` using `fun a => by`. Use `Nat.one_le_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Establish `: IsEmpty (Fin (c a))` using `by rw [h0]; exact Fin.isEmpty`. Establish `h3 : (y a).1 = 0` using `by rw [← hd a]; simp`. Conclude with `Γ.d_pos.ne' h3`.
+
+Take `rfl : c = fun _ => 1` from `funext (GlobalTheory.CompanionTheory.SegFineCons.eq_one_of_sum_eq c hc0 h)`. Use function extensionality and compare the values at `a`. Establish `h3 : x a 0 = Γ.term (Fin.cast h (finSigmaFinEquiv ⟨a, 0⟩))` using `(GlobalTheory.CompanionTheory.SegFineCons.concat_finSigmaFinEquiv _ x ⟨a, 0⟩).symm.trans (hcon (finSigmaFinEquiv ⟨a, 0⟩))`. Establish `h4 : Γ.term (Fin.cast h (finSigmaFinEquiv ⟨a, 0⟩)) = Γ.term a` using `congrArg _ (Fin.ext (GlobalTheory.CompanionTheory.SegFineCons.finSigmaFinEquiv_one_val a 0))`. Establish `h5 : x a 0 = y a` using `GlobalTheory.CompanionTheory.SegFine.eq_of_one_le_jm (y a) (y a).rep (.refl _) (x a) (hd a) (hpos a)`.
+
+Establish `h6 : (⟨(Γ.term a).1, σ a⟩ : IrrGL k) = ⟨(Γ.term a).1, (Γ.term a).2⟩` using `(h5.symm.trans h3).trans h4`. Conclude with `sigma_mk_injective (β := fun n => IrrCl (GL (Fin n) k)) h6`.
+-/
 theorem equiv_piTensor_term (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Γ : Segment k) (hF : FineJacZ Γ) (u : IrrGL k)
     (hu : IsZSeg Γ u.rep) (hs : ∑ i, (Γ.term i).1 = u.1) (X : Type) [AddCommGroup X] [Module ℂ X]
     (ρ : Representation ℂ (Levi k fun i => Fin ((Γ.term i).1)) X) (hi : ρ.IsIrreducible)
@@ -187,6 +240,9 @@ theorem equiv_piTensor_term (hA : GlobalTheory.Published.IrreducibleAdmissibleGL
   have h6 : (⟨(Γ.term a).1, σ a⟩ : IrrGL k) = ⟨(Γ.term a).1, (Γ.term a).2⟩ := (h5.symm.trans h3).trans h4
   exact sigma_mk_injective (β := fun n => IrrCl (GL (Fin n) k)) h6
 
+/- English proof (translation)
+Establish `hJ : HasFiniteLength (jac (stdBlocks (fun i => (Γ.term i).1) hs) u.rep)` using `GlobalTheory.T.jacquet_module_finite_length k _ _ _ _ _ _ u.2.rep.smooth (hasFiniteLength_of_isIrreducible u.2.rep.irr)`. Conclude with `GlobalTheory.T.equiv_of_multiplicity_one_unique_factor _ _ (GlobalTheory.CompanionTheory.FrobJm.piTensor_rep_isIrreducible hA Γ.term) hJ ((hF u.rep hu).1 hs) fun X _ _ ρ hi hq => equiv_piTensor_term hA Γ hF u hu hs X ρ hi hq`.
+-/
 theorem fine_tensor (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Γ : Segment k) (hF : FineJacZ Γ) (u : IrrGL k)
     (hu : IsZSeg Γ u.rep) (hs : ∑ i, (Γ.term i).1 = u.1) :
     Nonempty ((jac (stdBlocks (fun i => (Γ.term i).1) hs) u.rep).Equiv (piTensor fun i => (Γ.term i).rep)) := by
@@ -195,6 +251,15 @@ theorem fine_tensor (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Γ : 
   exact GlobalTheory.T.equiv_of_multiplicity_one_unique_factor _ _ (GlobalTheory.CompanionTheory.FrobJm.piTensor_rep_isIrreducible hA Γ.term) hJ ((hF u.rep hu).1 hs)
     fun X _ _ ρ hi hq => equiv_piTensor_term hA Γ hF u hu hs X ρ hi hq
 
+/- English proof (translation)
+Take `⟨u, hu1, hu⟩` from `exists_class hA (segLow Δ a h0)`. Take `⟨v, hv1, hv⟩` from `exists_class hA (segHigh Δ a h1)`. Establish `hN : N = Δ.len * Δ.d`. Take `⟨hd, -⟩` from `hπ`. Rewrite using `[← hd, Segment.sum_term_fst]`.
+
+Both sides reduce to the same expression. Establish `hd : ∑ i, (![u, v] i).1 = N`. Establish `e1 : (segLow Δ a h0).deg = a * Δ.d` using `rfl`. Establish `e2 : (segHigh Δ a h1).deg = (Δ.len - a) * Δ.d` using `rfl`. Rewrite using `[Fin.sum_univ_two]`.
+
+Use `show u.1 + v.1 = N`. Rewrite using `[hu1, hv1, e1, e2, ← Nat.add_mul, Nat.add_sub_cancel' h1.le, hN]`. Take `⟨φ, hφ⟩` from `subtwo hA Δ π hπ a h0 h1 u v hu hv hd`. Establish `hle` using `GlobalTheory.T.jacquet_multiplicity_subquotient_le y hy π _ (isSmooth_prodIrr _ hd) (.of_injective φ hφ)`. Establish `hs : ∑ i, ((segLow Δ a h0).term i).1 = u.1` using `by rw [Segment.sum_term_fst, hu1]`.
+
+Establish `ht : ∑ i, ((segHigh Δ a h1).term i).1 = v.1` using `by rw [Segment.sum_term_fst, hv1]`. Conclude with `GlobalTheory.CompanionTheory.Shuffle2.shuffle2 hA u v _ _ hs ht Δ.d (fun _ => rfl) (fun _ => rfl) (Segment.isCusp_term _) (Segment.isCusp_term _) (fine_tensor hA _ hlow u hu hs) (fine_tensor hA _ hhigh v hv ht) hd y hy hyc (h.trans hle)`.
+-/
 theorem shuffle_step (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) {N : ℕ} {V : Type} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (hπ : IsZSeg Δ π) (a : ℕ) (h0 : 0 < a) (h1 : a < Δ.len)
     (hlow : FineJacZ (segLow Δ a h0)) (hhigh : FineJacZ (segHigh Δ a h1)) {c : ℕ} (y : Fin c → IrrGL k)
@@ -221,9 +286,15 @@ theorem shuffle_step (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ :
   exact GlobalTheory.CompanionTheory.Shuffle2.shuffle2 hA u v _ _ hs ht Δ.d (fun _ => rfl) (fun _ => rfl) (Segment.isCusp_term _)
     (Segment.isCusp_term _) (fine_tensor hA _ hlow u hu hs) (fine_tensor hA _ hhigh v hv ht) hd y hy hyc (h.trans hle)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem term_segLow (Δ : Segment k) (a : ℕ) (h0 : 0 < a) (i : Fin (segLow Δ a h0).len) :
     (segLow Δ a h0).term i = Δ.first.nu (((i : ℕ) : ℕ) : ℂ) := rfl
 
+/- English proof (translation)
+Use `show (Δ.first.nu ((a : ℕ) : ℂ)).nu ((j : ℕ) : ℂ) = _`. Rewrite using `[IrrGL.nu_nu]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem term_segHigh (Δ : Segment k) (a : ℕ) (h1 : a < Δ.len) (j : Fin (segHigh Δ a h1).len) :
     (segHigh Δ a h1).term j = Δ.first.nu ((a + (j : ℕ) : ℕ) : ℂ) := by
   show (Δ.first.nu ((a : ℕ) : ℂ)).nu ((j : ℕ) : ℂ) = _
@@ -231,6 +302,27 @@ theorem term_segHigh (Δ : Segment k) (a : ℕ) (h1 : a < Δ.len) (j : Fin (segH
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `N V _ _ π hπ`. Use `⟨jm_term_eq_one hA Δ π hπ, fun c y hy hyc h => ?_⟩` and prove the remaining obligations. Establish `hN : N = Δ.len * Δ.d`. Take `⟨hd, -⟩` from `hπ`. Rewrite using `[← hd, Segment.sum_term_fst]`.
+
+Both sides reduce to the same expression. Establish `hl1 : 1 < Δ.len` using `by omega`. Establish `hl2 : Δ.len - 1 < Δ.len` using `by omega`. Establish `hl0 : 0 < Δ.len - 1` using `by omega`. Take `⟨f₁, g₁, dis₁, hf₁, hg₁⟩` from `shuffle_step hA Δ π hπ 1 one_pos hl1 (ih _ (show 1 < Δ.len from hl1)) (ih _ (show Δ.len - 1 < Δ.len from hl2)) y hy hyc h`.
+
+Take `⟨f₂, g₂, dis₂, hf₂, hg₂⟩` from `shuffle_step hA Δ π hπ (Δ.len - 1) hl0 hl2 (ih _ (show Δ.len - 1 < Δ.len from hl2)) (ih _ (show Δ.len - (Δ.len - 1) < Δ.len by omega)) y hy hyc h`. Establish `hpos : ∀ a, 0 < (y a).1` using `fun a => (hyc a).1`. Take `⟨cov₁, hc₁⟩` from `GlobalTheory.CompanionTheory.SegFine.cover (p := 1) (q := Δ.len - 1) (d := Δ.d) (fun a => (y a).1) hpos (by rw [hy, hN, Nat.add_sub_cancel' hl1.le]) f₁ g₁ f₁.injective g₁.injective dis₁ (fun i => congrArg Sigma.fst (hf₁ i)) (fun i => congrArg Sigma.fst (hg₁ i))`. Take `⟨cov₂, -⟩` from `GlobalTheory.CompanionTheory.SegFine.cover (p := Δ.len - 1) (q := Δ.len - (Δ.len - 1)) (d := Δ.d) (fun a => (y a).1) hpos (by rw [hy, hN, Nat.add_sub_cancel' hl2.le]) f₂ g₂ f₂.injective g₂.injective dis₂ (fun i => congrArg Sigma.fst (hf₂ i)) (fun i => congrArg Sigma.fst (hg₂ i))`. Establish `hcl : c = Δ.len` using `by omega`.
+
+Substitute `hcl` using the available equality. Establish `e : ∀ {m n : ℕ}, m = n → Δ.first.nu ((m : ℕ) : ℂ) = Δ.first.nu ((n : ℕ) : ℂ)`. Introduce and unpack `m _ rfl`. Both sides reduce to the same expression. Establish `hinj : ∀ a b, a < Δ.len → b < Δ.len → Δ.first.nu ((Δ.len - 1 - a : ℕ) : ℂ) = Δ.first.nu ((Δ.len - 1 - b : ℕ) : ℂ) → a = b` using `fun a b ha hb hab => by`.
+
+Use `congrArg Fin.val (GlobalTheory.T.segment_term_injective hA Δ (a₁ := ⟨Δ.len - 1 - a, by omega⟩) (a₂ := ⟨Δ.len - 1 - b, by omega⟩) hab)` as an intermediate fact. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Establish `z₁ : 0 < (segLow Δ 1 one_pos).len` using `one_pos`. Establish `z₂ : 0 < (segHigh Δ (Δ.len - 1) hl2).len` using `by show 0 < Δ.len - (Δ.len - 1)`.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨rfl, fun a => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.CompanionTheory.SegFine.word_eq_decreasing Δ.len h3 (fun n => Δ.first.nu ((Δ.len - 1 - n : ℕ) : ℂ)) hinj y (g₂ ⟨0, z₂⟩) f₂ (fun a => ?_) ?_ (fun j => ?_) (f₁ ⟨0, z₁⟩) g₁ (fun a => ?_) ?_ (fun j => ?_) a).trans ?_` and prove the remaining obligations. Break down `cov₂ a with h | ⟨x, rfl⟩` into its components or cases. Conclude with `Or.inr h`.
+
+Establish `hx : (x : ℕ) < Δ.len - (Δ.len - 1)` using `x.2`. Conclude with `Or.inl (congrArg g₂ (Fin.ext (by show (x : ℕ) = 0; omega)))`. Conclude with `(hg₂ _).trans ((term_segHigh _ _ _ _).trans (e (by simp)))`. Establish `hj : (j : ℕ) < Δ.len - 1` using `j.2`. Conclude with `(hf₂ j).trans ((term_segLow _ _ _ _).trans (e (by`.
+
+Establish `: ((j : Fin (segLow Δ (Δ.len - 1) hl0).len) : ℕ) = j` using `rfl`. Use the proof step `omega)))`. Break down `cov₁ a with ⟨x, rfl⟩ | h` into its components or cases. Establish `hx : (x : ℕ) < 1` using `x.2`. Conclude with `Or.inl (congrArg f₁ (Fin.ext (by show (x : ℕ) = 0; omega)))`.
+
+Conclude with `Or.inr h`. Conclude with `(hf₁ _).trans ((term_segLow _ _ _ _).trans (e (by simp)))`. Establish `hj : (j : ℕ) < Δ.len - 1` using `j.2`. Conclude with `(hg₁ j).trans ((term_segHigh _ _ _ _).trans (e (by`. Establish `: ((j : Fin (segHigh Δ 1 hl1).len) : ℕ) = j` using `rfl`.
+
+Use the proof step `omega)))`. Establish `ha` using `a.2 show _ = Δ.first.nu (((Fin.cast rfl a : Fin Δ.len) : ℕ) : ℂ)`. Conclude with `e (by simp only [Fin.val_cast]; omega)`.
+-/
 theorem fineJacZ_step (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) (h3 : 3 ≤ Δ.len)
     (ih : ∀ Δ' : Segment k, Δ'.len < Δ.len → FineJacZ Δ') : FineJacZ Δ := by
   intro N V _ _ π hπ
@@ -293,12 +385,24 @@ theorem fineJacZ_step (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ 
     show _ = Δ.first.nu (((Fin.cast rfl a : Fin Δ.len) : ℕ) : ℂ)
     exact e (by simp only [Fin.val_cast]; omega)
 
+/- English proof (translation)
+The claim follows from `funext fun a => by have h0 : ((a : Fin 1) : ℕ) = 0 := Nat.lt_one_iff.1 a.2 show ρ.nu (((a : Fin 1) : ℕ) : ℂ) = ρ rw [h0] exact (show ρ.nu ((0 : ℕ) : ℂ) = ρ by simp)`.
+-/
 theorem term_single (ρ : IrrGL k) (hρ : ρ.IsCusp) : (Segment.single ρ hρ).term = fun _ => ρ := funext fun a => by
   have h0 : ((a : Fin 1) : ℕ) = 0 := Nat.lt_one_iff.1 a.2
   show ρ.nu (((a : Fin 1) : ℕ) : ℂ) = ρ
   rw [h0]
   exact (show ρ.nu ((0 : ℕ) : ℂ) = ρ by simp)
 
+/- English proof (translation)
+Take `⟨ρ, hρ, rfl⟩ : ∃ ρ hρ, Δ = Segment.single ρ hρ` from `⟨Δ.first, Δ.isCusp_first, Segment.ext_first rfl h⟩`. Introduce `N V _ _ π hπ`. Use `⟨jm_term_eq_one hA _ π hπ, fun c y hy hc h1 => ?_⟩` and prove the remaining obligations. Take `⟨hd, hs⟩` from `id hπ`. Choose the witnesses or unpack the hypotheses as in `rfl : ρ.1 = N := by`.
+
+Use `(Segment.sum_term_fst (Segment.single ρ hρ)).symm.trans hd` as an intermediate fact. Simplify `this` using `[Segment.deg, Segment.single, Segment.ofFirst]`. Take `⟨hd', hs'⟩` from `(single_spec hρ).1`. Take `⟨φ⟩` from `hs'.unique hs`. Break down `c with _ | _ | c` into its components or cases.
+
+Conclude with `absurd hy (by simpa using hρ.1.ne)`. Establish `key : ∀ (z : Fin 1 → IrrGL k) (hz : ∑ a, (z a).1 = ρ.1), 1 ≤ jm z hz π → ∀ a, z a = ρ` using `fun z hz h1 a => by`. Rewrite using `[Subsingleton.elim a 0]`. Conclude with `GlobalTheory.CompanionTheory.SegFine.eq_of_one_le_jm ρ π φ z hz h1`. Conclude with `⟨rfl, fun a => (key y hy h1 a).trans (congrFun (term_single ρ hρ) _).symm⟩`.
+
+Conclude with `absurd h1 (GlobalTheory.CompanionTheory.SegFine.not_one_le_jm (isCuspidal_of_equiv φ.symm hρ.2) y hy hc)`.
+-/
 theorem fineJacZ_one (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) (h : Δ.len = 1) : FineJacZ Δ := by
   obtain ⟨ρ, hρ, rfl⟩ : ∃ ρ hρ, Δ = Segment.single ρ hρ :=
     ⟨Δ.first, Δ.isCusp_first, Segment.ext_first rfl h⟩
@@ -319,6 +423,13 @@ theorem fineJacZ_one (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ :
     exact ⟨rfl, fun a => (key y hy h1 a).trans (congrFun (term_single ρ hρ) _).symm⟩
   · exact absurd h1 (GlobalTheory.CompanionTheory.SegFine.not_one_le_jm (isCuspidal_of_equiv φ.symm hρ.2) y hy hc)
 
+/- English proof (translation)
+Establish `hN : N = Δ.len * Δ.d`. Rewrite using `[← hd]`. Conclude with `Δ.sum_term_fst`. Substitute `hN` using the available equality. Establish `he : GlobalTheory.Published.consecBlocks Δ.len Δ.d = stdBlocks (fun _ : Fin Δ.len => Δ.d) hd`.
+
+Use `Equiv.ext ?_` and prove the remaining obligations. Introduce and unpack `⟨a, j⟩`. Use `Fin.ext ?_` and prove the remaining obligations. Use `(GlobalTheory.Published.consecBlocks_val _ _ a j).trans (Eq.trans ?_ (stdBlocks_val (fun _ : Fin Δ.len => Δ.d) hd a j).symm)` and prove the remaining obligations. Simplify using `[mul_comm, add_comm]`.
+
+Establish `H₁ : GlobalTheory.CompanionTheory.SegFine2.SegConcl Δ.start.rep.ρ (GlobalTheory.Published.consecBlocks Δ.len Δ.d)` using `H`. Establish `H' : GlobalTheory.CompanionTheory.SegFine2.SegConcl Δ.start.rep.ρ (stdBlocks (fun _ : Fin Δ.len => Δ.d) hd)` using `he ▸ H₁`. Conclude with `GlobalTheory.CompanionTheory.SegFine2.exists_sub_of_equiv (stdBlocks (fun a => (Δ.term a).1) hd) (segProdEquiv Δ hd) (piTensorEquiv fun _ => Δ.first.twEquiv _ (isSmoothChar_absPow _)) H'`.
+-/
 theorem exists_sub (Δ : Segment k) (H : GlobalTheory.SegmentRepModel.Concl Δ.start.rep.ρ Δ.len) {N : ℕ}
     (hd : ∑ a, (Δ.term a).1 = N) :
     ∃ S : Subrepresentation (prodIrr Δ.term hd), S.toRepresentation.IsIrreducible ∧
@@ -340,6 +451,19 @@ theorem exists_sub (Δ : Segment k) (H : GlobalTheory.SegmentRepModel.Concl Δ.s
   exact GlobalTheory.CompanionTheory.SegFine2.exists_sub_of_equiv (stdBlocks (fun a => (Δ.term a).1) hd) (segProdEquiv Δ hd)
     (piTensorEquiv fun _ => Δ.first.twEquiv _ (isSmoothChar_absPow _)) H'
 
+/- English proof (translation)
+Introduce `N V _ _ π hπ`. Use `⟨jm_term_eq_one hA _ π hπ, fun c y hy hyc h1 => ?_⟩` and prove the remaining obligations. Take `⟨hd, hc⟩` from `id hπ`. Take `⟨S, hSi, -, ⟨φ⟩⟩` from `exists_sub _ H hd`. Set `ι : S.toRepresentation.IntertwiningMap (prodIrr (seg2 ρ hρ).term hd)` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`.
+
+Take `⟨E⟩` from `hc.equiv_of_embeds hSi ⟨ι, Subtype.val_injective⟩`. Set `ψ : (jac (stdBlocks (fun a => ((seg2 ρ hρ).term a).1) hd) π).Equiv (piTensor fun a => ((seg2 ρ hρ).term a).rep)` to `(GlobalTheory.SegmentRepModel.jacCongr _ E.symm).trans φ`. Establish `h2` using `h1.trans (GlobalTheory.T.jacquet_multiplicity_subquotient_le y hy π _ (isSmooth_prodIrr _ hd) hc.isSubquotient)`. Rewrite `h2` using `[GlobalTheory.T.jacquet_multiplicity_cuspidal_product hA (seg2 ρ hρ).term y hd hy (seg2 ρ hρ).isCusp_term hyc]`. Establish `hne : {e : Fin c ≃ Fin (seg2 ρ hρ).len | ∀ a, y a = (seg2 ρ hρ).term (e a)}.Nonempty`.
+
+Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[Set.not_nonempty_iff_eq_empty]`. Rewrite `h2` using `[hn, Set.ncard_empty]`. Simplify using `at h2`. Take `⟨e, he⟩` from `hne`.
+
+Establish `hc2 : c = 2`. Use `Fintype.card_congr e` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, Fintype.card_fin]`. Conclude with `this`. Substitute `hc2` using the available equality.
+
+Break down `GlobalTheory.CompanionTheory.SegFine2.perm_two e with rfl | rfl` into its components or cases. Conclude with `⟨rfl, he⟩`. Establish `hyx : y = dec (seg2 ρ hρ)` using `funext he`. Substitute `hyx` using the available equality. Establish `h3 : IsSubquotient (piTensor fun a => (dec (seg2 ρ hρ) a).rep) (jac (stdBlocks (fun a => ((seg2 ρ hρ).term a).1) hd) π)` using `jhMult_ne_zero_iff.1 (ENat.one_le_iff_ne_zero.1 h1)`.
+
+Conclude with `absurd (h3.trans (.of_injective ψ.toIntertwiningMap ψ.toLinearEquiv.injective)) (GlobalTheory.CompanionTheory.SegFine2.not_isSubquotient_dec hA ρ hρ)`.
+-/
 theorem fineJacZ_seg2 (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (ρ : IrrGL k) (hρ : ρ.IsCusp)
     (H : GlobalTheory.SegmentRepModel.Concl (seg2 ρ hρ).start.rep.ρ (seg2 ρ hρ).len) : FineJacZ (seg2 ρ hρ) := by
   intro N V _ _ π hπ
@@ -374,6 +498,11 @@ theorem fineJacZ_seg2 (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (ρ 
     exact absurd (h3.trans (.of_injective ψ.toIntertwiningMap ψ.toLinearEquiv.injective))
       (GlobalTheory.CompanionTheory.SegFine2.not_isSubquotient_dec hA ρ hρ)
 
+/- English proof (translation)
+Proceed by induction on `h : Δ.len using Nat.strong_induction_on generalizing Δ with`. Consider the case `_ n ih`. Establish `h0` using `Δ.len_pos`. Take `h1 | h2 | h3 : n = 1 ∨ n = 2 ∨ 3 ≤ n` from `by omega`. Conclude with `@fineJacZ_one k _ _ _ _ hA Δ (h.trans h1)`.
+
+Establish `e : seg2 Δ.first Δ.isCusp_first = Δ` using `Segment.ext_first rfl (h.trans h2).symm`. Rewrite using `[← e]`. Conclude with `@fineJacZ_seg2 k _ _ _ _ hA Δ.first Δ.isCusp_first (H _ (seg2 Δ.first Δ.isCusp_first).d_pos _ (seg2 Δ.first Δ.isCusp_first).isCusp_first.2)`. Conclude with `@fineJacZ_step k _ _ _ _ hA Δ (h ▸ h3) fun Δ' hlt => ih _ (h ▸ hlt) Δ' rfl`.
+-/
 theorem fineJacZ_all (hA : GlobalTheory.Published.IrreducibleAdmissibleGL)
     (H : ∀ (d : ℕ), 0 < d → ∀ σ : IrrRep (GL (Fin d) k), IsCuspidal σ.ρ → GlobalTheory.SegmentRepModel.Concl σ.ρ 2)
     (Δ : Segment k) : FineJacZ Δ := by
@@ -388,6 +517,15 @@ theorem fineJacZ_all (hA : GlobalTheory.Published.IrreducibleAdmissibleGL)
         (H _ (seg2 Δ.first Δ.isCusp_first).d_pos _ (seg2 Δ.first Δ.isCusp_first).isCusp_first.2)
     · exact @fineJacZ_step k _ _ _ _ hA Δ (h ▸ h3) fun Δ' hlt => ih _ (h ▸ hlt) Δ' rfl
 
+/- English proof (translation)
+Set `Δ : Segment k` to `⟨d, hd0, σ.cl, ⟨σ, rfl, hσ⟩, l, hl⟩`. Establish `hd : ∑ a, (Δ.term a).1 = l * d` using `Δ.sum_term_fst`. Take `⟨τ, hτ⟩` from `exists_isSocle hA Δ hd`. Establish `hu : IsZSeg Δ (IrrGL.of τ.ρ τ.smooth τ.irr).rep` using `⟨hd, hτ.of_equiv (IrrGL.equivOf _ _ _) (Representation.Equiv.refl _)⟩`. Take `⟨ψ⟩` from `fine_tensor hA Δ (@fineJacZ_all k _ _ _ _ hA H Δ) (IrrGL.of τ.ρ τ.smooth τ.irr) hu hd`.
+
+Establish `he : GlobalTheory.Published.consecBlocks l d = stdBlocks (fun _ : Fin l => d) hd`. Use `Equiv.ext ?_` and prove the remaining obligations. Introduce and unpack `⟨a, j⟩`. Use `Fin.ext ?_` and prove the remaining obligations. Use `(GlobalTheory.Published.consecBlocks_val _ _ a j).trans (Eq.trans ?_ (stdBlocks_val (fun _ : Fin l => d) hd a j).symm)` and prove the remaining obligations.
+
+Simplify using `[mul_comm, add_comm]`. Establish `Φ : Nonempty ((multiProd (GlobalTheory.Published.consecBlocks l d) (segTerm σ.ρ l)).Equiv (prodIrr Δ.term hd))`. Rewrite using `[he]`. Conclude with `⟨(multiProdEquiv _ fun _ => twistEquiv (equivRep σ) _).trans (segProdEquiv Δ hd)⟩`. Take `⟨Φ⟩` from `Φ`.
+
+Use `GlobalTheory.SegmentRepModel.concl_of_isSocle (τ := τ.ρ) (hτ.of_equiv (Representation.Equiv.refl _) Φ.symm) ?_` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `⟨(GlobalTheory.SegmentRepModel.jacCongr _ (IrrGL.equivOf τ.ρ τ.smooth τ.irr)).trans (ψ.trans (piTensorEquiv fun _ => (twistEquiv (equivRep σ) _).trans (Δ.first.twEquiv _ (isSmoothChar_absPow _))).symm)⟩`.
+-/
 theorem concl_all (hA : GlobalTheory.Published.IrreducibleAdmissibleGL)
     (H : ∀ (d : ℕ), 0 < d → ∀ σ : IrrRep (GL (Fin d) k), IsCuspidal σ.ρ → GlobalTheory.SegmentRepModel.Concl σ.ρ 2)
     {d l : ℕ} (hd0 : 0 < d) (hl : 0 < l) (σ : IrrRep (GL (Fin d) k)) (hσ : IsCuspidal σ.ρ) :
@@ -413,6 +551,9 @@ theorem concl_all (hA : GlobalTheory.Published.IrreducibleAdmissibleGL)
   exact ⟨(GlobalTheory.SegmentRepModel.jacCongr _ (IrrGL.equivOf τ.ρ τ.smooth τ.irr)).trans (ψ.trans
     (piTensorEquiv fun _ => (twistEquiv (equivRep σ) _).trans (Δ.first.twEquiv _ (isSmoothChar_absPow _))).symm)⟩
 
+/- English proof (translation)
+Introduce `H k _ _ _ _ d l hd hl σ hσ`. Conclude with `concl_all PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top (fun d' hd' σ' hσ' => H k d' hd' σ' hσ') hd hl σ hσ`.
+-/
 theorem segmentRepresentation_of_two :
     (∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (d : ℕ), 0 < d →
       ∀ σ : IrrRep (GL (Fin d) k), IsCuspidal σ.ρ →

@@ -24,6 +24,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FamChars
 open GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter (CharUnramAt)
 variable {D : D7}
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W hP x`. Establish `hC` using `hP.bot.hyp.2.2.2.1`. Conclude with `fun y h1 _ h3 h4 => GlobalTheory.Mem.TupChar.unramEverywhere hC.lev.eta ((_root_.GlobalTheory.Fam.pk_z W).C.isEta.unr) y h1 h3 h4`.
+-/
 theorem eta_unr_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ x : HeightOneSpectrum (𝓞 D.host.F), GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (_root_.GlobalTheory.Fam.pk_z W).eta x := by
   intro D L hT Gi Gl Kc Yd cX ex W hP x
   have hC := hP.bot.hyp.2.2.2.1
@@ -31,6 +34,35 @@ theorem eta_unr_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Fo
 end GlobalTheory.FamChars
 namespace GlobalTheory.FamChars
 open GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter (CharUnramAt)
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u hP f v hR hC hV hτ t w hQ`. Establish `hC3` using `hP.bot.hyp.2.2.2.1`. Establish `hL` using `hC3.lev`. Establish `eU : ∀ x, CharUnramAt D (_root_.GlobalTheory.Fam.pk_z W).eta x` using `_root_.GlobalTheory.FamChars.eta_unr_alt W hP`. Establish `gIn : ∀ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg, ∃ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`.
+
+Introduce `PP hPP`. Take `⟨k, hk⟩` from `(hL.Pg PP).1 hPP`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hmemK : ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (PP.under (𝓞 D.host.K)).asIdeal`. Establish `hk' : PP.under (𝓞 D.host.K) = (_root_.GlobalTheory.Fam.pk_z W).C.P.pb k` using `hk`.
+
+Rewrite using `[hk']`. Conclude with `(_root_.GlobalTheory.Fam.pk_z W).C.P.pb_over k`. Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ PP.asIdeal` using `hmemK`. Simplify using `using h2`. Establish `tG : ∀ x ∈ v.tP, ∀ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg, PP.under (𝓞 D.host.F) ≠ x`.
+
+Introduce `x hx PP hPP e`. Take `⟨k, hk⟩` from `gIn PP hPP`. Establish `hT : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `(mem_under PP _).1 (e ▸ (hV.tP x).1 hx)`. Conclude with `not_both PP ((Nat.coprime_primes (D.mem u).A.T_prime (D.host.g_prime k)).2 (D.T_ne_g u k)) hT hk`. Establish `tQ : ∀ x ∈ v.tP, ∀ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Q t, PP.under (𝓞 D.host.F) ≠ x`.
+
+Introduce `x hx PP hPP e`. Conclude with `(hL.Q_off t PP hPP).2 u ((mem_under PP _).1 (e ▸ (hV.tP x).1 hx))`. Establish `muU` using `fun n x h1 h2 hg hq => _root_.GlobalTheory.T.charUnramAt_of_not_under_pk W hP t n x h1 h2 hg hq`. Establish `unr : ∀ P : HeightOneSpectrum (𝓞 D.host.F) → Prop, (∀ x, P x → ∀ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg, PP.under (𝓞 D.host.F) ≠ x) → (∀ x, P x → ∀ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Q t, PP.under (𝓞 D.host.F) ≠ x) → (f.t t).UnrOn P`. Introduce `P hg hq`.
+
+Use `⟨fun j ρ h x hx => ?_, fun j σ h x hx => ?_, fun j h => ?_⟩` and prove the remaining obligations. Take `⟨-, -, e1, e2⟩` from `(hR.row t).sBF j ρ h`. Establish `m1` using `muU (j + 1) x (by omega) (by omega) (hg x hx) (hq x hx)`. Use `show CharUnramAt D ((f.row t).sBF j ρ h).χV x ∧ CharUnramAt D ((f.row t).sBF j ρ h).χW x`. Rewrite using `[e1, e2]`.
+
+Conclude with `⟨cu_mul m1 (cu_inv (eU x)), m1⟩`. Take `⟨-, -, e1, e2⟩` from `(hR.row t).sFB j σ h`. Establish `m1` using `muU (j + 1 + 1) x (by omega) (by omega) (hg x hx) (hq x hx)`. Use `show CharUnramAt D ((f.row t).sFB j σ h).χV x ∧ CharUnramAt D ((f.row t).sFB j σ h).χW x`. Rewrite using `[e1, e2]`.
+
+Conclude with `⟨m1, cu_mul m1 (cu_inv (eU x))⟩`. Use `⟨(Lift.chrStep ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t) (_root_.GlobalTheory.Fam.pk_z W).eta D.R.m).1, (Lift.chrStep ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t) (_root_.GlobalTheory.Fam.pk_z W).eta D.R.m).2, weil_rec ((_root_.GlobalTheory.Fam.pk_z W).ωX t) (hC3.chain.ω …` and prove the remaining obligations. Establish `m1` using `muU D.R.m x (by omega) le_rfl (hg x hx) (hq x hx)`. Unfold `Lift.chrStep`. Use `split_ifs`.
+
+Conclude with `⟨cu_mul m1 (cu_inv (eU x)), m1⟩`. Conclude with `⟨m1, cu_mul m1 (cu_inv (eU x))⟩`. Use `⟨_root_.GlobalTheory.T.weil_datum_of_rank_one_gram' W u hP f v hR hC hτ t, ?_, ?_, ?_, ?_, ?_, fun n G pl hG i => _root_.GlobalTheory.T.gLoc_chars_of_gRead' W u hP f v hR hV t n G pl hG i⟩` and prove the remaining obligations. Conclude with `unr _ (fun x hx PP hPP e => hx.1 ((hV.gP x).2 ⟨PP, hPP, e.symm⟩)) (fun x hx PP hPP e => hx.2 ((hQ x).2 ⟨PP, hPP, e.symm⟩))`. Conclude with `unr _ tG tQ`.
+
+Introduce `j hj`. Establish `hx : ∀ x ∈ v.tP, CharUnramAt D ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1)) x` using `fun x hx => muU (j + 1) x (by omega) (by omega) (tG x hx) (tQ x hx)`. Conclude with `⟨_, _, hC.kom t j hj, fun x h => ⟨hx x h, hx x h⟩⟩`. Rewrite using `[Finset.disjoint_left]`. Introduce `x hx hxg`.
+
+Take `⟨PP, hPP, rfl⟩` from `(hQ x).1 hx`. Take `⟨PP', hPP', e⟩` from `(hV.gP _).1 hxg`. Take `⟨k, hk⟩` from `gIn PP' hPP'`. Establish `hg : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `(mem_under PP _).1 (e ▸ (mem_under PP' _).2 hk)`. Take `⟨⟨q, hq, hcard, -, hne⟩, -⟩` from `hL.Q_pl t PP hPP`.
+
+Use `haveI : PP.asIdeal.IsPrime := PP.isPrime`. Use `haveI : Finite (Formalism.L2.DIV.kP PP) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hq.ne_zero)`. Use `haveI : Fintype (Formalism.L2.DIV.kP PP) := Fintype.ofFinite _`. Establish `hq0 : ((q : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Establish `h0q : ((q : ℕ) : Formalism.L2.DIV.kP PP) = 0`.
+
+Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Conclude with `Nat.cast_card_eq_zero (Formalism.L2.DIV.kP PP)`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem (I := PP.asIdeal)).1 (by simpa using h0q)`. Conclude with `not_both PP ((Nat.coprime_primes hq (D.host.g_prime k)).2 (hne k)) hq0 hg`. Rewrite using `[Finset.disjoint_left]`.
+
+Introduce `x hx hxT`. Take `⟨PP, hPP, rfl⟩` from `(hQ x).1 hx`. Conclude with `tQ _ hxT PP hPP rfl`.
+-/
 theorem weilOK_of_rank_one_gram : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (v : VCom f.c), f.RowOK → f.ColOK → _root_.GlobalTheory.Fam.CommutingVectorTie f v → (∀ j h, f.c.Lz.rank = 1 ∧ (v.τ j h)ᴴ * ((f.c.bes j 0 h).L.gram * v.τ j h) = (-(D.host.xi0 * star D.host.xi0)) • f.c.Lz.gram) → ∀ t (w : VTup (f.t t)), (∀ p, p ∈ w.Q ↔ ∃ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Q t, p = PP.under (𝓞 D.host.F)) → WeilOK (t := f.t t) v ∧ (f.t t).UnrOn (offP v w) ∧ (f.t t).UnrOn (· ∈ v.tP) ∧ (f.t t).UnrK (· ∈ v.tP) ∧ Disjoint w.Q v.gP ∧ Disjoint w.Q v.tP ∧ ∀ (n : ℕ) (G : Fin n → GLoc v) pl, _root_.GlobalTheory.Fam.LocalGroupReading f G pl → ∀ i, (G i).Chars (f.t t) := by
   intro D L hT Gi Gl Kc Yd cX ex W u hP f v hR hC hV hτ t w hQ
   have hC3 := hP.bot.hyp.2.2.2.1

@@ -20,6 +20,19 @@ namespace GlobalTheory.BoundedIndex
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hT l _ P K LL _ _ _ O _ _ hO A A' LA LA' m hm`. Take `⟨L1, hL1⟩` from `GlobalTheory.T.exists_cyclotomic_integral_lattice l P K LL O hO`. Take `⟨C0, k0, hF⟩` from `GlobalTheory.T.bounded_finite_cohomology_quotients hT l P K LL O hO A' LA'`. Take `⟨Es, hEs⟩` from `GlobalTheory.T.exists_finset_primePow_torsion_quotient l LL O hO k0`. Establish `hEs1 : 1 ≤ Es.card` using `Finset.card_pos.2 ⟨0, hEs 0 (smul_zero _)⟩`.
+
+Use `⟨Es.card ^ C0, pow_pos hEs1 _, fun r hI => ?_⟩` and prove the remaining obligations. Establish `hI' : StableSub LA' (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T)` using `GlobalTheory.TateOrth.stable_span_smul_top LA' _`. Use `haveI hX := GlobalTheory.T.finite_H1_reduction hT l K LL O hO A LA r hI`. Use `haveI hY := GlobalTheory.T.finite_H1_reduction hT l K LL O hO A' LA' r hI'`. Use `haveI : Module.Finite O (QuotientCohomology LA' _ hI') := Module.Finite.of_finite`.
+
+Take `⟨f, hker, hf⟩` from `GlobalTheory.T.ker_reduction_H1_eq l P K LL O hO A LA r hI`. Take `⟨β, hβ1, hβ2⟩` from `GlobalTheory.T.tate_pairing_lattice_level_primePow hT l P K LL O hO L1 hL1 A A' LA LA' m hm r hI hI'`. Take `⟨F, hFc, hFm⟩` from `hF r hI'`. Establish `hcardS : Nat.card (LatticeCohomology LA ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O (LatticeCohomology LA))) = Nat.card (LinearMap.range f)`. Establish `key : ∀ N : Submodule O (LatticeCohomology LA), LinearMap.ker f = N → Nat.card (LatticeCohomology LA ⧸ N) = Nat.card (LinearMap.range f)`.
+
+Introduce and unpack `N rfl`. Conclude with `Nat.card_congr f.quotKerEquivRange.toEquiv`. Conclude with `key _ hker`. Rewrite using `[hcardS]`. Use `⟨Nat.card_le_card_of_injective _ Subtype.val_injective, ?_⟩` and prove the remaining obligations.
+
+Establish `hdd : ∀ c, (∀ y, (∀ s ∈ LinearMap.range f, β y s = 0) → β y c = 0) → c ∈ LinearMap.range f` using `GlobalTheory.mem_of_forall_annihilator_annihilator l LL O hO _ _ β (LinearMap.range f) (fun c hc => by rw [hβ1 c hc]; exact Submodule.zero_mem _)`. Establish `hA : ∀ y, (∀ s ∈ LinearMap.range f, β y s = 0) → y ∈ F ∧ ((l : ℕ) : O) ^ k0 • y = 0`. Introduce `y hy`. Take `⟨c', rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Apply `hFm c'` to reduce the goal to its premises.
+
+Use `GlobalTheory.TateOrth.mem_BD_of_orthogonal hT l P K LL O hO L1 hL1 A A' LA LA' m hm _ (GlobalTheory.T.primePow_inv_smul_lift_mem_divisible_cocycles l K LL O hO A' LA' r hI' c') fun d hd => ?_` and prove the remaining obligations. Take `⟨h, hfd⟩` from `hf ⟨d, hd⟩`. Establish `h0 : β (Submodule.Quotient.mk c') (f (Submodule.Quotient.mk ⟨d, hd⟩)) = 0` using `hy _ ⟨_, rfl⟩`. Conclude with `hβ2 ⟨d, hd⟩ h c' ((congrArg (β (Submodule.Quotient.mk c')) hfd).symm.trans h0)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem h1_reduction_index_bounded : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDualLat1 (P.PD K) LA LA' m → ∃ C : ℕ, 0 < C ∧ ∀ (r : ℕ) (hI : StableSub LA (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)), Nat.card (LatticeCohomology LA ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O (LatticeCohomology LA))) ≤ Nat.card (QuotientCohomology LA _ hI) ∧ Nat.card (QuotientCohomology LA _ hI) ≤ C * Nat.card (LatticeCohomology LA ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O (LatticeCohomology LA))) := by
   intro hT l _ P K LL _ _ _ O _ _ hO A A' LA LA' m hm
   obtain ⟨L1, hL1⟩ := GlobalTheory.T.exists_cyclotomic_integral_lattice l P K LL O hO

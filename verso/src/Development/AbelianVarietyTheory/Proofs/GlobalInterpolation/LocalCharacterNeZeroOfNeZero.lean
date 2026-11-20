@@ -13,6 +13,11 @@ namespace GlobalTheory.Proof.localCharacter_ne_zero_of_ne_zero
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hb`. Establish `h1 : IntAt P b` using `(IntegralPowerExpansion.intAt_iff_val P b).2 hb.le`. Establish `h2 : IntAt P b⁻¹` using `(IntegralPowerExpansion.intAt_iff_val P _).2 (by rw [map_inv₀, hb, inv_one])`.
+
+Establish `h3` using `reduction_mul h1 h2`. Establish `h4 : redP P (1 : E) = 1` using `by simpa using reduction_coe P 1`. Rewrite `h3` using `[mul_inv_cancel₀ hb0, h4]`. Conclude with `IsUnit.of_mul_eq_one _ h3.symm`.
+-/
 theorem isUnit_reduction_of_valuation_eq_one (P : HeightOneSpectrum (𝓞 E)) {b : E} (hb : P.valuation E b = 1) :
     IsUnit (redP P b) := by
   have hb0 : b ≠ 0 := by
@@ -25,6 +30,9 @@ theorem isUnit_reduction_of_valuation_eq_one (P : HeightOneSpectrum (𝓞 E)) {b
   rw [mul_inv_cancel₀ hb0, h4] at h3
   exact IsUnit.of_mul_eq_one _ h3.symm
 
+/- English proof (translation)
+Establish `hv : P.valuation E a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Use `⟨-WithZero.log (P.valuation E a), isUnit_reduction_of_valuation_eq_one P ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_zpow₀, IntegralPowerExpansion.val_q hP, ← WithZero.exp_zsmul]`. Simplify using `only [smul_neg, neg_smul, neg_neg, smul_eq_mul, mul_one, mul_neg, neg_mul]`. Rewrite using `[WithZero.exp_log hv, div_self hv]`.
+-/
 theorem exists_isUnit_reduction_div_pow {P : HeightOneSpectrum (𝓞 E)} (hP : GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.DegOneUnram P) {a : E} (ha : a ≠ 0) :
     ∃ z : ℤ, IsUnit (redP P (a / (qOf P : E) ^ z)) := by
   have hv : P.valuation E a ≠ 0 := (Valuation.ne_zero_iff _).2 ha
@@ -33,6 +41,9 @@ theorem exists_isUnit_reduction_div_pow {P : HeightOneSpectrum (𝓞 E)} (hP : G
   simp only [smul_neg, neg_smul, neg_neg, smul_eq_mul, mul_one, mul_neg, neg_mul]
   rw [WithZero.exp_log hv, div_self hv]
 
+/- English proof (translation)
+Introduce `E _ _ K _ P hP cq χ a hcq ha`. Establish `h : IsUnit (redP P (a / (qOf P : E) ^ LocE.vP P (qOf P) a))` using `Classical.epsilon_spec (exists_isUnit_reduction_div_pow hP ha)`. Unfold `LocE.locChar LocE.unitV`. Rewrite using `[dif_pos h]`. Conclude with `mul_ne_zero (zpow_ne_zero _ hcq) (Units.ne_zero _)`.
+-/
 theorem locChar_ne_zero : ∀ (E : Type) [Field E] [NumberField E] (K : Type) [Field K] (P : HeightOneSpectrum (𝓞 E)),
     GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.DegOneUnram P → ∀ (cq : K) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a : E), cq ≠ 0 → a ≠ 0 →
       LocE.locChar (qOf P) cq χ a ≠ 0 := by

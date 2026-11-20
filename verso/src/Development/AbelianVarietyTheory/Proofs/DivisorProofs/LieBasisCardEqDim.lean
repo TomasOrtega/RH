@@ -12,6 +12,13 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G Recip
 
 namespace GlobalTheory.LieDim
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `CM.DiffCoord.exists_linearMap (𝟙 A) hv hv'`. Establish `a` using `LieComb.lieComb_algebra k A n v hv.1`. Establish `a'` using `LieComb.lieComb_algebra k A m v' hv'.1`. Establish `hi : Function.Injective M` using `fun c c' e => by`. Take `⟨w, hw⟩` from `(a.1 c).exists`.
+
+Take `⟨w', hw'⟩` from `(a.1 c').exists`. Establish `h₁` using `hM c w hw`. Establish `h₂` using `hM c' w' hw'`. Rewrite `h₁`, `h₂` using `[Category.comp_id]`. Take `rfl : w = w'` from `(a'.1 (M c')).unique (e ▸ h₁) h₂`.
+
+Conclude with `(hv.2 w (a.2.1 c w hw)).unique hw hw'`. Simplify using `using LinearMap.finrank_le_finrank_of_injective hi`.
+-/
 theorem length_le {k : Type} [Field k] {A : Over (Sp k)} [GrpObj A] [IsCommMonObj A] {n m : ℕ}
     {v : Fin n → (epsR k ⟶ A)} {v' : Fin m → (epsR k ⟶ A)} (hv : IsLieBasis v) (hv' : IsLieBasis v') : n ≤ m := by
   obtain ⟨M, hM⟩ := CM.DiffCoord.exists_linearMap (𝟙 A) hv hv'
@@ -27,6 +34,9 @@ theorem length_le {k : Type} [Field k] {A : Over (Sp k)} [GrpObj A] [IsCommMonOb
     exact (hv.2 w (a.2.1 c w hw)).unique hw hw'
   simpa using LinearMap.finrank_le_finrank_of_injective hi
 
+/- English proof (translation)
+Introduce `K _ P n v hv`. Use `P.isAb.comm` as an intermediate fact. Take `⟨w, hw⟩` from `KeyPow.exists_isLieBasis P.A P.smoothDim`. Conclude with `le_antisymm (length_le hw hv) (length_le hv hw)`.
+-/
 theorem dim_eq_length : ∀ (K : Type) [Field K] (P : ReciprocityTheory.ChartRestriction.G.Out.PolAV (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K)) (n : ℕ) (v : Fin n → (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsR K ⟶ P.A)), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsLieBasis v → P.g = n := by
   intro K _ P n v hv
   have := P.isAb.comm

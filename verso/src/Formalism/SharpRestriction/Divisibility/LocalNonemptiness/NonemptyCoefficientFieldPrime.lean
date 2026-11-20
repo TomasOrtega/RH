@@ -15,6 +15,9 @@ def cfPadic (p : ℕ) [Fact p.Prime] : CF p where
       simp
     rw [h1, PadicComplex.norm_extends, h2, PadicAlgCl.norm_extends, Padic.norm_p]
 
+/- English proof (translation)
+The claim follows from `haveI : Fact p.Prime := ⟨hp⟩ ⟨cfPadic p⟩`.
+-/
 theorem nonempty_coefficient_field_prime (p : ℕ) (hp : p.Prime) : Nonempty (CF p) :=
   haveI : Fact p.Prime := ⟨hp⟩
   ⟨cfPadic p⟩
@@ -36,11 +39,20 @@ def rescAbs : AbsoluteValue K ℝ where
         · rw [max_eq_right h]; exact le_add_of_nonneg_left (Real.rpow_nonneg (norm_nonneg _) _)
         · rw [max_eq_left h]; exact le_add_of_nonneg_right (Real.rpow_nonneg (norm_nonneg _) _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resc_norm (x : WithAbs (rescAbs K s hs)) : ‖x‖ = ‖x.ofAbs‖ ^ s := rfl
 
+/- English proof (translation)
+Rewrite using `[dist_eq_norm, resc_norm]`. Both sides reduce to the same expression.
+-/
 theorem resc_dist (x y : WithAbs (rescAbs K s hs)) : dist x y = ‖x.ofAbs - y.ofAbs‖ ^ s := by
   rw [dist_eq_norm, resc_norm]; rfl
 
+/- English proof (translation)
+The claim follows from `IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm (fun x y => by have h := IsUltrametricDist.norm_add_le_max x.ofAbs y.ofAbs rw [resc_norm, resc_norm, resc_norm] have h2 : ‖(x + y).ofAbs‖ ^ s ≤ (max ‖x.ofAbs‖ ‖y.ofAbs‖) ^ s := Real.rpow_le_rpow (norm_nonneg _) h …`.
+-/
 theorem resc_ultra : IsUltrametricDist (WithAbs (rescAbs K s hs)) :=
   IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm (fun x y => by
     have h := IsUltrametricDist.norm_add_le_max x.ofAbs y.ofAbs
@@ -52,6 +64,17 @@ theorem resc_ultra : IsUltrametricDist (WithAbs (rescAbs K s hs)) :=
     · rw [max_eq_right h]; exact le_max_right _ _
     · rw [max_eq_left h]; exact le_max_left _ _)
 
+/- English proof (translation)
+Use `Metric.complete_of_cauchySeq_tendsto (fun u hu => ?_)` and prove the remaining obligations. Establish `hc : CauchySeq (fun n => (u n).ofAbs)`. Rewrite `hu`, the goal using `[Metric.cauchySeq_iff]`. Introduce `ε hε`. Take `⟨N, hN⟩` from `hu (ε ^ s) (Real.rpow_pos_of_pos hε s)`.
+
+Use `⟨N, fun m hm n hn => ?_⟩` and prove the remaining obligations. Use `hN m hm n hn` as an intermediate fact. Rewrite `this` using `[resc_dist]`. Rewrite using `[dist_eq_norm]`. Conclude with `(Real.rpow_lt_rpow_iff (norm_nonneg _) hε.le hs).1 this`.
+
+Take `⟨a, ha⟩` from `cauchySeq_tendsto_of_complete hc`. Use `⟨WithAbs.toAbs _ a, ?_⟩` and prove the remaining obligations. Rewrite `ha`, the goal using `[Metric.tendsto_atTop]`. Introduce `ε hε`. Take `⟨N, hN⟩` from `ha (ε ^ (1 / s)) (Real.rpow_pos_of_pos hε _)`.
+
+Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Use `hN n hn` as an intermediate fact. Rewrite `this` using `[dist_eq_norm]`. Rewrite using `[resc_dist]`. Establish `h2` using `Real.rpow_lt_rpow (norm_nonneg _) this hs`.
+
+Rewrite `h2` using `[← Real.rpow_mul hε.le, one_div, inv_mul_cancel₀ hs.ne', Real.rpow_one]`. Then use the resulting hypothesis.
+-/
 theorem resc_complete [CompleteSpace K] : CompleteSpace (WithAbs (rescAbs K s hs)) := by
   refine Metric.complete_of_cauchySeq_tendsto (fun u hu => ?_)
   have hc : CauchySeq (fun n => (u n).ofAbs) := by
@@ -77,6 +100,17 @@ theorem resc_complete [CompleteSpace K] : CompleteSpace (WithAbs (rescAbs K s hs
 
 end Resc
 
+/- English proof (translation)
+Establish `hp0 : (p : K) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `ht : 0 < ‖(p : K)‖` using `norm_pos_iff.2 hp0`. Establish `hlt : Real.log ‖(p : K)‖ < 0` using `Real.log_neg ht h1`. Establish `hpR : (1 : ℝ) < p` using `by exact_mod_cast (by omega : 1 < p)`. Establish `hlp : 0 < Real.log p` using `Real.log_pos hpR`.
+
+Use `set s : ℝ := Real.log p / (-Real.log ‖(p : K)‖) with hsdef`. Establish `hs : 0 < s` using `div_pos hlp (by linarith)`. Establish `hnp : ‖((p : ℕ) : WithAbs (rescAbs K s hs))‖ = (p : ℝ)⁻¹`. Establish `e : ((p : ℕ) : WithAbs (rescAbs K s hs)).ofAbs = (p : K)` using `map_natCast (WithAbs.equiv (rescAbs K s hs)) p`. Rewrite using `[resc_norm, e, Real.rpow_def_of_pos ht, ← Real.exp_log (inv_pos.2 (by linarith : (0 : ℝ) < p)), Real.log_inv, hsdef]`.
+
+Use `congr 1`. Establish `hne : Real.log ‖(p : K)‖ ≠ 0` using `hlt.ne`. Clear the denominators using the available nonvanishing facts. Set `iN : NontriviallyNormedField (WithAbs (rescAbs K s hs))` to `NontriviallyNormedField.ofNormNeOne ⟨((p : ℕ) : WithAbs (rescAbs K s hs)), by`. Introduce `h`.
+
+Establish `: ((p : ℕ) : WithAbs (rescAbs K s hs)).ofAbs = (p : K)` using `map_natCast (WithAbs.equiv (rescAbs K s hs)) p`. Rewrite `this` using `[h]`. Conclude with `hp0 this.symm, by`. Rewrite using `[hnp]`. Introduce `h`.
+
+Establish `: (p : ℝ) = 1`. Use `congrArg (·⁻¹) h` as an intermediate fact. Simplify using `using this`. Use the proof step `linarith⟩`. Conclude with `⟨{ C := WithAbs (rescAbs K s hs) fld := iN ultra := resc_ultra K s hs ac := IsAlgClosed.of_ringEquiv K _ (WithAbs.equiv (rescAbs K s hs)).symm cpl := resc_complete K s hs ch0 := (RingHom.charZero_iff (ϕ := (WithAbs.equiv (rescAbs K s hs)).symm.toRingHom) (WithAbs.equiv (rescAbs K …`.
+-/
 theorem cf_of_norm_lt_one (K : Type) [NormedField K] [IsUltrametricDist K] [IsAlgClosed K] [CompleteSpace K]
     [CharZero K] (p : ℕ) (hp : 2 ≤ p) (h1 : ‖(p : K)‖ < 1) : Nonempty (CF p) := by
   have hp0 : (p : K) ≠ 0 := Nat.cast_ne_zero.2 (by omega)
@@ -116,6 +150,13 @@ theorem cf_of_norm_lt_one (K : Type) [NormedField K] [IsUltrametricDist K] [IsAl
              (WithAbs.equiv (rescAbs K s hs)).symm.injective).1 inferInstance
            norm_p := hnp }⟩
 
+/- English proof (translation)
+Establish `: Fact (Nat.Prime 2)` using `⟨Nat.prime_two⟩`. Break down `Nat.lt_or_ge p 2 with h | h` into its components or cases. Apply the tactic sequence `exact ⟨{ C := PadicComplex 2 norm_p := by interval_cases p <;> simp }⟩`. Establish `: Fact p.minFac.Prime` using `⟨Nat.minFac_prime (by omega)⟩`. Use `cf_of_norm_lt_one (PadicComplex p.minFac) p h ?_` and prove the remaining obligations.
+
+Establish `h1 : ((p : ℕ) : PadicComplex p.minFac) = ((((p : ℕ) : PadicAlgCl p.minFac)) : PadicComplex p.minFac)`. Simplify using the standard rewrite rules. Establish `h2 : ((p : ℕ) : PadicAlgCl p.minFac) = algebraMap ℚ_[p.minFac] (PadicAlgCl p.minFac) (p : ℚ_[p.minFac])`. Simplify using the standard rewrite rules. Rewrite using `[h1, PadicComplex.norm_extends, h2, PadicAlgCl.norm_extends]`.
+
+Conclude with `(Padic.norm_natCast_lt_one_iff).2 (Nat.minFac_dvd p)`.
+-/
 theorem nonempty_coefficient_field (p : ℕ) : Nonempty (CF p) := by
   have : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
   rcases Nat.lt_or_ge p 2 with h | h

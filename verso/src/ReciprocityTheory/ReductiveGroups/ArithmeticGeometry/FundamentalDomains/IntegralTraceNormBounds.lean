@@ -7,16 +7,28 @@ open scoped ComplexConjugate Classical
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Unfold `cc`. Conclude with `map_mul _ a b`.
+-/
 lemma cc_mul (a b : E) : cc (a * b) = cc a * cc b := by
   unfold cc
   exact map_mul _ a b
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexConj_apply_apply E a`.
+-/
 lemma cc_cc (a : E) : cc (cc a) = a := IsCMField.complexConj_apply_apply E a
 
+/- English proof (translation)
+Unfold `cc`. Conclude with `map_ofNat _ 2`.
+-/
 lemma cc_two : cc (2 : E) = 2 := by
   unfold cc
   exact map_ofNat _ 2
 
+/- English proof (translation)
+Rewrite using `[inner_iota, ← sum_re_eq_trace]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w _`. Simplify using `only [cc, map_mul, IsCMField.complexEmbedding_complexConj]`.
+-/
 lemma inner_iota_eq_trace (x y : E) :
     inner ℝ (iota E x) (iota E y) = (1 / 2 : ℝ) * (Algebra.trace ℚ E (x * cc y) : ℝ) := by
   rw [inner_iota, ← sum_re_eq_trace]
@@ -29,6 +41,9 @@ variable (E) in
 noncomputable def ed : Basis (Free.ChooseBasisIndex ℤ (𝓞 E)) ℚ E :=
   (Algebra.traceForm ℚ E).dualBasis (traceForm_nondegenerate (K := ℚ) (L := E)) (integralBasis E)
 
+/- English proof (translation)
+Rewrite using `[← Algebra.traceForm_apply]`. Conclude with `LinearMap.BilinForm.apply_dualBasis_right _ (Algebra.traceForm_isSymm ℚ) _ i j`.
+-/
 lemma trace_ed (i j : Free.ChooseBasisIndex ℤ (𝓞 E)) :
     Algebra.trace ℚ E (integralBasis E i * ed E j) = if i = j then 1 else 0 := by
   rw [← Algebra.traceForm_apply]
@@ -38,6 +53,11 @@ variable (E) in
 
 noncomputable def bd (j : Free.ChooseBasisIndex ℤ (𝓞 E)) : VS E := iota E (2 * cc (ed E j))
 
+/- English proof (translation)
+Rewrite using `[bas_apply, bd, inner_iota_eq_trace, cc_mul, cc_cc, cc_two]`. Establish `h2 : integralBasis E i * (2 * ed E j) = (2 : ℚ) • (integralBasis E i * ed E j)`. Rewrite using `[Algebra.smul_def, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, LinearMap.map_smul, trace_ed]`.
+
+Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 lemma inner_bas_bd (i j : Free.ChooseBasisIndex ℤ (𝓞 E)) :
     inner ℝ (bas E i) (bd E j) = if i = j then 1 else 0 := by
   rw [bas_apply, bd, inner_iota_eq_trace, cc_mul, cc_cc, cc_two]
@@ -47,6 +67,13 @@ lemma inner_bas_bd (i j : Free.ChooseBasisIndex ℤ (𝓞 E)) :
   rw [h2, LinearMap.map_smul, trace_ed]
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : Free.ChooseBasisIndex ℤ (𝓞 E) → ℤ, (γ : E) = ∑ i, m i • integralBasis E i := by`. Use `⟨(RingOfIntegers.basis E).repr γ, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← (RingOfIntegers.basis E).sum_repr γ]`. Simplify using `[integralBasis_apply]`. Establish `key : ∀ j i, Algebra.trace ℚ E ((c j • ed E j) * (m i • integralBasis E i)) = if i = j then ((c j * m i : ℤ) : ℚ) else 0`.
+
+Introduce `j i`. Rewrite using `[smul_mul_smul_comm, map_zsmul, mul_comm (ed E j), trace_ed]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨∑ j, c j * m j, ?_⟩` and prove the remaining obligations. Rewrite using `[hm, Finset.sum_mul_sum, map_sum]`.
+
+Repeatedly rewrite using `[map_sum, key]`. Simplify using `[Finset.sum_ite_eq']`.
+-/
 lemma trace_int (c : Free.ChooseBasisIndex ℤ (𝓞 E) → ℤ) (γ : 𝓞 E) :
     ∃ m : ℤ, Algebra.trace ℚ E ((∑ j, c j • ed E j) * (γ : E)) = m := by
   obtain ⟨m, hm⟩ : ∃ m : Free.ChooseBasisIndex ℤ (𝓞 E) → ℤ,
@@ -64,6 +91,23 @@ lemma trace_int (c : Free.ChooseBasisIndex ℤ (𝓞 E) → ℤ) (γ : 𝓞 E) :
   simp_rw [map_sum, key]
   simp [Finset.sum_ite_eq']
 
+/- English proof (translation)
+Use `choose m hm using fun i j => hint (RingOfIntegers.basis E i * RingOfIntegers.basis E j)`. Establish `hbB : ∀ i, integralBasis E i = ((RingOfIntegers.basis E i : 𝓞 E) : E)`. Introduce `i`. Rewrite using `[integralBasis_apply]`. Establish `hP : Matrix.of (fun i j => ((m i j : ℤ) : ℚ)) = Algebra.traceMatrix ℚ (integralBasis E) * Algebra.leftMulMatrix (integralBasis E) β`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, ← hm i j, Matrix.mul_apply]`. Establish `e : β * ((RingOfIntegers.basis E i * RingOfIntegers.basis E j : 𝓞 E) : E) = integralBasis E i * (β * integralBasis E j)`. Rewrite using `[hbB, hbB]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `conv_lhs => rw [← (integralBasis E).sum_repr (β * integralBasis E j)]`. Rewrite using `[Finset.mul_sum, map_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `k _`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, Algebra.traceMatrix_apply, Algebra.traceForm_apply, mul_smul_comm, LinearMap.map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ((Matrix.of m).det : ℚ) = (Matrix.of (fun i j => ((m i j : ℤ) : ℚ))).det`. Rewrite using `[show ((Matrix.of m).det : ℚ) = (Int.castRingHom ℚ) (Matrix.of m).det from rfl, RingHom.map_det]`.
+
+Both sides reduce to the same expression. Establish `hdet : ((Matrix.of m).det : ℚ) = (NumberField.discr E : ℚ) * Algebra.norm ℚ β`. Rewrite using `[h1, hP, Matrix.det_mul, NumberField.coe_discr, Algebra.discr_def, Algebra.norm_eq_matrix_det (integralBasis E)]`. Establish `hN0 : Algebra.norm ℚ β ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hβ`. Establish `hD0 : (NumberField.discr E : ℚ) ≠ 0` using `by exact_mod_cast NumberField.discr_ne_zero E`.
+
+Establish `hZ : (Matrix.of m).det ≠ 0`. Introduce `h`. Establish `h0 : ((Matrix.of m).det : ℚ) = 0` using `by rw [h]; simp`. Rewrite `h0` using `[hdet]`. Conclude with `mul_ne_zero hD0 hN0 h0`.
+
+Establish `hR : ((Matrix.of m).det : ℝ) = ((NumberField.discr E : ℤ) : ℝ) * ((Algebra.norm ℚ β : ℚ) : ℝ)`. Establish `h2` using `congrArg (Rat.cast : ℚ → ℝ) hdet`. Simplify using `only [Rat.cast_mul, Rat.cast_intCast] at h2`. Conclude with `h2`. Unfold `dE`.
+
+Rewrite using `[← abs_mul, mul_comm, ← hR]`. Conclude with `Int.one_le_abs hZ` after adjusting the coercions.
+-/
 lemma norm_discr (β : E) (hβ : β ≠ 0)
     (hint : ∀ γ : 𝓞 E, ∃ m : ℤ, Algebra.trace ℚ E (β * (γ : E)) = m) :
     1 ≤ |(Algebra.norm ℚ β : ℝ)| * dE E := by
@@ -111,6 +155,11 @@ lemma norm_discr (β : E) (hβ : β ≠ 0)
   rw [← abs_mul, mul_comm, ← hR]
   exact_mod_cast Int.one_le_abs hZ
 
+/- English proof (translation)
+Rewrite using `[← Rat.cast_abs, ← NumberField.InfinitePlace.prod_eq_abs_norm, ← (Equiv.subtypeUnivEquiv (fun w : InfinitePlace E => IsTotallyComplex.isComplex w)).prod_comp]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `w _`. Rewrite using `[InfinitePlace.norm_embedding_eq]`. Express the relevant statement in the definitionally equal form `w.1 β ^ 2 = w.1 β ^ w.1.mult`.
+
+Rewrite using `[InfinitePlace.mult_isComplex]`.
+-/
 lemma prod_norm (β : E) :
     ∏ w : CP E, ‖w.1.embedding β‖ ^ 2 = |(Algebra.norm ℚ β : ℝ)| := by
   rw [← Rat.cast_abs, ← NumberField.InfinitePlace.prod_eq_abs_norm,
@@ -121,14 +170,35 @@ lemma prod_norm (β : E) :
   change w.1 β ^ 2 = w.1 β ^ w.1.mult
   rw [InfinitePlace.mult_isComplex]
 
+/- English proof (translation)
+Unfold `dE`. Conclude with `abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero E)`.
+-/
 lemma dE_pos : 0 < dE E := by
   unfold dE
   exact abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero E)
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Conclude with `Fintype.card_pos_iff.mpr ⟨⟨w, IsTotallyComplex.isComplex w⟩⟩`.
+-/
 lemma card_complexPlaces_pos : 0 < Fintype.card (CP E) := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace E) := inferInstance
   exact Fintype.card_pos_iff.mpr ⟨⟨w, IsTotallyComplex.isComplex w⟩⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).mp hx`. Take `⟨β, hβdef⟩ : ∃ β : E, β = ∑ j, c j • ed E j` from `⟨_, rfl⟩`. Establish `hxβ : x = iota E (2 * cc β)`. Rewrite using `[← hc, hβdef]`. Simplify using `only [bd, cc, map_sum, map_zsmul, Finset.mul_sum, mul_smul_comm]`.
+
+Establish `hβ0 : β ≠ 0`. Introduce and unpack `h`. Apply `hx0` to reduce the goal to its premises. Rewrite using `[hxβ, h, cc, map_zero, mul_zero, map_zero]`. Establish `hint : ∀ γ : 𝓞 E, ∃ m : ℤ, Algebra.trace ℚ E (β * γ) = m`.
+
+Introduce `γ`. Rewrite using `[hβdef]`. Conclude with `trace_int c γ`. Establish `hN` using `norm_discr β hβ0 hint`. Establish `h2n : ‖(2 : ℂ)‖ = 2` using `by norm_num`.
+
+Establish `hnorm : ‖x‖ ^ 2 = 4 * ∑ w : CP E, ‖w.1.embedding β‖ ^ 2`. Rewrite using `[hxβ, norm_sq_iota, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w _`. Rewrite using `[map_mul, norm_mul, cc, IsCMField.complexEmbedding_complexConj, Complex.norm_conj, map_ofNat, h2n]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hn : (0 : ℝ) < Fintype.card (CP E)` using `by exact_mod_cast card_complexPlaces_pos`. Establish `hd : 0 < dE E` using `dE_pos`. Establish `hNinv : (dE E)⁻¹ ≤ |(Algebra.norm ℚ β : ℝ)|`. Rewrite using `[inv_eq_one_div, div_le_iff₀ hd]`.
+
+Conclude with `hN`. Establish `hgm` using `Real.geom_mean_le_arith_mean_weighted (Finset.univ : Finset (CP E)) (fun _ => 1 / (Fintype.card (CP E) : ℝ)) (fun w => ‖w.1.embedding β‖ ^ 2) (fun _ _ => by positivity) (by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]; field_simp) (fun _ _ => by positivity)`. Rewrite `hgm` using `[Real.finset_prod_rpow _ _ (fun _ _ => by positivity), prod_norm, ← Finset.mul_sum]`. Establish `h1 : dE E ^ (-(1 / (Fintype.card (CP E) : ℝ))) ≤ |(Algebra.norm ℚ β : ℝ)| ^ (1 / (Fintype.card (CP E) : ℝ))`. Rewrite using `[Real.rpow_neg hd.le, ← Real.inv_rpow hd.le]`.
+
+Conclude with `Real.rpow_le_rpow (inv_nonneg.mpr hd.le) hNinv (by positivity)`. Rewrite using `[hnorm]`. Establish `h3` using `mul_le_mul_of_nonneg_left (h1.trans hgm) (by positivity : (0 : ℝ) ≤ 4 * (Fintype.card (CP E) : ℝ))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, mul_assoc 4, mul_one_div_cancel hn.ne', mul_one]`.
+-/
 lemma norm_bd_ge (x : VS E) (hx : x ∈ span ℤ (Set.range (bd E))) (hx0 : x ≠ 0) :
     4 * (Fintype.card (CP E) : ℝ) * dE E ^ (-(1 / (Fintype.card (CP E) : ℝ))) ≤ ‖x‖ ^ 2 := by
   obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℤ).mp hx

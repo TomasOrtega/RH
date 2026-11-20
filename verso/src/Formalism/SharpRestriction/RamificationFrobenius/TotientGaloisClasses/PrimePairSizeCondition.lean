@@ -23,6 +23,9 @@ def inv (ψ : PChar) : PChar :=
     have h : ψ.χ.conductor = ψ.N := ψ.prim
     exact (DirichletCharacter.conductor_inv ψ.χ).trans h⟩
 
+/- English proof (translation)
+Consider the cases of `ψ`. Simplify using `only [inv]`. Use `congr 1`. Conclude with `_root_.inv_inv _`.
+-/
 theorem inv_inv (ψ : PChar) : ψ.inv.inv = ψ := by
   cases ψ
   simp only [inv]
@@ -98,6 +101,9 @@ namespace HostRaw
 
 variable {φ : Frame} (H : HostRaw φ)
 
+/- English proof (translation)
+The claim follows from `Nat.mul_pos (Nat.mul_pos H.QS_pos H.hyp.1.pos) H.hyp.2.1.pos`.
+-/
 theorem condN_pos : 0 < H.condN :=
   Nat.mul_pos (Nat.mul_pos H.QS_pos H.hyp.1.pos) H.hyp.2.1.pos
 

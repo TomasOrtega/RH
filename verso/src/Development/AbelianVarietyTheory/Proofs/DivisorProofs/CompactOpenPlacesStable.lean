@@ -21,17 +21,32 @@ namespace GlobalTheory.TruncFix
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `show truncMat (idem ∅) (mat k) = 1`. Simplify using `[truncMat, idem]`.
+-/
 theorem truncU_empty {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J) : truncU ∅ k = 1 := by
   refine Subtype.ext (Units.ext ?_)
   show truncMat (idem ∅) (mat k) = 1
   simp [truncMat, idem]
 
+/- English proof (translation)
+Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `show truncMat (idem {v}) (mat k) = 1`. Rewrite using `[truncMat, idem_singleton, hk _ (GlobalTheory.LatVac.at_liftV v 1), add_zero]`.
+-/
 theorem truncU_of_triv {v : Pl F} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J)
     (hk : ∀ u : AF F, At (evFin F v) u → u • (mat k - 1) = 0) : truncU {v} k = 1 := by
   refine Subtype.ext (Units.ext ?_)
   show truncMat (idem {v}) (mat k) = 1
   rw [truncMat, idem_singleton, hk _ (GlobalTheory.LatVac.at_liftV v 1), add_zero]
 
+/- English proof (translation)
+Establish `hk' : ∀ u : AF F, At (evI F) u → u • (mat k⁻¹ - 1) = 0`. Introduce `u hu`. Establish `hinv : mat k⁻¹ * mat k = 1` using `Units.inv_mul k.1`. Establish `: mat k⁻¹ - 1 = -(mat k⁻¹ * (mat k - 1))`. Rewrite using `[Matrix.mul_sub, hinv, Matrix.mul_one, neg_sub]`.
+
+Rewrite using `[this, smul_neg, ← Matrix.mul_smul, hk u hu, Matrix.mul_zero, neg_zero]`. Establish `hent : ∀ A : Matrix (Fin n) (Fin n) (AE F E), (∀ u : AF F, At (evI F) u → u • (A - 1) = 0) → Tendsto (fun T : Finset (Pl F) => truncMat (idem T) A) atTop (𝓝 A)`. Introduce `A hA`. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Establish `hc : ∀ u : AF F, At (evI F) u → u • (A - 1) i j = 0` using `fun u hu => by`.
+
+Use `congrFun (congrFun (hA u hu) i) j` as an intermediate fact. Simplify using `using this`. Establish `h` using `(GlobalTheory.T.truncated_idempotent_tendsto F E ((A - 1) i j) hc).const_add ((1 : Matrix (Fin n) (Fin n) (AE F E)) i j)`. Rewrite `h` using `[Matrix.sub_apply, add_sub_cancel]`. Use `show Tendsto (fun T : Finset (Pl F) => truncMat (idem T) A i j) atTop (𝓝 (A i j))`.
+
+Use `h.congr fun T => ?_` and prove the remaining obligations. Simplify using `[truncMat]`. Rewrite using `[tendsto_subtype_rng, Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Use `Tendsto.prodMk_nhds (hent _ hk) ?_` and prove the remaining obligations. Conclude with `(MulOpposite.continuous_op.tendsto _).comp (hent _ hk')`.
+-/
 theorem tendsto_truncU {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J)
     (hk : ∀ u : AF F, At (evI F) u → u • (mat k - 1) = 0) :
     Tendsto (fun T : Finset (Pl F) => truncU T k) atTop (𝓝 k) := by
@@ -57,6 +72,13 @@ theorem tendsto_truncU {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J)
   refine Tendsto.prodMk_nhds (hent _ hk) ?_
   exact (MulOpposite.continuous_op.tendsto _).comp (hent _ hk')
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, -, y, -, rfl⟩` from `hz`. Rewrite using `[smul_smul, GlobalTheory.ThK.LocalOps.liftV_one_mul]`. Use `congr 1`.
+
+Establish `h1 : evFin F v (1 - GlobalTheory.LatVac.liftV v 1) = 0`. Rewrite using `[map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self]`. Establish `h2` using `ha _ h1`. Rewrite `h2` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero, GlobalTheory.ThK.LocalOps.liftV_one_mul]`. Conclude with `h2.symm`.
+
+Consider the case `zero => rw [smul_zero]`. Consider the case `add z z' _ _ h h' => rw [smul_add, h, h']`. Consider the case `neg z _ h => rw [smul_neg, h]`.
+-/
 theorem eAt_smul_of_mem {d : ℕ} (W : Spc F E d) (v : Pl F) {z : Fin d → AE F E}
     (hz : z ∈ GlobalTheory.InertSph.latAt W v) : GlobalTheory.LatVac.liftV v 1 • z = z := by
   induction hz using AddSubgroup.closure_induction with
@@ -73,6 +95,9 @@ theorem eAt_smul_of_mem {d : ℕ} (W : Spc F E d) (v : Pl F) {z : Fin d → AE F
   | add z z' _ _ h h' => rw [smul_add, h, h']
   | neg z _ h => rw [smul_neg, h]
 
+/- English proof (translation)
+Establish `hs : ((GlobalTheory.LatVac.liftV v 1) • (A - 1)) *ᵥ z = (GlobalTheory.LatVac.liftV v 1) • ((A - 1) *ᵥ z)`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.smul_sum, smul_mul_assoc]`. Rewrite using `[truncMat, idem_singleton, Matrix.add_mulVec, Matrix.one_mulVec, hs, Matrix.sub_mulVec, Matrix.one_mulVec, smul_sub, eAt_smul_of_mem W v hz, eAt_smul_of_mem W v hA]`. Normalize the expressions using the abelian group laws.
+-/
 theorem truncMat_mulVec {d : ℕ} (W : Spc F E d) (v : Pl F) (A : Matrix (Fin d) (Fin d) (AE F E)) {z : Fin d → AE F E}
     (hz : z ∈ GlobalTheory.InertSph.latAt W v) (hA : A *ᵥ z ∈ GlobalTheory.InertSph.latAt W v) :
     truncMat (idem {v}) A *ᵥ z = A *ᵥ z := by
@@ -83,6 +108,9 @@ theorem truncMat_mulVec {d : ℕ} (W : Spc F E d) (v : Pl F) (A : Matrix (Fin d)
     Matrix.one_mulVec, smul_sub, eAt_smul_of_mem W v hz, eAt_smul_of_mem W v hA]
   abel
 
+/- English proof (translation)
+Use `⟨truncU_mem_UAt v k, fun z hz => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mat_truncU, truncMat_mulVec W v _ hz (h z hz).1]`. Conclude with `(h z hz).1`. Rewrite using `[mat_truncU_inv, truncMat_mulVec W v _ hz (h z hz).2]`. Conclude with `(h z hz).2`.
+-/
 theorem truncU_mem_KAt {d : ℕ} (W : Spc F E d) (v : Pl F) (k : UA σ W.J)
     (h : ∀ z ∈ GlobalTheory.InertSph.latAt W v, mat k *ᵥ z ∈ GlobalTheory.InertSph.latAt W v ∧ mat k⁻¹ *ᵥ z ∈ GlobalTheory.InertSph.latAt W v) :
     truncU {v} k ∈ GlobalTheory.InertSph.KAt σ W v := by
@@ -92,6 +120,9 @@ theorem truncU_mem_KAt {d : ℕ} (W : Spc F E d) (v : Pl F) (k : UA σ W.J)
 
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `g _`. Use `⟨g (fun i => (x i).2) • (BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ), fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.proj_apply, pureA, ContinuousLinearMap.coe_smul', ContinuousLinearMap.coe_comp', Function.comp_apply, Pi.smul_apply, SchwartzMap.toBoundedContinuousFunctionCLM_apply, BoundedContinuousFunction.evalCLM_apply, smul_eq_mul]`. Rewrite using `[mul_comm]`.
+-/
 theorem eval_mem_adm (κ : Type) [Fintype κ] (x : κ → AF F) :
     (LinearMap.proj x : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := by
   intro g _
@@ -102,6 +133,15 @@ theorem eval_mem_adm (κ : Type) [Fintype κ] (x : κ → AF F) :
     BoundedContinuousFunction.evalCLM_apply, smul_eq_mul]
   rw [mul_comm]
 
+/- English proof (translation)
+Establish `hcof : ∀ᶠ w in cofinite, φ w = M.vac w` using `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun w hw => by_contra fun h => hw (hvac w h))`. Establish `hstd : ∀ᶠ w in cofinite, φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `(hcof.and hM.std).mono fun w hw => hw.1.trans hw.2`. Establish `hpure : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ schA F _` using `GlobalTheory.ConeMeasV.pure_mem_schA hM f φ hSB hcof`. Establish `hfin` using `fun x => GlobalTheory.PureFactor.mulSupport_finite φ hstd x`. Establish `hfinT : ∀ T' : Finset (Pl F), om (1, truncU T' k) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ`.
+
+Introduce `T'`. Use `Finset.induction_on T' ?_ ?_` and prove the remaining obligations. Rewrite using `[truncU_empty, show ((1 : UA σ Y.J), (1 : UA σ W.J)) = 1 from rfl, map_one, Module.End.one_apply]`. Introduce `v T' hv ih`. Rewrite using `[truncU_insert hv, show ((1 : UA σ Y.J), truncU {v} k * truncU T' k) = ((1 : UA σ Y.J), truncU {v} k) * ((1 : UA σ Y.J), truncU T' k) by simp, map_mul, Module.End.mul_apply, ih]`.
+
+Distinguish the cases in `hvS : v ∈ S`. Rewrite using `[truncU_of_triv k (hS v hvS), show ((1 : UA σ Y.J), (1 : UA σ W.J)) = 1 from rfl, map_one, Module.End.one_apply]`. Establish `hφv : φ v = M.vac v` using `hvac v fun h => hvS (hTS h)`. Establish `hA : Acts (evFin F v) (om (1, truncU {v} k)) (φ v) (M.vac v)` using `by rw [hφv]; exact hloc v hvS`. Rewrite using `[GlobalTheory.ThK.LocalOps.acts_pure v (om (1, truncU {v} k)) f φ (M.vac v) hpure hfin hA, ← hφv, Function.update_eq_self]`.
+
+Use function extensionality and compare the values at `x`. Establish `hc : Continuous fun g : UA σ Y.J × UA σ W.J => om g (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) x` using `hcont _ (eval_mem_adm _ x) _ hpure`. Establish `h1 : Tendsto (fun T' : Finset (Pl F) => om (1, truncU T' k) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) x) atTop (𝓝 (om (1, k) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) x))` using `((hc.comp (continuous_const.prodMk continuous_id)).tendsto k).comp (tendsto_truncU k hinf)`. Simplify using `only [hfinT] at h1`. Conclude with `tendsto_nhds_unique h1 tendsto_const_nhds`.
+-/
 theorem fix_one {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (hM : M.IsGood ψ)
     (om : Rep σ Y W) (hcont : IsContOn (adeleClass F) om) (S T : Finset (Pl F)) (k : UA σ W.J) (hTS : T ⊆ S)
     (hinf : ∀ u : AF F, At (evI F) u → u • (mat k - 1) = 0)
@@ -144,6 +184,11 @@ end GlobalTheory.TruncFix
 
 namespace GlobalTheory.TruncFix
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT`. Take `⟨S₁, h₁⟩` from `GlobalTheory.T.unramified_places_invariant hKP.base F E σ B a a' G X om om' hT`. Take `⟨S₂, h₂⟩` from `GlobalTheory.T.unramified_places_spherical hKP.base F E σ B a a' G X om om' hT`. Take `⟨m, x, y, hxy, hsum⟩` from `GlobalTheory.T.exists_lattice_vectors_form_one F E σ B a G.V _ _ hT.geo.hV (by have := hT.geo.lt; omega)`. Use `⟨S₁ ∪ S₂, fun S T k hS hTS hinf hSk hlat _ => ?_⟩` and prove the remaining obligations.
+
+Establish `hK : ∀ v, v ∉ S → truncU {v} k ∈ GlobalTheory.InertSph.KAt σ G.W v` using `fun v hv => truncU_mem_KAt G.W v k (GlobalTheory.T.lattice_stabilizer_inert_sphere F E σ B a (a + a') G.V G.W _ _ hT.geo.hV m x y hxy hsum v k (hlat v hv))`. Use `⟨fun f φ hSB hvac => ?_, fun f φ hSB hvac => ?_⟩` and prove the remaining obligations. Conclude with `fix_one G.M B.ψ hT.geo.hM om hT.weil.2.2 S T k hTS hinf hSk (fun v hv => h₁ v (fun h => hv (hS (Finset.mem_union_left _ h))) _ (hK v hv)) f φ hSB hvac`. Conclude with `fix_one G.M' B.ψ hT.geo.hM' om' hT.weil'.2.2 S T k hTS hinf hSk (fun v hv => h₂ v (fun h => hv (hS (Finset.mem_union_right _ h))) _ (hK v hv)) f φ hSB hvac`.
+-/
 theorem fix_off_bad : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∃ S₀ : Finset (Pl F), ∀ (S T : Finset (Pl F)) (k : UA σ G.W.J), S₀ ⊆ S → T ⊆ S →

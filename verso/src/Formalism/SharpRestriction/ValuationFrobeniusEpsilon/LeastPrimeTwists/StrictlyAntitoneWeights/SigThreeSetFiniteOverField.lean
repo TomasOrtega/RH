@@ -10,6 +10,9 @@ namespace Formalism.MainNotions.V.Pf.V3
 
 variable {D : D7} (V : VData D)
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : V.jO l ((l : ℕ) : V.Ol l) = 0` using `by rw [h, map_zero]`. Rewrite `h1` using `[map_natCast]`. Conclude with `(Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero) h1`.
+-/
 theorem l_ne_zero (l : ℕ) [Fact l.Prime] : ((l : ℕ) : V.Ol l) ≠ 0 := by
   intro h
   have h1 : V.jO l ((l : ℕ) : V.Ol l) = 0 := by rw [h, map_zero]
@@ -99,11 +102,17 @@ def Ord3 {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ QbarQ} [FiniteDimen
   l ≠ 2 ∧ Formalism.ConjugateSelfDual.Irred (VData.toRecRep ρ) ∧ IsCSDOne (VData.toRecRep ρ) ∧
     OrdFixAbove (VData.toRecRep ρ) ![(e : ℤ), 0, -(e : ℤ)] M
 
+/- English proof (translation)
+Establish `he' : (0 : ℤ) < e` using `by exact_mod_cast he`. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all <;> omega`.
+-/
 theorem strictAnti_wts {e : ℕ} (he : 1 ≤ e) : StrictAnti ![(e : ℤ), 0, -(e : ℤ)] := by
   have he' : (0 : ℤ) < e := by exact_mod_cast he
   intro i j hij
   fin_cases i <;> fin_cases j <;> simp_all <;> omega
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> simp [Fin.rev] <;> ring`.
+-/
 theorem wts_eq (e : ℕ) (i : Fin 3) :
     ![(e : ℤ) + 1, 1, 1 - (e : ℤ)] i = -(![(e : ℤ), 0, -(e : ℤ)] i.rev) - (-1) := by
   fin_cases i <;> simp [Fin.rev] <;> ring
@@ -124,12 +133,18 @@ def Sig2G (M e : ℕ) : Set (V.spec ℚ 2).Rep :=
 abbrev Lab (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K] (e : ℕ) : Type :=
   ↥(Sig3G V K e) ⊕ ↥(Sig2G V (condV D * dK K) e)
 
+/- English proof (translation)
+Use `((V.spec K 3).finite M (fun _ => ![(e : ℤ) + 1, 1, 1 - (e : ℤ)])).subset ?_` and prove the remaining obligations. Introduce and unpack `π ⟨-, h2, h3⟩`. Conclude with `⟨h2, funext fun τ => funext fun i => h3 τ i⟩`.
+-/
 theorem sig_three_set_finite_over_field (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K] (M e : ℕ) :
     (Formalism.MainNotions.UnitaryThreeHeightBounds.Sig3 V K M e).Finite := by
   refine ((V.spec K 3).finite M (fun _ => ![(e : ℤ) + 1, 1, 1 - (e : ℤ)])).subset ?_
   rintro π ⟨-, h2, h3⟩
   exact ⟨h2, funext fun τ => funext fun i => h3 τ i⟩
 
+/- English proof (translation)
+The claim follows from `(V.spec ℚ 2).finite M _`.
+-/
 theorem sig_two_set_finite (M e : ℕ) : (Sig2 V M e).Finite := (V.spec ℚ 2).finite M _
 
 instance (K : IntermediateField ℚ QbarQ) [FiniteDimensional ℚ K] (e : ℕ) : Finite (Lab V K e) :=

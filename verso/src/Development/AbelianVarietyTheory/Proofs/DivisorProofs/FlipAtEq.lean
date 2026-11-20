@@ -37,6 +37,9 @@ def sqCore (W : G.Weil) (t : T) (i j : ℕ) (w : Pl D.host.E) (n : ℕ)
     (unifAt w) n (blockLat (unifAt w) n (Assignment.one.block _ _))
     (fourierSum (psiAt W w) (unifAt w) n (Assignment.one.block _ _) Φ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem flipAt_eq (W : G.Weil) (t : T) (i j : ℕ) (w : Pl D.host.E) (n : ℕ)
     (Φ : Matrix (Fin ((locGrid G t w).rank (i, j))) ((locGrid G t w).Cols i j) (Kw w) → ℂ) :
     flipAt W t i j w n Φ = invFourierSum (psiAt W w)⁻¹ (unifAt w) n (Assignment.one.block _ _)ᶜ (sqCore W t i j w n Φ) := rfl

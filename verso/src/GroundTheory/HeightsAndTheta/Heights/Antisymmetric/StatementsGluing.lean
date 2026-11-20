@@ -88,8 +88,14 @@ def NefAddBlock.Statement : Prop :=
 
 section Inhabitants
 
+/- English proof (translation)
+The claim follows from `lineBundle ℤ _ 1`.
+-/
 example : ChartBundle ℤ (![1, 2] : Fin 2 → ℚ) 1 ℚ := lineBundle ℤ _ 1
 
+/- English proof (translation)
+The claim follows from `addBlockPt (Ω := ℚ) (Ω' := ℚ) (fun p : (Σ _ : Fin 1, Fin 2) => ((p.2 : ℕ) : ℚ) + 1) (fun i : Fin 2 => ((i : ℕ) : ℚ) + 1)`.
+-/
 example : (Σ o, addBlockIdx (fun _ : Fin 1 => Fin 2) (Fin 2) o) → ℚ :=
   addBlockPt (Ω := ℚ) (Ω' := ℚ) (fun p : (Σ _ : Fin 1, Fin 2) => ((p.2 : ℕ) : ℚ) + 1)
     (fun i : Fin 2 => ((i : ℕ) : ℚ) + 1)

@@ -25,6 +25,11 @@ def lineEquiv {α n : Type} [Fintype α] [LinearOrder α] [IsEmpty α] [Fintype 
       mem_smooth_of_eventually _ (.of_forall fun _ _ => rfl)⟩, rfl⟩⟩).trans
     (PiTensorProduct.isEmptyEquiv _)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ α α' n _ _ _ _ _ _ _ _ m _ _ m' _ _ e e' X _ _ X' _ _ σ σ'`. Use `haveI : IsEmpty n := ⟨fun x => isEmptyElim (e.symm x).1⟩`. Use `haveI : Subsingleton (GL n k) := ⟨fun _ _ => Units.ext (Subsingleton.elim _ _)⟩`. Use `⟨Representation.Equiv.mk ((lineEquiv e σ).trans (lineEquiv e' σ').symm) fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim g 1, map_one, map_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem multiProd_equiv_of_isEmpty : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {α α' n : Type} [Fintype α] [LinearOrder α] [IsEmpty α] [Fintype α']
     [LinearOrder α'] [IsEmpty α'] [Fintype n] [DecidableEq n] {m : α → Type} [∀ a, Fintype (m a)]

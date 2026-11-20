@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Coef.TestN
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [Algebra.TensorProduct.basis_repr_tmul]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+-/
 theorem repr_map_tensor {F E : Type} [Field F] [Field E] [Algebra F E] {R R' : Type} [CommRing R] [Algebra F R]
     [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R') {d : ℕ} (b : Module.Basis (Fin d) F E) (y : R ⊗[F] E)
     (k : Fin d) :
@@ -23,6 +26,11 @@ theorem repr_map_tensor {F E : Type} [Field F] [Field E] [Algebra F E] {R R' : T
   | tmul r e => simp [Algebra.TensorProduct.basis_repr_tmul]
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_eq_matrix_trace (Algebra.TensorProduct.basis R' b), Algebra.trace_eq_matrix_trace (Algebra.TensorProduct.basis R b)]`. Simplify using `only [Matrix.trace, Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h : Algebra.TensorProduct.map f (AlgHom.id F E) (x * Algebra.TensorProduct.basis R b k) = Algebra.TensorProduct.map f (AlgHom.id F E) x * Algebra.TensorProduct.basis R' b k`. Rewrite using `[_root_.map_mul]`.
+
+Simplify using `[Algebra.TensorProduct.basis_apply]`. Rewrite using `[← repr_map_tensor f b, h]`.
+-/
 theorem trace_map_tensor {F E : Type} [Field F] [Field E] [Algebra F E] {R R' : Type} [CommRing R] [Algebra F R]
     [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R') {d : ℕ} (b : Module.Basis (Fin d) F E) (x : R ⊗[F] E) :
     Algebra.trace R' (R' ⊗[F] E) (Algebra.TensorProduct.map f (AlgHom.id F E) x) =
@@ -37,6 +45,9 @@ theorem trace_map_tensor {F E : Type} [Field F] [Field E] [Algebra F E] {R R' : 
     simp [Algebra.TensorProduct.basis_apply]
   rw [← repr_map_tensor f b, h]
 
+/- English proof (translation)
+Introduce `F E _ _ _ σ R R' _ _ _ _ f d b n S i`. Break down `i with i | q` into its components or cases. Simplify using `only [hCo, Sum.elim_inl, hermMap, Matrix.map_apply, map_mul, AlgHom.commutes, trace_map_tensor f b]`. Simplify using `only [hCo, Sum.elim_inr, hermMap, Matrix.map_apply, repr_map_tensor f b]`.
+-/
 theorem hCo_hermMap : ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (R R' : Type) [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R') (d : ℕ) (b : Module.Basis (Fin d) F E) (n : ℕ) (S : HermR R σ n) (i : Idx n d), hCo R' σ b (hermMap f σ S) i = f (hCo R σ b S i) := by
   intro F E _ _ _ σ R R' _ _ _ _ f d b n S i
   rcases i with i | q

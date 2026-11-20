@@ -33,6 +33,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 
 open GlobalTheory.FlagMod (ev_res ev_spMap le_preimage_mono)
 
+/- English proof (translation)
+Establish `hr : 0 < ‖Mx.det‖ / ‖c₀‖ ^ 2` using `(inv_pos.2 hC).trans_le h₁`. Establish `hM : Mx.det ≠ 0` using `fun h0 => by simp [h0] at hr`. Take `⟨P, hg, rig, hrig, th, hth, v, hv⟩` from `x`. Take `⟨th₀, hth₀, v₀, hv₀, hN₀, e₁, hMv⟩` from `GlobalTheory.KeyConst.exists_rescale P hg rig hrig th hth v hv τ Mx _ _ c₀ hc hM hN`. Take `⟨u, k₁, k₂, k₃, k₄, k₅, k₆⟩` from `(GlobalTheory.KeyPow.normalAt_one_iff _ _ _ _).1 hN₀`.
+
+Establish `e` using `hκ.1 ℂ P hg rig hrig _ hth₀ v₀ hv₀ th hth v hv c₀ Mx e₁ hMv`. Rewrite `e` using `[hκ.2.2.2.1 ⟨P, hg, rig, hrig, th₀, hth₀, v₀, hv₀⟩ u τ a b k₁ k₂ hab.1 hab.2 k₃ k₄ k₅ k₆, Units.val_one, _root_.mul_one]`. Establish `q : 0 < ‖c₀‖` using `norm_pos_iff.2 hc`. Establish `e' : ‖(κ ℂ ⟨P, hg, rig, hrig, th, hth, v, hv⟩ : ℂ)‖ = (‖Mx.det‖ / ‖c₀‖ ^ 2) ^ 4`. Use `congrArg (‖·‖) e` as an intermediate fact.
+
+Simplify using `only [norm_mul, norm_pow] at this`. Rewrite using `[div_pow, ← pow_mul, eq_div_iff (by positivity), ← this, _root_.mul_comm]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[e'] gcongr`. Rewrite using `[norm_inv, e', ← inv_pow] gcongr`.
+
+Conclude with `inv_le_of_inv_le₀ hC h₁`.
+-/
 theorem norm_bounds {κ : KeyRule} (hκ : IsKeyRule κ) (x : KeyIn ℂ) {τ Mx : Matrix (Fin x.P.g) (Fin x.P.g) ℂ}
     {a b : Fin x.P.g → ℂ} {c₀ : ℂ} (hab : GlobalTheory.KeyPow.charHalf _ a b) (hc : c₀ ≠ 0)
     (hN : GlobalTheory.KeyPow.NormalAt x τ Mx a b c₀) {C : ℝ} (hC : 0 < C) (h₁ : C⁻¹ ≤ ‖Mx.det‖ / ‖c₀‖ ^ 2)
@@ -57,6 +66,11 @@ theorem norm_bounds {κ : KeyRule} (hκ : IsKeyRule κ) (x : KeyIn ℂ) {τ Mx :
     gcongr
     exact inv_le_of_inv_le₀ hC h₁
 
+/- English proof (translation)
+Establish `hf : (s.appLE ⊤ _ le_top).hom.FiniteType` using `(HasRingHomProperty.appLE (P := @LocallyOfFiniteType) s inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨_, hU⟩ le_top)`. Use `letI := (s.appLE ⊤ U le_top).hom.toAlgebra`. Establish `: Algebra.FiniteType Γ(Sp O, ⊤) Γ(X, U)` using `hf`. Establish `hc : Countable Γ(Sp O, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of O)).symm.commRingCatIsoToRingEquiv.symm.injective.countable`. Take `⟨n, f, hfs⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 this`.
+
+Establish `: Countable (MvPolynomial (Fin n) Γ(Sp O, ⊤))` using `(MvPolynomial.basisMonomials (Fin n) Γ(Sp O, ⊤)).repr.injective.countable`. Conclude with `hfs.countable`.
+-/
 theorem countable_sections {X : Scheme.{0}} {O : Type} [CommRing O] [Countable O] (s : X ⟶ Sp O) [LocallyOfFiniteType s]
     {U : X.Opens} (hU : IsAffineOpen U) : Countable Γ(X, U) := by
   have hf : (s.appLE ⊤ _ le_top).hom.FiniteType :=
@@ -70,6 +84,31 @@ theorem countable_sections {X : Scheme.{0}} {O : Type} [CommRing O] [Countable O
     (MvPolynomial.basisMonomials (Fin n) Γ(Sp O, ⊤)).repr.injective.countable
   exact hfs.countable
 
+/- English proof (translation)
+Take `⟨⟨⟨_, hDed⟩, -, -⟩, hopen⟩` from `GlobalTheory.T.valuation_subring_dedekind_open_immersion E H l c W`. Use `Y.jQ_open` as an intermediate fact. Establish `hj : IsOpenImmersion Y.j` using `by unfold Model.j; infer_instance`. Take `⟨-, -, -, -, -, hdom, -⟩` from `GlobalTheory.genericPart_dense_proOpen W c.F Y.X _ Y.s Y.jQ Y.flat Y.proj Y.jQ_open Y.jQ_dense`. Establish `hdense : Dense (Set.range Y.j)` using `hdom.denseRange`.
+
+Take `⟨W₀, f₀, hW, hf⟩` from `GlobalTheory.T.exists_unit_thetaKeyRule_open_model_chart E H D l Xo c _ _ Y inferInstance hj hpq κ hκ M`. Establish `hcF : Countable c.F`. Use `c.fin` as an intermediate fact. Use `Algebra.IsAlgebraic.cardinalMk_le_max ℚ c.F` as an intermediate fact. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`.
+
+Simplify `this` using `[Cardinal.mkRat]`. Establish `: Countable W` using `Subtype.val_injective.countable`. Use `projProper _ _ _ Y.proj` as an intermediate fact. Establish `: IsLocallyNoetherian Y.X` using `LocallyOfFiniteType.isLocallyNoetherian Y.s`. Establish `: GlobalTheory.IsNormalScheme Y.X` using `GlobalTheory.IsNormalScheme.of_pred Y.normal`.
+
+Use `M.dom` as an intermediate fact. Establish `hpos : 1 ≤ Module.finrank ℚ E / 2 * (D.p + D.q)`. Establish `h₁` using `IsTotallyComplex.finrank E`. Establish `h₂ : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Conclude with `Nat.mul_pos (by omega) hpq`.
+
+Establish `hWU : W₀ ≤ M.U` using `fun x hx => ((hW x).1 hx).1`. Establish `hWj : ∀ {K : Type} [Field K] {z : Sp K ⟶ Y.X}, ⊤ ≤ z ⁻¹ᵁ W₀ → Set.range z ⊆ Set.range Y.j` using `fun hz => by`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `((hW _).1 (hz (Set.mem_univ q))).2`. Establish `hne : ∃ x, x ∈ W₀`.
+
+Take `⟨q⟩ : Nonempty (Sp Γ(Y.X, M.U))` from `inferInstanceAs (Nonempty (PrimeSpectrum _))`. Take `⟨x, hx, hx'⟩` from `hdense.exists_mem_open M.U.isOpen ⟨_, tau_le M.hU le_rfl (Set.mem_univ q)⟩`. Conclude with `⟨x, (hW x).2 ⟨hx', hx⟩⟩`. Take `⟨hinj, hext⟩` from `GlobalTheory.GenExt.extend_of_integral_at_dvr _ _ W₀ hWU M.hU M.dom (IsLocallyNoetherian.component_noetherian ⟨_, M.hU⟩) (GlobalTheory.IsNormalScheme.isIntegrallyClosed_of_isAffineOpen M.hU) (countable_sections Y.s M.hU) hne`. Establish `key : ∀ u : Γ(Y.X, W₀), (u = f₀.val ∨ u = (f₀⁻¹).val) → ∃ f, resG _ hWU f = u`.
+
+Introduce `u hu`. Use `hext u fun R K _ _ _ _ _ _ z hR hz h => ?_` and prove the remaining obligations. Set `y` to `IsOpenImmersion.lift Y.j (spMap (algebraMap R K) ≫ z) (hWj h)`. Establish `: CharZero K` using `charZero_of_injective_ringHom (Spec.preimage (y ≫ pullback.snd _ _)).hom.injective`. Use `GlobalTheory.T.integral_of_arcs_and_goodReduction_points E H D l Xo c W Y h3 h4 hs hj M.U W₀ u (fun x hx hx' => (hW x).2 ⟨hx, hx'⟩) (fun a χ hA hover hgen hχ => ?_) (fun R K _ _ _ _ _ _ _ z y hz hy hab h => ?_) R K z y hR hz (IsOpenImmersion.lift_fac _ _ _) h` and prove the remaining obligations.
+
+Take `⟨y, hy, T, C', hC', hT⟩` from `GlobalTheory.ArcNormal.arc_normal_form _ _ _ _ _ _ _ Y hpq hP a χ hA hover hgen M hχ`. Use `GlobalTheory.ArcReg.not_pole_of_bounded _ M.U W₀ u χ y M.hU hWU hχ hy ⟨T, C' ^ 4, fun w hw hyw => ?_⟩` and prove the remaining obligations. Take `⟨x, -, hk⟩` from `GlobalTheory.KeyAtEx.exists_keyAt_model M (y w) (le_preimage_mono hWU hyw) (hWj hyw) hpos`. Take `⟨τ, Mx, a', b', c₀, k₁, k₂, k₃, k₄, k₅⟩` from `hT w hw _ x hk`. Take `⟨b₁, b₂⟩` from `norm_bounds hκ x k₁ k₂ k₃ hC' k₄ k₅`.
+
+Establish `e` using `hf ℂ (y w) hyw _ x hk`. Break down `hu with rfl | rfl` into its components or cases. Rewrite using `[e]` and apply the resulting hypothesis. Rewrite using `[map_units_inv, e]` and apply the resulting hypothesis. Take `⟨x, -, hk⟩` from `GlobalTheory.KeyAtEx.exists_keyAt_model M _ (le_preimage_comp _ hz) (hWj h) hpos`.
+
+Take `⟨v, hv⟩` from `GlobalTheory.T.isUnit_thetaKeyScalar_goodReduction_chart E H D l Xo c _ _ Y κ hκ M R K z hz y hy hab x hk`. Establish `e` using `hf K _ h _ x hk`. Break down `hu with rfl | rfl` into its components or cases. Conclude with `⟨v, by rw [e, hv]⟩`. Conclude with `⟨(v⁻¹ : Rˣ), by rw [map_units_inv, map_units_inv, e, hv]⟩`.
+
+Take `⟨f, hf₁⟩` from `key _ (Or.inl rfl)`. Take `⟨f', hf₂⟩` from `key _ (Or.inr rfl)`. Use `⟨f, IsUnit.of_mul_eq_one f' (hinj ?_), fun K _ _ z hz x hr hk => ?_⟩` and prove the remaining obligations. Conclude with `((RingHom.map_mul _ f f').trans ((congrArg₂ (· * ·) hf₁ hf₂).trans f₀.mul_inv)).trans (RingHom.map_one _).symm`. Establish `hz₀ : ⊤ ≤ z ⁻¹ᵁ W₀` using `fun q hq => (hW _).2 ⟨hz hq, hr ⟨q, rfl⟩⟩`.
+
+Rewrite using `[← hf K z hz₀ _ x hk, ← hf₁, ev_res z hWU hz₀ hz]`.
+-/
 theorem exists_chart_unit {W : ValuationSubring c.F} (Y : Model Xo c W.subtype) (hpq : 1 ≤ D.p + D.q)
     (hP : PushInvertible Y.t.G Y.t.PP.L) (h3 : Y.N3) (h4 : Y.N4) (hs : Y.SplitFibres) {κ : KeyRule} (hκ : IsKeyRule κ)
     (M : GChart Y) : ∃ u : Γ(Y.X, M.U), IsUnit u ∧ ∀ (K : Type) [Field K] [CharZero K] (z : Sp K ⟶ Y.X)
@@ -134,6 +173,11 @@ theorem exists_chart_unit {W : ValuationSubring c.F} (Y : Model Xo c W.subtype) 
   · have hz₀ : ⊤ ≤ z ⁻¹ᵁ W₀ := fun q hq => (hW _).2 ⟨hz hq, hr ⟨q, rfl⟩⟩
     rw [← hf K z hz₀ _ x hk, ← hf₁, ev_res z hWU hz₀ hz]
 
+/- English proof (translation)
+Establish `: (1 : Matrix (Fin x.P.g) (Fin x.P.g) K) i = Pi.single i 1`. Use extensionality with `k`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[this]`. Use `x.P.isAb.comm` as an intermediate fact.
+
+Conclude with `(GlobalTheory.LieComb.lieComb_algebra _ _ _ x.v x.basis.1).2.2.2.1 i`.
+-/
 theorem lieComb_one {K : Type} [Field K] (x : KeyIn K) (i : Fin x.P.g) :
     IsLieComb ((1 : Matrix (Fin x.P.g) (Fin x.P.g) K) i) x.v (x.v i) := by
   have : (1 : Matrix (Fin x.P.g) (Fin x.P.g) K) i = Pi.single i 1 := by
@@ -142,6 +186,25 @@ theorem lieComb_one {K : Type} [Field K] (x : KeyIn K) (i : Fin x.P.g) :
   have := x.P.isAb.comm
   exact (GlobalTheory.LieComb.lieComb_algebra _ _ _ x.v x.basis.1).2.2.2.1 i
 
+/- English proof (translation)
+Introduce `y yt hyt t m n w hw θ x hx`. Take `⟨⟨⟨_, hDed⟩, -, -⟩, -⟩` from `GlobalTheory.T.valuation_subring_dedekind_open_immersion E H l c W`. Take `⟨M, hM⟩` from `GlobalTheory.FlagMod.exists_gChart hP (yt (IsLocalRing.closedPoint V))`. Establish `hz : ⊤ ≤ yt ⁻¹ᵁ M.U` using `((IsLocalRing.closed_point_mem_iff (U := yt ⁻¹ᵁ M.U)).1 hM).ge`. Take `⟨u, hu, hval⟩` from `exists_chart_unit Y hpq hP h3 h4 hs hκ M`.
+
+Use `t.semi.smooth` as an intermediate fact. Take `⟨θ₀, h₀⟩ : ∃ θ₀ : t.PP.L.Sec, NonzeroClosed (X` from `t.G) θ₀ := by`. Take `⟨-, θ₀, -, -, hne⟩` from `GlobalTheory.exists_sec_pull_nonzero_on_fibres E H _ _ Y.t t yt m M.U hz M.θ M.θ_mem M.θ_ne`. Take `⟨g, i, h₁, h₂⟩` from `hne (IsLocalRing.closedPoint V)`. Conclude with `⟨θ₀, g, h₁, TopologicalSpace.Opens.mem_iSup.2 ⟨i, h₂⟩⟩`.
+
+Establish `hC : ∀ (θ : t.PP.L.Sec) (x : KeyIn K), IsFibreOf x t.G t.PP.L t.PP.rig θ w (algebraMap V K) → Generates (X` using `t.G) θ → ∃ u : Vˣ, (κ K x : K) = algebraMap V K u := fun θ x hx hθ => by`. Take `⟨x', a, d, hk, e⟩` from `GlobalTheory.T.exists_generatingFrame_unit_change_to_chart E H D l Xo c _ _ Y M V K yt hz t m n w hw θ x hx hθ`. Establish `e₁` using `e κ hκ`. Rewrite using `[hval K _ _ x' (by`. Rewrite using `[hyt]`.
+
+Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `⟨y q, (Scheme.Hom.comp_apply _ _ _).symm⟩) hk,`. Use `ev_spMap (algebraMap V K) yt M.U hz, RingHom.comp_apply] at e₁`. Use `⟨(d ^ 4)⁻¹ * (a ^ 8 * (hu.map (ev yt M.U hz)).unit), ?_⟩` and prove the remaining obligations. Establish `hd : algebraMap V K d ≠ 0` using `(d.isUnit.map _).ne_zero`.
+
+Rewrite using `[Units.val_mul, map_mul, map_units_inv, Units.val_mul, map_mul, IsUnit.unit_spec, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_pow, map_pow, e₁, inv_mul_cancel_left₀ (pow_ne_zero _ hd)]`. Establish `hB : ∀ (θ : t.PP.L.Sec), Generates (X` using `t.G) θ → ∀ N : ℕ, Generates (X := pow t.G N) (boxSec t.G θ N) := fun θ' hθ N => by`. Take `⟨a, ha, -⟩` from `hθ θ₀`. Take `⟨hfl, g, hg, hnz⟩` from `GlobalTheory.T.flat_fibrePower_and_externalTensorSection_nonzero_closedFibre V t.G t.PP.L θ' (NonzeroClosed.of_isMul ha h₀).2 N`. Take `⟨X', p', φ, L', b, k₁, k₂, k₃, k₄⟩` from `GlobalTheory.T.exists_line_sections_externalTensorPower_fibre V K _ t.G t.PP.L t.PP.rig θ n w x t.PP.isLB hx N`.
+
+Conclude with `generates_of_generic_line (pow t.G N).hom k₁ (LB.isLB_linComb t.PP.isLB _ _) k₂ k₃ b k₄ _ hg hnz`. Use `⟨fun hθ => ⟨hC θ x hx hθ, fun N _ => hB θ hθ N⟩, ?_⟩` and prove the remaining obligations. Introduce `N hN σ a hσ hmul`. Establish `hg₀` using `generates_of_isFibreOf t.PP.isLB hx h₀`. Take `⟨b, hθb, -⟩` from `hg₀ θ`.
+
+Take `⟨th₀, hth₀, hth, hx₀⟩` from `GlobalTheory.T.exists_baseChange_rigidifiedSection_of_scalarMultiple V K _ t.G t.PP.L t.PP.rig θ n w x t.PP.isLB hx θ₀ b hθb`. Take `⟨u₀, hu₀⟩` from `hC θ₀ _ hx₀ hg₀`. Establish `hbox₀` using `hB θ₀ hg₀ N`. Establish `hom` using `hκ.1 K x.P x.g_pos x.rig x.rig_gen th₀ hth₀ x.v x.basis x.th x.th_ne x.v x.basis (algebraMap V K b) 1 hth (lieComb_one x)`. Rewrite `hom` using `[Matrix.det_one, one_pow, _root_.one_mul]`.
+
+Take `⟨c', hc', -⟩` from `hσ (boxSec t.G θ₀ N)`. Establish `hcu : IsUnit c'` using `Generates.isUnit hσ hbox₀ hc'`. Establish `ha : a = b ^ N * c'` using `(hσ (boxSec t.G θ N)).unique hmul (IsMul.trans (isMul_boxSec hθb N) hc')`. Take `⟨k, rfl⟩` from `hN`. Use `⟨hcu.unit * u₀ ^ k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ha, Nat.mul_div_cancel_left k (by norm_num : 0 < 8)]`. Simplify using `only [map_mul, map_pow, Units.val_mul, Units.val_pow_eq_pow_val, IsUnit.unit_spec]`. Rewrite using `[← hu₀, ← hom, pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem unitAt_local {W : ValuationSubring c.F} (Y : Model Xo c W.subtype) (hpq : 1 ≤ D.p + D.q)
     (hP : PushInvertible Y.t.G Y.t.PP.L) (h3 : Y.N3) (h4 : Y.N4) (hs : Y.SplitFibres) {κ : KeyRule} (hκ : IsKeyRule κ)
     (V K : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] :
@@ -193,6 +256,19 @@ theorem unitAt_local {W : ValuationSubring c.F} (Y : Model Xo c W.subtype) (hpq 
   rw [← hu₀, ← hom, pow_mul]
   ring
 
+/- English proof (translation)
+Introduce `y yt hyt t m`. Establish `hinj` using `IsFractionRing.injective V K`. Establish `sp : ∀ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : B →+* C) (g : A →+* B), spMap f ≫ spMap g = spMap (f.comp g)` using `fun _ _ => (Spec.map_comp _ _).symm`. Take `⟨io, hio⟩ : ∃ io : c.F →+* K, spMap io = y ≫ pullback.snd _ _` from `⟨_, Spec.map_preimage _⟩`. Take `⟨b₀, hb₀⟩ : ∃ b₀ : O →+* V, spMap b₀ = yt ≫ Y.s` from `⟨_, Spec.map_preimage _⟩`.
+
+Establish `hc : (algebraMap V K).comp b₀ = io.comp β`. Establish `e : spMap ((algebraMap V K).comp b₀) = spMap (io.comp β)`. Rewrite using `[← sp, ← sp, hb₀, hio, ← Category.assoc, hyt, Model.j, Category.assoc, Category.assoc, Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Set `W : ValuationSubring c.F` to `{ (algebraMap V K).range.comap io with mem_or_inv_mem' := fun a => by`.
+
+Use `ValuationRing.isInteger_or_isInteger V (io a)` as an intermediate fact. Rewrite `this` using `[← map_inv₀]`. Conclude with `this }`. Set `b : O →+* W` to `β.codRestrict W.toSubring fun a => ⟨b₀ a, RingHom.congr_fun hc a⟩`. Establish `hb : W.subtype.comp b = β` using `rfl`.
+
+Set `e` to `RingEquiv.ofBijective (algebraMap V K).rangeRestrict ⟨fun a a' h => hinj (congrArg Subtype.val h), (algebraMap V K).rangeRestrict_surjective⟩`. Set `b' : W →+* V` to `e.symm.toRingHom.comp ((io.comp W.subtype).codRestrict (algebraMap V K).range fun a => a.2)`. Establish `hb' : b'.comp b = b₀` using `RingHom.ext fun a => by`. Apply `e.injective` to reduce the goal to its premises. Conclude with `(e.apply_symm_apply _).trans (Subtype.ext (RingHom.congr_fun hc a).symm)`.
+
+Take `⟨_, _⟩` from `GlobalTheory.T.isPreimmersion_flat_valuationSubring_baseRing E H l c O β hβ W b hb`. Set `yt' : Sp V ⟶ (locModel Y b hb).X` to `pullback.lift yt (spMap b') (by rw [sp, hb', hb₀])`. Establish `hy' : yt' ≫ pullback.fst Y.s (spMap b) = yt` using `pullback.lift_fst _ _ _`. Take `⟨m', -⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel (g := yt') (locMap Y b) (hy'.symm ▸ m)`. Conclude with `unitAt_local (locModel Y b hb) hpq (locModel_pushInvertible Y b hb (GlobalTheory.T.valuation_subring_dedekind_open_immersion E H l c W).1 hP) (localisedModel_uniformisation_baseChange Y b hb h3) (GlobalTheory.T.arcProperty_localisationBaseChange_of_model E H D l Xo c O β Y _ _ b …`.
+
+Rewrite using `[← cancel_mono (pullback.fst Y.s (spMap b)), Category.assoc, Category.assoc, hy', locModel_j, hyt]) t m'`.
+-/
 theorem unitAt_valuation {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) (hpq : 1 ≤ D.p + D.q)
     (hβ : IsBaseRing β) (hP : PushInvertible Y.t.G Y.t.PP.L) (h3 : Y.N3) (h4 : Y.N4) (hs : Y.SplitFibres) {κ : KeyRule}
     (hκ : IsKeyRule κ) (V K : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [CharZero K] [Algebra V K]
@@ -230,6 +306,9 @@ theorem unitAt_valuation {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model X
     (GlobalTheory.T.arcProperty_localisationBaseChange_of_model E H D l Xo c O β Y _ _ b hb h4) (GlobalTheory.T.splitFibres_localisedModel_baseChange E H D l Xo c O β Y _ _ b hb hs) hκ V K y yt' (by
       rw [← cancel_mono (pullback.fst Y.s (spMap b)), Category.assoc, Category.assoc, hy', locModel_j, hyt]) t m'
 
+/- English proof (translation)
+Introduce `κ hκ E _ _ _ H D l Xo c O _ β Y p h₁ h₂ _ h₄ h₅ h₆ h₇`. Use `⟨fun V K _ _ _ _ _ _ _ _ => unitAt_valuation Y h₁ h₂ h₄.2.2.1 h₅ h₆ h₇ hκ V K, fun V C _ _ _ _ _ _ _ hV => ?_⟩` and prove the remaining obligations. Take `⟨_, _, _⟩` from `GlobalTheory.GoodRedUnitBall.valuationRing_of_unitBall hV`. Conclude with `unitAt_valuation Y h₁ h₂ h₄.2.2.1 h₅ h₆ h₇ hκ V C`.
+-/
 theorem keyUnitOnModels : KeyUnitOnModels := by
   intro κ hκ E _ _ _ H D l Xo c O _ β Y p h₁ h₂ _ h₄ h₅ h₆ h₇
   refine ⟨fun V K _ _ _ _ _ _ _ _ => unitAt_valuation Y h₁ h₂ h₄.2.2.1 h₅ h₆ h₇ hκ V K, fun V C _ _ _ _ _ _ _ hV => ?_⟩

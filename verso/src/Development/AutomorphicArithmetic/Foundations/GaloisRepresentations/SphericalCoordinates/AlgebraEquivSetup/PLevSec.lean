@@ -8,6 +8,25 @@ open UpperTheory.Gal.W2.Seed UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Pl 
 open scoped TensorProduct Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hIC E _ _ _ A n p _ S T S₀ Kw hS`. Establish `hn : 0 < n` using `S.facts.pos`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 E)`. Set `w₀ : Plc E` to `⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)⟩`. Establish `hsim : ∀ g : GUf E n, (∀ u, comp u g ∈ GlobalTheory.LFun.KGL u n) → sim g ∈ UpperTheory.Gal.CertificateRingHomMap.ZU` using `fun g h => (hIC E n g w₀ hn).2.1 h`.
+
+Establish `hcj : ∀ w : Plc E, (p : 𝓞 E) ∈ w.asIdeal → (p : 𝓞 E) ∈ (UpperTheory.Gal.CertificateRingHomMap.cj w).asIdeal`. Introduce `w hw`. Establish `h1 : (p : 𝓞 (maximalRealSubfield E)) ∈ (w.under (𝓞 (maximalRealSubfield E))).asIdeal` using `by show algebraMap _ (𝓞 E) (p : 𝓞 (maximalRealSubfield E)) ∈ w.asIdeal`. Simplify using `using hw`. Rewrite `h1` using `[← GlobalTheory.LocInj.under_conjSrc w]`.
+
+Establish `h2 : algebraMap _ (𝓞 E) (p : 𝓞 (maximalRealSubfield E)) ∈ (UpperTheory.Gal.CertificateRingHomMap.cj w).asIdeal` using `h1`. Simplify using `using h2`. Use `⟨fun k hk => ?_, fun k h1 h2 _ => ?_⟩` and prove the remaining obligations. Take `⟨hs, hK, hR⟩` from `UpperTheory.Gal.CertificateRingHomMap.mem_lev.1 hk`. Establish `hoff : ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → comp w (T.sec (T.j k)) = comp w k` using `(T.j_eq _ _).1 (T.j_sec _)`.
+
+Establish `hover : ∀ w : Plc E, (p : 𝓞 E) ∈ w.asIdeal → comp w k ∈ GlobalTheory.LFun.KGL w n` using `fun w hw => hR w (fun h => hS w h hw) (fun h => hS _ h (hcj w hw))`. Establish `hq : sim ((T.sec (T.j k))⁻¹ * k) ∈ UpperTheory.Gal.CertificateRingHomMap.ZU`. Use `hsim _ fun u => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv]`. Distinguish the cases in `hu : (p : 𝓞 E) ∈ u.asIdeal`.
+
+Rewrite using `[T.sec_p _ u hu, inv_one, one_mul]`. Conclude with `hover u hu`. Rewrite using `[hoff u hu, inv_mul_cancel]`. Conclude with `one_mem _`. Use `UpperTheory.Gal.CertificateRingHomMap.mem_lev.2 ⟨?_, fun w hw => ?_, fun w hw hcw => ?_⟩` and prove the remaining obligations.
+
+Establish `e : sim (T.sec (T.j k)) = sim k * (sim ((T.sec (T.j k))⁻¹ * k))⁻¹`. Rewrite using `[map_mul, map_inv]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `mul_mem hs (inv_mem hq)`.
+
+Rewrite using `[hoff w (hS w hw)]`. Conclude with `hK w hw`. Distinguish the cases in `hu : (p : 𝓞 E) ∈ w.asIdeal`. Rewrite using `[T.sec_p _ w hu]`. Conclude with `one_mem _`.
+
+Rewrite using `[hoff w hu]`. Conclude with `hR w hw hcw`. Establish `hall : ∀ u, comp u k ∈ GlobalTheory.LFun.KGL u n` using `fun u => by`. Distinguish the cases in `hu : (p : 𝓞 E) ∈ u.asIdeal`. Conclude with `h2 u hu`.
+
+Rewrite using `[h1 u hu]`. Conclude with `one_mem _`. Use `UpperTheory.Gal.CertificateRingHomMap.mem_lev.2 ⟨hsim k hall, fun w hw => ?_, fun w _ _ => hall w⟩` and prove the remaining obligations. Rewrite using `[h1 w (hS w hw)]`. Conclude with `one_mem _`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pLevSec :
     UpperTheory.Gal.W2.Seed.IntConj → LevSec := by
   intro hIC E _ _ _ A n p _ S T S₀ Kw hS

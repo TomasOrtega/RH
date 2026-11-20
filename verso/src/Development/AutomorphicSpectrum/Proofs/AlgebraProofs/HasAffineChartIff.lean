@@ -16,6 +16,9 @@ def IsChart {P X Y : Scheme.{0}} (a b : P ⟶ X) (V : X.Opens) (q : V.toScheme �
     ∃ a' : (b ⁻¹ᵁ V).toScheme ⟶ V.toScheme,
       a' ≫ V.ι = (b ⁻¹ᵁ V).ι ≫ a ∧ IsPullback a' (b ∣_ V) q q
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, Y, q, a', hY, h1, h2, h3, h4, h5, h6⟩`. Conclude with `⟨Y, q, hY, h, h1, h2, h3, h4, a', h5, h6⟩`. Introduce and unpack `⟨Y, q, hY, h, h1, h2, h3, h4, a', h5, h6⟩`. Conclude with `⟨h, Y, q, a', hY, h1, h2, h3, h4, h5, h6⟩`.
+-/
 theorem hasAffineChart_iff {P X : Scheme.{0}} (a b : P ⟶ X) (V : X.Opens) :
     HasAffineChart a b V ↔ ∃ (Y : Scheme.{0}) (q : V.toScheme ⟶ Y), IsAffine Y ∧ IsChart a b V q := by
   constructor
@@ -24,12 +27,22 @@ theorem hasAffineChart_iff {P X : Scheme.{0}} (a b : P ⟶ X) (V : X.Opens) :
   · rintro ⟨Y, q, hY, h, h1, h2, h3, h4, a', h5, h6⟩
     exact ⟨h, Y, q, a', hY, h1, h2, h3, h4, h5, h6⟩
 
+/- English proof (translation)
+Establish `: IsIso (⊤ : X.Opens).ι` using `X.topIso.isIso_hom`. Use `⟨rfl, inferInstance, inferInstance, inferInstance, inferInstance, 𝟙 X ∣_ ⊤, morphismRestrict_ι _ _, ?_⟩` and prove the remaining obligations. Conclude with `IsPullback.of_horiz_isIso ⟨rfl⟩`.
+-/
 theorem isChart_id (X : Scheme.{0}) : IsChart (𝟙 X) (𝟙 X) ⊤ (⊤ : X.Opens).ι := by
   have : IsIso (⊤ : X.Opens).ι := X.topIso.isIso_hom
   refine ⟨rfl, inferInstance, inferInstance, inferInstance, inferInstance,
     𝟙 X ∣_ ⊤, morphismRestrict_ι _ _, ?_⟩
   exact IsPullback.of_horiz_isIso ⟨rfl⟩
 
+/- English proof (translation)
+Establish `: IsIso (⊤ : X.Opens).ι` using `X.topIso.isIso_hom`. Establish `hb : IsIso ((pullback.snd q q) ⁻¹ᵁ (⊤ : X.Opens)).ι` using `(pullback q q).topIso.isIso_hom`. Set `f` to `((pullback.snd q q) ⁻¹ᵁ (⊤ : X.Opens)).ι`. Use `⟨rfl, inferInstance, inferInstance, inferInstance, inferInstance, f ≫ pullback.fst q q ≫ inv (⊤ : X.Opens).ι, by simp [f], ?_⟩` and prove the remaining obligations. Use `IsPullback.of_iso (IsPullback.of_hasPullback q q) (asIso f).symm (asIso (⊤ : X.Opens).ι).symm (asIso (⊤ : X.Opens).ι).symm (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Simplify using `[f]`. Rewrite using `[← cancel_mono (⊤ : X.Opens).ι]`. Simplify using `only [Iso.symm_hom, asIso_inv, Category.assoc, IsIso.inv_hom_id, Category.comp_id, morphismRestrict_ι]`. Conclude with `(IsIso.inv_hom_id_assoc f _).symm`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isChart_pullback {X Y : Scheme.{0}} (q : X ⟶ Y) [IsFinite q] [Flat q]
     [LocallyOfFinitePresentation q] [Surjective q] :
     IsChart (pullback.fst q q) (pullback.snd q q) ⊤ ((⊤ : X.Opens).ι ≫ q) := by
@@ -50,16 +63,45 @@ theorem isChart_pullback {X Y : Scheme.{0}} (q : X ⟶ Y) [IsFinite q] [Flat q]
 
 variable {P X Y : Scheme.{0}} {a b : P ⟶ X} {V : X.Opens} {q : V.toScheme ⟶ Y}
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem IsChart.stable (h : IsChart a b V q) : a ⁻¹ᵁ V = b ⁻¹ᵁ V := h.1
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem IsChart.isFinite (h : IsChart a b V q) : IsFinite q := h.2.1
+/- English proof (translation)
+The claim follows from `h.2.2.1`.
+-/
 theorem IsChart.flat (h : IsChart a b V q) : Flat q := h.2.2.1
+/- English proof (translation)
+The claim follows from `h.2.2.2.1`.
+-/
 theorem IsChart.lfp (h : IsChart a b V q) : LocallyOfFinitePresentation q := h.2.2.2.1
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.1`.
+-/
 theorem IsChart.surjective (h : IsChart a b V q) : Surjective q := h.2.2.2.2.1
 
+/- English proof (translation)
+Use `h.isFinite` as an intermediate fact. Use `h.flat` as an intermediate fact. Use `h.surjective` as an intermediate fact. Use `infer_instance`.
+-/
 theorem IsChart.effectiveEpi (h : IsChart a b V q) : EffectiveEpi q := by
   have := h.isFinite; have := h.flat; have := h.surjective
   infer_instance
 
+/- English proof (translation)
+Take `⟨hs, -, -, -, -, a', ha, hp⟩` from `h`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Use `⟨hp.lift g₁ g₂ e ≫ (b ⁻¹ᵁ V).ι, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← ha, hp.lift_fst_assoc]`.
+
+Rewrite using `[Category.assoc, ← morphismRestrict_ι, hp.lift_snd_assoc]`. Introduce and unpack `⟨l, h1, h2⟩`. Establish `hr : Set.range l ⊆ Set.range (b ⁻¹ᵁ V).ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Establish `: b (l z) ∈ V`.
+
+Establish `: b (l z) = V.ι (g₂ z)` using `congr($h2 z)`. Rewrite using `[this]`. Conclude with `(g₂ z).2`. Simplify using `using this`. Set `l' : Z ⟶ (b ⁻¹ᵁ V).toScheme` to `IsOpenImmersion.lift _ l hr`.
+
+Establish `hl : l' ≫ (b ⁻¹ᵁ V).ι = l` using `IsOpenImmersion.lift_fac _ _ _`. Establish `e1 : l' ≫ a' = g₁`. Rewrite using `[← cancel_mono V.ι, Category.assoc, ha, reassoc_of% hl, h1]`. Establish `e2 : l' ≫ (b ∣_ V) = g₂`. Rewrite using `[← cancel_mono V.ι, Category.assoc, morphismRestrict_ι, reassoc_of% hl, h2]`.
+
+Rewrite using `[← e1, ← e2, Category.assoc, Category.assoc, hp.w]`.
+-/
 theorem IsChart.comp_eq_iff (h : IsChart a b V q) {Z : Scheme.{0}} (g₁ g₂ : Z ⟶ V.toScheme) :
     g₁ ≫ q = g₂ ≫ q ↔ ∃ l : Z ⟶ P, l ≫ a = g₁ ≫ V.ι ∧ l ≫ b = g₂ ≫ V.ι := by
   obtain ⟨hs, -, -, -, -, a', ha, hp⟩ := h
@@ -83,6 +125,21 @@ theorem IsChart.comp_eq_iff (h : IsChart a b V q) {Z : Scheme.{0}} (g₁ g₂ : 
       rw [← cancel_mono V.ι, Category.assoc, morphismRestrict_ι, reassoc_of% hl, h2]
     rw [← e1, ← e2, Category.assoc, Category.assoc, hp.w]
 
+/- English proof (translation)
+Take `⟨hs, -, -, -, -, a', ha, hp⟩` from `id h`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Take `⟨z, h1, h2⟩` from `Scheme.Pullback.exists_preimage_pullback u v e`. Set `p : (b ⁻¹ᵁ V).toScheme` to `hp.isoPullback.inv z`.
+
+Establish `e1 : a' p = u`. Rewrite using `[← h1]`. Conclude with `congr($(hp.isoPullback_inv_fst) z)`. Establish `e2 : (b ∣_ V) p = v`. Rewrite using `[← h2]`.
+
+Conclude with `congr($(hp.isoPullback_inv_snd) z)`. Use `⟨(b ⁻¹ᵁ V).ι p, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e1]`. Conclude with `(congr($ha p)).symm`. Rewrite using `[← e2]`.
+
+Conclude with `(congr($(morphismRestrict_ι b V) p)).symm`. Introduce and unpack `⟨p, h1, h2⟩`. Establish `hp' : p ∈ b ⁻¹ᵁ V`. Express the relevant statement in the definitionally equal form `b p ∈ V`. Rewrite using `[h2]`.
+
+Conclude with `v.2`. Set `p' : (b ⁻¹ᵁ V).toScheme` to `⟨p, hp'⟩`. Establish `hi : (b ⁻¹ᵁ V).ι p' = p` using `rfl`. Establish `e1 : a' p' = u` using `V.ι.isOpenEmbedding.injective (by`. Rewrite using `[← h1, ← hi]`.
+
+Conclude with `congr($ha p'))`. Establish `e2 : (b ∣_ V) p' = v` using `V.ι.isOpenEmbedding.injective (by`. Rewrite using `[← h2, ← hi]`. Conclude with `congr($(morphismRestrict_ι b V) p'))`. Rewrite using `[← e1, ← e2]`.
+
+Conclude with `congr($(hp.w) p')`.
+-/
 theorem IsChart.apply_eq_iff (h : IsChart a b V q) (u v : V.toScheme) :
     q u = q v ↔ ∃ p : P, a p = V.ι u ∧ b p = V.ι v := by
   obtain ⟨hs, -, -, -, -, a', ha, hp⟩ := id h

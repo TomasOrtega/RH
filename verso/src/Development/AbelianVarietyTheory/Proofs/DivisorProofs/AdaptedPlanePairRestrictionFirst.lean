@@ -22,22 +22,37 @@ section Alg
 
 variable {A : Type} {κ κ₁ κ₂ κ' κ₁' κ₂' : Type}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [partL, Sum.elim_comp_inl, Sum.elim_comp_inr]`.
+-/
 theorem partL_partL (T : ((κ₁ → A) → ℂ) → (κ₂ → A) → ℂ) (U : ((κ → A) → ℂ) → (κ₁ → A) → ℂ)
     (Φ : (κ ⊕ κ' → A) → ℂ) : partL T (partL U Φ) = partL (fun φ => T (U φ)) Φ := by
   funext y; simp only [partL, Sum.elim_comp_inl, Sum.elim_comp_inr]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [partR, Sum.elim_comp_inl, Sum.elim_comp_inr]`.
+-/
 theorem partR_partR (T : ((κ₁' → A) → ℂ) → (κ₂' → A) → ℂ) (U : ((κ' → A) → ℂ) → (κ₁' → A) → ℂ)
     (Φ : (κ ⊕ κ' → A) → ℂ) : partR T (partR U Φ) = partR (fun φ => T (U φ)) Φ := by
   funext y; simp only [partR, Sum.elim_comp_inl, Sum.elim_comp_inr]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [partL, h]`.
+-/
 theorem partL_congr {T T' : ((κ → A) → ℂ) → (κ₁ → A) → ℂ} {Φ : (κ ⊕ κ' → A) → ℂ}
     (h : ∀ b : κ' → A, T (fun x => Φ (Sum.elim x b)) = T' (fun x => Φ (Sum.elim x b))) : partL T Φ = partL T' Φ := by
   funext y; simp only [partL, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [partR, h]`.
+-/
 theorem partR_congr {T T' : ((κ' → A) → ℂ) → (κ₁' → A) → ℂ} {Φ : (κ ⊕ κ' → A) → ℂ}
     (h : ∀ a : κ → A, T (fun x => Φ (Sum.elim a x)) = T' (fun x => Φ (Sum.elim a x))) : partR T Φ = partR T' Φ := by
   funext y; simp only [partR, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [partL, partR, Sum.elim_comp_inl, Sum.elim_comp_inr]`. Rewrite using `[show (fun x => c (y ∘ Sum.inr) * Φ (Sum.elim x (y ∘ Sum.inr + a))) = c (y ∘ Sum.inr) • fun x => Φ (Sum.elim x (y ∘ Sum.inr + a)) from rfl, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem partL_partR_mt [Add A] (e : ((κ → A) → ℂ) →ₗ[ℂ] (κ₁ → A) → ℂ) (c : (κ' → A) → ℂ) (a : κ' → A)
     (Φ : (κ ⊕ κ' → A) → ℂ) :
     partL e (partR (fun φ x => c x * φ (x + a)) Φ) = partR (fun φ x => c x * φ (x + a)) (partL e Φ) := by
@@ -47,6 +62,9 @@ theorem partL_partR_mt [Add A] (e : ((κ → A) → ℂ) →ₗ[ℂ] (κ₁ → 
     c (y ∘ Sum.inr) • fun x => Φ (Sum.elim x (y ∘ Sum.inr + a)) from rfl, map_smul]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [partL, partR, Sum.elim_comp_inl, Sum.elim_comp_inr]`. Rewrite using `[show (fun x => c (y ∘ Sum.inl) * Φ (Sum.elim (y ∘ Sum.inl + a) x)) = c (y ∘ Sum.inl) • fun x => Φ (Sum.elim (y ∘ Sum.inl + a) x) from rfl, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem partR_partL_mt [Add A] (e : ((κ' → A) → ℂ) →ₗ[ℂ] (κ₁' → A) → ℂ) (c : (κ → A) → ℂ) (a : κ → A)
     (Φ : (κ ⊕ κ' → A) → ℂ) :
     partR e (partL (fun φ x => c x * φ (x + a)) Φ) = partL (fun φ x => c x * φ (x + a)) (partR e Φ) := by
@@ -62,6 +80,11 @@ section Heis
 
 variable {R : Type} [CommRing R] [Invertible (2 : R)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Take `⟨u, v, rfl⟩ : ∃ u v, y = Sum.elim u v` from `⟨_, _, (Sum.elim_comp_inl_inr y).symm⟩`. Establish `h'` using `h w₁ w₂`. Simplify using `only [Darboux.rho, partL, partR, h', schr, Sum.elim_comp_inl, Sum.elim_comp_inr, sumElim_dotProduct_sumElim, Sum.elim_add_add, AddChar.inv_apply, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`.
+
+Simplify using `only [dotProduct_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rho_dbl {E : Type} [CommRing E] [Algebra R E] (c : E →ₐ[R] E) (ξ : E) {α β : Type} [Fintype α] [DecidableEq α]
     [Fintype β] [DecidableEq β] (JA : Matrix α α E) (JB : Matrix β β E) {κ : Type} [Fintype κ]
     (d : Darboux (symp c ξ JA JB) κ) (dd : Darboux (symp c ξ JA (dbl JB)) (κ ⊕ κ)) (h : IsDblCoord c ξ JA JB d dd)
@@ -79,16 +102,25 @@ theorem rho_dbl {E : Type} [CommRing E] [Algebra R E] (c : E →ₐ[R] E) (ξ : 
 variable {κ : Type} [Fintype κ] (ψ : AddChar R ℂ) (hψ : ∀ t, ‖ψ t‖ = 1)
 include hψ
 
+/- English proof (translation)
+Rewrite using `[AddChar.inv_apply, AddChar.map_neg_eq_inv]`. Use `eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hψ t]`. Evaluate the numerical expressions.
+-/
 theorem conj_psi (t : R) : starRingEnd ℂ (ψ t) = ψ⁻¹ t := by
   rw [AddChar.inv_apply, AddChar.map_neg_eq_inv]
   refine eq_inv_of_mul_eq_one_right ?_
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, hψ t]
   norm_num
 
+/- English proof (translation)
+Simplify using `only [schr, map_mul, conj_psi ψ hψ]`.
+-/
 theorem conj_schr (w : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) (x : κ → R) :
     starRingEnd ℂ (schr ψ w φ x) = schr ψ⁻¹ w (fun x => starRingEnd ℂ (φ x)) x := by
   simp only [schr, map_mul, conj_psi ψ hψ]
 
+/- English proof (translation)
+Simplify using `only [schr, map_mul, AddChar.inv_apply, conj_psi ψ hψ, inv_inv, neg_neg]`.
+-/
 theorem conj_schr_inv (w : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) (x : κ → R) :
     starRingEnd ℂ (schr ψ⁻¹ w φ x) = schr ψ w (fun x => starRingEnd ℂ (φ x)) x := by
   simp only [schr, map_mul, AddChar.inv_apply, conj_psi ψ hψ, inv_inv, neg_neg]
@@ -99,12 +131,21 @@ section Glue
 
 variable {A : Type} {κ κ₁ κ' κ₁' : Type}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [partL, Sum.elim_comp_inl_inr]`.
+-/
 theorem partL_id (Φ : (κ ⊕ κ' → A) → ℂ) : partL (fun φ => φ) Φ = Φ := by
   funext y; simp only [partL, Sum.elim_comp_inl_inr]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [partR, Sum.elim_comp_inl_inr]`.
+-/
 theorem partR_id (Φ : (κ ⊕ κ' → A) → ℂ) : partR (fun φ => φ) Φ = Φ := by
   funext y; simp only [partR, Sum.elim_comp_inl_inr]
 
+/- English proof (translation)
+Rewrite using `[partL_partL, partL_partL]`. Conclude with `partL_congr fun b => h _ (hΦ b)`.
+-/
 theorem partL_intertwine {κa κb κc κd : Type} (T : ((κb → A) → ℂ) → (κd → A) → ℂ)
     (U : ((κa → A) → ℂ) → (κb → A) → ℂ) (U' : ((κc → A) → ℂ) → (κd → A) → ℂ) (T₀ : ((κa → A) → ℂ) → (κc → A) → ℂ)
     (S : Set ((κa → A) → ℂ)) (h : ∀ φ ∈ S, T (U φ) = U' (T₀ φ)) {Φ : (κa ⊕ κ' → A) → ℂ}
@@ -112,6 +153,9 @@ theorem partL_intertwine {κa κb κc κd : Type} (T : ((κb → A) → ℂ) →
   rw [partL_partL, partL_partL]
   exact partL_congr fun b => h _ (hΦ b)
 
+/- English proof (translation)
+Rewrite using `[partR_partR, partR_partR]`. Conclude with `partR_congr fun a => h _ (hΦ a)`.
+-/
 theorem partR_intertwine {κa κb κc κd : Type} (T : ((κb → A) → ℂ) → (κd → A) → ℂ)
     (U : ((κa → A) → ℂ) → (κb → A) → ℂ) (U' : ((κc → A) → ℂ) → (κd → A) → ℂ) (T₀ : ((κa → A) → ℂ) → (κc → A) → ℂ)
     (S : Set ((κa → A) → ℂ)) (h : ∀ φ ∈ S, T (U φ) = U' (T₀ φ)) {Φ : (κ ⊕ κa → A) → ℂ}
@@ -126,14 +170,23 @@ section Rho
 variable {R : Type} [CommRing R] [Invertible (2 : R)] {Wt : Type} [AddCommGroup Wt] [Module R Wt] {Bf : Wt → Wt → R}
   {κ κ₁ κ' κ₁' : Type} [Fintype κ] [Fintype κ']
 
+/- English proof (translation)
+The claim follows from `partL_partR_mt e (fun x => ψ (x ⬝ᵥ (D.e w).2 + ⅟(2 : R) * ((D.e w).1 ⬝ᵥ (D.e w).2))) (D.e w).1 Φ`.
+-/
 theorem partL_partR_rho (e : ((κ → R) → ℂ) →ₗ[ℂ] (κ₁ → R) → ℂ) (D : Darboux Bf κ') (ψ : AddChar R ℂ) (w : Wt)
     (Φ : (κ ⊕ κ' → R) → ℂ) : partL e (partR (D.rho ψ w) Φ) = partR (D.rho ψ w) (partL e Φ) :=
   partL_partR_mt e (fun x => ψ (x ⬝ᵥ (D.e w).2 + ⅟(2 : R) * ((D.e w).1 ⬝ᵥ (D.e w).2))) (D.e w).1 Φ
 
+/- English proof (translation)
+The claim follows from `partR_partL_mt e (fun x => ψ (x ⬝ᵥ (D.e w).2 + ⅟(2 : R) * ((D.e w).1 ⬝ᵥ (D.e w).2))) (D.e w).1 Φ`.
+-/
 theorem partR_partL_rho (e : ((κ' → R) → ℂ) →ₗ[ℂ] (κ₁' → R) → ℂ) (D : Darboux Bf κ) (ψ : AddChar R ℂ) (w : Wt)
     (Φ : (κ ⊕ κ' → R) → ℂ) : partR e (partL (D.rho ψ w) Φ) = partL (D.rho ψ w) (partR e Φ) :=
   partR_partL_mt e (fun x => ψ (x ⬝ᵥ (D.e w).2 + ⅟(2 : R) * ((D.e w).1 ⬝ᵥ (D.e w).2))) (D.e w).1 Φ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[partR, Darboux.rho, schr]`.
+-/
 theorem sliceL_partR_rho (D : Darboux Bf κ') (ψ : AddChar R ℂ) (w : Wt) (Φ : (κ ⊕ κ' → R) → ℂ) (b : κ' → R) :
     (fun x => partR (D.rho ψ w) Φ (Sum.elim x b)) =
       ψ (b ⬝ᵥ (D.e w).2 + ⅟(2 : R) * ((D.e w).1 ⬝ᵥ (D.e w).2)) • fun x => Φ (Sum.elim x (b + (D.e w).1)) := by
@@ -145,6 +198,9 @@ section Main
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `e1 : (fun x => Φ (Sum.elim x b)) = fun x => Φ (GlobalTheory.ThK.Adapt.glue (Equiv.sumComm κ κ') b x)`. Apply the tactic sequence `funext fun x => congrArg Φ (funext fun k => by cases k <;> rfl)`. Rewrite using `[e1]`. Conclude with `GlobalTheory.ThK.Adapt.slice_mem_schA (Equiv.sumComm κ κ') b hΦ`.
+-/
 theorem sliceL_mem {κ κ' : Type} [Fintype κ] [Fintype κ'] {Φ : (κ ⊕ κ' → AF F) → ℂ} (hΦ : Φ ∈ schA F (κ ⊕ κ'))
     (b : κ' → AF F) : (fun x => Φ (Sum.elim x b)) ∈ schA F κ := by
   have e1 : (fun x => Φ (Sum.elim x b)) = fun x => Φ (GlobalTheory.ThK.Adapt.glue (Equiv.sumComm κ κ') b x) :=
@@ -152,12 +208,24 @@ theorem sliceL_mem {κ κ' : Type} [Fintype κ] [Fintype κ'] {Φ : (κ ⊕ κ' 
   rw [e1]
   exact GlobalTheory.ThK.Adapt.slice_mem_schA (Equiv.sumComm κ κ') b hΦ
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ThK.Adapt.slice_mem_schA (Equiv.refl (κ ⊕ κ')) a hΦ`.
+-/
 theorem sliceR_mem {κ κ' : Type} [Fintype κ] [Fintype κ'] {Φ : (κ ⊕ κ' → AF F) → ℂ} (hΦ : Φ ∈ schA F (κ ⊕ κ'))
     (a : κ → AF F) : (fun x => Φ (Sum.elim a x)) ∈ schA F κ' :=
   GlobalTheory.ThK.Adapt.slice_mem_schA (Equiv.refl (κ ⊕ κ')) a hΦ
 
 variable {κ κ₁ κ' κ₁' : Type} [Fintype κ] [Fintype κ₁] [Fintype κ'] [Fintype κ₁']
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `GlobalTheory.T.local_operator_left_partial_pure (κ' := κ') e he`. Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`.
+
+Take `⟨g₁, hg₁, h1⟩` from `hP g hg`. Rewrite using `[h1 f]`. Conclude with `Submodule.subset_span ⟨P f, g₁, hg₁, rfl⟩`. Consider the case `zero => show partLₗ e 0 ∈ _`. Rewrite using `[map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => show partLₗ e (x + y) ∈ _`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => show partLₗ e (c • x) ∈ _`.
+
+Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem partL_mem (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ₁ → AF F) → ℂ) (he : IsLocOp e) :
     ∀ Φ ∈ schA F (κ ⊕ κ'), partL e Φ ∈ schA F (κ₁ ⊕ κ') := by
   obtain ⟨P, hP⟩ := GlobalTheory.T.local_operator_left_partial_pure (κ' := κ') e he
@@ -172,6 +240,15 @@ theorem partL_mem (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ₁ → AF F) → 
   | add x y _ _ hx hy => show partLₗ e (x + y) ∈ _; rw [map_add]; exact add_mem hx hy
   | smul c x _ hx => show partLₗ e (c • x) ∈ _; rw [map_smul]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `GlobalTheory.T.local_operator_right_partial_pure (κ := κ) e he`. Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`.
+
+Take `⟨g₁, hg₁, h1⟩` from `hP g hg`. Rewrite using `[h1 f]`. Conclude with `Submodule.subset_span ⟨P f, g₁, hg₁, rfl⟩`. Consider the case `zero => show partRₗ e 0 ∈ _`. Rewrite using `[map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => show partRₗ e (x + y) ∈ _`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => show partRₗ e (c • x) ∈ _`.
+
+Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem partR_mem (e : ((κ' → AF F) → ℂ) →ₗ[ℂ] (κ₁' → AF F) → ℂ) (he : IsLocOp e) :
     ∀ Φ ∈ schA F (κ ⊕ κ'), partR e Φ ∈ schA F (κ ⊕ κ₁') := by
   obtain ⟨P, hP⟩ := GlobalTheory.T.local_operator_right_partial_pure (κ := κ) e he
@@ -186,6 +263,9 @@ theorem partR_mem (e : ((κ' → AF F) → ℂ) →ₗ[ℂ] (κ₁' → AF F) �
   | add x y _ _ hx hy => show partRₗ e (x + y) ∈ _; rw [map_add]; exact add_mem hx hy
   | smul c x _ hx => show partRₗ e (c • x) ∈ _; rw [map_smul]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `GlobalTheory.T.local_operator_left_partial_pure (κ' := κ') e he`. Introduce `l hl g hg`. Take `⟨g₁, hg₁, h1⟩` from `hP g hg`. Take `⟨T, hT⟩` from `hl g₁ hg₁`. Conclude with `⟨T.comp P, fun f => by rw [LinearMap.comp_apply, partLₗ_apply, h1 f, hT, ContinuousLinearMap.comp_apply]⟩`.
+-/
 theorem partL_adm (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ₁ → AF F) → ℂ) (he : IsLocOp e) :
     ∀ l ∈ (adeleClass F).adm (κ₁ ⊕ κ'), l ∘ₗ partLₗ e ∈ (adeleClass F).adm (κ ⊕ κ') := by
   obtain ⟨P, hP⟩ := GlobalTheory.T.local_operator_left_partial_pure (κ' := κ') e he
@@ -194,6 +274,9 @@ theorem partL_adm (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ₁ → AF F) → 
   obtain ⟨T, hT⟩ := hl g₁ hg₁
   exact ⟨T.comp P, fun f => by rw [LinearMap.comp_apply, partLₗ_apply, h1 f, hT, ContinuousLinearMap.comp_apply]⟩
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `GlobalTheory.T.local_operator_right_partial_pure (κ := κ) e he`. Introduce `l hl g hg`. Take `⟨g₁, hg₁, h1⟩` from `hP g hg`. Take `⟨T, hT⟩` from `hl g₁ hg₁`. Conclude with `⟨T.comp P, fun f => by rw [LinearMap.comp_apply, partRₗ_apply, h1 f, hT, ContinuousLinearMap.comp_apply]⟩`.
+-/
 theorem partR_adm (e : ((κ' → AF F) → ℂ) →ₗ[ℂ] (κ₁' → AF F) → ℂ) (he : IsLocOp e) :
     ∀ l ∈ (adeleClass F).adm (κ ⊕ κ₁'), l ∘ₗ partRₗ e ∈ (adeleClass F).adm (κ ⊕ κ') := by
   obtain ⟨P, hP⟩ := GlobalTheory.T.local_operator_right_partial_pure (κ := κ) e he
@@ -208,6 +291,9 @@ section Ev
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨ei, ev, -, hev, hloc⟩` from `he.loc`. Use `⟨ei, ev, fun v φ hφ => (hev v).2 ▸ Submodule.mem_map_of_mem hφ, (hM.std.and hM₁.std).mono fun v h => ?_, fun f φ hφ hstd => hloc f φ hφ ((hstd.and hM.std).mono fun v h => h.1.trans h.2.symm)⟩` and prove the remaining obligations. Use `show ev v (Set.indicator _ 1) = Set.indicator _ 1`. Rewrite using `[← h.1, (hev v).1, h.2]`.
+-/
 theorem isLocOp_of_isEv {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁}
     {W₁ : Spc F E d₁} {M : Model σ X W} {M₁ : Model σ X₁ W₁} {ι : Matrix (Fin n) (Fin n₁) E}
     {ι' : Matrix (Fin d) (Fin d₁) E} {I : Set (Matrix (Fin n) (Fin d) (AE F E))} {e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁}
@@ -222,6 +308,27 @@ end Ev
 
 section Thm
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ _ hpair₁ e he hne dd dd₁ hdd hdd₁`. Establish `hψ : ∀ t, ‖B.ψ t‖ = 1` using `GlobalTheory.StdCharWeilDatum.norm_psi hpair.base.std`. Establish `hL : IsLocOp e` using `isLocOp_of_isEv hpair.good hpair₁.good he`. Establish `hL₂ : IsLocOp (conjLin e)` using `GlobalTheory.T.conj_local_operator e hL`. Establish `hone : (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ = 1`.
+
+Rewrite using `[incM, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Establish `Heisenberg₂ : ∀ (z : Matrix (Fin n₁) (Fin d) (AE F E)), ∀ φ ∈ schA F (Fin n × Fin d), e (M.co.rho B.ψ (incM F H.ι * z) φ) = M₁.co.rho B.ψ z (e φ)` using `fun z φ hφ => by`. Use `he.Heisenberg₂ z φ hφ` as an intermediate fact. Rewrite `this` using `[hone, Matrix.mul_one]`. Then use the resulting hypothesis. Establish `heis₂ : ∀ (z : Matrix (Fin n₁) (Fin d) (AE F E)), ∀ φ ∈ schA F (Fin n × Fin d), conjLin e (M.co.rho B.ψ⁻¹ (incM F H.ι * z) φ) = M₁.co.rho B.ψ⁻¹ z (conjLin e φ)` using `fun z φ hφ => by`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[conjLin_apply]`. Establish `h1 : (fun x => starRingEnd ℂ (M.co.rho B.ψ⁻¹ (incM F H.ι * z) φ x)) = M.co.rho B.ψ (incM F H.ι * z) (fun x => starRingEnd ℂ (φ x))`. Use function extensionality and compare the values at `fun x => conj_schr_inv B.ψ hψ _ _ _`. Rewrite using `[h1, Heisenberg₂ z _ (GlobalTheory.T.adelic_schwartz_conj_mem φ hφ)]`.
+
+Conclude with `conj_schr B.ψ hψ _ _ _`. Establish `inv₁ : ∀ (z : Fin d → AE F E), ∀ φ ∈ schA F (Fin n × Fin d), e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) z) φ) = e φ` using `fun z φ hφ => he.inv _ ⟨z, rfl⟩ φ hφ`. Establish `inv₂ : ∀ (z : Fin d → AE F E), ∀ φ ∈ schA F (Fin n × Fin d), conjLin e (M.co.rho B.ψ⁻¹ (Matrix.vecMulVec (incV F H.x) z) φ) = conjLin e φ` using `fun z φ hφ => by`. Use function extensionality and compare the values at `y`. Rewrite using `[conjLin_apply, conjLin_apply]`.
+
+Establish `h1 : (fun x => starRingEnd ℂ (M.co.rho B.ψ⁻¹ (Matrix.vecMulVec (incV F H.x) z) φ x)) = M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) z) (fun x => starRingEnd ℂ (φ x))`. Use function extensionality and compare the values at `fun x => conj_schr_inv B.ψ hψ _ _ _`. Rewrite using `[h1, inv₁ z _ (GlobalTheory.T.adelic_schwartz_conj_mem φ hφ)]`. Use `⟨partRₗ (conjLin e) ∘ₗ partLₗ e, conjLin e, fun Φ hΦ => ?_, fun z Φ hΦ => ?_, fun z Φ hΦ => ?_, fun l hl => ?_, fun φ₁ _ φ₂ _ => ?_, fun φ hφ => ?_, ?_⟩` and prove the remaining obligations. Conclude with `partR_mem (conjLin e) hL₂ _ (partL_mem e hL Φ hΦ)`.
+
+Rewrite using `[← Matrix.fromCols_toCols z, Matrix.mul_fromCols, rho_dbl _ _ _ _ _ _ hdd, rho_dbl _ _ _ _ _ _ hdd₁]`. Simplify using `only [LinearMap.comp_apply, partLₗ_apply, partRₗ_apply]`. Rewrite using `[partL_intertwine e (M.co.rho B.ψ (incM F H.ι * z.toCols₁)) (M₁.co.rho B.ψ z.toCols₁) e _ (fun φ hφ => Heisenberg₂ _ φ hφ) (fun b => by rw [sliceL_partR_rho]; exact Submodule.smul_mem _ _ (sliceL_mem hΦ _)), partL_partR_rho, partR_partL_rho, partR_intertwine (conjLin e) (M.co.rho …`. Establish `hv : Matrix.vecMulVec (incV F H.x) z = Matrix.fromCols (Matrix.vecMulVec (incV F H.x) (z ∘ Sum.inl)) (Matrix.vecMulVec (incV F H.x) (z ∘ Sum.inr))`. Apply the tactic sequence `ext i j; cases j <;> rfl`.
+
+Rewrite using `[hv, rho_dbl _ _ _ _ _ _ hdd]`. Simplify using `only [LinearMap.comp_apply, partLₗ_apply, partRₗ_apply]`. Rewrite using `[partL_intertwine e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (z ∘ Sum.inl))) (fun φ => φ) e _ (fun φ hφ => inv₁ _ φ hφ) (fun b => by rw [sliceL_partR_rho]; exact Submodule.smul_mem _ _ (sliceL_mem hΦ _)), partL_id, partL_partR_rho, partR_intertwine (conjLin e) (M.co.rho B.ψ⁻¹ …`. Rewrite using `[← LinearMap.comp_assoc]`. Conclude with `partL_adm e hL _ (partR_adm (conjLin e) hL₂ l hl)`.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [LinearMap.comp_apply, partLₗ_apply, partRₗ_apply, partR, partL, boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr]`. Establish `h1 : (fun x => e (fun x' => φ₁ x' * φ₂ x) (y ∘ Sum.inl)) = e φ₁ (y ∘ Sum.inl) • φ₂` using `funext fun x => by`. Rewrite using `[show (fun x' => φ₁ x' * φ₂ x) = φ₂ x • φ₁ from funext fun x' => by simp [mul_comm], map_smul]`. Simplify using `[mul_comm]`.
+
+Rewrite using `[h1, map_smul]`. Both sides reduce to the same expression. Conclude with `GlobalTheory.T.adelic_schwartz_conj_mem _ (he.maps _ (GlobalTheory.T.adelic_schwartz_conj_mem φ hφ))`. Take `⟨Φ₀, h₀, hne⟩` from `hne`. Use `⟨fun x => starRingEnd ℂ (Φ₀ x), GlobalTheory.T.adelic_schwartz_conj_mem _ h₀, fun h => hne (funext fun y => ?_)⟩` and prove the remaining obligations.
+
+Use `congrFun h y` as an intermediate fact. Simplify `this` using `[conjLin_apply]`.
+-/
 theorem exists_dblEv : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (om₁ : Rep σ X₁ W) (r₁ s₁ : ℕ),

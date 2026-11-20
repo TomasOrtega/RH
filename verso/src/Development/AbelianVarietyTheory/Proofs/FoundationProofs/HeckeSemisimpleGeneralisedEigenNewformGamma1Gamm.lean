@@ -27,6 +27,13 @@ open scoped MatrixGroups ModularForm
 
 namespace GlobalTheory.HeckeFamilyMatrices.Semi
 
+/- English proof (translation)
+Establish `h1 : ContinuousOn (f ∘ UpperHalfPlane.ofComplex) {z : ℂ | 0 < z.im}`. Introduce `z hz`. Conclude with `(hf.continuousAt.comp (UpperHalfPlane.contMDiffAt_ofComplex (n := 0) hz).continuousAt).continuousWithinAt`. Use `h1.comp (f := fun t : ℝ => Complex.I + t * ((τ : ℂ) - Complex.I)) (by fun_prop) ?_` and prove the remaining obligations. Introduce `t ht`.
+
+Rewrite `ht` using `[Set.uIcc_of_le zero_le_one]`. Use `τ.im_pos` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq, Complex.add_im, Complex.I_im, Complex.mul_im, Complex.ofReal_re, Complex.sub_im, Complex.ofReal_im, zero_mul, add_zero, UpperHalfPlane.coe_im]`. Break down `eq_or_lt_of_le ht.1 with h | h` into its components or cases. Rewrite using `[← h]`.
+
+Evaluate the numerical expressions. Use polynomial arithmetic with `[mul_pos h this, ht.2]`.
+-/
 theorem integrand_cont (f : ℍ → ℂ) (hf : Continuous f) (τ : ℍ) :
     ContinuousOn (fun t : ℝ => (f ∘ UpperHalfPlane.ofComplex) (Complex.I + t * ((τ : ℂ) - Complex.I)))
       (Set.uIcc (0 : ℝ) 1) := by
@@ -43,6 +50,13 @@ theorem integrand_cont (f : ℍ → ℂ) (hf : Continuous f) (τ : ℍ) :
   · rw [← h]; norm_num
   · nlinarith [mul_pos h this, ht.2]
 
+/- English proof (translation)
+Simplify using `only [eichler, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← add_mul, ← C_add, ← mul_add, ← intervalIntegral.integral_add]`. Use `congr 3`. Use `intervalIntegral.integral_congr fun t _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `ContinuousOn.intervalIntegrable ?_` and prove the remaining obligations. Conclude with `((integrand_cont f hf τ).mul (by fun_prop)).mul (by fun_prop)`. Use `ContinuousOn.intervalIntegrable ?_` and prove the remaining obligations.
+
+Conclude with `((integrand_cont g hg τ).mul (by fun_prop)).mul (by fun_prop)`.
+-/
 theorem eichler_add_of_cont (w : ℕ) (f g : ℍ → ℂ) (hf : Continuous f) (hg : Continuous g) (τ : ℍ) :
     eichler w (f + g) τ = eichler w f τ + eichler w g τ := by
   simp only [eichler, ← Finset.sum_add_distrib]
@@ -57,6 +71,9 @@ theorem eichler_add_of_cont (w : ℕ) (f g : ℍ → ℂ) (hf : Continuous f) (h
   · refine ContinuousOn.intervalIntegrable ?_
     exact ((integrand_cont g hg τ).mul (by fun_prop)).mul (by fun_prop)
 
+/- English proof (translation)
+Establish `: f - a • g = f + (-a) • g` using `by rw [_root_.neg_smul, sub_eq_add_neg]`. Rewrite using `[this, sub_eq_add_neg, ← _root_.neg_smul, ← (GlobalTheory.HeckeFamilyMatrices.cj_mem_Z1_cj_mem_B1_per_smul Γ w).2.2]`. Use function extensionality and compare the values at `γ`. Simplify using `only [per, Pi.add_apply]`. Rewrite using `[eichler_add_of_cont w f _ hf (hg.const_smul (-a)), map_add]`.
+-/
 theorem per_sub_smul (Γ : Subgroup SL(2, ℤ)) (w : ℕ) (f g : ℍ → ℂ) (hf : Continuous f) (hg : Continuous g) (a : ℂ) :
     per Γ w (f - a • g) = per Γ w f - a • per Γ w g := by
   have : f - a • g = f + (-a) • g := by rw [_root_.neg_smul, sub_eq_add_neg]
@@ -65,12 +82,23 @@ theorem per_sub_smul (Γ : Subgroup SL(2, ℤ)) (w : ℕ) (f g : ℍ → ℂ) (h
   simp only [per, Pi.add_apply]
   rw [eichler_add_of_cont w f _ hf (hg.const_smul (-a)), map_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `γ`. Simplify using `[cj]`.
+-/
 theorem cj_sub {Γ : Type} (x y : Γ → ℂ[X]) : cj (x - y) = cj x - cj y := by
   funext γ; simp [cj]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `γ`. Simplify using `[cj, smul_eq_C_mul]`.
+-/
 theorem cj_smul {Γ : Type} (a : ℂ) (x : Γ → ℂ[X]) : cj (starRingEnd ℂ a • x) = a • cj x := by
   funext γ; simp [cj, smul_eq_C_mul]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, ← ih]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`.
+
+Rewrite using `[cj_sub, hA, cj_smul]`.
+-/
 theorem cj_pow {Γ : Type} (A : Module.End ℂ (Γ → ℂ[X])) (hA : ∀ z, cj (A z) = A (cj z)) (a : ℂ) (n : ℕ)
     (y : Γ → ℂ[X]) : cj (((A - starRingEnd ℂ a • 1) ^ n) y) = ((A - a • 1) ^ n) (cj y) := by
   induction n with
@@ -80,6 +108,11 @@ theorem cj_pow {Γ : Type} (A : Module.End ℂ (Γ → ℂ[X])) (hA : ∀ z, cj 
     simp only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]
     rw [cj_sub, hA, cj_smul]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro z hz`. Simplify using `using hz`. Consider the case `succ n ih`. Introduce `z hz`.
+
+Rewrite using `[pow_succ, Module.End.mul_apply]`. Use `ih _ ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `B.sub_mem (hA z hz) (B.smul_mem a hz)`.
+-/
 theorem pow_mem {V : Type} [AddCommGroup V] [Module ℂ V] (B : Submodule ℂ V) (A : Module.End ℂ V)
     (hA : ∀ z ∈ B, A z ∈ B) (a : ℂ) (n : ℕ) : ∀ z ∈ B, ((A - a • 1) ^ n) z ∈ B := by
   induction n with
@@ -91,6 +124,15 @@ theorem pow_mem {V : Type} [AddCommGroup V] [Module ℂ V] (B : Submodule ℂ V)
     simp only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]
     exact B.sub_mem (hA z hz) (B.smul_mem a hz)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro f`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `f`.
+
+Take `⟨f', hf'⟩` from `hM f`. Establish `e : ⇑(f' - a • f) = F ⇑f - a • ⇑f` using `by rw [← hf']; rfl`. Rewrite using `[Function.iterate_succ_apply, ← e, pow_succ, Module.End.mul_apply]`. Establish `h1` using `ih (f' - a • f)`. Establish `h2 : (A - a • 1) (per Γ (k - 2) ⇑f) - per Γ (k - 2) ⇑(f' - a • f) ∈ B1 Γ (k - 2)`.
+
+Establish `e' : ⇑(f' - a • f) = ⇑f' - a • ⇑f` using `rfl`. Rewrite using `[e', per_sub_smul Γ _ _ _ (ModularFormClass.continuous f') (ModularFormClass.continuous f), hf']`. Use `(B1 Γ (k - 2)).neg_mem (hE f)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`.
+
+Normalize the expressions using the abelian group laws. Establish `h3` using `pow_mem _ A hB a n _ h2`. Rewrite `h3` using `[map_sub]`. Use `(B1 Γ (k - 2)).add_mem h3 h1 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem per_iter (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (A : Module.End ℂ (Γ → ℂ[X])) (F : (ℍ → ℂ) → ℍ → ℂ)
     (hB : ∀ z ∈ B1 Γ (k - 2), A z ∈ B1 Γ (k - 2))
     (hM : ∀ f : ModularForm Γ (k : ℤ), ∃ f' : ModularForm Γ (k : ℤ), ⇑f' = F ⇑f)
@@ -117,6 +159,11 @@ theorem per_iter (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (A : Module.End ℂ (Γ �
     convert (B1 Γ (k - 2)).add_mem h3 h1 using 1
     abel
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro f`. Conclude with `⟨f, rfl⟩`. Consider the case `succ n ih`. Introduce `f`.
+
+Take `⟨f', hf'⟩` from `hM f`. Establish `e : ⇑(f' - a • f) = F ⇑f - a • ⇑f` using `by rw [← hf']; rfl`. Rewrite using `[Function.iterate_succ_apply, ← e]`. Conclude with `ih _`.
+-/
 theorem iter_mf (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (F : (ℍ → ℂ) → ℍ → ℂ)
     (hM : ∀ f : ModularForm Γ (k : ℤ), ∃ f' : ModularForm Γ (k : ℤ), ⇑f' = F ⇑f) (a : ℂ) (n : ℕ) :
     ∀ f : ModularForm Γ (k : ℤ), ∃ f' : ModularForm Γ (k : ℤ), ⇑f' = (fun G => F G - a • G)^[n] ⇑f := by
@@ -129,6 +176,11 @@ theorem iter_mf (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (F : (ℍ → ℂ) → ℍ 
     rw [Function.iterate_succ_apply, ← e]
     exact ih _
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro f`. Conclude with `⟨f, rfl⟩`. Consider the case `succ n ih`. Introduce `f`.
+
+Take `⟨f', hf'⟩` from `hS f`. Establish `e : ⇑(f' - a • f) = F ⇑f - a • ⇑f` using `by rw [← hf']; rfl`. Rewrite using `[Function.iterate_succ_apply, ← e]`. Conclude with `ih _`.
+-/
 theorem iter_cf (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (F : (ℍ → ℂ) → ℍ → ℂ)
     (hS : ∀ f : CuspForm Γ (k : ℤ), ∃ f' : CuspForm Γ (k : ℤ), ⇑f' = F ⇑f) (a : ℂ) (n : ℕ) :
     ∀ f : CuspForm Γ (k : ℤ), ∃ f' : CuspForm Γ (k : ℤ), ⇑f' = (fun G => F G - a • G)^[n] ⇑f := by
@@ -141,6 +193,13 @@ theorem iter_cf (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (F : (ℍ → ℂ) → ℍ 
     rw [Function.iterate_succ_apply, ← e]
     exact ih _
 
+/- English proof (translation)
+Establish `e : cj (per Γ (k - 2) ⇑(-h)) = - cj (per Γ (k - 2) ⇑h)`. Establish `: ⇑(-h) = starRingEnd ℂ (-1) • ⇑h` using `by simp`. Rewrite using `[this, (GlobalTheory.HeckeFamilyMatrices.cj_mem_Z1_cj_mem_B1_per_smul Γ (k - 2)).2.2, cj_smul]`. Simplify using the standard rewrite rules. Establish `H' : per Γ (k - 2) ⇑f - cj (per Γ (k - 2) ⇑(-h)) ∈ B1 Γ (k - 2)`.
+
+Rewrite using `[e, sub_neg_eq_add]`. Conclude with `H`. Take `⟨f', hf'⟩` from `GlobalTheory.T.cuspidal_of_eichlerPeriod_sub_conj_mem_coboundaries N Γ k hN hΓ hfi hk f (-h) H'`. Rewrite `H'`, the goal using `[← hf']`. Take `⟨h1, h2⟩` from `GlobalTheory.T.cuspForms_eq_zero_of_period_sub_conj_coboundary N Γ k hN hΓ hfi hk f' (-h) H'`.
+
+Rewrite `h2` using `[neg_eq_zero]`. Rewrite using `[h1, h2]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem direct (N : ℕ) (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (hN : 5 ≤ N) (hΓ : Γ ≤ CongruenceSubgroup.Gamma1 N)
     (hfi : Γ.FiniteIndex) (hk : 3 ≤ k) (f : ModularForm Γ (k : ℤ)) (h : CuspForm Γ (k : ℤ))
     (H : per Γ (k - 2) ⇑f + cj (per Γ (k - 2) ⇑h) ∈ B1 Γ (k - 2)) : ⇑f = 0 ∧ ⇑h = 0 := by
@@ -156,6 +215,17 @@ theorem direct (N : ℕ) (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (hN : 5 ≤ N) (h�
   rw [h1, h2]
   exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Establish `h1` using `pow_mem _ A hB a n _ hz`. Rewrite `h1` using `[map_sub, map_sub]`. Establish `h2` using `per_iter Γ k A F hB hM hE a n f`. Establish `h3` using `(GlobalTheory.HeckeFamilyMatrices.cj_mem_Z1_cj_mem_B1_per_smul Γ (k - 2)).2.1 _ (per_iter Γ k A F hB hM hE (starRingEnd ℂ a) n (CuspForm.toModularFormₗ h))`. Establish `eh : ⇑(CuspForm.toModularFormₗ h) = ⇑h` using `rfl`.
+
+Rewrite `h3` using `[cj_sub, cj_pow A hA, eh]`. Take `⟨f', hf'⟩` from `iter_mf Γ k F hM a n f`. Take `⟨h', hh'⟩` from `iter_cf Γ k F hS (starRingEnd ℂ a) n h`. Rewrite `h2`, the goal using `[← hf']`. Rewrite `h3`, the goal using `[← hh']`.
+
+Establish `h4 : ((A - a • 1) ^ n) z - (per Γ (k - 2) ⇑f' + cj (per Γ (k - 2) ⇑h')) ∈ B1 Γ (k - 2)`. Use `(B1 Γ (k - 2)).add_mem ((B1 Γ (k - 2)).add_mem h1 h2) h3 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+
+Use `direct N Γ k hN hΓ hfi hk f' h' ?_` and prove the remaining obligations. Use `(B1 Γ (k - 2)).sub_mem H h4 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨e1, e2⟩`. Establish `p0 : per Γ (k - 2) 0 = 0`.
+
+Use `(GlobalTheory.HeckeFamilyMatrices.cj_mem_Z1_cj_mem_B1_per_smul Γ (k - 2)).2.2 0 0` as an intermediate fact. Simplify using `using this`. Establish `c0 : cj (0 : Γ → ℂ[X]) = 0` using `by funext γ; simp [cj]`. Rewrite `h4` using `[e1, e2, p0, c0]`. Simplify using `using h4`.
+-/
 theorem key (N : ℕ) (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (hN : 5 ≤ N) (hΓ : Γ ≤ CongruenceSubgroup.Gamma1 N)
     (hfi : Γ.FiniteIndex) (hk : 3 ≤ k) (A : Module.End ℂ (Γ → ℂ[X])) (F : (ℍ → ℂ) → ℍ → ℂ)
     (hB : ∀ z ∈ B1 Γ (k - 2), A z ∈ B1 Γ (k - 2)) (hA : ∀ z, cj (A z) = A (cj z))
@@ -193,6 +263,15 @@ theorem key (N : ℕ) (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (hN : 5 ≤ N) (hΓ :
     rw [e1, e2, p0, c0] at h4
     simpa using h4
 
+/- English proof (translation)
+Establish `main : ∀ (n : ℕ) (f : ModularForm Γ (k : ℤ)), ∃ h : CuspForm Γ (k : ℤ), (fun G => F G - a • G)^[n] ⇑f = (c - a) ^ n • ⇑f + ⇑h`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro f; exact ⟨0, by simp⟩`. Consider the case `succ n ih`.
+
+Introduce `f`. Take `⟨h, hh⟩` from `hF f`. Establish `e : ⇑((c - a) • f + CuspForm.toModularFormₗ h) = (c - a) • ⇑f + ⇑h` using `rfl`. Establish `e' : F ⇑f - a • ⇑f = (c - a) • ⇑f + ⇑h` using `by rw [hh, sub_smul]; abel`. Take `⟨h', hh'⟩` from `ih ((c - a) • f + CuspForm.toModularFormₗ h)`.
+
+Use `⟨(c - a) ^ n • h + h', ?_⟩` and prove the remaining obligations. Establish `e2 : ⇑((c - a) ^ n • h + h') = (c - a) ^ n • ⇑h + ⇑h'` using `rfl`. Rewrite using `[Function.iterate_succ_apply, e', ← e, hh', e, e2, smul_add, smul_smul, ← pow_succ, add_assoc]`. Take `⟨h, hh⟩` from `main n f`. Establish `hne : (c - a) ^ n ≠ 0` using `pow_ne_zero _ (sub_ne_zero.2 hca.symm)`.
+
+Use `⟨(-((c - a) ^ n)⁻¹) • h, ?_⟩` and prove the remaining obligations. Establish `e : ⇑((-((c - a) ^ n)⁻¹) • h) = (-((c - a) ^ n)⁻¹) • ⇑h` using `rfl`. Rewrite `hh` using `[hf]`. Establish `: ⇑h = -((c - a) ^ n • ⇑f)` using `by rw [eq_neg_iff_add_eq_zero, add_comm, ← hh]`. Rewrite using `[e, this, smul_neg, _root_.neg_smul, neg_neg, smul_smul, inv_mul_cancel₀ hne, one_smul]`.
+-/
 theorem cusp_of_iter (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (F : (ℍ → ℂ) → ℍ → ℂ) (c a : ℂ) (hca : a ≠ c)
     (hF : ∀ f : ModularForm Γ (k : ℤ), ∃ h : CuspForm Γ (k : ℤ), ⇑h = F ⇑f - c • ⇑f) (n : ℕ)
     (f : ModularForm Γ (k : ℤ)) (hf : (fun G => F G - a • G)^[n] ⇑f = 0) :
@@ -219,6 +298,11 @@ theorem cusp_of_iter (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (F : (ℍ → ℂ) →
   have : ⇑h = -((c - a) ^ n • ⇑f) := by rw [eq_neg_iff_add_eq_zero, add_comm, ← hh]
   rw [e, this, smul_neg, _root_.neg_smul, neg_neg, smul_smul, inv_mul_cancel₀ hne, one_smul]
 
+/- English proof (translation)
+Establish `: toGL (mat σ) = (σ : GL (Fin 2) ℝ)`. Establish `hd : ¬ (mat σ).det = 0` using `by simp`. Rewrite using `[toGL, dif_neg hd]`. Use extensionality with `i j`. Both sides reduce to the same expression.
+
+Simplify using `only [DdF, hkF, Finset.univ_unique, Finset.sum_singleton, this]`. Both sides reduce to the same expression.
+-/
 theorem DdF_eq (k : ℤ) (σ : SL(2, ℤ)) (f : ℍ → ℂ) : DdF k σ f = f ∣[k] σ := by
   have : toGL (mat σ) = (σ : GL (Fin 2) ℝ) := by
     have hd : ¬ (mat σ).det = 0 := by simp
@@ -228,6 +312,23 @@ theorem DdF_eq (k : ℤ) (σ : SL(2, ℤ)) (f : ℍ → ℂ) : DdF k σ f = f �
   simp only [DdF, hkF, Finset.univ_unique, Finset.sum_singleton, this]
   rfl
 
+/- English proof (translation)
+Establish `red : ∀ δ : SL(2, ℤ), δ ∈ CongruenceSubgroup.Gamma0 (N * l) → ((δ 1 0 : ℤ) : ZMod N) = 0 ∧ ((δ 1 0 : ℤ) : ZMod l) = 0 ∧ ((δ 0 0 : ℤ) : ZMod N) * ((δ 1 1 : ℤ) : ZMod N) = 1`. Introduce `δ hδ`. Rewrite `hδ` using `[CongruenceSubgroup.Gamma0_mem, ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at hδ`. Establish `h1 : ((δ 1 0 : ℤ) : ZMod N) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 ((dvd_mul_right _ _).trans hδ)`.
+
+Use `⟨h1, (ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 ((dvd_mul_left _ _).trans hδ), ?_⟩` and prove the remaining obligations. Use `δ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Use `congrArg (Int.cast : ℤ → ZMod N) this` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Rewrite `this` using `[h1]`. Simplify using `using this`. Take `⟨g1, g2, g3⟩` from `red γ hγ`. Set `d : (ZMod N)ˣ` to `⟨((γ 1 1 : ℤ) : ZMod N), ((γ 0 0 : ℤ) : ZMod N), by rw [mul_comm]; exact g3, g3⟩`. Take `⟨s0, s4⟩` from `hD d`.
+
+Take `⟨s1, s2, s3⟩` from `red _ s0`. Establish `s4' : (((σD d) 1 1 : ℤ) : ZMod N) = ((γ 1 1 : ℤ) : ZMod N)` using `s4`. Establish `hm : γ * (σD d)⁻¹ ∈ Lev N l`. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`.
+
+Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one]`. Use `push_cast`. Rewrite using `[s1, g1, s4']`. Use `⟨by rw [g3]; simp, ?_, by simp⟩` and prove the remaining obligations.
+
+Rewrite using `[← s4', mul_comm _ (((σD d) 0 0 : ℤ) : ZMod N), s3]`. Simplify using the standard rewrite rules. Rewrite using `[CongruenceSubgroup.Gamma0_mem]`. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one]`.
+
+Use `push_cast`. Rewrite using `[s2, g2]`. Simplify using the standard rewrite rules. Establish `hinv : ⇑f ∣[(k : ℤ)] (γ * (σD d)⁻¹) = ⇑f` using `SlashInvariantFormClass.slash_action_eq f _ (Subgroup.mem_map_of_mem _ hm)`. Establish `: γ = (γ * (σD d)⁻¹) * σD d` using `by simp`.
+
+Establish `h2` using `hf d`. Rewrite `h2` using `[DdF_eq]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem char_of_dia (N l k : ℕ) (χ : DirichletCharacter ℂ N) (σD : (ZMod N)ˣ → SL(2, ℤ))
     (hD : ∀ d : (ZMod N)ˣ, IsDiam N l (d : ZMod N) (σD d)) (f : CuspForm (Lev N l) (k : ℤ))
     (hf : ∀ d : (ZMod N)ˣ, DdF (k : ℤ) (σD d) ⇑f = χ (d : ZMod N) • ⇑f) (γ : SL(2, ℤ))
@@ -278,6 +379,13 @@ theorem char_of_dia (N l k : ℕ) (χ : DirichletCharacter ℂ N) (σD : (ZMod N
     _ = ⇑f ∣[(k : ℤ)] (σD d) := by rw [SlashAction.slash_mul, hinv]
     _ = _ := h2
 
+/- English proof (translation)
+Introduce `γ hγ`. Rewrite `hγ` using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨h1, -, h3, h4⟩` from `hγ`. Establish `c1` using `fun (x : ℤ) => map_intCast (ZMod.castHom (dvd_mul_right N l) (ZMod N)) x`. Establish `c2` using `fun (x : ℤ) => map_intCast (ZMod.castHom (dvd_mul_left l N) (ZMod l)) x`.
+
+Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← c1, h1, map_one]`. Rewrite using `[← c1, h4, map_one]`.
+
+Rewrite using `[← c1, h3, map_zero]`. Rewrite using `[CongruenceSubgroup.Gamma0_mem, ← c2, h3, map_zero]`.
+-/
 theorem gamma_le_lev (N l : ℕ) : CongruenceSubgroup.Gamma (N * l) ≤ Lev N l := by
   intro γ hγ
   rw [CongruenceSubgroup.Gamma_mem] at hγ
@@ -292,6 +400,15 @@ theorem gamma_le_lev (N l : ℕ) : CongruenceSubgroup.Gamma (N * l) ≤ Lev N l 
     · rw [← c1, h3, map_zero]
   · rw [CongruenceSubgroup.Gamma0_mem, ← c2, h3, map_zero]
 
+/- English proof (translation)
+Take `⟨bU, bD, bT, bI, -⟩` from `GlobalTheory.SlashUpperTriangularMatrices.bridge`. Use `⟨fun q σ hq hqn hσ => ?_, fun f => ?_, fun f => ?_, fun d σ hσ => ?_⟩` and prove the remaining obligations. Establish `hσ' : GlobalTheory.Hk.IsDia N l q σ` using `(bI N l q σ).1 (by simpa using hσ)`. Use `⟨fun f => ?_, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[bT k q σ _ hq.pos]`.
+
+Conclude with `GlobalTheory.T.heckeTOperatorExplicit_modularForm N l q k σ hN hq hqn hσ' f`. Rewrite using `[bT k q σ _ hq.pos]`. Conclude with `GlobalTheory.T.heckeTOperatorExplicit_cuspForm N l q k σ hN hq hqn hσ' f`. Rewrite using `[bU k l _ hl.pos]`. Conclude with `GlobalTheory.T.heckeUOperator_preserves_modularForm_gamma1InterGamma0 N l l k hN hl.pos hl (dvd_mul_left l N) f`.
+
+Rewrite using `[bU k l _ hl.pos]`. Conclude with `GlobalTheory.Hk.uOp_cuspForm N l l k hN hl.pos hl (dvd_mul_left l N) f`. Establish `hσ' : GlobalTheory.Hk.IsDia N l (mat σ 1 1) σ` using `(bI N l _ σ).1 ⟨hσ.1, rfl⟩`. Use `⟨fun f => ?_, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[bD]`.
+
+Conclude with `GlobalTheory.T.diamondOperatorOfMatrix_modularForm_gamma1InterGamma0 N l k _ σ hN hσ' f`. Rewrite using `[bD]`. Conclude with `GlobalTheory.T.diamondOperatorOfMatrix_cuspForm_gamma1InterGamma0 N l k _ σ hN hσ' f`.
+-/
 theorem pres (N l : ℕ) (k : ℤ) (hN : 0 < N) (hl : l.Prime) :
     (∀ (q : ℕ) (σ : SL(2, ℤ)), q.Prime → ¬ q ∣ N * l → IsDiam N l (q : ZMod N) σ →
       (∀ f : ModularForm (Lev N l) k, ∃ f' : ModularForm (Lev N l) k, ⇑f' = TqF k q σ ⇑f) ∧
@@ -318,6 +435,31 @@ end GlobalTheory.HeckeFamilyMatrices.Semi
 
 open GlobalTheory.HeckeFamilyMatrices.Semi in
 
+/- English proof (translation)
+Introduce `k g N l hMN hN hl hlN hodd hk α _ hα1 hα2 σT σD hT hD z hz n zT zU zD`. Establish `hle : Lev N l ≤ CongruenceSubgroup.Gamma1 N` using `inf_le_left`. Establish `hpos : 0 < N * l` using `Nat.mul_pos (by omega) hl.pos`. Establish `hfi : (Lev N l).FiniteIndex` using `by haveI : NeZero (N * l) := ⟨hpos.ne'⟩`. Conclude with `Subgroup.finiteIndex_of_le (gamma_le_lev N l)`.
+
+Take `⟨f, h, hfh⟩` from `GlobalTheory.T.exists_eichlerShimura_decomposition_cocycle N (N * l) (Lev N l) k hN hpos (gamma_le_lev N l) hle hodd hk z hz`. Take `⟨rT, rU, rD⟩` from `GlobalTheory.T.heckeDoubleCosetReps_gammaOneGammaZeroLevel N l hN hl hlN`. Take `⟨pT, pU1, pU2, pD⟩` from `pres N l (k : ℤ) (by omega) hl`. Establish `keyT` using `fun (q : ℕ) (hq : q.Prime) (hqn : ¬ q ∣ N * l) =>`. Establish `hk'` using `GlobalTheory.T.heckeOperatorOnCocycleMaps_cocycle_coboundary_conj (Lev N l) (k - 2) _ _ _ (by simpa [dg, Matrix.det_fin_two] using hq.pos) (rT q (σT q) hq hqn (hT q hq hqn))`.
+
+Establish `hp` using `pT q (σT q) hq hqn (hT q hq hqn)`. Use `key N (Lev N l) k hN hle hfi hk (TqZ (Lev N l) (k - 2) q (σT q)) (TqF (k : ℤ) q (σT q)) hk'.2.1 hk'.2.2 hp.1 hp.2 (fun f => (GlobalTheory.T.per_hecke_and_diamond_sub_mem_b1_of_lev N l k hN hl hlN hk f).1 q (σT q) hq hqn (hT q hq hqn)) z f h hfh (g.a q)`. Establish `keyU`. Establish `hk'` using `GlobalTheory.T.heckeOperatorOnCocycleMaps_cocycle_coboundary_conj (Lev N l) (k - 2) _ _ _ (by simpa [dg, Matrix.det_fin_two] using hl.pos) rU`. Use `key N (Lev N l) k hN hle hfi hk (UlZ (Lev N l) (k - 2) l) (UlF (k : ℤ) l) hk'.2.1 hk'.2.2 pU1 pU2 (fun f => (GlobalTheory.T.per_hecke_and_diamond_sub_mem_b1_of_lev N l k hN hl hlN hk f).2.1) z f h hfh α`.
+
+Establish `keyD` using `fun d : (ZMod N)ˣ =>`. Establish `hk'` using `GlobalTheory.T.heckeOperatorOnCocycleMaps_cocycle_coboundary_conj (Lev N l) (k - 2) _ _ _ (by simp) (rD d (σD d) (hD d))`. Use `key N (Lev N l) k hN hle hfi hk (DdZ (Lev N l) (k - 2) (σD d)) (DdF (k : ℤ) (σD d)) hk'.2.1 hk'.2.2 (pD d (σD d) (hD d)).1 (pD d (σD d) (hD d)).2 (fun f => (GlobalTheory.T.per_hecke_and_diamond_sub_mem_b1_of_lev N l k hN hl hlN hk f).2.2 d (σD d) (hD d)) z f h hfh (g.χ (ZMod.cast …`. Choose the witnesses or unpack the hypotheses as in `⟨f', hf'⟩ : ∃ f' : CuspForm (Lev N l) (k : ℤ), ⇑f' = ⇑f := by`. Take `⟨q, hq, hgt, hmod⟩` from `Nat.exists_prime_gt_modEq_one (N * l) hpos.ne'`.
+
+Establish `hqn : ¬ q ∣ N * l` using `fun hd => absurd (Nat.le_of_dvd hpos hd) (not_le.2 hgt)`. Establish `h1 : 1 < N * l` using `by nlinarith [hl.two_le]`. Establish `hm : q % (N * l) = 1` using `by rw [hmod, Nat.mod_eq_of_lt h1]`. Conclude with `cusp_of_iter (Lev N l) k (TqF (k : ℤ) q (σT q)) _ (g.a q) (GlobalTheory.HeckeFamilyMatrices.hecke_bound_main k g q hk hq (fun hd => hqn ((hd.trans hMN).mul_right l))).2 (GlobalTheory.HeckeFamilyMatrices.EisT.tq_sub_smul_cuspForm N l k hN hl hlN hk q (σT q) hq hm (hT q hq hqn)) n …`. Establish `eD1 : ∀ d : (ZMod N)ˣ, DdF (k : ℤ) (σD d) ⇑f' = g.χ (ZMod.castHom hMN (ZMod g.M) (d : ZMod N)) • ⇑f'` using `fun d => by`.
+
+Rewrite using `[hf']`. Conclude with `GlobalTheory.HeckeFamilyMatrices.diamond_genEigen_eigen N l k hN hl hlN hk d (σD d) (hD d) f _ n ((keyD d n).1 (zD d)).1`. Establish `eD2 : ∀ d : (ZMod N)ˣ, DdF (k : ℤ) (σD d) ⇑h = starRingEnd ℂ (g.χ (ZMod.castHom hMN (ZMod g.M) (d : ZMod N))) • ⇑h` using `fun d => GlobalTheory.HeckeFamilyMatrices.diamond_genEigen_eigen N l k hN hl hlN hk d (σD d) (hD d) (CuspForm.toModularFormₗ h) _ n ((keyD d n).1 (zD d)).2`. Use `⟨fun q hq hqn => ?_, ?_, fun d => ?_⟩` and prove the remaining obligations. Establish `H` using `(keyT q hq hqn n).1 (zT q hq hqn)`.
+
+Use `(keyT q hq hqn 1).2 ⟨?_, ?_⟩` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Rewrite `H`, the goal using `[← hf']`. Conclude with `sub_eq_zero.2 (GlobalTheory.HeckeFamilyMatrices.tqF_semisimple N l k hN hl hlN hk q (σT q) hq hqn (hT q hq hqn) f' _ n H.1)`. Conclude with `sub_eq_zero.2 (GlobalTheory.HeckeFamilyMatrices.tqF_semisimple N l k hN hl hlN hk q (σT q) hq hqn (hT q hq hqn) h _ n H.2)`.
+
+Establish `H` using `(keyU n).1 zU`. Set `χ : DirichletCharacter ℂ N` to `DirichletCharacter.changeLevel hMN g.χ`. Establish `hχ : ∀ d : (ZMod N)ˣ, χ (d : ZMod N) = g.χ (ZMod.castHom hMN (ZMod g.M) (d : ZMod N))` using `fun d => DirichletCharacter.changeLevel_eq_cast_of_dvd g.χ hMN d`. Establish `hχl : χ (l : ZMod N) = g.χ (l : ZMod g.M)`. Use `hχ (ZMod.unitOfCoprime l ((Nat.Prime.coprime_iff_not_dvd hl).2 hlN))` as an intermediate fact.
+
+Rewrite `this` using `[ZMod.coe_unitOfCoprime, map_natCast (ZMod.castHom hMN (ZMod g.M))]`. Then use the resulting hypothesis. Rewrite `hα1`, `hα2` using `[← hχl]`. Simplify using `only [← hχ] at eD1 eD2`. Use `(keyU 1).2 ⟨?_, ?_⟩` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+
+Rewrite `H`, the goal using `[← hf']`. Conclude with `sub_eq_zero.2 (GlobalTheory.HeckeFamilyMatrices.ul_semisimple N l k hN hl hlN hk χ α hα1 hα2 f' (char_of_dia N l k χ σD hD f' eD1) n H.1)`. Use `sub_eq_zero.2 (GlobalTheory.HeckeFamilyMatrices.ul_semisimple N l k hN hl hlN hk (χ.ringHomComp (starRingEnd ℂ)) (starRingEnd ℂ α) (fun e => hα1 ?_) (fun e => hα2 ?_) h (char_of_dia N l k _ σD hD h eD2) n H.2)` and prove the remaining obligations. Apply `(starRingEnd ℂ).injective` to reduce the goal to its premises. Simplify using `using e`.
+
+Apply `(starRingEnd ℂ).injective` to reduce the goal to its premises. Simplify using `using e`. Use `(keyD d 1).2 ⟨?_, ?_⟩` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Rewrite using `[← hf']`.
+
+Conclude with `sub_eq_zero.2 (eD1 d)`. Conclude with `sub_eq_zero.2 (eD2 d)`.
+-/
 theorem GlobalTheory.HeckeFamilyMatrices.hecke_semisimple_at_newform : ∀ (k : ℕ) (g : UpperTheory.V.Af.Newform k) (N l : ℕ) (hN : g.M ∣ N), 5 ≤ N → l.Prime → ¬ l ∣ N → Odd k → 3 ≤ k →
   ∀ α : ℂ, α ^ 2 - g.a l * α + g.χ (l : ZMod g.M) * (l : ℂ) ^ (k - 1) = 0 →
   α ^ 2 ≠ g.χ (l : ZMod g.M) * (l : ℂ) ^ (k - 1) → α ^ 2 ≠ g.χ (l : ZMod g.M) * (l : ℂ) ^ (k - 2) →

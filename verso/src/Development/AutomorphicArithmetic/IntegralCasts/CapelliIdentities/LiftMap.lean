@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `α β f B t`. Proceed by induction on `t using Multiset.induction_on with`. Consider the case `empty => exact fun _ => ⟨0, Multiset.map_zero f, fun x hx => absurd hx (Multiset.notMem_zero x)⟩`. Consider the case `cons b s ih`. Introduce `h`.
+
+Take `⟨s', hs', hB⟩` from `ih fun x hx => h x (Multiset.mem_cons_of_mem hx)`. Take `⟨a, ha, hab⟩` from `Multiset.mem_map.1 (h b (Multiset.mem_cons_self b s))`. Use `⟨a ::ₘ s', by rw [Multiset.map_cons, hab, hs'], fun x hx => ?_⟩` and prove the remaining obligations. Break down `Multiset.mem_cons.1 hx with rfl | hx` into its components or cases. Conclude with `ha`.
+
+Conclude with `hB x hx`.
+-/
 theorem UpperTheory.Reformulated.B.Qk56.lift_map :
     ∀ {α β : Type} (f : α → β) (B : Multiset α)
     (t : Multiset β), (∀ x ∈ t, x ∈ Multiset.map f B) → ∃ (t' : Multiset α), Multiset.map f t' = t ∧ ∀ x ∈ t', x ∈ B := by

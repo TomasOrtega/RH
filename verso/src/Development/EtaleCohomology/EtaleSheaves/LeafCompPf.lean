@@ -12,6 +12,9 @@ def LeafCompGeom : Prop := ∀ (k : Type) [Field k] {X : Scheme.{0}} (p : X ⟶ 
   ∃ (m : ℕ) (Z : Fin m → Scheme.{0}) (ι : ∀ j, Z j ⟶ X), (∀ j, IsClosedImmersion (ι j) ∧ IsIntegral (Z j)) ∧
     IsProper (Sigma.desc ι) ∧ Surjective (Sigma.desc ι)
 
+/- English proof (translation)
+Introduce `hH q k _ X p _ n i hZ`. Take `⟨m, Z, ι, hι, hP, hS⟩` from `hG k p`. Conclude with `⟨∐ Z, Sigma.desc ι, hP, hS, hC hH q n i m Z (fun j => hZ (Z j) (ι j) (hι j).1 (hι j).2)⟩`.
+-/
 theorem LeafComp_of (hC : LeafCoprod) (hG : LeafCompGeom) : LeafComp := by
   intro hH q k _ X p _ n i hZ
   obtain ⟨m, Z, ι, hι, hP, hS⟩ := hG k p

@@ -16,6 +16,11 @@ section Gen
 variable {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [Group G'] [TopologicalSpace G'] [IsTopologicalGroup G']
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.TwOrbConj.twOrb_eq, GlobalTheory.TwOrbConj.twOrb_eq]`. Use `(finsum_congr fun q => ?_).trans (finsum_comp_equiv (f := fun q : DoubleCoset.Quotient (twCent θ δ : Set G) (K : Set G) => GlobalTheory.TwOrbConj.summand θ K δ f (Quotient.out q)) (GlobalTheory.TwOrbConj.dcEquiv θ K δ g))` and prove the remaining obligations. Take `⟨t, k, ht, hk, he⟩` from `DoubleCoset.mk_out_eq_mul (twCent θ δ) K (g * Quotient.out q)`. Rewrite using `[GlobalTheory.TwOrbConj.summand_twist]`. Use `show _ = GlobalTheory.TwOrbConj.summand θ K δ f (Quotient.out (DoubleCoset.mk (twCent θ δ) K (g * Quotient.out q)))`.
+
+Rewrite using `[he, GlobalTheory.TwOrbConj.summand_rep θ K δ f _ ht hk]`.
+-/
 private theorem twOrb_conj' (θ : G →* G) (K : Subgroup G) (δ g : G) (f : G → ℂ) :
     twOrb θ K (g⁻¹ * δ * θ g) f = twOrb θ K δ f := by
   rw [GlobalTheory.TwOrbConj.twOrb_eq, GlobalTheory.TwOrbConj.twOrb_eq]
@@ -27,6 +32,15 @@ private theorem twOrb_conj' (θ : G →* G) (K : Subgroup G) (δ g : G) (f : G �
   show _ = GlobalTheory.TwOrbConj.summand θ K δ f (Quotient.out (DoubleCoset.mk (twCent θ δ) K (g * Quotient.out q)))
   rw [he, GlobalTheory.TwOrbConj.summand_rep θ K δ f _ ht hk]
 
+/- English proof (translation)
+Set `h : G ≃ₜ G'` to `{ e.toEquiv with continuous_toFun := hc, continuous_invFun := hc' }`. Establish `hk : ∀ t, IsCompact (closure (Subgroup.zpowers (e t) : Set G')) ↔ IsCompact (closure (Subgroup.zpowers t : Set G))`. Introduce `t`. Establish `hz : (Subgroup.zpowers (e t) : Set G') = h '' (Subgroup.zpowers t : Set G)`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩`. Conclude with `⟨t ^ m, ⟨m, rfl⟩, by simp [h]⟩`. Introduce and unpack `⟨_, ⟨m, rfl⟩, rfl⟩`. Conclude with `⟨m, by simp [h]⟩`.
+
+Rewrite using `[hz, ← h.image_closure, h.isCompact_image]`. Unfold `cptPart`. Rewrite using `[MonoidHom.map_closure]`. Use `congr 1`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨t, ht, rfl⟩, hc⟩`. Conclude with `⟨t, ⟨ht, (hk t).1 hc⟩, rfl⟩`. Introduce and unpack `⟨t, ⟨ht, hc⟩, rfl⟩`. Conclude with `⟨⟨t, ht, rfl⟩, (hk t).2 hc⟩`.
+-/
 private theorem cptPart_map_equiv (e : G ≃* G') (hc : Continuous e) (hc' : Continuous e.symm) (T : Subgroup G) :
     cptPart (T.map e.toMonoidHom) = (cptPart T).map e.toMonoidHom := by
   let h : G ≃ₜ G' := { e.toEquiv with continuous_toFun := hc, continuous_invFun := hc' }
@@ -51,6 +65,11 @@ private theorem cptPart_map_equiv (e : G ≃* G') (hc : Continuous e) (hc' : Con
   · rintro ⟨t, ⟨ht, hc⟩, rfl⟩
     exact ⟨⟨t, ht, rfl⟩, (hk t).2 hc⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Subgroup.mem_map_equiv, GlobalTheory.TwOrbConj.mem_twCent, GlobalTheory.TwOrbConj.mem_twCent]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `e.injective` to reduce the goal to its premises.
+
+Simplify using `[map_mul, hθ, h]`. Introduce `h`. Use `congrArg e h` as an intermediate fact. Simplify `this` using `[map_mul, hθ]`.
+-/
 private theorem twCent_map (e : G ≃* G') (θ : G →* G) (θ' : G' →* G') (hθ : ∀ x, e (θ x) = θ' (e x)) (δ : G) :
     twCent θ' (e δ) = (twCent θ δ).map e.toMonoidHom := by
   ext x
@@ -63,6 +82,11 @@ private theorem twCent_map (e : G ≃* G') (θ : G →* G) (θ' : G' →* G') (h
     have := congrArg e h
     simpa [map_mul, hθ] using this
 
+/- English proof (translation)
+Unfold `GlobalTheory.TwOrbConj.summand`. Use `congr 1`. Establish `hconj : (K.map e.toMonoidHom).map (MulAut.conj (e y)).toMonoidHom = (K.map (MulAut.conj y).toMonoidHom).map e.toMonoidHom`. Rewrite using `[Subgroup.map_map, Subgroup.map_map]`. Use `congr 1`.
+
+Use extensionality with `k`. Simplify using `[MulAut.conj_apply]`. Rewrite using `[twCent_map e θ θ' hθ, hconj, ← Subgroup.map_inf_eq _ _ _ e.injective, cptPart_map_equiv e hc hc', Subgroup.relIndex_map_map_of_injective _ _ e.injective]`. Use `(GlobalTheory.BCT.OrbProd.avg_comp_equiv (e.subgroupMap K) _).symm.trans (congrArg avg (funext fun k => ?_))` and prove the remaining obligations. Simplify using `[hf, hθ, map_mul]`.
+-/
 private theorem summand_map (e : G ≃* G') (hc : Continuous e) (hc' : Continuous e.symm) (θ : G →* G) (θ' : G' →* G')
     (hθ : ∀ x, e (θ x) = θ' (e x)) (K : Subgroup G) (δ : G) (f : G → ℂ) (f' : G' → ℂ) (hf : ∀ x, f x = f' (e x)) (y : G) :
     GlobalTheory.TwOrbConj.summand θ' (K.map e.toMonoidHom) (e δ) f' (e y) = GlobalTheory.TwOrbConj.summand θ K δ f y := by
@@ -79,6 +103,19 @@ private theorem summand_map (e : G ≃* G') (hc : Continuous e) (hc' : Continuou
   · refine (GlobalTheory.BCT.OrbProd.avg_comp_equiv (e.subgroupMap K) _).symm.trans (congrArg avg (funext fun k => ?_))
     simp [hf, hθ, map_mul]
 
+/- English proof (translation)
+Establish `mT : ∀ x, x ∈ T → e x ∈ T'` using `fun x hx => hT ▸ ⟨x, hx, rfl⟩`. Establish `mK : ∀ x, x ∈ K → e x ∈ K'` using `fun x hx => hK ▸ ⟨x, hx, rfl⟩`. Establish `mT' : ∀ x, x ∈ T' → e.symm x ∈ T` using `fun x hx => by`. Rewrite `hx` using `[hT]`. Take `⟨y, hy, rfl⟩` from `hx`.
+
+Simplify using `using hy`. Establish `mK' : ∀ x, x ∈ K' → e.symm x ∈ K` using `fun x hx => by`. Rewrite `hx` using `[hK]`. Take `⟨y, hy, rfl⟩` from `hx`. Simplify using `using hy`.
+
+Set `F : DoubleCoset.Quotient (T : Set G) (K : Set G) → DoubleCoset.Quotient (T' : Set G') (K' : Set G')` to `fun q => DoubleCoset.mk T' K' (e (Quotient.out q))`. Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce `q₁ q₂ h`. Take `⟨t, ht, k, hk, he⟩` from `(DoubleCoset.eq _ _ _ _).1 h`.
+
+Rewrite using `[← DoubleCoset.out_eq' T K q₁, ← DoubleCoset.out_eq' T K q₂, DoubleCoset.eq]`. Use `⟨e.symm t, mT' t ht, e.symm k, mK' k hk, e.injective ?_⟩` and prove the remaining obligations. Simplify using `[he]`. Introduce `p`. Use `⟨DoubleCoset.mk T K (e.symm (Quotient.out p)), ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, b, ha, hb, he⟩` from `DoubleCoset.mk_out_eq_mul T K (e.symm (Quotient.out p))`. Use `show DoubleCoset.mk T' K' (e (Quotient.out (DoubleCoset.mk T K (e.symm (Quotient.out p))))) = p`. Rewrite using `[he]`. Use `conv_rhs => rw [← DoubleCoset.out_eq' T' K' p]`. Rewrite using `[DoubleCoset.eq]`.
+
+Use `⟨(e a)⁻¹, T'.inv_mem (mT a ha), (e b)⁻¹, K'.inv_mem (mK b hb), ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`. Use `⟨Equiv.ofBijective F hF, fun q => ?_⟩` and prove the remaining obligations. Take `⟨a, b, ha, hb, he⟩` from `DoubleCoset.mk_out_eq_mul T' K' (e (Quotient.out q))`. Conclude with `⟨a, ha, b, hb, he⟩`.
+-/
 private theorem dc_equiv (e : G ≃* G') {T K : Subgroup G} {T' K' : Subgroup G'}
     (hT : T' = T.map e.toMonoidHom) (hK : K' = K.map e.toMonoidHom) :
     ∃ E : DoubleCoset.Quotient (T : Set G) (K : Set G) ≃ DoubleCoset.Quotient (T' : Set G') (K' : Set G'),
@@ -115,6 +152,11 @@ private theorem dc_equiv (e : G ≃* G') {T K : Subgroup G} {T' K' : Subgroup G'
   obtain ⟨a, b, ha, hb, he⟩ := DoubleCoset.mk_out_eq_mul T' K' (e (Quotient.out q))
   exact ⟨a, ha, b, hb, he⟩
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.TwOrbConj.twOrb_eq, GlobalTheory.TwOrbConj.twOrb_eq]`. Take `⟨F, hF⟩` from `dc_equiv e (twCent_map e θ θ' hθ δ) (K := K) (K' := K.map e.toMonoidHom) rfl`. Rewrite using `[← finsum_comp_equiv F]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Take `⟨t, ht, k, hk, he⟩` from `hF q`.
+
+Rewrite using `[he, GlobalTheory.TwOrbConj.summand_rep θ' _ _ f' _ ht hk, summand_map e hc hc' θ θ' hθ K δ f f' hf]`.
+-/
 private theorem twOrb_map (e : G ≃* G') (hc : Continuous e) (hc' : Continuous e.symm) (θ : G →* G) (θ' : G' →* G')
     (hθ : ∀ x, e (θ x) = θ' (e x)) (K : Subgroup G) (δ : G) (f : G → ℂ) (f' : G' → ℂ) (hf : ∀ x, f x = f' (e x)) :
     twOrb θ K δ f = twOrb θ' (K.map e.toMonoidHom) (e δ) f' := by
@@ -125,6 +167,23 @@ private theorem twOrb_map (e : G ≃* G') (hc : Continuous e) (hc' : Continuous 
   obtain ⟨t, ht, k, hk, he⟩ := hF q
   rw [he, GlobalTheory.TwOrbConj.summand_rep θ' _ _ f' _ ht hk, summand_map e hc hc' θ θ' hθ K δ f f' hf]
 
+/- English proof (translation)
+Set `F' : G' → ℂ` to `fun x => if x ∈ S' then twOrb θ' (K.map e.toMonoidHom) x f' else 0`. Establish `hF' : ∀ g x, F' (g⁻¹ * x * θ' g) = F' x`. Introduce `g x`. Establish `hm : g⁻¹ * x * θ' g ∈ S' ↔ x ∈ S'`. Use `⟨fun h => ?_, hS' g x⟩` and prove the remaining obligations.
+
+Use `hS' g⁻¹ _ h` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Simplify using `only [F', hm, twOrb_conj']`. Set `L : TwCl θ' → ℂ` to `Quot.lift F' (by rintro x y ⟨g, rfl⟩; exact (hF' g x).symm)`. Establish `hL : ∀ c : TwCl θ', L c = F' c.rep`.
+
+Introduce `c`. Use `conv_lhs => rw [← GlobalTheory.BCT.StTwTens.mkC_rep _ c]`. Both sides reduce to the same expression. Set `M : TwCl θ ≃ TwCl θ'` to `{ toFun := Quot.map e (by rintro x y ⟨g, rfl⟩; exact ⟨e g, by simp [hθ]⟩) invFun := Quot.map e.symm (by`. Introduce and unpack `x y ⟨g, rfl⟩`.
+
+Use `⟨e.symm g, e.injective ?_⟩` and prove the remaining obligations. Simplify using `[hθ])`. Use `left_inv := fun c => by`. Use `Quot.inductionOn c fun x => ?_` and prove the remaining obligations. Conclude with `congrArg (Quot.mk _) (e.symm_apply_apply x)`.
+
+Use `right_inv := fun c => by`. Use `Quot.inductionOn c fun x => ?_` and prove the remaining obligations. Conclude with `congrArg (Quot.mk _) (e.apply_symm_apply x) }`. Combine the equalities or inequalities in the displayed calculation. Use `finsum_congr fun c => ?_` and prove the remaining obligations.
+
+Establish `hM : M c = GlobalTheory.BCT.StTwTens.mkC θ' (e c.rep)` using `by conv_lhs => rw [← GlobalTheory.BCT.StTwTens.mkC_rep _ c]`. Both sides reduce to the same expression. Rewrite using `[hM]`. Use `show _ = F' (e c.rep)`. Simplify using `only [F', hS, Pi.one_apply, one_mul]`.
+
+Rewrite using `[twOrb_map e hc hc' θ θ' hθ K c.rep f f' hf]`. Use `_ = ∑ᶠ c, L c := finsum_comp_equiv M (f := L)`. Use `_ = clSum θ' (K.map e.toMonoidHom) S' 1 f' := by`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[hL]`.
+
+Simplify using `only [F', Pi.one_apply, one_mul]`.
+-/
 private theorem clSum_map (e : G ≃* G') (hc : Continuous e) (hc' : Continuous e.symm) (θ : G →* G) (θ' : G' →* G')
     (hθ : ∀ x, e (θ x) = θ' (e x)) (K : Subgroup G) (S : Set G) (S' : Set G') (hS : ∀ x, x ∈ S ↔ e x ∈ S')
     (hS' : ∀ g x, x ∈ S' → g⁻¹ * x * θ' g ∈ S') (f : G → ℂ) (f' : G' → ℂ) (hf : ∀ x, f x = f' (e x)) :
@@ -173,6 +232,13 @@ end Gen
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `hK : (KGL w b).prod (KGL w a) = ((KGL w a).prod (KGL w b)).map (MulEquiv.prodComm : GLw a w × GLw b w ≃* GLw b w × GLw a w).toMonoidHom`. Use extensionality with `⟨x, y⟩`. Rewrite using `[Subgroup.mem_map_equiv]`. Simplify using `[Subgroup.mem_prod, and_comm]`. Unfold `stTw2`.
+
+Rewrite using `[hK]`. Establish `hc : Continuous (MulEquiv.prodComm : GLw a w × GLw b w ≃* GLw b w × GLw a w)` using `continuous_swap`. Establish `hc' : Continuous (MulEquiv.prodComm : GLw a w × GLw b w ≃* GLw b w × GLw a w).symm` using `continuous_swap`. Use `clSum_map (MulEquiv.prodComm : GLw a w × GLw b w ≃* GLw b w × GLw a w) hc hc' ((thL a w).prodMap (thL b w)) ((thL b w).prodMap (thL a w)) (fun _ => rfl) ((KGL w a).prod (KGL w b)) {y | (nrmL a w y.1).val.charpoly = Q₁ ∧ (nrmL b w y.2).val.charpoly = Q₂} {y | (nrmL b w y.1).val.ch …` and prove the remaining obligations. Conclude with `and_comm`.
+
+Introduce and unpack `g x ⟨h₁, h₂⟩`. Conclude with `⟨(GlobalTheory.BCT.StTwTens.nrmL_charpoly_twConj b w g.1 x.1).trans h₁, (GlobalTheory.BCT.StTwTens.nrmL_charpoly_twConj a w g.2 x.2).trans h₂⟩`.
+-/
 private theorem stTw2_swap (a b : ℕ) (w : Pl E) (Q₁ Q₂ : (w.adicCompletion E)[X]) (φ : GLw a w × GLw b w → ℂ)
     (φ' : GLw b w × GLw a w → ℂ) (h : ∀ y, φ y = φ' (y.2, y.1)) :
     stTw2 a b w Q₁ Q₂ φ = stTw2 b a w Q₂ Q₁ φ' := by
@@ -194,6 +260,11 @@ private theorem stTw2_swap (a b : ℕ) (w : Pl E) (Q₁ Q₂ : (w.adicCompletion
     exact ⟨(GlobalTheory.BCT.StTwTens.nrmL_charpoly_twConj b w g.1 x.1).trans h₁,
       (GlobalTheory.BCT.StTwTens.nrmL_charpoly_twConj a w g.2 x.2).trans h₂⟩
 
+/- English proof (translation)
+Unfold `PositivityTheory.Rg.BcB.G8.geomSt2`. Use `finsum_mem_eq_of_bijOn Prod.swap ⟨?_, Prod.swap_injective.injOn, ?_⟩ ?_` and prove the remaining obligations. Introduce and unpack `p ⟨h₁, h₂, h₃⟩`. Conclude with `⟨h₂, h₁, h₃.symm⟩`. Introduce and unpack `p ⟨h₁, h₂, h₃⟩`.
+
+Conclude with `⟨p.swap, ⟨h₂, h₁, h₃.symm⟩, Prod.swap_swap p⟩`. Introduce `p _`. Establish `hP : ∏ᶠ w ∈ S, stTw2 a b w (atPl w p.1) (atPl w p.2) (Φ w) = ∏ᶠ w ∈ S, stTw2 b a w (atPl w p.2) (atPl w p.1) (Φ' w)` using `finprod_mem_congr rfl fun w hw => stTw2_swap a b w _ _ _ _ (h w hw)`. Simplify using `only [Prod.fst_swap, Prod.snd_swap, hP]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem geomSt2_swap {a b : ℕ} (S : Set (Pl E)) (l₁ : InfinitePlace E → DomWeight a)
     (l₂ : InfinitePlace E → DomWeight b) (Φ : ∀ w : Pl E, GLw a w × GLw b w → ℂ)
     (Φ' : ∀ w : Pl E, GLw b w × GLw a w → ℂ) (h : ∀ w ∈ S, ∀ y, Φ w y = Φ' w (y.2, y.1)) :
@@ -211,6 +282,19 @@ private theorem geomSt2_swap {a b : ℕ} (S : Set (Pl E)) (l₁ : InfinitePlace 
     simp only [Prod.fst_swap, Prod.snd_swap, hP]
     ring
 
+/- English proof (translation)
+Establish `key : ∀ l : DomWeight n, (infOfWeight l).map Complex.re = ((List.ofFn fun k : Fin n => (l.w k : ℝ) + (((n : ℝ) - 1) / 2 - (k : ℕ)) : List ℝ) : Multiset ℝ)`. Introduce `l`. Unfold `infOfWeight`. Rewrite using `[Multiset.map_map, Fin.univ_val_map]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Establish `anti : ∀ l : DomWeight n, (List.ofFn fun k : Fin n => (l.w k : ℝ) + (((n : ℝ) - 1) / 2 - (k : ℕ))).Pairwise (· > ·)`. Introduce `l`. Rewrite using `[List.pairwise_ofFn]`.
+
+Introduce `i j hij`. Establish `h1 : l.w j ≤ l.w i` using `l.anti hij.le`. Establish `h2 : (l.w j : ℝ) ≤ l.w i` using `by exact_mod_cast h1`. Establish `h3 : ((i : ℕ) : ℝ) < (j : ℕ)` using `by exact_mod_cast hij`. Use `show (l.w j : ℝ) + (((n : ℝ) - 1) / 2 - (j : ℕ)) < (l.w i : ℝ) + (((n : ℝ) - 1) / 2 - (i : ℕ))`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp` using `Multiset.coe_eq_coe.1 ((key l).symm.trans ((congrArg _ h).trans (key l')))`. Establish `he` using `List.Perm.eq_of_pairwise (fun a b _ _ (hab : a > b) (hba : b > a) => absurd hab (not_lt.2 hba.le)) (anti l) (anti l') hp`. Establish `hf` using `List.ofFn_injective he`. Consider the cases of `l with | mk w₁ a₁ => cases l' with | mk w₂ a₂ =>`.
+
+Establish `: w₁ = w₂`. Use function extensionality and compare the values at `k`. Use `congrFun hf k` as an intermediate fact. Simplify using `only [add_left_inj] at this`. Conclude with `this` after adjusting the coercions.
+
+Substitute `this` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem infOfWeight_inj {n : ℕ} {l l' : DomWeight n} (h : infOfWeight l = infOfWeight l') : l = l' := by
   have key : ∀ l : DomWeight n, (infOfWeight l).map Complex.re =
       ((List.ofFn fun k : Fin n => (l.w k : ℝ) + (((n : ℝ) - 1) / 2 - (k : ℕ)) : List ℝ) : Multiset ℝ) := by
@@ -241,19 +325,33 @@ private theorem infOfWeight_inj {n : ℕ} {l l' : DomWeight n} (h : infOfWeight 
   subst this
   rfl
 
+/- English proof (translation)
+Simplify using `[infOfWeight]`.
+-/
 private theorem infOfWeight_zero (l : DomWeight 0) : infOfWeight l = 0 := by
   simp [infOfWeight]
 
+/- English proof (translation)
+Consider the cases of `l`. Consider the cases of `l'`. Reduce the equality to equality of the corresponding arguments. Conclude with `Subsingleton.elim _ _`.
+-/
 private theorem domWeight_zero (l l' : DomWeight 0) : l = l' := by
   cases l
   cases l'
   congr
   exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `Subsingleton.elim _ _`.
+-/
 private theorem gl_zero_eq_one_alt (w : Pl E) (x : GLw 0 w) : x = 1 := by
   apply Units.ext
   exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Unfold `hint`. Establish `h1 : rStab u ⊓ K = ⊤` using `Subsingleton.elim _ _`. Establish `h2 : (rStab u ⊓ K).relIndex K = 1` using `by rw [h1]; simp`. Rewrite using `[h2]`. Use `haveI : Unique (H ⧸ (rStab u ⊓ K)) := Unique.mk' _`.
+
+Rewrite using `[finsum_unique]`. Simplify using `only [Nat.cast_one, inv_one, one_mul]`. Conclude with `congrArg u (Subsingleton.elim _ _)`.
+-/
 private theorem hint_subsingleton {H : Type} [Group H] [Subsingleton H] (K : Subgroup H) (u : H → ℂ) :
     hint K u = u 1 := by
   unfold hint
@@ -265,6 +363,13 @@ private theorem hint_subsingleton {H : Type} [Group H] [Subsingleton H] (K : Sub
   simp only [Nat.cast_one, inv_one, one_mul]
   exact congrArg u (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Establish `he : ∀ i : Fin n, (finSumFinEquiv.trans (finCongr (Nat.zero_add n))).symm i = Sum.inr i`. Introduce `i`. Rewrite using `[Equiv.symm_apply_eq]`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Establish `hM : Matrix.reindex (finSumFinEquiv.trans (finCongr (Nat.zero_add n))) (finSumFinEquiv.trans (finCongr (Nat.zero_add n))) (Matrix.fromBlocks x.val (x.val * X) 0 g.val) = g.val`. Use extensionality with `i j`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, he, Matrix.fromBlocks_apply₂₂]`. Unfold `blk`. Simplify using `only [hM]`.
+
+Rewrite using `[dif_pos g.isUnit]`. Conclude with `Units.ext rfl`.
+-/
 private theorem blk_left (n : ℕ) (w : Pl E) (x : GLw 0 w) (g : GLw n w) (X : Matrix (Fin 0) (Fin n) (w.adicCompletion E)) :
     blk (Nat.zero_add n) w (x, g) X = g := by
   have he : ∀ i : Fin n, (finSumFinEquiv.trans (finCongr (Nat.zero_add n))).symm i = Sum.inr i := by
@@ -281,6 +386,13 @@ private theorem blk_left (n : ℕ) (w : Pl E) (x : GLw 0 w) (g : GLw n w) (X : M
   rw [dif_pos g.isUnit]
   exact Units.ext rfl
 
+/- English proof (translation)
+Establish `he : ∀ i : Fin n, (finSumFinEquiv.trans (finCongr (Nat.add_zero n))).symm i = Sum.inl i`. Introduce `i`. Rewrite using `[Equiv.symm_apply_eq]`. Apply `Fin.ext` to reduce the goal to its premises. Use `show (i : ℕ) = ((finSumFinEquiv (m := n) (n := 0) (Sum.inl i) : Fin (n + 0)) : ℕ)`.
+
+Rewrite using `[finSumFinEquiv_apply_left]`. Both sides reduce to the same expression. Establish `hM : Matrix.reindex (finSumFinEquiv.trans (finCongr (Nat.add_zero n))) (finSumFinEquiv.trans (finCongr (Nat.add_zero n))) (Matrix.fromBlocks g.val (g.val * X) 0 x.val) = g.val`. Use extensionality with `i j`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, he, Matrix.fromBlocks_apply₁₁]`.
+
+Unfold `blk`. Simplify using `only [hM]`. Rewrite using `[dif_pos g.isUnit]`. Conclude with `Units.ext rfl`.
+-/
 private theorem blk_right (n : ℕ) (w : Pl E) (g : GLw n w) (x : GLw 0 w) (X : Matrix (Fin n) (Fin 0) (w.adicCompletion E)) :
     blk (Nat.add_zero n) w (g, x) X = g := by
   have he : ∀ i : Fin n, (finSumFinEquiv.trans (finCongr (Nat.add_zero n))).symm i = Sum.inl i := by
@@ -299,6 +411,11 @@ private theorem blk_right (n : ℕ) (w : Pl E) (g : GLw n w) (x : GLw 0 w) (X : 
   rw [dif_pos g.isUnit]
   exact Units.ext rfl
 
+/- English proof (translation)
+Take `rfl` from `gl_zero_eq_one_alt w x`. Take `rfl` from `gl_zero_eq_one_alt w x'`. Use `haveI : Subsingleton (Multiplicative (Matrix (Fin 0) (Fin n) (w.adicCompletion E))) := inferInstanceAs (Subsingleton (Matrix (Fin 0) (Fin n) (w.adicCompletion E)))`. Use `haveI : Subsingleton (Multiplicative (Matrix (Fin n) (Fin 0) (w.adicCompletion E))) := inferInstanceAs (Subsingleton (Matrix (Fin n) (Fin 0) (w.adicCompletion E)))`. Unfold `ctMu ct`.
+
+Rewrite using `[hint_subsingleton, hint_subsingleton]`. Simplify using `only [blk_left, blk_right]`. Simplify using the standard rewrite rules.
+-/
 private theorem ctMu_swap (n : ℕ) (w : Pl E) (χ : (w.adicCompletion E)ˣ →* ℂˣ) (f : UL n w → ℂ) (x x' : GLw 0 w)
     (g : GLw n w) : ctMu (Nat.zero_add n) w χ f (x, g) = ctMu (Nat.add_zero n) w χ f (g, x') := by
   obtain rfl := gl_zero_eq_one_alt w x
@@ -312,6 +429,9 @@ private theorem ctMu_swap (n : ℕ) (w : Pl E) (χ : (w.adicCompletion E)ˣ →*
   simp only [blk_left, blk_right]
   simp
 
+/- English proof (translation)
+Unfold `PositivityTheory.Rg.BcB.G8.geomSt2`. Use `finsum_mem_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[finprod_mem_congr rfl fun w hw => by rw [h w hw]]`.
+-/
 private theorem geomSt2_congr {a b : ℕ} (S : Set (Pl E)) (l₁ : InfinitePlace E → DomWeight a)
     (l₂ : InfinitePlace E → DomWeight b) (Φ Φ' : ∀ w : Pl E, GLw a w × GLw b w → ℂ) (h : ∀ w ∈ S, Φ w = Φ' w) :
     PositivityTheory.Rg.BcB.G8.geomSt2 S l₁ l₂ Φ = PositivityTheory.Rg.BcB.G8.geomSt2 S l₁ l₂ Φ' := by
@@ -319,6 +439,17 @@ private theorem geomSt2_congr {a b : ℕ} (S : Set (Pl E)) (l₁ : InfinitePlace
   refine finsum_mem_congr rfl fun p _ => ?_
   rw [finprod_mem_congr rfl fun w hw => by rw [h w hw]]
 
+/- English proof (translation)
+Introduce `E _ _ _ n a b h hab μ e S l₁ l₂ lam l₀ f Φ Φ' hw hΦ hΦ'`. Break down `hab with rfl | rfl` into its components or cases. Take `rfl : b = n` from `by omega`. Establish `hl : l₂ = lam` using `funext fun v => infOfWeight_inj (by`. Use `hw v` as an intermediate fact.
+
+Simplify `this)` using `[infOfWeight_zero]`. Establish `hl0 : l₁ = l₀` using `funext fun v => domWeight_zero _ _`. Substitute `hl hl0` using the available equality. Use `geomSt2_swap S l₁ l₂ Φ Φ' fun w hw' y => ?_` and prove the remaining obligations. Rewrite using `[hΦ w hw', hΦ' w hw']`.
+
+Distinguish the cases in `hs : IsSplitAt w`. Simplify using `only [if_pos hs]`. Conclude with `ctMu_swap b w _ _ _ _ _`. Simplify using `only [if_neg hs]`. Establish `hm : y ∈ K2 0 b w ↔ (y.2, y.1) ∈ K2 b 0 w`.
+
+Simplify using `[K2, Subgroup.mem_prod, and_comm]`. Simplify using `only [Set.indicator, SetLike.mem_coe, hm, Pi.one_apply]`. Take `rfl : a = n` from `by omega`. Establish `hl : l₁ = lam` using `funext fun v => infOfWeight_inj (by`. Use `hw v` as an intermediate fact.
+
+Simplify `this)` using `[infOfWeight_zero]`. Establish `hl0 : l₂ = l₀` using `funext fun v => domWeight_zero _ _`. Substitute `hl hl0` using the available equality. Use `geomSt2_congr S l₁ l₂ Φ Φ' fun w hw' => ?_` and prove the remaining obligations. Rewrite using `[hΦ w hw', hΦ' w hw']`.
+-/
 theorem ends : UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.Ends := by
   intro E _ _ _ n a b h hab μ e S l₁ l₂ lam l₀ f Φ Φ' hw hΦ hΦ'
   rcases hab with rfl | rfl

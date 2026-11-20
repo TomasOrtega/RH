@@ -8,6 +8,19 @@ set_option autoImplicit false
 
 namespace GlobalTheory.QLogInt
 
+/- English proof (translation)
+Introduce `p hpf B O Q _ _ _ _ θ hF d μ hμ l hl α hdeg hne`. Establish `hp : p.Prime` using `hpf.out`. Distinguish the cases in `h0 : α = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[h0, coeff_zero_eq_constantCoeff_apply, hl.1, map_zero]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, α k ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `h0 (Finsupp.ext h)`. Establish `hkle : α k ≤ p` using `(Finsupp.le_degree k α).trans hdeg`.
+
+Establish `hklt : α k < p`. Use `lt_of_le_of_ne hkle fun hkp => hne k ?_` and prove the remaining obligations. Establish `hs : Finsupp.single k p ≤ α`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hsplit : α = Finsupp.single k p + (α - Finsupp.single k p)` using `(add_tsub_cancel_of_le hs).symm`. Establish `hd : (α - Finsupp.single k p).degree = 0`. Establish `h2` using `congrArg Finsupp.degree hsplit`. Rewrite `h2` using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hsplit` using `[(Finsupp.degree_eq_zero_iff _).1 hd, add_zero]`. Conclude with `hsplit`. Establish `hcop : Nat.Coprime (α k) p` using `(Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hp).2 (Nat.not_dvd_of_pos_of_lt (Nat.pos_of_ne_zero hk) hklt)))`. Take `⟨u, hu⟩` from `hF.unit_coprime (α k) hcop`. Take `⟨b', -, hb'⟩` from `GlobalTheory.QLogDiff.dIn_of_QL p B O Q θ hF d μ hμ ⊤ l hl α k`.
+
+Use `⟨(↑u⁻¹ : B) * b', ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap B Q (↑u⁻¹ : B) * (α k : Q) = 1`. Rewrite using `[← map_natCast (algebraMap B Q) (α k), ← hu, ← map_mul, Units.inv_mul, map_one]`. Rewrite using `[map_mul, ← hb']`. Take the linear combination `(-(coeff α l)) * h1`.
+-/
 theorem coeff_integral_of_QL : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B), IsLift θ μ → ∀ l : MvPowerSeries (Fin d) Q, QL μ ⊤ l → ∀ α : Fin d →₀ ℕ, α.degree ≤ p → (∀ i, α ≠ Finsupp.single i p) → ∃ b : B, coeff α l = algebraMap B Q b := by
   intro p hpf B O Q _ _ _ _ θ hF d μ hμ l hl α hdeg hne
   have hp : p.Prime := hpf.out

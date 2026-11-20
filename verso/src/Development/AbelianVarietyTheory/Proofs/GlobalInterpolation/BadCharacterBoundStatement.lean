@@ -8,5 +8,8 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DisjointExcep
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ThinScalesIffHostBound
 open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.GlobalTheoryTheory GlobalTheory.EX NumberField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EX.chBad_of_from | exact GlobalTheory.EX.chBad_of_from | (intros; apply GlobalTheory.EX.chBad_of_from <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bad_character_bound : ∀ (C : FC) (p : Pt C) (R : Ranks) (H : Host R) (a b : R.A → ℤ) (M : ℕ) (c : Fin M → Fin (R.k - 2) → Bool) (u0 : ℕ) (Cb : ℝ), p.From H a b c u0 → CanonInst p.ta.Gx → BadOK p.L.sc Cb H → ChBad_at p.ta.Gx Cb := by
   first | exact @GlobalTheory.EX.chBad_of_from | exact GlobalTheory.EX.chBad_of_from | (intros; apply GlobalTheory.EX.chBad_of_from <;> assumption)

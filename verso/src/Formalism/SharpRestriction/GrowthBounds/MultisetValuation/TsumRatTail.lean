@@ -6,6 +6,17 @@ namespace Formalism.MainNotions.FormalGroupSystem.Pf
 
 open Formalism.MainNotions.G Formalism.BasicNotions Finset
 
+/- English proof (translation)
+Establish `hsE : Summable (fun i => (g (i + E) : ℝ))` using `(summable_nat_add_iff E).2 hs`. Establish `h1` using `hsE.sum_add_tsum_nat_add N`. Establish `h2 : ∀ i, (g (i + N + E) : ℝ) = (g (i + E) : ℝ) / Q`. Introduce `i`. Rewrite using `[show i + N + E = i + E + N by omega, h4 (i + E) (by omega)]`.
+
+Use `push_cast`. Apply the tactic sequence `try rfl`. Simplify using `only [h2] at h1`. Rewrite `h1` using `[tsum_div_const]`. Establish `h0` using `hs.sum_add_tsum_nat_add E`.
+
+Establish `hQ0 : (Q : ℝ) ≠ 0`. Establish `: (1 : ℝ) < Q` using `by exact_mod_cast hQ1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQ1' : (Q : ℝ) - 1 ≠ 0`. Establish `: (1 : ℝ) < Q` using `by exact_mod_cast hQ1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT : ∑' i, (g (i + E) : ℝ) = (∑ i ∈ range N, (g (i + E) : ℝ)) * Q / (Q - 1)`. Rewrite using `[eq_div_iff hQ1']`. Clear denominators, using `at h1` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨∑ i ∈ range E, g i + (∑ i ∈ range N, g (i + E)) * Q / (Q - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[← h0, hT]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tsum_rat_tail (g : ℕ → ℚ) (hs : Summable (fun e => (g e : ℝ))) (E N : ℕ) (Q : ℚ) (hQ1 : 1 < Q)
     (h4 : ∀ e, E ≤ e → g (e + N) = g e / Q) : ∃ q : ℚ, ∑' e, (g e : ℝ) = q := by
   have hsE : Summable (fun i => (g (i + E) : ℝ)) := (summable_nat_add_iff E).2 hs
@@ -36,6 +47,9 @@ theorem tsum_rat_tail (g : ℕ → ℚ) (hs : Summable (fun e => (g e : ℝ))) (
 def fqT (P : ℕ) (α : ℤ) (c : ℕ → ℤ) (Ds : Finset ℕ) (e : ℕ) : ℚ :=
   if 2 * e + 1 ∈ Ds then 0 else max ((α : ℚ) / (P : ℚ) ^ (2 * e + 1) - (c e : ℚ)) 0
 
+/- English proof (translation)
+Unfold `fqT`. Use `split_ifs`. Simplify using the standard rewrite rules. Apply the tactic sequence `push_cast try rfl`.
+-/
 theorem fqT_cast (P : ℕ) (α : ℤ) (c : ℕ → ℤ) (Ds : Finset ℕ) (e : ℕ) :
     (if 2 * e + 1 ∈ Ds then (0 : ℝ) else max ((α : ℝ) / (P : ℝ) ^ (2 * e + 1) - (c e : ℝ)) 0) =
       (fqT P α c Ds e : ℝ) := by
@@ -45,6 +59,35 @@ theorem fqT_cast (P : ℕ) (α : ℤ) (c : ℕ → ℤ) (Ds : Finset ℕ) (e : �
   · push_cast
     try rfl
 
+/- English proof (translation)
+Repeatedly rewrite using `[fqT_cast]`. Distinguish the cases in `hs : Summable (fun e => (fqT P α c Ds e : ℝ))`. Use `swap`. Conclude with `⟨0, by rw [tsum_eq_zero_of_not_summable hs]; simp⟩`. Establish `hP0 : (0 : ℚ) < P` using `by exact_mod_cast (by omega : 0 < P)`.
+
+Establish `h1 : ∀ e, Ds.sup id + α.natAbs + 1 ≤ e → 2 * e + 1 ∉ Ds` using `fun e he hmem => by`. Use `Finset.le_sup (f := id) hmem` as an intermediate fact. Simplify using `only [id] at this`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ∀ e, Ds.sup id + α.natAbs + 1 ≤ e → |(α : ℚ)| * 2 < (P : ℚ) ^ (2 * e + 1)`.
+
+Introduce `e he`. Establish `a1 : α.natAbs * 2 < P ^ (2 * e + 1)`. Combine the equalities or inequalities in the displayed calculation. Establish `a2 : ((α.natAbs : ℕ) : ℚ) = |(α : ℚ)|` using `by rw [Nat.cast_natAbs, Int.cast_abs]`. Rewrite using `[← a2]`.
+
+Conclude with `a1` after adjusting the coercions. Establish `h2' : ∀ e, Ds.sup id + α.natAbs + 1 ≤ e → |(α : ℚ) / (P : ℚ) ^ (2 * e + 1)| < 1 / 2`. Introduce `e he`. Establish `hpos : (0 : ℚ) < (P : ℚ) ^ (2 * e + 1)` using `pow_pos hP0 _`. Rewrite using `[abs_div, abs_of_pos hpos, div_lt_iff₀ hpos]`.
+
+Combine the linear relations using `[h2 e he]`. Establish `hcK : ∀ k e, c (e + k * N) = c e`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro e`.
+
+Simplify using the standard rewrite rules. Consider the case `succ k ih => intro e`. Rewrite using `[Nat.succ_mul, ← add_assoc, hc, ih]`. Establish `h3 : ∀ e, Ds.sup id + α.natAbs + 1 ≤ e → 0 ≤ c e`. Introduce `e0 he0`.
+
+Assume the negation of the conclusion as `hneg`. Establish `hneg : c e0 ≤ -1` using `by omega`. Establish `tend` using `hs.tendsto_atTop_zero`. Take `⟨M, hM⟩` from `(tend.eventually (gt_mem_nhds (by norm_num : (0 : ℝ) < 1 / 2))).exists_forall_of_atTop`. Establish `hge : M ≤ e0 + M * N` using `by nlinarith`.
+
+Establish `hlt : (fqT P α c Ds (e0 + M * N) : ℝ) < 1 / 2` using `hM _ hge`. Establish `hlt' : fqT P α c Ds (e0 + M * N) < 1 / 2`. Establish `: (fqT P α c Ds (e0 + M * N) : ℝ) < ((1 / 2 : ℚ) : ℝ)` using `by push_cast; exact hlt`. Conclude with `Rat.cast_lt.1 this`. Establish `hE1 : Ds.sup id + α.natAbs + 1 ≤ e0 + M * N` using `le_trans he0 (Nat.le_add_right _ _)`.
+
+Unfold `fqT at hlt'`. Rewrite `hlt'` using `[if_neg (h1 _ hE1), hcK]`. Establish `b1` using `abs_lt.1 (h2' _ hE1)`. Establish `b2 : ((c e0 : ℤ) : ℚ) ≤ -1` using `by exact_mod_cast hneg`. Establish `b3` using `le_max_left ((α : ℚ) / (P : ℚ) ^ (2 * (e0 + M * N) + 1) - (c e0 : ℚ)) 0`.
+
+Combine the linear relations using `[b1.1]`. Establish `h4 : ∀ e, Ds.sup id + α.natAbs + 1 ≤ e → fqT P α c Ds (e + N) = fqT P α c Ds e / (P : ℚ) ^ (2 * N)`. Introduce `e he`. Establish `he' : Ds.sup id + α.natAbs + 1 ≤ e + N` using `le_trans he (Nat.le_add_right _ _)`. Unfold `fqT`.
+
+Rewrite using `[if_neg (h1 _ he), if_neg (h1 _ he'), hc]`. Establish `hQ : (0 : ℚ) < (P : ℚ) ^ (2 * N)` using `pow_pos hP0 _`. Break down `(h3 e he).eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Simplify using `only [Int.cast_zero, sub_zero]`.
+
+Establish `: (α : ℚ) / (P : ℚ) ^ (2 * (e + N) + 1) = (α : ℚ) / (P : ℚ) ^ (2 * e + 1) / (P : ℚ) ^ (2 * N)`. Rewrite using `[div_div, ← pow_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, ← max_div_div_right hQ.le, zero_div]`.
+
+Establish `b2 : (1 : ℚ) ≤ ((c e : ℤ) : ℚ)` using `by exact_mod_cast h0`. Establish `c1` using `abs_lt.1 (h2' _ he)`. Establish `c2` using `abs_lt.1 (h2' _ he')`. Rewrite using `[max_eq_right (by linarith [c2.2]), max_eq_right (by linarith [c1.2]), zero_div]`. Establish `hQ1 : (1 : ℚ) < (P : ℚ) ^ (2 * N)`.
+
+Establish `: (1 : ℚ) < P` using `by exact_mod_cast (by omega : 1 < P)`. Conclude with `one_lt_pow₀ this (by omega)`. Conclude with `tsum_rat_tail _ hs _ N _ hQ1 h4`.
+-/
 theorem tsum_rat (P N : ℕ) (hP : 2 ≤ P) (hN : 0 < N) (α : ℤ) (c : ℕ → ℤ) (hc : ∀ e, c (e + N) = c e)
     (Ds : Finset ℕ) :
     ∃ q : ℚ, ∑' e : ℕ, (if 2 * e + 1 ∈ Ds then (0 : ℝ) else
@@ -119,6 +162,15 @@ theorem tsum_rat (P N : ℕ) (hP : 2 ≤ P) (hN : 0 < N) (α : ℤ) (c : ℕ →
     exact one_lt_pow₀ this (by omega)
   exact tsum_rat_tail _ hs _ N _ hQ1 h4
 
+/- English proof (translation)
+Establish `h1 : ∀ s : Fin n', ∃ q : ℚ, ∑' e : ℕ, (if 2 * e + 1 ∈ dSet TT s then (0 : ℝ) else max ((al TT lam0 s : ℝ) / (p : ℝ) ^ (2 * e + 1) - (cap t TT lam0 w j (posAdd s (2 * e + 1)) : ℝ)) 0) = q`. Introduce `s`. Apply `tsum_rat p n' hp hn (al TT lam0 s) (fun e => cap t TT lam0 w j (posAdd s (2 * e + 1))) _ (dSet TT s)` to reduce the goal to its premises. Introduce `e`. Establish `: posAdd s (2 * (e + n') + 1) = posAdd s (2 * e + 1)`.
+
+Unfold `posAdd`. Apply `Fin.ext` to reduce the goal to its premises. Use `show (s.val + (2 * (e + n') + 1)) % n' = (s.val + (2 * e + 1)) % n'`. Establish `: s.val + (2 * (e + n') + 1) = s.val + (2 * e + 1) + 2 * n'` using `by ring`. Rewrite using `[this, Nat.add_mul_mod_self_right]`.
+
+Simplify using `only [this]`. Use `choose q hq using h1`. Use `⟨∑ s ∈ TT, q s - (∑ s : Fin n', ((NN k1 t j : ℚ) * lgp p (al TT lam0 s) + (NN k1 t (j - 1) : ℚ) * (NN k1 t j : ℚ) * lgp p (lsz t TT lam0 w j s)) + ∑ s ∈ TT, ((lgp p (al TT lam0 s) : ℚ)) ^ 2), ?_⟩` and prove the remaining obligations. Unfold `gA de`. Simplify using `only [hq]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gA_rat {n' k1 : ℕ} (p t : ℕ) (hp : 2 ≤ p) (hn : 0 < n') (TT : Finset (Fin n'))
     (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (w : ℕ → Fin n' → ℤ) (j : ℕ) : ∃ q : ℚ, gA p t TT lam0 w j = q := by
   have h1 : ∀ s : Fin n', ∃ q : ℚ, ∑' e : ℕ,
@@ -143,6 +195,9 @@ theorem gA_rat {n' k1 : ℕ} (p t : ℕ) (hp : 2 ≤ p) (hn : 0 < n') (TT : Fins
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `v j`. Establish `h` using `X.std v`. Conclude with `gA_rat p X.t (by have := h.five_le; omega) (by have := h.two_le; omega) _ _ _ j`.
+-/
 theorem restRat {p : ℕ} [Fact p.Prime] (X : Sys p) : RatCondition X := by
   intro v j
   have h := X.std v

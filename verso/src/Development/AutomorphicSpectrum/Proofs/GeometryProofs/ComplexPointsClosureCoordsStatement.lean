@@ -8,6 +8,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.CompanionTheory.Ar.RootHt GroundTheory.Heights₂.Heights
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.RootHt.ArchC.closed_coords' | exact GlobalTheory.CompanionTheory.Ar.RootHt.ArchC.closed_coords' | (intros; apply GlobalTheory.CompanionTheory.Ar.RootHt.ArchC.closed_coords' <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.complex_points_closure_coords : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω),
     (∀ q : X, genPt ξ ⤳ q) → CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) →

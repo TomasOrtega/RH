@@ -17,11 +17,21 @@ namespace GlobalTheory.OLinearCompare
 
 open GlobalTheory.IndefiniteRowSideFullHecke.OLinearMaps GlobalTheory.TorusCoord
 
+/- English proof (translation)
+The claim follows from `isGen_of_gm _ fun _ _ _ _ _ => (map_one _).trans (Eq.symm ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)))`.
+-/
 theorem oneGen_isGen {X Y : Scheme.{0}} (L : LB X) : (LB.oneGen L (Y := Y)).IsGen :=
   isGen_of_gm _ fun _ _ _ _ _ =>
     (map_one _).trans (Eq.symm ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans
       (_root_.mul_one _)))
 
+/- English proof (translation)
+Establish `key` using `gen_unique' hL (u := LB.pullGen L _ _ u (lift (𝟙 A) (1 : A ⟶ A)).left) (u' := LB.oneGen L) (fun U _ h => by`. Use `(Fintype.prod_empty _).trans (Eq.symm ((prod_ros f g (𝟙 A) 1 h).trans ?_))` and prove the remaining obligations. Rewrite using `[MonObj.one_comp, _root_.mul_one, _root_.mul_one]`. Use the proof step `simp)`. Use the proof step `A.hom η[A].left (Over.w η[A]) (globalFns_holds _ _ hA).2 (DVR.pullGen_isGen _ _ _ _ hu _)`.
+
+Use the proof step `(oneGen_isGen L) (fun y I hI => by`. Use `val_corr hI h₀ (𝟙 _)` as an intermediate fact. Rewrite `this` using `[val_pull hI, Category.id_comp, val_one]`. Rewrite using `[val_pull hI, val_one, ← Over.comp_left]`. Establish `e : η[A] ≫ lift (𝟙 A) (1 : A ⟶ A) = lift η[A] η[A]` using `by simp [Hom.one_def]`.
+
+Rewrite using `[e]`. Conclude with `this) _ x.left z J hJ`. Rewrite `key` using `[val_pull hJ, val_one, ← Over.comp_left, comp_lift, Category.comp_id, MonObj.comp_one]`. Conclude with `key`.
+-/
 theorem val₂_axis {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {L : LB A.left}
     (hA : IsAbelianScheme A) (hL : L.IsLB) (f g : A ⟶ A) [IsMonHom f] [IsMonHom g]
     (u : LB.Gen (LB.LinComb L (rosatiφ A f g) rosatiε)) (hu : u.IsGen)
@@ -45,6 +55,9 @@ theorem val₂_axis {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {L
 variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Rewrite using `[val_pull hJ, ← Over.comp_left, comp_lift, comp_toUnit_assoc]`. Both sides reduce to the same expression.
+-/
 theorem val_pull_lift {b b' : D.P.A ⟶ D.P.A}
     (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A b' b) rosatiε)) (χ : D.X)
     {T Z : Over (Spec (CommRingCat.of R))} (p : T ⟶ D.P.A) (x : Z ⟶ T) {z : Z.left} {J}

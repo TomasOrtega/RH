@@ -8,6 +8,9 @@ open GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.Iwasawa GroundT
 open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.LFUDom
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LFUDom.whittaker_torus_value_formula | exact GlobalTheory.CompanionTheory.LFUDom.whittaker_torus_value_formula | (intros; apply GlobalTheory.CompanionTheory.LFUDom.whittaker_torus_value_formula <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.whittaker_torus_value_formula_holds : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), Ad3.IsStd ψ → ∀ (ν : Fˣ →* ℂˣ) (a b : ℤ),
   (b ≤ a → Ad3.LFS.s2 ψ ν (torusPow F 2 ![a, b]) =
     sqrtQ F ^ (-(a - b)) * evalAt ![ν (unifUnit F), (ν (unifUnit F))⁻¹] (schur ![a, b])) ∧

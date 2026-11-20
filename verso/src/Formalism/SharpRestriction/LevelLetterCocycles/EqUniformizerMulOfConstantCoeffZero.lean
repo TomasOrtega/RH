@@ -24,25 +24,44 @@ def ιS (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) : PowerSeries O
   PowerSeries.substAlgHom (R := O) (PowerSeries.HasSubst.of_constantCoeff_zero'
     (Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_cc hR))
 
+/- English proof (translation)
+Rewrite using `[ιS, PowerSeries.coe_substAlgHom]`.
+-/
 theorem ιS_apply (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (F : PowerSeries O) :
     ιS W hR F = PowerSeries.subst W.π₀₁ F := by
   rw [ιS, PowerSeries.coe_substAlgHom]
 
+/- English proof (translation)
+Rewrite using `[ιS_apply]`. Conclude with `PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero' (Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_cc hR))`.
+-/
 theorem ιS_X (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) : ιS W hR PowerSeries.X = W.π₀₁ := by
   rw [ιS_apply]; exact PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero'
     (Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_cc hR))
 
+/- English proof (translation)
+Take `⟨F, hF, -⟩` from `hR.2.1 g hg`. Conclude with `⟨F, fun i => by rw [hF i, ιS_apply]; rfl⟩`.
+-/
 theorem rep (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) {g : LetA O n} (hg : g ∈ W.AΔ) :
     ∃ F : ZMod n → PowerSeries O, ∀ i, g i = ιS W hR (F i) := by
   obtain ⟨F, hF, -⟩ := hR.2.1 g hg
   exact ⟨F, fun i => by rw [hF i, ιS_apply]; rfl⟩
 
+/- English proof (translation)
+Introduce `δ _`. Use function extensionality and compare the values at `i`. Use `show W.γ₀ δ (PowerSeries.C (o i)) = PowerSeries.C (o i)`. Conclude with `(W.γ₀ δ).commutes (o i)`.
+-/
 theorem const_mem (o : ZMod n → O) : (fun i => PowerSeries.C (o i) : LetA O n) ∈ W.AΔ := by
   intro δ _
   funext i
   show W.γ₀ δ (PowerSeries.C (o i)) = PowerSeries.C (o i)
   exact (W.γ₀ δ).commutes (o i)
 
+/- English proof (translation)
+Establish `hLR` using `Formalism.MainNotions.LiftingTheory.lifta_ring_of W hR`. Take `⟨F, hF⟩` from `rep W hR ha`. Establish `hF0 : ∀ i, PowerSeries.constantCoeff (F i) = 0`. Introduce `i`. Rewrite using `[← Formalism.MainNotions.UnusedSlot80.ToolsR.cc_subst (Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_cc hR), ← ιS_apply W hR, ← hF i]`.
+
+Conclude with `h0 i`. Use `choose F' hF' using fun i => PowerSeries.X_dvd_iff.mpr (hF0 i)`. Establish `he : a = W.π₀ * fun i => ιS W hR (F' i)`. Use function extensionality and compare the values at `i`. Rewrite using `[hF i, hF' i, map_mul, ιS_X]`.
+
+Both sides reduce to the same expression. Use `⟨_, Formalism.MainNotions.LiftingTheory.lifta_divΔ W _ _ hLR.πΔ hLR.πU (he ▸ ha), he⟩` and prove the remaining obligations.
+-/
 theorem eq_uniformizer_mul_of_constantCoeff_zero [IsDomain O] (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) {a : LetA O n} (ha : a ∈ W.AΔ)
     (h0 : ∀ i, PowerSeries.constantCoeff (a i) = 0) : ∃ r ∈ W.AΔ, a = W.π₀ * r := by
   have hLR := Formalism.MainNotions.LiftingTheory.lifta_ring_of W hR
@@ -58,14 +77,29 @@ theorem eq_uniformizer_mul_of_constantCoeff_zero [IsDomain O] (hR : Formalism.Ma
     rfl
   refine ⟨_, Formalism.MainNotions.LiftingTheory.lifta_divΔ W _ _ hLR.πΔ hLR.πU (he ▸ ha), he⟩
 
+/- English proof (translation)
+Simplify using `[Gd]`.
+-/
 theorem Gd01 : (Gd (O := O) PD.p 0 1) = PowerSeries.X + ((PD.p : ℕ) : PowerSeries O) := by
   simp [Gd]
 
+/- English proof (translation)
+Rewrite using `[map_add, ιS_X, map_natCast]`. Both sides reduce to the same expression.
+-/
 theorem ιS_qp (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (i : ZMod n) :
     Formalism.MainNotions.LiftingTheory.qp W i = ιS W hR (PowerSeries.X + ((PD.p : ℕ) : PowerSeries O)) := by
   rw [map_add, ιS_X, map_natCast]
   rfl
 
+/- English proof (translation)
+Establish `hLR` using `Formalism.MainNotions.LiftingTheory.lifta_ring_of W hR`. Take `⟨F, hF⟩` from `rep W hR hg`. Use `choose Q R hQR hRd using fun i => wdiv hlm 0 1 (F i)`. Establish `hRc : ∀ i, (R i : PowerSeries O) = PowerSeries.C ((R i).coeff 0)`. Introduce `i`.
+
+Establish `h1 : (R i).degree ≤ 0` using `Nat.WithBot.lt_one_iff_le_zero.mp (by simpa using hRd i)`. Use `conv_lhs => rw [Polynomial.eq_C_of_degree_le_zero h1]`. Simplify using the standard rewrite rules. Establish `he : g = (fun i => PowerSeries.C ((R i).coeff 0)) + Formalism.MainNotions.LiftingTheory.qp W * fun i => ιS W hR (Q i)`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Pi.add_apply, Pi.mul_apply, hF i, hQR i, Gd01, map_add, map_mul, ← ιS_qp, hRc i]`. Rewrite using `[show ιS W hR (PowerSeries.C ((R i).coeff 0)) = PowerSeries.C ((R i).coeff 0) from (ιS W hR).commutes _]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨_, _, Formalism.MainNotions.LiftingTheory.lifta_divΔ W _ _ (Formalism.MainNotions.LiftingTheory.lifta_qΔ W hLR.πΔ) hLR.qU ?_, he⟩` and prove the remaining obligations. Establish `: Formalism.MainNotions.LiftingTheory.qp W * (fun i => ιS W hR (Q i)) = g - fun i => PowerSeries.C ((R i).coeff 0)`.
+
+Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `W.AΔ.sub_mem hg (const_mem W _)`.
+-/
 theorem res_decomp [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (hlm : ((PD.p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W)
     {g : LetA O n} (hg : g ∈ W.AΔ) :
@@ -91,6 +125,15 @@ theorem res_decomp [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) 
   rw [this]
   exact W.AΔ.sub_mem hg (const_mem W _)
 
+/- English proof (translation)
+Establish `hLR` using `Formalism.MainNotions.LiftingTheory.lifta_ring_of W hR`. Take `⟨G, hG⟩` from `rep W hR hg`. Establish `ha : (fun i => PowerSeries.C (o i) : LetA O n) ∈ W.AΔ` using `const_mem W o`. Take `⟨f0, -, huniq⟩` from `hR.2.1 _ ha`. Establish `h1 : ∀ i, (fun i => PowerSeries.C (o i) : LetA O n) i = PowerSeries.subst (W.π₀ i) (PowerSeries.C (o i))`.
+
+Introduce `i`. Use `show PowerSeries.C (o i) = PowerSeries.subst W.π₀₁ (PowerSeries.C (o i))`. Rewrite using `[← ιS_apply W hR]`. Conclude with `((ιS W hR).commutes _).symm`. Establish `h2 : ∀ i, (fun i => PowerSeries.C (o i) : LetA O n) i = PowerSeries.subst (W.π₀ i) ((PowerSeries.X + ((PD.p : ℕ) : PowerSeries O)) * G i)`.
+
+Introduce `i`. Use `show _ = PowerSeries.subst W.π₀₁ _`. Rewrite using `[← ιS_apply W hR, map_mul, ← ιS_qp, ← hG i, h]`. Both sides reduce to the same expression. Establish `e` using `congrFun ((huniq _ h1).trans (huniq _ h2).symm)`.
+
+Use function extensionality and compare the values at `i`. Establish `hP` using `wuniq hlm 0 1 (Polynomial.C (o i)) (lt_of_le_of_lt Polynomial.degree_C_le (by simp)) (G i) (by rw [Polynomial.coe_C, Gd01]; exact e i)`. Simplify using `using hP`.
+-/
 theorem res_unique [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (hlm : ((PD.p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W)
     (o : ZMod n → O) {g : LetA O n} (hg : g ∈ W.AΔ)
@@ -121,6 +164,9 @@ section Gam
 
 variable {R : Type} [CommRing R] [BinomialRing R] [Algebra R O]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `(Formalism.MainNotions.LiftingTheory.lifta_ring_of W hR).qq`. Use `⟨w, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, ← W.q₀_def]`. Use `congr 1`. Conclude with `congrFun hw i`.
+-/
 theorem qZ (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) :
     ∃ w : (LetA O n)ˣ, ∀ i, (1 + PowerSeries.X : PowerSeries O) ^ (PD.p ^ 1) - 1 =
       PowerSeries.X * ((w : LetA O n) i * Formalism.MainNotions.LiftingTheory.qp W i) := by
@@ -130,6 +176,11 @@ theorem qZ (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) :
   congr 1
   exact congrFun hw i
 
+/- English proof (translation)
+Establish `hl : 2 ≤ PD.p` using `PD.hp.two_le`. Take `⟨m, hm⟩` from `hz1`. Establish `hc : z = 1 + ((PD.p : ℕ) : R) ^ 1 * m` using `by rw [pow_one, ← hm]; ring`. Establish `h1 : PowerSeries.coeff 1 (W.γ₀ W.gam PowerSeries.X) = algebraMap R O z`. Rewrite using `[(W.γ₀_X W.gam).2, hz]`.
+
+Conclude with `Formalism.MainNotions.UnusedSlot80.LG.aut_core W.φ₀ (W.γ₀ W.gam) PD.p hl (Formalism.MainNotions.UnusedSlot80.LG.φ₀_X_eq W) (W.γ₀_comm _) (W.γ₀_X W.gam).1 z m 1 hc h1`.
+-/
 theorem autW [IsDomain O] [CharZero O] (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (z : R)
     (hz : ((W.χΓ W.gam : Oˣ) : O) = algebraMap R O z) (hz1 : ((PD.p : ℕ) : R) ∣ z - 1) :
     (∀ f, ∃ H, W.γ₀ W.gam f - f = ((1 + PowerSeries.X) ^ (PD.p ^ 1) - 1) * H) ∧
@@ -143,6 +194,13 @@ theorem autW [IsDomain O] [CharZero O] (hR : Formalism.MainNotions.UnusedSlot80.
   exact Formalism.MainNotions.UnusedSlot80.LG.aut_core W.φ₀ (W.γ₀ W.gam) PD.p hl (Formalism.MainNotions.UnusedSlot80.LG.φ₀_X_eq W) (W.γ₀_comm _)
     (W.γ₀_X W.gam).1 z m 1 hc h1
 
+/- English proof (translation)
+Establish `hLR` using `Formalism.MainNotions.LiftingTheory.lifta_ring_of W hR`. Take `⟨hA, -⟩` from `autW W hR z hz hz1`. Take `⟨w, hZ⟩` from `qZ W hR`. Introduce `g hg`. Use `choose H hH using fun i => hA (g i)`.
+
+Use `set t : LetA O n := fun i => PowerSeries.X * ((w : LetA O n) i * H i)`. Establish `ht : W.γA W.gam g - g = Formalism.MainNotions.LiftingTheory.qp W * t`. Use function extensionality and compare the values at `i`. Use `show W.γ₀ W.gam (g i) - g i = Formalism.MainNotions.LiftingTheory.qp W i * t i`. Rewrite using `[hH i, hZ i]`.
+
+Simplify using `only [t]`. Expand and normalize the polynomial expressions, which then agree. Establish `htA : t ∈ W.AΔ` using `Formalism.MainNotions.LiftingTheory.lifta_divΔ W _ t (Formalism.MainNotions.LiftingTheory.lifta_qΔ W hLR.πΔ) hLR.qU (ht ▸ W.AΔ.sub_mem (Formalism.MainNotions.LiftingTheory.tr_γA_mem W W.gam hg) hg)`. Take `⟨r, hr, hrt⟩` from `eq_uniformizer_mul_of_constantCoeff_zero W hR htA (fun i => by simp [t])`. Conclude with `⟨r, hr, by rw [ht, hrt]; ring⟩`.
+-/
 theorem hγg_of [IsDomain O] [CharZero O] (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (z : R)
     (hz : ((W.χΓ W.gam : Oˣ) : O) = algebraMap R O z) (hz1 : ((PD.p : ℕ) : R) ∣ z - 1) :
     ∀ g ∈ W.AΔ, ∃ g' ∈ W.AΔ, W.γA W.gam g - g = W.π₀ * Formalism.MainNotions.LiftingTheory.qp W * g' := by
@@ -163,6 +221,15 @@ theorem hγg_of [IsDomain O] [CharZero O] (hR : Formalism.MainNotions.UnusedSlot
   obtain ⟨r, hr, hrt⟩ := eq_uniformizer_mul_of_constantCoeff_zero W hR htA (fun i => by simp [t])
   exact ⟨r, hr, by rw [ht, hrt]; ring⟩
 
+/- English proof (translation)
+Establish `hLR` using `Formalism.MainNotions.LiftingTheory.lifta_ring_of W hR`. Take `⟨-, hB⟩` from `autW W hR z hz hz1`. Take `⟨w, hZ⟩` from `qZ W hR`. Use `choose H hH using fun i => hB (Formalism.MainNotions.LiftingTheory.qp W i) (PowerSeries.X * (w : LetA O n) i) (by rw [hZ i]; ring)`. Establish `hq` using `Formalism.MainNotions.LiftingTheory.lifta_qΔ W hLR.πΔ`.
+
+Establish `he : W.γA W.gam (Formalism.MainNotions.LiftingTheory.qp W) = (algebraMap O (LetA O n) (W.χΓ W.gam : O) + Formalism.MainNotions.LiftingTheory.qp W * fun i => H i) * Formalism.MainNotions.LiftingTheory.qp W`. Use function extensionality and compare the values at `i`. Use `show W.γ₀ W.gam (Formalism.MainNotions.LiftingTheory.qp W i) = _`. Rewrite using `[sub_eq_iff_eq_add.mp (hH i), Pi.mul_apply, Pi.add_apply, Pi.mul_apply, Pi.algebraMap_apply, hz]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨fun i => H i, ?_, he⟩` and prove the remaining obligations. Apply `Formalism.MainNotions.LiftingTheory.lifta_divΔ W (Formalism.MainNotions.LiftingTheory.qp W ^ 2) _ (W.AΔ.pow_mem hq 2) (by rw [map_pow]; exact hLR.qU.pow 2)` to reduce the goal to its premises. Establish `: Formalism.MainNotions.LiftingTheory.qp W ^ 2 * (fun i => H i) = W.γA W.gam (Formalism.MainNotions.LiftingTheory.qp W) - algebraMap O (LetA O n) (W.χΓ W.gam : O) * Formalism.MainNotions.LiftingTheory.qp W`. Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `W.AΔ.sub_mem (Formalism.MainNotions.LiftingTheory.tr_γA_mem W W.gam hq) (W.AΔ.mul_mem (W.AΔ.algebraMap_mem _) hq)`.
+-/
 theorem hγq_of [IsDomain O] [CharZero O] (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (z : R)
     (hz : ((W.χΓ W.gam : Oˣ) : O) = algebraMap R O z) (hz1 : ((PD.p : ℕ) : R) ∣ z - 1) :
     ∃ r ∈ W.AΔ, W.γA W.gam (Formalism.MainNotions.LiftingTheory.qp W) =
@@ -186,6 +253,33 @@ theorem hγq_of [IsDomain O] [CharZero O] (hR : Formalism.MainNotions.UnusedSlot
   rw [this]
   exact W.AΔ.sub_mem (Formalism.MainNotions.LiftingTheory.tr_γA_mem W W.gam hq) (W.AΔ.mul_mem (W.AΔ.algebraMap_mem _) hq)
 
+/- English proof (translation)
+Establish `hLR` using `Formalism.MainNotions.LiftingTheory.lifta_ring_of W hR`. Establish `hl : 2 ≤ PD.p` using `PD.hp.two_le`. Establish `hπ` using `hLR.πΔ`. Establish `hq` using `Formalism.MainNotions.LiftingTheory.lifta_qΔ W hπ`. Use `set qp := Formalism.MainNotions.LiftingTheory.qp W`.
+
+Use `set p1 := Formalism.MainNotions.LiftingTheory.pk W 1`. Establish `hp1 : p1 = W.φA qp` using `by simp [p1, Formalism.MainNotions.LiftingTheory.pk]; rfl`. Establish `hp1A : p1 ∈ W.AΔ` using `by rw [hp1]; exact Formalism.MainNotions.LiftingTheory.lifta_φΔ W _ hq`. Take `⟨rq, hrq, hγq⟩` from `hγq_of W hR z hz hz1`. Use `set χ : LetA O n := algebraMap O (LetA O n) (W.χΓ W.gam : O)`.
+
+Use `set u : LetA O n := χ + p1 * W.φA rq`. Establish `huA : u ∈ W.AΔ` using `W.AΔ.add_mem (W.AΔ.algebraMap_mem _) (W.AΔ.mul_mem hp1A (Formalism.MainNotions.LiftingTheory.lifta_φΔ W _ hrq))`. Establish `hγp1 : W.γA W.gam p1 = u * p1`. Rewrite using `[hp1, ← W.φA_γA, hγq, map_mul, map_add, map_mul]`. Simplify using `only [u, χ, AlgHom.commutes]`.
+
+Rewrite using `[← hp1]`. Take `⟨g', hg', hγg'⟩` from `hγg_of W hR z hz hz1 p1 hp1A`. Establish `hu1 : (u - 1) * p1 = W.π₀ * qp * g'` using `by rw [← hγg', hγp1]; ring`. Take `⟨t, ht, hφπ⟩` from `hLR.φπ`. Establish `hp1e : p1 = ((PD.p : ℕ) : LetA O n) + W.π₀ * qp ^ (PD.p - 1) * t`.
+
+Rewrite using `[hp1, show qp = W.π₀ + ((PD.p : ℕ) : LetA O n) from rfl, map_add, hφπ, map_natCast]`. Simplify using `only [Formalism.MainNotions.LiftingTheory.qp]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨o, a, ha, hua⟩` from `res_decomp W hlm hR (W.AΔ.sub_mem huA W.AΔ.one_mem)`. Establish `hqp : qp ^ (PD.p - 1) = qp * qp ^ (PD.p - 2)` using `by rw [← pow_succ']; congr 1; omega`.
+
+Establish `ho : o = 0`. Establish `hC : (fun i => PowerSeries.C (o i * ((PD.p : ℕ) : O)) : LetA O n) = qp * (W.π₀ * g' - a * p1 - (fun i => PowerSeries.C (o i)) * (W.π₀ * qp ^ (PD.p - 2) * t))`. Establish `e1 : (fun i => PowerSeries.C (o i * ((PD.p : ℕ) : O)) : LetA O n) = (fun i => PowerSeries.C (o i)) * ((PD.p : ℕ) : LetA O n)`. Use function extensionality and compare the values at `i`. Simplify using `[map_mul]`.
+
+Rewrite using `[e1]`. Establish `e2` using `hu1`. Rewrite `e2` using `[hua, hp1e]`. Rewrite `*` using `[hp1e, hqp]`. Take the linear combination `e2`.
+
+Use `res_unique W hlm hR _ (W.AΔ.sub_mem (W.AΔ.sub_mem (W.AΔ.mul_mem hπ hg') (W.AΔ.mul_mem ha hp1A)) (W.AΔ.mul_mem (const_mem W o) (W.AΔ.mul_mem (W.AΔ.mul_mem hπ (W.AΔ.pow_mem hq _)) ht))) hC` as an intermediate fact. Use function extensionality and compare the values at `i`. Establish `hi` using `congrFun this i`. Simplify using `only [Pi.zero_apply] at hi ⊢`. Conclude with `(mul_eq_zero.mp hi).resolve_right hl0`.
+
+Establish `hua' : u - 1 = qp * a`. Rewrite using `[hua, ho]`. Establish `: (fun i => PowerSeries.C ((0 : ZMod n → O) i) : LetA O n) = 0` using `by funext i; simp`. Rewrite using `[this, zero_add]`. Establish `hap : a * p1 = W.π₀ * g'`.
+
+Apply `Formalism.MainNotions.LiftingTheory.lifta_reg W qp _ _ hLR.qU` to reduce the goal to its premises. Rewrite using `[← mul_assoc, ← hua', hu1]`. Expand and normalize the polynomial expressions, which then agree. Establish `ha0 : ∀ i, PowerSeries.constantCoeff (a i) = 0`. Introduce `i`.
+
+Establish `e` using `congrArg (fun x : LetA O n => PowerSeries.constantCoeff (x i)) hap`. Simplify using `only [Pi.mul_apply, map_mul] at e`. Establish `hcp : PowerSeries.constantCoeff (p1 i) = ((PD.p : ℕ) : O)`. Rewrite using `[hp1e]`. Simplify using `[LocWach.π₀, Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_cc hR]`.
+
+Establish `hcπ : PowerSeries.constantCoeff (W.π₀ i) = 0` using `Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_cc hR`. Rewrite `e` using `[hcp, hcπ, zero_mul]`. Conclude with `(mul_eq_zero.mp e).resolve_right hl0`. Take `⟨r, hr, har⟩` from `eq_uniformizer_mul_of_constantCoeff_zero W hR ha ha0`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hγp1, show u = 1 + (u - 1) by ring, hua', har]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hγp_of [IsDomain O] [CharZero O] [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (hlm : ((PD.p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O) (hl0 : ((PD.p : ℕ) : O) ≠ 0)
     (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (z : R)
@@ -260,6 +354,13 @@ theorem hγp_of [IsDomain O] [CharZero O] [IsLocalRing O] [IsAdicComplete (IsLoc
 
 end Gam
 
+/- English proof (translation)
+Introduce `i g hg hgi`. Take `⟨o, g', hg', he⟩` from `res_decomp W hlm hR hg`. Use `⟨o i, letE i * g', W.AΔ.mul_mem (Formalism.MainNotions.LiftingTheory.idempotent_mem_invariants W i) hg', ?_⟩` and prove the remaining obligations. Rewrite using `[← hgi]`. Use `conv_lhs => rw [he]`.
+
+Establish `e : (letE i : LetA O n) * (fun j => PowerSeries.C (o j)) = algebraMap O (LetA O n) (o i) * letE i`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[letE]`.
+
+Simplify using `[letE, h]`. Rewrite using `[mul_add, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hAq'_of [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (hlm : ((PD.p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) :
     ∀ i (g : LetA O n), g ∈ W.AΔ → (letE i : LetA O n) * g = g →
@@ -278,6 +379,11 @@ theorem hAq'_of [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
   rw [mul_add, e]
   ring
 
+/- English proof (translation)
+Introduce `i o g hg _ h`. Establish `e : algebraMap O (LetA O n) o * letE i = (fun j => PowerSeries.C (if j = i then o else 0) : LetA O n)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Simplify using `[letE]`. Simplify using `[letE, hj]`. Rewrite `h` using `[e]`. Use `congrFun (res_unique W hlm hR _ hg h) i` as an intermediate fact. Simplify using `using this`.
+-/
 theorem hqc'_of [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (hlm : ((PD.p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) :
     ∀ i (o : O) (g : LetA O n), g ∈ W.AΔ → (letE i : LetA O n) * g = g →
@@ -293,6 +399,9 @@ theorem hqc'_of [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
   have := congrFun (res_unique W hlm hR _ hg h) i
   simpa using this
 
+/- English proof (translation)
+Establish `hLR` using `Formalism.MainNotions.LiftingTheory.lifta_ring_of W hR`. Conclude with `⟨hLR.πU, hLR.qU, hγg_of W hR z hz hz1, hγq_of W hR z hz hz1, hγp_of W hlm hl0 hR z hz hz1, hAq'_of W hlm hR, hqc'_of W hlm hR⟩`.
+-/
 theorem uniformizer_unit_of_binomial_ring [IsDomain O] [CharZero O] [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (hlm : ((PD.p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O) (hl0 : ((PD.p : ℕ) : O) ≠ 0)
     (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) {R : Type} [CommRing R] [BinomialRing R] [Algebra R O] (z : R)
@@ -321,6 +430,15 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `l _ K LL hg _`. Establish `h9W : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K 1 LL hg)` using `h9 l K 1 LL hg`. Use `fun d T₁ T₂ F' b S η m hset => ?_` and prove the remaining obligations. Establish `hCA : Formalism.MainNotions.LiftingTheory.CaseA ((HW l).W K 1 LL hg)` using `hset.1`. Establish `hT₂ : IsCrys ((D.loc l).PD K) T₂.ρ` using `hset.2.2.2.2.2.1.2.1`.
+
+Establish `hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP ((HW l).W K 1 LL hg)` using `(Formalism.MainNotions.LiftingTheory.frame_p9A ((HW l).W K 1 LL hg) h9W hCA T₂ hT₂).1`. Use `haveI : CharZero ↥(OL LL) := Formalism.MainNotions.UnusedSlot80.levg_charZero LL`. Use `letI : IsLocalRing ↥(OL LL) := Formalism.MainNotions.LiftingTheory.lkd_local (D.loc l) LL`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal ↥(OL LL)) ↥(OL LL) := Formalism.MainNotions.CrystallineLiftingInputs.OL.OL_complete_max (D.loc l) LL`. Establish `hlm : (((((D.loc l).PD K).p : ℕ)) : ↥(OL LL)) ∈ IsLocalRing.maximalIdeal ↥(OL LL)`.
+
+Rewrite using `[(D.loc l).PD_p K]`. Conclude with `Formalism.MainNotions.CrystallineLiftingInputs.OL.l_mem_max (D.loc l) LL`. Establish `hl0 : (((((D.loc l).PD K).p : ℕ)) : ↥(OL LL)) ≠ 0`. Rewrite using `[(D.loc l).PD_p K]`. Conclude with `Formalism.MainNotions.CrystallineLiftingInputs.OL.l_ne_zero LL`.
+
+Take `⟨z, hz, hz1⟩` from `Formalism.MainNotions.UnusedSlot80.levg_chi (D.loc l) (HW l) K LL hg`. Take `⟨hπU, hqU, hγg, hγq, hγp, hAq, hqc⟩` from `uniformizer_unit_of_binomial_ring ((HW l).W K 1 LL hg) hlm hl0 hR z hz hz1`. Conclude with `Formalism.MainNotions.N.Pv.LocalLengthBound.gamma_structure_of ((HW l).W K 1 LL hg) h9W hπU hqU hγg hγq hγp hAq hqc d T₁ T₂ F' b S η m hset`.
+-/
 theorem gamma_lemma_of_crystalline (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) :
     ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hg : Good K 1 LL)
       [NeZero (Module.finrank ℚ_[l] ↥(K0 K))], Formalism.MainNotions.N.Pv.LocalLengthBound.WachGammaDerivation ((HW l).W K 1 LL hg) := by

@@ -19,12 +19,18 @@ namespace GlobalTheory.CompanionTheory.SphSupp
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.induced_in_principal_series k n α f`.
+-/
 theorem mem_principalSeriesSpace_of_indSp {n : ℕ} (α : Fin n → ℂˣ)
     (f : IndSp (points (Fin n))
       ((GlobalTheory.SmGL.ofChar (torusChar fun i => unrChar k (α i))).comp (leviTorus k (Fin n)).symm.toMonoidHom)) :
     (fun g => f.1.1 g) ∈ principalSeriesSpace k n (paramChar k α) :=
   GlobalTheory.T.induced_in_principal_series k n α f
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.subquotient_principal_series_bound k n α X V ρ hρ ι hι π h μ`.
+-/
 theorem isSatakeParameter_of_isSubquotient_of_injective {n : ℕ} (α : Fin n → ℂˣ) {X V : Type}
     [AddCommGroup X] [Module ℂ X] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ (GL (Fin n) k) X}
     (hρ : IsSmooth ρ) (ι : ρ.IntertwiningMap (principalSeries k n (paramChar k α))) (hι : Function.Injective ι)
@@ -33,8 +39,14 @@ theorem isSatakeParameter_of_isSubquotient_of_injective {n : ℕ} (α : Fin n �
     [μ.IsHaarMeasure] : IsSatakeParameter π μ α :=
   GlobalTheory.T.subquotient_principal_series_bound k n α X V ρ hρ ι hι π h μ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem KO_eq_integralGL (n : ℕ) : KO k (Fin n) = GroundTheory.Automorphic.GLnLocal.integralGL k n := rfl
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `[fixed, eig, GroundTheory.Automorphic.fixedVectors]`.
+-/
 theorem fixed_eq_fixedVectors {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (H : Subgroup G) : fixed ρ H = GroundTheory.Automorphic.fixedVectors ρ H := by
   ext v
@@ -49,6 +61,9 @@ def bridge {n : ℕ} (α : Fin n → ℂˣ) :
     simp only [LinearMap.coe_mk, AddHom.coe_mk, LinearMap.comp_apply]
     rfl)
 
+/- English proof (translation)
+Introduce `f f' e` and use `by have := congrArg Subtype.val e apply Subtype.ext apply Subtype.ext exact this`.
+-/
 theorem bridge_injective {n : ℕ} (α : Fin n → ℂˣ) : Function.Injective (bridge (k := k) α) := fun f f' e =>
   by
   have := congrArg Subtype.val e
@@ -56,12 +71,18 @@ theorem bridge_injective {n : ℕ} (α : Fin n → ℂˣ) : Function.Injective (
   apply Subtype.ext
   exact this
 
+/- English proof (translation)
+The claim follows from `isSatakeParameter_of_isSubquotient_of_injective α (isSmooth_parInd _ _) (bridge α) (bridge_injective α) h μ`.
+-/
 theorem isSatakeParameter_of_isSubquotient {n : ℕ} (α : Fin n → ℂˣ) {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin n) k) V} (h : IsSubquotient π (prinSeries fun i => unrChar k (α i)))
     [MeasurableSpace (GL (Fin n) k)] [BorelSpace (GL (Fin n) k)] (μ : MeasureTheory.Measure (GL (Fin n) k))
     [μ.IsHaarMeasure] : IsSatakeParameter π μ α :=
   isSatakeParameter_of_isSubquotient_of_injective α (isSmooth_parInd _ _) (bridge α) (bridge_injective α) h μ
 
+/- English proof (translation)
+Establish `H : GlobalTheory.SmGL.IsCuspSupport π.ρ (fun _ : Fin n => 1) fun a => detRep (Fin 1) (χ a)` using `⟨π.irr, fun a => ⟨one_pos, isIrreducible_ofChar _, isCuspidal_detRep_one (hχ a)⟩, _, h.trans (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k n χ)⟩`. Conclude with `hasSupport_of_isCuspSupport H`.
+-/
 theorem hasSupport_prinSeries (n : ℕ) (χ : Fin n → kˣ →* ℂˣ) (hχ : ∀ i, IsSmoothChar (χ i))
     (π : IrrRep (GL (Fin n) k)) (h : IsSubquotient π.ρ (prinSeries χ)) :
     HasSupport π.ρ (Finset.univ.val.map fun i => IrrGL.ofChar (χ i) (hχ i)) := by
@@ -76,6 +97,9 @@ namespace GlobalTheory.CompanionTheory.SphSupp
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `show fixed π (KO k (Fin n)) ≠ ⊥ ↔ _`. Rewrite using `[KO_eq_integralGL, fixed_eq_fixedVectors]`.
+-/
 theorem isSpherical_iff_fixedVectors {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) k) V) :
     IsSpherical π ↔ GroundTheory.Automorphic.fixedVectors π (GroundTheory.Automorphic.GLnLocal.integralGL k n) ≠ ⊥ := by

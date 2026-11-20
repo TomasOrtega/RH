@@ -11,6 +11,11 @@ namespace GlobalTheory.CentCpt
 section Closed
 variable {L : Type} [NormedField L] [IsAlgClosed L] {n : ℕ}
 
+/- English proof (translation)
+Establish `hnd : y.charpoly.roots.Nodup` using `nodup_roots hs`. Establish `hcard : y.charpoly.roots.toFinset.card = n`. Rewrite using `[Multiset.toFinset_card_of_nodup hnd, splits_iff_card_roots.1 (IsAlgClosed.splits _), charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hev : ∀ r : y.charpoly.roots.toFinset, ∃ v : Fin n → L, Module.End.HasEigenvector (Matrix.toLin' y) r.1 v` using `fun r => ((Module.End.hasEigenvalue_iff_isRoot_charpoly _ _).2 (by`. Rewrite using `[Matrix.charpoly_toLin']`.
+
+Conclude with `isRoot_of_mem_roots (Multiset.mem_toFinset.1 r.2))).exists_hasEigenvector`. Use `choose v hv using hev`. Conclude with `⟨_, inferInstance, v, fun r => r.1, Module.End.eigenvectors_linearIndependent' _ _ Subtype.val_injective v hv, by rw [Fintype.card_coe, hcard], hv⟩`.
+-/
 theorem exists_eigenbasis (y : Matrix (Fin n) (Fin n) L) (hs : y.charpoly.Separable) :
     ∃ (ι : Type) (_ : Fintype ι) (v : ι → Fin n → L) (l : ι → L), LinearIndependent L v ∧
       Fintype.card ι = n ∧ ∀ i, Module.End.HasEigenvector (Matrix.toLin' y) (l i) (v i) := by
@@ -29,6 +34,9 @@ theorem exists_eigenbasis (y : Matrix (Fin n) (Fin n) L) (hs : y.charpoly.Separa
     Module.End.eigenvectors_linearIndependent' _ _ Subtype.val_injective v hv,
     by rw [Fintype.card_coe, hcard], hv⟩
 
+/- English proof (translation)
+Rewrite using `[← Module.End.aeval_apply_of_hasEigenvector h]`. Establish `h1` using `aeval_algHom_apply (toLinAlgEquiv' (R := L) (n := Fin n)).toAlgHom y q`. Conclude with `(LinearMap.congr_fun h1 x).symm`.
+-/
 theorem aeval_mulVec_eigen (y : Matrix (Fin n) (Fin n) L) {μ : L} {x : Fin n → L}
     (h : Module.End.HasEigenvector (Matrix.toLin' y) μ x) (q : L[X]) :
     aeval y q *ᵥ x = q.eval μ • x := by
@@ -36,6 +44,27 @@ theorem aeval_mulVec_eigen (y : Matrix (Fin n) (Fin n) L) {μ : L} {x : Fin n �
   have h1 := aeval_algHom_apply (toLinAlgEquiv' (R := L) (n := Fin n)).toAlgHom y q
   exact (LinearMap.congr_fun h1 x).symm
 
+/- English proof (translation)
+Take `⟨ι, _, v, l, hli, hcard, hv⟩` from `exists_eigenbasis y hs`. Set `b : Module.Basis ι L (Fin n → L)` to `basisOfLinearIndependentOfCardEqFinrank' v hli (by rw [hcard, Module.finrank_fin_fun])`. Establish `hb : ⇑b = v` using `coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _`. Set `c : Fin n → ι → L` to `fun j i => b.repr (Pi.single j 1) i`. Use `⟨∑ a, ∑ j, ∑ i, ‖c j i‖ * ‖v i a‖, fun t ht ⟨B, hB⟩ a j => ?_⟩` and prove the remaining obligations.
+
+Take `⟨p, hp⟩` from `GlobalTheory.BCT.ClsFin.exists_aeval_of_comm y t hs ht.symm`. Establish `hpow : ∀ k : ℕ, ∀ i, (t ^ k) *ᵥ v i = (p.eval (l i)) ^ k • v i`. Introduce `k i`. Rewrite using `[hp, ← map_pow, aeval_mulVec_eigen y (hv i), eval_pow]`. Establish `hd : ∀ i, ‖p.eval (l i)‖ ≤ 1`.
+
+Introduce `i`. Choose the witnesses or unpack the hypotheses as in `⟨a0, ha0⟩ : ∃ a0, v i a0 ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `(hv i).2 (funext h)`.
+
+Establish `hk : ∀ k : ℕ, ‖p.eval (l i)‖ ^ k ≤ (B * ∑ j, ‖v i j‖) / ‖v i a0‖`. Introduce `k`. Rewrite using `[le_div_iff₀ (norm_pos_iff.2 ha0), ← norm_pow, ← norm_mul]`. Establish `e` using `congrFun (hpow k i) a0`. Rewrite `e` using `[Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[← e, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hB k a0 j) (norm_nonneg _)`. Assume the negation of the conclusion as `h1`.
+
+Use `push_neg at h1`. Take `⟨k, hk'⟩` from `((tendsto_pow_atTop_atTop_of_one_lt h1).eventually_gt_atTop ((B * ∑ j, ‖v i j‖) / ‖v i a0‖)).exists`. Conclude with `absurd (hk k) (not_le.2 hk')`. Establish `hcol : t a j = (t *ᵥ Pi.single j 1) a`. Rewrite using `[Matrix.mulVec_single_one]`.
+
+Both sides reduce to the same expression. Establish `hexp : (Pi.single j 1 : Fin n → L) = ∑ i, c j i • v i`. Rewrite using `[← hb]`. Conclude with `(b.sum_repr _).symm`. Establish `hval : t a j = ∑ i, c j i * (p.eval (l i) * v i a)`.
+
+Rewrite using `[hcol, hexp, Matrix.mulVec_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `hpow 1 i` as an intermediate fact. Rewrite `this` using `[pow_one, pow_one]`. Rewrite using `[Matrix.mulVec_smul, this, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`.
+
+Rewrite using `[hval]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `h1 : ∑ i, ‖c j i * (p.eval (l i) * v i a)‖ ≤ ∑ i, ‖c j i‖ * ‖v i a‖`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (by`. Simplify using `using mul_le_mul_of_nonneg_right (hd i) (norm_nonneg (v i a))) (norm_nonneg _)`. Use `h1.trans ?_` and prove the remaining obligations. Establish `hnn : ∀ a' j', 0 ≤ ∑ i, ‖c j' i‖ * ‖v i a'‖` using `fun _ _ => Finset.sum_nonneg fun _ _ => mul_nonneg (norm_nonneg _) (norm_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_bound (y : Matrix (Fin n) (Fin n) L) (hs : y.charpoly.Separable) :
     ∃ M : ℝ, ∀ t : Matrix (Fin n) (Fin n) L, t * y = y * t →
       (∃ B : ℝ, ∀ k : ℕ, ∀ i j, ‖(t ^ k) i j‖ ≤ B) → ∀ i j, ‖t i j‖ ≤ M := by
@@ -104,6 +133,11 @@ namespace GlobalTheory.CentCpt
 section Local
 variable {F : Type} [NontriviallyNormedField F] [IsUltrametricDist F] [CompleteSpace F] {n : ℕ}
 
+/- English proof (translation)
+Use `letI : NormedField (AlgebraicClosure F) := spectralNorm.normedField F (AlgebraicClosure F)`. Set `f : F →+* AlgebraicClosure F` to `algebraMap F _`. Establish `hf : ∀ x : F, ‖f x‖ = ‖x‖` using `fun x => spectralNorm_extends (L := AlgebraicClosure F) x`. Take `⟨M, hM⟩` from `exists_bound (y.map f) (by rw [Matrix.charpoly_map]; exact hs.map)`. Use `⟨M, fun t ht ⟨B, hB⟩ i j => ?_⟩` and prove the remaining obligations.
+
+Use `hM (t.map f) (by rw [← Matrix.map_mul, ht, Matrix.map_mul]) ⟨B, fun k a b => by` as an intermediate fact. Rewrite using `[← Matrix.map_pow, Matrix.map_apply, hf]`. Conclude with `hB k a b⟩ i j`. Rewrite `this` using `[Matrix.map_apply, hf]`. Then use the resulting hypothesis.
+-/
 theorem exists_bound_local (y : Matrix (Fin n) (Fin n) F) (hs : y.charpoly.Separable) :
     ∃ M : ℝ, ∀ t : Matrix (Fin n) (Fin n) F, t * y = y * t →
       (∃ B : ℝ, ∀ k : ℕ, ∀ i j, ‖(t ^ k) i j‖ ≤ B) → ∀ i j, ‖t i j‖ ≤ M := by
@@ -116,6 +150,11 @@ theorem exists_bound_local (y : Matrix (Fin n) (Fin n) F) (hs : y.charpoly.Separ
       rw [← Matrix.map_pow, Matrix.map_apply, hf]; exact hB k a b⟩ i j
   rwa [Matrix.map_apply, hf] at this
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.BoundedUnitsCompact.isCompact_bounded_units`. Consider the case `exact _root_.GlobalTheory.BoundedUnitsCompact.isCompact_bounded_units`. Consider the case `(apply _root_.GlobalTheory.BoundedUnitsCompact.isCompact_bounded_units <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.BoundedUnitsCompact.isCompact_bounded_units <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.BoundedUnitsCompact.isCompact_bounded_units <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.BoundedUnitsCompact.isCompact_bounded_units ..)`.
+-/
 theorem isCompact_bdd [ProperSpace F] (M : ℝ) :
     IsCompact {g : GL (Fin n) F | (∀ i j, ‖(g : Matrix (Fin n) (Fin n) F) i j‖ ≤ M) ∧
       ∀ i j, ‖((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j‖ ≤ M} := by
@@ -129,6 +168,9 @@ theorem isCompact_bdd [ProperSpace F] (M : ℝ) :
 
 end Local
 
+/- English proof (translation)
+The claim follows from `(Finset.single_le_sum (f := fun b => ‖A i b‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun a => ∑ b, ‖A a b‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))`.
+-/
 theorem norm_le_sum {F : Type} [NormedField F] {n : ℕ} (A : Matrix (Fin n) (Fin n) F) (i j : Fin n) :
     ‖A i j‖ ≤ ∑ a, ∑ b, ‖A a b‖ :=
   (Finset.single_le_sum (f := fun b => ‖A i b‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans
@@ -139,6 +181,17 @@ end GlobalTheory.CentCpt
 
 namespace GlobalTheory.CentCpt
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n w y hs`. Use `letI : NontriviallyNormedField (w.adicCompletion E) := Valued.toNontriviallyNormedField _ _`. Use `haveI : IsUltrametricDist (w.adicCompletion E) := inferInstanceAs (@IsUltrametricDist (w.adicCompletion E) (Valued.toNormedField (w.adicCompletion E) (WithZero (Multiplicative ℤ))).toDist)`. Use `haveI : CompleteSpace (w.adicCompletion E) := inferInstance`. Use `haveI : ProperSpace (w.adicCompletion E) := ProperSpace.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace (w.adicCompletion E)`.
+
+Take `⟨M, hM⟩` from `exists_bound_local (y.1.val) hs`. Use `⟨Subtype.val ⁻¹' {g : GLw n w | (∀ i j, ‖(g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j‖ ≤ M) ∧ ∀ i j, ‖((g⁻¹ : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j‖ ≤ M}, (GlobalTheory.LocFinU.isClosed_UL n w).isClosedEmbedding_subtypeVal.isCompact_preimage (isComp …` and prove the remaining obligations. Establish `hbd : ∀ s ∈ twCent (MonoidHom.id (UL n w)) y, IsCompact (closure (Subgroup.zpowers s : Set (UL n w))) → ∀ i j, ‖(s.1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j‖ ≤ M`. Introduce `s hs' hcs`. Establish `hcont : Continuous fun g : UL n w => ∑ a, ∑ b, ‖(g.1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) a b‖` using `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => ((Units.continuous_val.comp continuous_subtype_val).matrix_elem a b).norm`.
+
+Take `⟨B, hB⟩` from `(hcs.image hcont).bddAbove`. Use `hM _ ?_ ⟨B, fun k a b => ?_⟩` and prove the remaining obligations. Establish `h1 : s * y = y * s` using `hs'`. Establish `h2` using `congrArg (fun g : UL n w => (g.1 : Matrix (Fin n) (Fin n) (w.adicCompletion E))) h1`. Simplify using `using h2`.
+
+Establish `hk : s ^ k ∈ closure (Subgroup.zpowers s : Set (UL n w))` using `subset_closure (Subgroup.npow_mem_zpowers s k)`. Establish `e : ((s ^ k).1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = (s.1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) ^ k`. Simplify using `[Subgroup.coe_pow, Units.val_pow_eq_pow_val]`. Rewrite using `[← e]`. Conclude with `(norm_le_sum _ a b).trans (hB ⟨_, hk, rfl⟩)`.
+
+Introduce `t ht hc`. Use `⟨hbd t ht hc, ?_⟩` and prove the remaining obligations. Use `hbd t⁻¹ (inv_mem ht) (by rwa [Subgroup.zpowers_inv])` as an intermediate fact. Simplify using `using this`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (w : Pl E) (y : UL n w),
     y.1.val.charpoly.Separable → ∃ Ω : Set (UL n w), IsCompact Ω ∧ ∀ t ∈ twCent (MonoidHom.id (UL n w)) y,
       IsCompact (closure (Subgroup.zpowers t : Set (UL n w))) → t ∈ Ω := by

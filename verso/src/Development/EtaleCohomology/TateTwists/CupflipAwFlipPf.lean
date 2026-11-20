@@ -19,6 +19,11 @@ def cupflip_homotopy : Prop :=
       μ.IsAW hk α.1 β.1 γ.1 → ν.IsAW hk' β.1 α.1 γ'.1 →
         ∃ η : Cochain ((chains R).obj E) K (k - 1), δ (k - 1) k η = γ.1 - (n * m).negOnePow • γ'.1
 
+/- English proof (translation)
+Introduce `R _ I J K μ ν hflip E n m k h h' α β γ γ' hγ hγ'`. Take `⟨s, hs⟩` from `hst`. Take `⟨η, hη⟩` from `hho s hs R μ ν hflip E h h' α β γ γ' hγ hγ'`. Break down `Int.units_eq_one_or ((n * m).negOnePow) with he | he` into its components or cases. Rewrite `hη`, the goal using `[he, one_smul]`.
+
+Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (k - 1) (by omega)]`. Conclude with `⟨η, hη⟩`. Rewrite `hη`, the goal using `[he, Units.neg_smul, one_smul]`. Rewrite using `[← sub_eq_zero, sub_neg_eq_add, ← CohomologyClass.mk_add, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (k - 1) (by omega)]`. Conclude with `⟨η, by rw [hη, sub_neg_eq_add]; rfl⟩`.
+-/
 theorem cupflip_aw_flip_of (hst : cupflip_steen) (hho : cupflip_homotopy) : cupflip_aw_flip := by
   intro R _ I J K μ ν hflip E n m k h h' α β γ γ' hγ hγ'
   obtain ⟨s, hs⟩ := hst

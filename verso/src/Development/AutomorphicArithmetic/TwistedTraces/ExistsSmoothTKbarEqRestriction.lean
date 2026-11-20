@@ -10,6 +10,17 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped ContDiff
 
+/- English proof (translation)
+Introduce `K _ _ n hn a x₀ ha`. Take `⟨χ, hχs, hχ1, hχc⟩` from `UpperTheory.exists_smooth_archCutoff_kbar_eq_one K n hn`. Establish `hχcont : Continuous fun A : archGroup K n => (χ A : ℂ)`. Use `letI := (isExpLieAlgebra K n).chartedSpace`. Conclude with `ContMDiff.continuous hχs`.
+
+Establish `hcont : Continuous fun A : archGroup K n => (χ A : ℂ) * a (archP K n A * x₀)` using `hχcont.mul (a.continuous.comp (continuous_archP.mul continuous_const))`. Establish `hC : IsCompact ((fun g : G1 K n => g * x₀⁻¹) '' tsupport a)` using `a.hasCompactSupport.isCompact.image (continuous_id.mul continuous_const)`. Take `⟨D, hD, hDm⟩` from `hχc _ hC`. Establish `hcs : HasCompactSupport fun A : archGroup K n => (χ A : ℂ) * a (archP K n A * x₀)`. Use `HasCompactSupport.intro hD fun A hA => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Establish `h1 : χ A ≠ 0` using `fun h0 => hne (by rw [h0, Complex.ofReal_zero, zero_mul])`. Establish `h2 : a (archP K n A * x₀) ≠ 0` using `fun h0 => hne (by rw [h0, mul_zero])`. Conclude with `hA (hDm A h1 ⟨archP K n A * x₀, subset_tsupport _ h2, by simp⟩)`. Use `⟨⟨⟨_, hcont⟩, hcs⟩, ?_, fun A => ?_⟩` and prove the remaining obligations.
+
+Use `((isExpLieAlgebra K n).isSmoothFun_iff).2 fun g => ?_` and prove the remaining obligations. Conclude with `ContDiff.mul (((isExpLieAlgebra K n).isSmoothFun_iff).1 hχs g) (((isExpLieAlgebra K n).isSmoothFun_iff).1 ha g)`. Establish `h1` using `hχ1 A`. Unfold `kbar at h1 ⊢`. Establish `h2 : ∀ s, (χ (A * zInf K n s) : ℂ) * a (archP K n (A * zInf K n s) * x₀) = (χ (A * zInf K n s) : ℂ) * a (archP K n A * x₀)` using `fun s => by`.
+
+Rewrite using `[archimedeanProjection_mul_positiveScalar hn]`. Use `show ∫ s, (χ (A * zInf K n s) : ℂ) * a (archP K n (A * zInf K n s) * x₀) ∂_ = _`. Repeatedly rewrite using `[h2]`. Rewrite using `[integral_mul_const, h1, one_mul]`.
+-/
 theorem UpperTheory.exists_smoothT_kbar_eq_restriction :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (a : CC K n) (x₀ : G1 K n),
         (isExpLieAlgebra K n).IsSmoothFun (fun A : archGroup K n => a (archP K n A * x₀)) →

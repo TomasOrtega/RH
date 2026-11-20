@@ -8,11 +8,19 @@ universe w
 
 namespace GlobalTheory.CompanionTheory.RedPull
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cls_eq_of_eq {R : Type} [CommRing R] {K : Cx.{w} R} {n : ℕ} {a b : K.X n} (e : a = b)
     (ha : K.d n a = 0) (hb : K.d n b = 0) : K.cls a ha = K.cls b hb := by
   subst e
   rfl
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (CH.cx F) j).1 z`. Establish `h1` using `CrystallineSemistableComparison.CechClassBoundaries.cyc a.hom x hx`. Establish `h2` using `CrystallineSemistableComparison.CechClassBoundaries.cyc b.hom _ h1`. Establish `h3` using `CrystallineSemistableComparison.CechClassBoundaries.cyc c.hom x hx`. Establish `h4` using `CrystallineSemistableComparison.CechClassBoundaries.cyc d.hom _ h3`.
+
+Express the relevant statement in the definitionally equal form `b.hom.mapH j (a.hom.mapH j _) = d.hom.mapH j (c.hom.mapH j _)`. Rewrite using `[CrystallineSemistableComparison.CechClassBoundaries.mapH_cls' a.hom x hx h1, CrystallineSemistableComparison.CechClassBoundaries.mapH_cls' b.hom _ h1 h2, CrystallineSemistableComparison.CechClassBoundaries.mapH_cls' c.hom x hx h3, CrystallineSemistableComparison.CechClassBoundar …`. Conclude with `cls_eq_of_eq (h x) h2 h4`.
+-/
 theorem pull_square {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C C' : Type 1} [Category.{0} C]
     [Category.{0} C'] {F G : C ⥤ ModuleCat.{0} R} {F' G' : C' ⥤ ModuleCat.{0} R'}
     (a : CH.Mor F G (RingHom.id R)) (b : CH.Mor G G' σ) (c : CH.Mor F F' σ) (d : CH.Mor F' G' (RingHom.id R'))
@@ -28,6 +36,9 @@ theorem pull_square {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {
     CrystallineSemistableComparison.CechClassBoundaries.mapH_cls' c.hom x hx h3, CrystallineSemistableComparison.CechClassBoundaries.mapH_cls' d.hom _ h3 h4]
   exact cls_eq_of_eq (h x) h2 h4
 
+/- English proof (translation)
+Use `pull_square _ _ _ _ j (fun x => ?_) z` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Conclude with `Subtype.ext Ideal.quotientMap_mk`.
+-/
 theorem sq_toSq {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C C' : Type 1} [Category.{0} C]
     [Category.{0} C'] {Φ : PDF R C} {Φ' : PDF R' C'} (mm : SMor Φ Φ' σ) (b : IdF Φ.A) (b' : IdF Φ'.A)
     (ha : mm.Le (IdF.top _) (IdF.top _)) (hb : mm.Le b b') (j : ℕ) (z : CH.H (CH.modF Φ.A) j) :
@@ -37,6 +48,9 @@ theorem sq_toSq {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C C'
   funext t
   exact Subtype.ext Ideal.quotientMap_mk
 
+/- English proof (translation)
+Introduce `O A A' _ _ _ _ _ I I' γ γ' X X' q q' σ m l s r n j z`. Conclude with `sq_toSq (nmS m l s) _ _ (fun _ _ _ => trivial) (nm_std m l s r n) j z`.
+-/
 theorem nmHM_redM : ∀ {O A A' : Type} [CommRing O] [CommRing A] [CommRing A'] [Algebra O A] [Algebra O A'] {I : Ideal A} {I' : Ideal A'}
     {γ : DividedPowers I} {γ' : DividedPowers I'} {X X' : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {q' : X' ⟶ Spec (CommRingCat.of O)}
     {σ : A →+* A'} (m : NMor γ q (κA O I) γ' q' (κA O I') σ) (l s : ℕ) (r : Option ℤ) (n j : ℕ) (z : HO (TS γ q l s {⊤}) j),

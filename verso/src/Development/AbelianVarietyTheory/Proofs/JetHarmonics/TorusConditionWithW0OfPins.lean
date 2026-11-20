@@ -24,9 +24,15 @@ def ofConjLinear (β : (Fin g → ℂ) →ₛₗ[starRingEnd ℂ] V) : (Fin g �
   map_add' z w := by rw [star_add, map_add]
   map_smul' t z := by rw [star_smul, map_smulₛₗ]; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toConjLinear_apply (L : (Fin g → ℂ) →ₗ[ℂ] V) (z : Fin g → ℂ) :
     toConjLinear L z = L (star z) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofConjLinear_apply (β : (Fin g → ℂ) →ₛₗ[starRingEnd ℂ] V) (z : Fin g → ℂ) :
     ofConjLinear β z = β (star z) := rfl
 

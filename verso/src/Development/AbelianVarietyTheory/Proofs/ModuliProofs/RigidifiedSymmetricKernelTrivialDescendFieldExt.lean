@@ -15,6 +15,11 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.PolDescent
 
+/- English proof (translation)
+Take `⟨i₀, hi₀⟩` from `exists_chart hM y₀`. Establish `h : ∀ y, y ∈ M.U i₀` using `fun y => by rwa [Subsingleton.elim y y₀]`. Establish `le : ∀ i, M.U i ≤ M.U i ⊓ M.U i₀` using `fun i => le_inf le_rfl fun y _ => h y`. Use `⟨⟨fun i => res (le i) (M.g i i₀)⟩, fun i j => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `((gm_res _ y _ hy _).trans (gm_res _ y _ hy.1 _)).trans (Eq.symm ((map_mul _ _ _).trans ?_))` and prove the remaining obligations.
+
+Use `(congrArg _ ((gm_res _ y _ hy _).trans (gm_res _ y _ hy.2 _))).trans ?_` and prove the remaining obligations. Conclude with `gm_cocycle hM _ y hy.1 hy.2 (h y)`.
+-/
 theorem exists_gen_of_unique {Y : Scheme.{0}} [Subsingleton Y] (y₀ : Y) {M : LB Y} (hM : M.IsLB) :
     ∃ t : LB.Gen M, t.IsGen := by
   obtain ⟨i₀, hi₀⟩ := exists_chart hM y₀
@@ -28,12 +33,34 @@ theorem exists_gen_of_unique {Y : Scheme.{0}} [Subsingleton Y] (y₀ : Y) {M : L
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A']
   {φ : A'.left ⟶ A.left} {L : LB A.left} {L' : LB A'.left}
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun q => q.left) (map_inv (pushHom h A') (𝟙 A'))`. Simplify using `only [Hom.inv_def, Category.id_comp] at e`. Conclude with `e.trans (congrArg (· ≫ _) (Category.id_comp φ))`.
+-/
 theorem inv_left_comp (h : IsGrpPullback A' A f φ) :
     (GrpObj.inv : A' ⟶ A').left ≫ φ = φ ≫ (GrpObj.inv : A ⟶ A).left := by
   have e := congrArg (fun q => q.left) (map_inv (pushHom h A') (𝟙 A'))
   simp only [Hom.inv_def, Category.id_comp] at e
   exact e.trans (congrArg (· ≫ _) (Category.id_comp φ))
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hw`. Introduce `R _ t x hx`. Establish `: IsAffine (pullback t f)` using `isAffine_of_isAffineHom (pullback.fst t f)`. Set `R' : Type` to `Γ(pullback t f, ⊤)`. Set `e : Spec (CommRingCat.of R') ⟶ pullback t f` to `(pullback t f).isoSpec.inv`.
+
+Establish `: IsIso e` using `inferInstanceAs (IsIso (pullback t f).isoSpec.inv)`. Establish `: Epi (pullback.fst t f)` using `Flat.epi_of_flat_of_surjective _`. Take `⟨q, t', hq, sq⟩ : ∃ (q : Spec (CommRingCat.of R') ⟶ Spec (CommRingCat.of R)) (t' : Spec (CommRingCat.of R') ⟶ S'), Epi q ∧ q ≫ t = t' ≫ f` from `⟨e ≫ pullback.fst t f, e ≫ pullback.snd t f, inferInstance, by`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]⟩`. Set `T : Over S` to `Over.mk t`.
+
+Set `T' : Over S'` to `Over.mk t'`. Establish `sx : (q ≫ x.left) ≫ A.hom = t' ≫ f` using `by rw [Category.assoc, Over.w x]; exact sq`. Set `x' : T' ⟶ A'` to `Over.homMk (h.1.lift _ _ sx) (h.1.lift_snd _ _ _)`. Establish `hx' : x'.left ≫ φ = q ≫ x.left` using `h.1.lift_fst _ _ _`. Establish `main : x' = toUnit _ ≫ η[A']`.
+
+Use `hK R' t' x' fun p => ?_` and prove the remaining obligations. Take `⟨V, hV, c, hc⟩` from `hx (q p)`. Use `⟨q ⁻¹ᵁ V, hV, ?_⟩` and prove the remaining obligations. Set `a : Over.mk ((T' ⊗ A').hom ≫ f) ⟶ T` to `Over.homMk ((fst T' A').left ≫ q) ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) sq).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ f) (Over.w (fst T' A'))))))`. Set `b : Over.mk ((T' ⊗ A').hom ≫ f) ⟶ A` to `pushPt h.1.w (snd T' A')`.
+
+Establish `k₁ : (lift a b).left ≫ (fst T A).left = (fst T' A').left ≫ q` using `congrArg (fun q => q.left) (lift_fst a b)`. Establish `k₂ : (snd T' A').left ≫ φ = (lift a b).left ≫ (snd T A).left` using `(congrArg (fun q => q.left) (lift_snd a b)).symm`. Establish `k₃ : ((fst T' A' ≫ x') * snd T' A').left ≫ φ = (lift a b).left ≫ ((fst T A ≫ x) * snd T A).left`. Establish `e₀ : lift a b ≫ ((fst T A ≫ x) * snd T A) = (a ≫ x) * b`. Rewrite using `[MonObj.comp_mul, lift_fst_assoc, lift_snd]`.
+
+Establish `e₁` using `h.2 (T' ⊗ A') (fst T' A' ≫ x') (snd T' A') (a ≫ x) b ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) hx'.symm).trans (Category.assoc _ _ _).symm)) rfl`. Rewrite `e₁` using `[← e₀]`. Conclude with `e₁.symm`. Take `⟨n, hn⟩ : ∃ n : ((fst T' A').left ⁻¹ᵁ (q ⁻¹ᵁ V)).toScheme ⟶ ((fst T A).left ⁻¹ᵁ V).toScheme, n ≫ ((fst T A).left ⁻¹ᵁ V).ι = ((fst T' A').left ⁻¹ᵁ (q ⁻¹ᵁ V)).ι ≫ (lift a b).left` from `⟨IsOpenImmersion.lift _ (((fst T' A').left ⁻¹ᵁ (q ⁻¹ᵁ V)).ι ≫ (lift a b).left) (by`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(congrArg (fun q => q y.1 ∈ V) k₁).mpr y.2), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨c₁, h₁⟩` from `gen_chartPull (chartPullIn L _ _ _) c hc`. Set `ψ : Fin 2 → (((fst T' A').left ⁻¹ᵁ (q ⁻¹ᵁ V)).toScheme ⟶ A'.left)` to `fun k => ((fst T' A').left ⁻¹ᵁ (q ⁻¹ᵁ V)).ι ≫ ![(lift (fst T' A' ≫ x') (snd T' A') ≫ μ[A']).left, (snd T' A').left] k`. Take `⟨c₂, h₂⟩` from `gen_chartPull (chartPullSame L (fun k => ψ k ≫ φ) _ _ n fun k => by`.
+
+Rewrite using `[← Category.assoc n, hn, Category.assoc, Category.assoc]`. Use `fin_cases k`. Use `exacts [congrArg (_ ≫ ·) k₃, congrArg (_ ≫ ·) k₂]) c₁ h₁`. Take `⟨c₃, h₃⟩` from `exists_down ((isGen_iff w).1 hw) hL hL' c₂ h₂`. Conclude with `gen_chartPull (chartPullOut L' _ _ _ ψ fun _ => rfl) c₃ h₃`.
+
+Set `a : Over.mk (T'.hom ≫ f) ⟶ T` to `Over.homMk q sq`. Establish `e₁ : pushPt h.1.w x' = 1` using `(congrArg _ main).trans (map_one (pushHom h T'))`. Establish `e₂ : a ≫ x = a ≫ (1 : T ⟶ A)` using `(Over.OverMorphism.ext hx'.symm : a ≫ x = pushPt h.1.w x').trans (e₁.trans (MonObj.comp_one a).symm)`. Conclude with `Over.OverMorphism.ext ((cancel_epi q).1 (congrArg (fun z => z.left) e₂))`.
+-/
 theorem kTriv_of_pullback [Flat f] [Surjective f] [IsAffineHom f] (h : IsGrpPullback A' A f φ) (hL : L.IsLB)
     (hL' : L'.IsLB) (hw : LBIso L' (L.pull φ)) (hK : Out.KTriv A' L') : Out.KTriv A L := by
   obtain ⟨w, hw⟩ := hw
@@ -93,6 +120,15 @@ theorem kTriv_of_pullback [Flat f] [Surjective f] [IsAffineHom f] (h : IsGrpPull
     (Over.OverMorphism.ext hx'.symm : a ≫ x = pushPt h.1.w x').trans (e₁.trans (MonObj.comp_one a).symm)
   exact Over.OverMorphism.ext ((cancel_epi q).1 (congrArg (fun z => z.left) e₂))
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hw`. Take `⟨U, hU, c, hc⟩` from `hS s'`. Take `⟨e, he⟩ : ∃ e : A'.left ⟶ (A'.hom ⁻¹ᵁ U).toScheme, e ≫ (A'.hom ⁻¹ᵁ U).ι = 𝟙 _` from `⟨IsOpenImmersion.lift _ (𝟙 _) (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Use `show A'.hom y ∈ U`. Rewrite using `[Subsingleton.elim (A'.hom y) s']), IsOpenImmersion.lift_fac _ _ _⟩` and apply the resulting hypothesis. Take `⟨c₁, h₁⟩` from `gen_chartPull (chartPullSame L' ![(GrpObj.inv : A' ⟶ A').left, 𝟙 _] _ _ e fun k => by fin_cases k`. Conclude with `((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) he).trans (Category.id_comp _))).symm`. Conclude with `he.symm) c hc`.
+
+Take `⟨c₂, h₂, -⟩` from `exists_up ((isGen_iff w).1 hw) hL hL' c₁ h₁`. Take `⟨c₃, h₃⟩` from `desc _ (DVR.linComb_isLB L hL ![(GrpObj.inv : A ⟶ A).left, 𝟙 _] ![1, -1]) (gen_chartPull (chartPullOut L _ _ φ _ fun k => by fin_cases k`. Conclude with `inv_left_comp h`. Conclude with `(Category.id_comp φ).trans (Category.comp_id φ).symm) c₂ h₂)`. Introduce `s`.
+
+Use `⟨⊤, trivial, gen_chartPull (chartPullSame L _ _ _ (A.hom ⁻¹ᵁ ⊤).ι fun k => ?_) c₃ h₃⟩` and prove the remaining obligations. Use `fin_cases k`. Both sides reduce to the same expression. Conclude with `(Category.comp_id _).symm`.
+-/
 theorem sym_of_pullback [Subsingleton S'] (s' : S') (h : IsGrpPullback A' A f φ) (hL : L.IsLB)
     (hL' : L'.IsLB) (hw : LBIso L' (L.pull φ))
     (desc : ∀ M : LB A.left, M.IsLB → (∃ t : (M.pull φ).Gen, t.IsGen) → ∃ t : M.Gen, t.IsGen)
@@ -121,6 +157,11 @@ theorem sym_of_pullback [Subsingleton S'] (s' : S') (h : IsGrpPullback A' A f φ
   · rfl
   · exact (Category.comp_id _).symm
 
+/- English proof (translation)
+Introduce `K₀ K _ _ i A₀ A _ _ φ L₀ L hA h hL₀ hL hw`. Use `⟨fun _ => ?_, fun hS => ?_, fun hK => ?_⟩` and prove the remaining obligations. Establish `: Subsingleton (𝟙_ (Over (Sp K₀))).left` using `inferInstanceAs (Subsingleton (PrimeSpectrum K₀))`. Conclude with `exists_gen_of_unique (default : PrimeSpectrum K₀) (pull_isLB hL₀ _)`. Establish `: Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`.
+
+Conclude with `sym_of_pullback (default : PrimeSpectrum K) h hL₀ hL hw (GlobalTheory.T.lineBundle_trivial_iso_descend_field K₀ K i _ _ A₀.hom A.hom φ hA.smooth hA.proper hA.geomConnected h.1).1 hS`. Use `GlobalTheory.FieldBaseChange.flat_spMap i` as an intermediate fact. Use `GlobalTheory.FieldBaseChange.surjective_spMap i` as an intermediate fact. Conclude with `kTriv_of_pullback h hL₀ hL hw hK`.
+-/
 theorem rigidified_sym_kTriv_descend : ∀ (K₀ K : Type) [Field K₀] [Field K] (i : K₀ →+* K) (A₀ : Over (Sp K₀)) (A : Over (Sp K)) [GrpObj A₀] [GrpObj A] (φ : A.left ⟶ A₀.left) (L₀ : LB A₀.left) (L : LB A.left), IsAbelianScheme A₀ → IsGrpPullback A A₀ (spMap i) φ → L₀.IsLB → L.IsLB → LBIso L (L₀.pull φ) → (Out.Rigidified A L → Out.Rigidified A₀ L₀) ∧ (Out.Sym A L → Out.Sym A₀ L₀) ∧ (Out.KTriv A L → Out.KTriv A₀ L₀) := by
   intro K₀ K _ _ i A₀ A _ _ φ L₀ L hA h hL₀ hL hw
   refine ⟨fun _ => ?_, fun hS => ?_, fun hK => ?_⟩

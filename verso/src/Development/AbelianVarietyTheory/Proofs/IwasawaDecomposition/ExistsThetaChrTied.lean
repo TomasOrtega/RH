@@ -19,6 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨⟨h.1.1.mul h'.1.1, fun x => ?_⟩, fun P e he k x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, h.1.2, h'.1.2, one_mul]`. Rewrite using `[MonoidHom.mul_apply, Circle.coe_mul, h.2 P e he k x hx, h'.2 P e he k x hx, ← Units.val_mul]`. Both sides reduce to the same expression.
+-/
 theorem chrEq_mul {c c' : (AE D)ˣ →* Circle} {χ χ' : HChar D.host.E} (h : ChrEq c χ) (h' : ChrEq c' χ') :
     ChrEq (c * c') (χ * χ') := by
   refine ⟨⟨h.1.1.mul h'.1.1, fun x => ?_⟩, fun P e he k x hx => ?_⟩
@@ -26,6 +29,15 @@ theorem chrEq_mul {c c' : (AE D)ˣ →* Circle} {χ χ' : HChar D.host.E} (h : C
   · rw [MonoidHom.mul_apply, Circle.coe_mul, h.2 P e he k x hx, h'.2 P e he k x hx, ← Units.val_mul]
     rfl
 
+/- English proof (translation)
+Take `⟨u1, u2, u3⟩` from `GlobalTheory.ChrEqUnique.chrEq_unique D`. Establish `hc : ∀ c, IsHeckeChar D (T.eChr c) ∧ ∀ τ, ∃ a, HasInfExp D (T.eChr c) τ a` using `fun c => by`. Establish `: T.eChr c ∈ Set.range T.eChr` using `⟨c, rfl⟩`. Rewrite `this` using `[T.eChr_range]`. Then use the resulting hypothesis. Use `choose e he using fun c => GlobalTheory.HeckeTensorRead.exists_hchar_chrEq D (T.eChr c) (hc c).1`.
+
+Establish `hmul : ∀ a b, e (a * b) = e a * e b` using `fun a b => u1 _ _ _ (he (a * b)) (by rw [map_mul]; exact chrEq_mul (he a) (he b))`. Establish `hinf : ∀ c, (e c).HasInfQ (Formalism.L2.Host.embTau D) (X.infTy c)` using `fun c => (GlobalTheory.HeckeInfExp.hasInfExp_iff_hasInfQ D _ _ _ (he c)).1 (T.infTy c)`. Use `⟨⟨MonoidHom.mk' e hmul, fun a b hab => T.eChr_inj (u2 _ _ _ (he a) ?_), fun χ => ⟨?_, ?_⟩, hinf, fun μ j => u1 _ _ _ (he _) (hR.chr μ j), u1 _ _ _ (he _) hR.eta⟩, he⟩` and prove the remaining obligations. Establish `hab' : e a = e b` using `hab`. Rewrite using `[hab']`.
+
+Conclude with `he b`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨u3 _ _ (he c), _, hinf c⟩`. Introduce and unpack `⟨hu, a, ha⟩`. Take `⟨c, hcχ⟩` from `GlobalTheory.CharTransport.exists_chrEq D χ hu`.
+
+Establish `hm : c ∈ Set.range T.eChr`. Rewrite using `[T.eChr_range]`. Conclude with `⟨hcχ.1, fun τ => ⟨a τ, (GlobalTheory.HeckeInfExp.hasInfExp_iff_hasInfQ D _ _ _ hcχ).2 ha τ⟩⟩`. Take `⟨x, rfl⟩` from `hm`. Conclude with `⟨x, u1 _ _ _ (he x) hcχ⟩`.
+-/
 theorem exists_thetaChrTied (D : D7) (C : Formalism.L2.Host.CharFrame D) (nch : NChoice D) (Tp : Formalism.L2.Host.TupTied D C nch)
     (X : ThetaX D) (T : ThetaTied D X) (hR : ChrRead T C Tp.xi) :
     ∃ H : Formalism.L2.Host.ThetaChrTied D C nch Tp X, ∀ c, ChrEq (T.eChr c) (H.eChr c) := by

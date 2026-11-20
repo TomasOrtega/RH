@@ -14,6 +14,11 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.BettiB
 
 namespace GlobalTheory.KZ.BettiEx
 
+/- English proof (translation)
+Take `⟨hadd, hzero, -⟩` from `GlobalTheory.T.isKummerCharacterAtLevel_add_zero_congr Ω ε X l n`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `hzero`.
+
+Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `hadd _ _ _ _ (GlobalTheory.T.isKummerCharacterAtLevel_padicInt_smul Ω ε X l n (r a) (x a) (χ a) (h a)) ih`.
+-/
 theorem kum_sum {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ)
     {ι : Type} (s : Finset ι) (r : ι → ℤ_[l]) (x : ι → X.Khat l) (χ : ι → SL(2, ℤ) → ZMod (l ^ n))
     (h : ∀ i, H3.Kum X l n (x i) (χ i)) :
@@ -28,6 +33,15 @@ theorem kum_sum {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X :
     simp only [Finset.sum_insert ha]
     exact hadd _ _ _ _ (GlobalTheory.T.isKummerCharacterAtLevel_padicInt_smul Ω ε X l n (r a) (x a) (χ a) (h a)) ih
 
+/- English proof (translation)
+Introduce and unpack `b ⟨⟨c, hcA, hb⟩, hinv⟩`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `hJ : H3.JHol X`. Take `⟨φ, h1, h2⟩` from `hj`. Conclude with `⟨φ, h2, h1⟩`.
+
+Establish `hlN : ¬ l ∣ N` using `(Nat.Prime.coprime_iff_not_dvd (Fact.out : l.Prime)).1 hc.symm`. Take `⟨Φ, hΦ, hK⟩` from `GlobalTheory.T.kummerCharacters_invariant_compatible_family Ω ε X l hJ N w c hcA (fun γ hγ => GlobalTheory.T.binaryForm_coeff_of_gamma1CapGamma0_invariant Ω ε X l N w b c hb γ hγ (hinv γ hγ))`. Take `⟨z, hz, hnear⟩` from `GlobalTheory.T.exists_padic_cocycle_of_compatible_poly_family N l w (by omega) hl hlN hw Φ hΦ`. Use `⟨fun δ => z δ, ⟨fun γ => hz.1 γ γ.2, fun γ δ => hz.2 γ γ.2 δ δ.2⟩, fun n u => ?_⟩` and prove the remaining obligations. Take `⟨M, hM, hMn⟩` from `hnear n`.
+
+Establish `hk` using `kum_sum X l n Finset.univ (fun i : Fin (w + 1) => u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) c _ (hK n)`. Rewrite `hk` using `[← hb u]`. Use `⟨_, hk, M, hM, fun δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨-, hexp, -, hev, -⟩` from `GlobalTheory.KZ.H3.mon_expand (ZMod (l ^ n)) w`. Establish `e` using `hMn δ hδ`.
+
+Simplify using `only at e ⊢`. Rewrite using `[e]`. Use `conv_lhs => rw [hexp (Φ n δ) (hΦ.1 n δ)]`. Simplify using `only [map_sum, map_mul, map_pow, MvPolynomial.eval_C, hev]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem exists_betti_cocycle {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε)
     (_hε : Function.Injective ε) (hj : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero))
     (N l w : ℕ) [Fact l.Prime] (hl : l ≠ 2) (hN : 5 ≤ N) (hc : Nat.Coprime N l) (hw : Odd w) :

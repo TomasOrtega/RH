@@ -8,6 +8,19 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 
 namespace GlobalTheory.Dieu
 
+/- English proof (translation)
+Introduce `p _ T k _ _ _ G`. Establish `tor : ∀ (K : PDivGroup p k) (m : T.M K), p • m = 0 → m = 0`. Introduce `K m hm`. Establish `h` using `(GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k K K K trivial trivial trivial).2.2.2.2.2.2.2.2 1 m`. Conclude with `h (by simpa using hm)`.
+
+Establish `Finj : ∀ K : PDivGroup p k, Function.Injective (T.F K)`. Introduce `K x y hxy`. Establish `h1 : p • x = p • y` using `by rw [← T.V_F K x, ← T.V_F K y]; exact congrArg _ hxy`. Establish `: p • (x - y) = 0` using `by rw [smul_sub, h1, sub_self]`. Conclude with `sub_eq_zero.mp (tor K _ this)`.
+
+Establish `Vinj : ∀ K : PDivGroup p k, Function.Injective (T.V K)`. Introduce `K x y hxy`. Establish `h1 : p • x = p • y` using `by rw [← T.F_V K x, ← T.F_V K y]; exact congrArg _ hxy`. Establish `: p • (x - y) = 0` using `by rw [smul_sub, h1, sub_self]`. Conclude with `sub_eq_zero.mp (tor K _ this)`.
+
+Establish `comm : ∀ (H : PDivGroup p k) (φ : T.M H →ₗ[(WittVector p k)] T.M G), (∀ m, φ (T.F H m) = T.F G (φ m)) → ∀ m, φ (T.V H m) = T.V G (φ m)`. Introduce `H φ hφ m`. Apply `Finj G` to reduce the goal to its premises. Rewrite using `[← hφ, T.F_V H m, T.F_V G, map_nsmul]`. Use `⟨Finj G, Vinj G, ?_, comm, ?_⟩` and prove the remaining obligations.
+
+Introduce `m`. Establish `ht` using `GlobalTheory.T.dieudonne_frobeniusTwist_bijective_relFrobenius p T.base k G`. Take `⟨n, hn⟩` from `ht.1.2 (T.map (verschiebung (p_eq_zero p k) G) m)`. Establish `hF : T.F G n = p • m` using `ht.2.2 m n hn`. Establish `: n = T.V G m` using `Finj G (by rw [hF, T.F_V])`.
+
+Rewrite using `[← this]`. Conclude with `hn`. Introduce `H f m`. Conclude with `comm H (T.map f) (fun m => (GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k G H H trivial trivial trivial).2.2.2.2.2.2.1 f m) m`.
+-/
 theorem theory_V_verschiebung : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k), Function.Injective (T.F G) ∧ Function.Injective (T.V G) ∧ (∀ m, T.smap (frobProj (p_eq_zero p k) G) (T.V G m) = T.map (verschiebung (p_eq_zero p k) G) m) ∧ (∀ (H : PDivGroup p k) (φ : T.M H →ₗ[(WittVector p k)] T.M G), (∀ m, φ (T.F H m) = T.F G (φ m)) → ∀ m, φ (T.V H m) = T.V G (φ m)) ∧ ∀ (H : PDivGroup p k) (f : G ⟶ H) (m : T.M H), T.map f (T.V H m) = T.V G (T.map f m) := by
   intro p _ T k _ _ _ G
 

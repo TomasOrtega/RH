@@ -32,6 +32,29 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.FormalOrigin
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ _ G _ _ hsm hint n v dd hdd D W d hd hW`. Establish `hx0W : origin G ∈ W` using `hW (show IsLocalRing.closedPoint R ∈ (⊤ : (Sp R).Opens) from trivial)`. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Take `⟨D', hD'⟩` from `GlobalTheory.T.exists_derivation_of_vectorFieldLift_near_unit R G D W d hd hW`. Use `choose δ hδ using fun a => GlobalTheory.T.exists_stalk_derivation_of_vectorFieldOnOpen G.left ⊤ (dd a) (hdd a).1 (origin G) trivial`.
+
+Take `⟨dA, hdA⟩` from `GlobalTheory.T.exists_stalk_derivation_of_vectorFieldOnOpen G.left W d hd.1 (origin G) hx0W`. Establish `hcomm : ∀ a b s, δ a (δ b s) = δ b (δ a s)`. Introduce `a b s`. Take `⟨O, hO, f, rfl⟩` from `TopCat.Presheaf.germ_exist G.left.presheaf s`. Rewrite using `[hδ b O hO le_top, hδ a O hO le_top, hδ a O hO le_top, hδ b O hO le_top, GlobalTheory.T.invariantVectorFields_commute_of_commGroupScheme R G (v a) (v b) (dd a) (dd b) (hdd a) (hdd b)]`.
+
+Establish `hconst : ∀ a r, δ a (constO G r) = 0`. Introduce `a r`. Rewrite using `[← GlobalTheory.T.germ_origin_constantSection_eq_originStalkConstants R G ⊤ trivial r, hδ a ⊤ trivial le_top, GlobalTheory.T.invariantVectorField_apply_constant_eq_zero R G (v a) (dd a) (hdd a), map_zero]`. Establish `hdc : ∀ r, dA (constO G r) = constO G (D' r)`. Introduce `r`.
+
+Rewrite using `[← GlobalTheory.T.germ_origin_constantSection_eq_originStalkConstants R G W hx0W r, hdA W hx0W le_rfl, hd.2 W le_rfl, ← hD', GlobalTheory.T.germ_origin_constantSection_eq_originStalkConstants]`. Take `⟨z, hz0, hz1, hm⟩` from `GlobalTheory.T.smooth_commGroup_local_coordinates_at_origin R G hsm n v dd hdd δ (fun a O hO f => hδ a O hO le_top f)`. Take `⟨T, hT⟩` from `GlobalTheory.T.exists_ringHom_eq_taylor _ R n (evO G) δ`. Establish `hTC : ∀ r, T (constO G r) = MvPowerSeries.C r`. Introduce `r`.
+
+Rewrite using `[hT, GlobalTheory.T.derivationTaylorPowerSeries_of_derivations_kill _ R n (evO G) δ _ (fun i => hconst i r), GlobalTheory.T.groupSchemeStalkEvalAtOrigin_originStalkConstants]`. Establish `hT0 : ∀ s, MvPowerSeries.constantCoeff (T s) = evO G s`. Introduce `s`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hT]`. Use `show (∏ i, (((0 : Fin n →₀ ℕ) i).factorial : ℚ))⁻¹ • evO G (iterOp _ 0 s) = _`.
+
+Rewrite using `[iterOp_zero]`. Simplify using the standard rewrite rules. Use `haveI : IsLocalHom (evO G) := Scheme.isLocalHom_stalkClosedPointTo (R := CommRingCat.of R) (η[G]).left`. Establish `: IsLocalHom T` using `⟨fun s hs => by`. Establish `h1 : IsUnit (evO G s)` using `by rw [← hT0]; exact (MvPowerSeries.isUnit_iff_constantCoeff).1 hs`.
+
+Conclude with `(isUnit_map_iff (evO G) s).1 h1⟩`. Take `⟨dΩ, hdΩC, hdΩ⟩` from `GlobalTheory.T.derivation_extends_taylorPowerSeriesRing R _ (constO G) (evO G) (GlobalTheory.T.groupSchemeStalkEvalAtOrigin_originStalkConstants R G) n δ z hz0 hz1 hm hconst dA D' hdc`. Establish `hval : ∀ (O : G.left.Opens) (hO : origin G ∈ O) (f : Γ(G.left, O)), valR (spMap T ≫ G.left.fromSpecStalk (origin G)) O f = T ((G.left.presheaf.germ O (origin G) hO).hom f)` using `fun O hO f => GlobalTheory.FlagBundle.valR_spMap_fromSpecStalk T hO f`. Establish `htop : ∀ O : G.left.Opens, ⊤ ≤ (spMap T ≫ G.left.fromSpecStalk (origin G)) ⁻¹ᵁ O → origin G ∈ O` using `fun O h => (GlobalTheory.T.preimage_spMap_fromSpecStalk_whole_iff_mem G.left (origin G) _ T inferInstance O).1 h`. Use `⟨MvPowerSeries (Fin n) R, inferInstance, NoZeroDivisors.to_isDomain _, inferInstance, MvPowerSeries.C, spMap T ≫ G.left.fromSpecStalk (origin G), fun a => intDer (MvPowerSeries.pderiv R a), intDer dΩ, GlobalTheory.T.mvPowerSeries_isAdicComplete_map_C_of_noetherian R _ ‹_› n, ?_, …` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, GlobalTheory.T.spec_map_fromSpecStalk_origin_comp_structure_eq R G _ T]`. Use `congr 1`. Conclude with `RingHom.ext hTC`. Rewrite using `[← hD']`. Conclude with `hdΩC r`.
+
+Conclude with `MvPowerSeries.pderiv_C`. Establish `h` using `htop O hO`. Rewrite using `[hval O h, hval O h, ← hδ a O h le_top, hT, hT, GlobalTheory.T.derivationTaylorPowerSeries_derivation_eq_pderiv _ R n (evO G) δ hcomm]`. Both sides reduce to the same expression. Establish `h` using `htop O hO`.
+
+Rewrite using `[hval O h, hval O h, ← hdA O h hOW, hT, hT]`. Conclude with `(hdΩ _).symm`. Establish `h` using `htop O hO`. Rewrite `hf` using `[hval O h, hT]`. Establish `h0` using `GlobalTheory.T.derivationTaylorPowerSeries_injective_localRing R _ (constO G) (evO G) (GlobalTheory.T.groupSchemeStalkEvalAtOrigin_originStalkConstants R G) n δ z hz0 hz1 hm _ hf`.
+
+Conclude with `germ_injective_of_isIntegral G.left (origin G) h (h0.trans (map_zero _).symm)`.
+-/
 theorem exists_formalPoint : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], Smooth G.hom → IsIntegral G.left → ∀ (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) G)) (dd : Fin n → Fld G.left), (∀ a, IsInv G (v a) (dd a)) → ∀ (D : R → R) (W : G.left.Opens) (d : Fld G.left), IsLift G D W d → ⊤ ≤ (η[G]).left ⁻¹ᵁ W → ∃ (Ω : Type) (_ : CommRing Ω) (_ : IsDomain Ω) (_ : IsLocalRing Ω) (φ : R →+* Ω) (x : Sp Ω ⟶ G.left) (δ : Fin n → Derivation ℤ Ω Ω) (dΩ : Derivation ℤ Ω Ω), IsAdicComplete ((maximalIdeal R).map φ) Ω ∧ x ≫ G.hom = spMap φ ∧ ⊤ ≤ x ⁻¹ᵁ W ∧ (∀ r, dΩ (φ r) = φ (D r)) ∧ (∀ a r, δ a (φ r) = 0) ∧ (∀ a O f, ⊤ ≤ x ⁻¹ᵁ O → valR x O (dd a O f) = δ a (valR x O f)) ∧ (∀ O f, O ≤ W → ⊤ ≤ x ⁻¹ᵁ O → valR x O (d O f) = dΩ (valR x O f)) ∧ ∀ O (f : Γ(G.left, O)), ⊤ ≤ x ⁻¹ᵁ O → valR x O f = 0 → f = 0 := by
   intro R _ _ _ _ _ _ G _ _ hsm hint n v dd hdd D W d hd hW
   have hx0W : origin G ∈ W := hW (show IsLocalRing.closedPoint R ∈ (⊤ : (Sp R).Opens) from trivial)

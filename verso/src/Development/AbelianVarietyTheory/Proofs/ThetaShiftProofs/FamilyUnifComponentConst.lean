@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `U f`. Take `⟨h1, h2⟩` from `h U f`. Establish `hc : Continuous (fun b : Fin 1 → ℂ => b 0)` using `continuous_apply (0 : Fin 1)`. Use `⟨h1.preimage hc, ?_⟩` and prove the remaining obligations. Establish `hd : Differentiable ℂ (fun b : Fin 1 → ℂ => b 0)` using `differentiable_apply (0 : Fin 1)`.
+
+Conclude with `h2.comp hd.differentiableOn (fun b hb => hb)`.
+-/
 theorem isHolTo_comp_fin_one {X : Scheme.{0}} {B : Set ℂ} {y : ℂ → (Sp ℂ ⟶ X)} (h : IsHolTo B y) :
     IsHolTo {b : Fin 1 → ℂ | b 0 ∈ B} (fun b => y (b 0)) := by
   intro U f
@@ -19,6 +24,21 @@ theorem isHolTo_comp_fin_one {X : Scheme.{0}} {B : Set ℂ} {y : ℂ → (Sp ℂ
   have hd : Differentiable ℂ (fun b : Fin 1 → ℂ => b 0) := differentiable_apply (0 : Fin 1)
   exact h2.comp hd.differentiableOn (fun b hb => hb)
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ D l Xo σ g ty Fu T yw hhol hσ`. Use `set B : Set (Fin 1 → ℂ) := {b | T < (b 0).im} with hB`. Establish `hBo : IsOpen B` using `isOpen_lt continuous_const (Complex.continuous_im.comp (continuous_apply 0))`. Establish `hBc : IsPreconnected B`. Establish `hc : Convex ℝ B`.
+
+Use `(convex_halfSpace_im_gt T).is_linear_preimage (f := fun b : Fin 1 → ℂ => b 0) ⟨fun _ _ => rfl, fun _ _ => rfl⟩` as an intermediate fact. Conclude with `this`. Conclude with `hc.isPreconnected`. Establish `hy : IsHolTo B (fun b => yw (b 0))` using `isHolTo_comp_fin_one hhol`. Establish `hex : ∀ b : Fin 1 → ℂ, ∃ i : Fin Fu.n, b ∈ B → ∃ P, IsPeriod (Fu.Di i) ty P ∧ Fu.u i P = yw (b 0)`.
+
+Introduce `b`. Distinguish the cases in `hb : b ∈ B`. Take `⟨i, P, h⟩` from `Fu.onto _ (hσ (b 0) hb)`. Conclude with `⟨i, fun _ => ⟨P, h⟩⟩`. Conclude with `⟨⟨0, Fu.n_pos⟩, fun h => absurd h hb⟩`.
+
+Use `choose c hc using hex`. Establish `hcont : ContinuousOn c B`. Introduce `b₀ hb₀`. Take `⟨B', i, P, ho, hm, hsub, hP, hu⟩` from `Fu.lift 1 B _ hBo (fun b hb => hσ (b 0) hb) hy b₀ hb₀`. Establish `key : ∀ b ∈ B', c b = i`.
+
+Introduce `b hb`. Take `⟨Q, hQ, hQu⟩` from `hc b (hsub hb)`. Conclude with `Fu.disj _ _ Q (P b) hQ (hP.1 b hb) (hQu.trans (hu b hb).symm)`. Establish `hev : c =ᶠ[nhds b₀] fun _ => i` using `Filter.eventually_of_mem (ho.mem_nhds hm) key`. Conclude with `(continuousAt_const.congr hev.symm).continuousWithinAt`.
+
+Establish `h0 : (fun _ : Fin 1 => ((T + 1 : ℝ) : ℂ) * Complex.I) ∈ B`. Simplify using `[hB]`. Use `⟨c (fun _ : Fin 1 => ((T + 1 : ℝ) : ℂ) * Complex.I), fun w hw => ?_⟩` and prove the remaining obligations. Establish `hwB : (fun _ : Fin 1 => w) ∈ B` using `hw`. Rewrite using `[hBc.constant hcont h0 hwB]`.
+
+Conclude with `hc _ hwB`.
+-/
 theorem familyUnif_component_const :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo σ ty) (T : ℝ) (yw : ℂ → (Sp ℂ ⟶ Xo.X)), IsHolTo {w : ℂ | T < w.im} yw → (∀ w : ℂ, T < w.im → yw w ≫ Xo.s = spMap σ) → ∃ i, ∀ w : ℂ, T < w.im → ∃ P, IsPeriod (Fu.Di i) ty P ∧ Fu.u i P = yw w := by
   intro E _ _ _ H _ D l Xo σ g ty Fu T yw hhol hσ

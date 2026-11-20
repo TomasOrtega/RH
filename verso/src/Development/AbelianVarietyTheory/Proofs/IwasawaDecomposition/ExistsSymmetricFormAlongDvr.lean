@@ -26,14 +26,23 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
 
 include hϖ in
 
+/- English proof (translation)
+The claim follows from `exists_genHasVal hϖ D.P.L D.P.isLB _ _ _ _ (D.psi χ) (D.psi_gen χ)`.
+-/
 theorem qVal_exists (χ : D.X) : ∃ n : ℤ, QForm.QVal D ϖ χ n :=
   exists_genHasVal hϖ D.P.L D.P.isLB _ _ _ _ (D.psi χ) (D.psi_gen χ)
 
 include hϖ in
 
+/- English proof (translation)
+The claim follows from `genHasVal_unique hϖ D.P.L D.P.isLB _ _ _ _ _ hn hm`.
+-/
 theorem qVal_unique {χ : D.X} {n m : ℤ} (hn : QForm.QVal D ϖ χ n) (hm : QForm.QVal D ϖ χ m) : n = m :=
   genHasVal_unique hϖ D.P.L D.P.isLB _ _ _ _ _ hn hm
 
+/- English proof (translation)
+The claim follows from `genHasVal_pullGen_of (ϖ := ϖ) D.P.L _ _ D.rig D.rig_gen (𝟙 _) (toUnit (TK V)).left (by rw [Category.comp_id]; rfl)`.
+-/
 theorem rigK_val0 : GenHasVal ϖ D.P.L (fun _ : PUnit => 𝟙 _ ≫ eSec D.P.A)
     (fun _ => (toUnit (TK V)).left ≫ eSec D.P.A) (fun _ => by rw [Category.id_comp]; rfl) (fun _ => 1)
     D.rigK 0 :=
@@ -44,6 +53,11 @@ variable {Q : D.X → ℤ}
 
 include hϖ in
 
+/- English proof (translation)
+Establish `hL` using `D.P.isLB`. Establish `h1` using `genHasVal_mulGen hϖ D.P.L hL _ _ _ _ _ _ _ _ _ _ (hQ (a + b)) (genHasVal_invGen D.P.L hL _ _ _ _ _ (hQ a))`. Establish `h2` using `genHasVal_mulGen hϖ D.P.L hL _ _ _ _ _ _ _ _ _ _ h1 (genHasVal_invGen D.P.L hL _ _ _ _ _ (hQ b))`. Establish `h3` using `genHasVal_mulGen hϖ D.P.L hL _ _ _ _ _ _ _ _ _ _ h2 (genHasVal_invGen D.P.L hL _ _ _ _ _ (rigK_val0 D))`. Establish `h4 : Q (a + b) + -Q a + -Q b + -0 = QForm.bOf D Q a b` using `by simp only [QForm.bOf]; ring`.
+
+Rewrite `h3` using `[h4]`. Conclude with `⟨_, _, by secTac, h3⟩`.
+-/
 theorem tau_val' (hQ : QForm.IsQ D ϖ Q) (a b : D.X) :
     ∃ (φ : _) (hφ : _), (∀ k, φ k ≫ D.P.A.hom = 𝟙 _) ∧
       GenHasVal ϖ D.P.L φ _ hφ _ (D.tau a b) (QForm.bOf D Q a b) := by
@@ -60,6 +74,11 @@ theorem tau_val' (hQ : QForm.IsQ D ϖ Q) (a b : D.X) :
 
 include hϖ in
 
+/- English proof (translation)
+Establish `hL` using `D.P.isLB`. Take `⟨_, _, hsA, hA⟩` from `tau_val' hϖ D hQ (a + a') b`. Take `⟨_, _, hsB, hB'⟩` from `tau_val' hϖ D hQ a b`. Take `⟨_, _, hsC, hC⟩` from `tau_val' hϖ D hQ a' b`. Establish `hcub` using `genHasVal_pullGen_of (ϖ := ϖ) D.P.L _ _ D.cub.t D.cub.isGen (lift (D.c a) (lift (D.c a') (D.c b))).left (D.pt3 a a' b) (by simp [DegPre.pt3, ← CartesianMonoidalCategory.comp_lift])`.
+
+Establish `h1` using `genHasVal_mulGen hϖ D.P.L hL _ _ _ _ _ _ _ _ _ _ hA hcub`. Establish `h2` using `genHasVal_mulGen hϖ D.P.L hL _ _ _ _ _ _ _ _ _ _ hB' hC`. Use `genHasVal_unique hϖ D.P.L hL _ _ _ _ _ (genHasVal_corr hϖ D.P.L hL D.P.A.hom _ _ _ _ _ _ _ _ (QForm.sumElim_sec hsA (fun _ => QForm.over_sec _ _)) (QForm.sumElim_sec hsB hsC) _ _ (genHasVal_isGen D.P.L _ _ _ _ _ h2) (hB a a' b) h1) h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem bOf_add_left' (hB : D.TauBimult) (hQ : QForm.IsQ D ϖ Q) (a a' b : D.X) :
     QForm.bOf D Q (a + a') b = QForm.bOf D Q a b + QForm.bOf D Q a' b := by
   have hL := D.P.isLB
@@ -79,6 +98,9 @@ theorem bOf_add_left' (hB : D.TauBimult) (hQ : QForm.IsQ D ϖ Q) (a a' b : D.X) 
 
 include hϖ in
 
+/- English proof (translation)
+Establish `hL` using `D.P.isLB`. Establish `hsym` using `genHasVal_pullGen_of (ϖ := ϖ) D.P.L _ _ D.sym D.sym_gen (D.c χ).left (D.xK χ) (QForm.ptK_eq D χ)`. Establish `h1` using `genHasVal_mulGen hϖ D.P.L hL _ _ _ _ _ _ _ _ _ _ (hQ (-χ)) hsym`. Use `qVal_unique hϖ D (genHasVal_corr hϖ D.P.L hL D.P.A.hom _ _ _ _ _ _ _ _ (by secTac) (by secTac) _ _ (D.psi_gen χ) (hE χ) h1) (hQ χ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Q_neg' (hE : D.PsiEven) (hQ : QForm.IsQ D ϖ Q) (χ : D.X) : Q (-χ) = Q χ := by
   have hL := D.P.isLB
   have hsym := genHasVal_pullGen_of (ϖ := ϖ) D.P.L _ _ D.sym D.sym_gen (D.c χ).left (D.xK χ)
@@ -90,16 +112,27 @@ theorem Q_neg' (hE : D.PsiEven) (hQ : QForm.IsQ D ϖ Q) (χ : D.X) : Q (-χ) = Q
 
 include hϖ in
 
+/- English proof (translation)
+Establish `h` using `bOf_add_left' hϖ D hB hQ 0 0 0`. Simplify using `only [QForm.bOf, add_zero] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Q_zero' (hB : D.TauBimult) (hQ : QForm.IsQ D ϖ Q) : Q 0 = 0 := by
   have h := bOf_add_left' hϖ D hB hQ 0 0 0
   simp only [QForm.bOf, add_zero] at h
   linarith
 
+/- English proof (translation)
+Simplify using `only [QForm.bOf, add_comm χ χ']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bOf_comm' (χ χ' : D.X) : QForm.bOf D Q χ χ' = QForm.bOf D Q χ' χ := by
   simp only [QForm.bOf, add_comm χ χ']; ring
 
 include hϖ in
 
+/- English proof (translation)
+Establish `h0` using `Q_zero' hϖ D hB hQ`. Establish `hn` using `Q_neg' hϖ D hE hQ χ`. Establish `hadd` using `bOf_add_left' hϖ D hB hQ χ (-χ) χ`. Establish `hc` using `bOf_comm' D (Q := Q) χ (-χ)`. Simplify using `only [QForm.bOf, add_neg_cancel, neg_add_cancel, zero_add, h0, hn] at hadd hc ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem two_Q_eq' (hB : D.TauBimult) (hE : D.PsiEven) (hQ : QForm.IsQ D ϖ Q) (χ : D.X) :
     2 * Q χ = QForm.bOf D Q χ χ := by
   have h0 := Q_zero' hϖ D hB hQ
@@ -111,6 +144,13 @@ theorem two_Q_eq' (hB : D.TauBimult) (hE : D.PsiEven) (hQ : QForm.IsQ D ϖ Q) (�
 
 end Form
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `h`. Establish `hinj` using `IsFractionRing.injective V (FractionRing V)`. Break down `le_or_gt 0 n with hn | hn` into its components or cases. Use `⟨hn, ?_⟩ lift n to ℕ using hn` and prove the remaining obligations. Rewrite `hv` using `[zpow_natCast, ← map_pow, ← map_mul]`.
+
+Rewrite using `[Int.toNat_natCast]`. Conclude with `Associated.symm (⟨v, (hinj hv).symm⟩ : Associated (ϖ ^ n) a)`. It suffices to derive a contradiction. Take `⟨k, rfl⟩ : ∃ k : ℕ, n = -((k + 1 : ℕ) : ℤ)` from `⟨(-n - 1).toNat, by omega⟩`. Establish `hϖ0 : algebraMap V (FractionRing V) ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`.
+
+Establish `h2 : algebraMap V (FractionRing V) (a * ϖ ^ (k + 1)) = algebraMap V (FractionRing V) v`. Rewrite using `[map_mul, map_pow, hv, zpow_neg, zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Establish `h3 : a * ϖ ^ (k + 1) = v` using `hinj h2`. Conclude with `hϖ.not_isUnit (isUnit_of_dvd_unit (h3 ▸ dvd_mul_of_dvd_right (dvd_pow_self ϖ (Nat.succ_ne_zero k)) a) v.isUnit)`.
+-/
 theorem assoc_of_hasVal {V : Type} [CommRing V] [IsDomain V] {ϖ : V} (hϖ : Irreducible ϖ) {a : V} {n : ℤ}
     (h : HasVal ϖ (algebraMap V (FractionRing V) a) n) : 0 ≤ n ∧ Associated a (ϖ ^ n.toNat) := by
   obtain ⟨v, hv⟩ := h
@@ -131,6 +171,19 @@ theorem assoc_of_hasVal {V : Type} [CommRing V] [IsDomain V] {ϖ : V} (hϖ : Irr
     exact hϖ.not_isUnit (isUnit_of_dvd_unit
       (h3 ▸ dvd_mul_of_dvd_right (dvd_pow_self ϖ (Nat.succ_ne_zero k)) a) v.isUnit)
 
+/- English proof (translation)
+Introduce `R _ _ _ _ hR Dg W _ _ _ f hf ϖ hϖ`. Take `⟨W₀, hW₀, hψ⟩` from `GlobalTheory.PsiSpread.exists_psiOn Dg.toPre Dg.tau_bimult`. Establish `hη : (specOf f).base (genericPoint (Spec (CommRingCat.of W))) ∈ W₀`. Establish `: (specOf f).base (genericPoint (Spec (CommRingCat.of W))) = genericPoint (Spec (CommRingCat.of R))`. Rewrite using `[genericPoint_eq_bot_of_affine, genericPoint_eq_bot_of_affine]`.
+
+Conclude with `PrimeSpectrum.ext (Ideal.comap_bot_of_injective f hf)`. Rewrite using `[this]`. Conclude with `hW₀`. Take `⟨D', hD, -, -⟩` from `GlobalTheory.StrictPull.exists_isPullDeg_strict GlobalTheory.allSixLaws.1 R W f Dg.toPre W₀ hψ hη`. Establish `hB : D'.TauBimult` using `GlobalTheory.TauPull.tauBimult_pull GlobalTheory.globalFns_holds hD Dg.tau_bimult`.
+
+Establish `hE : D'.PsiEven` using `GlobalTheory.PsiEvenPull.psiEven_pull GlobalTheory.globalFns_holds R W f Dg.toPre D' hD Dg.psi_even`. Use `choose Q hQ using qVal_exists hϖ D'`. Establish `hQ' : QForm.IsQ D' ϖ Q` using `hQ`. Set `B : D'.X →+ D'.X →+ ℤ` to `AddMonoidHom.mk' (fun a => AddMonoidHom.mk' (fun b => QForm.bOf D' Q a b) (fun b b' => by`. Rewrite using `[bOf_comm' D' (Q := Q) a (b + b'), bOf_add_left' hϖ D' hB hQ', bOf_comm' D' (Q := Q) b a, bOf_comm' D' (Q := Q) b' a]))`.
+
+Use the proof step `(fun a a' => by ext b; simp [bOf_add_left' hϖ D' hB hQ'])`. Establish `hBa : ∀ a b, B a b = QForm.bOf D' Q a b` using `fun _ _ => rfl`. Set `be : LinearMap.BilinForm ℤ Dg.toPre.X` to `LinearMap.mk₂ ℤ (fun y z => B (hD.xe.symm y) (hD.xe.symm z)) (fun y y' z => by simp only [map_add, AddMonoidHom.add_apply]) (fun c y z => by simp only [map_zsmul, AddMonoidHom.smul_apply, smul_eq_mul]) (fun y z z' => by simp only [map_add]) (fun c y z => by simp only [map_zsmul, …`. Establish `hbe : ∀ y z, be y z = QForm.bOf D' Q (hD.xe.symm y) (hD.xe.symm z)` using `fun _ _ => rfl`. Use `⟨be, fun y z => by rw [hbe, hbe, bOf_comm'], fun y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨r, hr, -⟩` from `(GlobalTheory.PsiCoordLocal.main R Dg hR y).1`. Establish `hr' : Formalism.L2.Pj.PsiCoord Dg.toPre (hD.xe (hD.xe.symm y)) r` using `by rw [AddEquiv.apply_symm_apply]; exact hr`. Take `⟨u, hu⟩` from `GlobalTheory.PelCoordPull.psiCoord_pull hD (hD.xe.symm y) r hr'`. Take `⟨h0, hassoc⟩` from `assoc_of_hasVal hϖ (GlobalTheory.ValForm.hasVal_coord (hQ (hD.xe.symm y)) hu)`. Use `⟨r, (Q (hD.xe.symm y)).toNat, hr, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hbe, ← two_Q_eq' hϖ D' hB hE hQ', Int.toNat_of_nonneg h0]`. Conclude with `(associated_unit_mul_left (f r) (u : W) u.isUnit).symm.trans hassoc`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CharZero R], IsIntegrallyClosed R →
     ∀ (Dg : DegData R (maximalIdeal R)) (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (f : R →+* W),
     Function.Injective f → ∀ ϖ : W, Irreducible ϖ →

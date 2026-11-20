@@ -22,6 +22,9 @@ open Formalism.L2.Th1.CM (omegaK)
 
 namespace GramFrameCompositionTwoFacts
 
+/- English proof (translation)
+Rewrite using `[omegaK, map_div₀, map_add, map_one, map_mul, Complex.conj_I, Complex.conj_ofReal, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_omegaK (d : ℕ) : conj (omegaK d) = (1 - Complex.I * ((Real.sqrt d : ℝ) : ℂ)) / 2 := by
   rw [omegaK, map_div₀, map_add, map_one, map_mul, Complex.conj_I, Complex.conj_ofReal, map_ofNat]
   ring
@@ -31,6 +34,11 @@ end GramFrameCompositionTwoFacts
 open GramFrameCompositionTwoFacts
 
 open Formalism.L2.Th1.G JL Formalism.G in
+/- English proof (translation)
+Introduce `K _ _ _ n _ T γ hT ν _ M Cm hC hM`. Establish `k1 : JetsIn (unitBall K) (linSub γ (Formalism.L2.Th1.G.tens4 T))` using `(jets_in_norm_holds K _ _).1 hT`. Establish `k2 : JetsIn (unitBall K) (linSub Cm (linSub γ (Formalism.L2.Th1.G.tens4 T)))` using `jetsIn_linSub hC k1`. Establish `e : (fun (w : Fin 4 × n) (x : Fin 4 × ν) => ∑ w', γ w w' * Cm w' x) = four M`. Use function extensionality and compare the values at `w x`.
+
+Conclude with `hM w.1 w.2 x.1 x.2`. Rewrite `k2` using `[linSub_linSub, e, linSub_tens4]`. Conclude with `jets_fourth_holds K (unitBall K) ν (linSub M T) fourth_root_mem k2`.
+-/
 theorem JetsLinZ_proof : JetsLinZ := by
   intro K _ _ _ n _ T γ hT ν _ M Cm hC hM
   have k1 : JetsIn (unitBall K) (linSub γ (Formalism.L2.Th1.G.tens4 T)) := (jets_in_norm_holds K _ _).1 hT

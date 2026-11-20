@@ -15,6 +15,23 @@ open scoped Matrix WithZero
 
 namespace GlobalTheory.LocalQuad
 
+/- English proof (translation)
+Take `⟨x, -, ⟨k, hk⟩, hx⟩` from `exists_unit_valued_ternary_lt_one F v (Matrix.diagonal a) (by`. Introduce `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[ha]`.
+
+Simplify using `[Matrix.diagonal_apply_ne _ h])`. Establish `e : ∑ i, ∑ j, Matrix.diagonal a i j * x i * x j = ∑ i, a i * x i ^ 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [Matrix.diagonal_apply_ne _ hj.symm]) (by simp)]`. Simplify using `[sq, mul_assoc]`.
+
+Rewrite `hx` using `[e]`. Use `set q := ∑ i, a i * x i ^ 2 with hq`. Establish `hu : Valued.v (a k * x k ^ 2) = 1` using `by simp [ha, hk]`. Establish `hu0 : a k * x k ^ 2 ≠ 0`. Introduce `h`.
+
+Rewrite `hu` using `[h]`. Simplify using `at hu`. Establish `h4 : Valued.v (4 : v.adicCompletion F) = 1`. Rewrite using `[show (4 : v.adicCompletion F) = 2 * 2 by norm_num, map_mul, h2, mul_one]`. Establish `hlt : Valued.v (1 - q / (a k * x k ^ 2) - 1) < 1`.
+
+Rewrite using `[sub_sub_cancel_left, Valuation.map_neg, map_div₀, hu, div_one]`. Conclude with `hx`. Take `⟨s, hs⟩` from `isSquare_of_valued_sub_one_lt F v (1 - q / (a k * x k ^ 2)) (by rwa [h4])`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hlt` using `[hs]`. Simplify using `at hlt`. Establish `hxk : x k ≠ 0`. Introduce `h`. Rewrite `hk` using `[h]`.
+
+Simplify using `at hk`. Use `⟨Function.update x k (x k * s), fun hc => ?_, ?_⟩` and prove the remaining obligations. Use `congrFun hc k` as an intermediate fact. Simplify using `[hs0, hxk] at this`. Establish `h1 : a k * x k ^ 2 * (s * s) = a k * x k ^ 2 - q`.
+
+Rewrite using `[← hs, mul_sub, mul_one, mul_div_cancel₀ _ hu0]`. Rewrite `hq`, the goal using `[← Finset.add_sum_erase _ _ (Finset.mem_univ k)]`. Rewrite using `[Finset.sum_congr rfl (g := fun i => a i * x i ^ 2) (fun i hi => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hi)]), Function.update_self]`. Take the linear combination `h1 - hq`.
+-/
 theorem isotropic_ternary_of_units (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (h2 : Valued.v (2 : v.adicCompletion F) = 1)
     (a : Fin 3 → v.adicCompletion F) (ha : ∀ i, Valued.v (a i) = 1) :
@@ -55,6 +72,9 @@ theorem isotropic_ternary_of_units (F : Type) [Field F] [NumberField F]
       (fun i hi => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hi)]), Function.update_self]
     linear_combination h1 - hq
 
+/- English proof (translation)
+Use `haveI : CharZero (v.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective`. Take `⟨e⟩ : Nonempty (Fin 5 ↪ ι)` from `Function.Embedding.nonempty_of_card_le (by simpa using hι)`. Conclude with `isotropic_of_injective e e.injective (exists_zero_five_of_valuation two_ne_zero Valued.v (v.valuedAdicCompletion_surjective F) (isSquare_of_valued_sub_one_lt F v) (exists_unit_valued_ternary_lt_one F v) _)`.
+-/
 theorem isotropic_adicCompletion_of_five_le (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) {ι : Type*} [Fintype ι] (hι : 5 ≤ Fintype.card ι)
     (a : ι → v.adicCompletion F) :
@@ -67,6 +87,11 @@ theorem isotropic_adicCompletion_of_five_le (F : Type) [Field F] [NumberField F]
     (exists_zero_five_of_valuation two_ne_zero Valued.v (v.valuedAdicCompletion_surjective F)
       (isSquare_of_valued_sub_one_lt F v) (exists_unit_valued_ternary_lt_one F v) _)
 
+/- English proof (translation)
+Use `H L _ _ (by simpa using hα) (by simpa using hβ) (fun σ => ?_) (fun w => ?_)` and prove the remaining obligations. Take `⟨x, y, z, t, h0, h⟩` from `hr (σ.comp (algebraMap F L))`. Conclude with `exists_norm_of_quaternary (s := σ s) (γ := σ (algebraMap F L γ)) (by simpa using hα) (by simpa using hβ) (by simpa using hγ) (by rw [← map_pow, hs]; simp) h0 h`. Use `haveI : CharZero (w.adicCompletion L) := charZero_of_injective_algebraMap (algebraMap L (w.adicCompletion L)).injective`. Take `⟨v, φ, hφ⟩` from `exists_ringHom_adicCompletion F L w`.
+
+Take `⟨x, y, z, t, h0, h⟩` from `hf v`. Use `exists_norm_of_quaternary (s := algebraMap L _ s) (γ := algebraMap L _ (algebraMap F L γ)) (x := φ x) (y := φ y) (z := φ z) (t := φ t) (by simpa using hα) (by simpa using hβ) (by simpa using hγ) (by rw [← map_pow, hs]; simp only [map_mul]) (by simpa using h0) ?_` and prove the remaining obligations. Use `congrArg φ h` as an intermediate fact. Simplify `this` using `only [map_add, map_sub, map_mul, map_pow, hφ, map_zero]`.
+-/
 theorem exists_norm_over_extension (H : GlobalTheory.Published.HasseNormSt) (F : Type) [Field F] [NumberField F]
     (L : Type) [Field L] [NumberField L] [Algebra F L] {α β γ : F} (hα : α ≠ 0) (hβ : β ≠ 0)
     (hγ : γ ≠ 0) {s : L} (hs : s ^ 2 = algebraMap F L (α * β * γ))
@@ -91,6 +116,17 @@ theorem exists_norm_over_extension (H : GlobalTheory.Published.HasseNormSt) (F :
     have := congrArg φ h
     simpa only [map_add, map_sub, map_mul, map_pow, hφ, map_zero] using this
 
+/- English proof (translation)
+Rewrite using `[isotropic_four_iff (ha 0)]`. Establish `hα : -(a 0 * a 1) ≠ 0` using `by simp [ha]`. Establish `hβ : -(a 0 * a 2) ≠ 0` using `by simp [ha]`. Establish `hγ : a 0 * a 3 ≠ 0` using `by simp [ha]`. Establish `hr'` using `fun σ : F →+* ℝ => (isotropic_four_iff (a := fun i => σ (a i)) (by simpa using ha 0)).1 (hr σ)`.
+
+Establish `hf'` using `fun v : HeightOneSpectrum (𝓞 F) => (isotropic_four_iff (a := fun i => algebraMap F (v.adicCompletion F) (a i)) (by simpa using ha 0)).1 (hf v)`. Simplify using `only [← map_mul, ← map_neg] at hr' hf'`. Generalize the expression as in `-(a 0 * a 1) = α at *`. Generalize the expression as in `-(a 0 * a 2) = β at *`. Generalize the expression as in `a 0 * a 3 = γ at *`.
+
+Distinguish the cases in `hs : IsSquare (α * β * γ)`. Take `⟨s, hs⟩` from `hs`. Take `⟨X, Y, h⟩` from `exists_norm_over_extension H F F hα hβ hγ (s := s) (by rw [hs, sq]; rfl) hr' hf'`. Use `⟨X, Y, 1, 0, by simp, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `β = X ^ 2 - α * Y ^ 2 at h`.
+
+Take the linear combination `-h`. Establish `: Fact (∀ r : F, r ^ 2 ≠ α * β * γ + 0 * r)` using `⟨fun r h => hs ⟨r, by linear_combination -h⟩⟩`. Set `L` to `QuadraticAlgebra F (α * β * γ) 0`. Establish `: NumberField L` using `NumberField.of_module_finite F L`. Apply the tactic sequence `obtain ⟨X, Y, h⟩ := exists_norm_over_extension H F L hα hβ hγ (s := ⟨0, 1⟩) (by ext <;> simp [sq, L]) hr' hf'`.
+
+Establish `h1` using `congrArg QuadraticAlgebra.re h`. Establish `h2` using `congrArg QuadraticAlgebra.im h`. Simplify using `[sq, L] at h1 h2`. Use `exists_quaternary_of_coordinates hα hβ (X₀ := X.re) (X₁ := X.im) (Y₀ := Y.re) (Y₁ := Y.im) (by linear_combination h1) ?_` and prove the remaining obligations. Take the linear combination `(-1 / 2 : F) * h2`.
+-/
 theorem isotropic_four (H : GlobalTheory.Published.HasseNormSt) (F : Type) [Field F] [NumberField F]
     (a : Fin 4 → F) (ha : ∀ i, a i ≠ 0)
     (hr : ∀ σ : F →+* ℝ, ∃ x : Fin 4 → ℝ, x ≠ 0 ∧ ∑ i, σ (a i) * x i ^ 2 = 0)
@@ -134,6 +170,25 @@ end GlobalTheory.LocalQuad
 
 namespace GlobalTheory.LocalQuad
 
+/- English proof (translation)
+Establish `hd` using `(denseRange_finite_real F T).prodMap (denseRange_finite_real F T)`. Establish `h4 : ∀ v : T, Valued.v (4 : v.1.adicCompletion F) ≠ 0`. Introduce `v`. Use `haveI : CharZero (v.1.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F (v.1.adicCompletion F)).injective`. Simplify using the standard rewrite rules.
+
+Establish `h41 : ∀ v : T, Valued.v (4 : v.1.adicCompletion F) ≤ 1`. Introduce `v`. Establish `h2 : Valued.v (1 + 1 : v.1.adicCompletion F) ≤ 1` using `Valuation.map_add_le _ (by simp) (by simp)`. Rewrite using `[show (4 : v.1.adicCompletion F) = (1 + 1) * (1 + 1) by norm_num, map_mul]`. Conclude with `mul_le_one' h2 h2`.
+
+Set `U : Set ((((v : T) → v.1.adicCompletion F) × ((F →+* ℝ) → ℝ)) × (((v : T) → v.1.adicCompletion F) × ((F →+* ℝ) → ℝ)))` to `(⋂ v : T, {z | Valued.v ((algebraMap F _ a * z.1.1 v ^ 2 + algebraMap F _ a' * z.2.1 v ^ 2) / (algebraMap F _ a * p v ^ 2 + algebraMap F _ a' * q v ^ 2) - 1) < Valued.v (4 : v.1.adicCompletion F)}) ∩ ⋂ σ : F →+* ℝ, {z | 0 < (σ a * z.1.2 σ ^ 2 + σ a' * z.2.2 σ ^ 2) / (σ a * p' σ ^ …`. Establish `hU : IsOpen U`. Use `IsOpen.inter (isOpen_iInter_of_finite fun v => ?_) (isOpen_iInter_of_finite fun σ => ?_)` and prove the remaining obligations. Establish `ho : IsOpen {u : v.1.adicCompletion F | Valued.v u < Valued.v (4 : v.1.adicCompletion F)}`. Use `Valued.isOpen_ball (v.1.adicCompletion F) (Valued.v.restrict (4 : v.1.adicCompletion F))` as an intermediate fact.
+
+Simplify `this` using `only [Valuation.restrict_lt_iff]`. Conclude with `ho.preimage (f := fun z : (((v : T) → v.1.adicCompletion F) × ((F →+* ℝ) → ℝ)) ×`. Use the proof step `(((v : T) → v.1.adicCompletion F) × ((F →+* ℝ) → ℝ)) => (algebraMap F _ a * z.1.1 v ^ 2 + algebraMap F _ a' * z.2.1 v ^ 2) / (algebraMap F _ a * p v ^ 2 + algebraMap F _ a' * q v ^ 2) - 1) (by fun_prop)`. Conclude with `isOpen_lt continuous_const (by fun_prop)`. Take `⟨⟨x, y⟩, hT, hR⟩` from `hd.exists_mem_open hU ⟨((p, p'), (q, q')), by`.
+
+Use `⟨Set.mem_iInter.2 fun v => ?_, Set.mem_iInter.2 fun σ => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[div_self (hpq v), sub_self, map_zero]`. Conclude with `zero_lt_iff.2 (h4 v)`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Rewrite using `[div_self (hpq' σ)]`. Conclude with `one_pos⟩`. Use `replace hT : ∀ v : T, Valued.v (algebraMap F (v.1.adicCompletion F) (a * x ^ 2 + a' * y ^ 2) / (algebraMap F _ a * p v ^ 2 + algebraMap F _ a' * q v ^ 2) - 1) < Valued.v (4 : v.1.adicCompletion F) := by`. Introduce `v`. Simplify using `only [map_add, map_mul, map_pow]`.
+
+Conclude with `Set.mem_iInter.1 hT v`. Use `replace hR : ∀ σ : F →+* ℝ, 0 < σ (a * x ^ 2 + a' * y ^ 2) / (σ a * p' σ ^ 2 + σ a' * q' σ ^ 2) := by`. Introduce `σ`. Simplify using `only [map_add, map_mul, map_pow]`. Conclude with `Set.mem_iInter.1 hR σ`.
+
+Distinguish the cases in `h0 : a * x ^ 2 + a' * y ^ 2 = 0`. Use `⟨1, 0, by simpa using ha, fun v => ?_, fun σ => ?_⟩` and prove the remaining obligations. Use `(hT v).trans_le (h41 v)` as an intermediate fact. Simplify using `[h0] at this`. Use `hR σ` as an intermediate fact.
+
+Simplify using `[h0] at this`. Conclude with `⟨x, y, h0, fun v => isSquare_of_valued_sub_one_lt F v _ (hT v), fun σ => Real.isSquare_iff.2 (hR σ).le⟩`.
+-/
 theorem exists_value_isSquare_div (F : Type) [Field F] [NumberField F] {a a' : F} (ha : a ≠ 0)
     (T : Finset (HeightOneSpectrum (𝓞 F))) (p q : (v : T) → v.1.adicCompletion F)
     (hpq : ∀ v, algebraMap F _ a * p v ^ 2 + algebraMap F _ a' * q v ^ 2 ≠ 0)
@@ -198,6 +253,9 @@ theorem exists_value_isSquare_div (F : Type) [Field F] [NumberField F] {a a' : F
   · exact ⟨x, y, h0, fun v => isSquare_of_valued_sub_one_lt F v _ (hT v),
       fun σ => Real.isSquare_iff.2 (hR σ).le⟩
 
+/- English proof (translation)
+Establish `h` using `(FinitePlace.hasFiniteMulSupport hc).preimage (f := FinitePlace.equivHeightOneSpectrum.symm) (FinitePlace.equivHeightOneSpectrum (K := F)).symm.injective.injOn`. Use `h.subset fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Function.mem_mulSupport, FinitePlace.equivHeightOneSpectrum_symm_apply]`. Introduce `h1`. Conclude with `hv (le_antisymm (Valued.toNormedField.norm_le_one_iff.1 h1.le) (Valued.toNormedField.one_le_norm_iff.1 h1.ge))`.
+-/
 theorem finite_setOf_valued_ne_one (F : Type) [Field F] [NumberField F] {c : F} (hc : c ≠ 0) :
     {v : HeightOneSpectrum (𝓞 F) |
       Valued.v (algebraMap F (v.adicCompletion F) c) ≠ 1}.Finite := by
@@ -211,6 +269,23 @@ theorem finite_setOf_valued_ne_one (F : Type) [Field F] [NumberField F] {c : F} 
   exact hv (le_antisymm (Valued.toNormedField.norm_le_one_iff.1 h1.le)
     (Valued.toNormedField.one_le_norm_iff.1 h1.ge))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact isotropic_four H F a ha hr hf`. Consider the case `succ n ih => classical`. Establish `split : ∀ (k : Type) [Field k] (φ : F →+* k), (∃ x : Fin (n + 1 + 4) → k, x ≠ 0 ∧ ∑ i, φ (a i) * x i ^ 2 = 0) → ∃ x y : k, φ (a 0) * x ^ 2 + φ (a 1) * y ^ 2 ≠ 0 ∧ ∀ μ : F, IsSquare (φ μ / (φ (a 0) * x ^ 2 + φ (a 1) * y ^ 2)) → ∃ x : Fin (n + 4) → k, x ≠ 0 ∧ ∑ i, φ ((Fin.cons μ fu …`. Introduce and unpack `k _ φ ⟨x, hx, h⟩`.
+
+Use `haveI : CharZero k := (RingHom.charZero_iff φ.injective).1 inferInstance`. Rewrite `h` using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Take `⟨X, Y, hXY, H⟩` from `exists_value_isotropic (a := φ (a 0)) (a' := φ (a 1)) (b := fun j : Fin (n + 2 + 1) => φ (a j.succ.succ)) (by simpa using ha 0) (by simpa using ha 1) (by simpa using ha _) (x := x 0) (y := x 1) (z := fun j => x j.succ.succ) (by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `Fin.cases hc.1 (fun j => Fin.cases hc.2.1 (fun l => congrFun hc.2.2 l) j) i) h` and prove the remaining obligations. Use `⟨X, Y, hXY, fun μ hμ => ?_⟩` and prove the remaining obligations. Use `(isotropic_succ_iff (n := n + 3)).2 ?_` and prove the remaining obligations.
+
+Simplify using `using H _ hμ`. Set `e : Fin 3 → Fin (n + 3)` to `Fin.natAdd n`. Establish `hT` using `(finite_setOf_valued_ne_one F (two_ne_zero (α := F))).union (Set.finite_iUnion fun i : Fin 3 => finite_setOf_valued_ne_one F (ha (e i).succ.succ))`. Use `choose p q hpq hp using fun v : hT.toFinset => split _ _ (hf v.1)`. Use `choose p' q' hpq' hp' using fun σ : F →+* ℝ => split _ _ (hr σ)`.
+
+Take `⟨x, y, h0, h1, h2⟩` from `exists_value_isSquare_div F (a' := a 1) (ha 0) _ p q hpq p' q' hpq'`. Take `⟨t, z, hz0, hz⟩` from `(isotropic_succ_iff (n := n + 3)).1 (ih (Fin.cons (a 0 * x ^ 2 + a 1 * y ^ 2) fun j : Fin (n + 3) => a j.succ.succ) (fun i => Fin.cases h0 (fun j => ha _) i) (fun σ => hp' σ _ (h2 σ)) (fun v => by`. Distinguish the cases in `hv : v ∈ hT.toFinset`. Conclude with `hp ⟨v, hv⟩ _ (h1 ⟨v, hv⟩)`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_union, Set.mem_setOf_eq, Set.mem_iUnion, not_or, not_exists, not_not] at hv`.
+
+Use `isotropic_of_injective (fun i => (e i).succ) ((Fin.succ_injective _).comp (Fin.natAdd_injective _ _)) ?_` and prove the remaining obligations. Conclude with `isotropic_ternary_of_units F v (by simpa only [map_ofNat] using hv.1) _ hv.2))`. Simplify using `only [Fin.cons_zero, Fin.cons_succ] at hz`. Use `(isotropic_succ_iff (n := n + 4)).2 ⟨x * t, Fin.cons (y * t) z, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc push Not at hc`.
+
+Take `⟨hx, hy⟩` from `hc`. Establish `hy0 : y * t = 0` using `by simpa using congrFun hy 0`. Break down `hz0 with ht | hz0` into its components or cases. Rewrite `hx`, `hy0` using `[mul_eq_zero_iff_right ht]`. Simplify using `[hx, hy0] at h0`.
+
+Conclude with `hz0 (funext fun i => by simpa using congrFun hy i.succ)`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, Fin.succ_zero_eq_one]`. Take the linear combination `hz`.
+-/
 theorem isotropic_add_four (H : GlobalTheory.Published.HasseNormSt) (F : Type) [Field F] [NumberField F] (n : ℕ)
     (a : Fin (n + 4) → F) (ha : ∀ i, a i ≠ 0)
     (hr : ∀ σ : F →+* ℝ, ∃ x : Fin (n + 4) → ℝ, x ≠ 0 ∧ ∑ i, σ (a i) * x i ^ 2 = 0)
@@ -273,6 +348,9 @@ theorem isotropic_add_four (H : GlobalTheory.Published.HasseNormSt) (F : Type) [
       simp only [Fin.cons_zero, Fin.cons_succ, Fin.succ_zero_eq_one]
       linear_combination hz
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `Nat.exists_eq_add_of_le' hι`. Set `e : ι ≃ Fin (n + 4)` to `Fintype.equivFinOfCardEq hn`. Use `isotropic_of_injective e.symm e.symm.injective (isotropic_add_four H F n _ (fun i => ha _) (fun σ => ?_) (fun v => ?_))` and prove the remaining obligations. Conclude with `isotropic_of_injective e e.injective (by simpa using hr σ)`. Conclude with `isotropic_of_injective e e.injective (by simpa only [e.symm_apply_apply] using hf v)`.
+-/
 theorem isotropic_of_locally_isotropic (H : GlobalTheory.Published.HasseNormSt) (F : Type) [Field F]
     [NumberField F] {ι : Type*} [Fintype ι] (hι : 4 ≤ Fintype.card ι) (a : ι → F)
     (ha : ∀ i, a i ≠ 0)
@@ -287,6 +365,9 @@ theorem isotropic_of_locally_isotropic (H : GlobalTheory.Published.HasseNormSt) 
   · exact isotropic_of_injective e e.injective (by simpa using hr σ)
   · exact isotropic_of_injective e e.injective (by simpa only [e.symm_apply_apply] using hf v)
 
+/- English proof (translation)
+The claim follows from `isotropic_of_locally_isotropic H F (by omega) a ha (fun σ => by obtain ⟨i, j, hi, hj⟩ := hr σ exact isotropic_real (a := fun i => σ (a i)) hi hj) (fun v => isotropic_adicCompletion_of_five_le F v hι _)`.
+-/
 theorem isotropic_of_indefinite (H : GlobalTheory.Published.HasseNormSt) (F : Type) [Field F] [NumberField F]
     {ι : Type*} [Fintype ι] (a : ι → F) (hι : 5 ≤ Fintype.card ι) (ha : ∀ i, a i ≠ 0)
     (hr : ∀ σ : F →+* ℝ, ∃ i j, σ (a i) < 0 ∧ 0 < σ (a j)) :
@@ -297,11 +378,17 @@ theorem isotropic_of_indefinite (H : GlobalTheory.Published.HasseNormSt) (F : Ty
       exact isotropic_real (a := fun i => σ (a i)) hi hj)
     (fun v => isotropic_adicCompletion_of_five_le F v hι _)
 
+/- English proof (translation)
+The claim follows from `landherr_of_isotropy fun F _ _ _ _ a hι ha hr => isotropic_of_indefinite H F a hι ha hr`.
+-/
 theorem landherr_of_hasseNormSt (H : GlobalTheory.Published.HasseNormSt) : GlobalTheory.Published.Landherr :=
   landherr_of_isotropy fun F _ _ _ _ a hι ha hr => isotropic_of_indefinite H F a hι ha hr
 
 universe u v w in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h2 c hc hF _ _ _ _ _ hG hG' hd hd' => exists_congr_iff_trace_forms_isometric h2 c hc hF hG hG' hd hd', fun H F _ _ _ _ hι a ha hr hf => isotropic_of_locally_isotropic H F hι a ha hr hf, landherr_of_hasseNormSt⟩`.
+-/
 theorem trace_forms_and_landherr :
     (∀ {F : Type u} {E : Type v} [Field F] [Field E] [Algebra F E], (2 : E) ≠ 0 →
       ∀ c : E →+* E, (∀ t, c (c t) = t) → (∀ t : E, c t = t ↔ ∃ s : F, algebraMap F E s = t) →

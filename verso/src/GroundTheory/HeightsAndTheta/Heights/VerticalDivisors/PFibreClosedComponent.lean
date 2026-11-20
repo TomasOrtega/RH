@@ -6,6 +6,43 @@ namespace GroundTheory.Heights₂.Heights.Vertical
 
 open MvPolynomial IsDedekindDomain
 
+/- English proof (translation)
+Introduce `O _ _ F _ _ _ n P W v hP hPO hW hWmax`. Use `hP` as an intermediate fact. Establish `: W.IsPrime` using `hW.1.1`. Use `set mk : MvPolynomial (Fin n) O →+* MvPolynomial (Fin n) O ⧸ P := Ideal.Quotient.mk P with hmk_def`. Establish `hmk : Function.Surjective mk` using `Ideal.Quotient.mk_surjective`.
+
+Establish `hPW : P ≤ W` using `le_sup_left.trans hW.1.2`. Establish `hvW : Ideal.map (C : O →+* MvPolynomial (Fin n) O) v.asIdeal ≤ W` using `le_sup_right.trans hW.1.2`. Establish `hker : RingHom.ker mk = P` using `Ideal.mk_ker`. Establish `hQprime : (W.map mk).IsPrime` using `Ideal.map_isPrime_of_surjective hmk (by rw [hker]; exact hPW)`. Set `Q : PrimeSpectrum (MvPolynomial (Fin n) O ⧸ P)` to `⟨W.map mk, hQprime⟩`.
+
+Establish `hcomapQ : (W.map mk).comap mk = W`. Rewrite using `[Ideal.comap_map_of_surjective _ hmk, ← RingHom.ker_eq_comap_bot, hker, sup_eq_left.mpr hPW]`. Establish `halg : algebraMap O (MvPolynomial (Fin n) O ⧸ P) = mk.comp C`. Conclude with `RingHom.ext fun _ => rfl`. Establish `hfin` using `Ideal.finite_minimalPrimes_of_isNoetherianRing (MvPolynomial (Fin n) O) (P ⊔ Ideal.map (C : O →+* MvPolynomial (Fin n) O) v.asIdeal)`.
+
+Set `U : Set (PrimeSpectrum (MvPolynomial (Fin n) O ⧸ P))` to `{q | ∀ W' ∈ (P ⊔ Ideal.map (C : O →+* MvPolynomial (Fin n) O) v.asIdeal).minimalPrimes, W' ≠ W → ¬ W' ≤ q.asIdeal.comap mk}`. Establish `hU : IsOpen U`. Establish `hUc : Uᶜ = ⋃ W' ∈ {W' | W' ∈ (P ⊔ Ideal.map (C : O →+* MvPolynomial (Fin n) O) v.asIdeal).minimalPrimes ∧ W' ≠ W}, PrimeSpectrum.zeroLocus ((W'.map mk : Ideal (MvPolynomial (Fin n) O ⧸ P)) : Set _)`. Use extensionality with `q`. Simplify using `only [U, Set.mem_compl_iff, Set.mem_ofPred_eq, not_forall, not_not, Set.mem_iUnion, PrimeSpectrum.mem_zeroLocus, SetLike.coe_subset_coe, Ideal.map_le_iff_le_comap, exists_prop, and_assoc]`.
+
+Rewrite using `[← isClosed_compl_iff, hUc]`. Conclude with `Set.Finite.isClosed_biUnion (hfin.subset fun _ h => h.1) fun _ _ => PrimeSpectrum.isClosed_zeroLocus _`. Establish `hiso : IsOpen (X` using `PrimeSpectrum.comap (algebraMap O (MvPolynomial (Fin n) O ⧸ P)) ⁻¹' {Q.comap (algebraMap O (MvPolynomial (Fin n) O ⧸ P))}) {⟨Q, rfl⟩} := by`. Use `isOpen_induced_iff.mpr ⟨U, hU, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨q, hq⟩`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hqU`. Establish `hq' : q.asIdeal.comap (algebraMap O _) = Q.asIdeal.comap (algebraMap O _)` using `congrArg PrimeSpectrum.asIdeal hq`. Establish `hle : P ⊔ Ideal.map (C : O →+* MvPolynomial (Fin n) O) v.asIdeal ≤ q.asIdeal.comap mk`.
+
+Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `x hx show mk x ∈ q.asIdeal`. Rewrite using `[show mk x = 0 from Ideal.Quotient.eq_zero_iff_mem.mpr hx]`. Conclude with `q.asIdeal.zero_mem`. Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.comap_comap, ← halg, hq', halg, ← Ideal.comap_comap] show v.asIdeal ≤ ((W.map mk).comap mk).comap C`.
+
+Rewrite using `[hcomapQ, ← Ideal.map_le_iff_le_comap]`. Conclude with `hvW`. Take `⟨W'', hW'', hW''le⟩` from `Ideal.exists_minimalPrimes_le hle`. Establish `hW''W : W'' = W`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hqU W'' hW'' hne hW''le`. Rewrite `hW''le` using `[hW''W]`. Establish `heq : W = q.asIdeal.comap mk` using `hWmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) hW''le`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `q.asIdeal = W.map mk`. Rewrite using `[heq, Ideal.map_comap_of_surjective _ hmk]`. Introduce `h`. Take `rfl : q = Q` from `congrArg Subtype.val h`. Introduce `W' hW' hne hle`.
+
+Express the relevant statement in the definitionally equal form `W' ≤ (W.map mk).comap mk at hle`. Rewrite `hle` using `[hcomapQ]`. Conclude with `hne (le_antisymm hle (hW.2 hW'.1 hle))`. Establish `: Algebra.QuasiFiniteAt O Q.asIdeal` using `(Algebra.quasiFiniteAt_iff_isOpen_singleton_fiber Q).mpr hiso`. Take `⟨r, hrQ, hr, hm⟩` from `Algebra.zariskisMainProperty_iff.mp (Algebra.ZariskisMainProperty.of_finiteType (R := O) Q.asIdeal)`.
+
+Establish `hr0 : r ≠ 0` using `fun h => hrQ (h ▸ Q.asIdeal.zero_mem)`. Establish `hDalg : ∀ d : MvPolynomial (Fin n) O ⧸ P, IsAlgebraic O d`. Introduce `d`. Take `⟨m, hm⟩` from `hm d`. Conclude with `IsAlgebraic.of_mul (mem_nonZeroDivisors_of_ne_zero (pow_ne_zero m hr0)) (hr.pow m).isAlgebraic hm.isAlgebraic`.
+
+Establish `hIprime : (P.map (MvPolynomial.map (algebraMap O F) : MvPolynomial (Fin n) O →+* MvPolynomial (Fin n) F)).IsPrime`. Set `_` to `MvPolynomial.algebraMvPolynomial (σ := Fin n) (R := O) (S := F)`. Establish `hloc : IsLocalization ((nonZeroDivisors O).map (C : O →+* MvPolynomial (Fin n) O)) (MvPolynomial (Fin n) F)` using `MvPolynomial.isLocalization _ _`. Use `IsLocalization.isPrime_of_isPrime_disjoint ((nonZeroDivisors O).map (C : O →+* MvPolynomial (Fin n) O)) (MvPolynomial (Fin n) F) P hP ?_` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`.
+
+Introduce and unpack `x hx hxP`. Take `⟨c, hc, rfl⟩` from `Submonoid.mem_map.mp hx`. Establish `hcP : c ∈ P.comap (C : O →+* MvPolynomial (Fin n) O)` using `hxP`. Rewrite `hcP` using `[hPO, Ideal.mem_bot]`. Conclude with `nonZeroDivisors.ne_zero hc hcP`.
+
+Set `I` to `P.map (MvPolynomial.map (algebraMap O F) : MvPolynomial (Fin n) O →+* MvPolynomial (Fin n) F)`. Set `φ : (MvPolynomial (Fin n) O ⧸ P) →ₐ[O] (MvPolynomial (Fin n) F ⧸ I)` to `Ideal.quotientMapₐ I (MvPolynomial.mapAlgHom (Algebra.ofId O F)) Ideal.le_comap_map`. Establish `hX : ∀ i, IsIntegral F (Ideal.Quotient.mk I (X i))`. Introduce `i`. Establish `h : Ideal.Quotient.mk I (X i) = φ (Ideal.Quotient.mk P (X i))` using `by show _ = Ideal.Quotient.mk I (MvPolynomial.map (algebraMap O F) (X i))`.
+
+Rewrite using `[MvPolynomial.map_X]`. Rewrite using `[h]`. Conclude with `(((hDalg _).algHom φ).extendScalars (IsFractionRing.injective O F)).isIntegral`. Establish `hint : ∀ x : MvPolynomial (Fin n) F ⧸ I, IsIntegral F x`. Introduce `x`.
+
+Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => exact isIntegral_algebraMap`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `hp.add hq`.
+
+Consider the case `mul_X p i hp => rw [map_mul]`. Conclude with `hp.mul (hX i)`. Establish `: Algebra.IsIntegral F (MvPolynomial (Fin n) F ⧸ I)` using `⟨hint⟩`. Establish `hfield : IsField (MvPolynomial (Fin n) F ⧸ I)` using `(Algebra.IsIntegral.isField_iff_isField (algebraMap F _).injective).mp (Field.toIsField F)`. Conclude with `ringKrullDim_eq_zero_of_isField hfield`.
+-/
 theorem FibreClosedComponent.proof : FibreClosedComponent.Statement := by
   intro O _ _ F _ _ _ n P W v hP hPO hW hWmax
   classical

@@ -15,6 +15,13 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.CurveDens
 
+/- English proof (translation)
+Establish `key : part ρ ≤ (part ρ).restrict K` using `iSup_le fun c => by`. Establish `e : ChartGlue.chartMeas c.e (fun y => ENNReal.ofReal (ρ c y)) Kᶜ = 0`. Rewrite using `[ChartGlue.chartMeas_apply _ _ hK.compl]`. Use `setLIntegral_eq_zero (ChartGlue.measurableSet_image _ (c.e.open_source.measurableSet.inter hK.compl) Set.inter_subset_left) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Simplify using `only [c.e.left_inv hy.1]`. Conclude with `ENNReal.ofReal_eq_zero.2 (h c y hy.1 hy.2)`. Rewrite using `[← Measure.restrict_eq_self_of_ae_mem (s := K) (mem_ae_iff.2 e)]`. Conclude with `Measure.restrict_mono le_rfl (le_iSup (fun c : AlgChart p σ 1 => ChartGlue.chartMeas c.e fun y => ENNReal.ofReal (ρ c y)) c)`. Use `le_antisymm ((key Kᶜ).trans_eq ?_) bot_le` and prove the remaining obligations.
+
+Rewrite using `[Measure.restrict_apply hK.compl, Set.compl_inter_self, measure_empty]`.
+-/
 theorem part_compl_eq_zero {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
     {ρ : AlgChart p σ 1 → CxPts p σ → ℝ} {K : Set (CxPts p σ)} (hK : MeasurableSet K)
     (h : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, y ∉ K → ρ c y ≤ 0) : part ρ Kᶜ = 0 := by
@@ -32,6 +39,13 @@ theorem part_compl_eq_zero {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ S
   refine le_antisymm ((key Kᶜ).trans_eq ?_) bot_le
   rw [Measure.restrict_apply hK.compl, Set.compl_inter_self, measure_empty]
 
+/- English proof (translation)
+Establish `hint : ∀ w : ReciprocityTheory.L2DbarEstimates.V n, Integrable (fun y => fderiv ℝ F y w)` using `fun w => ((hF.continuous_fderiv (by norm_num)).clm_apply continuous_const).integrable_of_hasCompactSupport (hc.fderiv_apply (𝕜 := ℝ) w)`. Establish `hD : Integrable (fun v => dbar F v u)`. Simplify using `only [dbar_apply, smul_eq_mul]`. Conclude with `((hint _).add ((hint _).const_mul _)).const_mul _`. Use `⟨Complex.reCLM.integrable_comp hD, ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : ∫ v, dbar F v u = 0`. Simplify using `only [dbar_apply, smul_eq_mul]`. Rewrite using `[integral_const_mul, integral_add (hint _) ((hint _).const_mul _), integral_const_mul, ReciprocityTheory.L2DbarEstimates.integral_fderiv_apply_eq_zero n F hF hc, ReciprocityTheory.L2DbarEstimates.integral_fderiv_apply_eq_zero n F hF hc]`. Simplify using the standard rewrite rules. Use `Complex.reCLM.integral_comp_comm hD` as an intermediate fact.
+
+Simplify using `only [Complex.reCLM_apply] at this`. Rewrite using `[this, h0, Complex.zero_re]`.
+-/
 theorem integral_re_dbar_eq_zero {n : ℕ} {F : ReciprocityTheory.L2DbarEstimates.V n → ℂ} (hF : ContDiff ℝ 1 F)
     (hc : HasCompactSupport F) (u : ReciprocityTheory.L2DbarEstimates.V n) :
     Integrable (fun v => (dbar F v u).re) ∧ ∫ v, (dbar F v u).re = 0 := by
@@ -52,6 +66,29 @@ theorem integral_re_dbar_eq_zero {n : ℕ} {F : ReciprocityTheory.L2DbarEstimate
   simp only [Complex.reCLM_apply] at this
   rw [this, h0, Complex.zero_re]
 
+/- English proof (translation)
+Introduce `k _ X p σ _ _ m h1 h2 c₀ K hK hKs h3`. Use `set ρ : AlgChart p σ 1 → CxPts p σ → ℝ := fun c y => (dbar (fun v => m c (c.e.symm v)) (c.e y) (EuclideanSpace.single 0 1)).re with hρ`. Establish `hD : IsDens ρ` using `GlobalTheory.T.dbar_density_of_transition k X p σ m h1 h2`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `hz : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, y ∉ K → ρ c y = 0` using `fun c y hy hyK => by`.
+
+Establish `hW` using `ChartGlue.isOpen_over c.e hK.isClosed.isOpen_compl`. Establish `he : (fun v => m c (c.e.symm v)) =ᶠ[𝓝 (c.e y)] fun _ => 0` using `by filter_upwards [hW.mem_nhds (ChartGlue.mem_over c.e hy hyK)] with v hv`. Conclude with `h3 c _ (c.e.map_target hv.1) hv.2`. Simplify using `only [hρ]`. Rewrite using `[dbar_congr he, dbar_apply]`.
+
+Simplify using the standard rewrite rules. Use `set A : Set (ReciprocityTheory.L2DbarEstimates.V 1) := c₀.e '' K with hAdef`. Establish `hA : IsCompact A` using `hK.image_of_continuousOn (c₀.e.continuousOn.mono hKs)`. Establish `hAt : A ⊆ c₀.e.target`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Conclude with `c₀.e.map_source (hKs hy)`. Use `set F : ReciprocityTheory.L2DbarEstimates.V 1 → ℂ := c₀.e.target.indicator fun v => m c₀ (c₀.e.symm v) with hFdef`. Establish `hF0 : ∀ v ∉ A, F v = 0` using `fun v hv => by`. Distinguish the cases in `ht : v ∈ c₀.e.target`. Rewrite using `[hFdef, Set.indicator_of_mem ht]`.
+
+Use `h3 c₀ _ (c₀.e.map_target ht) fun hk => hv ⟨_, hk, c₀.e.right_inv ht⟩` and prove the remaining obligations. Rewrite using `[hFdef, Set.indicator_of_notMem ht]`. Establish `hFt : ∀ v ∈ c₀.e.target, F =ᶠ[𝓝 v] fun v => m c₀ (c₀.e.symm v)` using `fun v hv => by filter_upwards [c₀.e.open_target.mem_nhds hv] with w hw`. Rewrite using `[hFdef, Set.indicator_of_mem hw]`. Establish `hFA : ∀ v ∉ A, F =ᶠ[𝓝 v] fun _ => 0` using `fun v hv => by filter_upwards [hA.isClosed.isOpen_compl.mem_nhds hv] with w hw`.
+
+Conclude with `hF0 w hw`. Establish `hFC : ContDiff ℝ 1 F` using `contDiff_iff_contDiffAt.2 fun v => by`. Distinguish the cases in `ht : v ∈ c₀.e.target`. Use `h1 c₀ _ (c₀.e.map_target ht)` as an intermediate fact. Rewrite `this` using `[c₀.e.right_inv ht]`.
+
+Conclude with `this.congr_of_eventuallyEq (hFt v ht)`. Conclude with `contDiffAt_const.congr_of_eventuallyEq (hFA v fun h => ht (hAt h))`. Establish `hFs : HasCompactSupport F` using `HasCompactSupport.intro hA hF0`. Take `⟨hHi, hH0⟩` from `integral_re_dbar_eq_zero hFC hFs (EuclideanSpace.single 0 1)`. Use `set H : ReciprocityTheory.L2DbarEstimates.V 1 → ℝ := fun v => (dbar F v (EuclideanSpace.single 0 1)).re with hHdef`.
+
+Establish `hHA : ∀ v ∉ A, H v = 0` using `fun v hv => by`. Simplify using `only [hHdef]`. Rewrite using `[dbar_congr (hFA v hv), dbar_apply]`. Simplify using the standard rewrite rules. Establish `hHt : ∀ v ∈ A, H v = ρ c₀ (c₀.e.symm v)` using `fun v hv => by`.
+
+Simplify using `only [hHdef, hρ]`. Rewrite using `[dbar_congr (hFt v (hAt hv)), c₀.e.right_inv (hAt hv)]`. Establish `hl : ∀ τ : ℝ → ℝ, τ 0 = 0 → ∫⁻ v, ENNReal.ofReal (τ (H v)) = ∫⁻ v in A, ENNReal.ofReal (τ (ρ c₀ (c₀.e.symm v)))` using `fun τ h0 => by`. Rewrite using `[← lintegral_indicator hA.measurableSet]`. Use `lintegral_congr fun v => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hv : v ∈ A`. Rewrite using `[Set.indicator_of_mem hv, hHt v hv]`. Rewrite using `[Set.indicator_of_notMem hv, hHA v hv, h0, ENNReal.ofReal_zero]`. Establish `hp : part ρ Set.univ = ∫⁻ v, ENNReal.ofReal (H v)`. Rewrite using `[hl (fun t => t) rfl, ← measure_add_measure_compl hKm, part_compl_eq_zero hKm fun c y hy hyK => (hz c y hy hyK).le, add_zero, hD.part_apply c₀ hKm hKs]`.
+
+Establish `hn : part (fun c y => -ρ c y) Set.univ = ∫⁻ v, ENNReal.ofReal (-H v)`. Rewrite using `[hl (fun t => -t) neg_zero, ← measure_add_measure_compl hKm, part_compl_eq_zero hKm fun c y hy hyK => by rw [hz c y hy hyK, neg_zero], add_zero, hD.neg.part_apply c₀ hKm hKs]`. Rewrite using `[total, hp, hn, ← integral_eq_lintegral_pos_part_sub_lintegral_neg_part hHi]`. Conclude with `hH0`.
+-/
 theorem total_dbar_eq_zero_of_compact_chart : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) [T2Space (CxPts p σ)] [SecondCountableTopology (CxPts p σ)] (m : AlgChart p σ 1 → CxPts p σ → ℂ), (∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, ContDiffAt ℝ 1 (fun v => m c (c.e.symm v)) (c.e y)) → (∀ (c c' : AlgChart p σ 1) (y : CxPts p σ), y ∈ c.e.source → y ∈ c'.e.source → m c y = ChartGlue.transDet c.e c'.e y * m c' y) → ∀ (c₀ : AlgChart p σ 1) (K : Set (CxPts p σ)), IsCompact K → K ⊆ c₀.e.source → (∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, y ∉ K → m c y = 0) → total (fun (c : AlgChart p σ 1) (y : CxPts p σ) => (dbar (fun v => m c (c.e.symm v)) (c.e y) (EuclideanSpace.single 0 1)).re) = 0 := by
   intro k _ X p σ _ _ m h1 h2 c₀ K hK hKs h3
   set ρ : AlgChart p σ 1 → CxPts p σ → ℝ := fun c y =>

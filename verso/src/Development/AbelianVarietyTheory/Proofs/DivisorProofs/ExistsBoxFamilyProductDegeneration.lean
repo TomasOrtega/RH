@@ -18,6 +18,11 @@ namespace GlobalTheory.BoxFamSum
 
 variable {R : Type} [CommRing R] [IsDomain R] (F : Type) [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Use `congrArg (fun m => m.left) (?_ : DegPre.trF D F mu ≫ (TF (R := R) F ◁ p) = (TF (R := R) F ◁ p) ≫ DegPre.trF D₁ F (q mu))` and prove the remaining obligations. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[DegPre.trF]`. Rewrite using `[Category.assoc, Category.assoc, whiskerLeft_snd, DegPre.trF, DegPre.trF, lift_snd, lift_snd_assoc]`. Establish `b : DegPre.prB D F ≫ p = (TF (R` using `R) F ◁ p) ≫ DegPre.prB D₁ F := (whiskerLeft_snd _ _).symm`.
+
+Establish `e : (DegPre.prB D F * cP D _ mu) ≫ p = (TF (R` using `R) F ◁ p) ≫ (DegPre.prB D₁ F * cP D₁ _ (q mu)) := by`. Rewrite using `[MonObj.mul_comp, MonObj.comp_mul, b, GlobalTheory.ProdUnif.cPoint_pr hc, comp_cP]`. Conclude with `e`.
+-/
 theorem trF_pr {D D₁ : DegPre R} {p : D.P.A ⟶ D₁.P.A} [IsMonHom p] {q : D.X → D₁.X}
     (hc : ∀ x, D.c x ≫ p = D₁.c (q x)) (mu : D.X) :
     (DegPre.trF D F mu).left ≫ (TF (R := R) F ◁ p).left =
@@ -32,6 +37,9 @@ theorem trF_pr {D D₁ : DegPre R} {p : D.P.A ⟶ D₁.P.A} [IsMonHom p] {q : D.
       rw [MonObj.mul_comp, MonObj.comp_mul, b, GlobalTheory.ProdUnif.cPoint_pr hc, comp_cP]
     exact e
 
+/- English proof (translation)
+Use `congrArg (fun m => m.left) (?_ : DegPre.zF D F ≫ (TF (R := R) F ◁ p) = DegPre.zF D₁ F)` and prove the remaining obligations. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[DegPre.zF]`. Simplify using `[DegPre.zF]`.
+-/
 theorem zF_pr {D D₁ : DegPre R} (p : D.P.A ⟶ D₁.P.A) [IsMonHom p] :
     (DegPre.zF D F).left ≫ (TF (R := R) F ◁ p).left = (DegPre.zF D₁ F).left := by
   refine congrArg (fun m => m.left) (?_ : DegPre.zF D F ≫ (TF (R := R) F ◁ p) = DegPre.zF D₁ F)
@@ -39,6 +47,11 @@ theorem zF_pr {D D₁ : DegPre R} (p : D.P.A ⟶ D₁.P.A) [IsMonHom p] :
   · simp [DegPre.zF]
   · simp [DegPre.zF]
 
+/- English proof (translation)
+Break down `a with a | a` into its components or cases. Use `(GlobalTheory.ProdUnif.famφ_pr hc F (α + k • mu) a).trans ?_` and prove the remaining obligations. Rewrite using `[map_add, map_nsmul]`. Both sides reduce to the same expression. Use `show ((DegPre.trF D F mu).left ≫ DegPre.famφ D F α a) ≫ _ = _ ≫ (DegPre.trF D₁ F (q mu)).left ≫ DegPre.famφ D₁ F (q α) a`.
+
+Rewrite using `[Category.assoc, GlobalTheory.ProdUnif.famφ_pr hc, ← Category.assoc, trF_pr F hc, Category.assoc]`.
+-/
 theorem deltaφ_pr {D D₁ : DegPre R} {p : D.P.A ⟶ D₁.P.A} [IsMonHom p] {q : D.X →+ D₁.X}
     (hc : ∀ x, D.c x ≫ p = D₁.c (q x)) (k : ℕ) (α mu : D.X) (a : Fin 4 ⊕ Fin 4) :
     DegPre.deltaφ D F k α mu a ≫ p.left = (TF (R := R) F ◁ p).left ≫ DegPre.deltaφ D₁ F k (q α) (q mu) a := by
@@ -60,6 +73,17 @@ section Values
 variable {D D₁ D₂ : DegPre R} {p₁ : D.P.A ⟶ D₁.P.A} {p₂ : D.P.A ⟶ D₂.P.A} (q₁ : D.X →+ D₁.X) (q₂ : D.X →+ D₂.X)
   {w : LB.Iso D.P.L (extLB D₁.P.L D₂.P.L p₁.left p₂.left)}
 
+/- English proof (translation)
+Establish `a₁ : ∀ χ, (𝟙 (TF (R` using `R) F).left ≫ jFK (R := R) F) ≫ D.xK χ = (cP D (TF (R := R) F) χ).left := fun χ => (Category.assoc _ _ _).trans ((Category.id_comp _).trans (Category.assoc _ _ _).symm)`. Establish `a₂ : (𝟙 (TF (R` using `R) F).left ≫ jFK (R := R) F) ≫ (toUnit (TK R)).left ≫ eSec D.P.A = (1 : TF (R := R) F ⟶ D.P.A).left := (Category.assoc _ _ _).trans ((Category.id_comp _).trans (Category.assoc _ _ _).symm)`. Establish `b₁` using `fun χ => hpsi χ _ (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) y J₁ J₂ J hJ₁ hJ₂ hJ`. Establish `b₂` using `hrig _ ((𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) ≫ (toUnit (TK R)).left) y J₁ J₂ J hJ₁ hJ₂ hJ`. Simplify using `only [Fintype.prod_unique, Category.comp_id] at b₁ b₂`.
+
+Establish `r₀ : val D.rigK (𝟙 (TF (R` using `R) F).left ≫ jFK (R := R) F) y J = val D.rig ((𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) ≫ (toUnit (TK R)).left) y J := val_pull hJ _ _ _`. Establish `r₁ : val D₁.rigK (𝟙 (TF (R` using `R) F).left ≫ jFK (R := R) F) y J₁ = val D₁.rig ((𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) ≫ (toUnit (TK R)).left) y J₁ := val_pull hJ₁ _ _ _`. Establish `r₂ : val D₂.rigK (𝟙 (TF (R` using `R) F).left ≫ jFK (R := R) F) y J₂ = val D₂.rig ((𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) ≫ (toUnit (TK R)).left) y J₂ := val_pull hJ₂ _ _ _`. Establish `c₁ : ∀ χ, val (D.psi χ) (𝟙 (TF (R` using `R) F).left ≫ jFK (R := R) F) y J = om w y J₁ J₂ J (cP D (TF (R := R) F) χ).left * (val (D₁.psi (q₁ χ)) (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) y J₁ * val (D₂.psi (q₂ χ)) (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) y J₂) := fun χ => by`. Establish `h` using `b₁ χ`.
+
+Rewrite `h` using `[zpow_neg_one, show (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) ≫ ptK (D.c χ) = (cP D (TF (R := R) F) χ).left from a₁ χ]`. Conclude with `inv_mul_eq_iff_eq_mul.1 h`. Establish `c₂ : val D.rigK (𝟙 (TF (R` using `R) F).left ≫ jFK (R := R) F) y J = (om w y J₁ J₂ J (1 : TF (R := R) F ⟶ D.P.A).left)⁻¹ * (val D₁.rigK (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) y J₁ * val D₂.rigK (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) y J₂) := by`. Rewrite using `[r₀, r₁, r₂]`. Rewrite `b₂` using `[zpow_one, Category.assoc, a₂]`.
+
+Conclude with `eq_inv_mul_of_mul_eq b₂`. Establish `c₃` using `c₁ (mu + α)`. Rewrite `c₃` using `[map_add, map_add]`. Rewrite using `[GlobalTheory.BoxFamily.prod_delta_zero F D k α mu (om w y J₁ J₂ J), GlobalTheory.BoxFamily.famMult_val F hJ, GlobalTheory.BoxFamily.famMult_val F hJ₁, GlobalTheory.BoxFamily.famMult_val F hJ₂, c₃, c₁ mu, c₁ α, c₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_zpow]`. Use `module`.
+-/
 theorem famMult_box₂ (hrig : IsBoxGen w (𝟙 _) (𝟙 _) D.rig D₁.rig D₂.rig)
     (hpsi : ∀ x, IsBoxGen w (𝟙 _) (𝟙 _) (D.psi x) (D₁.psi (q₁ x)) (D₂.psi (q₂ x)))
     (k : ℕ) (α mu : D.X) (y : (TF (R := R) F).left) {J₁ J₂ J}
@@ -113,6 +137,9 @@ namespace GlobalTheory.BoxFamSum
 
 variable {R : Type} [CommRing R] [IsDomain R] (F : Type) [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Establish `h` using `(secRel_iff D₁.P.isLB _ _ _ _ _ _ _ _ _ u₁).1 (E₁.fe _ _ u₁ hu₁ hc₁) _ (r ≫ (TF (R := R) F ◁ p).left) z J₁ hJ₁`. Rewrite using `[map_add, map_nsmul, h, Category.assoc, Category.assoc, trF_pr F hc]`.
+-/
 theorem fe_along {D D₁ : DegPre R} {p : D.P.A ⟶ D₁.P.A} [IsMonHom p] {q : D.X →+ D₁.X}
     (hc : ∀ x, D.c x ≫ p = D₁.c (q x)) {k : ℕ} (E₁ : Fam D₁ F k) (mu α : D.X)
     (u₁ : LB.Gen (LB.LinComb D₁.P.L (DegPre.deltaφ D₁ F k (q α) (q mu)) (DegPre.deltaε k))) (hu₁ : u₁.IsGen)
@@ -129,6 +156,17 @@ theorem fe_along {D D₁ : DegPre R} {p : D.P.A ⟶ D₁.P.A} [IsMonHom p] {q : 
 variable {D D₁ D₂ : DegPre R} {p₁ : D.P.A ⟶ D₁.P.A} {p₂ : D.P.A ⟶ D₂.P.A} {q₁ : D.X →+ D₁.X} {q₂ : D.X →+ D₂.X}
   {w : LB.Iso D.P.L (extLB D₁.P.L D₂.P.L p₁.left p₂.left)}
 
+/- English proof (translation)
+Use `haveI := hS.hom₁`. Use `haveI := hS.hom₂`. Establish `z₁ : DegPre.zF D F ≫ fst _ _ = 𝟙 _` using `lift_fst _ _`. Use `isBoxGen_of_section w hw D₁.P.isLB D₂.P.isLB D.P.isLB (deltaφ_pr F hS.c_pr₁ k α mu) (deltaφ_pr F hS.c_pr₂ k α mu) hu hu₁ hu₂ (fst (TF (R := R) F) D.P.A).left (DegPre.zF D F).left (congrArg (fun q => q.left) z₁) (surj_appTop D F hG) ?_` and prove the remaining obligations. Introduce `y J₁ J₂ J hJ₁ hJ₂ hJ`.
+
+Establish `e` using `famMult_box₂ F q₁ q₂ hrig hpsi k α mu y hJ₁ hJ₂ hJ`. Establish `v : val u (DegPre.zF D F).left y J = val (Z` using `(TF (R := R) F).left) (DegPre.famMult D F k mu α) (𝟙 _) y J := by`. Establish `h` using `val_corr hJ hc (𝟙 _)`. Rewrite `h` using `[val_pull hJ, Category.id_comp]`. Then use the resulting hypothesis. Establish `v₁ : val u₁ ((DegPre.zF D F).left ≫ (TF (R` using `R) F ◁ p₁).left) y J₁ = val (Z := (TF (R := R) F).left) (DegPre.famMult D₁ F k (q₁ mu) (q₁ α)) (𝟙 _) y J₁ := by`.
+
+Establish `h` using `val_corr hJ₁ hc₁ (𝟙 _)`. Rewrite `h` using `[val_pull hJ₁, Category.id_comp]`. Rewrite using `[zF_pr]`. Conclude with `h`. Establish `v₂ : val u₂ ((DegPre.zF D F).left ≫ (TF (R` using `R) F ◁ p₂).left) y J₂ = val (Z := (TF (R := R) F).left) (DegPre.famMult D₂ F k (q₂ mu) (q₂ α)) (𝟙 _) y J₂ := by`.
+
+Establish `h` using `val_corr hJ₂ hc₂ (𝟙 _)`. Rewrite `h` using `[val_pull hJ₂, Category.id_comp]`. Rewrite using `[zF_pr]`. Conclude with `h`. Rewrite using `[v, v₁, v₂]`.
+
+Conclude with `e`.
+-/
 theorem gen_box₂ (hS : IsSumDeg D D₁ D₂ p₁ p₂ q₁ q₂) (hw : w.IsGen)
     (hrig : IsBoxGen w (𝟙 _) (𝟙 _) D.rig D₁.rig D₂.rig)
     (hpsi : ∀ x, IsBoxGen w (𝟙 _) (𝟙 _) (D.psi x) (D₁.psi (q₁ x)) (D₂.psi (q₂ x))) (hG : GlobalFnsSt)
@@ -171,6 +209,19 @@ end GlobalTheory.BoxFamSum
 
 namespace GlobalTheory.BoxFamSum
 
+/- English proof (translation)
+Introduce `R _ _ D D₁ D₂ p₁ p₂ q₁ q₂ hS w hw hrig hpsi F _ _ k E₁ E₂`. Use `haveI := hS.hom₁`. Use `haveI := hS.hom₂`. Establish `hG : GlobalFnsSt` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Use `choose s hs using fun α : D.X => exists_boxSec w hw D₁.P.isLB D₂.P.isLB D.P.isLB (GlobalTheory.ProdUnif.famφ_pr hS.c_pr₁ F α) (GlobalTheory.ProdUnif.famφ_pr hS.c_pr₂ F α) (E₁.s (q₁ α)) (E₂.s (q₂ α))`.
+
+Use `⟨⟨s, ?_⟩, hs⟩` and prove the remaining obligations. Introduce `mu α u hu hc`. Take `⟨u₁, hu₁, hc₁⟩` from `(gen_fe (D := D₁) (F := F) hG k (q₁ mu) (q₁ α)).1`. Take `⟨u₂, hu₂, hc₂⟩` from `(gen_fe (D := D₂) (F := F) hG k (q₂ mu) (q₂ α)).1`. Establish `hb` using `gen_box₂ F hS hw hrig hpsi hG k α mu u hu hc u₁ hu₁ hc₁ u₂ hu₂ hc₂`.
+
+Use `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).2 fun y J hJ => ?_` and prove the remaining obligations. Take `⟨J₁, hJ₁⟩` from `GlobalTheory.BoxFamily.exists_good_at D₁.P.isLB y`. Take `⟨J₂, hJ₂⟩` from `GlobalTheory.BoxFamily.exists_good_at D₂.P.isLB y`. Establish `e₁` using `hs (α + k • mu) _ (𝟙 _) y J₁ J₂ J hJ₁ hJ₂ hJ`. Establish `e₂` using `hs α _ (𝟙 _ ≫ (DegPre.trF D F mu).left) y J₁ J₂ J hJ₁ hJ₂ hJ`.
+
+Establish `e₃` using `hb _ (𝟙 _) y J₁ J₂ J hJ₁ hJ₂ hJ`. Establish `f₁` using `fe_along F hS.c_pr₁ E₁ mu α u₁ hu₁ hc₁ (𝟙 _) y hJ₁`. Establish `f₂` using `fe_along F hS.c_pr₂ E₂ mu α u₂ hu₂ hc₂ (𝟙 _) y hJ₂`. Establish `e₅ : (∏ a, om w y J₁ J₂ J (𝟙 _ ≫ DegPre.deltaφ D F k α mu a) ^ DegPre.deltaε k a) = (∏ a, om w y J₁ J₂ J (𝟙 _ ≫ DegPre.famφ D F (α + k • mu) a) ^ DegPre.famε k a) * (∏ a, om w y J₁ J₂ J ((𝟙 _ ≫ (DegPre.trF D F mu).left) ≫ DegPre.famφ D F α a) ^ DegPre.famε k a)⁻¹`. Simplify using `only [Category.assoc]`.
+
+Conclude with `prod_sum₂ (K := Fin 4) (K' := Fin 4) _ rfl (prod_neg _ _ rfl)`. Use `(∏ a, om w y J₁ J₂ J (𝟙 _ ≫ DegPre.famφ D F (α + k • mu) a) ^ DegPre.famε k a).mul_right_inj.1 ?_` and prove the remaining obligations. Use `e₁.trans ?_` and prove the remaining obligations. Rewrite using `[f₁, f₂]`. Use `Eq.trans ?_ ((congrArg₂ (· * ·) e₂ (congrArg Units.val e₃)).symm.trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e₅]`. Conclude with `GlobalTheory.BoxFamily.unit_shuffle _ _ _ _`.
+-/
 theorem exists_isBoxFam₂ : ∀ (R : Type) [CommRing R] [IsDomain R] (D D₁ D₂ : DegPre R) (p₁ : D.P.A ⟶ D₁.P.A) (p₂ : D.P.A ⟶ D₂.P.A) (q₁ : D.X →+ D₁.X) (q₂ : D.X →+ D₂.X), IsSumDeg D D₁ D₂ p₁ p₂ q₁ q₂ → ∀ (w : LB.Iso D.P.L (extLB D₁.P.L D₂.P.L p₁.left p₂.left)), w.IsGen → IsBoxGen w (𝟙 _) (𝟙 _) D.rig D₁.rig D₂.rig → (∀ x, IsBoxGen w (𝟙 _) (𝟙 _) (D.psi x) (D₁.psi (q₁ x)) (D₂.psi (q₂ x))) → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (E₁ : Fam D₁ F k) (E₂ : Fam D₂ F k), ∃ E : Fam D F k, IsBoxFam₂ p₁ p₂ q₁ q₂ w F k E E₁ E₂ := by
   intro R _ _ D D₁ D₂ p₁ p₂ q₁ q₂ hS w hw hrig hpsi F _ _ k E₁ E₂
   haveI := hS.hom₁

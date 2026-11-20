@@ -61,6 +61,11 @@ def cvE (D : D7) (n : ℕ) : (Fin n → D.host.E) →ₛₗ[starRingEnd D.host.E
 def conjLat {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) : Submodule (𝓞 D.host.E) (Fin n → D.host.E) :=
   L.map (cvO D n)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `e : (fun i => star ((cvO D n) y i)) = y` using `by ext i; simp [cvO]`. Rewrite using `[e]`. Conclude with `hy`.
+
+Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[cvO]`.
+-/
 theorem mem_conjLat {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (z : Fin n → D.host.E) :
     z ∈ conjLat L ↔ (fun i => star (z i)) ∈ L := by
   constructor
@@ -71,6 +76,11 @@ theorem mem_conjLat {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E
     refine ⟨_, h, ?_⟩
     ext i; simp [cvO]
 
+/- English proof (translation)
+Use `⟨hL.fg.map _, ?_⟩` and prove the remaining obligations. Establish `h1 : ((conjLat L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) : Set (Fin n → D.host.E)) = cvE D n '' (L : Set _)`. Rewrite using `[conjLat, Submodule.map_coe]`. Both sides reduce to the same expression. Rewrite using `[h1, Submodule.span_image, hL.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`.
+
+Introduce `z`. Conclude with `⟨fun i => star (z i), by ext i; simp [cvE]⟩`.
+-/
 theorem isLattice_conjLat {n : ℕ} {L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (hL : L.IsLattice D.host.E) :
     (conjLat L).IsLattice D.host.E := by
   refine ⟨hL.fg.map _, ?_⟩
@@ -80,6 +90,11 @@ theorem isLattice_conjLat {n : ℕ} {L : Submodule (𝓞 D.host.E) (Fin n → D.
   intro z
   exact ⟨fun i => star (z i), by ext i; simp [cvE]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `map_isIntegral_int (starRingEnd D.host.E) h` as an intermediate fact. Rewrite `this` using `[starRingEnd_apply, star_star]`. Then use the resulting hypothesis. Introduce `h`.
+
+Conclude with `map_isIntegral_int (starRingEnd D.host.E) h`.
+-/
 theorem isIntegral_star_iff (a : D.host.E) : IsIntegral ℤ (star a) ↔ IsIntegral ℤ a := by
   constructor
   · intro h
@@ -88,6 +103,11 @@ theorem isIntegral_star_iff (a : D.host.E) : IsIntegral ℤ (star a) ↔ IsInteg
   · intro h
     exact map_isIntegral_int (starRingEnd D.host.E) h
 
+/- English proof (translation)
+Establish `hs : ∀ i j, star (J i j) = J j i` using `fun i j => hJ j i`. Establish `hσ : ∀ x, D.sp.cm.sig x = star x` using `fun _ => rfl`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, hσ, dotProduct, Matrix.mulVec, star_sum, star_mul', star_star, hs, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_conj {n : ℕ} (J : Matrix (Fin n) (Fin n) D.host.E) (hJ : ∀ i j, D.sp.cm.sig (J j i) = J i j)
     (a b : Fin n → D.host.E) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig J (fun i => star (a i)) b =
@@ -101,6 +121,13 @@ theorem form_conj {n : ℕ} (J : Matrix (Fin n) (Fin n) D.host.E) (hJ : ∀ i j,
 
 variable {B : Base D.host.F D.host.E} {n r s : ℕ} {V : Spc D.host.F D.host.E n}
 
+/- English proof (translation)
+Rewrite using `[mem_conjLat, hV.dual]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Rewrite `hx` using `[mem_conjLat]`. Establish `h1` using `h _ hx`.
+
+Rewrite `h1` using `[form_conj V.J hV.herm]`. Simplify `h1` using `only [star_star, isIntegral_star_iff]`. Introduce `h y hy`. Establish `hx : (fun i => star (y i)) ∈ conjLat V.L`. Rewrite using `[mem_conjLat]`.
+
+Simplify `hy` using `only [star_star]`. Establish `h1` using `h _ hx`. Rewrite using `[form_conj V.J hV.herm, isIntegral_star_iff]`. Conclude with `h1`.
+-/
 theorem mem_conjLat_iff (hV : V.IsHerm D.sp.cm.sig B r s) (z : Fin n → D.host.E) :
     z ∈ conjLat V.L ↔ ∀ x ∈ conjLat V.L, IsIntegral ℤ (∑ i, ∑ j, star (x i) * V.J i j * z j) := by
   rw [mem_conjLat, hV.dual]
@@ -117,6 +144,9 @@ theorem mem_conjLat_iff (hV : V.IsHerm D.sp.cm.sig B r s) (z : Fin n → D.host.
     rw [form_conj V.J hV.herm, isIntegral_star_iff]
     exact h1
 
+/- English proof (translation)
+Establish `hs : ∀ i j, star (V.J i j) = V.J j i` using `fun i j => hV.herm j i`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.WeilSchrodingerHerm.sesq_apply, starRingEnd_apply, dotProduct, Matrix.mulVec, star_sum, star_mul', star_star, Pi.star_apply, hs, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+-/
 theorem sesq_herm (hV : V.IsHerm D.sp.cm.sig B r s) : (GlobalTheory.WeilSchrodinger.sesq D V.J).IsSymm := by
   have hs : ∀ i j, star (V.J i j) = V.J j i := fun i j => hV.herm j i
   refine ⟨fun x y => ?_⟩
@@ -125,6 +155,13 @@ theorem sesq_herm (hV : V.IsHerm D.sp.cm.sig B r s) : (GlobalTheory.WeilSchrodin
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Establish `hdet : V.J.det ≠ 0` using `GlobalTheory.WeilSchrodingerHerm.det_J_ne_zero D B V hV`. Use `⟨fun x hx => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : star x ᵥ* V.J = 0`. Use `dotProduct_eq_zero _ fun v => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.dotProduct_mulVec, ← GlobalTheory.WeilSchrodingerHerm.sesq_apply]`.
+
+Conclude with `hx v`. Establish `h2 : star x = 0` using `Matrix.eq_zero_of_vecMul_eq_zero hdet h1`. Simplify using `using congrArg star h2`. Establish `h1 : V.J *ᵥ y = 0`. Use `dotProduct_eq_zero _ fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[dotProduct_comm]`. Use `hy (star v)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.WeilSchrodingerHerm.sesq_apply, star_star]`. Then use the resulting hypothesis. Conclude with `Matrix.eq_zero_of_mulVec_eq_zero hdet h1`.
+-/
 theorem sesq_nondeg (hV : V.IsHerm D.sp.cm.sig B r s) : (GlobalTheory.WeilSchrodinger.sesq D V.J).Nondegenerate := by
   have hdet : V.J.det ≠ 0 := GlobalTheory.WeilSchrodingerHerm.det_J_ne_zero D B V hV
   refine ⟨fun x hx => ?_, fun y hy => ?_⟩
@@ -141,6 +178,11 @@ theorem sesq_nondeg (hV : V.IsHerm D.sp.cm.sig B r s) : (GlobalTheory.WeilSchrod
       rwa [GlobalTheory.WeilSchrodingerHerm.sesq_apply, star_star] at this
     exact Matrix.eq_zero_of_mulVec_eq_zero hdet h1
 
+/- English proof (translation)
+Use `show Formalism.E.hdual _ (conjLat V.L) = conjLat V.L`. Use extensionality with `x`. Simplify using `only [Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]`. Rewrite using `[mem_conjLat_iff hV x]`. Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.WeilSchrodingerHerm.sesq_apply, GlobalTheory.WeilSchrodingerHerm.mem_one_iff]`. Establish `e : star y ⬝ᵥ (V.J *ᵥ x) = ∑ i, ∑ j, star (y i) * V.J i j * x j`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, mul_assoc]`. Rewrite using `[e]`.
+-/
 theorem sesq_unimod (hV : V.IsHerm D.sp.cm.sig B r s) :
     Formalism.HermitianLatticesTheory.IsUnimodular (GlobalTheory.WeilSchrodinger.sesq D V.J) (conjLat V.L) := by
   show Formalism.E.hdual _ (conjLat V.L) = conjLat V.L
@@ -153,6 +195,13 @@ theorem sesq_unimod (hV : V.IsHerm D.sp.cm.sig B r s) :
     simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, mul_assoc]
   rw [e]
 
+/- English proof (translation)
+Take `⟨hn, A, hA⟩` from `h`. Use `⟨hn, A.map star, ?_⟩` and prove the remaining obligations. Establish `e1 : (A.map star).map star = A` using `by ext i j; simp`. Establish `e2 : (A.map star)ᵀ * M.map (starRingEnd ℂ) * A = (Aᵀ * M * A.map star).map (starRingEnd ℂ)`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map]`.
+
+Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, hA, Matrix.fromBlocks_map]`. Establish `e3 : (-1 : Matrix (Fin b) (Fin b) ℂ).map (starRingEnd ℂ) = -1`.
+
+Apply the tactic sequence `ext i j; by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Simplify using `[e3]`.
+-/
 theorem hasSig_map_conj {m a b : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} (h : HasSig M a b) :
     HasSig (M.map (starRingEnd ℂ)) a b := by
   obtain ⟨hn, A, hA⟩ := h
@@ -167,6 +216,13 @@ theorem hasSig_map_conj {m a b : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} (h : HasS
     ext i j; by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
   simp [e3]
 
+/- English proof (translation)
+Establish `h` using `hG.cm`. Use `haveI := h.1`. Use `set w := InfinitePlace.mk (φ.comp (algebraMap D.host.F D.host.E)) with hw`. Establish `hreal : ComplexEmbedding.IsReal (φ.comp (algebraMap D.host.F D.host.E))` using `IsTotallyReal.complexEmbedding_isReal _`. Establish `he : (B.emb w).1.comp (algebraMap D.host.F D.host.E) = φ.comp (algebraMap D.host.F D.host.E)`.
+
+Rewrite using `[(B.emb w).2, hw, InfinitePlace.embedding_mk_eq_of_isReal hreal]`. Use `GlobalTheory.FunObj.hasSignature_of_hasSig_conj ?_` and prove the remaining obligations. Break down `GlobalTheory.IdxAll.eq_or_eq_comp _ h _ _ he with h1 | h1` into its components or cases. Rewrite using `[h1]`. Conclude with `hasSig_map_conj (hs w)`.
+
+Establish `e : (J.map φ).map (starRingEnd ℂ) = J.map (B.emb w).1`. Use extensionality with `i j`. Simplify using `[h1]`. Rewrite using `[e]`. Conclude with `hs w`.
+-/
 theorem hasSignature_all (hG : B.IsGood D.sp.cm.sig) {m a b : ℕ} (J : Matrix (Fin m) (Fin m) D.host.E)
     (hs : ∀ w, HasSig (J.map (B.emb w).1) a b) (φ : D.host.E →+* ℂ) : Formalism.UG.HasSignature (J.map φ) a b := by
   have h := hG.cm
@@ -187,6 +243,17 @@ end GlobalTheory.ConjSpace
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc) in
 
+/- English proof (translation)
+Introduce `D Bs hG _ n r p V hV`. Establish `hn : r + p = n`. Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`. Conclude with `(hV.sig w).1`. Establish `hgram` using `GlobalTheory.WeilSchrodinger.gram_hspOf V.J (GlobalTheory.ConjSpace.sesq_herm hV) (GlobalTheory.ConjSpace.sesq_nondeg hV) (GlobalTheory.ConjSpace.conjLat V.L) (GlobalTheory.ConjSpace.isLattice_conjLat hV.lat) (GlobalTheory.ConjSpace.sesq_unimod hV) (fun _ => (n - p, p))`.
+
+Use `⟨GlobalTheory.WeilSchrodinger.hspOf D V.J (GlobalTheory.ConjSpace.sesq_herm hV) (GlobalTheory.ConjSpace.sesq_nondeg hV) (GlobalTheory.ConjSpace.conjLat V.L) (GlobalTheory.ConjSpace.isLattice_conjLat hV.lat) (GlobalTheory.ConjSpace.sesq_unimod hV) (fun _ => (n - p, p)), GlobalTheo …` and prove the remaining obligations. Rewrite using `[hgram]`. Use `(GlobalTheory.ConjSpace.mem_conjLat_iff (n := n) hV y).trans ?_` and prove the remaining obligations. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Conclude with `⟨fun h => ⟨⟨_, h⟩, rfl⟩, fun ⟨b, hb⟩ => hb ▸ b.isIntegral_coe⟩`.
+
+Use `show Formalism.UG.HasSignature ((HSpace.gram _).map (tauE D τ)) _ p`. Rewrite using `[hgram]`. Establish `h` using `GlobalTheory.ConjSpace.hasSignature_all hG V.J hV.sig (tauE D τ)`. Establish `hr : r = n - p` using `by omega`. Rewrite `h` using `[hr]`.
+
+Conclude with `h`. Rewrite using `[hgram, one_smul]`. Both sides reduce to the same expression. Use `Iff.symm ((GlobalTheory.ConjSpace.mem_conjLat (n := n) V.L _).trans ?_)` and prove the remaining obligations. Simplify using `only [star_star]`.
+
+Conclude with `Iff.rfl`.
+-/
 theorem GlobalTheory.ConjSpace.main : ∀ (D : D7) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E), Bs.IsGood D.sp.cm.sig → GlobalTheory.SqStepBig.EmbCM Bs →
     ∀ (n r p : ℕ) (V : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E n), V.IsHerm D.sp.cm.sig Bs r p →
       ∃ (B : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin B.rank → D.host.E)),

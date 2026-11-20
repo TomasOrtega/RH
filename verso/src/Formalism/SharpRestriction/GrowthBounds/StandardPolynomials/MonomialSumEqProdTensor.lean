@@ -28,17 +28,28 @@ def TCoreBody (C0 Cde CE1 CE2 : ℝ) (X : Loc) [NeZero X.m] (O : Type) [CommRing
 
 section Small
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Nat.add_mul, Nat.sub_add_cancel (hu a)]`.
+-/
 theorem sum_split {κ : Type} [Fintype κ] (mult u d : κ → ℕ) (hu : ∀ a, u a ≤ mult a) :
     ∑ a, (mult a - u a) * d a + ∑ a, u a * d a = ∑ a, mult a * d a := by
   rw [← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [← Nat.add_mul, Nat.sub_add_cancel (hu a)]
 
+/- English proof (translation)
+Establish `h` using `Formalism.MainNotions.G.Joints.StandardMonomialSpace.hom_Pol_C K (ι := ι) (n := n) (1 : K)`. Rewrite `h` using `[C_1]`. Conclude with `h`.
+-/
 theorem chain_pol_one (K : Type) [CommRing K] {ι : Type} {n : ℕ} : (1 : MvPolynomial (ι × Fin n) K) ∈ Pol K n (fun _ : ι => 0) := by
   have h := Formalism.MainNotions.G.Joints.StandardMonomialSpace.hom_Pol_C K (ι := ι) (n := n) (1 : K)
   rw [C_1] at h
   exact h
 
+/- English proof (translation)
+Proceed by induction on `u with`. Consider the case `zero => simpa using chain_pol_one K (ι := ι) (n := n)`. Consider the case `succ u ih`. Rewrite using `[pow_succ]`. Use `Formalism.MainNotions.G.Joints.StandardMonomialSpace.hom_Pol_mul K ih h` as an intermediate fact.
+
+Establish `e : ((fun i => u * d i) + d) = fun i => (u + 1) * d i` using `by funext i; simp [Nat.succ_mul]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem chain_pol_pow (K : Type) [CommRing K] {ι : Type} {n : ℕ} {d : ι → ℕ} {P : MvPolynomial (ι × Fin n) K}
     (h : P ∈ Pol K n d) (u : ℕ) : P ^ u ∈ Pol K n (fun i => u * d i) := by
   induction u with
@@ -49,6 +60,11 @@ theorem chain_pol_pow (K : Type) [CommRing K] {ι : Type} {n : ℕ} {d : ι → 
     have e : ((fun i => u * d i) + d) = fun i => (u + 1) * d i := by funext i; simp [Nat.succ_mul]
     rwa [e] at this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using chain_pol_one K (ι := ι) (n := n)`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Use `Formalism.MainNotions.G.Joints.StandardMonomialSpace.hom_Pol_mul K (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))` as an intermediate fact.
+
+Establish `e : (d a + fun i => ∑ a ∈ s, d a i) = fun i => ∑ b ∈ insert a s, d b i`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_insert ha]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem chain_pol_prod (K : Type) [CommRing K] {ι κ : Type} {n : ℕ} (s : Finset κ) (d : κ → ι → ℕ)
     (P : κ → MvPolynomial (ι × Fin n) K) (h : ∀ a ∈ s, P a ∈ Pol K n (d a)) :
     ∏ a ∈ s, P a ∈ Pol K n (fun i => ∑ a ∈ s, d a i) := by
@@ -63,20 +79,32 @@ theorem chain_pol_prod (K : Type) [CommRing K] {ι κ : Type} {n : ℕ} (s : Fin
       funext i; simp [Finset.sum_insert ha]
     rwa [e] at this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp⟩`.
+-/
 theorem glIntOne {O : Type} [CommRing O] [IsDomain O] {σ : Type} : (1 : MvPolynomial σ (KK O)) ∈ IntPol O σ := ⟨1, by simp⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a * b, by simp⟩`.
+-/
 theorem glIntMul {O : Type} [CommRing O] [IsDomain O] {σ : Type} {x y : MvPolynomial σ (KK O)} (hx : x ∈ IntPol O σ)
     (hy : y ∈ IntPol O σ) : x * y ∈ IntPol O σ := by
   obtain ⟨a, rfl⟩ := hx
   obtain ⟨b, rfl⟩ := hy
   exact ⟨a * b, by simp⟩
 
+/- English proof (translation)
+Proceed by induction on `u with`. Consider the case `zero => simpa using glIntOne (O := O) (σ := σ)`. Consider the case `succ u ih => rw [pow_succ]`. Conclude with `glIntMul ih hx`.
+-/
 theorem glIntPow {O : Type} [CommRing O] [IsDomain O] {σ : Type} {x : MvPolynomial σ (KK O)} (hx : x ∈ IntPol O σ) (u : ℕ) :
     x ^ u ∈ IntPol O σ := by
   induction u with
   | zero => simpa using glIntOne (O := O) (σ := σ)
   | succ u ih => rw [pow_succ]; exact glIntMul ih hx
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using glIntOne (O := O) (σ := σ)`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `glIntMul (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem glIntProd {O : Type} [CommRing O] [IsDomain O] {σ κ : Type} (s : Finset κ) (P : κ → MvPolynomial σ (KK O))
     (h : ∀ a ∈ s, P a ∈ IntPol O σ) : ∏ a ∈ s, P a ∈ IntPol O σ := by
   classical
@@ -86,6 +114,9 @@ theorem glIntProd {O : Type} [CommRing O] [IsDomain O] {σ κ : Type} (s : Finse
     rw [Finset.prod_insert ha]
     exact glIntMul (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
+/- English proof (translation)
+Use `mono_sum (O := O) s (fun _ => 1) a` as an intermediate fact. Simplify using `using this`.
+-/
 theorem monomial_sum_eq_prod_tensor {X : Loc} {O : Type} [CommRing O] [IsDomain O] {ι : Type} (s : Finset ι) (a : ι → MonH X) :
     (monomial (∑ i ∈ s, a i) (1 : KK O) : RHH O X) = ∏ i ∈ s, (monomial (a i) (1 : KK O) : RHH O X) := by
   have := mono_sum (O := O) s (fun _ => 1) a
@@ -109,6 +140,11 @@ def PreSys.sgH (_P : PreSys C0 CE1 CE2 X O w mu β L G Std) (j : Fin (numSeg X.T
     (i : Fin (BDk C0 CE1 CE2 mu X β j).T.t) : RHH O X :=
   ioD O C0 CE1 CE2 mu X β j ((BDk C0 CE1 CE2 mu X β j).Ehat O (r := X.m) i)
 
+/- English proof (translation)
+Establish `e1 : (monomial (P.R + ((∑ j, ∑ a, nC j a • P.pl j a) + ∑ a, nM a • P.aM a) + M) (1 : KK O) : RHH O X) = monomial P.R 1 * ((∏ j, ∏ a, (monomial (P.pl j a) (1 : KK O) : RHH O X) ^ nC j a) * ∏ a, (monomial (P.aM a) (1 : KK O) : RHH O X) ^ nM a) * monomial M 1`. Rewrite using `[← mono_sum, ← Finset.prod_congr rfl (fun j _ => mono_sum (O := O) Finset.univ (nC j) (P.pl j)), ← monomial_sum_eq_prod_tensor]`. Simplify using `only [monomial_mul, one_mul]`. Rewrite using `[e1]`. Unfold `PreSys.sgR PreSys.sgC PreSys.sgH LvDat.head`.
+
+Simplify using `only [map_mul, map_prod, map_pow, mul_pow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem PreSys.ident (P : PreSys C0 CE1 CE2 X O w mu β L G Std) (nC : ∀ j, P.ιC j → ℕ)
     (nH : ∀ j, Fin (BDk C0 CE1 CE2 mu X β j).T.t → ℕ) (nM : P.ιM → ℕ) (M : MonH X) :
     P.sgR * ((∏ j, ∏ a, P.sgC j a ^ nC j a) * ((∏ j, ∏ i, P.sgH j i ^ nH j i) *

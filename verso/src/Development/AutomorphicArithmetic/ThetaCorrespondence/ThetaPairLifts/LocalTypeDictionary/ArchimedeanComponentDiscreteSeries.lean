@@ -18,6 +18,45 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 open scoped Classical
 open GlobalTheory.RealWeil GlobalTheory.ArchUniq
+/- English proof (translation)
+Introduce `hP hDer _ F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d a b A C Φ hCM hψ hFr hΦ`. Take `⟨n, θ, φ, φ₀, hp, hq, hφ, hφu⟩` from `GlobalTheory.T.exists_archimedean_phaseSpace_coordinates_frames F E σ α β κ P Q R S τ JA JB d a b A C hCM hFr`. Take `⟨k, hkc, hkC, hkJ, hcan⟩` from `GlobalTheory.T.exists_continuous_hom_unitary_realPlaces_orthonormal_J F E σ β R S τ JB b C hCM hFr.2.2`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Take `⟨ω, hωc, hωi⟩` from `GlobalTheory.T.exists_oscillator_action_normalising_schrodingerOperators _ _ P Q R S φ hφ (GlobalTheory.T.continuous_rho_apply _) (UG (cA σ) JB) k hkc hkJ`.
+
+Take `⟨s, hsc, hsφ⟩` from `GlobalTheory.T.exists_continuous_symplecticHom_of_indefiniteUnitary _ _ P Q R S φ hφ (UG (cA σ) JB) k hkc hkJ`. Take `⟨ρ, η, hη1, hη2, hη3, hρi, hρu, hρc, hρd⟩` from `realRep hP.realMetaplecticRepresentation s hsc ω hωc fun g w v => by`. Take `⟨c, rfl⟩` from `φ.surjective w`. Rewrite using `[hsφ, hωi]`. Take `⟨kk, hkk⟩` from `_root_.GlobalTheory.T.realLift_characterTrace_hasDerivAt hP F E σ β R S τ JB b C hCM hFr.2.2 η (fun g h _ _ => hη1 g h) hη2.continuousOn fun g _ => hη3 g`.
+
+Set `toE : SInf F κ →L[ℂ] Sch (Fin n)` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) θ.symm`. Set `toV : Sch (Fin n) →L[ℂ] SInf F κ` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) θ`. Establish `htoE : ∀ g, ⇑(toE g) = ⇑g ∘ ⇑θ.symm` using `fun g => rfl`. Establish `htoV : ∀ h, ⇑(toV h) = ⇑h ∘ ⇑θ` using `fun h => rfl`. Establish `hVE : ∀ g, toV (toE g) = g` using `fun g => by ext x; simp [htoE, htoV]`.
+
+Establish `hEV : ∀ h, toE (toV h) = h` using `fun h => by ext x; simp [htoE, htoV]`. Use `clear_value toE toV`. Establish `hS` using `SchrTransport.schr_coords (trP F κ) θ φ₀ hp hq`. Set `ρ' : UG (cA σ) JB →* (SInf F κ →L[ℂ] SInf F κ)` to `{ toFun := fun g => toV ∘L ρ g ∘L toE map_one' := ContinuousLinearMap.ext fun f => by`. Rewrite using `[map_one]`.
+
+Conclude with `hVE f`. Use the proof step `map_mul' := fun g h => ContinuousLinearMap.ext fun f => by`. Simplify using `only [map_mul, ContinuousLinearMap.mul_apply, ContinuousLinearMap.comp_apply, hEV] }`. Establish `hρ' : ∀ g f, ρ' g f = toV (ρ g (toE f))` using `fun _ _ => rfl`. Use `clear_value ρ'`.
+
+Use `⟨ρ', fun w => kk w / 2, fun g _ => ⟨fun u hu f f₁ hf h => ?_, fun ν hν f₁ f₂ => ?_⟩, fun L f => ?_, fun γ hγ Y hY T L => ?_⟩` and prove the remaining obligations. Use `choose A' hA' using fun w => (hFr.2.1 w).2 choose C' hC' using fun w => (hFr.2.2 w).2`. Take `⟨c, hc⟩ : ∃ c : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ, ∀ w, u.map (piInf (τ w)) = A w * c w * (C w)ᵀ` from `⟨fun w => A' w * u.map (piInf (τ w)) * (C' w)ᵀ, fun w => by`. Establish `: (C' w)ᵀ * (C w)ᵀ = 1` using `by rw [← Matrix.transpose_mul, hC', Matrix.transpose_one]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[this, Matrix.mul_one, ← Matrix.mul_assoc, hA', Matrix.one_mul]⟩`. Establish `hu' : At (evI F) (actB (cA σ) g u)` using `fun t ht => by`. Rewrite using `[actB, ← Matrix.smul_mul, hu t ht, Matrix.zero_mul]`. Establish `hc' : ∀ w, (actB (cA σ) g u).map (piInf (τ w)) = A w * (c w * (k g w)ᵀ) * (C w)ᵀ` using `fun w => by`. Rewrite using `[actB, Matrix.map_mul, hc, Matrix.transpose_map, Matrix.mul_assoc, ← Matrix.transpose_mul, hkC, Matrix.transpose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Establish `e1 : ⇑f₁ = schrF (trP F κ) (locV (d.e u).1, locV (d.e u).2) ⇑f`. Use function extensionality and compare the values at `y`. Use `congrFun ((GlobalTheory.T.heisenbergOp_archimedean_vector_acts_by_schrodinger_trace F E σ α β κ ψ JA JB d hψ u hu f fun _ => 1).symm.trans (hf fun _ => 1)) (liftV y)` as an intermediate fact. Simplify `this.symm` using `[pureA, liftV]`.
+
+Establish `e2 : ⇑(toE f₁) = rhoFun (φ c) ⇑(toE f)`. Use `hS (locV (d.e u).1, locV (d.e u).2) ⇑(toE f)` as an intermediate fact. Rewrite `this` using `[← htoV, hVE, ← e1, ← hφu u c hu hc]`. Rewrite using `[htoE, this]`. Use function extensionality and compare the values at `x`.
+
+Simplify using the standard rewrite rules. Establish `e3` using `hρi g _ _ _ e2`. Rewrite `e3` using `[hsφ, hφu _ _ hu' hc']`. Rewrite using `[GlobalTheory.T.heisenbergOp_archimedean_vector_acts_by_schrodinger_trace F E σ α β κ ψ JA JB d hψ _ hu', hρ', hρ', htoV, htoV, hS, e3]`. Use `haveI : BorelSpace ({w : InfinitePlace F // w.IsReal} → ℝ) := Pi.borelSpace haveI : BorelSpace ({w : InfinitePlace F // w.IsComplex} → ℂ) := Pi.borelSpace haveI : BorelSpace (mixedEmbedding.mixedSpace F) := Prod.borelSpace haveI : BorelSpace (κ → mixedEmbedding.mixedSpace F) := P …`.
+
+Take `⟨r, hr⟩` from `haar_coords ν θ`. Rewrite using `[hr, hr]`. Use `congr 1`. Simplify using `only [hρ', htoV, Function.comp_apply, ContinuousLinearEquiv.apply_symm_apply]`. Rewrite using `[hρu]`.
+
+Simplify using `only [htoE, Function.comp_apply]`. Simplify using `only [hρ']`. Conclude with `(hρc (L ∘L toV) (toE f)).continuousOn`. Establish `hkY : ∀ (t : ℝ) w, k (γ (Multiplicative.ofAdd t)) w = NormedSpace.exp (t • Y w)` using `fun t w => hcan w _ _ ((hkC _ w).symm.trans (hY t w))`. Establish `hYu : ∀ w, Y w ∈ upq R S` using `fun w => GlobalTheory.RealLiftGen.mem_upq_of (Y w) fun t => by`.
+
+Use `congrArg (fun X => X.map star) (hkJ (γ (Multiplicative.ofAdd t)) w)` as an intermediate fact. Simplify using `only [GlobalTheory.RealLiftGen.map_star_mul, GlobalTheory.RealLiftGen.Jm_map_star, hkY] at this`. Use `Eq.trans ?_ this` and prove the remaining obligations. Use `congr 2`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Take `⟨Z, hZ, hZφ, hZe⟩` from `GlobalTheory.T.exists_symplecticLie_of_indefiniteUnitaryLie_rightAction _ _ P Q R S φ hφ Y hYu`. Establish `hsZ : ∀ t : ℝ, (s (γ (Multiplicative.ofAdd t)) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) = NormedSpace.exp (t • Z)` using `fun t => Matrix.toLin'.injective (LinearMap.ext fun v => by`. Take `⟨c, rfl⟩` from `φ.surjective v`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, hsφ, hZe]`.
+
+Simplify using `only [hkY])`. Establish `hd` using `hρd (fun t => γ (Multiplicative.ofAdd t)) (hγ.1.comp continuous_ofAdd) (by simp) Z hZ hsZ _ (hkk γ hγ Y hY) (L ∘L toV) (toE (Φ T))`. Take `⟨D, hD⟩` from `hDer F E σ α β κ ψ JA JB d hψ`. Establish `hΨ : ∀ c T, (toE.toLinearMap ∘ₗ Φ) (sumPl (fun w => heisOp (c w)) T) = dRho (φ c) ((toE.toLinearMap ∘ₗ Φ) T)`. Introduce `c T`.
+
+Take `⟨u, ⟨hu, hc⟩, -⟩` from `GlobalTheory.T.existsUnique_archimedeanMatrix_adeleExtension_of_components σ τ hCM fun w => A w * c w * (C w)ᵀ`. Establish `e1` using `(GlobalTheory.RealLift.actsLaws F κ (Φ T) _ _).2.2.2.2 _ (hΦ.2 u hu c hc T) (hD u hu (Φ T)).1`. Use extensionality with `x`. Take `⟨y, rfl⟩` from `θ.surjective x`. Establish `e2` using `SchrTransport.dRho_coords (trP F κ) θ φ₀ hp hq (locV (d.e u).1, locV (d.e u).2) (Φ T) (toE (Φ T)) (by rw [← htoV, hVE]) y`.
+
+Rewrite `e2` using `[← hφu u c hu hc]`. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe]`. Rewrite using `[← e2, e1, htoE, Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply]`. Conclude with `(hD u hu (Φ T)).2 y`. Establish `e3` using `GlobalTheory.T.fockToSchwartz_intertwines_metaplecticQuadratic GlobalTheory.T.metaplecticQuadraticOperator_eq_sum_symplectic_dual GlobalTheory.T.fockAct2_eq_symmetrised_heisenbergQuadratic _ _ P Q R S φ hφ _ hΨ Y hYu Z hZφ T`.
+
+Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe] at e3`. Simplify using `only [hρ']`. Use `hd.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[e3, sumPl_add_smul]`. Simplify using `only [ContinuousLinearMap.comp_apply, hVE, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, map_add, map_smul, smul_eq_mul, Finset.sum_div]`.
+
+Use `congr 2`. Conclude with `Finset.sum_congr rfl fun w _ => by ring`.
+-/
 theorem exists_archimedean_component : _root_.GlobalTheory.FunPr.ThetaLocalInputs → DerEx → VacLine →
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (α β κ : Type) [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (P Q R S : ℕ) (ψ : AddChar (AF F) ℂ)
@@ -153,6 +192,9 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.ArchRep.exists_archimedean_component | exact _root_.GlobalTheory.ArchRep.exists_archimedean_component | (intros; apply _root_.GlobalTheory.ArchRep.exists_archimedean_component <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.archimedean_component_discreteSeries : _root_.GlobalTheory.FunPr.ThetaLocalInputs → DerEx → VacLine →
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (α β κ : Type) [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (P Q R S : ℕ) (ψ : AddChar (AF F) ℂ)

@@ -23,9 +23,15 @@ def Loc2.mk₁ : Localization.Away a →+* Loc2 a t :=
 
 def Loc2.mk₀ : A →+* Loc2 a t := (Loc2.mk₁ a t).comp (algebraMap A (Localization.Away a))
 
+/- English proof (translation)
+The claim follows from `(IsLocalization.Away.algebraMap_isUnit (S := Localization.Away a) a).map (Loc2.mk₁ a t)`.
+-/
 theorem Loc2.isUnit_left : IsUnit (Loc2.mk₀ a t a) :=
   (IsLocalization.Away.algebraMap_isUnit (S := Localization.Away a) a).map (Loc2.mk₁ a t)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (algebraMap A (Localization.Away a) t)) (algebraMap A (Localization.Away a) t)`.
+-/
 theorem Loc2.isUnit_right : IsUnit (Loc2.mk₀ a t t) :=
   IsLocalization.Away.algebraMap_isUnit
     (S := Localization.Away (algebraMap A (Localization.Away a) t))
@@ -39,12 +45,18 @@ def Loc2.lift {E : Type} [CommRing E] (f : A →+* E) (ha : IsUnit (f a)) (ht : 
     ((congrArg IsUnit (IsLocalization.lift_eq (M := Submonoid.powers a)
       (S := Localization.Away a) _ t)).mpr ht)
 
+/- English proof (translation)
+The claim follows from `(IsLocalization.lift_eq (M := Submonoid.powers (algebraMap A (Localization.Away a) t)) (S := Localization.Away (algebraMap A (Localization.Away a) t)) _ _).trans (IsLocalization.lift_eq (M := Submonoid.powers a) (S := Localization.Away a) _ x)`.
+-/
 theorem Loc2.lift_mk₀ {E : Type} [CommRing E] (f : A →+* E) (ha : IsUnit (f a)) (ht : IsUnit (f t))
     (x : A) : Loc2.lift f ha ht (Loc2.mk₀ a t x) = f x :=
   (IsLocalization.lift_eq (M := Submonoid.powers (algebraMap A (Localization.Away a) t))
     (S := Localization.Away (algebraMap A (Localization.Away a) t)) _ _).trans
     (IsLocalization.lift_eq (M := Submonoid.powers a) (S := Localization.Away a) _ x)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (algebraMap A (Localization.Away a) t)) (S := Localization.Away (algebraMap A (Localization.Away a) t)) (IsLocalization.ringHom_ext (Submonoid.powers a) (S := Localization.Away a) (RingHom.ext h))`.
+-/
 theorem Loc2.hom_ext {E : Type} [CommRing E] {f g : Loc2 a t →+* E}
     (h : ∀ x, f (Loc2.mk₀ a t x) = g (Loc2.mk₀ a t x)) : f = g :=
   IsLocalization.ringHom_ext (Submonoid.powers (algebraMap A (Localization.Away a) t))
@@ -57,6 +69,9 @@ def Loc2.map (f : A →+* A) (ha : f a = a) (c : A) (hc : IsUnit (Loc2.mk₀ a t
     (by rw [RingHom.comp_apply, ha]; exact Loc2.isUnit_left a t)
     (by rw [RingHom.comp_apply, ht, map_mul]; exact hc.mul (Loc2.isUnit_right a t))
 
+/- English proof (translation)
+The claim follows from `Loc2.lift_mk₀ _ _ _ x`.
+-/
 theorem Loc2.map_mk₀ (f : A →+* A) (ha : f a = a) (c : A) (hc : IsUnit (Loc2.mk₀ a t c))
     (ht : f t = c * t) (x : A) : Loc2.map f ha c hc ht (Loc2.mk₀ a t x) = Loc2.mk₀ a t (f x) :=
   Loc2.lift_mk₀ _ _ _ x
@@ -75,6 +90,9 @@ def intEquiv : ↥(PadicComplexInt l) ≃+* ↥(normInteger ℂ_[l]) where
   map_mul' _ _ := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 := h.map (intEquiv l) rw [map_natCast] at h1 exact (Fact.out : ¬ IsUnit ((l : ℕ) : normInteger ℂ_[l])) h1`.
+-/
 theorem not_isUnit_l : ¬ IsUnit ((l : ℕ) : PadicComplexInt l) := fun h => by
   have h1 := h.map (intEquiv l)
   rw [map_natCast] at h1
@@ -147,10 +165,16 @@ def toBot (g : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) :
 def χA {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (σ : PadicAlgCl l ≃ₐ[K] PadicAlgCl l) : Acris :=
   algebraMap (AInf ℂ_[l] l) Acris (IsPerfectoidField.padicIntToWitt l (cycloChar K σ : ℤ_[l]))
 
+/- English proof (translation)
+The claim follows from `((cycloChar K σ).isUnit.map (IsPerfectoidField.padicIntToWitt l)).map _`.
+-/
 theorem isUnit_χA {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
     (σ : PadicAlgCl l ≃ₐ[K] PadicAlgCl l) : IsUnit (χA σ) :=
   ((cycloChar K σ).isUnit.map (IsPerfectoidField.padicIntToWitt l)).map _
 
+/- English proof (translation)
+Apply `ACris.iota_injective (K := ℂ_[l]) (p := l)` to reduce the goal to its premises. Rewrite using `[← ACris.gal_smul_def, tA, ACris.iota_gal_smul, ACris.iota_periodT, map_mul, ACris.iota_periodT, χA, ACris.iota_padicInt, gal_smul_fontaineT]`.
+-/
 theorem galCris_tA {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
     (σ : PadicAlgCl l ≃ₐ[K] PadicAlgCl l) : ACris.galCris σ (tA l) = χA σ * tA l := by
   apply ACris.iota_injective (K := ℂ_[l]) (p := l)

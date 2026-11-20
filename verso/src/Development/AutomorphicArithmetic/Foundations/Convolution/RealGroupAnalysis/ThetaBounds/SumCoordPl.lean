@@ -12,6 +12,11 @@ section SlopeTestRemainingChoices
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E]
 
+/- English proof (translation)
+Use extensionality with `τ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : InfinitePlace.mk w.embedding = InfinitePlace.mk τ` using `by rw [InfinitePlace.mk_embedding, h]`.
+
+Conclude with `(InfinitePlace.mk_eq_iff.1 h').imp Eq.symm Eq.symm`. Introduce and unpack `(rfl | rfl)`. Conclude with `InfinitePlace.mk_embedding w`. Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`.
+-/
 private theorem fiber_eq (w : InfinitePlace E) :
     (Finset.univ.filter fun τ : E →+* ℂ => InfinitePlace.mk τ = w) =
       {w.embedding, ComplexEmbedding.conjugate w.embedding} := by
@@ -25,13 +30,24 @@ private theorem fiber_eq (w : InfinitePlace E) :
     · exact InfinitePlace.mk_embedding w
     · rw [InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]
 
+/- English proof (translation)
+Introduce `h` and use `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w) (InfinitePlace.isReal_iff.2 (ComplexEmbedding.isReal_iff.2 h.symm))`.
+-/
 private theorem emb_ne (w : InfinitePlace E) : w.embedding ≠ ComplexEmbedding.conjugate w.embedding := fun h =>
   InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w)
     (InfinitePlace.isReal_iff.2 (ComplexEmbedding.isReal_iff.2 h.symm))
 
+/- English proof (translation)
+Rewrite using `[InfinitePlace.comap_mk]`. Both sides reduce to the same expression.
+-/
 private theorem pl_eq (τ : E →+* ℂ) : Fo.pl F τ = (InfinitePlace.mk τ).comap (algebraMap F E) := by
   rw [InfinitePlace.comap_mk]; rfl
 
+/- English proof (translation)
+Establish `hr : ∀ v, ((trI F s v : ℝ) : ℂ) • G v = ∑ w : InfinitePlace E, (if w.comap (algebraMap F E) = v then ((2 * (s w).re : ℝ) : ℂ) • G v else 0)`. Introduce `v`. Simplify using `only [trI]`. Rewrite using `[Complex.ofReal_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [hr]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_fiberwise Finset.univ InfinitePlace.mk]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq, if_pos (Finset.mem_univ _), fiber_eq, Finset.sum_pair (emb_ne w), pl_eq, pl_eq, InfinitePlace.mk_embedding, InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding, UpperTheory.V.FieldIso.coord_conj, UpperTheory.V.FieldIso.coord_embedding, ← add_smul, Comple …`.
+-/
 private theorem sum_coord_pl {M : Type*} [AddCommGroup M] [Module ℂ M] (s : Cinf E) (G : InfinitePlace F → M) :
     ∑ τ : E →+* ℂ, coord τ s • G (Fo.pl F τ) = ∑ v, ((trI F s v : ℝ) : ℂ) • G v := by
   have hr : ∀ v, ((trI F s v : ℝ) : ℂ) • G v =
@@ -48,9 +64,17 @@ private theorem sum_coord_pl {M : Type*} [AddCommGroup M] [Module ℂ M] (s : Ci
     InfinitePlace.mk_embedding, InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding,
     UpperTheory.V.FieldIso.coord_conj, UpperTheory.V.FieldIso.coord_embedding, ← add_smul, Complex.add_conj]
 
+/- English proof (translation)
+Rewrite using `[← D.b1]`. Conclude with `D.b.ne_zero 1`.
+-/
 private theorem theta_ne (D : Dat F E) : D.θ ≠ 0 := by
   rw [← D.b1]; exact D.b.ne_zero 1
 
+/- English proof (translation)
+Establish `ht : τ D.θ ≠ 0` using `fun h => theta_ne D ((map_eq_zero τ).1 h)`. Establish `h2 : (2 : Module.End ℂ (S4 F)) = 1 + 1` using `one_add_one_eq_two.symm`. Simplify using `only [Fo.Ops.dE, Fo.Ops.X, Fo.Ops.DX, Fo.Ops.h, Fin.sum_univ_two, Fin.sum_univ_four, h2]`. Simplify using `only [Fin.isValue, if_true, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, Matrix.cons_val]`. Generalize the expression as in `τ D.θ = t at ht`.
+
+Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, smul_add, smul_sub, smul_mul_assoc, mul_smul_comm, smul_smul]`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`.
+-/
 private theorem dE_sum (D : Dat F E) (O : Fo.Ops F) (τ : E →+* ℂ) :
     O.dE D τ 0 0 + O.dE D τ 1 1 = -O.h (Fo.pl F τ) := by
   have ht : τ D.θ ≠ 0 := fun h => theta_ne D ((map_eq_zero τ).1 h)
@@ -65,6 +89,19 @@ end SlopeTestRemainingChoices
 
 end UpperTheory.ConvolutionTheory.R2.Ff
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D O`. Use `⟨fun s => ?_, fun Y Y' => ?_, fun c Y => ?_, fun s => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ i j, zE s i j = if i = j then s else 0`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [zE, GlobalTheory.CuspRep.toL, Matrix.scalar_apply]`.
+
+Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.sum_univ_two, hz]`. Simplify using `only [Fin.isValue, if_true, one_ne_zero, zero_ne_one, if_false, map_zero, zero_smul, add_zero, zero_add]`. Rewrite using `[← smul_add, dE_sum, smul_neg]`.
+
+Simplify using `only [Fo.Ops.dL, ← Finset.sum_add_distrib, ← add_smul]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show (Y + Y') i j = Y i j + Y' i j from rfl, map_add]`. Simplify using `only [Fo.Ops.dL, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[show (c • Y) i j = c • Y i j from rfl, UpperTheory.V.FieldIso.coord_smul, Complex.real_smul, mul_smul]`. Rewrite using `[sum_coord_pl s (fun v => TR.Eop v 0 0 + TR.Eop v 1 1)]`. Establish `hz : zF (trI F s) = ∑ v, trI F s v • (TR.toL (Matrix.single 0 0 (Pi.single v 1)) + TR.toL (Matrix.single 1 1 (Pi.single v 1)) : TR.Lie F 2)`. Use extensionality with `i j w`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [zF, TR.toL, Matrix.scalar_apply, Finset.sum_apply, Pi.single_apply, Matrix.single_apply]`.
+
+Rewrite using `[hz, map_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_add]`. Use `first`. Consider the case `rfl`.
+
+Consider the case `exact (Complex.coe_smul _ _).symm`. Consider the case `(ext φ g; rfl)`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.dLCen :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (O : Fo.Ops F), DLCen D O := by
   intro F E _ _ _ _ _ _ _ D O

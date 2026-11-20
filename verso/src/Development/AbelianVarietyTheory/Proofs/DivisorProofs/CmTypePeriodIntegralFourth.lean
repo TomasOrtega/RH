@@ -5,6 +5,21 @@ open Classical
 
 namespace GlobalTheory.Div.cm_type_period_integral_fourth
 
+/- English proof (translation)
+Establish `key : ∀ x ∈ Fil.baseChange K, ∃ s : O, s ≠ 0 ∧ ∃ f ∈ Fil, algebraMap O K s • x = (1 : K) ⊗ₜ[O] f`. Introduce `x hx`. Rewrite `hx` using `[Submodule.baseChange_eq_span]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨f, hf, rfl⟩` from `hy`. Conclude with `⟨1, one_ne_zero, f, hf, by simp⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, 0, Fil.zero_mem, by simp⟩`. Consider the case `add x y _ _ ihx ihy`. Take `⟨s, hs, f, hf, e⟩` from `ihx`.
+
+Take `⟨t, ht, g, hg, e'⟩` from `ihy`. Use `⟨s * t, mul_ne_zero hs ht, t • f + s • g, Fil.add_mem (Fil.smul_mem _ hf) (Fil.smul_mem _ hg), ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, smul_add, mul_smul]`. Rewrite using `[smul_comm (algebraMap O K s) (algebraMap O K t) x, e, e', TensorProduct.tmul_add, TensorProduct.tmul_smul, TensorProduct.tmul_smul, algebraMap_smul, algebraMap_smul]`. Consider the case `smul k x _ ihx`.
+
+Take `⟨s, hs, f, hf, e⟩` from `ihx`. Take `⟨⟨a, b⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors O) k`. Establish `hb : (b : O) ≠ 0` using `nonZeroDivisors.ne_zero b.2`. Use `⟨b * s, mul_ne_zero hb hs, a • f, Fil.smul_mem _ hf, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_smul, map_mul, mul_assoc, mul_comm (algebraMap O K s), ← mul_assoc, mul_comm (algebraMap O K (b : O)), IsLocalization.mk'_spec, mul_smul, e, TensorProduct.tmul_smul, algebraMap_smul]`.
+
+Take `⟨s, hs, f, hf, e⟩` from `key _ hh`. Establish `hloc : IsLocalizedModule (nonZeroDivisors O) (TensorProduct.mk O K H 1)` using `(isLocalizedModule_iff_isBaseChange (nonZeroDivisors O) K _).2 (TensorProduct.isBaseChange O H K)`. Establish `h0 : TensorProduct.mk O K H 1 (s • h - f) = 0`. Rewrite using `[map_sub, map_smul, TensorProduct.mk_apply, TensorProduct.mk_apply, ← algebraMap_smul K, e, sub_self]`. Take `⟨t, ht⟩` from `(IsLocalizedModule.eq_zero_iff (nonZeroDivisors O) _).1 h0`.
+
+Use `⟨(t : O) * s, mul_ne_zero (nonZeroDivisors.ne_zero t.2) hs, ?_⟩` and prove the remaining obligations. Establish `: (t : O) • (s • h) = (t : O) • f`. Rewrite `ht` using `[Submonoid.smul_def, smul_sub, sub_eq_zero]`. Conclude with `ht`. Rewrite using `[mul_smul, this]`.
+
+Conclude with `Fil.smul_mem _ hf`.
+-/
 theorem exists_smul_mem_of_tmul_mem_baseChange {O : Type} [CommRing O] [IsDomain O] {K : Type} [Field K] [Algebra O K]
     [IsFractionRing O K] {H : Type} [AddCommGroup H] [Module O H] (Fil : Submodule O H) (h : H)
     (hh : (1 : K) ⊗ₜ[O] h ∈ Fil.baseChange K) : ∃ d : O, d ≠ 0 ∧ d • h ∈ Fil := by
@@ -44,6 +59,11 @@ theorem exists_smul_mem_of_tmul_mem_baseChange {O : Type} [CommRing O] [IsDomain
   rw [mul_smul, this]
   exact Fil.smul_mem _ hf
 
+/- English proof (translation)
+Introduce `E _ _ _ c _ l _ O _ _ _ _ K _ _ _ _ _ D _ _ I _ φ _ H _ _ ρ Fil B hL i`. Use `inf_eq_right.2 fun h hh => ?_` and prove the remaining obligations. Take `⟨-, -, -, -, hsat, hbc, -⟩` from `hL`. Establish `h1 : inK K H h ∈ Fil.baseChange K`. Rewrite using `[hbc]`.
+
+Conclude with `le_iSup (fun j => eigK ρ (φ j)) i hh`. Take `⟨d, hd, hdh⟩` from `exists_smul_mem_of_tmul_mem_baseChange Fil h h1`. Conclude with `hsat d h hd hdh`.
+-/
 theorem fil_inf_eigLat_cmType : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ → ∀ (l : ℕ), l.Prime → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (K : Type) [Field K] [Algebra O K] [IsFractionRing O K], (l : O) ∈ IsLocalRing.maximalIdeal O → Nat.card (E →+* K) = Module.finrank ℚ E → ∀ (D : O), D ≠ 0 → ClearsIdem K c D → ∀ (I : Type) [Fintype I] (φ : I → E →+* K), IsCMTypeIn φ → ∀ (H : Type) [AddCommGroup H] [Module O H] (ρ : orderC c →+* Module.End O H) (Fil : Submodule O H) (B : LinearMap.BilinForm O H), IsCMLattice φ ρ Fil B → ∀ i, Fil ⊓ eigLat ρ (φ i) = eigLat ρ (φ i) := by
   intro E _ _ _ c _ l _ O _ _ _ _ K _ _ _ _ _ D _ _ I _ φ _ H _ _ ρ Fil B hL i
   refine inf_eq_right.2 fun h hh => ?_

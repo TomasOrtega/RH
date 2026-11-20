@@ -8,5 +8,8 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.LieVB GlobalTheory.CurveRootGeome
 open GlobalTheory.Cris (dp0)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinitePartTower.exists_finTower | exact GlobalTheory.FinitePartTower.exists_finTower | (intros; apply GlobalTheory.FinitePartTower.exists_finTower <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.semiabelian_extension_abelian_generic_henselian : GlobalTheory.Published.RaynaudExtension → ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] [IsAlgClosed (IsLocalRing.ResidueField R)] [IsAdicComplete (IsLocalRing.maximalIdeal R) R] (G : Over (Sp R)) [GrpObj G] (A : Over (Sp K)) [GrpObj A] (φ : A.left ⟶ G.left), IsSemiAbelian G → IsAbelianScheme A → IsGrpPullback A G (spMap (algebraMap R K)) φ → ∃ Γ' : PDivGroup p R, Nonempty (FinTower Γ' G) := by
   first | exact @GlobalTheory.FinitePartTower.exists_finTower | exact GlobalTheory.FinitePartTower.exists_finTower | (intros; apply GlobalTheory.FinitePartTower.exists_finTower <;> assumption)

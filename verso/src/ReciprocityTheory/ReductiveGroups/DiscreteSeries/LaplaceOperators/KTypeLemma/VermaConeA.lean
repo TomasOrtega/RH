@@ -13,10 +13,16 @@ section Core
 
 variable {n : ℕ} {U : Type*} [AddCommGroup U] [Module ℂ U]
 
+/- English proof (translation)
+Unfold `genSub`. Conclude with `le_sInf fun X hX => hX.1`.
+-/
 theorem vc_le_genSub (T : Fin n → Fin n → Module.End ℂ U) (S : Submodule ℂ U) : S ≤ genSub T S := by
   unfold genSub
   exact le_sInf fun X hX => hX.1
 
+/- English proof (translation)
+Unfold `genSub at hv ⊢`. Rewrite `hv`, the goal using `[Submodule.mem_sInf]`. Introduce `X hX`. Conclude with `hX.2 a b v (hv X hX)`.
+-/
 theorem vc_genSub_stable (T : Fin n → Fin n → Module.End ℂ U) (S : Submodule ℂ U) (a b : Fin n) {v : U}
     (hv : v ∈ genSub T S) : T a b v ∈ genSub T S := by
   unfold genSub at hv ⊢
@@ -24,6 +30,9 @@ theorem vc_genSub_stable (T : Fin n → Fin n → Module.End ℂ U) (S : Submodu
   intro X hX
   exact hX.2 a b v (hv X hX)
 
+/- English proof (translation)
+Unfold `genSub`. Conclude with `sInf_le ⟨hSX, hX⟩`.
+-/
 theorem vc_genSub_le (T : Fin n → Fin n → Module.End ℂ U) (S X : Submodule ℂ U) (hSX : S ≤ X)
     (hX : ∀ a b, ∀ v ∈ X, T a b v ∈ X) : genSub T S ≤ X := by
   unfold genSub
@@ -32,6 +41,9 @@ theorem vc_genSub_le (T : Fin n → Fin n → Module.End ℂ U) (S X : Submodule
 def vcGood (T : Fin n → Fin n → Module.End ℂ U) (P : (Fin n → ℝ) → Prop) : Set U :=
   {w | ∃ ν, P ν ∧ ∀ a, T a a w = ((ν a : ℝ) : ℂ) • w}
 
+/- English proof (translation)
+Simplify using `only [vcGood, Set.mem_setOf_eq] at hw ⊢`. Take `⟨ν, hP, hν⟩` from `hw`. Use `⟨ν, hP, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hν a, smul_comm]`.
+-/
 theorem vcGood_smul (T : Fin n → Fin n → Module.End ℂ U) (P : (Fin n → ℝ) → Prop) {w : U}
     (hw : w ∈ vcGood T P) (c : ℂ) : c • w ∈ vcGood T P := by
   simp only [vcGood, Set.mem_setOf_eq] at hw ⊢
@@ -39,10 +51,30 @@ theorem vcGood_smul (T : Fin n → Fin n → Module.End ℂ U) (P : (Fin n → �
   refine ⟨ν, hP, fun a => ?_⟩
   rw [map_smul, hν a, smul_comm]
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.SmulListSum.goal1 .. | (apply Bl.SmulListSum.goal1 <;> assumption) | (intros; apply Bl.SmulListSum.goal1 <;> assumption)`.
+-/
 theorem vc_exists_list {G : Set U} (hs : ∀ w ∈ G, ∀ c : ℂ, c • w ∈ G) {y : U}
     (hy : y ∈ Submodule.span ℂ G) : ∃ l : List U, (∀ w ∈ l, w ∈ G) ∧ y = l.sum := by
   first | exact Bl.SmulListSum.goal1 .. | (apply Bl.SmulListSum.goal1 <;> assumption) | (intros; apply Bl.SmulListSum.goal1 <;> assumption)
 
+/- English proof (translation)
+Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `l hl _ x _ hxl`. Consider the cases of `l with`.
+
+Consider the case `nil => simpa using hxl`. Consider the case `cons w l' => simp at hl`. Consider the case `succ N ih`. Introduce `l hl hg x hx hxl`. Consider the cases of `l with`.
+
+Consider the case `nil => simp at hl`. Consider the case `cons w l'`. Establish `hl' : l'.length = N` using `by simpa using hl`. Establish `hw0` using `hg w (by simp)`. Simplify using `only [vcGood, Set.mem_setOf_eq] at hw0`.
+
+Take `⟨ν, hPν, hν⟩` from `hw0`. Establish `hne : ν ≠ μ` using `fun h => hμ (h ▸ hPν)`. Take `⟨a, ha⟩` from `Function.ne_iff.mp hne`. Establish `hc0 : ((μ a : ℝ) : ℂ) - ((ν a : ℝ) : ℂ) ≠ 0` using `sub_ne_zero.mpr (by exact_mod_cast ha.symm)`. Take `⟨D, hD⟩ : ∃ D : Module.End ℂ U, ∀ u, D u = T a a u - ((ν a : ℝ) : ℂ) • u` from `⟨T a a - ((ν a : ℝ) : ℂ) • 1, fun u => by simp⟩`.
+
+Establish `h1 : D x = (((μ a : ℝ) : ℂ) - ((ν a : ℝ) : ℂ)) • x`. Rewrite using `[hD, hx a, sub_smul]`. Establish `h2 : D w = 0` using `by rw [hD, hν a, sub_self]`. Establish `h3 : D x = (l'.map D).sum`. Rewrite using `[hxl, List.sum_cons, map_add, h2, zero_add, map_list_sum]`.
+
+Establish `hgood : ∀ u ∈ l'.map D, u ∈ vcGood T P`. Introduce `u hu`. Take `⟨u0, hu0, rfl⟩` from `List.mem_map.mp hu`. Establish `hg0` using `hg u0 (by simp [hu0])`. Simplify using `only [vcGood, Set.mem_setOf_eq] at hg0 ⊢`.
+
+Take `⟨ν', hP', hν'⟩` from `hg0`. Use `⟨ν', hP', fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[hD, hν' a, ← sub_smul, map_smul, hν' b, smul_comm]`. Establish `hwt : ∀ b, T b b ((((μ a : ℝ) : ℂ) - ((ν a : ℝ) : ℂ)) • x) = ((μ b : ℝ) : ℂ) • ((((μ a : ℝ) : ℂ) - ((ν a : ℝ) : ℂ)) • x)`. Introduce `b`.
+
+Rewrite using `[map_smul, hx b, smul_comm]`. Establish `hz` using `ih (l'.map D) (by simpa using hl') hgood _ hwt (by rw [← h1, h3])`. Conclude with `(smul_eq_zero.mp hz).resolve_left hc0`.
+-/
 theorem vc_eq_zero_of_list (T : Fin n → Fin n → Module.End ℂ U) (P : (Fin n → ℝ) → Prop)
     {μ : Fin n → ℝ} (hμ : ¬ P μ) :
     ∀ (N : ℕ) (l : List U), l.length = N → (∀ w ∈ l, w ∈ vcGood T P) → ∀ x : U,
@@ -89,6 +121,9 @@ theorem vc_eq_zero_of_list (T : Fin n → Fin n → Module.End ℂ U) (P : (Fin 
       have hz := ih (l'.map D) (by simpa using hl') hgood _ hwt (by rw [← h1, h3])
       exact (smul_eq_zero.mp hz).resolve_left hc0
 
+/- English proof (translation)
+Take `⟨l, hl, e⟩` from `vc_exists_list (fun w hw c => vcGood_smul T P hw c) hxs`. Conclude with `vc_eq_zero_of_list T P hμ l.length l rfl hl x hx e`.
+-/
 theorem vc_eq_zero_of_mem_span (T : Fin n → Fin n → Module.End ℂ U) (P : (Fin n → ℝ) → Prop)
     {μ : Fin n → ℝ} (hμ : ¬ P μ) {x : U} (hx : ∀ a, T a a x = ((μ a : ℝ) : ℂ) • x)
     (hxs : x ∈ Submodule.span ℂ (vcGood T P)) : x = 0 := by
@@ -103,12 +138,25 @@ def vcMonAll (T : Fin n → Fin n → Module.End ℂ U) (v : U) : Set U := ⋃ k
 
 def vcHt (β : Fin n → ℝ) : ℝ := ∑ a : Fin n, -((a : ℕ) : ℝ) * β a
 
+/- English proof (translation)
+Simplify using `only [vcHt, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem vcHt_add (β γ : Fin n → ℝ) : vcHt (β + γ) = vcHt β + vcHt γ := by
   simp only [vcHt, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[vcHt]`.
+-/
 theorem vcHt_zero : vcHt (0 : Fin n → ℝ) = 0 := by
   simp [vcHt]
 
+/- English proof (translation)
+Establish `h1 : ∀ e : Fin n, ∑ a : Fin n, -((a : ℕ) : ℝ) * (Pi.single e (1 : ℝ) : Fin n → ℝ) a = -((e : ℕ) : ℝ)`. Introduce `e`. Rewrite using `[Fintype.sum_eq_single e (fun a ha => by simp [Pi.single_apply, ha])]`. Simplify using the standard rewrite rules. Establish `key : vcHt (root c d) = ((d : ℕ) : ℝ) - ((c : ℕ) : ℝ)`.
+
+Simplify using `only [vcHt, root, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib, h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Establish `h' : (c : ℕ) + 1 ≤ (d : ℕ)` using `h`. Establish `h'' : ((c : ℕ) : ℝ) + 1 ≤ ((d : ℕ) : ℝ)` using `by exact_mod_cast h'`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem vcHt_root {c d : Fin n} (h : c < d) : 1 ≤ vcHt (root c d) := by
   have h1 : ∀ e : Fin n, ∑ a : Fin n, -((a : ℕ) : ℝ) * (Pi.single e (1 : ℝ) : Fin n → ℝ) a
       = -((e : ℕ) : ℝ) := by
@@ -123,10 +171,22 @@ theorem vcHt_root {c d : Fin n} (h : c < d) : 1 ≤ vcHt (root c d) := by
   have h'' : ((c : ℕ) : ℝ) + 1 ≤ ((d : ℕ) : ℝ) := by exact_mod_cast h'
   linarith
 
+/- English proof (translation)
+Unfold `InRootCone`. Conclude with `⟨fun _ _ => 0, by simp⟩`.
+-/
 theorem vc_inRootCone_zero' : InRootCone (0 : Fin n → ℝ) := by
   unfold InRootCone
   exact ⟨fun _ _ => 0, by simp⟩
 
+/- English proof (translation)
+Unfold `InRootCone at hβ ⊢`. Take `⟨m, hm⟩` from `hβ`. Use `⟨fun a b => m a b + if a = c ∧ b = d then 1 else 0, ?_⟩` and prove the remaining obligations. Establish `hsplit : ∀ a b : Fin n, (if a < b then (((m a b + if a = c ∧ b = d then 1 else 0 : ℕ)) : ℝ) • root a b else 0) = (if a < b then (m a b : ℝ) • root a b else 0) + (if a = c ∧ b = d then root c d else 0)`. Introduce `a b`.
+
+Distinguish the cases in `hab : a = c ∧ b = d`. Take `⟨rfl, rfl⟩` from `hab`. Simplify using `[h, add_smul]`. Rewrite using `[if_neg hab, if_neg hab]`. Simplify using the standard rewrite rules.
+
+Establish `hind : (∑ a : Fin n, ∑ b : Fin n, (if a = c ∧ b = d then root c d else 0)) = root c d`. Rewrite using `[Finset.sum_eq_single c (fun a _ ha => by simp [ha]) (by simp)]`. Rewrite using `[Finset.sum_eq_single d (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules. Rewrite using `[hm]`.
+
+Simplify using `only [hsplit, Finset.sum_add_distrib, hind]`.
+-/
 theorem vc_inRootCone_add_root {β : Fin n → ℝ} (hβ : InRootCone β) {c d : Fin n} (h : c < d) :
     InRootCone (β + root c d) := by
   unfold InRootCone at hβ ⊢
@@ -149,6 +209,29 @@ theorem vc_inRootCone_add_root {β : Fin n → ℝ} (hβ : InRootCone β) {c d :
   rw [hm]
   simp only [hsplit, Finset.sum_add_distrib, hind]
 
+/- English proof (translation)
+Establish `hz : ∀ w, w ∈ vcMon T v 0 → w = v` using `fun w hw => hw`. Establish `hs : ∀ k w, w ∈ vcMon T v (k + 1) → ∃ a b, a < b ∧ ∃ x ∈ vcMon T v k, w = T a b x` using `fun k w hw => hw`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Introduce `w hw`. Rewrite using `[hz w hw]`. Use `⟨base, hv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_self]`. Conclude with `vc_inRootCone_zero'`.
+
+Rewrite using `[sub_self, vcHt_zero]`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `w hw`. Take `⟨a, b, hab', x, hx, rfl⟩` from `hs k w hw`.
+
+Take `⟨ν, hxν, hcone, hht⟩` from `ih x hx`. Establish `hab : a ≠ b` using `ne_of_lt hab'`. Establish `hw : ∀ c, T c c (T a b x) = (((ν + root a b) c : ℝ) : ℂ) • T a b x`. Introduce `c`. Establish `hc` using `LinearMap.congr_fun (hT c c a b) x`.
+
+Establish `e : (T c c * T a b - T a b * T c c) x = T c c (T a b x) - T a b (T c c x)` using `by first`. Consider the case `rfl`. Consider the case `simp [LinearMap.sub_apply, Module.End.mul_apply]`. Consider the case `simp [LinearMap.sub_apply, LinearMap.mul_apply]`. Rewrite `hc` using `[e, hxν c, map_smul]`.
+
+Simplify using `only [root, Pi.add_apply, Pi.sub_apply, Pi.single_apply]`. Distinguish the cases in `h1 : c = a`. Establish `h2 : ¬ b = c`. Rewrite using `[h1]`. Conclude with `fun h => hab h.symm`.
+
+Rewrite `hc` using `[if_pos h1, if_neg h2, sub_zero]`. Rewrite `hc`, the goal using `[h1]`. Rewrite using `[if_pos rfl, if_neg hab, sub_zero, Complex.ofReal_add, Complex.ofReal_one, add_smul, one_smul]`. Rewrite `hc` using `[sub_eq_iff_eq_add]`. Rewrite using `[hc, add_comm]`.
+
+Distinguish the cases in `h3 : c = b`. Establish `h2 : b = c` using `h3.symm`. Rewrite `hc` using `[if_neg h1, if_pos h2, zero_sub]`. Rewrite `hc`, the goal using `[h3]`. Rewrite using `[if_neg (Ne.symm hab), if_pos rfl, zero_sub, ← sub_eq_add_neg, Complex.ofReal_sub, Complex.ofReal_one, sub_smul, one_smul]`.
+
+Rewrite `hc` using `[LinearMap.neg_apply, sub_eq_iff_eq_add]`. Rewrite using `[hc, neg_add_eq_sub]`. Establish `h2 : ¬ b = c` using `fun h => h3 h.symm`. Rewrite `hc` using `[if_neg h1, if_neg h2, sub_zero, LinearMap.zero_apply, sub_eq_zero]`. Rewrite using `[if_neg h1, if_neg h3, sub_zero, add_zero, hc]`.
+
+Establish `e : ν + root a b - base = (ν - base) + root a b` using `by abel`. Use `⟨ν + root a b, hw, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `vc_inRootCone_add_root hcone hab'`. Rewrite using `[e, vcHt_add]`.
+
+Use `vcHt_root hab'` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem vcMon_weight (T : Fin n → Fin n → Module.End ℂ U) (hT : IsGlRep T) {v : U}
     {base : Fin n → ℝ} (hv : ∀ a, T a a v = ((base a : ℝ) : ℂ) • v) :
     ∀ k, ∀ w ∈ vcMon T v k, ∃ ν : Fin n → ℝ, (∀ a, T a a w = ((ν a : ℝ) : ℂ) • w) ∧
@@ -211,6 +294,11 @@ theorem vcMon_weight (T : Fin n → Fin n → Module.End ℂ U) (hT : IsGlRep T)
       push_cast
       linarith
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h : Submodule.span ℂ G ⊔ F ≤ (Submodule.span ℂ G ⊔ F).comap X`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce `w hw`.
+
+Conclude with `hG w hw`. Introduce `y hy`. Conclude with `Submodule.mem_sup_right (hF y hy)`. Conclude with `h hx`.
+-/
 theorem vc_sup_stable {G : Set U} {F : Submodule ℂ U} (X : Module.End ℂ U)
     (hG : ∀ w ∈ G, X w ∈ Submodule.span ℂ G ⊔ F) (hF : ∀ x ∈ F, X x ∈ F) :
     ∀ x ∈ Submodule.span ℂ G ⊔ F, X x ∈ Submodule.span ℂ G ⊔ F := by
@@ -224,6 +312,33 @@ theorem vc_sup_stable {G : Set U} {F : Submodule ℂ U} (X : Module.End ℂ U)
       exact Submodule.mem_sup_right (hF y hy)
   exact h hx
 
+/- English proof (translation)
+Establish `hz : ∀ w, w ∈ vcMon T v 0 → w = v` using `fun w hw => hw`. Establish `hv0 : v ∈ vcMon T v 0` using `by show v ∈ ({v} : Set U)`. Conclude with `Set.mem_singleton v`. Establish `hs : ∀ k w, w ∈ vcMon T v (k + 1) → ∃ a b, a < b ∧ ∃ x ∈ vcMon T v k, w = T a b x` using `fun k w hw => hw`. Establish `hn : ∀ k a b, a < b → ∀ x ∈ vcMon T v k, T a b x ∈ vcMon T v (k + 1)`.
+
+Introduce `k a b hab x hx`. Use `show ∃ a' b', a' < b' ∧ ∃ y ∈ vcMon T v k, T a b x = T a' b' y`. Conclude with `⟨a, b, hab, x, hx, rfl⟩`. Establish `hmon : ∀ k, ∀ w ∈ vcMon T v k, w ∈ Submodule.span ℂ (vcMonAll T v) ⊔ F`. Introduce `k w hw`.
+
+Use `Submodule.mem_sup_left (Submodule.subset_span ?_)` and prove the remaining obligations. Use `show w ∈ ⋃ k, vcMon T v k`. Conclude with `Set.mem_iUnion.mpr ⟨k, hw⟩`. Establish `hup : ∀ c d, c < d → ∀ y ∈ Submodule.span ℂ (vcMonAll T v) ⊔ F, T c d y ∈ Submodule.span ℂ (vcMonAll T v) ⊔ F`. Introduce `c d hcd`.
+
+Use `vc_sup_stable (T c d) ?_ (hF c d)` and prove the remaining obligations. Introduce `w hw`. Take `⟨k, hk⟩ : ∃ k, w ∈ vcMon T v k` from `by simpa [vcMonAll] using hw`. Conclude with `hmon (k + 1) _ (hn k c d hcd w hk)`. Establish `hstab : ∀ k, ∀ a b, ∀ w ∈ vcMon T v k, T a b w ∈ Submodule.span ℂ (vcMonAll T v) ⊔ F`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `a b w hw`. Rewrite using `[hz w hw]`.
+
+Break down `lt_trichotomy a b with h | h | h` into its components or cases. Conclude with `hmon 1 _ (hn 0 a b h v hv0)`. Rewrite using `[h]`. Take `⟨c, hc⟩` from `hdiag b`. Rewrite using `[hc]`.
+
+Conclude with `Submodule.smul_mem _ c (hmon 0 v hv0)`. Conclude with `Submodule.mem_sup_right (hlow a b h)`. Consider the case `succ k ih`. Introduce `a b w hw`. Take `⟨c, d, hcd, x, hx, rfl⟩` from `hs k w hw`.
+
+Establish `hc` using `LinearMap.congr_fun (hT a b c d) x`. Establish `e : (T a b * T c d - T c d * T a b) x = T a b (T c d x) - T c d (T a b x)` using `by first`. Consider the case `rfl`. Consider the case `simp [LinearMap.sub_apply, Module.End.mul_apply]`. Consider the case `simp [LinearMap.sub_apply, LinearMap.mul_apply]`.
+
+Rewrite `hc` using `[e, sub_eq_iff_eq_add]`. Rewrite using `[hc]`. Use `Submodule.add_mem _ ?_ (hup c d hcd _ (ih a b x hx))` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply]`. Use `Submodule.sub_mem _ ?_ ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `ih a d x hx`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`. Use `split_ifs`.
+
+Conclude with `ih c b x hx`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`. Use `vc_genSub_le T (Submodule.span ℂ {v}) _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`.
+
+Conclude with `hmon 0 v hv0`. Introduce `a b y hy`. Use `vc_sup_stable (T a b) ?_ (hF a b) y hy` and prove the remaining obligations. Introduce `w hw`. Take `⟨k, hk⟩ : ∃ k, w ∈ vcMon T v k` from `by simpa [vcMonAll] using hw`.
+
+Conclude with `hstab k a b w hk`.
+-/
 theorem vc_genSub_le_mon (T : Fin n → Fin n → Module.End ℂ U) (hT : IsGlRep T) (v : U)
     (F : Submodule ℂ U) (hF : ∀ a b, ∀ x ∈ F, T a b x ∈ F) (hlow : ∀ a b, b < a → T a b v ∈ F)
     (hdiag : ∀ a, ∃ c : ℂ, T a a v = c • v) :
@@ -299,6 +414,9 @@ def vcIter (A : Module.End ℂ U) (θ : ℕ → ℂ) (k0 : ℕ) : ℕ → Module
   | 0 => 1
   | i + 1 => (A - θ (k0 + i) • 1) * vcIter A θ k0 i
 
+/- English proof (translation)
+The claim follows from `| 0, x, hx => by simpa [vcIter] using hx | i + 1, x, hx => by have h := hstep (k0 + i) _ (vcIter_maps A θ F hstep k0 i x hx) simpa [vcIter, Module.End.mul_apply, LinearMap.sub_apply, add_assoc] using h`.
+-/
 theorem vcIter_maps (A : Module.End ℂ U) (θ : ℕ → ℂ) (F : ℕ → Submodule ℂ U)
     (hstep : ∀ k, ∀ x ∈ F k, A x - θ k • x ∈ F (k + 1)) (k0 : ℕ) :
     ∀ i, ∀ x ∈ F k0, vcIter A θ k0 i x ∈ F (k0 + i)
@@ -307,6 +425,9 @@ theorem vcIter_maps (A : Module.End ℂ U) (θ : ℕ → ℂ) (F : ℕ → Submo
     have h := hstep (k0 + i) _ (vcIter_maps A θ F hstep k0 i x hx)
     simpa [vcIter, Module.End.mul_apply, LinearMap.sub_apply, add_assoc] using h
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp [vcIter] | i + 1 => by rw [vcIter, Module.End.mul_apply, vcIter_eig A θ k0 hx i, Finset.prod_range_succ] simp only [map_smul, LinearMap.sub_apply, hx, LinearMap.smul_apply, Module.End.one_apply] rw [← sub_smul, smul_smul, mul_comm]`.
+-/
 theorem vcIter_eig (A : Module.End ℂ U) (θ : ℕ → ℂ) (k0 : ℕ) {x : U} {t : ℂ} (hx : A x = t • x) :
     ∀ i, vcIter A θ k0 i x = (∏ i' ∈ range i, (t - θ (k0 + i'))) • x
   | 0 => by simp [vcIter]
@@ -315,6 +436,9 @@ theorem vcIter_eig (A : Module.End ℂ U) (θ : ℕ → ℂ) (k0 : ℕ) {x : U} 
     simp only [map_smul, LinearMap.sub_apply, hx, LinearMap.smul_apply, Module.End.one_apply]
     rw [← sub_smul, smul_smul, mul_comm]
 
+/- English proof (translation)
+The claim follows from `| 0 => Commute.one_left X | i + 1 => ((hX.sub_left ((Commute.one_left X).smul_left _)).mul_left (vcIter_comm A θ k0 hX i))`.
+-/
 theorem vcIter_comm (A : Module.End ℂ U) (θ : ℕ → ℂ) (k0 : ℕ) {X : Module.End ℂ U} (hX : Commute A X) :
     ∀ i, Commute (vcIter A θ k0 i) X
   | 0 => Commute.one_left X

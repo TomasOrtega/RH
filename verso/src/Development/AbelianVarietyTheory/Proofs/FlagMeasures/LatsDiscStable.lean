@@ -23,6 +23,9 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 omit [StarRing K] in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `using hx`. Introduce `hy`. Conclude with `⟨e.symm y, hy, by simp⟩`.
+-/
 theorem _root_.GlobalTheory.Mass.Transp.mem_img (e : V ≃ₗ[K] V') (L : Submodule R V) (y : V') :
     y ∈ _root_.GlobalTheory.Mass.Transp.img e L ↔ e.symm y ∈ L := by
   constructor
@@ -38,6 +41,9 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 omit [StarRing K] in
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[_root_.GlobalTheory.Mass.Transp.mem_img]`.
+-/
 theorem _root_.GlobalTheory.Mass.Transp.img_symm_img (e : V ≃ₗ[K] V') (L : Submodule R V) :
     _root_.GlobalTheory.Mass.Transp.img e.symm (_root_.GlobalTheory.Mass.Transp.img e L) = L := by
   ext x
@@ -50,6 +56,9 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 omit [StarRing K] in
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[_root_.GlobalTheory.Mass.Transp.mem_img]`.
+-/
 theorem _root_.GlobalTheory.Mass.Transp.img_img_symm (e : V ≃ₗ[K] V') (L : Submodule R V') :
     _root_.GlobalTheory.Mass.Transp.img e (_root_.GlobalTheory.Mass.Transp.img e.symm L) = L := by
   ext x
@@ -64,6 +73,9 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K} in
+/- English proof (translation)
+Introduce `x y`. Rewrite using `[← he]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.Mass.Transp.symm_isom (e : V ≃ₗ[K] V') (he : ∀ x y, h' (e x) (e y) = h x y) :
     ∀ x y, h (e.symm x) (e.symm y) = h' x y := by
   intro x y
@@ -77,6 +89,9 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K} in
+/- English proof (translation)
+Unfold `_root_.Formalism.HermitianLatticesTheory.dual _root_.Formalism.E.hdual`. Simplify using `[Submodule.mem_iInf]`.
+-/
 private lemma mem_dual_iff_hermitian_lattices (L : Submodule R V) (x : V) :
     x ∈ _root_.Formalism.HermitianLatticesTheory.dual h L ↔ ∀ y ∈ L, h y x ∈ (1 : Submodule R K) := by
   unfold _root_.Formalism.HermitianLatticesTheory.dual _root_.Formalism.E.hdual
@@ -89,6 +104,11 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K} in
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_dual_iff_hermitian_lattices, _root_.GlobalTheory.Mass.Transp.mem_img, mem_dual_iff_hermitian_lattices]`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Rewrite using `[← he, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `hy (e x) ((_root_.GlobalTheory.Mass.Transp.mem_img e L _).2 (by simpa using hx))`. Introduce `hy z hz`. Rewrite `hz` using `[_root_.GlobalTheory.Mass.Transp.mem_img]`. Use `hy _ hz` as an intermediate fact. Rewrite `this` using `[_root_.GlobalTheory.Mass.Transp.symm_isom e he]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.Mass.Transp.dual_img (e : V ≃ₗ[K] V') (he : ∀ x y, h' (e x) (e y) = h x y) (L : Submodule R V) :
     _root_.Formalism.HermitianLatticesTheory.dual h' (_root_.GlobalTheory.Mass.Transp.img e L) = _root_.GlobalTheory.Mass.Transp.img e (_root_.Formalism.HermitianLatticesTheory.dual h L) := by
   ext y
@@ -102,6 +122,11 @@ theorem _root_.GlobalTheory.Mass.Transp.dual_img (e : V ≃ₗ[K] V') (he : ∀ 
     have := hy _ hz
     rwa [_root_.GlobalTheory.Mass.Transp.symm_isom e he] at this
 
+/- English proof (translation)
+Unfold `discN idxN`. Rewrite using `[dual_img e he]`. Establish `h1 : ∀ M : Submodule R V, (img e M).toAddSubgroup = M.toAddSubgroup.map (e.toAddEquiv : V →+ V')`. Introduce `M`. Use extensionality with `y`.
+
+Simplify using `[img]`. Rewrite using `[h1, h1]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ e.injective`.
+-/
 theorem discN_img (e : V ≃ₗ[K] V') (he : ∀ x y, h' (e x) (e y) = h x y) (L : Submodule R V) :
     discN h' (img e L) = discN h L := by
   unfold discN idxN
@@ -119,6 +144,9 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 omit [StarRing K] in
+/- English proof (translation)
+Use `⟨hL.fg.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.Mass.Transp.img, Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image (e : V →ₗ[K] V'), hL.span_eq_top, Submodule.map_top]`. Conclude with `LinearEquiv.range e`.
+-/
 private lemma isLattice_img_of_isLattice (e : V ≃ₗ[K] V') (L : Submodule R V) (hL : Submodule.IsLattice K L) :
     Submodule.IsLattice K (_root_.GlobalTheory.Mass.Transp.img e L) := by
   refine ⟨hL.fg.map _, ?_⟩
@@ -133,6 +161,9 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Mass.IsIntLat _root_.Formalism.HermitianLatticesTheory.IsIntegralLat at *`. Use `⟨isLattice_img_of_isLattice e L hL.1, fun x hx y hy => ?_⟩` and prove the remaining obligations. Rewrite `hx`, `hy` using `[_root_.GlobalTheory.Mass.Transp.mem_img]`. Rewrite using `[← _root_.GlobalTheory.Mass.Transp.symm_isom e he]`. Conclude with `hL.2 _ hx _ hy`.
+-/
 theorem _root_.GlobalTheory.Mass.Transp.intLat_img (e : V ≃ₗ[K] V') (he : ∀ x y, h' (e x) (e y) = h x y) (L : Submodule R V)
     (hL : _root_.GlobalTheory.Mass.IsIntLat h L) : _root_.GlobalTheory.Mass.IsIntLat h' (_root_.GlobalTheory.Mass.Transp.img e L) := by
   unfold _root_.GlobalTheory.Mass.IsIntLat _root_.Formalism.HermitianLatticesTheory.IsIntegralLat at *
@@ -141,6 +172,9 @@ theorem _root_.GlobalTheory.Mass.Transp.intLat_img (e : V ≃ₗ[K] V') (he : �
   rw [← _root_.GlobalTheory.Mass.Transp.symm_isom e he]
   exact hL.2 _ hx _ hy
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨intLat_img e he L hL.1, (discN_img e he L).trans hL.2⟩`.
+-/
 theorem latsDisc_img (e : V ≃ₗ[K] V') (he : ∀ x y, h' (e x) (e y) = h x y) (n : ℕ)
     (L : Submodule R V) (hL : L ∈ latsDisc (R := R) h n) : img e L ∈ latsDisc (R := R) h' n :=
   ⟨intLat_img e he L hL.1, (discN_img e he L).trans hL.2⟩
@@ -163,6 +197,9 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma isom_smul_eq_img (g : _root_.Formalism.HermitianLatticesTheory.isom h) (L : Submodule R V) :
     g • L = _root_.GlobalTheory.Mass.Transp.img (g : V ≃ₗ[K] V) L := rfl
 
@@ -173,6 +210,9 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 omit [StarRing K] in
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[_root_.GlobalTheory.Mass.Transp.mem_img]`.
+-/
 private lemma img_trans_eq_img_img (e₁ : V ≃ₗ[K] V') (e₂ : V' ≃ₗ[K] V'') (L : Submodule R V) :
     _root_.GlobalTheory.Mass.Transp.img (e₁.trans e₂) L =
       _root_.GlobalTheory.Mass.Transp.img e₂ (_root_.GlobalTheory.Mass.Transp.img e₁ L) := by
@@ -186,6 +226,9 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K} in
+/- English proof (translation)
+Rewrite using `[isom_smul_eq_img, isom_smul_eq_img, ← img_trans_eq_img_img, ← img_trans_eq_img_img]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[_root_.GlobalTheory.Mass.Transp.conj]`.
+-/
 theorem _root_.GlobalTheory.Mass.Transp.img_smul (e : V ≃ₗ[K] V') (he : ∀ x y, h' (e x) (e y) = h x y) (g : _root_.Formalism.HermitianLatticesTheory.isom h)
     (L : Submodule R V) : _root_.GlobalTheory.Mass.Transp.img e (g • L) = _root_.GlobalTheory.Mass.Transp.conj e he g • _root_.GlobalTheory.Mass.Transp.img e L := by
   rw [isom_smul_eq_img, isom_smul_eq_img, ← img_trans_eq_img_img, ← img_trans_eq_img_img]
@@ -200,6 +243,9 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private lemma mem_genus_iff_isLattice_and_locally_isom (L M : Submodule R V) : M ∈ _root_.Formalism.HermitianLatticesTheory.genus h L ↔ Submodule.IsLattice K M ∧
     ∀ p : Ideal R, p.IsMaximal → ∃ g ∈ _root_.Formalism.HermitianLatticesTheory.isom h,
       _root_.GlobalTheory.Mass.Transp.img g (_root_.Formalism.HermitianLatticesTheory.loc (K := K) p L) = _root_.Formalism.HermitianLatticesTheory.loc (K := K) p M := Iff.rfl
@@ -210,6 +256,11 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
+/- English proof (translation)
+Establish `hsmul : ∀ (s : R) (y : V'), e.symm (s • y) = s • e.symm y` using `fun s y => LinearMap.map_smul_of_tower e.symm.toLinearMap s y`. Use extensionality with `y`. Rewrite using `[_root_.GlobalTheory.Mass.Transp.mem_img]`. Unfold `_root_.Formalism.HermitianLatticesTheory.loc _root_.Formalism.HermitianLatticesTheory.locS`. Use `show (∃ s ∈ _, s • y ∈ _) ↔ (∃ s ∈ _, s • e.symm y ∈ _)`.
+
+Simplify using `only [_root_.GlobalTheory.Mass.Transp.mem_img, hsmul]`.
+-/
 private lemma loc_img_eq_img_loc (e : V ≃ₗ[K] V') (p : Ideal R) (L : Submodule R V) :
     _root_.Formalism.HermitianLatticesTheory.loc (K := K) p (_root_.GlobalTheory.Mass.Transp.img e L) =
       _root_.GlobalTheory.Mass.Transp.img e (_root_.Formalism.HermitianLatticesTheory.loc (K := K) p L) := by
@@ -228,6 +279,11 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K} in
+/- English proof (translation)
+Rewrite `hM`, the goal using `[mem_genus_iff_isLattice_and_locally_isom]`. Use `⟨isLattice_img_of_isLattice e M hM.1, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, heq⟩` from `hM.2 p hp`. Use `⟨(_root_.GlobalTheory.Mass.Transp.conj e he ⟨g, hg⟩ : _root_.Formalism.HermitianLatticesTheory.isom h'), SetLike.coe_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[loc_img_eq_img_loc, loc_img_eq_img_loc, ← heq, ← img_trans_eq_img_img, ← img_trans_eq_img_img]`.
+
+Use `congr 1`. Use extensionality with `x`. Simplify using `[_root_.GlobalTheory.Mass.Transp.conj]`.
+-/
 theorem _root_.GlobalTheory.Mass.Transp.genus_img (e : V ≃ₗ[K] V') (he : ∀ x y, h' (e x) (e y) = h x y) (L M : Submodule R V)
     (hM : M ∈ _root_.Formalism.HermitianLatticesTheory.genus h L) : _root_.GlobalTheory.Mass.Transp.img e M ∈ _root_.Formalism.HermitianLatticesTheory.genus h' (_root_.GlobalTheory.Mass.Transp.img e L) := by
   rw [mem_genus_iff_isLattice_and_locally_isom] at hM ⊢
@@ -246,6 +302,9 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private lemma mem_isom_iff_preserves_form (g : V ≃ₗ[K] V) :
     g ∈ _root_.Formalism.HermitianLatticesTheory.isom h ↔ ∀ x y, h (g x) (g y) = h x y :=
   Iff.rfl
@@ -257,6 +316,11 @@ variable {R K V V' V'' : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V'] [Module K V'] [Module R V'] [IsScalarTower R K V']
   [AddCommGroup V''] [Module K V''] [Module R V''] [IsScalarTower R K V''] in
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K} in
+/- English proof (translation)
+Introduce `g M hM`. Rewrite using `[isom_smul_eq_img]`. Rewrite `hM`, the goal using `[mem_genus_iff_isLattice_and_locally_isom]`. Use `⟨isLattice_img_of_isLattice _ M hM.1, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨g', hg', heq⟩` from `hM.2 p hp`.
+
+Use `⟨g'.trans g.1, fun x y => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, (mem_isom_iff_preserves_form _).1 g.2, (mem_isom_iff_preserves_form _).1 hg']`. Rewrite using `[loc_img_eq_img_loc, img_trans_eq_img_img, heq]`.
+-/
 theorem _root_.GlobalTheory.Mass.Transp.genus_stable (L : Submodule R V) : _root_.GlobalTheory.Mass.Stable (_root_.Formalism.HermitianLatticesTheory.isom h) (_root_.Formalism.HermitianLatticesTheory.genus h L) := by
   intro g M hM
   rw [isom_smul_eq_img]
@@ -268,9 +332,15 @@ theorem _root_.GlobalTheory.Mass.Transp.genus_stable (L : Submodule R V) : _root
       (mem_isom_iff_preserves_form _).1 hg']
   · rw [loc_img_eq_img_loc, img_trans_eq_img_img, heq]
 
+/- English proof (translation)
+Introduce `g M hM` and use `latsDisc_img g.1 g.2 n M hM`.
+-/
 theorem latsDisc_stable (n : ℕ) : Stable (isom h) (latsDisc (R := R) h n) :=
   fun g M hM => latsDisc_img g.1 g.2 n M hM
 
+/- English proof (translation)
+Use `GlobalTheory.Mass.OrbTransport.main _ _ _ _ (conj e he) (img e) X Y (fun _ => 1) hX hY ?_ (fun g x _ => img_smul e he g x) (fun _ _ => rfl)` and prove the remaining obligations. Use `⟨h1, fun a _ b _ hab => ?_, fun M hM => ⟨_, h2 M hM, img_img_symm e M⟩⟩` and prove the remaining obligations. Rewrite using `[← img_symm_img e a, hab, img_symm_img]`.
+-/
 theorem mass_img (e : V ≃ₗ[K] V') (he : ∀ x y, h' (e x) (e y) = h x y)
     (X : Set (Submodule R V)) (Y : Set (Submodule R V'))
     (hX : Stable (isom h) X) (hY : Stable (isom h') Y)
@@ -283,6 +353,11 @@ theorem mass_img (e : V ≃ₗ[K] V') (he : ∀ x y, h' (e x) (e y) = h x y)
 
 end General
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ h _ _ V' _ _ _ _ _ h' _ e he`. Use `⟨fun n => mass_img e he _ _ (latsDisc_stable n) (latsDisc_stable n) (latsDisc_img e he n) (latsDisc_img e.symm (symm_isom e he) n), fun L => ⟨?_, discN_img e he L, ?_, intLat_img e he L⟩⟩` and prove the remaining obligations. Use `mass_img e he _ (genus h' (img e L)) (genus_stable _) (genus_stable _) (genus_img e he L) (fun M hM => ?_)` and prove the remaining obligations. Use `genus_img e.symm (symm_isom e he) _ M hM` as an intermediate fact. Rewrite `this` using `[img_symm_img]`. Then use the resulting hypothesis.
+
+Introduce `hL`. Use `intLat_img e.symm (symm_isom e he) (img e L) hL` as an intermediate fact. Rewrite `this` using `[img_symm_img]`. Then use the resulting hypothesis.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → ∀ (V' : Type) [AddCommGroup V'] [Module K V'] [FiniteDimensional K V'] [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V'] (h' : V' →ₗ⋆[K] V' →ₗ[K] K), h'.IsSymm → ∀ e : V ≃ₗ[K] V', (∀ x y, h' (e x) (e y) = h x y) → (∀ n : ℕ, orbMass (isom h) (latsDisc (R := 𝓞 K) h n) = orbMass (isom h') (latsDisc (R := 𝓞 K) h' n)) ∧ ∀ L : Submodule (𝓞 K) V, orbMass (isom h) (genus h L) = orbMass (isom h') (genus h' (L.map (e.toLinearMap.restrictScalars (𝓞 K)))) ∧ discN h' (L.map (e.toLinearMap.restrictScalars (𝓞 K))) = discN h L ∧ (IsIntLat h' (L.map (e.toLinearMap.restrictScalars (𝓞 K))) ↔ IsIntLat h L) := by
   intro K V _ _ _ _ _ _ _ _ h _ _ V' _ _ _ _ _ h' _ e he
   refine ⟨fun n => mass_img e he _ _ (latsDisc_stable n) (latsDisc_stable n)

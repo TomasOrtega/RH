@@ -17,6 +17,11 @@ section Gen
 
 variable {C : Type} [Field C] {V : VF C}
 
+/- English proof (translation)
+Establish `e : (A + B) ^ V.l - A ^ V.l - B ^ V.l = MvPowerSeries.C (V.l : C) * ∑ k ∈ Finset.Ioo 0 V.l, A ^ k * B ^ (V.l - k) * MvPowerSeries.C ((V.l.choose k / V.l : ℕ) : C)`. Rewrite using `[add_pow_prime_eq' V.l_prime A B]`. Simplify using `only [map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, coeff_C_mul, map_sum, mul_comm]`.
+
+Use `ValuationNonnegativity.mm_mul_int (VF.Ge.sum fun k _ => ?_) FrobP.mm_l` and prove the remaining obligations. Rewrite using `[coeff_mul_C]`. Conclude with `VF.Ge.mul_int (intS_mul (intS_pow hA k) (intS_pow hB _) μ) (VF.ge_natCast _)`.
+-/
 theorem frob_mv {σ : Type} {A B : MvPowerSeries σ C} (hA : IntS V A) (hB : IntS V B) (μ : σ →₀ ℕ) :
     V.MM (coeff μ ((A + B) ^ V.l - A ^ V.l - B ^ V.l)) := by
   have e : (A + B) ^ V.l - A ^ V.l - B ^ V.l = MvPowerSeries.C (V.l : C) *
@@ -29,6 +34,11 @@ theorem frob_mv {σ : Type} {A B : MvPowerSeries σ C} (hA : IntS V A) (hB : Int
   rw [coeff_mul_C]
   exact VF.Ge.mul_int (intS_mul (intS_pow hA k) (intS_pow hB _) μ) (VF.ge_natCast _)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty, zero_pow V.l_prime.ne_zero, sub_zero, map_zero]`. Conclude with `ValuationNonnegativity.mm_zero`. Consider the case `insert b s hb ih`.
+
+Rewrite using `[Finset.sum_insert hb, Finset.sum_insert hb]`. Establish `hS : IntS V (∑ i ∈ s, f i)` using `intS_sum _ fun i _ => hf i`. Establish `e : (f b + ∑ i ∈ s, f i) ^ V.l - (f b ^ V.l + ∑ i ∈ s, f i ^ V.l) = ((f b + ∑ i ∈ s, f i) ^ V.l - f b ^ V.l - (∑ i ∈ s, f i) ^ V.l) + ((∑ i ∈ s, f i) ^ V.l - ∑ i ∈ s, f i ^ V.l)` using `by ring`. Rewrite using `[e, map_add]`. Conclude with `ValuationNonnegativity.mm_add (frob_mv (hf b) hS μ) ih`.
+-/
 theorem frob_sum {σ ι : Type} (s : Finset ι) (f : ι → MvPowerSeries σ C) (hf : ∀ i, IntS V (f i))
     (μ : σ →₀ ℕ) : V.MM (coeff μ ((∑ i ∈ s, f i) ^ V.l - ∑ i ∈ s, f i ^ V.l)) := by
   induction s using Finset.induction_on with
@@ -44,6 +54,9 @@ theorem frob_sum {σ ι : Type} (s : Finset ι) (f : ι → MvPowerSeries σ C) 
     rw [e, map_add]
     exact ValuationNonnegativity.mm_add (frob_mv (hf b) hS μ) ih
 
+/- English proof (translation)
+The claim follows from `| 0 => by ext μ rw [pow_zero, zero_smul, pow_zero, coeff_one, coeff_monomial] | n + 1 => by rw [pow_succ, monomial_pow' β a n, monomial_mul_monomial, succ_nsmul, pow_succ]`.
+-/
 theorem monomial_pow' {σ : Type} (β : σ →₀ ℕ) (a : C) :
     ∀ n : ℕ, (monomial β a) ^ n = monomial (n • β) (a ^ n)
   | 0 => by
@@ -54,9 +67,35 @@ theorem monomial_pow' {σ : Type} (β : σ →₀ ℕ) (a : C) :
 
 def divL {σ : Type} (l : ℕ) (α : σ →₀ ℕ) : σ →₀ ℕ := Finsupp.mapRange (fun n => n / l) (Nat.zero_div l) α
 
+/- English proof (translation)
+Simplify using `[divL]`.
+-/
 theorem divL_apply {σ : Type} (l : ℕ) (α : σ →₀ ℕ) (t : σ) : divL l α t = α t / l := by
   simp [divL]
 
+/- English proof (translation)
+Establish `hl0 : 0 < V.l` using `V.l_prime.pos`. Take `⟨P, hPdef⟩ : ∃ P : MvPowerSeries σ C, P = ∑ β ∈ Finset.Iic α, monomial β (coeff β F)` from `⟨_, rfl⟩`. Establish `hmon : ∀ β, IntS V (monomial β (coeff β F))` using `fun β μ => by`. Rewrite using `[coeff_monomial]`. Use `split_ifs`.
+
+Conclude with `hF β`. Conclude with `VF.Ge.zero 0`. Establish `e1 : coeff α (F ^ V.l) = coeff α (P ^ V.l)`. Take `⟨R, hR⟩` from `sub_dvd_pow_sub_pow F P V.l`. Establish `h0 : coeff α (F ^ V.l - P ^ V.l) = 0`.
+
+Rewrite using `[hR, coeff_mul]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Establish `hx1 : x.1 ≤ α`. Rewrite using `[← Finset.HasAntidiagonal.mem_antidiagonal.1 hx]`. Conclude with `le_self_add`.
+
+Establish `hc : coeff x.1 (F - P) = 0`. Rewrite using `[map_sub, sub_eq_zero, hPdef, map_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq, if_pos (Finset.mem_Iic.2 hx1)]`. Rewrite using `[hc, zero_mul]`.
+
+Rewrite `h0` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `e2` using `frob_sum (Finset.Iic α) (fun β => monomial β (coeff β F)) hmon α`. Establish `e3 : coeff α (∑ β ∈ Finset.Iic α, (monomial β (coeff β F)) ^ V.l) = if ∀ t, V.l ∣ α t then coeff (divL V.l α) F ^ V.l else 0`. Rewrite using `[map_sum]`. Simplify using `only [monomial_pow', coeff_monomial]`.
+
+Use `split_ifs with hdiv`. Establish `hβ : α = V.l • divL V.l α`. Use extensionality with `t`. Rewrite using `[Finsupp.smul_apply, smul_eq_mul, divL_apply, Nat.mul_div_cancel' (hdiv t)]`. Rewrite using `[Finset.sum_eq_single (divL V.l α)]`.
+
+Rewrite using `[if_pos hβ]`. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`. Apply `hb` to reduce the goal to its premises.
+
+Use extensionality with `t`. Use `congrArg (fun f : σ →₀ ℕ => f t) (h.symm.trans hβ)` as an intermediate fact. Simplify using `only [Finsupp.smul_apply, smul_eq_mul] at this`. Conclude with `Nat.eq_of_mul_eq_mul_left hl0 this`. Introduce `h`.
+
+It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Rewrite using `[Finset.mem_Iic, Finsupp.le_def]`. Introduce `t`. Rewrite using `[divL_apply]`.
+
+Conclude with `Nat.div_le_self _ _`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `h`. Apply `hdiv` to reduce the goal to its premises.
+
+Introduce `t`. Rewrite using `[h, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `Nat.dvd_mul_right _ _`. Rewrite using `[e1, ← e3, ← map_sub, hPdef]`. Conclude with `e2`.
+-/
 theorem frobPowMv {σ : Type} (F : MvPowerSeries σ C) (hF : IntS V F) (α : σ →₀ ℕ) :
     V.MM (coeff α (F ^ V.l) - if ∀ t, V.l ∣ α t then coeff (divL V.l α) F ^ V.l else 0) := by
   have hl0 : 0 < V.l := V.l_prime.pos

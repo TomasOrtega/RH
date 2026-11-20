@@ -20,10 +20,16 @@ section
 
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
 
+/- English proof (translation)
+Rewrite using `[mem_primeOf_of_isHomogeneous x (isHomogeneous_X S i), aeval_X, hi]`.
+-/
 theorem hilbW_X_mem_primeOf (x : Fin (N + 1) → Ω) {i : Fin (N + 1)} (hi : x i = 0) :
     (X i : Poly S N) ∈ primeOf (S := S) x := by
   rw [mem_primeOf_of_isHomogeneous x (isHomogeneous_X S i), aeval_X, hi]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `h.relevant`. Introduce `hx`. Conclude with `hi (h.le (hilbW_X_mem_primeOf x (by rw [hx, Pi.zero_apply])))`.
+-/
 theorem hilbW_ne_zero {x : Fin (N + 1) → Ω} {pp : Ideal (Poly S N)} {e : ℕ} (h : IsSubvar x pp e) :
     x ≠ 0 := by
   obtain ⟨i, hi⟩ := h.relevant
@@ -32,6 +38,41 @@ theorem hilbW_ne_zero {x : Fin (N + 1) → Ω} {pp : Ideal (Poly S N)} {e : ℕ}
 
 end
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x Nb pp e hVA hW`. Take `⟨r, h, hVh⟩` from `hVA`. Take `⟨j, hj'⟩` from `hW.relevant`. Establish `hj : x j ≠ 0` using `fun h0 => hj' (hW.le (hilbW_X_mem_primeOf x h0))`. Establish `hPtj` using `hPt k Ω N x pp hW.isPrime hW.homog hW.le j hj hj'`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨K', _, _, ψ, hker⟩ : ∃ (K' : Type w) (_ : Field K') (_ : Algebra k K') (ψ : chartRing k x (singleChart hj) →ₐ[k] K'), RingHom.ker ψ = chartPrime pp hj := by`. Establish `: (chartPrime pp hj).IsPrime` using `hPtj.1`. Establish `: IsDomain (chartRing k x (singleChart hj) ⧸ chartPrime pp hj)` using `Ideal.Quotient.isDomain _`. Use `⟨FractionRing (chartRing k x (singleChart hj) ⧸ chartPrime pp hj), inferInstance, inferInstance, (IsScalarTower.toAlgHom k _ _).comp (Ideal.Quotient.mkₐ k (chartPrime pp hj)), ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
+
+Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `algebraMap _ (FractionRing (chartRing k x (singleChart hj) ⧸ chartPrime pp hj)) (Ideal.Quotient.mk (chartPrime pp hj) a) = 0 ↔ _`. Rewrite using `[IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hxy : ∀ i, ψ (ratio hj i) ≠ 0 → x i ≠ 0`. Introduce `i hi h0`.
+
+Apply `hi` to reduce the goal to its premises. Establish `: ratio (S` using `k) hj i = 0 := Subtype.ext (show x i / x j = 0 by rw [h0, zero_div])`. Rewrite using `[this, map_zero]`. Establish `hpy : primeOf (S` using `k) (fun i => ψ (ratio hj i)) = pp := hPtj.2 K' ψ hker`. Establish `hle : primeOf (S` using `k) x ≤ primeOf (S := k) (fun i => ψ (ratio hj i)) := by`.
+
+Rewrite using `[hpy]`. Conclude with `hW.le`. Establish `hWy : IsSubvar (fun i => ψ (ratio hj i)) pp e` using `⟨hW.isPrime, hW.homog, hpy.le, hW.relevant, hW.dim⟩`. Establish `hWy' : IsSubvar (fun i => ψ (ratio hj i)) (primeOf (S` using `k) (fun i => ψ (ratio hj i))) e := by`. Rewrite using `[hpy]`.
+
+Conclude with `hWy`. Take `⟨Q', ρ, hRD, hVA', -⟩` from `hRes k Ω N x Nb r h hVh pp hW.isPrime hW.homog hW.le j hj hj' K' ψ hker hxy`. Take `⟨hWh, hnum⟩` from `hEN k K' N _ Q' r (ρ ∘ h) hVA' e hWy'`. Establish `hpow : ∀ m : ℕ, ∃ (Nm : LineBundle k x) (Qm : LineBundle k (fun i => ψ (ratio hj i))) (rm : Ω → K'), Nm.toSubSystem = Nb.toSubSystem.pow m ∧ Qm.toSubSystem = Q'.toSubSystem.pow m ∧ RestrictData Nm.toSubSystem hxy Qm.toSubSystem rm`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero`. Take `⟨r0, hr0⟩` from `hRT.1 k Ω N x K' _ hxy hle 0`. Conclude with `⟨twistBundle k x 0, twistBundle k _ 0, r0, rfl, rfl, hr0⟩`. Consider the case `succ m ih`.
+
+Take `⟨Nm, Qm, rm, hN, hQ, hr⟩` from `ih`. Take `⟨N1, hN1⟩` from `hLT k Ω N x Nm Nb`. Take `⟨Q1, hQ1⟩` from `hLT k K' N _ Qm Q'`. Take `⟨r1, hr1⟩` from `hRT.2 k Ω N x K' _ hxy Nm Nb Qm Q' rm ρ hr hRD`. Use `⟨N1, Q1, r1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hN1, hN]`. Both sides reduce to the same expression. Rewrite using `[hQ1, hQ]`. Both sides reduce to the same expression. Rewrite using `[hN1, hQ1]`.
+
+Conclude with `hr1`. Establish `hdim : ∀ m : ℕ, Module.finrank k (SubSystem.quotH (twistMul Nb.toSubSystem m 0) ((twistMul Nb.toSubSystem m 0).twist (idealSys x pp)) 0) = Module.finrank k (twistSys k (ρ ∘ h) (m : ℤ)).secs`. Introduce `m`. Take `⟨Nm, Qm, rm, hN, hQ, hr⟩` from `hpow m`. Take `⟨E1⟩` from `hRQ k Ω N x pp hW.isPrime hW.homog hW.le j hj hj' K' ψ hker hxy Nm Qm rm hr 0 0`.
+
+Take `⟨E2⟩` from `hH0 k K' N _ K' (Q'.toSubSystem.pow m) (hilbW_ne_zero hWy)`. Establish `e1 : Nm.toSubSystem.twist (twistSys k x 0) = twistMul Nb.toSubSystem m 0` using `by rw [hN]; rfl`. Establish `e2 : Qm.toSubSystem.twist (twistSys k (fun i => ψ (ratio hj i)) 0) = Q'.toSubSystem.pow m`. Rewrite using `[hQ, SubSystem.twist_twistSys_zero]`. Rewrite using `[← hES k K' N _ Q' r (ρ ∘ h) (hilbW_ne_zero hWy) hVA' m, ← e1, ← E2.finrank_eq, ← e2]`.
+
+Conclude with `E1.finrank_eq`. Establish `hI : interNum pp (fun _ : Fin e => Nb.toSubSystem) = interNum (primeOf (S` using `k) (ρ ∘ h)) (fun _ : Fin e => twistSys k (ρ ∘ h) 1) := by`. Establish `h1 : interNum pp (fun _ : Fin e => Q'.toSubSystem) = interNum pp (fun _ : Fin e => Nb.toSubSystem)` using `hIR k Ω N x K' _ hxy hle pp e hWy (fun _ => Nb) (fun _ => Q') (fun _ => ρ) (fun _ => hRD)`. Rewrite using `[← h1, ← hnum, hpy]`. Break down `Nat.eq_zero_or_pos e with rfl | he` into its components or cases.
+
+Take `⟨-, hpc, hsecs⟩` from `hHPt k K' r (ρ ∘ h) hWh`. Establish `hI0 : interNum pp (fun _ : Fin 0 => Nb.toSubSystem) = (Module.finrank k (funField (k` using `k) (ρ ∘ h)) : ℤ) := by`. Rewrite using `[hI]`. Conclude with `hIP k K' r (ρ ∘ h) hWh _`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hpc, hsecs] with m h1 h2`. Rewrite using `[hdim m, h2, h1, hI0]`. Simplify using the standard rewrite rules. Take `⟨⟨C, hC⟩, -, hsecs⟩` from `hHP k K' r (ρ ∘ h) e he hWh`. Establish `hc : (primeOf (S` using `k) (ρ ∘ h)).comap (oneBlock (S := k) (N := r)).toRingHom = primeOfOne (S := k) (ρ ∘ h) := Ideal.ext fun _ => Iff.rfl`.
+
+Establish `hIe : interNum pp (fun _ : Fin e => Nb.toSubSystem) = NumbersDVR.intNum k (primeOfOne (S` using `k) (ρ ∘ h)) (fun _ : Fin e => fun _ : Unit => (1 : ℤ)) := by`. Rewrite using `[hI, ← hc]`. Conclude with `hTie k K' r (ρ ∘ h) e (primeOf (S := k) (ρ ∘ h)) (fun _ => 1) hWh`. Use `⟨C, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hC, hsecs, eventually_ge_atTop 1] with m h1 h2 hm`.
+
+Rewrite using `[hdim m, h2, hIe]`. Establish `hm0 : (m : ℝ) ≠ 0` using `by exact_mod_cast (show m ≠ 0 by omega)`. Establish `hpow' : (m : ℝ) ^ e / m = (m : ℝ) ^ (e - 1)`. Take `⟨e', rfl⟩ : ∃ e', e = e' + 1` from `⟨e - 1, by omega⟩`. Rewrite using `[pow_succ, mul_div_assoc, div_self hm0, mul_one, Nat.add_sub_cancel]`.
+
+Establish `hCm : C * (m : ℝ) ^ e / m = C * (m : ℝ) ^ (e - 1)` using `by rw [mul_div_assoc, hpow']`. Rewrite using `[hCm]`. Conclude with `h1`.
+-/
 theorem SectionCount.Drop.HilbW.proof
     (hPt : PrimeFiltration.Point.Statement.{u, w})
     (hRes : Restriction.Statement.{u, w})

@@ -42,6 +42,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 open Matrix in
 variable {g : ℕ} in
+/- English proof (translation)
+The claim follows from `Complex.exp_ne_zero _`.
+-/
 theorem _root_.GlobalTheory.SimilTheta.aut_ne_zero (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (k n : Fin g → ℤ) (z : Fin g → ℂ) :
     _root_.GlobalTheory.SimilTheta.aut τ a b k n z ≠ 0 :=
   Complex.exp_ne_zero _
@@ -50,6 +53,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 open Matrix in
 variable {g : ℕ} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem _root_.GlobalTheory.SimilTheta.isLevel_iff_aut (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (l : ℕ) (F : (Fin g → ℂ) → ℂ) :
     _root_.GlobalTheory.KeyKa.IsLevel τ a b l F ↔ Differentiable ℂ F ∧ ∀ k n z, F (z + _root_.GlobalTheory.SimilTheta.lat τ k n) = _root_.GlobalTheory.SimilTheta.aut τ a b k n z ^ l * F z :=
   Iff.rfl
@@ -58,6 +64,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 open Matrix in
 variable {g : ℕ} in
+/- English proof (translation)
+Establish `h : (fun i => ((n + n') i : ℂ)) = (fun i => (n i : ℂ)) + fun i => (n' i : ℂ)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Unfold `_root_.GlobalTheory.SimilTheta.lat`. Rewrite using `[h, Matrix.mulVec_add]`.
+
+Use extensionality with `i`. Simplify using `only [Pi.add_apply, Int.cast_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.SimilTheta.lat_add (τ : Matrix (Fin g) (Fin g) ℂ) (k n k' n' : Fin g → ℤ) :
     _root_.GlobalTheory.SimilTheta.lat τ (k + k') (n + n') = _root_.GlobalTheory.SimilTheta.lat τ k n + _root_.GlobalTheory.SimilTheta.lat τ k' n' := by
   have h : (fun i => ((n + n') i : ℂ)) = (fun i => (n i : ℂ)) + fun i => (n' i : ℂ) := by
@@ -72,6 +83,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 open Matrix in
 variable {g : ℕ} in
+/- English proof (translation)
+Establish `h : (fun i => ((s • n) i : ℂ)) = (s : ℂ) • fun i => (n i : ℂ)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Unfold `_root_.GlobalTheory.SimilTheta.lat`. Rewrite using `[h, Matrix.mulVec_smul]`.
+
+Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, zsmul_eq_mul, Int.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.SimilTheta.lat_zsmul (τ : Matrix (Fin g) (Fin g) ℂ) (s : ℤ) (k n : Fin g → ℤ) :
     _root_.GlobalTheory.SimilTheta.lat τ (s • k) (s • n) = s • _root_.GlobalTheory.SimilTheta.lat τ k n := by
   have h : (fun i => ((s • n) i : ℂ)) = (s : ℂ) • fun i => (n i : ℂ) := by
@@ -86,6 +102,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 open Matrix in
 variable {g : ℕ} in
+/- English proof (translation)
+Establish `h : (fun i : Fin g => (((0 : Fin g → ℤ) i : ℤ) : ℂ)) = 0`. Use extensionality with `i`. Simplify using the standard rewrite rules. Unfold `_root_.GlobalTheory.SimilTheta.lat`. Rewrite using `[h, Matrix.mulVec_zero]`.
+
+Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 private theorem lat_zero_zero (τ : Matrix (Fin g) (Fin g) ℂ) :
     _root_.GlobalTheory.SimilTheta.lat τ 0 0 = 0 := by
   have h : (fun i : Fin g => (((0 : Fin g → ℤ) i : ℤ) : ℂ)) = 0 := by
@@ -99,6 +120,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 open Matrix in
 variable {g : ℕ} in
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using lat_zero_zero τ`. Consider the case `insert c s hc ih`. Rewrite using `[Finset.sum_insert hc, Finset.sum_insert hc, Finset.sum_insert hc, _root_.GlobalTheory.SimilTheta.lat_add, ih]`.
+-/
 theorem _root_.GlobalTheory.SimilTheta.lat_sum (τ : Matrix (Fin g) (Fin g) ℂ) {K : Type} (s : Finset K) (k n : K → Fin g → ℤ) :
     _root_.GlobalTheory.SimilTheta.lat τ (∑ c ∈ s, k c) (∑ c ∈ s, n c) = ∑ c ∈ s, _root_.GlobalTheory.SimilTheta.lat τ (k c) (n c) := by
   classical

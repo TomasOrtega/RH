@@ -24,6 +24,11 @@ open Classical in
 
 def toGoodAut (c : Coeff l) (σ : c.F →+* ℂ) : ℂ →+* ℂ := if GoodEmb c σ then RingHom.id ℂ else starRingEnd ℂ
 
+/- English proof (translation)
+Establish `h2 : ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re` using `hx`. Use `show ∀ τ : X.Ψ, (mat (lact γ x) τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm (lact γ x) τ i).re`. Introduce `τ`. Use `⟨?_, fun i => by rw [dmin_lact X hγ]; exact (h2 τ).2 i⟩` and prove the remaining obligations. Use `show ((γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ).det ≠ 0`.
+
+Rewrite using `[Matrix.det_mul]`. Use `mul_ne_zero ?_ (h2 τ).1` and prove the remaining obligations. Establish `e : ((γ : Matrix (Fin r) (Fin r) E).map τ.1).det = τ.1 (γ : Matrix (Fin r) (Fin r) E).det` using `(RingHom.map_det τ.1 _).symm`. Rewrite using `[e]`. Conclude with `(map_ne_zero τ.1).2 (Matrix.GeneralLinearGroup.det_ne_zero γ)`.
+-/
 theorem lact_mem_dom (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     lact γ x ∈ X.dom := by
   have h2 : ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re := hx

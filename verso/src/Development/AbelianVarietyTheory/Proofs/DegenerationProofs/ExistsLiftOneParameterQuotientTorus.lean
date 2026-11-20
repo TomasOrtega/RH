@@ -21,11 +21,19 @@ section Algebra
 variable {X : Type} [AddCommGroup X] {A C : Type} [CommRing A] [CommRing C]
   {α : A →+* C} {ρ : C →+* AddMonoidAlgebra C X}
 
+/- English proof (translation)
+Use `RingHom.congr_fun ((h _).2.1 (cst X C) (univ X C)) a` as an intermediate fact. Rewrite `this` using `[ev_univ]`. Then use the resulting hypothesis.
+-/
 theorem coaction_base (h : ∀ (R : Type) [CommRing R], IsTorsorOn R α ρ) (a : A) :
     ρ (α a) = AddMonoidAlgebra.single 0 (α a) := by
   have := RingHom.congr_fun ((h _).2.1 (cst X C) (univ X C)) a
   rwa [ev_univ] at this
 
+/- English proof (translation)
+Use `letI : Algebra A C := α.toAlgebra`. Use `haveI : Module.FaithfullyFlat A C := hα`. Take `⟨φ, hφ⟩` from `(h (TensorProduct A C C)).2.2.2 (Algebra.TensorProduct.includeRight : C →ₐ[A] TensorProduct A C C).toRingHom Algebra.TensorProduct.includeLeftRingHom (Algebra.TensorProduct.includeLeftRingHom_comp_algebraMap (R := A) (A := C) (B := C)).symm`. Establish `h1` using `RingHom.congr_fun hφ c`. Rewrite `h1` using `[RingHom.comp_apply, hc, ev_single]`.
+
+Use `(Algebra.IsEffective.of_faithfullyFlat A C c).1 ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.includeLeftSubRight_apply, sub_eq_zero]`. Simplify using `using h1`.
+-/
 theorem exists_eq_of_invariant (hα : α.FaithfullyFlat)
     (h : ∀ (R : Type) [CommRing R], IsTorsorOn R α ρ) (c : C)
     (hc : ρ c = AddMonoidAlgebra.single 0 c) : ∃ a, α a = c := by
@@ -41,6 +49,9 @@ theorem exists_eq_of_invariant (hα : α.FaithfullyFlat)
   rw [Algebra.TensorProduct.includeLeftSubRight_apply, sub_eq_zero]
   simpa using h1
 
+/- English proof (translation)
+Use `⟨(ρ c').coeff (-χ), ?_, coaction_coeff (h _) _ _⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun z => (ρ z).coeff 0) hcc`. Simplify using `only [map_mul, hc, coaction_base h] at h1`. Simplify using `using h1`.
+-/
 theorem exists_homogeneous_cofactor (h : ∀ (R : Type) [CommRing R], IsTorsorOn R α ρ) {χ : X}
     {c c' : C} {a : A} (hcc : c * c' = α a) (hc : ρ c = AddMonoidAlgebra.single χ c) :
     ∃ d, c * d = α a ∧ ρ d = AddMonoidAlgebra.single (-χ) d := by
@@ -49,6 +60,23 @@ theorem exists_homogeneous_cofactor (h : ∀ (R : Type) [CommRing R], IsTorsorOn
   simp only [map_mul, hc, coaction_base h] at h1
   simpa using h1
 
+/- English proof (translation)
+Use `letI : Algebra A C := α.toAlgebra`. Use `haveI : Module.FaithfullyFlat A C := hα`. Set `M : X → Submodule A C` to `fun x => { carrier := {c | ρ c = AddMonoidAlgebra.single x c} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_add, ha, hb, AddMonoidAlgebra.single_add]`.
+
+Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun a c hc => by`. Simplify using `only [Set.mem_setOf_eq] at hc ⊢`. Express the relevant statement in the definitionally equal form `ρ (α a * c) = AddMonoidAlgebra.single x (α a * c)`. Rewrite using `[map_mul, coaction_base h, hc, AddMonoidAlgebra.single_mul_single, zero_add] }`.
+
+Establish `hM : ∀ x c, c ∈ M x ↔ ρ c = AddMonoidAlgebra.single x c` using `fun _ _ => Iff.rfl`. Establish `hmul : M χ * M (-χ) = 1`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.mul_le.2 fun c hc d hd => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_eq_of_invariant hα h (c * d) (by`.
+
+Rewrite using `[map_mul, (hM _ _).1 hc, (hM _ _).1 hd, AddMonoidAlgebra.single_mul_single, add_neg_cancel])`. Conclude with `Submodule.mem_one.2 ⟨a, ha⟩`. Rewrite using `[Submodule.one_le]`. Set `p : Ideal A` to `(M χ * M (-χ)).comap (Algebra.linearMap A C)`. Distinguish the cases in `hp : p = ⊤`.
+
+Establish `: (1 : A) ∈ p` using `hp ▸ Submodule.mem_top`. Simplify `this` using `[p]`. Take `⟨a, ha, c, c', hcc, hc⟩` from `exists_homogeneous hα h χ p hp`. Take `⟨d, hd, hd'⟩` from `exists_homogeneous_cofactor h hcc hc`. Use `absurd ?_ ha` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `α a ∈ M χ * M (-χ)`. Rewrite using `[← hd]`. Conclude with `Submodule.mul_mem_mul hc hd'`. Set `I : (Submodule A C)ˣ` to `Units.mkOfMulEqOne _ _ hmul`. Establish `hI : I ∈ (Submodule.unitsToPic A C).ker` using `Subsingleton.elim _ _`.
+
+Rewrite `hI` using `[Submodule.ker_unitsToPic]`. Take `⟨u, hu⟩` from `hI`. Use `⟨u, (hM _ _).1 ?_⟩` and prove the remaining obligations. Establish `h1 : Submodule.span A {u.val} = M χ` using `congrArg Units.val hu`. Rewrite using `[← h1]`.
+
+Conclude with `Submodule.mem_span_singleton_self _`.
+-/
 theorem exists_unit [Subsingleton (CommRing.Pic A)] (hα : α.FaithfullyFlat)
     (h : ∀ (R : Type) [CommRing R], IsTorsorOn R α ρ) (χ : X) :
     ∃ u : Cˣ, ρ u.val = AddMonoidAlgebra.single χ u.val := by
@@ -92,6 +120,15 @@ theorem exists_unit [Subsingleton (CommRing.Pic A)] (hα : α.FaithfullyFlat)
   rw [← h1]
   exact Submodule.mem_span_singleton_self _
 
+/- English proof (translation)
+Use `choose v hv using exists_unit hα h`. Set `b` to `Module.Free.chooseBasis ℤ X`. Set `l : X →ₗ[ℤ] Additive Cˣ` to `b.constr ℤ fun j => Additive.ofMul (v (b j))`. Set `u : Multiplicative X →* Cˣ` to `AddMonoidHom.toMultiplicativeLeft l.toAddMonoidHom`. Set `w₁ : Multiplicative X →* (AddMonoidAlgebra C X)ˣ` to `(Units.map ρ.toMonoidHom).comp u`.
+
+Set `w₂ : Multiplicative X →* (AddMonoidAlgebra C X)ˣ` to `univ X C * (Units.map (cst X C).toMonoidHom).comp u`. Establish `hw₂ : ∀ x, (w₂ (Multiplicative.ofAdd x)).val = AddMonoidAlgebra.single x (u (Multiplicative.ofAdd x)).val` using `fun x => by`. Express the relevant statement in the definitionally equal form `AddMonoidAlgebra.single x 1 * AddMonoidAlgebra.single 0 _ = _`. Rewrite using `[AddMonoidAlgebra.single_mul_single, add_zero, _root_.one_mul]`. Establish `hw : (MonoidHom.toAdditiveRight w₁).toIntLinearMap = (MonoidHom.toAdditiveRight w₂).toIntLinearMap`.
+
+Use `b.ext fun j => ?_` and prove the remaining obligations. Establish `hu : u (Multiplicative.ofAdd (b j)) = v (b j)` using `congrArg Additive.toMul (b.constr_basis ℤ (fun j => Additive.ofMul (v (b j))) j)`. Use `congrArg Additive.ofMul (Units.ext ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (hw₂ (b j)).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ (u (Multiplicative.ofAdd (b j))).val = _`.
+
+Rewrite using `[hu, hv]`. Use `⟨u, fun x => Eq.trans ?_ (hw₂ x)⟩` and prove the remaining obligations. Conclude with `congrArg (fun z => (Additive.toMul z).val) (LinearMap.congr_fun hw x)`.
+-/
 theorem exists_units [Subsingleton (CommRing.Pic A)] [Module.Free ℤ X] (hα : α.FaithfullyFlat)
     (h : ∀ (R : Type) [CommRing R], IsTorsorOn R α ρ) :
     ∃ u : Multiplicative X →* Cˣ, ∀ x,
@@ -120,6 +157,17 @@ theorem exists_units [Subsingleton (CommRing.Pic A)] [Module.Free ℤ X] (hα : 
   refine ⟨u, fun x => Eq.trans ?_ (hw₂ x)⟩
   exact congrArg (fun z => (Additive.toMul z).val) (LinearMap.congr_fun hw x)
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `exists_units hα h`. Set `τ : C →+* C` to `(ev (RingHom.id C) u⁻¹).comp ρ`. Establish `hτα : τ.comp α = α` using `(h C).2.1 _ _`. Establish `hτ : ∀ c, ∃ a, α a = τ c` using `fun c => by`. Use `exists_eq_of_invariant hα h _ ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ρ (ev (RingHom.id C) u⁻¹ (ρ c)) = cst X C (ev (RingHom.id C) u⁻¹ (ρ c))`. Rewrite using `[← AddMonoidAlgebra.sum_coeff_single (ρ c), Finsupp.sum]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `h1 : u⁻¹ (Multiplicative.ofAdd x) = u (Multiplicative.ofAdd (-x))`.
+
+Rewrite using `[ofAdd_neg, map_inv]`. Both sides reduce to the same expression. Rewrite using `[ev_single, h1, RingHom.id_apply, map_mul, coaction_coeff (h _), hu, AddMonoidAlgebra.single_mul_single, add_neg_cancel, cst_apply]`. Use `choose σ hσ using hτ`. Establish `inj` using `hα.injective`.
+
+Use `⟨⟨⟨⟨σ, inj ?_⟩, fun a b => inj ?_⟩, inj ?_, fun a b => inj ?_⟩, RingHom.ext fun a => inj ?_⟩` and prove the remaining obligations. Rewrite using `[hσ, map_one, map_one]`. Simplify using `only [hσ, map_mul]`. Simplify using `only [hσ, map_zero]`. Simplify using `only [hσ, map_add]`.
+
+Conclude with `(hσ _).trans (RingHom.congr_fun hτα a)`.
+-/
 theorem exists_retraction [Subsingleton (CommRing.Pic A)] [Module.Free ℤ X]
     (hα : α.FaithfullyFlat) (h : ∀ (R : Type) [CommRing R], IsTorsorOn R α ρ) :
     ∃ σ : C →+* A, σ.comp α = RingHom.id A := by
@@ -147,6 +195,9 @@ theorem exists_retraction [Subsingleton (CommRing.Pic A)] [Module.Free ℤ X]
 
 end Algebra
 
+/- English proof (translation)
+Set `q' : Grp.mk G ⟶ Grp.mk B` to `Grp.homMk q`. Set `f' : Grp.mk H ⟶ Grp.mk B` to `Grp.homMk f`. Establish `h` using `(IsPullback.of_hasPullback q' f').map (Grp.forget C)`. Conclude with `⟨(pullback q' f').X, inferInstance, (pullback.fst q' f').hom.hom, (pullback.snd q' f').hom.hom, inferInstance, inferInstance, h⟩`.
+-/
 theorem exists_pullback_grp {C : Type*} [Category C] [CartesianMonoidalCategory C] [HasPullbacks C]
     {G B H : C} [GrpObj G] [GrpObj B] [GrpObj H] (q : G ⟶ B) (f : H ⟶ B) [IsMonHom q] [IsMonHom f] :
     ∃ (E : C) (_ : GrpObj E) (p : E ⟶ G) (r : E ⟶ H), IsMonHom p ∧ IsMonHom r ∧ IsPullback p r q f := by
@@ -156,6 +207,11 @@ theorem exists_pullback_grp {C : Type*} [Category C] [CartesianMonoidalCategory 
   exact ⟨(pullback q' f').X, inferInstance, (pullback.fst q' f').hom.hom, (pullback.snd q' f').hom.hom,
     inferInstance, inferInstance, h⟩
 
+/- English proof (translation)
+Establish `w : i ≫ q = (toUnit T ≫ η[H]) ≫ f`. Rewrite using `[hi.w, Category.assoc, IsMonHom.one_hom]`. Use `⟨h.lift i _ w, ⟨h.hom_ext ?_ ?_, h.hom_ext ?_ ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Simplify using `[tensorHom_comp_tensorHom_assoc]`. Simplify using `only [Category.assoc, h.lift_snd, IsMonHom.mul_hom, tensorHom_comp_tensorHom_assoc]`. Use `IsPullback.of_right ?_ (h.lift_snd _ _ _) h` and prove the remaining obligations. Rewrite using `[h.lift_fst, IsMonHom.one_hom]`. Conclude with `hi`.
+-/
 theorem exists_ker_pullback {C : Type*} [Category C] [CartesianMonoidalCategory C]
     {T G B H E : C} [GrpObj T] [GrpObj G] [GrpObj B] [GrpObj H] [GrpObj E] {i : T ⟶ G} {q : G ⟶ B}
     {f : H ⟶ B} {p : E ⟶ G} {r : E ⟶ H} [IsMonHom i] [IsMonHom f] [IsMonHom p] [IsMonHom r]
@@ -172,6 +228,15 @@ theorem exists_ker_pullback {C : Type*} [Category C] [CartesianMonoidalCategory 
     rw [h.lift_fst, IsMonHom.one_hom]
     exact hi
 
+/- English proof (translation)
+Establish `hV : IsAffineOpen (⊤ : B.left.Opens)` using `isAffineOpen_top _`. Establish `hU : IsAffineOpen (q.left ⁻¹ᵁ ⊤)` using `hV.preimage q.left`. Take `⟨ρ, hρ⟩` from `exists_coaction hi hU`. Establish `htor : ∀ (R : Type) [CommRing R], IsTorsorOn R (q.left.appLE ⊤ _ le_rfl).hom ρ` using `fun R _ => (isTorsorOn hi hV hU hρ (Spec (.of R))).of_equiv (Scheme.ΓSpecIso (.of R)).symm.commRingCatIsoToRingEquiv`. Take `⟨σ, hσ⟩` from `exists_retraction (faithfullyFlat_appLE q.left hV hU) htor`.
+
+Establish `h1 : pt hU σ ≫ q.left = 𝟙 B.left`. Rewrite using `[pt_comp hU hV q.left le_rfl, hσ]`. Take `⟨θ, hθ⟩` from `exists_eq_pt hV (𝟙 B.left) le_rfl`. Establish `h2` using `pt_appLE hV θ (le_pt_preimage hV θ)`. Establish `h3 : ∀ (g : B.left ⟶ B.left) (e : ⊤ ≤ g ⁻¹ᵁ ⊤), g = 𝟙 _ → (g.appLE ⊤ ⊤ e).hom = RingHom.id _`.
+
+Introduce and unpack `_ e rfl`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app]`. Conclude with `congrArg CommRingCat.Hom.hom ((Category.id_comp _).trans (B.left.presheaf.map_id _))`. Rewrite using `[hθ, ← h2, h3 _ _ hθ.symm]`. Use `⟨Over.homMk (pt hU σ) ?_, Over.OverMorphism.ext h1⟩` and prove the remaining obligations.
+
+Rewrite using `[← Over.w q, ← Category.assoc, h1, Category.id_comp]`.
+-/
 theorem exists_section {S : Scheme.{0}} {X : Type} [AddCommGroup X] [Module.Free ℤ X] {G B : Over S}
     [GrpObj G] [GrpObj B] {q : G ⟶ B} {i : splitTorus S X ⟶ G} [IsMonHom q] [IsMonHom i]
     [Flat q.left] [Surjective q.left] [IsAffineHom q.left] [IsAffine B.left]
@@ -197,6 +262,11 @@ theorem exists_section {S : Scheme.{0}} {X : Type} [AddCommGroup X] [Module.Free
   refine ⟨Over.homMk (pt hU σ) ?_, Over.OverMorphism.ext h1⟩
   rw [← Over.w q, ← Category.assoc, h1, Category.id_comp]
 
+/- English proof (translation)
+Use `GlobalTheory.subsingleton_pic_addMonoidAlgebra_of_free k X` as an intermediate fact. Set `e : Γ((splitTorus (Sp k) X).left, ⊤) ≃+* AddMonoidAlgebra k X` to `RingEquiv.ofBijective (Rosenlicht.torusGamma k X).hom (Rosenlicht.torusGamma_bijective k X)`. Establish `key : ∀ x : CommRing.Pic Γ((splitTorus (Sp k) X).left, ⊤), x = CommRing.Pic.mapRingHom e.symm.toRingHom (CommRing.Pic.mapRingHom e.toRingHom x)` using `fun x => by`. Rewrite using `[CommRing.Pic.mapRingHom_mapRingHom, e.symm_toRingHom_comp_toRingHom, CommRing.Pic.mapRingHom_id_apply]`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[key x, key y, Subsingleton.elim (CommRing.Pic.mapRingHom e.toRingHom x) _]`.
+-/
 theorem subsingleton_pic_torus (k : Type) [Field k] (X : Type) [AddCommGroup X] [Module.Free ℤ X] :
     Subsingleton (CommRing.Pic Γ((splitTorus (Sp k) X).left, ⊤)) := by
   have := GlobalTheory.subsingleton_pic_addMonoidAlgebra_of_free k X
@@ -215,6 +285,23 @@ namespace GlobalTheory.SS
 
 open LiftTorus in
 
+/- English proof (translation)
+Introduce `k _ _ G _ _ X _ _ _ B _ i q ⟨_, _, hfl, hsu, haf, hi, _⟩ f _`. Take `⟨E, _, p, r, _, _, hE⟩` from `exists_pullback_grp q f`. Take `⟨i', _, hi'⟩` from `exists_ker_pullback hi hE`. Establish `hE' : IsPullback p.left r.left q.left f.left` using `hE.map (Over.forget _)`. Use `haveI : Flat r.left := MorphismProperty.of_isPullback hE' hfl`.
+
+Use `haveI : Surjective r.left := MorphismProperty.of_isPullback hE' hsu`. Use `haveI : IsAffineHom r.left := MorphismProperty.of_isPullback hE' haf`. Use `haveI : IsAffine (Gm (Sp k)).left := .of_isIso (Rosenlicht.torusIso k (ULift.{0} ℤ)).inv`. Use `haveI := subsingleton_pic_torus k (ULift.{0} ℤ)`. Take `⟨s, hs⟩` from `exists_section hi'`.
+
+Establish `hs₀ : (s ≫ p) ≫ q = f` using `by rw [Category.assoc, hE.w, ← Category.assoc, hs, Category.id_comp]`. Establish `hone : ∀ {Z : Over (Sp k)}, (1 : Z ⟶ Gm (Sp k)) ≫ f = 1` using `fun {Z} => MonObj.one_comp f`. Set `j : Gm (Sp k) ⟶ G` to `(s ≫ p) * ((1 : Gm (Sp k) ⟶ Gm (Sp k)) ≫ s ≫ p)⁻¹`. Establish `hj : j ≫ q = f`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, Category.assoc 1, hs₀, hone, inv_one, _root_.mul_one]`.
+
+Establish `hj1 : ∀ {Z : Over (Sp k)}, (1 : Z ⟶ Gm (Sp k)) ≫ j = 1` using `fun {Z} => by`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc 1 1, MonObj.comp_one, mul_inv_cancel]`. Use `clear_value j`. Set `c : Gm (Sp k) ⊗ Gm (Sp k) ⟶ G` to `((fst _ _ * snd _ _) ≫ j) * ((fst _ _ ≫ j) * (snd _ _ ≫ j))⁻¹`. Establish `hc : c ≫ q = toUnit _ ≫ η[B]`.
+
+Rewrite using `[MonObj.mul_comp _ _ q, GrpObj.inv_comp, MonObj.mul_comp _ _ q, Category.assoc, Category.assoc, Category.assoc, hj, MonObj.mul_comp _ _ f, mul_inv_cancel, Hom.one_def]`. Establish `hcomp : ∀ a b : Gm (Sp k) ⟶ Gm (Sp k), lift a b ≫ c = ((a * b) ≫ j) * ((a ≫ j) * (b ≫ j))⁻¹` using `fun a b => by`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, MonObj.comp_mul, ← Category.assoc, MonObj.comp_mul, lift_fst_assoc, lift_snd_assoc, lift_fst, lift_snd]`. Establish `hax : ∀ z : Gm (Sp k) ⟶ Gm (Sp k) ⊗ Gm (Sp k), z ≫ c = 1 → z ≫ hi.lift c _ hc = toUnit _ ≫ η` using `fun z hz => by`. Use `hi.hom_ext ?_ (toUnit_unique _ _)` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hi.lift_fst, hz, Category.assoc, IsMonHom.one_hom, Hom.one_def]`. Use `haveI : TwoUniqueSums (ULift.{0} ℤ) := (TwoUniqueSums.of_injective_addHom (AddEquiv.ulift : ULift.{0} ℤ ≃+ ℤ).toAddHom (AddEquiv.ulift : ULift.{0} ℤ ≃+ ℤ).injective inferInstance)`. Establish `h0` using `splitTorus_rigidity k (ULift.{0} ℤ) X (hi.lift c _ hc) (hax _ (by rw [← Hom.one_def, hcomp, hj1, _root_.mul_one, _root_.mul_one, mul_inv_cancel])) (hax _ (by rw [← Hom.one_def, hcomp, hj1, _root_.one_mul, _root_.one_mul, mul_inv_cancel]))`. Establish `h1 : c = 1`. Rewrite using `[← hi.lift_fst c _ hc, h0, Category.assoc, IsMonHom.one_hom, Hom.one_def]`.
+
+Establish `h2` using `mul_inv_eq_one.1 h1`. Use `⟨j, ⟨?_, ?_⟩, hj⟩` and prove the remaining obligations. Use `hj1 (Z := 𝟙_ _)` as an intermediate fact. Simplify `this` using `[Hom.one_def]`. Rewrite `h2` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, lift_fst_comp_snd_comp]`.
+
+Conclude with `h2`.
+-/
 theorem exists_lift_oneParameter : ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G], SmConn G → ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (B : Over (Sp k)) [GrpObj B] (i : splitTorus (Sp k) X ⟶ G) (q : G ⟶ B), IsQuot i q → ∀ f : Gm (Sp k) ⟶ B, IsMonHom f → ∃ j : Gm (Sp k) ⟶ G, IsMonHom j ∧ j ≫ q = f := by
   intro k _ _ G _ _ X _ _ _ B _ i q ⟨_, _, hfl, hsu, haf, hi, _⟩ f _
   obtain ⟨E, _, p, r, _, _, hE⟩ := exists_pullback_grp q f

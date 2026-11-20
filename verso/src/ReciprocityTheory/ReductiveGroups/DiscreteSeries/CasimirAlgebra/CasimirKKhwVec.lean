@@ -15,6 +15,11 @@ section Alg
 
 variable {M : Type*} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Establish `hc` using `congrArg (fun f : Module.End ℂ M => f v) (hE a b b a)`. Simplify using `only [if_pos rfl, if_true, ite_true, LinearMap.sub_apply, Module.End.mul_apply, hab h, map_zero, sub_zero] at hc`. Rewrite using `[Module.End.mul_apply, hc, hd, hd]`. Simplify using `[hwTerm, h, h.ne, sub_smul]`.
+
+Rewrite using `[Module.End.mul_apply, hd, map_smul, hd, smul_smul]`. Simplify using `[hwTerm]`. Rewrite using `[Module.End.mul_apply, hba h, map_zero]`. Simplify using `[hwTerm, h.ne', not_lt.2 h.le]`.
+-/
 theorem pair_apply_hw {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E) {μ : Fin n → ℝ}
     {v : M} (hd : ∀ a, E a a v = (μ a : ℂ) • v) {a b : Fin n}
     (hab : a < b → E a b v = 0) (hba : b < a → E b a v = 0) :
@@ -31,6 +36,9 @@ theorem pair_apply_hw {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E
   · rw [Module.End.mul_apply, hba h, map_zero]
     simp [hwTerm, h.ne', not_lt.2 h.le]
 
+/- English proof (translation)
+Simplify using `only [LinearMap.sum_apply, Complex.ofReal_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Establish `hab : S a b` using `(Finset.mem_filter.1 hb).2`. Conclude with `pair_apply_hw hE hd (fun h => hv a b h hab) (fun h => hv b a h (hS a b hab))`.
+-/
 theorem sum_pair_hw {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E) {μ : Fin n → ℝ}
     {v : M} (S : Fin n → Fin n → Prop) [DecidableRel S] (hS : ∀ a b, S a b → S b a)
     (hd : ∀ a, E a a v = (μ a : ℂ) • v) (hv : ∀ a b, a < b → S a b → E a b v = 0) :
@@ -43,6 +51,21 @@ theorem sum_pair_hw {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E) 
 
 end Alg
 
+/- English proof (translation)
+Establish `hpt : ∀ a b, (if S a b then hwTerm μ a b else 0) = (if a = b then μ a * μ a else 0) + ((if a < b ∧ S a b then μ a else 0) - (if a < b ∧ S a b then μ b else 0))`. Introduce `a b`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Apply the tactic sequence `by_cases hs : S a b <;> simp [hwTerm, h, h.ne, hs]`. Simplify using `[hwTerm, hrefl]`.
+
+Apply the tactic sequence `by_cases hs : S a b <;> simp [hwTerm, h.ne', not_lt.2 h.le, hs]`. Establish `hL : ∑ a, ∑ b ∈ univ.filter (fun b => S a b), hwTerm μ a b = ∑ a, μ a * μ a + ∑ a, ∑ b, ((if a < b ∧ S a b then μ a else 0) - (if a < b ∧ S a b then μ b else 0))`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_filter]`.
+
+Simplify using `only [hpt a, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hR : nsq (μ + r) - nsq r = ∑ a, μ a * μ a + ∑ a, ∑ b, ((if a < b ∧ S a b then μ a else 0) - (if b < a ∧ S a b then μ a else 0))`. Rewrite using `[← Finset.sum_add_distrib]`. Unfold `nsq dot`. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h2 : ∑ b, ((if a < b ∧ S a b then μ a else 0) - (if b < a ∧ S a b then μ a else 0)) = μ a * (2 * r a)`. Rewrite using `[hr a, Finset.natCast_card_filter, Finset.natCast_card_filter, mul_sub, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [mul_ite, mul_one, mul_zero]`.
+
+Rewrite using `[h2, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, hR]`. Use `congr 1`. Simplify using `only [Finset.sum_sub_distrib]`.
+
+Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : b < a ∧ S a b`. Rewrite using `[if_pos h, if_pos ⟨h.1, hS a b h.2⟩]`.
+
+Rewrite using `[if_neg h, if_neg fun h' => h ⟨h'.1, hS b a h'.2⟩]`.
+-/
 theorem sum_hwTerm (S : Fin n → Fin n → Prop) [DecidableRel S] (hrefl : ∀ a, S a a)
     (hS : ∀ a b, S a b → S b a) (μ r : Fin n → ℝ)
     (hr : ∀ a, 2 * r a = ((univ.filter fun b => a < b ∧ S a b).card : ℝ) -
@@ -94,6 +117,11 @@ section Alg
 
 variable {M : Type*} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+Establish `hc : casimir E = ∑ a, ∑ b ∈ univ.filter (fun _ => True), E a b * E b a`. Simplify using `[casimir]`. Establish `hsum` using `sum_pair_hw hE (fun _ _ => True) (fun _ _ h => h) hv.1 (fun a b h _ => hv.2 a b h)`. Rewrite using `[hc, hsum, sum_hwTerm (fun _ _ => True) (fun _ => trivial) (fun _ _ h => h) μ (rho n)]`. Introduce `a`.
+
+Establish `ha : 1 + (a : ℕ) ≤ n` using `by have := a.isLt; omega`. Simplify using `only [and_true, Finset.filter_lt_eq_Ioi, Finset.filter_gt_eq_Iio, Fin.card_Ioi, Fin.card_Iio, rho]`. Rewrite using `[Nat.sub_sub, Nat.cast_sub ha]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem casimir_hwVec {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E) {μ : Fin n → ℝ}
     {v : M} (hv : IsHWVec E μ v) :
     casimir E v = ((nsq (μ + rho n) - nsq (rho n) : ℝ) : ℂ) • v := by
@@ -110,6 +138,9 @@ theorem casimir_hwVec {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hsum` using `sum_pair_hw hE (fun a b => ε b = ε a) (fun _ _ h => h.symm) hv.1 (fun a b h hs => hv.2 a b h hs.symm)`. Rewrite using `[casimirK, hsum, sum_hwTerm (fun a b => ε b = ε a) (fun _ => rfl) (fun _ _ h => h.symm) μ (rhoC ε)]`. Introduce `a`. Simplify using `only [rhoC]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem casimirK_khwVec (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E)
     {μ : Fin n → ℝ} {v : M} (hv : IsKHWVec ε E μ v) :
     casimirK ε E v = ((nsq (μ + rhoC ε) - nsq (rhoC ε) : ℝ) : ℂ) • v := by

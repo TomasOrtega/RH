@@ -8,6 +8,17 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.BorelSplit
 
+/- English proof (translation)
+Introduce `L _ _ σ n _ b hb`. Establish `hbT : ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).BlockTriangular id` using `(Formalism.UG.P.spherical_upper_iff _).1 hb`. Set `qb : GlobalTheory.LGrp.blockQ L (id : Fin n → Fin n)` to `⟨(b : GL (Fin n) L), hbT⟩`. Establish `htG : GlobalTheory.LGrp.blockProj id qb ∈ GU σ n` using `GlobalTheory.LGrp.blockProj_mem_GU σ (GlobalTheory.LGrp.selfDualBlocks_id n) qb b.2`. Set `t : GU σ n` to `⟨GlobalTheory.LGrp.blockProj id qb, htG⟩`.
+
+Establish `hdiag : ∀ i, ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i`. Introduce `i`. Use `show (GlobalTheory.LGrp.blockProj id qb).val i i = _`. Rewrite using `[GlobalTheory.LGrp.blockProj_val]`. Simplify using `[GlobalTheory.LGrp.blockPart, qb]`.
+
+Establish `hoff : ∀ i j, i ≠ j → ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = 0`. Introduce `i j hij`. Use `show (GlobalTheory.LGrp.blockProj id qb).val i j = _`. Rewrite using `[GlobalTheory.LGrp.blockProj_val]`. Simplify using `[GlobalTheory.LGrp.blockPart, hij]`.
+
+Establish `htT : ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).BlockTriangular id` using `fun i j h => hoff i j (ne_of_gt h)`. Establish `htiT` using `Formalism.UG.P.spherical_upper_inv _ htT`. Use `⟨t, t⁻¹ * b, hoff, ⟨?_, ?_⟩, by group⟩` and prove the remaining obligations. Use `(Formalism.UG.P.spherical_upper_iff _).2 ?_ show ((((t : GL (Fin n) L))⁻¹ * (b : GL (Fin n) L) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).BlockTriangular id` and prove the remaining obligations. Conclude with `Formalism.UG.P.spherical_upper_mul _ _ htiT hbT`.
+
+Introduce `i show ((((t : GL (Fin n) L))⁻¹ * (b : GL (Fin n) L) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = 1`. Establish `h1 : ((((t : GL (Fin n) L))⁻¹ * (t : GL (Fin n) L) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = 1`. Rewrite using `[inv_mul_cancel, Units.val_one, Matrix.one_apply_eq]`. Rewrite using `[Units.val_mul, Formalism.UG.P.spherical_diag_mul _ _ htiT hbT, ← hdiag]`. Rewrite `h1` using `[Units.val_mul, Formalism.UG.P.spherical_diag_mul _ _ htiT htT]`. Then use the resulting hypothesis.
+-/
 theorem borelSplitU : PositivityTheory.SphericalProduct.BorelSplitU := by
   intro L _ _ σ n _ b hb
   have hbT : ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).BlockTriangular id :=

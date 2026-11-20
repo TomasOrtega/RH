@@ -6,6 +6,9 @@ noncomputable section
 
 namespace Formalism.REAL
 
+/- English proof (translation)
+Unfold `Jm`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 private lemma Jm_mul_self_eq_oneRealPlaceTaylor {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   unfold Jm
   rw [diagonal_mul_diagonal, ← diagonal_one]
@@ -13,6 +16,11 @@ private lemma Jm_mul_self_eq_oneRealPlaceTaylor {n : ℕ} (ε : Fin n → Bool) 
   funext a
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Unfold `Jm`. Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.star_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private lemma Jm_conjTranspose_eq {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   unfold Jm
   rw [diagonal_conjTranspose]
@@ -21,29 +29,50 @@ private lemma Jm_conjTranspose_eq {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ =
   simp only [Pi.star_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨Jm ε, Jm ε, Jm_mul_self_eq_oneRealPlaceTaylor ε, Jm_mul_self_eq_oneRealPlaceTaylor ε⟩, rfl⟩`.
+-/
 lemma f1alg_isUnit_J {n : ℕ} (ε : Fin n → Bool) : IsUnit (Jm ε) :=
   ⟨⟨Jm ε, Jm ε, Jm_mul_self_eq_oneRealPlaceTaylor ε, Jm_mul_self_eq_oneRealPlaceTaylor ε⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (Jm_mul_self_eq_oneRealPlaceTaylor ε)`.
+-/
 lemma f1alg_inv_J {n : ℕ} (ε : Fin n → Bool) : (Jm ε)⁻¹ = Jm ε :=
   Matrix.inv_eq_left_inv (Jm_mul_self_eq_oneRealPlaceTaylor ε)
 
+/- English proof (translation)
+Establish `h2` using `congrArg (· * Jm ε) h`. Simplify `h2` using `[Matrix.mul_assoc, Jm_mul_self_eq_oneRealPlaceTaylor]`.
+-/
 lemma f1alg_cancel {n : ℕ} (ε : Fin n → Bool) {A B : Matrix (Fin n) (Fin n) ℂ}
     (h : A * Jm ε = B * Jm ε) : A = B := by
   have h2 := congrArg (· * Jm ε) h
   simpa [Matrix.mul_assoc, Jm_mul_self_eq_oneRealPlaceTaylor] using h2
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, Jm_mul_self_eq_oneRealPlaceTaylor, Matrix.one_mul]`.
+-/
 lemma f1alg_JJ_left {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) :
     Jm ε * (Jm ε * A) = A := by
   rw [← Matrix.mul_assoc, Jm_mul_self_eq_oneRealPlaceTaylor, Matrix.one_mul]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_assoc, f1alg_JJ_left]`.
+-/
 lemma f1alg_theta_mul {n : ℕ} (ε : Fin n → Bool) (A B : Matrix (Fin n) (Fin n) ℂ) :
     Jm ε * (A * B) * Jm ε = (Jm ε * A * Jm ε) * (Jm ε * B * Jm ε) := by
   simp only [Matrix.mul_assoc, f1alg_JJ_left]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_assoc, f1alg_JJ_left, Jm_mul_self_eq_oneRealPlaceTaylor, Matrix.mul_one]`.
+-/
 lemma f1alg_theta_theta {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) :
     Jm ε * (Jm ε * A * Jm ε) * Jm ε = A := by
   simp only [Matrix.mul_assoc, f1alg_JJ_left, Jm_mul_self_eq_oneRealPlaceTaylor, Matrix.mul_one]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[Matrix.mul_assoc, h, f1alg_JJ_left]`. Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma f1alg_comm_iff {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) :
     A * Jm ε = Jm ε * A ↔ Jm ε * A * Jm ε = A := by
   constructor
@@ -53,6 +82,9 @@ lemma f1alg_comm_iff {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n)
     calc A * Jm ε = (Jm ε * A * Jm ε) * Jm ε := by rw [h]
       _ = Jm ε * A := by rw [Matrix.mul_assoc, Jm_mul_self_eq_oneRealPlaceTaylor, Matrix.mul_one]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[Matrix.mul_assoc, h, Matrix.mul_neg, f1alg_JJ_left]`. Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma f1alg_anti_iff {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) :
     A * Jm ε = -(Jm ε * A) ↔ Jm ε * A * Jm ε = -A := by
   constructor
@@ -62,6 +94,11 @@ lemma f1alg_anti_iff {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n)
     calc A * Jm ε = -(Jm ε * A * Jm ε) * Jm ε := by rw [h, neg_neg]
       _ = -(Jm ε * A) := by rw [Matrix.neg_mul, Matrix.mul_assoc, Jm_mul_self_eq_oneRealPlaceTaylor, Matrix.mul_one]
 
+/- English proof (translation)
+Unfold `inG`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : Xᴴ * Jm ε = -(Jm ε * X)` using `eq_neg_of_add_eq_zero_left h`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `h`. Rewrite using `[h, Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_assoc, Jm_mul_self_eq_oneRealPlaceTaylor, Matrix.mul_one, neg_add_cancel]`.
+-/
 lemma f1alg_inG_iff {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) :
     inG ε X ↔ Xᴴ = -(Jm ε * X * Jm ε) := by
   unfold inG
@@ -73,6 +110,11 @@ lemma f1alg_inG_iff {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) 
   · intro h
     rw [h, Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_assoc, Jm_mul_self_eq_oneRealPlaceTaylor, Matrix.mul_one, neg_add_cancel]
 
+/- English proof (translation)
+Unfold `inK`. Rewrite using `[f1alg_inG_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨by rw [h1, (f1alg_comm_iff ε X).mp h2], h2⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨by rw [h1, (f1alg_comm_iff ε X).mp h2], h2⟩`.
+-/
 lemma f1alg_inK_iff {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) :
     inK ε X ↔ Xᴴ = -X ∧ X * Jm ε = Jm ε * X := by
   unfold inK
@@ -83,6 +125,11 @@ lemma f1alg_inK_iff {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) 
   · rintro ⟨h1, h2⟩
     exact ⟨by rw [h1, (f1alg_comm_iff ε X).mp h2], h2⟩
 
+/- English proof (translation)
+Unfold `inP`. Rewrite using `[f1alg_inG_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨by rw [h1, (f1alg_anti_iff ε X).mp h2, neg_neg], h2⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨by rw [h1, (f1alg_anti_iff ε X).mp h2, neg_neg], h2⟩`.
+-/
 lemma mem_cartanP_iff {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) :
     inP ε X ↔ Xᴴ = X ∧ X * Jm ε = -(Jm ε * X) := by
   unfold inP
@@ -93,6 +140,11 @@ lemma mem_cartanP_iff {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n
   · rintro ⟨h1, h2⟩
     exact ⟨by rw [h1, (f1alg_anti_iff ε X).mp h2, neg_neg], h2⟩
 
+/- English proof (translation)
+Unfold `inUJ`. Establish `hY' : Yᴴ = Jm ε * (-Y) * Jm ε`. Rewrite using `[(f1alg_inG_iff ε Y).mp hY, Matrix.mul_neg, Matrix.neg_mul]`. Set `U : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `⟨Jm ε, Jm ε, Jm_mul_self_eq_oneRealPlaceTaylor ε, Jm_mul_self_eq_oneRealPlaceTaylor ε⟩`. Establish `hconj : NormedSpace.exp (Jm ε * (-Y) * Jm ε) = Jm ε * NormedSpace.exp (-Y) * Jm ε` using `Matrix.exp_units_conj U (-Y)`.
+
+Establish `hinv : NormedSpace.exp (-Y) * NormedSpace.exp Y = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl Y)), neg_add_cancel, NormedSpace.exp_zero]`. Rewrite using `[← Matrix.exp_conjTranspose, hY', hconj]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[f1alg_JJ_left, hinv, Matrix.mul_one]`.
+-/
 lemma f1alg_exp_inUJ {n : ℕ} (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) (hY : inG ε Y) :
     inUJ ε (NormedSpace.exp Y) := by
   unfold inUJ
@@ -108,11 +160,19 @@ lemma f1alg_exp_inUJ {n : ℕ} (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n)
   simp only [Matrix.mul_assoc]
   rw [f1alg_JJ_left, hinv, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `n ε`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+-/
 theorem indefinite_unitary_closed : UJClosed := by
   intro n ε
   exact isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul
     continuous_id) continuous_const
 
+/- English proof (translation)
+Introduce `n ε X hX t`. Apply `f1alg_exp_inUJ` to reduce the goal to its premises. Unfold `inG at hX ⊢`. Establish `hs : ((t : ℂ) • X)ᴴ = (t : ℂ) • Xᴴ`. Rewrite using `[conjTranspose_smul, Complex.star_def, Complex.conj_ofReal]`.
+
+Rewrite using `[hs, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]`.
+-/
 theorem exp_indefinite_unitary_holds : ExpUJ := by
   intro n ε X hX t
   apply f1alg_exp_inUJ
@@ -121,29 +181,59 @@ theorem exp_indefinite_unitary_holds : ExpUJ := by
     rw [conjTranspose_smul, Complex.star_def, Complex.conj_ofReal]
   rw [hs, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]
 
+/- English proof (translation)
+Introduce `n ε g h`. Establish `h2 : (Jm ε * gᴴ * Jm ε) * g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, Jm_mul_self_eq_oneRealPlaceTaylor]`. Conclude with `⟨mul_eq_one_comm.mp h2, h2⟩`.
+-/
 theorem indefinite_unitary_inv_closed : UJInv := by
   intro n ε g h
   have h2 : (Jm ε * gᴴ * Jm ε) * g = 1 := by
     rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, Jm_mul_self_eq_oneRealPlaceTaylor]
   exact ⟨mul_eq_one_comm.mp h2, h2⟩
 
+/- English proof (translation)
+Introduce `n X s t`. Rewrite using `[Complex.ofReal_add, add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left _).smul_right _)`.
+-/
 theorem one_parameter_subgroup_holds : OneParam := by
   intro n X s t
   rw [Complex.ofReal_add, add_smul]
   exact Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left _).smul_right _)
 
+/- English proof (translation)
+Introduce `n ε X`. Conclude with `⟨mem_cartanP_iff ε X, fun h => (f1alg_anti_iff ε X).mp h.2⟩`.
+-/
 theorem parabolic_character_holds : PChar := by
   intro n ε X
   exact ⟨mem_cartanP_iff ε X, fun h => (f1alg_anti_iff ε X).mp h.2⟩
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`.
+-/
 lemma f1alg_unit_iff {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     g ∈ Matrix.unitaryGroup (Fin n) ℂ ↔ gᴴ * g = 1 := by
   rw [Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]`.
+-/
 lemma mem_unitaryGroup_iff_mul_conjTranspose {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     g ∈ Matrix.unitaryGroup (Fin n) ℂ ↔ g * gᴴ = 1 := by
   rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]
 
+/- English proof (translation)
+Introduce `n ε`. Establish `h1 : ∀ g ∈ Kset ε, inUJ ε g`. Introduce and unpack `g ⟨hu, hc⟩`. Unfold `inUJ`. Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, (f1alg_unit_iff g).mp hu, Matrix.one_mul]`.
+
+Establish `h5 : ∀ g, g ∈ Kset ε ↔ (inUJ ε g ∧ g ∈ Matrix.unitaryGroup (Fin n) ℂ)`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Conclude with `⟨h1 g hg, hg.1⟩`.
+
+Introduce and unpack `⟨hJ, hu⟩`. Use `⟨hu, ?_⟩` and prove the remaining obligations. Unfold `inUJ at hJ`. Combine the equalities or inequalities in the displayed calculation. Use `⟨h1, ?_, ?_, ?_, h5⟩` and prove the remaining obligations.
+
+Establish `hcl : IsClosed (Kset ε)`. Establish `: Kset ε = {g | gᴴ * g = 1} ∩ {g | g * Jm ε = Jm ε * g}`. Use extensionality with `g`. Simplify using `only [Kset, Set.mem_setOf_eq, Set.mem_inter_iff, f1alg_unit_iff]`. Rewrite using `[this]`.
+
+Conclude with `(isClosed_eq (continuous_id.matrix_conjTranspose.matrix_mul continuous_id) continuous_const).inter (isClosed_eq (continuous_id.matrix_mul continuous_const) (continuous_const.matrix_mul continuous_id))`. Establish `hsub : Kset ε ⊆ Set.pi Set.univ (fun _ : Fin n => Set.pi Set.univ (fun _ : Fin n => Metric.closedBall (0 : ℂ) 1))`. Introduce `g hg i _ j _`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `entry_norm_bound_of_unitary hg.1 i j`.
+
+Conclude with `IsCompact.of_isClosed_subset (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _) hcl hsub`. Use `⟨?_, rfl⟩` and prove the remaining obligations. Rewrite using `[f1alg_unit_iff, Jm_conjTranspose_eq, Jm_mul_self_eq_oneRealPlaceTaylor]`. Introduce and unpack `X ⟨hG, hc⟩`. Establish `hX : Xᴴ = -X` using `((f1alg_inK_iff ε X).mp ⟨hG, hc⟩).1`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[f1alg_unit_iff, ← Matrix.exp_conjTranspose, hX, ← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl X)), neg_add_cancel, NormedSpace.exp_zero]`. Conclude with `((Commute.exp_right (show Commute (Jm ε) X from hc.symm)).symm).eq`.
+-/
 theorem maximal_compact_facts : KFacts := by
   intro n ε
 
@@ -189,19 +279,47 @@ theorem maximal_compact_facts : KFacts := by
         NormedSpace.exp_zero]
     · exact ((Commute.exp_right (show Commute (Jm ε) X from hc.symm)).symm).eq
 
+/- English proof (translation)
+Rewrite using `[conjTranspose_mul, conjTranspose_mul, Jm_conjTranspose_eq, Matrix.mul_assoc]`.
+-/
 lemma f1alg_ct_theta {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) :
     (Jm ε * A * Jm ε)ᴴ = Jm ε * Aᴴ * Jm ε := by
   rw [conjTranspose_mul, conjTranspose_mul, Jm_conjTranspose_eq, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, f1alg_theta_mul, f1alg_theta_mul]`.
+-/
 lemma f1alg_theta_comm {n : ℕ} (ε : Fin n → Bool) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     Jm ε * (X * Y - Y * X) * Jm ε =
       (Jm ε * X * Jm ε) * (Jm ε * Y * Jm ε) - (Jm ε * Y * Jm ε) * (Jm ε * X * Jm ε) := by
   rw [Matrix.mul_sub, Matrix.sub_mul, f1alg_theta_mul, f1alg_theta_mul]
 
+/- English proof (translation)
+Rewrite using `[conjTranspose_sub, conjTranspose_mul, conjTranspose_mul]`.
+-/
 lemma f1alg_ct_comm {n : ℕ} (X Y : Matrix (Fin n) (Fin n) ℂ) :
     (X * Y - Y * X)ᴴ = Yᴴ * Xᴴ - Xᴴ * Yᴴ := by
   rw [conjTranspose_sub, conjTranspose_mul, conjTranspose_mul]
 
+/- English proof (translation)
+Introduce `n ε X Y`. Establish `hK : ∀ Z, inK ε Z ↔ Zᴴ = -Z ∧ Jm ε * Z * Jm ε = Z` using `fun Z => by`. Rewrite using `[f1alg_inK_iff, f1alg_comm_iff]`. Establish `hP : ∀ Z, inP ε Z ↔ Zᴴ = Z ∧ Jm ε * Z * Jm ε = -Z` using `fun Z => by`. Rewrite using `[mem_cartanP_iff, f1alg_anti_iff]`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hx hy`. Rewrite `hx`, `hy`, the goal using `[hK]`. Conclude with `⟨by rw [f1alg_ct_comm, hx.1, hy.1]; noncomm_ring, by rw [f1alg_theta_comm, hx.2, hy.2]⟩`. Introduce `hx hy`.
+
+Rewrite `hx` using `[hK]`. Rewrite `hy`, the goal using `[hP]`. Conclude with `⟨by rw [f1alg_ct_comm, hx.1, hy.1]; noncomm_ring, by rw [f1alg_theta_comm, hx.2, hy.2]; noncomm_ring⟩`. Introduce `hx hy`. Rewrite `hx`, `hy` using `[hP]`.
+
+Rewrite using `[hK]`. Conclude with `⟨by rw [f1alg_ct_comm, hx.1, hy.1]; noncomm_ring, by rw [f1alg_theta_comm, hx.2, hy.2]; noncomm_ring⟩`. Introduce `hX`. Establish `hx` using `(f1alg_inG_iff ε X).mp hX`. Establish `htt` using `f1alg_theta_theta ε X`.
+
+Establish `hct` using `f1alg_ct_theta ε X`. Establish `h2 : star ((2 : ℂ)⁻¹) = (2 : ℂ)⁻¹` using `by simp`. Use `⟨(2 : ℂ)⁻¹ • (X + Jm ε * X * Jm ε), (2 : ℂ)⁻¹ • (X - Jm ε * X * Jm ε), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hK]`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[conjTranspose_smul, conjTranspose_add, hct, hx, h2, Matrix.mul_neg, Matrix.neg_mul, htt] module`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, htt] module`. Rewrite using `[hP]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[conjTranspose_smul, conjTranspose_sub, hct, hx, h2, Matrix.mul_neg, Matrix.neg_mul, htt] module`.
+
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, htt] module`. Use `module`. Introduce `hx hy`. Rewrite `hx` using `[hK]`. Rewrite `hy` using `[hP]`.
+
+Establish `h : X = -X` using `hy.1.symm.trans hx.1`. Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun h i) j`. Simplify using `only [Matrix.neg_apply] at hij`. Rewrite using `[Matrix.zero_apply]`.
+
+Take the linear combination `hij / 2`.
+-/
 theorem lie_brackets_holds : Brackets := by
   intro n ε X Y
 

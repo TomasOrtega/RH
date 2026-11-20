@@ -8,6 +8,13 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar
 open GlobalTheory.VertCmp
 open scoped Classical
 
+/- English proof (translation)
+Establish `h0 : ⊤ ≤ X.fromSpecStalk (genericPoint X) ⁻¹ᵁ U`. Introduce `p _`. Establish `hp : X.fromSpecStalk (genericPoint X) p ∈ Set.range (X.fromSpecStalk (genericPoint X))` using `⟨p, rfl⟩`. Rewrite `hp` using `[Scheme.range_fromSpecStalk]`. Conclude with `hp.mem_open U.isOpen h`.
+
+Use `⟨h0, ?_⟩` and prove the remaining obligations. Establish `e : (X.fromSpecStalk (genericPoint X)).appLE U ⊤ h0 ≫ (Scheme.ΓSpecIso (X.presheaf.stalk (genericPoint X))).hom = X.presheaf.germ U _ h`. Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app h, Category.assoc, Category.assoc, Category.assoc, ← Functor.map_comp_assoc]`. Establish `: (Spec (X.presheaf.stalk (genericPoint X))).presheaf.map ((homOfLE le_top).op ≫ (homOfLE h0).op) = 𝟙 _` using `(Spec (X.presheaf.stalk (genericPoint X))).presheaf.map_id _`. Rewrite using `[this, Category.id_comp, Iso.inv_hom_id, Category.comp_id]`.
+
+Conclude with `(dif_pos h0).trans (congrArg (fun g => g.hom s) e)`.
+-/
 private theorem valF_gen {X : Scheme.{0}} [IsIntegral X] (U : X.Opens) (h : genericPoint X ∈ U) (s : Γ(X, U)) :
     ⊤ ≤ X.fromSpecStalk (genericPoint X) ⁻¹ᵁ U ∧
       valF (F := X.functionField) (X.fromSpecStalk (genericPoint X)) U s = fnOf U h s := by
@@ -26,6 +33,9 @@ private theorem valF_gen {X : Scheme.{0}} [IsIntegral X] (U : X.Opens) (h : gene
     rw [this, Category.id_comp, Iso.inv_hom_id, Category.comp_id]
   exact (dif_pos h0).trans (congrArg (fun g => g.hom s) e)
 
+/- English proof (translation)
+Establish `e : X.presheaf.germ U _ hU ≫ Scheme.stalkClosedPointTo (R` using `CommRingCat.of K) y = y.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of K)).hom := by`. Rewrite using `[Scheme.germ_stalkClosedPointTo]`. Simplify using `[Iso.trans_hom, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map_assoc]`. Rewrite using `[← algebraMap_germ hU, Base.valAt_stalk, valF, dif_pos h]`. Conclude with `congrArg (fun g => g.hom a) e`.
+-/
 private theorem valAt_fnOf' {X : Scheme.{0}} [IsIntegral X] {K : Type} [Field K] (y : Sp K ⟶ X) {U : X.Opens}
     (hU : below y ∈ U) (h : ⊤ ≤ y ⁻¹ᵁ U) (a : Γ(X, U)) :
     TrueGeo.valAt y (fnOf U (gen_mem hU) a) = valF y U a := by
@@ -36,6 +46,13 @@ private theorem valAt_fnOf' {X : Scheme.{0}} [IsIntegral X] {K : Type} [Field K]
   rw [← algebraMap_germ hU, Base.valAt_stalk, valF, dif_pos h]
   exact congrArg (fun g => g.hom a) e
 
+/- English proof (translation)
+Introduce `X X' _ q V r`. Establish `e : (q.appLE V (q ⁻¹ᵁ V) le_rfl).hom r = q.app V r` using `by rw [← Scheme.Hom.app_eq_appLE]`. Establish `h1 : ∀ h : genericPoint X ∈ q ⁻¹ᵁ V, valF (F` using `X.functionField) (X.fromSpecStalk (genericPoint X) ≫ q) V r = fnOf _ h (q.app V r) := by`. Introduce `h`. Take `⟨h0, h2⟩` from `valF_gen (q ⁻¹ᵁ V) h (q.app V r)`.
+
+Rewrite using `[← h2, ← e]`. Conclude with `(Pull.valF_appLE (F := X.functionField) q V le_rfl h0 r).symm`. Use `⟨h1, fun k _ z hz hr => ?_⟩` and prove the remaining obligations. Establish `hz' : ⊤ ≤ z ⁻¹ᵁ (q ⁻¹ᵁ V)` using `hz`. Establish `hb : below z ∈ q ⁻¹ᵁ V` using `hz' trivial`.
+
+Rewrite using `[h1 (gen_mem hb)]`. Use `⟨unitAt_fnOf hb _ (hr.map (q.app V).hom).unit, ?_⟩` and prove the remaining obligations. Rewrite using `[valAt_fnOf' z hb hz', ← e]`. Conclude with `Pull.valF_appLE q V le_rfl hz' r`.
+-/
 theorem UpperTheory.generic_stalk_section_unit :
     ∀ (X X' : Scheme.{0}) [IsIntegral X] (q : X ⟶ X') (V : X'.Opens) (r : Γ(X', V)), (∀ h : genericPoint X ∈ q ⁻¹ᵁ V, valF (F := X.functionField) (X.fromSpecStalk (genericPoint X) ≫ q) V r = fnOf _ h (q.app V r)) ∧ ∀ (k : Type) [Field k] (z : Sp k ⟶ X), ⊤ ≤ (z ≫ q) ⁻¹ᵁ V → IsUnit r → UnitAt (below z) (valF (F := X.functionField) (X.fromSpecStalk (genericPoint X) ≫ q) V r) ∧ TrueGeo.valAt z (valF (F := X.functionField) (X.fromSpecStalk (genericPoint X) ≫ q) V r) = valF (z ≫ q) V r := by
   intro X X' _ q V r

@@ -9,6 +9,9 @@ namespace GlobalTheory.TwistCoords
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
+/- English proof (translation)
+Establish `h1 : (r ⊗ₜ[F] x : R ⊗[F] E) = r • ((1 : R) ⊗ₜ[F] x)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, smul_eq_mul]`.
+-/
 theorem trace_tmul_base {F E R : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     [CommRing R] [Algebra F R] (r : R) (x : E) :
     Algebra.trace R (R ⊗[F] E) (r ⊗ₜ[F] x) = r * algebraMap F R (Algebra.trace F E x) := by
@@ -17,6 +20,9 @@ theorem trace_tmul_base {F E R : Type} [Field F] [Field E] [Algebra F E] [Finite
   rw [h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul,
     LinearMap.trace_baseChange, smul_eq_mul]
 
+/- English proof (translation)
+Establish `h` using `congrArg (Algebra.traceForm F E ((Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) b l)) (b.sum_repr x)`. Rewrite `h` using `[map_sum]`. Simplify using `only [map_smul, LinearMap.BilinForm.apply_dualBasis_left, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Rewrite `h` using `[Algebra.traceForm_apply]`. Conclude with `h.symm`.
+-/
 theorem repr_eq_trace {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     [Algebra.IsSeparable F E] {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι F E)
     (x : E) (l : ι) :
@@ -30,6 +36,13 @@ theorem repr_eq_trace {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDime
   rw [Algebra.traceForm_apply] at h
   exact h.symm
 
+/- English proof (translation)
+Set `b` to `Module.finBasis F E`. Use `⟨_, fun l => (Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) b l, b, ?_⟩` and prove the remaining obligations. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul r x`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, one_mul, trace_tmul_base, map_mul, AlgHom.commutes, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq]`. Simplify using `only [repr_eq_trace]`. Use `conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[TensorProduct.tmul_sum]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← Algebra.smul_def, TensorProduct.smul_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, mul_add, ← Finset.sum_add_distrib, TensorProduct.add_tmul]`.
+-/
 theorem coords_gen (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
     [FiniteDimensional F E] [Algebra.IsSeparable F E] :
     ∃ (d : ℕ) (c e : Fin d → E), ∀ w : AF F ⊗[F] E,
@@ -55,6 +68,9 @@ end GlobalTheory.TwistCoords
 
 namespace GlobalTheory.TwistCoords
 
+/- English proof (translation)
+Introduce `D`. Take `⟨d, c, e, h⟩` from `coords_gen D.host.F D.host.E`. Conclude with `⟨d, c, e, fun w => h w⟩`.
+-/
 theorem finPart_eq_sum_trace :
     ∀ (D : D7), ∃ (d : ℕ) (c e : Fin d → D.host.E), ∀ w : AE D, finPart D w =
       ∑ l, sndA D.host.F (Algebra.trace (AF D.host.F) (AE D) (incA D (c l) * w)) ⊗ₜ[D.host.F] e l := by

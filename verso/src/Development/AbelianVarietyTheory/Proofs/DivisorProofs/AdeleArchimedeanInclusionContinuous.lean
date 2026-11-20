@@ -6,6 +6,21 @@ open scoped Matrix TensorProduct
 
 namespace GlobalTheory.DecCont
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ hF Φ hΦ`. Use `haveI : IsModuleTopology (AdeleRing (𝓞 F) F) (AE F E) := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.modTop`. Use `haveI : ContinuousAdd (AE F E) := IsModuleTopology.toContinuousAdd (AdeleRing (𝓞 F) F) _`. Use `haveI : ContinuousSMul (AdeleRing (𝓞 F) F) (AE F E) := IsModuleTopology.toContinuousSMul (AdeleRing (𝓞 F) F) _`. Establish `hr : ∀ w : InfinitePlace F, w.IsReal` using `fun w => IsTotallyReal.isReal w`.
+
+Set `rr : InfinitePlace F → ℝ → AdeleRing (𝓞 F) F` to `fun w t => ((Pi.single w ((InfinitePlace.Completion.isometryEquivRealOfIsReal (hr w)).symm t) : InfiniteAdeleRing F), (0 : FiniteAdeleRing (𝓞 F) F))`. Establish `hrc : ∀ w, Continuous (rr w)` using `fun w => ((continuous_single w).comp (InfinitePlace.Completion.isometryEquivRealOfIsReal (hr w)).symm.continuous).prodMk continuous_const`. Establish `he : ∀ (w : InfinitePlace F) (t : ℝ), InfinitePlace.Completion.extensionEmbedding w ((InfinitePlace.Completion.isometryEquivRealOfIsReal (hr w)).symm t) = t` using `fun w t => (InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (hr w) _).symm.trans (congrArg _ ((InfinitePlace.Completion.isometryEquivRealOfIsReal (hr w)).apply_symm_apply t))`. Establish `key : ∀ (w : InfinitePlace F) (t : ℝ) (z : ℂ), Φ (rr w t • Φ.symm (Pi.single w z, 0)) = (Pi.single w ((t : ℂ) * z), 0)`. Introduce `w t z`.
+
+Rewrite using `[Algebra.smul_def, map_mul, hΦ _ rfl, Φ.apply_symm_apply, Prod.mk_mul_mk, mul_zero]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality.
+
+Rewrite using `[Pi.mul_apply]`. Simplify using `only [rr, Pi.single_eq_same, he, mul_one]`. Simplify using `[rr, Pi.single_eq_of_ne hv]`. Establish `hsum : (fun c : InfinitePlace F → ℂ => Φ.symm (c, 0)) = fun c => ∑ w, (rr w (c w).re • Φ.symm (Pi.single w 1, 0) + rr w (c w).im • Φ.symm (Pi.single w Complex.I, 0))`. Use function extensionality and compare the values at `c`.
+
+Apply `Φ.injective` to reduce the goal to its premises. Rewrite using `[Φ.apply_symm_apply, map_sum]`. Simplify using `only [map_add, key]`. Use extensionality with `v`. Rewrite using `[Prod.fst_sum, Finset.sum_apply]`.
+
+Simplify using `only [Prod.fst_add, mul_one, Pi.add_apply, Pi.single_apply, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `(Complex.re_add_im _).symm`. Rewrite using `[Prod.snd_sum]`. Simplify using the standard rewrite rules. Rewrite using `[hsum]`.
+
+Use `continuous_finset_sum _ fun w _ => ?_` and prove the remaining obligations. Conclude with `((hrc w).comp (Complex.continuous_re.comp (continuous_apply w))).smul continuous_const |>.add (((hrc w).comp (Complex.continuous_im.comp (continuous_apply w))).smul continuous_const)`.
+-/
 theorem continuous_symm_inf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], NumberField.IsTotallyReal F → ∀ Φ : AE F E ≃+* (InfinitePlace F → ℂ) × (E ⊗[F] FiniteAdeleRing (𝓞 F) F), (∀ u : AdeleRing (𝓞 F) F, u.2 = 0 → Φ (algebraMap (AdeleRing (𝓞 F) F) (AE F E) u) = (fun w => InfinitePlace.Completion.extensionEmbedding w (u.1 w), 0)) → Continuous (fun c : InfinitePlace F → ℂ => Φ.symm (c, 0)) := by
   intro F E _ _ _ _ _ hF Φ hΦ
   classical

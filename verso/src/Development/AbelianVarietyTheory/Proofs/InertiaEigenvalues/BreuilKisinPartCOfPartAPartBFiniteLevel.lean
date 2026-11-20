@@ -19,6 +19,27 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.BKFinLevel
 
+/- English proof (translation)
+Introduce `hT _ l _ P _ _ K hA hB LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' m hDR hd ϖ hϖ r hI hI'`. Use `show (∀ c ∈ quotientCocycles LA _ hI, (c ∈ HfQ (P.PD K) LA _ hI ↔ ∀ c' ∈ HfQ (P.PD K) LA' _ hI', CobO (P.PD K) L1 (GlobalTheory.BKFinLevel.cupQ LA LA' m ϖ r c c'))) ∧ (∀ c' ∈ quotientCocycles LA' _ hI', (c' ∈ HfQ (P.PD K) LA' _ hI' ↔ ∀ c ∈ HfQ (P.PD K) LA _ hI, CobO (P.PD K) L1 ( …`. Establish `orth` using `GlobalTheory.T.blochKato_reductions_orthogonal_mod_pow l P K hA LL O hO L1 hL1 A A' LA LA' m hDR hd ϖ r hI hI'`. Establish `hfz : ∀ s ∈ HfQ (P.PD K) LA _ hI, s ∈ quotientCocycles LA _ hI`. Introduce `s hs`.
+
+Take `⟨a, -, has⟩` from `(GlobalTheory.T.mem_blochKato_quotient_pow_iff_reduction l P K LL O hO A LA ϖ r hI s).1 hs`. Rewrite using `[has]`. Conclude with `GlobalTheory.T.lattice_reduction_mod_pow_mem_locConst_cocycles l P K LL O hO A LA ϖ hϖ r hI a`. Establish `clause2 : ∀ c' ∈ quotientCocycles LA' _ hI', (∀ c ∈ HfQ (P.PD K) LA _ hI, CobO (P.PD K) L1 (GlobalTheory.BKFinLevel.cupQ LA LA' m ϖ r c c')) → c' ∈ HfQ (P.PD K) LA' _ hI'`. Introduce `c' hc' horth`.
+
+Apply `GlobalTheory.T.blochKato_quotient_of_divisible_image_mem l P K LL O hO A' LA' ϖ hϖ r hI' c'` to reduce the goal to its premises. Establish `hZ` using `GlobalTheory.T.latticeQuotientToDivisibleQuotient_mem_cocycles l P K LL O hO A' LA' ϖ r hI' c' hc'`. Use `((hB LL O hO L1 hL1 A A' LA LA' m hDR hd).1 _ hZ).2 ?_` and prove the remaining obligations. Introduce `d hdf`. Establish `hdT : d ∈ latticeCocycles LA` using `hdf.1`.
+
+Rewrite using `[GlobalTheory.T.cup_divisible_image_coboundary_iff_finite_level l P K LL O hO L1 hL1 A A' LA LA' m hd ϖ r ⟨d, hdT⟩ c']`. Conclude with `horth _ ((GlobalTheory.T.mem_blochKato_quotient_pow_iff_reduction l P K LL O hO A LA ϖ r hI _).2 ⟨⟨d, hdT⟩, hdf.2, rfl⟩)`. Use `⟨fun c hc => ⟨fun h c' hc' => orth c h c' hc', fun h => ?_⟩, fun c' hc' => ⟨fun h c hc => orth c hc c' h, clause2 c' hc'⟩⟩` and prove the remaining obligations. Set `S : Submodule O (↥(GK K) → A.V ⧸ LA.T)` to `(HfQ (P.PD K) LA _ hI).map ((GlobalTheory.BKFinLevel.ioL LA ϖ r).compLeft ↥(GK K)) ⊔ BD LA`. Establish `hS1 : BD LA ≤ S` using `le_sup_right`.
+
+Establish `hS2 : S ≤ divisibleCocycles LA`. Use `sup_le ?_ (GlobalTheory.T.lattice_divisible_coboundaries_le_locConst_cocycles' l P K LL O hO A LA)` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `GlobalTheory.T.latticeQuotientToDivisibleQuotient_mem_cocycles l P K LL O hO A LA ϖ r hI s (hfz s hs)`. Establish `hflip : IsDualLat1 (P.PD K) LA' LA m.flip`.
+
+Take `⟨⟨hDom, hDVR, hFr⟩, -, -, htr, -⟩` from `id hO`. Conclude with `Formalism.MainNotions.BlochKatoDuality.Br.isDualLat1_flip (P.PD K) hd`. Establish `hC` using `GlobalTheory.T.latticeQuotientToDivisibleQuotient_mem_cocycles l P K LL O hO A LA ϖ r hI c hc`. Establish `key` using `GlobalTheory.T.lattice_dual_cyclotomic hT l P K LL O hO L1 hL1 A' A LA' LA m.flip hflip S hS1 hS2 _ hC (by`. Introduce `d hdZ hdS`.
+
+Rewrite using `[← GlobalTheory.T.finite_level_cup_swap_coboundary_iff l P K LL O hO L1 hL1 A A' LA LA' m hd ϖ r hI c hc ⟨d, hdZ⟩]`. Apply `h` to reduce the goal to its premises. Apply `clause2 _ (GlobalTheory.T.lattice_reduction_mod_pow_mem_locConst_cocycles l P K LL O hO A' LA' ϖ hϖ r hI' ⟨d, hdZ⟩)` to reduce the goal to its premises. Introduce `s hs`. Rewrite using `[GlobalTheory.T.finite_level_cup_swap_coboundary_iff l P K LL O hO L1 hL1 A A' LA LA' m hd ϖ r hI s (hfz s hs) ⟨d, hdZ⟩]`.
+
+Conclude with `hdS _ (Submodule.mem_sup_left ⟨s, hs, rfl⟩))`. Take `⟨y, ⟨a, ha, rfl⟩, z, hz, hyz⟩` from `Submodule.mem_sup.1 key`. Establish `hdiff : (fun g => GlobalTheory.BKFinLevel.ioL LA ϖ r ((c - a) g)) ∈ HfD (P.PD K) LA`. Establish `: (fun g => GlobalTheory.BKFinLevel.ioL LA ϖ r ((c - a) g)) = z`. Use function extensionality and compare the values at `g`.
+
+Use `congrFun hyz g` as an intermediate fact. Simplify using `only [Pi.sub_apply, map_sub, LinearMap.compLeft_apply, Function.comp_apply, Pi.add_apply] at this ⊢`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+
+Conclude with `Submodule.mem_sup_right hz`. Use `GlobalTheory.T.blochKato_quotient_of_divisible_image_mem l P K LL O hO A LA ϖ hϖ r hI _ hdiff` as an intermediate fact. Simplify using `using (HfQ (P.PD K) LA _ hI).add_mem this ha`.
+-/
 theorem bkC_of_bkA_bkB : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK → ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ K : FinExt l, bkACore (P.PD K) → bkBCore (P.PD K) → Formalism.MainNotions.LocalSituation.bkC (P.PD K) := by
   intro hT _ l _ P _ _ K hA hB LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' m hDR hd ϖ hϖ r hI hI'
   show (∀ c ∈ quotientCocycles LA _ hI, (c ∈ HfQ (P.PD K) LA _ hI ↔ ∀ c' ∈ HfQ (P.PD K) LA' _ hI',

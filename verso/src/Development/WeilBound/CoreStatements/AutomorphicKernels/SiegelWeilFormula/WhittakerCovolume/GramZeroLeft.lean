@@ -12,9 +12,15 @@ open PositivityTheory.SiegelWeilFormula
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+The claim follows from `d.ok.dbl.weil.2.1.pres x Φ hΦ`.
+-/
 theorem om_mem_sch (d : SD σ) (x : d.G) {Φ : d.Fn} (hΦ : Φ ∈ d.sch) : d.om x Φ ∈ d.sch :=
   d.ok.dbl.weil.2.1.pres x Φ hΦ
 
+/- English proof (translation)
+Unfold `SD.T`. Rewrite using `[Matrix.zero_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `[Darboux.rho, schr]`.
+-/
 theorem T_zero (d : SD σ) {Φ : d.Fn} (_hΦ : Φ ∈ d.sch) : d.T Φ 0 = d.l Φ := by
   unfold SD.T
   rw [Matrix.zero_mul]
@@ -22,9 +28,19 @@ theorem T_zero (d : SD σ) {Φ : d.Fn} (_hΦ : Φ ∈ d.sch) : d.T Φ 0 = d.l Φ
   funext y
   simp [Darboux.rho, schr]
 
+/- English proof (translation)
+Simplify using `[SD.gram]`.
+-/
 theorem gram_zero_left (d : SD σ) (Z : Mx F E d.m d.n) : d.gram 0 Z = 0 := by
   simp [SD.gram]
 
+/- English proof (translation)
+Introduce `hT F E _ _ _ _ _ σ d ν hν ε w hw Φ hΦ g x β hg`. Establish `hΨ : d.om x Φ ∈ d.sch` using `om_mem_sch d x hΦ`. Establish `hΨ' : d.om g (d.om x Φ) ∈ d.sch` using `om_mem_sch d g hΨ`. Establish `hW` using `hT.2.2.1 F E σ d ν hν ε w hw _ hΨ' 0`. Establish `hP` using `(hT.2.1 F E σ d _ hΨ).1 g β hg`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul]`. Both sides reduce to the same expression. Use `_ = d.T (d.om w (d.om g (d.om x Φ))) 0 := (T_zero d (om_mem_sch d w hΨ')).symm`. Use `_ = ∫ Z, d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram 0 Z)) * d.T (d.om g (d.om x Φ)) Z ∂ν := hW`.
+
+Use `_ = _ := by`. Use `congr 1`. Use function extensionality and compare the values at `Z`. Rewrite using `[gram_zero_left d Z, hP Z]`. Simplify using `[SD.tt]`.
+-/
 theorem cellFormula : CellFormula := by
   intro hT F E _ _ _ _ _ σ d ν hν ε w hw Φ hΦ g x β hg
   have hΨ : d.om x Φ ∈ d.sch := om_mem_sch d x hΦ

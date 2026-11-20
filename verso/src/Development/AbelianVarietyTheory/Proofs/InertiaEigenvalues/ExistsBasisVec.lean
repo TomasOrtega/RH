@@ -32,10 +32,18 @@ def FinSumAt (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (th : (R.HV i t).H →
       (a : ℂ) * (coef R i t μ 𝓕 (q.out : GfC (Wc D i)) * trPair R i (q.out : GfC (Wc D i)) x y))
       ⟪LinearMap.adjoint th x, LinearMap.adjoint th y⟫_ℂ
 
+/- English proof (translation)
+Simplify using `only [jointVec, RealDat.ptP, map_smul]`.
+-/
 theorem jointVec_smul (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (c : ℂ)
     (w : (R.cV i).W) : jointVec R i t v (c • w) = c • jointVec R i t v w := by
   simp only [jointVec, RealDat.ptP, map_smul]
 
+/- English proof (translation)
+Unfold `thetaIP`. Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[Complex.ofReal_pow, ← Complex.conj_mul']`.
+
+Both sides reduce to the same expression.
+-/
 theorem thetaInner_self {S T' : HSp D} (μ : Measure (WO S T')) (𝓕 : Set (WO S T')) (f : WO S T' → ℂ) :
     thetaIP μ 𝓕 f f = ((∫ z in 𝓕, ‖f z‖ ^ 2 ∂μ : ℝ) : ℂ) := by
   unfold thetaIP
@@ -45,6 +53,17 @@ theorem thetaInner_self {S T' : HSp D} (μ : Measure (WO S T')) (𝓕 : Set (WO 
   rw [Complex.ofReal_pow, ← Complex.conj_mul']
   rfl
 
+/- English proof (translation)
+Take `⟨v, w, hv, hw⟩` from `h`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Apply `hw` to reduce the goal to its premises. Establish `e : jointVec R i t v 0 = 0` using `by simpa using jointVec_smul R i t v 0 0`.
+
+Rewrite using `[e]`. Simplify using `[thetaIP]`. Establish `hn : 0 < Module.finrank ℂ (R.cV i).W` using `by haveI : Nontrivial (R.cV i).W := ⟨⟨w, 0, hw0⟩⟩`. Conclude with `Module.finrank_pos`. Establish `hwn : ‖w‖ ≠ 0` using `norm_ne_zero_iff.2 hw0`.
+
+Take `⟨b, hb⟩` from `Orthonormal.exists_orthonormalBasis_extension_of_card_eq (𝕜 := ℂ) (E := (R.cV i).W) (ι := Fin (Module.finrank ℂ (R.cV i).W)) (by simp) (v := fun _ => ((‖w‖⁻¹ : ℝ) : ℂ) • w) (s := {⟨0, hn⟩}) (by`. Rewrite using `[orthonormal_iff_ite]`. Introduce and unpack `⟨a, ha⟩ ⟨c, hc⟩`. Rewrite `ha`, `hc` using `[Set.mem_singleton_iff]`. Substitute `ha hc` using the available equality.
+
+Rewrite using `[if_pos rfl]`. Use `show ⟪((‖w‖⁻¹ : ℝ) : ℂ) • w, ((‖w‖⁻¹ : ℝ) : ℂ) • w⟫_ℂ = 1`. Rewrite using `[inner_self_eq_norm_sq_to_K, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm, inv_mul_cancel₀ hwn]`. Use the proof step `simp)`. Use `⟨v, hv, _, b, ⟨0, hn⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hb _ rfl, jointVec_smul, thetaInner_smul_left, thetaInner_smul_right]`. Establish `hc : ((‖w‖⁻¹ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast inv_ne_zero hwn`. Conclude with `mul_ne_zero (star_ne_zero.2 hc) (mul_ne_zero hc hw)`.
+-/
 theorem exists_basis_vec (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (μ : Measure (WO (Vc D i) (Wc D i)))
     (𝓕 : Set (WO (Vc D i) (Wc D i)))
     (h : ∃ v w, IsUnitVec R i v ∧ thetaIP μ 𝓕 (jointVec R i t v w) (jointVec R i t v w) ≠ 0) :
@@ -80,6 +99,41 @@ theorem exists_basis_vec (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (μ : Meas
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, tF⟩` from `hTL`. Establish `hm` using `hL.models`. Establish `hνV : (R.νV i t).IsHaarMeasure` using `(hm.νV i t).1.1`. Establish `hfdV` using `(hm.νV i t).2`. Establish `hνW : (R.νW i).IsHaarMeasure` using `(hm.νW i).1.1`.
+
+Establish `hfdW` using `(hm.νW i).2`. Establish `hpos` using `hL.posDef i`. Establish `hmem : ∀ x, IsMultMap R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) ((R.HW i (sg0 D A)).e x)` using `fun x => (GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 (by`. Establish `e` using `(hm.HW i (sg0 D A)).2.1`. Use `show _ ∈ R.Wall i (sg0 D A)`.
+
+Rewrite using `[← e]`. Conclude with `LinearMap.mem_range_self _ x)`. Establish `hR : ∀ k x y, Integrable (rallisF R i t μ 𝓕 v (jointVec R i t v (b k)) x y) (R.νW i) ∧ ∫ h in R.fdV i t, star (upLift (R.ωP i t) (R.νW i) (R.fdW i) (jointVec R i t v (b k)) (val R i v x) h) * upLift (R.ωP i t) (R.νW i) (R.fdW i) (jointVec R i t v (b k)) (val R i v y) h ∂(R.νV i t …`. Introduce `k x y`. Use `hRal R.θ R.ψ (Vc D i) (Wc D i) _ _ (R.ωP i t) hm.inf (hL.thP.ωP i t) hpos.1 hpos.2 (two_mul_rank_W_lt D i) (R.νV i t) (R.fdV i t) (R.νW i) (R.fdW i) μ 𝓕 hνV hfdV hνW hfdW hμ.1 hμ.2.1 hμ.2.2 (jointVec R i t v (b k)) (jointVec R i t v (b k)) (val R i v x) (val R i v y) (hL.thP.pt_t …` as an intermediate fact.
+
+Conclude with `⟨this.2.2.1, this.2.2.2⟩`. Establish `hP` using `fun k x y => GlobalTheory.T.rallisIntegrand_factorises_on_levelCoset D G Pl0 T A Ks R F hL i t hLF hFI hRL hLP μ 𝓕 hμ v hv (b k) x y (GlobalTheory.T.schur_l2Pairing_realFiniteTranslate hC D G Pl0 T A Ks R F hL i hLP v x y)`. Establish `hKo : IsOpen {g : GfC (Wc D i) | (g : GA D (Wc D i)) ∈ levW R i}` using `GlobalTheory.LevelOpen.isOpen_levG _ _ _`. Establish `hCo` using `fun k x y => GlobalTheory.T.integral_eq_tsum_realPoints_levelCoset_translates D (Wc D i) (R.νW i) (levW R i) hνW hLP.1 hKo _ (hR k x y).1`. Establish `hmeas : MeasurableSet (realLev R i)` using `(hCo k0 x₀ x₀).1`.
+
+Take `⟨Pr, hPr, hPc⟩ : ∃ Pr : ℝ, 0 < Pr ∧ dimProd A i = (Pr : ℂ)` from `⟨∏ ρ, ((dimK _ _ (kapAt (Wc D i) (sg0 D A) ρ) : ℚ) : ℝ), Finset.prod_pos fun ρ _ => by exact_mod_cast GlobalTheory.Mem.WeylDimPos.dimK_kapAt_Wc_pos D i _ ρ, by unfold dimProd; push_cast; rfl⟩`. Establish `hPne : (Pr : ℂ) ≠ 0` using `by exact_mod_cast hPr.ne'`. Take `⟨nf, hnf⟩ : ∃ nf : Fin n → ℝ, ∀ k, thetaIP μ 𝓕 (jointVec R i t v (b k)) (jointVec R i t v (b k)) = nf k ∧ 0 ≤ nf k` from `⟨fun k => ∫ z in 𝓕, ‖jointVec R i t v (b k) z‖ ^ 2 ∂μ, fun k => ⟨thetaInner_self _ _ _, integral_nonneg fun z => by positivity⟩⟩`. Take `⟨I, hI⟩ : ∃ I : ℝ, I = ∫ h in realLev R i, lowCoefSq R i v h ∂(R.νW i)` from `⟨_, rfl⟩`. Establish `hq : ∀ k x y (γ : GfC (Wc D i)), ∫ h in realLev R i, rallisF R i t μ 𝓕 v (jointVec R i t v (b k)) x y ((γ : GA D (Wc D i)) * h) ∂(R.νW i) = (Pr : ℂ)⁻¹ * ((nf k : ℂ) * coef R i t μ 𝓕 γ * trPair R i γ x y * (I : ℂ))`.
+
+Introduce `k x y γ`. Establish `e : Set.EqOn (fun h => rallisF R i t μ 𝓕 v (jointVec R i t v (b k)) x y ((γ : GA D (Wc D i)) * h)) (fun h => ((Pr : ℂ)⁻¹ * ((nf k : ℂ) * coef R i t μ 𝓕 γ * trPair R i γ x y)) * (lowCoefSq R i v h : ℂ)) (realLev R i)`. Introduce `h hh`. Use `hP k x y γ γ.2 h hh` as an intermediate fact. Rewrite `this` using `[hPc, (hnf k).1]`.
+
+Simplify using `only`. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`. Rewrite using `[setIntegral_congr_fun hmeas e, integral_const_mul, integral_complex_ofReal, ← hI]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hk : ∀ k x y, HasSum (fun q : GfC (Wc D i) ⧸ (levW R i).subgroupOf (GfC (Wc D i)) => (Pr : ℂ)⁻¹ * ((nf k : ℂ) * coef R i t μ 𝓕 (q.out : GfC (Wc D i)) * trPair R i (q.out : GfC (Wc D i)) x y * (I : ℂ))) (∫ g, rallisF R i t μ 𝓕 v (jointVec R i t v (b k)) x y g ∂(R.νW i))`. Introduce `k x y`. Use `(hCo k x y).2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Conclude with `(hq k x y q.out).symm`.
+
+Establish `hc1 : coef R i t μ 𝓕 1 = 1`. Unfold `coef`. Rewrite using `[show ((1 : GA D (Vc D i)), (1 : GA D (Wc D i))) = 1 from rfl, map_one, Module.End.one_apply]`. Conclude with `div_self hvP`. Establish `hnf0 : (nf k0 : ℂ) ≠ 0` using `by rw [← (hnf k0).1]; exact hk0`.
+
+Establish `hx0 : trPair R i 1 x₀ x₀ ≠ 0` using `by rw [tF]; exact inner_self_ne_zero.2 hx₀`. Establish `hGint : IntegrableOn (lowCoefSq R i v) (realLev R i) (R.νW i)`. Establish `hF : IntegrableOn (fun h => ((nf k0 : ℂ) * trPair R i 1 x₀ x₀)⁻¹ * ((Pr : ℂ) * rallisF R i t μ 𝓕 v (jointVec R i t v (b k0)) x₀ x₀ h)) (realLev R i) (R.νW i)` using `((hR k0 x₀ x₀).1.integrableOn.const_mul _).const_mul _`. Establish `e : Set.EqOn (fun h => ((nf k0 : ℂ) * trPair R i 1 x₀ x₀)⁻¹ * ((Pr : ℂ) * rallisF R i t μ 𝓕 v (jointVec R i t v (b k0)) x₀ x₀ h)) (fun h => (lowCoefSq R i v h : ℂ)) (realLev R i)`. Introduce `h hh`.
+
+Use `hP k0 x₀ x₀ 1 (GfC (Wc D i)).one_mem h hh` as an intermediate fact. Rewrite `this` using `[one_mul, hPc, (hnf k0).1, hc1]`. Simplify using `only`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h3` using `(hF.congr_fun e hmeas).re`. Establish `h4 : Integrable (lowCoefSq R i v) ((R.νW i).restrict (realLev R i))` using `by simpa using h3`. Conclude with `h4`. Establish `hIpos : 0 < I` using `hI ▸ GlobalTheory.T.integral_lowestKTypeMatrixCoeff_sq_pos D G Pl0 T A Ks R F hL i hLP v hv hGint`. Take `⟨a₀, ha₀, hA⟩` from `hAdj th hth v hv n b`.
+
+Establish `hvol` using `GlobalTheory.T.definiteUnitaryFundamentalDomain_volume_pos_finite D G Pl0 T A Ks R F hL i t`. Establish `hvolpos : 0 < (R.νV i t (R.fdV i t)).toReal` using `ENNReal.toReal_pos hvol.1.ne' hvol.2.ne`. Establish `hnfs : 0 < ∑ k, nf k` using `Finset.sum_pos' (fun k _ => (hnf k).2) ⟨k0, Finset.mem_univ _, lt_of_le_of_ne (hnf k0).2 fun h => hnf0 (by rw [← h]; simp)⟩`. Use `⟨a₀ * (R.νV i t (R.fdV i t)).toReal * (∑ k, nf k) * I / Pr, by positivity, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[hA x y]`.
+
+Establish `h2` using `(hasSum_sum (s := Finset.univ) fun k _ => hk k x y).mul_left ((a₀ : ℂ) * ((R.νV i t (R.fdV i t)).toReal : ℂ))`. Establish `hfun : (fun q : GfC (Wc D i) ⧸ (levW R i).subgroupOf (GfC (Wc D i)) => ((a₀ * (R.νV i t (R.fdV i t)).toReal * (∑ k, nf k) * I / Pr : ℝ) : ℂ) * (coef R i t μ 𝓕 (q.out : GfC (Wc D i)) * trPair R i (q.out : GfC (Wc D i)) x y)) = fun q => (a₀ : ℂ) * ((R.νV i t (R.fdV i t)).toReal : ℂ …`. Use function extensionality and compare the values at `q`. Establish `e1 : ∑ k, (Pr : ℂ)⁻¹ * ((nf k : ℂ) * coef R i t μ 𝓕 (q.out : GfC (Wc D i)) * trPair R i (q.out : GfC (Wc D i)) x y * (I : ℂ)) = (∑ k, (nf k : ℂ)) * ((Pr : ℂ)⁻¹ * coef R i t μ 𝓕 (q.out : GfC (Wc D i)) * trPair R i (q.out : GfC (Wc D i)) x y * (I : ℂ))`. Rewrite using `[Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[e1]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hval : (a₀ : ℂ) * ∑ k, ∫ h in R.fdV i t, star (upLift (R.ωP i t) (R.νW i) (R.fdW i) (jointVec R i t v (b k)) (val R i v x) h) * upLift (R.ωP i t) (R.νW i) (R.fdW i) (jointVec R i t v (b k)) (val R i v y) h ∂(R.νV i t) = (a₀ : ℂ) * ((R.νV i t (R.fdV i t)).toReal : ℂ) * ∑ k, ∫ g, r …`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[(hR k x y).2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun, hval]`.
+
+Conclude with `h2`.
+-/
 theorem finSumAt_core (hC : GlobalTheory.Published.CuspRapidDecay) (R : RealDat D A Ks) (F : Face D A) (hL : Laws R F)
     (hRal : RallisConv D) (i : Fin D.R.m) (t : T) (hAdj : AdjFormula R i t) (hLF : LevFix R i t)
     (hFI : FactInf R i t) (hRL : RealLow R i t) (hLP : LevProd R i) (hTL : TransLaws R i)
@@ -220,6 +274,13 @@ theorem finSumAt_core (hC : GlobalTheory.Published.CuspRapidDecay) (R : RealDat 
   rw [hfun, hval]
   exact h2
 
+/- English proof (translation)
+Distinguish the cases in `hx : ∃ x₀ : (R.HW i (sg0 D A)).H, x₀ ≠ 0`. Take `⟨x₀, hx₀⟩` from `hx`. Take `⟨v, hv, n, b, k0, hk0⟩` from `exists_basis_vec R i t μ 𝓕 (hVN μ 𝓕 hμ).2`. Conclude with `finSumAt_core hC R F hL hRal i t hAdj hLF hFI hRL hLP hTL th hth μ 𝓕 hμ (hVN μ 𝓕 hμ).1 v hv n b k0 hk0 x₀ hx₀`. Use `push_neg at hx`.
+
+Take `⟨-, -, tC, -, -, -⟩` from `hTL`. Use `⟨1, one_pos, fun x y => ?_⟩` and prove the remaining obligations. Establish `ex : LinearMap.adjoint th x = 0` using `by rw [hx x, map_zero]`. Establish `hterm : ∀ q : GfC (Wc D i) ⧸ (levW R i).subgroupOf (GfC (Wc D i)), trPair R i (q.out : GfC (Wc D i)) x y = 0` using `fun q => by`. Take `⟨B, -, hB⟩` from `tC _ (q.out).2`.
+
+Rewrite using `[hB, hx x, inner_zero_left]`. Simplify using `only [ex, inner_zero_left, hterm, mul_zero]`. Conclude with `hasSum_zero`.
+-/
 theorem finSumAt_of (hC : GlobalTheory.Published.CuspRapidDecay) (R : RealDat D A Ks) (F : Face D A) (hL : Laws R F)
     (hRal : RallisConv D) (i : Fin D.R.m) (t : T) (hAdj : AdjFormula R i t) (hLF : LevFix R i t)
     (hFI : FactInf R i t) (hRL : RealLow R i t) (hVN : VecNe R i t) (hLP : LevProd R i) (hTL : TransLaws R i)
@@ -241,6 +302,9 @@ theorem finSumAt_of (hC : GlobalTheory.Published.CuspRapidDecay) (R : RealDat D 
     simp only [ex, inner_zero_left, hterm, mul_zero]
     exact hasSum_zero
 
+/- English proof (translation)
+Introduce `hC _ _ _ _ _ _ _ _ _ _ _ R F hL _ hRal i t hAdj hLF hFI hRL hVN hLP hTL th hth μ 𝓕 hμ` and use `finSumAt_of hC R F hL hRal i t hAdj hLF hFI hRL hVN hLP hTL th hth μ 𝓕 hμ`.
+-/
 theorem finSum_of_rallis : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → RallisConv D → ∀ i t, AdjFormula R i t → LevFix R i t → FactInf R i t → RealLow R i t → VecNe R i t → LevProd R i → TransLaws R i → FinSum R i t :=
   fun hC _ _ _ _ _ _ _ _ _ _ _ R F hL _ hRal i t hAdj hLF hFI hRL hVN hLP hTL th hth μ 𝓕 hμ =>
     finSumAt_of hC R F hL hRal i t hAdj hLF hFI hRL hVN hLP hTL th hth μ 𝓕 hμ

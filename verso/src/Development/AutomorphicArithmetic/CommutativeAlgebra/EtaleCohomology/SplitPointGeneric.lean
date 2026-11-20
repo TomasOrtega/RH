@@ -18,6 +18,9 @@ section Act
 
 variable {l : ℕ} {Y : Scheme.{0}} {J : Type} {T : J → Corr l Y} (D : WDat l T)
 
+/- English proof (translation)
+Establish `hunit : IsUnit ((l : ℕ) : Localization.Away (l : U))`. Use `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (l : U)) (l : U)` as an intermediate fact. Simplify using `using this`. Use `hunit.map (Scheme.ΓSpecIso (CommRingCat.of (Localization.Away (l : U)))).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 private lemma unit_away (U : Type) [CommRing U] :
     IsUnit ((l : ℕ) : Γ(Spec (CommRingCat.of (Localization.Away (l : U))), ⊤)) := by
   have hunit : IsUnit ((l : ℕ) : Localization.Away (l : U)) := by
@@ -26,17 +29,26 @@ private lemma unit_away (U : Type) [CommRing U] :
   have := hunit.map (Scheme.ΓSpecIso (CommRingCat.of (Localization.Away (l : U)))).inv.hom
   rwa [map_natCast] at this
 
+/- English proof (translation)
+Establish `h` using `D.gen _ (awayPt l U ≫ w) (unit_away U) j`. Simplify using `only [Category.assoc] at h`. Conclude with `h`.
+-/
 private lemma split_point_generic {U : Type} [CommRing U] (w : Spec (CommRingCat.of U) ⟶ D.W) (j : J) :
     SplitOn (T j).p (awayPt l U ≫ w ≫ D.π) fun i => awayPt l U ≫ w ≫ D.s j i := by
   have h := D.gen _ (awayPt l U ≫ w) (unit_away U) j
   simp only [Category.assoc] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `(splitRules.1 _ _ (𝟙 _) _ (split_point_generic D w j)).2 (σ j)`.
+-/
 private lemma split_pt {U : Type} [CommRing U] (w : Spec (CommRingCat.of U) ⟶ D.W)
     (σ : ∀ j, Equiv.Perm (Fin (T j).d)) (j : J) :
     SplitOn (T j).p (awayPt l U ≫ w ≫ D.π) fun i => awayPt l U ≫ w ≫ D.s j (σ j i) :=
   (splitRules.1 _ _ (𝟙 _) _ (split_point_generic D w j)).2 (σ j)
 
+/- English proof (translation)
+The claim follows from `D.univ U hl (w ≫ D.π) (fun j i => w ≫ D.s j (σ j i)) (fun j i => by rw [Category.assoc, D.hs]) (fun j => split_pt D w σ j)`.
+-/
 private lemma act_ex {U : Type} [CommRing U] (hl : (l : U) ∈ nonZeroDivisors U)
     (w : Spec (CommRingCat.of U) ⟶ D.W) (σ : ∀ j, Equiv.Perm (Fin (T j).d)) :
     ∃! w₁ : Spec (CommRingCat.of U) ⟶ D.W, w₁ ≫ D.π = w ≫ D.π ∧ ∀ j i, w₁ ≫ D.s j i = w ≫ D.s j (σ j i) :=
@@ -47,11 +59,17 @@ private def act {U : Type} [CommRing U] (hl : (l : U) ∈ nonZeroDivisors U)
     (w : Spec (CommRingCat.of U) ⟶ D.W) (σ : ∀ j, Equiv.Perm (Fin (T j).d)) :
     Spec (CommRingCat.of U) ⟶ D.W := (act_ex D hl w σ).exists.choose
 
+/- English proof (translation)
+The claim follows from `(act_ex D hl w σ).exists.choose_spec`.
+-/
 private lemma act_spec {U : Type} [CommRing U] (hl : (l : U) ∈ nonZeroDivisors U)
     (w : Spec (CommRingCat.of U) ⟶ D.W) (σ : ∀ j, Equiv.Perm (Fin (T j).d)) :
     act D hl w σ ≫ D.π = w ≫ D.π ∧ ∀ j i, act D hl w σ ≫ D.s j i = w ≫ D.s j (σ j i) :=
   (act_ex D hl w σ).exists.choose_spec
 
+/- English proof (translation)
+The claim follows from `(act_ex D hl w σ).unique (act_spec D hl w σ) ⟨h₁, h₂⟩`.
+-/
 private lemma act_eq {U : Type} [CommRing U] (hl : (l : U) ∈ nonZeroDivisors U)
     (w w₁ : Spec (CommRingCat.of U) ⟶ D.W) (σ : ∀ j, Equiv.Perm (Fin (T j).d))
     (h₁ : w₁ ≫ D.π = w ≫ D.π) (h₂ : ∀ j i, w₁ ≫ D.s j i = w ≫ D.s j (σ j i)) :
@@ -64,6 +82,13 @@ section Idem
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Use `⟨⟨fun τ => ?_, fun τ τ' h => ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∏ j, e j (τ j)) * (∏ j, e j (τ j)) = ∏ j, e j (τ j)`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun j _ => (he j).toOrthogonalIdempotents.idem (τ j)`. Take `⟨j, hj⟩` from `Function.ne_iff.1 h`.
+
+Express the relevant statement in the definitionally equal form `(∏ j, e j (τ j)) * (∏ j, e j (τ' j)) = 0`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ j) ((he j).toOrthogonalIdempotents.ortho hj)`. Establish `h : ∏ j, ∑ i, e j i = 1` using `by simp [fun j => (he j).complete]`. Rewrite `h` using `[Finset.prod_univ_sum]`.
+
+Simplify `h` using `[Fintype.piFinset_univ]`.
+-/
 private lemma coi_pi {J : Type} [Fintype J] [DecidableEq J] {I : J → Type} [∀ j, Fintype (I j)]
     (e : ∀ j, I j → R) (he : ∀ j, CompleteOrthogonalIdempotents (e j)) :
     CompleteOrthogonalIdempotents fun τ : (∀ j, I j) => ∏ j, e j (τ j) := by
@@ -83,6 +108,23 @@ end Idem
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `s1 : A.sharp 1 = 1` using `map_one _`. Establish `s0 : A.sharp 0 = 0`. Use `(RL.sharp_cong A).2.2 1 IsIdempotentElem.one` as an intermediate fact. Simplify `this` using `[s1]`. Establish `hsub : ∀ a : A.A, IsIdempotentElem a → A.sharp (1 - a) = 1 - A.sharp a` using `(RL.sharp_cong A).2.2`.
+
+Establish `h` using `fun i => (RL.idem_au A (e i) (he.toOrthogonalIdempotents.idem i)).exists`. Use `choose e₀ h1 h2 using h`. Establish `hz : ∀ a : A.A, IsIdempotentElem a → A.sharp a = 0 → a = 0` using `fun a ha hs => (RL.idem_au A 0 IsIdempotentElem.zero).unique ⟨ha, hs⟩ ⟨IsIdempotentElem.zero, s0⟩`. Establish `ho : ∀ a : A.A, IsIdempotentElem a → A.sharp a = 1 → a = 1` using `fun a ha hs => (RL.idem_au A 1 IsIdempotentElem.one).unique ⟨ha, hs⟩ ⟨IsIdempotentElem.one, s1⟩`. Establish `hort : ∀ i j, i ≠ j → e₀ i * e₀ j = 0` using `fun i j hij => hz _ ((h1 i).mul (h1 j)) (by`.
+
+Rewrite using `[map_mul, h2, h2]`. Conclude with `he.toOrthogonalIdempotents.ortho hij)`. Establish `hsum : ∀ s : Finset I, IsIdempotentElem (∑ i ∈ s, e₀ i) ∧ A.sharp (∑ i ∈ s, e₀ i) = ∑ i ∈ s, e i`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => exact ⟨by simpa using IsIdempotentElem.zero, by simpa using s0⟩`. Consider the case `insert a s ha ih`. Take `⟨i1, i2⟩` from `ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `hbc : e₀ a * ∑ i ∈ s, e₀ i = 0`.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun i hi => hort a i fun h => ha (h ▸ hi)`. Establish `hid : IsIdempotentElem (e₀ a + ∑ i ∈ s, e₀ i)`. Establish `e1 : e₀ a * e₀ a = e₀ a` using `h1 a`. Establish `e2 : (∑ i ∈ s, e₀ i) * (∑ i ∈ s, e₀ i) = ∑ i ∈ s, e₀ i` using `i1`.
+
+Express the relevant statement in the definitionally equal form `(e₀ a + ∑ i ∈ s, e₀ i) * (e₀ a + ∑ i ∈ s, e₀ i) = _`. Rewrite using `[add_mul, mul_add, mul_add, e1, e2, hbc, mul_comm, hbc]`. Simplify using the standard rewrite rules. Use `⟨hid, ?_⟩` and prove the remaining obligations. Establish `hx : e₀ a + ∑ i ∈ s, e₀ i = 1 - (1 - e₀ a) * (1 - ∑ i ∈ s, e₀ i)`.
+
+Take the linear combination `hbc`. Establish `hm : A.sharp (e₀ a) * A.sharp (∑ i ∈ s, e₀ i) = 0`. Rewrite using `[← map_mul, hbc, s0]`. Rewrite using `[hx, hsub _ ((h1 a).one_sub.mul i1.one_sub), map_mul, hsub _ (h1 a), hsub _ i1, h2, ← i2]`. Rewrite `hm` using `[h2]`.
+
+Take the linear combination `-hm`. Use `⟨e₀, ⟨⟨h1, fun i j hij => hort i j hij⟩, ?_⟩, h2⟩` and prove the remaining obligations. Take `⟨i1, i2⟩` from `hsum Finset.univ`. Conclude with `ho _ i1 (by rw [i2, he.complete])`.
+-/
 private lemma lift_coi (A : PAlg l) {I : Type} [Fintype I] (e : I → A.U)
     (he : CompleteOrthogonalIdempotents e) :
     ∃ e₀ : I → A.A, CompleteOrthogonalIdempotents e₀ ∧ ∀ i, A.sharp (e₀ i) = e i := by
@@ -150,6 +192,27 @@ private def gAct (κ : O →+* OC l) (D : WDat l T) (σ : ∀ j, Equiv.Perm (Fin
 end UpperTheory.Ru.crystallineComparison
 
 open CategoryTheory Limits AlgebraicGeometry CrystallineSemistableComparison UpperTheory.Gal.crystallineComparison UpperTheory.Ru.crystallineComparison in
+/- English proof (translation)
+Introduce `l _ O _ Y q κ J _ _ T D`. Use `⟨fun σ => gAct κ D σ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ`. Use extensionality with `A w`. Use `Subtype.ext ?_` and prove the remaining obligations.
+
+Conclude with `(act_spec D (RL.u_tf A).1 w.1 σ).1`. Introduce `A y`. Establish `hT` using `testFacts l A.obj A.property`. Establish `hz : ∀ j, ∃ z : Fin (T j).d → (Spec (CommRingCat.of A.obj.U) ⟶ (T j).Z), (∀ i, z i ≫ (T j).p = y.1) ∧ SplitOn (T j).p (awayPt l A.obj.U ≫ y.1) fun i => awayPt l A.obj.U ≫ z i` using `fun j => splitEx l Fact.out Y (T j) A.obj.U hT.1 hT.2.1 hT.2.2.1 y.1`. Use `choose z hz hs using hz`.
+
+Take `⟨w, ⟨hw, -⟩, -⟩` from `D.univ A.obj.U hT.1 y.1 z hz hs`. Conclude with `⟨⟨w, by rw [← Category.assoc, hw]; exact y.2⟩, Subtype.ext hw⟩`. Introduce `A w w' hp`. Establish `hT` using `testFacts l A.obj A.property`. Establish `hww : w.1 ≫ D.π = w'.1 ≫ D.π` using `congrArg Subtype.val hp`.
+
+Establish `hperm : ∀ j, ∃ e : Equiv.Perm (Fin (T j).d) → A.obj.U, CompleteOrthogonalIdempotents e ∧ ∀ (σ : Equiv.Perm (Fin (T j).d)) (V : Type) [CommRing V] (ρ : A.obj.U →+* V), ρ (e σ) = 1 → ∀ i, Spec.map (CommRingCat.ofHom ρ) ≫ w'.1 ≫ D.s j i = Spec.map (CommRingCat.ofHom ρ) ≫ w.1 ≫ D.s j …` using `fun j => splitPerm l Y (T j) A.obj.U hT.1 hT.2.1 (w.1 ≫ D.π) (fun i => w.1 ≫ D.s j i) (fun i => w'.1 ≫ D.s j i) (fun i => by rw [Category.assoc, D.hs]) (fun i => by rw [Category.assoc, D.hs, hww]) (split_point_generic D w.1 j) (by rw [hww]; exact split_point_generic D w'.1 j)`. Use `choose e he hE using hperm`. Take `⟨e₀, he₀, hs⟩` from `lift_coi A.obj _ (coi_pi e he)`. Take `⟨B, f, hdec, hf⟩` from `decEx l A (∀ j, Equiv.Perm (Fin (T j).d)) e₀ he₀`. Use `⟨(⟨_, B, f⟩ : Fam A), hdec, fun τ => ?_⟩` and prove the remaining obligations.
+
+Set `ρ : A.obj.U →+* (B τ).obj.U` to `PAlg.mapU (f τ).hom`. Establish `hρ : ρ (∏ j, e j (τ j)) = 1`. Rewrite using `[← hs τ]`. Use `((RL.expand_nat A.obj (B τ).obj (f τ).hom).2.2.1 (e₀ τ)).trans ?_` and prove the remaining obligations. Rewrite using `[hf τ, map_one]`.
+
+Establish `hρj : ∀ j, ρ (e j (τ j)) = 1`. Introduce `j`. Establish `h1` using `hρ`. Rewrite `h1` using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j), map_mul]`. Establish `h2 : ρ (e j (τ j)) * ρ (e j (τ j)) = ρ (e j (τ j))`.
+
+Rewrite using `[← map_mul, (he j).toOrthogonalIdempotents.idem (τ j)]`. Combine the equalities or inequalities in the displayed calculation. Establish `key : ∀ j i, Spec.map (CommRingCat.ofHom ρ) ≫ w'.1 ≫ D.s j i = Spec.map (CommRingCat.ofHom ρ) ≫ w.1 ≫ D.s j (τ j i)` using `fun j i => hE j (τ j) _ ρ (hρj j) i`. Establish `hstep : ∀ σ, (gAct κ D σ).app _ ((PX (D.π ≫ q) κ).map (f τ).hom w') = (gAct κ D (τ * σ)).app _ ((PX (D.π ≫ q) κ).map (f τ).hom w)`. Introduce `σ`.
+
+Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `act D (RL.u_tf _).1 (Spec.map (CommRingCat.ofHom ρ) ≫ w'.1) σ = act D (RL.u_tf _).1 (Spec.map (CommRingCat.ofHom ρ) ≫ w.1) (τ * σ)`. Use `act_eq D _ _ _ σ ?_ fun j i => ?_` and prove the remaining obligations. Rewrite using `[(act_spec D _ _ _).1, Category.assoc, Category.assoc, hww]`. Rewrite using `[(act_spec D _ _ _).2]`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[key]`. Both sides reduce to the same expression. Simplify using `only [hstep]`. Establish `hm` using `Multiset.map_univ_val_equiv (Equiv.mulLeft τ)`.
+
+Use `conv_lhs => rw [← hm]`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Ru.crystallineComparison.wTrans :
     UpperTheory.Ru.crystallineComparison.WTrans := by
   intro l _ O _ Y q κ J _ _ T D

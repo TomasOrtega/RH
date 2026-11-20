@@ -12,6 +12,21 @@ section Alg
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Set `T : Matrix ι ι k` to `(1 : Matrix ι ι k).updateRow c ρ`. Set `M : Matrix ι ι k` to `T.submatrix (Equiv.swap c j) id`. Establish `hT : T.det = ρ c`. Establish `h` using `Matrix.cramer_transpose_apply (1 : Matrix ι ι k) ρ c`. Rewrite `h` using `[Matrix.transpose_one, Matrix.cramer_one]`.
+
+Simplify using `using h.symm`. Establish `hdet : M.det ≠ 0`. Establish `h` using `Matrix.det_permute (Equiv.swap c j) T`. Establish `h2 : M.det = _` using `h`. Rewrite using `[h2, hT]`.
+
+Use `mul_ne_zero ?_ hc` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Equiv.swap c j)) with e | e <;> simp [e]`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero M hdet, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x show T (Equiv.swap c j j) x = ρ x`. Simplify using `[T]`.
+
+Introduce `r x hr hx show T (Equiv.swap c j r) x = 0`. Distinguish the cases in `hrj : r = j`. Substitute `hrj` using the available equality. Simplify `hρ hr x hx` using `[T]`. Establish `hne : Equiv.swap c j r ≠ c`.
+
+Introduce `e`. Conclude with `hrj (by simpa using congrArg (Equiv.swap c j) e)`. Simplify using `only [T, Matrix.updateRow_ne hne, Matrix.one_apply]`. Rewrite using `[if_neg]`. Introduce `e`.
+
+Distinguish the cases in `hrc : r = c`. Substitute `hrc` using the available equality. Simplify using `at e`. Substitute `e` using the available equality. Conclude with `hr (hcj.2 hx)`.
+
+Rewrite `e` using `[Equiv.swap_apply_of_ne_of_ne hrc hrj]`. Substitute `e` using the available equality. Conclude with `hr hx`.
+-/
 theorem exists_row {ι : Type} [Fintype ι] [DecidableEq ι] (s : ι → Prop) (ρ : ι → k) (c j : ι)
     (hc : ρ c ≠ 0) (hcj : s c ↔ s j) (hρ : ¬ s j → ∀ x, s x → ρ x = 0) :
     ∃ B : GL ι k, (B : Matrix ι ι k) j = ρ ∧ ∀ r x, ¬ s r → s x → (B : Matrix ι ι k) r x = 0 := by
@@ -51,6 +66,13 @@ theorem exists_row {ι : Type} [Fintype ι] [DecidableEq ι] (s : ι → Prop) (
         subst e
         exact hr hx
 
+/- English proof (translation)
+Establish `hh` using `(mem_Mir_iff k (p : GL (Fin (n + 1)) k)).1 p.2`. Use `ext1`. Rewrite using `[Units.val_mul]`. Use `show _ = (1 + colMat k n _) * glEmbMat k n (blockMat k n (p : GL (Fin (n + 1)) k))`. Rewrite using `[add_mul, one_mul, colMat_mul_glEmbMat]`.
+
+Use extensionality with `a b`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[hh]`. Apply the tactic sequence `induction b using Fin.lastCases <;>`.
+
+Simplify using `[glEmbMat, colMat, eLast, Fin.castSucc_ne_last, Pi.single_apply]`. Consider the case `cast a`. Apply the tactic sequence `induction b using Fin.lastCases <;>`. Simplify using `[glEmbMat, colMat, blockMat, Fin.castSucc_ne_last]`.
+-/
 theorem eq_unip_glEmb {n : ℕ} (p : Mir k n) :
     (p : GL (Fin (n + 1)) k) =
       unip k n (Multiplicative.ofAdd fun r => ((p : GL (Fin (n + 1)) k) : Matrix _ _ k) (Fin.castSucc r) (Fin.last n)) *
@@ -70,24 +92,39 @@ theorem eq_unip_glEmb {n : ℕ} (p : Mir k n) :
     induction b using Fin.lastCases <;>
       simp [glEmbMat, colMat, blockMat, Fin.castSucc_ne_last]
 
+/- English proof (translation)
+Use `show (1 + colMat k n v) _ _ = 0`. Simplify using `[colMat, Matrix.one_apply, h, Fin.castSucc_ne_last]`.
+-/
 theorem unip_castSucc_castSucc (n : ℕ) (v : Fin n → k) (r c : Fin n) (h : r ≠ c) :
     (unip k n (Multiplicative.ofAdd v)).val (Fin.castSucc r) (Fin.castSucc c) = 0 := by
   show (1 + colMat k n v) _ _ = 0
   simp [colMat, Matrix.one_apply, h, Fin.castSucc_ne_last]
 
+/- English proof (translation)
+Use `show glEmbMat k n g.val _ _ = _`. Simplify using `[glEmbMat]`.
+-/
 theorem glEmb_castSucc_castSucc (n : ℕ) (g : GL (Fin n) k) (r c : Fin n) :
     (glEmb k n g).val (Fin.castSucc r) (Fin.castSucc c) = g.val r c := by
   show glEmbMat k n g.val _ _ = _
   simp [glEmbMat]
 
+/- English proof (translation)
+Use `show glEmbMat k n g.val _ _ = _`. Simplify using `[glEmbMat]`.
+-/
 theorem glEmb_castSucc_last (n : ℕ) (g : GL (Fin n) k) (r : Fin n) :
     (glEmb k n g).val (Fin.castSucc r) (Fin.last n) = 0 := by
   show glEmbMat k n g.val _ _ = _
   simp [glEmbMat]
 
+/- English proof (translation)
+Simplify using `[ePG, two]`.
+-/
 theorem ePG_true_val (I T : ℕ) (x : Fin T) : (ePG I T ⟨true, x⟩ : Fin (I + T + 1)).val = I + x := by
   simp [ePG, two]
 
+/- English proof (translation)
+Simplify using `[ePG, two, finSumFinEquiv_symm_apply_castSucc]`.
+-/
 theorem ePG_false_val (I T : ℕ) (y : Fin I) : (ePG I T ⟨false, Fin.castSucc y⟩ : Fin (I + T + 1)).val = y := by
   simp [ePG, two, finSumFinEquiv_symm_apply_castSucc]
 
@@ -97,6 +134,13 @@ section Group
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `show (g : GL (Fin (I + T + 1)) k) ∈ parab k (ePG I T)`. Use `mem_parab_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `(_ | _) (_ | _) a b hab`. Conclude with `absurd hab (by decide)`. Conclude with `absurd hab (by decide)`.
+
+Establish `ea : ePG I T ⟨true, a⟩ = Fin.castSucc ⟨I + a.1, by have` using `a.2; change a.1 < T at this; omega⟩ := Fin.ext (ePG_true_val I T a)`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Rewrite using `[ea, ePG_false_last]`. Conclude with `h' a`.
+
+Consider the case `cast y`. Establish `eb : ePG I T ⟨false, Fin.castSucc y⟩ = Fin.castSucc ⟨y, by omega⟩` using `Fin.ext (ePG_false_val I T y)`. Rewrite using `[ea, eb]`. Conclude with `h a y`. Conclude with `absurd hab (by decide)`.
+-/
 theorem mem_HPG_of {I T : ℕ} (g : Mir k (I + T))
     (h : ∀ (x : Fin T) (y : Fin I), (g : GL (Fin (I + T + 1)) k).val
         (Fin.castSucc (⟨I + x, by omega⟩ : Fin (I + T))) (Fin.castSucc (⟨y, by omega⟩ : Fin (I + T))) = 0)
@@ -120,6 +164,33 @@ theorem mem_HPG_of {I T : ℕ} (g : Mir k (I + T))
       exact h a y
   · exact absurd hab (by decide)
 
+/- English proof (translation)
+Use `set g : GL (Fin ((i + 1) + t + 1)) k := mirabolicProjection k _ p with hg`. Establish `hginv : mirabolicProjection k _ p⁻¹ = g⁻¹` using `map_inv _ _`. Rewrite `hBj` using `[hginv]`. Establish `hM : (X⁻¹ * B * g) ∈ Mir k ((i + 1) + t)`. Establish `h1 : (g⁻¹ * (B⁻¹ * X)) ∈ Mir k ((i + 1) + t)`.
+
+Rewrite using `[mem_Mir_iff, Units.val_mul, Matrix.mul_apply_eq_vecMul, ← hBj, ← Matrix.mul_apply_eq_vecMul, ← Units.val_mul, mul_inv_cancel_left, hX]`. Establish `h2` using `(Mir k ((i + 1) + t)).inv_mem h1`. Simplify `h2` using `[mul_assoc]`. Set `v : Fin ((i + 1) + (t + 1)) → k` to `fun r => (p : GL (Fin ((i + 1) + t + 1 + 1)) k).val (Fin.castSucc r) (Fin.last _)`. Set `v' : Fin ((i + 1) + (t + 1)) → k` to `B.val.mulVec v`.
+
+Set `a : Fin ((i + 1) + (t + 1)) → k` to `Fin.append (fun x => v' (Fin.castAdd (t + 1) x)) (0 : Fin (t + 1) → k)`. Set `d : Fin (t + 1) → k` to `fun x => v' (Fin.natAdd (i + 1) x)`. Set `b : Fin ((i + 1) + (t + 1)) → k` to `Fin.append (0 : Fin (i + 1) → k) d`. Establish `hsum : a + b = v'`. Use function extensionality and compare the values at `x`.
+
+Proceed by induction on `x using Fin.addCases with`. Consider the case `left x => simp [a, b]`. Consider the case `right x => simp [a, b, d]`. Establish `hp` using `eq_unip_glEmb p`. Set `ua : Mir k ((i + 1) + t + 1)` to `⟨unip k ((i + 1) + (t + 1)) (Multiplicative.ofAdd a), MirU_le_Mir k _ ⟨_, rfl⟩⟩`.
+
+Establish `hua : ua ∈ HPG k (i + 1) (t + 1)`. Use `mem_HPG_of (I := i + 1) (T := t + 1) ua ?_ ?_` and prove the remaining obligations. Introduce `x y`. Use `unip_castSucc_castSucc _ a _ _ ?_` and prove the remaining obligations. Introduce `e`.
+
+Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Introduce `x`. Use `(unip_apply_castSucc_last k _ _ _).trans ?_` and prove the remaining obligations.
+
+Use `show a (Fin.natAdd (i + 1) x) = 0`. Simplify using `[a]`. Establish `hlB : levi k _ B⁻¹ ∈ HPG k (i + 1) (t + 1)`. Establish `: levi k _ B ∈ HPG k (i + 1) (t + 1)`. Use `mem_HPG_of (I := i + 1) (T := t + 1) _ ?_ ?_` and prove the remaining obligations.
+
+Introduce `x y`. Use `(glEmb_castSucc_castSucc _ B _ _).trans ?_` and prove the remaining obligations. Conclude with `hB _ _ (by simp; omega) (by simp; omega)`. Introduce `x`. Conclude with `glEmb_castSucc_last _ B _`.
+
+Rewrite using `[map_inv]`. Conclude with `(HPG k (i + 1) (t + 1)).inv_mem this`. Use `⟨levi k _ B⁻¹ * ua, (HPG k (i + 1) (t + 1)).mul_mem hlB hua, d, ⟨_, hM⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hp : (p : GL (Fin ((i + 1) + t + 1 + 1)) k) = unip k ((i + 1) + t + 1) (Multiplicative.ofAdd v) * glEmb k _ g` using `eq_unip_glEmb p`.
+
+Establish `e1 : unip k ((i + 1) + t + 1) (Multiplicative.ofAdd a) * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd b) = unip k ((i + 1) + t + 1) (Multiplicative.ofAdd v')`. Rewrite using `[← map_mul, ← ofAdd_add, hsum]`. Establish `e2 : glEmb k _ B * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd v) = unip k ((i + 1) + t + 1) (Multiplicative.ofAdd v') * glEmb k _ B` using `glEmb_mul_unip' k _ B _`. Establish `e3 : glEmb k _ X * glEmb k _ (X⁻¹ * B * g) = glEmb k _ B * glEmb k _ g`. Rewrite using `[← map_mul, ← map_mul]`.
+
+Use `congr 1`. Use `group`. Use `show (p : GL (Fin ((i + 1) + t + 1 + 1)) k) = glEmb k _ B⁻¹ * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd a) * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd b) * glEmb k _ X * glEmb k _ (X⁻¹ * B * g)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hp]`.
+
+Use `group`. Use `_ = (glEmb k _ B)⁻¹ * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd v') * (glEmb k _ B * glEmb k _ g) := by`. Rewrite using `[e2]`. Simplify using `only [mul_assoc]`. Use `_ = _ := by`.
+
+Rewrite using `[← e3, ← e1, map_inv]`. Simplify using `only [mul_assoc]`.
+-/
 theorem core (i t : ℕ) (p : Mir k ((i + 1) + t + 1)) (X B : GL (Fin ((i + 1) + t + 1)) k) (j : Fin ((i + 1) + t + 1))
     (hX : X.val j = eLast k ((i + 1) + t))
     (hBj : B.val j = (mirabolicProjection k _ p⁻¹ : GL (Fin ((i + 1) + t + 1)) k).val (Fin.last ((i + 1) + t)))
@@ -195,12 +266,20 @@ theorem core (i t : ℕ) (p : Mir k ((i + 1) + t + 1)) (X B : GL (Fin ((i + 1) +
     _ = _ := by
         rw [← e3, ← e1, map_inv]; simp only [mul_assoc]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h0` using `Matrix.det_eq_zero_of_row_eq_zero r hc`. Conclude with `(Matrix.GeneralLinearGroup.det g).ne_zero (by simpa using h0)`.
+-/
 theorem row_ne_zero {ι : Type} [Fintype ι] [DecidableEq ι] (g : GL ι k) (r : ι) : ∃ c, g.val r c ≠ 0 := by
   by_contra hc
   push_neg at hc
   have h0 := Matrix.det_eq_zero_of_row_eq_zero r hc
   exact (Matrix.GeneralLinearGroup.det g).ne_zero (by simpa using h0)
 
+/- English proof (translation)
+Establish `e : (finCongr (by omega : (i + 1) + t + 1 = i + (t + 1) + 1)) (Fin.last ((i + 1) + t)) = ePG i (t + 1) ⟨false, Fin.last i⟩`. Rewrite using `[ePG_false_last]`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use `show (eGP (i + 1) t ((ePG i (t + 1)).symm ((finCongr (by omega : (i + 1) + t + 1 = i + (t + 1) + 1)) (Fin.last ((i + 1) + t))))).val = i`.
+
+Rewrite using `[e, Equiv.symm_apply_apply]`. Simplify using `[eGP, two, stdSum]`.
+-/
 theorem piPerm_last_val (i t : ℕ) : (piPerm i t (Fin.last ((i + 1) + t))).val = i := by
   have e : (finCongr (by omega : (i + 1) + t + 1 = i + (t + 1) + 1)) (Fin.last ((i + 1) + t)) = ePG i (t + 1) ⟨false, Fin.last i⟩ := by
     rw [ePG_false_last]
@@ -210,11 +289,17 @@ theorem piPerm_last_val (i t : ℕ) : (piPerm i t (Fin.last ((i + 1) + t))).val 
   rw [e, Equiv.symm_apply_apply]
   simp [eGP, two, stdSum]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Use `show Equiv.Perm.permMatrix k (piPerm i t)⁻¹ _ b = _`. Simplify using `[Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, eLast, Pi.single_apply, eq_comm]`.
+-/
 theorem wGL_row (i t : ℕ) : (wGL k i t).val (piPerm i t (Fin.last ((i + 1) + t))) = eLast k ((i + 1) + t) := by
   funext b
   show Equiv.Perm.permMatrix k (piPerm i t)⁻¹ _ b = _
   simp [Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, eLast, Pi.single_apply, eq_comm]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h c hc`. Conclude with `h ⟨c.val, hc⟩`. Introduce `h c`. Conclude with `h (Fin.castLE (by omega) c) c.2`.
+-/
 theorem Cl_iff (i t : ℕ) (p : Mir k ((i + 1) + t + 1)) : p ∈ Cl k i t ↔ ∀ c : Fin ((i + 1) + t + 1), c.val < i + 1 →
     (mirabolicProjection k _ p⁻¹ : GL (Fin ((i + 1) + t + 1)) k).val (Fin.last ((i + 1) + t)) c = 0 := by
   constructor
@@ -223,6 +308,15 @@ theorem Cl_iff (i t : ℕ) (p : Mir k ((i + 1) + t + 1)) : p ∈ Cl k i t ↔ �
   · intro h c
     exact h (Fin.castLE (by omega) c) c.2
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t`. Prove the components needed by the constructor for the conclusion. Introduce `p hp`. Establish `hp'` using `(Cl_iff i t p).1 hp`. Take `⟨c, hc⟩` from `row_ne_zero (mirabolicProjection k _ p⁻¹) (Fin.last ((i + 1) + t))`.
+
+Establish `hlast : ¬ (Fin.last ((i + 1) + t)).val < i + 1` using `by simp; omega`. Establish `hcs : ¬ c.val < i + 1` using `fun h => hc (hp' c h)`. Take `⟨B, hBj, hB⟩` from `exists_row (fun x : Fin ((i + 1) + t + 1) => x.val < i + 1) _ c (Fin.last ((i + 1) + t)) hc (by simp only [hcs, hlast]) (fun _ x hx => hp' x hx)`. Take `⟨h, hh, d, m, e⟩` from `core i t p 1 B (Fin.last ((i + 1) + t)) (by funext b; simp [eLast, Matrix.one_apply, Pi.single_apply, eq_comm]) hBj hB`. Conclude with `⟨h, hh, d, m, by simpa using e⟩`.
+
+Introduce `p hp`. Establish `hp' : ¬ _` using `fun h => hp ((Cl_iff i t p).2 h)`. Use `push_neg at hp'`. Take `⟨c, hcs, hc⟩` from `hp'`. Establish `hj : (piPerm i t (Fin.last ((i + 1) + t))).val < i + 1` using `by rw [piPerm_last_val]; omega`.
+
+Take `⟨B, hBj, hB⟩` from `exists_row (fun x : Fin ((i + 1) + t + 1) => x.val < i + 1) _ c (piPerm i t (Fin.last ((i + 1) + t))) hc (by simp only [hcs, hj]) (fun h => absurd hj h)`. Conclude with `core i t p (wGL k i t) B _ (wGL_row i t) hBj hB`.
+-/
 theorem cells :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ),
   (∀ p ∈ Cl k i t, ∃ h ∈ HPG k (i + 1) (t + 1), ∃ (d : Fin (t + 1) → k) (m : Mir k ((i + 1) + t)),

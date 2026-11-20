@@ -4,6 +4,9 @@ open Module
 
 namespace GlobalTheory.FiniteCover
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.finrank_range_of_inj hL]`. Use `(Submodule.finrank_mono (t := LinearMap.range B) ?_).trans B.finrank_range_le` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `h p`.
+-/
 theorem finrank_le_of_range_le {K P Q E : Type*} [Field K] [AddCommGroup P] [Module K P]
     [AddCommGroup Q] [Module K Q] [AddCommGroup E] [Module K E] [Module.Finite K Q]
     (L : P →ₗ[K] E) (hL : Function.Injective L) (B : Q →ₗ[K] E) (h : ∀ p, ∃ q, B q = L p) :
@@ -13,6 +16,25 @@ theorem finrank_le_of_range_le {K P Q E : Type*} [Field K] [AddCommGroup P] [Mod
   rintro _ ⟨p, rfl⟩
   exact h p
 
+/- English proof (translation)
+Take `⟨n, g, hg⟩` from `Module.Finite.exists_fin (R := A) (M := C)`. Take `⟨c₁, hc₁⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors A) (fun p : ι × Fin n => e.repr (algebraMap C F' (g p.2)) p.1)`. Establish `h2 : ∀ j, ∃ c : A, c ≠ 0 ∧ ∃ y : C, algebraMap C F' y = algebraMap A F c • e j`. Introduce `j`. Take `⟨p, q, hq, hpq⟩` from `IsFractionRing.div_surjective (A := C) (e j)`.
+
+Establish `hinj : Function.Injective (algebraMap A C)`. Establish `: Function.Injective (algebraMap A F')`. Rewrite using `[IsScalarTower.algebraMap_eq A F F']`. Conclude with `(algebraMap F F').injective.comp (IsFractionRing.injective A F)`. Rewrite `this` using `[IsScalarTower.algebraMap_eq A C F']`.
+
+Conclude with `Function.Injective.of_comp this`. Establish `hal : IsAlgebraic A q` using `(Algebra.IsIntegral.isIntegral (R := A) q).isAlgebraic`. Take `⟨c, hc, z, hz⟩` from `hal.exists_nonzero_dvd hq`. Use `⟨c, hc, z * p, ?_⟩` and prove the remaining obligations. Establish `hq' : algebraMap C F' q ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hq`.
+
+Rewrite using `[← hpq, Algebra.smul_def, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply A C F', hz, map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts. Use `choose c₂ hc₂ y₂ hy₂ using h2`. Use `⟨c₁ * ∏ j, c₂ j, mul_ne_zero (nonZeroDivisors.coe_ne_zero c₁) (Finset.prod_ne_zero_iff.2 fun j _ => hc₂ j), fun j y => ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `hy : y ∈ Submodule.span A (Set.range g)` using `hg ▸ Submodule.mem_top`.
+
+It suffices to establish `h : ∃ a : A, algebraMap A F a = algebraMap A F c₁ * e.repr (algebraMap C F' y) j by`. Take `⟨a, ha⟩` from `h`. Conclude with `⟨a * ∏ j, c₂ j, by rw [map_mul, map_mul, ha]; ring⟩`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨k, rfl⟩` from `hx`. Take `⟨a, ha⟩` from `hc₁ (j, k)`. Conclude with `⟨a, by rw [ha, Algebra.smul_def]⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [map_add, map_add, map_add, Finsupp.add_apply, ha, hb, mul_add]⟩`. Consider the case `smul r x _ hx`. Take `⟨a, ha⟩` from `hx`.
+
+Use `⟨r * a, ?_⟩` and prove the remaining obligations. Establish `: algebraMap C F' (r • x) = algebraMap A F r • algebraMap C F' x`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[this, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, ha]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨(c₁ * ∏ k ∈ Finset.univ.erase j, c₂ k : A) • y₂ j, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ j), ← mul_assoc, map_mul (algebraMap A F) _ (c₂ j), mul_smul (algebraMap A F _), ← hy₂, Algebra.smul_def, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem exists_denominator {A C F F' ι : Type*} [CommRing A] [IsDomain A] [CommRing C] [IsDomain C]
     [Field F] [Field F'] [Algebra A C] [Module.Finite A C] [Algebra A F] [IsFractionRing A F]
     [Algebra C F'] [IsFractionRing C F'] [Algebra F F'] [Algebra A F'] [IsScalarTower A F F']
@@ -70,6 +92,13 @@ theorem exists_denominator {A C F F' ι : Type*} [CommRing A] [IsDomain A] [Comm
       mul_smul (algebraMap A F _), ← hy₂, Algebra.smul_def, Algebra.smul_def, map_mul,
       ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Use `choose m hm using hext`. Set `M : I → ℕ` to `fun i => ∑ k, m i k`. Establish `hM : ∀ i k, c i * (ρ i / ρ k) ^ M i ∈ A k` using `fun i k => by`. Take `⟨l, hl⟩` from `Nat.exists_eq_add_of_le (Finset.single_le_sum (f := m i) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k))`. Express the relevant statement in the definitionally equal form `c i * (ρ i / ρ k) ^ (∑ k, m i k) ∈ A k`.
+
+Rewrite using `[hl, pow_add, ← mul_assoc]`. Conclude with `mul_mem (hm i k) (pow_mem (hr i k) _)`. Use `⟨∑ i, M i, ∏ i, c i * ρ i ^ M i, Finset.prod_ne_zero_iff.2 fun i _ => mul_ne_zero (hc i) (pow_ne_zero _ (hρ i)), fun k => ?_⟩` and prove the remaining obligations. Use `⟨∏ i ∈ Finset.univ.erase k, c i * (ρ i / ρ k) ^ M i, prod_mem fun i _ => hM i k, ?_⟩` and prove the remaining obligations. Establish `e : ∀ i, c i * ρ i ^ M i = ρ k ^ M i * (c i * (ρ i / ρ k) ^ M i)` using `fun i => by`.
+
+Use `hρ k` as an intermediate fact. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Finset.prod_congr rfl fun i _ => e i, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, ← Finset.mul_prod_erase _ _ (Finset.mem_univ k), div_self (hρ k), one_pow, mul_one, mul_assoc]`.
+-/
 theorem exists_common_multiple {F I : Type*} [Field F] [Fintype I] (A : I → Subring F) (ρ c : I → F)
     (hρ : ∀ i, ρ i ≠ 0) (hc : ∀ i, c i ≠ 0) (hr : ∀ i k, ρ i / ρ k ∈ A k)
     (hext : ∀ i k, ∃ m : ℕ, c i * (ρ i / ρ k) ^ m ∈ A k) :
@@ -93,6 +122,21 @@ theorem exists_common_multiple {F I : Type*} [Field F] [Fintype I] (A : I → Su
   rw [Finset.prod_congr rfl fun i _ => e i, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum,
     ← Finset.mul_prod_erase _ _ (Finset.mem_univ k), div_self (hρ k), one_pow, mul_one, mul_assoc]
 
+/- English proof (translation)
+Take `⟨a, u, hu, hub⟩` from `exists_common_multiple A ρ c hρ hc hr hext`. Establish `hpi : ∀ t, finrank K (Fin d → V t) = d * finrank K (V t)` using `fun t => by`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Use `⟨a, fun t => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← hpi]`. Set `L : (Fin d → V t) →ₗ[K] F'` to `((e.equivFun.symm.toLinearMap.restrictScalars K).comp (((LinearMap.mulLeft K u).comp (α t)).compLeft (Fin d)))`. Establish `hL : ∀ v, L v = ∑ j, (u * α t (v j)) • e j` using `fun v => e.equivFun_symm_apply _`. Use `finrank_le_of_range_le L ?_ (β (t + a)) fun v => (rβ _ _).2 fun i => ?_` and prove the remaining obligations. Introduce `v w h`.
+
+Establish `h'` using `e.equivFun.symm.injective h`. Use function extensionality and compare the values at `j`. Conclude with `hα t (mul_left_cancel₀ hu (congrFun h' j))`. Take `⟨b, hb, rfl⟩` from `hub i choose x hx hx' using fun j => (rα t _).1 ⟨v j, rfl⟩ i`. Use `⟨∑ j, algebraMap F F' (b * x j) * (c i • e j), sum_mem fun j _ => mul_mem (hAC i _ (mul_mem hb (hx j))) (hc₂ i j), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hL, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hx' j]`. Simplify using `only [Algebra.smul_def, map_mul, map_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← hpi]`. Set `L : W t →ₗ[K] (Fin d → F)` to `((LinearMap.mulLeft K u).compLeft (Fin d)).comp ((e.equivFun.toLinearMap.restrictScalars K).comp (β t))`. Establish `hL : ∀ w j, L w j = u * e.repr (β t w) j` using `fun w j => rfl`. Use `finrank_le_of_range_le L ?_ ((α (t + a)).compLeft (Fin d)) fun w => ?_` and prove the remaining obligations. Introduce `v w h`.
+
+Use `hβ t (e.equivFun.injective (funext fun j => ?_))` and prove the remaining obligations. Conclude with `mul_left_cancel₀ hu (congrFun h j)`. Establish `key : ∀ j, ∃ v, α (t + a) v = L w j` using `fun j => (rα _ _).2 fun i => by`. Take `⟨b, hb, hub⟩` from `hub i`. Take `⟨y, hy, hy'⟩` from `(rβ t _).1 ⟨w, rfl⟩ i`.
+
+Use `⟨b * (c i * e.repr y j), mul_mem hb (hc₁ i j y hy), ?_⟩` and prove the remaining obligations. Rewrite using `[hL, hy', mul_comm y, ← Algebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul, hub, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `choose v hv using key`. Conclude with `⟨v, funext hv⟩`.
+-/
 theorem finrank_sandwich {K F F' I : Type*} [Field K] [Field F] [Field F'] [Algebra K F]
     [Algebra K F'] [Algebra F F'] [IsScalarTower K F F'] [Fintype I] {d : ℕ} (e : Basis (Fin d) F F')
     (A : I → Subring F) (C : I → Subring F') (ρ c : I → F)

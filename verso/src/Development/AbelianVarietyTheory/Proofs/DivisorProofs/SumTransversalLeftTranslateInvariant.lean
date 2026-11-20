@@ -2,6 +2,19 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `G X _ _ H K R f hR hU hf k hk`. Establish `hkH : ∀ a ∈ R, k * a ∈ H` using `fun a ha => H.mul_mem hk (hR a ha)`. Use `Finset.sum_bij (fun a ha => Classical.choose (hU (k * a) (hkH a ha)).exists) (fun a ha => (Classical.choose_spec (hU (k * a) (hkH a ha)).exists).1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a₁ ha₁ a₂ ha₂ heq`. Establish `h1` using `(Classical.choose_spec (hU (k * a₁) (hkH a₁ ha₁)).exists).2`.
+
+Establish `h2` using `(Classical.choose_spec (hU (k * a₂) (hkH a₂ ha₂)).exists).2`. Rewrite `h1` using `[heq]`. Use `set r' := Classical.choose (hU (k * a₂) (hkH a₂ ha₂)).exists`. Establish `hm : a₁⁻¹ * a₂ ∈ K`. Use `K.mul_mem (K.inv_mem h1) h2` as an intermediate fact.
+
+Simplify `this` using `[mul_assoc]`. Establish `hu` using `(hU a₂ (hR a₂ ha₂)).unique (y₁ := a₁) (y₂ := a₂) ⟨ha₁, hm⟩ ⟨ha₂, by simpa using K.one_mem⟩`. Conclude with `hu`. Introduce `b hb`. Establish `hb' : k⁻¹ * b ∈ H` using `H.mul_mem (H.inv_mem hk) (hR b hb)`.
+
+Take `⟨a, ⟨ha, haK⟩, -⟩` from `hU (k⁻¹ * b) hb'`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Establish `hs` using `Classical.choose_spec (hU (k * a) (hkH a ha)).exists`. Establish `hbK : b⁻¹ * (k * a) ∈ K`. Use `K.inv_mem haK` as an intermediate fact.
+
+Simplify `this` using `[mul_assoc]`. Conclude with `(hU (k * a) (hkH a ha)).unique hs ⟨hb, hbK⟩`. Introduce `a ha`. Establish `hs` using `Classical.choose_spec (hU (k * a) (hkH a ha)).exists`. Use `set r' := Classical.choose (hU (k * a) (hkH a ha)).exists`.
+
+Use `hf r' (hR r' hs.1) (r'⁻¹ * (k * a)) hs.2` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `this`.
+-/
 theorem sum_transversal_left_translate_invariant :
     ∀ {G X : Type} [Group G] [AddCommMonoid X] (H K : Subgroup G) (R : Finset G) (f : G → X),
       (∀ r ∈ R, r ∈ H) → (∀ k ∈ H, ∃! r, r ∈ R ∧ r⁻¹ * k ∈ K) →

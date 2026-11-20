@@ -14,20 +14,34 @@ noncomputable section
 namespace GlobalTheory.UPel.HT.PolLift
 open GlobalTheory.AbDual GlobalTheory.CechPic
 
+/- English proof (translation)
+The claim follows from `(cls_eq_iff hQ hP).1 ((cls_eq_iff hP hQ).2 e).symm`.
+-/
 theorem lbIso_symm {X : Scheme.{0}} {P Q : LB X} (hP : P.IsLB) (hQ : Q.IsLB) (e : LBIso P Q) : LBIso Q P :=
   (cls_eq_iff hQ hP).1 ((cls_eq_iff hP hQ).2 e).symm
 
+/- English proof (translation)
+Use `(cls_eq_zero_iff (pull_isLB hP _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hP, pull_comp, ← cls_pull hP _ (pull_isLB hP _), (cls_eq_zero_iff (pull_isLB hP _)).2 h, map_zero]`.
+-/
 theorem gen_comp {X Y Z : Scheme.{0}} {P : LB X} (hP : P.IsLB) (f : Y ⟶ X) (g : Z ⟶ Y)
     (h : ∃ t : (P.pull f).Gen, t.IsGen) : ∃ t : (P.pull (g ≫ f)).Gen, t.IsGen := by
   refine (cls_eq_zero_iff (pull_isLB hP _)).1 ?_
   rw [cls_pull hP, pull_comp, ← cls_pull hP _ (pull_isLB hP _), (cls_eq_zero_iff (pull_isLB hP _)).2 h, map_zero]
 
+/- English proof (translation)
+Use `(cls_eq_zero_iff (pull_isLB (pull_isLB hP _) _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull (pull_isLB hP _), cls_pull hP, ← pull_comp, ← cls_pull hP _ (pull_isLB hP _)]`. Conclude with `(cls_eq_zero_iff (pull_isLB hP _)).2 h`.
+-/
 theorem gen_pull_pull {X Y Z : Scheme.{0}} {P : LB X} (hP : P.IsLB) (a : Y ⟶ X) (x : Z ⟶ Y)
     (h : ∃ t : (P.pull (x ≫ a)).Gen, t.IsGen) : ∃ t : ((P.pull a).pull x).Gen, t.IsGen := by
   refine (cls_eq_zero_iff (pull_isLB (pull_isLB hP _) _)).1 ?_
   rw [cls_pull (pull_isLB hP _), cls_pull hP, ← pull_comp, ← cls_pull hP _ (pull_isLB hP _)]
   exact (cls_eq_zero_iff (pull_isLB hP _)).2 h
 
+/- English proof (translation)
+Use `⟨gen_pull_pull hP _ _ ?_, gen_pull_pull hP _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd, MonObj.one_comp]`. Conclude with `h₁`. Establish `e : lift (𝟙 A) (1 : A ⟶ A) ≫ lift (fst A A ≫ u) (snd A A) = u ≫ lift (𝟙 A) (1 : A ⟶ A)`. Rewrite using `[comp_lift, lift_fst_assoc, lift_snd, comp_lift, Category.id_comp, Category.comp_id, MonObj.comp_one]`.
+
+Rewrite using `[← Over.comp_left, e, Over.comp_left]`. Conclude with `gen_comp hP _ _ h₂`.
+-/
 theorem gen_left {S : Scheme.{0}} {A : Over S} [GrpObj A] (P : LB (A ⊗ A).left) (hP : P.IsLB) (u : A ⟶ A) [IsMonHom u]
     (h₁ : ∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen)
     (h₂ : ∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) :
@@ -41,6 +55,9 @@ theorem gen_left {S : Scheme.{0}} {A : Over S} [GrpObj A] (P : LB (A ⊗ A).left
     rw [← Over.comp_left, e, Over.comp_left]
     exact gen_comp hP _ _ h₂
 
+/- English proof (translation)
+Apply `GlobalTheory.AbDual.left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, l₁, Category.assoc, GlobalTheory.AbDual.lift_left_fst, ← Category.assoc, GlobalTheory.AbDual.lift_left_fst, Over.comp_left, Over.comp_left, Category.assoc, w, ← Category.assoc, ← l₁, Category.assoc]`. Rewrite using `[Category.assoc, l₂, Category.assoc, GlobalTheory.AbDual.lift_left_snd, ← Category.assoc, GlobalTheory.AbDual.lift_left_snd, l₂]`.
+-/
 theorem sq_left {S S' : Scheme.{0}} {A₀ : Over S'} {A : Over S} [GrpObj A₀] [GrpObj A] {i : A₀.left ⟶ A.left}
     {l : (A₀ ⊗ A₀).left ⟶ (A ⊗ A).left} (l₁ : l ≫ (fst A A).left = (fst A₀ A₀).left ≫ i)
     (l₂ : l ≫ (snd A A).left = (snd A₀ A₀).left ≫ i) (u₀ : A₀ ⟶ A₀) (u : A ⟶ A) (w : u₀.left ≫ i = i ≫ u.left) :
@@ -50,6 +67,27 @@ theorem sq_left {S S' : Scheme.{0}} {A₀ : Over S'} {A : Over S} [GrpObj A₀] 
       Over.comp_left, Over.comp_left, Category.assoc, w, ← Category.assoc, ← l₁, Category.assoc]
   · rw [Category.assoc, l₂, Category.assoc, GlobalTheory.AbDual.lift_left_snd, ← Category.assoc, GlobalTheory.AbDual.lift_left_snd, l₂]
 
+/- English proof (translation)
+Introduce `p _ D R _ b N C C₀ _ _ _ _ π hπ hsq tR o₀ A _ _ i h hA act hact hiso`. Use `haveI : Nontrivial C₀ := by`. Use `⟨⟨0, 1, fun h ↦ ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (1 : C) ∈ RingHom.ker π` using `by rw [RingHom.mem_ker, map_one]; exact h.symm`. Establish `h2 : (1 : C) ∈ RingHom.ker π ^ 2`.
+
+Rewrite using `[pow_two]`. Simplify using `using Ideal.mul_mem_mul h1 h1`. Rewrite `h2` using `[hsq]`. Conclude with `one_ne_zero ((Submodule.mem_bot C).1 h2)`. Set `κ` to `divided₂ hsq`.
+
+Establish `hκ : IsNilDP κ` using `isDPNilpotent_squareZero hsq`. Establish `ADR : GlobalTheory.Published.AbelianDeRham` using `GlobalTheory.abelianDeRham`. Establish `ADC : GlobalTheory.Published.AbelianDualCrystal` using `GlobalTheory.abelianDualCrystal`. Establish `GD : GlobalTheory.Published.GrothendieckDeformation` using `GlobalTheory.Published.grothendieckDeformation_of_lifting GlobalTheory.abelianDeRham GlobalTheory.abelianScheme_hom_lifting_nilpotent_dividedPowers`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim C A hA`.
+
+Take `⟨l, l₁, l₂⟩` from `exists_prod_pullback h h`. Establish `hsq2 : Geo.Tor.IsSquare i l` using `⟨l₁, l₂⟩`. Establish `C'` using `GlobalTheory.Published.AbelianDualCrystal.cupSquare_crys_prod ADR.1 ADC.2 hκ hπ rfl hA hg hA hg h h`. Take `⟨φ₀, hφ₀⟩` from `exists_isCorrForm C' o₀.isLB o₀.rig₁ o₀.rig₂`. Establish `hΔ₀ : (o₀.P.pull (lift (𝟙 o₀.A) (𝟙 o₀.A)).left).IsLB` using `pull_isLB o₀.isLB _`.
+
+Take `⟨P, hP, t₁, t₂, -, -, eP⟩` from `GlobalTheory.BirigidLift.exists_lift GD ADR ADC hκ hπ rfl hA hg hA hg h h l₁ l₂ hΔ₀ o₀.ample hΔ₀ o₀.ample o₀.isLB o₀.rig₁ o₀.rig₂ hφ₀ (hiso φ₀ hφ₀)`. Establish `wΔ : (lift (𝟙 o₀.A) (𝟙 o₀.A)).left ≫ l = i ≫ (lift (𝟙 A) (𝟙 A)).left`. Apply `GlobalTheory.AbDual.left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, l₁, Category.assoc, GlobalTheory.AbDual.lift_left_fst, ← Category.assoc, GlobalTheory.AbDual.lift_left_fst]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Category.assoc, l₂, Category.assoc, GlobalTheory.AbDual.lift_left_snd, ← Category.assoc, GlobalTheory.AbDual.lift_left_snd]`. Simplify using the standard rewrite rules. Establish `hL : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `aL : Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left)` using `by haveI := hA.smooth`. Conclude with `GlobalTheory.T.relAmple_lift_of_nilpotentDividedPowers_thickening C C₀ (RingHom.ker π) κ hκ π hπ rfl A o₀.A i h.1 inferInstance _ _ hL hΔ₀ (GlobalTheory.RMDeform.lbIso_pull_square hP o₀.isLB eP _ _ i wΔ) o₀.ample`.
+
+Establish `symm` using `GlobalTheory.T.birigidified_lift_symmetric_of_symmetric_reduction GD ADC C C₀ (RingHom.ker π) κ hκ π hπ rfl g o₀.A A i h hA hg l hsq2 _ hL aL o₀.P o₀.isLB o₀.symm P hP t₁ t₂ eP`. Establish `ros : ∀ c : D.O, LBIso (P.pull (lift (fst A A ≫ act.act c) (snd A A)).left) (P.pull (lift (fst A A) (snd A A ≫ act.act (D.star c).unop)).left)`. Introduce `c`. Use `haveI := o₀.act.hom c`. Use `haveI := act.hom c`.
+
+Use `haveI := o₀.act.hom (D.star c).unop`. Use `haveI := act.hom (D.star c).unop`. Establish `hQ` using `pull_isLB hP (lift (fst A A ≫ act.act c) (snd A A)).left`. Establish `hQ₀` using `pull_isLB o₀.isLB (lift (fst o₀.A o₀.A ≫ o₀.act.act c) (snd o₀.A o₀.A)).left`. Take `⟨q₁, q₂⟩` from `gen_left P hP (act.act c) t₁ t₂`.
+
+Establish `eQ : LBIso ((P.pull (lift (fst A A ≫ act.act c) (snd A A)).left).pull l) (o₀.P.pull (lift (fst o₀.A o₀.A ≫ o₀.act.act c) (snd o₀.A o₀.A)).left)` using `lbIso_symm hQ₀ (pull_isLB hQ _) (GlobalTheory.RMDeform.lbIso_pull_square hP o₀.isLB eP _ _ l (sq_left l₁ l₂ _ _ (hact c)))`. Conclude with `GlobalTheory.T.birigidified_lift_pullback_one_prod_endomorphism GD ADC C C₀ (RingHom.ker π) κ hκ π hπ rfl g o₀.A A i h hA hg l hsq2 _ hL aL (o₀.act.act (D.star c).unop) (act.act (D.star c).unop) (hact _) o₀.P _ o₀.isLB hQ₀ (o₀.rosati c) P _ hP hQ t₁ t₂ q₁ q₂ eP eQ`. Establish `ker : ∃ e : ℕ, e.Coprime p ∧ ∀ (T : Over (Sp C)) (x : T ⟶ A), (∃ t : (P.pull (lift (snd A T ≫ x) (fst A T)).left).Gen, t.IsGen) → x ^ e = 1`. Take `⟨e, he, H⟩` from `o₀.kerP`. Establish `hu : IsUnit (e : C)`.
+
+Use `(b.unit e he).map tR` as an intermediate fact. Simplify using `using this`. Conclude with `⟨e, he, GlobalTheory.T.lifted_polarisation_kernel_killed_of_unit C C₀ π hπ hsq o₀.A A i h hA l hsq2 o₀.P P o₀.isLB hP t₁ t₂ symm aL eP e hu H⟩`. Conclude with `⟨P, l, hP, t₁, t₂, symm, aL, ker, ros, hsq2, lbIso_symm (pull_isLB hP l) o₀.isLB eP⟩`.
+-/
 theorem exists_pol_lift : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (C C₀ : Type) [CommRing C] [IsLocalRing C] [IsArtinianRing C] [CommRing C₀] (π : C →+* C₀), Function.Surjective π → ∀ (hsq : RingHom.ker π ^ 2 = 0) (tR : R →+* C) (o₀ : GlobalTheory.UPel.HT.Obj b N (spMap π ≫ spMap tR)), ∀ (A : Over (Sp C)) [GrpObj A] [IsCommMonObj A] (i : o₀.A.left ⟶ A.left) (h : IsGrpPullback o₀.A A (spMap π) i), IsAbelianScheme A → ∀ (act : GlobalTheory.UPel.HT.OActN D.O A), (∀ c, (o₀.act.act c).left ≫ i = i ≫ (act.act c).left) → (∀ φ : Crys (divided₂ hsq) (spMap π) o₀.A →ₗ[C] Crys (divided₂ hsq) (spMap π) o₀.A →ₗ[C] C, GlobalTheory.AbDual.IsCorrForm (divided₂ hsq) (spMap π) o₀.A o₀.A o₀.P φ → ∀ x ∈ liftFil (divided₂ hsq) h, ∀ y ∈ liftFil (divided₂ hsq) h, φ x y = 0) → ∃ (P : LB (G2 A).left) (φ₂ : (G2 o₀.A).left ⟶ (G2 A).left), P.IsLB ∧ (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) ∧ (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) ∧ LBIso P (P.pull (lift (snd A A) (fst A A)).left) ∧ Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) ∧ (∃ e : ℕ, e.Coprime p ∧ ∀ (T : Over (Sp C)) (x : T ⟶ A), (∃ t : (P.pull (lift (snd A T ≫ x) (fst A T)).left).Gen, t.IsGen) → x ^ e = 1) ∧ (∀ c : D.O, LBIso (P.pull (lift (fst A A ≫ act.act c) (snd A A)).left) (P.pull (lift (fst A A) (snd A A ≫ act.act (D.star c).unop)).left)) ∧ IsSquare i φ₂ ∧ LBIso o₀.P (P.pull φ₂) := by
   intro p _ D R _ b N C C₀ _ _ _ _ π hπ hsq tR o₀ A _ _ i h hA act hact hiso
   haveI : Nontrivial C₀ := by

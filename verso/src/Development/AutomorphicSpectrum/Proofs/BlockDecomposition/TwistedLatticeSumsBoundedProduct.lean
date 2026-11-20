@@ -19,6 +19,33 @@ namespace GlobalTheory.CompanionTheory.FJE
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D ρ p m ψ hψ b₀ hb Φ φ B₁ B₂ hΦ hφ h1 h2`. Use `haveI := m.hμ.1`. Establish `hfd : IsAddFundamentalDomain (ratMx D ρ p) m.𝓕 m.μ` using `m.hμ.2.1`. Establish `hfin : m.μ m.𝓕 = 1` using `m.hμ.2.2`. Use `haveI : BorelSpace (Mx D ρ p) := ⟨rfl⟩`.
+
+Use `haveI : Countable D.host.E := (Module.finBasis ℚ D.host.E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin ρ) (Fin p) D.host.E) := inferInstanceAs (Countable (Fin ρ → Fin p → D.host.E))`. Use `haveI : Countable (ratMx D ρ p) := by`. Unfold `GlobalTheory.MixModel.ratMx`. Conclude with `(AddMonoidHom.rangeRestrict_surjective _).countable`.
+
+Use `haveI : MeasurableConstVAdd (ratMx D ρ p) (Mx D ρ p) := ⟨fun c => (continuous_const.add continuous_id).measurable⟩`. Use `haveI : SFinite m.μ := by`. Establish `hs` using `hfd.sum_restrict`. Use `open scoped Pointwise in`. Use `haveI : ∀ g : ratMx D ρ p, IsFiniteMeasure (m.μ.restrict (g +ᵥ m.𝓕)) := fun g => ⟨by rw [Measure.restrict_apply_univ, measure_vadd, hfin]; exact ENNReal.one_lt_top⟩`.
+
+Rewrite using `[← hs]`. Use `infer_instance`. Use `haveI : IsFiniteMeasure (m.μ.restrict m.𝓕) := ⟨by rw [Measure.restrict_apply_univ, hfin]; exact ENNReal.one_lt_top⟩`. Establish `hds : ∀ (Ψ : Mx D ρ p → ℂ) (B : ℝ), (∀ y, Summable (fun ξ : Matrix (Fin ρ) (Fin p) D.host.E => ‖Ψ (rt ξ + y)‖) ∧ ∑' ξ : Matrix (Fin ρ) (Fin p) D.host.E, ‖Ψ (rt ξ + y)‖ ≤ B) → ∀ x y, ‖dsum ψ b₀ Ψ x y‖ ≤ B`. Introduce `Ψ B hB x y`.
+
+Use `(norm_tsum_le_tsum_norm ?_).trans ?_` and prove the remaining obligations. Simplify `(hB y).1` using `[norm_mul, chv_norm ψ hψ]`. Simplify `(hB y).2` using `[norm_mul, chv_norm ψ hψ]`. Establish `hB₁ : 0 ≤ B₁` using `(tsum_nonneg (fun _ => norm_nonneg _)).trans (h1 0).2`. Establish `hB₂ : 0 ≤ B₂` using `(tsum_nonneg (fun _ => norm_nonneg _)).trans (h2 0).2`.
+
+Establish `hm : StronglyMeasurable (Ap ψ b₀ Φ φ)` using `(dsum_stronglyMeasurable ψ hψ b₀ Φ hΦ (fun y => (h1 y).1)).mul (Complex.continuous_conj.comp_stronglyMeasurable (dsum_stronglyMeasurable ψ hψ b₀ φ hφ (fun y => (h2 y).1)))`. Establish `hint : Integrable (Ap ψ b₀ Φ φ) ((m.μ.restrict m.𝓕).prod (m.μ.restrict m.𝓕))`. Use `Integrable.of_bound hm.aestronglyMeasurable (B₁ * B₂) (ae_of_all _ (fun v => ?_))` and prove the remaining obligations. Rewrite using `[Ap, norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul (hds Φ B₁ h1 _ _) (hds φ B₂ h2 _ _) (norm_nonneg _) hB₁`.
+
+Establish `hP : StronglyMeasurable (fun y => Φ y * conj (φ y))` using `hΦ.mul (Complex.continuous_conj.comp_stronglyMeasurable hφ)`. Establish `hsum : ∀ y, ∑' ξ : Matrix (Fin ρ) (Fin p) D.host.E, ‖Φ (rt ξ + y) * conj (φ (rt ξ + y))‖ₑ ≤ ENNReal.ofReal (B₁ * B₂)`. Introduce `y`. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.tsum_le_tsum (fun ξ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[enorm_mul, ← ofReal_norm (conj _), Complex.norm_conj, ofReal_norm]`. Use `gcongr`. Conclude with `ENNReal.le_tsum (f := fun η => ‖φ (rt η + y)‖ₑ) ξ`. Use `_ = (∑' ξ : Matrix (Fin ρ) (Fin p) D.host.E, ‖Φ (rt ξ + y)‖ₑ) * ∑' η : Matrix (Fin ρ) (Fin p) D.host.E, ‖φ (rt η + y)‖ₑ := ENNReal.tsum_mul_right`. Use `_ ≤ ENNReal.ofReal B₁ * ENNReal.ofReal B₂ := by gcongr`.
+
+Simplify using `only [← ofReal_norm]`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (h1 y).1]`. Conclude with `ENNReal.ofReal_le_ofReal (h1 y).2`. Simplify using `only [← ofReal_norm]`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (h2 y).1]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal (h2 y).2`. Use `_ = ENNReal.ofReal (B₁ * B₂) := (ENNReal.ofReal_mul hB₁).symm`. Establish `hPint : Integrable (fun y => Φ y * conj (φ y)) m.μ`. Use `⟨hP.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`.
+
+Rewrite using `[hfd.lintegral_eq_tsum'']`. Use `beta_reduce`. Rewrite using `[← lintegral_tsum (f := fun (g : ratMx D ρ p) (x : Mx D ρ p) => ‖Φ (g +ᵥ x) * conj (φ (g +ᵥ x))‖ₑ) (fun g => ((hP.measurable.comp (measurable_const_vadd g)).enorm).aemeasurable)]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono (fun x => ?_)` and prove the remaining obligations.
+
+Use `(ENNReal.tsum_le_tsum_comp_of_surjective (AddMonoidHom.rangeRestrict_surjective (Formalism.L2.Theta.incA D).toAddMonoidHom.mapMatrix) _).trans ?_` and prove the remaining obligations. Conclude with `hsum x`. Use `_ < ⊤ := by`. Rewrite using `[lintegral_const, Measure.restrict_apply_univ, hfin, mul_one]`. Conclude with `ENNReal.ofReal_lt_top`.
+
+Rewrite using `[← Measure.prod_restrict, integral_prod _ hint, integral_fold m _ hPint]`. Use `integral_congr_ae (ae_of_all _ (fun y => ?_))` and prove the remaining obligations. Conclude with `GlobalTheory.T.heisenberg_character_orthogonality m ψ hψ b₀ hb (fun η => Φ (rt η + y)) (fun η => φ (rt η + y)) (h1 y).1 (h2 y).1`.
+-/
 theorem fold_parseval : ∀ {D : D7} {ρ p : ℕ} (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ b₀ : HermE D ρ, b₀.1.det ≠ 0 → ∀ (Φ φ : Mx D ρ p → ℂ) (B₁ B₂ : ℝ), StronglyMeasurable Φ → StronglyMeasurable φ → (∀ y, Summable (fun ξ : Matrix (Fin ρ) (Fin p) D.host.E => ‖Φ (GlobalTheory.CompanionTheory.FJE.rt ξ + y)‖) ∧ ∑' ξ : Matrix (Fin ρ) (Fin p) D.host.E, ‖Φ (GlobalTheory.CompanionTheory.FJE.rt ξ + y)‖ ≤ B₁) → (∀ y, Summable (fun ξ : Matrix (Fin ρ) (Fin p) D.host.E => ‖φ (GlobalTheory.CompanionTheory.FJE.rt ξ + y)‖) ∧ ∑' ξ : Matrix (Fin ρ) (Fin p) D.host.E, ‖φ (GlobalTheory.CompanionTheory.FJE.rt ξ + y)‖ ≤ B₂) → ∫ v in m.𝓕 ×ˢ m.𝓕, GlobalTheory.CompanionTheory.FJE.Ap ψ b₀ Φ φ v ∂(m.μ.prod m.μ) = ∫ y, Φ y * conj (φ y) ∂m.μ := by
   intro D ρ p m ψ hψ b₀ hb Φ φ B₁ B₂ hΦ hφ h1 h2
   haveI := m.hμ.1

@@ -13,6 +13,21 @@ open PositivityTheory.RgTw (Mat)
 open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.RealD UpperTheory.RealTr
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
+/- English proof (translation)
+Introduce `n V _ _ F hU hL ν hν`. Take `⟨x, hxh, hx0⟩` from `(Submodule.ne_bot_iff _).1 hν`. Take `⟨S0, hS0f, hxS0, hS0⟩` from `hL x`. Use `set S : Submodule ℂ V := Formalism.REAL.kSpan (fun _ => true) F x with hSdef`. Establish `hSle : S ≤ S0`.
+
+Introduce `y hy`. Conclude with `(Submodule.mem_sInf.1 hy) S0 ⟨hxS0, fun a b _ z hz => hS0 a b z hz⟩`. Establish `hxS : x ∈ S` using `Submodule.mem_sInf.2 (fun T hT => hT.1)`. Establish `hSf : FiniteDimensional ℂ S` using `Submodule.finiteDimensional_of_le hSle`. Establish `hSs : Stb F S`.
+
+Introduce `a b y hy`. Conclude with `Submodule.mem_sInf.2 (fun T hT => hT.2 a b rfl y (Submodule.mem_sInf.1 hy T hT))`. Establish `hD : Dom ν` using `hwDom n V F hU S hSf hSs ν x hxS hx0 hxh`. Take `⟨c, hc⟩` from `chEx n V F hU S hSf hSs 1`. Establish `hCm : Cm F S 1` using `⟨fun a b => by rw [one_mul, mul_one], fun y hy => by simpa using hy⟩`.
+
+Establish `hKR : Formalism.REAL.KRel (fun _ => true) F` using `Formalism.REAL.glRel_kRel _ F hU.gl`. Establish `hKU : Formalism.REAL.KUnit (fun _ => true) F` using `fun a b _ y z => hU.unit a b y z`. Establish `hoth : ∀ μ : Wt n, μ ≠ ν → hw F μ ⊓ S = ⊥`. Introduce `μ hμ`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `y hy`. Rewrite using `[Submodule.mem_bot]`. Break down `Formalism.REAL.kHiUniq V n (fun _ => true) F ν μ x y hKR hKU hxh hy.2 hy.1 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h.1 hμ`.
+
+Establish `key` using `wcfIso n V F hU S hSf hSs 1 c ν hCm hc hoth`. Establish `hIf : FiniteDimensional ℂ (hw F ν ⊓ S : Submodule ℂ V)` using `Submodule.finiteDimensional_of_le (inf_le_right : hw F ν ⊓ S ≤ S)`. Establish `htr : trOn (hw F ν ⊓ S) (1 : Module.End ℂ V) = (Module.finrank ℂ (hw F ν ⊓ S : Submodule ℂ V) : ℂ)` using `(trAdd V (1 : Module.End ℂ V)).2.2.2 _ hIf`. Use `⟨hD, S, c, trOn (hw F ν ⊓ S) 1, hSf, hSs, hc, ?_, key⟩` and prove the remaining obligations. Rewrite using `[htr, Nat.cast_ne_zero]`.
+
+Introduce `h0`. Rewrite `h0` using `[Submodule.finrank_eq_zero]`. Establish `: x ∈ hw F ν ⊓ S` using `⟨hxh, hxS⟩`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Conclude with `hx0 this`.
+-/
 theorem UpperTheory.RealTr.irrCh :
     ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F : Fin n → Fin n → Module.End ℂ V), UF F → LocF F → ∀ ν : Wt n, hw F ν ≠ ⊥ → Dom ν ∧ ∃ (S : Submodule ℂ V) (c : FR n) (d : ℂ), FiniteDimensional ℂ S ∧ Stb F S ∧ IsCh F S 1 c ∧ d ≠ 0 ∧
       alt (rhoV n) * c = d • alt (ν + rhoV n) := by

@@ -14,6 +14,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 section Univ
 variable {F : Type} [Field F] [NumberField F] [IsCMField F] {D : Datum F} {p N : ℕ}
 
+/- English proof (translation)
+Introduce `C C₀ _ _ _ _ π _ _ t o o₀ x₀ hx₀ ⟨m⟩ h₀`. Take `⟨x, ⟨hx, ⟨mx⟩⟩, hu⟩` from `h _ t o`. Take `⟨y, -, hy⟩` from `h _ _ o₀`. Use `⟨x, ⟨?_, hx, ⟨mx⟩⟩, fun x' h' => hu x' h'.2⟩` and prove the remaining obligations. Conclude with `(hy _ ⟨by rw [Category.assoc, hx], ⟨m.comp mx⟩⟩).trans (hy _ ⟨hx₀, h₀⟩).symm`.
+-/
 theorem infUniv_of_rep {X : Scheme.{0}} {s : X ⟶ Sp (D.OEp p)} (univ : Obj D p N s)
     (h : ∀ (S : Scheme.{0}) (s' : S ⟶ Sp (D.OEp p)) (o : Obj D p N s'),
       ∃! f : S ⟶ X, f ≫ s = s' ∧ Nonempty (ObjMap o univ f)) : InfUniv univ := by
@@ -23,6 +26,9 @@ theorem infUniv_of_rep {X : Scheme.{0}} {s : X ⟶ Sp (D.OEp p)} (univ : Obj D p
   refine ⟨x, ⟨?_, hx, ⟨mx⟩⟩, fun x' h' => hu x' h'.2⟩
   exact (hy _ ⟨by rw [Category.assoc, hx], ⟨m.comp mx⟩⟩).trans (hy _ ⟨hx₀, h₀⟩).symm
 
+/- English proof (translation)
+Establish `: ∃ o₀ : Obj D p N (spMap π ≫ t), Nonempty (ObjMap o₀ univ x₀)` using `hx₀ ▸ Pull.exists_objMap F D p N _ _ s univ x₀`. Take `⟨o₀, h₀⟩` from `this`. Take `⟨o, ho⟩` from `hl o₀`. Take `⟨x, hx, -⟩` from `h C C₀ π hπ hsq t o o₀ x₀ hx₀ ho h₀`. Conclude with `⟨x, hx.1, hx.2.1⟩`.
+-/
 theorem InfUniv.lift_point {X : Scheme.{0}} {s : X ⟶ Sp (D.OEp p)} {univ : Obj D p N s} (h : InfUniv univ)
     (C C₀ : Type) [CommRing C] [IsLocalRing C] [IsArtinianRing C] [CommRing C₀] (π : C →+* C₀)
     (hπ : Function.Surjective π) (hsq : RingHom.ker π ^ 2 = ⊥) (t : Sp C ⟶ Sp (D.OEp p))
@@ -35,6 +41,17 @@ theorem InfUniv.lift_point {X : Scheme.{0}} {s : X ⟶ Sp (D.OEp p)} {univ : Obj
   obtain ⟨x, hx, -⟩ := h C C₀ π hπ hsq t o o₀ x₀ hx₀ ho h₀
   exact ⟨x, hx.1, hx.2.1⟩
 
+/- English proof (translation)
+Introduce `h`. Set `π : DualNumber k →+* k` to `(TrivSqZeroExt.fstHom k k k).toRingHom`. Set `j : k →+* DualNumber k` to `algebraMap k (DualNumber k)`. Use `haveI : IsArtinianRing (DualNumber k) := haveI : Module.Finite k (DualNumber k) := inferInstanceAs (Module.Finite k (k × k)) IsArtinianRing.of_finite k _`. Establish `hs : Function.Surjective π` using `fun a => ⟨TrivSqZeroExt.inl a, rfl⟩`.
+
+Establish `hsq : RingHom.ker π ^ 2 = ⊥`. Rewrite using `[pow_two, eq_bot_iff, Ideal.mul_le]`. Introduce `a ha c hc`. Establish `ha' : a.fst = 0` using `ha`. Establish `hc' : c.fst = 0` using `hc`.
+
+Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [ha', hc']`. Establish `e1 : spMap π ≫ spMap j = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Both sides reduce to the same expression.
+
+Take `⟨o₀, h₀⟩` from `Pull.exists_objMap F D p N _ _ _ u (spMap π)`. Take `⟨x, -, hu⟩` from `h (DualNumber k) k π hs hsq _ u o₀ (spMap π) rfl h₀ h₀`. Establish `e2 : (spMap j ≫ spMap π) ≫ spMap j = spMap j` using `by rw [Category.assoc, e1, Category.comp_id]`. Establish `a1` using `hu (𝟙 _) ⟨Category.comp_id _, Category.id_comp _, ⟨ObjMap.refl u⟩⟩`. Establish `a2` using `hu (spMap j ≫ spMap π) ⟨by rw [← Category.assoc, e1, Category.id_comp], by rw [← Category.assoc, e2], objMap_cancel F D p N _ _ _ _ _ _ u u o _ _ m (e2.symm ▸ m)⟩`.
+
+Establish `a3 : 𝟙 _ = spMap j ≫ spMap π` using `a1.trans a2.symm`. Rewrite `a3` using `[← Spec.map_comp, ← Spec.map_id]`. Establish `a4` using `congrArg (fun f => (CommRingCat.Hom.hom f DualNumber.eps : DualNumber k).snd) (Spec.map_injective a3)`. Simplify using `[π, j] at a4`.
+-/
 theorem not_infUniv_const {k : Type} [Field k] {b : Sp k ⟶ Sp (D.OEp p)} (o : Obj D p N b)
     (u : Obj D p N (spMap (algebraMap k (DualNumber k)) ≫ b))
     (m : ObjMap u o (spMap (algebraMap k (DualNumber k)))) : ¬ InfUniv u := by
@@ -65,6 +82,9 @@ theorem not_infUniv_const {k : Type} [Field k] {b : Sp k ⟶ Sp (D.OEp p)} (o : 
   have a4 := congrArg (fun f => (CommRingCat.Hom.hom f DualNumber.eps : DualNumber k).snd) (Spec.map_injective a3)
   simp [π, j] at a4
 
+/- English proof (translation)
+Take `⟨D, p, -, -, hg, o, -⟩` from `exists_datum_good_obj`. Take `⟨u, ⟨m⟩⟩` from `Pull.exists_objMap _ D p 5 _ _ _ o (spMap (algebraMap ℂ (DualNumber ℂ)))`. Conclude with `⟨D, p, hg, _, u, not_infUniv_const o u m⟩`.
+-/
 theorem exists_not_infUniv : ∃ (D : Datum HostModel.E21) (p : ℕ), Good HostModel.E21 p 5 ∧
     ∃ (s : Sp (DualNumber ℂ) ⟶ Sp (D.OEp p)) (u : Obj D p 5 s), ¬ InfUniv u := by
   obtain ⟨D, p, -, -, hg, o, -⟩ := exists_datum_good_obj
@@ -102,9 +122,21 @@ def cls (Fil : Submodule k H) : (H →ₗ[k] H) →ₗ[k] (Fil →ₗ[k] H ⧸ F
   map_add' f g := by ext; simp
   map_smul' c f := by ext; simp
 
+/- English proof (translation)
+Simplify using `[cls, LinearMap.ext_iff, Submodule.Quotient.eq]`.
+-/
 theorem cls_eq_iff (f g : H →ₗ[k] H) : cls Fil f = cls Fil g ↔ ∀ x ∈ Fil, f x - g x ∈ Fil := by
   simp [cls, LinearMap.ext_iff, Submodule.Quotient.eq]
 
+/- English proof (translation)
+Take `⟨f, hf, hu⟩` from `h`. Establish `key : ∀ (g : H →ₗ[k] H) (c : Fin d → k), (∀ x ∈ Fil, g x - ∑ i, c i • f i x ∈ Fil) ↔ cls Fil g = ∑ i, c i • cls Fil (f i)` using `fun g c => by`. Simplify using `only [← map_smul, ← map_sum, cls_eq_iff, LinearMap.sum_apply, LinearMap.smul_apply]`. Establish `li : LinearIndependent k fun i => cls Fil (f i)`. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `c hc`. Take `⟨c₀, -, h₀⟩` from `hu 0 (ksSub ρ φ Fil Z).zero_mem`. Use `(h₀ c ((key 0 c).2 (by rw [hc, map_zero]))).trans (h₀ 0 ((key 0 0).2 (by simp))).symm` as an intermediate fact. Conclude with `congrFun this`. Establish `: (ksSub ρ φ Fil Z).map (cls Fil) = Submodule.span k (Set.range fun i => cls Fil (f i))`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨c, hc, -⟩` from `hu g hg`. Rewrite using `[(key g c).1 hc]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨f i, hf i, rfl⟩`. Rewrite using `[this, rank_span li, ← Cardinal.lift_inj.{_, 0}, Cardinal.mk_range_eq_of_injective li.injective]`. Simplify using the standard rewrite rules.
+-/
 theorem KSDim.rank_eq {d : ℕ} (h : KSDim ρ φ Fil Z d) :
     Module.rank k ((ksSub ρ φ Fil Z).map (cls Fil)) = d := by
   obtain ⟨f, hf, hu⟩ := h
@@ -129,6 +161,9 @@ theorem KSDim.rank_eq {d : ℕ} (h : KSDim ρ φ Fil Z d) :
   rw [this, rank_span li, ← Cardinal.lift_inj.{_, 0}, Cardinal.mk_range_eq_of_injective li.injective]
   simp
 
+/- English proof (translation)
+Conclude with `(KSDim.rank_eq h).symm.trans (KSDim.rank_eq h')` after adjusting the coercions.
+-/
 theorem KSDim.unique {d e : ℕ} (h : KSDim ρ φ Fil Z d) (h' : KSDim ρ φ Fil Z e) : d = e := by
   exact_mod_cast (KSDim.rank_eq h).symm.trans (KSDim.rank_eq h')
 
@@ -143,8 +178,22 @@ def ω₂ : LinearMap.BilinForm k (k × k) :=
 
 def L₁ : Submodule k (k × k) := LinearMap.ker (LinearMap.snd k k k)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_L₁ (x : k × k) : x ∈ L₁ k ↔ x.2 = 0 := Iff.rfl
 
+/- English proof (translation)
+Use `⟨fun _ => LinearMap.inr k k k ∘ₗ LinearMap.fst k k k, fun _ => ⟨?_, ?_, ?_⟩, fun g _ => ?_⟩` and prove the remaining obligations. Introduce `a x _`. Simplify using `[mem_L₁]`. Introduce `x hx`. Simplify using `[(Submodule.mem_bot k).1 hx, mem_L₁]`.
+
+Introduce and unpack `⟨a, b⟩ hx ⟨c, d⟩ hy`. Rewrite `hx`, `hy` using `[mem_L₁]`. Simplify using `at hx hy`. Simplify using `[ω₂, hx, hy, mul_comm]`. Use `⟨fun _ => (g (1, 0)).2, ?_, fun c hc => ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨a, b⟩ hx`. Rewrite `hx` using `[mem_L₁]`. Simplify using `at hx`. Substitute `hx` using the available equality. Establish `: ((a, 0) : k × k) = a • (1, 0)` using `by simp`.
+
+Rewrite using `[mem_L₁, this, map_smul]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Use `hc (1, 0) rfl` as an intermediate fact. Rewrite `this` using `[mem_L₁]`.
+
+Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `at this`. Conclude with `(sub_eq_zero.1 this).symm`.
+-/
 theorem ksDim_plane : KSDim (Int.castRingHom (Module.End k (k × k))) (ω₂ k) (L₁ k) ⊥ 1 := by
   refine ⟨fun _ => LinearMap.inr k k k ∘ₗ LinearMap.fst k k k, fun _ => ⟨?_, ?_, ?_⟩, fun g _ => ?_⟩
   · intro a x _; simp [mem_L₁]
@@ -163,12 +212,20 @@ theorem ksDim_plane : KSDim (Int.castRingHom (Module.End k (k × k))) (ω₂ k) 
       simp at this
       exact (sub_eq_zero.1 this).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Fin.elim0, fun i => i.elim0, fun g hg => ⟨Fin.elim0, fun x hx => by simpa using hg.2.1 x hx, fun _ _ => Subsingleton.elim _ _⟩⟩`.
+-/
 theorem ksDim_plane_fixed : KSDim (Int.castRingHom (Module.End k (k × k))) (ω₂ k) (L₁ k) (L₁ k) 0 :=
   ⟨Fin.elim0, fun i => i.elim0, fun g hg => ⟨Fin.elim0, fun x hx => by simpa using hg.2.1 x hx,
     fun _ _ => Subsingleton.elim _ _⟩⟩
 
 def diag : (k × k) →+* Module.End k (k × k) := (Algebra.lmul k (k × k)).toRingHom
 
+/- English proof (translation)
+Use `⟨Fin.elim0, fun i => i.elim0, fun g hg => ⟨Fin.elim0, fun x hx => ?_, fun _ _ => Subsingleton.elim _ _⟩⟩` and prove the remaining obligations. Use `hg.1 (1, 0) x hx` as an intermediate fact. Take `⟨a, b⟩` from `x`. Rewrite `hx` using `[mem_L₁]`. Simplify using `at hx`.
+
+Substitute `hx` using the available equality. Rewrite `this`, the goal using `[mem_L₁]`. Simplify `this` using `[diag]`.
+-/
 theorem ksDim_plane_cm : KSDim (diag k) (ω₂ k) (L₁ k) ⊥ 0 := by
   refine ⟨Fin.elim0, fun i => i.elim0, fun g hg => ⟨Fin.elim0, fun x hx => ?_, fun _ _ => Subsingleton.elim _ _⟩⟩
   have := hg.1 (1, 0) x hx
@@ -177,6 +234,9 @@ theorem ksDim_plane_cm : KSDim (diag k) (ω₂ k) (L₁ k) ⊥ 0 := by
   rw [mem_L₁] at this ⊢
   simpa [diag] using this
 
+/- English proof (translation)
+Introduce `h` and use `absurd (KSDim.unique h (ksDim_plane k)) (by norm_num)`.
+-/
 theorem not_ksDim_plane_zero : ¬ KSDim (Int.castRingHom (Module.End k (k × k))) (ω₂ k) (L₁ k) ⊥ 0 :=
   fun h => absurd (KSDim.unique h (ksDim_plane k)) (by norm_num)
 
@@ -190,11 +250,34 @@ def act₄ : (k × k) →+* Module.End k (Fin 4 → k) :=
 
 def F₄ : Submodule k (Fin 4 → k) := LinearMap.ker (LinearMap.proj 1) ⊓ LinearMap.ker (LinearMap.proj 2)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_F₄ (x : Fin 4 → k) : x ∈ F₄ k ↔ x 1 = 0 ∧ x 2 = 0 := Iff.rfl
 
+/- English proof (translation)
+Apply the tactic sequence `funext i; fin_cases i <;> rfl`.
+-/
 theorem act₄_apply (a : k × k) (x : Fin 4 → k) : act₄ k a x = ![a.1 * x 0, a.1 * x 1, a.2 * x 2, a.2 * x 3] := by
   funext i; fin_cases i <;> rfl
 
+/- English proof (translation)
+Set `f : (Fin 4 → k) →ₗ[k] (Fin 4 → k)` to `LinearMap.pi ![0, LinearMap.proj 0, -LinearMap.proj 3, 0]`. Apply the tactic sequence `have hf : ∀ x, f x = ![0, x 0, -x 3, 0] := fun x => by funext i; fin_cases i <;> rfl`. Use `⟨fun _ => f, fun _ => ⟨?_, ?_, ?_⟩, fun g hg => ?_⟩` and prove the remaining obligations. Introduce `a x _`. Simplify using `[mem_F₄, hf, act₄_apply]`.
+
+Introduce `x hx`. Simplify using `[(Submodule.mem_bot k).1 hx]`. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[mem_F₄]`. Simplify using `[ω₄, hf, hx, hy, mul_comm]`.
+
+Set `e : Fin 4 → k` to `![1, 0, 0, 0]`. Set `e' : Fin 4 → k` to `![0, 0, 0, 1]`. Establish `he : e ∈ F₄ k` using `⟨rfl, rfl⟩`. Establish `he' : e' ∈ F₄ k` using `⟨rfl, rfl⟩`. Establish `h1` using `hg.1 (1, 0) e he`.
+
+Establish `h2` using `hg.1 (0, 1) e' he'`. Establish `h3` using `hg.2.2 e he e' he'`. Establish `a1 : act₄ k (1, 0) e = e` using `by simp [act₄_apply, e]`. Establish `a2 : act₄ k (0, 1) e' = e'` using `by simp [act₄_apply, e']`. Rewrite `h1` using `[a1, mem_F₄]`.
+
+Rewrite `h2` using `[a2, mem_F₄]`. Simplify using `[act₄_apply] at h1 h2`. Establish `h3' : g e 1 + g e' 2 = 0` using `by simpa [ω₄, e, e'] using h3`. Use `⟨fun _ => g e 1, fun x hx => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Establish `: x = x 0 • e + x 3 • e'`.
+
+Apply the tactic sequence `funext i; fin_cases i <;> simp [e, e', hx.1, hx.2, ((mem_F₄ k x).1 hx).1, ((mem_F₄ k x).1 hx).2]`. Establish `hgx : g x = x 0 • g e + x 3 • g e'` using `by conv_lhs => rw [this, map_add, map_smul, map_smul]`. Rewrite using `[mem_F₄, hgx]`. Simplify using `[hf, h1, h2]`. Prove the components needed by the constructor for the conclusion.
+
+Expand and normalize the polynomial expressions, which then agree. Take the linear combination `x 3 * h3'`. Use `(hc e he).1` as an intermediate fact. Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`.
+
+Simplify using `[hf, e] at this`. Conclude with `(sub_eq_zero.1 this).symm`.
+-/
 theorem kottwitzDim_signatureOneOne : KSDim (act₄ k) (ω₄ k) (F₄ k) ⊥ 1 := by
   let f : (Fin 4 → k) →ₗ[k] (Fin 4 → k) :=
     LinearMap.pi ![0, LinearMap.proj 0, -LinearMap.proj 3, 0]

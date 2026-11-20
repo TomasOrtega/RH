@@ -12,6 +12,13 @@ section Generic
 
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use extensionality with `k`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Establish `h` using `hk 1`. Simplify using `only [one_mul] at h`.
+
+Assume the negation of the conclusion as `hn`. Rewrite `h` using `[Set.indicator_of_notMem (by simpa using hn), Set.indicator_of_mem (by simp [K'.one_mem])]`. Simplify using `at h`. Introduce `hk x`. Distinguish the cases in `hx : x ∈ K'`.
+
+Rewrite using `[Set.indicator_of_mem (show x * k ∈ (K' : Set G) from K'.mul_mem hx hk), Set.indicator_of_mem (show x ∈ (K' : Set G) from hx)]`. Both sides reduce to the same expression. Establish `hxk : x * k ∉ K'` using `fun h => hx (by simpa using K'.mul_mem h (K'.inv_mem hk))`. Rewrite using `[Set.indicator_of_notMem (show x * k ∉ (K' : Set G) from hxk), Set.indicator_of_notMem (show x ∉ (K' : Set G) from hx)]`.
+-/
 private theorem rStab_ind (K' : Subgroup G) :
     rStab ((K' : Set G).indicator (1 : G → ℂ)) = K' := by
   classical
@@ -32,6 +39,11 @@ private theorem rStab_ind (K' : Subgroup G) :
       rw [Set.indicator_of_notMem (show x * k ∉ (K' : Set G) from hxk),
         Set.indicator_of_notMem (show x ∉ (K' : Set G) from hx)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ K'`. Rewrite using `[Set.indicator_of_mem (show y⁻¹ ∈ (K' : Set G) from K'.inv_mem hy), Set.indicator_of_mem (show y ∈ (K' : Set G) from hy)]`. Both sides reduce to the same expression. Establish `: y⁻¹ ∉ K'` using `fun h => hy (by simpa using K'.inv_mem h)`.
+
+Rewrite using `[Set.indicator_of_notMem (show y⁻¹ ∉ (K' : Set G) from this), Set.indicator_of_notMem (show y ∉ (K' : Set G) from hy)]`.
+-/
 private theorem ind_inv (K' : Subgroup G) :
     (fun y : G => (K' : Set G).indicator (1 : G → ℂ) y⁻¹) = (K' : Set G).indicator (1 : G → ℂ) := by
   classical
@@ -44,6 +56,15 @@ private theorem ind_inv (K' : Subgroup G) :
     rw [Set.indicator_of_notMem (show y⁻¹ ∉ (K' : Set G) from this),
       Set.indicator_of_notMem (show y ∉ (K' : Set G) from hy)]
 
+/- English proof (translation)
+Establish `hfx : ∀ h ∈ K', ρ h x = x` using `fun h hh => by simpa using hx ⟨h, hh⟩`. Establish `hout : ∀ q : G ⧸ K', q.out ∈ K' ↔ q = (QuotientGroup.mk 1 : G ⧸ K')`. Introduce `q`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h2 : ((q.out : G) : G ⧸ K') = QuotientGroup.mk 1` using `QuotientGroup.eq.2 (by simpa using K'.inv_mem h)`. Rewrite `h2` using `[QuotientGroup.out_eq']`. Then use the resulting hypothesis. Introduce and unpack `rfl`. Use `QuotientGroup.mk_out_eq_mul K' (1 : G)` as an intermediate fact. Take `⟨h, hh⟩` from `this`.
+
+Rewrite using `[hh]`. Simplify using `using h.2`. Unfold `levOp`. Rewrite using `[finsum_eq_single _ (QuotientGroup.mk 1 : G ⧸ K')]`. Rewrite using `[Set.indicator_of_mem (show (QuotientGroup.mk 1 : G ⧸ K').out ∈ (K' : Set G) from (hout _).2 rfl)]`.
+
+Simplify using `[hfx _ ((hout _).2 rfl)]`. Introduce `q hq`. Rewrite using `[Set.indicator_of_notMem (show q.out ∉ (K' : Set G) from fun h => hq ((hout q).1 h))]`. Simplify using the standard rewrite rules.
+-/
 private theorem levOp_ind (ρ : Representation ℂ G V) (K K' : Subgroup G) (x : V) (hx : x ∈ fixed ρ K') :
     levOp ρ K K' ((K' : Set G).indicator (1 : G → ℂ)) LinearMap.id x = ((K'.relIndex K : ℕ) : ℂ)⁻¹ • x := by
   classical
@@ -68,6 +89,15 @@ private theorem levOp_ind (ρ : Representation ℂ G V) (K K' : Subgroup G) (x :
     rw [Set.indicator_of_notMem (show q.out ∉ (K' : Set G) from fun h => hq ((hout q).1 h))]
     simp
 
+/- English proof (translation)
+Establish `hlev : K ⊓ rStab ((K' : Set G).indicator (1 : G → ℂ)) ⊓ rStab (fun y : G => (K' : Set G).indicator (1 : G → ℂ) y⁻¹) = K'`. Rewrite using `[ind_inv, rStab_ind, inf_assoc, inf_idem]`. Conclude with `inf_eq_right.2 hle`. Unfold `trc`. Rewrite using `[hlev]`.
+
+Establish `hc : ∀ v ∈ fixed ρ K', levOp ρ K K' ((K' : Set G).indicator (1 : G → ℂ)) LinearMap.id v ∈ fixed ρ K'`. Introduce `v hv`. Rewrite using `[levOp_ind ρ K K' v hv]`. Conclude with `Submodule.smul_mem _ _ hv`. Establish `hr : (levOp ρ K K' ((K' : Set G).indicator (1 : G → ℂ)) LinearMap.id).restrict hc = ((K'.relIndex K : ℕ) : ℂ)⁻¹ • LinearMap.id`.
+
+Use extensionality with `v`. Simplify using `[LinearMap.restrict_apply, levOp_ind ρ K K' v v.2]`. Unfold `twTr`. Rewrite using `[dif_pos hc, hr, map_smul, LinearMap.trace_id, smul_eq_mul]`. Establish `hpos : Module.finrank ℂ (fixed ρ K') ≠ 0`.
+
+Introduce `h0`. Conclude with `hne (Submodule.finrank_eq_zero.1 h0)`. Conclude with `mul_ne_zero (inv_ne_zero (by exact_mod_cast hi)) (by exact_mod_cast hpos)`.
+-/
 private theorem trc_ind_ne (ρ : Representation ℂ G V) (K K' : Subgroup G) (hle : K' ≤ K) (hi : K'.relIndex K ≠ 0)
     (hfd : FiniteDimensional ℂ (fixed ρ K')) (hne : fixed ρ K' ≠ ⊥) :
     trc ρ K ((K' : Set G).indicator (1 : G → ℂ)) ≠ 0 := by
@@ -96,6 +126,25 @@ end Generic
 
 end UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
+/- English proof (translation)
+Introduce `E _ _ _ n w τ`. Take `⟨ho, hc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w n`. Establish `hnt : Nontrivial τ.V`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`.
+
+Establish `hs : Subsingleton (Subrepresentation τ.ρ)` using `⟨fun a b => by`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Conclude with `Subsingleton.elim _ _⟩`. Use `haveI := τ.irred`. Conclude with `not_subsingleton (Subrepresentation τ.ρ) hs`.
+
+Take `⟨v, hv⟩` from `exists_ne (0 : τ.V)`. Set `U : Subgroup (GLw n w)` to `{ carrier := {g | τ.ρ g v = v} one_mem' := by simp mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at *`. Rewrite using `[hb, ha]`.
+
+Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+
+Simplify using `}`. Establish `hU : IsOpen (U : Set (GLw n w))` using `τ.smooth v`. Set `K' : Subgroup (GLw n w)` to `U ⊓ GlobalTheory.LFun.KGL w n`. Establish `hKo : IsOpen (K' : Set (GLw n w))` using `hU.inter ho`. Establish `hKc : IsCompact (K' : Set (GLw n w))` using `hc.inter_left (U.isClosed_of_isOpen hU)`.
+
+Establish `hle : K' ≤ GlobalTheory.LFun.KGL w n` using `inf_le_right`. Establish `hfd : FiniteDimensional ℂ (fixed τ.ρ K')` using `finiteDimensional_fixed_openSubgroup_GLw E n w τ K' hKo`. Establish `hne : fixed τ.ρ K' ≠ ⊥`. Introduce `hb`. Establish `hm : v ∈ fixed τ.ρ K'` using `fun h => by`.
+
+Establish `h1 : τ.ρ h v = v` using `h.2.1`. Simplify using `using h1`. Rewrite `hm` using `[hb]`. Conclude with `hv ((Submodule.mem_bot ℂ).1 hm)`. Establish `hi : K'.relIndex (GlobalTheory.LFun.KGL w n) ≠ 0` using `by haveI : CompactSpace (GlobalTheory.LFun.KGL w n) := isCompact_iff_compactSpace.1 hc haveI : Finite ((GlobalTheory.LFun.KGL w n) ⧸ K'.subgroupOf (GlobalTheory.LFun.KGL w n)) := Subgroup.quotient_finite_of_isOpen _ (hKo.preimage continuous_subtype_val)`.
+
+Conclude with `(Subgroup.finiteIndex_of_finite_quotient (H := K'.subgroupOf (GlobalTheory.LFun.KGL w n))).index_ne_zero`. Use `⟨(K' : Set (GLw n w)).indicator 1, ⟨K', hKo, hle, ?_, ?_⟩, UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.trc_ind_ne τ.ρ _ K' hle hi hfd hne⟩` and prove the remaining obligations. Conclude with `HasCompactSupport.intro' hKc (K'.isClosed_of_isOpen hKo) fun x hx => Set.indicator_of_notMem hx _`. Introduce `k hk x`. Establish `h1 : (k * x ∈ (K' : Set (GLw n w))) ↔ x ∈ (K' : Set (GLw n w))` using `K'.mul_mem_cancel_left hk`.
+
+Establish `h2 : (x * k ∈ (K' : Set (GLw n w))) ↔ x ∈ (K' : Set (GLw n w))` using `K'.mul_mem_cancel_right hk`. Use `show (K' : Set (GLw n w)).indicator 1 (k * x) = _ ∧ (K' : Set (GLw n w)).indicator 1 (x * k) = _`. Rewrite using `[Set.indicator_apply, Set.indicator_apply, Set.indicator_apply]`. Simplify using `only [h1, h2, Pi.one_apply, and_self]`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.levelFn :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.LevelFn := by
   intro E _ _ _ n w τ

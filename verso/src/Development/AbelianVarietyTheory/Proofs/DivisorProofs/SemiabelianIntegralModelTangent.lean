@@ -14,6 +14,23 @@ noncomputable section
 
 namespace GlobalTheory.BdFib
 
+/- English proof (translation)
+Introduce `hP E _ _ _ H X t K _ _ xO xK hx φ m hφ G _ hG θ hθ v hv q hq w`. Substitute `hx` using the available equality. Establish `h₀` using `isGrpPullback_pullback t.G xO`. Set `ψ : φ.G.left ⟶ ((Over.pullback xO).obj t.G).left` to `pullback.lift m.F (φ.G.hom ≫ spMap (algebraMap (𝓞 K) K)) (by rw [Category.assoc, hφ.1.1.w])`. Establish `hψ₁ : ψ ≫ pullback.fst t.G.hom xO = m.F` using `pullback.lift_fst _ _ _`.
+
+Establish `hψ₂ : ψ ≫ pullback.snd t.G.hom xO = φ.G.hom ≫ spMap (algebraMap (𝓞 K) K)` using `pullback.lift_snd _ _ _`. Establish `hψ : IsGrpPullback φ.G ((Over.pullback xO).obj t.G) (spMap (algebraMap (𝓞 K) K)) ψ` using `h₀.cancel (hφ.1.congr rfl hψ₁.symm) hψ₂`. Take `⟨F, ⟨hF, eF⟩, -⟩` from `hP.fractionField_of_isGrpPullback (Geo.Tor.IsSemiAbelian.pullback xO t.G t.semi) hG hψ hθ φ.q`. Establish `hw` using `isTan_tv w`. Set `w₀ : epsR (𝓞 K) ⟶ (Over.pullback xO).obj t.G` to `Over.homMk (pullback.lift (tv w).left (spMap (algebraMap _ _)) hw.1) (pullback.lift_snd _ _ _)`.
+
+Establish `e₁ : w₀.left ≫ pullback.fst t.G.hom xO = (tv w).left` using `pullback.lift_fst _ _ _`. Establish `e₂ : w₀.left ≫ pullback.snd t.G.hom xO = spMap (algebraMap _ (DualNumber (𝓞 K)))` using `pullback.lift_snd _ _ _`. Establish `t₀ : IsTangent w₀`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Establish `e` using `PolBaseChange.eSec_comm h₀`.
+
+Unfold `eSec at e`. Rewrite using `[Category.assoc, e₁, hw.2, e]`. Conclude with `congrArg (fun z => z.left) (MonObj.comp_one (M := t.G) (toUnit (Over.mk xO))).symm`. Rewrite using `[Category.assoc, e₂]`. Use `Eq.trans ?_ (Over.w η[(Over.pullback xO).obj t.G]).symm` and prove the remaining obligations.
+
+Use `(spMap_comp_spMap _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Spec.map_id (CommRingCat.of (𝓞 K)))` and prove the remaining obligations. Use `congr 1`. Take `⟨w', hw', hc⟩` from `hq (bcTan (algebraMap (𝓞 K) K) rfl w)`. Apply the tactic sequence `have hd : Formalism.L2.Pj.dualMap (algebraMap (𝓞 K) K) = Chart.dualMapR (algebraMap (𝓞 K) K) := RingHom.ext fun a => by ext <;> simp [Formalism.L2.Pj.dualMap, Chart.dualMapR]`.
+
+Establish `hov : IsVecOver (algebraMap (𝓞 K) K) ψ w₀ w'`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hψ₁, hw', left_bcTan, Category.assoc, e₁, hd]`. Rewrite using `[Category.assoc, hψ₂, Category.assoc, e₂, ← Category.assoc, Over.w w']`. Use `(spMap_comp_spMap _ _).trans (Eq.trans ?_ (spMap_comp_spMap _ _).symm)` and prove the remaining obligations.
+
+Use `congr 1`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Use `Submodule.subset_span ⟨w₀ ≫ F, ?_, w' ≫ φ.q, ?_, hc⟩` and prove the remaining obligations. Unfold `IsTangent at t₀ ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, t₀]`.
+
+Conclude with `congrArg (fun z => z.left) (IsMonHom.one_hom F)`. Unfold `IsVecOver at hov ⊢`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc]`. Use `(congrArg (w'.left ≫ ·) eF).trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hov, Category.assoc]`.
+-/
 theorem abMap_bcTan_mem_lieLat : GlobalTheory.Published.SemiAbelianHomExtension → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (K : Type) [Field K] [NumberField K] (xO : Sp (𝓞 K) ⟶ X) (xK : Sp K ⟶ X) (hx : spMap (algebraMap (𝓞 K) K) ≫ xO = xK) (φ : Fib K) (m : CubeMap φ.G t.G), FibAt t xK φ m → ∀ (G : Over (Sp (𝓞 K))) [GrpObj G] (hG : IsSemiAbelian G) (θ : φ.P.A.left ⟶ G.left) (hθ : IsGrpPullback φ.P.A G (spMap (algebraMap (𝓞 K) K)) θ) (v : Fin φ.P.g → (epsR K ⟶ φ.P.A)) (hv : IsLieBasis v) (q : TanM xK t.G →ₗ[K] (Fin φ.P.g → K)), IsAbMap φ m v q → ∀ w : TanM xO t.G, q (bcTan (algebraMap (𝓞 K) K) hx w) ∈ (SemiFib.mk φ.P G hG θ hθ v hv).lieLat := by
   intro hP E _ _ _ H X t K _ _ xO xK hx φ m hφ G _ hG θ hθ v hv q hq w
   subst hx

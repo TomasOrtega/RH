@@ -19,6 +19,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Set `q : AutQ V` to `Quotient.mk _ g`. Establish `hq : (QuotientGroup.rightRel (GQ V)) g q.out` using `(QuotientGroup.rightRel (GQ V)).iseqv.symm (Quotient.exact (Quotient.out_eq q))`. Rewrite `hq` using `[QuotientGroup.rightRel_apply]`. Establish `e : q.out = (q.out * g⁻¹) * g` using `by group`. Establish `h1` using `h q`.
+
+Rewrite `h1` using `[e, hF _ hq, hF' _ hq]`. Conclude with `h1`.
+-/
 theorem eq_of_out {V : HSp D} {F F' : GA D V → ℂ} (hF : ∀ γ ∈ GQ V, ∀ g, F (γ * g) = F g)
     (hF' : ∀ γ ∈ GQ V, ∀ g, F' (γ * g) = F' g) (h : ∀ q : AutQ V, F q.out = F' q.out) (g : GA D V) : F g = F' g := by
   let q : AutQ V := Quotient.mk _ g
@@ -29,6 +34,11 @@ theorem eq_of_out {V : HSp D} {F F' : GA D V → ℂ} (hF : ∀ γ ∈ GQ V, ∀
   rw [e, hF _ hq, hF' _ hq] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `γ hγ g`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T h => exact (h.aut v).toIsAutFun.1 γ hγ g`. Consider the case `zero => rfl`. Consider the case `add T T' _ _ h h' => simp [h, h']`.
+
+Consider the case `smul c T _ h => simp [h]`.
+-/
 theorem mult_leftInv {V : HSp D} {S : D.what₂.Tau → SPar} {θ} {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ}
     {T : MMap M} (hT : T ∈ Mult.Mult θ M J χ) (v : M.Vec) : ∀ γ ∈ GQ V, ∀ g, T v (γ * g) = T v g := by
   intro γ hγ g
@@ -38,6 +48,11 @@ theorem mult_leftInv {V : HSp D} {S : D.what₂.Tau → SPar} {θ} {M : DSModel 
   | add T T' _ _ h h' => simp [h, h']
   | smul c T _ h => simp [h]
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Introduce `γ hγ g`. Take `⟨th, hr, -, hD⟩` from `hL.dictU j hj σ hσ`. Establish `h1` using `rdU_leftInv (C.U j σ) (C.V j σ) (C.dict j σ) (C.mu j σ) (C.Kf j σ) th hr (hL.unf j hj σ hσ) hD (hL.muUnit j hj σ hσ) hd (hL.chiTriv j hj σ hσ a n hd) hf γ hγ g`. Take `⟨γ', -, he⟩` from `hD.1 γ hγ g`.
+
+Establish `h2 : (C.dict j σ (γ * g)).1 = (C.dict j σ g).1` using `by rw [he]`. Use `show cc (C.dict j σ (γ * g)).1 * C.mu j σ (γ * g) * _ = cc (C.dict j σ g).1 * C.mu j σ g * _`. Rewrite using `[mul_assoc, mul_assoc]`. Conclude with `congrArg₂ (· * ·) (congrArg cc h2) h1`.
+-/
 theorem adel_muPin_leftInv {C : Core D} (hL : LawsM C) {j : ℕ} (hj : InR D j) {σ : C.Q.c.F →+* ℂ} (hσ : GoodEmb C.Q.c σ)
     {W : HSp D} (hV : C.V j σ = W) (cc : (C.U j σ).Comp → ℂ) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hd : Dom a n)
     {f : C.R j} (hf : f ∈ sec (C.Q.Xo j) C.Q.c a n) : ∀ γ ∈ GQ W, ∀ g,
@@ -56,6 +71,11 @@ theorem adel_muPin_leftInv {C : Core D} (hL : LawsM C) {j : ℕ} (hj : InR D j) 
 
 variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
 
+/- English proof (translation)
+Use `⟨hg.choose, hg.choose_spec, fun F h => ?_⟩` and prove the remaining obligations. Establish `h1 : Lev.levChi (Wc D i) (R.βW i) (Lev.flagL (R.datWp i R.triv)) hg.choose = 1`. Unfold `Lev.levChi levFn`. Establish `: ext1 (Lev.flagL (R.datWp i R.triv)).P.H (Lev.flagL (R.datWp i R.triv)).P.chi (rTup (R.βW i) (Lev.flagL (R.datWp i R.triv)) (Lev.finE (Wc D i) hg.choose)) = 1` using `Lev.subgroupCharExtension_one_apply _ _`. Rewrite using `[this]`.
+
+Simplify using `[Lev.flagL, Lev.withP, LevCh.datWp, Lev.datY]`. Use `show Lev.actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) F h = _`. Unfold `Lev.actG0`. Rewrite using `[dif_pos hg]`. Simplify using `only [h1, inv_one, one_mul]`.
+-/
 theorem finiteGroup_acts_by_lift_translation_principalType {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (g : G)
     (hg : ∃ k, Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k) :
     ∃ k, Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k ∧ ∀ F h,
@@ -72,6 +92,13 @@ theorem finiteGroup_acts_by_lift_translation_principalType {Ks : Type} [Field Ks
   rw [dif_pos hg]
   simp only [h1, inv_one, one_mul]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ ((U (σ'.comp (incF c c' hle))).X k).dom`. Set `_ : Algebra c.F (CAt σ')` to `(σ'.comp (incF c c' hle)).toAlgebra`. Establish `h1` using `h (CAt σ') (fun _ => rfl) ((unfBC hle U σ').un k ⟨x, hx⟩)`. Establish `e1 : rdU (unfBC hle U σ') f' k x = toC (evR Xo c' f' ((unfBC hle U σ').un k ⟨x, hx⟩))` using `dif_pos hx`. Establish `e2 : ∀ i, rdU (U (σ'.comp (incF c c' hle))) (fs i) k x = toC (evR Xo c (fs i) ((U (σ'.comp (incF c c' hle))).un k ⟨x, hx⟩))` using `fun i => dif_pos hx`.
+
+Simplify using `only [e2]`. Rewrite using `[e1]`. Conclude with `h1`. Establish `e1 : rdU (unfBC hle U σ') f' k x = 0` using `dif_neg hx`. Establish `e2 : ∀ i, rdU (U (σ'.comp (incF c c' hle))) (fs i) k x = 0` using `fun i => dif_neg hx`.
+
+Simplify using `only [e2, e1, mul_zero, Finset.sum_const_zero]`.
+-/
 theorem rdU_of_isBC {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c c' : Coeff l}
     (hle : c.F ≤ c'.F) {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (σ' : c'.F →+* ℂ) {m : ℕ} {f' : Rul Xo c'}
     {as : Fin m → c'.F} {fs : Fin m → Rul Xo c} (h : IsBC hle f' as fs) (k : (U (σ'.comp (incF c c' hle))).Comp)
@@ -91,6 +118,13 @@ theorem rdU_of_isBC {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.hos
     have e2 : ∀ i, rdU (U (σ'.comp (incF c c' hle))) (fs i) k x = 0 := fun i => dif_neg hx
     simp only [e2, e1, mul_zero, Finset.sum_const_zero]
 
+/- English proof (translation)
+Take `⟨-, -, z, -, hrow⟩` from `hrow`. Take `⟨ze, hze, -, hrow⟩` from `hrow t`. Take `⟨⟨f', hf', hcl⟩, hall⟩` from `hrow x hx`. Establish `hf's` using `cusp_le_sec _ _ _ _ _ hf'`. Take `⟨m, as, fs, hfs, hBC⟩` from `(GlobalTheory.FieldBC.secBC_and_cuspBC D.host.E H Dw l Xo c c' hle).2 r U a n f' hf'`.
+
+Establish `hBCz` using `(GlobalTheory.FieldBC.actLev_and_actBC D H Dw l Xo c c' hle Γ lev hL).2 a n z m as fs f' hf's (fun k => cusp_le_sec _ _ _ _ _ (hfs k)) hBC`. Use `⟨z, ze, m, as, fs, hze, hfs, fun q => ?_⟩` and prove the remaining obligations. Establish `h1` using `hall f' hf's hcl q`. Establish `h2` using `rdU_of_isBC hle U σ' hBCz (dict q.out).1 (dict q.out).2`. Establish `h3 : jFn V σ' (rdU (unfBC hle U σ')) dict mu (actLev c' lev z f') q = mu q.out * ∑ k, σ' (as k) * rdU (U (σ'.comp (incF c c' hle))) (actLev c lev z (fs k)) (dict q.out).1 (dict q.out).2` using `congrArg (mu q.out * ·) h2`.
+
+Rewrite using `[h1, h3, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[adel_muPin]`. Express the relevant statement in the definitionally equal form `ze * cc (dict q.out).1 * _ * _ = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem row_baseChange {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c c' : Coeff l}
     (hle : c.F ≤ c'.F) {r n : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (σ' : c'.F →+* ℂ) (V : HSp D)
     (dict : GA D V → Σ k, Frame ((U (σ'.comp (incF c c' hle))).X k).Ψ r) (mu : GA D V → ℂ) (xr : ℝ)
@@ -126,6 +160,9 @@ theorem row_baseChange {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.
   change ze * cc (dict q.out).1 * _ * _ = _
   ring
 
+/- English proof (translation)
+The claim follows from `h.reps.elim fun _ h => h.elim fun _ h => (h.2.1 x).imp fun y hy => ⟨(h.2.2.2 y).2 ⟨x, hy⟩, fun q => congrFun (h.2.2.1 _ y hy) q⟩`.
+-/
 theorem placed_of_pins {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m}
     {K' : Type} [Field K'] {σ' : K' →+* ℂ} {t : T0} {v₀ : (R.MW i (sg0 D A)).Vec} {c0' : VsV D i K' →ₛₗ[σ'] (R.cV i).W}
     {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La] {ι : La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)}
@@ -138,6 +175,9 @@ theorem placed_of_pins {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.wha
   h.reps.elim fun _ h => h.elim fun _ h => (h.2.1 x).imp fun y hy =>
     ⟨(h.2.2.2 y).2 ⟨x, hy⟩, fun q => congrFun (h.2.2.1 _ y hy) q⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Fintype.card ι, fun k => a ((Fintype.equivFin ι).symm k), fun k => f ((Fintype.equivFin ι).symm k), fun x => (h x).trans ((Fintype.equivFin ι).symm.sum_comp fun k => e (a k) * P (f k) x).symm⟩`.
+-/
 theorem comb_fin {K M X ι : Type} [Fintype ι] (e : K → ℂ) (P : M → X → ℂ) (F : X → ℂ) (a : ι → K) (f : ι → M)
     (h : ∀ x, F x = ∑ k, e (a k) * P (f k) x) :
     ∃ (n : ℕ) (a : Fin n → K) (f : Fin n → M), ∀ x, F x = ∑ k, e (a k) * P (f k) x :=
@@ -156,6 +196,13 @@ abbrev IdentityAt (cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ) (ph : ℂ) : Pr
     O.thAd O.Plc D.what₂.embLL.toRatAlgHom.fieldRange
     (cusp (C.Q.Xo ((i : ℕ) + 1)) O.c' (unfBC O.hle (C.U ((i : ℕ) + 1))) (wtA κ) (Vc D i).rank) cc ph
 
+/- English proof (translation)
+Use `revert x`. Use `ht.rec fun x => ?_` and prove the remaining obligations. Establish `hrk : (Vc D i).rank = κ.n` using `(D.sp.V_rank _ (Nat.le_add_left _ _) i.2).trans hn.symm`. Use `(placed_of_pins (hpins.tuple t) x).elim fun y hy => ?_` and prove the remaining obligations. Use `(row_baseChange O.hle (C.U ((i : ℕ) + 1)) (inC O.c') (Wc D i) O.dict O.mu (xiR D) (wtA κ) O.lev2 hpins.act.1 hid t y hy.1).elim fun z h => h.elim fun ze h => h.elim fun m h => h.elim fun as h => h.elim fun fs h => h.1.elim fun ze' hze' => (hpins.lift.lev z).elim fun kz hkz => ?_` and prove the remaining obligations.
+
+Establish `hz : ∀ k, actLev C.Q.c O.lev2 z (fs k) ∈ C.cuspA ((i : ℕ) + 1) (wtA κ) κ.n` using `fun k => (hequiv z kz hkz.1 (fs k) (hrk ▸ h.2.1 k)).1`. Establish `has : ∀ k, ∃ b : D.what₂.LL, D.what₂.embLL b = inC O.c' (as k)` using `fun k => hF.le (as k).2`. Use `⟨m, fun k => ze' * (has k).choose, fun k => ⟨_, hz k⟩, ?_⟩` and prove the remaining obligations. Use `eq_of_out (V := Wc D i) (fun γ hγ g => ?_) (fun γ hγ g => ?_) fun q => ?_` and prove the remaining obligations. Conclude with `congrArg (ph * ·) (mult_leftInv (hmem i (tup t) _) v₀ γ hγ g)`.
+
+Use `Finset.sum_congr rfl fun k _ => congrArg (_ * ·) (congrArg (_ * ·) ?_)` and prove the remaining obligations. Conclude with `adel_muPin_leftInv hlaws ⟨Nat.le_add_left _ _, i.2⟩ (σ := O.s0) C.good_σ₀ O.hV cc (dom_wtA κ) (cusp_le_sec _ _ _ _ _ (hz k)) γ hγ g`. Use `(congrArg (ph * ·) (hy.2 q)).symm.trans ((h.2.2 q).trans ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => congrArg (· * _) ?_` and prove the remaining obligations. Conclude with `(congrArg₂ (· * ·) hze' (has k).choose_spec).symm.trans (map_mul D.what₂.embLL _ _).symm`.
+-/
 theorem lift_rational (v₀ : (R.MW i (sg0 D A)).Vec) (cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ) (ph : ℂ)
     {ι : (C.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)}
     {x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ}
@@ -186,6 +233,15 @@ theorem lift_rational (v₀ : (R.MW i (sg0 D A)).Vec) (cc : (C.U ((i : ℕ) + 1)
     refine Finset.sum_congr rfl fun k _ => congrArg (· * _) ?_
     exact (congrArg₂ (· * ·) hze' (has k).choose_spec).symm.trans (map_mul D.what₂.embLL _ _).symm
 
+/- English proof (translation)
+Establish `hact` using `fun g => finiteGroup_acts_by_lift_translation_principalType R i g (hlift g)`. Establish `heq` using `fun g (k : Fin n) => hequiv g _ (hact g).choose_spec.1 _ (f k).2`. Use `comb_fin D.what₂.embLL (fun (u : C.cuspA ((i : ℕ) + 1) (wtA κ) κ.n) h => s * O.phi cc (u : C.R ((i : ℕ) + 1)) h) (fun h => ph * R.eWf i (sg0 D A) F h) (fun p : G × Fin n => (idemOf A.X).coeff p.1 * ((((R.FW i).chi p.1)⁻¹ : D.what₂.LLˣ) : D.what₂.LL) * a p.2) (fun p => ⟨_, (heq p. …` and prove the remaining obligations. Establish `hs : sg0 D A = D.what₂.embLL` using `sgAt_mk _ R.hv0`. Establish `h1 : R.eWf i (sg0 D A) F h = ∑ g, D.what₂.embLL ((idemOf A.X).coeff g) * F (h * (hact g).choose)`.
+
+Unfold `RealDat.eWf gaL`. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[← (hact g).choose_spec.2 F h, ← hs]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, Fintype.sum_prod_type, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, hF, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h2` using `((heq g k).2 h).trans (congrArg (· * _) (hchi i g).symm)`.
+
+Establish `h3 : D.what₂.embLL ((((R.FW i).chi g)⁻¹ : D.what₂.LLˣ) : D.what₂.LL) * D.what₂.embLL (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Simplify using `only`. Rewrite using `[h2, map_mul, map_mul]`. Take the linear combination `(-(D.what₂.embLL ((idemOf A.X).coeff g) * D.what₂.embLL (a k) * s * O.phi cc (f k : C.R ((i : ℕ) + 1)) (h * (hact g).choose))) * h3`.
+-/
 theorem proj_rational (cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ) (s ph : ℂ)
     (hlift : ∀ g, ∃ k, Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k) (hchi : R.grp_chiW)
     (hequiv : O.EquivAt κ cc) (F : GA D (Wc D i) → ℂ) (n : ℕ) (a : Fin n → D.what₂.LL)
@@ -220,6 +276,11 @@ theorem proj_rational (cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ) (s ph : ℂ
   linear_combination (-(D.what₂.embLL ((idemOf A.X).coeff g) * D.what₂.embLL (a k) * s *
     O.phi cc (f k : C.R ((i : ℕ) + 1)) (h * (hact g).choose))) * h3
 
+/- English proof (translation)
+Establish `key` using `lift_rational O κ v₀ cc ph hF hpins hlaws hn hmem hequiv hid t A.μ0 ht`. Introduce `x`. Use `(key x).elim fun n h => h.elim fun a h => h.elim fun f h => ?_` and prove the remaining obligations. Establish `h1` using `proj_rational O κ cc _ ph (fun g => (hpins.lift.lev g).imp fun _ hk => hk.1) hchi hequiv _ n a f h`. Use `h1.imp fun _ h2 => h2.imp fun _ h2 => h2.imp fun _ h2 g => Eq.trans (congrArg (ph * ·) ?_) (h2 g)` and prove the remaining obligations.
+
+Conclude with `congrArg (fun S : MMap (R.MW i (sg0 D A)) => S v₀ g) (hG i A.μ0 (jVx R i A.μ0 x))`.
+-/
 theorem phRat_of_identity (v₀ : (R.MW i (sg0 D A)).Vec) (cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ) (ph : ℂ)
     {ι : (C.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)}
     {x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ} (t : Tp) (ht : tup t = A.μ0)

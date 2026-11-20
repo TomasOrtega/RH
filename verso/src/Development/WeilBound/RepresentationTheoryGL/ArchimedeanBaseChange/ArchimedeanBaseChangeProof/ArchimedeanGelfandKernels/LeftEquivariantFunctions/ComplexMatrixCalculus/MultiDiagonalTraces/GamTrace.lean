@@ -9,6 +9,9 @@ namespace PositivityTheory.RgBcC
 
 open PositivityTheory.RgBcC.Cxi
 
+/- English proof (translation)
+Unfold `gamM`. Rewrite using `[Matrix.toLin'_mul, ← ExteriorAlgebra.map_comp_map]`. Use `show LinearMap.toMatrix (fb n) (fb n) ((ExteriorAlgebra.map (toLin' A)).comp (ExteriorAlgebra.map (toLin' B))).toLinearMap = LinearMap.toMatrix (fb n) (fb n) (ExteriorAlgebra.map (toLin' A)).toLinearMap * LinearMap.toMatrix (fb n) (fb n) (ExteriorAlgebra.map (toLin' B)).toLinearM …`. Rewrite using `[AlgHom.comp_toLinearMap]`. Conclude with `LinearMap.toMatrix_comp (fb n) (fb n) (fb n) _ _`.
+-/
 private theorem gamM_mul' {n : ℕ} (A B : Matrix (Md n) (Md n) ℂ) :
     gamM (A * B) = gamM A * gamM B := by
   unfold gamM
@@ -20,16 +23,35 @@ private theorem gamM_mul' {n : ℕ} (A B : Matrix (Md n) (Md n) ℂ) :
   rw [AlgHom.comp_toLinearMap]
   exact LinearMap.toMatrix_comp (fb n) (fb n) (fb n) _ _
 
+/- English proof (translation)
+Unfold `gamM`. Rewrite using `[Matrix.toLin'_one, ExteriorAlgebra.map_id]`. Conclude with `LinearMap.toMatrix_id _`.
+-/
 private theorem gamM_one' {n : ℕ} : gamM (1 : Matrix (Md n) (Md n) ℂ) = 1 := by
   unfold gamM
   rw [Matrix.toLin'_one, ExteriorAlgebra.map_id]
   exact LinearMap.toMatrix_id _
 
+/- English proof (translation)
+Rewrite using `[gamM_mul', gamM_mul', Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← gamM_mul', h, gamM_one', Matrix.one_mul]`.
+-/
 private theorem trace_gamM_conj_eq_of_mul_eq_one {n : ℕ} (A P Q : Matrix (Md n) (Md n) ℂ) (h : Q * P = 1) :
     (gamM (P * A * Q)).trace = (gamM A).trace := by
   rw [gamM_mul', gamM_mul', Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← gamM_mul', h,
     gamM_one', Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `n z hz`. Establish `hz0 : ∀ a, z a ≠ 0` using `fun a h => by simpa [h] using hz a`. Establish `hinv : (diagonal z)⁻¹ = diagonal (fun a => (z a)⁻¹)`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `inv_mul_cancel₀ (hz0 a)`. Establish `hc : ∀ a, conj (z a) = (z a)⁻¹`. Introduce `a`.
+
+Apply `eq_inv_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hz a]`. Evaluate the numerical expressions. Rewrite using `[hinv]`. Break down `isEmpty_or_nonempty (Md n) with hn | hn` into its components or cases.
+
+Establish `h0 : n = 0`. Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Conclude with `h`. Conclude with `(hn.false ⟨0, Nat.mul_pos h h⟩).elim`. Substitute `h0` using the available equality.
+
+Establish `hM : (Mt (diagonal fun a => (z a)⁻¹))ᵀ = diagonal (fun _ => (0 : ℂ))`. Use extensionality with `i`. Conclude with `hn.elim i`. Rewrite using `[hM, Cxi.trace_gam_diag]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Mt_eq_toMatrix, ← basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix (hbB n) (stdB n) (hbB n) (stdB n), toMatrix_stdB, Matrix.transpose_mul, Matrix.transpose_mul, diagonal_transpose, ← Matrix.mul_assoc, trace_gamM_conj_eq_of_mul_eq_one _ _ _ (by rw [← Matrix.transpose_mul, …`. Use `Finset.prod_congr rfl (fun a _ => Finset.prod_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Rewrite using `[map_inv₀, hc, inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gamTrace : GamTrace := by
   intro n z hz
   have hz0 : ∀ a, z a ≠ 0 := fun a h => by simpa [h] using hz a

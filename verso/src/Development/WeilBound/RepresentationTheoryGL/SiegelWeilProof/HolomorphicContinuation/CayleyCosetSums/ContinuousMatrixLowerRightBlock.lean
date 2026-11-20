@@ -13,36 +13,62 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `: (fun M : M2 n => M.toBlocks₂₁) = fun M => M.submatrix Sum.inr Sum.inl` using `by funext M; rfl`. Rewrite using `[this]`. Conclude with `continuous_id.matrix_submatrix _ _`.
+-/
 theorem continuous_matrix_lower_left_block : Continuous (fun M : M2 n => M.toBlocks₂₁) := by
   have : (fun M : M2 n => M.toBlocks₂₁) = fun M => M.submatrix Sum.inr Sum.inl := by funext M; rfl
   rw [this]; exact continuous_id.matrix_submatrix _ _
 
+/- English proof (translation)
+Establish `: (fun M : M2 n => M.toBlocks₂₂) = fun M => M.submatrix Sum.inr Sum.inr` using `by funext M; rfl`. Rewrite using `[this]`. Conclude with `continuous_id.matrix_submatrix _ _`.
+-/
 theorem continuous_matrix_lower_right_block : Continuous (fun M : M2 n => M.toBlocks₂₂) := by
   have : (fun M : M2 n => M.toBlocks₂₂) = fun M => M.submatrix Sum.inr Sum.inr := by funext M; rfl
   rw [this]; exact continuous_id.matrix_submatrix _ _
 
+/- English proof (translation)
+Unfold `u1`. Conclude with `((continuous_const : Continuous fun _ : M2 n => Complex.I).smul continuous_matrix_lower_left_block).add continuous_matrix_lower_right_block`.
+-/
 theorem continuous_cayley_first_block : Continuous (fun M : M2 n => u1 M) := by
   unfold u1
   exact ((continuous_const : Continuous fun _ : M2 n => Complex.I).smul continuous_matrix_lower_left_block).add continuous_matrix_lower_right_block
 
+/- English proof (translation)
+Unfold `u2`. Conclude with `((continuous_const : Continuous fun _ : M2 n => Complex.I).smul continuous_matrix_lower_left_block).neg.add continuous_matrix_lower_right_block`.
+-/
 theorem continuous_cayley_second_block : Continuous (fun M : M2 n => u2 M) := by
   unfold u2
   exact ((continuous_const : Continuous fun _ : M2 n => Complex.I).smul continuous_matrix_lower_left_block).neg.add continuous_matrix_lower_right_block
 
+/- English proof (translation)
+The claim follows from `isOpen_setK (hFz n 0 0).1 Kg ι hι`.
+-/
 theorem isOpen_OmZ (hFz : FzHol) (Kg : Type) [TopologicalSpace Kg] [CompactSpace Kg] (ι : Kg → M2 n)
     (hι : Continuous ι) : IsOpen {x : M2 n | ∀ k, ι k * x ∈ DomZ n} :=
   isOpen_setK (hFz n 0 0).1 Kg ι hι
 
+/- English proof (translation)
+Introduce `_g hg k` and use `(hFz n 0 0).2.1 (inG_mul (hιG k) hg)`.
+-/
 theorem gset_sub_OmZ (hFz : FzHol) {Kg : Type} (ι : Kg → M2 n) (hιG : ∀ k, InG (ι k)) :
     GSet n ⊆ {x : M2 n | ∀ k, ι k * x ∈ DomZ n} :=
   fun _g hg k => (hFz n 0 0).2.1 (inG_mul (hιG k) hg)
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hA` using `(hFz n m 0).2.2 ((0 : ℂ), x) ⟨Set.mem_univ _, hx⟩`. Establish `hmk : Continuous fun y : M2 n => ((0 : ℂ), y)` using `by fun_prop`. Conclude with `(hA.continuousAt.comp hmk.continuousAt).continuousWithinAt`.
+-/
 theorem continuousOn_vacuum_at_zero (hFz : FzHol) (m : ℕ) : ContinuousOn (fun x : M2 n => fz m 0 0 x) (DomZ n) := by
   intro x hx
   have hA := (hFz n m 0).2.2 ((0 : ℂ), x) ⟨Set.mem_univ _, hx⟩
   have hmk : Continuous fun y : M2 n => ((0 : ℂ), y) := by fun_prop
   exact (hA.continuousAt.comp hmk.continuousAt).continuousWithinAt
 
+/- English proof (translation)
+Unfold `rhoP`. Establish `hfz : Continuous fun k => fz m 0 0 (ι k)` using `(continuousOn_vacuum_at_zero hFz m).comp_continuous hι (fun k => (hFz n m 0).2.1 (hιG k))`. Establish `hinv : Continuous fun k => (u2 (ι k))⁻¹`. Establish `e : (fun k => (u2 (ι k))⁻¹) = fun k => (u2 (ι k)).det⁻¹ • (u2 (ι k)).adjugate`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Rewrite using `[e]`. Establish `hd` using `(continuous_cayley_second_block.comp hι).matrix_det`. Conclude with `(hd.inv₀ (fun k => det_second_cayley_block_ne_zero (hιG k))).smul ((continuous_cayley_second_block.comp hι).matrix_adjugate)`. Conclude with `(hfz.mul (((hinv.matrix_mul continuous_const).matrix_mul (continuous_cayley_first_block.comp hι)).matrix_trace)).star`.
+-/
 theorem continuous_rhoP (hFz : FzHol) (m : ℕ) {Kg : Type} [TopologicalSpace Kg] (ι : Kg → M2 n)
     (hι : Continuous ι) (hιG : ∀ k, InG (ι k)) (Y : Matrix (Fin n) (Fin n) ℂ) : Continuous (rhoP ι m 0 Y) := by
   unfold rhoP
@@ -56,6 +82,9 @@ theorem continuous_rhoP (hFz : FzHol) (m : ℕ) {Kg : Type} [TopologicalSpace Kg
     exact (hd.inv₀ (fun k => det_second_cayley_block_ne_zero (hιG k))).smul ((continuous_cayley_second_block.comp hι).matrix_adjugate)
   exact (hfz.mul (((hinv.matrix_mul continuous_const).matrix_mul (continuous_cayley_first_block.comp hι)).matrix_trace)).star
 
+/- English proof (translation)
+Establish `hF : ContDiffOn ℂ ∞ (Fd (n` using `n) m) (DomZ n) := (hFd n m).1.of_le le_top`. Conclude with `(PositivityTheory.Rg.Sw.LVs.holInt n Kg μ _ (fun k x => Fd m (ι k * x) * c k) (isOpen_OmZ hFz Kg ι hι) (fun N => continuousOn_iteratedFDeriv_translate (Fd m) (DomZ n) (hFz n 0 0).1 hF Kg ι hι c hc N) (fun k => (hF.comp (contDiff_mulLeft (ι k)).contDiffOn (fun x (hx : x ∈ {x : M2 …`.
+-/
 theorem contDiffOn_PhiZ (hFd : FdProps) (hFz : FzHol) (m : ℕ) (Kg : Type) [TopologicalSpace Kg] [CompactSpace Kg]
     [MeasurableSpace Kg] [BorelSpace Kg] (μ : Measure Kg) [IsFiniteMeasure μ] (ι : Kg → M2 n) (hι : Continuous ι)
     (c : Kg → ℂ) (hc : Continuous c) :
@@ -66,6 +95,19 @@ theorem contDiffOn_PhiZ (hFd : FdProps) (hFz : FzHol) (m : ℕ) (Kg : Type) [Top
     (fun k => (hF.comp (contDiff_mulLeft (ι k)).contDiffOn
       (fun x (hx : x ∈ {x : M2 n | ∀ k, ι k * x ∈ DomZ n}) => hx k)).mul contDiffOn_const)).1
 
+/- English proof (translation)
+Establish `hherm : Continuous (herm (n` using `n)) := by`. Unfold `herm`. Use `fun_prop`. Establish `hnU : Continuous fun x : Fin n → Fin n → ℝ => nU (herm x)`. Unfold `nU`.
+
+Conclude with `Continuous.matrix_fromBlocks continuous_const hherm continuous_const continuous_const`. Establish `hmap : Continuous fun z : Kg × (Fin n → Fin n → ℝ) => ι z.1 * a * nU (herm z.2) * b` using `(((hι.comp continuous_fst).mul continuous_const).mul (hnU.comp continuous_snd)).mul continuous_const`. Use `set Fp : Kg × (Fin n → Fin n → ℝ) → ℂ := fun z => F (ι z.1 * a * nU (herm z.2) * b) * ψ z.2 * ρ z.1 with hFpdef`. Establish `hFc : Continuous Fp` using `((hF.comp_continuous hmap (fun z => hGU (inG_mul (inG_mul (inG_mul (hιG z.1) ha) (inG_nU_herm z.2)) hb))).mul (hψ.1.comp continuous_snd)).mul (hρ.comp continuous_fst)`. Establish `hFs : HasCompactSupport Fp`.
+
+Use `IsCompact.of_isClosed_subset (isCompact_univ.prod hψ.2.1) (isClosed_tsupport Fp) ?_` and prove the remaining obligations. Use `closure_minimal (fun z hz => ⟨Set.mem_univ _, subset_tsupport ψ ?_⟩) (isClosed_univ.prod (isClosed_tsupport ψ))` and prove the remaining obligations. Introduce `h0`. Apply `hz` to reduce the goal to its premises. Simplify using `[hFpdef, h0]`.
+
+Establish `hFi : Integrable Fp (μ.prod volume)` using `hFc.integrable_of_hasCompactSupport hFs`. Establish `e1 : ∀ k, ρ k * (∫ t, F (1 * ι k * a * nU (herm t) * b) * ψ t) = ∫ t, Fp (k, t)`. Introduce `k`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hFpdef, Matrix.one_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ t, (∫ k, F (ι k * (a * nU (herm t) * b)) * ρ k ∂μ) * ψ t = ∫ k, Fp (k, t) ∂μ`. Introduce `t`. Rewrite using `[← integral_mul_const]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [hFpdef, Matrix.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e1, e2]`. Conclude with `(integral_integral_swap (f := fun k x => Fp (k, x)) hFi).symm`.
+-/
 theorem fubini_gen (F : M2 n → ℂ) (U : Set (M2 n)) (hF : ContinuousOn F U) (hGU : GSet n ⊆ U)
     (Kg : Type) [Group Kg] [TopologicalSpace Kg] [IsTopologicalGroup Kg] [CompactSpace Kg]
     [MeasurableSpace Kg] [BorelSpace Kg] (μ : Measure Kg) [μ.IsHaarMeasure] (ι : Kg →* M2 n) (hι : Continuous ι)
@@ -100,6 +142,15 @@ theorem fubini_gen (F : M2 n → ℂ) (U : Set (M2 n)) (hF : ContinuousOn F U) (
   simp_rw [e1, e2]
   exact (integral_integral_swap (f := fun k x => Fp (k, x)) hFi).symm
 
+/- English proof (translation)
+Establish `hιG : ∀ k, InG (ι k)` using `fun k => ((hK (ι k)).2 ⟨k, rfl⟩).1`. Establish `hΩo` using `isOpen_OmZ hFz Kg ι hι`. Establish `hGΩ` using `gset_sub_OmZ hFz ι hιG`. Establish `hρ` using `continuous_rhoP hFz m ι hι hιG Y`. Establish `hΦ` using `contDiffOn_PhiZ hFd hFz m Kg μ ι hι _ hρ`.
+
+Establish `hpre : IsOpen {H : Matrix (Fin n) (Fin n) ℂ | a * nU H * b ∈ {x : M2 n | ∀ k, ι k * x ∈ DomZ n}}` using `hΩo.preimage (contDiff_nU_sandwich a b).continuous`. Establish `h0 : (0 : Matrix (Fin n) (Fin n) ℂ) ∈ {H : Matrix (Fin n) (Fin n) ℂ | a * nU H * b ∈ {x : M2 n | ∀ k, ι k * x ∈ DomZ n}}` using `by show a * nU 0 * b ∈ {x : M2 n | ∀ k, ι k * x ∈ DomZ n}`. Establish `: nU (0 : Matrix (Fin n) (Fin n) ℂ) = 1` using `by simp [nU, Matrix.fromBlocks_one]`. Rewrite using `[this, mul_one]`. Conclude with `hGΩ (inG_mul ha hb)`.
+
+Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 hpre 0 h0`. Use `singToDiff n (fun H => ∫ k, Fd m (ι k * (a * nU H * b)) * rhoP ι m 0 Y k ∂μ) r hr (hΦ.comp (contDiff_nU_sandwich a b).contDiffOn (fun H hH => hball hH)) ?_` and prove the remaining obligations. Introduce `ψ hψ`. Establish `h1` using `hneg Y ψ a b 1 hψ ha hb inG_one`. Rewrite `h1` using `[(hFd n m).2 Kg μ ι hι hK (rhoP ι m 0 Y) ψ a b 1 hρ hψ.1 hψ.2.1 ha hb inG_one]`.
+
+Rewrite using `[← h1]`. Establish `hFc : ContinuousOn (Fd (n` using `n) m) (DomZ n) := (hFd n m).1.continuousOn`. Conclude with `fubini_gen (Fd m) (DomZ n) hFc (hFz n 0 0).2.1 Kg μ ι hι hιG _ hρ a b ha hb ψ hψ`.
+-/
 theorem stepA_Z (hFd : FdProps) (hFz : FzHol) (m : ℕ) (Kg : Type) [Group Kg] [TopologicalSpace Kg]
     [IsTopologicalGroup Kg] [CompactSpace Kg] [MeasurableSpace Kg] [BorelSpace Kg] (μ : Measure Kg)
     [μ.IsHaarMeasure] (ι : Kg →* M2 n) (hι : Continuous ι) (hK : ∀ g, InK g ↔ ∃ k, ι k = g)

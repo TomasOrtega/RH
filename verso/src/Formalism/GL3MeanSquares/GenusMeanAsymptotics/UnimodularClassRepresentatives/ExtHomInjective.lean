@@ -30,8 +30,14 @@ def extHom (S : VecSplit h h') : (V' ≃ₗ[K] V') →* (V ≃ₗ[K] V) where
     rw [SplitBAux.extOf_apply, LinearEquiv.mul_apply, LinearEquiv.mul_apply, SplitBAux.extOf_apply,
       SplitBAux.extOf_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extHom_apply (S : VecSplit h h') (g' : V' ≃ₗ[K] V') : extHom S g' = SplitBAux.extOf S g' := rfl
 
+/- English proof (translation)
+Introduce `a b e`. Use extensionality with `x`. Apply `S.inj` to reduce the goal to its premises. Rewrite using `[← SplitBAux.extOf_ι, ← SplitBAux.extOf_ι S b, ← extHom_apply, e, extHom_apply]`.
+-/
 theorem extHom_injective (S : VecSplit h h') : Function.Injective (extHom S) := by
   intro a b e
   ext x
@@ -52,6 +58,11 @@ def kap (S : VecSplit h h') (M : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (
   (cnt h M 𝔭 k n (tube (autSub h M) M 𝔭 J S.x₀) : ℝ) /
     ((Ideal.absNorm 𝔭 : ℝ) ^ vd h M 𝔭 * nu h M 𝔭) * (nu h' (S.cut M) 𝔭 / (oM S M : ℝ))
 
+/- English proof (translation)
+Establish `e : alphaL h (locF 𝔭 A₀) 𝔭 = alphaL h A₀ 𝔭`. Unfold `alphaL`. Use `congr 1`. Use extensionality with `k`. Rewrite using `[akCount_locF hF h A₀ 𝔭 h𝔭]`.
+
+Establish `hq : (0 : ℝ) < (Ideal.absNorm 𝔭 : ℝ)`. Conclude with `reductionMapsOfForms.absNorm_pos h𝔭` after adjusting the coercions. Unfold `nu`. Rewrite using `[e]`. Conclude with `div_pos (alphaL_pos hK hF hs hd hA₀ hA₀i h𝔭) (pow_pos hq _)`.
+-/
 theorem nu_pos (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ : Submodule (𝓞 K) V}
     (hA₀ : Submodule.IsLattice K A₀) (hA₀i : Formalism.HermitianLatticesTheory.IsIntegralLat h A₀) {𝔭 : Ideal (𝓞 F)}
@@ -67,6 +78,11 @@ theorem nu_pos (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF
   rw [e]
   exact div_pos (alphaL_pos hK hF hs hd hA₀ hA₀i h𝔭) (pow_pos hq _)
 
+/- English proof (translation)
+Establish `hq : (0 : ℝ) < (Ideal.absNorm 𝔭 : ℝ)`. Conclude with `reductionMapsOfForms.absNorm_pos h𝔭` after adjusting the coercions. Establish `h1` using `local_density_ratio_holds K F hK hF V h A₀ B₀ 𝔭 hs hd h𝔭 hA₀ hB₀ hA₀i hB₀i`. Rewrite `h1` using `[orbCount_eq_relIndex, orbCount_eq_relIndex]`. Unfold `nu`.
+
+Rewrite using `[div_mul_eq_mul_div, div_mul_eq_mul_div, div_eq_div_iff (pow_pos hq _).ne' (pow_pos hq _).ne']`. Take the linear combination `h1`.
+-/
 theorem nu_mul_relIndex (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ B₀ : Submodule (𝓞 K) V}
     (hA₀ : Submodule.IsLattice K A₀) (hA₀i : Formalism.HermitianLatticesTheory.IsIntegralLat h A₀)
@@ -82,6 +98,9 @@ theorem nu_mul_relIndex (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF
   rw [div_mul_eq_mul_div, div_mul_eq_mul_div, div_eq_div_iff (pow_pos hq _).ne' (pow_pos hq _).ne']
   linear_combination h1
 
+/- English proof (translation)
+Introduce `g' hg`. Take `⟨h1, h2⟩ : SplitBAux.extOf S g' ∈ Formalism.HermitianLatticesTheory.isom h ∧ Formalism.HermitianLatticesTheory.gmap (SplitBAux.extOf S g') M = M` from `hg`. Use `⟨fun a b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← S.isom, ← S.isom, ← SplitBAux.extOf_ι, ← SplitBAux.extOf_ι, h1]`. Rewrite using `[← StabilizerLattices.cut_gmap_extOf, h2]`.
+-/
 theorem autExt_le (S : VecSplit h h') (M : Submodule (𝓞 K) V) :
     autExt S M ≤ autSub h' (S.cut M) := by
   intro g' hg
@@ -91,6 +110,13 @@ theorem autExt_le (S : VecSplit h h') (M : Submodule (𝓞 K) V) :
   · rw [← S.isom, ← S.isom, ← SplitBAux.extOf_ι, ← SplitBAux.extOf_ι, h1]
   · rw [← StabilizerLattices.cut_gmap_extOf, h2]
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, hx⟩`. Establish `hx' : g S.x₀ = S.x₀` using `hx`. Establish `e : extHom S (SplitBAux.res S g hg.1 hx') = g`.
+
+Use extensionality with `v`. Take `⟨c, a, rfl⟩` from `S.cover v`. Rewrite using `[extHom_apply, SplitBAux.extOf_apply, SplitBAux.res_spec, map_add, map_smul, hx']`. Use `⟨SplitBAux.res S g hg.1 hx', ?_, e⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `extHom S _ ∈ autSub h M`.
+
+Rewrite using `[e]`. Conclude with `hg`. Introduce and unpack `⟨g', hg', rfl⟩`. Conclude with `⟨hg', SplitBAux.extOf_x₀ S g'⟩`.
+-/
 theorem inf_fixS_eq_map (S : VecSplit h h') (M : Submodule (𝓞 K) V) :
     autSub h M ⊓ fixS S.x₀ = (autExt S M).map (extHom S) := by
   ext g
@@ -108,11 +134,25 @@ theorem inf_fixS_eq_map (S : VecSplit h h') (M : Submodule (𝓞 K) V) :
   · rintro ⟨g', hg', rfl⟩
     exact ⟨hg', SplitBAux.extOf_x₀ S g'⟩
 
+/- English proof (translation)
+Rewrite using `[inf_fixS_eq_map, inf_fixS_eq_map, Subgroup.relIndex_map_map_of_injective _ _ (extHom_injective S)]`.
+-/
 theorem relIndex_fix_eq (hs : h.IsSymm) (S : VecSplit h h') (M₁ M₂ : Submodule (𝓞 K) V) :
     (autSub h M₂ ⊓ fixS S.x₀).relIndex (autSub h M₁ ⊓ fixS S.x₀) =
       (autExt S M₂).relIndex (autExt S M₁) := by
   rw [inf_fixS_eq_map, inf_fixS_eq_map, Subgroup.relIndex_map_map_of_injective _ _ (extHom_injective S)]
 
+/- English proof (translation)
+Establish `hN : Submodule.IsLattice K (S.adjoin (S.cut M₁))` using `(S.isLattice_adjoin_iff' _).mpr (StabilizerLattices.isLattice_cut S hM₁)`. Establish `h1 : (autExt S (locF 𝔭 M₁)).relIndex (autExt S (locF 𝔭 (S.adjoin (S.cut M₁)))) ≠ 0` using `Subgroup.relIndex_comap_ne_zero (extHom S) (relIndex_autSub_ne_zero h hN hM₁ h𝔭)`. Establish `h2 : autSub h' (S.cut (locF 𝔭 M₁)) ≤ autExt S (locF 𝔭 (S.adjoin (S.cut M₁)))`. Introduce and unpack `g' ⟨hg1, hg2⟩`. Use `⟨SplitBAux.extOf_mem_isom hs S hg1, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Formalism.HermitianLatticesTheory.gmap (SplitBAux.extOf S g') _ = _`. Rewrite `hg2` using `[LocalizedFibreSets.cut_locF, LocalizedFibreSets.gmap_locF]`. Rewrite using `[LocalizedFibreSets.gmap_locF, SplitBAux.gmap_extOf S g' rfl]`. Establish `mono : ∀ T T' : Submodule (𝓞 K) V', locF 𝔭 T = locF 𝔭 T' → locF 𝔭 (S.adjoin T) ≤ locF 𝔭 (S.adjoin T')`. Introduce `T T' e`.
+
+Rewrite using `[← LocalizedFibreSets.locF_idem 𝔭 (S.adjoin T')]`. Apply `LocF.locF_mono` to reduce the goal to its premises. Unfold `VecSplit.adjoin`. Use `sup_le ((le_sup_left).trans (LocalizedFibreSets.le_locF 𝔭 _)) ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`.
+
+Introduce `a ha`. Establish `ha' : a ∈ locF 𝔭 T'` using `e ▸ LocalizedFibreSets.le_locF 𝔭 T ha`. Take `⟨s, hs, hsa⟩` from `ha'`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Apply `Submodule.mem_sup_right` to reduce the goal to its premises.
+
+Use `Submodule.mem_map.mpr ⟨s • a, hsa, ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.map_smul_of_tower _ _ _`. Conclude with `le_antisymm (mono _ _ hg2) (mono _ _ hg2.symm)`. Introduce `h0`. Conclude with `h1 (Subgroup.relIndex_eq_zero_of_le_right h2 h0)`.
+-/
 theorem oM_ne_zero (hs : h.IsSymm) (S : VecSplit h h') {M₁ : Submodule (𝓞 K) V}
     (hM₁ : Submodule.IsLattice K M₁) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     (hx : S.x₀ ∈ locF 𝔭 M₁) : oM S (locF 𝔭 M₁) ≠ 0 := by
@@ -145,6 +185,9 @@ theorem oM_ne_zero (hs : h.IsSymm) (S : VecSplit h h') {M₁ : Submodule (𝓞 K
   intro h0
   exact h1 (Subgroup.relIndex_eq_zero_of_le_right h2 h0)
 
+/- English proof (translation)
+Rewrite using `[div_mul_div_comm, div_mul_div_comm, div_eq_div_iff (mul_ne_zero (mul_ne_zero hQ₁ hν₁) ho₁) (mul_ne_zero (mul_ne_zero hQ₂ hν₂) ho₂)]`. Apply `mul_right_cancel₀ (mul_ne_zero (mul_ne_zero (mul_ne_zero hb ha') ha) hd)` to reduce the goal to its premises. Take the linear combination `(μ₁ * d * ν₂ * a * o₂) * h1 + (E₂ * Q₁ * a * b' * ν₂ * a * o₂) * h3 - (E₂ * Q₁ * a * b' * μ₂ * c * o₂) * h2 - (E₂ * μ₂ * Q₁ * ν₁ * b * a) * h4`.
+-/
 theorem kap_alg {E₁ E₂ Q₁ Q₂ ν₁ ν₂ μ₁ μ₂ a b c d a' b' o₁ o₂ : ℝ} (hQ₁ : Q₁ ≠ 0) (hQ₂ : Q₂ ≠ 0)
     (hν₁ : ν₁ ≠ 0) (hν₂ : ν₂ ≠ 0) (ha : a ≠ 0) (hb : b ≠ 0) (hd : d ≠ 0) (ha' : a' ≠ 0)
     (ho₁ : o₁ ≠ 0) (ho₂ : o₂ ≠ 0) (h1 : E₁ * Q₂ * b * a' = E₂ * Q₁ * a * b')
@@ -156,6 +199,27 @@ theorem kap_alg {E₁ E₂ Q₁ Q₂ ν₁ ν₂ μ₁ μ₂ a b c d a' b' o₁ 
   linear_combination (μ₁ * d * ν₂ * a * o₂) * h1 + (E₂ * Q₁ * a * b' * ν₂ * a * o₂) * h3 -
     (E₂ * Q₁ * a * b' * μ₂ * c * o₂) * h2 - (E₂ * μ₂ * Q₁ * ν₁ * b * a) * h4
 
+/- English proof (translation)
+Establish `hq : (0 : ℝ) < (Ideal.absNorm 𝔭 : ℝ)`. Conclude with `reductionMapsOfForms.absNorm_pos h𝔭` after adjusting the coercions. Establish `hT₁` using `StabilizerLattices.isLattice_cut S hM₁`. Establish `hT₂` using `StabilizerLattices.isLattice_cut S hM₂`. Establish `hT₁i` using `UnimodularLocalization.isIntegralLat_cut S hM₁i`.
+
+Establish `hT₂i` using `UnimodularLocalization.isIntegralLat_cut S hM₂i`. Use `set P := autExt S (locF 𝔭 M₁) with hP`. Use `set W := autExt S (locF 𝔭 M₂) with hW`. Use `set Q := autSub h' (S.cut (locF 𝔭 M₁)) with hQ`. Use `set R := autSub h' (S.cut (locF 𝔭 M₂)) with hR`.
+
+Establish `hPQ : P ≤ Q` using `autExt_le S _`. Establish `hWR : W ≤ R` using `autExt_le S _`. Establish `ho₁ : P.relIndex Q ≠ 0` using `oM_ne_zero hs S hM₁ h𝔭 hx₁`. Establish `ho₂ : W.relIndex R ≠ 0` using `oM_ne_zero hs S hM₂ h𝔭 hx₂`. Establish `hc : R.relIndex Q ≠ 0`.
+
+Rewrite using `[hR, hQ, LocalizedFibreSets.cut_locF, LocalizedFibreSets.cut_locF]`. Conclude with `relIndex_autSub_ne_zero h' hT₁ hT₂ h𝔭`. Establish `hd' : Q.relIndex R ≠ 0`. Rewrite using `[hR, hQ, LocalizedFibreSets.cut_locF, LocalizedFibreSets.cut_locF]`. Conclude with `relIndex_autSub_ne_zero h' hT₂ hT₁ h𝔭`.
+
+Establish `hu : W.relIndex Q ≠ 0` using `Subgroup.relIndex_ne_zero_trans ho₂ hc`. Establish `ht : Q.relIndex W ≠ 0` using `fun h0 => hd' (Subgroup.relIndex_eq_zero_of_le_right hWR h0)`. Establish `ha' : W.relIndex P ≠ 0` using `fun h0 => hu (Subgroup.relIndex_eq_zero_of_le_right hPQ h0)`. Establish `c1` using `relIndex_cocycle P Q W ha' ho₁ ht`. Establish `c2` using `relIndex_cocycle Q R W hu hd' (by rw [Subgroup.relIndex_eq_one.mpr hWR]; exact one_ne_zero)`.
+
+Rewrite `c1` using `[Subgroup.relIndex_eq_one.mpr hPQ, one_mul]`. Rewrite `c2` using `[Subgroup.relIndex_eq_one.mpr hWR, mul_one]`. Establish `h4 : W.relIndex P * P.relIndex Q * Q.relIndex R = R.relIndex Q * W.relIndex R * P.relIndex W`. Apply `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero ht)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h2` using `nu_mul_relIndex hK hF hs hd hM₁ hM₁i hM₂ hM₂i h𝔭`. Establish `h3` using `nu_mul_relIndex hK hF (S.isSymm hs) (S.isTotPosDef hd) hT₁ hT₁i hT₂ hT₂i h𝔭`. Rewrite `h3` using `[← LocalizedFibreSets.cut_locF, ← LocalizedFibreSets.cut_locF, ← hQ, ← hR]`. Use `filter_upwards [pair hK hF hs hd hM₁ hM₁i hM₂ hM₂i h𝔭 hn hx hx₁ hx₂] with J hJ`. Use `filter_upwards [hJ] with k hk`.
+
+Rewrite `hk` using `[relIndex_fix_eq hs, relIndex_fix_eq hs, ← hP, ← hW]`. Unfold `kap oM`. Rewrite using `[← hP, ← hW, ← hQ, ← hR]`. Use `kap_alg (pow_pos hq _).ne' (pow_pos hq _).ne' (nu_pos hK hF hs hd hM₁ hM₁i h𝔭).ne' (nu_pos hK hF hs hd hM₂ hM₂i h𝔭).ne' (a := ((autSub h (locF 𝔭 M₂)).relIndex (autSub h (locF 𝔭 M₁)) : ℝ)) (b := ((autSub h (locF 𝔭 M₁)).relIndex (autSub h (locF 𝔭 M₂)) : ℝ)) (c := (R.relIndex Q : ℝ) …` and prove the remaining obligations. Conclude with `relIndex_autSub_ne_zero h hM₁ hM₂ h𝔭` after adjusting the coercions.
+
+Conclude with `relIndex_autSub_ne_zero h hM₂ hM₁ h𝔭` after adjusting the coercions. Conclude with `hd'` after adjusting the coercions. Conclude with `ha'` after adjusting the coercions. Conclude with `ho₁` after adjusting the coercions. Conclude with `ho₂` after adjusting the coercions.
+
+Conclude with `hk` after adjusting the coercions. Conclude with `h4` after adjusting the coercions.
+-/
 theorem kap_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm) (hd : IsTotPosDef h)
     (S : VecSplit h h')
     {M₁ M₂ : Submodule (𝓞 K) V} (hM₁ : Submodule.IsLattice K M₁)

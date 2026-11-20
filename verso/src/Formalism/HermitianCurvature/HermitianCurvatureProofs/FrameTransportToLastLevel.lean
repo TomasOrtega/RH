@@ -8,6 +8,15 @@ namespace Formalism.FourierDecayAlt.P.WordCorrespondence
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.PBH
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Rewrite `hz`, `hz'` using `[P.JCTx5.castV_rfl]`. Substitute `hz hz'` using the available equality. Take `rfl : πs = fun y => π (ιLev k i r' y)` from `funext fun y => by rw [hπ, P.JCTx5.castM_rfl]`. Take `rfl : πs' = fun y => π' (ιLev k i r' y)` from `funext fun y => by rw [hπ', P.JCTx5.castM_rfl]`.
+
+Establish `fr` using `fun (j : Fin 6) v => fn_rs hr' hc X₀ X j v`. Establish `tr` using `fun Y (a b : Fin 2) v => t_rs hr' hc X₀ X Y a b v`. Take `⟨-, -, -, -, -, -, h0ζ, h0ζi, h0ζb, h0ζbi, h0G, h0Gi, h0TT⟩` from `hL₀`. Take `⟨-, -, -, -, -, -, hζ, hζi, hζb, hζbi, hG, hGi, hTT⟩` from `hL`. Establish `G : Gen (rsL hr' hc zs zs' π π') L₀ L` using `{ ζ := by rw [h0ζ, hζ]; exact rel_mk (fr 0) (fr 2) ζi := by rw [h0ζi, hζi]; exact rel_mk (fr 1) (fr 3) ζb := by rw [h0ζb, hζb]; exact rel_mk (fr 2) (fr 0) ζbi := by rw [h0ζbi, hζbi]; exact rel_mk (fr 3) (fr 1) GG := by rw [h0G, hG]; exact rel_mk (fr 4) (fr 4) GGi := by rw [h0Gi, …`.
+
+Establish `hQ : ∀ Y, MRel (rsL hr' hc zs zs' π π') (st₀.QQ Y) (st.QQ Y)` using `fun Y => by`. Rewrite using `[hst₀, hst]`. Conclude with `mrel_smul s fun a b => rel_mk (fun v => tr Y a b v) (fun v => tr (star Y) b a v)`. Use `⟨rsL hr' hc zs zs' π π', fun Ψ c' g => by rw [P.JCTx5.castM_rfl]; rfl, fun w h₀ h Ψ e c' g => ?_⟩` and prove the remaining obligations. Rewrite using `[P.JCTx5.castM_rfl]`.
+
+Establish `key` using `act_frame G hQ hq hinv hSL₀ hSL hs₀ hs (D.positionted w) h₀ h Ψ e`. Conclude with `congrArg (fun v : RadSp k r' zs zs' _ _ => (v : Fn k r' (Wq →L[ℂ] Wp)) c' g) key`.
+-/
 theorem transport_gen {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (k n i r' : ℕ) (hn : i + r' = n) (hr' : r' = 0)
     {z z' : Fin (2 * n + k + 1) → ℂ} {zs zs' : Fin (2 * r' + k + 1) → ℂ}
@@ -57,6 +66,9 @@ theorem transport_gen {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace 
 
 end Formalism.FourierDecayAlt.P.WordCorrespondence
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p X₀ μ₀ L₀ st₀ X μ L st hD₀ hD c hc`. Take `⟨T, hT, hact⟩` from `Formalism.FourierDecayAlt.P.WordCorrespondence.transport_gen P.k P.r P.r (P.r - P.r) (by omega) (by omega) (p.T.z_lev P.r le_rfl) (p.T.z'_lev P.r le_rfl) (p.T.π_lev P.r le_rfl) (p.T.π'_lev P.r le_rfl) X₀ L₀ st₀ X L st hD₀.2.2.1 hD.2.2.1 (Formalism.FourierDecayAlt.M.sgn P p.l0) hD …`. Conclude with `⟨T, hT, fun w h₀ h Ψ e c' g _ _ => hact w h₀ h Ψ e c' g⟩`.
+-/
 theorem Formalism.FourierDecayAlt.P.frame_transport_to_last_level : Formalism.FourierDecayAlt.P.PBI.FrameTransport := by
   intro Wp Wq _ _ _ _ _ _ P p X₀ μ₀ L₀ st₀ X μ L st hD₀ hD c hc
   obtain ⟨T, hT, hact⟩ := Formalism.FourierDecayAlt.P.WordCorrespondence.transport_gen P.k P.r P.r (P.r - P.r) (by omega) (by omega)

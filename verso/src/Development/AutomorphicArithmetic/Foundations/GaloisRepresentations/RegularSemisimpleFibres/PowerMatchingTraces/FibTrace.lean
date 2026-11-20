@@ -16,6 +16,17 @@ open Formalism.L2.Host UpperTheory.V.Published UpperTheory.CBC
 open scoped Classical
 open UpperTheory.Gal.InertialTypesAlt.G
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp n hn μE _ μF _ π P V Λ t hC hAt hW V₀ Λ₀ t₀ hS hAt₀ hΛ ht v _ m τ τ₀ hτ hO f z hf hz`. Take `⟨π₀, hπ₀, -⟩` from `Dp.exCusp F n μF V₀ hS`. Take `⟨-, -, hcl, -⟩` from `T.carryLift F E σ hσ hp n hn μE μF`. Establish `hl` using `hcl π₀ P V₀ V Λ₀ t₀ Λ t hπ₀ hC hAt₀ hAt hΛ ht`. Take `⟨η, hη, hiso⟩` from `(R.fibre_holds F E hp n hn (.cx π₀) (.cx P) hl.1).2 (.cx π) hW`.
+
+Establish `he : π₀.twist η = π` using `(Dp.isoEq F n _ _).1 hiso`. Substitute `he` using the available equality. Establish `hτ₀ : (Cusp.cx π₀).locComp v τ₀` using `((Dp.locIff F n μF π₀ V₀ hπ₀ v τ₀).trans (occursIff F n μF V₀ hπ₀.summand v τ₀).symm).2 hO`. Take `⟨e, hTw⟩` from `(locTw F n hn π₀ η v τ₀ hτ₀).2 τ hτ`. Establish `hfe : (fun g => f g * chiAt n η v g) = f`.
+
+Use function extensionality and compare the values at `g`. Distinguish the cases in `h0 : f g = 0`. Simplify using `[h0]`. Establish `h1 : chiAt n η v g = 1`. Break down `hη with rfl | hη` into its components or cases.
+
+Both sides reduce to the same expression. Simplify using `only [chiAt]`. Rewrite using `[(hf g h0) η hη]`. Both sides reduce to the same expression. Rewrite using `[h1, mul_one]`.
+
+Establish `h` using `((trTw (Gw n v) m (chiAt n η v) τ₀ τ e hTw f z).1).2 hz`. Rewrite `h` using `[hfe]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.G.fibTrace :
     UpperTheory.Gal.InertialTypesAlt.G.FibTrace := by
   intro F E _ _ _ _ _ _ _ _ σ hσ hp n hn μE _ μF _ π P V Λ t hC hAt hW V₀ Λ₀ t₀ hS hAt₀ hΛ ht v _ m τ τ₀ hτ hO f z hf hz

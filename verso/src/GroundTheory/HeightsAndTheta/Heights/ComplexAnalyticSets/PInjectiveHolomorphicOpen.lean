@@ -7,10 +7,22 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 namespace InjectiveHolomorphicOpen
 
+/- English proof (translation)
+Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm]`.
+-/
 theorem finrank_eq (k : ℕ) :
     Module.finrank ℝ (Fin k → ℂ) = Module.finrank ℝ (Fin (2 * k) → ℝ) := by
   simp [Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm]
 
+/- English proof (translation)
+Introduce `k U f hU hf hinj`. Set `e : (Fin k → ℂ) ≃L[ℝ] (Fin (2 * k) → ℝ)` to `ContinuousLinearEquiv.ofFinrankEq (finrank_eq k)`. Establish `hU' : IsOpen (e '' U)` using `e.toHomeomorph.isOpenMap U hU`. Establish `hcont : ContinuousOn (fun y => e (f (e.symm y))) (e '' U)`. Use `e.continuous.comp_continuousOn (hf.continuousOn.comp e.symm.continuous.continuousOn ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify using `using hx`. Establish `hinj' : Set.InjOn (fun y => e (f (e.symm y))) (e '' U)`. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨x', hx', rfl⟩ h`. Simplify using `only [ContinuousLinearEquiv.symm_apply_apply] at h`.
+
+Rewrite using `[hinj hx hx' (e.injective h)]`. Establish `himage : (fun y => e (f (e.symm y))) '' (e '' U) = e '' (f '' U)`. Rewrite using `[Set.image_image, Set.image_image]`. Simplify using the standard rewrite rules. Establish `hopen` using `hID (2 * k) (e '' U) (fun y => e (f (e.symm y))) hU' hcont hinj'`.
+
+Rewrite `hopen` using `[himage]`. Establish `hpre : e ⁻¹' (e '' (f '' U)) = f '' U` using `Set.preimage_image_eq _ e.injective`. Rewrite using `[← hpre]`. Conclude with `hopen.preimage e.continuous`.
+-/
 theorem proof (hID : InvarianceOfDomain.Statement) : InjectiveHolomorphicOpen.Statement := by
   intro k U f hU hf hinj
   let e : (Fin k → ℂ) ≃L[ℝ] (Fin (2 * k) → ℝ) := ContinuousLinearEquiv.ofFinrankEq (finrank_eq k)

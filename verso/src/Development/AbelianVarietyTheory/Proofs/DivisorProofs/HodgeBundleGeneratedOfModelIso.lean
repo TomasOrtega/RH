@@ -18,6 +18,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.HodgeGenDesc
 
+/- English proof (translation)
+Take `⟨h, ⟨h₁, h₂⟩, -⟩` from `GlobalTheory.existsUnique_lift_of_densePart X U X _ j hX ‹_› ‹_› ‹_› ‹_› j.fromNormalization (𝟙 X) j.toNormalization inferInstance (by simp)`. Use `⟨h, ?_, h₂⟩` and prove the remaining obligations. Use `GlobalTheory.normalization_hom_ext j j.fromNormalization ?_ ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.toNormalization_fromNormalization_assoc, h₁, Category.comp_id]`. Simplify using `[h₂]`.
+-/
 theorem isIso_fromNormalization {U X : Scheme.{0}} [IsLocallyNoetherian X] (j : U ⟶ X)
     (hX : Geo.Tor.IsNormalScheme X) [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j] :
     IsIso j.fromNormalization := by
@@ -28,6 +31,13 @@ theorem isIso_fromNormalization {U X : Scheme.{0}} [IsLocallyNoetherian X] (j : 
   · rw [Scheme.Hom.toNormalization_fromNormalization_assoc, h₁, Category.comp_id]
   · simp [h₂]
 
+/- English proof (translation)
+Use `GlobalTheory.IsNormalScheme.of_pred hX` as an intermediate fact. Establish `: IsDominant p` using `.of_comp u p`. Establish `: IsSchemeTheoreticallyDominant p` using `.of_isDominant p`. Establish `hI` using `(isIso_fromNormalization_iff (u ≫ p)).1 (isIso_fromNormalization (u ≫ p) hX)`. Use `⟨p.app_injective V, fun t => mem_range_app_of_forall_isAffineOpen p V t fun W hW _ => ?_⟩` and prove the remaining obligations.
+
+Generalize the expression as in `N.presheaf.map _ t = t`. Establish `ht : (p.app W).hom.IsIntegralElem t` using `GenPush.isIntegral_app_of_universallyClosed p W hW t`. Establish `hs : ((u ≫ p).app W).hom.IsIntegralElem (u.app (p ⁻¹ᵁ W) t)`. Express the relevant statement in the definitionally equal form `((u.app (p ⁻¹ᵁ W)).hom.comp (p.app W).hom).IsIntegralElem _`. Conclude with `RingHom.IsIntegralElem.map ht _`.
+
+Take `⟨h, hh⟩` from `(hI W hW).2 _ hs`. Use `⟨h, u.app_injective (p ⁻¹ᵁ W) ?_⟩` and prove the remaining obligations. Rewrite using `[← hh]`. Both sides reduce to the same expression.
+-/
 theorem bijective_app {U N X : Scheme.{0}} (hX : Geo.Tor.IsNormalScheme X) [IsLocallyNoetherian X] (u : U ⟶ N)
     (p : N ⟶ X) [QuasiCompact u] [IsSchemeTheoreticallyDominant u] [UniversallyClosed p] [IsPreimmersion (u ≫ p)]
     [Flat (u ≫ p)] [IsDominant (u ≫ p)] (V : X.Opens) : Function.Bijective (p.app V).hom := by
@@ -46,6 +56,13 @@ theorem bijective_app {U N X : Scheme.{0}} (hX : Geo.Tor.IsNormalScheme X) [IsLo
   rw [← hh]
   rfl
 
+/- English proof (translation)
+Use `GlobalTheory.IsNormalScheme.of_pred hX` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant j` using `.of_isDominant j`. Use `hG.smooth` as an intermediate fact. Use `hG'.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact.
+
+Use `hG'.separated` as an intermediate fact. Take `⟨a, ha, -⟩` from `grpPullback_iso hφ (isGrpPullback_pullback G j)`. Take `⟨b, hb, -⟩` from `grpPullback_iso hψ (isGrpPullback_pullback G' j)`. Take `⟨F, ⟨hF, hF'⟩, -⟩` from `GlobalTheory.HomExtProOpen.existsUnique_hom_extension_of_dvr GlobalTheory.homExtension_semiAbelian_dvr X U j hX G G' hG hG' (a.inv ≫ b.hom) inferInstance`. Take `⟨F₁, ⟨-, hF₁⟩, -⟩` from `GlobalTheory.HomExtProOpen.existsUnique_hom_extension_of_dvr GlobalTheory.homExtension_semiAbelian_dvr X U j hX G' G hG' hG (b.inv ≫ a.hom) inferInstance`.
+
+Take `⟨h₁, h₂⟩` from `ExtUnique.comp_eq_id_of_pullback j (a.symm ≪≫ b) F F₁ hF' hF₁`. Conclude with `⟨⟨F, F₁, h₁, h₂⟩, hF⟩`.
+-/
 theorem exists_iso_of_extensions {U X : Scheme.{0}} [IsLocallyNoetherian X] (j : U ⟶ X)
     (hX : Geo.Tor.IsNormalScheme X) [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j]
     {A : Over U} [GrpObj A] {G G' : Over X} [GrpObj G] [GrpObj G'] (hG : IsSemiAbelian G) (hG' : IsSemiAbelian G')
@@ -66,6 +83,9 @@ theorem exists_iso_of_extensions {U X : Scheme.{0}} [IsLocallyNoetherian X] (j :
   obtain ⟨h₁, h₂⟩ := ExtUnique.comp_eq_id_of_pullback j (a.symm ≪≫ b) F F₁ hF' hF₁
   exact ⟨⟨F, F₁, h₁, h₂⟩, hF⟩
 
+/- English proof (translation)
+The claim follows from `(hg.lbIso_det_pullback f).trans (pull_isLB hg.isLB_det f) (hg.pullback f).isLB_det (GlobalTheory.LieVB.isVB_omega_of_isGrpPullback h hg).isLB_det ((hg.pullback f).lbIso_det_of_iso (asIso (GlobalTheory.LieVB.omegaBase h)))`.
+-/
 theorem lbIso_hodge_pull {S T : Scheme.{0}} {G : Over S} {G' : Over T} [GrpObj G] [GrpObj G'] [QuasiSeparated G.hom]
     {f : T ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {g : ℕ} (hg : GlobalTheory.VB.IsVB (GlobalTheory.LieVB.omega G) g) :
     LBIso ((hodge G g).pull f) (hodge G' g) :=
@@ -73,6 +93,9 @@ theorem lbIso_hodge_pull {S T : Scheme.{0}} {G : Over S} {G' : Over T} [GrpObj G
     (GlobalTheory.LieVB.isVB_omega_of_isGrpPullback h hg).isLB_det
     ((hg.pullback f).lbIso_det_of_iso (asIso (GlobalTheory.LieVB.omegaBase h)))
 
+/- English proof (translation)
+Use `isGenerated_iff_forall.2 fun x => ?_` and prove the remaining obligations. Take `⟨n, rfl⟩` from `p.surjective x`. Take `⟨s', hs'⟩` from `h.exists_mem n`. Take `⟨s, rfl⟩` from `(bijective_lbSecPull p hp _).2 s'`. Conclude with `⟨s, by rwa [HodgeDominates.nonzeroLocus_lbSecPull] at hs'⟩`.
+-/
 theorem isGenerated_of_pull {N X : Scheme.{0}} [CompactSpace X] (p : N ⟶ X) [Surjective p]
     (hp : ∀ V, Function.Bijective (p.app V).hom) {L : LB X} (h : IsGenerated (L.pull p)) : IsGenerated L := by
   refine isGenerated_iff_forall.2 fun x => ?_
@@ -84,9 +107,31 @@ theorem isGenerated_of_pull {N X : Scheme.{0}} [CompactSpace X] (p : N ⟶ X) [S
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l} {R : Type} [CommRing R] {ω : R →+* c.F}
 
+/- English proof (translation)
+Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`.
+-/
 theorem j_s (Y : Model Xo c ω) : Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap ω := by
   rw [Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, _, _⟩` from `ModelRelCompare.densePart Y hω`. Take `⟨⟨_, _⟩, hi, -⟩` from `hω`. Establish `: CharZero R` using `ω.charZero`. Use `Y.flat` as an intermediate fact. Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver Y.proj` as an intermediate fact.
+
+Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver C.proj` as an intermediate fact. Use `GlobalTheory.IsNormalScheme.of_pred Y.normal` as an intermediate fact. Use `isIso_stalkMap_of_flat_of_surjectiveOnStalks Y.j` as an intermediate fact. Establish `: GlobalTheory.IsNormalScheme (Xo.XF c)` using `GlobalTheory.IsNormalScheme.of_isIso_stalkMap Y.j`. Establish `: IsLocallyNoetherian (Xo.XF c)` using `AmpUniq.isLocallyNoetherian_of_isPreimmersion Y.j`.
+
+Set `f : Xo.XF c ⟶ pullback Y.s C.s` to `pullback.lift Y.j C.j ((j_s Y).trans (j_s C).symm)`. Establish `hf₁ : f ≫ pullback.fst Y.s C.s = Y.j` using `pullback.lift_fst _ _ _`. Establish `hf₂ : f ≫ pullback.snd Y.s C.s = C.j` using `pullback.lift_snd _ _ _`. Establish `: IsPreimmersion (f ≫ pullback.fst Y.s C.s)` using `hf₁ ▸ inferInstance`. Establish `: QuasiCompact (f ≫ pullback.fst Y.s C.s)` using `hf₁ ▸ inferInstance`.
+
+Establish `: IsPreimmersion f` using `AmpUniq.isPreimmersion_of_comp f (pullback.fst Y.s C.s)`. Establish `: QuasiCompact f` using `.of_comp f (pullback.fst Y.s C.s)`. Establish `: Flat (f ≫ pullback.fst Y.s C.s ≫ Y.s)`. Rewrite using `[reassoc_of% hf₁]`. Use `infer_instance`.
+
+Establish `: IsFinite f.fromNormalization` using `AmpUniq.isFinite_fromNormalization_graph f (pullback.fst Y.s C.s ≫ Y.s)`. Set `u` to `f.toNormalization`. Set `p` to `f.fromNormalization ≫ pullback.fst Y.s C.s`. Set `p'` to `f.fromNormalization ≫ pullback.snd Y.s C.s`. Establish `hu₁ : u ≫ p = Y.j` using `by simp [u, p, hf₁]`.
+
+Establish `hu₂ : u ≫ p' = C.j` using `by simp [u, p', hf₂]`. Establish `: IsPreimmersion (u ≫ p)` using `hu₁ ▸ inferInstance`. Establish `: Flat (u ≫ p)` using `hu₁ ▸ inferInstance`. Establish `: IsDominant (u ≫ p)` using `hu₁ ▸ inferInstance`. Establish `: IsPreimmersion u` using `AmpUniq.isPreimmersion_of_comp u p`.
+
+Establish `: Flat u` using `AmpUniq.flat_of_isPreimmersion u`. Establish `hN` using `GlobalTheory.IsNormalScheme.pred f.normalization`. Establish `: IsLocallyNoetherian f.normalization` using `LocallyOfFiniteType.isLocallyNoetherian p`. Establish `: IsDominant p` using `.of_comp u p`. Take `⟨_, _, _, _, _, n₁, -⟩` from `sabPull Out.CubePf.cubePull p Y.t`.
+
+Take `⟨_, _, _, _, _, n₂, -⟩` from `sabPull Out.CubePf.cubePull p' C.t`. Take `⟨m₀, -⟩` from `ObjMaps.exists_sab_cancel (g := 𝟙 _) C.m0.toSABMap (by rw [Category.id_comp]; exact Y.m0.toSABMap : SABMap Y.oF.t Xo.univ.t (𝟙 _ ≫ pullback.fst _ _))`. Take `⟨m₂, -⟩` from `ObjMaps.exists_sab_comp C.m m₀`. Take `⟨a₁, -⟩` from `ObjMaps.exists_sab_cancel n₁ (hu₁ ▸ Y.m : SABMap Y.oF.t Y.t (u ≫ p))`. Take `⟨a₂, -⟩` from `ObjMaps.exists_sab_cancel n₂ ((((Category.id_comp _).trans hu₂.symm : 𝟙 _ ≫ C.j = u ≫ p')) ▸ m₂ : SABMap Y.oF.t C.t (u ≫ p'))`.
+
+Take `⟨e, _⟩` from `exists_iso_of_extensions u hN (IsSemiAbelian.pullback p Y.t.G Y.t.semi) (IsSemiAbelian.pullback p' C.t.G C.t.semi) a₁.cart a₂.cart`. Conclude with `⟨f.normalization, p, p', (Over.pullback p).obj Y.t.G, inferInstance, _, _, surjective_of_isDominant_of_isClosed_range p p.isClosedMap.isClosed_range, bijective_app Y.normal u p, n₁.cart, ((isGrpPullback_of_iso e).comp n₂.cart).congr (Category.id_comp _) rfl⟩`.
+-/
 theorem exists_common_modification (hω : IsDedFrac ω) (Y C : Model Xo c ω) :
     ∃ (N : Scheme.{0}) (p : N ⟶ Y.X) (p' : N ⟶ C.X) (G : Over N) (_ : GrpObj G) (φ : G.left ⟶ Y.t.G.left)
       (ψ : G.left ⟶ C.t.G.left), Surjective p ∧ (∀ V, Function.Bijective (p.app V).hom) ∧
@@ -138,6 +183,13 @@ theorem exists_common_modification (hω : IsDedFrac ω) (Y C : Model Xo c ω) :
     surjective_of_isDominant_of_isClosed_range p p.isClosedMap.isClosed_range, bijective_app Y.normal u p, n₁.cart,
     ((isGrpPullback_of_iso e).comp n₂.cart).congr (Category.id_comp _) rfl⟩
 
+/- English proof (translation)
+Take `⟨Z, p, p', G, _, φ, ψ, _, hp, h₁, h₂⟩` from `exists_common_modification hω Y C`. Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver Y.proj` as an intermediate fact. Establish `: CompactSpace Y.X` using `QuasiCompact.compactSpace_of_compactSpace Y.s`. Use `Y.t.semi.separated` as an intermediate fact. Use `C.t.semi.separated` as an intermediate fact.
+
+Establish `l₁ : (hodge Y.t.G g).IsLB` using `hY.isLB_det`. Establish `l₂ : (hodge C.t.G g).IsLB` using `hC.isLB_det`. Establish `l₃ : (hodge G g).IsLB` using `(GlobalTheory.LieVB.isVB_omega_of_isGrpPullback h₁ hY).isLB_det`. Establish `e₁` using `(cls_eq_iff (pull_isLB l₁ p) l₃).2 (lbIso_hodge_pull h₁ hY)`. Establish `e₂` using `(cls_eq_iff (pull_isLB l₂ p') l₃).2 (lbIso_hodge_pull h₂ hC)`.
+
+Rewrite `e₁` using `[cls_pull l₁]`. Rewrite `e₂` using `[cls_pull l₂]`. Use `isGenerated_of_pull p hp ((h.pull p').of_lbIso (pull_isLB (isLB_lbPow l₁ N) p) ((cls_eq_iff (pull_isLB (isLB_lbPow l₁ N) p) (pull_isLB (isLB_lbPow l₂ N) p')).1 ?_))` and prove the remaining obligations. Rewrite using `[cls_pull (isLB_lbPow l₁ N), cls_pull (isLB_lbPow l₂ N), cls_lbPow l₁, cls_lbPow l₂, map_nsmul, map_nsmul, e₁, e₂]`.
+-/
 theorem isGenerated_of_isGenerated (hω : IsDedFrac ω) (Y C : Model Xo c ω) {g N : ℕ}
     (hY : GlobalTheory.VB.IsVB (GlobalTheory.LieVB.omega Y.t.G) g) (hC : GlobalTheory.VB.IsVB (GlobalTheory.LieVB.omega C.t.G) g)
     (h : IsGenerated (lbPow (hodge C.t.G g) N)) : IsGenerated (lbPow (hodge Y.t.G g) N) := by
@@ -157,6 +209,9 @@ theorem isGenerated_of_isGenerated (hω : IsDedFrac ω) (Y C : Model Xo c ω) {g
     ((cls_eq_iff (pull_isLB (isLB_lbPow l₁ N) p) (pull_isLB (isLB_lbPow l₂ N) p')).1 ?_))
   rw [cls_pull (isLB_lbPow l₁ N), cls_pull (isLB_lbPow l₂ N), cls_lbPow l₁, cls_lbPow l₂, map_nsmul, map_nsmul, e₁, e₂]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ Y C _ _ hω hY hC h` and use `isGenerated_of_isGenerated hω Y C hY hC h`.
+-/
 theorem main : GlobalTheory.Published.SemiAbelianHomExtension → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (R : Type) [CommRing R] (ω : R →+* c.F) (Y C : Model Xo c ω) (g N : ℕ), IsDedFrac ω → GlobalTheory.VB.IsVB (GlobalTheory.LieVB.omega Y.t.G) g → GlobalTheory.VB.IsVB (GlobalTheory.LieVB.omega C.t.G) g → IsGenerated (lbPow (hodge C.t.G g) N) → IsGenerated (lbPow (hodge Y.t.G g) N) :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ Y C _ _ hω hY hC h => isGenerated_of_isGenerated hω Y C hY hC h
 

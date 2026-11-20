@@ -12,10 +12,19 @@ namespace CrystallineSemistableComparison.PAlg
 
 variable {l : ℕ} [Fact l.Prime] (A : PAlg l)
 
+/- English proof (translation)
+The claim follows from `(CharP.charP_iff_prime_eq_zero Fact.out).2 A.natCast_l`.
+-/
 theorem charP [Nontrivial A.A] : CharP A.A l := (CharP.charP_iff_prime_eq_zero Fact.out).2 A.natCast_l
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => WittVector.ext fun _ => Subsingleton.elim _ _⟩`.
+-/
 theorem subsingleton_W_of_subsingleton_A [Subsingleton A.A] : Subsingleton A.W := ⟨fun _ _ => WittVector.ext fun _ => Subsingleton.elim _ _⟩
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial A.A with h | h` into its components or cases. Use `A.subsingleton_W_of_subsingleton_A` as an intermediate fact. Conclude with `⟨fun _ => Subsingleton.elim _ _, fun _ => by rw [Subsingleton.elim x 0]; exact zero_mem _⟩`. Use `A.charP` as an intermediate fact. Conclude with `WittVector.mem_span_p_iff_coeff_zero_eq_zero x`.
+-/
 theorem mem_span_l_iff (x : A.W) : x ∈ Ideal.span {(l : A.W)} ↔ x.coeff 0 = 0 := by
   rcases subsingleton_or_nontrivial A.A with h | h
   · have := A.subsingleton_W_of_subsingleton_A
@@ -23,8 +32,16 @@ theorem mem_span_l_iff (x : A.W) : x ∈ Ideal.span {(l : A.W)} ↔ x.coeff 0 = 
   · have := A.charP
     exact WittVector.mem_span_p_iff_coeff_zero_eq_zero x
 
+/- English proof (translation)
+The claim follows from `A.perf.bijective_frobenius`.
+-/
 theorem frob_bijective : Function.Bijective A.frob := A.perf.bijective_frobenius
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial A.A with h' | h'` into its components or cases. Use `A.subsingleton_W_of_subsingleton_A` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Use `A.charP` as an intermediate fact. Use extensionality with `i`.
+
+Establish `e` using `congrArg (fun w : A.W => w.coeff (i + 1)) ((mul_comm _ _).trans h)`. Simplify using `only [WittVector.mul_charP_coeff_succ, WittVector.zero_coeff] at e`. Rewrite using `[WittVector.zero_coeff]`. Conclude with `A.frob_bijective.1 (e.trans (map_zero A.frob).symm)`.
+-/
 theorem l_mul_eq_zero {x : A.W} (h : (l : A.W) * x = 0) : x = 0 := by
   rcases subsingleton_or_nontrivial A.A with h' | h'
   · have := A.subsingleton_W_of_subsingleton_A
@@ -36,6 +53,9 @@ theorem l_mul_eq_zero {x : A.W} (h : (l : A.W) * x = 0) : x = 0 := by
     rw [WittVector.zero_coeff]
     exact A.frob_bijective.1 (e.trans (map_zero A.frob).symm)
 
+/- English proof (translation)
+The claim follows from `mem_nonZeroDivisors_iff_left.2 fun _ h => A.l_mul_eq_zero h`.
+-/
 theorem l_mem_nzd : (l : A.W) ∈ nonZeroDivisors A.W :=
   mem_nonZeroDivisors_iff_left.2 fun _ h => A.l_mul_eq_zero h
 
@@ -46,25 +66,43 @@ instance completeW : IsAdicComplete (Ideal.span {(l : A.W)}) A.W := by
   · have := A.charP
     infer_instance
 
+/- English proof (translation)
+The claim follows from `IsLocalization.injective _ (M := Submonoid.powers (l : A.W)) (Submonoid.powers_le.2 A.l_mem_nzd)`.
+-/
 theorem algebraMap_WL_injective : Function.Injective (algebraMap A.W (WL l A.A)) :=
   IsLocalization.injective _ (M := Submonoid.powers (l : A.W)) (Submonoid.powers_le.2 A.l_mem_nzd)
 
+/- English proof (translation)
+Rewrite using `[xi, xi0, map_sub, map_natCast, sW, WittVector.map_teichmuller]`. Both sides reduce to the same expression.
+-/
 theorem xi_eq : A.xi = (l : A.W) - WittVector.teichmuller l A.pi := by
   rw [xi, xi0, map_sub, map_natCast, sW, WittVector.map_teichmuller]; rfl
 
+/- English proof (translation)
+Rewrite using `[xi_eq, ← WittVector.constantCoeff_apply, map_sub, map_natCast, natCast_l, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero, zero_sub]`.
+-/
 theorem xi_coeff_zero : A.xi.coeff 0 = -A.pi := by
   rw [xi_eq, ← WittVector.constantCoeff_apply, map_sub, map_natCast, natCast_l, WittVector.constantCoeff_apply,
     WittVector.teichmuller_coeff_zero, zero_sub]
 
+/- English proof (translation)
+Establish `h : A.th A.xi = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Rewrite `h` using `[xi_eq, map_sub, map_natCast, sub_eq_zero]`. Conclude with `h.symm`.
+-/
 theorem sharp_pi : A.sharp A.pi = (l : A.U) := by
   have h : A.th A.xi = 0 := Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)
   rw [xi_eq, map_sub, map_natCast, sub_eq_zero] at h
   exact h.symm
 
+/- English proof (translation)
+Introduce `k hk` and use `mem_nonZeroDivisors_iff_left.2 fun x hx => Subtype.ext (by have : (k : WL l A.A) * x.1 = 0 := by simpa using congrArg Subtype.val hx exact (A.isUnit_natCast hk).mul_right_eq_zero.1 this)`.
+-/
 theorem acris_torsion_free : R.TF A.Acr0 := fun k hk => mem_nonZeroDivisors_iff_left.2 fun x hx => Subtype.ext (by
   have : (k : WL l A.A) * x.1 = 0 := by simpa using congrArg Subtype.val hx
   exact (A.isUnit_natCast hk).mul_right_eq_zero.1 this)
 
+/- English proof (translation)
+Introduce `a` and use `⟨WittVector.teichmuller l a, WittVector.teichmuller_coeff_zero l a⟩`.
+-/
 theorem constantCoeff_surjective : Function.Surjective (WittVector.constantCoeff : A.W →+* A.A) :=
   fun a => ⟨WittVector.teichmuller l a, WittVector.teichmuller_coeff_zero l a⟩
 
@@ -75,6 +113,9 @@ def aTo1 : A.A →+* A.Acr 1 :=
     rw [pow_one] at this
     rw [RingHom.mem_ker, map_mul, map_natCast, this, mul_zero]⟩
 
+/- English proof (translation)
+The claim follows from `RingHom.liftOfSurjective_comp_apply _ _ _ x`.
+-/
 theorem aTo1_coeff (x : A.W) : A.aTo1 (x.coeff 0) = A.toAcr 1 x := RingHom.liftOfSurjective_comp_apply _ _ _ x
 
 def aToU1 : A.A →+* A.Un 1 :=
@@ -84,9 +125,15 @@ def aToU1 : A.A →+* A.Un 1 :=
     rw [RingHom.mem_ker, RingHom.comp_apply, map_mul, map_natCast, Ideal.Quotient.eq_zero_iff_mem, pow_one]
     exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)⟩
 
+/- English proof (translation)
+The claim follows from `RingHom.liftOfSurjective_comp_apply _ _ _ x`.
+-/
 theorem sharpMap_coeff (x : A.W) : A.aToU1 (x.coeff 0) = Ideal.Quotient.mk _ (A.th x) :=
   RingHom.liftOfSurjective_comp_apply _ _ _ x
 
+/- English proof (translation)
+Use `A.sharpMap_coeff (WittVector.teichmuller l a)` as an intermediate fact. Rewrite `this` using `[WittVector.teichmuller_coeff_zero]`. Then use the resulting hypothesis.
+-/
 theorem sharpMap_eq (a : A.A) : A.aToU1 a = Ideal.Quotient.mk _ (A.sharp a) := by
   have := A.sharpMap_coeff (WittVector.teichmuller l a)
   rwa [WittVector.teichmuller_coeff_zero] at this

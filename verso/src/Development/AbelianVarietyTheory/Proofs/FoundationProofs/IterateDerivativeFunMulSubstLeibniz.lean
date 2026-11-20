@@ -4,6 +4,13 @@ open Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_antidiagonal_choose_succ_nsmul (fun i j => (⇑D)^[i] a * (⇑D)^[j] b) n, Function.iterate_succ_apply', ih, map_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun ij hij => ?_` and prove the remaining obligations.
+
+Rewrite `hij` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hc : n.choose ij.2 = n.choose ij.1`. Rewrite using `[← hij, Nat.choose_symm_add]`. Rewrite using `[hc, map_nsmul, Derivation.leibniz, Function.iterate_succ_apply', Function.iterate_succ_apply']`. Simplify using `only [smul_eq_mul, ← nsmul_add]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iterate_derivation_mul_antidiagonal {R S : Type} [CommRing R] [CommRing S] [Algebra R S]
     (D : Derivation R S S) (a b : S) (n : ℕ) :
     (⇑D)^[n] (a * b) =
@@ -23,6 +30,13 @@ theorem iterate_derivation_mul_antidiagonal {R S : Type} [CommRing R] [CommRing 
     congr 1
     ring
 
+/- English proof (translation)
+Introduce `k _ a φ ψ l ha`. Establish `hs : PowerSeries.HasSubst a` using `PowerSeries.HasSubst.of_constantCoeff_zero' ha`. Establish `hit : ∀ (n : ℕ) (f : PowerSeries k), (PowerSeries.derivativeFun)^[n] f = (⇑(PowerSeries.derivative k))^[n] f`. Introduce `n f`. Proceed by induction on `n generalizing f with`.
+
+Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, ih]`. Both sides reduce to the same expression. Simplify using `only [hit]`.
+
+Rewrite using `[iterate_derivation_mul_antidiagonal, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => l.choose i • ((⇑(PowerSeries.derivative k))^[i] φ * (⇑(PowerSeries.derivative k))^[j] ψ)) l, ← PowerSeries.coe_substAlgHom hs, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_nsmul, map_mul]`.
+-/
 theorem iterate_derivativeFun_mul_subst :
     ∀ (k : Type) [Field k] (a φ ψ : PowerSeries k) (l : ℕ), PowerSeries.constantCoeff a = 0 →
       (((PowerSeries.derivativeFun)^[l] (φ * ψ)).subst a : PowerSeries k) =

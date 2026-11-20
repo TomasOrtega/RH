@@ -6,6 +6,23 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `F V _ _ _ _ n kp`. Set `ib` to `NumberField.integralBasis F`. Set `b` to `NumberField.RingOfIntegers.basis F`. Set `g : Fin n × Module.Free.ChooseBasisIndex ℤ (𝓞 F) → V` to `fun ij => kp.symm (Pi.single ij.1 (ib ij.2))`. Establish `hg : ∀ i j, g (i, j) ∈ ((Finset.univ.image g : Finset V) : Set V)` using `fun i j => Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨(i, j), Finset.mem_univ _, rfl⟩)`.
+
+Use `⟨Finset.univ.image g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `v -`. Establish `hsum : v = ∑ i, kp.symm (Pi.single i (kp v i))`. Rewrite using `[← map_sum, Finset.univ_sum_single, AddEquiv.symm_apply_apply]`.
+
+Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Set `Φ : F →+ V` to `kp.symm.toAddMonoidHom.comp (AddMonoidHom.single (fun _ : Fin n => F) i)`. Establish `hΦa : ∀ y, kp.symm (Pi.single i y) = Φ y` using `fun y => rfl`. Rewrite using `[hΦa, ← ib.sum_repr (kp v i), map_sum]`.
+
+Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_rat_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (hg i j))`. Introduce `x N c hc`. Establish `hx : N • x = kp.symm (fun i => (c i : F))`.
+
+Apply `kp.injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply, map_nsmul]`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, hc i, nsmul_eq_mul]`. Rewrite using `[hx, ← Finset.univ_sum_single (fun i => (c i : F)), map_sum]`.
+
+Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Set `Φ : F →+ V` to `kp.symm.toAddMonoidHom.comp (AddMonoidHom.single (fun _ : Fin n => F) i)`. Establish `hΦa : ∀ y, kp.symm (Pi.single i y) = Φ y` using `fun y => rfl`. Establish `hci : ((c i : 𝓞 F) : F) = ∑ j, (b.repr (c i) j) • ib j`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[b.sum_repr]`. Use `_ = ∑ j, (b.repr (c i) j) • ib j := by`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, NumberField.integralBasis_apply]`. Rewrite using `[hΦa, hci, map_sum]`. Use `AddSubgroup.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Conclude with `AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (hg i j)) _`.
+-/
 theorem UpperTheory.exists_finset_span_of_integral_multiples :
     ∀ (F V : Type) [Field F] [NumberField F] [AddCommGroup V] [Module ℚ V] (n : ℕ) (kp : V ≃+ (Fin n → F)), ∃ s : Finset V, Submodule.span ℚ (s : Set V) = ⊤ ∧ ∀ (x : V) (N : ℕ) (c : Fin n → 𝓞 F), (∀ i, (c i : F) = (N : F) * kp x i) → N • x ∈ AddSubgroup.closure (s : Set V) := by
   intro F V _ _ _ _ n kp

@@ -10,6 +10,15 @@ noncomputable section
 
 namespace GlobalTheory.SeriesIdem
 
+/- English proof (translation)
+Establish `hcard : (Fintype.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Use `haveI := invertibleOfNonzero hcard`. Establish `ho` using `FDRep.char_orthonormal W τ`. Assume the negation of the conclusion as `hn`. Rewrite `ho` using `[if_neg hn]`.
+
+Apply `h` to reduce the goal to its premises. Establish `hs : ∑ g, W.character g * τ.character g⁻¹ = 0`. Break down `mul_eq_zero.mp ho with h0 | h0` into its components or cases. Conclude with `absurd h0 (inv_ne_zero (Nat.cast_ne_zero.mpr Nat.card_pos.ne'))`. Conclude with `h0`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[zIdem_coeff]`. Simplify using `only [FDRep.character]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [hs, mul_zero]`.
+-/
 theorem zIdem_pair_ne_zero {G : Type} [Group G] [Fintype G] (τ W : FDRep ℂ G) [Simple τ] [Simple W]
     (h : ∑ x, (zIdem τ).coeff x * W.character x ≠ 0) : Nonempty (W ≅ τ) := by
   classical
@@ -35,6 +44,25 @@ theorem zIdem_pair_ne_zero {G : Type} [Group G] [Fintype G] (τ W : FDRep ℂ G)
 end GlobalTheory.SeriesIdem
 
 open GlobalTheory.SeriesIdem in
+/- English proof (translation)
+Introduce `g _ C O r f ψ hψ hsum`. Take `⟨W, hWs, rfl⟩` from `(PI.SerBridgeGLW.irrCharIff_of PI.SerBridgeGLW.conjugate_character_formula _ ψ).1 hψ`. Use `haveI := hWs`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+
+Establish `hnt : Nontrivial W`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Establish `h0 : ∀ x, W.character x = 0` using `fun x => by`. Rewrite using `[FDRep.character, Subsingleton.elim (W.ρ x) 0, map_zero]`.
+
+Establish `hn1` using `(FDRep.simple_iff_char_is_norm_one W).mp hWs`. Simplify using `only [h0, zero_mul, Finset.sum_const_zero] at hn1`. Conclude with `absurd hn1.symm (Nat.cast_ne_zero.mpr Nat.card_pos.ne')`. Establish `h1 : W.character 1 ≠ 0`. Rewrite using `[FDRep.char_one]`.
+
+Conclude with `Module.finrank_pos.ne'` after adjusting the coercions. Apply `h1` to reduce the goal to its premises. Rewrite using `[← hsum]`. Establish `hz : ∀ z : MonoidAlgebra ℂ (GL (Fin r) (ZMod g)), (∃ τ : FDRep ℂ (GL (Fin r) (ZMod g)), Simple τ ∧ zIdem τ = z ∧ HasLabelO O τ f) → ∑ x, z.coeff x * W.character x = 0`. Introduce and unpack `z ⟨τ, hτs, rfl, hτl⟩`.
+
+Use `haveI := hτs`. Assume the negation of the conclusion as `hne`. Take `⟨i⟩` from `zIdem_pair_ne_zero τ W hne`. Take `⟨x, hx⟩` from `hno τ hτs hτl`. Conclude with `hx (by rw [FDRep.char_iso i])`.
+
+Unfold `Formalism.L2.NT.eSerO`. Use `set F : MonoidAlgebra ℂ (GL (Fin r) (ZMod g)) → MonoidAlgebra ℂ (GL (Fin r) (ZMod g)) := fun z => ∑ᶠ (_ : ∃ τ : FDRep ℂ (GL (Fin r) (ZMod g)), Simple τ ∧ zIdem τ = z ∧ HasLabelO O τ f), z with hF`. Distinguish the cases in `hfin : (Function.support F).Finite`. Rewrite using `[finsum_eq_sum F hfin]`. Establish `hsplit : ∑ x, (∑ z ∈ hfin.toFinset, F z).coeff x * W.character x = ∑ z ∈ hfin.toFinset, ∑ x, (F z).coeff x * W.character x`.
+
+Simplify using `only [MonoidAlgebra.coeff_sum, Finset.sum_apply', Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Rewrite using `[hsplit]`. Use `Finset.sum_eq_zero fun z _ => ?_` and prove the remaining obligations. Distinguish the cases in `hP : ∃ τ : FDRep ℂ (GL (Fin r) (ZMod g)), Simple τ ∧ zIdem τ = z ∧ HasLabelO O τ f`.
+
+Simplify using `only [hF, finsum_eq_if, if_pos hP]`. Conclude with `hz z hP`. Simplify using `only [hF, finsum_eq_if, if_neg hP]`. Simplify using the standard rewrite rules. Rewrite using `[finsum_of_infinite_support hfin]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.SeriesIdem.exists_simple_of_eSerO_pair : ∀ (g : ℕ) [Fact g.Prime] (C : LabelConv (ZMod g)) (O : LabelMap (ZMod g) C) (r : ℕ) (f : (ZMod g)[X]) (ψ : GL (Fin r) (ZMod g) → ℂ), Formalism.L2.NT.IsIrrChar ψ → ∑ x, (Formalism.L2.NT.eSerO O r f).coeff x * ψ x = ψ 1 → ∃ τ : FDRep ℂ (GL (Fin r) (ZMod g)), Simple τ ∧ HasLabelO O τ f ∧ ∀ x, τ.character x = ψ x := by
   intro g _ C O r f ψ hψ hsum
   classical

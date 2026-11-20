@@ -12,6 +12,9 @@ section Vals
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Unfold `vAdd`. Establish `hx' : w.valuation K x ≠ 0` using `by simpa using hx`. Establish `hy' : w.valuation K y ≠ 0` using `by simpa using hy`. Rewrite using `[map_mul, WithZero.log_mul hx' hy']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vAdd_mul (w : HeightOneSpectrum (𝓞 K)) (x y : K) (hx : x ≠ 0) (hy : y ≠ 0) :
     vAdd w (x * y) = vAdd w x + vAdd w y := by
   unfold vAdd
@@ -20,6 +23,9 @@ theorem vAdd_mul (w : HeightOneSpectrum (𝓞 K)) (x y : K) (hx : x ≠ 0) (hy :
   rw [map_mul, WithZero.log_mul hx' hy']
   ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [vAdd]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, vAdd_mul w _ _ (hf a (Finset.mem_insert_self a s)) (Finset.prod_ne_zero_iff.mpr fun i hi => hf i (Finset.mem_insert_of_mem hi)), ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]`.
+-/
 theorem vAdd_prod (w : HeightOneSpectrum (𝓞 K)) {ι : Type} (s : Finset ι) (f : ι → K) (hf : ∀ i ∈ s, f i ≠ 0) :
     vAdd w (∏ i ∈ s, f i) = ∑ i ∈ s, vAdd w (f i) := by
   classical
@@ -31,6 +37,11 @@ theorem vAdd_prod (w : HeightOneSpectrum (𝓞 K)) {ι : Type} (s : Finset ι) (
         (Finset.prod_ne_zero_iff.mpr fun i hi => hf i (Finset.mem_insert_of_mem hi)),
       ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]
 
+/- English proof (translation)
+Rewrite using `[← HeightOneSpectrum.intValuation_le_pow_iff_mem, ← HeightOneSpectrum.valuation_of_algebraMap (K := K)]`. Establish `h0 : w.valuation K (algebraMap (𝓞 K) K a) ≠ 0` using `by simpa using ha`. Establish `hnn` using `volume_nonneg K w a`. Rewrite using `[Int.toNat_of_nonneg hnn]`. Unfold `vAdd`.
+
+Rewrite using `[neg_neg, WithZero.exp_log h0]`.
+-/
 theorem mem_pow_of_vAdd (w : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) (ha : a ≠ 0) :
     a ∈ w.asIdeal ^ (vAdd w (algebraMap (𝓞 K) K a)).toNat := by
   rw [← HeightOneSpectrum.intValuation_le_pow_iff_mem, ← HeightOneSpectrum.valuation_of_algebraMap (K := K)]
@@ -50,9 +61,17 @@ variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Modul
 def smulSub (d : K) (L : Submodule (𝓞 K) V) : Submodule (𝓞 K) V :=
   L.map ((d • LinearMap.id : V →ₗ[K] V).restrictScalars (𝓞 K))
 
+/- English proof (translation)
+Simplify using `[smulSub]`.
+-/
 theorem mem_smulSub (d : K) (L : Submodule (𝓞 K) V) (x : V) : x ∈ smulSub d L ↔ ∃ y ∈ L, d • y = x := by
   simp [smulSub]
 
+/- English proof (translation)
+Rewrite using `[smulSub, Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using Submodule.smul_mem _ d hy`.
+
+Introduce `hx`. Use `⟨d⁻¹ • x, Submodule.smul_mem _ _ hx, ?_⟩` and prove the remaining obligations. Simplify using `[smul_smul, inv_mul_cancel₀ hd]`.
+-/
 theorem span_smulSub (d : K) (hd : d ≠ 0) (L : Submodule (𝓞 K) V) :
     Submodule.span K (smulSub d L : Set V) = Submodule.span K (L : Set V) := by
   rw [smulSub, Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image]
@@ -64,6 +83,9 @@ theorem span_smulSub (d : K) (hd : d ≠ 0) (L : Submodule (𝓞 K) V) :
     refine ⟨d⁻¹ • x, Submodule.smul_mem _ _ hx, ?_⟩
     simp [smul_smul, inv_mul_cancel₀ hd]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [mem_smulSub]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨z, hz, rfl⟩, rfl⟩; exact ⟨z, hz, by rw [smul_smul]⟩`. Introduce and unpack `⟨z, hz, rfl⟩; exact ⟨e • z, ⟨z, hz, rfl⟩, by rw [smul_smul]⟩`.
+-/
 theorem smulSub_smulSub (d e : K) (L : Submodule (𝓞 K) V) : smulSub d (smulSub e L) = smulSub (d * e) L := by
   ext x
   simp only [mem_smulSub]
@@ -71,8 +93,14 @@ theorem smulSub_smulSub (d e : K) (L : Submodule (𝓞 K) V) : smulSub d (smulSu
   · rintro ⟨y, ⟨z, hz, rfl⟩, rfl⟩; exact ⟨z, hz, by rw [smul_smul]⟩
   · rintro ⟨z, hz, rfl⟩; exact ⟨e • z, ⟨z, hz, rfl⟩, by rw [smul_smul]⟩
 
+/- English proof (translation)
+The claim follows from `hL.map _`.
+-/
 theorem fg_smulSub (d : K) (L : Submodule (𝓞 K) V) (hL : L.FG) : (smulSub d L).FG := hL.map _
 
+/- English proof (translation)
+Establish `hinj : ∀ P : Submodule (𝓞 K) V, ∀ x ∈ P, (d • LinearMap.id : V →ₗ[K] V) x = 0 → x = 0`. Introduce `P x _ hx`. Simplify `hx` using `[hd]`. Conclude with `(idx_map_inj hI w (d • LinearMap.id) M N hM hN h1 (hinj M) (hinj N)).symm`.
+-/
 theorem idx_smulSub_map (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (d : K) (hd : d ≠ 0)
     (M N : Submodule (𝓞 K) V) (hM : M.FG) (hN : N.FG)
     (h1 : Submodule.span K (M : Set V) = Submodule.span K (N : Set V)) :
@@ -82,6 +110,11 @@ theorem idx_smulSub_map (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (d : K) 
     simpa [hd] using hx
   exact (idx_map_inj hI w (d • LinearMap.id) M N hM hN h1 (hinj M) (hinj N)).symm
 
+/- English proof (translation)
+Establish `haK : algebraMap (𝓞 K) K a ≠ 0` using `by simpa using ha`. Establish `hsp` using `(span_smulSub (algebraMap (𝓞 K) K a) haK M).symm`. Use `(hI K V w M _ hM (fg_smulSub _ M hM) hsp).2.2.2.1 (vAdd w (algebraMap (𝓞 K) K a)).toNat (fun x hx => by` as an intermediate fact. Take `⟨y, hy, rfl⟩` from `(mem_smulSub _ M x).mp hx`. Use `⟨1, one_notMem_w w, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[one_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem_smul (mem_pow_of_vAdd w a ha) hy)`. Rewrite `this` using `[Int.toNat_of_nonneg (volume_nonneg K w a)]`. Then use the resulting hypothesis.
+-/
 theorem idx_ge_int (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) (ha : a ≠ 0)
     (M : Submodule (𝓞 K) V) (hM : M.FG) :
     vAdd w (algebraMap (𝓞 K) K a) * (Formalism.HN.rkK M : ℤ) ≤ idxAt w M (smulSub (algebraMap (𝓞 K) K a) M) := by
@@ -95,6 +128,11 @@ theorem idx_ge_int (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) 
       exact Submodule.smul_mem_smul (mem_pow_of_vAdd w a ha) hy)
   rwa [Int.toNat_of_nonneg (volume_nonneg K w a)] at this
 
+/- English proof (translation)
+Establish `hmK : ((m : ℕ) : K) ≠ 0` using `by exact_mod_cast hm.ne'`. Use `idx_le_nat hI w M _ hM (fg_smulSub _ M hM) (span_smulSub _ hmK M).symm m hm ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `(mem_smulSub _ M x).mp hx`. Rewrite using `[Nat.cast_smul_eq_nsmul K m y, ← Nat.cast_smul_eq_nsmul (𝓞 K) m y]`.
+
+Conclude with `Submodule.smul_mem _ _ hy`. Introduce `x hx`. Use `(mem_smulSub _ M _).mpr ⟨x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem idx_le_natSub (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (m : ℕ) (hm : 0 < m)
     (M : Submodule (𝓞 K) V) (hM : M.FG) :
     idxAt w M (smulSub ((m : ℕ) : K) M) ≤ (Formalism.HN.rkK M : ℤ) * vAdd w ((m : ℕ) : K) := by
@@ -108,6 +146,17 @@ theorem idx_le_natSub (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (m : ℕ) 
     refine (mem_smulSub _ M _).mpr ⟨x, hx, ?_⟩
     rw [Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+Establish `haK : algebraMap (𝓞 K) K a ≠ 0` using `by simpa using ha`. Establish `hspan : Ideal.span {a} ≠ ⊥` using `by simpa using ha`. Take `⟨a', ha'⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {a}))`. Use `set m := Ideal.absNorm (Ideal.span {a}) with hm`. Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero (by rw [hm, Ne, Ideal.absNorm_eq_zero_iff]; exact hspan)`.
+
+Establish `ha'0 : a' ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha'` using `[zero_mul]`. Conclude with `hm0.ne' (by exact_mod_cast ha'.symm)`. Establish `ha'K : algebraMap (𝓞 K) K a' ≠ 0` using `by simpa using ha'0`.
+
+Establish `hmK : ((m : ℕ) : K) = algebraMap (𝓞 K) K a * algebraMap (𝓞 K) K a'`. Rewrite using `[← map_mul, mul_comm, ha', map_natCast]`. Establish `e1` using `idx_chain hI w M (smulSub (algebraMap (𝓞 K) K a) M) (smulSub ((m : ℕ) : K) M) hM (fg_smulSub _ M hM) (fg_smulSub _ M hM) (span_smulSub _ haK M).symm (by rw [span_smulSub _ (by rw [hmK]; exact mul_ne_zero haK ha'K), span_smulSub _ haK])`. Establish `e2 : idxAt w (smulSub (algebraMap (𝓞 K) K a) M) (smulSub ((m : ℕ) : K) M) = idxAt w M (smulSub (algebraMap (𝓞 K) K a') M)`. Rewrite using `[hmK, ← smulSub_smulSub]`.
+
+Conclude with `idx_smulSub_map hI w _ haK M _ hM (fg_smulSub _ M hM) (span_smulSub _ ha'K M).symm`. Establish `u` using `idx_le_natSub hI w m hm0 M hM`. Establish `l1` using `idx_ge_int hI w a ha M hM`. Establish `l2` using `idx_ge_int hI w a' ha'0 M hM`. Rewrite `u` using `[e1, e2, hmK, vAdd_mul w _ _ haK ha'K]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem idx_smulSub_int (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) (ha : a ≠ 0)
     (M : Submodule (𝓞 K) V) (hM : M.FG) :
     idxAt w M (smulSub (algebraMap (𝓞 K) K a) M) = (Formalism.HN.rkK M : ℤ) * vAdd w (algebraMap (𝓞 K) K a) := by
@@ -136,6 +185,15 @@ theorem idx_smulSub_int (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (a : �
   rw [e1, e2, hmK, vAdd_mul w _ _ haK ha'K] at u
   nlinarith
 
+/- English proof (translation)
+Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) d`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbK : algebraMap (𝓞 K) K b ≠ 0` using `by simpa using hb0`. Establish `haK : algebraMap (𝓞 K) K a ≠ 0`. Introduce `h`.
+
+Apply `hd` to reduce the goal to its premises. Rewrite using `[h, zero_div]`. Establish `ha0 : a ≠ 0` using `by intro h; apply haK; rw [h, map_zero]`. Use `set d := algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K b with hd'`. Establish `hda : d * algebraMap (𝓞 K) K b = algebraMap (𝓞 K) K a`.
+
+Rewrite using `[hd', div_mul_cancel₀ _ hbK]`. Establish `e1` using `idx_chain hI w M (smulSub d M) (smulSub (algebraMap (𝓞 K) K a) M) hM (fg_smulSub _ M hM) (fg_smulSub _ M hM) (span_smulSub _ hd M).symm (by rw [span_smulSub _ haK, span_smulSub _ hd])`. Establish `e2 : idxAt w (smulSub d M) (smulSub (algebraMap (𝓞 K) K a) M) = idxAt w M (smulSub (algebraMap (𝓞 K) K b) M)`. Rewrite using `[← hda, ← smulSub_smulSub]`. Conclude with `idx_smulSub_map hI w _ hd M _ hM (fg_smulSub _ M hM) (span_smulSub _ hbK M).symm`.
+
+Rewrite `e1` using `[e2, idx_smulSub_int hI w a ha0 M hM, idx_smulSub_int hI w b hb0 M hM]`. Establish `hv : vAdd w (algebraMap (𝓞 K) K a) = vAdd w d + vAdd w (algebraMap (𝓞 K) K b)`. Rewrite using `[← hda, vAdd_mul w _ _ hd hbK]`. Rewrite `e1` using `[hv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem idx_smulSub (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (d : K) (hd : d ≠ 0)
     (M : Submodule (𝓞 K) V) (hM : M.FG) :
     idxAt w M (smulSub d M) = (Formalism.HN.rkK M : ℤ) * vAdd w d := by

@@ -8,6 +8,17 @@ namespace GlobalTheory.BK
 
 open PowerSeries
 
+/- English proof (translation)
+Establish `hL` using `sub_one_mul_padicValNat_factorial (p := l) i`. Break down `Nat.eq_zero_or_pos i with rfl | hi` into its components or cases. Simplify using the standard rewrite rules. Establish `hpos : 0 < (l.digits i).sum`. Break down `Nat.eq_zero_or_pos (l.digits i).sum with h0 | h0` into its components or cases.
+
+It suffices to derive a contradiction. Establish `hne : l.digits i ≠ []` using `Nat.digits_ne_nil_iff_ne_zero.mpr hi.ne'`. Establish `h1` using `Nat.getLast_digit_ne_zero l hi.ne'`. Establish `h2` using `List.sum_eq_zero_iff.1 h0 _ (List.getLast_mem hne)`. Conclude with `h1 h2`.
+
+Conclude with `h0`. Establish `hsum : (l.digits i).sum ≤ i` using `Nat.digit_sum_le l i`. Establish `hl2` using `hp.out.two_le`. Use `set v := padicValNat l i.factorial`. Break down `Nat.eq_zero_or_pos v with hv | hv` into its components or cases.
+
+Use linear arithmetic over natural numbers and integers. Establish `: (l - 1) * v ≤ i - 1` using `by omega clear_value v`. Establish `h3 : v + (l - 1) ≤ (l - 1) * v + 1`. Take `⟨L, hLe⟩ : ∃ L, l - 1 = L + 1` from `⟨l - 2, by omega⟩`. Take `⟨w, rfl⟩ : ∃ w, v = w + 1` from `⟨v - 1, by omega⟩`.
+
+Rewrite using `[hLe]`. Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers.
+-/
 theorem padicValNat_factorial_le_sub (l i j : ℕ) [hp : Fact l.Prime] (hji : j ≤ i) (hjl : j < l) :
     padicValNat l i.factorial ≤ i - j := by
   have hL := sub_one_mul_padicValNat_factorial (p := l) i
@@ -42,6 +53,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
 
 omit [IsUltrametricDist K] in
 
+/- English proof (translation)
+Rewrite using `[norm_l, norm_natCast_eq l, Padic.norm_eq_zpow_neg_valuation (by`. Conclude with `i.factorial_ne_zero), Padic.valuation_natCast, inv_pow, zpow_neg, zpow_natCast]` after adjusting the coercions. Establish `h1 : (1 : ℝ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).one_le`. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_right₀ h1 (padicValNat_factorial_le_sub l i j hji hjl))`.
+-/
 theorem norm_pow_sub_le_norm_factorial {i j : ℕ} (hji : j ≤ i) (hjl : j < l) :
     ‖(l : K)‖ ^ (i - j) ≤ ‖(i.factorial : K)‖ := by
   rw [norm_l, norm_natCast_eq l, Padic.norm_eq_zpow_neg_valuation (by
@@ -50,10 +64,18 @@ theorem norm_pow_sub_le_norm_factorial {i j : ℕ} (hji : j ≤ i) (hjl : j < l)
   exact inv_anti₀ (by positivity)
     (pow_le_pow_right₀ h1 (padicValNat_factorial_le_sub l i j hji hjl))
 
+/- English proof (translation)
+Rewrite using `[← monomial_zero_eq_C_apply]`. Conclude with `monomial_mem_S (mul_le_one₀ hc (wS_nonneg _ _) (wS_le_one _ _))`.
+-/
 theorem C_mem_S {e : ℕ} {c : K} (hc : ‖c‖ ≤ 1) : C c ∈ S O K e := by
   rw [← monomial_zero_eq_C_apply]
   exact monomial_mem_S (mul_le_one₀ hc (wS_nonneg _ _) (wS_le_one _ _))
 
+/- English proof (translation)
+Use `⟨1 + monomial (e * l) ((l : K)⁻¹), add_mem (one_mem _) (monomial_mem_S ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[wS, Nat.mul_div_cancel_left _ (NeZero.pos e), norm_inv]`. Establish `h0 : 0 < ‖(l : K)‖` using `norm_pos_iff.2 (l_ne_zero l)`. Rewrite using `[inv_mul_le_one₀ h0]`. Conclude with `norm_natCast_le_of_dvd (Nat.dvd_factorial (Fact.out : l.Prime).pos le_rfl)`.
+
+Rewrite using `[E, map_add, map_pow, frob_X, map_natCast, monomial_eq_C_mul_X_pow, mul_add, mul_one, ← mul_assoc, ← map_mul, mul_inv_cancel₀ (l_ne_zero l), map_one, one_mul, ← pow_mul, mul_comm l e, add_comm, map_natCast]`.
+-/
 theorem exists_frob_E_eq (e : ℕ) [NeZero e] : ∃ d ∈ S O K e, frob K l (E K l e) = C (l : K) * d := by
   refine ⟨1 + monomial (e * l) ((l : K)⁻¹), add_mem (one_mem _) (monomial_mem_S ?_), ?_⟩
   · rw [wS, Nat.mul_div_cancel_left _ (NeZero.pos e), norm_inv]
@@ -64,6 +86,11 @@ theorem exists_frob_E_eq (e : ℕ) [NeZero e] : ∃ d ∈ S O K e, frob K l (E K
       ← mul_assoc, ← map_mul, mul_inv_cancel₀ (l_ne_zero l), map_one, one_mul, ← pow_mul,
       mul_comm l e, add_comm, map_natCast]
 
+/- English proof (translation)
+Take `⟨d, hd, hE⟩` from `exists_frob_E_eq (O := O) (K := K) l e`. Establish `hf : (i.factorial : K) ≠ 0` using `natCast_ne_zero' l i.factorial_ne_zero`. Use `⟨C ((l : K) ^ (i - j) / (i.factorial : K)) * d ^ i, mul_mem (C_mem_S ?_) (pow_mem hd i), ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_pow]`. Conclude with `div_le_one_of_le₀ (norm_pow_sub_le_norm_factorial l hji hjl) (norm_nonneg _)`.
+
+Establish `key : (i.factorial : K)⁻¹ * (l : K) ^ i = (l : K) ^ j * ((l : K) ^ (i - j) / (i.factorial : K))`. Rewrite using `[mul_div_assoc', ← pow_add, Nat.add_sub_cancel' hji, div_eq_inv_mul]`. Rewrite using `[Ediv, map_mul, frob_C, map_pow, hE, mul_pow, ← map_pow, ← mul_assoc, ← map_mul, key, map_mul, mul_assoc]`.
+-/
 theorem exists_frob_Ediv_eq (e : ℕ) [NeZero e] {i j : ℕ} (hji : j ≤ i) (hjl : j < l) :
     ∃ s ∈ S O K e, frob K l (Ediv K l e i) = C ((l : K) ^ j) * s := by
   obtain ⟨d, hd, hE⟩ := exists_frob_E_eq (O := O) (K := K) l e
@@ -76,6 +103,17 @@ theorem exists_frob_Ediv_eq (e : ℕ) [NeZero e] {i j : ℕ} (hji : j ≤ i) (hj
     rw [Ediv, map_mul, frob_C, map_pow, hE, mul_pow, ← map_pow, ← mul_assoc, ← map_mul, key,
       map_mul, mul_assoc]
 
+/- English proof (translation)
+Take `⟨g, hg, h, rfl⟩` from `(mem_Fil l).1 hr j`. Establish `key : ∀ x ∈ FilPre O K l e j, ∃ s ∈ S O K e, frob K l (x : K⟦X⟧) = C ((l : K) ^ j) * s`. Introduce `x hx`. Establish `hx' : x ∈ Submodule.span (S O K e) {x : S O K e | ∃ i, j ≤ i ∧ (x : K⟦X⟧) = Ediv K l e i}` using `hx`. Use `clear hx`.
+
+Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, hxi⟩` from `hx`. Rewrite using `[hxi]`. Conclude with `exists_frob_Ediv_eq l e hi hjl`.
+
+Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs, h1⟩` from `hx`. Take `⟨t, ht, h2⟩` from `hy`. Conclude with `⟨s + t, add_mem hs ht, by rw [Subalgebra.coe_add, map_add, h1, h2, mul_add]⟩`.
+
+Consider the case `smul c x _ hx`. Take `⟨s, hs, h1⟩` from `hx`. Conclude with `⟨frob K l c * s, mul_mem (frob_mem_S l c.2) hs, by`. Rewrite using `[smul_eq_mul, Subalgebra.coe_mul, map_mul, h1]`. Use the proof step `ring⟩`.
+
+Take `⟨s, hs, h1⟩` from `key g hg`. Use `⟨s + frob K l h, add_mem hs (frob_mem_S l h.2), ?_⟩` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_add, Subalgebra.coe_mul, map_add, map_mul, h1, mul_add]`. Use `congr 2`. Simplify using the standard rewrite rules.
+-/
 theorem exists_frob_eq_of_mem_Fil (e : ℕ) [NeZero e] {j : ℕ} (hjl : j < l) {r : S O K e}
     (hr : r ∈ Fil O K l e j) : ∃ s ∈ S O K e, frob K l (r : K⟦X⟧) = C ((l : K) ^ j) * s := by
   obtain ⟨g, hg, h, rfl⟩ := (mem_Fil l).1 hr j
@@ -105,6 +143,11 @@ theorem exists_frob_eq_of_mem_Fil (e : ℕ) [NeZero e] {j : ℕ} (hjl : j < l) {
 
 end Padic
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D j hjl v hv`. Use `Submodule.smul_induction_on (p := fun v => ∃ v' ∈ D.MM, (l : K) ^ η • D.phi v = (l : K) ^ j • v') hv (fun r hr n hn => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Take `⟨s, hs, hfs⟩` from `exists_frob_eq_of_mem_Fil l e hjl hr`. Establish `h3` using `D.l_pow_smul_phi_mem_MM (k := η) (D.smul_mem_Mext (A_le_S l e) hn)`. Use `⟨s • ((l : K) ^ η • D.phi n), PhiMod.smul_mem_MM _ hs h3, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Subalgebra.smul_def, PhiMod.phi_smul, hfs, ← smul_eq_C_mul, smul_assoc, smul_comm ((l : K) ^ η) ((l : K) ^ j), smul_comm ((l : K) ^ η) s]`. Take `⟨v₁, h₁, e₁⟩` from `hx`. Take `⟨v₂, h₂, e₂⟩` from `hy`. Conclude with `⟨v₁ + v₂, add_mem h₁ h₂, by rw [map_add, smul_add, e₁, e₂, smul_add]⟩`.
+-/
 theorem phi_FilMM_mem : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (η H : ℕ) (D : BKDat O K l e a ι η H) (j : ℕ), j < l → ∀ v ∈ D.FilMM j, ∃ v' ∈ D.MM, (l : K) ^ η • D.phi v = (l : K) ^ j • v' := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D j hjl v hv
   refine Submodule.smul_induction_on (p := fun v => ∃ v' ∈ D.MM, (l : K) ^ η • D.phi v = (l : K) ^ j • v')

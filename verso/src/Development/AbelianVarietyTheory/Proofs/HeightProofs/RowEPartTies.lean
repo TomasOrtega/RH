@@ -12,6 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.PlugPt
 
+/- English proof (translation)
+Introduce `hR hL 𝒮 ν Q hC`. Use `(EvP.and (rowE_tiesB hR hL 𝒮 ν Q hC) GlobalTheory.T.eventually_constructedPoint_hostSize_numerical).mono ?_` and prove the remaining obligations. Introduce `κ K _ H β hq c b hl`. Take `⟨p, b', hpin, heq⟩` from `hl`. Establish `hl' : linkOf (pinPt ν) K β c b.pt` using `⟨p, b'.pt, hpin, congrArg (fun y : (Σ (D : D7) (O : Obj D), Ind.Part D O c) => (⟨y.1, y.2.1, y.2.2.pt⟩ : Σ (D : D7) (O : Obj D), BdPt D O c)) heq⟩`.
+
+Establish `ht : TiesB β.D β.O c b.pt` using `H.1 β hq c b.pt hl'`. Establish `hs : FieldSmall β.D β.O.L` using `((H.2 β).2 _ ht.1.tied.field).2.2`. Establish `hw : SingleIndexPlacesAreTwisted b.pt` using `fun w hw => ((b.muDef 0 0).2.2.2 w).2 hw`. Conclude with `⟨ht, ⟨hs, (GlobalTheory.T.pathCoreConditions_of_intrinsicConditions β.D β.O c b.pt ht hs).2.2.1⟩, GlobalTheory.PlugPt.more_of_tiesB β.D β.O c b.pt ht hs hw⟩`.
+-/
 theorem rowE_part_ties : GlobalTheory.NT.RayField → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (𝒮 : Slots) (ν : NRead hL 𝒮) (Q : V4.Slot),
     CoreSlot 𝒮 → RowE (Bd := Ind.Part) (sAnd Q RayPosition) (linkOf fun K p c b => pinPt ν K p c b.pt)
       fun _ D O c b => TiesB D O c b.pt ∧ GlobalTheory.CovTop.RecTied D O.L ∧ More b.pt := by

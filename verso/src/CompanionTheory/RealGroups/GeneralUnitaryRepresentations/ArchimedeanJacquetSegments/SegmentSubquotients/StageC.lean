@@ -19,24 +19,39 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 abbrev cls {d : ℕ} (σ : IrrRep (GL (Fin d) k)) : IrrGL k := IrrGL.of σ.ρ σ.smooth σ.irr
 
+/- English proof (translation)
+The claim follows from `isSmooth_twist σ.smooth (isSmoothChar_absPow _).detChar`.
+-/
 theorem segTerm_smooth {d : ℕ} (σ : IrrRep (GL (Fin d) k)) (l : ℕ) (a : Fin l) : IsSmooth (segTerm σ.ρ l a) :=
   isSmooth_twist σ.smooth (isSmoothChar_absPow _).detChar
 
+/- English proof (translation)
+The claim follows from `isIrreducible_twist σ.irr _`.
+-/
 theorem segTerm_irr {d : ℕ} (σ : IrrRep (GL (Fin d) k)) (l : ℕ) (a : Fin l) : (segTerm σ.ρ l a).IsIrreducible :=
   isIrreducible_twist σ.irr _
 
 abbrev tcl {d : ℕ} (σ : IrrRep (GL (Fin d) k)) (l : ℕ) (a : Fin l) : IrrGL k :=
   IrrGL.of (segTerm σ.ρ l a) (segTerm_smooth σ l a) (segTerm_irr σ l a)
 
+/- English proof (translation)
+The claim follows from `(IrrGL.tw_of σ.ρ σ.smooth σ.irr _ _).symm`.
+-/
 theorem tcl_eq {d : ℕ} (σ : IrrRep (GL (Fin d) k)) (l : ℕ) (a : Fin l) : tcl σ l a = (cls σ).nu ((a : ℕ) : ℂ) :=
   (IrrGL.tw_of σ.ρ σ.smooth σ.irr _ _).symm
 
+/- English proof (translation)
+Use extensionality with `⟨a, j⟩`. Rewrite using `[stdBlocks_val, consecBlocks_val]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem blocks_eq (l d : ℕ) (h : ∑ _a : Fin l, d = l * d) : stdBlocks (fun _ : Fin l => d) h = consecBlocks l d := by
   ext ⟨a, j⟩
   rw [stdBlocks_val, consecBlocks_val]
   simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `he : stdBlocks (fun a => (tcl σ l a).1) h = consecBlocks l d` using `blocks_eq l d h`. Unfold `prodIrr`. Rewrite using `[he]`. Conclude with `⟨multiProdEquiv (consecBlocks l d) fun a => IrrGL.equivOf _ _ _⟩`.
+-/
 theorem consec_equiv {d : ℕ} (σ : IrrRep (GL (Fin d) k)) (l : ℕ) (h : ∑ a, (tcl σ l a).1 = l * d) :
     Nonempty ((multiProd (consecBlocks l d) (segTerm σ.ρ l)).Equiv (prodIrr (tcl σ l) h)) := by
   have he : stdBlocks (fun a => (tcl σ l a).1) h = consecBlocks l d := blocks_eq l d h
@@ -44,6 +59,9 @@ theorem consec_equiv {d : ℕ} (σ : IrrRep (GL (Fin d) k)) (l : ℕ) (h : ∑ a
   rw [he]
   exact ⟨multiProdEquiv (consecBlocks l d) fun a => IrrGL.equivOf _ _ _⟩
 
+/- English proof (translation)
+Establish `hι : Function.Injective (GlobalTheory.ParIndExact.extTensorMapRight σ f)` using `Module.Flat.lTensor_preserves_injective_linearMap f.toLinearMap hf`. Establish `hι' : Function.Injective (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ f) (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom)` using `hι`. Conclude with `⟨parIndMap (two (stdSum rfl)) (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ f) (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom), GlobalTheory.ParIndExact.parIndMap_injective _ _ hι'⟩`.
+-/
 theorem prod₂_map_injective_right (r t : ℕ) {U W W' : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup W]
     [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] (σ : Representation ℂ (GL (Fin r) k) U)
     (ρ : Representation ℂ (GL (Fin t) k) W) (ρ' : Representation ℂ (GL (Fin t) k) W')
@@ -56,17 +74,26 @@ theorem prod₂_map_injective_right (r t : ℕ) {U W W' : Type} [AddCommGroup U]
   exact ⟨parIndMap (two (stdSum rfl)) (compMap (GlobalTheory.ParIndExact.extTensorMapRight σ f)
     (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom), GlobalTheory.ParIndExact.parIndMap_injective _ _ hι'⟩
 
+/- English proof (translation)
+Introduce `_ _ h` and use `hg (hf h)`.
+-/
 theorem inj_comp {G V₁ V₂ V₃ : Type} [Group G] [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂] [Module ℂ V₂]
     [AddCommGroup V₃] [Module ℂ V₃] {ρ₁ : Representation ℂ G V₁} {ρ₂ : Representation ℂ G V₂}
     {ρ₃ : Representation ℂ G V₃} (f : ρ₂.IntertwiningMap ρ₃) (g : ρ₁.IntertwiningMap ρ₂)
     (hf : Function.Injective f) (hg : Function.Injective g) : Function.Injective (f.comp g) :=
   fun _ _ h => hg (hf h)
 
+/- English proof (translation)
+The claim follows from `φ.toLinearEquiv.injective`.
+-/
 theorem inj_equiv {G V₁ V₂ : Type} [Group G] [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂] [Module ℂ V₂]
     {ρ₁ : Representation ℂ G V₁} {ρ₂ : Representation ℂ G V₂} (φ : ρ₁.Equiv ρ₂) :
     Function.Injective φ.toIntertwiningMap :=
   φ.toLinearEquiv.injective
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem sum_const_fin (n d : ℕ) : ∑ _a : Fin n, d = n * d := by simp
 
 section Emb
@@ -77,18 +104,37 @@ variable {G V₁ V₂ V₃ : Type} [Group G] [AddCommGroup V₁] [Module ℂ V�
 def Emb (ρ₁ : Representation ℂ G V₁) (ρ₂ : Representation ℂ G V₂) : Prop :=
   ∃ F : ρ₁.IntertwiningMap ρ₂, Function.Injective F
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `h`. Take `⟨g, hg⟩` from `h'`. Conclude with `⟨g.comp f, inj_comp _ _ hg hf⟩`.
+-/
 theorem Emb.trans (h : Emb ρ₁ ρ₂) (h' : Emb ρ₂ ρ₃) : Emb ρ₁ ρ₃ := by
   obtain ⟨f, hf⟩ := h
   obtain ⟨g, hg⟩ := h'
   exact ⟨g.comp f, inj_comp _ _ hg hf⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨e.some.toIntertwiningMap, inj_equiv _⟩`.
+-/
 theorem Emb.of (e : Nonempty (ρ₁.Equiv ρ₂)) : Emb ρ₁ ρ₂ := ⟨e.some.toIntertwiningMap, inj_equiv _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨e.some.symm.toIntertwiningMap, inj_equiv _⟩`.
+-/
 theorem Emb.of' (e : Nonempty (ρ₂.Equiv ρ₁)) : Emb ρ₁ ρ₂ := ⟨e.some.symm.toIntertwiningMap, inj_equiv _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨S.toSubmodule.subtype, fun _ => rfl⟩, Subtype.val_injective⟩`.
+-/
 theorem Emb.sub (S : Subrepresentation ρ₁) : Emb S.toRepresentation ρ₁ :=
   ⟨⟨S.toSubmodule.subtype, fun _ => rfl⟩, Subtype.val_injective⟩
 
+/- English proof (translation)
+Take `⟨F, hF⟩` from `h`. Set `T : Subrepresentation ρ₂` to `⟨LinearMap.range F.toLinearMap, by`. Introduce and unpack `g _ ⟨v, rfl⟩`. Conclude with `⟨_, F.isIntertwining _ _ g v⟩⟩`. Set `toT : ρ₁.IntertwiningMap T.toRepresentation` to `⟨LinearMap.codRestrict T.toSubmodule F.toLinearMap (fun v => ⟨v, rfl⟩), fun g => by`.
+
+Use extensionality with `v`. Conclude with `F.isIntertwining _ _ g v⟩`. Use `⟨T, fun hT => ?_, IsSubquotient.of_surjective toT ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `exists_ne (0 : V₁)`. Establish `hmem : F v ∈ T.toSubmodule` using `⟨v, rfl⟩`.
+
+Rewrite `hmem` using `[hT, Submodule.mem_bot]`. Conclude with `hv (hF (hmem.trans (map_zero F).symm))`. Introduce and unpack `⟨_, v, rfl⟩`. Conclude with `⟨v, rfl⟩`.
+-/
 theorem Emb.range (h : Emb ρ₁ ρ₂) [Nontrivial V₁] :
     ∃ T : Subrepresentation ρ₂, T.toSubmodule ≠ ⊥ ∧ IsSubquotient T.toRepresentation ρ₁ := by
   obtain ⟨F, hF⟩ := h
@@ -110,6 +156,9 @@ theorem Emb.range (h : Emb ρ₁ ρ₂) [Nontrivial V₁] :
 
 end Emb
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`.
+-/
 theorem sum_app {p q : ℕ} (x : Fin p → IrrGL k) (y : Fin q → IrrGL k) :
     ∑ a, (Fin.append x y a).1 = ∑ a, (x a).1 + ∑ a, (y a).1 := by
   rw [Fin.sum_univ_add]
@@ -122,6 +171,9 @@ variable {r t : ℕ} {U U' W W' Y Y' : Type} [AddCommGroup U] [Module ℂ U] [Ad
   [Module ℂ Y']
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Take `⟨f, hf⟩` from `h`. Establish `h3 : Emb (prod₂ σ ρ) (prod₂ σ ρ')` using `prod₂_map_injective_right r t σ ρ ρ' f hf`. Conclude with `((Emb.of' e).trans h3).trans (Emb.of e')`.
+-/
 theorem embR (σ : Representation ℂ (GL (Fin r) k) U) (ρ : Representation ℂ (GL (Fin t) k) W)
     (ρ' : Representation ℂ (GL (Fin t) k) W') (P : Representation ℂ (GL (Fin (r + t)) k) Y)
     (P' : Representation ℂ (GL (Fin (r + t)) k) Y') (h : Emb ρ ρ') (e : Nonempty ((prod₂ σ ρ).Equiv P))
@@ -131,6 +183,9 @@ theorem embR (σ : Representation ℂ (GL (Fin r) k) U) (ρ : Representation ℂ
   exact ((Emb.of' e).trans h3).trans (Emb.of e')
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Take `⟨f, hf⟩` from `h`. Establish `h3 : Emb (prod₂ σ ρ) (prod₂ σ' ρ)` using `GlobalTheory.CompanionTheory.ProdInj.prod₂_map_injective k r t _ _ _ σ σ' ρ f hf`. Conclude with `((Emb.of' e).trans h3).trans (Emb.of e')`.
+-/
 theorem embL (σ : Representation ℂ (GL (Fin r) k) U) (σ' : Representation ℂ (GL (Fin r) k) U')
     (ρ : Representation ℂ (GL (Fin t) k) W) (P : Representation ℂ (GL (Fin (r + t)) k) Y)
     (P' : Representation ℂ (GL (Fin (r + t)) k) Y') (h : Emb σ σ') (e : Nonempty ((prod₂ σ ρ).Equiv P))
@@ -142,6 +197,9 @@ theorem embL (σ : Representation ℂ (GL (Fin r) k) U) (σ' : Representation �
 end Two
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+The claim follows from `embR (prodIrr A hA) (prodIrr y hy) (prodIrr y' hy') _ _ h (GlobalTheory.T.product_irreducible_append_equiv k p q r t A y hA hy h1) (GlobalTheory.T.product_irreducible_append_equiv k p q' r t A y' hA hy' h2)`.
+-/
 theorem emb_right {p q q' r t : ℕ} (A : Fin p → IrrGL k) (y : Fin q → IrrGL k) (y' : Fin q' → IrrGL k)
     (hA : ∑ a, (A a).1 = r) (hy : ∑ a, (y a).1 = t) (hy' : ∑ a, (y' a).1 = t) (h : Emb (prodIrr y hy) (prodIrr y' hy'))
     (h1 : ∑ a, (Fin.append A y a).1 = r + t) (h2 : ∑ a, (Fin.append A y' a).1 = r + t) :
@@ -150,6 +208,9 @@ theorem emb_right {p q q' r t : ℕ} (A : Fin p → IrrGL k) (y : Fin q → IrrG
     (GlobalTheory.T.product_irreducible_append_equiv k p q' r t A y' hA hy' h2)
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+The claim follows from `embL (prodIrr y hy) (prodIrr y' hy') (prodIrr B hB) _ _ h (GlobalTheory.T.product_irreducible_append_equiv k p q r t y B hy hB h1) (GlobalTheory.T.product_irreducible_append_equiv k p' q r t y' B hy' hB h2)`.
+-/
 theorem emb_left {p p' q r t : ℕ} (y : Fin p → IrrGL k) (y' : Fin p' → IrrGL k) (B : Fin q → IrrGL k)
     (hy : ∑ a, (y a).1 = r) (hy' : ∑ a, (y' a).1 = r) (hB : ∑ a, (B a).1 = t) (h : Emb (prodIrr y hy) (prodIrr y' hy'))
     (h1 : ∑ a, (Fin.append y B a).1 = r + t) (h2 : ∑ a, (Fin.append y' B a).1 = r + t) :
@@ -158,6 +219,11 @@ theorem emb_left {p p' q r t : ℕ} (y : Fin p → IrrGL k) (y' : Fin p' → Irr
     (GlobalTheory.T.product_irreducible_append_equiv k p' q r t y' B hy' hB h2)
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Substitute `hz` using the available equality. Establish `hA : GlobalTheory.Published.IrreducibleAdmissibleGL` using `GlobalTheory.CompanionTheory.BZCuspPair.irrAdm`. Take `⟨b, hb, s', hrow, hcol⟩` from `GlobalTheory.CompanionTheory.Shuffle2.exists_cell_data hA xx hdx y hy hyc hjm`. Use `choose a ha haw using hcol`. Establish `key : ∀ r j, b r j ≠ 0 → IrrGL.of (s' r j).ρ (s' r j).smooth (s' r j).irr = y j`.
+
+Introduce `r j hj`. Take `rfl : a j = r` from `by_contra fun hne => hj (ha j r (Ne.symm hne))`. Conclude with `haw j`. Take `⟨f, -, hf⟩` from `GlobalTheory.CompanionTheory.Shuffle2.exists_row hA (xx iz) pr hs d hsd hsc hu (b iz) (hb iz) (s' iz) (hrow iz) y hyc (key iz)`. Conclude with `⟨f, hf⟩`.
+-/
 theorem comb {n c N : ℕ} (xx : Fin n → IrrGL k) (hdx : ∑ a, (xx a).1 = N) (iz : Fin n) (z : IrrGL k) (hz : xx iz = z)
     (pr : Fin 2 → IrrGL k) (hs : ∑ j, (pr j).1 = z.1) (d : ℕ) (hsd : ∀ j, (pr j).1 = d) (hsc : ∀ j, (pr j).IsCusp)
     (hu : Nonempty ((jac (stdBlocks (fun j => (pr j).1) hs) z.rep).Equiv (piTensor fun j => (pr j).rep)))
@@ -176,6 +242,17 @@ theorem comb {n c N : ℕ} (xx : Fin n → IrrGL k) (hdx : ∑ a, (xx a).1 = N) 
   exact ⟨f, hf⟩
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Take `⟨A, hA⟩ : ∃ A : Fin i → IrrGL k, ∀ a, A a = t (Fin.castAdd q (Fin.castAdd 2 a))` from `⟨_, fun _ => rfl⟩`. Take `⟨B, hB⟩ : ∃ B : Fin q → IrrGL k, ∀ b, B b = t (Fin.natAdd (i + 2) b)` from `⟨_, fun _ => rfl⟩`. Establish `hfun : Fin.append (Fin.append A pr) B = t`. Use function extensionality and compare the values at `a`. Use `Fin.addCases (fun u => ?_) (fun b => ?_) a` and prove the remaining obligations.
+
+Rewrite using `[Fin.append_left]`. Use `Fin.addCases (fun v => ?_) (fun j => ?_) u` and prove the remaining obligations. Rewrite using `[Fin.append_left, hA]`. Rewrite using `[Fin.append_right, hpr]`. Rewrite using `[Fin.append_right, hB]`.
+
+Use `clear hA hB hpr`. Substitute `hfun` using the available equality. Establish `hzs : ∑ _a : Fin 1, z.1 = z.1` using `by simp`. Establish `h1 : ∑ a, (Fin.append A (fun _ : Fin 1 => z) a).1 = ∑ a, (A a).1 + z.1` using `by rw [sum_app, hzs]`. Establish `h2 : ∑ a, (Fin.append A pr a).1 = ∑ a, (A a).1 + z.1` using `by rw [sum_app, hs]`.
+
+Establish `hN : ∑ a, (A a).1 + z.1 + ∑ a, (B a).1 = N` using `by rw [← ht, sum_app, h2]`. Substitute `hN` using the available equality. Establish `h3 : ∑ a, (Fin.append (Fin.append A (fun _ : Fin 1 => z)) B a).1 = ∑ a, (A a).1 + z.1 + ∑ a, (B a).1`. Rewrite using `[sum_app, h1]`. Establish `e0 : Emb (prodIrr (fun _ : Fin 1 => z) hzs) (prodIrr pr hs)` using `(Emb.of' (nonempty_equiv_prodIrr_one z hzs)).trans he`.
+
+Use `⟨_, _, h3, Fin.castAdd q (Fin.natAdd i (0 : Fin 1)), by rw [Fin.append_left, Fin.append_right], ?_⟩` and prove the remaining obligations. Conclude with `emb_left _ _ B h1 h2 rfl (emb_right A _ pr rfl hzs hs e0 h1 h2) h3 ht`.
+-/
 theorem classMain {i q N : ℕ} (t : Fin (i + 2 + q) → IrrGL k) (ht : ∑ a, (t a).1 = N) (pr : Fin 2 → IrrGL k)
     (hpr : ∀ j, pr j = t (Fin.castAdd q (Fin.natAdd i j))) (z : IrrGL k) (hs : ∑ j, (pr j).1 = z.1)
     (he : Emb z.rep (prodIrr pr hs)) :
@@ -207,6 +284,11 @@ theorem classMain {i q N : ℕ} (t : Fin (i + 2 + q) → IrrGL k) (ht : ∑ a, (
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `a1 : Emb (IrrGL.of τ hsS hiS).rep τ` using `Emb.of' ⟨IrrGL.equivOf τ hsS hiS⟩`. Establish `he2 : stdBlocks (fun j => (tcl σ 2 j).1) hs = consecBlocks 2 d` using `blocks_eq 2 d hs`. Establish `e1 : (piTensor (segTerm σ.ρ 2)).Equiv (piTensor fun a => (tcl σ 2 a).rep)` using `piTensorEquiv fun a => IrrGL.equivOf _ _ _`. Establish `a3 : Nonempty ((jac (stdBlocks (fun j => (tcl σ 2 j).1) hs) τ).Equiv (piTensor fun j => (tcl σ 2 j).rep))`. Rewrite using `[he2]`.
+
+Conclude with `⟨eS.trans e1⟩`. Conclude with `⟨IrrGL.of τ hsS hiS, hs, a1.trans a2, ⟨(SrMult.jacEquivOf (stdBlocks (fun j => (tcl σ 2 j).1) hs) (IrrGL.equivOf τ hsS hiS).symm).trans a3.some⟩⟩`.
+-/
 theorem exists_alt_ter {d : ℕ} (σ : IrrRep (GL (Fin d) k)) {U : Type} [AddCommGroup U] [Module ℂ U]
     (τ : Representation ℂ (GL (Fin (2 * d)) k) U) (hsS : IsSmooth τ) (hiS : τ.IsIrreducible)
     (hs : ∑ j, (tcl σ 2 j).1 = 2 * d) (a2 : Emb τ (prodIrr (tcl σ 2) hs))
@@ -225,6 +307,9 @@ theorem exists_alt_ter {d : ℕ} (σ : IrrRep (GL (Fin d) k)) {U : Type} [AddCom
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨S, hiS, -, ⟨eS⟩⟩` from `h2 k d hd σ hσ`. Establish `hs : ∑ j, (tcl σ 2 j).1 = 2 * d` using `sum_const_fin 2 d`. Conclude with `exists_alt_ter σ S.toRepresentation (GlobalTheory.CompanionTheory.JacExp.isSmooth_sub (isSmooth_parInd _ _) S) hiS hs ((Emb.sub S).trans (Emb.of (consec_equiv σ 2 hs))) eS`.
+-/
 theorem exists_unit_one_add_generator (h2 : CompanionTheory.Pf1.SegRepC.SegTwo) {d : ℕ} (hd : 0 < d) (σ : IrrRep (GL (Fin d) k)) (hσ : IsCuspidal σ.ρ) :
     ∃ (z : IrrGL k) (hs : ∑ j, (tcl σ 2 j).1 = z.1), Emb z.rep (prodIrr (tcl σ 2) hs) ∧
       Nonempty ((jac (stdBlocks (fun j => (tcl σ 2 j).1) hs) z.rep).Equiv (piTensor fun j => (tcl σ 2 j).rep)) := by
@@ -235,6 +320,11 @@ theorem exists_unit_one_add_generator (h2 : CompanionTheory.Pf1.SegRepC.SegTwo) 
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hey : stdBlocks (fun a => (tcl σ l (w a)).1) hy = consecBlocks l d` using `blocks_eq _ d hy`. Use `ENat.one_le_iff_ne_zero.2 (jhMult_ne_zero_iff.2 ?_)` and prove the remaining obligations. Use `show IsSubquotient (piTensor fun a => (tcl σ l (w a)).rep) (jac (stdBlocks (fun a => (tcl σ l (w a)).1) hy) τ)`. Rewrite using `[hey]`. Establish `e1 : (piTensor fun a => segTerm σ.ρ l (w a)).Equiv (piTensor fun a => (tcl σ l (w a)).rep)` using `piTensorEquiv fun a => IrrGL.equivOf _ _ _`.
+
+Conclude with `(GlobalTheory.JacStages.isSubquotient_of_equiv (e1.symm.trans φ.symm)).trans hsub`.
+-/
 theorem one_le_jm {d l : ℕ} (σ : IrrRep (GL (Fin d) k)) {U X : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup X]
     [Module ℂ X] (τ : Representation ℂ (GL (Fin (l * d)) k) U) (π : Representation ℂ (Levi k fun _ : Fin l => Fin d) X)
     (hsub : IsSubquotient π (jac (consecBlocks l d) τ)) (w : Equiv.Perm (Fin l))
@@ -253,6 +343,23 @@ end StageC
 open StageC in
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `k _ _ _ _ _ h2 d l hd _ σ hσ i hi`. Take `⟨q, rfl⟩ : ∃ q, l = i + 2 + q` from `⟨l - (i + 2), by omega⟩`. Establish `hx : (cls σ).IsCusp` using `⟨hd, isCuspidal_of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irr) hσ⟩`. Take `⟨σ', hσ'c, hcls'⟩ : ∃ σ' : IrrRep (GL (Fin d) k), IsCuspidal σ'.ρ ∧ cls σ' = (cls σ).nu ((i : ℕ) : ℂ)` from `⟨((cls σ).nu ((i : ℕ) : ℂ)).2.rep, (hx.nu _).2, IrrGL.of_rep _⟩`. Establish `hpr : ∀ j : Fin 2, tcl σ' 2 j = tcl σ (i + 2 + q) (Fin.castAdd q (Fin.natAdd i j))`.
+
+Introduce `j`. Rewrite using `[tcl_eq, tcl_eq, hcls', IrrGL.nu_nu]`. Use `congr 1`. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨z, hs, hz, hu⟩` from `exists_unit_one_add_generator h2 hd σ' hσ'c`. Establish `ht : ∑ a, (tcl σ (i + 2 + q) a).1 = (i + 2 + q) * d` using `sum_const_fin (i + 2 + q) d`. Take `⟨n, xx, hdx, iz, hxz, he⟩` from `classMain (tcl σ (i + 2 + q)) ht (tcl σ' 2) hpr z hs hz`. Use `haveI := GlobalTheory.CompanionTheory.AdjQuot.nontrivial_prodIrr xx hdx`.
+
+Take `⟨T, hT, hTs⟩` from `(he.trans (Emb.of' (consec_equiv σ (i + 2 + q) ht))).range`. Use `⟨T, hT, ?_⟩` and prove the remaining obligations. Introduce `X _ _ π _ hsub w φ`. Establish `hy : ∑ a, (tcl σ (i + 2 + q) (w a)).1 = (i + 2 + q) * d` using `sum_const_fin (i + 2 + q) d`. Establish `hjm` using `(one_le_jm σ T.toRepresentation π hsub w φ hy).trans (GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient _ hy _ _ (isSmooth_prodIrr xx hdx) hTs)`.
+
+Establish `hsc : ∀ j, (tcl σ' 2 j).IsCusp` using `fun j => by`. Rewrite using `[tcl_eq, hcls']`. Conclude with `(hx.nu _).nu _`. Take `⟨f, hf⟩` from `comb xx hdx iz z hxz (tcl σ' 2) hs d (fun _ => rfl) hsc hu _ hy (fun a => by rw [tcl_eq]; exact hx.nu _) hjm`. Establish `hval : ∀ j : Fin 2, ((w (f j) : Fin (i + 2 + q)) : ℕ) = i + j`.
+
+Introduce `j`. Establish `h3 : tcl σ (i + 2 + q) (w (f j)) = tcl σ (i + 2 + q) (Fin.castAdd q (Fin.natAdd i j))` using `(hf j).trans (hpr j)`. Rewrite `h3` using `[tcl_eq, tcl_eq]`. Conclude with `(IrrGL.nu_natCast_inj hx.1).1 h3`. Establish `e0 : w.symm ⟨i, by omega⟩ = f 0`.
+
+Rewrite using `[Equiv.symm_apply_eq]`. Conclude with `Fin.ext (by simpa using (hval 0).symm)`. Establish `e1 : w.symm ⟨i + 1, hi⟩ = f 1`. Rewrite using `[Equiv.symm_apply_eq]`. Conclude with `Fin.ext (by simpa using (hval 1).symm)`.
+
+Rewrite using `[e0, e1]`. Conclude with `f.strictMono (by decide)`.
+-/
 theorem stageP : StageP := by
   intro k _ _ _ _ _ h2 d l hd _ σ hσ i hi
   obtain ⟨q, rfl⟩ : ∃ q, l = i + 2 + q := ⟨l - (i + 2), by omega⟩

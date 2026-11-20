@@ -17,6 +17,11 @@ namespace GlobalTheory.LevelSeries
 def flipElt {D : D7} (e : AE D) (m : ℕ) : AE D :=
   e * (m : AE D) + cA D e * incA D ((m : D.host.E)⁻¹) + (1 - e - cA D e)
 
+/- English proof (translation)
+Unfold `flipIdx`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `PP _`. Use `pow_ne_zero _ ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, HeightOneSpectrum.maxPowDividing]`.
+
+Conclude with `pow_ne_zero _ PP.ne_bot`.
+-/
 theorem flipIdx_ne_zero {D : D7} (V W : HSp D) (T : Finset (Formalism.L2.DIV.Pl D.host.E)) {m : ℕ} (hm : m ≠ 0) :
     flipIdx V W T m ≠ 0 := by
   unfold flipIdx

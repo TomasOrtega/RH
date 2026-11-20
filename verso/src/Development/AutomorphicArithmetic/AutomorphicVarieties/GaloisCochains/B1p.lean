@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.Fr UpperTheory.V.GC
 open scoped Pointwise
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_smul_eq_of_isPlaceOver (F := F) h₀ hA`. Establish `h : IsLift (RingEquiv.refl F) g.toRingEquiv` using `fun x => g.commutes x`. Establish `hm : ∀ x, g.toRingEquiv x ∈ A ↔ x ∈ A₀` using `fun x => by show g • x ∈ A ↔ _`. Rewrite using `[← hg]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff`.
+
+Conclude with `⟨g, fun x hx => conjGal_mem_Dec h hm hx.1⟩`.
+-/
 private theorem exists_conj {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {A₀ A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (h₀ : IsPlaceOver A₀ v) (hA : IsPlaceOver A v) :
     ∃ u : G F Ω, ∀ x ∈ Ine (F := F) A, u⁻¹ * x * u ∈ Dec (F := F) A₀ := by
@@ -17,6 +22,31 @@ private theorem exists_conj {F Ω : Type} [Field F] [NumberField F] [Field Ω] [
     exact ValuationSubring.smul_mem_pointwise_smul_iff
   exact ⟨g, fun x hx => conjGal_mem_Dec h hm hx.1⟩
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l hl k _ _ Φ S K π ι A pl e c L h3 C₀ hC`. Use `haveI := L.g.normal`. Establish `hω : IsOpen ((cycMod F Ω l 1).ker : Set (G F Ω))` using `(isOpen_discrete {(1 : (ZMod (l ^ 1))ˣ)}).preimage GlobalTheory.Published.PoitouTate.continuous_cycMod`. Establish `hidx : ¬ l ∣ (K ⊓ (cycMod F Ω l 1).ker).relIndex ⊤`. Rewrite using `[Subgroup.relIndex_top_right]`.
+
+Introduce `h`. Establish `h1 : (K ⊓ (cycMod F Ω l 1).ker).index ∣ K.index * (cycMod F Ω l 1).ker.index`. Rewrite using `[← Subgroup.relIndex_mul_index (inf_le_left : K ⊓ (cycMod F Ω l 1).ker ≤ K), mul_comm, Subgroup.inf_relIndex_left]`. Conclude with `Nat.mul_dvd_mul_left _ (Subgroup.relIndex_dvd_index_of_normal _ _)`. Break down `(hl.out.dvd_mul).1 (h.trans h1) with h2 | h2` into its components or cases.
+
+Conclude with `L.g.idx h2`. Rewrite `h2` using `[Subgroup.index_ker]`. Establish `h4` using `h2.trans (Subgroup.card_subgroup_dvd_card _)`. Use `haveI : NeZero (l ^ 1) := ⟨pow_ne_zero _ hl.out.ne_zero⟩`. Rewrite `h4` using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, pow_one, Nat.totient_prime hl.out]`.
+
+Establish `h5` using `hl.out.two_le`. Use `Nat.le_of_dvd (by omega) h4` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `key` using `strGen F Ω l k ⊤ (K ⊓ (cycMod F Ω l 1).ker) le_top (L.g.isOpen.inter hω) hidx Φ.Γ (π.comp (Subgroup.subtype ⊤)) (L.g.cont.comp continuous_subtype_val) (fun y => by`. Take `⟨x, hx⟩` from `L.g.onto y`.
+
+Conclude with `⟨⟨x, trivial⟩, hx⟩)`. Use the proof step `Φ.V Φ.Gv Φ.loc (Φ.Ψ⁻¹ ^ 2 * Φ.delK k)`. Use the proof step `(fun u hu => by`. Establish `h1` using `L.K_del _ hu.1`. Establish `h2` using `L.K_Ψ _ hu.1`.
+
+Simplify using `[Frame.delK, h1, h2])`. Use the proof step `(fun B u hu hK => by`. Take `⟨p1, p2, -⟩` from `Kum.placeDict F Ω`. Distinguish the cases in `hB : B = ⊤`. Use `left`.
+
+Rewrite `hu` using `[hB, p1, Subgroup.mem_bot]`. Simplify using `[hu]`. Take `⟨w, hw⟩` from `p2 B hB`. Distinguish the cases in `hS : w ∈ S`. Use `right`.
+
+Take `⟨v, rfl⟩` from `(L.loc.mem w).2 (L.only w hS)`. Take `⟨g, hg⟩` from `exists_conj (L.loc.isOver v) hw`. Establish `h1` using `hg _ hu`. Rewrite `h1` using `[← L.loc.range v]`. Take `⟨s, hs⟩` from `h1`.
+
+Use `⟨v, s, π g, ?_⟩` and prove the remaining obligations. Rewrite using `[L.loc_eq, hs]`. Simplify using `[mul_assoc]`. Use `left`. Establish `: u.1 ∈ π.ker`.
+
+Rewrite using `[L.g.ker]`. Use `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨w, hS, B, hw, hu, hK.1⟩`. Conclude with `this)`.
+
+Use `haveI : IsEmpty {v // ∀ s, (Φ.Ψ⁻¹ ^ 2 * Φ.delK k) (Φ.loc v s) = 1} := ⟨fun ⟨v, hv⟩ => by`. Take `⟨g, hg⟩` from `h3 v`. Establish `h1 : Φ.del (Φ.loc v g) = 1` using `(Φ.loc0 v g).2`. Establish `h2` using `hv g`. Apply `hg` to reduce the goal to its premises.
+
+Simplify `h2⟩` using `[Frame.delK, h1]`. Rewrite `key` using `[Nat.card_of_isEmpty, Nat.cast_zero, add_zero, Cardinal.lift_id]`. Conclude with `key.trans hC`.
+-/
 theorem UpperTheory.V.GC.b1p :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] (Φ : Fr.Frame l k) (S : Finset (HeightOneSpectrum (𝓞 F))) (K : Subgroup (G F Ω)) (π : G F Ω →* Φ.Γ) (ι : ∀ v, Φ.Gv v →* G F Ω) (A : Φ.V → ValuationSubring Ω) (pl : Φ.V → HeightOneSpectrum (𝓞 F)) (e : Φ.Inf ≃ InfinitePlace F) (c : Φ.Inf → G F Ω), FLink l Φ S K π ι A pl e c → (∀ v, ∃ g, Φ.Ψ (Φ.loc v g) ^ 2 ≠ 1) → ∀ C₀ : ℕ, clRk l (K ⊓ (cycMod F Ω l 1).ker) ≤ C₀ → Module.rank k (H1C (k := k) (W := k) Φ.loc (chRep (Φ.Ψ⁻¹ ^ 2 * Φ.delK k)) fun _ => ⊥) ≤ C₀ := by
   intro F Ω _ _ _ _ _ l hl k _ _ Φ S K π ι A pl e c L h3 C₀ hC

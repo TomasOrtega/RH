@@ -18,6 +18,11 @@ section Gen
 
 variable {F : Type} [Field F] [NumberField F] {E : Type} [CommRing E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h1 : (Formalism.UG.bc (Formalism.UG.prV (E` using `E) w) g).val i j = (1 : GL (Fin n) (E ⊗[F] w.adicCompletion F)).val i j := by`. Rewrite using `[h]`. Rewrite `h1` using `[Formalism.UG.bc, Units.coe_map]`. Express the relevant statement in the definitionally equal form `Formalism.UG.prV (E := E) w (g.val i j) = (1 : Matrix (Fin n) (Fin n) (E ⊗[F] w.adicCompletion F)) i j at h1`. Rewrite using `[Matrix.sub_apply, map_sub, h1, Matrix.one_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem prV_entry_eq_zero {n : ℕ} (g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (w : HeightOneSpectrum (𝓞 F))
     (h : Formalism.UG.bc (Formalism.UG.prV (E := E) w) g = 1) (i j : Fin n) : Formalism.UG.prV (E := E) w ((g.val - 1) i j) = 0 := by
   have h1 : (Formalism.UG.bc (Formalism.UG.prV (E := E) w) g).val i j = (1 : GL (Fin n) (E ⊗[F] w.adicCompletion F)).val i j := by
@@ -27,6 +32,11 @@ theorem prV_entry_eq_zero {n : ℕ} (g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (�
   rw [Matrix.sub_apply, map_sub, h1, Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Apply `Formalism.UG.P.afsplit_inj` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_sub, map_mul]`. Distinguish the cases in `h : w = v`.
+
+Substitute `h` using the available equality. Rewrite using `[Formalism.UG.P.afsplit_prV_eps, one_mul, sub_self]`. Rewrite using `[hy w h, mul_zero, sub_zero]`.
+-/
 theorem eps_mul_of_off (v : HeightOneSpectrum (𝓞 F)) {y : E ⊗[F] FiniteAdeleRing (𝓞 F) F}
     (hy : ∀ w, w ≠ v → Formalism.UG.prV (E := E) w y = 0) : Formalism.UG.P.afsplitEps E v * y = y := by
   rw [← sub_eq_zero]
@@ -42,6 +52,11 @@ end Gen
 
 variable {D : D7}
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[h]`. Use extensionality with `x`. Use `show Formalism.L2.Col.cO D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) ∈ Pb.asIdeal ↔ algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x ∈ Pb.asIdeal`. Establish `: Formalism.L2.Col.cO D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show star ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x : 𝓞 D.host.E) : D.host.E) = _`. Rewrite using `[show ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x : 𝓞 D.host.E) : D.host.E) = algebraMap D.host.F D.host.E (x : D.host.F) from rfl]`. Conclude with `(D.sp.cm.fixed _).2 ⟨_, rfl⟩`. Rewrite using `[this]`.
+-/
 theorem belowPl_conjP {v : HeightOneSpectrum (𝓞 D.host.F)} {Pb : Formalism.L2.DIV.Pl D.host.E}
     (h : Formalism.L2.Col.IsOver v Pb) : Formalism.IndefR.Fin.belowPl (D := D) (Formalism.L2.Col.conjPrime₂ Pb) = v := by
   apply HeightOneSpectrum.ext
@@ -56,6 +71,11 @@ theorem belowPl_conjP {v : HeightOneSpectrum (𝓞 D.host.F)} {Pb : Formalism.L2
     exact (D.sp.cm.fixed _).2 ⟨_, rfl⟩
   rw [this]
 
+/- English proof (translation)
+Apply `Formalism.IndefR.Fin.af_ext` to reduce the goal to its premises. Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Formalism.IndefR.Fin.sglV_same]`.
+
+Conclude with `Formalism.UG.P.afsplitI_self w 1`. Rewrite using `[Formalism.IndefR.Fin.sglV_ne v _ hw]`. Conclude with `Formalism.UG.P.afsplitI_ne v w hw 1`.
+-/
 theorem afsplitI_one (v : HeightOneSpectrum (𝓞 D.host.F)) :
     Formalism.UG.P.afsplitI v (1 : v.adicCompletion D.host.F) = Formalism.IndefR.Fin.sglV v 1 := by
   apply Formalism.IndefR.Fin.af_ext
@@ -67,11 +87,19 @@ theorem afsplitI_one (v : HeightOneSpectrum (𝓞 D.host.F)) :
   · rw [Formalism.IndefR.Fin.sglV_ne v _ hw]
     exact Formalism.UG.P.afsplitI_ne v w hw 1
 
+/- English proof (translation)
+Rewrite using `[Formalism.UG.P.afsplitEps, Algebra.TensorProduct.one_def, Formalism.UG.P.afsplitIE_tmul, afsplitI_one]`. Both sides reduce to the same expression.
+-/
 theorem swap_finPart_phiE (v : HeightOneSpectrum (𝓞 D.host.F)) :
     swapAE D (finPart D (Formalism.IndefR.Fin.phiE v 1)) = Formalism.UG.P.afsplitEps D.host.E v := by
   rw [Formalism.UG.P.afsplitEps, Algebra.TensorProduct.one_def, Formalism.UG.P.afsplitIE_tmul, afsplitI_one]
   rfl
 
+/- English proof (translation)
+Introduce `D V v Pb e hO hI α hα hw`. Rewrite using `[GlobalTheory.HeckeTrans.suppAt_iff e hα, Formalism.IndefR.Fin.below_of_idemAt hI, belowPl_conjP hO, ← GlobalTheory.HeckeTrans.finE_unswap]`. Establish `hM : (finE V α).val.map (GlobalTheory.HeckeTrans.unswap D) - 1 = ((finE V α).val - 1).map (GlobalTheory.HeckeTrans.unswap D)`. Rewrite using `[Matrix.map_sub _ (RingHom.map_sub _), Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _)]`. Rewrite using `[hM]`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, Matrix.map_apply]`. Apply `Function.LeftInverse.injective (GlobalTheory.HeckeTrans.unswap_swap (D := D))` to reduce the goal to its premises. Rewrite using `[map_mul, swap_finPart_phiE, GlobalTheory.HeckeTrans.swap_unswap]`. Conclude with `eps_mul_of_off v (fun w hw' => prV_entry_eq_zero _ w (hw w hw') i j)`.
+-/
 theorem suppAt_of_trivial_off : ∀ {D : D7} (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (Pb : Formalism.L2.DIV.Pl D.host.E) (e : Formalism.L2.Theta.AE D), Formalism.L2.Col.IsOver v Pb → Formalism.L2.NTheta.IsIdemAt e (Formalism.L2.Col.conjPrime₂ Pb) → ∀ α : GA D V, α ∈ GfC V → (∀ w : HeightOneSpectrum (𝓞 D.host.F), w ≠ v → Formalism.UG.bc (Formalism.UG.prV (E := D.host.E) w) (finE V α) = 1) → SuppAt e V α := by
   intro D V v Pb e hO hI α hα hw
   rw [GlobalTheory.HeckeTrans.suppAt_iff e hα, Formalism.IndefR.Fin.below_of_idemAt hI, belowPl_conjP hO,

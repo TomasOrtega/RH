@@ -6,6 +6,9 @@ open MvPolynomial ReciprocityTheory.AnForm.R GlobalTheory.CompanionTheory.Ar.Cmp
 
 namespace GlobalTheory.CompanionTheory.Ar.Cmp.Kext
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yde9.main`.
+-/
 theorem exists_algHom_adjoin_inv :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (σ : Type) (τ : σ → Ω) (F : MvPolynomial σ ℚ)
       (S : Subalgebra ℚ Ω) (E : Type) [CommRing E] [Algebra ℚ E] (u : σ → E),

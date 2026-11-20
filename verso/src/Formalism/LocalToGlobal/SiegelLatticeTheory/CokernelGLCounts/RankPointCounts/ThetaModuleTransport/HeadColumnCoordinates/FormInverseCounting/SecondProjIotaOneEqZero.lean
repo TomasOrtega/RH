@@ -15,20 +15,34 @@ def uV (g : SplitG M.L) (l : Fin (r + 1) → M.R) : Ix r → F :=
 
 def qM (r : ℕ) (x : F) : Matrix (Ix r) (Ix r) F := Matrix.fromBlocks 1 1 0 (x • 1)
 
+/- English proof (translation)
+Rewrite using `[pM, qM, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`. Apply the tactic sequence `congr 1 <;> simp [smul_smul, mul_inv_cancel₀ hx]`.
+-/
 theorem pM_mul_qM (x : F) (hx : x ≠ 0) : pM r x⁻¹ * qM r x = 1 := by
   rw [pM, qM, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]
   congr 1 <;> simp [smul_smul, mul_inv_cancel₀ hx]
 
+/- English proof (translation)
+The claim follows from `| Sum.inl a => ph1 g (l a) | Sum.inr a => (ph2 g (l a) - ph1 g (l a)) / (g.q : F) := by rcases i with a | a <;> simp [iota1, firstProj_apply, secondProj_apply]`.
+-/
 theorem firstProj_iotaOne_cases (hs : M.split = some g) (l : Fin (r + 1) → M.R) (i : Ix r) :
     ph1 g (iota1 hs l i : E) = match i with
       | Sum.inl a => ph1 g (l a)
       | Sum.inr a => (ph2 g (l a) - ph1 g (l a)) / (g.q : F) := by
   rcases i with a | a <;> simp [iota1, firstProj_apply, secondProj_apply]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases i with a | a <;> simp [iota1, secondProj_apply]`.
+-/
 theorem secondProj_iotaOne_eq_zero (hs : M.split = some g) (l : Fin (r + 1) → M.R) (i : Ix r) :
     ph2 g (iota1 hs l i : E) = 0 := by
   rcases i with a | a <;> simp [iota1, secondProj_apply]
 
+/- English proof (translation)
+Establish `hq` using `q_ne g`. Use function extensionality and compare the values at `k`. Break down `k with a | a` into its components or cases. Simplify using `[Matrix.vecMul, dotProduct, Fintype.sum_sum_type, qM, firstProj_iotaOne_cases, uV, Matrix.one_apply]`. Simplify using `[Matrix.vecMul, dotProduct, Fintype.sum_sum_type, qM, firstProj_iotaOne_cases, uV, Matrix.one_apply]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vecMul_qM (hs : M.split = some g) (l : Fin (r + 1) → M.R) :
     Matrix.vecMul (fun i => ph1 g (iota1 hs l i : E)) (qM r (g.q : F)) = uV g l := by
   have hq := q_ne g
@@ -39,6 +53,9 @@ theorem vecMul_qM (hs : M.split = some g) (l : Fin (r + 1) → M.R) :
     field_simp
     ring
 
+/- English proof (translation)
+Unfold `formG`. Simplify using `[map_sum, map_mul, secondProj_iotaOne_eq_zero]`.
+-/
 theorem splitForm_iota_secondProj (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (l w : Fin (r + 1) → M.R) :
     ph2 g (formG M.L.O (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) Zh (algebraMap F E T)
@@ -46,6 +63,15 @@ theorem splitForm_iota_secondProj (hs : M.split = some g) (Zh : Matrix (Fin (r +
   unfold formG
   simp [map_sum, map_mul, secondProj_iotaOne_eq_zero]
 
+/- English proof (translation)
+Use `set G := gramG (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) Zh (algebraMap F E T) (algebraMap F E T')`. Establish `hq` using `q_ne g`. Establish `hcw : ∀ j, ph1 g ((M.L.cj : E →+* E) (iota2 hs w j : E)) = ph1 g (iota1 hs w j : E)`. Introduce `j`. Use `show ph1 g (M.L.cj (M.L.cj (iota1 hs w j : E))) = _`.
+
+Rewrite using `[M.L.cj_cj]`. Establish `h1 : ph1 g (formG M.L.O (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) Zh (algebraMap F E T) (algebraMap F E T') (iota1 hs l) (iota2 hs w)) = dotProduct (fun i => ph1 g (iota1 hs l i : E)) (Matrix.mulVec (G.map (ph1 g))⁻¹ fun j => ph1 g (iota1 hs w j : E))`. Rewrite using `[← map_inv_of (ph1 g) G hG]`. Unfold `formG`. Simplify using `only [map_sum, map_mul, hcw, dotProduct, Matrix.mulVec, Matrix.map_apply, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hP : (pM r (g.q : F)⁻¹)⁻¹ = qM r (g.q : F)` using `Matrix.inv_eq_right_inv (pM_mul_qM _ hq)`. Establish `hPt : ((pM r (g.q : F)⁻¹).transpose)⁻¹ = (qM r (g.q : F)).transpose`. Rewrite using `[← Matrix.transpose_nonsing_inv, hP]`.
+
+Rewrite using `[h1, map_gramG, Matrix.mul_inv_rev, Matrix.mul_inv_rev, hP, hPt, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.mulVec_transpose, vecMul_qM, vecMul_qM]`.
+-/
 theorem splitForm_iota_firstProj (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (hG : IsUnit (gramG (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) Zh (algebraMap F E T)
       (algebraMap F E T')).det)

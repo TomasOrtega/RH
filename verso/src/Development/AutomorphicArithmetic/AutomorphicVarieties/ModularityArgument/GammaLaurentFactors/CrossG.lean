@@ -22,12 +22,24 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 namespace UpperTheory.V.Z.Gam
 
+/- English proof (translation)
+The claim follows from `crossGOf Inf.expAlg Inf.expIndep secDiff`.
+-/
 theorem crossG : CrossG := crossGOf Inf.expAlg Inf.expIndep secDiff
 
+/- English proof (translation)
+The claim follows from `sideGOf pairGOps suppFacts (sideGCenOf (gamLocOf leviDiv coefInd suppBridge) locIso)`.
+-/
 theorem sideG : SideG := sideGOf pairGOps suppFacts (sideGCenOf (gamLocOf leviDiv coefInd suppBridge) locIso)
 
+/- English proof (translation)
+The claim follows from `upDownOf suppFacts normCnt (matchBCOf pairGOps crossG sideG suppFacts normLoc globTw regroupBC)`.
+-/
 theorem upDown : UpDown := upDownOf suppFacts normCnt (matchBCOf pairGOps crossG sideG suppFacts normLoc globTw regroupBC)
 
+/- English proof (translation)
+The claim follows from `indTorOf suppFacts normCnt (matchIndOf pairGOps crossG sideG suppFacts normLoc globTw)`.
+-/
 theorem indTor : IndTor := indTorOf suppFacts normCnt (matchIndOf pairGOps crossG sideG suppFacts normLoc globTw)
 
 end UpperTheory.V.Z.Gam

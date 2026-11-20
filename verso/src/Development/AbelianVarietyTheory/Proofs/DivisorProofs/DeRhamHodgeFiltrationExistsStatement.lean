@@ -10,6 +10,9 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ZeroSectionBase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheaf
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConjSeq.conjugate_sequence | exact GlobalTheory.ConjSeq.conjugate_sequence | (intros; apply GlobalTheory.ConjSeq.conjugate_sequence <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.de_rham_conjugate_filtration_exists : GlobalTheory.Published.DualAbelianScheme → GlobalTheory.Published.CubeTheorem → GlobalTheory.Published.ConjugateFiltration →
     GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.PoincareDeRhamDuality → ∀ (p : ℕ) [Fact p.Prime] (T : Scheme.{0})
     [Algebra (ZMod p) Γ(T, ⊤)] (A : Over T) [GrpObj A] (g : ℕ),

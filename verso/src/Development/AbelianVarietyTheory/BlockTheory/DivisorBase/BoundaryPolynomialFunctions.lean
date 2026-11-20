@@ -105,6 +105,11 @@ def LogNormIntegrablePoincare : Prop :=
     regIntegral A Z n (poincarePot α Λ σ c) (regularLocus A Z n \ boundary σ)
       (absLogNorm L s) < ∞
 
+/- English proof (translation)
+Use `Set.eq_univ_of_forall fun x => ⟨trivial, ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `A.cover x`. Use `⟨A.chart j, ⟨le_rfl, fun i => ⟨A.holo i j, A.holo j i⟩, ?_⟩, hj⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [Set.univ_inter, Set.mem_setOf_eq]`.
+
+Conclude with `⟨fun h => ⟨h, fun k hk => absurd k.2 (not_lt.2 hk)⟩, fun h => h.1⟩`.
+-/
 theorem regularLocus_univ (A : FinHolAtlas d X) : regularLocus A Set.univ d = Set.univ := by
   refine Set.eq_univ_of_forall fun x => ⟨trivial, ?_⟩
   obtain ⟨j, hj⟩ := A.cover x

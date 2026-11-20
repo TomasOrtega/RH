@@ -22,6 +22,9 @@ def liftAdd (φ : L →ₐ[K] A) (v : (L ≃ₐ[K] L) → A) : CrossedProduct hf
   (Finsupp.liftAddHom fun σ => (AddMonoidHom.mulRight (v σ)).comp (φ : L →+ A)).comp
     coeffAddHom
 
+/- English proof (translation)
+Simplify using `[liftAdd, coeffAddHom]`.
+-/
 theorem liftAdd_single (φ : L →ₐ[K] A) (v : (L ≃ₐ[K] L) → A) (σ : L ≃ₐ[K] L) (a : L) :
     liftAdd φ v (single σ a : CrossedProduct hf) = φ a * v σ := by
   simp [liftAdd, coeffAddHom]
@@ -56,19 +59,31 @@ section
 variable (φ : L →ₐ[K] A) (v : (L ≃ₐ[K] L) → A) (hcomm : ∀ σ a, v σ * φ a = φ (σ a) * v σ)
     (hmul : ∀ σ τ, v σ * v τ = φ (f (σ, τ)) * v (σ * τ)) (hone : v 1 = φ (f (1, 1)))
 
+/- English proof (translation)
+The claim follows from `liftAdd_single φ v σ a`.
+-/
 @[simp] theorem lift_single (σ : L ≃ₐ[K] L) (a : L) :
     lift (hf := hf) φ v hcomm hmul hone (single σ a) = φ a * v σ :=
   liftAdd_single φ v σ a
 
+/- English proof (translation)
+Rewrite using `[incl_apply, lift_single, hone, map_mul, mul_assoc, ← map_mul, Units.inv_mul, map_one, mul_one]`.
+-/
 @[simp] theorem lift_incl (a : L) : lift (hf := hf) φ v hcomm hmul hone (incl a) = φ a := by
   rw [incl_apply, lift_single, hone, map_mul, mul_assoc, ← map_mul, Units.inv_mul, map_one,
     mul_one]
 
+/- English proof (translation)
+Rewrite using `[u, lift_single, map_one, one_mul]`.
+-/
 @[simp] theorem lift_u (σ : L ≃ₐ[K] L) : lift (hf := hf) φ v hcomm hmul hone (u σ) = v σ := by
   rw [u, lift_single, map_one, one_mul]
 
 end
 
+/- English proof (translation)
+Use extensionality with `x`. Proceed by induction on `x using induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `single σ a => rw [← incl_mul_u, map_mul, map_mul, hL, hu]`.
+-/
 theorem algHom_ext {g₁ g₂ : CrossedProduct hf →ₐ[K] A} (hL : ∀ a, g₁ (incl a) = g₂ (incl a))
     (hu : ∀ σ, g₁ (u σ) = g₂ (u σ)) : g₁ = g₂ := by
   ext x
@@ -83,6 +98,9 @@ section coboundary
 
 variable {f' : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ}
 
+/- English proof (translation)
+Establish `h` using `hx σ τ`. Rewrite `h` using `[Pi.div_apply, div_mul_eq_mul_div, div_eq_div_iff_mul_eq_mul]`. Establish `h'` using `congrArg (fun y : Lˣ => (y : L)) h`. Simplify using `only [Units.val_mul, val_smul_units] at h'`. Take the linear combination `h'`.
+-/
 theorem mul_smul_mul_eq_of_coboundary {x : (L ≃ₐ[K] L) → Lˣ}
     (hx : ∀ σ τ : L ≃ₐ[K] L, σ • x τ / x (σ * τ) * x σ = (f' / f) (σ, τ)) (σ τ : L ≃ₐ[K] L) :
     (f (σ, τ) : L) * σ (x τ) * x σ = f' (σ, τ) * x (σ * τ) := by
@@ -144,11 +162,17 @@ def equivOfIsMulCoboundary₂ (hf : IsMulCocycle₂ f) (hf' : IsMulCocycle₂ f'
       simp only [AlgHom.comp_apply, lift_u, map_mul, lift_incl, AlgHom.id_apply]
       rw [← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]))
 
+/- English proof (translation)
+Simplify using `[equivOfIsMulCoboundary₂]`.
+-/
 @[simp] theorem equivOfIsMulCoboundary₂_incl (hf : IsMulCocycle₂ f) (hf' : IsMulCocycle₂ f')
     (h : IsMulCoboundary₂ (f' / f)) (a : L) :
     equivOfIsMulCoboundary₂ hf hf' h (incl a) = incl a := by
   simp [equivOfIsMulCoboundary₂]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨equivOfIsMulCoboundary₂ hf hf' h, equivOfIsMulCoboundary₂_incl hf hf' h⟩`.
+-/
 theorem exists_algEquiv_of_isMulCoboundary₂ (hf : IsMulCocycle₂ f) (hf' : IsMulCocycle₂ f')
     (h : IsMulCoboundary₂ (f' / f)) :
     ∃ e : CrossedProduct hf ≃ₐ[K] CrossedProduct hf', ∀ a : L, e (incl a) = incl a :=
@@ -158,6 +182,9 @@ end coboundary
 
 section split
 
+/- English proof (translation)
+Introduce `_ _ _` and use `by simp`.
+-/
 theorem isMulCocycle₂_one : IsMulCocycle₂ (1 : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) :=
   fun _ _ _ => by simp
 
@@ -174,12 +201,18 @@ def toEnd (hf : IsMulCocycle₂ (1 : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ)
       ext y
       simp)
 
+/- English proof (translation)
+Simplify using `[toEnd]`.
+-/
 @[simp] theorem toEnd_single (hf : IsMulCocycle₂ (1 : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ))
     (σ : L ≃ₐ[K] L) (a y : L) : toEnd hf (single σ a) y = a * σ y := by
   simp [toEnd]
 
 variable [FiniteDimensional K L] [IsGalois K L]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (toEnd hf)` using `RingHom.injective (toEnd hf).toRingHom`. Use `⟨hinj, ?_⟩` and prove the remaining obligations. Establish `hdim : Module.finrank K (CrossedProduct hf) = Module.finrank K (Module.End K L)`. Rewrite using `[finrank_eq_sq, Module.finrank_linearMap, sq]`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim (f := (toEnd hf).toLinearMap)).1 hinj`.
+-/
 theorem toEnd_bijective (hf : IsMulCocycle₂ (1 : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ)) :
     Function.Bijective (toEnd hf) := by
   have hinj : Function.Injective (toEnd hf) := RingHom.injective (toEnd hf).toRingHom
@@ -193,6 +226,9 @@ def endEquiv (hf : IsMulCocycle₂ (1 : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → L
     CrossedProduct hf ≃ₐ[K] Module.End K L :=
   AlgEquiv.ofBijective (toEnd hf) (toEnd_bijective hf)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem endEquiv_apply (hf : IsMulCocycle₂ (1 : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ))
     (x : CrossedProduct hf) : endEquiv hf x = toEnd hf x := rfl
 
@@ -203,6 +239,9 @@ def matrixEquiv (hf : IsMulCocycle₂ (1 : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) �
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `h`. Use `⟨x⁻¹, fun σ τ => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.inv_apply]`. Rewrite using `[← hx σ τ, smul_inv']`. Simplify using `only [div_eq_mul_inv, mul_inv, inv_inv]`.
+-/
 theorem isMulCoboundary₂_inv {g : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ} (h : IsMulCoboundary₂ g) :
     IsMulCoboundary₂ g⁻¹ := by
   obtain ⟨x, hx⟩ := h

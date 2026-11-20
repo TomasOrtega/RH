@@ -17,12 +17,18 @@ def side (e : ι ≃ Fin a ⊕ Fin b) (i : ι) : Bool := (e i).isRight
 def uMat (e : ι ≃ Fin a ⊕ Fin b) (X : Fin a → Fin b → K) : Matrix ι ι K :=
   Matrix.reindex e.symm e.symm (Matrix.fromBlocks 1 (Matrix.of X) 0 1)
 
+/- English proof (translation)
+Simplify using `only [uMat, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Use `congr 1`. Simplify using `[Matrix.of_add_of, add_comm]`.
+-/
 theorem uMat_add (e : ι ≃ Fin a ⊕ Fin b) (X Y : Fin a → Fin b → K) :
     uMat e (X + Y) = uMat e X * uMat e Y := by
   simp only [uMat, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
   congr 1
   simp [Matrix.of_add_of, add_comm]
 
+/- English proof (translation)
+Simplify using `[uMat]`.
+-/
 theorem uMat_zero (e : ι ≃ Fin a ⊕ Fin b) : uMat e (0 : Fin a → Fin b → K) = 1 := by
   simp [uMat]
 

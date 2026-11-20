@@ -7,6 +7,11 @@ namespace GlobalTheory.ScalarPoin
 
 open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.ChartRestriction.G.AR.Inst MeasureTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ r X x0 ho`. Take `⟨FF, hF⟩` from `GlobalTheory.MetricWeightTest.exists_fundSet_orth X ho`. Establish `hfin` using `(GlobalTheory.TrueCx.covol_eq X ho hF).1`. Use `⟨4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 + 1, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hCb⟩` from `kaUnfoldStatement_holds r X x0 ho (GlobalTheory.ClosedDiscontinuity.propDisc_closed r X) FF hF s (by linarith)`.
+
+Establish `h` using `hCb (fun _ => 1) measurable_const (fun _ _ _ _ => rfl) (fun _ _ _ _ => rfl)`. Simplify using `only [mul_one, lintegral_const, Measure.restrict_apply MeasurableSet.univ, Set.univ_inter, one_mul] at h`. Conclude with `h.trans_lt (ENNReal.mul_lt_top hC hfin)`.
+-/
 theorem lintegral_kaF_lt_top : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
     (x0 : Frame X.Ψ r), IsOrth X x0 → ∃ s0 : ℝ, ∀ s : ℝ, s0 ≤ s →
       ∫⁻ z, ENNReal.ofReal (kaF X x0 s z) ∂muF X x0 < ⊤ := by

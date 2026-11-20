@@ -20,6 +20,35 @@ noncomputable section
 namespace CompanionTheory.PlacePermOperatorBicommutantSpan
 
 set_option maxHeartbeats 600000 in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm M J hJ hM T hT hd d b li lam hli hlam μ 𝓕 hμ h𝓕 mi m hmi hm`. Take `⟨t1, t2⟩` from `theta_inv F E σ hcm M J hJ μ 𝓕 hμ h𝓕 1 T`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_isEulerProd_of_invariant_of_fiber_supported F E σ hcm M J hJ 1 (Or.inr hM) T hT hd d b li lam hli hlam mi hmi m hm _ (theta_measure_locally_finite F E σ hcm M J hJ hM μ 𝓕 hμ h𝓕 T hT hd) t1 t2`. Distinguish the cases in `h0 : mi (hermOf (Ainf F) σ T hT) = 0 ∨ ∃ v, m v (hermOf (Fv F v) σ T hT) = 0`. Rewrite using `[(GlobalTheory.T.euler_product_measure_zero F E σ hcm d b 1 M _ c _ _).2.1 hc h0]`.
+
+Conclude with `(GlobalTheory.T.euler_product_measure_zero F E σ hcm d b 1 M 0 1 _ _).2.2 hc.1 hc.2.1 h0`. It suffices to establish `h : c = 1 from h ▸ hc`. Take `⟨β, rfl, hβ, he⟩` from `GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm T hT`. Simplify using `only [he] at hc h0`. Use `push Not at h0`.
+
+Take `⟨φ, C, φc, φp, φf, hb⟩` from `GlobalTheory.T.thetaMeas_rank_one_sub_density_product_le F E σ hcm M J hJ hM d b li lam hli hlam μ 𝓕 hμ h𝓕 mi hmi m hm β (hβ hd)`. Take `⟨κ, hκ, hg⟩` from `GlobalTheory.T.exists_frequently_mul_pow_le_tprod_rank_one_local_density F E σ hcm M J hJ hM d b lam hlam m hm β (hβ hd) h0.2`. Establish `: BorelSpace (Fin 1 → Fin M → Ainf F ⊗[F] E)`. Establish `: BorelSpace (Ainf F ⊗[F] E)` using `⟨rfl⟩`. Take `⟨_, _, _, _, -⟩` from `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hcm.1`.
+
+Conclude with `(GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Ainf F)).2.2.2.2.2.2.2.1 1 M`. Establish `hφm : Measurable fun X => ENNReal.ofReal (φ X)` using `φc.measurable.ennreal_ofReal`. Use `set w := ∫⁻ X, ENNReal.ofReal (φ X) ∂(mi (hermScal (Ainf F) σ (algebraMap F _ β))) with hw`. Establish `hw0 : 0 < w.toReal` using `ENNReal.toReal_pos (fun h => h0.1 (by`. Rewrite `h` using `[hw, lintegral_eq_zero_iff hφm]`.
+
+Conclude with `ae_eq_bot.1 (Filter.eventually_false_iff_eq_bot.1 (h.mono fun X hX => (ENNReal.ofReal_pos.2 (φp X)).ne' hX)))) φf.ne`. Establish `key : ∀ k : ℕ, ∃ a : ℕ, k < a ∧ |(c : ℝ) - 1| * (w.toReal * κ) * (a : ℝ) ≤ |C|` using `fun k => by`. Take `⟨a, ha, h1⟩` from `hg k`. Establish `ha0 : 0 < a` using `lt_of_le_of_lt k.zero_le ha`. Establish `haE : (a : E) ≠ 0` using `by exact_mod_cast ha0.ne'`.
+
+Take `⟨I, e1, e2⟩` from `hb a ha0`. Establish `hA : ∀ v, MeasurableSet {X : Fin 1 → Fin M → Fv F v ⊗[F] E | (fun p i => (a : Fv F v ⊗[F] E) * X p i) ∈ latV b v} ∧ m v (hermScal (Fv F v) σ (algebraMap F _ β)) {X : Fin 1 → Fin M → Fv F v ⊗[F] E | (fun p i => (a : Fv F v ⊗[F] E) * X p i) ∈ latV b v} < ⊤` using `fun v => by`. Establish `hR` using `GlobalTheory.T.completion_is_local_ring F v`. Establish `hR'` using `hR`. Take `⟨_, _, _, _, -⟩` from `hR'`.
+
+Establish `: BorelSpace (Fv F v)` using `⟨rfl⟩`. Take `⟨_, _, _, _, -, -, -, hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)`. Use `hB 1 M` as an intermediate fact. Establish `hu : IsUnit (a : Fv F v ⊗[F] E)` using `by simpa using (Ne.isUnit haE).map (inclR (F := F) (Fv F v))`. Establish `hK : IsCompact {X : Fin 1 → Fin M → Fv F v ⊗[F] E | (fun p i => (a : Fv F v ⊗[F] E) * X p i) ∈ latV b v}` using `(Homeomorph.smul hu.unit).isCompact_preimage.2 ((GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 M).2.2.2.1 v).1`.
+
+Take `⟨-, k1, k2⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hcm (Fv F v) d b (lam v) (hlam v).1`. Use `(GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hcm M J hJ (Fv F v) hR 1 _ _ _ (k1 1 M) (k2 1) (hm v) (hermScal (Fv F v) σ (algebraMap F _ β))).1` as an intermediate fact. Conclude with `⟨hK.measurableSet, hK.measure_lt_top⟩`. Take `⟨-, e3⟩` from `GlobalTheory.T.euler_product_measure_integral F E σ hcm d b 1 M _ c _ _ hc _ _ hφm (fun v => (hA v).1) (fun v => (hA v).2) (((GlobalTheory.T.lattice_stable_almost_everywhere F E σ hcm d b 1 M).1 (Matrix.of fun _ _ => (a : E)) ((Matrix.det_unique _).trans_ne haE)).mono fun v hv => …`. Use `Iff.trans (Iff.of_eq (congrArg (· ∈ latV b v) (funext fun p => funext fun i => ?_))) (hv X)` and prove the remaining obligations.
+
+Rewrite using `[Subsingleton.elim p 0]`. Simplify using `[rmul, mul_comm])`. Generalize the expression as in `(∏' v, (m v (hermScal (Fv F v) σ (algebraMap F _ β)) {X : Fin 1 → Fin M → Fv F v ⊗[F] E | (fun p i => (a : Fv F v ⊗[F] E) * X p i) ∈ latV b v}).toReal) = P at h1 e2 e3`. Establish `haR : (1 : ℝ) ≤ a` using `by exact_mod_cast ha0`. Establish `hP : 0 ≤ P` using `le_trans (by positivity) h1`.
+
+Establish `e4` using `congrArg ENNReal.toReal (e1.symm.trans e3)`. Rewrite `e4` using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal hP, ENNReal.coe_toReal, ENNReal.coe_toReal]`. Rewrite `e2` using `[e4, show (c : ℝ) * w.toReal * P - w.toReal * P = (c - 1) * (w.toReal * P) by ring, abs_mul, abs_of_nonneg (mul_nonneg hw0.le hP)]`. Establish `hD : 0 < Module.finrank ℚ F` using `Module.finrank_pos`. Establish `h2 : (a : ℝ) * (a : ℝ) ^ (Module.finrank ℚ F * M) ≤ (a : ℝ) ^ (Module.finrank ℚ F * (2 * M - 2))`.
+
+Rewrite using `[← pow_succ']`. Use `pow_le_pow_right₀ haR ?_` and prove the remaining obligations. Take `⟨M', rfl⟩` from `Nat.exists_eq_add_of_le' hM`. Rewrite using `[show 2 * (M' + 3) - 2 = M' + 3 + (M' + 1) by omega, mul_add _ (M' + 3)]`. Conclude with `Nat.add_le_add_left (Nat.mul_pos hD (Nat.succ_pos _)) _`.
+
+Use `⟨a, ha, le_of_mul_le_mul_right ?_ (show (0 : ℝ) < (a : ℝ) ^ (Module.finrank ℚ F * M) by positivity)⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `(mul_le_mul_of_nonneg_left h2 hκ.le).trans h1`. Use `_ ≤ _ := e2.trans (by gcongr; exact le_abs_self C)`. Assume the negation of the conclusion as `hne`.
+
+Establish `hp : 0 < |(c : ℝ) - 1| * (w.toReal * κ)` using `mul_pos (abs_pos.2 (sub_ne_zero.2 (by exact_mod_cast hne))) (mul_pos hw0 hκ)`. Take `⟨k, hk⟩` from `exists_nat_gt (|C| / (|(c : ℝ) - 1| * (w.toReal * κ)))`. Take `⟨a, ha, h⟩` from `key k`. Rewrite `hk` using `[div_lt_iff₀' hp]`. Establish `: (k : ℝ) < a` using `by exact_mod_cast ha`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem sw_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M → ∀ (T : Matrix (Fin 1) (Fin 1) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → SWMeas σ J T hT := by
   intro F E _ _ _ _ _ σ hcm M J hJ hM T hT hd d b li lam hli hlam μ 𝓕 hμ h𝓕 mi m hmi hm
   obtain ⟨t1, t2⟩ := theta_inv F E σ hcm M J hJ μ 𝓕 hμ h𝓕 1 T

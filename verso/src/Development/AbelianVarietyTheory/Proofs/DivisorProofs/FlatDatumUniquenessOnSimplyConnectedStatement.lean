@@ -22,5 +22,8 @@ open scoped ContDiff
 open GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.FlatSame.main | exact GlobalTheory.TorsionForm.FlatSame.main | (intros; apply GlobalTheory.TorsionForm.FlatSame.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flat_datum_uniqueness_on_simply_connected : IsometryInv → TranslationInv → ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] (g n : ℕ) (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ), SimplyConnectedSpace B → ∀ (M : Submodule ℤ (Fl g)), (∀ l ∈ M, ∀ l' ∈ M, ∃ k : ℤ, riem l l' = k) → ∀ (j₁ j₂ : Fl g → Pt E g → ℂ) (h₁ h₂ : Pt E g → ℝ), IsDatum B τ M j₁ h₁ → ChernIsFlat B τ h₁ → IsDatum B τ M j₂ h₂ → ChernIsFlat B τ h₂ → ∀ (β : Fin n → E), ∀ b ∈ B, ∀ T : Ext (n + n), IsTorsionForm τ M j₁ h₁ β b T → IsTorsionForm τ M j₂ h₂ β b T := by
   first | exact @GlobalTheory.TorsionForm.FlatSame.main | exact GlobalTheory.TorsionForm.FlatSame.main | (intros; apply GlobalTheory.TorsionForm.FlatSame.main <;> assumption)

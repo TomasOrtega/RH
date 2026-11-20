@@ -14,6 +14,9 @@ namespace GlobalTheory.CovTop.Assembly
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h` using `(tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero (A / c) 1 one_pos).comp (tendsto_rpow_atTop hc)`. Use `h.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (0 : ℝ)] with x hx`. Simplify using `only [Function.comp]`. Rewrite using `[← Real.rpow_mul hx, mul_div_cancel₀ _ hc.ne', mul_comm, neg_mul, one_mul]`.
+-/
 theorem tendsto_exp_mul_rpow {c : ℝ} (hc : 0 < c) (A : ℝ) :
     Tendsto (fun x : ℝ => Real.exp (-(x ^ c)) * x ^ A) atTop (𝓝 0) := by
   have h := (tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero (A / c) 1 one_pos).comp (tendsto_rpow_atTop hc)
@@ -22,6 +25,11 @@ theorem tendsto_exp_mul_rpow {c : ℝ} (hc : 0 < c) (A : ℝ) :
   simp only [Function.comp]
   rw [← Real.rpow_mul hx, mul_div_cancel₀ _ hc.ne', mul_comm, neg_mul, one_mul]
 
+/- English proof (translation)
+Establish `h` using `((((tendsto_exp_mul_rpow hc A).add (tendsto_exp_mul_rpow hc B)).add ((tendsto_exp_mul_rpow hc 0).mul_const C)).const_mul 12)`. Establish `h1 : (12 : ℝ) * (0 + 0 + 0 * C) < 1` using `by norm_num`. Take `⟨x0, hx0⟩` from `eventually_atTop.1 (h.eventually (gt_mem_nhds h1))`. Use `⟨x0, fun x hx => ?_⟩` and prove the remaining obligations. Use `hx0 x hx` as an intermediate fact.
+
+Simplify using `only [Real.rpow_zero] at this`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_loss_le {c : ℝ} (hc : 0 < c) (A B C : ℝ) :
     ∃ x0 : ℝ, ∀ x, x0 ≤ x → 12 * Real.exp (-(x ^ c)) * (x ^ A + x ^ B + C) ≤ 1 := by
   have h := ((((tendsto_exp_mul_rpow hc A).add (tendsto_exp_mul_rpow hc B)).add
@@ -36,6 +44,21 @@ theorem exists_loss_le {c : ℝ} (hc : 0 < c) (A B C : ℝ) :
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
+/- English proof (translation)
+Use `haveI : IsTotallyComplex D.what₂.LL := D.tcLL`. Take `⟨g1, g2, g3, -⟩` from `hG`. Take `⟨c1, c2, c3, c4⟩` from `hC`. Take `⟨s1, s2, -, s4, -⟩` from `hS`. Unfold `RecAt at hR`.
+
+Unfold `LamAt at hL`. Unfold `CoreAt at hK`. Unfold `LowAt at hW`. Establish `hA` using `Real.rpow_pos_of_pos hx A`. Establish `hB'` using `Real.rpow_pos_of_pos hx B`.
+
+Establish `hδ` using `Real.exp_pos (-(L.sc.x ^ (L.sc.ez / 7)))`. Establish `hm` using `(abs_le.1 s4).2`. Establish `key` using `GlobalTheory.CutNum.slope_good_ge D.what₂.LL _ (nrmR p.R.toRealDat i) (latType p.R.toRealDat p.F.lv2 i) (latAll p.R.toRealDat i) (eGood p.R.toRealDat i) (Fintype.card p.P.Gp) (Real.exp (-(L.sc.x ^ (L.sc.ez / 7)))) ((L.sc.x ^ A + L.sc.x ^ B + (C1 + C2 + 1)) * unitE p) g1 g2 inf_le …`. Establish `key' : slope_sq (nrmR p.R.toRealDat i) (latType p.R.toRealDat p.F.lv2 i) - 12 * Real.exp (-(L.sc.x ^ (L.sc.ez / 7))) * ((L.sc.x ^ A + L.sc.x ^ B + (C1 + C2 + 1)) * unitE p) ≤ slope_sq (nrmR p.R.toRealDat i) (latGood p.R.toRealDat p.F.lv2 i)`. Use `key ?_ hB ?_ ?_ ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `all_goals clear key hR`. Generalize the expression as in `Real.exp (-(L.sc.x ^ (L.sc.ez / 7))) = δ at *`. Generalize the expression as in `L.sc.x ^ A = a at *`. Generalize the expression as in `L.sc.x ^ B = b at *`. Generalize the expression as in `unitE p = E at *`.
+
+Establish `hE : 0 ≤ E` using `by linarith`. Establish `ea` using `mul_le_mul_of_nonneg_left s2 hA.le`. Establish `eb` using `mul_le_mul_of_nonneg_left s2 hB'.le`. Establish `e1` using `mul_nonneg h1 hE`. Establish `e2` using `mul_nonneg h2 hE`.
+
+Establish `e3` using `mul_nonneg hA.le hE`. Establish `e4` using `mul_nonneg hB'.le hE`. Use polynomial arithmetic with `[mul_nonneg hδ.le hA.le, mul_nonneg hδ.le hB'.le, mul_nonneg hδ.le h1, mul_nonneg hδ.le h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE : 0 ≤ unitE p` using `by linarith`. Use `mul_le_mul_of_nonneg_right hs hE` as an intermediate fact. Rewrite `this` using `[mul_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lcv_le {A B PP C1 C2 : ℝ} (hx : 0 < L.sc.x) (h1 : 0 ≤ C1) (h2 : 0 ≤ C2)
     (hs : 12 * Real.exp (-(L.sc.x ^ (L.sc.ez / 7))) * (L.sc.x ^ A + L.sc.x ^ B + (C1 + C2 + 1)) ≤ 1)
     (hG : GramAt p i) (hR : RecAt p i) (hC : CutAt p i) (hB : BadAt p i) (hL : LamAt p i A) (hS : SizeAt p i PP B)
@@ -83,6 +106,17 @@ theorem lcv_le {A B PP C1 C2 : ℝ} (hx : 0 < L.sc.x) (h1 : 0 ≤ C1) (h2 : 0 �
   rw [mul_assoc] at this
   linarith
 
+/- English proof (translation)
+Introduce `hG hR hC hB hL hS hK hW`. Use `Closed.imp (Closed.and (Closed.and (Closed.and hG hR) (Closed.and hC hB)) (Closed.and (Closed.and hL hS) (Closed.and hK hW))) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH he ⟨⟨⟨⟨_, -, g⟩, ⟨_, -, r⟩⟩, ⟨⟨_, -, c⟩, ⟨_, -, b⟩⟩⟩, ⟨⟨A, -, l⟩, ⟨B, -, s⟩⟩, ⟨C1, h1, k⟩, ⟨C2, h2, w⟩⟩`. Establish `hez : 0 < Fm.ez`. Take `⟨i⟩` from `Fm.Ix_zero`.
+
+Rewrite using `[← Fm.L_ez 0 i]`. Conclude with `(Fm.L 0 i).sc.ez_pos`. Take `⟨x0, hx0⟩` from `exists_loss_le (show 0 < Fm.ez / 7 by positivity) A B (C1 + C2 + 1)`. Take `⟨x1, h⟩` from `(((g.and r).and (c.and b)).and ((l.and s).and (k.and w)))`. Use `⟨C1 + C2 + 1, by linarith, max x0 x1, fun x hx hle ι p hp C hC i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨⟨g, r⟩, c, b⟩, ⟨l, s⟩, k, w⟩` from `h x hx ((le_max_right _ _).trans hle) ι p hp`. Establish `ex` using `Fm.L_x x ι hx`. Establish `ee` using `Fm.L_ez x ι`. Establish `hs` using `hx0 x ((le_max_left _ _).trans hle)`. Establish `hx' : 0 < x` using `(zero_lt_one.trans Fm.one_lt_family_threshold).trans hx`.
+
+Establish `main` using `lcv_le p i (ex.symm ▸ hx') h1 h2 (by rw [ex, ee]; exact hs) (g i) (r i) (c i) (b i) (l i) (s i) (k i) (w i)`. Establish `hE : 0 ≤ unitE p`. Take `⟨s1, s2, -⟩` from `s i`. Combine the linear equalities and inequalities to obtain the conclusion. Use `main.trans ?_` and prove the remaining obligations.
+
+Use `show mainT p i + (C1 + C2 + 1) * unitE p ≤ mainT p i + C * unitE p`. Use `mul_le_mul_of_nonneg_right hC hE` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem covolX_of_steps : Gram → Rec → Cut → Bad → abelian₂ → Size → CoreLe → Low → CovolX := by
   intro hG hR hC hB hL hS hK hW
   refine Closed.imp (Closed.and (Closed.and (Closed.and hG hR) (Closed.and hC hB))

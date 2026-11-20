@@ -22,6 +22,15 @@ open GlobalTheory.TorusExt
 
 attribute [local instance] gtGroup
 
+/- English proof (translation)
+Introduce `R _ _ _ hBase G _ _ hG D A U E E' hE K _ _ _ m pk pk' x hm h1 h2`. Use `haveI : CharZero R := hBase.2`. Establish `hAdm` using `hBase.1`. Take `⟨-, hFE⟩` from `GlobalTheory.UT.functorial_of_unif R (maximalIdeal R) hAdm D A G hG U`. Take `⟨-, hK⟩` from `hFE E E' hE`.
+
+Take `⟨hex, hiota, hmap⟩` from `hK K`. Establish `hcalc` using `(GlobalTheory.EndCalc.end_calculus GlobalTheory.firstFiveLaws R (maximalIdeal R) hAdm D A G hG U K E E E).2.1`. Use `choose φ hφ using fun g => (hex g).exists`. Establish `hadd : ∀ g g' : GtPtF D.toPre K, φ (g + g') = φ g + φ g'` using `fun g g' => (isAdd_iff_eq _ _ _).1 (hcalc g g' (g + g') _ _ _ ((isAdd_iff_eq _ _ _).2 rfl) (hφ g) (hφ g') (hφ _))`. Set `φh : GtPtF D.toPre K →+ GtPtF D.toPre K` to `AddMonoidHom.mk' φ hadd`.
+
+Take `⟨h, hns, hio⟩` from `pk.eq`. Establish `hh : h = m • pk.g` using `(isNsmul_iff_eq _ _ _).1 hns`. Set `p' : QkPt D.toPre K m` to `⟨E'.h pk.y, φ pk.g, φ h, (isNsmul_iff_eq _ _ _).2 (by rw [hh]; exact map_nsmul φh m pk.g), hiota _ _ _ hio (hφ h)⟩`. Establish `h3 : QkToAkU U.toUnifPre K m p' (x ≫ E.aA)` using `hmap m hm pk p' x rfl (hφ pk.g) h1`. Take `⟨f, hf, -⟩` from `GlobalTheory.TorsionIso.torsion_clause R (maximalIdeal R) hAdm D A G hG U K m hm`.
+
+Establish `e : f p' = f pk'` using `((hf.1 _ _).1 h3).symm.trans ((hf.1 _ _).1 h2)`. Take `⟨z, hz, -⟩` from `(hf.2.2.1 _ _).1 e`. Conclude with `⟨z, hz⟩`.
+-/
 theorem congMod_y_of_end : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (E E' : GlobalTheory.UT.EndU U.toUnifPre), LBIso (cubeLB G ![fst G G ≫ E.aG, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ E'.aG] U.LG.L) → ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra (FractionRing R) K] (m : ℕ) (pk pk' : QkPt D.toPre K m) (x : TFK (R := R) K ⟶ A.A), 1 ≤ m → QkToAkU U.toUnifPre K m pk x → QkToAkU U.toUnifPre K m pk' (x ≫ E.aA) → CongMod m pk'.y (E'.h pk.y) := by
   intro R _ _ _ hBase G _ _ hG D A U E E' hE K _ _ _ m pk pk' x hm h1 h2
   haveI : CharZero R := hBase.2

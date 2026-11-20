@@ -22,6 +22,27 @@ noncomputable section
 
 namespace GlobalTheory.Core.Rk.BoxCoef
 
+/- English proof (translation)
+Introduce `D ψ A B W H o χA χW omB omW omH hB hW hH νB 𝓕B νW 𝓕W νH 𝓕H cB cW cH Φ Φ' hΦ hΦ' g`. Establish `hψ` using `hB.std`. Establish `hB' : IsWeilDatumO ψ A B χA (χW * 1) omB` using `by rwa [mul_one]`. Establish `hom` using `(GlobalTheory.TensorTargetRule.tensorTarget D ψ hψ B W H o A).om_box χA χW 1 omB omW omH hB' hW hH g 1 1 Φ Φ' hΦ hΦ'`. Establish `e1 : o.emb ((1 : GA D W), (1 : GA D H)) = 1` using `map_one o.emb`.
+
+Rewrite `hom` using `[e1]`. Establish `hF1t : IsThetaFunO ψ A W (omW (g, 1) Φ)` using `hW.om_pres _ _ hΦ`. Establish `hF2t : IsThetaFunO ψ A H (omH (g, 1) Φ')` using `hH.om_pres _ _ hΦ'`. Simplify using `only [wcoef, ip]`. Rewrite using `[hom]`.
+
+Use `haveI := GlobalTheory.WeilSliceUnit.borel_Mx (D := D) B.rank A.rank`. Use `haveI := GlobalTheory.WeilSliceUnit.borel_Mx (D := D) W.rank A.rank`. Use `haveI := GlobalTheory.WeilSliceUnit.borel_Mx (D := D) H.rank A.rank`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D B.rank A.rank`. Take `⟨j1, j2, j3, j4, j5, -⟩` from `lattice_Mx D W.rank A.rank`.
+
+Take `⟨k1, k2, k3, k4, k5, -⟩` from `lattice_Mx D H.rank A.rank`. Use `haveI := cW.1`. Use `haveI := cH.1`. Set `e : WO A B ≃ₜ (WO A W × WO A H)` to `{ (o.resT A).toEquiv with continuous_toFun := o.continuous_resT A, continuous_invFun := o.continuous_resT_symm A }`. Set `em` to `e.toMeasurableEquiv`.
+
+Set `μP : Measure (WO A W × WO A H)` to `νW.prod νH`. Set `μ' : Measure (WO A B)` to `μP.map em.symm`. Use `haveI : μ'.IsAddHaarMeasure := (o.resT A).symm.isAddHaarMeasure_map μP (o.continuous_resT_symm A) (o.continuous_resT A)`. Establish `hmp : MeasurePreserving em μ' μP` using `⟨em.measurable, em.map_map_symm⟩`. Establish `hprod` using `GlobalTheory.WeilSliceUnit.isAddFundamentalDomain_prod cW.2.1 cH.2.1`.
+
+Establish `hmem : ∀ γ : (ratL W A).prod (ratL H A), (o.resT A).symm (γ : WO A W × WO A H) ∈ ratL B A` using `fun γ => by`. Rewrite using `[o.mem_ratL_resT, AddEquiv.apply_symm_apply]`. Conclude with `AddSubgroup.mem_prod.1 γ.2`. Establish `hP : IsAddFundamentalDomain (ratL B A) (em ⁻¹' (𝓕W ×ˢ 𝓕H)) μ'`. Use `hprod.preimage_of_equiv hmp.quasiMeasurePreserving (e := fun γ => ⟨_, hmem γ⟩) ⟨fun γ γ' h => ?_, fun h => ?_⟩ fun γ x => ?_` and prove the remaining obligations.
+
+Conclude with `Subtype.ext ((o.resT A).symm.injective (congrArg Subtype.val h))`. Use `⟨⟨o.resT A h, AddSubgroup.mem_prod.2 ((o.mem_ratL_resT A h).1 h.2)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `(o.resT A).symm_apply_apply h`. Express the relevant statement in the definitionally equal form `o.resT A ((o.resT A).symm (γ : WO A W × WO A H) + x) = (γ : WO A W × WO A H) + o.resT A x`. Rewrite using `[map_add, AddEquiv.apply_symm_apply]`.
+
+Establish `hvol : μ' (em ⁻¹' (𝓕W ×ˢ 𝓕H)) = 1`. Rewrite using `[← em.map_apply, hmp.map_eq, Measure.prod_prod, cW.2.2, cH.2.2, one_mul]`. Establish `hcov : IsCovolOne (ratL B A) μ' (em ⁻¹' (𝓕W ×ˢ 𝓕H))` using `⟨inferInstance, hP, hvol⟩`. Establish `hper` using `GlobalTheory.Size.mul_conj_periodic hψ (o.isThetaFunO_boxT hF1t hF2t) (o.isThetaFunO_boxT hΦ hΦ')`. Use `(covolOne_integral_eq cB hcov (fun w => o.boxT A (omW (g, 1) Φ) (omH (g, 1) Φ') w * conj (o.boxT A Φ Φ' w)) hper).symm.trans ?_` and prove the remaining obligations.
+
+Establish `hfun : (fun w => o.boxT A (omW (g, 1) Φ) (omH (g, 1) Φ') w * conj (o.boxT A Φ Φ' w)) = fun w => (fun y : WO A W × WO A H => (omW (g, 1) Φ y.1 * conj (Φ y.1)) * (omH (g, 1) Φ' y.2 * conj (Φ' y.2))) (em w)`. Use function extensionality and compare the values at `w`. Use `show omW (g, 1) Φ (o.resT A w).1 * omH (g, 1) Φ' (o.resT A w).2 * conj (Φ (o.resT A w).1 * Φ' (o.resT A w).2) = omW (g, 1) Φ (o.resT A w).1 * conj (Φ (o.resT A w).1) * (omH (g, 1) Φ' (o.resT A w).2 * conj (Φ' (o.resT A w).2))`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hfun]`. Use `(hmp.setIntegral_preimage_emb em.measurableEmbedding (fun y : WO A W × WO A H => (omW (g, 1) Φ y.1 * conj (Φ y.1)) * (omH (g, 1) Φ' y.2 * conj (Φ' y.2))) (𝓕W ×ˢ 𝓕H)).trans ?_` and prove the remaining obligations. Rewrite using `[← Measure.prod_restrict]`. Conclude with `integral_prod_mul (fun u => omW (g, 1) Φ u * conj (Φ u)) (fun v => omH (g, 1) Φ' v * conj (Φ' v))`.
+-/
 theorem wcoef_boxT : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B W H : HSp D) (o : OrthDec B W H) (χA χW : (AE D)ˣ →* Circle) (omB : WRep A B) (omW : WRep A W) (omH : WRep A H), IsWeilDatumO ψ A B χA χW omB → IsWeilDatumO ψ A W χA χW omW → IsWeilDatumO ψ A H χA 1 omH → ∀ νB 𝓕B νW 𝓕W νH 𝓕H, IsCovolOne (ratL B A) νB 𝓕B → IsCovolOne (ratL W A) νW 𝓕W → IsCovolOne (ratL H A) νH 𝓕H → ∀ Φ Φ', IsThetaFunO ψ A W Φ → IsThetaFunO ψ A H Φ' → ∀ g, wcoef omB νB 𝓕B (o.boxT A Φ Φ') (o.boxT A Φ Φ') g = wcoef omW νW 𝓕W Φ Φ g * wcoef omH νH 𝓕H Φ' Φ' g := by
   intro D ψ A B W H o χA χW omB omW omH hB hW hH νB 𝓕B νW 𝓕W νH 𝓕H cB cW cH Φ Φ' hΦ hΦ' g
   have hψ := hB.std

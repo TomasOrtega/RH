@@ -16,6 +16,9 @@ namespace GlobalTheory.Dieu.EtFromConn
 
 variable {p : ℕ} [Fact p.Prime] (B : Base p (fun _ _ G => G.IsConn))
 
+/- English proof (translation)
+The claim follows from `PDivGroup.dual_isConn_of_isEt p k G hG`.
+-/
 theorem dual_conn {k : Type} [Field k] [CharP k p] [PerfectRing k p] {G : PDivGroup p k}
     (hG : G.IsEt) : G.dual.IsConn :=
   PDivGroup.dual_isConn_of_isEt p k G hG
@@ -41,6 +44,9 @@ def tr {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k
     (hG : G.IsEt) (s : SemiHom σ G' G) (l : Mod B G hG) : Mod B G' hG' :=
   if h : ∃ l', IsTr B σ hG' hG s l l' then Classical.choose h else 0
 
+/- English proof (translation)
+Rewrite using `[tr, dif_pos h]`. Conclude with `Classical.choose_spec h`.
+-/
 theorem tr_spec {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p]
     [PerfectRing k' p] {σ : k →+* k'} {G' : PDivGroup p k'} {G : PDivGroup p k} (hG' : G'.IsEt)
     (hG : G.IsEt) (s : SemiHom σ G' G) (l : Mod B G hG) (h : ∃ l', IsTr B σ hG' hG s l l') :
@@ -52,6 +58,9 @@ section Red
 
 variable {k : Type} [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k) (hG : G.IsEt)
 
+/- English proof (translation)
+Use `haveI := B.free G.dual (dual_conn hG)`. Use `haveI := B.finite G.dual (dual_conn hG)`. Conclude with `wittDual_reduction p k _ _ (B.red G.dual (dual_conn hG)) (B.red_surjective G.dual (dual_conn hG)) (B.red_eq_zero G.dual (dual_conn hG))`.
+-/
 theorem exists_redDual : ∃ r' : Mod B G hG →ₛₗ[(WittVector.constantCoeff : WittVector p k →+* k)]
       Module.Dual k G.dual.RigExt,
     (∀ l m, r' l (B.red G.dual (dual_conn hG) m) = WittVector.constantCoeff (l m)) ∧
@@ -65,6 +74,9 @@ def redDual : Mod B G hG →ₛₗ[(WittVector.constantCoeff : WittVector p k �
     Module.Dual k G.dual.RigExt :=
   Classical.choose (exists_redDual B G hG)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_redDual B G hG)`.
+-/
 theorem redDual_spec :
     (∀ l m, redDual B G hG l (B.red G.dual (dual_conn hG) m) = WittVector.constantCoeff (l m)) ∧
       Function.Surjective (redDual B G hG) ∧ ∀ l, redDual B G hG l = 0 ↔ ∃ l', l = p • l' :=
@@ -77,6 +89,9 @@ def rigLie : G.RigExt ≃ₗ[k] G.dual.Lie :=
 def red : Mod B G hG →ₛₗ[(WittVector.constantCoeff : WittVector p k →+* k)] G.RigExt :=
   (rigLie G hG).symm.toLinearMap.comp (G.dual.rigOfOmega.dualMap.comp (redDual B G hG))
 
+/- English proof (translation)
+The claim follows from `(rigLie G hG).apply_symm_apply _`.
+-/
 theorem rigToLie_red (l : Mod B G hG) :
     G.rigToLie (p_eq_zero p k) (red B G hG l) = G.dual.rigOfOmega.dualMap (redDual B G hG l) :=
   (rigLie G hG).apply_symm_apply _

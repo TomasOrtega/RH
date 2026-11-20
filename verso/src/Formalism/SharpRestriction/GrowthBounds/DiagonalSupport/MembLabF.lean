@@ -14,6 +14,11 @@ section Geo
 
 variable {n' r : ℕ} [NeZero n'] (Fr : Frames n' r) {L₁ N₁ : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `m using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[show j + ((k : ℤ) + 1) * (Fr.J : ℤ) = (j + (k : ℤ) * Fr.J) + Fr.J by ring, hV.2.1, ih]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `pred k ih`. Establish `h` using `hV.2.1 (j + (-(k : ℤ) - 1) * Fr.J) i`. Rewrite `h` using `[show j + (-(k : ℤ) - 1) * (Fr.J : ℤ) + Fr.J = j + -(k : ℤ) * Fr.J by ring, ih]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lf_fr_per (hV : Fr.Valid L₁ N₁) (j : ℤ) (i : ℕ) (m : ℤ) :
     Fr.fr (j + m * Fr.J) i = Fr.fr j i + m * n' := by
   induction m using Int.induction_on with
@@ -26,6 +31,11 @@ theorem lf_fr_per (hV : Fr.Valid L₁ N₁) (j : ℤ) (i : ℕ) (m : ℤ) :
     rw [show j + (-(k : ℤ) - 1) * (Fr.J : ℤ) + Fr.J = j + -(k : ℤ) * Fr.J by ring, ih] at h
     linarith
 
+/- English proof (translation)
+Introduce `i i' hii' hi'`. Proceed by induction on `i' with`. Consider the case `zero => rw [Nat.le_zero.mp hii']`. Consider the case `succ k ih`. Break down `Nat.lt_or_ge i (k + 1) with h | h` into its components or cases.
+
+Conclude with `le_trans (ih (by omega) (by omega)) (hV.2.2.1 j k (by omega)).le`. Rewrite using `[le_antisymm hii' h]`.
+-/
 private theorem fr_mono_of_valid (hV : Fr.Valid L₁ N₁) (j : ℤ) :
     ∀ i i' : ℕ, i ≤ i' → i' < r → Fr.fr j i ≤ Fr.fr j i' := by
   intro i i' hii' hi'
@@ -36,6 +46,9 @@ private theorem fr_mono_of_valid (hV : Fr.Valid L₁ N₁) (j : ℤ) :
     · exact le_trans (ih (by omega) (by omega)) (hV.2.2.1 j k (by omega)).le
     · rw [le_antisymm hii' h]
 
+/- English proof (translation)
+Introduce `b hab`. Proceed by induction on `b, hab using Int.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ k _ ih`. Conclude with `le_trans ih (le_trans (hV.2.2.2.1 k).le (fr_mono_of_valid Fr hV (k + 1) 0 (r - 1) (Nat.zero_le _) (by omega)))`.
+-/
 private theorem fr_last_mono_in_index_of_valid (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (a : ℤ) :
     ∀ b : ℤ, a ≤ b → Fr.fr a (r - 1) ≤ Fr.fr b (r - 1) := by
   intro b hab
@@ -45,6 +58,17 @@ private theorem fr_last_mono_in_index_of_valid (hV : Fr.Valid L₁ N₁) (hr : 1
     exact le_trans ih (le_trans (hV.2.2.2.1 k).le
       (fr_mono_of_valid Fr hV (k + 1) 0 (r - 1) (Nat.zero_le _) (by omega)))
 
+/- English proof (translation)
+Establish `hn0 : (0 : ℤ) < n'` using `by exact_mod_cast NeZero.pos n'`. Establish `hv : ((y % (n' : ℤ)).toNat % n') = ((x % (n' : ℤ)).toNat % n')` using `congrArg Fin.val h`. Establish `ex1 : 0 ≤ x % (n' : ℤ)` using `Int.emod_nonneg _ hn0.ne'`. Establish `ex2 : x % (n' : ℤ) < n'` using `Int.emod_lt_of_pos _ hn0`. Establish `ey1 : 0 ≤ y % (n' : ℤ)` using `Int.emod_nonneg _ hn0.ne'`.
+
+Establish `ey2 : y % (n' : ℤ) < n'` using `Int.emod_lt_of_pos _ hn0`. Establish `hmod : y % (n' : ℤ) = x % (n' : ℤ)`. Rewrite `hv` using `[Nat.mod_eq_of_lt (by omega), Nat.mod_eq_of_lt (by omega)]`. Use linear arithmetic over natural numbers and integers. Take `⟨k, hk⟩ : (n' : ℤ) ∣ y - x` from `Int.dvd_of_emod_eq_zero (Int.emod_emod_of_dvd _ (dvd_refl _) ▸ (Int.emod_eq_emod_iff_emod_sub_eq_zero.mp hmod))`.
+
+Establish `hJ1` using `lf_fr_per Fr hV j (r - 1) k`. Establish `hJ2` using `lf_fr_per Fr hV (j - 1) (r - 1) k`. Establish `hjj : j' = j + k * Fr.J`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hl | hl` into its components or cases.
+
+Use `fr_last_mono_in_index_of_valid Fr hV hr j' (j - 1 + k * Fr.J) (by linarith)` as an intermediate fact. Rewrite `this` using `[hJ2]`. Use the polynomial consequences of the given equalities and inequalities. Use `fr_last_mono_in_index_of_valid Fr hV hr (j + k * Fr.J) (j' - 1) (by linarith)` as an intermediate fact. Rewrite `this` using `[hJ1]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Unfold `Frames.dist`. Rewrite using `[hjj, hJ1]`. Use `congr 1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lf_dist_eq (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j j' x y : ℤ) (hx1 : Fr.fr (j - 1) (r - 1) < x)
     (hx2 : x ≤ Fr.fr j (r - 1)) (hy1 : Fr.fr (j' - 1) (r - 1) < y) (hy2 : y ≤ Fr.fr j' (r - 1))
     (h : posOf n' y = posOf n' x) : Fr.dist j x = Fr.dist j' y := by
@@ -80,6 +104,15 @@ section Lab
 
 variable {n' r : ℕ} [NeZero n'] (Fr : Frames n' r) (K : ℕ) {J : ℕ} [NeZero J] (nL : ZMod J → ℕ)
 
+/- English proof (translation)
+Simplify using `only [labO, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Rewrite using `[Finset.sum_eq_single y]`. Rewrite using `[Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `c' _ hc'`.
+
+Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hc' (Prod.ext_iff.mp h).2`. Introduce `h`. Conclude with `absurd (Finset.mem_univ c) h`.
+
+Introduce `x _ hx`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c' _`. Rewrite using `[if_neg]`. Introduce `h`.
+
+Conclude with `hx (hinj (Prod.ext_iff.mp h).1)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ y) h`.
+-/
 theorem labO_apply (hinj : Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x))
     (rho : TL J nL r × Fin (r + K) → ℕ) (y : TL J nL r) (c : Fin (r + K)) :
     labO Fr K nL rho (posOf n' (posTL Fr y), c) = rho (y, c) := by
@@ -101,6 +134,13 @@ theorem labO_apply (hinj : Function.Injective fun x : TL J nL r => posOf n' (pos
     exact hx (hinj (Prod.ext_iff.mp h).1)
   · intro h; exact absurd (Finset.mem_univ y) h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `Finsupp.mem_support_iff.mp hv` to reduce the goal to its premises. Simplify using `only [labO, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `x _`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Rewrite using `[if_neg]`. Introduce `h`.
+
+Conclude with `hne x (Prod.ext_iff.mp h).1.symm`.
+-/
 theorem labO_support (rho : TL J nL r × Fin (r + K) → ℕ) (v : Fin n' × Fin (r + K))
     (hv : v ∈ (labO Fr K nL rho).support) : ∃ x : TL J nL r, v.1 = posOf n' (posTL Fr x) := by
   classical
@@ -118,6 +158,19 @@ theorem labO_support (rho : TL J nL r × Fin (r + K) → ℕ) (v : Fin n' × Fin
 
 end Lab
 
+/- English proof (translation)
+Introduce `p _ n' r K _ _ _ O _ _ _ _S Fr TT L₁ L₂ N₁ G' deg d Y cP hMFH J _ Dt dPl dNo ka rho No Go hMH`. Take `⟨hJ, hnL, -⟩` from `hMH.1.1`. Establish `hV : Fr.Valid L₁ N₁` using `hMFH.frames.2.1`. Establish `hr : 1 ≤ r` using `by have := hMFH.two_le_r; omega`. Establish `hinj` using `posTL_inj Fr hV hr hJ hnL`.
+
+Establish `hB` using `hMH.2.1`. Unfold `LabAt`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `j x hx hW c`. Distinguish the cases in `hy : ∃ y : TL J Dt.nL r, posOf n' (posTL Fr y) = posOf n' x`.
+
+Take `⟨y, hy⟩` from `hy`. Rewrite using `[← hy, labO_apply Fr K Dt.nL hinj rho y c]`. Establish `hlt` using `hB.1 y c`. Establish `hseg` using `posTL_seg Fr hV hr hnL y`. Establish `hxl` using `(Finset.mem_filter.mp hx).1`.
+
+Rewrite `hxl` using `[Finset.mem_Icc]`. Establish `hd` using `lf_dist_eq Fr hV hr j (segZ y.1) x (posTL Fr y) (not_le.mp hW) hxl.2 hseg.1 hseg.2.1 hy`. Rewrite using `[hd]`. Conclude with `hlt`. Use `push_neg at hy`.
+
+Establish `h0 : labO Fr K Dt.nL rho (posOf n' x, c) = 0`. Assume the negation of the conclusion as `hne`. Take `⟨y, hy'⟩` from `labO_support Fr K Dt.nL rho (posOf n' x, c) (Finsupp.mem_support_iff.mpr hne)`. Conclude with `hy y hy'.symm`. Rewrite using `[h0]`.
+
+Conclude with `pow_pos (Fact.out : p.Prime).pos _`. Introduce `v hv`. Take `⟨y, hy⟩` from `labO_support Fr K Dt.nL rho v hv`. Rewrite using `[hy]`. Conclude with `(posTL_seg Fr hV hr hnL y).2.2`.
+-/
 theorem restLabG : RestLabG := by
   intro p _ n' r K _ _ _ O _ _ _ _S Fr TT L₁ L₂ N₁ G' deg d Y cP hMFH J _ Dt dPl dNo ka rho No Go hMH
   obtain ⟨hJ, hnL, -⟩ := hMH.1.1

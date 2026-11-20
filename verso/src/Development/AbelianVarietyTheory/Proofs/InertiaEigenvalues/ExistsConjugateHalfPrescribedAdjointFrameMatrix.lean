@@ -22,10 +22,16 @@ namespace GlobalTheory.AdjHalfLift
 
 open GlobalTheory.AdelicLatMove
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit S), Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _)]`.
+-/
 theorem gramInv_mul_gram {D : D7} (S : HSp D) : (S.gram⁻¹).map (eToEAf D) * S.gram.map (eToEAf D) = 1 := by
   rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit S),
     Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _)]
 
+/- English proof (translation)
+Take `⟨Z, -, rfl⟩` from `GlobalTheory.HalfDuality.exists_lift (D := D) w`. Conclude with `GlobalTheory.PlaceVec.cF_cF_toEAf Z`.
+-/
 theorem cF_cF {D : D7} (w : EAf D) : cF D (cF D w) = w := by
   obtain ⟨Z, -, rfl⟩ := GlobalTheory.HalfDuality.exists_lift (D := D) w
   exact GlobalTheory.PlaceVec.cF_cF_toEAf Z
@@ -33,6 +39,15 @@ theorem cF_cF {D : D7} (w : EAf D) : cF D (cF D w) = w := by
 set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D S T βS βT e hee z hz`. Use `choose L hL0 hL using fun t : EAf D => GlobalTheory.HalfDuality.exists_lift (D := D) t`. Set `N : Matrix (Fin S.rank) (Fin T.rank) (EAf D)` to `HMul.hMul (HMul.hMul (HMul.hMul (S.gram.map (eToEAf D)) βS.val) z) (HMul.hMul (βT⁻¹).val ((T.gram⁻¹).map (eToEAf D)))`. Set `X : Matrix (Fin T.rank) (Fin S.rank) (EAf D)` to `Matrix.of fun i j => cF D (N j i)`. Use `⟨Matrix.of fun i j => cA D e * L (X i j), fun i j => ?_, fun i j => ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.of_apply, ← mul_assoc, ← map_mul, hee]`. Simplify using `only [Matrix.of_apply, map_mul, hL0, mul_zero]`. Establish `hcc : cF D (toEAf D (cA D e)) = toEAf D e`. Rewrite using `[← toEAf_cA, GlobalTheory.DualPairCheck.cA_cA]`. Establish `hY : (((Matrix.of fun i j => cA D e * L (X i j) : WO S T).map (toEAf D)).map (cF D))ᵀ = toEAf D e • N`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, map_mul, hL, X, cF_cF, hcc, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[GlobalTheory.PlaceVec.frMapAdj_eq, hY, Matrix.mul_smul, Matrix.smul_mul]`. Establish `e1 : HMul.hMul (HMul.hMul (HMul.hMul (βS⁻¹).val ((S.gram⁻¹).map (eToEAf D))) N) (HMul.hMul (T.gram.map (eToEAf D)) βT.val) = z` using `GlobalTheory.PlaceVec.sandwich_cancel _ _ _ _ _ _ _ _ z (gramInv_mul_gram S) (Units.inv_mul βS) (gramInv_mul_gram T) (Units.inv_mul βT)`. Rewrite using `[e1]`.
+
+Conclude with `Matrix.ext fun i j => hz i j`.
+-/
 theorem exists_half_frMapAdj : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D), e * e = e → ∀ z : Matrix (Fin S.rank) (Fin T.rank) (EAf D), (∀ i j, toEAf D e * z i j = z i j) → ∃ y : WO S T, IsHalf (cA D e) y ∧ (∀ i j, infPart D (y i j) = 0) ∧ frMapAdj S T βS βT y = z := by
   intro D S T βS βT e hee z hz
   choose L hL0 hL using fun t : EAf D => GlobalTheory.HalfDuality.exists_lift (D := D) t

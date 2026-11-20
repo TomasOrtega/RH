@@ -8,6 +8,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.AffinePreimageFibre
 
+/- English proof (translation)
+The claim follows from `IsPullback.of_isLimit' ⟨by simp⟩ (PullbackCone.IsLimit.mk _ (fun s => s.snd) (fun s => by rw [← cancel_mono c] simp only [Category.assoc] exact s.condition.symm) (fun s => by simp) (fun s m _ h2 => by simpa using h2))`.
+-/
 theorem isPullback_comp_mono {C : Type*} [Category C] {A B T : C} (f : A ⟶ B) (c : B ⟶ T) [Mono c] :
     IsPullback f (𝟙 A) c (f ≫ c) :=
   IsPullback.of_isLimit' ⟨by simp⟩
@@ -19,6 +22,13 @@ theorem isPullback_comp_mono {C : Type*} [Category C] {A B T : C} (f : A ⟶ B) 
       (fun s => by simp)
       (fun s m _ h2 => by simpa using h2))
 
+/- English proof (translation)
+Introduce `X Z p U m A q ι H W hW hWU`. Use `haveI : IsOpenImmersion (chart U) := U.2.isOpenImmersion_fromSpec`. Set `h : (W : Scheme) ⟶ Sp Γ(X, U.1)` to `p.resLE U.1 W hWU ≫ U.2.isoSpec.hom`. Establish `hh : W.ι ≫ p = h ≫ chart U`. Simplify using `[h, chart, IsAffineOpen.fromSpec]`.
+
+Establish `big` using `(isPullback_morphismRestrict ι W).paste_vert H`. Rewrite `big` using `[hh]`. Establish `comm : (ι ∣_ W) ≫ h = ((ι ⁻¹ᵁ W).ι ≫ q) ≫ spMap (Ideal.Quotient.mk m)`. Rewrite using `[← cancel_mono (chart U)]`. Simplify `big.w` using `[Category.assoc]`.
+
+Establish `sq : IsPullback (ι ∣_ W) ((ι ⁻¹ᵁ W).ι ≫ q) h (spMap (Ideal.Quotient.mk m))` using `IsPullback.of_bot (v₂₁ := 𝟙 _) (by simpa using big) comm (isPullback_comp_mono _ _)`. Use `haveI : IsClosedImmersion (spMap (Ideal.Quotient.mk m)) := IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Use `haveI : IsAffineHom (ι ∣_ W) := MorphismProperty.of_isPullback (P := @IsAffineHom) sq.flip inferInstance`. Use `haveI : IsAffine (W : Scheme) := hW`. Conclude with `isAffine_of_isAffineHom (ι ∣_ W)`.
+-/
 theorem isAffineOpen_preimage_fibre : ∀ (X Z : Scheme.{0}) (p : Z ⟶ X) (U : X.affineOpens) (m : Ideal Γ(X, U.1)) (A : Scheme.{0}) (q : A ⟶ Sp (Γ(X, U.1) ⧸ m)) (ι : A ⟶ Z), IsPullback ι q p (spMap (Ideal.Quotient.mk m) ≫ chart U) → ∀ W : Z.Opens, IsAffineOpen W → W ≤ p ⁻¹ᵁ U.1 → IsAffineOpen (ι ⁻¹ᵁ W) := by
   intro X Z p U m A q ι H W hW hWU
   haveI : IsOpenImmersion (chart U) := U.2.isOpenImmersion_fromSpec

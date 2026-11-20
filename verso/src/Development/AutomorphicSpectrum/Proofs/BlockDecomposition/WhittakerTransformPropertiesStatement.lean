@@ -9,6 +9,9 @@ open Ad3.R (G2 Jd md Dt KA Set0 Coord LInv pt dia2 pri)
 open GlobalTheory.CompanionTheory.UnfoldingAlt
 open scoped NumberField.AdeleRing ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.UnfoldingAlt.TrBasic.main | exact GlobalTheory.CompanionTheory.UnfoldingAlt.TrBasic.main | (intros; apply GlobalTheory.CompanionTheory.UnfoldingAlt.TrBasic.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.whittaker_transform_properties : (∀ (W : G3 → ℂ) (g : G3), tr W g = W (w3 * ti (dia dl3) * ti g)) ∧
   (∀ (W : G3 → ℂ) (h g : G3), tr W (g * h) = tr (fun x => W (x * ti h)) g) ∧
   Function.Injective tr ∧

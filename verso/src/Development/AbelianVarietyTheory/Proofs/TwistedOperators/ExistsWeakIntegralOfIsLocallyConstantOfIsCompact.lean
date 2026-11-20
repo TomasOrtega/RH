@@ -6,6 +6,21 @@ namespace GlobalTheory
 
 open MeasureTheory ValuativeRel Matrix in
 
+/- English proof (translation)
+Introduce `U _ _ _ _ m _ V _ _ T hT K hK hzero`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun v : V => T ⁻¹' {v}) (fun v => hT.isOpen_fiber v) (fun u _ => Set.mem_iUnion.2 ⟨T u, rfl⟩)`. Establish `hS : ∀ u, T u ∈ insert 0 t`. Introduce `u`. Distinguish the cases in `hu : u ∈ K`.
+
+Establish `h` using `ht hu`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, Set.mem_singleton_iff] at h`. Take `⟨v, hv, huv⟩` from `h`. Rewrite using `[huv]`. Conclude with `Finset.mem_insert_of_mem hv`.
+
+Rewrite using `[hzero u hu]`. Conclude with `Finset.mem_insert_self 0 t`. Establish `hmeas : ∀ v, MeasurableSet (T ⁻¹' {v})` using `fun v => (hT.isOpen_fiber v).measurableSet`. Use `⟨∑ v ∈ insert 0 t, ((m.real (T ⁻¹' {v}) : ℂ)) • v, fun l => ?_⟩` and prove the remaining obligations. Establish `hpt : ∀ u, l (T u) = ∑ v ∈ insert 0 t, (T ⁻¹' {v}).indicator (fun _ => l v) u`.
+
+Introduce `u`. Rewrite using `[Finset.sum_eq_single_of_mem (T u) (hS u)]`. Simplify using the standard rewrite rules. Introduce `v _ hv`. Conclude with `Set.indicator_of_notMem (show u ∉ T ⁻¹' {v} from fun h => hv (Set.mem_singleton_iff.1 h).symm) (fun _ => l v)`.
+
+Establish `hint : ∀ v ∈ insert 0 t, Integrable ((T ⁻¹' {v}).indicator fun _ => l v) m`. Introduce `v _`. Distinguish the cases in `hv : v = 0`. Substitute `hv` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hsub : T ⁻¹' {v} ⊆ K`. Introduce `u hu`. Assume the negation of the conclusion as `hK'`. Conclude with `hv (by rw [← Set.mem_singleton_iff.1 hu, hzero u hK'])`. Establish `hfin : m (T ⁻¹' {v}) ≠ ⊤` using `((measure_mono hsub).trans_lt hK.measure_lt_top).ne`.
+
+Conclude with `(integrable_indicator_iff (hmeas v)).2 (integrableOn_const (C := l v) hfin)`. Rewrite using `[integral_congr_ae (ae_of_all _ hpt), integral_finset_sum _ hint, map_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (hmeas v), map_smul, smul_eq_mul, Complex.real_smul]`.
+-/
 theorem _root_.GlobalTheory.exists_weakIntegral_of_isLocallyConstant_of_isCompact :
     ∀ (U : Type) [TopologicalSpace U] [T2Space U] [MeasurableSpace U] [OpensMeasurableSpace U] (m : Measure U) [IsFiniteMeasureOnCompacts m] (V : Type) [AddCommGroup V] [Module ℂ V] (T : U → V) (_ : IsLocallyConstant T) (K : Set U) (_ : IsCompact K) (_ : ∀ u, u ∉ K → T u = 0), ∃ w : V, ∀ l : V →ₗ[ℂ] ℂ, l w = ∫ u, l (T u) ∂m := by
   intro U _ _ _ _ m _ V _ _ T hT K hK hzero

@@ -9,6 +9,19 @@ noncomputable section
 
 namespace GlobalTheory.LKMid
 
+/- English proof (translation)
+Introduce `p _ G β hW`. Use `choose W hW using hW`. Take `⟨hinj, hsurj⟩` from `GlobalTheory.T.bijective_realTensor_to_prod_matrixAlgebras_infPlaces p G`. Take `⟨z, hz⟩` from `hsurj (fun v => (W v : Matrix (Fin G.n) (Fin G.n) ℂ))`. Take `⟨z', hz'⟩` from `hsurj (fun v => (((W v)⁻¹ : GL (Fin G.n) ℂ) : Matrix (Fin G.n) (Fin G.n) ℂ))`.
+
+Establish `hz1 : ∀ v, G.psiR v z = (W v : Matrix (Fin G.n) (Fin G.n) ℂ)` using `fun v => congrFun hz v`. Establish `hz2 : ∀ v, G.psiR v z' = (((W v)⁻¹ : GL (Fin G.n) ℂ) : Matrix (Fin G.n) (Fin G.n) ℂ)` using `fun v => congrFun hz' v`. Establish `e1 : z * z' = 1` using `hinj (funext fun v => show G.psiR v (z * z') = G.psiR v 1 by`. Rewrite using `[map_mul, map_one, hz1, hz2, Units.mul_inv])`. Establish `e2 : z' * z = 1` using `hinj (funext fun v => show G.psiR v (z' * z) = G.psiR v 1 by`.
+
+Rewrite using `[map_mul, map_one, hz1, hz2, Units.inv_mul])`. Use `⟨⟨z, z', e1, e2⟩, ?_⟩` and prove the remaining obligations. Unfold `Triv`. Rewrite using `[Units.val_one, map_one]`. Apply `hinj` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `v`. Use `show G.psiR v (z * inC G ℝ (β : G.C) * (starT G.star ℝ z).unop) = G.psiR v 1`. Establish `hb : G.psiR v (inC G ℝ (β : G.C)) = G.psi v (β : G.C)`. Express the relevant statement in the definitionally equal form `G.psiR v ((1 : ℝ) ⊗ₜ (β : G.C)) = _`. Rewrite using `[psiR_tmul, one_smul]`.
+
+Rewrite using `[map_mul, map_mul, psiR_starT, hb, hz1, map_one]`. Use `set Wm : Matrix (Fin G.n) (Fin G.n) ℂ := (W v : Matrix (Fin G.n) (Fin G.n) ℂ)`. Establish `hg : IsUnit (G.gram v).det` using `isUnit_iff_ne_zero.2 (G.gram_det v)`. Establish `hM : (G.gram v)⁻¹ * Wmᴴ * G.gram v * Wm = G.psi v ((β⁻¹ : G.Cˣ) : G.C)`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Wmᴴ, ← hW v, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hg, Matrix.one_mul]`.
+
+Establish `hBA : ((G.gram v)⁻¹ * Wmᴴ * G.gram v) * (Wm * G.psi v (β : G.C)) = 1`. Rewrite using `[← Matrix.mul_assoc, hM, ← map_mul, Units.inv_mul, map_one]`. Establish `hAB` using `mul_eq_one_comm.1 hBA`. Simplify `hAB` using `[Matrix.mul_assoc]`.
+-/
 theorem trivR_of_gram_psi_inv_congr : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (β : G.Cˣ),
     (∀ v : InfinitePlace G.F, ∃ W : GL (Fin G.n) ℂ, G.gram v * G.psi v ((β⁻¹ : G.Cˣ) : G.C) =
       (W : Matrix (Fin G.n) (Fin G.n) ℂ)ᴴ * G.gram v * (W : Matrix (Fin G.n) (Fin G.n) ℂ)) →

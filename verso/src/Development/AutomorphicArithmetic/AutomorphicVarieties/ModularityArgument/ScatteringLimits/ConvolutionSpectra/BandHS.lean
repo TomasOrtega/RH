@@ -10,6 +10,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M X κ hk hX φ a b h1 h2 hab`. Establish `cU : ∀ (F : Flow H) (A : V →L[ℂ] H), Continuous fun y => F.U y ∘L A` using `fun F A => continuous_clm_apply.2 fun e => F.cont (A e)`. Set `A : V →L[ℂ] H` to `(M.J'.toContinuousLinearEquiv : L W →L[ℂ] H) ∘L kv κ`. Set `A' : V →L[ℂ] H` to `(M.J.toContinuousLinearEquiv : L V →L[ℂ] H) ∘L sv V fun x => φ (-x)`. Establish `pa : ∀ u, M.P (Ioc a b) (M.J u) = M.J (cut V (Ioc a b) u)` using `fun u => congrArg M.J (congrArg _ (M.J.symm_apply_apply u))`.
+
+Take `⟨s1, s2, s3⟩` from `scalSpec (V := V) φ h1 h2`. Establish `hi : Integrable φ` using `h1.integrable_of_hasCompactSupport h2`. Establish `y1 : ∀ u : L V, (X ∘L M.P (Ioc a b)) (M.J u) = ∫ y in Ioc a b, (M.F.U y ∘L A) (u y)` using `fun u => by`. Take `⟨i1, i2⟩` from `(kvSpec κ hk).2 a b u`. Rewrite using `[ContinuousLinearMap.comp_apply, pa, hX, i2]`.
+
+Use `((M.J'.toContinuousLinearEquiv : L W →L[ℂ] H).integral_comp_comm i1).symm.trans ?_` and prove the remaining obligations. Conclude with `integral_congr_ae (Eventually.of_forall fun y => (M.hJ' y _).symm)`. Establish `y2 : ∀ u : L V, (M.F.av φ ∘L M.P (Ioc a b)) (M.J u) = ∫ y in Ioc a b, (M.F.rev.U y ∘L A') (u y)` using `fun u => by`. Take `⟨i1, i2⟩` from `(kvSpec _ s1).2 a b u`. Establish `c` using `((avSpec (shF V)).2.2.2 φ hi).2.2.2.2 M.F (M.J.toContinuousLinearEquiv : L V →L[ℂ] H) fun t h => (M.hJ t h).symm`.
+
+Establish `c' : ∀ v, M.F.av φ (M.J v) = M.J ((shF V).av φ v)` using `fun v => (DFunLike.congr_fun c v).symm`. Rewrite using `[ContinuousLinearMap.comp_apply, pa, c', s2, i2]`. Use `((M.J.toContinuousLinearEquiv : L V →L[ℂ] H).integral_comp_comm i1).symm.trans ?_` and prove the remaining obligations. Rewrite using `[s3]`. Conclude with `integral_congr_ae (Eventually.of_forall fun y => (M.hJ (-y) _).symm)`.
+
+Take `⟨k1, k2, k3⟩` from `kp M.J a b _ _ _ _ hab (cU M.F A) (cU M.F.rev A') y1 y2`. Take `⟨k4, k5, -⟩` from `kp M.J a b _ _ _ _ hab (cU M.F.rev A') (cU M.F.rev A') y2 y2`. Use `⟨k1, ?_, k4, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[k2]`. Simplify using `[M.F.norm, A]`.
+
+Rewrite using `[k5]`. Establish `m2 : MemLp (fun x => φ (-x)) 2 volume` using `(h1.comp continuous_neg).memLp_of_hasCompactSupport (h2.comp_homeomorph (Homeomorph.neg ℝ))`. Establish `n : ∀ i, ‖(M.F.rev.U 0 ∘L A') (stdOrthonormalBasis ℂ V i)‖ ^ 2 = ∫ x, ‖φ x‖ ^ 2` using `fun i => by show ‖M.F.rev.U 0 (M.J (sv V (fun x => φ (-x)) (stdOrthonormalBasis ℂ V i)))‖ ^ 2 = _`. Rewrite using `[Flow.norm, M.J.norm_map, ((svSpec (V := V)).1 _ m2 _).2, (stdOrthonormalBasis ℂ V).orthonormal.1, integral_neg_eq_self fun x => ‖φ x‖ ^ 2]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [ContinuousLinearMap.comp_apply, Flow.norm] at n ⊢`. Simplify using `[n, mul_left_comm]`. Rewrite using `[k3]`. Use `intervalIntegral.integral_congr fun y _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show ⟪M.F.U (-y) (M.J _), M.F.U y (M.J' _)⟫_ℂ = ⟪M.J _, M.F.U (2 * y) (M.J' _)⟫_ℂ`.
+
+Rewrite using `[← (avSpec M.F).1, ContinuousLinearMap.adjoint_inner_left, ← M.F.add, two_mul]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.bandHS :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W) (X : H →L[ℂ] H) (κ : ℝ → V →L[ℂ] W), Ker κ → M.Carries X κ → ∀ (φ : ℝ → ℂ) (a b : ℝ), Continuous φ → HasCompactSupport φ → a ≤ b →
       IsHilbertSchmidt (X ∘L M.P (Ioc a b)) ∧ hsNorm (X ∘L M.P (Ioc a b)) ^ 2 = (b - a) * ∑ i, ‖kv κ (stdOrthonormalBasis ℂ V i)‖ ^ 2 ∧

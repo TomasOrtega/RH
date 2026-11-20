@@ -36,6 +36,9 @@ def lin {σ : Type} (v : σ) (f : MvPowerSeries σ S) : S := constantCoeff (pder
 
 def quad {σ : Type} (v w : σ) (f : MvPowerSeries σ S) : S := constantCoeff (pderiv S v (pderiv S w f))
 
+/- English proof (translation)
+Rewrite using `[lin, ← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]`. Simplify using the standard rewrite rules.
+-/
 theorem lin_eq_coeff {σ : Type} (v : σ) (f : MvPowerSeries σ S) : lin v f = coeff (Finsupp.single v 1) f := by
   rw [lin, ← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]
   simp
@@ -46,13 +49,22 @@ def bil (c : Fin d → Fin d → S) (P Q : Pt S n d) : PS S n d := ∑ i, ∑ l,
 
 variable {c : Fin d → Fin d → S} {P Q : Pt S n d}
 
+/- English proof (translation)
+Simplify using `[bil, hP]`.
+-/
 theorem cc_bil (hP : ∀ i, constantCoeff (P i) = 0) : constantCoeff (bil c P Q) = 0 := by
   simp [bil, hP]
 
+/- English proof (translation)
+Simplify using `[bil, lin, Derivation.leibniz, hP, hQ]`.
+-/
 theorem lin_bil (hP : ∀ i, constantCoeff (P i) = 0) (hQ : ∀ i, constantCoeff (Q i) = 0) (v : Fin n × Fin d) :
     lin v (bil c P Q) = 0 := by
   simp [bil, lin, Derivation.leibniz, hP, hQ]
 
+/- English proof (translation)
+Simplify using `only [bil, lin, quad, map_sum, Derivation.map_smul, Derivation.leibniz, smul_eq_mul, map_add, map_mul, constantCoeff_smul, hP, hQ]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quad_bil (hP : ∀ i, constantCoeff (P i) = 0) (hQ : ∀ i, constantCoeff (Q i) = 0) (v w : Fin n × Fin d) :
     quad v w (bil c P Q) =
       ∑ i, ∑ l, c i l * (lin v (P i) * lin w (Q l) + lin w (P i) * lin v (Q l)) := by
@@ -63,15 +75,24 @@ theorem quad_bil (hP : ∀ i, constantCoeff (P i) = 0) (hQ : ∀ i, constantCoef
 
 variable [Algebra ℚ S]
 
+/- English proof (translation)
+The claim follows from `TB.WickVanishing.constantCoeff_exp h0`.
+-/
 theorem cc_exp {g : PS S n d} (h0 : constantCoeff g = 0) : constantCoeff (expP g) = 1 :=
   TB.WickVanishing.constantCoeff_exp h0
 
+/- English proof (translation)
+Establish `h` using `TB.WickVanishing.Nab.pderiv_expS h0 v`. Establish `h1` using `cc_exp h0`. Express the relevant statement in the definitionally equal form `pderiv S v (expP g) = expP g * _ at h`. Simplify using `[lin, h, h1]`.
+-/
 theorem lin_exp {g : PS S n d} (h0 : constantCoeff g = 0) (v : Fin n × Fin d) : lin v (expP g) = lin v g := by
   have h := TB.WickVanishing.Nab.pderiv_expS h0 v
   have h1 := cc_exp h0
   change pderiv S v (expP g) = expP g * _ at h
   simp [lin, h, h1]
 
+/- English proof (translation)
+Establish `h` using `TB.WickVanishing.Nab.pderiv_expS h0 w`. Establish `h2` using `cc_exp h0`. Express the relevant statement in the definitionally equal form `pderiv S w (expP g) = expP g * _ at h`. Unfold `lin at h1`. Simplify using `[quad, h, h1, h2, Derivation.leibniz]`.
+-/
 theorem quad_exp {g : PS S n d} (h0 : constantCoeff g = 0) (v w : Fin n × Fin d) (h1 : lin w g = 0) :
     quad v w (expP g) = quad v w g := by
   have h := TB.WickVanishing.Nab.pderiv_expS h0 w
@@ -81,6 +102,11 @@ theorem quad_exp {g : PS S n d} (h0 : constantCoeff g = 0) (v w : Fin n × Fin d
   simp [quad, h, h1, h2, Derivation.leibniz]
 
 omit [Algebra ℚ S] in
+/- English proof (translation)
+Establish `hz : CZ (![a] : Fin 1 → Pt S n d)` using `fun j i => by fin_cases j; exact ha i`. Unfold `comp1`. Rewrite using `[lin, TB.LogPf.pderiv_ev hz, Fintype.sum_prod_type, Fin.sum_univ_one, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, TB.LogPf.cc_ev hz]`.
+
+Use `congr 1`. Conclude with `lin_eq_coeff _ _`.
+-/
 theorem lin_comp1 (φ : Pt S 1 d) {a : Pt S n d} (ha : ∀ i, constantCoeff (a i) = 0) (v : Fin n × Fin d) (i : Fin d) :
     lin v (comp1 φ a i) = ∑ j, dLin φ i j * lin v (a j) := by
   have hz : CZ (![a] : Fin 1 → Pt S n d) := fun j i => by fin_cases j; exact ha i
@@ -92,10 +118,18 @@ theorem lin_comp1 (φ : Pt S 1 d) {a : Pt S n d} (ha : ∀ i, constantCoeff (a i
   exact lin_eq_coeff _ _
 
 omit [Algebra ℚ S] in
+/- English proof (translation)
+Rewrite using `[lin, TB.LogPf.pderiv_pt]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 theorem lin_pt (j : Fin n) (i : Fin d) (v : Fin n × Fin d) : lin v (pt S d j i) = if v = (j, i) then 1 else 0 := by
   rw [lin, TB.LogPf.pderiv_pt]
   split_ifs <;> simp_all
 
+/- English proof (translation)
+Use `⟨fun i => TB.LogPf.constantCoeff_prim _, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h` using `congrArg constantCoeff (TB.LogPf.pderiv_logOf G i j)`. Establish `h2` using `congrFun (congrFun (TB.LogPf.cc_om G) i) j`. Simplify using `only [Matrix.map_apply] at h2`.
+
+Rewrite `h` using `[h2]`. Conclude with `(lin_eq_coeff _ _).symm.trans h`. Use function extensionality and compare the values at `i show ev (n := 2) ![G.add (pt S d 0) (pt S d 1)] (logOf G i) = ev (n := 2) ![pt S d 0] (logOf G i) + ev (n := 2) ![pt S d 1] (logOf G i)`. Rewrite using `[TB.LogPf.addPt]`. Conclude with `TB.LogPf.logOf_add G i`.
+-/
 theorem isLog_logOf (G : FGLaw S d) : IsLog G (logOf G) := by
   refine ⟨fun i => TB.LogPf.constantCoeff_prim _, ?_, ?_⟩
   · refine Matrix.ext fun i j => ?_
@@ -110,17 +144,31 @@ theorem isLog_logOf (G : FGLaw S d) : IsLog G (logOf G) := by
     rw [TB.LogPf.addPt]
     exact TB.LogPf.logOf_add G i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lg_eq (G : FGLaw S d) (j : Fin n) : lg G j = comp1 (logOf G) (pt S d j) := rfl
 
+/- English proof (translation)
+Simplify using `only [bilLog, bil, Matrix.of_apply, smul_eq_C_mul, _root_.mul_assoc]`.
+-/
 theorem bilLog_eq_bil (ℓ : Pt S 1 d) (c : Fin d → Fin d → S) (P Q : Pt S n d) :
     bilLog ℓ (Matrix.of c) P Q = bil c (comp1 ℓ P) (comp1 ℓ Q) := by
   simp only [bilLog, bil, Matrix.of_apply, smul_eq_C_mul, _root_.mul_assoc]
 
 omit [Algebra ℚ S] in
+/- English proof (translation)
+Simplify using `[pt]`.
+-/
 theorem cc_pt (j : Fin n) (i : Fin d) : constantCoeff (pt S d j i) = 0 := by
   simp [pt]
 
 omit [Algebra ℚ S] in
+/- English proof (translation)
+Establish `hb : CZ (![pt S d j] : Fin 1 → Pt S k d)` using `fun j' i => by fin_cases j'; exact cc_pt j i`. Rewrite using `[comp1, comp1, TB.LogPf.ev_ev ha hb]`. Use `congr 1`. Use function extensionality and compare the values at `j' i`. Use `fin_cases j'`.
+
+Conclude with `TB.LogPf.ev_X ha j i`.
+-/
 theorem ev_comp1_pt {k : ℕ} {a : Fin k → Pt S n d} (ha : CZ a) (φ : Pt S 1 d) (j : Fin k) (i : Fin d) :
     ev a (comp1 φ (pt S d j) i) = comp1 φ (a j) i := by
   have hb : CZ (![pt S d j] : Fin 1 → Pt S k d) := fun j' i => by fin_cases j'; exact cc_pt j i
@@ -130,39 +178,67 @@ theorem ev_comp1_pt {k : ℕ} {a : Fin k → Pt S n d} (ha : CZ a) (φ : Pt S 1 
   fin_cases j'
   exact TB.LogPf.ev_X ha j i
 
+/- English proof (translation)
+Simplify using `only [bilL, bilLog, lg_eq, smul_eq_C_mul, TB.LogPf.ev_sum ha, TB.LogPf.ev_mul ha, TB.LogPf.ev_C ha, ev_comp1_pt ha, Matrix.of_apply, _root_.mul_assoc]`.
+-/
 theorem ev_bilL_eq (G : FGLaw S d) (c : Fin d → Fin d → S) {a : Fin 2 → Pt S n d} (ha : CZ a) :
     ev a (bilL G c) = bilLog (logOf G) (Matrix.of c) (a 0) (a 1) := by
   simp only [bilL, bilLog, lg_eq, smul_eq_C_mul, TB.LogPf.ev_sum ha, TB.LogPf.ev_mul ha, TB.LogPf.ev_C ha,
     ev_comp1_pt ha, Matrix.of_apply, _root_.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[bilLog_eq_bil]`. Both sides reduce to the same expression.
+-/
 theorem bilL_eq (G : FGLaw S d) (c : Fin d → Fin d → S) :
     bilL G c = bilLog (logOf G) (Matrix.of c) (pt S (n := 2) d 0) (pt S (n := 2) d 1) := by
   rw [bilLog_eq_bil]
   rfl
 
+/- English proof (translation)
+The claim follows from `TB.WickVanishing.cc_comp1 _ _ (isLog_logOf G).1 ha i`.
+-/
 theorem cc_comp1_log (G : FGLaw S d) {a : Pt S n d} (ha : ∀ i, constantCoeff (a i) = 0) (i : Fin d) :
     constantCoeff (comp1 (logOf G) a i) = 0 :=
   TB.WickVanishing.cc_comp1 _ _ (isLog_logOf G).1 ha i
 
+/- English proof (translation)
+Rewrite using `[lin_comp1 _ ha, (isLog_logOf G).2.1]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem lin_comp1_log (G : FGLaw S d) {a : Pt S n d} (ha : ∀ i, constantCoeff (a i) = 0) (v : Fin n × Fin d)
     (i : Fin d) : lin v (comp1 (logOf G) a i) = lin v (a i) := by
   rw [lin_comp1 _ ha, (isLog_logOf G).2.1]
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[bilL_eq, bilLog_eq_bil, cc_bil (cc_comp1_log G (cc_pt 0))]`.
+-/
 theorem cc_bilL (G : FGLaw S d) (c : Fin d → Fin d → S) : constantCoeff (bilL G c) = 0 := by
   rw [bilL_eq, bilLog_eq_bil, cc_bil (cc_comp1_log G (cc_pt 0))]
 
+/- English proof (translation)
+Establish `hg : constantCoeff (-bilL G c) = 0` using `by rw [map_neg, cc_bilL, neg_zero]`. Rewrite using `[← TB.LogPf.ev_neg ha]`. Conclude with `TB.WickVanishing.subst_exp (fun p : Fin 2 × Fin d => a p.1 p.2) (fun p => ha p.1 p.2) hg`.
+-/
 theorem ev_expP (G : FGLaw S d) (c : Fin d → Fin d → S) {a : Fin 2 → Pt S n d} (ha : CZ a) :
     ev a (expP (-bilL G c)) = expP (-ev a (bilL G c)) := by
   have hg : constantCoeff (-bilL G c) = 0 := by rw [map_neg, cc_bilL, neg_zero]
   rw [← TB.LogPf.ev_neg ha]
   exact TB.WickVanishing.subst_exp (fun p : Fin 2 × Fin d => a p.1 p.2) (fun p => ha p.1 p.2) hg
 
+/- English proof (translation)
+Rewrite using `[TB.LogPf.cc_ev ha, cc_exp]`. Rewrite using `[map_neg, cc_bilL, neg_zero]`.
+-/
 theorem cc_ev_twist (G : FGLaw S d) (c : Fin d → Fin d → S) {a : Fin 2 → Pt S n d} (ha : CZ a) :
     constantCoeff (ev a (expP (-bilL G c))) = 1 := by
   rw [TB.LogPf.cc_ev ha, cc_exp]
   rw [map_neg, cc_bilL, neg_zero]
 
+/- English proof (translation)
+Establish `h0` using `cc_comp1_log G (ha 0)`. Establish `h1` using `cc_comp1_log G (ha 1)`. Rewrite using `[ev_expP G c ha, ev_bilL_eq G c ha, bilLog_eq_bil, quad_exp]`. Use `quad_bil (c := c) h0 h1 v w` as an intermediate fact. Simplify using `only [lin_comp1_log G (ha 0), lin_comp1_log G (ha 1)] at this`.
+
+Rewrite using `[← this]`. Simplify using `[quad]`. Rewrite using `[map_neg, cc_bil h0, neg_zero]`. Use `lin_bil (c := c) h0 h1 w` as an intermediate fact. Unfold `lin at this ⊢`.
+
+Rewrite using `[map_neg, map_neg, this, neg_zero]`.
+-/
 theorem quad_ev_twist (G : FGLaw S d) (c : Fin d → Fin d → S) {a : Fin 2 → Pt S n d} (ha : CZ a)
     (v w : Fin n × Fin d) :
     quad v w (ev a (expP (-bilL G c))) =
@@ -187,6 +263,11 @@ open MvPolynomial
 
 variable {S : Type} [CommRing S] {d : ℕ}
 
+/- English proof (translation)
+Rewrite using `[ev, FBIdJet.psJet_subst m _ (fun p => ha p.1 p.2) f]`. Apply `DFunLike.congr_fun` to reduce the goal to its premises. Use `GermD.jet_hom_ext fun p => ?_` and prove the remaining obligations. Rewrite using `[GermD.jetMap_mk, aeval_X]`. Simplify using `only [jetSubstP, GermD.jetMap_mk, aeval_X, hφ p, map_zero, sub_zero]`.
+
+Rewrite using `[hmk p]`. Both sides reduce to the same expression.
+-/
 theorem jetSubstP_psJet {n n' : ℕ} (m : ℕ) (φ : Fin n × Fin d → MvPolynomial (Fin n' × Fin d) S)
     {a : Fin n → Pt S n' d} (ha : CZ a) (hφ : ∀ p, constantCoeff (φ p) = 0)
     (hmk : ∀ p : Fin n × Fin d,
@@ -200,6 +281,11 @@ theorem jetSubstP_psJet {n n' : ℕ} (m : ℕ) (φ : Fin n × Fin d → MvPolyno
   rw [hmk p]
   rfl
 
+/- English proof (translation)
+Establish `e : (![pt S d k] : Fin 1 → Pt S n' d) = fun i => pt S d ((![k] : Fin 1 → Fin n') i)`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Rewrite using `[e, FBIdPh.psJet_ev_rel, psIn, FBIdPh.mk_rename]`.
+
+Apply `DFunLike.congr_fun` to reduce the goal to its premises. Use `GermD.jet_hom_ext fun p => ?_` and prove the remaining obligations. Rewrite using `[GermD.jetMap_mk, aeval_X]`. Simplify using `only [jetSubstP, GermD.jetMap_mk, aeval_X, FBIdPh.rel, constantCoeff_X, map_zero, sub_zero]`.
+-/
 theorem mk_psIn_psJet {n' : ℕ} (m : ℕ) (k : Fin n') (f : PS S 1 d) :
     Ideal.Quotient.mk (Formalism.L2.Pj.orig S (Fin n' × Fin d) ^ (m + 1)) (psIn d m ![k] f) =
       psJet m (ev ![pt S d k] f) := by
@@ -211,6 +297,9 @@ theorem mk_psIn_psJet {n' : ℕ} (m : ℕ) (k : Fin n') (f : PS S 1 d) :
   rw [GermD.jetMap_mk, aeval_X]
   simp only [jetSubstP, GermD.jetMap_mk, aeval_X, FBIdPh.rel, constantCoeff_X, map_zero, sub_zero]
 
+/- English proof (translation)
+Introduce `j i`. Use `fin_cases j`. Conclude with `(TB.LogPf.cc_ev TB.LogPf.czX _).trans (hφ i)`. Conclude with `cc_pt _ i`.
+-/
 theorem cz_left {φ : Pt S 1 d} (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0) :
     CZ (![comp1 φ (pt S d 0), pt S d 1] : Fin 2 → Pt S 2 d) := by
   intro j i
@@ -218,6 +307,9 @@ theorem cz_left {φ : Pt S 1 d} (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i)
   · exact (TB.LogPf.cc_ev TB.LogPf.czX _).trans (hφ i)
   · exact cc_pt _ i
 
+/- English proof (translation)
+Introduce `j i`. Use `fin_cases j`. Conclude with `cc_pt _ i`. Conclude with `(TB.LogPf.cc_ev TB.LogPf.czY _).trans (hφ i)`.
+-/
 theorem cz_right {φ : Pt S 1 d} (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0) :
     CZ (![pt S d 0, comp1 φ (pt S d 1)] : Fin 2 → Pt S 2 d) := by
   intro j i
@@ -225,6 +317,11 @@ theorem cz_right {φ : Pt S 1 d} (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i
   · exact cc_pt _ i
   · exact (TB.LogPf.cc_ev TB.LogPf.czY _).trans (hφ i)
 
+/- English proof (translation)
+Use `jetSubstP_psJet m _ (cz_left hφ) ?_ ?_ f` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩ fin_cases i`. Conclude with `(FBIdPh.cc_psIn d m _ _).trans (hφ j)`. Simplify using the standard rewrite rules. Introduce and unpack `⟨i, j⟩ fin_cases i`.
+
+Conclude with `mk_psIn_psJet m 0 (φ j)`. Conclude with `(FBIdSy.mk_psTrunc_X m _).symm`.
+-/
 theorem jetSubstP_left (m : ℕ) {φ : Pt S 1 d} (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0) (f : PS S 2 d) :
     jetSubstP m (fun p : Fin 2 × Fin d => (![fun j => psIn d m ![0] (φ j), fun j => X ((1 : Fin 2), j)] :
         Fin 2 → Fin d → MvPolynomial (Fin 2 × Fin d) S) p.1 p.2) (psJet m f) =
@@ -239,6 +336,11 @@ theorem jetSubstP_left (m : ℕ) {φ : Pt S 1 d} (hφ : ∀ i, MvPowerSeries.con
     · exact mk_psIn_psJet m 0 (φ j)
     · exact (FBIdSy.mk_psTrunc_X m _).symm
 
+/- English proof (translation)
+Use `jetSubstP_psJet m _ (cz_right hφ) ?_ ?_ f` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩ fin_cases i`. Simplify using the standard rewrite rules. Conclude with `(FBIdPh.cc_psIn d m _ _).trans (hφ j)`. Introduce and unpack `⟨i, j⟩ fin_cases i`.
+
+Conclude with `(FBIdSy.mk_psTrunc_X m _).symm`. Conclude with `mk_psIn_psJet m 1 (φ j)`.
+-/
 theorem jetSubstP_right (m : ℕ) {φ : Pt S 1 d} (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0) (f : PS S 2 d) :
     jetSubstP m (fun p : Fin 2 × Fin d => (![fun j => X ((0 : Fin 2), j), fun j => psIn d m ![1] (φ j)] :
         Fin 2 → Fin d → MvPolynomial (Fin 2 × Fin d) S) p.1 p.2) (psJet m f) =

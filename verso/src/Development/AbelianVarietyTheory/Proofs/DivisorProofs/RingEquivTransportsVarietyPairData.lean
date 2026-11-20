@@ -17,6 +17,11 @@ section General
 
 variable {k A B : Type} [CommRing k] [CommRing A] [CommRing B]
 
+/- English proof (translation)
+Use `⟨fun b b' hb => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hσ.2 b`. Take `⟨a', rfl⟩` from `hσ.2 b'`. Establish `: F (a • ω) = F (a' • ω)`. Rewrite using `[F.map_smulₛₗ, F.map_smulₛₗ]`.
+
+Conclude with `hb`. Conclude with `congrArg σ (h.1 (hF.1 this))`. Take `⟨x, rfl⟩` from `hF.2 y`. Take `⟨a, rfl⟩` from `h.2 x`. Conclude with `⟨σ a, (F.map_smulₛₗ a ω).symm⟩`.
+-/
 theorem isFreeGen_map {M N : Type} [AddCommGroup M] [Module A M] [AddCommGroup N] [Module B N]
     {σ : A →+* B} (hσ : Function.Bijective σ) (F : M →ₛₗ[σ] N) (hF : Function.Bijective F)
     {ω : M} (h : IsFreeGen A ω) : IsFreeGen B (F ω) := by
@@ -31,12 +36,18 @@ theorem isFreeGen_map {M N : Type} [AddCommGroup M] [Module A M] [AddCommGroup N
     obtain ⟨a, rfl⟩ := h.2 x
     exact ⟨σ a, (F.map_smulₛₗ a ω).symm⟩
 
+/- English proof (translation)
+The claim follows from `(TopForm.formMap_formMap _ _ (RingHom.id A) (RingHom.ext fun a => by simp) h h' (RingHom.id_comp α) x).trans (TopForm.formMap_of_eq_id _ rfl _ x)`.
+-/
 theorem formMap_symm_formMap {α : k →+* A} {β : k →+* B} (ρ : A ≃+* B)
     (h : ρ.toRingHom.comp α = β) (h' : ρ.symm.toRingHom.comp β = α) (D : ℕ) (x : Forms α D) :
     TopForm.formMap D ρ.symm.toRingHom h' (TopForm.formMap D ρ.toRingHom h x) = x :=
   (TopForm.formMap_formMap _ _ (RingHom.id A) (RingHom.ext fun a => by simp) h h'
     (RingHom.id_comp α) x).trans (TopForm.formMap_of_eq_id _ rfl _ x)
 
+/- English proof (translation)
+Establish `h' : ρ.symm.toRingHom.comp β = α`. Rewrite using `[← h]`. Conclude with `RingHom.ext fun a => by simp`. Establish `h'' : ρ.symm.symm.toRingHom.comp α = β` using `h`. Conclude with `⟨Function.LeftInverse.injective (formMap_symm_formMap ρ h h' D), Function.RightInverse.surjective (formMap_symm_formMap ρ.symm h' h'' D)⟩`.
+-/
 theorem formMap_bijective {α : k →+* A} {β : k →+* B} (ρ : A ≃+* B)
     (h : ρ.toRingHom.comp α = β) (D : ℕ) :
     Function.Bijective (TopForm.formMap D ρ.toRingHom h) := by
@@ -60,6 +71,9 @@ def ringEquiv (E : ValuationSubring K) : E ≃+* E.comap e.symm.toRingHom where
   map_mul' x y := Subtype.ext (map_mul e x.1 y.1)
   map_add' x y := Subtype.ext (map_add e x.1 y.1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ringEquiv_apply (E : ValuationSubring K) (x : E) : ((ringEquiv e E x : E.comap e.symm.toRingHom) : K') = e x :=
   rfl
 
@@ -76,20 +90,35 @@ def place (E : Place c) : Place c' where
     convert h using 1
     exact RingHom.ext fun a => Subtype.ext (he a).symm
 
+/- English proof (translation)
+The claim follows from `ValuationSubring.mem_comap`.
+-/
 theorem mem_place (E : Place c) (y : K') : y ∈ (place e he E).ring ↔ e.symm y ∈ E.ring :=
   ValuationSubring.mem_comap
 
+/- English proof (translation)
+Rewrite using `[mem_place, e.symm_apply_apply]`.
+-/
 theorem apply_mem_place (E : Place c) (f : K) : e f ∈ (place e he E).ring ↔ f ∈ E.ring := by
   rw [mem_place, e.symm_apply_apply]
 
+/- English proof (translation)
+Rewrite using `[← he a, e.symm_apply_apply]`.
+-/
 theorem symm_apply (he : ∀ a, e (c a) = c' a) (a : k) : e.symm (c' a) = c a := by
   rw [← he a, e.symm_apply_apply]
 
+/- English proof (translation)
+The claim follows from `Place.ext (ValuationSubring.ext _ _ fun x => by rw [mem_place, mem_place]; simp)`.
+-/
 theorem place_symm_place (E : Place c) :
     place e.symm (symm_apply e he) (place e he E) = E :=
   Place.ext (ValuationSubring.ext _ _ fun x => by
     rw [mem_place, mem_place]; simp)
 
+/- English proof (translation)
+The claim follows from `Place.ext (ValuationSubring.ext _ _ fun x => by rw [mem_place, mem_place]; simp)`.
+-/
 theorem place_place_symm (E' : Place c') :
     place e he (place e.symm (symm_apply e he) E') = E' :=
   Place.ext (ValuationSubring.ext _ _ fun x => by
@@ -103,6 +132,17 @@ namespace GlobalTheory.FieldPair.RingEquivTransport
 variable {k K K' : Type} [Field k] [Field K] [Field K']
 variable {c : k →+* K} {c' : k →+* K'} (e : K ≃+* K') (he : ∀ a, e (c a) = c' a)
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible E.ring`. Establish `ht' : Irreducible (ringEquiv e E.ring t)` using `(MulEquiv.irreducible_iff (ringEquiv e E.ring)).2 ht`. Establish `ht0 : ((t : E.ring) : K) ≠ 0` using `fun h => ht.ne_zero (Subtype.ext h)`. Establish `key : ∀ a : E.ring, a ≠ 0 → (place e he E).ord (e a) = E.ord a`. Introduce `a ha`.
+
+Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha ht`. Establish `hu0 : ((u : E.ring) : K) ≠ 0` using `fun h => u.ne_zero (Subtype.ext h)`. Establish `h1 : (place e he E).ord (e ((u : E.ring) : K)) = 0`. Rewrite using `[← ringEquiv_apply e E.ring (u : E.ring)]`. Conclude with `Place.ord_eq_zero (place e he E) (u.isUnit.map (ringEquiv e E.ring))`.
+
+Establish `h2 : (place e he E).ord (e ((t : E.ring) : K)) = 1`. Rewrite using `[← ringEquiv_apply e E.ring t]`. Conclude with `Place.ord_irreducible (place e he E) ht'`. Establish `hu0' : e ((u : E.ring) : K) ≠ 0` using `(map_ne_zero e).2 hu0`. Establish `ht0' : e ((t : E.ring) : K) ≠ 0` using `(map_ne_zero e).2 ht0`.
+
+Use `push_cast`. Rewrite using `[map_mul, map_pow, E.ord_mul hu0 (pow_ne_zero _ ht0), E.ord_pow, E.ord_eq_zero u.isUnit, E.ord_irreducible ht, Place.ord_mul _ hu0' (pow_ne_zero _ ht0'), Place.ord_pow, h1, h2]`. Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Simplify using `[Place.ord]`.
+
+Break down `E.ring.mem_or_inv_mem f with h | h` into its components or cases. Conclude with `key ⟨f, h⟩ fun h0 => hf (congrArg Subtype.val h0)`. Use `key ⟨f⁻¹, h⟩ fun h0 => hf (inv_eq_zero.1 (congrArg Subtype.val h0))` as an intermediate fact. Rewrite using `[← inv_inv f, map_inv₀, Place.ord_inv, Place.ord_inv, this]`.
+-/
 theorem ord_place (E : Place c) (f : K) : (place e he E).ord (e f) = E.ord f := by
   obtain ⟨t, ht⟩ := IsDiscreteValuationRing.exists_irreducible E.ring
   have ht' : Irreducible (ringEquiv e E.ring t) := (MulEquiv.irreducible_iff (ringEquiv e E.ring)).2 ht
@@ -130,10 +170,16 @@ theorem ord_place (E : Place c) (f : K) : (place e he E).ord (e f) = E.ord f := 
   · have := key ⟨f⁻¹, h⟩ fun h0 => hf (inv_eq_zero.1 (congrArg Subtype.val h0))
     rw [← inv_inv f, map_inv₀, Place.ord_inv, Place.ord_inv, this]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => Subtype.ext (he a)`.
+-/
 theorem constHom (E : Place c) :
     (ringEquiv e E.ring).toRingHom.comp E.const = (place e he E).const :=
   RingHom.ext fun a => Subtype.ext (he a)
 
+/- English proof (translation)
+Establish `hτ : (e.toRingHom.comp E.ring.subtype).comp E.const = c'` using `RingHom.ext fun a => he a`. Conclude with `(TopForm.formMap_formMap _ (place e he E).ring.subtype (e.toRingHom.comp E.ring.subtype) (RingHom.ext fun _ => rfl) (constHom e he E) rfl hτ ω).trans (TopForm.formMap_formMap E.ring.subtype e.toRingHom _ rfl rfl (RingHom.ext he) hτ ω).symm`.
+-/
 theorem toRat_place (E : Place c) {n : ℕ} (ω : Forms E.const n) :
     (place e he E).toRat n (TopForm.formMap n (ringEquiv e E.ring).toRingHom (constHom e he E) ω) =
       TopForm.formMap n e.toRingHom (RingHom.ext he) (E.toRat n ω) := by
@@ -142,6 +188,9 @@ theorem toRat_place (E : Place c) {n : ℕ} (ω : Forms E.const n) :
       (RingHom.ext fun _ => rfl) (constHom e he E) rfl hτ ω).trans
     (TopForm.formMap_formMap E.ring.subtype e.toRingHom _ rfl rfl (RingHom.ext he) hτ ω).symm
 
+/- English proof (translation)
+Take `⟨ω, hω, f, rfl, hf⟩` from `h`. Use `⟨TopForm.formMap n (ringEquiv e E.ring).toRingHom (constHom e he E) ω, isFreeGen_map (ringEquiv e E.ring).bijective _ (formMap_bijective _ _ n) hω, Units.map e.toMonoidHom f, ?_, (ord_place e he E f).trans hf⟩` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, toRat_place]`. Both sides reduce to the same expression.
+-/
 theorem isFormOrd_place {E : Place c} {n : ℕ} {η : Forms c n} {a : ℤ} (h : E.IsFormOrd η a) :
     (place e he E).IsFormOrd (TopForm.formMap n e.toRingHom (RingHom.ext he) η) a := by
   obtain ⟨ω, hω, f, rfl, hf⟩ := h
@@ -151,6 +200,11 @@ theorem isFormOrd_place {E : Place c} {n : ℕ} {η : Forms c n} {a : ℤ} (h : 
   rw [map_smulₛₗ, toRat_place]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ a, E.IsFormOrd η a`. Take `⟨a, ha⟩` from `h`. Rewrite using `[ha.formOrd_eq, (isFormOrd_place e he ha).formOrd_eq]`. Establish `h' : ¬ ∃ a, (place e he E).IsFormOrd (TopForm.formMap n e.toRingHom (RingHom.ext he) η) a`. Introduce and unpack `⟨a, ha⟩`.
+
+Use `isFormOrd_place e.symm (symm_apply e he) ha` as an intermediate fact. Rewrite `this` using `[place_symm_place, formMap_symm_formMap e]`. Conclude with `h ⟨a, this⟩`. Rewrite using `[Place.formOrd, Place.formOrd, dif_neg h, dif_neg h']`.
+-/
 theorem formOrd_place (E : Place c) {n : ℕ} (η : Forms c n) :
     (place e he E).formOrd (TopForm.formMap n e.toRingHom (RingHom.ext he) η) = E.formOrd η := by
   by_cases h : ∃ a, E.IsFormOrd η a
@@ -163,6 +217,9 @@ theorem formOrd_place (E : Place c) {n : ℕ} (η : Forms c n) :
       exact h ⟨a, this⟩
     rw [Place.formOrd, Place.formOrd, dif_neg h, dif_neg h']
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Finsupp.linearCombination ℚ _ (Finsupp.mapDomain e φ) = Finsupp.linearCombination ℚ _ φ`. Rewrite using `[Finsupp.linearCombination_mapDomain]`. Establish `: ((fun g : K' => ((place e he E).ord g : ℚ)) ∘ e) = fun g => (E.ord g : ℚ)`. Use function extensionality and compare the values at `fun g => by simp only [Function.comp, ord_place]`. Rewrite using `[this]`.
+-/
 theorem ordQ_place (E : Place c) (φ : K →₀ ℚ) :
     (place e he E).ordQ (Finsupp.mapDomain e φ) = E.ordQ φ := by
   change Finsupp.linearCombination ℚ _ (Finsupp.mapDomain e φ) = Finsupp.linearCombination ℚ _ φ
@@ -171,11 +228,17 @@ theorem ordQ_place (E : Place c) (φ : K →₀ ℚ) :
     funext fun g => by simp only [Function.comp, ord_place]
   rw [this]
 
+/- English proof (translation)
+Rewrite using `[Place.disc, Place.disc, formOrd_place, ordQ_place]`.
+-/
 theorem disc_place (E : Place c) {n : ℕ} (η : Forms c n) (φ : K →₀ ℚ) :
     (place e he E).disc (TopForm.formMap n e.toRingHom (RingHom.ext he) η) (Finsupp.mapDomain e φ) =
       E.disc η φ := by
   rw [Place.disc, Place.disc, formOrd_place, ordQ_place]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h f hf`. Conclude with `(apply_mem_place e he E f).1 (h (e f) ⟨f, hf, rfl⟩)`. Introduce and unpack `h _ ⟨f, hf, rfl⟩`. Conclude with `(apply_mem_place e he E f).2 (h f hf)`.
+-/
 theorem contains_place (E : Place c) (R : Subring K) :
     (place e he E).Contains (R.map e.toRingHom) ↔ E.Contains R := by
   constructor
@@ -184,6 +247,13 @@ theorem contains_place (E : Place c) (R : Subring K) :
   · rintro h _ ⟨f, hf, rfl⟩
     exact (apply_mem_place e he E f).2 (h f hf)
 
+/- English proof (translation)
+Use `and_congr (contains_place e he E R) ⟨fun h f hf => ?_, fun h f' hf' => ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨a, ha, rfl⟩, _, ⟨b, hb, rfl⟩, hb0, hord, hfb⟩` from `h (e f) ((apply_mem_place e he E f).2 hf)`. Use `⟨a, ha, b, hb, fun h0 => hb0 (by simp [h0]), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← ord_place e he E]`. Conclude with `hord`.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul]`. Conclude with `hfb`. Take `⟨a, ha, b, hb, hb0, hord, hfb⟩` from `h (e.symm f') ((mem_place e he E f').1 hf')`. Use `⟨e a, ⟨a, ha, rfl⟩, e b, ⟨b, hb, rfl⟩, (map_ne_zero e).2 hb0, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ord_place]`. Conclude with `hord`. Rewrite using `[← hfb, map_mul, e.apply_symm_apply]`.
+-/
 theorem isPrimeOf_place (E : Place c) (R : Subring K) :
     (place e he E).IsPrimeOf (R.map e.toRingHom) ↔ E.IsPrimeOf R := by
   refine and_congr (contains_place e he E R) ⟨fun h f hf => ?_, fun h f' hf' => ?_⟩
@@ -201,14 +271,25 @@ theorem isPrimeOf_place (E : Place c) (R : Subring K) :
       exact hord
     · rw [← hfb, map_mul, e.apply_symm_apply]
 
+/- English proof (translation)
+The claim follows from `map_ne_zero_iff _ (formMap_bijective e (RingHom.ext he) n).1`.
+-/
 theorem formMap_ne_zero_iff {n : ℕ} (η : Forms c n) :
     TopForm.formMap n e.toRingHom (RingHom.ext he) η ≠ 0 ↔ η ≠ 0 :=
   map_ne_zero_iff _ (formMap_bijective e (RingHom.ext he) n).1
 
+/- English proof (translation)
+Use `Finsupp.mapDomain_apply e.injective φ 0` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis.
+-/
 theorem mapDomain_apply_zero (φ : K →₀ ℚ) : Finsupp.mapDomain e φ 0 = φ 0 := by
   have := Finsupp.mapDomain_apply e.injective φ 0
   rwa [map_zero] at this
 
+/- English proof (translation)
+Unfold `Klt`. Rewrite using `[formMap_ne_zero_iff e he, mapDomain_apply_zero]`. Use `and_congr_right fun _ => and_congr_right fun _ => ⟨fun h E' hE' => ?_, fun h E hE => ?_⟩` and prove the remaining obligations. Rewrite `hE'`, the goal using `[← place_place_symm e he E']`. Rewrite using `[disc_place]`.
+
+Conclude with `h _ ((contains_place e he _ R).1 hE')`. Rewrite using `[← disc_place e he]`. Conclude with `h _ ((contains_place e he E R).2 hE)`.
+-/
 theorem klt_iff {n : ℕ} (R : Subring K) (η : Forms c n) (φ : K →₀ ℚ) :
     Klt c n R η φ ↔ Klt c' n (R.map e.toRingHom) (TopForm.formMap n e.toRingHom (RingHom.ext he) η)
       (Finsupp.mapDomain e φ) := by
@@ -221,6 +302,11 @@ theorem klt_iff {n : ℕ} (R : Subring K) (η : Forms c n) (φ : K →₀ ℚ) :
   · rw [← disc_place e he]
     exact h _ ((contains_place e he E R).2 hE)
 
+/- English proof (translation)
+Unfold `EffAt`. Rewrite using `[formMap_ne_zero_iff e he, mapDomain_apply_zero]`. Use `and_congr_right fun _ => and_congr_right fun _ => ⟨fun h E' hE' => ?_, fun h E hE => ?_⟩` and prove the remaining obligations. Rewrite `hE'`, the goal using `[← place_place_symm e he E']`. Rewrite using `[disc_place]`.
+
+Conclude with `h _ ((isPrimeOf_place e he _ R).1 hE')`. Rewrite using `[← disc_place e he]`. Conclude with `h _ ((isPrimeOf_place e he E R).2 hE)`.
+-/
 theorem effAt_iff {n : ℕ} (R : Subring K) (η : Forms c n) (φ : K →₀ ℚ) :
     EffAt c n R η φ ↔ EffAt c' n (R.map e.toRingHom) (TopForm.formMap n e.toRingHom (RingHom.ext he) η)
       (Finsupp.mapDomain e φ) := by
@@ -235,6 +321,9 @@ theorem effAt_iff {n : ℕ} (R : Subring K) (η : Forms c n) (φ : K →₀ ℚ)
 
 include he in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨c a, h.const_mem a, he a⟩ isLocalRing := by haveI := h.isLocalRing exact (e.subringMap (s := R)).isLocalRing essFiniteType := by have h3 := h.essFiniteType.comp (RingHom.FiniteType.of_surjective (e.subringMap (s := R)).toRingHom (e.subringMap (s := R)).surjective).essFiniteType …`.
+-/
 theorem isLocModel_map {R : Subring K} (h : IsLocModel c R) : IsLocModel c' (R.map e.toRingHom) where
   const_mem a := ⟨c a, h.const_mem a, he a⟩
   isLocalRing := by
@@ -251,6 +340,11 @@ theorem isLocModel_map {R : Subring K} (h : IsLocModel c R) : IsLocModel c' (R.m
     rw [← hab, map_mul, e.apply_symm_apply]
 
 include he in
+/- English proof (translation)
+Use `⟨isLocModel_map e he, fun h => ?_⟩` and prove the remaining obligations. Establish `h'` using `isLocModel_map e.symm (symm_apply e he) h`. Establish `hR : (R.map e.toRingHom).map e.symm.toRingHom = R`. Use extensionality with `x`. Simplify using `[Subring.mem_map]`.
+
+Rewrite `h'` using `[hR]`. Then use the resulting hypothesis.
+-/
 theorem isLocModel_iff (R : Subring K) : IsLocModel c R ↔ IsLocModel c' (R.map e.toRingHom) := by
   refine ⟨isLocModel_map e he, fun h => ?_⟩
   have h' := isLocModel_map e.symm (symm_apply e he) h
@@ -261,6 +355,9 @@ theorem isLocModel_iff (R : Subring K) : IsLocModel c R ↔ IsLocModel c' (R.map
 
 include he in
 
+/- English proof (translation)
+Use `letI := c.toAlgebra`. Use `letI := c'.toAlgebra`. Conclude with `(AlgEquiv.ofRingEquiv (f := e) he).isTranscendenceBasis h`.
+-/
 theorem trBasis_map {n : ℕ} {x : Fin n → K} (h : TrBasis c x) : TrBasis c' (e ∘ x) := by
   letI := c.toAlgebra
   letI := c'.toAlgebra
@@ -268,6 +365,9 @@ theorem trBasis_map {n : ℕ} {x : Fin n → K} (h : TrBasis c x) : TrBasis c' (
 
 end RingEquivTransport
 
+/- English proof (translation)
+Introduce `k K K' _ _ _ _ c c' e he n x R φ hx`. Establish `hd : dForm c' (e ∘ x) = TopForm.formMap n e.toRingHom (RingHom.ext he) (dForm c x)` using `(TopForm.formMap_dForm e.toRingHom (RingHom.ext he) x).symm`. Rewrite using `[hd]`. Conclude with `⟨RingEquivTransport.trBasis_map e he hx, RingEquivTransport.isLocModel_iff e he R, RingEquivTransport.klt_iff e he R _ φ, RingEquivTransport.effAt_iff e he R _ φ⟩`.
+-/
 theorem transport_ringEquiv : ∀ {k K K' : Type} [Field k] [CharZero k] [Field K] [Field K'] (c : k →+* K) (c' : k →+* K') (e : K ≃+* K'),
   (∀ a, e (c a) = c' a) → ∀ (n : ℕ) (x : Fin n → K) (R : Subring K) (φ : K →₀ ℚ), TrBasis c x →
   TrBasis c' (e ∘ x) ∧

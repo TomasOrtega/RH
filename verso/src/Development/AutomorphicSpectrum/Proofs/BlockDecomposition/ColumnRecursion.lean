@@ -14,6 +14,13 @@ namespace ColRecProof
 
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
 
+/- English proof (translation)
+Unfold `patChar`. Rewrite using `[← AddChar.map_add_eq_mul]`. Use `congr 1`. Simplify using `only [add_mul, Finset.sum_add_distrib, ite_mul, zero_mul]`. Use `congr 1`.
+
+Rewrite using `[Finset.sum_eq_single p, Finset.sum_eq_single q]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[hj]`. Simplify using the standard rewrite rules.
+
+Introduce `i _ hi`. Simplify using `[hi]`. Simplify using the standard rewrite rules.
+-/
 theorem patChar_add_single {ι : Type} [Fintype ι] [DecidableEq ι] (E : ι → ι → K) (ψ₀ : AddChar K ℂ)
     (p q : ι) (t : K) (u : GL ι K) :
     patChar (fun i j => E i j + if i = p ∧ j = q then t else 0) ψ₀ u =
@@ -30,6 +37,13 @@ theorem patChar_add_single {ι : Type} [Fintype ι] [DecidableEq ι] (E : ι →
   · intro i _ hi; simp [hi]
   · simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j => ⟨(h i j).1, fun hij hn => (h i j).2 hij fun h' => hn ((hiff i j).1 h').1⟩, ?_⟩` and prove the remaining obligations. Conclude with `(h p q).2 hne fun h' => ((hiff p q).1 h').2 ⟨rfl, rfl⟩`. Introduce and unpack `⟨h, h0⟩ i j`.
+
+Use `⟨(h i j).1, fun hij hn => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hΦ : Φ i j`. Establish `: i = p ∧ j = q`. Assume the negation of the conclusion as `hc`. Conclude with `hn ((hiff i j).2 ⟨hΦ, hc⟩)`.
+
+Rewrite using `[this.1, this.2]`. Conclude with `h0`. Conclude with `(h i j).2 hij hΦ`.
+-/
 theorem mem_patSet_remove {ι : Type} [Fintype ι] [DecidableEq ι] {Φ Φ' : ι → ι → Prop} {p q : ι}
     (hne : p ≠ q) (hiff : ∀ i j, Φ' i j ↔ Φ i j ∧ ¬ (i = p ∧ j = q)) (hpq : Φ p q) (u : GL ι K) :
     u ∈ patSet K Φ' ↔ u ∈ patSet K Φ ∧ (u : Matrix ι ι K) p q = 0 := by
@@ -46,6 +60,17 @@ theorem mem_patSet_remove {ι : Type} [Fintype ι] [DecidableEq ι] {Φ Φ' : ι
       rw [this.1, this.2]; exact h0
     · exact (h i j).2 hij hΦ
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.T.pattern_group_statement K ι Φ hΦ).2.1`. Establish `h2` using `(GlobalTheory.T.pattern_group_statement K ι Φ' hΦ').2.1`. Establish `hset : {x : ι × ι | Φ x.1 x.2} = insert (p, q) {x : ι × ι | Φ' x.1 x.2}`. Use extensionality with `⟨i, j⟩`. Simplify using `only [Set.mem_setOf_eq, Set.mem_insert_iff, Prod.mk.injEq, hiff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Distinguish the cases in `hc : i = p ∧ j = q`. Conclude with `Or.inl hc`. Conclude with `Or.inr ⟨h, hc⟩`.
+
+Introduce and unpack `(⟨rfl, rfl⟩ | h)`. Conclude with `hpq`. Conclude with `h.1`. Establish `hn : Nat.card {x : ι × ι // Φ x.1 x.2} = Nat.card {x : ι × ι // Φ' x.1 x.2} + 1`. Establish `h3` using `Set.ncard_insert_of_notMem (s := {x : ι × ι | Φ' x.1 x.2}) (a := (p, q)) (by simp [hiff]) (Set.toFinite _)`.
+
+Rewrite `h3` using `[← hset]`. Establish `e1` using `Nat.card_coe_set_eq {x : ι × ι | Φ x.1 x.2}`. Establish `e2` using `Nat.card_coe_set_eq {x : ι × ι | Φ' x.1 x.2}`. Express the relevant statement in the definitionally equal form `Nat.card {x : ι × ι | Φ x.1 x.2} = Nat.card {x : ι × ι | Φ' x.1 x.2} + 1`. Rewrite using `[e1, e2, h3]`.
+
+Rewrite using `[h1, h2, hn, pow_succ, mul_comm]`.
+-/
 theorem ncard_patSet_remove {ι : Type} [Fintype ι] [DecidableEq ι] {Φ Φ' : ι → ι → Prop} {p q : ι}
     (hΦ : IsPat Φ) (hΦ' : IsPat Φ') (hiff : ∀ i j, Φ' i j ↔ Φ i j ∧ ¬ (i = p ∧ j = q)) (hpq : Φ p q) :
     (patSet K Φ).ncard = Fintype.card K * (patSet K Φ').ncard := by
@@ -72,6 +97,23 @@ theorem ncard_patSet_remove {ι : Type} [Fintype ι] [DecidableEq ι] {Φ Φ' : 
     rw [e1, e2, h3]
   rw [h1, h2, hn, pow_succ, mul_comm]
 
+/- English proof (translation)
+Establish `hne : p ≠ q`. Introduce and unpack `rfl`. Conclude with `hΦ.1 p hpq`. Establish `hprim : ψ₀.IsPrimitive` using `AddChar.IsPrimitive.of_ne_one hψ`. Establish `hq : (Fintype.card K : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`.
+
+Establish `hc` using `ncard_patSet_remove (K := K) hΦ hΦ' hiff hpq`. Establish `hS : ((patSet K Φ').ncard : ℂ) = (Fintype.card K : ℂ)⁻¹ * ((patSet K Φ).ncard : ℂ)`. Rewrite using `[hc]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Establish `key : ∀ u : GL ι K, ∑ t : K, (if u ∈ patSet K Φ then (patChar E ψ₀ u * ψ₀ (t * (u : Matrix ι ι K) p q))⁻¹ * χ u else 0) = (Fintype.card K : ℂ) * (if u ∈ patSet K Φ' then (patChar E ψ₀ u)⁻¹ * χ u else 0)`. Introduce `u`. Distinguish the cases in `hu : u ∈ patSet K Φ`. Establish `hs : ∑ t : K, (ψ₀ (t * (u : Matrix ι ι K) p q))⁻¹ = if (u : Matrix ι ι K) p q = 0 then (Fintype.card K : ℂ) else 0`. Use `AddChar.sum_mulShift (-(u : Matrix ι ι K) p q) hprim` as an intermediate fact.
+
+Simplify using `only [neg_eq_zero, Nat.cast_ite, Nat.cast_zero] at this`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← AddChar.map_neg_eq_inv]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_pos hu, mul_inv]`. Establish `: ∀ t : K, (patChar E ψ₀ u)⁻¹ * (ψ₀ (t * (u : Matrix ι ι K) p q))⁻¹ * χ u = ((patChar E ψ₀ u)⁻¹ * χ u) * (ψ₀ (t * (u : Matrix ι ι K) p q))⁻¹` using `fun t => by ring`. Simplify using `only [this]`. Rewrite using `[← Finset.mul_sum, hs]`.
+
+Distinguish the cases in `h0 : (u : Matrix ι ι K) p q = 0`. Rewrite using `[if_pos h0, if_pos ((mem_patSet_remove hne hiff hpq u).2 ⟨hu, h0⟩)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h0, if_neg fun h => h0 ((mem_patSet_remove hne hiff hpq u).1 h).2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hu' : u ∉ patSet K Φ'` using `fun h => hu ((mem_patSet_remove hne hiff hpq u).1 h).1`. Simplify using `[hu, hu']`. Unfold `wh`. Simplify using `only [patChar_add_single]`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm, hS]`.
+
+Simplify using `only [key]`. Rewrite using `[← Finset.mul_sum, mul_inv, inv_inv]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem wh_fourier {ι : Type} [Fintype ι] [DecidableEq ι] {Φ Φ' : ι → ι → Prop} {p q : ι}
     (hΦ : IsPat Φ) (hΦ' : IsPat Φ') (hiff : ∀ i j, Φ' i j ↔ Φ i j ∧ ¬ (i = p ∧ j = q)) (hpq : Φ p q)
     (E : ι → ι → K) (ψ₀ : AddChar K ℂ) (χ : GL ι K → ℂ) (hψ : ψ₀ ≠ 1) :
@@ -116,6 +158,11 @@ theorem wh_fourier {ι : Type} [Fintype ι] [DecidableEq ι] {Φ Φ' : ι → ι
   rw [← Finset.mul_sum, mul_inv, inv_inv]
   field_simp
 
+/- English proof (translation)
+Unfold `wh`. Use `congr 1`. Rewrite using `[← Equiv.sum_comp (MulAut.conj x).toEquiv (fun u => if u ∈ patSet K Φ then (patChar E' ψ₀ u)⁻¹ * χ u else 0)]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Establish `e : (MulAut.conj x).toEquiv u = x * u * x⁻¹` using `rfl`.
+
+Rewrite using `[e]`. Distinguish the cases in `hu : u ∈ patSet K Φ`. Rewrite using `[if_pos hu, if_pos ((hmem u).2 hu), hE u hu, hχ]`. Rewrite using `[if_neg hu, if_neg fun h => hu ((hmem u).1 h)]`.
+-/
 theorem wh_conj {ι : Type} [Fintype ι] [DecidableEq ι] (Φ : ι → ι → Prop) (E E' : ι → ι → K)
     (ψ₀ : AddChar K ℂ) (χ : GL ι K → ℂ) (hχ : ∀ x g, χ (x * g * x⁻¹) = χ g) (x : GL ι K)
     (hmem : ∀ u, x * u * x⁻¹ ∈ patSet K Φ ↔ u ∈ patSet K Φ)
@@ -133,6 +180,11 @@ theorem wh_conj {ι : Type} [Fintype ι] [DecidableEq ι] (Φ : ι → ι → Pr
   · rw [if_pos hu, if_pos ((hmem u).2 hu), hE u hu, hχ]
   · rw [if_neg hu, if_neg fun h => hu ((hmem u).1 h)]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single p, Finset.sum_eq_single q]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[hj]`. Simplify using the standard rewrite rules.
+
+Introduce `i _ hi`. Simplify using `[hi]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_sum_ite {ι : Type} [Fintype ι] [DecidableEq ι] (p q : ι) (c : K) :
     ∑ i : ι, ∑ j : ι, (if i = p ∧ j = q then c else 0) = c := by
   rw [Finset.sum_eq_single p, Finset.sum_eq_single q]
@@ -144,16 +196,27 @@ theorem sum_sum_ite {ι : Type} [Fintype ι] [DecidableEq ι] (p q : ι) (c : K)
 
 def Dp (N k a : ℕ) (i j : Fin N) : Prop := i < j ∧ ¬ (a ≤ (i : ℕ) ∧ (j : ℕ) = k)
 
+/- English proof (translation)
+Use `⟨fun i h => lt_irrefl _ h.1, fun i j l hij hjl => ⟨hij.1.trans hjl.1, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (i : ℕ) < j` using `hij.1`. Conclude with `hjl.2 ⟨by omega, h.2⟩`.
+-/
 theorem isPat_Dp (N k a : ℕ) : IsPat (Dp N k a) := by
   refine ⟨fun i h => lt_irrefl _ h.1, fun i j l hij hjl => ⟨hij.1.trans hjl.1, fun h => ?_⟩⟩
   have h1 : (i : ℕ) < j := hij.1
   exact hjl.2 ⟨by omega, h.2⟩
 
+/- English proof (translation)
+Simplify using `only [Dp, Fin.ext_iff, Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Dp_step_iff {N k a : ℕ} (ha : a < k) (hk : k < N) (i j : Fin N) :
     Dp N k a i j ↔ Dp N k (a + 1) i j ∧ ¬ (i = ⟨a, ha.trans hk⟩ ∧ j = ⟨k, hk⟩) := by
   simp only [Dp, Fin.ext_iff, Fin.lt_def]
   omega
 
+/- English proof (translation)
+Establish `hmem : Dp N k (a + 1) ⟨a, ha.trans hk⟩ ⟨k, hk⟩`. Simplify using `only [Dp, Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[wh_fourier (isPat_Dp N k (a + 1)) (isPat_Dp N k a) (Dp_step_iff ha hk) hmem (cutE K N k) ψ₀ χ hψ, ← Finset.add_sum_erase Finset.univ _ (Finset.mem_univ (0 : K))]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem wh_Dp_step {N k a : ℕ} (ha : a < k) (hk : k < N) (ψ₀ : AddChar K ℂ) (χ : GL (Fin N) K → ℂ)
     (hψ : ψ₀ ≠ 1) :
     wh (Dp N k a) (cutE K N k) ψ₀ χ = wh (Dp N k (a + 1)) (cutE K N k) ψ₀ χ +
@@ -171,6 +234,11 @@ def Ea (N k a : ℕ) (t : K) (i j : Fin N) : K :=
   if (i : ℕ) = a ∧ (j : ℕ) = k then t
   else if (j : ℕ) = i + 1 ∧ (j : ℕ) ≠ k ∧ (i : ℕ) ≠ a then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[add_mul, one_mul, Matrix.add_apply]`. Use `congr 1`. Distinguish the cases in `h : i = b`. Substitute `h` using the available equality. Simplify using `[Matrix.single_mul_apply_same]`.
+
+Simplify using `[h, Matrix.single_mul_apply_of_ne]`.
+-/
 theorem one_add_single_mul {N : ℕ} (b k : Fin N) (s : K) (M : Matrix (Fin N) (Fin N) K) (i j : Fin N) :
     ((1 + Matrix.single b k s) * M) i j = M i j + if i = b then s * M k j else 0 := by
   rw [add_mul, one_mul, Matrix.add_apply]
@@ -180,6 +248,11 @@ theorem one_add_single_mul {N : ℕ} (b k : Fin N) (s : K) (M : Matrix (Fin N) (
     simp [Matrix.single_mul_apply_same]
   · simp [h, Matrix.single_mul_apply_of_ne]
 
+/- English proof (translation)
+Rewrite using `[mul_add, mul_one, Matrix.add_apply]`. Use `congr 1`. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Simplify using `[Matrix.mul_single_apply_same]`.
+
+Simplify using `[h, Matrix.mul_single_apply_of_ne]`.
+-/
 theorem mul_one_add_single {N : ℕ} (b k : Fin N) (s : K) (M : Matrix (Fin N) (Fin N) K) (i j : Fin N) :
     (M * (1 + Matrix.single b k s)) i j = M i j + if j = k then M i b * s else 0 := by
   rw [mul_add, mul_one, Matrix.add_apply]
@@ -213,11 +286,17 @@ def xs {N : ℕ} (b k : Fin N) (hbk : b ≠ k) (s : K) : GL (Fin N) K where
       · simp [Matrix.add_apply, Matrix.single_apply, Matrix.one_apply, hbk.symm, h2, Ne.symm h2]
     · simp [Matrix.add_apply, Matrix.single_apply, h1, Ne.symm h1]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `1 + Matrix.single b k (-s) = 1 + Matrix.single b k (-s)`. Both sides reduce to the same expression.
+-/
 theorem xs_neg {N : ℕ} (b k : Fin N) (hbk : b ≠ k) (s : K) : xs b k hbk (-s) = (xs b k hbk s)⁻¹ := by
   apply Units.ext
   change 1 + Matrix.single b k (-s) = 1 + Matrix.single b k (-s)
   rfl
 
+/- English proof (translation)
+Establish `h : ((xs b k hbk s * u * (xs b k hbk s)⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) = (1 + Matrix.single b k s) * (u : Matrix (Fin N) (Fin N) K) * (1 + Matrix.single b k (-s))` using `rfl`. Rewrite using `[h, mul_one_add_single, one_add_single_mul, one_add_single_mul]`.
+-/
 theorem xs_conj_apply {N : ℕ} (b k : Fin N) (hbk : b ≠ k) (s : K) (u : GL (Fin N) K) (i j : Fin N) :
     ((xs b k hbk s * u * (xs b k hbk s)⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) i j =
       ((u : Matrix (Fin N) (Fin N) K) i j + if i = b then s * (u : Matrix (Fin N) (Fin N) K) k j else 0) +
@@ -227,6 +306,27 @@ theorem xs_conj_apply {N : ℕ} (b k : Fin N) (hbk : b ≠ k) (s : K) (u : GL (F
       (1 + Matrix.single b k s) * (u : Matrix (Fin N) (Fin N) K) * (1 + Matrix.single b k (-s)) := rfl
   rw [h, mul_one_add_single, one_add_single_mul, one_add_single_mul]
 
+/- English proof (translation)
+Establish `hlow : ∀ i j : Fin N, (j : ℕ) < i → (u : Matrix (Fin N) (Fin N) K) i j = 0` using `fun i j h => (hu i j).2 (by intro e; subst e; omega) (fun h' => by`. Establish `: (i : ℕ) < j` using `h'.1`. Use the proof step `omega)`. Establish `hdiag : ∀ i : Fin N, (u : Matrix (Fin N) (Fin N) K) i i = 1` using `fun i => (hu i i).1 rfl`. Establish `hcol : ∀ i : Fin N, a + 1 ≤ (i : ℕ) → (i : ℕ) < k → (u : Matrix (Fin N) (Fin N) K) i ⟨k, hk⟩ = 0` using `fun i h1 h2 => (hu i ⟨k, hk⟩).2 (by intro e; rw [e] at h2; simp at h2) (fun h' => h'.2 ⟨h1, rfl⟩)`.
+
+Establish `hkb : (u : Matrix (Fin N) (Fin N) K) ⟨k, hk⟩ ⟨a + 1, hb.trans hk⟩ = 0` using `hlow _ _ hb`. Introduce `i j`. Rewrite using `[xs_conj_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+
+Distinguish the cases in `h1 : i = ⟨a + 1, hb.trans hk⟩`. Substitute `h1` using the available equality. Simplify using `[hdiag, hkb, hbk]`. Distinguish the cases in `h2 : i = ⟨k, hk⟩`. Substitute `h2` using the available equality.
+
+Simplify using `[hdiag, hkb, h1]`. Simplify using `[hdiag, h1, h2]`. Introduce `hij hD`. Establish `hcase : (j : ℕ) < i ∨ (a + 1 ≤ (i : ℕ) ∧ (i : ℕ) < k ∧ (j : ℕ) = k)`. Establish `hne : (i : ℕ) ≠ j` using `fun e => hij (Fin.ext e)`.
+
+Simplify using `only [Dp, Fin.lt_def] at hD`. Use linear arithmetic over natural numbers and integers. Break down `hcase with h | ⟨h1, h2, h3⟩` into its components or cases. Rewrite using `[hlow i j h]`. Distinguish the cases in `hi : i = ⟨a + 1, hb.trans hk⟩`.
+
+Substitute `hi` using the available equality. Establish `hjk : j ≠ ⟨k, hk⟩`. Introduce `e`. Rewrite `h` using `[e]`. Simplify using `at h`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hz : (u : Matrix (Fin N) (Fin N) K) ⟨k, hk⟩ j = 0` using `hlow _ _ (by simp at h ⊢; omega)`. Simplify using `[hz, hjk]`. Distinguish the cases in `hj : j = ⟨k, hk⟩`. Substitute `hj` using the available equality.
+
+Establish `hz : (u : Matrix (Fin N) (Fin N) K) i ⟨a + 1, hb.trans hk⟩ = 0` using `hlow _ _ (by simp at h ⊢; omega)`. Simplify using `[hz, hi]`. Simplify using `[hi, hj]`. Establish `hj : j = ⟨k, hk⟩` using `Fin.ext h3`. Substitute `hj` using the available equality.
+
+Rewrite using `[hcol i h1 h2]`. Distinguish the cases in `hi : i = ⟨a + 1, hb.trans hk⟩`. Substitute `hi` using the available equality. Simplify using `[hdiag, hkb]`. Establish `hz : (u : Matrix (Fin N) (Fin N) K) i ⟨a + 1, hb.trans hk⟩ = 0` using `hlow _ _ (by`.
+
+Establish `: (i : ℕ) ≠ a + 1` using `fun e => hi (Fin.ext e)`. Simplify using `only`. Use the proof step `omega)`. Simplify using `[hz, hi]`.
+-/
 theorem xs_conj_mem {N k a : ℕ} (hb : a + 1 < k) (hk : k < N) (hbk : (⟨a + 1, hb.trans hk⟩ : Fin N) ≠ ⟨k, hk⟩)
     (s : K) (u : GL (Fin N) K) (hu : u ∈ patSet K (Dp N k (a + 1))) :
     xs ⟨a + 1, hb.trans hk⟩ ⟨k, hk⟩ hbk s * u * (xs ⟨a + 1, hb.trans hk⟩ ⟨k, hk⟩ hbk s)⁻¹ ∈
@@ -282,6 +382,31 @@ theorem xs_conj_mem {N k a : ℕ} (hb : a + 1 < k) (hk : k < N) (hbk : (⟨a + 1
           omega)
         simp [hz, hi]
 
+/- English proof (translation)
+Establish `hpb : p ≠ b` using `fun e => by rw [e] at hpv; omega`. Establish `hpt : ∀ i j : Fin N, Ea N k a t i j * ((xs b q hbk (-t⁻¹) * u * (xs b q hbk (-t⁻¹))⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) i j = (cutE K N k i j + if i = p ∧ j = q then t else 0) * (u : Matrix (Fin N) (Fin N) K) i j + ((if i = p ∧ j = q then (u : Matrix (Fin N) (Fin N) K) …`. Introduce `i j`. Rewrite using `[xs_conj_apply]`. Distinguish the cases in `h1 : i = p ∧ j = q`.
+
+Take `⟨rfl, rfl⟩` from `h1`. Establish `hE : Ea N k a t i j = t`. Simplify using `only [Ea]`. Rewrite using `[if_pos ⟨hpv, hqv⟩]`. Establish `hF : cutE K N k i j = 0`.
+
+Simplify using `only [cutE]`. Rewrite using `[if_neg (by omega)]`. Rewrite using `[hE, hF]`. Simplify using `[hpb, hbk.symm]`. Clear the denominators using the available nonvanishing facts.
+
+Distinguish the cases in `h2 : i = p ∧ j = b`. Take `⟨rfl, rfl⟩` from `h2`. Establish `hE : Ea N k a t i j = 0`. Simplify using `only [Ea]`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`.
+
+Establish `hF : cutE K N k i j = 1`. Simplify using `only [cutE]`. Rewrite using `[if_pos (by omega)]`. Rewrite using `[hE, hF]`. Simplify using `[hpb, hbk, hbk.symm]`.
+
+Rewrite using `[if_neg h1, if_neg h1, if_neg h2]`. Establish `h1' : ¬ ((i : ℕ) = a ∧ (j : ℕ) = k)` using `fun h => h1 ⟨Fin.ext (h.1.trans hpv.symm), Fin.ext (h.2.trans hqv.symm)⟩`. Establish `h2' : ¬ ((i : ℕ) = a ∧ (j : ℕ) = a + 1)` using `fun h => h2 ⟨Fin.ext (h.1.trans hpv.symm), Fin.ext (h.2.trans hbv.symm)⟩`. Distinguish the cases in `h3 : (j : ℕ) = i + 1 ∧ (j : ℕ) ≠ k ∧ (i : ℕ) ≠ a`. Establish `hE : Ea N k a t i j = 1`.
+
+Simplify using `only [Ea]`. Rewrite using `[if_neg h1', if_pos h3]`. Establish `hF : cutE K N k i j = 1`. Simplify using `only [cutE]`. Rewrite using `[if_pos ⟨h3.1, h3.2.1⟩]`.
+
+Establish `hjq : j ≠ q` using `fun e => h3.2.1 (by rw [e, hqv])`. Rewrite using `[hE, hF, if_neg hjq]`. Distinguish the cases in `hi : i = b`. Establish `hz : (u : Matrix (Fin N) (Fin N) K) q j = 0` using `hlow _ _ (by`. Establish `h4` using `h3.1`.
+
+Establish `h5` using `h3.2.1`. Rewrite `h4` using `[hi, hbv]`. Rewrite using `[hqv]`. Use the proof step `omega)`. Simplify using `[hi, hz]`.
+
+Simplify using `[hi]`. Establish `hE : Ea N k a t i j = 0`. Simplify using `only [Ea]`. Rewrite using `[if_neg h1', if_neg h3]`. Establish `hF : cutE K N k i j = 0`.
+
+Simplify using `only [cutE]`. Rewrite using `[if_neg (by omega)]`. Rewrite using `[hE, hF]`. Simplify using the standard rewrite rules. Unfold `patChar`.
+
+Use `congr 1`. Simplify using `only [hpt, Finset.sum_add_distrib, Finset.sum_sub_distrib, sum_sum_ite]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem patChar_xs_conj {N k a : ℕ} (hb : a + 1 < k) (p b q : Fin N) (hpv : (p : ℕ) = a)
     (hbv : (b : ℕ) = a + 1) (hqv : (q : ℕ) = k) (hbk : b ≠ q) {t : K} (ht : t ≠ 0) (ψ₀ : AddChar K ℂ)
     (u : GL (Fin N) K) (hlow : ∀ i j : Fin N, (j : ℕ) < i → (u : Matrix (Fin N) (Fin N) K) i j = 0) :
@@ -352,6 +477,9 @@ theorem patChar_xs_conj {N k a : ℕ} (hb : a + 1 < k) (p b q : Fin N) (hpv : (p
   simp only [hpt, Finset.sum_add_distrib, Finset.sum_sub_distrib, sum_sum_ite]
   ring
 
+/- English proof (translation)
+Unfold `Ea at h`. Use `split_ifs at h with h1 h2`. Conclude with `Or.inl h1`. Conclude with `Or.inr h2`. Conclude with `absurd rfl h`.
+-/
 theorem Ea_ne {N k a : ℕ} {t : K} {i j : Fin N} (h : Ea N k a t i j ≠ 0) :
     ((i : ℕ) = a ∧ (j : ℕ) = k) ∨ ((j : ℕ) = i + 1 ∧ (j : ℕ) ≠ k ∧ (i : ℕ) ≠ a) := by
   unfold Ea at h
@@ -360,6 +488,27 @@ theorem Ea_ne {N k a : ℕ} {t : K} {i j : Fin N} (h : Ea N k a t i j ≠ 0) :
   · exact Or.inr h2
   · exact absurd rfl h
 
+/- English proof (translation)
+Establish `e1 : (fun i j : Fin N => i < j ∧ ¬ ((a < (i : ℕ) ∧ (i : ℕ) < k) ∧ j = ⟨k, hk⟩)) = Dp N k (a + 1)`. Use function extensionality and compare the values at `i j`. Apply `propext` to reduce the goal to its premises. Simplify using `only [Dp, Fin.ext_iff, Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `e2 : (fun i j : Fin N => i < j ∧ ¬ (i = ⟨a, ha.trans hk⟩ ∧ (a < (j : ℕ) ∧ (j : ℕ) < k))) = rowPat N k a`. Use function extensionality and compare the values at `i j`. Apply `propext` to reduce the goal to its premises. Simplify using `only [rowPat, Fin.ext_iff, Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[← e1, ← e2]`. Use `GlobalTheory.T.root_exchange' K (Fin N) (fun i j => i < j) (Ea N k a t) ψ₀ (fun w => a < (w : ℕ) ∧ (w : ℕ) < k) ⟨a, ha.trans hk⟩ ⟨k, hk⟩ χ ⟨fun i => lt_irrefl i, fun i j l => lt_trans⟩ hψ hχ ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `w ⟨h1, h2⟩`. Conclude with `⟨h1, h2⟩`. Establish `: Ea N k a t ⟨a, ha.trans hk⟩ ⟨k, hk⟩ = t`.
+
+Unfold `Ea`. Conclude with `if_pos ⟨rfl, rfl⟩`. Rewrite using `[this]`. Conclude with `ht`. Introduce `i j h`.
+
+Break down `Ea_ne h with ⟨h1, h2⟩ | ⟨h1, _⟩` into its components or cases. Express the relevant statement in the definitionally equal form `(i : ℕ) < j`. Use linear arithmetic over natural numbers and integers. Express the relevant statement in the definitionally equal form `(i : ℕ) < j`. Use linear arithmetic over natural numbers and integers.
+
+Introduce and unpack `w ⟨h1, h2⟩`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `h`. Break down `Ea_ne h with ⟨_, h3⟩ | ⟨_, _, h3⟩` into its components or cases. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h3 rfl`. Assume the negation of the conclusion as `h`. Break down `Ea_ne h with ⟨h3, _⟩ | ⟨_, h3, _⟩` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `h3 rfl`.
+
+Introduce and unpack `w z ⟨h1, h2⟩ hwz hzq`. Establish `h3 : (w : ℕ) < z` using `hwz`. Establish `h4 : (z : ℕ) < k` using `hzq`. Conclude with `⟨by omega, h4⟩`. Introduce and unpack `w z ⟨h1, h2⟩ hpz hzw`.
+
+Establish `h3 : a < (z : ℕ)` using `hpz`. Establish `h4 : (z : ℕ) < w` using `hzw`. Conclude with `⟨h3, by omega⟩`. Introduce `i j l hij hjl h`. Establish `h1 : (i : ℕ) < j` using `hij`.
+
+Establish `h2 : (j : ℕ) < l` using `hjl`. Break down `Ea_ne h with ⟨h3, h4⟩ | ⟨h3, _⟩` into its components or cases. Conclude with `⟨Fin.ext h3, Fin.ext h4, by omega, by omega⟩`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem wh_exchange {N k a : ℕ} (ha : a < k) (hk : k < N) {t : K} (ht : t ≠ 0) (ψ₀ : AddChar K ℂ)
     (χ : GL (Fin N) K → ℂ) (hψ : ψ₀ ≠ 1) (hχ : ∀ x g, χ (x * g * x⁻¹) = χ g) :
     wh (Dp N k (a + 1)) (Ea N k a t) ψ₀ χ = wh (rowPat N k a) (Ea N k a t) ψ₀ χ := by
@@ -417,6 +566,23 @@ theorem wh_exchange {N k a : ℕ} (ha : a < k) (hk : k < N) {t : K} (ht : t ≠ 
 
 def tor {N : ℕ} (a : ℕ) (t : Kˣ) (i : Fin N) : Kˣ := if (i : ℕ) ≤ a then t else 1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Distinguish the cases in `h1 : (i : ℕ) = a ∧ (j : ℕ) = k`. Establish `hE : rowE K N k a i j = 1`. Simplify using `only [rowE]`. Rewrite using `[if_pos (Or.inl h1)]`.
+
+Establish `hEa : Ea N k a (t : K) i j = t`. Simplify using `only [Ea]`. Rewrite using `[if_pos h1]`. Establish `hi : tor a t i = t`. Simplify using `only [tor]`.
+
+Rewrite using `[if_pos (by omega)]`. Establish `hj : tor a t j = 1`. Simplify using `only [tor]`. Rewrite using `[if_neg (by omega)]`. Rewrite using `[hE, hEa, hi, hj]`.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `h2 : (j : ℕ) = i + 1 ∧ (j : ℕ) ≠ k ∧ (i : ℕ) ≠ a`. Establish `hE : rowE K N k a i j = 1`. Simplify using `only [rowE]`. Rewrite using `[if_pos (Or.inr h2)]`.
+
+Establish `hEa : Ea N k a (t : K) i j = 1`. Simplify using `only [Ea]`. Rewrite using `[if_neg h1, if_pos h2]`. Establish `hij : tor a t i = tor a t j`. Simplify using `only [tor]`.
+
+Distinguish the cases in `h3 : (i : ℕ) ≤ a`. Rewrite using `[if_pos h3, if_pos (by omega)]`. Rewrite using `[if_neg h3, if_neg (by omega)]`. Rewrite using `[hE, hEa, hij]`. Simplify using the standard rewrite rules.
+
+Establish `hE : rowE K N k a i j = 0`. Simplify using `only [rowE]`. Rewrite using `[if_neg fun h => h.elim h1 h2]`. Establish `hEa : Ea N k a (t : K) i j = 0`. Simplify using `only [Ea]`.
+
+Rewrite using `[if_neg h1, if_neg h2]`. Rewrite using `[hE, hEa]`. Simplify using the standard rewrite rules.
+-/
 theorem Ea_torus {N k a : ℕ} (ha : a < k) (t : Kˣ) :
     (fun i j : Fin N => ((tor a t i : Kˣ) : K) * rowE K N k a i j * (((tor a t j)⁻¹ : Kˣ) : K)) =
       Ea N k a (t : K) := by
@@ -459,6 +625,23 @@ theorem Ea_torus {N k a : ℕ} (ha : a < k) (t : Kˣ) :
       rw [hE, hEa]
       simp
 
+/- English proof (translation)
+Establish `h1 : wh (Dp N k (a + 1)) (fun i j => cutE K N k i j + if i = ⟨a, ha.trans hk⟩ ∧ j = ⟨k, hk⟩ then t else 0) ψ₀ χ = wh (Dp N k (a + 1)) (Ea N k a t) ψ₀ χ`. Break down `Nat.lt_or_ge (a + 1) k with hb | hb` into its components or cases. Establish `hbk : (⟨a + 1, hb.trans hk⟩ : Fin N) ≠ ⟨k, hk⟩`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact.
+
+Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Use `wh_conj _ _ _ ψ₀ χ hχ (xs ⟨a + 1, hb.trans hk⟩ ⟨k, hk⟩ hbk (-t⁻¹)) ?_ ?_` and prove the remaining obligations. Introduce `u`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h2` using `xs_conj_mem hb hk hbk (-(-t⁻¹)) _ h`. Rewrite `h2` using `[xs_neg _ _ hbk (-t⁻¹)]`. Establish `e : ∀ x : GL (Fin N) K, x⁻¹ * (x * u * x⁻¹) * x⁻¹⁻¹ = u` using `fun x => by group`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+
+Conclude with `xs_conj_mem hb hk hbk _ u`. Introduce `u hu`. Use `patChar_xs_conj hb _ _ _ rfl rfl rfl hbk ht ψ₀ u fun i j h => (hu i j).2 (by intro e; subst e; omega) (fun h' => ?_)` and prove the remaining obligations. Establish `: (i : ℕ) < j` using `h'.1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hka : k = a + 1` using `by omega`. Substitute `hka` using the available equality. Use `congr 1`. Use function extensionality and compare the values at `i j`. Establish `e : (i = ⟨a, ha.trans hk⟩ ∧ j = ⟨a + 1, hk⟩) ↔ ((i : ℕ) = a ∧ (j : ℕ) = a + 1)`.
+
+Simplify using `[Fin.ext_iff]`. Distinguish the cases in `h1 : (i : ℕ) = a ∧ (j : ℕ) = a + 1`. Rewrite using `[if_pos (e.2 h1)]`. Simplify using `only [cutE, Ea]`. Rewrite using `[if_neg (by omega), if_pos h1, zero_add]`.
+
+Rewrite using `[if_neg (fun h => h1 (e.1 h)), add_zero]`. Simplify using `only [cutE, Ea]`. Rewrite using `[if_neg h1]`. Distinguish the cases in `h2 : (j : ℕ) = i + 1 ∧ (j : ℕ) ≠ a + 1`. Rewrite using `[if_pos h2, if_pos ⟨h2.1, h2.2, by omega⟩]`.
+
+Rewrite using `[if_neg h2, if_neg (by omega)]`. Establish `h2` using `Ea_torus (K := K) (N := N) ha (Units.mk0 t ht)`. Rewrite `h2` using `[Units.val_mk0]`. Rewrite using `[h1, wh_exchange ha hk ht ψ₀ χ hψ hχ, ← h2]`. Apply the tactic sequence `exact ((GlobalTheory.T.whittaker_symmetry K (Fin N) (Fin N) (rowPat N k a) (rowE K N k a) ψ₀ χ).2 hχ).2 (tor a (Units.mk0 t ht))`.
+-/
 theorem wh_term {N k a : ℕ} (ha : a < k) (hk : k < N) {t : K} (ht : t ≠ 0) (ψ₀ : AddChar K ℂ)
     (χ : GL (Fin N) K → ℂ) (hψ : ψ₀ ≠ 1) (hχ : ∀ x g, χ (x * g * x⁻¹) = χ g) :
     wh (Dp N k (a + 1))
@@ -513,6 +696,17 @@ end ColRecProof
 
 open ColRecProof in
 
+/- English proof (translation)
+Introduce `K _ _ _ N k ψ₀ χ hψ hχ hk`. Establish `hsum : ∀ m, m ≤ k → wh (Dp N k 0) (cutE K N k) ψ₀ χ = wh (Dp N k m) (cutE K N k) ψ₀ χ + ((Fintype.card K : ℂ) - 1) * ∑ a ∈ Finset.range m, wh (rowPat N k a) (rowE K N k a) ψ₀ χ`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _`.
+
+Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `hm`. Establish `hmk : m < k` using `by omega`. Establish `hcard : ∑ t ∈ Finset.univ.erase (0 : K), wh (Dp N k (m + 1)) (fun i j => cutE K N k i j + if i = ⟨m, hmk.trans hk⟩ ∧ j = ⟨k, hk⟩ then t else 0) ψ₀ χ = ((Fintype.card K : ℂ) - 1) * wh (rowPat N k m) (rowE K N k m) ψ₀ χ`.
+
+Rewrite using `[Finset.sum_congr rfl fun t ht => wh_term hmk hk (Finset.ne_of_mem_erase ht) ψ₀ χ hψ hχ, Finset.sum_const, Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, nsmul_eq_mul, Nat.cast_sub Fintype.card_pos, Nat.cast_one]`. Rewrite using `[ih (by omega), wh_Dp_step hmk hk ψ₀ χ hψ, hcard, Finset.sum_range_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `e0 : Dp N k 0 = colPat N k`. Use function extensionality and compare the values at `i j`.
+
+Apply `propext` to reduce the goal to its premises. Simplify using `only [Dp, colPat]`. Use linear arithmetic over natural numbers and integers. Establish `eK : Dp N k k = fun i j : Fin N => i < j`. Use function extensionality and compare the values at `i j`.
+
+Apply `propext` to reduce the goal to its premises. Simplify using `only [Dp, Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `hsum k le_rfl`. Rewrite `h` using `[e0, eK]`. Then use the resulting hypothesis.
+-/
 theorem colRec : ReciprocityTheory.Ty.Fin.St.ColRec := by
   intro K _ _ _ N k ψ₀ χ hψ hχ hk
   have hsum : ∀ m, m ≤ k → wh (Dp N k 0) (cutE K N k) ψ₀ χ = wh (Dp N k m) (cutE K N k) ψ₀ χ +

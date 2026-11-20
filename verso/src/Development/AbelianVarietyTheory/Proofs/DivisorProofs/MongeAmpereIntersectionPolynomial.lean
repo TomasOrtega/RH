@@ -18,6 +18,13 @@ open CategoryTheory AlgebraicGeometry
 
 namespace GlobalTheory.ChernWeilLine
 
+/- English proof (translation)
+Establish `hGd : IsGood (ofDivisors Δ) ⊤ H` using `fun y hy => absurd mem_ptsIn_top hy`. Establish `h` using `hG F σ Y Y ι (fun _ => 1) (ofDivisors Δ) (lineFlag (ofDivisors Δ)) (AlgHom.id F Y.Fn) (𝟙 Y.X) (fun x => Δ x.1) (refines_lineFlag _) (isGraded_ofDivisors Δ) ⊤ H hH hGd ((∑ i, C (t i) * X (i, 1)) ^ Y.dim)`. Establish `e1 : chernRoots (fun _ : ι => 1) ((∑ i, C (t i) * X (i, 1)) ^ Y.dim) * fibrePoint (fun _ : ι => 1) = (∑ i, C (t i) * X (⟨i, 0⟩ : Root fun _ : ι => 1)) ^ Y.dim`. Simplify using `[chernRoots, fibrePoint, esymm_one]`. Establish `hexp {κ : Type} (f : ι → MvPolynomial κ ℝ) : (∑ i, C (t i) * f i) ^ Y.dim = ∑ s : Fin Y.dim → ι, C (∏ k, t (s k)) * ∏ k, f (s k)`.
+
+Rewrite using `[← Fin.prod_const, Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, map_prod]`. Establish `e2 : (Y.interPoly fun x : Root (fun _ : ι => 1) => Δ x.1) ((∑ i, C (t i) * X (⟨i, 0⟩ : Root fun _ : ι => 1)) ^ Y.dim) = Y.interPoly Δ ((∑ i, C (t i) * X i) ^ Y.dim)`. Rewrite using `[hexp (fun i => X (⟨i, 0⟩ : Root fun _ : ι => 1)), hexp (fun i => (X i : MvPolynomial ι ℝ)), map_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[C_mul', C_mul', map_smul, map_smul, Var.interPoly_prod, Var.interPoly_prod]`. Both sides reduce to the same expression. Rewrite `h` using `[e1, e2]`. Then use the resulting hypothesis.
+-/
 theorem hasChernIntegral_ofDivisors (hG : GlobalTheory.Published.GoodChernNumbers) {F : Type} [Field F] (σ : F →+* ℂ) (Y : Var F)
     {ι : Type} [Fintype ι] (Δ : ι → Y.Dv) (H : Mat (fun _ : ι => 1) Y.Fn → CxPts Y.str σ → Mat (fun _ : ι => 1) ℂ)
     (hH : IsMetricOn (ofDivisors Δ) ⊤ H) (t : ι → ℝ) :
@@ -42,6 +49,11 @@ theorem hasChernIntegral_ofDivisors (hG : GlobalTheory.Published.GoodChernNumber
     rfl
   rwa [e1, e2] at h
 
+/- English proof (translation)
+Establish `hpot : IsPotential (M.A a) (InhabCalc.combPot Q t 0)` using `InhabCalc.isPotential_combPot _ Q (fun i => (hQ i).2) t 0 fun j => contDiffOn_const`. Rewrite using `[GlobalTheory.SameForm.mInt_eq (fun _ => GlobalTheory.T.same_form_of_levi_combination (M.A a) (P a) Q t (fun i => (hQ i).2) hP)]`. Establish `hm` using `GlobalTheory.T.isMetricOn_line_gram I m a Q hQ`. Establish `htop : ptsIn Y.str (I.ε a) ⊤ = Set.univ` using `Set.eq_univ_of_forall fun _ => mem_ptsIn_top`. Rewrite using `[htop]`.
+
+Conclude with `GlobalTheory.T.chart_independent_degree_potential (M.A a) (I.pt a) (I.alg a) (fun _ => InhabCalc.combPot Q t 0) (fun _ => hpot) _ (fun c c' y hy hy' => GlobalTheory.T.chern_top_chart_independent _ hm t c c' y hy hy' _ ((ofDivisors Δ).nonempty (under y)).choose_spec) (fun j c hc z …`.
+-/
 theorem chernTopPart_sub_eq_mInt {F : Type} [Field F] [NumberField F] {Y : Var F} {M : Man Y.dim} (I : ManIs M Y)
     {ι : Type} [Fintype ι] {Δ : ι → Y.Dv} (m : ∀ i σ, (cxSt F).Met Y σ (Δ i)) (t : ι → ℝ) (P : M.Pot)
     (a : Fin (M.n + 1)) (Q : ι → LocPot (M.X a))
@@ -63,6 +75,13 @@ theorem chernTopPart_sub_eq_mInt {F : Type} [Field F] [NumberField F] {Y : Var F
     (fun c c' y hy hy' => GlobalTheory.T.chern_top_chart_independent _ hm t c c' y hy hy' _ ((ofDivisors Δ).nonempty (under y)).choose_spec)
     (fun j c hc z hz => GlobalTheory.T.potential_combination_chart I m t a Q hQ j c hc z hz _ ((ofDivisors Δ).nonempty _).choose_spec)
 
+/- English proof (translation)
+Introduce `hG F _ _ Y e M I hdim ι _ Δ m t P hP`. Substitute `hdim` using the available equality. Establish `key (a : Fin (M.n + 1)) : mInt (M.A a) (fun _ => P a) (fun _ => 1) = Y.interPoly Δ ((∑ i, C (t i) * X i) ^ Y.dim)`. Take `⟨Q, hQ, hPQ⟩` from `hP a`. Rewrite using `[← chernTopPart_sub_eq_mInt I m t P a Q hQ hPQ]`.
+
+Conclude with `(hasChernIntegral_ofDivisors hG (I.ε a) Y Δ _ (GlobalTheory.T.isMetricOn_line_gram I m a Q hQ) t).2`. Simplify using `only [Man.int]`. Rewrite using `[Finset.sum_congr rfl fun a _ => key a, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, M.κ_eq]`. Establish `: (M.n : ℝ) + 1 ≠ 0` using `by positivity`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem int_topPow_eq_interPoly : GlobalTheory.Published.GoodChernNumbers → ∀ {F : Type} [Field F] [NumberField F]
     {Y : GlobalTheory.ProjVar.Var F} {e : ℕ} {M : Man e} (I : ManIs M Y), Y.dim = e → ∀ {ι : Type} [Fintype ι] {Δ : ι → Y.Dv}
     (m : ∀ i σ, (GlobalTheory.TrueGeo.cxSt F).Met Y σ (Δ i)) (t : ι → ℝ) (P : M.Pot), I.FormOf m t P →

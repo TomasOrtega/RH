@@ -11,6 +11,11 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 
 namespace UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
+/- English proof (translation)
+Introduce `K M Ω _ _ _ _ _ _ _ _ _ _ _ _ A v w hv hw hD a π P hP B hB`. Take `⟨i, hi, hi', hiv⟩` from `splitIso_holds K M Ω A v w hv hw hD`. Take `⟨σ, hσ, -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp UpperTheory.V.Af.formsFiniteGL K a π v`. Take `⟨σ', hσ', -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp UpperTheory.V.Af.formsFiniteGL M a P w`. Take `⟨e, he⟩` from `hP v w i hi hi' σ σ' hσ hσ'`.
+
+Take `⟨φ, hφ⟩` from `exists_isFrob hv`. Establish `hq : normV w = normV v ^ 1` using `degOf K M Ω A v w hv hw (fun τ hτ => hD τ (Ine_le_Dec A hτ)) φ 1 one_pos hφ fun k => ⟨fun _ => one_dvd k, fun _ => hD _ (pow_mem (show φ ∈ Dec (F := K) A from hφ.1) k)⟩`. Rewrite `hq` using `[pow_one]`. Use `((GlobalTheory.T.cuspRep_satake_iff_localComponent_satake M a P w σ' hσ').1 B).2 (GlobalTheory.IsoPull.hasSatGL_of_ringEquiv i hiv ?_ e (fun g x => (he g x).symm) (((GlobalTheory.T.cuspRep_satake_iff_localComponent_satake K a π v σ hσ).1 B).1 hB))` and prove the remaining obligations. Apply the tactic sequence `first | exact hq | (unfold normV at hq; simp only [Formalism.UG.qV, Ideal.absNorm_apply, Submodule.cardQuot_apply]; exact hq)`.
+-/
 theorem satSplit : SatSplit := by
   intro K M Ω _ _ _ _ _ _ _ _ _ _ _ _ A v w hv hw hD a π P hP B hB
   obtain ⟨i, hi, hi', hiv⟩ := splitIso_holds K M Ω A v w hv hw hD

@@ -7,6 +7,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.LeibPhi.UNorm
 
+/- English proof (translation)
+Rewrite `hu` using `[GlobalTheory.BZMir.MirUin, Subgroup.mem_subgroupOf, GlobalTheory.BZMir.MirU, MonoidHom.mem_range]`. Take `⟨v, hv⟩` from `hu`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `((u : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) i.castSucc j.castSucc = (1 : Matrix (Fin n) (Fin n) k) i j`.
+
+Rewrite using `[← hv]`. Express the relevant statement in the definitionally equal form `(1 + GlobalTheory.BZMir.colMat k n (Multiplicative.toAdd v)) i.castSucc j.castSucc = _`. Simplify using `[GlobalTheory.BZMir.colMat, Matrix.one_apply, Fin.castSucc_ne_last]`.
+-/
 theorem mirProj_eq_one_of_mem {k : Type} [Field k] {n : ℕ} (u : Mir k n) (hu : u ∈ MirUin k n) :
     mirabolicProjection k n u = 1 := by
   rw [GlobalTheory.BZMir.MirUin, Subgroup.mem_subgroupOf, GlobalTheory.BZMir.MirU,
@@ -20,6 +25,17 @@ theorem mirProj_eq_one_of_mem {k : Type} [Field k] {n : ℕ} (u : Mir k n) (hu :
   change (1 + GlobalTheory.BZMir.colMat k n (Multiplicative.toAdd v)) i.castSucc j.castSucc = _
   simp [GlobalTheory.BZMir.colMat, Matrix.one_apply, Fin.castSucc_ne_last]
 
+/- English proof (translation)
+Establish `hrow` using `(GlobalTheory.BZMir.mem_Mir_iff k (u : GL (Fin (n + 1)) k)).mp u.2`. Establish `hrow' : ∀ j, ((u : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) j = (Pi.single (Fin.last n) (1 : k) : Fin (n + 1) → k) j`. Introduce `j`. Rewrite using `[hrow]`. Both sides reduce to the same expression.
+
+Establish `hblk : ∀ i j : Fin n, ((u : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) i.castSucc j.castSucc = (1 : Matrix (Fin n) (Fin n) k) i j`. Introduce `i j`. Conclude with `congrArg (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) i j) hu`. Rewrite using `[GlobalTheory.BZMir.MirUin, Subgroup.mem_subgroupOf, GlobalTheory.BZMir.MirU, MonoidHom.mem_range]`. Use `⟨Multiplicative.ofAdd (fun i : Fin n => ((u : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) i.castSucc (Fin.last n)), ?_⟩` and prove the remaining obligations.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 + GlobalTheory.BZMir.colMat k n (Multiplicative.toAdd (Multiplicative.ofAdd (fun i : Fin n => ((u : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) i.castSucc (Fin.last n))))) i j = _`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+
+Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [GlobalTheory.BZMir.colMat, hrow']`. Consider the case `cast j`. Simplify using `[GlobalTheory.BZMir.colMat, hrow', Matrix.one_apply, Pi.single_apply, Fin.castSucc_ne_last, (Fin.castSucc_ne_last j).symm]`. Consider the case `cast i`.
+
+Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [GlobalTheory.BZMir.colMat, Matrix.one_apply, Fin.castSucc_ne_last]`. Consider the case `cast j => simp [GlobalTheory.BZMir.colMat, Matrix.one_apply, Fin.castSucc_ne_last, hblk]`.
+-/
 theorem mem_of_mirProj_eq_one {k : Type} [Field k] {n : ℕ} (u : Mir k n) (hu : mirabolicProjection k n u = 1) :
     u ∈ MirUin k n := by
   have hrow := (GlobalTheory.BZMir.mem_Mir_iff k (u : GL (Fin (n + 1)) k)).mp u.2
@@ -53,6 +69,9 @@ theorem mem_of_mirProj_eq_one {k : Type} [Field k] {n : ℕ} (u : Mir k n) (hu :
     | last => simp [GlobalTheory.BZMir.colMat, Matrix.one_apply, Fin.castSucc_ne_last]
     | cast j => simp [GlobalTheory.BZMir.colMat, Matrix.one_apply, Fin.castSucc_ne_last, hblk]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n`. Use `⟨fun u hu g => ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.CompanionTheory.LeibPhi.UNorm.mem_of_mirProj_eq_one` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_inv, GlobalTheory.CompanionTheory.LeibPhi.UNorm.mirProj_eq_one_of_mem u hu, mul_one, mul_inv_cancel]`.
+-/
 theorem mirUin_normal : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ), (MirUin k n).Normal := by
   intro k _ _ _ _ n

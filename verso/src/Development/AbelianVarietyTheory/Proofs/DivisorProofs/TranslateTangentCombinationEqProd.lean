@@ -24,6 +24,9 @@ def precompHom {C : Type*} [Category C] [CartesianMonoidalCategory C] {M P Q : C
   map_one' := MonObj.comp_one f
   map_mul' := fun g₁ g₂ => MonObj.comp_mul f g₁ g₂
 
+/- English proof (translation)
+Establish `h` using `map_list_prod (precompHom (M := M) f) (List.ofFn u)`. Rewrite `h` using `[List.map_ofFn]`. Conclude with `h`.
+-/
 theorem comp_list_prod {C : Type*} [Category C] [CartesianMonoidalCategory C] {M P Q : C} [MonObj M]
     (f : P ⟶ Q) {m : ℕ} (u : Fin m → (Q ⟶ M)) :
     f ≫ (List.ofFn u).prod = (List.ofFn fun c => f ≫ u c).prod := by
@@ -31,6 +34,21 @@ theorem comp_list_prod {C : Type*} [Category C] [CartesianMonoidalCategory C] {M
   rw [List.map_ofFn] at h
   exact h
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t U m v' cf va S _ φ g₀ hg g' y hTan hComb hg' hy`. Establish `hr0 : (epsMul (0 : S)).comp (dualMap φ) = ((algebraMap S (DualNumber S)).comp φ).comp (TrivSqZeroExt.fstHom Γ(X, U.1) Γ(X, U.1) Γ(X, U.1)).toRingHom`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Apply the tactic sequence `ext <;> simp [epsMul, dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Establish `hra : (dualMap φ).comp (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1))) = (algebraMap S (DualNumber S)).comp φ`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Use `⟨fun c => ?_, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Set `gA : overAt (g₀ ≫ t.G.hom) (DualNumber S) ⟶ Over.mk (GlobalTheory.LogKS.chart U)` to `Over.homMk (spMap ((algebraMap S (DualNumber S)).comp φ)) (by show spMap _ ≫ GlobalTheory.LogKS.chart U = spMap (algebraMap S (DualNumber S)) ≫ g₀ ≫ t.G.hom`. Rewrite using `[hg, spMap_comp, Category.assoc])`. Establish `h1 : gA ≫ (1 : Over.mk (GlobalTheory.LogKS.chart U) ⟶ t.G) = 1` using `MonObj.comp_one gA`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← h1, smT_left, Over.comp_left, hy c, ← (hTan c).2]`.
+
+Simplify using `only [gA, Over.homMk_left]`. Rewrite using `[← Category.assoc, spMap_comp', hr0, spMap_comp, Category.assoc]`. Take `⟨g'', V, h1, h2, h3⟩` from `hw`. Take `⟨u, hu, hprod⟩` from `hComb`. Establish `hg'' : g'' = g'` using `Over.OverMorphism.ext (h1.trans hg'.symm)`.
+
+Set `bA : overAt (g₀ ≫ t.G.hom) (DualNumber S) ⟶ tEpsG (GlobalTheory.LogKS.chart U)` to `Over.homMk (spMap (dualMap φ)) (by show spMap (dualMap φ) ≫ spMap (algebraMap Γ(X, U.1) (DualNumber Γ(X, U.1))) ≫ GlobalTheory.LogKS.chart U = spMap (algebraMap S (DualNumber S)) ≫ g₀ ≫ t.G.hom`. Rewrite using `[hg, ← Category.assoc, spMap_comp', hra, spMap_comp, Category.assoc])`. Establish `hV : V = bA ≫ (List.ofFn u).prod`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[h2, Over.comp_left, hprod]`.
+
+Both sides reduce to the same expression. Establish `hbAu : ∀ c, bA ≫ u c = smT (g₀ ≫ t.G.hom) (φ (cf c)) (y c)`. Introduce `c`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, hu c, smT_left, hy c]`.
+
+Simplify using `only [bA, Over.homMk_left]`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', Formalism.L2.Pj.dualMap_comp_epsMul]`. Rewrite using `[← h3, hg'', hV, comp_list_prod]`. Simplify using `only [hbAu]`.
+-/
 theorem translate_comb : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
     (t : SAB H X) (U : X.affineOpens) {m : ℕ} (v' : Fin m → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left))
     (cf : Fin m → Γ(X, U.1)) (va : Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left) {S : Type} [CommRing S]

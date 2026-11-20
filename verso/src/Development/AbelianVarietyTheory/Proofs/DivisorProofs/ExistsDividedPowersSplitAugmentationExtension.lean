@@ -11,6 +11,23 @@ namespace GlobalTheory.SplitDP
 
 open Finset
 
+/- English proof (translation)
+Establish `inner : ∀ p ∈ antidiagonal m, ∑ q ∈ antidiagonal n, ((p.1 + q.1).choose p.1 : R) * ((p.2 + q.2).choose p.2 : R) * (f (p.1 + q.1) * g (p.2 + q.2)) = ∑ r ∈ antidiagonal (m + n), ((r.1.choose p.1 : R) * (r.2.choose p.2 : R)) * (f r.1 * g r.2)`. Introduce `p hp`. Rewrite `hp` using `[HasAntidiagonal.mem_antidiagonal]`. Establish `hsub : (antidiagonal n).image (fun q : ℕ × ℕ ↦ (p.1 + q.1, p.2 + q.2)) ⊆ antidiagonal (m + n)`. Introduce `r hr`.
+
+Simplify using `only [mem_image, HasAntidiagonal.mem_antidiagonal] at hr ⊢`. Take `⟨q, hq, rfl⟩` from `hr`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← sum_subset hsub, sum_image]`.
+
+Introduce `q _ q' _ h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext (by omega) (by omega)`. Introduce `r hr hn`. Rewrite `hr` using `[HasAntidiagonal.mem_antidiagonal]`.
+
+Distinguish the cases in `h1 : p.1 ≤ r.1`. Distinguish the cases in `h2 : p.2 ≤ r.2`. It suffices to derive a contradiction. Apply `hn` to reduce the goal to its premises. Rewrite using `[mem_image]`.
+
+Conclude with `⟨(r.1 - p.1, r.2 - p.2), by rw [HasAntidiagonal.mem_antidiagonal]; omega, Prod.ext (by simp only; omega) (by simp only; omega)⟩`. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega : r.2 < p.2)]`. Simplify using the standard rewrite rules. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega : r.1 < p.1)]`. Simplify using the standard rewrite rules.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_mul_sum]`. Use `sum_congr rfl fun p _ ↦ sum_congr rfl fun q _ ↦ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `_ = ∑ p ∈ antidiagonal m, ∑ r ∈ antidiagonal (m + n), ((r.1.choose p.1 : R) * (r.2.choose p.2 : R)) * (f r.1 * g r.2) := sum_congr rfl inner`.
+
+Use `_ = ∑ r ∈ antidiagonal (m + n), (∑ p ∈ antidiagonal m, (r.1.choose p.1 : R) * (r.2.choose p.2 : R)) * (f r.1 * g r.2) := by`. Rewrite using `[sum_comm]`. Simplify using `only [sum_mul]`. Use `_ = _ := by`. Rewrite using `[mul_sum]`.
+
+Use `sum_congr rfl fun r hr ↦ ?_` and prove the remaining obligations. Rewrite `hr` using `[HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[← hr, Nat.add_choose_eq]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem conv_mul_choose {R : Type} [CommRing R] (f g : ℕ → R)
     (hf : ∀ a c, f a * f c = ((a + c).choose a : R) * f (a + c))
     (hg : ∀ b d, g b * g d = ((b + d).choose b : R) * g (b + d)) (m n : ℕ) :
@@ -74,9 +91,19 @@ def th (δ : DividedPowers J) (ε : P →ₐ[B] B) (η : DividedPowers 𝔞) (n 
 
 variable {δ : DividedPowers J} {ε : P →ₐ[B] B} {η : DividedPowers 𝔞}
 
+/- English proof (translation)
+The claim follows from `(h𝔞 _).2 (by simp)`.
+-/
 theorem sub_mem_aug (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (x : P) : x - algebraMap B P (ε x) ∈ 𝔞 :=
   (h𝔞 _).2 (by simp)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Establish `hy' : y ∈ J.comap ε`. Use `Ideal.map_le_iff_le_comap.2 ?_ hy` and prove the remaining obligations.
+
+Introduce `a ha`. Simplify using `[Ideal.mem_comap, ha]`. Rewrite using `[map_add, (h𝔞 z).1 hz, add_zero]`. Conclude with `hy'`. Introduce `h`.
+
+Establish `hx : x = algebraMap B P (ε x) + (x - algebraMap B P (ε x))` using `by ring`. Rewrite using `[hx]`. Conclude with `Submodule.add_mem_sup (Ideal.mem_map_of_mem _ h) (sub_mem_aug h𝔞 x)`.
+-/
 theorem mem_ext_iff (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (x : P) :
     x ∈ J.map (algebraMap B P) ⊔ 𝔞 ↔ ε x ∈ J := by
   constructor
@@ -93,6 +120,11 @@ theorem mem_ext_iff (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (x : P) :
     rw [hx]
     exact Submodule.add_mem_sup (Ideal.mem_map_of_mem _ h) (sub_mem_aug h𝔞 x)
 
+/- English proof (translation)
+Simplify using `only [th, (h𝔞 y).1 hy, map_zero, sub_zero]`. Rewrite using `[sum_eq_single (0, n)]`. Rewrite using `[δ.dpow_zero J.zero_mem, map_one, one_mul]`. Introduce `p hp hne`. Rewrite `hp` using `[HasAntidiagonal.mem_antidiagonal]`.
+
+Establish `: p.1 ≠ 0` using `fun h ↦ hne (Prod.ext h (by simp only; omega))`. Rewrite using `[δ.dpow_eval_zero this, map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (HasAntidiagonal.mem_antidiagonal.2 (zero_add n)) h`.
+-/
 theorem th_of_mem (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) {y : P} (hy : y ∈ 𝔞) (n : ℕ) :
     th δ ε η n y = η.dpow n y := by
   simp only [th, (h𝔞 y).1 hy, map_zero, sub_zero]
@@ -105,6 +137,11 @@ theorem th_of_mem (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) {y : P} (hy : y ∈ �
   · intro h
     exact absurd (HasAntidiagonal.mem_antidiagonal.2 (zero_add n)) h
 
+/- English proof (translation)
+Simplify using `only [th, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Rewrite using `[sum_eq_single (n, 0)]`. Rewrite using `[η.dpow_zero 𝔞.zero_mem, mul_one]`. Introduce `p hp hne`. Rewrite `hp` using `[HasAntidiagonal.mem_antidiagonal]`.
+
+Establish `: p.2 ≠ 0` using `fun h ↦ hne (Prod.ext (by simp only; omega) h)`. Rewrite using `[η.dpow_eval_zero this, mul_zero]`. Introduce `h`. Conclude with `absurd (HasAntidiagonal.mem_antidiagonal.2 (add_zero n)) h`.
+-/
 theorem th_algebraMap (j : B) (n : ℕ) : th δ ε η n (algebraMap B P j) = algebraMap B P (δ.dpow n j) := by
   simp only [th, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]
   rw [sum_eq_single (n, 0)]
@@ -116,23 +153,37 @@ theorem th_algebraMap (j : B) (n : ℕ) : th δ ε η n (algebraMap B P j) = alg
   · intro h
     exact absurd (HasAntidiagonal.mem_antidiagonal.2 (add_zero n)) h
 
+/- English proof (translation)
+Rewrite `hx` using `[mem_ext_iff h𝔞]`. Use `sum_eq_zero fun p _ ↦ ?_` and prove the remaining obligations. Rewrite using `[δ.dpow_null hx, map_zero, zero_mul]`.
+-/
 theorem th_null (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (n : ℕ) (x : P) (hx : x ∉ J.map (algebraMap B P) ⊔ 𝔞) :
     th δ ε η n x = 0 := by
   rw [mem_ext_iff h𝔞] at hx
   refine sum_eq_zero fun p _ ↦ ?_
   rw [δ.dpow_null hx, map_zero, zero_mul]
 
+/- English proof (translation)
+Rewrite `hx` using `[mem_ext_iff h𝔞]`. Simplify using `[th, δ.dpow_zero hx, η.dpow_zero (sub_mem_aug h𝔞 x)]`.
+-/
 theorem th_zero (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (x : P) (hx : x ∈ J.map (algebraMap B P) ⊔ 𝔞) :
     th δ ε η 0 x = 1 := by
   rw [mem_ext_iff h𝔞] at hx
   simp [th, δ.dpow_zero hx, η.dpow_zero (sub_mem_aug h𝔞 x)]
 
+/- English proof (translation)
+Rewrite `hx` using `[mem_ext_iff h𝔞]`. Simplify using `[th, Finset.Nat.antidiagonal_succ, δ.dpow_zero hx, δ.dpow_one hx, η.dpow_zero (sub_mem_aug h𝔞 x), η.dpow_one (sub_mem_aug h𝔞 x)]`.
+-/
 theorem th_one (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (x : P) (hx : x ∈ J.map (algebraMap B P) ⊔ 𝔞) :
     th δ ε η 1 x = x := by
   rw [mem_ext_iff h𝔞] at hx
   simp [th, Finset.Nat.antidiagonal_succ, δ.dpow_zero hx, δ.dpow_one hx, η.dpow_zero (sub_mem_aug h𝔞 x),
     η.dpow_one (sub_mem_aug h𝔞 x)]
 
+/- English proof (translation)
+Establish `hu` using `(mem_ext_iff h𝔞 x).1 hx`. Use `Ideal.sum_mem _ fun p hp ↦ ?_` and prove the remaining obligations. Rewrite `hp` using `[HasAntidiagonal.mem_antidiagonal]`. Distinguish the cases in `h1 : p.1 = 0`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_sup_right (η.dpow_mem (by omega) (sub_mem_aug h𝔞 x)))`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ (δ.dpow_mem h1 hu)))`.
+-/
 theorem th_mem (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (n : ℕ) (hn : n ≠ 0) (x : P)
     (hx : x ∈ J.map (algebraMap B P) ⊔ 𝔞) : th δ ε η n x ∈ J.map (algebraMap B P) ⊔ 𝔞 := by
   have hu := (mem_ext_iff h𝔞 x).1 hx
@@ -143,6 +194,9 @@ theorem th_mem (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (n : ℕ) (hn : n ≠ 0)
       (Ideal.mem_sup_right (η.dpow_mem (by omega) (sub_mem_aug h𝔞 x)))
   · exact Ideal.mul_mem_right _ _ (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ (δ.dpow_mem h1 hu)))
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[PowerSeries.coeff_mul, th]`.
+-/
 theorem mk_th (x : P) :
     PowerSeries.mk (fun k ↦ th δ ε η k x) =
       PowerSeries.mk (fun k ↦ algebraMap B P (δ.dpow k (ε x))) *
@@ -150,6 +204,15 @@ theorem mk_th (x : P) :
   ext k
   simp [PowerSeries.coeff_mul, th]
 
+/- English proof (translation)
+Establish `hu` using `(mem_ext_iff h𝔞 x).1 hx`. Establish `hv` using `(mem_ext_iff h𝔞 y).1 hy`. Establish `hA : PowerSeries.mk (fun k ↦ algebraMap B P (δ.dpow k (ε (x + y)))) = PowerSeries.mk (fun k ↦ algebraMap B P (δ.dpow k (ε x))) * PowerSeries.mk (fun k ↦ algebraMap B P (δ.dpow k (ε y)))`. Use extensionality with `k`. Simplify using `only [PowerSeries.coeff_mul, PowerSeries.coeff_mk, map_add]`.
+
+Rewrite using `[δ.dpow_add hu hv, map_sum]`. Simplify using `only [map_mul]`. Establish `hE : PowerSeries.mk (fun k ↦ η.dpow k (x + y - algebraMap B P (ε (x + y)))) = PowerSeries.mk (fun k ↦ η.dpow k (x - algebraMap B P (ε x))) * PowerSeries.mk (fun k ↦ η.dpow k (y - algebraMap B P (ε y)))`. Use extensionality with `k`. Simplify using `only [PowerSeries.coeff_mul, PowerSeries.coeff_mk]`.
+
+Establish `e : x + y - algebraMap B P (ε (x + y)) = (x - algebraMap B P (ε x)) + (y - algebraMap B P (ε y))`. Rewrite using `[map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, η.dpow_add (sub_mem_aug h𝔞 x) (sub_mem_aug h𝔞 y)]`. Establish `key : PowerSeries.mk (fun k ↦ th δ ε η k (x + y)) = PowerSeries.mk (fun k ↦ th δ ε η k x) * PowerSeries.mk (fun k ↦ th δ ε η k y)`.
+
+Rewrite using `[mk_th, mk_th, mk_th, hA, hE]`. Expand and normalize the polynomial expressions, which then agree. Use `congrArg (PowerSeries.coeff n) key` as an intermediate fact. Simplify `this` using `[PowerSeries.coeff_mul]`.
+-/
 theorem th_add (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (n : ℕ) (x : P) (hx : x ∈ J.map (algebraMap B P) ⊔ 𝔞)
     (y : P) (hy : y ∈ J.map (algebraMap B P) ⊔ 𝔞) :
     th δ ε η n (x + y) = ∑ k ∈ antidiagonal n, th δ ε η k.1 x * th δ ε η k.2 y := by
@@ -178,6 +241,9 @@ theorem th_add (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (n : ℕ) (x : P) (hx : 
   have := congrArg (PowerSeries.coeff n) key
   simpa [PowerSeries.coeff_mul] using this
 
+/- English proof (translation)
+Establish `hu` using `(mem_ext_iff h𝔞 x).1 hx`. Use `conv_mul_choose (fun k ↦ algebraMap B P (δ.dpow k (ε x))) (fun k ↦ η.dpow k (x - algebraMap B P (ε x))) (fun a c ↦ ?_) (fun b d ↦ ?_) m n` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← map_mul, δ.mul_dpow hu, map_mul, map_natCast]`. Conclude with `η.mul_dpow (sub_mem_aug h𝔞 x)`.
+-/
 theorem th_mul_dpow (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (m n : ℕ) (x : P)
     (hx : x ∈ J.map (algebraMap B P) ⊔ 𝔞) :
     th δ ε η m x * th δ ε η n x = ((m + n).choose m : P) * th δ ε η (m + n) x := by
@@ -188,6 +254,11 @@ theorem th_mul_dpow (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (m n : ℕ) (x : P)
     rw [← map_mul, δ.mul_dpow hu, map_mul, map_natCast]
   · exact η.mul_dpow (sub_mem_aug h𝔞 x)
 
+/- English proof (translation)
+Establish `hu` using `(mem_ext_iff h𝔞 x).1 hx`. Establish `e1 : ε (algebraMap B P β * x) = β * ε x` using `by simp`. Establish `e2 : algebraMap B P β * x - algebraMap B P (ε (algebraMap B P β * x)) = algebraMap B P β * (x - algebraMap B P (ε x))`. Rewrite using `[e1, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[th, th, e2, e1, mul_sum]`. Use `sum_congr rfl fun p hp ↦ ?_` and prove the remaining obligations. Rewrite `hp` using `[HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[δ.dpow_mul hu, η.dpow_mul (sub_mem_aug h𝔞 x), map_mul, map_pow, ← hp, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem th_mul_alg (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (n : ℕ) (β : B) (x : P)
     (hx : x ∈ J.map (algebraMap B P) ⊔ 𝔞) :
     th δ ε η n (algebraMap B P β * x) = algebraMap B P β ^ n * th δ ε η n x := by
@@ -202,6 +273,13 @@ theorem th_mul_alg (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (n : ℕ) (β : B) (
   rw [δ.dpow_mul hu, η.dpow_mul (sub_mem_aug h𝔞 x), map_mul, map_pow, ← hp, pow_add]
   ring
 
+/- English proof (translation)
+Establish `hu` using `(mem_ext_iff h𝔞 x).1 hx`. Establish `hr` using `sub_mem_aug h𝔞 x`. Rewrite using `[th_of_mem h𝔞 (Ideal.mul_mem_right x 𝔞 hq)]`. Establish `e : q * x = algebraMap B P (ε x) * q + q * (x - algebraMap B P (ε x))` using `by ring`. Rewrite using `[e, η.dpow_add (Ideal.mul_mem_left _ _ hq) (Ideal.mul_mem_left _ _ hr), th, mul_sum]`.
+
+Use `sum_congr rfl fun p hp ↦ ?_` and prove the remaining obligations. Rewrite `hp` using `[HasAntidiagonal.mem_antidiagonal]`. Establish `hk : algebraMap B P (ε x) ^ p.1 * η.dpow p.1 q = algebraMap B P (δ.dpow p.1 (ε x)) * q ^ p.1`. Rewrite using `[← η.factorial_mul_dpow_eq_pow hq, ← map_pow, ← δ.factorial_mul_dpow_eq_pow hu, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[η.dpow_mul hq, η.dpow_mul hr, ← mul_assoc, hk, ← hp, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem th_mul_aug (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (n : ℕ) {q : P} (hq : q ∈ 𝔞) (x : P)
     (hx : x ∈ J.map (algebraMap B P) ⊔ 𝔞) :
     th δ ε η n (q * x) = q ^ n * th δ ε η n x := by
@@ -218,6 +296,11 @@ theorem th_mul_aug (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (n : ℕ) {q : P} (h
   rw [η.dpow_mul hq, η.dpow_mul hr, ← mul_assoc, hk, ← hp, pow_add]
   ring
 
+/- English proof (translation)
+Take `⟨β, q, hq, rfl⟩ : ∃ β q, q ∈ 𝔞 ∧ c = algebraMap B P β + q` from `⟨ε c, _, sub_mem_aug h𝔞 c, by ring⟩`. Establish `h1 : algebraMap B P β * x ∈ J.map (algebraMap B P) ⊔ 𝔞` using `Ideal.mul_mem_left _ _ hx`. Establish `h2 : q * x ∈ J.map (algebraMap B P) ⊔ 𝔞` using `Ideal.mul_mem_left _ _ hx`. Rewrite using `[add_mul, th_add h𝔞 n _ h1 _ h2, (Commute.all _ _).add_pow', sum_mul]`. Use `sum_congr rfl fun p hp ↦ ?_` and prove the remaining obligations.
+
+Rewrite `hp` using `[HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[th_mul_alg h𝔞 _ _ _ hx, th_mul_aug h𝔞 _ hq _ hx, nsmul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem th_mul (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (n : ℕ) (c x : P) (hx : x ∈ J.map (algebraMap B P) ⊔ 𝔞) :
     th δ ε η n (c * x) = c ^ n * th δ ε η n x := by
   obtain ⟨β, q, hq, rfl⟩ : ∃ β q, q ∈ 𝔞 ∧ c = algebraMap B P β + q :=
@@ -232,6 +315,9 @@ theorem th_mul (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) (n : ℕ) (c x : P) (hx 
       = algebraMap B P β ^ p.1 * q ^ p.2 * (th δ ε η p.1 x * th δ ε η p.2 x) := by ring
     _ = _ := by rw [th_mul_dpow h𝔞 _ _ _ hx, hp]; ring
 
+/- English proof (translation)
+The claim follows from `th_null h𝔞 n x hx zero x hx := th_zero h𝔞 x hx one x hx := th_one h𝔞 x hx mem n hn x hx := th_mem h𝔞 n hn x hx add n x hx y hy := th_add h𝔞 n x hx y hy mul n c x hx := th_mul h𝔞 n c x hx mul_dpow m n x hx := th_mul_dpow h𝔞 m n x hx`.
+-/
 theorem isPreDividedPowers_th (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) :
     IsPreDP (J.map (algebraMap B P) ⊔ 𝔞) (th δ ε η) where
   null n x hx := th_null h𝔞 n x hx
@@ -242,10 +328,16 @@ theorem isPreDividedPowers_th (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) :
   mul n c x hx := th_mul h𝔞 n c x hx
   mul_dpow m n x hx := th_mul_dpow h𝔞 m n x hx
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_union, Ideal.span_eq]`. Both sides reduce to the same expression.
+-/
 theorem ext_eq_span : J.map (algebraMap B P) ⊔ 𝔞 = Ideal.span (algebraMap B P '' (J : Set B) ∪ (𝔞 : Set P)) := by
   rw [Ideal.span_union, Ideal.span_eq]
   rfl
 
+/- English proof (translation)
+Introduce and unpack `x (⟨j, hj, rfl⟩ | hx) m n hn`. Rewrite using `[th_algebraMap, th_algebraMap, th_algebraMap, δ.dpow_comp hn hj, map_mul, map_natCast]`. Rewrite using `[th_of_mem h𝔞 hx n, th_of_mem h𝔞 (η.dpow_mem hn hx), th_of_mem h𝔞 hx, η.dpow_comp hn hx]`.
+-/
 theorem th_comp (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) :
     ∀ x ∈ algebraMap B P '' (J : Set B) ∪ (𝔞 : Set P), ∀ m n : ℕ, n ≠ 0 →
       th δ ε η m (th δ ε η n x) = (m.uniformBell n : P) * th δ ε η (m * n) x := by
@@ -253,6 +345,9 @@ theorem th_comp (h𝔞 : ∀ p, p ∈ 𝔞 ↔ ε p = 0) :
   · rw [th_algebraMap, th_algebraMap, th_algebraMap, δ.dpow_comp hn hj, map_mul, map_natCast]
   · rw [th_of_mem h𝔞 hx n, th_of_mem h𝔞 (η.dpow_mem hn hx), th_of_mem h𝔞 hx, η.dpow_comp hn hx]
 
+/- English proof (translation)
+Introduce `B _ J δ P _ _ ε 𝔞 η h𝔞`. Take `⟨θ, hθ⟩` from `GlobalTheory.T.exists_dividedPowers_of_comp_on_generators P (J.map (algebraMap B P) ⊔ 𝔞) (th δ ε η) _ (isPreDividedPowers_th h𝔞) ext_eq_span (th_comp h𝔞)`. Use `⟨θ, ⟨le_sup_left, fun {n} a _ ↦ ?_⟩, fun n p hp ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hθ, th_algebraMap]`. Rewrite using `[hθ, th_of_mem h𝔞 hp]`.
+-/
 theorem exists_dp_ext : ∀ (B : Type) [CommRing B] (J : Ideal B) (δ : DividedPowers J) (P : Type) [CommRing P]
     [Algebra B P] (ε : P →ₐ[B] B) (𝔞 : Ideal P) (η : DividedPowers 𝔞), (∀ p, p ∈ 𝔞 ↔ ε p = 0) →
     ∃ θ : DividedPowers (J.map (algebraMap B P) ⊔ 𝔞), IsDPMorphism δ θ (algebraMap B P) ∧

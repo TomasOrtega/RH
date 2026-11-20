@@ -12,6 +12,11 @@ def ThetaPos : Prop := InCtx fun F E _ _ _ _ _ σ M J a X0 _hT =>
     ∃ φ : (Fin a → Fin M → AF F ⊗[F] E) → ℝ, (∀ X, 0 ≤ φ X) ∧ IsAdmS F E (fun X => (φ X : ℂ)) ∧
       meanC μ 𝓕 (thetaS F E σ M J (fun X => (φ X : ℂ)) {X | gramE σ J X = gramE σ J X0}) ≠ 0
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ νX hν h0`. Take `⟨μ, hμ⟩` from `ha.1`. Take `⟨𝓕, h𝓕⟩` from `(ha.2 μ hμ).1`. Take `⟨φ, -, hadm, hne⟩` from `hP F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet μ hμ 𝓕 h𝓕`. Establish `e` using `hS F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μ hμ 𝓕 h𝓕 νX hν _ hadm`.
+
+Rewrite `hne` using `[e, h0, integral_zero_measure]`. Conclude with `hne rfl`.
+-/
 theorem nuNeZero_of (hS : SWeqOm) (hP : ThetaPos) : NuNeZero := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ νX hν h0
   obtain ⟨μ, hμ⟩ := ha.1

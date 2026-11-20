@@ -18,6 +18,11 @@ variable {p : ℕ} [Fact p.Prime]
 noncomputable def intRing (p : ℕ) [Fact p.Prime] : Subring ℂ_[p] :=
   _root_.UpperTheory.Reformulated.B.CapelliIdentity₂.intRing p
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun e => ⟨MvPowerSeries.coeff e F, h e⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `e`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨G, rfl⟩ e`. Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `(MvPowerSeries.coeff e G).2`.
+-/
 theorem integral_iff {σ : Type*} (F : MvPowerSeries σ ℂ_[p]) :
     IntegralMv F ↔ ∃ G : MvPowerSeries σ (intRing p), MvPowerSeries.map (intRing p).subtype G = F := by
   constructor
@@ -29,18 +34,31 @@ theorem integral_iff {σ : Type*} (F : MvPowerSeries σ ℂ_[p]) :
     rw [MvPowerSeries.coeff_map]
     exact (MvPowerSeries.coeff e G).2
 
+/- English proof (translation)
+Take `⟨F', rfl⟩` from `(integral_iff F).1 hF`. Take `⟨G', rfl⟩` from `(integral_iff G).1 hG`. Conclude with `(integral_iff _).2 ⟨F' * G', map_mul _ _ _⟩`.
+-/
 theorem integral_mul {σ : Type*} {F G : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) (hG : IntegralMv G) :
     IntegralMv (F * G) := by
   obtain ⟨F', rfl⟩ := (integral_iff F).1 hF
   obtain ⟨G', rfl⟩ := (integral_iff G).1 hG
   exact (integral_iff _).2 ⟨F' * G', map_mul _ _ _⟩
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.constantCoeff_map]`. Both sides reduce to the same expression.
+-/
 theorem constantCoeff_lift {σ : Type*} (G : MvPowerSeries σ (intRing p)) :
     ((MvPowerSeries.constantCoeff G : intRing p) : ℂ_[p]) =
       MvPowerSeries.constantCoeff (MvPowerSeries.map (intRing p).subtype G) := by
   rw [MvPowerSeries.constantCoeff_map]
   rfl
 
+/- English proof (translation)
+Use `choose a' ha' using fun i => (integral_iff (a i)).1 (haI i)`. Take `⟨f', rfl⟩` from `(integral_iff f).1 hf`. Establish `h0 : ∀ i, MvPowerSeries.constantCoeff (a' i) = 0`. Introduce `i`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[constantCoeff_lift, ha', ha0]`. Both sides reduce to the same expression. Establish `hs : MvPowerSeries.HasSubst a'` using `MvPowerSeries.hasSubst_of_constantCoeff_zero h0`. Use `(integral_iff _).2 ⟨MvPowerSeries.subst a' f', ?_⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.map_subst hs]`.
+
+Simplify using `only [ha']`.
+-/
 theorem integral_subst {σ τ : Type*} [Finite σ] (a : σ → MvPowerSeries τ ℂ_[p])
     (ha0 : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (haI : ∀ i, IntegralMv (a i))
     {f : MvPowerSeries σ ℂ_[p]} (hf : IntegralMv f) : IntegralMv (MvPowerSeries.subst a f) := by
@@ -56,10 +74,22 @@ theorem integral_subst {σ τ : Type*} [Finite σ] (a : σ → MvPowerSeries τ 
   rw [MvPowerSeries.map_subst hs]
   simp only [ha']
 
+/- English proof (translation)
+Conclude with `D.host.gal.apply_symm_apply _`.
+-/
 theorem galE_sigmaOf (D : D7) (g : D.R.GG) :
     D.host.galE (D.host.sigmaOf g) = g := by
   exact D.host.gal.apply_symm_apply _
 
+/- English proof (translation)
+Use `set σ := D.host.sigmaOf ((D.eTau τ : D.R.Psi) : D.R.GG)`. Establish `hb : σ (D.host.sqd) = D.host.sqd`. Rewrite using `[← D.host.galE_mem_Psi_iff, galE_sigmaOf]`. Conclude with `(D.eTau τ).2`. Establish `hfix : σ x = x`.
+
+Establish `hx' : x ∈ IntermediateField.adjoin ℚ {D.host.sqd}` using `hx`. Use `clear hx`. Proceed by induction on `hx' using IntermediateField.adjoin_induction with`. Consider the case `mem y hy => rw [Set.mem_singleton_iff.mp hy]`. Conclude with `hb`.
+
+Consider the case `algebraMap r => rw [eq_ratCast (algebraMap ℚ D.host.E) r]`. Conclude with `map_ratCast σ r`. Consider the case `add y z _ _ h1 h2 => rw [map_add, h1, h2]`. Consider the case `inv y _ h1 => rw [map_inv₀, h1]`. Consider the case `mul y z _ _ h1 h2 => rw [map_mul, h1, h2]`.
+
+Use `show D.host.φ₀ (σ x) = _`. Rewrite using `[hfix]`.
+-/
 theorem embT_K (D : D7) (τ : D.what₂.Tau) (x : D.host.E) (hx : x ∈ D.host.K) :
     embT D τ x = D.host.φ₀ x := by
   set σ := D.host.sigmaOf ((D.eTau τ : D.R.Psi) : D.R.GG)
@@ -78,23 +108,35 @@ theorem embT_K (D : D7) (τ : D.what₂.Tau) (x : D.host.E) (hx : x ∈ D.host.K
   show D.host.φ₀ (σ x) = _
   rw [hfix]
 
+/- English proof (translation)
+Rewrite using `[mem_algebraicClosure_iff']`. Conclude with `(Algebra.IsIntegral.isIntegral x).map (embT D τ).toRatAlgHom`.
+-/
 theorem emb_mem (D : D7) (τ : D.what₂.Tau) (x : D.host.E) : embT D τ x ∈ Qbar := by
   rw [mem_algebraicClosure_iff']
   exact (Algebra.IsIntegral.isIntegral x).map (embT D τ).toRatAlgHom
 
 def embQ (D : D7) (τ : D.what₂.Tau) : D.host.E →+* Qbar := (embT D τ).codRestrict Qbar (emb_mem D τ)
 
+/- English proof (translation)
+Unfold `lamC`. Rewrite using `[dif_pos (emb_mem D τ x)]`. Both sides reduce to the same expression.
+-/
 theorem lamC_embT (D : D7) (lam : Qbar →+* ℂ_[p]) (τ : D.what₂.Tau) (x : D.host.E) :
     lamC lam (embT D τ x) = lam (embQ D τ x) := by
   unfold lamC
   rw [dif_pos (emb_mem D τ x)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Simplify using `[flog]`.
+-/
 theorem flog_constantCoeff (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     PowerSeries.constantCoeff (flog W wq) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
   simp [flog]
 
+/- English proof (translation)
+Establish `hX : MvPowerSeries.HasSubst (fun _ : Unit => (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => MvPowerSeries.constantCoeff_X i)`. Unfold `PowerSeries.subst`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hX hS]`. Simplify using `only [MvPowerSeries.subst_X hS]`.
+-/
 theorem subst_subst_X {r : ℕ} (S : Fin r → MvPowerSeries (Fin r) ℂ_[p]) (hS : MvPowerSeries.HasSubst S)
     (f : PowerSeries ℂ_[p]) (i : Fin r) :
     MvPowerSeries.subst S (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) f) =
@@ -105,6 +147,19 @@ theorem subst_subst_X {r : ℕ} (S : Fin r → MvPowerSeries (Fin r) ℂ_[p]) (h
   rw [MvPowerSeries.subst_comp_subst_apply hX hS]
   simp only [MvPowerSeries.subst_X hS]
 
+/- English proof (translation)
+Establish `hl0` using `flog_constantCoeff (C • wModel lam Λ) wq`. Establish `hX : ∀ i, MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) (flog (C • wModel lam Λ) wq)) = 0` using `fun i => PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X i) _ hl0`. Establish `hY : MvPowerSeries.HasSubst (fun k : D.what₂.Tau × Fin N' × Fin N => ∑ i, algebraMap ℂ_[p] (MvPowerSeries (Fin r) ℂ_[p]) (((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * lamC lam (embT D k.1 (b i k.2.1 k.2.2))) * PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) (flog (C • wModel …`. Apply `MvPowerSeries.hasSubst_of_constantCoeff_zero` to reduce the goal to its premises. Introduce `k`.
+
+Simplify using `[map_sum, hX]`. Establish `hSs : MvPowerSeries.HasSubst S` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hS0`. Unfold `atLog`. Simplify using `only []`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hY hSs]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hSs, map_sum]`. Simplify using `only [map_mul, AlgHom.commutes, MvPowerSeries.coe_substAlgHom, subst_subst_X S hSs, hSl]`. Establish `hx : ∀ j, lamC lam (embT D k.1 (b' j k.2.1 k.2.2)) = ∑ i, lam (embQ D k.1 (A i j)) * lam (embQ D k.1 (b i k.2.1 k.2.2))`.
+
+Introduce `j`. Rewrite using `[lamC_embT, hb' j, Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_sum, map_mul]`. Establish `hy : ∀ i j, lamC lam (D.host.φ₀ (A i j)) = lam (embQ D k.1 (A i j))`. Introduce `i j`.
+
+Rewrite using `[← embT_K D k.1 _ (hAK i j), lamC_embT]`. Simplify using `only [hx, hy, lamC_embT, Finset.mul_sum, map_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem atLog_change (D : D7) {N N' r : ℕ} (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ)
     (C : WeierstrassCurve.VariableChange ℂ_[p]) (wq : PowerSeries ℂ_[p])
     (b b' : Fin r → Matrix (Fin N') (Fin N) D.host.E) (A : Fin r → Fin r → D.host.E)
@@ -148,12 +203,26 @@ theorem atLog_change (D : D7) {N N' r : ℕ} (lam : Qbar →+* ℂ_[p]) (Λ : Ad
   simp only [map_mul]
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem smul_eq_K (D : D7) {N N' : ℕ} (a : D.host.E) (ha : a ∈ D.host.K) (M : Matrix (Fin N') (Fin N) D.host.E) :
     a • M = (⟨a, ha⟩ : D.host.K) • M := by
   ext i j
   rw [Matrix.smul_apply, Matrix.smul_apply, Algebra.smul_def]
   rfl
 
+/- English proof (translation)
+Use `choose s1 hs1 hm1 using hb'.2.1`. Use `choose s2 hs2 c hc using fun j => hb.2.2 _ (hm1 j)`. Establish `hcop : ∀ j, Nat.Coprime (s2 j * s1 j) p` using `fun j => Nat.Coprime.mul (hs2 j) (hs1 j)`. Establish `hn : ∀ j, ((s2 j * s1 j : ℕ) : D.host.E) ≠ 0`. Introduce `j`.
+
+Establish `: s2 j * s1 j ≠ 0`. Introduce `h0`. Establish `h` using `hcop j`. Rewrite `h` using `[h0, Nat.coprime_zero_left]`. Conclude with `hp.one_lt.ne' h`.
+
+Conclude with `this` after adjusting the coercions. Use `⟨fun i j => ((c j i : D.host.K) : D.host.E) / ((s2 j * s1 j : ℕ) : D.host.E), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Conclude with `D.host.K.div_mem (SetLike.coe_mem _) (by push_cast; exact mul_mem (by simp) (by simp))`. Introduce `i j`.
+
+Conclude with `⟨s2 j * s1 j, hcop j, c j i, mul_div_cancel₀ _ (hn j)⟩`. Introduce `j`. Establish `h` using `hc j`. Rewrite `h` using `[smul_smul, ← Nat.cast_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[smul_smul, inv_mul_cancel₀ (hn j), one_smul]`. Use `_ = ∑ i, (((c j i : D.host.K) : D.host.E) / ((s2 j * s1 j : ℕ) : D.host.E)) • b i := by`. Rewrite using `[h, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, div_eq_inv_mul]`.
+-/
 theorem exists_coeffs (D : D7) {p N N' : ℕ} (hp : p.Prime)
     {Y : Submodule (𝓞 D.host.E) (Matrix (Fin N') (Fin N) D.host.E)} {r r' : ℕ}
     {b : Fin r → Matrix (Fin N') (Fin N) D.host.E} {b' : Fin r' → Matrix (Fin N') (Fin N) D.host.E}
@@ -187,6 +256,11 @@ theorem exists_coeffs (D : D7) {p N N' : ℕ} (hp : p.Prime)
           refine Finset.sum_congr rfl fun i _ => ?_
           rw [smul_smul, div_eq_inv_mul]
 
+/- English proof (translation)
+Establish `hs : Set.range b' ≤ Submodule.span D.host.K (Set.range b)`. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[hb' j]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_K D (A i j) (hAK i j)]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `h` using `linearIndependent_le_span' b' hli (Set.range b) hs`. Rewrite `h` using `[Cardinal.mk_fintype, Fintype.card_fin]`. Conclude with `(Nat.cast_le.1 h).trans ((Fintype.card_range_le b).trans (Fintype.card_fin r).le)`.
+-/
 theorem card_le (D : D7) {N N' r r' : ℕ} {b : Fin r → Matrix (Fin N') (Fin N) D.host.E}
     {b' : Fin r' → Matrix (Fin N') (Fin N) D.host.E} (A : Fin r → Fin r' → D.host.E)
     (hAK : ∀ i j, A i j ∈ D.host.K) (hli : LinearIndependent D.host.K b') (hb' : ∀ j, b' j = ∑ i, A i j • b i) :
@@ -202,6 +276,9 @@ theorem card_le (D : D7) {N N' r r' : ℕ} {b : Fin r → Matrix (Fin N') (Fin N
   rw [Cardinal.mk_fintype, Fintype.card_fin] at h
   exact (Nat.cast_le.1 h).trans ((Fintype.card_range_le b).trans (Fintype.card_fin r).le)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum4 {α β γ κ M : Type*} [Fintype α] [Fintype β] [Fintype γ] [Fintype κ] [AddCommMonoid M]
     (f : α → β → γ → κ → M) : ∑ a, ∑ b, ∑ c, ∑ d, f a b c d = ∑ c, ∑ d, ∑ a, ∑ b, f a b c d := by
   calc ∑ a, ∑ b, ∑ c, ∑ d, f a b c d = ∑ a, ∑ c, ∑ b, ∑ d, f a b c d :=
@@ -211,6 +288,13 @@ theorem sum4 {α β γ κ M : Type*} [Fintype α] [Fintype β] [Fintype γ] [Fin
     _ = ∑ c, ∑ a, ∑ d, ∑ b, f a b c d := Finset.sum_comm
     _ = ∑ c, ∑ d, ∑ a, ∑ b, f a b c d := Finset.sum_congr rfl fun c _ => Finset.sum_comm
 
+/- English proof (translation)
+Establish `hk : ∀ i i', x i * D.host.conj (y i') ∈ D.host.K` using `fun i i' => mul_mem (hx i) (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.G0.conj_mem D ⟨y i', hy i'⟩)`. Establish `e1 : (∑ a, ∑ c, (∑ i, x i • b i) a c * D.host.conj ((∑ i, y i • b i) a c)) = ∑ i, ∑ i', (x i * D.host.conj (y i')) * ∑ a, ∑ c, b i a c * D.host.conj (b i' a c)`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[sum4, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun i' _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ i i', (x i * D.host.conj (y i')) * ∑ a, ∑ c, b i a c * D.host.conj (b i' a c) = (⟨x i * D.host.conj (y i'), hk i i'⟩ : D.host.K) • ∑ a, ∑ c, b i a c * D.host.conj (b i' a c)`. Introduce `i i'`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Unfold `hYY`. Rewrite using `[e1]`. Simplify using `only [e2, map_sum, map_smul, smul_eq_mul, IntermediateField.coe_sum, IntermediateField.coe_mul]`.
+-/
 theorem hYY_comb (D : D7) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (x y : Fin r → D.host.E)
     (hx : ∀ i, x i ∈ D.host.K) (hy : ∀ i, y i ∈ D.host.K) :
     ((hYY D (∑ i, x i • b i) (∑ i, y i • b i) : D.host.K) : D.host.E) =
@@ -234,6 +318,13 @@ theorem hYY_comb (D : D7) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) 
   rw [e1]
   simp only [e2, map_sum, map_smul, smul_eq_mul, IntermediateField.coe_sum, IntermediateField.coe_mul]
 
+/- English proof (translation)
+Introduce `D p hp N N' L L' r r' b b' hbL hbO hb'L hb'O`. Take `⟨A, hAK, hAp, hb'⟩` from `exists_coeffs D hp hbL hb'L`. Take `⟨A', hAK', -, hb⟩` from `exists_coeffs D hp hb'L hbL`. Establish `h1` using `card_le D A hAK hb'L.1 hb'`. Establish `h2` using `card_le D A' hAK' hbL.1 hb`.
+
+Use `⟨le_antisymm h1 h2, A, hAK, hAp, ?_, hb'⟩` and prove the remaining obligations. Introduce `j j'`. Establish `hbO' : ∀ i i', hYY D (b i) (b i') = if i = i' then 1 else 0` using `hbO`. Establish `hb'O' : ∀ i i', hYY D (b' i) (b' i') = if i = i' then 1 else 0` using `hb'O`. Establish `h` using `hYY_comb D b (fun i => A i j) (fun i => A i j') (fun i => hAK i j) (fun i => hAK i j')`.
+
+Rewrite `h` using `[← hb' j, ← hb' j', hb'O' j j']`. Simplify using `only [hbO', apply_ite (fun x : D.host.K => (x : D.host.E)), IntermediateField.coe_one, IntermediateField.coe_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h`. Use `first`. Consider the case `exact h.symm`. Consider the case `(rw [← h]; split_ifs <;> simp)`.
+-/
 theorem orthChange_core : OrthChange := by
   intro D p hp N N' L L' r r' b b' hbL hbO hb'L hb'O
   obtain ⟨A, hAK, hAp, hb'⟩ := exists_coeffs D hp hbL hb'L
@@ -256,6 +347,13 @@ end IntegralOrthonormalChange
 
 open IntegralOrthonormalChange in
 
+/- English proof (translation)
+Introduce `D cc δ hcc hδ p _ hp5 hin lam N N' L L' F hS`. Take `⟨r, b, hbL, hbO, hI⟩` from `hS`. Introduce `C wq r' b' hC hW hb'L hb'O`. Take `⟨hrr, A, hAK, hAp, hAu, hb'⟩` from `hO D p Fact.out N N' L L' r r' b b' hbL hbO hb'L hb'O`. Substitute `hrr` using the available equality.
+
+Take `⟨S, hS0, hSI, hSl, V, hV, hPV⟩` from `hU D cc δ hcc hδ p hp5 hin lam C wq hC hW _ A hAK hAp hAu`. Establish `hSs : MvPowerSeries.HasSubst S` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hS0`. Establish `key` using `atLog_change D lam (lamOf D cc δ) C wq b b' A hAK hb' S hS0 hSl F`. Use `show IntegralMv (atLog D lam (lamOf D cc δ) C wq b' F * ePh lam (lamOf D cc δ) C wq _)`. Rewrite using `[key, hPV, ← mul_assoc, ← MvPowerSeries.subst_mul hSs]`.
+
+Conclude with `integral_mul (integral_subst S hS0 hSI (hI C wq hC hW)) hV`.
+-/
 theorem basisInv_of (hO : OrthChange) (hU : UnitSubst) : BasisInv := by
   intro D cc δ hcc hδ p _ hp5 hin lam N N' L L' F hS
   obtain ⟨r, b, hbL, hbO, hI⟩ := hS
@@ -269,8 +367,14 @@ theorem basisInv_of (hO : OrthChange) (hU : UnitSubst) : BasisInv := by
   rw [key, hPV, ← mul_assoc, ← MvPowerSeries.subst_mul hSs]
   exact integral_mul (integral_subst S hS0 hSI (hI C wq hC hW)) hV
 
+/- English proof (translation)
+The claim follows from `IntegralOrthonormalChange.orthChange_core`.
+-/
 theorem orthonormal_change_unitary_integral : OrthChange := IntegralOrthonormalChange.orthChange_core
 
+/- English proof (translation)
+The claim follows from `basisInv_of orthonormal_change_unitary_integral hU`.
+-/
 theorem basisInv_of_unitSubst (hU : UnitSubst) : BasisInv := basisInv_of orthonormal_change_unitary_integral hU
 
 end Formalism.L2.KerInert

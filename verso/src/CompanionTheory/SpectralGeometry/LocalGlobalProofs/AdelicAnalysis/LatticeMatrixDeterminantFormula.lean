@@ -11,6 +11,13 @@ open scoped ENNReal NNReal MatrixGroups Kronecker nonZeroDivisors
 variable {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
   [DecidableEq (InfinitePlace F)]
 
+/- English proof (translation)
+Set `B : Module.Basis (InfinitePlace F) ℚ F` to `b.localizationLocalization ℚ ℤ⁰ F`. Establish `hB : ∀ i, B i = (b i : F)` using `fun i => Module.Basis.localizationLocalization_apply ℚ ℤ⁰ F b i`. Establish `hd : Algebra.discr ℚ B = (discr F : ℚ)`. Rewrite using `[← NumberField.discr_eq_discr F b]`. Conclude with `(Algebra.discr_localizationLocalization ℤ ℤ⁰ F b).trans (by simp)`.
+
+Establish `hm : (EM ρ (fun v => b v))ᵀ * EM ρ (fun v => b v) = (algebraMap ℚ ℝ).mapMatrix (Algebra.traceMatrix ℚ B)`. Use extensionality with `u v`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, EM, RingHom.mapMatrix_apply, Matrix.map_apply, Algebra.traceMatrix_apply, Algebra.traceForm_apply, hB]`. Repeatedly rewrite using `[← map_mul]`. Rewrite using `[sum_rho_eq_trace hT hρ]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : (EM ρ (fun v => b v)).det ^ 2 = ((EM ρ (fun v => b v))ᵀ * EM ρ (fun v => b v)).det`. Rewrite using `[Matrix.det_mul, Matrix.det_transpose, sq]`. Rewrite using `[h2, hm, ← RingHom.map_det, ← Algebra.discr_def, hd]`. Simplify using the standard rewrite rules.
+-/
 theorem det_EM_sq {ρ : InfinitePlace F → (F →+* ℝ)} (hT : IsTotallyReal F)
     (hρ : ∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x)
     (b : Module.Basis (InfinitePlace F) ℤ (𝓞 F)) :
@@ -35,6 +42,9 @@ theorem det_EM_sq {ρ : InfinitePlace F → (F →+* ℝ)} (hT : IsTotallyReal F
   rw [h2, hm, ← RingHom.map_det, ← Algebra.discr_def, hd]
   simp
 
+/- English proof (translation)
+The claim follows from `|(gM (ι := ι) ρ (fun v => b v) N).det| = ((N : ℝ) ^ Module.finrank ℚ F * Real.sqrt |(discr F : ℝ)|) ^ Fintype.card ι := by have hfr : Module.finrank ℚ F = Fintype.card (InfinitePlace F) := Module.finrank_eq_card_basis (b.localizationLocalization ℚ ℤ⁰ F) have hE : |(EM ρ (fun v => …`.
+-/
 theorem abs_det_gM {ρ : InfinitePlace F → (F →+* ℝ)} (hT : IsTotallyReal F)
     (hρ : ∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x)
     (b : Module.Basis (InfinitePlace F) ℤ (𝓞 F)) (N : ℕ) :
@@ -48,6 +58,9 @@ theorem abs_det_gM {ρ : InfinitePlace F → (F →+* ℝ)} (hT : IsTotallyReal 
     Fintype.card_prod, abs_mul, abs_pow, abs_pow, hE, hfr, Nat.abs_cast]
   ring
 
+/- English proof (translation)
+The claim follows from `|(gM (ι := ι) ρ (fun v => b v) N).det| = ((N : ℝ) ^ Module.finrank ℚ F * Real.sqrt |(discr F : ℝ)|) ^ Fintype.card ι := fun _ _ _ _ _ _ _ _ hT hρ b N => abs_det_gM hT hρ b N`.
+-/
 theorem abs_det_gM_all : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι]
     [DecidableEq (InfinitePlace F)] (ρ : InfinitePlace F → (F →+* ℝ)), IsTotallyReal F →
     (∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) →

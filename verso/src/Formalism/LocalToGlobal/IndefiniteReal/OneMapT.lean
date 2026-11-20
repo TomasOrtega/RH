@@ -19,6 +19,9 @@ abbrev inC {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {l :
 
 abbrev sOv (C : Core D) (c' : Coeff C.Q.l) (hle : C.Q.c.F ≤ c'.F) : C.Q.c.F →+* ℂ := (inC c').comp (incF C.Q.c c' hle)
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(ext x; rfl)`. Consider the case `(ext x; simp [sOv, inC, incF])`.
+-/
 theorem sOv_eq (C : Core D) (c' : Coeff C.Q.l) (hle : C.Q.c.F ≤ c'.F) : sOv C c' hle = C.σ₀ := by
   first
   | rfl
@@ -111,6 +114,11 @@ def OneMapOf (v₀ : (R.MW i (sg0 D A)).Vec) (cc : (C.U ((i : ℕ) + 1) O.s0).Co
       (actLev C.Q.c O.lev2) (actLev O.c' O.lev2) O.dδ O.Cl' O.w O.La O.Nc O.gam O.vol O.ep O.io O.thAd O.Plc cc ph ∧
     O.PhRat κ v₀ cc ph
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ cc ph, O.OneMapOf κ v₀ cc ph`. Take `⟨cc, ph, hO⟩` from `hex`. Establish `hO'` using `hO`. Take `⟨_, hT, _⟩` from `hO'`. Apply the tactic sequence `first | unfold OneMapTieC at hT | skip`.
+
+Establish `hR` using `hT.2.2.2`. Apply the tactic sequence `first | unfold OneMapRow at hR | skip`. Conclude with `⟨cc, ph, hR.1, hR.2.1, fun _ => hO⟩`. Conclude with `⟨fun _ => 1, 1, fun _ => by simp, by simp, fun h => absurd h hex⟩`.
+-/
 theorem exists_choice (v₀ : (R.MW i (sg0 D A)).Vec) : ∃ (cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ) (ph : ℂ),
     (∀ k, ‖cc k‖ = 1) ∧ ‖ph‖ = 1 ∧ ((∃ cc' ph', O.OneMapOf κ v₀ cc' ph') → O.OneMapOf κ v₀ cc ph) := by
   by_cases hex : ∃ cc ph, O.OneMapOf κ v₀ cc ph
@@ -154,6 +162,9 @@ def OneMapRowR (ph : Fin D.R.m → ℂ) (i : Fin D.R.m) : Prop :=
       O'.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O'.s0) ∧
         O'.OneMapOf (κ i) (v₀ i (sg0 D A)) (T.cE ((i : ℕ) + 1) O'.s0) (ph i))
 
+/- English proof (translation)
+Establish `key : ∀ (σ : T.Q.c.F →+* ℂ) (W : HSp D) (hV : T.V ((i : ℕ) + 1) σ = W) (g : GA D W), (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) a : ℂ) * adel W (castDict hV (T.dict ((i : ℕ) + 1) σ)) (muPin W (castDict hV (T.dict ((i : ℕ) + 1) σ)) (castDict hV (T.mu ((i : ℕ) + 1) σ)) (T.cE ((i : ℕ) + …`. Introduce `σ W hV g`. Substitute `hV` using the available equality. Both sides reduce to the same expression. Conclude with `key _ _ (O i).hV h`.
+-/
 theorem phi_cE (i : Fin D.R.m) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R ((i : ℕ) + 1)) (h : GA D (Wc D i)) :
     (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) a : ℂ) * (O i).phi (T.cE ((i : ℕ) + 1) (O i).s0) f h =
       ((O i).hV ▸ T.phiJ ((i : ℕ) + 1) (O i).s0 a f : GA D (Wc D i) → ℂ) h := by

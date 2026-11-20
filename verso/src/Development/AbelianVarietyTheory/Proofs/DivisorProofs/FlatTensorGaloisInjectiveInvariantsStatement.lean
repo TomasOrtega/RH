@@ -10,6 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InvAlg.flat_tensor_invariants | exact GlobalTheory.InvAlg.flat_tensor_invariants | (intros; apply GlobalTheory.InvAlg.flat_tensor_invariants <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flat_tensor_galois_injective_invariants : ∀ (R R' O : Type) [CommRing R] [CommRing R'] [Algebra R R'] [CommRing O] [Algebra R O] [Module.Flat R O],
     Function.Injective (algebraMap R R') → GlobalTheory.Mum.IsGal (algebraMap R R') →
     Function.Injective (algebraMap O (TensorProduct R O R')) ∧

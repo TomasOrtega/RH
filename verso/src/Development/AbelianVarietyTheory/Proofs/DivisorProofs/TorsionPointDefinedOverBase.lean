@@ -12,6 +12,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RealMult
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 X N hN Ω _ _ t y hy`. Establish `hM` using `GlobalTheory.abMulN_holds`. Establish `: CharZero Ω` using `charZero_of_injective_ringHom (f := (Spec.preimage t).hom) (RingHom.injective _)`. Establish `hSub : Subsingleton (Sp ℂ)` using `inferInstanceAs (Subsingleton (PrimeSpectrum ℂ))`. Establish `: Flat t` using `inferInstance`.
+
+Establish `: Surjective t` using `⟨fun _ => ⟨(default : PrimeSpectrum Ω), Subsingleton.elim _ _⟩⟩`. Establish `: Epi t` using `Flat.epi_of_flat_of_surjective _`. Use `letI : GrpObj ((Over.pullback t).obj X.A) := Functor.grpObjObj`. Establish `hg : IsGrpPullback ((Over.pullback t).obj X.A) X.A t (pullback.fst X.A.hom t)` using `isGrpPullback_pullback X.A t`. Establish `hab : IsAbelianScheme ((Over.pullback t).obj X.A)` using `GlobalTheory.isAbelianScheme_pullback_obj t X.A X.ab`.
+
+Establish `hdim : SmoothOfRelativeDimension (Module.finrank ℚ F) ((Over.pullback t).obj X.A).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hg.1 X.dim`. Take `⟨e, -⟩` from `GlobalTheory.exists_mulEquiv_of_isGrpPullback hg (𝟙 (Sp Ω)) t (Category.id_comp t).symm`. Establish `hNΩ : ((N : ℕ) : Ω) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hNC : ((N : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `h₁` using `hM Ω ((Over.pullback t).obj X.A) _ N hab hdim hNΩ`.
+
+Establish `h₂` using `hM ℂ X.A _ N X.ab X.dim hNC`. Set `r : {z : 𝟙_ (Over (Sp ℂ)) ⟶ X.A // z ^ N = 1} → {y : Over.mk t ⟶ X.A // y ^ N = 1}` to `fun z => ⟨toUnit (Over.mk t) ≫ z.1, by rw [← MonObj.comp_pow, z.2, MonObj.comp_one]⟩`. Establish `hl : (toUnit (Over.mk t)).left = t` using `by simpa using Over.w (toUnit (Over.mk t))`. Establish `hr : Function.Injective r` using `fun a b h => Subtype.ext (Over.OverMorphism.ext ((cancel_epi t).1 (by`. Use `congrArg (fun q => q.1.left) h` as an intermediate fact.
+
+Simplify `this)))` using `only [r, Over.comp_left, hl]`. Establish `hc : Nat.card {y : Over.mk t ⟶ X.A // y ^ N = 1} = Nat.card {x : 𝟙_ (Over (Sp Ω)) ⟶ (Over.pullback t).obj X.A // x ^ N = 1}` using `(Nat.card_congr (Equiv.subtypeEquiv e.toEquiv fun x => by`. Express the relevant statement in the definitionally equal form `x ^ N = 1 ↔ e x ^ N = 1`. Rewrite using `[← map_pow, map_eq_one_iff e e.injective])).symm`. Establish `: Finite {y : Over.mk t ⟶ X.A // y ^ N = 1}` using `Nat.finite_of_card_ne_zero (by rw [hc, h₁]; positivity)`.
+
+Take `⟨z, hz⟩` from `((Nat.bijective_iff_injective_and_card r).2 ⟨hr, h₂.trans (h₁.symm.trans hc.symm)⟩).2 ⟨y, hy⟩`. Conclude with `⟨z.1, (congrArg Subtype.val hz).symm⟩`.
+-/
 theorem torsion_descends_to_complex : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (N : ℕ), 1 ≤ N → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (t : Sp Ω ⟶ Sp ℂ) (y : Over.mk t ⟶ X.A), y ^ N = 1 → ∃ z : 𝟙_ (Over (Sp ℂ)) ⟶ X.A, y = toUnit (Over.mk t) ≫ z := by
   intro F _ _ 𝔠 X N hN Ω _ _ t y hy
   have hM := GlobalTheory.abMulN_holds

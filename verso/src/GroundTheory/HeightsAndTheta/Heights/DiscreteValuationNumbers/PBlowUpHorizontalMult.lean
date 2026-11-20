@@ -10,6 +10,15 @@ open MvPolynomial
 
 universe u
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ K _ _ ι _ J _ P n hP N u hu hex hloc c x hx hxP W hW hϖW`. Establish `hm` using `hmin O ϖ hϖ K ι J P n hP N u hu hex hloc c x hx hxP W hW hϖW`. Take `⟨hWp, hBW, hrel⟩` from `le_and_isRelevant_of_divCycle_ne_zero hW`. Take `⟨-, -, hrel₀, -⟩` from `comap_liftForm_facts hWp hBW hrel`. Establish `hcond : W ∈ (blowUpOf P u ⊔ Ideal.span {liftForm x}).minimalPrimes ∧ IsRelevant W`.
+
+Assume the negation of the conclusion as `h`. Unfold `divCycle at hW`. Rewrite `hW` using `[dif_neg h]`. Conclude with `hW rfl`. Establish `hch` using `hchart O ϖ hϖ K ι J P n hP N u hu hex hloc c x hx hxP W hW hϖW hWp`.
+
+Use `hWp` as an intermediate fact. Establish `hp` using `PolynomialLocalizedLength.full (MRing ι O) (W.comap (liftForm (ι := ι) (J := J) (R := O))) (P ⊔ Ideal.span {x})`. Unfold `divCycle`. Rewrite using `[dif_pos ⟨hm, hrel₀⟩, dif_pos hcond]`. Use `congr 2`.
+
+Conclude with `(hp.symm.trans hch.symm : _)`.
+-/
 theorem BlowUpHorizontalMult.proof (hmin : BlowUpHorizontalMinimal.Statement.{u})
     (hchart : BlowUpHorizontalChartLength.Statement.{u}) : BlowUpHorizontalMult.Statement.{u} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ J _ P n hP N u hu hex hloc c x hx hxP W hW hϖW

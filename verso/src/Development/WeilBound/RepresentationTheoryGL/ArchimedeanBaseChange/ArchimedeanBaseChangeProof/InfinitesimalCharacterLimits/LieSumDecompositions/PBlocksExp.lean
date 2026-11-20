@@ -22,6 +22,11 @@ def tl (r : ℕ) (s : ℝ) : Module.End ℂ (GA E N → ℂ) where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Proceed by induction on `i generalizing f with`. Consider the case `zero`. Use function extensionality and compare the values at `g`. Simplify using `[aT_zero]`. Consider the case `succ i ih`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[pow_succ, Module.End.mul_apply, ih]`. Use `show f (aT E N r s * (aT E N r (s * i) * g)) = f (aT E N r (s * ((i + 1 : ℕ) : ℝ)) * g)`. Rewrite using `[← mul_assoc, ← aT_add, show s + s * (i : ℝ) = s * ((i + 1 : ℕ) : ℝ) by push_cast; ring]`.
+-/
 theorem tl_pow (r : ℕ) (s : ℝ) (i : ℕ) (f : GA E N → ℂ) : (tl r s ^ i) f = fun g => f (aT E N r (s * i) * g) := by
   induction i generalizing f with
   | zero =>
@@ -33,6 +38,13 @@ theorem tl_pow (r : ℕ) (s : ℝ) (i : ℕ) (f : GA E N → ℂ) : (tl r s ^ i)
     show f (aT E N r s * (aT E N r (s * i) * g)) = f (aT E N r (s * ((i + 1 : ℕ) : ℝ)) * g)
     rw [← mul_assoc, ← aT_add, show s + s * (i : ℝ) = s * ((i + 1 : ℕ) : ℝ) by push_cast; ring]
 
+/- English proof (translation)
+Establish `e : aeval (tl (N` using `N) r s) p F = fun g => ∑ j ∈ Finset.range (p.natDegree + 1), p.coeff j * F (aT E N r (s * j) * g) := by`. Rewrite using `[aeval_eq_sum_range, LinearMap.sum_apply]`. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, tl_pow]`. Both sides reduce to the same expression. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use function extensionality and compare the values at `g`. Conclude with `h g`. Introduce `h g`. Conclude with `congrFun h g`.
+-/
 theorem kl_iff (r : ℕ) (s : ℝ) (p : ℂ[X]) (F : GA E N → ℂ) : Kl r s p F ↔ aeval (tl r s) p F = 0 := by
   have e : aeval (tl (N := N) r s) p F = fun g => ∑ j ∈ Finset.range (p.natDegree + 1), p.coeff j * F (aT E N r (s * j) * g) := by
     rw [aeval_eq_sum_range, LinearMap.sum_apply]
@@ -49,14 +61,25 @@ theorem kl_iff (r : ℕ) (s : ℝ) (p : ℂ[X]) (F : GA E N → ℂ) : Kl r s p 
   · intro h g
     exact congrFun h g
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[kl_iff]`. Rewrite using `[mul_comm, aeval_mul, Module.End.mul_apply, h, map_zero]`.
+-/
 theorem kl_mul {r : ℕ} {s : ℝ} {p q : ℂ[X]} {F : GA E N → ℂ} (h : Kl r s p F) : Kl r s (p * q) F := by
   rw [kl_iff] at h ⊢
   rw [mul_comm, aeval_mul, Module.End.mul_apply, h, map_zero]
 
+/- English proof (translation)
+Rewrite using `[mul_comm]`. Conclude with `kl_mul h`.
+-/
 theorem kl_mul' {r : ℕ} {s : ℝ} {p q : ℂ[X]} {F : GA E N → ℂ} (h : Kl r s q F) : Kl r s (p * q) F := by
   rw [mul_comm]
   exact kl_mul h
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (BlockIx N r → Ad E) := borel _`. Establish `: BorelSpace (BlockIx N r → Ad E)` using `⟨rfl⟩`. Take `⟨μ, hμ, hD, hint⟩` from `JDict.exists_normed E N r`. Use `⟨μ, hμ, hD, fun f => funext fun g => ?_⟩` and prove the remaining obligations. Use `show An.ctn r f.1 g = ∫ x in GroundTheory.Automorphic.AutomorphicForm.unipFundamentalDomain E N r, f.1 (unip x * g) ∂μ`.
+
+Rewrite using `[hint]`. Simplify using `only [An.ctn, GroundTheory.Automorphic.AutomorphicForm.constantTerm, GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip]`.
+-/
 theorem ctn_eq_ct (r : ℕ) :
     letI : MeasurableSpace (BlockIx N r → Ad E) := borel _
     ∃ μ : Measure (BlockIx N r → Ad E), μ.IsAddHaarMeasure ∧
@@ -70,6 +93,11 @@ theorem ctn_eq_ct (r : ℕ) :
   rw [hint]
   simp only [An.ctn, GroundTheory.Automorphic.AutomorphicForm.constantTerm, GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip]
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (BlockIx N r → Ad E) := borel _`. Establish `: BorelSpace (BlockIx N r → Ad E)` using `⟨rfl⟩`. Take `⟨μ, hμ, hD, e⟩` from `ctn_eq_ct (E := E) (N := N) r`. Use `hμ` as an intermediate fact. Rewrite using `[e, e, e]`.
+
+Conclude with `ct_add μ _ hD hφ hψ`.
+-/
 theorem ctn_add (r : ℕ) {φ ψ : Sm E N} (hφ : IsAutForm φ) (hψ : IsAutForm ψ) :
     An.ctn r (φ + ψ).1 = An.ctn r φ.1 + An.ctn r ψ.1 := by
   letI : MeasurableSpace (BlockIx N r → Ad E) := borel _
@@ -79,6 +107,9 @@ theorem ctn_add (r : ℕ) {φ ψ : Sm E N} (hφ : IsAutForm φ) (hψ : IsAutForm
   rw [e, e, e]
   exact ct_add μ _ hD hφ hψ
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (BlockIx N r → Ad E) := borel _`. Take `⟨μ, -, -, e⟩` from `ctn_eq_ct (E := E) (N := N) r`. Rewrite using `[e, e]`. Conclude with `ct_smul μ _ c φ`.
+-/
 theorem ctn_smul (r : ℕ) (c : ℂ) (φ : Sm E N) : An.ctn r (c • φ).1 = c • An.ctn r φ.1 := by
   letI : MeasurableSpace (BlockIx N r → Ad E) := borel _
   obtain ⟨μ, -, -, e⟩ := ctn_eq_ct (E := E) (N := N) r
@@ -88,6 +119,15 @@ theorem ctn_smul (r : ℕ) (c : ℂ) (φ : Sm E N) : An.ctn r (c • φ).1 = c �
 def Good (β : ℕ → ℝ) (φ : Sm E N) : Prop :=
   IsAutForm φ ∧ ∀ r, 0 < r → r < N → ∃ p : ℂ[X], p.Monic ∧ Kl r 1 p (An.ctn r φ.1) ∧ ∀ z, p.IsRoot z → ‖z‖ ≤ Real.exp (β r)
 
+/- English proof (translation)
+Introduce `r hr hrN c hc`. Take `⟨p, -, hk, hroot⟩` from `h.2 r hr hrN`. Take `⟨F₀, hCT, F, hFspan, hF0, hFe⟩` from `hc`. Take `⟨-, -, -, hD⟩` from `dict_holds E N`. Take `⟨c₁, -, e₁⟩` from `(hD φ h.1 r hr hrN).2 F₀ hCT`.
+
+Establish `hk₀ : Kl r 1 p F₀`. Establish `: F₀ = c₁ • An.ctn r φ.1`. Use function extensionality and compare the values at `g`. Rewrite using `[e₁]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `(klSub r 1 p).smul_mem c₁ hk`. Establish `hroot'` using `kl_eigen (kl_span hk₀ hFspan) hF0 hFe`. Establish `h1` using `hroot (Complex.exp (c * ((1 : ℝ) : ℂ))) hroot'`. Rewrite `h1` using `[Complex.norm_exp]`.
+
+Establish `h2` using `Real.exp_le_exp.1 h1`. Simplify using `using h2`.
+-/
 theorem good_bound {β : ℕ → ℝ} {φ : Sm E N} (h : Good β φ) :
     ∀ r, 0 < r → r < N → ∀ c ∈ Exp r φ.1, c.re ≤ β r := by
   intro r hr hrN c hc
@@ -108,6 +148,15 @@ theorem good_bound {β : ℕ → ℝ} {φ : Sm E N} (h : Good β φ) :
   have h2 := Real.exp_le_exp.1 h1
   simpa using h2
 
+/- English proof (translation)
+Use `⟨hφ, fun r hr hrN => ?_⟩` and prove the remaining obligations. Take `⟨hA, -, -, hCT⟩` from `dict_holds E N`. Establish `hct` using `(hCT φ hφ r hr hrN).1`. Establish `hfin` using `finTr_holds E N φ hφ r hr hrN _ hct`. Establish `hadd : ∀ s t, aT E N r (s + t) = aT E N r s * aT E N r t` using `fun s t => aT_add r s t`.
+
+Establish `hcont : ∀ g, Continuous fun t => An.ctn r φ.1 (aT E N r t * g)`. Introduce `g`. Establish `e : (fun t => An.ctn r φ.1 (aT E N r t * g)) = fun t => An.ctn r φ.1 (An.aR E N r t * g)`. Use function extensionality and compare the values at `fun t => by rw [hA]`. Rewrite using `[e]`.
+
+Conclude with `JSqIntGlue.continuous_ctn_comp (GlobalTheory.CompanionTheory.ContAutForm.continuous_of_isAutForm_totallyComplex E N φ hφ) r ((JSqIntGlue.continuous_aR r).mul continuous_const)`. Take `⟨p, hp, hpk, hroots⟩` from `killPoly_holds (GA E N) (aT E N r) (An.ctn r φ.1) hadd hcont hfin`. Use `⟨p, hp, fun g => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `hpk g` as an intermediate fact. Simplify `this` using `only [one_mul]`.
+
+Take `⟨c, rfl, F, hF, hF0, hFe⟩` from `hroots z hz`. Establish `hc : c ∈ Exp r φ.1` using `⟨_, hct, F, hF, hF0, hFe⟩`. Rewrite using `[Complex.norm_exp]`. Conclude with `Real.exp_le_exp.2 (hexp r hr hrN c hc)`.
+-/
 theorem good_of (β : ℕ → ℝ) {φ : Sm E N} (hφ : IsAutForm φ)
     (hexp : ∀ r, 0 < r → r < N → ∀ c ∈ Exp r φ.1, c.re ≤ β r) : Good β φ := by
   refine ⟨hφ, fun r hr hrN => ?_⟩
@@ -131,6 +180,11 @@ theorem good_of (β : ℕ → ℝ) {φ : Sm E N} (hφ : IsAutForm φ)
     rw [Complex.norm_exp]
     exact Real.exp_le_exp.2 (hexp r hr hrN c hc)
 
+/- English proof (translation)
+Use `⟨GlobalTheory.CompanionTheory.AffglAssembly.isAutForm_add hφ.1 hψ.1, fun r hr hrN => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hpk, hpr⟩` from `hφ.2 r hr hrN`. Take `⟨q, hq, hqk, hqr⟩` from `hψ.2 r hr hrN`. Use `⟨p * q, hp.mul hq, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[ctn_add r hφ.1 hψ.1]`.
+
+Conclude with `(klSub r 1 (p * q)).add_mem (kl_mul hpk) (kl_mul' hqk)`. Break down `(Polynomial.root_mul.1 hz) with h | h` into its components or cases. Conclude with `hpr z h`. Conclude with `hqr z h`.
+-/
 theorem good_add {β : ℕ → ℝ} {φ ψ : Sm E N} (hφ : Good β φ) (hψ : Good β ψ) : Good β (φ + ψ) := by
   refine ⟨GlobalTheory.CompanionTheory.AffglAssembly.isAutForm_add hφ.1 hψ.1, fun r hr hrN => ?_⟩
   obtain ⟨p, hp, hpk, hpr⟩ := hφ.2 r hr hrN
@@ -142,6 +196,9 @@ theorem good_add {β : ℕ → ℝ} {φ ψ : Sm E N} (hφ : Good β φ) (hψ : G
     · exact hpr z h
     · exact hqr z h
 
+/- English proof (translation)
+Use `⟨GlobalTheory.CompanionTheory.AffglAssembly.isAutForm_smul c hφ.1, fun r hr hrN => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hpk, hpr⟩` from `hφ.2 r hr hrN`. Use `⟨p, hp, ?_, hpr⟩` and prove the remaining obligations. Rewrite using `[ctn_smul]`. Conclude with `(klSub r 1 p).smul_mem c hpk`.
+-/
 theorem good_smul {β : ℕ → ℝ} {φ : Sm E N} (hφ : Good β φ) (c : ℂ) : Good β (c • φ) := by
   refine ⟨GlobalTheory.CompanionTheory.AffglAssembly.isAutForm_smul c hφ.1, fun r hr hrN => ?_⟩
   obtain ⟨p, hp, hpk, hpr⟩ := hφ.2 r hr hrN
@@ -149,6 +206,11 @@ theorem good_smul {β : ℕ → ℝ} {φ : Sm E N} (hφ : Good β φ) (c : ℂ) 
   rw [ctn_smul]
   exact (klSub r 1 p).smul_mem c hpk
 
+/- English proof (translation)
+Use `⟨GlobalTheory.HCF.FormsSub.isAutForm_zero, fun r hr hrN => ⟨1, monic_one, ?_, fun z hz => ?_⟩⟩` and prove the remaining obligations. Establish `e : An.ctn r (0 : Sm E N).1 = (0 : ℂ) • An.ctn r (0 : Sm E N).1`. Rewrite using `[← ctn_smul, zero_smul]`. Rewrite using `[e]`. Conclude with `(klSub r 1 1).smul_mem 0 (by`.
+
+Introduce `g`. Simplify using `[An.ctn, GroundTheory.Automorphic.AutomorphicForm.constantTerm])`. Conclude with `absurd hz (by simp [Polynomial.IsRoot])`.
+-/
 theorem good_zero (β : ℕ → ℝ) : Good β (0 : Sm E N) := by
   refine ⟨GlobalTheory.HCF.FormsSub.isAutForm_zero, fun r hr hrN => ⟨1, monic_one, ?_, fun z hz => ?_⟩⟩
   · have e : An.ctn r (0 : Sm E N).1 = (0 : ℂ) • An.ctn r (0 : Sm E N).1 := by
@@ -159,6 +221,11 @@ theorem good_zero (β : ℕ → ℝ) : Good β (0 : Sm E N) := by
       simp [An.ctn, GroundTheory.Automorphic.AutomorphicForm.constantTerm])
   · exact absurd hz (by simp [Polynomial.IsRoot])
 
+/- English proof (translation)
+Introduce `φ hφ`. Use `good_bound ?_` and prove the remaining obligations. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact good_of β (haut x hx) (hexp x hx)`. Consider the case `zero => exact good_zero β`.
+
+Consider the case `add x y _ _ hx hy => exact good_add hx hy`. Consider the case `smul c x _ hx => exact good_smul hx c`.
+-/
 theorem exp_span (S : Set (Sm E N)) (β : ℕ → ℝ) (haut : ∀ φ ∈ S, IsAutForm φ)
     (hexp : ∀ φ ∈ S, ∀ r, 0 < r → r < N → ∀ c ∈ Exp r φ.1, c.re ≤ β r) :
     ∀ φ ∈ Submodule.span ℂ S, ∀ r, 0 < r → r < N → ∀ c ∈ Exp r φ.1, c.re ≤ β r := by

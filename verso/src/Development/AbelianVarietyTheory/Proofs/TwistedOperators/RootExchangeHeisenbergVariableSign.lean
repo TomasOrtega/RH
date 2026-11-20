@@ -8,11 +8,17 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 noncomputable section
 namespace GlobalTheory.RootEx.HeisenbergSign
 
+/- English proof (translation)
+Rewrite using `[ExchangeSupport.colE_inv_val, ExchangeSupport.colE_val]`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.one_apply]`.
+-/
 theorem colE_inv_eq {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] (c p : ℕ) (β : n → k) :
     ((colE c p β)⁻¹ : GL (n ⊕ Fin c) k).val = 1 - ((colE c p β).val - 1) := by
   rw [ExchangeSupport.colE_inv_val, ExchangeSupport.colE_val]
   ext (i | i) (j | j) <;> simp [Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `r s`. Apply the tactic sequence `rcases r with r | l <;> rcases s with s | i <;>`. Simplify using `[Exchange.mat, Exchange.gCol, colM, add_assoc, Fin.ext_iff]`.
+-/
 theorem mat_add_gCol {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
     {c : ℕ} (q : Fin c) (ξ : n → k) (x₀ : Matrix n n' k) (y : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) → k) :
     Exchange.mat x₀ (y + Exchange.gCol q ξ) = Exchange.mat x₀ y + colM c (q.val + 1) ξ := by
@@ -20,6 +26,17 @@ theorem mat_add_gCol {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq
   rcases r with r | l <;> rcases s with s | i <;>
     simp [Exchange.mat, Exchange.gCol, colM, add_assoc, Fin.ext_iff]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n n' _ _ _ _ c ρ _ hρc`. Use `⟨fun x₀ e β r i hi => ?_, fun ψ ν _ hψ μ Φ β => ⟨fun x => ?_, fun x₀ => ?_⟩⟩` and prove the remaining obligations. Establish `hi' : i = Fin.castSucc (⟨ρ, hρc⟩ : Fin c)` using `Fin.ext (by simp; omega)`. Substitute `hi'` using the available equality. Establish `h` using `congrFun (Exchange.col_colE_inv_mul (n' := n') (⟨ρ, hρc⟩ : Fin c) β x₀ e) r`.
+
+Simplify using `only at h`. Rewrite using `[← colE_inv_eq]`. Conclude with `neg_eq_iff_eq_neg.mp h`. Rewrite using `[Exchange.om_colE, colE_inv_eq]`. Establish `hch : ∀ (y : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (p : ℕ) (ξ : n → k), ch (y + colM c p ξ) = ch y`.
+
+Introduce `y p ξ`. Simplify using `[ch, colM]`. Establish `hmem : IsLocallyConstant Φ.1 ∧ HasCompactSupport Φ.1` using `Φ.2`. Establish `key` using `Exchange.opE_colE hψ ν μ (⟨ρ, hρc⟩ : Fin c) (⟨ρ, hρc⟩ : Fin c) (χ := fun _ => (1 : ℂ)) continuous_const hmem.1.continuous x₀ β`. Simplify using `only at key`.
+
+Use `Eq.trans ?_ (key.trans ?_)` and prove the remaining obligations. Simplify using `[fl]`. Rewrite using `[opE]`. Use `congr 1`. Use function extensionality and compare the values at `e`.
+
+Rewrite using `[mat_add_gCol, ← Exchange.affPt_eq]`. Simplify using `only [Exchange.big, one_mul, hch]`.
+-/
 theorem sign : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c ρ : ℕ) (_ : 1 ≤ ρ) (_ : ρ < c), (∀ (x₀ : Matrix n n' k) (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free (ρ + 1) rs} → k) (β : n → k) (r : n) (i : Fin (c + 1)), i.val + 1 = ρ + 1 → ((1 - ((colE c (ρ + 1) β).val - 1)) * affPt (ρ + 1) x₀ e : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (Sum.inl r) (Sum.inr i) = -β r) ∧ ∀ (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure], Continuous ψ → ∀ (μ : kˣ →* ℂˣ) (Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)) (β : n → k), (∀ x, om μ 1 (colE c (ρ + 1) β) Φ.1 x = Φ.1 ((1 - ((colE c (ρ + 1) β).val - 1)) * x)) ∧ ∀ x₀, fl ψ ν μ ρ Φ.1 x₀ β = opE ψ ν (ρ + 1) (fun x => Φ.1 (x + colM c (ρ + 1) (-β))) x₀ := by
   intro k _ _ _ _ _ _ n n' _ _ _ _ c ρ _ hρc
   refine ⟨fun x₀ e β r i hi => ?_, fun ψ ν _ hψ μ Φ β => ⟨fun x => ?_, fun x₀ => ?_⟩⟩

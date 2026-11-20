@@ -21,6 +21,9 @@ namespace GlobalTheory.RatioVal
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.DVR.TWM
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor IsLocalRing TWO SectionScalarValuation
 
+/- English proof (translation)
+The claim follows from `map_pow _ _ _`.
+-/
 theorem val_powGen {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (n : ℕ) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) :
     val (GeneratorPullback.powGen L φ ε t n) r z J = val t r z J ^ n :=
@@ -29,22 +32,38 @@ theorem val_powGen {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : 
 def germConst (F : Type) [Field F] (z : Spec (CommRingCat.of F)) : F →+* (Spec (CommRingCat.of F)).presheaf.stalk z :=
   ((Spec (CommRingCat.of F)).presheaf.germ ⊤ z trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom
 
+/- English proof (translation)
+Rewrite using `[gs_eq _ z ⊤ trivial]`. Conclude with `congrArg ((Spec (CommRingCat.of F)).presheaf.germ ⊤ z trivial).hom (appTop_specMap (CommRingCat.ofHom f) a)`.
+-/
 theorem gs_specMap {A F : Type} [CommRing A] [Field F] (f : A →+* F) (z : Spec (CommRingCat.of F))
     (a : Γ(Spec (CommRingCat.of A), ⊤)) :
     gs (Spec.map (CommRingCat.ofHom f)) z ⊤ a = germConst F z (f ((Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom a)) := by
   rw [gs_eq _ z ⊤ trivial]
   exact congrArg ((Spec (CommRingCat.of F)).presheaf.germ ⊤ z trivial).hom (appTop_specMap (CommRingCat.ofHom f) a)
 
+/- English proof (translation)
+Rewrite using `[gs_eq _ z ⊤ trivial]`. Both sides reduce to the same expression.
+-/
 theorem gs_id_const {F : Type} [Field F] (z : Spec (CommRingCat.of F)) (c : F) :
     gs (𝟙 (Spec (CommRingCat.of F))) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom c) = germConst F z c := by
   rw [gs_eq _ z ⊤ trivial]; rfl
 
+/- English proof (translation)
+Rewrite using `[gs_specMap]`. Use `congr 2`. Simplify using `[scal]`.
+-/
 theorem gs_scal {A F : Type} [CommRing A] [Field F] (f : A →+* F) (z : Spec (CommRingCat.of F)) (c : A) :
     gs (Spec.map (CommRingCat.ofHom f)) z ⊤ (scal (𝟙 (Spec (CommRingCat.of A))) c) = germConst F z (f c) := by
   rw [gs_specMap]
   congr 2
   simp [scal]
 
+/- English proof (translation)
+Establish `e1 : u * (Eψ * Er * G ^ k) = E * C`. Rewrite using `[hu]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+
+Establish `e2 : fam * C = s ^ k * (P * R)` using `by rw [h3, ← h2]; ac_rfl`. Establish `e1'` using `congrArg Units.val e1`. Establish `e2'` using `congrArg Units.val e2`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, h1, h4, h5, h6, h8, mul_pow] at e1' e2'`. Apply `(Eψ * Er * G ^ k).isUnit.mul_right_cancel` to reduce the goal to its premises.
+
+Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val]`. Take the linear combination `c₀ * e1' + e2'`.
+-/
 theorem unit_calc {S : Type} [CommRing S] {s G τ C P R E Eψ Er fam u : Sˣ} {T c₀ cψ cr A : S} {k : ℕ}
     (h1 : s.val = T * G.val) (h2 : τ * C = s ^ k) (h3 : fam = τ * (P * R)) (h4 : fam.val = c₀ * E.val)
     (h5 : P.val = cψ * Eψ.val) (h6 : R.val = cr * Er.val) (h8 : u.val = A)
@@ -66,6 +85,45 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {D : DegData V (maximalIdeal V)} {F : Type} [Field F] [Algebra (FractionRing V) F]
   {v : AddValuation F (WithTop ℚ)}
 
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Establish `hmk : m ^ k = cP D.toPre (TO hϖ hv) p.y`. Apply `liftO_unique hϖ hv` to reduce the goal to its premises. Rewrite using `[comp_cP, cPoint_y, ← hm]`. Conclude with `map_pow (preHom (ιS hϖ hv)) m k`.
+
+Take `⟨Ix, _, φV, εV, e', he', hfe', c₀, hc₀, hve'⟩` from `famMult_data D hϖ hQ k p.y α`. Take `⟨eψ, heψ, cψ, hcψ, hteψ⟩` from `genHasVal_powGen D.toPre.P.L _ _ _ _ _ (hQ p.y) k`. Take `⟨er, her, cr, hcr, hter⟩` from `genHasVal_powGen D.toPre.P.L _ _ _ _ _ (QForm.rigK_val (ϖ := ϖ) D) k`. Take `⟨tc, htc, hvtc⟩` from `exists_cubN D.toPre.cub (1 : TO hϖ hv ⟶ D.toPre.P.A) m (cP D.toPre _ α) k`. Set `h₀ : (TO hϖ hv).left ⟶ Spec (CommRingCat.of V)` to `(TO hϖ hv).hom`.
+
+Set `u` to `LB.mulGen D.toPre.P.L _ _ _ _ (LB.mulGen D.toPre.P.L _ _ _ _ (LB.mulGen D.toPre.P.L _ _ _ _ (LB.mulGen D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L _ _ e' h₀) (LB.invGen D.toPre.P.L _ _ (LB.pullGen D.toPre.P.L _ _ eψ h₀))) (LB.invGen D.toPre.P.L _ _ (LB.pullGen D.toPre.P.L _ _ er …`. Establish `hu : u.IsGen` using `mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ he' _) (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ heψ _))) (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ her _))) htc) (invGen_isGen _ _ _ _ (pow …`. Establish `hsurj : Function.Surjective (Scheme.Hom.appTop (𝟙 (TO hϖ hv).left)).hom` using `fun x => ⟨x, by simp⟩`. Establish `hfs : ∀ (U : Type) [CommGroup U] (h : ((TO hϖ hv).left ⟶ D.toPre.P.A.left) → U), (((((∏ i, h (h₀ ≫ φV i) ^ εV i) * (h (cP D.toPre (TO hϖ hv) p.y).left ^ ((k : ℤ) * -1))⁻¹) * (h (1 : TO hϖ hv ⟶ D.toPre.P.A).left ^ ((k : ℤ) * 1))⁻¹) * ∏ i, h (![(1 * m ^ k * cP D.toPre _ α).left, (1 …`. Introduce `U _ h`.
+
+Set `o : TO hϖ hv ⟶ D.toPre.P.A` to `1`. Establish `e` using `hfe' U (fun q => h (o.left ≫ q))`. Establish `w : o.left ≫ D.toPre.P.A.hom = h₀` using `Over.w o`. Establish `q₀ : ∀ i, o.left ≫ D.toPre.P.A.hom ≫ φV i = h₀ ≫ φV i` using `fun i => by rw [← Category.assoc, w]`. Establish `q₁ : ∀ χ, o.left ≫ (cQ D.toPre D.toPre.P.A χ).left = (cP D.toPre (TO hϖ hv) χ).left` using `fun χ => congrArg (fun q : TO hϖ hv ⟶ D.toPre.P.A => q.left) (comp_cP D.toPre o χ)`.
+
+Establish `q₂ : o.left ≫ (cQ D.toPre D.toPre.P.A α * cQ D.toPre D.toPre.P.A p.y).left = (cP D.toPre (TO hϖ hv) α * cP D.toPre (TO hϖ hv) p.y).left` using `congrArg (fun q : TO hϖ hv ⟶ D.toPre.P.A => q.left) ((MonObj.comp_mul o _ _).trans (congrArg₂ (· * ·) (comp_cP D.toPre o α) (comp_cP D.toPre o p.y)))`. Establish `q₃ : o.left ≫ (1 : D.toPre.P.A ⟶ D.toPre.P.A).left = (1 : TO hϖ hv ⟶ D.toPre.P.A).left` using `congrArg (fun q : TO hϖ hv ⟶ D.toPre.P.A => q.left) (MonObj.comp_one (M := D.toPre.P.A) o)`. Simplify using `only [q₀, q₁, q₂, q₃] at e`. Rewrite using `[e, hmk, _root_.one_mul, _root_.one_mul, mul_comm (cP D.toPre (TO hϖ hv) p.y), mul_comm m]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `[Fin.prod_univ_succ, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, gtφO, DegPre.gtε]`. Use `module`. Establish `pψ : ∀ (U : Type) [CommGroup U] (h : ((TO hϖ hv).left ⟶ D.toPre.P.A.left) → U), ∏ _i : PUnit.{1}, h (h₀ ≫ (D.toPre.c p.y).left) ^ ((k : ℤ) * -1) = h (cP D.toPre (TO hϖ hv) p.y).left ^ ((k : ℤ) * -1)` using `fun U _ h => by`. Rewrite using `[Fintype.prod_unique]`. Both sides reduce to the same expression.
+
+Establish `pr : ∀ (U : Type) [CommGroup U] (h : ((TO hϖ hv).left ⟶ D.toPre.P.A.left) → U), ∏ _i : PUnit.{1}, h (h₀ ≫ 𝟙 _ ≫ eSec D.toPre.P.A) ^ ((k : ℤ) * 1) = h (1 : TO hϖ hv ⟶ D.toPre.P.A).left ^ ((k : ℤ) * 1)` using `fun U _ h => by`. Rewrite using `[Fintype.prod_unique, Hom.one_def]`. Both sides reduce to the same expression. Take `⟨a, ha⟩ : ∃ a : Γ((TO hϖ hv).left, ⊤), ∀ (Z : Scheme.{0}) (r : Z ⟶ (TO hϖ hv).left) (z : Z) (J), Good D.toPre.P.L z J → (val u r z J).val = gs (r ≫ 𝟙 _) z ⊤ a` from `ReciprocityTheory.ChartRestriction.G.H1.exists_const D.toPre.P.L hL (𝟙 _) hsurj u hu (fun U _ h => by`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`.
+
+Rewrite using `[pψ U h, pr U h]`. Conclude with `hfs U h)`. Take `⟨a', ha'⟩ : ∃ a : Γ((TO hϖ hv).left, ⊤), ∀ (Z : Scheme.{0}) (r : Z ⟶ (TO hϖ hv).left) (z : Z) (J), Good D.toPre.P.L z J → (val (LB.invGen D.toPre.P.L _ _ u) r z J).val = gs (r ≫ 𝟙 _) z ⊤ a` from `ReciprocityTheory.ChartRestriction.G.H1.exists_const D.toPre.P.L hL (𝟙 _) hsurj _ (invGen_isGen _ _ _ _ hu) (fun U _ h => by`. Use `(prod_neg _ _ ?_).trans inv_one` and prove the remaining obligations. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`.
+
+Rewrite using `[pψ U h, pr U h]`. Conclude with `hfs U h)`. Set `z₀ : Spec (CommRingCat.of F)` to `default`. Use `choose J₀ hJ₀ using fun χ : (TF (R := V) F).left ⟶ D.toPre.P.A.left => exists_chart hL (χ z₀)`. Establish `hG : Good D.toPre.P.L z₀ J₀` using `hJ₀`.
+
+Establish `h1` using `ht _ (𝟙 _) z₀ J₀ hG`. Establish `h2` using `chain_val (𝟙 (TF (R := V) F)) hG p α`. Establish `h3` using `val_famMult (𝟙 (TF (R := V) F)) hG k p.y α`. Establish `h4` using `hve' F _ (𝟙 _) z₀ J₀ hG`. Establish `h5` using `val_genHasVal (hφ := fun _ => QForm.ptK_eq D.toPre p.y) hteψ ((𝟙 _) ≫ jFK (R := V) F) z₀ hG`.
+
+Establish `h6` using `val_genHasVal (hφ := fun _ => by rw [Category.id_comp]; rfl) hter ((𝟙 _) ≫ jFK (R := V) F) z₀ hG`. Establish `h7` using `hvtc (TF (R := V) F) (ιS hϖ hv) z₀ J₀ hG`. Establish `h8` using `ha _ (ιS hϖ hv).left z₀ J₀ hG`. Establish `h8'` using `ha' _ (ιS hϖ hv).left z₀ J₀ hG`. Establish `hι : (ιS hϖ hv).left ≫ (TO hϖ hv).hom = DegPre.jFR (R` using `V) F := Over.w (ιS hϖ hv)`.
+
+Establish `hid : Over.Hom.left (𝟙 (TF (R` using `V) F)) = 𝟙 (Spec (CommRingCat.of F)) := Over.id_left _`. Rewrite `h2`, `h3` using `[hid]`. Simplify using `only [Category.id_comp] at h1 h2 h3 h4 h5 h6 h8 h8'`. Establish `hu8 : val u (ιS hϖ hv).left z₀ J₀ = val (Z` using `(TF (R := V) F).left) e' (DegPre.jFR (R := V) F) z₀ J₀ * (val (Z := (TF (R := V) F).left) eψ (DegPre.jFR (R := V) F) z₀ J₀)⁻¹ * (val (Z := (TF (R := V) F).left) er (DegPre.jFR (R := V) F) z₀ J₀)⁻¹ * val tc (ιS hϖ hv).left z₀ J₀ * (val G₀ (ιS hϖ hv).left z₀ J₀ ^ k)⁻¹ := by`. Simplify using `only [u, h₀, val_mul hG, val_inv, val_pull hG, val_powGen, hι]`.
+
+Establish `h7' : val tc (ιS hϖ hv).left z₀ J₀ = cubN (th D.toPre z₀ J₀) k 1 p.g.b (cP D.toPre (TF (R` using `V) F) α) := by`. Rewrite using `[h7, MonObj.comp_one, hm, comp_cP]`. Establish `key` using `unit_calc h1 (h7' ▸ h2) h3 h4 h5 h6 h8 hu8`. Establish `g1 : gs (𝟙 (TF (R` using `V) F).left) z₀ ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom t) = germConst F z₀ t := gs_id_const z₀ t`. Establish `g2 : ∀ c : FractionRing V, gs (jFK (R` using `V) F) z₀ ⊤ (scal (𝟙 _) c) = germConst F z₀ (algebraMap (FractionRing V) F c) := fun c => gs_scal _ z₀ c`.
+
+Establish `g3 : ∀ b : Γ((TO hϖ hv).left, ⊤), gs ((ιS hϖ hv).left ≫ 𝟙 _) z₀ ⊤ b = germConst F z₀ (ιr (v` using `v) b) := fun b => by`. Rewrite using `[Category.comp_id]`. Conclude with `gs_specMap _ z₀ b`. Establish `hinj : Function.Injective (germConst F z₀)` using `(germConst F z₀).injective`. Establish `k1 : algebraMap (FractionRing V) F c₀ * ιr (v` using `v) a = t ^ k * algebraMap (FractionRing V) F cψ * algebraMap (FractionRing V) F cr := by`.
+
+Apply `hinj` to reduce the goal to its premises. Simplify using `only [map_mul, map_pow]`. Rewrite using `[← g1, ← g2, ← g2, ← g2, ← g3]`. Conclude with `key`. Establish `k2 : ιr (v` using `v) a * ιr (v := v) a' = 1 := by`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, ← g3, ← g3, ← h8, ← h8', val_inv, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `va : v (ιr (v` using `v) a) = 0 := by`. Establish `e : v (ιr (v` using `v) a) + v (ιr (v := v) a') = 0 := by rw [← AddValuation.map_mul, k2, AddValuation.map_one]`. Conclude with `le_antisymm (le_zero_of_add_eq_zero_nonneg e (v_ιr a')) (v_ιr a)`.
+
+Establish `k3` using `congrArg v k1`. Rewrite `k3` using `[AddValuation.map_mul, AddValuation.map_mul, AddValuation.map_mul, AddValuation.map_pow, va, hv _ _ hc₀, hv _ _ hcψ, hv _ _ hcr]`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Rewrite `h1` using `[g1, map_zero, zero_mul]`.
+
+Conclude with `(val (p.g.s α) (𝟙 _) z₀ J₀).ne_zero h1`. Take `⟨q, hq⟩` from `wt_coe_of_ne (v := v) ht0`. Use `⟨q, hq, ?_⟩` and prove the remaining obligations. Rewrite `k3` using `[hq]`. Establish `k4 : (((k : ℤ) * Q p.y + QForm.bOf D.toPre Q p.y α : ℤ) : ℚ) + 0 = k • q + (((k : ℤ) * Q p.y : ℤ) : ℚ) + (((k : ℤ) * 0 : ℤ) : ℚ)` using `by exact_mod_cast k3`.
+
+Rewrite `k4` using `[nsmul_eq_mul]`. Move the coercions through the operations in `at k4`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem v_ratio_gt (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q)
     {k : ℕ} (hk : 1 ≤ k) (p : QkPt D.toPre F k) (m : TO hϖ hv ⟶ D.toPre.P.A) (hm : ιS hϖ hv ≫ m = p.g.b)
     (α : D.toPre.X) (G₀ : LB.Gen (LB.LinComb D.toPre.P.L (gtφO hϖ hv m α) DegPre.gtε)) (hG₀ : G₀.IsGen) (t : F)
@@ -200,6 +258,9 @@ theorem v_ratio_gt (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) {Q : D.toPre.X �
   push_cast at k4
   linarith
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ hϖ _ _ hQ _ _ _ _ hv _ hk p m hm α G₀ hG₀ t ht` and use `v_ratio_gt hϖ hv hQ hk p m hm α G₀ hG₀ t ht`.
+-/
 theorem main : TWM.VRatioGtStatement :=
   fun _ _ _ _ _ hϖ _ _ hQ _ _ _ _ hv _ hk p m hm α G₀ hG₀ t ht => v_ratio_gt hϖ hv hQ hk p m hm α G₀ hG₀ t ht
 

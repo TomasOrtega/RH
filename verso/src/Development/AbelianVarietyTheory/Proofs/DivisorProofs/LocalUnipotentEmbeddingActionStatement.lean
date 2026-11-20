@@ -18,6 +18,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnipEmbAct.emb_mulVec | exact GlobalTheory.UnipEmbAct.emb_mulVec | (intros; apply GlobalTheory.UnipEmbAct.emb_mulVec <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_unipotent_embedding_action : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v) (y : Fin n → AF F ⊗[F] E),
     (matHom (AF F) σ J (emb σ J v x)).1 *ᵥ y =

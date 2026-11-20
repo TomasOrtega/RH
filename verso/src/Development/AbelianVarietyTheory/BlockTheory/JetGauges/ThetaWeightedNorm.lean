@@ -181,10 +181,16 @@ def Explicit : Prop :=
     I.dp = 2 * (X.Ψ.card : ℝ) * I.qp ∧ I.g0h = 5 ^ 4 * r ∧
     I.a1 = (X.Ψ.card : ℝ) / (5 ^ 4 * rdE E ^ 2)
 
+/- English proof (translation)
+Unfold `n1 g0`. Use `module`.
+-/
 theorem be_weight : 2 • ((I.i * I.g0h) • I.de2) + I.n1 • (2 • I.L - I.de2) = (2 * I.n1) • I.L := by
   unfold n1 g0
   module
 
+/- English proof (translation)
+Establish `h` using `I.frame_theta_weight_pos`. Establish `: I.t * I.a1 = I.a1 + I.c1`. Unfold `t`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem constant_lt_t_mul_a : I.c1 < I.t * I.a1 := by
   have h := I.frame_theta_weight_pos
   have : I.t * I.a1 = I.a1 + I.c1 := by
@@ -231,8 +237,14 @@ def DeepBoundStatement : Prop :=
   ∀ (r : ℕ) (X : Data E r), HidaSetting X → ∀ I : ThetaIn X, ∀ f ∈ X.SSgt I.ka I.c1,
     ∃ C : ℝ, ∀ x ∈ X.dom, X.pnorm I.ka f x ≤ C * wnorm X I.L I.w x ^ I.T
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (X : Data E r) (x0 : Frame X.Ψ r) (z : V (nd X)) : rh X (cpt X x0 z) = rhF X x0 z := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩`.
+-/
 example (X : Data E r) (a : ℝ) : IsInv X fun _ => a := ⟨fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩
 
 end

@@ -19,21 +19,37 @@ def k1 (W : WeierstrassCurve A) (l n : A) : A :=
   W.a₁ * n + 2 * W.a₃ * l * n + W.a₄ * n ^ 2 + 3 * W.a₆ * l * n ^ 2 - l
 def k0 (W : WeierstrassCurve A) (n : A) : A := W.a₃ * n ^ 2 + W.a₆ * n ^ 3 - n
 
+/- English proof (translation)
+Unfold `gE k3 k2 k1 k0`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma gE_line (W : WeierstrassCurve A) (l n z : A) :
     gE W z (l * z + n) = k3 W l * z ^ 3 + k2 W l n * z ^ 2 + k1 W l n * z + k0 W n := by
   unfold gE k3 k2 k1 k0
   ring
 
+/- English proof (translation)
+Unfold `fuAt fwAt k3 k2 k1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma gE_line_der (W : WeierstrassCurve A) (l n z : A) :
     fuAt W z (l * z + n) - l * fwAt W z (l * z + n)
       = 3 * k3 W l * z ^ 2 + 2 * k2 W l n * z + k1 W l n := by
   unfold fuAt fwAt k3 k2 k1
   ring
 
+/- English proof (translation)
+Unfold `WEq gE`. Apply the tactic sequence `constructor <;> intro h <;> linear_combination -h`.
+-/
 lemma wEq_iff (W : WeierstrassCurve A) (z v : A) : WEq W z v ↔ gE W z v = 0 := by
   unfold WEq gE
   constructor <;> intro h <;> linear_combination -h
 
+/- English proof (translation)
+Take `⟨hadd, hmul⟩` from `hD`. Take `⟨c1, c2, c3, c4, c6⟩` from `hC`. Establish `hsub : ∀ a b, D (a - b) = D a - D b`. Introduce `a b`. Establish `h` using `hadd (a - b) b`.
+
+Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hp2 : ∀ a, D (a ^ 2) = 2 * a * D a` using `fun a => by rw [sq, hmul]; ring`. Establish `hp3 : ∀ a, D (a ^ 3) = 3 * a ^ 2 * D a` using `fun a => by`.
+
+Rewrite using `[show a ^ 3 = a * a ^ 2 by ring, hmul, hp2]; ring`. Unfold `gE fuAt fwAt`. Simplify using `only [hsub, hadd, hmul, hp2, hp3, c1, c2, c3, c4, c6]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma der_gE {D : A → A} (hD : IsDer D) {W : WeierstrassCurve A} (hC : ConstCurve D W) (z v : A) :
     D (gE W z v) = fuAt W z v * D z - fwAt W z v * D v := by
   obtain ⟨hadd, hmul⟩ := hD
@@ -51,6 +67,11 @@ lemma der_gE {D : A → A} (hD : IsDer D) {W : WeierstrassCurve A} (hC : ConstCu
   simp only [hsub, hadd, hmul, hp2, hp3, c1, c2, c3, c4, c6]
   ring
 
+/- English proof (translation)
+Establish `hq : (z1 - z2) * (C3 * (z1 ^ 2 + z1 * z2 + z2 ^ 2) + C2 * (z1 + z2) + C1) = 0`. Take the linear combination `h1 - h2`. Establish `hq'` using `(mul_eq_zero.mp hq).resolve_left (sub_ne_zero.mpr hz)`. Establish `e2 : C3 * (z1 * z2 + z1 * z3 + z2 * z3) - C1 = 0`. Take the linear combination `-hq' + (z1 + z2) * he1`.
+
+Establish `e3 : C3 * (z1 * z2 * z3) + C0 = 0`. Take the linear combination `h1 - z1 ^ 2 * he1 + z1 * e2`. Use `⟨?_, e2, e3⟩` and prove the remaining obligations. Take the linear combination `z3 ^ 2 * he1 - z3 * e2 + e3`.
+-/
 lemma cubic_roots [IsDomain A] {C3 C2 C1 C0 z1 z2 z3 : A} (hz : z1 ≠ z2)
     (h1 : C3 * z1 ^ 3 + C2 * z1 ^ 2 + C1 * z1 + C0 = 0)
     (h2 : C3 * z2 ^ 3 + C2 * z2 ^ 2 + C1 * z2 + C0 = 0)
@@ -71,6 +92,27 @@ end CubicFlow
 
 open QuadraticFlow CubicFlow
 
+/- English proof (translation)
+Introduce `A _ _ W D u1 w1 u2 w2 l n u3 hD hC hF hW2 hDu2 hDw2 hl hn hsum hk3 h12 h31 h32`. Take `⟨hW1, hDu1, hDw1⟩` from `hF`. Establish `hD'` using `hD`. Take `⟨hadd, hmul⟩` from `hD'`. Establish `hw1 : w1 = l * u1 + n` using `by linear_combination -hn`.
+
+Establish `hw2 : w2 = l * u2 + n` using `by linear_combination hl - hn`. Establish `r1 : k3 W l * u1 ^ 3 + k2 W l n * u1 ^ 2 + k1 W l n * u1 + k0 W n = 0`. Rewrite using `[← gE_line, ← hw1]`. Conclude with `(wEq_iff W u1 w1).1 hW1`. Establish `r2 : k3 W l * u2 ^ 3 + k2 W l n * u2 ^ 2 + k1 W l n * u2 + k0 W n = 0`.
+
+Rewrite using `[← gE_line, ← hw2]`. Conclude with `(wEq_iff W u2 w2).1 hW2`. Establish `hs : k3 W l * (u1 + u2 + u3) + k2 W l n = 0` using `hsum`. Establish `hk : k3 W l ≠ 0` using `hk3`. Take `⟨r3, e2, -⟩` from `cubic_roots h12 r1 r2 hs`.
+
+Establish `hD0 : D 0 = 0`. Establish `h` using `hadd 0 0`. Rewrite `h` using `[add_zero]`. Take the linear combination `-h`. Establish `hDline : ∀ z, D (l * z + n) = l * D z + z * D l + D n`.
+
+Introduce `z`. Rewrite using `[hadd, hmul]`. Establish `T1 : u1 * D l + D n = 3 * k3 W l * u1 ^ 2 + 2 * k2 W l n * u1 + k1 W l n`. Establish `h` using `hDline u1`. Rewrite `h` using `[← hw1, hDw1, hDu1]`.
+
+Establish `hd` using `gE_line_der W l n u1`. Rewrite `hd` using `[← hw1]`. Take the linear combination `hd - h`. Establish `T2 : u2 * D l + D n = 0`. Establish `h` using `hDline u2`.
+
+Rewrite `h` using `[← hw2, hDw2, hDu2]`. Take the linear combination `-h`. Establish `hq : (u1 - u2) * (D l - k3 W l * (u1 - u3)) = 0`. Take the linear combination `T1 - T2 + 2 * u1 * hs - e2`. Establish `hDl` using `sub_eq_zero.mp ((mul_eq_zero.mp hq).resolve_left (sub_ne_zero.mpr h12))`.
+
+Establish `hg3 : gE W u3 (l * u3 + n) = 0` using `by rw [gE_line]; exact r3`. Establish `hd3` using `der_gE hD hC u3 (l * u3 + n)`. Rewrite `hd3` using `[hg3, hD0, hDline]`. Establish `hd3'` using `gE_line_der W l n u3`. Establish `hK : k3 W l * (u3 - u1) * (u3 - u2) ≠ 0` using `mul_ne_zero (mul_ne_zero hk (sub_ne_zero.mpr h31)) (sub_ne_zero.mpr h32)`.
+
+Establish `hkey : (k3 W l * (u3 - u1) * (u3 - u2)) * (D u3 + fwAt W u3 (l * u3 + n)) = 0`. Take the linear combination `-hd3 - D u3 * hd3' - D u3 * (2 * u3 * hs - e2) + fwAt W u3 (l * u3 + n) * (u3 - u2) * hDl + fwAt W u3 (l * u3 + n) * T2`. Establish `hX : D u3 = -fwAt W u3 (l * u3 + n)`. Use `(mul_eq_zero.mp hkey).resolve_left hK` as an intermediate fact. Take the linear combination `this`.
+
+Use `⟨(wEq_iff W u3 _).2 hg3, hX, ?_⟩` and prove the remaining obligations. Rewrite using `[hDline]`. Take the linear combination `l * hX + hd3' + 2 * u3 * hs - e2 + (u3 - u2) * hDl + T2`.
+-/
 theorem flowThirdPoint : FlowThird.{u} := by
   intro A _ _ W D u1 w1 u2 w2 l n u3 hD hC hF hW2 hDu2 hDw2 hl hn hsum hk3 h12 h31 h32
   obtain ⟨hW1, hDu1, hDw1⟩ := hF

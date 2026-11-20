@@ -7,6 +7,9 @@ open ValuativeRel
 open scoped Matrix Topology
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SBRestrict.eq_SB_of_restrict | exact GlobalTheory.SBRestrict.eq_SB_of_restrict | (intros; apply GlobalTheory.SBRestrict.eq_SB_of_restrict <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schwartz_submodule_support_closed : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (ψ0 : AddChar k ℂ), Continuous ψ0 →
     (∀ x : k, ‖ψ0 x‖ = 1) → ψ0 ≠ 1 → ∀ (I : Set (Y × Y')) (S : Submodule ℂ (Matrix Y Y' k → ℂ)),

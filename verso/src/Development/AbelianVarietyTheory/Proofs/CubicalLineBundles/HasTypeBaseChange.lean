@@ -9,6 +9,13 @@ open GlobalTheory GlobalTheory.CM
 
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+Introduce `E _ _ _ H R R' _ _ f t t' m ρ p q`. Establish `key : ∀ (k : Type) [Field k] (β' : R' →+* k) (τ : 𝓞 E →+* k) (n : ℕ), LieMult t'.act (spMap β') τ n ↔ LieMult t.act (spMap (β'.comp f)) τ n` using `fun k _ β' τ n => by`. Establish `e : spMap β' ≫ spMap f = spMap (β'.comp f)` using `(Spec.map_comp _ _).symm`. Rewrite using `[← e]`. Conclude with `LiePull.lieMult_pull _ _ _ t.G t'.G (spMap f) m.cm.F t.act t'.act m.cart m.act k _ τ n`.
+
+Use `⟨fun hf h k _ _ β' hβ' τ => ?_, fun hext h k _ _ β hβ τ => ?_⟩` and prove the remaining obligations. Rewrite using `[key, key]`. Conclude with `h k (β'.comp f) (hβ'.comp hf) τ`. Take `⟨β', rfl, hβ'⟩` from `hext k β hβ`. Rewrite using `[← key, ← key]`.
+
+Conclude with `h k β' hβ' τ`.
+-/
 theorem hasType_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R R' : Type) [CommRing R] [CommRing R'] (f : R →+* R') (t : SAB H (Sp R)) (t' : SAB H (Sp R')) (_ : SABMap t' t (spMap f)) (ρ : R) (p q : ℕ), (Function.Injective f → HasType H t.act ρ p q → HasType H t'.act (f ρ) p q) ∧ ((∀ (k : Type) [Field k] (β : R →+* k), Function.Injective β → ∃ β' : R' →+* k, β'.comp f = β ∧ Function.Injective β') → HasType H t'.act (f ρ) p q → HasType H t.act ρ p q) := by
   intro E _ _ _ H R R' _ _ f t t' m ρ p q
   have key : ∀ (k : Type) [Field k] (β' : R' →+* k) (τ : 𝓞 E →+* k) (n : ℕ),

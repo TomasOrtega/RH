@@ -29,6 +29,45 @@ open GlobalTheory.DblVacLine
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Distinguish the cases in `hR0 : R = 0`. Establish `e : GlobalTheory.InertDbl.dblFun (tens (evFin F v) φ R) = 0`. Use function extensionality and compare the values at `x`. Simplify using `[hR0, GlobalTheory.InertDbl.dblFun, boxFun, tens]`. Conclude with `⟨0, by rw [e, map_zero, smul_zero]⟩`.
+
+Take `⟨x₀, hx₀⟩` from `Function.ne_iff.mp hR0`. Establish `hn` using `GlobalTheory.StdCharFromIsStd.norm_psi hψ`. Use `set Λ := latAtV X Y v with hΛ`. Establish `hat : ∀ γ ∈ Λ, At (evFin F v) γ` using `(GlobalTheory.LatVac.latAtV_at_stable X Y v).1`. Use `set φd := boxFun φ fun x => star (φ x) with hφd`.
+
+Use `set Rd := GlobalTheory.InertDbl.dblFun R with hRd`. Use `set Φ := GlobalTheory.InertDbl.dblFun (tens (evFin F v) φ R) with hΦ`. Establish `hΦt : Φ = tens (evFin F v) φd Rd` using `dblFun_tens v φ R`. Establish `hrest : Rest (evFin F v) φd Rd` using `rest_dbl v hR`. Establish `hΦs : Φ ∈ schA F _` using `hΦt ▸ hrest.2`.
+
+Establish `hRd0 : Rd (Sum.elim x₀ x₀) ≠ 0` using `by show R x₀ * star (R x₀) ≠ 0`. Conclude with `mul_ne_zero hx₀ (star_ne_zero.mpr hx₀)`. Establish `hφdSB : φd ∈ SB _` using `box_mem_SB hφSB ⟨hφSB.1.comp star, hφSB.2.comp_left (star_zero ℂ)⟩`. Set `cf : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E) → ℂ` to `fun w => ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) θ) (incM F X.J) (dbl (incM F Y.J)) w w)`. Establish `h1 : ∀ γ₁ ∈ Λ, ∀ γ₂ ∈ Λ, dd.rho ψ (Matrix.fromCols γ₁ γ₂) Φ = cf (Matrix.fromCols γ₁ γ₂) • Φ`.
+
+Introduce `γ₁ h₁ γ₂ h₂`. Establish `e₁` using `hvac γ₁ h₁ R hR`. Establish `e₂` using `hvac γ₂ h₂ R hR`. Rewrite `e₁`, `e₂` using `[GlobalTheory.VacTransport.tens_smul]`. Simplify using `only [Darboux.rho] at e₁ e₂`.
+
+Rewrite using `[Darboux.rho, hdd, hΦ, GlobalTheory.InertDbl.dblFun, schr_box ψ hn, e₁, e₂]`. Use function extensionality and compare the values at `x`. Simplify using `only [cf, symp_dbl, boxFun, Pi.smul_apply, smul_eq_mul, star_mul', star_eq_neg ψ hn, mul_sub]`. Rewrite using `[sub_eq_add_neg, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : ∀ γ₁ ∈ Λ, ∀ γ₂ ∈ Λ, dd.rho ψ (Matrix.fromCols γ₁ γ₂) (omd g Φ) = cf (Matrix.fromCols γ₁ γ₂) • omd g Φ`. Introduce `γ₁ h₁ γ₂ h₂`. Take `⟨δ₁, k₁, δ₂, k₂, he⟩` from `fromCols_mul_transpose X Y v (GlobalTheory.InertDbl.matD g⁻¹) (fun z hz => (hg.2 z hz).2) h₁ h₂`. Establish `hback : actB (cA σ) g (Matrix.fromCols δ₁ δ₂) = Matrix.fromCols γ₁ γ₂`. Express the relevant statement in the definitionally equal form `Matrix.fromCols δ₁ δ₂ * (GlobalTheory.InertDbl.matD g)ᵀ = _`.
+
+Establish `e : GlobalTheory.InertDbl.matD g * GlobalTheory.InertDbl.matD g⁻¹ = 1` using `Units.mul_inv g.1`. Rewrite using `[← he, Matrix.mul_assoc, ← Matrix.transpose_mul, e, Matrix.transpose_one, Matrix.mul_one]`. Establish `hsy : cf (Matrix.fromCols δ₁ δ₂) = cf (Matrix.fromCols γ₁ γ₂)`. Simplify using `only [cf]`. Rewrite using `[← he, GlobalTheory.VacTransport.symp_mul_transpose (cA σ) _ _ _ (GlobalTheory.InertDbl.matD g⁻¹) (g⁻¹).2]`.
+
+Establish `h` using `hS.impl g (Matrix.fromCols δ₁ δ₂) Φ hΦs`. Rewrite `h` using `[hback, h1 δ₁ k₁ δ₂ k₂, map_smul, hsy]`. Conclude with `h.symm`. Take `⟨φ₁, -, hact⟩` from `acts_of_at hψ dd omd hS v g hg.1 φd hφdSB`. Establish `hT : omd g Φ = tens (evFin F v) φ₁ Rd` using `by rw [hΦt]; exact hact Rd hrest`.
+
+Establish `hrest₁ : Rest (evFin F v) φ₁ Rd` using `⟨hrest.1, hT ▸ hS.pres g Φ hΦs⟩`. Establish `hloc : ∀ f, Rest (evFin F v) f Rd → ∀ γ₁ ∈ Λ, ∀ γ₂ ∈ Λ, dd.rho ψ (Matrix.fromCols γ₁ γ₂) (tens (evFin F v) f Rd) = cf (Matrix.fromCols γ₁ γ₂) • tens (evFin F v) f Rd → schr (GlobalTheory.LatVac.psiAt ψ v) (GlobalTheory.LatVac.locCo dd v (Matrix.fromCols γ₁ γ₂)) f = cf (Matrix.fro …`. Introduce `f hf γ₁ h₁ γ₂ h₂ h`. Use `eq_of_tens v hf.1 hRd0 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.VacTransport.tens_smul, ← h]`.
+
+Conclude with `(GlobalTheory.VacBridge.rho_acts_locCo dd ψ v _ (at_fromCols v (hat _ h₁) (hat _ h₂)) f Rd hf).symm`. Establish `hco : ∀ γ₁ γ₂, GlobalTheory.LatVac.locCo dd v (Matrix.fromCols γ₁ γ₂) = (Sum.elim (GlobalTheory.LatVac.locCo co v γ₁).1 (GlobalTheory.LatVac.locCo co v γ₂).1, Sum.elim (GlobalTheory.LatVac.locCo co v γ₁).2 (-(GlobalTheory.LatVac.locCo co v γ₂).2))`. Introduce `γ₁ γ₂`. Express the relevant statement in the definitionally equal form `((fun k => evFin F v ((dd.e (Matrix.fromCols γ₁ γ₂)).1 k)), fun k => evFin F v ((dd.e (Matrix.fromCols γ₁ γ₂)).2 k)) = _`. Rewrite using `[hdd]`.
+
+Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Apply the tactic sequence `cases k <;> rfl`. Consider the cases of `k with`. Consider the case `inl k => rfl`. Consider the case `inr k => exact map_neg (evFin F v) _`.
+
+Take `⟨c, hc0, hcb⟩` from `GlobalTheory.LatBound.locCo_latAtV_bounded X Y v co hX hY`. Establish `hfill` using `GlobalTheory.SelfDualFirstProj.exists_pair_of_annihilator v (GlobalTheory.LatVac.psiAt ψ v) (Λ.map (GlobalTheory.LatVac.locCo co v)) c hc0 (fun x => hunr x) (GlobalTheory.LatVac.DualLoc.map_selfDual v co ψ Λ hat hsd) (fun l hl i => by`. Take `⟨γ, hγ, rfl⟩` from `AddSubgroup.mem_map.mp hl`. Conclude with `hcb γ hγ i)`. Establish `hφd0 : φd ≠ 0`.
+
+Take `⟨t, ht⟩` from `Function.ne_iff.mp hφ0`. Use `Function.ne_iff.mpr ⟨Sum.elim t t, ?_⟩` and prove the remaining obligations. Use `show φ t * star (φ t) ≠ 0`. Conclude with `mul_ne_zero ht (star_ne_zero.mpr ht)`. Take `⟨c', hc'⟩` from `GlobalTheory.VacUniqInert.eq_smul_of_eigen (GlobalTheory.LatVac.psiAt ψ v) (fun i : Λ × Λ => GlobalTheory.LatVac.locCo dd v (Matrix.fromCols i.1.1 i.2.1)) (fun i => cf (Matrix.fromCols i.1.1 i.2.1)) (fun u hu => by`.
+
+Establish `eu : u = Sum.elim (u ∘ Sum.inl) (u ∘ Sum.inr)` using `(Sum.elim_comp_inl_inr u).symm`. Take `⟨y₁, γ₁, h₁, e₁⟩` from `hfill (u ∘ Sum.inl) (by`. Introduce and unpack `b ⟨γ, hγ, he⟩`. Use `hu (⟨γ, hγ⟩, 0) (by` as an intermediate fact. Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero]`.
+
+Apply the tactic sequence `funext k; cases k <;> rfl)`. Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero] at this`. Rewrite `this` using `[eu, sumElim_dotProduct_sumElim]`. Simplify using `using this)`. Take `⟨y₂, γ₂, h₂, e₂⟩` from `hfill (u ∘ Sum.inr) (by`.
+
+Introduce and unpack `b ⟨γ, hγ, he⟩`. Use `hu (0, ⟨-γ, neg_mem hγ⟩) (by` as an intermediate fact. Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero, map_neg]`. Apply the tactic sequence `funext k; cases k <;> simp)`. Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero, map_neg] at this`.
+
+Rewrite `this` using `[eu, sumElim_dotProduct_sumElim]`. Simplify using `using this)`. Use `⟨(⟨γ₁, h₁⟩, ⟨γ₂, h₂⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [hco, e₁, e₂]`. Conclude with `eu.symm) φ₁ φd`.
+
+Use the proof step `(fun i => hloc φ₁ hrest₁ _ i.1.2 _ i.2.2 (hT ▸ h2 _ i.1.2 _ i.2.2))`. Use the proof step `(fun i => hloc φd hrest _ i.1.2 _ i.2.2 (hΦt ▸ h1 _ i.1.2 _ i.2.2)) hφd0`. Conclude with `⟨c', by rw [hT, hc', GlobalTheory.VacTransport.tens_smul, ← hΦt]⟩`.
+-/
 theorem dbl_line_coord {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {Y : Spc F E d} {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ)
     (v : Pl F) (hunr : PsiUnr ψ v) (hX : X.L.IsLattice E) (hY : Y.L.IsLattice E)
     (hsd : ∀ z : Matrix (Fin n) (Fin d) (AE F E), At (evFin F v) z → (z ∈ latAtV X Y v ↔ ∀ γ ∈ latAtV X Y v,
@@ -154,6 +193,23 @@ theorem dbl_line_coord {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {Y : Spc
     (fun i => hloc φd hrest _ i.1.2 _ i.2.2 (hΦt ▸ h1 _ i.1.2 _ i.2.2)) hφd0
   exact ⟨c', by rw [hT, hc', GlobalTheory.VacTransport.tens_smul, ← hΦt]⟩
 
+/- English proof (translation)
+Take `⟨k, S, Φ, h1, hS, hΦ⟩` from `GlobalTheory.AdelicU.SelfDual.exists_frame L hL`. Use `set f := algebraMap E (w.adicCompletion E) with hf`. Establish `hΦw : ∀ z ∈ latAt w L, ∀ j, (Φ.map f *ᵥ z) j ∈ Formalism.UG.Ov E w`. Introduce `z hz j`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem z hz`. Take `⟨y, hy, rfl⟩` from `hz`. Take `⟨r, hr⟩` from `hΦ y hy j`. Establish `e : (Φ.map f *ᵥ fun i => f (y i)) j = f ((Φ *ᵥ y) j)` using `(RingHom.map_mulVec f Φ y j).symm`. Use `show (Φ.map f *ᵥ fun i => f (y i)) j ∈ _`.
+
+Rewrite using `[e, ← hr]`. Conclude with `GlobalTheory.AdeleBaseChange.algebraMap_int_mem r w`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `e : (Φ.map f *ᵥ (c • x)) j = (c : w.adicCompletion E) * (Φ.map f *ᵥ x) j`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, Subring.smul_def, mul_left_comm]`. Rewrite using `[e]`.
+
+Conclude with `mul_mem c.2 hx`. Establish `h2 : S.map f * Φ.map f = 1`. Rewrite using `[← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e : T = 1 + ((T - 1) * S.map f) * Φ.map f`. Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_one, add_sub_cancel]`.
+
+Establish `hent : ∀ i j, (1 + Φ.map f * ((T - 1) * S.map f) : Matrix (Fin k) (Fin k) (w.adicCompletion E)) i j ∈ Formalism.UG.Ov E w`. Introduce `i j`. Establish `hc : (fun l => f (S l j)) ∈ latAt w L` using `Submodule.subset_span ⟨_, hS j, rfl⟩`. Establish `hc' : (T - 1) *ᵥ (fun l => f (S l j)) ∈ latAt w L`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+
+Conclude with `sub_mem (hT _ hc) hc`. Use `add_mem ?_ (hΦw _ hc' i)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+
+Rewrite using `[e, Matrix.det_one_add_mul_comm]`. Set `m : Matrix (Fin k) (Fin k) (Formalism.UG.Ov E w)` to `fun i j => ⟨_, hent i j⟩`. Establish `e3 : (1 + Φ.map f * ((T - 1) * S.map f)) = (Formalism.UG.Ov E w).subtype.mapMatrix m` using `rfl`. Rewrite using `[e3, ← RingHom.map_det]`. Conclude with `m.det.2`.
+-/
 theorem det_mem_of_keeps {n : ℕ} (w : HeightOneSpectrum (𝓞 E)) (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.IsLattice E)
     (T : Matrix (Fin n) (Fin n) (w.adicCompletion E)) (hT : ∀ z ∈ latAt w L, T *ᵥ z ∈ latAt w L) :
     T.det ∈ Formalism.UG.Ov E w := by
@@ -196,6 +252,15 @@ theorem det_mem_of_keeps {n : ℕ} (w : HeightOneSpectrum (𝓞 E)) (L : Submodu
   rw [e3, ← RingHom.map_det]
   exact m.det.2
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.InertDetChr.eq_ideleAt (GlobalTheory.InertDetChr.at_det_sub_one v t h1), GlobalTheory.LFun.ideleAt_eq_prod_locIdele, map_prod]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Establish `h : w.1.under (𝓞 F) = v` using `(Formalism.L2.Host.finite_aboveF (L := E) F v).mem_toFinset.1 w.2`. Establish `key : ∀ s : GL (Fin n) (AE F E), (∀ z ∈ GlobalTheory.InertSph.latAt Y v, (s : Matrix (Fin n) (Fin n) (AE F E)) *ᵥ z ∈ GlobalTheory.InertSph.latAt Y v) → ((Units.map (toCompl h).toMonoidHom (GlobalTheory.Doubling.unitFin F E v (Matrix.GeneralLinearGroup.det s)) : (w.1.adicCompleti …`. Introduce `s hs`.
+
+Establish `e : ((Units.map (toCompl h).toMonoidHom (GlobalTheory.Doubling.unitFin F E v (Matrix.GeneralLinearGroup.det s)) : (w.1.adicCompletion E)ˣ) : w.1.adicCompletion E) = GlobalTheory.InertDetChr.piW' h ((s : Matrix (Fin n) (Fin n) (AE F E)).det)`. Rewrite using `[Units.coe_map, GlobalTheory.InertDetChr.piW', RingHom.comp_apply, ← Matrix.GeneralLinearGroup.val_det_apply]`. Both sides reduce to the same expression. Rewrite using `[e, RingHom.map_det]`. Conclude with `det_mem_of_keeps w.1 Y.L hL _ (GlobalTheory.InertDetChr.mulVec_mem_latAt h Y _ hs)`.
+
+Establish `hu : Formalism.L2.Host.IsUnitAt w.1 (Units.map (toCompl h).toMonoidHom (GlobalTheory.Doubling.unitFin F E v (Matrix.GeneralLinearGroup.det t)))`. Use `(EulerTie.isUnitAt_iff w.1 _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (key t fun z hz => (h2 z hz).1)`. Rewrite using `[← map_inv, ← map_inv, ← map_inv]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (key t⁻¹ fun z hz => (h2 z hz).2)`.
+
+Conclude with `Circle.ext (congrArg Units.val (hχ w.1 h _ hu))`.
+-/
 theorem chr_det_eq_one {n : ℕ} (Y : Spc F E n) (hL : Y.L.IsLattice E) (v : Pl F) (χ : Chr F E)
     (hχ : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → UnrAt χ w) (t : GL (Fin n) (AE F E))
     (h1 : At (evFin F v) ((t : Matrix (Fin n) (Fin n) (AE F E)) - 1))
@@ -225,6 +290,15 @@ theorem chr_det_eq_one {n : ℕ} (Y : Spc F E n) (hL : Y.L.IsLattice E) (v : Pl 
       exact (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (key t⁻¹ fun z hz => (h2 z hz).2)
   exact Circle.ext (congrArg Units.val (hχ w.1 h _ hu))
 
+/- English proof (translation)
+Take `⟨hSB, h0, θ, -, hvac⟩` from `hG.hM'.vac v`. Establish `hsd` using `GlobalTheory.LatSelfDualAll.latAtV_selfDual F E σ B _ _ G.V' G.W _ _ _ _ hB hG.hV' hG.hW v`. Use `dbl_line_coord hB.std v hunr hG.hW.lat hG.hV'.lat (fun z hz => ?_) d' _ hSB h0 (θ : E) (fun γ hγ => ?_) dd omd hdc hS R hR g hg` and prove the remaining obligations. Establish `hzt : At (evFin F v) zᵀ` using `fun u hu => by`. Rewrite using `[← Matrix.transpose_smul, hz u hu, Matrix.transpose_zero]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hm γ hγ`. Rewrite using `[← GlobalTheory.WeilSchrodinger.symp_transpose]`. Conclude with `(hsd _ hzt).1 (GlobalTheory.AdelMatLatRight.transpose_mem_latAtV _ _ v z hm) _ (GlobalTheory.AdelMatLatRight.transpose_mem_latAtV _ _ v γ hγ)`. Introduce `hm`.
+
+Use `GlobalTheory.AdelMatLatRight.transpose_mem_latAtV _ _ v zᵀ ((hsd _ hzt).2 fun γ hγ => ?_)` and prove the remaining obligations. Use `hm _ (GlobalTheory.AdelMatLatRight.transpose_mem_latAtV _ _ v γ hγ)` as an intermediate fact. Rewrite `this` using `[← GlobalTheory.WeilSchrodinger.symp_transpose, Matrix.transpose_transpose]`. Then use the resulting hypothesis. Establish `h` using `hvac _ (GlobalTheory.AdelMatLatRight.transpose_mem_latAtV _ _ v γ hγ)`. Establish `e : d'.rho B.ψ γ = G.M'.co.rho B.ψ γᵀ`.
+
+Simplify using `only [Darboux.rho, ← hd', Matrix.transpose_transpose]`. Rewrite `h` using `[GlobalTheory.WeilSchrodinger.symp_transpose, ← e]`. Conclude with `h`.
+-/
 theorem dblFun_eigen_left {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} (hB : B.IsGood σ) (hG : G.IsGood B)
     (v : Pl F) (hunr : PsiUnr B.ψ v)
     (d' : Darboux (symp (cA σ) (-1) (incM F G.W.J) (incM F G.V'.J)) (Fin a' × Fin (a + a')))
@@ -258,6 +332,19 @@ theorem dblFun_eigen_left {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : 
     rw [GlobalTheory.WeilSchrodinger.symp_transpose, ← e] at h
     exact h
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hTr v _ hT hunr _ _ d' hd' dd omd hdc hws R hR0 hRv p hp`. Use `set Ψ := tens (evFin F v) (G.M'.vac v) R with hΨdef`. Establish `hΨ : Ψ ∈ schA F _` using `hRv.2`. Establish `hΦ : GlobalTheory.InertDbl.dblFun Ψ ∈ schA F _` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ Ψ hΨ _ (GlobalTheory.SchAConj.star_mem_schA F _ Ψ hΨ)`. Establish `hV` using `hTr.geo.hM'.vac v`.
+
+Take `⟨y, hy⟩` from `Function.ne_iff.mp hV.2.1`. Establish `hΨne : Ψ ≠ 0`. Introduce `h0`. Set `x : Fin a' × Fin (a + a') → AF F` to `fun i => GlobalTheory.LatVac.liftV v (y i)`. Establish `hRx : R x = R 0`.
+
+Use `hRv.1 0 x (fun u hu => by funext i; exact GlobalTheory.LatVac.at_liftV v _ u hu)` as an intermediate fact. Simplify using `using this`. Establish `h1` using `congrFun h0 x`. Simplify using `only [hΨdef, tens, x, GlobalTheory.LatVac.evFin_liftV, hRx, Pi.zero_apply] at h1`. Conclude with `mul_ne_zero hy hR0 h1`.
+
+Take `⟨c, hc⟩` from `dblFun_eigen_left hTr.base hTr.geo v hunr d' hd' dd omd hdc hws.2.1 R hRv p hp.1`. Take `⟨l, hl, hinv, hl0⟩` from `GlobalTheory.DblDiagForm.exists_form F _ Ψ hΨ hΨne`. Take `⟨t, ht⟩` from `hp.2`. Establish `hS` using `hws.2.2 l hl (fun z φ hφ => hinv φ hφ _ _ (GlobalTheory.WeilM.SiegelModel.rho_diag B.ψ hdc z φ)) p t ht _ hΦ`. Establish `htp` using `GlobalTheory.InertDbl.parD_diag_action F E σ G.V' v p hp t ht`.
+
+Establish `hw : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → w ∉ above E (X.T : Set (Pl F))` using `fun w h hm => hT (h ▸ hm)`. Establish `ha : (X.α / X.β) (Matrix.GeneralLinearGroup.det t) = 1`. Rewrite using `[MonoidHom.div_apply, chr_det_eq_one G.V' hTr.geo.hV'.lat v X.α (fun w h => hTr.chars.unrα w (hw w h)) t htp.1 htp.2, chr_det_eq_one G.V' hTr.geo.hV'.lat v X.β (fun w h => hTr.chars.unrβ w (hw w h)) t htp.1 htp.2, div_one]`. Establish `hb` using `GlobalTheory.IntegralDetModule.modu_norm_det G.V' hTr.geo.hV'.lat v t htp.1 htp.2`. Rewrite `hS` using `[ha, hb]`.
+
+Rewrite `hS` using `[hc, map_smul, smul_eq_mul]`. Simplify using `only [Circle.coe_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, one_mul] at hS`. Establish `h1 : c = 1` using `(mul_eq_right₀ hl0).mp hS`. Rewrite using `[hc, h1, one_smul]`.
+-/
 theorem parD_fix_left : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → v ∉ X.T → PsiUnr B.ψ v → (2 : 𝓞 F) ∉ v.asIdeal →

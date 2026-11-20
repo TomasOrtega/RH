@@ -8,6 +8,11 @@ noncomputable def UpperTheory.Reformulated.B.Qe40.IsUp :
     {R : Type} → [CommRing R] → UpperTheory.Reformulated.B.Qe40.M4 R → Prop :=
     fun {R : Type} [CommRing R] (X : UpperTheory.Reformulated.B.Qe40.M4 R) ↦ ∀ (i j : Fin (4 : ℕ)), j < i → X i j = (0 : R)
 
+/- English proof (translation)
+Introduce `R _ X Y hX hY i`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun k _ hk => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hX i k h, zero_mul]`.
+
+Rewrite using `[hY k i h, mul_zero]`.
+-/
 theorem UpperTheory.Reformulated.B.Qe40.up_diag_mul :
     ∀ {R : Type} [inst : CommRing R] {X Y : UpperTheory.Reformulated.B.Qe40.M4 R},
       UpperTheory.Reformulated.B.Qe40.IsUp X → UpperTheory.Reformulated.B.Qe40.IsUp Y → ∀ (i : Fin (4 : ℕ)), (X * Y) i i = X i i * Y i i := by

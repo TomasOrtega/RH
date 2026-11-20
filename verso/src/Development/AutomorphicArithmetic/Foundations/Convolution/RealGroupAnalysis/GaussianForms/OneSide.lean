@@ -6,6 +6,11 @@ open UpperTheory.ConvolutionTheory.R2
 open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
+/- English proof (translation)
+Establish `h3` using `((measurePreserving_prod_add μ μ).integrable_comp_of_integrable (h2.mul_prod hP))`. Establish `h4` using `integral_integral_swap (f := fun z y => φ₂ z * ∫ x, φ₁ x * γ (x + (z + y)) ∂μ) h3`. Simplify using `only [integral_const_mul] at h4 ⊢`. Rewrite using `[← h4, mul_comm, ← integral_mul_const]`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[integral_add_left_eq_self (fun y => ∫ x, φ₁ x * γ (x + y) ∂μ) z]`.
+-/
 private theorem one_side {G : Type} [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd₂ G] (μ : Measure G) [SFinite μ]
     [μ.IsAddLeftInvariant] (γ φ₁ φ₂ : G → ℂ) (h2 : Integrable φ₂ μ) (hP : Integrable (fun y => ∫ x, φ₁ x * γ (x + y) ∂μ) μ) :
     (∫ y, ∫ x, φ₁ x * γ (x + y) ∂μ ∂μ) * ∫ x, φ₂ x ∂μ = ∫ y, ∫ z, ∫ x, φ₂ z * (φ₁ x * γ (x + (z + y))) ∂μ ∂μ ∂μ := by
@@ -17,6 +22,13 @@ private theorem one_side {G : Type} [AddCommGroup G] [MeasurableSpace G] [Measur
   simp only
   rw [integral_add_left_eq_self (fun y => ∫ x, φ₁ x * γ (x + y) ∂μ) z]
 
+/- English proof (translation)
+Introduce `G _ _ _ _ μ _ _ γ φ₁ φ₂ hγ hb h1 h2 hP1 hP2`. Use `(one_side μ γ φ₁ φ₂ h2 hP1).trans (Eq.trans ?_ (one_side μ γ φ₂ φ₁ h1 hP2).symm)` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `hm : Measurable fun p : G × G => γ (p.2 + (p.1 + y))` using `hγ.comp (by fun_prop)`. Establish `h3` using `(h2.mul_prod h1).mul_bdd (c := 1) hm.aestronglyMeasurable (Eventually.of_forall fun p => hb _)`.
+
+Establish `h4` using `integral_integral_swap (f := fun z x => φ₂ z * φ₁ x * γ (x + (z + y))) h3`. Simplify using `only [mul_assoc] at h4`. Use `h4.trans (integral_congr_ae (Eventually.of_forall fun x => integral_congr_ae (Eventually.of_forall fun z => ?_)))` and prove the remaining obligations. Simplify using `only`. Rewrite using `[add_left_comm]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.C.symm :
     ∀ (G : Type) [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd₂ G] [MeasurableNeg G] (μ : Measure G) [SFinite μ] [μ.IsAddLeftInvariant] (γ φ₁ φ₂ : G → ℂ),
     Measurable γ → (∀ x, ‖γ x‖ ≤ 1) → Integrable φ₁ μ → Integrable φ₂ μ → Integrable (fun y => ∫ x, φ₁ x * γ (x + y) ∂μ) μ →

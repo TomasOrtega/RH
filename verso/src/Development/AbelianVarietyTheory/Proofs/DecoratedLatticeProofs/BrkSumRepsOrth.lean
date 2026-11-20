@@ -20,6 +20,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `V _ _ H α A B Λ hyp SB hSB w hw`. Take `⟨hH, -, hB, -, sdB, hΛ, -, -, -, -⟩` from `hyp`. Establish `hBint` using `(Formalism.L2.Th1.H.semicharacterBasic V H hH B α hB).2.2`. Establish `hΛint` using `(Formalism.L2.Th1.H.semicharacterBasic V H hH Λ α hΛ).2.2`. Establish `hwΛ : w ∈ Λ` using `(AddSubgroup.mem_inf.1 hw).1`.
+
+Distinguish the cases in `hwB : w ∈ B`. Rewrite using `[if_pos hwB, Finset.sum_congr rfl fun y hy => brk_one_of_int H (hBint hwB y (hSB.1 y hy))]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hwB]`. Establish `hnd : w ∉ Formalism.L2.Th1.H.dualLat H B` using `by rw [sdB]; exact hwB`.
+
+Establish `hex : ∃ y₀ ∈ B, ¬ ∃ m : ℤ, Formalism.L2.Th1.H.altE H w y₀ = (m : ℝ)`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hnd (fun y hy => hcon y hy)`. Take `⟨y₀, hy₀B, hy₀⟩` from `hex`.
+
+Conclude with `char_sum_zero hSB (fun y => brk H y w) (fun u v => brk_add_left H u v w) (fun m _ hmΛ => brk_one_of_int H (hΛint hwΛ m hmΛ)) (x₀ := y₀) hy₀B (fun h => hy₀ (int_of_brk_one H h))`.
+-/
 theorem brk_sum_reps_orth : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Formalism.L2.Th1.H.Sesq V) (α : V → ℂ) (A B Λ : AddSubgroup V), SplitHyp H α A B Λ → ∀ SB : Finset V, Formalism.L2.Th1.H.IsReps Λ B SB → ∀ w ∈ Λ ⊓ A, ∑ y ∈ SB, brk H y w = if w ∈ B then (SB.card : ℂ) else 0 := by
   intro V _ _ H α A B Λ hyp SB hSB w hw
   obtain ⟨hH, -, hB, -, sdB, hΛ, -, -, -, -⟩ := hyp

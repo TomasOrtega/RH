@@ -12,12 +12,21 @@ section Split
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Simplify using `[intInd, h]`.
+-/
 theorem intInd_of_mem {x : F} (h : x ∈ 𝒪[F]) : intInd x = 1 := by
   simp [intInd, h]
 
+/- English proof (translation)
+Simplify using `[intInd, h]`.
+-/
 theorem intInd_of_notMem {x : F} (h : x ∉ 𝒪[F]) : intInd x = 0 := by
   simp [intInd, h]
 
+/- English proof (translation)
+Establish `hiff : x ∈ 𝒪[F] ↔ y ∈ 𝒪[F]`. Rewrite using `[← modulus_le_one_iff, ← modulus_le_one_iff, h]`. Distinguish the cases in `hx : x ∈ 𝒪[F]`. Rewrite using `[intInd_of_mem hx, intInd_of_mem (hiff.1 hx)]`. Rewrite using `[intInd_of_notMem hx, intInd_of_notMem (fun hy => hx (hiff.2 hy))]`.
+-/
 theorem intInd_congr {x y : F} (h : modulus x = modulus y) : intInd x = intInd y := by
   have hiff : x ∈ 𝒪[F] ↔ y ∈ 𝒪[F] := by
     rw [← modulus_le_one_iff, ← modulus_le_one_iff, h]
@@ -25,6 +34,13 @@ theorem intInd_congr {x y : F} (h : modulus x = modulus y) : intInd x = intInd y
   · rw [intInd_of_mem hx, intInd_of_mem (hiff.1 hx)]
   · rw [intInd_of_notMem hx, intInd_of_notMem (fun hy => hx (hiff.2 hy))]
 
+/- English proof (translation)
+Establish `hO : IsOpen (𝒪[F] : Set F)`. Rewrite using `[← coe_valBall_zero]`. Conclude with `isOpen_valBall 0`. Establish `hC : IsCompact (𝒪[F] : Set F)`. Rewrite using `[← coe_valBall_zero]`.
+
+Conclude with `isCompact_valBall 0`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ 𝒪[F]`. Use `filter_upwards [hO.mem_nhds hx] with y hy`.
+
+Rewrite using `[intInd_of_mem hy, intInd_of_mem hx]`. Use `filter_upwards [hC.isClosed.isOpen_compl.mem_nhds hx] with y hy`. Rewrite using `[intInd_of_notMem hy, intInd_of_notMem hx]`.
+-/
 theorem isLocallyConstant_intInd : IsLocallyConstant (intInd : F → ℂ) := by
   have hO : IsOpen (𝒪[F] : Set F) := by
     rw [← coe_valBall_zero]; exact isOpen_valBall 0
@@ -38,10 +54,18 @@ theorem isLocallyConstant_intInd : IsLocallyConstant (intInd : F → ℂ) := by
   · filter_upwards [hC.isClosed.isOpen_compl.mem_nhds hx] with y hy
     rw [intInd_of_notMem hy, intInd_of_notMem hx]
 
+/- English proof (translation)
+The claim follows from `(isLocallyConstant_intInd.comp_continuous continuous_fst).mul (isLocallyConstant_intInd.comp_continuous continuous_snd)`.
+-/
 theorem isLocallyConstant_phiS : IsLocallyConstant (phiS : F × F → ℂ) :=
   (isLocallyConstant_intInd.comp_continuous continuous_fst).mul
     (isLocallyConstant_intInd.comp_continuous continuous_snd)
 
+/- English proof (translation)
+Establish `hC : IsCompact (𝒪[F] : Set F)`. Rewrite using `[← coe_valBall_zero]`. Conclude with `isCompact_valBall 0`. Use `HasCompactSupport.intro (hC.prod hC) fun p hp => ?_` and prove the remaining obligations. Unfold `phiS`.
+
+Distinguish the cases in `h1 : p.1 ∈ 𝒪[F]`. Establish `h2 : p.2 ∉ 𝒪[F]` using `fun h2 => hp ⟨h1, h2⟩`. Rewrite using `[intInd_of_notMem h2, mul_zero]`. Rewrite using `[intInd_of_notMem h1, zero_mul]`.
+-/
 theorem hasCompactSupport_phiS : HasCompactSupport (phiS : F × F → ℂ) := by
   have hC : IsCompact (𝒪[F] : Set F) := by
     rw [← coe_valBall_zero]; exact isCompact_valBall 0
@@ -52,6 +76,11 @@ theorem hasCompactSupport_phiS : HasCompactSupport (phiS : F × F → ℂ) := by
     rw [intInd_of_notMem h2, mul_zero]
   · rw [intInd_of_notMem h1, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[mem_unitFiltrationUnits_zero_iff_ord, modulus_of_ne_zero u.ne_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+
+Introduce `h`. Establish `h1 : (residueCard F : NNReal) ^ (-ord (u : F)) = (residueCard F : NNReal) ^ (0 : ℤ)`. Rewrite using `[h, zpow_zero]`. Use `zpow_right_injective₀ (zero_lt_one.trans one_lt_residueCard_nnreal) one_lt_residueCard_nnreal.ne' h1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mem_units_iff_modulus {u : Fˣ} :
     u ∈ unitFiltrationUnits F 0 ↔ modulus (u : F) = 1 := by
   rw [mem_unitFiltrationUnits_zero_iff_ord, modulus_of_ne_zero u.ne_zero]
@@ -64,6 +93,9 @@ theorem mem_units_iff_modulus {u : Fˣ} :
       one_lt_residueCard_nnreal.ne' h1
     omega
 
+/- English proof (translation)
+Establish `: c u = 1` using `hc (mem_units_iff_modulus.2 hu)`. Rewrite using `[this, Units.val_one]`.
+-/
 theorem char_eq_one {c : Fˣ →* ℂˣ} (hc : IsUnramifiedChar c) {u : Fˣ}
     (hu : modulus (u : F) = 1) : ((c u : ℂˣ) : ℂ) = 1 := by
   have : c u = 1 := hc (mem_units_iff_modulus.2 hu)
@@ -72,6 +104,9 @@ theorem char_eq_one {c : Fˣ →* ℂˣ} (hc : IsUnramifiedChar c) {u : Fˣ}
 def sphJ (c₁ c₂ : Fˣ →* ℂˣ) (D m : F) (u : Fˣ) : ℂ :=
   intInd (m * u)⁻¹ * intInd (D * u / m) * ((c₁ u : ℂˣ) : ℂ) * (((c₂ u)⁻¹ : ℂˣ) : ℂ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Unfold `sphJ`. Rewrite using `[intInd_congr (x := (m * u)⁻¹) (y := (m' * u)⁻¹) (by simp only [modulus_inv, modulus_mul, hm]), intInd_congr (x := D * u / m) (y := D' * u / m') (by simp only [div_eq_mul_inv, modulus_inv, modulus_mul, hm, hD])]`.
+-/
 theorem sphJ_congr (c₁ c₂ : Fˣ →* ℂˣ) {D D' m m' : F} (hD : modulus D = modulus D')
     (hm : modulus m = modulus m') : sphJ c₁ c₂ D m = sphJ c₁ c₂ D' m' := by
   funext u
@@ -80,6 +115,15 @@ theorem sphJ_congr (c₁ c₂ : Fˣ →* ℂˣ) {D D' m m' : F} (hD : modulus D 
     intInd_congr (x := D * u / m) (y := D' * u / m')
       (by simp only [div_eq_mul_inv, modulus_inv, modulus_mul, hm, hD])]
 
+/- English proof (translation)
+Unfold `sphJ`. Distinguish the cases in `h1 : (m * u)⁻¹ ∈ 𝒪[F]`. Distinguish the cases in `h2 : D * u / m ∈ 𝒪[F]`. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises.
+
+Establish `hm0` using `modulus_pos hm`. Establish `hu0` using `modulus_pos u.ne_zero`. Establish `a1` using `modulus_le_one_iff.2 h1`. Establish `a2` using `modulus_le_one_iff.2 h2`. Rewrite `a1` using `[modulus_inv, modulus_mul]`.
+
+Rewrite `a2` using `[div_eq_mul_inv, modulus_mul, modulus_mul, modulus_inv]`. Establish `b1 : 1 ≤ modulus m * modulus (u : F)` using `(inv_le_one₀ (mul_pos hm0 hu0)).1 a1`. Establish `b2 : modulus D * modulus (u : F) ≤ modulus m`. Use `mul_le_mul_of_nonneg_right a2 (le_of_lt hm0)` as an intermediate fact. Rewrite `this` using `[mul_assoc, inv_mul_cancel₀ hm0.ne', mul_one, one_mul]`. Then use the resulting hypothesis.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[intInd_of_notMem h2]`. Simplify using the standard rewrite rules. Rewrite using `[intInd_of_notMem h1]`. Simplify using the standard rewrite rules.
+-/
 theorem sphJ_eq_zero (c₁ c₂ : Fˣ →* ℂˣ) {D m : F} (hm : m ≠ 0)
     (h : ¬ modulus D ≤ modulus m ^ 2) (u : Fˣ) : sphJ c₁ c₂ D m u = 0 := by
   unfold sphJ
@@ -107,6 +151,37 @@ theorem sphJ_eq_zero (c₁ c₂ : Fˣ →* ℂˣ) {D m : F} (hm : m ≠ 0)
 
 end Split
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ χ c₁ c₂ hχ hc₁ hc₂ H1 H2`. Establish `key : ∀ g : GL (Fin 2) F, GL2LocalData.WcS χ c₁ c₂ phiS g = ((c₁ (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) * mp (Matrix.GeneralLinearGroup.det g) (1 / 2) * ((((modulus (mRow g) : ℝ)⁻¹ : ℝ) : ℂ) * (χ (xRow g) : ℂ) * ∫ u, sphJ c₁ c₂ (g.val).det (mRow g) u ∂multHaar F)`. Introduce `g`. Unfold `GL2LocalData.WcS`. Use `congr 1`.
+
+Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [H1 g u, sphJ]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨GL2LocalData.WcS χ c₁ c₂ phiS, Submodule.subset_span ⟨phiS, isLocallyConstant_phiS, hasCompactSupport_phiS, 1, by simp⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `k hk g`. Take `⟨hm, hD, hM, hx⟩` from `H2 g k hk`. Establish `hk1 : modulus (k.val).det = 1`. Use `(H2 1 k hk).2.1` as an intermediate fact. Simplify using `using this`.
+
+Establish `hdet : Matrix.GeneralLinearGroup.det (g * k) = Matrix.GeneralLinearGroup.det g * Matrix.GeneralLinearGroup.det k` using `map_mul _ _ _`. Establish `hc : ((c₁ (Matrix.GeneralLinearGroup.det (g * k)) : ℂˣ) : ℂ) = ((c₁ (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ)`. Rewrite using `[hdet, map_mul, Units.val_mul, char_eq_one hc₁ (u := Matrix.GeneralLinearGroup.det k) hk1, mul_one]`. Establish `hmp : mp (Matrix.GeneralLinearGroup.det (g * k)) (1 / 2) = mp (Matrix.GeneralLinearGroup.det g) (1 / 2)`. Unfold `mp`.
+
+Establish `: modulus ((Matrix.GeneralLinearGroup.det (g * k) : Fˣ) : F) = modulus ((Matrix.GeneralLinearGroup.det g : Fˣ) : F)` using `hD`. Rewrite using `[this]`. Rewrite using `[key, key, hc, hmp, hM, sphJ_congr c₁ c₂ hD hM]`. Distinguish the cases in `hle : modulus (g.val).det ≤ modulus (mRow g) ^ 2`. Establish `ht` using `hx hle`.
+
+Establish `h1 : χ (xRow (g * k) - xRow g) = 1`. Establish `h` using `isTrivialOn_addCharConductor hχ.1 hχ.2.1`. Rewrite `h` using `[hχ.2.2]`. Conclude with `h _ (mem_valBall_zero_iff.2 ht)`. Establish `h2 : χ (xRow (g * k)) = χ (xRow g)`.
+
+Establish `e : xRow (g * k) = (xRow (g * k) - xRow g) + xRow g` using `by ring`. Rewrite using `[e, AddChar.map_add_eq_mul, h1, one_mul]`. Rewrite using `[h2]`. Establish `h0 : (fun u => sphJ c₁ c₂ (g.val).det (mRow g) u) = fun _ => 0`. Use function extensionality and compare the values at `(sphJ_eq_zero c₁ c₂ hm hle)`.
+
+Simplify using `only [h0, integral_zero, mul_zero]`. Rewrite using `[key]`. Establish `hm1 : mRow (1 : GL (Fin 2) F) = 1`. Simplify using `[mRow]`. Establish `hx1 : xRow (1 : GL (Fin 2) F) = 0`.
+
+Simplify using `[xRow]`. Establish `hJ : (fun u => sphJ c₁ c₂ ((1 : GL (Fin 2) F).val).det 1 u) = (unitFiltrationUnits F 0 : Set Fˣ).indicator (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u ∈ (unitFiltrationUnits F 0 : Set Fˣ)`. Establish `hu1 : modulus (u : F) = 1` using `mem_units_iff_modulus.1 hu`.
+
+Rewrite using `[Set.indicator_of_mem hu]`. Establish `e1 : ((c₂ u)⁻¹ : ℂˣ) = 1`. Establish `: c₂ u = 1` using `hc₂ (mem_units_iff_modulus.2 hu1)`. Rewrite using `[this, inv_one]`. Unfold `sphJ`.
+
+Rewrite using `[e1, char_eq_one hc₁ hu1, intInd_of_mem, intInd_of_mem]`. Simplify using the standard rewrite rules. Rewrite using `[← modulus_le_one_iff]`. Simplify using `[modulus_mul, hu1]`. Rewrite using `[← modulus_le_one_iff]`.
+
+Simplify using `[modulus_mul, modulus_inv, hu1]`. Rewrite using `[Set.indicator_of_notMem hu]`. Establish `hu1 : modulus (u : F) ≠ 1` using `fun h => hu (mem_units_iff_modulus.2 h)`. Unfold `sphJ`. Break down `lt_or_gt_of_ne hu1 with h | h` into its components or cases.
+
+Rewrite using `[intInd_of_notMem (x := (1 * (u : F))⁻¹)]`. Simplify using the standard rewrite rules. Rewrite using `[← modulus_le_one_iff, one_mul, modulus_inv, not_le]`. Conclude with `(one_lt_inv₀ (modulus_pos u.ne_zero)).2 h`. Rewrite using `[intInd_of_notMem (x := ((1 : GL (Fin 2) F).val).det * u / 1)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← modulus_le_one_iff, not_le]`. Simplify using `using h`. Establish `hmeas : MeasurableSet (unitFiltrationUnits F 0 : Set Fˣ)`. Conclude with `(isOpen_unitFiltrationUnits 0).measurableSet`.
+
+Establish `hint : ∫ u, sphJ c₁ c₂ ((1 : GL (Fin 2) F).val).det 1 u ∂multHaar F = 1`. Rewrite using `[hJ, integral_indicator_const _ hmeas]`. Simplify using `[Measure.real, multHaar_unitFiltrationUnits_zero]`. Rewrite using `[hm1, hx1, hint]`. Simplify using `[mp]`.
+-/
 theorem spherical_split_of_pointwise :
   ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (χ : AddChar F Circle) (c₁ c₂ : Fˣ →* ℂˣ), Ad3.IsStd χ → IsUnramifiedChar c₁ → IsUnramifiedChar c₂ → (∀ (g : GL (Fin 2) F) (u : Fˣ), Ad3.K.GL2LocalData.rW χ Ad3.K.GL2LocalData.swapE ((selfDualMeasure χ).prod (selfDualMeasure χ)) 1 (g.val 0 0 / (g.val).det) (g.val 0 1) (g.val 1 0 / (g.val).det) (g.val 1 1) (fun x => phiS (x * ((g.val).det, 1))) ((u : F), ((u⁻¹ : Fˣ) : F)) = (((modulus (mRow g) : ℝ)⁻¹ : ℝ) : ℂ) * (χ (xRow g) : ℂ) * intInd (mRow g * u)⁻¹ * intInd ((g.val).det * u / mRow g)) → (∀ (g k : GL (Fin 2) F), k ∈ GLnLocal.integralGL F 2 → mRow g ≠ 0 ∧ modulus ((g * k).val).det = modulus (g.val).det ∧ modulus (mRow (g * k)) = modulus (mRow g) ∧ (modulus (g.val).det ≤ modulus (mRow g) ^ 2 → xRow (g * k) - xRow g ∈ 𝒪[F])) → ∃ W ∈ Ad3.K.GL2LocalData.VWS χ c₁ c₂, Ad3.K.QuadraticBaseChangeGL3.SphN W := by
   intro F _ _ _ _ _ _ χ c₁ c₂ hχ hc₁ hc₂ H1 H2

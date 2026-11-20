@@ -21,6 +21,9 @@ section Lin
 
 variable {R N N' : Type} [CommRing R] [AddCommGroup N] [Module R N] [AddCommGroup N'] [Module R N'] {m k : ℕ}
 
+/- English proof (translation)
+Rewrite using `[initSpan]`. Use `congr 1`. Use extensionality with `v`. Conclude with `⟨fun ⟨j, hj, e⟩ => ⟨⟨j, hj⟩, e⟩, fun ⟨i, e⟩ => ⟨_, i.2, e⟩⟩`.
+-/
 theorem initSpan_castLE (hk : k ≤ m) (u : Fin m → N) :
     initSpan R u k = Submodule.span R (Set.range fun i : Fin k => u (Fin.castLE hk i)) := by
   rw [initSpan]
@@ -28,15 +31,27 @@ theorem initSpan_castLE (hk : k ≤ m) (u : Fin m → N) :
   ext v
   exact ⟨fun ⟨j, hj, e⟩ => ⟨⟨j, hj⟩, e⟩, fun ⟨i, e⟩ => ⟨_, i.2, e⟩⟩
 
+/- English proof (translation)
+The claim follows from `initSpan_castLE le_rfl u`.
+-/
 theorem initSpan_top (u : Fin m → N) : initSpan R u m = Submodule.span R (Set.range u) := initSpan_castLE le_rfl u
 
+/- English proof (translation)
+Simplify using `[initSpan]`.
+-/
 theorem initSpan_zero (u : Fin m → N) : initSpan R u 0 = ⊥ := by
   simp [initSpan]
 
+/- English proof (translation)
+Rewrite using `[initSpan, initSpan, Submodule.map_span, Set.image_image]`.
+-/
 theorem map_initSpan (F : N →ₗ[R] N') (u : Fin m → N) (e : ℕ) :
     (initSpan R u e).map F = initSpan R (fun i => F (u i)) e := by
   rw [initSpan, initSpan, Submodule.map_span, Set.image_image]
 
+/- English proof (translation)
+Use `(HasRingHomProperty.Spec_iff (P := @Smooth)).2 ?_` and prove the remaining obligations. Conclude with `RingHom.smooth_algebraMap.2 (⟨inferInstance, inferInstance⟩ : Algebra.Smooth R (MvPolynomial σ R))`.
+-/
 theorem smooth_C (σ : Type) [Finite σ] : Smooth (spMap (MvPolynomial.C : R →+* MvPolynomial σ R)) := by
   refine (HasRingHomProperty.Spec_iff (P := @Smooth)).2 ?_
   exact RingHom.smooth_algebraMap.2 (⟨inferInstance, inferInstance⟩ : Algebra.Smooth R (MvPolynomial σ R))
@@ -48,22 +63,34 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {M : Model Xo c V.subtype} {X : Scheme.{0}} {π : X ⟶ M.X} {ty : (E →+* ℂ) → Finset ℕ}
   {A : Atlas M π ty} {D : LCrd M π} {σ : E →+* ℂ} {a k b : ℕ} {K : Type} [Field K]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i`. Rewrite using `[Vecs.bc, Vecs.bc, Vecs.bc, FlagMod.dualMap_comp, ← spMap_comp', Category.assoc]`.
+-/
 theorem bc_bc {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (φ : R →+* S) (ψ : S →+* T) (u : Vecs Dw M.t R) :
     (u.bc φ).bc ψ = u.bc (ψ.comp φ) := by
   funext τ i
   rw [Vecs.bc, Vecs.bc, Vecs.bc, FlagMod.dualMap_comp, ← spMap_comp', Category.assoc]
 
+/- English proof (translation)
+Take `⟨a, φ, -, hf, -⟩` from `hu`. Conclude with `((isFrame_up_iff _ _).1 hf τ).1`.
+-/
 theorem linearIndependent_of_flagAt {z : Sp K ⟶ X} {u : TVecs Dw M.t (z ≫ π)} (hu : A.FlagAt z (up u)) (τ : E →+* ℂ) :
     LinearIndependent K (u τ) := by
   obtain ⟨a, φ, -, hf, -⟩ := hu
   exact ((isFrame_up_iff _ _).1 hf τ).1
 
+/- English proof (translation)
+Take `⟨a, φ, e, -⟩` from `hu`. Rewrite using `[← A.cover]`. Conclude with `A.ch.range_subset e`.
+-/
 theorem range_subset_of_flagAt {z : Sp K ⟶ X} {u : Vecs Dw M.t K} (hu : A.FlagAt z u) :
     Set.range z ⊆ π ⁻¹' Set.range M.j := by
   obtain ⟨a, φ, e, -⟩ := hu
   rw [← A.cover]
   exact A.ch.range_subset e
 
+/- English proof (translation)
+The claim follows from `FlagMod.exists_chart_of_isLocalRing (eq_top_iff.2 fun x _ => by obtain ⟨β, hβ⟩ := C.cover x exact TopologicalSpace.Opens.mem_iSup.2 ⟨β, hβ⟩) z`.
+-/
 theorem exists_chart {Z : Scheme.{0}} (C : Coc Z) (z : Sp K ⟶ Z) : ∃ β, ⊤ ≤ z ⁻¹ᵁ C.B β :=
   FlagMod.exists_chart_of_isLocalRing (eq_top_iff.2 fun x _ => by
     obtain ⟨β, hβ⟩ := C.cover x
@@ -75,6 +102,11 @@ def embL (α : D.C.A) {S : Type} [CommRing S] (z : Sp S ⟶ X) (h : ⊤ ≤ z �
     TanM (z ≫ π) M.t.G →ₗ[S] (Fin (D.N + 1) → S) :=
   ((D.Em.A α).map (ev z _ h)).mulVecLin.comp (D.crd α S z h)
 
+/- English proof (translation)
+Take `⟨A', hA⟩` from `D.Em.linv α`. Establish `h1 : A'.map (ev z _ h) * (D.Em.A α).map (ev z _ h) = 1`. Rewrite using `[← Matrix.map_mul, hA, Matrix.map_one _ (map_zero _) (map_one _)]`. Introduce `v v' e`. Use `D.inj α K z h hz ?_` and prove the remaining obligations.
+
+Use `congrArg (A'.map (ev z _ h)).mulVec e` as an intermediate fact. Simplify `this` using `only [embL, LinearMap.comp_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`.
+-/
 theorem embL_injective (α : D.C.A) {z : Sp K ⟶ X} (h : ⊤ ≤ z ⁻¹ᵁ D.C.B α) (hz : Set.range z ⊆ π ⁻¹' Set.range M.j) :
     Function.Injective (embL D α z h) := by
   obtain ⟨A', hA⟩ := D.Em.linv α
@@ -85,6 +117,9 @@ theorem embL_injective (α : D.C.A) {z : Sp K ⟶ X} (h : ⊤ ≤ z ⁻¹ᵁ D.C
   have := congrArg (A'.map (ev z _ h)).mulVec e
   simpa only [embL, LinearMap.comp_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec] using this
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[up_injective hU]`.
+-/
 theorem emb_congr (α : D.C.A) {z z' : Sp K ⟶ X} (e : z = z') (h : ⊤ ≤ z ⁻¹ᵁ D.C.B α) (h' : ⊤ ≤ z' ⁻¹ᵁ D.C.B α)
     {U : TVecs Dw M.t (z ≫ π)} {U' : TVecs Dw M.t (z' ≫ π)} (hU : up U = up U') (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
     D.emb α z h (U τ i) = D.emb α z' h' (U' τ i) := by
@@ -101,12 +136,18 @@ def Good (hk : k ≤ Dw.mult σ) {X' : Scheme.{0}} (f : X' ⟶ X) (q : X' ⟶ PS
 variable {hk : k ≤ Dw.mult σ} {X' : Scheme.{0}} {f : X' ⟶ X} {q : X' ⟶ PSpace V (plN D.N k)} {w : Sp K ⟶ X'}
   {u u' : TVecs Dw M.t ((w ≫ f) ≫ π)} {ty' : (E →+* ℂ) → Finset ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hu, fun β hβ => by have := (car_span _ _ _ _ _ _ _ _ _ _ _ _ _ _ hc).2.2 β hβ simpa only [D.tr] using this⟩`.
+-/
 theorem good_of_one (hu : A.FlagAt (w ≫ f) (up u)) {α : D.C.A} {h : ⊤ ≤ (w ≫ f) ⁻¹ᵁ D.C.B α}
     (hc : Car D.Em f q w α h fun i => D.crd α K (w ≫ f) h (u σ (Fin.castLE hk i))) : Good A D hk f q w u :=
   ⟨hu, fun β hβ => by
     have := (car_span _ _ _ _ _ _ _ _ _ _ _ _ _ _ hc).2.2 β hβ
     simpa only [D.tr] using this⟩
 
+/- English proof (translation)
+Take `⟨α, hα⟩` from `exists_chart D.C (w ≫ f)`. Establish `h1` using `(((car_span _ _ _ _ _ _ _ _ _ _ _ _ _ _ (h.2 α hα)).2.1 _).1 (h'.2 α hα)).2`. Use `Submodule.map_injective_of_injective (D.inj α K _ hα (range_subset_of_flagAt h.1)) ?_` and prove the remaining obligations. Rewrite using `[map_initSpan, map_initSpan, initSpan_castLE hk, initSpan_castLE hk]`. Conclude with `h1`.
+-/
 theorem Good.initSpan_eq (h : Good A D hk f q w u) (h' : Good A D hk f q w u') :
     initSpan K (u' σ) k = initSpan K (u σ) k := by
   obtain ⟨α, hα⟩ := exists_chart D.C (w ≫ f)
@@ -115,6 +156,9 @@ theorem Good.initSpan_eq (h : Good A D hk f q w u) (h' : Good A D hk f q w u') :
   rw [map_initSpan, map_initSpan, initSpan_castLE hk, initSpan_castLE hk]
   exact h1
 
+/- English proof (translation)
+Use `⟨hu, fun α hα => ((car_span _ _ _ _ _ _ _ _ _ _ _ _ _ _ (h.2 α hα)).2.1 _).2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `((linearIndependent_of_flagAt hu σ).comp _ (Fin.castLE_injective hk)).map' _ (LinearMap.ker_eq_bot.2 (D.inj α K _ hα (range_subset_of_flagAt hu)))`. Use `congrArg (Submodule.map (D.crd α K (w ≫ f) hα)) e` as an intermediate fact. Rewrite `this` using `[map_initSpan, map_initSpan, initSpan_castLE hk, initSpan_castLE hk]`. Then use the resulting hypothesis.
+-/
 theorem Good.of_initSpan_eq (h : Good A D hk f q w u) (hu : A.FlagAt (w ≫ f) (up u'))
     (e : initSpan K (u' σ) k = initSpan K (u σ) k) : Good A D hk f q w u' := by
   refine ⟨hu, fun α hα => ((car_span _ _ _ _ _ _ _ _ _ _ _ _ _ _ (h.2 α hα)).2.1 _).2 ⟨?_, ?_⟩⟩
@@ -123,6 +167,11 @@ theorem Good.of_initSpan_eq (h : Good A D hk f q w u) (hu : A.FlagAt (w ≫ f) (
   · have := congrArg (Submodule.map (D.crd α K (w ≫ f) hα)) e
     rwa [map_initSpan, map_initSpan, initSpan_castLE hk, initSpan_castLE hk] at this
 
+/- English proof (translation)
+Introduce `τ j hj`. Distinguish the cases in `hτ : τ = σ`. Use `swap`. Conclude with `(h'.1.initSpan_eq h.1 τ (h2 τ hτ ▸ hj)).le`. Substitute `hτ` using the available equality.
+
+Rewrite `hj` using `[h1, Finset.mem_insert]`. Break down `hj with rfl | hj` into its components or cases. Conclude with `(h.initSpan_eq h').le`. Conclude with `(h'.1.initSpan_eq h.1 τ hj).le`.
+-/
 theorem Good.le (h : Good A D hk f q w u) (h' : Good A D hk f q w u') (h1 : ty' σ = insert k (ty σ))
     (h2 : ∀ σ', σ' ≠ σ → ty' σ' = ty σ') : ∀ τ, ∀ j ∈ ty' τ, initSpan K (u' τ) j ≤ initSpan K (u τ) j := by
   intro τ j hj
@@ -135,6 +184,11 @@ theorem Good.le (h : Good A D hk f q w u) (h' : Good A D hk f q w u') (h1 : ty' 
   · exact (h.initSpan_eq h').le
   · exact (h'.1.initSpan_eq h.1 τ hj).le
 
+/- English proof (translation)
+Take `⟨u₀, h₀⟩` from `A.exists_up_fr e`. Establish `hsub : ∀ τ, ∀ j ∈ ty τ, j ∈ ty' τ` using `fun τ j hj => by`. Distinguish the cases in `hτ : τ = σ`. Substitute `hτ` using the available equality. Rewrite using `[h1]`.
+
+Conclude with `Finset.mem_insert_of_mem hj`. Rewrite using `[h2 τ hτ]` and apply the resulting hypothesis. Establish `hi` using `linearIndependent_of_flagAt h.1`. Establish `hF : A.FlagAt (w ≫ f) (up u')` using `(A.flagAt_iff e h₀ u').2 ⟨hf, fun τ j hj => (initSpan_eq_of_le (hi τ) ((isFrame_up_iff _ _).1 hf τ).1 (hle τ j (hsub τ j hj))).trans (((A.flagAt_iff e h₀ u).1 h.1).2 τ j hj)⟩`. Conclude with `h.of_initSpan_eq hF (initSpan_eq_of_le (hi σ) ((isFrame_up_iff _ _).1 hf σ).1 (hle σ k (h1 ▸ Finset.mem_insert_self _ _)))`.
+-/
 theorem Good.of_le (h : Good A D hk f q w u) {j : A.ch.ι} {φ : A.ch.R j →+* K} (e : spMap φ ≫ A.ch.χ j = w ≫ f)
     (hf : LocM.IsFrame M.t (φ.comp (A.alg j)) ((w ≫ f) ≫ π) (up u')) (h1 : ty' σ = insert k (ty σ))
     (h2 : ∀ σ', σ' ≠ σ → ty' σ' = ty σ') (hle : ∀ τ, ∀ j ∈ ty' τ, initSpan K (u' τ) j ≤ initSpan K (u τ) j) :
@@ -153,6 +207,13 @@ theorem Good.of_le (h : Good A D hk f q w u) {j : A.ch.ι} {φ : A.ch.R j →+* 
   exact h.of_initSpan_eq hF (initSpan_eq_of_le (hi σ) ((isFrame_up_iff _ _).1 hf σ).1
     (hle σ k (h1 ▸ Finset.mem_insert_self _ _)))
 
+/- English proof (translation)
+Take `⟨α, hα⟩` from `exists_chart D.C (w ≫ f)`. Establish `hα' : ⊤ ≤ (w' ≫ f) ⁻¹ᵁ D.C.B α` using `e ▸ hα`. Take `⟨g, hv, h1⟩` from `h.2 α hα`. Take `⟨g', hv', h1'⟩` from `h'.2 α hα'`. Establish `hg : g = g'`.
+
+Establish `h3 : spMap g = spMap g'`. Rewrite using `[← ProjSpace.pt_str g _ hv, ← ProjSpace.pt_str g' _ hv', ← h1, ← h1', Category.assoc, Category.assoc, ho, ← Category.assoc, e, Category.assoc]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h3)`. Substitute `hg` using the available equality. Rewrite using `[h1, h1']`.
+
+Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `emb_congr α e hα hα' hU σ _`.
+-/
 theorem Good.comp_eq (ho : q ≫ PSpace.str V _ = f ≫ π ≫ M.s) (h : Good A D hk f q w u) {w' : Sp K ⟶ X'}
     {U' : TVecs Dw M.t ((w' ≫ f) ≫ π)} (h' : Good A D hk f q w' U') (e : w ≫ f = w' ≫ f) (hU : up u = up U') :
     w ≫ q = w' ≫ q := by
@@ -176,18 +237,29 @@ open Classical in
 def chg {S : Type} [CommRing S] (p : GPm (Dw.mult σ) a b) (x : GVar (Dw.mult σ) a k b → S)
     {z : Sp S ⟶ M.X} (u : TVecs Dw M.t z) : TVecs Dw M.t z := Function.update u σ (gvec (u σ) p x)
 
+/- English proof (translation)
+Unfold `chg`. Use `Function.update_self σ _ u` and compare the differences between its conclusion and the goal.
+-/
 theorem chg_self {S : Type} [CommRing S] (p : GPm (Dw.mult σ) a b) (x : GVar (Dw.mult σ) a k b → S)
     {z : Sp S ⟶ M.X} (u : TVecs Dw M.t z) : chg p x u σ = gvec (u σ) p x := by
   classical
   unfold chg
   convert Function.update_self σ _ u
 
+/- English proof (translation)
+Unfold `chg`. Use `Function.update_of_ne h _ u` and compare the differences between its conclusion and the goal.
+-/
 theorem chg_ne {S : Type} [CommRing S] (p : GPm (Dw.mult σ) a b) (x : GVar (Dw.mult σ) a k b → S)
     {z : Sp S ⟶ M.X} (u : TVecs Dw M.t z) {τ : E →+* ℂ} (h : τ ≠ σ) : chg p x u τ = u τ := by
   classical
   unfold chg
   convert Function.update_of_ne h _ u
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[isFrame_up_iff]`. Introduce `τ`. Distinguish the cases in `hτ : τ = σ`. Substitute `hτ` using the available equality. Take `⟨h1, h2, -⟩` from `gvec_frame S _ a k b _ (u τ) p x ha hb`.
+
+Rewrite using `[chg_self, h2]`. Conclude with `⟨h1 (hu τ).1, (hu τ).2⟩`. Rewrite using `[chg_ne p x u hτ]`. Conclude with `hu τ`.
+-/
 theorem isFrame_chg (ha : a ≤ k) (hb : k ≤ b) {S : Type} [CommRing S] (p : GPm (Dw.mult σ) a b)
     (x : GVar (Dw.mult σ) a k b → S) {z : Sp S ⟶ M.X} {u : TVecs Dw M.t z} {g : c.F →+* S}
     (hu : LocM.IsFrame M.t g z (up u)) : LocM.IsFrame M.t g z (up (chg p x u)) := by
@@ -201,6 +273,9 @@ theorem isFrame_chg (ha : a ≤ k) (hb : k ≤ b) {S : Type} [CommRing S] (p : G
   · rw [chg_ne p x u hτ]
     exact hu τ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i`. Distinguish the cases in `hτ : τ = σ`. Substitute `hτ` using the available equality. Rewrite using `[chg_self, chg_self, map_gvec]`. Rewrite using `[chg_ne _ _ _ hτ, chg_ne _ _ _ hτ]`.
+-/
 theorem tanPull_chg {S S' : Type} [CommRing S] [CommRing S'] (p : GPm (Dw.mult σ) a b)
     (x : GVar (Dw.mult σ) a k b → S) (φ : S →+* S') {z : Sp S ⟶ M.X} {z' : Sp S' ⟶ M.X}
     (e : spMap φ ≫ z = z') (u : TVecs Dw M.t z) :
@@ -211,6 +286,11 @@ theorem tanPull_chg {S S' : Type} [CommRing S] [CommRing S'] (p : GPm (Dw.mult �
     rw [chg_self, chg_self, map_gvec]
   · rw [chg_ne _ _ _ hτ, chg_ne _ _ _ hτ]
 
+/- English proof (translation)
+Take `⟨j, φ, e, -⟩` from `id hu`. Take `⟨u₀, h₀⟩` from `A.exists_up_fr e`. Take `⟨h1, h2⟩` from `(A.flagAt_iff e h₀ u).1 hu`. Use `(A.flagAt_iff e h₀ _).2 ⟨isFrame_chg ha hb p x h1, fun τ j hj' => Eq.trans ?_ (h2 τ j hj')⟩` and prove the remaining obligations. Distinguish the cases in `hτ : τ = σ`.
+
+Substitute `hτ` using the available equality. Rewrite using `[chg_self, (gvec_frame K _ a k b _ (u τ) p x ha hb).2.2 _ (hty j hj')]`. Rewrite using `[chg_ne _ _ _ hτ]`.
+-/
 theorem flagAt_chg (ha : a ≤ k) (hb : k ≤ b) (hty : ∀ e ∈ ty σ, e ≤ a ∨ b ≤ e) (p : GPm (Dw.mult σ) a b)
     (x : GVar (Dw.mult σ) a k b → K) {z : Sp K ⟶ X} {u : TVecs Dw M.t (z ≫ π)}
     (hu : A.FlagAt z (up u)) : A.FlagAt z (up (chg p x u)) := by
@@ -223,6 +303,9 @@ theorem flagAt_chg (ha : a ≤ k) (hb : k ≤ b) (hty : ∀ e ∈ ty σ, e ≤ a
     rw [chg_self, (gvec_frame K _ a k b _ (u τ) p x ha hb).2.2 _ (hty j hj')]
   · rw [chg_ne _ _ _ hτ]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[map_gvec, funext (hS j K φ z e h u hu)]`. Both sides reduce to the same expression.
+-/
 theorem embL_gvec {α : A.ch.ι → D.C.A} {cv : ∀ j, Fin (Dw.mult σ) → Fin (D.N + 1) → A.ch.R j}
     (hS : IsFrVec D A σ α cv) {j : A.ch.ι} {φ : A.ch.R j →+* K} {z : Sp K ⟶ X} (e : spMap φ ≫ A.ch.χ j = z)
     (h : ⊤ ≤ z ⁻¹ᵁ D.C.B (α j)) {u : TVecs Dw M.t (z ≫ π)} (hu : up u = (A.fr j).bc φ) (p : GPm (Dw.mult σ) a b)
@@ -232,6 +315,19 @@ theorem embL_gvec {α : A.ch.ι → D.C.A} {cv : ∀ j, Fin (Dw.mult σ) → Fin
   rw [map_gvec, funext (hS j K φ z e h u hu)]
   rfl
 
+/- English proof (translation)
+Take `⟨U, rfl⟩` from `hu.exists_up`. Take `⟨u₀, h₀⟩` from `A.exists_up_fr (φ := φ) rfl`. Take `⟨h1, h2⟩` from `(A.flagAt_iff rfl h₀ U).1 hu`. Establish `h : ⊤ ≤ (spMap φ ≫ A.ch.χ j) ⁻¹ᵁ D.C.B (α j)` using `le_preimage_comp _ (hα j)`. Establish `hi` using `embL_injective (α j) h (range_subset_of_flagAt hu)`.
+
+Use `set F := embL D (α j) _ h with hF`. Establish `hc : (fun i => φ ∘ cv j i) = fun i => F (u₀ σ i)` using `funext (hS j K φ _ rfl h u₀ h₀)`. Establish `hs : Submodule.span K (Set.range fun i : Fin k => F (U σ (Fin.castLE hk i))) = (initSpan K (U σ) k).map F`. Rewrite using `[map_initSpan, initSpan_castLE hk]`. Establish `h3 : initSpan K (u₀ σ) a ≤ initSpan K (U σ) k`.
+
+Break down `ha' with h' | rfl` into its components or cases. Rewrite using `[← h2 σ a h']`. Conclude with `FlagMod.initSpan_mono _ ha`. Rewrite using `[initSpan_zero]`. Conclude with `bot_le`.
+
+Establish `h4 : initSpan K (U σ) k ≤ initSpan K (u₀ σ) b`. Use `(FlagMod.initSpan_mono _ hb).trans ?_` and prove the remaining obligations. Break down `hb' with h' | rfl` into its components or cases. Conclude with `(h2 σ b h').le`. Establish `f₀` using `A.isFrame_bc (φ := φ) rfl`.
+
+Rewrite `f₀` using `[← h₀]`. Rewrite using `[initSpan_top, initSpan_top, ((isFrame_up_iff _ _).1 f₀ σ).2, ((isFrame_up_iff _ _).1 h1 σ).2]`. Take `⟨⟨p, hp⟩, h5⟩` from `Normal.main K _ a k b _ hk (fun i => φ ∘ Dv j i) (fun i => φ ∘ cv j i) (fun i => F (U σ (Fin.castLE hk i))) ha hb ((hD j).map φ) (((linearIndependent_of_flagAt hu σ).comp _ (Fin.castLE_injective hk)).map' _ (LinearMap.ker_eq_bot.2 hi)) (by rw [hs, hc, ← map_initSpan]; exact Submo …`. Take `⟨x, hx⟩` from `h5 p hp`. Use `⟨p, x, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `z rfl U' U₀ hU' hU₀`. Rewrite using `[up_injective hU', up_injective (hU₀.trans h₀.symm)]`. Use `Submodule.map_injective_of_injective hi ?_` and prove the remaining obligations. Rewrite using `[← hs, hx, map_initSpan, embL_gvec hS rfl h h₀]`.
+-/
 theorem exists_cell {α : A.ch.ι → D.C.A} {cv Dv : ∀ j, Fin (Dw.mult σ) → Fin (D.N + 1) → A.ch.R j}
     (hk : k ≤ Dw.mult σ) (ha : a ≤ k) (hb : k ≤ b) (ha' : a ∈ ty σ ∨ a = 0) (hb' : b ∈ ty σ ∨ b = Dw.mult σ)
     (hα : ∀ j, ⊤ ≤ A.ch.χ j ⁻¹ᵁ D.C.B (α j)) (hS : IsFrVec D A σ α cv) (hD : ∀ j, LeftInv (Dv j) (cv j))
@@ -282,6 +378,9 @@ variable {α : A.ch.ι → D.C.A} {cv Dv : ∀ j, Fin (Dw.mult σ) → Fin (D.N 
 def frBelow (j : A.ch.ι) (p : GPm (Dw.mult σ) a b) : TVecs Dw M.t ((κ j p ≫ f) ≫ π) :=
   (A.exists_up_fr (cl.sq j p).symm).choose
 
+/- English proof (translation)
+The claim follows from `(A.exists_up_fr (cl.sq j p).symm).choose_spec`.
+-/
 theorem up_frBelow (j : A.ch.ι) (p : GPm (Dw.mult σ) a b) : up (frBelow cl j p) = (A.fr j).bc MvPolynomial.C :=
   (A.exists_up_fr (cl.sq j p).symm).choose_spec
 
@@ -296,16 +395,35 @@ def pre : PreAtlas M X' where
   alg i := (MvPolynomial.C : A.ch.R i.1 →+* MvPolynomial (GVar (Dw.mult σ) a k b) (A.ch.R i.1)).comp (A.alg i.1)
   fr i := up (chg i.2 MvPolynomial.X (frBelow cl i.1 i.2))
 
+/- English proof (translation)
+Rewrite using `[← cl.cover, Charts.carrier]`. Conclude with `Set.iUnion_prod' fun i : A.ch.ι × GPm (Dw.mult σ) a b => Set.range (κ i.1 i.2)`.
+-/
 theorem carrier_eq : (charts cl).carrier = f ⁻¹' A.ch.carrier := by
   rw [← cl.cover, Charts.carrier]
   exact Set.iUnion_prod' fun i : A.ch.ι × GPm (Dw.mult σ) a b => Set.range (κ i.1 i.2)
 
 include cl in
+/- English proof (translation)
+Rewrite using `[← spMap_comp', Category.assoc, ← cl.sq, ← Category.assoc, e]`.
+-/
 theorem sq_point (j : A.ch.ι) (p : GPm (Dw.mult σ) a b)
     {ψ : MvPolynomial (GVar (Dw.mult σ) a k b) (A.ch.R j) →+* K} {w : Sp K ⟶ X'} (e : spMap ψ ≫ κ j p = w) :
     spMap (ψ.comp MvPolynomial.C) ≫ A.ch.χ j = w ≫ f := by
   rw [← spMap_comp', Category.assoc, ← cl.sq, ← Category.assoc, e]
 
+/- English proof (translation)
+Establish `e'` using `sq_point cl j p e`. Establish `e2 : spMap ψ ≫ (κ j p ≫ f) ≫ π = (w ≫ f) ≫ π`. Rewrite using `[← e]`. Simplify using `only [Category.assoc]`. Set `U₀ : TVecs Dw M.t ((w ≫ f) ≫ π)` to `fun τ i => tanPull ψ e2 (frBelow cl j p τ i)`.
+
+Establish `h₀ : up U₀ = (A.fr j).bc (ψ.comp MvPolynomial.C)`. Rewrite using `[up_tanPull ψ e2, up_frBelow, bc_bc]`. Establish `hF : A.FlagAt (w ≫ f) (up U₀)` using `h₀ ▸ A.flagAt_fr e'`. Establish `hU : (fun τ i => tanPull ψ e2 (chg p MvPolynomial.X (frBelow cl j p) τ i)) = chg p (ψ ∘ MvPolynomial.X) U₀` using `tanPull_chg p _ ψ e2 _`. Use `⟨U₀, h₀, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hU]`. Conclude with `up_tanPull ψ e2 _`. Establish `h : ⊤ ≤ (w ≫ f) ⁻¹ᵁ D.C.B (α j)` using `e' ▸ le_preimage_comp _ (hα _)`. Use `good_of_one (flagAt_chg ha hb hty p _ hF) (α := α j) (h := h) ?_` and prove the remaining obligations. Take `⟨hv, h1⟩` from `cl.pl j p`.
+
+Establish `h2 : ψ ∘ gxi a b hk (cv j) p = plk (fun i => ((D.Em.A (α j)).map (ev (w ≫ f) _ h)).mulVec (D.crd (α j) K (w ≫ f) h (chg p (ψ ∘ MvPolynomial.X) U₀ σ (Fin.castLE hk i)))) id`. Rewrite using `[gxi, FlagEmb.map_plk, chg_self]`. Establish `h3` using `embL_gvec hS e' h h₀ p (ψ ∘ MvPolynomial.X)`. Establish `h4 : (fun z => ψ ∘ gvec (fun i => (MvPolynomial.C : A.ch.R j →+* MvPolynomial (GVar (Dw.mult σ) a k b) _) ∘ cv j i) p (MvPolynomial.X : GVar (Dw.mult σ) a k b → MvPolynomial (GVar (Dw.mult σ) a k b) (A.ch.R j)) z) = fun i => embL D (α j) (w ≫ f) h (gvec (U₀ σ) p (ψ ∘ MvPolynomial …`. Rewrite using `[h3]`.
+
+Use function extensionality and compare the values at `z`. Conclude with `comp_gvec ψ _ p _ z`. Rewrite using `[h4]`. Both sides reduce to the same expression. Use `⟨ψ.comp (MvPolynomial.C.comp ((A.alg j).comp V.subtype)), h2 ▸ ProjSpace.span_range_comp_eq_top _ hv ψ, ?_⟩` and prove the remaining obligations.
+
+Establish `h5 : w ≫ q = spMap ψ ≫ κ j p ≫ q` using `by rw [← Category.assoc, e]`. Rewrite using `[h5, h1, ProjSpace.spMap_pt]`. Use `congr 1`.
+-/
 theorem exists_good (ha : a ≤ k) (hb : k ≤ b) (hty : ∀ e ∈ ty σ, e ≤ a ∨ b ≤ e)
     (hα : ∀ j, ⊤ ≤ A.ch.χ j ⁻¹ᵁ D.C.B (α j)) (hS : IsFrVec D A σ α cv) (j : A.ch.ι) (p : GPm (Dw.mult σ) a b)
     {ψ : MvPolynomial (GVar (Dw.mult σ) a k b) (A.ch.R j) →+* K} {w : Sp K ⟶ X'} (e : spMap ψ ≫ κ j p = w) :
@@ -343,6 +461,15 @@ theorem exists_good (ha : a ≤ k) (hb : k ≤ b) (hty : ∀ e ∈ ty σ, e ≤ 
     rw [h5, h1, ProjSpace.spMap_pt]
     congr 1
 
+/- English proof (translation)
+Establish `ex : w ≫ f ≫ π = (w ≫ f) ≫ π` using `(Category.assoc _ _ _).symm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨j, p⟩, ψ, e, hf, hs⟩`. Take `⟨U₀, -, hU₀, hg⟩` from `exists_good cl ha hb hty hα hS j p e`. Rewrite `hf`, `hs` using `[ex]`.
+
+Use `hg.of_le (sq_point cl j p e) hf h1 h2 ((sameFlag_up_iff _ _).1 ?_)` and prove the remaining obligations. Rewrite using `[hU₀]`. Conclude with `hs`. Introduce `hg`. Take `⟨j₀, φ, e, -⟩` from `id hg.1`.
+
+Establish `hr : w (IsLocalRing.closedPoint K) ∈ (charts cl).carrier`. Rewrite using `[carrier_eq]`. Conclude with `A.ch.range_subset e ⟨IsLocalRing.closedPoint K, rfl⟩`. Take `⟨⟨j, p⟩, ψ, eq⟩` from `(charts cl).exists_fac w hr`. Take `⟨U₀, h₀, hU₀, hg₀⟩` from `exists_good cl ha hb hty hα hS j p eq`.
+
+Establish `hfr` using `((A.flagAt_iff (sq_point cl j p eq) h₀ U).1 hg.1).1`. Establish `hs` using `(sameFlag_up_iff _ U).2 (hg₀.le hg h1 h2)`. Rewrite `hs` using `[hU₀]`. Conclude with `⟨(j, p), ψ, eq, by rw [ex]; exact hfr, by rw [ex]; exact hs⟩`.
+-/
 theorem pre_flagAt_iff (ha : a ≤ k) (hb : k ≤ b) (hty : ∀ e ∈ ty σ, e ≤ a ∨ b ≤ e)
     (hα : ∀ j, ⊤ ≤ A.ch.χ j ⁻¹ᵁ D.C.B (α j)) (hS : IsFrVec D A σ α cv) (h1 : ty' σ = insert k (ty σ))
     (h2 : ∀ σ', σ' ≠ σ → ty' σ' = ty σ') (w : Sp K ⟶ X') (U : TVecs Dw M.t ((w ≫ f) ≫ π)) :
@@ -367,12 +494,18 @@ theorem pre_flagAt_iff (ha : a ≤ k) (hb : k ≤ b) (hty : ∀ e ∈ ty σ, e �
     rw [hU₀] at hs
     exact ⟨(j, p), ψ, eq, by rw [ex]; exact hfr, by rw [ex]; exact hs⟩
 
+/- English proof (translation)
+Rewrite using `[carrier_eq, A.cover]`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Scheme.Hom.comp_apply]`.
+-/
 theorem pre_cover : (charts cl).carrier = (f ≫ π) ⁻¹' Set.range M.j := by
   rw [carrier_eq, A.cover]
   ext x
   simp only [Set.mem_preimage, Scheme.Hom.comp_apply]
 
 include cl in
+/- English proof (translation)
+Use `A.affineOpenChart_comp_structure_eq_spMap (cl.sq j p).symm` as an intermediate fact. Simplify using `only [Category.assoc] at this ⊢`. Conclude with `this`.
+-/
 theorem pre_alg_s (j : A.ch.ι) (p : GPm (Dw.mult σ) a b) : κ j p ≫ (f ≫ π) ≫ M.s =
     spMap (((MvPolynomial.C : A.ch.R j →+* MvPolynomial (GVar (Dw.mult σ) a k b) _).comp (A.alg j)).comp V.subtype) := by
   have := A.affineOpenChart_comp_structure_eq_spMap (cl.sq j p).symm
@@ -380,6 +513,11 @@ theorem pre_alg_s (j : A.ch.ι) (p : GPm (Dw.mult σ) a b) : κ j p ≫ (f ≫ �
   exact this
 
 include cl in
+/- English proof (translation)
+Establish `h3 : κ j p ≫ f ≫ π = spMap MvPolynomial.C ≫ A.ch.χ j ≫ π`. Rewrite using `[← Category.assoc, cl.sq, Category.assoc]`. Use `smooth_C (R := A.ch.R j) (GVar (Dw.mult σ) a k b)` as an intermediate fact. Use `A.smooth j` as an intermediate fact. Rewrite using `[h3]`.
+
+Use `infer_instance`.
+-/
 theorem pre_smooth (j : A.ch.ι) (p : GPm (Dw.mult σ) a b) : Smooth (κ j p ≫ f ≫ π) := by
   have h3 : κ j p ≫ f ≫ π = spMap MvPolynomial.C ≫ A.ch.χ j ≫ π := by
     rw [← Category.assoc, cl.sq, Category.assoc]
@@ -388,6 +526,11 @@ theorem pre_smooth (j : A.ch.ι) (p : GPm (Dw.mult σ) a b) : Smooth (κ j p ≫
   rw [h3]
   infer_instance
 
+/- English proof (translation)
+Establish `hf` using `A.isFrame_bc (cl.sq j p).symm`. Rewrite `hf` using `[← up_frBelow cl]`. Establish `h5 : ∀ {S : Type} [CommRing S] {g : c.F →+* S} {x x' : Sp S ⟶ M.X} (_ : x = x') {v : Vecs Dw M.t S}, LocM.IsFrame M.t g x v → LocM.IsFrame M.t g x' v`. Introduce and unpack `_ _ _ _ _ rfl _ h`. Conclude with `h`.
+
+Conclude with `h5 (Category.assoc _ _ _) (isFrame_chg ha hb p _ hf)`.
+-/
 theorem pre_frame (ha : a ≤ k) (hb : k ≤ b) (j : A.ch.ι) (p : GPm (Dw.mult σ) a b) :
     LocM.IsFrame M.t ((MvPolynomial.C : A.ch.R j →+* MvPolynomial (GVar (Dw.mult σ) a k b) _).comp (A.alg j))
       (κ j p ≫ f ≫ π) (up (chg p MvPolynomial.X (frBelow cl j p))) := by
@@ -399,6 +542,11 @@ theorem pre_frame (ha : a ≤ k) (hb : k ≤ b) (j : A.ch.ι) (p : GPm (Dw.mult 
     exact h
   exact h5 (Category.assoc _ _ _) (isFrame_chg ha hb p _ hf)
 
+/- English proof (translation)
+Take `⟨U, -, hU, hg⟩` from `exists_good cl ha hb hty hα hS j p (rfl : spMap ψ ≫ κ j p = _)`. Take `⟨U', -, hU', hg'⟩` from `exists_good cl ha hb hty hα hS j' p' e.symm`. Establish `hs` using `(sameFlag_up_iff _ _).2 (hg.le hg' h1 h2)`. Rewrite `hs` using `[hU, hU']`. Establish `ex : spMap ψ ≫ κ j p ≫ f ≫ π = ((spMap ψ ≫ κ j p) ≫ f) ≫ π`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[ex]`. Conclude with `hs`.
+-/
 theorem pre_glue (ha : a ≤ k) (hb : k ≤ b) (hty : ∀ e ∈ ty σ, e ≤ a ∨ b ≤ e)
     (hα : ∀ j, ⊤ ≤ A.ch.χ j ⁻¹ᵁ D.C.B (α j)) (hS : IsFrVec D A σ α cv) (h1 : ty' σ = insert k (ty σ))
     (h2 : ∀ σ', σ' ≠ σ → ty' σ' = ty σ') (K : Type) [Field K] (j j' : A.ch.ι) (p p' : GPm (Dw.mult σ) a b)
@@ -454,6 +602,9 @@ def atlas (ha : a ≤ k) (hb : k ≤ b) (ha' : a ∈ ty σ ∨ a = 0) (hb' : b �
 
 end Closure
 
+/- English proof (translation)
+Introduce `ha hb ha' hb' hty hα hS hD cl h1 h2` and use `⟨atlas cl ha hb ha' hb' hty hα hS hD h1 h2, fun _ _ w U => pre_flagAt_iff cl ha hb hty hα hS h1 h2 w U⟩`.
+-/
 theorem exists_cellAtlas (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : ValuationSubring c.F) (M : Model Xo c V.subtype)
     (X : Scheme.{0}) (π : X ⟶ M.X) (ty : (E →+* ℂ) → Finset ℕ) (A : Atlas M π ty) (D : LCrd M π) (σ : E →+* ℂ)

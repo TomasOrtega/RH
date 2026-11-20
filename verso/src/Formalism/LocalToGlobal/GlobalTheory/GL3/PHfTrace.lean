@@ -9,6 +9,11 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Fo
 
 variable (D : D7)
 
+/- English proof (translation)
+Introduce `τ τ' h`. Establish `h2 : D.host.sigmaOf ((D.eTau τ : D.R.Psi) : D.R.GG) = D.host.sigmaOf ((D.eTau τ' : D.R.Psi) : D.R.GG)`. Use `AlgEquiv.ext fun x => ?_` and prove the remaining obligations. Conclude with `D.host.φ₀.injective (congrArg (fun f : D.host.E →+* ℂ => f x) h)`. Establish `h3` using `congrArg (D.host.galE) h2`.
+
+Rewrite `h3` using `[galE_sigmaOf, galE_sigmaOf]`. Conclude with `D.eTau.injective (Subtype.ext h3)`.
+-/
 theorem embT_inj : Function.Injective (embT D) := by
   intro τ τ' h
   have h2 : D.host.sigmaOf ((D.eTau τ : D.R.Psi) : D.R.GG) =
@@ -28,9 +33,23 @@ def embA (τ : D.what₂.Tau) : @AlgHom D.host.K D.host.E ℂ _ _ _ _ (algKC D) 
       show embT D τ (r : D.host.E) = D.host.φ₀ (r : D.host.E)
       exact embT_K D τ _ r.2 }
 
+/- English proof (translation)
+The claim follows from `IntermediateField.subset_adjoin ℚ _ (Set.mem_singleton _)`.
+-/
 theorem bE_mem : D.host.sqd ∈ D.host.K :=
   IntermediateField.subset_adjoin ℚ _ (Set.mem_singleton _)
 
+/- English proof (translation)
+Use `letI := algKC D`. Prove the components needed by the constructor for the conclusion. Introduce `τ τ' h`. Apply `embT_inj D` to reduce the goal to its premises. Use extensionality with `x`.
+
+Conclude with `congrArg (fun f : D.host.E →ₐ[D.host.K] ℂ => f x) h`. Introduce `σ`. Take `⟨τ, hτ | hτ⟩` from `emb_cases D (σ : D.host.E →+* ℂ)`. Use `⟨τ, AlgHom.ext fun x => ?_⟩` and prove the remaining obligations. Use `congrArg (fun f : D.host.E →+* ℂ => f x) hτ` as an intermediate fact.
+
+Conclude with `this.symm`. It suffices to derive a contradiction. Establish `hb` using `bE_mem D`. Establish `h1 : σ (D.host.sqd) = D.host.φ₀ (D.host.sqd)` using `σ.commutes ⟨_, hb⟩`. Establish `h2` using `congrArg (fun f : D.host.E →+* ℂ => f (D.host.sqd)) hτ`.
+
+Simplify using `only [AlgHom.coe_toRingHom, RingHom.comp_apply] at h2`. Rewrite `h2` using `[embT_K D τ _ hb, h1]`. Establish `h0 : D.host.φ₀ (D.host.sqd) = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Rewrite `h2` using `[h0, map_mul, Complex.conj_I, Complex.conj_ofReal]`. Establish `hs` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.sqrt_d_pos D`.
+
+Establish `: (Real.sqrt D.host.d : ℂ) = 0`. Establish `h3 : 2 * Complex.I * (Real.sqrt D.host.d : ℂ) = 0` using `by linear_combination h2`. Simplify `h3` using `[Complex.I_ne_zero]`. Conclude with `hs.ne' (by exact_mod_cast this)`.
+-/
 theorem embA_bij : letI := algKC D; Function.Bijective (embA D) := by
   letI := algKC D
   constructor
@@ -59,6 +78,11 @@ theorem embA_bij : letI := algKC D; Function.Bijective (embA D) := by
         simpa [Complex.I_ne_zero] using h3
       exact hs.ne' (by exact_mod_cast this)
 
+/- English proof (translation)
+Use `letI := algKC D`. Establish `h` using `_root_.trace_eq_sum_embeddings (K := D.host.K) (L := D.host.E) ℂ (x := z)`. Rewrite `h` using `[RingHom.algebraMap_toAlgebra, RingHom.comp_apply]`. Express the relevant statement in the definitionally equal form `_ = D.host.φ₀ (algebraMap D.host.K D.host.E _)`. Rewrite using `[h, ← (Equiv.ofBijective _ (embA_bij D)).sum_comp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sum_tau_trace (z : D.host.E) :
     ∑ τ : D.what₂.Tau, embT D τ z =
       D.host.φ₀ ((Algebra.trace D.host.K D.host.E z : D.host.K) : D.host.E) := by
@@ -77,10 +101,16 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Fo
 
 variable (D : D7)
 
+/- English proof (translation)
+Conclude with `D.host.conjE_apply φ x`.
+-/
 theorem emb_conj (φ : D.host.E →+* ℂ) (x : D.host.E) :
     φ (D.host.conj x) = starRingEnd ℂ (φ x) := by
   exact D.host.conjE_apply φ x
 
+/- English proof (translation)
+Unfold `Hf hYY`. Use `congr 1`. Rewrite using `[← sum_tau_trace]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [embV, hT, map_sum, map_mul, emb_conj]`.
+-/
 theorem Hf_embV (T : Tor D) (hT : ∀ τ x, T.emb τ x = embT D τ x) {N N' : ℕ}
     (A B : Matrix (Fin N') (Fin N) D.host.E) :
     Hf D T (embV D T A) (embV D T B) =
@@ -106,11 +136,17 @@ def HfArithRec : Prop :=
           starRingEnd ℂ (δ * D.host.φ₀ (((c' : D.host.K) : D.host.E))) *
           (D.host.φ₀ ((hYY D A B : D.host.K) : D.host.E) / (area (lamOf D cc δ) : ℂ)))
 
+/- English proof (translation)
+Introduce `D cc hcc δ hδ h0 N N' L L' hA c hc c' hc' A hA' B hB'`. Rewrite using `[FL.Hf_embV D (tor0 D cc δ) (fun _ _ => rfl) A B]`. Conclude with `h D cc hcc δ hδ h0 N N' L L' hA c hc c' hc' A hA' B hB'`.
+-/
 theorem HfGenRec_of_arith (h : HfArithRec) : HfGenRec := by
   intro D cc hcc δ hδ h0 N N' L L' hA c hc c' hc' A hA' B hB'
   rw [FL.Hf_embV D (tor0 D cc δ) (fun _ _ => rfl) A B]
   exact h D cc hcc δ hδ h0 N N' L L' hA c hc c' hc' A hA' B hB'
 
+/- English proof (translation)
+The claim follows from `LinkThIndep_of_gen (HfGenRec_of_arith hA) hB`.
+-/
 theorem LinkThIndep_of_arith (hA : HfArithRec) (hB : SelfDualRec) : LinkThIndep :=
   LinkThIndep_of_gen (HfGenRec_of_arith hA) hB
 

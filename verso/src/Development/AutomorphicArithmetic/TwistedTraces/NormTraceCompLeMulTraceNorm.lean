@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C
 
+/- English proof (translation)
+Introduce `H _ _ _ ι b T D c hc hT hd`. Establish `hs` using `hT.summable_norm_inner b`. Establish `h1` using `(hT.comp_right D).hasSum_trace b`. Rewrite using `[trace_comp_comm hT D]`. Establish `h2 : ‖trace (T ∘L D)‖ ≤ ∑' i, c * ‖inner ℂ (b i) (T (b i))‖` using `h1.norm_le_of_bounded (hs.mul_left c).hasSum fun i => by`.
+
+Take `⟨d, hd1, hd2⟩` from `hd i`. Rewrite using `[ContinuousLinearMap.comp_apply, hd2, inner_smul_right, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right hd1 (norm_nonneg _)`. Establish `h3 : ∑' i, ‖inner ℂ (b i) (T (b i))‖ ≤ (traceNorm T).toReal`. Rewrite using `[← ENNReal.ofReal_le_iff_le_toReal (show traceNorm T < ⊤ from hT).ne, ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) hs]`.
+
+Simplify using `only [ofReal_norm]`. Conclude with `tsum_enorm_inner_self_le b T`. Rewrite `h2` using `[tsum_mul_left]`. Conclude with `h2.trans (mul_le_mul_of_nonneg_left h3 hc)`.
+-/
 theorem UpperTheory.norm_trace_comp_le_mul_traceNorm :
     ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (ι : Type) (b : HilbertBasis ι ℂ H) (T D : H →L[ℂ] H) (c : ℝ), 0 ≤ c → IsTraceClass T → (∀ i, ∃ d : ℂ, ‖d‖ ≤ c ∧ T (D (b i)) = d • T (b i)) → ‖trace (D ∘L T)‖ ≤ c * (traceNorm T).toReal := by
   intro H _ _ _ ι b T D c hc hT hd

@@ -13,6 +13,15 @@ open PositivityTheory.SiegelWeilFormula.Tpar
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨t0, hB, -, -, -⟩` from `frameData d`. Establish `h1` using `inFrame_mul hw`. Establish `he : ((ε : ℤ) : AE F E) * ((ε : ℤ) : AE F E) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `hN : (Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) * Matrix.fromBlocks 0 (((ε : ℤ) : AE F E) • 1) 1 0 = 1`.
+
+Rewrite using `[Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`. Simplify using `[smul_smul, he]`. Establish `h2` using `inv_mul_frame h1 hN`. Rewrite `h1`, `h2` using `[hB, Matrix.mul_fromCols, Matrix.fromCols_mul_fromBlocks]`. Take `⟨-, h1b⟩` from `Matrix.fromCols_inj h1`.
+
+Take `⟨-, h2b⟩` from `Matrix.fromCols_inj h2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1b]`. Simplify using the standard rewrite rules. Rewrite using `[h2b]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem w_cols (d : SD σ) {ε : ℤˣ} {w : d.G} (hw : d.IsW ε w) :
     mat2 w * incM F d.b.1.toCols₂ = incM F d.b.1.toCols₁ ∧
     mat2 w⁻¹ * incM F d.b.1.toCols₂ = ((ε : ℤ) : AE F E) • incM F d.b.1.toCols₁ := by
@@ -33,11 +42,27 @@ theorem w_cols (d : SD σ) {ε : ℤˣ} {w : d.G} (hw : d.IsW ε w) :
   · rw [h1b]; simp
   · rw [h2b]; simp
 
+/- English proof (translation)
+Simplify using `only [SD.tt, SD.gram, Matrix.transpose_smul, Matrix.smul_mul, Matrix.trace_smul]`. Rewrite using `[Int.cast_smul_eq_zsmul, map_zsmul, zsmul_eq_mul]`.
+-/
 theorem tt_smul (d : SD σ) (ε : ℤˣ) (X Z : Mx F E d.m d.n) :
     d.tt (d.gram (((ε : ℤ) : AE F E) • X) Z) = ((ε : ℤ) : AF F) * d.tt (d.gram X Z) := by
   simp only [SD.tt, SD.gram, Matrix.transpose_smul, Matrix.smul_mul, Matrix.trace_smul]
   rw [Int.cast_smul_eq_zsmul, map_zsmul, zsmul_eq_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d ν hν ε w hw`. Establish `h` using `d.ok.dbl`. Establish `hψ : IsStd d.B.ψ` using `d.ok.good.std`. Take `⟨t0, -, hBx, -, -⟩` from `frameData d`. Take `⟨hw1, hw2⟩` from `w_cols d hw`.
+
+Establish `hsp` using `h.weil.2.1.toIsSplitting`. Take `⟨C, hC⟩` from `hU F E σ d ν hν (d.l ∘ₗ d.om w) (hsp.adm w d.l h.adm) (by`. Introduce `Z Φ hΦ`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hsp.impl w _ Φ hΦ]`.
+
+Establish `e : actB (cA σ) w (Z * (incM F d.b.1.toCols₂)ᵀ) = (Z * (incM F t0.1)ᵀ) * (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E))ᵀ`. Express the relevant statement in the definitionally equal form `Z * (incM F d.b.1.toCols₂)ᵀ * (mat2 w)ᵀ = _`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, hw1, hBx, Matrix.transpose_mul, Matrix.mul_assoc]`. Rewrite using `[e]`. Use `h.kill (Z * (incM F t0.1)ᵀ) _ (hsp.pres w Φ hΦ) using 4` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `all_goals rfl)`. Use `⟨C, fun Φ hΦ X => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `d.l (d.dd.rho d.B.ψ (X * (incM F d.b.1.toCols₂)ᵀ) (d.om w Φ)) = _`. Establish `key : X * (incM F d.b.1.toCols₂)ᵀ * (mat2 w⁻¹)ᵀ = (((ε : ℤ) : AE F E) • X) * (incM F d.b.1.toCols₁)ᵀ`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, hw2, Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul]`.
+
+Rewrite using `[l_rho_om h w _ hΦ, key]`. Establish `hm : d.dd.rho d.B.ψ ((((ε : ℤ) : AE F E) • X) * (incM F d.b.1.toCols₁)ᵀ) Φ ∈ d.sch` using `GlobalTheory.HeisSchA.schr_mem_schA _ hψ _ Φ hΦ`. Establish `e1` using `hC _ hm`. Simplify using `only [LinearMap.comp_apply] at e1`. Rewrite using `[e1]`.
+
+Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun Z => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[(Tunit.tHeis F E σ d Φ hΦ (((ε : ℤ) : AE F E) • X) Z).2, tt_smul]`.
+-/
 theorem upTo_of (hU : Uniq) : UpTo := by
   intro F E _ _ _ _ _ σ d ν hν ε w hw
   have h := d.ok.dbl

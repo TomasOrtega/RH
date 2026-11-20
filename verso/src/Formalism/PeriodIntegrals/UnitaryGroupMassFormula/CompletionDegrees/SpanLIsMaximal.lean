@@ -6,12 +6,22 @@ namespace PI.CompDegEF
 
 open IsDedekindDomain NumberField Module Formalism.BasicNotions Formalism.BasicNotions.Loc
 
+/- English proof (translation)
+Use `Ideal.IsPrime.isMaximal ?_ ?_` and prove the remaining obligations. Conclude with `(Ideal.span_singleton_prime (by exact_mod_cast hl.out.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hl.out)`. Simplify using `[hl.out.ne_zero]`.
+-/
 theorem span_l_isMaximal (l : ℕ) [hl : Fact l.Prime] : (Ideal.span {((l : ℕ) : ℤ)}).IsMaximal := by
   refine Ideal.IsPrime.isMaximal ?_ ?_
   · exact (Ideal.span_singleton_prime (by exact_mod_cast hl.out.ne_zero)).mpr
       (Nat.prime_iff_prime_int.mp hl.out)
   · simp [hl.out.ne_zero]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `(span_l_isMaximal l).eq_of_le ?_ ?_` and prove the remaining obligations. Introduce `h`. Rewrite `h` using `[Ideal.comap_eq_top_iff]`. Conclude with `v.isPrime.ne_top h`.
+
+Rewrite using `[Ideal.span_le]`. Introduce `x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Express the relevant statement in the definitionally equal form `algebraMap ℤ (𝓞 E) ((l : ℕ) : ℤ) ∈ v.asIdeal`.
+
+Simplify using `using (show ((l : ℕ) : 𝓞 E) ∈ v.asIdeal from hv)`.
+-/
 theorem liesOver_of_mem {l : ℕ} [hl : Fact l.Prime] {E : Type} [Field E] [NumberField E]
     {v : HeightOneSpectrum (𝓞 E)} (hv : v ∈ placesOver E l) :
     v.asIdeal.LiesOver (Ideal.span {((l : ℕ) : ℤ)}) := by
@@ -27,6 +37,11 @@ theorem liesOver_of_mem {l : ℕ} [hl : Fact l.Prime] {E : Type} [Field E] [Numb
     change algebraMap ℤ (𝓞 E) ((l : ℕ) : ℤ) ∈ v.asIdeal
     simpa using (show ((l : ℕ) : 𝓞 E) ∈ v.asIdeal from hv)
 
+/- English proof (translation)
+Introduce `l _ E _ _ v hv`. Use `liesOver_of_mem hv` as an intermediate fact. Establish `hmax` using `span_l_isMaximal l`. Establish `hvmax : v.asIdeal.IsMaximal` using `v.isPrime.isMaximal v.ne_bot`. Establish `h1 : Nat.card (𝓞 E ⧸ v.asIdeal ^ v.asIdeal.ramificationIdx ℤ) = Ideal.absNorm (v.asIdeal ^ v.asIdeal.ramificationIdx ℤ)`.
+
+Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[h1, map_pow, Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver v.asIdeal (Ideal.span {((l : ℕ) : ℤ)}) hmax.isPrime (by simp [(Fact.out : l.Prime).ne_zero]), Ideal.absNorm_span_natCast, Module.finrank_self, pow_one, Ideal.inertiaDeg'_eq_inertiaDeg, Formalism.MainNotions.N.locDeg, ← po …`.
+-/
 theorem normCard : NormCard := by
   intro l _ E _ _ v hv
   have := liesOver_of_mem hv

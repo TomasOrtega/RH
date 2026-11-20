@@ -20,40 +20,73 @@ section Lin
 
 variable {n k : ℕ} (ε : Fin n → Bool)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hJ_eq (x y : Fin n → ℂ) : hJ ε x y = star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ y) := rfl
 
+/- English proof (translation)
+Simplify using `only [hJ, dotProduct, Formalism.REAL.Jm, mulVec_diagonal, Pi.star_apply, star_sum, star_mul', star_star]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`.
+-/
 theorem hJ_symm (x y : Fin n → ℂ) : hJ ε x y = star (hJ ε y x) := by
   simp only [hJ, dotProduct, Formalism.REAL.Jm, mulVec_diagonal, Pi.star_apply, star_sum, star_mul', star_star]
   refine Finset.sum_congr rfl fun i _ => ?_
   split_ifs <;> simp [mul_comm]
 
+/- English proof (translation)
+Simplify using `only [hJ, mulVec_add, dotProduct_add]`.
+-/
 theorem hJ_add_right (x y z : Fin n → ℂ) : hJ ε x (y + z) = hJ ε x y + hJ ε x z := by
   simp only [hJ, mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `only [hJ, mulVec_sub, dotProduct_sub]`.
+-/
 theorem hJ_sub_right (x y z : Fin n → ℂ) : hJ ε x (y - z) = hJ ε x y - hJ ε x z := by
   simp only [hJ, mulVec_sub, dotProduct_sub]
 
+/- English proof (translation)
+Simplify using `only [hJ, mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem hJ_smul_right (x y : Fin n → ℂ) (c : ℂ) : hJ ε x (c • y) = c * hJ ε x y := by
   simp only [hJ, mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [hJ, mulVec_zero, dotProduct_zero]`.
+-/
 theorem hJ_zero_right (x : Fin n → ℂ) : hJ ε x 0 = 0 := by
   simp only [hJ, mulVec_zero, dotProduct_zero]
 
+/- English proof (translation)
+Use `Finset.induction_on s (by simp only [Finset.sum_empty, hJ_zero_right]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hJ_add_right, ih]`.
+-/
 theorem hJ_sum_right {ι : Type} (s : Finset ι) (x : Fin n → ℂ) (y : ι → Fin n → ℂ) :
     hJ ε x (∑ i ∈ s, y i) = ∑ i ∈ s, hJ ε x (y i) := by
   refine Finset.induction_on s (by simp only [Finset.sum_empty, hJ_zero_right]) ?_
   intro a s ha ih
   rw [Finset.sum_insert ha, Finset.sum_insert ha, hJ_add_right, ih]
 
+/- English proof (translation)
+Simplify using `only [hJ, star_add, add_dotProduct]`.
+-/
 theorem hJ_add_left (x y z : Fin n → ℂ) : hJ ε (x + y) z = hJ ε x z + hJ ε y z := by
   simp only [hJ, star_add, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `only [hJ, star_sub, sub_dotProduct]`.
+-/
 theorem hJ_sub_left (x y z : Fin n → ℂ) : hJ ε (x - y) z = hJ ε x z - hJ ε y z := by
   simp only [hJ, star_sub, sub_dotProduct]
 
+/- English proof (translation)
+Simplify using `only [hJ, star_smul, smul_dotProduct, smul_eq_mul]`.
+-/
 theorem hJ_smul_left (x y : Fin n → ℂ) (c : ℂ) : hJ ε (c • x) y = star c * hJ ε x y := by
   simp only [hJ, star_smul, smul_dotProduct, smul_eq_mul]
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty, hJ, star_zero, zero_dotProduct]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hJ_add_left, ih]`.
+-/
 theorem hJ_sum_left {ι : Type} (s : Finset ι) (x : ι → Fin n → ℂ) (y : Fin n → ℂ) :
     hJ ε (∑ i ∈ s, x i) y = ∑ i ∈ s, hJ ε (x i) y := by
   refine Finset.induction_on s ?_ ?_
@@ -61,12 +94,20 @@ theorem hJ_sum_left {ι : Type} (s : Finset ι) (x : ι → Fin n → ℂ) (y : 
   · intro a s ha ih
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hJ_add_left, ih]
 
+/- English proof (translation)
+Simplify using `only [hJ]`. Rewrite using `[star_mulVec, mulVec_mulVec, dotProduct_mulVec, vecMul_vecMul, ← Matrix.mul_assoc, hg, ← dotProduct_mulVec]`.
+-/
 theorem hJ_unitary {g : Matrix (Fin n) (Fin n) ℂ} (hg : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε) (x y : Fin n → ℂ) :
     hJ ε (g *ᵥ x) (g *ᵥ y) = hJ ε x y := by
   simp only [hJ]
   rw [star_mulVec, mulVec_mulVec, dotProduct_mulVec, vecMul_vecMul, ← Matrix.mul_assoc, hg,
     ← dotProduct_mulVec]
 
+/- English proof (translation)
+Establish `hw : (Wm wf)ᴴ *ᵥ (Formalism.REAL.Jm ε *ᵥ y) = fun d => hJ ε (wf d) y`. Use function extensionality and compare the values at `d`. Simplify using `only [hJ, mulVec, dotProduct, Wm, conjTranspose_apply, of_apply, Pi.star_apply]`. Use function extensionality and compare the values at `i`. Simplify using `only [smat]`.
+
+Rewrite using `[add_mulVec, one_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, hw]`. Simplify using `only [Pi.add_apply, mulVec, dotProduct, Wm, of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+-/
 theorem smat_apply (wf : Fin k → Fin n → ℂ) (G : Matrix (Fin k) (Fin k) ℂ) (y : Fin n → ℂ) :
     smat (Formalism.REAL.Jm ε) wf G *ᵥ y = y + ∑ c, ((G - 1) *ᵥ fun d => hJ ε (wf d) y) c • wf c := by
   have hw : (Wm wf)ᴴ *ᵥ (Formalism.REAL.Jm ε *ᵥ y) = fun d => hJ ε (wf d) y := by
@@ -86,15 +127,24 @@ variable {D : D7} (X : HidaSetting D)
 
 abbrev rvc (v : InfinitePlace X.B.I.F) (p : (VS D).V) : Fin X.B.I.n → ℂ := rv X.B.I v (X.crd p)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf, map_add, Finsupp.add_apply, Pi.add_apply]`.
+-/
 theorem crd_add (p p' : (VS D).V) : X.crd (p + p') = X.crd p + X.crd p' := by
   funext i
   simp only [Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf, map_add, Finsupp.add_apply, Pi.add_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Pi.smul_apply]`.
+-/
 theorem crd_smul (c : D.host.E) (p : (VS D).V) : X.crd (c • p) = X.ιE.symm c • X.crd p := by
   funext i
   simp only [Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf, map_smul, Finsupp.smul_apply,
     smul_eq_mul, map_mul, Pi.smul_apply]
 
+/- English proof (translation)
+Simplify using `only [rvc, crd_add, Formalism.L2.SG.HidaSetting.rv]`. Rewrite using `[← mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, map_add]`.
+-/
 theorem rvc_add (v : InfinitePlace X.B.I.F) (p p' : (VS D).V) : rvc X v (p + p') = rvc X v p + rvc X v p' := by
   simp only [rvc, crd_add, Formalism.L2.SG.HidaSetting.rv]
   rw [← mulVec_add]
@@ -102,6 +152,9 @@ theorem rvc_add (v : InfinitePlace X.B.I.F) (p p' : (VS D).V) : rvc X v (p + p')
   funext i
   simp only [Pi.add_apply, map_add]
 
+/- English proof (translation)
+Simplify using `only [rvc, crd_smul, Formalism.L2.SG.HidaSetting.rv]`. Rewrite using `[← mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`.
+-/
 theorem rvc_smul (v : InfinitePlace X.B.I.F) (c : D.host.E) (p : (VS D).V) :
     rvc X v (c • p) = X.B.I.φ v (X.ιE.symm c) • rvc X v p := by
   simp only [rvc, crd_smul, Formalism.L2.SG.HidaSetting.rv]
@@ -110,9 +163,17 @@ theorem rvc_smul (v : InfinitePlace X.B.I.F) (c : D.host.E) (p : (VS D).V) :
   funext i
   simp only [Pi.smul_apply, smul_eq_mul, map_mul]
 
+/- English proof (translation)
+Simplify using `using rvc_smul X v (0 : D.host.E) 0`.
+-/
 theorem rvc_zero (v : InfinitePlace X.B.I.F) : rvc X v 0 = 0 := by
   simpa using rvc_smul X v (0 : D.host.E) 0
 
+/- English proof (translation)
+Introduce `p hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => simp only [rvc_zero, hJ, star_zero, zero_dotProduct]`. Consider the case `add x y _ _ hx hy => rw [rvc_add, hJ_add_left, hx, hy, add_zero]`.
+
+Consider the case `smul a x _ hx => rw [rvc_smul, hJ_smul_left, hx, mul_zero]`.
+-/
 theorem orth_span (v : InfinitePlace X.B.I.F) (w : Fin X.B.I.n → ℂ) {S : Set (VS D).V}
     (h : ∀ s ∈ S, hJ (X.B.I.ε v) (rvc X v s) w = 0) :
     ∀ p ∈ Submodule.span D.host.E S, hJ (X.B.I.ε v) (rvc X v p) w = 0 := by
@@ -123,6 +184,11 @@ theorem orth_span (v : InfinitePlace X.B.I.F) (w : Fin X.B.I.n → ℂ) {S : Set
   | add x y _ _ hx hy => rw [rvc_add, hJ_add_left, hx, hy, add_zero]
   | smul a x _ hx => rw [rvc_smul, hJ_smul_left, hx, mul_zero]
 
+/- English proof (translation)
+Introduce `y hy`. Unfold `spanAt at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, hp, rfl⟩` from `hx`.
+
+Conclude with `h p hp`. Consider the case `zero => simp only [hJ, star_zero, zero_dotProduct]`. Consider the case `add x y _ _ hx hy => rw [hJ_add_left, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [hJ_smul_left, hx, mul_zero]`.
+-/
 theorem spanAt_orth (v : InfinitePlace X.B.I.F) (U : Submodule D.host.E (VS D).V) (w : Fin X.B.I.n → ℂ)
     (h : ∀ p ∈ U, hJ (X.B.I.ε v) (rvc X v p) w = 0) : ∀ y ∈ spanAt X v U, hJ (X.B.I.ε v) y w = 0 := by
   intro y hy
@@ -135,21 +201,33 @@ theorem spanAt_orth (v : InfinitePlace X.B.I.F) (U : Submodule D.host.E (VS D).V
   | add x y _ _ hx hy => rw [hJ_add_left, hx, hy, add_zero]
   | smul a x _ hx => rw [hJ_smul_left, hx, mul_zero]
 
+/- English proof (translation)
+Introduce `y hy`. Rewrite using `[hJ_symm, spanAt_orth X v U w h y hy, star_zero]`.
+-/
 theorem spanAt_orth' (v : InfinitePlace X.B.I.F) (U : Submodule D.host.E (VS D).V) (w : Fin X.B.I.n → ℂ)
     (h : ∀ p ∈ U, hJ (X.B.I.ε v) (rvc X v p) w = 0) : ∀ y ∈ spanAt X v U, hJ (X.B.I.ε v) w y = 0 := by
   intro y hy
   rw [hJ_symm, spanAt_orth X v U w h y hy, star_zero]
 
+/- English proof (translation)
+Unfold `spanAt`. Conclude with `Submodule.span_mono fun _ ⟨q, hq, e⟩ => ⟨q, h hq, e⟩`.
+-/
 theorem spanAt_mono (v : InfinitePlace X.B.I.F) {U U' : Submodule D.host.E (VS D).V} (h : U ≤ U') :
     spanAt X v U ≤ spanAt X v U' := by
   unfold spanAt
   exact Submodule.span_mono fun _ ⟨q, hq, e⟩ => ⟨q, h hq, e⟩
 
+/- English proof (translation)
+Unfold `spanAt`. Conclude with `Submodule.subset_span ⟨p, hp, rfl⟩`.
+-/
 theorem rvc_mem (v : InfinitePlace X.B.I.F) {U : Submodule D.host.E (VS D).V} {p : (VS D).V} (hp : p ∈ U) :
     rvc X v p ∈ spanAt X v U := by
   unfold spanAt
   exact Submodule.subset_span ⟨p, hp, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[X.φ_eq, RingEquiv.apply_symm_apply]`. Use `first`. Consider the case `exact Formalism.L2.SG.PoincareInHH.Cut.hJ_crd X v p p'`. Consider the case `exact Formalism.L2.SG.PoincareInHH.Cut.hJ_crd v p p'`. Consider the case `exact Formalism.L2.SG.PoincareInHH.Cut.hJ_crd (X := X) v p p'`.
+-/
 theorem hJ_rvc (v : InfinitePlace X.B.I.F) (p p' : (VS D).V) :
     hJ (X.B.I.ε v) (rvc X v p) (rvc X v p') = X.B.I.φ v (X.ιE.symm ((VS D).hT p p')) := by
   rw [X.φ_eq, RingEquiv.apply_symm_apply]
@@ -158,14 +236,23 @@ theorem hJ_rvc (v : InfinitePlace X.B.I.F) (p p' : (VS D).V) :
   | exact Formalism.L2.SG.PoincareInHH.Cut.hJ_crd v p p'
   | exact Formalism.L2.SG.PoincareInHH.Cut.hJ_crd (X := X) v p p'
 
+/- English proof (translation)
+Rewrite using `[hJ_rvc, h, map_zero, map_zero]`.
+-/
 theorem hJ_rvc_zero (v : InfinitePlace X.B.I.F) {p p' : (VS D).V} (h : (VS D).hT p p' = 0) :
     hJ (X.B.I.ε v) (rvc X v p) (rvc X v p') = 0 := by
   rw [hJ_rvc, h, map_zero, map_zero]
 
+/- English proof (translation)
+Rewrite using `[hJ_rvc, h, map_one, map_one]`.
+-/
 theorem hJ_rvc_one (v : InfinitePlace X.B.I.F) {p p' : (VS D).V} (h : (VS D).hT p p' = 1) :
     hJ (X.B.I.ε v) (rvc X v p) (rvc X v p') = 1 := by
   rw [hJ_rvc, h, map_one, map_one]
 
+/- English proof (translation)
+Rewrite using `[Submodule.span_union]`. Both sides reduce to the same expression.
+-/
 theorem Xplus_span {r : ℕ} {T : D.host.E} (F : FlagG (VS D) r T) :
     F.Xplus = Submodule.span D.host.E (Set.range F.e ∪ {F.z}) := by
   rw [Submodule.span_union]
@@ -183,27 +270,152 @@ def sUg {n k : ℕ} (ε : Fin n → Bool) (wf : Fin k → Fin n → ℂ)
     smat_inv _ _ (Formalism.REAL.Jm_mul_self _) (Formalism.REAL.Jm_conjTranspose _) G hG hon⟩,
     smat_unitary _ _ hon (Formalism.REAL.Jm_conjTranspose _) G hG⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uMat_sUg {n k : ℕ} (ε : Fin n → Bool) (wf : Fin k → Fin n → ℂ)
     (hon : ∀ a b, hJ ε (wf a) (wf b) = if a = b then 1 else 0) (G : Matrix (Fin k) (Fin k) ℂ) (hG : Gᴴ * G = 1) :
     uMat (sUg ε wf hon G hG) = smat (Formalism.REAL.Jm ε) wf G := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uMat_mul' {n : ℕ} {ε : Fin n → Bool} (a b : Formalism.REAL.UJ ε) : uMat (a * b) = uMat a * uMat b := by
   rfl
 
+/- English proof (translation)
+Conclude with `Units.inv_mul (a : (Matrix (Fin n) (Fin n) ℂ)ˣ)`.
+-/
 theorem uMat_inv_mul'' {n : ℕ} {ε : Fin n → Bool} (a : Formalism.REAL.UJ ε) : uMat a⁻¹ * uMat a = 1 := by
   exact Units.inv_mul (a : (Matrix (Fin n) (Fin n) ℂ)ˣ)
 
+/- English proof (translation)
+Conclude with `Units.mul_inv (a : (Matrix (Fin n) (Fin n) ℂ)ˣ)`.
+-/
 theorem uMat_mul_inv'' {n : ℕ} {ε : Fin n → Bool} (a : Formalism.REAL.UJ ε) : uMat a * uMat a⁻¹ = 1 := by
   exact Units.mul_inv (a : (Matrix (Fin n) (Fin n) ℂ)ˣ)
 
+/- English proof (translation)
+Conclude with `a.2`.
+-/
 theorem uMat_unit {n : ℕ} {ε : Fin n → Bool} (a : Formalism.REAL.UJ ε) :
     (uMat a)ᴴ * Formalism.REAL.Jm ε * uMat a = Formalism.REAL.Jm ε := by
   exact a.2
 
+/- English proof (translation)
+Rewrite using `[sub_mulVec, one_mulVec, h, sub_self]`.
+-/
 theorem sub_one_mulVec_fix {n : ℕ} {g : Matrix (Fin n) (Fin n) ℂ} {y : Fin n → ℂ} (h : g *ᵥ y = y) :
     (g - 1) *ᵥ y = 0 := by
   rw [sub_mulVec, one_mulVec, h, sub_self]
 
+/- English proof (translation)
+Introduce `D X u u' Λ Λ' q hrel hG`. Establish `hFXp : (lf D (X.Fu u)).fl.Xplus ≤ fixedSubspaceOfRepresentative X q` using `le_sup_left`. Establish `hF'Xp : (frq X q).fl.Xplus ≤ fixedSubspaceOfRepresentative X q` using `le_sup_right`. Establish `hFX : (lf D (X.Fu u)).fl.X ≤ fixedSubspaceOfRepresentative X q` using `le_trans (by unfold FlagG.Xplus; exact le_sup_left) hFXp`. Establish `hF'X : (frq X q).fl.X ≤ fixedSubspaceOfRepresentative X q` using `le_trans (by unfold FlagG.Xplus; exact le_sup_left) hF'Xp`.
+
+Establish `he : ∀ a, X.eX a ∈ (lf D (X.Fu u)).fl.X`. Introduce `a`. Use `show X.eX a ∈ (X.Fu u).X`. Rewrite using `[← X.Fu_e u]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`.
+
+Establish `hz : X.zu u ∈ (lf D (X.Fu u)).fl.Xplus` using `by show X.zu u ∈ (X.Fu u).Xplus`. Rewrite using `[← X.flagZVector u]`. Unfold `FlagG.Xplus`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Establish `hiso` using `q.2.2.1`.
+
+Establish `hfrq : (frq X q).fl = mapFlag q.1.2 hiso (lf D (X.Fu u')).fl`. Unfold `frq mapLF`. Rewrite using `[dif_pos hiso]`. Both sides reduce to the same expression. Establish `he' : ∀ a, q.1.2 (X.eX a) ∈ (frq X q).fl.X`.
+
+Introduce `a`. Rewrite using `[hfrq]`. Establish `: q.1.2 (X.eX a) = (mapFlag q.1.2 hiso (lf D (X.Fu u')).fl).e a`. Simplify using `only [mapFlag, lf]`. Rewrite using `[X.Fu_e u']`.
+
+Rewrite using `[this]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Establish `hz' : q.1.2 (X.zu u') ∈ (frq X q).fl.Xplus`. Rewrite using `[hfrq]`. Establish `: q.1.2 (X.zu u') = (mapFlag q.1.2 hiso (lf D (X.Fu u')).fl).z`.
+
+Simplify using `only [mapFlag, lf]`. Conclude with `congrArg _ (X.flagZVector u').symm`. Rewrite using `[this]`. Unfold `FlagG.Xplus`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`.
+
+Take `⟨Mq, -, hMv, -, hcrd⟩` from `q.2.1`. Establish `hγ : ∀ v p, uMat (q.1.1.1 v) *ᵥ rvc X v p = rvc X v (q.1.2 p)`. Introduce `v p`. Rewrite using `[hMv v]`. Use `show _ *ᵥ rv X.B.I v (X.crd p) = rv X.B.I v (X.crd (q.1.2 p))`.
+
+Rewrite using `[Formalism.L2.SG.Pf.rv_mulVec, ← hcrd]`. Establish `hwp : ∀ v b, ∀ p ∈ (lf D (X.Fu u)).fl.Xplus, hJ (X.B.I.ε v) (rvc X v p) (X.wfr u v b) = 0`. Introduce `v b p hp`. Rewrite `hp` using `[Xplus_span]`. Use `orth_span X v _ ?_ p hp` and prove the remaining obligations.
+
+Introduce and unpack `s (⟨a, rfl⟩ | hs)`. Use `show hJ _ (rv X.B.I v (X.crd ((X.Fu u).e a))) _ = 0`. Rewrite using `[X.Fu_e u]`. Conclude with `((X.wfr_perp u v b).1 a).1`. Rewrite `hs` using `[Set.mem_singleton_iff]`.
+
+Substitute `hs` using the available equality. Use `show hJ _ (rv X.B.I v (X.crd (X.Fu u).z)) _ = 0`. Rewrite using `[X.flagZVector u]`. Conclude with `(X.wfr_perp u v b).2`. Establish `hwp' : ∀ v b, ∀ p ∈ (frq X q).fl.Xplus, hJ (X.B.I.ε v) (rvc X v p) (uMat (q.1.1.1 v) *ᵥ X.wfr u' v b) = 0`.
+
+Introduce `v b p hp`. Rewrite `hp` using `[Xplus_span, hfrq]`. Use `orth_span X v _ ?_ p hp` and prove the remaining obligations. Introduce and unpack `s (⟨a, rfl⟩ | hs)`. Use `show hJ _ (rvc X v (q.1.2 ((lf D (X.Fu u')).fl.e a))) _ = 0`.
+
+Rewrite using `[← hγ, hJ_unitary _ (uMat_unit _)]`. Use `show hJ _ (rv X.B.I v (X.crd ((X.Fu u').e a))) _ = 0`. Rewrite using `[X.Fu_e u']`. Conclude with `((X.wfr_perp u' v b).1 a).1`. Rewrite `hs` using `[Set.mem_singleton_iff]`.
+
+Substitute `hs` using the available equality. Use `show hJ _ (rvc X v (q.1.2 ((lf D (X.Fu u')).fl.z))) _ = 0`. Rewrite using `[← hγ, hJ_unitary _ (uMat_unit _)]`. Use `show hJ _ (rv X.B.I v (X.crd (X.Fu u').z)) _ = 0`. Rewrite using `[X.flagZVector u']`.
+
+Conclude with `(X.wfr_perp u' v b).2`. Establish `ex1 : ∀ v b, ∃ x ∈ spanAt X v (lf D (X.Fu u)).fl.X, ∀ p ∈ fixedSubspaceOfRepresentative X q, hJ (X.B.I.ε v) (rvc X v p) (X.wfr u v b - x) = 0` using `fun v b => (hN D X u u' Λ Λ' q hrel hG v).1 _ (hwp v b)`. Establish `ex2 : ∀ v b, ∃ x ∈ spanAt X v (frq X q).fl.X, ∀ p ∈ fixedSubspaceOfRepresentative X q, hJ (X.B.I.ε v) (rvc X v p) (uMat (q.1.1.1 v) *ᵥ X.wfr u' v b - x) = 0` using `fun v b => (hN D X u u' Λ Λ' q hrel hG v).2.1 _ (hwp' v b)`. Use `choose x hx hxo using ex1`. Use `choose x' hx' hx'o using ex2`.
+
+Establish `hXXp : ∀ {r : ℕ} {T : D.host.E} (F : FlagG (VS D) r T), F.X ≤ F.Xplus` using `fun F => by`. Unfold `FlagG.Xplus`. Conclude with `le_sup_left`. Take `⟨wt, hwt⟩ : ∃ wt : ∀ v : InfinitePlace X.B.I.F, Fin D.R.k → Fin X.B.I.n → ℂ, ∀ v b, wt v b = X.wfr u v b - x v b` from `⟨_, fun _ _ => rfl⟩`. Take `⟨wt', hwt'⟩ : ∃ wt' : ∀ v : InfinitePlace X.B.I.F, Fin D.R.k → Fin X.B.I.n → ℂ, ∀ v b, wt' v b = uMat (q.1.1.1 v) *ᵥ X.wfr u' v b - x' v b` from `⟨_, fun _ _ => rfl⟩`.
+
+Establish `hwo : ∀ v b, ∀ p ∈ fixedSubspaceOfRepresentative X q, hJ (X.B.I.ε v) (rvc X v p) (wt v b) = 0`. Introduce `v b p hp`. Rewrite using `[hwt]`. Conclude with `hxo v b p hp`. Establish `hwo' : ∀ v b, ∀ p ∈ fixedSubspaceOfRepresentative X q, hJ (X.B.I.ε v) (rvc X v p) (wt' v b) = 0`.
+
+Introduce `v b p hp`. Rewrite using `[hwt']`. Conclude with `hx'o v b p hp`. Establish `hxV : ∀ v b, x v b ∈ spanAt X v (fixedSubspaceOfRepresentative X q)` using `fun v b => spanAt_mono X v hFX (hx v b)`. Establish `hx'V : ∀ v b, x' v b ∈ spanAt X v (fixedSubspaceOfRepresentative X q)` using `fun v b => spanAt_mono X v hF'X (hx' v b)`.
+
+Establish `hwtx : ∀ v c, ∀ y ∈ spanAt X v (fixedSubspaceOfRepresentative X q), hJ (X.B.I.ε v) (wt v c) y = 0` using `fun v c => spanAt_orth' X v _ (wt v c) (hwo v c)`. Establish `hxwt : ∀ v c, ∀ y ∈ spanAt X v (fixedSubspaceOfRepresentative X q), hJ (X.B.I.ε v) y (wt v c) = 0` using `fun v c => spanAt_orth X v _ (wt v c) (hwo v c)`. Establish `hxwt' : ∀ v c, ∀ y ∈ spanAt X v (fixedSubspaceOfRepresentative X q), hJ (X.B.I.ε v) y (wt' v c) = 0` using `fun v c => spanAt_orth X v _ (wt' v c) (hwo' v c)`. Establish `hwfrX : ∀ v a, ∀ y ∈ spanAt X v (lf D (X.Fu u)).fl.X, hJ (X.B.I.ε v) (X.wfr u v a) y = 0` using `fun v a => spanAt_orth' X v _ _ (fun p hp => hwp v a p (hXXp _ hp))`. Establish `hwhX : ∀ v a, ∀ y ∈ spanAt X v (frq X q).fl.X, hJ (X.B.I.ε v) (uMat (q.1.1.1 v) *ᵥ X.wfr u' v a) y = 0` using `fun v a => spanAt_orth' X v _ _ (fun p hp => hwp' v a p (hXXp _ hp))`.
+
+Establish `hw : ∀ v b, X.wfr u v b = wt v b + x v b` using `fun v b => by rw [hwt]; abel`. Establish `hw' : ∀ v b, uMat (q.1.1.1 v) *ᵥ X.wfr u' v b = wt' v b + x' v b` using `fun v b => by rw [hwt']; abel`. Establish `hon : ∀ v a b, hJ (X.B.I.ε v) (wt v a) (wt v b) = if a = b then 1 else 0`. Introduce `v a b`. Establish `e1 : hJ (X.B.I.ε v) (wt v a) (wt v b) = hJ (X.B.I.ε v) (X.wfr u v a) (wt v b)`.
+
+Rewrite using `[hwt v a, hJ_sub_left, hxwt v b (x v a) (hxV v a), sub_zero]`. Rewrite using `[e1, hwt v b, hJ_sub_right, hwfrX v a (x v b) (hx v b), sub_zero]`. Conclude with `X.wfr_on u v a b`. Establish `hon' : ∀ v a b, hJ (X.B.I.ε v) (wt' v a) (wt' v b) = if a = b then 1 else 0`. Introduce `v a b`.
+
+Establish `e1 : hJ (X.B.I.ε v) (wt' v a) (wt' v b) = hJ (X.B.I.ε v) (uMat (q.1.1.1 v) *ᵥ X.wfr u' v a) (wt' v b)`. Rewrite using `[hwt' v a, hJ_sub_left, hxwt' v b (x' v a) (hx'V v a), sub_zero]`. Rewrite using `[e1, hwt' v b, hJ_sub_right, hwhX v a (x' v b) (hx' v b), sub_zero, hJ_unitary _ (uMat_unit _)]`. Conclude with `X.wfr_on u' v a b`. Take `⟨K, hK⟩ : ∃ K : InfinitePlace X.B.I.F → Matrix (Fin D.R.k) (Fin D.R.k) ℂ, ∀ v c a, K v c a = hJ (X.B.I.ε v) (wt v c) (wt' v a)` from `⟨fun v => Matrix.of fun c a => _, fun _ _ _ => rfl⟩`.
+
+Establish `KK : ∀ v, (K v)ᴴ * K v = 1`. Introduce `v`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.conjTranspose_apply]`.
+
+Establish `yperp` using `hwo' v a`. Take `⟨ξ, hξ⟩ : ∃ ξ : Fin X.B.I.n → ℂ, ξ = ∑ c, hJ (X.B.I.ε v) (rvc X v (X.fY c)) (wt' v a) • rvc X v (X.eX c)` from `⟨_, rfl⟩`. Establish `hee : ∀ a c, hJ (X.B.I.ε v) (rvc X v (X.eX a)) (rvc X v (X.eX c)) = 0` using `fun a c => hJ_rvc_zero X v (X.ee a c)`. Establish `hfe : ∀ a c, hJ (X.B.I.ε v) (rvc X v (X.fY a)) (rvc X v (X.eX c)) = if c = a then 1 else 0`. Introduce `a c`.
+
+Rewrite using `[hJ_symm, hJ_rvc, X.ef c a]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hze : ∀ c, hJ (X.B.I.ε v) (rvc X v (X.zu u)) (rvc X v (X.eX c)) = 0`. Introduce `c`. Rewrite using `[hJ_symm, hJ_rvc_zero X v (X.zu_orth u c).1, star_zero]`.
+
+Establish `hwe : ∀ b c, hJ (X.B.I.ε v) (X.wfr u v b) (rvc X v (X.eX c)) = 0`. Introduce `b c`. Rewrite using `[hJ_symm, hwp v b _ (hXXp _ (he c)), star_zero]`. Establish `hexp : ∀ w, hJ (X.B.I.ε v) w (wt' v a - ξ) = hJ (X.B.I.ε v) w (wt' v a) - ∑ c, hJ (X.B.I.ε v) (rvc X v (X.fY c)) (wt' v a) * hJ (X.B.I.ε v) w (rvc X v (X.eX c))`. Introduce `w`.
+
+Rewrite using `[hξ, hJ_sub_right, hJ_sum_right]`. Repeatedly rewrite using `[hJ_smul_right]`. Establish `h1` using `hW D X u v (wt' v a - ξ) (fun a' => ⟨?_, ?_⟩) ?_`. Use `rotate_left`. Use `show hJ _ (rvc X v (X.eX a')) _ = 0`.
+
+Rewrite using `[hexp, yperp _ (hFX (he a'))]`. Simplify using `[hee]`. Use `show hJ _ (rvc X v (X.fY a')) _ = 0`. Rewrite using `[hexp]`. Repeatedly rewrite using `[hfe]`.
+
+Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]`. Use `show hJ _ (rvc X v (X.zu u)) _ = 0`. Rewrite using `[hexp, yperp _ (hFXp hz)]`. Simplify using `[hze]`. Establish `hcoef : ∀ b, hJ (X.B.I.ε v) (X.wfr u v b) (wt' v a - ξ) = K v b a`.
+
+Introduce `b`. Rewrite using `[hexp]`. Simplify using `only [hwe, mul_zero, Finset.sum_const_zero, sub_zero]`. Rewrite using `[hw v b, hJ_add_left, spanAt_orth X v _ _ yperp _ (hxV v b), add_zero, hK]`. Rewrite `h1` using `[hcoef]`.
+
+Take `⟨η, hη⟩ : ∃ η : Fin X.B.I.n → ℂ, η = wt' v a - ∑ c, K v c a • wt v c` from `⟨_, rfl⟩`. Establish `hη1 : η = ξ + ∑ c, K v c a • x v c`. Establish `e : wt' v a = ξ + ∑ c, K v c a • (wt v c + x v c)`. Rewrite using `[← sub_add_cancel (wt' v a) ξ, h1, add_comm]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => by rw [hw v c]`. Rewrite using `[hη, e]`. Simplify using `only [smul_add, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws. Establish `hηX : η ∈ spanAt X v (lf D (X.Fu u)).fl.X`.
+
+Rewrite using `[hη1, hξ]`. Conclude with `Submodule.add_mem _ (Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (rvc_mem X v (he c))) (Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (hx v c))`. Establish `hηp : ∀ p ∈ fixedSubspaceOfRepresentative X q, hJ (X.B.I.ε v) (rvc X v p) η = 0`. Introduce `p hp`. Rewrite using `[hη, hJ_sub_right, hJ_sum_right, yperp p hp]`.
+
+Simplify using `[hJ_smul_right, hwo v _ p hp]`. Establish `hηI` using `(hN D X u u' Λ Λ' q hrel hG v).2.2 η hηX hηp`. Establish `hηw : hJ (X.B.I.ε v) η (wt' v b) = 0` using `spanAt_orth X v _ (wt' v b) (fun p hp => hwo' v b p (hF'X (Submodule.mem_inf.1 hp).2)) η hηI`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hJ_sum_left]`.
+
+Repeatedly rewrite using `[hJ_smul_left, hK]`. Use `_ = hJ (X.B.I.ε v) (wt' v a) (wt' v b) := by`. Establish `e : wt' v a = η + ∑ c, K v c a • wt v c` using `by rw [hη, sub_add_cancel]`. Rewrite using `[e, hJ_add_left, hηw, zero_add]`. Use `_ = _ := hon' v a b`.
+
+Establish `hC : ∀ v, (K v)ᴴ ∈ UJset (allPos D.R.k)`. Introduce `v`. Rewrite using `[memU_iff, Matrix.conjTranspose_conjTranspose]`. Conclude with `mul_eq_one_comm.1 (KK v)`. Use `⟨fun v => (K v)ᴴ, hC, fun M hM => ?_⟩` and prove the remaining obligations.
+
+Establish `hMu : ∀ v, (M v)ᴴ * M v = 1` using `fun v => (memU_iff _).1 (hM v)`. Set `h : X.B.I.Ginf` to `fun v => sUg (X.B.I.ε v) (wt v) (hon v) (M v) (hMu v)`. Establish `hh : ∀ v, uMat (h v) = smat (Formalism.REAL.Jm (X.B.I.ε v)) (wt v) (M v)` using `fun v => rfl`. Establish `hfix : ∀ v y, (∀ c, hJ (X.B.I.ε v) (wt v c) y = 0) → uMat (h v) *ᵥ y = y` using `fun v y hy => by rw [hh]; exact smat_fix _ _ (hon v) _ _ hy`. Establish `hfixV : ∀ v, ∀ p ∈ fixedSubspaceOfRepresentative X q, uMat (h v) *ᵥ rvc X v p = rvc X v p` using `fun v p hp => hfix v _ (fun c => by rw [hJ_symm, hwo v c p hp, star_zero])`.
+
+Establish `hfixS : ∀ v, ∀ y ∈ spanAt X v (fixedSubspaceOfRepresentative X q), uMat (h v) *ᵥ y = y` using `fun v y hy => hfix v y (fun c => hwtx v c y hy)`. Use `⟨h, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v y hy`. Take `⟨p, hp, rfl⟩` from `hy`. Conclude with `hfixV v p hp`.
+
+Establish `hS : h ∈ X.SinfU u` using `by show ∀ v, InS _ _ _`. Introduce `v`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Use `show (uMat (h v) - 1) *ᵥ rvc X v (X.eX a) ∈ _`. Rewrite using `[sub_one_mulVec_fix (hfixV v _ (hFX (he a)))]`.
+
+Conclude with `Submodule.zero_mem _`. Use `show (uMat (h v) - 1) *ᵥ rvc X v (X.zu u) ∈ _`. Rewrite using `[sub_one_mulVec_fix (hfixV v _ (hFXp hz))]`. Conclude with `Submodule.zero_mem _`. Establish `hmat : ∀ v, matW X.B.I (X.wfr u v) v h = M v`.
+
+Introduce `v`. Use function extensionality and compare the values at `a b`. Use `show hJ (X.B.I.ε v) (X.wfr u v a) (uMat (h v) *ᵥ X.wfr u v b) = M v a b`. Rewrite using `[hw v b, Matrix.mulVec_add, hfixS v _ (hxV v b), hJ_add_right, hwfrX v a _ (hx v b), add_zero, hw v a, hJ_add_left]`. Establish `e1 : hJ (X.B.I.ε v) (x v a) (uMat (h v) *ᵥ wt v b) = 0`.
+
+Establish `hu` using `hJ_unitary (X.B.I.ε v) (uMat_unit (h v)) (x v a) (wt v b)`. Rewrite `hu` using `[hfixS v _ (hxV v a)]`. Rewrite using `[hu]`. Conclude with `hxwt v b _ (hxV v a)`. Rewrite using `[e1, add_zero, hh]`.
+
+Conclude with `smat_mat _ _ (hon v) (M v) a b`. Introduce `y`. Rewrite using `[hL D X u h hS y]`. Simplify using `only [hmat]`. Set `h' : X.B.I.Ginf` to `q.1.1.1⁻¹ * h * q.1.1.1`.
+
+Establish `hh' : ∀ v, uMat (h' v) = uMat (q.1.1.1 v)⁻¹ * uMat (h v) * uMat (q.1.1.1 v)`. Introduce `v`. Use `show uMat ((q.1.1.1 v)⁻¹ * h v * q.1.1.1 v) = _`. Rewrite using `[uMat_mul', uMat_mul']`. Establish `hfix' : ∀ v p, q.1.2 p ∈ fixedSubspaceOfRepresentative X q → uMat (h' v) *ᵥ rvc X v p = rvc X v p`.
+
+Introduce `v p hp`. Rewrite using `[hh', ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hγ, hfixV v _ hp, ← hγ, Matrix.mulVec_mulVec, uMat_inv_mul'', Matrix.one_mulVec]`. Establish `hS' : h' ∈ X.SinfU u'` using `by show ∀ v, InS _ _ _`. Introduce `v`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show (uMat (h' v) - 1) *ᵥ rvc X v (X.eX a) ∈ _`. Rewrite using `[sub_one_mulVec_fix (hfix' v _ (hF'X (he' a)))]`. Conclude with `Submodule.zero_mem _`. Use `show (uMat (h' v) - 1) *ᵥ rvc X v (X.zu u') ∈ _`. Rewrite using `[sub_one_mulVec_fix (hfix' v _ (hF'Xp hz'))]`.
+
+Conclude with `Submodule.zero_mem _`. Establish `hmat' : ∀ v, matW X.B.I (X.wfr u' v) v h' = (K v)ᴴ * M v * ((K v)ᴴ)ᴴ`. Introduce `v`. Use function extensionality and compare the values at `a b`. Use `show hJ (X.B.I.ε v) (X.wfr u' v a) (uMat (h' v) *ᵥ X.wfr u' v b) = _`.
+
+Rewrite using `[Matrix.conjTranspose_conjTranspose]`. Establish `e0 : hJ (X.B.I.ε v) (X.wfr u' v a) (uMat (h' v) *ᵥ X.wfr u' v b) = hJ (X.B.I.ε v) (uMat (q.1.1.1 v) *ᵥ X.wfr u' v a) (uMat (h v) *ᵥ (uMat (q.1.1.1 v) *ᵥ X.wfr u' v b))`. Rewrite using `[← hJ_unitary _ (uMat_unit (q.1.1.1 v)) (X.wfr u' v a), hh']`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (uMat (q.1.1.1 v)) (uMat (q.1.1.1 v)⁻¹), uMat_mul_inv'', Matrix.one_mul]`.
+
+Establish `hsa : uMat (h v) *ᵥ wt' v b = wt' v b + ∑ c, ((M v - 1) *ᵥ fun d : Fin D.R.k => K v d b) c • wt v c`. Rewrite using `[hh, smat_apply]`. Simplify using `only [← hK]`. Establish `hwa : ∀ c, hJ (X.B.I.ε v) (uMat (q.1.1.1 v) *ᵥ X.wfr u' v a) (wt v c) = star (K v c a)`. Introduce `c`.
+
+Rewrite using `[hw' v a, hJ_add_left, hxwt v c _ (hx'V v a), add_zero, hK, hJ_symm]`. Establish `lhs : hJ (X.B.I.ε v) (uMat (q.1.1.1 v) *ᵥ X.wfr u' v a) (uMat (h v) *ᵥ (uMat (q.1.1.1 v) *ᵥ X.wfr u' v b)) = (if a = b then 1 else 0) + ∑ c, star (K v c a) * ((M v - 1) *ᵥ fun d : Fin D.R.k => K v d b) c`. Establish `e2 : uMat (h v) *ᵥ (uMat (q.1.1.1 v) *ᵥ X.wfr u' v b) = (wt' v b + x' v b) + ∑ c, ((M v - 1) *ᵥ fun d : Fin D.R.k => K v d b) c • wt v c`. Rewrite using `[hw' v b, Matrix.mulVec_add, hfixS v _ (hx'V v b), hsa]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e2, hJ_add_right, ← hw' v b, hJ_unitary _ (uMat_unit _), X.wfr_on u' v a b, hJ_sum_right]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hJ_smul_right, hwa, mul_comm]`. Establish `rhs : ((K v)ᴴ * M v * K v) a b = (if a = b then 1 else 0) + ∑ c, star (K v c a) * ((M v - 1) *ᵥ fun d : Fin D.R.k => K v d b) c`.
+
+Establish `hid : (K v)ᴴ * M v * K v = 1 + (K v)ᴴ * ((M v - 1) * K v)`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub, KK v, ← Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[hid, Matrix.add_apply, Matrix.one_apply, Matrix.mul_apply]`. Use `congr 1`.
+
+Rewrite using `[e0, lhs, rhs]`. Introduce `y`. Rewrite using `[hL D X u' h' hS' y]`. Simplify using `only [hmat']`.
+-/
 theorem geomB_of (hL : LeviTens) (hW : WfrSpan) (hN : CplxNF) : GeomB := by
   intro D X u u' Λ Λ' q hrel hG
 

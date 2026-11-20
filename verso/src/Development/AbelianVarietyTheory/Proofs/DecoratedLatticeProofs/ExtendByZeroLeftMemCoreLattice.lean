@@ -8,6 +8,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ContrComb
 
+/- English proof (translation)
+Introduce `D V₀ A L S o P LA LS M hA hS hM hO u hu`. Rewrite `hu` using `[GlobalTheory.T.mem_homLatticeCompletion_iff_supported_maps D A S LA LS hA hS P u]`. Take `⟨huP, huL⟩` from `hu`. Rewrite using `[GlobalTheory.T.mem_homLatticeCompletion_iff_supported_maps D V₀ S M LS hM hS P, OrthDec.resS_symm_apply, Matrix.zero_mul, add_zero]`. Establish `hloc` using `(GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).2`.
+
+Use `⟨fun i j => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (huP i k)`. Establish `hy'` using `((hloc V₀).2.2.2 M y hM.1).1 hy`. Establish `hp : o.pA *ᵥ y ∈ latV A LA P`.
+
+Use `((hloc A).2.2.2 LA (o.pA *ᵥ y) hA.1).2 ⟨fun i => ?_, fun v hv e he => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (hy'.1 k)`. Take `⟨LL, hLL⟩` from `hO v hv`. Establish `h1` using `((hLL (e • y)).1 (hy'.2 v hv e he)).1`.
+
+Rewrite `h1` using `[Matrix.mulVec_smul]`. Then use the resulting hypothesis. Establish `h2` using `huL _ hp`. Express the relevant statement in the definitionally equal form `(u * o.pA) *ᵥ y ∈ latA S LS P`. Rewrite using `[← Matrix.mulVec_mulVec]` and apply the resulting hypothesis.
+-/
 theorem extL_mem_latO : ∀ (D : D7) (V₀ A L S : HSp D) (o : OrthDec V₀ A L) (P : Pl D → Prop) (LA : Lat A) (LS : Lat S) (M : Lat V₀), IsSelfDualC A LA → IsSelfDualC S LS → IsSelfDualC V₀ M → (∀ v, P v → ∃ LL, OrthAt o M LA LL v) → ∀ u ∈ latO A S (LA : Set _) (LS : Set _) P, (o.resS S).symm (u, 0) ∈ latO V₀ S (M : Set _) (LS : Set _) P := by
   intro D V₀ A L S o P LA LS M hA hS hM hO u hu
   rw [GlobalTheory.T.mem_homLatticeCompletion_iff_supported_maps D A S LA LS hA hS P u] at hu

@@ -11,5 +11,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.chart_exists | exact GlobalTheory.StdUnn.chart_exists | (intros; apply GlobalTheory.StdUnn.chart_exists <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_standardUnitaryChart_doubledSpace : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∃ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ := by
   first | exact @GlobalTheory.StdUnn.chart_exists | exact GlobalTheory.StdUnn.chart_exists | (intros; apply GlobalTheory.StdUnn.chart_exists <;> assumption)

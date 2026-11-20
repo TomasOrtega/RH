@@ -24,6 +24,9 @@ noncomputable def rightMulEquiv (m n : ℕ) (a : Matrix (Fin n) (Fin n) ℂ) (ha
         rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul a ha, Matrix.mul_one]
         rfl }
 
+/- English proof (translation)
+Introduce `m n c a ha φ`. Use `⟨c • SchwartzMap.compCLMOfContinuousLinearEquiv ℂ ((rightMulEquiv m n a ha).restrictScalars ℝ) φ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Both sides reduce to the same expression.
+-/
 theorem exists_schwartz_rightMul : ∀ (m n : ℕ) (c : ℂ) (a : Matrix (Fin n) (Fin n) ℂ), IsUnit a.det →
     ∀ φ : SchwartzMap (Fin m → Fin n → ℂ) ℂ, ∃ ψ : SchwartzMap (Fin m → Fin n → ℂ) ℂ,
       ⇑ψ = fun u => c * φ (Matrix.of u * a) := by

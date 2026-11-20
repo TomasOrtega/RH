@@ -12,10 +12,18 @@ open Formalism.MainNotions.S
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E} {r : ℕ} {T : E}
 
+/- English proof (translation)
+Unfold `FlagG.Xa FlagG.X`. Conclude with `Submodule.span_mono (Set.image_subset_range _ _)`.
+-/
 lemma Xa_le_X (F : FlagG S r T) (j : ℕ) : F.Xa j ≤ F.X := by
   unfold FlagG.Xa FlagG.X
   exact Submodule.span_mono (Set.image_subset_range _ _)
 
+/- English proof (translation)
+Unfold `FlagG.Xa FlagG.X`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`.
+
+Conclude with `⟨i, i.isLt, rfl⟩`. Introduce and unpack `⟨i, -, rfl⟩`. Conclude with `⟨i, rfl⟩`.
+-/
 lemma X_eq_Xa (F : FlagG S r T) : F.X = F.Xa r := by
   unfold FlagG.Xa FlagG.X
   congr 1
@@ -26,10 +34,16 @@ lemma X_eq_Xa (F : FlagG S r T) : F.X = F.Xa r := by
   · rintro ⟨i, -, rfl⟩
     exact ⟨i, rfl⟩
 
+/- English proof (translation)
+Unfold `FlagG.Xa`. Conclude with `Submodule.subset_span ⟨a, Nat.lt_succ_self _, rfl⟩`.
+-/
 lemma e_mem (F : FlagG S r T) (a : Fin r) : F.e a ∈ F.Xa (a.val + 1) := by
   unfold FlagG.Xa
   exact Submodule.subset_span ⟨a, Nat.lt_succ_self _, rfl⟩
 
+/- English proof (translation)
+Establish `hmem : Finsupp.linearCombination E F.e l ∈ Submodule.span E (Set.range F.e)`. Rewrite using `[← Finsupp.range_linearCombination]`. Conclude with `LinearMap.mem_range_self _ l`. Unfold `FlagG.coefX`. Rewrite using `[dif_pos hmem, F.e_indep.repr_eq (l := l) rfl]`.
+-/
 private lemma coefX_linearCombination_eq (F : FlagG S r T) (l : Fin r →₀ E) (a : Fin r) :
     F.coefX (Finsupp.linearCombination E F.e l) a = l a := by
   have hmem : Finsupp.linearCombination E F.e l ∈ Submodule.span E (Set.range F.e) := by
@@ -38,28 +52,47 @@ private lemma coefX_linearCombination_eq (F : FlagG S r T) (l : Fin r →₀ E) 
   unfold FlagG.coefX
   rw [dif_pos hmem, F.e_indep.repr_eq (l := l) rfl]
 
+/- English proof (translation)
+Unfold `FlagG.X at hy`. Rewrite `hy` using `[← Finsupp.range_linearCombination]`. Conclude with `LinearMap.mem_range.mp hy`.
+-/
 private lemma exists_linearCombination_eq_of_mem_flagX (F : FlagG S r T) {y : S.V} (hy : y ∈ F.X) :
     ∃ l : Fin r →₀ E, Finsupp.linearCombination E F.e l = y := by
   unfold FlagG.X at hy
   rw [← Finsupp.range_linearCombination] at hy
   exact LinearMap.mem_range.mp hy
 
+/- English proof (translation)
+Take `⟨l, rfl⟩` from `exists_linearCombination_eq_of_mem_flagX F hx`. Take `⟨m, rfl⟩` from `exists_linearCombination_eq_of_mem_flagX F hy`. Rewrite using `[← map_add, coefX_linearCombination_eq, coefX_linearCombination_eq, coefX_linearCombination_eq, Finsupp.add_apply]`.
+-/
 lemma coefX_add (F : FlagG S r T) (a : Fin r) {x y : S.V} (hx : x ∈ F.X) (hy : y ∈ F.X) :
     F.coefX (x + y) a = F.coefX x a + F.coefX y a := by
   obtain ⟨l, rfl⟩ := exists_linearCombination_eq_of_mem_flagX F hx
   obtain ⟨m, rfl⟩ := exists_linearCombination_eq_of_mem_flagX F hy
   rw [← map_add, coefX_linearCombination_eq, coefX_linearCombination_eq, coefX_linearCombination_eq, Finsupp.add_apply]
 
+/- English proof (translation)
+Take `⟨l, rfl⟩` from `exists_linearCombination_eq_of_mem_flagX F hx`. Rewrite using `[← map_smul, coefX_linearCombination_eq, coefX_linearCombination_eq, Finsupp.smul_apply, smul_eq_mul]`.
+-/
 lemma coefX_smul (F : FlagG S r T) (a : Fin r) (c : E) {x : S.V} (hx : x ∈ F.X) :
     F.coefX (c • x) a = c * F.coefX x a := by
   obtain ⟨l, rfl⟩ := exists_linearCombination_eq_of_mem_flagX F hx
   rw [← map_smul, coefX_linearCombination_eq, coefX_linearCombination_eq, Finsupp.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Establish `h : F.e i = Finsupp.linearCombination E F.e (Finsupp.single i 1)` using `by simp`. Rewrite using `[h, coefX_linearCombination_eq, Finsupp.single_apply]`.
+-/
 lemma coefX_e (F : FlagG S r T) (i a : Fin r) :
     F.coefX (F.e i) a = if i = a then 1 else 0 := by
   have h : F.e i = Finsupp.linearCombination E F.e (Finsupp.single i 1) := by simp
   rw [h, coefX_linearCombination_eq, Finsupp.single_apply]
 
+/- English proof (translation)
+Unfold `FlagG.Xa at hy ⊢`. Take `⟨l, hl, rfl⟩` from `(Finsupp.mem_span_image_iff_linearCombination (R := E)).mp hy`. Rewrite `h0` using `[coefX_linearCombination_eq]`. Use `(Finsupp.mem_span_image_iff_linearCombination (R := E)).mpr ⟨l, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hl`, the goal using `[Finsupp.mem_supported']`.
+
+Introduce `i hi`. Simplify using `only [Set.mem_ofPred_eq, not_lt] at hi`. Break down `lt_or_eq_of_le hi with h | h` into its components or cases. Conclude with `hl i (by simp only [Set.mem_ofPred_eq]; omega)`. Establish `hia : i = a` using `Fin.ext h.symm`.
+
+Rewrite using `[hia]`. Conclude with `h0`.
+-/
 lemma mem_Xa_of_coefX_eq_zero (F : FlagG S r T) (a : Fin r) {y : S.V} (hy : y ∈ F.Xa (a.val + 1))
     (h0 : F.coefX y a = 0) : y ∈ F.Xa a.val := by
   unfold FlagG.Xa at hy ⊢
@@ -75,6 +108,9 @@ lemma mem_Xa_of_coefX_eq_zero (F : FlagG S r T) (a : Fin r) {y : S.V} (hy : y �
     rw [hia]
     exact h0
 
+/- English proof (translation)
+Establish `hyX` using `Xa_le_X F _ hy`. Establish `hwX` using `Xa_le_X F _ hw`. Apply `mem_Xa_of_coefX_eq_zero F a (Submodule.sub_mem _ hy (Submodule.smul_mem _ _ hw))` to reduce the goal to its premises. Rewrite using `[sub_eq_add_neg, ← neg_smul, coefX_add F a hyX (Submodule.smul_mem _ _ hwX), coefX_smul F a _ hwX, hw1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma sub_smul_mem (F : FlagG S r T) (a : Fin r) {y w : S.V} (hy : y ∈ F.Xa (a.val + 1))
     (hw : w ∈ F.Xa (a.val + 1)) (hw1 : F.coefX w a = 1) :
     y - F.coefX y a • w ∈ F.Xa a.val := by
@@ -85,6 +121,17 @@ lemma sub_smul_mem (F : FlagG S r T) (a : Fin r) {y w : S.V} (hy : y ∈ F.Xa (a
     coefX_smul F a _ hwX, hw1]
   ring
 
+/- English proof (translation)
+Establish `key : ∀ s ∈ J * J⁻¹, ∃ w ∈ F.Xa (a.val + 1), F.coefX w a = s ∧ ∀ t ∈ J, t • w ∈ Λ`. Introduce `s hs`. Use `FractionalIdeal.mul_induction_on hs ?_ ?_` and prove the remaining obligations. Introduce `i hi j hj`. Take `⟨x, hxΛ, hxX, hxc⟩` from `h3 i hi`.
+
+Use `⟨j • x, Submodule.smul_mem _ j hxX, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coefX_smul F a j (Xa_le_X F _ hxX), hxc, mul_comm]`. Introduce `t ht`. Establish `htj : t * j ∈ J * J⁻¹` using `FractionalIdeal.mul_mem_mul ht hj`. Rewrite `htj` using `[mul_inv_cancel₀ hJ, FractionalIdeal.mem_one_iff]`.
+
+Take `⟨o, ho⟩` from `htj`. Rewrite using `[smul_smul, ← ho, algebraMap_smul]`. Conclude with `Λ.smul_mem o hxΛ`. Introduce and unpack `s₁ s₂ ⟨w₁, hw₁, hc₁, hΛ₁⟩ ⟨w₂, hw₂, hc₂, hΛ₂⟩`. Use `⟨w₁ + w₂, Submodule.add_mem _ hw₁ hw₂, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[coefX_add F a (Xa_le_X F _ hw₁) (Xa_le_X F _ hw₂), hc₁, hc₂]`. Introduce `t ht`. Rewrite using `[smul_add]`. Conclude with `Λ.add_mem (hΛ₁ t ht) (hΛ₂ t ht)`. Establish `h1 : (1 : E) ∈ J * J⁻¹`.
+
+Rewrite using `[mul_inv_cancel₀ hJ, FractionalIdeal.mem_one_iff]`. Conclude with `⟨1, map_one _⟩`. Conclude with `key 1 h1`.
+-/
 lemma exists_section (F : FlagG S r T) (Λ : Submodule (𝓞 E) S.V)
     (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hJ : J ≠ 0) (a : Fin r)
     (h3 : ∀ t : E, t ∈ J → ∃ x ∈ Λ, x ∈ F.Xa (a.val + 1) ∧ F.coefX x a = t) :
@@ -114,6 +161,23 @@ lemma exists_section (F : FlagG S r T) (Λ : Submodule (𝓞 E) S.V)
     exact ⟨1, map_one _⟩
   exact key 1 h1
 
+/- English proof (translation)
+Introduce `E _ _ _ S r T G Λ J hJ h2 h3`. Establish `hsec : ∀ a : Fin r, ∃ w ∈ G.fl.Xa (a.val + 1), G.fl.coefX w a = 1 ∧ ∀ t ∈ J a, t • w ∈ Λ` using `fun a => exists_section G.fl Λ (J a) (hJ a) a (h3 a)`. Use `choose e' he'X he'c he'Λ using hsec`. Use `⟨e', fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `hea : G.fl.coefX (G.fl.e a) a = 1` using `by rw [coefX_e, if_pos rfl]`.
+
+Establish `h` using `sub_smul_mem G.fl a (he'X a) (e_mem G.fl a) hea`. Rewrite `h` using `[he'c a, one_smul]`. Then use the resulting hypothesis. Apply `le_antisymm` to reduce the goal to its premises. Establish `step : ∀ j : ℕ, j ≤ r → ∀ v ∈ Λ, v ∈ G.fl.Xa j → v ∈ Submodule.span (𝓞 E) {y | ∃ (a : Fin r) (x : E), x ∈ J a ∧ y = x • e' a}`. Introduce `j`.
+
+Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ v _ hv`. Establish `hv0 : v = 0`. Unfold `Formalism.MainNotions.S.FlagG.Xa at hv`.
+
+Simplify using `using hv`. Rewrite using `[hv0]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ j ih`. Introduce `hj v hvΛ hv`.
+
+Take `⟨a, rfl⟩ : ∃ a : Fin r, a.val = j` from `⟨⟨j, hj⟩, rfl⟩`. Establish `hc : G.fl.coefX v a ∈ J a` using `h2 a v hvΛ hv`. Establish `hrest : v - G.fl.coefX v a • e' a ∈ G.fl.Xa a.val` using `sub_smul_mem G.fl a hv (he'X a) (he'c a)`. Establish `hrestΛ : v - G.fl.coefX v a • e' a ∈ Λ` using `Λ.sub_mem hvΛ (he'Λ a _ hc)`. Establish `hlow` using `ih (Nat.le_of_succ_le hj) _ hrestΛ hrest`.
+
+Establish `htop : G.fl.coefX v a • e' a ∈ Submodule.span (𝓞 E) {y | ∃ (a : Fin r) (x : E), x ∈ J a ∧ y = x • e' a}` using `Submodule.subset_span ⟨a, _, hc, rfl⟩`. Establish `hsum` using `Submodule.add_mem _ hlow htop`. Rewrite `hsum` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `v hv`. Take `⟨hvΛ, hvX⟩ : v ∈ Λ ∧ v ∈ G.fl.X` from `hv`.
+
+Rewrite `hvX` using `[X_eq_Xa]`. Conclude with `step r le_rfl v hvΛ hvX`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨a, x, hx, rfl⟩`. Use `show x • e' a ∈ Λ ⊓ Formalism.MainNotions.S.Lat.toO S (Formalism.MainNotions.S.Lat.Xsp G)`.
+
+Conclude with `Submodule.mem_inf.mpr ⟨he'Λ a x hx, (G.fl.X).smul_mem x (Xa_le_X G.fl _ (he'X a))⟩`.
+-/
 theorem xLam_eq_span : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E) (r : ℕ) (T : E) (G : Formalism.MainNotions.S.Lat.LFlag S r T) (Λ : Submodule (𝓞 E) S.V) (J : Fin r → FractionalIdeal (nonZeroDivisors (𝓞 E)) E), (∀ a, J a ≠ 0) → (∀ (a : Fin r) (x : S.V), x ∈ Λ → x ∈ G.fl.Xa (a.val + 1) → G.fl.coefX x a ∈ J a) → (∀ (a : Fin r) (t : E), t ∈ J a → ∃ x ∈ Λ, x ∈ G.fl.Xa (a.val + 1) ∧ G.fl.coefX x a = t) → ∃ e' : Fin r → S.V, (∀ a, e' a - G.fl.e a ∈ G.fl.Xa a.val) ∧ Formalism.MainNotions.S.Lat.XLam Λ G = Submodule.span (𝓞 E) {y | ∃ (a : Fin r) (x : E), x ∈ J a ∧ y = x • e' a} := by
   intro E _ _ _ S r T G Λ J hJ h2 h3
   have hsec : ∀ a : Fin r, ∃ w ∈ G.fl.Xa (a.val + 1), G.fl.coefX w a = 1 ∧ ∀ t ∈ J a, t • w ∈ Λ :=

@@ -5,6 +5,13 @@ open scoped TensorProduct ENNReal nonZeroDivisors Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hd0 : 0 < d` using `by linarith`. Establish `hd0' : d ≠ 0` using `hd0.ne'`. Establish `hs : Real.sqrt d * Real.sqrt d = d` using `Real.mul_self_sqrt hd0.le`. Establish `h1 : d ^ (1 / 2 - 2 * (t : ℝ)) = Real.sqrt d / d ^ (2 * t)`. Rewrite using `[Real.rpow_sub hd0, Real.sqrt_eq_rpow]`.
+
+Use `congr 1`. Conclude with `Real.rpow_natCast d (2 * t)` after adjusting the coercions. Rewrite using `[Real.sqrt_sq hd0.le, h1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_mul, show 2 * (2 * t) = 2 * t + 2 * t by ring, pow_add]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem covolQuotient_real (d : ℝ) (f t : ℕ) (hd : 1 ≤ d) :
     ((d ^ 2) ^ (2 * t))⁻¹ * (2⁻¹ : ℝ) ^ f * Real.sqrt (d ^ 2) =
       ((d ^ (2 * t))⁻¹ * (2⁻¹ : ℝ) ^ 0 * Real.sqrt d) *
@@ -24,6 +31,11 @@ theorem covolQuotient_real (d : ℝ) (f t : ℕ) (hd : 1 ≤ d) :
         rw [← pow_mul, show 2 * (2 * t) = 2 * t + 2 * t by ring, pow_add]
         field_simp
 
+/- English proof (translation)
+Introduce `d c f t m hd hc h`. Establish `hd0 : 0 < d` using `by linarith`. Establish `hY : 0 < (d ^ (2 * t))⁻¹ * (2⁻¹ : ℝ) ^ 0 * Real.sqrt d` using `mul_pos (mul_pos (inv_pos.mpr (pow_pos hd0 _)) (by norm_num)) (Real.sqrt_pos.mpr hd0)`. Establish `hZ : 0 ≤ (2⁻¹ : ℝ) ^ f * d ^ (1 / 2 - 2 * (t : ℝ))` using `mul_nonneg (by positivity) (Real.rpow_nonneg hd0.le _)`. Rewrite `h` using `[covolQuotient_real d f t hd, ENNReal.ofReal_mul hY.le]`.
+
+Establish `hm : m = ENNReal.ofReal ((2⁻¹ : ℝ) ^ f * d ^ (1 / 2 - 2 * (t : ℝ)))` using `((ENNReal.mul_right_inj (ENNReal.ofReal_pos.mpr hY).ne' ENNReal.ofReal_ne_top).mp h).symm`. Rewrite using `[hm, ← ENNReal.ofReal_mul (pow_nonneg (by linarith) f)]`. Use `congr 1`. Establish `h2 : (2 : ℝ) ^ f * (2⁻¹ : ℝ) ^ f = 1` using `by rw [← mul_pow]; norm_num`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem covolQuotient_arith : ∀ (d c : ℝ) (f t : ℕ) (m : ℝ≥0∞), 1 ≤ d → 0 < c →
     ENNReal.ofReal (((d ^ 2) ^ (2 * t))⁻¹ * (2⁻¹ : ℝ) ^ f * Real.sqrt (d ^ 2)) =
       ENNReal.ofReal ((d ^ (2 * t))⁻¹ * (2⁻¹ : ℝ) ^ 0 * Real.sqrt d) * m →

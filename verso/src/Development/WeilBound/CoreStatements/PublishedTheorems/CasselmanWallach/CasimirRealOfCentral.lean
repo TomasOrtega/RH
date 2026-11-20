@@ -10,12 +10,20 @@ namespace CasimirRealScalar
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `casimir Mm`. Rewrite using `[sq, Matrix.trace]`. Simplify using `[Matrix.diag, Matrix.mul_apply]`.
+-/
 theorem casimir_eq_trace {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V) :
     casimir E = (Mm E ^ 2).trace := by
   unfold casimir Mm
   rw [sq, Matrix.trace]
   simp [Matrix.diag, Matrix.mul_apply]
 
+/- English proof (translation)
+Rewrite using `[← inner_conj_symm, hu a b, Complex.conj_im, neg_eq_zero]`. Establish `h1 : (adjSign ε a b).im = 0`. Unfold `adjSign`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : (inner ℂ (E b a v) (E b a v)).im = 0` using `inner_self_im (𝕜 := ℂ) _`.
+
+Rewrite using `[Complex.mul_im, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem term_im {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) (hu : IsInfUnitary ε E) (a b : Fin n) (v : V) :
     (inner ℂ v (E a b (E b a v))).im = 0 := by
@@ -27,6 +35,9 @@ theorem term_im {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (ε 
   rw [Complex.mul_im, h1, h2]
   ring
 
+/- English proof (translation)
+Unfold `casimir`. Simplify using `only [LinearMap.sum_apply, Module.End.mul_apply, inner_sum, Complex.im_sum]`. Conclude with `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => term_im ε E hu a b v`.
+-/
 theorem cas_im {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) (hu : IsInfUnitary ε E) (v : V) :
     (inner ℂ v (casimir E v)).im = 0 := by
@@ -36,6 +47,19 @@ theorem cas_im {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (ε :
 
 end CasimirRealScalar
 
+/- English proof (translation)
+Introduce `h2 h3`. Unfold `CasimirIsRealScalar ForMod`. Introduce `n ε V _ _ E h`. Establish `hc : ∀ a b, E a b * casimir E = casimir E * E a b`. Introduce `a b`.
+
+Rewrite using `[CasimirRealScalar.casimir_eq_trace]`. Conclude with `h2 n ε V E h 2 a b`. Take `⟨c, hc'⟩` from `h3 n ε V E h (casimir E) hc`. Break down `subsingleton_or_nontrivial V with hV | hV` into its components or cases. Conclude with `⟨0, fun v => Subsingleton.elim _ _⟩`.
+
+Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `him` using `CasimirRealScalar.cas_im ε E h.uni v`. Establish `hn : ‖v‖ ≠ 0` using `norm_ne_zero_iff.mpr hv`. Establish `hcim : c.im = 0`. Rewrite `him` using `[hc', inner_smul_right, inner_self_eq_norm_sq_to_K, Complex.mul_im]`.
+
+Establish `hre : ((‖v‖ : ℂ) ^ 2).re = ‖v‖ ^ 2`. Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_re]`. Establish `him2 : ((‖v‖ : ℂ) ^ 2).im = 0`. Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_im]`. Use `erw [hre, him2, mul_zero, zero_add] at him`.
+
+Break down `mul_eq_zero.mp him with h0 | h0` into its components or cases. Conclude with `h0`. Conclude with `absurd (pow_eq_zero_iff two_ne_zero |>.mp h0) hn`. Use `⟨c.re, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hc' w]`.
+
+Use `congr 1`. Apply the tactic sequence `apply Complex.ext <;> simp [hcim]`.
+-/
 theorem casimir_real_of_central : A2 → A3 → CasimirIsRealScalar := by
   intro h2 h3
   unfold CasimirIsRealScalar ForMod

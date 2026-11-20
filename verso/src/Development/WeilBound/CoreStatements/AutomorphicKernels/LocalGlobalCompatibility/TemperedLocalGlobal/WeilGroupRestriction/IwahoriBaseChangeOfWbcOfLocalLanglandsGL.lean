@@ -16,6 +16,9 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.LocalGlobalCompat
 
 namespace PositivityTheory.Pf1.CLGD.K
 
+/- English proof (translation)
+The claim follows from `char_poly_restriction_holds hG hB hL split_places_weil_galois (cm_composition_lift_holds hG (CyclicCMExtension.cyclic_cm_extension_prescribed_weil weil_element_exists) (cm_descent_avoiding_field weil_element_exists) split_places_weil_galois place_membership_of_sup (cyclic_composi …`.
+-/
 theorem main_holds (hW : WBC) (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (hB : GlobalTheory.Published.DeRhamPotSemistable)
     (hL : GlobalTheory.Published.LocalLanglandsGL) (hJ : GlobalTheory.Published.JacquetShalikaRigidity) : Main :=
   char_poly_restriction_holds hG hB hL split_places_weil_galois (cm_composition_lift_holds hG (CyclicCMExtension.cyclic_cm_extension_prescribed_weil weil_element_exists) (cm_descent_avoiding_field weil_element_exists) split_places_weil_galois place_membership_of_sup (cyclic_composition_lift hG hL (oneStep_of hW frobenius_trace_place_norm conjugate_place_norm_under weak_lift_galois_restriction hL hJ))) weil_deligne_restriction_away fontaine_weil_deligne_restriction iwahori_fixed_vector_unipotent

@@ -15,17 +15,35 @@ abbrev normInteger : Subring K := (NormedField.valuation (K := K)).integer
 
 variable {K}
 
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff, NormedField.valuation_apply, ← NNReal.coe_le_coe]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_normInteger {x : K} : x ∈ normInteger K ↔ ‖x‖ ≤ 1 := by
   rw [Valuation.mem_integer_iff, NormedField.valuation_apply, ← NNReal.coe_le_coe]
   simp
 
+/- English proof (translation)
+The claim follows from `Valuation.integer.integers _`.
+-/
 theorem normInteger_integers : (NormedField.valuation (K := K)).Integers (normInteger K) :=
   Valuation.integer.integers _
 
 open scoped NormedField in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem normInteger_eq_valued_integer : normInteger K = Valued.integer K := rfl
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[Subring.coe_mul, SubmonoidClass.coe_pow, norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `hx`. Distinguish the cases in `ha : (a : K) ^ n = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: ‖(x : K)‖ = 0` using `le_antisymm (by simpa [← norm_pow, ha] using hx) (norm_nonneg _)`. Use `ext`.
+
+Simplify using `[norm_eq_zero.1 this]`. Use `⟨⟨(x : K) / (a : K) ^ n, mem_normInteger.2 ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_pow]`. Conclude with `div_le_one_of_le₀ hx (by positivity)`. Use `ext`.
+
+Simplify using `[div_mul_cancel₀ _ ha]`.
+-/
 theorem mem_span_singleton_pow_iff {a x : normInteger K} (n : ℕ) :
     x ∈ Ideal.span {a} ^ n ↔ ‖(x : K)‖ ≤ ‖(a : K)‖ ^ n := by
   rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton']
@@ -45,6 +63,17 @@ theorem mem_span_singleton_pow_iff {a x : normInteger K} (n : ℕ) :
         exact div_le_one_of_le₀ hx (by positivity)
       · ext; simp [div_mul_cancel₀ _ ha]
 
+/- English proof (translation)
+Establish `hmem : ∀ (n : ℕ) (x y : normInteger K), x ≡ y [SMOD (Ideal.span {a} ^ n • ⊤ : Submodule (normInteger K) (normInteger K))] ↔ ‖(x : K) - y‖ ≤ ‖(a : K)‖ ^ n`. Introduce `n x y`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, mem_span_singleton_pow_iff]`. Simplify using the standard rewrite rules. Use `{ haus' := ?_, prec' := ?_ }` and prove the remaining obligations.
+
+Introduce `x hx`. Simplify using `only [hmem, ZeroMemClass.coe_zero, sub_zero] at hx`. Establish `ht : Filter.Tendsto (fun n : ℕ => ‖(a : K)‖ ^ n) Filter.atTop (nhds 0)` using `tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) ha`. Establish `: ‖(x : K)‖ ≤ 0` using `ge_of_tendsto' ht hx`. Use `ext`.
+
+Simplify using `using this`. Introduce `f hf`. Simplify using `only [hmem] at hf`. Establish `ht : Filter.Tendsto (fun n : ℕ => ‖(a : K)‖ ^ n) Filter.atTop (nhds 0)` using `tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) ha`. Establish `hc : CauchySeq (fun n => (f n : K))`.
+
+Use `Metric.cauchySeq_iff'.2 fun ε hε => ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `(ht.eventually (gt_mem_nhds hε)).exists_forall_of_atTop`. Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[dist_eq_norm, norm_sub_rev]`. Conclude with `(hf hn).trans_lt (hN N le_rfl)`.
+
+Take `⟨L, hL⟩` from `cauchySeq_tendsto_of_complete hc`. Establish `hL1 : ‖L‖ ≤ 1` using `le_of_tendsto' hL.norm fun n => mem_normInteger.1 (f n).2`. Use `⟨⟨L, mem_normInteger.2 hL1⟩, fun n => (hmem n _ _).2 ?_⟩` and prove the remaining obligations. Establish `h2 : Filter.Tendsto (fun m => (f n : K) - f m) Filter.atTop (nhds ((f n : K) - L))` using `tendsto_const_nhds.sub hL`. Conclude with `le_of_tendsto h2.norm (Filter.eventually_atTop.2 ⟨n, fun m hm => hf hm⟩)`.
+-/
 theorem isAdicComplete_span_singleton [CompleteSpace K] {a : normInteger K}
     (ha : ‖(a : K)‖ < 1) : IsAdicComplete (Ideal.span {a}) (normInteger K) := by
   have hmem : ∀ (n : ℕ) (x y : normInteger K),
@@ -78,6 +107,13 @@ theorem isAdicComplete_span_singleton [CompleteSpace K] {a : normInteger K}
       tendsto_const_nhds.sub hL
     exact le_of_tendsto h2.norm (Filter.eventually_atTop.2 ⟨n, fun m hm => hf hm⟩)
 
+/- English proof (translation)
+Introduce `z`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨y, hy⟩` from `h x (mem_normInteger.1 x.2)`. Establish `hy1 : ‖y‖ ≤ 1`. Establish `: ‖y‖ ^ p ≤ 1` using `by rw [← norm_pow, hy]; exact mem_normInteger.1 x.2`.
+
+Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) hp).1 this`. Use `⟨Ideal.Quotient.mk _ ⟨y, mem_normInteger.2 hy1⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_pow]`. Use `congr 1`. Use `ext`.
+
+Simplify using `[hy]`.
+-/
 theorem surjective_pow_modP_of_exists_pow_eq {p : ℕ} (hp : p ≠ 0)
     (h : ∀ x : K, ‖x‖ ≤ 1 → ∃ y : K, y ^ p = x) :
     Function.Surjective (fun x : ModP (normInteger K) p => x ^ p) := by
@@ -110,9 +146,15 @@ namespace IsPerfectoidField
 variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K]
 variable (p : ℕ) [Fact p.Prime] [IsPerfectoidField K p]
 
+/- English proof (translation)
+The claim follows from `IsPerfectoidField.complete p`.
+-/
 theorem completeSpace (p : ℕ) [Fact p.Prime] [IsPerfectoidField K p] : CompleteSpace K :=
   IsPerfectoidField.complete p
 
+/- English proof (translation)
+Simplify using `using IsPerfectoidField.norm_natCast_lt_one (K := K) (p := p)`.
+-/
 theorem norm_natCast_integer_lt_one : ‖((p : normInteger K) : K)‖ < 1 := by
   simpa using IsPerfectoidField.norm_natCast_lt_one (K := K) (p := p)
 
@@ -136,18 +178,33 @@ instance isAdicComplete : IsAdicComplete (Ideal.span {(p : normInteger K)}) (nor
   haveI := completeSpace (K := K) p
   isAdicComplete_span_singleton (norm_natCast_integer_lt_one p)
 
+/- English proof (translation)
+The claim follows from `IsPerfectoidField.surjective_pow`.
+-/
 theorem surjective_frobenius : Function.Surjective (frobenius (ModP (normInteger K) p) p) :=
   IsPerfectoidField.surjective_pow
 
+/- English proof (translation)
+The claim follows from `_root_.surjective_fontaineTheta (surjective_frobenius p)`.
+-/
 theorem surjective_fontaineTheta : Function.Surjective (WittVector.fontaineTheta (normInteger K) p) :=
   _root_.surjective_fontaineTheta (surjective_frobenius p)
 
+/- English proof (translation)
+The claim follows from `PreTilt.isDomain K NormedField.valuation (normInteger K) normInteger_integers p`.
+-/
 theorem isDomain_preTilt : IsDomain (PreTilt (normInteger K) p) :=
   PreTilt.isDomain K NormedField.valuation (normInteger K) normInteger_integers p
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : Field (Tilt K NormedField.valuation (normInteger K) normInteger_integers p) :=
   inferInstance
 
+/- English proof (translation)
+The claim follows from `PreTilt.untilt`.
+-/
 example : PreTilt (normInteger K) p →* normInteger K := PreTilt.untilt
 
 end IsPerfectoidField
@@ -158,6 +215,15 @@ variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K]
 
 omit [IsUltrametricDist K] in
 
+/- English proof (translation)
+Introduce `r hr`. Take `⟨c, hc0, hc1⟩` from `NormedField.exists_norm_lt_one K`. Use `set r' := max r 0 with hr'`. Establish `hr'0 : 0 ≤ r'` using `le_max_right _ _`. Establish `hr'1 : r' < 1` using `max_lt hr zero_lt_one`.
+
+Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hc0 hr'1`. Establish `hN0 : N ≠ 0`. Introduce and unpack `rfl`. Rewrite `hN` using `[pow_zero]`. Conclude with `absurd (hN.trans hc1) (lt_irrefl _)`.
+
+Take `⟨y, hy⟩` from `h c N (Nat.pos_of_ne_zero hN0)`. Establish `hyN : ‖y‖ ^ N = ‖c‖` using `by rw [← norm_pow, hy]`. Use `⟨y, lt_of_le_of_lt (le_max_left r 0) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_lt_pow_iff_left₀ hr'0 (norm_nonneg y) hN0, hyN]`. Conclude with `hN`.
+
+Rewrite using `[← pow_lt_one_iff_of_nonneg (norm_nonneg y) hN0, hyN]`. Conclude with `hc1`.
+-/
 theorem exists_norm_mem_Ioo_of_exists_pow_eq
     (h : ∀ (x : K) (n : ℕ), 0 < n → ∃ y : K, y ^ n = x) :
     ∀ r : ℝ, r < 1 → ∃ x : K, r < ‖x‖ ∧ ‖x‖ < 1 := by
@@ -179,6 +245,9 @@ theorem exists_norm_mem_Ioo_of_exists_pow_eq
   · rw [← pow_lt_one_iff_of_nonneg (norm_nonneg y) hN0, hyN]
     exact hc1
 
+/- English proof (translation)
+The claim follows from `inferInstance norm_natCast_lt_one := hp exists_norm_mem_Ioo := exists_norm_mem_Ioo_of_exists_pow_eq fun x _ hn => IsAlgClosed.exists_pow_nat_eq x hn surjective_pow := surjective_pow_modP_of_exists_pow_eq (Fact.out : p.Prime).ne_zero fun x _ => IsAlgClosed.exists_pow_nat_eq x (Fac …`.
+-/
 theorem of_isAlgClosed (p : ℕ) [Fact p.Prime] [CompleteSpace K] [IsAlgClosed K]
     (hp : ‖(p : K)‖ < 1) : IsPerfectoidField K p where
   complete := inferInstance
@@ -196,6 +265,9 @@ instance padicComplex (p : ℕ) [Fact p.Prime] : IsPerfectoidField ℂ_[p] p :=
     rw [← hc, h]
     exact Padic.norm_p_lt_one)
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, mem_normInteger, PadicComplex.norm_eq_norm, SetLike.mem_coe, PadicComplexInt, Valuation.mem_valuationSubring_iff]`. Conclude with `Valued.toNormedField.norm_le_one_iff (L := ℂ_[p]) (Γ₀ := ℝ≥0)`.
+-/
 theorem coe_normInteger_padicComplex (p : ℕ) [Fact p.Prime] :
     (normInteger ℂ_[p] : Set ℂ_[p]) = (𝓞_ℂ_[p] : Set ℂ_[p]) := by
   ext x
@@ -203,6 +275,9 @@ theorem coe_normInteger_padicComplex (p : ℕ) [Fact p.Prime] :
     PadicComplexInt, Valuation.mem_valuationSubring_iff]
   exact Valued.toNormedField.norm_le_one_iff (L := ℂ_[p]) (Γ₀ := ℝ≥0)
 
+/- English proof (translation)
+The claim follows from `inferInstance norm_natCast_lt_one := by simp [CharP.cast_eq_zero] exists_norm_mem_Ioo := h surjective_pow := surjective_pow_modP_of_exists_pow_eq (Fact.out : p.Prime).ne_zero fun x _ => (frobeniusEquiv K p).surjective x`.
+-/
 theorem of_perfectRing (p : ℕ) [Fact p.Prime] [CharP K p] [PerfectRing K p] [CompleteSpace K]
     (h : ∀ r : ℝ, r < 1 → ∃ x : K, r < ‖x‖ ∧ ‖x‖ < 1) : IsPerfectoidField K p where
   complete := inferInstance
@@ -211,6 +286,15 @@ theorem of_perfectRing (p : ℕ) [Fact p.Prime] [CharP K p] [PerfectRing K p] [C
   surjective_pow := surjective_pow_modP_of_exists_pow_eq (Fact.out : p.Prime).ne_zero
     fun x _ => (frobeniusEquiv K p).surjective x
 
+/- English proof (translation)
+Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `h1 : ∀ x : K, ‖x‖ ≤ 1 → ∃ y : K, y ^ p = x`. Introduce `x hx`. Take `⟨z, hz⟩` from `IsPerfectoidField.surjective_pow (K := K) (p := p) (Ideal.Quotient.mk _ ⟨x, mem_normInteger.2 hx⟩)`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective z`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `hz' : Ideal.Quotient.mk (Ideal.span {(p : normInteger K)}) (y ^ p) = Ideal.Quotient.mk _ ⟨x, mem_normInteger.2 hx⟩`. Rewrite using `[map_pow]`. Conclude with `hz`. Rewrite `hz'` using `[Ideal.Quotient.eq]`.
+
+Establish `hp : (p : normInteger K) = 0` using `by ext; simp [CharP.cast_eq_zero]`. Rewrite `hz'` using `[hp, Ideal.span_singleton_eq_bot.2 rfl, Ideal.mem_bot, sub_eq_zero]`. Use `congrArg Subtype.val hz'` as an intermediate fact. Simplify using `using this`. Use `PerfectRing.ofSurjective K p fun x => ?_` and prove the remaining obligations.
+
+Break down `le_or_gt ‖x‖ 1 with hx | hx` into its components or cases. Conclude with `h1 x hx`. Establish `hx0 : x ≠ 0` using `by rintro rfl; norm_num at hx`. Take `⟨y, hy⟩` from `h1 x⁻¹ (by rw [norm_inv]; exact inv_le_one_of_one_le₀ hx.le)`. Conclude with `⟨y⁻¹, by rw [frobenius_def, inv_pow, hy, inv_inv]⟩`.
+-/
 theorem perfectRing (p : ℕ) [Fact p.Prime] [CharP K p] [IsPerfectoidField K p] :
     PerfectRing K p := by
   have hp0 : p ≠ 0 := (Fact.out : p.Prime).ne_zero
@@ -237,6 +321,9 @@ theorem perfectRing (p : ℕ) [Fact p.Prime] [CharP K p] [IsPerfectoidField K p]
     obtain ⟨y, hy⟩ := h1 x⁻¹ (by rw [norm_inv]; exact inv_le_one_of_one_le₀ hx.le)
     exact ⟨y⁻¹, by rw [frobenius_def, inv_pow, hy, inv_inv]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => perfectRing p, fun _ => of_perfectRing p h⟩`.
+-/
 theorem iff_perfectRing (p : ℕ) [Fact p.Prime] [CharP K p] [CompleteSpace K]
     (h : ∀ r : ℝ, r < 1 → ∃ x : K, r < ‖x‖ ∧ ‖x‖ < 1) :
     IsPerfectoidField K p ↔ PerfectRing K p :=

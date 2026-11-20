@@ -19,6 +19,19 @@ namespace GlobalTheory.ZH.SeriesConv
 
 open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.UT GlobalTheory.UT.CoefVal
 
+/- English proof (translation)
+Introduce `hLL o Ω _ _ _ _ S ρ p _ y₀ u _ k hk s g w hw`. Establish `hTW : TwistBCSpanStatement` using `twistBCSpan_of (GlobalTheory.twistBaseChange_of_finrank_sections_one fun K _ _ P => (hLL.1.globalSectionsRank K P 1 le_rfl).trans (one_pow _))`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible u.V`. Use `choose Q hQ using DVR.QForm.exists_QVal hϖ u.D`. Establish `h0` using `PsiForm.norm_pos_of_irreducible (F := PadicAlgCl p) hϖ`.
+
+Establish `h1` using `PsiForm.norm_lt_one_of_irreducible u.norm_le hϖ`. Take `⟨v, hvn⟩` from `PadicVal.exists_addValuation _ h0 h1`. Establish `hv : ValOver ϖ (PadicAlgCl p) v` using `fun c n hc => by`. Establish `e` using `PsiForm.norm_of_hasVal u.norm_le hϖ hc`. Take `⟨q, hq, hq'⟩` from `hvn (algebraMap _ _ c) (norm_pos_iff.1 (by rw [e]; exact Real.exp_pos _))`.
+
+Rewrite `hq'` using `[e, Real.log_exp, neg_mul, neg_neg, mul_comm, mul_left_inj' (Real.log_neg h0 h1).ne]`. Establish `: q = n` using `by exact_mod_cast hq'.symm`. Rewrite using `[hq, this]`. Establish `ht : Filter.Tendsto (fun χ => coef s g w χ) Filter.cofinite (nhds 0)`. Use `PadicVal.tendsto_of_null h0 h1 hvn fun q => ?_` and prove the remaining obligations.
+
+Take `⟨l, hl, -⟩` from `exists_gtV (hϖ := hϖ) (hv := hv) g`. Take `⟨ω, hω⟩` from `exists_genV_frm (hϖ := hϖ) (hv := hv) hw`. Take `⟨r, hr⟩` from `exists_nuGe hϖ hv hTW hQ hk s`. Use `(finite_sublevel hϖ hQ hk l (q - r - ω)).subset fun χ hχ => ?_` and prove the remaining obligations. Establish `h : r + (Q χ : ℚ) / k + l χ + ω < q` using `WithTop.coe_lt_coe.1 ((le_v_coef hw (hr χ) (hl χ) hω).trans_lt hχ)`.
+
+Use `show (Q χ : ℚ) / k + l χ ≤ q - r - ω`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨T, hT⟩` from `CoefField.exists_finset hLL.1.globalFns hk s g hw fun α => by`. Take `⟨r, n, a, σ, σF, hσ, -, hsum⟩` from `exists_vge hϖ hv hTW hk (s.s α)`. Conclude with `⟨n, a, σ, σF, hσ, hsum⟩`.
+
+Take `⟨-, -, -, K₀, hK₀, hK⟩` from `GlobalTheory.T.testField_finite_over_padic o Ω S ρ p y₀ u`. Establish `: FiniteDimensional ℚ_[p] (IntermediateField.adjoin ℚ_[p] (T : Set (PadicAlgCl p)))` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Establish `hm : ∀ χ, coef s g w χ ∈ K₀ ⊔ IntermediateField.adjoin ℚ_[p] (T : Set (PadicAlgCl p))` using `hT (K₀ ⊔ IntermediateField.adjoin ℚ_[p] (T : Set (PadicAlgCl p))).toSubfield (fun a => (le_sup_left : K₀ ≤ _) (show _ ∈ (K₀ : Set (PadicAlgCl p)) from hK ▸ ⟨a, rfl⟩)) (fun t h => (le_sup_right : _ ≤ K₀ ⊔ _) (IntermediateField.subset_adjoin _ _ h))`. Conclude with `⟨PadicVal.summable_of_mem _ hm ht, ht, _, inferInstance, hm⟩`.
+-/
 theorem summable_coef : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (k : ℕ), 1 ≤ k → ∀ (s : Fam u.D.toPre (PadicAlgCl p) k) (g : GtPtF u.D.toPre (PadicAlgCl p)) (w : GlobalTheory.UT.Frm u.D.toPre (PadicAlgCl p) k g.b), w.IsGen → Summable (fun χ => GlobalTheory.UT.coef s g w χ) ∧ Filter.Tendsto (fun χ => GlobalTheory.UT.coef s g w χ) Filter.cofinite (nhds 0) ∧ ∃ K : IntermediateField ℚ_[p] (PadicAlgCl p), FiniteDimensional ℚ_[p] K ∧ ∀ χ, GlobalTheory.UT.coef s g w χ ∈ K := by
   intro hLL o Ω _ _ _ _ S ρ p _ y₀ u _ k hk s g w hw
   have hTW : TwistBCSpanStatement := twistBCSpan_of (GlobalTheory.twistBaseChange_of_finrank_sections_one fun K _ _ P =>

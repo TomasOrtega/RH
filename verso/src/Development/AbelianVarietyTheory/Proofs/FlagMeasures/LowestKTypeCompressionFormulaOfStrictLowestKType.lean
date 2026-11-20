@@ -19,6 +19,35 @@ namespace GlobalTheory.Jet.FormGapFree
 
 open GlobalTheory.Jet.FormGap GlobalTheory.Dec.FormF GlobalTheory.Dec.PsiEig Filter Topology
 
+/- English proof (translation)
+Introduce `n ε lam H _ _ σ hlam hσ h hgap hh w hw X hX u hu v hv`. Use `haveI := hσ.1`. Establish `hU` using `hσ.2.2.1`. Take `⟨g₀, hg1, hg2⟩` from `exists_gap hlam hgap hh`. Establish `hS` using `GlobalTheory.Jet.MultGap.isKTypeOf_lowKSub n ε lam H σ hlam hσ fun a b hab => by`.
+
+Break down `lt_trichotomy a b with hlt | heq | hlt` into its components or cases. Conclude with `(hg2.trans_le (hg1 a b hlt hab)).trans_le (le_abs_self _)`. Conclude with `absurd (congrArg ε heq) hab`. Rewrite using `[abs_sub_comm]`. Conclude with `(hg2.trans_le (hg1 b a hlt hab.symm)).trans_le (le_abs_self _)`.
+
+Take `⟨V, E, hD, hSV⟩` from `GlobalTheory.DerEx.exists_isDer_lowKSub n ε lam H σ hU hS`. Establish `han` using `GlobalTheory.Jet.Anal.lowK_analytic n ε H σ V E lam hU hD hS hSV u hu X hX.1`. Take `⟨hw1, hwS, hwt⟩` from `hw`. Generalize the expression as in `lowKSub ε lam σ = S at *`. Use `haveI := hS.1`.
+
+Use `haveI := FiniteDimensional.complete ℂ S`. Take `⟨τ, hτ, hτσ⟩` from `TauExt.tauExists n ε _ H σ S ⟨w, hwS⟩ (URep_K hU) hS hw1 hwt`. Establish `hw0 : (⟨w, hSV hwS⟩ : V) ≠ 0` using `fun h0 => by`. Establish `: w = 0` using `congrArg Subtype.val h0`. Simplify using `[this] at hw1`.
+
+Take `⟨hK, hsp, hfd⟩` from `(KType.kType_iff n ε H σ V E hU hD).2 _ S ⟨w, hSV hwS⟩ hS hSV hwS hw0 hwt`. Establish `hA : ∀ x y : S, LocAn ε (fun z => ⟪y, Psi ε lam τ ⟨w, hwS⟩ (z.map star) x⟫_ℂ)` using `fun x y => locAn_conj (f := fun z => ⟪y, Psi ε lam τ ⟨w, hwS⟩ z x⟫_ℂ) fun g hg => psiAnalytic n ε lam S τ _ hlam hτ y x g hg`. Establish `hsm : ∀ (x : V) (y : H), SmoothOnG ε (fun z => ⟪y, diffOp ε lam σ τ ⟨w, hwS⟩ z x⟫_ℂ)` using `fun x y => by`. Rewrite using `[inner_diffOp]`. Conclude with `Line.smooth_comb _ (hD.2.2.2 x _) (hA _ _).smooth`.
+
+Establish `hjet` using `GlobalTheory.Jet.Germ.germ_jet_zero n ε H σ V E lam g₀ ⟨w, hSV hwS⟩ hU hD hK hfd hg1 hg2 (fun z => (diffOp ε lam σ τ ⟨w, hwS⟩ z : H →ₗ[ℂ] H)) ?_ ?_ ?_ ?_`. Rewrite `hjet` using `[hsp]`. Establish `h0` using `Line.vanish_of_zero_jet n ε _ X (hsm ⟨u, hSV hu⟩ v) hX.1 (fun l => hjet l u hu v) (by`. Introduce `t ht`. Establish `e` using `inner_diffOp (ε := ε) (σ := σ) lam τ ⟨w, hwS⟩ u v`.
+
+Simplify using `only [congrFun e]`. Conclude with `(((innerSL ℂ (S.starProjection v)).restrictScalars ℝ).analyticAt _ |>.comp (han t ht)).add (analyticAt_const.mul (locAn_line (hA _ _) hX.1 t ht)))`. Establish `hp` using `exp_posDef (P_star hX)`. Establish `h1` using `(psiPolar n ε lam S τ _ hlam hτ).1 1 (one_K ε) _ (P_star hX)`. Rewrite `h1` using `[one_mul, hτ.2.1.1, ← exp_star]`.
+
+Rewrite `hp` using `[← exp_star]`. Apply the tactic sequence `have h2 := ps_entry (lam := lam) hτ hτσ (z := NormedSpace.exp X) (fun k hk => (phiPos n lam _ (by`. Rewrite using `[K_inv hk]`. Conclude with `hp.conjTranspose_mul_mul_same (Matrix.mulVec_injective_of_isUnit (K_KC hk).1))).1) u v`. Rewrite `h0` using `[congrFun (inner_diffOp lam τ ⟨w, hwS⟩ u v), h1, Submodule.starProjection_eq_self_iff.2 hv, neg_one_mul, add_neg_eq_zero]`.
+
+Use `h0.trans (h2.trans ?_)` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `k`. Establish `hk : toMK k ∈ Kset ε` using `k.2`. Establish `hpos : ((toMK k)⁻¹ * NormedSpace.exp X * toMK k).PosDef`.
+
+Rewrite using `[K_inv hk]`. Conclude with `(exp_posDef hX).conjTranspose_mul_mul_same (Matrix.mulVec_injective_of_isUnit (K_KC hk).1)`. Rewrite using `[Phi_star, (phiPos n lam _ hpos).2.1.le.isSelfAdjoint.star_eq]`. Rewrite using `[hsp]`. Conclude with `fun g hg x _ => ⟨S.sub_mem (S.starProjection_apply_mem _) (Subtype.prop _), fun k₁ h₁ k₂ h₂ => diffOp_equiv hlam hU hS.2.1 hτ hτσ hg h₁ h₂ x⟩`.
+
+Rewrite using `[hsp]`. Conclude with `fun x hx y => hsm ⟨x, hSV hx⟩ y`. Introduce `G hG y filter_upwards [psi_near_one hlam hτ hτσ, GlobalTheory.Jet.SchmidIntegral.eab_integral_eq_zero n ε H σ V E lam _ hU hD hK hfd G hG y] with g h1 h2`. Establish `h3 : ∀ a b, Eab ε a b (fun z => ⟪y, diffOp ε lam σ τ ⟨w, hwS⟩ z (at1 G a b : V)⟫_ℂ) (umat g) = ⟪S.starProjection y, σ (umat g) (E a b (at1 G a b) : V)⟫_ℂ + (-1) * ((Module.finrank ℂ S : ℂ) * Eab ε a b (fun z => ∫ k : KG ε, Phi lam (((toMK k)⁻¹ * z * toMK k).map star) * (⟪y, σ (to …` using `fun a b => by`. Rewrite using `[inner_diffOp, ← h1 a b (at1 G a b : V) y]`.
+
+Use `(Line.word_comb (-1) (hD.2.2.2 _ _) (hA _ _).smooth [(a, b)] _ g.2).trans ?_` and prove the remaining obligations. Rewrite using `[(Coef.coef_flow n ε H σ V E hU hD).1 _ _ _ _ g.2]`. Both sides reduce to the same expression. Establish `h4` using `congrArg (fun x : V => ⟪S.starProjection y, σ (umat g) x⟫_ℂ) (GlobalTheory.Jet.Schmid.mul_vminus_eq_zero n ε H σ V E lam _ hlam hσ hD hK hfd G hG)`. Simplify using `only [Submodule.coe_sum, map_sum, inner_sum, Submodule.coe_zero, map_zero, inner_zero_right] at h4`.
+
+Simplify using `only [ContinuousLinearMap.coe_coe, h3, Finset.sum_add_distrib, ← Finset.mul_sum, h2, h4]`. Simplify using the standard rewrite rules. Rewrite using `[hsp]`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `diffOp ε lam σ τ ⟨w, hwS⟩ 1 x = 0`.
+
+Rewrite using `[diffOp_apply, map_star_one, (psiPolar n ε lam S τ _ hlam hτ).2.1, hU.1.1]`. Conclude with `sub_self _`.
+-/
 theorem formulaGap : FormulaGap := by
   intro n ε lam H _ _ σ hlam hσ h hgap hh w hw X hX u hu v hv
   haveI := hσ.1

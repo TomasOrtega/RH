@@ -7,6 +7,43 @@ open Formalism.MainNotions.N
 
 namespace GlobalTheory.TraceSemisimple
 
+/- English proof (translation)
+Introduce `Γ k _ _ _ a ρ N hN hfin hρ`. Set `M : Γ → Matrix (Fin a) (Fin a) k` to `fun g => ((ρ g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k)`. Establish `hMmul : ∀ g h, M g * M h = M (g * h)` using `fun g h => by simp [M]`. Establish `hMone : M 1 = 1` using `by simp [M]`. Establish `hMinv : ∀ g, M g⁻¹ * M g = 1` using `fun g => by rw [hMmul, inv_mul_cancel, hMone]`.
+
+Set `S : Submodule k (Matrix (Fin a) (Fin a) k)` to `Submodule.span k (Set.range fun n : N => M (n : Γ))`. Establish `hSgen : ∀ n ∈ N, M n ∈ S` using `fun n hn => Submodule.subset_span ⟨⟨n, hn⟩, rfl⟩`. Establish `hSmul : ∀ y ∈ S, ∀ z ∈ S, y * z ∈ S`. Introduce `y hy z hz`. Establish `h` using `Submodule.mul_mem_mul hy hz`.
+
+Rewrite `h` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨n, rfl⟩, _, ⟨n', rfl⟩, rfl⟩`. Conclude with `⟨n * n', (hMmul _ _).symm⟩`. Establish `hSconj : ∀ g : Γ, ∀ y ∈ S, M g * y * M g⁻¹ ∈ S`.
+
+Introduce `g y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨n, rfl⟩` from `hy`. Rewrite using `[hMmul, hMmul]`.
+
+Conclude with `hSgen _ (hN.conj_mem _ n.2 g)`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [mul_add, add_mul]`. Conclude with `S.add_mem hy hz`. Consider the case `smul c y _ hy => rw [mul_smul_comm, smul_mul_assoc]`.
+
+Conclude with `S.smul_mem c hy`. Apply `isSSRep_of_trace_nondegenerate` to reduce the goal to its premises. Introduce `x hx htr`. Express the relevant statement in the definitionally equal form `x ∈ S at hx`. Express the relevant statement in the definitionally equal form `∀ n : N, (x * M n).trace = 0 at htr`.
+
+Set `I : Set (Matrix (Fin a) (Fin a) k)` to `{z | z ∈ S ∧ ∀ y ∈ S, (z * y).trace = 0}`. Establish `hxI : x ∈ I`. Use `⟨hx, fun y hy => ?_⟩` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨n, rfl⟩ := hy`.
+
+Conclude with `htr n`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [mul_add, Matrix.trace_add, hy, hz, add_zero]`. Consider the case `smul c y _ hy => rw [mul_smul_comm, Matrix.trace_smul, hy, smul_zero]`. Establish `hIr : ∀ z ∈ I, ∀ y ∈ S, z * y ∈ I` using `fun z hz y hy => ⟨hSmul z hz.1 y hy, fun w hw => by rw [mul_assoc]; exact hz.2 _ (hSmul y hy w hw)⟩`.
+
+Establish `hIconj : ∀ g : Γ, ∀ z ∈ I, M g * z * M g⁻¹ ∈ I`. Introduce `g z hz`. Use `⟨hSconj g z hz.1, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : M g⁻¹ * y * M g⁻¹⁻¹ ∈ S` using `hSconj g⁻¹ y hy`. Rewrite `hy'` using `[inv_inv]`.
+
+Establish `e : (M g * z * M g⁻¹ * y).trace = (z * (M g⁻¹ * y * M g)).trace`. Rewrite using `[mul_assoc, mul_assoc, Matrix.trace_mul_comm, ← mul_assoc, ← mul_assoc, ← mul_assoc]`. Rewrite using `[e]`. Conclude with `hz.2 _ hy'`. Establish `hpow : ∀ g : Γ, ∀ j : ℕ, ∃ y ∈ I, (x * M g) ^ (j + 1) = y * M (g ^ (j + 1))`.
+
+Introduce `g j`. Proceed by induction on `j with`. Consider the case `zero => exact ⟨x, hxI, by simp⟩`. Consider the case `succ j ih`. Take `⟨y, hy, e⟩` from `ih`.
+
+Use `⟨y * (M (g ^ (j + 1)) * x * M (g ^ (j + 1))⁻¹), hIr y hy _ (hIconj _ x hxI).1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ (x * M g) (j + 1), e, pow_succ g (j + 1), ← hMmul (g ^ (j + 1)) g]`. Establish `h1` using `hMinv (g ^ (j + 1))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`.
+
+Simplify using `only [mul_one, mul_assoc]`. Use `_ = y * (M (g ^ (j + 1)) * x * M (g ^ (j + 1))⁻¹) * (M (g ^ (j + 1)) * M g) := by`. Simplify using `only [mul_assoc]`. Establish `hm : 0 < N.index` using `Nat.pos_of_ne_zero (Subgroup.FiniteIndex.index_ne_zero)`. Establish `htrΓ : ∀ g : Γ, (x * M g).trace = 0`.
+
+Introduce `g`. Establish `hgm : g ^ N.index ∈ N` using `Subgroup.pow_index_mem N g`. Establish `hnil : IsNilpotent ((x * M g) ^ N.index)`. Apply `ReciprocityTheory.L2DbarEstimates.Y.isNilpotent_of_trace_pow` to reduce the goal to its premises. Introduce `e he _`.
+
+Take `⟨y, hy, hye⟩` from `hpow g (N.index * e - 1)`. Establish `h1 : N.index * e - 1 + 1 = N.index * e`. Establish `: 1 ≤ N.index * e` using `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero hm.ne' (by omega))`. Use linear arithmetic over natural numbers and integers. Rewrite `hye` using `[h1]`.
+
+Rewrite using `[← pow_mul, hye]`. Use `hy.2 _ (hSgen _ ?_)` and prove the remaining obligations. Rewrite using `[pow_mul]`. Conclude with `N.pow_mem hgm e`. Take `⟨e, he⟩` from `hnil`.
+
+Establish `hnil' : IsNilpotent (x * M g)` using `⟨N.index * e, by rw [pow_mul, he]⟩`. Conclude with `(Matrix.isNilpotent_trace_of_isNilpotent hnil').eq_zero`. Establish `hxΓ : x ∈ spanAlg ρ`. Rewrite using `[mem_spanAlg]`. Use `Submodule.span_mono ?_ hx` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨n, rfl⟩`. Conclude with `⟨n, rfl⟩`. Conclude with `trace_nondegenerate_of_isSSRep ρ hρ x hxΓ htrΓ`.
+-/
 theorem isSSRep_comp_subtype_of_normal_finiteIndex :
     ∀ (Γ k : Type) [Group Γ] [Field k] [CharZero k] (a : ℕ) (ρ : Γ →* GL (Fin a) k)
       (N : Subgroup Γ), N.Normal → N.FiniteIndex → IsSSRep ρ → IsSSRep (ρ.comp N.subtype) := by

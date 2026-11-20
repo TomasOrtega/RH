@@ -21,6 +21,9 @@ variable (G) in
 
 def dg (ϖ : kˣ) (e : ℕ) : G.VertexGroup := fun X => diagGL fun a : Fin (G.rank X) => wt G ϖ e X a
 
+/- English proof (translation)
+Unfold `wt`. Use `split_ifs`. Rewrite using `[show a + 1 - topRank G X.2 = 0 by omega]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem wt_core (ϖ : kˣ) (e : ℕ) (X : ℕ × ℕ) {a : ℕ} (ha : a < topRank G X.2) : wt G ϖ e X a = 1 := by
   unfold wt
   split_ifs
@@ -28,6 +31,9 @@ theorem wt_core (ϖ : kˣ) (e : ℕ) (X : ℕ × ℕ) {a : ℕ} (ha : a < topRan
     simp
   · rfl
 
+/- English proof (translation)
+Unfold `wt`. Rewrite using `[if_neg]`. Introduce and unpack `⟨-, h2⟩`. Simplify using `only at h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem wt_end (ϖ : kˣ) (e : ℕ) {i j : ℕ} (h : G.m < j + 2) (a : ℕ) : wt G ϖ e (i, j) a = 1 := by
   unfold wt
   rw [if_neg]
@@ -35,6 +41,9 @@ theorem wt_end (ϖ : kˣ) (e : ℕ) {i j : ℕ} (h : G.m < j + 2) (a : ℕ) : wt
   dsimp only at h2
   omega
 
+/- English proof (translation)
+Simplify using `only [Grid.moveArgs, Assignment.read, dg]`. Express the relevant statement in the definitionally equal form `((diagonal fun a : Fin (G.rank b.tgt) => (wt G ϖ e b.tgt a : k))ᵀ * z b * (diagonal fun a : Fin (G.rank b.src) => (((wt G ϖ e b.src a)⁻¹ : kˣ) : k))ᵀ) r s = _`. Rewrite using `[diagonal_transpose, diagonal_transpose, mul_diagonal, diagonal_mul]`.
+-/
 theorem moveArgs_apply (ϖ : kˣ) (e : ℕ) (z : G.Args) (b : Edge) (r : Fin (G.rank b.tgt)) (s : Fin (G.rank b.src)) :
     G.moveArgs .one (dg G ϖ e) z b r s = (wt G ϖ e b.tgt r : k) * z b r s * ((wt G ϖ e b.src s)⁻¹ : kˣ) := by
   simp only [Grid.moveArgs, Assignment.read, dg]
@@ -44,6 +53,17 @@ theorem moveArgs_apply (ϖ : kˣ) (e : ℕ) (z : G.Args) (b : Edge) (r : Fin (G.
 
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hd1 : ∀ X : ℕ × ℕ, ¬ (X.1 = G.m ∧ X.2 + 2 ≤ G.m) → dg G ϖ e X = 1`. Introduce `X hX`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Simplify using `[dg, diagGL, wt, hX, Matrix.one_apply, Matrix.diagonal_apply]`.
+
+Use function extensionality and compare the values at `X`. Take `⟨i, j⟩` from `X`. Distinguish the cases in `hc : i = G.m ∧ j + 2 ≤ G.m`. Take `⟨rfl, hj⟩` from `hc`. Rewrite using `[through_elt _ hj]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Simplify using `[stair, dg, diagGL, wt, hj]`. Rewrite using `[hd1 _ hc]`. Distinguish the cases in `hi : i = G.m`.
+
+Substitute `hi` using the available equality. Establish `hj : G.m < j + 2`. Simplify using `only [true_and] at hc`. Use linear arithmetic over natural numbers and integers. Take `_ | j` from `j`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [Reps.elt, onColumn_apply]`. Rewrite using `[dif_neg (by omega)]`. Simplify using `only [Reps.elt, onColumn]`. Rewrite using `[dif_neg hi]`.
+-/
 theorem elt_eq [MeasurableSpace k] [BorelSpace k] (hs : 1 ≤ G.s) (J : G.Level) (ϖ : kˣ) (e : ℕ) (hm : 2 ≤ G.m) :
     (Reps.through hs J (stair G ϖ e)).elt (fun i => DoubleCoset.mk _ _ (stair G ϖ e (i + 1))) = dg G ϖ e := by
   have hd1 : ∀ X : ℕ × ℕ, ¬ (X.1 = G.m ∧ X.2 + 2 ≤ G.m) → dg G ϖ e X = 1 := by
@@ -72,12 +92,20 @@ theorem elt_eq [MeasurableSpace k] [BorelSpace k] (hs : 1 ≤ G.s) (J : G.Level)
     · simp only [Reps.elt, onColumn]
       rw [dif_neg hi]
 
+/- English proof (translation)
+Unfold `wt`. Use `split_ifs`. Simplify using `using val_pow_anti hϖ (Nat.zero_le (e * (a + 1 - topRank G X.2)))`. Simplify using the standard rewrite rules.
+-/
 theorem val_wt_le {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (X : ℕ × ℕ) (a : ℕ) : valuation k (wt G ϖ e X a : k) ≤ 1 := by
   unfold wt
   split_ifs
   · simpa using val_pow_anti hϖ (Nat.zero_le (e * (a + 1 - topRank G X.2)))
   · simp
 
+/- English proof (translation)
+Establish `hT0 : T (G.moveArgs .one (dg G ϖ e) z) ≠ 0`. Introduce `h0`. Apply `hz` to reduce the goal to its premises. Simplify using `[moved, Grid.pathAct, h0]`. Establish `hint : G.moveArgs .one (dg G ϖ e) z b ∈ matLat _ (SplitFlip.stdLat k _)`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hT0 (hT.2.1 _ b hb hc)`. Rewrite using `[← moveArgs_apply]`. Conclude with `mem_matLat_stdLat.1 hint r s`.
+-/
 theorem moved_supp {ϖ : kˣ} {e : ℕ}
     {T : G.Args → ℂ} (hT : G.IsTensor ϖ e (oppositePath G.m) T) (keep : Bool) {z : G.Args}
     (hz : moved G keep (dg G ϖ e) T z ≠ 0) {b : Edge} (hb : b ∈ oppositePath G.m) (r : Fin (G.rank b.tgt))
@@ -90,6 +118,15 @@ theorem moved_supp {ϖ : kˣ} {e : ℕ}
   rw [← moveArgs_apply]
   exact mem_matLat_stdLat.1 hint r s
 
+/- English proof (translation)
+Establish `key : T (G.moveArgs .one (dg G ϖ e) z') = T (G.moveArgs .one (dg G ϖ e) z)`. Set `d : G.Args` to `fun b => if b ∈ oppositePath G.m then G.moveArgs .one (dg G ϖ e) z' b - G.moveArgs .one (dg G ϖ e) z b else 0`. Establish `h1 : T (G.moveArgs .one (dg G ϖ e) z + d) = T (G.moveArgs .one (dg G ϖ e) z)`. Apply `hT.2.2` to reduce the goal to its premises. Introduce `b`.
+
+Rewrite using `[FourierDepth.mem_matLat_smul_stdLat]`. Introduce `r s`. Distinguish the cases in `hb : b ∈ oppositePath G.m`. Simplify using `only [d, if_pos hb, Matrix.sub_apply, moveArgs_apply]`. Use `hδ b hb r s using 2` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [Pi.sub_apply, Matrix.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[d, hb]`. Rewrite using `[← h1]`. Apply `hT.1` to reduce the goal to its premises.
+
+Introduce `b hb`. Establish `hb' : b ∈ oppositePath G.m` using `hb`. Simplify using `[d, hb']`. Simplify using `only [moved, Grid.pathAct, key]`.
+-/
 theorem moved_per {ϖ : kˣ} {e : ℕ}
     {T : G.Args → ℂ} (hT : G.IsTensor ϖ e (oppositePath G.m) T) (keep : Bool) (z z' : G.Args)
     (hδ : ∀ b ∈ oppositePath G.m, ∀ (r : Fin (G.rank b.tgt)) (s : Fin (G.rank b.src)),
@@ -119,6 +156,9 @@ theorem moved_per {ϖ : kˣ} {e : ℕ}
 
 variable (hs : 1 ≤ G.s)
 
+/- English proof (translation)
+Establish `hi : i = frame h (Sum.inl q)`. Rewrite using `[← hq]`. Simplify using the standard rewrite rules. Rewrite using `[hi]`. Simplify using `[frame]`.
+-/
 private theorem lt_of_frame_symm_eq_inl {p c m : ℕ} (h : p + c = m) (i : Fin m) (q : Fin p)
     (hq : (frame h).symm i = Sum.inl q) : (i : ℕ) < p := by
   have hi : i = frame h (Sum.inl q) := by
@@ -127,6 +167,9 @@ private theorem lt_of_frame_symm_eq_inl {p c m : ℕ} (h : p + c = m) (i : Fin m
   rw [hi]
   simp [frame]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases hs' : (frame h1).symm s with s' | s' <;> rcases hr' : (frame h2).symm r with r' | r' <;>`. Apply the tactic sequence `rw [hs', hr'] at hne <;>`. Simplify using `only [fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.zero_apply, ne_eq, not_true_eq_false] at hne`. Conclude with `⟨lt_of_frame_symm_eq_inl h1 s s' hs', lt_of_frame_symm_eq_inl h2 r r' hr'⟩`.
+-/
 private theorem lt_and_lt_of_fromBlocks_frame_ne_zero {p q c d m n : ℕ} (A : Matrix (Fin p) (Fin q) k) (h1 : p + c = m) (h2 : q + d = n)
     (s : Fin m) (r : Fin n)
     (hne : fromBlocks A 0 0 (0 : Matrix (Fin c) (Fin d) k) ((frame h1).symm s) ((frame h2).symm r) ≠ 0) :
@@ -137,6 +180,17 @@ private theorem lt_and_lt_of_fromBlocks_frame_ne_zero {p q c d m n : ℕ} (A : M
       ne_eq, not_true_eq_false] at hne
   exact ⟨lt_of_frame_symm_eq_inl h1 s s' hs', lt_of_frame_symm_eq_inl h2 r r' hr'⟩
 
+/- English proof (translation)
+Establish `key : ∀ (r : Fin (G.rank c.tgt)) (s : Fin (G.rank c.src)), (fill hs (x + a) (y + b) u - fill hs x y u) c r s ≠ 0 → wt G ϖ e c.tgt r = 1 ∧ wt G ϖ e c.src s = 1`. Break down `FlatDep.mem_opp hc with ⟨i, hi, rfl⟩ | ⟨j, hj, rfl⟩` into its components or cases. Introduce `r s _`. Conclude with `⟨wt_end (G := G) ϖ e (i := i + 1) (j := G.m) (by omega) _, wt_end (G := G) ϖ e (i := i) (j := G.m) (by omega) _⟩`. Distinguish the cases in `hjm : j < G.m - 1`.
+
+Use `show ∀ (r : Fin (G.rank (G.m, j))) (s : Fin (G.rank (G.m, j + 1))), (fill hs (x + a) (y + b) u - fill hs x y u) (Edge.theta G.m j) r s ≠ 0 → wt G ϖ e (G.m, j) r = 1 ∧ wt G ϖ e (G.m, j + 1) s = 1`. Introduce `r s hne`. Rewrite `hne` using `[Pi.sub_apply, fill_theta, fill_theta, Matrix.sub_apply, Matrix.transpose_apply, Matrix.transpose_apply]`. Simplify using `only [downMap, dif_pos hjm, Pi.add_apply, FlatDep.stepPt_add, Matrix.reindex_apply, Matrix.submatrix_apply] at hne`. Rewrite `hne` using `[Matrix.add_apply, add_sub_cancel_left]`.
+
+Take `⟨hs1, hr1⟩` from `lt_and_lt_of_fromBlocks_frame_ne_zero _ _ _ s r hne`. Conclude with `⟨wt_core ϖ e (G.m, j) hr1, wt_core ϖ e (G.m, j + 1) hs1⟩`. Introduce `r s _`. Conclude with `⟨wt_end (G := G) ϖ e (i := G.m) (j := j) (by omega) _, wt_end (G := G) ϖ e (i := G.m) (j := j + 1) (by omega) _⟩`. Distinguish the cases in `hD : (fill hs (x + a) (y + b) u - fill hs x y u) c r s = 0`.
+
+Rewrite using `[hD, mul_zero, zero_mul, map_zero]`. Conclude with `zero_le'`. Take `⟨h1, h2⟩` from `key r s hD`. Rewrite using `[h1, h2]`. Simplify using `only [Units.val_one, inv_one, one_mul, mul_one]`.
+
+Conclude with `FlatDep.fill_sub_le hs ha hb u hc r s`.
+-/
 theorem fill_sub_wt_le (ϖ : kˣ) (e : ℕ) {x a : ColArgs G} {y b : RowArgs G} {t : ValueGroupWithZero k}
     (ha : ∀ j, j < G.m → ∀ r s, valuation k (a j r s) ≤ t) (hb : ∀ i, i < G.m → ∀ r s, valuation k (b i r s) ≤ t)
     (u : Vars G) {c : Edge} (hc : c ∈ oppositePath G.m) (r : Fin (G.rank c.tgt)) (s : Fin (G.rank c.src)) :
@@ -172,6 +226,17 @@ theorem fill_sub_wt_le (ϖ : kˣ) (e : ℕ) {x a : ColArgs G} {y b : RowArgs G} 
     simp only [Units.val_one, inv_one, one_mul, mul_one]
     exact FlatDep.fill_sub_le hs ha hb u hc r s
 
+/- English proof (translation)
+Establish `hjm : (j : ℕ) < G.m - 1` using `by omega`. Establish `hb : Edge.theta G.m j ∈ oppositePath G.m` using `FlatDep.mem_opp_theta (by omega)`. Establish `e1` using `topRank_add hs (j : ℕ)`. Establish `e2` using `topRank_add hs ((j : ℕ) + 1)`. Establish `h2 : topRank G j + (G.m - 2 - j + 1) = G.rank (G.m, j)` using `by omega`.
+
+Establish `h1 : topRank G (j + 1) + (G.m - 2 - j) = G.rank (G.m, j + 1)` using `by omega`. Establish `hm` using `moved_supp hT keep hz hb (frame h2 (Sum.inr ⟨0, by omega⟩)) (frame h1 (Sum.inl r))`. Rewrite `hm` using `[fill_theta, Matrix.transpose_apply]`. Simplify using `only [downMap, dif_pos hjm, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply] at hm`. Establish `hw1 : wt G ϖ e (G.m, (j : ℕ)) (topRank G j) = ϖ ^ e`.
+
+Unfold `wt`. Rewrite using `[if_pos ⟨rfl, by omega⟩]`. Simplify using the standard rewrite rules. Establish `hw2 : wt G ϖ e (G.m, (j : ℕ) + 1) r = 1` using `wt_core ϖ e _ r.isLt`. Simplify using `only [frame, Equiv.trans_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, finCongr_apply, Fin.coe_cast, Fin.coe_castAdd, Fin.coe_natAdd, add_zero] at hm`.
+
+Rewrite `hm` using `[hw1, hw2]`. Simplify using `only [Units.val_one, inv_one, mul_one] at hm`. Simplify using `only [colVar]`. Use `hm using 4` and compare the differences between its conclusion and the goal. Use `congr 1`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Use `show (G.m - 2 - (j : ℕ)) / 2 = 0`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem colVar_le {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ} (hT : G.IsTensor ϖ e (oppositePath G.m) T) (keep : Bool)
     {x : ColArgs G} {y : RowArgs G} {u : Vars G} (hz : moved G keep (dg G ϖ e) T (fill hs x y u) ≠ 0)
     (j : Fin (G.m - 1)) (hj : (j : ℕ) + 2 = G.m) (r : Fin (topRank G (j + 1))) :
@@ -201,6 +266,9 @@ theorem colVar_le {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ} (hT : G.IsTensor ϖ 
   show (G.m - 2 - (j : ℕ)) / 2 = 0
   omega
 
+/- English proof (translation)
+Break down `hq : (frame h).symm s with q | q` into its components or cases. Conclude with `lt_of_frame_symm_eq_inl h s q hq`. Rewrite `hne` using `[hq, hM]`. Conclude with `absurd rfl hne`.
+-/
 private theorem lt_of_frame_entry_ne_zero_of_inr_zero {p c m : ℕ} {n' : Type} (h : p + c = m) (s : Fin m) (col : n')
     (M : Matrix (Fin p ⊕ Fin c) n' k) (hM : ∀ l col, M (Sum.inr l) col = 0)
     (hne : M ((frame h).symm s) col ≠ 0) : (s : ℕ) < p := by
@@ -209,6 +277,17 @@ private theorem lt_of_frame_entry_ne_zero_of_inr_zero {p c m : ℕ} {n' : Type} 
   · rw [hq, hM] at hne
     exact absurd rfl hne
 
+/- English proof (translation)
+Establish `key : ∀ (r : Fin (G.rank c.tgt)) (s : Fin (G.rank c.src)), (fill hs x y (u + FlatLast.shiftVar j₀ q t) - fill hs x y u) c r s ≠ 0 → wt G ϖ e c.src s = 1`. Break down `FlatDep.mem_opp hc with ⟨i, hi, rfl⟩ | ⟨j, hj, rfl⟩` into its components or cases. Introduce `r s _`. Conclude with `wt_end (G := G) ϖ e (i := i) (j := G.m) (by omega) _`. Distinguish the cases in `hjm : j < G.m - 1`.
+
+Use `show ∀ (r : Fin (G.rank (G.m, j))) (s : Fin (G.rank (G.m, j + 1))), (fill hs x y (u + FlatLast.shiftVar j₀ q t) - fill hs x y u) (Edge.theta G.m j) r s ≠ 0 → wt G ϖ e (G.m, j + 1) s = 1`. Introduce `r s hne`. Rewrite `hne` using `[Pi.sub_apply, fill_theta, fill_theta, Matrix.sub_apply, Matrix.transpose_apply, Matrix.transpose_apply]`. Simplify using `only [downMap, dif_pos hjm, Matrix.reindex_apply, Matrix.submatrix_apply] at hne`. Rewrite `hne` using `[← Matrix.sub_apply]`.
+
+Establish `hlt` using `lt_of_frame_entry_ne_zero_of_inr_zero _ s _ _ (by`. Introduce `l col`. Simplify using `[stepPt, basePt, FlatLast.shiftVar]) hne`. Conclude with `wt_core ϖ e (G.m, j + 1) hlt`. Introduce `r s _`.
+
+Conclude with `wt_end (G := G) ϖ e (i := G.m) (j := j + 1) (by omega) _`. Distinguish the cases in `hD : (fill hs x y (u + FlatLast.shiftVar j₀ q t) - fill hs x y u) c r s = 0`. Rewrite using `[hD, mul_zero, zero_mul, map_zero]`. Conclude with `zero_le'`. Rewrite using `[key r s hD]`.
+
+Simplify using `only [inv_one, Units.val_one, mul_one]`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem shift_wt_le {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (x : ColArgs G) (y : RowArgs G) (u : Vars G) (j₀ : Fin (G.m - 1))
     (hj₀ : (j₀ : ℕ) + 2 = G.m) (q : ℕ) {t s₀ : k} (ht : valuation k t ≤ valuation k s₀)
     {c : Edge} (hc : c ∈ oppositePath G.m) (r : Fin (G.rank c.tgt)) (s : Fin (G.rank c.src)) :
@@ -249,6 +328,15 @@ theorem shift_wt_le {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (x : ColArgs G) (y : 
 
 variable [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k)
 
+/- English proof (translation)
+Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `j _`. Establish `hjlt` using `j.isLt`. Distinguish the cases in `hev : Even (G.m - 2 - ↑j)`. Rewrite using `[if_pos hev]`.
+
+Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `r _`. Distinguish the cases in `hj : (j : ℕ) + 1 < G.m - 1`. Rewrite using `[if_pos hj, zero_mul, map_zero]`. Conclude with `zero_le'`.
+
+Establish `hj2 : (j : ℕ) + 2 = G.m` using `by omega`. Rewrite using `[if_neg hj, map_mul]`. Establish `h1` using `ha (j + 1) (by omega) (topLast G (↑j + 1 + 1)) r`. Establish `h2` using `hc j hj2 r`. Rewrite `h2` using `[map_mul]`.
+
+Conclude with `le_trans (mul_le_mul' h1 le_rfl) h2`. Rewrite using `[if_neg hev, map_zero]`. Conclude with `zero_le'`.
+-/
 private theorem valuation_sum_colVar_even_le_one {ϖ : kˣ} {e : ℕ} (x a : ColArgs G) (u : Vars G)
     (ha : ∀ j, j < G.m → ∀ r s, valuation k (a j r s) ≤ valuation k ((ϖ ^ e : kˣ) : k))
     (hc : ∀ (j : Fin (G.m - 1)), (j : ℕ) + 2 = G.m → ∀ r,
@@ -275,11 +363,19 @@ private theorem valuation_sum_colVar_even_le_one {ϖ : kˣ} {e : ℕ} (x a : Col
   · rw [if_neg hev, map_zero]
     exact zero_le'
 
+/- English proof (translation)
+Rewrite using `[neg_add, AddChar.map_add_eq_mul, (hψ 1).mpr (by simp) (-E) (by rw [Valuation.map_neg]; simpa using hE), mul_one]`.
+-/
 private theorem addChar_neg_add_eq_of_conductor_one (hψ : HasConductor ψ 1) (p E : k) (hE : valuation k E ≤ 1) :
     ψ (-(p + E)) = ψ (-p) := by
   rw [neg_add, AddChar.map_add_eq_mul,
     (hψ 1).mpr (by simp) (-E) (by rw [Valuation.map_neg]; simpa using hE), mul_one]
 
+/- English proof (translation)
+Unfold `flatTensor`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [flatIntegrand]`. Establish `hper : moved G keep (dg G ϖ e) T (fill hs (x + a) (y + b) u) = moved G keep (dg G ϖ e) T (fill hs x y u)` using `moved_per hT keep _ _ (fun c hc r s => fill_sub_wt_le hs ϖ e ha hb u hc r s)`. Rewrite using `[hper]`.
+
+Distinguish the cases in `hz : moved G keep (dg G ϖ e) T (fill hs x y u) = 0`. Rewrite using `[hz, zero_mul, zero_mul]`. Establish `hE` using `valuation_sum_colVar_even_le_one x a u ha (fun j hj r => colVar_le hs hT keep hz j hj r)`. Rewrite using `[FlatDep.phase_add, addChar_neg_add_eq_of_conductor_one ψ hψ _ _ hE]`.
+-/
 theorem flat_per {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ} (hψ : HasConductor ψ 1) (hT : G.IsTensor ϖ e (oppositePath G.m) T)
     (keep : Bool) (x a : ColArgs G) (y b : RowArgs G)
     (ha : ∀ j, j < G.m → ∀ r s, valuation k (a j r s) ≤ valuation k ((ϖ ^ e : kˣ) : k))
@@ -297,6 +393,23 @@ theorem flat_per {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ} (hψ : HasConductor �
   · have hE := valuation_sum_colVar_even_le_one x a u ha (fun j hj r => colVar_le hs hT keep hz j hj r)
     rw [FlatDep.phase_add, addChar_neg_add_eq_of_conductor_one ψ hψ _ _ hE]
 
+/- English proof (translation)
+Establish `hex : ∃ u, moved G keep (dg G ϖ e) T (fill hs x y u) ≠ 0`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `hne` to reduce the goal to its premises. Unfold `flatTensor`.
+
+Simplify using `[flatIntegrand, hall]`. Take `⟨u, hu⟩` from `hex`. Prove the components needed by the constructor for the conclusion. Introduce `j hj r s hr`. Establish `hb` using `FlatDep.mem_opp_theta (G := G) hj`.
+
+Establish `e1` using `topRank_add hs j`. Establish `e2` using `topRank_add hs (j + 1)`. Distinguish the cases in `hjm : j < G.m - 1`. Establish `h2 : topRank G j + (G.m - 2 - j + 1) = G.rank (G.m, j)` using `by omega`. Establish `h1 : topRank G (j + 1) + (G.m - 2 - j) = G.rank (G.m, j + 1)` using `by omega`.
+
+Establish `hm` using `moved_supp hT keep hu hb (frame h2 (Sum.inl s)) (frame h1 (Sum.inl r))`. Rewrite `hm` using `[fill_theta, Matrix.transpose_apply]`. Simplify using `only [downMap, dif_pos hjm, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply] at hm`. Simplify using `only [frame, Equiv.trans_apply, finSumFinEquiv_apply_left, finCongr_apply, Fin.coe_cast, Fin.coe_castAdd] at hm`. Rewrite `hm` using `[wt_core ϖ e (G.m, j) s.isLt, wt_core ϖ e (G.m, j + 1) r.isLt]`.
+
+Simplify `hm` using `[stepPt, basePt, Free, Kept]`. Establish `hj1 : j + 1 = G.m` using `by omega`. Establish `hrne : (r : ℕ) ≠ topRank G (j + 1) - 1` using `fun h => hr hj1 (Fin.ext h)`. Establish `hrl : (r : ℕ) < G.rank (G.m, j + 1)`. Use `r.isLt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hsl : (s : ℕ) < G.rank (G.m, j)`. Use `s.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hm` using `moved_supp hT keep hu hb ⟨s, hsl⟩ ⟨r, hrl⟩`.
+
+Rewrite `hm` using `[fill_theta, Matrix.transpose_apply]`. Simplify using `only [downMap, dif_neg hjm, dif_pos hj1, Matrix.submatrix_apply] at hm`. Rewrite `hm` using `[wt_end (G := G) ϖ e (i := G.m) (j := j) (by omega), wt_end (G := G) ϖ e (i := G.m) (j := j + 1) (by omega)]`. Simplify using `using hm`. Introduce `i hi r s`.
+
+Establish `hb : Edge.ex i G.m ∈ oppositePath G.m`. Simplify using `[oppositePath, hi]`. Establish `hm` using `moved_supp hT keep hu hb s r`. Rewrite `hm` using `[fill_ex, Matrix.transpose_apply, wt_end (G := G) ϖ e (i := i + 1) (j := G.m) (by omega), wt_end (G := G) ϖ e (i := i) (j := G.m) (by omega)]`. Simplify using `using hm`.
+-/
 theorem flat_supp {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ} (hT : G.IsTensor ϖ e (oppositePath G.m) T) (keep : Bool)
     (x : ColArgs G) (y : RowArgs G) (hne : flatTensor hs ψ ν (moved G keep (dg G ϖ e) T) x y ≠ 0) :
     (∀ j, j < G.m → ∀ r s, (j + 1 = G.m → r ≠ topLast G (j + 1)) → valuation k (x j r s) ≤ 1) ∧
@@ -346,6 +459,21 @@ theorem flat_supp {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ} (hT : G.IsTensor ϖ 
       wt_end (G := G) ϖ e (i := i) (j := G.m) (by omega)] at hm
     simpa using hm
 
+/- English proof (translation)
+Take `⟨hsc, ht2⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Use `haveI := hsc`. Use `haveI := ht2`. Use `haveI : SigmaFinite ν := inferInstance`. Use `haveI hinv : (varsVol G ν).IsAddRightInvariant := by`.
+
+Unfold `varsVol`. Use `infer_instance`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Use `set X := x ((j₀ : ℕ) + 1) (topLast G ((j₀ : ℕ) + 1 + 1)) r with hX`.
+
+Establish `hnot : X ∉ cball ((1 : kˣ) * (ϖ ^ e)⁻¹)`. Simplify using `only [cball, Set.mem_setOf_eq, one_mul, not_le]`. Conclude with `hlt`. Take `⟨t, ht, hψt⟩` from `hψ.exists_ne_one (ϖ ^ e) hnot`. Establish `hneg : valuation k (-t) ≤ valuation k ((ϖ ^ e : kˣ) : k)`.
+
+Rewrite using `[Valuation.map_neg]`. Conclude with `ht`. Establish `hshift : flatTensor hs ψ ν (moved G keep (dg G ϖ e) T) x y = ((ψ (-(X * -t)) : Circle) : ℂ) * flatTensor hs ψ ν (moved G keep (dg G ϖ e) T) x y`. Unfold `flatTensor`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [flatIntegrand]`. Rewrite using `[moved_per hT keep (fill hs x y u) (fill hs x y (u + FlatLast.shiftVar j₀ r (-t))) (fun c hc r' s' => shift_wt_le hs hϖ e x y u j₀ hj₀ r hneg hc r' s')]`. Rewrite using `[FlatLast.phase_shift x u j₀ hj₀ r (-t)]`. Establish `hrow : rowVar x u ((j₀ : ℕ) + 1) r = X`.
+
+Unfold `rowVar`. Rewrite using `[dif_neg (by omega)]`. Rewrite using `[hrow, neg_add, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := MeasureTheory.integral_const_mul _ _`.
+
+Establish `h1 : ((ψ (-(X * -t)) : Circle) : ℂ) = 1` using `(mul_eq_right₀ hF).mp hshift.symm`. Apply `hψt` to reduce the goal to its premises. Establish `h3 : -(X * -t) = t * X` using `by ring`. Rewrite using `[← h3]`. Conclude with `Circle.ext h1`.
+-/
 theorem flat_last [ν.IsAddHaarMeasure] {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ} (hϖ : IsUnif ϖ) (hψ : HasConductor ψ 1)
     (hT : G.IsTensor ϖ e (oppositePath G.m) T) (keep : Bool) (x : ColArgs G) (y : RowArgs G)
     (hF : flatTensor hs ψ ν (moved G keep (dg G ϖ e) T) x y ≠ 0) (j₀ : Fin (G.m - 1)) (hj₀ : (j₀ : ℕ) + 2 = G.m)
@@ -393,6 +521,11 @@ theorem flat_last [ν.IsAddHaarMeasure] {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ
   rw [← h3]
   exact Circle.ext h1
 
+/- English proof (translation)
+Establish `h1 : (1 : ValueGroupWithZero k) ≤ valuation k (((ϖ ^ e)⁻¹ : kˣ) : k)`. Simplify using `using val_inv_pow_mono hϖ (Nat.zero_le e)`. Use `⟨(GlobalTheory.T.flatTensor_depends_below_and_small_translation_invariant G hs ψ ν ϖ e T keep _ hϖ hψ hT).1, fun x y a b ha hb => flat_per hs ψ ν hψ hT keep x a y b ha hb, fun x y hxy => ⟨fun j hj r s => ?_, fun i hi r s => ((flat_supp hs ψ ν hT keep x y hxy).2 i hi r s).trans h1 …` and prove the remaining obligations. Distinguish the cases in `hr : j + 1 = G.m ∧ r = topLast G (j + 1)`. Take `⟨h2, rfl⟩` from `hr`.
+
+Take `⟨j, rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Conclude with `flat_last hs ψ ν hϖ hψ hT keep x y hxy ⟨j, by omega⟩ (by simp only; omega) s`. Conclude with `((flat_supp hs ψ ν hT keep x y hxy).1 j hj r s fun h h' => hr ⟨h, h'⟩).trans h1`.
+-/
 theorem isSBArgs_stair [ν.IsAddHaarMeasure] {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ} (hm : 2 ≤ G.m) (hϖ : IsUnif ϖ)
     (hψ : HasConductor ψ 1) (hT : G.IsTensor ϖ e (oppositePath G.m) T) (keep : Bool) :
     IsSBArgs G ϖ e (flatTensor hs ψ ν (moved G keep (dg G ϖ e) T)) := by

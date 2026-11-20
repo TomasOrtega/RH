@@ -8,6 +8,17 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.TwistBlockK
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d v g Y hg hY u hu`. Establish `hgu` using `hg u hu`. Establish `hYu : u • Y = 0` using `hY u hu`. Rewrite `hgu` using `[smul_sub, sub_eq_zero]`. Establish `h11 : u • g.toBlocks₁₁ = u • (1 : Matrix (Fin d) (Fin d) (AE F E))`.
+
+Use extensionality with `i j`. Use `congrFun (congrFun hgu (Sum.inl i)) (Sum.inl j)` as an intermediate fact. Simplify `this` using `[Matrix.toBlocks₁₁, Matrix.one_apply]`. Establish `h22 : u • g.toBlocks₂₂ = u • (1 : Matrix (Fin d) (Fin d) (AE F E))`. Use extensionality with `i j`.
+
+Use `congrFun (congrFun hgu (Sum.inr i)) (Sum.inr j)` as an intermediate fact. Simplify `this` using `[Matrix.toBlocks₂₂, Matrix.one_apply]`. Establish `h12 : u • g.toBlocks₁₂ = 0`. Use extensionality with `i j`. Use `congrFun (congrFun hgu (Sum.inl i)) (Sum.inr j)` as an intermediate fact.
+
+Simplify `this` using `[Matrix.toBlocks₁₂, Matrix.one_apply]`. Establish `h21 : u • g.toBlocks₂₁ = 0`. Use extensionality with `i j`. Use `congrFun (congrFun hgu (Sum.inr i)) (Sum.inl j)` as an intermediate fact. Simplify `this` using `[Matrix.toBlocks₂₁, Matrix.one_apply]`.
+
+Rewrite using `[smul_sub, smul_add, ← Matrix.smul_mul, hYu, Matrix.zero_mul, add_zero, smul_comm u (⅟(2 : AF F))]`. Simplify using `only [smul_add, h11, h12, h21, h22, add_zero]`. Rewrite using `[← add_smul, invOf_two_add_invOf_two, one_smul, sub_self]`.
+-/
 theorem atK_sub_one : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {d : ℕ} (v : Pl F) (g : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) (Y : Matrix (Fin d) (Fin d) (AE F E)),
   At (evFin F v) (g - 1) → At (evFin F v) Y → At (evFin F v) ((⅟(2 : AF F) • ((g).toBlocks₁₁ + (g).toBlocks₁₂ + (g).toBlocks₂₁ + (g).toBlocks₂₂) +
       Y * (⅟(2 : AF F) • ((g).toBlocks₁₁ + (g).toBlocks₁₂ - (g).toBlocks₂₁ - (g).toBlocks₂₂))) - 1) := by

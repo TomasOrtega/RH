@@ -24,6 +24,19 @@ namespace GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj
 
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
+/- English proof (translation)
+Take `⟨s, g, hinj, hint⟩` from `exists_integral_inj_algHom_of_fg ℂ (MvPolynomial σ ℂ ⧸ Q)`. Establish `hns : n ≤ s` using `by set S := Algebra.adjoin ℂ (Set.range (g ∘ X))`. Establish `hmem : ∀ y, g y ∈ S`. Introduce `y`. Use `show g y ∈ Algebra.adjoin ℂ (Set.range (g ∘ X))`.
+
+Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `show aeval (g ∘ X) y = g y`. Rewrite using `[← MvPolynomial.aeval_unique g]`. Set `g' : MvPolynomial (Fin s) ℂ →+* S` to `g.toRingHom.codRestrict S.toSubsemiring hmem`.
+
+Establish `hg' : (algebraMap S (MvPolynomial σ ℂ ⧸ Q)).comp g' = g.toRingHom`. Apply the tactic sequence `ext y <;> rfl`. Establish `halg : Algebra.IsAlgebraic S (MvPolynomial σ ℂ ⧸ Q)`. Use `⟨fun b => ?_⟩` and prove the remaining obligations. Take `⟨p, hpm, hp⟩` from `hint b`.
+
+Use `IsIntegral.isAlgebraic ⟨p.map g', hpm.map g', ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, hg']`. Conclude with `hp`. Establish `h1` using `hx.cardinalMk_le_trdeg`. Establish `h2` using `Algebra.IsAlgebraic.trdeg_le_cardinalMk ℂ (Set.range (g ∘ X))`.
+
+Establish `h3` using `Cardinal.mk_range_le (f := g ∘ X)`. Use `h1.trans (h2.trans h3)` as an intermediate fact. Simplify using `using this`. Establish `hdim : (s : WithBot ℕ∞) ≤ ringKrullDim (MvPolynomial σ ℂ ⧸ Q)`. Use `le_ringKrullDim_of_isIntegral g.toRingHom hint hinj s ?_` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules. Conclude with `le_trans (by exact_mod_cast hns) hdim`.
+-/
 theorem card_le_ringKrullDim {σ : Type} [Finite σ] (Q : Ideal (MvPolynomial σ ℂ)) [Q.IsPrime] {n : ℕ}
     (x : Fin n → MvPolynomial σ ℂ ⧸ Q) (hx : AlgebraicIndependent ℂ x) :
     ((n : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (MvPolynomial σ ℂ ⧸ Q) := by
@@ -59,6 +72,9 @@ theorem card_le_ringKrullDim {σ : Type} [Finite σ] (Q : Ideal (MvPolynomial σ
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `m hm`. Establish `hms : m ∈ f.support` using `mem_support_iff.mpr hm`. Use extensionality with `k`. Rewrite using `[weight_blkWt_apply, hf m hms k]`. Simplify using the standard rewrite rules.
+-/
 theorem isWeightedHomogeneous_of_isMultiHomog (f : MRingOver ℂ ι) (a : K → ℕ) (hf : IsMultiHomog f a) :
     IsWeightedHomogeneous (blkWt (ι := ι)) f (Finsupp.equivFunOnFinite.symm a) := by
   intro m hm
@@ -67,6 +83,9 @@ theorem isWeightedHomogeneous_of_isMultiHomog (f : MRingOver ℂ ι) (a : K → 
   rw [weight_blkWt_apply, hf m hms k]
   simp
 
+/- English proof (translation)
+Take `⟨S, hS, rfl⟩` from `hQ`. Apply `Ideal.homogeneous_span` to reduce the goal to its premises. Introduce `f hf`. Take `⟨a, ha⟩` from `hS f hf`. Conclude with `⟨_, (mem_weightedHomogeneousSubmodule ℂ _ _ _).mpr (isWeightedHomogeneous_of_isMultiHomog f a ha)⟩`.
+-/
 theorem ideal_isHomogeneous (Q : Ideal (MRingOver ℂ ι)) (hQ : IsMultiHomogIdeal Q) :
     Q.IsHomogeneous (weightedHomogeneousSubmodule ℂ (blkWt (ι := ι))) := by
   obtain ⟨S, hS, rfl⟩ := hQ
@@ -77,6 +96,11 @@ theorem ideal_isHomogeneous (Q : Ideal (MRingOver ℂ ι)) (hQ : IsMultiHomogIde
 
 def segMonC (i : (k : K) → ι k) : MRingOver ℂ ι := ∏ k, X ⟨k, i k⟩
 
+/- English proof (translation)
+Unfold `segMonC`. Use `IsWeightedHomogeneous.prod Finset.univ (fun k => (X ⟨k, i k⟩ : MRingOver ℂ ι)) (fun k => Finsupp.single k 1) (w := blkWt (ι := ι)) (fun k _ => isWeightedHomogeneous_X ℂ _ _)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Rewrite using `[Finsupp.finsetSum_apply]`.
+
+Simplify using `[oneK, Finsupp.single_apply]`.
+-/
 theorem segMonC_isWeightedHomogeneous (i : (k : K) → ι k) :
     IsWeightedHomogeneous (blkWt (ι := ι)) (segMonC i) oneK := by
   unfold segMonC
@@ -88,6 +112,13 @@ theorem segMonC_isWeightedHomogeneous (i : (k : K) → ι k) :
   rw [Finsupp.finsetSum_apply]
   simp [oneK, Finsupp.single_apply]
 
+/- English proof (translation)
+Rewrite using `[H.as_sum, map_sum, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `hmon : IsWeightedHomogeneous (blkWt (ι` using `ι)) (aeval yt (monomial m (coeff m H))) (Finsupp.weight w' m) := by`. Rewrite using `[aeval_monomial, algebraMap_eq, Finsupp.prod]`. Use `IsWeightedHomogeneous.C_mul ?_ _` and prove the remaining obligations.
+
+Use `IsWeightedHomogeneous.prod m.support (fun e => yt e ^ m e) (fun e => m e • w' e) (fun e _ => (hy e).pow (m e))` as an intermediate fact. Rewrite using `[Finsupp.weight_apply]` and apply the resulting hypothesis. Distinguish the cases in `h : Finsupp.weight w' m = δ`. Substitute `h` using the available equality. Rewrite using `[hmon.weightedHomogeneousComponent_same, (isWeightedHomogeneous_monomial w' m (coeff m H) rfl).weightedHomogeneousComponent_same]`.
+
+Rewrite using `[hmon.weightedHomogeneousComponent_ne δ (Ne.symm h), (isWeightedHomogeneous_monomial w' m (coeff m H) rfl).weightedHomogeneousComponent_ne δ (Ne.symm h), map_zero]`.
+-/
 theorem component_aeval_cx {E : Type*} (w' : E → (K →₀ ℕ))
     (yt : E → MRingOver ℂ ι)
     (hy : ∀ e, IsWeightedHomogeneous (blkWt (ι := ι)) (yt e) (w' e)) (H : MvPolynomial E ℂ)
@@ -112,6 +143,11 @@ theorem component_aeval_cx {E : Type*} (w' : E → (K →₀ ℕ))
       (isWeightedHomogeneous_monomial w' m (coeff m H) rfl).weightedHomogeneousComponent_ne δ
         (Ne.symm h), map_zero]
 
+/- English proof (translation)
+Use `conv_lhs => rw [H.as_sum]`. Use `conv_rhs => rw [H.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight (sWt k0 r) n = Finsupp.weight (sWt k0 r) n0` using `(hH (mem_support_iff.mp hn)).trans (hH (mem_support_iff.mp hn0)).symm`.
+
+Simplify using `only [aeval_monomial]`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Pi.one_apply, one_pow, Finset.prod_const_one, mul_one, inr_eq_of_weight_eq k0 hw]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_sumElim_factor_cx (k0 : K) {S : Type*} [CommRing S] [Algebra ℂ S] {r : ℕ}
     {H : MvPolynomial (Fin r ⊕ {k // k ≠ k0}) ℂ} {δ : K →₀ ℕ}
     (hH : IsWeightedHomogeneous (sWt k0 r) H δ) {n0 : (Fin r ⊕ {k // k ≠ k0}) →₀ ℕ}
@@ -133,6 +169,37 @@ theorem aeval_sumElim_factor_cx (k0 : K) {S : Type*} [CommRing S] [Algebra ℂ S
 def segC (Q : Ideal (MRingOver ℂ ι)) (i : (k : K) → ι k) : MRingOver ℂ ι ⧸ Q :=
   Ideal.Quotient.mk _ (segMonC i)
 
+/- English proof (translation)
+Use `set xs : {k // k ≠ k0} → MRingOver ℂ ι ⧸ Q := fun k' => Ideal.Quotient.mk Q (X ⟨k'.1, i0 k'.1⟩) with hxs`. Set `π` to `Ideal.Quotient.mkₐ ℂ Q`. Set `yt : Fin r ⊕ {k // k ≠ k0} → MRingOver ℂ ι` to `Sum.elim (fun j => ∑ i, L j i • segMonC i) (fun k' => X ⟨k'.1, i0 k'.1⟩)`. Establish `hyt : ∀ e, IsWeightedHomogeneous (blkWt (ι` using `ι)) (yt e) (sWt k0 r e) := by`. Introduce and unpack `(j | k')`.
+
+Use `IsWeightedHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul]`. Conclude with `(segMonC_isWeightedHomogeneous i).C_mul _`. Conclude with `isWeightedHomogeneous_X ℂ _ _`. Establish `hπy : (fun e => π (yt e)) = Sum.elim (forms (segC Q) L) xs`.
+
+Use function extensionality and compare the values at `e`. Break down `e with j | k'` into its components or cases. Simplify using `[yt, π, forms, segC, map_sum]`. Both sides reduce to the same expression. Establish `hcomp : ∀ G : MvPolynomial (Fin r ⊕ {k // k ≠ k0}) ℂ, Ideal.Quotient.mk Q (aeval yt G) = aeval (Sum.elim (forms (segC Q) L) xs) G`.
+
+Introduce `G`. Rewrite using `[← hπy, ← MvPolynomial.comp_aeval]`. Both sides reduce to the same expression. Establish `hx0 : ∀ k', xs k' ≠ 0`. Introduce `k' h`.
+
+Rewrite `h` using `[hxs, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hi0 k'.1 h`. Rewrite using `[algebraicIndependent_iff]`. Introduce `H hH0`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨n0, hn0⟩` from `support_nonempty.mpr hne`. Use `set δ := Finsupp.weight (sWt k0 r) n0`. Use `set H' := weightedHomogeneousComponent (sWt k0 r) δ H`. Establish `hH'hom : IsWeightedHomogeneous (sWt k0 r) H' δ` using `weightedHomogeneousComponent_isWeightedHomogeneous δ H`. Establish `hn0' : n0 ∈ H'.support`.
+
+Rewrite using `[mem_support_iff, coeff_weightedHomogeneousComponent, if_pos rfl]`. Conclude with `mem_support_iff.mp hn0`. Establish `hmem : aeval yt H ∈ Q`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, hcomp]`. Conclude with `hH0`.
+
+Establish `hmem' : aeval yt H' ∈ Q`. Rewrite using `[← component_aeval_cx (sWt k0 r) yt hyt H δ]`. Conclude with `weightedHomogeneousComponent_mem_of_mem ℂ blkWt (ideal_isHomogeneous Q hhom) hmem δ`. Establish `hzero : aeval (Sum.elim (forms (segC Q) L) xs) H' = 0`. Rewrite using `[← hcomp]`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hmem'`. Rewrite `hzero` using `[aeval_sumElim_factor_cx k0 hH'hom hn0']`. Establish `hprod : (∏ k', xs k' ^ n0 (Sum.inr k')) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k' _ => pow_ne_zero _ (hx0 k')`. Establish `h1 : aeval (Sum.elim (forms (segC Q) L) 1) H' = 0` using `(mul_eq_zero.mp hzero).resolve_left hprod`. Set `G : MvPolynomial (Fin r) ℂ` to `aeval (Sum.elim X 1) H'`.
+
+Establish `hG : ∀ {S : Type} [CommRing S] [Algebra ℂ S] (a : Fin r → S), aeval a G = aeval (Sum.elim a 1) H'`. Introduce `S _ _ a`. Simplify using `only [G]`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Apply the tactic sequence `exact congrArg (fun f => aeval f H') (funext fun e => by rcases e with j | k' <;> simp)`.
+
+Establish `hG0 : G = 0` using `(algebraicIndependent_iff.mp hind) G (by rw [hG]; exact h1)`. Establish `hH'0 : H' * ∏ k', X (Sum.inr k') = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `z`. Rewrite using `[map_mul, map_zero, map_prod]`.
+
+Distinguish the cases in `hz : ∀ k', z (Sum.inr k') ≠ 0`. Use `aeval_sumElim_factor_cx k0 hH'hom hn0' (S := ℂ) (z ∘ Sum.inl) (z ∘ Sum.inr)` as an intermediate fact. Establish `hzz : Sum.elim (z ∘ Sum.inl) (z ∘ Sum.inr) = z`. Apply the tactic sequence `funext e; rcases e with j | k' <;> rfl`. Rewrite `this` using `[hzz, ← hG, hG0, map_zero, mul_zero]`.
+
+Rewrite using `[← coe_aeval_eq_eval]`. Simplify using `only [AlgHom.coe_toRingHom] at this ⊢`. Rewrite using `[this, zero_mul]`. Use `push Not at hz`. Take `⟨k', hk'⟩` from `hz`.
+
+Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ k') (by simp [hk']), mul_zero]`. Establish `hH'z : H' = 0`. Break down `mul_eq_zero.mp hH'0 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (Finset.prod_ne_zero_iff.mpr fun k' _ => X_ne_zero _)`.
+
+Rewrite `hn0'` using `[hH'z]`. Simplify using `at hn0'`.
+-/
 theorem algebraicIndependent_sumElim_cx (Q : Ideal (MRingOver ℂ ι)) [Q.IsPrime]
     (hhom : IsMultiHomogIdeal Q) (k0 : K) (i0 : (k : K) → ι k)
     (hi0 : ∀ k, (X ⟨k, i0 k⟩ : MRingOver ℂ ι) ∉ Q) {r : ℕ} (L : Fin r → ((k : K) → ι k) → ℂ)
@@ -219,6 +286,15 @@ theorem algebraicIndependent_sumElim_cx (Q : Ideal (MRingOver ℂ ι)) [Q.IsPrim
   rw [hH'z] at hn0'
   simp at hn0'
 
+/- English proof (translation)
+Introduce `hind`. Take `⟨⟨k0⟩, ⟨hprime, hhom, hrel⟩, hdim⟩` from `hQ`. Use `haveI := hprime`. Use `choose i0 hi0 using hrel`. Establish `hs` using `algebraicIndependent_sumElim_cx Q hhom k0 i0 hi0 L hind`.
+
+Set `eqv : Fin (r + Fintype.card {k // k ≠ k0}) ≃ Fin r ⊕ {k // k ≠ k0}` to `finSumFinEquiv.symm.trans (Equiv.sumCongr (Equiv.refl _) (Fintype.equivFin _).symm)`. Establish `h` using `card_le_ringKrullDim Q _ (hs.comp eqv eqv.injective)`. Rewrite `h` using `[hdim]`. Establish `hc : Fintype.card {k // k ≠ k0} + 1 = Fintype.card K`. Establish `h1` using `Fintype.card_subtype_compl (fun k => k = k0)`.
+
+Rewrite `h1` using `[Fintype.card_subtype_eq]`. Use `Fintype.card_pos_iff.mpr ⟨k0⟩` as an intermediate fact. Simplify using `only [ne_eq]`. Use linear arithmetic over natural numbers and integers. Establish `h' : r + Fintype.card {k // k ≠ k0} ≤ e + Fintype.card K` using `by exact_mod_cast h`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem forms_not_algebraicIndependent_cx (Q : Ideal (MRingOver ℂ ι)) (e : ℕ) (hQ : IsCxVar Q e)
     {r : ℕ} (hr : e + 1 < r) (L : Fin r → ((k : K) → ι k) → ℂ) :
     ¬ AlgebraicIndependent ℂ (forms (segC Q) L) := by
@@ -247,19 +323,31 @@ def evC (Q : Ideal (MRingOver ℂ ι)) (z : (Σ k, ι k) → ℂ) (hz : z ∈ co
     rw [← coe_aeval_eq_eval] at h
     exact h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evC_mk (Q : Ideal (MRingOver ℂ ι)) (z : (Σ k, ι k) → ℂ) (hz : z ∈ conePts Q)
     (q : MRingOver ℂ ι) : evC Q z hz (Ideal.Quotient.mk _ q) = aeval z q := rfl
 
+/- English proof (translation)
+Rewrite using `[segC, evC_mk, segMonC, map_prod]`. Simplify using `[segre]`.
+-/
 theorem evC_segC (Q : Ideal (MRingOver ℂ ι)) (z : (Σ k, ι k) → ℂ) (hz : z ∈ conePts Q)
     (t : (k : K) → ι k) : evC Q z hz (segC Q t) = segre z t := by
   rw [segC, evC_mk, segMonC, map_prod]
   simp [segre]
 
+/- English proof (translation)
+Simplify using `only [forms, map_sum, map_smul, evC_segC, smul_eq_mul]`.
+-/
 theorem evC_forms (Q : Ideal (MRingOver ℂ ι)) (z : (Σ k, ι k) → ℂ) (hz : z ∈ conePts Q) {r : ℕ}
     (L : Fin r → ((k : K) → ι k) → ℂ) (j : Fin r) :
     evC Q z hz (forms (segC Q) L j) = ∑ t, L j t * segre z t := by
   simp only [forms, map_sum, map_smul, evC_segC, smul_eq_mul]
 
+/- English proof (translation)
+Use `⟨fun k => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Use `⟨i, mul_ne_zero ?_ hi⟩` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [hc]`. Conclude with `ReciprocityTheory.AnForm.R.eval_eq_zero_of_smul hQ (fun k => if k = k0 then c else 1) z hz.2`.
+-/
 theorem mem_conePts (Q : Ideal (MRingOver ℂ ι)) (hQ : IsMultiHomogIdeal Q) (k0 : K) {c : ℂ}
     (hc : c ≠ 0) {z : (Σ k, ι k) → ℂ} (hz : z ∈ conePts Q) : scaleBlock k0 c z ∈ conePts Q := by
   refine ⟨fun k => ?_, ?_⟩
@@ -268,6 +356,19 @@ theorem mem_conePts (Q : Ideal (MRingOver ℂ ι)) (hQ : IsMultiHomogIdeal Q) (k
     split_ifs <;> simp [hc]
   · exact ReciprocityTheory.AnForm.R.eval_eq_zero_of_smul hQ (fun k => if k = k0 then c else 1) z hz.2
 
+/- English proof (translation)
+Use `choose i1 hi1 using hz.1`. Establish `hs : segre z i1 ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hi1 k`. Take `⟨p, hpm, hp⟩` from `hL i1`. Set `g0 : MvPolynomial (Fin r) ℂ →+* ℂ` to `eval₂Hom (RingHom.id ℂ) 0`. Establish `key : ∀ c : ℂ, c ≠ 0 → Polynomial.eval (c * segre z i1) (p.map g0) = 0`.
+
+Introduce `c hc`. Establish `hzc` using `mem_conePts Q hhom k0 hc hz`. Establish `hcomp : ((evC Q _ hzc : (MRingOver ℂ ι ⧸ Q) →+* ℂ)).comp ((aeval (forms (segC Q) L) : MvPolynomial (Fin r) ℂ →ₐ[ℂ] _) : MvPolynomial (Fin r) ℂ →+* _) = g0`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`.
+
+Simplify using `[g0]`. Introduce `j`. Establish `h1 : ∑ t, L j t * (c * segre z t) = c * ∑ t, L j t * segre z t`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`.
+
+Simplify using `[g0, evC_forms, GroundTheory.Heights₂.Heights.SegreCoordGoodProj.segre_scaleBlock, h1, hV j]`. Use `congrArg (evC Q _ hzc : (MRingOver ℂ ι ⧸ Q) →+* ℂ) hp` as an intermediate fact. Rewrite `this` using `[Polynomial.hom_eval₂, hcomp]`. Simplify using `only [RingHom.coe_coe, evC_segC, GroundTheory.Heights₂.Heights.SegreCoordGoodProj.segre_scaleBlock, map_zero] at this`. Rewrite using `[Polynomial.eval_map]`.
+
+Conclude with `this`. Establish `hinf : {x : ℂ | (p.map g0).IsRoot x}.Infinite`. Use `Set.Infinite.mono ?_ (Set.finite_singleton (0 : ℂ)).infinite_compl` and prove the remaining obligations. Introduce `x hx`. Establish `hx0 : x ≠ 0` using `hx`.
+
+Use `key (x / segre z i1) (div_ne_zero hx0 hs)` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ x hs]`. Conclude with `this`. Conclude with `(hpm.map g0).ne_zero (Polynomial.eq_zero_of_infinite_isRoot _ hinf)`.
+-/
 theorem false_of_forms_vanish_cx (Q : Ideal (MRingOver ℂ ι)) (hhom : IsMultiHomogIdeal Q) (k0 : K)
     {r : ℕ} (L : Fin r → ((k : K) → ι k) → ℂ) (hL : ∀ t, IntOver ℂ (forms (segC Q) L) (segC Q t))
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ conePts Q) (hV : ∀ j, ∑ t, L j t * segre z t = 0) : False := by
@@ -304,6 +405,9 @@ theorem false_of_forms_vanish_cx (Q : Ideal (MRingOver ℂ ι)) (hhom : IsMultiH
     exact this
   exact (hpm.map g0).ne_zero (Polynomial.eq_zero_of_infinite_isRoot _ hinf)
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p j hp => simp [hp]`.
+-/
 theorem evC_aeval (Q : Ideal (MRingOver ℂ ι)) (z : (Σ k, ι k) → ℂ) (hz : z ∈ conePts Q) {r : ℕ}
     (ℓ : Fin r → MRingOver ℂ ι ⧸ Q) (F : MvPolynomial (Fin r) ℂ) :
     evC Q z hz (aeval ℓ F) = aeval (fun j => evC Q z hz (ℓ j)) F := by
@@ -312,6 +416,37 @@ theorem evC_aeval (Q : Ideal (MRingOver ℂ ι)) (z : (Σ k, ι k) → ℂ) (hz 
   | add p q hp hq => simp [hp, hq]
   | mul_X p j hp => simp [hp]
 
+/- English proof (translation)
+Introduce `hQ ⟨z0, hz0, hz0i⟩`. Take `⟨r, hr, L, hL⟩` from `exists_linear_normalization (k := ℂ) (segC Q) (e + 1) (fun r L hr => forms_not_algebraicIndependent_cx Q e hQ hr L)`. Take `⟨⟨k0⟩, ⟨hprime, hhom, -⟩, -⟩` from `hQ`. Use `haveI := hprime`. Consider the cases of `r with`.
+
+Consider the case `zero => exact (false_of_forms_vanish_cx Q hhom k0 L hL hz0 fun j => j.elim0).elim`. Consider the case `succ r'`. Establish `hw : segC Q i ≠ 0` using `fun h => hz0i (by rw [← evC_segC Q z0 hz0, h, map_zero])`. Take `⟨p, hpm, hp, hc0⟩` from `GroundTheory.Heights₂.Heights.SegreCoordGoodProj.exists_monic_coeff_zero_ne _ hw (hL i)`. Use `set c0 := p.coeff 0 with hc0def`.
+
+Establish `hsupp : ∀ m ∈ (homogeneousComponent c0.totalDegree c0).support, Finsupp.degree m = c0.totalDegree`. Introduce `m hm`. Rewrite `hm` using `[mem_support_iff, coeff_homogeneousComponent]`. Assume the negation of the conclusion as `hne`. Conclude with `hm (if_neg hne)`.
+
+Take `⟨lam, hlam⟩` from `exists_eval_cons_one_ne_zero _ _ hsupp (homogeneousComponent_totalDegree_ne_zero hc0)`. Set `Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)` to `{ toFun := fun w j => Fin.cases (w i) (fun j' : Fin e => if h : (j' : ℕ) < r' then ∑ t, (L (Fin.succ ⟨j', h⟩) t - lam ⟨j', h⟩ * L 0 t) * w t else 0) j map_add' := by`. Introduce `w w'`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j' => ?_) j` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Apply the tactic sequence `simp only [Fin.cases_succ, Pi.add_apply] split_ifs <;> simp [mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`. Introduce `c w`. Use function extensionality and compare the values at `j`.
+
+Use `Fin.cases ?_ (fun j' => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules. Apply the tactic sequence `simp only [Fin.cases_succ, Pi.smul_apply, smul_eq_mul, RingHom.id_apply] split_ifs <;> simp [Finset.mul_sum, mul_left_comm] }`. Use `⟨Ψ, fun z hz hΨ => ?_, fun w => rfl⟩` and prove the remaining obligations. Use `set V : Fin (r' + 1) → ℂ := fun j => ∑ t, L j t * segre z t with hVdef`.
+
+Establish `hzi : segre z i = 0` using `congrFun hΨ 0`. Establish `hVs : ∀ j : Fin r', V j.succ = lam j * V 0`. Introduce `j`. Establish `h` using `congrFun hΨ (Fin.succ ⟨j, by omega⟩)`. Simplify using `only [Ψ, LinearMap.coe_mk, AddHom.coe_mk, Fin.cases_succ, dif_pos j.2, Fin.eta, Pi.zero_apply] at h`.
+
+Simplify using `only [hVdef]`. Rewrite using `[← sub_eq_zero, Finset.mul_sum, ← Finset.sum_sub_distrib, ← h]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hs : V 0 = 0`.
+
+Use `false_of_forms_vanish_cx Q hhom k0 L hL hz fun j => ?_` and prove the remaining obligations. Use `Fin.cases hs (fun j => ?_) j` and prove the remaining obligations. Conclude with `(hVs j).trans (by rw [hs, mul_zero])`. Set `g : Polynomial ℂ` to `(ReciprocityTheory.ChartRestriction.G.Geo.subst lam c0).map ((aeval (0 : Fin r' → ℂ) : MvPolynomial (Fin r') ℂ →ₐ[ℂ] ℂ) : MvPolynomial (Fin r') ℂ →+* ℂ)`. Establish `hgD : g.coeff c0.totalDegree ≠ 0`.
+
+Simplify using `only [g, Polynomial.coeff_map, subst_coeff_totalDegree]`. Simplify using `using hlam`. Establish `hroot : ∀ x : ℂ, x ≠ 0 → g.eval x = 0`. Introduce `x hx`. Establish `hc : x / V 0 ≠ 0` using `div_ne_zero hx hs`.
+
+Establish `hzc` using `mem_conePts Q hhom k0 hc hz`. Use `set u : Fin (r' + 1) → ℂ := fun j => x / V 0 * V j with hudef`. Establish `hu0 : u 0 = x` using `div_mul_cancel₀ x hs`. Establish `hu' : (fun j : Fin r' => u j.succ - lam j • u 0) = 0`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [hudef, hVs j, smul_eq_mul, Pi.zero_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : aeval u c0 = 0`. Use `congrArg (evC Q _ hzc : (MRingOver ℂ ι ⧸ Q) →+* ℂ) hp` as an intermediate fact. Rewrite `this` using `[Polynomial.hom_eval₂]`.
+
+Simplify using `only [RingHom.coe_coe, evC_segC, GroundTheory.Heights₂.Heights.SegreCoordGoodProj.segre_scaleBlock, hzi, mul_zero, Polynomial.eval₂_at_zero, map_zero, RingHom.comp_apply] at this`. Rewrite using `[← this]`. Simplify using `only [AlgHom.coe_toRingHom, RingHom.coe_coe, evC_aeval]`. Use `congrArg (fun v => aeval v c0) (funext fun j => ?_)` and prove the remaining obligations. Rewrite using `[evC_forms]`.
+
+Simplify using `only [GroundTheory.Heights₂.Heights.SegreCoordGoodProj.segre_scaleBlock, hudef, hVdef, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`. Establish `h2` using `eval₂_subst lam u c0`. Rewrite `h2` using `[hu', hu0, h1]`. Rewrite using `[Polynomial.eval_map]`.
+
+Conclude with `h2`. Establish `hg0 : g = 0` using `Polynomial.eq_zero_of_infinite_isRoot g (Set.Infinite.mono (fun x hx => hroot x hx) (Set.finite_singleton (0 : ℂ)).infinite_compl)`. Conclude with `hgD (by rw [hg0, Polynomial.coeff_zero])`.
+-/
 theorem exists_goodProj_coord (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e : ℕ) (i : (k : K) → ι k) :
     IsCxVar Q e → (∃ z ∈ conePts Q, segre z i ≠ 0) →

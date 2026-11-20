@@ -16,6 +16,15 @@ noncomputable section
 
 namespace GlobalTheory.Nef.SecRat
 
+/- English proof (translation)
+Establish `: SmoothOfRelativeDimension 1 (strHom k C)` using `hx.1.1`. Establish `: Smooth (strHom k C)` using `SmoothOfRelativeDimension.smooth 1 _`. Establish `hred : IsReduced C` using `isReduced_of_smooth_of_isReduced (strHom k C)`. Establish `hd : IsDominant x` using `hx.2.1.1`. Establish `hden : DenseRange x.base` using `hd.denseRange`.
+
+Establish `hcl : closure {x.base default} = (Set.univ : Set C)`. Establish `hr : Set.range x.base = {x.base default}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, rfl⟩`.
+
+Rewrite using `[Subsingleton.elim p default]`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨_, rfl⟩`. Rewrite using `[← hr]`.
+
+Conclude with `hden.closure_range`. Establish `hirr : IsIrreducible (Set.univ : Set C)` using `hcl ▸ isIrreducible_singleton.closure`. Establish `: IrreducibleSpace C` using `{ isPreirreducible_univ := hirr.2, toNonempty := ⟨x.base default⟩ }`. Conclude with `(isIntegral_iff_irreducibleSpace_and_isReduced C).2 ⟨this, hred⟩`.
+-/
 theorem isIntegral_of_isGenOver (k K : Type) [Field k] [Field K] [Algebra k K] (C : Scheme.{0})
     [Algebra k Γ(C, ⊤)] (x : Sp K ⟶ C) (hx : IsGenOver k x) : IsIntegral C := by
   have : SmoothOfRelativeDimension 1 (strHom k C) := hx.1.1
@@ -33,6 +42,13 @@ theorem isIntegral_of_isGenOver (k K : Type) [Field k] [Field K] [Algebra k K] (
   have : IrreducibleSpace C := { isPreirreducible_univ := hirr.2, toNonempty := ⟨x.base default⟩ }
   exact (isIntegral_iff_irreducibleSpace_and_isReduced C).2 ⟨this, hred⟩
 
+/- English proof (translation)
+Introduce `hu`. Apply `hf` to reduce the goal to its premises. Establish `h1 : (b.appLE U ⊤ h).hom f = (Scheme.ΓSpecIso (.of R)).inv.hom (evAt b h f)`. Simplify using `[evAt]`. Establish `h2 : (Sp R).basicOpen ((b.appLE U ⊤ h).hom f) = ⊤ ⊓ (Sp R).basicOpen ((b.app U).hom f)`.
+
+Rewrite using `[Scheme.Hom.appLE, CommRingCat.comp_apply, Scheme.basicOpen_res]`. Establish `h3 : IsLocalRing.closedPoint R ∈ (Sp R).basicOpen ((b.appLE U ⊤ h).hom f)`. Rewrite using `[h1, basicOpen_eq_of_affine]`. Conclude with `(PrimeSpectrum.mem_basicOpen _ _).2 fun hm => (IsLocalRing.mem_maximalIdeal _).1 hm hu`. Rewrite `h3` using `[h2, ← Scheme.preimage_basicOpen]`.
+
+Conclude with `h3.2`.
+-/
 theorem not_isUnit_evAt {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} (b : Sp R ⟶ X)
     {U : X.Opens} (h : ⊤ ≤ b ⁻¹ᵁ U) (f : Γ(X, U)) (hf : b (IsLocalRing.closedPoint R) ∉ X.basicOpen f) :
     ¬ IsUnit (evAt b h f) := by
@@ -48,6 +64,17 @@ theorem not_isUnit_evAt {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}}
   rw [h2, ← Scheme.preimage_basicOpen] at h3
   exact h3.2
 
+/- English proof (translation)
+Establish `hV : V' ≤ (lbPow (det W r) m).U (fun _ => c) ⊓ (lbPow (det W r) m).U (fun _ => c₀)` using `fun y hy => ⟨Set.mem_iInter.2 fun _ => h₁ hy, Set.mem_iInter.2 fun _ => h₀ hy⟩`. Establish `hxV : ⊤ ≤ x ⁻¹ᵁ ((lbPow (det W r) m).U (fun _ => c) ⊓ (lbPow (det W r) m).U (fun _ => c₀))` using `hx'.trans (x.preimage_mono hV)`. Establish `hcc : ⊤ ≤ x ⁻¹ᵁ (c.U ⊓ c₀.U)` using `hx'.trans (x.preimage_mono (le_inf h₁ h₀))`. Establish `e` using `congrArg (evAt x hxV) (σ.compat (fun _ => c) (fun _ => c₀))`. Rewrite `e` using `[(GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.1 R C x _ _ _ h1 hxV, map_mul, (GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.1 R C x _ _ _ h0 hxV]`.
+
+Rewrite using `[e]`. Use `congr 1`. Establish `hd : evAt x hcc (c.isFrame.detUnit c₀.isFrame (inf_le_left : c.U ⊓ c₀.U ≤ c.U) inf_le_right).val = (M.map (evAt x hx')).det`. Rewrite using `[← (GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.1 R C x _ _ (le_inf h₁ h₀) hcc hx']`. Establish `hr` using `IsFrame.res_detUnit c.isFrame c₀.isFrame (inf_le_left : c.U ⊓ c₀.U ≤ c.U) inf_le_right (le_inf h₁ h₀)`.
+
+Use `(congrArg (evAt x hx') (congrArg Units.val hr)).trans ?_` and prove the remaining obligations. Rewrite using `[IsFrame.val_detUnit, Module.Basis.det_apply, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.map_apply, Module.Basis.toMatrix_apply, hM]`.
+
+Simplify using `only [← IsFrame.basis_apply c.isFrame h₁]`. Rewrite using `[Module.Basis.repr_sum_self]`. Rewrite using `[← hd, ← map_pow, ← (GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.1 R C x _ _ (fun y hy => ⟨Set.mem_iInter.1 hy.1 PUnit.unit, Set.mem_iInter.1 hy.2 PUnit.unit⟩ : (lbPow (det W r) m).U (fun _ => c) ⊓ (lbPow (det W r) m).U (fun _ => c₀) ≤ c.U ⊓ c₀.U) hcc hxV …`. Use `congr 1`. Simplify using `only [lbPow, LB.LinComb]`.
+
+Rewrite using `[Fintype.prod_unique, zpow_natCast, Units.val_pow_eq_pow_val]`. Use `erw [map_pow]`. Use `congr 1`.
+-/
 theorem evAt_coord {R : Type} [CommRing R] {C : Scheme.{0}} (x : Sp R ⟶ C) {W : C.Modules} {r m : ℕ}
     (σ : (lbPow (det W r) m).Sec) (c₀ c : Chart W r) (V' : C.Opens) (h₀ : V' ≤ c₀.U) (h₁ : V' ≤ c.U)
     (hx' : ⊤ ≤ x ⁻¹ᵁ V') (M : Matrix (Fin r) (Fin r) Γ(C, V'))
@@ -81,6 +108,9 @@ theorem evAt_coord {R : Type} [CommRing R] {C : Scheme.{0}} (x : Sp R ⟶ C) {W 
   erw [map_pow]
   congr 1
 
+/- English proof (translation)
+Establish `h1 : v.1 (a : K) ≤ 1` using `(Valuation.mem_valuationSubring_iff _ _).1 a.2`. Use `lt_of_le_of_ne h1 fun h => ha ?_` and prove the remaining obligations. Establish `h0 : (a : K) ≠ 0` using `fun h0 => by rw [h0, map_zero] at h; exact zero_ne_one h`. Establish `hi : (a : K)⁻¹ ∈ v.O` using `(Valuation.mem_valuationSubring_iff _ _).2 (by rw [map_inv₀, h, inv_one])`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨_, hi⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩`.
+-/
 theorem val_lt_one {k K : Type} [Field k] [Field K] [Algebra k K] (v : Place k K) (a : v.O) (ha : ¬ IsUnit a) :
     v.1 (a : K) < 1 := by
   have h1 : v.1 (a : K) ≤ 1 := (Valuation.mem_valuationSubring_iff _ _).1 a.2
@@ -89,6 +119,9 @@ theorem val_lt_one {k K : Type} [Field k] [Field K] [Algebra k K] (v : Place k K
   have hi : (a : K)⁻¹ ∈ v.O := (Valuation.mem_valuationSubring_iff _ _).2 (by rw [map_inv₀, h, inv_one])
   exact isUnit_iff_exists_inv.2 ⟨⟨_, hi⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩
 
+/- English proof (translation)
+Take `⟨f, hc⟩` from `σ`. Establish `: f = fun _ => 0` using `funext h`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+-/
 theorem sec_eq_zero {X : Scheme.{0}} {L : LB X} (σ : L.Sec) (h : ∀ j, σ.f j = 0) : σ = 0 := by
   obtain ⟨f, hc⟩ := σ
   have : f = fun _ => 0 := funext h
@@ -99,6 +132,25 @@ end GlobalTheory.Nef.SecRat
 
 open GlobalTheory.Nef.SecRat in
 
+/- English proof (translation)
+Introduce `k K _ _ _ _ _ C _ x hx W r hW V₀ s hV₀ hs m σ hσ`. Use `haveI := isIntegral_of_isGenOver k K C x hx`. Set `c₀ : Chart W r` to `⟨V₀, s, hs⟩`. Establish `hUeq : ∀ c : Chart W r, (((lbPow (det W r) m).U (fun _ => c) : C.Opens) : Set C) = c.U` using `fun c => Set.ext fun y => ⟨fun hy => Set.mem_iInter.1 hy PUnit.unit, fun hy => Set.mem_iInter.2 fun _ => hy⟩`. Establish `hle : ∀ c : Chart W r, c.U ≤ (lbPow (det W r) m).U (fun _ => c)` using `fun c y hy => Set.mem_iInter.2 fun _ => hy`.
+
+Take `⟨hx0, hinj0, -⟩` from `GlobalTheory.T.evalSectionAtRingPoint_generic_injective_fraction K C x hx.2.1 ((lbPow (det W r) m).U fun _ => c₀) (by rw [hUeq]; exact hV₀)`. Use `⟨evAt x hx0 (σ.f fun _ => c₀), ?_, ?_⟩` and prove the remaining obligations. Introduce `hf`. Apply `hσ` to reduce the goal to its premises. Establish `h0 : σ.f (fun _ => c₀) = 0` using `hinj0 (by rw [hf, map_zero])`.
+
+Use `sec_eq_zero σ fun j => ?_` and prove the remaining obligations. Establish `hj : j = fun _ => j PUnit.unit` using `funext fun _ => rfl`. Rewrite using `[hj]`. Generalize the expression as in `j PUnit.unit = c`. Distinguish the cases in `hne : (((lbPow (det W r) m).U fun _ => c : C.Opens) : Set C).Nonempty`.
+
+Establish `hne2 : ((((lbPow (det W r) m).U fun _ => c) ⊓ (lbPow (det W r) m).U (fun _ => c₀) : C.Opens) : Set C).Nonempty` using `nonempty_preirreducible_inter (Opens.isOpen _) (Opens.isOpen _) hne (by rw [hUeq]; exact hV₀)`. Take `⟨hxj, hinjj, -⟩` from `GlobalTheory.T.evalSectionAtRingPoint_generic_injective_fraction K C x hx.2.1 _ hne`. Take `⟨hx2, -, -⟩` from `GlobalTheory.T.evalSectionAtRingPoint_generic_injective_fraction K C x hx.2.1 _ hne2`. Apply `hinjj` to reduce the goal to its premises. Establish `e` using `congrArg (evAt x hx2) (σ.compat (fun _ => c) (fun _ => c₀))`.
+
+Rewrite `e` using `[(GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.1 K C x _ _ _ hxj hx2, map_mul, (GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).2.2.1 K C x _ _ _ hx0 hx2, h0, map_zero, mul_zero]`. Rewrite using `[e, map_zero]`. Conclude with `eq_zero_of_basicOpen_eq_bot _ (eq_bot_iff.2 fun y hy => hne ⟨y, C.basicOpen_le _ hy⟩)`. Introduce and unpack `v g ⟨b, V, t, V', h₀, h₁, hx', M, hb, hbV, ht, hM, rfl⟩`. Set `c : Chart W r` to `⟨V, t, ht⟩`.
+
+Establish `hbj : ⊤ ≤ b ⁻¹ᵁ (lbPow (det W r) m).U (fun _ => c)` using `hbV.trans (b.preimage_mono (hle c))`. Establish `hxj : ⊤ ≤ x ⁻¹ᵁ (lbPow (det W r) m).U (fun _ => c)` using `hx'.trans (x.preimage_mono (h₁.trans (hle c)))`. Establish `key` using `evAt_coord x σ c₀ c V' h₀ h₁ hx' M hM hx0 hxj`. Establish `hval : v.1 (evAt x hx0 (σ.f fun _ => c₀) * (M.map (evAt x hx')).det ^ m) = v.1 ((evAt b hbj (σ.f fun _ => c) : v.O) : K)`. Rewrite using `[mul_comm, ← key]`.
+
+Use `congr 1`. Substitute `hb` using the available equality. Conclude with `(GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk).1 v.O K C v.O.subtype b _ hbj hxj _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`.
+
+Conclude with `(Valuation.mem_valuationSubring_iff _ _).1 (evAt b hbj _).2`. Introduce `b' hb' hout`. Establish `e : spMap (algebraMap K K) ≫ x = x`. Rewrite using `[Algebra.algebraMap_self, spMap, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`. Take `⟨b₀, -, huniq⟩` from `GlobalTheory.T.existsUnique_centre_functionFieldPlace_curve k K K C x hx v`.
+
+Establish `hbb : b' = b` using `(huniq b' (hb'.trans e.symm)).trans (huniq b (hb.trans e.symm)).symm`. Substitute `hbb` using the available equality. Establish `hnu` using `not_isUnit_evAt b' hbj (σ.f fun _ => c) (fun hm => hout (Opens.mem_iSup.2 ⟨_, hm⟩))`. Rewrite using `[hval]`. Conclude with `val_lt_one v _ hnu`.
+-/
 theorem GlobalTheory.Nef.sec_detPow_rational : ∀ (k K : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k K] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] (x : Sp K ⟶ C), IsGenOver k x →
   ∀ (W : C.Modules) (r : ℕ), IsVB W r → ∀ (V₀ : C.Opens) (s : Fin r → Γ(W, V₀)), (V₀ : Set C).Nonempty → IsFrame s → ∀ (m : ℕ) (σ : (lbPow (det W r) m).Sec), σ ≠ 0 → ∃ f : K, f ≠ 0 ∧ ∀ (v : Place k K) (g : Matrix (Fin r) (Fin r) K), LocFrame x s v g → v.1 (f * g.det ^ m) ≤ 1 ∧ ∀ b : Sp v.O ⟶ C, spMap v.O.subtype ≫ b = x → b (IsLocalRing.closedPoint v.O) ∉ Out.nonzeroLocus σ → v.1 (f * g.det ^ m) < 1 := by
   intro k K _ _ _ _ _ C _ x hx W r hW V₀ s hV₀ hs m σ hσ

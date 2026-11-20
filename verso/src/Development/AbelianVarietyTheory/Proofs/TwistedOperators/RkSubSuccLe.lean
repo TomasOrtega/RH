@@ -23,20 +23,37 @@ def rkSub (ρ : ℕ) : Submodule ℂ (Matrix (Fin n) (Fin m) k → ℂ) where
     rintro c Φ ⟨h1, h2⟩
     exact ⟨Submodule.smul_mem _ c h1, fun x hx => by simp [h2 x hx]⟩
 
+/- English proof (translation)
+Introduce `_ h` and use `h.1`.
+-/
 theorem rkSub_le_SB (ρ : ℕ) : rkSub k n m ρ ≤ SB (Matrix (Fin n) (Fin m) k) := fun _ h => h.1
 
+/- English proof (translation)
+The claim follows from `le_antisymm (rkSub_le_SB 0) fun _ h => ⟨h, fun _ hx => absurd hx (Nat.not_lt_zero _)⟩`.
+-/
 theorem rkSub_zero : rkSub k n m 0 = SB (Matrix (Fin n) (Fin m) k) :=
   le_antisymm (rkSub_le_SB 0) fun _ h => ⟨h, fun _ hx => absurd hx (Nat.not_lt_zero _)⟩
 
+/- English proof (translation)
+Use `eq_bot_iff.2 fun Φ h => ?_` and prove the remaining obligations. Use `funext fun x => h.2 x ?_` and prove the remaining obligations. Establish `: x.rank ≤ n` using `by simpa using Matrix.rank_le_height x`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rkSub_succ_n : rkSub k n m (n + 1) = ⊥ := by
   refine eq_bot_iff.2 fun Φ h => ?_
   refine funext fun x => h.2 x ?_
   have : x.rank ≤ n := by simpa using Matrix.rank_le_height x
   omega
 
+/- English proof (translation)
+Introduce `_ h` and use `⟨h.1, fun x hx => h.2 x (Nat.lt_succ_of_lt hx)⟩`.
+-/
 theorem rkSub_succ_le (ρ : ℕ) : rkSub k n m (ρ + 1) ≤ rkSub k n m ρ :=
   fun _ h => ⟨h.1, fun x hx => h.2 x (Nat.lt_succ_of_lt hx)⟩
 
+/- English proof (translation)
+Use `⟨Model.om_mem_SB 1 g 1 h.1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hr : ((1 : GL (Fin n) k)⁻¹.val * x * g.val).rank = x.rank`. Simplify using `only [inv_one, Units.val_one, Matrix.one_mul]`. Conclude with `Matrix.rank_mul_eq_left_of_isUnit_det _ _ (Matrix.isUnits_det_units g)`. Simplify using `only [om]`.
+
+Rewrite using `[h.2 _ (hr ▸ hx), mul_zero]`.
+-/
 theorem om_mem_rkSub (ρ : ℕ) (g : GL (Fin m) k) {Φ : Matrix (Fin n) (Fin m) k → ℂ}
     (h : Φ ∈ rkSub k n m ρ) : om 1 g (1 : GL (Fin n) k) Φ ∈ rkSub k n m ρ := by
   refine ⟨Model.om_mem_SB 1 g 1 h.1, fun x hx => ?_⟩
@@ -46,12 +63,18 @@ theorem om_mem_rkSub (ρ : ℕ) (g : GL (Fin m) k) {Φ : Matrix (Fin n) (Fin m) 
   simp only [om]
   rw [h.2 _ (hr ▸ hx), mul_zero]
 
+/- English proof (translation)
+Use `⟨le_sup_left, sup_le (aug_le_SB χ) (rkSub_le_SB ρ), fun g Φ hΦ => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hΦ`. Rewrite using `[om_add]`. Conclude with `Submodule.add_mem_sup ((isSub_aug χ).2.2 g y hy) (om_mem_rkSub ρ g hz)`.
+-/
 theorem isSub_aug_sup (χ : GL (Fin n) k →* ℂˣ) (ρ : ℕ) : IsSub χ (aug m χ ⊔ rkSub k n m ρ) := by
   refine ⟨le_sup_left, sup_le (aug_le_SB χ) (rkSub_le_SB ρ), fun g Φ hΦ => ?_⟩
   obtain ⟨y, hy, z, hz, rfl⟩ := Submodule.mem_sup.1 hΦ
   rw [om_add]
   exact Submodule.add_mem_sup ((isSub_aug χ).2.2 g y hy) (om_mem_rkSub ρ g hz)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨le_inf h.1 h'.1, inf_le_left.trans h.2.1, fun g Φ hΦ => ⟨h.2.2 g Φ hΦ.1, h'.2.2 g Φ hΦ.2⟩⟩`.
+-/
 theorem IsSub.inf {χ : GL (Fin n) k →* ℂˣ} {N N' : Submodule ℂ (Matrix (Fin n) (Fin m) k → ℂ)} (h : IsSub χ N)
     (h' : IsSub χ N') : IsSub χ (N ⊓ N') :=
   ⟨le_inf h.1 h'.1, inf_le_left.trans h.2.1, fun g Φ hΦ => ⟨h.2.2 g Φ hΦ.1, h'.2.2 g Φ hΦ.2⟩⟩

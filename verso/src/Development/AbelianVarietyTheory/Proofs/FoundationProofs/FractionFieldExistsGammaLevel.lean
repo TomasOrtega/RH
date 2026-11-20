@@ -13,6 +13,9 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FN
 
+/- English proof (translation)
+Apply `T.sl_io` to reduce the goal to its premises. Rewrite using `[GlobalTheory.T.cmp_mul_ofSL_and_up_cmp_eq_up_mob.2.2.1 γ a]`. Use function extensionality and compare the values at `τ`. Conclude with `(ha γ hγ τ).symm`.
+-/
 theorem sl_ofSL_io_of_gamma {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (T : Frac Ω ε) (a : ring ε.range) (M : ℕ)
     (ha : ∀ γ ∈ CongruenceSubgroup.Gamma M, ∀ τ : ℍ, (a : ℍ → ℂ) (γ • τ) = (a : ℍ → ℂ) τ)
     (γ : SL(2, ℤ)) (hγ : γ ∈ CongruenceSubgroup.Gamma M) : T.sl (ofSL γ) (T.io a) = T.io a := by
@@ -21,6 +24,15 @@ theorem sl_ofSL_io_of_gamma {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →
   funext τ
   exact (ha γ hγ τ).symm
 
+/- English proof (translation)
+Take `⟨a, b, hb, hf⟩` from `T.io_surj f`. Take `⟨N₁, w₁, hN₁, h₁⟩` from `((GlobalTheory.T.mem_modularFunctionRingOver_iff_hasSomeLevelOver ε.range).1 a).1 a.2`. Take `⟨N₂, w₂, hN₂, h₂⟩` from `((GlobalTheory.T.mem_modularFunctionRingOver_iff_hasSomeLevelOver ε.range).1 b).1 b.2`. Establish `hM : 0 < N₁ * N₂` using `Nat.mul_pos hN₁ hN₂`. Establish `h₁'` using `GlobalTheory.T.lv_mono_of_dvd_of_le ε.range N₁ (N₁ * N₂) w₁ w₁ a hM (dvd_mul_right _ _) le_rfl h₁`.
+
+Establish `h₂'` using `GlobalTheory.T.lv_mono_of_dvd_of_le ε.range N₂ (N₁ * N₂) w₂ w₂ b hM (dvd_mul_left _ _) le_rfl h₂`. Use `⟨N₁ * N₂, hM, fun γ hγ => ?_⟩` and prove the remaining obligations. Establish `ea` using `sl_ofSL_io_of_gamma T a _ h₁'.1 γ hγ`. Establish `eb` using `sl_ofSL_io_of_gamma T b _ h₂'.1 γ hγ`. Establish `hib : T.io b ≠ 0`.
+
+Introduce `h`. Apply `hb` to reduce the goal to its premises. Apply `T.io_inj` to reduce the goal to its premises. Rewrite using `[h, map_zero]`. Establish `key : T.sl (ofSL γ) f * T.io b = f * T.io b`.
+
+Use `congrArg (T.sl (ofSL γ)) hf` as an intermediate fact. Rewrite `this` using `[map_mul, eb, ea]`. Rewrite using `[this, hf]`. Conclude with `mul_right_cancel₀ hib key`.
+-/
 theorem frac_exists_level (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Frac Ω ε) (f : T.K) :
     ∃ M : ℕ, 0 < M ∧ ∀ γ ∈ CongruenceSubgroup.Gamma M, T.sl (ofSL γ) f = f := by
   obtain ⟨a, b, hb, hf⟩ := T.io_surj f

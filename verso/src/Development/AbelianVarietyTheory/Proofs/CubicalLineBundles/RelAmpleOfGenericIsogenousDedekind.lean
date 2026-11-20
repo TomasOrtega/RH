@@ -12,6 +12,11 @@ open GlobalTheory GlobalTheory.CM
 
 namespace GlobalTheory.AmpleDedekind
 
+/- English proof (translation)
+Establish `h : ∀ p : Sp K, spMap (algebraMap R K) p = genericPoint (Sp R)` using `fun p => by`. Rewrite using `[genericPoint_eq_bot_of_affine]`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap R K) (PrimeSpectrum.asIdeal p) = ⊥`. Establish `hp : PrimeSpectrum.asIdeal p = ⊥` using `Ideal.eq_bot_of_prime (K := K) _ (h := p.isPrime)`.
+
+Rewrite using `[hp]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective R K)`. Conclude with `Set.eq_singleton_iff_unique_mem.2 ⟨⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K), h _⟩, by rintro _ ⟨p, rfl⟩; exact h p⟩`.
+-/
 theorem range_spMap_fractionRing (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] : Set.range (spMap (algebraMap R K)) = {genericPoint (Sp R)} := by
   have h : ∀ p : Sp K, spMap (algebraMap R K) p = genericPoint (Sp R) := fun p => by
@@ -24,6 +29,17 @@ theorem range_spMap_fractionRing (R K : Type) [CommRing R] [IsDomain R] [Field K
   exact Set.eq_singleton_iff_unique_mem.2
     ⟨⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K), h _⟩, by rintro _ ⟨p, rfl⟩; exact h p⟩
 
+/- English proof (translation)
+Introduce `h₁ h₂ R K _ _ _ _ _ P B _ Ψ M B₀ _ φ M₀ hB hM hM₀ hfin hfl hsurj hpb hiso hamp`. Use `hB.proper` as an intermediate fact. Use `P.isAb.proper` as an intermediate fact. Establish `hsq` using `hpb.1`. Establish `: IsProper B₀.hom` using `MorphismProperty.of_isPullback (P := @IsProper) hsq inferInstance`.
+
+Establish `: IsLocallyNoetherian (Sp R)` using `inferInstance`. Establish `a₀ : IsAmpleLB (M.pull φ)` using `(isAmpleLB_congr hM₀ (LB.isLB_pull hM φ) hiso).1 ((relAmple_iff_isAmpleLB_of_isAffine B₀ hM₀).1 hamp)`. Set `x` to `spMap (algebraMap R K)`. Set `g : pullback P.A.hom x ⟶ B₀.left` to `hsq.lift (pullback.fst P.A.hom x ≫ Ψ.left) (pullback.snd P.A.hom x) (by rw [Category.assoc, Over.w Ψ]; exact pullback.condition)`. Establish `e₁ : g ≫ φ = pullback.fst P.A.hom x ≫ Ψ.left` using `hsq.lift_fst _ _ _`.
+
+Establish `e₂ : g ≫ B₀.hom = pullback.snd P.A.hom x` using `hsq.lift_snd _ _ _`. Establish `sq : IsPullback (pullback.fst P.A.hom x) g Ψ.left φ`. Use `IsPullback.of_bot ?_ e₁.symm hsq` and prove the remaining obligations. Rewrite using `[e₂, Over.w Ψ]`. Conclude with `IsPullback.of_hasPullback _ _`.
+
+Establish `: IsFinite g` using `MorphismProperty.of_isPullback (P := @IsFinite) sq hfin`. Establish `hΨ` using `LB.isLB_pull hM Ψ.left`. Establish `a₁ : IsAmpleLB ((M.pull Ψ.left).pull (pullback.fst P.A.hom x))` using `(isAmpleLB_congr (LB.isLB_pull (LB.isLB_pull hM φ) g) (LB.isLB_pull hΨ _) (FiniteAmple.lbIso_pull_pull φ hM e₁)).1 (a₀.pull_of_isFinite g)`. Establish `: IsProper ((Over.pullback x).obj P.A).hom` using `inferInstanceAs (IsProper (pullback.snd P.A.hom x))`. Establish `a₂ : Out.RelAmple P.A (M.pull Ψ.left)` using `AmpleSpecialisation.relAmple_of_genericFibre h₁ h₂ (Sp R) P (M.pull Ψ.left) K x hΨ (range_spMap_fractionRing R K) ((relAmple_iff_isAmpleLB_of_isAffine ((Over.pullback x).obj P.A) (LB.isLB_pull hΨ _)).2 a₁)`.
+
+Conclude with `(relAmple_finite_pow_iso (Sp R) P.A B Ψ M 1 one_pos P.isAb hB hM hfin).2.2.1 hfl hsurj a₂`.
+-/
 theorem relAmple_of_generic_of_isogenous : Out.Laws → Out.Laws2 → ∀ (R K : Type) [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (P : Out.PolAV (Sp R)) (B : Over (Sp R)) [GrpObj B] (Ψ : P.A ⟶ B) (M : LB B.left) (B₀ : Over (Sp K)) [GrpObj B₀] (φ : B₀.left ⟶ B.left) (M₀ : LB B₀.left), IsAbelianScheme B → M.IsLB → M₀.IsLB → IsFinite Ψ.left → Flat Ψ.left → Surjective Ψ.left → IsGrpPullback B₀ B (spMap (algebraMap R K)) φ → LBIso M₀ (M.pull φ) → Out.RelAmple B₀ M₀ → Out.RelAmple B M := by
   intro h₁ h₂ R K _ _ _ _ _ P B _ Ψ M B₀ _ φ M₀ hB hM hM₀ hfin hfl hsurj hpb hiso hamp
   have := hB.proper

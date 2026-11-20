@@ -10,5 +10,8 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.QuasiPlurisubhar
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.OmCmpProof.om_cmp | exact GlobalTheory.OmCmpProof.om_cmp | (intros; apply GlobalTheory.OmCmpProof.om_cmp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.omega_comparison_statement : Hypotheses2 → HypothesesH → OmCmp := by
   first | exact @GlobalTheory.OmCmpProof.om_cmp | exact GlobalTheory.OmCmpProof.om_cmp | (intros; apply GlobalTheory.OmCmpProof.om_cmp <;> assumption)

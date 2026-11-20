@@ -39,6 +39,9 @@ def c₂ (τ : K →+* ℂ) : ℝ := archSize (G.A₂ τ) fun j => τ (G.second.
 
 def ht : ℝ := vecHt x.gen x.c₁
 
+/- English proof (translation)
+Introduce `_ hw` and use `mem_tw_U.2 ⟨G.second.le_chartAt x.pt.1 hw, G.le_chartAt x.pt.1 hw⟩`.
+-/
 theorem le_chart (j : ℤ) : ⊤ ≤ (x.1 ≫ (G.ideal s).subschemeι) ⁻¹ᵁ (tw G.L₂ G.L j).U
     (twIdx j (G.second.chartAt (ptOf x.pt.1)) (G.chartAt (ptOf x.pt.1))) :=
   fun _ hw => mem_tw_U.2 ⟨G.second.le_chartAt x.pt.1 hw, G.le_chartAt x.pt.1 hw⟩
@@ -48,20 +51,39 @@ def val (j : ℕ) : G.SecOn s j →ₗ[K] K where
   map_add' f g := map_add _ f g
   map_smul' c g := valOn_smul x.1 x.2 _ _ c g
 
+/- English proof (translation)
+The claim follows from `archSize_pos (G.herm τ) fun h => G.geom.alg.bpf.coords_ne_zero x.pt.1 (funext fun k => (map_eq_zero τ).1 (congrFun h k))`.
+-/
 theorem c₁_pos (τ : K →+* ℂ) : 0 < x.c₁ τ := archSize_pos (G.herm τ) fun h =>
   G.geom.alg.bpf.coords_ne_zero x.pt.1 (funext fun k => (map_eq_zero τ).1 (congrFun h k))
 
+/- English proof (translation)
+The claim follows from `archSize_pos (G.herm₂ τ) fun h => G.alg₂.bpf.coords_ne_zero x.pt.1 (funext fun k => (map_eq_zero τ).1 (congrFun h k))`.
+-/
 theorem c₂_pos (τ : K →+* ℂ) : 0 < x.c₂ τ := archSize_pos (G.herm₂ τ) fun h =>
   G.alg₂.bpf.coords_ne_zero x.pt.1 (funext fun k => (map_eq_zero τ).1 (congrFun h k))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ht_eq_pointHeight : x.ht = pointHeight G.w G.A (G.coords x.pt.1) := rfl
 
+/- English proof (translation)
+Use `vecHeight_smul_algebraMap K K _ _ G.w G.A G.geom.alg.spans G.herm K (G.coords x.pt.1) 1 (G.geom.alg.bpf.coords_ne_zero _) one_ne_zero` as an intermediate fact. Rewrite `this` using `[one_smul]`. Conclude with `this.symm`.
+-/
 theorem ht_eq_ptHeight : x.ht = G.ptHeight x.pt := by
   have := vecHeight_smul_algebraMap K K _ _ G.w G.A G.geom.alg.spans G.herm K (G.coords x.pt.1) 1
     (G.geom.alg.bpf.coords_ne_zero _) one_ne_zero
   rw [one_smul] at this
   exact this.symm
 
+/- English proof (translation)
+Set `w (σ : K →+* ℂ) : CxPts G.str σ` to `Points.PtsOver.map (G.ideal s).subschemeι rfl (spMap σ) (x.along σ)`. Establish `e (σ : K →+* ℂ) : (G.φ₂ σ).φ (G.second.chartAt (ptOf x.pt.1)) (w σ) = Real.log (x.c₂ σ ^ 2)`. Use `(G.second.weight_φ _ _ σ _ (w σ)).trans (congrArg (fun y => Real.log (archSize _ y ^ 2)) (funext fun k => ?_))` and prove the remaining obligations. Conclude with `Points.valR_spMap_comp σ x.pt.1 _ (G.second.le_chartAt x.pt.1) _`. Establish `h` using `G.isConj_φ₂ τ (G.second.chartAt (ptOf x.pt.1)) (w τ) (w _) (by`.
+
+Express the relevant statement in the definitionally equal form `(spMap _ ≫ x.1) ≫ _ = spMap _ ≫ (spMap τ ≫ x.1) ≫ _`. Rewrite using `[← Category.assoc (spMap (starRingEnd ℂ)), ← Category.assoc (spMap (starRingEnd ℂ)), ← Spec.map_comp]`. Use the proof step `rfl) fun _ _ => G.second.le_chartAt x.pt.1 (Set.mem_univ _)`. Establish `p` using `x.c₂_pos τ`. Establish `p'` using `x.c₂_pos ((starRingEnd ℂ).comp τ)`.
+
+Conclude with `(pow_left_inj₀ p'.le p.le two_ne_zero).1 (Real.log_injOn_pos (pow_pos p' 2) (pow_pos p 2) ((e _).symm.trans (h.trans (e τ))))`.
+-/
 theorem c₂_conj (τ : K →+* ℂ) : x.c₂ ((starRingEnd ℂ).comp τ) = x.c₂ τ := by
   let w (σ : K →+* ℂ) : CxPts G.str σ := Points.PtsOver.map (G.ideal s).subschemeι rfl (spMap σ) (x.along σ)
   have e (σ : K →+* ℂ) : (G.φ₂ σ).φ (G.second.chartAt (ptOf x.pt.1)) (w σ) = Real.log (x.c₂ σ ^ 2) := by
@@ -76,6 +98,11 @@ theorem c₂_conj (τ : K →+* ℂ) : x.c₂ ((starRingEnd ℂ).comp τ) = x.c�
   exact (pow_left_inj₀ p'.le p.le two_ne_zero).1
     (Real.log_injOn_pos (pow_pos p' 2) (pow_pos p 2) ((e _).symm.trans (h.trans (e τ))))
 
+/- English proof (translation)
+Establish `e : (Geo.weightOn s j τ).φ (fun _ => twIdx j (G.second.chartAt (ptOf x.pt.1)) (G.chartAt (ptOf x.pt.1))) (x.along τ) = Real.log (x.c₂ τ ^ 2) + j * Real.log (x.c₁ τ ^ 2)`. Simplify using `only [Geo.weightOn, Weight.pull, Weight.linComb, Geo.φTw, Weight.tens, Weight.zpow, Geo.φ, Geo.φ₂, HermSys.weight_φ]`. Establish `a₁ : ∀ k, secVal G.str τ (G.b k) (G.chartAt (ptOf x.pt.1)) (Points.PtsOver.map (G.ideal s).subschemeι rfl (spMap τ) (x.along τ)) = τ (G.coords x.pt.1 k)` using `fun k => Points.valR_spMap_comp τ x.pt.1 _ (G.le_chartAt x.pt.1) _`. Establish `a₂ : ∀ k, secVal G.str τ (G.b₂ k) (G.second.chartAt (ptOf x.pt.1)) (Points.PtsOver.map (G.ideal s).subschemeι rfl (spMap τ) (x.along τ)) = τ (G.second.coords x.pt.1 k)` using `fun k => Points.valR_spMap_comp τ x.pt.1 _ (G.second.le_chartAt x.pt.1) _`. Simplify using `only [id, a₁, a₂, Finset.univ_unique, Finset.sum_singleton, Int.cast_one, one_mul, Int.cast_natCast, c₁, c₂]`.
+
+Establish `p₁` using `x.c₁_pos τ`. Establish `p₂` using `x.c₂_pos τ`. Rewrite using `[e, Real.exp_neg, Real.exp_add, ← Real.log_pow, Real.exp_log (by positivity), Real.exp_log (by positivity), mul_pow, ← pow_mul, ← pow_mul, mul_comm 2 j]`.
+-/
 theorem exp_neg_weight (j : ℕ) (τ : K →+* ℂ) :
     Real.exp (-(Geo.weightOn s j τ).φ (fun _ => twIdx j (G.second.chartAt (ptOf x.pt.1)) (G.chartAt (ptOf x.pt.1)))
       (x.along τ)) = ((x.c₂ τ * x.c₁ τ ^ j) ^ 2)⁻¹ := by
@@ -95,6 +122,9 @@ theorem exp_neg_weight (j : ℕ) (τ : K →+* ℂ) :
   rw [e, Real.exp_neg, Real.exp_add, ← Real.log_pow, Real.exp_log (by positivity), Real.exp_log (by positivity), mul_pow,
     ← pow_mul, ← pow_mul, mul_comm 2 j]
 
+/- English proof (translation)
+Establish `hw : x.along τ ∈ ptsIn ((G.ideal s).subschemeι ≫ G.str) τ (((tw G.L₂ G.L j).pull (G.ideal s).subschemeι).U fun _ => twIdx j (G.second.chartAt (ptOf x.pt.1)) (G.chartAt (ptOf x.pt.1)))` using `fun _ _ => mem_pull.2 (x.le_chart j (Set.mem_univ _))`. Rewrite using `[Weight.nsq_eq _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (cval_mem τ (g i))) hw, exp_neg_weight, div_eq_mul_inv]`. Use `congrArg (fun r => ‖r‖ ^ 2 * _) ?_` and prove the remaining obligations. Use `((congrFun (Finset.sum_apply _ _ _) _).trans (Finset.sum_apply _ _ _)).trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i _ => congrArg (c i * ·) ((cval_eq_val τ _ _ _ mem_ptsIn_top hw).trans (evalPt_spMap_comp τ x.1 _ _ _ _))`.
+-/
 theorem nsq_eq (j : ℕ) (τ : K →+* ℂ) {ι : Type} [Fintype ι] (c : ι → ℂ) (g : ι → G.SecOn s j) :
     (Geo.weightOn s j τ).nsq (∑ i, c i • cval τ (g i)) (x.along τ) =
       ‖∑ i, c i * τ (x.val j (g i))‖ ^ 2 / (x.c₂ τ * x.c₁ τ ^ j) ^ 2 := by
@@ -108,6 +138,9 @@ theorem nsq_eq (j : ℕ) (τ : K →+* ℂ) {ι : Type} [Fintype ι] (c : ι →
   exact Finset.sum_congr rfl fun i _ => congrArg (c i * ·)
     ((cval_eq_val τ _ _ _ mem_ptsIn_top hw).trans (evalPt_spMap_comp τ x.1 _ _ _ _))
 
+/- English proof (translation)
+Use `x.nsq_eq j τ (fun _ : Unit => 1) fun _ => g` as an intermediate fact. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, one_smul, one_mul] at this`. Establish `p₁` using `x.c₁_pos τ`. Establish `p₂` using `x.c₂_pos τ`. Rewrite using `[nrm, this, ← div_pow, Real.sqrt_sq (by positivity)]`.
+-/
 theorem nrm_eq (j : ℕ) (τ : K →+* ℂ) (g : G.SecOn s j) :
     x.nrm j τ g = ‖τ (x.val j g)‖ / (x.c₂ τ * x.c₁ τ ^ j) := by
   have := x.nsq_eq j τ (fun _ : Unit => 1) fun _ => g
@@ -116,6 +149,9 @@ theorem nrm_eq (j : ℕ) (τ : K →+* ℂ) (g : G.SecOn s j) :
   have p₂ := x.c₂_pos τ
   rw [nrm, this, ← div_pow, Real.sqrt_sq (by positivity)]
 
+/- English proof (translation)
+Use `(valOn_mulSecOn G.isLB₂ G.isLB (G.comb u) _ g x.1 _ _ (G.le_chartAt x.pt.1) (x.le_chart j) (x.le_chart _)).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Use `(Points.valR_eq _ _ (G.le_chartAt x.pt.1) _).symm.trans ((G.val_comb x.pt.1 u).trans ?_)` and prove the remaining obligations. Rewrite using `[LinSys.baseHom_ptOver]`. Both sides reduce to the same expression.
+-/
 theorem val_mulSecOn (j : ℕ) (u : Fin G.N → K) (g : G.SecOn s j) :
     x.val (j + 1) (mulSecOn G.isLB₂ G.isLB (G.comb u) (Nat.cast_succ j).symm g) =
       (∑ k, u k * G.coords x.pt.1 k) * x.val j g := by
@@ -125,6 +161,9 @@ theorem val_mulSecOn (j : ℕ) (u : Fin G.N → K) (g : G.SecOn s j) :
   rw [LinSys.baseHom_ptOver]
   rfl
 
+/- English proof (translation)
+Introduce `x x' h` and use `by have := hs.finite have : IsAffine (G.ideal s).subscheme := isAffine_of_isAffineHom ((G.ideal s).subschemeι ≫ G.str) have e : spMap φ ≫ x.1 = spMap φ ≫ x'.1 := congrArg Subtype.val h refine Subtype.ext (ext_evalPt (isAffineOpen_top _) le_top le_top (RingHom.ext fun f => φ.injec …`.
+-/
 theorem along_injective (hs : G.IsGood s) {Ω : Type} [Field Ω] (φ : K →+* Ω) :
     Function.Injective fun x : RatPt G s => x.along φ := fun x x' h => by
   have := hs.finite
@@ -141,6 +180,11 @@ variable {G : Geo K} {s : Fin G.D → Fin G.N → K}
 def Coord.AtPoints {hs : G.IsGood s} {δ : ℕ} (Co : Coord G hs δ) (x : Fin δ ≃ RatPt G s) : Prop :=
   ∀ p, (∀ j g, Co.ev j g p = (x p).val j g) ∧ Co.y p = G.coords (x p).pt.1 ∧ ∀ τ, Co.c₂ τ p = (x p).c₂ τ
 
+/- English proof (translation)
+Use `hs.finite` as an intermediate fact. Use `hs.etale` as an intermediate fact. Use `letI := φ.toAlgebra`. Establish `hB` using `isLB_tw G.isLB₂ G.isLB 0`. Establish `: Finite (Points.PtsOver ((G.ideal s).subschemeι ≫ G.str) (spMap φ))` using `finite_ptsOver _ Ω`.
+
+Use `(RatPt.along_injective hs φ).bijective_of_nat_card_le (le_of_eq ?_)` and prove the remaining obligations. Conclude with `(finrank_H0On (p := G.str) (I := G.ideal s) hB Ω).symm.trans ((finrank_H0On hB (AlgebraicClosure K)).trans (Nat.card_eq_of_bijective _ ⟨RatPt.along_injective hs _, h⟩).symm)`.
+-/
 theorem RatPt.along_bijective (hs : G.IsGood s)
     (h : Function.Surjective fun x : RatPt G s => x.along (algebraMap K (AlgebraicClosure K)))
     {Ω : Type} [Field Ω] [IsAlgClosed Ω] (φ : K →+* Ω) : Function.Bijective fun x : RatPt G s => x.along φ := by
@@ -153,6 +197,17 @@ theorem RatPt.along_bijective (hs : G.IsGood s)
   exact (finrank_H0On (p := G.str) (I := G.ideal s) hB Ω).symm.trans
     ((finrank_H0On hB (AlgebraicClosure K)).trans (Nat.card_eq_of_bijective _ ⟨RatPt.along_injective hs _, h⟩).symm)
 
+/- English proof (translation)
+Use `hs.finite` as an intermediate fact. Use `hs.etale` as an intermediate fact. Set `φ (j : ℕ) : G.SecOn s j →ₗ[K] (Fin δ → K)` to `LinearMap.pi fun p => (x p).val j`. Establish `bij (j : ℕ) : Function.Bijective (φ j)`. Establish `hB` using `isLB_tw G.isLB₂ G.isLB (j : ℤ)`.
+
+Use `choose r hr using h`. Establish `inj : Function.Injective (φ j)` using `(injective_iff_map_eq_zero _).2 fun g hg => by`. Establish `hr' (w : PtsOver (AlgebraicClosure K) ((G.ideal s).subschemeι ≫ G.str)) : w.1 = spMap (algebraMap K (AlgebraicClosure K)) ≫ (r w).1` using `(congrArg Subtype.val (hr w)).symm`. Use `eq_zero_of_forall_valOn_eq_zero (Ω := AlgebraicClosure K) hB (fun w => twIdx j (G.second.chartAt (ptOf (r w).pt.1)) (G.chartAt (ptOf (r w).pt.1))) (fun w => by rw [hr' w]; exact fun _ _ => (r w).le_chart j (Set.mem_univ _)) fun w => ?_` and prove the remaining obligations. Establish `e : (r w).val j g = 0` using `by simpa [φ] using congrFun hg (x.symm (r w))`.
+
+Establish `key : ∀ (z : Sp (AlgebraicClosure K) ⟶ (G.ideal s).subscheme) (hz), z = spMap (algebraMap K (AlgebraicClosure K)) ≫ (r w).1 → valOn z (twIdx j (G.second.chartAt (ptOf (r w).pt.1)) (G.chartAt (ptOf (r w).pt.1))) hz g = 0`. Introduce and unpack `_ hz rfl`. Conclude with `(evalPt_spMap_comp _ (r w).1 _ _ _ _).trans ((congrArg _ e).trans (map_zero _))`. Conclude with `key _ _ (hr' w)`. Use `finite_H0On (p := G.str) (I := G.ideal s) hB` as an intermediate fact.
+
+Use `⟨inj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).1 inj⟩` and prove the remaining obligations. Rewrite using `[finrank_H0On hB (AlgebraicClosure K), Module.finrank_fin_fun, ← Nat.card_fin δ, Nat.card_congr x]`. Conclude with `(Nat.card_eq_of_bijective _ ⟨RatPt.along_injective hs _, fun w => ⟨r w, hr w⟩⟩).symm`. Use `⟨⟨fun j => LinearEquiv.ofBijective (φ j) (bij j), fun p => G.coords (x p).pt.1, fun σ p => (x p).c₂ σ, fun _ => G.geom.alg.bpf.coords_ne_zero _, fun σ p => (x p).c₂_pos σ, fun σ p => (x p).c₂_conj σ, fun j u g => funext fun p => (x p).val_mulSecOn j u g, fun j σ m c g => ?_⟩, fun …` and prove the remaining obligations. Use `(csq_pointHerm _ _ _ σ c g).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← finsum_comp_equiv (x.trans (Equiv.ofBijective _ (RatPt.along_bijective hs h σ))), finsum_eq_sum_of_fintype]`. Conclude with `Finset.sum_congr rfl fun p _ => (x p).nsq_eq j σ c g`.
+-/
 theorem exists_coord_atPoints (hs : G.IsGood s)
     (h : Function.Surjective fun x : RatPt G s => x.along (algebraMap K (AlgebraicClosure K)))
     {δ : ℕ} (x : Fin δ ≃ RatPt G s) : ∃ Co : Coord G hs δ, Co.AtPoints x := by
@@ -186,15 +241,24 @@ theorem exists_coord_atPoints (hs : G.IsGood s)
   rw [← finsum_comp_equiv (x.trans (Equiv.ofBijective _ (RatPt.along_bijective hs h σ))), finsum_eq_sum_of_fintype]
   exact Finset.sum_congr rfl fun p _ => (x p).nsq_eq j σ c g
 
+/- English proof (translation)
+Rewrite using `[RatPt.nrm_eq, (h p).1, (h p).2.2, pow_zero, mul_one]`.
+-/
 theorem Coord.AtPoints.norm_ev {hs : G.IsGood s} {δ : ℕ} {Co : Coord G hs δ} {x : Fin δ ≃ RatPt G s} (h : Co.AtPoints x)
     (p : Fin δ) (τ : K →+* ℂ) (g : G.SecOn s 0) : ‖τ (Co.ev 0 g p)‖ / Co.c₂ τ p = (x p).nrm 0 τ g := by
   rw [RatPt.nrm_eq, (h p).1, (h p).2.2, pow_zero, mul_one]
 
+/- English proof (translation)
+Simplify using `only [Coord.gen, Coord.c₁, (h p).2.1]`. Both sides reduce to the same expression.
+-/
 theorem Coord.AtPoints.vecHt_eq {hs : G.IsGood s} {δ : ℕ} {Co : Coord G hs δ} {x : Fin δ ≃ RatPt G s} (h : Co.AtPoints x)
     (p : Fin δ) : vecHt (fun k => Co.gen k p) (fun τ => Co.c₁ τ p) = (x p).ht := by
   simp only [Coord.gen, Coord.c₁, (h p).2.1]
   rfl
 
+/- English proof (translation)
+Rewrite using `[hs.nrm_normOn_sq, ← finsum_comp_equiv (Equiv.ofBijective _ (RatPt.along_bijective hs h τ))]`. Conclude with `finsum_congr fun x => (Real.sq_sqrt (Weight.nsq_nonneg _ _ _)).symm`.
+-/
 theorem nrm_normOn_sq_eq (hs : G.IsGood s)
     (h : Function.Surjective fun x : RatPt G s => x.along (algebraMap K (AlgebraicClosure K))) (j : ℕ) (τ : K →+* ℂ)
     (g : G.SecOn s j) : (hs.normOn j).nrm τ g ^ 2 = ∑ᶠ x : RatPt G s, x.nrm j τ g ^ 2 := by
@@ -211,6 +275,9 @@ def RatPt.geomPt (x : RatPt (G.baseChange E) s) : (G.toLinSys.baseChange E).Pt (
 
 variable {G E s}
 
+/- English proof (translation)
+The claim follows from `Algebra.IsAlgebraic.trans F E _ G.ptHeight (LinSys.toBase (RatPt.geomPt G E s x)) = x.ht := by haveI : Algebra.IsAlgebraic F (AlgebraicClosure E) := Algebra.IsAlgebraic.trans F E _ obtain ⟨c, hc, e⟩ := G.exists_coords_baseChange E x.pt.1 have h₀ := G.geom.alg.bpf.coords_ne_zero ( …`.
+-/
 theorem RatPt.ptHeight_geomPt (x : RatPt (G.baseChange E) s) :
     haveI : Algebra.IsAlgebraic F (AlgebraicClosure E) := Algebra.IsAlgebraic.trans F E _
     G.ptHeight (LinSys.toBase (RatPt.geomPt G E s x)) = x.ht := by
@@ -228,6 +295,9 @@ theorem RatPt.ptHeight_geomPt (x : RatPt (G.baseChange E) s) :
   rw [HermSys.ptHeight, h₅, h₁]
   exact (h₃.symm.trans h₄).trans (congrArg (pointHeight G.w G.A) e.symm)
 
+/- English proof (translation)
+Introduce `w` and use `by obtain ⟨x₀, e⟩ := h w.1 w.2 refine ⟨⟨x₀, ?_⟩, Subtype.ext e.symm⟩ have h₁ := (G.baseChange E).comp_str (x₀ ≫ ((G.baseChange E).ideal s).subschemeι) have h₃ := (Category.assoc _ _ _).symm.trans h₁ have h₂ := (Spec.map_comp _ _).trans ((congrArg (spMap (algebraMap E (AlgebraicCl …`.
+-/
 theorem Split.along_surjective (h : Split G.toTuple E s) :
     Function.Surjective fun x : RatPt (G.baseChange E) s => x.along (algebraMap E (AlgebraicClosure E)) := fun w => by
   obtain ⟨x₀, e⟩ := h w.1 w.2
@@ -239,16 +309,29 @@ theorem Split.along_surjective (h : Split G.toTuple E s) :
   refine h₃.trans (congrArg spMap (RingHom.ext fun a => (algebraMap E (AlgebraicClosure E)).injective ?_))
   exact congrArg (fun f => f.hom a) (Spec.map_injective h₂)
 
+/- English proof (translation)
+Use `Set.ext fun y => ⟨fun ⟨z, hz⟩ => ?_, fun ⟨x, hx⟩ => ⟨_, congrArg Subtype.val hx⟩⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `h.along_surjective ⟨z, (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) hz).trans y.2)⟩`. Conclude with `⟨x, Subtype.ext ((congrArg (fun t => t.1 ≫ _) hx).trans hz)⟩`.
+-/
 theorem Split.geomPts_eq (h : Split G.toTuple E s) :
     G.geomPts E (G.linSection E s) = Set.range (RatPt.geomPt G E s) := by
   refine Set.ext fun y => ⟨fun ⟨z, hz⟩ => ?_, fun ⟨x, hx⟩ => ⟨_, congrArg Subtype.val hx⟩⟩
   obtain ⟨x, hx⟩ := h.along_surjective ⟨z, (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) hz).trans y.2)⟩
   exact ⟨x, Subtype.ext ((congrArg (fun t => t.1 ≫ _) hx).trans hz)⟩
 
+/- English proof (translation)
+Introduce `_ _ h` and use `RatPt.along_injective hs _ (Subtype.ext ((cancel_mono ((G.baseChange E).ideal s).subschemeι).1 (congrArg Subtype.val h)))`.
+-/
 theorem RatPt.geomPt_injective (hs : (G.baseChange E).IsGood s) : Function.Injective (RatPt.geomPt G E s) :=
   fun _ _ h => RatPt.along_injective hs _ (Subtype.ext ((cancel_mono ((G.baseChange E).ideal s).subschemeι).1
     (congrArg Subtype.val h)))
 
+/- English proof (translation)
+Establish `hfin` using `(Geo.isGood_baseChange_iff.1 hs).finite_geomPts`. Establish `: Finite (RatPt (G.baseChange E) s)` using `(Set.finite_range_iff (RatPt.geomPt_injective hs)).1 (h.geomPts_eq ▸ hfin)`. Establish `e : Nat.card (RatPt (G.baseChange E) s) = (G.geomPts E (G.linSection E s)).ncard`. Rewrite using `[h.geomPts_eq, Set.ncard_range_of_injective (RatPt.geomPt_injective hs)]`. Set `x` to `(Finite.equivFinOfCardEq e).symm`.
+
+Take `⟨Co, hCo⟩` from `exists_coord_atPoints hs h.along_surjective x`. Use `⟨x, Co, hCo, ?_⟩` and prove the remaining obligations. Rewrite using `[HermSys.cycleHeight]`. Use `(finsum_mem_congr h.geomPts_eq fun _ _ => rfl).trans ?_` and prove the remaining obligations. Rewrite using `[finsum_mem_range (RatPt.geomPt_injective hs), ← finsum_comp_equiv x, finsum_eq_sum_of_fintype]`.
+
+Conclude with `Finset.sum_congr rfl fun p _ => (x p).ptHeight_geomPt`.
+-/
 theorem Split.exists_coord (h : Split G.toTuple E s) (hs : (G.baseChange E).IsGood s) :
     ∃ (x : Fin (G.geomPts E (G.linSection E s)).ncard ≃ RatPt (G.baseChange E) s)
       (Co : Coord (G.baseChange E) hs (G.geomPts E (G.linSection E s)).ncard),

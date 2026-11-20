@@ -18,12 +18,21 @@ section Ip
 
 variable (R : RiemLat E g Λ)
 
+/- English proof (translation)
+Simplify using `[RiemLat.ip, add_dotProduct]`.
+-/
 theorem ip_add_right (x y y' : Fin g → ℂ) : R.ip x (y + y') = R.ip x y + R.ip x y' := by
   simp [RiemLat.ip, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[RiemLat.ip, smul_dotProduct]`.
+-/
 theorem ip_smul_right (c : ℂ) (x y : Fin g → ℂ) : R.ip x (c • y) = c * R.ip x y := by
   simp [RiemLat.ip, smul_dotProduct]
 
+/- English proof (translation)
+Use `show star (y ⬝ᵥ R.Hm *ᵥ star x) = x ⬝ᵥ R.Hm *ᵥ star y`. Rewrite using `[← star_dotProduct_star, star_mulVec, star_star, R.herm.eq, dotProduct_mulVec]`.
+-/
 theorem ip_conj (x y : Fin g → ℂ) : starRingEnd ℂ (R.ip x y) = R.ip y x := by
   show star (y ⬝ᵥ R.Hm *ᵥ star x) = x ⬝ᵥ R.Hm *ᵥ star y
   rw [← star_dotProduct_star, star_mulVec, star_star, R.herm.eq, dotProduct_mulVec]
@@ -33,20 +42,35 @@ def ipL (x : Fin g → ℂ) : (Fin g → ℂ) →ₗ[ℂ] ℂ where
   map_add' := ip_add_right R x
   map_smul' c y := ip_smul_right R c x y
 
+/- English proof (translation)
+Rewrite using `[← ip_conj R y, ip_add_right, map_add, ip_conj, ip_conj]`.
+-/
 theorem ip_add_left (x x' y : Fin g → ℂ) : R.ip (x + x') y = R.ip x y + R.ip x' y := by
   rw [← ip_conj R y, ip_add_right, map_add, ip_conj, ip_conj]
 
+/- English proof (translation)
+Rewrite using `[← ip_conj R y, ip_smul_right, map_mul, ip_conj]`.
+-/
 theorem ip_smul_left (c : ℂ) (x y : Fin g → ℂ) : R.ip (c • x) y = starRingEnd ℂ c * R.ip x y := by
   rw [← ip_conj R y, ip_smul_right, map_mul, ip_conj]
 
+/- English proof (translation)
+The claim follows from `R.pos x hx`.
+-/
 theorem ip_self_pos {x : Fin g → ℂ} (hx : x ≠ 0) : 0 < (R.ip x x).re := R.pos x hx
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `[RiemLat.ip]`. Conclude with `(ip_self_pos R hx).le`.
+-/
 theorem ip_self_nonneg (x : Fin g → ℂ) : 0 ≤ (R.ip x x).re := by
   by_cases hx : x = 0
   · subst hx
     simp [RiemLat.ip]
   · exact (ip_self_pos R hx).le
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Use `ip_self_pos R hx` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+-/
 theorem ip_self_eq_zero {x : Fin g → ℂ} (h : R.ip x x = 0) : x = 0 := by
   by_contra hx
   have := ip_self_pos R hx
@@ -67,6 +91,11 @@ def core : InnerProductSpace.Core ℂ (TanSp R) where
   smul_left x y r := ip_smul_left R r x y
   definite x h := ip_self_eq_zero R h
 
+/- English proof (translation)
+Use `letI : NormedAddCommGroup (TanSp R) := (core R).toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ (TanSp R) := InnerProductSpace.ofCore (core R).toCore`. Establish `h1 : ‖(inner ℂ (show TanSp R from x) (show TanSp R from y) : ℂ)‖ ≤ _` using `norm_inner_le_norm _ _`. Establish `h2 : (R.ip x x).re = ‖(show TanSp R from x)‖ ^ 2` using `inner_self_eq_norm_sq (𝕜 := ℂ) (show TanSp R from x)`. Establish `h3 : (R.ip y y).re = ‖(show TanSp R from y)‖ ^ 2` using `inner_self_eq_norm_sq (𝕜 := ℂ) (show TanSp R from y)`.
+
+Establish `h4 : R.ip x y = (inner ℂ (show TanSp R from x) (show TanSp R from y) : ℂ)` using `rfl`. Rewrite using `[h2, h3, h4, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h1 2`.
+-/
 theorem ip_cs (x y : Fin g → ℂ) : ‖R.ip x y‖ ^ 2 ≤ (R.ip x x).re * (R.ip y y).re := by
   letI : NormedAddCommGroup (TanSp R) := (core R).toNormedAddCommGroup
   letI : InnerProductSpace ℂ (TanSp R) := InnerProductSpace.ofCore (core R).toCore
@@ -77,6 +106,11 @@ theorem ip_cs (x y : Fin g → ℂ) : ‖R.ip x y‖ ^ 2 ≤ (R.ip x x).re * (R.
   rw [h2, h3, h4, ← mul_pow]
   exact pow_le_pow_left₀ (norm_nonneg _) h1 2
 
+/- English proof (translation)
+Use `letI : NormedAddCommGroup (TanSp R) := (core R).toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ (TanSp R) := InnerProductSpace.ofCore (core R).toCore`. Use `letI : FiniteDimensional ℂ (TanSp R) := inferInstanceAs (FiniteDimensional ℂ (Fin g → ℂ))`. Set `S' : Submodule ℂ (TanSp R)` to `S`. Establish `h' : Module.finrank ℂ S' = m` using `h`.
+
+Set `b` to `(stdOrthonormalBasis ℂ S').reindex (finCongr h')`. Use `⟨fun c => ((b c : S') : TanSp R), fun c => (b c).2, fun x hx y hy => ?_⟩` and prove the remaining obligations. Establish `key` using `b.sum_inner_mul_inner (⟨x, hx⟩ : S') (⟨y, hy⟩ : S')`. Use `Eq.trans (Finset.sum_congr rfl fun c _ => ?_) key` and prove the remaining obligations. Conclude with `congrArg (· * R.ip (((b c : S') : TanSp R)) y) (ip_conj R (((b c : S') : TanSp R)) x)`.
+-/
 theorem exists_frame (S : Submodule ℂ (Fin g → ℂ)) (m : ℕ) (h : Module.finrank ℂ S = m) :
     ∃ e : Fin m → Fin g → ℂ, (∀ c, e c ∈ S) ∧
       ∀ x ∈ S, ∀ y ∈ S, ∑ c, starRingEnd ℂ (R.ip (e c) x) * R.ip (e c) y = R.ip x y := by
@@ -97,25 +131,40 @@ section Eig
 
 variable (R : RiemLat E g Λ)
 
+/- English proof (translation)
+The claim follows from `map_sum (ipL R x) f t`.
+-/
 theorem ip_sum_right {A : Type} (t : Finset A) (f : A → Fin g → ℂ) (x : Fin g → ℂ) :
     R.ip x (∑ i ∈ t, f i) = ∑ i ∈ t, R.ip x (f i) := map_sum (ipL R x) f t
 
+/- English proof (translation)
+Rewrite using `[← ip_conj R y, ip_sum_right, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => ip_conj R y (f i)`.
+-/
 theorem ip_sum_left {A : Type} (t : Finset A) (f : A → Fin g → ℂ) (y : Fin g → ℂ) :
     R.ip (∑ i ∈ t, f i) y = ∑ i ∈ t, R.ip (f i) y := by
   rw [← ip_conj R y, ip_sum_right, map_sum]
   exact Finset.sum_congr rfl fun i _ => ip_conj R y (f i)
 
+/- English proof (translation)
+Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_eigSp_iff' {s : 𝓞 E →+* ℂ} {x : Fin g → ℂ} : x ∈ eigSp R.B s ↔ ∀ a, R.B a x = s a • x := by
   simp [eigSp, Submodule.mem_iInf, sub_eq_zero]
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Introduce `e` and use `h (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) e)`.
+-/
 theorem comp_ne {s s' : E →+* ℂ} (h : s ≠ s') :
     s.comp (algebraMap (𝓞 E) E) ≠ s'.comp (algebraMap (𝓞 E) E) :=
   fun e => h (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) e)
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Establish `hc : (RingHom.ker s).comap (algebraMap ℤ (𝓞 E)) = ⊥`. Rewrite using `[RingHom.comap_ker]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (RingHom.injective_int _)`. Conclude with `(RingHom.injective_iff_ker_eq_bot s).2 (Ideal.eq_bot_of_comap_eq_bot hc)`.
+-/
 theorem emb_injective (s : 𝓞 E →+* ℂ) : Function.Injective s := by
   have hc : (RingHom.ker s).comap (algebraMap ℤ (𝓞 E)) = ⊥ := by
     rw [RingHom.comap_ker]
@@ -125,13 +174,24 @@ theorem emb_injective (s : 𝓞 E →+* ℂ) : Function.Injective s := by
 def extEmb (s : 𝓞 E →+* ℂ) : E →+* ℂ := IsFractionRing.lift (emb_injective s)
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `IsFractionRing.lift_algebraMap (emb_injective s) a`.
+-/
 theorem extEmb_apply (s : 𝓞 E →+* ℂ) (a : 𝓞 E) : extEmb s (algebraMap (𝓞 E) E a) = s a :=
   IsFractionRing.lift_algebraMap (emb_injective s) a
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `RingHom.ext (extEmb_apply s)`.
+-/
 theorem extEmb_comp (s : 𝓞 E →+* ℂ) : (extEmb s).comp (algebraMap (𝓞 E) E) = s :=
   RingHom.ext (extEmb_apply s)
 
+/- English proof (translation)
+Take `⟨-, -, h3, h4, h5⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Use `conv_lhs => rw [← h4 x]`. Rewrite using `[ip_sum_right, Finset.sum_eq_single s]`. Introduce `s' _ hs`. Conclude with `h5 _ _ (comp_ne hs.symm) _ hx' _ ((h3 _).1 x)`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ip_eig (s : E →+* ℂ) {x' : Fin g → ℂ} (hx' : x' ∈ eigSp R.B (s.comp (algebraMap (𝓞 E) E)))
     (x : Fin g → ℂ) : R.ip x' x = R.ip x' (eigComp R.B (s.comp (algebraMap (𝓞 E) E)) x) := by
   obtain ⟨-, -, h3, h4, h5⟩ := GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R
@@ -141,6 +201,9 @@ theorem ip_eig (s : E →+* ℂ) {x' : Fin g → ℂ} (hx' : x' ∈ eigSp R.B (s
     exact h5 _ _ (comp_ne hs.symm) _ hx' _ ((h3 _).1 x)
   · simp
 
+/- English proof (translation)
+Take `⟨-, -, h3, h4, -⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ip_self_sum (x : Fin g → ℂ) :
     R.ip x x = ∑ s : E →+* ℂ, R.ip (eigComp R.B (s.comp (algebraMap (𝓞 E) E)) x)
       (eigComp R.B (s.comp (algebraMap (𝓞 E) E)) x) := by
@@ -149,6 +212,11 @@ theorem ip_self_sum (x : Fin g → ℂ) :
     _ = ∑ s : E →+* ℂ, R.ip (eigComp R.B (s.comp (algebraMap (𝓞 E) E)) x) x := ip_sum_left R _ _ _
     _ = _ := Finset.sum_congr rfl fun s _ => ip_eig R s ((h3 _).1 x) x
 
+/- English proof (translation)
+Set `sE : Ψ → (E →+* ℂ)` to `fun τ => extEmb (emb τ)`. Establish `hsE : ∀ τ, (sE τ).comp (algebraMap (𝓞 E) E) = emb τ` using `fun τ => extEmb_comp (emb τ)`. Establish `hinj : Function.Injective sE` using `fun a b h => hemb (by rw [← hsE, ← hsE, h])`. Establish `e : ∑ τ, (R.ip (eigComp R.B (emb τ) x) (eigComp R.B (emb τ) x)).re = ∑ s ∈ Finset.univ.image sE, (R.ip (eigComp R.B (s.comp (algebraMap (𝓞 E) E)) x) (eigComp R.B (s.comp (algebraMap (𝓞 E) E)) x)).re`. Rewrite using `[Finset.sum_image fun a _ b _ h => hinj h]`.
+
+Conclude with `Finset.sum_congr rfl fun τ _ => by rw [hsE]`. Rewrite using `[e, ip_self_sum R x, Complex.re_sum]`. Conclude with `Finset.sum_le_univ_sum_of_nonneg fun s => ip_self_nonneg R _`.
+-/
 theorem sum_ip_le {Ψ : Type} [Fintype Ψ] (emb : Ψ → (𝓞 E →+* ℂ)) (hemb : Function.Injective emb)
     (x : Fin g → ℂ) :
     ∑ τ, (R.ip (eigComp R.B (emb τ) x) (eigComp R.B (emb τ) x)).re ≤ (R.ip x x).re := by
@@ -169,6 +237,9 @@ open Classical in
 def frame (s : 𝓞 E →+* ℂ) (m : ℕ) : Fin m → Fin g → ℂ :=
   if h : Module.finrank ℂ (eigSp R.B s) = m then (exists_frame R _ m h).choose else 0
 
+/- English proof (translation)
+Rewrite using `[frame, dif_pos h]`. Conclude with `(exists_frame R _ m h).choose_spec.2 x hx y hy`.
+-/
 theorem frame_parseval {s : 𝓞 E →+* ℂ} {m : ℕ} (h : Module.finrank ℂ (eigSp R.B s) = m)
     {x y : Fin g → ℂ} (hx : x ∈ eigSp R.B s) (hy : y ∈ eigSp R.B s) :
     ∑ c, starRingEnd ℂ (R.ip (frame R s m c) x) * R.ip (frame R s m c) y = R.ip x y := by
@@ -178,6 +249,9 @@ theorem frame_parseval {s : 𝓞 E →+* ℂ} {m : ℕ} (h : Module.finrank ℂ 
 def lieOf (s : 𝓞 E →+* ℂ) (m : ℕ) (v : Λ) : Fin m → ℂ :=
   fun c => R.ip (frame R s m c) (eigComp R.B s (R.P v))
 
+/- English proof (translation)
+Take `⟨-, -, h3, -, -⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Use function extensionality and compare the values at `c`. Establish `h` using `(h3 s).2.2.1 1 (R.P v) (R.P w)`. Rewrite `h` using `[one_smul, one_smul]`. Simplify using `only [lieOf, map_add, h, ip_add_right, Pi.add_apply]`.
+-/
 theorem lieOf_add (s : 𝓞 E →+* ℂ) (m : ℕ) (v w : Λ) :
     lieOf R s m (v + w) = lieOf R s m v + lieOf R s m w := by
   obtain ⟨-, -, h3, -, -⟩ := GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R
@@ -186,17 +260,26 @@ theorem lieOf_add (s : 𝓞 E →+* ℂ) (m : ℕ) (v w : Λ) :
   rw [one_smul, one_smul] at h
   simp only [lieOf, map_add, h, ip_add_right, Pi.add_apply]
 
+/- English proof (translation)
+Take `⟨-, -, h3, -, -⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Use function extensionality and compare the values at `c`. Simplify using `only [lieOf, R.act, (h3 s).2.2.2, ip_smul_right, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem lieOf_smul (s : 𝓞 E →+* ℂ) (m : ℕ) (a : 𝓞 E) (v : Λ) :
     lieOf R s m (a • v) = s a • lieOf R s m v := by
   obtain ⟨-, -, h3, -, -⟩ := GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R
   funext c
   simp only [lieOf, R.act, (h3 s).2.2.2, ip_smul_right, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Take `⟨-, -, h3, -, -⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Conclude with `frame_parseval R h ((h3 s).1 _) ((h3 s).1 _)`.
+-/
 theorem lieOf_gram {s : 𝓞 E →+* ℂ} {m : ℕ} (h : Module.finrank ℂ (eigSp R.B s) = m) (v v' : Λ) :
     star (lieOf R s m v) ⬝ᵥ lieOf R s m v' = R.ip (eigComp R.B s (R.P v)) (eigComp R.B s (R.P v')) := by
   obtain ⟨-, -, h3, -, -⟩ := GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R
   exact frame_parseval R h ((h3 s).1 _) ((h3 s).1 _)
 
+/- English proof (translation)
+Rewrite using `[← lieOf_gram R h v v]`. Simplify using `only [dotProduct, Pi.star_apply]`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`.
+-/
 theorem lieOf_sq {s : 𝓞 E →+* ℂ} {m : ℕ} (h : Module.finrank ℂ (eigSp R.B s) = m) (v : Λ) :
     ∑ c, ‖lieOf R s m v c‖ ^ 2 = (R.ip (eigComp R.B s (R.P v)) (eigComp R.B s (R.P v))).re := by
   rw [← lieOf_gram R h v v]
@@ -208,6 +291,11 @@ theorem lieOf_sq {s : 𝓞 E →+* ℂ} {m : ℕ} (h : Module.finrank ℂ (eigSp
 def lieL (s : 𝓞 E →+* ℂ) (m : ℕ) : (Fin g → ℂ) →ₗ[ℂ] (Fin m → ℂ) :=
   LinearMap.pi fun c => ipL R (frame R s m c)
 
+/- English proof (translation)
+Take `⟨-, -, h3, -, -⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Use `hl.map (f := lieL R s m) ?_` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hk`. Establish `hxS : x ∈ eigSp R.B s` using `(Submodule.span_le (p := eigSp R.B s)).2 (by rintro _ ⟨a, rfl⟩; exact (h3 s).1 _) hx`.
+
+Establish `hz : ∀ c, R.ip (frame R s m c) x = 0` using `fun c => congrFun (LinearMap.mem_ker.1 hk) c`. Establish `hp` using `frame_parseval R h hxS hxS`. Simplify using `only [hz, mul_zero, Finset.sum_const_zero] at hp`. Conclude with `ip_self_eq_zero R hp.symm`.
+-/
 theorem lieOf_linInd {s : 𝓞 E →+* ℂ} {m : ℕ} (h : Module.finrank ℂ (eigSp R.B s) = m) {ρ : ℕ}
     (v : Fin ρ → Λ) (hl : LinearIndependent ℂ fun a => eigComp R.B s (R.P (v a))) :
     LinearIndependent ℂ fun a => lieOf R s m (v a) := by
@@ -224,6 +312,11 @@ theorem lieOf_linInd {s : 𝓞 E →+* ℂ} {m : ℕ} (h : Module.finrank ℂ (e
 
 end Eig
 
+/- English proof (translation)
+Establish `hu` using `LinearEquiv.isUnit_det (LinearEquiv.ofBijective F₀ h) b b.dualBasis`. Establish `e : LinearMap.toMatrix b b.dualBasis (LinearEquiv.ofBijective F₀ h : Λ →ₗ[ℤ] (Λ →ₗ[ℤ] ℤ)) = (Matrix.of fun a c => F₀ (b a) (b c))ᵀ`. Use extensionality with `i j`. Simplify using `[LinearMap.toMatrix_apply]`. Rewrite `hu` using `[e, Matrix.det_transpose]`.
+
+Conclude with `hu`.
+-/
 theorem gram_unit {F₀ : Λ →ₗ[ℤ] Λ →ₗ[ℤ] ℤ} (h : Function.Bijective F₀) {n : ℕ}
     (b : Module.Basis (Fin n) ℤ Λ) : IsUnit (Matrix.of fun a c => F₀ (b a) (b c)).det := by
   have hu := LinearEquiv.isUnit_det (LinearEquiv.ofBijective F₀ h) b b.dualBasis
@@ -251,15 +344,24 @@ def lieFam (T : Set ((Σ k, J k) → ℂ)) (R : ((Σ k, J k) → ℂ) → RiemLa
 
 variable {T : Set ((Σ k, J k) → ℂ)} {R : ((Σ k, J k) → ℂ) → RiemLat E g Λ} {w : (Σ k, J k) → ℂ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Simplify using `[normFam, h]`.
+-/
 theorem normFam_of_mem (h : w ∈ T) : normFam T R w = (R w).normSq := by
   funext v
   simp [normFam, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Simplify using `[lieFam, h]`.
+-/
 theorem lieFam_of_mem (emb : Ψ → (𝓞 E →+* ℂ)) (m : ℕ) (h : w ∈ T) (τ : Ψ) :
     lieFam T R emb m w τ = lieOf (R w) (emb τ) m := by
   funext v
   simp [lieFam, h]
 
+/- English proof (translation)
+Distinguish the cases in `h : w ∈ T`. Rewrite using `[lieFam_of_mem emb m h]`. Conclude with `lieOf_add _ _ _ _ _`. Simplify using `[lieFam, h]`.
+-/
 theorem lieFam_add (emb : Ψ → (𝓞 E →+* ℂ)) (m : ℕ) (w : (Σ k, J k) → ℂ) (τ : Ψ) (v v' : Λ) :
     lieFam T R emb m w τ (v + v') = lieFam T R emb m w τ v + lieFam T R emb m w τ v' := by
   by_cases h : w ∈ T
@@ -267,6 +369,9 @@ theorem lieFam_add (emb : Ψ → (𝓞 E →+* ℂ)) (m : ℕ) (w : (Σ k, J k) 
     exact lieOf_add _ _ _ _ _
   · simp [lieFam, h]
 
+/- English proof (translation)
+Distinguish the cases in `h : w ∈ T`. Rewrite using `[lieFam_of_mem emb m h]`. Conclude with `lieOf_smul _ _ _ _ _`. Simplify using `[lieFam, h]`.
+-/
 theorem lieFam_smul (emb : Ψ → (𝓞 E →+* ℂ)) (m : ℕ) (w : (Σ k, J k) → ℂ) (τ : Ψ) (a : 𝓞 E) (v : Λ) :
     lieFam T R emb m w τ (a • v) = emb τ a • lieFam T R emb m w τ v := by
   by_cases h : w ∈ T
@@ -274,6 +379,13 @@ theorem lieFam_smul (emb : Ψ → (𝓞 E →+* ℂ)) (m : ℕ) (w : (Σ k, J k)
     exact lieOf_smul _ _ _ _ _
   · simp [lieFam, h]
 
+/- English proof (translation)
+Establish `h` using `R.im v v'`. Establish `cs` using `ip_cs R (R.P v') (R.P v)`. Establish `e : R.P v ⬝ᵥ R.Hm *ᵥ star (R.P v') = R.ip (R.P v') (R.P v)` using `rfl`. Rewrite `h` using `[e]`. Rewrite using `[← h]`.
+
+Establish `h2 : (R.ip (R.P v') (R.P v)).im ^ 2 ≤ ‖R.ip (R.P v') (R.P v)‖ ^ 2`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Use polynomial arithmetic with `[mul_self_nonneg (R.ip (R.P v') (R.P v)).re]`. Establish `e2 : R.normSq v * R.normSq v' = (R.ip (R.P v') (R.P v')).re * (R.ip (R.P v) (R.P v)).re` using `mul_comm _ _`. Rewrite using `[e2]`.
+
+Conclude with `h2.trans cs`.
+-/
 theorem form_sq_le (R : RiemLat E g Λ) (v v' : Λ) :
     ((R.form v v' : ℤ) : ℝ) ^ 2 ≤ R.normSq v * R.normSq v' := by
   have h := R.im v v'
@@ -288,10 +400,16 @@ theorem form_sq_le (R : RiemLat E g Λ) (v v' : Λ) :
   rw [e2]
   exact h2.trans cs
 
+/- English proof (translation)
+Take `⟨h1, -⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Conclude with `R.pos (R.P v) fun h0 => hv (h1 (by rw [h0, map_zero]))`.
+-/
 theorem normSq_pos' (R : RiemLat E g Λ) {v : Λ} (hv : v ≠ 0) : 0 < R.normSq v := by
   obtain ⟨h1, -⟩ := GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R
   exact R.pos (R.P v) fun h0 => hv (h1 (by rw [h0, map_zero]))
 
+/- English proof (translation)
+Simplify using `only [fun τ => lieOf_sq R (hrk τ) v]`. Conclude with `sum_ip_le R emb hemb (R.P v)`.
+-/
 theorem sum_lie_le [Fintype Ψ] (R : RiemLat E g Λ) (emb : Ψ → (𝓞 E →+* ℂ)) (hemb : Function.Injective emb) {m : ℕ}
     (hrk : ∀ τ, Module.finrank ℂ (eigSp R.B (emb τ)) = m) (v : Λ) :
     ∑ τ, ∑ c, ‖lieOf R (emb τ) m v c‖ ^ 2 ≤ R.normSq v := by
@@ -300,6 +418,29 @@ theorem sum_lie_le [Fintype Ψ] (R : RiemLat E g Λ) (emb : Ψ → (𝓞 E →+*
 
 end Family
 
+/- English proof (translation)
+Introduce `E _ _ _ II Ψ _ K _ J _ Ω _ _ V _ _ Dc T g Λ _ _ F₀ emb R hT hemb hform hrk htor`. Take `⟨w₀, hw₀⟩` from `hT`. Use `haveI := (R w₀).free`. Use `haveI := (R w₀).fin`. Establish `hbij : Function.Bijective F₀` using `hform w₀ hw₀ ▸ (R w₀).unimod`.
+
+Establish `halt : ∀ v, F₀ v v = 0` using `hform w₀ hw₀ ▸ (R w₀).alt`. Use `⟨{ rank := Module.finrank ℤ Λ basis := Module.finBasis ℤ Λ form := F₀ alt := halt unimod := gram_unit hbij _ emb := emb normSq := normFam T R normSq_pos := fun z hz v hv => by` and prove the remaining obligations. Rewrite using `[normFam_of_mem hz]`. Conclude with `normSq_pos' _ hv`. Use `form_le := fun z hz v v' => by`.
+
+Rewrite using `[normFam_of_mem hz, ← hform z hz]`. Conclude with `form_sq_le _ v v'`. Use `lie := lieFam T R emb (Dc.N - Dc.j)`. Use `lie_add := fun z τ v v' => lieFam_add emb _ z τ v v'`. Use `lie_smul := fun z τ a v => lieFam_smul emb _ z τ a v`.
+
+Use `lie_le := fun z hz v => by`. Rewrite using `[normFam_of_mem hz]`. Simplify using `only [lieFam_of_mem emb _ hz]`. Conclude with `sum_lie_le _ emb hemb (hrk z hz) v`. Use `inj := fun z hz τ I hI ρ v hv hli => by`.
+
+Simplify using `only [lieFam_of_mem emb _ hz]`. Establish `hI' : IsIsoSub (R z).form I` using `by rw [hform z hz]; exact hI`. Conclude with `lieOf_linInd _ (hrk z hz τ) v ((GlobalTheory.T.isotropic_eigencomponent_conjugate_form E g Λ Unit (R z) I hI' (emb τ)).2 ρ v hv hli)`. Use `torus := fun z hz c hc => by`. Take `⟨h1, h2⟩` from `htor z hz c hc`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[normFam_of_mem h1, normFam_of_mem hz, h2]`. Use function extensionality and compare the values at `τ`. Rewrite using `[lieFam_of_mem emb _ h1, lieFam_of_mem emb _ hz, h2] }, rfl, fun w hw => ?_⟩`. Take `⟨-, -, h3, -, -⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit (R w)`.
+
+Use `⟨fun a v => ?_, fun v => ?_, fun v v' => ?_, fun τ => eigComp (R w).B (emb τ), fun τ x => ⟨fun a => ?_, fun x' hx' => ?_⟩, fun τ v v' => ?_⟩` and prove the remaining obligations. Rewrite using `[(R w).act, LinearMap.toMatrix'_mulVec]`. Use `show normFam T R w v = _`. Rewrite using `[normFam_of_mem hw]`. Both sides reduce to the same expression.
+
+Use `show ((F₀ v v' : ℤ) : ℝ) = _`. Rewrite using `[← hform w hw]`. Conclude with `((R w).im v v').symm`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Conclude with `(mem_eigSp_iff' (R w)).1 ((h3 _).1 x) a`.
+
+Establish `hx'' : x' ∈ eigSp (R w).B (emb τ)` using `(mem_eigSp_iff' (R w)).2 fun a => by`. Use `hx' a` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_mulVec]`. Then use the resulting hypothesis. Rewrite `hx''` using `[← extEmb_comp (emb τ)]`. Establish `key` using `ip_eig (R w) (extEmb (emb τ)) hx'' x`.
+
+Rewrite `key` using `[extEmb_comp]`. Use `show ipL (R w) x' (x - eigComp (R w).B (emb τ) x) = 0`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `key`. Use `show star (lieFam T R emb (Dc.N - Dc.j) w τ v) ⬝ᵥ lieFam T R emb (Dc.N - Dc.j) w τ v' = _`.
+
+Rewrite using `[lieFam_of_mem emb _ hw]`. Conclude with `lieOf_gram (R w) (hrk w hw τ) v v'`.
+-/
 theorem cuspData_of_family : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (V : Ψ → Type) [∀ τ, AddCommGroup (V τ)] [∀ τ, Module Ω (V τ)] (Dc : ComponentData II Ψ K J Ω V) (T : Set ((Σ k, J k) → ℂ)) (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F₀ : Λ →ₗ[ℤ] Λ →ₗ[ℤ] ℤ) (emb : Ψ → (𝓞 E →+* ℂ)) (R : ((Σ k, J k) → ℂ) → RiemLat E g Λ), T.Nonempty → Function.Injective emb → (∀ w ∈ T, (R w).form = F₀) → (∀ w ∈ T, ∀ τ, Module.finrank ℂ (eigSp (R w).B (emb τ)) = Dc.N - Dc.j) → (∀ w ∈ T, ∀ c : K → ℂ, (∀ k, c k ≠ 0) → torusSmul c w ∈ T ∧ R (torusSmul c w) = R w) → ∃ C : CuspDataOn Dc T (𝓞 E) Λ, C.emb = emb ∧ ∀ w ∈ T, Origin.IsPeriodAt C w (R w).P (R w).Hm (fun a => LinearMap.toMatrix' ((R w).B a)) := by
   intro E _ _ _ II Ψ _ K _ J _ Ω _ _ V _ _ Dc T g Λ _ _ F₀ emb R hT hemb hform hrk htor
   obtain ⟨w₀, hw₀⟩ := hT

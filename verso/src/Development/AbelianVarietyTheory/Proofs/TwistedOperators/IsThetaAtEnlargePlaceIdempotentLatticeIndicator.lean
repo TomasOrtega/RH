@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.ThetaEnlarge
 
+/- English proof (translation)
+Introduce `D S T ψ θ sS sT ΛS ΛT hS hT f₀ hvac e e' P P' he he' hsub Φ g hΦ hg`. Take `⟨b, rfl, hb, hab⟩` from `GlobalTheory.RowLocVec.exists_compl_idem hsub he he'`. Establish `ha` using `GlobalTheory.PlaceDatum.idemSum_mul_self he'`. Rewrite using `[add_sub_cancel_left]`. Conclude with `GlobalTheory.RowLocVec.isThetaAt_extend hvac.1 hS hT he ha hb hab hvac.2.lat hΦ hg`.
+-/
 theorem isThetaAt_enlarge : ∀ {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)},

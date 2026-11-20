@@ -19,6 +19,15 @@ def conjM (γ : SL(2, ℤ)) (l : ℕ) (j k B : ℤ) (hB : (l : ℤ) * B = γ 0 1
     linear_combination hd - γ 1 0 * hB⟩
 
 open scoped MatrixGroups in
+/- English proof (translation)
+Establish `hdet : ∀ m : ℤ, 0 < (!![1, m; 0, (l : ℤ)]).det`. Introduce `m`. Simplify using `only [Matrix.det_fin_two_of, one_mul, mul_zero, sub_zero]`. Conclude with `hl` after adjusting the coercions. Unfold `_root_.GlobalTheory.KZ.toGQ _root_.GlobalTheory.KZ.ofSL`.
+
+Rewrite using `[dif_pos (hdet j), dif_pos (hdet k)]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Matrix.GeneralLinearGroup.ext` to reduce the goal to its premises. Introduce `i i'`. Establish `h00` using `congrFun (congrFun hγ' 0) 0`.
+
+Establish `h01` using `congrFun (congrFun hγ' 0) 1`. Establish `h10` using `congrFun (congrFun hγ' 1) 0`. Establish `h11` using `congrFun (congrFun hγ' 1) 1`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons] at h00 h01 h10 h11`. Establish `hBq : ((l : ℚ) * B = γ 0 1 + j * γ 1 1 - k * (γ 0 0 + j * γ 1 0))` using `by exact_mod_cast hB`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases i' <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.SpecialLinearGroup.toGLPos, Matrix.GeneralLinearGroup.mkOfDetNeZero, h00, h01, h10, h11] <;>`. Apply the tactic sequence `first | ring1 | linear_combination -hBq`.
+-/
 private lemma toGQ_mul_ofSL_eq_ofSL_mul_toGQ (γ γ' : SL(2, ℤ)) (l : ℕ) (hl : 0 < l) (j k B : ℤ)
     (hB : (l : ℤ) * B = γ 0 1 + j * γ 1 1 - k * (γ 0 0 + j * γ 1 0))
     (hγ' : (γ' : Matrix (Fin 2) (Fin 2) ℤ) = !![γ 0 0 + j * γ 1 0, B; l * γ 1 0, γ 1 1 - k * γ 1 0]) :
@@ -47,6 +56,27 @@ private lemma toGQ_mul_ofSL_eq_ofSL_mul_toGQ (γ γ' : SL(2, ℤ)) (l : ℕ) (hl
 
 open scoped MatrixGroups in
 
+/- English proof (translation)
+Introduce `δ hδN hδl`. Take `⟨g, hg, hfg⟩` from `hδ δ hδN hδl`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hl0 : 0 < l` using `hlp.pos`. Use `⟨∏ j ∈ Finset.range l, X.sl (_root_.GlobalTheory.KZ.toGQ !![1, (j : ℤ); 0, (l : ℤ)]) g, _root_.GlobalTheory.normInv_gamma1 Ω ε X N l n hn g hg, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hδN` using `[CongruenceSubgroup.Gamma1_mem]`. Take `⟨-, -, hcN⟩` from `hδN`. Rewrite `hδl` using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨ha', hb', hc', hd'⟩` from `hδl`. Simplify using `only [Matrix.SpecialLinearGroup.coe_neg, Matrix.neg_apply, Int.cast_neg] at ha' hb' hc' hd'`.
+
+Establish `hlpow : ∀ x : ℤ, ((x : ZMod (l ^ n)) = 0) → (l : ℤ) ∣ x` using `fun x hx => (dvd_pow_self (l : ℤ) hn.ne').trans (by exact_mod_cast (ZMod.intCast_zmod_eq_zero_iff_dvd x (l ^ n)).1 hx)`. Take `⟨xa, hxa⟩` from `hlpow (δ 0 0 + 1) (by push_cast; linear_combination -ha')`. Take `⟨xd, hxd⟩` from `hlpow (δ 1 1 + 1) (by push_cast; linear_combination -hd')`. Take `⟨xb, hxb⟩` from `hlpow (δ 0 1) (by linear_combination -hb')`. Take `⟨xc, hxc⟩` from `hlpow (δ 1 0) (by linear_combination -hc')`.
+
+Establish `hcop : IsCoprime (N : ℤ) ((l : ℤ) ^ n)`. Use `Nat.Coprime.pow_right n ((Nat.Prime.coprime_iff_not_dvd hlp).2 hlN).symm` as an intermediate fact. Conclude with `Nat.isCoprime_iff_coprime.2 this` after adjusting the coercions. Establish `hcM : ((δ 1 0 : ℤ) : ZMod (N * l ^ n)) = 0`. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+
+Use `push_cast`. Use `hcop.mul_dvd ((ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 hcN) ?_` and prove the remaining obligations. Use `(ZMod.intCast_zmod_eq_zero_iff_dvd (δ 1 0) (l ^ n)).1 (by linear_combination -hc')` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hdetM : ((δ 0 0 : ℤ) : ZMod (N * l ^ n)) * (δ 1 1 : ℤ) = 1`.
+
+Establish `hdet` using `δ.2`. Rewrite `hdet` using `[Matrix.det_fin_two]`. Use `congrArg (Int.cast : ℤ → ZMod (N * l ^ n)) hdet` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite `this` using `[hcM]`.
+
+Simplify using `using this`. Rewrite using `[map_prod, ← Finset.prod_mul_distrib, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hB : (l : ℤ) * (xb + j * xd - j * xa - j * j * xc) = δ 0 1 + j * δ 1 1 - j * (δ 0 0 + j * δ 1 0)`. Take the linear combination `-hxb - j * hxd + j * hxa + j * j * hxc`.
+
+Establish `hη : _root_.GlobalTheory.NormDelta.conjM δ l j j _ hB * δ⁻¹ ∈ CongruenceSubgroup.Gamma1 (N * l ^ n)`. Rewrite using `[CongruenceSubgroup.Gamma1_mem, Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]`. Simplify using `only [_root_.GlobalTheory.NormDelta.conjM, Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons]`. Use `push_cast`. Rewrite using `[hcM]`.
+
+Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> first | ring1 | linear_combination hdetM`. Establish `hsplit : _root_.GlobalTheory.KZ.ofSL (_root_.GlobalTheory.NormDelta.conjM δ l j j _ hB) = _root_.GlobalTheory.KZ.ofSL (_root_.GlobalTheory.NormDelta.conjM δ l j j _ hB * δ⁻¹) * _root_.GlobalTheory.KZ.ofSL δ`. Rewrite using `[← map_mul, inv_mul_cancel_right]`. Establish `hact : X.sl (_root_.GlobalTheory.KZ.ofSL δ) (X.sl (_root_.GlobalTheory.KZ.toGQ !![1, (j : ℤ); 0, (l : ℤ)]) f) = X.sl (_root_.GlobalTheory.KZ.toGQ !![1, (j : ℤ); 0, (l : ℤ)]) (X.sl (_root_.GlobalTheory.KZ.ofSL δ) f)`. Rewrite using `[← _root_.GlobalTheory.KZ.Tower.sl_mul, toGQ_mul_ofSL_eq_ofSL_mul_toGQ δ (_root_.GlobalTheory.NormDelta.conjM δ l j j _ hB) l hl0 j j _ hB rfl, _root_.GlobalTheory.KZ.Tower.sl_mul, hsplit, _root_.GlobalTheory.KZ.Tower.sl_mul, hf _ hη]`.
+
+Rewrite using `[hact, ← map_mul, hfg, map_pow]`.
+-/
 theorem _root_.GlobalTheory.NormDelta.norm_delta (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : _root_.GlobalTheory.KZ.Tower Ω ε) (N l : ℕ) [Fact l.Prime] (n : ℕ)
     (hn : 0 < n) (hlN : ¬ l ∣ N) (f : X.K) (hf : _root_.GlobalTheory.Glue.Inv X (CongruenceSubgroup.Gamma1 (N * l ^ n)) f)
     (hδ : ∀ δ ∈ CongruenceSubgroup.Gamma1 N, -δ ∈ CongruenceSubgroup.Gamma (l ^ n) →

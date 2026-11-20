@@ -18,8 +18,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def rIdx (n d : ℕ) : (Fin n × Fin d) ⊕ (Fin n × Fin d) ≃ Fin (n + n) × Fin d :=
   (Equiv.sumProdDistrib _ _ _).symm.trans (finSumFinEquiv.prodCongr (Equiv.refl _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rIdx_inl (p : Fin n × Fin d) : rIdx n d (.inl p) = (finSumFinEquiv (.inl p.1), p.2) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rIdx_inr (p : Fin n × Fin d) : rIdx n d (.inr p) = (finSumFinEquiv (.inr p.1), p.2) := rfl
 
 def upB {A : Type} (u : Matrix (Fin (n + n)) (Fin d) A) : Matrix (Fin n) (Fin d) A := fun i => u (finSumFinEquiv (.inl i))
@@ -29,8 +35,14 @@ def loB {A : Type} (u : Matrix (Fin (n + n)) (Fin d) A) : Matrix (Fin n) (Fin d)
 def reix {R κ κ' : Type} (e : κ ≃ κ') : ((κ → R) → ℂ) ≃ₗ[ℂ] ((κ' → R) → ℂ) :=
   LinearEquiv.funCongrLeft ℂ ℂ (Equiv.arrowCongr e (Equiv.refl R)).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reix_apply {R κ κ' : Type} (e : κ ≃ κ') (φ : (κ → R) → ℂ) (x : κ' → R) : reix e φ x = φ (x ∘ e) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reix_symm {R κ κ' : Type} (e : κ ≃ κ') : (reix (R := R) e).symm = reix e.symm := rfl
 
 def bx (φ₁ φ₂ : Fn F n d) : Fn F (n + n) d := reix (rIdx n d) (boxFun φ₁ φ₂)
@@ -47,6 +59,11 @@ section Reindex₂
 
 variable {κ κ' : Type} [Fintype κ] [Fintype κ']
 
+/- English proof (translation)
+Use `GlobalTheory.RestrSchA.mem_schA_comp_extend F e.symm e.symm.injective φ h` as an intermediate fact. Use `this using 2 with y` and compare the differences between its conclusion and the goal. Rewrite using `[reix_apply]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Take `⟨k, rfl⟩` from `e.symm.surjective k`. Rewrite using `[e.symm.injective.extend_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem reix_mem_schA (e : κ ≃ κ') {φ : (κ → AF F) → ℂ} (h : φ ∈ schA F κ) : reix e φ ∈ schA F κ' := by
   have := GlobalTheory.RestrSchA.mem_schA_comp_extend F e.symm e.symm.injective φ h
   convert this using 2 with y
@@ -57,10 +74,20 @@ theorem reix_mem_schA (e : κ ≃ κ') {φ : (κ → AF F) → ℂ} (h : φ ∈ 
   rw [e.symm.injective.extend_apply]
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by simpa [← reix_symm] using reix_mem_schA e.symm h, reix_mem_schA e⟩`.
+-/
 theorem reix_mem_schA_iff (e : κ ≃ κ') {φ : (κ → AF F) → ℂ} : reix e φ ∈ schA F κ' ↔ φ ∈ schA F κ :=
   ⟨fun h => by simpa [← reix_symm] using reix_mem_schA e.symm h, reix_mem_schA e⟩
 
 open scoped Classical in
+/- English proof (translation)
+Introduce `g hg`. Take `⟨T, hT⟩` from `h (fun z => g (Function.extend e.symm z 0)) (GlobalTheory.RestrSchA.sb_comp_extend F e.symm.injective hg)`. Use `⟨T.comp (GlobalTheory.RestrSchA.restrS F e.symm.injective), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, ← hT, LinearMap.comp_apply]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[← GlobalTheory.RestrSchA.pureA_extend F e.symm.injective]`. Use `show pureA F f g (y ∘ e) = _`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Take `⟨k, rfl⟩` from `e.symm.surjective k`. Rewrite using `[e.symm.injective.extend_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem comp_reix_mem_adm (e : κ ≃ κ') {l : ((κ' → AF F) → ℂ) →ₗ[ℂ] ℂ} (h : l ∈ (adeleClass F).adm κ') :
     l ∘ₗ (reix e).toLinearMap ∈ (adeleClass F).adm κ := by
   intro g hg
@@ -79,9 +106,19 @@ theorem comp_reix_mem_adm (e : κ ≃ κ') {l : ((κ' → AF F) → ℂ) →ₗ[
   simp
 
 omit [Fintype κ] [Fintype κ'] in
+/- English proof (translation)
+The claim follows from `(Equiv.arrowCongr e (Equiv.refl F)).symm.tsum_eq fun ξ => φ fun i => algebraMap F (AF F) (ξ i)`.
+-/
 theorem thetaSum_reix (e : κ ≃ κ') (φ : (κ → AF F) → ℂ) : thetaSum F (reix e φ) = thetaSum F φ :=
   (Equiv.arrowCongr e (Equiv.refl F)).symm.tsum_eq fun ξ => φ fun i => algebraMap F (AF F) (ξ i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `h1 : x ⬝ᵥ (b ∘ e.symm) = (x ∘ e) ⬝ᵥ b`. Simplify using `only [dotProduct]`. Rewrite using `[← e.sum_comp]`. Simplify using the standard rewrite rules.
+
+Establish `h2 : (a ∘ e.symm) ⬝ᵥ (b ∘ e.symm) = a ⬝ᵥ b`. Simplify using `only [dotProduct]`. Rewrite using `[← e.sum_comp]`. Simplify using the standard rewrite rules. Simplify using `only [schr, reix_apply, h1, h2]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+-/
 theorem schr_reix {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) (e : κ ≃ κ') (a b : κ → R)
     (φ : (κ → R) → ℂ) : schr ψ (a ∘ e.symm, b ∘ e.symm) (reix e φ) = reix e (schr ψ (a, b) φ) := by
   funext x
@@ -96,15 +133,37 @@ theorem schr_reix {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R �
 
 end Reindex₂
 
+/- English proof (translation)
+The claim follows from `reix_mem_schA _ (GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ₁ h₁ φ₂ h₂)`.
+-/
 theorem bx_mem_schA {φ₁ φ₂ : Fn F n d} (h₁ : φ₁ ∈ schA F _) (h₂ : φ₂ ∈ schA F _) : bx φ₁ φ₂ ∈ schA F _ :=
   reix_mem_schA _ (GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ₁ h₁ φ₂ h₂)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ConjSch.conj_mem_schA φ h`.
+-/
 theorem cj_mem_schA {φ : Fn F n d} (h : φ ∈ schA F _) : cj φ ∈ schA F _ := GlobalTheory.ConjSch.conj_mem_schA φ h
 
+/- English proof (translation)
+Rewrite using `[bx, thetaSum_reix, GlobalTheory.ThetaBox.thetaSum_boxFun F _ _ φ₁ h₁ φ₂ h₂]`.
+-/
 theorem thetaSum_bx {φ₁ φ₂ : Fn F n d} (h₁ : φ₁ ∈ schA F _) (h₂ : φ₂ ∈ schA F _) :
     thetaSum F (bx φ₁ φ₂) = thetaSum F φ₁ * thetaSum F φ₂ := by
   rw [bx, thetaSum_reix, GlobalTheory.ThetaBox.thetaSum_boxFun F _ _ φ₁ h₁ φ₂ h₂]
 
+/- English proof (translation)
+Set `S : Matrix (Fin (n + n)) (Fin d) (AE F E) ≃ₗ[AF F] Matrix (Fin n) (Fin d) (AE F E) × Matrix (Fin n) (Fin d) (AE F E)` to `(LinearEquiv.funCongrLeft (AF F) (Fin d → AE F E) finSumFinEquiv).trans (LinearEquiv.sumArrowLequivProdArrow _ _ (AF F) _)`. Set `G : (Fin (n + n) × Fin d → AF F) ≃ₗ[AF F] (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)` to `(LinearEquiv.funCongrLeft (AF F) (AF F) (rIdx n d)).trans (LinearEquiv.sumArrowLequivProdArrow _ _ (AF F) _)`. Set `T` to `(LinearEquiv.prodProdProdComm (AF F) (Fin n × Fin d → AF F) (Fin n × Fin d → AF F) (Fin n × Fin d → AF F) (Fin n × Fin d → AF F)).trans ((LinearEquiv.refl (AF F) _).prodCongr ((LinearEquiv.refl (AF F) (Fin n × Fin d → AF F)).prodCongr (LinearEquiv.neg (AF F) (M := Fin n × Fin d → …`. Set `e` to `S.trans ((co.e.prodCongr co.e).trans (T.trans (G.symm.prodCongr G.symm)))`. Establish `he : ∀ u, e u = (Sum.elim (co.e (upB u)).1 (co.e (loB u)).1 ∘ (rIdx n d).symm, Sum.elim (co.e (upB u)).2 (-(co.e (loB u)).2) ∘ (rIdx n d).symm)` using `fun u => by`.
+
+Apply the tactic sequence `refine Prod.ext (funext fun k => ?_) (funext fun k => ?_) <;> obtain ⟨k | k, rfl⟩ := (rIdx n d).surjective k <;>`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr]`. Conclude with `congrArg (fun z => z.1 k) (G.apply_symm_apply _)`. Conclude with `congrArg (fun z => z.2 k) (G.apply_symm_apply _)`. Conclude with `congrArg (fun z => z.1 k) (G.apply_symm_apply _)`.
+
+Conclude with `congrArg (fun z => z.2 k) (G.apply_symm_apply _)`. Establish `hdot : ∀ a b : (Fin n × Fin d) ⊕ (Fin n × Fin d) → AF F, (a ∘ (rIdx n d).symm) ⬝ᵥ (b ∘ (rIdx n d).symm) = a ⬝ᵥ b` using `fun a b => by`. Simplify using `only [dotProduct]`. Rewrite using `[← (rIdx n d).sum_comp]`. Simplify using the standard rewrite rules.
+
+Use `⟨⟨e, fun u v => ?_⟩, he, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hJ, GlobalTheory.DefDoubling.incM_dblGram, GlobalTheory.SWAniso.symp_dblGram, he, he, hdot, hdot, sumElim_dotProduct_sumElim, sumElim_dotProduct_sumElim, dotProduct_neg, dotProduct_neg]`. Establish `h1` using `co.form (upB u) (upB v)`. Establish `h2` using `co.form (loB u) (loB v)`. Use `(congrArg₂ (· - ·) h1 h2).trans ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨y, z, h1⟩` from `hd (upB x)`. Take `⟨y', z', h2⟩` from `hd (loB x)`. Use `⟨Sum.elim y y' ∘ (rIdx n d).symm, Sum.elim z (-z') ∘ (rIdx n d).symm, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (incM F x) = _`.
+
+Rewrite using `[he, show upB (incM F x) = incM F (upB x) from rfl, show loB (incM F x) = incM F (loB x) from rfl, h1, h2]`. Apply the tactic sequence `refine Prod.ext (funext fun k => ?_) (funext fun k => ?_) <;> obtain ⟨k | k, rfl⟩ := (rIdx n d).surjective k <;>`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr, Pi.neg_apply, map_neg]`.
+-/
 theorem exists_boxCo {J : Matrix (Fin n) (Fin n) E} {J' : Matrix (Fin d) (Fin d) E}
     {J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E} (hJ : J₂ = dblGram finSumFinEquiv J)
     (co : Darboux (symp (R := AF F) (cA σ) (-1) (incM F J) (incM F J')) (Fin n × Fin d))
@@ -149,6 +208,9 @@ theorem exists_boxCo {J : Matrix (Fin n) (Fin n) E} {J' : Matrix (Fin d) (Fin d)
     refine Prod.ext (funext fun k => ?_) (funext fun k => ?_) <;> obtain ⟨k | k, rfl⟩ := (rIdx n d).surjective k <;>
       simp only [Function.comp_apply, Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr, Pi.neg_apply, map_neg]
 
+/- English proof (translation)
+Rewrite using `[Darboux.rho, h u, schr_reix]`.
+-/
 theorem IsBoxCo.rho_reix {J : Matrix (Fin n) (Fin n) E} {J' : Matrix (Fin d) (Fin d) E}
     {J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E}
     {co : Darboux (symp (R := AF F) (cA σ) (-1) (incM F J) (incM F J')) (Fin n × Fin d)}

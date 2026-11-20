@@ -24,17 +24,29 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 private theorem smooth_of_isIso {A B : Scheme.{u}} (g : A ⟶ B) [IsIso g] :
     AlgebraicGeometry.Smooth g := inferInstance
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 private theorem surjective_of_isIso {A B : Scheme.{u}} (g : A ⟶ B) [IsIso g] :
     AlgebraicGeometry.Surjective g := inferInstance
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem comap_congr {X W : Scheme.{u}} {a b : W ⟶ X} (h : a = b)
     (I : X.IdealSheafData) : I.comap a = I.comap b := by
   subst h
   rfl
 
+/- English proof (translation)
+Proceed by induction on `M with`. Consider the case `nil => rfl`. Consider the case `cons x xs ih`. Simplify using `only [List.map_cons]`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ih]`.
+-/
 private theorem map_comap_map_comap_eq_map_comap_comp {X Y W : Scheme.{u}} (a : W ⟶ Y) (b : Y ⟶ X)
     (M : List X.IdealSheafData) :
     List.map (fun D : Y.IdealSheafData => D.comap a)
@@ -46,6 +58,9 @@ private theorem map_comap_map_comap_eq_map_comap_comp {X Y W : Scheme.{u}} (a : 
       simp only [List.map_cons]
       rw [← Scheme.IdealSheafData.comap_comp, ih]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem map_comap_congr {X W : Scheme.{u}} {a b : W ⟶ X} (h : a = b)
     (M : List X.IdealSheafData) :
     List.map (fun D : X.IdealSheafData => D.comap a) M
@@ -53,10 +68,16 @@ private theorem map_comap_congr {X W : Scheme.{u}} {a b : W ⟶ X} (h : a = b)
   subst h
   rfl
 
+/- English proof (translation)
+The claim follows from `hB ▸ h`.
+-/
 private theorem sameNontrivialBoundary_of_eq_right {X : Scheme.{u}} {A B B' : List X.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary A B) (hB : B = B') : MarkedIdealWithBoundary.SameNontrivialBoundary A B' :=
   hB ▸ h
 
+/- English proof (translation)
+Establish `h2 : IsPullback (fieldBaseChangeProjection T K f) ((T.baseChange K f).structMap) T.structMap (specMapOfFieldHom T.base K f)` using `IsPullback.of_hasPullback _ _`. Conclude with `(isPullback_subschemeMapOfComap _ _ (fieldBaseChangeProjection T K f) (T.boundary.get ⟨j, hj⟩) Z hZ).paste_vert h2`.
+-/
 private theorem isPullback_subschemeMapOfComap_comp_structureMorphism (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (K : Type u) [Field K] (f : T.base →+* K)
     (Z : (T.baseChange K f).scheme.IdealSheafData)
@@ -70,6 +91,15 @@ private theorem isPullback_subschemeMapOfComap_comp_structureMorphism (T : Marke
   exact (isPullback_subschemeMapOfComap _ _ (fieldBaseChangeProjection T K f)
     (T.boundary.get ⟨j, hj⟩) Z hZ).paste_vert h2
 
+/- English proof (translation)
+Substitute `hI₀'` using the available equality. Establish `hsq : IsPullback (subschemeMapOfComap (fieldBaseChangeProjection T K f) (T.boundary.get ⟨j, hj⟩) (E'.get ⟨j, hjE⟩) hget) ((E'.get ⟨j, hjE⟩).subschemeι ≫ (T.baseChange K f).structMap) (restrictToBoundaryDivisor T j hj I₀ E₀).structMap (specMapOfFieldHom (restrictToBoundaryDivisor …` using `isPullback_subschemeMapOfComap_comp_structureMorphism T j hj K f (E'.get ⟨j, hjE⟩) hget`. Establish `hQ : IsPullback (CategoryTheory.Limits.pullback.fst (restrictToBoundaryDivisor T j hj I₀ E₀).structMap (specMapOfFieldHom (restrictToBoundaryDivisor T j hj I₀ E₀).base K f)) (CategoryTheory.Limits.pullback.snd (restrictToBoundaryDivisor T j hj I₀ E₀).structMap (specMapOfFieldHom …` using `IsPullback.of_hasPullback _ _`. Take `⟨ee, hfst, hsnd, hinv1, hinv2⟩ : ∃ ee : _ ≅ _, ee.hom ≫ CategoryTheory.Limits.pullback.fst (restrictToBoundaryDivisor T j hj I₀ E₀).structMap (specMapOfFieldHom (restrictToBoundaryDivisor T j hj I₀ E₀).base K f) = subschemeMapOfComap (fieldBaseChangeProjection T K f) (T.boundary. …` from `⟨hsq.isoIsPullback _ _ hQ, hsq.isoIsPullback_hom_fst _ _ hQ, hsq.isoIsPullback_hom_snd _ _ hQ, hsq.isoIsPullback_inv_fst _ _ hQ, hsq.isoIsPullback_inv_snd _ _ hQ⟩`. Establish `hlbc : divisorPullbackMap T j hj I₀ E₀ (T.baseChange K f).scheme (fieldBaseChangeProjection T K f) (E'.get ⟨j, hjE⟩) hget = subschemeMapOfComap (fieldBaseChangeProjection T K f) (T.boundary.get ⟨j, hj⟩) (E'.get ⟨j, hjE⟩) hget` using `rfl`.
+
+Establish `hbe` using `sameNontrivialBoundary_comap_subschemeι (fieldBaseChangeProjection T K f) (T.boundary.get ⟨j, hj⟩) (E'.get ⟨j, hjE⟩) hget (List.take (T.boundary.length - 1) (E₀.eraseIdx j)) (List.take (E'.length - 1) (E₀'.eraseIdx j)) hE₀'`. Use `⟨List.map (fun D : (E'.get ⟨j, hjE⟩).subscheme.IdealSheafData => D.comap ee.inv) (List.map (fun D : (T.baseChange K f).scheme.IdealSheafData => D.comap (E'.get ⟨j, hjE⟩).subschemeι) (List.take (E'.length - 1) (E₀'.eraseIdx j))), ee.hom, ?_, ?_, ?_, hfst.trans hlbc.symm, hsnd, ?_, …` and prove the remaining obligations. Conclude with `smooth_of_isIso ee.hom`. Conclude with `surjective_of_isIso ee.hom`. Conclude with `sameNontrivialBoundary_of_eq_right (MarkedIdealWithBoundary.SameNontrivialBoundary.comap ee.inv hbe) (((map_comap_map_comap_eq_map_comap_comp ee.inv (subschemeMapOfComap (fieldBaseChangeProjection T K f) (T.boundary.get ⟨j, hj⟩) (E'.get ⟨j, hjE⟩) hget) _).trans (map_comap_congr h …`.
+
+Conclude with `sameNontrivialBoundary_of_eq_right (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) (((map_comap_map_comap_eq_map_comap_comp ee.hom ee.inv _).trans (map_comap_congr ee.hom_inv_id _)).trans (list_map_comap_id _ _)).symm`. Introduce `hS`. Establish `hval` using `isAdmissible_comap_of_iso ee.symm ((E'.get ⟨j, hjE⟩).subschemeι ≫ (T.baseChange K f).structMap) ((I₀.comap (fieldBaseChangeProjection T K f)).comap (E'.get ⟨j, hjE⟩).subschemeι) T.mult (List.map (fun D : (T.baseChange K f).scheme.IdealSheafData => D.comap (E'.get ⟨j, hjE⟩).subsch …`. Establish `hp : ee.symm.hom ≫ ((E'.get ⟨j, hjE⟩).subschemeι ≫ (T.baseChange K f).structMap) = ((restrictToBoundaryDivisor T j hj I₀ E₀).baseChange K f).structMap` using `hinv2`. Establish `s1 : (I₀.comap (fieldBaseChangeProjection T K f)).comap (E'.get ⟨j, hjE⟩).subschemeι = (I₀.comap (T.boundary.get ⟨j, hj⟩).subschemeι).comap (subschemeMapOfComap (fieldBaseChangeProjection T K f) (T.boundary.get ⟨j, hj⟩) (E'.get ⟨j, hjE⟩) hget)` using `(comap_subschemeMapOfComap (fieldBaseChangeProjection T K f) (T.boundary.get ⟨j, hj⟩) (E'.get ⟨j, hjE⟩) hget I₀).symm`.
+
+Establish `hI : ((I₀.comap (fieldBaseChangeProjection T K f)).comap (E'.get ⟨j, hjE⟩).subschemeι).comap ee.symm.hom = ((restrictToBoundaryDivisor T j hj I₀ E₀).baseChange K f).ideal` using `(congrArg (fun J : (E'.get ⟨j, hjE⟩).subscheme.IdealSheafData => J.comap ee.symm.hom) s1).trans (((Scheme.IdealSheafData.comap_comp _ ee.symm.hom _).symm.trans (comap_congr hinv1 _)).trans (MarkedIdealWithBoundary.baseChange_ideal (restrictToBoundaryDivisor T j hj I₀ E₀) K f).sym …`. Conclude with `isAdmissible_congr hp hI rfl rfl hval`.
+-/
 theorem exists_smooth_surjective_to_restrictToBoundaryDivisor_baseChange (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (K : Type u) [Field K] [CharZero K] (f : T.base →+* K)
     (E' : List (T.baseChange K f).scheme.IdealSheafData) (hjE : j < E'.length)

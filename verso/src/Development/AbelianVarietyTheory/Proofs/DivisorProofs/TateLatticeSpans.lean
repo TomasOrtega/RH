@@ -12,6 +12,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 namespace GlobalTheory.TateSpan
 
+/- English proof (translation)
+Establish `h1 : ∀ k, s.lev (k + 1) ^ p ^ k = 1` using `fun k => by`. Rewrite using `[add_comm, GlobalTheory.HTLat.Tate.lev_add_pow, hs]`. Use `⟨GlobalTheory.HTLat.Tate.mk (fun k => s.lev (k + 1)) fun k => ⟨h1 k, s.lev_succ (k + 1)⟩, GlobalTheory.HTLat.Tate.ext fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.HTLat.Tate.lev_smul, GlobalTheory.HTLat.Tate.lev_mk, GlobalTheory.PDiv.pow_digit_natCast (h1 k), s.lev_succ]`.
+-/
 theorem exists_eq_p_smul_of_lev_one {p : ℕ} [Fact p.Prime] {M : Type} [CommGroup M]
     (s : GlobalTheory.HTLat.Tate p M) (hs : s.lev 1 = 1) :
     ∃ s' : GlobalTheory.HTLat.Tate p M, s = (p : ℤ_[p]) • s' := by
@@ -22,6 +25,17 @@ theorem exists_eq_p_smul_of_lev_one {p : ℕ} [Fact p.Prime] {M : Type} [CommGro
   rw [GlobalTheory.HTLat.Tate.lev_smul, GlobalTheory.HTLat.Tate.lev_mk, GlobalTheory.PDiv.pow_digit_natCast (h1 k),
     s.lev_succ]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw p _ _ P tι h`. Use `set S := Submodule.span ℤ_[p] (Set.range tι)`. Establish `hI : IsLocalRing.maximalIdeal ℤ_[p] ≤ (⊥ : Ideal ℤ_[p]).jacobson`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Establish `hle : (⊤ : Submodule ℤ_[p] P.T) ≤ S ⊔ IsLocalRing.maximalIdeal ℤ_[p] • ⊤`.
+
+Introduce `t _`. Establish `hx : t.lev 1 ^ p = 1`. Use `GlobalTheory.HTLat.Tate.lev_pow t 1` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `h _ hx`.
+
+Establish `hs : (t - tι a).lev 1 = 1`. Establish `e` using `congrArg (·.lev 1) (show t = tι a + (t - tι a) by abel)`. Simplify using `only [GlobalTheory.HTLat.Tate.lev_add, ha] at e`. Conclude with `left_eq_mul.1 e`. Take `⟨s', hs'⟩` from `exists_eq_p_smul_of_lev_one _ hs`.
+
+Establish `e : t = tι a + (p : ℤ_[p]) • s'` using `by rw [← hs']; abel`. Rewrite using `[e]`. Use `Submodule.add_mem_sup (Submodule.subset_span ⟨a, rfl⟩) (Submodule.smul_mem_smul ?_ trivial)` and prove the remaining obligations. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.subset_span rfl`.
+
+Conclude with `top_le_iff.1 (Submodule.le_of_le_smul_of_le_jacobson_bot Module.Finite.fg_top hI hle)`.
+-/
 theorem span_range_eq_top : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (p : ℕ) [Fact p.Prime] [StarRing (𝓞 E)] (P : PtP E p) (tι : Dw.La →+ P.T),
     (∀ x : (Over.mk (𝟙 (Sp ℂ_[p])) ⟶ P.A.A), x ^ p = 1 → ∃ a, (tι a).lev 1 = x) →

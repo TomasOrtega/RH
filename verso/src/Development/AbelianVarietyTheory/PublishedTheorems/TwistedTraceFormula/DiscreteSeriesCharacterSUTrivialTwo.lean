@@ -21,6 +21,9 @@ variable {n : ℕ}
 
 def suMat (ε : Fin n → Bool) : SUJ ε →* Matrix (Fin n) (Fin n) ℂ := (ujMat ε).comp (SUJ ε).subtype
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨g.1.2, g.2⟩`.
+-/
 theorem suMat_mem (ε : Fin n → Bool) (g : SUJ ε) : suMat ε g ∈ SUset ε := ⟨g.1.2, g.2⟩
 
 def suRep {X : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] {ε : Fin n → Bool}
@@ -33,9 +36,15 @@ def suTorusPt (ε : Fin n → Bool) (θ : Fin n → ℝ) (hθ : ∑ a, θ a = 0)
     rw [ujMat_torusPt, det_diagonal, ← Complex.exp_sum, ← Finset.sum_mul, ← Complex.ofReal_sum, hθ]
     simp⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem suMat_suTorusPt (ε : Fin n → Bool) (θ : Fin n → ℝ) (hθ : ∑ a, θ a = 0) :
     suMat ε (suTorusPt ε θ hθ) = diagonal fun a => Complex.exp (θ a * Complex.I) := rfl
 
+/- English proof (translation)
+The claim follows from `(isInducing_matCoord (ε := ε)).comp Topology.IsInducing.subtypeVal`.
+-/
 theorem isInducing_suMat (ε : Fin n → Bool) : Topology.IsInducing (GlobalTheory.Orb.matCoord (suMat ε)) :=
   (isInducing_matCoord (ε := ε)).comp Topology.IsInducing.subtypeVal
 
@@ -46,12 +55,18 @@ def chamberDenom (lam θ : Fin n → ℝ) : ℂ :=
 def chamberChar (ε : Fin n → Bool) (lam θ : Fin n → ℝ) : ℂ :=
   (-1) ^ halfDim ε * (∑ w ∈ compactWeyl ε, ((Equiv.Perm.sign w : ℤ) : ℂ) * wtVal (lam ∘ w.symm) θ) / chamberDenom lam θ
 
+/- English proof (translation)
+Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `b`. Simplify using `[h.lt_iff_gt]`.
+-/
 theorem chamberDenom_of_strictAnti {lam : Fin n → ℝ} (h : StrictAnti lam) (θ : Fin n → ℝ) :
     chamberDenom lam θ = weylDenom θ := by
   refine Finset.prod_congr rfl fun a _ => Finset.prod_congr ?_ fun _ _ => rfl
   ext b
   simp [h.lt_iff_gt]
 
+/- English proof (translation)
+Rewrite using `[chamberChar, chamberDenom_of_strictAnti h, dsChar]`.
+-/
 theorem chamberChar_of_strictAnti (ε : Fin n → Bool) {lam : Fin n → ℝ} (h : StrictAnti lam) (θ : Fin n → ℝ) :
     chamberChar ε lam θ = dsChar ε lam θ := by
   rw [chamberChar, chamberDenom_of_strictAnti h, dsChar]

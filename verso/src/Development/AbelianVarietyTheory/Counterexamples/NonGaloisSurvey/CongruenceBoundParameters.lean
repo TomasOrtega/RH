@@ -10,6 +10,21 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes
 
 namespace GlobalTheory.Survey.CongruenceBoundParameters
 
+/- English proof (translation)
+Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `ht : (7 : ℝ) ≤ D.R.t`. Use `D.R.three_m_lt_t; have := D.R.two_le_m; exact_mod_cast (by omega : 7 ≤ D.R.t)` as an intermediate fact. Establish `hn1 : (1 : ℝ) ≤ D.R.n` using `by exact_mod_cast (show 1 ≤ D.R.n from D.R.ord_pos)`. Establish `hx : 1 < L.sc.x` using `L.sc.one_lt_alt`.
+
+Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hl` using `lStar_pos L`. Establish `hη` using `L.etaSz_pos`. Establish `hX : 1 ≤ L.sc.X'` using `Real.one_le_exp (by positivity)`. Establish `hb' : 0 < L.sc.b'` using `by unfold Scale.b' Scale.a; positivity`.
+
+Establish `hxn : 1 ≤ L.sc.x * D.R.n` using `by nlinarith`. Establish `hw1 : L.sc.w'' D.R.n ≤ L.sc.b'` using `div_le_self hb'.le hxn`. Establish `hw2 : L.sc.w'' D.R.n ≤ L.sc.b`. Establish `: L.sc.w'' D.R.n = L.sc.b / (L.sc.X' * D.R.n)`. Unfold `Scale.w'' Scale.b' Scale.a`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[this]; exact div_le_self hb.le (by nlinarith)`. Establish `hWw : L.sc.w'' D.R.n ≤ W`. Break down `hW with rfl | rfl | ⟨t, rfl⟩` into its components or cases. Conclude with `hw2`.
+
+Conclude with `le_rfl`. Establish `h1` using `L.bT_ge t`. Establish `h2 : (0 : ℝ) ≤ ((⌊L.sc.b' / L.sc.x⌋ : ℤ) : ℝ)`. Conclude with `Int.floor_nonneg.2 (by positivity)` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1` using `P.h0_ge.1`. Establish `h2 : LevelStarExponents.h0 L ≤ L.etaSz` using `div_le_self hη.le (by linarith)`. Establish `h3` using `P.mteta`. Establish `h4 : 16 * L.etaSz ≤ (D.R.m : ℝ) * ((D.R.t : ℝ) + 1) * L.etaSz` using `mul_le_mul_of_nonneg_right (by nlinarith) hη.le`. Establish `h5 : (sgPlus L : ℝ) ≤ 2 * L.sc.b / LevelStarExponents.lStar L` using `Int.floor_le _`.
+
+Establish `h6 : 0 < L.sc.b / LevelStarExponents.lStar L` using `by positivity`. Establish `h7 : 12 * L.sc.b / LevelStarExponents.lStar L = 12 * (L.sc.b / LevelStarExponents.lStar L)` using `by ring`. Establish `h8 : 2 * L.sc.b / LevelStarExponents.lStar L = 2 * (L.sc.b / LevelStarExponents.lStar L)` using `by ring`. Establish `: (0 : ℝ) < n` using `by linarith [hn.1]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem window_pos {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (W : ℝ) (hW : W ∈ baseSizes L) (n : ℤ)
     (hn : n ∈ window L W) : 0 < n := by
   have hm : (2 : ℝ) ≤ D.R.m := by exact_mod_cast D.R.two_le_m
@@ -48,6 +63,15 @@ theorem window_pos {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (W : 
   have : (0 : ℝ) < n := by linarith [hn.1]
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `ht : 3 * (D.R.m : ℝ) < D.R.t` using `by exact_mod_cast D.R.three_m_lt_t`. Establish `hn1 : (1 : ℝ) ≤ D.R.n` using `by exact_mod_cast (show 1 ≤ D.R.n from D.R.ord_pos)`. Establish `hL : 1 ≤ L.sc.L` using `Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le`. Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`.
+
+Establish `hS` using `L.Sc_pos`. Establish `hN : (0 : ℝ) ≤ (D.R.N D.R.m : ℝ)` using `Nat.cast_nonneg _`. Establish `hk : (0 : ℝ) ≤ (D.R.k : ℝ)` using `Nat.cast_nonneg _`. Establish `hA : (D.R.t : ℝ) ≤ (D.R.n : ℝ) * (D.R.t : ℝ) ^ 2 * ((D.R.N D.R.m : ℝ) + D.R.t) * L.sc.L ^ 2`. Establish `a1 : (1 : ℝ) ≤ (D.R.n : ℝ) * (D.R.t : ℝ) ^ 2` using `one_le_mul_of_one_le_of_one_le hn1 (by nlinarith)`.
+
+Establish `a2 : (1 : ℝ) ≤ L.sc.L ^ 2` using `by nlinarith`. Establish `a3 : (D.R.t : ℝ) ≤ (D.R.n : ℝ) * (D.R.t : ℝ) ^ 2 * ((D.R.N D.R.m : ℝ) + D.R.t)` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hB : (0 : ℝ) ≤ (D.R.k : ℝ) * (D.R.n : ℝ) ^ 2 * (L.Sc + D.R.t + L.sc.L)` using `by positivity`. Express the relevant statement in the definitionally equal form `2 * LevelStarExponents.lStar L < L.sc.b`.
+
+Unfold `LevelStarExponents.lStar`. Rewrite using `[← mul_div_assoc, div_lt_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem two_lStar_lt_b {D : D7} (L : SizeData₂ D) : 2 * LevelStarExponents.lStar L < Real.exp L.sc.L := by
   have hm : (2 : ℝ) ≤ D.R.m := by exact_mod_cast D.R.two_le_m
   have ht : 3 * (D.R.m : ℝ) < D.R.t := by exact_mod_cast D.R.three_m_lt_t

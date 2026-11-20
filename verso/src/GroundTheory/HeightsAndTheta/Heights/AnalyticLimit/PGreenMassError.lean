@@ -24,6 +24,9 @@ section Forms
 
 variable {e e' : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
 
+/- English proof (translation)
+Introduce `x k y hy w`. Distinguish the cases in `hw : w = 0`. Substitute `hw` using the available equality. Rewrite using `[ReciprocityTheory.AnForm.levi_zero]`. Conclude with `(hP x k y ⟨hy.1, hy.2.2⟩ w hw).le`.
+-/
 theorem formNonneg_of_posPot (A : FinHolAtlas e X) (V : Set X) (P : LocPot X) (hP : IsPosPot A P) :
     FormNonneg A V P := by
   intro x k y hy w
@@ -32,6 +35,15 @@ theorem formNonneg_of_posPot (A : FinHolAtlas e X) (V : Set X) (P : LocPot X) (h
     rw [ReciprocityTheory.AnForm.levi_zero]
   · exact (hP x k y ⟨hy.1, hy.2.2⟩ w hw).le
 
+/- English proof (translation)
+Introduce `x k y hy w`. Take `⟨hyt, hyV, hyU⟩` from `hy`. Take `⟨j, hj⟩` from `A.cover (h ((B.chart k).symm y))`. Establish `hτa : AnalyticAt ℂ (A.chart j ∘ h ∘ (B.chart k).symm) y` using `hh.2 k j y ⟨hyt, hj⟩`. Establish `hτy : (A.chart j ∘ h ∘ (B.chart k).symm) y ∈ (A.chart j).target` using `(A.chart j).map_source hj`.
+
+Establish `hsymm : (A.chart j).symm ((A.chart j ∘ h ∘ (B.chart k).symm) y) = h ((B.chart k).symm y)` using `(A.chart j).left_inv hj`. Establish `hev : (P.pullback h hh.1).φ x ∘ (B.chart k).symm =ᶠ[𝓝 y] (P.φ (h x) ∘ (A.chart j).symm) ∘ (A.chart j ∘ h ∘ (B.chart k).symm)`. Establish `hc : ContinuousAt (h ∘ (B.chart k).symm) y` using `hh.1.continuousAt.comp ((B.chart k).continuousAt_symm hyt)`. Use `filter_upwards [hc.preimage_mem_nhds ((A.chart j).open_source.mem_nhds hj)] with y' hy'`. Simplify using `only [Function.comp_apply, LocPot.pullback]`.
+
+Rewrite using `[(A.chart j).left_inv (show h ((B.chart k).symm y') ∈ (A.chart j).source from hy')]`. Establish `hU : (A.chart j).symm ((A.chart j ∘ h ∘ (B.chart k).symm) y) ∈ P.U (h x)`. Rewrite using `[hsymm]`. Conclude with `hyU`. Rewrite using `[ReciprocityTheory.AnForm.levi_congr hev w, ReciprocityTheory.AnForm.levi_comp w hτa (ReciprocityTheory.AnForm.M.pot_contDiffAt_two hP (h x) j hτy hU)]`.
+
+Use `hnn (h x) j _ ⟨hτy, ?_, hU⟩ _` and prove the remaining obligations. Use `show (A.chart j).symm ((A.chart j ∘ h ∘ (B.chart k).symm) y) ∈ V`. Rewrite using `[hsymm]`. Conclude with `hyV`.
+-/
 theorem formNonneg_pullback (A : FinHolAtlas e X) (B : FinHolAtlas e' Y) (h : Y → X)
     (hh : HoloMap B A h) (V : Set X) (P : LocPot X) (hP : IsPotential A P)
     (hnn : FormNonneg A V P) : FormNonneg B (h ⁻¹' V) (P.pullback h hh.1) := by
@@ -60,6 +72,9 @@ theorem formNonneg_pullback (A : FinHolAtlas e X) (B : FinHolAtlas e' Y) (h : Y 
   rw [hsymm]
   exact hyV
 
+/- English proof (translation)
+Establish `hpot` using `ReciprocityTheory.AnForm.M.isPotentialPullback A B h hh _ (ReciprocityTheory.AnForm.M.isPotential_ofFun A u hu)`. Introduce `j y hy`. Use `(hpot.1 ((B.chart j).symm y) j) y (by simpa [LocPot.pullback, LocPot.ofFun] using hy)` as an intermediate fact. Simplify `this` using `[LocPot.pullback, LocPot.ofFun, Function.comp_def]`.
+-/
 theorem smooth_comp_holoMap (A : FinHolAtlas e X) (B : FinHolAtlas e' Y) (h : Y → X)
     (hh : HoloMap B A h) {u : X → ℝ} (hu : A.Smooth u) : B.Smooth (u ∘ h) := by
   have hpot := ReciprocityTheory.AnForm.M.isPotentialPullback A B h hh _
@@ -68,6 +83,13 @@ theorem smooth_comp_holoMap (A : FinHolAtlas e X) (B : FinHolAtlas e' Y) (h : Y 
   have := (hpot.1 ((B.chart j).symm y) j) y (by simpa [LocPot.pullback, LocPot.ofFun] using hy)
   simpa [LocPot.pullback, LocPot.ofFun, Function.comp_def] using this
 
+/- English proof (translation)
+Establish `hK : MIntegrable A Φ (fun _ => K)` using `ReciprocityTheory.AnForm.M.mIntegrableCont A Φ hpot _ continuous_const`. Establish `h1 : MIntegrable A Φ (fun _ => (1 : ℝ))` using `ReciprocityTheory.AnForm.M.mIntegrableCont A Φ hpot _ continuous_const`. Establish `hb` using `SystemIndependence.mIntegrable_linComb A Φ c hf hK`. Establish `habs` using `SystemIndependence.abs_mInt_le A V Φ hpot hnn hAn hint hg hb hle`. Establish `l1` using `ReciprocityTheory.AnForm.M.mIntLinear A Φ hpot c f (fun _ => K) hf hK`.
+
+Establish `l2` using `ReciprocityTheory.AnForm.M.mIntLinear A Φ hpot K (fun _ => 1) (fun _ => 0) h1 (SystemIndependence.mIntegrable_zero A Φ)`. Use `beta_reduce at l1 l2`. Rewrite `l2` using `[SystemIndependence.mInt_zero]`. Simplify using `only [mul_one, add_zero] at l2`. Rewrite `habs` using `[l1, l2]`.
+
+Combine the linear relations using `[le_abs_self (mInt A Φ g)]`.
+-/
 theorem mInt_le_of_abs_le [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (V : Set X)
     (Φ : Fin e → LocPot X) (hpot : ∀ i, IsPotential A (Φ i)) (hnn : ∀ i, FormNonneg A V (Φ i))
     (hAn : A.IsAnalyticSubset Vᶜ) (hint : interior Vᶜ = ∅) {g f : X → ℝ}
@@ -93,11 +115,21 @@ end Forms
 
 def nearBound (C t₀ : ℝ) : ℝ := t₀ ^ (1 / 3 : ℝ) + |errE C t₀| + |C| * |errE C t₀|
 
+/- English proof (translation)
+Use `(Real.tendsto_pow_log_div_mul_add_atTop 1 0 n one_ne_zero).comp tendsto_ell` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+-/
 theorem tendsto_logPow_div (n : ℕ) :
     Tendsto (fun t => Real.log (ell t) ^ n / ell t) (𝓝[>] 0) (𝓝 0) := by
   have := (Real.tendsto_pow_log_div_mul_add_atTop 1 0 n one_ne_zero).comp tendsto_ell
   simpa [Function.comp_def] using this
 
+/- English proof (translation)
+Establish `h13 : Tendsto (fun t : ℝ => t ^ (1 / 3 : ℝ)) (𝓝[>] 0) (𝓝 0)`. Use `(Real.continuousAt_rpow_const 0 (1 / 3 : ℝ) (Or.inr (by norm_num))).tendsto` as an intermediate fact. Rewrite `this` using `[Real.zero_rpow (by norm_num)]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Establish `hE : Tendsto (fun t => errE C t) (𝓝[>] 0) (𝓝 0)`.
+
+Use `(tendsto_logPow_div 1).const_mul C` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Use `this.congr fun t => ?_` and prove the remaining obligations. Simplify using `[errE, mul_div_assoc]`. Use `(h13.add hE.abs).add (hE.abs.const_mul |C|)` as an intermediate fact.
+
+Use `show Tendsto (fun t => t ^ (1 / 3 : ℝ) + |errE C t| + |C| * |errE C t|) _ _`. Simplify using `using this`.
+-/
 theorem tendsto_nearBound (C : ℝ) : Tendsto (nearBound C) (𝓝[>] 0) (𝓝 0) := by
   have h13 : Tendsto (fun t : ℝ => t ^ (1 / 3 : ℝ)) (𝓝[>] 0) (𝓝 0) := by
     have := (Real.continuousAt_rpow_const 0 (1 / 3 : ℝ) (Or.inr (by norm_num))).tendsto
@@ -114,10 +146,16 @@ theorem tendsto_nearBound (C : ℝ) : Tendsto (nearBound C) (𝓝[>] 0) (𝓝 0)
 
 variable {D : ℕ} {W : Type} [TopologicalSpace W]
 
+/- English proof (translation)
+Use `Real.add_one_le_exp (1 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_exp_one : (1 : ℝ) ≤ Real.exp 1 := by
   have := Real.add_one_le_exp (1 : ℝ)
   linarith
 
+/- English proof (translation)
+The claim follows from `|S.gap a ha t₀ t x| ≤ |S.C₁| * (tail S.Yo S.r (ell t₀)).indicator (fun y => Real.log (S.r y)) x + nearBound S.C t₀ := by have ht0 : 0 < t₀ := ht.trans_le htt have hell : ell t₀ ≤ ell t := Real.log_le_log (inv_pos.2 ht0) (inv_anti₀ ht htt) have h0t : S.ell₀ ≤ ell t := h0.trans hel …`.
+-/
 theorem abs_gap_le (S : UIData D W) (a : ℕ) (ha : a < D + 1) {t₀ t : ℝ} (ht : 0 < t)
     (htt : t ≤ t₀) (h0 : S.ell₀ ≤ ell t₀) (he : Real.exp 1 ≤ ell t₀) {x : W} (hx : x ∈ S.Yo) :
     |S.gap a ha t₀ t x| ≤
@@ -160,11 +198,17 @@ theorem abs_gap_le (S : UIData D W) (a : ℕ) (ha : a < D + 1) {t₀ t : ℝ} (h
     unfold UIData.gap
     linarith
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.AnForm.M.isPotentialAdd S.A _ _ (S.form i t ht h0t).1.th_pot (ReciprocityTheory.AnForm.M.isPotential_ofFun S.A _ (S.form i t ht h0t).2)`.
+-/
 theorem isPotential_alt (S : UIData D W) {t : ℝ} (ht : 0 < t) (h0t : S.ell₀ ≤ ell t)
     (i : Fin (D + 1)) : IsPotential S.A (S.T t i) :=
   ReciprocityTheory.AnForm.M.isPotentialAdd S.A _ _ (S.form i t ht h0t).1.th_pot
     (ReciprocityTheory.AnForm.M.isPotential_ofFun S.A _ (S.form i t ht h0t).2)
 
+/- English proof (translation)
+Unfold `mixedForms`. Use `split_ifs`. Conclude with `isPotential_alt S ht h0t i`. Conclude with `S.Om.isPot`.
+-/
 theorem isPotential_mixed (S : UIData D W) {t : ℝ} (ht : 0 < t) (h0t : S.ell₀ ≤ ell t) (a : ℕ)
     (i : Fin (D + 1)) : IsPotential S.A (mixedForms S.Om.pot (S.T t) a i) := by
   unfold mixedForms
@@ -172,6 +216,9 @@ theorem isPotential_mixed (S : UIData D W) {t : ℝ} (ht : 0 < t) (h0t : S.ell�
   · exact isPotential_alt S ht h0t i
   · exact S.Om.isPot
 
+/- English proof (translation)
+Unfold `mixedForms`. Use `split_ifs`. Conclude with `(S.form i t ht h0t).1.nonneg`. Conclude with `formNonneg_of_posPot S.A S.Yo _ S.Om.pos`.
+-/
 theorem formNonneg_mixed (S : UIData D W) {t : ℝ} (ht : 0 < t) (h0t : S.ell₀ ≤ ell t) (a : ℕ)
     (i : Fin (D + 1)) : FormNonneg S.A S.Yo (mixedForms S.Om.pot (S.T t) a i) := by
   unfold mixedForms
@@ -179,6 +226,15 @@ theorem formNonneg_mixed (S : UIData D W) {t : ℝ} (ht : 0 < t) (h0t : S.ell₀
   · exact (S.form i t ht h0t).1.nonneg
   · exact formNonneg_of_posPot S.A S.Yo _ S.Om.pos
 
+/- English proof (translation)
+Establish `hpot : ∀ i, IsPotential S.A (mixedForms S.Om.pot S.th a i)`. Introduce `i`. Unfold `mixedForms`. Use `split_ifs`. Conclude with `(S.form i t ht h0t).1.th_pot`.
+
+Conclude with `S.Om.isPot`. Establish `hsm : ∀ i, S.A.Smooth ((fun i : Fin (D + 1) => if (i : ℕ) < a then S.u i t else fun _ => (0 : ℝ)) i)`. Introduce `i`. Simplify using `only`. Use `split_ifs`.
+
+Conclude with `(S.form i t ht h0t).2`. Conclude with `fun _ => contDiffOn_const`. Rewrite using `[← ReciprocityTheory.AnForm.M.massIndep S.A _ _ hpot hsm]`. Apply `ReciprocityTheory.AnForm.M.PLC.mInt_congr_phi` to reduce the goal to its premises. Introduce `i x y`.
+
+Simplify using `only [mixedForms, UIData.T, curForms, potForm]`. Apply the tactic sequence `split_ifs <;> simp [locPot_add_φ, LocPot.ofFun]`.
+-/
 theorem mass_mixed [CompactSpace W] [T2Space W] (S : UIData D W) {t : ℝ} (ht : 0 < t)
     (h0t : S.ell₀ ≤ ell t) (a : ℕ) :
     mInt S.A (mixedForms S.Om.pot (S.T t) a) (fun _ => 1) =
@@ -202,6 +258,9 @@ theorem mass_mixed [CompactSpace W] [T2Space W] (S : UIData D W) {t : ℝ} (ht :
   simp only [mixedForms, UIData.T, curForms, potForm]
   split_ifs <;> simp [locPot_add_φ, LocPot.ofFun]
 
+/- English proof (translation)
+Establish `ht0 : 0 < t₀` using `ht.trans_le htt`. Establish `h0t : S.ell₀ ≤ ell t` using `h0.trans (Real.log_le_log (inv_pos.2 ht0) (inv_anti₀ ht htt))`. Establish `c0` using `ReciprocityTheory.AnForm.M.PLAux.smooth_continuous (S.form ⟨a, ha⟩ t₀ ht0 h0).2`. Establish `c1` using `ReciprocityTheory.AnForm.M.PLAux.smooth_continuous (S.form ⟨a, ha⟩ t ht h0t).2`. Conclude with `(c0.add continuous_const).sub c1`.
+-/
 theorem continuous_gap (S : UIData D W) (a : ℕ) (ha : a < D + 1) {t₀ t : ℝ} (ht : 0 < t)
     (htt : t ≤ t₀) (h0 : S.ell₀ ≤ ell t₀) : Continuous (S.gap a ha t₀ t) := by
   have ht0 : 0 < t₀ := ht.trans_le htt
@@ -211,6 +270,9 @@ theorem continuous_gap (S : UIData D W) (a : ℕ) (ha : a < D + 1) {t₀ t : ℝ
   have c1 := ReciprocityTheory.AnForm.M.PLAux.smooth_continuous (S.form ⟨a, ha⟩ t ht h0t).2
   exact (c0.add continuous_const).sub c1
 
+/- English proof (translation)
+The claim follows from `|S.C₁| * (|S.CE| * (Real.log (ell t₀) ^ (D + 1 + 1) / ell t₀)) := by have ht0 : 0 < t₀ := ht.trans_le htt have h0t : S.ell₀ ≤ ell t := h0.trans (Real.log_le_log (inv_pos.2 ht0) (inv_anti₀ ht htt)) have hpot := isPotential_mixed S ht h0t a have hg := ReciprocityTheory.AnForm.M.mIn …`.
+-/
 theorem errW_le [CompactSpace W] [T2Space W] (S : UIData D W) (a : ℕ) (ha : a < D + 1)
     {t₀ t : ℝ} (ht : 0 < t) (htt : t ≤ t₀) (h0 : S.ell₀ ≤ ell t₀) (he : Real.exp 1 ≤ ell t₀) :
     S.errW a ha t₀ t ≤ nearBound S.C t₀ * mInt S.A (mixedForms S.Om.pot S.th a) (fun _ => 1) +
@@ -237,6 +299,31 @@ theorem errW_le [CompactSpace W] [T2Space W] (S : UIData D W) (a : ℕ) (ha : a 
   unfold UIData.errW
   linarith
 
+/- English proof (translation)
+Establish `ht0 : 0 < t₀` using `ht.trans_le htt`. Establish `h0t : S.ell₀ ≤ ell t` using `h0.trans (Real.log_le_log (inv_pos.2 ht0) (inv_anti₀ ht htt))`. Unfold `UIData.errDiv UIData.divInt`. Use `Finset.sum_le_sum fun k _ => mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations. Establish `: CompactSpace (S.comp k)` using `isCompact_iff_compactSpace.mp (ReciprocityTheory.AnForm.M.sncClosed S.A S.L S.s S.mult S.comp S.s_snc k).isCompact`.
+
+Establish `hholo` using `S.B_holo k`. Establish `hpotW : ∀ i : Fin D, IsPotential S.A (restForms S.Om.pot (S.T t) a i)`. Introduce `i`. Unfold `restForms`. Use `split_ifs`.
+
+Conclude with `isPotential_alt S ht h0t _`. Conclude with `S.Om.isPot`. Establish `hpot : ∀ i, IsPotential (S.B k) (restrictForms (S.comp k) (S.rest a t) i)` using `fun i => ReciprocityTheory.AnForm.M.isPotentialPullback S.A (S.B k) Subtype.val hholo _ (hpotW i)`. Establish `hnnW : ∀ i : Fin D, FormNonneg S.A S.Yo (restForms S.Om.pot (S.T t) a i)`. Introduce `i`.
+
+Unfold `restForms`. Use `split_ifs`. Conclude with `(S.form _ t ht h0t).1.nonneg`. Conclude with `formNonneg_of_posPot S.A S.Yo _ S.Om.pos`. Establish `hnn : ∀ i, FormNonneg (S.B k) (Subtype.val ⁻¹' S.Yo) (restrictForms (S.comp k) (S.rest a t) i)` using `fun i => formNonneg_pullback S.A (S.B k) Subtype.val hholo S.Yo _ (hpotW i) (hnnW i)`.
+
+Establish `hg` using `ReciprocityTheory.AnForm.M.mIntegrableCont (S.B k) _ hpot _ ((continuous_gap S a ha ht htt h0).comp continuous_subtype_val)`. Establish `htail` using `S.tailComp k a (Nat.lt_succ_iff.mp ha) t ht h0t (ell t₀) he`. Establish `key` using `mInt_le_of_abs_le (S.B k) (Subtype.val ⁻¹' S.Yo) _ hpot hnn (S.bdComp_analytic k) (S.bdComp_interior k) hg htail.1 (nearBound S.C t₀) |S.C₁| (fun z hz => by`. Establish `hb` using `abs_gap_le S a ha ht htt h0 he hz`. Establish `hind : (tail (Subtype.val ⁻¹' S.Yo) (S.r ∘ Subtype.val) (ell t₀)).indicator (fun x => Real.log ((S.r ∘ Subtype.val) x)) z = (tail S.Yo S.r (ell t₀)).indicator (fun y => Real.log (S.r y)) z.val`.
+
+Both sides reduce to the same expression. Rewrite using `[hind]`. Conclude with `hb)`. Establish `hmass : mInt (S.B k) (restrictForms (S.comp k) (S.rest a t)) (fun _ => 1) = mInt (S.B k) (restrictForms (S.comp k) (restForms S.Om.pot S.th a)) (fun _ => 1)`. Establish `hpotθ : ∀ i, IsPotential (S.B k) (restrictForms (S.comp k) (restForms S.Om.pot S.th a) i)`.
+
+Introduce `i`. Use `ReciprocityTheory.AnForm.M.isPotentialPullback S.A (S.B k) Subtype.val hholo _ ?_` and prove the remaining obligations. Unfold `restForms`. Use `split_ifs`. Conclude with `(S.form _ t ht h0t).1.th_pot`.
+
+Conclude with `S.Om.isPot`. Establish `hsm : ∀ i, (S.B k).Smooth ((fun i : Fin D => if (i : ℕ) < a then S.u i.castSucc t ∘ Subtype.val else fun _ => (0 : ℝ)) i)`. Introduce `i`. Simplify using `only`. Use `split_ifs`.
+
+Conclude with `smooth_comp_holoMap S.A (S.B k) Subtype.val hholo (S.form _ t ht h0t).2`. Conclude with `fun _ => contDiffOn_const`. Rewrite using `[← ReciprocityTheory.AnForm.M.massIndep (S.B k) _ _ hpotθ hsm]`. Apply `ReciprocityTheory.AnForm.M.PLC.mInt_congr_phi` to reduce the goal to its premises. Introduce `i x y`.
+
+Simplify using `only [restrictForms, restForms, UIData.rest, UIData.T, curForms, potForm]`. Apply the tactic sequence `split_ifs <;> simp [locPot_add_φ, LocPot.ofFun, LocPot.pullback]`. Rewrite `key` using `[hmass]`. Establish `hℓ : 0 < ell t₀` using `lt_of_lt_of_le (Real.exp_pos 1) he`. Establish `hlog : 0 ≤ Real.log (ell t₀)` using `Real.log_nonneg (one_le_exp_one.trans he)`.
+
+Establish `htb` using `htail.2.trans (show S.CE * Real.log (ell t₀) ^ (D + 1) / ell t₀ ≤ |S.CE| * (Real.log (ell t₀) ^ (D + 1) / ell t₀) by`. Rewrite using `[mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self _) (div_nonneg (pow_nonneg hlog _) hℓ.le))`. Use `mul_le_mul_of_nonneg_left htb (abs_nonneg S.C₁)` as an intermediate fact. Unfold `UIData.rest UIData.T at key ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem errDiv_le [CompactSpace W] [T2Space W] (S : UIData D W) (a : ℕ) (ha : a < D + 1)
     {t₀ t : ℝ} (ht : 0 < t) (htt : t ≤ t₀) (h0 : S.ell₀ ≤ ell t₀) (he : Real.exp 1 ≤ ell t₀) :
     S.errDiv a ha t₀ t ≤ ∑ k, (S.mult k : ℝ) * (nearBound S.C t₀ *
@@ -314,6 +401,15 @@ theorem errDiv_le [CompactSpace W] [T2Space W] (S : UIData D W) (a : ℕ) (ha : 
 
 end GreenMassError
 
+/- English proof (translation)
+Introduce `D W _ _ _ S a ha δ hδ`. Establish `hK` using `GreenMassError.tendsto_nearBound S.C`. Establish `hL` using `GreenMassError.tendsto_logPow_div`. Establish `hW : Tendsto (fun t₀ => GreenMassError.nearBound S.C t₀ * mInt S.A (mixedForms S.Om.pot S.th a) (fun _ => 1) + |S.C₁| * (|S.CE| * (Real.log (ell t₀) ^ (D + 1 + 1) / ell t₀))) (𝓝[>] 0) (𝓝 0)`. Use `(hK.mul_const (mInt S.A (mixedForms S.Om.pot S.th a) (fun _ => 1))).add (((hL (D + 1 + 1)).const_mul |S.CE|).const_mul |S.C₁|)` as an intermediate fact.
+
+Simplify using `using this`. Establish `hDv : Tendsto (fun t₀ => ∑ k, (S.mult k : ℝ) * (GreenMassError.nearBound S.C t₀ * mInt (S.B k) (restrictForms (S.comp k) (restForms S.Om.pot S.th a)) (fun _ => 1) + |S.C₁| * (|S.CE| * (Real.log (ell t₀) ^ (D + 1) / ell t₀)))) (𝓝[>] 0) (𝓝 0)`. Use `tendsto_finsetSum Finset.univ fun k _ => ((hK.mul_const (mInt (S.B k) (restrictForms (S.comp k) (restForms S.Om.pot S.th a)) (fun _ => 1))).add (((hL (D + 1)).const_mul |S.CE|).const_mul |S.C₁|)).const_mul (S.mult k : ℝ)` as an intermediate fact. Simplify using `using this`. Establish `hev` using `(hW.eventually (gt_mem_nhds hδ)).and ((hDv.eventually (gt_mem_nhds hδ)).and (tendsto_ell.eventually_ge_atTop (Real.exp 1)))`.
+
+Take `⟨u, hu, hsub⟩` from `mem_nhdsGT_iff_exists_Ioo_subset.mp hev`. Establish `hu0 : (0 : ℝ) < u` using `hu`. Use `⟨u / 2, by linarith, fun t₀ t ht htt hτ h0 => ?_⟩` and prove the remaining obligations. Establish `hmem : t₀ ∈ Set.Ioo 0 u` using `⟨ht.trans_le htt, by linarith⟩`. Take `⟨h1, h2, he⟩` from `hsub hmem`.
+
+Conclude with `⟨(GreenMassError.errW_le S a ha ht htt h0 he).trans h1.le, (GreenMassError.errDiv_le S a ha ht htt h0 he).trans h2.le⟩`.
+-/
 theorem GreenMassError.proof : GreenMassError.Statement := by
   intro D W _ _ _ S a ha δ hδ
   have hK := GreenMassError.tendsto_nearBound S.C

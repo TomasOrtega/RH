@@ -3,6 +3,13 @@ open Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[Module.length_eq_height]`. Use `Order.height_le_iff'.2 fun p _ => ?_` and prove the remaining obligations. Establish `hx : ∀ i : Fin p.length, ∃ x ∈ p i.succ, x ∉ p i.castSucc` using `fun i => SetLike.exists_of_lt (p.step i)`. Use `choose x hx1 hx2 using hx`. Use `set N : Submodule O M := Submodule.span O (Set.range x) with hN`.
+
+Establish `hNfg : N.FG` using `Submodule.fg_span (Set.finite_range x)`. Establish `hxN : ∀ i, x i ∈ N` using `fun i => Submodule.subset_span ⟨i, rfl⟩`. Set `q : LTSeries (Submodule O N)` to `{ length := p.length toFun := fun i => (p i).comap N.subtype step := fun i => by`. Use `lt_of_le_of_ne (Submodule.comap_mono (p.step i).le) ?_` and prove the remaining obligations. Introduce `heq`.
+
+Establish `h1 : (⟨x i, hxN i⟩ : N) ∈ (p i.succ).comap N.subtype` using `hx1 i`. Rewrite `h1` using `[← heq]`. Conclude with `hx2 i h1 }`. Establish `h2 : (q.length : ℕ∞) ≤ Order.height (⊤ : Submodule O N)` using `Order.length_le_height le_top`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem length_le_of_forall_fg_length_le (O M : Type) [CommRing O] [AddCommGroup M] [Module O M] (b : ℕ∞)
     (h : ∀ N : Submodule O M, N.FG → Module.length O N ≤ b) : Module.length O M ≤ b := by
   rw [Module.length_eq_height]

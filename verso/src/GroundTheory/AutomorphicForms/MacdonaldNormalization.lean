@@ -13,6 +13,9 @@ variable {n : ℕ}
 
 def vPoly (m : ℕ) (t : ℂ) : ℂ := ∏ k ∈ Finset.range m, (1 - t ^ (k + 1)) / (1 - t)
 
+/- English proof (translation)
+Establish `: monomial (μ ∘ σ) = permAct σ⁻¹ (monomial μ)`. Rewrite using `[permAct_monomial]`. Both sides reduce to the same expression. Rewrite using `[alternant, this, antisymm_permAct, Equiv.Perm.sign_inv]`. Both sides reduce to the same expression.
+-/
 theorem alternant_comp (μ : Fin n → ℤ) (σ : Equiv.Perm (Fin n)) :
     alternant (μ ∘ σ) = Equiv.Perm.sign σ • alternant μ := by
   have : monomial (μ ∘ σ) = permAct σ⁻¹ (monomial μ) := by
@@ -21,6 +24,17 @@ theorem alternant_comp (μ : Fin n → ℤ) (σ : Equiv.Perm (Fin n)) :
   rw [alternant, this, antisymm_permAct, Equiv.Perm.sign_inv]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `hinj : Function.Injective ν`. Set `f : Fin n → Fin n` to `fun i => ⟨n - 1 - (ν i).toNat, by`. Use `h1 i` as an intermediate fact. Use `h0 i` as an intermediate fact. Use `i.2` as an intermediate fact.
+
+Use the proof step `omega⟩`. Establish `hf : ∀ i, staircase n (f i) = ν i`. Introduce `i`. Simplify using `only [staircase, f]`. Use `h1 i` as an intermediate fact.
+
+Use `h0 i` as an intermediate fact. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hfi : Function.Injective f` using `fun i j h => hinj (by rw [← hf i, ← hf j, h])`. Set `σ` to `Equiv.ofBijective f (Finite.injective_iff_bijective.1 hfi)`.
+
+Establish `hν : ν = staircase n ∘ σ` using `funext fun i => (hf i).symm`. Use `⟨((Equiv.Perm.sign σ : ℤ) : ℂ), ?_⟩` and prove the remaining obligations. Rewrite using `[hν, alternant_comp, Units.smul_def, Int.cast_smul_eq_zsmul]`. Simplify using `only [Function.Injective, not_forall] at hinj`. Take `⟨i, j, hij, hne⟩` from `hinj`.
+
+Conclude with `⟨0, by rw [zero_smul, alternant_eq_zero hne hij]⟩`.
+-/
 theorem exists_alternant_eq_smul {ν : Fin n → ℤ} (h0 : ∀ i, 0 ≤ ν i) (h1 : ∀ i, ν i ≤ n - 1) :
     ∃ c : ℂ, alternant ν = c • alternant (staircase n) := by
   by_cases hinj : Function.Injective ν
@@ -40,6 +54,13 @@ theorem exists_alternant_eq_smul {ν : Fin n → ℤ} (h0 : ∀ i, 0 ≤ ν i) (
     obtain ⟨i, j, hij, hne⟩ := hinj
     exact ⟨0, by rw [zero_smul, alternant_eq_zero hne hij]⟩
 
+/- English proof (translation)
+Set `g : Fin n → Fin n × Fin n` to `fun j => if i < j then (i, j) else (j, i)`. Establish `hsub : (Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2)).filter (fun p => p.1 = i ∨ p.2 = i) ⊆ (Finset.univ.erase i).image g`. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Take `⟨hlt, h | h⟩` from `hp`.
+
+Use `Finset.mem_image.2 ⟨p.2, Finset.mem_erase.2 ⟨fun h' => ?_, Finset.mem_univ _⟩, ?_⟩` and prove the remaining obligations. Rewrite `hlt` using `[h, h']`. Conclude with `lt_irrefl _ hlt`. Simplify using `only [g, ← h, if_pos hlt]`. Use `Finset.mem_image.2 ⟨p.1, Finset.mem_erase.2 ⟨fun h' => ?_, Finset.mem_univ _⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hlt` using `[h, h']`. Conclude with `lt_irrefl _ hlt`. Simplify using `only [g, ← h, if_neg (not_lt.2 hlt.le)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_pairs_containing_le (i : Fin n) :
     ((Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2)).filter
       (fun p => p.1 = i ∨ p.2 = i)).card ≤ n - 1 := by
@@ -63,6 +84,19 @@ theorem card_pairs_containing_le (i : Fin n) :
     _ = n - 1 := by rw [Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ,
         Fintype.card_fin]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `ν hν i`. Rewrite `hν` using `[Finset.prod_empty, AddMonoidAlgebra.one_def, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Use `split_ifs at hν with h`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Conclude with `absurd rfl hν`. Consider the case `insert a s ha ih`. Introduce `ν hν i`.
+
+Rewrite `hν` using `[Finset.prod_insert ha, sub_mul, smul_mul_assoc, AddMonoidAlgebra.coeff_sub, AddMonoidAlgebra.coeff_smul, Finsupp.sub_apply, Finsupp.smul_apply, varL, varL, monomial, monomial, AddMonoidAlgebra.coeff_single_mul_apply, AddMonoidAlgebra.coeff_single_mul_apply, one_mul, one_mul, smu …`. Establish `hcard : ((insert a s).filter (fun p => p.1 = i ∨ p.2 = i)).card = (if a.1 = i ∨ a.2 = i then 1 else 0) + (s.filter (fun p => p.1 = i ∨ p.2 = i)).card`. Rewrite using `[Finset.filter_insert]`. Use `split_ifs with h`. Rewrite using `[Finset.card_insert_of_notMem (fun h' => ha (Finset.mem_filter.1 h').1), add_comm]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hcard]`. Distinguish the cases in `h1 : (∏ p ∈ s, (varL p.1 - t • varL p.2) : LaurentRing n).coeff (-Pi.single a.1 1 + ν) ≠ 0`. Use `ih _ h1 i` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.neg_apply, Pi.single_apply] at this`.
+
+Apply the tactic sequence `split_ifs at this ⊢ with h2 h3 h3 <;> simp_all <;> omega`. Use `push Not at h1`. Rewrite `hν` using `[h1, zero_sub]`. Establish `h1' : (∏ p ∈ s, (varL p.1 - t • varL p.2) : LaurentRing n).coeff (-Pi.single a.2 1 + ν) ≠ 0`. Introduce `h`.
+
+Rewrite `hν` using `[h, mul_zero, neg_zero]`. Conclude with `hν rfl`. Use `ih _ h1' i` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.neg_apply, Pi.single_apply] at this`. Apply the tactic sequence `split_ifs at this ⊢ with h2 h3 h3 <;> simp_all <;> omega`.
+-/
 theorem coeff_prod_ne_zero (t : ℂ) (s : Finset (Fin n × Fin n)) :
     ∀ ν, (∏ p ∈ s, (varL p.1 - t • varL p.2) : LaurentRing n).coeff ν ≠ 0 →
       ∀ i, 0 ≤ ν i ∧ ν i ≤ (s.filter (fun p => p.1 = i ∨ p.2 = i)).card := by
@@ -103,6 +137,9 @@ theorem coeff_prod_ne_zero (t : ℂ) (s : Finset (Fin n × Fin n)) :
       simp only [Pi.add_apply, Pi.neg_apply, Pi.single_apply] at this
       split_ifs at this ⊢ with h2 h3 h3 <;> simp_all <;> omega
 
+/- English proof (translation)
+Use `coeff_prod_ne_zero t _ ν hν i` as an intermediate fact. Use `⟨this.1, this.2.trans ?_⟩` and prove the remaining obligations. Use `card_pairs_containing_le i` as an intermediate fact. Establish `hn : 0 < n` using `Fin.pos i`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem coeff_hlFactor_ne_zero (t : ℂ) {ν : Fin n → ℤ} (hν : (hlFactor n t).coeff ν ≠ 0) (i : Fin n) :
     0 ≤ ν i ∧ ν i ≤ n - 1 := by
   have := coeff_prod_ne_zero t _ ν hν i
@@ -111,6 +148,13 @@ theorem coeff_hlFactor_ne_zero (t : ℂ) {ν : Fin n → ℤ} (hν : (hlFactor n
   have hn : 0 < n := Fin.pos i
   omega
 
+/- English proof (translation)
+Establish `key : ∀ ν ∈ (hlFactor n t).coeff.support, ∃ c : ℂ, antisymm n (single ν ((hlFactor n t).coeff ν)) = c • alternant (staircase n)`. Introduce `ν hν`. Establish `hb` using `coeff_hlFactor_ne_zero t (Finsupp.mem_support_iff.1 hν)`. Take `⟨c, hc⟩` from `exists_alternant_eq_smul (fun i => (hb i).1) (fun i => (hb i).2)`. Use `⟨(hlFactor n t).coeff ν * c, ?_⟩` and prove the remaining obligations.
+
+Establish `: (single ν ((hlFactor n t).coeff ν) : LaurentRing n) = (hlFactor n t).coeff ν • monomial ν`. Simplify using `[monomial, smul_single']`. Rewrite using `[this, map_smul, ← alternant, hc, smul_smul]`. Use `choose c hc using key`. Use `⟨∑ ν ∈ (hlFactor n t).coeff.support.attach, c ν.1 ν.2, ?_⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [← AddMonoidAlgebra.sum_coeff_single (hlFactor n t)]`. Rewrite using `[Finsupp.sum, map_sum, Finset.sum_smul, ← Finset.sum_attach]`. Conclude with `Finset.sum_congr rfl fun ν _ => hc ν.1 ν.2`.
+-/
 theorem exists_antisymm_hlFactor_eq (t : ℂ) :
     ∃ c : ℂ, antisymm n (hlFactor n t) = c • alternant (staircase n) := by
   classical
@@ -130,18 +174,27 @@ theorem exists_antisymm_hlFactor_eq (t : ℂ) :
   rw [Finsupp.sum, map_sum, Finset.sum_smul, ← Finset.sum_attach]
   exact Finset.sum_congr rfl fun ν _ => hc ν.1 ν.2
 
+/- English proof (translation)
+Rewrite using `[varL, monomial, evalAt_single, one_mul, monomialChar_apply, Finset.prod_eq_single a (fun b _ hb => by simp [Pi.single_apply, hb]) (fun h => absurd (Finset.mem_univ a) h)]`. Simplify using the standard rewrite rules.
+-/
 theorem evalAt_varL (w : Fin n → ℂˣ) (a : Fin n) : evalAt w (varL a) = w a := by
   rw [varL, monomial, evalAt_single, one_mul, monomialChar_apply,
     Finset.prod_eq_single a (fun b _ hb => by simp [Pi.single_apply, hb])
       (fun h => absurd (Finset.mem_univ a) h)]
   simp
 
+/- English proof (translation)
+Rewrite using `[hlFactor, map_prod]`. Simplify using `only [map_sub, map_smul, evalAt_varL, smul_eq_mul]`.
+-/
 theorem evalAt_hlFactor (w : Fin n → ℂˣ) (t : ℂ) :
     evalAt w (hlFactor n t) = ∏ p ∈ (Finset.univ : Finset (Fin n × Fin n)).filter
       (fun p => p.1 < p.2), ((w p.1 : ℂ) - t * w p.2) := by
   rw [hlFactor, map_prod]
   simp only [map_sub, map_smul, evalAt_varL, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[antisymm_apply, map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, map_zsmul, evalAt_permAct, zsmul_eq_mul]`.
+-/
 theorem evalAt_antisymm (w : Fin n → ℂˣ) (p : LaurentRing n) :
     evalAt w (antisymm n p) = ∑ σ : Equiv.Perm (Fin n),
       ((Equiv.Perm.sign σ : ℤ) : ℂ) * evalAt (w ∘ σ) p := by
@@ -149,11 +202,19 @@ theorem evalAt_antisymm (w : Fin n → ℂˣ) (p : LaurentRing n) :
   refine Finset.sum_congr rfl fun σ _ => ?_
   rw [Units.smul_def, map_zsmul, evalAt_permAct, zsmul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[staircase_eq_natCast, alternant_natCast_eq hn, remMat_staircase hn, Matrix.det_permutation]`.
+-/
 theorem alternant_staircase_eq_vdm (hn : 0 < n) :
     alternant (staircase n) =
       vdm.det * ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤ) : LaurentRing n) := by
   rw [staircase_eq_natCast, alternant_natCast_eq hn, remMat_staircase hn, Matrix.det_permutation]
 
+/- English proof (translation)
+Rewrite using `[← AlgHom.coe_toRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a k`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply]`. Simplify using `only [vdm, Matrix.of_apply, Matrix.vandermonde_apply, AlgHom.coe_toRingHom]`.
+
+Rewrite using `[map_pow, evalAt_varL]`.
+-/
 theorem evalAt_vdm_det (w : Fin n → ℂˣ) :
     evalAt w vdm.det = (Matrix.vandermonde fun i => (w i : ℂ)).det := by
   rw [← AlgHom.coe_toRingHom, RingHom.map_det]
@@ -163,6 +224,11 @@ theorem evalAt_vdm_det (w : Fin n → ℂˣ) :
   simp only [vdm, Matrix.of_apply, Matrix.vandermonde_apply, AlgHom.coe_toRingHom]
   rw [map_pow, evalAt_varL]
 
+/- English proof (translation)
+Establish `key : ∀ d : ℕ, ∀ a b : Fin n, (b : ℕ) = a + d + 1 → f a < f b`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => exact fun a b hab => h a b (by omega)`. Consider the case `succ d ih`.
+
+Introduce `a b hab`. Establish `hc : (a : ℕ) + d + 1 < n` using `by omega`. Conclude with `(ih a ⟨a + d + 1, hc⟩ rfl).trans (h _ b (by simp only; omega))`. Introduce `a b hab`. Conclude with `key (b - a - 1) a b (by have := Fin.lt_def.1 hab; omega)`.
+-/
 theorem strictMono_of_forall_succ_lt {f : Fin n → Fin n}
     (h : ∀ i j : Fin n, (j : ℕ) = i + 1 → f i < f j) : StrictMono f := by
   have key : ∀ d : ℕ, ∀ a b : Fin n, (b : ℕ) = a + d + 1 → f a < f b := by
@@ -176,6 +242,13 @@ theorem strictMono_of_forall_succ_lt {f : Fin n → Fin n}
   intro a b hab
   exact key (b - a - 1) a b (by have := Fin.lt_def.1 hab; omega)
 
+/- English proof (translation)
+Establish `hinv : StrictMono τ.symm`. Introduce `a b hab`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_lt]`. Use `hτ.monotone h` as an intermediate fact.
+
+Simplify using `only [Equiv.apply_symm_apply] at this`. Conclude with `absurd hab (not_lt.2 this)`. Use extensionality with `i`. Establish `h1 : i ≤ τ i` using `hτ.le_apply`. Establish `h2 : i ≤ τ.symm i` using `hinv.le_apply`.
+
+Establish `h3 : τ i ≤ i`. Use `hτ.monotone h2` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Simplify using `[le_antisymm h3 h1]`.
+-/
 theorem eq_one_of_strictMono {τ : Equiv.Perm (Fin n)} (hτ : StrictMono τ) : τ = 1 := by
   have hinv : StrictMono τ.symm := by
     intro a b hab
@@ -192,6 +265,13 @@ theorem eq_one_of_strictMono {τ : Equiv.Perm (Fin n)} (hτ : StrictMono τ) : �
     rwa [Equiv.apply_symm_apply] at this
   simp [le_antisymm h3 h1]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `hσ` to reduce the goal to its premises. Establish `hmono : StrictMono (Fin.revPerm * σ⁻¹ : Equiv.Perm (Fin n))`. Use `strictMono_of_forall_succ_lt fun i j hij => ?_` and prove the remaining obligations.
+
+Simplify using `only [Equiv.Perm.coe_mul, Function.comp_apply, Fin.revPerm_apply, Fin.rev_lt_rev]`. Break down `lt_trichotomy (σ⁻¹ j) (σ⁻¹ i) with h | h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (σ⁻¹.injective h) (fun h' => by rw [h'] at hij; omega)`. Use `hne _ _ h` as an intermediate fact.
+
+Rewrite `this` using `[show σ (σ⁻¹ j) = j from σ.apply_symm_apply j, show σ (σ⁻¹ i) = i from σ.apply_symm_apply i]`. Use linear arithmetic over natural numbers and integers. Use `eq_one_of_strictMono hmono` as an intermediate fact. Rewrite `this` using `[mul_eq_one_iff_eq_inv, inv_inv]`. Rewrite using `[← this]`.
+-/
 theorem exists_succ_of_ne_rev {σ : Equiv.Perm (Fin n)} (hσ : σ ≠ Fin.revPerm) :
     ∃ a b : Fin n, a < b ∧ (σ b : ℕ) = σ a + 1 := by
   by_contra hne
@@ -214,6 +294,9 @@ theorem exists_succ_of_ne_rev {σ : Equiv.Perm (Fin n)} (hσ : σ ≠ Fin.revPer
 
 def revPoint (t : ℂ) (ht : t ≠ 0) : Fin n → ℂˣ := fun i => Units.mk0 (t ^ (n - 1 - (i : ℕ))) (pow_ne_zero _ ht)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Finset.prod_range_succ, Finset.prod_range_succ, mul_right_comm, ih]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_one_sub_pow_shift (t : ℂ) (m : ℕ) :
     (∏ k ∈ Finset.range m, (1 - t ^ (k + 2))) * (1 - t) =
       (1 - t ^ (m + 1)) * ∏ k ∈ Finset.range m, (1 - t ^ (k + 1)) := by
@@ -223,6 +306,15 @@ theorem prod_one_sub_pow_shift (t : ℂ) (m : ℕ) :
     rw [Finset.prod_range_succ, Finset.prod_range_succ, mul_right_comm, ih]
     ring
 
+/- English proof (translation)
+Establish `e1 : ∏ i ∈ Finset.range m, (t ^ i - t ^ (m + 1)) = (∏ i ∈ Finset.range m, t ^ i) * ∏ i ∈ Finset.range m, (1 - t ^ (m - 1 - i + 2))`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi` using `Finset.mem_range.1 hi`. Rewrite using `[mul_sub, mul_one, ← pow_add]`.
+
+Use `congr 2`. Use linear arithmetic over natural numbers and integers. Establish `e2 : ∏ i ∈ Finset.range m, (t ^ i - t ^ m) = (∏ i ∈ Finset.range m, t ^ i) * ∏ i ∈ Finset.range m, (1 - t ^ (m - 1 - i + 1))`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hi` using `Finset.mem_range.1 hi`. Rewrite using `[mul_sub, mul_one, ← pow_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1, e2, Finset.prod_range_reflect (fun k => 1 - t ^ (k + 2)) m, Finset.prod_range_reflect (fun k => 1 - t ^ (k + 1)) m, mul_assoc, prod_one_sub_pow_shift]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_pow_sub_pow_succ_mul (t : ℂ) (m : ℕ) :
     (∏ i ∈ Finset.range m, (t ^ i - t ^ (m + 1))) * (1 - t) =
       (1 - t ^ (m + 1)) * ∏ i ∈ Finset.range m, (t ^ i - t ^ m) := by
@@ -246,12 +338,20 @@ theorem prod_pow_sub_pow_succ_mul (t : ℂ) (m : ℕ) :
     Finset.prod_range_reflect (fun k => 1 - t ^ (k + 1)) m, mul_assoc, prod_one_sub_pow_shift]
   ring
 
+/- English proof (translation)
+Establish `h1 : (1 : ℂ) - t ≠ 0` using `sub_ne_zero.2 (Ne.symm ht)`. Rewrite using `[vPoly, Finset.prod_div_distrib, Finset.prod_const, Finset.card_range, div_mul_cancel₀ _ (pow_ne_zero _ h1)]`.
+-/
 theorem vPoly_mul_pow (t : ℂ) (ht : t ≠ 1) (m : ℕ) :
     vPoly m t * (1 - t) ^ m = ∏ k ∈ Finset.range m, (1 - t ^ (k + 1)) := by
   have h1 : (1 : ℂ) - t ≠ 0 := sub_ne_zero.2 (Ne.symm ht)
   rw [vPoly, Finset.prod_div_distrib, Finset.prod_const, Finset.card_range,
     div_mul_cancel₀ _ (pow_ne_zero _ h1)]
 
+/- English proof (translation)
+Establish `h1 : (1 : ℂ) - t ≠ 0` using `sub_ne_zero.2 (Ne.symm ht)`. Use `mul_right_cancel₀ (pow_ne_zero m h1) ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm, vPoly_mul_pow t ht]`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+
+Consider the case `succ m ih`. Establish `htel` using `prod_pow_sub_pow_succ_mul t m`. Rewrite using `[Finset.prod_range_succ (fun j => ∏ i ∈ Finset.range j, (t ^ i - t ^ (j + 1))), Finset.prod_range_succ (fun k => 1 - t ^ (k + 1)), Finset.prod_range_succ (fun j => ∏ i ∈ Finset.range j, (t ^ i - t ^ j)), pow_succ (1 - t) m]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem prod_pairs_pow_sub_eq_vPoly_mul (t : ℂ) (ht : t ≠ 1) (m : ℕ) :
     ∏ j ∈ Finset.range m, ∏ i ∈ Finset.range j, (t ^ i - t ^ (j + 1)) =
       vPoly m t * ∏ j ∈ Finset.range m, ∏ i ∈ Finset.range j, (t ^ i - t ^ j) := by
@@ -269,6 +369,13 @@ theorem prod_pairs_pow_sub_eq_vPoly_mul (t : ℂ) (ht : t ≠ 1) (m : ℕ) :
           ((∏ i ∈ Finset.range m, (t ^ i - t ^ (m + 1))) * (1 - t)) := by ring
       _ = _ := by rw [ih, htel]; ring
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_filter, Fintype.prod_prod_type, Finset.prod_comm]`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun j => ∏ i ∈ Finset.range j, g i j)]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Finset.prod_filter]`. Use `congr 1`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use `j.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem prod_pairs_eq_range (g : ℕ → ℕ → ℂ) :
     ∏ p ∈ (Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2), g p.1 p.2 =
       ∏ j ∈ Finset.range n, ∏ i ∈ Finset.range j, g i j := by
@@ -289,6 +396,43 @@ theorem prod_pairs_eq_range (g : ℕ → ℕ → ℂ) :
         have := j.2
         omega
 
+/- English proof (translation)
+Establish `ht0 : t ≠ 0` using `fun h => by`. Use `@ht 1 2 (by simp [h])` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `ht1 : t ≠ 1` using `fun h => by`. Use `@ht 0 1 (by simp [h])` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hne : ∀ a b : ℕ, a ≠ b → t ^ a - t ^ b ≠ 0` using `fun a b h h' => h (ht (sub_eq_zero.1 h'))`. Take `⟨c, hc⟩` from `exists_antisymm_hlFactor_eq (n := n) t`. Establish `hR : hlR t (0 : Fin n → ℤ) = algebraMap ℂ (LaurentRing n) c`. Rewrite using `[hlR, show (monomial (0 : Fin n → ℤ) : LaurentRing n) = 1 from rfl, one_mul]`.
+
+Use `altQuot_eq_of_mul ?_` and prove the remaining obligations. Rewrite using `[hc, Algebra.smul_def, mul_comm]`. Rewrite using `[hR]`. Use `congr 1`. Break down `n.eq_zero_or_pos with hn | hn` into its components or cases.
+
+Substitute `hn` using the available equality. Establish `hδ : alternant (staircase 0) = 1`. Rewrite using `[alternant, antisymm_apply, Fintype.sum_unique]`. Simplify using `only [Equiv.Perm.default_eq, Equiv.Perm.sign_one, one_smul]`. Rewrite using `[permAct_one, AlgHom.id_apply, show staircase 0 = (0 : Fin 0 → ℤ) from funext fun i => i.elim0]`.
+
+Both sides reduce to the same expression. Establish `hD : hlFactor 0 t = 1`. Rewrite using `[hlFactor]`. Conclude with `Finset.prod_eq_one fun p _ => p.1.elim0`. Rewrite `hc` using `[hD, hδ, antisymm_apply, Fintype.sum_unique]`.
+
+Simplify using `only [Equiv.Perm.sign_one, one_smul, map_one] at hc`. Rewrite using `[vPoly, Finset.range_zero, Finset.prod_empty]`. Use `congrArg (fun p : LaurentRing 0 => p.coeff 0) hc` as an intermediate fact. Simplify using `[AddMonoidAlgebra.one_def] at this`. Conclude with `this.symm`.
+
+Use `set z : Fin n → ℂˣ := revPoint t ht0 with hz`. Use `set P := (Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2) with hP`. Establish `hzv : ∀ k : Fin n, (z k : ℂ) = t ^ (n - 1 - (k : ℕ))` using `fun k => rfl`. Establish `hev` using `congrArg (evalAt z) hc`. Rewrite `hev` using `[evalAt_antisymm, map_smul, alternant_staircase_eq_vdm hn, map_mul, map_intCast, evalAt_vdm_det, smul_eq_mul]`.
+
+Rewrite `hev` using `[Finset.sum_eq_single (Fin.revPerm : Equiv.Perm (Fin n))]`. Rewrite `hev` using `[evalAt_hlFactor]`. Establish `hA : ∏ p ∈ P, (((z ∘ Fin.revPerm) p.1 : ℂ) - t * (z ∘ Fin.revPerm) p.2) = ∏ j ∈ Finset.range n, ∏ i ∈ Finset.range j, (t ^ i - t ^ (j + 1))`. Rewrite using `[← prod_pairs_eq_range (n := n) (fun i j => t ^ i - t ^ (j + 1))]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, hzv, Fin.revPerm_apply, Fin.val_rev]`. Rewrite using `[← pow_succ']`. Apply the tactic sequence `congr 2 <;> omega`. Establish `hV : (Matrix.vandermonde fun i => (z i : ℂ)).det = ∏ j ∈ Finset.range n, ∏ i ∈ Finset.range j, (t ^ i - t ^ j)`. Rewrite using `[Matrix.det_vandermonde, ← prod_pairs_eq_range (n := n) (fun i j => t ^ i - t ^ j)]`.
+
+Rewrite using `[show (∏ i : Fin n, ∏ j ∈ Finset.Ioi i, ((z j : ℂ) - z i)) = ∏ p ∈ P, ((z p.2 : ℂ) - z p.1) by`. Rewrite using `[hP, Finset.prod_filter, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Use `congr 1`.
+
+Use extensionality with `j`. Use the proof step `simp]`. Use `Finset.prod_nbij' (fun p => (Fin.rev p.2, Fin.rev p.1)) (fun p => (Fin.rev p.2, Fin.rev p.1)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [hP, Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢`.
+
+Conclude with `Fin.rev_lt_rev.2 hp`. Introduce `p hp`. Simplify using `only [hP, Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢`. Conclude with `Fin.rev_lt_rev.2 hp`. Introduce `p _`.
+
+Simplify using the standard rewrite rules. Introduce `p _`. Simplify using the standard rewrite rules. Introduce `p _`. Simplify using `only [hzv, Fin.val_rev]`.
+
+Apply the tactic sequence `congr 2 <;> omega`. Rewrite `hev` using `[hA, hV]`. Establish `hs : ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤ) : ℂ) ≠ 0`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n))) with h | h <;>`. Simplify using `[h]`.
+
+Establish `hVne : ∏ j ∈ Finset.range n, ∏ i ∈ Finset.range j, (t ^ i - t ^ j) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => Finset.prod_ne_zero_iff.2 fun i hi => hne i j (by have := Finset.mem_range.1 hi; omega)`. Rewrite `hev` using `[prod_pairs_pow_sub_eq_vPoly_mul t ht1]`. Use `set V := ∏ j ∈ Finset.range n, ∏ i ∈ Finset.range j, (t ^ i - t ^ j)`. Establish `h2 : (vPoly n t * V) * ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤ) : ℂ) = (c * V) * ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤ) : ℂ)`. Rewrite using `[mul_comm _ ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤ) : ℂ), hev]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_right_cancel₀ hVne (mul_right_cancel₀ hs h2)).symm`. Introduce `σ _ hσ`. Take `⟨a, b, hab, hσab⟩` from `exists_succ_of_ne_rev hσ`. Rewrite using `[evalAt_hlFactor, Finset.prod_eq_zero (i := (a, b)) (by simp [hP, hab]), mul_zero]`.
+
+Simplify using `only [Function.comp_apply, hzv]`. Rewrite using `[← pow_succ']`. Use `(σ b).2` as an intermediate fact. Rewrite using `[show n - 1 - (σ b : ℕ) + 1 = n - 1 - (σ a : ℕ) by omega, sub_self]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem hlR_zero (t : ℂ) (ht : Function.Injective fun k : ℕ => t ^ k) :
     hlR t (0 : Fin n → ℤ) = algebraMap ℂ (LaurentRing n) (vPoly n t) := by
   have ht0 : t ≠ 0 := fun h => by

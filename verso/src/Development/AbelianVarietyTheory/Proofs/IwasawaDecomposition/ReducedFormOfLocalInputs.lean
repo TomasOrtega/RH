@@ -8,6 +8,13 @@ namespace GlobalTheory.PtSt
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N GlobalTheory.RowCopy
 
+/- English proof (translation)
+Introduce `x hx Sig hS`. Use `Submodule.eq_of_le_of_finrank_le (hUp x hx Sig hS) ?_` and prove the remaining obligations. Establish `hinj` using `SumRepresentations.thetaT_injective D.nd D.naut i hInt h42`. Establish `h1 : Module.finrank ℂ ↥((MjSig D.nd D.naut i Sig).map (D.what₂.thetaT (D.nd.mu i) (D.nd.j i))) = Module.finrank ℂ ↥(MjSig D.nd D.naut i Sig)` using `(LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ hinj (MjSig D.nd D.naut i Sig))).symm`. Establish `hfi : Function.Injective ((D.what₂.thetaP (D.nd.mu i) (D.nd.j i)).domRestrict (eigC D.nd D.naut i x))`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `F hF`. Conclude with `Subtype.ext (hNZ x hx F.1 F.2 hF)`. Establish `h2 : Module.finrank ℂ ↥(eigC D.nd D.naut i x) = Module.finrank ℂ ↥((eigC D.nd D.naut i x).map (D.what₂.thetaP (D.nd.mu i) (D.nd.j i)))`. Rewrite using `[← LinearMap.range_domRestrict]`.
+
+Conclude with `(LinearMap.finrank_range_of_inj hfi).symm`. Rewrite using `[h1, h2]`. Conclude with `Submodule.finrank_mono (hDown x hx Sig hS)`.
+-/
 theorem map_MjSig_eq (D : D7) (i : D.nd.Loc) (hInt : Rows.IsotInternal D.what₂) (h42 : SumRepresentations.At.Conclusion42 D.nd D.naut i)
     (hUp : ParUpRec D.nd D.naut i) (hDown : DownMemRec D.nd D.naut i) (hNZ : TypeNZRec D.nd D.naut i) :
     ∀ x ∈ ZgoodN D.nd D.naut i, ∀ Sig, HasParamX D.nd D.naut i x Sig →
@@ -29,6 +36,9 @@ theorem map_MjSig_eq (D : D7) (i : D.nd.Loc) (hInt : Rows.IsotInternal D.what₂
   rw [h1, h2]
   exact Submodule.finrank_mono (hDown x hx Sig hS)
 
+/- English proof (translation)
+Introduce `hL D I R i _`. Establish `hInt : Rows.IsotInternal D.what₂` using `I.isot`. Establish `h42 : SumRepresentations.Conclusion42 D` using `(I.Conclusion1 (GlobalTheory.T.parts_give_dimension D) R.a R.b).2.2`. Establish `h1` using `map_MjSig_eq D i hInt (h42 i) (R.c.parUp i) (R.c.downMem i) (R.typeNZ i)`. Conclude with `⟨h1, (SumRepresentations.good_part_image_iff D.nd D.naut i hInt (h42 i) h1).2 (R.c.goodPart i)⟩`.
+-/
 theorem reducedMultiplicity_of_rows :
     ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7), GlobalTheory.NRows.Inputs hL D → GlobalTheory.NRows.Rows D → SumRepresentations.ReducedMultiplicityStatement D := by
   intro hL D I R i _

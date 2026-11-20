@@ -13,10 +13,20 @@ namespace PositivityTheory.AdelicQuotientData
 
 namespace LogBallEstimates
 
+/- English proof (translation)
+Use `Real.log_le_rpow_div (inv_pos.2 ht).le hε` as an intermediate fact. Rewrite `this` using `[Real.log_inv, Real.inv_rpow ht.le, ← Real.rpow_neg ht.le]`. Then use the resulting hypothesis.
+-/
 theorem neg_log_le {t ε : ℝ} (ht : 0 < t) (hε : 0 < ε) : -Real.log t ≤ t ^ (-ε) / ε := by
   have := Real.log_le_rpow_div (inv_pos.2 ht).le hε
   rwa [Real.log_inv, Real.inv_rpow ht.le, ← Real.rpow_neg ht.le] at this
 
+/- English proof (translation)
+Establish `t0 : 0 < t` using `by linarith`. Rewrite using `[min_eq_right ((inv_le_one_of_one_le₀ ht).trans ht), Real.rpow_one]`. Establish `h1 : t ^ σ * t ≤ t ^ M`. Rewrite using `[← Real.rpow_add_one t0.ne', ← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le ht hM`.
+
+Establish `hp : 0 < t ^ M` using `by positivity`. Establish `h2 : c ≤ |C| * (t ^ M)⁻¹` using `h.trans (mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity))`. Establish `h3 : t ^ σ ≤ t ^ M * t⁻¹`. Rewrite using `[le_mul_inv_iff₀ t0]`. Conclude with `h1`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem large_power_bound {t σ c C : ℝ} {M : ℕ} (ht : 1 ≤ t) (hM : σ + 1 ≤ M) (hc : 0 ≤ c)
     (h : c ≤ C * (t ^ M)⁻¹) : c * t ^ σ ≤ |C| * min t t⁻¹ ^ (1 : ℝ) := by
   have t0 : 0 < t := by linarith
@@ -33,6 +43,9 @@ theorem large_power_bound {t σ c C : ℝ} {M : ℕ} (ht : 1 ≤ t) (hM : σ + 1
     _ ≤ |C| * ((t ^ M)⁻¹ * (t ^ M * t⁻¹)) := by gcongr
     _ = |C| * t⁻¹ := by field_simp
 
+/- English proof (translation)
+Establish `t0 : 0 < t` using `by linarith`. Establish `hl : |Real.log t| ≤ t`. Rewrite using `[abs_of_nonneg (Real.log_nonneg ht)]`. Combine the linear relations using `[Real.log_le_sub_one_of_pos t0]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem big_log {t σ c C : ℝ} {M : ℕ} (ht : 1 ≤ t) (hM : σ + 2 ≤ M) (hc : 0 ≤ c)
     (h : c ≤ C * (t ^ M)⁻¹) : c * t ^ σ * |Real.log t| ≤ |C| * min t t⁻¹ ^ (1 : ℝ) := by
   have t0 : 0 < t := by linarith
@@ -42,6 +55,9 @@ theorem big_log {t σ c C : ℝ} {M : ℕ} (ht : 1 ≤ t) (hM : σ + 2 ≤ M) (h
     _ = c * t ^ (σ + 1) := by rw [Real.rpow_add_one t0.ne']; ring
     _ ≤ _ := large_power_bound ht (by linarith) hc h
 
+/- English proof (translation)
+Establish `h2 : c ≤ |C| * t` using `h.trans (mul_le_mul_of_nonneg_right (le_abs_self C) t0.le)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem small_power_bound {t b ε c C : ℝ} (t0 : 0 < t) (t1 : t < 1) (hε : 0 < ε) (hb : 2 * ε ≤ b + 1)
     (hc : 0 ≤ c) (h : c ≤ C * t) : c * t ^ b ≤ |C| * t ^ (2 * ε) := by
   have h2 : c ≤ |C| * t := h.trans (mul_le_mul_of_nonneg_right (le_abs_self C) t0.le)
@@ -50,6 +66,9 @@ theorem small_power_bound {t b ε c C : ℝ} (t0 : 0 < t) (t1 : t < 1) (hε : 0 
     _ ≤ |C| * t ^ (2 * ε) :=
       mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_ge t0 t1.le hb) (abs_nonneg _)
 
+/- English proof (translation)
+Rewrite using `[min_eq_left (t1.le.trans (one_le_inv₀ t0 |>.2 t1.le))]`. Establish `h1` using `small_power_bound t0 t1 hε hb hc h`. Establish `h2 : t ^ (2 * ε) ≤ t ^ ε` using `Real.rpow_le_rpow_of_exponent_ge t0 t1.le (by linarith)`. Establish `h3 : 0 ≤ |C| * t ^ ε * ε⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem small0 {t b ε c C : ℝ} (t0 : 0 < t) (t1 : t < 1) (hε : 0 < ε) (hb : 2 * ε ≤ b + 1)
     (hc : 0 ≤ c) (h : c ≤ C * t) : c * t ^ b ≤ |C| * (1 + ε⁻¹) * min t t⁻¹ ^ ε := by
   rw [min_eq_left (t1.le.trans (one_le_inv₀ t0 |>.2 t1.le))]
@@ -60,6 +79,11 @@ theorem small0 {t b ε c C : ℝ} (t0 : 0 < t) (t1 : t < 1) (hε : 0 < ε) (hb :
     _ ≤ |C| * t ^ ε + |C| * t ^ ε * ε⁻¹ := by linarith
     _ = |C| * (1 + ε⁻¹) * t ^ ε := by ring
 
+/- English proof (translation)
+Rewrite using `[min_eq_left (t1.le.trans (one_le_inv₀ t0 |>.2 t1.le))]`. Establish `h1` using `small_power_bound t0 t1 hε hb hc h`. Establish `hl : |Real.log t| ≤ t ^ (-ε) / ε`. Rewrite using `[abs_of_neg (Real.log_neg t0 t1)]`. Conclude with `neg_log_le t0 hε`.
+
+Establish `e : t ^ (2 * ε) * (t ^ (-ε) / ε) = t ^ ε * ε⁻¹`. Rewrite using `[mul_div_assoc', ← Real.rpow_add t0, div_eq_mul_inv]`. Put the polynomial expressions in normal form. Establish `h3 : 0 ≤ |C| * t ^ ε` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem small_log {t b ε c C : ℝ} (t0 : 0 < t) (t1 : t < 1) (hε : 0 < ε) (hb : 2 * ε ≤ b + 1)
     (hc : 0 ≤ c) (h : c ≤ C * t) : c * t ^ b * |Real.log t| ≤ |C| * (1 + ε⁻¹) * min t t⁻¹ ^ ε := by
   rw [min_eq_left (t1.le.trans (one_le_inv₀ t0 |>.2 t1.le))]
@@ -75,23 +99,37 @@ theorem small_log {t b ε c C : ℝ} (t0 : 0 < t) (t1 : t < 1) (hε : 0 < ε) (h
     _ ≤ |C| * t ^ ε + |C| * t ^ ε * ε⁻¹ := by linarith
     _ = |C| * (1 + ε⁻¹) * t ^ ε := by ring
 
+/- English proof (translation)
+Rewrite using `[min_eq_left (t1.le.trans (one_le_inv₀ t0 |>.2 t1.le))]`. Conclude with `mul_le_mul_of_nonneg_right (h.trans (le_abs_self C)) (by positivity)`.
+-/
 theorem bddBelow_support_primePowerComponent_coeff {t ε c C : ℝ} (t0 : 0 < t) (t1 : t < 1) (hc : 0 ≤ c) (h : c ≤ C) :
     c * t ^ ε ≤ |C| * min t t⁻¹ ^ ε := by
   rw [min_eq_left (t1.le.trans (one_le_inv₀ t0 |>.2 t1.le))]
   exact mul_le_mul_of_nonneg_right (h.trans (le_abs_self C)) (by positivity)
 
+/- English proof (translation)
+Rewrite `hs` using `[Metric.mem_ball, dist_eq_norm]`. Rewrite using `[← Complex.sub_re]`. Conclude with `(Complex.abs_re_le_norm _).trans_lt hs`.
+-/
 theorem re_lt_of_ball {s s₀ : ℂ} {r : ℝ} (hs : s ∈ Metric.ball s₀ r) : |s.re - s₀.re| < r := by
   rw [Metric.mem_ball, dist_eq_norm] at hs
   rw [← Complex.sub_re]; exact (Complex.abs_re_le_norm _).trans_lt hs
 
 variable {X : Type*} [MeasurableSpace X]
 
+/- English proof (translation)
+The claim follows from `hg.mono' (hF.mul ((Complex.measurable_ofReal.comp hDm).pow_const s).aestronglyMeasurable) (h0.mono fun x hx => by rw [norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos (hD x)]; exact hx)`.
+-/
 theorem intg (ν : Measure X) (D : X → ℝ) (hD : ∀ x, 0 < D x) (hDm : Measurable D) (F : X → ℂ)
     (hF : AEStronglyMeasurable F ν) (s : ℂ) (g : X → ℝ) (hg : Integrable g ν)
     (h0 : ∀ᵐ x ∂ν, ‖F x‖ * D x ^ s.re ≤ g x) : Integrable (fun x => F x * (D x : ℂ) ^ s) ν :=
   hg.mono' (hF.mul ((Complex.measurable_ofReal.comp hDm).pow_const s).aestronglyMeasurable)
     (h0.mono fun x hx => by rw [norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos (hD x)]; exact hx)
 
+/- English proof (translation)
+Establish `hDc : Measurable fun x => (D x : ℂ)` using `Complex.measurable_ofReal.comp hDm`. Establish `hmeas : ∀ s : ℂ, AEStronglyMeasurable (fun x => F x * (D x : ℂ) ^ s) ν` using `fun s => hF.mul (hDc.pow_const s).aestronglyMeasurable`. Use `hasDerivAt_integral_of_dominated_loc_of_deriv_le (𝕜 := ℂ) (μ := ν) (F := fun s x => F x * (D x : ℂ) ^ s) (F' := fun s x => F x * ((D x : ℂ) ^ s * Complex.log (D x))) (x₀ := s₀) (bound := g) (Metric.ball_mem_nhds s₀ hr) (Filter.Eventually.of_forall fun s => hmeas s) (intg ν D hD h …` as an intermediate fact. Rewrite using `[norm_mul, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos (hD x), ← Complex.ofReal_log (hD x).le, Complex.norm_real, Real.norm_eq_abs, ← mul_assoc]`. Conclude with `hx s hs)`.
+
+Use `hg`. Use the proof step `(Filter.Eventually.of_forall fun x s _ => ((Complex.hasStrictDerivAt_const_cpow (Or.inl (Complex.ofReal_ne_zero.2 (hD x).ne'))).hasDerivAt.const_mul (F x)))`. Conclude with `this.2.differentiableAt`.
+-/
 theorem diffAt (ν : Measure X) (D : X → ℝ) (hD : ∀ x, 0 < D x) (hDm : Measurable D) (F : X → ℂ)
     (hF : AEStronglyMeasurable F ν) (s₀ : ℂ) (r : ℝ) (hr : 0 < r) (g : X → ℝ) (hg : Integrable g ν)
     (h0 : ∀ᵐ x ∂ν, ‖F x‖ * D x ^ s₀.re ≤ g x)
@@ -117,6 +155,37 @@ theorem diffAt (ν : Measure X) (D : X → ℝ) (hD : ∀ x, 0 < D x) (hDm : Mea
 end LogBallEstimates
 
 open LogBallEstimates in
+/- English proof (translation)
+Introduce `hD0 hV1 hE1 E _ _ _ k μ _ hk β hβ H H₀ hG`. Take `⟨hpos, -, hcont, -⟩` from `hD0 E k`. Establish `hmin` using `(hV1 E k μ hk β hβ).2.2`. Establish `hE` using `hE1 E k μ hk β hβ H₀ hG.meas₀ hG.inv₀ hG.cen hG.bdd`. Establish `hDm : Measurable (Dt : GA E k → ℝ)` using `hcont.measurable`.
+
+Establish `hS : MeasurableSet {g : GA E k | Dt g < 1}` using `measurableSet_lt hDm measurable_const`. Take `⟨C₀, hC₀⟩` from `hG.bdd`. Take `⟨C₁, hC₁⟩` from `hG.small`. Establish `hFm : Measurable fun g => (Dt g : ℂ) * H g - H₀ g` using `((Complex.measurable_ofReal.comp hDm).mul hG.meas).sub hG.meas₀`. Establish `hAb : ∀ (σ : ℝ), ∃ g : GA E k → ℝ, IntegrableOn g {g | Dt g < 1}ᶜ (μ.withDensity β) ∧ ∀ x, x ∈ {g : GA E k | Dt g < 1}ᶜ → ∀ τ, τ ≤ σ → ‖H x‖ * Dt x ^ τ ≤ g x ∧ ‖H x‖ * Dt x ^ τ * |Real.log (Dt x)| ≤ g x`.
+
+Introduce `σ`. Take `⟨C, hC⟩` from `hG.big (⌈σ⌉₊ + 2)`. Use `⟨fun x => |C| * min (Dt x) (Dt x)⁻¹ ^ (1 : ℝ), ((hmin 1 one_pos).const_mul |C|).integrableOn, fun x hx τ hτ => ?_⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ Dt x` using `not_lt.1 hx`. Establish `hM : τ + 2 ≤ ((⌈σ⌉₊ + 2 : ℕ) : ℝ)` using `by push_cast; linarith [Nat.le_ceil σ]`.
+
+Conclude with `⟨large_power_bound h1 (by linarith) (norm_nonneg _) (hC x h1), big_log h1 hM (norm_nonneg _) (hC x h1)⟩`. Establish `hBb : ∀ ε : ℝ, 0 < ε → ∃ g : GA E k → ℝ, IntegrableOn g {g | Dt g < 1} (μ.withDensity β) ∧ ∀ x, x ∈ {g : GA E k | Dt g < 1} → ∀ b, 2 * ε ≤ b + 1 → ‖(Dt x : ℂ) * H x - H₀ x‖ * Dt x ^ b ≤ g x ∧ ‖(Dt x : ℂ) * H x - H₀ x‖ * Dt x ^ b * |Real.log (Dt x)| ≤ g x`. Introduce `ε hε`. Use `⟨fun x => |C₁| * (1 + ε⁻¹) * min (Dt x) (Dt x)⁻¹ ^ ε, ((hmin ε hε).const_mul (|C₁| * (1 + ε⁻¹))).integrableOn, fun x hx b hb => ?_⟩` and prove the remaining obligations. Establish `h1 : Dt x < 1` using `hx`.
+
+Conclude with `⟨small0 (hpos x) h1 hε hb (norm_nonneg _) (hC₁ x h1), small_log (hpos x) h1 hε hb (norm_nonneg _) (hC₁ x h1)⟩`. Set `κ : ℂ` to `((k : ℂ) * Module.finrank ℚ E)⁻¹ * ∫ g in band E k, H₀ g ∂μ.withDensity β`. Set `A : ℂ → ℂ` to `fun s => ∫ g in {g | Dt g < 1}ᶜ, H g * (Dt g : ℂ) ^ s ∂μ.withDensity β`. Set `B : ℂ → ℂ` to `fun s => ∫ g in {g | Dt g < 1}, ((Dt g : ℂ) * H g - H₀ g) * (Dt g : ℂ) ^ (s - 1) ∂μ.withDensity β`. Establish `hA : ∀ s₀ : ℂ, DifferentiableAt ℂ A s₀`.
+
+Introduce `s₀`. Take `⟨g, hg, hgb⟩` from `hAb (s₀.re + 1)`. Use `diffAt _ Dt hpos hDm H hG.meas.aestronglyMeasurable s₀ 1 one_pos g hg ?_ ?_` and prove the remaining obligations. Conclude with `(ae_restrict_iff' hS.compl).2 (Eventually.of_forall fun x hx => (hgb x hx _ (by linarith)).1)`. Conclude with `(ae_restrict_iff' hS.compl).2 (Eventually.of_forall fun x hx s hs => (hgb x hx _ (by linarith [(abs_lt.1 (re_lt_of_ball hs)).2])).2)`.
+
+Establish `hB : ∀ s₀ : ℂ, 0 < s₀.re → DifferentiableAt ℂ B s₀`. Introduce `s₀ h0`. Take `⟨g, hg, hgb⟩` from `hBb (s₀.re / 4) (by linarith)`. Use `diffAt _ Dt hpos hDm _ hFm.aestronglyMeasurable (s₀ - 1) (s₀.re / 2) (by linarith) g hg ((ae_restrict_iff' hS).2 (Eventually.of_forall fun x hx => (hgb x hx _ (by rw [Complex.sub_re, Complex.one_re]; linarith)).1)) ((ae_restrict_iff' hS).2 (Eventually.of_forall fun x hx s hs => ( …` as an intermediate fact. Use `(abs_lt.1 (re_lt_of_ball hs)).1` as an intermediate fact.
+
+Rewrite `this` using `[Complex.sub_re, Complex.one_re]`. Use the proof step `linarith)).2))`. Establish `h2 : DifferentiableAt ℂ (fun s : ℂ => s - 1) s₀` using `differentiableAt_id.sub_const 1`. Establish `h3` using `DifferentiableAt.comp s₀ this h2`. Conclude with `h3`.
+
+Use `⟨fun s => (s - 1) * (A s + B s) + κ, fun s hs => ?_, fun s hs => ?_, fun hb => ?_⟩` and prove the remaining obligations. Establish `h2 : DifferentiableAt ℂ (fun s : ℂ => s - 1) s` using `differentiableAt_id.sub_const 1`. Conclude with `(h2.mul ((hA s).add (hB s hs))).add_const κ |>.differentiableWithinAt`. Take `⟨gA, hgA, hgAb⟩` from `hAb s.re`. Take `⟨gB, hgB, hgBb⟩` from `hBb (1 / 2) (by norm_num)`.
+
+Establish `i1 : IntegrableOn (fun g => H g * (Dt g : ℂ) ^ s) {g | Dt g < 1}ᶜ (μ.withDensity β)` using `intg _ Dt hpos hDm H hG.meas.aestronglyMeasurable s gA hgA ((ae_restrict_iff' hS.compl).2 (Eventually.of_forall fun x hx => (hgAb x hx _ le_rfl).1))`. Establish `i2 : IntegrableOn (fun g => ((Dt g : ℂ) * H g - H₀ g) * (Dt g : ℂ) ^ (s - 1)) {g | Dt g < 1} (μ.withDensity β)` using `intg _ Dt hpos hDm _ hFm.aestronglyMeasurable (s - 1) gB hgB ((ae_restrict_iff' hS).2 (Eventually.of_forall fun x hx => (hgBb x hx _ (by rw [Complex.sub_re, Complex.one_re]; linarith)).1))`. Establish `hs1 : 0 < (s - 1).re` using `by rw [Complex.sub_re, Complex.one_re]; linarith`. Establish `i3 : IntegrableOn (fun g => H₀ g * (Dt g : ℂ) ^ (s - 1)) {g | Dt g < 1} (μ.withDensity β)` using `intg _ Dt hpos hDm _ hG.meas₀.aestronglyMeasurable (s - 1) _ ((hmin _ hs1).const_mul |C₀|).integrableOn ((ae_restrict_iff' hS).2 (Eventually.of_forall fun x hx => bddBelow_support_primePowerComponent_coeff (hpos x) hx (norm_nonneg _) (hC₀ x)))`. Establish `hid : ∀ g, H g * (Dt g : ℂ) ^ s = ((Dt g : ℂ) * H g - H₀ g) * (Dt g : ℂ) ^ (s - 1) + H₀ g * (Dt g : ℂ) ^ (s - 1)`.
+
+Introduce `g`. Establish `h0 : (Dt g : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (hpos g).ne'`. Rewrite using `[Complex.cpow_sub _ _ h0, Complex.cpow_one]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `i4 : IntegrableOn (fun g => H g * (Dt g : ℂ) ^ s) {g | Dt g < 1} (μ.withDensity β)`. Repeatedly rewrite using `[hid]`. Conclude with `i2.add i3`. Establish `hint : Integrable (fun g => H g * (Dt g : ℂ) ^ s) (μ.withDensity β)`. Use `i4.union i1` as an intermediate fact.
+
+Rewrite `this` using `[Set.union_compl_self, integrableOn_univ]`. Then use the resulting hypothesis. Establish `hE'` using `hE (s - 1) hs1`. Rewrite using `[← integral_add_compl hS hint]`. Establish `hsplit : ∫ g in {g | Dt g < 1}, H g * (Dt g : ℂ) ^ s ∂μ.withDensity β = B s + ∫ g in {g | Dt g < 1}, H₀ g * (Dt g : ℂ) ^ (s - 1) ∂μ.withDensity β`. Repeatedly rewrite using `[hid]`.
+
+Conclude with `integral_add i2 i3`. Rewrite using `[hsplit]`. Use `show (s - 1) * (A s + B s) + κ = _`. Take the linear combination `-hE'`. Use `show (1 - 1) * (A 1 + B 1) + κ = 0`.
+
+Simplify using `only [sub_self, zero_mul, zero_add, κ, hb, mul_zero]`.
+-/
 theorem duality_diagonalClass_of_affineProperBaseChange : D0 → V1 → E1 → E2 := by
   intro hD0 hV1 hE1 E _ _ _ k μ _ hk β hβ H H₀ hG
   obtain ⟨hpos, -, hcont, -⟩ := hD0 E k

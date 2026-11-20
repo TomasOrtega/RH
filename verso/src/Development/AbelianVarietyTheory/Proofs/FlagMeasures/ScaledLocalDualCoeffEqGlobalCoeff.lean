@@ -12,6 +12,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RowLatXS
 
+/- English proof (translation)
+Introduce `D T G Z A hA p a x hx`. Establish `hes : ∀ b : Fin D.R.rS, frFac Z.δ p b.castSucc * (locH Z p).h (baseChange₂ D p (G.fl.e b)) ((A p).es a) = if b = a then 1 else 0`. Introduce `b`. Establish `h1` using `(A p).h_es b a`. Rewrite `h1` using `[hA p]`.
+
+Rewrite using `[← (locH Z p).h_smul_left]`. Simplify `h1` using `[frame, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc]`. Establish `hunit : ∀ b : Fin D.R.rS, IsUnit (frFac Z.δ p b.castSucc)`. Introduce `b`. Establish `h1` using `(A p).h_es b b`.
+
+Rewrite `h1` using `[hA p]`. Rewrite `h1` using `[if_pos rfl, (locH Z p).h_smul_left]`. Conclude with `isUnit_iff_exists_inv.mpr ⟨_, by simpa [frame, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc] using h1⟩`. Establish `hzero : ∀ b : Fin D.R.rS, b ≠ a → (locH Z p).h (baseChange₂ D p (G.fl.e b)) ((A p).es a) = 0`. Introduce `b hb`.
+
+Establish `h1` using `hes b`. Rewrite `h1` using `[if_neg hb]`. Conclude with `(hunit b).mul_right_eq_zero.mp h1`. Establish `hxs : x ∈ Submodule.span D.host.E (Set.range G.fl.e)` using `hx`. Establish `hexp : x = ∑ b, G.fl.coefX x b • G.fl.e b`.
+
+Establish `h2` using `G.fl.e_indep.linearCombination_repr ⟨x, hxs⟩`. Rewrite `h2` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [Formalism.MainNotions.S.FlagG.coefX, dif_pos hxs]`. Conclude with `h2.symm`. Establish `hsum : ∀ (s : Finset (Fin D.R.rS)) (v : Fin D.R.rS → Vp D p) (y : Vp D p), (locH Z p).h (∑ b ∈ s, v b) y = ∑ b ∈ s, (locH Z p).h (v b) y`.
+
+Introduce `s v y`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (locH Z p).h_zero_left y`. Consider the case `insert b s hb ih => rw [Finset.sum_insert hb, Finset.sum_insert hb, (locH Z p).h_add_left, ih]`. Establish `hbc : baseChange₂ D p x = ∑ b, (D.s.atP p).ιE (G.fl.coefX x b) • baseChange₂ D p (G.fl.e b)` using `by conv_lhs => rw [hexp]`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => baseChange_smul₂ p _ _`. Rewrite using `[hbc, hsum, Finset.mul_sum, Finset.sum_eq_single a]`. Rewrite using `[(locH Z p).h_smul_left, mul_left_comm, hes a, if_pos rfl, mul_one]`. Introduce `b _ hb`.
+
+Rewrite using `[(locH Z p).h_smul_left, hzero b hb, mul_zero, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+-/
 theorem scaled_local_coef_eq :
     ∀ (D : D7) (T : D.host.E) (G : LFlag (VS D) D.R.rS T) (Z : LocDat D) (A : ∀ p : PlF D, LocNG.FrameD (locH Z p) D.R.rS), (∀ p, (A p).f = fun a => frFac Z.δ p a • baseChange₂ D p (frame G a)) → ∀ (p : PlF D) (a : Fin D.R.rS) (x : (VS D).V), x ∈ G.fl.X → frFac Z.δ p a.castSucc * (locH Z p).h (baseChange₂ D p x) ((A p).es a) = (D.s.atP p).ιE (G.fl.coefX x a) := by
   intro D T G Z A hA p a x hx

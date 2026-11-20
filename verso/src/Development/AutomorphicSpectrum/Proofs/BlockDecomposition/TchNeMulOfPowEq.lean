@@ -7,6 +7,13 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.LTPer
 
+/- English proof (translation)
+Use `letI : Algebra A B := f.toAlgebra`. Set `C : Subalgebra A B` to `{ S with algebraMap_mem' := hW }`. Establish `hfg : (Subalgebra.toSubmodule C).FG`. Use `⟨T, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Conclude with `Submodule.span_le.2 fun t ht => hT t ht`.
+
+Introduce `s hs`. Take `⟨a, rfl⟩` from `hS s hs`. Use `Submodule.sum_mem _ fun t ht => ?_` and prove the remaining obligations. Establish `: t * f (a t) = a t • t`. Rewrite using `[Algebra.smul_def, mul_comm]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ht)`. Conclude with `IsIntegral.of_mem_of_fg C hfg e he`.
+-/
 theorem exists_monic_eval₂_of_span {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) (S : Subring B)
     (T : Finset B) (hW : ∀ a, f a ∈ S) (hT : ∀ t ∈ T, t ∈ S)
     (hS : ∀ s ∈ S, ∃ a : B → A, s = ∑ t ∈ T, t * f (a t)) (e : B) (he : e ∈ S) :
@@ -25,6 +32,15 @@ theorem exists_monic_eval₂_of_span {A B : Type*} [CommRing A] [CommRing B] (f 
       exact Submodule.smul_mem _ _ (Submodule.subset_span ht)
   exact IsIntegral.of_mem_of_fg C hfg e he
 
+/- English proof (translation)
+Establish `h1 : (P.scaleRoots n).eval₂ f (f v) = 0`. Rewrite using `[← hv, Polynomial.scaleRoots_eval₂_mul, he, mul_zero]`. Establish `h2 : (P.scaleRoots n).eval v = 0`. Apply `hf` to reduce the goal to its premises. Rewrite using `[← Polynomial.eval₂_at_apply, h1, map_zero]`.
+
+Establish `h3 : (P.scaleRoots n).eval₂ c (c v) = 0`. Rewrite using `[Polynomial.eval₂_at_apply, h2, map_zero]`. Rewrite `h3` using `[Polynomial.eval₂_eq_sum_range, Polynomial.natDegree_scaleRoots, Finset.sum_eq_single P.natDegree]`. Rewrite `h3` using `[Polynomial.coeff_scaleRoots, Nat.sub_self, pow_zero, mul_one, Polynomial.coeff_natDegree, hP.leadingCoeff, map_one, one_mul]`. Conclude with `h3`.
+
+Introduce `i hi hne`. Establish `hlt : i < P.natDegree` using `lt_of_le_of_ne (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)) hne`. Rewrite using `[Polynomial.coeff_scaleRoots, map_mul, map_pow, hn, zero_pow (Nat.sub_ne_zero_of_lt hlt)]`. Simplify using the standard rewrite rules. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_range.2 (Nat.lt_succ_self _)) h`.
+-/
 theorem pow_natDegree_eq_zero_of_eval₂ {A B R : Type*} [CommRing A] [CommRing B] [CommRing R]
     (f : A →+* B) (hf : Function.Injective f) (c : A →+* R) (P : Polynomial A) (hP : P.Monic)
     (e : B) (he : P.eval₂ f e = 0) (n v : A) (hn : c n = 0) (hv : f n * e = f v) :
@@ -48,6 +64,15 @@ theorem pow_natDegree_eq_zero_of_eval₂ {A B R : Type*} [CommRing A] [CommRing 
   · intro h
     exact absurd (Finset.mem_range.2 (Nat.lt_succ_self _)) h
 
+/- English proof (translation)
+Introduce `hW hT hS ϖ y N hy hN u hu s hs h`. Use `haveI := GroundTheory.PAdicHodge.IsPerfectoidField.isDomain_preTilt (K := ℂ_[l]) l`. Take `⟨P, hP, hev⟩` from `exists_monic_eval₂_of_span (wB l) S T hW hT hS (y * s ^ N) (S.mul_mem hy (S.pow_mem hs N))`. Establish `hinj : Function.Injective (wB l)` using `PositivityTheory.LocInh.wittTo_injective`. Establish `hv : wB l (l : Wl l) * (y * s ^ N) = wB l (WittVector.teichmuller l (u ^ N))`.
+
+Establish `h1 : wB l (WittVector.teichmuller l (u ^ N)) = tch l u ^ N`. Rewrite using `[map_pow, map_pow]`. Both sides reduce to the same expression. Rewrite using `[h1, h, mul_pow, hN, map_natCast, mul_assoc]`. Establish `hc : (WittVector.constantCoeff : Wl l →+* Tl l) (l : Wl l) = 0`.
+
+Rewrite using `[map_natCast]`. Conclude with `CharP.cast_eq_zero _ _`. Establish `h0` using `pow_natDegree_eq_zero_of_eval₂ (wB l) hinj WittVector.constantCoeff P hP _ hev (l : Wl l) _ hc hv`. Establish `h2 : (WittVector.constantCoeff : Wl l →+* Tl l) (WittVector.teichmuller l (u ^ N)) = u ^ N` using `WittVector.teichmuller_coeff_zero l _`. Rewrite `h0` using `[h2]`.
+
+Conclude with `hu (eq_zero_of_pow_eq_zero (eq_zero_of_pow_eq_zero h0))`.
+-/
 theorem tch_ne_mul_of_pow_eq {l : ℕ} [Fact l.Prime] (S : Subring (Formalism.Per6.BdRp l)) (T : Finset (Formalism.Per6.BdRp l)) :
     (∀ a, wB l a ∈ S) → (∀ t ∈ T, t ∈ S) →
     (∀ s ∈ S, ∃ a : Formalism.Per6.BdRp l → Wl l, s = ∑ t ∈ T, t * wB l (a t)) →

@@ -22,6 +22,15 @@ noncomputable section
 
 namespace GlobalTheory.SerStd
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`. Take `⟨v', hv', e⟩` from `hc v`. Conclude with `⟨v', fun m => by rw [hv', MvPolynomial.coeff_map]; exact hv m, e.symm⟩`.
+
+Consider the case `zero => exact ⟨0, fun m => by simp, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a + b, fun m => by simpa using k.add_mem (ha m) (hb m), by simp⟩`.
+
+Consider the case `smul c x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`. Use `⟨(c : ℂ) • a, fun m => ?_, ?_⟩` and prove the remaining obligations. Simplify using `using k.mul_mem c.2 (ha m)`. Rewrite using `[map_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_of_mem_ratVec {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type}
     {A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     (R : RealDat D A Ks) (i : Fin D.R.m) {c0L : VsV D i D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV i).W}
@@ -44,6 +53,11 @@ theorem exists_of_mem_ratVec {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 :
     · simpa using k.mul_mem c.2 (ha m)
     · rw [map_smul]; rfl
 
+/- English proof (translation)
+Use `choose b hb using fun k => RingHom.mem_range.1 (hβ k)`. Use `⟨∑ k, b k • fs k, ⟨sum_mem fun k _ => (sec _ _ _ _).smul_mem _ (hf k).1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `sum_mem fun k _ => by rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ (hf k).2`. Simplify using `only [Cover.rd, map_sum, map_smulₛₗ, hb, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, smul_comm]`.
+-/
 theorem sum_mem_ratForms {D : D7} {T : CoreJ D} {j : ℕ} {σ : T.Q.c.F →+* ℂ} (C : Cover T j σ)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) {m : ℕ} (β : Fin m → ℂ) (fs : Fin m → Rul C.d.Xo₂ C.d.c₂)
     (hβ : ∀ k, β k ∈ C.σ₂.range) (hf : ∀ k, fs k ∈ C.cuspSec a n) :
@@ -58,6 +72,43 @@ theorem sum_mem_ratForms {D : D7} {T : CoreJ D} {j : ℕ} {σ : T.Q.c.F →+* �
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hL hLev hG hFam hMod hTh hTie i hV hFP hstd gramR c0R c0L hFT u hu`. Take `⟨c0, hc0, -⟩` from `GlobalTheory.RationalValuesObj.existsUnique_c0BC R i D.what₂.embLL (RingHom.id ℂ) rfl (c0L i)`. Establish `hcm : GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.IsCoefMap R i c0` using `⟨gramR, c0R, c0L, hFT, hc0⟩`. Establish `hj : Formalism.L2.Pj.InR D ((i : ℕ) + 1)` using `inR i`. Establish `h5 : GlobalTheory.Core5 R F` using `⟨hLev, hG, hFam, hMod, hTh⟩`.
+
+Take `⟨hPr, q1, q2, q3, q4, q5, q6⟩` from `GlobalTheory.AdTh.RecPair.isPair_record_ofFive D G Pl0 T0 A _ R F h5 i A.μ0 hstd`. Take `⟨-, -, f3, -, f5⟩` from `GlobalTheory.AdTh.PhaseMapFree.vec_fock_of_clauses D G Pl0 T0 A _ R hMod hTh i A.μ0 hstd`. Establish `hvac` using `(hTh.vP i A.μ0).1`. Establish `hP : VacPair R.ψ R.θ (Vc D i) (Wc D i) _ _ (R.ωP i A.μ0) (R.ΛV i) (R.ΛW i) (cart (R.MW i (sg0 D A))) (R.vacP i)` using `⟨hPr, q1, q2, q3, q4, q5, q6, f3, hvac⟩`. Take `⟨-, -, -, -, hrpq, -, -, -, -, -, hDom, hn, hLast⟩` from `GlobalTheory.AdTh.models_at_record_ofFive D G Pl0 T0 A T R F κ v₀ h5 hTie i T.σ₀ rfl (T.dict _ T.σ₀ 1).1`.
+
+Take `⟨-, -, hΨ, -, -⟩` from `GlobalTheory.WeightExponents.weight_exponents D T.Q hL.pins _ hj (κ i)`. Establish `hodd : Odd D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`.
+
+Conclude with `⟨a + b - 1, by simp only [Ranks.r]; omega⟩`. Establish `hpq` using `(rank_Wc i).trans hrpq`. Establish `hB : ∀ τ, IsONBasis (gramAt D (Wc D i) τ) (cart (R.MW i (sg0 D A)) τ) (onb (R.MW i (sg0 D A)) τ) (T.Q.Dw ((i : ℕ) + 1)).p` using `fun τ => by`. Rewrite using `[(hL.pins.2.2.2 _ hj).1, ← show (Wc D i).sig (tauE D τ) = D.R.sigW ((i : ℕ) + 1) from D.sp.W_sigval _ hj.1 hj.2 _]`. Conclude with `f5 τ`.
+
+Establish `hlt` using `GlobalTheory.FockLetters.isLetters_letterEquiv (n := (Vc D i).rank) (T.Q.Dw ((i : ℕ) + 1)) hΨ hpq`. Generalize the expression as in `GlobalTheory.FockLetters.letterEquiv (n := (Vc D i).rank) (T.Q.Dw ((i : ℕ) + 1)) hΨ hpq = lt at hlt`. Establish `hχ` using `GlobalTheory.T.referenceTuple_secondSplittingCharacter D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd`. Establish `hMg : T.Q.l.M = D.host.g 0 * D.host.g 1` using `hL.pins.2.1.1`. Rewrite `hχ` using `[← hMg]`.
+
+Establish `hM₀ : T.Q.l.M ≠ 0` using `by have := T.Q.l.three_le; omega`. Establish `hMb : Nat.Coprime T.Q.l.M (GlobalTheory.Tow.badN D)`. Establish `: ∀ k, Nat.Coprime (D.host.g k) (GlobalTheory.Tow.badN D)` using `fun k => ((D.host.level_coprimeS _ (D.host.g_level k)).mul_right (Nat.Coprime.of_dvd_right (Dvd.intro _ rfl |>.trans (show D.host.q * (D.host.QS * D.host.d) ∣ D.host.QS * D.host.q * D.host.d from ⟨1, by ring⟩)) (Nat.Coprime.symm (by rw [Nat.Coprime, Nat.gcd_rec, D.ntypes.g_cond k …`. Rewrite using `[hMg]`. Conclude with `(this 0).mul_left (this 1)`.
+
+Take `⟨ph, hph, hbase⟩` from `GlobalTheory.T.coreConstants_eq_vacuumIdentity_up_to_phase D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd hV hFP`. Take `⟨ka, hka, J, hJH, hJk, hJ⟩` from `GlobalTheory.T.harmonicMap_extremalVector_eq_phase_smul_letters D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd u hu c0 hcm lt hlt`. Establish `hph0 : ph ≠ 0` using `fun h => by simp [h] at hph`. Establish `hka0 : ka ≠ 0` using `fun h => by simp [h] at hka`. Use `⟨(ka * ph)⁻¹, by rw [norm_inv, norm_mul, hka, hph]; norm_num, fun C hC s hs f hf w hw => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hU, hpin, hAux, hSmall, -⟩` from `hC`. Take `⟨v, hvk, rfl⟩` from `exists_of_mem_ratVec R i hc0 _ hw`. Establish `hM₂ : C.d.l₂.M = T.Q.l.M * C.d.pd` using `hU.1.2.1`. Establish `hpd0 : 0 < C.d.pd` using `hAux.1.pos`. Take `⟨l, hlge, hl⟩` from `Nat.exists_infinite_primes (C.d.pd + 1)`.
+
+Establish `hcl : Nat.Coprime C.d.pd l` using `((Nat.Prime.coprime_iff_not_dvd hl).2 fun h => by have := Nat.le_of_dvd hpd0 h; omega).symm`. Take `⟨c₂, hc₂⟩` from `series_bound hP (rank_Wc i) hodd hχ hM₀ hpq hΨ hB hlt hDom hLast hl hs`. Take `⟨hD, hF, hrel, hσ⟩` from `GlobalTheory.T.uniformisedCover_isDictionary_frameCompatible D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd hV C hU`. Establish `hcc` using `GlobalTheory.T.vacuumIdentityConstants_cover_of_dominantPins D G Pl0 T0 A T R F κ v₀ hL hLev hG hFam hMod hTh hTie i hstd hV ph hph hbase C hU hpin`. Establish `hgood : C.d.l₂.GoodAt l` using `goodAt_of_dvd hl hM₂ hcl (Formalism.L2.Pj.goodAt_of_two_primes hMg (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne l hl)`.
+
+Establish `hval` using `GlobalTheory.T.character_quotient_values_in_embedding_field D G Pl0 T0 A T.Q.c.F R i C.d.c₂.F C.σ₂ hSmall`. Take `⟨P, e, Φ, he, hPM, hsupp, hper, hΦk, hth⟩` from `hf`. Take `⟨e', P', he', hPM', hce⟩` from `GlobalTheory.T.exists_conj_idempotentSum_over_level D _ e P he hPM`. Take `⟨la, hla⟩` from `exists_place_over C.d.c₂.F hl`. Establish `hθf : IsThetaFunO R.ψ (Vc D i) (Wc D i) f` using `GlobalTheory.VecTheta.isThetaFunO_of_thetaAt hPr.weil.std hPr.inf hth hvac.2.theta`.
+
+Establish `hfld : ∀ x ∈ T.Q.c.F, x ∈ C.σ₂.fieldRange` using `fun x hx => ⟨C.inc ⟨x, hx⟩, RingHom.congr_fun hU.2.2.1 ⟨x, hx⟩⟩`. Establish `hQO : ∀ mo, (J v).coeff mo ∈ C.σ₂.range` using `fun mo => RingHom.mem_range.2 (RingHom.mem_fieldRange.1 (hJk C.σ₂.fieldRange hfld v hvk mo))`. Establish `hΦO : ∀ x, Φ x ∈ C.σ₂.range` using `fun x => RingHom.mem_range.2 (RingHom.mem_fieldRange.1 (hΦk x))`. Establish `hPM₂ : ∀ PP ∈ P', ((C.d.l₂.M : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `by rw [hM₂]; exact hPM'`. Establish `hfn : GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.IsLevelFn (cA D e') (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True) C.d.l₂.M Φ`.
+
+Rewrite using `[hce, hM₂]`. Conclude with `⟨hsupp, hper⟩`. Establish `hth' : IsThetaAt R.ψ (symplO (Vc D i) (Wc D i)) (heisO R.ψ (Vc D i) (Wc D i)) (cA D e') (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True) 1 (R.vacP i) Φ f` using `by rw [hce]; exact hth`. Take `⟨m, β, fs, hfs, hsum⟩` from `hc₂ C.d.l₂ C.d.pd C.d.Xo₂ C.d.c₂ C.σ₂ C.U₂ _ _ _ _ _ hM₂ hU.1.2.2.1 hcl (hM₂ ▸ hMb.mul_left hAux.2.2.2.2) hU.2.1 hgood hrel hσ hD hF hcc hval la C.σ₂.range hla (valRing_range _ _) e' P' Φ f he' hPM₂ hfn hΦO hth' (J v) (hJH v) hQO`. Set `Fn : GA D (T.V ((i : ℕ) + 1) T.σ₀) → ℂ` to `castDict hV.symm fun g => (l : ℂ) ^ c₂ * ((ka * ph)⁻¹ * GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.series R i u s f (c0 v) g)`.
+
+Establish `e1 : Fn = ∑ k, β k • C.rd (wtA (κ i)) (fs k)`. Use `eq_of_castDict hV fun g => ?_` and prove the remaining obligations. Rewrite using `[castDict_symm]`. Establish `e2` using `hsum g`. Establish `e3 : castDict hV (∑ k, β k • C.rd (wtA (κ i)) (fs k)) g = ∑ k, β k * ((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℂ) * (C.cc₂ (castDict hV C.dict₂ g).1 * castDict hV (T.mu ((i : ℕ) + 1) T.σ₀) g * rdU C.U₂ (fs k) (castDict hV C.dict₂ g).1 (castDict hV C.dict₂ g).2))`.
+
+Unfold `castDict`. Rewrite using `[Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[e3, GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.series, hJ f hθf v]`. Simplify using `only [thetaKO, map_smul, Pi.smul_apply, smul_eq_mul] at e2 ⊢`.
+
+Establish `e4 : ∑ k, β k * ((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℂ) * (ph * C.cc₂ (castDict hV C.dict₂ g).1 * castDict hV (T.mu ((i : ℕ) + 1) T.σ₀) g * rdU C.U₂ (fs k) (castDict hV C.dict₂ g).1 (castDict hV C.dict₂ g).2)) = ph * ∑ k, β k * ((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xi …`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite `e2` using `[e4]`. Use `mul_left_cancel₀ hph0 ?_` and prove the remaining obligations.
+
+Rewrite using `[← e2]`. Clear the denominators using the available nonvanishing facts. Establish `hR : IsRat T i hV C (κ i) (castDict hV Fn)`. Use `⟨Fn, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[e1]`.
+
+Use `sum_mem_ratForms C _ _ β fs (fun k => (hfs k).1) fun k => ?_` and prove the remaining obligations. Rewrite using `[hn]`. Conclude with `⟨(hfs k).2.1, (hfs k).2.2.1⟩`. Establish `hl0 : ((l : ℂ) ^ c₂) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hl.ne_zero)`. Establish `h2` using `GlobalTheory.SerRatRay.isRat_const_mul T i hV C (κ i) _ ((l : ℂ) ^ c₂)⁻¹ hR ⟨((l : C.d.c₂.F) ^ c₂)⁻¹, by simp⟩`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Use `show _ = ((l : ℂ) ^ c₂)⁻¹ * castDict hV (castDict hV.symm _) g`. Rewrite using `[castDict_symm, inv_mul_cancel_left₀ hl0]`. Both sides reduce to the same expression.
+-/
 theorem untwRatS : UntwRatS := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hL hLev hG hFam hMod hTh hTie i hV hFP hstd gramR c0R c0L hFT u hu
   obtain ⟨c0, hc0, -⟩ := GlobalTheory.RationalValuesObj.existsUnique_c0BC R i D.what₂.embLL (RingHom.id ℂ) rfl (c0L i)

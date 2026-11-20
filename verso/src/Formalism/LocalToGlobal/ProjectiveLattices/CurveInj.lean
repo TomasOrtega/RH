@@ -15,11 +15,19 @@ variable {k V M : Type*} [Field k] [AddCommGroup V] [Module k V] [AddCommGroup M
 def evDual (φ : Module.Dual k V) : V ⊗[k] M →ₗ[k] M :=
   TensorProduct.lid k M ∘ₗ TensorProduct.map φ LinearMap.id
 
+/- English proof (translation)
+Simplify using `[evDual]`.
+-/
 theorem evDual_tmul (φ : Module.Dual k V) (v : V) (m : M) : evDual φ (v ⊗ₜ[k] m) = φ v • m := by
   simp [evDual]
 
 end Lin
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i₀`. Use `(Module.forall_dual_apply_eq_zero_iff Kl (c i₀)).1 fun φ => ?_` and prove the remaining obligations. Use `(Module.forall_dual_apply_eq_zero_iff K (φ (c i₀))).1 fun ψ => ?_` and prove the remaining obligations. Establish `hF : (∑ i, ψ (φ (c i)) • b i) = 0`. Use `hev _ fun Z => ?_` and prove the remaining obligations.
+
+Establish `h` using `congrArg (fun t => evDual (M := Ω Z) ψ (evDual (M := Kl ⊗[K] Ω Z) φ t)) (hc Z)`. Simplify using `only [map_sum, evDual_tmul, map_zero, TensorProduct.smul_tmul', smul_eq_mul, mul_one] at h`. Rewrite using `[map_sum]`. Simplify `h` using `only [map_smul]`. Conclude with `Fintype.linearIndependent_iff.1 b.linearIndependent _ hF i₀`.
+-/
 theorem coeff_eq_zero {K Kl K' C : Type*} [Field K] [Field Kl] [Field K'] [Algebra K Kl] [Algebra Kl K']
     [AddCommGroup C] [Module K C] {κ : Type*} [Fintype κ] (b : Module.Basis κ K C)
     {ι : Type*} (Ω : ι → Type*) [∀ Z, AddCommGroup (Ω Z)] [∀ Z, Module K (Ω Z)]
@@ -42,6 +50,11 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
   (N : ℕ) {ι : Type} (Ω : ι → Type) [∀ Z, CommRing (Ω Z)] [∀ Z, Algebra B.KO (Ω Z)]
   (gF : ∀ Z, X.Forms →ₐ[B.KO] Ω Z)
 
+/- English proof (translation)
+Set `b` to `Module.finBasis B.KO (B.Cusp j u)`. Establish `hs : Submodule.span B.KO (Set.range b) = ⊤` using `b.span_eq`. Rewrite `hg` using `[Vw_eq_span_image X la N u hs, ← Set.range_comp]`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (Kp X la N)).1 hg`. Establish `hc : c = 0`.
+
+Use `coeff_eq_zero (K := B.KO) (Kl := X.Kl la) (K' := Kp X la N) b Ω (fun Z => (gF Z).toLinearMap ∘ₗ X.inc u) (fun F hF => hinj F hF) c fun Z => ?_` and prove the remaining obligations. Use `(Finset.sum_congr rfl fun i _ => ?_).trans ((map_sum _ _ _).symm.trans (h0 Z))` and prove the remaining obligations. Rewrite using `[map_smul, Function.comp_apply, rzMap_emb, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Simplify using `[hc]`.
+-/
 theorem vw_inj (u : WeightFamilies.Wt D j) (hinj : ∀ F : B.Cusp j u, (∀ Z, gF Z (X.inc u F) = 0) → F = 0)
     {g : Rp X la N} (hg : g ∈ Vw X la N u) (h0 : ∀ Z, rzMap X la N (Ω Z) (gF Z) g = 0) : g = 0 := by
   classical
@@ -57,6 +70,17 @@ theorem vw_inj (u : WeightFamilies.Wt D j) (hinj : ∀ F : B.Cusp j u, (∀ Z, g
     rfl
   simp [hc]
 
+/- English proof (translation)
+Consider the cases of `nonempty_fintype ι`. Take `⟨k, g, hg, hfg⟩` from `(mem_Hfr X la w).1 ((mem_Frac0 X la w).1 f.2)`. Establish `hZ : ∀ Z, ∃ n : ℕ, rzMap X la N (Ω Z) (gF Z) (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0 ^ n * g) = 0`. Introduce `Z`. Establish `h1` using `hf Z`.
+
+Rewrite `h1` using `[phiZ_apply, hfg, frac_apply, map_mul, map_pow]`. Establish `hu : IsUnit (lwZ X la N (Ω Z) (gF Z) w (w0inv X la w))`. Use `IsUnit.of_mul_eq_one (lwZ X la N (Ω Z) (gF Z) w (algebraMap (Rp X la N) (Lw X la w) (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0))) ?_` and prove the remaining obligations. Rewrite using `[← map_mul, mul_comm, section_mul_inverse_eq_one, map_one]`. Rewrite `h1` using `[(hu.pow k).mul_left_eq_zero, lwZ_alg, IsLocalization.map_eq_zero_iff (Submonoid.powers (rzMap X la N (Ω Z) (gF Z) (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0)))]`.
+
+Take `⟨⟨_, n, rfl⟩, hn⟩` from `h1`. Conclude with `⟨n, by rw [map_mul, map_pow]; exact hn⟩`. Use `choose n hn using hZ`. Establish `hM : ∀ Z, rzMap X la N (Ω Z) (gF Z) (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0 ^ (Finset.univ.sup n) * g) = 0`. Introduce `Z`.
+
+Establish `hle : n Z ≤ Finset.univ.sup n` using `Finset.le_sup (Finset.mem_univ Z)`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_assoc, map_mul, hn Z, mul_zero]`. Establish `h0` using `vw_inj X la N Ω gF _ (hinj _) (sec_pow_mul_mem X la w 0 (wt0 D j) k (Finset.univ.sup n) hg) hM`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (f : Lw X la w) = 0`.
+
+Rewrite using `[hfg, frac_eq_zero_iff]`. Conclude with `⟨_, h0⟩`.
+-/
 theorem fraction_zero_injective [Finite ι] {wL : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL)
     (hinj : ∀ (u : WeightFamilies.Wt D j) (F : B.Cusp j u), (∀ Z, gF Z (X.inc u F) = 0) → F = 0)
     (f : ↥(Frac0 X la w)) (hf : ∀ Z, phiZ X la N (Ω Z) (gF Z) w f = 0) : f = 0 := by
@@ -94,6 +118,9 @@ section Inst
 variable {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c)
   (hT : GenFromTest (T.Q.Xo j) T.Q.c hG)
 
+/- English proof (translation)
+The claim follows from `CurveInj.fraction_zero_injective (recPlus h j hj) la G.N (fun Z : Comp (T.Q.Xo j) T.Q.c => Om Z) (fun Z => formsEvR j hG hT Z) G.w (fun u F hF => hV u F fun Z => (formsEvR_single j hG hT Z _ _).symm.trans (hF Z)) f hf`.
+-/
 theorem curveInj [Finite (Comp (T.Q.Xo j) T.Q.c)] (hV : GenValInjSt h j hG) {ka wL wF : WeightFamilies.Wt D j}
     (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (la : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO))
     (f : ↥(Frac0 (recPlus h j hj) la G.w))

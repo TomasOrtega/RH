@@ -11,6 +11,13 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hz` using `L.ω₁_div_two_notMem_lattice`. Use `set z := L.ω₁ / 2`. Take `⟨w, hw, hw1, hw2⟩` from `exists_weierstrassP_eq_and_derivWeierstrassP_eq L' (x := ℘[L] z) (y := ℘'[L] z) (by rw [← h₂, ← h₃]; exact L.derivWeierstrassP_sq z hz)`. Take `⟨c, rfl⟩ : ∃ c, w = z + c` from `⟨w - z, by ring⟩`. Establish `h1` using `eventuallyEq_of_weierstrass_system (weierstrass_system_add_const L 0 (z := z) (by simpa using hz)) (h₂ ▸ weierstrass_system_add_const L' c hw) (by simp [hw1]) (by simp [hw2])`.
+
+Establish `h2` using `eqOn_compl_of_countable ((countable_add_mem_periodLattice L 0).union (countable_add_mem_periodLattice L' c)) (fun t ht ↦ analyticAt_weierstrassP_add L 0 fun h ↦ ht (.inl h)) (fun t ht ↦ analyticAt_weierstrassP_add L' c fun h ↦ ht (.inr h)) (z := z) (by rintro (h | h); exacts [hz …`. Establish `key : ∀ l ∈ L.lattice, l + c ∈ L'.lattice` using `fun l hl ↦ by`. Assume the negation of the conclusion as `h0`. Use `not_eventually_weierstrassP_eq L hl (analyticAt_weierstrassP_add L' c h0).continuousAt ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ne_notMem_periodLattice L l, mem_nhdsWithin_of_mem_nhds ((continuous_add_const c).continuousAt.eventually (eventually_notMem_periodLattice L' h0))] with t h3 h4`.
+
+Simplify `h), h4 h])` using `using h2 (x := t) (by rintro (h | h); exacts [h3 (by simpa`. Introduce `l hl`. Simplify using `using sub_mem (key l hl) (key 0 (zero_mem _))`.
+-/
 theorem lattice_le_of_g₂_eq_of_g₃_eq {L L' : PeriodPair} (h₂ : L.g₂ = L'.g₂)
     (h₃ : L.g₃ = L'.g₃) : L.lattice ≤ L'.lattice := by
   have hz := L.ω₁_div_two_notMem_lattice
@@ -37,21 +44,48 @@ theorem lattice_le_of_g₂_eq_of_g₃_eq {L L' : PeriodPair} (h₂ : L.g₂ = L'
   intro l hl
   simpa using sub_mem (key l hl) (key 0 (zero_mem _))
 
+/- English proof (translation)
+The claim follows from `le_antisymm (lattice_le_of_g₂_eq_of_g₃_eq h₂ h₃) (lattice_le_of_g₂_eq_of_g₃_eq h₂.symm h₃.symm)`.
+-/
 theorem lattice_eq_of_g₂_eq_of_g₃_eq {L L' : PeriodPair} (h₂ : L.g₂ = L'.g₂)
     (h₃ : L.g₃ = L'.g₃) : L.lattice = L'.lattice :=
   le_antisymm (lattice_le_of_g₂_eq_of_g₃_eq h₂ h₃) (lattice_le_of_g₂_eq_of_g₃_eq h₂.symm h₃.symm)
 
+/- English proof (translation)
+The claim follows from `latticeCurve_Δ L ▸ latticeCurve_Δ_ne_zero L`.
+-/
 theorem g₂_cube_sub_g₃_sq_ne_zero (L : PeriodPair) : L.g₂ ^ 3 - 27 * L.g₃ ^ 2 ≠ 0 :=
   latticeCurve_Δ L ▸ latticeCurve_Δ_ne_zero L
 
+/- English proof (translation)
+Rewrite using `[g₂, g₂, h.G_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsHomothetic.g₂_eq {L L' : PeriodPair} {c : ℂ} (h : IsHomothetic c L L') :
     L'.g₂ = (c ^ 4)⁻¹ * L.g₂ := by
   rw [g₂, g₂, h.G_eq]; ring
 
+/- English proof (translation)
+Rewrite using `[g₃, g₃, h.G_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsHomothetic.g₃_eq {L L' : PeriodPair} {c : ℂ} (h : IsHomothetic c L L') :
     L'.g₃ = (c ^ 6)⁻¹ * L.g₃ := by
   rw [g₃, g₃, h.G_eq]; ring
 
+/- English proof (translation)
+Establish `e' : a ^ 3 * b' ^ 2 = a' ^ 3 * b ^ 2` using `by linear_combination -e / 27`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Establish `hb : b ≠ 0` using `by rintro rfl; simp at h`. Establish `ha' : a' = 0` using `by simpa [hb] using e'`.
+
+Substitute `ha'` using the available equality. Establish `hb' : b' ≠ 0` using `by rintro rfl; simp at h'`. Take `⟨u, hu⟩` from `IsAlgClosed.exists_pow_nat_eq (b' / b) (n := 3) (by norm_num)`. Use `⟨u, ?_, by simp, by rw [hu]; field_simp⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Conclude with `div_ne_zero hb' hb (by simpa using hu.symm)`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Establish `hb' : b' = 0` using `by simpa [ha] using e'`. Substitute `hb'` using the available equality.
+
+Establish `ha' : a' ≠ 0` using `by rintro rfl; simp at h'`. Take `⟨u, hu⟩` from `IsAlgClosed.exists_pow_nat_eq (a' / a) (n := 2) (by norm_num)`. Use `⟨u, ?_, by rw [hu]; field_simp, by simp⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `div_ne_zero ha' ha (by simpa using hu.symm)`.
+
+Establish `ha' : a' ≠ 0`. Introduce and unpack `rfl`. Establish `: b' = 0` using `by simpa [ha] using e'`. Simplify using `[this] at h'`. Establish `hb' : b' ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `[ha', hb] at e'`. Use `⟨b' * a / (b * a'), by simp [*], ?_, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `-e'`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `-e'`.
+-/
 theorem exists_scale_of_j_eq {a b a' b' : ℂ} (h : a ^ 3 - 27 * b ^ 2 ≠ 0)
     (h' : a' ^ 3 - 27 * b' ^ 2 ≠ 0)
     (e : a ^ 3 * (a' ^ 3 - 27 * b' ^ 2) = a' ^ 3 * (a ^ 3 - 27 * b ^ 2)) :
@@ -89,6 +123,13 @@ theorem exists_scale_of_j_eq {a b a' b' : ℂ} (h : a ^ 3 - 27 * b ^ 2 ≠ 0)
   · field_simp
     linear_combination -e'
 
+/- English proof (translation)
+Take `⟨u, hu, h2, h3⟩` from `exists_scale_of_j_eq (g₂_cube_sub_g₃_sq_ne_zero L) (g₂_cube_sub_g₃_sq_ne_zero L') e`. Take `⟨c, hc⟩` from `IsAlgClosed.exists_pow_nat_eq u⁻¹ (n := 2) (by norm_num)`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `inv_ne_zero hu (by simpa using hc.symm)`.
+
+Establish `H` using `isHomothetic_scalePeriods L c hc0`. Establish `: (scalePeriods L c hc0).lattice = L'.lattice`. Use `lattice_eq_of_g₂_eq_of_g₃_eq ?_ ?_` and prove the remaining obligations. Rewrite using `[H.g₂_eq, h2, show c ^ 4 = (c ^ 2) ^ 2 by ring, hc]; simp`. Rewrite using `[H.g₃_eq, h3, show c ^ 6 = (c ^ 2) ^ 3 by ring, hc]; simp`.
+
+Conclude with `⟨c, fun x ↦ this ▸ H x⟩`.
+-/
 theorem exists_isHomothetic_of_j_eq {L L' : PeriodPair}
     (e : L.g₂ ^ 3 * (L'.g₂ ^ 3 - 27 * L'.g₃ ^ 2) = L'.g₂ ^ 3 * (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)) :
     ∃ c : ℂ, IsHomothetic c L L' := by
@@ -105,6 +146,9 @@ theorem exists_isHomothetic_of_j_eq {L L' : PeriodPair}
     · rw [H.g₃_eq, h3, show c ^ 6 = (c ^ 2) ^ 3 by ring, hc]; simp
   exact ⟨c, fun x ↦ this ▸ H x⟩
 
+/- English proof (translation)
+Use `⟨lattice_eq_of_g₂_eq_of_g₃_eq, fun e ↦ ?_⟩` and prove the remaining obligations. Take `⟨c, h⟩` from `exists_isHomothetic_of_j_eq e`. Use `⟨c, h.ne_zero, fun z ↦ ⟨fun hz ↦ ⟨c⁻¹ * z, (h _).1 (by simpa [h.ne_zero] using hz), by simp [h.ne_zero]⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `(h w).2 hw`.
+-/
 theorem lattice_determined_by_invariants (L L' : PeriodPair) :
     (L.g₂ = L'.g₂ → L.g₃ = L'.g₃ → L.lattice = L'.lattice) ∧
     (L.g₂ ^ 3 * (L'.g₂ ^ 3 - 27 * L'.g₃ ^ 2) = L'.g₂ ^ 3 * (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) →
@@ -122,14 +166,23 @@ variable {L : PeriodPair} {a : ℂ} {τ : ℍ} (ha : a ≠ 0)
   (h : ∀ x, x ∈ L.lattice ↔ ∃ m n : ℤ, a * (m * (τ : ℂ) + n) = x)
 include ha h
 
+/- English proof (translation)
+Rewrite using `[← latticeCurve_Δ, latticeCurve_Δ_eq_discriminant ha h]`.
+-/
 theorem g₂_cube_sub_g₃_sq_eq_discriminant :
     L.g₂ ^ 3 - 27 * L.g₃ ^ 2 = (2 * π / a) ^ 12 * ModularForm.discriminant τ := by
   rw [← latticeCurve_Δ, latticeCurve_Δ_eq_discriminant ha h]
 
+/- English proof (translation)
+The claim follows from `g₂_cube_sub_g₃_sq_eq_discriminant ha h`.
+-/
 theorem g₂_cube_sub_g₃_sq_eq_eta :
     L.g₂ ^ 3 - 27 * L.g₃ ^ 2 = (2 * π / a) ^ 12 * ModularForm.eta τ ^ 24 :=
   g₂_cube_sub_g₃_sq_eq_discriminant ha h
 
+/- English proof (translation)
+Rewrite using `[modularJ_def, ← latticeCurve_j ha h, WeierstrassCurve.j, Units.val_inv_eq_inv_val, WeierstrassCurve.coe_Δ', latticeCurve_Δ, latticeCurve_c₄]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem g₂_cube_div_eq_modularJ :
     1728 * L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) = modularJ τ := by
   rw [modularJ_def, ← latticeCurve_j ha h, WeierstrassCurve.j, Units.val_inv_eq_inv_val,
@@ -138,6 +191,9 @@ theorem g₂_cube_div_eq_modularJ :
 
 end
 
+/- English proof (translation)
+Rewrite using `[mem_lattice]`. Apply the tactic sequence `rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> rw [h1, h2]`. Apply the tactic sequence `constructor <;> rintro ⟨m, n, rfl⟩ <;> exact ⟨n, m, by ring⟩`. Simplify using the standard rewrite rules.
+-/
 theorem mem_lattice_iff_of_periods_eq {L : PeriodPair} {τ : ℍ}
     (h : (L.ω₁ = 1 ∧ L.ω₂ = τ) ∨ (L.ω₁ = τ ∧ L.ω₂ = 1)) (x : ℂ) :
     x ∈ L.lattice ↔ ∃ m n : ℤ, 1 * (m * (τ : ℂ) + n) = x := by
@@ -146,6 +202,9 @@ theorem mem_lattice_iff_of_periods_eq {L : PeriodPair} {τ : ℍ}
   · constructor <;> rintro ⟨m, n, rfl⟩ <;> exact ⟨n, m, by ring⟩
   · simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simpa using g₂_cube_sub_g₃_sq_eq_discriminant one_ne_zero (mem_lattice_iff_of_periods_eq h), by simpa using g₂_cube_sub_g₃_sq_eq_eta one_ne_zero (mem_lattice_iff_of_periods_eq h), g₂_cube_div_eq_modularJ one_ne_zero (mem_lattice_iff_of_periods_eq h)⟩`.
+-/
 theorem invariants_of_periods_eq {L : PeriodPair} {τ : ℍ}
     (h : (L.ω₁ = 1 ∧ L.ω₂ = τ) ∨ (L.ω₁ = τ ∧ L.ω₂ = 1)) :
     L.g₂ ^ 3 - 27 * L.g₃ ^ 2 = (2 * π) ^ 12 * ModularForm.discriminant τ ∧

@@ -21,6 +21,19 @@ open GlobalTheory.Amp
 
 namespace GlobalTheory.GapUAmp
 
+/- English proof (translation)
+Introduce `_ hH _ Cg cb Cu cT CT C0 A C1`. Take `⟨CMo, hMo⟩` from `GlobalTheory.T.majorantLength_moments_amplitudes_largeGap hH Cg cb Cu cT CT C0 C1 25`. Take `⟨C₀, hAbs⟩` from `GlobalTheory.Amp.AbsRange.abs_range Cg cb Cu cT CT C0 C1 CMo`. Take `⟨m₁, hAbs'⟩` from `hAbs (max C₀ 0) (le_max_left _ _)`. Use `⟨max C₀ 0, 1000, le_max_right _ _, ?_⟩` and prove the remaining obligations.
+
+Introduce `eps Fm _ hCl _`. Establish `key : ∀ Cn : ℝ, OwnEv Fm fun C' Cl x i => ABSr (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 Cn C1 (max C₀ 0)`. Introduce `Cn`. Take `⟨m₂, hM⟩` from `hMo Cn`. Take `⟨x0, hx0⟩` from `GlobalTheory.family_sizes_eventually_large eps Fm (max (max m₁ m₂) 1)`.
+
+Use `⟨x0, fun x hx i => ?_⟩` and prove the remaining obligations. Take `⟨-, hm, -, -, hrd, -⟩` from `hx0 x hx i`. Establish `hm1 : (1 : ℝ) ≤ ((Fm.D x i).R.m : ℝ)` using `le_trans (le_max_right _ _) hm`. Establish `hB : ∀ m₀, m₀ ≤ max (max m₁ m₂) 1 → Big (Fm.D x i) (Fm.L x i) (sCl Fm) m₀` using `fun m₀ h => ⟨hrd, by nlinarith, le_trans h hm⟩`. Conclude with `hAbs' Cn _ _ _ _ (hB _ (le_trans (le_max_left _ _) (le_max_left _ _))) (hM _ _ _ _ hCl (hB _ (le_trans (le_max_right _ _) (le_max_left _ _))))`.
+
+Use `⟨fun Cn => (key Cn).mono ?_, (key 0).mono ?_⟩` and prove the remaining obligations. Introduce `C' Cl x i h τ w w' hTT θ hθ W hW lam' hl S hS γ p hp θ' hθ' νR hR hHyp hD`. Establish `h0 : HypZ (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0`. Unfold `Formalism.MainNotions.S.Cnt.Hyp at hHyp`. Conclude with `hHyp.1`.
+
+Conclude with `(h h0 τ w w' hTT θ hθ W hW lam' hl S hS γ p hp θ' hθ' νR hR hD).2`. Introduce `C' Cl x i h τ w w' hTT θ hθ W hW S hS _ γ p hp θ' hθ' νR hR hHyp hD`. Establish `h0 : HypZ (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0`. Unfold `Formalism.MainNotions.S.Cnt.Hyp at hHyp`. Conclude with `hHyp.1`.
+
+Conclude with `(h h0 τ w w' hTT θ hθ W hW (lamD _ τ) (by simp [l1dist]) S hS γ p hp θ' hθ' νR hR hD).1`.
+-/
 theorem abs_all_along_family_gap : Formalism.HermitianLatticesTheory.SiegelMassRatio → GlobalTheory.GapIn.Hyp → BpJoin.ThmBpDS → ∀ Cg cb Cu cT CT C0 A C1 : ℝ, ∃ C thr : ℝ, 0 ≤ C ∧ ∀ (eps : ℝ) (Fm : FamP eps), thr ≤ sC' Fm → thr ≤ sCl Fm → PX.RanksF Fm C0 Cg cb Cu cT CT → (∀ Cn : ℝ, OwnEv Fm fun C' Cl x i => Formalism.MainNotions.BridgeLemma.AbsAllParameters (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1 Cn C) ∧ (OwnEv Fm fun C' Cl x i => VanishingOnXAndXPlusBranching.PrimeSumLogBound (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1) := by
   intro _ hH _ Cg cb Cu cT CT C0 A C1
   obtain ⟨CMo, hMo⟩ := GlobalTheory.T.majorantLength_moments_amplitudes_largeGap hH Cg cb Cu cT CT C0 C1 25

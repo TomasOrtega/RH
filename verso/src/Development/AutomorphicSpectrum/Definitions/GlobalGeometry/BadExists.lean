@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Tor.Level H}
   {Xo : Moduli D l} {c : Coeff l}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.d_prime⟩ ((quadraticChar (ZMod H.d)).ringHomComp (Int.castRingHom ℂ)) (-1) = -1 := by haveI : Fact H.d.Prime := ⟨H.d_prime⟩ have h4 : H.d % 4 = 3 := by have := H.d_mod; omega have h2 : ringChar (ZMod H.d) ≠ 2 := by rw [ZMod.ringChar_zmod_n]; have := H.d_mod; omega rw [MulChar. …`.
+-/
 theorem chi_odd (H : Host E) :
     haveI : Fact H.d.Prime := ⟨H.d_prime⟩
     ((quadraticChar (ZMod H.d)).ringHomComp (Int.castRingHom ℂ)) (-1) = -1 := by
@@ -21,6 +24,9 @@ theorem chi_odd (H : Host E) :
   rw [MulChar.ringHomComp_apply, quadraticChar_neg_one h2, ZMod.card, ZMod.χ₄_nat_three_mod_four h4]
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.d_prime⟩ DirichletCharacter.LFunction ((quadraticChar (ZMod H.d)).ringHomComp (Int.castRingHom ℂ) : DirichletCharacter ℂ H.d) 1 ≠ 0 := by haveI : Fact H.d.Prime := ⟨H.d_prime⟩ haveI : NeZero H.d := ⟨H.d_prime.ne_zero⟩ apply DirichletCharacter.LFunction_apply_one_ne_zero intro …`.
+-/
 theorem L_ne (H : Host E) :
     haveI : Fact H.d.Prime := ⟨H.d_prime⟩
     DirichletCharacter.LFunction
@@ -33,12 +39,22 @@ theorem L_ne (H : Host E) :
   rw [h, MulChar.one_apply isUnit_one.neg] at h1
   norm_num at h1
 
+/- English proof (translation)
+Establish `hn : (Module.finrank ℚ E : ℝ) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℚ) (M := E)).ne'` after adjusting the coercions. Unfold `hostRd`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (abs_nonneg _), one_div, inv_mul_cancel₀ hn, Real.rpow_one]`.
+-/
 theorem hostRd_pow : hostRd E ^ Module.finrank ℚ E = |(discr E : ℝ)| := by
   have hn : (Module.finrank ℚ E : ℝ) ≠ 0 := by
     exact_mod_cast (Module.finrank_pos (R := ℚ) (M := E)).ne'
   unfold hostRd
   rw [← Real.rpow_natCast, ← Real.rpow_mul (abs_nonneg _), one_div, inv_mul_cancel₀ hn, Real.rpow_one]
 
+/- English proof (translation)
+Establish `hM : l.M' ≠ 0` using `Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'`. Establish `hne : (2 * discr E * (l.M' : ℤ)) ≠ 0` using `mul_ne_zero (mul_ne_zero two_ne_zero (NumberField.discr_ne_zero E)) (by exact_mod_cast hM)`. Use `⟨(2 * discr E * (l.M' : ℤ)).natAbs.primeFactors, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.mem_primeFactors]`. Use `⟨Nat.prime_two, ?_, Int.natAbs_ne_zero.mpr hne⟩` and prove the remaining obligations.
+
+Rewrite using `[← Int.natCast_dvd]`. Conclude with `⟨discr E * (l.M' : ℤ), by push_cast; ring⟩`. Introduce `r`. Rewrite using `[Nat.mem_primeFactors, Int.natCast_dvd]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hp, hd, -⟩`. Conclude with `⟨hp, hd⟩`. Introduce and unpack `⟨hp, hd⟩`. Conclude with `⟨hp, hd, Int.natAbs_ne_zero.mpr hne⟩`.
+-/
 theorem bad_exists (l : Tor.Level H) : ∃ bad : Finset ℕ, 2 ∈ bad ∧
     ∀ r : ℕ, r ∈ bad ↔ r.Prime ∧ (r : ℤ) ∣ 2 * discr E * l.M' := by
   have hM : l.M' ≠ 0 := Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'
@@ -59,6 +75,9 @@ theorem bad_exists (l : Tor.Level H) : ∃ bad : Finset ℕ, 2 ∈ bad ∧
 
 variable {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {T : Top.RootTower (CMType H) (D.p + D.q)}
 
+/- English proof (translation)
+Establish `h1` using `T.j_pos`. Establish `h2` using `T.j_lt`. Rewrite `h1`, `h2` using `[o.j_eq]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sig_pos (o : TowerOrigin Y T) : 1 ≤ D.p ∧ 1 ≤ D.q := by
   have h1 := T.j_pos
   have h2 := T.j_lt
@@ -69,6 +88,9 @@ variable {O : Type} [CommRing O] {β : O →+* c.F} {Y' : Model Xo c β} {S : Fi
   {RM : Top.RootModel (CMType H) (D.p + D.q)}
   {Sys : PB.AnSys (Top.dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))} {Fx : FixedData Y' Sys}
 
+/- English proof (translation)
+Use `letI := o.g.toAlgebra`. Establish `hd : 0 < o.Fl.deg`. Take `⟨_, _, _, _, _, _, _, _, _, _, hpos, _⟩` from `o.Fl.generic`. Conclude with `hpos`. Conclude with `Module.finite_of_finrank_pos (by rw [o.g_deg]; exact hd)`.
+-/
 theorem finite_g (o : RootOrigin Y' S RM Fx) : letI := o.g.toAlgebra; Module.Finite Fx.Ωf RM.Ω := by
   letI := o.g.toAlgebra
   have hd : 0 < o.Fl.deg := by
@@ -76,6 +98,11 @@ theorem finite_g (o : RootOrigin Y' S RM Fx) : letI := o.g.toAlgebra; Module.Fin
     exact hpos
   exact Module.finite_of_finrank_pos (by rw [o.g_deg]; exact hd)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `o.π_pt x`. Use `⟨a, ?_, ha⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨hnz, -⟩` from `o.Re.R.mem x x (o.Re.R.mem_U x)`. Take `⟨i, hi⟩` from `hnz o.k₀`.
+
+Apply `hi` to reduce the goal to its premises. Establish `h` using `congrFun ha (o.ix.symm i)`. Simplify using `only [Equiv.apply_symm_apply, zero_smul, Pi.zero_apply] at h`. Conclude with `h`.
+-/
 theorem pi_pt_ne (o : RootOrigin Y' S RM Fx) (x : o.Re.R.X) :
     ∃ a : ℂ, a ≠ 0 ∧ (fun i => o.Re.R.lift x x ⟨o.k₀, o.ix i⟩) = a • Fx.pt (o.Re.π x) := by
   obtain ⟨a, ha⟩ := o.π_pt x
@@ -88,6 +115,11 @@ theorem pi_pt_ne (o : RootOrigin Y' S RM Fx) (x : o.Re.R.X) :
   simp only [Equiv.apply_symm_apply, zero_smul, Pi.zero_apply] at h
   exact h
 
+/- English proof (translation)
+Establish `hsub : ∀ (K : Type) [Field K] (p q : PrimeSpectrum K), p = q` using `fun K _ p q => PrimeSpectrum.ext ((Ideal.eq_bot_of_prime p.asIdeal).trans (Ideal.eq_bot_of_prime q.asIdeal).symm)`. Establish `h1` using `o.g_over`. Establish `h2` using `o.𝔐.fn_over`. Unfold `Dominates at h2`. Rewrite `h2` using `[h1]`.
+
+Establish `h3 : Fx.ξf ((spMap o.g) (IsLocalRing.closedPoint RM.Ω)) = o.𝔐.ξ₀ ((Spec.map (CommRingCat.ofHom o.𝔐.fn)) (IsLocalRing.closedPoint RM.Ω))` using `congrArg (fun φ => φ (IsLocalRing.closedPoint RM.Ω)) h2`. Unfold `genPt`. Rewrite using `[hsub Fx.Ωf (IsLocalRing.closedPoint Fx.Ωf) ((spMap o.g) (IsLocalRing.closedPoint RM.Ω)), hsub o.𝔐.Ω₀ (IsLocalRing.closedPoint o.𝔐.Ω₀) ((Spec.map (CommRingCat.ofHom o.𝔐.fn)) (IsLocalRing.closedPoint RM.Ω))]`. Conclude with `h3`.
+-/
 theorem genPt_eq (o : RootOrigin Y' S RM Fx) : genPt Fx.ξf = genPt o.𝔐.ξ₀ := by
   have hsub : ∀ (K : Type) [Field K] (p q : PrimeSpectrum K), p = q := fun K _ p q =>
     PrimeSpectrum.ext ((Ideal.eq_bot_of_prime p.asIdeal).trans (Ideal.eq_bot_of_prime q.asIdeal).symm)

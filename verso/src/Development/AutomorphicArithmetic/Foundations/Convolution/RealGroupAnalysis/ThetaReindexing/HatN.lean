@@ -5,6 +5,15 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W b φ v`. Establish `hψ : ∀ x y : A F, ψ (x + y) = ψ x * ψ y`. Introduce `x y`. Simplify using `only [ψ, AddChar.map_add_eq_mul, Circle.coe_mul]`. Establish `hq : ∀ s : A F, q4 D.δ (Function.update v 1 s) = v 2 ^ 2 - rt D.δ * v 3 ^ 2 - s * v 0`.
+
+Introduce `s`. Simplify using `[q4]`. Unfold `hat`. Rewrite using `[← MeasureTheory.integral_const_mul]`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
+
+Establish `h : ψ (b * q4 D.δ (Function.update v 1 s)) * ψ (-(s * v 1)) = ψ (b * (v 2 ^ 2 - rt D.δ * v 3 ^ 2)) * ψ (-(s * (v 1 + b * v 0)))`. Rewrite using `[← hψ, ← hψ, hq]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [W.Om_n, Function.update_idem, Function.update_self]`.
+
+Take the linear combination `(φ.1 (Function.update v 1 s)) * h`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.D.hatN :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), ∀ b φ v, hat (W.Om (nU b) φ).1 v = ψ (b * (v 2 ^ 2 - rt D.δ * v 3 ^ 2)) * hat φ.1 (Function.update v 1 (v 1 + b * v 0)) := by
   intro F E _ _ _ _ _ _ _ D W b φ v

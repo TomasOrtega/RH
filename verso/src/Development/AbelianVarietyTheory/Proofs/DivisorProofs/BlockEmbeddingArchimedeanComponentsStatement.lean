@@ -18,6 +18,9 @@ open scoped TensorProduct
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BlockForms.exists_archComp_of_isBlockEmb | exact GlobalTheory.BlockForms.exists_archComp_of_isBlockEmb | (intros; apply GlobalTheory.BlockForms.exists_archComp_of_isBlockEmb <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.block_embedding_archimedean_components : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E)
     (r : ℕ) (Xf Yf : Matrix (Fin n) (Fin r) E) (l d : ℕ) (h : l + d ≤ r) (ι : GlobalTheory.CuspRep.GA E d →* GAd σ J),

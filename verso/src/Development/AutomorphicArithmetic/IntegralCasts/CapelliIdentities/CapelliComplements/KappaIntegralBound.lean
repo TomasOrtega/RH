@@ -277,6 +277,11 @@ import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.Bridge
 
 namespace Bl.KappaIntegralBound
 
+/- English proof (translation)
+Set `w : Valuation K NNReal` to `(NormedField.valuation (K := PadicComplex p.val)).comap κ`. Establish `hi : IsIntegral ℤ (algebraMap (NumberField.RingOfIntegers K) K r)` using `NumberField.RingOfIntegers.isIntegral_coe r`. Establish `hO : IsIntegral w.integer (algebraMap (NumberField.RingOfIntegers K) K r)` using `hi.tower_top`. Establish `hm : algebraMap (NumberField.RingOfIntegers K) K r ∈ w.integer` using `(Valuation.integer.integers w).mem_of_integral hO`. Rewrite `hm` using `[Valuation.mem_integer_iff]`.
+
+Establish `h2 : ‖κ (algebraMap (NumberField.RingOfIntegers K) K r)‖₊ ≤ 1` using `hm`. Conclude with `h2` after adjusting the coercions.
+-/
 private lemma kappaIntBound {K : Type} [Field K] [NumberField K] (p : Nat.Primes)
     (κ : K →+* PadicComplex p.val) (r : NumberField.RingOfIntegers K) :
     ‖κ (algebraMap (NumberField.RingOfIntegers K) K r)‖ ≤ 1 := by
@@ -290,6 +295,39 @@ private lemma kappaIntBound {K : Type} [Field K] [NumberField K] (p : Nat.Primes
   have h2 : ‖κ (algebraMap (NumberField.RingOfIntegers K) K r)‖₊ ≤ 1 := hm
   exact_mod_cast h2
 
+/- English proof (translation)
+Introduce `K _ _ p κ`. Establish `hle : ∀ r : NumberField.RingOfIntegers K, ‖κ (algebraMap (NumberField.RingOfIntegers K) K r)‖ ≤ 1` using `fun r => kappaIntBound p κ r`. Set `I : Ideal (NumberField.RingOfIntegers K)` to `{ carrier := {r | ‖κ (algebraMap (NumberField.RingOfIntegers K) K r)‖ < 1} add_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_ofPred_eq, map_add] at ha hb ⊢`.
+
+Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ha hb)`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := by`. Introduce `c a ha`. Simplify using `only [Set.mem_ofPred_eq, smul_eq_mul, map_mul, norm_mul] at ha ⊢`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hmem : ∀ r, r ∈ I ↔ ‖κ (algebraMap (NumberField.RingOfIntegers K) K r)‖ < 1` using `fun r => Iff.rfl`. Establish `hIprime : I.IsPrime`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.eq_top_iff_one, hmem]`.
+
+Simplify using the standard rewrite rules. Introduce `a b hab`. Rewrite `hab` using `[hmem, map_mul, map_mul, norm_mul]`. Rewrite using `[hmem, hmem]`. Assume the negation of the conclusion as `h`.
+
+Rewrite `h` using `[not_or, not_lt, not_lt]`. Establish `ha` using `le_antisymm (hle a) h.1`. Establish `hb` using `le_antisymm (hle b) h.2`. Rewrite `hab` using `[ha, hb, mul_one]`. Conclude with `lt_irrefl _ hab`.
+
+Establish `hpI : ((p.val : ℕ) : NumberField.RingOfIntegers K) ∈ I`. Rewrite using `[hmem, map_natCast, map_natCast]`. Rewrite using `[show ((p.val : ℕ) : PadicComplex p.val) = (((p.val : ℕ) : Padic p.val) : PadicComplex p.val) from by simp]`. Rewrite using `[PadicComplex.norm_extends', Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast p.2.one_lt)`.
+
+Establish `hne : I ≠ ⊥`. Introduce `h`. Rewrite `hpI` using `[h, Ideal.mem_bot]`. Establish `h2` using `congrArg (algebraMap (NumberField.RingOfIntegers K) K) hpI`. Rewrite `h2` using `[map_natCast, map_zero, Nat.cast_eq_zero]`.
+
+Conclude with `p.2.ne_zero h2`. Set `la : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers K)` to `⟨I, hIprime, hne⟩`. Use `⟨la, fun a => ?_⟩` and prove the remaining obligations. Take `⟨n, d, h | h⟩` from `la.exists_primeCompl_mul_eq_or_mul_eq a`. Establish `hd : (d : NumberField.RingOfIntegers K) ∉ la.asIdeal` using `d.2`.
+
+Establish `hvd` using `(la.valuation_eq_one_iff_notMem (K := K)).mpr hd`. Establish `hNd : ‖κ (algebraMap _ K (d : NumberField.RingOfIntegers K))‖ = 1` using `le_antisymm (hle _) (not_lt.mp hd)`. Establish `hv : la.valuation K a = la.valuation K (algebraMap _ K n)`. Rewrite using `[← h, map_mul, hvd, mul_one]`. Establish `hN : ‖κ a‖ = ‖κ (algebraMap _ K n)‖`.
+
+Rewrite using `[← h, map_mul, norm_mul, hNd, mul_one]`. Rewrite using `[hv, hN]`. Conclude with `iff_of_true (la.valuation_le_one (K := K) n) (hle n)`. Establish `hd : (d : NumberField.RingOfIntegers K) ∉ la.asIdeal` using `d.2`. Establish `hvd` using `(la.valuation_eq_one_iff_notMem (K := K)).mpr hd`.
+
+Establish `hNd : ‖κ (algebraMap _ K (d : NumberField.RingOfIntegers K))‖ = 1` using `le_antisymm (hle _) (not_lt.mp hd)`. Establish `hv2 : la.valuation K a * la.valuation K (algebraMap _ K n) = 1`. Rewrite using `[← map_mul, h, hvd]`. Establish `hN2 : ‖κ a‖ * ‖κ (algebraMap _ K n)‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, h, hNd]`.
+
+Establish `key1 : la.valuation K a ≤ 1 ↔ n ∉ la.asIdeal`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `h1 : 1 ≤ la.valuation K (algebraMap _ K n)` using `hv2 ▸ mul_le_of_le_one_left' ha`. Conclude with `(la.valuation_eq_one_iff_notMem (K := K)).mp (le_antisymm (la.valuation_le_one (K := K) n) h1)`.
+
+Introduce `hn`. Establish `h1` using `(la.valuation_eq_one_iff_notMem (K := K)).mpr hn`. Rewrite `hv2` using `[h1, mul_one]`. Conclude with `hv2.le`. Establish `key2 : ‖κ a‖ ≤ 1 ↔ n ∉ la.asIdeal`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `ha hn`. Establish `h1 : 1 ≤ ‖κ (algebraMap _ K n)‖`. Rewrite using `[← hN2]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) ha`.
+
+Conclude with `absurd ((hmem n).mp hn) (not_lt.mpr h1)`. Introduce `hn`. Establish `h1 : ‖κ (algebraMap _ K n)‖ = 1` using `le_antisymm (hle n) (not_lt.mp hn)`. Rewrite `hN2` using `[h1, mul_one]`. Conclude with `hN2.le`.
+
+Rewrite using `[key1, key2]`.
+-/
 theorem goal1 :
   ∀ {K : Type} [inst : Field.{0} K] [inst_1 : NumberField.{0} K] (p : Nat.Primes)
   (κ : RingHom.{0, 0} K (PadicComplex (Subtype.val.{1} p))),

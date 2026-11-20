@@ -6,6 +6,85 @@ open Matrix
 
 namespace PositivityTheory.KB.MomentRationality.Cz.Red
 
+/- English proof (translation)
+Establish `hM1 : 1 ≤ M`. Take `⟨w⟩` from `‹Nonempty ι›`. Establish `h1` using `hbM w ⟨0, hN⟩ ⟨0, hN⟩`. Establish `h2` using `hbm w ⟨0, hN⟩`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Establish `h3 : 1 < M⁻¹` using `(one_lt_inv₀ hM).mpr h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogM : 0 ≤ Real.log M` using `Real.log_nonneg hM1`. Establish `hbpos : ∀ w i, 0 < ‖b w i i‖` using `fun w i => lt_of_lt_of_le (inv_pos.mpr hM) (hbm w i)`.
+
+Establish `hBle : ∀ w i, Real.log ‖b w i i‖ ≤ Real.log M` using `fun w i => Real.log_le_log (hbpos w i) (hbM w i i)`. Establish `hBge : ∀ w i, -Real.log M ≤ Real.log ‖b w i i‖`. Introduce `w i`. Rewrite using `[← Real.log_inv]`. Conclude with `Real.log_le_log (inv_pos.mpr hM) (hbm w i)`.
+
+Establish `hnorm : ∀ w, ‖a w‖ ^ N * ((∏ i, ‖b w i i‖) * ∏ i, r i) = 1`. Introduce `w`. Establish `h` using `congrArg norm (hdet w)`. Establish `hk1 : ‖(k w).det‖ = 1` using `CStarRing.norm_of_mem_unitary (Matrix.det_of_mem_unitary (hk w))`. Rewrite `h` using `[Matrix.det_smul, Matrix.det_mul, Matrix.det_mul, Matrix.det_of_upperTriangular (hb w), Matrix.det_diagonal]`.
+
+Simplify using `only [norm_mul, norm_pow, norm_prod, Fintype.card_fin, hk1, mul_one, norm_one, Complex.norm_real, Real.norm_eq_abs] at h`. Rewrite `h` using `[Finset.prod_congr rfl (fun i _ => abs_of_pos (hr i))]`. Simplify `h` using `[mul_assoc]`. Establish `hapos : ∀ w, 0 < ‖a w‖`. Introduce `w`.
+
+Break down `(norm_nonneg (a w)).lt_or_eq with h | h` into its components or cases. Conclude with `h`. Establish `h1` using `hnorm w`. Rewrite `h1` using `[← h, zero_pow (by omega), zero_mul]`. Conclude with `absurd h1 zero_ne_one`.
+
+Establish `hsumlog : ∀ w, (N : ℝ) * Real.log ‖a w‖ + ∑ i, Real.log ‖b w i i‖ + ∑ i, Real.log (r i) = 0`. Introduce `w`. Establish `h` using `congrArg Real.log (hnorm w)`. Rewrite `h` using `[Real.log_one, Real.log_mul (pow_ne_zero _ (hapos w).ne') (mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun i _ => (hbpos w i).ne') (Finset.prod_ne_zero_iff.mpr fun i _ => (hr i).ne')), Real.log_mul (Finset.prod_ne_zero_iff.mpr fun i _ => (hbpos w i).ne') (Finset.prod_ne_zero_iff.mpr …`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hn : (0 : ℝ) < Fintype.card ι` using `by exact_mod_cast Fintype.card_pos`. Establish `hNpos : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `hdiff : ∀ w w', Real.log ‖a w‖ - Real.log ‖a w'‖ ≤ 2 * Real.log M`. Introduce `w w'`. Establish `h1` using `hsumlog w`.
+
+Establish `h2` using `hsumlog w'`. Establish `hle : ∑ i, (Real.log ‖b w' i i‖ - Real.log ‖b w i i‖) ≤ ∑ i : Fin N, 2 * Real.log M` using `Finset.sum_le_sum (fun i _ => by linarith [hBle w' i, hBge w i])`. Rewrite `hle` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Finset.sum_sub_distrib]`. Establish `h3 : (N : ℝ) * (Real.log ‖a w‖ - Real.log ‖a w'‖) ≤ N * (2 * Real.log M)` using `by nlinarith`. Conclude with `le_of_mul_le_mul_left h3 hNpos`.
+
+Establish `avg_le : ∀ (f : ι → ℝ) (c : ℝ), (∀ w, f w ≤ c) → (∑ w, f w) / Fintype.card ι ≤ c`. Introduce `f c h`. Rewrite using `[div_le_iff₀ hn]`. Use `Finset.sum_le_sum (fun w (_ : w ∈ Finset.univ) => h w)` as an intermediate fact. Simplify `this` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_comm]`.
+
+Establish `le_avg : ∀ (f : ι → ℝ) (c : ℝ), (∀ w, c ≤ f w) → c ≤ (∑ w, f w) / Fintype.card ι`. Introduce `f c h`. Rewrite using `[le_div_iff₀ hn]`. Use `Finset.sum_le_sum (fun w (_ : w ∈ Finset.univ) => h w)` as an intermediate fact. Simplify `this` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_comm]`.
+
+Take `⟨s, hs⟩ : ∃ s : Fin N → ℝ, s = fun j => (∑ w, (Real.log ‖a w‖ + Real.log ‖b w j j‖)) / Fintype.card ι + Real.log (r j)` from `⟨_, rfl⟩`. Establish `hs_sum : ∑ j, s j = 0`. Establish `h1 : ∀ w, ∑ j, (Real.log ‖a w‖ + Real.log ‖b w j j‖) = -∑ j, Real.log (r j)`. Introduce `w`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+
+Combine the linear relations using `[hsumlog w]`. Rewrite using `[hs]`. Simplify using `only`. Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_div, Finset.sum_comm, Finset.sum_congr rfl (fun w _ => h1 w), Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hs_step : ∀ i j : Fin N, (j : ℕ) = i + 1 → s j ≤ s i + (4 * Real.log M - Real.log t)`. Introduce `i j hij`. Establish `hr' : Real.log (r j) ≤ Real.log (r i) - Real.log t`. Establish `h` using `Real.log_le_log (mul_pos ht (hr j)) (hrt i j hij)`.
+
+Rewrite `h` using `[Real.log_mul ht.ne' (hr j).ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : (∑ w, (Real.log ‖b w j j‖ - Real.log ‖b w i i‖)) / Fintype.card ι ≤ 2 * Real.log M` using `avg_le _ _ (fun w => by linarith [hBle w j, hBge w i])`. Establish `hsplit : ∑ w, (Real.log ‖b w j j‖ - Real.log ‖b w i i‖) = ∑ w, (Real.log ‖a w‖ + Real.log ‖b w j j‖) - ∑ w, (Real.log ‖a w‖ + Real.log ‖b w i i‖)`. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `w`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hB` using `[hsplit, sub_div]`. Rewrite using `[hs]`.
+
+Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `he_up : ∀ w j, Real.log ‖a w‖ + Real.log (r j) - s j ≤ 3 * Real.log M`. Introduce `w j`. Establish `h : Real.log ‖a w‖ + Real.log (r j) - s j = (∑ w', (Real.log ‖a w‖ - Real.log ‖a w'‖ - Real.log ‖b w' j j‖)) / Fintype.card ι`.
+
+Rewrite using `[hs]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`.
+
+Conclude with `avg_le _ _ (fun w' => by linarith [hdiff w w', hBge w' j])`. Establish `hd_low : ∀ w i, -(4 * Real.log M) ≤ Real.log ‖b w i i‖ + (Real.log ‖a w‖ + Real.log (r i) - s i)`. Introduce `w i`. Establish `h : Real.log ‖b w i i‖ + (Real.log ‖a w‖ + Real.log (r i) - s i) = (∑ w', (Real.log ‖a w‖ - Real.log ‖a w'‖ + Real.log ‖b w i i‖ - Real.log ‖b w' i i‖)) / Fintype.card ι`. Rewrite using `[hs]`.
+
+Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `le_avg _ _ (fun w' => by linarith [hdiff w' w, hBge w i, hBle w' i])`.
+
+Establish `hprod0 : ∀ i, ∑ w, (Real.log ‖b w i i‖ + (Real.log ‖a w‖ + Real.log (r i) - s i)) = 0`. Introduce `i`. Rewrite using `[hs]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hz : ∀ w j, 0 < ‖a w * b w j j‖` using `fun w j => by`. Rewrite using `[norm_mul]`. Conclude with `mul_pos (hapos w) (hbpos w j)`. Take `⟨φ, hφ⟩ : ∃ φ : ι → Fin N → ℂ, φ = fun w j => (a w * b w j j) / ((‖a w * b w j j‖ : ℝ) : ℂ)` from `⟨_, rfl⟩`.
+
+Establish `hφnorm : ∀ w j, ‖φ w j‖ = 1`. Introduce `w j`. Rewrite using `[hφ]`. Simplify using `only`. Rewrite using `[norm_div, Complex.norm_real, norm_norm, div_self (hz w j).ne']`.
+
+Establish `hφn : ∀ w j, star (φ w j) * φ w j = 1`. Introduce `w j`. Rewrite using `[mul_comm, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, hφnorm]`. Simplify using the standard rewrite rules. Establish `hφz : ∀ w j, a w * b w j j * star (φ w j) = ((‖a w * b w j j‖ : ℝ) : ℂ)`.
+
+Introduce `w j`. Establish `hne : ((‖a w * b w j j‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (hz w j).ne'`. Rewrite using `[hφ]`. Simplify using `only`. Simplify using `only [star_div₀, Complex.star_def, Complex.conj_ofReal]`.
+
+Rewrite using `[← mul_div_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd⟩ : ∃ d : ι → Fin N → ℂ, d = fun w j => a w * ((r j * Real.exp (-s j) : ℝ) : ℂ) * star (φ w j)` from `⟨_, rfl⟩`.
+
+Establish `hdnorm : ∀ w j, ‖d w j‖ = Real.exp (Real.log ‖a w‖ + Real.log (r j) - s j)`. Introduce `w j`. Rewrite using `[hd]`. Simplify using `only`. Rewrite using `[norm_mul, norm_mul, norm_star, hφnorm, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (mul_pos (hr j) (Real.exp_pos _)), Real.exp_sub, Real.exp_add, Real.exp_log (hapos w), Real.exp_log (hr j), Real.exp_neg]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hpn : ∀ w i j, ‖(b w * diagonal (d w)) i j‖ = ‖b w i j‖ * Real.exp (Real.log ‖a w‖ + Real.log (r j) - s j)`. Introduce `w i j`. Rewrite using `[Matrix.mul_diagonal, norm_mul, hdnorm]`. Establish `hpdiag : ∀ w i, ‖(b w * diagonal (d w)) i i‖ = Real.exp (Real.log ‖b w i i‖ + (Real.log ‖a w‖ + Real.log (r i) - s i))`.
+
+Introduce `w i`. Rewrite using `[hpn, Real.exp_add, Real.exp_log (hbpos w i)]`. Establish `hdetp : ∀ w, (b w * diagonal (d w)).det = 1`. Introduce `w`. Rewrite using `[Matrix.det_mul, Matrix.det_of_upperTriangular (hb w), Matrix.det_diagonal, ← Finset.prod_mul_distrib]`.
+
+Establish `h1 : ∀ j, b w j j * d w j = ((‖a w‖ * ‖b w j j‖ * (r j * Real.exp (-s j)) : ℝ) : ℂ)`. Introduce `j`. Rewrite using `[hd]`. Simplify using `only`. Establish `h2` using `hφz w j`.
+
+Rewrite `h2` using `[norm_mul]`. Move the coercions through the operations in `at h2 ⊢`. Take the linear combination `((r j : ℂ) * Complex.exp (-(s j : ℂ))) * h2`. Rewrite using `[Finset.prod_congr rfl (fun j _ => h1 j), ← Complex.ofReal_prod]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← Real.exp_sum, Finset.sum_neg_distrib, hs_sum, neg_zero, Real.exp_zero, mul_one]`.
+
+Rewrite using `[mul_assoc, hnorm w, Complex.ofReal_one]`. Establish `hdiagu : ∀ w, diagonal (φ w) ∈ unitaryGroup (Fin N) ℂ`. Introduce `w`. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[Pi.star_apply, mul_comm]`. Conclude with `hφn w j`. Establish `hmain : ∀ w, a w • (b w * diagonal (fun i => ((r i : ℝ) : ℂ)) * k w) = b w * diagonal (d w) * diagonal (fun i => ((Real.exp (s i) : ℝ) : ℂ)) * (diagonal (φ w) * k w)`. Introduce `w`.
+
+Establish `hfun : (fun j => d w j * ((Real.exp (s j) : ℝ) : ℂ) * φ w j) = fun j => a w * ((r j : ℝ) : ℂ)`. Use function extensionality and compare the values at `j`. Establish `he : ((Real.exp (-s j) : ℝ) : ℂ) * ((Real.exp (s j) : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hd]`. Simplify using `only`. Rewrite using `[Complex.ofReal_mul]`. Take the linear combination `(a w * (r j : ℂ) * ((Real.exp (-s j) : ℝ) : ℂ) * ((Real.exp (s j) : ℝ) : ℂ)) * hφn w j + a w * (r j : ℂ) * he`. Use `conv_rhs => rw [← Matrix.mul_assoc, Matrix.mul_assoc (b w), Matrix.mul_assoc (b w), Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal, hfun]`.
+
+Establish `hsm : (diagonal fun j => a w * ((r j : ℝ) : ℂ)) = a w • diagonal (fun j => ((r j : ℝ) : ℂ))`. Use extensionality with `i j`. Simplify using `[Matrix.diagonal_apply]`. Rewrite using `[hsm, Matrix.mul_smul, Matrix.smul_mul]`. Use `⟨fun w => b w * diagonal (d w), fun w => diagonal (φ w) * k w, s, hs_sum, hs_step, fun w => (hb w).mul (Matrix.blockTriangular_diagonal _), ?_, ?_, ?_, hdetp, fun w => Submonoid.mul_mem _ (hdiagu w) (hk w), ?_, hmain⟩` and prove the remaining obligations.
+
+Introduce `w i j`. Rewrite using `[hpn]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show 4 * Real.log M = Real.log M + 3 * Real.log M by ring, Real.exp_add, Real.exp_log hM]`. Introduce `w i`.
+
+Rewrite using `[hpdiag]`. Conclude with `Real.exp_le_exp.mpr (hd_low w i)`. Introduce `i`. Simplify using `only [hpdiag]`. Rewrite using `[← Real.exp_sum, hprod0, Real.exp_zero]`.
+
+Introduce `w`. Establish `h` using `congrArg Matrix.det (hmain w)`. Rewrite `h` using `[hdet w, Matrix.det_mul, Matrix.det_mul, hdetp, Matrix.det_diagonal, ← Complex.ofReal_prod, ← Real.exp_sum, hs_sum, Real.exp_zero, Complex.ofReal_one, one_mul, one_mul]`. Conclude with `h.symm`.
+-/
 theorem local_decomp {ι : Type*} [Fintype ι] [Nonempty ι] {N : ℕ} (hN : 1 ≤ N) {M t : ℝ} (hM : 0 < M)
     (ht : 0 < t) {r : Fin N → ℝ} (hr : ∀ i, 0 < r i) (hrt : ∀ i j : Fin N, (j : ℕ) = i + 1 → t * r j ≤ r i)
     (a : ι → ℂ) (b k : ι → Matrix (Fin N) (Fin N) ℂ) (hb : ∀ w, (b w).BlockTriangular id)

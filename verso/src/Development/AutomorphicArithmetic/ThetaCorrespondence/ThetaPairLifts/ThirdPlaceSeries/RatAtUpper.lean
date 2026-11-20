@@ -21,6 +21,11 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 end GlobalTheory.CovTop.MeasUp
 namespace GlobalTheory.CovTop.MeasRd
+/- English proof (translation)
+Introduce `hOM`. Use `Closed.imp (Closed.and (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 2) _root_.GlobalTheory.CovTop.WtShape.wtN_z) fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨A, -, hA⟩, ⟨C, -, hC⟩⟩` from `h`. Take `⟨x0, hx⟩` from `_root_.GlobalTheory.CovTop.EventuallyAtAllPoints.and hA hC`. Use `⟨244, by norm_num, x0, fun x hx' hle ι p hp i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h1, h2⟩` from `hx x hx' hle ι p hp`. Conclude with `GlobalTheory.CovTop.MeasUp.ratAt_pos_le p i hOM (Fm.params x hx' ι) (h1 i) h2`.
+-/
 theorem ratAt_upper_alt : (∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.OneMeasure D) → Closed FamHyp fun Fm _ =>
     ∃ K : ℝ, 0 ≤ K ∧ _root_.GlobalTheory.CovTop.EventuallyAtAllPoints Fm fun _ _ _ p => ∀ i, 0 < ratAt p i ∧ Real.log (ratAt p i) ≤ K * unitE p := by
   intro hOM

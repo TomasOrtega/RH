@@ -18,12 +18,21 @@ abbrev aH (A : Over S) {T X : Over S} (x : T ⟶ X) : A ⊗ T ⟶ A ⊗ X := lif
 
 abbrev zS (A : Over S) [GrpObj A] (T : Over S) : T ⟶ A ⊗ T := lift (1 : T ⟶ A) (𝟙 T)
 
+/- English proof (translation)
+Simplify using `[aH, comp_lift]`.
+-/
 theorem aH_comp {T T' : Over S} (v : T' ⟶ T) (x : T ⟶ X) : aH A v ≫ aH A x = aH A (v ≫ x) := by
   simp [aH, comp_lift]
 
+/- English proof (translation)
+Simplify using `[aH, zS, comp_lift]`.
+-/
 theorem zS_aH [GrpObj A] {T : Over S} (x : T ⟶ X) : zS A T ≫ aH A x = x ≫ zS A X := by
   simp [aH, zS, comp_lift]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left]`. Simplify using `[zS]`.
+-/
 theorem zS_left_snd [GrpObj A] (T : Over S) : (zS A T).left ≫ (snd A T).left = 𝟙 T.left := by
   rw [← Over.comp_left]; simp [zS]
 
@@ -34,6 +43,15 @@ def Normed [GrpObj A] (M : LB (A ⊗ X).left) (R : LB.Gen (LB.LinComb M (K := PU
 
 variable [GrpObj A] {M : LB (A ⊗ X).left} {R : LB.Gen (LB.LinComb M (K := PUnit) (fun _ => (zS A X).left) (fun _ => 1))}
 
+/- English proof (translation)
+Establish `hc` using `(cls_eq_iff (pull_isLB hM _) (pull_isLB hM _)).2 h`. Rewrite `hc` using `[cls_pull hM, cls_pull hM]`. Take `⟨t, ht⟩` from `(cls_eq_zero_iff (LB.isLB_linComb hM ![(aH A x).left, (aH A x').left] ![-1, 1])).1 (by`. Rewrite using `[cls_linComb hM, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, neg_smul, one_smul]`.
+
+Rewrite using `[← hc]`. Use the proof step `simp)`. Establish `e₁ : ∀ y : T ⟶ X, (zS A T).left ≫ (aH A y).left = y.left ≫ (zS A X).left` using `fun y => by`. Rewrite using `[← Over.comp_left, ← Over.comp_left, zS_aH]`. Take `⟨t', ht', hv⟩` from `GlobalTheory.T.linear_combination_generator_section_exists hM ![(aH A x).left, (aH A x').left] ![-1, 1] (Sum.elim (fun _ : PUnit => x.left ≫ (zS A X).left) (fun _ : PUnit => x'.left ≫ (zS A X).left)) (Sum.elim (fun _ => -1) (fun _ => 1)) (snd A T).left (zS A T).left (zS_left_snd …`.
+
+Rewrite using `[Fin.prod_univ_two, Fintype.prod_sum_type]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, e₁, Sum.elim_inl, Sum.elim_inr, Finset.univ_unique, Finset.prod_singleton, zpow_neg, zpow_one]) t ht`. Use the proof step `(LB.mulGen M _ _ _ _ (LB.invGen M _ _ (LB.pullGen M _ _ R x.left)) (LB.pullGen M _ _ R x'.left))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hR _)) (DVR.pullGen_isGen _ _ _ _ hR _))`. Use `⟨t', ht', fun Z s z J hJ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hv Z s z J hJ, val_mul hJ, val_inv, val_pull hJ, val_pull hJ]`.
+-/
 theorem exists_normed (hM : M.IsLB) (hR : R.IsGen) {T : Over S} (x x' : T ⟶ X)
     (h : LBIso (ev M (fst A T) (snd A T ≫ x)) (ev M (fst A T) (snd A T ≫ x'))) : ∃ l, Normed M R x x' l := by
   have hc := (cls_eq_iff (pull_isLB hM _) (pull_isLB hM _)).2 h
@@ -56,6 +74,13 @@ theorem exists_normed (hM : M.IsLB) (hR : R.IsGen) {T : Over S} (x x' : T ⟶ X)
   refine ⟨t', ht', fun Z s z J hJ => ?_⟩
   rw [hv Z s z J hJ, val_mul hJ, val_inv, val_pull hJ, val_pull hJ]
 
+/- English proof (translation)
+Rewrite using `[← val_mul hJ]`. Use `gen_unique' hM (fun U _ k => ?_) (snd A T).left (zS A T).left (zS_left_snd T) (surj_snd hG hA T) (DVR.mulGen_isGen _ _ _ _ _ _ _ h₁.1 h₂.1) h₃.1 (fun y I hI => ?_) Z r z J hJ` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two, Fintype.prod_sum_type]`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Sum.elim_inl, Sum.elim_inr, zpow_neg, zpow_one]`. Use `group`.
+
+Establish `a₁` using `h₁.2 _ (𝟙 _) y I hI`. Establish `a₂` using `h₂.2 _ (𝟙 _) y I hI`. Establish `a₃` using `h₃.2 _ (𝟙 _) y I hI`. Simplify using `only [Category.id_comp] at a₁ a₂ a₃`. Rewrite using `[val_mul hI, a₁, a₂, a₃]`.
+
+Use `group`.
+-/
 theorem normed_mul (hG : ReciprocityTheory.ChartRestriction.G.Out.GlobalFnsSt) (hA : IsAbelianScheme A) (hM : M.IsLB) {T : Over S} {x x' x'' : T ⟶ X}
     {l₁ l₂ l₃} (h₁ : Normed M R x x' l₁) (h₂ : Normed M R x' x'' l₂) (h₃ : Normed M R x x'' l₃)
     (Z : Scheme.{0}) (r : Z ⟶ (A ⊗ T).left) (z : Z) (J) (hJ : Good M z J) :
@@ -73,6 +98,13 @@ theorem normed_mul (hG : ReciprocityTheory.ChartRestriction.G.Out.GlobalFnsSt) (
     rw [val_mul hI, a₁, a₂, a₃]
     group
 
+/- English proof (translation)
+Substitute `e e'` using the available equality. Rewrite using `[← val_pull hJ]`. Use `gen_unique' hM (fun U _ k => ?_) (snd A T').left (zS A T').left (zS_left_snd T') (surj_snd hG hA T') h'.1 (DVR.pullGen_isGen _ _ _ _ h.1 _) (fun w I hI => ?_) Z r z J hJ` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[← Over.comp_left, ← Over.comp_left, aH_comp, aH_comp]`.
+
+Establish `a₁` using `h'.2 _ (𝟙 _) w I hI`. Establish `a₂` using `h.2 _ v.left w I hI`. Simplify using `only [Category.id_comp] at a₁`. Establish `e₀ : (zS A T').left ≫ (aH A v).left = v.left ≫ (zS A T).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, zS_aH]`.
+
+Rewrite using `[val_pull hI, e₀, a₁, a₂]`. Both sides reduce to the same expression.
+-/
 theorem normed_pull (hG : ReciprocityTheory.ChartRestriction.G.Out.GlobalFnsSt) (hA : IsAbelianScheme A) (hM : M.IsLB) {T T' : Over S} {x x' : T ⟶ X} {y y' : T' ⟶ X}
     (v : T' ⟶ T) (e : v ≫ x = y) (e' : v ≫ x' = y') {l l'} (h : Normed M R x x' l) (h' : Normed M R y y' l')
     (Z : Scheme.{0}) (r : Z ⟶ (A ⊗ T').left) (z : Z) (J) (hJ : Good M z J) :
@@ -95,17 +127,26 @@ section Descent
 variable {Y : Over S} (q : X ⟶ Y)
 
 omit [GrpObj A] in
+/- English proof (translation)
+Use `congrArg (· ≫ fst A Y) h` as an intermediate fact. Simplify `this` using `[aH]`.
+-/
 theorem fst_eq {W : Over S} {a b : W ⟶ A ⊗ X} (h : a ≫ aH A q = b ≫ aH A q) : a ≫ fst A X = b ≫ fst A X := by
   have := congrArg (· ≫ fst A Y) h
   simpa [aH] using this
 
 omit [GrpObj A] in
+/- English proof (translation)
+Use `congrArg (· ≫ snd A Y) h` as an intermediate fact. Simplify `this` using `[aH]`.
+-/
 theorem snd_eq {W : Over S} {a b : W ⟶ A ⊗ X} (h : a ≫ aH A q = b ≫ aH A q) :
     (a ≫ snd A X) ≫ q = (b ≫ snd A X) ≫ q := by
   have := congrArg (· ≫ snd A Y) h
   simpa [aH] using this
 
 omit [GrpObj A] in
+/- English proof (translation)
+Rewrite using `[← Over.w (aH A q), ← Category.assoc, ← Category.assoc, h]`.
+-/
 theorem hom_eq {W : Scheme.{0}} {a b : W ⟶ (A ⊗ X).left} (h : a ≫ (aH A q).left = b ≫ (aH A q).left) :
     b ≫ (A ⊗ X).hom = a ≫ (A ⊗ X).hom := by
   rw [← Over.w (aH A q), ← Category.assoc, ← Category.assoc, h]
@@ -119,15 +160,24 @@ abbrev P₂ (A : Over S) {X Y : Over S} (q : X ⟶ Y) : T₂ A q ⟶ A ⊗ X :=
   Over.homMk (pullback.snd _ _) (hom_eq q pullback.condition)
 
 omit [GrpObj A] in
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext pullback.condition`.
+-/
 theorem charpoly_eq_of_isIso : P₁ A q ≫ aH A q = P₂ A q ≫ aH A q := Over.OverMorphism.ext pullback.condition
 
 abbrev sg (A : Over S) {X Y : Over S} (q : X ⟶ Y) : T₂ A q ⟶ A ⊗ T₂ A q := lift (P₁ A q ≫ fst A X) (𝟙 _)
 
 omit [GrpObj A] in
+/- English proof (translation)
+Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [aH, sg]`.
+-/
 theorem sg_one : sg A q ≫ aH A (P₁ A q ≫ snd A X) = P₁ A q := by
   apply CartesianMonoidalCategory.hom_ext <;> simp [aH, sg]
 
 omit [GrpObj A] in
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify `fst_eq q (charpoly_eq_of_isIso q)` using `[aH, sg]`. Simplify using `[aH, sg]`.
+-/
 theorem sg_two : sg A q ≫ aH A (P₂ A q ≫ snd A X) = P₂ A q := by
   apply CartesianMonoidalCategory.hom_ext
   · simpa [aH, sg] using fst_eq q (charpoly_eq_of_isIso q)
@@ -139,14 +189,23 @@ abbrev pr {W : Over S} (a b : W ⟶ A ⊗ X) (h : a.left ≫ (aH A q).left = b.l
     rw [pullback.lift_fst_assoc]; exact Over.w a)
 
 omit [GrpObj A] in
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (pullback.lift_fst _ _ _)`.
+-/
 theorem pr_one {W : Over S} (a b : W ⟶ A ⊗ X) (h) : pr q a b h ≫ P₁ A q = a :=
   Over.OverMorphism.ext (pullback.lift_fst _ _ _)
 
 omit [GrpObj A] in
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (pullback.lift_snd _ _ _)`.
+-/
 theorem pr_two {W : Over S} (a b : W ⟶ A ⊗ X) (h) : pr q a b h ≫ P₂ A q = b :=
   Over.OverMorphism.ext (pullback.lift_snd _ _ _)
 
 omit [GrpObj A] in
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Use `pr_one q a b h` as an intermediate fact. Simplify using `only [aH, sg, comp_lift, lift_fst, Category.assoc, lift_snd_assoc, Category.id_comp, Category.comp_id]`. Rewrite using `[← Category.assoc, this]`. Simplify using `[aH, sg]`.
+-/
 theorem pr_sg {W : Over S} (a b : W ⟶ A ⊗ X) (h) :
     lift (a ≫ fst A X) (𝟙 W) ≫ aH A (pr q a b h) = pr q a b h ≫ sg A q := by
   apply CartesianMonoidalCategory.hom_ext
@@ -155,6 +214,11 @@ theorem pr_sg {W : Over S} (a b : W ⟶ A ⊗ X) (h) :
     rw [← Category.assoc, this]
   · simp [aH, sg]
 
+/- English proof (translation)
+Take `⟨c, hc, hv⟩` from `exists_gen hM (φ' := ![pullback.fst (aH A q).left (aH A q).left, pullback.snd (aH A q).left (aH A q).left]) (ε' := ![-1, 1]) (fun U _ k => by`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[← Over.comp_left, ← Over.comp_left, sg_one, sg_two]`. Use the proof step `rfl)`. Use the proof step `(LB.pullGen M _ _ l (sg A q).left) (DVR.pullGen_isGen _ _ _ _ hl _)`.
+
+Conclude with `⟨c, hc, fun Z r z J hJ => (hv Z r z J hJ).trans (val_pull hJ _ _ _)⟩`.
+-/
 theorem exists_c (hM : M.IsLB) {l : LB.Gen (LB.LinComb M (K := Fin 2)
       ![(aH A (P₁ A q ≫ snd A X)).left, (aH A (P₂ A q ≫ snd A X)).left] ![-1, 1])} (hl : l.IsGen) :
     ∃ c : LB.Gen (LB.LinComb M (K := Fin 2) ![pullback.fst (aH A q).left (aH A q).left,
@@ -168,6 +232,9 @@ theorem exists_c (hM : M.IsLB) {l : LB.Gen (LB.LinComb M (K := Fin 2)
     (LB.pullGen M _ _ l (sg A q).left) (DVR.pullGen_isGen _ _ _ _ hl _)
   exact ⟨c, hc, fun Z r z J hJ => (hv Z r z J hJ).trans (val_pull hJ _ _ _)⟩
 
+/- English proof (translation)
+Rewrite using `[normed_pull hG hA hM (pr q a b h) (by rw [← Category.assoc, pr_one]) (by rw [← Category.assoc, pr_two]) hl h₀ _ _ w J hJ, ← Over.comp_left, ← Over.comp_left, pr_sg]`.
+-/
 theorem val_pr (hG : ReciprocityTheory.ChartRestriction.G.Out.GlobalFnsSt) (hA : IsAbelianScheme A) (hM : M.IsLB)
     {l : LB.Gen (LB.LinComb M (K := Fin 2)
       ![(aH A (P₁ A q ≫ snd A X)).left, (aH A (P₂ A q ≫ snd A X)).left] ![-1, 1])}
@@ -179,6 +246,15 @@ theorem val_pr (hG : ReciprocityTheory.ChartRestriction.G.Out.GlobalFnsSt) (hA :
 
 end Descent
 
+/- English proof (translation)
+Introduce `S A X Y _ hA q M hM hT hyp`. Take `⟨R, hR⟩` from `hT`. Establish `hG` using `GlobalTheory.globalFns_holds`. Take `⟨l, hl⟩` from `exists_normed (A := A) hM hR (P₁ A q ≫ snd A X) (P₂ A q ≫ snd A X) (hyp _ _ _ (snd_eq q (charpoly_eq_of_isIso q)))`. Take `⟨c, hc, hv⟩` from `exists_c q hM hl.1`.
+
+Use `⟨c, hc, fun W a b d hab hbd w J hJ => ?_⟩` and prove the remaining obligations. Set `W₀ : Over S` to `Over.mk (a ≫ (A ⊗ X).hom)`. Set `a' : W₀ ⟶ A ⊗ X` to `Over.homMk a rfl`. Set `b' : W₀ ⟶ A ⊗ X` to `Over.homMk b (hom_eq q hab)`. Set `d' : W₀ ⟶ A ⊗ X` to `Over.homMk d ((hom_eq q hbd).trans (hom_eq q hab))`.
+
+Establish `eab : a' ≫ aH A q = b' ≫ aH A q` using `Over.OverMorphism.ext hab`. Establish `ebd : b' ≫ aH A q = d' ≫ aH A q` using `Over.OverMorphism.ext hbd`. Take `⟨l₁, h₁⟩` from `exists_normed (A := A) hM hR (a' ≫ snd A X) (b' ≫ snd A X) (hyp _ _ _ (snd_eq q eab))`. Take `⟨l₂, h₂⟩` from `exists_normed (A := A) hM hR (b' ≫ snd A X) (d' ≫ snd A X) (hyp _ _ _ (snd_eq q ebd))`. Take `⟨l₃, h₃⟩` from `exists_normed (A := A) hM hR (a' ≫ snd A X) (d' ≫ snd A X) (hyp _ _ _ (snd_eq q (eab.trans ebd)))`.
+
+Establish `v₁` using `(hv W _ w J hJ).trans (val_pr q hG hA hM hl a' b' hab h₁ w J hJ)`. Establish `v₂` using `(hv W _ w J hJ).trans (val_pr q hG hA hM hl b' d' hbd h₂ w J hJ)`. Establish `v₃` using `(hv W _ w J hJ).trans (val_pr q hG hA hM hl a' d' (hab.trans hbd) h₃ w J hJ)`. Rewrite `v₂` using `[← fst_eq q eab]`. Conclude with `(congrArg₂ (· * ·) v₁ v₂).trans ((normed_mul hG hA hM h₁ h₂ h₃ _ _ w J hJ).trans v₃.symm)`.
+-/
 theorem descent_datum : ∀ (S : Scheme.{0}) (A X Y : Over S) [GrpObj A], IsAbelianScheme A → ∀ (q : X ⟶ Y) (M : LB (A ⊗ X).left), M.IsLB →
     Triv (ev M (1 : X ⟶ A) (𝟙 X)) →
     (∀ (T : Over S) (x x' : T ⟶ X), x ≫ q = x' ≫ q →

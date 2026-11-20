@@ -20,11 +20,23 @@ def epsHom (φ : R →+* R') (x : Spec (CommRingCat.of R) ⟶ S) (x' : Spec (Com
     congr 3
     ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl])
 
+/- English proof (translation)
+Apply the tactic sequence `refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;>`. Simplify using `[dualMap, epsMul, mul_comm]`.
+-/
 theorem dualMap_epsMul (φ : R →+* R') (c : R) :
     (dualMap φ).comp (epsMul c) = (epsMul (φ c)).comp (dualMap φ) := by
   refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;>
     simp [dualMap, epsMul, mul_comm]
 
+/- English proof (translation)
+Introduce `p`. Establish `hn : ∀ m : R, (TrivSqZeroExt.inr m : TrivSqZeroExt R R) ∈ p.asIdeal` using `fun m => p.isPrime.mem_of_pow_mem 2 (by rw [pow_two, TrivSqZeroExt.inr_mul_inr]; exact p.asIdeal.zero_mem)`. Establish `: p.asIdeal.IsPrime` using `p.isPrime`. Use `⟨⟨Ideal.comap (TrivSqZeroExt.inlHom R R) p.asIdeal, Ideal.IsPrime.comap _⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PrimeSpectrum.comap (TrivSqZeroExt.fstHom R R R).toRingHom _ = p`.
+
+Use extensionality with `y`. Rewrite using `[PrimeSpectrum.comap_asIdeal, Ideal.mem_comap, Ideal.mem_comap]`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.inl y.fst ∈ p.asIdeal ↔ y ∈ p.asIdeal`. Establish `hy : TrivSqZeroExt.inl y.fst = y - TrivSqZeroExt.inr y.snd` using `eq_sub_of_add_eq (TrivSqZeroExt.inl_fst_add_inr_snd_eq y)`. Rewrite using `[hy]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `p.asIdeal.add_mem h (hn y.snd)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `h`.
+
+Conclude with `p.asIdeal.sub_mem h (hn y.snd)`.
+-/
 theorem surjective_fst :
     Function.Surjective (Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom)) := by
   intro p
@@ -46,6 +58,11 @@ theorem surjective_fst :
   · intro h
     exact p.asIdeal.sub_mem h (hn y.snd)
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `hinj : Function.Injective ((TrivSqZeroExt.fstHom R R R).toRingHom.prod (dualMap φ))`. Introduce `a b hab`. Establish `h2 : dualMap φ a = dualMap φ b` using `congrArg Prod.snd hab`. Establish `h3` using `congrArg TrivSqZeroExt.fst h2`.
+
+Establish `h4` using `congrArg TrivSqZeroExt.snd h2`. Simplify using `[dualMap, hφ.eq_iff] at h3 h4`. Conclude with `TrivSqZeroExt.ext h3 h4`. Unfold `IsTanAt at hv hv'`. Conclude with `GlobalTheory.CompanionTheory.Ar.LieEx.joint_epi _ _ hinj surjective_fst v.left v'.left (hv.trans hv'.symm) h`.
+-/
 theorem tan_ext {G : Over S} [GrpObj G] (φ : R →+* R') (hφ : Function.Injective φ)
     (x : Spec (CommRingCat.of R) ⟶ S) (v v' : epsAt x ⟶ G) (hv : IsTanAt G x v) (hv' : IsTanAt G x v')
     (h : Spec.map (CommRingCat.ofHom (dualMap φ)) ≫ v.left = Spec.map (CommRingCat.ofHom (dualMap φ)) ≫ v'.left) :
@@ -63,6 +80,11 @@ theorem tan_ext {G : Over S} [GrpObj G] (φ : R →+* R') (hφ : Function.Inject
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+Take `⟨W, hW, hyW, -⟩` from `exists_isAffineOpen_mem_and_subset (x := p.1) (U := ⊤) trivial`. Establish `hxW : genPt ξ ∈ W` using `p.2.mem_open W.isOpen hyW`. Establish `key : Spec.map (X.presheaf.stalkSpecializes p.2) ≫ X.fromSpecStalk p.1 = X.fromSpecStalk (genPt ξ)`. Rewrite using `[← hW.fromSpecStalk_eq_fromSpecStalk hyW, ← hW.fromSpecStalk_eq_fromSpecStalk hxW]`. Simplify using `only [IsAffineOpen.fromSpecStalk]`.
+
+Rewrite using `[← Category.assoc, ← Spec.map_comp, TopCat.Presheaf.germ_stalkSpecializes]`. Establish `e1 : Spec.map (CommRingCat.ofHom (genMap ξ p)) = Spec.map (Scheme.stalkClosedPointTo ξ) ≫ Spec.map (X.presheaf.stalkSpecializes p.2)` using `Spec.map_comp _ _`. Rewrite using `[e1, Category.assoc]`. Conclude with `(congrArg (fun f => Spec.map (Scheme.stalkClosedPointTo ξ) ≫ f) key).trans (Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ)`.
+-/
 theorem genMap_fromSpecStalk (p : Cpt ξ) :
     Spec.map (CommRingCat.ofHom (genMap ξ p)) ≫ X.fromSpecStalk p.1 = ξ := by
   obtain ⟨W, hW, hyW, -⟩ := exists_isAffineOpen_mem_and_subset (x := p.1) (U := ⊤) trivial
@@ -79,6 +101,21 @@ theorem genMap_fromSpecStalk (p : Cpt ξ) :
   exact (congrArg (fun f => Spec.map (Scheme.stalkClosedPointTo ξ) ≫ f) key).trans
     (Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ)
 
+/- English proof (translation)
+It suffices to establish `H : ∃ v : epsAt x ⟶ G, IsTanAt G x v ∧ M.pt e = epsHom φ x x' h ≫ v by`. Take `⟨v, hv, hev⟩` from `H`. Conclude with `⟨v, hv, by rw [hev]; rfl⟩`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem a ha`.
+
+Take `⟨v, hv, hav⟩` from `ha`. Conclude with `⟨v, hv, Over.OverMorphism.ext hav⟩`. Consider the case `zero`. Use `⟨1, (GlobalTheory.CompanionTheory.Ar.LieEx.isTanAt_iff x G 1).mpr (MonObj.comp_one _), ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_one]`.
+
+Establish `h0 : M.pt 0 * 1 = M.pt 0 * M.pt 0` using `by rw [_root_.mul_one, ← M.add, add_zero]`. Conclude with `(mul_left_cancel h0).symm`. Consider the case `add a b _ _ ha hb`. Take `⟨v, hv, hva⟩` from `ha`. Take `⟨w, hw, hwb⟩` from `hb`.
+
+Use `⟨v * w, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hv`, `hw`, the goal using `[GlobalTheory.CompanionTheory.Ar.LieEx.isTanAt_iff]`. Rewrite using `[MonObj.comp_mul, hv, hw, _root_.mul_one]`. Rewrite using `[M.add, hva, hwb, MonObj.comp_mul]`. Consider the case `smul a b _ hb`.
+
+Take `⟨v, hv, hvb⟩` from `hb`. Take `⟨r, hr⟩` from `a`. Take `⟨c, rfl⟩` from `RingHom.mem_range.mp hr`. Use `⟨GlobalTheory.CompanionTheory.Ar.LieEx.hom x (c • LinearMap.id) ≫ v, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[GlobalTheory.CompanionTheory.Ar.LieEx.isTanAt_iff]`.
+
+Rewrite using `[← Category.assoc, GlobalTheory.CompanionTheory.Ar.LieEx.zsec_hom]`. Conclude with `hv`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(M.pt ((φ c) • b)).left = _`. Rewrite using `[M.smul, hvb]`.
+
+Establish `e2 : Spec.map (CommRingCat.ofHom (epsMul (φ c))) ≫ Spec.map (CommRingCat.ofHom (dualMap φ)) = Spec.map (CommRingCat.ofHom (dualMap φ)) ≫ Spec.map (CommRingCat.ofHom (epsMul c))`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, dualMap_epsMul]`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (epsMul (φ c))) ≫ Spec.map (CommRingCat.ofHom (dualMap φ)) ≫ v.left = Spec.map (CommRingCat.ofHom (dualMap φ)) ≫ Spec.map (CommRingCat.ofHom (epsMul c)) ≫ v.left`. Rewrite using `[← Category.assoc, e2, Category.assoc]`.
+-/
 theorem span_ext {G : Over S} [GrpObj G] (φ : R →+* R') (x : Spec (CommRingCat.of R) ⟶ S)
     (x' : Spec (CommRingCat.of R') ⟶ S) (h : Spec.map (CommRingCat.ofHom φ) ≫ x = x')
     {E : Type} [AddCommGroup E] [Module R' E] (M : LieModel G x' E) (e : E)
@@ -129,6 +166,9 @@ namespace GlobalTheory.CompanionTheory.Ar
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 
+/- English proof (translation)
+Use `⟨fun e => ⟨fun he => ?_, fun hv => Submodule.subset_span hv⟩, ?_⟩` and prove the remaining obligations. Conclude with `LieCarrier.span_ext (genMap ξ p) (X.fromSpecStalk p.1) ξ (LieCarrier.genMap_fromSpecStalk p) M e he`. Introduce `hgen _ e v v' hv hv'`. Conclude with `LieCarrier.tan_ext (genMap ξ p) (hgen.inj p) _ v v' hv.1 hv'.1 (hv.2.symm.trans hv'.2)`.
+-/
 theorem lieLat_carrier (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (Ω : Type) [Field Ω]
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (p : Cpt ξ) :
     (∀ e, e ∈ M.lat p ↔ ∃ v, M.Extends p e v) ∧

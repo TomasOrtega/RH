@@ -18,16 +18,30 @@ section Rec
 
 variable {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P)
 
+/- English proof (translation)
+Use `R.two_le_m` as an intermediate fact. Use `R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem six_le_r (R : Ranks) : 6 ≤ R.r := by
   have := R.two_le_m; have := R.m_add_three_le_k; unfold Ranks.r; omega
 
+/- English proof (translation)
+Rewrite using `[T.Dp_eq]`. Establish `h2 : 0 < D.R.f` using `by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Conclude with `Nat.mul_pos h2 (Nat.choose_pos (by have := six_le_r D.R; omega))`.
+-/
 theorem one_le_Dp : 1 ≤ T.Dp := by
   rw [T.Dp_eq]
   have h2 : 0 < D.R.f := by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega
   exact Nat.mul_pos h2 (Nat.choose_pos (by have := six_le_r D.R; omega))
 
+/- English proof (translation)
+The claim follows from `le_trans (by exact_mod_cast T.nW_40) T.nW_le`.
+-/
 theorem forty_le_PP : 40 ≤ T.PP := le_trans (by exact_mod_cast T.nW_40) T.nW_le
 
+/- English proof (translation)
+Establish `h1 : (1 : ℝ) ≤ T.Dp` using `by exact_mod_cast one_le_Dp T`. Establish `h2` using `forty_le_PP T`. Establish `hm : (0 : ℝ) < D.R.m` using `by exact_mod_cast (by have := D.R.two_le_m; omega : 0 < D.R.m)`. Establish `hmk : (D.R.m : ℝ) ≤ D.R.k` using `by exact_mod_cast (by have := D.R.m_add_three_le_k; omega : D.R.m ≤ D.R.k)`. Establish `h3 : T.PP ^ 2 * (T.Dp : ℝ) ^ 2 ≤ T.PP ^ 2 * (T.Dp : ℝ) ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ)`.
+
+Rewrite using `[le_div_iff₀ hm]; exact mul_le_mul_of_nonneg_left hmk (by positivity)`. Establish `h4 : (8 : ℝ) * (T.Dp : ℝ) ^ 2 ≤ T.PP ^ 2 * (T.Dp : ℝ) ^ 2` using `mul_le_mul_of_nonneg_right (by nlinarith) (by positivity)`. Establish `h5 : ((4 * T.Dp + 4 : ℕ) : ℝ) ≤ T.PP ^ 2 * (T.Dp : ℝ) ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ)` using `by push_cast; nlinarith`. Conclude with `h5.trans (Nat.le_ceil _)` after adjusting the coercions.
+-/
 theorem len_ge : 4 * T.Dp + 4 ≤ ⌈T.PP ^ 2 * (T.Dp : ℝ) ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ)⌉₊ := by
   have h1 : (1 : ℝ) ≤ T.Dp := by exact_mod_cast one_le_Dp T
   have h2 := forty_le_PP T
@@ -40,6 +54,17 @@ theorem len_ge : 4 * T.Dp + 4 ≤ ⌈T.PP ^ 2 * (T.Dp : ℝ) ^ 2 * (D.R.k : ℝ)
     push_cast; nlinarith
   exact_mod_cast h5.trans (Nat.le_ceil _)
 
+/- English proof (translation)
+Establish `h1` using `cZeroN_le D j`. Establish `h2` using `T.TO_11D2`. Establish `h6` using `six_le_r D.R`. Establish `h3 : D.R.r ^ 4 ≤ 6 * (D.R.r.choose 2) ^ 2`. Take `⟨s, hs⟩ : ∃ s, D.R.r = s + 1` from `⟨D.R.r - 1, by omega⟩`.
+
+Establish `e : 2 * (D.R.r.choose 2) = D.R.r * s`. Rewrite using `[hs, Nat.choose_two_right, Nat.add_sub_cancel, Nat.mul_div_cancel' (by`. Rewrite using `[mul_comm]`. Conclude with `(Nat.even_mul_succ_self s).two_dvd)]`. Establish `e2 : 4 * (D.R.r.choose 2) ^ 2 = D.R.r ^ 2 * s ^ 2`.
+
+Rewrite using `[← mul_pow, ← e]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : 4 * D.R.r ^ 2 ≤ 6 * s ^ 2`. Establish `: 5 ≤ s` using `by omega`. Rewrite using `[hs]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `e4 : D.R.r ^ 2 * (4 * D.R.r ^ 2) ≤ D.R.r ^ 2 * (6 * s ^ 2)` using `Nat.mul_le_mul_left _ e3`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : D.R.f ^ 2 * D.R.r ^ 4 ≤ D.R.f ^ 2 * (6 * (D.R.r.choose 2) ^ 2)` using `Nat.mul_le_mul_left _ h3`. Rewrite `h2` using `[T.Dp_eq, mul_pow]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem cZeroN_le_TO (j : ℕ) : cZeroN D j ≤ 12 * T.TO := by
   have h1 := cZeroN_le D j
   have h2 := T.TO_11D2
@@ -60,6 +85,13 @@ theorem cZeroN_le_TO (j : ℕ) : cZeroN D j ≤ 12 * T.TO := by
   rw [T.Dp_eq, mul_pow] at h2
   nlinarith
 
+/- English proof (translation)
+Establish `a1 : (cZeroN D j : ℝ) ≤ 12 * T.TO` using `by exact_mod_cast cZeroN_le_TO T j`. Establish `a2 : 6 * (D.R.r : ℝ) ≤ T.TO`. Establish `h` using `T.order_ge_rank_bound`. Establish `: 6 * D.R.r ≤ T.TO` using `by nlinarith [Nat.zero_le (D.R.r * T.Dp)]`. Conclude with `this` after adjusting the coercions.
+
+Establish `a3 : 40 * ((T.Dp : ℝ) + 2) ≤ T.TO` using `by exact_mod_cast T.TO_40`. Establish `a4 : (n : ℝ) ≤ T.TO` using `by exact_mod_cast hn`. Establish `a5` using `T.heightBound_ge_order_sq`. Establish `b0 : (0 : ℝ) ≤ T.Dp` using `Nat.cast_nonneg _`. Establish `b1 : (0 : ℝ) ≤ D.R.r` using `Nat.cast_nonneg _`.
+
+Establish `b2 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg _`. Establish `b3 : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Use `⟨by nlinarith, ?_, by nlinarith⟩` and prove the remaining obligations. Establish `: 6 * (D.R.r : ℝ) * n ≤ T.TO * T.TO` using `mul_le_mul a2 a4 b2 (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem spacing_ge (j n : ℕ) (hn : n ≤ T.TO) :
     4 * ((cZeroN D j : ℝ) + 2 * D.R.r + n + T.Dp + 1) ≤ LevelStarExponents.h0 L ∧ 24 * (D.R.r : ℝ) * n ≤ LevelStarExponents.h0 L ∧
       4 * (n : ℝ) ^ 2 ≤ LevelStarExponents.h0 L := by
@@ -79,6 +111,21 @@ theorem spacing_ge (j n : ℕ) (hn : n ≤ T.TO) :
   have : 6 * (D.R.r : ℝ) * n ≤ T.TO * T.TO := mul_le_mul a2 a4 b2 (by linarith)
   nlinarith
 
+/- English proof (translation)
+Establish `a4 : (n : ℝ) ≤ T.TO` using `by exact_mod_cast hn`. Establish `hP` using `forty_le_PP T`. Establish `hP0 : 0 ≤ T.PP` using `by linarith`. Establish `hrN : (D.R.r : ℝ) ≤ (D.R.N D.R.m : ℝ)`. Establish `: D.R.r ≤ D.R.N D.R.m`.
+
+Unfold `Ranks.r Ranks.N`. Establish `h1 : D.R.m ≤ D.R.m * (D.R.t + 1)` using `Nat.le_mul_of_pos_right _ (Nat.succ_pos _)`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `le_trans ?_ T.heightBound_ge_order_product` and prove the remaining obligations. Establish `e1 : T.PP * n * (D.R.r : ℝ) * (D.R.f : ℝ) ^ 2 * (D.R.m : ℝ) ^ 2 * D.R.k * (T.Dp : ℝ) ≤ T.PP * (T.TO : ℝ) * (D.R.N D.R.m : ℝ) * (D.R.f : ℝ) ^ 2 * (D.R.m : ℝ) ^ 2 * D.R.k * (T.Dp : ℝ)` using `by gcongr`. Establish `e2 : T.PP * (T.TO : ℝ) * (D.R.N D.R.m : ℝ) * (D.R.f : ℝ) ^ 2 * (D.R.m : ℝ) ^ 2 * D.R.k * (T.Dp : ℝ) ≤ T.ChT * (T.PP * (T.TO : ℝ) * (D.R.N D.R.m : ℝ) * (D.R.f : ℝ) ^ 2 * (D.R.m : ℝ) ^ 2 * D.R.k * (T.Dp : ℝ))` using `le_mul_of_one_le_left (by positivity) T.ChT_ge`. Combine the equalities or inequalities in the displayed calculation. Use `le_trans ?_ T.b_ge` and prove the remaining obligations.
+
+Establish `e2 : T.PP ^ 2 * (D.R.r : ℝ) * D.R.m * D.R.k * (T.Dp : ℝ) ^ 3 ≤ T.CbN * (T.PP ^ 2 * (D.R.r : ℝ) * D.R.m * D.R.k * (T.Dp : ℝ) ^ 3)` using `le_mul_of_one_le_left (by positivity) T.CbN_ge`. Combine the equalities or inequalities in the displayed calculation. Establish `hb0 : 0 < L.sc.b` using `by unfold Scale.b; exact Real.exp_pos _`. Establish `hlb : Real.log L.sc.b = L.sc.L` using `by unfold Scale.b; exact Real.log_exp _`. Establish `hL : 0 ≤ L.sc.L` using `by unfold Scale.L; exact Real.rpow_nonneg (by linarith [L.sc.one_lt_alt]) _`.
+
+Establish `c1` using `T.TD2'`. Establish `c2` using `T.TO_PP'`. Rewrite `c1` using `[hlb]`. Establish `c3 : (1 : ℝ) ≤ T.TO`. Use `T.TO_40` as an intermediate fact.
+
+Conclude with `(by omega : 1 ≤ T.TO)` after adjusting the coercions. Establish `c4 : T.PP ≤ L.sc.b ^ (1 / 2 : ℝ)` using `le_trans (le_mul_of_one_le_left hP0 c3) c2`. Establish `c5 : (n : ℝ) * (T.Dp : ℝ) ^ 2 * L.sc.L ≤ L.sc.b ^ (1 / 2 : ℝ)` using `le_trans (by gcongr) c1`. Establish `c6 : L.sc.b ^ (1 / 2 : ℝ) * L.sc.b ^ (1 / 2 : ℝ) = L.sc.b`. Rewrite using `[← Real.rpow_add hb0]`.
+
+Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem prod_bounds (n : ℕ) (hn : n ≤ T.TO) :
     T.PP * n * D.R.r * (D.R.f : ℝ) ^ 2 * (D.R.m : ℝ) ^ 2 * D.R.k * T.Dp ≤ LevelStarExponents.h0 L ∧
     T.PP ^ 2 * D.R.r * D.R.m * D.R.k * (T.Dp : ℝ) ^ 3 ≤ L.sc.b ∧
@@ -125,6 +172,15 @@ theorem prod_bounds (n : ℕ) (hn : n ≤ T.TO) :
       _ ≤ _ := mul_le_mul c4 c5 (by positivity) (by positivity)
       _ = _ := c6
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, hCond, hQD, -⟩` from `hS`. Establish `hx0 : 0 < L.sc.x` using `by linarith [L.sc.one_lt_alt]`. Establish `h1` using `log_rdE_le_L D L hCond hQD`. Establish `hrd : 1 ≤ D.host.rdE` using `hQD.2.2.2.2.2.2.1`. Establish `h0` using `Real.log_nonneg hrd`.
+
+Establish `h2 : |L.logDerivativeAtOne| ≤ L.sc.L` using `hQD.2.2.2.2.2.1`. Establish `h3` using `Real.one_half_lt_eulerMascheroniConstant`. Establish `h4` using `Real.eulerMascheroniConstant_lt_two_thirds`. Establish `h5 : 0 ≤ Real.log Real.pi` using `Real.log_nonneg (by linarith [Real.pi_gt_three])`. Establish `h6 : Real.log Real.pi ≤ 3`.
+
+Use `Real.log_le_sub_one_of_pos Real.pi_pos` as an intermediate fact. Combine the linear relations using `[Real.pi_le_four]`. Establish `h7` using `Real.log_two_lt_d9`. Establish `h8` using `Real.log_two_gt_d9`. Unfold `SizeData₂.logOm Host.v`.
+
+Rewrite using `[Real.log_div Real.pi_pos.ne' (by positivity), Real.log_div (by positivity) (by norm_num)]`. Take `⟨h9, h10⟩` from `abs_le.1 h2`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem abs_logOm_le (hS : SizesAt L) (hL : 3 ≤ L.sc.L) : |L.logOm| ≤ 3 * L.sc.L := by
   obtain ⟨-, -, -, -, -, hCond, hQD, -⟩ := hS
   have hx0 : 0 < L.sc.x := by linarith [L.sc.one_lt_alt]
@@ -149,11 +205,19 @@ def entR (D : D7) (i : Fin D.R.m) (t : D.what₂.Tau) (n : ℕ) : ℝ :=
   sgR D t n + DV.wSz D ((i : ℕ) + 1) t + n - ((D.R.k : ℝ) + i) + ((D.R.r : ℝ) + 1) / 2 -
     if n < D.R.k + i then 0 else (D.R.r : ℝ)
 
+/- English proof (translation)
+Unfold `ent entR sgR`. Rewrite using `[← DV.eQ_cast, eQ_succ]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+-/
 theorem ent_cast (i : Fin D.R.m) (t : D.what₂.Tau) (n : ℕ) : ((ent D i t n : ℚ) : ℝ) = entR D i t n := by
   unfold ent entR sgR
   rw [← DV.eQ_cast, eQ_succ]
   split_ifs <;> push_cast <;> ring
 
+/- English proof (translation)
+Unfold `entR`. Rewrite using `[if_pos (by omega), sgR_cloud D t n hn]`. Take `⟨v0, v1⟩` from `L.cloud_v t ⟨n, hn⟩`. Establish `c1 : (n : ℝ) + 2 ≤ D.R.k` using `by exact_mod_cast (by omega : n + 2 ≤ D.R.k)`. Establish `c3 : ((i : ℕ) : ℝ) + 1 ≤ D.R.m` using `by exact_mod_cast i.2`.
+
+Establish `c4 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg _`. Establish `c5 : (0 : ℝ) ≤ ((i : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `c6 : (6 : ℝ) ≤ D.R.r` using `by exact_mod_cast six_le_r D.R`. Use `r_cast D.R` as an intermediate fact. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem entR_cloud (L : SizeData₂ D) (i : Fin D.R.m) (t : D.what₂.Tau) (n : ℕ) (hn : n < D.R.k - 1) :
     DV.wSz D ((i : ℕ) + 1) t - D.R.r ≤ entR D i t n ∧ entR D i t n ≤ DV.wSz D ((i : ℕ) + 1) t + L.Sc + D.R.r := by
   unfold entR
@@ -167,6 +231,9 @@ theorem entR_cloud (L : SizeData₂ D) (i : Fin D.R.m) (t : D.what₂.Tau) (n : 
   have := r_cast D.R
   constructor <;> linarith
 
+/- English proof (translation)
+The claim follows from `|entR D i t n| ≤ L.etaSz + D.R.r := by obtain ⟨a1, a2⟩ := abs_le.1 (sgR_be D L ((i : ℕ) + 1) (Nat.le_add_left _ _) i.2 t n hn hr) have c1 : (D.R.k : ℝ) ≤ (n : ℝ) + 1 := by exact_mod_cast (by omega : D.R.k ≤ n + 1) have c2 : (n : ℝ) + 1 ≤ D.R.r := by exact_mod_cast hr have c3 : (( …`.
+-/
 theorem entR_node (L : SizeData₂ D) (i : Fin D.R.m) (t : D.what₂.Tau) (n : ℕ) (hn : D.R.k - 1 ≤ n) (hr : n < D.R.r) :
     |entR D i t n| ≤ L.etaSz + D.R.r := by
   obtain ⟨a1, a2⟩ := abs_le.1 (sgR_be D L ((i : ℕ) + 1) (Nat.le_add_left _ _) i.2 t n hn hr)
@@ -183,12 +250,20 @@ theorem entR_node (L : SizeData₂ D) (i : Fin D.R.m) (t : D.what₂.Tau) (n : �
   · have c8 : (D.R.k : ℝ) + (i : ℕ) ≤ n := by exact_mod_cast not_lt.1 h
     rw [abs_le]; constructor <;> linarith
 
+/- English proof (translation)
+Unfold `entR`. Apply the tactic sequence `split_ifs <;> first | omega | (push_cast; ring)`.
+-/
 theorem entR_step (i : Fin D.R.m) (t : D.what₂.Tau) (n : ℕ) :
     entR D i t n - entR D i t (n + 1) =
       sgR D t n - sgR D t (n + 1) - 1 + if n + 1 = D.R.k + i then (D.R.r : ℝ) else 0 := by
   unfold entR
   split_ifs <;> first | omega | (push_cast; ring)
 
+/- English proof (translation)
+Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `h1` using `steps_sum (sgR D t) 0 D.R.r 1 (fun a _ ha => hs a ha) n (Nat.zero_le _) (D.R.k - 1 - 1) (by omega) (by omega)`. Establish `h2 : (n : ℝ) ≤ ((D.R.k - 1 - 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : n ≤ D.R.k - 1 - 1)`. Establish `h3` using `(L.cloud_v t ⟨n, hn⟩).2`. Establish `h4` using `(L.cloud_v t ⟨D.R.k - 1 - 1, by omega⟩).1`.
+
+Rewrite `h3`, `h4` using `[← sgR_cloud]`. Unfold `entR`. Rewrite using `[if_pos (by omega), if_pos (by omega)]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem entR_cloud_sub (L : SizeData₂ D) (i : Fin D.R.m) (t : D.what₂.Tau)
     (hs : ∀ a, a + 1 < D.R.r → 1 ≤ sgR D t a - sgR D t (a + 1)) (n : ℕ) (hn : n < D.R.k - 1) :
     0 ≤ entR D i t n - entR D i t (D.R.k - 1 - 1) ∧ entR D i t n - entR D i t (D.R.k - 1 - 1) ≤ L.Sc := by

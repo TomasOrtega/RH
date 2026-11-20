@@ -14,6 +14,9 @@ namespace GlobalTheory.HatInt
 
 noncomputable section
 
+/- English proof (translation)
+Unfold `omegaK`. Use `if_congr (forall₂_congr fun PP hP => ?_) rfl rfl` and prove the remaining obligations. Rewrite using `[h PP hP]`.
+-/
 theorem omegaK_congr {D : D7} {a b : ℕ} (Pg : Finset (Formalism.L2.DIV.Pl D.host.E))
     (y y' : ∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin b) (Fin a) (Formalism.L2.DIV.kP PP))
     (h : ∀ PP ∈ Pg, y PP = y' PP) : omegaK Pg y = omegaK Pg y' := by
@@ -21,6 +24,11 @@ theorem omegaK_congr {D : D7} {a b : ℕ} (Pg : Finset (Formalism.L2.DIV.Pl D.ho
   refine if_congr (forall₂_congr fun PP hP => ?_) rfl rfl
   rw [h PP hP]
 
+/- English proof (translation)
+Unfold `omegaQ`. Use `dite_congr (propext (forall₂_congr fun PP hP => by rw [h PP hP])) (fun h1 => ?_) (fun _ => rfl)` and prove the remaining obligations. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Use `congr 3`. Apply `Units.ext` to reduce the goal to its premises.
+
+Simplify using `only [IsUnit.unit_spec]`. Rewrite using `[h PP.1 PP.2]`.
+-/
 theorem omegaQ_congr {D : D7} {a b : ℕ} (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (r : ℕ)
     (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) (k : ℤ)
     (y y' : ∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin b) (Fin a) (Formalism.L2.DIV.kP PP))
@@ -33,6 +41,9 @@ theorem omegaQ_congr {D : D7} {a b : ℕ} (Q : Finset (Formalism.L2.DIV.Pl D.hos
   simp only [IsUnit.unit_spec]
   rw [h PP.1 PP.2]
 
+/- English proof (translation)
+Establish `h2 : ∀ (P Q : Matrix m n K), (P + d • Q).map f = P.map f + f d • Q.map f`. Introduce `P Q`. Use extensionality with `b a`. Simplify using the standard rewrite rules. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, h2]`.
+-/
 theorem matrix_map_ringHom_add_smul_sandwich {K S : Type} [CommRing K] [CommRing S] (f : K →+* S) {m n : Type} [Fintype m] [Fintype n]
     (B : Matrix m m S) (C : Matrix n n S) (P : Matrix m m K) (Q : Matrix n n K) (X Y : Matrix m n K) (d : K) :
     B * (P * (X + d • Y) * Q).map f * C = B * (P * X * Q).map f * C + f d • (B * (P * Y * Q).map f * C) := by
@@ -40,6 +51,11 @@ theorem matrix_map_ringHom_add_smul_sandwich {K S : Type} [CommRing K] [CommRing
     intro P Q; ext b a; simp
   simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, h2]
 
+/- English proof (translation)
+Establish `h1 : (Matrix.of fun b a => D.sp.cm.sig ((X b + c • Y b) a)) = (Matrix.of fun b a => D.sp.cm.sig (X b a)) + D.sp.cm.sig c • (Matrix.of fun b a => D.sp.cm.sig (Y b a))`. Use extensionality with `b a`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `b a`. Establish `h2` using `congrFun (congrFun (matrix_map_ringHom_add_smul_sandwich (eToEAf D) (βS⁻¹).val βT.val S.gram⁻¹ T.gram (Matrix.of fun b a => D.sp.cm.sig (X b a)) (Matrix.of fun b a => D.sp.cm.sig (Y b a)) (D.sp.cm.sig c)) b) a`.
+
+Rewrite `h2` using `[← h1, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Establish `h3` using `congrArg (fun u => toEAf D e * u) h2`. Simplify using `only [mul_add] at h3`. Rewrite `h3` using `[mul_left_comm]`. Conclude with `h3`.
+-/
 theorem uMat_add_smul {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D)
     (X Y : Fin S.rank → Fin T.rank → D.host.E) (c : D.host.E) :
     FWT.uMat S T βS βT e (fun b => X b + c • Y b) =
@@ -56,6 +72,9 @@ theorem uMat_add_smul {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (β
   rw [mul_left_comm] at h3
   exact h3
 
+/- English proof (translation)
+Establish `hmem : x + (c : S) * y ∈ O` using `add_mem hx (mul_mem c.2 hy)`. Rewrite using `[dif_pos hmem, dif_pos hx]`. Establish `: (⟨_, hmem⟩ : O) = ⟨x, hx⟩ + c * ⟨y, hy⟩` using `rfl`. Rewrite using `[this, map_add, map_mul, hc, zero_mul, add_zero]`.
+-/
 theorem subring_reduction_add_mul_killed {S k : Type} [CommRing S] [CommRing k] (O : Subring S) (f : O →+* k) (x y : S) (hx : x ∈ O) (hy : y ∈ O)
     (c : O) (hc : f c = 0) :
     (if h : x + (c : S) * y ∈ O then f ⟨x + (c : S) * y, h⟩ else 0) = if h : x ∈ O then f ⟨x, h⟩ else 0 := by
@@ -64,6 +83,11 @@ theorem subring_reduction_add_mul_killed {S k : Type} [CommRing S] [CommRing k] 
   have : (⟨_, hmem⟩ : O) = ⟨x, hx⟩ + c * ⟨y, hy⟩ := rfl
   rw [this, map_add, map_mul, hc, zero_mul, add_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Establish `h0 : ((Formalism.L2.DIV.oToS D.host.F D.host.E s : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D) = eToEAf D (s : D.host.E)`. Unfold `Formalism.L2.DIV.oToS eToEAf`. Rewrite using `[RingHom.codRestrict_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[← h0]`. Unfold `Datum.redM`. Conclude with `subring_reduction_add_mul_killed _ (Formalism.L2.DIV.resS D.host.F PP) _ _ (hN i j) (hN' i j) _ (by rw [Formalism.L2.DIV.resS_oToS, Ideal.Quotient.eq_zero_iff_mem.2 hs])`.
+-/
 theorem redM_add_smul {D : D7} (PP : Formalism.L2.DIV.Pl D.host.E) {b a : ℕ} (N N' : Matrix (Fin b) (Fin a) (EAf D))
     (hN : Datum.IsIntM N) (hN' : Datum.IsIntM N') (s : 𝓞 D.host.E) (hs : s ∈ PP.asIdeal) :
     Datum.redM PP (fun i j => N i j + eToEAf D (s : D.host.E) * N' i j) = Datum.redM PP N := by
@@ -78,11 +102,25 @@ theorem redM_add_smul {D : D7} (PP : Formalism.L2.DIV.Pl D.host.E) {b a : ℕ} (
   exact subring_reduction_add_mul_killed _ (Formalism.L2.DIV.resS D.host.F PP) _ _ (hN i j) (hN' i j) _
     (by rw [Formalism.L2.DIV.resS_oToS, Ideal.Quotient.eq_zero_iff_mem.2 hs])
 
+/- English proof (translation)
+Rewrite using `[H.bar_eq]`. Conclude with `IsCMField.complexConj_apply_apply D.host.E (s : D.host.E)`.
+-/
 theorem sig_bar {D : D7} (H : Geo.Tor.Host D.host.E) (s : 𝓞 D.host.E) :
     D.sp.cm.sig ((H.bar s : 𝓞 D.host.E) : D.host.E) = (s : D.host.E) := by
   rw [H.bar_eq]
   exact IsCMField.complexConj_apply_apply D.host.E (s : D.host.E)
 
+/- English proof (translation)
+Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `hp` using `Complex.isPrimitiveRoot_exp l.M hM`. Use `set ζ := Complex.exp (2 * Real.pi * Complex.I / (l.M : ℂ)) with hζ`. Establish `h0 : ζ ≠ 0` using `hp.ne_zero hM`. Establish `hrep : ∀ y : LevQc Dw l, Submodule.Quotient.mk (qRep y) = y` using `fun y => Classical.choose_spec (Submodule.Quotient.mk_surjective _ y)`.
+
+Establish `key : hatC l φ q = ζ ^ Formalism.L2.Pj.pairL (l` using `l) z (fun b => levRep (q b)) * hatC l φ q := by`. Unfold `hatC`. Rewrite using `[mul_finsum, ← finsum_comp_equiv (Equiv.addRight (fun b => (Submodule.Quotient.mk (z b) : LevQc Dw l)))]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_addRight]`.
+
+Rewrite using `[hφ, mul_left_comm, ← zpow_add₀ h0]`. Use `congr 1`. Establish `hd` using `LevelPairing.pairL_congr (l := l) (fun b => qRep ((x + fun b => (Submodule.Quotient.mk (z b) : LevQc Dw l)) b)) (fun b => z b + qRep (x b)) (fun b => levRep (q b)) (fun b => levRep (q b)) (fun b => (Submodule.Quotient.eq _).1 (by`. Rewrite using `[hrep, Submodule.Quotient.mk_add, hrep, add_comm]; rfl)) (fun b => by simp)`. Establish `ha : Formalism.L2.Pj.pairL (l` using `l) (fun b => z b + qRep (x b)) (fun b => levRep (q b)) = Formalism.L2.Pj.pairL (l := l) z (fun b => levRep (q b)) + Formalism.L2.Pj.pairL (l := l) (fun b => qRep (x b)) (fun b => levRep (q b)) := by`.
+
+Simplify using `[Formalism.L2.Pj.pairL, Finset.sum_add_distrib]`. Rewrite using `[← ha]`. Use `(hp.zpow_eq_one_iff_dvd _).2 hd` as an intermediate fact. Rewrite `this` using `[zpow_sub₀ h0, div_eq_one_iff_eq (zpow_ne_zero _ h0)]`. Then use the resulting hypothesis. Rewrite using `[← hp.zpow_eq_one_iff_dvd]`.
+
+Conclude with `(mul_left_eq_self₀.1 key.symm).resolve_right hq`.
+-/
 theorem dvd_of_invariant {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H}
     (l : Geo.Tor.Level H) {n : ℕ} (φ : (Fin n → LevQc Dw l) → ℂ) (q : Fin n → LevQ Dw l) (hq : hatC l φ q ≠ 0)
     (z : Fin n → Dw.La) (hφ : ∀ x, φ (x + fun b => Submodule.Quotient.mk (z b)) = φ x) :
@@ -115,6 +153,21 @@ theorem dvd_of_invariant {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   rw [← hp.zpow_eq_one_iff_dvd]
   exact (mul_left_eq_self₀.1 key.symm).resolve_right hq
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R i H Dw ι t l₂ φ hφ q hq s hs b`. Take `⟨e, -, he⟩` from `hφ`. Establish `hM : l₂.M ≠ 0` using `by have := l₂.three_le; omega`. Establish `hdvd : ∀ w : Dw.La, (l₂.M : ℤ) ∣ Dw.EF w (s • (cSep l₂ • levRep (q b)))`. Introduce `w`.
+
+Establish `h1` using `dvd_of_invariant l₂ φ q hq (fun b' => H.bar s • (Pi.single b w : Fin (Vc D i).rank → Dw.La) b') (by`. Introduce `x`. Take `⟨x, rfl⟩ : ∃ x' : Fin (Vc D i).rank → Dw.La, x = fun b => Submodule.Quotient.mk (x' b)` from `⟨fun b => qRep (x b), funext fun b => (Classical.choose_spec (Submodule.Quotient.mk_surjective _ (x b))).symm⟩`. Establish `e1` using `(he (fun b' => x b' + H.bar s • (Pi.single b w : Fin (Vc D i).rank → Dw.La) b')).2`. Establish `e2` using `(he x).2`.
+
+Simplify using `only [RingHom.id_apply] at e1 e2`. Establish `e3 : ∀ PP, PP ∈ R.Pg ∨ PP ∈ R.Q t → Datum.redM PP (FWT.uMat (Vc D i) (Wc D i) (R.βV i) (R.βW i) e fun b' => ι (x b' + H.bar s • (Pi.single b w : Fin (Vc D i).rank → Dw.La) b')) = Datum.redM PP (FWT.uMat (Vc D i) (Wc D i) (R.βV i) (R.βW i) e fun b' => ι (x b'))`. Introduce `PP hP`. Establish `e4 : (fun b' => ι (x b' + H.bar s • (Pi.single b w : Fin (Vc D i).rank → Dw.La) b')) = fun b' => ι (x b') + ((H.bar s : 𝓞 D.host.E) : D.host.E) • ι ((Pi.single b w : Fin (Vc D i).rank → Dw.La) b')`. Use function extensionality and compare the values at `b'`.
+
+Rewrite using `[map_add, map_smul]`. Both sides reduce to the same expression. Rewrite using `[e4, uMat_add_smul, sig_bar]`. Conclude with `redM_add_smul PP _ _ (he x).1 (he _).1 s (hs PP hP)`. Rewrite `e1` using `[omegaK_congr _ _ _ (fun PP hP => e3 PP (Or.inl hP)), omegaQ_congr _ _ _ _ _ _ (fun PP hP => e3 PP (Or.inr hP)), ← e2]`.
+
+Conclude with `e1)`. Unfold `Formalism.L2.Pj.pairL at h1`. Rewrite `h1` using `[Finset.sum_eq_single b]`. Simplify `h1` using `[Dw.adj, LevelPairing.bar_bar]`. Introduce `j _ hj`.
+
+Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules. Take `⟨z, hz⟩` from `LevelPairing.exists_eq_smul_of_dvd (s • (cSep l₂ • levRep (q b))) l₂.M hM (fun y => by`. Establish `h2` using `Dw.alt (y + s • (cSep l₂ • levRep (q b)))`. Simplify using `only [map_add, LinearMap.add_apply, Dw.alt, zero_add, add_zero] at h2`.
+
+Establish `h3` using `hdvd y`. Establish `: Dw.EF (s • (cSep l₂ • levRep (q b))) y = -Dw.EF y (s • (cSep l₂ • levRep (q b)))` using `by linarith`. Rewrite using `[this]`. Conclude with `h3.neg_right)`. Conclude with `⟨z, by rw [hz, natCast_zsmul]⟩`.
+-/
 theorem smul_eq_of_hatC_ne_zero : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (H : Geo.Tor.Host D.host.E) (Dw : Datum H) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)) (t : T0) (l₂ : Geo.Tor.Level H) (φ : (Fin (Vc D i).rank → LevQc Dw l₂) → ℂ), PhiIs R i (RingHom.id ℂ) t ι (Mfr l₂ • ⊤) φ → ∀ q : Fin (Vc D i).rank → LevQ Dw l₂, hatC l₂ φ q ≠ 0 → ∀ s : 𝓞 D.host.E, (∀ PP, PP ∈ R.Pg ∨ PP ∈ R.Q t → s ∈ PP.asIdeal) → ∀ b, ∃ z : Dw.La, s • (cSep l₂ • levRep (q b)) = l₂.M • z := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R i H Dw ι t l₂ φ hφ q hq s hs b
   obtain ⟨e, -, he⟩ := hφ

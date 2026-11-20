@@ -20,6 +20,13 @@ open GlobalTheory.CompanionTheory.DualHol
 
 namespace GlobalTheory.CompanionTheory.DualHolMain
 
+/- English proof (translation)
+Introduce `F _ _ _ _ ψ ⟨h1, h2, h3⟩`. Establish `hinv : ∀ x, ψ⁻¹ x = (ψ x)⁻¹` using `fun x => AddChar.inv_apply' ψ x`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: (ψ⁻¹ : AddChar F Circle) = fun x => (ψ x)⁻¹` using `by funext x; exact hinv x show Continuous (ψ⁻¹ : AddChar F Circle)`. Rewrite using `[this]`.
+
+Conclude with `h1.inv`. Conclude with `inv_ne_one.2 h2`. Establish `: {n : ℤ | IsTrivialOn ψ⁻¹ n} = {n : ℤ | IsTrivialOn ψ n}`. Use extensionality with `n`. Simplify using `only [Set.mem_setOf_eq, IsTrivialOn, hinv, inv_eq_one]`.
+
+Rewrite using `[← h3, addCharConductor, addCharConductor, this]`.
+-/
 theorem isStd_inv : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     (ψ : AddChar F Circle), IsStd ψ → IsStd ψ⁻¹ := by
   intro F _ _ _ _ ψ ⟨h1, h2, h3⟩
@@ -34,6 +41,9 @@ theorem isStd_inv : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace 
       simp only [Set.mem_setOf_eq, IsTrivialOn, hinv, inv_eq_one]
     rw [← h3, addCharConductor, addCharConductor, this]
 
+/- English proof (translation)
+Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(GroundTheory.Automorphic.GodementSection.continuous_localChar c w).comp (Continuous.units_map _ (continuous_adicCompletionMap v w))`. Simplify using `only [cAt, MonoidHom.comp_apply]`. Rewrite using `[GroundTheory.Automorphic.GodementSection.coe_localChar]`. Conclude with `Circle.norm_coe _`.
+-/
 theorem isUnit1_cAt {K : Type} [Field K] [NumberField K] (c : HeckeCharacter K) (v : Pl) (w : PlK K)
     [w.asIdeal.LiesOver v.asIdeal] : IsUnit1 (cAt c v w) := by
   refine ⟨?_, fun x => ?_⟩
@@ -42,6 +52,19 @@ theorem isUnit1_cAt {K : Type} [Field K] [NumberField K] (c : HeckeCharacter K) 
   · simp only [cAt, MonoidHom.comp_apply]
     rw [GroundTheory.Automorphic.GodementSection.coe_localChar]; exact Circle.norm_coe _
 
+/- English proof (translation)
+Introduce `K _ _ hK D c v W hW Wt e hT`. Establish `hψ : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.RankinQ.isStd_local v`. Establish `hν` using `D.unit v`. Establish `hνi : IsUnit1 (D.ν v)⁻¹` using `⟨hν.1.inv, fun x => by`. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, norm_inv, hν.2, inv_one]⟩`.
+
+Establish `hV` using `GlobalTheory.T.whittaker_induced_of_functional_equation GlobalTheory.T.functional_equation_generic (Qv v) (GP.psiF v) hψ (D.ν v) (D.ν v)⁻¹ hν hνi`. Establish `h3 : TemperedBoundGL3 W`. Use `TemperedBoundGL3.span ?_ hW` and prove the remaining obligations. Introduce and unpack `_ ⟨W', hW', Φ, hΦ, rfl⟩`. Conclude with `GlobalTheory.T.temperedBoundGL3_lifted_whittaker _ _ (D.ν v) _ _ ⟨hψ, hν, ⟨_, hV, hW'⟩, hΦ⟩`.
+
+Establish `h2 : TemperedBoundGL2 Wt`. Break down `hT with ⟨w₁, w₂, i₁, i₂, -, hm, -⟩ | ⟨w, i, -, σ, η, hσ, -, hm, -⟩` into its components or cases. Establish `hχ` using `isStd_inv _ _ hψ`. Establish `u₁` using `isUnit1_cAt c v w₁`. Establish `u₂` using `isUnit1_cAt c v w₂`.
+
+Establish `hV'` using `GlobalTheory.T.whittaker_induced_of_functional_equation GlobalTheory.T.functional_equation_generic (Qv v) (GP.psiF v)⁻¹ hχ _ _ u₂ u₁`. Use `TemperedBoundGL2.span ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨Φ, h1, h2, h₀, rfl⟩`. Take `⟨φ, hφ, e⟩` from `GlobalTheory.T.compact_whittaker_eq_godement_local _ _ hχ _ _ u₁ u₂ Φ h1 h2`. Rewrite using `[e]`.
+
+Conclude with `GlobalTheory.T.temperedBoundGL2_of_induced _ _ _ _ _ u₂ u₁ hV' _ (hV'.stable _ (Submodule.subset_span ⟨φ, hφ, rfl⟩) h₀)`. Use `TemperedBoundGL2.span ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨Φ, hΦ, h₀, rfl⟩`. Establish `hc : IsUnit1 (localChar c w)` using `⟨GroundTheory.Automorphic.GodementSection.continuous_localChar c w, fun x => by`. Rewrite using `[GroundTheory.Automorphic.GodementSection.coe_localChar]`.
+
+Conclude with `Circle.norm_coe _⟩`. Establish `hχ` using `isStd_inv _ _ hψ`. Conclude with `GlobalTheory.T.temperedBoundGL2_quadratic_whittaker _ _ hχ.1 hχ.2.1 _ (GlobalTheory.T.nontrivial_galois_place_degree_two K hK v w i σ hσ) (continuous_adicCompletionMap v w) σ hσ _ _ hc Φ hΦ h₀`. Conclude with `GlobalTheory.T.differentiableOn_zetaGL3GL2_dual _ _ _ _ h3 h2`.
+-/
 theorem main : ∀ (K : Type) [Field K] [NumberField K], Ad3.K.QuadraticBaseChangeGL3.HOLV K := by
   intro K _ _ hK D c v W hW Wt e hT
   have hψ : IsStd (GP.psiF v) := GlobalTheory.CompanionTheory.RankinQ.isStd_local v

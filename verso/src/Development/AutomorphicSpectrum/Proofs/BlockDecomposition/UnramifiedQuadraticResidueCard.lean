@@ -29,6 +29,33 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WInert
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ h2 hcont hres χ hχ σ hσ η hη c hc1 hc b hb Φ hΦ`. Establish `hord` using `GlobalTheory.T.unramified_quadratic_extension_valuation F E h2 hcont hres`. Take `⟨η', hη'⟩` from `GlobalTheory.CompanionTheory.SphTheta.UnramQuad.exists_quadChar_unramified F E h2 hcont hord`. Establish `hηe : η = η'`. Use extensionality with `a`.
+
+Rewrite using `[hη, hη'.1]`. Substitute `hηe` using the available equality. Establish `hstd` using `GlobalTheory.CompanionTheory.SphTheta.isStd_chE_of_ord_unif F E h2 hcont hord χ hχ`. Establish `hlam` using `GlobalTheory.CompanionTheory.LamUnr.lamE_eq_one F E χ η hχ hstd hη'.2.1 hη'.2.2.1`. Establish `hform` using `GlobalTheory.CompanionTheory.SphTheta.inert_rw F E h2 hcont hord χ η σ hσ hχ hstd hη' (GlobalTheory.T.unramified_quadratic_uniformizer_order F E h2 hcont hord χ η hχ hstd hη')`.
+
+Rewrite using `[hlam]`. Establish `hψ : ∀ x ∈ 𝒪[F], (Circle.coeHom.compAddChar χ) x = 1`. Introduce `x hx`. Establish `h1` using `isTrivialOn_addCharConductor hχ.1 hχ.2.1 x (by rw [hχ.2.2]; exact mem_valBall_zero_iff.2 hx)`. Simplify using `[h1]`.
+
+Use `set f₁ : GL (Fin 2) F → ℂ := Spherical.sphericalWhittaker (Circle.coeHom.compAddChar χ) ![b, -b] with hf₁`. Establish `hW0 : ∀ g, GL2LocalData.Wc χ σ (selfDualMeasure (GL2LocalData.chE E χ)) 1 c intInd g = f₁ g`. Introduce `g`. Establish `hg` using `Spherical.eq_iwasawa g`. Establish `hu` using `Spherical.iwasawaUnip_mem g`.
+
+Establish `hk` using `Spherical.iwasawaInt_mem g`. Use `set u := Spherical.iwasawaUnip g`. Use `set k := Spherical.iwasawaInt g`. Use `set l := Iwasawa.iwasawaExponent F 2 g`. Rewrite using `[hg, hf₁, Spherical.sphericalWhittaker_apply hψ _ hu hk, GlobalTheory.T.ramified_quadratic_extension_valuation F E h2 hcont hord χ η σ c hχ hc hη' hform _ k hk, mul_assoc, GlobalTheory.T.ramified_quadratic_extension_uniformizer F E h2 hcont hord χ η σ c hχ hc hη' hform u _ hu, Gl …`.
+
+Establish `hpsi : Whittaker.psiN (Circle.coeHom.compAddChar χ) u = (χ (u.val 0 1) : ℂ)`. Simplify using `[Whittaker.psiN, Whittaker.superdiagSum, Fin.sum_univ_two]`. Both sides reduce to the same expression. Rewrite using `[hpsi]`. Use `split_ifs with hl`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Take `⟨s, n, a, y, hdec⟩` from `GlobalTheory.T.unramified_extension_whittaker_formula F E h2 hcont hord χ hχ c hc Φ hΦ`. Use `haveI : Fact (Module.finrank F E = 2) := ⟨h2⟩`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`.
+
+Use `haveI : Algebra.IsSeparable F E := inferInstance`. Use `set Ψ : Fin n → E → ℂ := fun j x => (χ (y j * Algebra.norm F x) : ℂ) * intInd (x * (s : E)) with hΨ`. Establish `hΦe : Φ = fun z => ∑ j, a j * Ψ j z` using `funext hdec`. Establish `hI0 : Continuous (fun x : E => (intInd (x * (s : E)) : ℂ))` using `(InertAsm.intInd_isLocallyConstant (K := E)).continuous.comp (continuous_id.mul continuous_const)`. Establish `hI1 : HasCompactSupport (fun x : E => (intInd (x * (s : E)) : ℂ))` using `(InertAsm.intInd_hasCompactSupport (K := E)).comp_homeomorph (Homeomorph.mulRight₀ (s : E) s.ne_zero)`.
+
+Establish `hPc : ∀ j, Continuous (Ψ j)` using `fun j => by`. Establish `hN` using `GroundTheory.LocalField.continuous_algebraNorm F E`. Conclude with `(continuous_induced_dom.comp (hχ.1.comp (continuous_const.mul hN))).mul hI0`. Establish `hPs : ∀ j, HasCompactSupport (Ψ j)` using `fun j => hI1.mul_left`. Use `set κ : ℂ := ((c s : ℂˣ) : ℂ) * (((modulus (Algebra.norm F (s : E)) : ℝ) : ℂ) ^ (1 / 2 : ℂ)) with hκ`.
+
+Establish `hκ0 : κ ≠ 0`. Use `mul_ne_zero (Units.ne_zero _) ?_` and prove the remaining obligations. Establish `h0 : ((modulus (Algebra.norm F (s : E)) : ℝ) : ℂ) ≠ 0`. Use `modulus_ne_zero (K := F) ((Algebra.norm_ne_zero_iff).2 s.ne_zero)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Simplify using `[Complex.cpow_eq_zero_iff, h0]`. Establish `hstep : ∀ j g, GL2LocalData.Wc χ σ (selfDualMeasure (GL2LocalData.chE E χ)) 1 c (Ψ j) g = κ⁻¹ * f₁ (g * (uni2 (y j) * dg2 (Units.map (Algebra.norm F : E →* F) s) 1))`. Introduce `j g`. Establish `h1` using `GlobalTheory.T.weil_whittaker_right_unipotent_formula F E h2 χ σ (selfDualMeasure (GL2LocalData.chE E χ)) 1 c (fun z => intInd (z * (s : E))) (y j) g`. Establish `h2'` using `GlobalTheory.T.weil_whittaker_schwartz_compact_support F E h2 χ σ (selfDualMeasure (GL2LocalData.chE E χ)) 1 c intInd (InertAsm.intInd_mem_SBc c hc) s (g * uni2 (y j))`.
+
+Rewrite using `[← hW0, ← mul_assoc g, h2', h1, ← hκ, inv_mul_cancel_left₀ hκ0]`. Establish `hfun : GL2LocalData.Wc χ σ (selfDualMeasure (GL2LocalData.chE E χ)) 1 c Φ = ∑ j, (a j * κ⁻¹) • (fun g => f₁ (g * (uni2 (y j) * dg2 (Units.map (Algebra.norm F : E →* F) s) 1)))`. Use function extensionality and compare the values at `g`. Rewrite using `[hΦe, GlobalTheory.T.weil_whittaker_smooth_vector F E h2 hcont χ hχ.1 σ 1 c n a Ψ hPc hPs g, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hstep, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[hfun]`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)` and prove the remaining obligations.
+-/
 theorem winert_span : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] [CharZero F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E], Module.finrank F E = 2 → Continuous (algebraMap F E) → residueCard E = residueCard F ^ 2 → ∀ χ : AddChar F Circle, IsStd χ → ∀ σ : E ≃ₐ[F] E, σ ≠ AlgEquiv.refl → ∀ η : Fˣ →* ℂˣ, (∀ a, ((η a : ℂˣ) : ℂ) = GL2LocalData.nsg E (a : F)) → ∀ c : Eˣ →* ℂˣ, IsUnit1 c → IsUnramifiedChar c → ∀ b : ℂˣ, b ^ 2 = c (Units.map (algebraMap F E).toMonoidHom (unifUnit F)) → ∀ Φ ∈ GL2LocalData.SBc F E c, GL2LocalData.Wc χ σ (selfDualMeasure (GL2LocalData.chE E χ)) (GL2LocalData.lamE E χ η) c Φ ∈ Submodule.span ℂ {f : GL (Fin 2) F → ℂ | ∃ h : GL (Fin 2) F, f = fun g => Spherical.sphericalWhittaker (Circle.coeHom.compAddChar χ) ![b, -b] (g * h)} := by
   intro F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ h2 hcont hres χ hχ σ hσ η hη c hc1 hc b hb Φ hΦ
   have hord := GlobalTheory.T.unramified_quadratic_extension_valuation F E h2 hcont hres

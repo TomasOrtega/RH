@@ -17,6 +17,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
 variable {HH : Type} [NormedAddCommGroup HH] [InnerProductSpace ℂ HH] [CompleteSpace HH]
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
 
+/- English proof (translation)
+Unfold `Fk`. Rewrite using `[hWeq q hq z', hσ.2.1 q z', ContinuousLinearMap.mul_apply]`. Establish `hn : ‖τ q (W z')‖ = ‖W z'‖`. Establish `h` using `hτu q hq (W z') (W z')`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`.
+
+Establish `h' : ‖τ q (W z')‖ ^ 2 = ‖W z'‖ ^ 2` using `by exact_mod_cast h`. Conclude with `(sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 h'`. Establish `hA : ‖⟪τ q (W z'), W z⟫_ℂ‖ ≤ ‖W z‖ * ‖W z'‖` using `(norm_inner_le_norm _ _).trans (by rw [hn, mul_comm])`. Establish `hAe : ‖⟪τ q (W z'), W z⟫_ℂ‖ₑ ≤ ‖W z‖ₑ * ‖W z'‖ₑ`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ← ENNReal.ofReal_mul (norm_nonneg _)]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal hA`. Rewrite using `[enorm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Fk_enorm_le {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) {S : Set G}
     {τ : G → (V →L[ℂ] V)} {W : G → V}
     (hWeq : ∀ s ∈ S, ∀ x, W (s * x) = τ s (W x)) (hτu : ∀ s ∈ S, ∀ a b, ⟪τ s a, τ s b⟫_ℂ = ⟪a, b⟫_ℂ)
@@ -40,6 +47,9 @@ theorem Fk_enorm_le {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH)
       ≤ (‖W z‖ₑ * ‖W z'‖ₑ) * ‖⟪σ z w, σ q (σ z' w)⟫_ℂ‖ₑ := by gcongr
     _ = ‖⟪σ z w, σ q (σ z' w)⟫_ℂ‖ₑ * ‖W z‖ₑ * ‖W z'‖ₑ := by ring
 
+/- English proof (translation)
+Establish `hσc` using `hσ.2.2.2 w`. Unfold `Fk`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Conclude with `(hWc.comp (continuous_snd.snd.mul continuous_snd.fst)).inner (hWc.comp continuous_fst)`. Conclude with `(hσc.comp continuous_fst).inner (hσc.comp (continuous_snd.snd.mul continuous_snd.fst))`.
+-/
 private theorem continuous_Fk_uncurry {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) {W : G → V}
     (hWc : Continuous W) : Continuous (fun x : G × G × G => Fk σ w W x.1 x.2.1 x.2.2) := by
   have hσc := hσ.2.2.2 w
@@ -48,6 +58,11 @@ private theorem continuous_Fk_uncurry {σ : G → (HH →L[ℂ] HH)} (hσ : IsUn
   · exact (hWc.comp (continuous_snd.snd.mul continuous_snd.fst)).inner (hWc.comp continuous_fst)
   · exact (hσc.comp continuous_fst).inner (hσc.comp (continuous_snd.snd.mul continuous_snd.fst))
 
+/- English proof (translation)
+Establish `hSae : ∀ᵐ q ∂μS, q ∈ S`. Establish `h` using `compl_mem_ae_iff.2 hS0`. Rewrite `h` using `[compl_compl]`. Conclude with `h`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `Fk_enorm_le hσ w hWeq hτu z z' hq)`. Use `_ < ⊤ := hconv`.
+-/
 private theorem lintegral_enorm_Fk_lt_infty {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) {S : Set G}
     {μS ν : Measure G} [SFinite μS] [SFinite ν] (hS0 : μS Sᶜ = 0) {τ : G → (V →L[ℂ] V)} {W : G → V}
     (hWeq : ∀ s ∈ S, ∀ x, W (s * x) = τ s (W x)) (hτu : ∀ s ∈ S, ∀ a b, ⟪τ s a, τ s b⟫_ℂ = ⟪a, b⟫_ℂ)
@@ -68,6 +83,9 @@ private theorem lintegral_enorm_Fk_lt_infty {σ : G → (HH →L[ℂ] HH)} (hσ 
           exact Fk_enorm_le hσ w hWeq hτu z z' hq)
     _ < ⊤ := hconv
 
+/- English proof (translation)
+Establish `hcont` using `continuous_Fk_uncurry hσ w hWc`. Conclude with `⟨hcont.aestronglyMeasurable, lintegral_enorm_Fk_lt_infty hσ w hS0 hWeq hτu (continuous_enorm.measurable.comp hcont.measurable) hconv⟩`.
+-/
 theorem Fk_integrable {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) {S : Set G}
     {μS ν : Measure G} [SFinite μS] [SFinite ν] (hS0 : μS Sᶜ = 0) {τ : G → (V →L[ℂ] V)} {W : G → V}
     (hWeq : ∀ s ∈ S, ∀ x, W (s * x) = τ s (W x)) (hτu : ∀ s ∈ S, ∀ a b, ⟪τ s a, τ s b⟫_ℂ = ⟪a, b⟫_ℂ)
@@ -78,6 +96,11 @@ theorem Fk_integrable {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : H
   exact ⟨hcont.aestronglyMeasurable,
     lintegral_enorm_Fk_lt_infty hσ w hS0 hWeq hτu (continuous_enorm.measurable.comp hcont.measurable) hconv⟩
 
+/- English proof (translation)
+Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ fun x => sq_nonneg _) ((hWc.norm.pow 2).aestronglyMeasurable)]`. Establish `h : (fun x => ENNReal.ofReal (‖W x‖ ^ 2)) = fun x => ‖W x‖ₑ ^ 2`. Use function extensionality and compare the values at `x`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Rewrite using `[h, h2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem integral_norm_sq_eq_one {ν : Measure G} {W : G → V} (hWc : Continuous W) (h2 : ∫⁻ x, ‖W x‖ₑ ^ 2 ∂ν = 1) :
     ∫ z, ‖W z‖ ^ 2 ∂ν = 1 := by
   rw [integral_eq_lintegral_of_nonneg_ae (ae_of_all _ fun x => sq_nonneg _)
@@ -88,6 +111,17 @@ theorem integral_norm_sq_eq_one {ν : Measure G} {W : G → V} (hWc : Continuous
   rw [h, h2]
   simp
 
+/- English proof (translation)
+Take `⟨hint, heq⟩` from `hW.2.2.2.2.2.1 z`. Rewrite using `[← integral_mul_left_eq_self _ z]`. Establish `hd0 : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `hpt : ∀ y, ⟪W (z * y), W z⟫_ℂ * ⟪σ z w, σ (z * y) w⟫_ℂ = conj (((1 / d : ℝ) : ℂ) * ⟪W z, ((d : ℂ) * conj ⟪w, σ y w⟫_ℂ) • W (z * y)⟫_ℂ)`. Introduce `y`.
+
+Rewrite using `[hσ.2.1 z y, ContinuousLinearMap.mul_apply, hσ.2.2.1, inner_smul_right]`. Simplify using `only [map_mul, Complex.conj_conj, Complex.conj_ofReal, inner_conj_symm]`. Use `push_cast`. Apply the tactic sequence `first | (field_simp; ring) | field_simp | ring`. Repeatedly rewrite using `[hpt]`.
+
+Establish `hself : ⟪W z, W z⟫_ℂ = ((‖W z‖ ^ 2 : ℝ) : ℂ)`. Use `Complex.ext ?_ ?_` and prove the remaining obligations. Use `first`. Consider the case `simp [inner_self_eq_norm_sq]`. Consider the case `(rw [Complex.ofReal_re]; exact inner_self_eq_norm_sq (𝕜 := ℂ) (W z))`.
+
+Use `first`. Consider the case `simp`. Consider the case `(rw [Complex.ofReal_im]; exact inner_self_im (𝕜 := ℂ) (W z))`. Rewrite using `[integral_conj, integral_const_mul, integral_inner hint, heq, hself, ← Complex.ofReal_mul, Complex.conj_ofReal]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_inner_mul_inner_eq_norm_sq_div {μ : Measure G} [μ.IsMulLeftInvariant] {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {d : ℝ}
     (hd : 0 < d) {w : HH} {S : Set G} {τ : G → (V →L[ℂ] V)} {ν : Measure G} {W : G → V}
     (hW : IsWAbs μ σ d w S τ ν W) (z : G) :
@@ -116,6 +150,15 @@ theorem integral_inner_mul_inner_eq_norm_sq_div {μ : Measure G} [μ.IsMulLeftIn
   congr 1
   ring
 
+/- English proof (translation)
+Establish `hWc : Continuous W` using `hW.2.2.2.2.1`. Establish `hL2` using `hW.2.2.2.2.2.2.2`. Establish `hm : Measurable (fun p : G × G => p.2 * p.1)` using `measurable_snd.mul measurable_fst`. Establish `hmap : μ = Measure.map (fun p : G × G => p.2 * p.1) (ν.prod μS)`. Use extensionality with `s hs`.
+
+Rewrite using `[Measure.map_apply hm hs, ← lintegral_indicator_one hs, hq _ (measurable_one.indicator hs), ← lintegral_indicator_one (hm hs), lintegral_prod _ ((measurable_one.indicator (hm hs)).aemeasurable)]`. Use `first`. Consider the case `rfl`. Consider the case `(simp only [Set.indicator_apply, Set.mem_preimage]; rfl)`. Establish `hinner : ∀ z, ∫ y, Fk σ w W z y.1 y.2 ∂(ν.prod μS) = ((‖W z‖ ^ 2 / d : ℝ) : ℂ)`.
+
+Introduce `z`. Establish `hg` using `integral_inner_mul_inner_eq_norm_sq_div hσ hd hW z`. Establish `hgc : Continuous (fun x : G => ⟪W x, W z⟫_ℂ * ⟪σ z w, σ x w⟫_ℂ)` using `(hWc.inner continuous_const).mul (continuous_const.inner (hσ.2.2.2 w))`. Rewrite `hg` using `[hmap, integral_map hm.aemeasurable hgc.aestronglyMeasurable]`. Conclude with `hg`.
+
+Rewrite using `[integral_prod _ hΦ]`. Use `(integral_congr_ae (ae_of_all _ fun z => hinner z)).trans ?_` and prove the remaining obligations. Use `first`. Consider the case `rw [integral_complex_ofReal, integral_div, integral_norm_sq_eq_one hWc hL2]`. Consider the case `rw [integral_ofReal, integral_div, integral_norm_sq_eq_one hWc hL2]`.
+-/
 theorem Fk_value {μ : Measure G} [μ.IsMulLeftInvariant] {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {d : ℝ}
     (hd : 0 < d) {w : HH} {S : Set G} {μS ν : Measure G} [SFinite μS] [SFinite ν] (hq : IsQuot μ μS ν)
     {τ : G → (V →L[ℂ] V)} {W : G → V} (hW : IsWAbs μ σ d w S τ ν W)

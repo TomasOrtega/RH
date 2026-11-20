@@ -18,6 +18,9 @@ namespace PositivityTheory.SiegelWeilFormula.TW.Twp
 attribute [-instance] CStarMatrix.instHMulOfFintypeOfMulOfAddCommMonoid
 open PositivityTheory.SiegelWeilFormula.TBij.Adp
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.TW.Twp.integral_cov_k d ν hν, GroundTheory.Automorphic.GJMatrix.adelicFourierPi]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.TW.Twp.pair_eq_k d ε Y (d.cmb c), _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.crd_cmb, GlobalTheory.AdelicSvN.Weyl.isStd_eq d.ok.good.std, mul_comm]`.
+-/
 theorem int_eq_four_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (ν : Measure (Mx F E d.m d.n)) (hν : d.IsCov ν) (ε : ℤˣ) (f : Mx F E d.m d.n → ℂ)
     (Y : Matrix (Fin d.m) (Fin d.n) E) :
     ∫ Z, d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram (incM F Y) Z)) * f Z ∂ν =
@@ -27,6 +30,15 @@ theorem int_eq_four_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (�
   congr 1
   funext c
   rw [_root_.PositivityTheory.SiegelWeilFormula.TW.Twp.pair_eq_k d ε Y (d.cmb c), _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.crd_cmb, GlobalTheory.AdelicSvN.Weyl.isStd_eq d.ok.good.std, mul_comm]
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d ν hν ε f hf`. Establish `hg : (fun c => f (d.cmb c)) ∈ schA F (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d)` using `Submodule.mem_comap.1 hf`. Establish `hθ` using `GlobalTheory.TowU.FourWeyl.theta_four hg`. Use `(tsum_congr fun X => _root_.PositivityTheory.SiegelWeilFormula.TW.Twp.int_eq_four_k d ν hν ε f X).trans ?_` and prove the remaining obligations. Use `((_root_.PositivityTheory.SiegelWeilFormula.TW.Twp.rc_k d).toEquiv.tsum_eq (fun a => GroundTheory.Automorphic.GJMatrix.adelicFourierPi F (fun c => f (d.cmb c)) (fun q => algebraMap F (AF F) (_root_.PositivityTheory.SiegelWeilFormula.TW.Twp.Lm_k d ε a q)))).trans ?_` and prove the remaining obligations.
+
+Use `((LinearEquiv.ofInjectiveEndo (_root_.PositivityTheory.SiegelWeilFormula.TW.Twp.Lm_k d ε) (_root_.PositivityTheory.SiegelWeilFormula.TW.Twp.Lm_inj_k d ε)).toEquiv.tsum_eq (fun a => GroundTheory.Automorphic.GJMatrix.adelicFourierPi F (fun c => f (d.cmb c)) (fun q => algebraMap F ( …` and prove the remaining obligations. Use `hθ.trans ?_` and prove the remaining obligations. Use `show ∑' ξ : _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d → F, f (d.cmb fun q => algebraMap F (AF F) (ξ q)) = _`. Establish `e : ∀ X : Matrix (Fin d.m) (Fin d.n) E, f (incM F X) = f (d.cmb fun q => algebraMap F (AF F) (_root_.PositivityTheory.SiegelWeilFormula.TW.Twp.rc_k d X q))`. Introduce `X`.
+
+Use `congr 1`. Rewrite using `[← _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.cmb_crd d (incM F X)]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.crd_incM]`.
+
+Both sides reduce to the same expression. Repeatedly rewrite using `[e]`. Conclude with `((_root_.PositivityTheory.SiegelWeilFormula.TW.Twp.rc_k d).toEquiv.tsum_eq (fun a => f (d.cmb fun q => algebraMap F (AF F) (a q)))).symm`.
+-/
 theorem poisson_k : _root_.PositivityTheory.SiegelWeilFormula.TW.Poisson_k := by
   intro F E _ _ _ _ _ σ d ν hν ε f hf
   have hg : (fun c => f (d.cmb c)) ∈ schA F (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) := Submodule.mem_comap.1 hf

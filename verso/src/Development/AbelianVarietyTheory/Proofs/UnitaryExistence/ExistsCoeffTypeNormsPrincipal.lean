@@ -20,6 +20,25 @@ namespace GlobalTheory
 
 open GlobalTheory.IndefiniteRowSideFullHecke.ReflexNormIndexIdeal GlobalTheory.LatticeBetaCompare in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l c`. Establish `key : ∀ x : ClassGroup (𝓞 E), ∃ (I : (Ideal (𝓞 E))⁰) (h : ℕ) (γ : 𝓞 E) (ψ : ℂ), ClassGroup.mk0 I = x ∧ 0 < h ∧ (I : Ideal (𝓞 E)) ^ h = Ideal.span {γ} ∧ ψ ^ h = ∏ σ : E →+* ℂ, σ (γ : E) ^ Dw.mult σ`. Introduce `x`. Take `⟨I, rfl⟩` from `ClassGroup.mk0_surjective x`. Take `⟨h, hh, e⟩` from `(isOfFinOrder_of_finite (ClassGroup.mk0 I)).exists_pow_eq_one`.
+
+Rewrite `e` using `[← map_pow]`. Take `⟨γ, hγ⟩ : ((I : Ideal (𝓞 E)) ^ h).IsPrincipal` from `(ClassGroup.mk0_eq_one_iff (I ^ h).2).1 e`. Take `⟨ψ, hψ⟩` from `IsAlgClosed.exists_pow_nat_eq (∏ σ : E →+* ℂ, σ (γ : E) ^ Dw.mult σ) hh`. Conclude with `⟨I, h, γ, ψ, rfl, hh, hγ, hψ⟩`. Use `choose I h γ ψ hI hh hγ hψ using key`.
+
+Use `haveI := c.fin`. Set `b` to `Module.finBasis ℚ c.F`. Take `⟨c', hc'⟩` from `exists_coeff_containing E H l (Finset.univ.image ψ ∪ Finset.univ.image fun i => (b i : ℂ)) (by`. Introduce `z hz`. Simplify using `only [Finset.mem_union, Finset.mem_image, Finset.mem_univ, true_and] at hz`.
+
+Break down `hz with ⟨x, rfl⟩ | ⟨i, rfl⟩` into its components or cases. Use `(IsIntegral.of_pow (hh x) ?_).isAlgebraic` and prove the remaining obligations. Rewrite using `[hψ]`. Conclude with `IsIntegral.prod _ fun σ _ => ((Algebra.IsIntegral.isIntegral (R := ℚ) (γ x : E)).map σ.toRatAlgHom).pow _`. Conclude with `((Algebra.IsIntegral.isIntegral (R := ℚ) (b i)).map c.F.val).isAlgebraic)`.
+
+Use `⟨c', ?_, fun c'' hle => ?_⟩` and prove the remaining obligations. Introduce `z hz`. Establish `e : z = ∑ i, b.repr ⟨z, hz⟩ i • (b i : ℂ)`. Use `congrArg c.F.val (b.sum_repr ⟨z, hz⟩)` as an intermediate fact. Simplify using `only [map_sum, map_smul] at this`.
+
+Conclude with `this.symm`. Rewrite using `[e]`. Conclude with `sum_mem fun i _ => IntermediateField.smul_mem _ (hc' _ (by simp))`. Rewrite using `[kPsiIn_iff]`. Introduce `𝔞 h0`.
+
+Set `x` to `ClassGroup.mk0 (⟨𝔞, mem_nonZeroDivisors_of_ne_zero h0⟩ : (Ideal (𝓞 E))⁰)`. Establish `hm : ψ x ∈ c''.F` using `hle (hc' _ (by simp))`. Establish `h1 : IsBe Dw c'' (I x) ⟨ψ x, hm⟩` using `isBe_of_pow (hh x) (by`. Establish `e : (⟨ψ x, hm⟩ : c''.F) ^ h x = reflexNorm Dw c'' (γ x : E)`. Apply `c''.F.val.toRingHom.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_pow, reflexNorm, map_prod]`. Simplify using `only [map_pow]`. Conclude with `hψ x`. Rewrite using `[hγ, e]`. Conclude with `isBe_principal Dw c'' _)`.
+
+Take `⟨u, v, hu0, -, huv⟩` from `ClassGroup.mk0_eq_mk0_iff.1 (hI x).symm`. Establish `h2` using `isBe_mul (isBe_principal Dw c'' v) h1`. Rewrite `h2` using `[← huv]`. Conclude with `⟨_, isBe_div (by simpa using hu0) (isBe_principal Dw c'' u) h2⟩`.
+-/
 theorem exists_coeff_typeNorms_principal :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (c : Coeff l), ∃ c' : Coeff l, c.F ≤ c'.F ∧ ∀ c'' : Coeff l, c'.F ≤ c''.F → KPsiIn (Dw := Dw) c'' := by
   intro E _ _ _ H Dw l c

@@ -31,6 +31,9 @@ section Helpers
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `hW`. Rewrite using `[← he]`. Establish `: exteriorPower.ιMulti R 2 ![x, x] = 0` using `AlternatingMap.map_eq_zero_of_eq _ _ (i := 0) (j := 1) rfl (by decide)`. Rewrite using `[this, map_zero]`.
+-/
 theorem cup_self_eq_zero_of_wedgeO' {C : Type} [Category.{0} C] {F : C ⥤ CommAlgCat.{0} R} (hW : WedgeO F)
     (x : CatCoh.H1 F) : cup F x x = 0 := by
   obtain ⟨e, he⟩ := hW
@@ -39,6 +42,9 @@ theorem cup_self_eq_zero_of_wedgeO' {C : Type} [Category.{0} C] {F : C ⥤ CommA
     AlternatingMap.map_eq_zero_of_eq _ _ (i := 0) (j := 1) rfl (by decide)
   rw [this, map_zero]
 
+/- English proof (translation)
+Establish `h` using `cup_self_eq_zero_of_wedgeO' hW (H1.mk F (cechDeRhamTotalCocyclesOne.fn F c))`. Rewrite `h` using `[cup_mk, H2.mk_eq_zero]`. Take `⟨f, hf⟩` from `h`. Conclude with `⟨f, hf⟩`.
+-/
 theorem fn_cupZZ_self_exact {C : Type} [Category.{0} C] {F : C ⥤ CommAlgCat.{0} R} (hW : WedgeO F) (c : cechDeRhamTotalCocyclesOne F) :
     ∃ f, d1 F f = (cupZZ F c c).1.1 := by
   have h := cup_self_eq_zero_of_wedgeO' hW (H1.mk F (cechDeRhamTotalCocyclesOne.fn F c))
@@ -48,13 +54,22 @@ theorem fn_cupZZ_self_exact {C : Type} [Category.{0} C] {F : C ⥤ CommAlgCat.{0
 
 variable {Y A : Over (Sp R)}
 
+/- English proof (translation)
+The claim follows from `((pull_comp_cup_id).2.1 R R _ _ A.hom Y.hom (RingHom.id R) f.left (ovw f)).2.1 a b`.
+-/
 theorem pH2_cupHH_over (f : Y ⟶ A) (a b : HH1 A.hom) :
     deRhamH2Pullback f (cupHH A.hom a b) = cupHH Y.hom (deRhamH1Pullback f a) (deRhamH1Pullback f b) :=
   ((pull_comp_cup_id).2.1 R R _ _ A.hom Y.hom (RingHom.id R) f.left (ovw f)).2.1 a b
 
+/- English proof (translation)
+The claim follows from `((pull_comp_cup_id).2.1 R R _ _ A.hom Y.hom (RingHom.id R) f.left (ovw f)).2.2 a`.
+-/
 theorem toHO1_pH1_over (f : Y ⟶ A) (a : HH1 A.hom) : toHO1 Y.hom (deRhamH1Pullback f a) = pO1 f (toHO1 A.hom a) :=
   ((pull_comp_cup_id).2.1 R R _ _ A.hom Y.hom (RingHom.id R) f.left (ovw f)).2.2 a
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.pull_closed_form_class R R _ _ A.hom Y.hom (RingHom.id R) f.left (ovw f) hc hc' w`.
+-/
 theorem pH1_clAll_over (f : Y ⟶ A) (hc : Closed1 (OAff A.hom) = ⊤) (hc' : Closed1 (OAff Y.hom) = ⊤)
     (w : GlobForm A.hom) : deRhamH1Pullback f (clAll (OAff A.hom) hc w) = clAll (OAff Y.hom) hc' (pF f w) :=
   GlobalTheory.T.pull_closed_form_class R R _ _ A.hom Y.hom (RingHom.id R) f.left (ovw f) hc hc' w
@@ -65,15 +80,26 @@ section Wsum
 
 variable {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T`. Simplify using `only [wsum, Fin.sum_univ_add, Fin.append_left, Fin.append_right, Pi.add_apply]`.
+-/
 theorem wsum_finAppend {n n' : ℕ} (u v : Fin n → Glob1 F) (u' v' : Fin n' → Glob1 F) :
     wsum F (Fin.append u u') (Fin.append v v') = wsum F u v + wsum F u' v' := by
   funext T
   simp only [wsum, Fin.sum_univ_add, Fin.append_left, Fin.append_right, Pi.add_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T`. Simplify using `only [wsum, Submodule.coe_neg, Pi.neg_apply, map_neg, LinearMap.neg_apply, Finset.sum_neg_distrib]`.
+-/
 theorem wsum_neg_first {n : ℕ} (u v : Fin n → Glob1 F) : wsum F (fun k ↦ -u k) v = -wsum F u v := by
   funext T
   simp only [wsum, Submodule.coe_neg, Pi.neg_apply, map_neg, LinearMap.neg_apply, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Establish `h2 : ∑ k, cupHyp F (clAll F hc (Fin.append (Fin.append u₁ (fun k ↦ -u₂ k)) (fun k ↦ -u₃ k) k)) (clAll F hc (Fin.append (Fin.append v₁ v₂) v₃ k)) = 0`. Rewrite using `[Fin.sum_univ_add, Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, map_neg, LinearMap.neg_apply, Finset.sum_neg_distrib]`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws.
+
+Establish `h3` using `(GlobalTheory.T.cupSum_closedGlobalOneForms_eq_zero_iff_sumWedge R C F hc hsur _ _ _).1 h2`. Rewrite `h3` using `[wsum_finAppend, wsum_finAppend, wsum_neg_first, wsum_neg_first]`. Rewrite using `[← sub_eq_zero, ← h3]`. Normalize the expressions using the abelian group laws.
+-/
 theorem wsum_eq_add_of_cupSum_eq (hc : Closed1 F = ⊤) (hsur : Function.Surjective (toO F)) {m : ℕ}
     (u₁ v₁ u₂ v₂ u₃ v₃ : Fin m → Glob1 F)
     (h : ∑ k, cupHyp F (clAll F hc (u₁ k)) (clAll F hc (v₁ k)) =
@@ -92,6 +118,35 @@ theorem wsum_eq_add_of_cupSum_eq (hc : Closed1 F = ⊤) (hsur : Function.Surject
 
 end Wsum
 
+/- English proof (translation)
+Introduce `R _ A _ g hA hs a`. Establish `hb` using `GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hA hs`. Establish `hb2` using `GlobalTheory.T.abelianScheme_oneFormFrame_and_square R (A ⊗ A) (g + g) hb.2.2.1 hb.2.2.2`. Establish `hc` using `GlobalTheory.T.abelianScheme_globalOneForms_closed R A g hA hs`. Establish `hc2` using `GlobalTheory.T.abelianScheme_globalOneForms_closed R (A ⊗ A) (g + g) hb.2.2.1 hb.2.2.2`.
+
+Establish `hsur` using `GlobalTheory.T.de_rham_to_structure_h1_surjective R A g hA hs`. Establish `hsur2` using `GlobalTheory.T.de_rham_to_structure_h1_surjective R (A ⊗ A) (g + g) hb.2.2.1 hb.2.2.2`. Establish `hW` using `(GlobalTheory.T.abelian_structure_cohomology_statement R A g hA hs).2.1`. Establish `hP : ∀ x : HH1 A.hom, deRhamH1Pullback μ[A] x = deRhamH1Pullback (fst A A) x + deRhamH1Pullback (snd A A) x` using `(GlobalTheory.T.de_rham_h1_rank_primitive R A g hA hs).2`. Establish `hPF : ∀ x : GlobForm A.hom, pF μ[A] x = pF (fst A A) x + pF (snd A A) x` using `GlobalTheory.T.abelianScheme_globalOneForms_primitive R A g hA hs`.
+
+Establish `hax` using `GlobalTheory.T.grpObj_pullback_axes_cohomology_projections R A`. Establish `anti` using `GlobalTheory.T.cechDeRhamHypercohomologyCup_anticomm R _ (OAff (A ⊗ A).hom)`. Establish `hprim : deRhamH2Pullback μ[A] (cupHH A.hom a a) = deRhamH2Pullback (fst A A) (cupHH A.hom a a) + deRhamH2Pullback (snd A A) (cupHH A.hom a a)`. Rewrite using `[pH2_cupHH_over, pH2_cupHH_over, pH2_cupHH_over, hP a]`. Establish `h` using `anti (deRhamH1Pullback (fst A A) a) (deRhamH1Pullback (snd A A) a)`.
+
+Simplify using `only [map_add, LinearMap.add_apply]`. Take the linear combination `(norm := module) h`. Take `⟨c, rfl⟩` from `Hyp1.mk_surjective _ a`. Take `⟨n, a', w, hz⟩` from `GlobalTheory.T.hyper_h2_sum_of_cups_exact R _ (OAff A.hom) hb.1 hb.2.1 hc hsur (cupZZ _ c c) (fn_cupZZ_self_exact hW c)`. Rewrite `hz` using `[← cupHyp_mk]`.
+
+Express the relevant statement in the definitionally equal form `cupHH A.hom _ _ = _ at hz`. Use `set z := cupHH A.hom (Hyp1.mk _ c) (Hyp1.mk _ c)`. Use `clear_value z`. Establish `hcross : ∑ k, (cupHyp (OAff (A ⊗ A).hom) (deRhamH1Pullback (fst A A) (a' k)) (clAll _ hc2 (pF (snd A A) (w k))) + cupHyp (OAff (A ⊗ A).hom) (deRhamH1Pullback (snd A A) (a' k)) (clAll _ hc2 (pF (fst A A) (w k)))) = 0`. Establish `h` using `hprim`.
+
+Rewrite `h` using `[hz]`. Simplify using `only [map_sum, pH2_cupHH_over, pH1_clAll_over _ hc hc2, hP, hPF, map_add, LinearMap.add_apply, Finset.sum_add_distrib] at h`. Rewrite using `[Finset.sum_add_distrib]`. Take the linear combination `(norm := module) h`. Establish `hk : ∀ l : Glob1 (OAff A.hom) →ₗ[R] R, ∑ k, l (w k) • toO (OAff A.hom) (a' k) = 0`.
+
+Introduce `l`. Establish `h2 : ∑ k, cupHH (A ⊗ A).hom (Fin.append (fun k ↦ deRhamH1Pullback (fst A A) (a' k)) (fun k ↦ deRhamH1Pullback (snd A A) (a' k)) k) (clAll _ hc2 (Fin.append (fun k ↦ pF (snd A A) (w k)) (fun k ↦ pF (fst A A) (w k)) k)) = 0`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Conclude with `hcross`. Establish `h3` using `GlobalTheory.T.sum_cup_oneForms_zero_imp_coordinates_zero R _ _ hb2.1 hb2.2.1 hc2 hsur2 (n + n) _ _ h2 (l ∘ₗ pF (lift (toUnit A ≫ η[A]) (𝟙 A)))`. Rewrite `h3` using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, LinearMap.comp_apply, (hax.2.1 _).2.2.2.1, (hax.2.1 _).2.2.2.2.1, map_zero, zero_smul, Finset.sum_const_zero, add_zero] at h3`. Establish `h4` using `congrArg (pO1 (lift (𝟙 A) (toUnit A ≫ η[A]))) h3`.
+
+Simplify using `only [map_sum, map_smul, map_zero] at h4`. Simplify `h4` using `only [toHO1_pH1_over, (hax.1 _).1]`. Take `⟨m, ⟨Φ⟩⟩` from `hb.1`. Take `⟨L, -, hL⟩` from `GlobalTheory.T.globalOneFormFrame_coordinates_constant R _ (OAff A.hom) hb.2.1 m Φ`. Establish `hu : ∀ i, ∃ u : Glob1 (OAff A.hom), clAll _ hc u = ∑ k, L i (w k) • a' k`.
+
+Introduce `i`. Establish `hm : ∑ k, L i (w k) • a' k ∈ Fil1 (OAff A.hom)`. Rewrite using `[Fil1, LinearMap.mem_ker, map_sum]`. Simplify `hk (L i)` using `only [map_smul]`. Rewrite `hm` using `[Fil1_eq_range]`.
+
+Take `⟨ω, hω⟩` from `hm`. Use `⟨ω.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hω]`. Both sides reduce to the same expression. Use `choose u hu using hu`.
+
+Establish `hz2 : z = ∑ i, cupHyp (OAff A.hom) (clAll _ hc (u i)) (clAll _ hc (Φ.w i))`. Rewrite using `[hz]`. Simplify using `only [hu]`. Use `conv_lhs => enter [2, k]`. Rewrite using `[hL (w k)]`.
+
+Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Finset.sum_comm`. Establish `hwp : wsum (OAff (A ⊗ A).hom) (fun k ↦ pF μ[A] (u k)) (fun k ↦ pF μ[A] (Φ.w k)) = wsum (OAff (A ⊗ A).hom) (fun k ↦ pF (fst A A) (u k)) (fun k ↦ pF (fst A A) (Φ.w k)) + wsum (OAff (A ⊗ A).hom) (fun k ↦ pF (snd A A) (u k)) (fun k ↦ pF (snd A A) (Φ.w k))`. Establish `h` using `hprim`. Rewrite `h` using `[hz2]`.
+
+Simplify using `only [map_sum, pH2_cupHH_over, pH1_clAll_over _ hc hc2] at h`. Conclude with `wsum_eq_add_of_cupSum_eq _ hc2 hsur2 _ _ _ _ _ _ h`. Establish `hw0` using `GlobalTheory.T.sum_wedge_primitive_oneForms_eq_zero_abelianScheme R A g hA hs m u Φ.w hwp`. Rewrite using `[hz2]`. Conclude with `(GlobalTheory.T.cupSum_closedGlobalOneForms_eq_zero_iff_sumWedge R _ _ hc hsur m u Φ.w).2 hw0`.
+-/
 theorem cupHH_self_eq_zero : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → ∀ a : HH1 A.hom, cupHH A.hom a a = 0 := by
   intro R _ A _ g hA hs a

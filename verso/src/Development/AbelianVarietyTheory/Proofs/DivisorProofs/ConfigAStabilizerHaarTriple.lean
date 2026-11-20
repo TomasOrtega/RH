@@ -19,6 +19,31 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.LemF
 open GlobalTheory.Doubling (absE)
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B b a' G G₁ H H' hcfg K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ m hm f hfQ hfc hint g hg`. Take `⟨m₀, hemb, hlev, htriv⟩` from `GlobalTheory.T.levi_embedding_local_closed F E σ B b a' G G₁ H H' hcfg X om om' om₁ om₁' hT hT₁ v`. Take `⟨hLC, hSC, hT2, huni⟩` from `GlobalTheory.T.local_stabilizer_locally_compact F E σ B b a' G G₁ H H' hcfg X om om' om₁ om₁' hT hT₁ v`. Take `⟨hQc, hPc⟩` from `GlobalTheory.T.levi_embedding_local_measurable F E σ B b a' G G₁ H H' hcfg X om om' om₁ om₁' hT hT₁ v m₀ hlev`. Establish `hQu` using `GlobalTheory.T.local_stabilizer_haar_right_invariant F E σ B b a' G G₁ H H' hcfg X om om' om₁ om₁' hT hT₁ v`.
+
+Take `⟨hKc, hKs, hKt⟩` from `GlobalTheory.T.local_compact_subgroup_topology F E σ B b a' G G₁ H H' hcfg X om om' om₁ om₁' hT hT₁ v K hK`. Establish `hIw` using `GlobalTheory.T.levi_embedding_local_stabilizer_mem F E σ B b a' G G₁ H H' hcfg X om om' om₁ om₁' hT hT₁ v K hK m₀ hlev`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evFin F v)`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Use `haveI := hLC`.
+
+Use `haveI := hSC`. Use `haveI := hT2`. Use `haveI := hKc`. Use `haveI := hKs`. Use `haveI := hKt`.
+
+Establish `hinvx : ∀ t : idelesAt E (evFin F v), mat (m₀ t).1⁻¹ *ᵥ incV F H.x = (((t.1)⁻¹ : (AE F E)ˣ) : AE F E) • incV F H.x`. Introduce `t`. Establish `e : (m₀ t).1⁻¹ = (m₀ t⁻¹).1` using `by rw [map_inv]; rfl`. Rewrite using `[e, (hlev t⁻¹).1]`. Both sides reduce to the same expression.
+
+Establish `hn : ∀ t, ∀ q ∈ stabAt σ G.V (evFin F v) H.x, (m₀ t)⁻¹ * q * m₀ t ∈ stabAt σ G.V (evFin F v) H.x`. Introduce `t q hq`. Rewrite `hq`, the goal using `[mem_stabAt]`. Use `show mat ((m₀ t).1⁻¹ * q.1 * (m₀ t).1) *ᵥ incV F H.x = incV F H.x`. Rewrite using `[GlobalTheory.StabHaar.mat_mul, GlobalTheory.StabHaar.mat_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, (hlev t).1, Matrix.mulVec_smul, hq, Matrix.mulVec_smul, hinvx t, smul_smul, Units.mul_inv, one_smul]`.
+
+Establish `key : ∀ t : idelesAt E (evFin F v), ∀ y ∈ UAt σ G.V (evFin F v), f ((m t.1)⁻¹ * y) = f ((m₀ t).1⁻¹ * y)`. Introduce `t y hy`. Take `⟨hl, hmu⟩` from `hm t.1 t.2`. Establish `hq : (m₀ t).1⁻¹ * m t.1 ∈ UAt σ G.V (evFin F v)` using `(UAtSub σ G.V (evFin F v)).mul_mem ((UAtSub σ G.V (evFin F v)).inv_mem (m₀ t).2) hmu`. Establish `hqx : mat ((m₀ t).1⁻¹ * m t.1) *ᵥ incV F H.x = incV F H.x`.
+
+Rewrite using `[GlobalTheory.StabHaar.mat_mul, ← Matrix.mulVec_mulVec, hl.1, Matrix.mulVec_smul, hinvx t, smul_smul, Units.mul_inv, one_smul]`. Establish `hy' : (m t.1)⁻¹ * y ∈ UAt σ G.V (evFin F v)` using `(UAtSub σ G.V (evFin F v)).mul_mem ((UAtSub σ G.V (evFin F v)).inv_mem hmu) hy`. Rewrite using `[← hfQ _ hq hqx _ hy']`. Use `congr 1`. Use `group`.
+
+Set `f' : UAtSub σ G.V (evFin F v) → ℂ` to `fun x => f x.1`. Establish `pw : ∀ (k : KAt K (evFin F v)) (t : idelesAt E (evFin F v)) (g' : UAtSub σ G.V (evFin F v)), f ((m t.1)⁻¹ * k.1 * g'.1) * ((absE F E t.1 : ℝ) : ℂ) ^ (b + 1) = f' ((m₀ t)⁻¹ * kIncl K (evFin F v) k * g') * ((absPow E (evFin F v) (b + 1) t : ℝ) : ℂ)`. Introduce `k t g'`. Establish `hk : k.1 * g'.1 ∈ UAt σ G.V (evFin F v)` using `(UAtSub σ G.V (evFin F v)).mul_mem (mem_KAt.1 k.2).2 g'.2`. Rewrite using `[mul_assoc, key t _ hk, absPow_apply, NNReal.coe_pow, Complex.ofReal_pow, ← mul_assoc]`.
+
+Both sides reduce to the same expression. Establish `hδ : Continuous (absPow E (evFin F v) (b + 1))` using `(continuous_pow (b + 1)).comp (GlobalTheory.Doubling.continuous_absE.comp continuous_subtype_val)`. Establish `hκ : Continuous (kIncl K (evFin F v))` using `Continuous.subtype_mk continuous_subtype_val (fun k => (mem_KAt.1 k.2).2)`. Establish `hfQ' : ∀ q ∈ stabAt σ G.V (evFin F v) H.x, ∀ x : UAtSub σ G.V (evFin F v), f' (q * x) = f' x` using `fun q hq x => hfQ q.1 q.2 hq x.1 x.2`. Establish `hint' : ∀ g' : UAtSub σ G.V (evFin F v), Integrable (fun p : KAt K (evFin F v) × idelesAt E (evFin F v) => f' ((m₀ p.2)⁻¹ * kIncl K (evFin F v) p.1 * g') * ((absPow E (evFin F v) (b + 1) p.2 : ℝ) : ℂ)) (μK.prod μ)`.
+
+Introduce `g'`. Use `(hint g'.1 g'.2).congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Conclude with `pw p.1 p.2 g'`. Establish `hA` using `GlobalTheory.T.compact_torus_group_measure_decomposition (UAtSub σ G.V (evFin F v)) (KAt K (evFin F v)) (idelesAt E (evFin F v)) (stabAt σ G.V (evFin F v) H.x) (kIncl K (evFin F v)) m₀ (absPow E (evFin F v) (b + 1)) μK μ hQc hκ hemb hδ hμK hμ huni hQu hn (GlobalTheory.T.levi_embe …`. Establish `e1 : ∀ k : KAt K (evFin F v), ∫ t, f ((m t.1)⁻¹ * k.1 * g) * ((absE F E t.1 : ℝ) : ℂ) ^ (b + 1) ∂μ = ∫ t, f' ((m₀ t)⁻¹ * kIncl K (evFin F v) k * ⟨g, hg⟩) * ((absPow E (evFin F v) (b + 1) t : ℝ) : ℂ) ∂μ` using `fun k => integral_congr_ae (Filter.Eventually.of_forall fun t => pw k t ⟨g, hg⟩)`.
+
+Establish `e2 : ∀ k : KAt K (evFin F v), ∫ t, f ((m t.1)⁻¹ * k.1) * ((absE F E t.1 : ℝ) : ℂ) ^ (b + 1) ∂μ = ∫ t, f' ((m₀ t)⁻¹ * kIncl K (evFin F v) k) * ((absPow E (evFin F v) (b + 1) t : ℝ) : ℂ) ∂μ`. Introduce `k`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `pw k t 1` as an intermediate fact. Simplify using `only [mul_one, OneMemClass.coe_one] at this`.
+
+Conclude with `this`. Conclude with `(integral_congr_ae (Filter.Eventually.of_forall e1)).trans (hA.trans (integral_congr_ae (Filter.Eventually.of_forall e2)).symm)`.
+-/
 theorem quotInv : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ (K : Subgroup (UA σ G.V.J)), IsStab B K → ∀ X om om' om₁ om₁', IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

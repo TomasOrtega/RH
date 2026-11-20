@@ -20,6 +20,9 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 
 open GlobalTheory.FinPl GlobalTheory.FinPl.FrameLat
 
+/- English proof (translation)
+Establish `h` using `(idem_iff q a).1 ha`. Rewrite using `[q.sec_pr, q.sec_pr, map_mul, cA_cA]`. Use `conv_lhs => rw [← h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eq_sec_add_csec (q : SplitPt D k) {a : AE D} (ha : a ∈ idAt D (· = q.v)) :
     a = q.sec (q.pr a) + cA D (q.sec (q.pr (cA D a))) := by
   have h := (idem_iff q a).1 ha
@@ -27,6 +30,13 @@ theorem eq_sec_add_csec (q : SplitPt D k) {a : AE D} (ha : a ∈ idAt D (· = q.
   conv_lhs => rw [← h]
   ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨(q.int_iff _).2 ?_, (q.int_iff _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[q.sec_pr, RingHom.map_mul]`. Conclude with `mul_mem_intAE (e_mem_intAt q).2 h.2`.
+
+Rewrite using `[q.sec_pr, RingHom.map_mul]`. Conclude with `mul_mem_intAE (e_mem_intAt q).2 ((cA_int_iff a).2 h.2)`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨ha, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_sec_add_csec q ha, RingHom.map_add]`.
+
+Conclude with `add_mem ((q.int_iff _).1 h1) ((cA_int_iff _).2 ((q.int_iff _).1 h2))`.
+-/
 theorem mem_intAt_iff (q : SplitPt D k) {a : AE D} (ha : a ∈ idAt D (· = q.v)) :
     a ∈ intAt D (· = q.v) ↔ q.pr a ∈ 𝒪[k] ∧ q.pr (cA D a) ∈ 𝒪[k] := by
   constructor
@@ -39,6 +49,15 @@ theorem mem_intAt_iff (q : SplitPt D k) {a : AE D} (ha : a ∈ idAt D (· = q.v)
     rw [eq_sec_add_csec q ha, RingHom.map_add]
     exact add_mem ((q.int_iff _).1 h1) ((cA_int_iff _).2 ((q.int_iff _).1 h2))
 
+/- English proof (translation)
+Establish `he` using `e_mem_intAt q`. Establish `hpe : q.pr q.e = 1` using `by rw [← sec_one q, q.pr_sec]`. Establish `h1` using `((mem_intAt_iff q (h.1 q.e he).1.1).1 (h.1 q.e he).1).1`. Establish `h2` using `((mem_intAt_iff q (h.1 q.e he).2.1).1 (h.1 q.e he).2).1`. Rewrite `h1`, `h2` using `[map_mul, hpe, mul_one]`.
+
+Establish `hne : D.host.xi0 ≠ 0` using `GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero`. Establish `hprod : q.pr (incA D D.host.xi0⁻¹) * q.pr (incA D D.host.xi0) = 1`. Rewrite using `[← map_mul, ← map_mul, inv_mul_cancel₀ hne, map_one, map_one]`. Express the relevant statement in the definitionally equal form `valuation k (q.pr (incA D D.host.xi0)) = 1`. Establish `v1` using `(Valuation.mem_integer_iff _ _).1 h1`.
+
+Establish `v2` using `(Valuation.mem_integer_iff _ _).1 h2`. Establish `v3` using `congrArg (valuation k) hprod`. Rewrite `v3` using `[map_mul, map_one]`. Use `le_antisymm v1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+
+Use `push_neg at hlt`. Use `mul_lt_mul_of_le_of_lt_of_nonneg_of_pos v2 hlt zero_le' zero_lt_one` as an intermediate fact. Rewrite `this` using `[v3, mul_one]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem val_xi (q : SplitPt D k) (h : q.UnitAA) : valuation k ((ofSplit q).xi) = 1 := by
   have he := e_mem_intAt q
   have hpe : q.pr q.e = 1 := by rw [← sec_one q, q.pr_sec]

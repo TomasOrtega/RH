@@ -11,6 +11,9 @@ def TSelF {eps : ℝ} (Fm : FamP eps) : Type _ :=
 
 def TSel (𝒞 : FamClass) : Type _ := ∀ {eps : ℝ} (Fm : FamP eps), 𝒞 Fm → TSelF Fm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨s.1, fun x hx h i => ⟨s.2 x hx h i⟩⟩`.
+-/
 theorem TSelF.tiedRec {eps : ℝ} {Fm : FamP eps} (s : TSelF Fm) :
     ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, TiedRec (Fm.ex x hx i) :=
   ⟨s.1, fun x hx h i => ⟨s.2 x hx h i⟩⟩

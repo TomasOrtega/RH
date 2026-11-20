@@ -17,6 +17,9 @@ def UAct {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
       LBIso (P.L.pull α) (Xo.univ.t.PP.L.pull β) ∧
       ∀ a, ∃ f : G ⟶ G, f.left ≫ α = α ≫ (act a).left ∧ f.left ≫ β = β ≫ (Xo.univ.t.act.act (H.bar a)).left
 
+/- English proof (translation)
+The claim follows from `let ⟨G, i, α, β, h₁, h₂, h₃, _⟩ := h ⟨G, i, α, β, h₁, h₂, h₃⟩`.
+-/
 theorem UAct.uOver {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {R R' : Type} [CommRing R] [CommRing R'] {P : PolAV (Sp R)}
     {act : 𝓞 E → (P.A ⟶ P.A)} {σ : R →+* R'} {u : Sp R' ⟶ Xo.XF c} (h : UAct Xo c P act σ u) : UOver Xo c P σ u :=

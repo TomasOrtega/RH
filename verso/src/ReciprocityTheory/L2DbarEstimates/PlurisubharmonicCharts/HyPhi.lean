@@ -9,6 +9,85 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Introduce `A L la N w w0 s De σ ps F0 h hD hF hσ hps hPos hF0 hh hdb`. Distinguish the cases in `hfin : ∫⁻ y, h y * ENNReal.ofReal (Real.exp (-ps y)) ∂A.mu = ⊤`. Use `⟨fun _ _ => 0, ⟨fun i => differentiableOn_const 0, fun i j y _ _ _ => by simp⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hfin]`. Conclude with `le_top`.
+
+Use `set M := A.Mset w0 s De with hMdef`. Use `set X := flatStein A hD hF with hX`. Establish `hMo : IsOpen M` using `isOpen_Mset A hD`. Use `set Φ := hyPhi A w0 s σ la ps with hΦdef`. Use `set u0 := sectionFrameQuotient A F0 σ with hu0def`.
+
+Use `set nσ := A.nsq (A.kap + la) σ with hnσdef`. Establish `hpsc : Continuous ps` using `hyq_smoothFn_cont A hps`. Establish `hΦs : SmoothR n X.z (fun y : M => Φ y)` using `smoothR_flat A hD hF Φ (fun x hx => ⟨A.pick x, A.mem_pick x, hyq_phi_smooth A hD hF hσ hps hx _ (A.mem_pick x)⟩)`. Establish `hΦl : LeviNonneg n X.z (fun y : M => Φ y)` using `leviNonneg_flat A hD hF Φ (fun x hx => ⟨A.pick x, A.mem_pick x, hyq_phi_smooth A hD hF hσ hps hx _ (A.mem_pick x), fun ξ => by`. Rewrite using `[hyq_levi_phi A hD hF hσ hps hx _ (A.mem_pick x)]`.
+
+Conclude with `hPos _ _ (A.mem_pick x) ξ⟩)`. Establish `hu0s : Smooth n X.z (fun y : M => u0 y)` using `smooth_flat A hD hF u0 (fun x hx => ⟨A.pick x, A.mem_pick x, contDiffAt_sectionFrameQuotient A hD hσ hF0 hx _ (A.mem_pick x)⟩)`. Establish `hnσs : SmoothR n X.z (fun y : M => nσ y)` using `smoothR_flat A hD hF nσ (fun x hx => ⟨A.pick x, A.mem_pick x, hyq_nsig_smooth A hD hσ hx _ (A.mem_pick x)⟩)`. Establish `hnσc : Continuous (fun y : M => nσ y)`. Use `Complex.continuous_re.comp (Smooth.continuous n X.z X.isLocalHomeomorph _ hnσs)` as an intermediate fact.
+
+Conclude with `this`. Establish `hu0c : Continuous (fun y : M => u0 y)` using `Smooth.continuous n X.z X.isLocalHomeomorph _ hu0s`. Use `set hHf : M → ℝ≥0∞ := fun x => h x * ENNReal.ofReal (nσ x)⁻¹ with hHfdef`. Establish `hHm : Measurable hHf` using `(hh.comp measurable_subtype_coe).mul (ENNReal.measurable_ofReal.comp hnσc.measurable.inv)`. Establish `hdbM : ∀ (x : M) (η : Fin n → ℂ), ENNReal.ofReal (‖dbarDot n X.z (fun y : M => u0 y) x η‖ ^ 2) ≤ hHf x * ENNReal.ofReal (Levi n X.z (fun y : M => Φ y) x η).re`.
+
+Introduce `x η`. Establish `hi` using `A.mem_pick (x : Y)`. Establish `hdet` using `jz_det_ne A hD hF x x.2 (A.pick x) hi`. Use `set J' := (jz A w0 s (A.pick x) x).toContinuousLinearEquivOfDetNeZero hdet`. Use `set ξ : Fin n → ℂ := WithLp.ofLp (J'.symm (WithLp.toLp 2 η)) with hξ`.
+
+Establish `hη : (fun k => jz A w0 s (A.pick x) x (WithLp.toLp 2 ξ) k) = η`. Establish `h1 : jz A w0 s (A.pick x) x (WithLp.toLp 2 ξ) = WithLp.toLp 2 η`. Establish `h2` using `((jz A w0 s (A.pick x) x).toContinuousLinearEquivOfDetNeZero hdet).apply_symm_apply (WithLp.toLp 2 η)`. Rewrite `h2` using `[ContinuousLinearMap.toContinuousLinearEquivOfDetNeZero_apply]`. Simplify `h2` using `[J', ξ]`.
+
+Rewrite using `[h1]`. Rewrite using `[← hη, ← dbar_flat_loc A hD hF u0 (A.pick x) x hi (contDiffAt_sectionFrameQuotient A hD hσ hF0 x.2 _ hi) ξ, ← levi_flat_loc A hD hF Φ (A.pick x) x hi (hyq_phi_smooth A hD hF hσ hps x.2 _ hi) ξ, hyq_levi_phi A hD hF hσ hps x.2 _ hi, dbar_sectionFrameQuotient A hD hσ hF0 x.2 _ hi]`. Establish `key` using `hdb (A.pick x) x hi ξ`. Establish `hσne` using `hyq_sigma_ne A hσ x.2 (A.pick x) hi`. Establish `e1 : ‖A.dbarAt (A.pick x) F0 x ξ / σ (A.pick x) x‖ ^ 2 = (‖A.dbarAt (A.pick x) F0 x ξ‖ ^ 2 * Real.exp (-A.ph (A.kap + la) (A.pick x) x)) * (nσ x)⁻¹`.
+
+Simplify using `only [hnσdef, nsq]`. Rewrite using `[norm_div, div_pow, mul_inv, Real.exp_neg, inv_inv]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, ENNReal.ofReal_mul (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨Fu, hFu, hFbd⟩` from `hH M X (fun y => Φ y) (fun y => u0 y) hHf hΦs hΦl hu0s hHm hdbM`. Use `set ut : Y → ℂ := fun y => if hy : y ∈ M then Fu ⟨y, hy⟩ else 0 with hutdef`. Establish `hut : (fun y : M => ut y) = Fu` using `funext fun y => dif_pos y.2`. Establish `hutc : Continuous (fun y : M => ut y)`. Rewrite using `[hut]`.
+
+Conclude with `Smooth.continuous n X.z X.isLocalHomeomorph _ (Holo.smooth n X.z _ hFu)`. Use `set Fs : ι → Y → ℂ := fun i y => σ i y * ut y with hFsdef`. Establish `hFs : A.IsSecOn (A.kap + la) M Fs`. Use `⟨fun i => ?_, fun i j y hy hi hj => ?_⟩` and prove the remaining obligations. Establish `h1` using `(holo_flat_iff A hD hF ut).1 (by rw [hut]; exact hFu) i`.
+
+Conclude with `(hσ.1.1 i).mul h1`. Simplify using `only [hFsdef]`. Rewrite using `[hσ.1.2 i j y hy hi hj]`. Expand and normalize the polynomial expressions, which then agree. Use `set ψ0 : Y → ℝ≥0∞ := fun y => ENNReal.ofReal (nσ y * ‖u0 y - ut y‖ ^ 2 * Real.exp (-ps y)) with hψ0def`.
+
+Use `set ψ : Y → ℝ≥0∞ := M.indicator ψ0 with hψdef`. Establish `hψm : Measurable ψ`. Use `measurable_of_restrict_of_restrict_compl hMo.measurableSet ?_ ?_` and prove the remaining obligations. Establish `hc : Continuous (fun y : M => ψ0 y)` using `ENNReal.continuous_ofReal.comp ((hnσc.mul ((hu0c.sub hutc).norm.pow 2)).mul (Real.continuous_exp.comp (hpsc.comp continuous_subtype_val).neg))`. Establish `: M.domRestrict ψ = fun y : M => ψ0 y` using `funext fun y => by show M.indicator ψ0 y = ψ0 y; exact Set.indicator_of_mem y.2 _`.
+
+Rewrite using `[this]`. Conclude with `hc.measurable`. Establish `: Mᶜ.domRestrict ψ = fun _ => 0` using `funext fun y => by show M.indicator ψ0 y = 0; exact Set.indicator_of_notMem y.2 _`. Rewrite using `[this]`. Conclude with `measurable_const`.
+
+Establish `hae : ∀ᵐ y ∂A.mu, y ∈ M`. Rewrite using `[ae_iff]`. Simplify `mu_compl_Mset A hN hD hF` using `[Set.compl_def]`. Establish `hre : ∀ f : Y → ℝ≥0∞, ∫⁻ y, f y ∂A.mu = ∫⁻ y in M, f y ∂A.mu` using `fun f => by`. Rewrite using `[Measure.restrict_eq_self_of_ae_mem hae]`.
+
+Use `set nJ := A.nsq A.kap (fun i y => (jz A w0 s i y).det) with hnJdef`. Establish `hdens : ∀ x : M, Real.exp (A.ph A.kap (A.pick x) x) / ‖(jz A w0 s (A.pick x) x).det‖ ^ 2 = (nJ x)⁻¹`. Introduce `x`. Establish `hJp` using `hyq_nJ_pos A hD hF x.2`. Simplify using `only [hnJdef, nsq] at hJp ⊢`.
+
+Rewrite using `[Real.exp_neg, mul_inv, inv_inv, div_eq_mul_inv, mul_comm]`. Establish `hexp : ∀ x : M, Real.exp (-Φ x) = nσ x * Real.exp (-ps x) * (nJ x)⁻¹`. Introduce `x`. Establish `hσp` using `hyq_nsig_pos A hσ x.2`. Establish `hJp` using `hyq_nJ_pos A hD hF x.2`.
+
+Establish `e : -Φ x = Real.log (nσ x) - Real.log (nJ x) + -ps x`. Simplify using `only [hΦdef, hyPhi, hnσdef, hnJdef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Real.exp_add, Real.exp_sub, Real.exp_log hσp, Real.exp_log hJp]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hI1 : ∫⁻ y, ψ y ∂A.mu = wint n X.z (fun x => u0 x - Fu x) (fun y => Φ y)`. Rewrite using `[hre, lintegral_flat A hD hF ψ hψm, wint]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `hσp` using `hyq_nsig_pos A hσ x.2`. Rewrite using `[hψdef, Set.indicator_of_mem x.2]`.
+
+Use `show ENNReal.ofReal (nσ x * ‖u0 x - ut x‖ ^ 2 * Real.exp (-ps x)) * _ = _`. Rewrite using `[show ut x = Fu x from congrFun hut x, ← ENNReal.ofReal_mul (by positivity), hdens x, hexp x]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hI2 : ∫⁻ x, hHf x * ENNReal.ofReal (Real.exp (-(fun y : M => Φ y) x)) ∂vol n X.z = ∫⁻ y in M, h y * ENNReal.ofReal (Real.exp (-ps y)) ∂A.mu`.
+
+Rewrite using `[lintegral_flat A hD hF (fun y => h y * ENNReal.ofReal (Real.exp (-ps y))) (hh.mul (ENNReal.measurable_ofReal.comp (Real.continuous_exp.comp hpsc.neg).measurable))]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `hσp` using `hyq_nsig_pos A hσ x.2`. Establish `hJp` using `hyq_nJ_pos A hD hF x.2`. Rewrite using `[hHfdef, mul_assoc, mul_assoc, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), hdens x]`.
+
+Use `show h x * ENNReal.ofReal ((nσ x)⁻¹ * Real.exp (-Φ x)) = _`. Rewrite using `[hexp x]`. Use `congr 2`. Rewrite using `[← mul_assoc, ← mul_assoc, inv_mul_cancel₀ (show nσ x ≠ 0 from hσp.ne'), one_mul]`. Establish `hint : ∫⁻ y, ψ y ∂A.mu ≤ ∫⁻ y, h y * ENNReal.ofReal (Real.exp (-ps y)) ∂A.mu`.
+
+Rewrite using `[hI1]`. Conclude with `hFbd.trans (hI2.le.trans (setLIntegral_le_lintegral _ _))`. Establish `hψfin : ∫⁻ y, ψ y ∂A.mu < ⊤` using `hint.trans_lt (lt_top_iff_ne_top.2 hfin)`. Establish `hloc : ∀ y, ∃ U ∈ 𝓝 y, ∫⁻ x in U ∩ M, ENNReal.ofReal (A.nsq (A.kap + la) Fs x) ∂A.mu < ⊤`. Introduce `y0`.
+
+Establish `hi` using `A.mem_pick y0`. Use `set e := A.chart (A.pick y0) with he`. Take `⟨r, hr, hrt⟩` from `Metric.isOpen_iff.1 e.open_target (e y0) (e.map_source hi)`. Establish `hcb : closedBall (e y0) (r / 2) ⊆ e.target` using `(closedBall_subset_ball (by linarith)).trans hrt`. Establish `hS : ContinuousOn e.symm (closedBall (e y0) (r / 2))` using `e.continuousOn_symm.mono hcb`.
+
+Take `⟨C1, hC1⟩` from `hyq_bdd (f := fun v => ‖F0 (A.pick y0) (e.symm v)‖ ^ 2 * Real.exp (-A.ph (A.kap + la) (A.pick y0) (e.symm v))) (c := e y0) (r := r / 2) (by`. Establish `h1` using `(hF0.1 (A.pick y0)).continuousOn.mono hcb`. Establish `h2` using `(A.smooth_ph (A.kap + la) (A.pick y0)).continuousOn.mono hcb`. Conclude with `(h1.norm.pow 2).mul (Real.continuous_exp.comp_continuousOn h2.neg))`. Take `⟨C2, hC2⟩` from `hyq_bdd (f := fun v => ps (e.symm v)) (c := e y0) (r := r / 2) (hpsc.comp_continuousOn hS)`.
+
+Take `⟨C3, hC3⟩` from `hyq_bdd (f := fun v => Real.exp (A.ph A.kap (A.pick y0) (e.symm v))) (c := e y0) (r := r / 2) (Real.continuous_exp.comp_continuousOn ((A.smooth_ph A.kap (A.pick y0)).continuousOn.mono hcb))`. Use `set U := e.source ∩ e ⁻¹' ball (e y0) (r / 2) with hU`. Establish `hUo : IsOpen U` using `e.isOpen_inter_preimage isOpen_ball`. Establish `hyU : y0 ∈ U` using `⟨hi, mem_ball_self (by linarith)⟩`. Establish `hUM : MeasurableSet (U ∩ M)` using `(hUo.inter hMo).measurableSet`.
+
+Use `⟨U, hUo.mem_nhds hyU, ?_⟩` and prove the remaining obligations. Establish `hC1n : 0 ≤ C1` using `le_trans (by positivity) (hC1 (e y0) (mem_closedBall_self (by linarith)))`. Establish `hpt : ∀ x ∈ U ∩ M, ENNReal.ofReal (A.nsq (A.kap + la) Fs x) ≤ ENNReal.ofReal (2 * C1) + ENNReal.ofReal (2 * Real.exp C2) * ψ x`. Introduce and unpack `x ⟨⟨hxs, hxb⟩, hxM⟩`. Establish `hv : e x ∈ closedBall (e y0) (r / 2)` using `ball_subset_closedBall hxb`.
+
+Establish `hSx : e.symm (e x) = x` using `e.left_inv hxs`. Establish `h1` using `hC1 _ hv`. Establish `h2` using `hC2 _ hv`. Simplify using `only [hSx] at h1 h2`. Establish `hF0x : A.nsq (A.kap + la) F0 x = ‖F0 (A.pick y0) x‖ ^ 2 * Real.exp (-A.ph (A.kap + la) (A.pick y0) x)` using `hyq_nsq_chart A _ F0 _ x hxs (hF0.2 _ _ x hxs (A.mem_pick x))`.
+
+Establish `hσne` using `hyq_sigma_ne A hσ hxM (A.pick x) (A.mem_pick x)`. Establish `hFsx : A.nsq (A.kap + la) Fs x = nσ x * ‖ut x‖ ^ 2`. Simplify using `only [nsq, hFsdef, hnσdef, norm_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hF0x' : A.nsq (A.kap + la) F0 x = nσ x * ‖u0 x‖ ^ 2`.
+
+Simplify using `only [nsq, hnσdef, hu0def, sectionFrameQuotient, norm_div, div_pow]`. Clear the denominators using the available nonvanishing facts. Establish `hσp` using `hyq_nsig_pos A hσ hxM`. Use `set t := nσ x * ‖u0 x - ut x‖ ^ 2 * Real.exp (-ps x) with ht`. Establish `hψx : ψ x = ENNReal.ofReal t` using `by rw [hψdef, Set.indicator_of_mem hxM]`.
+
+Establish `ht0 : 0 ≤ t` using `by positivity`. Establish `hpar : ‖ut x‖ ^ 2 ≤ 2 * ‖u0 x‖ ^ 2 + 2 * ‖u0 x - ut x‖ ^ 2`. Establish `h0 : ‖ut x‖ ≤ ‖u0 x‖ + ‖u0 x - ut x‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖ut x‖ ^ 2 ≤ (‖u0 x‖ + ‖u0 x - ut x‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h0 2`.
+
+Use polynomial arithmetic with `[sq_nonneg (‖u0 x‖ - ‖u0 x - ut x‖)]`. Establish `hte : nσ x * ‖u0 x - ut x‖ ^ 2 = Real.exp (ps x) * t`. Rewrite using `[ht, Real.exp_neg]`. Clear the denominators using the available nonvanishing facts. Establish `hkey : A.nsq (A.kap + la) Fs x ≤ 2 * C1 + 2 * Real.exp C2 * t`.
+
+Establish `he2 : Real.exp (ps x) ≤ Real.exp C2` using `Real.exp_le_exp.2 h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hF0x]`. Use `gcongr`. Use `_ = 2 * C1 + 2 * Real.exp C2 * t := by ring`.
+
+Rewrite using `[hψx, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_add (by positivity) (by positivity)]`. Conclude with `ENNReal.ofReal_le_ofReal hkey`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_left measurable_const, lintegral_const, lintegral_const_mul _ hψm, Measure.restrict_apply_univ]`. Use `_ < ⊤ := by`.
+
+Establish `hmu : A.mu (U ∩ M) < ⊤`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `_ ⟨y, ⟨_, hyb⟩, rfl⟩`. Conclude with `ball_subset_closedBall hyb)`. Use `_ ≤ ∫⁻ v in closedBall (e y0) (r / 2), ENNReal.ofReal C3 := setLIntegral_mono' measurableSet_closedBall (fun v hv => ENNReal.ofReal_le_ofReal (hC3 v hv))`.
+
+Use `_ = ENNReal.ofReal C3 * volume (closedBall (e y0) (r / 2)) := setLIntegral_const _ _`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top measure_closedBall_lt_top`. Establish `hψU : ∫⁻ x in U ∩ M, ψ x ∂A.mu < ⊤` using `(setLIntegral_le_lintegral _ _).trans_lt hψfin`. Conclude with `ENNReal.add_lt_top.2 ⟨ENNReal.mul_lt_top ENNReal.ofReal_lt_top hmu, ENNReal.mul_lt_top ENNReal.ofReal_lt_top hψU⟩`. Take `⟨G, hG, hGeq⟩` from `ext_Mset A hE hD hF (A.kap + la) Fs hFs hloc`.
+
+Use `⟨G, hG, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr_ae (hae.mono fun y hy => ?_)` and prove the remaining obligations. Rewrite using `[hψdef, Set.indicator_of_mem hy]`. Use `show ENNReal.ofReal (A.nsq (A.kap + la) (F0 - G) y * Real.exp (-ps y)) = ψ0 y`.
+
+Establish `hσne` using `hyq_sigma_ne A hσ hy (A.pick y) (A.mem_pick y)`. Establish `hGy` using `hGeq (A.pick y) y hy (A.mem_pick y)`. Establish `e : A.nsq (A.kap + la) (F0 - G) y = nσ y * ‖u0 y - ut y‖ ^ 2`. Simplify using `only [nsq, Pi.sub_apply, hGy, hFsdef, hnσdef, hu0def, sectionFrameQuotient]`. Rewrite using `[show F0 (A.pick y) y - σ (A.pick y) y * ut y = σ (A.pick y) y * (F0 (A.pick y) y / σ (A.pick y) y - ut y) by field_simp, norm_mul, mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `_ ≤ _ := hint`.
+-/
 theorem hy (n : ℕ) (Y : Type u) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*) [AddCommGroup La] (hH : HAll.{u} n) (hE : EXTStatement n) (hN : EXTNullStatement n) :
     HYStatement n Y ι La := by
   intro A L la N w w0 s De σ ps F0 h hD hF hσ hps hPos hF0 hh hdb

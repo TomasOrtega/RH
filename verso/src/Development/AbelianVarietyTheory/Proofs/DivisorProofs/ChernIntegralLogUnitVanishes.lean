@@ -19,6 +19,21 @@ open scoped ContDiff
 
 namespace GlobalTheory.ArInt
 
+/- English proof (translation)
+Introduce `H k _ X _ p D hX a ι _ L n`. Set `u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ` to `fun σ y => CxPts.logSq y ⊤ a`. Establish `hu : ∀ σ y, CxPts.CInfAt (u σ) y`. Introduce `σ y`. Establish `hy : y ∈ ptsIn p σ (⊤ : X.Opens)` using `mem_ptsIn_top`.
+
+Establish `hs : ContDiff ℝ ∞ fun v : Unit → ℂ => ‖v ()‖ ^ 2` using `(contDiff_apply ℝ ℂ ()).norm_sq ℂ`. Use `⟨⊤, Unit, inferInstance, fun _ => a.val, fun v => Real.log (‖v ()‖ ^ 2), {v | ‖v ()‖ ^ 2 ≠ 0}, hy, isOpen_ne_fun hs.continuous continuous_const, ?_, hs.contDiffOn.log fun _ h => h, Filter.Eventually.of_forall fun _ => rfl⟩` and prove the remaining obligations. Conclude with `pow_ne_zero _ (norm_ne_zero_iff.2 (ev_ne_zero hy a.isUnit))`. Establish `hc : ∀ σ σ', (Weight.ofFun (u σ)).IsConj (Weight.ofFun (u σ'))`. Introduce `σ σ' i y y' h _`.
+
+Express the relevant statement in the definitionally equal form `CxPts.logSq y' ⊤ a = CxPts.logSq y ⊤ a`. Simplify using `only [CxPts.logSq, CxPts.ev_conj h mem_ptsIn_top, RCLike.norm_conj]`. Establish `hiso : (HermLB.triv p).Isometric (fnB u hu hc)`. Use `isometric_of_local (fun _ : PUnit => (⊤ : X.Opens)) (fun _ => ⟨PUnit.unit, trivial⟩) (fun _ => PUnit.unit) (fun _ => PUnit.unit) (fun _ => le_rfl) (fun _ => le_rfl) (fun _ => a) (fun x j j' _ _ => ?_) (fun σ j y _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = gm (𝟙 X) x _ (1 : Γ(X, ⊤ ⊓ ⊤)ˣ) * (gm (𝟙 X) x _ (1 : Γ(X, ⊤ ⊓ ⊤)ˣ))⁻¹ * _`.
+
+Rewrite using `[map_one, inv_one, mul_one, one_mul]`. Express the relevant statement in the definitionally equal form `CxPts.logSq y ⊤ a = 0 + CxPts.logSq y ⊤ a`. Rewrite using `[zero_add]`. Establish `h0 : HermLB.triv p = fnB (fun _ _ => 0) (fun _ y => cInfAt_const 0 y) (fun _ _ _ _ _ _ _ => rfl)` using `rfl`. Take `⟨Φ, hΦ⟩` from `((H.arExists k X p D hX).2 (Option ι) fun o => o.elim (HermLB.triv p) L).1`.
+
+Establish `hΦ' : IsArFun (fun o : Option ι => o.elim (fnB u hu hc) L) D Φ` using `((H.arIso k X p D hX).2 _ _ Φ hΦ).2.1 _ fun o => by`. Consider the cases of `o with`. Consider the case `none => exact hiso`. Consider the case `some i => exact HermLB.Isometric.refl _`. Rewrite `hΦ` using `[h0]`.
+
+Take `⟨h₁, h₂⟩` from `H.arMix.fnB H.arExists hX hΦ' n`. Establish `h₃` using `(H.arMix.fnB H.arExists hX hΦ n).2`. Use `⟨h₁, ?_⟩` and prove the remaining obligations. Establish `hz : chInt (comb L n) D (fun _ _ => (0 : ℝ)) = 0`. Use `finsum_eq_zero_of_forall_eq_zero fun σ => ?_` and prove the remaining obligations.
+
+Simplify using `[Weight.chernInt]`. Rewrite `h₃` using `[hz]`. Express the relevant statement in the definitionally equal form `chInt (comb L n) D u = 0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem chInt_logSq_unit_eq_zero : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (a : Γ(X, ⊤)ˣ) (ι : Type) [Fintype ι] (L : ι → HermLB p) (n : ι → ℤ),
       (∀ σ, ((comb L n).φ σ).ChernIntegrableOn D Set.univ (fun y => CxPts.logSq y ⊤ a)) ∧

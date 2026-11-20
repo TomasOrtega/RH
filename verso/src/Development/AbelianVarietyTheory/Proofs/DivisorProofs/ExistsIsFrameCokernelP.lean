@@ -27,14 +27,23 @@ def AdaptedAt (o : ι → ℕ) (T : ∀ a, E a ⟶ L) (u : ∀ a, E a ⟶ E' a) 
   ∀ a i, (∀ z : Σ a, Fin (r a), o a < o z.1 → (hc.basis le_rfl).repr ((T a).app V (f a i)) z = 0) ∧
     ∀ j, (hc.basis le_rfl).repr ((T a).app V (f a i)) ⟨a, j⟩ = ((hf' a).basis le_rfl).repr ((u a).app V (f a i)) j
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem locAdapted_iff (o : ι → ℕ) (T : ∀ a, E a ⟶ L) (u : ∀ a, E a ⟶ E' a) (V : X.Opens) :
     LocAdapted r o T u V ↔ ∃ (f : ∀ a, Fin (r a) → Γ(E a, V)) (_ : ∀ a, IsFrame (f a)) (f' : ∀ a, Fin (r a) → Γ(E' a, V))
       (hf' : ∀ a, IsFrame (f' a)) (c : (Σ a, Fin (r a)) → Γ(L, V)) (hc : IsFrame c), AdaptedAt o T u f f' hf' c hc :=
   Iff.rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ ⟨a, ha, rest⟩ => ⟨a, lt_of_lt_of_le ha h, rest⟩`.
+-/
 theorem genSpan_mono (o : ι → ℕ) (T : ∀ a, E a ⟶ L) {k l : ℕ} (h : k ≤ l) : genSpan o T k ≤ genSpan o T l :=
   Submodule.span_mono fun _ ⟨a, ha, rest⟩ => ⟨a, lt_of_lt_of_le ha h, rest⟩
 
+/- English proof (translation)
+Introduce `h` and use `Submodule.subset_span ⟨a, hk, V, h, s, rfl⟩`.
+-/
 theorem app_mem_filtSub (o : ι → ℕ) (T : ∀ a, E a ⟶ L) (a : ι) {k : ℕ} (hk : o a < k) (V : X.Opens) (s : Γ(E a, V)) :
     (T a).app V s ∈ (filtSub o T k).sec V :=
   fun h => Submodule.subset_span ⟨a, hk, V, h, s, rfl⟩
@@ -43,12 +52,18 @@ def stepMap (o : ι → ℕ) (T : ∀ a, E a ⟶ L) (k : ℕ) : (filtSub o T k).
   (filtSub o T (k + 1)).lift (filtSub o T k).incl fun V s h =>
     genSpan_mono o T (Nat.le_succ k) ((filtSub o T k).incl_app_mem s h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[reassoc (attr := simp)] theorem stepMap_incl (o : ι → ℕ) (T : ∀ a, E a ⟶ L) (k : ℕ) :
     stepMap o T k ≫ (filtSub o T (k + 1)).incl = (filtSub o T k).incl := rfl
 
 def liftT (o : ι → ℕ) (T : ∀ a, E a ⟶ L) (a : ι) : E a ⟶ (filtSub o T (o a + 1)).toMod :=
   (filtSub o T (o a + 1)).lift (T a) fun V s => app_mem_filtSub o T a (Nat.lt_succ_self _) V s
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[reassoc (attr := simp)] theorem liftT_incl (o : ι → ℕ) (T : ∀ a, E a ⟶ L) (a : ι) :
     liftT o T a ≫ (filtSub o T (o a + 1)).incl = T a := rfl
 
@@ -58,6 +73,17 @@ namespace GlobalTheory.GrFilt
 
 variable {X : Scheme.{0}} {F : X.Modules} {U : X.Opens} {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Establish `hmem (j : {z // Q z}) : c j ∈ P.sec U`. Use `(hP U le_rfl (Pi.single (j : κ) 1)).2 fun j' hj' => by` as an intermediate fact. Rewrite using `[Pi.single_apply, if_neg (by rintro rfl; exact hj' j.2)]`. Simplify `this` using `[Pi.single_apply, resM_self]`. Use `⟨fun j => P.mkSec _ (hmem j), isFrame_iff.2 fun V h => ⟨?_, fun t _ => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations.
+
+Use `LinearIndependent.of_comp (QCoh.appLinear P.incl V) ?_` and prove the remaining obligations. Use `(hc.basis h).linearIndependent.comp _ (Subtype.val_injective (p := Q))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, IsFrame.basis_apply, QCoh.appLinear_apply, app_resM, Sub.incl_app_mkSec]`.
+
+Establish `h1` using `P.incl_app_mem t`. Rewrite `h1` using `[← (hc.basis h).sum_repr (P.incl.app V t)]`. Simplify using `only [IsFrame.basis_apply] at h1`. Establish `h2` using `(hP V h _).1 h1`. Establish `h3 : t = ∑ j : {z // Q z}, (hc.basis h).repr (P.incl.app V t) j • resM P.toMod h (P.mkSec _ (hmem j))`.
+
+Apply `P.incl_app_injective V` to reduce the goal to its premises. Use `conv_lhs => rw [← (hc.basis h).sum_repr (P.incl.app V t)]`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, app_resM, Sub.incl_app_mkSec, IsFrame.basis_apply]`. Use `symm`. Use `Finset.sum_of_injOn Subtype.val Subtype.val_injective.injOn (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _)) (fun j _ hj => ?_) (fun _ _ => rfl)` and prove the remaining obligations.
+
+Rewrite using `[h2 j (fun hq => hj ⟨⟨j, hq⟩, by simp, rfl⟩), zero_smul]`. Rewrite using `[h3]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem exists_isFrame_subP (P : Sub F) (c : κ → Γ(F, U)) (hc : IsFrame c) (Q : κ → Prop) [DecidablePred Q]
     (hP : ∀ (V : X.Opens) (h : V ≤ U) (a : κ → Γ(X, V)),
       (∑ j, a j • resM F h (c j)) ∈ P.sec V ↔ ∀ j, ¬ Q j → a j = 0) :
@@ -90,11 +116,23 @@ theorem exists_isFrame_subP (P : Sub F) (c : κ → Γ(F, U)) (hc : IsFrame c) (
 def qFirst (Q : κ → Prop) [DecidablePred Q] : κ ≃ Fin (Fintype.card {z // Q z} + Fintype.card {z // ¬ Q z}) :=
   (Equiv.sumCompl Q).symm.trans ((Equiv.sumCongr (Fintype.equivFin _) (Fintype.equivFin _)).trans finSumFinEquiv)
 
+/- English proof (translation)
+Distinguish the cases in `h : Q z`. Simplify using `[qFirst, h, Equiv.sumCompl_symm_apply_of_pos]`. Simplify using `[qFirst, h, Equiv.sumCompl_symm_apply_of_neg]`.
+-/
 theorem qFirst_lt_iff (Q : κ → Prop) [DecidablePred Q] (z : κ) : ((qFirst Q z : ℕ) < Fintype.card {z // Q z}) ↔ Q z := by
   by_cases h : Q z
   · simp [qFirst, h, Equiv.sumCompl_symm_apply_of_pos]
   · simp [qFirst, h, Equiv.sumCompl_symm_apply_of_neg]
 
+/- English proof (translation)
+Use `set σ := qFirst Q`. Take `⟨e, he⟩` from `exists_isFrame_cokernel_of_frame P (c ∘ σ.symm) (hc.comp_equiv σ.symm) (Fintype.card {z // Q z}) (Nat.le_add_right _ _) fun V h a => by`. Establish `e1 : (∑ j, a j • resM F h ((c ∘ σ.symm) j)) = ∑ z, a (σ z) • resM F h (c z)` using `(Equiv.sum_comp σ (fun j => a j • resM F h ((c ∘ σ.symm) j))).symm.trans (by simp)`. Rewrite using `[e1]`. Use `(hP V h (fun z => a (σ z))).trans ?_` and prove the remaining obligations.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H j hj`. Use `H (σ.symm j) (fun hq => by` as an intermediate fact. Use `(qFirst_lt_iff Q (σ.symm j)).2 hq` as an intermediate fact. Simplify using `only [σ, Equiv.apply_symm_apply] at this`.
+
+Use the proof step `omega)`. Simplify using `using this`. Introduce `H z hz`. Conclude with `H (σ z) (Nat.le_of_not_lt (mt (qFirst_lt_iff Q z).1 hz))`. Establish `hn : Fintype.card {z // Q z} + Fintype.card {z // ¬ Q z} - Fintype.card {z // Q z} = Fintype.card {z // ¬ Q z}` using `Nat.add_sub_cancel_left _ _`.
+
+Conclude with `⟨e ∘ (finCongr hn).symm, he.comp_equiv _⟩`.
+-/
 theorem exists_isFrame_cokernelP (P : Sub F) (c : κ → Γ(F, U)) (hc : IsFrame c) (Q : κ → Prop) [DecidablePred Q]
     (hP : ∀ (V : X.Opens) (h : V ≤ U) (a : κ → Γ(X, V)),
       (∑ j, a j • resM F h (c j)) ∈ P.sec V ↔ ∀ j, ¬ Q j → a j = 0) :

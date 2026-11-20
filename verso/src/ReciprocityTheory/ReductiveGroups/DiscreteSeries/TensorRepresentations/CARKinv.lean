@@ -7,16 +7,25 @@ open Finset
 namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ} {W : Type*} [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem carKinv_triple₁ {R : Type*} [Ring R] (A B C δ : R) (h1 : C * A + A * C = 0)
     (h2 : B * C + C * B = δ) : A * B * C - C * (A * B) = A * δ := by
   calc A * B * C - C * (A * B) = A * (B * C + C * B) - (C * A + A * C) * B := by noncomm_ring
     _ = A * δ := by rw [h1, h2]; noncomm_ring
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem carKinv_triple₂ {R : Type*} [Ring R] (A B C δ : R) (h1 : C * A + A * C = δ)
     (h2 : B * C + C * B = 0) : A * B * C - C * (A * B) = -(δ * B) := by
   calc A * B * C - C * (A * B) = A * (B * C + C * B) - (C * A + A * C) * B := by noncomm_ring
     _ = -(δ * B) := by rw [h1, h2]; noncomm_ring
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← h, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+-/
 theorem carKinv_sum_mul_comm {R ι κ : Type*} [Ring R] (s : Finset ι) (t : Finset κ)
     (f : ι → κ → R) (X : R) (h : ∑ i ∈ s, ∑ c ∈ t, (f i c * X - X * f i c) = 0) :
     (∑ i ∈ s, ∑ c ∈ t, f i c) * X = X * ∑ i ∈ s, ∑ c ∈ t, f i c := by
@@ -24,6 +33,9 @@ theorem carKinv_sum_mul_comm {R ι κ : Type*} [Ring R] (s : Finset ι) (t : Fin
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hQA, hPS, sub_self, sub_self, mul_zero, zero_mul, add_zero, add_zero]`.
+-/
 theorem carKinv_expand {R : Type*} [Ring R] (P Q A S : R) (hQA : Q * A = A * Q)
     (hPS : P * S = S * P) :
     P * Q * (A + S) - (A + S) * (P * Q) = (P * A - A * P) * Q - P * (S * Q - Q * S) := by
@@ -33,6 +45,11 @@ theorem carKinv_expand {R : Type*} [Ring R] (P Q A S : R) (hQA : Q * A = A * Q)
     _ = (P * A - A * P) * Q - P * (S * Q - Q * S) := by
         rw [hQA, hPS, sub_self, sub_self, mul_zero, zero_mul, add_zero, add_zero]
 
+/- English proof (translation)
+Establish `key : ∀ x y u v, E c d * (cp x y * cm u v) = cp x y * cm u v * E c d`. Introduce `x y u v`. Rewrite using `[← mul_assoc, (hEC c d x y).1, mul_assoc, (hEC c d u v).2, ← mul_assoc]`. Unfold `sgE`. Use `split_ifs`.
+
+Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun x _ => key _ _ _ _`. Rewrite using `[mul_neg, neg_mul, Finset.mul_sum, Finset.sum_mul]`. Conclude with `congrArg Neg.neg (Finset.sum_congr rfl fun x _ => key _ _ _ _)`. Simplify using the standard rewrite rules.
+-/
 theorem carKinv_E_sgE {E cp cm : Fin n → Fin n → Module.End ℂ W} (hEC : CommutesCAR E cp cm)
     (ε : Fin n → Bool) (a b c d : Fin n) : E c d * sgE ε cp cm a b = sgE ε cp cm a b * E c d := by
   have key : ∀ x y u v, E c d * (cp x y * cm u v) = cp x y * cm u v * E c d := by
@@ -46,6 +63,11 @@ theorem carKinv_E_sgE {E cp cm : Fin n → Fin n → Module.End ℂ W} (hEC : Co
     exact congrArg Neg.neg (Finset.sum_congr rfl fun x _ => key _ _ _ _)
   · simp
 
+/- English proof (translation)
+Establish `hs : sgE ε cp cm a b = ∑ x ∈ minusIdx ε, cp a x * cm b x` using `by simp [sgE, ha, hb]`. Establish `hcm : c ∈ minusIdx ε` using `by simp [minusIdx, hc]`. Rewrite using `[hs, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_congr rfl fun x _ => carKinv_triple₁ _ _ _ _ (hC i c a x).1 (hC b x i c).2.2]`. Distinguish the cases in `hbi : b = i`. Substitute `hbi` using the available equality.
+
+Simplify using `[mul_ite, Finset.sum_ite_eq', hcm]`. Simplify using `[hbi]`.
+-/
 theorem carKinv_sg_cp_plus {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp cm)
     (ε : Fin n → Bool) (a b i c : Fin n) (ha : ε a = true) (hb : ε b = true) (hc : ε c = false) :
     sgE ε cp cm a b * cp i c - cp i c * sgE ε cp cm a b = if b = i then cp a c else 0 := by
@@ -58,6 +80,11 @@ theorem carKinv_sg_cp_plus {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : 
     simp [mul_ite, Finset.sum_ite_eq', hcm]
   · simp [hbi]
 
+/- English proof (translation)
+Establish `hs : sgE ε cp cm a b = -∑ y ∈ plusIdx ε, cp y b * cm y a` using `by simp [sgE, ha, hb]`. Establish `hip : i ∈ plusIdx ε` using `by simp [plusIdx, hi]`. Establish `e : ∀ S T : Module.End ℂ W, (-S) * T - T * (-S) = -(S * T - T * S)` using `fun S T => by noncomm_ring`. Rewrite using `[hs, e, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_congr rfl fun y _ => carKinv_triple₁ _ _ _ _ (hC i c y b).1 (hC y a i c).2.2]`. Use `congr 1`.
+
+Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality. Simplify using `[mul_ite, Finset.sum_ite_eq', hip]`. Simplify using `[hac]`.
+-/
 theorem carKinv_sg_cp_minus {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp cm)
     (ε : Fin n → Bool) (a b i c : Fin n) (ha : ε a = false) (hb : ε b = false) (hi : ε i = true) :
     sgE ε cp cm a b * cp i c - cp i c * sgE ε cp cm a b = -(if a = c then cp i b else 0) := by
@@ -72,6 +99,11 @@ theorem carKinv_sg_cp_minus {cp cm : Fin n → Fin n → Module.End ℂ W} (hC :
     simp [mul_ite, Finset.sum_ite_eq', hip]
   · simp [hac]
 
+/- English proof (translation)
+Establish `hs : sgE ε cp cm a b = ∑ x ∈ minusIdx ε, cp a x * cm b x` using `by simp [sgE, ha, hb]`. Establish `hcm : c ∈ minusIdx ε` using `by simp [minusIdx, hc]`. Rewrite using `[hs, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_congr rfl fun x _ => carKinv_triple₂ _ _ _ _ (hC i c a x).2.2 (hC b x i c).2.1, Finset.sum_neg_distrib]`. Use `congr 1`. Distinguish the cases in `hia : i = a`.
+
+Substitute `hia` using the available equality. Simplify using `[ite_mul, Finset.sum_ite_eq, hcm]`. Simplify using `[hia]`.
+-/
 theorem carKinv_sg_cm_plus {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp cm)
     (ε : Fin n → Bool) (a b i c : Fin n) (ha : ε a = true) (hb : ε b = true) (hc : ε c = false) :
     sgE ε cp cm a b * cm i c - cm i c * sgE ε cp cm a b = -(if i = a then cm b c else 0) := by
@@ -86,6 +118,11 @@ theorem carKinv_sg_cm_plus {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : 
     simp [ite_mul, Finset.sum_ite_eq, hcm]
   · simp [hia]
 
+/- English proof (translation)
+Establish `hs : sgE ε cp cm a b = -∑ y ∈ plusIdx ε, cp y b * cm y a` using `by simp [sgE, ha, hb]`. Establish `hip : i ∈ plusIdx ε` using `by simp [plusIdx, hi]`. Establish `e : ∀ S T : Module.End ℂ W, (-S) * T - T * (-S) = -(S * T - T * S)` using `fun S T => by noncomm_ring`. Rewrite using `[hs, e, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_congr rfl fun y _ => carKinv_triple₂ _ _ _ _ (hC i c y b).2.2 (hC y a i c).2.1, Finset.sum_neg_distrib, neg_neg]`. Distinguish the cases in `hcb : c = b`.
+
+Substitute `hcb` using the available equality. Simplify using `[ite_mul, Finset.sum_ite_eq, hip]`. Simplify using `[hcb]`.
+-/
 theorem carKinv_sg_cm_minus {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp cm)
     (ε : Fin n → Bool) (a b i c : Fin n) (ha : ε a = false) (hb : ε b = false) (hi : ε i = true) :
     sgE ε cp cm a b * cm i c - cm i c * sgE ε cp cm a b = if c = b then cm i a else 0 := by
@@ -100,6 +137,9 @@ theorem carKinv_sg_cm_minus {cp cm : Fin n → Fin n → Module.End ℂ W} (hC :
     simp [ite_mul, Finset.sum_ite_eq, hip]
   · simp [hcb]
 
+/- English proof (translation)
+Unfold `diagE`. Rewrite using `[carKinv_expand _ _ _ _ (hEC a b i c).1.symm (carKinv_E_sgE hEC ε a b c i), hE c i a b]`.
+-/
 theorem carKinv_term_d {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E)
     (hEC : CommutesCAR E cp cm) (ε : Fin n → Bool) (a b i c : Fin n) :
     E c i * cp i c * diagE ε E cp cm a b - diagE ε E cp cm a b * (E c i * cp i c) =
@@ -108,6 +148,9 @@ theorem carKinv_term_d {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : Is
   unfold diagE
   rw [carKinv_expand _ _ _ _ (hEC a b i c).1.symm (carKinv_E_sgE hEC ε a b c i), hE c i a b]
 
+/- English proof (translation)
+Unfold `diagE`. Rewrite using `[carKinv_expand _ _ _ _ (hEC a b i c).2.symm (carKinv_E_sgE hEC ε a b i c), hE i c a b]`.
+-/
 theorem carKinv_term_d' {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E)
     (hEC : CommutesCAR E cp cm) (ε : Fin n → Bool) (a b i c : Fin n) :
     E i c * cm i c * diagE ε E cp cm a b - diagE ε E cp cm a b * (E i c * cm i c) =
@@ -116,6 +159,17 @@ theorem carKinv_term_d' {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : I
   unfold diagE
   rw [carKinv_expand _ _ _ _ (hEC a b i c).2.symm (carKinv_E_sgE hEC ε a b i c), hE i c a b]
 
+/- English proof (translation)
+Unfold `dOp`. Apply `carKinv_sum_mul_comm` to reduce the goal to its premises. Repeatedly rewrite using `[carKinv_term_d hE hEC]`. Establish `hpl : ∀ x, x ∈ plusIdx ε ↔ ε x = true` using `fun x => by simp [plusIdx]`. Establish `hmi : ∀ x, x ∈ minusIdx ε ↔ ε x = false` using `fun x => by simp [minusIdx]`.
+
+Consider the cases of `hεa : ε a`. Establish `hεb : ε b = false` using `by rw [← hab]; exact hεa`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `(hpl i).1 hi`. Establish `hia : i ≠ a` using `by rintro rfl; simp_all`.
+
+Rewrite using `[Finset.sum_congr rfl fun c _ => show ((if i = a then E c b else 0) - (if b = c then E a i else 0)) * cp i c - E c i * (sgE ε cp cm a b * cp i c - cp i c * sgE ε cp cm a b) = (if a = c then E a i * cp i b else 0) - (if b = c then E a i * cp i b else 0) by`. Rewrite using `[carKinv_sg_cp_minus hC ε a b i c hεa hεb hi']`. Apply the tactic sequence `split_ifs <;> subst_vars <;> (try simp_all) <;> (try noncomm_ring)]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.sum_ite_eq, if_pos ((hmi a).2 hεa), if_pos ((hmi b).2 hεb), sub_self]`. Establish `hεb : ε b = true` using `by rw [← hab]; exact hεa`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun c hc => ?_` and prove the remaining obligations. Establish `hc'` using `(hmi c).1 hc`. Establish `hbc : b ≠ c` using `by rintro rfl; simp_all`. Rewrite using `[Finset.sum_congr rfl fun i _ => show ((if i = a then E c b else 0) - (if b = c then E a i else 0)) * cp i c - E c i * (sgE ε cp cm a b * cp i c - cp i c * sgE ε cp cm a b) = (if i = a then E c b * cp a c else 0) - (if b = i then E c b * cp a c else 0) by`.
+
+Rewrite using `[carKinv_sg_cp_plus hC ε a b i c hεa hεb hc']`. Apply the tactic sequence `split_ifs <;> subst_vars <;> (try simp_all) <;> (try noncomm_ring)]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq, if_pos ((hpl a).2 hεa), if_pos ((hpl b).2 hεb), sub_self]`.
+-/
 theorem dOp_comm_diagE {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E) (hC : IsCAR cp cm)
     (hEC : CommutesCAR E cp cm) (ε : Fin n → Bool) (a b : Fin n) (hab : ε a = ε b) :
     dOp ε E cp * diagE ε E cp cm a b = diagE ε E cp cm a b * dOp ε E cp := by
@@ -153,6 +207,17 @@ theorem dOp_comm_diagE {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : Is
     rw [Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq, if_pos ((hpl a).2 hεa),
       if_pos ((hpl b).2 hεb), sub_self]
 
+/- English proof (translation)
+Unfold `dOp'`. Rewrite using `[neg_mul, mul_neg, neg_inj]`. Apply `carKinv_sum_mul_comm` to reduce the goal to its premises. Repeatedly rewrite using `[carKinv_term_d' hE hEC]`. Establish `hpl : ∀ x, x ∈ plusIdx ε ↔ ε x = true` using `fun x => by simp [plusIdx]`.
+
+Establish `hmi : ∀ x, x ∈ minusIdx ε ↔ ε x = false` using `fun x => by simp [minusIdx]`. Consider the cases of `hεa : ε a`. Establish `hεb : ε b = false` using `by rw [← hab]; exact hεa`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `(hpl i).1 hi`.
+
+Establish `hib : b ≠ i` using `by rintro rfl; simp_all`. Rewrite using `[Finset.sum_congr rfl fun c _ => show ((if c = a then E i b else 0) - (if b = i then E a c else 0)) * cm i c - E i c * (sgE ε cp cm a b * cm i c - cm i c * sgE ε cp cm a b) = (if c = a then E i b * cm i a else 0) - (if c = b then E i b * cm i a else 0) by`. Rewrite using `[carKinv_sg_cm_minus hC ε a b i c hεa hεb hi']`. Apply the tactic sequence `split_ifs <;> subst_vars <;> (try simp_all) <;> (try noncomm_ring)]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq', if_pos ((hmi a).2 hεa), if_pos ((hmi b).2 hεb), sub_self]`.
+
+Establish `hεb : ε b = true` using `by rw [← hab]; exact hεa`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun c hc => ?_` and prove the remaining obligations. Establish `hc'` using `(hmi c).1 hc`. Establish `hca : c ≠ a` using `by rintro rfl; simp_all`.
+
+Rewrite using `[Finset.sum_congr rfl fun i _ => show ((if c = a then E i b else 0) - (if b = i then E a c else 0)) * cm i c - E i c * (sgE ε cp cm a b * cm i c - cm i c * sgE ε cp cm a b) = (if i = a then E a c * cm b c else 0) - (if b = i then E a c * cm b c else 0) by`. Rewrite using `[carKinv_sg_cm_plus hC ε a b i c hεa hεb hc']`. Apply the tactic sequence `split_ifs <;> subst_vars <;> (try simp_all) <;> (try noncomm_ring)]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq, if_pos ((hpl a).2 hεa), if_pos ((hpl b).2 hεb), sub_self]`.
+-/
 theorem dOp'_comm_diagE {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E) (hC : IsCAR cp cm)
     (hEC : CommutesCAR E cp cm) (ε : Fin n → Bool) (a b : Fin n) (hab : ε a = ε b) :
     dOp' ε E cm * diagE ε E cp cm a b = diagE ε E cp cm a b * dOp' ε E cm := by

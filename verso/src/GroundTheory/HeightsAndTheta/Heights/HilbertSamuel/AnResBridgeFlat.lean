@@ -16,6 +16,9 @@ open MvPolynomial MeasureTheory ReciprocityTheory.AnForm.M Topology Filter Set
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {P J : Ideal (MRing ι)} {e : ℕ} (R : AnRes P J e)
 
+/- English proof (translation)
+Use `Set.Finite.of_finite_image (f := brW R Ψ) ((fibreFinite K ι P e Ψ hP hΨ y).subset ?_) ((brW_injOn R Ψ).mono fun x hx => hx.2)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `brW_mem_fibre R Ψ hP.1 hP.2.1.2.1 hx.2.2` as an intermediate fact. Rewrite `this` using `[show brQ R Ψ x = y from hx.1]`. Then use the resulting hypothesis.
+-/
 theorem brFib_finite' (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
     (hP : IsArithVar P (e + 1)) (hΨ : IsGoodProj P Ψ) (y : Fin e → ℂ) :
     (brQ R Ψ ⁻¹' {y} ∩ {x | R.lift x x ∉ mcPts J ∧ Ψ (segre (R.lift x x)) 0 ≠ 0}).Finite := by
@@ -25,6 +28,11 @@ theorem brFib_finite' (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1
   have := brW_mem_fibre R Ψ hP.1 hP.2.1.2.1 hx.2.2
   rwa [show brQ R Ψ x = y from hx.1] at this
 
+/- English proof (translation)
+Take `⟨c, hc, hzc⟩` from `R.compat z x z ⟨R.mem_U z, hz⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `mem_mcPts_of_sameOrbit R.homog ⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), ?_⟩ h` and prove the remaining obligations. Use function extensionality and compare the values at `p`.
+
+Rewrite using `[hzc]`. Clear denominators, using `[hc p.1]` for the nonvanishing conditions. Introduce `h`. Conclude with `mem_mcPts_of_sameOrbit R.homog ⟨c, hc, hzc⟩ h`.
+-/
 theorem lift_mem_iff {x z : R.X} (hz : z ∈ R.U x) :
     R.lift z z ∈ mcPts J ↔ R.lift x z ∈ mcPts J := by
   obtain ⟨c, hc, hzc⟩ := R.compat z x z ⟨R.mem_U z, hz⟩
@@ -37,12 +45,22 @@ theorem lift_mem_iff {x z : R.X} (hz : z ∈ R.U x) :
   · intro h
     exact mem_mcPts_of_sameOrbit R.homog ⟨c, hc, hzc⟩ h
 
+/- English proof (translation)
+Take `⟨c, hc, hzc⟩` from `R.compat z x z ⟨R.mem_U z, hz⟩`. Conclude with `⟨∏ k, c k, Finset.prod_ne_zero_iff.mpr fun k _ => hc k, by rw [hzc, segre_smul, map_smul]⟩`.
+-/
 theorem psi_lift_eq {x z : R.X} (hz : z ∈ R.U x)
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) :
     ∃ μ : ℂ, μ ≠ 0 ∧ Ψ (segre (R.lift z z)) = μ • Ψ (segre (R.lift x z)) := by
   obtain ⟨c, hc, hzc⟩ := R.compat z x z ⟨R.mem_U z, hz⟩
   exact ⟨∏ k, c k, Finset.prod_ne_zero_iff.mpr fun k _ => hc k, by rw [hzc, segre_smul, map_smul]⟩
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `u1 ⟨hu1, hB1⟩`. Use `set x1 := (R.A.chart j).symm u1`. Establish `hV : (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x1 ∈ 𝓝 u1` using `((R.A.chart j).isOpen_inter_preimage_symm (R.isOpen_U x1)).mem_nhds ⟨hu1, R.mem_U x1⟩`. Establish `hnot : ¬ ∀ f ∈ J, eval (R.lift x1 x1) (map (Int.castRingHom ℂ) f) = 0` using `fun h => hB1 ⟨(R.mem x1 x1 (R.mem_U x1)).1, h⟩`.
+
+Use `push Not at hnot`. Take `⟨f, hfJ, hf0⟩` from `hnot`. Establish `hcont : ContinuousAt (fun u => eval (R.lift x1 ((R.A.chart j).symm u)) (map (Int.castRingHom ℂ) f)) u1` using `(MvPolynomial.continuous_eval _).continuousAt.comp (analyticAt_lift_chart R x1 j ⟨hu1, R.mem_U x1⟩).continuousAt`. Use `filter_upwards [hV, hcont.eventually_ne hf0] with u hu hne`. Use `⟨hu.1, fun hB => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hne (((lift_mem_iff R hu.2).mp hB).2 f hfJ)`.
+-/
 theorem isOpen_chart_notB (j : Fin R.A.n) :
     IsOpen ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' {x | R.lift x x ∉ mcPts J}) := by
   rw [isOpen_iff_mem_nhds]
@@ -62,6 +80,15 @@ theorem isOpen_chart_notB (j : Fin R.A.n) :
   refine ⟨hu.1, fun hB => ?_⟩
   exact hne (((lift_mem_iff R hu.2).mp hB).2 f hfJ)
 
+/- English proof (translation)
+Use `set O' := O ∩ ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' {x | R.lift x x ∉ mcPts J}) with hO'def`. Establish `hO' : IsOpen O'` using `hO.inter (isOpen_chart_notB R j)`. Establish `hne' : O'.Nonempty`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Set.not_nonempty_iff_eq_empty]`.
+
+Take `⟨u, hu⟩` from `hne`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hO u hu`. Establish `hsub : Metric.ball u r ⊆ (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' {x | R.lift x x ∈ mcPts J}`. Introduce `v hv`. Establish `hvO` using `hball hv`.
+
+Use `⟨hOt hvO, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hB`. Establish `: v ∈ O'` using `⟨hvO, hOt hvO, hB⟩`. Rewrite `this` using `[h]`. Conclude with `this`.
+
+Conclude with `(Metric.measure_ball_pos volume u hr).ne' (measure_mono_null hsub (R.null j))`. Take `⟨y, hy⟩` from `exists_infinite_fibre hO' hne' (han.mono inter_subset_left) (fun u hu => hdet u hu.1)`. Use `(brFib_finite' R Ψ hP hΨ y).not_infinite ((Set.Infinite.image ((R.A.chart j).symm.injOn.mono fun u hu => hOt hu.1.1) hy).mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, ⟨huO, hqu⟩, rfl⟩`. Conclude with `⟨hqu, huO.2.2, h0 u huO.1⟩`.
+-/
 theorem not_flat (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
     (hP : IsArithVar P (e + 1)) (hΨ : IsGoodProj P Ψ) (j : Fin R.A.n) {O : Set (Fin e → ℂ)}
     (hO : IsOpen O) (hOt : O ⊆ (R.A.chart j).target) (hne : O.Nonempty)
@@ -94,6 +121,13 @@ theorem not_flat (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) →
   rintro _ ⟨u, ⟨huO, hqu⟩, rfl⟩
   exact ⟨hqu, huO.2.2, h0 u huO.1⟩
 
+/- English proof (translation)
+Use `set u := R.A.chart j x`. Establish `hsu : (R.A.chart j).symm u = x` using `(R.A.chart j).left_inv hj`. Use `set T := R.A.chart k ∘ (R.A.chart j).symm with hTdef`. Establish `huk : u ∈ (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' (R.A.chart k).source` using `⟨(R.A.chart j).map_source hj, by rw [mem_preimage, hsu]; exact hk⟩`. Establish `hT : AnalyticAt ℂ T u` using `R.A.holo j k u huk`.
+
+Establish `hTu : T u = R.A.chart k x` using `by simp only [hTdef, Function.comp_apply, hsu]`. Establish `hQk` using `analyticAt_brQ R Ψ x k hk h0`. Establish `heq : brQ R Ψ ∘ (R.A.chart j).symm =ᶠ[𝓝 u] (brQ R Ψ ∘ (R.A.chart k).symm) ∘ T` using `by filter_upwards [((R.A.chart j).isOpen_inter_preimage_symm (R.A.chart k).open_source).mem_nhds huk] with v hv`. Simplify using `only [hTdef, Function.comp_apply, (R.A.chart k).left_inv hv.2]`. Rewrite using `[heq.fderiv_eq, fderiv_comp u (by rw [hTu]; exact hQk.differentiableAt) hT.differentiableAt, hTu]`.
+
+Conclude with `LinearMap.det_comp _ _`.
+-/
 theorem det_brQ_chart (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) {x : R.X}
     {j k : Fin R.A.n} (hj : x ∈ (R.A.chart j).source) (hk : x ∈ (R.A.chart k).source)
     (h0 : Ψ (segre (R.lift x x)) 0 ≠ 0) :

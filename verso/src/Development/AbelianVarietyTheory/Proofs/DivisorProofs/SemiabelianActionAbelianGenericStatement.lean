@@ -10,6 +10,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Mean4 GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DieuCover.exists_cover_hasDieu_of_hypotheses | exact GlobalTheory.DieuCover.exists_cover_hasDieu_of_hypotheses | (intros; apply GlobalTheory.DieuCover.exists_cover_hasDieu_of_hypotheses <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.semiabelian_action_abelian_generic : GlobalTheory.CovTop.HypothesesXH → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
   (q : ℕ) [Fact q.Prime], q ≠ 2 → ¬ q ∣ (discr E).natAbs →
   ∀ (k : Type) [Field k] [IsAlgClosed k] [CharP k q] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] [IsIntegral C],

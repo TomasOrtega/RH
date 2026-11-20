@@ -12,6 +12,9 @@ section Std
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Finset.univ_sum_single v]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: (Pi.single j (v j) : Sp E a) = v j • Pi.single j 1` using `by rw [← Pi.single_smul, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul]`.
+-/
 theorem xt_sum_single {a b : ℕ} (z : HomE E a b) (v : Sp E a) : z v = ∑ j, v j • z (Pi.single j 1) := by
   conv_lhs => rw [← Finset.univ_sum_single v]
   rw [map_sum]
@@ -19,6 +22,11 @@ theorem xt_sum_single {a b : ℕ} (z : HomE E a b) (v : Sp E a) : z v = ∑ j, v
   have : (Pi.single j (v j) : Sp E a) = v j • Pi.single j 1 := by rw [← Pi.single_smul, smul_eq_mul, mul_one]
   rw [this, map_smul]
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[ciMem_stdAt]`. Introduce `l`. Rewrite using `[xt_sum_single z v, Finset.sum_apply]`. Conclude with `ciIntAt_sum _ _ fun j _ => by`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `(hv j).mul (hz j l)`.
+-/
 theorem xt_map_std {a b : ℕ} (z : HomE E a b) (hz : ∀ j l, IntAt P (z (Pi.single j 1) l)) {v : Sp E a} (hv : v ∈ stdAt E a P) :
     z v ∈ stdAt E b P := by
   rw [ciMem_stdAt] at hv ⊢
@@ -55,6 +63,37 @@ def LastRow {j : ℕ} (Λm : LevFam X.E X.K (R.N j) Pr.vGs) : Prop :=
 
 variable {Ch sel mu cst L}
 
+/- English proof (translation)
+Establish `hk : ∀ v, κ.1 v ∈ stdAt X.E (R.N (m2 + 1)) w.1 ↔ v ∈ stdAt X.E (R.N (m2 + 1)) w.1` using `κ.2`. Establish `hk' : ∀ v, κ'.1 v ∈ stdAt X.E (R.N (m2 + 1 + 1)) w.1 ↔ v ∈ stdAt X.E (R.N (m2 + 1 + 1)) w.1` using `κ'.2`. Distinguish the cases in `hint : ∀ j l, IntAt w.1 (y (Pi.single j 1) l)`. Establish `hF : ftY sel mu cst w (atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ (κ'.1.symm.toLinearMap ∘ₗ y ∘ₗ κ.1.toLinearMap)) y₁ = ftY sel mu cst w (atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ y) y₂`. Establish `e1 : atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ (κ'.1.symm.toLinearMap ∘ₗ y ∘ₗ κ.1.toLinearMap) = (atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ κ'.1.symm.toLinearMap ∘ₗ y) ∘ₗ κ.1.toLinearMap` using `rfl`.
+
+Rewrite using `[e1, ftY_move2 sel mu cst hc w hw κ _ y₂ y₁ hδ hq]`. Use `set ζ : Sp X.E (R.N (m2 + 1)) →ₗ[X.E] X.E := atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ κ'.1.symm.toLinearMap ∘ₗ y - atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ y with hζdef`. Establish `e2 : atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ κ'.1.symm.toLinearMap ∘ₗ y = atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ y + ζ` using `by rw [hζdef]; abel`. Establish `hζq : ∀ i, IntAt w.1 (ζ (Pi.single i 1) / (qOf w.1 : X.E))`. Introduce `i`.
+
+Use `set v := y (Pi.single i 1) with hv`. Establish `hvs : v ∈ stdAt X.E (R.N (m2 + 1 + 1)) w.1` using `(ciMem_stdAt _ _).2 (hint i)`. Establish `hvs' : κ'.1.symm v ∈ stdAt X.E (R.N (m2 + 1 + 1)) w.1` using `(hk' _).1 (by rw [LinearEquiv.apply_symm_apply]; exact hvs)`. Establish `h1` using `hκ' _ hvs'`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`.
+
+Establish `h2 : redV w.1 (κ'.1.symm v) = h'.1.1.mulVec (redV w.1 v)`. Rewrite using `[h1, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `h3 : redP w.1 (κ'.1.symm v ⟨R.N (m2 + 1 + 1) - 1, xt_last_lt R _⟩) = redP w.1 (v ⟨R.N (m2 + 1 + 1) - 1, xt_last_lt R _⟩)`. Establish `h20` using `congrFun h2 ⟨R.N (m2 + 1 + 1) - 1, xt_last_lt R _⟩`. Establish `e : (h'.1.1.mulVec (redV w.1 v)) ⟨R.N (m2 + 1 + 1) - 1, xt_last_lt R _⟩ = redV w.1 v ⟨R.N (m2 + 1 + 1) - 1, xt_last_lt R _⟩` using `by show ∑ l, h'.1.1 ⟨R.N (m2 + 1 + 1) - 1, xt_last_lt R _⟩ l * redV w.1 v l = _`.
+
+Rewrite using `[Finset.sum_eq_single (⟨R.N (m2 + 1 + 1) - 1, xt_last_lt R _⟩ : Fin (R.N (m2 + 1 + 1)))]`. Rewrite using `[hRow ⟨w.1, hw⟩ h'.1 h'.2 ⟨R.N (m2 + 1 + 1) - 1, xt_last_lt R _⟩, if_pos rfl, one_mul]`. Introduce `l _ hl`. Rewrite using `[hRow ⟨w.1, hw⟩ h'.1 h'.2 l, if_neg (fun hh => hl (Fin.ext hh)), zero_mul]`. Introduce `hh`.
+
+Conclude with `absurd (Finset.mem_univ _) hh`. Conclude with `h20.trans e`. Establish `ha` using `(ciMem_stdAt _ _).1 hvs' ⟨R.N (m2 + 1 + 1) - 1, xt_last_lt R _⟩`. Establish `hb` using `(ciMem_stdAt _ _).1 hvs ⟨R.N (m2 + 1 + 1) - 1, xt_last_lt R _⟩`. Establish `e3 : ζ (Pi.single i 1) = κ'.1.symm v ⟨R.N (m2 + 1 + 1) - 1, xt_last_lt R _⟩ - v ⟨R.N (m2 + 1 + 1) - 1, xt_last_lt R _⟩`.
+
+Rewrite using `[hζdef, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.comp_apply, xt_atNL, xt_atNL]`. Both sides reduce to the same expression. Rewrite using `[e3]`. Conclude with `ciIntAt_div (ciQ_mem w.1) hu (ciIntAt_sub ha hb) (by rw [redP_sub ha hb, h3, sub_self])`. Establish `hq0 : (qOf w.1 : X.E) ≠ 0` using `ciQ_ne_zero hu`.
+
+Establish `hζ : ∀ i, IntAt w.1 (ζ (Pi.single i 1))` using `fun i => by`. Use `(ciIntAt_q (q := qOf w.1)).mul (hζq i)` as an intermediate fact. Rewrite `this` using `[mul_div_cancel₀ _ hq0]`. Then use the resulting hypothesis. Establish `hζy : IntAt w.1 (ζ y₂)`. Establish `e4 : ζ y₂ = ∑ j, y₂ j * ζ (Pi.single j 1)` using `by conv_lhs => rw [← Finset.univ_sum_single y₂]`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: (Pi.single j (y₂ j) : Sp X.E (R.N (m2 + 1))) = y₂ j • Pi.single j 1` using `by rw [← Pi.single_smul, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, smul_eq_mul]`. Rewrite using `[e4]`.
+
+Use `ciIntAt_sum _ _ fun j _ => ?_` and prove the remaining obligations. Establish `h1` using `(ciMem_stdAt _ _).1 hq j`. Rewrite `h1` using `[Pi.smul_apply, smul_eq_mul]`. Establish `h2` using `h1.mul (hζq j)`. Establish `e5 : ((qOf w.1 : ℕ) : X.E) * y₂ j * (ζ (Pi.single j 1) / (qOf w.1 : X.E)) = y₂ j * ζ (Pi.single j 1)`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite `h2` using `[e5]`. Then use the resulting hypothesis. Rewrite using `[e2]`. Conclude with `fourierTwist_add_integral sel mu cst hc w hw _ ζ y₂ hζ hζy hq`. Unfold `topDat`.
+
+Rewrite using `[hF, ← mul_assoc, hLaw w hw h h' κ κ' hκ hκ' y hint, mul_assoc]`. Establish `r0 : topDat Ch sel mu cst (m2 + 1) w y y₂ = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hint fun j l => topDat_int Ch sel mu cst hn w hw y y₂ hne j l`. Establish `l0 : topDat Ch sel mu cst (m2 + 1) w (κ'.1.symm.toLinearMap ∘ₗ y ∘ₗ κ.1.toLinearMap) y₁ = 0`.
+
+Assume the negation of the conclusion as `hne`. Establish `hz` using `fun j l => topDat_int Ch sel mu cst hn w hw _ y₁ hne j l`. Use `hint fun j l => ?_` and prove the remaining obligations. Establish `h1 : κ.1.symm (Pi.single j 1) ∈ stdAt X.E (R.N (m2 + 1)) w.1` using `(hk _).1 (by rw [LinearEquiv.apply_symm_apply]; exact ciSingle_mem j)`. Establish `h2` using `xt_map_std _ hz h1`.
+
+Establish `h3 : (κ'.1.symm.toLinearMap ∘ₗ y ∘ₗ κ.1.toLinearMap) (κ.1.symm (Pi.single j 1)) = κ'.1.symm (y (Pi.single j 1))`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Rewrite `h2` using `[h3]`. Establish `h4` using `(hk' _).2 h2`. Rewrite `h4` using `[LinearEquiv.apply_symm_apply]`.
+
+Conclude with `(ciMem_stdAt _ _).1 h4 l`. Rewrite using `[r0, l0, mul_zero, mul_zero]`.
+-/
 theorem topDat_law (hc : cst.Ok) {m2 : ℕ} (hn : TopNum R (m2 + 1)) {Λm : LevFam X.E X.K (R.N (m2 + 1 + 1)) Pr.vGs} {b : L.β (m2 + 1)}
     (hLaw : TopLawG Ch sel mu cst L m2 Λm b) (hRow : LastRow Λm)
     (w : rowSG Pr sel mu) (hw : w.1 ∈ Pr.vGs) (h : ↥(L.levG (m2 + 1) b ⟨w.1, hw⟩).H) (h' : ↥(Λm ⟨w.1, hw⟩).H)

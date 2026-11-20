@@ -15,6 +15,15 @@ open Matrix
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨v, hv, hJv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Set `w : InfinitePlace F` to `Classical.arbitrary _`. Set `τ : E →+* ℂ` to `(B.emb w).1`. Set `M : Matrix (Fin n) (Fin n) ℂ` to `Complex.I • Y.J.map τ`.
+
+Set `v' : Fin n → ℂ` to `fun i => τ (v i)`. Establish `hv' : v' ≠ 0` using `fun h => hv (funext fun i => τ.injective (by simpa [v'] using congrFun h i))`. Establish `hMv : M *ᵥ v' = 0`. Use extensionality with `i`. Use `congrArg τ (congrFun hJv i)` as an intermediate fact.
+
+Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Pi.zero_apply, map_zero] at this`. Simplify using `only [M, v', Matrix.smul_mulVec, Matrix.mulVec, dotProduct, Matrix.map_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, Matrix.smul_apply, mul_assoc, ← Finset.mul_sum, this, mul_zero]`. Establish `hx : star v' ≠ 0` using `fun h => hv' (by simpa using congrArg star h)`. Use `(h w).2.2 (star v') hx` as an intermediate fact. Rewrite `this` using `[star_star]`.
+
+Express the relevant statement in the definitionally equal form `0 < (_ ⬝ᵥ M *ᵥ v').re at this`. Rewrite `this` using `[hMv, dotProduct_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem det_ne_zero_of_cartan (B : Base F E) {n : ℕ} (Y : Spc F E n)
     (h : ∀ w, IsCartan (Complex.I • Y.J.map (B.emb w).1) (Y.θ w)) : Y.J.det ≠ 0 := by
   intro h0
@@ -37,6 +46,29 @@ theorem det_ne_zero_of_cartan (B : Base F E) {n : ℕ} (Y : Spc F E n)
   rw [hMv, dotProduct_zero, Complex.zero_re] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Take `⟨hax, hay, hbx, hby, hxJ, hyJ, haι, hbι⟩` from `GlobalTheory.LeviIdeleHom.dual_facts hσ hsk hxx hyy hxy horth`. Use `set aE := J *ᵥ (⇑σ ∘ y) with haE`. Use `set bE := -(J *ᵥ (⇑σ ∘ x)) with hbE`. Set `π : Matrix (Fin n₁) (Fin n) E` to `(J₁⁻¹)ᵀ * (J * ι.map σ)ᵀ`. Establish `hπι : π * ι = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [π, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hgram, ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hJ₁, Matrix.transpose_one]`. Establish `hv : ∀ w : Fin n → E, (⇑σ ∘ w) ᵥ* ι.map σ = ⇑σ ∘ (w ᵥ* ι)` using `fun w =>`. Use function extensionality and compare the values at `fun j => by simp [vecMul, dotProduct, map_sum]`.
+
+Establish `hπx : π *ᵥ x = 0`. Establish `inner : (J * ι.map σ)ᵀ *ᵥ x = 0`. Rewrite using `[mulVec_transpose, ← vecMul_vecMul, hxJ, hv, hbι]`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+
+Simplify using `only [π]`. Rewrite using `[← mulVec_mulVec, inner, mulVec_zero]`. Establish `hπy : π *ᵥ y = 0`. Establish `inner : (J * ι.map σ)ᵀ *ᵥ y = 0`. Rewrite using `[mulVec_transpose, ← vecMul_vecMul, hyJ, neg_vecMul, hv, haι]`.
+
+Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Simplify using `only [π]`. Rewrite using `[← mulVec_mulVec, inner, mulVec_zero]`. Set `X : Matrix (Fin n) (Fin 2) E` to `Matrix.of fun i k => ![x i, y i] k`.
+
+Set `L : Matrix (Fin 2) (Fin n) E` to `Matrix.of ![aE, bE]`. Establish `hLX : L * X = 1`. Use extensionality with `k l`. Apply the tactic sequence `fin_cases k <;> fin_cases l <;> simp [Matrix.mul_apply, L, X, Matrix.one_apply]`. Conclude with `hax`.
+
+Conclude with `hay`. Conclude with `hbx`. Conclude with `hby`. Establish `hLι : L * ι = 0`. Use extensionality with `k j`.
+
+Apply the tactic sequence `fin_cases k <;> simp [Matrix.mul_apply, L]`. Conclude with `congrFun haι j`. Conclude with `congrFun hbι j`. Establish `hπX : π * X = 0`. Use extensionality with `k l`.
+
+Apply the tactic sequence `fin_cases l <;> simp [Matrix.mul_apply, X]`. Conclude with `congrFun hπx k`. Conclude with `congrFun hπy k`. Establish `hXL : X * L = vecMulVec x aE + vecMulVec y bE`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.mul_apply, X, L, Fin.sum_univ_two, vecMulVec_apply]`. Establish `h1 : Matrix.fromRows π L * Matrix.fromCols ι X = 1`. Rewrite using `[Matrix.fromRows_mul_fromCols, hπι, hπX, hLι, hLX, Matrix.fromBlocks_one]`. Establish `e : Fin n₁ ⊕ Fin 2 ≃ Fin n` using `finSumFinEquiv.trans (finCongr hn.symm)`. Establish `h2` using `(Matrix.mul_eq_one_comm_of_equiv e).1 h1`.
+
+Rewrite `h2` using `[Matrix.fromCols_mul_fromRows, hXL]`. Use `⟨π, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, hbE, Matrix.vecMulVec_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem frame_of_gram {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) {n n₁ : ℕ} {J : Matrix (Fin n) (Fin n) E}
     {J₁ : Matrix (Fin n₁) (Fin n₁) E} (hsk : ∀ i j, σ (J j i) = -J i j) {x y : Fin n → E} {ι : Matrix (Fin n) (Fin n₁) E}
     (hn : n = n₁ + 2) (hxx : form σ J x x = 0) (hyy : form σ J y y = 0) (hxy : form σ J x y = 1)

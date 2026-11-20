@@ -4,6 +4,9 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Bas
 
 namespace GlobalTheory.AdmissibleDictionary
 
+/- English proof (translation)
+Introduce `D i`. Conclude with `GlobalTheory.TameFixedLift.main D.nd i`.
+-/
 theorem main : ∀ (D : D7) (i : D.nd.Loc), TruncatedSeriesCountingIdentities.CyclotomicInertiaImage (D := D) i := by
   intro D i
   exact GlobalTheory.TameFixedLift.main D.nd i

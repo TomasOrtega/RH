@@ -4,6 +4,13 @@ open NumberField TensorProduct
 
 namespace GlobalTheory.CompanionTheory.UnimodularBaseChange
 
+/- English proof (translation)
+Introduce `Z _ L _ _ _ B hB`. Set `b` to `Module.Free.chooseBasis ℤ L`. Set `c` to `b.baseChange Z`. Establish `h1 : IsUnit (LinearMap.toMatrix b b.dualBasis B).det` using `LinearEquiv.isUnit_det (LinearEquiv.ofBijective B hB) b b.dualBasis`. Establish `h2 : LinearMap.toMatrix c c.dualBasis (B.baseChange Z) = (algebraMap ℤ Z).mapMatrix (LinearMap.toMatrix b b.dualBasis B)`.
+
+Use extensionality with `i j`. Simplify using `[c, LinearMap.toMatrix_apply, Module.Basis.baseChange_apply]`. Establish `h3 : IsUnit (LinearMap.toMatrix c c.dualBasis (B.baseChange Z)).det`. Rewrite using `[h2, ← RingHom.map_det]`. Conclude with `h1.map _`.
+
+Conclude with `(LinearEquiv.ofIsUnitDet h3).bijective`.
+-/
 theorem bijective_baseChange :
     ∀ (Z : Type) [CommRing Z] (L : Type) [AddCommGroup L] [Module.Finite ℤ L] [Module.Free ℤ L]
       (B : LinearMap.BilinForm ℤ L), Function.Bijective B →

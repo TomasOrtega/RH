@@ -17,6 +17,19 @@ namespace GlobalTheory.IntStruct
 
 open MvPolynomial in
 
+/- English proof (translation)
+Set `s : Finset (σ →₀ ℕ)` to `Finset.univ.biUnion fun j => ((B j : V) : MvPolynomial σ ℂ).support`. Set `R : V →ₗ[ℂ] (s → ℂ)` to `LinearMap.pi fun m => (lcoeff ℂ m.1).comp V.subtype`. Establish `hR : LinearMap.ker R = ⊥`. Use `LinearMap.ker_eq_bot'.2 fun v hv => ?_` and prove the remaining obligations. Establish `h0 : ∀ m : s, coeff m.1 (v : MvPolynomial σ ℂ) = 0` using `fun m => congrFun hv m`.
+
+Use `Subtype.ext (MvPolynomial.ext _ _ fun m => ?_)` and prove the remaining obligations. Distinguish the cases in `hm : m ∈ s`. Simplify using `using h0 ⟨m, hm⟩`. Establish `hv' : (v : MvPolynomial σ ℂ) = ∑ j, B.repr v j • ((B j : V) : MvPolynomial σ ℂ)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hv', coeff_sum]`. Simplify using `only [coeff_smul, ZeroMemClass.coe_zero, coeff_zero]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `: m ∉ ((B j : V) : MvPolynomial σ ℂ).support` using `fun h => hm (Finset.mem_biUnion.2 ⟨j, Finset.mem_univ _, h⟩)`. Rewrite using `[notMem_support_iff.1 this, smul_zero]`.
+
+Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective R hR`. Use `⟨s, fun m => B.repr (L (Pi.single m 1)) i, fun v => ?_⟩` and prove the remaining obligations. Establish `e1 : B.repr v i = ((B.coord i).comp L) (R v)`. Rewrite using `[LinearMap.comp_apply, ← LinearMap.comp_apply L R, hL, LinearMap.id_apply, Module.Basis.coord_apply]`. Rewrite using `[e1, LinearMap.pi_apply_eq_sum_univ ((B.coord i).comp L) (R v)]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `hs : (fun j => if m = j then (1 : ℂ) else 0) = Pi.single m 1`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[hs, smul_eq_mul, mul_comm]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_coord_eq_sum_coeff {σ : Type} {d : ℕ} (V : Submodule ℂ (MvPolynomial σ ℂ)) (B : Module.Basis (Fin d) ℂ V)
     (i : Fin d) : ∃ (s : Finset (σ →₀ ℕ)) (a : s → ℂ), ∀ v : V, B.repr v i = ∑ m : s, a m * coeff m.1 (v : MvPolynomial σ ℂ) := by
   classical

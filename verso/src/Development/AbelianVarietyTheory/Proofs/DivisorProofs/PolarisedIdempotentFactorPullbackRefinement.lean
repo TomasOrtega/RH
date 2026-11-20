@@ -22,6 +22,9 @@ section PFactorPull
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {B C : Over S} {B₁ C₁ : Over S'} [GrpObj B] [GrpObj C]
   [GrpObj B₁] [GrpObj C₁] [IsCommMonObj C] [IsCommMonObj C₁] {β : B₁.left ⟶ B.left} {δ : C₁.left ⟶ C.left}
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show _ ≫ (fst C C).left = _ ≫ (fst C C).left`. Rewrite using `[Category.assoc, (isSquare_sqOf gC).1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst, Over.comp_left, Over.comp_left, Category.assoc, hu, ← Category.assoc β₂, hsq.1, Category.assoc]`. Use `show _ ≫ (snd C C).left = _ ≫ (snd C C).left`. Rewrite using `[Category.assoc, (isSquare_sqOf gC).2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd, Over.comp_left, Over.comp_left, Category.assoc, hv, ← Category.assoc β₂, hsq.2, Category.assoc]`.
+-/
 theorem lift_sq_of (β₂ : (G2 B₁).left ⟶ (G2 B).left) (hsq : IsSquare β β₂) (gC : IsGrpPullback C₁ C f δ)
     {u v : B ⟶ C} {u₁ v₁ : B₁ ⟶ C₁} (hu : u₁.left ≫ δ = β ≫ u.left) (hv : v₁.left ≫ δ = β ≫ v.left) :
     (lift (fst B₁ B₁ ≫ u₁) (snd B₁ B₁ ≫ v₁) : G2 B₁ ⟶ G2 C₁).left ≫ sqOf gC =
@@ -40,6 +43,29 @@ end PFactorPull
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `R R' _ _ _ _ ρ hρ Q D' F D ε hR D₁' hD' _ o₁ hx ho`. Take `⟨β, β₂, wR, gB, hsq, hwR, hcR, htR⟩` from `hR`. Establish `gC` using `pull_grp hD'`. Take `⟨inc, mi, hi⟩` from `hom_pull gB gC F.inc F.inc_hom`. Take `⟨pr, mp, hp⟩` from `hom_pull gC gB F.pr F.pr_hom`.
+
+Take `⟨xi, hxi⟩ : ∃ xi : D.X →+ D₁'.X, ∀ y, hD'.xe (xi y) = F.xi (ε y)` from `⟨hD'.xe.symm.toAddMonoidHom.comp (F.xi.comp ε.toAddMonoidHom), fun y => hD'.xe.apply_symm_apply _⟩`. Take `⟨xp, hxp⟩ : ∃ xp : D₁'.X →+ D.X, ∀ y, ε (xp y) = F.xp (hD'.xe y)` from `⟨ε.symm.toAddMonoidHom.comp (F.xp.comp hD'.xe.toAddMonoidHom), fun y => ε.apply_symm_apply _⟩`. Establish `hf : (inc ≫ o₁.onB.act F.f).left ≫ proj hD' = β ≫ (F.inc ≫ F.o.onB.act F.f).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, ho, ← Category.assoc, hi, Category.assoc]`. Establish `hm` using `lift_sq_of β₂ hsq gC hi hf`.
+
+Take `⟨w, hw, vw⟩` from `GlobalTheory.T.mumfordBundleIso_square_passes_second_iso gC Q.M.isLB D'.P.isLB D.P.isLB D₁'.P.isLB β₂ wR hwR hD'.w hD'.w_gen hm F.w F.w_gen`. Establish `hc : ∀ y, D₁'.c (xi y) = D.c y ≫ inc` using `fun y => ext_pull gC (by`. Rewrite using `[hD'.c_pr, hxi, F.c_xi, Over.comp_left, Over.comp_left, Category.assoc, hi, ← Category.assoc (D.c y).left, hcR, Category.assoc])`. Use `⟨inc, pr, xi, xp, w, mi, mp, ext_pull gB ?_, ext_pull gC ?_, fun y => ε.injective ?_, fun y => hD'.xe.injective ?_, hc, fun y y' h => ?_, fun z => ?_, hw, fun a b z I₁ J₁ hI₁ hJ₁ => ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left, Category.assoc, hp, ← Category.assoc, hi, Category.assoc, ← Over.comp_left, F.inc_pr, Over.id_left, Over.id_left, Category.comp_id, Category.id_comp]`.
+
+Rewrite using `[Over.comp_left, Category.assoc, hi, ← Category.assoc, hp, Category.assoc, ← Over.comp_left, F.pr_inc, ho]`. Rewrite using `[hxp, hxi, F.xp_xi]`. Rewrite using `[hxi, hxp, F.xi_xp, hx]`. Establish `h'` using `congrArg hD'.xe h`. Simplify using `only [hx, hxi] at h'`.
+
+Conclude with `ε.injective (F.inj h')`. Take `⟨y, hy⟩` from `F.onto (hD'.xe z)`. Use `⟨ε.symm y, hD'.xe.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hx, hx, hx, hxi, ε.apply_symm_apply, hy]`. Take `⟨J, hJ⟩` from `GlobalTheory.DegPull.exists_good' Q.M.isLB z`.
+
+Take `⟨I, hI⟩` from `GlobalTheory.DegPull.exists_good' D'.P.isLB z`. Set `g₀` to `genMap hρ`. Establish `sq : (TK R').hom ≫ spMap ρ = g₀ ≫ (TK R).hom` using `(Category.id_comp _).symm.trans (fracMap_sq hρ)`. Establish `hκ : g₀ ≫ jK R = jK R' ≫ spMap ρ` using `(fracMap_sq hρ).symm.trans (Category.id_comp _)`. Establish `cQ : ∀ y, (toUnit (TK R') ≫ D.c y).left ≫ β = g₀ ≫ (toUnit (TK R) ≫ Q.c (ε y)).left` using `fun y => by`.
+
+Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hcR, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ (Q.c (ε y)).left) sq`. Establish `hP : (lift (toUnit (TK R') ≫ D.c a) (toUnit (TK R') ≫ D.c b)).left ≫ β₂ = g₀ ≫ (lift (toUnit (TK R) ≫ Q.c (ε a)) (toUnit (TK R) ≫ Q.c (ε b))).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show _ ≫ (fst Q.B Q.B).left = _ ≫ (fst Q.B Q.B).left`.
+
+Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst]`. Conclude with `cQ a`. Use `show _ ≫ (snd Q.B Q.B).left = _ ≫ (snd Q.B Q.B).left`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd]`. Conclude with `cQ b`.
+
+Establish `hQ : (lift (toUnit (TK R') ≫ D.c a) (toUnit (TK R') ≫ D.c b)).left ≫ (lift (fst D.P.A D.P.A ≫ inc) (snd D.P.A D.P.A ≫ inc ≫ o₁.onB.act F.f) : G2 D.P.A ⟶ G2 D₁'.P.A).left = (lift (toUnit (TK R') ≫ D₁'.c (xi a)) (toUnit (TK R') ≫ D₁'.c (F.f • xi b))).left`. Rewrite using `[← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc, o₁.c_lin, hc, hc]`. Simplify using `only [Category.assoc]`. Establish `R₁` using `htR g₀ hκ a b z J J₁ hJ hJ₁`. Establish `t₁` using `F.tau (ε a) (ε b) (g₀ z) (fun ψ => I (g₀ ≫ ψ)) (fun ψ => J (g₀ ≫ ψ)) (fun ψ => hI (g₀ ≫ ψ)) (fun ψ => hJ (g₀ ≫ ψ))`.
+
+Establish `t₂` using `(congrArg (Units.map (g₀.stalkMap z).hom.toMonoidHom) t₁).trans (map_mul _ _ _)`. Establish `n₁ : val (Q.tau (ε a) (ε b)) (g₀ ≫ 𝟙 _) z J = Units.map (g₀.stalkMap z).hom.toMonoidHom (val (Q.tau (ε a) (ε b)) (𝟙 _) (g₀ z) (fun ψ => J (g₀ ≫ ψ)))` using `Units.ext ((GlobalTheory.values_natural _ _ _ _ _ _ _ _ (𝟙 _) g₀ z J hJ).2.2.1 _)`. Establish `n₂ : val (D'.tau (F.xi (ε a)) (F.f • F.xi (ε b))) (g₀ ≫ 𝟙 _) z I = Units.map (g₀.stalkMap z).hom.toMonoidHom (val (D'.tau (F.xi (ε a)) (F.f • F.xi (ε b))) (𝟙 _) (g₀ z) (fun ψ => I (g₀ ≫ ψ)))` using `Units.ext ((GlobalTheory.values_natural _ _ _ _ _ _ _ _ (𝟙 _) g₀ z I hI).2.2.1 _)`. Rewrite `n₁`, `n₂` using `[Category.comp_id]`. Establish `E` using `n₁.trans (t₂.trans (congrArg₂ (· * ·) (lamVal_comp F.w g₀ _ z I J hI hJ).symm n₂.symm))`.
+
+Establish `K` using `vw _ (lift (toUnit (TK R') ≫ D.c a) (toUnit (TK R') ≫ D.c b)).left z I J I₁ J₁ hI hJ hI₁ hJ₁`. Rewrite `K` using `[hP, hQ]`. Establish `a₂` using `tau_lam hD' hρ (xi a) (F.f • xi b) hI hI₁`. Rewrite `a₂` using `[hx, hxi, hxi]`. Rewrite using `[R₁, ← a₂, E, ← _root_.mul_assoc, ← _root_.mul_assoc, mul_comm (lamVal w _ z I₁ J₁), K, mul_comm (lamVal F.w _ z I J)]`.
+-/
 theorem pfactor_pull : ∀ {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (ρ : R →+* R'), Function.Injective ρ →
   ∀ (Q : Data R) (D' : DegPre R) (F : PFactor Q D') (D : DegPre R') (ε : D.X ≃+ Q.X), Refines Q ρ D ε →
   ∀ (D₁' : DegPre R') (hD' : IsPullDeg ρ D' D₁') [Module F.O D₁'.X] (o₁ : D₁'.OAct F.O),

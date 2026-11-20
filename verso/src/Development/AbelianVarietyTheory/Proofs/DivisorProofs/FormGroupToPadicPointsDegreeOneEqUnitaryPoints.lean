@@ -23,6 +23,9 @@ def psiP (G : HTGroup p) : (ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ →* Gr G 1 :=
   (inclG G 1).comp ((MonoidHom.snd _ _).prod (Pi.monoidHom fun w =>
     (Units.map ((G.locW w).toRingHom.toMonoidHom)).comp (MonoidHom.fst _ _)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem psiAway_apply (G : HTGroup p) (x : (AfP p ⊗[ℚ] G.C)ˣ) (z : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) :
     psiAway G x z = (x * z.1 * x⁻¹, z.2) := rfl
 
@@ -33,11 +36,19 @@ def dg (D : Type) [Ring D] [Algebra ℚ D] (p : ℕ) [Fact p.Prime] :
     ((Units.map (Algebra.TensorProduct.includeRight : D →ₐ[ℚ] ℚ_[p] ⊗[ℚ] D).toMonoidHom).prodMap
       (Units.map (algebraMap ℚ ℚ_[p]).toMonoidHom))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toAfF_eq_psiAway (G : HTGroup p) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
     (hx : Triv G (AfP p) β x t) (y : grp G β) :
     ((toAfF G β x t hx y : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) =
       psiAway G x ((dg G.C p (y : G.Cˣ × ℚˣ)).1) := rfl
 
+/- English proof (translation)
+Simplify using `only [toP1, psiP, MonoidHom.comp_apply]`. Use `congr 1`. Use `Prod.ext rfl (funext fun w => Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G.rho w _ = G.locW w ((1 : ℚ_[p]) ⊗ₜ _)`. Express the relevant statement in the definitionally equal form `_ = (Algebra.ofId ℚ_[p] (Matrix (Fin G.n) (Fin G.n) (G.Fw w)) (1 : ℚ_[p])) * (G.rho w).toRatAlgHom _`.
+
+Rewrite using `[map_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem formGroupToPadicPointsDegreeOne_eq_unitaryPoints (G : HTGroup p) (β : G.Cˣ) (y : grp G β) :
     toP1 G β y = psiP G ((dg G.C p (y : G.Cˣ × ℚˣ)).2) := by
   simp only [toP1, psiP, MonoidHom.comp_apply]
@@ -48,6 +59,17 @@ theorem formGroupToPadicPointsDegreeOne_eq_unitaryPoints (G : HTGroup p) (β : G
   rw [map_one, one_mul]
   rfl
 
+/- English proof (translation)
+Establish `hs : (σ (e : D)).unop * (σ ((e⁻¹ : Dˣ) : D)).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Establish `hs' : (σ ((e⁻¹ : Dˣ) : D)).unop * (σ (e : D)).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.mul_inv, map_one, MulOpposite.unop_one]`. Establish `hη : algebraMap ℚ D ((η⁻¹ : ℚˣ) : ℚ) * algebraMap ℚ D (η : ℚ) = 1`.
+
+Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `key : ((e⁻¹ : Dˣ) : D) * β * (σ ((e⁻¹ : Dˣ) : D)).unop = algebraMap ℚ D ((η⁻¹ : ℚˣ) : ℚ) * β`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, smul_smul]`. Rewrite using `[show (η : ℚ) * ((η⁻¹ : ℚˣ) : ℚ) = 1 by simp, one_smul]`.
+
+Use `_ = algebraMap ℚ D ((η⁻¹ : ℚˣ) : ℚ) * ((((e⁻¹ : Dˣ) : D) * e) * β * ((σ (e : D)).unop * (σ ((e⁻¹ : Dˣ) : D)).unop)) := by`. Rewrite using `[← he]`. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [Units.inv_mul, hs, one_mul, mul_one]`. Establish `hsm : (σ ((a * e⁻¹ : Dˣ) : D)).unop = (σ ((e⁻¹ : Dˣ) : D)).unop * (σ (a : D)).unop`.
+
+Rewrite using `[Units.val_mul, map_mul, MulOpposite.unop_mul]`. Rewrite using `[hsm, Units.val_mul, Units.val_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = algebraMap ℚ D ((η⁻¹ : ℚˣ) : ℚ) * ((a : D) * β * (σ (a : D)).unop) := by`.
+
+Rewrite using `[key, ← mul_assoc (a : D), ← Algebra.commutes ((η⁻¹ : ℚˣ) : ℚ) (a : D)]`. Simplify using `only [mul_assoc]`. Use `_ = _ := by`. Rewrite using `[ha, ← mul_assoc, ← map_mul, mul_comm ((η⁻¹ : ℚˣ) : ℚ), map_mul]`.
+-/
 theorem form_mul_inv {D : Type} [Ring D] [Algebra ℚ D] (σ : D →+* Dᵐᵒᵖ) (β : D) (a e : Dˣ) (α η : ℚˣ)
     (ha : (a : D) * β * (σ a).unop = algebraMap ℚ D α * β) (he : (e : D) * β * (σ e).unop = algebraMap ℚ D η * β) :
     ((a * e⁻¹ : Dˣ) : D) * β * (σ ((a * e⁻¹ : Dˣ) : D)).unop = algebraMap ℚ D ((α * η⁻¹ : ℚˣ) : ℚ) * β := by
@@ -78,6 +100,15 @@ theorem form_mul_inv {D : Type} [Ring D] [Algebra ℚ D] (σ : D →+* Dᵐᵒ�
     _ = _ := by
         rw [ha, ← mul_assoc, ← map_mul, mul_comm ((η⁻¹ : ℚˣ) : ℚ), map_mul]
 
+/- English proof (translation)
+Establish `h1 : (σ (x : S)).unop * (σ ((x⁻¹ : Sˣ) : S)).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Establish `hb : b = algebraMap A S t * (((x⁻¹ : Sˣ) : S) * (σ ((x⁻¹ : Sˣ) : S)).unop)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.inv_mul, h1, one_mul, mul_one]`.
+
+Use `_ = ((x⁻¹ : Sˣ) : S) * ((x : S) * b * (σ (x : S)).unop) * (σ ((x⁻¹ : Sˣ) : S)).unop := by`. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [hx, ← Algebra.commutes, mul_assoc]`. Establish `hσ : (σ ((x⁻¹ * g * x : Sˣ) : S)).unop = (σ (x : S)).unop * (σ (g : S)).unop * (σ ((x⁻¹ : Sˣ) : S)).unop`. Simplify using `only [Units.val_mul, map_mul, MulOpposite.unop_mul, mul_assoc]`.
+
+Rewrite using `[hσ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, mul_assoc]`. Use `_ = ((x⁻¹ : Sˣ) : S) * (algebraMap A S t * ((g : S) * (σ (g : S)).unop)) * (σ ((x⁻¹ : Sˣ) : S)).unop := by`. Rewrite using `[hx, ← Algebra.commutes t (g : S)]`.
+
+Simplify using `only [mul_assoc]`. Use `_ = algebraMap A S (c * t) * (((x⁻¹ : Sˣ) : S) * (σ ((x⁻¹ : Sˣ) : S)).unop) := by`. Rewrite using `[hg, ← map_mul, ← Algebra.commutes, mul_assoc, mul_comm t c]`. Use `_ = algebraMap A S c * b := by rw [hb, map_mul, mul_assoc]`.
+-/
 theorem conj_back {S A : Type*} [Ring S] [CommRing A] [Algebra A S] (σ : S →+* Sᵐᵒᵖ) (b : S) (x g : Sˣ)
     (t c : A) (hx : (x : S) * b * (σ x).unop = algebraMap A S t)
     (hg : (g : S) * (σ g).unop = algebraMap A S c) :
@@ -105,6 +136,15 @@ theorem conj_back {S A : Type*} [Ring S] [CommRing A] [Algebra A S] (σ : S →+
         rw [hg, ← map_mul, ← Algebra.commutes, mul_assoc, mul_comm t c]
     _ = algebraMap A S c * b := by rw [hb, map_mul, mul_assoc]
 
+/- English proof (translation)
+Introduce `p _ G β x t hx y₀ c hc`. Establish `hxx : ((x⁻¹)⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) = x` using `inv_inv x`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hg : (((c : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C) * (starT G.star (AfP p) (((c : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C)).unop = algebraMap (AfP p) (AfP p ⊗[ℚ] G.C) ((c : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2 : AfP p)` using `c.2`. Establish `h` using `conj_back (starT G.star (AfP p)) (inC G (AfP p) β) x _ (t : AfP p) _ hx hg`.
+
+Simplify using `only [psiAway_apply, hxx]`. Conclude with `h`. Establish `hU` using `congrArg (fun g : G.GAf => ((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1)) hc`. Simplify using `only [Subgroup.coe_mul, Prod.fst_mul] at hU`. Rewrite `hU` using `[toAfF_eq_psiAway, psiAway_apply]`.
+
+Simplify using `only [psiAway_apply, hxx]`. Use `set c1 := (c : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1`. Use `set Y := (dg G.C p (y₀ : G.Cˣ × ℚˣ)).1.1`. Establish `hUU : (x⁻¹ * c1 * x) * Y = Y * (x⁻¹ * c1 * x)`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `congrArg Units.val hUU`.
+-/
 theorem inT_psiAway_inv_of_commute : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
     (hx : Triv G (AfP p) β x t) (y₀ : grp G β) (c : G.GAf), c * toAfF G β x t hx y₀ = toAfF G β x t hx y₀ * c →
     InT G (AfP p) β (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) (psiAway G x⁻¹ (c : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ)) := by

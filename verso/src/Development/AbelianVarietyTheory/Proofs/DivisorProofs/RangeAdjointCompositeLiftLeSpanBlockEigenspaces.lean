@@ -27,6 +27,27 @@ namespace GlobalTheory.AdjSpan
 
 open Formalism.L2 in
 
+/- English proof (translation)
+Establish `hcU : Col.PairComm U` using `fun i i' => GlobalTheory.AdjBlock.ext_of_span hsp fun v => by`. Simplify using `only [Module.End.mul_apply, hU]`. Conclude with `congrArg j (LinearMap.congr_fun (hc i i').eq v)`. Establish `h1 : ∀ x, Col.eigAt op x ≤ (Col.eigAt U fun i => σ (x i)).comap j`. Introduce `x v hv`.
+
+Rewrite using `[Submodule.mem_comap, Col.eigAt, Submodule.mem_iInf]`. Introduce `i`. Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 (Col.eigAt_le op x i hv)`. Use `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨k, ?_⟩` and prove the remaining obligations. Establish `: ∀ (k : ℕ) w, ((U i - σ (x i) • (1 : Module.End ℂ H)) ^ k) (j w) = j (((op i - x i • (1 : Module.End K V)) ^ k) w)`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro w`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+
+Introduce `w`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ← ih]`. Simplify using `[hU, map_smulₛₗ]`. Rewrite using `[this, hk, map_zero]`. Establish `h2 : ∀ Q : (I → K) → Prop, Submodule.span ℂ (j '' (Col.eigSum op Q : Set V)) ≤ Col.eigSum U fun y => ∃ x, Q x ∧ y = fun i => σ (x i)` using `fun Q => by`.
+
+Establish `: Col.eigSum op Q ≤ (Col.eigSum U fun y => ∃ x, Q x ∧ y = fun i => σ (x i)).comap j` using `iSup₂_le fun x hx => (h1 x).trans (Submodule.comap_mono (Col.eigAt_le_eigSum ⟨x, hx, rfl⟩))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `this hv`. Establish `h3 : Submodule.span ℂ (j '' (Col.eigSum op C : Set V)) ⊔ Submodule.span ℂ (j '' (Col.eigSum op (fun x => ¬ C x) : Set V)) = ⊤`.
+
+Rewrite using `[eq_top_iff, ← hsp, Submodule.span_le]`. Introduce and unpack `_ ⟨v, rfl⟩`. Take `⟨a, ha, c, hc', rfl⟩` from `Submodule.mem_sup.1 ((Col.isCompl_eigSum hc hs C).sup_eq_top ▸ (Submodule.mem_top : v ∈ (⊤ : Submodule K V)))`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨a, ha, rfl⟩) (Submodule.subset_span ⟨c, hc', rfl⟩)`.
+
+Establish `h4 : Disjoint (Col.eigSum U fun y => CC y ∨ ∃ x, C x ∧ y = fun i => σ (x i)) (Col.eigSum U fun y => ∃ x, ¬ C x ∧ y = fun i => σ (x i))`. Use `Col.disjoint_eigSum hcU ?_` and prove the remaining obligations. Introduce and unpack `y hy ⟨x, hx, rfl⟩`. Break down `hy with hy | ⟨x', hx', he⟩` into its components or cases. Conclude with `hx (hC x hy)`.
+
+Establish `: x = x'` using `funext fun i => σ.injective (congrFun he i)`. Conclude with `hx (this ▸ hx')`. Rewrite `h4` using `[Col.eigSum_or]`. Introduce `w hw`. Take `⟨a, ha, c, hc', rfl⟩` from `Submodule.mem_sup.1 (h3 ▸ (Submodule.mem_top : w ∈ (⊤ : Submodule ℂ H)))`.
+
+Establish `h5 : c = 0`. Use `(Submodule.disjoint_def.1 h4) _ ?_ (h2 _ hc')` and prove the remaining obligations. Establish `: c = (a + c) - a` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left hw) (Submodule.mem_sup_right (h2 _ ha))`.
+
+Rewrite using `[h5, add_zero]`. Conclude with `ha`.
+-/
 theorem eigSum_le_span {K V H I : Type} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] {σ : K →+* ℂ} {j : V →ₛₗ[σ] H}
     (hsp : Submodule.span ℂ (Set.range j) = ⊤) {op : I → Module.End K V} {U : I → Module.End ℂ H}
@@ -86,6 +107,9 @@ theorem eigSum_le_span {K V H I : Type} [Field K] [AddCommGroup V] [Module K V] 
   rw [h5, add_zero]
   exact ha
 
+/- English proof (translation)
+Unfold `Formalism.L2.Col.heckePolyOf`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[h i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))]`.
+-/
 theorem heckePolyOf_congr {L : Type} [Field L] (n q : ℕ) {a b : ℕ → L} (h : ∀ k, k ≤ n → a k = b k) :
     Formalism.L2.Col.heckePolyOf n q a = Formalism.L2.Col.heckePolyOf n q b := by
   unfold Formalism.L2.Col.heckePolyOf
@@ -93,6 +117,9 @@ theorem heckePolyOf_congr {L : Type} [Field L] (n q : ℕ) {a b : ℕ → L} (h 
   rw [h i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))]
 
 open Classical in
+/- English proof (translation)
+Unfold `GlobalTheory.Hk3.evC GlobalTheory.Hk3.splitC`. Apply the tactic sequence `rw [← Finsupp.sum_finset_sum_index (by simp) (by intro d x y; split_ifs <;> simp [add_mul])]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (by simp)]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem evC_splitC {D : D7} (V : HSp D) (P : Pl D.host.E) (a : List ℤ → ℂ) (z : ℕ → ℂ) :
     GlobalTheory.Hk3.evC V P a (GlobalTheory.Hk3.splitC V.rank z) = ∑ j ∈ Finset.range (V.rank + 1),
       z j * (if IsLab V P (splitLab V.rank j) then a (splitLab V.rank j) else 0) := by
@@ -104,6 +131,17 @@ theorem evC_splitC {D : D7} (V : HSp D) (P : Pl D.host.E) (a : List ℤ → ℂ)
 
 open Formalism.L2 in
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Set `U : Pl × ℕ → Module.End ℂ H` to `fun i => if i.2 ≤ m then T i.1 i.2 else 0`. Establish `hU : ∀ i v, U i (j v) = j (op i v)`. Introduce and unpack `⟨P, k⟩ v`. Distinguish the cases in `hk : k ≤ m`.
+
+Simplify using `only [U, if_pos hk]`. Conclude with `(hT P k hk v).symm`. Simplify using `only [U, if_neg hk]`. Rewrite using `[hz P k (not_le.1 hk)]`. Simplify using the standard rewrite rules.
+
+Use `le_trans ?_ (eigSum_le_span (U := U) hsp hU hc hs fun x hx => (Col.hasBlocks_map σ m q t bl x).1 hx)` and prove the remaining obligations. Rewrite using `[LinearMap.range_eq_map, ← hW, Submodule.map_iSup]`. Use `iSup_le fun c => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Set `x : Pl × ℕ → ℂ` to `fun i => if i.2 ≤ m then ev c i.1 i.2 else 0`.
+
+Use `Col.eigAt_le_eigSum (x := x) (fun P => ?_) (Col.mem_eigAt_of_forall_apply ?_)` and prove the remaining obligations. Establish `h1 : Col.heckePolyOf m (q P) (fun k => x (P, k)) = _` using `(heckePolyOf_congr _ _ fun k hk => if_pos hk).trans (hg c P)`. Use `Dvd.intro_left (g c P) (Eq.trans ?_ h1.symm)` and prove the remaining obligations. Simplify using `only [Polynomial.map_list_prod, List.map_map, Function.comp_def, Col.map_blockPoly]`. Introduce and unpack `⟨P, k⟩`.
+
+Distinguish the cases in `hk : k ≤ m`. Simplify using `only [U, x, if_pos hk]`. Conclude with `hev c w hw P k hk`. Simplify using `only [U, x, if_neg hk]`. Simplify using the standard rewrite rules.
+-/
 theorem range_le_span_blockSum {K V H E Pl ι : Type} [Field K] [AddCommGroup V] [Module K V]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] {σ : K →+* ℂ} {j : V →ₛₗ[σ] H}
@@ -143,6 +181,13 @@ theorem range_le_span_blockSum {K V H E Pl ι : Type} [Field K] [AddCommGroup V]
     · simp only [U, x, if_neg hk]
       simp
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F s hI hOk hC hS t`. Establish `hSF : IsSF R (R.Pg.image fun PP => PP.under (𝓞 D.host.F))`. Introduce `v`. Simplify using `only [Finset.mem_image, HeightOneSpectrum.ext_iff]`. Both sides reduce to the same expression.
+
+Establish `htop : ⨆ c, EEc R _ c = ⊤` using `(GlobalTheory.T.exists_sphericalOperators_rows_normal_eigenspaces R F hC hS _ hSF).elim fun _ h => h.2.2.1`. Use `choose hX hXo _ using (GlobalTheory.T.realization_family_normal_operators R F hC.lev hC.fam hC.models).1 t`. Establish `hsplit` using `(GlobalTheory.SplitHeckeLabel.split_ops R F hC.lev hC.fam hC.models).1 t hX hXo`. Establish `hf` using `GlobalTheory.AdjBlock.model_form (W := R.cX.W) (ι := Bridge.ratF D.sp.X') (ρ := R.cX.coef.ρ) (J := (levEnv _ R.βX (R.datXt t)).J) (χ := (levEnv _ R.βX (R.datXt t)).χ) (R.B.R t).pres (R.HX t) (hC.models.HX t) (hC.models.jX t)`. Use `choose z hm hp using fun P : A.ok t => GlobalTheory.T.exists_splitPrime_heckeTransfer_compositeLift R F hI hC hS t P`.
+
+Set `a : (Pl D.host.E → List ℤ → ℂ) → A.ok t → ℕ → ℂ` to `fun c P j => if IsLab (Yc D 0) (R.pl P) (splitLab (Yc D 0).rank j) then c (R.pl P) (dualLab (splitLab (Yc D 0).rank j)) else 0`. Conclude with `range_le_span_blockSum (Pl := A.ok t) (q := fun P => A.q P) (Module.Finite.of_basis (A.MtildeCSD t).basis) hf.2.1 (hOk.what₂ t).comm (hOk.what₂ t).split R.B.rankR (fun P => (hC.fam.degR t P).2) (R.Th t) _ htop (fun P k => hX (R.pl P) (Finsupp.single (splitLab D.sp.X'.rank k) 1)) …`.
+-/
 theorem range_adjoint_le_span : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) {s : ℕ}, GlobalTheory.Chain.LiftInteg D → A.fam.Ok s → Core R F → SchurAll R → ∀ t, LinearMap.range (LinearMap.adjoint (R.Th t)) ≤ Submodule.span ℂ (R.jX t '' ((A.fam.R t).ZH : Set (A.fam.R t).S.Forms)) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F s hI hOk hC hS t
   classical

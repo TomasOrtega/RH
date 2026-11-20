@@ -21,18 +21,31 @@ local notation "FI" => FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.
 
 def SS (I : FI) : Prop := ∀ x ∈ I, star x ∈ I
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hx`. Take `⟨o', ho'⟩` from `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.star_int o`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨o', ho'⟩`.
+-/
 theorem SS_one : SS (1 : FI) := by
   intro x hx
   obtain ⟨o, rfl⟩ := (FractionalIdeal.mem_one_iff _).1 hx
   obtain ⟨o', ho'⟩ := Formalism.L2.SG.NGCut.LeadingMinorIntegrality.star_int o
   exact (FractionalIdeal.mem_one_iff _).2 ⟨o', ho'⟩
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hx`. Take `⟨y', hy', ey⟩` from `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.star_mem_pow n y hy`. Conclude with `(FractionalIdeal.mem_coeIdeal _).2 ⟨y', hy', ey⟩`.
+-/
 theorem SS_dIpow (n : ℕ) : SS (((Formalism.L2.SG.NGCut.LeadingMinorIntegrality.dI D ^ n : Ideal (𝓞 D.host.E)) : FI)) := by
   intro x hx
   obtain ⟨y, hy, rfl⟩ := (FractionalIdeal.mem_coeIdeal _).1 hx
   obtain ⟨y', hy', ey⟩ := Formalism.L2.SG.NGCut.LeadingMinorIntegrality.star_mem_pow n y hy
   exact (FractionalIdeal.mem_coeIdeal _).2 ⟨y', hy', ey⟩
 
+/- English proof (translation)
+Distinguish the cases in `h0 : I = 0`. Substitute `h0` using the available equality. Introduce `x hx`. Rewrite `hx`, the goal using `[_root_.inv_zero]`. Rewrite using `[(FractionalIdeal.mem_zero_iff _).1 hx, star_zero]`.
+
+Conclude with `(FractionalIdeal.mem_zero_iff _).2 rfl`. Introduce `x hx`. Rewrite `hx`, the goal using `[FractionalIdeal.mem_inv_iff h0]`. Introduce `y hy`. Establish `h` using `SS_one _ (hx _ (hI y hy))`.
+
+Rewrite `h` using `[star_mul, star_star, mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem SS_inv {I : FI} (hI : SS I) : SS I⁻¹ := by
   by_cases h0 : I = 0
   · subst h0
@@ -46,6 +59,11 @@ theorem SS_inv {I : FI} (hI : SS I) : SS I⁻¹ := by
   have h := SS_one _ (hx _ (hI y hy))
   rwa [star_mul, star_star, mul_comm] at h
 
+/- English proof (translation)
+Introduce `x hx`. Use `FractionalIdeal.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Rewrite using `[star_mul']`. Conclude with `FractionalIdeal.mul_mem_mul (hI a ha) (hJ b hb)`.
+
+Introduce `a b ha hb`. Rewrite using `[star_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+-/
 theorem SS_mul {I J : FI} (hI : SS I) (hJ : SS J) : SS (I * J) := by
   intro x hx
   refine FractionalIdeal.mul_induction_on hx ?_ ?_
@@ -56,6 +74,11 @@ theorem SS_mul {I J : FI} (hI : SS I) (hJ : SS J) : SS (I * J) := by
     rw [star_add]
     exact Submodule.add_mem _ ha hb
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.SG.SplitPrimeNormLemmas.IntG.aaD_eq]`. Establish `: ddS D ^ (D.R.rS - (a : ℕ)) = (((Formalism.L2.SG.NGCut.LeadingMinorIntegrality.dI D ^ (D.R.rS - (a : ℕ)) : Ideal (𝓞 D.host.E)) : FI))`. Rewrite using `[FractionalIdeal.coeIdeal_pow]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `SS_inv (SS_dIpow _)`.
+-/
 theorem SS_aaD (a : Fin D.R.rS) : SS (aaD D a) := by
   rw [Formalism.L2.SG.SplitPrimeNormLemmas.IntG.aaD_eq]
   have : ddS D ^ (D.R.rS - (a : ℕ)) = (((Formalism.L2.SG.NGCut.LeadingMinorIntegrality.dI D ^ (D.R.rS - (a : ℕ)) : Ideal (𝓞 D.host.E)) : FI)) := by
@@ -63,11 +86,23 @@ theorem SS_aaD (a : Fin D.R.rS) : SS (aaD D a) := by
   rw [this]
   exact SS_inv (SS_dIpow _)
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.SG.SplitPrimeNormLemmas.IntG.aaD_eq]`. Conclude with `inv_ne_zero (pow_ne_zero _ Formalism.L2.SG.SplitPrimeNormLemmas.IntG.ddS_ne_zero)`.
+-/
 theorem aa_ne (a : Fin D.R.rS) : aaD D a ≠ 0 := by
   rw [Formalism.L2.SG.SplitPrimeNormLemmas.IntG.aaD_eq]; exact inv_ne_zero (pow_ne_zero _ Formalism.L2.SG.SplitPrimeNormLemmas.IntG.ddS_ne_zero)
 
 variable (X : HidaSetting D)
 
+/- English proof (translation)
+Establish `hy' : y ∈ Submodule.span (𝓞 D.host.E) {y | ∃ c ∈ (aaD D d : Set D.host.E), ∃ l ∈ X.Lb, y = c • l}` using `hy`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨c', hc', l, hl, rfl⟩` from `hz`.
+
+Establish `hm : c * c' ∈ (1 : FI)`. Rewrite using `[← inv_mul_cancel₀ (aa_ne d)]`. Conclude with `FractionalIdeal.mul_mem_mul hc hc'`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 hm`. Rewrite using `[smul_smul, ← ho, algebraMap_smul]`.
+
+Conclude with `Submodule.smul_mem _ o hl`. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul o x _ hx`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ o hx`.
+-/
 theorem smul_aaLb {d : Fin D.R.rS} {c : D.host.E} (hc : c ∈ (aaD D d)⁻¹) {y : (VS D).V} (hy : y ∈ aaLb X d) :
     c • y ∈ X.Lb := by
   have hy' : y ∈ Submodule.span (𝓞 D.host.E) {y | ∃ c ∈ (aaD D d : Set D.host.E), ∃ l ∈ X.Lb, y = c • l} := hy
@@ -86,9 +121,21 @@ theorem smul_aaLb {d : Fin D.R.rS} {c : D.host.E} (hc : c ∈ (aaD D d)⁻¹) {y
     rw [smul_comm]
     exact Submodule.smul_mem _ o hx
 
+/- English proof (translation)
+Rewrite using `[X.Lam_split]`. Conclude with `le_sup_of_le_left le_sup_right`.
+-/
 theorem Lb_le : X.Lb ≤ (VS D).L0 := by
   rw [X.Lam_split]; exact le_sup_of_le_left le_sup_right
 
+/- English proof (translation)
+Establish `hy' : y ∈ Submodule.span (𝓞 D.host.E) {y | ∃ c ∈ (aaD D b : Set D.host.E), ∃ l ∈ X.Lb, y = c • l}` using `hy`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨c, hc, l, hl, rfl⟩` from `hz`.
+
+Take `⟨o, ho⟩` from `Formalism.MainNotions.LatticeGluingRadicals.d_Lam_int (VS D).baseLattice_isUnimodular (Lb_le X hl) (Lb_le X hw)`. Rewrite using `[hT_smulL, ← ho, mul_comm]`. Conclude with `fi_smul_mem (SS_aaD b c hc) o`. Consider the case `zero => rw [map_zero, LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul o x _ hx`. Rewrite using `[← algebraMap_smul D.host.E o x, hT_smulL]`. Take `⟨o', ho'⟩` from `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.star_int o`.
+
+Rewrite using `[show algebraMap (𝓞 D.host.E) D.host.E o = (o : D.host.E) from rfl, ← ho']`. Conclude with `fi_smul_mem hx o'`.
+-/
 theorem hT_aaLb_mem {b : Fin D.R.rS} {y : (VS D).V} (hy : y ∈ aaLb X b) {w : (VS D).V} (hw : w ∈ X.Lb) :
     (VS D).hT y w ∈ aaD D b := by
   have hy' : y ∈ Submodule.span (𝓞 D.host.E) {y | ∃ c ∈ (aaD D b : Set D.host.E), ∃ l ∈ X.Lb, y = c • l} := hy
@@ -107,15 +154,45 @@ theorem hT_aaLb_mem {b : Fin D.R.rS} {y : (VS D).V} (hy : y ∈ aaLb X b) {w : (
     rw [show algebraMap (𝓞 D.host.E) D.host.E o = (o : D.host.E) from rfl, ← ho']
     exact fi_smul_mem hx o'
 
+/- English proof (translation)
+Rewrite using `[mul_assoc, ← mul_assoc (aaD D a)⁻¹, inv_mul_cancel₀ (aa_ne a), one_mul]`.
+-/
 theorem aa_cancel (a b c : Fin D.R.rS) : aaD D b * (aaD D a)⁻¹ * (aaD D a * (aaD D c)⁻¹) = aaD D b * (aaD D c)⁻¹ := by
   rw [mul_assoc, ← mul_assoc (aaD D a)⁻¹, inv_mul_cancel₀ (aa_ne a), one_mul]
 
+/- English proof (translation)
+Rewrite using `[mul_assoc, ← mul_assoc (aaD D a)⁻¹, inv_mul_cancel₀ (aa_ne a), one_mul]`.
+-/
 theorem aa_cancel2 (a b c : Fin D.R.rS) : aaD D b * (aaD D a)⁻¹ * (aaD D a * aaD D c) = aaD D b * aaD D c := by
   rw [mul_assoc, ← mul_assoc (aaD D a)⁻¹, inv_mul_cancel₀ (aa_ne a), one_mul]
 
+/- English proof (translation)
+Rewrite using `[mul_inv_cancel₀ (aa_ne a)]`. Conclude with `FractionalIdeal.one_mem_one _`.
+-/
 theorem one_mem_aa (a : Fin D.R.rS) : (1 : D.host.E) ∈ aaD D a * (aaD D a)⁻¹ := by
   rw [mul_inv_cancel₀ (aa_ne a)]; exact FractionalIdeal.one_mem_one _
 
+/- English proof (translation)
+Establish `hdet : X0.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => hup i j hij)]`. Simplify using `[hd]`. Establish `hU : IsUnit X0.det` using `by rw [hdet]; exact isUnit_one`. Establish `hXY : X0 * X0⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hU`.
+
+Establish `hYup : ∀ b a, a < b → X0⁻¹ b a = 0`. Establish `hbt : X0.BlockTriangular id` using `fun i j hij => hup i j hij`. Use `haveI : Invertible X0 := Matrix.invertibleOfIsUnitDet X0 hU`. Conclude with `fun b a h => Matrix.blockTriangular_inv_of_blockTriangular hbt h`. Establish `hYd : ∀ a, X0⁻¹ a a = 1`.
+
+Introduce `a`. Establish `h` using `congrFun (congrFun hXY a) a`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq, ← Finset.add_sum_erase _ _ (Finset.mem_univ a), hd, one_mul]`. Establish `hz : ∑ e ∈ Finset.univ.erase a, X0 a e * X0⁻¹ e a = 0`. Use `Finset.sum_eq_zero fun e he => ?_` and prove the remaining obligations.
+
+Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase he) with h1 | h1` into its components or cases. Rewrite using `[hup a e h1, zero_mul]`. Rewrite using `[hYup e a h1, mul_zero]`. Rewrite `h` using `[hz, add_zero]`. Conclude with `h`.
+
+Establish `key : ∀ k, ∀ b a : Fin D.R.rS, a.val - b.val = k → b < a → X0⁻¹ b a ∈ aaD D b * (aaD D a)⁻¹`. Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `b a hk hba`.
+
+Establish `h0 : ∑ e, X0 b e * X0⁻¹ e a = 0`. Use `congrFun (congrFun hXY b) a` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply_ne (ne_of_lt hba)]`. Conclude with `this`. Rewrite `h0` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ b), hd, one_mul]`.
+
+Rewrite using `[eq_neg_of_add_eq_zero_left h0]`. Use `Submodule.neg_mem _ (Submodule.sum_mem _ fun e he => ?_)` and prove the remaining obligations. Establish `heb : e ≠ b` using `Finset.ne_of_mem_erase he`. Break down `lt_or_gt_of_ne heb with h1 | h1` into its components or cases. Rewrite using `[hup b e h1, zero_mul]`.
+
+Conclude with `Submodule.zero_mem _`. Break down `lt_trichotomy e a with h2 | h2 | h2` into its components or cases. Establish `hY` using `ih (a.val - e.val) (by have := Fin.lt_iff_val_lt_val.1 h1; omega) e a rfl h2`. Rewrite using `[← aa_cancel e b a]`. Conclude with `FractionalIdeal.mul_mem_mul (hs b e h1) hY`.
+
+Substitute `h2` using the available equality. Rewrite using `[hYd, mul_one]`. Conclude with `hs b e h1`. Rewrite using `[hYup e a h2, mul_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Conclude with `fun b a h => key _ b a rfl h`.
+-/
 theorem shape_inv (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (hup : ∀ b a, a < b → X0 b a = 0)
     (hd : ∀ a, X0 a a = 1) (hs : ∀ b a, b < a → X0 b a ∈ aaD D b * (aaD D a)⁻¹) :
     ∀ b a, b < a → X0⁻¹ b a ∈ aaD D b * (aaD D a)⁻¹ := by
@@ -163,6 +240,13 @@ theorem shape_inv (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (hup : ∀ b 
         · rw [hYup e a h2, mul_zero]; exact Submodule.zero_mem _
   exact fun b a h => key _ b a rfl h
 
+/- English proof (translation)
+Introduce `b a`. Rewrite using `[Matrix.mul_apply]`. Use `Submodule.sum_mem _ fun e _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy e b with h | h | h` into its components or cases. Rewrite using `[hup b e h, zero_mul]`.
+
+Conclude with `Submodule.zero_mem _`. Substitute `h` using the available equality. Rewrite using `[hd, one_mul]`. Conclude with `hM e a`. Rewrite using `[← aa_cancel2 e b a]`.
+
+Conclude with `FractionalIdeal.mul_mem_mul (hs b e h) (hM e a)`.
+-/
 theorem shape_mul (X0 M : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (hup : ∀ b a, a < b → X0 b a = 0)
     (hd : ∀ a, X0 a a = 1) (hs : ∀ b a, b < a → X0 b a ∈ aaD D b * (aaD D a)⁻¹)
     (hM : ∀ b a, M b a ∈ aaD D b * aaD D a) : ∀ b a, (X0 * M) b a ∈ aaD D b * aaD D a := by

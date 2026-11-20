@@ -6,6 +6,21 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
+/- English proof (translation)
+Establish `hc : IsClosed ((V.comap T.toLinearMap : Submodule ℂ H) : Set H)` using `IsClosed.preimage T.continuous hcl`. Establish `hI : π.IsInvariant (V.comap T.toLinearMap)`. Introduce `g v hv`. Use `show T (π g v) ∈ V`. Rewrite using `[hTπ]`.
+
+Conclude with `hinv g _ hv`. Establish `hcs : CompleteSpace (V.comap T.toLinearMap)` using `hc.completeSpace_coe`. Use `⟨hcs, hI, ?_, fun U hU hUi => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.nontrivial_iff_ne_bot]`. Introduce `h0`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨v, rfl⟩` from `hle x hx`. Establish `hv : v ∈ V.comap T.toLinearMap` using `hx`.
+
+Rewrite `hv` using `[h0, Submodule.mem_bot]`. Rewrite using `[hv, map_zero]`. Conclude with `Submodule.zero_mem _`. Set `J : (V.comap T.toLinearMap) →ₗᵢ[ℂ] L` to `{ toLinearMap := T.toLinearMap ∘ₗ (V.comap T.toLinearMap).subtype norm_map' := fun v => hT v.1 }`. Establish `hinj` using `Submodule.map_injective_of_injective (f := J.toLinearMap) J.injective`.
+
+Establish `htop : (⊤ : Submodule ℂ (V.comap T.toLinearMap)).map J.toLinearMap = V`. Use `le_antisymm ?_ fun x hx => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, -, rfl⟩`. Conclude with `v.2`. Take `⟨v, rfl⟩` from `hle x hx`.
+
+Conclude with `⟨⟨v, hx⟩, trivial, rfl⟩`. Establish `hclU : IsClosed ((U.map J.toLinearMap : Submodule ℂ L) : Set L)` using `J.isometry.isClosedEmbedding.isClosedMap _ hU`. Establish `hinvU : ρ.IsInvariant (U.map J.toLinearMap)`. Introduce and unpack `g _ ⟨v, hv, rfl⟩`. Conclude with `⟨_, hUi g v hv, hTπ g v.1⟩`.
+
+Use `(hirr (U.map J.toLinearMap) ((Submodule.map_mono le_top).trans htop.le) hclU hinvU).imp (fun h0 => hinj (h0.trans (Submodule.map_bot _).symm)) fun h0 => hinj (h0.trans htop.symm)` and prove the remaining obligations.
+-/
 private theorem comap_irreducible {G H L : Type*} [Group G] [TopologicalSpace G]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     [NormedAddCommGroup L] [InnerProductSpace ℂ L] [CompleteSpace L]
@@ -52,6 +67,9 @@ private theorem comap_irreducible {G H L : Type*} [Group G] [TopologicalSpace G]
     refine (hirr (U.map J.toLinearMap) ((Submodule.map_mono le_top).trans htop.le) hclU hinvU).imp
       (fun h0 => hinj (h0.trans (Submodule.map_bot _).symm)) fun h0 => hinj (h0.trans htop.symm)
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ V hV`. Conclude with `comap_irreducible (cuspRepT μ) (rightRegularRep (rationalGLOne K n) μ) (toLp μ) (norm_toLp μ) (toLp_cuspRepT μ) V (fun x hx => ⟨⟨x, hV.le hx⟩, rfl⟩) hV.closed hV.inv hV.ne_bot hV.irred`.
+-/
 theorem UpperTheory.ConvolutionTheory.Dp.sumT :
     UpperTheory.ConvolutionTheory.Dp.SumT := by
   intro K _ _ n μ _ V hV

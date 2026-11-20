@@ -27,12 +27,18 @@ abbrev BplusIn (A K : Type) [CommRing A] [Field K] [Algebra A K] : Type := integ
 
 abbrev Bplus (A : Type) [CommRing A] [IsDomain A] : Type := BplusIn A (AlgebraicClosure (FractionRing A))
 
+/- English proof (translation)
+The claim follows from `(faithfulSMul_iff_algebraMap_injective _ _).2 <| by rw [IsScalarTower.algebraMap_eq A F (AlgebraicClosure F)] exact (algebraMap F (AlgebraicClosure F)).injective.comp (IsFractionRing.injective _ _)`.
+-/
 theorem faithfulSMul_algClosure (A F : Type) [CommRing A] [Field F] [Algebra A F] [IsFractionRing A F] :
     FaithfulSMul A (AlgebraicClosure F) :=
   (faithfulSMul_iff_algebraMap_injective _ _).2 <| by
     rw [IsScalarTower.algebraMap_eq A F (AlgebraicClosure F)]
     exact (algebraMap F (AlgebraicClosure F)).injective.comp (IsFractionRing.injective _ _)
 
+/- English proof (translation)
+The claim follows from `(IsFractionRing.comap_isAlgebraic_iff (K := F)).2 inferInstance`.
+-/
 theorem isAlgebraic_algClosure (A F : Type) [CommRing A] [IsDomain A] [Field F] [Algebra A F] [IsFractionRing A F] :
     Algebra.IsAlgebraic A (AlgebraicClosure F) :=
   (IsFractionRing.comap_isAlgebraic_iff (K := F)).2 inferInstance
@@ -53,23 +59,46 @@ instance isIntegrallyClosed [IsDomain A] [FaithfulSMul A K] [Algebra.IsAlgebraic
 
 variable {A K}
 
+/- English proof (translation)
+The claim follows from `IsIntegral.of_pow hn h`.
+-/
 theorem mem_of_pow_mem {x : K} {n : ℕ} (hn : 0 < n) (h : x ^ n ∈ integralClosure A K) : x ∈ integralClosure A K :=
   IsIntegral.of_pow hn h
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq (x : K) hn`. Conclude with `⟨⟨y, mem_of_pow_mem hn (hy ▸ x.2)⟩, Subtype.ext hy⟩`.
+-/
 theorem exists_pow_eq [IsAlgClosed K] (x : BplusIn A K) {n : ℕ} (hn : 0 < n) : ∃ y : BplusIn A K, y ^ n = x := by
   obtain ⟨y, hy⟩ := IsAlgClosed.exists_pow_nat_eq (x : K) hn
   exact ⟨⟨y, mem_of_pow_mem hn (hy ▸ x.2)⟩, Subtype.ext hy⟩
 
+/- English proof (translation)
+Use `haveI : FaithfulSMul A (BplusIn A K) := (faithfulSMul_iff_algebraMap_injective _ _).2 fun x y e => FaithfulSMul.algebraMap_injective A K (congrArg Subtype.val e)`. Conclude with `fun h' => h (isUnit_of_map_unit (algebraMap A (BplusIn A K)) a h')`.
+-/
 theorem not_isUnit_algebraMap [FaithfulSMul A K] {a : A} (h : ¬ IsUnit a) : ¬ IsUnit (algebraMap A (BplusIn A K) a) := by
   haveI : FaithfulSMul A (BplusIn A K) := (faithfulSMul_iff_algebraMap_injective _ _).2 fun x y e =>
     FaithfulSMul.algebraMap_injective A K (congrArg Subtype.val e)
   exact fun h' => h (isUnit_of_map_unit (algebraMap A (BplusIn A K)) a h')
 
+/- English proof (translation)
+The claim follows from `map_natCast (algebraMap A (BplusIn A K)) p ▸ not_isUnit_algebraMap h`.
+-/
 theorem not_isUnit_natCast [FaithfulSMul A K] {p : ℕ} (h : ¬ IsUnit (p : A)) : ¬ IsUnit (p : BplusIn A K) :=
   map_natCast (algebraMap A (BplusIn A K)) p ▸ not_isUnit_algebraMap h
 
 variable (A K) in
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Use `haveI : NeZero (p : K) := ⟨Nat.cast_ne_zero.2 hp.ne_zero⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot K p`. Establish `hz' : IsPrimitiveRoot (⟨z, mem_of_pow_mem hp.pos (hz.pow_eq_one ▸ one_mem _)⟩ : BplusIn A K) p` using `IsPrimitiveRoot.of_map_of_injective (f := (integralClosure A K).val) hz Subtype.val_injective`. Generalize the expression as in `(⟨z, _⟩ : BplusIn A K) = z₁ at hz'`.
+
+Use `choose r hr using fun x : BplusIn A K => exists_pow_eq x hp.pos`. Establish `key : ∀ n, (r^[n] z₁) ^ p ^ n = z₁` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', pow_succ', pow_mul, hr, ih]`.
+
+Use `⟨fun n => Nat.casesOn n 1 fun m => r^[m] z₁, fun n => ?_, fun n => ?_⟩` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => exact IsPrimitiveRoot.one`. Consider the case `succ m`. Use `(IsPrimitiveRoot.iff_orderOf).2 (orderOf_eq_prime_pow ?_ ?_)` and prove the remaining obligations.
+
+Conclude with `(key m).symm ▸ hz'.ne_one hp.one_lt`. Express the relevant statement in the definitionally equal form `(r^[m] z₁) ^ p ^ (m + 1) = 1`. Rewrite using `[pow_succ, pow_mul, key, hz'.pow_eq_one]`. Consider the cases of `n with`. Consider the case `zero => exact hz'.pow_eq_one`.
+
+Consider the case `succ m => exact (congrArg (· ^ p) (Function.iterate_succ_apply' r m z₁)).trans (hr _)`.
+-/
 theorem exists_zeta [IsAlgClosed K] [CharZero K] (p : ℕ) [Fact p.Prime] : ∃ ζ : ℕ → BplusIn A K,
     (∀ n, IsPrimitiveRoot (ζ n) (p ^ n)) ∧ ∀ n, ζ (n + 1) ^ p = ζ n := by
   have hp : p.Prime := Fact.out
@@ -100,12 +129,21 @@ def incl {A' : Type} [CommRing A'] [Algebra A' K] (φ : A →+* A') (h : ∀ a, 
   (integralClosure A K).val.toRingHom.codRestrict (integralClosure A' K) fun x =>
     IsIntegral.map_of_comp_eq φ (RingHom.id K) (RingHom.ext h) x.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_incl {A' : Type} [CommRing A'] [Algebra A' K] (φ : A →+* A')
     (h : ∀ a, algebraMap A' K (φ a) = algebraMap A K a) (x : BplusIn A K) : (incl φ h x : K) = x := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance⟩`.
+-/
 example (A : Type) [CommRing A] [IsDomain A] : IsDomain (Bplus A) ∧ IsIntegrallyClosed (Bplus A) ∧
     IsFractionRing (Bplus A) (AlgebraicClosure (FractionRing A)) := ⟨inferInstance, inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨exists_pow_eq 2 two_pos, not_isUnit_natCast (by decide)⟩`.
+-/
 example : (∃ y : Bplus ℤ, y ^ 2 = 2) ∧ ¬ IsUnit ((2 : ℕ) : Bplus ℤ) :=
   ⟨exists_pow_eq 2 two_pos, not_isUnit_natCast (by decide)⟩
 
@@ -138,6 +176,9 @@ def AffOp.res {U U' : AffOp X} (h : U'.1 ≤ U.1) : U.Bp →+* U'.Bp :=
   incl (resG X h) fun a => congrArg (algebraMap X.functionField (Kbar X))
     (X.presheaf.germ_res_apply (homOfLE h) _ _ a)
 
+/- English proof (translation)
+Rewrite using `[AffOp.toX, AffOp.toX, ← U.2.1.map_fromSpec U'.2.1 (homOfLE h).op, ← Category.assoc, ← Category.assoc, ← Cris.spMap_comp]`. Establish `e : (AffOp.res h).comp (algebraMap Γ(X, U.1) U.Bp) = (algebraMap Γ(X, U'.1) U'.Bp).comp (resG X h)` using `RingHom.ext fun a => Subtype.ext (congrArg (algebraMap X.functionField (Kbar X)) (X.presheaf.germ_res_apply (homOfLE h) _ _ a).symm)`. Rewrite using `[e, Cris.spMap_comp]`. Both sides reduce to the same expression.
+-/
 theorem AffOp.res_toX {U U' : AffOp X} (h : U'.1 ≤ U.1) : spMap (AffOp.res h) ≫ U.toX = U'.toX := by
   rw [AffOp.toX, AffOp.toX, ← U.2.1.map_fromSpec U'.2.1 (homOfLE h).op, ← Category.assoc, ← Category.assoc,
     ← Cris.spMap_comp]
@@ -151,6 +192,9 @@ variable (X) in
 
 def genPt : Sp (Kbar X) ⟶ X := spMap (algebraMap X.functionField (Kbar X)) ≫ X.fromSpecStalk (genericPoint X)
 
+/- English proof (translation)
+Establish `hx : genericPoint X ∈ U.1` using `((genericPoint_spec X).mem_open_set_iff U.1.isOpen).2 (by simpa using U.2.2)`. Rewrite using `[AffOp.toX, genPt, ← U.2.1.fromSpecStalk_eq_fromSpecStalk hx, IsAffineOpen.fromSpecStalk, ← Category.assoc, ← Cris.spMap_comp]`. Conclude with `(congrArg (· ≫ U.2.1.fromSpec) (Cris.spMap_comp (X.presheaf.germ U.1 _ hx).hom (algebraMap X.functionField (Kbar X)))).trans (Category.assoc ..)`.
+-/
 theorem AffOp.val_toX (U : AffOp X) : spMap (algebraMap U.Bp (Kbar X)) ≫ U.toX = genPt X := by
   have hx : genericPoint X ∈ U.1 := ((genericPoint_spec X).mem_open_set_iff U.1.isOpen).2 (by simpa using U.2.2)
   rw [AffOp.toX, genPt, ← U.2.1.fromSpecStalk_eq_fromSpecStalk hx, IsAffineOpen.fromSpecStalk, ← Category.assoc,
@@ -158,6 +202,9 @@ theorem AffOp.val_toX (U : AffOp X) : spMap (algebraMap U.Bp (Kbar X)) ≫ U.toX
   exact (congrArg (· ≫ U.2.1.fromSpec) (Cris.spMap_comp (X.presheaf.germ U.1 _ hx).hom
     (algebraMap X.functionField (Kbar X)))).trans (Category.assoc ..)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+-/
 example (U : AffOp X) : IsIntegrallyClosed U.Bp ∧ IsFractionRing U.Bp (Kbar X) := ⟨inferInstance, inferInstance⟩
 
 end Opens
@@ -184,6 +231,9 @@ structure TorsionMap (A : Over (Sp O)) [GrpObj A] (G : PDivGroup p O) : Type 1 w
 
 variable {A : Over (Sp O)} [GrpObj A] {G : PDivGroup p O}
 
+/- English proof (translation)
+Establish `h' : (toUnit (Pdiv.specO O O)).left = 𝟙 (Sp O)`. Rewrite using `[Over.toUnit_left]`. Conclude with `Spec.map_id _`. Rewrite using `[Over.OverMorphism.ext_iff, Over.comp_left, Over.comp_left, h']`. Conclude with `⟨fun h => h.trans (Category.id_comp _).symm, fun h => h.trans (Category.id_comp _)⟩`.
+-/
 theorem isTangent_iff_lieG (v : epsR O ⟶ A) : IsTangent v ↔
     Pdiv.ptMap (TrivSqZeroExt.fstHom O O O) ≫ (v : Pdiv.specO O (DualNumber O) ⟶ A) = toUnit (Pdiv.specO O O) ≫ η[A] := by
   have h' : (toUnit (Pdiv.specO O O)).left = 𝟙 (Sp O) := by
@@ -192,6 +242,9 @@ theorem isTangent_iff_lieG (v : epsR O ⟶ A) : IsTangent v ↔
   rw [Over.OverMorphism.ext_iff, Over.comp_left, Over.comp_left, h']
   exact ⟨fun h => h.trans (Category.id_comp _).symm, fun h => h.trans (Category.id_comp _)⟩
 
+/- English proof (translation)
+The claim follows from `(isTangent_iff_lieG _).2 x.2`.
+-/
 theorem isTangent_lieG (x : Pdiv.LieG A) : IsTangent (G := A) x.1 := (isTangent_iff_lieG _).2 x.2
 
 def tanTors (p n : ℕ) (x : Pdiv.LieG A) : Tors A (p ^ n) (DualNumber (ModPow p O n)) :=
@@ -201,6 +254,9 @@ namespace TorsionMap
 
 variable (θ : TorsionMap A G)
 
+/- English proof (translation)
+Establish `h` using `θ.mul n B ⟨1, one_pow _⟩ ⟨1, one_pow _⟩ ⟨1, one_pow _⟩ (_root_.mul_one _).symm`. Conclude with `((IsUnit.of_pow_eq_one (G.pts_pow_self n _) (pow_ne_zero n hp)).mul_eq_left).1 h.symm`.
+-/
 theorem pt_one (n : ℕ) (B : Type) [CommRing B] [Algebra O B] (hp : p ≠ 0) : toConv (θ.pt n B ⟨1, one_pow _⟩) = 1 := by
   have h := θ.mul n B ⟨1, one_pow _⟩ ⟨1, one_pow _⟩ ⟨1, one_pow _⟩ (_root_.mul_one _).symm
   exact ((IsUnit.of_pow_eq_one (G.pts_pow_self n _) (pow_ne_zero n hp)).mul_eq_left).1 h.symm
@@ -231,23 +287,38 @@ def ofTower (t : G.TorsionTower A) : TorsionMap A G where
   mul n B _ _ x y z h := t.pts_injective n B (by rw [map_mul]; simp only [TorsionTower.pts_apply, t.lift_y, h])
   res n B _ _ z z' h := t.inj (n + 1) B _ _ (by rw [t.lift_y, ← spOver_comp, Category.assoc, t.res, t.lift_y, h])
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun z z' h => Subtype.ext ((t.lift_y n z.1 z.2).symm.trans ((congrArg (spOver · ≫ t.y n) h).trans (t.lift_y n z'.1 z'.2))), fun φ => ⟨⟨_, (t.exists_iff n _).1 ⟨φ, rfl⟩⟩, t.inj n B _ _ (t.lift_y n _ ((t.exists_iff n _).1 ⟨φ, rfl⟩))⟩⟩`.
+-/
 theorem ofTower_bijective (t : G.TorsionTower A) (n : ℕ) (B : Type) [CommRing B] [Algebra O B] :
     Function.Bijective ((ofTower t).pt n B) :=
   ⟨fun z z' h => Subtype.ext ((t.lift_y n z.1 z.2).symm.trans ((congrArg (spOver · ≫ t.y n) h).trans (t.lift_y n z'.1 z'.2))),
     fun φ => ⟨⟨_, (t.exists_iff n _).1 ⟨φ, rfl⟩⟩, t.inj n B _ _ (t.lift_y n _ ((t.exists_iff n _).1 ⟨φ, rfl⟩))⟩⟩
 
+/- English proof (translation)
+Introduce `n B _ _ _` and use `ofTower_bijective t n B`.
+-/
 theorem ofTower_isIsoOver (t : G.TorsionTower A) (W : Set (Sp O)) : (ofTower t).IsIsoOver W :=
   fun n B _ _ _ => ofTower_bijective t n B
 
+/- English proof (translation)
+Introduce `n` and use `⟨⊤, ⊤, Set.subset_univ _, fun B _ _ => by simpa using ofTower_bijective t n B⟩`.
+-/
 theorem ofTower_isOpenNearZero (t : G.TorsionTower A) : (ofTower t).IsOpenNearZero := fun n =>
   ⟨⊤, ⊤, Set.subset_univ _, fun B _ _ => by
     simpa using ofTower_bijective t n B⟩
 
+/- English proof (translation)
+Introduce `n B _ _ z z' h` and use `t.inj n B _ _ (by change spOver (t.lift n z'.1 z'.2) ≫ _ = spOver ((t.lift n z.1 z.2).comp _) ≫ _ rw [t.lift_y, ← spOver_comp, Category.assoc, t.map_y, ← Category.assoc, t.lift_y, h])`.
+-/
 theorem ofTower_intertwines (t : G.TorsionTower A) (f : A ⟶ A) [IsMonHom f] : (ofTower t).Intertwines f (t.map t f) :=
   fun n B _ _ z z' h => t.inj n B _ _ (by
     change spOver (t.lift n z'.1 z'.2) ≫ _ = spOver ((t.lift n z.1 z.2).comp _) ≫ _
     rw [t.lift_y, ← spOver_comp, Category.assoc, t.map_y, ← Category.assoc, t.lift_y, h])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofTower_tanTors (t : G.TorsionTower A) (n : ℕ) (x : Pdiv.LieG A) :
     (ofTower t).pt n _ (tanTors p n x) = t.tanPt (isTangent_lieG x) n := rfl
 
@@ -263,11 +334,17 @@ def gmVec (c : O) : Pdiv.LieG (Gm (Sp O)) :=
 
 omit [Fact p.Prime] in
 
+/- English proof (translation)
+The claim follows from `(Diag.charVal_lieVec _ _).trans (congrArg (1 + TrivSqZeroExt.inr ·) (one_zsmul c))`.
+-/
 theorem gmCoord_gmVec (c : O) : gmCoord (B := DualNumber O) (gmVec O c).1 = 1 + TrivSqZeroExt.inr c :=
   (Diag.charVal_lieVec _ _).trans (congrArg (1 + TrivSqZeroExt.inr ·) (one_zsmul c))
 
 omit [Fact p.Prime] in
 
+/- English proof (translation)
+The claim follows from `(gmCoord_comp (TrivSqZeroExt.fstHom O O O) x.1).symm.trans ((congrArg gmCoord x.2).trans (map_one gmCoordHom))`.
+-/
 theorem fst_gmCoord (x : Pdiv.LieG (Gm (Sp O))) : (gmCoord (B := DualNumber O) x.1).fst = 1 :=
   (gmCoord_comp (TrivSqZeroExt.fstHom O O O) x.1).symm.trans ((congrArg gmCoord x.2).trans (map_one gmCoordHom))
 
@@ -281,6 +358,9 @@ def gmForm : Pdiv.omega (Gm (Sp O)) :=
 
 omit [Fact p.Prime] in
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun x => by have h0 : gmCoord (B := DualNumber O) x.1 = Pdiv.dualScale (gmCoord (B := DualNumber O) x.1).snd (gmCoord (B := DualNumber O) (gmVec O 1).1) := by rw [gmCoord_gmVec] ext · simp [fst_gmCoord, Pdiv.dualScale] · simp [Pdiv.dualScale] have h1 : x.1 = s …`.
+-/
 theorem omega_gm_eq (w : Pdiv.omega (Gm (Sp O))) : w = w.1 (gmVec O 1) • gmForm O :=
   Subtype.ext (funext fun x => by
     have h0 : gmCoord (B := DualNumber O) x.1 =
@@ -294,6 +374,9 @@ theorem omega_gm_eq (w : Pdiv.omega (Gm (Sp O))) : w = w.1 (gmVec O 1) • gmFor
     have h : x = Pdiv.AvDefs.lieScale _ (gmCoord (B := DualNumber O) x.1).snd (gmVec O 1) := Subtype.ext h1
     exact (congrArg w.1 h).trans ((HTLat.omega_lieScale w _ _).trans (mul_comm _ _)))
 
+/- English proof (translation)
+Introduce `n` and use `by have h1 : (gmForm O).1 (gmVec O 1) = 1 := (congrArg TrivSqZeroExt.snd (gmCoord_gmVec O 1)).trans (by simp) refine ⟨fun v => ?_, fun w => (smul_dUnit_muT_eq_zero_iff p O n _).trans ⟨?_, ?_⟩, fun x w a ha => ?_⟩ · obtain ⟨c, rfl⟩ := mu_cot_span p O n v exact ⟨c • gmForm O, congr …`.
+-/
 theorem isOmega_muTower : (TorsionMap.ofTower (muTower p O)).IsOmega
     (LinearMap.toSpanSingleton O _ (dlogT p O) ∘ₗ LinearMap.proj (gmVec O 1) ∘ₗ (Pdiv.omega _).subtype) := fun n => by
   have h1 : (gmForm O).1 (gmVec O 1) = 1 := (congrArg TrivSqZeroExt.snd (gmCoord_gmVec O 1)).trans (by simp)
@@ -309,6 +392,9 @@ theorem isOmega_muTower : (TorsionMap.ofTower (muTower p O)).IsOmega
     rw [TorsionTower.tanDer_d, ← gmCoord_muTower, TorsionTower.tanPt_y, gmCoord_comp, snd_epsTo, Algebra.smul_def, ← map_mul]
     exact congrArg _ (congrArg (fun w : Pdiv.omega (Gm (Sp O)) => w.1 x) (omega_gm_eq O w)).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨.ofTower (muTower p O), TorsionMap.ofTower_isOpenNearZero _, TorsionMap.ofTower_isIsoOver _ _, _, isOmega_muTower p O⟩`.
+-/
 example : ∃ θ : TorsionMap (Gm (Sp O)) (PDivGroup.mu p O), θ.IsOpenNearZero ∧ θ.IsIsoOver Set.univ ∧ ∃ c, θ.IsOmega c :=
   ⟨.ofTower (muTower p O), TorsionMap.ofTower_isOpenNearZero _, TorsionMap.ofTower_isIsoOver _ _, _, isOmega_muTower p O⟩
 
@@ -359,6 +445,9 @@ variable {Dw}
 
 def dualVec {J : Type} (b : Module.Basis J ℤ Dw.La) (j : J) : Dw.La := -(Dw.unimod.2 (b.coord j)).choose
 
+/- English proof (translation)
+Rewrite using `[dualVec, map_neg, LinearMap.IsAlt.neg Dw.alt, (Dw.unimod.2 (b.coord j)).choose_spec, Module.Basis.coord_apply]`.
+-/
 theorem EF_dualVec {J : Type} (b : Module.Basis J ℤ Dw.La) (x : Dw.La) (j : J) : Dw.EF x (dualVec b j) = b.repr x j := by
   rw [dualVec, map_neg, LinearMap.IsAlt.neg Dw.alt, (Dw.unimod.2 (b.coord j)).choose_spec, Module.Basis.coord_apply]
 
@@ -369,6 +458,9 @@ variable {t : SAB H (Sp R)} {GG : PDivGroup p R} {act : Action (𝓞 E) GG} {pol
 
 include h in
 
+/- English proof (translation)
+The claim follows from `have k := Coisotropic.lattice_rank E H Dw haveI := k.1 haveI := k.2.1 ⟨Module.finBasisOfFinrankEq ℤ _ (k.2.2.trans h.height.symm)⟩`.
+-/
 theorem nonempty_basis : Nonempty (Module.Basis (Fin GG.height) ℤ Dw.La) :=
   have k := Coisotropic.lattice_rank E H Dw
   haveI := k.1
@@ -382,23 +474,35 @@ def constTate (b : Module.Basis (Fin GG.height) ℤ Dw.La) : ConstTate ε GG whe
     rw [h.pair, EF_dualVec, Module.Basis.repr_self, Finsupp.single_apply]
     split_ifs <;> simp
 
+/- English proof (translation)
+Use `conv_rhs => rw [← b.sum_repr x, map_sum]`. Simplify using `only [ConstTate.toTate, Fintype.linearCombination_apply, map_zsmul, Int.cast_smul_eq_zsmul]`. Both sides reduce to the same expression.
+-/
 theorem toTate_repr (b : Module.Basis (Fin GG.height) ℤ Dw.La) (x : Dw.La) :
     (h.constTate b).toTate (fun i => (b.repr x i : ℤ_[p])) = τ x := by
   conv_rhs => rw [← b.sum_repr x, map_sum]
   simp only [ConstTate.toTate, Fintype.linearCombination_apply, map_zsmul, Int.cast_smul_eq_zsmul]
   rfl
 
+/- English proof (translation)
+Introduce `i` and use `(h.lin a (b i)).symm.trans ((h.toTate_repr b _).symm.trans (Fintype.linearCombination_apply ..))`.
+-/
 theorem stable (b : Module.Basis (Fin GG.height) ℤ Dw.La) (a : 𝓞 E) :
     (h.constTate b).Stable (act a) (Matrix.of fun k i => (b.repr (a • b i) k : ℤ_[p])) := fun i =>
   (h.lin a (b i)).symm.trans ((h.toTate_repr b _).symm.trans (Fintype.linearCombination_apply ..))
 
 include h in
 
+/- English proof (translation)
+The claim follows from `h.nonempty_basis.elim fun b => ⟨h.constTate b, fun a => ⟨_, h.stable b a⟩⟩`.
+-/
 theorem exists_constTate : ∃ c : ConstTate ε GG, ∀ a, ∃ ρ, c.Stable (act a) ρ :=
   h.nonempty_basis.elim fun b => ⟨h.constTate b, fun a => ⟨_, h.stable b a⟩⟩
 
 include h in
 
+/- English proof (translation)
+The claim follows from `h.weil n k hp hk z z' y u hz' (by rw [hu, ← h.pair, muRoot_pairing, hz]; rfl)`.
+-/
 theorem weil_lattice (n : ℕ) (k : Type) [Field k] [IsAlgClosed k] [Algebra R k] (hp : (p : k) ≠ 0)
     (hk : Set.range (spMap (algebraMap R k)) ⊆ abLocus t.G) (z z' : Tors t.G (p ^ n) k) (x y : Dw.La) (u : kˣ)
     (hz : θ.pt n k z = tatePt (τ x) n k) (hz' : θ.pt n k z' = tatePt (τ y) n k)
@@ -408,6 +512,9 @@ theorem weil_lattice (n : ℕ) (k : Type) [Field k] [IsAlgClosed k] [Algebra R k
 
 include h in
 
+/- English proof (translation)
+Take `⟨S, e, he⟩` from `GlobalTheory.PerfdCompletion.exists_cycPerfd p R K hp _ h.prim (muRoot_succ_pow ε)`. Use `letI := (e.toRingHom.comp (algebraMap R _)).toAlgebra`. Establish `k : ∀ n, muRoot (eps S) n = algebraMap R S.R (muRoot ε n)` using `fun n => (muRoot_eps S n).trans (he n)`. Conclude with `⟨S, e, k, h.exists_constTate.elim fun c _ => ⟨c.baseChange S.R k⟩⟩`.
+-/
 theorem exists_completion (K : Type) [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K]
     [IsFractionRing R K] (hp : ¬ IsUnit (p : R)) :
     ∃ (S : GlobalTheory.Published.CycPerfd p) (e : AdicCompletion (Ideal.span {(p : R)}) R ≃+* S.R),
@@ -443,6 +550,9 @@ def PropGOn {X Z : Scheme.{0}} [IsIntegral X] (g : X ⟶ Z) (tZ : SAB H Z) : Pro
       ∀ (U U' : AffOp X) (h : U'.1 ≤ U.1), letI := (AffOp.res h).toAlgebra
         IsRestr (m U).φ (act U) (pol U) (θ U) (ε U) (τ U) (m U').φ (act U') (pol U') (θ U') (ε U') (τ U')
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun U => (exists_sab (U.toX ≫ g) tZ).choose, ⟨fun U => (exists_sab (U.toX ≫ g) tZ).choose_spec.some⟩⟩`.
+-/
 theorem exists_pullbacks {X Z : Scheme.{0}} [IsIntegral X] (g : X ⟶ Z) (tZ : SAB H Z) :
     ∃ t : ∀ U : AffOp X, SAB H (Sp U.Bp), Nonempty (∀ U, SABMap (t U) tZ (U.toX ≫ g)) :=
   ⟨fun U => (exists_sab (U.toX ≫ g) tZ).choose, ⟨fun U => (exists_sab (U.toX ≫ g) tZ).choose_spec.some⟩⟩
@@ -454,10 +564,16 @@ def IsOfType {k : Type} [Field k] (t : SAB H (Sp k)) : Prop :=
     Nonempty (TateIso Dw k (Over.mk (𝟙 (Sp k)) ⟶ t.G) (fun a g => g ≫ t.act.act a)
       fun n g g' c => Out.WeilIs t.G t.PP.L n g g' (unitOn c))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨o.proper, o.ample, o.ktriv, (o.geom k (𝟙 _) β (Category.id_comp _)).2.elim fun I _ => ⟨I⟩⟩`.
+-/
 theorem isOfType_obj {l : Level H} {B k : Type} [CommRing B] [Field k] [IsAlgClosed k] {b : Base l B} (β : B →+* k)
     (o : Obj Dw l b (spMap β)) : IsOfType Dw o.t :=
   ⟨o.proper, o.ample, o.ktriv, (o.geom k (𝟙 _) β (Category.id_comp _)).2.elim fun I _ => ⟨I⟩⟩
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.elim fun I => charZero_of_inj_zero fun n hn => by by_contra h0 haveI : NeZero n := ⟨h0⟩ exact ((IsPrimitiveRoot.coe_units_iff.2 (I.ζ_prim n (Nat.pos_of_ne_zero h0))).neZero'.out hn)`.
+-/
 theorem IsOfType.charZero {k : Type} [Field k] {t : SAB H (Sp k)} (h : IsOfType Dw t) : CharZero k :=
   h.2.2.2.elim fun I => charZero_of_inj_zero fun n hn => by
     by_contra h0
@@ -469,6 +585,9 @@ variable (Dw) in
 def GenericType {X Z : Scheme.{0}} [IsIntegral X] (g : X ⟶ Z) (tZ : SAB H Z) : Prop :=
   ∃ t₀ : SAB H (Sp (Kbar X)), Nonempty (SABMap t₀ tZ (genPt X ≫ g)) ∧ IsOfType Dw t₀
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨o.t, ⟨m⟩, isOfType_obj β o⟩`.
+-/
 theorem genericType_of_obj {X Z : Scheme.{0}} [IsIntegral X] {g : X ⟶ Z} {tZ : SAB H Z} {l : Level H} {B : Type} [CommRing B]
     {b : Base l B} (β : B →+* Kbar X) (o : Obj Dw l b (spMap β)) (m : SABMap o.t tZ (genPt X ≫ g)) : GenericType Dw g tZ :=
   ⟨o.t, ⟨m⟩, isOfType_obj β o⟩
@@ -493,6 +612,11 @@ def HasLevelTowers (Y : LocalSystem Xo p W) (i₀ : Idx H p) {R : Type} [CommRin
   ∃ s : Finset R, Ideal.span (s : Set R) = ⊤ ∧ ∀ r ∈ s, ∃ i y,
     IsLevelTower Y i₀ (spMap (algebraMap R (Localization.Away r)) ≫ y₀) i y
 
+/- English proof (translation)
+Take `⟨h1, -, h2, h3⟩` from `h.1 0`. Rewrite `h2` using `[pow_zero, _root_.mul_one]`. Establish `h4 : (i 0).l.M' = i₀.l.M'` using `by rw [Level.M', Level.M', h1, h2]`. Use `⟨h2, h4, h3.trans (sup_eq_left.2 ?_)⟩` and prove the remaining obligations. Rewrite using `[h4, IntermediateField.adjoin_simple_le_iff]`.
+
+Conclude with `i₀.c.zeta_mem`.
+-/
 theorem IsLevelTower.zero_eq {Y : LocalSystem Xo p W} {i₀ : Idx H p} {S : Scheme.{0}} {y₀ : S ⟶ (Y i₀).X} {i : ℕ → Idx H p}
     {y : ∀ n, S ⟶ (Y (i n)).X} (h : IsLevelTower Y i₀ y₀ i y) : (i 0).l.A = i₀.l.A ∧ (i 0).l.M' = i₀.l.M' ∧ (i 0).c.F = i₀.c.F := by
   obtain ⟨h1, -, h2, h3⟩ := h.1 0
@@ -531,10 +655,16 @@ def GroupGoodSt : Prop := AtGood fun _ _ _ _ _ _ _ z => GroupAt z
 
 def GenericSt : Prop := GlobalTheory.BundleChernComparison.AtAll fun _ _ _ _ _ _ _ z => GenericAt z
 
+/- English proof (translation)
+Introduce `D O hO p _ W hW jc hj z c B f hB _` and use `haveI := isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW h _ _ _ p _ _ _ _ hB (hg D O hO p W hW jc hj z c B f)`.
+-/
 theorem GroupSt.all (h : GroupSt) (hg : GenericSt) : GroupAllSt := fun D O hO p _ W hW jc hj z c B f hB _ =>
   haveI := isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW
   h _ _ _ p _ _ _ _ hB (hg D O hO p W hW jc hj z c B f)
 
+/- English proof (translation)
+Introduce `D O hO p _ _ _ _ W hW jc hj z` and use `h D O hO p W hW jc hj z`.
+-/
 theorem GroupAllSt.good (h : GroupAllSt) : GroupGoodSt := fun D O hO p _ _ _ _ W hW jc hj z => h D O hO p W hW jc hj z
 
 def LevelSt : Prop := AtGood fun _ O p _ W hW _ z =>

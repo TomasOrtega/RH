@@ -11,6 +11,9 @@ open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid Glob
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal GlobalTheory.FinPl
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RowShape.topL_selfDual_orthAt | exact GlobalTheory.RowShape.topL_selfDual_orthAt | (intros; apply GlobalTheory.RowShape.topL_selfDual_orthAt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.posNormLine_selfDual_and_topLattice_splits : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => IsSelfDualC _ (GlobalTheory.RowShape.topL D) ∧
     ∀ v, GlobalTheory.FinPl.OrthAt (topOrth ch.G) (ch.G.Λ (.top D.R.m)) (ch.G.Λ (.grid D.R.m D.R.m)) (GlobalTheory.RowShape.topL D) v := by
   first | exact @GlobalTheory.RowShape.topL_selfDual_orthAt | exact GlobalTheory.RowShape.topL_selfDual_orthAt | (intros; apply GlobalTheory.RowShape.topL_selfDual_orthAt <;> assumption)

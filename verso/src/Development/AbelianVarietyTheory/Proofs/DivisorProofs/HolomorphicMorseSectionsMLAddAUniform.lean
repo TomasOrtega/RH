@@ -20,6 +20,11 @@ namespace GlobalTheory.HSAmp.Morse
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Take `⟨θ, hθ, h⟩` from `GlobalTheory.T.sectionValueUnitFrame_eq_localFunction_unitScalar k X p P m 1 σ y i j hi hj`. Establish `e : ∑ l, c l * vals P m 1 f σ y l = θ * ((∑ l, c l * ratVal (P.loc m 1 (f l) i j) y) * (Real.exp (-(((m : ℤ) : ℝ) * (P.L.φ σ).φ i y + ((1 : ℤ) : ℝ) * (P.A.φ σ).φ j y) / 2) : ℝ))`. Simplify using `only [vals, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[h _ (hf l)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[cmb, e, norm_mul, hθ, one_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, mul_pow, sq (Real.exp _), ← Real.exp_add, mul_assoc, ← Real.exp_add]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cmb_eq_frame (P : Pair p) (m : ℕ) {ι : Type} [Fintype ι] (f : ι → X.functionField)
     (hf : ∀ l, f l ∈ P.H m 1) (c : ι → ℂ) (σ : k →+* ℂ) (y : CxPts p σ) (i : P.L.B.ι) (j : P.A.B.ι)
     (hi : y ∈ ptsIn p σ (P.L.B.U i)) (hj : y ∈ ptsIn p σ (P.A.B.U j)) :
@@ -38,6 +43,11 @@ theorem cmb_eq_frame (P : Pair p) (m : ℕ) {ι : Type} [Fintype ι] (f : ι →
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hp` using `(GlobalTheory.T.continuous_hermSectionValue_mul_conj_and_norm_bounded k X p D hX P m 1).1 σ`. Establish `e : (fun y => cmb (vals P m 1 f) c σ y) = fun y => (∑ a, ∑ b, c a * (starRingEnd ℂ) (c b) * (val P m 1 σ y (f a) * (starRingEnd ℂ) (val P m 1 σ y (f b)))).re`. Use function extensionality and compare the values at `y`. Rewrite using `[cmb, ← Complex.normSq_eq_norm_sq, ← Complex.ofReal_re (Complex.normSq _), ← Complex.mul_conj, map_sum, Finset.sum_mul_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [vals, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Complex.continuous_re.comp (continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => continuous_const.mul (hp _ (hf a) _ (hf b)))`.
+-/
 theorem continuous_cmb {D : ℕ} (hX : IsArithVar p D) (P : Pair p) (m : ℕ) {ι : Type} [Fintype ι]
     (f : ι → X.functionField) (hf : ∀ l, f l ∈ P.H m 1) (c : ι → ℂ) (σ : k →+* ℂ) :
     Continuous fun y => cmb (vals P m 1 f) c σ y := by
@@ -56,6 +66,17 @@ theorem continuous_cmb {D : ℕ} (hX : IsArithVar p D) (P : Pair p) (m : ℕ) {�
   exact Complex.continuous_re.comp (continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ =>
     continuous_const.mul (hp _ (hf a) _ (hf b)))
 
+/- English proof (translation)
+Use `haveI : Finite (k →+* ℂ) := hX.finite_emb`. Use `haveI := hX.compactSpace σ`. Use `haveI : T2Space (CxPts p σ) := CxPts.t2Space_cxPts_of_isProjOver σ hX.isProjOver`. Take `⟨hfin, -⟩` from `GlobalTheory.T.smoothVolumeDensity_finite_isOpenPos k X p D hX hs σ (ω σ)`. Establish `hcont` using `continuous_cmb hX P m f hf c σ`.
+
+Use `set S := C.e.source ∩ C.e ⁻¹' T with hSdef`. Establish `hSo : IsOpen S` using `C.e.isOpen_inter_preimage hT`. Establish `hSs : S ⊆ C.e.source` using `Set.inter_subset_left`. Establish `hST : C.e '' S = T`. Rewrite using `[hSdef, C.e.image_source_inter_eq']`.
+
+Use extensionality with `v`. Use `⟨fun hv => ?_, fun hv => ⟨hTt hv, ?_⟩⟩` and prove the remaining obligations. Establish `h` using `hv.2`. Simplify using `only [Set.mem_preimage, C.e.right_inv hv.1] at h`. Conclude with `h`.
+
+Simplify using `only [Set.mem_preimage, C.e.right_inv (hTt hv)]`. Conclude with `hv`. Establish `h1` using `(GlobalTheory.T.meas_integral_eq_chartDensity_integral k X p D hX σ (ω σ) C S _ hSo.measurableSet hSs hcont).2`. Rewrite `h1` using `[hST]`. Rewrite using `[← h1]`.
+
+Establish `hnn : ∀ σ' (y : CxPts p σ'), 0 ≤ cmb (vals P m 1 f) c σ' y` using `fun _ _ => by unfold cmb; positivity`. Establish `hint : Integrable (fun y => cmb (vals P m 1 f) c σ y) (ω σ).meas` using `integrableOn_univ.1 (hcont.continuousOn.integrableOn_compact isCompact_univ)`. Combine the equalities or inequalities in the displayed calculation. Unfold `l2`. Conclude with `single_le_finsum (f := fun σ' => ∫ y, cmb (vals P m 1 f) c σ' y ∂(ω σ').meas) σ (Set.toFinite _) fun σ' => integral_nonneg (hnn σ')`.
+-/
 theorem integral_over_chart_le_l2 {D : ℕ} (hX : IsArithVar p D) (hs : GenSmooth p D) (P : Pair p) (m : ℕ) {ι : Type}
     [Fintype ι] (f : ι → X.functionField) (hf : ∀ l, f l ∈ P.H m 1) (c : ι → ℂ) (ω : ∀ σ, VolDens p σ D)
     (σ : k →+* ℂ) (C : AlgChart p σ D) (T : Set (ReciprocityTheory.L2DbarEstimates.V D)) (hT : IsOpen T) (hTt : T ⊆ C.e.target) :
@@ -91,6 +112,37 @@ theorem integral_over_chart_le_l2 {D : ℕ} (hX : IsArithVar p D) (hs : GenSmoot
         exact single_le_finsum (f := fun σ' => ∫ y, cmb (vals P m 1 f) c σ' y ∂(ω σ').meas) σ (Set.toFinite _)
           fun σ' => integral_nonneg (hnn σ')
 
+/- English proof (translation)
+Take `⟨R⟩` from `hs σ`. Take `⟨a, ha⟩` from `R.cover y₀`. Use `set C := R.chart a with hC`. Use `set i := pick (P.L.φ σ).isLB y₀ with hi`. Use `set j := pick (P.A.φ σ).isLB y₀ with hj`.
+
+Use `set O := C.e.source ∩ ptsIn p σ (P.L.B.U i) ∩ ptsIn p σ (P.A.B.U j) with hOdef`. Establish `hO : IsOpen O` using `(C.e.open_source.inter (isOpen_ptsIn _)).inter (isOpen_ptsIn _)`. Establish `hy₀O : y₀ ∈ O` using `⟨⟨ha, mem_pick _ _⟩, mem_pick _ _⟩`. Use `set U := C.e '' O with hUdef`. Establish `hU : IsOpen U` using `C.e.isOpen_image_of_subset_source hO fun y hy => hy.1.1`.
+
+Establish `hUO : ∀ v ∈ U, C.e.symm v ∈ O ∧ v ∈ C.e.target`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨by rwa [C.e.left_inv hy.1.1], C.e.map_source hy.1.1⟩`. Take `⟨r, hr, hrU⟩ : ∃ r > 0, Metric.closedBall (C.e y₀) r ⊆ U` from `Metric.nhds_basis_closedBall.mem_iff.1 (hU.mem_nhds ⟨y₀, hy₀O, rfl⟩)`. Use `set K := Metric.closedBall (C.e y₀) r with hK`.
+
+Establish `hsymm : ContinuousOn C.e.symm U` using `C.e.continuousOn_symm.mono fun v hv => (hUO v hv).2`. Establish `hdc : ContinuousOn (fun v => (ω σ).dens C (C.e.symm v)) U` using `((ω σ).cont C).comp hsymm fun v hv => (hUO v hv).1.1.1`. Establish `hψc : ContinuousOn (fun v => (P.A.φ σ).φ j (C.e.symm v)) U` using `ContinuousOn.comp (show ContinuousOn ((P.A.φ σ).φ j) (ptsIn p σ (P.A.B.U j)) from fun y hy => ((P.A.cInf σ) j y hy).continuousAt.continuousWithinAt) hsymm fun v hv => (hUO v hv).1.2`. Establish `hφ' : ContDiffOn ℝ 2 (fun v => (P.L.φ σ).φ i (C.e.symm v)) U`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Conclude with `((P.L.cInf σ).contDiffAt C hy.1.1 hy.1.2).contDiffWithinAt`. Establish `hlevi : ∀ z ∈ U, ∀ ξ : Fin D → ℂ, 0 ≤ (ReciprocityTheory.L2DbarEstimates.leviV D (fun v => (((P.L.φ σ).φ i (C.e.symm v) : ℝ) : ℂ)) z ξ).re`. Introduce and unpack `_ ⟨y, hy, rfl⟩ ξ`. Conclude with `hP σ i C y ⟨hy.1.1, hy.1.2⟩ ξ`. Establish `hgc : ContinuousOn (fun v => Real.exp (-(P.A.φ σ).φ j (C.e.symm v)) * (ω σ).dens C (C.e.symm v)) U` using `(Real.continuous_exp.comp_continuousOn hψc.neg).mul hdc`.
+
+Establish `hgp : ∀ v ∈ U, 0 < Real.exp (-(P.A.φ σ).φ j (C.e.symm v)) * (ω σ).dens C (C.e.symm v)` using `fun v hv => mul_pos (Real.exp_pos _) ((ω σ).pos C _ (hUO v hv).1.1.1)`. Take `⟨v₀, hv₀, hmin⟩` from `(isCompact_closedBall (C.e y₀) r).exists_isMinOn ⟨C.e y₀, Metric.mem_closedBall_self hr.le⟩ (hdc.mono hrU)`. Establish `hd₀ : 0 < (ω σ).dens C (C.e.symm v₀)` using `(ω σ).pos C _ (hUO v₀ (hrU hv₀)).1.1.1`. Take `⟨δ, hδ, hball, hev⟩` from `GlobalTheory.T.local_holomorphic_morse_inequality_uniform D U K (fun v => (P.L.φ σ).φ i (C.e.symm v)) (fun v => Real.exp (-(P.A.φ σ).φ j (C.e.symm v)) * (ω σ).dens C (C.e.symm v)) (ε * (ω σ).dens C (C.e.symm v₀)) hU (isCompact_closedBall _ _) hrU hφ' hlevi hgc hgp (mul_pos hε hd₀ …`. Use `⟨C.e.source ∩ C.e ⁻¹' K, inter_mem (C.e.open_source.mem_nhds ha) ((C.e.continuousAt ha).preimage_mem_nhds (Metric.closedBall_mem_nhds _ hr)), ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hev] with m hm ι _ f hf c y hy`. Establish `hyO : y ∈ O`. Use `(hUO (C.e y) (hrU hy.2)).1` as an intermediate fact. Rewrite `this` using `[C.e.left_inv hy.1]`. Then use the resulting hypothesis. Use `set F : ReciprocityTheory.L2DbarEstimates.V D → ℂ := fun v => ∑ l, c l * ratVal (P.loc m 1 (f l) i j) (C.e.symm v) with hF`.
+
+Establish `hFd : DifferentiableOn ℂ F U`. Use `DifferentiableOn.fun_sum (𝕜 := ℂ) (u := Finset.univ) (A := fun l v => c l * ratVal (P.loc m 1 (f l) i j) (C.e.symm v)) fun l _ => ?_` and prove the remaining obligations. Conclude with `(((GlobalTheory.T.sectionLocalFunction_continuousOn_holomorphicChart k X p P m 1 σ (f l) (hf l) i j).2 D C).mono fun v hv => ⟨(hUO v hv).2, (hUO v hv).1.1.2, (hUO v hv).1.2⟩).const_mul (c l)`. Establish `hid : ∀ v ∈ U, ‖F v‖ ^ 2 * Real.exp (-((m : ℝ) * (P.L.φ σ).φ i (C.e.symm v))) * (Real.exp (-(P.A.φ σ).φ j (C.e.symm v)) * (ω σ).dens C (C.e.symm v)) = cmb (vals P m 1 f) c σ (C.e.symm v) * (ω σ).dens C (C.e.symm v)`. Introduce `v hv`.
+
+Rewrite using `[cmb_eq_frame P m f hf c σ _ i j (hUO v hv).1.1.2 (hUO v hv).1.2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hBU : ∀ w ∈ Metric.ball (C.e y) δ, w ∈ U` using `fun w hw => hball _ hy.2 (Metric.ball_subset_closedBall hw)`. Establish `hI : ∫ w in Metric.ball (C.e y) δ, ‖F w‖ ^ 2 * Real.exp (-((m : ℝ) * (P.L.φ σ).φ i (C.e.symm w))) * (Real.exp (-(P.A.φ σ).φ j (C.e.symm w)) * (ω σ).dens C (C.e.symm w)) = ∫ w in Metric.ball (C.e y) δ, cmb (vals P m 1 f) c σ (C.e.symm w) * (ω σ).dens C (C.e.symm w)` using `setIntegral_congr_fun Metric.isOpen_ball.measurableSet fun w hw => hid w (hBU w hw)`. Establish `hle` using `integral_over_chart_le_l2 hX hs P m f hf c ω σ C _ Metric.isOpen_ball fun w hw => (hUO w (hBU w hw)).2`.
+
+Establish `hInn : 0 ≤ ∫ w in Metric.ball (C.e y) δ, cmb (vals P m 1 f) c σ (C.e.symm w) * (ω σ).dens C (C.e.symm w)` using `setIntegral_nonneg Metric.isOpen_ball.measurableSet fun w hw => mul_nonneg (by unfold cmb; positivity) ((ω σ).pos C _ (hUO w (hBU w hw)).1.1.1).le`. Establish `hdy : 0 < (ω σ).dens C y` using `(ω σ).pos C y hy.1`. Establish `hρ0 : 0 ≤ ρ σ y`. Establish `h2` using `C.chernDens_nonneg (P.L.cInf σ) (hP σ) hy.1`. Rewrite `h2` using `[(hρ σ).2 C y hy.1]`.
+
+Conclude with `(mul_nonneg_iff_of_pos_right hdy).1 h2`. Establish `hdet : (ReciprocityTheory.L2DbarEstimates.cHess D (fun v => (((P.L.φ σ).φ i (C.e.symm v) : ℝ) : ℂ)) (C.e y)).det.re / Real.pi ^ D = ρ σ y * (ω σ).dens C y / D.factorial`. Establish `h1` using `(hρ σ).2 C y hy.1`. Rewrite `h1` using `[C.chernDens_eq (P.L.cInf σ) hy.1 hyO.1.2]`. Establish `hpi : 0 < Real.pi ^ D` using `by positivity`.
+
+Establish `hfac : (0 : ℝ) < D.factorial` using `by exact_mod_cast D.factorial_pos`. Rewrite using `[div_eq_div_iff hpi.ne' hfac.ne', ← h1]`. Simplify using `only [AlgChart.hess]`. Clear the denominators using the available nonvanishing facts. Establish `h0` using `hm (C.e y) hy.2 F hFd`.
+
+Use `beta_reduce at h0`. Rewrite `h0` using `[hid _ (hrU hy.2), hI, hdet, C.e.left_inv hy.1]`. Establish `hmin' : (ω σ).dens C (C.e.symm v₀) ≤ (ω σ).dens C y`. Use `hmin hy.2` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq, C.e.left_inv hy.1] at this`.
+
+Conclude with `this`. Use `set I := ∫ w in Metric.ball (C.e y) δ, cmb (vals P m 1 f) c σ (C.e.symm w) * (ω σ).dens C (C.e.symm w)`. Establish `hM : 0 ≤ (m : ℝ) ^ D * I` using `mul_nonneg (by positivity) hInn`. Establish `h3 : (ω σ).dens C y * cmb (vals P m 1 f) c σ y ≤ (ω σ).dens C y * ((ρ σ y / D.factorial + ε) * (m : ℝ) ^ D * I)`. Rewrite using `[mul_comm]`.
+
+Use `h0.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `(le_of_mul_le_mul_left h3 hdy).trans (mul_le_mul_of_nonneg_left hle ?_)` and prove the remaining obligations. Check the signs of the components of the expression.
+-/
 theorem local_bound {D : ℕ} (hX : IsArithVar p D) (hs : GenSmooth p D) (P : Pair p) (hP : P.L.SemiPos D)
     (ω : ∀ σ, VolDens p σ D) (ρ : ∀ σ, CxPts p σ → ℝ) (hρ : ∀ σ, (ω σ).IsRatio (P.L.φ σ) (ρ σ)) (ε : ℝ)
     (hε : 0 < ε) (σ : k →+* ℂ) (y₀ : CxPts p σ) :
@@ -198,6 +250,13 @@ theorem local_bound {D : ℕ} (hX : IsArithVar p D) (hs : GenSmooth p D) (P : Pa
   refine (le_of_mul_le_mul_left h3 hdy).trans (mul_le_mul_of_nonneg_left hle ?_)
   positivity
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX hs P hP ω ρ hρ ε hε`. Use `haveI : Finite (k →+* ℂ) := hX.finite_emb`. Use `choose N hN hev using fun σ (y₀ : CxPts p σ) => local_bound hX hs P hP ω ρ hρ ε hε σ y₀`. Establish `hcov : ∀ σ : k →+* ℂ, ∃ t : Finset (CxPts p σ), ∀ y, ∃ y₀ ∈ t, y ∈ N σ y₀` using `fun σ => by haveI := hX.compactSpace σ`. Take `⟨t, -, ht⟩` from `(isCompact_univ (X := CxPts p σ)).elim_nhds_subcover (N σ) fun y _ => hN σ y`.
+
+Conclude with `⟨t, fun y => by simpa using ht (Set.mem_univ y)⟩`. Use `choose t ht using hcov`. Establish `hall : ∀ᶠ m : ℕ in atTop, ∀ σ : k →+* ℂ, ∀ y₀ ∈ t σ, ∀ (ι : Type) [Fintype ι] (f : ι → X.functionField), (∀ i, f i ∈ P.H m 1) → ∀ (c : ι → ℂ), ∀ y ∈ N σ y₀, cmb (vals P m 1 f) c σ y ≤ (ρ σ y / D.factorial + ε) * (m : ℝ) ^ D * l2 (fun σ => (ω σ).meas) (vals P m 1 f) c` using `eventually_all.2 fun σ => (eventually_all_finset (t σ)).2 fun y₀ _ => hev σ y₀`. Use `filter_upwards [hall] with m hm ι _ f hf c σ y`. Take `⟨y₀, hy₀, hy⟩` from `ht σ y`.
+
+Conclude with `hm σ y₀ hy₀ ι f hf c y hy`.
+-/
 theorem cmb_le : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
     GenSmooth p D → ∀ (P : Pair p), P.L.SemiPos D → ∀ (ω : ∀ σ, VolDens p σ D) (ρ : ∀ σ, CxPts p σ → ℝ),
     (∀ σ, (ω σ).IsRatio (P.L.φ σ) (ρ σ)) → ∀ ε : ℝ, 0 < ε → ∀ᶠ m : ℕ in atTop, ∀ (ι : Type) [Fintype ι]

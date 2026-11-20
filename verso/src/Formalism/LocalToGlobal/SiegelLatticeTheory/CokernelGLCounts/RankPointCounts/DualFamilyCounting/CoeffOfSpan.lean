@@ -13,6 +13,13 @@ variable {D : Formalism.BasicNotions.D7} {T T' : D.host.E} {F0 : FlagG (VS D) D.
 variable (hw : LinearIndependent D.host.E (Sum.elim F0.fvec F'.fl.fvec))
 include hw
 
+/- English proof (translation)
+Take `⟨o1, o2, h⟩` from `mmg_coord D F0 F' hv`. Take `⟨c, rfl⟩` from `(mem_X_iff F0).1 hX`. Rewrite using `[show ∑ i, c i • F0.e i = ∑ i, (Fin.snoc (α := fun _ => D.host.E) c 0 : _ → _) i • F0.fvec i + ∑ j, (0 : Fin (D.R.rS + 1) → D.host.E) j • F'.fl.fvec j by`. Rewrite using `[sum_fvec]`. Simplify using `only [zero_smul, add_zero, Pi.zero_apply, Finset.sum_const_zero]] at h`.
+
+Take `⟨hα, hβ⟩` from `coord_eq hw h`. Establish `hc : ∀ a, c a = algebraMap (𝓞 D.host.E) D.host.E (o1 (Fin.castSucc a))`. Introduce `a`. Establish `h1` using `congrFun hα (Fin.castSucc a)`. Establish `h2` using `congrFun hβ (Fin.castSucc a)`.
+
+Simplify using `only [Fin.snoc_castSucc, Pi.zero_apply] at h1 h2`. Rewrite using `[h1, ← h2, sub_zero]`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Conclude with `⟨fun a => o1 (Fin.castSucc a), by simp only [hc, smulO]⟩`.
+-/
 theorem u1 {v : (VS D).V} (hv : v ∈ MMg D F0 F') (hX : v ∈ F0.X) :
     v ∈ Submodule.span (𝓞 D.host.E) (Set.range F0.e) := by
   obtain ⟨o1, o2, h⟩ := mmg_coord D F0 F' hv
@@ -30,6 +37,13 @@ theorem u1 {v : (VS D).V} (hv : v ∈ MMg D F0 F') (hX : v ∈ F0.X) :
   rw [Submodule.mem_span_range_iff_exists_fun]
   exact ⟨fun a => o1 (Fin.castSucc a), by simp only [hc, smulO]⟩
 
+/- English proof (translation)
+Take `⟨o1, o2, h⟩` from `mmg_coord D F0 F' hv`. Take `⟨d, rfl⟩` from `(mem_X_iff F0).1 hx`. Rewrite using `[show c • F0.z - ∑ i, d i • F0.e i = ∑ i, (Fin.snoc (α := fun _ => D.host.E) (-d) c : _ → _) i • F0.fvec i + ∑ j, (0 : Fin (D.R.rS + 1) → D.host.E) j • F'.fl.fvec j by`. Rewrite using `[sum_fvec]`. Simplify using `only [Pi.neg_apply, neg_smul, Finset.sum_neg_distrib, Pi.zero_apply, zero_smul, Finset.sum_const_zero, add_zero]`.
+
+Use the proof step `abel] at h`. Take `⟨hα, hβ⟩` from `coord_eq hw h`. Establish `h1` using `congrFun hα (Fin.last _)`. Establish `h2` using `congrFun hβ (Fin.last _)`. Simplify using `only [Fin.snoc_last, Pi.zero_apply] at h1 h2`.
+
+Conclude with `⟨o1 (Fin.last _), by rw [h1, ← h2, sub_zero]⟩`.
+-/
 theorem u2 {c : D.host.E} {x : (VS D).V} (hv : c • F0.z - x ∈ MMg D F0 F') (hx : x ∈ F0.X) :
     ∃ o : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E o = c := by
   obtain ⟨o1, o2, h⟩ := mmg_coord D F0 F' hv
@@ -47,6 +61,13 @@ theorem u2 {c : D.host.E} {x : (VS D).V} (hv : c • F0.z - x ∈ MMg D F0 F') (
   simp only [Fin.snoc_last, Pi.zero_apply] at h1 h2
   exact ⟨o1 (Fin.last _), by rw [h1, ← h2, sub_zero]⟩
 
+/- English proof (translation)
+Take `⟨o1, o2, h⟩` from `mmg_coord D F0 F' hv`. Take `⟨c, rfl⟩` from `(mem_X_iff F'.fl).1 hX`. Rewrite using `[show ∑ i, c i • F'.fl.e i = ∑ i, (0 : Fin (D.R.rS + 1) → D.host.E) i • F0.fvec i + ∑ j, (Fin.snoc (α := fun _ => D.host.E) c 0 : _ → _) j • F'.fl.fvec j by`. Rewrite using `[sum_fvec]`. Simplify using `only [zero_smul, add_zero, zero_add, Pi.zero_apply, Finset.sum_const_zero]] at h`.
+
+Take `⟨hα, hβ⟩` from `coord_eq hw h`. Establish `hc : ∀ a, c a = algebraMap (𝓞 D.host.E) D.host.E (o1 (Fin.castSucc a))`. Introduce `a`. Establish `h1` using `congrFun hα (Fin.castSucc a)`. Establish `h2` using `congrFun hβ (Fin.castSucc a)`.
+
+Simplify using `only [Fin.snoc_castSucc, Pi.zero_apply] at h1 h2`. Rewrite using `[h2]`. Take the linear combination `h1`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Conclude with `⟨fun a => o1 (Fin.castSucc a), by simp only [hc, smulO]⟩`.
+-/
 theorem u3 {v : (VS D).V} (hv : v ∈ MMg D F0 F') (hX : v ∈ F'.fl.X) :
     v ∈ Submodule.span (𝓞 D.host.E) (Set.range F'.fl.e) := by
   obtain ⟨o1, o2, h⟩ := mmg_coord D F0 F' hv
@@ -65,6 +86,13 @@ theorem u3 {v : (VS D).V} (hv : v ∈ MMg D F0 F') (hX : v ∈ F'.fl.X) :
   rw [Submodule.mem_span_range_iff_exists_fun]
   exact ⟨fun a => o1 (Fin.castSucc a), by simp only [hc, smulO]⟩
 
+/- English proof (translation)
+Take `⟨o1, o2, h⟩` from `mmg_coord D F0 F' hv`. Take `⟨d, rfl⟩` from `(mem_X_iff F'.fl).1 hx`. Rewrite using `[show c • F'.fl.z - ∑ i, d i • F'.fl.e i = ∑ i, (0 : Fin (D.R.rS + 1) → D.host.E) i • F0.fvec i + ∑ j, (Fin.snoc (α := fun _ => D.host.E) (-d) c : _ → _) j • F'.fl.fvec j by`. Rewrite using `[sum_fvec]`. Simplify using `only [Pi.neg_apply, neg_smul, Finset.sum_neg_distrib, Pi.zero_apply, zero_smul, Finset.sum_const_zero, zero_add]`.
+
+Use the proof step `abel] at h`. Take `⟨hα, hβ⟩` from `coord_eq hw h`. Establish `h1` using `congrFun hα (Fin.last _)`. Establish `h2` using `congrFun hβ (Fin.last _)`. Simplify using `only [Fin.snoc_last, Pi.zero_apply] at h1 h2`.
+
+Conclude with `⟨o1 (Fin.last _), by rw [h2]; linear_combination -h1⟩`.
+-/
 theorem u4 {c : D.host.E} {x : (VS D).V} (hv : c • F'.fl.z - x ∈ MMg D F0 F') (hx : x ∈ F'.fl.X) :
     ∃ o : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E o = c := by
   obtain ⟨o1, o2, h⟩ := mmg_coord D F0 F' hv
@@ -82,6 +110,11 @@ theorem u4 {c : D.host.E} {x : (VS D).V} (hv : c • F'.fl.z - x ∈ MMg D F0 F'
   simp only [Fin.snoc_last, Pi.zero_apply] at h1 h2
   exact ⟨o1 (Fin.last _), by rw [h2]; linear_combination -h1⟩
 
+/- English proof (translation)
+Take `⟨x1, hx1, o, x2, hx2, o', h⟩` from `uus_coord D F0 F' hv`. Establish `h0 : (x1 - v) + algebraMap (𝓞 D.host.E) D.host.E o • F0.z + (x2 + algebraMap (𝓞 D.host.E) D.host.E o' • F'.fl.z) = 0`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws. Use `(indep4 hw (F0.X.sub_mem (XS_le_X D F0 hx1) hX) (XS_le_X D F'.fl hx2) h0).1` as an intermediate fact.
+
+Rewrite `this` using `[sub_eq_zero]`. Rewrite using `[← this]`. Conclude with `hx1`.
+-/
 theorem v1 {v : (VS D).V} (hX : v ∈ F0.X) (hv : v ∈ UUS D F0 F') : v ∈ XS D F0 := by
   obtain ⟨x1, hx1, o, x2, hx2, o', h⟩ := uus_coord D F0 F' hv
   have h0 : (x1 - v) + algebraMap (𝓞 D.host.E) D.host.E o • F0.z +
@@ -91,6 +124,11 @@ theorem v1 {v : (VS D).V} (hX : v ∈ F0.X) (hv : v ∈ UUS D F0 F') : v ∈ XS 
   rw [sub_eq_zero] at this
   rw [← this]; exact hx1
 
+/- English proof (translation)
+Take `⟨x1, hx1, o, x2, hx2, o', h⟩` from `uus_coord D F0 F' hv`. Establish `h0 : (x1 + x) + (algebraMap (𝓞 D.host.E) D.host.E o - c) • F0.z + (x2 + algebraMap (𝓞 D.host.E) D.host.E o' • F'.fl.z) = 0`. Establish `e : (x1 + x) + (algebraMap (𝓞 D.host.E) D.host.E o - c) • F0.z + (x2 + algebraMap (𝓞 D.host.E) D.host.E o' • F'.fl.z) = (x1 + algebraMap (𝓞 D.host.E) D.host.E o • F0.z + (x2 + algebraMap (𝓞 D.host.E) D.host.E o' • F'.fl.z)) - (c • F0.z - x)`. Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e, ← h, sub_self]`. Use `(indep4 hw (F0.X.add_mem (XS_le_X D F0 hx1) hx) (XS_le_X D F'.fl hx2) h0).2.1` as an intermediate fact. Conclude with `⟨o, sub_eq_zero.1 this⟩`.
+-/
 theorem v2 {c : D.host.E} {x : (VS D).V} (hv : c • F0.z - x ∈ UUS D F0 F') (hx : x ∈ F0.X) :
     ∃ o : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E o = c := by
   obtain ⟨x1, hx1, o, x2, hx2, o', h⟩ := uus_coord D F0 F' hv
@@ -105,6 +143,11 @@ theorem v2 {c : D.host.E} {x : (VS D).V} (hv : c • F0.z - x ∈ UUS D F0 F') (
   have := (indep4 hw (F0.X.add_mem (XS_le_X D F0 hx1) hx) (XS_le_X D F'.fl hx2) h0).2.1
   exact ⟨o, sub_eq_zero.1 this⟩
 
+/- English proof (translation)
+Take `⟨x1, hx1, o, x2, hx2, o', h⟩` from `uus_coord D F0 F' hv`. Establish `h0 : x1 + algebraMap (𝓞 D.host.E) D.host.E o • F0.z + ((x2 - v) + algebraMap (𝓞 D.host.E) D.host.E o' • F'.fl.z) = 0`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws. Use `(indep4 hw (XS_le_X D F0 hx1) (F'.fl.X.sub_mem (XS_le_X D F'.fl hx2) hX) h0).2.2.1` as an intermediate fact.
+
+Rewrite `this` using `[sub_eq_zero]`. Rewrite using `[← this]`. Conclude with `hx2`.
+-/
 theorem v3 {v : (VS D).V} (hX : v ∈ F'.fl.X) (hv : v ∈ UUS D F0 F') : v ∈ XS D F'.fl := by
   obtain ⟨x1, hx1, o, x2, hx2, o', h⟩ := uus_coord D F0 F' hv
   have h0 : x1 + algebraMap (𝓞 D.host.E) D.host.E o • F0.z +
@@ -114,6 +157,11 @@ theorem v3 {v : (VS D).V} (hX : v ∈ F'.fl.X) (hv : v ∈ UUS D F0 F') : v ∈ 
   rw [sub_eq_zero] at this
   rw [← this]; exact hx2
 
+/- English proof (translation)
+Take `⟨x1, hx1, o, x2, hx2, o', h⟩` from `uus_coord D F0 F' hv`. Establish `h0 : x1 + algebraMap (𝓞 D.host.E) D.host.E o • F0.z + ((x2 + x) + (algebraMap (𝓞 D.host.E) D.host.E o' - c) • F'.fl.z) = 0`. Establish `e : x1 + algebraMap (𝓞 D.host.E) D.host.E o • F0.z + ((x2 + x) + (algebraMap (𝓞 D.host.E) D.host.E o' - c) • F'.fl.z) = (x1 + algebraMap (𝓞 D.host.E) D.host.E o • F0.z + (x2 + algebraMap (𝓞 D.host.E) D.host.E o' • F'.fl.z)) - (c • F'.fl.z - x)`. Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e, ← h, sub_self]`. Use `(indep4 hw (XS_le_X D F0 hx1) (F'.fl.X.add_mem (XS_le_X D F'.fl hx2) hx) h0).2.2.2` as an intermediate fact. Conclude with `⟨o', sub_eq_zero.1 this⟩`.
+-/
 theorem v4 {c : D.host.E} {x : (VS D).V} (hv : c • F'.fl.z - x ∈ UUS D F0 F') (hx : x ∈ F'.fl.X) :
     ∃ o : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E o = c := by
   obtain ⟨x1, hx1, o, x2, hx2, o', h⟩ := uus_coord D F0 F' hv
@@ -132,12 +180,25 @@ variable {Λ : Submodule (𝓞 D.host.E) (VS D).V}
   (hB : Λ ⊓ (UPair D F0 F').restrictScalars (𝓞 D.host.E) = BB D F0 F')
 include hB
 
+/- English proof (translation)
+Rewrite using `[← hB]`. Conclude with `⟨hvΛ, hvU⟩`.
+-/
 theorem mem_BB_of {v : (VS D).V} (hvΛ : v ∈ Λ) (hvU : v ∈ UPair D F0 F') : v ∈ BB D F0 F' := by
   rw [← hB]; exact ⟨hvΛ, hvU⟩
 
+/- English proof (translation)
+Rewrite using `[← hB]`. Conclude with `inf_le_left`.
+-/
 theorem BB_le_Lam : BB D F0 F' ≤ Λ := by
   rw [← hB]; exact inf_le_left
 
+/- English proof (translation)
+Use `P.isPrime` as an intermediate fact. Use `⟨fun hg => ?_, fun hg => ?_⟩` and prove the remaining obligations. Establish `h1 : v ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (MMg D F0 F')`. Rewrite using `[← loc_BB_g D F0 F' P.asIdeal hg]`. Conclude with `Formalism.L2.SG.Pf.le_locP' _ _ hv`.
+
+Take `⟨s, hs, hsv⟩` from `h1`. Conclude with `⟨s, hs, hsv⟩`. Establish `h1 : v ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (UUS D F0 F')`. Rewrite using `[← loc_BB_ng D F0 F' P.asIdeal hg]`. Conclude with `Formalism.L2.SG.Pf.le_locP' _ _ hv`.
+
+Take `⟨s, hs, hsv⟩` from `h1`. Conclude with `⟨s, hs, hsv⟩`.
+-/
 theorem loc_cases {v : (VS D).V} (hv : v ∈ BB D F0 F') (P : HeightOneSpectrum (𝓞 D.host.E)) :
     ((((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal) → ∃ s : 𝓞 D.host.E, s ∉ P.asIdeal ∧ s • v ∈ MMg D F0 F') ∧
     ((((gS D : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal) → ∃ s : 𝓞 D.host.E, s ∉ P.asIdeal ∧ s • v ∈ UUS D F0 F') := by
@@ -152,6 +213,13 @@ theorem loc_cases {v : (VS D).V} (hv : v ∈ BB D F0 F') (P : HeightOneSpectrum 
     obtain ⟨s, hs, hsv⟩ := h1
     exact ⟨s, hs, hsv⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `v ⟨hvΛ, hvX⟩`. Establish `hvX' : v ∈ F0.X` using `hvX`. Establish `hvB` using `mem_BB_of hw hB hvΛ (flag_x_le_pair_span D F0 F' hvX')`. Apply `Formalism.L2.SG.Pf.mem_of_forall_prime` to reduce the goal to its premises.
+
+Introduce `P`. Distinguish the cases in `hg : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Take `⟨s, hs, hsv⟩` from `(loc_cases hw hB hvB P).1 hg`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `h2` using `u1 hw hsv (F0.X.smul_of_tower_mem s hvX')`.
+
+Conclude with `(Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact e_mem_XS D F0 a)) h2`. Take `⟨s, hs, hsv⟩` from `(loc_cases hw hB hvB P).2 hg`. Conclude with `⟨s, hs, v1 hw (F0.X.smul_of_tower_mem s hvX') hsv⟩`. Introduce `v hv`. Conclude with `⟨BB_le_Lam hw hB (flag_xs_le_big_block D F0 F' hv), XS_le_X D F0 hv⟩`.
+-/
 theorem xlam0 : XLam Λ (lf D F0) = XS D F0 := by
   apply le_antisymm
   · rintro v ⟨hvΛ, hvX⟩
@@ -169,6 +237,13 @@ theorem xlam0 : XLam Λ (lf D F0) = XS D F0 := by
   · intro v hv
     exact ⟨BB_le_Lam hw hB (flag_xs_le_big_block D F0 F' hv), XS_le_X D F0 hv⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `v ⟨hvΛ, hvX⟩`. Establish `hvX' : v ∈ F'.fl.X` using `hvX`. Establish `hvB` using `mem_BB_of hw hB hvΛ (second_flag_x_le_pair_span D F0 F' hvX')`. Apply `Formalism.L2.SG.Pf.mem_of_forall_prime` to reduce the goal to its premises.
+
+Introduce `P`. Distinguish the cases in `hg : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Take `⟨s, hs, hsv⟩` from `(loc_cases hw hB hvB P).1 hg`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `h2` using `u3 hw hsv (F'.fl.X.smul_of_tower_mem s hvX')`.
+
+Conclude with `(Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact e_mem_XS D F'.fl a)) h2`. Take `⟨s, hs, hsv⟩` from `(loc_cases hw hB hvB P).2 hg`. Conclude with `⟨s, hs, v3 hw (F'.fl.X.smul_of_tower_mem s hvX') hsv⟩`. Introduce `v hv`. Conclude with `⟨BB_le_Lam hw hB (second_flag_xs_le_big_block D F0 F' hv), XS_le_X D F'.fl hv⟩`.
+-/
 theorem xlam1 : XLam Λ F' = XS D F'.fl := by
   apply le_antisymm
   · rintro v ⟨hvΛ, hvX⟩
@@ -187,22 +262,42 @@ theorem xlam1 : XLam Λ F' = XS D F'.fl := by
     exact ⟨BB_le_Lam hw hB (second_flag_xs_le_big_block D F0 F' hv), XS_le_X D F'.fl hv⟩
 
 omit hB in
+/- English proof (translation)
+Use `hw.ne_zero (Sum.inl (Fin.last _))` as an intermediate fact. Simplify `this` using `[fvec_last]`.
+-/
 theorem z_ne : F0.z ≠ 0 := by
   have := hw.ne_zero (Sum.inl (Fin.last _))
   simpa [fvec_last] using this
 
 omit hB in
+/- English proof (translation)
+Use `hw.ne_zero (Sum.inr (Fin.last _))` as an intermediate fact. Simplify `this` using `[fvec_last]`.
+-/
 theorem z'_ne : F'.fl.z ≠ 0 := by
   have := hw.ne_zero (Sum.inr (Fin.last _))
   simpa [fvec_last] using this
 
 omit hB in
+/- English proof (translation)
+Take `⟨o, ho⟩` from `Submodule.mem_span_singleton.1 h`. Rewrite `ho` using `[smulO]`. Conclude with `⟨o, smul_left_injective D.host.E hz ho⟩`.
+-/
 theorem coeff_of_span {z : (VS D).V} (hz : z ≠ 0) {c : D.host.E}
     (h : c • z ∈ Submodule.span (𝓞 D.host.E) {z}) : ∃ o : 𝓞 D.host.E, (o : D.host.E) = c := by
   obtain ⟨o, ho⟩ := Submodule.mem_span_singleton.1 h
   rw [smulO] at ho
   exact ⟨o, smul_left_injective D.host.E hz ho⟩
 
+/- English proof (translation)
+Take `⟨l, hl, x, hx, hlx⟩` from `Submodule.mem_sup.1 hc.1`. Establish `hx' : x ∈ F0.X` using `hx`. Establish `hl' : c • F0.z - x = l` using `by rw [← hlx]; abel`. Establish `hzU : F0.z ∈ UPair D F0 F'` using `by rw [← fvec_last]; exact f_mem_U D F0 F' _`. Establish `hlB : c • F0.z - x ∈ BB D F0 F'`.
+
+Use `mem_BB_of hw hB (hl' ▸ hl.1) ?_` and prove the remaining obligations. Conclude with `(UPair D F0 F').sub_mem ((UPair D F0 F').smul_mem c hzU) (flag_x_le_pair_span D F0 F' hx')`. Use `coeff_of_span hw (z_ne hw) ?_` and prove the remaining obligations. Apply `Formalism.L2.SG.Pf.mem_of_forall_prime` to reduce the goal to its premises. Introduce `P`.
+
+Establish `e1 : ∀ s : 𝓞 D.host.E, s • (c • F0.z - x) = (algebraMap (𝓞 D.host.E) D.host.E s * c) • F0.z - s • x`. Introduce `s`. Rewrite using `[smul_sub, smulO D s (c • _), smul_smul]`. Establish `fin : ∀ s : 𝓞 D.host.E, (∃ o : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E o = algebraMap (𝓞 D.host.E) D.host.E s * c) → s • c • F0.z ∈ Submodule.span (𝓞 D.host.E) {F0.z}`. Introduce and unpack `s ⟨o, ho⟩`.
+
+Rewrite using `[smulO, smul_smul, ← ho, ← smulO]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Distinguish the cases in `hg : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Take `⟨s, hs, hsv⟩` from `(loc_cases hw hB hlB P).1 hg`. Rewrite `hsv` using `[e1]`.
+
+Conclude with `⟨s, hs, fin s (u2 hw hsv (F0.X.smul_of_tower_mem s hx'))⟩`. Take `⟨s, hs, hsv⟩` from `(loc_cases hw hB hlB P).2 hg`. Rewrite `hsv` using `[e1]`. Conclude with `⟨s, hs, fin s (v2 hw hsv (F0.X.smul_of_tower_mem s hx'))⟩`.
+-/
 theorem prim0 (c : D.host.E) (hc : c • F0.z ∈ Lsub Λ (lf D F0)) : ∃ o : 𝓞 D.host.E, (o : D.host.E) = c := by
   obtain ⟨l, hl, x, hx, hlx⟩ := Submodule.mem_sup.1 hc.1
   have hx' : x ∈ F0.X := hx
@@ -230,6 +325,17 @@ theorem prim0 (c : D.host.E) (hc : c • F0.z ∈ Lsub Λ (lf D F0)) : ∃ o : �
     rw [e1] at hsv
     exact ⟨s, hs, fin s (v2 hw hsv (F0.X.smul_of_tower_mem s hx'))⟩
 
+/- English proof (translation)
+Take `⟨l, hl, x, hx, hlx⟩` from `Submodule.mem_sup.1 hc.1`. Establish `hx' : x ∈ F'.fl.X` using `hx`. Establish `hl' : c • F'.fl.z - x = l` using `by rw [← hlx]; abel`. Establish `hzU : F'.fl.z ∈ UPair D F0 F'` using `by rw [← fvec_last]; exact f'_mem_U D F0 F' _`. Establish `hlB : c • F'.fl.z - x ∈ BB D F0 F'`.
+
+Use `mem_BB_of hw hB (hl' ▸ hl.1) ?_` and prove the remaining obligations. Conclude with `(UPair D F0 F').sub_mem ((UPair D F0 F').smul_mem c hzU) (second_flag_x_le_pair_span D F0 F' hx')`. Use `coeff_of_span hw (z'_ne hw) ?_` and prove the remaining obligations. Apply `Formalism.L2.SG.Pf.mem_of_forall_prime` to reduce the goal to its premises. Introduce `P`.
+
+Establish `e1 : ∀ s : 𝓞 D.host.E, s • (c • F'.fl.z - x) = (algebraMap (𝓞 D.host.E) D.host.E s * c) • F'.fl.z - s • x`. Introduce `s`. Rewrite using `[smul_sub, smulO D s (c • _), smul_smul]`. Establish `fin : ∀ s : 𝓞 D.host.E, (∃ o : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E o = algebraMap (𝓞 D.host.E) D.host.E s * c) → s • c • F'.fl.z ∈ Submodule.span (𝓞 D.host.E) {F'.fl.z}`. Introduce and unpack `s ⟨o, ho⟩`.
+
+Rewrite using `[smulO, smul_smul, ← ho, ← smulO]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Distinguish the cases in `hg : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Take `⟨s, hs, hsv⟩` from `(loc_cases hw hB hlB P).1 hg`. Rewrite `hsv` using `[e1]`.
+
+Conclude with `⟨s, hs, fin s (u4 hw hsv (F'.fl.X.smul_of_tower_mem s hx'))⟩`. Take `⟨s, hs, hsv⟩` from `(loc_cases hw hB hlB P).2 hg`. Rewrite `hsv` using `[e1]`. Conclude with `⟨s, hs, fin s (v4 hw hsv (F'.fl.X.smul_of_tower_mem s hx'))⟩`.
+-/
 theorem prim1 (c : D.host.E) (hc : c • F'.fl.z ∈ Lsub Λ F') : ∃ o : 𝓞 D.host.E, (o : D.host.E) = c := by
   obtain ⟨l, hl, x, hx, hlx⟩ := Submodule.mem_sup.1 hc.1
   have hx' : x ∈ F'.fl.X := hx

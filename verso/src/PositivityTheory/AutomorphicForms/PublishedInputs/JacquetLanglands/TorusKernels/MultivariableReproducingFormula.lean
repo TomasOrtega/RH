@@ -25,12 +25,20 @@ structure Dat (F I Gf : Type) [Field F] [Group Gf] where
 
 abbrev X (I : Type) : Type := I → P
 
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Establish `h0` using `den_ne g z.2`. Rewrite using `[coe_smul, div_eq_iff h0]`. Simplify using `[num, den, hb, hc, h, mul_comm]`.
+-/
 theorem center_smul (g : GL (Fin 2) ℝ) (hb : g 0 1 = 0) (hc : g 1 0 = 0) (h : g 0 0 = g 1 1) (z : P) : g • z = z := by
   refine Subtype.ext ?_
   have h0 := den_ne g z.2
   rw [coe_smul, div_eq_iff h0]
   simp [num, den, hb, hc, h, mul_comm]
 
+/- English proof (translation)
+Establish `h1` using `Subgroup.mem_center_iff.1 h ⟨!![1, 1; 0, 1], !![1, -1; 0, 1], by simp [Matrix.one_fin_two], by simp [Matrix.one_fin_two]⟩`. Establish `h2` using `Subgroup.mem_center_iff.1 h ⟨!![1, 0; 1, 1], !![1, 0; -1, 1], by simp [Matrix.one_fin_two], by simp [Matrix.one_fin_two]⟩`. Establish `a1` using `congrArg (fun g : GL (Fin 2) F => g 0 0) h1`. Establish `a2` using `congrArg (fun g : GL (Fin 2) F => g 0 1) h1`. Establish `a3` using `congrArg (fun g : GL (Fin 2) F => g 0 0) h2`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at a1 a2 a3`. Conclude with `⟨a3, a1, by linear_combination -a2⟩`.
+-/
 theorem center_entries {F : Type} [Field F] {γ : GL (Fin 2) F} (h : γ ∈ Subgroup.center (GL (Fin 2) F)) :
     γ 0 1 = 0 ∧ γ 1 0 = 0 ∧ γ 0 0 = γ 1 1 := by
   have h1 := Subgroup.mem_center_iff.1 h ⟨!![1, 1; 0, 1], !![1, -1; 0, 1], by simp [Matrix.one_fin_two], by simp [Matrix.one_fin_two]⟩
@@ -89,10 +97,19 @@ instance : MulAction (PG F) D.Cj where
   one_smul γ := by change (1 * D.el γ * 1⁻¹ : PG F) = D.el γ; simp
   mul_smul a b γ := by change (a * b * D.el γ * (a * b)⁻¹ : PG F) = a * (b * D.el γ * b⁻¹) * a⁻¹; group
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mk_smulX (γ : GL (Fin 2) F) (z : D.Xs) : (γ : PG F) • z = D.act γ z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mk_smulO (γ : GL (Fin 2) F) (x : Gf) : (γ : PG F) • (show D.Om from (x : Gf ⧸ D.H)) = ((D.j γ * x : Gf) : Gf ⧸ D.H) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smulC (δ : PG F) (γ : D.Cj) : D.el (δ • γ) = δ * D.el γ * δ⁻¹ := rfl
 
 abbrev Y : Type := D.Om × D.Xs

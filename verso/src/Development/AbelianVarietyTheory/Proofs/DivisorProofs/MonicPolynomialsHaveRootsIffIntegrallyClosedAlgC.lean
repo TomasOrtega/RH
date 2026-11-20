@@ -5,6 +5,17 @@ open GlobalTheory.EtC
 namespace GlobalTheory.AICIff
 open Polynomial
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `p hp hn x hx`. Rewrite `hx` using `[eq_one_of_monic_natDegree_zero hp hn]`.
+
+Simplify using `at hx`. Consider the case `succ n ih`. Introduce `p hp hn x hx`. Take `⟨a, ha⟩` from `h p hp (by omega)`. Establish `hfac : (X - C a) * (p /ₘ (X - C a)) = p` using `(mul_divByMonic_eq_iff_isRoot).2 ha`.
+
+Establish `hq : (p /ₘ (X - C a)).Monic` using `(monic_X_sub_C a).of_mul_monic_left (hfac.symm ▸ hp)`. Establish `hqn : (p /ₘ (X - C a)).natDegree = n`. Use `(monic_X_sub_C a).natDegree_mul hq` as an intermediate fact. Rewrite `this` using `[hfac, natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hx` using `[← hfac, map_mul]`. Break down `mul_eq_zero.1 hx with h0 | h0` into its components or cases. Use `⟨a, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, aeval_X, aeval_C] at h0`. Conclude with `(sub_eq_zero.1 h0).symm`.
+
+Conclude with `ih _ hq hqn x h0`.
+-/
 theorem root_mem_range {D K : Type} [CommRing D] [Nontrivial D] [CommRing K] [IsDomain K] [Algebra D K]
     (h : AIC D) : ∀ (n : ℕ) (p : D[X]), p.Monic → p.natDegree = n →
       ∀ x : K, aeval x p = 0 → ∃ y : D, algebraMap D K y = x := by
@@ -30,6 +41,25 @@ theorem root_mem_range {D K : Type} [CommRing D] [Nontrivial D] [CommRing K] [Is
       exact (sub_eq_zero.1 h0).symm
     · exact ih _ hq hqn x h0
 
+/- English proof (translation)
+Introduce `D _ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isIntegrallyClosed_iff (FractionRing D)]`.
+
+Introduce and unpack `x ⟨p, hp, hx⟩`. Conclude with `root_mem_range h _ p hp rfl x (by rwa [aeval_def])`. Apply `IsAlgClosed.of_exists_root` to reduce the goal to its premises. Introduce `f hf hirr`. Establish `hdeg : 0 < f.natDegree` using `hf.natDegree_pos.2 (fun h1 => hirr.not_isUnit (h1 ▸ isUnit_one))`.
+
+Establish `hinj` using `IsFractionRing.injective D (FractionRing D)`. Take `⟨b, hb⟩` from `IsLocalization.integerNormalization_map_to_map (nonZeroDivisors D) f`. Use `set g := IsLocalization.integerNormalization (nonZeroDivisors D) f with hg`. Establish `hc : algebraMap D (FractionRing D) (b : D) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Establish `hgmap : g.map (algebraMap D (FractionRing D)) = C (algebraMap D (FractionRing D) (b : D)) * f`.
+
+Rewrite using `[hb, Algebra.smul_def]`. Both sides reduce to the same expression. Establish `hgdeg : g.natDegree = f.natDegree`. Rewrite using `[← natDegree_map_eq_of_injective hinj g, hgmap, natDegree_C_mul hc]`. Establish `hg0 : g ≠ 0`.
+
+Introduce `h0`. Rewrite `hgdeg` using `[h0, natDegree_zero]`. Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `h (integralNormalization g) (monic_integralNormalization hg0) (by rw [natDegree_integralNormalization]; omega)`. Establish `hl : algebraMap D (FractionRing D) g.leadingCoeff ≠ 0`.
+
+Rewrite using `[Ne, ← map_zero (algebraMap D (FractionRing D)), hinj.eq_iff]`. Conclude with `leadingCoeff_ne_zero.2 hg0`. Use `⟨algebraMap D (FractionRing D) a / algebraMap D (FractionRing D) g.leadingCoeff, ?_⟩` and prove the remaining obligations. Establish `key` using `integralNormalization_eval₂_leadingCoeff_mul (p := g) (by omega) (algebraMap D (FractionRing D)) (algebraMap D (FractionRing D) a / algebraMap D (FractionRing D) g.leadingCoeff)`. Rewrite `key` using `[mul_div_cancel₀ _ hl, eval₂_at_apply, ha, map_zero, ← eval_map, hgmap, eval_mul, eval_C]`.
+
+Use `key.symm` as an intermediate fact. Simplify `this` using `[hl, hc]`. Introduce and unpack `⟨h1, h2⟩ p hp hpos`. Establish `hd : (p.map (algebraMap D (FractionRing D))).degree ≠ 0`. Use `ne_of_gt (natDegree_pos_iff_degree_pos.1 ?_)` and prove the remaining obligations.
+
+Rewrite using `[hp.natDegree_map]`. Conclude with `hpos`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_root _ hd`. Establish `hint : IsIntegral D x` using `⟨p, hp, by rwa [IsRoot, eval_map] at hx⟩`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`.
+
+Use `⟨y, IsFractionRing.injective D (FractionRing D) ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, ← eval₂_at_apply, ← eval_map]`. Conclude with `hx`.
+-/
 theorem aic_iff : ∀ (D : Type) [CommRing D] [IsDomain D],
     AIC D ↔ (IsIntegrallyClosed D ∧ IsAlgClosed (FractionRing D)) := by
   intro D _ _

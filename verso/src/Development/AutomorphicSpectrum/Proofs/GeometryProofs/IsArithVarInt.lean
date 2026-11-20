@@ -15,6 +15,11 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
+/- English proof (translation)
+Introduce `k _ X p t D hp`. Take `⟨hdom, hfin, hint, hproj, hflat, hdim⟩` from `hp`. Establish `hZ : ∀ f g : X ⟶ Sp ℤ, f = g` using `fun f g => specZIsTerminal.hom_ext f g`. Use `⟨inferInstance, inferInstance, hint, ?_, ?_, hdim⟩` and prove the remaining obligations. Rewrite using `[hZ t (GlobalTheory.ShFam.Pad.toSpZ X)]`.
+
+Conclude with `GlobalTheory.ShFam.Pad.isProjOver_toSpZ hproj`. Rewrite using `[hZ (t ≫ spMap (Int.castRingHom ℤ)) (p ≫ spMap (Int.castRingHom k))]`. Conclude with `hflat`.
+-/
 theorem isArithVar_int : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ)
     (D : ℕ), IsArithVar p D → IsArithVar t D := by
   intro k _ X p t D hp

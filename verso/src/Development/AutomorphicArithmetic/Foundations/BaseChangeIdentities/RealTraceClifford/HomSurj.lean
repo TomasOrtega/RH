@@ -10,6 +10,9 @@ open PositivityTheory.RgTw (Mat)
 open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.RealD UpperTheory.RealTr
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
+/- English proof (translation)
+Introduce `a b y hy`. Rewrite `hy`, the goal using `[Formalism.REAL.kSpan, Submodule.mem_sInf]`. Introduce `S hS`. Conclude with `hS.2 a b rfl y (hy S hS)`.
+-/
 private theorem kspan_stb {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (F : Fin n → Fin n → Module.End ℂ V) (x : V) :
     Stb F (Formalism.REAL.kSpan (fun _ => true) F x) := by
@@ -18,6 +21,11 @@ private theorem kspan_stb {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   intro S hS
   exact hS.2 a b rfl y (hy S hS)
 
+/- English proof (translation)
+Establish `hz : F a b (y - S.starProjection y) ∈ Sᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `w hw`. Rewrite using `[← hF.unit b a w]`. Conclude with `Submodule.inner_right_of_mem_orthogonal (hS b a w hw) (Submodule.sub_starProjection_mem_orthogonal y)`.
+
+Use `Submodule.eq_starProjection_of_mem_orthogonal' (hS a b _ (S.starProjection_apply_mem y)) hz ?_` and prove the remaining obligations. Rewrite using `[← map_add, add_sub_cancel]`.
+-/
 private theorem proj_comm {n : ℕ} {N : Type} [NormedAddCommGroup N] [InnerProductSpace ℂ N]
     {F : Fin n → Fin n → Module.End ℂ N} (hF : UF F) (S : Submodule ℂ N) [S.HasOrthogonalProjection]
     (hS : Stb F S) (a b : Fin n) (y : N) :
@@ -31,6 +39,41 @@ private theorem proj_comm {n : ℕ} {N : Type} [NormedAddCommGroup N] [InnerProd
   refine Submodule.eq_starProjection_of_mem_orthogonal' (hS a b _ (S.starProjection_apply_mem y)) hz ?_
   rw [← map_add, add_sub_cancel]
 
+/- English proof (translation)
+Introduce `n N V _ _ _ _ _ F K hF hK hL ν φ`. Establish `hKR : Formalism.REAL.KRel (fun _ => true) F` using `Formalism.REAL.glRel_kRel _ F hF.gl`. Establish `hKU : Formalism.REAL.KUnit (fun _ => true) F` using `fun a b _ => hF.unit a b`. Take `⟨m, x, μ, hx, horth, hsup⟩` from `Formalism.REAL.kDecomp N n (fun _ => true) F ⊤ inferInstance hKR hKU (fun a b _ y _ => trivial)`. Take `⟨P, hP⟩ : ∃ P : Fin m → N →L[ℂ] N, ∀ i, P i = (Formalism.REAL.kSpan (fun _ => true) F (x i)).starProjection` from `⟨_, fun _ => rfl⟩`.
+
+Establish `hPmem : ∀ i y, P i y ∈ Formalism.REAL.kSpan (fun _ => true) F (x i)`. Introduce `i y`. Rewrite using `[hP]`. Conclude with `Submodule.starProjection_apply_mem _ y`. Establish `hPself : ∀ i y, y ∈ Formalism.REAL.kSpan (fun _ => true) F (x i) → P i y = y`.
+
+Introduce `i y hy`. Rewrite using `[hP]`. Conclude with `Submodule.starProjection_eq_self_iff.mpr hy`. Establish `hPorth : ∀ i j y, j ≠ i → y ∈ Formalism.REAL.kSpan (fun _ => true) F (x j) → P i y = 0`. Introduce `i j y hji hy`.
+
+Rewrite using `[hP]`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (zero_mem _) (fun w hw => ?_)` and prove the remaining obligations. Rewrite using `[sub_zero]`. Conclude with `horth j i hji y hy w hw`. Establish `hcomm : ∀ i a b y, P i (F a b y) = F a b (P i y)`.
+
+Introduce `i a b y`. Rewrite using `[hP]`. Conclude with `proj_comm hF _ (kspan_stb F (x i)) a b y`. Establish `hcomp : ∀ (μ' : Wt n) (y : N), KHighest (fun _ => true) F μ' y → ∀ i, KHighest (fun _ => true) F μ' (P i y)`. Introduce `μ' y hy i`.
+
+Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomm, hy.1 a, map_smul]`. Rewrite using `[← hcomm, hy.2 a b hab he, map_zero]`. Establish `huniq : ∀ (μ' : Wt n) (y : N) i, KHighest (fun _ => true) F μ' y → y ∈ Formalism.REAL.kSpan (fun _ => true) F (x i) → y = 0 ∨ μ' = μ i ∧ ∃ c : ℂ, y = c • x i` using `fun μ' y i hy hm => Formalism.REAL.kHiUniq N n _ F (μ i) μ' (x i) y hKR hKU (hx i).2.2 hm hy`. Establish `hsum : ∀ y : N, y = ∑ i, P i y`.
+
+Introduce `y`. Establish `hy : y ∈ ⨆ i, Formalism.REAL.kSpan (fun _ => true) F (x i)`. Rewrite using `[hsup]`. Discharge the goal by the elementary cases of `trivial`. Use `Submodule.iSup_induction (motive := fun y => y = ∑ i, P i y) _ hy ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `j z hz`. Rewrite using `[Finset.sum_eq_single j (fun i _ hij => hPorth i j z (Ne.symm hij) hz) (fun h => absurd (Finset.mem_univ j) h), hPself j z hz]`. Simplify using the standard rewrite rules. Introduce `a b ha hb`. Simplify using `only [map_add, Finset.sum_add_distrib]`.
+
+Rewrite using `[← ha, ← hb]`. Establish `hg : ∀ i, ∃ g : N →ₗ[ℂ] V, (∀ a b (y : N), g (F a b y) = K a b (g y)) ∧ (μ i = ν → ∀ h : x i ∈ hw F ν, g (x i) = (φ ⟨x i, h⟩ : V)) ∧ (μ i ≠ ν → g = 0)`. Introduce `i`. Distinguish the cases in `h : μ i = ν`. Establish `hxi : x i ∈ hw F ν`.
+
+Rewrite using `[← h]`. Conclude with `(hx i).2.2`. Take `⟨S, hSf, hvS, hSstb⟩` from `hL (φ ⟨x i, hxi⟩ : V)`. Take `⟨g, hg1, hg2⟩` from `GlobalTheory.CompanionTheory.TransS.InfChar.hHWMap n (fun _ => true) N V F K ν (x i) (φ ⟨x i, hxi⟩ : V) S (fun a b c d _ _ => hF.gl a b c d) (fun a b _ => hF.unit a b) (fun a b c d _ _ => hK.gl a b c d) (fun a b _ => hK.unit a b) (hx i).2.1 hxi (φ ⟨x i, hxi⟩).2 hSf (fun a b _ => …`. Conclude with `⟨g, fun a b y => hg2 a b rfl y, fun _ _ => hg1, fun hne => absurd h hne⟩`.
+
+Conclude with `⟨0, fun a b y => by simp, fun h' => absurd h' h, fun _ => rfl⟩`. Use `choose g hgL hgv hg0 using hg`. Establish `happ : ∀ y, (∑ i, (g i).comp (P i : N →ₗ[ℂ] N)) y = ∑ i, g i (P i y)`. Introduce `y`. Simplify using `[LinearMap.sum_apply]`.
+
+Use `⟨∑ i, (g i).comp (P i : N →ₗ[ℂ] N), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ (fun i _ => ?_) show ∀ a b (y : N), (g i).comp (P i : N →ₗ[ℂ] N) (F a b y) = K a b ((g i).comp (P i : N →ₗ[ℂ] N) y)` and prove the remaining obligations. Introduce `a b y`. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe]`. Rewrite using `[hcomm i a b y]`.
+
+Conclude with `hgL i a b _`. Introduce `y`. Establish `key : ∀ i, g i (P i y) = (φ ⟨P i y, hcomp ν y y.2 i⟩ : V)`. Introduce `i`. Break down `huniq ν (P i y) i (hcomp ν y y.2 i) (hPmem i y) with h0 | ⟨hμ, c, hc⟩` into its components or cases.
+
+Establish `e : (⟨P i y, hcomp ν y y.2 i⟩ : hw F ν) = 0` using `Subtype.ext h0`. Rewrite using `[e, map_zero, Submodule.coe_zero, h0, map_zero]`. Establish `hxi : x i ∈ hw F ν`. Rewrite using `[hμ]`. Conclude with `(hx i).2.2`.
+
+Establish `e : (⟨P i y, hcomp ν y y.2 i⟩ : hw F ν) = c • ⟨x i, hxi⟩` using `Subtype.ext hc`. Rewrite using `[e, map_smul, Submodule.coe_smul, hc, map_smul, hgv i hμ.symm hxi]`. Establish `hs : (∑ i, (⟨P i y, hcomp ν y y.2 i⟩ : hw F ν)) = y`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`.
+
+Conclude with `(hsum y).symm`. Rewrite using `[happ, Finset.sum_congr rfl (fun i _ => key i), ← Submodule.coe_sum, ← map_sum, hs]`. Introduce `μ' hne y hy`. Rewrite using `[happ]`. Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `h : μ i = ν`. Break down `huniq μ' (P i y) i (hcomp μ' y hy i) (hPmem i y) with h0 | ⟨hμ, _⟩` into its components or cases. Rewrite using `[h0, map_zero]`. Conclude with `absurd (hμ.trans h) hne`. Rewrite using `[hg0 i h, LinearMap.zero_apply]`.
+-/
 theorem UpperTheory.RealTr.homSurj :
     ∀ (n : ℕ) (N V : Type) [NormedAddCommGroup N] [InnerProductSpace ℂ N] [FiniteDimensional ℂ N] [NormedAddCommGroup V] [InnerProductSpace ℂ V]
       (F : Fin n → Fin n → Module.End ℂ N) (K : Fin n → Fin n → Module.End ℂ V), UF F → UF K → LocF K → ∀ (ν : Wt n) (φ : hw F ν →ₗ[ℂ] hw K ν), ∃ t ∈ homL F K, (∀ x : hw F ν, t x = φ x) ∧ ∀ μ, μ ≠ ν → ∀ x ∈ hw F μ, t x = 0 := by

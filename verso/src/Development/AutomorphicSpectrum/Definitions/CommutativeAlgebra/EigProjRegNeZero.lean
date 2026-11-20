@@ -14,6 +14,11 @@ section Norms
 variable {C : Type} [Field C] {v : Valuation C NNReal} {O : Type} [CommRing O] [Algebra O C]
   {V : Type} [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V]
 
+/- English proof (translation)
+Apply `IsLeast.csInf_eq` to reduce the goal to its premises. Use `⟨⟨c, rfl, g, Submodule.mem_span_singleton_self g, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `r ⟨a, rfl, y, hy, h⟩`. Take `⟨o, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Rewrite `h` using `[← IsScalarTower.algebraMap_smul C o g, smul_smul]`.
+
+Establish `h2` using `smul_left_injective C hg h`. Rewrite using `[h2, map_mul]`. Conclude with `mul_le_of_le_one_right' (hv.map_le_one o)`.
+-/
 theorem latNorm_span (hv : v.Integers O) {g : V} (hg : g ≠ 0) (c : C) :
     latNorm v (Submodule.span O {g}) (c • g) = v c := by
   apply IsLeast.csInf_eq
@@ -25,10 +30,22 @@ theorem latNorm_span (hv : v.Integers O) {g : V} (hg : g ≠ 0) (c : C) :
   rw [h2, map_mul]
   exact mul_le_of_le_one_right' (hv.map_le_one o)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨x, ⟨hx, hF⟩, rfl⟩`.
+-/
 theorem mem_grLat {n : ℕ} (L : Submodule O V) (b : Basis (Fin n) C V) (i : Fin n) {x : V}
     (hx : x ∈ L) (hF : x ∈ b.flag i.succ) : b.repr x i ∈ grLat L b i :=
   ⟨x, ⟨hx, hF⟩, rfl⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, ⟨hx, -⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `b.coord i x ∈ _`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`.
+
+Take `⟨j, rfl⟩` from `h`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Finsupp.single_apply, hj]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[LinearMap.map_smul_of_tower]`.
+
+Conclude with `Submodule.smul_mem _ a hx`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Use `⟨c i • b i, ⟨Submodule.subset_span ⟨i, rfl⟩, ?_⟩, by simp⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem (b.flag i.succ) _ (b.self_mem_flag Fin.castSucc_lt_succ)`.
+-/
 theorem grLat_diag {n : ℕ} (b : Basis (Fin n) C V) (c : Fin n → C) (i : Fin n) :
     grLat (Submodule.span O (Set.range fun j => c j • b j)) b i = Submodule.span O {c i} := by
   apply le_antisymm
@@ -48,6 +65,9 @@ theorem grLat_diag {n : ℕ} (b : Basis (Fin n) C V) (c : Fin n → C) (i : Fin 
     refine ⟨c i • b i, ⟨Submodule.subset_span ⟨i, rfl⟩, ?_⟩, by simp⟩
     exact Submodule.smul_mem (b.flag i.succ) _ (b.self_mem_flag Fin.castSucc_lt_succ)
 
+/- English proof (translation)
+Establish `h` using `latNorm_span hv hc (c i)⁻¹`. Rewrite `h` using `[smul_eq_mul, inv_mul_cancel₀ hc]`. Rewrite using `[grLog, grLat_diag, h, map_inv₀, NNReal.coe_inv, Real.log_inv]`.
+-/
 theorem grLog_diag (hv : v.Integers O) {n : ℕ} (b : Basis (Fin n) C V) (c : Fin n → C) (i : Fin n)
     (hc : c i ≠ 0) :
     grLog v (Submodule.span O (Set.range fun j => c j • b j)) b i = -Real.log (v (c i)) := by
@@ -55,6 +75,15 @@ theorem grLog_diag (hv : v.Integers O) {n : ℕ} (b : Basis (Fin n) C V) (c : Fi
   rw [smul_eq_mul, inv_mul_cancel₀ hc] at h
   rw [grLog, grLat_diag, h, map_inv₀, NNReal.coe_inv, Real.log_inv]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨x, ⟨hx, hF⟩, rfl⟩`. Take `⟨o, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Establish `h1` using `b.flag_le_ker_coord (k := (0 : Fin 2).succ) (l := 1) (by decide) hF`.
+
+Rewrite `h1` using `[LinearMap.mem_ker, LinearMap.map_smul_of_tower]`. Establish `h2 : o • (1 : C) = 0` using `by simpa using h1`. Express the relevant statement in the definitionally equal form `b.coord 0 _ ∈ _`. Rewrite using `[LinearMap.map_smul_of_tower]`. Simplify using `using h2`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, ⟨hx, -⟩, rfl⟩`. Take `⟨o, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Express the relevant statement in the definitionally equal form `b.coord 1 _ ∈ _`. Rewrite using `[LinearMap.map_smul_of_tower]`.
+
+Conclude with `Submodule.smul_mem _ o (by simp)`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Use `⟨b 0 + b 1, ⟨Submodule.mem_span_singleton_self _, ?_⟩, by simp⟩` and prove the remaining obligations. Conclude with `Submodule.add_mem (b.flag (1 : Fin 2).succ) (b.self_mem_flag (by decide)) (b.self_mem_flag (by decide))`.
+-/
 theorem grLat_side (b : Basis (Fin 2) C V) :
     grLat (Submodule.span O {b 0 + b 1}) b 0 = ⊥ ∧
       grLat (Submodule.span O {b 0 + b 1}) b 1 = Submodule.span O {(1 : C)} := by
@@ -79,6 +108,13 @@ theorem grLat_side (b : Basis (Fin 2) C V) :
       exact Submodule.add_mem (b.flag (1 : Fin 2).succ) (b.self_mem_flag (by decide))
         (b.self_mem_flag (by decide))
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨o, ho⟩` from `h c (Submodule.mem_span_singleton_self c)`. Use `Submodule.mem_span_singleton.2 ⟨o, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, ho]`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Introduce `h x hx`. Take `⟨o, rfl⟩` from `Submodule.mem_span_singleton.1 h`.
+
+Take `⟨o', rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Use `⟨o' * o, ?_⟩` and prove the remaining obligations. Simplify using `[Algebra.smul_def]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem dualLat_span {c : C} (hc : c ≠ 0) :
     dualLat (LinearMap.mul C C) (Submodule.span O {c}) = Submodule.span O {c⁻¹} := by
   ext y
@@ -101,10 +137,16 @@ variable {A : Type} [CommRing A] {K : Type} [Field K] [Algebra A K]
   {V : Type} [AddCommGroup V] [Module K V] [Module A V] [IsScalarTower A K V]
   {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_eigSp {ρ : 𝓞 E →+* Module.End K V} {σ : E →+* K} {x : V} :
     x ∈ eigSp ρ σ ↔ ∀ a : 𝓞 E, ρ a x = σ (a : E) • x := by
   simp [eigSp, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Use `LinearMap.BilinForm.apply_dualBasis_left (B := Algebra.traceForm ℚ E) (traceForm_nondegenerate ℚ E) (integralBasis E) k j` as an intermediate fact. Rewrite `this` using `[Algebra.traceForm_apply]`. Use `this using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+-/
 theorem trace_dualInt (k j) :
     Algebra.trace ℚ E (dualInt E k * integralBasis E j) = if j = k then 1 else 0 := by
   classical
@@ -114,6 +156,9 @@ theorem trace_dualInt (k j) :
   convert this using 1
   rfl
 
+/- English proof (translation)
+Establish `h` using `((Algebra.traceForm ℚ E).dualBasis (traceForm_nondegenerate ℚ E) (integralBasis E)).sum_repr x`. Simplify using `only [LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply] at h`. Conclude with `h.symm`.
+-/
 theorem expand_dual (x : E) :
     x = ∑ k, Algebra.trace ℚ E (x * integralBasis E k) • dualInt E k := by
   classical
@@ -122,6 +167,9 @@ theorem expand_dual (x : E) :
   simp only [LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply] at h
   exact h.symm
 
+/- English proof (translation)
+Use `conv_rhs => rw [← (RingOfIntegers.basis E).sum_repr a]`. Simplify using `only [map_sum, RingOfIntegers.coe_eq_algebraMap, Finset.mul_sum, map_zsmul, mul_smul_comm, ← integralBasis_apply, trace_dualInt]`. Simplify using the standard rewrite rules.
+-/
 theorem repr_eq_trace (a : 𝓞 E) (k) :
     (((RingOfIntegers.basis E).repr a k : ℤ) : ℚ) = Algebra.trace ℚ E (dualInt E k * (a : E)) := by
   classical
@@ -130,6 +178,17 @@ theorem repr_eq_trace (a : 𝓞 E) (k) :
     ← integralBasis_apply, trace_dualInt]
   simp
 
+/- English proof (translation)
+Use `haveI : CharZero K := (RingHom.charZero_iff σ.injective).1 inferInstance`. Rewrite using `[mem_eigSp]`. Introduce `a`. Use `set b := RingOfIntegers.basis E`. Establish `e1 : ∀ k, ρ a (ρ (b k) x) = ∑ j, σ ((Algebra.trace ℚ E (dualInt E j * (a : E) * integralBasis E k) : ℚ) : E) • ρ (b j) x`.
+
+Introduce `k`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← b.sum_repr (a * b k), map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `repr_eq_trace (a * b k) j` as an intermediate fact. Rewrite using `[map_zsmul, mul_assoc, integralBasis_apply]`.
+
+Rewrite `this` using `[RingOfIntegers.coe_eq_algebraMap, map_mul (algebraMap (𝓞 E) E)]`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, ← this]`. Simplify using `[Int.cast_smul_eq_zsmul, b]`. Simplify using `only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]`. Express the relevant statement in the definitionally equal form `∑ k, σ (dualInt E k) • ρ a (ρ (b k) x) = _`.
+
+Simplify using `only [e1, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, ← map_mul, mul_comm (a : E), expand_dual (dualInt E j * (a : E)), map_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← expand_dual, ← map_mul, Rat.smul_def, mul_comm]`.
+-/
 theorem eigProj_mem (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) (x : V) :
     eigProj ρ σ x ∈ eigSp ρ σ := by
   classical
@@ -157,6 +216,11 @@ theorem eigProj_mem (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) (x : V) 
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [← expand_dual, ← map_mul, Rat.smul_def, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Apply `(traceForm_nondegenerate ℚ E).1` to reduce the goal to its premises. Introduce `y`. Rewrite using `[Algebra.traceForm_apply, sub_mul, one_mul, map_sub, sub_eq_zero, Finset.sum_mul, map_sum, Algebra.trace_eq_matrix_trace (integralBasis E) y, Matrix.trace]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.diag_apply, Algebra.leftMulMatrix_eq_repr_mul, mul_assoc, mul_comm _ y]`. Generalize the expression as in `y * integralBasis E k = z`. Use `conv_lhs => rw [← (integralBasis E).sum_repr z]`. Simplify using `only [Finset.mul_sum, map_sum, mul_smul_comm, map_smul, trace_dualInt]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_dualInt_mul : ∑ k, dualInt E k * integralBasis E k = 1 := by
   classical
   rw [← sub_eq_zero]
@@ -171,6 +235,11 @@ theorem sum_dualInt_mul : ∑ k, dualInt E k * integralBasis E k = 1 := by
   simp only [Finset.mul_sum, map_sum, mul_smul_comm, map_smul, trace_dualInt]
   simp
 
+/- English proof (translation)
+Rewrite `hx` using `[mem_eigSp]`. Simplify using `only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, hx, smul_smul]`. Rewrite using `[← Finset.sum_smul]`. Establish `: ∑ k, σ (dualInt E k) * σ ((RingOfIntegers.basis E k : 𝓞 E) : E) = 1`. Rewrite using `[← map_one σ, ← sum_dualInt_mul, map_sum]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, one_smul]`.
+-/
 theorem eigProj_of_mem {ρ : 𝓞 E →+* Module.End K V} {σ : E →+* K} {x : V} (hx : x ∈ eigSp ρ σ) :
     eigProj ρ σ x = x := by
   rw [mem_eigSp] at hx
@@ -181,6 +250,11 @@ theorem eigProj_of_mem {ρ : 𝓞 E →+* Module.End K V} {σ : E →+* K} {x : 
     simp
   rw [this, one_smul]
 
+/- English proof (translation)
+Establish `h1` using `eigProj_mem ρ σ x`. Establish `h2 : eigProj ρ σ x ∈ eigSp ρ σ'`. Simplify using `only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, mem_eigSp.1 hx]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.smul_mem _ _ hx)`. Assume the negation of the conclusion as `hne`.
+
+Apply `h` to reduce the goal to its premises. Use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => ?_)` and prove the remaining obligations. Use `(mem_eigSp.1 h1 a).symm.trans (mem_eigSp.1 h2 a)` as an intermediate fact. Conclude with `smul_left_injective K hne this`.
+-/
 theorem eigProj_of_ne {ρ : 𝓞 E →+* Module.End K V} {σ σ' : E →+* K} (h : σ ≠ σ') {x : V}
     (hx : x ∈ eigSp ρ σ') : eigProj ρ σ x = 0 := by
   have h1 := eigProj_mem ρ σ x
@@ -193,6 +267,9 @@ theorem eigProj_of_ne {ρ : 𝓞 E →+* Module.End K V} {σ σ' : E →+* K} (h
   have := (mem_eigSp.1 h1 a).symm.trans (mem_eigSp.1 h2 a)
   exact smul_left_injective K hne this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x hx => ⟨x, hx.1, eigProj_of_mem hx.2⟩, by rintro _ ⟨x, -, rfl⟩; exact eigProj_mem ρ σ x⟩`.
+-/
 theorem eigSub_le_eigQuot (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) (X : Submodule A V) :
     eigSub ρ σ X ≤ eigQuot ρ σ X ∧ eigQuot ρ σ X ≤ (eigSp ρ σ).restrictScalars A :=
   ⟨fun x hx => ⟨x, hx.1, eigProj_of_mem hx.2⟩, by rintro _ ⟨x, -, rfl⟩; exact eigProj_mem ρ σ x⟩
@@ -202,11 +279,19 @@ def regAct (K : Type) [Field K] (E : Type) [Field E] [NumberField E] :
   (Algebra.lmul K (K ⊗[ℤ] 𝓞 E)).toRingHom.comp
     (Algebra.TensorProduct.includeRight (R := ℤ) (A := K) (B := 𝓞 E)).toRingHom
 
+/- English proof (translation)
+Simplify using `[regAct, Algebra.TensorProduct.basis_apply]`.
+-/
 theorem regAct_basis (k) :
     regAct K E (RingOfIntegers.basis E k) 1 =
       Algebra.TensorProduct.basis K (RingOfIntegers.basis E) k := by
   simp [regAct, Algebra.TensorProduct.basis_apply]
 
+/- English proof (translation)
+Introduce `h`. Set `φ : K ⊗[ℤ] 𝓞 E →ₐ[K] K` to `Algebra.TensorProduct.lift (AlgHom.id K K) (σ.comp (algebraMap (𝓞 E) E)).toIntAlgHom (fun _ _ => Commute.all _ _)`. Establish `h1` using `congrArg φ h`. Simplify using `only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, regAct_basis, Algebra.TensorProduct.basis_apply, map_zero] at h1`. Establish `h2 : ∑ k, σ (dualInt E k * integralBasis E k) = 0`.
+
+Simplify `h1` using `[φ]`. Rewrite `h2` using `[← map_sum, sum_dualInt_mul, map_one]`. Conclude with `one_ne_zero h2`.
+-/
 theorem eigProj_reg_ne_zero (σ : E →+* K) : eigProj (regAct K E) σ 1 ≠ 0 := by
   intro h
   let φ : K ⊗[ℤ] 𝓞 E →ₐ[K] K := Algebra.TensorProduct.lift (AlgHom.id K K)
@@ -219,6 +304,11 @@ theorem eigProj_reg_ne_zero (σ : E →+* K) : eigProj (regAct K E) σ 1 ≠ 0 :
   rw [← map_sum, sum_dualInt_mul, map_one] at h2
   exact one_ne_zero h2
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [regAct_basis]`. Conclude with `(Algebra.TensorProduct.basis K (RingOfIntegers.basis E)).linearIndependent.comp (fun q : Fin 1 × _ => q.2) (fun p q h => Prod.ext (Subsingleton.elim _ _) h)`. Rewrite using `[Submodule.span_span_of_tower, Basis.span_eq]`. Simplify using `only [regAct_basis]`.
+
+Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem isFreeOn_reg :
     IsFreeOn (A := A) (regAct K E)
       (Submodule.span A (Set.range (Algebra.TensorProduct.basis K (RingOfIntegers.basis E))))
@@ -233,6 +323,13 @@ theorem isFreeOn_reg :
     ext x
     simp
 
+/- English proof (translation)
+Establish `hle : ∀ x : 𝓞 E, v (σ (x : E)) ≤ 1` using `fun x => by`. Establish `hi : IsIntegral ℤ (σ (x : E))` using `x.isIntegral_coe.map σ.toIntAlgHom`. Establish `hi' : IsIntegral v.integer (σ (x : E))` using `hi.tower_top`. Conclude with `(Valuation.integer.integers v).mem_of_integral hi'`. Establish `hb : BddAbove (Set.range fun x : differentIdeal ℤ (𝓞 E) => v (σ ((x : 𝓞 E) : E)))` using `⟨1, by rintro _ ⟨x, rfl⟩; exact hle x⟩`.
+
+Establish `h3 : ∀ x ∈ differentIdeal ℤ (𝓞 E), v (σ (x : E)) ≤ diffAbs v σ` using `fun x hx => le_ciSup hb ⟨x, hx⟩`. Use `⟨?_, ciSup_le fun x => hle x, h3⟩` and prove the remaining obligations. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 E))`. Use `lt_of_lt_of_le ?_ (h3 x hx)` and prove the remaining obligations. Rewrite using `[pos_iff_ne_zero, Valuation.ne_zero_iff, map_ne_zero]`.
+
+Conclude with `hx0` after adjusting the coercions.
+-/
 theorem diffAbs_bounds (v : Valuation K NNReal) (σ : E →+* K) :
     0 < diffAbs v σ ∧ diffAbs v σ ≤ 1 ∧
       ∀ x ∈ differentIdeal ℤ (𝓞 E), v (σ (x : E)) ≤ diffAbs v σ := by
@@ -251,6 +348,11 @@ theorem diffAbs_bounds (v : Valuation K NNReal) (σ : E →+* K) :
   rw [pos_iff_ne_zero, Valuation.ne_zero_iff, map_ne_zero]
   exact_mod_cast hx0
 
+/- English proof (translation)
+Use `le_antisymm (ciSup_le fun x => ?_) ((diffAbs_bounds v σ).2.2 δ (h ▸ Ideal.mem_span_singleton_self δ))` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 (h.le x.2)`. Establish `hi : IsIntegral ℤ (σ (y : E))` using `y.isIntegral_coe.map σ.toIntAlgHom`. Establish `hi' : IsIntegral v.integer (σ (y : E))` using `hi.tower_top`. Establish `h1 : v (σ (y : E)) ≤ 1` using `(Valuation.integer.integers v).mem_of_integral hi'`.
+
+Rewrite using `[← hy, RingOfIntegers.coe_eq_algebraMap, map_mul, map_mul, map_mul]`. Conclude with `mul_le_of_le_one_left' h1`.
+-/
 theorem diffAbs_of_span (v : Valuation K NNReal) (σ : E →+* K) {δ : 𝓞 E}
     (h : differentIdeal ℤ (𝓞 E) = Ideal.span {δ}) : diffAbs v σ = v (σ (δ : E)) := by
   refine le_antisymm (ciSup_le fun x => ?_)
@@ -269,6 +371,13 @@ section Further
 variable {C : Type} [Field C] {v : Valuation C NNReal} {O : Type} [CommRing O] [Algebra O C]
   {V : Type} [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, ⟨hx, hF⟩, rfl⟩`. Take `⟨o, o', rfl⟩` from `Submodule.mem_span_pair.1 hx`. Establish `h1` using `b.flag_le_ker_coord (k := (0 : Fin 2).succ) (l := 1) (by decide) hF`. Rewrite `h1` using `[LinearMap.mem_ker, map_add, LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower]`.
+
+Establish `h2 : o' • (1 : C) = 0` using `by simpa using h1`. Express the relevant statement in the definitionally equal form `b.coord 0 _ ∈ _`. Rewrite using `[map_add, LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower]`. Establish `h3 : o' • a = 0` using `by rw [← one_mul a, ← smul_mul_assoc, h2, zero_mul]`. Use `Submodule.mem_span_singleton.2 ⟨o, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[h3]`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Conclude with `⟨b 0, ⟨Submodule.subset_span (by simp), b.self_mem_flag (by decide)⟩, by simp⟩`.
+-/
 theorem grLat_shear (b : Basis (Fin 2) C V) (a : C) :
     grLat (Submodule.span O {b 0, a • b 0 + b 1}) b 0 = Submodule.span O {(1 : C)} := by
   apply le_antisymm
@@ -285,6 +394,9 @@ theorem grLat_shear (b : Basis (Fin 2) C V) (a : C) :
   · rw [Submodule.span_singleton_le_iff_mem]
     exact ⟨b 0, ⟨Submodule.subset_span (by simp), b.self_mem_flag (by decide)⟩, by simp⟩
 
+/- English proof (translation)
+Establish `hp : (p : ℂ_[p]) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Rewrite using `[grLog_diag (PadicComplexInt.integers p) _ (fun _ => (p : ℂ_[p])) i hp, PadicComplex.valuation_p]`. Simplify using the standard rewrite rules.
+-/
 theorem grLog_padic (p : ℕ) [Fact p.Prime] {n : ℕ} (i : Fin n) :
     grLog (Valued.v : Valuation ℂ_[p] NNReal)
       (Submodule.span 𝓞_ℂ_[p] (Set.range fun j => (p : ℂ_[p]) • Pi.basisFun ℂ_[p] (Fin n) j))
@@ -304,6 +416,11 @@ variable {A : Type} [CommRing A] {K : Type} [Field K] [Algebra A K]
 
 omit [Algebra A K] [IsScalarTower A K V] in
 
+/- English proof (translation)
+Establish `h1` using `h.2.1`. Rewrite `h1` using `[h.2.2, Set.range_eq_empty, Submodule.span_empty]`. Use `subsingleton_of_forall_eq 0 fun y => ?_` and prove the remaining obligations. Establish `: y ∈ (⊤ : Submodule K V)` using `trivial`. Rewrite `this` using `[← h1]`.
+
+Simplify using `using this`.
+-/
 theorem isFreeOn_zero {ρ : 𝓞 E →+* Module.End K V} {X : Submodule A V} {t : Fin 0 → V}
     (h : IsFreeOn ρ X t) : Subsingleton V := by
   have h1 := h.2.1
@@ -313,6 +430,13 @@ theorem isFreeOn_zero {ρ : 𝓞 E →+* Module.End K V} {X : Submodule A V} {t 
   rw [← h1] at this
   simpa using this
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[h.2.2]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨q, rfl⟩` from `hx`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← (RingOfIntegers.basis E).sum_repr (a * RingOfIntegers.basis E q.2), map_sum, LinearMap.sum_apply]`.
+
+Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, LinearMap.smul_apply]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨(q.1, k), rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem isFreeOn_stable {ρ : 𝓞 E →+* Module.End K V} {X : Submodule A V} {N : ℕ} {t : Fin N → V}
     (h : IsFreeOn ρ X t) (a : 𝓞 E) {x : V} (hx : x ∈ X) : ρ a x ∈ X := by
   rw [h.2.2] at hx ⊢
@@ -330,6 +454,13 @@ theorem isFreeOn_stable {ρ : 𝓞 E →+* Module.End K V} {X : Submodule A V} {
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul c x _ hx => rw [LinearMap.map_smul_of_tower]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Introduce `he`. Take `⟨hσ, d, hd0, hdv, hsp⟩` from `exists_diff_generator K v A hv E σ`. Take `⟨h1, h2, h3, -⟩` from `SubDiffQuot.eigSub_eq_different_smul_eigQuot A K V E ρ X 1 t σ d hv.hom_inj hσ hsp h`. Establish `hg : eigProj ρ σ (t 0) ≠ 0` using `h3.ne_zero 0`. Establish `h4 : eigQuot ρ σ X = Submodule.span A {eigProj ρ σ (t 0)}`.
+
+Rewrite using `[h2, Set.range_unique]`. Both sides reduce to the same expression. Establish `h5 : (algebraMap A K d)⁻¹ • eigProj ρ σ (t 0) ∈ eigQuot ρ σ X`. Rewrite using `[h1, he, ← IsScalarTower.algebraMap_smul K d, smul_smul, mul_inv_cancel₀ hd0, one_smul, h4]`. Conclude with `Submodule.mem_span_singleton_self _`.
+
+Rewrite `h5` using `[h4]`. Establish `h6` using `LatBasic.latNorm_le v (1 : K) h5`. Rewrite `h6` using `[one_smul, latNorm_span hv hg, map_inv₀, map_one, hdv]`. Conclude with `absurd ((inv_le_one₀ (LatBasic.diffAbs_pos v σ)).1 h6) (not_le.2 hd)`.
+-/
 theorem eigSub_ne_eigQuot [CharZero K] {v : Valuation K NNReal} (hv : v.Integers A)
     {ρ : 𝓞 E →+* Module.End K V} {X : Submodule A V} {t : Fin 1 → V} (h : IsFreeOn ρ X t)
     (σ : E →+* K) (hd : diffAbs v σ < 1) : eigSub ρ σ X ≠ eigQuot ρ σ X := by
@@ -348,6 +479,15 @@ theorem eigSub_ne_eigQuot [CharZero K] {v : Valuation K NNReal} (hv : v.Integers
   rw [one_smul, latNorm_span hv hg, map_inv₀, map_one, hdv] at h6
   exact absurd ((inv_le_one₀ (LatBasic.diffAbs_pos v σ)).1 h6) (not_le.2 hd)
 
+/- English proof (translation)
+Establish `hζ` using `IsCyclotomicExtension.zeta_spec 4 ℚ E`. Establish `hadj` using `IsCyclotomicExtension.Rat.adjoin_singleton_eq_top hζ`. Establish `hQ : Algebra.adjoin ℚ {algebraMap (𝓞 E) E hζ.toInteger} = ⊤` using `IsCyclotomicExtension.adjoin_primitive_root_eq_top hζ`. Establish `h` using `conductor_mul_differentIdeal ℤ ℚ E hζ.toInteger hQ`. Establish `hm : minpoly ℤ hζ.toInteger = Polynomial.X ^ 2 + 1`.
+
+Rewrite using `[← minpoly.algebraMap_eq (RingOfIntegers.coe_injective (K := E)) hζ.toInteger]`. Express the relevant statement in the definitionally equal form `minpoly ℤ (IsCyclotomicExtension.zeta 4 ℚ E) = _`. Rewrite using `[← Polynomial.cyclotomic_eq_minpoly hζ (by norm_num)]`. Use `Polynomial.cyclotomic_prime_pow_eq_geom_sum (R := ℤ) (p := 2) (n := 1) Nat.prime_two` as an intermediate fact. Evaluate the numerical expressions using `[Finset.sum_range_succ] at this`.
+
+Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[conductor_eq_top_of_adjoin_eq_top hadj, Ideal.top_mul, hm]`. Rewrite using `[diffAbs_of_span v σ h]`. Establish `h4 : v (σ (IsCyclotomicExtension.zeta 4 ℚ E)) = 1`.
+
+Establish `: v (σ (IsCyclotomicExtension.zeta 4 ℚ E)) ^ 4 = 1`. Rewrite using `[← map_pow, ← map_pow, hζ.pow_eq_one, map_one, map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le (by norm_num)).1 this`. Establish `h5 : ((Polynomial.aeval hζ.toInteger (Polynomial.derivative (Polynomial.X ^ 2 + 1 : Polynomial ℤ)) : 𝓞 E) : E) = 2 * IsCyclotomicExtension.zeta 4 ℚ E` using `by simp; norm_num; rw [map_ofNat, map_ofNat]; rfl`. Rewrite using `[h5, map_mul, map_mul, h4, mul_one, map_ofNat]`.
+-/
 theorem diffAbs_gauss [IsCyclotomicExtension {4} ℚ E] (v : Valuation K NNReal) (σ : E →+* K) :
     diffAbs v σ = v 2 := by
   have hζ := IsCyclotomicExtension.zeta_spec 4 ℚ E
@@ -373,6 +513,9 @@ theorem diffAbs_gauss [IsCyclotomicExtension {4} ℚ E] (v : Valuation K NNReal)
     simp; norm_num; rw [map_ofNat, map_ofNat]; rfl
   rw [h5, map_mul, map_mul, h4, mul_one, map_ofNat]
 
+/- English proof (translation)
+Establish `h : diffAbs (Valued.v : Valuation ℂ_[2] NNReal) σ = 1 / 2`. Rewrite using `[diffAbs_gauss]`. Conclude with `PadicComplex.valuation_p 2` after adjusting the coercions. Conclude with `⟨h, eigSub_ne_eigQuot (PadicComplexInt.integers 2) LatBasic.isFreeOn_reg σ (by rw [h]; norm_num)⟩`.
+-/
 theorem gauss_two [IsCyclotomicExtension {4} ℚ E] (σ : E →+* ℂ_[2]) :
     diffAbs (Valued.v : Valuation ℂ_[2] NNReal) σ = 1 / 2 ∧
       eigSub (A := 𝓞_ℂ_[2]) (LatBasic.regAct ℂ_[2] E) σ (Submodule.span _
@@ -385,9 +528,15 @@ theorem gauss_two [IsCyclotomicExtension {4} ℚ E] (σ : E →+* ℂ_[2]) :
   exact ⟨h, eigSub_ne_eigQuot (PadicComplexInt.integers 2) LatBasic.isFreeOn_reg σ
     (by rw [h]; norm_num)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(IsAlgClosed.lift : CyclotomicField 4 ℚ →ₐ[ℚ] ℂ_[2]).toRingHom⟩`.
+-/
 theorem gauss_two_nonempty : Nonempty (CyclotomicField 4 ℚ →+* ℂ_[2]) :=
   ⟨(IsAlgClosed.lift : CyclotomicField 4 ℚ →ₐ[ℚ] ℂ_[2]).toRingHom⟩
 
+/- English proof (translation)
+Use `haveI : IsCyclotomicExtension {4} ℚ (CyclotomicField 4 ℚ) := CyclotomicField.isCyclotomicExtension 4 ℚ`. Take `⟨σ⟩` from `gauss_two_nonempty`. Conclude with `⟨σ, (gauss_two σ).1⟩`.
+-/
 theorem gauss_two_exists : ∃ σ : CyclotomicField 4 ℚ →+* ℂ_[2],
     diffAbs (Valued.v : Valuation ℂ_[2] NNReal) σ = 1 / 2 := by
   haveI : IsCyclotomicExtension {4} ℚ (CyclotomicField 4 ℚ) :=

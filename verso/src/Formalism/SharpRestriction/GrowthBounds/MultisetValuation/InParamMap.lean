@@ -14,10 +14,16 @@ section Gen
 
 variable (p : ℕ) [hp : Fact p.Prime] (K' : Type) [Field K'] [Algebra (K0 p) K']
 
+/- English proof (translation)
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, lgF, PowerSeries.coeff_mk]`. Simplify using the standard rewrite rules.
+-/
 theorem lgF_const : PowerSeries.constantCoeff (lgF K' p) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, lgF, PowerSeries.coeff_mk]
   simp
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `PowerSeries.X_dvd_iff.2 hf`. Establish `hs : PowerSeries.HasSubst a` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Rewrite using `[← PowerSeries.coe_substAlgHom hs, map_mul, PowerSeries.coe_substAlgHom, PowerSeries.subst_X hs, map_mul, ha, zero_mul]`.
+-/
 private theorem cc_subst_lemma {Kf : Type} [Field Kf] {ρ : Type} (a : MvPowerSeries ρ Kf) (f : PowerSeries Kf)
     (ha : MvPowerSeries.constantCoeff a = 0) (hf : PowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (PowerSeries.subst a f) = 0 := by
@@ -26,6 +32,15 @@ private theorem cc_subst_lemma {Kf : Type} [Field Kf] {ρ : Type} (a : MvPowerSe
   rw [← PowerSeries.coe_substAlgHom hs, map_mul, PowerSeries.coe_substAlgHom, PowerSeries.subst_X hs, map_mul,
     ha, zero_mul]
 
+/- English proof (translation)
+Establish `hμ : PowerSeries.HasSubst μ` using `PowerSeries.HasSubst.of_constantCoeff_zero h0`. Establish `hL' : PowerSeries.HasSubst L` using `PowerSeries.HasSubst.of_constantCoeff_zero hL`. Establish `hvμ : PowerSeries.HasSubst (PowerSeries.C vp * μ)` using `PowerSeries.HasSubst.of_constantCoeff_zero (by rw [map_mul]; exact mul_eq_zero_of_right _ h0)`. Establish `hvX : PowerSeries.HasSubst (vp • PowerSeries.X : PowerSeries K')` using `PowerSeries.HasSubst.of_constantCoeff_zero (by simp; exact Or.inr (PowerSeries.constantCoeff_X (R := K')))`. Establish `hres : PowerSeries.rescale vp (lgF K' p) = vp • lamF p vp`.
+
+Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Rewrite using `[PowerSeries.coeff_rescale, PowerSeries.coeff_smul, lamF, PowerSeries.coeff_mk, PowerSeries.coeff_zero_eq_constantCoeff_apply, lgF_const p K']`. Simplify using the standard rewrite rules. Rewrite using `[PowerSeries.coeff_rescale, PowerSeries.coeff_smul, lamF, PowerSeries.coeff_mk]`.
+
+Simplify using `only [Nat.add_sub_cancel, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsub : PowerSeries.subst (PowerSeries.C vp * μ) (lgF K' p) = vp • PowerSeries.subst μ (lamF p vp)`. Establish `hvμe : PowerSeries.C vp * μ = PowerSeries.subst μ (vp • PowerSeries.X : PowerSeries K')`. Rewrite using `[← PowerSeries.coe_substAlgHom hμ, map_smul, PowerSeries.coe_substAlgHom, PowerSeries.subst_X hμ, PowerSeries.smul_eq_C_mul]`.
+
+Rewrite using `[hvμe, ← PowerSeries.subst_comp_subst_apply hvX hμ, ← PowerSeries.rescale_eq_subst, hres, ← PowerSeries.coe_substAlgHom hμ, map_smul]`. Rewrite using `[← PowerSeries.subst_comp_subst_apply hvμ hL', hsub, h1, ← PowerSeries.coe_substAlgHom hL', map_smul, PowerSeries.coe_substAlgHom, PowerSeries.subst_X hL', MvPowerSeries.smul_eq_C_mul]`.
+-/
 theorem log_at {τ : Type} (vp : K') (μ : PowerSeries K') (h0 : PowerSeries.constantCoeff μ = 0)
     (h1 : (PowerSeries.subst μ (lamF p vp) : PowerSeries K') = PowerSeries.X)
     (L : MvPowerSeries τ K') (hL : MvPowerSeries.constantCoeff L = 0) :
@@ -55,6 +70,19 @@ theorem log_at {τ : Type} (vp : K') (μ : PowerSeries K') (h0 : PowerSeries.con
   rw [← PowerSeries.subst_comp_subst_apply hvμ hL', hsub, h1, ← PowerSeries.coe_substAlgHom hL', map_smul,
     PowerSeries.coe_substAlgHom, PowerSeries.subst_X hL', MvPowerSeries.smul_eq_C_mul]
 
+/- English proof (translation)
+Take `⟨μ, h0, hμ, h1⟩` from `exists_mu (p := p) (K' := K') vp hvp`. Establish `hlg : PowerSeries.map (algebraMap (K0 p) K') (logF p) = lgF K' p` using `map_logF (p := p) (K' := K')`. Set `M : σ → MvPowerSeries τ K'` to `fun i => PowerSeries.subst (L i) (PowerSeries.C vp * μ)`. Establish `hvμ0 : PowerSeries.constantCoeff (PowerSeries.C vp * μ) = 0` using `by simp [h0]`. Establish `hM0 : ∀ i, MvPowerSeries.constantCoeff (M i) = 0` using `fun i => cc_subst_lemma _ _ (hL0 i) hvμ0`.
+
+Establish `hvp_mem : vp ∈ R'` using `hRp (Subring.subset_closure (Or.inr rfl))`. Establish `hvμI : IntR R' (PowerSeries.C vp * μ : PowerSeries K')`. Introduce `n`. Rewrite using `[← PowerSeries.smul_eq_C_mul, MvPowerSeries.coeff_smul]`. Use `R'.mul_mem hvp_mem (hRp ?_)` and prove the remaining obligations.
+
+Establish `hn : n = Finsupp.single () (n ())` using `Finsupp.ext fun u => by cases u; simp`. Rewrite using `[hn]`. Conclude with `hμ (n ())`. Establish `hMint : ∀ i, IntR R' (M i)` using `fun i => IntR_subst (K := K') (R := R') (fun _ : Unit => L i) (fun _ => hL0 i) (fun _ => hL i) hvμI`. Establish `hMs : MvPowerSeries.HasSubst M` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hM0`.
+
+Establish `hMeq : ∀ i, PowerSeries.subst (M i) (lgF K' p) = MvPowerSeries.C vp * L i` using `fun i => log_at p K' vp μ h0 h1 (L i) (hL0 i)`. Establish `key : MvPowerSeries.subst (fun i => MvPowerSeries.C vp * L i) U = MvPowerSeries.subst M (inParamK p K' U)`. Establish `hXs : MvPowerSeries.HasSubst (fun i : σ => PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ K') (lgF K' p))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => cc_subst_lemma _ _ (MvPowerSeries.constantCoeff_X i) (lgF_const p K')`. Rewrite using `[inParamK, hlg, MvPowerSeries.subst_comp_subst_apply hXs hMs]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[← hMeq i]`. Establish `hXi : MvPowerSeries.HasSubst (fun _ : Unit => (MvPowerSeries.X i : MvPowerSeries σ K'))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X i`. Use `show _ = MvPowerSeries.subst M (MvPowerSeries.subst (fun _ : Unit => (MvPowerSeries.X i : MvPowerSeries σ K')) (lgF K' p))`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hXi hMs, MvPowerSeries.subst_X hMs]`.
+
+Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `IntR_subst (K := K') (R := R') M hM0 hMint hU`.
+-/
 theorem genInt {σ τ : Type} [Finite σ] (R' : Subring K') (vp : K') (hvp : vp ^ (p ^ 2 - 1) = (p : K'))
     (hRp : Rp p K' vp ≤ R') (U : MvPowerSeries σ K') (hU : IntR R' (inParamK p K' U))
     (L : σ → MvPowerSeries τ K') (hL0 : ∀ i, MvPowerSeries.constantCoeff (L i) = 0) (hL : ∀ i, IntR R' (L i)) :
@@ -96,6 +124,13 @@ theorem genInt {σ τ : Type} [Finite σ] (R' : Subring K') (vp : K') (hvp : vp 
   rw [key]
   exact IntR_subst (K := K') (R := R') M hM0 hMint hU
 
+/- English proof (translation)
+Establish `hXs1 : MvPowerSeries.HasSubst (fun i : σ => PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ K1) (PowerSeries.map (algebraMap (K0 p) K1) (logF p)))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => cc_subst_lemma _ _ (MvPowerSeries.constantCoeff_X i) (by rw [map_logF (p := p) (K' := K1)]; exact lgF_const p K1)`. Establish `e : inParamK p K' (MvPowerSeries.map (algebraMap K1 K') U) = MvPowerSeries.map (algebraMap K1 K') (inParamK p K1 U)`. Rewrite using `[inParamK, inParamK, MvPowerSeries.map_subst hXs1]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)), MvPowerSeries.map_X]`. Use `congr 1`. Use extensionality with `n`. Simplify using `[PowerSeries.coeff_map, IsScalarTower.algebraMap_apply (K0 p) K1 K']`. Rewrite using `[e]`.
+
+Introduce `n`. Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `hR1 _ (hU n)`.
+-/
 theorem inParam_map {σ : Type} [Finite σ] (K1 : Type) [Field K1] [Algebra (K0 p) K1] [Algebra K1 K']
     [IsScalarTower (K0 p) K1 K'] (R1 : Subring K1) (R' : Subring K') (hR1 : ∀ x ∈ R1, algebraMap K1 K' x ∈ R')
     (U : MvPowerSeries σ K1) (hU : IntR R1 (inParamK p K1 U)) :
@@ -121,6 +156,15 @@ theorem inParam_map {σ : Type} [Finite σ] (K1 : Type) [Field K1] [Algebra (K0 
 
 end Gen
 
+/- English proof (translation)
+Introduce `n' r0 r1 B K1 _ _ R1 U hU K' _ _ _ _ R' vp hvp hRp hR1`. Establish `hc : coordZ (r0` using `r0) (r1 := r1) B K' vp = fun x => MvPowerSeries.C vp * coordZ B K' 1 x := by`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `rcases x with ⟨r, a, b⟩ | ⟨r, a, b⟩ <;> simp [coordZ, Finset.mul_sum, map_mul, mul_assoc]`. Establish `hLint : ∀ x, IntR R' (coordZ (r0` using `r0) (r1 := r1) B K' 1 x) := by`.
+
+Introduce `x n`. Apply the tactic sequence `rcases x with ⟨r, a, b⟩ | ⟨r, a, b⟩ <;>`. Simplify using `only [coordZ, one_mul, map_sum]`. Use `R'.sum_mem fun s _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X]`.
+
+Use `split_ifs`. Rewrite using `[mul_one]`. Conclude with `hRp (Subring.subset_closure (Or.inl ⟨_, rfl⟩))`. Rewrite using `[mul_zero]`. Conclude with `R'.zero_mem`.
+
+Unfold `ThZ`. Rewrite using `[hc]`. Conclude with `genInt p K' R' vp hvp hRp (MvPowerSeries.map (algebraMap K1 K') U) (inParam_map p K' K1 R1 R' hR1 U hU) (coordZ B K' 1) (coordZ_const (p := p) B K' 1) hLint`.
+-/
 theorem restSInt (p : ℕ) [Fact p.Prime] : RestSInt p := by
   intro n' r0 r1 B K1 _ _ R1 U hU K' _ _ _ _ R' vp hvp hRp hR1
   have hc : coordZ (r0 := r0) (r1 := r1) B K' vp = fun x => MvPowerSeries.C vp * coordZ B K' 1 x := by

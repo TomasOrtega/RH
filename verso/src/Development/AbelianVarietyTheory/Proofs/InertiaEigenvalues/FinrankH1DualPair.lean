@@ -15,6 +15,15 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.EulerCharH1
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hab`. Use `push_neg at hab`. Establish `key : ∀ r : ℕ, q ^ r ≤ C`. Introduce `r`. Establish `h1` using `h r`.
+
+Establish `hpos : 0 < q ^ (r * b)` using `pow_pos (by omega) _`. Establish `: q ^ (r * a) ≥ q ^ (r * b) * q ^ r`. Rewrite using `[← pow_add]`. Apply `Nat.pow_le_pow_right (by omega)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `: q ^ (r * b) * q ^ r ≤ C * q ^ (r * b)` using `le_trans this h1`. Rewrite `this` using `[mul_comm (q ^ (r * b))]`. Conclude with `Nat.le_of_mul_le_mul_right this hpos`. Establish `h2` using `key C`. Establish `h3 : C < 2 ^ C` using `Nat.lt_two_pow_self`.
+
+Establish `h4 : 2 ^ C ≤ q ^ C` using `Nat.pow_le_pow_left hq C`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_of_pow_le {q a b C : ℕ} (hq : 2 ≤ q) (h : ∀ r : ℕ, q ^ (r * a) ≤ C * q ^ (r * b)) :
     a ≤ b := by
   by_contra hab
@@ -35,6 +44,9 @@ theorem le_of_pow_le {q a b C : ℕ} (hq : 2 ≤ q) (h : ∀ r : ℕ, q ^ (r * a
   have h4 : 2 ^ C ≤ q ^ C := Nat.pow_le_pow_left hq C
   omega
 
+/- English proof (translation)
+Introduce `g x hx`. Rewrite `hx`, the goal using `[Submodule.ideal_span_singleton_smul]`. Take `⟨y, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp hx`. Conclude with `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mpr ⟨actT L g y, Submodule.mem_top, (map_smul _ _ _).symm⟩`.
+-/
 theorem stableSub_span_smul {G LL O V : Type} [Group G] [Field LL] [CommRing O] [Algebra O LL]
     [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
     {ρ : Representation LL G V} (L : Lattice (O := O) ρ) (c : O) :
@@ -48,6 +60,15 @@ end GlobalTheory.EulerCharH1
 
 namespace GlobalTheory.EulerCharH1
 
+/- English proof (translation)
+Introduce and unpack `⟨u, hu⟩`. Establish `hl0 : ((l : ℕ) : ℚ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hy : algebraMap O LL ((u⁻¹ : Oˣ) : O) = algebraMap ℚ_[l] LL (((l : ℕ) : ℚ_[l])⁻¹)`. Rewrite using `[map_inv₀, map_natCast]`. Establish `h1 : algebraMap O LL ((u⁻¹ : Oˣ) : O) * algebraMap O LL (u : O) = 1`.
+
+Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Rewrite `h1` using `[hu, map_natCast]`. Conclude with `eq_inv_of_mul_eq_one_left h1`. Take `⟨p, hpm, hp⟩` from `(hint _).mp ⟨_, hy⟩`. Rewrite `hp` using `[← Polynomial.hom_eval₂]`.
+
+Establish `hp' : p.eval₂ (algebraMap ℤ_[l] ℚ_[l]) (((l : ℕ) : ℚ_[l])⁻¹) = 0` using `(algebraMap ℚ_[l] LL).injective (by rw [hp, map_zero])`. Establish `hI : IsIntegral ℤ_[l] (((l : ℕ) : ℚ_[l])⁻¹)` using `⟨p, hpm, hp'⟩`. Take `⟨w, hw⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hI`. Establish `hlw : ((l : ℕ) : ℤ_[l]) * w = 1`. Apply `IsFractionRing.injective ℤ_[l] ℚ_[l]` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, hw, map_natCast, map_one, mul_inv_cancel₀ hl0]`. Conclude with `PadicInt.p_nonunit (IsUnit.of_mul_eq_one _ hlw)`.
+-/
 theorem natCast_not_isUnit (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra ℚ_[l] LL]
     (O : Type) [CommRing O] [Algebra O LL]
     (hint : ∀ x : LL, x ∈ Set.range (algebraMap O LL) ↔
@@ -76,6 +97,11 @@ end GlobalTheory.EulerCharH1
 
 namespace GlobalTheory.EulerCharH1
 
+/- English proof (translation)
+Take `⟨hint, -, hfin, -⟩` from `GlobalTheory.T.coefficient_ring_integers_compact_adic_properties l LL O hO`. Establish `hf : Finite (O ⧸ Ideal.span {((l : ℕ) : O)})`. Simplify using `using hfin 1`. Establish `: Nontrivial (O ⧸ Ideal.span {((l : ℕ) : O)})` using `Ideal.Quotient.nontrivial_iff.mpr (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`.
+
+Conclude with `natCast_not_isUnit l LL O hint)`. Conclude with `Finite.one_lt_card`.
+-/
 theorem two_le_card (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra ℚ_[l] LL]
     [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL]
     (hO : GoodO (Qp := ℚ_[l]) LL O) : 2 ≤ Nat.card (O ⧸ Ideal.span {((l : ℕ) : O)}) := by
@@ -87,6 +113,13 @@ theorem two_le_card (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra ℚ
       rw [Ne, Ideal.span_singleton_eq_top]; exact natCast_not_isUnit l LL O hint)
   exact Finite.one_lt_card
 
+/- English proof (translation)
+Establish `key : ∀ r : ℕ, q ^ (r * a) ≤ C3 * C4 * q ^ (r * (h0 + h0' + d)) ∧ q ^ (r * (h0 + h0' + d)) ≤ C2 * C1 * q ^ (r * a)`. Introduce `r`. Take `⟨hX1, hX2⟩` from `hX r`. Take `⟨hY1, hY2⟩` from `hY r`. Take `⟨hH1, hH2⟩` from `hH r`.
+
+Take `⟨hH1', hH2'⟩` from `hH' r`. Establish `hpow : q ^ (r * (h0 + h0' + d)) = q ^ (r * h0) * q ^ (r * h0') * q ^ (r * d)`. Rewrite using `[← pow_add, ← pow_add]`. Put the polynomial expressions in normal form. Prove the components needed by the constructor for the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `le_of_pow_le hq (fun r => (key r).1)`. Establish `h2` using `le_of_pow_le hq (fun r => (key r).2)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_of_bounds {q a h0 h0' d C1 C2 C3 C4 : ℕ} (X Y H H' : ℕ → ℕ) (hq : 2 ≤ q)
     (hX : ∀ r, q ^ (r * a) ≤ X r ∧ X r ≤ C1 * q ^ (r * a))
     (hY : ∀ r, X r ≤ Y r ∧ Y r ≤ C2 * X r)
@@ -120,6 +153,11 @@ theorem eq_of_bounds {q a h0 h0' d C1 C2 C3 C4 : ℕ} (X Y H H' : ℕ → ℕ) (
   have h2 := le_of_pow_le hq (fun r => (key r).2)
   omega
 
+/- English proof (translation)
+Introduce `hTD hEC l _ P K LL _ _ _ O _ _ hO A A' m hm`. Take `⟨LA, LA', hLL, -⟩` from `GlobalTheory.T.exists_mutuallyDual_stable_lattices l P K LL O hO A A' m hm`. Establish `hfinT : Module.Finite O (LatticeCohomology LA)` using `GlobalTheory.T.finite_H1_period_datum hTD l P K LL O hO A LA`. Take `⟨hfinV, C1, -, hX⟩` from `GlobalTheory.T.H1_lattice_rank_growth_of_goodO l K LL O hO A LA hfinT`. Take `⟨C2, -, hY⟩` from `GlobalTheory.T.H1_reduction_index_bound_of_tateDuality hTD l P K LL O hO A A' LA LA' m hLL`.
+
+Take `⟨C3, -, hH⟩` from `GlobalTheory.T.growth_galois_invariants_mod_prime_power_lattice l K LL O hO A LA`. Take `⟨C4, -, hH'⟩` from `GlobalTheory.T.growth_galois_invariants_mod_prime_power_lattice l K LL O hO A' LA'`. Conclude with `⟨hfinV, eq_of_bounds _ _ _ _ (two_le_card l LL O hO) hX (fun r => hY r (stableSub_span_smul LA _)) (fun r => GlobalTheory.T.H1_lattice_index_growth_of_tateDuality_eulerChar hTD hEC l P K LL O hO A A' LA LA' m hLL r (stableSub_span_smul LA _) (stableSub_span_smul LA' _)) (fun r => …`.
+-/
 theorem finite_and_finrank_H1V : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK →
     ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l), ∀ (K : FinExt l) (LL : Type) [Field LL]
     [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL],

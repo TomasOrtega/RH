@@ -228,10 +228,16 @@ def AllA (P : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
     (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype) (O' : Type) [CommRing O'] [IsDomain O']
     [CharZero O'] (b : c.V W₀ →+* O') (ϖ : O') (a : ArcIn D l (c.V W₀).subtype O' b), GlobalTheory.LN.ArcBase O' ϖ → P Y a
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Use `⟨Function.Injective.comp (g := h) (fun r s e => IsFractionRing.injective R₁ (FractionRing R₁) (h'.injective (by rw [hh, hh, e]))) hy.1, hf.comp hy.2.1, ?_⟩` and prove the remaining obligations. Establish `e : spMap h' ≫ jK R₁ = jK R₂ ≫ spMap h` using `(spMap_comp' (algebraMap R₁ _) h').symm.trans ((congrArg spMap (RingHom.ext hh)).trans (spMap_comp' h (algebraMap R₂ _)))`. Rewrite using `[Category.assoc, hy.2.2, spMap_comp', ← Category.assoc, e]`. Simplify using `only [Category.assoc]`.
+-/
 theorem ArcPt.comp {Y : Model Xo c β} {R₁ R₂ : Type} [CommRing R₁] [IsDomain R₁] [CommRing R₂] [IsDomain R₂]
     {g : PowerSeries O' →+* R₁} {y₁ : Sp (FractionRing R₁) ⟶ Xo.XF c} (hy : ArcPt Y b g y₁) (h : R₁ →+* R₂)
     (h' : FractionRing R₁ →+* FractionRing R₂) (hf : h.Finite) (hh : ∀ r, h' (algebraMap R₁ _ r) = algebraMap R₂ _ (h r)) :
@@ -243,6 +249,9 @@ theorem ArcPt.comp {Y : Model Xo c β} {R₁ R₂ : Type} [CommRing R₁] [IsDom
   rw [Category.assoc, hy.2.2, spMap_comp', ← Category.assoc, e]
   simp only [Category.assoc]
 
+/- English proof (translation)
+Use `⟨hR.1.comp h h' hf hh, fun C _ _ _ _ _ gam u h₁ h₂ h₃ h₄ => ?_⟩` and prove the remaining obligations. Take `⟨A, r, o, p₁, p₂, p₃, p₄⟩` from `hR.2 C (gam.comp h') u (fun x => by rw [h₁, RingHom.comp_apply, RingHom.comp_apply, hh]) (fun r => by rw [RingHom.comp_apply, hh]; exact h₂ _) (by rw [h₃, RingHom.comp_apply, RingHom.comp_apply, hh]) h₄`. Use `⟨A, r, o, p₁, p₂, ?_, p₄⟩` and prove the remaining obligations. Rewrite `p₃` using `[spMap_comp', Category.assoc]`. Then use the resulting hypothesis.
+-/
 theorem RealAt.comp {Y : Model Xo c β} {a : ArcIn D l β O' b} {R₁ R₂ : Type} [CommRing R₁] [IsDomain R₁] [CommRing R₂]
     [IsDomain R₂] {g : PowerSeries O' →+* R₁} {y₁ : Sp (FractionRing R₁) ⟶ Xo.XF c} (hR : RealAt Y a g y₁) (h : R₁ →+* R₂)
     (h' : FractionRing R₁ →+* FractionRing R₂) (hf : h.Finite) (hh : ∀ r, h' (algebraMap R₁ _ r) = algebraMap R₂ _ (h r)) :
@@ -255,12 +264,18 @@ theorem RealAt.comp {Y : Model Xo c β} {a : ArcIn D l β O' b} {R₁ R₂ : Typ
   refine ⟨A, r, o, p₁, p₂, ?_, p₄⟩
   rwa [spMap_comp', Category.assoc] at p₃
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨‹_›, FaithfulSMul.algebraMap_injective _ _, fun x => Algebra.IsAlgebraic.isAlgebraic (R := PowerSeries O') x, h⟩`.
+-/
 theorem serBase_algebraMap (K : Type) [Field K] [IsAlgClosed K] [Algebra (FractionRing O') K] [Algebra (PowerSeries O') K]
     [FaithfulSMul (PowerSeries O') K] [Algebra.IsAlgebraic (PowerSeries O') K]
     (h : ∀ x, algebraMap (FractionRing O') K (algebraMap O' _ x) = algebraMap (PowerSeries O') K (PowerSeries.C x)) :
     SerBase (algebraMap (PowerSeries O') K) :=
   ⟨‹_›, FaithfulSMul.algebraMap_injective _ _, fun x => Algebra.IsAlgebraic.isAlgebraic (R := PowerSeries O') x, h⟩
 
+/- English proof (translation)
+Take `⟨h₁, h₂, h₃⟩` from `M.cdv`. Conclude with `⟨⟨inferInstance, inferInstance, inferInstance, inferInstance⟩, h₃⟩`.
+-/
 theorem Mdl.admissible_base_of_complete_dvr {C : Type} [NormedField C] {o : Full D C} (M : Mdl o) :
     AdmBase M.W (IsLocalRing.maximalIdeal M.W) ∧ CharZero M.W := by
   obtain ⟨h₁, h₂, h₃⟩ := M.cdv

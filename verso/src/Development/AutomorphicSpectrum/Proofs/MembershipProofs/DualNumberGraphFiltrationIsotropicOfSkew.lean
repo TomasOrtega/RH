@@ -8,6 +8,33 @@ namespace GlobalTheory.CompanionTheory.VacLoc.GoodInh
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hcoe : ∀ z, (Circle.coeHom.compAddChar χ) z = 1 ↔ χ z = 1` using `fun z => by show ((χ z : Circle) : ℂ) = 1 ↔ _`. Conclude with `Circle.coe_eq_one`. Use `⟨fun x => ?_, IsNonarchimedeanLocalField.isCompact_closedBall k 1, Valuation.isOpen_integer, fun x => ?_, fun U hU => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `show ‖((χ x : Circle) : ℂ)‖ = 1`. Conclude with `Circle.norm_coe _`.
+
+Establish `key : (∀ y ∈ 𝒪[k], (Circle.coeHom.compAddChar χ) (x * y) = 1) ↔ ∀ y, ValuativeRel.valuation k y ≤ ValuativeRel.valuation k x → χ y = 1`. Simplify using `only [hcoe]`. Prove the components needed by the constructor for the conclusion. Introduce `H y hy`. Distinguish the cases in `hx : x = 0`.
+
+Establish `h0 : ValuativeRel.valuation k y = 0`. Rewrite `hy` using `[hx, map_zero]`. Conclude with `le_antisymm hy zero_le'`. Rewrite using `[(Valuation.zero_iff _).1 h0, AddChar.map_zero_eq_one]`. Establish `hmem : x⁻¹ * y ∈ 𝒪[k]`.
+
+Rewrite using `[Valuation.mem_integer_iff, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `H _ hmem`. Rewrite `h1` using `[mul_inv_cancel_left₀ hx]`. Then use the resulting hypothesis. Introduce `H y hy`.
+
+Apply `H` to reduce the goal to its premises. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key, hχ x, Valuation.mem_integer_iff, map_mul]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hle`. Combine the equalities or inequalities in the displayed calculation. Introduce `hle`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, Units.mul_inv, one_mul]`.
+
+Use `_ = ValuativeRel.valuation k (c : k) * ValuativeRel.valuation k (((c⁻¹ : kˣ) : k) * x) := map_mul _ _ _`. Use `_ ≤ ValuativeRel.valuation k (c : k) * 1 := by`. Rewrite using `[map_mul]`. Conclude with `mul_le_mul_of_nonneg_left hle zero_le'`. Use `_ = ValuativeRel.valuation k (c : k) := mul_one _`.
+
+Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff U).1 hU`. Take `⟨δ, hδ0, hδ1⟩` from `ValuativeRel.IsNontrivial.exists_lt_one (R := k)`. Take `⟨ϖ, hϖ⟩` from `ValuativeRel.valuation_surjective (K := k) δ`. Take `⟨z, hz⟩` from `ValuativeRel.valuation_surjective (K := k) (γ : ValuativeRel.ValueGroupWithZero k)`. Establish `hz0 : z ≠ 0`.
+
+Introduce `h0`. Rewrite `hz` using `[h0, map_zero]`. Conclude with `γ.ne_zero hz.symm`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`.
+
+Rewrite `hϖ` using `[h0, map_zero]`. Conclude with `hδ0.ne hϖ`. Use `⟨Units.mk0 (z * ϖ) (mul_ne_zero hz0 hϖ0), fun y hy => hγ ?_⟩` and prove the remaining obligations. Establish `hy' : ValuativeRel.valuation k y ≤ 1` using `(Valuation.mem_integer_iff _ _).1 hy`. Use `show ValuativeRel.valuation k (z * ϖ * y) < γ`.
+
+Rewrite using `[map_mul, map_mul, hz, hϖ]`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hx : ValuativeRel.valuation k x ≤ 1`. Conclude with `⟨1, by simp, by simpa [Valuation.mem_integer_iff] using hx⟩`. Establish `hx0 : x ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hx`. Use `⟨(Units.mk0 x hx0)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff, Units.val_inv_eq_inv_val, Units.val_mk0, Valuation.map_inv]`. Conclude with `(inv_le_one₀ ((Valuation.pos_iff _).2 hx0)).2 (le_of_lt (not_le.1 hx))`.
+
+Rewrite using `[Units.val_inv_eq_inv_val, Units.val_mk0, inv_mul_cancel₀ hx0]`. Conclude with `one_mem _`.
+-/
 theorem goodChar_of_hasConductor (χ : AddChar k Circle) (c : kˣ) (hχ : HasConductor χ c) :
     GoodChar (Circle.coeHom.compAddChar χ) 𝒪[k] c := by
   have hcoe : ∀ z, (Circle.coeHom.compAddChar χ) z = 1 ↔ χ z = 1 := fun z => by
@@ -92,6 +119,15 @@ theorem goodChar_of_hasConductor (χ : AddChar k Circle) (c : kˣ) (hχ : HasCon
       · rw [Units.val_inv_eq_inv_val, Units.val_mk0, inv_mul_cancel₀ hx0]
         exact one_mem _
 
+/- English proof (translation)
+Introduce `k _ _ _ _`. Use `letI : MeasurableSpace k := borel k`. Use `haveI : BorelSpace k := ⟨rfl⟩`. Use `⟨?_, fun ψ hψc hψn hψ1 => ?_⟩` and prove the remaining obligations. Take `⟨-, ⟨χ, -, -, hχ⟩, -⟩` from `GlobalTheory.SplitWeil.conductor_exists k`.
+
+Conclude with `⟨_, goodChar_of_hasConductor χ 1 hχ⟩`. Set `χ : AddChar k Circle` to `{ toFun := fun x => ⟨ψ x, mem_sphere_zero_iff_norm.2 (hψn x)⟩ map_zero_eq_one' := Circle.ext (by simp) map_add_eq_mul' := fun a b => Circle.ext (AddChar.map_add_eq_mul ψ a b) }`. Establish `hχψ : Circle.coeHom.compAddChar χ = ψ` using `AddChar.ext _ _ fun x => rfl`. Establish `hχc : Continuous χ` using `hψc.subtype_mk _`. Establish `hχ1 : χ ≠ 1`.
+
+Introduce `h1`. Apply `hψ1` to reduce the goal to its premises. Rewrite using `[← hχψ, h1]`. Conclude with `AddChar.ext _ _ fun x => by simp`. Take `⟨c, hc⟩` from `GlobalTheory.SplitWeil.exists_hasConductor_of_continuous χ hχc hχ1`.
+
+Conclude with `⟨c, hχψ ▸ goodChar_of_hasConductor χ c hc⟩`.
+-/
 theorem exists_goodChar :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
       (∃ ψ : AddChar k ℂ, GoodChar ψ 𝒪[k] 1) ∧

@@ -12,6 +12,9 @@ namespace GlobalTheory.CompanionTheory.ConeRepCup
 
 open GlobalTheory.CompanionTheory.CupRep
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => by funext s change ∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (A.map (toLast i s)).hom 1 = (0 : A.obj _) rw [Fin.sum_univ_two, map_one, map_one] simp | m + 1, ℓ, h => by change CH.d _ (m + 1) ((CH.mulP A).cupC (by omega) (cupListC A fun i => ℓ (Fin.castSucc i)) (ℓ (Fin.last m …`.
+-/
 theorem cupList_cocycle {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (A : C ⥤ CommAlgCat.{0} R) :
     ∀ {m : ℕ} (ℓ : Fin m → CH.Cn (CH.modF A) 1), (∀ k, CH.d _ 1 (ℓ k) = 0) → CH.d _ m (cupListC A ℓ) = 0
   | 0, _, _ => by
@@ -24,6 +27,9 @@ theorem cupList_cocycle {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (A
       rw [CrystallineSemistableComparison.P.leibniz, cupList_cocycle A _ (fun k => h _), h]
       simp
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => mem_FC.2 fun s => by rw [Nat.cast_zero, hF.top 0 le_rfl] exact trivial | m + 1, ℓ, h => cup_mem hF (r := m) (r' := 1) _ (cupList_mem hF _ fun k => h _) (h _)`.
+-/
 theorem cupList_mem {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {Fil : ℤ → IdF Φ.A}
     (hF : IsFil Φ Fil) : ∀ {m : ℕ} (ℓ : Fin m → CH.Cn (CH.modF Φ.A) 1),
     (∀ k, ℓ k ∈ FC (Fil ((1 : ℕ) : ℤ)) 1) → cupListC Φ.A ℓ ∈ FC (Fil (m : ℤ)) m
@@ -32,6 +38,9 @@ theorem cupList_mem {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : 
       exact trivial
   | m + 1, ℓ, h => cup_mem hF (r := m) (r' := 1) _ (cupList_mem hF _ fun k => h _) (h _)
 
+/- English proof (translation)
+Introduce `hF m ℓ hd hl`. Establish `hm : cupListC Φ.A ℓ ∈ FC (Fil (m : ℤ)) m` using `cupList_mem hF ℓ fun k => mem_FC.2 fun s => by simpa using hl k s`. Use `GlobalTheory.CompanionTheory.ConeLocal.rep_exists (cupListC Φ.A ℓ) (mem_FC.1 hm) fun s => ?_` and prove the remaining obligations. Rewrite using `[cupList_cocycle Φ.A ℓ hd]`. Conclude with `(Fil ((m : ℤ) + 1)).S _ |>.zero_mem`.
+-/
 theorem exists_rep {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (Φ : PDF R C) (Fil : ℤ → IdF Φ.A) :
     IsFil Φ Fil → ∀ {m : ℕ} (ℓ : Fin m → CH.Cn (CH.modF Φ.A) 1), (∀ k, CH.d _ 1 (ℓ k) = 0) → (∀ k σ, ℓ k σ ∈ (Fil 1).S _) →
     ∃ c : CH.H (sq (Fil m) (Fil ((m : ℤ) + 1))) m, Rep (Fil m) (Fil ((m : ℤ) + 1)) (cupListC Φ.A ℓ) c := by

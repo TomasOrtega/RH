@@ -6,5 +6,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Formalism.L2.Pj Formalism.L2.PjFree Formalism.L2.Pj.QAt Formalism.L2.LamCM GlobalTheory GlobalTheory.ArcQ GlobalTheory.LamF GlobalTheory.ArcCM
 open scoped LaurentSeries
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArcCM.known_holds | exact GlobalTheory.ArcCM.known_holds | (intros; apply GlobalTheory.ArcCM.known_holds <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithmeticCMKnownTheorems_proof : Known := by
   first | exact @GlobalTheory.ArcCM.known_holds | exact GlobalTheory.ArcCM.known_holds | (intros; apply GlobalTheory.ArcCM.known_holds <;> assumption)

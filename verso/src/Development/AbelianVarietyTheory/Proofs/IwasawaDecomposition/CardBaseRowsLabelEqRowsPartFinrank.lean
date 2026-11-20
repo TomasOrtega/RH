@@ -16,6 +16,13 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.LabCount
 
+/- English proof (translation)
+Establish `hle : ∀ q, (Finset.univ.filter (fun k => lab k = q)).card ≤ Module.finrank ℂ (P q)`. Introduce `q`. Set `y : {k // lab k = q} → P q` to `fun k => ⟨x k.1, by have h := hmem k.1; rwa [k.2] at h⟩`. Establish `hy : LinearIndependent ℂ y`. Apply `LinearIndependent.of_comp (P q).subtype` to reduce the goal to its premises.
+
+Conclude with `hx.comp Subtype.val Subtype.val_injective`. Use `hy.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Fintype.card_subtype]`. Then use the resulting hypothesis. Establish `htot : ∑ q, (Finset.univ.filter (fun k => lab k = q)).card = Fintype.card ι`. Rewrite using `[← Finset.card_univ, Finset.card_eq_sum_card_fiberwise (fun k _ => Finset.mem_univ (lab k))]`.
+
+Assume the negation of the conclusion as `hne`. Establish `hlt : (Finset.univ.filter (fun k => lab k = p)).card < Module.finrank ℂ (P p)` using `lt_of_le_of_ne (hle p) hne`. Establish `: ∑ q, (Finset.univ.filter (fun k => lab k = q)).card < ∑ q, Module.finrank ℂ (P q)` using `Finset.sum_lt_sum (fun q _ => hle q) ⟨p, Finset.mem_univ _, hlt⟩`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_filter_eq_finrank {V Q ι : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     [Fintype ι] [Fintype Q] [DecidableEq Q] (x : ι → V) (hx : LinearIndependent ℂ x) (lab : ι → Q)
     (P : Q → Submodule ℂ V) (hmem : ∀ k, x k ∈ P (lab k))
@@ -37,6 +44,9 @@ theorem card_filter_eq_finrank {V Q ι : Type} [AddCommGroup V] [Module ℂ V] [
     Finset.sum_lt_sum (fun q _ => hle q) ⟨p, Finset.mem_univ _, hlt⟩
   omega
 
+/- English proof (translation)
+Set `j : (Tw.sub s V) ≃+ V` to `{ toFun := fun x => ⟨Tw.out x.1, x.2⟩ invFun := fun x => ⟨Tw.mk s x.1, x.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_add' := fun _ _ => rfl }`. Establish `hb : Function.Bijective (cj s)` using `Function.bijective_iff_has_inverse.2 ⟨cj s, cj_cj s, cj_cj s⟩`. Establish `h` using `rank_eq_of_equiv_equiv (cj s) j hb (fun _ _ => rfl)`. Unfold `Module.finrank`. Rewrite using `[h]`.
+-/
 theorem finrank_twSub (s : Bool) {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (V : Submodule ℂ E) :
     Module.finrank ℂ (Tw.sub s V) = Module.finrank ℂ V := by
   let j : (Tw.sub s V) ≃+ V :=
@@ -51,9 +61,39 @@ theorem finrank_twSub (s : Bool) {E : Type} [NormedAddCommGroup E] [InnerProduct
   unfold Module.finrank
   rw [h]
 
+/- English proof (translation)
+The claim follows from `Submodule.ext fun _ => Iff.rfl`.
+-/
 theorem twSub_inf (s : Bool) {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (V W : Submodule ℂ E) :
     Tw.sub s (V ⊓ W) = Tw.sub s V ⊓ Tw.sub s W := Submodule.ext fun _ => Iff.rfl
 
+/- English proof (translation)
+Introduce `hWe hDs hHC hCu D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hHo hHost cOf hLab p`. Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hHo.ok hHo.sep hP.char hHo.prim`. Establish `hRow` using `hR.rowHyp false`. Establish `hE : (R.toCx3 F).PartsE false` using `hHo.prim.sumE false`. Establish `hinj : Function.Injective R.HE.e` using `hP.char.base.models.HE.1`.
+
+Use `set L : Submodule ℂ R.HE.H := (R.toRealDat.EEat (R.toRealDat.levR F.lv2 false)).comap R.HE.e with hL`. Establish `hpart : ∀ q, Module.finrank ℂ ((R.toCx3 F).EEp q ⊓ (R.toCx3 F).EEl false : Submodule ℂ (R.toCx3 F).EE) = Module.finrank ℂ (R.EEp3 q ⊓ L : Submodule ℂ R.HE.H)`. Introduce `q`. Rewrite using `[← finrank_twSub (twAt D.what₂.embLL A3.A.v0) (R.EEp3 q ⊓ L : Submodule ℂ R.HE.H), twSub_inf]`. Both sides reduce to the same expression.
+
+Establish `hEp : Module.finrank D.what₂.LL ((s0Of R F).Ep p) = Module.finrank ℂ (R.EEp3 p ⊓ L : Submodule ℂ R.HE.H)`. Rewrite using `[← hpart p]`. Conclude with `(R.toCx3 F).finrank_Ep F.cr false hRow.wf hRow.h2 hRow.h3 hE p`. Set `C` to `toChainReal R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop`. Set `lf : Mult.MMap (R.MY 0) ≃ₗ[ℂ] C.Amb 0` to `PiTensorProduct.lift`.
+
+Set `φ : R.HE.H →ₗ[ℂ] C.Amb 0` to `lf.toLinearMap ∘ₗ R.HE.e`. Establish `hφ : Function.Injective φ` using `lf.injective.comp hinj`. Establish `hmemL : ∀ y : R.HE.H, φ y ∈ C.EEc false → y ∈ L`. Introduce `y hy`. Take `⟨z, hz, hzy⟩` from `Submodule.mem_map.1 hy`.
+
+Establish `: z = R.HE.e y` using `lf.injective hzy`. Substitute `this` using the available equality. Conclude with `hz`. Use `choose x hxP hxe using fun k => (hLab (D.what₂.ft0 k)).2 k rfl`. Establish `hxφ : ∀ k, φ (x k) = (Y.Iz.jE (D.what₂.onb0 k)).1` using `fun k => (hxe k).symm`.
+
+Establish `hli0 : LinearIndependent ℂ (fun k => ((Y.Iz.jE (D.what₂.onb0 k)).1 : C.Amb 0))`. Establish `h1` using `D.what₂.onb0.toBasis.linearIndependent.map' Y.Iz.jE.toLinearMap Y.Iz.jE.ker`. Establish `h2` using `h1.map' (C.EEc false).subtype (Submodule.ker_subtype _)`. Conclude with `h2`. Establish `hli : LinearIndependent ℂ x`.
+
+Apply `LinearIndependent.of_comp φ` to reduce the goal to its premises. Use `hli0 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Conclude with `hxφ k`. Establish `hxL : ∀ k, x k ∈ L` using `fun k => hmemL _ (by rw [hxφ k]; exact (Y.Iz.jE (D.what₂.onb0 k)).2)`.
+
+Establish `hDim : Module.finrank ℂ L ≤ Fintype.card (Fin D.what₂.D0)`. Set `g0 : L →ₗ[ℂ] C.EEc false` to `(φ.domRestrict L).codRestrict (C.EEc false) (fun y => Submodule.mem_map_of_mem (f := lf.toLinearMap) y.2)`. Set `g : L →ₗ[ℂ] D.what₂.EE0` to `Y.Iz.jE.symm.toLinearMap ∘ₗ g0`. Establish `hg : Function.Injective g`. Introduce `a b h`.
+
+Establish `h1 : g0 a = g0 b` using `Y.Iz.jE.symm.injective h`. Establish `h2 : φ a = φ b` using `congrArg Subtype.val h1`. Conclude with `Subtype.ext (hφ h2)`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : ∑ q, Module.finrank ℂ (R.EEp3 q ⊓ L : Submodule ℂ R.HE.H) ≤ Fintype.card (Fin D.what₂.D0)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hcard` using `card_filter_eq_finrank x hli (fun k => cOf (D.what₂.ft0 k)) (fun q => (R.EEp3 q ⊓ L : Submodule ℂ R.HE.H)) (fun k => ⟨hxP k, hxL k⟩) hsum p`. Establish `hcount : ∑ σ ∈ Finset.univ.filter (fun σ => cOf σ = p), D.what₂.nRows0 σ = (Finset.univ.filter (fun k => cOf (D.what₂.ft0 k) = p)).card`. Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := D.what₂.ft0) (t := Finset.univ.filter (fun σ => cOf σ = p)) (fun k hk => by simpa using hk)]`. Use `Finset.sum_congr rfl fun σ hσ => ?_` and prove the remaining obligations.
+
+Rewrite `hσ` using `[Finset.mem_filter]`. Rewrite using `[Formalism.BasicNotions.Rows.Data.nRows0, Fintype.card_subtype, Finset.filter_filter]`. Use `congr 1`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h ▸ hσ.2, h⟩`. Introduce `h`. Conclude with `h.2`.
+
+Rewrite using `[hEp, ← hcard]`. Conclude with `hcount`.
+-/
 theorem cnt : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ cOf : D.what₂.FT → A3.fam3.base3.Ix, (∀ σ, HasLab Y σ (cOf σ)) → ∀ p : A3.fam3.base3.Ix, ∑ σ ∈ Finset.univ.filter (fun σ => cOf σ = p), D.what₂.nRows0 σ = Module.finrank D.what₂.LL ((s0Of R F).Ep p) := by
   intro hWe hDs hHC hCu D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hHo hHost cOf hLab p
   have hR := complex_data_conditions_base_level_of_primitive_links hHo.ok hHo.sep hP.char hHo.prim

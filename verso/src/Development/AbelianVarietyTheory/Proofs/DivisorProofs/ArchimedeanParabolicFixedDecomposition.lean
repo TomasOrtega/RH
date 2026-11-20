@@ -18,10 +18,16 @@ section Alg
 variable {R : Type} [CommRing R] (c : R →+* R) {d d₁ : ℕ} (Jd : Matrix (Fin d) (Fin d) R)
   (J₁ : Matrix (Fin d₁) (Fin d₁) R) (I : Matrix (Fin d) (Fin d₁) R) (P : Matrix (Fin d₁) (Fin d) R) (x y : Fin d → R)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec c M v i`.
+-/
 theorem map_mulVec_fun {k l : ℕ} (M : Matrix (Fin k) (Fin l) R) (v : Fin l → R) :
     (fun i => c ((M *ᵥ v) i)) = M.map c *ᵥ fun i => c (v i) := by
   funext i; exact RingHom.map_mulVec c M v i
 
+/- English proof (translation)
+Establish `hcx : (fun i => c (x i)) = q.map c *ᵥ fun i => c (x i)` using `by conv_lhs => rw [← hqx]`. Conclude with `map_mulVec_fun c q x`. Use `conv_lhs => rw [hcx]`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, hq]`.
+-/
 theorem transpose_mulVec_fix (q : Matrix (Fin d) (Fin d) R) (hq : qᵀ * Jd * q.map c = Jd) (hqx : q *ᵥ x = x) :
     qᵀ *ᵥ (Jd *ᵥ fun i => c (x i)) = Jd *ᵥ fun i => c (x i) := by
   have hcx : (fun i => c (x i)) = q.map c *ᵥ fun i => c (x i) := by
@@ -30,16 +36,27 @@ theorem transpose_mulVec_fix (q : Matrix (Fin d) (Fin d) R) (hq : qᵀ * Jd * q.
   conv_lhs => rw [hcx]
   rw [mulVec_mulVec, mulVec_mulVec, hq]
 
+/- English proof (translation)
+Rewrite using `[mulVec_mulVec, hc, ← mulVec_mulVec, ← map_mulVec_fun c P x, hPx]`. Simplify using `only [Pi.zero_apply, map_zero]`. Conclude with `mulVec_zero J₁`.
+-/
 theorem orth_of (hc : Iᵀ * Jd = J₁ * P.map c) (hPx : P *ᵥ x = 0) :
     Iᵀ *ᵥ (Jd *ᵥ fun i => c (x i)) = 0 := by
   rw [mulVec_mulVec, hc, ← mulVec_mulVec, ← map_mulVec_fun c P x, hPx]
   simp only [Pi.zero_apply, map_zero]
   exact mulVec_zero J₁
 
+/- English proof (translation)
+Rewrite using `[transpose_mul, ← mulVec_mulVec, transpose_mulVec_fix c Jd x q hq hqx, orth_of c Jd J₁ I P x hc hPx]`.
+-/
 theorem orth_mul (hc : Iᵀ * Jd = J₁ * P.map c) (hPx : P *ᵥ x = 0) (q : Matrix (Fin d) (Fin d) R)
     (hq : qᵀ * Jd * q.map c = Jd) (hqx : q *ᵥ x = x) : (q * I)ᵀ *ᵥ (Jd *ᵥ fun i => c (x i)) = 0 := by
   rw [transpose_mul, ← mulVec_mulVec, transpose_mulVec_fix c Jd x q hq hqx, orth_of c Jd J₁ I P x hc hPx]
 
+/- English proof (translation)
+Establish `hM' : (Jd *ᵥ fun i => c (x i)) ᵥ* M = 0` using `by rw [← mulVec_transpose]; exact hM`. Establish `h` using `congrArg (· * M) hD`. Establish `hz : vecMulVec y (0 : Fin d₁ → R) = 0` using `by ext; simp [vecMulVec]`. Simplify using `only [Matrix.add_mul, Matrix.one_mul, vecMulVec_mul, hM', hz, add_zero] at h`. Rewrite using `[← Matrix.mul_assoc]`.
+
+Conclude with `eq_sub_of_add_eq' h`.
+-/
 theorem decomp_mul
     (hD : vecMulVec x (Jd *ᵥ fun i => c (y i)) + I * P + vecMulVec y (Jd *ᵥ fun i => c (x i)) = 1)
     (M : Matrix (Fin d) (Fin d₁) R) (hM : Mᵀ *ᵥ (Jd *ᵥ fun i => c (x i)) = 0) :
@@ -51,6 +68,9 @@ theorem decomp_mul
   rw [← Matrix.mul_assoc]
   exact eq_sub_of_add_eq' h
 
+/- English proof (translation)
+Establish `h` using `decomp_mul c Jd I P x y hD (q' * I) (orth_mul c Jd J₁ I P x hc hPx q' hq' hqx')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, Matrix.mul_sub, Matrix.mul_vecMulVec, hqx, Matrix.mul_sub, Matrix.mul_vecMulVec, hPx]`. Simplify using `[Matrix.mul_assoc]`.
+-/
 theorem restr_mul (hc : Iᵀ * Jd = J₁ * P.map c) (hPx : P *ᵥ x = 0)
     (hD : vecMulVec x (Jd *ᵥ fun i => c (y i)) + I * P + vecMulVec y (Jd *ᵥ fun i => c (x i)) = 1)
     (q q' : Matrix (Fin d) (Fin d) R) (hqx : q *ᵥ x = x) (hq' : q'ᵀ * Jd * q'.map c = Jd) (hqx' : q' *ᵥ x = x) :
@@ -61,6 +81,19 @@ theorem restr_mul (hc : Iᵀ * Jd = J₁ * P.map c) (hPx : P *ᵥ x = 0)
       rw [h, Matrix.mul_sub, Matrix.mul_vecMulVec, hqx, Matrix.mul_sub, Matrix.mul_vecMulVec, hPx]
       simp [Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `set M := q * I with hMdef`. Establish `hM` using `orth_mul c Jd J₁ I P x hc hPx q hq hqx`. Rewrite `hM` using `[← hMdef]`. Establish `h` using `decomp_mul c Jd I P x y hD M hM`. Use `set a := (Jd *ᵥ fun i => c (y i)) ᵥ* M`.
+
+Establish `hvm : (vecMulVec x a).map c = vecMulVec (fun i => c (x i)) (fun j => c (a j))`. Use extensionality with `i j`. Simplify using `[vecMulVec]`. Establish `hsub : (M - vecMulVec x a).map c = M.map c - (vecMulVec x a).map c` using `Matrix.map_sub _ (map_sub c) _ _`. Establish `hgram : Iᵀ * Jd * I.map c = J₁`.
+
+Rewrite using `[hc, Matrix.mul_assoc, ← Matrix.map_mul, hPI, Matrix.map_one _ (map_zero c) (map_one c), Matrix.mul_one]`. Establish `hMM : Mᵀ * Jd * M.map c = J₁`. Rewrite using `[hMdef, transpose_mul, Matrix.map_mul]`. Establish `e : Iᵀ * qᵀ * Jd * (q.map c * I.map c) = Iᵀ * (qᵀ * Jd * q.map c) * I.map c`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[e, hq, hgram]`. Use `clear_value M`. Establish `hzero : Mᵀ * Jd * vecMulVec (fun i => c (x i)) (fun j => c (a j)) = 0`. Rewrite using `[Matrix.mul_vecMulVec, ← mulVec_mulVec, hM]`. Simplify using the standard rewrite rules.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hd, transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Mᵀ * Jd * (I * (P * M)).map c := by`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = J₁ := by`. Rewrite using `[h, hsub, hvm, Matrix.mul_sub, hMM, hzero, sub_zero]`.
+-/
 theorem restr_unitary (hPI : P * I = 1) (hc : Iᵀ * Jd = J₁ * P.map c) (hd : Jd * I.map c = Pᵀ * J₁)
     (hPx : P *ᵥ x = 0)
     (hD : vecMulVec x (Jd *ᵥ fun i => c (y i)) + I * P + vecMulVec y (Jd *ᵥ fun i => c (x i)) = 1)
@@ -91,6 +124,9 @@ theorem restr_unitary (hPI : P * I = 1) (hc : Iᵀ * Jd = J₁ * P.map c) (hd : 
     _ = J₁ := by
         rw [h, hsub, hvm, Matrix.mul_sub, hMM, hzero, sub_zero]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [mulVec, vecMulVec, dotProduct, of_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem vecMulVec_mulVec_comm (w : Fin d → R) (v z : Fin d₁ → R) : vecMulVec w v *ᵥ z = (v ⬝ᵥ z) • w := by
   ext i
   simp only [mulVec, vecMulVec, dotProduct, of_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]
@@ -104,6 +140,41 @@ namespace GlobalTheory.ThK.LemF
 
 open Matrix GlobalTheory.ThK.StabDec
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n₁ X X₁ H i₀ i₁ r s r₁ s₁ hB hX _ hA p hp hpx`. Take `⟨π, hπι, hπx, hπy, hc, hd⟩` from `GlobalTheory.LeviFrameH.frame_facts σ B X X₁ H hB.cm hX hA`. Take `⟨π', -, hD'⟩` from `GlobalTheory.LeviFrameH.frame_dual σ B X X₁ H hB.cm hX hA`. Establish `hππ : π' = π`. Establish `h` using `congrArg (π * ·) hD'`.
+
+Simplify using `only [Matrix.mul_add, Matrix.mul_vecMulVec, hπx, hπy, ← Matrix.mul_assoc, hπι, Matrix.one_mul, Matrix.mul_one] at h`. Establish `hz : ∀ w : Fin (n₁ + 2) → E, vecMulVec (0 : Fin n₁ → E) w = 0` using `fun w => by ext; simp [vecMulVec]`. Rewrite `h` using `[hz, hz, zero_add, add_zero]`. Conclude with `h`. Rewrite `hD'` using `[hππ]`.
+
+Set `c : AE F E →+* AE F E` to `(cA σ).toRingHom`. Establish `hPI : incM F π * incM F H.ι = 1`. Simplify using `only [incM]`. Rewrite using `[← Matrix.map_mul, hπι, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hcM : (incM F H.ι)ᵀ * incM F X.J = incM F X₁.J * (incM F π).map c`.
+
+Rewrite using `[show (incM F π).map c = (incM F π).map (cA σ) from rfl, GlobalTheory.LeviFrame.incM_map_cA]`. Simplify using `only [incM]`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, hc, Matrix.map_mul]`. Establish `hdM : incM F X.J * (incM F H.ι).map c = (incM F π)ᵀ * incM F X₁.J`. Rewrite using `[show (incM F H.ι).map c = (incM F H.ι).map (cA σ) from rfl, GlobalTheory.LeviFrame.incM_map_cA]`.
+
+Simplify using `only [incM]`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, hd, Matrix.map_mul]`. Establish `h0 : incV F (0 : Fin n₁ → E) = 0` using `funext fun _ => map_zero _`. Establish `hPx : incM F π *ᵥ incV F H.x = 0` using `by rw [GlobalTheory.LeviFrame.incM_mulVec_incV, hπx, h0]`. Establish `hPy : incM F π *ᵥ incV F H.y = 0` using `by rw [GlobalTheory.LeviFrame.incM_mulVec_incV, hπy, h0]`.
+
+Establish `hDA : vecMulVec (incV F H.x) (incM F X.J *ᵥ fun i => c (incV F H.y i)) + incM F H.ι * incM F π + vecMulVec (incV F H.y) (incM F X.J *ᵥ fun i => c (incV F H.x i)) = 1`. Rewrite using `[← Matrix.map_one (inclR (F := F) (AF F)) (map_zero _) (map_one _), ← hD']`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec, Matrix.mulVec, dotProduct, incM, incV, map_sum, map_mul, Matrix.add_apply, Matrix.mul_apply, c, GlobalTheory.LeviTorusH.cA_incl]`. Establish `hpU : (mat p)ᵀ * incM F X.J * (mat p).map c = incM F X.J` using `p.2`.
+
+Establish `hpiU : (mat p⁻¹)ᵀ * incM F X.J * (mat p⁻¹).map c = incM F X.J` using `(p⁻¹).2`. Establish `hpinv : mat p⁻¹ * mat p = 1`. Establish `h` using `GlobalTheory.StabHaar.mat_mul_inv p⁻¹`. Rewrite `h` using `[inv_inv]`. Then use the resulting hypothesis. Establish `hpix : mat p⁻¹ *ᵥ incV F H.x = incV F H.x` using `by conv_lhs => rw [← hpx]`.
+
+Rewrite using `[mulVec_mulVec, hpinv, one_mulVec]`. Take `⟨G, hG⟩ : ∃ G, G = incM F π * (mat p * incM F H.ι)` from `⟨_, rfl⟩`. Take `⟨Gi, hGi⟩ : ∃ G, G = incM F π * (mat p⁻¹ * incM F H.ι)` from `⟨_, rfl⟩`. Establish `hGGi : G * Gi = 1`. Rewrite using `[hG, hGi, restr_mul c (incM F X.J) (incM F X₁.J) (incM F H.ι) (incM F π) (incV F H.x) (incV F H.y) hcM hPx hDA (mat p) (mat p⁻¹) hpx hpiU hpix, GlobalTheory.StabHaar.mat_mul_inv, Matrix.one_mul, hPI]`.
+
+Establish `hGiG : Gi * G = 1`. Rewrite using `[hG, hGi, restr_mul c (incM F X.J) (incM F X₁.J) (incM F H.ι) (incM F π) (incV F H.x) (incV F H.y) hcM hPx hDA (mat p⁻¹) (mat p) hpix hpU hpx, hpinv, Matrix.one_mul, hPI]`. Establish `hGU : Gᵀ * incM F X₁.J * G.map c = incM F X₁.J`. Rewrite using `[hG]`. Conclude with `restr_unitary c (incM F X.J) (incM F X₁.J) (incM F H.ι) (incM F π) (incV F H.x) (incV F H.y) hPI hcM hdM hPx hDA (mat p) hpU hpx`.
+
+Set `g₀ : UA σ X₁.J` to `⟨⟨G, Gi, hGGi, hGiG⟩, hGU⟩`. Establish `hg₀ : g₀ ∈ UAt σ X₁ (evI F)`. Introduce `u hu`. Use `show u • (G - 1) = 0`. Establish `e : G - 1 = incM F π * ((mat p - 1) * incM F H.ι)`.
+
+Rewrite using `[hG, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub, hPI]`. Rewrite using `[e, ← Matrix.mul_smul, ← Matrix.smul_mul, hp u hu, Matrix.zero_mul, Matrix.mul_zero]`. Set `g' : UA σ X.J` to `⟨⟨1 + incM F H.ι * ((G - 1) * incM F π), 1 + incM F H.ι * ((Gi - 1) * incM F π), GlobalTheory.LeviFrame.levi_inv_alg _ _ _ _ hPI hGGi, GlobalTheory.LeviFrame.levi_inv_alg _ _ _ _ hPI hGiG⟩, GlobalTheory.LeviFrame.levi_unit_alg c (incM F X.J) (incM F X₁.J) (incM F H.ι) (incM F π) …`. Establish `hLevi : IsLevi H 1 g₀ g'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show (1 + incM F H.ι * ((G - 1) * incM F π)) *ᵥ incV F H.x = ((1 : (AE F E)ˣ) : AE F E) • incV F H.x`. Rewrite using `[Units.val_one, one_smul, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hPx, Matrix.mulVec_zero, Matrix.mulVec_zero, add_zero]`. Use `show (1 + incM F H.ι * ((G - 1) * incM F π)) *ᵥ incV F H.y = cA σ (((1 : (AE F E)ˣ)⁻¹ : (AE F E)ˣ) : AE F E) • incV F H.y`. Rewrite using `[inv_one, Units.val_one, map_one, one_smul, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hPy, Matrix.mulVec_zero, Matrix.mulVec_zero, add_zero]`. Use `show (1 + incM F H.ι * ((G - 1) * incM F π)) * incM F H.ι = incM F H.ι * G`.
+
+Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_assoc, hPI, Matrix.mul_one, Matrix.mul_sub, Matrix.mul_one, add_sub_cancel]`. Establish `hg' : g' ∈ UAt σ X (evI F)`. Introduce `u hu`. Use `show u • (1 + incM F H.ι * ((G - 1) * incM F π) - 1) = 0`. Establish `h1 : u • (G - 1) = 0` using `hg₀ u hu`.
+
+Rewrite using `[add_sub_cancel_left, ← Matrix.mul_smul, ← Matrix.smul_mul, h1, Matrix.zero_mul, Matrix.mul_zero]`. Establish `hgi : mat g'⁻¹ = 1 + incM F H.ι * ((Gi - 1) * incM F π)` using `rfl`. Take `⟨a, ha⟩ : ∃ a : Fin n₁ → AE F E, a = (incM F X.J *ᵥ fun i => c (incV F H.y i)) ᵥ* (mat p * incM F H.ι)` from `⟨_, rfl⟩`. Establish `hpI : mat p * incM F H.ι = incM F H.ι * G + vecMulVec (incV F H.x) a`. Establish `h` using `decomp_mul c (incM F X.J) (incM F H.ι) (incM F π) (incV F H.x) (incV F H.y) hDA (mat p * incM F H.ι) (orth_mul c (incM F X.J) (incM F X₁.J) (incM F H.ι) (incM F π) (incV F H.x) hcM hPx (mat p) hpU hpx)`.
+
+Rewrite using `[hG, ha]`. Conclude with `sub_eq_iff_eq_add.mp h.symm`. Establish `hnI : mat (p * g'⁻¹) * incM F H.ι = incM F H.ι + vecMulVec (incV F H.x) (a ᵥ* Gi)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.StabHaar.mat_mul, hgi, Matrix.mul_assoc, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_assoc, hPI, Matrix.mul_one, Matrix.mul_sub, Matrix.mul_one, add_sub_cancel, Matrix.mul_assoc]`.
+
+Use `_ = _ := by`. Rewrite using `[hpI, Matrix.add_mul, Matrix.mul_assoc, hGGi, Matrix.mul_one, vecMulVec_mul]`. Establish `hn : p * g'⁻¹ ∈ unip σ X H`. Use `Subgroup.subset_closure ⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.StabHaar.mat_mul, hgi, ← Matrix.mulVec_mulVec, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hPx, Matrix.mulVec_zero, Matrix.mulVec_zero, add_zero, hpx]`.
+
+Use `⟨(a ᵥ* Gi) ⬝ᵥ z, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, hnI, Matrix.add_mulVec, vecMulVec_mulVec_comm]`. Establish `hnA : p * g'⁻¹ ∈ UAt σ X (evI F)` using `(UAtSub σ X (evI F)).mul_mem hp ((UAtSub σ X (evI F)).inv_mem hg')`. Conclude with `⟨p * g'⁻¹, hn, hnA, g₀, hg₀, g', hLevi, hg', (inv_mul_cancel_right p g').symm⟩`.
+-/
 theorem stab_eq_unip_mul_levi_inf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n₁ : ℕ) (X : Spc F E (n₁ + 2)) (X₁ : Spc F E n₁) (H : Plane E (n₁ + 2) n₁) (i₀ i₁ r s r₁ s₁ : ℕ), B.IsGood σ →
     X.IsHerm σ B r s → X₁.IsHerm σ B r₁ s₁ → H.IsAdapted σ B X X₁ i₀ i₁ →

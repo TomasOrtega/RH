@@ -93,15 +93,42 @@ def Fibre : Prop := ∀ (k : Type) [Field k] [IsAlgClosed k] {X P : Scheme.{0}} 
   (r : P ⟶ S k) (π : X ⟶ P), π ≫ r = p → LocallyOfFiniteType r → IsFinite π → Surjective π →
   (π.stalkMap (genericPoint X)).hom.FormallyUnramified → ∃ t : Pt r, Etale (equalizer.ι π (p ≫ t.1) ≫ p)
 
+/- English proof (translation)
+Use `⟨X.presheaf.germ ⊤ x trivial (p.appTop ((Scheme.ΓSpecIso (CommRingCat.of k)).inv c)), ?_⟩` and prove the remaining obligations. Conclude with `X.presheaf.germ_stalkSpecializes_apply _ _ _`.
+-/
 theorem kHom_mem_loc {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) (x : X) (c : k) :
     kHom p c ∈ loc X x := by
   refine ⟨X.presheaf.germ ⊤ x trivial (p.appTop ((Scheme.ΓSpecIso (CommRingCat.of k)).inv c)), ?_⟩
   exact X.presheaf.germ_stalkSpecializes_apply _ _ _
 
+/- English proof (translation)
+The claim follows from `IsLocalRing.of_surjective' (algebraMap (X.presheaf.stalk x) X.functionField).rangeRestrict (RingHom.rangeRestrict_surjective _)`.
+-/
 theorem loc_local (X : Scheme.{0}) [IsIntegral X] (x : X) : IsLocalRing (loc X x) :=
   IsLocalRing.of_surjective' (algebraMap (X.presheaf.stalk x) X.functionField).rangeRestrict
     (RingHom.rangeRestrict_surjective _)
 
+/- English proof (translation)
+Introduce `k _ _ d X p hsp ⟨N, ι, hι, hιp⟩ hX`. Set `_ : Algebra k X.functionField` to `(kHom p).toAlgebra`. Take `⟨v, i₀, hv1, hv⟩` from `h2 k p N ι hιp`. Establish `cv` using `h4 k p N ι v hv`. Establish `hgen : ∀ z : X.functionField, ∃ f g : MvPolynomial (Fin (N + 1)) k, z = aeval v g / aeval v f`.
+
+Introduce `z`. Take `⟨n, f, g, -, -, -, h⟩` from `(cv.range z).1 (ι.stalkMap_surjective (genericPoint X) z)`. Conclude with `⟨f, g, h⟩`. Take `⟨hspan, hess⟩` from `h5 k X.functionField _ v i₀ hv1 hgen`. Establish `hd` using `h10 k d p hsp.2`.
+
+Establish `htr` using `h6 k X.functionField`. Rewrite `htr` using `[hd]`. Take `⟨w, hw1, hw2, hw3, hw4⟩` from `h7 k X.functionField d hd htr _ v hspan`. Establish `hfree : ∀ x : X, ∃ i, v i ≠ 0 ∧ ∀ j, v j / v i ∈ loc X x`. Introduce `x`.
+
+Establish `htop : ⨆ i, Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) (MvPolynomial.X i) = ⊤`. Apply `Proj.iSup_basicOpen_eq_top' _ _ (fun i => ⟨1, isHomogeneous_X k i⟩)` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Introduce and unpack `f -`. Proceed by induction on `f using MvPolynomial.induction_on with`.
+
+Consider the case `C a => exact Subalgebra.algebraMap_mem _ (⟨C a, isHomogeneous_C _ a⟩ : homogeneousSubmodule (Fin (N + 1)) k 0)`. Consider the case `add f g hf hg => exact add_mem hf hg`. Consider the case `mul_X f i hf => exact mul_mem hf (Algebra.subset_adjoin ⟨i, rfl⟩)`. Establish `hx : ι x ∈ ⨆ i, Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) (MvPolynomial.X i)`. Rewrite using `[htop]`.
+
+Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Take `⟨a, b⟩` from `(cv.opens 1 one_pos _ (isHomogeneous_X k i) x).1 hi`. Conclude with `⟨i, by simpa using a, fun j => by simpa using b _ (isHomogeneous_X k j)⟩`. Establish `hwx : ∀ x : X, ∃ i, w i ≠ 0 ∧ ∀ j, v j / w i ∈ loc X x` using `fun x => hw4 _ (loc_local X x) (kHom_mem_loc p x) (hfree x)`.
+
+Establish `hc : ∀ i, ∃ c : Fin (N + 1) → k, w i = ∑ j, kHom p (c j) * v j`. Introduce `i`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun k).1 (hw1 i)`. Conclude with `⟨c, by rw [← hc]; exact Finset.sum_congr rfl fun j _ => Algebra.smul_def _ _⟩`. Establish `hww : ∀ x : X, ∃ i, w i ≠ 0 ∧ ∀ j, w j / w i ∈ loc X x`.
+
+Introduce `x`. Take `⟨i, hi, h⟩` from `hwx x`. Use `⟨i, hi, fun j => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hc j`. Rewrite using `[hc, Finset.sum_div]`.
+
+Conclude with `sum_mem fun l _ => by rw [mul_div_assoc]; exact mul_mem (kHom_mem_loc p x _) (h l)`. Take `⟨π, hπ, hg⟩` from `h3 k p d w hww`. Establish `cw` using `h4 k p d π w hg`. Take `⟨hfin, hsurj⟩` from `h11 k p hsp.1 N d ι π v w hι hπ cv cw hc hwx (h8 k X.functionField _ w hw3)`. Take `⟨hint, -, hft⟩` from `h1 k d`.
+
+Take `⟨i, hi, -⟩` from `hwx (genericPoint X)`. Establish `hun` using `h9 k X.functionField _ (π.stalkMap (genericPoint X)).hom _ w i hi hw2 (fun c => (cw.range _).2 ⟨0, 1, C c, isHomogeneous_one _ _, isHomogeneous_C _ c, by simp, by simp; rfl⟩) (fun j => (cw.range _).2 ⟨1, MvPolynomial.X i, MvPolynomial.X j, isHomogeneous_X k i, isHomogeneous_X k j …`. Take `⟨t, ht⟩` from `h12 k p (PNto k d) π hπ hft hfin hsurj hun`. Conclude with `⟨π, t, hπ, hfin, hsurj, ht⟩`.
+-/
 theorem goal_of (h1 : PNBasic) (h2 : GenIn) (h3 : GenOut) (h4 : GenUse) (h5 : JetSpan) (h6 : TrdegLe) (h7 : Project)
     (h8 : JetIndep) (h9 : JetUnram) (h10 : FieldDim) (h11 : FinSurj) (h12 : Fibre) : LCover := by
   intro k _ _ d X p hsp ⟨N, ι, hι, hιp⟩ hX

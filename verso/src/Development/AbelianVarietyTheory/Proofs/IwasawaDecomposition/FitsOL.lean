@@ -9,6 +9,9 @@ set_option maxHeartbeats 4000000
 
 namespace GlobalTheory.HeightCounting.Up.ThirdFits
 
+/- English proof (translation)
+Introduce `_ _ _` and use `GlobalTheory.Mem.Top.Bl.StepW.of_all fun _ _ _ _ _ _ _ _ _ x _ _ L _ _ => GlobalTheory.HeightCounting.Fin3.fitsL (x := x) L`.
+-/
 theorem fits_oL : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → GlobalTheory.NRows.HypothesesX → AllSt fun _ _ _ T w P x => ∀ (l : LC hL x) (big : (Dof x).what₂.places.Pl → Finset ℂ) (L : LocAll (lay0 (Dof x))), GlobalTheory.CoefDuty.Built l.a.A l.mt.M l.c.ch l.c.tp.tup big L → SumRepresentations.hypO (withLoc L) → (GlobalTheory.HeightCounting.Fin3.oL x L).Fits :=
   fun _ _ _ => GlobalTheory.Mem.Top.Bl.StepW.of_all fun _ _ _ _ _ _ _ _ _ x _ _ L _ _ => GlobalTheory.HeightCounting.Fin3.fitsL (x := x) L
 

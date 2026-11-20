@@ -11,6 +11,9 @@ open GlobalTheory.Poinc Formalism.L2.Pj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PolSemiAbModel.exists_model | exact GlobalTheory.PolSemiAbModel.exists_model | (intros; apply GlobalTheory.PolSemiAbModel.exists_model <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_semiAbelianModel_finiteExt_completeDVR : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ (P : PolAV (Sp (FractionRing W))),
     ∃ (V₁ : Type) (_ : CommRing V₁) (_ : IsDomain V₁) (_ : IsLocalRing V₁) (f : W →+* V₁)
       (fK : FractionRing W →+* FractionRing V₁), GlobalTheory.LN.CDvr V₁ ∧ Function.Injective f ∧ IsLocalHom f ∧ f.Finite ∧

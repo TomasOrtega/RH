@@ -5,6 +5,19 @@ open scoped Kronecker ComplexOrder TensorProduct
 
 namespace GlobalTheory.ClassFin
 
+/- English proof (translation)
+Introduce `ι _ _ S Γ`. Use `⟨fun h1 h2 hS W hW => ?_, fun P hP hS W hW => ?_⟩` and prove the remaining obligations. Take `⟨W', hW', hc⟩` from `hS W (fun g hg => hW g (h1 hg))`. Use `⟨W', fun g hg v hv => ?_, hc⟩` and prove the remaining obligations. Establish `hg' : g ∈ Submodule.span ℂ S` using `h2 hg`.
+
+Use `clear hg`. Proceed by induction on `hg' using Submodule.span_induction with`. Consider the case `mem x hx => exact hW' x hx v hv`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.add_mulVec]`.
+
+Conclude with `W'.add_mem hx hy`. Consider the case `smul a x _ hx => rw [Matrix.smul_mulVec]`. Conclude with `W'.smul_mem a hx`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hP`. Establish `h2 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hP`.
+
+Set `e : (ι → ℂ) ≃ₗ[ℂ] (ι → ℂ)` to `{ P.mulVecLin with invFun := fun v => P⁻¹ *ᵥ v left_inv := fun v => by simp [Matrix.mulVec_mulVec, h2] right_inv := fun v => by simp [Matrix.mulVec_mulVec, h1] }`. Establish `he : ∀ v, e v = P *ᵥ v` using `fun v => rfl`. Establish `key : ∀ (x : Matrix ι ι ℂ) (v : ι → ℂ), (P * x * P⁻¹) *ᵥ (P *ᵥ v) = P *ᵥ (x *ᵥ v)`. Introduce `x v`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+
+Take `⟨W', hW', hc⟩` from `hS (Submodule.orderIsoMapComap e W) (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨v, hv, rfl⟩`. Conclude with `⟨x *ᵥ v, hW x hx v hv, (key x v).symm⟩)`. Use `⟨(Submodule.orderIsoMapComap e).symm W', fun g hg v hv => ?_, ?_⟩` and prove the remaining obligations. Establish `hv' : P *ᵥ v ∈ W'` using `hv`.
+
+Use `hW' _ ⟨g, hg, rfl⟩ _ hv'` as an intermediate fact. Rewrite `this` using `[key]`. Conclude with `this`. Use `(Submodule.orderIsoMapComap e).symm.isCompl hc` as an intermediate fact. Rewrite `this` using `[OrderIso.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem ss_transfer : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (S Γ : Set (Matrix ι ι ℂ)), (S ⊆ Γ → Γ ⊆ (Submodule.span ℂ S : Set (Matrix ι ι ℂ)) → SS S → SS Γ) ∧ ∀ P : Matrix ι ι ℂ, IsUnit P.det → SS ((fun x => P * x * P⁻¹) '' S) → SS S := by
   intro ι _ _ S Γ
   refine ⟨fun h1 h2 hS W hW => ?_, fun P hP hS W hW => ?_⟩

@@ -19,6 +19,21 @@ open MeasureTheory Filter Topology
 
 namespace GlobalTheory.TypeSum
 
+/- English proof (translation)
+Introduce `n ε F hF d b c hb hlin m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `Y _ g _`. Simplify using the standard rewrite rules.
+
+Consider the case `succ m ih`. Introduce `Y hY g hg`. Establish `hwb : ∀ J : Fin m → Fin d, ∀ Z ∈ List.ofFn (fun j => b (J j)), Z ∈ lieSet ε`. Introduce `J Z hZ`. Take `⟨j, rfl⟩` from `(List.mem_ofFn' _ _).1 hZ`.
+
+Conclude with `hb _`. Establish `hwY : ∀ Z ∈ List.ofFn (fun j : Fin m => Y j.succ), Z ∈ lieSet ε`. Introduce `Z hZ`. Take `⟨j, rfl⟩` from `(List.mem_ofFn' _ _).1 hZ`. Conclude with `hY _`.
+
+Establish `key : ∀ i, F (b i :: List.ofFn (fun j : Fin m => Y j.succ)) g = ∑ J : Fin m → Fin d, (∏ j, (c (J j) (Y j.succ) : ℂ)) * F (b i :: List.ofFn fun j => b (J j)) g`. Introduce `i`. Establish `h1` using `hF (List.ofFn fun j : Fin m => Y j.succ) hwY (b i) (hb i) g hg`. Establish `h2 : HasDerivAt (fun t : ℝ => ∑ J : Fin m → Fin d, (∏ j, (c (J j) (Y j.succ) : ℂ)) * F (List.ofFn fun j => b (J j)) (g * NormedSpace.exp (t • b i))) (∑ J : Fin m → Fin d, (∏ j, (c (J j) (Y j.succ) : ℂ)) * F (b i :: List.ofFn fun j => b (J j)) g) 0`. Apply `HasDerivAt.fun_sum` to reduce the goal to its premises.
+
+Introduce `J _`. Conclude with `(hF _ (hwb J) (b i) (hb i) g hg).const_mul _`. Establish `heq : (fun t : ℝ => F (List.ofFn fun j : Fin m => Y j.succ) (g * NormedSpace.exp (t • b i))) = fun t : ℝ => ∑ J : Fin m → Fin d, (∏ j, (c (J j) (Y j.succ) : ℂ)) * F (List.ofFn fun j => b (J j)) (g * NormedSpace.exp (t • b i))`. Use function extensionality and compare the values at `t`. Conclude with `ih (fun j => Y j.succ) (fun j => hY _) _ (mul_mem_UJ hg (exp_mem_UJ (hb i) t))`.
+
+Rewrite `h1` using `[heq]`. Conclude with `h1.unique h2`. Rewrite using `[List.ofFn_succ, hlin _ hwY (Y 0) (hY 0) g hg]`. Repeatedly rewrite using `[key, Finset.mul_sum]`. Rewrite using `[← (Fin.consEquiv fun _ => Fin d).sum_comp, Fintype.sum_prod_type]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Simplify using `[Fin.consEquiv, Fin.prod_univ_succ, List.ofFn_succ, mul_assoc]`.
+-/
 theorem derFam_expand_words : ∀ (n : ℕ) (ε : Fin n → Bool) (F : List (GlobalTheory.TypeSum.Mx n) → GlobalTheory.TypeSum.Mx n → ℂ), GlobalTheory.TypeSum.IsDerFam ε F →
     ∀ (d : ℕ) (b : Fin d → GlobalTheory.TypeSum.Mx n) (c : Fin d → GlobalTheory.TypeSum.Mx n → ℝ), (∀ i, b i ∈ lieSet ε) →
     (∀ l : List (GlobalTheory.TypeSum.Mx n), (∀ Y ∈ l, Y ∈ lieSet ε) → ∀ Z ∈ lieSet ε, ∀ g ∈ UJset ε,

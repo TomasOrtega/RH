@@ -7,6 +7,11 @@ open NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar
 
 namespace GlobalTheory.CompanionTheory.Ar.Fl
 
+/- English proof (translation)
+Establish `hN : Algebra.norm ℚ x ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hx`. Establish `hfin : ∀ p : Nat.Primes, (LogNorms.ofElt x).finSum p = Real.log ‖((Algebra.norm ℚ x : ℚ) : ℂ_[p])‖` using `fun p => sum_log_norm_embeddings_eq_log_norm k ℂ_[p] x hx`. Establish `hinf` using `sum_log_norm_embeddings_eq_log_norm k ℂ x hx`. Take `⟨h1, h2⟩` from `GlobalTheory.T.rat_product_formula (Algebra.norm ℚ x) hN`. Simplify using `only [hfin]`.
+
+Conclude with `⟨h1, by rw [hinf]; exact h2⟩`.
+-/
 theorem product_formula_embeddings (k : Type) [Field k] [NumberField k] (x : k) (hx : x ≠ 0) :
     {p | (LogNorms.ofElt x).finSum p ≠ 0}.Finite ∧
       (∑ s : k →+* ℂ, Real.log ‖s x‖) + ∑ᶠ p, (LogNorms.ofElt x).finSum p = 0 := by

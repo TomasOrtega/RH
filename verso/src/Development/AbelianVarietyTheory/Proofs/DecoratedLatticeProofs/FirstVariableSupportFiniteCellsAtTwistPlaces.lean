@@ -14,11 +14,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.QFinSupp
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem locK_congr {D : D7} {c : Comm D} {v : VCom c} {χ : ℕ → (AE D)ˣ →* Circle} (Q : QAt v χ) (j d d' : ℕ) (e : d = d')
     (h1 : j + d = Q.s + 1) (h2 : j + d' = Q.s + 1) :
     (Q.T.lev j d h1).J.map (Q.gl j d h1) = (Q.T.lev j d' h2).J.map (Q.gl j d' h2) := by
   subst e; rfl
 
+/- English proof (translation)
+Introduce `D c v t w F hc ht hv hW hF j σ h i a`. Take `⟨T, hT⟩` from `GlobalTheory.T.seeSaw_twistPlace_finitely_many_cells D c v t w F hc ht hv hW hF j σ h i a`. Use `⟨T, fun Ψ₁ hΨ g hg h₁ hh x hne => ?_⟩` and prove the remaining obligations. Take `⟨f₁, hf₁, e⟩` from `GlobalTheory.T.twistCombination_splits_singlePlace_vacuum D c v t w F hc hv hF j (by omega) i Ψ₁ hΨ`. Rewrite `hne` using `[e]`.
+
+Conclude with `hT f₁ hf₁ g hg h₁ hh x hne`.
+-/
 theorem cells_at : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t) (F : QFam v t), c.Is → t.Is → v.Is → WeilOK (t := t) v → F.Pins w → ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m) (i : Fin F.r) (a : GL ((F.Q i).X j ⊕ Fin (2 * σ + 2 + 1)) (F.Q i).k), ∃ T : Finset (GL ((F.Q i).X (j + 1) ⊕ Fin (2 * σ + 2)) (F.Q i).k), ∀ Ψ₁, GlobalTheory.FinPl.Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ w.Q) Ψ₁ → ∀ g ∈ GlobalTheory.FinPl.grpOff (c.V j) (· = (F.Q i).q.v), ∀ h₁ ∈ GlobalTheory.FinPl.grpOff (c.V (j + 1)) (· = (F.Q i).q.v), ∀ x, flatBF (t.sBF j (σ + 1) h) (t.om j (g * (F.Q i).gl j (2 * σ + 2 + 1) (by have := (F.Q i).hs; omega) a, h₁ * (F.Q i).gl (j + 1) (2 * σ + 2) (by have := (F.Q i).hs; omega) x) (comb c.ψ _ _ (w.eQ j) Ψ₁)) ≠ 0 → ∃ τ ∈ T, ∃ r, (F.Q i).gl (j + 1) (2 * σ + 2) (by have := (F.Q i).hs; omega) r ∈ jacGrp (c.jac j (σ + 1) h).d ∧ ∃ κ ∈ ((F.Q i).T.lev (j + 1) (2 * σ + 2) (by have := (F.Q i).hs; omega)).J, x = r * τ * κ := by
   intro D c v t w F hc ht hv hW hF j σ h i a
   obtain ⟨T, hT⟩ := GlobalTheory.T.seeSaw_twistPlace_finitely_many_cells D c v t w F hc ht hv hW hF j σ h i a
@@ -27,6 +35,15 @@ theorem cells_at : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup 
   rw [e] at hne
   exact hT f₁ hf₁ g hg h₁ hh x hne
 
+/- English proof (translation)
+Introduce `D c v t w F hc ht hv hW hF j σ h`. Take `⟨A, hA⟩` from `GlobalTheory.T.exists_finite_local_support_exchangeData_twistPlaces D c v t w F hF j σ h`. Use `choose T hT using fun i a => cells_at D c v t w F hc ht hv hW hF j σ h i a`. Take `⟨P, hPH, hPat, hPdec⟩` from `GlobalTheory.T.twistPlaces_group_eq_product_local_groups D c v t w F hF j σ h`. Use `⟨(Fintype.piFinset fun i => (A i).biUnion (T i)).image P, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `q hq`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `hPat y`. Introduce `Ψ₁ hΨ α g hg x hx hne`. Take `⟨a, ha⟩` from `hA α g hg`.
+
+Take `⟨y, rfl, hy⟩` from `hPdec x hx`. Establish `key` using `fun i => hT i (a i) Ψ₁ hΨ _ (ha i).2 _ (hy i) (y i) (by simpa only [inv_mul_cancel_right] using hne)`. Use `choose τ hτ r hr κ hκ hyeq using key`. Establish `hyy : y = r * τ * κ` using `funext hyeq`. Use `⟨P r, hPH _ r hr, hPat r, P τ, Finset.mem_image.2 ⟨τ, Fintype.mem_piFinset.2 fun i => Finset.mem_biUnion.2 ⟨a i, (ha i).1, hτ i⟩, rfl⟩, P κ, hPH _ κ fun i => ?_, by rw [hyy, map_mul, map_mul]⟩` and prove the remaining obligations.
+
+Use `Subgroup.mem_iSup_of_mem i ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.QuotientFiniteLevel.locK, locK_congr (F.Q i) (j + 1) _ (2 * σ + 2) (by have := (F.Q i).hs; omega) _ (by have := (F.Q i).hs; omega)]`. Conclude with `Subgroup.mem_map_of_mem _ (hκ i)`.
+-/
 theorem main : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t) (F : QFam v t), c.Is → t.Is → v.Is → WeilOK (t := t) v → F.Pins w → ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m), ∃ T₁ : Finset (GA D (c.V (j + 1))), (∀ q ∈ T₁, q ∈ GlobalTheory.FinPl.grpAt _ (· ∈ w.Q)) ∧ ∀ Ψ₁, GlobalTheory.FinPl.Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ w.Q) Ψ₁ → ∀ α, ∀ g ∈ (w.ε j α).support, ∀ x ∈ GlobalTheory.FinPl.grpAt _ (· ∈ w.Q), flatBF (t.sBF j (σ + 1) h) (t.om j (g, x) (comb c.ψ _ _ (w.eQ j) Ψ₁)) ≠ 0 → ∃ r ∈ jacGrp (c.jac j (σ + 1) h).d, r ∈ GlobalTheory.FinPl.grpAt _ (· ∈ w.Q) ∧ ∃ q ∈ T₁, ∃ k ∈ GlobalTheory.QuotientFiniteLevel.qK F j σ h, x = r * q * k := by
   intro D c v t w F hc ht hv hW hF j σ h
   classical

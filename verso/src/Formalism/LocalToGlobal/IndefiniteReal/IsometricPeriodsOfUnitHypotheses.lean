@@ -27,6 +27,11 @@ def MIUnit2 (d : X.MIDat fc) : Prop :=
 def MIstar2 (eV : ∀ t, (Fin ((fc X.zs).Df1.nV t) → K) →ₗ[K] A.FR t) (sEE : X.EE →ₗ⋆[ℂ] (fc X.zs).Sp.HH) : Prop :=
   ∃ d : X.MIDat fc, X.MIUnit2 d ∧ X.MIid eV sEE d ∧ X.AuNZ d
 
+/- English proof (translation)
+Establish `h1 : (n : ℤ) * vw w k = 0`. Unfold `vw`. Rewrite using `[← FractionalIdeal.count_pow]`. Use `first`. Consider the case `rw [FractionalIdeal.spanSingleton_pow]`.
+
+Consider the case `rw [← FractionalIdeal.spanSingleton_pow]`. Rewrite using `[hk, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`. Break down `mul_eq_zero.mp h1 with h | h` into its components or cases. Conclude with `absurd h (by exact_mod_cast hn.ne')`. Conclude with `h`.
+-/
 theorem vw_eq_zero_of_pow {k : K} {n : ℕ} (hn : 0 < n) (hk : k ^ n = 1) (w : HeightOneSpectrum (𝓞 K)) : vw w k = 0 := by
   have h1 : (n : ℤ) * vw w k = 0 := by
     unfold vw
@@ -39,6 +44,13 @@ theorem vw_eq_zero_of_pow {k : K} {n : ℕ} (hn : 0 < n) (hk : k ^ n = 1) (w : H
   · exact absurd h (by exact_mod_cast hn.ne')
   · exact h
 
+/- English proof (translation)
+Use `⟨fun u => ?_, fun u t => ?_, fun u w => ?_⟩` and prove the remaining obligations. Establish `h : ∃ k : K, Bs.v0.embedding k = d.ζC u Bs.μ0` using `⟨1, by rw [map_one, hU.2.2.2 u]⟩`. Apply `Bs.v0.embedding.injective` to reduce the goal to its premises. Rewrite using `[X.zetaOf_spec u Bs.μ0 h, hU.2.2.2 u, map_one]`. Distinguish the cases in `h : ∃ k : K, Bs.v0.embedding k = d.ζC u t`.
+
+Introduce `h0`. Establish `h'` using `X.zetaOf_spec u t h`. Rewrite `h'` using `[h0, map_zero]`. Conclude with `hU.2.2.1.1 u t h'.symm`. Rewrite using `[X.zetaOf_not u t h]`.
+
+Conclude with `one_ne_zero`. Distinguish the cases in `h : ∃ k : K, Bs.v0.embedding k = d.ζC u (X.μ w)`. Conclude with `hU.2.2.1.2 u w _ (X.zetaOf_spec u (X.μ w) h)`. Rewrite using `[X.zetaOf_not u (X.μ w) h]`. Conclude with `vw_eq_zero_of_pow one_pos (one_pow 1) w`.
+-/
 theorem zetaOK_of_miUnit2 {d : X.MIDat fc} (hU : X.MIUnit2 d) : X.ZetaOK (X.zetaOf d) := by
   refine ⟨fun u => ?_, fun u t => ?_, fun u w => ?_⟩
   · have h : ∃ k : K, Bs.v0.embedding k = d.ζC u Bs.μ0 := ⟨1, by rw [map_one, hU.2.2.2 u]⟩
@@ -60,6 +72,11 @@ section Ident2
 
 variable {eV : ∀ t, (Fin ((fc X.zs).Df1.nV t) → K) →ₗ[K] A.FR t} {sEE : X.EE →ₗ⋆[ℂ] (fc X.zs).Sp.HH} {d : X.MIDat fc}
 
+/- English proof (translation)
+Establish `h1` using `hI u Bs.μ0 φ ((rinv ((fc X.zs).Df1.Pq Bs.μ0)).mulVec y)`. Rewrite `h1` using `[hU.2.2.2 u, one_mul, X.theta_eV cr cv eV hJ hRL hDn hUp hC hE]`. Establish `h3 : ((fc X.zs).Df1.Pq Bs.μ0).mulVec ((rinv ((fc X.zs).Df1.Pq Bs.μ0)).mulVec y) = y` using `mulVec_rinv _ (hW.Pq_surj Bs.μ0) y`. Rewrite `h1` using `[h3]`. Rewrite using `[X.iC_cpt' cr true Bs.μ0 y]`.
+
+Conclude with `h1`.
+-/
 theorem embedding_pairing_eq_mul_inner (hW : (fc X.zs).Df1.WF) (hJ : X.JIsoR cv) (hRL : X.RatLev cr cv true) (hDn : X.DnLev cv true)
     (hUp : X.UpLev cv true) (hC : X.CoordinatesInGoodPart cr cv true) (hE : X.EVTie cr cv eV) (hU : X.MIUnit2 d)
     (hI : X.MIid eV sEE d) (u : (fc X.zs).Dc.Mem) (φ : Fin ((fc X.zs).Dc.a u) → K)
@@ -75,6 +92,9 @@ theorem embedding_pairing_eq_mul_inner (hW : (fc X.zs).Df1.WF) (hJ : X.JIsoR cv)
   rw [X.iC_cpt' cr true Bs.μ0 y]
   exact h1
 
+/- English proof (translation)
+Rewrite using `[X.embedding_pairing_eq_mul_inner cr cv hW hJ hRL hDn hUp hC hE hU hI, hI u t φ F, X.theta_eV cr cv eV hJ hRL hDn hUp hC hE]`. Establish `hx : X.iC cr true Bs.μ0 (cpt Bs.v0.embedding ((X.rowMat cr true t).mulVec (((fc X.zs).Df1.Pq t).mulVec F))) = X.Θ t (X.jR t (cr.toR X.zs true t (((fc X.zs).Df1.Pq t).mulVec F)))` using `(X.key_row cr true h2 hr t _).trans (X.iC_cpt' cr true t _)`. Rewrite using `[hx]`.
+-/
 theorem zetaC_mul_embedding_Pt (hW : (fc X.zs).Df1.WF) (h2 : X.H2 cr true) (hr : X.RATmu cr true) (hJ : X.JIsoR cv)
     (hRL : X.RatLev cr cv true) (hDn : X.DnLev cv true) (hUp : X.UpLev cv true) (hC : X.CoordinatesInGoodPart cr cv true)
     (hE : X.EVTie cr cv eV) (hU : X.MIUnit2 d) (hI : X.MIid eV sEE d) (u : (fc X.zs).Dc.Mem) (t : Bs.Tup)
@@ -87,6 +107,11 @@ theorem zetaC_mul_embedding_Pt (hW : (fc X.zs).Df1.WF) (h2 : X.H2 cr true) (hr :
     (X.key_row cr true h2 hr t _).trans (X.iC_cpt' cr true t _)
   rw [hx]
 
+/- English proof (translation)
+Introduce `u φ F hF`. Establish `hP : ((fc X.zs).Df1.Pq Bs.μ0).mulVec F = 0` using `LinearMap.mem_ker.1 hF`. Establish `h1` using `hI u Bs.μ0 φ F`. Establish `h0 : cr.toR X.zs true Bs.μ0 (((fc X.zs).Df1.Pq Bs.μ0).mulVec F) = 0`. Rewrite using `[hP]`.
+
+Conclude with `map_zero _`. Rewrite `h1` using `[hU.2.2.2 u, one_mul, X.theta_eV cr cv eV hJ hRL hDn hUp hC hE, h0]`. Simplify using `only [map_zero, inner_zero_left, mul_zero] at h1`. Conclude with `(map_eq_zero Bs.v0.embedding).1 h1`.
+-/
 theorem base_tuple_vanishing_of_hypotheses (hJ : X.JIsoR cv) (hRL : X.RatLev cr cv true) (hDn : X.DnLev cv true)
     (hUp : X.UpLev cv true) (hC : X.CoordinatesInGoodPart cr cv true) (hE : X.EVTie cr cv eV) (hU : X.MIUnit2 d)
     (hI : X.MIid eV sEE d) : X.BtVanish (fc := fc) := by
@@ -99,6 +124,13 @@ theorem base_tuple_vanishing_of_hypotheses (hJ : X.JIsoR cv) (hRL : X.RatLev cr 
   simp only [map_zero, inner_zero_left, mul_zero] at h1
   exact (map_eq_zero Bs.v0.embedding).1 h1
 
+/- English proof (translation)
+Introduce `u t _ φ F`. Establish `hk` using `X.zetaC_mul_embedding_Pt cr cv hW h2 hr hJ hRL hDn hUp hC hE hU hI u t φ F`. Distinguish the cases in `h : ∃ k : K, Bs.v0.embedding k = d.ζC u t`. Apply `Bs.v0.embedding.injective` to reduce the goal to its premises. Rewrite using `[map_mul, X.zetaOf_spec u t h, hk]`.
+
+Establish `hP : (fc X.zs).Dc.Pt u t φ F = 0`. Assume the negation of the conclusion as `hP`. Apply `h` to reduce the goal to its premises. Use `⟨X.Bdef u φ ((X.rowMat cr true t).mulVec (((fc X.zs).Df1.Pq t).mulVec F)) / (fc X.zs).Dc.Pt u t φ F, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, ← hk, mul_div_assoc, div_self ((map_ne_zero _).2 hP), mul_one]`.
+
+Rewrite `hk` using `[hP, map_zero, mul_zero]`. Rewrite using `[hP, mul_zero]`. Conclude with `((map_eq_zero _).1 hk.symm).symm`.
+-/
 theorem matrix_identity_of_unit_hypotheses (hW : (fc X.zs).Df1.WF) (h2 : X.H2 cr true) (hr : X.RATmu cr true) (hJ : X.JIsoR cv)
     (hRL : X.RatLev cr cv true) (hDn : X.DnLev cv true) (hUp : X.UpLev cv true) (hC : X.CoordinatesInGoodPart cr cv true)
     (hE : X.EVTie cr cv eV) (hU : X.MIUnit2 d) (hI : X.MIid eV sEE d) : X.MatrixIdentityOffBase cr (X.zetaOf d) := by
@@ -117,6 +149,25 @@ theorem matrix_identity_of_unit_hypotheses (hW : (fc X.zs).Df1.WF) (h2 : X.H2 cr
     rw [hP, mul_zero]
     exact ((map_eq_zero _).1 hk.symm).symm
 
+/- English proof (translation)
+Establish `hn : 0 < X.nP true` using `hpos.2.2 true`. Establish `hli : LinearIndependent ℂ (fun i => X.iC cr true Bs.μ0 (Pi.single i 1))` using `li_of_lin_injective (by rw [lin_basis]; exact h2.1)`. Establish `hXE : X.XE cr true Bs.v0 = frameOf (X.gramE cr true)` using `(rowXE_spec (Df := lv (fc X.zs) true) hW _ (X.gramE_unit cr true h2 hn) X.κ hpos.1 (fun j p v => X.lam j Bs.μ0 p v) (fun j p v => hpos.2.1 j Bs.μ0 p v)).2.1`. Establish `hfn : ∀ y, fnorm (X.XE cr true Bs.v0) y = Real.sqrt (X.nP true)⁻¹ * ‖X.iC cr true Bs.μ0 y‖`. Introduce `y`.
+
+Rewrite using `[hXE, gramE, fnorm_gram_smul _ hli _ (inv_pos.mpr hn), lin_basis]`. Establish `hmem : ∀ y, X.iC cr true Bs.μ0 y ∈ X.EEl true` using `fun y => h2.2.2 ▸ LinearMap.mem_range_self _ y`. Establish `hsn : ∀ e ∈ X.EEl true, ‖sEE e‖ = Real.sqrt (X.nP true)⁻¹ * ‖e‖`. Introduce `e he`. Establish `h3 : ‖sEE e‖ ^ 2 = (X.nP true)⁻¹ * ‖e‖ ^ 2`.
+
+Rewrite using `[← hS.1 e he, ← mul_assoc, inv_mul_cancel₀ hn.ne', one_mul]`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (sEE e)), h3, Real.sqrt_mul (inv_pos.mpr hn).le, Real.sqrt_sq (norm_nonneg e)]`. Establish `hex : ∀ y, ∃ y', X.iC cr true Bs.μ0 y' = d.V (X.iC cr true Bs.μ0 y)`. Introduce `y`. Establish `h4` using `(hU.1 _ (hmem y)).1`.
+
+Rewrite `h4` using `[← h2.2.2]`. Conclude with `LinearMap.mem_range.1 h4`. Use `choose w hw using hex`. Set `W : (Fin ((lv (fc X.zs) true).dQ Bs.μ0) → ℂ) →ₗ[ℂ] (Fin ((lv (fc X.zs) true).dQ Bs.μ0) → ℂ)` to `{ toFun := w map_add' := fun x y => h2.1 (by simp only [hw, map_add]) map_smul' := fun c y => h2.1 (by simp only [hw, map_smul, RingHom.id_apply]) }`. Establish `hWy : ∀ y, (LinearMap.toMatrix' W).mulVec y = w y` using `fun y => LinearMap.toMatrix'_mulVec W y`.
+
+Use `⟨fun (y : Fin ((lv (fc X.zs) true).dQ Bs.μ0) → ℂ) => ?_, fun y => ?_, ?_, LinearMap.toMatrix' W, fun (y : Fin ((lv (fc X.zs) true).dQ Bs.μ0) → ℂ) => ?_, fun u => ⟨d.a u, hA u, d.U u, hU.2.1 u, fun x (y : Fin ((lv (fc X.zs) true).dQ Bs.μ0) → ℂ) => ?_⟩⟩` and prove the remaining obligations. Conclude with `(hsn _ (hmem y)).trans (hfn y).symm`. Conclude with `hS.2.1 _ (hmem y)`. Use `show Module.finrank ℂ (fc X.zs).Sp.Rw = (lv (fc X.zs) true).dQ Bs.μ0`. Rewrite using `[hS.2.2, ← h2.2.2, LinearMap.finrank_range_of_inj h2.1, Module.finrank_fin_fun]`.
+
+Establish `e1 : fnorm (X.XE cr true Bs.v0) ((LinearMap.toMatrix' W).mulVec y) = fnorm (X.XE cr true Bs.v0) (w y)` using `congrArg _ (hWy y)`. Use `e1.trans ((hfn _).trans ?_)` and prove the remaining obligations. Rewrite using `[hw, (hU.1 _ (hmem y)).2]`. Conclude with `(hfn y).symm`. Use `show pairC Bs.v0 (X.Bdef u) x y = d.a u * ⟪sEE (X.iC cr true Bs.μ0 ((LinearMap.toMatrix' W).mulVec y)), (fc X.zs).Sp.Pu u ((d.U u).mulVec x)⟫_ℂ`.
+
+Rewrite using `[hWy, hw]`. Set `Φ : (Fin ((fc X.zs).Dc.a u) → ℂ) →ₗ[ℂ] (Fin ((lv (fc X.zs) true).dQ Bs.μ0) → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.mk₂ ℂ (fun x y => d.a u * ⟪sEE (d.V (X.iC cr true Bs.μ0 y)), (fc X.zs).Sp.Pu u ((d.U u).mulVec x)⟫_ℂ) (fun x x' y => by simp only [Matrix.mulVec_add, map_add, inner_add_right, mul_add]) (fun c x y => by simp only [Matrix.mulVec_smul, map_smul, inner_smul_right, smul_eq_ …`. Simplify using `only [map_smul, LinearMap.map_smulₛₗ, inner_smul_left, smul_eq_mul, starRingEnd_self_apply]`. Use the proof step `ring)`. Establish `hΦ : d.a u * ⟪sEE (d.V (X.iC cr true Bs.μ0 y)), (fc X.zs).Sp.Pu u ((d.U u).mulVec x)⟫_ℂ = Φ x y` using `rfl`.
+
+Rewrite using `[hΦ, bil_expand Φ x y, pairC]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hik : Φ (Pi.single i 1) (Pi.single k 1) = Bs.v0.embedding (X.Bdef u (Pi.single i 1) (Pi.single k 1))`. Rewrite using `[X.embedding_pairing_eq_mul_inner cr cv hW hJ hRL hDn hUp hC hE hU hI, cpt_single, cpt_single]`. Both sides reduce to the same expression.
+
+Rewrite using `[hik]`.
+-/
 theorem isometric_periods_of_unit_hypotheses (hW : (fc X.zs).Df1.WF) (hpos : X.H4pos) (h2 : X.H2 cr true) (hJ : X.JIsoR cv)
     (hRL : X.RatLev cr cv true) (hDn : X.DnLev cv true) (hUp : X.UpLev cv true) (hC : X.CoordinatesInGoodPart cr cv true)
     (hE : X.EVTie cr cv eV) (hS : X.SEEIso sEE) (hU : X.MIUnit2 d) (hI : X.MIid eV sEE d) (hA : X.AuNZ d)
@@ -180,6 +231,9 @@ theorem isometric_periods_of_unit_hypotheses (hW : (fc X.zs).Df1.WF) (hpos : X.H
 
 end Ident2
 
+/- English proof (translation)
+Take `⟨d, hU, hI, hA⟩` from `hM`. Conclude with `⟨X.base_tuple_vanishing_of_hypotheses cr cv hJ hRL hDn hUp hC hE hU hI, X.zetaOf d, X.matrix_identity_of_unit_hypotheses cr cv hW h2 hr hJ hRL hDn hUp hC hE hU hI, X.zetaOK_of_miUnit2 hU, X.isometric_periods_of_unit_hypotheses cr cv hW hpos h2 hJ hRL hDn hUp hC hE hS hU hI hA _⟩`.
+-/
 theorem btVanish_of_miStar2 (eV : ∀ t, (Fin ((fc X.zs).Df1.nV t) → K) →ₗ[K] A.FR t) (sEE : X.EE →ₗ⋆[ℂ] (fc X.zs).Sp.HH)
     (hW : (fc X.zs).Df1.WF) (hpos : X.H4pos) (h2 : X.H2 cr true) (hr : X.RATmu cr true) (hJ : X.JIsoR cv)
     (hRL : X.RatLev cr cv true) (hDn : X.DnLev cv true) (hUp : X.UpLev cv true) (hC : X.CoordinatesInGoodPart cr cv true)
@@ -191,6 +245,9 @@ theorem btVanish_of_miStar2 (eV : ∀ t, (Fin ((fc X.zs).Df1.nV t) → K) →ₗ
     X.matrix_identity_of_unit_hypotheses cr cv hW h2 hr hJ hRL hDn hUp hC hE hU hI, X.zetaOK_of_miUnit2 hU,
     X.isometric_periods_of_unit_hypotheses cr cv hW hpos h2 hJ hRL hDn hUp hC hE hS hU hI hA _⟩
 
+/- English proof (translation)
+Take `⟨hBt, ζ, hMI, hZ, hL⟩` from `X.btVanish_of_miStar2 cr cv eV sEE hW hpos h2 hr hJ hRL hDn hUp hC hE hS hM`. Conclude with `⟨ζ, X.cutPairing cr ζ sEE hW h2 hBt hMI hZ, hL⟩`.
+-/
 theorem exists_zeta_pairing_factors_through_periods (eV : ∀ t, (Fin ((fc X.zs).Df1.nV t) → K) →ₗ[K] A.FR t) (sEE : X.EE →ₗ⋆[ℂ] (fc X.zs).Sp.HH)
     (hW : (fc X.zs).Df1.WF) (hpos : X.H4pos) (h2 : X.H2 cr true) (hr : X.RATmu cr true) (hJ : X.JIsoR cv)
     (hRL : X.RatLev cr cv true) (hDn : X.DnLev cv true) (hUp : X.UpLev cv true) (hC : X.CoordinatesInGoodPart cr cv true)

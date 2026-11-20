@@ -18,10 +18,18 @@ open GlobalTheory.ArchRec
 
 namespace GlobalTheory.ArchRec.NoLiftTransfer
 
+/- English proof (translation)
+Unfold `Jm Formalism.UG.Jpq`. Simplify using `[Matrix.fromBlocks_multiply]`.
+-/
 theorem jm_mul_jm (p q : ℕ) : Jm p q * Jm p q = 1 := by
   unfold Jm Formalism.UG.Jpq
   simp [Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Establish `h : Zᴴ * Jm p q + Jm p q * Z = 0` using `hZ`. Establish `h2 : Jm p q * Zᴴ * Jm p q + Z = 0`. Establish `h'` using `congrArg (fun X => Jm p q * X) h`. Simplify `h'` using `[mul_add, ← mul_assoc, jm_mul_jm]`. Establish `h3 : (Jm p q * Zᴴ * Jm p q).trace + Z.trace = 0` using `by rw [← Matrix.trace_add, h2, Matrix.trace_zero]`.
+
+Rewrite `h3` using `[Matrix.trace_mul_comm, ← mul_assoc, jm_mul_jm, one_mul, Matrix.trace_conjTranspose]`. Rewrite using `[starRingEnd_apply]`. Conclude with `eq_neg_of_add_eq_zero_left h3`.
+-/
 theorem conj_trace {p q : ℕ} {Z : Mat p q} (hZ : Z ∈ upq p q) : (starRingEnd ℂ) Z.trace = -Z.trace := by
   have h : Zᴴ * Jm p q + Jm p q * Z = 0 := hZ
 
@@ -46,11 +54,27 @@ def invConj {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Modul
     rw [hsmul]
     simp only [Equiv.ofBijective_apply_symm_apply, Complex.conj_conj]
 
+/- English proof (translation)
+The claim follows from `hb.1 ((Equiv.ofBijective u hb).apply_symm_apply (u x))`.
+-/
 theorem invConj_apply {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module ℂ B] (u : A → B)
     (hb : Function.Bijective u) (hadd : ∀ x y, u (x + y) = u x + u y)
     (hsmul : ∀ (z : ℂ) x, u (z • x) = conj z • u x) (x : A) : invConj u hb hadd hsmul (u x) = x :=
   hb.1 ((Equiv.ofBijective u hb).apply_symm_apply (u x))
 
+/- English proof (translation)
+Introduce `D V S M τ ι σ Z A pt κ p q T₁ R₁ a₁ l₁ c₁ b₁ e₁ u₁ hK hS hP`. Establish `hsm : ∀ (z : ℂ) x, u₁ (z • x) = conj z • u₁ x` using `fun z x => by simpa [cjc] using hK.smul z x`. Set `w` to `invConj u₁ hK.bij hK.add hsm`. Establish `hw_right : ∀ y, u₁ (w y) = y` using `fun y => (Equiv.ofBijective u₁ hK.bij).apply_symm_apply y`. Establish `hw_left : ∀ v, w (u₁ v) = v` using `fun v => invConj_apply u₁ hK.bij hK.add hsm v`.
+
+Introduce `U _ _ Q hQ`. Set `B : MvPolynomial σ ℂ →ₗ[ℂ] R₁.HK.V →ₛₗ[starRingEnd ℂ] U` to `{ toFun := fun P => (Q (κ.symm P)).comp w map_add' := fun P P' => by ext x; simp map_smul' := fun z P => by ext x; simp }`. Establish `hB : ∀ P x, B P x = Q (κ.symm P) (w x)` using `fun _ _ => rfl`. Establish `hinv : PInv a₁ R₁ B`. Introduce `Y hY P x`.
+
+Use `set t : ℂ := (c₁ : ℂ) * Y.trace with ht_def`. Establish `ht : conj t = -t` using `by rw [ht_def, map_mul, conj_trace hY, map_ratCast, mul_neg]`. Establish `hX : phiFr (M.fr τ) b₁ e₁ Y ∈ lieAt V τ` using `by rw [← hK.lie]; exact ⟨Y, hY, rfl⟩`. Establish `hpol : PolDer A pt (phiFr (M.fr τ) b₁ e₁ Y) (κ.symm P) (κ.symm (a₁ Y P + t • P))` using `(hS.der Y hY _ _).2 (by simp only [LinearEquiv.apply_symm_apply, ht_def])`. Establish `hvec : VecDer M τ (phiFr (M.fr τ) b₁ e₁ Y) (w x) (w (R₁.HK.act Y x + t • x))` using `(hK.der Y hY _ _).2 (by simp only [hw_right, ht_def])`.
+
+Establish `h0` using `hQ _ hX _ _ _ _ hpol hvec`. Establish `e1 : Q (κ.symm (a₁ Y P + t • P)) (w x) = Q (κ.symm (a₁ Y P)) (w x) + t • Q (κ.symm P) (w x)`. Rewrite using `[map_add, map_smul, map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply]`. Establish `e2 : Q (κ.symm P) (w (R₁.HK.act Y x + t • x)) = Q (κ.symm P) (w (R₁.HK.act Y x)) - t • Q (κ.symm P) (w x)`. Rewrite using `[map_add, map_add, map_smulₛₗ, ht, map_smul, neg_smul, sub_eq_add_neg]`.
+
+Rewrite `h0` using `[e1, e2]`. Rewrite using `[hB, hB, ← h0]`. Normalize the expressions using the abelian group laws. Establish `hB0 : B = 0` using `hP U B hinv`. Use `LinearMap.ext fun P => LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Establish `h1` using `congrArg (fun F : MvPolynomial σ ℂ →ₗ[ℂ] R₁.HK.V →ₛₗ[starRingEnd ℂ] U => F (κ P) (u₁ v)) hB0`. Simplify `h1` using `[hB, hw_left]`.
+-/
 theorem noLift_of_pairNo : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (ι σ Z : Type) (A : Mn V.rank → (Z → ℂ) → (Z → ℂ)) (pt : MvPolynomial ι ℂ → (Z → ℂ)) (κ : MvPolynomial ι ℂ ≃ₗ[ℂ] MvPolynomial σ ℂ) (p q : ℕ) (T₁ : GrpData p q) (R₁ : DSRep T₁) (a₁ : Mat p q →ₗ[ℂ] Module.End ℂ (MvPolynomial σ ℂ)) (l₁ : Ix p q → ℚ) (c₁ : ℚ) (b₁ : Bool) (e₁ : Ix p q ≃ Fin V.rank) (u₁ : kfin M τ → R₁.HK.V), KTie R₁ M τ l₁ c₁ b₁ true e₁ u₁ → Side A pt κ (phiFr (M.fr τ) b₁ e₁) c₁ a₁ → PairNo a₁ R₁ → NoLift M τ A pt := by
   intro D V S M τ ι σ Z A pt κ p q T₁ R₁ a₁ l₁ c₁ b₁ e₁ u₁ hK hS hP
 

@@ -56,8 +56,18 @@ variable {V : VF C} {vm : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R
 def vA (V : VF C) (R : Type) [CommRing R] [Algebra R C] : AddValuation R (WithTop ℝ) :=
   V.v.comap (algebraMap R C)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem vA_apply (x : R) : vA V R x = V.v (algebraMap R C x) := rfl
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[vA_apply]`. Distinguish the cases in `hx : algebraMap R C x = 0`. Rewrite using `[hx, V.v.map_zero]`. Conclude with `le_top`.
+
+Take `⟨t, ht1, ht2⟩` from `hT _ hx`. Rewrite using `[ht1]`. Establish `hle : (vm (algebraMap R C x) : ℝ) ≤ 1` using `by exact_mod_cast hv.map_le_one x`. Establish `: 0 ≤ t`. Assume the negation of the conclusion as `hneg`.
+
+Use `Real.one_lt_rpow_of_pos_of_lt_one_of_neg h0 h1 (not_le.mp hneg)` as an intermediate fact. Rewrite `this` using `[← ht2]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions.
+-/
 theorem vA_nonneg (hT : ValTie V vm) (hv : vm.Integers R) (h0 : 0 < (vm (V.l : C) : ℝ))
     (h1 : (vm (V.l : C) : ℝ) < 1) : ∀ x : R, 0 ≤ vA V R x := by
   intro x
@@ -74,6 +84,9 @@ theorem vA_nonneg (hT : ValTie V vm) (hv : vm.Integers R) (h0 : 0 < (vm (V.l : C
       linarith
     exact_mod_cast this
 
+/- English proof (translation)
+Unfold `S4.lenCoker`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[vA_apply, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem lenCoker_vA {m h : ℕ} (α : Matrix (Fin m) (Fin h) R) :
     S4.lenCoker (vA V R) α = S4.lenCoker V.v (Matrix.of fun i k => algebraMap R C (α i k)) := by
   unfold S4.lenCoker
@@ -84,6 +97,9 @@ theorem lenCoker_vA {m h : ℕ} (α : Matrix (Fin m) (Fin h) R) :
 
 end Val
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp | k + 1 => by rw [pow_succ', Equiv.Perm.mul_apply, pow_frob φ ix hφ a k, hφ] congr 1 push_cast ring`.
+-/
 theorem pow_frob {m : ℕ} {d : ℕ} (φ : Equiv.Perm (Fin m)) (ix : ZMod d → Fin m)
     (hφ : ∀ a, φ (ix a) = ix (a + 1)) (a : ZMod d) : ∀ k : ℕ, (φ ^ k) (ix a) = ix (a + (k : ZMod d))
   | 0 => by simp
@@ -93,11 +109,31 @@ theorem pow_frob {m : ℕ} {d : ℕ} (φ : Equiv.Perm (Fin m)) (ix : ZMod d → 
     push_cast
     ring
 
+/- English proof (translation)
+Establish `h0 : (0 : ℝ) ≤ l` using `by positivity`. Rewrite using `[Real.rpow_neg h0, ← Nat.cast_succ, Real.rpow_natCast]`.
+-/
 theorem rpow_neg_succ {l : ℕ} (hl : 0 < l) (n : ℕ) :
     (l : ℝ) ^ (-((n : ℝ) + 1)) = ((l : ℝ) ^ (n + 1))⁻¹ := by
   have h0 : (0 : ℝ) ≤ l := by positivity
   rw [Real.rpow_neg h0, ← Nat.cast_succ, Real.rpow_natCast]
 
+/- English proof (translation)
+Take `⟨E⟩` from `T.bad g a ha`. Take `⟨V1, hV1⟩` from `lenEx C vm R hS.integers gB H.Ht (U.εL (T.ix g a)) (U.εT (U.cj (T.ix g a)))`. Establish `hN : HasLen vm R ((Fin (pT G g a) → R) ⧸ LinearMap.range (T.αR g a).mulVecLin) V1` using `hasLen_of_equiv E.symm hV1`. Establish `hrc : (((fun j => U.r j + rh) (U.cj (T.ix g a)) : ℕ) : ℝ) = (r : ℝ) - ((fun j => U.r j + rh) (T.ix g a) : ℕ)` using `by show ((U.r (U.cj (T.ix g a)) + rh : ℕ) : ℝ) = (r : ℝ) - ((U.r (T.ix g a) + rh : ℕ) : ℝ)`. Rewrite using `[T.ix_conj, T.rank, T.rank, ← hr]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hb` using `up_shift u7 V.l gB C vm R O σ cp l_odd hS H U (T.ix g a) rh r (fun j => U.r j + rh) (fun _ => rfl) hrc _ E V1 hN`. Establish `hcast : algebraMap R C ((V.l : ℕ) : R) = (V.l : C)` using `map_natCast _ _`. Establish `hb0 : 0 < (vm (V.l : C) : ℝ)`.
+
+Rewrite using `[← hcast]`. Conclude with `NNReal.coe_pos.2 (pos_iff_ne_zero.2 hS.p_ne)`. Establish `hb1 : (vm (V.l : C) : ℝ) < 1`. Rewrite using `[← hcast]`. Conclude with `hS.p_lt` after adjusting the coercions.
+
+Establish `hsum : (∑' n : ℕ, (V.l : ℝ) ^ (-((n : ℝ) + 1)) * (((fun j => U.r j + rh) ((U.φ ^ (n + 1)) (T.ix g a)) : ℕ) : ℝ)) = S4.frobSum V.l (pT G g) a`. Unfold `S4.frobSum`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[pow_frob U.φ (T.ix g) (T.ix_frob g) a (n + 1), rpow_neg_succ V.l_prime.pos]`. Use `show _ * ((U.r (T.ix g (a + ((n + 1 : ℕ) : ZMod d))) + rh : ℕ) : ℝ) = _`.
+
+Rewrite using `[T.rank]`. Establish `hri : (((fun j => U.r j + rh) (T.ix g a) : ℕ) : ℝ) = (pT G g a : ℝ)` using `by show ((U.r (T.ix g a) + rh : ℕ) : ℝ) = _`. Rewrite using `[T.rank]`. Rewrite `hb` using `[hsum, hri, hcast]`. Take `⟨y, hy, hyV⟩` from `hF C vm R hS.integers _ _ (T.αR g a) V1 hN`.
+
+Establish `hpos : 0 < (V1 : ℝ)` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hb0 _) hb`. Establish `hy0 : algebraMap R C y ≠ 0`. Introduce `h0`. Rewrite `hyV` using `[h0, map_zero]`. Rewrite `hpos` using `[← hyV]`.
+
+Simplify using `at hpos`. Take `⟨t, ht1, ht2⟩` from `T.val _ hy0`. Rewrite `hb` using `[← hyV, ht2, Real.rpow_le_rpow_left_iff_of_base_lt_one hb0 hb1]`. Establish `hmat : (Matrix.of fun c i => ht g i (T.e g a c)) = Matrix.of fun c i => algebraMap R C (T.αR g a c i)`. Use extensionality with `c i`.
+
+Conclude with `(T.αR_eq g a c i).symm`. Rewrite using `[hmat, ← lenCoker_vA]`. Use `le_trans (S4.lenCoker_le_of_mem (vA V R) (vA_nonneg T.val hS.integers hb0 hb1) _ hy) ?_` and prove the remaining obligations. Rewrite using `[vA_apply, ht1]`. Conclude with `hb` after adjusting the coercions.
+-/
 theorem lenCoker_le (hF : FittGe) [IsAlgClosed C] [CharZero C] {V : VF C} {d : ℕ}
     {I J : Fin 2 → Type} [∀ g, Fintype (I g)]
     (G : ∀ g, Cart V d (I g) (J g)) (big : Fin 2 → ZMod d → Prop) (rh r : ℕ) (h : Fin 2 → ℕ)
@@ -158,6 +194,19 @@ theorem lenCoker_le (hF : FittGe) [IsAlgClosed C] [CharZero C] {V : VF C} {d : �
   rw [vA_apply, ht1]
   exact_mod_cast hb
 
+/- English proof (translation)
+Establish `hl1 : 1 < V.l` using `V.l_prime.one_lt`. Establish `hL : (1 : ℝ) < V.l` using `by exact_mod_cast hl1`. Establish `hL1 : (0 : ℝ) < (V.l : ℝ) - 1` using `by linarith`. Establish `h1` using `S4.one_div_eq_gam_add_rho hl1`. Establish `hdiv : ∀ x : ℝ, x / ((V.l : ℝ) - 1) = x * (S4.gam V.l + S4.rho V.l)` using `fun x => by`.
+
+Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hgr : 0 ≤ S4.gam V.l + S4.rho V.l` using `by rw [← h1]; positivity`. Establish `hrh : 0 ≤ (rh : ℝ) * (S4.gam V.l + S4.rho V.l)` using `mul_nonneg (Nat.cast_nonneg _) hgr`. Use `CH_of_UP G n j j' big big_compl h ht ht_int (fun g a ha => ⟨T.e g a, fun hA => ?_, fun hB => ?_⟩) hGerm` and prove the remaining obligations.
+
+Establish `hr : pT G (1 - g) a + pT G g a = r`. Rewrite using `[rk_big g a ha, rk_small (1 - g) a (fun hh => (big_compl g a).mp hh ha), r_eq]`. Expand and normalize the polynomial expressions, which then agree. Use `le_trans (lenCoker_le hF G big rh r h ht l_odd vm R O σ cp gB hS H U T g a ha hr) (WithTop.coe_le_coe.mpr ?_)` and prove the remaining obligations. Rewrite using `[S4.frobSum_alt hl1 n j j' (big g) (alt_step big big_compl hA g) (pT G g) (rk_big g) (rk_small g) a ha, rk_big g a ha, r_eq]`.
+
+Establish `hg : gam V.l = S4.gam V.l` using `rfl`. Unfold `upB`. Rewrite using `[hg]`. Simplify using `only [hdiv]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr : pT G (1 - g) a + pT G g a = r`. Rewrite using `[rk_big g a ha, rk_small (1 - g) a (fun hh => (big_compl g a).mp hh ha), r_eq]`. Expand and normalize the polynomial expressions, which then agree. Use `le_trans (lenCoker_le hF G big rh r h ht l_odd vm R O σ cp gB hS H U T g a ha hr) (WithTop.coe_le_coe.mpr ?_)` and prove the remaining obligations.
+
+Rewrite using `[S4.frobSum_const hl1 (n + j) (pT G g) (fun τ => rk_big g τ (hB τ)) a, rk_big g a ha, r_eq]`. Unfold `upB`. Simplify using `only [hdiv]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem CH_of_HTD_of (hF : FittGe) [IsAlgClosed C] [CharZero C] {V : VF C} {d : ℕ} [NeZero d]
     {I J : Fin 2 → Type} [∀ g, Fintype (I g)] [∀ g, Fintype (J g)]
     (G : ∀ g, Cart V d (I g) (J g)) (n j j' rh r : ℕ) (r_eq : r = n + j + j')
@@ -208,8 +257,14 @@ theorem CH_of_HTD_of (hF : FittGe) [IsAlgClosed C] [CharZero C] {V : VF C} {d : 
     push_cast
     linarith
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ hv _ _ α _ hx` and use `Formalism.MainNotions.G.ValuationFitting.fitt_ge hv α hx`.
+-/
 theorem fittGe : FittGe := fun _ _ _ _ _ _ hv _ _ α _ hx => Formalism.MainNotions.G.ValuationFitting.fitt_ge hv α hx
 
+/- English proof (translation)
+The claim follows from `CH_of_HTD_of fittGe G n j j' rh r r_eq big big_compl rk_big rk_small l_odd h ht ht_int vm R O σ cp gB hS H U T hGerm`.
+-/
 theorem CH_of_HTD [IsAlgClosed C] [CharZero C] {V : VF C} {d : ℕ} [NeZero d]
     {I J : Fin 2 → Type} [∀ g, Fintype (I g)] [∀ g, Fintype (J g)]
     (G : ∀ g, Cart V d (I g) (J g)) (n j j' rh r : ℕ) (r_eq : r = n + j + j')
@@ -235,6 +290,19 @@ section Val2
 
 variable {V : VF C} {vm : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C]
 
+/- English proof (translation)
+Establish `hxb : (vm (V.l : C) : ℝ) ^ Real.logb (vm (V.l : C) : ℝ) x = x` using `Real.rpow_logb h0 (ne_of_lt h1) hpos`. Rewrite using `[← lenCoker_vA]`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨y, hy, hyV⟩` from `Formalism.MainNotions.G.ValuationFitting.fitt_ge hv α hx`. Establish `hy0 : algebraMap R C y ≠ 0`.
+
+Introduce `hz`. Rewrite `hyV` using `[hz, map_zero]`. Rewrite `hpos` using `[← hyV]`. Simplify using `at hpos`. Take `⟨t, ht1, ht2⟩` from `hT _ hy0`.
+
+Use `le_trans (S4.lenCoker_le_of_mem (vA V R) (vA_nonneg hT hv h0 h1) _ hy) ?_` and prove the remaining obligations. Rewrite using `[vA_apply, ht1]`. Establish `: (vm (V.l : C) : ℝ) ^ Real.logb (vm (V.l : C) : ℝ) x ≤ (vm (V.l : C) : ℝ) ^ t`. Rewrite using `[hxb, ← ht2, hyV]`. Rewrite `this` using `[Real.rpow_le_rpow_left_iff_of_base_lt_one h0 h1]`.
+
+Conclude with `this` after adjusting the coercions. Unfold `S4.lenCoker`. Use `Finset.le_inf fun g _ => ?_` and prove the remaining obligations. Rewrite using `[vA_apply]`. Distinguish the cases in `hz : algebraMap R C (α.submatrix id g).det = 0`.
+
+Rewrite using `[hz, V.v.map_zero]`. Conclude with `le_top`. Take `⟨t, ht1, ht2⟩` from `hT _ hz`. Rewrite using `[ht1]`. Establish `hle : (vm (algebraMap R C (α.submatrix id g).det) : ℝ) ≤ x`.
+
+Conclude with `Formalism.MainNotions.G.ValuationFitting.fitt_le hv α hx g` after adjusting the coercions. Rewrite `hle` using `[ht2, ← hxb, Real.rpow_le_rpow_left_iff_of_base_lt_one h0 h1]`. Conclude with `hle` after adjusting the coercions.
+-/
 theorem lenCoker_eq_logb (hT : ValTie V vm) (hv : vm.Integers R) (h0 : 0 < (vm (V.l : C) : ℝ))
     (h1 : (vm (V.l : C) : ℝ) < 1) {m h : ℕ} (α : Matrix (Fin m) (Fin h) R) {x : NNReal}
     (hx : HasLen vm R ((Fin m → R) ⧸ LinearMap.range α.mulVecLin) x) (hpos : 0 < (x : ℝ)) :
@@ -271,6 +339,13 @@ theorem lenCoker_eq_logb (hT : ValTie V vm) (hv : vm.Integers R) (h0 : 0 < (vm (
 
 end Val2
 
+/- English proof (translation)
+Take `⟨B, hB⟩ : ∃ B : ℝ, ∀ k : Fin U.m, ((U.r k + rh : ℕ) : ℝ) ≤ B` from `⟨∑ k, ((U.r k + rh : ℕ) : ℝ), fun k => Finset.single_le_sum (f := fun k => ((U.r k + rh : ℕ) : ℝ)) (fun k _ => Nat.cast_nonneg _) (Finset.mem_univ k)⟩`. Establish `hsG` using `summable_geom_p (p := V.l) (fun n => ((U.r ((U.φ ^ (n + 1)) (T.ix g a)) + rh : ℕ) : ℝ)) (fun n => Nat.cast_nonneg _) B (fun n => hB _)`. Establish `hsρ` using `summable_geom_p (p := V.l) (fun _ => (rh : ℝ)) (fun _ => Nat.cast_nonneg _) rh (fun _ => le_rfl)`. Establish `hsum : (∑' n : ℕ, (V.l : ℝ) ^ (-((n : ℝ) + 1)) * ((U.r ((U.φ ^ (n + 1)) (T.ix g a)) + rh : ℕ) : ℝ)) = S4.frobSum V.l (pT G g) a`. Unfold `S4.frobSum`.
+
+Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[pow_frob U.φ (T.ix g) (T.ix_frob g) a (n + 1), rpow_neg_succ V.l_prime.pos, T.rank]`. Unfold `ReciprocityTheory.PGsh.Up.frobSum`. Establish `e1 : ∀ n : ℕ, (V.l : ℝ) ^ (-((n : ℝ) + 1)) * (U.r ((U.φ ^ (n + 1)) (T.ix g a)) : ℝ) = (V.l : ℝ) ^ (-((n : ℝ) + 1)) * ((U.r ((U.φ ^ (n + 1)) (T.ix g a)) + rh : ℕ) : ℝ) - (V.l : ℝ) ^ (-((n : ℝ) + 1)) * rh`. Introduce `n`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e1]`. Rewrite using `[Summable.tsum_sub hsG hsρ, tsum_mul_right, tsum_geom_p, hsum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frobSum_shift {V : VF C} {d : ℕ} {I J : Fin 2 → Type} [∀ g, Fintype (I g)]
     {G : ∀ g, Cart V d (I g) (J g)} {big : Fin 2 → ZMod d → Prop} {rh : ℕ} {h : Fin 2 → ℕ}
     {ht : ∀ g, Fin (h g) → I g → C}
@@ -302,6 +377,29 @@ theorem frobSum_shift {V : VF C} {d : ℕ} {I J : Fin 2 → Type} [∀ g, Fintyp
   rw [Summable.tsum_sub hsG hsρ, tsum_mul_right, tsum_geom_p, hsum]
   ring
 
+/- English proof (translation)
+Establish `hcast : algebraMap R C ((V.l : ℕ) : R) = (V.l : C)` using `map_natCast _ _`. Establish `hb0 : 0 < (vm (V.l : C) : ℝ)`. Rewrite using `[← hcast]`. Conclude with `NNReal.coe_pos.2 (pos_iff_ne_zero.2 hS.p_ne)`. Establish `hb1 : (vm (V.l : C) : ℝ) < 1`.
+
+Rewrite using `[← hcast]`. Conclude with `hS.p_lt` after adjusting the coercions. Establish `hL : (1 : ℝ) < V.l` using `by exact_mod_cast V.l_prime.one_lt`. Establish `hL1 : (V.l : ℝ) - 1 ≠ 0` using `by linarith`. Establish `ex1` using `fun (g : Fin 2) (a : ZMod d) => lenEx C vm R hS.integers gB H.Ht (U.εL (T.ix g a)) (U.εT (U.cj (T.ix g a)))`.
+
+Establish `ex2` using `fun (g : Fin 2) (a : ZMod d) => lenEx C vm R hS.integers gB H.Ht (U.εL (U.cj (T.ix g a))) (U.εT (T.ix g a))`. Use `choose W1 hW1 using ex1`. Use `choose W2 hW2 using ex2`. Establish `hA : ∀ g a, (vm (V.l : C) : ℝ) ^ ((U.r (U.cj (T.ix g a)) : ℝ) / ((V.l : ℝ) - 1)) ≤ (W2 g a : ℝ)`. Introduce `g a`.
+
+Establish `hidem : U.εL (U.cj (T.ix g a)) * U.εL (U.cj (T.ix g a)) = U.εL (U.cj (T.ix g a))`. Rewrite using `[U.εL_orth, if_pos rfl]`. Take `⟨y, hy⟩` from `idemGen R gB _ _ hidem (U.rank (U.cj (T.ix g a)))`. Establish `hkg` using `killedGen C vm R hS.integers _ (W2 g a) _ cp (hW2 g a) ⟨_, span_mk_top _ y hy⟩ (up_kill hS H U (T.ix g a))`. Rewrite using `[← hcast, vp_rpow hS]`.
+
+Conclude with `hkg` after adjusting the coercions. Establish `hW2pos : ∀ g a, 0 < (W2 g a : ℝ)` using `fun g a => lt_of_lt_of_le (Real.rpow_pos_of_pos hb0 _) (hA g a)`. Establish `h7 : ∀ g a, (W1 g a : ℝ) = W2 g a * (vm (V.l : C) : ℝ) ^ ((U.r (T.ix g a) : ℝ) / ((V.l : ℝ) - 1) - ReciprocityTheory.PGsh.Up.frobSum U (T.ix g a))`. Introduce `g a`. Use `u7 V.l gB C vm R O σ cp l_odd hS H U (T.ix g a) (W1 g a) (W2 g a) (hW1 g a) (hW2 g a)` as an intermediate fact.
+
+Rewrite `this` using `[hcast]`. Then use the resulting hypothesis. Establish `hW1pos : ∀ g a, 0 < (W1 g a : ℝ)` using `fun g a => by`. Rewrite using `[h7]`. Conclude with `mul_pos (hW2pos g a) (Real.rpow_pos_of_pos hb0 _)`. Establish `hrk : ∀ g a, (U.r (T.ix g a) : ℝ) = (pT G g a : ℝ) - rh` using `fun g a => by`.
+
+Rewrite using `[← T.rank g a]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun g a => Real.logb (vm (V.l : C) : ℝ) (W1 g a), fun g a => Real.logb (vm (V.l : C) : ℝ) (W2 g a), fun g a _ => ?_, fun g a ha => ?_, fun g a ha => ?_⟩` and prove the remaining obligations. Unfold `S4.CorDET show Real.logb _ (W1 g a : ℝ) - Real.logb _ (W2 g a : ℝ) = _`.
+
+Rewrite using `[h7, Real.logb_mul (ne_of_gt (hW2pos g a)) (ne_of_gt (Real.rpow_pos_of_pos hb0 _)), Real.logb_rpow hb0 (ne_of_lt hb1), frobSum_shift T g a, hrk]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Unfold `S4.ThmAi show Real.logb _ (W2 g a : ℝ) ≤ _`. Establish `h2` using `hA g a`.
+
+Rewrite `h2` using `[← Real.rpow_logb hb0 (ne_of_lt hb1) (hW2pos g a), Real.rpow_le_rpow_left_iff_of_base_lt_one hb0 hb1, T.ix_conj, hrk]`. Use `le_trans h2 (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← hr g a ha]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `S4.ThmAiii`. Take `⟨E⟩` from `T.bad g a ha`. Establish `hN : HasLen vm R ((Fin (pT G g a) → R) ⧸ LinearMap.range (T.αR g a).mulVecLin) (W1 g a)` using `hasLen_of_equiv E.symm (hW1 g a)`. Establish `hmat : (Matrix.of fun c i => ht g i (T.e g a c)) = Matrix.of fun c i => algebraMap R C (T.αR g a c i)`.
+
+Use extensionality with `c i`. Conclude with `(T.αR_eq g a c i).symm`. Rewrite using `[hmat]`. Conclude with `lenCoker_eq_logb T.val hS.integers hb0 hb1 _ hN (hW1pos g a)`.
+-/
 theorem rank_inputs_of_hodge_tate [IsAlgClosed C] [CharZero C] {V : VF C} {d : ℕ}
     {I J : Fin 2 → Type} [∀ g, Fintype (I g)]
     (G : ∀ g, Cart V d (I g) (J g)) (big : Fin 2 → ZMod d → Prop) (rh r : ℕ) (h : Fin 2 → ℕ)
@@ -381,6 +479,9 @@ theorem rank_inputs_of_hodge_tate [IsAlgClosed C] [CharZero C] {V : VF C} {d : �
     rw [hmat]
     exact lenCoker_eq_logb T.val hS.integers hb0 hb1 _ hN (hW1pos g a)
 
+/- English proof (translation)
+Take `⟨l1, l2, hD, hAi, hAiii⟩` from `rank_inputs_of_hodge_tate G big rh r h ht l_odd (fun g a ha => by`. Rewrite using `[rk_big g a ha, rk_small (1 - g) a (fun hh => (big_compl g a).mp hh ha), r_eq]`. Use the proof step `ring)`. Use `vm R O σ cp gB hS H U T`. Conclude with `characteristic_of_rank_split G n j j' rh r r_eq big big_compl rk_big rk_small rk_fil l_odd h hh ht ht_int l1 l2 hD hAi (fun g a ha => ⟨T.e g a, hAiii g a ha⟩) hGerm`.
+-/
 theorem chart_hypothesis_of_hodge_tate [IsAlgClosed C] [CharZero C] {V : VF C} {d : ℕ} [NeZero d]
     {I J : Fin 2 → Type} [∀ g, Fintype (I g)] [∀ g, Fintype (J g)]
     (G : ∀ g, Cart V d (I g) (J g)) (n j j' rh r : ℕ) (r_eq : r = n + j + j')

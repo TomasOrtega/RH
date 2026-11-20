@@ -12,6 +12,17 @@ variable (p : ℕ) [Fact p.Prime] (K L : IntermediateField ℚ_[p] (PadicAlgCl p
 
 variable {p K L}
 
+/- English proof (translation)
+Set `sec : QZ → ℚ` to `Function.surjInv (QuotientAddGroup.mk'_surjective (Int.castAddHom ℚ).range)`. Establish `hsec : ∀ q : QZ, (QuotientAddGroup.mk (sec q) : QZ) = q` using `Function.surjInv_eq (QuotientAddGroup.mk'_surjective (Int.castAddHom ℚ).range)`. Set `f : GK p K → QZ` to `fun g => χ.1 (Additive.ofMul g)`. Establish `hf : IsLocallyConstant f` using `χ.2`. Establish `hfq : ∀ g : GK p K, f (QuotientGroup.mk g : GalLK p K (MaximalUnramifiedExtension p K)).out = f g`.
+
+Introduce `g`. Take `⟨n, hn⟩` from `QuotientGroup.mk_out_eq_mul (subG p K (MaximalUnramifiedExtension p K)) g`. Rewrite using `[hn]`. Use `show χ.1 (Additive.ofMul g + Additive.ofMul n.1) = _`. Rewrite using `[map_add, hχ n.1 n.2, add_zero]`.
+
+Establish `hloc : IsLocallyConstant fun q : GalLK p K (MaximalUnramifiedExtension p K) => f q.out`. Introduce `s`. Rewrite using `[← QuotientGroup.isOpenQuotientMap_mk.isQuotientMap.isOpen_preimage]`. Establish `h0 : (QuotientGroup.mk : GK p K → GalLK p K (MaximalUnramifiedExtension p K)) ⁻¹' ((fun q : GalLK p K (MaximalUnramifiedExtension p K) => f q.out) ⁻¹' s) = f ⁻¹' s`. Use extensionality with `g`.
+
+Use `show f (QuotientGroup.mk g : GalLK p K (MaximalUnramifiedExtension p K)).out ∈ s ↔ f g ∈ s`. Rewrite using `[hfq]`. Rewrite using `[h0]`. Conclude with `hf s`. Use `⟨fun q => sec (f q.out), hloc.comp sec, fun g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsec]`. Conclude with `hfq g`.
+-/
 theorem exists_ur_lift (χ : charGrp (GK p K)) (hχ : TrivOn p K (MaximalUnramifiedExtension p K) χ) :
     ∃ t : GalLK p K (MaximalUnramifiedExtension p K) → ℚ, IsLocallyConstant t ∧
       ∀ g : GK p K, (QuotientAddGroup.mk (t (QuotientGroup.mk g)) : QZ) = χ.1 (Additive.ofMul g) := by
@@ -45,8 +56,26 @@ variable (p K) in
 noncomputable def urOfK (a : Kˣ) : (urT p K).V :=
   toLayer p ⟨ofK p K (Additive.ofMul a), le_Kur (K := K) (ofK_mem p K _)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem urOfK_val (a : Kˣ) : (urOfK p K a).1 = ofK p K (Additive.ofMul a) := rfl
 
+/- English proof (translation)
+Take `⟨t, ht, htχ⟩` from `exists_ur_lift χ hχ`. Establish `hex : ∀ g : Fin 2 → GalLK p K (MaximalUnramifiedExtension p K), ∃ k : ℤ, (k : ℚ) = t (g 0) + t (g 1) - t (g 0 * g 1)`. Introduce `g`. Take `⟨σ, hσ⟩` from `QuotientGroup.mk_surjective (g 0)`. Take `⟨τ, hτ⟩` from `QuotientGroup.mk_surjective (g 1)`.
+
+Establish `h0 : (QuotientAddGroup.mk (t (g 0) + t (g 1) - t (g 0 * g 1)) : QZ) = 0`. Rewrite using `[← hσ, ← hτ, ← QuotientGroup.mk_mul, QuotientAddGroup.mk_sub, QuotientAddGroup.mk_add, htχ, htχ, htχ, ofMul_mul, map_add, sub_self]`. Conclude with `(QuotientAddGroup.eq_zero_iff _).1 h0`. Use `choose m hm using hex`. Establish `hmc : IsLocallyConstant m`.
+
+Apply `IsLocallyConstant.desc m (Int.cast : ℤ → ℚ) _ Int.cast_injective` to reduce the goal to its premises. Establish `h0 : ((Int.cast : ℤ → ℚ) ∘ m) = fun g => t (g 0) + t (g 1) - t (g 0 * g 1)` using `funext hm`. Rewrite using `[h0]`. Conclude with `((ht.comp_continuous (continuous_apply 0)).add (ht.comp_continuous (continuous_apply 1))).sub (ht.comp_continuous ((continuous_apply 0).mul (continuous_apply 1)))`. Establish `hzc : Continuous fun g : Fin 2 → GalLK p K (MaximalUnramifiedExtension p K) => m g • urOfK p K a` using `(hmc.comp fun k : ℤ => k • urOfK p K a).continuous`.
+
+Set `z : (urT p K).coch.X 2` to `⟨fun g => m g • urOfK p K a, hzc⟩`. Establish `hinv` using `(layer_invariant_iff (urOfK p K a)).2 (ofK_mem p K _)`. Establish `hz : (urT p K).coch.d 2 z = 0`. Apply `LowDeg.coch_d_eq_zero` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Establish `h1 : m ![g 1, g 2] - m ![g 0 * g 1, g 2] + m ![g 0, g 1 * g 2] - m ![g 0, g 1] = 0`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[hm, hm, hm, hm]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, mul_assoc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[LowDeg.dn_two_apply]`. Use `show (urT p K).rho (g 0) (m ![g 1, g 2] • urOfK p K a) - m ![g 0 * g 1, g 2] • urOfK p K a + m ![g 0, g 1 * g 2] • urOfK p K a - m ![g 0, g 1] • urOfK p K a = 0`. Rewrite using `[map_zsmul, hinv, ← sub_smul, ← add_smul, ← sub_smul, h1, zero_smul]`. Use `⟨t, m, z, hz, ht, htχ, hm, fun _ => rfl, ?_⟩` and prove the remaining obligations.
+
+Use `IsPairClass.unique (isPairClass_pairBr a χ) ⟨fun g => t (QuotientGroup.mk g), fun g => m fun i => QuotientGroup.mk (g i), (layerInf p K (MaximalUnramifiedExtension p K)).hom.f 2 z, by rw [← (layerInf p K (MaximalUnramifiedExtension p K)).hom.comm, hz, map_zero], ht.comp_continuou …` and prove the remaining obligations.
+-/
 theorem exists_ur_cocycle (a : Kˣ) (χ : charGrp (GK p K)) (hχ : TrivOn p K (MaximalUnramifiedExtension p K) χ) :
     ∃ (t : GalLK p K (MaximalUnramifiedExtension p K) → ℚ) (m : (Fin 2 → GalLK p K (MaximalUnramifiedExtension p K)) → ℤ) (z : (urT p K).coch.X 2)
       (hz : (urT p K).coch.d 2 z = 0), IsLocallyConstant t ∧
@@ -92,6 +121,17 @@ theorem exists_ur_cocycle (a : Kˣ) (χ : charGrp (GK p K)) (hχ : TrivOn p K (M
       (layerInf p K (MaximalUnramifiedExtension p K)).hom.f 2 z, by rw [← (layerInf p K (MaximalUnramifiedExtension p K)).hom.comm, hz, map_zero],
       ht.comp_continuous continuous_quot_mk, htχ, fun g => hm _, fun g => rfl, rfl⟩
 
+/- English proof (translation)
+Take `⟨t, m, z, hz, -, -, -, hzm, h⟩` from `exists_ur_cocycle a χ hχ`. Establish `hv : vLayerMap p K (MaximalUnramifiedExtension p K) (urOfK p K a) = 0`. Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[vLayerMap_spec p le_Kur, urOfK_val, vbar_apply]`. Establish `ha' : ‖((a : K) : PadicAlgCl p)‖ = 1` using `ha`.
+
+Use `show (eK p (MaximalUnramifiedExtension p K) : ℝ) * - Real.logb p ‖((a : K) : PadicAlgCl p)‖ = _`. Rewrite using `[ha']`. Simplify using the standard rewrite rules. Establish `hf0 : (vLayer p K (MaximalUnramifiedExtension p K)).hom.f 2 z = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `g`. Use `show vLayerMap p K (MaximalUnramifiedExtension p K) (z.1 fun i => g i) = 0`. Rewrite using `[hzm, map_zsmul, hv, smul_zero]`. Establish `hc : (urT p K).coch.cls 2 z hz = 0`. Apply `(valuation_unramified_closure_h2_bijective hK).1` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Use `show (trivRep (GalLK p K (MaximalUnramifiedExtension p K)) ℤ).coch.cls 2 ((vLayer p K (MaximalUnramifiedExtension p K)).hom.f 2 z) _ = 0`. Use `(LongExactSequenceMaps.cls_eq_zero _ 2 _ _).2 ?_` and prove the remaining obligations. Rewrite using `[hf0]`. Conclude with `Submodule.zero_mem _`.
+
+Unfold `pairK`. Rewrite using `[h, hc, map_zero, map_zero]`.
+-/
 theorem pairK_unit_unr (hK : FiniteDimensional ℚ_[p] K) (a : Kˣ) (ha : a ∈ UK p K) (χ : charGrp (GK p K))
     (hχ : TrivOn p K (MaximalUnramifiedExtension p K) χ) : pairK p K a χ = 0 := by
   obtain ⟨t, m, z, hz, -, -, -, hzm, h⟩ := exists_ur_cocycle a χ hχ
@@ -117,6 +157,11 @@ theorem pairK_unit_unr (hK : FiniteDimensional ℚ_[p] K) (a : Kˣ) (ha : a ∈ 
   unfold pairK
   rw [h, hc, map_zero, map_zero]
 
+/- English proof (translation)
+Take `⟨t, m, z, hz, ht, htχ, hm, hzm, h⟩` from `exists_ur_cocycle π χ hχ`. Establish `h1 : (eK p K : ℝ) * vbar p (urOfK p K π).1 = 1`. Establish `h2` using `vOn_spec p K ⟨ofK p K (Additive.ofMul π), ofK_mem p K _⟩`. Establish `h3 : vOn p K ⟨ofK p K (Additive.ofMul π), ofK_mem p K _⟩ = 1` using `hπ`. Rewrite `h2` using `[h3, Int.cast_one]`.
+
+Conclude with `h2.symm`. Unfold `pairK`. Rewrite using `[h, invBr_layerInf hK, isInv_invUr hK (urOfK p K π) t m z hz (ofK_mem p K _) h1 ht hm hzm]`. Conclude with `htχ (frobK p K)`.
+-/
 theorem pairK_uniformiser_unr (hK : FiniteDimensional ℚ_[p] K) (π : Kˣ) (hπ : vK p K π = 1) (χ : charGrp (GK p K))
     (hχ : TrivOn p K (MaximalUnramifiedExtension p K) χ) : pairK p K π χ = χ.1 (Additive.ofMul (frobK p K)) := by
   obtain ⟨t, m, z, hz, ht, htχ, hm, hzm, h⟩ := exists_ur_cocycle π χ hχ
@@ -129,6 +174,13 @@ theorem pairK_uniformiser_unr (hK : FiniteDimensional ℚ_[p] K) (π : Kˣ) (hπ
   rw [h, invBr_layerInf hK, isInv_invUr hK (urOfK p K π) t m z hz (ofK_mem p K _) h1 ht hm hzm]
   exact htχ (frobK p K)
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `exists_vK_eq_one p K hK`. Establish `hzpow : ∀ n : ℤ, pairK p K (π ^ n) χ = n • pairK p K π χ`. Introduce `n`. Take `⟨k, rfl | rfl⟩` from `n.eq_nat_or_neg`. Rewrite using `[zpow_natCast, pairK_pow, natCast_zsmul]`.
+
+Rewrite using `[zpow_neg, zpow_natCast, pairK_inv, pairK_pow, neg_smul, natCast_zsmul]`. Establish `hu : a * (π ^ vK p K a)⁻¹ ∈ UK p K`. Rewrite using `[mem_UK_iff p K hK, vK_mul, vK_inv, vK_zpow, hπ]`. Expand and normalize the polynomial expressions, which then agree. Establish `ha : a = a * (π ^ vK p K a)⁻¹ * π ^ vK p K a` using `by rw [inv_mul_cancel_right]`.
+
+Use `conv_lhs => rw [ha]`. Rewrite using `[pairK_mul, pairK_unit_unr hK _ hu χ hχ, zero_add, hzpow, pairK_uniformiser_unr hK π hπ χ hχ]`.
+-/
 theorem pairK_unr (hK : FiniteDimensional ℚ_[p] K) (a : Kˣ) (χ : charGrp (GK p K)) (hχ : TrivOn p K (MaximalUnramifiedExtension p K) χ) :
     pairK p K a χ = vK p K a • χ.1 (Additive.ofMul (frobK p K)) := by
   obtain ⟨π, hπ⟩ := exists_vK_eq_one p K hK

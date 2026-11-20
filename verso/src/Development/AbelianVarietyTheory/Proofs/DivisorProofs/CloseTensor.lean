@@ -9,6 +9,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CloseTen
 
+/- English proof (translation)
+Proceed by induction on `hc using Relation.ReflTransGen.head_induction_on with`. Consider the case `refl`. Introduce `φ hφ hφd`. Establish `e : φ = ψ₂`. Apply `RingHom.ext` to reduce the goal to its premises.
+
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul d h`. Establish `e1 : d ⊗ₜ[ℂ] h = (d ⊗ₜ[ℂ] (1 : Hol W₀)) * ((1 : R) ⊗ₜ[ℂ] h)`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, _root_.one_mul]`. Rewrite using `[e1, map_mul, map_mul, hφd, hφ]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Substitute `e` using the available equality.
+
+Conclude with `Relation.ReflTransGen.refl`. Consider the case `head hs _ ih`. Introduce `φ hφ hφd`. Take `⟨n, hnJ, hn2, hn⟩` from `hs`. Take `⟨φ', hφ'⟩` from `GlobalTheory.T.exists_squareZero_move_tensor_holomorphic φ n hn2`.
+
+Use `Relation.ReflTransGen.head ⟨n, hnJ, hn2, fun h => ?_⟩ (ih φ' (fun h => ?_) (fun d => ?_))` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hφ']`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hρ]`.
+
+Rewrite using `[hφ', hn h, hφ]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.lTensor_tmul, Derivation.coeFn_coe, hφ]`. Rewrite using `[hφ', ← hφd] conv_rhs => rw [← add_zero (φ (d ⊗ₜ[ℂ] 1))]`.
+
+Use `congr 1`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.lTensor_tmul, Derivation.coeFn_coe, Derivation.map_one_eq_zero, TensorProduct.tmul_zero, map_zero, zero_mul]`.
+-/
 theorem baseChange_tensor_holomorphic_closeness {I : Type} [Fintype I] {g : ℕ} {W : Opens (Tot I g)} {W₀ : Opens (Tot Empty g)}
     {R : Type} [CommRing R] [Algebra ℂ R] {C : Type} [CommRing C] (J : Ideal C)
     (ρ : Hol W →+* R ⊗[ℂ] Hol W₀)
@@ -54,6 +69,9 @@ theorem baseChange_tensor_holomorphic_closeness {I : Type} [Fintype I] {g : ℕ}
       rw [LinearMap.lTensor_tmul, Derivation.coeFn_coe, Derivation.map_one_eq_zero,
         TensorProduct.tmul_zero, map_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `I _ g W W₀ R _ _ C _ J ρ hρ ψ₁ ψ₂ hd hc`. Conclude with `baseChange_tensor_holomorphic_closeness J ρ hρ ψ₂ _ hc ψ₁ (fun h => rfl) hd`.
+-/
 theorem close_tensor : ∀ {I : Type} [Fintype I] {g : ℕ} {W : Opens (Tot I g)} {W₀ : Opens (Tot Empty g)} {R : Type} [CommRing R] [Algebra ℂ R] {C : Type} [CommRing C] (J : Ideal C) (ρ : Hol W →+* R ⊗[ℂ] Hol W₀), (∀ (a : Fin g) (h : Hol W), ρ (dw a h) = LinearMap.lTensor R (dw a).toLinearMap (ρ h)) → ∀ ψ₁ ψ₂ : R ⊗[ℂ] Hol W₀ →+* C, (∀ d : R, ψ₁ (d ⊗ₜ[ℂ] 1) = ψ₂ (d ⊗ₜ[ℂ] 1)) → Close J (ψ₁.comp (Algebra.TensorProduct.includeRight : Hol W₀ →ₐ[ℂ] R ⊗[ℂ] Hol W₀).toRingHom) (ψ₂.comp (Algebra.TensorProduct.includeRight : Hol W₀ →ₐ[ℂ] R ⊗[ℂ] Hol W₀).toRingHom) → Close J (ψ₁.comp ρ) (ψ₂.comp ρ) := by
   intro I _ g W W₀ R _ _ C _ J ρ hρ ψ₁ ψ₂ hd hc
   exact baseChange_tensor_holomorphic_closeness J ρ hρ ψ₂ _ hc ψ₁ (fun h => rfl) hd

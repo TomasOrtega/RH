@@ -10,6 +10,11 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.SymGenericExt
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ G _ hG L hL h`. Establish `e` using `GlobalTheory.SymBaseChange.inv_left_fst _ _ G (jK R)`. Establish `h1` using `GenSpread.lbIso_pull_pull hL (a := pullback.fst G.hom (jK R)) (GrpObj.inv : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G).left rfl`. Establish `h2` using `GenSpread.lbIso_pull_pull hL (a := (GrpObj.inv : G ⟶ G).left) (pullback.fst G.hom (jK R)) e`. Use `GlobalTheory.GenericDec.lbIso_of_generic G hG (pull_isLB hL _) hL ?_` and prove the remaining obligations.
+
+Conclude with `LBIso.trans (pull_isLB (pull_isLB hL _) _) (pull_isLB hL _) (pull_isLB hL _) (LBIso.symm h2) (LBIso.trans (pull_isLB hL _) (pull_isLB (pull_isLB hL _) _) (pull_isLB hL _) h1 h)`.
+-/
 theorem symm_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → ∀ L : LB G.left, L.IsLB → LBIso ((L.pull (pullback.fst G.hom (jK R))).pull (GrpObj.inv : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G).left) (L.pull (pullback.fst G.hom (jK R))) → LBIso (L.pull (GrpObj.inv : G ⟶ G).left) L := by
   intro R _ _ _ _ _ G _ hG L hL h
   have e := GlobalTheory.SymBaseChange.inv_left_fst _ _ G (jK R)

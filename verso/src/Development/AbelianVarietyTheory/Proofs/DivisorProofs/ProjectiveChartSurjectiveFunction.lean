@@ -27,6 +27,9 @@ noncomputable section
 
 namespace GlobalTheory.ResDegRatio
 
+/- English proof (translation)
+Use `⟨Y.evaluation V (f x) (h hx) s, ?_⟩` and prove the remaining obligations. Use `(Scheme.evaluation_naturality_apply f x (h hx) s).trans ?_` and prove the remaining obligations. Use `congrArg (X.residue x).hom ?_` and prove the remaining obligations. Conclude with `(X.presheaf.germ_res_apply (homOfLE h) x hx _).symm`.
+-/
 theorem residue_germ_appLE_mem {X Y : Scheme.{0}} (f : X ⟶ Y) (x : X) (V : Y.Opens) (U : X.Opens) (hx : x ∈ U)
     (h : U ≤ f ⁻¹ᵁ V) (s : Γ(Y, V)) :
     (X.residue x).hom ((X.presheaf.germ U x hx).hom ((f.appLE V U h).hom s)) ∈
@@ -36,6 +39,9 @@ theorem residue_germ_appLE_mem {X Y : Scheme.{0}} (f : X ⟶ Y) (x : X) (V : Y.O
   refine congrArg (X.residue x).hom ?_
   exact (X.presheaf.germ_res_apply (homOfLE h) x hx _).symm
 
+/- English proof (translation)
+Set `` to `(f.residueFieldMap x).hom.toAlgebra`. Establish `h : Function.Bijective (algebraMap (Y.residueField (f x)) (X.residueField x))` using `⟨RingHom.injective _, hs⟩`. Conclude with `(LinearEquiv.ofBijective (Algebra.linearMap _ _) h).finrank_eq.symm.trans (CommSemiring.finrank_self _)`.
+-/
 theorem residueDegree_eq_one_of_surjective {X Y : Scheme.{0}} (f : X ⟶ Y) (x : X)
     (hs : Function.Surjective (f.residueFieldMap x).hom) : f.residueDegree x = 1 := by
   let := (f.residueFieldMap x).hom.toAlgebra
@@ -43,6 +49,19 @@ theorem residueDegree_eq_one_of_surjective {X Y : Scheme.{0}} (f : X ⟶ Y) (x :
     ⟨RingHom.injective _, hs⟩
   exact (LinearEquiv.ofBijective (Algebra.linearMap _ _) h).finrank_eq.symm.trans (CommSemiring.finrank_self _)
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ m z X _ p π ψ i U hη hU hp hψ hc hz hr`. Substitute `hp` using the available equality. Use `residueDegree_eq_one_of_surjective π _ ?_` and prove the remaining obligations. Set `ρ : Ω →+* X.residueField (genericPoint X)` to `(X.residue (genericPoint X)).hom.comp ψ`. Set `F : Subfield Ω` to `((π.residueFieldMap (genericPoint X)).hom.fieldRange).comap ρ`.
+
+Establish `hO : ∀ a : 𝓞 K, algebraMap K Ω (a : K) ∈ F` using `fun a => by`. Express the relevant statement in the definitionally equal form `(X.residue (genericPoint X)).hom (ψ _) ∈ (π.residueFieldMap (genericPoint X)).hom.fieldRange`. Rewrite using `[hc]`. Establish `e : algX (π ≫ PSpace.str (𝓞 K) m) ⊤ a = (π.appLE ⊤ ⊤ le_top).hom (algX (PSpace.str (𝓞 K) m) ⊤ a)` using `(congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of (𝓞 K))).inv.hom a)) (Scheme.Hom.appLE_comp_appLE π (PSpace.str (𝓞 K) m) ⊤ ⊤ ⊤ le_top le_top)).symm`. Rewrite using `[e]`.
+
+Conclude with `residue_germ_appLE_mem π _ ⊤ ⊤ _ le_top _`. Establish `hK : ∀ a : K, algebraMap K Ω a ∈ F` using `fun a => by`. Take `⟨b, c, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) a`. Rewrite using `[map_div₀]`. Conclude with `F.div_mem (hO b) (hO c)`.
+
+Establish `hF : IntermediateField.adjoin K (Set.range z) ≤ F.toIntermediateField hK`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨j, rfl⟩`. Express the relevant statement in the definitionally equal form `(X.residue (genericPoint X)).hom (ψ _) ∈ (π.residueFieldMap (genericPoint X)).hom.fieldRange`. Rewrite using `[← hr]`.
+
+Conclude with `residue_germ_appLE_mem π _ _ U hη hU _`. Introduce `y`. Take `⟨b, rfl⟩` from `X.residue_surjective (genericPoint X) y`. Take `⟨a, rfl⟩` from `hψ b`. Rewrite `hF` using `[hz]`.
+
+Conclude with `hF (IntermediateField.mem_top (x := a))`.
+-/
 theorem residueDegree_eq_one_of_ratios :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (m : ℕ) (z : Fin (m + 1) → Ω) (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (π : X ⟶ PSpace (𝓞 K) m) (ψ : Ω →+* X.functionField) (i : Fin (m + 1)) (U : X.Opens) (hη : genericPoint X ∈ U) (hU : U ≤ π ⁻¹ᵁ GlobalTheory.ProjSpace.chart (𝓞 K) m i),
     π ≫ PSpace.str (𝓞 K) m = p → Function.Surjective ψ →

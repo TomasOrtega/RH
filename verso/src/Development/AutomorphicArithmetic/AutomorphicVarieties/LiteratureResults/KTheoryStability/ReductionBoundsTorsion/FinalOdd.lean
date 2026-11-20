@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 
 namespace PositivityTheory.KB
 
+/- English proof (translation)
+The claim follows from `sBStarOdd_of sChain sSep' sBridge sStab (sSurj_of sPrime_of sHecke sHt_of sPU sMom sWhit sCen sGap_of sLoc sMean_of sInv) (sWtOdd_of sChain sEv sPsi sStokes_of)`.
+-/
 theorem bStarOdd : BStarOdd :=
   sBStarOdd_of sChain sSep' sBridge sStab
     (sSurj_of sPrime_of sHecke sHt_of sPU sMom sWhit sCen sGap_of sLoc sMean_of sInv)

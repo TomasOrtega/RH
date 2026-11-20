@@ -25,9 +25,17 @@ def vecLS (a : ℕ) :
     simp only [vecL, Pi.smul_apply, Algebra.smul_def, map_mul, Br.toLLK_alg]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(D.nbr i w hw).eO.surjective⟩`.
+-/
 theorem eO_surj : RingHomSurjective (D.nbr i w hw).eO.toRingHom :=
   ⟨(D.nbr i w hw).eO.surjective⟩
 
+/- English proof (translation)
+Rewrite using `[latY, Submodule.map_span]`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Conclude with `hu`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨⟨vecL i w hw y, Submodule.subset_span ⟨y, hy, rfl⟩⟩, ⟨y, hy, rfl⟩, rfl⟩`.
+-/
 theorem latY_map {a : ℕ} (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK D.nd i)) :
     (latY i w hw Y).map ((spanL i w hw Y).subtype.restrictScalars (Br.OLL D.nbr i w hw)) =
       Submodule.span (Br.OLL D.nbr i w hw) (vecL i w hw '' (Y : Set _)) := by
@@ -40,6 +48,11 @@ theorem latY_map {a : ℕ} (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → K
   · rintro ⟨y, hy, rfl⟩
     exact ⟨⟨vecL i w hw y, Submodule.subset_span ⟨y, hy, rfl⟩⟩, ⟨y, hy, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hinj : Function.Injective ((spanL i w hw Y).subtype.restrictScalars (Br.OLL D.nbr i w hw))` using `Subtype.val_injective`. Apply `Submodule.fg_of_fg_map_injective _ hinj` to reduce the goal to its premises. Rewrite using `[latY_map]`. Use `haveI := eO_surj i w hw`. Take `⟨S, rfl⟩` from `hY`.
+
+Establish `h : ∀ T : Set (Fin a → Fin D.R.nV → KK D.nd i), vecL i w hw '' T = (vecLS i w hw a) '' T` using `fun _ => rfl`. Rewrite using `[h, ← Submodule.map_coe, Submodule.span_eq, Submodule.map_span]`. Conclude with `⟨(S.image (vecLS i w hw a)), by rw [Finset.coe_image]⟩`.
+-/
 theorem latY_fg {a : ℕ} (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK D.nd i)) (hY : Y.FG) :
     (latY i w hw Y).FG := by
   have hinj : Function.Injective ((spanL i w hw Y).subtype.restrictScalars (Br.OLL D.nbr i w hw)) :=
@@ -54,6 +67,9 @@ theorem latY_fg {a : ℕ} (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK
   classical
   exact ⟨(S.image (vecLS i w hw a)), by rw [Finset.coe_image]⟩
 
+/- English proof (translation)
+Introduce `v hv`. Use `haveI := hT`. Establish `key : Submodule.span R s ≤ (Submodule.span R s).comap (f.restrictScalars R)` using `Submodule.span_le.2 fun u hu => Submodule.subset_span (h u hu)`. Conclude with `key hv`.
+-/
 theorem span_stable_of_gen {R K M : Type} [CommRing R] [Field K] [Algebra R K] [AddCommGroup M] [Module K M]
     [Module R M] (hT : IsScalarTower R K M) (f : M →ₗ[K] M) (s : Set M) (h : ∀ v ∈ s, f v ∈ s) :
     ∀ v ∈ Submodule.span R s, f v ∈ Submodule.span R s := by
@@ -63,6 +79,11 @@ theorem span_stable_of_gen {R K M : Type} [CommRing R] [Field K] [Algebra R K] [
     Submodule.span_le.2 fun u hu => Submodule.subset_span (h u hu)
   exact key hv
 
+/- English proof (translation)
+Introduce `g`. Apply `span_stable_of_gen (K := Br.LL D.nbr i w hw)` to reduce the goal to its premises. Conclude with `⟨fun c k u => Subtype.ext (smul_assoc c k (u.1 : Fin a → Fin D.R.nV → Br.LL D.nbr i w hw))⟩`. Introduce and unpack `v ⟨y, hy, hv⟩`. Use `⟨actK i r Xs x (gl i w hw g) y, hst _ y hy, ?_⟩` and prove the remaining obligations.
+
+Use `show _ = (sumG i w hw r Xs hr x).ρ g (v : Fin a → Fin D.R.nV → Br.LL D.nbr i w hw)`. Rewrite using `[← hv, sumG_vecL]`.
+-/
 theorem latY_stable (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (Xs : Set (D.nd.X i)) (hr : GoodR D.nd i r) {a : ℕ} (x : Fin a → ↥Xs)
     (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK D.nd i))
@@ -77,6 +98,11 @@ theorem latY_stable (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
   show _ = (sumG i w hw r Xs hr x).ρ g (v : Fin a → Fin D.R.nV → Br.LL D.nbr i w hw)
   rw [← hv, sumG_vecL]
 
+/- English proof (translation)
+Apply `Submodule.map_injective_of_injective (spanL i w hw Y).injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_subtype_top]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨u, -, rfl⟩`.
+
+Conclude with `u.2`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨⟨vecL i w hw y, Submodule.subset_span ⟨y, hy, rfl⟩⟩, Submodule.subset_span ⟨y, hy, rfl⟩, rfl⟩`.
+-/
 theorem latY_span {a : ℕ} (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK D.nd i)) :
     Submodule.span (Br.LL D.nbr i w hw) ((latY i w hw Y : Set ↥(spanL i w hw Y))) = ⊤ := by
   apply Submodule.map_injective_of_injective (spanL i w hw Y).injective_subtype
@@ -91,6 +117,15 @@ theorem latY_span {a : ℕ} (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → 
     exact ⟨⟨vecL i w hw y, Submodule.subset_span ⟨y, hy, rfl⟩⟩,
       Submodule.subset_span ⟨y, hy, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Use `haveI : Module.Finite (Br.OLL D.nbr i w hw) ↥(latY i w hw Y) := Module.Finite.iff_fg.2 (latY_fg i w hw Y hY)`. Use `haveI : NoZeroSMulDivisors (Br.OLL D.nbr i w hw) ↥(latY i w hw Y) := by`. Prove the components needed by the constructor for the conclusion. Introduce `c u h`. Distinguish the cases in `hc : c = 0`.
+
+Conclude with `Or.inl hc`. Use `right`. Establish `h1 : ((c • u : ↥(latY i w hw Y)) : ↥(spanL i w hw Y)) = 0` using `by rw [h]; rfl`. Establish `h2 : ((algebraMap (Br.OLL D.nbr i w hw) (Br.LL D.nbr i w hw) c) • (u : ↥(spanL i w hw Y))) = 0`. Rewrite using `[algebraMap_smul]`.
+
+Conclude with `h1`. Establish `hc' : algebraMap (Br.OLL D.nbr i w hw) (Br.LL D.nbr i w hw) c ≠ 0`. Introduce `h0`. Apply `hc` to reduce the goal to its premises. Conclude with `Subtype.val_injective h0`.
+
+Use `(smul_eq_zero.1 h2).resolve_left hc'` as an intermediate fact. Conclude with `Subtype.ext this`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+-/
 theorem latY_free {a : ℕ} (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK D.nd i)) (hY : Y.FG) :
     Module.Free (Br.OLL D.nbr i w hw) ↥(latY i w hw Y) := by
   haveI : Module.Finite (Br.OLL D.nbr i w hw) ↥(latY i w hw Y) :=
@@ -110,6 +145,9 @@ theorem latY_free {a : ℕ} (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → 
     exact Subtype.ext this
   exact Module.free_of_finite_type_torsion_free'
 
+/- English proof (translation)
+Introduce `D i w hw r Xs hr a x Y hst hY`. Conclude with `⟨{ T := latY i w hw Y stable := latY_stable i w hw r Xs hr x Y hst fg := latY_fg i w hw Y hY free := latY_free i w hw Y hY span := latY_span i w hw Y }, rfl⟩`.
+-/
 theorem latY_lattice : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (Xs : Set (D.nd.X i)) (hr : GoodR D.nd i r) {a : ℕ} (x : Fin a → ↥Xs)

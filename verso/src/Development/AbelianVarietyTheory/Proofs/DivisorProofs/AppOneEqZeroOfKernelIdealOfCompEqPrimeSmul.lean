@@ -8,6 +8,13 @@ set_option autoImplicit false
 
 namespace GlobalTheory.PDivGroup
 
+/- English proof (translation)
+Introduce `p _ R _ G H f g hgf a ha`. Establish `hle : kerIdeal (f.app 1) ≤ RingHom.ker (g.app 1 : G.A 1 →ₐ[R] H.A 1)`. Rewrite using `[kerIdeal, Ideal.map_le_iff_le_comap]`. Introduce `c hc`. Establish `hc' : counit (R` using `R) c = 0 := hc`.
+
+Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Establish `e : g.app 1 (f.app 1 c) = Hom.app (g ≫ f) 1 c` using `rfl`. Express the relevant statement in the definitionally equal form `g.app 1 (f.app 1 c) = 0`. Rewrite using `[e, hgf, prime_smul_id_app]`. Establish `h1` using `H.mulBy_pow_self 1 c`.
+
+Rewrite `h1` using `[pow_one]`. Rewrite using `[h1, hc', map_zero]`. Conclude with `hle ha`.
+-/
 theorem app_one_eq_zero_of_mem_kerIdeal_of_comp_eq_prime_smul :
     ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (G H : PDivGroup p R) (f : G ⟶ H) (g : H ⟶ G),
       g ≫ f = (p : ℤ_[p]) • 𝟙 H → ∀ a ∈ kerIdeal (f.app 1), g.app 1 a = 0 := by

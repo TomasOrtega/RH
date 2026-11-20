@@ -23,6 +23,11 @@ def cOf (m m' : Fin (r + 1) → M.R) : Ix r → M.L.O
       mem_O_of_comp g _ (by simpa using (comp_of_mem_R hs (m a).2).1)
         (by simpa using (comp_of_mem_R hs (m' a).2).1)⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[embedding_firstCoefficient]`. Simplify using `only [cOf, AlgEquiv.apply_symm_apply]`.
+
+Use `Prod.ext rfl ?_` and prove the remaining obligations. Simplify using `only [trO_coe]`. Clear denominators, using `[q_ne g]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mOf1_cOf (m m' : Fin (r + 1) → M.R) : mOf1 hs (cOf hs m m') = m := by
   funext a; apply Subtype.ext; apply g.e.injective
   rw [embedding_firstCoefficient]
@@ -32,6 +37,11 @@ theorem mOf1_cOf (m m' : Fin (r + 1) → M.R) : mOf1 hs (cOf hs m m') = m := by
   field_simp [q_ne g]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[embedding_secondCoefficient]`. Simplify using `only [cOf, AlgEquiv.apply_symm_apply]`.
+
+Use `Prod.ext rfl ?_` and prove the remaining obligations. Simplify using `only [trO_coe]`. Clear denominators, using `[q_ne g]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mOf2_cOf (m m' : Fin (r + 1) → M.R) : mOf2 hs (cOf hs m m') = m' := by
   funext a; apply Subtype.ext; apply g.e.injective
   rw [embedding_secondCoefficient]
@@ -46,6 +56,21 @@ variable (hTT : g.e (TT : E) = (T, T')) (hZ : Z.Z.map M.R.subtype = HermSp.ZZplu
   (hZσ : Zσ.Z.map M.R.subtype = HermSp.ZZplusOf M (Zh.map M.L.cj) T T')
 
 include hTT hZ hZσ in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨AddMonoidHom.mem_range.2 ⟨_, (firstComponent_gram_rows hs hTT hZ c Y hc).symm⟩, AddMonoidHom.mem_range.2 ⟨_, (secondComponent_gram_rows hs hTT hZσ c Y hc).symm⟩⟩`. Introduce and unpack `⟨hm, hm'⟩`. Take `⟨m, hm⟩` from `AddMonoidHom.mem_range.1 hm`.
+
+Take `⟨m', hm'⟩` from `AddMonoidHom.mem_range.1 hm'`. Establish `hq` using `q_ne g`. Establish `hmc : llMap hs Z TT (mOf1 hs (cOf hs m m')) = cmp1 hs Y` using `by rw [mOf1_cOf]; exact hm`. Establish `hmc' : llMap hs Zσ TT (mOf2 hs (cOf hs m m')) = cmp2 hs Y` using `by rw [mOf2_cOf]; exact hm'`. Use `⟨cOf hs m m', fun j => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ∀ b, g.e ((cmp1 hs Y b : M.R) : E) = ((g.e (∑ i, (cOf hs m m' i : E) * GG (g` using `g) Zh T T' i (Sum.inl b))).1, (g.e (∑ i, (cOf hs m m' i : E) * GG (g := g) Zh T T' i (Sum.inl b))).1 + (g.q : F) * (g.e (∑ i, (cOf hs m m' i : E) * GG (g := g) Zh T T' i (Sum.inr b))).1) := fun b => by rw [← hmc]; exact (gram_rows_firstEmbedding hs hTT hZ (cOf hs m m') b).symm`. Establish `h2 : ∀ b, g.e ((cmp2 hs Y b : M.R) : E) = ((g.e (∑ i, (cOf hs m m' i : E) * GG (g` using `g) Zh T T' i (Sum.inl b))).2, (g.e (∑ i, (cOf hs m m' i : E) * GG (g := g) Zh T T' i (Sum.inl b))).2 + (g.q : F) * (g.e (∑ i, (cOf hs m m' i : E) * GG (g := g) Zh T T' i (Sum.inr b))).2) := fun b => by rw [← hmc']; exact (gram_rows_secondEmbedding hs hTT hZσ (cOf hs m m') b).symm`. Apply `g.e.injective` to reduce the goal to its premises. Break down `j with b | b` into its components or cases. Establish `a1` using `congrArg Prod.fst (h1 b)`.
+
+Establish `a2` using `congrArg Prod.fst (h2 b)`. Rewrite `a1` using `[embedding_firstComponent]`. Rewrite `a2` using `[embedding_secondComponent]`. Conclude with `Prod.ext a1 a2`. Establish `a1` using `congrArg Prod.fst (h1 b)`.
+
+Establish `a2` using `congrArg Prod.fst (h2 b)`. Establish `b1` using `congrArg Prod.snd (h1 b)`. Establish `b2` using `congrArg Prod.snd (h2 b)`. Rewrite `a1`, `b1` using `[embedding_firstComponent]`. Rewrite `a2`, `b2` using `[embedding_secondComponent]`.
+
+Simplify using `only at a1 a2 b1 b2`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `mul_left_cancel₀ hq` to reduce the goal to its premises. Take the linear combination `b1 - a1`. Apply `mul_left_cancel₀ hq` to reduce the goal to its premises.
+
+Take the linear combination `b2 - a2`.
+-/
 theorem rel_iff (Y : Ix r → M.L.O) :
     Y ∈ RelG g Zh T T' ↔ cmp1 hs Y ∈ LL hs Z TT ∧ cmp2 hs Y ∈ LL hs Zσ TT := by
   constructor
@@ -79,11 +104,17 @@ theorem rel_iff (Y : Ix r → M.L.O) :
       · apply mul_left_cancel₀ hq; linear_combination b1 - a1
       · apply mul_left_cancel₀ hq; linear_combination b2 - a2
 
+/- English proof (translation)
+Establish `h` using `iotaOne_add hs (0 : Fin (r + 1) → M.R) 0`. Rewrite `h` using `[add_zero]`. Conclude with `(add_eq_left.1 h.symm)`.
+-/
 theorem iotaOne_zero : iota1 hs (0 : Fin (r + 1) → M.R) = 0 := by
   have h := iotaOne_add hs (0 : Fin (r + 1) → M.R) 0
   rw [add_zero] at h
   exact (add_eq_left.1 h.symm)
 
+/- English proof (translation)
+Establish `h` using `iotaTwo_add hs (0 : Fin (r + 1) → M.R) 0`. Rewrite `h` using `[add_zero]`. Conclude with `(add_eq_left.1 h.symm)`.
+-/
 theorem iotaTwo_zero : iota2 hs (0 : Fin (r + 1) → M.R) = 0 := by
   have h := iotaTwo_add hs (0 : Fin (r + 1) → M.R) 0
   rw [add_zero] at h
@@ -127,11 +158,17 @@ def ofP : DD1 hs Z TT × DD1 hs Zσ TT →+ DG g Zh T T' :=
         · rw [firstComponent_iotaTwo]; exact zero_mem _
         · rw [secondComponent_iotaTwo]; exact hl))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toP_mk (Y : Ix r → M.L.O) :
     toP hs hTT hZ hZσ (Submodule.Quotient.mk Y : DG g Zh T T') =
       ((QuotientAddGroup.mk (cmp1 hs Y) : DD1 hs Z TT), (QuotientAddGroup.mk (cmp2 hs Y) : DD1 hs Zσ TT)) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofP_mk (l w : Fin (r + 1) → M.R) :
     ofP hs hTT hZ hZσ ((QuotientAddGroup.mk l : DD1 hs Z TT), (QuotientAddGroup.mk w : DD1 hs Zσ TT)) =
       (Submodule.Quotient.mk (iota1 hs l + iota2 hs w) : DG g Zh T T') :=
@@ -150,6 +187,9 @@ def splitQ : DG g Zh T T' ≃+ DD1 hs Z TT × DD1 hs Zσ TT where
     rw [ofP_mk, toP_mk, map_add, map_add, firstComponent_iotaOne, secondComponent_iotaOne, firstComponent_iotaTwo, secondComponent_iotaTwo, add_zero, zero_add]
   map_add' := (toP hs hTT hZ hZσ).map_add
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem splitQ_mk (Y : Ix r → M.L.O) :
     splitQ hs hTT hZ hZσ (Submodule.Quotient.mk Y : DG g Zh T T') =
       ((QuotientAddGroup.mk (cmp1 hs Y) : DD1 hs Z TT), (QuotientAddGroup.mk (cmp2 hs Y) : DD1 hs Zσ TT)) :=

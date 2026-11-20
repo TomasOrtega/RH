@@ -19,6 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.NormRatio
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NormRatio.ip_om_cosetVec_eq_zero | exact GlobalTheory.NormRatio.ip_om_cosetVec_eq_zero | (intros; apply GlobalTheory.NormRatio.ip_om_cosetVec_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cosetVector_orthogonal_translate_finite_point : ∀ {D : D7} {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (X : Data P) (r : D.host.E), IsExact P X r →
   ∀ (𝔪 : Ideal (𝓞 D.host.E)) (Sf : Finset (FinPl D)) (o : ℕ), GoodMod D 𝔪 Sf →
   ∀ LB : Lat X.B, IsSelfDualC X.B LB →

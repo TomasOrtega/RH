@@ -12,13 +12,30 @@ namespace GlobalTheory.RatCorr
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `haveI : Nontrivial (AF F) := inferInstanceAs (Nontrivial (Ainf F × Af F)) Algebra.TensorProduct.includeRight_injective (algebraMap F (AF F)).injective`.
+-/
 theorem inclR_injective : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
   haveI : Nontrivial (AF F) := inferInstanceAs (Nontrivial (Ainf F × Af F))
   Algebra.TensorProduct.includeRight_injective (algebraMap F (AF F)).injective
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem sigR_inclR (σ : E →ₐ[F] E) (x : E) : sigR (AF F) σ (inclR (AF F) x) = inclR (AF F) (σ x) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+Establish `hg : (g.1 : GL (Fin d) (AE F E)) ∈ HR (AF F) σ (c • J.map σ)` using `(toGAd hσ J hc g).2`. Express the relevant statement in the definitionally equal form `g.1 ∈ (Matrix.GeneralLinearGroup.map (n := Fin d) (inclR (F := F) (E := E) (AF F))).range ↔ g.1 ∈ (Formalism.UG.UJ (σ : E →+* E) (c • J.map σ)).map (Formalism.UG.bc (inclR (AF F)))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g₀, hg₀⟩`. Use `⟨g₀, ?_, hg₀⟩` and prove the remaining obligations.
+
+Establish `h1 : Formalism.UG.cT (sigR (AF F) σ) ((g.1 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) * JR (AF F) (c • J.map σ) * ((g.1 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = JR (AF F) (c • J.map σ)` using `hg`. Establish `hm : ((g.1 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = (g₀ : Matrix (Fin d) (Fin d) E).map (inclR (AF F))`. Rewrite using `[← hg₀]`. Both sides reduce to the same expression. Rewrite `h1` using `[hm]`.
+
+Express the relevant statement in the definitionally equal form `Formalism.UG.cT (σ : E →+* E) (g₀ : Matrix (Fin d) (Fin d) E) * (c • J.map σ) * (g₀ : Matrix (Fin d) (Fin d) E) = c • J.map σ`. Apply `Matrix.map_injective (inclR_injective (F := F) (E := E))` to reduce the goal to its premises. Simplify using `only`. Establish `e1 : (Formalism.UG.cT (σ : E →+* E) (g₀ : Matrix (Fin d) (Fin d) E)).map (inclR (F` using `F) (AF F)) = Formalism.UG.cT (sigR (AF F) σ) ((g₀ : Matrix (Fin d) (Fin d) E).map (inclR (AF F))) := by`. Use extensionality with `i j`.
+
+Simplify using `[Formalism.UG.cT, sigR_inclR]`. Establish `e2 : (c • J.map σ).map (inclR (F` using `F) (AF F)) = JR (AF F) (c • J.map σ) := rfl`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, e1, e2]`. Conclude with `h1`. Introduce and unpack `⟨g₀, -, hg₀⟩`.
+
+Conclude with `⟨g₀, hg₀⟩`.
+-/
 theorem ratU_iff (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (d : ℕ) (J : Matrix (Fin d) (Fin d) E) (c : E) (hc : c ≠ 0)
     (g : UA σ J) : g ∈ ratU σ J ↔ toGAd hσ J hc g ∈ GlobalTheory.AdelicU.ratPts σ (c • J.map σ) := by
   have hg : (g.1 : GL (Fin d) (AE F E)) ∈ HR (AF F) σ (c • J.map σ) := (toGAd hσ J hc g).2
@@ -47,6 +64,9 @@ theorem ratU_iff (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (d : ℕ) (J 
   · rintro ⟨g₀, -, hg₀⟩
     exact ⟨g₀, hg₀⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ σ hσ d J c hc g` and use `ratU_iff σ hσ d J c hc g`.
+-/
 theorem ratU_iff_ratPts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (d : ℕ) (J : Matrix (Fin d) (Fin d) E) (c : E) (hc : c ≠ 0),
       ∀ g : UA σ J, g ∈ ratU σ J ↔ toGAd hσ J hc g ∈ GlobalTheory.AdelicU.ratPts σ (c • J.map σ) :=

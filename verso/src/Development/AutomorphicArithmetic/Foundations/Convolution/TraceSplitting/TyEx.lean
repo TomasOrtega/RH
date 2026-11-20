@@ -8,6 +8,9 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvo
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.EigBasic
 
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.T in
+/- English proof (translation)
+The claim follows from `tyEx_of splitLev splitStable splitMatch inertData offStable L1.typedEx L1.eigBasic`.
+-/
 theorem UpperTheory.ConvolutionTheory.T.tyEx :
     UpperTheory.ConvolutionTheory.T.TyEx :=
   tyEx_of splitLev splitStable splitMatch inertData offStable L1.typedEx L1.eigBasic

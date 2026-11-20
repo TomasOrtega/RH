@@ -24,6 +24,9 @@ def dg (g : Matrix e e R) (t t' : R) : Matrix (e ⊕ Fin 2) (e ⊕ Fin 2) R := f
 variable {ε : R} {A' : Matrix (e ⊕ Fin 2) d R} {c : R →+* R} {J : Matrix d d R} {J₁ : Matrix e e R} {ι : Matrix d e R} {x y : d → R}
 
 omit [Fintype d] [DecidableEq d] [Fintype e] [DecidableEq e] in
+/- English proof (translation)
+Use extensionality with `i j`. Break down `j with j | j` into its components or cases. Simplify using `[fr]`. Apply the tactic sequence `fin_cases j <;> simp [fr]`.
+-/
 theorem fr_map (f : R →+* S) : fr (ι.map f) (fun i => f (x i)) (fun i => f (y i)) = (fr ι x y).map f := by
   ext i j
   rcases j with j | j
@@ -31,6 +34,11 @@ theorem fr_map (f : R →+* S) : fr (ι.map f) (fun i => f (x i)) (fun i => f (y
   · fin_cases j <;> simp [fr]
 
 omit [Fintype e] [DecidableEq e] in
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `[gr]`. Simplify using `[gr]`. Simplify using `[gr]`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [gr]`.
+-/
 theorem gr_map (f : R →+* S) : gr (f ε) (J₁.map f) = (gr ε J₁).map f := by
   ext i j
   rcases i with i | i <;> rcases j with j | j
@@ -39,6 +47,11 @@ theorem gr_map (f : R →+* S) : gr (f ε) (J₁.map f) = (gr ε J₁).map f := 
   · simp [gr]
   · fin_cases i <;> fin_cases j <;> simp [gr]
 
+/- English proof (translation)
+Establish `hfr : fr (ι.map f) (fun i => f (x i)) (fun i => f (y i)) = (fr ι x y).map f` using `fr_map f`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, h.eps, map_one]`. Establish `hcm : ((fr ι x y).map f).map c' = ((fr ι x y).map c).map f`. Use extensionality with `i j`.
+
+Simplify using `[hc]`. Rewrite using `[hfr, gr_map, ← h.gram, hcm, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul]`. Rewrite using `[hfr, ← Matrix.map_mul, h.inv1, Matrix.map_one _ f.map_zero f.map_one]`. Rewrite using `[hfr, ← Matrix.map_mul, h.inv2, Matrix.map_one _ f.map_zero f.map_one]`.
+-/
 theorem IsFr.map (h : IsFr c ε J J₁ ι x y A') (f : R →+* S) {c' : S →+* S} (hc : ∀ a, f (c a) = c' (f a)) :
     IsFr c' (f ε) (J.map f) (J₁.map f) (ι.map f) (fun i => f (x i)) (fun i => f (y i)) (A'.map f) := by
   have hfr : fr (ι.map f) (fun i => f (x i)) (fun i => f (y i)) = (fr ι x y).map f := fr_map f
@@ -51,6 +64,13 @@ theorem IsFr.map (h : IsFr c ε J J₁ ι x y A') (f : R →+* S) {c' : S →+* 
   · rw [hfr, ← Matrix.map_mul, h.inv1, Matrix.map_one _ f.map_zero f.map_one]
   · rw [hfr, ← Matrix.map_mul, h.inv2, Matrix.map_one _ f.map_zero f.map_one]
 
+/- English proof (translation)
+Establish `e1 : (fr ι x y).map c * A'.map c = 1`. Rewrite using `[← Matrix.map_mul, h.inv1, Matrix.map_one _ c.map_zero c.map_one]`. Establish `e2 : J * J⁻¹ = 1` using `Matrix.mul_nonsing_inv J hJ`. Establish `e3 : (fr ι x y)ᵀ * A'ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, h.inv2, Matrix.transpose_one]`.
+
+Establish `hinv : gr ε J₁ * (A'.map c * J⁻¹ * A'ᵀ) = 1`. Rewrite using `[← h.gram]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [e1, Matrix.one_mul, e2, Matrix.mul_one, e3]`.
+
+Establish `hu : IsUnit (gr ε J₁).det` using `Matrix.isUnit_det_of_right_inverse hinv`. Unfold `gr at hu`. Rewrite `hu` using `[Matrix.det_fromBlocks_zero₂₁]`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+-/
 theorem IsFr.isUnit_det (h : IsFr c ε J J₁ ι x y A') (hJ : IsUnit J.det) : IsUnit J₁.det := by
   have e1 : (fr ι x y).map c * A'.map c = 1 := by
     rw [← Matrix.map_mul, h.inv1, Matrix.map_one _ c.map_zero c.map_one]
@@ -69,6 +89,13 @@ theorem IsFr.isUnit_det (h : IsFr c ε J J₁ ι x y A') (hJ : IsUnit J.det) : I
   exact isUnit_of_mul_isUnit_left hu
 
 omit [DecidableEq d] [DecidableEq e] in
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (congrFun h i) (Sum.inl j)` as an intermediate fact. Apply the tactic sequence `simp [fr, Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two] at this ⊢ <;>`. Take the linear combination `this`.
+
+Use extensionality with `i`. Use `congrFun (congrFun h i) (Sum.inr 0)` as an intermediate fact. Apply the tactic sequence `simp [fr, Matrix.mul_apply, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fin.sum_univ_two] at this ⊢ <;>`. Take the linear combination `this`. Use extensionality with `i`.
+
+Use `congrFun (congrFun h i) (Sum.inr 1)` as an intermediate fact. Apply the tactic sequence `simp [fr, Matrix.mul_apply, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fin.sum_univ_two] at this ⊢ <;>`. Take the linear combination `this`.
+-/
 theorem cols_of_mul {m : Matrix d d R} {g : Matrix e e R} {b : Matrix e (Fin 2) R} {a : Matrix (Fin 2) e R}
     {s : Matrix (Fin 2) (Fin 2) R} (h : m * fr ι x y = fr ι x y * fromBlocks g b a s) :
     m * ι = ι * g + of (fun i j => ![x i, y i] j) * a ∧
@@ -87,6 +114,25 @@ theorem cols_of_mul {m : Matrix d d R} {g : Matrix e e R} {b : Matrix e (Fin 2) 
     simp [fr, Matrix.mul_apply, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fin.sum_univ_two] at this ⊢ <;>
       linear_combination this
 
+/- English proof (translation)
+Establish `hct : c t * c t' = 1` using `by rw [← map_mul, ht, map_one]`. Establish `hct' : c t' * c t = 1` using `by rw [mul_comm]; exact hct`. Establish `hdd : dg g t (c t') * dg g' t' (c t) = 1`. Unfold `dg`. Rewrite using `[Matrix.fromBlocks_multiply]`.
+
+Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, hg']`. Rewrite using `[← Matrix.fromBlocks_one]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, ht, hct']`.
+
+Establish `hdgT : (dg g t (c t'))ᵀ * gr ε J₁ * (dg g t (c t')).map c = gr ε J₁`. Unfold `dg gr`. Rewrite using `[Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.transpose_zero, Matrix.map_zero _ c.map_zero, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`. Rewrite using `[hg]`.
+
+Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, hcc, ht] <;>`. Take the linear combination `ε * hct'`. Establish `hmfr : fr ι x y * dg g t (c t') * A' * fr ι x y = fr ι x y * dg g t (c t')`.
+
+Rewrite using `[Matrix.mul_assoc, h.inv2, Matrix.mul_one]`. Take `⟨c1, c2, c3⟩` from `cols_of_mul (g := g) (b := 0) (a := 0) (s := !![t, 0; 0, c t']) hmfr`. Use `⟨fr ι x y * dg g t (c t') * A', fr ι x y * dg g' t' (c t) * A', rfl, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [h.inv2, Matrix.mul_one, hdd, Matrix.mul_one, h.inv1]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = A'ᵀ * ((fr ι x y)ᵀ * J * (fr ι x y).map c) * A'.map c := by rw [h.gram, hdgT]`. Use `_ = (fr ι x y * A')ᵀ * J * (fr ι x y * A').map c := by`.
+
+Simplify using `only [Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = J := by`. Rewrite using `[h.inv1, Matrix.transpose_one, Matrix.map_one _ c.map_zero c.map_one, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[c2]`. Use extensionality with `i`.
+
+Simplify using `[Matrix.mulVec, dotProduct]`. Rewrite using `[c3]`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct]`. Rewrite using `[c1]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem IsFr.levi (h : IsFr c ε J J₁ ι x y A') (hcc : ∀ a, c (c a) = a) {t t' : R} (ht : t * t' = 1) {g g' : Matrix e e R}
     (hg' : g * g' = 1) (hg : gᵀ * J₁ * g.map c = J₁) :
     ∃ m m' : Matrix d d R, m = fr ι x y * dg g t (c t') * A' ∧ m * m' = 1 ∧ mᵀ * J * m.map c = J ∧ m *ᵥ x = t • x ∧ m *ᵥ y = c t' • y ∧ m * ι = ι * g := by
@@ -138,11 +184,17 @@ theorem IsFr.levi (h : IsFr c ε J J₁ ι x y A') (hcc : ∀ a, c (c a) = a) {t
   · rw [c1]
     simp
 
+/- English proof (translation)
+Use extensionality with `i`. Apply the tactic sequence `simp [fr, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fin.sum_univ_two] <;> ring`.
+-/
 private theorem fr_mulVec_sum_elim (u : e → R) (s t : R) :
     fr ι x y *ᵥ Sum.elim u ![s, t] = ι *ᵥ u + s • x + t • y := by
   ext i
   simp [fr, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fin.sum_univ_two] <;> ring
 
+/- English proof (translation)
+Rewrite `e1` using `[← fr_mulVec_sum_elim, ← fr_mulVec_sum_elim]`. Establish `h2` using `congrArg (fun v => A' *ᵥ v) e1`. Simplify using `only [Matrix.mulVec_mulVec, h.inv2, Matrix.one_mulVec] at h2`. Conclude with `⟨funext fun j => by simpa using congrFun h2 (Sum.inl j), by simpa using congrFun h2 (Sum.inr 0), by simpa using congrFun h2 (Sum.inr 1)⟩`.
+-/
 private theorem eq_of_iota_mulVec_add_smul_eq (h : IsFr c ε J J₁ ι x y A') {u u' : e → R} {s t s' t' : R}
     (e1 : ι *ᵥ u + s • x + t • y = ι *ᵥ u' + s' • x + t' • y) : u = u' ∧ s = s' ∧ t = t' := by
   rw [← fr_mulVec_sum_elim, ← fr_mulVec_sum_elim] at e1
@@ -151,6 +203,11 @@ private theorem eq_of_iota_mulVec_add_smul_eq (h : IsFr c ε J J₁ ι x y A') {
   exact ⟨funext fun j => by simpa using congrFun h2 (Sum.inl j), by simpa using congrFun h2 (Sum.inr 0),
     by simpa using congrFun h2 (Sum.inr 1)⟩
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.fromBlocks_toBlocks, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h.inv1, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h.gram]`. Simplify using `only [Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+
+Use `_ = gr ε J₁ := by`. Rewrite using `[h.inv1, Matrix.transpose_one, Matrix.map_one _ c.map_zero c.map_one, Matrix.one_mul, Matrix.mul_one, hp, h.gram]`.
+-/
 private theorem mul_fr_eq_fr_mul_fromBlocks_and_preserves_gr (h : IsFr c ε J J₁ ι x y A') {p : Matrix d d R} (hp : pᵀ * J * p.map c = J) :
     p * fr ι x y = fr ι x y * Matrix.fromBlocks (A' * p * fr ι x y).toBlocks₁₁ (A' * p * fr ι x y).toBlocks₁₂
       (A' * p * fr ι x y).toBlocks₂₁ (A' * p * fr ι x y).toBlocks₂₂ ∧
@@ -166,6 +223,19 @@ private theorem mul_fr_eq_fr_mul_fromBlocks_and_preserves_gr (h : IsFr c ε J J�
           rw [h.inv1, Matrix.transpose_one, Matrix.map_one _ c.map_zero c.map_one, Matrix.one_mul,
             Matrix.mul_one, hp, h.gram]
 
+/- English proof (translation)
+Establish `hct : c t * c t' = 1` using `by rw [← map_mul, ht, map_one]`. Take `⟨hpf, hQ⟩` from `mul_fr_eq_fr_mul_fromBlocks_and_preserves_gr h hp`. Establish `hQ'` using `hQ`. Rewrite `hQ'` using `[← Matrix.fromBlocks_toBlocks (A' * p * fr ι x y)]`. Generalize the expression as in `(A' * p * fr ι x y).toBlocks₁₁ = g0 at hpf hQ' ⊢`.
+
+Generalize the expression as in `(A' * p * fr ι x y).toBlocks₁₂ = b0 at hpf hQ' ⊢`. Generalize the expression as in `(A' * p * fr ι x y).toBlocks₂₁ = a0 at hpf hQ' ⊢`. Generalize the expression as in `(A' * p * fr ι x y).toBlocks₂₂ = s0 at hpf hQ' ⊢`. Take `⟨c1, c2, c3⟩` from `cols_of_mul hpf`. Take `⟨hb0, hs00, hs10⟩` from `eq_of_iota_mulVec_add_smul_eq h (u := 0) (s := t) (t := 0) (u' := fun j => b0 j 0) (s' := s0 0 0) (t' := s0 1 0) (by rw [← c2, hx]; simp)`.
+
+Establish `hb0' : ∀ j, b0 j 0 = 0` using `fun j => (congrFun hb0 j).symm`. Unfold `gr at hQ'`. Rewrite `hQ'` using `[Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj]`. Take `⟨e11, e12, -, -⟩` from `hQ'`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at e11 e12`.
+
+Establish `ha1 : ∀ i, a0 1 i = 0`. Introduce `i`. Establish `h12` using `congrFun (congrFun e12 i) 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, hb0', ← hs00, ← hs10] at h12`. Take the linear combination `(ε * c t') * h12 - a0 1 i * h.eps - a0 1 i * ε * ε * hct`.
+
+Establish `haK : a0ᵀ * !![0, 1; ε, 0] * a0.map c = 0`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, ha1]`. Rewrite `e11` using `[haK, add_zero]`. Use `⟨g0, fun j => a0 0 j, rfl, e11, fun z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_mulVec, c1, Matrix.add_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use extensionality with `i`. Apply the tactic sequence `simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two, ha1] <;> ring`.
+-/
 theorem IsFr.stab (h : IsFr c ε J J₁ ι x y A') {t t' : R} (ht : t * t' = 1) {p : Matrix d d R}
     (hp : pᵀ * J * p.map c = J) (hx : p *ᵥ x = t • x) :
     ∃ (g : Matrix e e R) (α : e → R), g = (A' * p * fr ι x y).toBlocks₁₁ ∧ gᵀ * J₁ * g.map c = J₁ ∧ ∀ z, p *ᵥ (ι *ᵥ z) = ι *ᵥ (g *ᵥ z) + (α ⬝ᵥ z) • x := by
@@ -201,6 +271,13 @@ theorem IsFr.stab (h : IsFr c ε J J₁ ι x y A') {t t' : R} (ht : t * t' = 1) 
   ext i
   simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two, ha1] <;> ring
 
+/- English proof (translation)
+Establish `hf : m * fr ι x y = m' * fr ι x y`. Use extensionality with `i j`. Break down `j with j | j` into its components or cases. Use `congrFun (congrFun h3 i) j` as an intermediate fact. Simplify `this` using `[fr, Matrix.mul_apply]`.
+
+Use `fin_cases j`. Use `congrFun h1 i` as an intermediate fact. Simplify `this` using `[fr, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Use `congrFun h2 i` as an intermediate fact. Simplify `this` using `[fr, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem IsFr.ext (h : IsFr c ε J J₁ ι x y A') {m m' : Matrix d d R} (h1 : m *ᵥ x = m' *ᵥ x) (h2 : m *ᵥ y = m' *ᵥ y)
     (h3 : m * ι = m' * ι) : m = m' := by
   have hf : m * fr ι x y = m' * fr ι x y := by
@@ -218,10 +295,18 @@ theorem IsFr.ext (h : IsFr c ε J J₁ ι x y A') {m m' : Matrix d d R} (h1 : m 
     _ = m' := by rw [h.inv1, Matrix.mul_one]
 
 omit [DecidableEq d] [DecidableEq e] in
+/- English proof (translation)
+Use extensionality with `i`. Apply the tactic sequence `simp [fr, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fin.sum_univ_two] <;> ring`.
+-/
 theorem fr_mulVec (u : e → R) (s t : R) : fr ι x y *ᵥ Sum.elim u ![s, t] = ι *ᵥ u + s • x + t • y := by
   ext i
   simp [fr, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fin.sum_univ_two] <;> ring
 
+/- English proof (translation)
+Use `⟨fun j => (A' *ᵥ z) (Sum.inl j), (A' *ᵥ z) (Sum.inr 0), (A' *ᵥ z) (Sum.inr 1), ?_⟩` and prove the remaining obligations. Rewrite using `[← fr_mulVec]`. Establish `hw : Sum.elim (fun j => (A' *ᵥ z) (Sum.inl j)) ![(A' *ᵥ z) (Sum.inr 0), (A' *ᵥ z) (Sum.inr 1)] = A' *ᵥ z`. Use extensionality with `k`. Break down `k with k | k` into its components or cases.
+
+Both sides reduce to the same expression. Apply the tactic sequence `fin_cases k <;> rfl`. Rewrite using `[hw, Matrix.mulVec_mulVec, h.inv1, Matrix.one_mulVec]`.
+-/
 theorem IsFr.span (h : IsFr c ε J J₁ ι x y A') (z : d → R) : ∃ (u : e → R) (s t : R), z = ι *ᵥ u + s • x + t • y := by
   refine ⟨fun j => (A' *ᵥ z) (Sum.inl j), (A' *ᵥ z) (Sum.inr 0), (A' *ᵥ z) (Sum.inr 1), ?_⟩
   rw [← fr_mulVec]
@@ -233,6 +318,9 @@ theorem IsFr.span (h : IsFr c ε J J₁ ι x y A') (z : d → R) : ∃ (u : e �
     · fin_cases k <;> rfl
   rw [hw, Matrix.mulVec_mulVec, h.inv1, Matrix.one_mulVec]
 
+/- English proof (translation)
+Rewrite `e1` using `[← fr_mulVec, ← fr_mulVec]`. Use `congrArg (A' *ᵥ ·) e1` as an intermediate fact. Simplify using `only [mulVec_mulVec, h.inv2, one_mulVec] at this`. Conclude with `⟨funext fun j => congrFun this (Sum.inl j), congrFun this (Sum.inr 0), congrFun this (Sum.inr 1)⟩`.
+-/
 theorem IsFr.indep (h : IsFr c ε J J₁ ι x y A') {u u' : e → R} {s t s' t' : R}
     (e1 : ι *ᵥ u + s • x + t • y = ι *ᵥ u' + s' • x + t' • y) : u = u' ∧ s = s' ∧ t = t' := by
   rw [← fr_mulVec, ← fr_mulVec] at e1
@@ -240,6 +328,15 @@ theorem IsFr.indep (h : IsFr c ε J J₁ ι x y A') {u u' : e → R} {s t s' t' 
   simp only [mulVec_mulVec, h.inv2, one_mulVec] at this
   exact ⟨funext fun j => congrFun this (Sum.inl j), congrFun this (Sum.inr 0), congrFun this (Sum.inr 1)⟩
 
+/- English proof (translation)
+Take `⟨hpf, hQ⟩` from `mul_fr_eq_fr_mul_fromBlocks_and_preserves_gr h hp`. Establish `hQ'` using `hQ`. Rewrite `hQ'` using `[← Matrix.fromBlocks_toBlocks (A' * p * fr ι x y)]`. Generalize the expression as in `(A' * p * fr ι x y).toBlocks₁₁ = g0 at hpf hQ'`. Generalize the expression as in `(A' * p * fr ι x y).toBlocks₁₂ = b0 at hpf hQ'`.
+
+Generalize the expression as in `(A' * p * fr ι x y).toBlocks₂₁ = a0 at hpf hQ'`. Generalize the expression as in `(A' * p * fr ι x y).toBlocks₂₂ = s0 at hpf hQ'`. Take `⟨c1, c2, c3⟩` from `cols_of_mul hpf`. Take `⟨hb0, hs00, hs10⟩` from `eq_of_iota_mulVec_add_smul_eq h (u := 0) (s := 1) (t := 0) (u' := fun j => b0 j 0) (s' := s0 0 0) (t' := s0 1 0) (by rw [← c2, hx]; simp)`. Establish `hb0' : ∀ j, b0 j 0 = 0` using `fun j => (congrFun hb0 j).symm`.
+
+Unfold `gr at hQ'`. Rewrite `hQ'` using `[Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj]`. Take `⟨-, -, -, e22⟩` from `hQ'`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at e22`. Establish `h22` using `congrFun (congrFun e22 0) 1`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, hb0', ← hs00, ← hs10] at h22`. Establish `hs11 : s0 1 1 = 1` using `by rw [← hcc (s0 1 1), h22, map_one]`. Use `⟨fun j => b0 j 1, s0 0 1, ?_⟩` and prove the remaining obligations. Rewrite using `[c3, hs11, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem IsFr.fix_y (h : IsFr c ε J J₁ ι x y A') (hcc : ∀ a, c (c a) = a) {p : Matrix d d R}
     (hp : pᵀ * J * p.map c = J) (hx : p *ᵥ x = x) : ∃ (u : e → R) (s : R), p *ᵥ y = y + ι *ᵥ u + s • x := by
   obtain ⟨hpf, hQ⟩ := mul_fr_eq_fr_mul_fromBlocks_and_preserves_gr h hp

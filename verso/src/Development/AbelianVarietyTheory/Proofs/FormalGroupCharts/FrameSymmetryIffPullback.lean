@@ -21,6 +21,13 @@ section Val
 
 variable {X X' Y : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {K K₁ : Type} [Fintype K] [Fintype K₁]
 
+/- English proof (translation)
+Establish `P` using `(maps_iff w φ' (fun k => φ' k ≫ F) ε a c (𝟙 Y) (flatGen L F φ' ε c) (fun j x hx => wchart_pull_le L F φ' j hx) (fun j => ?_)).1 hm`. Use `P Z r z (fun k => J ((r ≫ φ' k) ≫ F)) (fun k => J' (r ≫ φ' k)) (fun k => hJ ((r ≫ φ' k) ≫ F)) (fun k => hJ' (r ≫ φ' k))` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Rewrite using `[val_of c r z J (fun k => J ((r ≫ φ' k) ≫ F)) (fun k => by rw [Category.assoc])]`. Conclude with `this`.
+
+Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `hyV : (𝟙 Y : Y ⟶ Y) y ∈ ((L.pull F).LinComb φ' ε).U j` using `hy`. Establish `hyU : (𝟙 Y : Y ⟶ Y) ((𝟙 Y : Y ⟶ Y) y) ∈ LB.wchart L (fun k => φ' k ≫ F) (fun k => j k ⟨⟩)` using `wchart_pull_le L F φ' j hy`. Use `(gm_res (𝟙 Y) y _ hyV _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (gm_res (𝟙 Y) y _ hyV _).symm` and prove the remaining obligations.
+
+Establish `e` using `gm_pull (𝟙 Y) (𝟙 Y) y _ hyU (c.s fun k => j k ⟨⟩)`. Rewrite `e` using `[Category.comp_id]`. Conclude with `e.symm`.
+-/
 theorem val_tie (w : LB.Iso L' (L.pull F)) (φ' : K → (Y ⟶ X')) (ε : K → ℤ) (a : LB.Gen (LB.LinComb L' φ' ε))
     (c : LB.Gen (LB.LinComb L (fun k => φ' k ≫ F) ε)) (hm : LB.Gen.Maps (LB.linCombIso w φ' ε) a (flatGen L F φ' ε c))
     {Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) {J' : (Z ⟶ X') → L'.ι}
@@ -46,15 +53,28 @@ theorem val_tie (w : LB.Iso L' (L.pull F)) (φ' : K → (Y ⟶ X')) (ε : K → 
 def scale (φ : K → (Y ⟶ X)) (ε : K → ℤ) (u : Γ(Y, ⊤)ˣ) (g : LB.Gen (LB.LinComb L φ ε)) : LB.Gen (LB.LinComb L φ ε) :=
   ⟨fun j => res le_top u * g.s j⟩
 
+/- English proof (translation)
+The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z le_top (hJ.mem φ r) u) rfl)`.
+-/
 theorem val_scale {φ : K → (Y ⟶ X)} {ε : K → ℤ} (u : Γ(Y, ⊤)ˣ) (g : LB.Gen (LB.LinComb L φ ε)) {Z : Scheme.{0}}
     (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     val (scale φ ε u g) r z J = gm r z ⊤ u * val g r z J :=
   (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z le_top (hJ.mem φ r) u) rfl)
 
+/- English proof (translation)
+Use `choose d hd using fun χ : Z ⟶ X => exists_chart hL (χ z)`. Conclude with `⟨d, hd⟩`.
+-/
 theorem good_exists (hL : L.IsLB) {Z : Scheme.{0}} (z : Z) : ∃ J, Good L z J := by
   choose d hd using fun χ : Z ⟶ X => exists_chart hL (χ z)
   exact ⟨d, hd⟩
 
+/- English proof (translation)
+Establish `key : ∀ (y : Y) J J', Good L y J → Good L' y J' → (val e (𝟙 Y) y J = val (scale _ _ u (LB.pullGen L φ ε₁ e s)) (𝟙 Y) y J ↔ val a (𝟙 Y) y J' = val (scale _ _ u (LB.pullGen L' φ' ε a s)) (𝟙 Y) y J')`. Introduce `y J J' hJ hJ'`. Rewrite using `[val_scale _ _ _ _ hJ, val_scale _ _ _ _ hJ', val_pull hJ, val_pull hJ', ← val_corr hJ hc, ← val_corr hJ hc, val_tie w φ' ε a c hm _ y hJ hJ', val_tie w φ' ε a c hm _ y hJ hJ']`. Establish `h` using `hs _ (fun ψ => gw w ψ y (J (ψ ≫ F)) (J' ψ))`. Simplify using `only [Category.id_comp]`.
+
+Rewrite using `[← h, mul_left_comm, mul_right_inj]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `corr_of_val hL' fun y J' hJ' => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `good_exists hL y`.
+
+Conclude with `(key y J J' hJ hJ').1 (val_corr hJ h _)`. Introduce `h`. Use `corr_of_val hL fun y J hJ => ?_` and prove the remaining obligations. Take `⟨J', hJ'⟩` from `good_exists hL' y`. Conclude with `(key y J J' hJ hJ').2 (val_corr hJ' h _)`.
+-/
 theorem corr_sym_iff (hL : L.IsLB) (hL' : L'.IsLB) (w : LB.Iso L' (L.pull F)) (φ' : K → (Y ⟶ X')) (ε : K → ℤ)
     (a : LB.Gen (LB.LinComb L' φ' ε)) (c : LB.Gen (LB.LinComb L (fun k => φ' k ≫ F) ε))
     (hm : LB.Gen.Maps (LB.linCombIso w φ' ε) a (flatGen L F φ' ε c))
@@ -83,6 +103,15 @@ theorem corr_sym_iff (hL : L.IsLB) (hL' : L'.IsLB) (w : LB.Iso L' (L.pull F)) (�
 
 end Val
 
+/- English proof (translation)
+Introduce `U _ h`. Establish `hp : ∀ I : Finset (Fin 2), s.left ≫ (psum G ![a, b] I).left = (psum G ![b, a] I).left` using `fun I => by`. Use `psum_hom (preHom (G := G) s) ![a, b] I` as an intermediate fact. Establish `e : (fun i => preHom (G` using `G) s (![a, b] i)) = ![b, a] := by`. Use function extensionality and compare the values at `i`.
+
+Use `fin_cases i`. Use `exacts [ha, hb]`. Rewrite `this` using `[e]`. Conclude with `congrArg (fun z => z.left) this`. Simplify using `only [hp]`.
+
+Establish `hu : (Finset.univ : Finset (ULift.{0} (Finset (Fin 2)))) = {⟨∅⟩, ⟨{0}⟩, ⟨{1}⟩, ⟨{0, 1}⟩}` using `by decide`. Rewrite using `[hu]`. Simplify using `only [Finset.prod_insert (by decide : (⟨∅⟩ : ULift.{0} (Finset (Fin 2))) ∉ ({⟨{0}⟩, ⟨{1}⟩, ⟨{0, 1}⟩} : Finset _)), Finset.prod_insert (by decide : (⟨{0}⟩ : ULift.{0} (Finset (Fin 2))) ∉ ({⟨{1}⟩, ⟨{0, 1}⟩} : Finset _)), Finset.prod_insert (by decide : (⟨{1}⟩ : ULift.{0} (Finset (F …`. Establish `p0 : ∀ xs : Fin 2 → (T ⟶ G), psum G xs ∅ = 1` using `fun _ => rfl`. Establish `p1 : ∀ xs : Fin 2 → (T ⟶ G), psum G xs {0} = xs 0 * 1` using `fun _ => rfl`.
+
+Establish `p2 : ∀ xs : Fin 2 → (T ⟶ G), psum G xs {1} = xs 1 * 1` using `fun _ => rfl`. Establish `p3 : ∀ xs : Fin 2 → (T ⟶ G), psum G xs {0, 1} = xs 0 * (xs 1 * 1)` using `fun _ => rfl`. Simplify using `only [p0, p1, p2, p3, Matrix.cons_val_zero, Matrix.cons_val_one, _root_.mul_one]`. Rewrite using `[_root_.mul_comm b a]`. Conclude with `congrArg _ (mul_left_comm _ _ _)`.
+-/
 theorem formEq_swap {B : Scheme.{0}} (G : Over B) [GrpObj G] [IsCommMonObj G] {T : Over B} (a b : T ⟶ G) (s : T ⟶ T)
     (ha : s ≫ a = b) (hb : s ≫ b = a) :
     FormEq (fun I : ULift.{0} (Finset (Fin 2)) => (psum G ![a, b] I.down).left) (cε 2)
@@ -110,10 +139,18 @@ theorem formEq_swap {B : Scheme.{0}} (G : Over B) [GrpObj G] [IsCommMonObj G] {T
   rw [_root_.mul_comm b a]
   exact congrArg _ (mul_left_comm _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jetMap_mk {R : Type} [CommRing R] {κ κ' : Type} {m : ℕ} (φ : κ → MvPolynomial κ' R) (hφ : ∀ i, φ i ∈ orig R κ')
     (p : MvPolynomial κ R) :
     jetMap (m := m) φ hφ (Ideal.Quotient.mk _ p) = Ideal.Quotient.mk _ (MvPolynomial.aeval φ p) := rfl
 
+/- English proof (translation)
+Establish `e : (jetSubstP m (fun p : Fin 2 × Fin d => φ p.1 p.2)).comp (jetCopy d m i) = jetCopy d m k`. Use `Ideal.Quotient.algHom_ext S (MvPolynomial.algHom_ext fun p => ?_)` and prove the remaining obligations. Use `show jetSubstP m _ (jetCopy d m i (Ideal.Quotient.mk _ (X p))) = jetCopy d m k (Ideal.Quotient.mk _ (X p))`. Simplify using `[jetSubstP, jetCopy, jetMap_mk, h]`. Rewrite using `[jptG, jptG, ← Category.assoc, ← e]`.
+
+Use `congr 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Formalism.L2.Pj.homAt, Over.comp_left, Over.homMk_left, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+-/
 theorem swap_jpt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
     {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (m : ℕ)
     (φ : Fin 2 → Fin d → MvPolynomial (Fin 2 × Fin d) S) (i k : Fin 2) (h : φ i = fun j => X (k, j)) :
@@ -128,6 +165,9 @@ theorem swap_jpt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
   simp only [Formalism.L2.Pj.homAt, Over.comp_left, Over.homMk_left, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H X0 t S _ x0 t' mp w _ d x x' _ e e' _ _ ht sy`. Use `forall_congr' fun m => exists_congr fun u => and_congr Iff.rfl ?_` and prove the remaining obligations. Take `⟨c₁, hc, hm⟩` from `ht m`. Conclude with `corr_sym_iff t.PP.isLB t'.PP.isLB w _ (cε 2) (e' m) c₁ hm (cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)]) (cε 2) (e m) hc _ (formEq_swap t'.G _ _ _ (swap_jpt t' _ d x' m ![fun j => X ((1 : Fin 2), j), fun j => X ((0 : Fin 2), j)] 0 1 rfl) (swap_jpt t' _ d x' m …`.
+-/
 theorem frame_sym_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (S : Type) [CommRing S] (x0 : Sp S ⟶ X0) (t' : SAB H (Sp S)) (mp : SABMap t' t x0) (w : LB.Iso t'.PP.L (t.PP.L.pull mp.φ)), RigIso mp w → ∀ (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (x' : ∀ m, jOG (𝟙 (Sp S)) d m 1 ⟶ t'.G), (∀ m, (x' m).left ≫ mp.φ = (x m).left) → ∀ (e : ∀ m, FrTyG t x0 d x m) (e' : ∀ m, FrTyG t' (𝟙 (Sp S)) d x' m), (∀ m, (e m).IsGen) → (∀ m, (e' m).IsGen) → (∀ m, ∃ c₁ : LB.Gen (LB.LinComb t.PP.L (fun J => cφG t' ![jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2), jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2)] J ≫ mp.φ) (cε 2)), LB.Gen.Corr t.PP.L _ _ _ _ c₁ (e m) ∧ LB.Gen.Maps (LB.linCombIso w (cφG t' ![jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2), jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2)]) (cε 2)) (e' m) (flatGen t.PP.L mp.φ _ _ c₁)) → ∀ (sy : PS S 2 d), (∀ m, ∃ u : (Jet S (Fin 2 × Fin d) m)ˣ, (u : Jet S (Fin 2 × Fin d) m) = psJet m sy ∧ LB.Gen.Corr t.PP.L _ _ _ _ (e m) (scaleGenG t _ _ (unitΓ u⁻¹) (peG t x0 d x e m ![fun j => X ((1 : Fin 2), j), fun j => X ((0 : Fin 2), j)]))) ↔ (∀ m, ∃ u : (Jet S (Fin 2 × Fin d) m)ˣ, (u : Jet S (Fin 2 × Fin d) m) = psJet m sy ∧ LB.Gen.Corr t'.PP.L _ _ _ _ (e' m) (scaleGenG t' _ _ (unitΓ u⁻¹) (peG t' (𝟙 (Sp S)) d x' e' m ![fun j => X ((1 : Fin 2), j), fun j => X ((0 : Fin 2), j)]))) := by
   intro E _ _ _ H X0 t S _ x0 t' mp w _ d x x' _ e e' _ _ ht sy
   refine forall_congr' fun m => exists_congr fun u => and_congr Iff.rfl ?_

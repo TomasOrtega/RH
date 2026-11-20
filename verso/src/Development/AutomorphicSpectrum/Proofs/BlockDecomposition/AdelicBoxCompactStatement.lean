@@ -6,5 +6,8 @@ open NumberField MeasureTheory Matrix Formalism.MainNotions.GlobalTheoryTheory.G
 open Formalism.UG (cT)
 open scoped TensorProduct NNReal ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RedCov.Simple.BoxCpt.main | exact GlobalTheory.CompanionTheory.RedCov.Simple.BoxCpt.main | (intros; apply GlobalTheory.CompanionTheory.RedCov.Simple.BoxCpt.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adelic_box_compact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], IsCompact (boxF F 1) ∧ IsCompact (boxE F E 1) := by
   first | exact @GlobalTheory.CompanionTheory.RedCov.Simple.BoxCpt.main | exact GlobalTheory.CompanionTheory.RedCov.Simple.BoxCpt.main | (intros; apply GlobalTheory.CompanionTheory.RedCov.Simple.BoxCpt.main <;> assumption)

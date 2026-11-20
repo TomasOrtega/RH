@@ -19,35 +19,62 @@ noncomputable def posIndex (G : Matrix n n ℂ) : ℕ := sSup (posDims G)
 
 noncomputable def negIndex (G : Matrix n n ℂ) : ℕ := posIndex (-G)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊥, finrank_bot ℂ _, fun x hx hx0 => (hx0 (by simpa using hx)).elim⟩`.
+-/
 theorem zero_mem_posDims (G : Matrix n n ℂ) : 0 ∈ posDims G :=
   ⟨⊥, finrank_bot ℂ _, fun x hx hx0 => (hx0 (by simpa using hx)).elim⟩
 
+/- English proof (translation)
+Take `⟨W, rfl, -⟩` from `hd`. Simplify using `using W.finrank_le`.
+-/
 theorem le_card_of_mem_posDims {G : Matrix n n ℂ} {d : ℕ} (hd : d ∈ posDims G) :
     d ≤ Fintype.card n := by
   obtain ⟨W, rfl, -⟩ := hd
   simpa using W.finrank_le
 
+/- English proof (translation)
+Establish `hb : BddAbove (posDims G)` using `⟨_, fun _ hd => le_card_of_mem_posDims hd⟩`. Conclude with `⟨Nat.sSup_mem ⟨0, zero_mem_posDims G⟩ hb, fun _ hd => le_csSup hb hd⟩`.
+-/
 theorem isGreatest_posIndex (G : Matrix n n ℂ) : IsGreatest (posDims G) (posIndex G) := by
   have hb : BddAbove (posDims G) := ⟨_, fun _ hd => le_card_of_mem_posDims hd⟩
   exact ⟨Nat.sSup_mem ⟨0, zero_mem_posDims G⟩ hb, fun _ hd => le_csSup hb hd⟩
 
+/- English proof (translation)
+Establish `h` using `isGreatest_posIndex (-G)`. Simplify `h` using `only [negIndex, posDims, neg_mulVec, dotProduct_neg, Complex.neg_re, Left.neg_pos_iff]`.
+-/
 theorem isGreatest_negIndex (G : Matrix n n ℂ) :
     IsGreatest {d | ∃ W : Submodule ℂ (n → ℂ), finrank ℂ W = d ∧
       ∀ x ∈ W, x ≠ 0 → (x ⬝ᵥ G *ᵥ star x).re < 0} (negIndex G) := by
   have h := isGreatest_posIndex (-G)
   simpa only [negIndex, posDims, neg_mulVec, dotProduct_neg, Complex.neg_re, Left.neg_pos_iff] using h
 
+/- English proof (translation)
+The claim follows from `le_card_of_mem_posDims (isGreatest_posIndex G).1`.
+-/
 theorem posIndex_le_card (G : Matrix n n ℂ) : posIndex G ≤ Fintype.card n :=
   le_card_of_mem_posDims (isGreatest_posIndex G).1
 
+/- English proof (translation)
+The claim follows from `posIndex_le_card _`.
+-/
 theorem negIndex_le_card (G : Matrix n n ℂ) : negIndex G ≤ Fintype.card n :=
   posIndex_le_card _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem posIndex_neg (G : Matrix n n ℂ) : posIndex (-G) = negIndex G := rfl
 
+/- English proof (translation)
+Rewrite using `[negIndex, neg_neg]`.
+-/
 @[simp] theorem negIndex_neg (G : Matrix n n ℂ) : negIndex (-G) = posIndex G := by
   rw [negIndex, neg_neg]
 
+/- English proof (translation)
+Establish `h : star (P *ᵥ y) = P.map conj *ᵥ star y`. Use extensionality with `k`. Simplify using `[mulVec, dotProduct]`. Rewrite using `[h, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec x, vecMul_transpose]`.
+-/
 theorem dotProduct_congr_mulVec_star (G : Matrix n n ℂ) (P : Matrix n m ℂ) (x y : m → ℂ) :
     x ⬝ᵥ (Pᵀ * G * P.map conj) *ᵥ star y = (P *ᵥ x) ⬝ᵥ G *ᵥ star (P *ᵥ y) := by
   have h : star (P *ᵥ y) = P.map conj *ᵥ star y := by
@@ -55,6 +82,11 @@ theorem dotProduct_congr_mulVec_star (G : Matrix n n ℂ) (P : Matrix n m ℂ) (
     simp [mulVec, dotProduct]
   rw [h, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec x, vecMul_transpose]
 
+/- English proof (translation)
+Take `⟨W, hW, hpos⟩` from `(isGreatest_posIndex (Pᵀ * G * P.map conj)).1`. Use `(isGreatest_posIndex G).2 ⟨W.map P.mulVecLin, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hW]`. Conclude with `(Submodule.equivMapOfInjective P.mulVecLin hP W).finrank_eq.symm`. Introduce and unpack `_ ⟨x, hx, rfl⟩ hx0`.
+
+Use `hpos x hx (by rintro rfl; simp at hx0)` as an intermediate fact. Rewrite `this` using `[dotProduct_congr_mulVec_star]`. Then use the resulting hypothesis.
+-/
 theorem posIndex_congr_le (G : Matrix n n ℂ) {P : Matrix n m ℂ}
     (hP : Function.Injective P.mulVec) : posIndex (Pᵀ * G * P.map conj) ≤ posIndex G := by
   obtain ⟨W, hW, hpos⟩ := (isGreatest_posIndex (Pᵀ * G * P.map conj)).1
@@ -65,11 +97,27 @@ theorem posIndex_congr_le (G : Matrix n n ℂ) {P : Matrix n m ℂ}
     have := hpos x hx (by rintro rfl; simp at hx0)
     rwa [dotProduct_congr_mulVec_star] at this
 
+/- English proof (translation)
+Rewrite using `[transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem congr_mul {l : Type*} (G : Matrix n n ℂ) (P : Matrix n m ℂ) (Q : Matrix m l ℂ) :
     (P * Q)ᵀ * G * (P * Q).map conj = Qᵀ * (Pᵀ * G * P.map conj) * Q.map conj := by
   rw [transpose_mul, Matrix.map_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `h : ∀ x : n → ℂ, (x ∘ e) ⬝ᵥ G.submatrix e e *ᵥ star (x ∘ e) = x ⬝ᵥ G *ᵥ star x`. Introduce `x`. Establish `h1 : star (x ∘ e) ∘ e.symm = star x`. Use extensionality with `k`. Simplify using the standard rewrite rules.
+
+Rewrite using `[submatrix_mulVec_equiv, h1]`. Conclude with `comp_equiv_dotProduct_comp_equiv x (G *ᵥ star x) e`. Set `L : (n → ℂ) ≃ₗ[ℂ] (m → ℂ)` to `LinearEquiv.funCongrLeft ℂ ℂ e`. Establish `hL : ∀ x, L x = x ∘ e` using `fun _ => rfl`. Use `(isGreatest_posIndex _).unique ?_` and prove the remaining obligations.
+
+Establish `hs : posDims (G.submatrix e e) = posDims G`. Use extensionality with `d`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨W, rfl, hW⟩`. Use `⟨W.map L.symm.toLinearMap, LinearEquiv.finrank_map_eq _ _, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩ h0`. Rewrite using `[← h, ← hL]`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Conclude with `hW y hy (by rintro rfl; simp at h0)`. Introduce and unpack `⟨W, rfl, hW⟩`.
+
+Use `⟨W.map L.toLinearMap, LinearEquiv.finrank_map_eq _ _, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩ h0`. Simplify using `only [LinearEquiv.coe_coe, hL, h]`. Conclude with `hW y hy (by rintro rfl; simp at h0)`. Rewrite using `[hs]`.
+
+Conclude with `isGreatest_posIndex G`.
+-/
 theorem posIndex_submatrix_equiv (G : Matrix n n ℂ) (e : m ≃ n) :
     posIndex (G.submatrix e e) = posIndex G := by
   have h : ∀ x : n → ℂ, (x ∘ e) ⬝ᵥ G.submatrix e e *ᵥ star (x ∘ e) = x ⬝ᵥ G *ᵥ star x := by
@@ -99,12 +147,18 @@ theorem posIndex_submatrix_equiv (G : Matrix n n ℂ) (e : m ≃ n) :
   rw [hs]
   exact isGreatest_posIndex G
 
+/- English proof (translation)
+The claim follows from `posIndex_submatrix_equiv (-G) e`.
+-/
 theorem negIndex_submatrix_equiv (G : Matrix n n ℂ) (e : m ≃ n) :
     negIndex (G.submatrix e e) = negIndex G :=
   posIndex_submatrix_equiv (-G) e
 
 variable [DecidableEq n]
 
+/- English proof (translation)
+Establish `hu : IsUnit P.det` using `hP.isUnit`. Use `le_antisymm (posIndex_congr_le G (mulVec_injective_iff_isUnit.2 ((isUnit_iff_isUnit_det P).2 hu))) ?_` and prove the remaining obligations. Establish `h` using `posIndex_congr_le (Pᵀ * G * P.map conj) (P := P⁻¹) (mulVec_injective_iff_isUnit.2 ((isUnit_iff_isUnit_det _).2 (isUnit_nonsing_inv_det P hu)))`. Rewrite `h` using `[← congr_mul, mul_nonsing_inv P hu]`. Simplify using `using h`.
+-/
 theorem posIndex_congr (G : Matrix n n ℂ) {P : Matrix n n ℂ} (hP : P.det ≠ 0) :
     posIndex (Pᵀ * G * P.map conj) = posIndex G := by
   have hu : IsUnit P.det := hP.isUnit
@@ -115,16 +169,35 @@ theorem posIndex_congr (G : Matrix n n ℂ) {P : Matrix n n ℂ} (hP : P.det ≠
   rw [← congr_mul, mul_nonsing_inv P hu] at h
   simpa using h
 
+/- English proof (translation)
+Rewrite using `[negIndex, negIndex, ← posIndex_congr (-G) hP, Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem negIndex_congr (G : Matrix n n ℂ) {P : Matrix n n ℂ} (hP : P.det ≠ 0) :
     negIndex (Pᵀ * G * P.map conj) = negIndex G := by
   rw [negIndex, negIndex, ← posIndex_congr (-G) hP, Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec_diagonal, Complex.re_sum, Pi.star_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, Complex.star_def, Complex.mul_conj, Complex.re_mul_ofReal]`.
+-/
 theorem re_dotProduct_diagonal_mulVec_star (d x : n → ℂ) :
     (x ⬝ᵥ diagonal d *ᵥ star x).re = ∑ k, (d k).re * Complex.normSq (x k) := by
   simp only [dotProduct, mulVec_diagonal, Complex.re_sum, Pi.star_apply]
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [mul_left_comm, Complex.star_def, Complex.mul_conj, Complex.re_mul_ofReal]
 
+/- English proof (translation)
+Use `(isGreatest_posIndex _).unique ⟨⟨Pi.spanSubset ℂ {k | 0 < (d k).re}, ?_, fun x hx hx0 => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.dim_spanSubset, Set.ncard_eq_toFinset_card']`. Simplify using the standard rewrite rules. Rewrite using `[re_dotProduct_diagonal_mulVec_star]`. Establish `hx'` using `Pi.mem_spanSubset_iff.1 hx`.
+
+Take `⟨k, hk⟩` from `Function.ne_iff.1 hx0`. Use `Finset.sum_pos' (fun j _ => ?_) ⟨k, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : 0 < (d j).re`. Conclude with `mul_nonneg hj.le (Complex.normSq_nonneg _)`. Simplify using `[hx' j hj]`.
+
+Establish `hk' : 0 < (d k).re`. Assume the negation of the conclusion as `h`. Conclude with `hk (hx' k h)`. Conclude with `mul_pos hk' (Complex.normSq_pos.2 hk)`. Introduce and unpack `_ ⟨W, rfl, hW⟩ set S := Finset.univ.filter fun k => 0 < (d k).re with hS`.
+
+Set `f : W →ₗ[ℂ] (S → ℂ)` to `(LinearMap.funLeft ℂ ℂ (Subtype.val : S → n)).comp W.subtype`. Establish `hf : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `Subtype.ext ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hx0`. Use `(hW x x.2 hx0).not_ge ?_` and prove the remaining obligations. Rewrite using `[re_dotProduct_diagonal_mulVec_star]`. Use `Finset.sum_nonpos fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : 0 < (d k).re`.
+
+Establish `: (x : n → ℂ) k = 0` using `congrFun hx ⟨k, by simpa [hS] using hk⟩`. Simplify using `[this]`. Conclude with `mul_nonpos_of_nonpos_of_nonneg (not_lt.1 hk) (Complex.normSq_nonneg _)`. Simplify using `using LinearMap.finrank_le_finrank_of_injective hf`.
+-/
 theorem posIndex_diagonal (d : n → ℂ) :
     posIndex (diagonal d) = (Finset.univ.filter fun k => 0 < (d k).re).card := by
   refine (isGreatest_posIndex _).unique
@@ -159,21 +232,33 @@ theorem posIndex_diagonal (d : n → ℂ) :
       · exact mul_nonpos_of_nonpos_of_nonneg (not_lt.1 hk) (Complex.normSq_nonneg _)
     simpa using LinearMap.finrank_le_finrank_of_injective hf
 
+/- English proof (translation)
+Rewrite using `[negIndex, diagonal_neg, posIndex_diagonal]`. Simplify using the standard rewrite rules.
+-/
 theorem negIndex_diagonal (d : n → ℂ) :
     negIndex (diagonal d) = (Finset.univ.filter fun k => (d k).re < 0).card := by
   rw [negIndex, diagonal_neg, posIndex_diagonal]
   simp
 
+/- English proof (translation)
+Rewrite using `[← posIndex_congr G hP, hd, posIndex_diagonal]`.
+-/
 theorem posIndex_eq_card_of_congr_diagonal {G P : Matrix n n ℂ} {d : n → ℂ} (hP : P.det ≠ 0)
     (hd : Pᵀ * G * P.map conj = diagonal d) :
     posIndex G = (Finset.univ.filter fun k => 0 < (d k).re).card := by
   rw [← posIndex_congr G hP, hd, posIndex_diagonal]
 
+/- English proof (translation)
+Rewrite using `[← negIndex_congr G hP, hd, negIndex_diagonal]`.
+-/
 theorem negIndex_eq_card_of_congr_diagonal {G P : Matrix n n ℂ} {d : n → ℂ} (hP : P.det ≠ 0)
     (hd : Pᵀ * G * P.map conj = diagonal d) :
     negIndex G = (Finset.univ.filter fun k => (d k).re < 0).card := by
   rw [← negIndex_congr G hP, hd, negIndex_diagonal]
 
+/- English proof (translation)
+Take `⟨P, d, hP, hd, hre, hne⟩` from `HermDiag.exists_congr_diagonal (c := starRingEnd ℂ) two_ne_zero Complex.conj_conj (G := G) (fun a b => hG.apply b a)`. Establish `h : ∀ k, (((d k).re : ℝ) : ℂ) = d k` using `fun k => Complex.conj_eq_iff_re.1 (hre k)`. Use `⟨P, fun k => (d k).re, hP, by simpa only [h] using hd, fun hG0 k hk => hne hG0 k ?_⟩` and prove the remaining obligations. Rewrite using `[← h k, show (d k).re = 0 from hk, Complex.ofReal_zero]`.
+-/
 theorem exists_congr_diagonal_real {G : Matrix n n ℂ} (hG : G.IsHermitian) :
     ∃ (P : Matrix n n ℂ) (d : n → ℝ), P.det ≠ 0 ∧
       Pᵀ * G * P.map conj = diagonal (fun k => (d k : ℂ)) ∧ (G.det ≠ 0 → ∀ k, d k ≠ 0) := by
@@ -183,6 +268,13 @@ theorem exists_congr_diagonal_real {G : Matrix n n ℂ} (hG : G.IsHermitian) :
   refine ⟨P, fun k => (d k).re, hP, by simpa only [h] using hd, fun hG0 k hk => hne hG0 k ?_⟩
   rw [← h k, show (d k).re = 0 from hk, Complex.ofReal_zero]
 
+/- English proof (translation)
+Take `⟨P, d, hP, hd, -⟩` from `exists_congr_diagonal_real hG`. Establish `hr : (Pᵀ * G * P.map conj).rank = G.rank`. Rewrite using `[rank_mul_eq_left_of_isUnit_det, rank_mul_eq_right_of_isUnit_det]`. Rewrite using `[det_transpose]`. Conclude with `hP.isUnit`.
+
+Establish `hm : (P.map conj).det = conj P.det` using `(RingHom.map_det (starRingEnd ℂ) P).symm`. Rewrite using `[hm]`. Conclude with `((map_ne_zero _).2 hP).isUnit`. Rewrite using `[posIndex_eq_card_of_congr_diagonal hP hd, negIndex_eq_card_of_congr_diagonal hP hd, ← hr, hd, rank_diagonal, Fintype.card_subtype, ← Finset.card_union_of_disjoint, ← Finset.filter_or]`. Use `congr 1`.
+
+Use extensionality with `k`. Simplify using `[lt_or_lt_iff_ne, eq_comm]`. Rewrite using `[Finset.disjoint_filter]`. Conclude with `fun k _ h1 h2 => lt_asymm h1 h2`.
+-/
 theorem posIndex_add_negIndex_eq_rank {G : Matrix n n ℂ} (hG : G.IsHermitian) :
     posIndex G + negIndex G = G.rank := by
   obtain ⟨P, d, hP, hd, -⟩ := exists_congr_diagonal_real hG
@@ -201,17 +293,30 @@ theorem posIndex_add_negIndex_eq_rank {G : Matrix n n ℂ} (hG : G.IsHermitian) 
   · rw [Finset.disjoint_filter]
     exact fun k _ h1 h2 => lt_asymm h1 h2
 
+/- English proof (translation)
+Rewrite using `[posIndex_add_negIndex_eq_rank hG, rank_of_isUnit G ((isUnit_iff_isUnit_det G).2 hG0.isUnit)]`.
+-/
 theorem posIndex_add_negIndex {G : Matrix n n ℂ} (hG : G.IsHermitian) (hG0 : G.det ≠ 0) :
     posIndex G + negIndex G = Fintype.card n := by
   rw [posIndex_add_negIndex_eq_rank hG,
     rank_of_isUnit G ((isUnit_iff_isUnit_det G).2 hG0.isUnit)]
 
+/- English proof (translation)
+Use `posIndex_add_negIndex hG hG0` as an intermediate fact. Rewrite using `[posIndex_neg]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem posIndex_neg_eq_sub {G : Matrix n n ℂ} (hG : G.IsHermitian) (hG0 : G.det ≠ 0) :
     posIndex (-G) = Fintype.card n - posIndex G := by
   have := posIndex_add_negIndex hG hG0
   rw [posIndex_neg]
   omega
 
+/- English proof (translation)
+Establish `h` using `hG.conjStarAlgAut_star_eigenvectorUnitary`. Rewrite `h` using `[Unitary.conjStarAlgAut_star_apply]`. Use `set U : Matrix n n ℂ := (hG.eigenvectorUnitary : Matrix n n ℂ) with hU`. Establish `hdet : U.det ≠ 0`. Establish `h1 : star U * U = 1` using `Unitary.coe_star_mul_self _`.
+
+Establish `h2` using `congrArg det h1`. Rewrite `h2` using `[det_mul, det_one]`. Conclude with `right_ne_zero_of_mul_eq_one h2`. Establish `hm : (U.map conj).det = conj U.det` using `(RingHom.map_det (starRingEnd ℂ) U).symm`. Use `⟨U.map conj, hm ▸ (map_ne_zero _).2 hdet, ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : (U.map conj).map conj = U`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[h3]`. Conclude with `h`.
+-/
 theorem exists_congr_diagonal_eigenvalues {G : Matrix n n ℂ} (hG : G.IsHermitian) :
     ∃ P : Matrix n n ℂ, P.det ≠ 0 ∧
       Pᵀ * G * P.map conj = diagonal fun k => (hG.eigenvalues k : ℂ) := by
@@ -231,12 +336,18 @@ theorem exists_congr_diagonal_eigenvalues {G : Matrix n n ℂ} (hG : G.IsHermiti
   rw [h3]
   exact h
 
+/- English proof (translation)
+Take `⟨P, hP, hd⟩` from `exists_congr_diagonal_eigenvalues hG`. Rewrite using `[posIndex_eq_card_of_congr_diagonal hP hd]`. Simplify using the standard rewrite rules.
+-/
 theorem posIndex_eq_card_eigenvalues {G : Matrix n n ℂ} (hG : G.IsHermitian) :
     posIndex G = (Finset.univ.filter fun k => 0 < hG.eigenvalues k).card := by
   obtain ⟨P, hP, hd⟩ := exists_congr_diagonal_eigenvalues hG
   rw [posIndex_eq_card_of_congr_diagonal hP hd]
   simp
 
+/- English proof (translation)
+Take `⟨P, hP, hd⟩` from `exists_congr_diagonal_eigenvalues hG`. Rewrite using `[negIndex_eq_card_of_congr_diagonal hP hd]`. Simplify using the standard rewrite rules.
+-/
 theorem negIndex_eq_card_eigenvalues {G : Matrix n n ℂ} (hG : G.IsHermitian) :
     negIndex G = (Finset.univ.filter fun k => hG.eigenvalues k < 0).card := by
   obtain ⟨P, hP, hd⟩ := exists_congr_diagonal_eigenvalues hG
@@ -245,12 +356,20 @@ theorem negIndex_eq_card_eigenvalues {G : Matrix n n ℂ} (hG : G.IsHermitian) :
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Rewrite using `[hG.posDef_iff_eigenvalues_pos, posIndex_eq_card_eigenvalues hG, ← Finset.card_univ, Finset.card_filter_eq_iff]`. Simplify using the standard rewrite rules.
+-/
 theorem posDef_iff_posIndex_eq_card {G : Matrix n n ℂ} (hG : G.IsHermitian) :
     G.PosDef ↔ posIndex G = Fintype.card n := by
   rw [hG.posDef_iff_eigenvalues_pos, posIndex_eq_card_eigenvalues hG, ← Finset.card_univ,
     Finset.card_filter_eq_iff]
   simp
 
+/- English proof (translation)
+Take `⟨P, d, hP, hd, -⟩` from `exists_congr_diagonal_real hG`. Establish `hm : (P.map conj).det = conj P.det` using `(RingHom.map_det (starRingEnd ℂ) P).symm`. Establish `hd' : (P.map conj)ᵀ * G.map conj * (P.map conj).map conj = diagonal (fun k => (d k : ℂ))`. Rewrite using `[← transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hd, diagonal_map (map_zero _)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[posIndex_eq_card_of_congr_diagonal hP hd, posIndex_eq_card_of_congr_diagonal (hm ▸ (map_ne_zero _).2 hP) hd']`.
+-/
 theorem posIndex_map_conj {G : Matrix n n ℂ} (hG : G.IsHermitian) :
     posIndex (G.map conj) = posIndex G := by
   obtain ⟨P, d, hP, hd, -⟩ := exists_congr_diagonal_real hG
@@ -262,10 +381,20 @@ theorem posIndex_map_conj {G : Matrix n n ℂ} (hG : G.IsHermitian) :
   rw [posIndex_eq_card_of_congr_diagonal hP hd,
     posIndex_eq_card_of_congr_diagonal (hm ▸ (map_ne_zero _).2 hP) hd']
 
+/- English proof (translation)
+Rewrite using `[negIndex, negIndex, ← posIndex_map_conj hG.neg, Matrix.map_neg _ (map_neg _)]`.
+-/
 theorem negIndex_map_conj {G : Matrix n n ℂ} (hG : G.IsHermitian) :
     negIndex (G.map conj) = negIndex G := by
   rw [negIndex, negIndex, ← posIndex_map_conj hG.neg, Matrix.map_neg _ (map_neg _)]
 
+/- English proof (translation)
+Take `⟨P, d, hP, hd, -⟩` from `exists_congr_diagonal_real hG`. Take `⟨Q, e, hQ, he, -⟩` from `exists_congr_diagonal_real hH`. Establish `h : (fromBlocks P 0 0 Q)ᵀ * fromBlocks G 0 0 H * (fromBlocks P 0 0 Q).map conj = diagonal (Sum.elim (fun k => (d k : ℂ)) (fun k => (e k : ℂ)))`. Rewrite using `[← fromBlocks_diagonal, ← hd, ← he, fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+
+Establish `hdet : (fromBlocks P 0 0 Q).det ≠ 0`. Rewrite using `[det_fromBlocks_zero₂₁]`. Conclude with `mul_ne_zero hP hQ`. Rewrite using `[posIndex_eq_card_of_congr_diagonal hdet h, posIndex_eq_card_of_congr_diagonal hP hd, posIndex_eq_card_of_congr_diagonal hQ he]`. Simplify using `only [Finset.card_filter, Fintype.sum_sum_type]`.
+
+Both sides reduce to the same expression.
+-/
 theorem posIndex_fromBlocks [DecidableEq m] {G : Matrix n n ℂ} {H : Matrix m m ℂ}
     (hG : G.IsHermitian) (hH : H.IsHermitian) :
     posIndex (fromBlocks G 0 0 H) = posIndex G + posIndex H := by
@@ -284,12 +413,26 @@ theorem posIndex_fromBlocks [DecidableEq m] {G : Matrix n n ℂ} {H : Matrix m m
   simp only [Finset.card_filter, Fintype.sum_sum_type]
   rfl
 
+/- English proof (translation)
+Rewrite using `[negIndex, negIndex, negIndex, ← posIndex_fromBlocks hG.neg hH.neg, fromBlocks_neg]`. Simplify using the standard rewrite rules.
+-/
 theorem negIndex_fromBlocks [DecidableEq m] {G : Matrix n n ℂ} {H : Matrix m m ℂ}
     (hG : G.IsHermitian) (hH : H.IsHermitian) :
     negIndex (fromBlocks G 0 0 H) = negIndex G + negIndex H := by
   rw [negIndex, negIndex, negIndex, ← posIndex_fromBlocks hG.neg hH.neg, fromBlocks_neg]
   simp
 
+/- English proof (translation)
+Take `⟨P, d, hP, hd, hne⟩` from `exists_congr_diagonal_real hG`. Use `replace hne := hne hG0`. Rewrite `hcard` using `[posIndex_eq_card_of_congr_diagonal hP hd]`. Simplify using `only [Complex.ofReal_re] at hcard`. Rewrite `hcard` using `[← Fintype.card_subtype, ← Fintype.card_subtype]`.
+
+Set `f : {k // 0 < e k} ≃ {k // 0 < d k}` to `Fintype.equivOfCardEq hcard`. Set `σ : Equiv.Perm n` to `f.extendSubtype`. Establish `hσ : ∀ k, 0 < e k / d (σ k)`. Introduce `k`. Distinguish the cases in `hk : 0 < e k`.
+
+Conclude with `div_pos hk (f.extendSubtype_mem k hk)`. Conclude with `div_pos_of_neg_of_neg ((not_lt.1 hk).lt_of_ne (he k)) ((not_lt.1 (f.extendSubtype_not_mem k hk)).lt_of_ne (hne _))`. Establish `h1 : (P.submatrix id σ)ᵀ * G * (P.submatrix id σ).map conj = diagonal fun k => (d (σ k) : ℂ)`. Establish `: (P.submatrix id σ)ᵀ * G * (P.submatrix id σ).map conj = (Pᵀ * G * P.map conj).submatrix σ σ` using `rfl`. Rewrite using `[this, hd, submatrix_diagonal_equiv]`.
+
+Both sides reduce to the same expression. Use `⟨P.submatrix id σ * diagonal fun k => (√(e k / d (σ k)) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_mul, det_permute', det_diagonal]`. Use `mul_ne_zero (mul_ne_zero ?_ hP) (Finset.prod_ne_zero_iff.2 fun k _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`.
+
+Conclude with `Complex.ofReal_ne_zero.2 (Real.sqrt_pos.2 (hσ k)).ne'`. Rewrite using `[congr_mul, h1, diagonal_transpose, diagonal_map (map_zero _), diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`. Use extensionality with `k`. Rewrite using `[Complex.conj_ofReal, ← Complex.ofReal_mul, ← Complex.ofReal_mul, mul_right_comm, Real.mul_self_sqrt (hσ k).le, div_mul_cancel₀ _ (hne _)]`.
+-/
 theorem exists_congr_diagonal_of_card_eq {G : Matrix n n ℂ} (hG : G.IsHermitian)
     (hG0 : G.det ≠ 0) {e : n → ℝ} (he : ∀ k, e k ≠ 0)
     (hcard : (Finset.univ.filter fun k => 0 < e k).card = posIndex G) :
@@ -325,6 +468,13 @@ theorem exists_congr_diagonal_of_card_eq {G : Matrix n n ℂ} (hG : G.IsHermitia
     rw [Complex.conj_ofReal, ← Complex.ofReal_mul, ← Complex.ofReal_mul, mul_right_comm,
       Real.mul_self_sqrt (hσ k).le, div_mul_cancel₀ _ (hne _)]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP, rfl⟩`. Conclude with `(posIndex_congr G hP).symm`. Introduce `h`. Take `⟨Q, d, hQ, hd, hne⟩` from `exists_congr_diagonal_real hH`.
+
+Take `⟨P, hP, hPd⟩` from `exists_congr_diagonal_of_card_eq hG hG0 (hne hH0) (by`. Rewrite using `[h, posIndex_eq_card_of_congr_diagonal hQ hd]`. Use the proof step `simp)`. Establish `hu : IsUnit Q.det` using `hQ.isUnit`. Use `⟨P * Q⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[det_mul]`. Conclude with `mul_ne_zero hP (isUnit_nonsing_inv_det Q hu).ne_zero`. Rewrite using `[congr_mul, hPd, ← hd, ← congr_mul, mul_nonsing_inv Q hu]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_congr_iff_posIndex_eq {G H : Matrix n n ℂ} (hG : G.IsHermitian) (hG0 : G.det ≠ 0)
     (hH : H.IsHermitian) (hH0 : H.det ≠ 0) :
     (∃ P : Matrix n n ℂ, P.det ≠ 0 ∧ Pᵀ * G * P.map conj = H) ↔ posIndex G = posIndex H := by
@@ -349,39 +499,63 @@ section NormalForm
 
 variable {r s : ℕ}
 
+/- English proof (translation)
+Unfold `FD.sgn`. Apply the tactic sequence `split_ifs with h <;> simp [h]`.
+-/
 theorem sgn_pos_iff (p a : ℕ) : 0 < FD.sgn p a ↔ a < p := by
   unfold FD.sgn
   split_ifs with h <;> simp [h]
 
+/- English proof (translation)
+Unfold `FD.sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem sgn_ne_zero (p a : ℕ) : FD.sgn p a ≠ 0 := by
   unfold FD.sgn
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [sgn_pos_iff]`. Rewrite using `[Fin.card_filter_val_lt, min_eq_right hp]`.
+-/
 theorem card_filter_sgn_pos {p : ℕ} (hp : p ≤ r) :
     (Finset.univ.filter fun a : Fin r => 0 < FD.sgn p a).card = p := by
   simp only [sgn_pos_iff]
   rw [Fin.card_filter_val_lt, min_eq_right hp]
 
+/- English proof (translation)
+Rewrite using `[posIndex_diagonal]`. Simplify `card_filter_sgn_pos hp` using `only [Complex.ofReal_re]`.
+-/
 theorem posIndex_diagonal_sgn {p : ℕ} (hp : p ≤ r) :
     posIndex (diagonal fun a : Fin r => ((FD.sgn p a : ℝ) : ℂ)) = p := by
   rw [posIndex_diagonal]
   simpa only [Complex.ofReal_re] using card_filter_sgn_pos hp
 
+/- English proof (translation)
+Simplify using `using posIndex_le_card G`.
+-/
 theorem posIndex_le (G : Matrix (Fin r) (Fin r) ℂ) : posIndex G ≤ r := by
   simpa using posIndex_le_card G
 
+/- English proof (translation)
+Rewrite using `[← posIndex_congr G hP, h, posIndex_diagonal_sgn hp]`.
+-/
 theorem posIndex_eq_of_congr_sgn {G P : Matrix (Fin r) (Fin r) ℂ} {p : ℕ} (hp : p ≤ r)
     (hP : P.det ≠ 0)
     (h : Pᵀ * G * P.map conj = diagonal fun a : Fin r => ((FD.sgn p a : ℝ) : ℂ)) :
     posIndex G = p := by
   rw [← posIndex_congr G hP, h, posIndex_diagonal_sgn hp]
 
+/- English proof (translation)
+The claim follows from `exists_congr_diagonal_of_card_eq hG hG0 (fun _ => sgn_ne_zero _ _) (card_filter_sgn_pos (posIndex_le G))`.
+-/
 theorem exists_congr_sgn {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.IsHermitian) (hG0 : G.det ≠ 0) :
     ∃ P : Matrix (Fin r) (Fin r) ℂ, P.det ≠ 0 ∧
       Pᵀ * G * P.map conj = diagonal fun a : Fin r => ((FD.sgn (posIndex G) a : ℝ) : ℂ) :=
   exists_congr_diagonal_of_card_eq hG hG0 (fun _ => sgn_ne_zero _ _)
     (card_filter_sgn_pos (posIndex_le G))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hp, P, hP, h⟩`. Conclude with `(posIndex_eq_of_congr_sgn hp hP h).symm`. Introduce and unpack `rfl`. Conclude with `⟨posIndex_le G, exists_congr_sgn hG hG0⟩`.
+-/
 theorem congr_sgn_iff {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.IsHermitian) (hG0 : G.det ≠ 0)
     (p : ℕ) :
     (p ≤ r ∧ ∃ P : Matrix (Fin r) (Fin r) ℂ, P.det ≠ 0 ∧
@@ -393,12 +567,18 @@ theorem congr_sgn_iff {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.IsHermitian) (hG0
   · rintro rfl
     exact ⟨posIndex_le G, exists_congr_sgn hG hG0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨posIndex G, (congr_sgn_iff hG hG0 _).2 rfl, fun p hp => (congr_sgn_iff hG hG0 p).1 hp⟩`.
+-/
 theorem existsUnique_congr_sgn {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.IsHermitian)
     (hG0 : G.det ≠ 0) :
     ∃! p : ℕ, p ≤ r ∧ ∃ P : Matrix (Fin r) (Fin r) ℂ, P.det ≠ 0 ∧
       Pᵀ * G * P.map conj = diagonal fun a : Fin r => ((FD.sgn p a : ℝ) : ℂ) :=
   ⟨posIndex G, (congr_sgn_iff hG hG0 _).2 rfl, fun p hp => (congr_sgn_iff hG hG0 p).1 hp⟩
 
+/- English proof (translation)
+Rewrite using `[reindex_apply, posIndex_submatrix_equiv, posIndex_fromBlocks hG hH]`.
+-/
 theorem posIndex_reindex_fromBlocks {G : Matrix (Fin r) (Fin r) ℂ} {H : Matrix (Fin s) (Fin s) ℂ}
     (hG : G.IsHermitian) (hH : H.IsHermitian) :
     posIndex (reindex finSumFinEquiv finSumFinEquiv (fromBlocks G 0 0 H)) =
@@ -413,9 +593,15 @@ open NumberField
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexEmbedding_complexConj E τ x`.
+-/
 theorem embedding_cc (τ : E →+* ℂ) (x : E) : τ (FD.cc x) = conj (τ x) :=
   IsCMField.complexEmbedding_complexConj E τ x
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[conjTranspose_apply, map_apply, map_apply, ← hG b a, embedding_cc]`. Both sides reduce to the same expression.
+-/
 theorem isHermitian_map {n : Type*} (τ : E →+* ℂ) {G : Matrix n n E}
     (hG : ∀ a b, FD.cc (G a b) = G b a) : (G.map τ).IsHermitian := by
   ext a b
@@ -423,6 +609,9 @@ theorem isHermitian_map {n : Type*} (τ : E →+* ℂ) {G : Matrix n n E}
   rfl
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Establish `h : (G.map τ).det = τ G.det` using `(RingHom.map_det τ G).symm`. Rewrite using `[h]`. Conclude with `(map_ne_zero τ).2 hG0`.
+-/
 theorem det_map_ne_zero {n : Type*} [Fintype n] [DecidableEq n] (τ : E →+* ℂ) {G : Matrix n n E}
     (hG0 : G.det ≠ 0) : (G.map τ).det ≠ 0 := by
   have h : (G.map τ).det = τ G.det := (RingHom.map_det τ G).symm
@@ -431,12 +620,18 @@ theorem det_map_ne_zero {n : Type*} [Fintype n] [DecidableEq n] (τ : E →+* �
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+The claim follows from `(HermDiag.dotProduct_mulVec_comp_eq_sum conj (G.map τ) u v).symm`.
+-/
 theorem hermC_eq_dotProduct (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u v : Fin r → ℂ) :
     FD.hermC τ G u v = u ⬝ᵥ G.map τ *ᵥ star v :=
   (HermDiag.dotProduct_mulVec_comp_eq_sum conj (G.map τ) u v).symm
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[HermDiag.transpose_mul_mul_map_apply]`. Conclude with `hermC_eq_dotProduct τ G _ _`.
+-/
 theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (P : Matrix (Fin r) (Fin r) ℂ) :
     FD.gram τ G P = Pᵀ * G.map τ * P.map conj := by
   ext a b
@@ -445,12 +640,18 @@ theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (P : Matrix (F
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Simplify using `only [hermC_eq_dotProduct]`. Conclude with `isGreatest_posIndex _`.
+-/
 theorem isGreatest_posIndex_map (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) :
     IsGreatest {d | ∃ W : Submodule ℂ (Fin r → ℂ), finrank ℂ W = d ∧
       ∀ x ∈ W, x ≠ 0 → 0 < (FD.hermC τ G x x).re} (posIndex (G.map τ)) := by
   simp only [hermC_eq_dotProduct]
   exact isGreatest_posIndex _
 
+/- English proof (translation)
+Simplify using `only [gram_eq]`. Conclude with `congr_sgn_iff (isHermitian_map τ hG) (det_map_ne_zero τ hG0) p`.
+-/
 theorem gram_eq_sgn_iff (τ : E →+* ℂ) {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, FD.cc (G a b) = G b a) (hG0 : G.det ≠ 0) (p : ℕ) :
     (p ≤ r ∧ ∃ P : Matrix (Fin r) (Fin r) ℂ, P.det ≠ 0 ∧
@@ -461,11 +662,17 @@ theorem gram_eq_sgn_iff (τ : E →+* ℂ) {G : Matrix (Fin r) (Fin r) E}
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+The claim follows from `posIndex_map_conj (isHermitian_map τ hG)`.
+-/
 theorem posIndex_map_conjugate (τ : E →+* ℂ) {G : Matrix n n E}
     (hG : ∀ a b, FD.cc (G a b) = G b a) :
     posIndex (G.map (ComplexEmbedding.conjugate τ)) = posIndex (G.map τ) :=
   posIndex_map_conj (isHermitian_map τ hG)
 
+/- English proof (translation)
+The claim follows from `negIndex_map_conj (isHermitian_map τ hG)`.
+-/
 theorem negIndex_map_conjugate (τ : E →+* ℂ) {G : Matrix n n E}
     (hG : ∀ a b, FD.cc (G a b) = G b a) :
     negIndex (G.map (ComplexEmbedding.conjugate τ)) = negIndex (G.map τ) :=
@@ -473,6 +680,9 @@ theorem negIndex_map_conjugate (τ : E →+* ℂ) {G : Matrix n n E}
 
 omit [DecidableEq n] in
 
+/- English proof (translation)
+Establish `h : (P.map FD.cc).map τ = (P.map τ).map conj`. Use extensionality with `a b`. Conclude with `embedding_cc τ _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, transpose_map, h]`.
+-/
 theorem map_congr {m : Type*} (τ : E →+* ℂ) (G : Matrix n n E) (P : Matrix n m E) :
     (Pᵀ * G * P.map FD.cc).map τ = (P.map τ)ᵀ * G.map τ * (P.map τ).map conj := by
   have h : (P.map FD.cc).map τ = (P.map τ).map conj := by
@@ -480,15 +690,26 @@ theorem map_congr {m : Type*} (τ : E →+* ℂ) (G : Matrix n n E) (P : Matrix 
     exact embedding_cc τ _
   rw [Matrix.map_mul, Matrix.map_mul, transpose_map, h]
 
+/- English proof (translation)
+Rewrite using `[map_congr, posIndex_congr _ (det_map_ne_zero τ hP)]`.
+-/
 theorem posIndex_map_congr (τ : E →+* ℂ) (G : Matrix n n E) {P : Matrix n n E} (hP : P.det ≠ 0) :
     posIndex ((Pᵀ * G * P.map FD.cc).map τ) = posIndex (G.map τ) := by
   rw [map_congr, posIndex_congr _ (det_map_ne_zero τ hP)]
 
+/- English proof (translation)
+Rewrite using `[← posIndex_map_congr τ G hP, hd, diagonal_map (map_zero τ), posIndex_diagonal]`.
+-/
 theorem posIndex_map_eq_card_of_congr_diagonal (τ : E →+* ℂ) {G P : Matrix n n E} {d : n → E}
     (hP : P.det ≠ 0) (hd : Pᵀ * G * P.map FD.cc = diagonal d) :
     posIndex (G.map τ) = (Finset.univ.filter fun k => 0 < (τ (d k)).re).card := by
   rw [← posIndex_map_congr τ G hP, hd, diagonal_map (map_zero τ), posIndex_diagonal]
 
+/- English proof (translation)
+Establish `key : ∀ σ ∈ X.Ψ, posIndex (X.Gm.map σ) = X.p0` using `fun σ hσ => ((gram_eq_sgn_iff σ X.Gm_herm X.Gm_det X.p0).1 ⟨X.p0_le, X.signature ⟨σ, hσ⟩⟩).symm`. Distinguish the cases in `h : τ ∈ X.Ψ`. Conclude with `key τ h`. Rewrite using `[← posIndex_map_conjugate τ X.Gm_herm]`. Use `key _ ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h'`. Conclude with `h ((X.cmType τ).2 h')`.
+-/
 theorem posIndex_map_data (X : FD.Data E r) (τ : E →+* ℂ) : posIndex (X.Gm.map τ) = X.p0 := by
   have key : ∀ σ ∈ X.Ψ, posIndex (X.Gm.map σ) = X.p0 := fun σ hσ =>
     ((gram_eq_sgn_iff σ X.Gm_herm X.Gm_det X.p0).1 ⟨X.p0_le, X.signature ⟨σ, hσ⟩⟩).symm
@@ -499,6 +720,9 @@ theorem posIndex_map_data (X : FD.Data E r) (τ : E →+* ℂ) : posIndex (X.Gm.
     by_contra h'
     exact h ((X.cmType τ).2 h')
 
+/- English proof (translation)
+Rewrite using `[← posIndex_neg, posIndex_neg_eq_sub (isHermitian_map τ X.Gm_herm) (det_map_ne_zero τ X.Gm_det), posIndex_map_data, Fintype.card_fin]`.
+-/
 theorem negIndex_map_data (X : FD.Data E r) (τ : E →+* ℂ) :
     negIndex (X.Gm.map τ) = r - X.p0 := by
   rw [← posIndex_neg,
@@ -509,6 +733,9 @@ end CM
 
 open NumberField in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ G hG hG0 => ⟨existsUnique_congr_sgn hG hG0, congr_sgn_iff hG hG0, fun _ _ hP hd => posIndex_eq_card_of_congr_diagonal hP hd, isGreatest_posIndex G, fun _ _ hH => ⟨posIndex_fromBlocks hG hH, posIndex_reindex_fromBlocks hG hH⟩, by simpa only [Fintype.card_fin] using posIndex …`.
+-/
 theorem law_of_inertia :
     (∀ (r : ℕ) (G : Matrix (Fin r) (Fin r) ℂ), G.IsHermitian → G.det ≠ 0 →
       (∃! p : ℕ, p ≤ r ∧ ∃ P : Matrix (Fin r) (Fin r) ℂ, P.det ≠ 0 ∧

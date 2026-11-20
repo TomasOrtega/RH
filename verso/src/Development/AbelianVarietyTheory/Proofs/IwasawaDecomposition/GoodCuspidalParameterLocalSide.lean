@@ -20,6 +20,11 @@ namespace GlobalTheory.HeightCounting.Up.ParCopy
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Take `⟨-, h2⟩` from `Sigma.mk.inj_iff.mp pack`. Take `⟨hcf, -⟩` from `Sigma.mk.inj_iff.mp (eq_of_heq h2)`. Substitute `hcf` using the available equality.
+
+Establish `hr : rep = rep'` using `eq_of_heq hrep`. Substitute `hr` using the available equality. Set `T : GlobalTheory.RowTie.WDTie (withLoc L).nd (withLoc L).naut` to `{ A.wdT with }`. Set `Rw : RowSide (withLoc L)` to `{ A.row with }`. Use `⟨Rw, HEq.rfl, ⟨{ T := T, lab := A.lab, chr := { A.chr with }, cg := { cg with }, A := { A.au with }, au := au, row := row }⟩⟩` and prove the remaining obligations.
+-/
 theorem parIn_of_nTrue {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : NTrue hL D' cf' C' tp') (rep' : D'.what₂.FT → NG.FinTyp D'.host.E D'.R.r)
     (hrep : HEq nt.rep rep') :
@@ -37,6 +42,9 @@ theorem parIn_of_nTrue {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Establish `hm : mtL L M = M'` using `eq_of_heq hM`. Substitute `hm` using the available equality. Conclude with `⟨tp.tup, C.Q, { mt with }⟩`.
+-/
 theorem mtInput_of_nTrue {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : NTrue hL D' cf' C' tp') (M' : MtFam D') (hM : HEq (mtL nt.L nt.M) M') :
     ∃ tup Q, MtInput D' M' tup Q := by
@@ -48,6 +56,17 @@ theorem mtInput_of_nTrue {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Establish `e0 : Rw0.locR = A.row.locR` using `eq_of_heq h0`. Establish `e1 : Rw.locR = A.row.locR` using `eq_of_heq hRw`. Establish `hpar : ParIn hL D cf rep A.row` using `⟨A.wdT, A.lab, A.chr, cg, A.au, au, row⟩`.
+
+Establish `hLaws` using `GlobalTheory.T.parameter_laws_empty hN hL D cf rep A.row A.bare hpar`. Establish `hconds` using `GlobalTheory.T.base_change_of_hypotheses hN.bc hN.what₂.bern hN.ds hN.gen hN.std hL D A.wdT A.au cg au`. Establish `hLift' : LiftAll D A.row`. Introduce `j h1 h2 σ hσ`. Take `⟨π, μ, hl⟩` from `hLift j h1 h2 σ hσ`.
+
+Use `⟨π, μ, ⟨hl.csd, hl.unr, hl.sph, fun w hw => ?_, hl.eta, hl.inf⟩⟩` and prove the remaining obligations. Use `hl.loc w hw` as an intermediate fact. Rewrite `this` using `[e0]`. Conclude with `this`. Establish `hLoc' : ∀ σ, RowLoc D A.row σ`.
+
+Introduce `σ w hw hk`. Use `hLoc σ w hw hk` as an intermediate fact. Rewrite `this` using `[e0]`. Conclude with `this`. Establish `hG` using `GlobalTheory.T.good_row_cusp_param D A.row hLaws hconds hEFK hCM hDef hLift' hLoc'`.
+
+Introduce `j h1 h2 σ hσ hg`. Take `⟨π, hπ⟩` from `hG j h1 h2 σ hσ hg`. Use `⟨π, hπ.1, hπ.2.1, fun w hw => ?_, hπ.2.2.2⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `hπ.2.2.1 w hw`.
+-/
 theorem final (hN : PrN) (hL : GlobalTheory.Published.LocalLanglandsGL) {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : NTrue hL D' cf' C' tp') (Rw0 : RowSide D') (h0 : HEq Rw0.locR nt.A.row.locR)
     (hLift : LiftAll D' Rw0) (hLoc : ∀ σ, RowLoc D' Rw0 σ) (hEFK : SphericalInertData.HypEFK D') (hCM : SphericalInertData.HypCM D')
@@ -85,6 +104,15 @@ namespace GlobalTheory.HeightCounting.Up
 
 open GlobalTheory.HeightCounting.Up.ParCopy in
 
+/- English proof (translation)
+Introduce `hN hL`. Establish `hlift` using `GlobalTheory.T.lift_all_of_inputs hN hL`. Establish `hloc` using `GlobalTheory.T.row_local_all hN hL`. Establish `hsz` using `GlobalTheory.T.eventually_sizes_congruences_hostFacts_columnChoices`. Use `EvG.imp ((hlift.inter hloc).inter hsz) fun K _ _ _ _ H => ?_` and prove the remaining obligations.
+
+Use `large₂.imp ((H.1.1.inter H.1.2).inter H.2) fun B f T _ h => ?_` and prove the remaining obligations. Introduce `hKP w Z Wt p0 t nch n xd c hE _ hpin Rw hRw`. Take `⟨⟨h1, h2⟩, h3⟩` from `h`. Take `⟨e⟩` from `hE`. Establish `e' : NMore (D` using `(w.st Z).toD7) c.row t.r.z.geo xd := e`.
+
+Take `⟨Rw0, hRw0, ⟨hpar⟩⟩` from `parIn_of_nTrue c.a.nt _ c.row.rep_eq`. Take `⟨tup, Q, hmt⟩` from `mtInput_of_nTrue c.a.nt c.a.all.gal.mt c.a.mt_eq`. Establish `hLift` using `h1 hKP w hpin Z Wt t.hX t.r.z p0 t.r.Y t.r.intersectionNumber_baseChange t.exAt t.inGeo t.grp t.grpAt Rw0 hpar _ tup Q e'.ad hmt`. Establish `hLoc` using `h2 hKP w hpin Z Wt t.hX t.r.z p0 t.r.Y t.r.intersectionNumber_baseChange t.exAt t.inGeo t.grp t.grpAt Rw0 hpar`. Take `⟨-, -, -, hEFK, hCM, hDef, -⟩` from `h3 hKP T w Z`.
+
+Conclude with `final hN hL c.a.nt Rw0 hRw0 hLift hLoc hEFK hCM hDef Rw hRw`.
+-/
 theorem goodRowCuspParam_atMem : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL (fun _ _ _ _ w Z _ _ _ _ _ c =>
     ∀ Rw : RowSide (w.D Z), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.GoodRowCuspParam (w.D Z) Rw) := by
   intro hN hL

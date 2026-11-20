@@ -30,14 +30,25 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 def conjEquiv (cm : CMData F E) : E ≃ₐ[F] E :=
   AlgEquiv.ofAlgHom cm.sig cm.sig (AlgHom.ext fun x => star_star x) (AlgHom.ext fun x => star_star x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjEquiv_apply (cm : CMData F E) (x : E) : conjEquiv cm x = star x := rfl
 
 def frameLat (V : HSpace E) : Submodule (𝓞 E) (Fin V.rank → E) :=
   V.L0.map (V.frame.equivFun.toLinearMap.restrictScalars (𝓞 E))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_frameLat (V : HSpace E) (v : Fin V.rank → E) :
     v ∈ frameLat V ↔ ∃ x ∈ V.L0, (fun i => V.frame.repr x i) = v := Iff.rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [← V.frame.sum_repr x, ← V.frame.sum_repr y]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, RingHom.id_apply, smul_eq_mul, starRingEnd_apply, HSpace.gram]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hT_eq (V : HSpace E) (x y : V.V) :
     V.hT x y = ∑ a, ∑ b, V.frame.repr y a * V.gram b a * star (V.frame.repr x b) := by
   conv_lhs => rw [← V.frame.sum_repr x, ← V.frame.sum_repr y]
@@ -49,15 +60,33 @@ theorem hT_eq (V : HSpace E) (x y : V.V) :
     HSpace.gram]
   ring
 
+/- English proof (translation)
+The claim follows from `V.standardTuple_isLattice.fg.map _`.
+-/
 theorem frameLat_fg (V : HSpace E) : (frameLat V).FG := V.standardTuple_isLattice.fg.map _
 
+/- English proof (translation)
+Establish `h : (frameLat V : Set (Fin V.rank → E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V)` using `rfl`. Rewrite using `[h, ← Submodule.map_span, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`.
+-/
 theorem frameLat_span (V : HSpace E) : Submodule.span E (frameLat V : Set (Fin V.rank → E)) = ⊤ := by
   have h : (frameLat V : Set (Fin V.rank → E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V) := rfl
   rw [h, ← Submodule.map_span, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]
 
+/- English proof (translation)
+The claim follows from `LinearMap.isSymm_def.1 V.herm _ _`.
+-/
 theorem gram_herm (V : HSpace E) (a b : Fin V.rank) : star (V.gram b a) = V.gram a b :=
   LinearMap.isSymm_def.1 V.herm _ _
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_transpose]`. Introduce `h`. Take `⟨v, hv, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hv` to reduce the goal to its premises. Establish `: V.frame.equivFun.symm v = 0`.
+
+Use `V.nondeg.2 _ fun x => ?_` and prove the remaining obligations. Rewrite using `[hT_eq, Finset.sum_comm]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`. Establish `hb` using `congrFun h0 b`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at hb`. Establish `e : ∑ a, V.frame.repr (V.frame.equivFun.symm v) a * V.gram b a = 0`. Rewrite using `[← hb]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← V.frame.equivFun_apply, LinearEquiv.apply_symm_apply, mul_comm]`.
+
+Rewrite using `[e, zero_mul]`. Conclude with `V.frame.equivFun.symm.map_eq_zero_iff.1 this`.
+-/
 theorem gram_det_ne (V : HSpace E) : V.gramᵀ.det ≠ 0 := by
   rw [Matrix.det_transpose]
   intro h
@@ -77,6 +106,17 @@ theorem gram_det_ne (V : HSpace E) : V.gramᵀ.det ≠ 0 := by
     rw [e, zero_mul]
   exact V.frame.equivFun.symm.map_eq_zero_iff.1 this
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `V.frame.equivFun.surjective v`. Establish `h1 : V.frame.equivFun x ∈ frameLat V ↔ x ∈ V.L0`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', hx', e⟩`. Establish `: x' = x` using `V.frame.equivFun.injective e`.
+
+Conclude with `this ▸ hx'`. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`. Establish `h2 : x ∈ V.L0 ↔ ∀ y ∈ V.L0, V.hT y x ∈ (1 : Submodule (𝓞 E) E)` using `by conv_lhs => rw [← V.baseLattice_isUnimodular]`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, h2]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Use `h _ ⟨y, hy, rfl⟩` as an intermediate fact.
+
+Rewrite using `[hT_eq]`. Conclude with `Submodule.mem_one.2 ((FractionalIdeal.mem_one_iff _).1 this)`. Introduce and unpack `h _ ⟨y, hy, rfl⟩`. Use `h y hy` as an intermediate fact. Rewrite `this` using `[hT_eq]`.
+
+Conclude with `(FractionalIdeal.mem_one_iff _).2 (Submodule.mem_one.1 this)`.
+-/
 theorem frameLat_dual (cm : CMData F E) (V : HSpace E) (v : Fin V.rank → E) :
     (∀ y ∈ frameLat V, (∑ a, ∑ b, v a * V.gramᵀ a b * conjEquiv cm (y b)) ∈
       (1 : FractionalIdeal (𝓞 E)⁰ E)) ↔ v ∈ frameLat V := by
@@ -103,6 +143,11 @@ theorem frameLat_dual (cm : CMData F E) (V : HSpace E) (v : Fin V.rank → E) :
     rw [hT_eq] at this
     exact (FractionalIdeal.mem_one_iff _).2 (Submodule.mem_one.1 this)
 
+/- English proof (translation)
+Unfold `GlobalTheory.AdLat.hermA`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x a * ((1 : Af F) ⊗ₜ J b a) * sigR (Af F) cm.sig (y b) = sigR (Af F) cm.sig (y b) * (((1 : Af F) ⊗ₜ J b a) * x a)`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermA_eq (cm : CMData F E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → GlobalTheory.AdLat.RA F E) :
     GlobalTheory.AdLat.hermA (conjEquiv cm) Jᵀ x y = (sigR (Af F) cm.sig ∘ y) ⬝ᵥ (JR (Af F) J *ᵥ x) := by
   unfold GlobalTheory.AdLat.hermA
@@ -112,6 +157,11 @@ theorem hermA_eq (cm : CMData F E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y
   change x a * ((1 : Af F) ⊗ₜ J b a) * sigR (Af F) cm.sig (y b) = sigR (Af F) cm.sig (y b) * (((1 : Af F) ⊗ₜ J b a) * x a)
   ring
 
+/- English proof (translation)
+Establish `h : Formalism.UG.cT (sigR (Af F) cm.sig) (g : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E)) * JR (Af F) J * (g : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E)) = JR (Af F) J` using `hg`. Rewrite using `[hermA_eq, hermA_eq]`. Establish `e : sigR (Af F) cm.sig ∘ ((g : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E)) *ᵥ y) = ((g : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E)).map (sigR (Af F) cm.sig)) *ᵥ (sigR (Af F) cm.sig ∘ y)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ _ _ _`.
+
+Rewrite using `[e]`. Use `conv_rhs => rw [← h]`. Rewrite using `[Formalism.UG.cT, Matrix.mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_transpose, dotProduct_comm, dotProduct_comm (_ ∘ y), Matrix.dotProduct_mulVec]`.
+-/
 theorem hermA_unitary (cm : CMData F E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (g : GL (Fin n) (GlobalTheory.AdLat.RA F E)) (hg : g ∈ HR (Af F) cm.sig J) (x y : Fin n → GlobalTheory.AdLat.RA F E) :
     GlobalTheory.AdLat.hermA (conjEquiv cm) Jᵀ ((g : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E)) *ᵥ x)
@@ -128,6 +178,15 @@ theorem hermA_unitary (cm : CMData F E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
   rw [Formalism.UG.cT, Matrix.mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_transpose,
     dotProduct_comm, dotProduct_comm (_ ∘ y), Matrix.dotProduct_mulVec]
 
+/- English proof (translation)
+Use `set ψ : R ⊗[F] E →+* R' ⊗[F] E := (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom with hψ`. Establish `h : Formalism.UG.cT (sigR R σ) (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * JR R J * (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = JR R J` using `hg`. Establish `h1 : ∀ t, ψ (sigR R σ t) = sigR R' σ (ψ t)`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a b => simp [hψ, sigR]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `h2 : (JR R J).map ψ = JR R' J`. Use extensionality with `i j`.
+
+Simplify using `[hψ, JR, inclR]`. Establish `h3 : (Formalism.UG.cT (sigR R σ) (g : Matrix (Fin n) (Fin n) (R ⊗[F] E))).map ψ = Formalism.UG.cT (sigR R' σ) ((g : Matrix (Fin n) (Fin n) (R ⊗[F] E)).map ψ)`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, h1]`. Establish `h4` using `congrArg (fun m => m.map ψ) h`.
+
+Simplify using `only [Matrix.map_mul, h2, h3] at h4`. Conclude with `h4`.
+-/
 theorem bc_mem_HR (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {R R' : Type} [CommRing R] [Algebra F R]
     [CommRing R'] [Algebra F R'] (φ : R →ₐ[F] R') (g : GL (Fin n) (R ⊗[F] E)) (hg : g ∈ HR R σ J) :
     Formalism.UG.bc (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom g ∈ HR R' σ J := by
@@ -157,6 +216,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `Formalism.L2.Pj.latHat GlobalTheory.AdLat.hat`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`.
+
+Conclude with `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, hx, rfl⟩`.
+-/
 theorem latHat_eq (V : HSp D) :
     Formalism.L2.Pj.latHat V = GlobalTheory.AdLat.hat D.host.F (frameLat V : Set (Fin V.rank → D.host.E)) := by
   unfold Formalism.L2.Pj.latHat GlobalTheory.AdLat.hat
@@ -168,6 +232,15 @@ theorem latHat_eq (V : HSp D) :
   · rintro ⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩
     exact ⟨a, ha, x, hx, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, x, hx, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨a, ha, b • x, V.L0.smul_mem b hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[← algebraMap_smul D.host.E b x, map_smul]`. Simplify using `[halfVec, Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]`. Consider the case `zero`. Establish `: halfVec V b 0 = 0` using `by funext i; simp [halfVec]`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Consider the case `add w w' _ _ h h'`. Establish `: halfVec V b (w + w') = halfVec V b w + halfVec V b w'` using `by funext i; simp [halfVec, mul_add]`. Rewrite using `[this]`. Conclude with `add_mem h h'`.
+
+Consider the case `neg w _ h`. Establish `: halfVec V b (-w) = - halfVec V b w` using `by funext i; simp [halfVec]`. Rewrite using `[this]`. Conclude with `neg_mem h`.
+-/
 theorem halfVec_mem (V : HSp D) (b : 𝓞 D.host.E) (z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E)
     (hz : z ∈ Formalism.L2.Pj.latHat V) : halfVec V b z ∈ Formalism.L2.Pj.latHat V := by
   induction hz using AddSubgroup.closure_induction with
@@ -187,9 +260,15 @@ theorem halfVec_mem (V : HSp D) (b : 𝓞 D.host.E) (z : Fin V.rank → Af D.hos
     have : halfVec V b (-w) = - halfVec V b w := by funext i; simp [halfVec]
     rw [this]; exact neg_mem h
 
+/- English proof (translation)
+The claim follows from `bc_mem_HR _ _ (sndA D.host.F) _ (show HR (AF D.host.F) D.sp.cm.sig V.gram from k).2`.
+-/
 theorem finHom_mem (V : HSp D) (k : GA D V) : finHom V k ∈ HR (Af D.host.F) D.sp.cm.sig V.gram :=
   bc_mem_HR _ _ (sndA D.host.F) _ (show HR (AF D.host.F) D.sp.cm.sig V.gram from k).2
 
+/- English proof (translation)
+Introduce `k`. Rewrite using `[hK k]`. Use `and_congr_right fun _ => ⟨fun h b _ z hz => h _ (halfVec_mem V b z hz), fun h => ?_⟩` and prove the remaining obligations. Rewrite `h`, the goal using `[latHat_eq]`. Use `GlobalTheory.AdLat.trivial_level_of_half D.host.F D.host.E V.rank (frameLat V) (conjEquiv D.sp.cm) V.gramᵀ 1 (finHom V k) l.M (l.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)) l.Mb (frameLat_fg V) (frameLat_span V) (fun x => star_star x) (fun a b => gram_herm V a b) (gram_det_ne V) …` and prove the remaining obligations.
+-/
 theorem kfHalf_of_level (V : HSp D) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (l : Level H)
     (Kf : Subgroup (GA D V)) (hK : IsLevelK V l.M Kf) :
     KfHalf V Kf l.M (l.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)) := by
@@ -204,6 +283,9 @@ theorem kfHalf_of_level (V : HSp D) {H : ReciprocityTheory.ChartRestriction.G.Ge
     (by rw [sup_comm]; exact l.coprime) (by rw [mul_comm]; exact l.prod)
     (fun b hb => ⟨H.bar b, Ideal.mem_map_of_mem _ hb, H.bar_eq b⟩) h
 
+/- English proof (translation)
+Introduce `D Q hQ j Kf hK`. Use `kfHalf_of_level _ Q.l Kf ?_` and prove the remaining obligations. Rewrite using `[hQ.2.1.1]`. Conclude with `hK`.
+-/
 theorem kfHalf_record : ∀ (D : D7) (Q : Par D), Q.Pins → ∀ j, ∀ Kf : Subgroup (GA D (D.sp.W j)), IsLevelK (D.sp.W j) (D.host.g 0 * D.host.g 1) Kf → KfHalf (D.sp.W j) Kf Q.l.M (Q.l.Mb.map (Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)) := by
   intro D Q hQ j Kf hK
   refine kfHalf_of_level _ Q.l Kf ?_

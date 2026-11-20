@@ -8,6 +8,17 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `hb : ∀ i, ∑ σ : E →+* ℂ, σ (integralBasis E i) * g σ = 0` using `fun i => by`. Rewrite using `[integralBasis_apply]`. Conclude with `h _`. Establish `hE : ∀ x : E, ∑ σ : E →+* ℂ, σ x * g σ = 0`. Introduce `x`.
+
+Rewrite using `[← (integralBasis E).sum_repr x]`. Simplify using `only [map_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `e : ∀ σ : E →+* ℂ, σ ((integralBasis E).repr x i • integralBasis E i) * g σ = ((integralBasis E).repr x i : ℂ) * (σ (integralBasis E i) * g σ)` using `fun σ => by`.
+
+Rewrite using `[map_rat_smul, Rat.smul_def, mul_assoc]`. Rewrite using `[Finset.sum_congr rfl fun σ _ => e σ, ← Finset.mul_sum, hb i, mul_zero]`. Establish `hli : LinearIndependent ℂ (fun σ : E →+* ℂ => ((σ : E →* ℂ) : E → ℂ))` using `(linearIndependent_monoidHom E ℂ).comp (fun σ : E →+* ℂ => (σ : E →* ℂ)) (fun a b hab => RingHom.ext fun x => DFunLike.congr_fun hab x)`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use function extensionality and compare the values at `σ`.
+
+Use `hli g ?_ σ` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Rewrite using `[← hE x]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Simplify using `[mul_comm]`.
+-/
 theorem emb_indep (g : (E →+* ℂ) → ℂ) (h : ∀ β : 𝓞 E, ∑ σ, σ (β : E) * g σ = 0) : g = 0 := by
   have hb : ∀ i, ∑ σ : E →+* ℂ, σ (integralBasis E i) * g σ = 0 := fun i => by
     rw [integralBasis_apply]
@@ -37,9 +48,15 @@ theorem emb_indep (g : (E →+* ℂ) → ℂ) (h : ∀ β : 𝓞 E, ∑ σ, σ (
 def ConjSymm (t : (E →+* ℂ) → ℂ) : Prop :=
   ∀ σ, t (ComplexEmbedding.conjugate σ) = (starRingEnd ℂ) (t σ)
 
+/- English proof (translation)
+Introduce `σ` and use `by simp only [canonicalEmbedding.apply_at, ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem conjSymm_canonical (x : E) : ConjSymm (canonicalEmbedding E x) := fun σ => by
   simp only [canonicalEmbedding.apply_at, ComplexEmbedding.conjugate_coe_eq]
 
+/- English proof (translation)
+Introduce `σ` and use `by rw [Finset.sum_apply, Finset.sum_apply, map_sum] refine Finset.sum_congr rfl fun i _ => ?_ rw [Pi.smul_apply, Pi.smul_apply, hv i σ, Complex.real_smul, Complex.real_smul, map_mul, Complex.conj_ofReal]`.
+-/
 theorem conjSymm_sum {ι : Type} (s : Finset ι) (c : ι → ℝ) (v : ι → (E →+* ℂ) → ℂ)
     (hv : ∀ i, ConjSymm (v i)) : ConjSymm (∑ i ∈ s, c i • v i) := fun σ => by
   rw [Finset.sum_apply, Finset.sum_apply, map_sum]
@@ -47,6 +64,17 @@ theorem conjSymm_sum {ι : Type} (s : Finset ι) (c : ι → ℝ) (v : ι → (E
   rw [Pi.smul_apply, Pi.smul_apply, hv i σ, Complex.real_smul, Complex.real_smul, map_mul,
     Complex.conj_ofReal]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `σ`. Take `⟨w, hwdef⟩ : ∃ w, w = InfinitePlace.mk σ` from `⟨_, rfl⟩`. Establish `hcases` using `InfinitePlace.embedding_mk_eq σ`. Rewrite `hcases` using `[← hwdef]`. Establish `key : t w.embedding = t' w.embedding`.
+
+Distinguish the cases in `hw : w.IsReal`. Establish `h1` using `congrArg (fun m => m.1 ⟨w, hw⟩) h`. Simplify using `only [mixedEmbedding.commMap_apply_of_isReal] at h1`. Establish `hr : ComplexEmbedding.conjugate w.embedding = w.embedding` using `ComplexEmbedding.isReal_iff.mp (InfinitePlace.isReal_iff.mp hw)`. Establish `a1 : starRingEnd ℂ (t w.embedding) = t w.embedding` using `by rw [← ht, hr]`.
+
+Establish `a2 : starRingEnd ℂ (t' w.embedding) = t' w.embedding` using `by rw [← ht', hr]`. Apply `Complex.ext h1` to reduce the goal to its premises. Rewrite using `[Complex.conj_eq_iff_im.mp a1, Complex.conj_eq_iff_im.mp a2]`. Establish `hw' : w.IsComplex` using `InfinitePlace.not_isReal_iff_isComplex.mp hw`. Establish `h1` using `congrArg (fun m => m.2 ⟨w, hw'⟩) h`.
+
+Simplify `h1` using `only [mixedEmbedding.commMap_apply_of_isComplex]`. Break down `hcases with he | he` into its components or cases. Rewrite `key` using `[he]`. Conclude with `key`. Rewrite `key` using `[he, ht, ht']`.
+
+Simplify using `using congrArg (starRingEnd ℂ) key`.
+-/
 theorem eq_of_commMap (t t' : (E →+* ℂ) → ℂ) (ht : ConjSymm t) (ht' : ConjSymm t')
     (h : mixedEmbedding.commMap E t = mixedEmbedding.commMap E t') : t = t' := by
   funext σ
@@ -72,6 +100,11 @@ theorem eq_of_commMap (t t' : (E →+* ℂ) → ℂ) (ht : ConjSymm t) (ht' : Co
   · rw [he, ht, ht'] at key
     simpa using congrArg (starRingEnd ℂ) key
 
+/- English proof (translation)
+Use `⟨fun k => (mixedEmbedding.latticeBasis E).repr (mixedEmbedding.commMap E t) k, ?_⟩` and prove the remaining obligations. Apply `eq_of_commMap t _ ht (conjSymm_sum Finset.univ (fun k => (mixedEmbedding.latticeBasis E).repr (mixedEmbedding.commMap E t) k) (fun k => canonicalEmbedding E (integralBasis E k)) fun k => conjSymm_canonical _)` to reduce the goal to its premises. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Use `conv_lhs => rw [← (mixedEmbedding.latticeBasis E).sum_repr (mixedEmbedding.commMap E t)]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mixedEmbedding.latticeBasis_apply, mixedEmbedding.commMap_canonical_eq_mixed]`.
+-/
 theorem real_span (t : (E →+* ℂ) → ℂ) (ht : ConjSymm t) :
     ∃ c : Free.ChooseBasisIndex ℤ (𝓞 E) → ℝ,
       t = ∑ k, c k • canonicalEmbedding E (integralBasis E k) := by
@@ -85,6 +118,9 @@ theorem real_span (t : (E →+* ℂ) → ℂ) (ht : ConjSymm t) :
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [mixedEmbedding.latticeBasis_apply, mixedEmbedding.commMap_canonical_eq_mixed]
 
+/- English proof (translation)
+Introduce `h`. Establish `hr : ComplexEmbedding.IsReal σ` using `ComplexEmbedding.isReal_iff.mpr h`. Conclude with `InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex (InfinitePlace.mk σ)) ⟨σ, hr, rfl⟩`.
+-/
 theorem conjugate_ne [IsTotallyComplex E] (σ : E →+* ℂ) : ComplexEmbedding.conjugate σ ≠ σ := by
   intro h
   have hr : ComplexEmbedding.IsReal σ := ComplexEmbedding.isReal_iff.mpr h

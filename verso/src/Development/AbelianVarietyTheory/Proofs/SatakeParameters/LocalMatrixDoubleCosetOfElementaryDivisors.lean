@@ -11,11 +11,19 @@ section Abstract
 
 variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] (O : Subring R)
 
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `using O.one_mem`. Simplify `O.zero_mem` using `[Pi.single_eq_of_ne h]`.
+-/
 theorem single_mem (j i : n) : (Pi.single j (1 : R) : n → R) i ∈ O := by
   by_cases h : i = j
   · subst h; simpa using O.one_mem
   · simpa [Pi.single_eq_of_ne h] using O.zero_mem
 
+/- English proof (translation)
+Use `choose z hz1 hz2 using fun j => H (Pi.single j 1) (single_mem O j)`. Use `⟨Matrix.of fun i j => ⟨z j i, hz1 j i⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (hz2 j) i` as an intermediate fact. Simplify using `only [Matrix.mulVec_single_one, Matrix.col_apply] at this`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem exists_factor (P Q : Matrix n n R)
     (H : ∀ y : n → R, (∀ i, y i ∈ O) → ∃ z : n → R, (∀ i, z i ∈ O) ∧ P.mulVec y = Q.mulVec z) :
     ∃ M : Matrix n n O, P = Q * M.map O.subtype := by
@@ -27,6 +35,9 @@ theorem exists_factor (P Q : Matrix n n R)
   rw [this]
   rfl
 
+/- English proof (translation)
+Establish `h1 : M * N = 1`. Apply `Matrix.map_injective O.subtype_injective` to reduce the goal to its premises. Simplify using `only [Matrix.map_mul]`. Rewrite using `[h, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `⟨_, ⟨⟨M, N, h1, mul_eq_one_comm.1 h1⟩, rfl⟩, rfl⟩`.
+-/
 theorem mem_range_of_mul_eq_one (M N : Matrix n n O) (h : M.map O.subtype * N.map O.subtype = 1) :
     ∃ k ∈ (Formalism.UG.bc (n := n) O.subtype).range, k.1 = M.map O.subtype := by
   have h1 : M * N = 1 := by
@@ -35,6 +46,15 @@ theorem mem_range_of_mul_eq_one (M N : Matrix n n O) (h : M.map O.subtype * N.ma
     rw [h, Matrix.map_one _ (map_zero _) (map_one _)]
   exact ⟨_, ⟨⟨M, N, h1, mul_eq_one_comm.1 h1⟩, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨B0, hB0⟩` from `exists_factor O B 1 fun y hy => ⟨_, h1 y hy, by rw [Matrix.one_mulVec]⟩`. Rewrite `hB0` using `[Matrix.one_mul]`. Take `⟨C, hC⟩` from `exists_factor O 1 B fun y hy => by rw [Matrix.one_mulVec]; exact h2 y hy`. Take `⟨M, hM⟩` from `exists_factor O m (B * T) h3`. Take `⟨N, hN⟩` from `exists_factor O (B * T) m fun z hz => (h4 z hz).imp fun y hy => ⟨hy.1, hy.2.symm⟩`.
+
+Establish `hCB : C.map O.subtype * B = 1` using `mul_eq_one_comm.1 hC.symm`. Establish `hinv : T' * C.map O.subtype * (B * T) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc _ B, hCB, Matrix.one_mul, hT]`. Establish `hMN : M.map O.subtype * N.map O.subtype = 1`. Establish `e : B * T * (M.map O.subtype * N.map O.subtype) = B * T`.
+
+Rewrite using `[← Matrix.mul_assoc, ← hM, ← hN]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv, Matrix.one_mul]`. Use `_ = 1 := by rw [Matrix.mul_assoc, e, hinv]`. Take `⟨k₁, hk₁, e₁⟩` from `mem_range_of_mul_eq_one O B0 C (by rw [← hB0, ← hC])`.
+
+Take `⟨k₂, hk₂, e₂⟩` from `mem_range_of_mul_eq_one O M N hMN`. Conclude with `⟨k₁, hk₁, k₂, hk₂, by rw [e₁, e₂, ← hB0, hM]⟩`.
+-/
 theorem double_coset (B m T T' : Matrix n n R) (hT : T' * T = 1)
     (h1 : ∀ z : n → R, (∀ i, z i ∈ O) → ∀ i, B.mulVec z i ∈ O)
     (h2 : ∀ y : n → R, (∀ i, y i ∈ O) → ∃ z : n → R, (∀ i, z i ∈ O) ∧ y = B.mulVec z)
@@ -64,6 +84,11 @@ end Abstract
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `(GlobalTheory.PlaceComp.IntLocal.mem_intA_iff F E _).2 fun w => ?_` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[evF_sgT_self]` and apply the resulting hypothesis. Rewrite using `[evF_sgT_ne h]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem sgT_mem_intA (v : HeightOneSpectrum (𝓞 F)) {y : Fv F v ⊗[F] E} (hy : y ∈ ordAt E v) :
     sgT E v y ∈ intA F E := by
   refine (GlobalTheory.PlaceComp.IntLocal.mem_intA_iff F E _).2 fun w => ?_
@@ -71,6 +96,11 @@ theorem sgT_mem_intA (v : HeightOneSpectrum (𝓞 F)) {y : Fv F v ⊗[F] E} (hy 
   · subst h; rwa [evF_sgT_self]
   · rw [evF_sgT_ne h]; exact zero_mem _
 
+/- English proof (translation)
+Use `(mem_lamHat_iff V _).2 fun w => ?_` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify `hy` using `only [evF_sgT_self]`. Simplify using `only [evF_sgT_ne h]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem sgT_mem_lamHat [StarRing E] (V : HSpace E) (v : HeightOneSpectrum (𝓞 F))
     {y : Fin V.rank → Fv F v ⊗[F] E} (hy : y ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.latLoc (F := F) V v) :
     (fun i => sgT E v (y i)) ∈ lamHat F V := by
@@ -80,6 +110,9 @@ theorem sgT_mem_lamHat [StarRing E] (V : HSpace E) (v : HeightOneSpectrum (𝓞 
   · simp only [evF_sgT_ne h]; exact zero_mem _
 
 omit [NumberField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Rewrite using `[map_mul, hf, one_mul, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem evF_mulVec {n : Type} [Fintype n] (v : HeightOneSpectrum (𝓞 F)) {f : Af F ⊗[F] E} (hf : evF E v f = 1)
     (A : Matrix n n (Af F ⊗[F] E)) (z : n → Af F ⊗[F] E) :
     (fun a => evF E v (f * A.mulVec z a)) = (A.map (evF E v)).mulVec fun i => evF E v (z i) := by
@@ -87,6 +120,27 @@ theorem evF_mulVec {n : Type} [Fintype n] (v : HeightOneSpectrum (𝓞 F)) {f : 
   rw [map_mul, hf, one_mul, RingHom.map_mulVec]
   rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hc V v e h ϖ d g he hh hϖ ⟨B, h1, h2, h3, h4⟩`. Establish `he1` using `he.2.1`. Establish `hfr : ∀ y : Fin V.rank → Fv F v ⊗[F] E, (∀ i, y i ∈ ordAt E v) → h.1.mulVec y ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.latLoc (F` using `F) V v := fun y hy => by`. Use `(hh _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+
+Conclude with `hy`. Establish `hback : ∀ y : Fin V.rank → Fv F v ⊗[F] E, h.1.mulVec ((h⁻¹).1.mulVec y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hback' : ∀ y : Fin V.rank → Fv F v ⊗[F] E, (h⁻¹).1.mulVec (h.1.mulVec y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+
+Establish `key : ∀ y z : Fin V.rank → Af F ⊗[F] E, ((fun a => finP F E e * (finMat hc.sig V.gram g).mulVec y a) = fun a => finP F E e * B.mulVec (fun i => finP F E (inclR (AF F) (ϖ ^ d i)) * z i) a) → (locMat hc V v g).1.mulVec (fun i => evF E v (y i)) = (B.map (evF E v) * Matrix.diagonal ( …`. Introduce `y z hyz`. Rewrite using `[locMat_val, ← evF_mulVec v he1, ← Matrix.mulVec_mulVec]`. Establish `e2 : (Matrix.diagonal (fun i => inclR (Fv F v) (ϖ ^ d i))).mulVec (fun i => evF E v (z i)) = fun i => evF E v (finP F E (inclR (AF F) (ϖ ^ d i)) * z i)`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Matrix.mulVec_diagonal, map_mul, evF_finP_incl]`. Rewrite using `[e2, ← evF_mulVec v he1]`. Use function extensionality and compare the values at `a`. Rewrite using `[congrFun hyz a]`. Use `double_coset (ordAt E v) ((h⁻¹).1 * B.map (evF E v)) _ _ (Matrix.diagonal fun i => inclR (Fv F v) (ϖ ^ d i)⁻¹) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← map_mul, inv_mul_cancel₀ (zpow_ne_zero _ hϖ), map_one]`. Introduce `z hz`.
+
+Use `(mem_lamHat_iff V _).1 (h1 (fun i => sgT E v (z i)) fun i => sgT_mem_intA v (hz i)) v` as an intermediate fact. Rewrite `this` using `[evF_mulVec v he1]`. Simplify using `only [evF_sgT_self] at this`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `(hh _).1 this`.
+
+Introduce `y hy`. Take `⟨z, hz, e2⟩` from `h2 _ (sgT_mem_lamHat V v (hfr y hy))`. Use `⟨fun i => evF E v (z i), fun i => (GlobalTheory.PlaceComp.IntLocal.mem_intA_iff F E _).1 (hz i) v, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← evF_mulVec v he1, ← hback' y]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[← congrFun e2 a, map_mul, he1, one_mul, evF_sgT_self]`. Introduce `y hy`. Take `⟨z, hz, e2⟩` from `h3 _ (sgT_mem_lamHat V v (hfr y hy))`. Use `⟨fun i => evF E v (z i), fun i => (GlobalTheory.PlaceComp.IntLocal.mem_intA_iff F E _).1 (hz i) v, ?_⟩` and prove the remaining obligations.
+
+Use `key _ _ e2` as an intermediate fact. Simplify using `only [evF_sgT_self] at this`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mulVec_mulVec _ (h⁻¹).1, ← this, Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Introduce `z hz`. Take `⟨y, hy, e2⟩` from `h4 (fun i => sgT E v (z i)) fun i => sgT_mem_intA v (hz i)`.
+
+Use `⟨(h⁻¹).1.mulVec fun i => evF E v (y i), (hh _).1 ((mem_lamHat_iff V _).1 hy v), ?_⟩` and prove the remaining obligations. Use `key _ _ e2` as an intermediate fact. Simplify using `only [evF_sgT_self] at this`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mulVec_mulVec _ (h⁻¹).1, ← this, Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hback]`.
+-/
 theorem double_coset_of_divG : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E] (hc : CMData F E) (V : HSpace E) (v : HeightOneSpectrum (𝓞 F)) (e : AF F ⊗[F] E) (h : GL (Fin V.rank) (Fv F v ⊗[F] E)) (ϖ : E) (d : Fin V.rank → ℤ) (g : HA (AF F) hc.sig V.gram), IsIdemOf E v e → IsFrameAt V v h → ϖ ≠ 0 → DivG hc V e ϖ d g → ∃ k₁ ∈ (Formalism.UG.bc (n := Fin V.rank) (ordAt E v).subtype).range, ∃ k₂ ∈ (Formalism.UG.bc (n := Fin V.rank) (ordAt E v).subtype).range, (h⁻¹ * locMat hc V v g * h).1 = k₁.1 * Matrix.diagonal (fun i => inclR (Fv F v) (ϖ ^ d i)) * k₂.1 := by
   intro F E _ _ _ _ _ _ hc V v e h ϖ d g he hh hϖ ⟨B, h1, h2, h3, h4⟩
   have he1 := he.2.1

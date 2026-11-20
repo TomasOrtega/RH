@@ -13,21 +13,38 @@ namespace Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL
 
 open Formalism.L2.SG.RealObj Formalism.L2.SG.HidaSetting
 
+/- English proof (translation)
+The claim follows from `Formalism.QuantumDeterminants.bigCellMem`.
+-/
 theorem bigMem_holds : BigMem := Formalism.QuantumDeterminants.bigCellMem
 
+/- English proof (translation)
+Unfold `hJ Formalism.QuantumDeterminants.herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hPJ]`.
+-/
 theorem hJ_P {n : ℕ} {ε : Fin n → Bool} {P H : Matrix (Fin n) (Fin n) ℂ} (hPJ : Pᴴ * Formalism.REAL.Jm ε * P = H)
     (x y : Fin n → ℂ) : hJ ε (P *ᵥ x) (P *ᵥ y) = Formalism.QuantumDeterminants.herm H y x := by
   unfold hJ Formalism.QuantumDeterminants.herm
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hPJ]
 
+/- English proof (translation)
+Unfold `hJ`. Rewrite using `[star_smul, smul_dotProduct, smul_eq_mul, Complex.star_def]`.
+-/
 theorem hJ_smul_l {n : ℕ} (ε : Fin n → Bool) (a : ℂ) (x y : Fin n → ℂ) : hJ ε (a • x) y = conj a * hJ ε x y := by
   unfold hJ
   rw [star_smul, smul_dotProduct, smul_eq_mul, Complex.star_def]
 
+/- English proof (translation)
+Unfold `hJ`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem hJ_smul_r {n : ℕ} (ε : Fin n → Bool) (a : ℂ) (x y : Fin n → ℂ) : hJ ε x (a • y) = a * hJ ε x y := by
   unfold hJ
   rw [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Unfold `fam Formalism.QuantumDeterminants.fvec`. Use `split_ifs with h`. Establish `ha : a = Fin.castSucc ⟨a.val, h⟩` using `Fin.ext rfl conv_lhs => rw [ha]`. Rewrite using `[Fin.snoc_castSucc]`. Conclude with `(hPe _).symm`.
+
+Establish `ha : a = Fin.last r` using `Fin.ext (by have := a.2; simp only [Fin.val_last]; omega)`. Substitute `ha` using the available equality. Rewrite using `[Fin.snoc_last]`. Conclude with `hPz.symm`.
+-/
 theorem fam_eq {r k : ℕ} {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     {e : Fin r → Fin (2 * r + k + 1) → ℂ} {z zH : Fin (2 * r + k + 1) → ℂ}
     (hPe : ∀ a, P *ᵥ Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a) = e a) (hPz : P *ᵥ zH = z) (a : Fin (r + 1)) :
@@ -43,6 +60,13 @@ theorem fam_eq {r k : ℕ} {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1
     rw [Fin.snoc_last]
     exact hPz.symm
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`. Establish `hj1 : ¬ j.val < r` using `by omega`.
+
+Unfold `Formalism.QuantumDeterminants.bigCell Formalism.FourierDecayAlt.B2.embWb`. Rewrite using `[dif_neg hj1, dif_pos hj.2]`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Rewrite using `[dif_pos hi, dif_pos ⟨hi, hj⟩]`. Rewrite using `[dif_neg hi, dif_neg (fun h => hi h.1), if_neg (fun (h : i = j ∧ ¬(r ≤ i.val ∧ i.val ≤ r + k)) => hi (by rw [h.1]; exact hj))]`.
+
+Rewrite using `[hw j (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem bigCell_mulVec_wb {k r : ℕ} (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     {w : Fin (2 * r + k + 1) → ℂ} (hw : Formalism.QuantumDeterminants.inWb k r w) :
     Formalism.QuantumDeterminants.bigCell k r c μ *ᵥ w = Formalism.FourierDecayAlt.B2.embWb k r μ *ᵥ w := by
@@ -60,9 +84,31 @@ theorem bigCell_mulVec_wb {k r : ℕ} (c : Fin r → ℂ) (μ : Matrix (Fin (k +
   · rw [hw j (by omega)]
     simp
 
+/- English proof (translation)
+Simplify using `[map_inv₀, map_pow]`.
+-/
 theorem conj_scinv (sc : ℝ) (m : ℕ) : conj (((sc : ℂ) ^ m)⁻¹) = ((sc : ℂ) ^ m)⁻¹ := by
   simp [map_inv₀, map_pow]
 
+/- English proof (translation)
+Introduce `r k ε e z z' zH zH' P sc hPJ hPdet hPe hzH hzH' hPz hPz' hsc μsec hsec q hq hζ`. Establish `hU : (μsec q.2)ᴴ * Formalism.QuantumDeterminants.Hb k * μsec q.2 = Formalism.QuantumDeterminants.Hb k` using `(hsec.2 q.2 hζ).1`. Use `⟨inUJ_conj hPJ hPdet (bigMem_holds k r q.1 _ hq hU), ?_⟩` and prove the remaining obligations. Establish `h2 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hPdet`. Establish `hB : ∀ y, (P * Formalism.QuantumDeterminants.bigCell k r q.1 (μsec q.2) * P⁻¹) *ᵥ (P *ᵥ y) = P *ᵥ (Formalism.QuantumDeterminants.bigCell k r q.1 (μsec q.2) *ᵥ y)`.
+
+Introduce `y`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, h2, Matrix.mul_one, ← Matrix.mulVec_mulVec]`. Establish `hlast : Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) (Formalism.QuantumDeterminants.bigCell k r q.1 (μsec q.2) *ᵥ zH') zH = q.2`. Establish `h1W : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ Formalism.QuantumDeterminants.UWset k r zH`. Use `⟨by simp [Formalism.QuantumDeterminants.UH], fun a => by simp, by simp⟩` and prove the remaining obligations.
+
+Establish `h1W' : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ Formalism.QuantumDeterminants.UWset k r zH'`. Use `⟨by simp [Formalism.QuantumDeterminants.UH], fun a => by simp, by simp⟩` and prove the remaining obligations. Use `(Formalism.FourierDecayAlt.P.b2_rank_one_mem k r zH zH' μsec hzH hzH' hsec q.2 hζ 1 h1W 1 h1W').2` as an intermediate fact. Rewrite `this` using `[inv_one, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[bigCell_mulVec_wb q.1 _ hzH']`.
+
+Conclude with `this`. Establish `hZ` using `Formalism.QuantumDeterminants.bigCellZhat k r zH zH' q.1 (μsec q.2) hzH hzH'`. Use extensionality with `a b`. Simplify using `only [Zhat, famSc]`. Rewrite using `[Matrix.mulVec_smul, hJ_smul_l, hJ_smul_r, fam_eq hPe hPz a, fam_eq hPe hPz' b, hB, hJ_P hPJ]`.
+
+Establish `hZab` using `congrFun (congrFun hZ a) b`. Simplify using `only [Formalism.QuantumDeterminants.Zhat] at hZab`. Rewrite using `[hZab, conj_scinv]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Rewrite using `[Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq]`. Distinguish the cases in `ha : a.val < r`. Rewrite using `[dif_pos ha]`. Establish `ha' : a = Fin.castSucc ⟨a.val, ha⟩` using `Fin.ext rfl`. Use `conv_rhs => rw [ha']`.
+
+Unfold `coordSc`. Rewrite using `[Fin.snoc_castSucc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg ha, hlast]`. Establish `ha' : a = Fin.last r` using `Fin.ext (by have := a.2; simp only [Fin.val_last]; omega)`.
+
+Substitute `ha'` using the available equality. Unfold `coordSc`. Rewrite using `[Fin.snoc_last]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.diagonal_apply_ne _ hab, Matrix.diagonal_apply_ne _ hab]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zBig : ZBig := by
   intro r k ε e z z' zH zH' P sc hPJ hPdet hPe hzH hzH' hPz hPz' hsc μsec hsec q hq hζ
   have hU : (μsec q.2)ᴴ * Formalism.QuantumDeterminants.Hb k * μsec q.2 = Formalism.QuantumDeterminants.Hb k := (hsec.2 q.2 hζ).1

@@ -22,10 +22,16 @@ def hsLE {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace ℂ Wp'] [
       map_add' := fun X Y => by rw [ContinuousLinearMap.comp_add]; unfold B.hsVec; rfl
       map_smul' := fun c X => by rw [ContinuousLinearMap.comp_smul]; exact PBL.hsVec_smul c _ }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hsLE_apply {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace ℂ Wp'] [NormedAddCommGroup Wq']
     [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wp'] [FiniteDimensional ℂ Wq'] (Eρ : Wp' →L[ℂ] Wp')
     (X : Wq' →L[ℂ] Wp') : hsLE Eρ X = B.hsVec (Eρ.comp X) := rfl
 
+/- English proof (translation)
+Unfold `D.vecV`. Rewrite using `[dif_neg (fun h => hQ h.1)]`.
+-/
 theorem vecV_nonloc {P : M.Par} {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace ℂ Wp']
     [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] (Bs : B.RealPlaceData P.k P.r Wp' Wq')
     (ν' : Fin (2 * P.r + P.k + 1) → ℂ) (m₀ : B.Mat P.k P.r) (F : B.Mat P.k P.r → (Wq' →L[ℂ] Wp')) (Q : C.LPt)
@@ -33,6 +39,35 @@ theorem vecV_nonloc {P : M.Par} {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [Inner
   unfold D.vecV
   rw [dif_neg (fun h => hQ h.1)]
 
+/- English proof (translation)
+Establish `hgpos` using `PBL.g_pos_of_built hB`. Establish `hTT` using `(PBL.pdG_of_built hB v).2`. Establish `hB'` using `hB`. Take `⟨-, -, -, -, -, -, -, -, -, -, hGr, -, -, -, -, hv⟩` from `hB'`. Take `⟨hl0, hInD, -, -, -⟩` from `hv v`.
+
+Establish `hcutw : KB.CutWord (D.parOf S v) (p v).l0 a`. Take `⟨w, hw⟩` from `ha`. Rewrite using `[hl0, ← hw]`. Conclude with `PBD.cutWord_of_adm S hGr (PBCut.cutInside_of_built hB) w v`. Establish `hInD' : KB.InDDplus2 (D.parOf S v) (p v).l0 (p v).T.base Cb (p v).Θ` using `by rw [hl0]; exact hInD`.
+
+Establish `hTh : ∀ e : Wd.Ix (Fin a.length), ∃ F' : B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)), KB.CptCoef (p v).T.base F' ∧ ∀ Q, (p v).V ((p v).Θ.Θ a e (F v ε)) Q = (p v).V F' Q`. Introduce `e`. Take `⟨F', hF', -, hV⟩` from `Formalism.FourierDecayAlt.P.theta_compact_support _ _ (D.parOf S v) (p v) (F v ε) a e Cb hInD' (hF v ε hε) hcutw`. Conclude with `⟨F', hF', hV⟩`. Use `choose Fe hFe hVe using hTh`.
+
+Establish `hΓ : PBL.ΓS S (S.G.r + 1) = 1` using `by simp [PBL.ΓS, D.GamLev]`. Use `⟨Wd.Ix (Fin a.length) × M.Ty (D.parOf S v), inferInstance, fun i => PBL.del2 S p v a i.1 i.2 / (PBL.ΓS S (S.G.r + 1) * S.sizeAt v a), fun i => Fe i.1, fun i => hsLE ((p v).TP.E i.2), fun i => ?_, fun i => hFe i.1, fun P Q => ?_⟩` and prove the remaining obligations. Rewrite using `[hΓ, one_mul]`. Conclude with `div_nonneg (PBL.second_defect_nonneg S p v a i.1 i.2) (PBL.sizeAt_nonneg S v a)`. Distinguish the cases in `hloc : D.IsLocPt P (S.G.r + 1) ∧ D.IsLocPt Q (S.G.r + 1)`.
+
+Take `⟨hPl, hQl⟩` from `hloc`. Establish `hPs : D.IsLocPt (PBL.stdS S P) (S.G.r + 1)` using `(PBD.isLocPt_toStd_iff _ _ hgpos _ 1 _).2 hPl`. Establish `hQs : D.IsLocPt (PBL.stdS S Q) (S.G.r + 1)` using `(PBD.isLocPt_toStd_iff _ _ hgpos _ 1 _).2 hQl`. Rewrite using `[PBL.gN_setC hB, PBL.rr_top_eq Formalism.FourierDecayAlt.P.vector_valued_types (p v) (F v ε) a _ _ hPs hQs]`. Unfold `Top.topOf`.
+
+Rewrite using `[Finset.mul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Simplify using `only`.
+
+Establish `e1` using `hVe e (PBL.stdS S P)`. Establish `e2` using `hVe e (PBL.stdS S Q)`. Unfold `KB.Pl.V at e1 e2`. Rewrite using `[e1, e2, inner_smul_left, inner_smul_right, hsLE_apply, hsLE_apply]`. Establish `hin : ⟪B.hsVec (((p v).TP.E ρ).comp ((p v).V (Fe e) (PBL.stdS S Q))), B.hsVec (((p v).TP.E ρ).comp ((p v).V (Fe e) (PBL.stdS S P)))⟫_ℂ = B.hsInner (((p v).TP.E ρ).comp (D.vecV (p v).T.base (p v).ν' (p v).m₀ (Fe e) (PBL.stdS S P))) (((p v).TP.E ρ).comp (D.vecV (p v).T.base (p v).ν …` using `rfl`.
+
+Rewrite using `[hin]`. Use `set TT := Formalism.QuantumDeterminants.Tz S.G.k S.G.r (p v).T.base.z * Formalism.QuantumDeterminants.Tz S.G.k S.G.r (p v).T.base.z' with hTTdef`. Distinguish the cases in `h1 : 0 < D.ptG TT S.G.r (PBL.stdS S P)`. Distinguish the cases in `h2 : 0 < D.ptG TT S.G.r (PBL.stdS S Q)`. Establish `hw1 : 0 ≤ Top.wPt TT S.G.r (PBL.stdS S P) ^ a.length` using `pow_nonneg (div_nonneg (Complex.normSq_nonneg _) h1.le) _`.
+
+Establish `hw2 : 0 ≤ Top.wPt TT S.G.r (PBL.stdS S Q) ^ a.length` using `pow_nonneg (div_nonneg (Complex.normSq_nonneg _) h2.le) _`. Establish `hd1 : Top.dH (D.parOf S v) (p v).l0 TT a (PBL.stdS S P) e ρ = √(Top.wPt TT S.G.r (PBL.stdS S P) ^ a.length) * √((Top.cW (D.parOf S v) (p v).l0 a e ρ).re)`. Unfold `Top.dH`. Conclude with `Real.sqrt_mul hw1 _`. Establish `hd2 : Top.dH (D.parOf S v) (p v).l0 TT a (PBL.stdS S Q) e ρ = √(Top.wPt TT S.G.r (PBL.stdS S Q) ^ a.length) * √((Top.cW (D.parOf S v) (p v).l0 a e ρ).re)`.
+
+Unfold `Top.dH`. Conclude with `Real.sqrt_mul hw2 _`. Rewrite using `[hd1, hd2]`. Unfold `omN PBL.del2`. Rewrite using `[← hTT]`.
+
+Simplify using `only [Complex.conj_ofReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[PBL.vecV_of_G _ _ _ _ _ h2, ContinuousLinearMap.comp_zero, PBL.hsInner_zero_right']`. Simplify using the standard rewrite rules.
+
+Rewrite using `[PBL.vecV_of_G _ _ _ _ _ h1, ContinuousLinearMap.comp_zero, PBD.hsInner_zero_left]`. Simplify using the standard rewrite rules. Rewrite using `[PBL.gN_setC_zero hB F v ε (S.G.r + 1) a P Q hloc]`. Use `symm`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hPl : D.IsLocPt P (S.G.r + 1)`. Establish `hQl : ¬ D.IsLocPt Q (S.G.r + 1)` using `fun h => hloc ⟨hPl, h⟩`. Establish `hQs : ¬ D.IsLocPt (PBL.stdS S Q) (S.G.r + 1)` using `fun h => hQl ((PBD.isLocPt_toStd_iff _ _ hgpos _ 1 _).1 h)`. Unfold `KB.Pl.V`. Simplify using `only`.
+
+Rewrite using `[vecV_nonloc (p v).T.base (p v).ν' (p v).m₀ (Fe i.1) (PBL.stdS S Q) hQs, map_zero, smul_zero, inner_zero_left, mul_zero]`. Establish `hPs : ¬ D.IsLocPt (PBL.stdS S P) (S.G.r + 1)` using `fun h => hPl ((PBD.isLocPt_toStd_iff _ _ hgpos _ 1 _).1 h)`. Unfold `KB.Pl.V`. Simplify using `only`. Rewrite using `[vecV_nonloc (p v).T.base (p v).ν' (p v).m₀ (Fe i.1) (PBL.stdS S P) hPs, map_zero, smul_zero, inner_zero_right, mul_zero]`.
+-/
 theorem gN_top_gram {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
     {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
     (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)

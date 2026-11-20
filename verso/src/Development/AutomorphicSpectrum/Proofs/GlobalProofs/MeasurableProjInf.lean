@@ -15,6 +15,11 @@ section SlopeTestRemainingChoices
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Establish `e` using `TopK.coordHomeo (E := E) (AF F) b`. Establish `: SecondCountableTopology (AF F ⊗[F] E)` using `e.secondCountableTopology`. Establish `: BorelSpace (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (Ainf F ⊗[F] E)` using `⟨rfl⟩`. Establish `hc : Continuous (HeckeCharacterZeroLocus.SiegelWeilU.projInf : (Fin n → Fin M → AF F ⊗[F] E) → _)` using `MeasProj.continuous_mapTup b (HeckeCharacterZeroLocus.SiegelWeilU.fstA F) MeasProj.continuous_fstA`.
+
+Use `measurable_pi_iff.2 fun a => measurable_pi_iff.2 fun i => ?_` and prove the remaining obligations. Conclude with `(((continuous_apply i).comp (continuous_apply a)).comp hc).measurable`.
+-/
 theorem measurable_projInf [Module.Finite F E] {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ) :
     Measurable (HeckeCharacterZeroLocus.SiegelWeilU.projInf : (Fin n → Fin M → AF F ⊗[F] E) → _) := by
   have e := TopK.coordHomeo (E := E) (AF F) b
@@ -26,6 +31,11 @@ theorem measurable_projInf [Module.Finite F E] {d : ℕ} (b : Module.Basis (Fin 
   refine measurable_pi_iff.2 fun a => measurable_pi_iff.2 fun i => ?_
   exact (((continuous_apply i).comp (continuous_apply a)).comp hc).measurable
 
+/- English proof (translation)
+Establish `e` using `TopK.coordHomeo (E := E) (AF F) b`. Establish `: SecondCountableTopology (AF F ⊗[F] E)` using `e.secondCountableTopology`. Establish `: BorelSpace (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `h1 : Continuous (HeckeCharacterZeroLocus.SiegelWeilU.projFin : (Fin n → Fin M → AF F ⊗[F] E) → _)` using `MeasProj.continuous_mapTup b (HeckeCharacterZeroLocus.SiegelWeilU.sndA F) MeasProj.continuous_sndA`.
+
+Establish `h2 : Continuous (HeckeCharacterZeroLocus.SiegelWeilU.projV v : (Fin n → Fin M → Af F ⊗[F] E) → _)` using `MeasProj.continuous_mapTup b (HeckeCharacterZeroLocus.SiegelWeilU.evalV F v) (MeasProj.continuous_evalV v)`. Use `measurable_pi_iff.2 fun a => measurable_pi_iff.2 fun i => ?_` and prove the remaining obligations. Conclude with `(((continuous_apply i).comp (continuous_apply a)).comp (h2.comp h1)).measurable`.
+-/
 theorem measurable_projV [Module.Finite F E] {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ)
     (v : HeightOneSpectrum (𝓞 F)) :
     Measurable (fun X : Fin n → Fin M → AF F ⊗[F] E =>
@@ -41,6 +51,9 @@ theorem measurable_projV [Module.Finite F E] {d : ℕ} (b : Module.Basis (Fin d)
   refine measurable_pi_iff.2 fun a => measurable_pi_iff.2 fun i => ?_
   exact (((continuous_apply i).comp (continuous_apply a)).comp (h2.comp h1)).measurable
 
+/- English proof (translation)
+Establish `e` using `TopK.coordHomeo (E := E) (AF F) b`. Establish `: SecondCountableTopology (AF F ⊗[F] E)` using `e.secondCountableTopology`. Establish `: BorelSpace (AF F ⊗[F] E)` using `⟨rfl⟩`. Rewrite using `[EulerBox.box_eq b S A hS]`. Conclude with `(MeasProj.isOpen_intOff b S).measurableSet.inter (Finset.measurableSet_biInter S fun v _ => measurable_projV b n M v (hA v))`.
+-/
 theorem measurableSet_box [Module.Finite F E] {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 F)))
     (A : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin n → Fin M → Fv F v ⊗[F] E))

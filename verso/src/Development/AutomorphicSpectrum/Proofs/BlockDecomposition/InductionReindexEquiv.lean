@@ -15,6 +15,13 @@ section Generic
 variable {G G' V V' W : Type} [Group G] [Group G']
   [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Use `delta GlobalTheory.PRep.twKer`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `w`. Simplify using `only [Set.mem_image, Set.mem_ofPred_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨n, v, rfl⟩, rfl⟩`. Conclude with `⟨⟨r n, (hN n).1 n.2⟩, L v, by simp [hL]⟩`. Introduce and unpack `⟨n', v', rfl⟩`. Use `⟨_, ⟨⟨r.symm n', (hN _).2 (by simpa using n'.2)⟩, L.symm v', rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[hL]`.
+-/
 theorem twKer_map (r : G ≃* G') (L : V ≃ₗ[ℂ] V') {π : Representation ℂ G V}
     {π' : Representation ℂ G' V'} (hL : ∀ g v, L (π g v) = π' (r g) (L v))
     {N : Subgroup G} {N' : Subgroup G'} (hN : ∀ g, g ∈ N ↔ r g ∈ N') :
@@ -45,6 +52,9 @@ def pullFun (r : G ≃* G') {H : Subgroup G} {H' : Subgroup G'}
     rw [map_mul, ← hσ h]
     exact f.2 ⟨r h, hH h⟩ (r g)⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show f.1 (r (x * g)) = f.1 (r x * r g)`. Rewrite using `[map_mul]`.
+-/
 theorem ind_pullFun (r : G ≃* G') {H : Subgroup G} {H' : Subgroup G'}
     (hH : ∀ h : H, r h ∈ H') {σ : Representation ℂ H W} {σ' : Representation ℂ H' W}
     (hσ : ∀ h : H, σ' ⟨r h, hH h⟩ = σ h) (f : indSpace H' σ') (g : G) :
@@ -54,6 +64,11 @@ theorem ind_pullFun (r : G ≃* G') {H : Subgroup G} {H' : Subgroup G'}
   show f.1 (r (x * g)) = f.1 (r x * r g)
   rw [map_mul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Establish `h1 : f.1 (r (r.symm y)) = f'.1 (r (r.symm y))` using `congrArg (fun p : indSpace H σ => p.1 (r.symm y)) h`.
+
+Simplify using `using h1`. Introduce and unpack `rfl`. Both sides reduce to the same expression.
+-/
 theorem pullFun_eq_iff (r : G ≃* G') {H : Subgroup G} {H' : Subgroup G'}
     (hH : ∀ h : H, r h ∈ H') {σ : Representation ℂ H W} {σ' : Representation ℂ H' W}
     (hσ : ∀ h : H, σ' ⟨r h, hH h⟩ = σ h) (f f' : indSpace H' σ') :
@@ -110,12 +125,22 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {α n : Type} [Fintype α] [LinearOrder α] [Fintype n] [DecidableEq n]
   {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] {N : ℕ}
 
+/- English proof (translation)
+Use `show (Matrix.reindexAlgEquiv k k ι (g : Matrix n n k)) (ι i) (ι j) = (g : Matrix n n k) i j`. Simplify using `[Matrix.coe_reindexAlgEquiv]`.
+-/
 theorem glReindex_apply (ι : n ≃ Fin N) (g : GL n k) (i j : n) :
     ((glReindex ι g : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) (ι i) (ι j) =
       (g : Matrix n n k) i j := by
   show (Matrix.reindexAlgEquiv k k ι (g : Matrix n n k)) (ι i) (ι j) = (g : Matrix n n k) i j
   simp [Matrix.coe_reindexAlgEquiv]
 
+/- English proof (translation)
+Use `show (g : Matrix n n k).BlockTriangular (blk e) ↔ ((glReindex ι g : GL (Fin N) k) : Matrix (Fin N) (Fin N) k).BlockTriangular (blk (e.trans ι))`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hij`. Establish `h2` using `@h (ι.symm i) (ι.symm j) (by simpa [blk] using hij)`. Establish `e1` using `glReindex_apply ι g (ι.symm i) (ι.symm j)`.
+
+Simplify using `only [Equiv.apply_symm_apply] at e1`. Rewrite using `[e1]`. Conclude with `h2`. Introduce `h i j hij`. Establish `h2` using `@h (ι i) (ι j) (by simpa [blk] using hij)`.
+
+Rewrite `h2` using `[glReindex_apply]`. Conclude with `h2`.
+-/
 theorem mem_parab_reindex (e : (Σ i, m i) ≃ n) (ι : n ≃ Fin N) (g : GL n k) :
     g ∈ parab k e ↔ glReindex ι g ∈ parab k (e.trans ι) := by
   show (g : Matrix n n k).BlockTriangular (blk e) ↔
@@ -132,6 +157,9 @@ theorem mem_parab_reindex (e : (Σ i, m i) ≃ n) (ι : n ≃ Fin N) (g : GL n k
     rw [glReindex_apply] at h2
     exact h2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show ((glReindex ι g : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) (ι (e ⟨a, i⟩)) (ι (e ⟨a, j⟩)) = (g : Matrix n n k) (e ⟨a, i⟩) (e ⟨a, j⟩)`. Conclude with `glReindex_apply ι g _ _`.
+-/
 private theorem leviProj_glReindex (e : (Σ i, m i) ≃ n) (ι : n ≃ Fin N) (g : GL n k)
     (h : g ∈ parab k e) (h' : glReindex ι g ∈ parab k (e.trans ι)) :
     leviProj k (e.trans ι) ⟨glReindex ι g, h'⟩ = leviProj k e ⟨g, h⟩ := by
@@ -142,6 +170,13 @@ private theorem leviProj_glReindex (e : (Σ i, m i) ≃ n) (ι : n ≃ Fin N) (g
     (g : Matrix n n k) (e ⟨a, i⟩) (e ⟨a, j⟩)
   exact glReindex_apply ι g _ _
 
+/- English proof (translation)
+Use `show g ∈ Subgroup.map (parab k e).subtype (leviProj k e).ker ↔ glReindex ι g ∈ Subgroup.map (parab k (e.trans ι)).subtype (leviProj k (e.trans ι)).ker`. Simplify using `only [Subgroup.mem_map, MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨p, hp'⟩, hp, rfl⟩`. Use `⟨⟨glReindex ι p, (mem_parab_reindex e ι p).1 hp'⟩, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[leviProj_glReindex e ι p hp']`. Conclude with `hp`. Introduce and unpack `⟨⟨p, hp'⟩, hp, hpg⟩`. Simplify using `only [Subgroup.coe_subtype] at hpg`. Substitute `hpg` using the available equality.
+
+Establish `hg : g ∈ parab k e` using `(mem_parab_reindex e ι g).2 hp'`. Use `⟨⟨g, hg⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hp` using `[leviProj_glReindex e ι g hg hp']`. Conclude with `hp`.
+-/
 theorem mem_unipRad_reindex (e : (Σ i, m i) ≃ n) (ι : n ≃ Fin N) (g : GL n k) :
     g ∈ unipRad k e ↔ glReindex ι g ∈ unipRad k (e.trans ι) := by
   show g ∈ Subgroup.map (parab k e).subtype (leviProj k e).ker ↔
@@ -160,10 +195,18 @@ theorem mem_unipRad_reindex (e : (Σ i, m i) ≃ n) (ι : n ≃ Fin N) (g : GL n
     rw [leviProj_glReindex e ι g hg hp'] at hp
     exact hp
 
+/- English proof (translation)
+Conclude with `leviProj_glReindex e ι p.1 p.2 _`.
+-/
 theorem leviProj_reindex (e : (Σ i, m i) ≃ n) (ι : n ≃ Fin N) (p : parab k e) :
     leviProj k (e.trans ι) ⟨glReindex ι p, (mem_parab_reindex (k := k) e ι p.1).1 p.2⟩ = leviProj k e p := by
   exact leviProj_glReindex e ι p.1 p.2 _
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `h1` using `glReindex_apply (k := k) ι (leviEmb k e g) (ι.symm i) (ι.symm j)`. Simplify using `only [Equiv.apply_symm_apply] at h1`. Rewrite using `[h1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem leviEmb_reindex (e : (Σ i, m i) ≃ n) (ι : n ≃ Fin N) (g : Levi k m) :
     glReindex ι (leviEmb k e g) = leviEmb k (e.trans ι) g := by
   apply Units.ext
@@ -173,6 +216,9 @@ theorem leviEmb_reindex (e : (Σ i, m i) ≃ n) (ι : n ≃ Fin N) (g : Levi k m
   rw [h1]
   rfl
 
+/- English proof (translation)
+Establish `h1 : ⇑(glReindex (k` using `k) ι).symm = ⇑(glReindex (k := k) ι.symm) :=`. Use function extensionality and compare the values at `(glReindex_symm ι)`. Rewrite using `[h1]`. Conclude with `continuous_glReindex ι.symm`.
+-/
 theorem continuous_glReindex_symm (ι : n ≃ Fin N) :
     Continuous (glReindex (k := k) ι).symm := by
   have h1 : ⇑(glReindex (k := k) ι).symm = ⇑(glReindex (k := k) ι.symm) :=
@@ -189,6 +235,9 @@ def parIndEquiv (e : (Σ i, m i) ≃ n) (ι : n ≃ Fin N) (ρ : Representation 
       show (twist ρ (deltaHalf k m)) (leviProj k (e.trans ι) _) = (twist ρ (deltaHalf k m)) (leviProj k e h)
       rw [leviProj_reindex])
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `show f.1.1 ((glReindex ι).symm y * g) = f.1.1 ((glReindex ι).symm (y * glReindex ι g))`. Rewrite using `[map_mul, MulEquiv.symm_apply_apply]`.
+-/
 theorem parIndEquiv_apply (e : (Σ i, m i) ≃ n) (ι : n ≃ Fin N) (ρ : Representation ℂ (Levi k m) W)
     (g : GL n k) (f : IndSp e ρ) :
     parIndEquiv e ι ρ (parInd e ρ g f) = parInd (e.trans ι) ρ (glReindex ι g) (parIndEquiv e ι ρ f) := by
@@ -200,6 +249,11 @@ theorem parIndEquiv_apply (e : (Σ i, m i) ≃ n) (ι : n ≃ Fin N) (ρ : Repre
 
 end Reindex
 
+/- English proof (translation)
+Introduce `k _ _ _ _ α β' n _ _ _ _ _ _ m _ _ m' _ _ e e' N ι W _ _ ρ`. Use `⟨Representation.Equiv.mk (jacquetEquiv (glReindex (k := k) ι) (parIndEquiv e ι ρ) (parIndEquiv_apply e ι ρ) (mem_unipRad_reindex e' ι)) (fun l => ?_)⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Take `⟨v, rfl⟩` from `Quot.exists_rep y`.
+
+Establish `h1` using `parIndEquiv_apply e ι ρ (leviEmb k e' l) v`. Rewrite `h1` using `[leviEmb_reindex]`. Establish `h2 : parIndEquiv e ι ρ ((((deltaHalf k m')⁻¹ l : ℂˣ) : ℂ) • parInd e ρ (leviEmb k e' l) v) = (((deltaHalf k m')⁻¹ l : ℂˣ) : ℂ) • parInd (e.trans ι) ρ (leviEmb k (e'.trans ι) l) (parIndEquiv e ι ρ v)`. Rewrite using `[LinearEquiv.map_smul, h1]`. Conclude with `congrArg (Quot.mk _) h2`.
+-/
 theorem jac_parInd_reindex : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {α β' n : Type} [Fintype α] [LinearOrder α] [Fintype β'] [LinearOrder β'] [Fintype n] [DecidableEq n] {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] {m' : β' → Type} [∀ j, Fintype (m' j)] [∀ j, DecidableEq (m' j)] (e : (Σ i, m i) ≃ n) (e' : (Σ j, m' j) ≃ n) {N : ℕ} (ι : n ≃ Fin N) {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Levi k m) W), Nonempty ((jac e' (parInd e ρ)).Equiv (jac (e'.trans ι) (parInd (e.trans ι) ρ))) := by
   intro k _ _ _ _ α β' n _ _ _ _ _ _ m _ _ m' _ _ e e' N ι W _ _ ρ
   refine ⟨Representation.Equiv.mk

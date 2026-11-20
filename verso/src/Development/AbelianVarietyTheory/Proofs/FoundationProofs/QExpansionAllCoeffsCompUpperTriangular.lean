@@ -9,6 +9,25 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FNQ
 
+/- English proof (translation)
+Introduce `E N a d b f hE hN ha hd hf`. Take `⟨c, hc, hcE⟩` from `hf`. Establish `hN' : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `ha' : (a : ℂ) ≠ 0` using `by exact_mod_cast ha.ne'`.
+
+Set `e : ℕ → ℂ` to `fun k => Complex.exp (2 * Real.pi * Complex.I * (((k : ℚ) * b / (N * d) : ℚ) : ℂ))`. Use `⟨fun m => if a ∣ m then c (m / a) * e (m / a) else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ`. Establish `hz : 0 < (((a : ℂ) * τ + b) / d).im`. Establish `: (((a : ℂ) * τ + b) / d).im = a * τ.im / d`.
+
+Simplify using `[Complex.div_ofReal_im]`. Rewrite using `[this]`. Use `τ.im_pos` as an intermediate fact. Check the signs of the components of the expression. Establish `hτ` using `hc (UpperHalfPlane.ofComplex (((a : ℂ) * τ + b) / d))`.
+
+Rewrite `hτ` using `[UpperHalfPlane.ofComplex_apply_of_im_pos hz]`. Simplify using `only [UpperHalfPlane.coe_mk_subtype] at hτ`. Establish `hinj : Function.Injective (fun k : ℕ => a * k)` using `fun x y h => by`. Simplify `h` using `[ha.ne']`. Rewrite using `[← hinj.hasSum_iff]`.
+
+Use `show HasSum (fun k => _) (f _)`. Use `hτ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp, dvd_mul_right, if_true, Nat.mul_div_cancel_left k ha, e]`. Rewrite using `[mul_assoc, ← Complex.exp_add]`.
+
+Use `congr 2`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `congrArg f (UpperHalfPlane.ofComplex_apply_of_im_pos hz)`.
+
+Introduce `m hm`. Establish `: ¬ a ∣ m`. Introduce and unpack `⟨k, rfl⟩`. Conclude with `hm ⟨k, rfl⟩`. Simplify using `[this]`.
+
+Introduce `m`. Distinguish the cases in `h : a ∣ m`. Simplify using `only [h, if_true]`. Conclude with `E.mul_mem (hcE _) (hE _)`. Simplify using `only [h, if_false]`.
+
+Conclude with `E.zero_mem`.
+-/
 theorem qAll_affine : ∀ (E : Subring ℂ) (N a d : ℕ) (b : ℤ) (f : ℍ → ℂ), (∀ x : ℚ, Complex.exp (2 * Real.pi * Complex.I * (x : ℂ)) ∈ E) → 0 < N → 0 < a → 0 < d → QAll (· ∈ E) N f → QAll (· ∈ E) (N * d) fun τ => up f (((a : ℂ) * τ + b) / d) := by
   intro E N a d b f hE hN ha hd hf
   obtain ⟨c, hc, hcE⟩ := hf

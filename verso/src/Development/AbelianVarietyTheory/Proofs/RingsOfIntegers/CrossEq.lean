@@ -19,6 +19,13 @@ namespace GlobalTheory.ExpFun
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.H1 GlobalTheory.ExpInt
 
+/- English proof (translation)
+Use `SecOps.sec_ext fun j => generic_app_injective G _ (fn_ext fun y hy => ?_)` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `exists_good L hL y (fun _ : Unit => (𝟙 _ ≫ pullback.fst G.hom (jK V)) ≫ 𝟙 G.left) (fun _ => j 0) (fun _ _ _ => rfl) (fun _ => Set.mem_iInter.1 hy 0)`. Establish `ej : ∀ a : Fin 1, J ((𝟙 _ ≫ pullback.fst G.hom (jK V)) ≫ 𝟙 G.left) = j a` using `fun a => by`. Rewrite using `[Subsingleton.elim a 0]`. Conclude with `e ()`.
+
+Establish `e₁` using `secScal_sval h (𝟙 _) y hJ`. Establish `e₂` using `secScal_sval h' (𝟙 _) y hJ`. Rewrite `e₁` using `[sval_of σ _ y J j ej, gs_scal, ← pullback.condition, ← Category.assoc]`. Rewrite `e₂` using `[sval_of σ' _ y J j ej, gs_scal, ← pullback.condition, ← Category.assoc]`. Use `(gs_pull (𝟙 _) _ y _ hy _).trans (Eq.trans ?_ (gs_pull (𝟙 _) _ y _ hy _).symm)` and prove the remaining obligations.
+
+Use `(secIsMul_gs hρ _ y j hy).trans (Eq.trans ?_ (secIsMul_gs hρ' _ y j hy).symm)` and prove the remaining obligations. Conclude with `(congrArg _ e₁).trans ((mul_left_comm _ _ _).trans (congrArg _ e₂).symm)`.
+-/
 theorem cross_eq {V : Type} [CommRing V] [IsDomain V] (G : Over (Spec (CommRingCat.of V))) [Flat G.hom]
     {L : LB G.left} (hL : L.IsLB) (k : ℕ) (σ σ' ρ ρ' : H0 L k)
     (s : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => pullback.fst G.hom (jK V)) (fun _ => (k : ℤ)))) (r r' : V)
@@ -40,6 +47,17 @@ theorem cross_eq {V : Type} [CommRing V] [IsDomain V] (G : Over (Spec (CommRingC
   refine (secIsMul_gs hρ _ y j hy).trans (Eq.trans ?_ (secIsMul_gs hρ' _ y j hy).symm)
   exact (congrArg _ e₁).trans ((mul_left_comm _ _ _).trans (congrArg _ e₂).symm)
 
+/- English proof (translation)
+Introduce `hB V _ _ _ D A G _ _ U k s E E' hE hE'`. Take `⟨r, hr, σ, f, h, hf, hx⟩` from `hE`. Take `⟨r', hr', σ', f', h', hf', hx'⟩` from `hE'`. Use `U.smooth` as an intermediate fact. Establish `: Flat G.hom` using `inferInstance`.
+
+Take `⟨ρ, hρ⟩` from `exists_secIsMul (p := G.hom) r' σ`. Take `⟨ρ', hρ'⟩` from `exists_secIsMul (p := G.hom) r σ'`. Use `choose g hg using fun α => exists_secIsMul (p := D.toPre.P.A.hom) r' (f α)`. Use `choose g' hg' using fun α => exists_secIsMul (p := D.toPre.P.A.hom) r (f' α)`. Take `rfl : ρ = ρ'` from `cross_eq G U.LG.isLB k σ σ' ρ ρ' s r r' h h' hρ hρ'`.
+
+Take `rfl : g = g'` from `GlobalTheory.ExpUniq.main hB V D A G U k ρ g g' (fun e => expandsAt_secIsMul V _ D A G U e k _ σ ρ f g hρ hg (hx e)) (fun e => expandsAt_secIsMul V _ D A G U e k _ σ' ρ f' g' hρ' hg' (hx' e))`. Use `fam_ext fun α j => sec_ext_val D.toPre.P.isLB (fun y J hJ => ?_) j` and prove the remaining obligations. Establish `e₁` using `secScal_sval (hf α) (𝟙 _) y hJ`. Establish `e₁'` using `secScal_sval (hf' α) (𝟙 _) y hJ`. Establish `e₂ : sval (g α) (𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) y J = _ * sval (f α) (𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) y J` using `secIsMul_gs (hg α) _ y _ (hJ.mem _ _)`.
+
+Establish `e₂' : sval (g α) (𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) y J = _ * sval (f' α) (𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) y J` using `secIsMul_gs (hg' α) _ y _ (hJ.mem _ _)`. Rewrite `e₂`, `e₂'` using `[Category.assoc, Over.w]`. Rewrite `e₁`, `e₁'` using `[gs_scal]`. Rewrite `e₂` using `[e₁]`. Rewrite `e₂'` using `[e₁', e₂, mul_left_comm]`.
+
+Establish `e₃ : 𝟙 _ ≫ (DegPre.BF D.toPre (FractionRing V)).hom = ((fst (TF (R` using `V) (FractionRing V)) D.toPre.P.A).left ≫ jFK (R := V) (FractionRing V)) ≫ jK V := by`. Rewrite using `[Category.id_comp, Category.assoc]`. Conclude with `(Over.w (fst (TF (R := V) (FractionRing V)) D.toPre.P.A)).symm`. Rewrite `e₂'` using `[e₃]`. Conclude with `(IsUnit.mul_right_inj (isUnit_cst _ y hr')).1 ((IsUnit.mul_right_inj (isUnit_cst _ y hr)).1 e₂')`.
+-/
 theorem main : lemmaBSt.{0} → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] (U : UnifPre (maximalIdeal V) D A G) (k : ℕ) (s : U.SecK k) (E E' : Fam D.toPre (FractionRing V) k), U.Expands k s E → U.Expands k s E' → E = E' := by
   intro hB V _ _ _ D A G _ _ U k s E E' hE hE'
   obtain ⟨r, hr, σ, f, h, hf, hx⟩ := hE

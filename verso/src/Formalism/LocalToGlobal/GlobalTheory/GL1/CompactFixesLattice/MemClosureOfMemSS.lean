@@ -9,12 +9,21 @@ namespace Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFix
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inl ⟨⟨e, he⟩, rfl⟩)`.
+-/
 theorem incl_mem_SS {e : E} (he : e ∈ intOE E) : inclE (F := F) (AF F) e ∈ SS F E :=
   Subring.subset_closure (Or.inl ⟨⟨e, he⟩, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`.
+-/
 theorem one_tmul_mem_SS {a : AF F} (ha : a ∈ intAd F) : (1 : E) ⊗ₜ[F] a ∈ SS F E :=
   Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)
 
+/- English proof (translation)
+Establish `h : e ⊗ₜ[F] a = (e ⊗ₜ[F] (1 : AF F)) * ((1 : E) ⊗ₜ[F] a)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[h]`. Conclude with `mul_mem (incl_mem_SS (F := F) he) (one_tmul_mem_SS ha)`.
+-/
 theorem tmul_mem_SS {e : E} (he : e ∈ intOE E) {a : AF F} (ha : a ∈ intAd F) :
     e ⊗ₜ[F] a ∈ SS F E := by
   have h : e ⊗ₜ[F] a = (e ⊗ₜ[F] (1 : AF F)) * ((1 : E) ⊗ₜ[F] a) := by
@@ -22,11 +31,23 @@ theorem tmul_mem_SS {e : E} (he : e ∈ intOE E) {a : AF F} (ha : a ∈ intAd F)
   rw [h]
   exact mul_mem (incl_mem_SS (F := F) he) (one_tmul_mem_SS ha)
 
+/- English proof (translation)
+Rewrite using `[← sum_coord b x]`. Conclude with `sum_mem fun i _ => tmul_mem_SS (hb i) (hx i)`.
+-/
 theorem mem_SS_of_coord {ι : Type} [Fintype ι] (b : Module.Basis ι F E) (hb : ∀ i, b i ∈ intOE E)
     (x : AE F E) (hx : ∀ i, coord b i x ∈ intAd F) : x ∈ SS F E := by
   rw [← sum_coord b x]
   exact sum_mem fun i _ => tmul_mem_SS (hb i) (hx i)
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨e, he, a, ha, rfl⟩` from `hy`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`.
+
+Take `⟨e', he', a', ha', rfl⟩` from `hz`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Conclude with `AddSubgroup.subset_closure ⟨_, mul_mem he he', _, mul_mem ha ha', rfl⟩`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add u v _ _ hu hv => rw [mul_add]`. Conclude with `add_mem hu hv`. Consider the case `neg u _ hu => rw [mul_neg]`. Conclude with `neg_mem hu`. Consider the case `zero => rw [zero_mul]`.
+
+Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [add_mul]`. Conclude with `add_mem hu hv`. Consider the case `neg u _ hu => rw [neg_mul]`. Conclude with `neg_mem hu`.
+-/
 theorem mul_mem_closure_tmul {y z : AE F E}
     (hy : y ∈ AddSubgroup.closure {y : AE F E | ∃ e ∈ intOE E, ∃ a ∈ intAd F, y = e ⊗ₜ[F] a})
     (hz : z ∈ AddSubgroup.closure {y : AE F E | ∃ e ∈ intOE E, ∃ a ∈ intAd F, y = e ⊗ₜ[F] a}) :
@@ -46,6 +67,11 @@ theorem mul_mem_closure_tmul {y z : AE F E}
   | add u v _ _ hu hv => rw [add_mul]; exact add_mem hu hv
   | neg u _ hu => rw [neg_mul]; exact neg_mem hu
 
+/- English proof (translation)
+Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem y hy`. Break down `hy with ⟨e, rfl⟩ | ⟨a, rfl⟩` into its components or cases. Conclude with `AddSubgroup.subset_closure ⟨e, e.2, 1, one_mem _, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨1, one_mem _, a, a.2, rfl⟩`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `one => exact AddSubgroup.subset_closure ⟨1, one_mem _, 1, one_mem _, rfl⟩`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `neg y _ hy => exact neg_mem hy`. Consider the case `mul y z _ _ hy hz => exact mul_mem_closure_tmul hy hz`.
+-/
 theorem mem_closure_of_mem_SS {x : AE F E} (hx : x ∈ SS F E) :
     x ∈ AddSubgroup.closure {y : AE F E | ∃ e ∈ intOE E, ∃ a ∈ intAd F, y = e ⊗ₜ[F] a} := by
   induction hx using Subring.closure_induction with
@@ -59,6 +85,13 @@ theorem mem_closure_of_mem_SS {x : AE F E} (hx : x ∈ SS F E) :
   | neg y _ hy => exact neg_mem hy
   | mul y z _ _ hy hz => exact mul_mem_closure_tmul hy hz
 
+/- English proof (translation)
+Establish `hx'` using `mem_closure_of_mem_SS hx`. Use `clear hx`. Proceed by induction on `hx' using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨e, he, a, ha, rfl⟩` from `hy`.
+
+Take `⟨m, hm⟩` from `hD e he i`. Rewrite using `[coord_tmul, smul_smul, ← hm]`. Conclude with `smul_mem_intAd m ha`. Consider the case `zero => rw [map_zero, smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add u v _ _ hu hv => rw [map_add, smul_add]`. Conclude with `add_mem hu hv`. Consider the case `neg u _ hu => rw [map_neg, smul_neg]`. Conclude with `neg_mem hu`.
+-/
 theorem coord_mem_of_mem_SS {ι : Type} (b : Module.Basis ι F E) (D : 𝓞 F)
     (hD : ∀ e ∈ intOE E, ∀ i, (D : F) * b.repr e i ∈ (algebraMap (𝓞 F) F).range)
     {x : AE F E} (hx : x ∈ SS F E) (i : ι) : (D : F) • coord b i x ∈ intAd F := by

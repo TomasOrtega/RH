@@ -9,6 +9,11 @@ open GlobalTheory GlobalTheory.Ex GlobalTheory.Ex.Arch
 
 namespace GlobalTheory.Ex.Arch
 
+/- English proof (translation)
+Establish `hl : la.l = 0`. Use `congrArg Prod.snd h` as an intermediate fact. Rewrite `this` using `[AnArc.degeneratingTori_basePeriodMap_snd, hy, map_zero, zero_add]`. Conclude with `Subtype.ext this`. Use `AnArc.La.ext hy (AddMonoidHom.ext fun x => ?_) hl` and prove the remaining obligations.
+
+Establish `: (B.P0 la).1 x = 0` using `by rw [h]; rfl`. Rewrite `this` using `[AnArc.degeneratingTori_basePeriodMap_fst_apply, hy, hl]`. Simplify using `using this`.
+-/
 theorem period_constantPart_eq_zero_injective {O : Type} [CommRing O] [StarRing O] (B : AnArc O) (la : B.La) (hy : la.y = 0)
     (h : B.P0 la = 0) : la = 0 := by
   have hl : la.l = 0 := by
@@ -20,6 +25,33 @@ theorem period_constantPart_eq_zero_injective {O : Type} [CommRing O] [StarRing 
   rw [AnArc.degeneratingTori_basePeriodMap_fst_apply, hy, hl] at this
   simpa using this
 
+/- English proof (translation)
+Introduce `hP O _ _ N B d k hk`. Take `⟨h1, h2, h3, h4, h5⟩` from `hP O N B d`. Use `choose E hE hU using h1`. Establish `hiff : ∀ v g, d.IsPt v g ↔ g = E v` using `fun v g => ⟨hU v g, fun h => h ▸ hE v⟩`. Establish `hadd : ∀ v v', E (v + v') = E v * E v'` using `fun v v' => (hU _ _ (h3 _ _ _ _ (hE v) (hE v'))).symm`.
+
+Establish `hzero : E 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Establish `hpow : ∀ (n : ℕ) v, E (n • v) = E v ^ n` using `fun n v => by`.
+
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_nsmul, pow_zero, hzero]`. Consider the case `succ n ih => rw [succ_nsmul, hadd, ih, pow_succ]`. Establish `hper : ∀ la : B.La, E (B.P0 la) = N.io (d.eX la.y)` using `fun la => (hU _ _ (h5 la)).symm`. Establish `hker : ∀ v v', E v = E v' → ∃ la : B.La, la.y = 0 ∧ v = v' + B.P0 la` using `fun v v' h => by`.
+
+Establish `e : E (v - v') * E v' = E v'` using `by rw [← hadd, sub_add_cancel, h]`. Take `⟨la, hy, hl⟩` from `(h4 (v - v')).1 ((hiff _ _).2 (mul_eq_right.1 e).symm)`. Conclude with `⟨la, hy, by rw [← hl, add_sub_cancel]⟩`. Establish `hk0 : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Establish `hc1 : ∀ v : B.V, (k : ℂ)⁻¹ • (k • v) = v` using `fun v => by`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ hk0]`. Establish `hc2 : ∀ v : B.V, k • ((k : ℂ)⁻¹ • v) = v` using `fun v => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ hk0]`. Establish `hrep : ∀ (la : B.La) (p : N.QT k), d.Rep k la p ↔ p.1.1.toAdd = d.eX la.y ∧ p.1.2 = E ((k : ℂ)⁻¹ • B.P0 la)` using `fun la p => and_congr Iff.rfl (hiff _ _)`. Use `⟨fun p => ?_, fun la => ?_, fun la la' p p' h h' => ?_, fun la la' p p' h h' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨v, hv⟩` from `h2 p.1.2`. Establish `hv'` using `(hiff _ _).1 hv`. Establish `e : E (k • v) = E (B.P0 (AnArc.La.mk (d.eX.symm p.1.1.toAdd) 0 0))`. Rewrite using `[hpow, hper, ← hv', AnArc.La.mk_y, AddEquiv.apply_symm_apply]`. Conclude with `N.mem_QT.1 p.2`.
+
+Take `⟨la, hy, hl⟩` from `hker _ _ e`. Use `⟨AnArc.La.mk (d.eX.symm p.1.1.toAdd) 0 0 + la, (hrep _ _).2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[AnArc.La.add_y, hy, add_zero, AnArc.La.mk_y, AddEquiv.apply_symm_apply]`. Rewrite using `[map_add, ← hl, hc1, hv']`. Use `⟨⟨(Multiplicative.ofAdd (d.eX la.y), E ((k : ℂ)⁻¹ • B.P0 la)), ?_⟩, (hrep _ _).2 ⟨rfl, rfl⟩, fun p hp => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[NumD.mem_QT, ← hpow, hc2, hper]`. Both sides reduce to the same expression. Take `⟨a, b⟩` from `(hrep _ _).1 hp`. Conclude with `Subtype.ext (Prod.ext a b)`. Take `⟨a, b⟩` from `(hrep _ _).1 h`.
+
+Take `⟨a', b'⟩` from `(hrep _ _).1 h'`. Use `(hrep _ _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AnArc.La.add_y, map_add, ← a, ← a']`. Both sides reduce to the same expression. Rewrite using `[map_add, smul_add, hadd, ← b, ← b']`.
+
+Both sides reduce to the same expression. Take `⟨a, b⟩` from `(hrep _ _).1 h`. Take `⟨a', b'⟩` from `(hrep _ _).1 h'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, c, c'⟩ set z₀ : B.La := AnArc.La.mk (d.eX.symm z) 0 0 with hz₀`.
+
+Establish `hz : d.eX z₀.y = z` using `by rw [hz₀, AnArc.La.mk_y, AddEquiv.apply_symm_apply]`. Establish `e : E ((k : ℂ)⁻¹ • B.P0 la') = E ((k : ℂ)⁻¹ • B.P0 la + B.P0 z₀)`. Rewrite using `[hadd, hper, hz, ← b, ← b', c']`. Take `⟨e₀, hy, hl⟩` from `hker _ _ e`. Use `⟨z₀ + e₀, sub_eq_zero.1 (period_constantPart_eq_zero_injective B _ ?_ ?_)⟩` and prove the remaining obligations.
+
+Apply `d.eX.injective` to reduce the goal to its premises. Rewrite using `[AnArc.La.sub_y, AnArc.La.add_y, AnArc.La.nsmul_y, AnArc.La.add_y, hy, add_zero, map_sub, map_add, map_nsmul, hz, ← a, ← a', c, sub_self, map_zero]`. Rewrite using `[map_sub, map_add, map_nsmul, map_add, ← hc2 (B.P0 la'), hl, add_assoc, smul_add, hc2, sub_self]`. Introduce and unpack `⟨e, rfl⟩`. Use `⟨d.eX e.y, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[a, a', AnArc.La.add_y, AnArc.La.nsmul_y, map_add, map_nsmul]`. Rewrite using `[b, b', map_add, map_nsmul, smul_add, hc1, hadd, hper]`.
+-/
 theorem qkSt_of_ptSt : PtSt → QkSt := by
   intro hP O _ _ N B d k hk
   obtain ⟨h1, h2, h3, h4, h5⟩ := hP O N B d

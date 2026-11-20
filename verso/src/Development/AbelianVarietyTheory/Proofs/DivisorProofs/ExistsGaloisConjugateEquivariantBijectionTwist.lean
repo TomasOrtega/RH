@@ -24,6 +24,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 open GlobalTheory.Mum GlobalTheory.Mum.Conj in
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D A N _ lab E hE hlab σ`. Establish `hσ : Function.Bijective σ` using `Algebra.IsAlgebraic.algHom_bijective σ`. Set `σe : Kb R ≃ₐ[FractionRing R] Kb R` to `AlgEquiv.ofBijective σ hσ`. Set `τ : Kb R →ₐ[FractionRing R] Kb R` to `σe.symm.toAlgHom`. Establish `hστ : σ.comp τ = AlgHom.id _ _` using `AlgHom.ext fun x => σe.apply_symm_apply x`.
+
+Establish `hστ' : ∀ x, σ (τ x) = x` using `fun x => σe.apply_symm_apply x`. Use `⟨fun s => secTw A N σ (E (famTw D.toPre N τ s)), ⟨?_, ?_, ?_, hE.onto, hE.frame, hE.lift, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.pullbackThetaSectionsGaloisTwist_bijective R A N σ).comp (hE.bij.comp (GlobalTheory.T.pullbackThetaFamilyGaloisTwist_bijective R D.toPre N τ))`. Introduce `s s' s'' h j`. Conclude with `GlobalTheory.T.pullbackThetaSectionsGaloisTwist_chart_add R A N σ _ _ _ (hE.add _ _ _ (GlobalTheory.T.pullbackThetaFamilyGaloisTwist_chart_add R D.toPre N τ _ _ _ h)) j`.
+
+Introduce `c s s' h j`. Use `GlobalTheory.T.pullbackThetaSectionsGaloisTwist_chart_semilinear R A N σ (τ c) _ _ (hE.smul (τ c) _ _ (GlobalTheory.T.pullbackThetaFamilyGaloisTwist_semilinear_smul R D.toPre N τ c _ _ h)) j` as an intermediate fact. Rewrite `this` using `[hστ']`. Then use the resulting hypothesis. Introduce `p w θ s s' hw hθ hφ`. Take `⟨p₀, hp₀⟩` from `qkExtExists R D.toPre (Kb R) (Kb R) τ.toRingHom (fun r => τ.commutes r) N p`.
+
+Establish `hx` using `hlab τ p p₀ hp₀`. Conclude with `GlobalTheory.T.thetaGroupAction_pullbackThetaSectionsGaloisTwist R A N σ τ hστ θ _ _ (hE.act p₀ (frTw D.toPre τ hp₀ w) (thTw A N τ θ) _ _ (GlobalTheory.T.isSymmetricFrame_pullbackMumfordFrameGaloisTwist R D.toPre N τ p p₀ hp₀ w hw) (GlobalTheory.T.symmetricLift_galoisTwist_of_con …`. Introduce `F₀ s hs show SecTw σ (E s) (secTw A N σ (E (famTw D.toPre N τ s)))`. Rewrite using `[GlobalTheory.T.pullbackThetaFamilyGaloisTwist_fixes_integralFamily R _ D.toPre N τ F₀ s hs]`. Conclude with `GlobalTheory.T.pullbackThetaSectionsGaloisTwist_isConjugate R A N σ (E s)`.
+-/
 theorem GlobalTheory.Mum.exists_eqv_conj : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (N : ℕ), Odd N → ∀ (lab : QkPt D.toPre (Kb R) N → (TFK (R := R) (Kb R) ⟶ A.A)) E, Eqv D.toPre A (Kb R) N lab E → (∀ τ : Kb R →ₐ[FractionRing R] Kb R, LabExt τ lab lab) → ∀ σ : Kb R →ₐ[FractionRing R] Kb R, ∃ E', Eqv D.toPre A (Kb R) N lab E' ∧ ∀ (F₀ : IntFam (maximalIdeal R) D.toPre N) s, F₀.Over s → SecTw σ (E s) (E' s) := by
   intro R _ _ _ _ D A N _ lab E hE hlab σ
   have hσ : Function.Bijective σ := Algebra.IsAlgebraic.algHom_bijective σ

@@ -8,6 +8,15 @@ open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.He
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg mcIdeal chartMon joinCoord bcCoord pullDeg liftVar fnField ck rootNum SameGeneric LatLE IsPull IsPullBC IsSubQuot QuotIso IsFrobPres FlagModel modelDeg)
 
+/- English proof (translation)
+Introduce `O _ Ω _ _ K _ _ ι _ x N V _ _`. Use `⟨fun Γ hfam hloc => ?_, fun E => ⟨⟨fun s _ => E.stable s, fun s t hs ht => E.overlap s t hs ht⟩, fun s hs => ⟨E.stable s, E.frame s hs⟩⟩⟩` and prove the remaining obligations. Use `⟨{ lat := fun s => if mseg x s = 0 then ⊥ else Γ s stable := ?_ frame := ?_ overlap := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `s a ha e he`. Distinguish the cases in `h : mseg x s = 0`.
+
+Simplify using `only [h, if_true, AddSubgroup.mem_bot] at he ⊢`. Rewrite using `[he, smul_zero]`. Simplify using `only [h, if_false] at he ⊢`. Conclude with `hfam.1 s h a ha e he`. Introduce `s hs`.
+
+Simplify using `only [hs, if_false]`. Conclude with `(hloc s hs).2`. Introduce `s t hs ht e he`. Simplify using `only [hs, ht, if_false] at he ⊢`. Conclude with `hfam.2 s t hs ht e he`.
+
+Introduce `s hs`. Simplify using `only [hs, if_false]`.
+-/
 theorem PositivityTheory.Xgn.t_bundle_of_family : ∀ (O : Type) [CommRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V], (∀ Γ : (∀ k, ι k) → AddSubgroup V, IsLatFamily O x Γ → (∀ s, mseg x s ≠ 0 → LocFree (chartRing O (mseg x) s) N (Γ s)) → ∃ E : ChartBundle O (mseg x) N V, ∀ s, mseg x s ≠ 0 → E.lat s = Γ s) ∧ ∀ E : ChartBundle O (mseg x) N V, IsLatFamily O x E.lat ∧ ∀ s, mseg x s ≠ 0 → LocFree (chartRing O (mseg x) s) N (E.lat s) := by
   classical
   intro O _ Ω _ _ K _ _ ι _ x N V _ _

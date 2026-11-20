@@ -17,16 +17,25 @@ variable (p : Ideal O) (σ : Type*)
 
 variable {p σ} in
 
+/- English proof (translation)
+The claim follows from `MvPolynomial.mem_map_C_iff`.
+-/
 theorem mem_gaussIdeal_iff {f : MvPolynomial σ O} :
     f ∈ gaussIdeal p σ ↔ ∀ m, f.coeff m ∈ p :=
   MvPolynomial.mem_map_C_iff
 
 variable {p σ} in
 
+/- English proof (translation)
+Use `⟨fun h ↦ by simpa using mem_gaussIdeal_iff.1 h 0, fun h ↦ Ideal.mem_map_of_mem _ h⟩` and prove the remaining obligations.
+-/
 theorem C_mem_gaussIdeal_iff {a : O} : (C a : MvPolynomial σ O) ∈ gaussIdeal p σ ↔ a ∈ p := by
   classical
   refine ⟨fun h ↦ by simpa using mem_gaussIdeal_iff.1 h 0, fun h ↦ Ideal.mem_map_of_mem _ h⟩
 
+/- English proof (translation)
+The claim follows from `Ideal.ext fun _ ↦ C_mem_gaussIdeal_iff`.
+-/
 theorem comap_C_gaussIdeal : (gaussIdeal p σ).comap (C : O →+* MvPolynomial σ O) = p :=
   Ideal.ext fun _ ↦ C_mem_gaussIdeal_iff
 
@@ -37,6 +46,9 @@ def quotientGaussIdealEquiv :
     (MvPolynomial σ O ⧸ gaussIdeal p σ) ≃ₐ[O] MvPolynomial σ (O ⧸ p) :=
   (MvPolynomial.quotientEquivQuotientMvPolynomial p).symm
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.map_eq_eval₂Hom_C_comp]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem quotientGaussIdealEquiv_mk (f : MvPolynomial σ O) :
     quotientGaussIdealEquiv p σ (Ideal.Quotient.mk _ f) =
       MvPolynomial.map (Ideal.Quotient.mk p) f := by
@@ -49,6 +61,9 @@ instance gaussIdeal_isPrime [p.IsPrime] : (gaussIdeal p σ).IsPrime := by
 
 variable {σ} in
 
+/- English proof (translation)
+Introduce `h`. Use `mem_gaussIdeal_iff.1 h (Finsupp.single i 1)` as an intermediate fact. Rewrite `this` using `[coeff_X_same]`. Conclude with `hp.ne_top ((Ideal.eq_top_iff_one _).2 this)`.
+-/
 theorem X_notMem_gaussIdeal [hp : p.IsPrime] (i : σ) :
     (X i : MvPolynomial σ O) ∉ gaussIdeal p σ := by
   classical
@@ -59,6 +74,9 @@ theorem X_notMem_gaussIdeal [hp : p.IsPrime] (i : σ) :
 
 variable {p} in
 
+/- English proof (translation)
+Use extensionality with `f`. Simplify using `[mem_gaussIdeal_iff, h, coeff_map]`.
+-/
 theorem comap_map_gaussIdeal {O₂ : Type*} [CommRing O₂] (φ : O →+* O₂) (q : Ideal O₂)
     (h : p = q.comap φ) :
     gaussIdeal p σ = (gaussIdeal q σ).comap (MvPolynomial.map φ) := by
@@ -83,28 +101,43 @@ instance algebraAtPrime : Algebra (Localization.AtPrime p) (GaussLocal O p σ) :
 instance isLiesOverAlgebra : Localization.AtPrime.IsLiesOverAlgebra p (gaussIdeal p σ) :=
   ⟨rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_C (a : O) :
     algebraMap (MvPolynomial σ O) (GaussLocal O p σ) (C a) = algebraMap O (GaussLocal O p σ) a :=
   rfl
 
 variable {p σ}
 
+/- English proof (translation)
+The claim follows from `(IsLocalization.AtPrime.to_map_mem_maximal_iff _ (gaussIdeal p σ) (C a)).trans C_mem_gaussIdeal_iff`.
+-/
 theorem algebraMap_base_mem_maximalIdeal_iff (a : O) :
     algebraMap O (GaussLocal O p σ) a ∈ maximalIdeal (GaussLocal O p σ) ↔ a ∈ p :=
   (IsLocalization.AtPrime.to_map_mem_maximal_iff _ (gaussIdeal p σ) (C a)).trans
     C_mem_gaussIdeal_iff
 
+/- English proof (translation)
+Rewrite using `[← notMem_maximalIdeal, algebraMap_base_mem_maximalIdeal_iff]`.
+-/
 theorem isUnit_algebraMap_base_iff (a : O) :
     IsUnit (algebraMap O (GaussLocal O p σ) a) ↔ a ∉ p := by
   rw [← notMem_maximalIdeal, algebraMap_base_mem_maximalIdeal_iff]
 
 variable (p) in
 
+/- English proof (translation)
+The claim follows from `(IsLocalization.AtPrime.isUnit_to_map_iff _ (gaussIdeal p σ) _).2 (X_notMem_gaussIdeal p i)`.
+-/
 theorem isUnit_X (i : σ) : IsUnit (algebraMap (MvPolynomial σ O) (GaussLocal O p σ) (X i)) :=
   (IsLocalization.AtPrime.isUnit_to_map_iff _ (gaussIdeal p σ) _).2 (X_notMem_gaussIdeal p i)
 
 variable (p σ)
 
+/- English proof (translation)
+Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map]`. Both sides reduce to the same expression.
+-/
 theorem map_eq_maximalIdeal :
     p.map (algebraMap O (GaussLocal O p σ)) = maximalIdeal (GaussLocal O p σ) := by
   rw [← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map]
@@ -112,6 +145,9 @@ theorem map_eq_maximalIdeal :
 
 variable {p} in
 
+/- English proof (translation)
+Rewrite using `[← map_eq_maximalIdeal, ← Set.image_singleton, ← Ideal.map_span, ← h]`.
+-/
 theorem maximalIdeal_eq_span {a : O} (h : p = Ideal.span {a}) :
     maximalIdeal (GaussLocal O p σ) = Ideal.span {algebraMap O (GaussLocal O p σ) a} := by
   rw [← map_eq_maximalIdeal, ← Set.image_singleton, ← Ideal.map_span, ← h]
@@ -142,6 +178,9 @@ instance isScalarTower_fractionRing :
   .of_algebraMap_eq fun a ↦ by
     rw [← algebraMap_C, ← IsScalarTower.algebraMap_apply]; rfl
 
+/- English proof (translation)
+The claim follows from `FaithfulSMul.algebraMap_injective _ _`.
+-/
 theorem algebraMap_injective :
     Function.Injective (algebraMap (MvPolynomial σ O) (GaussLocal O p σ)) :=
   FaithfulSMul.algebraMap_injective _ _
@@ -177,10 +216,18 @@ def reduction : GaussLocal O p σ →+* FractionRing (MvPolynomial σ k) :=
       MvPolynomial.ker_map, hφ] at h
     exact h
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_eq _ _`.
+-/
 @[simp] theorem reduction_algebraMap (f : MvPolynomial σ O) :
     reduction σ φ hφ (algebraMap _ _ f) = algebraMap _ _ (MvPolynomial.map φ f) :=
   IsLocalization.lift_eq _ _
 
+/- English proof (translation)
+Use `((maximalIdeal.isMaximal _).eq_of_le (RingHom.ker_ne_top _) ?_).symm` and prove the remaining obligations. Rewrite using `[← map_eq_maximalIdeal, Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite `ha` using `[← hφ, RingHom.mem_ker]`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← algebraMap_C, reduction_algebraMap, map_C, ha]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ker_reduction : RingHom.ker (reduction σ φ hφ) = maximalIdeal (GaussLocal O p σ) := by
   refine ((maximalIdeal.isMaximal _).eq_of_le (RingHom.ker_ne_top _) ?_).symm
   rw [← map_eq_maximalIdeal, Ideal.map_le_iff_le_comap]
@@ -194,6 +241,17 @@ instance isLocalHom_reduction : IsLocalHom (reduction σ φ hφ) :=
     rw [← notMem_maximalIdeal, ← ker_reduction σ φ hφ]
     exact h.ne_zero⟩
 
+/- English proof (translation)
+Use `⟨RingHom.injective _, fun x ↦ ?_⟩` and prove the remaining obligations. Use `set F := ResidueField.lift (reduction σ φ hφ) with hF`. Establish `h0 : ∀ f : MvPolynomial σ O, algebraMap _ _ (MvPolynomial.map φ f) ∈ F.fieldRange` using `fun f ↦ ⟨residue _ (algebraMap _ _ f), by`. Rewrite using `[hF, ResidueField.lift_residue_apply, reduction_algebraMap]⟩`. Establish `h1 : ∀ g : MvPolynomial σ k, algebraMap _ _ g ∈ F.fieldRange`.
+
+Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C c`. Take `⟨a, b, rfl⟩` from `hk c`. Use `div_mem (h0 (C a)) (h0 (C b))` as an intermediate fact.
+
+Rewrite `this` using `[map_C, map_C]`. Establish `e` using `map_div₀ ((algebraMap (MvPolynomial σ k) (FractionRing (MvPolynomial σ k))).comp C) (φ a) (φ b)`. Rewrite `e` using `[RingHom.comp_apply]`. Rewrite using `[e]`. Conclude with `this`.
+
+Consider the case `add f g hf hg => rw [map_add]`. Conclude with `add_mem hf hg`. Consider the case `mul_X f i hf`. Rewrite using `[map_mul]`. Use `mul_mem hf ?_` and prove the remaining obligations.
+
+Simplify using `using h0 (X i)`. Take `⟨f, g, -, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial σ k) x`. Conclude with `div_mem (h1 f) (h1 g)`.
+-/
 theorem lift_reduction_bijective (hk : ∀ c : k, ∃ a b : O, c = φ a / φ b) :
     Function.Bijective (ResidueField.lift (reduction σ φ hφ)) := by
   refine ⟨RingHom.injective _, fun x ↦ ?_⟩
@@ -223,6 +281,9 @@ theorem lift_reduction_bijective (hk : ∀ c : k, ∃ a b : O, c = φ a / φ b) 
 
 variable (p)
 
+/- English proof (translation)
+Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := O ⧸ p) c`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Conclude with `⟨a, b, rfl⟩`.
+-/
 theorem residueField_eq_div (c : p.ResidueField) :
     ∃ a b : O, c = algebraMap O p.ResidueField a / algebraMap O p.ResidueField b := by
   obtain ⟨a, b, -, rfl⟩ := IsFractionRing.div_surjective (A := O ⧸ p) c
@@ -245,6 +306,9 @@ def residueFieldEquiv :
       rfl
     exact congr($this c)
 
+/- English proof (translation)
+The claim follows from `reduction_algebraMap σ _ p.ker_algebraMap_residueField f`.
+-/
 @[simp] theorem residueFieldEquiv_residue (f : MvPolynomial σ O) :
     residueFieldEquiv p σ (residue _ (algebraMap _ _ f)) =
       algebraMap _ _ (MvPolynomial.map (algebraMap O p.ResidueField) f) :=
@@ -264,6 +328,9 @@ def residueFieldEquiv' [IsLocalRing O] :
     rw [map_C]
     rfl
 
+/- English proof (translation)
+The claim follows from `reduction_algebraMap σ _ ker_residue f`.
+-/
 @[simp] theorem residueFieldEquiv'_residue [IsLocalRing O] (f : MvPolynomial σ O) :
     residueFieldEquiv' O σ (residue _ (algebraMap _ _ f)) =
       algebraMap _ _ (MvPolynomial.map (residue O) f) :=
@@ -278,6 +345,9 @@ variable {p} {O₂ : Type*} [CommRing O₂] {q : Ideal O₂} [q.IsPrime]
 def map (φ : O →+* O₂) (h : p = q.comap φ) : GaussLocal O p σ →+* GaussLocal O₂ q σ :=
   Localization.localRingHom _ _ (MvPolynomial.map φ) (comap_map_gaussIdeal σ φ q h)
 
+/- English proof (translation)
+The claim follows from `Localization.localRingHom_to_map _ _ _ _ _`.
+-/
 @[simp] theorem map_algebraMap (φ : O →+* O₂) (h : p = q.comap φ) (f : MvPolynomial σ O) :
     map σ φ h (algebraMap _ _ f) = algebraMap _ _ (MvPolynomial.map φ f) :=
   Localization.localRingHom_to_map _ _ _ _ _
@@ -285,15 +355,26 @@ def map (φ : O →+* O₂) (h : p = q.comap φ) : GaussLocal O p σ →+* Gauss
 instance isLocalHom_map (φ : O →+* O₂) (h : p = q.comap φ) : IsLocalHom (map σ φ h) :=
   Localization.isLocalHom_localRingHom _ _ _ _
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_C, map_algebraMap, map_C, algebraMap_C]`.
+-/
 @[simp] theorem map_algebraMap_base (φ : O →+* O₂) (h : p = q.comap φ) (a : O) :
     map σ φ h (algebraMap O _ a) = algebraMap O₂ _ (φ a) := by
   rw [← algebraMap_C, map_algebraMap, map_C, algebraMap_C]
 
+/- English proof (translation)
+The claim follows from `Localization.localRingHom_unique _ _ _ _ fun f ↦ by simp [MvPolynomial.map_id]`.
+-/
 @[simp] theorem map_id : map σ (RingHom.id O) (Ideal.comap_id p).symm = RingHom.id _ :=
   Localization.localRingHom_unique _ _ _ _ fun f ↦ by simp [MvPolynomial.map_id]
 
 variable (p) (A : Type*) [CommRing A] [Algebra O A] [IsLocalRing A] [IsLocalization.AtPrime A p]
 
+/- English proof (translation)
+Set `: Algebra (MvPolynomial σ O) (MvPolynomial σ A)` to `MvPolynomial.algebraMvPolynomial`. Use `MvPolynomial.isLocalization (σ := σ) p.primeCompl A` as an intermediate fact. Establish `h` using `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (p.primeCompl.map (C : O →+* MvPolynomial σ O)) (GaussLocal' A σ) (gaussIdeal (maximalIdeal A) σ)`. Establish `e : gaussIdeal p σ = (gaussIdeal (maximalIdeal A) σ).comap (algebraMap (MvPolynomial σ O) (MvPolynomial σ A))` using `comap_map_gaussIdeal σ (algebraMap O A) _ (IsLocalization.AtPrime.under_maximalIdeal A p).symm`. Establish `: IsLocalization.AtPrime (GaussLocal' A σ) (gaussIdeal p σ)`.
+
+Use `h` and compare the differences between its conclusion and the goal. Use `IsLocalization.bijective (gaussIdeal p σ).primeCompl _ ?_` and prove the remaining obligations. Conclude with `RingHom.ext fun f ↦ map_algebraMap σ (algebraMap O A) (IsLocalization.AtPrime.under_maximalIdeal A p).symm f`.
+-/
 theorem map_bijective_of_isLocalization :
     Function.Bijective (map σ (algebraMap O A) (IsLocalization.AtPrime.under_maximalIdeal A p).symm :
       GaussLocal O p σ →+* GaussLocal' A σ) := by
@@ -318,6 +399,9 @@ def mapLocalization : GaussLocal O p σ →ₐ[O] GaussLocal' A σ where
     exact map_algebraMap_base σ (algebraMap O A)
       (IsLocalization.AtPrime.under_maximalIdeal A p).symm a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mapLocalization_toRingHom :
     (mapLocalization p σ A : GaussLocal O p σ →+* GaussLocal' A σ) =
       map σ (algebraMap O A) (IsLocalization.AtPrime.under_maximalIdeal A p).symm := rfl
@@ -327,6 +411,9 @@ def equivOfIsLocalization : GaussLocal O p σ ≃ₐ[O] GaussLocal' A σ :=
     rw [← AlgHom.coe_toRingHom, mapLocalization_toRingHom]
     exact map_bijective_of_isLocalization p σ A
 
+/- English proof (translation)
+Rewrite using `[equivOfIsLocalization, AlgEquiv.ofBijective_apply, ← AlgHom.coe_toRingHom, mapLocalization_toRingHom, map_algebraMap]`.
+-/
 @[simp] theorem equivOfIsLocalization_algebraMap (f : MvPolynomial σ O) :
     equivOfIsLocalization p σ A (algebraMap _ _ f) =
       algebraMap _ _ (MvPolynomial.map (algebraMap O A) f) := by
@@ -340,6 +427,9 @@ section Examples
 local instance isPrime_span_two : (Ideal.span {(2 : ℤ)}).IsPrime :=
   (Ideal.span_singleton_prime two_ne_zero).2 Int.prime_two
 
+/- English proof (translation)
+Rewrite using `[map_add]`. Establish `h2 : algebraMap (MvPolynomial Unit ℤ) (GaussLocal ℤ (Ideal.span {2}) Unit) (C 2) ∈ maximalIdeal _` using `(algebraMap_base_mem_maximalIdeal_iff 2).2 (Ideal.mem_span_singleton_self 2)`. Rewrite using `[← notMem_maximalIdeal, Ideal.add_mem_iff_left _ h2, notMem_maximalIdeal]`. Conclude with `isUnit_X _ ()`.
+-/
 example : IsUnit (algebraMap (MvPolynomial Unit ℤ) (GaussLocal ℤ (Ideal.span {2}) Unit)
     (X () + C 2)) := by
   rw [map_add]
@@ -349,13 +439,22 @@ example : IsUnit (algebraMap (MvPolynomial Unit ℤ) (GaussLocal ℤ (Ideal.span
   rw [← notMem_maximalIdeal, Ideal.add_mem_iff_left _ h2, notMem_maximalIdeal]
   exact isUnit_X _ ()
 
+/- English proof (translation)
+Rewrite using `[isField_iff_maximalIdeal_eq, maximalIdeal_eq_span Unit rfl, Ideal.span_singleton_eq_bot, FaithfulSMul.algebraMap_eq_zero_iff]`. Conclude with `two_ne_zero`.
+-/
 example : ¬ IsField (GaussLocal ℤ (Ideal.span {2}) Unit) := by
   rw [isField_iff_maximalIdeal_eq, maximalIdeal_eq_span Unit rfl, Ideal.span_singleton_eq_bot,
     FaithfulSMul.algebraMap_eq_zero_iff]
   exact two_ne_zero
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example [IsNoetherianRing O] [Finite σ] : IsNoetherianRing (GaussLocal O p σ) := inferInstance
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance⟩`.
+-/
 example : IsScalarTower O (MvPolynomial σ O) (GaussLocal O p σ) ∧
     IsScalarTower O (Localization.AtPrime p) (GaussLocal O p σ) ∧
     IsLocalHom (algebraMap (Localization.AtPrime p) (GaussLocal O p σ)) :=

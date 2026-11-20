@@ -4,6 +4,9 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.SmoothTransfer
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N V _ _ π h`. Conclude with `h`.
+-/
 theorem isSmooth_found : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], ∀ (N : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → GroundTheory.Automorphic.IsSmooth π := by

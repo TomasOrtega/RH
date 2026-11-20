@@ -18,19 +18,33 @@ namespace FV
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {L : Type} [Field L]
   {z : Spec (CommRingCat.of L) ⟶ X}
 
+/- English proof (translation)
+Take `⟨h, x, rfl, rfl⟩` from `h`. Take `⟨_, y, rfl, rfl⟩` from `h'`. Conclude with `⟨h, x * y, map_mul _ _ _, map_mul _ _ _⟩`.
+-/
 theorem mul {a b : Ω} {r s : L} (h : ValAt ξ z a r) (h' : ValAt ξ z b s) : ValAt ξ z (a * b) (r * s) := by
   obtain ⟨h, x, rfl, rfl⟩ := h
   obtain ⟨_, y, rfl, rfl⟩ := h'
   exact ⟨h, x * y, map_mul _ _ _, map_mul _ _ _⟩
 
+/- English proof (translation)
+The claim follows from `(inferInstance : IsLocalHom (Scheme.stalkClosedPointTo z).hom).map_nonunit x (IsUnit.mk0 _ h)`.
+-/
 theorem isUnit (x : X.presheaf.stalk (centre z)) (h : (Scheme.stalkClosedPointTo z).hom x ≠ 0) : IsUnit x :=
   (inferInstance : IsLocalHom (Scheme.stalkClosedPointTo z).hom).map_nonunit x (IsUnit.mk0 _ h)
 
+/- English proof (translation)
+Take `⟨h, x, rfl, rfl⟩` from `h`. Take `⟨x, rfl⟩ : IsUnit x` from `isUnit x hr`. Conclude with `⟨h, x⁻¹.val, map_units_inv _ x, map_units_inv _ x⟩`.
+-/
 theorem inv {a : Ω} {r : L} (h : ValAt ξ z a r) (hr : r ≠ 0) : ValAt ξ z a⁻¹ r⁻¹ := by
   obtain ⟨h, x, rfl, rfl⟩ := h
   obtain ⟨x, rfl⟩ : IsUnit x := isUnit x hr
   exact ⟨h, x⁻¹.val, map_units_inv _ x, map_units_inv _ x⟩
 
+/- English proof (translation)
+Take `⟨h, x, hx, rfl⟩` from `h`. Take `⟨_, y, hy, rfl⟩` from `h'`. Assume the negation of the conclusion as `hne`. Establish `hu : IsUnit (x - y)` using `isUnit _ fun h0 => hne (sub_eq_zero.1 ((map_sub (Scheme.stalkClosedPointTo z).hom x y).symm.trans h0))`. Use `hu.map (genMap ξ ⟨centre z, h⟩)` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, hx, hy, sub_self]`. Conclude with `not_isUnit_zero this`.
+-/
 theorem unique {a : Ω} {r s : L} (h : ValAt ξ z a r) (h' : ValAt ξ z a s) : r = s := by
   obtain ⟨h, x, hx, rfl⟩ := h
   obtain ⟨_, y, hy, rfl⟩ := h'
@@ -47,6 +61,13 @@ namespace VP
 
 variable {L : Type} [Field L]
 
+/- English proof (translation)
+Set `u : Fin n → (epsAt z ⟶ G)` to `fun k => LieTangent.epsScale z ((Scheme.stalkClosedPointTo z).hom (t k)) ≫ vb k`. Establish `hu : ∀ k, M.ValAt z (genMap ξ ⟨centre z, hc⟩ (t k) • b k) (u k)` using `fun k => (hb k).smul hc (t k)`. Establish `key : ∀ (m : ℕ) (x : Fin m → E) (w : Fin m → (epsAt z ⟶ G)), (∀ k, M.ValAt z (x k) (w k)) → M.ValAt z (∑ k, x k) (List.ofFn w).prod`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => intro x w _`. Simplify using `using LieModel.valAt_zero M hc`. Consider the case `succ m ih`. Introduce `x w h`. Rewrite using `[Fin.sum_univ_succ, List.ofFn_succ, List.prod_cons]`.
+
+Conclude with `(h 0).add (ih _ _ fun k => h k.succ)`. Conclude with `⟨_, key n _ u hu, u, fun k => rfl, rfl⟩`.
+-/
 theorem val_of_comb {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {E : Type} [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) {z : Spec (CommRingCat.of L) ⟶ X}
     (hc : genPt ξ ⤳ centre z) {n : ℕ} (b : Fin n → E) (vb : Fin n → (epsAt z ⟶ G)) (hb : ∀ k, M.ValAt z (b k) (vb k))
@@ -66,6 +87,27 @@ theorem val_of_comb {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj
       exact (h 0).add (ih _ _ fun k => h k.succ)
   exact ⟨_, key n _ u hu, u, fun k => rfl, rfl⟩
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Take `⟨hc1, vx₀, hvx₀, e1₀⟩` from `h1`. Take `⟨hc2, ve, hve, e2⟩` from `h2`. Establish `hD : Dominates 𝔐.ξ (Z.ξ₀ ≫ Y.j) 𝔐.f i` using `ht.1`. Establish `hcart` using `𝔐.m.cart`.
+
+Establish `hc1' : genPt (Z.ξ₀ ≫ Y.j) ⤳ 𝔐.f (centre z)` using `hc1`. Set `vx : epsAt (Y.X.fromSpecStalk (𝔐.f (centre z))) ⟶ Y.t.G` to `vx₀`. Establish `hvx : Z.M.Extends ⟨𝔐.f (centre z), hc1'⟩ e vx` using `hvx₀`. Establish `e5 : ((Scheme.stalkClosedPointTo (z ≫ 𝔐.f)).hom : Y.X.presheaf.stalk (𝔐.f (centre z)) →+* L) = (Scheme.stalkClosedPointTo z).hom.comp (𝔐.f.stalkMap (centre z)).hom` using `congrArg (fun t => t.hom) (Scheme.stalkClosedPointTo_comp z 𝔐.f)`. Establish `e1 : v'.left = Spec.map (CommRingCat.ofHom (dualMap ((Scheme.stalkClosedPointTo z).hom.comp (𝔐.f.stalkMap (centre z)).hom))) ≫ vx.left`.
+
+Use `e1₀.trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun g : Y.X.presheaf.stalk (𝔐.f (centre z)) →+* L => Spec.map (CommRingCat.ofHom (dualMap g)) ≫ vx.left) e5`. Establish `hst : Spec.map (CommRingCat.ofHom (𝔐.f.stalkMap (centre z)).hom) ≫ Y.X.fromSpecStalk (𝔐.f (centre z)) = 𝔐.X.fromSpecStalk (centre z) ≫ 𝔐.f`. Simplify using `using Scheme.Hom.SpecMap_stalkMap_fromSpecStalk 𝔐.f (x := centre z)`. Set `A : epsAt (𝔐.X.fromSpecStalk (centre z) ≫ 𝔐.f) ⟶ Y.t.G` to `Over.homMk (ve.left ≫ 𝔐.m.φ) (by`.
+
+Establish `h0` using `Over.w ve`. Express the relevant statement in the definitionally equal form `(ve.left ≫ 𝔐.m.φ) ≫ Y.t.G.hom = Spec.map _ ≫ 𝔐.X.fromSpecStalk (centre z) ≫ 𝔐.f`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (ve.left ≫ ·) hcart.1.w).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations.
+
+Use `(congrArg (· ≫ 𝔐.f) h0).trans ?_` and prove the remaining obligations. Conclude with `Category.assoc _ _ _)`. Set `B : epsAt (𝔐.X.fromSpecStalk (centre z) ≫ 𝔐.f) ⟶ Y.t.G` to `LieTangent.epsBase (𝔐.f.stalkMap (centre z)).hom hst ≫ vx`. Establish `hA : IsTanAt Y.t.G _ A`. Establish `h1 : _ ≫ ve.left = (1 : Over.mk (𝔐.X.fromSpecStalk (centre z)) ⟶ 𝔐.t.G).left` using `hve.1`.
+
+Establish `h2` using `congrArg (fun q => q.left) (map_one (pushHom hcart (Over.mk (𝔐.X.fromSpecStalk (centre z)))))`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ ve.left ≫ 𝔐.m.φ = _`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ 𝔐.m.φ) h1).trans h2)`. Establish `hB : IsTanAt Y.t.G _ B` using `LieTangent.isTanAt_base _ hst hvx.1`. Establish `hAB : A = B`.
+
+Use `LieTangent.tan_ext (𝔐.tie.gen.inj ⟨centre z, hc2⟩) hA hB ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ ve.left ≫ 𝔐.m.φ = _ ≫ Spec.map _ ≫ vx.left`. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (· ≫ 𝔐.m.φ) hve.2.symm).trans ?_` and prove the remaining obligations. Use `(ht.2.2.2 e).trans ?_` and prove the remaining obligations.
+
+Use `(congrArg (_ ≫ ·) hvx.2).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Category.assoc _ _ _)` and prove the remaining obligations. Conclude with `congrArg (· ≫ vx.left) (spec_dual_comp i (genMap (Z.ξ₀ ≫ Y.j) ⟨𝔐.f (centre z), hc1'⟩) (genMap 𝔐.ξ ⟨centre z, hc2⟩) (𝔐.f.stalkMap (centre z)).hom fun s => (PullReg.stalkMap_comp_genMap hD ⟨centre z, hc2⟩ hc1' s).symm)`. Establish `hAB' : ve.left ≫ 𝔐.m.φ = Spec.map (CommRingCat.ofHom (dualMap (𝔐.f.stalkMap (centre z)).hom)) ≫ vx.left` using `congrArg (fun q => q.left) hAB`.
+
+Use `(congrArg (· ≫ 𝔐.m.φ) e2).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (_ ≫ ·) hAB').trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ e1.symm` and prove the remaining obligations.
+
+Use `congrArg (· ≫ vx.left) ?_` and prove the remaining obligations. Conclude with `spec_dual_comp' _ _`.
+-/
 theorem tie_val {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {U : Set (Xo.XF c)}
     {Z : CptOver Y U} {S : Finset ℕ} {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type}
@@ -130,6 +172,11 @@ theorem tie_val {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} 
   refine congrArg (· ≫ vx.left) ?_
   exact spec_dual_comp' _ _
 
+/- English proof (translation)
+Use `⟨h, GagaRat.cst g (centre z) c, ?_, ?_⟩` and prove the remaining obligations. Establish `hg : genPt (ξ ≫ g) ⤳ g (centre z)` using `h.map g.continuous`. Rewrite using `[GagaRat.cst, GagaRat.genMap_stalkMap' ξ g ⟨centre z, h⟩ hg]`. Establish `e : ((Sp O).presheaf.stalkSpecializes hg).hom (GagaRat.cgerm (g (centre z)) c) = GagaRat.cgerm (genPt (ξ ≫ g)) c` using `congrArg (fun t => t.hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom c)) (TopCat.Presheaf.germ_stalkSpecializes (Sp O).presheaf (U := ⊤) trivial hg)`. Use `show (Scheme.stalkClosedPointTo (ξ ≫ g)).hom (((Sp O).presheaf.stalkSpecializes hg).hom (GagaRat.cgerm (g (centre z)) c)) = _`.
+
+Rewrite using `[e]`. Conclude with `GagaRat.closedPointTo_cgerm (ξ ≫ g) σ₀ hs c`. Establish `e` using `congrArg (fun t => t.hom (GagaRat.cgerm (g (centre z)) c)) (Scheme.stalkClosedPointTo_comp z g)`. Conclude with `e.symm.trans (GagaRat.closedPointTo_cgerm (z ≫ g) σ hz c)`.
+-/
 theorem val_const' {X : Scheme.{0}} {Ω : Type} [Field Ω] {O : Type} [CommRing O] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (g : X ⟶ Sp O) {σ₀ : O →+* Ω} (hs : ξ ≫ g = spMap σ₀) {σ : O →+* L} (z : Spec (CommRingCat.of L) ⟶ X)
     (hz : z ≫ g = spMap σ) (h : genPt ξ ⤳ centre z) (c : O) : ValAt ξ z (σ₀ c) (σ c) := by
@@ -146,6 +193,27 @@ theorem val_const' {X : Scheme.{0}} {Ω : Type} [Field Ω] {O : Type} [CommRing 
   · have e := congrArg (fun t => t.hom (GagaRat.cgerm (g (centre z)) c)) (Scheme.stalkClosedPointTo_comp z g)
     exact e.symm.trans (GagaRat.closedPointTo_cgerm (z ≫ g) σ hz c)
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c _ Y U Z S Ω _ K _ J y 𝔐 i j s z hc ht hint hcst`. Establish `hD : Dominates 𝔐.ξ (Z.ξ₀ ≫ Y.j) 𝔐.f i` using `ht.1`. Establish `hz₀ : z ≫ 𝔐.f ≫ Y.s = spMap (s.comp (algebraMap (𝓞 c.F) c.F))`. Establish `hp : z ≫ 𝔐.f ≫ Y.s = spMap (Spec.preimage (z ≫ 𝔐.f ≫ Y.s)).hom`. Unfold `spMap`.
+
+Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hv` using `val_const' (𝔐.f ≫ Y.s) 𝔐.cst_over z hp hc`. Establish `e : (Spec.preimage (z ≫ 𝔐.f ≫ Y.s)).hom = s.comp (algebraMap (𝓞 c.F) c.F)` using `RingHom.ext fun a => FV.unique (hv a) (hcst _)`. Rewrite using `[hp, e]`. Establish `hsq : (z ≫ 𝔐.f) ≫ Y.s = spMap s ≫ spMap (algebraMap (𝓞 c.F) c.F)`.
+
+Rewrite using `[Category.assoc, hz₀]`. Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Set `w` to `pullback.lift (z ≫ 𝔐.f) (spMap s) hsq`. Establish `hw1 : w ≫ pullback.fst _ _ = z ≫ 𝔐.f` using `pullback.lift_fst _ _ _`.
+
+Establish `hw2 : w ≫ pullback.snd _ _ = spMap s` using `pullback.lift_snd _ _ _`. Establish `hab : 𝔐.f (centre z) ∈ abLocus Y.t.G` using `(abLocus_pullback abLocusOne Y.t.semi 𝔐.m.cart.1 (centre z)).2 hint`. Establish `hrange : Set.range w ⊆ Set.range Y.jQ`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[← Y.ab_gen]`.
+
+Establish `hp : p = IsLocalRing.closedPoint L` using `Subsingleton.elim _ _`. Substitute `hp` using the available equality. Establish `e : (pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F))) (w (IsLocalRing.closedPoint L)) = 𝔐.f (centre z)` using `congrArg (fun t : Spec (CommRingCat.of L) ⟶ Y.X => t (IsLocalRing.closedPoint L)) hw1`. Use `show _ ∈ abLocus Y.t.G`. Rewrite using `[e]`.
+
+Conclude with `hab`. Use `haveI := Y.jQ_open`. Set `y₀ : Sp L ⟶ Xo.XF c` to `IsOpenImmersion.lift Y.jQ w hrange`. Establish `hy : y₀ ≫ Y.jQ = w` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hj : y₀ ≫ Y.j = z ≫ 𝔐.f` using `by show y₀ ≫ Y.jQ ≫ pullback.fst _ _ = _`.
+
+Rewrite using `[← Category.assoc, hy, hw1]`. Establish `hs : y₀ ≫ pullback.snd _ _ = spMap s`. Rewrite using `[← Y.jQ_over, ← Category.assoc, hy, hw2]`. Establish `hcen : centre (y₀ ≫ Y.j) = 𝔐.f (centre z)` using `by rw [hj]; rfl`. Establish `h : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y₀ ≫ Y.j)`.
+
+Rewrite using `[hcen, ← hD.map_genPt]`. Conclude with `hc.map 𝔐.f.continuous`. Use `⟨y₀, hj.symm, ?_, hs, h, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `hp : p = IsLocalRing.closedPoint L` using `Subsingleton.elim _ _`.
+
+Substitute `hp` using the available equality. Use `(Z.closure _).2 ?_` and prove the remaining obligations. Use `haveI : IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F)) := IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 c.F)) (S := c.F)`. Use `haveI : IsPreimmersion Y.j := by show IsPreimmersion (Y.jQ ≫ pullback.fst _ _) infer_instance`. Establish `hind : Topology.IsInducing Y.j` using `Y.j.isEmbedding.isInducing`.
+
+Conclude with `hind.specializes_iff.1 h`. Conclude with `⟨Y.jQ (y₀ (IsLocalRing.closedPoint L)), rfl⟩`.
+-/
 theorem exists_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) [NumberField c.F] (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (U : Set (Xo.XF c)) (Z : CptOver Y U) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (i : Z.Ω →+* Ω) (j : Z.V →+ 𝔐.Li) (s : c.F →+* L) (z : Spec (CommRingCat.of L) ⟶ 𝔐.X), genPt 𝔐.ξ ⤳ centre z → CptIn.IsTie Z 𝔐 i j → 𝔐.Interior z → (∀ a : c.F, ValAt 𝔐.ξ z (𝔐.cst a) (s a)) → ∃ y₀ : Sp L ⟶ Xo.XF c, z ≫ 𝔐.f = y₀ ≫ Y.j ∧ Set.range y₀ ⊆ U ∧ y₀ ≫ pullback.snd _ _ = spMap s ∧ ∃ h : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y₀ ≫ Y.j), (⟨_, h⟩ : Cpt (Z.ξ₀ ≫ Y.j)) ∈ Z.genFib := by
 
   intro E _ _ _ H D l Xo c _ Y U Z S Ω _ K _ J y 𝔐 i j s z hc ht hint hcst
@@ -202,6 +270,9 @@ theorem exists_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     exact hind.specializes_iff.1 h
   · exact ⟨Y.jQ (y₀ (IsLocalRing.closedPoint L)), rfl⟩
 
+/- English proof (translation)
+Take `⟨h, s, rfl, rfl⟩` from `hv`. Conclude with `⟨h', (f.stalkMap (centre z)).hom s, PullReg.stalkMap_comp_genMap hD ⟨centre z, h'⟩ h s, (congrArg (fun t => t.hom s) (Scheme.stalkClosedPointTo_comp z f)).symm⟩`.
+-/
 theorem val_pull₀ {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} {f : X' ⟶ X} {i : Ω →+* Ω'} (hD : Dominates ξ' ξ f i)
     (z : Spec (CommRingCat.of L) ⟶ X') (h' : genPt ξ' ⤳ centre z) {a : Ω} {r : L}
@@ -210,6 +281,11 @@ theorem val_pull₀ {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {
   exact ⟨h', (f.stalkMap (centre z)).hom s, PullReg.stalkMap_comp_genMap hD ⟨centre z, h'⟩ h s,
     (congrArg (fun t => t.hom s) (Scheme.stalkClosedPointTo_comp z f)).symm⟩
 
+/- English proof (translation)
+Introduce `o ho`. Establish `hx : (Scheme.stalkClosedPointTo z).hom (o : X.presheaf.stalk (centre z)) ≠ 0`. Introduce `h0`. Establish `e` using `(map_intCast (Scheme.stalkClosedPointTo z).hom o).symm.trans h0`. Conclude with `ho (by exact_mod_cast e)`.
+
+Take `⟨x, hxo⟩` from `FV.isUnit _ hx`. Establish `e : genMap ξ ⟨centre z, hc⟩ x.val = algebraMap ℤ Ω o` using `by rw [hxo, map_intCast]; simp`. Establish `hu : IsUnit (algebraMap ℤ Ω o)` using `e ▸ (x.isUnit.map (genMap ξ ⟨centre z, hc⟩))`. Use `⟨hu.ne_zero, ⟨x.val, e⟩, ⟨x⁻¹.val, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← e, ← map_units_inv]`.
+-/
 theorem mem_genFibre [CharZero L] {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (z : Spec (CommRingCat.of L) ⟶ X) (hc : genPt ξ ⤳ centre z) : (⟨centre z, hc⟩ : Cpt ξ) ∈ genFibre ℤ ξ := by
   intro o ho
@@ -223,6 +299,13 @@ theorem mem_genFibre [CharZero L] {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : 
   refine ⟨hu.ne_zero, ⟨x.val, e⟩, ⟨x⁻¹.val, ?_⟩⟩
   rw [← e, ← map_units_inv]
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Take `⟨u, hu, rfl⟩` from `hv`. Take `⟨u', hu', rfl⟩` from `hv'`. Set `ρ : epsAt (z ≫ f) ⟶ Over.mk ((epsAt z).hom ≫ f)` to `Over.homMk (𝟙 _) (by simp)`. Set `P` to `(preHom ρ).comp (pushHom h (epsAt z))`.
+
+Establish `hP : ∀ a, (P a).left = a.left ≫ φ` using `fun a => Category.id_comp _`. Establish `e : u' = fun k => P (u k)`. Use function extensionality and compare the values at `k`. Use `ext1`. Rewrite using `[hP, hu, hu', Category.assoc, hw]`.
+
+Rewrite using `[← hP, map_list_prod, List.map_ofFn, e]`. Both sides reduce to the same expression.
+-/
 theorem comb_push {X X' : Scheme.{0}} {G : Over X} {G' : Over X'} [GrpObj G] [GrpObj G'] {f : X' ⟶ X}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {z : Spec (CommRingCat.of L) ⟶ X'}
     {x : Spec (CommRingCat.of L) ⟶ X} (hx : z ≫ f = x) {n : ℕ} {c : Fin n → L} {w : Fin n → (epsAt z ⟶ G')}
@@ -241,6 +324,25 @@ theorem comb_push {X X' : Scheme.{0}} {G : Over X} {G' : Over X'} [GrpObj G] [Gr
   rw [← hP, map_list_prod, List.map_ofFn, e]
   rfl
 
+/- English proof (translation)
+Establish `hξ` using `𝔐.tie.gen`. Take `⟨T, T', hTT, hT, hT'⟩` from `frame_change _ _ _ _ _ _ 𝔐.f i _ _ j Λ V ⟨centre z, hc⟩ h n b bp ht.1 hξ ht.2.2.1 hb hV hbp`. Use `set gm := genMap 𝔐.ξ ⟨centre z, hc⟩ with hgm`. Set `ρ : 𝔐.X.presheaf.stalk (centre z) →+* L` to `(Scheme.stalkClosedPointTo z).hom`. Establish `hw : ∀ a, ∃ w, 𝔐.M.ValAt z (j (b a)) w` using `fun a => by`.
+
+Take `⟨w, h1, -⟩` from `val_of_comb 𝔐.M hc bp vb hvb (T a)`. Conclude with `⟨w, (hT a).symm ▸ h1⟩`. Use `choose w hw using hw`. Establish `hcomb : ∀ k, IsComb (fun a => ρ (T' k a)) w (vb k)` using `fun k => by`. Take `⟨w', h1, h2⟩` from `val_of_comb 𝔐.M hc (fun a => j (b a)) w hw (T' k)`.
+
+Rewrite `h1` using `[← hT' k]`. Rewrite using `[LieModel.ValAt.unique hξ (hvb k) h1]` and apply the resulting hypothesis. Take `⟨W, _, _, Mu, Mz, act, hMu, -, hsame⟩` from `GlobalTheory.T.universal_lie_model_pullback E H D l Xo c O β Y L y₀`. Use `choose e he using fun a => Mu.onto (v a) (hve.1 a).1`. Take `rfl : v = fun a => Mu.pt (e a)` from `funext fun a => (he a).symm`.
+
+Establish `hwe : ∀ a, (w a).left ≫ 𝔐.m.φ = (Mz.pt (e a)).left` using `fun a => by`. Take `⟨v', h1, h2⟩` from `hv a`. Rewrite using `[(hsame (e a)).unique h2]`. Conclude with `tie_val ht hz.symm h1 (hw a)`. Set `A : Matrix (Fin n) (Fin n) L` to `ρ.mapMatrix T'`.
+
+Set `B : Matrix (Fin n) (Fin n) L` to `ρ.mapMatrix T`. Establish `hBA : B * A = 1` using `by rw [← map_mul, hTT, map_one]`. Establish `hAB : A * B = 1` using `mul_eq_one_comm.1 hBA`. Set `e' : Fin n → W` to `fun k => ∑ a, A k a • e a`. Take `⟨he1, he2⟩` from `(GlobalTheory.T.eigen_frame_iff_eigenspace_basis _ L _ _ W Mu _ Xo.univ.t.act act σ n e hMu).1 hve`.
+
+Establish `hsum : ∀ cf : Fin n → L, ∑ k, cf k • e' k = ∑ a, (Matrix.vecMul cf A) a • e a` using `fun cf => by`. Simplify using `only [e', Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `hdet : T.det * T'.det = 1` using `by rw [← Matrix.det_mul, hTT, Matrix.det_one]`. Establish `hAd : A.det = ρ T'.det` using `(RingHom.map_det ρ T').symm`.
+
+Use `⟨gm T.det, ρ T.det, A, fun k => Mu.pt (e' k), by rw [hAd, ← map_mul, hdet, map_one], ⟨hc, T.det, rfl, rfl⟩, ?_, (GlobalTheory.T.eigen_frame_iff_eigenspace_basis _ L _ _ W Mu _ Xo.univ.t.act act σ n e' hMu).2 ⟨fun k => ?_, fun x hx => ?_⟩, fun k => (GlobalTheory.T.is_comb_tangent_ …` and prove the remaining obligations. Establish `e` using `GlobalTheory.alternating_map_sum_smul_eq_det_smul (exteriorPower.ιMulti Ω n (M := 𝔐.Li)) (gm.mapMatrix T) bp`. Establish `e2 : (fun k => j (b k)) = fun a => ∑ k, (gm.mapMatrix T) a k • bp k` using `funext hT`. Rewrite using `[e2, e, RingHom.map_det]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (he1 a)`.
+
+Take `⟨cf, hcf, hu⟩` from `he2 x hx`. Use `⟨Matrix.vecMul cf B, ?_, fun cf' hcf' => ?_⟩` and prove the remaining obligations. Use `show x = _`. Rewrite using `[hsum, Matrix.vecMul_vecMul, hBA, Matrix.vecMul_one]`. Conclude with `hcf`.
+
+Establish `: Matrix.vecMul cf' A = cf` using `hu _ (hcf'.trans (hsum cf'))`. Rewrite using `[← this, Matrix.vecMul_vecMul, hAB, Matrix.vecMul_one]`. Conclude with `comb_push 𝔐.m.cart hz hwe (hcomb k) ((GlobalTheory.T.is_comb_tangent_iff_linear_sum _ L _ _ W Mz n e _ _).2 rfl)`.
+-/
 theorem frame_vals {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {U : Set (Xo.XF c)}
     {Z : CptOver Y U} {S : Finset ℕ} {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type}
@@ -304,6 +406,29 @@ end VP
 
 open VP in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c _ Y U Z S Ω _ K _ J _ y 𝔐 τ i j a b a' b' φ L _ _ s z bp bq vp vq α κ u ht hl hg hr ha' hb' hint hcst hfp hfq hvp hvq hap hbq hu`. Establish `hc : genPt 𝔐.ξ ⤳ centre z` using `𝔐.all _`. Establish `hβ : Function.Injective (algebraMap (𝓞 c.F) c.F) ∧ IsNoetherianRing (𝓞 c.F) ∧ ∀ x : c.F, ∃ a b : 𝓞 c.F, algebraMap (𝓞 c.F) c.F b ≠ 0 ∧ x * algebraMap (𝓞 c.F) c.F b = algebraMap (𝓞 c.F) c.F a`. Use `⟨IsFractionRing.injective (𝓞 c.F) c.F, inferInstance, fun x => ?_⟩` and prove the remaining obligations. Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 c.F) x`.
+
+Establish `hq0 : algebraMap (𝓞 c.F) c.F q ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hq`. Conclude with `⟨p, q, hq0, div_mul_cancel₀ _ hq0⟩`. Take `⟨y₀, hz, hU, hs, h, hT⟩` from `exists_point E H D l Xo c Y U Z S Ω K J y 𝔐 i j s z hc ht hint hcst`. Establish `hτ : τ.1 (H.rt : E) = H.rt0` using `τ.2`. Take `⟨hv1, hv2, -⟩` from `GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c _ _ Y U Z τ.1 hβ hτ`.
+
+Take `⟨W₁, hW₁, b₁, -, hb₁⟩` from `hv1 _ hT`. Establish `hb₁x` using `hb₁ _ hT hW₁`. Take `⟨W₂, hW₂, b₂, -, hb₂⟩` from `hv2 _ hT`. Establish `hb₂x` using `hb₂ _ hT hW₂`. Take `⟨v, hvv, hve⟩` from `GlobalTheory.T.component_point_cm_eigen_frame E H D l Xo c _ _ Y U Z τ.1 hβ hτ L s y₀ hs hU h τ.1 D.p b₁ hb₁x`.
+
+Take `⟨w, hwv, hwe⟩` from `GlobalTheory.T.component_point_cm_eigen_frame E H D l Xo c _ _ Y U Z τ.1 hβ hτ L s y₀ hs hU h (ComplexEmbedding.conjugate τ.1) D.q b₂ hb₂x`. Establish `hfr : IsFramed U τ.1 s y₀ v w` using `⟨hs, hU, hve, hwe⟩`. Take `⟨-, -, hgen⟩` from `hg`. Take `⟨A₁, B₁, hA₁, hB₁, hw1, hw2, -⟩` from `hgen _ hT`. Take `⟨α₀, ha₀⟩` from `coeff_of_span hA₁ (hw1.symm.trans (WedgeFrame.wedge_eq_span_ιMulti _ _ _ _ _ _ _ _ hb₁x).1)`.
+
+Take `⟨κ₀, hb₀⟩` from `coeff_of_span hB₁ (hw2.symm.trans (WedgeFrame.wedge_eq_span_ιMulti _ _ _ _ _ _ _ _ hb₂x).1)`. Establish `hRep` using `hr L s y₀ v w b₁ b₂ α₀ κ₀ hfr ha₀ hb₀ hvv hwv`. Take `⟨-, hst1, hst2⟩` from `GlobalTheory.T.cm_type_lattice_comparison E H D l Xo c Y U Z S Ω K J y 𝔐 τ i j ht ⟨centre z, hc⟩ (mem_genFibre _ z hc)`. Establish `hcen : centre (y₀ ≫ Y.j) = 𝔐.f (centre z)` using `by rw [← hz]; rfl`. Establish `h' : genPt (Z.ξ₀ ≫ Y.j) ⤳ 𝔐.f (centre z)` using `hcen ▸ h`.
+
+Establish `hpt : (⟨centre (y₀ ≫ Y.j), h⟩ : Cpt (Z.ξ₀ ≫ Y.j)) = ⟨𝔐.f (centre z), h'⟩` using `Subtype.ext hcen`. Rewrite `hb₁x`, `hb₂x` using `[hpt]`. Take `⟨d₁, r₁, A, v', hr₁, hd₁, hι₁, hv'e, hA, ht₁⟩` from `frame_vals ht hc hz h' hb₁x hst1 hvv hve hfp hvp`. Take `⟨d₂, r₂, B, w', hr₂, hd₂, hι₂, hw'e, hB, ht₂⟩` from `frame_vals ht hc hz h' hb₂x hst2 hwv hwe hfq hvq`. Establish `hfr' : IsFramed U τ.1 s y₀ v' w'` using `⟨hs, hU, hv'e, hw'e⟩`.
+
+Establish `hne₁` using `(WedgeFrame.wedge_eq_span_ιMulti _ _ _ _ _ _ _ _ hfp).2`. Establish `hne₂` using `(WedgeFrame.wedge_eq_span_ιMulti _ _ _ _ _ _ _ _ hfq).2`. Establish `eα : α = i α₀ * d₁`. Establish `e` using `(ha' b₁ α₀ ha₀).symm.trans hap`. Rewrite `e` using `[hι₁, smul_smul]`.
+
+Conclude with `(smul_left_injective Ω hne₁ e).symm`. Establish `eκ : κ = i κ₀ * d₂`. Establish `e` using `(hb' b₂ κ₀ hb₀).symm.trans hbq`. Rewrite `e` using `[hι₂, smul_smul]`. Conclude with `(smul_left_injective Ω hne₂ e).symm`.
+
+Establish `hr₂0 : r₂ ≠ 0` using `left_ne_zero_of_mul_eq_one hr₂`. Rewrite `hRep` using `[← hz]`. Establish `hRep'` using `val_pull₀ ht.1 z hc hRep`. Establish `hval` using `FV.mul (FV.mul hRep' hd₁) (FV.inv hd₂ hr₂0)`. Establish `hαk : α / κ = i (α₀ / κ₀) * d₁ * d₂⁻¹`.
+
+Rewrite using `[eα, eκ, map_div₀]`. Simplify using `only [div_eq_mul_inv, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hval` using `[← hαk]`. Establish `hchg` using `hl.chg L s y₀ v w v' w' A B hfr hfr' hA hB`.
+
+Use `⟨y₀, v', w', hz, hfr', ?_, ht₁, ht₂⟩` and prove the remaining obligations. Rewrite using `[FV.unique hu hval, ← eq_inv_of_mul_eq_one_right hr₂]`. Take the linear combination `r₁ * hchg - φ L y₀ v' w' * hr₁`.
+-/
 theorem valuePhi : ValuePhi := by
   intro E _ _ _ H D l Xo c _ Y U Z S Ω _ K _ J _ y 𝔐 τ i j a b a' b' φ L _ _ s z bp bq vp vq α κ u ht hl hg hr ha'
     hb' hint hcst hfp hfq hvp hvq hap hbq hu

@@ -11,6 +11,13 @@ namespace GlobalTheory.CompanionTheory.Ar.BT
 
 variable {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T]
 
+/- English proof (translation)
+Establish `h1` using `Scheme.Hom.appLE_comp_appLE x π ⊤ U ⊤ hU h`. Establish `h0 : ∀ (q : Spec (CommRingCat.of B) ⟶ Spec (CommRingCat.of A)) (e : ⊤ ≤ q ⁻¹ᵁ ⊤), q = Spec.map (CommRingCat.ofHom φ) → q.appLE ⊤ ⊤ e ≫ (Scheme.ΓSpecIso (CommRingCat.of B)).hom = (Scheme.ΓSpecIso (CommRingCat.of A)).hom ≫ CommRingCat.ofHom φ`. Introduce and unpack `q e rfl`. Establish `: (Spec.map (CommRingCat.ofHom φ)).appLE ⊤ ⊤ e = (Spec.map (CommRingCat.ofHom φ)).appTop` using `Scheme.Hom.appLE_eq_app _`. Rewrite using `[this]`.
+
+Conclude with `Scheme.ΓSpecIso_naturality _`. Establish `h2 : (π.appLE ⊤ U hU ≫ x.appLE U ⊤ h) ≫ (Scheme.ΓSpecIso (CommRingCat.of B)).hom = (Scheme.ΓSpecIso (CommRingCat.of A)).hom ≫ CommRingCat.ofHom φ`. Rewrite using `[h1]`. Conclude with `h0 _ _ hw`. Establish `h3` using `congrArg (fun ψ => ψ.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom b)) h2`.
+
+Simplify `h3` using `[valAt]`.
+-/
 theorem valAt_scalar {A B : Type} [CommRing A] [CommRing B] {X : Scheme.{0}} (π : X ⟶ Spec (CommRingCat.of A))
     (x : Spec (CommRingCat.of B) ⟶ X) (φ : A →+* B) (hw : x ≫ π = Spec.map (CommRingCat.ofHom φ))
     (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (hU : U ≤ π ⁻¹ᵁ ⊤) (b : A) :
@@ -32,6 +39,13 @@ theorem valAt_scalar {A B : Type} [CommRing A] [CommRing B] {X : Scheme.{0}} (π
   have h3 := congrArg (fun ψ => ψ.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom b)) h2
   simpa [valAt] using h3
 
+/- English proof (translation)
+Take `⟨U, hg, s, hs⟩` from `H`. Take `⟨π, hπ⟩ : ∃ π : Γ.G.left ⟶ Spec (CommRingCat.of R), π = Γ.G.hom` from `⟨_, rfl⟩`. Establish `hU : U ≤ π ⁻¹ᵁ ⊤` using `fun _ _ => trivial`. Use `⟨U, hg, π.appLE ⊤ U hU ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom b) * s, fun t h => ?_⟩` and prove the remaining obligations. Establish `hw : (Γ.pt t).left ≫ π = Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))`.
+
+Rewrite using `[hπ]`. Conclude with `Over.w (Γ.pt t)`. Establish `h1` using `valAt_scalar π (Γ.pt t).left (algebraMap R (FractionRing R)) hw U h hU b`. Establish `h2` using `hs t h`. Use `show _ = algebraMap R (FractionRing R) b * f t`.
+
+Rewrite using `[← h1, ← h2]`. Simplify using `[valAt, map_mul]`.
+-/
 theorem QFGroup.regularAt_scalar_mul (Γ : QFGroup R T) {f : T → FractionRing R} {g : Γ.G.left} (b : R)
     (H : Γ.RegularAt f g) : Γ.RegularAt (fun t => algebraMap R (FractionRing R) b * f t) g := by
   obtain ⟨U, hg, s, hs⟩ := H
@@ -46,11 +60,21 @@ theorem QFGroup.regularAt_scalar_mul (Γ : QFGroup R T) {f : T → FractionRing 
   rw [← h1, ← h2]
   simp [valAt, map_mul]
 
+/- English proof (translation)
+Take `⟨π, hπ⟩ : ∃ π : Γ.G.left ⟶ Spec (CommRingCat.of R), π = Γ.G.hom` from `⟨_, rfl⟩`. Establish `: QuasiCompact π` using `hπ ▸ Γ.quasiCompact`. Conclude with `QuasiCompact.compactSpace_of_compactSpace π`.
+-/
 theorem QFGroup.compactSpace (Γ : QFGroup R T) : CompactSpace Γ.G.left := by
   obtain ⟨π, hπ⟩ : ∃ π : Γ.G.left ⟶ Spec (CommRingCat.of R), π = Γ.G.hom := ⟨_, rfl⟩
   have : QuasiCompact π := hπ ▸ Γ.quasiCompact
   exact QuasiCompact.compactSpace_of_compactSpace π
 
+/- English proof (translation)
+Use `Γ.compactSpace` as an intermediate fact. Establish `key : ∀ g : Γ.G.left, ∃ d : R, d ≠ 0 ∧ ∃ U : Γ.G.left.Opens, g ∈ U ∧ ∀ g' ∈ U, Γ.RegularAt (fun t => algebraMap R (FractionRing R) d * f t) g'`. Introduce `g`. Take `⟨d, hd, U, hg, s, hs⟩` from `GlobalTheory.T.exists_denominator_regular R T Γ f g`. Conclude with `⟨d, hd, U, hg, fun g' hg' => ⟨U, hg', s, hs⟩⟩`.
+
+Use `choose d hd U hgU hU using key`. Take `⟨F, hF⟩` from `CompactSpace.elim_nhds_subcover (fun g => (U g : Set Γ.G.left)) (fun g => (U g).isOpen.mem_nhds (hgU g))`. Use `⟨∏ x ∈ F, d x, Finset.prod_ne_zero_iff.2 fun x _ => hd x, fun g => ?_⟩` and prove the remaining obligations. Establish `hg : g ∈ ⋃ x ∈ F, (U x : Set Γ.G.left)` using `by rw [hF]; trivial`. Simplify using `only [Set.mem_iUnion] at hg`.
+
+Take `⟨x, hx, hgx⟩` from `hg`. Establish `h1` using `Γ.regularAt_scalar_mul (∏ y ∈ F.erase x, d y) (hU x g hgx)`. Establish `h2 : (∏ y ∈ F, d y) = (∏ y ∈ F.erase x, d y) * d x` using `(Finset.prod_erase_mul F d hx).symm`. Rewrite using `[h2]`. Simplify `h1` using `[map_mul, _root_.mul_assoc]`.
+-/
 theorem QFGroup.exists_denom [Finite T] (Γ : QFGroup R T) (f : T → FractionRing R) :
     ∃ d : R, d ≠ 0 ∧ ∀ g, Γ.RegularAt (fun t => algebraMap R (FractionRing R) d * f t) g := by
   classical
@@ -76,6 +100,19 @@ end GlobalTheory.CompanionTheory.Ar.BT
 
 open Classical in
 
+/- English proof (translation)
+Introduce `R _ _ T _ _ Γ`. Use `Fintype.ofFinite T` as an intermediate fact. Set `δ : T → T → R` to `fun s h => if h = s then 1 else 0`. Use `choose e he hreg using fun s : T => Γ.exists_denom (fun h => algebraMap R (FractionRing R) (δ s h))`. Establish `hmem : ∀ s, (∏ x, e x) • δ s ∈ Γ.btOrder ⊤`.
+
+Introduce `s`. Use `Algebra.subset_adjoin ?_` and prove the remaining obligations. Introduce `t g _`. Establish `h1` using `Γ.regularAt_scalar_mul (∏ y ∈ Finset.univ.erase (t⁻¹ * s), e y) (hreg (t⁻¹ * s) g)`. Establish `h2 : (∏ y, e y) = (∏ y ∈ Finset.univ.erase (t⁻¹ * s), e y) * e (t⁻¹ * s)` using `(Finset.prod_erase_mul _ e (Finset.mem_univ _)).symm`.
+
+Establish `h3 : (fun h => algebraMap R (FractionRing R) (((∏ x, e x) • δ s) (t * h))) = fun h => algebraMap R (FractionRing R) (∏ y ∈ Finset.univ.erase (t⁻¹ * s), e y) * (algebraMap R (FractionRing R) (e (t⁻¹ * s)) * algebraMap R (FractionRing R) (δ (t⁻¹ * s) h))`. Use function extensionality and compare the values at `h`. Establish `h4 : δ s (t * h) = δ (t⁻¹ * s) h`. Establish `: t * h = s ↔ h = t⁻¹ * s`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Simplify using `[δ, this]`.
+
+Rewrite using `[Pi.smul_apply, h4, h2, smul_eq_mul, map_mul, map_mul, _root_.mul_assoc]`. Rewrite using `[h3]`. Conclude with `h1`. Use `⟨∏ x, e x, Finset.prod_ne_zero_iff.2 fun x _ => he x, fun f => ?_⟩` and prove the remaining obligations. Establish `hf : (∏ x, e x) • f = ∑ s, f s • ((∏ x, e x) • δ s)`.
+
+Use function extensionality and compare the values at `h`. Simplify using `[δ, Finset.sum_apply, _root_.mul_comm, _root_.mul_left_comm, _root_.mul_assoc, Finset.mul_sum]`. Rewrite using `[hf]`. Conclude with `Subalgebra.sum_mem _ fun s _ => Subalgebra.smul_mem _ (hmem s) _`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.BT.btOrder_full_rank : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T]
     (Γ : QFGroup R T), ∃ d : R, d ≠ 0 ∧ ∀ f : T → R, d • f ∈ Γ.btOrder ⊤ := by
   intro R _ _ T _ _ Γ

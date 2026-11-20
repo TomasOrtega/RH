@@ -37,6 +37,13 @@ end Std
 section Main
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : B.Word} {a : _root_.GlobalTheory.Fam.GeometricFamily W u}
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Establish `hj' : j ≤ B.R.m` using `by omega`. Rewrite using `[← mem_lev_iff I hW.tr.ok hW.tr.tw l.pr u _ j (by omega) (hJ.is.reads j hj') β (hJ.std j (by omega) β) x hxU fun Q hQ r s => ?_]`. Rewrite using `[hJ.is.U j hj']`. Use `⟨fun ⟨_, κ, hκ⟩ => ?_, fun h => ⟨GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ hg, ⟨x, h⟩, hx⟩⟩` and prove the remaining obligations. Establish `e : x = κ.1` using `Units.ext (hx.trans hκ.symm)`.
+
+Rewrite using `[e]`. Conclude with `κ.2`. Rewrite using `[hx]`. Use `GlobalTheory.FinMComp.adAt_finM_eq_one _ _ _ P g hg Q (fun h => hP _ h ?_) r s` and prove the remaining obligations. Take `⟨i, hi⟩` from `hJ.surj Q ((hW.tq.Q t Q).2 hQ)`.
+
+Conclude with `⟨i, ((_root_.GlobalTheory.Fam.QJPlaces.places_under_alt W hW u a ha hTr t J hJ).2 i).trans (congrArg _ hi)⟩`.
+-/
 theorem mem_U_iff_mem_levU_of_grpAt (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) (ha : a.Is) (hTr : a.True) (j : ℕ) (hj : j + 2 ≤ B.R.m) [NeZero (B.R.N j)] {t : W.P.T} (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t)
     (hJ : J.Reads) (β : J.Ch₀ j) {P : GlobalTheory.FinPl.Pl (I.rec7 l Z) → Prop} (hP : ∀ v, P v → ¬ _root_.GlobalTheory.LevProd.quadraticTwistAtPlace J v)
     {g : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)} (hg : g ∈ GlobalTheory.FinPl.grpAt _ P) (x : TC.GA B (B.R.N j))
@@ -55,6 +62,11 @@ theorem mem_U_iff_mem_levU_of_grpAt (hW : _root_.GlobalTheory.Fam.AllFamilyCondi
     obtain ⟨i, hi⟩ := hJ.surj Q ((hW.tq.Q t Q).2 hQ)
     exact ⟨i, ((_root_.GlobalTheory.Fam.QJPlaces.places_under_alt W hW u a ha hTr t J hJ).2 i).trans (congrArg _ hi)⟩
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Establish `hj' : j ≤ B.R.m` using `by omega`. Use `haveI : NeZero (B.R.N j) := ⟨(B.R.N_pos j).ne'⟩`. Take `⟨hPins⟩` from `hW.tr.pins`. Establish `hg1 : gramN (I.rec7 l Z) j hj' = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hW.tr.ok hPins l Z).2.2.2 j hj').1`. Establish `eU : Formalism.UG.UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) j hj') (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F) = Formalism.L2.Col.UAd B.sp.cm (B.R.N j)` using `by rw [hg1]; rfl`.
+
+Take `⟨x, hx⟩` from `GlobalTheory.AdForm.RdVal.finM_mem ((I.rec7 l Z).sp.X j) (rankN (I.rec7 l Z) j hj') (gramN (I.rec7 l Z) j hj') rfl g`. Establish `hxU : x.1 ∈ Formalism.L2.Col.UAd B.sp.cm (B.R.N j)` using `eU ▸ x.2`. Conclude with `(_root_.GlobalTheory.LevProd.Supp.mem_U_iff_mem_levU_of_grpAt hW ha hTr j hj J' hJ' β' hP' hg x.1 hxU hx).2 ((_root_.GlobalTheory.LevProd.Supp.mem_U_iff_mem_levU_of_grpAt hW ha hTr j hj J hJ β hP hg x.1 hxU hx).1 h)`.
+-/
 theorem mem_U_of_mem_U_away_from_twisted (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) (ha : a.Is) (hTr : a.True) (j : ℕ) (hj : j + 2 ≤ B.R.m) {t t' : W.P.T} (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t)
     (hJ : J.Reads) (β : J.Ch₀ j) (J' : _root_.GlobalTheory.Fam.QuadraticExtensionData a t') (hJ' : J'.Reads) (β' : J'.Ch₀ j) {P : GlobalTheory.FinPl.Pl (I.rec7 l Z) → Prop}
     (hP : ∀ v, P v → ¬ _root_.GlobalTheory.LevProd.quadraticTwistAtPlace J v) (hP' : ∀ v, P v → ¬ _root_.GlobalTheory.LevProd.quadraticTwistAtPlace J' v)
@@ -69,6 +81,13 @@ theorem mem_U_of_mem_U_away_from_twisted (hW : _root_.GlobalTheory.Fam.AllFamily
   have hxU : x.1 ∈ Formalism.L2.Col.UAd B.sp.cm (B.R.N j) := eU ▸ x.2
   exact (_root_.GlobalTheory.LevProd.Supp.mem_U_iff_mem_levU_of_grpAt hW ha hTr j hj J' hJ' β' hP' hg x.1 hxU hx).2 ((_root_.GlobalTheory.LevProd.Supp.mem_U_iff_mem_levU_of_grpAt hW ha hTr j hj J hJ β hP hg x.1 hxU hx).1 h)
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Take `⟨⟨hsup, hgf⟩, hphi⟩` from `Subgroup.mem_inf.1 hg |>.imp_left Subgroup.mem_inf.1`. Distinguish the cases in `hv : _root_.GlobalTheory.LevProd.quadraticTwistAtPlace J v`. Take `⟨i, rfl⟩` from `hv`. Take `⟨gl, -, h1, h2⟩` from `GlobalTheory.LocEmb.exists_gl _ _ (J.G i).q ((I.rec7 l Z).sp.X j) (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) ((J.G i).FX j (Nat.le_succ_of_le (_root_.GlobalTheory.LevProd.step_index_le_s_alt J i hj)))`. Establish `hy : _root_.GlobalTheory.LevProd.localHomProduct J j hj g i ∈ KO (J.G i).k _` using `(Subgroup.mem_pi _).1 (Subgroup.mem_comap.1 hphi) i (Set.mem_univ _)`.
+
+Rewrite using `[h2 (cutAt _ (J.G i).q.v g) (_root_.GlobalTheory.LevProd.localHomProduct J j hj g i) (suppAt_cutAt _ _ g) ((GlobalTheory.LevIdx.eq_locHom_iff _ _ _ _ _).2 (locHom_cutAt _ _ _ hgf).symm)]`. Conclude with `_root_.GlobalTheory.T.true_geometry_lattice_open_alt W hW u a ha hTr j hj t' J' hJ' α' t J hJ i hv' gl h1 _ hy`. Establish `hle : J.A.U j (J.ι j α) ⊔ GlobalTheory.FinPl.grpAt _ (_root_.GlobalTheory.LevProd.quadraticTwistAtPlace J) ≤ (J.A.U j (J.ι j α)).comap (cutAt _ v)`. Use `sup_le (fun x hx => ((mem_U_iff hJ.is j (by omega) _ x).1 hx).2 v) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, cutAt_eq_one _ hv hx]`.
+
+Conclude with `one_mem _`. Conclude with `_root_.GlobalTheory.LevProd.Supp.mem_U_of_mem_U_away_from_twisted hW ha hTr j hj J hJ _ J' hJ' _ (P := (· ∈ ({v} : Finset _))) (fun w hw h => hv (Finset.mem_singleton.1 hw ▸ h)) (fun w hw h => hv' (Finset.mem_singleton.1 hw ▸ h)) (cutAt_mem _ v g) (hle hsup)`.
+-/
 theorem cutAt_mem_U_of_mem_relax_not_twAt (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) (ha : a.Is) (hTr : a.True) (j : ℕ) (hj : j + 2 ≤ B.R.m) {t t' : W.P.T} (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t)
     (hJ : J.Reads) (α : J.Ch j) (J' : _root_.GlobalTheory.Fam.QuadraticExtensionData a t') (hJ' : J'.Reads) (α' : J'.Ch j)
     {g : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)} (hg : g ∈ _root_.GlobalTheory.LevProd.relaxedLevelSubgroup J j hj α) (v : GlobalTheory.FinPl.Pl (I.rec7 l Z)) (hv' : ¬ _root_.GlobalTheory.LevProd.quadraticTwistAtPlace J' v) :
@@ -90,6 +109,15 @@ theorem cutAt_mem_U_of_mem_relax_not_twAt (hW : _root_.GlobalTheory.Fam.AllFamil
       (fun w hw h => hv (Finset.mem_singleton.1 hw ▸ h)) (fun w hw h => hv' (Finset.mem_singleton.1 hw ▸ h)) (cutAt_mem _ v g) (hle hsup)
 end Main
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α t' J' hJ' α' g hg`. Establish `hgf : g ∈ GfC _` using `(Subgroup.mem_inf.1 (Subgroup.mem_inf.1 hg).1).2`. Set `Q : Finset (GlobalTheory.FinPl.Pl (I.rec7 l Z))` to `Finset.univ.image fun i => (J'.G i).q.v`. Establish `hQ : ∀ v, v ∈ Q ↔ _root_.GlobalTheory.LevProd.quadraticTwistAtPlace J' v` using `fun v => by`. Simplify using `only [Q, Finset.mem_image, Finset.mem_univ, true_and]`.
+
+Both sides reduce to the same expression. Establish `h1` using `GlobalTheory.FinPl.SetCut.cutG_mem_Q _ Q g`. Establish `h2` using `GlobalTheory.FinPl.SetCut.cutG_mem_Qc _ Q hgf`. Establish `e` using `GlobalTheory.FinPl.SetCut.cutG_mul_cutG _ Q g`. Generalize the expression as in `GlobalTheory.FinPl.SetCut.cutG _ _ (GlobalTheory.FinPl.SetCut.idemQ_mul_self Q) g = g₁ at h1 e`.
+
+Generalize the expression as in `GlobalTheory.FinPl.SetCut.cutG _ _ (GlobalTheory.FinPl.SetCut.one_sub_idemQ_mul_self Q) g = g₂ at h2 e`. Establish `h3 : g₂ ∈ J'.A.U j (J'.ι j α')`. Use `(mem_U_iff hJ'.is j (by omega) _ g₂).2 ⟨GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ h2, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ Q`. Rewrite using `[cutAt_eq_one _ (P := (· ∉ Q)) (not_not.2 hv) h2]`.
+
+Conclude with `one_mem _`. Establish `h4` using `_root_.GlobalTheory.LevProd.Supp.cutAt_mem_U_of_mem_relax_not_twAt hW ha hTr j hj J hJ α J' hJ' α' hg v fun h => hv ((hQ v).2 h)`. Rewrite `h4` using `[← e, map_mul, cutAt_eq_one _ (P := (· ∈ Q)) hv h1, one_mul]`. Then use the resulting hypothesis. Rewrite using `[← e]`. Conclude with `mul_mem (Subgroup.mem_sup_right (grpAt_mono _ (fun v hv => (hQ v).1 hv) h1)) (Subgroup.mem_sup_left h3)`.
+-/
 theorem relax_mem_sup_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ j (hj : j + 2 ≤ B.R.m), ∀ t (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → ∀ (α : J.Ch j) t' (J' : _root_.GlobalTheory.Fam.QuadraticExtensionData a t'), J'.Reads → ∀ (α' : J'.Ch j), ∀ g ∈ _root_.GlobalTheory.LevProd.relaxedLevelSubgroup J j hj α, g ∈ J'.A.U j (J'.ι j α') ⊔ GlobalTheory.FinPl.grpAt _ (_root_.GlobalTheory.LevProd.quadraticTwistAtPlace J') := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α t' J' hJ' α' g hg
   have hgf : g ∈ GfC _ := (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 hg).1).2

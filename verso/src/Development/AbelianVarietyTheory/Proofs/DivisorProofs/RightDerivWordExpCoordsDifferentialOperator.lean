@@ -9,6 +9,9 @@ open scoped ContDiff
 
 namespace GlobalTheory.WordExp
 
+/- English proof (translation)
+The claim follows from `| [] => hf | X :: l => h.isSmoothFun_rightDeriv (isSmoothFun_foldr h hf l) X`.
+-/
 theorem isSmoothFun_foldr {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
     [FiniteDimensional ℝ 𝔸] {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra G 𝔤)
     {f : G → ℂ} (hf : h.IsSmoothFun f) : ∀ l : List 𝔤, h.IsSmoothFun (l.foldr h.rightDeriv f)
@@ -17,6 +20,17 @@ theorem isSmoothFun_foldr {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ �
 
 end GlobalTheory.WordExp
 
+/- English proof (translation)
+Introduce `𝔸 _ _ _ _ G 𝔤 h d b r c hyp l`. Take `⟨hc, -, hX⟩` from `hyp`. Proceed by induction on `l with`. Consider the case `nil`. Use `⟨fun _ _ _ => 1, fun _ _ => contDiffOn_const, fun f _ x _ => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [List.foldr_nil, List.length_nil]`. Rewrite using `[apOp_zero_one]`. Consider the case `cons X l ih`. Take `⟨a, ha, hl⟩` from `ih`. Establish `hcX : ∀ j, ContDiffOn ℝ ∞ (fun x : E d => ((c X j x : ℝ) : ℂ)) (Metric.ball 0 r)` using `fun j => Complex.ofRealCLM.contDiff.comp_contDiffOn (hc X j)`.
+
+Take `⟨a', ha', -, hcomp⟩` from `GlobalTheory.VFComp.vectorField_comp d l.length (Metric.ball 0 r) Metric.isOpen_ball a (fun j x => ((c X j x : ℝ) : ℂ)) ha hcX`. Use `⟨a', ha', fun f hf x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [List.foldr_cons, List.length_cons]`. Establish `hF` using `GlobalTheory.WordExp.isSmoothFun_foldr h hf l`. Rewrite using `[hX _ hF X x hx]`.
+
+Establish `heq : (fun y : E d => l.foldr h.rightDeriv f (h.expG (coordEquiv b y))) =ᶠ[nhds x] apOp l.length a (fun y => f (h.expG (coordEquiv b y)))` using `by filter_upwards [Metric.isOpen_ball.mem_nhds hx] with y hy using hl f hf y hy`. Establish `hu : ContDiffOn ℝ ∞ (fun y : E d => f (h.expG (coordEquiv b y))) (Metric.ball 0 r)`. Use `h.contDiff_comp_coordEquiv hf 1 b` as an intermediate fact. Simplify using `only [one_mul] at this`. Conclude with `this.contDiffOn`.
+
+Rewrite using `[heq.fderiv_eq]`. Conclude with `hcomp _ hu x hx`.
+-/
 theorem GlobalTheory.WordExp.word_apOp : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤) (d : ℕ) (b : Module.Basis (Fin d) ℝ 𝔤) (r : ℝ) (c : 𝔤 → Fin d → E d → ℝ), ((∀ X j, ContDiffOn ℝ ∞ (c X j) (Metric.ball 0 r)) ∧ (∀ x ∈ Metric.ball (0 : E d) r, ∀ ξ : E d, ξ ≠ 0 → ∃ i, ∑ j, c (b i) j x * ξ j ≠ 0) ∧ ∀ f : G → ℂ, h.IsSmoothFun f → ∀ X : 𝔤, ∀ x ∈ Metric.ball (0 : E d) r, h.rightDeriv X f (h.expG (coordEquiv b (x))) = ∑ j, (c X j x : ℂ) * fderiv ℝ (fun y => f (h.expG (coordEquiv b (y)))) x (ev j)) → ∀ l : List 𝔤, ∃ a : (n : ℕ) → (Fin n → Fin d) → E d → ℂ, (∀ n w, ContDiffOn ℝ ∞ (a n w) (Metric.ball 0 r)) ∧ ∀ f : G → ℂ, h.IsSmoothFun f → ∀ x ∈ Metric.ball (0 : E d) r, l.foldr h.rightDeriv f (h.expG (coordEquiv b (x))) = apOp l.length a (fun y => f (h.expG (coordEquiv b (y)))) x := by
   intro 𝔸 _ _ _ _ G 𝔤 h d b r c hyp l
   obtain ⟨hc, -, hX⟩ := hyp

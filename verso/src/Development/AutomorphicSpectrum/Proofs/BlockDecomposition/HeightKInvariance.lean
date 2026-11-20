@@ -14,6 +14,9 @@ namespace GlobalTheory.CompanionTheory.PfSWUS
 
 open GlobalTheory.StdUnn
 
+/- English proof (translation)
+Take `⟨p, hp, k', hk', rfl⟩` from `GlobalTheory.StdUnn.Iwasawa.exists_mul D n x`. Take `⟨a, ha⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_blkA hp`. Rewrite using `[mul_assoc, hH p hp a ha _ ((K D n).mul_mem hk' hk), hH p hp a ha k' hk']`.
+-/
 theorem height_mul_K {D : D7} {n : ℕ} {H : G D n → ℝ≥0} (hH : IsHeight H) (x : G D n) {k : G D n} (hk : k ∈ K D n) :
     H (x * k) = H x := by
   obtain ⟨p, hp, k', hk', rfl⟩ := GlobalTheory.StdUnn.Iwasawa.exists_mul D n x

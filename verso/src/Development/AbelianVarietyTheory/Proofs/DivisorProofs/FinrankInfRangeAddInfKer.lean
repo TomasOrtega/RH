@@ -18,6 +18,15 @@ open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.OntoChain GlobalTheory.
 
 namespace GlobalTheory.BadOnRec
 
+/- English proof (translation)
+Set `f : V →ₗ[K] V` to `e.restrict hV`. Establish `h1 : (LinearMap.range f).map V.subtype = V ⊓ LinearMap.range e`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`.
+
+Conclude with `⟨hV x x.2, x, rfl⟩`. Introduce and unpack `⟨hy, z, rfl⟩`. Conclude with `⟨⟨e z, hy⟩, ⟨⟨e z, hy⟩, Subtype.ext (he z)⟩, rfl⟩`. Establish `h2 : (LinearMap.ker f).map V.subtype = V ⊓ LinearMap.ker e`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x.2, congrArg Subtype.val hx⟩`. Introduce and unpack `⟨hy, hk⟩`. Conclude with `⟨⟨y, hy⟩, Subtype.ext hk, rfl⟩`.
+
+Rewrite using `[← h1, ← h2, Submodule.finrank_map_subtype_eq, Submodule.finrank_map_subtype_eq]`. Conclude with `LinearMap.finrank_range_add_finrank_ker f`.
+-/
 theorem finrank_inf_range_add_inf_ker {K M : Type} [Field K] [AddCommGroup M] [Module K M] [FiniteDimensional K M]
     (e : M →ₗ[K] M) (he : ∀ x, e (e x) = e x) (V : Submodule K M) (hV : ∀ x ∈ V, e x ∈ V) :
     finrank K (V ⊓ LinearMap.range e : Submodule K M) + finrank K (V ⊓ LinearMap.ker e : Submodule K M) = finrank K V := by
@@ -39,6 +48,11 @@ theorem finrank_inf_range_add_inf_ker {K M : Type} [Field K] [AddCommGroup M] [M
   rw [← h1, ← h2, Submodule.finrank_map_subtype_eq, Submodule.finrank_map_subtype_eq]
   exact LinearMap.finrank_range_add_finrank_ker f
 
+/- English proof (translation)
+Establish `e : p.map f = q`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `hf.2 y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', hx', e'⟩`.
+
+Conclude with `hf.1 e' ▸ (h x').1 hx'`. Introduce `hy`. Conclude with `⟨x, (h x).2 hy, rfl⟩`. Rewrite using `[← e]`. Conclude with `(Submodule.equivMapOfInjective f hf.1 p).finrank_eq`.
+-/
 theorem finrank_eq_of_bij {K M N : Type} [Field K] [AddCommGroup M] [Module K M] [AddCommGroup N] [Module K N]
     (f : M →ₗ[K] N) (hf : Function.Bijective f) (p : Submodule K M) (q : Submodule K N) (h : ∀ x, x ∈ p ↔ f x ∈ q) :
     finrank K p = finrank K q := by
@@ -80,6 +94,13 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {ℓ : G → (LaMod (T.Q.Dw ((ι : ℕ) + 1)) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw ((ι : ℕ) + 1)) T.Q.l)} {ph : ℂ}
   {y : (Fin (O.nX v i) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (srcDim A ι (R.mu v) F.P0 F.ψ0⁻¹) → D.what₂.LL)}
 
+/- English proof (translation)
+Establish `hb` using `GlobalTheory.OnTies.toForms_bijective h fw ι z`. Establish `e1 : x ∈ Formalism.EigenvalueLevelCeiling.eig (O.ρ i) O.U O.ψ ↔ ∀ u : O.U, O.ρ i u x = ((O.ψ u : 𝓞 D.what₂.LL) : D.what₂.LL) • x`. Unfold `Formalism.EigenvalueLevelCeiling.eig`. Rewrite using `[Submodule.mem_iInf]`. Conclude with `forall_congr' fun u => sub_eq_zero`.
+
+Establish `e2 : ∀ (g : P) (hg : inc g ∈ F.P0), O.ρ i g x = ((O.ψ g : 𝓞 D.what₂.LL) : D.what₂.LL) • x ↔ (R.FW ι).ρ (inc g) (GlobalTheory.OnTies.toForms h fw ι z x) = (((R.FW ι).chi (inc g) * F.ψ0⁻¹ ⟨inc g, hg⟩ : D.what₂.LLˣ) : D.what₂.LL) • GlobalTheory.OnTies.toForms h fw ι z x` using `fun g hg => by`. Rewrite using `[← t.rho_eq_of_actionPin ha, GlobalTheory.OnCoord.chi_eq_one hG ι hg, one_mul, ← t.ψ_eq g hg, ← map_smul, hb.1.eq_iff]`. Use `e1.trans ⟨fun hx => ?_, fun hx u => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g, hg⟩`. Take `⟨u, rfl⟩` from `hinc hg`.
+
+Conclude with `(e2 u hg).1 (hx ⟨u, t.U_eq.ge hg⟩)`. Conclude with `(e2 u (t.U_eq.le u.2)).2 (hx ⟨inc u, t.U_eq.le u.2⟩)`.
+-/
 theorem mem_eig_iff (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ F.P0 F.ψ0⁻¹ ph y) (ha : ActionPin h fw ι ℓ)
     (hG : R.IsGrp F) (hinc : F.P0 ≤ inc.range) (x : Fin (O.nZ i) → D.what₂.LL) :
     x ∈ Formalism.EigenvalueLevelCeiling.eig (O.ρ i) O.U O.ψ ↔ GlobalTheory.OnTies.toForms h fw ι z x ∈ GlobalTheory.CovTop.spType R F ι := by
@@ -114,6 +135,15 @@ section Point
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} {p : PtAt ex Csz}
 
+/- English proof (translation)
+Take `⟨hC, hOk, -, -, hRk, -⟩` from `GlobalTheory.T.second_link_of_weight_rows _ _ _ _ _ _ _ _ _ _ p hR hm.1`. Take `⟨hc, hinj, z, act, y, ht⟩` from `hrec.1.tied`. Establish `hU : (F2 p).P0 ≤ (mirIncl (R2 p)).range` using `fun g hg => by`. Take `⟨u, -, e⟩` from `(mem_base_iff hC.grp.levels g).1 hg`. Conclude with `⟨u, e⟩`.
+
+Take `⟨v₁, -⟩` from `exists_place3 D.what₂.LL`. Establish `hmem` using `mem_eig_iff (ht v₁ j).1 (ht v₁ j).2 hC.grp hU`. Establish `hf` using `finrank_eq_of_bij _ (GlobalTheory.OnTies.toForms_bijective (hrec.1.ok.laws v₁).p (fw2 p) j (z j)) _ _ hmem`. Establish `hd0 : O.d0 j = (finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j) : ℝ)`. Unfold `OnObj.d0`.
+
+Conclude with `congrArg (fun n : ℕ => (n : ℝ)) hf`. Establish `hV : ∀ x ∈ GlobalTheory.CovTop.spType (R2 p) (F2 p) j, goodOp (R2 p) j x ∈ GlobalTheory.CovTop.spType (R2 p) (F2 p) j` using `fun x hx g => by`. Rewrite using `[← GlobalTheory.BigOn.goodOp_rho_comm hOk.irr j (g : p.P.Gp) x, hx g, map_smul]`. Establish `hsplit` using `finrank_inf_range_add_inf_ker (goodOp (R2 p) j) (fun x => LinearMap.congr_fun (goodOp_idem hOk.irr j) x) _ hV`. Establish `hD : (S2 p).D = finrank D.what₂.LL ((R2 p).WL (F2 p) false j)` using `(hRk.2 j).symm`.
+
+Establish `hbad' : (finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j ⊓ LinearMap.ker (goodOp (R2 p) j) : Submodule D.what₂.LL _) : ℝ) ≤ del * finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j)` using `hbad`. Establish `hs : (finrank D.what₂.LL ((R2 p).WL (F2 p) false j) : ℝ) + (finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j ⊓ LinearMap.ker (goodOp (R2 p) j) : Submodule D.what₂.LL _) : ℝ) = finrank D.what₂.LL (GlobalTheory.CovTop.spType (R2 p) (F2 p) j)`. Conclude with `hsplit` after adjusting the coercions. Rewrite using `[hd0, hD]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem bad_rec (hR : p.Rows) (hm : More p) {Pm : ParameterChoice' D L} {Tp : ParamsT D L Pm} {r : TwoRuns p.T p.P.Gp}
     {c : OnConst} {O : Obj p c} (hrec : RecAt p Tp r O) {del : ℝ} (j : Fin D.R.m) (hbad : BadW p j del) :
     (1 - del) * O.d0 j ≤ ((S2 p).D : ℝ) := by
@@ -151,6 +181,11 @@ namespace GlobalTheory.BigOn
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `hB`. Use `(hB.and GlobalTheory.T.badShareSize_bounds_along_family).imp fun Fm CH _ H => ?_` and prove the remaining obligations. Take `⟨⟨x1, H1⟩, ⟨x2, H2⟩⟩` from `H`. Use `⟨0, fun c _ _ => ⟨max x1 x2, fun x hx hle i p hR hm r O hrec => ?_⟩⟩` and prove the remaining obligations. Establish `hb` using `H1 x hx ((le_max_left _ _).trans hle) i p hR hm r hrec.1.ok hrec.2`.
+
+Establish `hq` using `(H2 x hx ((le_max_right _ _).trans hle) i).2.2.1`. Introduce `j`. Conclude with `⟨_, (Real.exp_pos _).le, hq, GlobalTheory.BadOnRec.bad_rec hR hm hrec j (hb j)⟩`.
+-/
 theorem badSt_of_badW : BadWSt → BadSt := by
   intro hB
   refine (hB.and GlobalTheory.T.badShareSize_bounds_along_family).imp fun Fm CH _ H => ?_

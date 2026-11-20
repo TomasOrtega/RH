@@ -14,6 +14,9 @@ variable (R : Type) [CommRing R] [IsDomain R] [CharZero R] (I : Type) [Fintype I
 
 abbrev K : Type := FractionRing R
 
+/- English proof (translation)
+The claim follows from `charZero_of_injective_algebraMap (IsFractionRing.injective R (K R))`.
+-/
 theorem charZero_K : CharZero (K R) :=
   charZero_of_injective_algebraMap (IsFractionRing.injective R (K R))
 
@@ -36,6 +39,11 @@ def filt (k : ℕ) : Ideal (MvPolynomial I (K R)) where
       rw [← hx]; simp only [Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib]; omega
     rw [hp x.2 (lt_of_le_of_lt this hμ), mul_zero]
 
+/- English proof (translation)
+Introduce `μ hμ`. Rewrite using `[coeff_mul]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hs : ∑ i, x.1 i + ∑ i, x.2 i = ∑ i, μ i`.
+
+Rewrite using `[← hx]`. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib]`. Distinguish the cases in `h1 : ∑ i, x.1 i < a`. Rewrite using `[hp x.1 h1, zero_mul]`. Rewrite using `[hq x.2 (by omega), mul_zero]`.
+-/
 theorem filt_mul {a b : ℕ} {p q : MvPolynomial I (K R)} (hp : p ∈ filt a) (hq : q ∈ filt b) :
     p * q ∈ filt (a + b) := by
   intro μ hμ
@@ -48,6 +56,11 @@ theorem filt_mul {a b : ℕ} {p q : MvPolynomial I (K R)} (hp : p ∈ filt a) (h
   · rw [hp x.1 h1, zero_mul]
   · rw [hq x.2 (by omega), mul_zero]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => intro p _ μ hμ`. Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`. Rewrite using `[pow_succ, Ideal.mul_le]`.
+
+Introduce `p hp q hq`. Conclude with `filt_mul R I (ih hp) hq`.
+-/
 theorem filt_pow (k : ℕ) : (filt (R := R) (I := I) 1) ^ k ≤ filt k := by
   induction k with
   | zero => intro p _ μ hμ; omega
@@ -60,6 +73,9 @@ abbrev C : Type := MvPolynomial I (K R) ⧸ (filt (R := R) (I := I) (n + 2))
 
 def m : Ideal (C R I n) := (filt 1).map (Ideal.Quotient.mk _)
 
+/- English proof (translation)
+Rewrite using `[m, ← Ideal.map_pow, Ideal.map_eq_bot_iff_le_ker, Ideal.mk_ker]`. Conclude with `filt_pow R I _`.
+-/
 theorem m_pow : m R I n ^ (n + 2) = ⊥ := by
   rw [m, ← Ideal.map_pow, Ideal.map_eq_bot_iff_le_ker, Ideal.mk_ker]
   exact filt_pow R I _
@@ -68,6 +84,11 @@ def δ : DividedPowers (m R I n) := DividedPowers.RatAlgebra.dividedPowers _
 
 def x (i : I) : C R I n := Ideal.Quotient.mk _ (X i)
 
+/- English proof (translation)
+Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Introduce `μ hμ`. Establish `: μ ≠ Finsupp.single i 1`. Introduce and unpack `rfl`. Simplify using `at hμ`.
+
+Rewrite using `[coeff_X']`. Simplify using `[Ne.symm this]`.
+-/
 theorem x_mem (i : I) : x R I n i ∈ m R I n := by
   refine Ideal.mem_map_of_mem _ ?_
   intro μ hμ
@@ -77,10 +98,18 @@ theorem x_mem (i : I) : x R I n i ∈ m R I n := by
 
 def E (ν : I → ℕ) : C R I n := ∏ i, (δ R I n).dpow (ν i) (x R I n i)
 
+/- English proof (translation)
+Simplify using `only [δ, DividedPowers.RatAlgebra.dpow_apply, if_pos hz]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hz k)`.
+-/
 theorem dpow_mem_pow (k : ℕ) {z : C R I n} (hz : z ∈ m R I n) : (δ R I n).dpow k z ∈ m R I n ^ k := by
   simp only [δ, DividedPowers.RatAlgebra.dpow_apply, if_pos hz]
   exact Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hz k)
 
+/- English proof (translation)
+Establish `h1 : E R I n ν ∈ m R I n ^ (∑ i, ν i)`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Conclude with `Ideal.prod_mem_prod fun i _ => dpow_mem_pow R I n _ (x_mem R I n i)`. Establish `h2` using `Ideal.pow_le_pow_right h h1`. Rewrite `h2` using `[m_pow]`.
+
+Conclude with `(Ideal.mem_bot).1 h2`.
+-/
 theorem E_big (ν : I → ℕ) (h : n + 2 ≤ ∑ i, ν i) : E R I n ν = 0 := by
   have h1 : E R I n ν ∈ m R I n ^ (∑ i, ν i) := by
     rw [← Finset.prod_pow_eq_pow_sum]
@@ -89,12 +118,18 @@ theorem E_big (ν : I → ℕ) (h : n + 2 ≤ ∑ i, ν i) : E R I n ν = 0 := b
   rw [m_pow] at h2
   exact (Ideal.mem_bot).1 h2
 
+/- English proof (translation)
+Rewrite using `[E, E, E, ← Finset.prod_mul_distrib, nsmul_eq_mul, Nat.cast_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(δ R I n).mul_dpow (x_mem R I n i)]`. Both sides reduce to the same expression.
+-/
 theorem E_mul (ν ν' : I → ℕ) : E R I n ν * E R I n ν' =
     (∏ i, (ν i + ν' i).choose (ν i) : ℕ) • E R I n (ν + ν') := by
   rw [E, E, E, ← Finset.prod_mul_distrib, nsmul_eq_mul, Nat.cast_prod, ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [(δ R I n).mul_dpow (x_mem R I n i)]; rfl
 
+/- English proof (translation)
+Simplify using `[E, (δ R I n).dpow_zero (x_mem R I n _)]`.
+-/
 theorem E_zero : E R I n 0 = 1 := by
   simp [E, (δ R I n).dpow_zero (x_mem R I n _)]
 
@@ -106,9 +141,19 @@ variable (R : Type) [CommRing R] [IsDomain R] [CharZero R] (I : Type) [Fintype I
 
 attribute [local instance] charZero_K
 
+/- English proof (translation)
+Rewrite using `[← MvPolynomial.algebraMap_eq]`. Conclude with `Ideal.Quotient.mk_algebraMap _ _ _`.
+-/
 theorem mk_C (c : K R) : Ideal.Quotient.mk (filt (R := R) (I := I) (n + 2)) (MvPolynomial.C c) = algebraMap (K R) (C R I n) c := by
   rw [← MvPolynomial.algebraMap_eq]; exact Ideal.Quotient.mk_algebraMap _ _ _
 
+/- English proof (translation)
+Establish `h1 : (∏ i, ((ν i).factorial : C R I n)) * E R I n ν = Ideal.Quotient.mk _ (monomial (Finsupp.equivFunOnFinite.symm ν) (1 : K R))`. Rewrite using `[E, ← Finset.prod_mul_distrib]`. Repeatedly rewrite using `[(δ R I n).factorial_mul_dpow_eq_pow (x_mem R I n _), x, ← map_pow, ← map_prod]`. Use `congr 1`. Rewrite using `[← prod_X_pow_eq_monomial]`.
+
+Use `symm`. Use `Finset.prod_subset (Finset.subset_univ _) fun i _ hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finsupp.mem_support_iff, not_not]`. Rewrite using `[hi, pow_zero]`. Establish `h2 : (∏ i, ((ν i).factorial : C R I n)) = algebraMap (K R) (C R I n) (∏ i, ((ν i).factorial : K R))`.
+
+Simplify using `[map_prod, map_natCast]`. Establish `hne : (∏ i, ((ν i).factorial : K R)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Rewrite using `[show monomial (Finsupp.equivFunOnFinite.symm ν) (∏ i, ((ν i).factorial : K R))⁻¹ = MvPolynomial.C (∏ i, ((ν i).factorial : K R))⁻¹ * monomial (Finsupp.equivFunOnFinite.symm ν) 1 by`. Rewrite using `[C_mul_monomial, mul_one], map_mul, ← h1, h2, ← mul_assoc, mk_C, ← map_mul, inv_mul_cancel₀ hne, map_one,`. Use the proof step `one_mul]`.
+-/
 theorem E_eq (ν : I → ℕ) : E R I n ν = Ideal.Quotient.mk _
     (monomial (Finsupp.equivFunOnFinite.symm ν) (∏ i, ((ν i).factorial : K R))⁻¹) := by
   have h1 : (∏ i, ((ν i).factorial : C R I n)) * E R I n ν =
@@ -134,11 +179,19 @@ def Eidx (ν : Idx I n) : C R I n := E R I n ν.1
 
 def S : Submodule R (C R I n) := Submodule.span R (Set.range (Eidx R I n))
 
+/- English proof (translation)
+Distinguish the cases in `h : ∑ i, μ i ≤ n + 1`. Conclude with `Submodule.subset_span ⟨⟨μ, h⟩, rfl⟩`. Rewrite using `[E_big R I n μ (by omega)]; exact Submodule.zero_mem _`.
+-/
 theorem E_mem_S (μ : I → ℕ) : E R I n μ ∈ S R I n := by
   by_cases h : ∑ i, μ i ≤ n + 1
   · exact Submodule.subset_span ⟨⟨μ, h⟩, rfl⟩
   · rw [E_big R I n μ (by omega)]; exact Submodule.zero_mem _
 
+/- English proof (translation)
+Establish `: S R I n * S R I n ≤ S R I n`. Rewrite using `[S, Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨a, ⟨ν, rfl⟩, b, ⟨ν', rfl⟩, rfl⟩`. Simplify using `only`. Rewrite using `[Eidx, Eidx, E_mul]`.
+
+Conclude with `nsmul_mem (E_mem_S R I n _) _`. Conclude with `this (Submodule.mul_mem_mul ha hb)`.
+-/
 theorem S_mul {a b : C R I n} (ha : a ∈ S R I n) (hb : b ∈ S R I n) : a * b ∈ S R I n := by
   have : S R I n * S R I n ≤ S R I n := by
     rw [S, Submodule.span_mul_span, Submodule.span_le]
@@ -151,6 +204,15 @@ theorem S_mul {a b : C R I n} (ha : a ∈ S R I n) (hb : b ∈ S R I n) : a * b 
 def B : Subalgebra R (C R I n) :=
   (S R I n).toSubalgebra (by rw [← E_zero R I n]; exact E_mem_S R I n _) fun _ _ ha hb => S_mul R I n ha hb
 
+/- English proof (translation)
+Rewrite using `[linearIndependent_iff']`. Introduce `s g hg ν hν`. Establish `h3 : ∑ μ ∈ s, g μ • Eidx R I n μ = Ideal.Quotient.mk _ (∑ μ ∈ s, monomial (Finsupp.equivFunOnFinite.symm μ.1) (algebraMap R (K R) (g μ) * (∏ i, ((μ.1 i).factorial : K R))⁻¹))`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Eidx, E_eq, Algebra.smul_def, IsScalarTower.algebraMap_apply R (K R) (C R I n), ← mk_C, ← map_mul, C_mul_monomial]`. Rewrite `hg` using `[h3, Ideal.Quotient.eq_zero_iff_mem]`. Use `hg (Finsupp.equivFunOnFinite.symm ν.1) (by have := ν.2; simp; omega)` as an intermediate fact. Rewrite `this` using `[coeff_sum, Finset.sum_eq_single ν]`. Rewrite `this` using `[coeff_monomial, if_pos rfl]`.
+
+Establish `hne : (∏ i, ((ν.1 i).factorial : K R))⁻¹ ≠ 0` using `inv_ne_zero (Finset.prod_ne_zero_iff.2 fun i _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _))`. Establish `h4 : algebraMap R (K R) (g ν) = 0` using `(mul_eq_zero.1 this).resolve_right hne`. Conclude with `IsFractionRing.injective R (K R) (by rw [h4, map_zero])`. Introduce `μ _ hμ`. Rewrite using `[coeff_monomial, if_neg]`.
+
+Introduce `h`. Conclude with `hμ (Subtype.ext (Finsupp.equivFunOnFinite.symm.injective h))`. Introduce `h`. Conclude with `absurd hν h`.
+-/
 theorem linIndep : LinearIndependent R (Eidx R I n) := by
   rw [linearIndependent_iff']
   intro s g hg ν hν
@@ -176,6 +238,11 @@ theorem linIndep : LinearIndependent R (Eidx R I n) := by
 
 def v (ν : Idx I n) : B R I n := ⟨Eidx R I n ν, Submodule.subset_span ⟨ν, rfl⟩⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨z, hz⟩ -`. Express the relevant statement in the definitionally equal form `z ∈ S R I n at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨ν, rfl⟩` from `hy`.
+
+Conclude with `Submodule.subset_span ⟨ν, rfl⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add a c ha hc iha ihc => exact Submodule.add_mem _ iha ihc`. Consider the case `smul r a ha iha => exact Submodule.smul_mem _ r iha`.
+-/
 theorem span_v : ⊤ ≤ Submodule.span R (Set.range (v R I n)) := by
   rintro ⟨z, hz⟩ -
   change z ∈ S R I n at hz
@@ -190,6 +257,9 @@ theorem span_v : ⊤ ≤ Submodule.span R (Set.range (v R I n)) := by
 def b : Module.Basis (Idx I n) R (B R I n) :=
   Module.Basis.mk (v := v R I n) (LinearIndependent.of_comp (B R I n).val.toLinearMap (linIndep R I n)) (span_v R I n)
 
+/- English proof (translation)
+Simplify using `[b, v, Eidx]`.
+-/
 theorem b_apply (ν : Idx I n) : ((b R I n ν : B R I n) : C R I n) = E R I n ν.1 := by
   simp [b, v, Eidx]
 
@@ -201,18 +271,32 @@ variable (R : Type) [CommRing R] [IsDomain R] [CharZero R] (I : Type) [Fintype I
 
 attribute [local instance] charZero_K
 
+/- English proof (translation)
+The claim follows from `congrFun constantCoeff_eq p`.
+-/
 theorem cc (p : MvPolynomial I (K R)) : constantCoeff p = coeff 0 p := congrFun constantCoeff_eq p
 
 def εC : C R I n →+* K R :=
   Ideal.Quotient.lift _ MvPolynomial.constantCoeff fun a ha => by
     rw [cc]; exact ha 0 (by simp)
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.lift_mk _ _ _`.
+-/
 theorem εC_mk (p : MvPolynomial I (K R)) : εC R I n (Ideal.Quotient.mk _ p) = constantCoeff p :=
   Ideal.Quotient.lift_mk _ _ _
 
+/- English proof (translation)
+Rewrite using `[← mk_C, εC_mk, constantCoeff_C]`.
+-/
 theorem εC_alg (c : K R) : εC R I n (algebraMap (K R) (C R I n) c) = c := by
   rw [← mk_C, εC_mk, constantCoeff_C]
 
+/- English proof (translation)
+Establish `: m R I n ≤ RingHom.ker (εC R I n)`. Rewrite using `[m, Ideal.map_le_iff_le_comap]`. Introduce `p hp`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, εC_mk, cc]`. Conclude with `hp 0 (by simp)`.
+
+Conclude with `this hz`.
+-/
 theorem εC_m {z : C R I n} (hz : z ∈ m R I n) : εC R I n z = 0 := by
   have : m R I n ≤ RingHom.ker (εC R I n) := by
     rw [m, Ideal.map_le_iff_le_comap]
@@ -221,6 +305,11 @@ theorem εC_m {z : C R I n} (hz : z ∈ m R I n) : εC R I n z = 0 := by
     exact hp 0 (by simp)
   exact this hz
 
+/- English proof (translation)
+Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Introduce `μ hμ`. Establish `: μ = 0`. Use extensionality with `i`.
+
+Use `(Finset.sum_eq_zero_iff.1 (Nat.lt_one_iff.1 hμ)) i (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`. Rewrite using `[this, ← cc, ← εC_mk]`. Conclude with `hz`.
+-/
 theorem mem_m {z : C R I n} (hz : εC R I n z = 0) : z ∈ m R I n := by
   obtain ⟨p, rfl⟩ := Ideal.Quotient.mk_surjective z
   refine Ideal.mem_map_of_mem _ ?_
@@ -231,11 +320,19 @@ theorem mem_m {z : C R I n} (hz : εC R I n z = 0) : z ∈ m R I n := by
     simpa using this
   rw [this, ← cc, ← εC_mk]; exact hz
 
+/- English proof (translation)
+Use `congrArg (εC R I n) ((δ R I n).factorial_mul_dpow_eq_pow (n := k) hz)` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, εC_m R I n hz, zero_pow hk, map_natCast]`. Conclude with `(mul_eq_zero.1 this).resolve_left (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _))`.
+-/
 theorem εC_dpow {z : C R I n} (hz : z ∈ m R I n) {k : ℕ} (hk : k ≠ 0) : εC R I n ((δ R I n).dpow k z) = 0 := by
   have := congrArg (εC R I n) ((δ R I n).factorial_mul_dpow_eq_pow (n := k) hz)
   rw [map_mul, map_pow, εC_m R I n hz, zero_pow hk, map_natCast] at this
   exact (mul_eq_zero.1 this).resolve_left (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _))
 
+/- English proof (translation)
+Use `split_ifs with h`. Rewrite using `[h, E_zero, map_one]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ν i ≠ 0 := by`. Assume the negation of the conclusion as `h'`. Use `push_neg at h'`.
+
+Conclude with `h (funext h')`. Rewrite using `[E, map_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (εC_dpow R I n (x_mem R I n i) hi)`.
+-/
 theorem εC_E (ν : I → ℕ) : εC R I n (E R I n ν) = if ν = 0 then 1 else 0 := by
   split_ifs with h
   · rw [h, E_zero, map_one]
@@ -254,6 +351,13 @@ def εR : B R I n →ₗ[R] K R where
     rw [Subalgebra.coe_smul, Algebra.smul_def, IsScalarTower.algebraMap_apply R (K R) (C R I n), map_mul, εC_alg,
       Algebra.smul_def]
 
+/- English proof (translation)
+Establish `: (Algebra.linearMap R (K R)).comp ((b R I n).coord (i0 I n)) = εR R I n`. Use `(b R I n).ext fun ν => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Module.Basis.coord_apply, Module.Basis.repr_self, Algebra.linearMap_apply]`. Express the relevant statement in the definitionally equal form `_ = εC R I n ((b R I n ν : B R I n) : C R I n)`. Rewrite using `[b_apply, εC_E, Finsupp.single_apply]`.
+
+Distinguish the cases in `h : ν.1 = 0`. Establish `: i0 I n = ν` using `Subtype.ext h.symm`. Simplify using `[this, h]`. Establish `: i0 I n ≠ ν` using `fun e => h (congrArg Subtype.val e).symm`. Simplify using `[this, Ne.symm this, h]`.
+
+Conclude with `LinearMap.congr_fun this y`.
+-/
 theorem coord_eq (y : B R I n) : algebraMap R (K R) ((b R I n).repr y (i0 I n)) = εC R I n y := by
   have : (Algebra.linearMap R (K R)).comp ((b R I n).coord (i0 I n)) = εR R I n := by
     refine (b R I n).ext fun ν => ?_
@@ -275,8 +379,18 @@ def π : B R I n →+* R where
   map_zero' := by rw [LinearEquiv.map_zero, Finsupp.zero_apply]
   map_add' y z := by rw [LinearEquiv.map_add, Finsupp.add_apply]
 
+/- English proof (translation)
+The claim follows from `coord_eq R I n y`.
+-/
 theorem π_apply (y : B R I n) : algebraMap R (K R) (π R I n y) = εC R I n y := coord_eq R I n y
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ ∈ S R I n`. Distinguish the cases in `hk : k ≤ n + 1`. Establish `: (δ R I n).dpow k (x R I n i) = E R I n (Pi.single i k)`. Rewrite using `[E, Finset.prod_eq_single i]`. Simplify using the standard rewrite rules.
+
+Introduce `j _ hj`. Rewrite using `[Pi.single_eq_of_ne hj, (δ R I n).dpow_zero (x_mem R I n j)]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `E_mem_S R I n _`.
+
+Establish `h1` using `Ideal.pow_le_pow_right (show n + 2 ≤ k by omega) (dpow_mem_pow R I n k (x_mem R I n i))`. Rewrite `h1` using `[m_pow, Ideal.mem_bot]`. Rewrite using `[h1]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem dpow_x_mem (i : I) (k : ℕ) : (δ R I n).dpow k (x R I n i) ∈ B R I n := by
   change _ ∈ S R I n
   by_cases hk : k ≤ n + 1
@@ -293,23 +407,41 @@ theorem dpow_x_mem (i : I) (k : ℕ) : (δ R I n).dpow k (x R I n i) ∈ B R I n
 
 def Q (z : C R I n) : Prop := z ∈ m R I n ∧ ∀ k, (δ R I n).dpow k z ∈ B R I n
 
+/- English proof (translation)
+Use `⟨Ideal.zero_mem _, fun k => ?_⟩` and prove the remaining obligations. Break down `k with _ | k` into its components or cases. Rewrite using `[(δ R I n).dpow_zero (Ideal.zero_mem _)]`. Conclude with `Subalgebra.one_mem _`. Rewrite using `[(δ R I n).dpow_eval_zero k.succ_ne_zero]`.
+
+Conclude with `Subalgebra.zero_mem _`.
+-/
 theorem Q_zero : Q R I n 0 := by
   refine ⟨Ideal.zero_mem _, fun k => ?_⟩
   rcases k with _ | k
   · rw [(δ R I n).dpow_zero (Ideal.zero_mem _)]; exact Subalgebra.one_mem _
   · rw [(δ R I n).dpow_eval_zero k.succ_ne_zero]; exact Subalgebra.zero_mem _
 
+/- English proof (translation)
+Use `⟨Ideal.add_mem _ hy.1 hz.1, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[(δ R I n).dpow_add hy.1 hz.1]`. Conclude with `Subalgebra.sum_mem _ fun p _ => Subalgebra.mul_mem _ (hy.2 _) (hz.2 _)`.
+-/
 theorem Q_add {y z : C R I n} (hy : Q R I n y) (hz : Q R I n z) : Q R I n (y + z) := by
   refine ⟨Ideal.add_mem _ hy.1 hz.1, fun k => ?_⟩
   rw [(δ R I n).dpow_add hy.1 hz.1]
   exact Subalgebra.sum_mem _ fun p _ => Subalgebra.mul_mem _ (hy.2 _) (hz.2 _)
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def]`. Use `⟨Ideal.mul_mem_left _ _ hz.1, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[(δ R I n).dpow_mul hz.1]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (Subalgebra.algebraMap_mem _ r) _) (hz.2 k)`.
+-/
 theorem Q_smul (r : R) {z : C R I n} (hz : Q R I n z) : Q R I n (r • z) := by
   rw [Algebra.smul_def]
   refine ⟨Ideal.mul_mem_left _ _ hz.1, fun k => ?_⟩
   rw [(δ R I n).dpow_mul hz.1]
   exact Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (Subalgebra.algebraMap_mem _ r) _) (hz.2 k)
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨i₀, hi⟩ : ∃ i, ν i ≠ 0 := by`. Assume the negation of the conclusion as `h'`. Use `push_neg at h'`. Conclude with `hν (funext h')`. Establish `hE : E R I n ν = (∏ i ∈ Finset.univ.erase i₀, (δ R I n).dpow (ν i) (x R I n i)) * (δ R I n).dpow (ν i₀) (x R I n i₀)` using `(Finset.prod_erase_mul _ _ (Finset.mem_univ _)).symm`.
+
+Establish `hy : (δ R I n).dpow (ν i₀) (x R I n i₀) ∈ m R I n` using `(δ R I n).dpow_mem hi (x_mem R I n i₀)`. Establish `ha : (∏ i ∈ Finset.univ.erase i₀, (δ R I n).dpow (ν i) (x R I n i)) ∈ B R I n` using `Subalgebra.prod_mem _ fun i _ => dpow_x_mem R I n i _`. Rewrite using `[hE]`. Use `⟨Ideal.mul_mem_left _ _ hy, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[(δ R I n).dpow_mul hy, (δ R I n).dpow_comp hi (x_mem R I n i₀)]`.
+
+Conclude with `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ ha _) (Subalgebra.mul_mem _ (Subalgebra.natCast_mem _ _) (dpow_x_mem R I n i₀ _))`.
+-/
 theorem Q_E {ν : I → ℕ} (hν : ν ≠ 0) : Q R I n (E R I n ν) := by
   obtain ⟨i₀, hi⟩ : ∃ i, ν i ≠ 0 := by
     by_contra h'; push_neg at h'; exact hν (funext h')
@@ -324,6 +456,11 @@ theorem Q_E {ν : I → ℕ} (hν : ν ≠ 0) : Q R I n (E R I n ν) := by
   exact Subalgebra.mul_mem _ (Subalgebra.pow_mem _ ha _)
     (Subalgebra.mul_mem _ (Subalgebra.natCast_mem _ _) (dpow_x_mem R I n i₀ _))
 
+/- English proof (translation)
+Rewrite using `[← (b R I n).linearCombination_repr y, Finsupp.linearCombination_apply, Finsupp.sum, AddSubmonoidClass.coe_finset_sum]`. Use `Finset.sum_induction _ (Q R I n) (fun _ _ => Q_add R I n) (Q_zero R I n) fun ν _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_smul, b_apply]`. Distinguish the cases in `hν : ν.1 = 0`. Establish `: ν = i0 I n` using `Subtype.ext hν`.
+
+Establish `h0 : (b R I n).repr y ν = 0` using `by rw [this]; exact hy`. Rewrite using `[h0, zero_smul]`. Conclude with `Q_zero R I n`. Conclude with `Q_smul R I n _ (Q_E R I n hν)`.
+-/
 theorem integral (y : B R I n) (hy : π R I n y = 0) : Q R I n (y : C R I n) := by
   rw [← (b R I n).linearCombination_repr y, Finsupp.linearCombination_apply, Finsupp.sum,
     AddSubmonoidClass.coe_finset_sum]
@@ -347,16 +484,27 @@ abbrev f : B R I n →+* C R I n := (B R I n).val
 
 def J : Ideal (C R I n) := (RingHom.ker (π R I n)).map (f R I n)
 
+/- English proof (translation)
+Apply `mem_m` to reduce the goal to its premises. Rewrite using `[← π_apply, RingHom.mem_ker.1 hy, map_zero]`.
+-/
 theorem ker_m {y : B R I n} (hy : y ∈ RingHom.ker (π R I n)) : (y : C R I n) ∈ m R I n := by
   apply mem_m
   rw [← π_apply, RingHom.mem_ker.1 hy, map_zero]
 
+/- English proof (translation)
+Establish `h1 : f R I n y ∈ J R I n` using `Ideal.mem_map_of_mem _ hy`. Simplify using `only [δ, DividedPowers.RatAlgebra.dpow_apply, if_pos h1, if_pos (ker_m R I n hy)]`. Both sides reduce to the same expression.
+-/
 theorem dpowJ {y : B R I n} (hy : y ∈ RingHom.ker (π R I n)) (k : ℕ) :
     (DividedPowers.RatAlgebra.dividedPowers (J R I n)).dpow k (f R I n y) = (δ R I n).dpow k (y : C R I n) := by
   have h1 : f R I n y ∈ J R I n := Ideal.mem_map_of_mem _ hy
   simp only [δ, DividedPowers.RatAlgebra.dpow_apply, if_pos h1, if_pos (ker_m R I n hy)]
   rfl
 
+/- English proof (translation)
+Use `⟨⟨(δ R I n).dpow k (y : C R I n), (integral R I n y hy).2 k⟩, fun hk => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker]`. Apply `IsFractionRing.injective R (K R)` to reduce the goal to its premises. Rewrite using `[π_apply, map_zero]`. Conclude with `εC_dpow R I n (ker_m R I n hy) hk`.
+
+Rewrite using `[dpowJ R I n hy]`. Both sides reduce to the same expression.
+-/
 theorem hmem (k : ℕ) {y : B R I n} (hy : y ∈ RingHom.ker (π R I n)) :
     ∃ (z : B R I n) (_ : k ≠ 0 → z ∈ RingHom.ker (π R I n)),
       f R I n z = (DividedPowers.RatAlgebra.dividedPowers (J R I n)).dpow k (f R I n y) := by
@@ -371,11 +519,21 @@ def κ : DividedPowers (RingHom.ker (π R I n)) :=
   DividedPowers.ofInjective (RingHom.ker (π R I n)) (J R I n) (f R I n) Subtype.val_injective
     (DividedPowers.RatAlgebra.dividedPowers (J R I n)) rfl fun k _ hy => hmem R I n k hy
 
+/- English proof (translation)
+Simplify using `only [κ, DividedPowers.ofInjective, dif_pos hy]`. Conclude with `(Exists.choose_spec (hmem R I n k hy)).2.trans (dpowJ R I n hy k)`.
+-/
 theorem κ_apply {y : B R I n} (hy : y ∈ RingHom.ker (π R I n)) (k : ℕ) :
     (((κ R I n).dpow k y : B R I n) : C R I n) = (δ R I n).dpow k (y : C R I n) := by
   simp only [κ, DividedPowers.ofInjective, dif_pos hy]
   exact (Exists.choose_spec (hmem R I n k hy)).2.trans (dpowJ R I n hy k)
 
+/- English proof (translation)
+Use `⟨n + 2, fun l hl hs => ?_⟩` and prove the remaining obligations. Establish `key : ∀ l : List (ℕ × B R I n), (∀ p ∈ l, p.2 ∈ RingHom.ker (π R I n)) → (((l.map fun p => (κ R I n).dpow p.1 p.2).prod : B R I n) : C R I n) ∈ m R I n ^ (l.map Prod.fst).sum`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _`.
+
+Simplify using the standard rewrite rules. Consider the case `cons p l ih`. Introduce `h`. Establish `hp : p.2 ∈ RingHom.ker (π R I n)` using `h p (by simp)`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons]`.
+
+Rewrite using `[Subalgebra.coe_mul, pow_add, κ_apply R I n hp]`. Conclude with `Ideal.mul_mem_mul (dpow_mem_pow R I n _ (ker_m R I n hp)) (ih fun q hq => h q (by simp [hq]))`. Establish `h2` using `Ideal.pow_le_pow_right hs (key l hl)`. Rewrite `h2` using `[m_pow, Ideal.mem_bot]`. Conclude with `Subtype.val_injective h2`.
+-/
 theorem nil : IsNilDP (κ R I n) := by
   refine ⟨n + 2, fun l hl hs => ?_⟩
   have key : ∀ l : List (ℕ × B R I n), (∀ p ∈ l, p.2 ∈ RingHom.ker (π R I n)) →
@@ -411,5 +569,8 @@ def jetRing : JetRing R I n where
 
 end GlobalTheory.DivPowTrunc
 
+/- English proof (translation)
+Introduce `R _ _ _ I _ n` and use `⟨GlobalTheory.DivPowTrunc.jetRing R I n⟩`.
+-/
 theorem GlobalTheory.DivPowTrunc.jetRingEx : GlobalTheory.LatJet.JetRingEx :=
   fun R _ _ _ I _ n => ⟨GlobalTheory.DivPowTrunc.jetRing R I n⟩

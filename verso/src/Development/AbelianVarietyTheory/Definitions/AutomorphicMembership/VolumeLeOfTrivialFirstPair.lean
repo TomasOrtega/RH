@@ -26,6 +26,11 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   {P1 : Subgroup G} {ψ1 : P1 →* Kˣ} {Dc : ∀ Zs : DefSub A3.fam3.amb3, DefCols (A3.side3 P1 ψ1 Zs)}
   {Sp : ∀ Zs : DefSub A3.fam3.amb3, SPer (Dc Zs)} {Zsc : DefSub A3.fam3.amb3 → IndefScale A3.fam3.base3} {s : ℕ}
 
+/- English proof (translation)
+Establish `H` using `lift_hypotheses_of_unitary hok hK (cvOf3 A3 P0 ψ0 P1 ψ1) (fun _ _ _ _ => rfl) hJ hU hG j t`. Establish `e0` using `lift_good_part_complex_eq_range_family H (cv := cvOf3 A3 P0 ψ0 P1 ψ1) (b := false) (ℓ := A3.fam3.F.lvlA P0 ψ0) rfl`. Establish `e2` using `lift_good_part_complex_eq_range_family H (cv := cvOf3 A3 ⊥ 1 P1 ψ1) (b := false) (ℓ := A3.fam3.F.lvlA ⊥ 1) rfl`. Establish `e1 : goodAt (A3.fam3.F.lvlA ⊥ 1).X (A3.fam3.F.lvlA ⊥ 1).P (A3.fam3.F.lvlA ⊥ 1).ψ = idemOf A3.fam3.F.X` using `goodAt_bot A3.fam3.F.X _`. Rewrite `e2` using `[e1]`.
+
+Conclude with `e0.le.trans ((H.range_le A3.fam3.F.X P0 ψ0⁻¹).trans e2.ge)`.
+-/
 theorem volume_le_of_trivial_first_pair (hok : A3.fam3.Ok3 s) (hK : X.KFormL) (hJ : X.JIsoL (cvOf3 A3 P0 ψ0 P1 ψ1))
     {gW : ∀ j, Representation ℂ G (X.W j)} (hU : LiftActionUnitary X gW) (hG : LiftGroupEquivariance A3 X gW) (j : Fin m) (t : T) :
     X.goodPartComplexPoints (cvOf3 A3 P0 ψ0 P1 ψ1) false j t ≤ X.goodPartComplexPoints (cvOf3 A3 ⊥ 1 P1 ψ1) false j t := by
@@ -37,6 +42,9 @@ theorem volume_le_of_trivial_first_pair (hok : A3.fam3.Ok3 s) (hK : X.KFormL) (h
   rw [e1] at e2
   exact e0.le.trans ((H.range_le A3.fam3.F.X P0 ψ0⁻¹).trans e2.ge)
 
+/- English proof (translation)
+Establish `hrat` using `lift_rationality_of_equivariance (Dc := Dc) (Sp := Sp) (Zsc := Zsc) hok hK hJ hRZ hU hG false j t`. Establish `hu` using `hrat.ge (Submodule.mem_inf.2 ⟨⟨w, rfl⟩, hw⟩)`. Use `(Submodule.span_le (p := LinearMap.range (lin (X.uL (crdOf3 A3 ⊥ 1 P1 ψ1 Dc Sp Zsc) false j t)))).2 ?_ hu` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨cpt A3.fam3.base3.v0.embedding x, (X.jL_toL (crdOf3 A3 ⊥ 1 P1 ψ1 Dc Sp Zsc) false j t x).symm⟩`.
+-/
 theorem exists_crd (hok : A3.fam3.Ok3 s) (hK : X.KFormL) (hJ : X.JIsoL (cvOf3 A3 ⊥ 1 P1 ψ1)) (hRZ : X.RatZ)
     {gW : ∀ j, Representation ℂ G (X.W j)} (hU : LiftActionUnitary X gW) (hG : LiftGroupEquivariance A3 X gW) (j : Fin m) (t : T) (w : X.W j)
     (hw : LinearMap.adjoint (X.θ' j t) w ∈ X.goodPartComplexPoints (cvOf3 A3 ⊥ 1 P1 ψ1) false j t) :
@@ -47,6 +55,11 @@ theorem exists_crd (hok : A3.fam3.Ok3 s) (hK : X.KFormL) (hJ : X.JIsoL (cvOf3 A3
   rintro _ ⟨x, rfl⟩
   exact ⟨cpt A3.fam3.base3.v0.embedding x, (X.jL_toL (crdOf3 A3 ⊥ 1 P1 ψ1 Dc Sp Zsc) false j t x).symm⟩
 
+/- English proof (translation)
+Establish `hup` using `upper_level_lift_at_lower_type hok hK hJ hU hG hL0 j t`. Use `(hW j).2.ge.trans (iSup_le fun p w hw => ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_crd (Dc := Dc) (Sp := Sp) (Zsc := Zsc) hok hK (fun j t x y => hJ j t x y) hRZ hU hG j t w (volume_le_of_trivial_first_pair hok hK hJ hU hG j t (hup ⟨w, hw.2, rfl⟩))`. Establish `hl : ((X.lam j t p A3.fam3.base3.v0 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (hp j t p _).ne'`. Establish `h1 : X.tC (crdOf3 A3 ⊥ 1 P1 ψ1 Dc Sp Zsc) false j t c = ((X.lam j t p A3.fam3.base3.v0 : ℝ) : ℂ) • w` using `(X.tC_eq _ false j t c).trans ((congrArg (X.θ' j t) hc).trans (hA j t p w hw))`.
+
+Use `⟨((X.lam j t p A3.fam3.base3.v0 : ℝ) : ℂ)⁻¹ • c, (map_smul _ _ _).trans ?_⟩` and prove the remaining obligations. Rewrite using `[h1, smul_smul, inv_mul_cancel₀ hl, one_smul]`.
+-/
 theorem range_w0C_le (hok : A3.fam3.Ok3 s) (hK : X.KFormL) (hJ : X.JIsoL (cvOf3 A3 P0 ψ0 P1 ψ1)) (hRZ : X.RatZ)
     {gW : ∀ j, Representation ℂ G (X.W j)} (hU : LiftActionUnitary X gW) (hG : LiftGroupEquivariance A3 X gW)
     (hL0 : LevelTypeOfLifts A3 X (P1 := P1) (ψ1 := ψ1) (Dc := Dc) (Sp := Sp) (Zsc := Zsc) gW false P0 ψ0)
@@ -71,6 +84,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T T' : Type}
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨⟨hE, h1⟩, hW, h2⟩` from `h`. Conclude with `⟨⟨fun t => hE (f t), fun t => h1.intw (f t), h1.comm, h1.parts⟩, fun j t => hW j (f t), fun j t => h2.intw j (f t), h2.comm, h2.parts⟩`.
+-/
 theorem pHecke (h : R.PHecke (bare3 _ P0 ψ0 P1 ψ1)) : (dat3 f μ R mu tw).PHecke (bare3 _ P0 ψ0 P1 ψ1) := by
   obtain ⟨⟨hE, h1⟩, hW, h2⟩ := h
   exact ⟨⟨fun t => hE (f t), fun t => h1.intw (f t), h1.comm, h1.parts⟩,
@@ -78,6 +94,15 @@ theorem pHecke (h : R.PHecke (bare3 _ P0 ψ0 P1 ψ1)) : (dat3 f μ R mu tw).PHec
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hW' h'`. Take `⟨hW0, h0⟩` from `h.2`. Set `hW : ∀ j t, ((A3.comap id (f μ)).liftI j t).OpIx → Module.End ℂ ((R.toCx3 (bare3 _ P0 ψ0 P1 ψ1)).W j)` to `fun j => Function.update (hW0 j) (f μ) (hW' j μ)`. Establish `e : ∀ j, hW j (f μ) = hW' j μ` using `fun j => Function.update_self _ _ _`. Establish `hh : HeckeIntertwiningLifts (A3.comap id (f μ)) (R.toCx3 (bare3 _ P0 ψ0 P1 ψ1)) hW`.
+
+Use `⟨fun j t => ?_, fun j => ?_, fun j p => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ht : t = f μ`. Substitute `ht` using the available equality. Introduce `i u`. Rewrite using `[e j]`.
+
+Conclude with `h'.intw j μ i u`. Establish `e' : hW j t = hW0 j t` using `Function.update_of_ne ht _ _`. Rewrite using `[e']`. Conclude with `h0.intw j t`. Conclude with `(e j).symm ▸ h'.comm j`.
+
+Conclude with `(h'.parts j p).trans (congrArg (fun z => Formalism.L2.Col.eigSum z _) (e j).symm)`. Introduce `j`. Use `ho hW hh j` as an intermediate fact. Conclude with `(e j) ▸ this`.
+-/
 theorem liftOnto (h : R.PHecke (bare3 _ P0 ψ0 P1 ψ1))
     (ho : ∀ hW, HeckeIntertwiningLifts (A3.comap id (f μ)) (R.toCx3 (bare3 _ P0 ψ0 P1 ψ1)) hW →
       U2.OntoC (A3.comap id (f μ)) (R.toCx3 (bare3 _ P0 ψ0 P1 ψ1)) P0 ψ0 P1 ψ1 hW) :
@@ -107,6 +132,11 @@ theorem liftOnto (h : R.PHecke (bare3 _ P0 ψ0 P1 ψ1))
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hok hs hC h`. Introduce `j`. Establish `h1` using `range_w0C_le hok hR.kFormL hR.jIsoL hR.ratZ hR.gUnitL hR.gEquivL hR.lower_level_lift_type hR.thmAop hR.partsW h.posScal.2 j (f μ)`. Establish `h2` using `h.levW j`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Conclude with `le_inf (h1.trans (le_iSup_of_le μ le_rfl)) (h2.le.trans inf_le_right)`. Use `le_trans (inf_le_inf_right _ (iSup_le fun t => ?_)) h2.ge` and prove the remaining obligations. Conclude with `le_iSup_of_le (f t) le_rfl`.
+-/
 theorem pLevW {s : ℕ} (hok : (A3.comap id (f μ)).fam3.Ok3 s) (hs : (A3.comap id (f μ)).fam3.TypesSep3)
     (hC : R.WeakCharacterisation (bare3 _ P0 ψ0 P1 ψ1)) (h : PrimRows3 R (bare3 _ P0 ψ0 P1 ψ1)) :
     (dat3 f μ R mu tw).PLevW (bare3 _ P0 ψ0 P1 ψ1) := by
@@ -121,6 +151,9 @@ theorem pLevW {s : ℕ} (hok : (A3.comap id (f μ)).fam3.Ok3 s) (hs : (A3.comap 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `h.heckeR (f t) heckeL j t := h.heckeL j (f t) hecke := pHecke mu tw h.hecke gUnit := h.gUnit gEquiv := ⟨fun t => h.gEquiv.1 (f t), fun j t => h.gEquiv.2 j (f t)⟩ block := ⟨fun t => h.block.1 (f t), fun j t => h.block.2 j (f t)⟩ rowTest := by obtain ⟨N, ψ, h1, h2⟩ := h.rowTest exa …`.
+-/
 theorem primRows3 {s : ℕ} (hok : (A3.comap id (f μ)).fam3.Ok3 s) (hs : (A3.comap id (f μ)).fam3.TypesSep3)
     (hC : R.WeakCharacterisation (bare3 _ P0 ψ0 P1 ψ1)) (h : PrimRows3 R (bare3 _ P0 ψ0 P1 ψ1)) :
     PrimRows3 (dat3 f μ R mu tw) (bare3 _ P0 ψ0 P1 ψ1) where
@@ -159,6 +192,9 @@ theorem primRows3 {s : ℕ} (hok : (A3.comap id (f μ)).fam3.Ok3 s) (hs : (A3.co
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+The claim follows from `primRows3 mu tw h.ok h.sep hC h.prim aux := ⟨exAt (A := A3.A) mu tw h.aux.ex, h.aux.conj, h.aux.levelW, h.aux.integral⟩ ok := (A3.comap id (f μ)).fam3.comap_ok_of_injective h.ok hf μ sep := h.sep`.
+-/
 theorem intersectionNumber_baseChange (hf : Function.Injective f) (hC : R.WeakCharacterisation (bare3 _ P0 ψ0 P1 ψ1)) (h : Holds R (bare3 _ P0 ψ0 P1 ψ1)) :
     Holds (dat3 f μ R mu tw) (bare3 _ P0 ψ0 P1 ψ1) where
   prim := primRows3 mu tw h.ok h.sep hC h.prim

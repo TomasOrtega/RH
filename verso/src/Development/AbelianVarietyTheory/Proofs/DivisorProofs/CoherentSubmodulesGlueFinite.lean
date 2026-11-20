@@ -15,6 +15,11 @@ open GlobalTheory.LB (resG_resG)
 
 namespace GlobalTheory.LatGlue
 
+/- English proof (translation)
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Take `⟨n, hn⟩` from `hb u hu`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hn`. Establish `h1 : σ g ^ n • piMap σ (Fin h) u ∈ Submodule.span S (Set.range fun l => piMap σ (Fin h) (b l))`.
+
+Rewrite using `[← map_pow, ← LinearMap.map_smulₛₗ, ← ha, map_sum]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`. Conclude with `(Submodule.smul_mem_iff_of_isUnit _ (hg.pow n)).1 h1`.
+-/
 theorem span_image_le_span_range_of_isUnit {R S : Type} [CommRing R] [CommRing S] (σ : R →+* S) {h : ℕ}
     (P : Submodule R (Fin h → R)) (g : R) (hg : IsUnit (σ g)) (b : Fin h → Fin h → R)
     (hb : ∀ u ∈ P, ∃ n : ℕ, g ^ n • u ∈ Submodule.span R (Set.range b)) :
@@ -31,6 +36,11 @@ theorem span_image_le_span_range_of_isUnit {R S : Type} [CommRing R] [CommRing S
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)
   exact (Submodule.smul_mem_iff_of_isUnit _ (hg.pow n)).1 h1
 
+/- English proof (translation)
+Rewrite `hb` using `[RingHom.map_det]`. Use `Matrix.eq_zero_of_mulVec_eq_zero hb (funext fun k => ?_)` and prove the remaining obligations. Use `congrFun ha k` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, piMap_apply, smul_eq_mul, Pi.zero_apply] at this`. Simplify using `only [Matrix.mulVec, dotProduct, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Pi.zero_apply]`.
+
+Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`.
+-/
 theorem eq_zero_of_sum_smul_piMap {R S : Type} [CommRing R] [CommRing S] [IsDomain S] (σ : R →+* S) {h : ℕ}
     (b : Fin h → Fin h → R) (hb : σ (Matrix.of fun a l => b l a).det ≠ 0) (a : Fin h → S)
     (ha : ∑ l, a l • piMap σ (Fin h) (b l) = 0) : a = 0 := by
@@ -42,6 +52,27 @@ theorem eq_zero_of_sum_smul_piMap {R S : Type} [CommRing R] [CommRing S] [IsDoma
   rw [← this]
   exact Finset.sum_congr rfl fun l _ => mul_comm _ _
 
+/- English proof (translation)
+Introduce `y`. Take `⟨i, hy⟩` from `hcov y`. Establish `hinj : ∀ {A B : Y.Opens} (hle : B ≤ A) (z : Y), z ∈ B → Function.Injective (resG Y hle)`. Introduce `A B hle z hz`. Use `haveI : Nonempty B := ⟨⟨z, hz⟩⟩`.
+
+Conclude with `map_injective_of_isIntegral Y (homOfLE hle)`. Use `haveI : Nonempty (V i) := ⟨⟨y, hy⟩⟩`. Set `q : Ideal Γ(Y, V i)` to `(IsLocalRing.maximalIdeal (Y.presheaf.stalk y)).comap (Y.presheaf.germ (V i) y hy).hom`. Establish `hq : q.IsPrime` using `Ideal.comap_isPrime _ _`. Take `⟨g, hg, b, hbP, hdet, hspan⟩` from `GlobalTheory.T.projective_lattice_local_basis Γ(Y, V i) h (P i) (hfp i).1 (hfp i).2 (resG Y (le_top : V i ≤ ⊤) c) ((map_ne_zero_iff _ (hinj _ y hy)).2 hc) (hcP i) q hq`.
+
+Establish `hyg : y ∈ Y.basicOpen g`. Rewrite using `[Y.mem_basicOpen g y hy]`. Assume the negation of the conclusion as `hn`. Conclude with `hg ((IsLocalRing.mem_maximalIdeal _).2 hn)`. Establish `h0 : Y.basicOpen g ≤ V i` using `Y.basicOpen_le g`.
+
+Establish `hmem : ∀ l, (coords Y h (Y.basicOpen g)).symm (piMap (resG Y h0) (Fin h) (b l)) ∈ (glueSub V P).sec (Y.basicOpen g)`. Introduce `l z hz`. Use `⟨_, le_rfl, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Twist.resM_self, LinearEquiv.apply_symm_apply]`. Conclude with `Submodule.subset_span ⟨i, h0, b l, hbP l, rfl⟩`.
+
+Use `⟨Y.basicOpen g, fun l => (glueSub V P).mkSec _ (hmem l), hyg, GlobalTheory.VB.isFrame_of_forall_exists fun V' hV' z hz => ?_⟩` and prove the remaining obligations. Take `⟨W, hW, hzW, hWV⟩` from `exists_affine_mem_le z hz`. Use `⟨W, hWV, hzW, ?_⟩` and prove the remaining obligations. Use `haveI : Nonempty W := ⟨⟨z, hzW⟩⟩`. Establish `hW0 : W ≤ Y.basicOpen g` using `hWV.trans hV'`.
+
+Establish `hWi : W ≤ V i` using `hW0.trans h0`. Set `φ : Γ((glueSub V P).toMod, W) →ₗ[Γ(Y, W)] (Fin h → Γ(Y, W))` to `(coords Y h W).toLinearMap ∘ₗ appLinear (glueSub V P).incl W`. Establish `hφ : Function.Injective φ` using `(coords Y h W).injective.comp ((glueSub V P).incl_app_injective W)`. Establish `hφe : ∀ l, φ (resM _ hW0 ((glueSub V P).mkSec _ (hmem l))) = piMap (resG Y hWi) (Fin h) (b l)`. Introduce `l`.
+
+Establish `e1 : φ (resM _ hW0 ((glueSub V P).mkSec _ (hmem l))) = coords Y h W (resM _ hW0 ((coords Y h (Y.basicOpen g)).symm (piMap (resG Y h0) (Fin h) (b l))))` using `rfl`. Rewrite using `[e1, coords_resM, LinearEquiv.apply_symm_apply]`. Conclude with `funext fun k => resG_resG h0 hW0 (b l k)`. Establish `hφc : ∀ a : Fin h → Γ(Y, W), φ (Fintype.linearCombination Γ(Y, W) (fun l => resM _ hW0 ((glueSub V P).mkSec _ (hmem l))) a) = ∑ l, a l • piMap (resG Y hWi) (Fin h) (b l)`. Introduce `a`.
+
+Simplify using `only [Fintype.linearCombination_apply, map_sum, map_smul, hφe]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Use `eq_zero_of_sum_smul_piMap (resG Y hWi) b ((map_ne_zero_iff _ (hinj _ z hzW)).2 hdet) a ?_` and prove the remaining obligations.
+
+Rewrite using `[← hφc, ha, map_zero]`. Introduce `s`. Establish `hs : φ s ∈ _` using `(GlobalTheory.T.coherent_submodule_sections_affine Y h I V P hdir hcomp i W hW hWi _).1 ((glueSub V P).incl_app_mem s)`. Establish `hu : IsUnit (resG Y hWi g)`. Rewrite using `[← resG_resG h0 hW0]`.
+
+Conclude with `(Y.toRingedSpace.isUnit_res_basicOpen g).map _`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 (span_image_le_span_range_of_isUnit (resG Y hWi) (P i) g hu b hspan hs)`. Conclude with `⟨a, hφ ((hφc a).trans ha)⟩`.
+-/
 theorem isVB_glueSub (Y : Scheme.{0}) [IsIntegral Y] (h : ℕ) (I : Type) (V : I → Y.Opens)
     (P : ∀ i, Submodule Γ(Y, V i) (Fin h → Γ(Y, V i))) (_haff : ∀ i, IsAffineOpen (V i))
     (hcov : ∀ y : Y, ∃ i, y ∈ V i)

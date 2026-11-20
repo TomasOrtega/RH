@@ -9,8 +9,14 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Regul
 
 namespace UpperTheory.Gal.InertialTypesAlt.L
 
+/- English proof (translation)
+The claim follows from `elemPairJ elemPair`.
+-/
 theorem elemPairJ_holds : UpperTheory.Gal.Join.ElemPairJ := elemPairJ elemPair
 
+/- English proof (translation)
+The claim follows from `finTrace resEx finAct inflFacts frobFacts (inflTrace h h₁ h₂ h₃)`.
+-/
 theorem finTrace_holds (h : GlobalTheory.DZA.InflMatching) (h₁ : G.VarEx) (h₂ : G.VarTrace) (h₃ : G.NormInt) : FinTrace :=
   finTrace resEx finAct inflFacts frobFacts (inflTrace h h₁ h₂ h₃)
 

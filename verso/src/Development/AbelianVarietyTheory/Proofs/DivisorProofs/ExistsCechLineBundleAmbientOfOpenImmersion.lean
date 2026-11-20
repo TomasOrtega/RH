@@ -14,6 +14,9 @@ namespace GlobalTheory.PicGlue.OpenExt
 
 variable {X X' : Scheme.{0}} (f : X' ⟶ X) [IsOpenImmersion f] (L : LB X')
 
+/- English proof (translation)
+The claim follows from `fun x hx ↦ by obtain ⟨w, hw, rfl⟩ := hx.1 exact f.apply_mem_image_iff.2 ⟨hw, f.apply_mem_image_iff.1 hx.2⟩`.
+-/
 theorem image_inf_le (a b : L.ι) : f ''ᵁ L.U a ⊓ f ''ᵁ L.U b ≤ f ''ᵁ (L.U a ⊓ L.U b) := fun x hx ↦ by
   obtain ⟨w, hw, rfl⟩ := hx.1
   exact f.apply_mem_image_iff.2 ⟨hw, f.apply_mem_image_iff.1 hx.2⟩
@@ -21,6 +24,9 @@ theorem image_inf_le (a b : L.ι) : f ''ᵁ L.U a ⊓ f ''ᵁ L.U b ≤ f ''ᵁ 
 def extLB : LB X :=
   ⟨L.ι, fun a ↦ f ''ᵁ L.U a, fun a b ↦ res (image_inf_le f L a b) (GlobalTheory.GlueLineBundle.imU f _ (L.g a b))⟩
 
+/- English proof (translation)
+Establish `hm : (r ≫ f) z ∈ f ''ᵁ L.U a ⊓ f ''ᵁ L.U b` using `⟨f.apply_mem_image_iff.2 ha, f.apply_mem_image_iff.2 hb⟩`. Conclude with `(gm_res (r ≫ f) z (image_inf_le f L a b) hm _).trans (GlobalTheory.GlueLineBundle.gm_imU f r z (L.U a ⊓ L.U b) ⟨ha, hb⟩ _)`.
+-/
 theorem gm_ext_g {Z : Scheme.{0}} (r : Z ⟶ X') (z : Z) (a b : L.ι) (ha : r z ∈ L.U a) (hb : r z ∈ L.U b) :
     gm (r ≫ f) z ((extLB f L).U a ⊓ (extLB f L).U b) ((extLB f L).g a b) = gm r z (L.U a ⊓ L.U b) (L.g a b) := by
   have hm : (r ≫ f) z ∈ f ''ᵁ L.U a ⊓ f ''ᵁ L.U b := ⟨f.apply_mem_image_iff.2 ha, f.apply_mem_image_iff.2 hb⟩
@@ -29,6 +35,9 @@ theorem gm_ext_g {Z : Scheme.{0}} (r : Z ⟶ X') (z : Z) (a b : L.ι) (ha : r z 
 
 variable {f} in
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map, gm_val g y U h, GlobalTheory.GlueLineBundle.gm_id_val h]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply g U y h a.val).symm`.
+-/
 theorem gm_eq_map {Y : Scheme.{0}} (g : Y ⟶ X) (y : Y) (U : X.Opens) (h : g y ∈ U) (a : Γ(X, U)ˣ) :
     gm g y U a = Units.map (g.stalkMap y).hom.toMonoidHom (gm (𝟙 X) (g y) U a) := by
   apply Units.ext
@@ -41,6 +50,15 @@ namespace GlobalTheory.PicGlue.OpenExt
 
 variable {X X' : Scheme.{0}} (f : X' ⟶ X) [IsOpenImmersion f] (L : LB X')
 
+/- English proof (translation)
+Take `⟨w, -, rfl⟩` from `hx`. Conclude with `⟨w, rfl⟩`. Use `cov x hx := by`. Take `⟨w, rfl⟩` from `hx`. Take `⟨a, ha⟩` from `exists_chart hL w`.
+
+Conclude with `⟨a, f.apply_mem_image_iff.2 ha⟩`. Use `coc x a b c hxa hxb hxc := by`. Take `⟨w, ha, rfl⟩` from `hxa`. Establish `hb : w ∈ L.U b` using `f.apply_mem_image_iff.1 hxb`. Establish `hc : w ∈ L.U c` using `f.apply_mem_image_iff.1 hxc`.
+
+Establish `e : ∀ (d d' : L.ι) (hd : w ∈ L.U d) (hd' : w ∈ L.U d'), Units.map (f.stalkMap w).hom.toMonoidHom (gm (𝟙 X) (f w) _ ((extLB f L).g d d')) = gm (𝟙 X') w (L.U d ⊓ L.U d') (L.g d d')`. Introduce `d d' hd hd'`. Rewrite using `[← gm_eq_map f w ((extLB f L).U d ⊓ (extLB f L).U d') ⟨f.apply_mem_image_iff.2 hd, f.apply_mem_image_iff.2 hd'⟩]`. Establish `k` using `gm_ext_g f L (𝟙 X') w d d' hd hd'`. Rewrite `k` using `[Category.id_comp]`. Then use the resulting hypothesis.
+
+Apply `Units.map_injective (f := (f.stalkMap w).hom.toMonoidHom) (fun u v h ↦ (ConcreteCategory.bijective_of_isIso (f.stalkMap w)).1 h)` to reduce the goal to its premises. Use `(MonoidHom.map_mul _ _ _).trans ?_` and prove the remaining obligations. Conclude with `(congrArg₂ (· * ·) (e a b ha hb) (e b c hb hc)).trans ((gm_cocycle hL (𝟙 X') w ha hb hc).trans (e a c ha hc).symm)`.
+-/
 theorem isOn_extLB (hL : L.IsLB) : IsOn f.opensRange (extLB f L) where
   le a x hx := by
     obtain ⟨w, -, rfl⟩ := hx
@@ -70,6 +88,11 @@ end GlobalTheory.PicGlue.OpenExt
 
 open GlobalTheory.PicGlue.OpenExt in
 
+/- English proof (translation)
+Introduce `X X' f _ L hL`. Use `⟨extLB f L, isOn_extLB f L hL, iso_of_chart hL ⟨fun J ↦ J PUnit.unit, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `J y hy`. Conclude with `f.apply_mem_image_iff.1 (mem_pull.1 hy)`. Introduce `y J J' hj hj'`.
+
+Conclude with `(gm_pull_g (extLB f L) f (𝟙 X') y J J' hj hj').trans (gm_ext_g f L (𝟙 X') y _ _ (f.apply_mem_image_iff.1 (mem_pull.1 hj)) (f.apply_mem_image_iff.1 (mem_pull.1 hj')))`.
+-/
 theorem GlobalTheory.PicGlue.exists_isOn_of_openImmersion : ∀ (X X' : Scheme.{0}) (f : X' ⟶ X) [IsOpenImmersion f] (L : LB X'),
     L.IsLB → ∃ L' : LB X, IsOn f.opensRange L' ∧ LBIso (L'.pull f) L := by
   intro X X' f _ L hL

@@ -68,6 +68,9 @@ def CurveDegrees : Prop :=
       DegAdditive k C ∧ DegDual k C ∧ DegDet k C ∧ DegLeSat k C ∧ CoverRules k C ∧
         FrobeniusRules k C ∧ SubDegBounded k C
 
+/- English proof (translation)
+The claim follows from `h.2.2.symm.trans h'.2.2`.
+-/
 theorem IsFiniteOfDegree.unique {C' C : Scheme.{0}} [IsIntegral C'] [IsIntegral C] {π : C' ⟶ C}
     {m n : ℕ} (h : IsFiniteOfDegree π m) (h' : IsFiniteOfDegree π n) : m = n :=
   h.2.2.symm.trans h'.2.2
@@ -75,6 +78,9 @@ theorem IsFiniteOfDegree.unique {C' C : Scheme.{0}} [IsIntegral C'] [IsIntegral 
 open GlobalTheory.ProjSpace GlobalTheory.ProjCoh in
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
+/- English proof (translation)
+Establish `h` using `((H k (PSpace k 1) (isSmoothProjCurve_line k)).2.2.2.2.2.1 3).2.2.1 _ 1 (isVB_sheafO k 2)`. Rewrite `h` using `[deg_sheafO]`. Conclude with `h`.
+-/
 example (H : CurveDegrees) (k : Type) [Field k] [IsAlgClosed k] [Fact (Nat.Prime 3)] [CharP k 3] :
     deg k ((frobPull 3 (natCast_eq_zero (PSpace k 1) 3 k)).obj (sheafO k 1 2)) = 6 := by
   have h := ((H k (PSpace k 1) (isSmoothProjCurve_line k)).2.2.2.2.2.1 3).2.2.1 _ 1

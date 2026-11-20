@@ -26,23 +26,44 @@ namespace CrystallineSemistableComparison.Pb
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+The claim follows from `(CH.Mor.restrict (CH.modF (U.ι ⋙ A)) (ObjectProperty.ιOfLE h)).d_pullC j b`.
+-/
 theorem d_resB {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (A : C ⥤ CommAlgCat.{0} R)
     {U V : ObjectProperty C} (h : V ≤ U) {j : ℕ} (b : CH.Cn (CH.modF (U.ι ⋙ A)) j) :
     CH.d _ j (resB A h b) = resB A h (CH.d _ j b) :=
   (CH.Mor.restrict (CH.modF (U.ι ⋙ A)) (ObjectProperty.ιOfLE h)).d_pullC j b
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span ⟨[(n, x)], by simpa using hx, by simp, by simp⟩`.
+-/
 theorem dpow_mem_pdP' {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (n : ℕ) {x : B} (hx : x ∈ J) :
     δ.dpow n x ∈ pdP δ n :=
   Ideal.subset_span ⟨[(n, x)], by simpa using hx, by simp, by simp⟩
 
+/- English proof (translation)
+Use `dpow_mem_pdP' δ 1 hx` as an intermediate fact. Rewrite `this` using `[δ.dpow_one hx]`. Then use the resulting hypothesis.
+-/
 theorem mem_pdP_one {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {x : B} (hx : x ∈ J) : x ∈ pdP δ 1 := by
   have := dpow_mem_pdP' δ 1 hx
   rwa [δ.dpow_one hx] at this
 
+/- English proof (translation)
+The claim follows from `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (δ.dpow_mem (Nat.succ_ne_zero k) hx)`.
+-/
 theorem plogK_mem' {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (s : ℕ) {x : B} (hx : x ∈ J) :
     plogK δ s x ∈ J :=
   Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (δ.dpow_mem (Nat.succ_ne_zero k) hx)
 
+/- English proof (translation)
+Establish `hVb : ∀ b : Fin (n + 2), V ≤ uy i y b` using `fun b => hVW.trans (hW b)`. Use `set A : Fin (n + 2) → Fin (n + 2) → Γ(X, V) := fun a b => (i.appLE (Proj.basicOpen (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K) (y b)) V (hVb b)).hom (yQ y hy a b) with hAdef`. Establish `hA : ∀ a b c : Fin (n + 2), A a b * A b c = A a c` using `fun a b c => (yQ_mul i y hy a b c V (hVb a) (hVb b) (hVb c)).1`. Establish `hA1 : ∀ a, A a a = 1` using `fun a => (yQ_mul i y hy a a a V (hVb a) (hVb a) (hVb a)).2`. Establish `htA : ∀ k : Fin (n + 1), ((t k : Γ(X, V)ˣ) : Γ(X, V)) = A k.succ 0` using `fun k => ht k`.
+
+Establish `hinv : ∀ k : Fin (n + 1), A 0 k.succ = (((t k)⁻¹ : Γ(X, V)ˣ) : Γ(X, V))` using `fun k => Units.eq_inv_of_mul_eq_one_left (by rw [htA, hA, hA1])`. Establish `e0 : rs hVW ((i.appLE _ W (hW k.succ)).hom (yQ y hy k.castSucc k.succ)) = A k.castSucc k.succ` using `rs_appLE i _ hVW (hW k.succ) (yQ y hy k.castSucc k.succ)`. Rewrite using `[e0]`. Distinguish the cases in `hk : (k : ℕ) = 0`. Establish `hk0 : k = 0` using `Fin.ext hk`.
+
+Substitute `hk0` using the available equality. Rewrite using `[dif_pos hk]`. Conclude with `hinv 0`. Rewrite using `[dif_neg hk]`. Establish `e1 : (⟨(k : ℕ) - 1, by omega⟩ : Fin (n + 1)).succ = k.castSucc` using `Fin.ext (by simp; omega)`.
+
+Rewrite using `[htA, e1, ← hinv k, hA]`.
+-/
 theorem g_rel {K : Type} [Field K] {X : Scheme.{0}} {N n e : ℕ} (i : X ⟶ PSpace K N)
     (y : Fin (n + 2) → MvPolynomial (Fin (N + 1)) K) (hy : ∀ k, (y k).IsHomogeneous e) (V W : X.Opens) (hVW : V ≤ W)
     (hW : ∀ b, W ≤ uy i y b) (t : Fin (n + 1) → Γ(X, V)ˣ)
@@ -73,6 +94,53 @@ theorem g_rel {K : Type} [Field K] {X : Scheme.{0}} {N n e : ℕ} (i : X ⟶ PSp
     rw [htA, e1, ← hinv k, hA]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Break down `d with _ | n` into its components or cases. Conclude with `oneK_ne_zero q inferInstance`. Introduce `h0`. Take `⟨N, i, hci, hiq, hO⟩` from `hD`. Take `⟨e, he, y, hy, hcov, haff, V, hV, cc, hdom, htc, ht, halg, B, hBr, hBi, hBt, hBfg, hBint, hBle, hBfr⟩` from `hG q n N i hci hiq`.
+
+Set `_ : Algebra K Γ(X, V)` to `(strV q V).toAlgebra`. Establish `_` using `hdom`. Take `⟨Dv, hDv⟩` from `GlobalTheory.T.exists_dual_derivations_of_coords q V (n + 1) cc`. Establish `hsQ : ∀ T : (wU q i y (n + 2)).FullSubcategory, T.obj.pdPow (n + 2) = ⊥` using `fun T => by`. Take `⟨k, hk, -⟩` from `T.property`.
+
+Conclude with `hk.1`. Establish `hVQ : ∀ T : (wU q i y (n + 2)).FullSubcategory, ∃ (V : X.Opens) (σ : (V : Scheme.{0}) ⟶ D.Y), σ ≫ D.f = V.ι ∧ InU V ((wU q i y (n + 2)).ι.obj T)` using `fun T => by`. Take `⟨k, -, W, ⟨j, rfl⟩, hW⟩` from `T.property`. Take `⟨σ, hσ⟩` from `wch_mem D N i hO j`. Conclude with `⟨wch i j, σ, hσ, fun x hx => (hW hx).2⟩`.
+
+Set `Λ : CLiftK (wU q i y (n + 2)).ι D` to `(GlobalTheory.T.exists_cone_lift q D (n + 2)).some.precomp (ObjectProperty.ιOfLE (wU_le q D i y (n + 2) hO))`. Take `⟨z, hz, hzf, hzc⟩` from `hc (n + 2) _ (wU q i y (n + 2)).ι hsQ hVQ Λ`. Take `⟨hzp, hzp0⟩` from `powK_pull q (wU q i y (n + 2)).ι c z hz hzc (n + 1)`. Rewrite `hzp0` using `[h0, map_zero]`. Establish `hzK : z = zK Λ (n + 2)` using `funext fun σ => hzf σ`.
+
+Substitute `hzK` using the available equality. Take `⟨b, hb1, hb, hdiff⟩` from `hL q D i hO y hy (n + 2) Λ`. Set `W` to `wK q i y (n + 2)`. Establish `hsU : ∀ T, (∃ α, W α T) → (thFil (smFun X q) ((n + 2 : ℕ) : ℤ)).S T = ⊥`. Introduce and unpack `T ⟨k, hk, -⟩`.
+
+Conclude with `hk.1`. Establish `hvanS : ∀ S : Finset (Fin (n + 2)), S.Nonempty → ∀ (r : ℤ) (j : ℕ), Subsingleton (HU (sq (thFil (smFun X q) r) (thFil (smFun X q) (r + 1))) (KS q (n + 2) {⨅ k ∈ S, uy i y k}) j) → Subsingleton (HU (gr (Φ` using `thP (smFun X q)) (thFil (smFun X q)) r) (capS W S) j) := by`. Introduce `S hS r j hsub`. Take `⟨h, hbij⟩` from `zar_capS q i y (n + 2) S hS r (r + 1) j`. Conclude with `hbij.2.subsingleton`.
+
+Establish `: Smooth q` using `SmoothOfRelativeDimension.smooth (n + 1) q`. Establish `hvan2 : ∀ S : Finset (Fin (n + 2)), S.Nonempty → ∀ (r : ℤ) (j : ℕ), (n : ℤ) + 1 < r → Subsingleton (HU (gr (Φ` using `thP (smFun X q)) (thFil (smFun X q)) r) (capS W S) j) := by`. Introduce `S hS r j hr`. Use `hvanS S hS r j ?_` and prove the remaining obligations. Conclude with `gr_top_van q (n + 1) _ (haff S hS) (n + 2) r j (by exact_mod_cast hr)`.
+
+Establish `hvan1 : ∀ S : Finset (Fin (n + 2)), S.Nonempty → ∀ (r : ℤ) (j : ℕ), (j : ℤ) ≠ r → Subsingleton (HU (gr (Φ` using `thP (smFun X q)) (thFil (smFun X q)) r) (capS W S) j) := by`. Introduce `S hS r j hjr`. Break down `lt_or_ge r 0 with hr | hr` into its components or cases. Conclude with `gr_neg_van _ _ r hr j`. Break down `le_or_gt r ((n : ℤ) + 1) with hr' | hr'` into its components or cases.
+
+Use `hvanS S hS r j ?_` and prove the remaining obligations. Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le hr`. Conclude with `CrystallineSemistableComparison.Pb.gr_aff q _ (haff S hS) (n + 2) m j (by omega) (by omega)`. Conclude with `hvan2 S hS r j hr'`. Establish `hze : CH.d _ 2 (e • zK Λ (n + 2)) = 0` using `by rw [map_nsmul, hz, smul_zero]`.
+
+Establish `hz1 : ∀ σ, (e • zK Λ (n + 2)) σ ∈ (thFil (smFun X q) 1).S _` using `fun σ => by`. Establish `h` using `mem_pdP_one ((wU q i y (n + 2)).ι.obj (σ.obj (Fin.last 2))).δ (plogK_mem' ((wU q i y (n + 2)).ι.obj (σ.obj (Fin.last 2))).δ (n + 2) (GlobalTheory.T.cone_lift_ratio_mem_ideal Λ σ))`. Conclude with `nsmul_mem h e`. Establish `hzero : ∀ h, (CH.cx _).cls (cupPowC ((ObjectProperty.ι fun T => ∃ α, W α T) ⋙ thA (smFun X q)) (e • zK Λ (n + 2)) (n + 1)) h = 0`. Introduce `h`.
+
+Establish `hsm : cupPowC ((wU q i y (n + 2)).ι ⋙ thA (smFun X q)) (e • zK Λ (n + 2)) (n + 1) = ((e : K) ^ (n + 1)) • cupPowC ((wU q i y (n + 2)).ι ⋙ thA (smFun X q)) (zK Λ (n + 2)) (n + 1)`. Rewrite using `[← Nat.cast_smul_eq_nsmul K, cupPowC_smul]`. Establish `hB` using `((CrystallineSemistableComparison.P.cls_surj _ _).2.1 _ hzp).1 hzp0`. Use `((CrystallineSemistableComparison.P.cls_surj _ _).2.1 _ h).2 ?_` and prove the remaining obligations. Conclude with `hsm ▸ Submodule.smul_mem _ _ hB`.
+
+Set `ℓ : Fin (n + 1) → CH.Cn (CH.modF ((capS W Finset.univ).ι ⋙ thA (smFun X q))) 1` to `fun k => resB (thA (smFun X q)) (capS_le_univ W k.castSucc) (b k.castSucc) - resB (thA (smFun X q)) (capS_le_univ W k.succ) (b k.succ)`. Establish `hℓcoc : ∀ k, CH.d _ 1 (ℓ k) = 0` using `fun k => by show CH.d _ 1 (resB _ _ (b k.castSucc) - resB _ _ (b k.succ)) = 0`. Rewrite using `[map_sub, d_resB, d_resB, ← hb, ← hb]`. Conclude with `sub_eq_zero.2 rfl`. Establish `hℓ1 : ∀ k σ, ℓ k σ ∈ (sFil (capS W Finset.univ) 1).S _` using `fun k σ => by`.
+
+Establish `h1` using `hb1 k.castSucc (σ ⋙ ObjectProperty.ιOfLE (capS_le_univ W k.castSucc))`. Establish `h2` using `hb1 k.succ (σ ⋙ ObjectProperty.ιOfLE (capS_le_univ W k.succ))`. Conclude with `Ideal.sub_mem ((thFil (smFun X q) 1).S (σ.obj (Fin.last 1)).obj) h1 h2`. Establish `hc0' : ∃ c0 : HU (gr (Φ` using `thP (smFun X q)) (thFil (smFun X q)) ((n : ℤ) + 1)) (capS W Finset.univ) (n + 1), Rep ((thFil (smFun X q) ((n : ℤ) + 1)).res (capS W Finset.univ).ι) ((thFil (smFun X q) ((n : ℤ) + 1 + 1)).res (capS W Finset.univ).ι) (cupListC ((capS W Finset.univ).ι ⋙ (thP (smFun X q)).A) ℓ) c0 : …`. Use `rep_cupList (sP (capS W Finset.univ)) (sFil (capS W Finset.univ)) (isFil _) ℓ hℓcoc hℓ1` as an intermediate fact.
+
+Rewrite `this` using `[Nat.cast_succ]`. Conclude with `this`. Take `⟨c0, hc0⟩` from `hc0'`. Take `⟨ω, f, hf, hdf, hrep⟩` from `cech_top_rel (thP (smFun X q)) (thFil (smFun X q)) (isFil_th _) (n + 2) n W hsU (wK_rel q i y (n + 2)) hvan1 hvan2 (e • zK Λ (n + 2)) hze hz1 b hb1 hb hzero c0 hc0`. Establish `key : ∃ (x : Fin (n + 2) → Γ(X, V)) (η : Fin (n + 1) → Γ(X, V)), (∀ j, x j ∈ jacS (B (Finset.univ.erase j)) Dv id) ∧ (∀ k, η k ∈ jacS (B Finset.univ) Dv (Fin.succAbove k)) ∧ ((((∏ k, (ht k).unit)⁻¹ : Γ(X, V)ˣ) : Γ(X, V)) = ∑ j, x j + ∑ k : Fin (n + 1), (-1 : Γ(X, V)) ^ (k : ℕ) * …`.
+
+Establish `hKG : KH.LocGr` using `CrystallineSemistableComparison.Pb.loc_gr`. Establish `hKP : KH.PolyTf` using `CrystallineSemistableComparison.Pb.poly_tf`. Establish `hKA : KH.GrAff` using `CrystallineSemistableComparison.Pb.gr_aff`. Establish `hV' : ∀ S : Finset (Fin (n + 2)), V ≤ ⨅ k ∈ S, uy i y k` using `fun S => le_biInf_of_le hV S`. Establish `hUk : ∀ k, (⨅ k ∈ (Finset.univ : Finset (Fin (n + 2))), uy i y k) ≤ uy i y k` using `fun k => biInf_le _ (Finset.mem_univ k)`.
+
+Set `g : Fin (n + 1) → Γ(X, ⨅ k ∈ (Finset.univ : Finset (Fin (n + 2))), uy i y k)` to `fun k => (i.appLE _ _ (hUk k.succ)).hom (yQ y hy k.castSucc k.succ)`. Establish `hg : ∀ k, IsUnit (g k)` using `fun k => yQ_unit i y hy _ _ _ (hUk _) (hUk _)`. Use `choose ĝ0 hĝ0 hĝd using hdiff`. Set `ĝ : Fin (n + 1) → ∀ T : (capS W Finset.univ).FullSubcategory, T.obj.B` to `fun k T => ĝ0 k.castSucc k.succ ⟨T.obj, fun α _ => T.property α (Finset.mem_univ α)⟩`. Establish `hĝ : ∀ k T (h : InU (⨅ k ∈ (Finset.univ : Finset (Fin (n + 2))), uy i y k) T.obj), Ideal.Quotient.mk _ (ĝ k T) = ev T.obj h (g k)` using `fun k T h => by`.
+
+Establish `h1 : InU (uy i y k.succ) T.obj` using `inU_mono q (hUk k.succ) h`. Establish `e1` using `hĝ0 k.castSucc k.succ ⟨T.obj, fun α _ => T.property α (Finset.mem_univ α)⟩ h1`. Establish `e2` using `rs_appLE i (Proj.basicOpen (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K) (y k.succ)) (hUk k.succ) le_rfl (yQ y hy k.castSucc k.succ)`. Establish `e3` using `ev_rs T.obj (hUk k.succ) h h1 ((i.appLE (Proj.basicOpen (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K) (y k.succ)) (uy i y k.succ) le_rfl).hom (yQ y hy k.castSucc k.succ))`. Use `e1.trans (e3.symm.trans ?_)` and prove the remaining obligations.
+
+Conclude with `congrArg (ev T.obj h) e2`. Establish `hℓeq : ℓ = fun k => dlogC (capS W Finset.univ) (n + 2) (ĝ k)` using `funext fun k => congrArg (resB (thA (smFun X q)) (fun T h α _ => h α (Finset.mem_univ α) : capS W Finset.univ ≤ capS W {k.castSucc, k.succ})) (hĝd k.castSucc k.succ)`. Rewrite `hc0` using `[hℓeq]`. Take `⟨x, η, hx, hη, heq⟩` from `cone_transfer hKG hKP hKA q n i y haff V hV' cc Dv hDv g hg ĝ hĝ c0 hc0 ω f hf hdf hrep`. Set `tu : Fin (n + 1) → Γ(X, V)ˣ` to `fun k => (ht k).unit`.
+
+Set `g' : Fin (n + 1) → Γ(X, V)` to `fun k => if h : (k : ℕ) = 0 then (((tu 0)⁻¹ : Γ(X, V)ˣ) : Γ(X, V)) else (tu ⟨k - 1, by omega⟩ : Γ(X, V)) * (((tu k)⁻¹ : Γ(X, V)ˣ) : Γ(X, V))`. Establish `hgt : ∀ k, rs (hV' Finset.univ) (g k) = g' k` using `fun k => g_rel i y hy V _ (hV' Finset.univ) hUk tu (fun k => by simp only [tu, IsUnit.unit_spec]; exact htc k) k`. Establish `hDvu : ∀ k j, Dv k (tu j) = if k = j then 1 else 0` using `fun k j => by simpa [tu] using hDv k j`. Establish `hdr : Ring.inverse (∏ k, g' k) * (Matrix.of fun k l => Dv k (g' l)).det = (((∏ k, tu k)⁻¹ : Γ(X, V)ˣ) : Γ(X, V)) ∨ Ring.inverse (∏ k, g' k) * (Matrix.of fun k l => Dv k (g' l)).det = -(((∏ k, tu k)⁻¹ : Γ(X, V)ˣ) : Γ(X, V))` using `dlog_ratios n tu Dv hDvu`. Establish `hL : Ring.inverse (∏ k, rs (hV' Finset.univ) (g k)) * (Matrix.of fun k l => Dv k (rs (hV' Finset.univ) (g l))).det = Ring.inverse (∏ k, g' k) * (Matrix.of fun k l => Dv k (g' l)).det` using `by simp only [hgt]`.
+
+Rewrite `heq` using `[hL]`. Establish `hne : ∀ j : Fin (n + 2), (Finset.univ.erase j).Nonempty` using `fun j => ⟨j.succAbove 0, Finset.mem_erase.2 ⟨Fin.succAbove_ne j 0, Finset.mem_univ _⟩⟩`. Establish `hxm : ∀ j, x j ∈ jacS (B (Finset.univ.erase j)) Dv id` using `fun j => jacSpan_le (hV' _) (B _) (hBr _ (hne j)) Dv id (hx j)`. Establish `hηm : ∀ k, η k ∈ jacS (B Finset.univ) Dv (Fin.succAbove k)` using `fun k => jacSpan_le (hV' _) (B _) (hBr _ Finset.univ_nonempty) Dv _ (hη k)`. Establish `hneg : (∃ (x : Fin (n + 2) → Γ(X, V)) (η : Fin (n + 1) → Γ(X, V)), (∀ j, x j ∈ jacS (B (Finset.univ.erase j)) Dv id) ∧ (∀ k, η k ∈ jacS (B Finset.univ) Dv (Fin.succAbove k)) ∧ (-(((∏ k, (ht k).unit)⁻¹ : Γ(X, V)ˣ) : Γ(X, V)) = ∑ j, x j + ∑ k : Fin (n + 1), (-1 : Γ(X, V)) ^ (k : ℕ) …`.
+
+Introduce and unpack `⟨x, η, hx, hη, he⟩`. Use `⟨fun j => -x j, fun k => -η k, fun j => (jacS _ Dv id).neg_mem (hx j), fun k => (jacS _ Dv _).neg_mem (hη k), ?_⟩` and prove the remaining obligations. Rewrite using `[← neg_neg (((∏ k, (ht k).unit)⁻¹ : Γ(X, V)ˣ) : Γ(X, V)), he]`. Simplify using `only [map_neg, mul_neg, Finset.sum_neg_distrib, neg_add]`. Apply the tactic sequence `rcases hdr with hd | hd <;> rw [hd] at heq <;> rcases heq with he | he`.
+
+Conclude with `⟨x, η, hxm, hηm, he⟩`. Conclude with `hneg ⟨x, η, hxm, hηm, he⟩`. Conclude with `hneg ⟨x, η, hxm, hηm, he⟩`. Conclude with `⟨x, η, hxm, hηm, by rw [← he, neg_neg]⟩`. Take `⟨x, η, hx, hη, heq⟩` from `key`.
+
+Use `hR K n Γ(X, V) (fun k => (ht k).unit) (by simpa using halg) Dv (by simpa using hDv) B hBt hBfg hBint hBle hBfr x η hx hη heq` and prove the remaining obligations.
+-/
 theorem powK_ne_zero_of (hG : LocalCohomologySetup.GeoSetupP) (hR : LocalCohomologySetup.ResidAlgP) (hL : LocalCohomologySetup.LocExactP)
     {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [ConnectedSpace X] (d : ℕ) [SmoothOfRelativeDimension d q] (D : E.LineData X) (hD : IsTautologicalLine q D) (c : HdR q 2)
     (hc : IsFirstChernDeRham q D c) : powK q c d ≠ 0 := by

@@ -6,6 +6,15 @@ open NumberField MeasureTheory Col Topology
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `x₀`. Establish `hcd : ContDiff ℂ (1 : ℕ) G` using `contDiff_of_differentiable_fd hG 1`. Establish `hG' : Continuous (fderiv ℂ G)` using `hcd.continuous_fderiv (by norm_num)`. Use `set B := {x : Fin d → ℝ | ∀ i, x i ∈ Set.Ioc (0 : ℝ) 1} with hB`. Establish `hBsub : B ⊆ Set.Icc 0 1` using `fun x hx => ⟨fun i => (hx i).1.le, fun i => (hx i).2⟩`.
+
+Establish `hIcc : IsCompact (Set.Icc (0 : Fin d → ℝ) 1)` using `isCompact_Icc`. Establish `hBm : MeasurableSet B` using `tof_box_measurable d`. Establish `hfin : volume B < ⊤` using `(measure_mono hBsub).trans_lt hIcc.measure_lt_top`. Use `haveI : IsFiniteMeasure (volume.restrict B) := isFiniteMeasure_restrict.2 hfin.ne`. Establish `hKc : IsCompact ((fun p : V × (Fin d → ℝ) => p.1 + φ p.2) '' (Metric.closedBall x₀ 1 ×ˢ Set.Icc 0 1))` using `((isCompact_closedBall x₀ 1).prod hIcc).image (continuous_fst.add (hφ.comp continuous_snd))`.
+
+Take `⟨C, hC⟩` from `hKc.exists_bound_of_continuousOn hG'.continuousOn`. Establish `hcont : ∀ x, Continuous fun t => G (x + φ t)` using `fun x => hG.continuous.comp (continuous_const.add hφ)`. Establish `h` using `hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := volume.restrict B) (F := fun v t => G (v + φ t)) (F' := fun v t => fderiv ℂ G (v + φ t)) (x₀ := x₀) (bound := fun _ => C) (Metric.ball_mem_nhds x₀ one_pos) (Filter.Eventually.of_forall fun x => (hcont x).aestronglyMeasurable) ( …`. Establish `h1` using `(hG (x + φ t)).hasFDerivAt.comp x ((hasFDerivAt_id x).add_const (φ t))`. Simplify using `only [ContinuousLinearMap.comp_id] at h1`.
+
+Conclude with `h1)`. Conclude with `h.differentiableAt`.
+-/
 theorem tof_box_int_differentiable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     [FiniteDimensional ℂ V] {d : ℕ} {G : V → ℂ} (hG : Differentiable ℂ G)
     {φ : (Fin d → ℝ) → V} (hφ : Continuous φ) :
@@ -46,10 +55,16 @@ namespace ZM
 
 variable [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)}
 
+/- English proof (translation)
+Unfold `tb`. Conclude with `continuous_finset_sum _ fun i _ => (continuous_apply i).smul continuous_const`.
+-/
 theorem tb_continuous (hI : IsSplit P I) : Continuous (tb hI) := by
   unfold tb
   exact continuous_finset_sum _ fun i _ => (continuous_apply i).smul continuous_const
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Simplify using `[zmC, zmBox]`. Both sides reduce to the same expression.
+-/
 theorem zeroMode_eq_fiber_integral (hI : IsSplit P I) (s : (Fin 1 → Vsp X.dim) → ℂ) :
     zmC hI s 0 = fun v => ∫ t in {x : Fin (Module.finrank ℝ (IR I)) → ℝ | ∀ i, x i ∈ Set.Ioc (0 : ℝ) 1},
       zmG I s (v + tb hI t) := by
@@ -57,6 +72,13 @@ theorem zeroMode_eq_fiber_integral (hI : IsSplit P I) (s : (Fin 1 → Vsp X.dim)
   simp [zmC, zmBox]
   rfl
 
+/- English proof (translation)
+Establish `hz : ∀ k, Differentiable ℂ (fun v : Vsp X.dim => Col.z (IR I) k v)`. Introduce `k`. Unfold `Col.z Hf`. Conclude with `Differentiable.fun_sum fun i _ => ((EuclideanSpace.proj i : Vsp X.dim →L[ℂ] ℂ).differentiable).mul_const _`. Establish `hS : Differentiable ℂ (fun v => Col.S (IR I) v)`.
+
+Unfold `Col.S`. Conclude with `Differentiable.fun_sum fun k _ => (hz k).pow 2`. Establish `hG : Differentiable ℂ (zmG I s)`. Unfold `zmG`. Conclude with `(hs.1.comp (differentiable_pi.2 fun _ => differentiable_id)).mul ((differentiable_const _).mul hS).cexp`.
+
+Rewrite using `[zeroMode_eq_fiber_integral hI s]`. Conclude with `tof_box_int_differentiable hG (tb_continuous hI)`.
+-/
 theorem zeroMode_differentiable (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1) :
     Differentiable ℂ (zmC hI s 0) := by
   have hz : ∀ k, Differentiable ℂ (fun v : Vsp X.dim => Col.z (IR I) k v) := by
@@ -74,6 +96,15 @@ theorem zeroMode_differentiable (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) �
   rw [zeroMode_eq_fiber_integral hI s]
   exact tof_box_int_differentiable hG (tb_continuous hI)
 
+/- English proof (translation)
+Use `set ψ : ℂ → ℂ := fun ζ => zmC hI s 0 (w + ζ • e (IR I) k) with hψ`. Establish `hdiff : Differentiable ℂ ψ` using `(zeroMode_differentiable hI hs).comp ((differentiable_const _).add (differentiable_id.smul_const _))`. Establish `hreal : ∀ ζ (t : ℝ), ψ (ζ + t) = ψ ζ` using `fun ζ t => by`. Simplify using `only [hψ]`. Rewrite using `[add_smul, ← add_assoc, show ((t : ℂ)) • e (IR I) k = t • e (IR I) k from (Complex.coe_smul t _)]`.
+
+Conclude with `zeroMode_add_realSpan hI hs _ (Submodule.smul_mem _ _ (e_mem _ k))`. Establish `hder : ∀ ζ, deriv ψ ζ = 0` using `fun ζ => by`. Establish `h1 : HasDerivAt (fun z => ψ (ζ + z)) (deriv ψ ζ) ((0 : ℝ) : ℂ)`. Use `(hdiff (ζ + ((0 : ℝ) : ℂ))).hasDerivAt` as an intermediate fact. Simplify using `using (this.comp_const_add ζ ((0 : ℝ) : ℂ))`.
+
+Establish `h2` using `h1.comp_ofReal`. Establish `h3 : (fun y : ℝ => ψ (ζ + (y : ℂ))) = fun _ => ψ ζ` using `funext fun y => hreal ζ y`. Rewrite `h2` using `[h3]`. Conclude with `(h2.unique (hasDerivAt_const _ _)).symm ▸ rfl`. Use `is_const_of_deriv_eq_zero hdiff hder ζ 0` as an intermediate fact.
+
+Simplify `this` using `[hψ]`.
+-/
 theorem zeroMode_add_real_direction (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1)
     (w : Vsp X.dim) (k : Fin (dK (IR I))) (ζ : ℂ) :
     zmC hI s 0 (w + ζ • e (IR I) k) = zmC hI s 0 w := by
@@ -96,6 +127,11 @@ theorem zeroMode_add_real_direction (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim
   have := is_const_of_deriv_eq_zero hdiff hder ζ 0
   simpa [hψ] using this
 
+/- English proof (translation)
+Establish `hL : ∀ (L : Finset (Fin (dK (IR I)))) (c : Fin (dK (IR I)) → ℂ) (w : Vsp X.dim), zmC hI s 0 (w + ∑ k ∈ L, c k • e (IR I) k) = zmC hI s 0 w`. Introduce `L c w`. Proceed by induction on `L using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a L ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, add_comm (c a • e (IR I) a), ← add_assoc, zeroMode_add_real_direction hI hs, ih]`. Establish `hp : p2 (IR I) v = v + ∑ k, (-(z (IR I) k v)) • e (IR I) k`. Simplify using `only [p2, p1, neg_smul, Finset.sum_neg_distrib, sub_eq_add_neg]`. Rewrite using `[hp, hL]`.
+-/
 theorem zeroMode_proj_two (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1)
     (v : Vsp X.dim) : zmC hI s 0 v = zmC hI s 0 (p2 (IR I) v) := by
   have hL : ∀ (L : Finset (Fin (dK (IR I)))) (c : Fin (dK (IR I)) → ℂ) (w : Vsp X.dim),
@@ -109,6 +145,11 @@ theorem zeroMode_proj_two (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ}
     simp only [p2, p1, neg_smul, Finset.sum_neg_distrib, sub_eq_add_neg]
   rw [hp, hL]
 
+/- English proof (translation)
+Establish `hmem : jj (IR I) t ∈ V2 (IR I)` using `((ob2 (IR I)).repr.symm t).2`. Establish `hz : ∀ k, z (IR I) k (jj (IR I) t) = 0`. Introduce `k`. Establish `h0 : inner ℂ (e (IR I) k) (jj (IR I) t) = 0` using `(Submodule.mem_orthogonal _ _).1 hmem _ (Submodule.subset_span ⟨k, rfl⟩)`. Rewrite `h0` using `[PiLp.inner_apply]`.
+
+Simplify using `only [z, Hf]`. Rewrite using `[← h0]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [mul_comm]`. Simplify using `only [p2, p1, hz, zero_smul, Finset.sum_const_zero, sub_zero]`.
+-/
 theorem proj_two_embedding (t : EuclideanSpace ℂ (Fin (gB (IR I)))) : p2 (IR I) (jj (IR I) t) = jj (IR I) t := by
   have hmem : jj (IR I) t ∈ V2 (IR I) := ((ob2 (IR I)).repr.symm t).2
   have hz : ∀ k, z (IR I) k (jj (IR I) t) = 0 := by
@@ -121,6 +162,9 @@ theorem proj_two_embedding (t : EuclideanSpace ℂ (Fin (gB (IR I)))) : p2 (IR I
     exact Finset.sum_congr rfl fun i _ => by simp [mul_comm]
   simp only [p2, p1, hz, zero_smul, Finset.sum_const_zero, sub_zero]
 
+/- English proof (translation)
+Conclude with `((V2 (IR I)).subtypeL.comp ((ob2 (IR I)).repr.symm.toContinuousLinearEquiv : EuclideanSpace ℂ (Fin (gB (IR I))) →L[ℂ] V2 (IR I))).differentiable`.
+-/
 theorem jj_differentiable : Differentiable ℂ (jj (IR I)) := by
   exact ((V2 (IR I)).subtypeL.comp
     ((ob2 (IR I)).repr.symm.toContinuousLinearEquiv : EuclideanSpace ℂ (Fin (gB (IR I))) →L[ℂ] V2 (IR I))).differentiable
@@ -128,6 +172,13 @@ theorem jj_differentiable : Differentiable ℂ (jj (IR I)) := by
 end ZM
 
 open ZM in
+/- English proof (translation)
+Establish `hK` using `hK_of hI`. Use `⟨(zeroMode_differentiable hI hs).comp jj_differentiable, fun γ hγ t => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `mem_GB.1 ((YB_lat hI hP 1).1 hγ)`. Simplify using `only [zmB]`. Rewrite using `[jj_add, jj_wmap' hK]`.
+
+Establish `hp1 : p1 (IR I) x ∈ IR I` using `proj_one_mem_realSpan hx`. Rewrite using `[← zeroMode_add_realSpan hI hs (jj (IR I) t + p2 (IR I) x) hp1, show jj (IR I) t + p2 (IR I) x + p1 (IR I) x = jj (IR I) t + x by rw [p2]; abel]`. Rewrite using `[zeroMode_add_lattice hI hs hx, proj_two_embedding, YB_ka hI hP 1 hx, pow_one]`. Establish `h1 : Hf t (wmap (IR I) x) = Hf (jj (IR I) t) (p2 (IR I) x)` using `by conv_lhs => rw [← wmap_jj (IR I) t]`. Rewrite using `[Hf_wmap hK, proj_two_embedding]`.
+
+Establish `h2 : Hf (wmap (IR I) x) (wmap (IR I) x) = Hf (p2 (IR I) x) (p2 (IR I) x)` using `Hf_wmap hK x x`. Simplify using `only [Nat.cast_one, one_mul]`. Rewrite using `[h1, h2]`.
+-/
 theorem zeroMode_mem_sections [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF}
     {I : Submodule ℤ (Vsp X.dim)} (hI : IsSplit P I) (hP : Ext.PackingCount)
     {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1) :

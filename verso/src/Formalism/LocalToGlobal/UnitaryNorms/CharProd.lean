@@ -9,8 +9,14 @@ namespace Formalism.L2.Host.HChar
 
 variable {L : Type} [Field L] [NumberField L] (χ : HChar L)
 
+/- English proof (translation)
+The claim follows from `hecke_product_rule L χ`.
+-/
 theorem productRule : χ.ProductRule := hecke_product_rule L χ
 
+/- English proof (translation)
+The claim follows from `eq_inv_of_mul_eq_one_right (χ.productRule S hS k)`.
+-/
 theorem val_principal (S : Finset (HeightOneSpectrum (𝓞 L))) (hS : ∀ v, v ∉ S → χ.UnrAt v) (k : Lˣ) :
     (∏ᶠ (v : HeightOneSpectrum (𝓞 L)) (_ : v ∉ S), χ.val v ^ ordF v k) = (χ.inf k * ∏ v ∈ S, χ.locK v k)⁻¹ :=
   eq_inv_of_mul_eq_one_right (χ.productRule S hS k)

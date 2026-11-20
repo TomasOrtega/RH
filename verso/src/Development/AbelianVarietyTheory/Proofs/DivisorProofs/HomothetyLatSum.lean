@@ -13,21 +13,36 @@ variable {E : Type} [Field E] [NumberField E]
 def mulQ (α : E) : Quotient (unitRel (E := E)) → Quotient (unitRel (E := E)) :=
   Quotient.map (fun x => α * x) (by rintro x x' ⟨u, h⟩; exact ⟨u, by rw [h]; ring⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulQ_mk (α x : E) : mulQ α (Quotient.mk _ x) = Quotient.mk (unitRel (E := E)) (α * x) := rfl
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Quotient.exists_rep q`. Rewrite using `[mulQ_mk, mulQ_mk, mulQ_mk, mul_assoc]`.
+-/
 theorem mulQ_mulQ (a b : E) (q : Quotient (unitRel (E := E))) : mulQ a (mulQ b q) = mulQ (a * b) q := by
   obtain ⟨x, rfl⟩ := Quotient.exists_rep q
   rw [mulQ_mk, mulQ_mk, mulQ_mk, mul_assoc]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Quotient.exists_rep q`. Rewrite using `[mulQ_mk, one_mul]`.
+-/
 theorem mulQ_one (q : Quotient (unitRel (E := E))) : mulQ 1 q = q := by
   obtain ⟨x, rfl⟩ := Quotient.exists_rep q
   rw [mulQ_mk, one_mul]
 
+/- English proof (translation)
+Take `⟨x, hx, h0, rfl⟩` from `hq`. Conclude with `⟨α * x, ⟨x, hx, rfl⟩, mul_ne_zero hα h0, rfl⟩`.
+-/
 theorem mulQ_mem {α : E} (hα : α ≠ 0) {L : Set E} {q : Quotient (unitRel (E := E))} (hq : q ∈ modUnits L) :
     mulQ α q ∈ modUnits ((fun x => α * x) '' L) := by
   obtain ⟨x, hx, h0, rfl⟩ := hq
   exact ⟨α * x, ⟨x, hx, rfl⟩, mul_ne_zero hα h0, rfl⟩
 
+/- English proof (translation)
+Take `⟨_, ⟨x, hx, rfl⟩, h0, rfl⟩` from `hq`. Use `⟨x, hx, fun h => h0 (by simp [h]), ?_⟩` and prove the remaining obligations. Rewrite using `[mulQ_mk, inv_mul_cancel_left₀ hα]`.
+-/
 theorem mulQ_inv_mem {α : E} (hα : α ≠ 0) {L : Set E} {q : Quotient (unitRel (E := E))}
     (hq : q ∈ modUnits ((fun x => α * x) '' L)) : mulQ α⁻¹ q ∈ modUnits L := by
   obtain ⟨_, ⟨x, hx, rfl⟩, h0, rfl⟩ := hq
@@ -42,6 +57,9 @@ def mulEquiv {α : E} (hα : α ≠ 0) (L : Set E) : modUnits L ≃ modUnits ((f
 
 variable {I : Type} [Fintype I]
 
+/- English proof (translation)
+Establish `h1 : mulQ α q = Quotient.mk _ (α * q.out)` using `by conv_lhs => rw [← Quotient.out_eq q]`. Both sides reduce to the same expression. Take `⟨u, hu⟩` from `Quotient.exact ((Quotient.out_eq _).trans h1)`. Rewrite using `[← term_mul, hu, (TermUnit.term_unit_and_norm E I φ hφ s κ σ _).1 u]`.
+-/
 theorem term_out_mulQ [IsCMField E] {φ : I → E →+* ℂ} (hφ : IsCMType φ) (s : ℕ) (κ : I → ℕ) (σ : ℂ) (α : E)
     (q : Quotient (unitRel (E := E))) :
     term φ (2 * s) κ σ (mulQ α q).out = term φ (2 * s) κ σ α * term φ (2 * s) κ σ q.out := by
@@ -51,6 +69,13 @@ theorem term_out_mulQ [IsCMField E] {φ : I → E →+* ℂ} (hφ : IsCMType φ)
   obtain ⟨u, hu⟩ := Quotient.exact ((Quotient.out_eq _).trans h1)
   rw [← term_mul, hu, (TermUnit.term_unit_and_norm E I φ hφ s κ σ _).1 u]
 
+/- English proof (translation)
+Establish `key : ∀ i, ((‖φ i α‖ : ℝ) : ℂ) ^ (-2 * σ) = (((‖φ i α‖ ^ 2 : ℝ)) : ℂ) ^ (-σ)` using `fun i => by`. Establish `hp : 0 < ‖φ i α‖` using `by simp`. Establish `: (((‖φ i α‖ ^ 2 : ℝ)) : ℂ) = ((‖φ i α‖ : ℝ) : ℂ) * ((‖φ i α‖ : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.mul_cpow_ofReal_nonneg hp.le hp.le, ← Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 hp.ne')]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← TermUnit.prod_norm_sq hφ, ← TermUnit.prod_cpow _ _ (fun i => by positivity)]`. Unfold `term lamInf`. Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[key]`. Establish `gen : ∀ (a c N : ℂ) (m n : ℕ), a⁻¹ ^ m * c ^ n * N = (a ^ m * c⁻¹ ^ n)⁻¹ * N`. Introduce `a c N m n`. Rewrite using `[mul_inv, inv_pow, inv_pow, inv_inv]`. Conclude with `gen _ _ _ _ _`.
+-/
 theorem term_eq_lamInf [IsCMField E] {φ : I → E →+* ℂ} (hφ : IsCMType φ) (s : ℕ) (κ : I → ℕ) (σ : ℂ) (α : Eˣ) :
     term φ (2 * s) κ σ α =
       (lamInf φ (2 * s) κ α)⁻¹ * ((|((Algebra.norm ℚ (α : E) : ℚ) : ℝ)| : ℝ) : ℂ) ^ (-σ) := by
@@ -70,6 +95,15 @@ theorem term_eq_lamInf [IsCMField E] {φ : I → E →+* ℂ} (hφ : IsCMType φ
     rw [mul_inv, inv_pow, inv_pow, inv_inv]
   exact gen _ _ _ _ _
 
+/- English proof (translation)
+Introduce `κ α S hS`. Establish `hα : (α : E) ≠ 0` using `α.ne_zero`. Establish `hN : ((|((Algebra.norm ℚ (α : E) : ℚ) : ℝ)| : ℝ) : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero, abs_ne_zero, Rat.cast_ne_zero, Algebra.norm_ne_zero_iff]`. Conclude with `hα`.
+
+Establish `key : IsLatSum φ (2 * s) κ ((fun x => (α : E) * x) '' L) (fun σ => (lamInf φ (2 * s) κ α)⁻¹ * ((|((Algebra.norm ℚ (α : E) : ℚ) : ℝ)| : ℝ) : ℂ) ^ (-σ) * S σ)`. Use `⟨?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Conclude with `((differentiable_neg.const_cpow (Or.inl hN)).const_mul _).mul hS.1`. Establish `h1` using `(hS.2 σ hσ).mul_left ((lamInf φ (2 * s) κ α)⁻¹ * ((|((Algebra.norm ℚ (α : E) : ℚ) : ℝ)| : ℝ) : ℂ) ^ (-σ))`. Establish `hf : ((fun q' : modUnits ((fun x => (α : E) * x) '' L) => term φ (2 * s) κ σ q'.1.out) ∘ mulEquiv hα L) = fun q : modUnits L => (lamInf φ (2 * s) κ α)⁻¹ * ((|((Algebra.norm ℚ (α : E) : ℚ) : ℝ)| : ℝ) : ℂ) ^ (-σ) * term φ (2 * s) κ σ q.1.out` using `funext fun q => by show term φ (2 * s) κ σ (mulQ (α : E) q.1).out = _`.
+
+Rewrite using `[term_out_mulQ hφ, term_eq_lamInf hφ]`. Rewrite using `[← (mulEquiv hα L).hasSum_iff, hf]`. Conclude with `h1`. Use `⟨key, fun S' hS' => ?_⟩` and prove the remaining obligations. Rewrite using `[hS'.unique key]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem homothety (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] [DecidableEq I]
     (φ : I → E →+* ℂ) (hφ : IsCMType φ) (s : ℕ) (L : Set E) : Homothety φ (2 * s) L := by
   intro κ α S hS

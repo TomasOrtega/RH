@@ -15,29 +15,52 @@ variable {p : ℕ} [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 
 def tateTrace (n : ℕ) : PadicAlgCl p → PadicAlgCl p := normTrace (cyclotomicLayer K n)
 
+/- English proof (translation)
+The claim follows from `normTrace_add _ y z`.
+-/
 theorem tateTrace_add (n : ℕ) (y z : PadicAlgCl p) :
     tateTrace K n (y + z) = tateTrace K n y + tateTrace K n z :=
   normTrace_add _ y z
 
+/- English proof (translation)
+The claim follows from `normTrace_mem _ y`.
+-/
 theorem tateTrace_mem (n : ℕ) (y : PadicAlgCl p) : tateTrace K n y ∈ cyclotomicLayer K n :=
   normTrace_mem _ y
 
+/- English proof (translation)
+The claim follows from `normTrace_of_mem _ ha`.
+-/
 theorem tateTrace_of_mem {n : ℕ} {a : PadicAlgCl p} (ha : a ∈ cyclotomicLayer K n) :
     tateTrace K n a = a :=
   normTrace_of_mem _ ha
 
+/- English proof (translation)
+The claim follows from `normTrace_mul_of_mem _ ha y`.
+-/
 theorem tateTrace_mul_of_mem {n : ℕ} {a : PadicAlgCl p} (ha : a ∈ cyclotomicLayer K n)
     (y : PadicAlgCl p) : tateTrace K n (a * y) = a * tateTrace K n y :=
   normTrace_mul_of_mem _ ha y
 
+/- English proof (translation)
+The claim follows from `normTrace_cyclotomicLayer_gal K σ n y`.
+-/
 theorem tateTrace_gal (σ : Gal(PadicAlgCl p/K)) (n : ℕ) (y : PadicAlgCl p) :
     tateTrace K n (σ y) = σ (tateTrace K n y) :=
   normTrace_cyclotomicLayer_gal K σ n y
 
+/- English proof (translation)
+The claim follows from `normTrace_normTrace_of_le (cyclotomicLayer_mono K h) y`.
+-/
 theorem tateTrace_tateTrace_of_le {n n' : ℕ} (h : n ≤ n') (y : PadicAlgCl p) :
     tateTrace K n (tateTrace K n' y) = tateTrace K n y :=
   normTrace_normTrace_of_le (cyclotomicLayer_mono K h) y
 
+/- English proof (translation)
+Use `⟨p * ∑ i, ‖towerVec K i‖ * ‖towerDualVec K i‖, mul_nonneg (Nat.cast_nonneg _) (Finset.sum_nonneg fun i _ => by positivity), ?_⟩` and prove the remaining obligations. Introduce `n hn x hx`. Take `⟨m, hm⟩` from `(mem_cyclotomicLimit K).1 hx`. Establish `hm' : x ∈ cyclotomicLayer K (max m n)` using `cyclotomicLayer_mono K (le_max_left m n) hm`. Use `norm_normTrace_cyclotomicLayer_le K (Nat.cast_nonneg p) ?_ hn (le_max_right m n) hm'` and prove the remaining obligations.
+
+Introduce `n' m' hn' hnm' y hy`. Conclude with `norm_normTrace_cycl_le (le_trans (by norm_num) ((two_le_stableIndex K).trans hn')) hnm' hy`.
+-/
 theorem exists_norm_tateTrace_le_of_stableIndex_le :
     ∃ c : ℝ, 0 ≤ c ∧ ∀ n, stableIndex K ≤ n → ∀ x ∈ cyclotomicLimit K,
       ‖tateTrace K n x‖ ≤ c * ‖x‖ := by
@@ -51,6 +74,11 @@ theorem exists_norm_tateTrace_le_of_stableIndex_le :
   exact norm_normTrace_cycl_le
     (le_trans (by norm_num) ((two_le_stableIndex K).trans hn')) hnm' hy
 
+/- English proof (translation)
+Set `S : Submodule ℚ_[p] (PadicAlgCl p)` to `(cyclotomicLayer K N).toSubalgebra.toSubmodule`. Use `haveI : FiniteDimensional ℚ_[p] S := inferInstanceAs (FiniteDimensional ℚ_[p] (cyclotomicLayer K N))`. Set `f : S →ₗ[ℚ_[p]] PadicAlgCl p` to `((normTraceₗ (cyclotomicLayer K n)).restrictScalars ℚ_[p]).comp S.subtype`. Set `f'` to `LinearMap.toContinuousLinearMap f`. Use `⟨‖f'‖, ContinuousLinearMap.opNorm_nonneg f', fun x hx => ?_⟩` and prove the remaining obligations.
+
+Use `f'.le_opNorm ⟨x, hx⟩` as an intermediate fact. Conclude with `this`.
+-/
 theorem exists_norm_tateTrace_le_on_layer (n N : ℕ) :
     ∃ c : ℝ, 0 ≤ c ∧ ∀ x ∈ cyclotomicLayer K N, ‖tateTrace K n x‖ ≤ c * ‖x‖ := by
   let S : Submodule ℚ_[p] (PadicAlgCl p) := (cyclotomicLayer K N).toSubalgebra.toSubmodule
@@ -63,6 +91,15 @@ theorem exists_norm_tateTrace_le_on_layer (n N : ℕ) :
   have := f'.le_opNorm ⟨x, hx⟩
   exact this
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `exists_norm_tateTrace_le_of_stableIndex_le K`. Use `choose c' hc'0 hc' using fun n => exists_norm_tateTrace_le_on_layer K n (stableIndex K)`. Use `⟨c * (1 + ∑ n ∈ Finset.range (stableIndex K), c' n), by` and prove the remaining obligations. Establish `: 0 ≤ ∑ n ∈ Finset.range (stableIndex K), c' n` using `Finset.sum_nonneg fun n _ => hc'0 n`. Use the proof step `positivity, ?_⟩`.
+
+Introduce `n x hx`. Establish `hs : 0 ≤ ∑ n ∈ Finset.range (stableIndex K), c' n` using `Finset.sum_nonneg fun n _ => hc'0 n`. Distinguish the cases in `hn : stableIndex K ≤ n`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hc0 hs) (norm_nonneg x)]`.
+
+Use `push_neg at hn`. Establish `hle : c' n ≤ ∑ n ∈ Finset.range (stableIndex K), c' n` using `Finset.single_le_sum (fun n _ => hc'0 n) (Finset.mem_range.2 hn)`. Rewrite using `[← tateTrace_tateTrace_of_le K hn.le x]`. Combine the equalities or inequalities in the displayed calculation. Use `norm_nonneg x` as an intermediate fact.
+
+Use polynomial arithmetic with `[mul_nonneg hc0 this]`.
+-/
 theorem exists_norm_tateTrace_le :
     ∃ c : ℝ, 0 ≤ c ∧ ∀ n, ∀ x ∈ cyclotomicLimit K, ‖tateTrace K n x‖ ≤ c * ‖x‖ := by
   obtain ⟨c, hc0, hc⟩ := exists_norm_tateTrace_le_of_stableIndex_le K
@@ -89,8 +126,14 @@ theorem exists_norm_tateTrace_le :
 
 def tateBound : ℝ := Classical.choose (exists_norm_tateTrace_le K)
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (exists_norm_tateTrace_le K)).1`.
+-/
 theorem tateBound_nonneg : 0 ≤ tateBound K := (Classical.choose_spec (exists_norm_tateTrace_le K)).1
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (exists_norm_tateTrace_le K)).2 n x hx`.
+-/
 theorem norm_tateTrace_le (n : ℕ) {x : PadicAlgCl p} (hx : x ∈ cyclotomicLimit K) :
     ‖tateTrace K n x‖ ≤ tateBound K * ‖x‖ :=
   (Classical.choose_spec (exists_norm_tateTrace_le K)).2 n x hx
@@ -105,48 +148,78 @@ def tateKernel (n : ℕ) : Set ℂ_[p] := kernelInCp (cyclotomicLimit K) (tateTr
 
 variable {K}
 
+/- English proof (translation)
+Introduce `y _ z _` and use `tateTrace_add K n y z`.
+-/
 theorem tateTrace_add_of_mem (n : ℕ) : ∀ y ∈ cyclotomicLimit K, ∀ z ∈ cyclotomicLimit K,
     tateTrace K n (y + z) = tateTrace K n y + tateTrace K n z :=
   fun y _ z _ => tateTrace_add K n y z
 
+/- English proof (translation)
+Introduce `_ hy` and use `norm_tateTrace_le K n hy`.
+-/
 theorem norm_tateTrace_le_of_mem (n : ℕ) : ∀ y ∈ cyclotomicLimit K,
     ‖tateTrace K n y‖ ≤ tateBound K * ‖y‖ :=
   fun _ hy => norm_tateTrace_le K n hy
 
+/- English proof (translation)
+The claim follows from `norm_extendToClosure_le (tateTrace_add_of_mem n) (norm_tateTrace_le_of_mem n) hx`.
+-/
 theorem norm_tateTraceHat_le (n : ℕ) {x : ℂ_[p]} (hx : x ∈ cyclotomicCompletion K) :
     ‖tateTraceHat K n x‖ ≤ tateBound K * ‖x‖ :=
   norm_extendToClosure_le (tateTrace_add_of_mem n) (norm_tateTrace_le_of_mem n) hx
 
+/- English proof (translation)
+The claim follows from `(extendToClosure_add (tateTrace_add_of_mem n) (norm_tateTrace_le_of_mem n) hx hx').2`.
+-/
 theorem tateTraceHat_add (n : ℕ) {x x' : ℂ_[p]} (hx : x ∈ cyclotomicCompletion K)
     (hx' : x' ∈ cyclotomicCompletion K) :
     tateTraceHat K n (x + x') = tateTraceHat K n x + tateTraceHat K n x' :=
   (extendToClosure_add (tateTrace_add_of_mem n) (norm_tateTrace_le_of_mem n) hx hx').2
 
+/- English proof (translation)
+The claim follows from `extendToClosure_mem (tateTrace_add_of_mem n) (norm_tateTrace_le_of_mem n) (fun y _ => tateTrace_mem K n y) hx`.
+-/
 theorem tateTraceHat_mem (n : ℕ) {x : ℂ_[p]} (hx : x ∈ cyclotomicCompletion K) :
     tateTraceHat K n x ∈
       ((↑) : PadicAlgCl p → ℂ_[p]) '' (cyclotomicLayer K n : Set (PadicAlgCl p)) :=
   extendToClosure_mem (tateTrace_add_of_mem n) (norm_tateTrace_le_of_mem n)
     (fun y _ => tateTrace_mem K n y) hx
 
+/- English proof (translation)
+The claim follows from `extendToClosure_coe_of_mem (tateTrace_add_of_mem n) (norm_tateTrace_le_of_mem n) (cyclotomicLayer_le_cyclotomicLimit K n) (fun a ha => tateTrace_of_mem K ha) ha`.
+-/
 theorem tateTraceHat_coe_of_mem {n : ℕ} {a : PadicAlgCl p} (ha : a ∈ cyclotomicLayer K n) :
     tateTraceHat K n (a : ℂ_[p]) = a :=
   extendToClosure_coe_of_mem (tateTrace_add_of_mem n) (norm_tateTrace_le_of_mem n)
     (cyclotomicLayer_le_cyclotomicLimit K n) (fun a ha => tateTrace_of_mem K ha) ha
 
+/- English proof (translation)
+The claim follows from `extendToClosure_mul (tateTrace_add_of_mem n) (norm_tateTrace_le_of_mem n) (cyclotomicLayer_le_cyclotomicLimit K n) (fun a ha y _ => tateTrace_mul_of_mem K ha y) ha hx`.
+-/
 theorem tateTraceHat_mul {n : ℕ} {a : PadicAlgCl p} (ha : a ∈ cyclotomicLayer K n) {x : ℂ_[p]}
     (hx : x ∈ cyclotomicCompletion K) :
     tateTraceHat K n ((a : ℂ_[p]) * x) = (a : ℂ_[p]) * tateTraceHat K n x :=
   extendToClosure_mul (tateTrace_add_of_mem n) (norm_tateTrace_le_of_mem n)
     (cyclotomicLayer_le_cyclotomicLimit K n) (fun a ha y _ => tateTrace_mul_of_mem K ha y) ha hx
 
+/- English proof (translation)
+The claim follows from `map_mem_cyclotomicLimit K (σ.restrictScalars ℚ_[p]) (fun x hx => σ.commutes ⟨x, hx⟩) hy`.
+-/
 theorem gal_mem_cyclotomicLimit (σ : Gal(PadicAlgCl p/K)) {y : PadicAlgCl p}
     (hy : y ∈ cyclotomicLimit K) : σ y ∈ cyclotomicLimit K :=
   map_mem_cyclotomicLimit K (σ.restrictScalars ℚ_[p]) (fun x hx => σ.commutes ⟨x, hx⟩) hy
 
+/- English proof (translation)
+The claim follows from `smul_mem_closureInCp σ (fun _ hy => gal_mem_cyclotomicLimit σ hy) hx`.
+-/
 theorem smul_mem_cyclotomicCompletion (σ : Gal(PadicAlgCl p/K)) {x : ℂ_[p]}
     (hx : x ∈ cyclotomicCompletion K) : σ • x ∈ cyclotomicCompletion K :=
   smul_mem_closureInCp σ (fun _ hy => gal_mem_cyclotomicLimit σ hy) hx
 
+/- English proof (translation)
+The claim follows from `extendToClosure_smul (tateTrace_add_of_mem n) (norm_tateTrace_le_of_mem n) σ (fun _ hy => gal_mem_cyclotomicLimit σ hy) (fun y _ => tateTrace_gal K σ n y) hx`.
+-/
 theorem tateTraceHat_smul (n : ℕ) (σ : Gal(PadicAlgCl p/K)) {x : ℂ_[p]}
     (hx : x ∈ cyclotomicCompletion K) : tateTraceHat K n (σ • x) = σ • tateTraceHat K n x :=
   extendToClosure_smul (tateTrace_add_of_mem n) (norm_tateTrace_le_of_mem n) σ

@@ -22,6 +22,13 @@ section Pt
 
 variable {K : Type} [Field K] {σ : Type} {m : ℕ}
 
+/- English proof (translation)
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `le_antisymm (IsLocalRing.le_maximalIdeal p.isPrime.ne_top) fun a ha => ?_` and prove the remaining obligations. Establish `hn : IsNilpotent a`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `h0 : MvPolynomial.constantCoeff q = 0`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp ha (isUnit_of_jetAug _ (by rwa [jetAug_mk]))`. Use `jet_nilpotent_of_orig K σ m (sub_const_mem_orig (R := K) q)` as an intermediate fact. Rewrite `this` using `[h0, map_zero, sub_zero]`. Then use the resulting hypothesis. Take `⟨n, hn⟩` from `hn`.
+
+Conclude with `p.isPrime.mem_of_pow_mem n (hn ▸ p.asIdeal.zero_mem)`.
+-/
 theorem jet_pt_eq (p : PrimeSpectrum (Jet K σ m)) : p = IsLocalRing.closedPoint (Jet K σ m) := by
   apply PrimeSpectrum.ext
   refine le_antisymm (IsLocalRing.le_maximalIdeal p.isPrime.ne_top) fun a ha => ?_
@@ -37,6 +44,9 @@ theorem jet_pt_eq (p : PrimeSpectrum (Jet K σ m)) : p = IsLocalRing.closedPoint
 
 end Pt
 
+/- English proof (translation)
+Establish `hy : φ y ∈ U` using `h trivial`. Rewrite using `[Scheme.Hom.appLE, CommRingCat.comp_apply, gs_res (𝟙 Y) y h trivial, gs_pull (𝟙 Y) φ y U hy, Category.id_comp]`.
+-/
 theorem gs_appLE_top {Y X : Scheme.{0}} (φ : Y ⟶ X) (y : Y) (U : X.Opens) (h : ⊤ ≤ φ ⁻¹ᵁ U) (a : Γ(X, U)) :
     gs φ y U a = gs (𝟙 Y) y ⊤ ((φ.appLE U ⊤ h).hom a) := by
   have hy : φ y ∈ U := h trivial
@@ -66,6 +76,9 @@ def pullSecLP (s : LB.Sec (LPow A L a T)) : LB.Sec (LPow A L a T') where
       (gm_linComb L (fun _ : Fin 1 => (snd T' A).left) (fun _ => a) (𝟙 _) y i j hy.1 hy.2).symm)
     simp only [trF, Category.assoc, ← Over.comp_left, hh]
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem isPullSec_pullSecLP (s : LB.Sec (LPow A L a T)) : IsPullSec A L a h hh s (pullSecLP A L a h hh s) :=
   fun _ => rfl
 
@@ -86,14 +99,29 @@ def ePt (z : Fin g → ℂ) : Over.mk x0 ⟶ G := Over.homMk (e z) (he z)
 
 def lftJ (z : Fin g → ℂ) : Sp ℂ ⟶ (Over.mk x0 ⊗ G).left := (ptSecT G (ePt e he z)).left
 
+/- English proof (translation)
+Rewrite using `[lftJ, ← Over.comp_left, ptSecT, lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem lftJ_snd (z : Fin g → ℂ) : lftJ e he z ≫ (snd (Over.mk x0) G).left = e z := by
   rw [lftJ, ← Over.comp_left, ptSecT, lift_snd]
   rfl
 
+/- English proof (translation)
+Rewrite using `[lftJ, ← Over.comp_left, ptSecT, lift_fst]`. Both sides reduce to the same expression.
+-/
 theorem lftJ_fst (z : Fin g → ℂ) : lftJ e he z ≫ (fst (Over.mk x0) G).left = 𝟙 _ := by
   rw [lftJ, ← Over.comp_left, ptSecT, lift_fst]
   rfl
 
+/- English proof (translation)
+Establish `h1 : jetPt (lftJ e he) holP m ≫ (Over.mk x0 ⊗ G).hom = spMap (algebraMap ℂ (Jet ℂ (Fin 1 × Fin g) m)) ≫ x0` using `jetPt_over (lftJ e he) holP _ x0 (fun z => Over.w (ptSecT G (ePt e he z))) m`. Set `φ : overAt x0 (Jet ℂ (Fin 1 × Fin g) m) ⟶ Over.mk x0 ⊗ G` to `Over.homMk (jetPt (lftJ e he) holP m) h1`. It suffices to establish `hs : ptSecT G (xJ e hol he m) ≫ jB m ▷ G = φ by`. Rewrite using `[← Over.comp_left, hs]`. Both sides reduce to the same expression.
+
+Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, whiskerRight_fst, ptSecT, lift_fst_assoc, Category.id_comp]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left]`. Use `show spMap (algebraMap ℂ (Jet ℂ (Fin 1 × Fin g) m)) = jetPt (lftJ e he) holP m ≫ (fst (Over.mk x0) G).left`.
+
+Rewrite using `[jetPt_comp (lftJ e he) holP _ (fun _ => 𝟙 (Sp ℂ)) (isHolFam_const _) (lftJ_fst e he) m, ← jetPt_const, Category.comp_id]`. Rewrite using `[Category.assoc, whiskerRight_snd, ptSecT, lift_snd]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left]`. Use `show jetPt e hol m = jetPt (lftJ e he) holP m ≫ (snd (Over.mk x0) G).left`.
+
+Rewrite using `[jetPt_comp (lftJ e he) holP _ e hol (lftJ_snd e he) m]`.
+-/
 theorem lftJ_eq (holP : IsHolFam (lftJ e he)) (m : ℕ) :
     (ptSecT G (xJ e hol he m)).left ≫ (jB (x0 := x0) (g := g) m ▷ G).left = jetPt (lftJ e he) holP m := by
   have h1 : jetPt (lftJ e he) holP m ≫ (Over.mk x0 ⊗ G).hom =
@@ -116,6 +144,27 @@ theorem lftJ_eq (holP : IsHolFam (lftJ e he)) (m : ℕ) :
     show jetPt e hol m = jetPt (lftJ e he) holP m ≫ (snd (Over.mk x0) G).left
     rw [jetPt_comp (lftJ e he) holP _ e hol (lftJ_snd e he) m]
 
+/- English proof (translation)
+Introduce `j`. Take `⟨j0, rfl⟩ : ∃ j0, j = fun _ => j0` from `⟨j 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Use `fn_ext fun x hx => ?_` and prove the remaining obligations. Set `Φ` to `(ptSecT G (xJ e hol he m)).left`. Set `Ψ` to `(jB (x0 := x0) (g := g) m ▷ G).left`.
+
+Set `U` to `(LPow G L (k : ℤ) (Over.mk x0)).U (fun _ => j0)`. Establish `key : Φ ≫ Ψ = jetPt (lftJ e he) holP m` using `lftJ_eq e hol he holP m`. Establish `hW : ⊤ ≤ LB.wchart L (fun _ : Fin 1 => (xJ e hol he m).left) (fun _ => j0)` using `fun p _ => by`. Establish `e1` using `jet_pt_eq (K := ℂ) (σ := Fin 1 × Fin g) (m := m) p`. Establish `e2` using `jet_pt_eq (K := ℂ) (σ := Fin 1 × Fin g) (m := m) x`.
+
+Rewrite using `[e1, ← e2]`. Conclude with `hx`. Establish `hmem1 : ∀ p, Φ p ∈ (LPow G L (k : ℤ) (overAt x0 (Jet ℂ (Fin 1 × Fin g) m))).U (fun _ => j0)` using `fun p => val_le G L (xJ e hol he m) (fun _ => j0) (hW (show p ∈ (⊤ : (Sp (Jet ℂ (Fin 1 × Fin g) m)).Opens) from trivial))`. Establish `hmem : ∀ p, Ψ (Φ p) ∈ U` using `fun p => chart_le_res G L (T := Over.mk x0) (T' := overAt x0 (Jet ℂ (Fin 1 × Fin g) m)) (jB (x0 := x0) (g := g) m ▷ G) (whiskerRight_snd _ _) (k : ℤ) (fun _ => j0) (hmem1 p)`. Establish `hU' : ⊤ ≤ jetPt (lftJ e he) holP m ⁻¹ᵁ U` using `fun p _ => by`.
+
+Establish `h2` using `hmem p`. Rewrite `h2` using `[← Scheme.Hom.comp_apply, key]`. Conclude with `h2`. Establish `hU : lftJ e he 0 cpt ∈ U`. Establish `h3 : jetPt (lftJ e he) holP m (IsLocalRing.closedPoint _) ∈ U` using `hU' trivial`.
+
+Rewrite `h3` using `[jetPt_closedPoint]`. Then use the resulting hypothesis. Establish `hU0 : e 0 cpt ∈ L.U j0`. Establish `h4 : (snd (Over.mk x0) G).left (lftJ e he 0 cpt) ∈ L.U j0` using `Set.mem_iInter.1 hU 0`. Rewrite `h4` using `[← Scheme.Hom.comp_apply, lftJ_snd]`. Then use the resulting hypothesis. Establish `heq : ∀ᶠ z in nhds 0, valAt' (lftJ e he z) U (F.f (fun _ => j0)) = θF z * fr j0 z ^ k` using `(eventually_mem e hol hU0).mono fun z hz => by`.
+
+Rewrite using `[hrd j0 z (lftJ e he z) (lftJ_snd e he z) (lftJ_fst e he z) hz, zpow_natCast]`. Establish `hval : ContDiffAt ℂ ω (fun z => valAt' (lftJ e he z) U (F.f (fun _ => j0))) 0` using `contDiffAt_val (lftJ e he) holP hU _`. Establish `hfrA : ContDiffAt ℂ ω (fr j0) 0` using `(ReciprocityTheory.AnForm.Osgood.osgood g {z | ⊤ ≤ e z ⁻¹ᵁ L.U j0} (fr j0) (hol (L.U j0) 0).1 (hfr j0) 0 (top_le_of_mem hU0)).contDiffAt`. Establish `hfrk : ContDiffAt ℂ ω (fun z => fr j0 z ^ k) 0` using `hfrA.pow k`. Establish `hθ : ContDiffAt ℂ ω θF 0`.
+
+Use `(hval.div hfrk (pow_ne_zero _ (hfr0 j0 0 (top_le_of_mem hU0)))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [heq, eventually_mem e hol hU0] with z hz hz'`. Conclude with `eq_div_of_mul_eq (pow_ne_zero _ (hfr0 j0 z hz')) hz.symm`. Establish `hjet : jetOf m (fun z => valAt' (lftJ e he z) U (F.f (fun _ => j0))) = jetOf m θF * jetOf m (fun z => fr j0 z ^ k)`. Rewrite using `[jetOf_congr m heq]`.
+
+Conclude with `jetOf_mul m hθ hfrk`. Establish `s1 : gs (𝟙 (overAt x0 (Jet ℂ (Fin 1 × Fin g) m)).left) x (LB.wchart L (fun _ : Fin 1 => (xJ e hol he m).left) (fun _ => j0)) ((((overAt x0 (Jet ℂ (Fin 1 × Fin g) m)).left).presheaf.map (homOfLE (val_le G L (xJ e hol he m) (fun _ => j0))).op).hom (((ptSecT G (xJ e hol he m)).left. …` using `(gs_res (𝟙 _) x (val_le G L (xJ e hol he m) (fun _ => j0)) hx _).trans ((gs_pull (𝟙 _) Φ x _ (hmem1 x) _).trans (by rw [Category.id_comp]))`. Establish `s2 : gs Φ x ((LPow G L (k : ℤ) (overAt x0 (Jet ℂ (Fin 1 × Fin g) m))).U (fun _ => j0)) (F'.f (fun _ => j0)) = gs (Φ ≫ Ψ) x U (F.f (fun _ => j0))`. Rewrite using `[hF' (fun _ => j0)]`. Conclude with `(gs_res Φ x (chart_le_res G L (T := Over.mk x0) (T' := overAt x0 (Jet ℂ (Fin 1 × Fin g) m)) (jB (x0 := x0) (g := g) m ▷ G) (whiskerRight_snd _ _) (k : ℤ) (fun _ => j0)) (hmem1 x) _).trans (gs_pull Φ Ψ x U (hmem x) _)`.
+
+Establish `s3 : gs (Φ ≫ Ψ) x U (F.f (fun _ => j0)) = gs (𝟙 (overAt x0 (Jet ℂ (Fin 1 × Fin g) m)).left) x ⊤ (toΓ _ (jetOf m θF * jetOf m (fun z => fr j0 z ^ k)))`. Rewrite using `[key, gs_appLE_top _ x U hU', jetPt_appLE (lftJ e he) holP m U hU hU', CommRingCat.comp_apply, jetψ_apply, ← hjet]`. Both sides reduce to the same expression. Establish `r1 : gs (𝟙 (overAt x0 (Jet ℂ (Fin 1 × Fin g) m)).left) x (LB.wchart L (fun _ : Fin 1 => (xJ e hol he m).left) (fun _ => j0)) ((((overAt x0 (Jet ℂ (Fin 1 × Fin g) m)).left).presheaf.map (homOfLE le_top).op).hom (toΓ _ (jetOf m θF)) * (τ.s (fun _ => j0)).val) = gs (𝟙 (overAt x0 (Je …`. Use `(gs_mul (𝟙 _) x _ hx _ _).trans ?_` and prove the remaining obligations.
+
+Use `(congrArg₂ (· * ·) (gs_res (𝟙 _) x le_top hx _) ((gs_res (𝟙 _) x hW trivial (τ.s (fun _ => j0)).val).symm.trans (congrArg (gs (𝟙 (overAt x0 (Jet ℂ (Fin 1 × Fin g) m)).left) x ⊤) (hτ _ hW)))).trans ?_` and prove the remaining obligations. Rewrite using `[← gs_mul (𝟙 _) x ⊤ trivial, ← map_mul]`. Conclude with `(s1.trans (s2.trans s3)).trans r1.symm`.
+-/
 theorem isValueAt_jet (holP : IsHolFam (lftJ e he)) (m k : ℕ)
     (F : LB.Sec (LPow G L (k : ℤ) (Over.mk x0)))
     (F' : LB.Sec (LPow G L (k : ℤ) (overAt x0 (Jet ℂ (Fin 1 × Fin g) m))))
@@ -211,6 +260,11 @@ theorem isValueAt_jet (holP : IsHolFam (lftJ e he)) (m k : ℕ)
     rw [← gs_mul (𝟙 _) x ⊤ trivial, ← map_mul]
   exact (s1.trans (s2.trans s3)).trans r1.symm
 
+/- English proof (translation)
+Establish `hl : lftJ e he = fun z => Limits.pullback.lift (f` using `x0) (g := G.hom) (𝟙 (Sp ℂ)) (e z) ((Category.id_comp x0).trans (he z).symm) := by`. Use function extensionality and compare the values at `z`. Rewrite using `[lftJ, ptSecT, Over.lift_left]`. Both sides reduce to the same expression. Rewrite using `[hl]`.
+
+Conclude with `GlobalTheory.AnVal.isHolFam_pullback_lift X (Sp ℂ) G.left x0 G.hom g (fun _ => 𝟙 (Sp ℂ)) e x0 (fun _ => Category.id_comp x0) he (isHolFam_const _) hol`.
+-/
 theorem isHolFam_lftJ (hol : IsHolFam e) : IsHolFam (lftJ e he) := by
   have hl : lftJ e he = fun z => Limits.pullback.lift (f := x0) (g := G.hom) (𝟙 (Sp ℂ)) (e z)
       ((Category.id_comp x0).trans (he z).symm) := by
@@ -227,9 +281,17 @@ def onePr (g : ℕ) : (Fin (1 * g) → ℂ) →L[ℂ] (Fin g → ℂ) :=
   ContinuousLinearMap.pi fun j => ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (1 * g) => ℂ)
     (finProdFinEquiv ((0 : Fin 1), j))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem onePr_apply {g : ℕ} (v : Fin (1 * g) → ℂ) (j : Fin g) : onePr g v j = v (finProdFinEquiv ((0 : Fin 1), j)) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[anLin, Finset.sum_eq_single (finProdFinEquiv ((0 : Fin 1), p.2))]`. Rewrite using `[onePr_apply, Pi.single_eq_same, map_one]`. Conclude with `_root_.one_mul _`. Introduce `k _ hk`. Rewrite using `[onePr_apply, Pi.single_eq_of_ne (Ne.symm hk), map_zero, zero_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem anLin_onePr {g : ℕ} (p : Fin 1 × Fin g) :
     anLin (onePr g) p = MvPolynomial.X ((0 : Fin 1), finProdFinEquiv ((0 : Fin 1), p.2)) := by
   rw [anLin, Finset.sum_eq_single (finProdFinEquiv ((0 : Fin 1), p.2))]
@@ -239,6 +301,11 @@ theorem anLin_onePr {g : ℕ} (p : Fin 1 × Fin g) :
     rw [onePr_apply, Pi.single_eq_of_ne (Ne.symm hk), map_zero, zero_mul]
   · simp
 
+/- English proof (translation)
+Establish `h1 : (fun v => (fun w : Fin 1 → Fin g → ℂ => f (w 0)) (colsOf 1 g v)) = f ∘ onePr g` using `rfl`. Rewrite using `[jetN, h1, jetOf_comp_anLin m hf, renN, anJetMap_comp _ _ _ _ (fun p => MvPolynomial.X p) (fun _ => X_mem_orig _) (fun p => by`. Take `⟨a, j⟩` from `p`. Establish `ha : a = 0` using `Subsingleton.elim _ _`. Substitute `ha` using the available equality.
+
+Simplify using `only [anLin_onePr, MvPolynomial.aeval_X, Equiv.symm_apply_apply])]`. Take `⟨p, hp⟩` from `Ideal.Quotient.mk_surjective (jetOf m f)`. Rewrite using `[← hp]`. Use `show Ideal.Quotient.mk _ (MvPolynomial.aeval MvPolynomial.X p) = _`. Rewrite using `[MvPolynomial.aeval_X_left_apply]`.
+-/
 theorem jetN_one {g : ℕ} (m : ℕ) {f : (Fin g → ℂ) → ℂ} (hf : ContDiffAt ℂ ω f 0) :
     jetN (n := 1) m (fun w => f (w 0)) = jetOf m f := by
   have h1 : (fun v => (fun w : Fin 1 → Fin g → ℂ => f (w 0)) (colsOf 1 g v)) = f ∘ onePr g := rfl
@@ -253,6 +320,13 @@ theorem jetN_one {g : ℕ} (m : ℕ) {f : (Fin g → ℂ) → ℂ} (hf : ContDif
   show Ideal.Quotient.mk _ (MvPolynomial.aeval MvPolynomial.X p) = _
   rw [MvPolynomial.aeval_X_left_apply]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ y g ty el Φ m k F θ τ hF hτ`. Establish `he : ∀ z, (Φ.e z).left ≫ Xo.univ.t.G.hom = y.x` using `fun z => Over.w (Φ.e z)`. Use `⟨pullSecLP _ _ _ _ (whiskerRight_snd _ _) F, isPullSec_pullSecLP _ _ _ _ _ F, ?_⟩` and prove the remaining obligations. Use `isValueAt_jet Xo.univ.t.PP.L (fun z => (Φ.e z).left) Φ.hol he (isHolFam_lftJ _ he Φ.hol) m k F _ (isPullSec_pullSecLP _ _ _ _ _ F) θ Φ.fr Φ.fr_hol Φ.fr_ne hF τ fun j h => ?_` and prove the remaining obligations. Establish `hmem : jetPt (fun z => (Φ.e z).left) Φ.hol m (IsLocalRing.closedPoint _) ∈ Xo.univ.t.PP.L.U (j 0)` using `Set.mem_iInter.1 (h trivial) 0`.
+
+Rewrite `hmem` using `[jetPt_closedPoint]`. Establish `hA : ContDiffAt ℂ ω (Φ.fr (j 0)) 0` using `(ReciprocityTheory.AnForm.Osgood.osgood g {z | ⊤ ≤ (Φ.e z).left ⁻¹ᵁ Xo.univ.t.PP.L.U (j 0)} (Φ.fr (j 0)) (Φ.hol (Xo.univ.t.PP.L.U (j 0)) 0).1 (Φ.fr_hol (j 0)) 0 (top_le_of_mem hmem)).contDiffAt`. Use `(hτ.2 j h).trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[← jetN_one m (hA.pow k)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules.
+-/
 theorem isValueAt_jetPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] (y : FrPt Xo c ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (el : Fin g ≃ Lt1 Dw) (Φ : AnPt y g ty el), ∀ (m k : ℕ) (F : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L k (ptO Xo y.x))) (θ : (Fin g → ℂ) → ℂ) (τ : LB.Gen (LB.LinComb Xo.univ.t.PP.L (K := Fin 1) (fun _ => (Φ.jx m).left) fun _ => (k : ℤ))), Φ.toAnFr.Rd k F θ → Φ.toAnFr.JetRd (n := 1) m (fun _ : Fin 1 => (Φ.jx m).left) (fun _ => (k : ℤ)) τ (fun _ => LinearMap.proj 0) → ∃ F' : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L k (jO y g m 1)), IsPullSec Xo.univ.t.G Xo.univ.t.PP.L k (jBase y g m 1 ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F F' ∧ IsValueAt Xo.univ.t.G Xo.univ.t.PP.L k F' (Φ.jx m) τ (toΓ _ (jetOf m θ)) := by
   intro E _ _ _ H Dw l Xo c _ y g ty el Φ m k F θ τ hF hτ
   have he : ∀ z, (Φ.e z).left ≫ Xo.univ.t.G.hom = y.x := fun z => Over.w (Φ.e z)

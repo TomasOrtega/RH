@@ -13,6 +13,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
   GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.CuspBlock GlobalTheory.LFun.SplitTie
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ _ σ hcm n J hJ r X Y hW K hK' S l d h ι hι hd h1 h2 h3 ψ hψ g₀ _ f hf`. Conclude with `hK.leviBlockCentreFinite F E σ hcm n J hJ r X Y hW K hK' S l d h ι _ _ rfl rfl hι hd h1 h2 h3 ψ hψ.1 g₀ f hf`.
+-/
 theorem GlobalTheory.CuspBlockZfin.zfin_of_classicalTheorems : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (r : ℕ) (Xf Yf : Matrix (Fin n) (Fin r) E), IsWittFrame σ J Xf Yf → ∀ (K : Subgroup (GAd σ J)), IsMaxCpt σ J K →

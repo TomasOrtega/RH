@@ -14,6 +14,9 @@ section Padic
 
 variable {ℓ : ℕ} [hℓ : Fact ℓ.Prime]
 
+/- English proof (translation)
+The claim follows from `PadicInt.denseRange_natCast.induction_on t (hH.preimage (continuous_const.mul continuous_id)) fun k => by show x * (k : ℤ_[ℓ]) ∈ H rw [mul_comm, ← nsmul_eq_mul] exact H.nsmul_mem hx k`.
+-/
 theorem mul_mem_of_isClosed (H : AddSubgroup ℤ_[ℓ]) (hH : IsClosed (H : Set ℤ_[ℓ])) {x : ℤ_[ℓ]}
     (hx : x ∈ H) (t : ℤ_[ℓ]) : x * t ∈ H :=
   PadicInt.denseRange_natCast.induction_on t (hH.preimage (continuous_const.mul continuous_id))
@@ -22,6 +25,13 @@ theorem mul_mem_of_isClosed (H : AddSubgroup ℤ_[ℓ]) (hH : IsClosed (H : Set 
       rw [mul_comm, ← nsmul_eq_mul]
       exact H.nsmul_mem hx k
 
+/- English proof (translation)
+Take `⟨u, hu⟩ : ∃ u : ℤ_[ℓ]ˣ, x = u * (ℓ : ℤ_[ℓ]) ^ x.valuation` from `⟨_, PadicInt.unitCoeff_spec hx0⟩`. Use `set v := x.valuation`. Rewrite using `[Metric.isOpen_iff]`. Introduce `y hy`. Use `⟨(ℓ : ℝ) ^ (-(v : ℤ)), zpow_pos (by exact_mod_cast hℓ.out.pos) _, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : w - y ∈ Ideal.span {(ℓ : ℤ_[ℓ]) ^ v}` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ _).1 (by`. Rewrite using `[← dist_eq_norm]`. Conclude with `(Metric.mem_ball.1 hw).le)`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 h1`. Establish `h2 : x * (↑u⁻¹ * t) = w - y`.
+
+Rewrite using `[← ht, hu, show (u : ℤ_[ℓ]) * (ℓ : ℤ_[ℓ]) ^ v * (↑u⁻¹ * t) = ((u : ℤ_[ℓ]) * ↑u⁻¹) * t * (ℓ : ℤ_[ℓ]) ^ v by ring, Units.mul_inv, one_mul]`. Establish `h3 : w - y ∈ H` using `h2 ▸ mul_mem_of_isClosed H hH hx _`. Use `H.add_mem h3 hy` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem isOpen_of_isClosed_of_ne_zero (H : AddSubgroup ℤ_[ℓ]) (hH : IsClosed (H : Set ℤ_[ℓ]))
     {x : ℤ_[ℓ]} (hx : x ∈ H) (hx0 : x ≠ 0) : IsOpen (H : Set ℤ_[ℓ]) := by
   obtain ⟨u, hu⟩ : ∃ u : ℤ_[ℓ]ˣ, x = u * (ℓ : ℤ_[ℓ]) ^ x.valuation :=
@@ -41,6 +51,9 @@ theorem isOpen_of_isClosed_of_ne_zero (H : AddSubgroup ℤ_[ℓ]) (hH : IsClosed
   have := H.add_mem h3 hy
   rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+The claim follows from `Set.infinite_of_injective_forall_mem (f := fun k : ℕ => k • x) (fun a b hab => by simp only [nsmul_eq_mul] at hab exact Nat.cast_injective (mul_right_cancel₀ hx0 hab)) fun k => H.nsmul_mem hx k`.
+-/
 theorem infinite_of_ne_zero (H : AddSubgroup ℤ_[ℓ]) {x : ℤ_[ℓ]} (hx : x ∈ H) (hx0 : x ≠ 0) :
     (H : Set ℤ_[ℓ]).Infinite :=
   Set.infinite_of_injective_forall_mem (f := fun k : ℕ => k • x)
@@ -55,6 +68,11 @@ section ProfiniteInteger
 
 def factorialPNat (n : ℕ) : ℕ+ := ⟨(n + 1).factorial, Nat.factorial_pos _⟩
 
+/- English proof (translation)
+Rewrite using `[tendsto_subtype_rng, tendsto_pi_nhds]`. Introduce `m`. Use `tendsto_nhds_of_eventually_eq ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (m : ℕ)] with n hn`. Establish `hdvd : (m : ℕ) ∣ (factorialPNat n : ℕ)` using `Nat.dvd_factorial m.pos (by omega)`.
+
+Establish `h` using `ProfiniteInteger.castHom_proj hdvd a`. Rewrite `h` using `[ZMod.castHom_apply, ZMod.cast_eq_val]`. Simplify using `only [ProfiniteInteger.proj_apply] at h`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+-/
 theorem tendsto_natCast (a : ℤ̂) :
     Tendsto (fun n : ℕ => (((ProfiniteInteger.proj (factorialPNat n) a).val : ℕ) : ℤ̂)) atTop
       (𝓝 a) := by
@@ -69,9 +87,15 @@ theorem tendsto_natCast (a : ℤ̂) :
   rw [← h]
   rfl
 
+/- English proof (translation)
+Introduce `a` and use `mem_closure_of_tendsto (tendsto_natCast a) (Eventually.of_forall fun _ => Set.mem_range_self _)`.
+-/
 theorem denseRange_natCast : DenseRange (Nat.cast : ℕ → ℤ̂) := fun a =>
   mem_closure_of_tendsto (tendsto_natCast a) (Eventually.of_forall fun _ => Set.mem_range_self _)
 
+/- English proof (translation)
+The claim follows from `denseRange_natCast.induction_on a (hH.preimage (continuous_id.mul continuous_const)) fun k => by show (k : ℤ̂) * x ∈ H rw [← nsmul_eq_mul] exact H.nsmul_mem hx k`.
+-/
 theorem mul_mem_of_isClosed' (H : AddSubgroup ℤ̂) (hH : IsClosed (H : Set ℤ̂)) {x : ℤ̂}
     (hx : x ∈ H) (a : ℤ̂) : a * x ∈ H :=
   denseRange_natCast.induction_on a (hH.preimage (continuous_id.mul continuous_const))
@@ -89,14 +113,31 @@ def idealOfIsClosed (H : AddSubgroup ℤ̂) (hH : IsClosed (H : Set ℤ̂)) : Id
 noncomputable def primeIdempotent (q : Nat.Primes) : ℤ̂ :=
   ofPadics (Pi.single q 1)
 
+/- English proof (translation)
+The claim follows from `congrFun (toPadics_ofPadics _) q'`.
+-/
 theorem toPadicInt_primeIdempotent (q q' : Nat.Primes) :
     toPadicInt q' (primeIdempotent q) = Pi.single (M := fun q : Nat.Primes => ℤ_[q]) q 1 q' :=
   congrFun (toPadics_ofPadics _) q'
 
+/- English proof (translation)
+Introduce `z` and use `⟨ofPadics (Pi.single q z), by rw [← toPadics_apply, toPadics_ofPadics, Pi.single_eq_same]⟩`.
+-/
 theorem toPadicInt_surjective (q : Nat.Primes) : Function.Surjective (toPadicInt q) := fun z =>
   ⟨ofPadics (Pi.single q z), by
     rw [← toPadics_apply, toPadics_ofPadics, Pi.single_eq_same]⟩
 
+/- English proof (translation)
+Use `choose h hh hhy using hy`. Set `s : Finset Nat.Primes → ℤ̂` to `fun F => ∑ q ∈ F, primeIdempotent q * h q`. Establish `hs : ∀ F, s F ∈ H` using `fun F => H.sum_mem fun q _ => mul_mem_of_isClosed' H hH (hh q) _`. Establish `hcomp : ∀ (F : Finset Nat.Primes) (q' : Nat.Primes), toPadicInt q' (s F) = if q' ∈ F then toPadicInt q' y else 0`. Introduce `F q'`.
+
+Simplify using `only [s, map_sum, map_mul, toPadicInt_primeIdempotent]`. Use `split_ifs with hq'`. Rewrite using `[Finset.sum_eq_single q', Pi.single_eq_same, one_mul, hhy]`. Introduce `b _ hb`. Rewrite using `[Pi.single_eq_of_ne hb.symm, zero_mul]`.
+
+Introduce `h'`. Conclude with `absurd hq' h'`. Use `Finset.sum_eq_zero fun b hb => ?_` and prove the remaining obligations. Rewrite using `[Pi.single_eq_of_ne (by rintro rfl; exact hq' hb), zero_mul]`. Establish `ht : Tendsto (fun F => toPadics (s F)) atTop (𝓝 (toPadics y))`.
+
+Rewrite using `[tendsto_pi_nhds]`. Introduce `q'`. Use `tendsto_nhds_of_eventually_eq ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop {q'}] with F hF`. Rewrite using `[toPadics_apply, hcomp, if_pos (Finset.singleton_subset_iff.1 hF), toPadics_apply]`.
+
+Establish `ht'` using `(continuous_ofPadics.tendsto _).comp ht`. Simplify using `only [Function.comp_def, ofPadics_toPadics] at ht'`. Conclude with `hH.mem_of_tendsto ht' (Eventually.of_forall hs)`.
+-/
 theorem mem_of_forall_toPadicInt (H : AddSubgroup ℤ̂) (hH : IsClosed (H : Set ℤ̂)) {y : ℤ̂}
     (hy : ∀ q : Nat.Primes, ∃ h ∈ H, toPadicInt q h = toPadicInt q y) : y ∈ H := by
   choose h hh hhy using hy
@@ -123,6 +164,19 @@ theorem mem_of_forall_toPadicInt (H : AddSubgroup ℤ̂) (hH : IsClosed (H : Set
   simp only [Function.comp_def, ofPadics_toPadics] at ht'
   exact hH.mem_of_tendsto ht' (Eventually.of_forall hs)
 
+/- English proof (translation)
+Set `I : Ideal ℤ̂` to `idealOfIsClosed H hH`. Establish `hI : ∀ q : Nat.Primes, I.map (toPadicInt q) ≠ ⊥`. Introduce `q hbot`. Take `⟨h, hh, hh0⟩` from `hne q`. Apply `hh0` to reduce the goal to its premises.
+
+Establish `: toPadicInt q h ∈ I.map (toPadicInt q)` using `Ideal.mem_map_of_mem _ hh`. Rewrite `this` using `[hbot, Ideal.mem_bot]`. Then use the resulting hypothesis. Use `choose v hv using fun q => PadicInt.ideal_eq_span_pow_p (hI q)`. Establish `hmem : ∀ (q : Nat.Primes) (z : ℤ_[q]), (∃ h ∈ H, toPadicInt q h = z) ↔ (q : ℤ_[q]) ^ v q ∣ z`. Introduce `q z`.
+
+Rewrite using `[← Ideal.mem_span_singleton, ← hv q, Ideal.mem_map_iff_of_surjective _ (toPadicInt_surjective q)]`. Both sides reduce to the same expression. Set `g : ℤ̂` to `ofPadics fun q => (q : ℤ_[q]) ^ v q`. Establish `hg : ∀ q : Nat.Primes, toPadicInt q g = (q : ℤ_[q]) ^ v q` using `fun q => congrFun (toPadics_ofPadics _) q`. Use `⟨g, fun q => by rw [hg]; exact pow_ne_zero _ (Nat.cast_ne_zero.2 q.2.ne_zero), ?_⟩` and prove the remaining obligations.
+
+Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy choose t ht using fun q => (hmem q (toPadicInt q y)).1 ⟨y, hy, rfl⟩`. Use `⟨ofPadics t, ext_toPadicInt fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hg, ht q]`.
+
+Use `congr 1`. Conclude with `(congrFun (toPadics_ofPadics t) q).symm`. Introduce and unpack `⟨a, rfl⟩`. Establish `hgH : g ∈ H` using `mem_of_forall_toPadicInt H hH fun q => (hmem q _).2 (by rw [hg])`. Rewrite using `[mul_comm]`.
+
+Conclude with `mul_mem_of_isClosed' H hH hgH a`.
+-/
 theorem exists_eq_mul_of_isClosed (H : AddSubgroup ℤ̂) (hH : IsClosed (H : Set ℤ̂))
     (hne : ∀ q : Nat.Primes, ∃ h ∈ H, toPadicInt q h ≠ 0) :
     ∃ g : ℤ̂, (∀ q : Nat.Primes, toPadicInt q g ≠ 0) ∧ ∀ y, y ∈ H ↔ ∃ a, y = g * a := by
@@ -157,6 +211,11 @@ theorem exists_eq_mul_of_isClosed (H : AddSubgroup ℤ̂) (hH : IsClosed (H : Se
     rw [mul_comm]
     exact mul_mem_of_isClosed' H hH hgH a
 
+/- English proof (translation)
+Take `⟨g, hg0, hgH⟩` from `exists_eq_mul_of_isClosed H hH hne`. Set `f : ℤ̂ →+ H` to `{ toFun := fun a => ⟨g * a, (hgH _).2 ⟨a, rfl⟩⟩ map_zero' := by ext; simp map_add' := fun a b => by ext; simp [mul_add] }`. Establish `hf : Function.Bijective f`. Use `⟨fun a b hab => ext_toPadicInt fun q => ?_, fun y => ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : H => toPadicInt q (z : ℤ̂)) hab` as an intermediate fact.
+
+Simplify using `only [f, AddMonoidHom.coe_mk, ZeroHom.coe_mk, map_mul] at this`. Conclude with `mul_left_cancel₀ (hg0 q) this`. Take `⟨a, ha⟩` from `(hgH y).1 y.2`. Conclude with `⟨a, Subtype.ext ha.symm⟩`. Conclude with `⟨(AddEquiv.ofBijective f hf).symm⟩`.
+-/
 theorem nonempty_addEquiv_of_isClosed (H : AddSubgroup ℤ̂) (hH : IsClosed (H : Set ℤ̂))
     (hne : ∀ q : Nat.Primes, ∃ h ∈ H, toPadicInt q h ≠ 0) : Nonempty (H ≃+ ℤ̂) := by
   obtain ⟨g, hg0, hgH⟩ := exists_eq_mul_of_isClosed H hH hne

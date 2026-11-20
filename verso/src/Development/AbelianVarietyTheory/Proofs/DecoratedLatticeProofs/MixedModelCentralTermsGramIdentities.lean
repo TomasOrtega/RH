@@ -11,16 +11,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CentralGram
 
+/- English proof (translation)
+Rewrite using `[Matrix.neg_mul, trace_neg, trace_mul_comm, Matrix.smul_mul, trace_smul, smul_eq_mul, mul_neg]`.
+-/
 theorem mul_trace_neg {R : Type} [CommRing R] {n : ℕ} (a : R) (c H : Matrix (Fin n) (Fin n) R) :
     a * ((-c) * H).trace = -((a • H) * c).trace := by
   rw [Matrix.neg_mul, trace_neg, trace_mul_comm, Matrix.smul_mul, trace_smul, smul_eq_mul, mul_neg]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, trace_smul, trace_smul, ← Matrix.mul_assoc y, trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem trace_cycle_smul {R : Type} [CommRing R] {m n : ℕ} (a : R) (c : Matrix (Fin n) (Fin n) R)
     (y : Matrix (Fin m) (Fin n) R) (z : Matrix (Fin n) (Fin m) R) (G : Matrix (Fin m) (Fin m) R) :
     (y * (a • (c * (z * G)))).trace = ((a • (z * (G * y))) * c).trace := by
   rw [Matrix.mul_smul, Matrix.smul_mul, trace_smul, trace_smul, ← Matrix.mul_assoc y, trace_mul_comm]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, h, Matrix.add_mul, add_sub_cancel_left, Matrix.mul_assoc, neg_smul, Matrix.neg_mul, Matrix.mul_neg c, neg_neg, Matrix.mul_smul c]`.
+-/
 theorem move_sub {R : Type} [CommRing R] {m n k : ℕ} {M : Matrix (Fin m) (Fin m) R} {X Y : Matrix (Fin m) (Fin n) R}
     {c : Matrix (Fin n) (Fin n) R} (h : M * Y = Y + X * (-c)) (a : R) (z : Matrix (Fin n) (Fin k) R) :
     M * (Y * ((-a) • z)) - Y * ((-a) • z) = X * (a • (c * z)) := by
@@ -29,6 +38,11 @@ theorem move_sub {R : Type} [CommRing R] {m n k : ℕ} {M : Matrix (Fin m) (Fin 
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : adj (adj x ⬝ (gA T ⬝ x)) = adj x ⬝ (gA T ⬝ x)` using `gram_swap T rfl |>.symm`. Establish `h2 : cA D (-incA D D.host.xi0) = incA D D.host.xi0`. Rewrite using `[map_neg, GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, map_neg, neg_neg]`. Use function extensionality and compare the values at `i j`. Establish `h3` using `congrFun (congrFun h i) j`.
+
+Express the relevant statement in the definitionally equal form `cA D ((-incA D D.host.xi0) * (adj x ⬝ (gA T ⬝ x)) j i) = incA D D.host.xi0 * (adj x ⬝ (gA T ⬝ x)) i j`. Rewrite using `[map_mul, h2, ← h3]`. Both sides reduce to the same expression.
+-/
 theorem gramSkew_map (T : HSp D) {ρ : ℕ} (x : Mx D T.rank ρ) :
     (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew T x).map (cA D) = incA D D.host.xi0 • (adj x ⬝ (gA T ⬝ x)) := by
   have h : adj (adj x ⬝ (gA T ⬝ x)) = adj x ⬝ (gA T ⬝ x) := gram_swap T rfl |>.symm
@@ -40,11 +54,19 @@ theorem gramSkew_map (T : HSp D) {ρ : ℕ} (x : Mx D T.rank ρ) :
   rw [map_mul, h2, ← h3]
   rfl
 
+/- English proof (translation)
+Rewrite using `[gramSkew_map, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj, HypDec.extX_apply, d.pX_eq]`. Simplify using `only [adj_mul, adj_adj, adj_gA, Matrix.mul_assoc, giA_gA_cancel, Matrix.smul_mul, Matrix.mul_smul]`.
+-/
 theorem starAdj_extX_mul {S S₀ : HSp D} (T : HSp D) {ρ : ℕ} (d : HypDec S S₀ ρ) (x : Mx D T.rank ρ) :
     GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj S T (d.extX T x) ⬝ x = d.jY ⬝ (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew T x).map (cA D) := by
   rw [gramSkew_map, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj, HypDec.extX_apply, d.pX_eq]
   simp only [adj_mul, adj_adj, adj_gA, Matrix.mul_assoc, giA_gA_cancel, Matrix.smul_mul, Matrix.mul_smul]
 
+/- English proof (translation)
+Establish `hc : adj c.1 = -c.1` using `c.2`. Establish `h : incA D D.host.xi0 * pairS T x (x ⬝ c.1) = -((GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew T x).map (cA D) ⬝ c.1).trace`. Rewrite using `[gramSkew_map, pairS, adj_mul, hc, Matrix.mul_assoc]`. Conclude with `mul_trace_neg _ _ _`. Use `(d.symplOH_extX_extY T x _).trans ?_` and prove the remaining obligations.
+
+Use `(congrArg (fun z => algebraMap D.host.F (AF D.host.F) (1 / 2) * Algebra.trace (AF D.host.F) (AE D) z) h).trans ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_neg, mul_neg]`.
+-/
 theorem qS_eq {S S₀ : HSp D} (T : HSp D) {ρ : ℕ} (d : HypDec S S₀ ρ) (c : skewA D ρ) (x : Mx D T.rank ρ) :
     d.qS T c x = -(algebraMap D.host.F (AF D.host.F) (1 / 2) *
       Algebra.trace (AF D.host.F) (AE D) ((GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew T x).map (cA D) ⬝ c.1).trace) := by
@@ -57,6 +79,11 @@ theorem qS_eq {S S₀ : HSp D} (T : HSp D) {ρ : ℕ} (d : HypDec S S₀ ρ) (c 
   refine (congrArg (fun z => algebraMap D.host.F (AF D.host.F) (1 / 2) * Algebra.trace (AF D.host.F) (AE D) z) h).trans ?_
   rw [LinearMap.map_neg, mul_neg]
 
+/- English proof (translation)
+Establish `h1 : mt T (d.nC c)⁻¹ ⬝ d.jY = d.jY + d.jX ⬝ (-c.1)`. Rewrite using `[d.nC_inv]`. Conclude with `d.nC_jY (-c)`. Establish `h2 : incA D (-D.host.xi0⁻¹) = -incA D D.host.xi0⁻¹` using `RingHom.map_neg _ _`. Establish `h : mt T (d.nC c)⁻¹ ⬝ d.incAdj S y - d.incAdj S y = d.incX S (incA D D.host.xi0⁻¹ • (c.1 ⬝ (adj y ⬝ gA S)))`.
+
+Rewrite using `[HypDec.incAdj_apply, HypDec.incY_apply, HypDec.incX_apply, h2]`. Conclude with `move_sub h1 _ _`. Rewrite using `[HypDec.qT, h, symplOH_skew, symplOH, HypDec.symplO_incX_incAdj, trace_cycle_smul]`.
+-/
 theorem qT_eq (S : HSp D) {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (c : skewA D ρ) (y : Mx D S.rank ρ) :
     d.qT S c y = -(algebraMap D.host.F (AF D.host.F) (1 / 2) *
       Algebra.trace (AF D.host.F) (AE D) ((incA D D.host.xi0⁻¹ • (adj y ⬝ (gA S ⬝ y))) ⬝ c.1).trace) := by
@@ -69,6 +96,9 @@ theorem qT_eq (S : HSp D) {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (c 
     exact move_sub h1 _ _
   rw [HypDec.qT, h, symplOH_skew, symplOH, HypDec.symplO_incX_incAdj, trace_cycle_smul]
 
+/- English proof (translation)
+Introduce `_` and use `⟨fun _ _ T _ d => ⟨starAdj_extX_mul T d, qS_eq T d⟩, fun S _ _ _ d => qT_eq S d⟩`.
+-/
 theorem central_gram : ∀ D : D7, (∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), (∀ x : Mx D T.rank ρ, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj S T (d.extX T x) ⬝ x = d.jY ⬝ (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew T x).map (cA D)) ∧ ∀ (c : skewA D ρ) (x : Mx D T.rank ρ), d.qS T c x = -(algebraMap D.host.F (AF D.host.F) (1 / 2) * Algebra.trace (AF D.host.F) (AE D) ((GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew T x).map (cA D) ⬝ c.1).trace)) ∧ ∀ (S T T₀ : HSp D) (ρ : ℕ) (d : HypDec T T₀ ρ) (c : skewA D ρ) (y : Mx D S.rank ρ), d.qT S c y = -(algebraMap D.host.F (AF D.host.F) (1 / 2) * Algebra.trace (AF D.host.F) (AE D) ((incA D D.host.xi0⁻¹ • (adj y ⬝ (gA S ⬝ y))) ⬝ c.1).trace) :=
   fun _ => ⟨fun _ _ T _ d => ⟨starAdj_extX_mul T d, qS_eq T d⟩, fun S _ _ _ d => qT_eq S d⟩
 

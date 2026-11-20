@@ -19,6 +19,11 @@ instance finite_piece [Finite σ] (I : Ideal (MvPolynomial σ K)) (e : ℕ) :
     Module.Finite K (piece I e) :=
   Submodule.finiteDimensional_of_le (S₂ := homogeneousSubmodule σ K e) inf_le_left
 
+/- English proof (translation)
+Proceed by induction on `B using MvPolynomial.induction_on' with`. Consider the case `monomial d c`. Establish `h1` using `isHomogeneous_monomial (d := d) c rfl`. Rewrite using `[homogeneousComponent_of_mem (hh.mul h1), homogeneousComponent_of_mem h1]`. Distinguish the cases in `he : e = d.degree`.
+
+Rewrite using `[if_pos he, if_pos (by omega)]`. Rewrite using `[if_neg he, if_neg (by omega), mul_zero]`. Consider the case `add p q hp hq => simp [mul_add, hp, hq]`.
+-/
 theorem comp_succ_mul {h : MvPolynomial σ K} (hh : h.IsHomogeneous 1) (e : ℕ)
     (B : MvPolynomial σ K) :
     homogeneousComponent (e + 1) (h * B) = h * homogeneousComponent e B := by
@@ -31,6 +36,9 @@ theorem comp_succ_mul {h : MvPolynomial σ K} (hh : h.IsHomogeneous 1) (e : ℕ)
     · rw [if_neg he, if_neg (by omega), mul_zero]
   | add p q hp hq => simp [mul_add, hp, hq]
 
+/- English proof (translation)
+Proceed by induction on `B using MvPolynomial.induction_on' with`. Consider the case `monomial d c`. Establish `h1` using `isHomogeneous_monomial (d := d) c rfl`. Rewrite using `[homogeneousComponent_of_mem (hh.mul h1), if_neg (by omega)]`. Consider the case `add p q hp hq => rw [mul_add, map_add, hp, hq, add_zero]`.
+-/
 theorem comp_zero_mul {h : MvPolynomial σ K} (hh : h.IsHomogeneous 1)
     (B : MvPolynomial σ K) : homogeneousComponent 0 (h * B) = 0 := by
   induction B using MvPolynomial.induction_on' with
@@ -39,6 +47,11 @@ theorem comp_zero_mul {h : MvPolynomial σ K} (hh : h.IsHomogeneous 1)
     rw [homogeneousComponent_of_mem (hh.mul h1), if_neg (by omega)]
   | add p q hp hq => rw [mul_add, map_add, hp, hq, add_zero]
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A, hA, B, hB, rfl⟩`. Take `⟨C, rfl⟩` from `Ideal.mem_span_singleton.1 hB`. Conclude with `⟨A, hA, C, rfl⟩`.
+
+Introduce and unpack `⟨A, hA, B, rfl⟩`. Conclude with `⟨A, hA, _, Ideal.mem_span_singleton.2 ⟨B, rfl⟩, rfl⟩`.
+-/
 theorem mem_sup_span {I : Ideal (MvPolynomial σ K)} {h F : MvPolynomial σ K} :
     F ∈ I ⊔ Ideal.span {h} ↔ ∃ A ∈ I, ∃ B, F = A + h * B := by
   rw [Submodule.mem_sup]
@@ -49,6 +62,17 @@ theorem mem_sup_span {I : Ideal (MvPolynomial σ K)} {h F : MvPolynomial σ K} :
   · rintro ⟨A, hA, B, rfl⟩
     exact ⟨A, hA, _, Ideal.mem_span_singleton.2 ⟨B, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hfin` using `associatedPrimes.finite (MvPolynomial σ K) (MvPolynomial σ K ⧸ I)`. Set `W : Ideal (MvPolynomial σ K) → Subspace K (homogeneousSubmodule σ K 1)` to `fun P => (P.restrictScalars K).comap (homogeneousSubmodule σ K 1).subtype`. Establish `hcov : ⋃ p ∈ hfin.toFinset.image W, (p : Set (homogeneousSubmodule σ K 1)) = Set.univ`.
+
+Use `Set.eq_univ_of_forall fun h => ?_` and prove the remaining obligations. Take `⟨F, hF, hF'⟩` from `hcon h.1 h.2`. Establish `: h.1 ∈ ⋃ p ∈ associatedPrimes (MvPolynomial σ K) (MvPolynomial σ K ⧸ I), (p : Set (MvPolynomial σ K))`. Rewrite using `[biUnion_associatedPrimes_eq_zero_divisors]`. Conclude with `⟨Ideal.Quotient.mk I F, mt Ideal.Quotient.eq_zero_iff_mem.1 hF', Ideal.Quotient.eq_zero_iff_mem.2 hF⟩`.
+
+Take `⟨P, hP, hh⟩` from `Set.mem_iUnion₂.1 this`. Conclude with `Set.mem_iUnion₂.2 ⟨W P, Finset.mem_image_of_mem _ (hfin.mem_toFinset.2 hP), hh⟩`. Take `⟨P, hP, hW⟩` from `Finset.mem_image.1 (Subspace.top_mem_of_biUnion_eq_univ hcov)`. Take `⟨hp, x, hx⟩` from `isAssociatedPrime_iff.1 (hfin.mem_toFinset.1 hP)`. Take `⟨F, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+
+Establish `hF : F ∈ I` using `hsat F fun i => by`. Establish `h1 : (⟨X i, isHomogeneous_X K i⟩ : homogeneousSubmodule σ K 1) ∈ W P`. Rewrite using `[hW]`. Discharge the goal by the elementary cases of `trivial`. Establish `h2 : X i ∈ P` using `h1`.
+
+Rewrite `h2` using `[hx, Submodule.mem_colon_singleton]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h2`. Apply `hp.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, hx, Submodule.mem_colon_singleton, one_smul]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hF`.
+-/
 theorem exists_regular_form [Finite σ] [Infinite K] {I : Ideal (MvPolynomial σ K)}
     (hsat : ∀ F, (∀ i, X i * F ∈ I) → F ∈ I) :
     ∃ h : MvPolynomial σ K, h.IsHomogeneous 1 ∧ ∀ F, h * F ∈ I → F ∈ I := by
@@ -81,6 +105,11 @@ theorem exists_regular_form [Finite σ] [Infinite K] {I : Ideal (MvPolynomial σ
   rw [Ideal.eq_top_iff_one, hx, Submodule.mem_colon_singleton, one_smul]
   exact Ideal.Quotient.eq_zero_iff_mem.2 hF
 
+/- English proof (translation)
+Introduce `F hF e`. Take `⟨A, hA, B, rfl⟩` from `mem_sup_span.1 hF`. Rewrite using `[map_add]`. Consider the cases of `e with`. Consider the case `zero => exact mem_sup_span.2 ⟨_, hI A hA 0, 0, by rw [comp_zero_mul hh, mul_zero]⟩`.
+
+Consider the case `succ e => exact mem_sup_span.2 ⟨_, hI A hA _, _, by rw [comp_succ_mul hh]⟩`.
+-/
 theorem hom_sup_span {I : Ideal (MvPolynomial σ K)}
     (hI : ∀ F ∈ I, ∀ e, homogeneousComponent e F ∈ I) {h : MvPolynomial σ K}
     (hh : h.IsHomogeneous 1) :
@@ -92,6 +121,19 @@ theorem hom_sup_span {I : Ideal (MvPolynomial σ K)}
   | zero => exact mem_sup_span.2 ⟨_, hI A hA 0, 0, by rw [comp_zero_mul hh, mul_zero]⟩
   | succ e => exact mem_sup_span.2 ⟨_, hI A hA _, _, by rw [comp_succ_mul hh]⟩
 
+/- English proof (translation)
+Establish `h0 : h ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne ((Ideal.eq_top_iff_one _).2 (hreg 1 (by simp)))`. Set `μ : MvPolynomial σ K →ₗ[K] MvPolynomial σ K` to `LinearMap.mulLeft K h`. Establish `hμ : Function.Injective μ` using `fun a b hab => mul_left_cancel₀ h0 hab`.
+
+Establish `e1 : piece (I ⊔ Ideal.span {h}) (e + 1) = piece I (e + 1) ⊔ (homogeneousSubmodule σ K e).map μ`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `F ⟨hF1, hF2⟩`. Take `⟨A, hA, B, hAB⟩` from `mem_sup_span.1 hF2`. Establish `: F = homogeneousComponent (e + 1) A + h * homogeneousComponent e B`.
+
+Rewrite using `[← comp_succ_mul hh, ← map_add, ← hAB, homogeneousComponent_eq_self hF1]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup ⟨homogeneousComponent_isHomogeneous _ _, hI A hA _⟩ ⟨_, homogeneousComponent_isHomogeneous _ _, rfl⟩`. Use `sup_le (fun F hF => ⟨hF.1, mem_sup_span.2 ⟨F, hF.2, 0, by simp⟩⟩) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨B, hB, rfl⟩`.
+
+Use `⟨?_, mem_sup_span.2 ⟨0, I.zero_mem, B, by simp [μ]⟩⟩` and prove the remaining obligations. Use `hh.mul hB` as an intermediate fact. Rewrite `this` using `[add_comm]`. Then use the resulting hypothesis. Establish `e2 : piece I (e + 1) ⊓ (homogeneousSubmodule σ K e).map μ = (piece I e).map μ`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨hF, B, hB, rfl⟩`. Conclude with `⟨B, ⟨hB, hreg B hF.2⟩, rfl⟩`. Introduce and unpack `_ ⟨B, hB, rfl⟩`. Use `⟨⟨?_, I.mul_mem_left h hB.2⟩, B, hB.1, rfl⟩` and prove the remaining obligations. Use `hh.mul hB.1` as an intermediate fact.
+
+Rewrite `this` using `[add_comm]`. Then use the resulting hypothesis. Use `Submodule.finrank_sup_add_finrank_inf_eq (piece I (e + 1)) ((homogeneousSubmodule σ K e).map μ)` as an intermediate fact. Rewrite `this` using `[← e1, e2, ← (Submodule.equivMapOfInjective μ hμ _).finrank_eq, ← (Submodule.equivMapOfInjective μ hμ _).finrank_eq]`. Conclude with `this`.
+-/
 theorem finrank_section [Finite σ] {I : Ideal (MvPolynomial σ K)}
     (hI : ∀ F ∈ I, ∀ e, homogeneousComponent e F ∈ I) {h : MvPolynomial σ K}
     (hh : h.IsHomogeneous 1) (hreg : ∀ F, h * F ∈ I → F ∈ I) (hne : I ≠ ⊤) (e : ℕ) :
@@ -131,6 +173,9 @@ theorem finrank_section [Finite σ] {I : Ideal (MvPolynomial σ K)}
     ← (Submodule.equivMapOfInjective μ hμ _).finrank_eq] at this
   exact this
 
+/- English proof (translation)
+Introduce `F hF e`. Use `letI := MvPolynomial.gradedAlgebra (σ := σ) (R := K)`. Conclude with `homogeneousComponent_mem_of_mem (Ideal.homogeneous_span (homogeneousSubmodule σ K) _ fun G hG => ⟨d, hG.2⟩) hF e`.
+-/
 theorem hom_genIn (I : Ideal (MvPolynomial σ K)) (d : ℕ) :
     ∀ F ∈ genIn I d, ∀ e, homogeneousComponent e F ∈ genIn I d := by
   intro F hF e
@@ -138,6 +183,15 @@ theorem hom_genIn (I : Ideal (MvPolynomial σ K)) (d : ℕ) :
   exact homogeneousComponent_mem_of_mem
     (Ideal.homogeneous_span (homogeneousSubmodule σ K) _ fun G hG => ⟨d, hG.2⟩) hF e
 
+/- English proof (translation)
+Establish `h1 : genIn (I ⊔ Ideal.span {h}) e ≤ genIn I e ⊔ Ideal.span {h}`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `G ⟨hG, hGe⟩`. Take `⟨A, hA, B, hAB⟩` from `mem_sup_span.1 hG`. Establish `: G = homogeneousComponent e A + homogeneousComponent e (h * B)`.
+
+Rewrite using `[← map_add, ← hAB, homogeneousComponent_eq_self hGe]`. Rewrite using `[this]`. Use `Submodule.add_mem_sup (Ideal.subset_span ⟨hI A hA _, homogeneousComponent_isHomogeneous _ _⟩) ?_` and prove the remaining obligations. Consider the cases of `e with`. Consider the case `zero => rw [comp_zero_mul hh]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `succ e => rw [comp_succ_mul hh]`. Conclude with `Ideal.mem_span_singleton.2 ⟨_, rfl⟩`. Take `⟨A, hA, B, hAB⟩` from `mem_sup_span.1 (h1 hg)`. Establish `hAI : A ∈ I` using `(Ideal.span_le.2 fun G hG => hG.1 : genIn I e ≤ I) hA`.
+
+Establish `hB : B ∈ I` using `hreg B (by simpa [hAB] using I.sub_mem hF hAI)`. Establish `: F = homogeneousComponent (e + 1) A + h * homogeneousComponent e B`. Rewrite using `[← comp_succ_mul hh, ← map_add, ← hAB, homogeneousComponent_eq_self hFe]`. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (hom_genIn I e A hA _) (Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨hI B hB _, homogeneousComponent_isHomogeneous _ _⟩))`.
+-/
 theorem gen_of_section {I : Ideal (MvPolynomial σ K)}
     (hI : ∀ F ∈ I, ∀ e, homogeneousComponent e F ∈ I) {h : MvPolynomial σ K}
     (hh : h.IsHomogeneous 1) (hreg : ∀ F, h * F ∈ I → F ∈ I) {e : ℕ} {F : MvPolynomial σ K}
@@ -164,6 +218,11 @@ theorem gen_of_section {I : Ideal (MvPolynomial σ K)}
   exact Ideal.add_mem _ (hom_genIn I e A hA _) (Ideal.mul_mem_left _ _
     (Ideal.subset_span ⟨hI B hB _, homogeneousComponent_isHomogeneous _ _⟩))
 
+/- English proof (translation)
+Establish `: F ∈ homogeneousSubmodule σ K e * homogeneousSubmodule σ K 1`. Establish `h1 : F ∈ homogeneousSubmodule σ K 1 ^ (e + 1)`. Rewrite using `[homogeneousSubmodule_one_pow]`. Conclude with `hFe`. Rewrite `h1` using `[pow_succ, homogeneousSubmodule_one_pow]`. Then use the resulting hypothesis.
+
+Use `Submodule.mul_induction_on this (fun a ha b _ => ?_) (fun a b => Ideal.add_mem _)` and prove the remaining obligations. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨trivial, ha⟩)`.
+-/
 theorem gen_top {e : ℕ} {F : MvPolynomial σ K} (hFe : F.IsHomogeneous (e + 1)) :
     F ∈ genIn (⊤ : Ideal (MvPolynomial σ K)) e := by
   have : F ∈ homogeneousSubmodule σ K e * homogeneousSubmodule σ K 1 := by
@@ -173,6 +232,23 @@ theorem gen_top {e : ℕ} {F : MvPolynomial σ K} (hFe : F.IsHomogeneous (e + 1)
   refine Submodule.mul_induction_on this (fun a ha b _ => ?_) (fun a b => Ideal.add_mem _)
   exact Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨trivial, ha⟩)
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `IsNoetherian.noetherian L`. Establish `key : ∀ A G, G ∈ L → (A - C (coeff 0 A)) * G ∈ J`. Introduce `A G hG`. Proceed by induction on `A using MvPolynomial.induction_on with`. Consider the case `C a => simp`.
+
+Consider the case `add p q hp hq`. Use `J.add_mem hp hq using 1` and compare the differences between its conclusion and the goal. Simplify using `only [coeff_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p i _`.
+
+Establish `: coeff 0 (p * X i) = 0`. Use `map_mul (constantCoeff (σ := σ) (R := K)) p (X i)` as an intermediate fact. Simplify `this` using `[constantCoeff_eq]`. Rewrite using `[this, map_zero, sub_zero, mul_assoc]`. Conclude with `J.mul_mem_left _ (hL G hG i)`.
+
+Establish `key2 : ∀ F ∈ Submodule.span (MvPolynomial σ K) (T : Set (MvPolynomial σ K)), ∃ G ∈ L, G.totalDegree ≤ T.sup totalDegree ∧ F - G ∈ J`. Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨x, hT ▸ Submodule.subset_span hx, Finset.le_sup hx, by simp⟩`. Consider the case `zero => exact ⟨0, L.zero_mem, by simp, by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨G, h1, h2, h3⟩` from `hx`. Take `⟨G', h1', h2', h3'⟩` from `hy`. Use `⟨G + G', L.add_mem h1 h1', (totalDegree_add _ _).trans (max_le h2 h2'), ?_⟩` and prove the remaining obligations. Use `J.add_mem h3 h3' using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `smul A x _ hx`. Take `⟨G, h1, h2, h3⟩` from `hx`. Use `⟨C (coeff 0 A) * G, L.mul_mem_left _ h1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(totalDegree_mul _ _).trans (by simpa using h2)`.
+
+Use `J.add_mem (J.mul_mem_left A h3) (key A G h1) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [eventually_gt_atTop (T.sup totalDegree)] with e he F hF hFe`. Take `⟨G, -, h2, h3⟩` from `key2 F (hT ▸ hF)`.
+
+Use `hJ _ h3 e` as an intermediate fact. Rewrite `this` using `[map_sub, homogeneousComponent_eq_self hFe, homogeneousComponent_eq_zero _ _ (h2.trans_lt he), sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem eventually_mem_of_X_mul [Finite σ] {J L : Ideal (MvPolynomial σ K)}
     (hJ : ∀ F ∈ J, ∀ e, homogeneousComponent e F ∈ J) (hL : ∀ F ∈ L, ∀ i, X i * F ∈ J) :
     ∀ᶠ e in atTop, ∀ F ∈ L, F.IsHomogeneous e → F ∈ J := by
@@ -214,6 +290,15 @@ theorem eventually_mem_of_X_mul [Finite σ] {J L : Ideal (MvPolynomial σ K)}
   rwa [map_sub, homogeneousComponent_eq_self hFe,
     homogeneousComponent_eq_zero _ _ (h2.trans_lt he), sub_zero] at this
 
+/- English proof (translation)
+Take `⟨J', ⟨h1, h2, h3⟩, hmax⟩` from `(set_has_maximal_iff_noetherian.2 (inferInstance : IsNoetherian (MvPolynomial σ K) (MvPolynomial σ K))) {J' | J ≤ J' ∧ (∀ F ∈ J', ∀ e, homogeneousComponent e F ∈ J') ∧ ∀ᶠ e in atTop, ∀ F ∈ J', F.IsHomogeneous e → F ∈ J} ⟨J, le_rfl, hJ, Eventually.of_forall fun _ _ h _ => h⟩`. Use `⟨J', h1, h2, ?_, h3⟩` and prove the remaining obligations. Set `L : Ideal (MvPolynomial σ K)` to `{ carrier := {F | ∀ i, X i * F ∈ J'} add_mem' := fun ha hb i => by rw [mul_add]; exact J'.add_mem (ha i) (hb i) zero_mem' := fun i => by simp smul_mem' := fun c x hx i => by`. Rewrite using `[smul_eq_mul, mul_left_comm]`. Conclude with `Ideal.mul_mem_left J' _ (hx i) }`.
+
+Establish `hle : J' ≤ L` using `fun F hF i => Ideal.mul_mem_left J' _ hF`. Establish `hL` using `hmax L ⟨h1.trans hle, fun F hF e i => by`. Rewrite using `[← comp_succ_mul (isHomogeneous_X K i)]; exact h2 _ (hF i) _, by`. Use `filter_upwards [h3, eventually_mem_of_X_mul (L := L) h2 fun F hF => hF] with e a b F hF hFe`. Conclude with `a F (b F hF hFe) hFe⟩`.
+
+Establish `: J' = L`. Assume the negation of the conclusion as `hne`. Conclude with `hL (lt_of_le_of_ne hle hne)`. Introduce `F hF`. Rewrite using `[this]`.
+
+Conclude with `hF`.
+-/
 theorem exists_saturation [Finite σ] {J : Ideal (MvPolynomial σ K)}
     (hJ : ∀ F ∈ J, ∀ e, homogeneousComponent e F ∈ J) :
     ∃ J' : Ideal (MvPolynomial σ K), J ≤ J' ∧ (∀ F ∈ J', ∀ e, homogeneousComponent e F ∈ J') ∧
@@ -244,10 +329,32 @@ theorem exists_saturation [Finite σ] {J : Ideal (MvPolynomial σ K)}
 
 noncomputable def nmon (σ : Type) (e : ℕ) : ℕ := Nat.card {d : σ →₀ ℕ | d.degree = e}
 
+/- English proof (translation)
+Rewrite using `[homogeneousSubmodule_eq_finsupp_supported]`. Conclude with `finrank_eq_nat_card_basis (basisRestrictSupport K _)`.
+-/
 theorem finrank_forms (e : ℕ) : finrank K (homogeneousSubmodule σ K e) = nmon σ e := by
   rw [homogeneousSubmodule_eq_finsupp_supported]
   exact finrank_eq_nat_card_basis (basisRestrictSupport K _)
 
+/- English proof (translation)
+Establish `mono : ∀ e ≥ d, ∀ e' ≥ e, g e' ≤ g e`. Introduce `e he e' he'`. Proceed by induction on `e', he' using Nat.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ n hn ih`.
+
+Rewrite using `[h1 n (he.trans hn)]`. Establish `: (0 : ℚ) ≤ δ (n + 1)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `nonneg : ∀ e ≥ d, 0 ≤ g e`. Introduce `e he`.
+
+Take `⟨e', h, h'⟩` from `(h2.and (eventually_ge_atTop e)).exists`. Conclude with `h ▸ mono e he e' h'`. Establish `prop : ∀ e ≥ d, δ e = 0 → ∀ e' ≥ e, δ e' = 0`. Introduce `e he h e' he'`. Proceed by induction on `e', he' using Nat.le_induction with`.
+
+Consider the case `base => exact h`. Consider the case `succ n hn ih => exact h4 n (he.trans hn) ih`. Establish `dec : ∀ k : ℕ, δ (d + k) ≠ 0 → g (d + k) ≤ g d - k`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => simp`. Consider the case `succ k ih`. Introduce `hk`. Establish `h5` using `ih fun h => hk (h4 (d + k) (Nat.le_add_right _ _) h)`. Establish `h6 : (1 : ℚ) ≤ δ (d + k + 1)` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hk`.
+
+Rewrite using `[← add_assoc, h1 _ (by omega)]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `z : δ (d + (B + 1)) = 0`. Assume the negation of the conclusion as `h`.
+
+Use `dec _ h` as an intermediate fact. Use `nonneg (d + (B + 1)) (by omega)` as an intermediate fact. Move the coercions through the operations in `at *`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `e he`.
+
+Use `⟨prop _ (by omega) z e (by omega), ?_⟩` and prove the remaining obligations. Establish `const : ∀ e' ≥ e, g e' = g e`. Introduce `e' he'`. Proceed by induction on `e', he' using Nat.le_induction with`. Consider the case `base => rfl`.
+
+Consider the case `succ n hn ih => rw [h1 n (by omega), prop _ (by omega) z (n + 1) (by omega), ih]; simp`. Take `⟨e', h, h'⟩` from `(h2.and (eventually_ge_atTop e)).exists`. Rewrite using `[← const e' h', h]`.
+-/
 theorem numeric {g : ℕ → ℚ} {δ : ℕ → ℕ} {d B : ℕ} (h1 : ∀ e ≥ d, g (e + 1) = g e - δ (e + 1))
     (h2 : ∀ᶠ e in atTop, g e = 0) (h3 : g d ≤ B) (h4 : ∀ e ≥ d, δ e = 0 → δ (e + 1) = 0) :
     ∀ e ≥ d + B + 1, δ e = 0 ∧ g e = 0 := by
@@ -295,9 +402,45 @@ theorem numeric {g : ℕ → ℚ} {δ : ℕ → ℕ} {d B : ℕ} (h1 : ∀ e ≥
   obtain ⟨e', h, h'⟩ := (h2.and (eventually_ge_atTop e)).exists
   rw [← const e' h', h]
 
+/- English proof (translation)
+Introduce `_ hF` and use `⟨hF.1, h hF.2⟩`.
+-/
 theorem piece_mono {I J : Ideal (MvPolynomial σ K)} (h : I ≤ J) (e : ℕ) :
     piece I e ≤ piece J e := fun _ hF => ⟨hF.1, h hF.2⟩
 
+/- English proof (translation)
+Establish `htop : ∀ (K : Type) [Field K] (e : ℕ), finrank K (piece (⊤ : Ideal (MvPolynomial σ K)) e) = nmon σ e`. Introduce `K _ e`. Establish `: piece (⊤ : Ideal (MvPolynomial σ K)) e = homogeneousSubmodule σ K e` using `by simp [piece]`. Rewrite using `[this, finrank_forms]`. Proceed by induction on `k with`.
+
+Consider the case `zero`. Introduce `q`. Establish `: ∃ d : ℕ, (∀ᶠ e in atTop, (nmon σ e : ℚ) = q e) → ∀ e ≥ d, (nmon σ e : ℚ) = q e`. Distinguish the cases in `h : ∀ᶠ e in atTop, (nmon σ e : ℚ) = q e`. Take `⟨d, hd⟩` from `eventually_atTop.1 h`.
+
+Conclude with `⟨d, fun _ => hd⟩`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Take `⟨d, hd⟩` from `this`. Use `⟨d, fun K _ _ I _ hsat hk hq e he => ?_⟩` and prove the remaining obligations. Establish `h1 : piece I 1 = homogeneousSubmodule σ K 1` using `Submodule.eq_of_le_of_finrank_le inf_le_left (by rwa [finrank_forms])`.
+
+Establish `h2 : I = ⊤`. Rewrite using `[Ideal.eq_top_iff_one]`. Use `hsat 1 fun i => ?_` and prove the remaining obligations. Establish `: X i ∈ piece I 1` using `h1 ▸ isHomogeneous_X K i`. Simplify using `using this.2`.
+
+Substitute `h2` using the available equality. Simplify using `only [htop] at hq ⊢`. Conclude with `⟨hd hq e he, fun F _ hF => gen_top hF⟩`. Consider the case `succ k ih`. Introduce `q`.
+
+Take `⟨d₀, hd₀⟩` from `ih q`. Take `⟨d₁, hd₁⟩` from `ih fun e => q e + nmon σ (e - 1) - q (e - 1)`. Use `⟨max d₀ (d₁ + ⌈(nmon σ d₁ : ℚ) - q d₁⌉₊ + 1), fun K _ _ I hI hsat hk hq e he => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hne : I = ⊤`. Conclude with `hd₀ K I hI hsat (by rw [hne, htop]; omega) hq e (le_of_max_le_left he)`.
+
+Take `⟨h, hh, hreg⟩` from `exists_regular_form hsat`. Take `⟨J', hJJ, hJ'h, hJ's, hJ'e⟩` from `exists_saturation (hom_sup_span hI hh)`. Establish `hdim` using `finrank_section hI hh hreg hne`. Simplify using `only [finrank_forms] at hdim`. Use `set J := I ⊔ Ideal.span {h} with hJ`.
+
+Establish `hhJ : h ∈ J` using `mem_sup_span.2 ⟨0, I.zero_mem, 1, by simp⟩`. Establish `hlt : finrank K (piece I 1) < finrank K (piece J' 1)`. Use `Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne (piece_mono (le_sup_left.trans hJJ) 1) fun heq => hne ?_)` and prove the remaining obligations. Establish `: h ∈ piece I 1` using `heq ▸ (⟨hh, hJJ hhJ⟩ : h ∈ piece J' 1)`. Conclude with `(Ideal.eq_top_iff_one _).2 (hreg 1 (by simpa using this.2))`.
+
+Establish `hle : ∀ e, finrank K (piece J e) ≤ finrank K (piece J' e)` using `fun e => Submodule.finrank_mono (piece_mono hJJ e)`. Establish `hgood` using `hd₁ K J' hJ'h hJ's (by omega) (by`. Take `⟨N, hN⟩` from `eventually_atTop.1 hq`. Use `filter_upwards [hJ'e, eventually_ge_atTop (N + 1)] with e h1 h2`. Take `⟨e, rfl⟩ : ∃ e', e = e' + 1` from `⟨e - 1, by omega⟩`.
+
+Establish `: piece J' (e + 1) = piece J (e + 1)` using `le_antisymm (fun F hF => ⟨hF.1, h1 F hF.2 hF.1⟩) (piece_mono hJJ _)`. Rewrite using `[this, Nat.add_sub_cancel, ← hN (e + 1) (by omega), ← hN e (by omega)]`. Use `congrArg (Nat.cast : ℕ → ℚ) (hdim e)` as an intermediate fact. Move the coercions through the operations in `at this`. Use the proof step `linarith)`.
+
+Establish `hz : ∀ e, finrank K (piece J' e) - finrank K (piece J e) = 0 → genIn J' e ≤ genIn J e`. Introduce `e h0`. Establish `: piece J e = piece J' e` using `Submodule.eq_of_le_of_finrank_le (piece_mono hJJ e) (by omega)`. Use `Ideal.span_mono fun G hG => ⟨?_, hG.2⟩` and prove the remaining obligations. Establish `h1 : G ∈ piece J e` using `this ▸ (⟨hG.2, hG.1⟩ : G ∈ piece J' e)`.
+
+Conclude with `h1.2`. Establish `hnum` using `numeric (g := fun e => (finrank K (piece I e) : ℚ) - q e) (δ := fun e => finrank K (piece J' e) - finrank K (piece J e)) (d := d₁) (B := ⌈(nmon σ d₁ : ℚ) - q d₁⌉₊) (fun e he => by`. Establish `h1` using `(hgood (e + 1) (by omega)).1`. Establish `h2` using `congrArg (Nat.cast : ℕ → ℚ) (hdim e)`. Rewrite `h1` using `[Nat.add_sub_cancel]`.
+
+Simplify using `only [Nat.cast_sub (hle _)]`. Move the coercions through the operations in `at h2`. Use the proof step `linarith)`. Use the proof step `(hq.mono fun e he => sub_eq_zero.2 he)`. Use the proof step `(by`.
+
+Use `le_trans ?_ (Nat.le_ceil _)` and prove the remaining obligations. Establish `: finrank K (piece I d₁) ≤ nmon σ d₁`. Rewrite using `[← finrank_forms (K := K)]`. Conclude with `Submodule.finrank_mono inf_le_left`. Establish `: (finrank K (piece I d₁) : ℚ) ≤ nmon σ d₁` using `by exact_mod_cast this`.
+
+Use the proof step `linarith)`. Use the proof step `(fun e he h0 => by`. Use `Nat.sub_eq_zero_of_le (Submodule.finrank_mono fun F hF => ⟨hF.1, ?_⟩)` and prove the remaining obligations. Conclude with `(Ideal.span_le.2 fun G hG => hG.1 : genIn J e ≤ J) (hz e h0 ((hgood e he).2 F hF.2 hF.1)))`. Use `e (le_of_max_le_right he)`.
+
+Use `⟨sub_eq_zero.1 hnum.2, fun F hF hFe => gen_of_section hI hh hreg hF hFe ?_⟩` and prove the remaining obligations. Establish `he' : d₁ ≤ e` using `by have := le_of_max_le_right he; omega`. Conclude with `hz e hnum.1 ((hgood e he').2 F (hJJ (Ideal.mem_sup_left hF)) hFe)`.
+-/
 theorem bound_infinite (σ : Type) [Finite σ] (k : ℕ) : ∀ q : ℕ → ℚ, ∃ d : ℕ,
     ∀ (K : Type) [Field K] [Infinite K] (I : Ideal (MvPolynomial σ K)),
       (∀ F ∈ I, ∀ e, homogeneousComponent e F ∈ I) → (∀ F, (∀ i, X i * F ∈ I) → F ∈ I) →
@@ -402,6 +545,9 @@ variable {L : Type} [Field L] [Algebra K L]
 noncomputable def contr (φ : L →ₗ[K] K) (F : MvPolynomial σ L) : MvPolynomial σ K :=
   ∑ m ∈ F.support, monomial m (φ (coeff m F))
 
+/- English proof (translation)
+Simplify using `only [contr, coeff_sum, coeff_monomial, Finset.sum_ite_eq', MvPolynomial.mem_support_iff]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[not_not.1 h, map_zero]`.
+-/
 @[simp] theorem coeff_contr (φ : L →ₗ[K] K) (F : MvPolynomial σ L) (m : σ →₀ ℕ) :
     coeff m (contr φ F) = φ (coeff m F) := by
   classical
@@ -410,11 +556,20 @@ noncomputable def contr (φ : L →ₗ[K] K) (F : MvPolynomial σ L) : MvPolynom
   · rfl
   · rw [not_not.1 h, map_zero]
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem contr_add (φ : L →ₗ[K] K) (F G : MvPolynomial σ L) :
     contr φ (F + G) = contr φ F + contr φ G := by ext; simp
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem contr_zero (φ : L →ₗ[K] K) : contr φ (0 : MvPolynomial σ L) = 0 := by ext; simp
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `only [coeff_contr, coeff_X_mul']`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem contr_X_mul (φ : L →ₗ[K] K) (i : σ) (F : MvPolynomial σ L) :
     contr φ (X i * F) = X i * contr φ F := by
   classical
@@ -422,9 +577,15 @@ theorem contr_X_mul (φ : L →ₗ[K] K) (i : σ) (F : MvPolynomial σ L) :
   simp only [coeff_contr, coeff_X_mul']
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem contr_smul (φ : L →ₗ[K] K) (c : L) (F : MvPolynomial σ L) :
     contr φ (c • F) = contr (φ ∘ₗ LinearMap.mulLeft K c) F := by ext; simp
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `only [coeff_contr, coeff_homogeneousComponent]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem contr_comp (φ : L →ₗ[K] K) (e : ℕ) (F : MvPolynomial σ L) :
     contr φ (homogeneousComponent e F) = homogeneousComponent e (contr φ F) := by
   classical
@@ -432,12 +593,18 @@ theorem contr_comp (φ : L →ₗ[K] K) (e : ℕ) (F : MvPolynomial σ L) :
   simp only [coeff_contr, coeff_homogeneousComponent]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_contr, coeff_smul, coeff_smul, coeff_map, smul_eq_mul, mul_comm, ← Algebra.smul_def, map_smul, smul_eq_mul, smul_eq_mul, mul_comm]`.
+-/
 theorem contr_smul_map (φ : L →ₗ[K] K) (c : L) (F : MvPolynomial σ K) :
     contr φ (c • map (algebraMap K L) F) = φ c • F := by
   ext m
   rw [coeff_contr, coeff_smul, coeff_smul, coeff_map, smul_eq_mul, mul_comm, ← Algebra.smul_def,
     map_smul, smul_eq_mul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[← contr_smul_map, one_smul]`.
+-/
 theorem contr_map (φ : L →ₗ[K] K) (F : MvPolynomial σ K) :
     contr φ (map (algebraMap K L) F) = φ 1 • F := by
   rw [← contr_smul_map, one_smul]
@@ -463,6 +630,9 @@ def extIdeal (L : Type) [Field L] [Algebra K L] (I : Ideal (MvPolynomial σ K)) 
       rw [mul_assoc]
       exact hp _ fun φ => by rw [contr_X_mul]; exact I.mul_mem_left _ (hF φ)
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff K]`. Introduce `φ`. Rewrite using `[map_sub, sub_eq_zero, ← coeff_contr, ← coeff_contr, h]`.
+-/
 theorem eq_of_contr {F G : MvPolynomial σ L} (h : ∀ φ : L →ₗ[K] K, contr φ F = contr φ G) :
     F = G := by
   ext m
@@ -470,6 +640,25 @@ theorem eq_of_contr {F G : MvPolynomial σ L} (h : ∀ φ : L →ₗ[K] K, contr
   intro φ
   rw [map_sub, sub_eq_zero, ← coeff_contr, ← coeff_contr, h]
 
+/- English proof (translation)
+Set `w` to `Module.finBasis K W`. Set `v : Fin (finrank K W) → MvPolynomial σ L` to `fun i => map (algebraMap K L) (w i)`. Establish `hli : LinearIndependent L v`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`.
+
+Rewrite using `[← Module.forall_dual_apply_eq_zero_iff K]`. Introduce `φ`. Establish `hw : LinearIndependent K fun i => (w i : MvPolynomial σ K)` using `w.linearIndependent.map' W.subtype W.ker_subtype`. Use `Fintype.linearIndependent_iff.1 hw (fun i => φ (c i)) ?_ i` and prove the remaining obligations. Use extensionality with `m`.
+
+Use `congrArg (fun F => φ (coeff m F)) hc` as an intermediate fact. Simplify using `only [coeff_sum, map_sum, coeff_zero, map_zero] at this ⊢`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← coeff_contr, contr_smul_map]`.
+
+Establish `hsp : extSub L W = Submodule.span L (Set.range v)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `F hF`. Set `b` to `Basis.ofVectorSpace K L`. Establish `: F = ∑ j ∈ F.support.biUnion fun m => (b.repr (coeff m F)).support, b j • map (algebraMap K L) (contr (b.coord j) F)`.
+
+Use extensionality with `m`. Simplify using `only [coeff_sum, coeff_smul, coeff_map, coeff_contr, smul_eq_mul]`. Use `conv_lhs => rw [← b.linearCombination_repr (coeff m F), Finsupp.linearCombination_apply]`. Rewrite using `[Finsupp.sum_of_support_subset (s := F.support.biUnion fun m => (b.repr (coeff m F)).support) _ _ _ (by simp)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, mul_comm, Basis.coord_apply]`. Distinguish the cases in `hm : m ∈ F.support`. Conclude with `Finset.subset_biUnion_of_mem (fun m => (b.repr (coeff m F)).support) hm`. Simplify using `[notMem_support_iff.1 hm]`. Rewrite using `[this]`.
+
+Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `h1` using `congrArg W.subtype (w.sum_repr ⟨_, hF (b.coord j)⟩)`. Simplify using `only [map_sum, map_smul, Submodule.subtype_apply] at h1`. Rewrite using `[← h1, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_eq_C_mul, map_mul, map_C, C_mul']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩ φ`. Rewrite using `[contr_map]`.
+
+Conclude with `W.smul_mem _ (w i).2`. Rewrite using `[hsp, finrank_span_eq_card hli, Fintype.card_fin]`.
+-/
 theorem finrank_extSub (W : Submodule K (MvPolynomial σ K)) [Module.Finite K W] :
     finrank L (extSub L W) = finrank K W := by
   classical
@@ -519,11 +708,19 @@ theorem finrank_extSub (W : Submodule K (MvPolynomial σ K)) [Module.Finite K W]
       exact W.smul_mem _ (w i).2
   rw [hsp, finrank_span_eq_card hli, Fintype.card_fin]
 
+/- English proof (translation)
+Rewrite using `[← homogeneousComponent_eq_self hF, contr_comp]`. Conclude with `homogeneousComponent_isHomogeneous _ _`.
+-/
 theorem contr_isHomogeneous (φ : L →ₗ[K] K) {e : ℕ} {F : MvPolynomial σ L}
     (hF : F.IsHomogeneous e) : (contr φ F).IsHomogeneous e := by
   rw [← homogeneousComponent_eq_self hF, contr_comp]
   exact homogeneousComponent_isHomogeneous _ _
 
+/- English proof (translation)
+Use extensionality with `F`. Use `⟨fun hF φ => ⟨contr_isHomogeneous φ hF.1, hF.2 φ⟩, fun hF => ⟨?_, fun φ => (hF φ).2⟩⟩` and prove the remaining obligations. Establish `: F = homogeneousComponent e F` using `eq_of_contr (K := K) fun φ => by`. Rewrite using `[contr_comp, homogeneousComponent_eq_self (hF φ).1]`. Rewrite using `[this]`.
+
+Conclude with `homogeneousComponent_isHomogeneous _ _`.
+-/
 theorem piece_extIdeal (I : Ideal (MvPolynomial σ K)) (e : ℕ) :
     piece (extIdeal L I) e = extSub L (piece I e) := by
   ext F
@@ -533,6 +730,9 @@ theorem piece_extIdeal (I : Ideal (MvPolynomial σ K)) (e : ℕ) :
   rw [this]
   exact homogeneousComponent_isHomogeneous _ _
 
+/- English proof (translation)
+Establish `h1 : genIn (extIdeal L I) e ≤ extIdeal L (genIn I e)` using `Ideal.span_le.2 fun G hG φ => Ideal.subset_span ⟨hG.1 φ, contr_isHomogeneous φ hG.2⟩`. Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_eq_one K (one_ne_zero : (1 : L) ≠ 0)`. Use `h1 h φ` as an intermediate fact. Rewrite `this` using `[contr_map, hφ, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem mem_genIn_of_map {I : Ideal (MvPolynomial σ K)} {e : ℕ} {F : MvPolynomial σ K}
     (h : map (algebraMap K L) F ∈ genIn (extIdeal L I) e) : F ∈ genIn I e := by
   have h1 : genIn (extIdeal L I) e ≤ extIdeal L (genIn I e) :=
@@ -549,6 +749,15 @@ namespace GlobalTheory
 
 open RegBound in
 
+/- English proof (translation)
+Introduce `σ _ Q`. Take `⟨d, hd⟩` from `bound_infinite σ (nmon σ 1) fun e => Q.eval (e : ℚ)`. Use `⟨d, fun K _ I hI hsat hq => ?_⟩` and prove the remaining obligations. Use `haveI : Infinite (AlgebraicClosure K) := IsAlgClosed.instInfinite`. Establish `hdim : ∀ e, finrank (AlgebraicClosure K) (piece (extIdeal (AlgebraicClosure K) I) e) = finrank K (piece I e)` using `fun e => by rw [piece_extIdeal, finrank_extSub]`.
+
+Establish `h` using `hd (AlgebraicClosure K) (extIdeal (AlgebraicClosure K) I) (fun F hF e φ => by rw [contr_comp]; exact hI _ (hF φ) e) (fun F hF φ => hsat _ fun i => by rw [← contr_X_mul]; exact hF i φ) (Nat.le_add_left _ _) (by simpa only [hdim] using hq)`. Simplify using `only [hdim] at h`. Introduce `e he`. Use `⟨(h e he).1, ?_⟩` and prove the remaining obligations. Proceed by induction on `e, he using Nat.le_induction with`.
+
+Consider the case `base => exact fun F hF hFe => Ideal.subset_span ⟨hF, hFe⟩`. Consider the case `succ n hn ih`. Introduce `F hF hFe`. Use `(Ideal.span_le.2 fun G hG => ih G hG.1 hG.2 : genIn I n ≤ genIn I d) ?_` and prove the remaining obligations. Use `mem_genIn_of_map (L := AlgebraicClosure K) ((h n hn).2 _ (fun φ => ?_) (hFe.map _))` and prove the remaining obligations.
+
+Rewrite using `[contr_map, smul_eq_C_mul]`. Conclude with `I.mul_mem_left _ hF`.
+-/
 theorem exists_uniform_regularity_bound :
     ∀ (σ : Type) [Finite σ] (Q : Polynomial ℚ), ∃ d₀ : ℕ, ∀ (K : Type) [Field K] (I : Ideal (MvPolynomial σ K)), (∀ F ∈ I, ∀ e, MvPolynomial.homogeneousComponent e F ∈ I) → (∀ F, (∀ i, MvPolynomial.X i * F ∈ I) → F ∈ I) → (∀ᶠ e in Filter.atTop, (Module.finrank K ↥(MvPolynomial.homogeneousSubmodule σ K e ⊓ I.restrictScalars K) : ℚ) = Q.eval (e : ℚ)) → ∀ e ≥ d₀, (Module.finrank K ↥(MvPolynomial.homogeneousSubmodule σ K e ⊓ I.restrictScalars K) : ℚ) = Q.eval (e : ℚ) ∧ ∀ F ∈ I, F.IsHomogeneous e → F ∈ Ideal.span {G | G ∈ I ∧ G.IsHomogeneous d₀} := by
   intro σ _ Q

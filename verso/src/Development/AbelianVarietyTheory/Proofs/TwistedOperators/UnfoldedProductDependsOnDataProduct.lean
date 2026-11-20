@@ -12,6 +12,9 @@ open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid Glob
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.RowReal.big_mono (fun ch h => GlobalTheory.ConnectionLinear.conLin_of_positions ch h.1.1.1 h.1.1.2 h.1.2 h.2) (((GlobalTheory.T.thetaContraction_linear_left_largeDepth.and GlobalTheory.T.thetaContraction_linear_right_largeDepth).and GlobalTheory.T.lastSeesaw_linear_l …`.
+-/
 theorem GlobalTheory.RowVal.conLin_big : Big fun ch => ConLin ch :=
   GlobalTheory.RowReal.big_mono (fun ch h => GlobalTheory.ConnectionLinear.conLin_of_positions ch h.1.1.1 h.1.1.2 h.1.2 h.2)
     (((GlobalTheory.T.thetaContraction_linear_left_largeDepth.and GlobalTheory.T.thetaContraction_linear_right_largeDepth).and GlobalTheory.T.lastSeesaw_linear_left_largeDepth).and GlobalTheory.T.lastSeesaw_linear_right_largeDepth)

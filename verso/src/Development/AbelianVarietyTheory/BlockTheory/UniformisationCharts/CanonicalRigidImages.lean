@@ -139,8 +139,14 @@ def NonemptyIffIsGt : Prop :=
     (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G],
     Nonempty (GtIso D I e G) ↔ IsGtOfData D I e (thickObj R I e G)
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : ∑ k, oε k = 0 ∧ oεinv = ![-1, 1, 1, -1] := by decide
 
+/- English proof (translation)
+Simplify using `[down]`.
+-/
 example {T T' : Over (Se R I e)} (f : T' ⟶ T) (y : T ⟶ Be D I e) :
     (down D I e (f ≫ y)).left = f.left ≫ (down D I e y).left := by
   simp [down]

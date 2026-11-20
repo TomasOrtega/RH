@@ -11,6 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SemiAbelianDim
 
+/- English proof (translation)
+Introduce `R _ _ G _ _ hG`. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `: ConnectedSpace (Sp R)` using `AbelianDim.connectedSpace_spec_of_isLocalRing R`. Establish `: ConnectedSpace G.left` using `(GroupConn.connectedSpace_group _ G).1`.
+
+Take `⟨x⟩ : Nonempty G.left` from `inferInstance`. Conclude with `exists_dim_of_preconnected G.hom x`.
+-/
 theorem exists_relDim_of_isSemiAbelian : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∃ g : ℕ, SmoothOfRelativeDimension g G.hom := by
   intro R _ _ G _ _ hG
   have := hG.smooth

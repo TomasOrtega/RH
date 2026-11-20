@@ -8,6 +8,15 @@ noncomputable section
 
 namespace GlobalTheory.RayOnto
 
+/- English proof (translation)
+Introduce `P hP`. Use `letI : Algebra L L' := τ.toAlgebra`. Set `Q : HeightOneSpectrum (𝓞 L)` to `P.under (𝓞 L)`. Establish `hQ : Q.asIdeal = P.asIdeal.comap (RingOfIntegers.mapRingHom τ)` using `rfl`. Use `haveI hPo : P.asIdeal.LiesOver Q.asIdeal := ⟨rfl⟩`.
+
+Establish `hn : ((n : ℕ) : 𝓞 L) ∉ Q.asIdeal` using `fun h' => hP (by`. Rewrite `h'` using `[hQ, Ideal.mem_comap, map_natCast]`. Conclude with `h')`. Take `⟨f, α, h1, h2, h3⟩` from `h Q hn`. Establish `hf` using `Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver P.asIdeal Q.asIdeal Q.isPrime Q.ne_bot`.
+
+Establish `hcm : P.asIdeal.comap (RingOfIntegers.mapRingHom (τ.comp φ)) = Q.asIdeal.comap (RingOfIntegers.mapRingHom φ)`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[hcm]`. Use `⟨f * Q.asIdeal.inertiaDeg' P.asIdeal, α ^ Q.asIdeal.inertiaDeg' P.asIdeal, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hf, h1, ← pow_mul]`. Rewrite using `[pow_mul, h2, Ideal.span_singleton_pow]`. Use `sub_dvd_pow_sub_pow α 1 (Q.asIdeal.inertiaDeg' P.asIdeal)` as an intermediate fact. Rewrite `this` using `[one_pow]`. Conclude with `dvd_trans h3 this`.
+-/
 theorem containsRayField_comp {K L L' : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Field L'] [NumberField L']
     (φ : K →+* L) (τ : L →+* L') (n : ℕ) (h : GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField φ n) :
     GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField (τ.comp φ) n := by
@@ -33,6 +42,23 @@ theorem containsRayField_comp {K L L' : Type} [Field K] [NumberField K] [Field L
     rw [one_pow] at this
     exact dvd_trans h3 this
 
+/- English proof (translation)
+Introduce `hR P M hM`. Set `φK : P.host.K →+* ℂ` to `P.host.φ₀.comp (algebraMap P.host.K P.host.E)`. Take `⟨Rf, hRf⟩` from `GlobalTheory.Mem.Fld.exists_isRayFieldIn φK hR (GlobalTheory.Mem.Fld.natIdeal_ne_bot (E := P.host.K) hM)`. Use `haveI : NumberField Rf := hRf.numberField`. Set `b` to `Module.finBasis ℚ Rf`.
+
+Use `⟨Finset.univ.image (fun i => (b i : ℂ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hz`. Establish `h : IsAlgebraic ℚ (b i)` using `Algebra.IsAlgebraic.isAlgebraic _`. Conclude with `h.algHom Rf.val`.
+
+Introduce `L _ _ σ φ hσφ hS`. Take `⟨hm, hNF, hray⟩` from `hRf`. Use `letI := GlobalTheory.Mem.Fld.algOf φK Rf hm`. Take `⟨hab, hun, -, hart⟩` from `hray`. Use `haveI : IsGalois P.host.K Rf := hab.toIsGalois`.
+
+Establish `hc : GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField (algebraMap P.host.K Rf) M` using `GlobalTheory.FieldSize.RayNorm.containsRayField_of_ray (K := P.host.K) (L := Rf) M hun (fun I hI hc hχ => (hart I hI hc).1 hχ)`. Establish `hle : Rf ≤ σ.toRatAlgHom.fieldRange`. Introduce `z hz`. Establish `hsum` using `congrArg Subtype.val (b.sum_repr ⟨z, hz⟩)`. Rewrite `hsum` using `[IntermediateField.coe_sum]`.
+
+Simplify using `only [IntermediateField.coe_smul] at hsum`. Rewrite using `[← hsum]`. Use `sum_mem fun i _ => IntermediateField.smul_mem _ ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hS (b i) (Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩)`. Conclude with `⟨y, hy⟩`.
+
+Set `e : L ≃ₐ[ℚ] σ.toRatAlgHom.fieldRange` to `AlgEquiv.ofInjectiveField σ.toRatAlgHom`. Set `τ : Rf →+* L` to `(e.symm : σ.toRatAlgHom.fieldRange →+* L).comp (IntermediateField.inclusion hle : Rf →+* σ.toRatAlgHom.fieldRange)`. Establish `key : ∀ w, σ (e.symm w) = (w : ℂ)` using `fun w => by conv_rhs => rw [← e.apply_symm_apply w]`. Both sides reduce to the same expression. Establish `hτ : τ.comp (algebraMap P.host.K Rf) = φ`.
+
+Use extensionality with `x`. Apply `σ.injective` to reduce the goal to its premises. Establish `h1 : σ (φ x) = φK x` using `RingHom.congr_fun hσφ x`. Rewrite using `[h1]`. Conclude with `key _`.
+
+Rewrite using `[← hτ]`. Conclude with `containsRayField_comp _ τ M hc`.
+-/
 theorem exists_finset_containsRayField : GlobalTheory.NT.RayField → ∀ (P : Pre) (M : ℕ), M ≠ 0 → ∃ S : Finset ℂ, (∀ z ∈ S, IsAlgebraic ℚ z) ∧ ∀ (L : Type) [Field L] [NumberField L] (σ : L →+* ℂ) (φ : P.host.K →+* L), σ.comp φ = P.host.φ₀.comp (algebraMap P.host.K P.host.E) → (∀ z ∈ S, ∃ x, σ x = z) → GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField φ M := by
   intro hR P M hM
   let φK : P.host.K →+* ℂ := P.host.φ₀.comp (algebraMap P.host.K P.host.E)

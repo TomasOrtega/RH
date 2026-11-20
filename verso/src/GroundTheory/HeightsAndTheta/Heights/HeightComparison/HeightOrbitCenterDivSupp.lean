@@ -13,6 +13,13 @@ def OrbitCenterDivSupp.Statement : Prop :=
     ∀ v : FinitePlace (coordField x), s ∈ orbitCenter x v →
       orbitCenter x v ∈ Geo.divSupp (orbitIdeal x) s
 
+/- English proof (translation)
+Establish `: (Ideal.span {(2 : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime two_ne_zero).mpr Int.prime_two`. Take `⟨Q, -, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := 𝓞 K) (Ideal.span {(2 : ℤ)}) ⊥ (fun a ha ↦ by`. Rewrite `ha` using `[Ideal.mem_comap, Ideal.mem_bot, map_eq_zero_iff _ (algebraMap ℤ (𝓞 K)).injective_int]`. Simplify using `[ha])`. Establish `h2 : (2 : 𝓞 K) ∈ Q`.
+
+Establish `: (2 : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 K))` using `hQc ▸ Ideal.mem_span_singleton_self 2`. Simplify using `using this`. Establish `hne : Q ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `h2` using `[Ideal.mem_bot]`.
+
+Conclude with `two_ne_zero h2`. Use `⟨FinitePlace.mk ⟨Q, hQ, hne⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[FinitePlace.mk_apply, show (2 : K) = algebraMap (𝓞 K) K 2 from (map_ofNat _ 2).symm]`. Conclude with `(FinitePlace.norm_lt_one_iff_mem (K := K) (v := (⟨Q, hQ, hne⟩ : IsDedekindDomain.HeightOneSpectrum (𝓞 K))) (2 : 𝓞 K)).mpr h2`.
+-/
 theorem exists_finitePlace_two_lt_one (K : Type) [Field K] [NumberField K] :
     ∃ v : FinitePlace K, v 2 < 1 := by
   have : (Ideal.span {(2 : ℤ)}).IsPrime :=
@@ -34,6 +41,11 @@ theorem exists_finitePlace_two_lt_one (K : Type) [Field K] [NumberField K] :
   exact (FinitePlace.norm_lt_one_iff_mem (K := K)
     (v := (⟨Q, hQ, hne⟩ : IsDedekindDomain.HeightOneSpectrum (𝓞 K))) (2 : 𝓞 K)).mpr h2
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_finitePlace_two_lt_one (coordField samplePoint)`. Use `⟨v, samplePoint_blockNonzero, (geoMultiHomog_iff _ _).mpr (isWeightedHomogeneous_chartMonomial _ _), chartMonomial_notMem_orbitIdeal _ _ (fun _ ↦ by simp [samplePoint]) 1, ?_⟩` and prove the remaining obligations. Establish `hX : chartMonomial (n` using `fun _ : Unit ↦ 1) (fun _ ↦ 1) 1 = X ⟨(), 1⟩ := by`. Simplify using `[chartMonomial]`. Rewrite using `[hX]`.
+
+Use `X_mem_orbitCenter _ _ () 1 ?_` and prove the remaining obligations. Establish `h1 : coordVec samplePoint () 1 = 2` using `Subtype.ext (by simp [coordVec, samplePoint]; rfl)`. Establish `h0 : coordVec samplePoint () 0 = 1` using `Subtype.ext (by simp [coordVec, samplePoint])`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 example : ∃ v : FinitePlace (coordField samplePoint), BlockNonzero samplePoint ∧
     Geo.IsMultiHomog (ι := blockIdx (fun _ : Unit ↦ 1)) (chartMonomial (fun _ ↦ 1) 1) 1 ∧
     chartMonomial (fun _ ↦ 1) 1 ∉ orbitIdeal samplePoint ∧

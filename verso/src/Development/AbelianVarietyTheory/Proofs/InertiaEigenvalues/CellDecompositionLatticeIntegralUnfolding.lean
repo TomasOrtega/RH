@@ -18,12 +18,22 @@ namespace GlobalTheory.RSCell.CptMod
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use `Continuous.units_map _ ?_` and prove the remaining obligations. Establish `hs : Continuous (sFin E : Af E → Ad E)` using `(continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))`. Conclude with `continuous_const.sub continuous_const |>.add (continuous_id.matrix_map hs)`.
+-/
 theorem continuous_finGL_cpt {a : ℕ} : Continuous (finGL E a) := by
   refine Continuous.units_map _ ?_
   have hs : Continuous (sFin E : Af E → Ad E) :=
     (continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))
   exact continuous_const.sub continuous_const |>.add (continuous_id.matrix_map hs)
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, fun w => by simp⟩`. Consider the case `insert v T hvT ih`. Take `⟨h, hh⟩` from `ih`. Use `⟨locGL E n v (c v) * h, fun w => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hh w]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[pLoc_locGL, if_neg hvT, if_pos (Finset.mem_insert_self _ _), mul_one]`. Rewrite using `[pLoc_locGL_of_ne hw, one_mul]`.
+
+Simplify using `[Finset.mem_insert, hw]`.
+-/
 theorem exists_pLoc_ite {n : ℕ} (c : ∀ w : HeightOneSpectrum (𝓞 E), GL (Fin n) (w.adicCompletion E))
     (T : Finset (HeightOneSpectrum (𝓞 E))) :
     ∃ h : GL (Fin n) (Af E), ∀ w, GeneralLinearGroup.map (pLoc E w) h = if w ∈ T then c w else 1 := by
@@ -39,6 +49,11 @@ theorem exists_pLoc_ite {n : ℕ} (c : ∀ w : HeightOneSpectrum (𝓞 E), GL (F
     · rw [pLoc_locGL_of_ne hw, one_mul]
       simp [Finset.mem_insert, hw]
 
+/- English proof (translation)
+Use `GlobalTheory.isCompact_KGL E n using 1` and compare the differences between its conclusion and the goal. Use extensionality with `κ`. Simplify using `only [Set.mem_setOf_eq, GlobalTheory.LFun.KGL, GlobalTheory.CellDec.mem_GLint_iff_entries_cell, ← map_inv]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `⟨fun i j v => (h v).1 i j, fun i j v => (h v).2 i j⟩`. Introduce `h v`. Conclude with `⟨fun i j => h.1 i j v, fun i j => h.2 i j v⟩`.
+-/
 theorem isCompact_intGL (n : ℕ) :
     IsCompact {κ : GL (Fin n) (Af E) | ∀ w, GeneralLinearGroup.map (pLoc E w) κ ∈ GlobalTheory.LFun.KGL w n} := by
   convert GlobalTheory.isCompact_KGL E n using 1
@@ -50,12 +65,20 @@ theorem isCompact_intGL (n : ℕ) :
   · intro h v
     exact ⟨fun i j => h.1 i j v, fun i j => h.2 i j v⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[Units.val_mul, Matrix.mul_apply, h, ← Matrix.mul_apply, ← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+-/
 theorem row_mul_inv {R : Type} [CommRing R] {n : ℕ} {A B : GL (Fin n) R} {i : Fin n}
     (h : (A : Matrix (Fin n) (Fin n) R) i = (B : Matrix (Fin n) (Fin n) R) i) :
     ((A * B⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i = (1 : Matrix (Fin n) (Fin n) R) i := by
   funext j
   rw [Units.val_mul, Matrix.mul_apply, h, ← Matrix.mul_apply, ← Units.val_mul, mul_inv_cancel, Units.val_one]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB R).1 hu`. Use function extensionality and compare the values at `j`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single (Fin.last m)]`. Rewrite using `[h2, one_mul]`. Introduce `i _ hi`.
+
+Rewrite using `[h1 _ _ (lt_of_le_of_ne (Fin.le_last i) hi), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem row_last_unip_mul {R : Type} [CommRing R] {m : ℕ} {u : GL (Fin (m + 1)) R}
     (hu : u ∈ GlobalTheory.SmGL.unipB R (Fin (m + 1))) (k : GL (Fin (m + 1)) R) :
     ((u * k : GL (Fin (m + 1)) R) : Matrix (Fin (m + 1)) (Fin (m + 1)) R) (Fin.last m) =
@@ -69,6 +92,11 @@ theorem row_last_unip_mul {R : Type} [CommRing R] {m : ℕ} {u : GL (Fin (m + 1)
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `h0 : Finsupp.mapRange (fun x : Fin n → ℤ => x i) rfl l = 0`. Use extensionality with `w`. Simplify using `[hl w]`. Use function extensionality and compare the values at `j`. Rewrite using `[GlobalTheory.CellDec.tl_eq_diagT, Units.val_mul, GlobalTheory.SmGL.val_diagT, Matrix.diagonal_mul]`.
+
+Simplify using `only [h0, GlobalTheory.CellDec.adl_zero, map_one, Units.val_one, one_mul]`.
+-/
 theorem row_tl_mul {n : ℕ} (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ)
     (l : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ)) {i : Fin n} (hl : ∀ w, l w i = 0) (g : GA E n) :
     ((GlobalTheory.CellDec.tl n ϖ l * g : GA E n) : Matrix (Fin n) (Fin n) (Ad E)) i = (g : Matrix (Fin n) (Fin n) (Ad E)) i := by
@@ -79,6 +107,9 @@ theorem row_tl_mul {n : ℕ} (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCo
   rw [GlobalTheory.CellDec.tl_eq_diagT, Units.val_mul, GlobalTheory.SmGL.val_diagT, Matrix.diagonal_mul]
   simp only [h0, GlobalTheory.CellDec.adl_zero, map_one, Units.val_one, one_mul]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CellDec.compV_tl, hw]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.IwaCell.val_tD]`. Use extensionality with `i j`. Simplify using `[Matrix.diagonal_apply, Matrix.one_apply]`.
+-/
 theorem compV_tl_eq_one {n : ℕ} (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ)
     (l : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ)) {w : HeightOneSpectrum (𝓞 E)} (hw : l w = 0) :
     GlobalTheory.CellDec.compV E n w (GlobalTheory.CellDec.tl n ϖ l) = 1 := by
@@ -88,6 +119,11 @@ theorem compV_tl_eq_one {n : ℕ} (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.a
   ext i j
   simp [Matrix.diagonal_apply, Matrix.one_apply]
 
+/- English proof (translation)
+Apply `ga_ext` to reduce the goal to its premises. Simplify using `[GlobalTheory.CellDec.tl, map_mul]`. Apply `GlobalTheory.CellDec.GL_ext_pLoc` to reduce the goal to its premises. Introduce `w`. Express the relevant statement in the definitionally equal form `GlobalTheory.CellDec.compV E n w (GlobalTheory.CellDec.tl n ϖ l * p) = GlobalTheory.CellDec.compV E n w (p * GlobalTheory.CellDec.tl n ϖ l)`.
+
+Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hw : w ∈ T`. Rewrite using `[compV_tl_eq_one ϖ l (hl w hw), one_mul, mul_one]`. Rewrite using `[hp w hw, one_mul, mul_one]`.
+-/
 theorem tl_mul_comm [IsTotallyComplex E] {n : ℕ} (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ) {T : Finset (HeightOneSpectrum (𝓞 E))}
     (l : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ)) (hl : ∀ v ∈ T, l v = 0) {p : GA E n}
     (hp : ∀ w ∉ T, GlobalTheory.CellDec.compV E n w p = 1) :
@@ -108,6 +144,51 @@ namespace GlobalTheory.RSCell.CptMod
 
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `E _ _ _ m T ϖ hϖ F l₀ U Φ J C hC hl0 hU hKT hN hsupp hΦ hΦs hJ horb`. Use `set K₁ : Set (GA E (m + 1)) := finGL E (m + 1) '' {κ | ∀ w, GeneralLinearGroup.map (pLoc E w) κ ∈ GlobalTheory.LFun.KGL w (m + 1)} with hK₁d`. Use `set K₂ : Set (GA E (m + 1)) := (fun u => infGL E (m + 1) (GlobalTheory.RSTheta.rowGL (Fin.last m) u)) '' tsupport Φ with hK₂d`. Establish `hK₁ : IsCompact K₁` using `(isCompact_intGL (m + 1)).image continuous_finGL_cpt`. Establish `hK₂ : IsCompact K₂` using `(show IsCompact (tsupport Φ) from hΦ).image_of_continuousOn (GlobalTheory.CuspQuot.continuous_infGL.comp_continuousOn ((GlobalTheory.RSTheta.continuousOn_rowGL (Fin.last m)).mono hΦs))`.
+
+Use `⟨C * K₁ * K₂ * K₁, ((hC.mul hK₁).mul hK₂).mul hK₁, ?_⟩` and prove the remaining obligations. Introduce `x g hg hB`. Take `⟨u₁, hu₁, k, hk, rfl⟩` from `hg`. Use `set t := GlobalTheory.CellDec.tl (m + 1) ϖ l₀.1 with ht`. Establish `hrow : ((t * (u₁ * k) : GA E (m + 1)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) = (k : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m)`.
+
+Rewrite using `[row_tl_mul ϖ l₀.1 hl0, row_last_unip_mul hu₁]`. Use `set u : Fin (m + 1) → Cinf E := fun i => pInf E ((k : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) i) with hud`. Use `set yf : Fin (m + 1) → Af E := fun i => pFin E ((k : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) i) with hyf`. Use `set σ := infGL E (m + 1) (GlobalTheory.RSTheta.rowGL (Fin.last m) u) with hσ`. Establish `hB1` using `left_ne_zero_of_mul hB`.
+
+Rewrite `hB1` using `[enorm_ne_zero]`. Unfold `GlobalTheory.RSTheta.rsPsi GlobalTheory.ThetaPoisson.thetaFn at hB1`. Rewrite `hB1` using `[hrow]`. Take `⟨hB2, hlat⟩` from `mul_ne_zero_iff.1 hB1`. Establish `hlat' : yf - Pi.single (Fin.last m) 1 ∈ GlobalTheory.ThetaPoisson.latt (m + 1) J` using `Set.mem_of_indicator_ne_zero hlat`.
+
+Unfold `GlobalTheory.RSTheta.rsInf at hB2`. Take `⟨hB3, hΦu⟩` from `mul_ne_zero_iff.1 hB2`. Establish `hW : GlobalTheory.JSW.whit F (t * (u₁ * k) * σ⁻¹) ≠ 0` using `left_ne_zero_of_mul hB3`. Establish `hu_supp : u ∈ tsupport Φ` using `subset_tsupport _ (Function.mem_support.2 hΦu)`. Establish `hunit : IsUnit (u (Fin.last m))` using `GlobalTheory.RSTheta.isUnit_of_mem_rowSet (hΦs hu_supp)`.
+
+Take `⟨κ, hκU, hκK, hκ1, hκrow⟩` from `horb yf hlat'`. Take `⟨hf, hhf⟩` from `exists_pLoc_ite (fun w => GlobalTheory.CellDec.compV E (m + 1) w k) T`. Use `set h := infGL E (m + 1) (GeneralLinearGroup.map (pInf E) k) * finGL E (m + 1) hf with hhd`. Use `set kT := h⁻¹ * k with hkTd`. Establish `hcV_inf : ∀ w (y : GL (Fin (m + 1)) (Cinf E)), GlobalTheory.CellDec.compV E (m + 1) w (infGL E (m + 1) y) = 1`.
+
+Introduce `w y`. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) (infGL E (m + 1) y)) = 1`. Rewrite using `[pFin_infGL, map_one]`. Establish `hcV_h : ∀ w, GlobalTheory.CellDec.compV E (m + 1) w h = if w ∈ T then GlobalTheory.CellDec.compV E (m + 1) w k else 1`. Introduce `w`.
+
+Rewrite using `[hhd, map_mul, hcV_inf, GlobalTheory.CellDec.compV_finGL, hhf w, one_mul]`. Establish `hinf_h : GeneralLinearGroup.map (pInf E) h = GeneralLinearGroup.map (pInf E) k`. Rewrite using `[hhd, map_mul, pInf_infGL, pInf_finGL, mul_one]`. Establish `hkT_inf : GeneralLinearGroup.map (pInf E) kT = 1`. Rewrite using `[hkTd, map_mul, map_inv, hinf_h, inv_mul_cancel]`.
+
+Establish `hkT_T : ∀ w ∈ T, GlobalTheory.CellDec.compV E (m + 1) w kT = 1`. Introduce `w hw`. Rewrite using `[hkTd, map_mul, map_inv, hcV_h, if_pos hw, inv_mul_cancel]`. Establish `hkT_US : kT ∈ GlobalTheory.CellDec.US E (m + 1) T` using `GlobalTheory.CellDec.mem_US.2 fun w hw => by`. Rewrite using `[hkTd, map_mul, map_inv, hcV_h, if_neg hw, inv_one, one_mul]`.
+
+Conclude with `GlobalTheory.CellDec.mem_US.1 hk w hw`. Establish `hkT_fin : kT = finGL E (m + 1) (GeneralLinearGroup.map (pFin E) kT)` using `by conv_lhs => rw [← infGL_mul_finGL kT]`. Rewrite using `[hkT_inf, map_one, one_mul]`. Establish `hkT_K : ∀ w, GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) kT) ∈ GlobalTheory.LFun.KGL w (m + 1)`. Introduce `w`.
+
+Express the relevant statement in the definitionally equal form `GlobalTheory.CellDec.compV E (m + 1) w kT ∈ _`. Distinguish the cases in `hw : w ∈ T`. Rewrite using `[hkT_T w hw]`. Conclude with `one_mem _`. Conclude with `GlobalTheory.CellDec.mem_US.1 hkT_US w hw`.
+
+Use `set B := finGL E (m + 1) κ * σ with hBd`. Establish `hrowB : (h : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) = (B : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m)`. Use function extensionality and compare the values at `j`. Apply `ad_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(GeneralLinearGroup.map (pInf E) h : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E)) (Fin.last m) j = (GeneralLinearGroup.map (pInf E) B : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E)) (Fin.last m) j`.
+
+Rewrite using `[hinf_h, hBd, map_mul, pInf_finGL, one_mul, hσ, pInf_infGL, GlobalTheory.RSTheta.val_rowGL hunit, GlobalTheory.RSTheta.rowMat, Matrix.updateRow_self]`. Both sides reduce to the same expression. Apply `IsDedekindDomain.FiniteAdeleRing.ext` to reduce the goal to its premises. Introduce `w`. Express the relevant statement in the definitionally equal form `(GlobalTheory.CellDec.compV E (m + 1) w h : Matrix (Fin (m + 1)) (Fin (m + 1)) (w.adicCompletion E)) (Fin.last m) j = (GlobalTheory.CellDec.compV E (m + 1) w B : Matrix (Fin (m + 1)) (Fin (m + 1)) (w.adicCompletion E)) (Fin.last m) j`.
+
+Rewrite using `[hcV_h, hBd, map_mul, GlobalTheory.CellDec.compV_finGL, hσ, hcV_inf, mul_one]`. Use `split_ifs with hw`. Rewrite using `[hκrow w hw j]`. Both sides reduce to the same expression. Rewrite using `[hκ1 w hw]`.
+
+Use `set p := h * B⁻¹ with hpd`. Establish `hp_sup : ∀ w ∉ T, GlobalTheory.CellDec.compV E (m + 1) w p = 1`. Introduce `w hw`. Rewrite using `[hpd, map_mul, map_inv, hcV_h, if_neg hw, hBd, map_mul, GlobalTheory.CellDec.compV_finGL, hκ1 w hw, hσ, hcV_inf, mul_one, inv_one, one_mul]`. Establish `hp_mir : p ∈ GlobalTheory.JSW.mirS E T m`.
+
+Use `⟨fun w hw => hp_sup w hw, fun j => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (row_mul_inv hrowB) j`. Rewrite `e` using `[← hpd]`. Rewrite using `[e, Matrix.one_apply]`. Distinguish the cases in `hj : j = Fin.last m`.
+
+Rewrite using `[if_pos hj.symm, if_pos hj]`. Rewrite using `[if_neg (Ne.symm hj), if_neg hj]`. Establish `hcomm : kT * σ⁻¹ = σ⁻¹ * kT`. Rewrite using `[hkT_fin, hσ, ← map_inv]`. Conclude with `(infGL_comm _ _).symm`.
+
+Establish `hnorm : ‖GlobalTheory.JSW.whit F (t * (u₁ * k) * σ⁻¹)‖ = ‖GlobalTheory.JSW.whit F (p * t)‖`. Establish `e1 : t * (u₁ * k) * σ⁻¹ = (t * u₁ * t⁻¹) * (t * k * σ⁻¹)` using `by group`. Rewrite using `[e1, hN _ (GlobalTheory.CellDec.tl_conj_mem ϖ l₀.1 hu₁)]`. Establish `e2 : t * k * σ⁻¹ = t * h * σ⁻¹ * kT`. Rewrite using `[mul_assoc (t * h), ← hcomm, hkTd]`.
+
+Use `group`. Rewrite using `[e2, hKT kT hkT_US hkT_inf hkT_T]`. Establish `e3 : t * h * σ⁻¹ = t * p * finGL E (m + 1) κ`. Rewrite using `[hpd, hBd]`. Use `group`.
+
+Rewrite using `[e3, hU κ hκU, tl_mul_comm ϖ l₀.1 l₀.2 hp_sup]`. Establish `hWp : GlobalTheory.JSW.whit F (p * GlobalTheory.CellDec.tl (m + 1) ϖ l₀.1) ≠ 0`. Rewrite using `[← ht, ← norm_ne_zero_iff, ← hnorm, norm_ne_zero_iff]`. Conclude with `hW`. Take `⟨u₂, hu₂, hu₂C⟩` from `hsupp p hp_mir hWp`.
+
+Use `⟨u₂ * u₁⁻¹, mul_mem hu₂ (inv_mem hu₁), ?_⟩` and prove the remaining obligations. Establish `e : u₂ * u₁⁻¹ * (u₁ * k) = u₂ * p * finGL E (m + 1) κ * σ * finGL E (m + 1) (GeneralLinearGroup.map (pFin E) kT)`. Rewrite using `[← hkT_fin, hpd, hBd, hkTd]`. Use `group`. Rewrite using `[e]`.
+
+Conclude with `Set.mul_mem_mul (Set.mul_mem_mul (Set.mul_mem_mul hu₂C ⟨κ, hκK, rfl⟩) ⟨u, hu_supp, rfl⟩) ⟨_, hkT_K, rfl⟩`.
+-/
 theorem exists_isCompact_mod_NA : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ), (∀ w, IsUnifV E w (ϖ w : w.adicCompletion E)) →
     ∀ (F : GA E (m + 1) → ℂ) (l₀ : GlobalTheory.CellDec.abelian₂ E (m + 1) T) (U : Subgroup (GL (Fin (m + 1)) (Af E))) (Φ : (Fin (m + 1) → Cinf E) → ℂ)

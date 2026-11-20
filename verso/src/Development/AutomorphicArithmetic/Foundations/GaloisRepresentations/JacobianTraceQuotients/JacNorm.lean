@@ -7,6 +7,11 @@ open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.C
 open UpperTheory.Gal.LocD UpperTheory.Gal.InertialTypesAlt.G UpperTheory.Gal.Join
 open scoped Classical
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n V _ _ π t y`. Rewrite using `[UnramFixed.jacB_apply, smul_smul]`. Establish `h1 : ((((deltaHalf k fun _ : Fin n ↦ Unit).comp (leviTorus k (Fin n)).toMonoidHom) t : ℂˣ) : ℂ) = ((√(deltaB t) : ℝ) : ℂ)`. Rewrite using `[MonoidHom.comp_apply, val_deltaHalf, deltaB_eq_modulus]`. Both sides reduce to the same expression.
+
+Establish `h2 : ((√(deltaB t) : ℝ) : ℂ) ≠ 0`. Rewrite using `[← h1]`. Conclude with `Units.ne_zero _`. Rewrite using `[Units.val_inv_eq_inv_val, h1, mul_inv_cancel₀ h2, one_smul]`.
+-/
 theorem UpperTheory.Gal.Join.jacNorm :
     UpperTheory.Gal.Join.JacNorm := by
   intro k _ _ _ _ n V _ _ π t y

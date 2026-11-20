@@ -18,6 +18,11 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SatakeTransformE
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hL D P i P' v w hov hns Dv`. Establish `hsph` using `D.nbc.embAV_sph i P' w hns`. Rewrite `hsph` using `[P.H.emb i P']`. Establish `hS : (P.H.av.rep i P').SphAt v` using `(P.H.au.sph (D.nd.j i) _ _ (P.H.av.rep i P') w v hns hov).1 hsph`. Take `⟨α, hα, hsat⟩` from `P.H.au.sat (D.nd.j i) _ _ (P.H.av.rep i P') v w hov Dv (GlobalTheory.T.exists_satakeParameter_spherical_inertPlace _ _ _ v w hov Dv hS)`.
+
+Use `⟨α, hα, ?_⟩` and prove the remaining obligations. Rewrite using `[D.nbc.embAV_sat, P.H.emb]`. Conclude with `hsat`.
+-/
 theorem GlobalTheory.EigInert.satParam : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (i : D.nd.Loc) (P' : D.naut.AV i) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))) (w : HeightOneSpectrum (𝓞 D.host.E)), NG.OverPl w v → ¬ Formalism.BasicNotions.IsSplitPl D.host w → ∀ Dv : InertDatum D.host.E D.R.nV v w, ∃ α, NG.SatAt (P.H.av.rep i P') Dv α ∧ D.naut.satV i P' w = Multiset.map α Finset.univ.val := by
   intro hL D P i P' v w hov hns Dv
   have hsph := D.nbc.embAV_sph i P' w hns
@@ -28,6 +33,9 @@ theorem GlobalTheory.EigInert.satParam : ∀ (hL : GlobalTheory.Published.LocalL
   rw [D.nbc.embAV_sat, P.H.emb]
   exact hsat
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SatIso.heckeFunI_eq_sum Dv _ h (GlobalTheory.T.finite_inertHecke_support_cosets L n v w Dv (GlobalTheory.T.unitary_doubleCoset_finite_left_cosets Dv.ϖ Dv.σw _ n Dv.unram) (GlobalTheory.T.mem_maxCompact_of_trivOutside_local_integral L n v w Dv) _ (fun _ _ => Iff.rfl) …`.
+-/
 theorem GlobalTheory.EigInert.heckeFunI_umax_sum {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {w : HeightOneSpectrum (𝓞 L)} (Dv : InertDatum L n v w)
     (h : Formalism.UG.GU Dv.σw n → ℂ) (hh : h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n)) :
@@ -39,6 +47,23 @@ theorem GlobalTheory.EigInert.heckeFunI_umax_sum {L : Type} [Field L] [NumberFie
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hAF hL D P X hA h41 h7 htl i hμ j hj x hx f hf y hy hy0 h hops Pp hG hin d hd`. Establish `hns : ¬ Formalism.BasicNotions.IsSplitPl D.host Pp` using `GlobalTheory.T.not_isSplitPlace_of_inert_over_realSubfield D Pp hin`. Take `⟨v, Dv, hov⟩` from `GlobalTheory.T.exists_inertLocalDatum_at_inertPlace D hA.hF Pp hin`. Establish `hfix` using `GlobalTheory.T.operator_eigen_good_place_first hAF hL D P X hA h41 h7 htl i hμ j hj h hops Pp hG hin v hov`. Take `⟨h0, hh0, htr⟩` from `GlobalTheory.T.operator_eigen_good_place_second hAF hL D P X hA h41 h7 htl i hμ j hj h hops Pp hG hin d hd v Dv hov`.
+
+Take `⟨C, a, xs, hC⟩` from `GlobalTheory.EigInert.heckeFunI_umax_sum Dv h0 hh0`. Set `c : ℂ` to `if hP : ∃ P0 : D.naut.AV i, D.naut.ptV i P0 = some x then Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV (maximalRealSubfield D.host.E) v) h0 (GlobalTheory.EigInert.satParam hL D P i hP.choose v Pp hov hns Dv).choose else 0`. Use `⟨c, htr f y c hy (hfix (hj ▸ f)) ?_⟩` and prove the remaining obligations. Establish `key : ∀ g ∈ eigC D.nd D.naut i x, heckeFunI D.host.E D.R.nV (Umax D.host.E D.R.nV) Dv h0 ((P.M.loc i).real g) = c • (P.M.loc i).real g`. Introduce `g hg`.
+
+Unfold `eigC at hg`. Use `Submodule.iSup_induction _ (motive := fun g => heckeFunI D.host.E D.R.nV (Umax D.host.E D.R.nV) Dv h0 ((P.M.loc i).real g) = c • (P.M.loc i).real g) hg ?_ ?_ ?_` and prove the remaining obligations. Introduce `P' g' hg'`. Distinguish the cases in `hP' : D.naut.ptV i P' = some x`. Rewrite `hg'` using `[iSup_pos (show P' ∈ {P | D.naut.ptV i P = some x} from hP')]`.
+
+Establish `hex : ∃ P0 : D.naut.AV i, D.naut.ptV i P0 = some x` using `⟨P', hP'⟩`. Establish `hc : c = Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV _ v) h0 (GlobalTheory.EigInert.satParam hL D P i hex.choose v Pp hov hns Dv).choose` using `dif_pos hex`. Take `⟨α', hα', hsv'⟩` from `GlobalTheory.EigInert.satParam hL D P i P' v Pp hov hns Dv`. Establish `hsv0` using `(GlobalTheory.EigInert.satParam hL D P i hex.choose v Pp hov hns Dv).choose_spec.2`. Establish `hub : ubc D.R.nV (D.naut.satV i P' Pp) = ubc D.R.nV (D.naut.satV i hex.choose Pp)`.
+
+Establish `h41i` using `(show Formalism.MainNotions.SumRepresentations.At.Conclusion41 D.nd D.naut i from h41 i).2.1 P' hex.choose (by rw [hP']; simp) (by rw [hP', hex.choose_spec])`. Establish `hS : Pp ∉ D.nd.S i` using `fun hm => hns (D.nd.SQ_split i Pp (Or.inl hm))`. Establish `hQ : Pp ∉ D.nd.Q i` using `fun hm => hns (D.nd.SQ_split i Pp (Or.inr hm))`. Conclude with `(h41i.2 Pp hS hQ).2 hns`. Rewrite `hub` using `[hsv', hsv0]`.
+
+Establish `hW` using `GlobalTheory.T.satakeTransform_eq_of_unramifiedBaseChange_eq _ Dv.ϖ Dv.σw _ D.R.nV Dv.unram α' _ hub h0 hh0`. Rewrite using `[hc, ← hW]`. Establish `hmem : (P.M.loc i).real g' ∈ NG.isoTyp (P.H.av.rep i P').ρ (P.H.av.rep i P').S`. Establish `h2` using `hg'`. Rewrite `h2` using `[P.H.av.typeV]`.
+
+Conclude with `h2`. Conclude with `GlobalTheory.T.isotypicFixedVector_isSatakeEigen_inertPlace _ _ (P.H.av.rep i P') v Pp hov Dv α' hα' _ hmem (hfix g') h0 hh0`. Rewrite `hg'` using `[iSup_neg (show P' ∉ {P | D.naut.ptV i P = some x} from hP')]`. Rewrite using `[(Submodule.mem_bot ℂ).1 hg']`. Simplify using `[hC]`.
+
+Simplify using `[hC]`. Introduce `g1 g2 h1 h2`. Rewrite `h1`, `h2`, the goal using `[hC]`. Simplify using `only [map_add, smul_add, Finset.sum_add_distrib, h1, h2]`. Conclude with `key _ hf`.
+-/
 theorem GlobalTheory.EigInert.eigen_at_inert : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), Formalism.MainNotions.SumRepresentations.Conclusion41 D → Formalism.MainNotions.SumRepresentations.adm7 D → Formalism.MainNotions.SumRepresentations.tieLab D → ∀ (i : D.nd.Loc) (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i), ∀ x ∈ ZgoodN D.nd D.naut i, ∀ f : D.what₂.Mt (D.nd.mu i) (j.1 + 1), (hj ▸ f : D.what₂.Mt (D.nd.mu i) (D.nd.j i)) ∈ eigC D.nd D.naut i x → ∀ y, X.R.extV j (X.tupT (D.nd.mu i)) y = X.fn hμ j f → y ≠ 0 → ∀ h, GlobalTheory.Hk3.IsOpsV X.R j (X.tupT (D.nd.mu i)) h → ∀ Pp, GlobalTheory.Hk3.Good X.R (X.tupT (D.nd.mu i)) Pp → Formalism.UG.IsInertAt D.host.F D.host.E (Pp.under (𝓞 D.host.F)) Pp → ∀ d, GlobalTheory.Hk3.IsLab (Formalism.IndefR.Links.Vc D j) Pp d → ∃ c : ℂ, h Pp (Finsupp.single d 1) y = c • y := by
   intro hAF hL D P X hA h41 h7 htl i hμ j hj x hx f hf y hy hy0 h hops Pp hG hin d hd
   classical

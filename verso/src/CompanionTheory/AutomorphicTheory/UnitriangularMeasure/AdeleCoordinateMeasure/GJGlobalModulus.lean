@@ -19,6 +19,9 @@ section Shear
 variable {R : Type*} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [MeasurableSpace R]
   [BorelSpace R] [SecondCountableTopology R] (μ : Measure R) [μ.IsAddLeftInvariant] [SigmaFinite μ]
 
+/- English proof (translation)
+The claim follows from `| 0, u, _, _ => by have h : (fun x : Fin 0 → R => x ᵥ* u) = id := funext fun x => funext fun i => i.elim0 rw [h] exact MeasurePreserving.id _ | m + 1, u, hlow, hdiag => by set u' : Matrix (Fin m) (Fin m) R := u.submatrix Fin.castSucc Fin.castSucc with hu' have ih := measurePreser …`.
+-/
 theorem measurePreserving_vecMul_unitriangular : ∀ {m : ℕ} (u : Matrix (Fin m) (Fin m) R),
     (∀ i j : Fin m, j < i → u i j = 0) → (∀ i, u i i = 1) →
     MeasurePreserving (fun x : Fin m → R => x ᵥ* u) (Measure.pi fun _ => μ)
@@ -82,6 +85,9 @@ def vecMulHomeomorph (g : GL (Fin n) 𝔸[K]) : (Fin n → 𝔸[K]) ≃ₜ (Fin 
   continuous_toFun := continuous_id.matrix_vecMul continuous_const
   continuous_invFun := continuous_id.matrix_vecMul continuous_const
 
+/- English proof (translation)
+The claim follows from `(vecMulHomeomorph g).continuous.measurable`.
+-/
 theorem measurable_vecMul' (g : GL (Fin n) 𝔸[K]) :
     Measurable fun x : Fin n → 𝔸[K] => x ᵥ* (g : Matrix (Fin n) (Fin n) 𝔸[K]) :=
   (vecMulHomeomorph g).continuous.measurable
@@ -89,6 +95,9 @@ theorem measurable_vecMul' (g : GL (Fin n) 𝔸[K]) :
 def vecMulAddHom' (g : GL (Fin n) 𝔸[K]) : (Fin n → 𝔸[K]) →+ (Fin n → 𝔸[K]) :=
   AddMonoidHom.mk' (fun x => x ᵥ* (g : Matrix (Fin n) (Fin n) 𝔸[K])) fun x y => by rw [add_vecMul]
 
+/- English proof (translation)
+The claim follows from `isAddHaarMeasure_map (adeleMeasurePi K) (vecMulAddHom' g) (vecMulHomeomorph g).continuous (vecMulHomeomorph g).surjective (vecMulHomeomorph g).isClosedEmbedding.tendsto_cocompact`.
+-/
 theorem isAddHaarMeasure_map_vecMul' (g : GL (Fin n) 𝔸[K]) :
     ((adeleMeasurePi K (ι := Fin n)).map fun x => x ᵥ* (g : Matrix (Fin n) (Fin n) 𝔸[K])).IsAddHaarMeasure :=
   isAddHaarMeasure_map (adeleMeasurePi K) (vecMulAddHom' g) (vecMulHomeomorph g).continuous
@@ -98,6 +107,11 @@ def unitBall : Set (Fin n → 𝔸[K]) :=
   {x | (∀ w : InfinitePlace K, euclidNorm (infComp w x) ≤ 1) ∧
     ∀ v : HeightOneSpectrum (𝓞 K), ‖finComp v x‖ ≤ 1}
 
+/- English proof (translation)
+Simplify using `only [mem_integralFiniteAdeles]`. Prove the components needed by the constructor for the conclusion. Introduce `h i v`. Establish `hv` using `(pi_norm_le_iff_of_nonneg zero_le_one).1 (h v) i`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 K) K v).2 ((Valued.toNormedField.norm_le_one_iff).1 hv)`.
+
+Introduce `h v`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => ?_` and prove the remaining obligations. Conclude with `norm_le_one_of_mem v (h i v)`.
+-/
 theorem forall_norm_finComp_le_one_iff' (x : Fin n → 𝔸[K]) :
     (∀ v : HeightOneSpectrum (𝓞 K), ‖finComp v x‖ ≤ 1) ↔
       ∀ i, (x i).2 ∈ integralFiniteAdeles (𝓞 K) K := by
@@ -111,6 +125,9 @@ theorem forall_norm_finComp_le_one_iff' (x : Fin n → 𝔸[K]) :
     refine (pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => ?_
     exact norm_le_one_of_mem v (h i v)
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [unitBall, Set.mem_ofPred_eq, forall_norm_finComp_le_one_iff']`.
+-/
 theorem unitBall_eq :
     (unitBall : Set (Fin n → 𝔸[K])) =
       {x | (∀ w : InfinitePlace K, euclidNorm (infComp w x) ≤ 1) ∧
@@ -118,10 +135,18 @@ theorem unitBall_eq :
   ext x
   simp only [unitBall, Set.mem_ofPred_eq, forall_norm_finComp_le_one_iff']
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => (continuous_apply w).comp (continuous_fst.comp (continuous_apply i))`.
+-/
 theorem continuous_infComp' (w : InfinitePlace K) :
     Continuous fun x : Fin n → 𝔸[K] => infComp w x :=
   continuous_pi fun i => (continuous_apply w).comp (continuous_fst.comp (continuous_apply i))
 
+/- English proof (translation)
+Rewrite using `[unitBall_eq, Set.ofPred_and]`. Use `IsClosed.inter ?_ ?_` and prove the remaining obligations. Simplify using `only [Set.ofPred_forall]`. Conclude with `isClosed_iInter fun w => isClosed_le (continuous_euclidNorm.comp (continuous_infComp' w)) continuous_const`. Simplify using `only [Set.ofPred_forall]`.
+
+Conclude with `isClosed_iInter fun i => ((isCompact_integralFiniteAdeles K).isClosed).preimage (continuous_snd.comp (continuous_apply i))`.
+-/
 theorem isClosed_unitBall : IsClosed (unitBall : Set (Fin n → 𝔸[K])) := by
   rw [unitBall_eq, Set.ofPred_and]
   refine IsClosed.inter ?_ ?_
@@ -133,6 +158,15 @@ theorem isClosed_unitBall : IsClosed (unitBall : Set (Fin n → 𝔸[K])) := by
       ((isCompact_integralFiniteAdeles K).isClosed).preimage
         (continuous_snd.comp (continuous_apply i))
 
+/- English proof (translation)
+Use `set C : Set 𝔸[K] := {a | (∀ w, ‖a.1 w‖ ≤ 1) ∧ a.2 ∈ integralFiniteAdeles (𝓞 K) K}`. Establish `hC : IsCompact C`. Establish `hB : IsCompact (Set.univ.pi fun w : InfinitePlace K => Metric.closedBall (0 : w.Completion) 1)` using `isCompact_univ_pi fun w => isCompact_closedBall 0 1`. Establish `h` using `hB.prod (isCompact_integralFiniteAdeles K)`. Establish `hCeq : C = (Set.univ.pi fun w : InfinitePlace K => Metric.closedBall (0 : w.Completion) 1) ×ˢ (integralFiniteAdeles (𝓞 K) K : Set (FiniteAdeleRing (𝓞 K) K))`.
+
+Use extensionality with `a`. Express the relevant statement in the definitionally equal form `_ ↔ (a.1 ∈ Set.univ.pi (fun w : InfinitePlace K => Metric.closedBall (0 : w.Completion) 1) ∧ a.2 ∈ (integralFiniteAdeles (𝓞 K) K : Set _))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun w _ => mem_closedBall_zero_iff.mpr (h1 w), h2⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun w => mem_closedBall_zero_iff.mp (h1 w (Set.mem_univ w)), h2⟩`. Rewrite using `[hCeq]`. Conclude with `h`. Use `(isCompact_univ_pi fun _ : Fin n => hC).of_isClosed_subset isClosed_unitBall ?_` and prove the remaining obligations.
+
+Introduce `x hx i _`. Rewrite `hx` using `[unitBall_eq]`. Use `⟨fun w => ?_, hx.2 i⟩` and prove the remaining obligations. Conclude with `(norm_le_euclidNorm (infComp w x) i).trans (hx.1 w)`.
+-/
 theorem isCompact_unitBall : IsCompact (unitBall : Set (Fin n → 𝔸[K])) := by
   set C : Set 𝔸[K] := {a | (∀ w, ‖a.1 w‖ ≤ 1) ∧ a.2 ∈ integralFiniteAdeles (𝓞 K) K}
   have hC : IsCompact C := by
@@ -159,12 +193,31 @@ theorem isCompact_unitBall : IsCompact (unitBall : Set (Fin n → 𝔸[K])) := b
   refine ⟨fun w => ?_, hx.2 i⟩
   exact (norm_le_euclidNorm (infComp w x) i).trans (hx.1 w)
 
+/- English proof (translation)
+The claim follows from `isClosed_unitBall.measurableSet`.
+-/
 theorem measurableSet_unitBall : MeasurableSet (unitBall : Set (Fin n → 𝔸[K])) :=
   isClosed_unitBall.measurableSet
 
+/- English proof (translation)
+The claim follows from `isCompact_unitBall.measure_lt_top.ne`.
+-/
 theorem adeleMeasurePi_unitBall_ne_top : adeleMeasurePi K (unitBall : Set (Fin n → 𝔸[K])) ≠ ⊤ :=
   isCompact_unitBall.measure_lt_top.ne
 
+/- English proof (translation)
+Use `set U : Set (Fin n → 𝔸[K]) := {x | (∀ i, ∀ w : InfinitePlace K, ‖(x i).1 w‖ < 1 / ((n : ℝ) + 1)) ∧ ∀ i, (x i).2 ∈ integralFiniteAdeles (𝓞 K) K}`. Establish `hn1 : (0 : ℝ) < (n : ℝ) + 1` using `by positivity`. Establish `hU : IsOpen U`. Simplify using `only [U]`. Rewrite using `[Set.ofPred_and]`.
+
+Use `IsOpen.inter ?_ ?_` and prove the remaining obligations. Simplify using `only [Set.ofPred_forall]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun w => isOpen_lt (continuous_norm.comp ((continuous_apply w).comp (continuous_fst.comp (continuous_apply i)))) continuous_const`. Simplify using `only [Set.ofPred_forall]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_integralFiniteAdeles.preimage (continuous_snd.comp (continuous_apply i))`.
+
+Establish `h0 : (0 : Fin n → 𝔸[K]) ∈ U` using `⟨fun i w => by`. Establish `h0 : ((0 : Fin n → 𝔸[K]) i).1 w = 0` using `rfl`. Rewrite using `[h0, norm_zero]`. Use the proof step `positivity, fun i => zero_mem _⟩`. Establish `hsub : U ⊆ unitBall`.
+
+Introduce `x hx`. Rewrite using `[unitBall_eq]`. Use `⟨fun w => ?_, hx.2⟩` and prove the remaining obligations. Rewrite using `[euclidNorm]`. Use `Real.sqrt_le_one.mpr ?_` and prove the remaining obligations.
+
+Establish `hle : ∀ i, ‖infComp w x i‖ ^ 2 ≤ (1 / ((n : ℝ) + 1)) ^ 2` using `fun i => pow_le_pow_left₀ (norm_nonneg _) (hx.1 i w).le 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `_ ≤ 1 := by`. Rewrite using `[div_pow, one_pow, mul_one_div, div_le_one (by positivity)]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `(pos_iff_ne_zero.mp ((hU.measure_pos (adeleMeasurePi K) ⟨0, h0⟩).trans_le (measure_mono hsub)))`.
+-/
 theorem adeleMeasurePi_unitBall_ne_zero : adeleMeasurePi K (unitBall : Set (Fin n → 𝔸[K])) ≠ 0 := by
   set U : Set (Fin n → 𝔸[K]) :=
     {x | (∀ i, ∀ w : InfinitePlace K, ‖(x i).1 w‖ < 1 / ((n : ℝ) + 1)) ∧
@@ -204,6 +257,9 @@ theorem adeleMeasurePi_unitBall_ne_zero : adeleMeasurePi K (unitBall : Set (Fin 
   exact (pos_iff_ne_zero.mp ((hU.measure_pos (adeleMeasurePi K) ⟨0, h0⟩).trans_le
     (measure_mono hsub)))
 
+/- English proof (translation)
+Simplify using `only [unitBall, Set.mem_ofPred_eq]`. Establish `h1 : ∀ w : InfinitePlace K, euclidNorm (infComp w (x ᵥ* (k : Matrix (Fin n) (Fin n) 𝔸[K]))) = euclidNorm (infComp w x)` using `fun w => by rw [infComp_vecMul_GL, hk.1 w]`. Establish `h2 : ∀ v : HeightOneSpectrum (𝓞 K), ‖finComp v (x ᵥ* (k : Matrix (Fin n) (Fin n) 𝔸[K]))‖ = ‖finComp v x‖` using `fun v => by rw [finComp_vecMul_GL, norm_vecMul_integralGL v (hk.2 v)]`. Simplify using `only [h1, h2]`.
+-/
 theorem vecMul_mem_unitBall_iff {k : GL (Fin n) 𝔸[K]}
     (hk : k ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K n))) (x : Fin n → 𝔸[K]) :
     x ᵥ* (k : Matrix (Fin n) (Fin n) 𝔸[K]) ∈ unitBall ↔ x ∈ unitBall := by
@@ -217,6 +273,15 @@ theorem vecMul_mem_unitBall_iff {k : GL (Fin n) 𝔸[K]}
     fun v => by rw [finComp_vecMul_GL, norm_vecMul_integralGL v (hk.2 v)]
   simp only [h1, h2]
 
+/- English proof (translation)
+Use `set ν := (adeleMeasurePi K (ι := Fin n)).map fun x => x ᵥ* (k : Matrix (Fin n) (Fin n) 𝔸[K])`. Establish `: ν.IsAddHaarMeasure` using `isAddHaarMeasure_map_vecMul' k`. Establish `h` using `isAddLeftInvariant_eq_smul ν (adeleMeasurePi K (ι := Fin n))`. Use `set c := ν.addHaarScalarFactor (adeleMeasurePi K (ι := Fin n))`. Establish `hS : ν (unitBall : Set (Fin n → 𝔸[K])) = adeleMeasurePi K (unitBall : Set (Fin n → 𝔸[K]))`.
+
+Rewrite using `[map_apply (measurable_vecMul' k) measurableSet_unitBall]`. Use `congr 1`. Use extensionality with `x`. Conclude with `vecMul_mem_unitBall_iff hk x`. Establish `hc : (c : ℝ≥0∞) = 1`.
+
+Rewrite `hS` using `[h, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `h1 : (c : ℝ≥0∞) * adeleMeasurePi K (unitBall : Set (Fin n → 𝔸[K])) = 1 * adeleMeasurePi K (unitBall : Set (Fin n → 𝔸[K]))`. Rewrite using `[one_mul]`. Conclude with `hS`. Conclude with `(ENNReal.mul_left_inj adeleMeasurePi_unitBall_ne_zero adeleMeasurePi_unitBall_ne_top).1 h1`.
+
+Rewrite using `[h]`. Rewrite using `[show c = 1 from by exact_mod_cast hc, one_smul]`.
+-/
 theorem map_vecMul_maxCompact' {k : GL (Fin n) 𝔸[K]}
     (hk : k ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K n))) :
     (adeleMeasurePi K).map (fun x => x ᵥ* (k : Matrix (Fin n) (Fin n) 𝔸[K])) =
@@ -239,6 +304,9 @@ theorem map_vecMul_maxCompact' {k : GL (Fin n) 𝔸[K]}
   rw [h]
   rw [show c = 1 from by exact_mod_cast hc, one_smul]
 
+/- English proof (translation)
+The claim follows from `eq_one_of_isCompact isCompact_maxCompact ((IdeleGroup.ideleModule K).comp (AdelicGLn.det K n)) (continuous_subtype_val.comp (IdeleGroup.continuous_ideleModule.comp (AdelicGLn.continuous_det K n))) hk`.
+-/
 theorem ideleModule_det_of_mem_maxCompact' {k : GL (Fin n) 𝔸[K]}
     (hk : k ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K n))) :
     IdeleGroup.ideleModule K (Matrix.GeneralLinearGroup.det k) = 1 :=
@@ -246,6 +314,19 @@ theorem ideleModule_det_of_mem_maxCompact' {k : GL (Fin n) 𝔸[K]}
     (continuous_subtype_val.comp
       (IdeleGroup.continuous_ideleModule.comp (AdelicGLn.continuous_det K n))) hk
 
+/- English proof (translation)
+Establish `hf : (fun x : Fin n → 𝔸[K] => x ᵥ* Matrix.diagonal (fun i => (d i : 𝔸[K]))) = fun x i => d i • x i`. Use function extensionality and compare the values at `x i`. Rewrite using `[vecMul_diagonal, Units.smul_def, smul_eq_mul, mul_comm]`. Establish `hsm : ∀ i, Measurable fun y : 𝔸[K] => d i • y` using `fun i => (Homeomorph.smul (d i)).continuous.measurable`. Establish `hmeas : Measurable fun x : Fin n → 𝔸[K] => fun i => d i • x i` using `measurable_pi_lambda _ fun i => (hsm i).comp (measurable_pi_apply i)`.
+
+Use `set c : Fin n → ℝ≥0 := fun i => Real.toNNReal ((IdeleGroup.ideleModule K (d i) : ℝ))⁻¹`. Establish `hc : ∀ i, ENNReal.ofReal ((IdeleGroup.ideleModule K (d i) : ℝ))⁻¹ = (c i : ℝ≥0∞)` using `fun i => rfl`. Establish `hmap : ∀ i, (adeleMeasure K).map (fun y => d i • y) = c i • adeleMeasure K`. Introduce `i`. Rewrite using `[map_smul_adeleMeasure, hc, ENNReal.smul_def]`.
+
+Establish `h1 : (adeleMeasurePi K).map (fun x : Fin n → 𝔸[K] => fun i => d i • x i) = Measure.pi fun i => c i • adeleMeasure K`. Use `(pi_eq fun s hs => ?_).symm` and prove the remaining obligations. Rewrite using `[map_apply hmeas (MeasurableSet.univ_pi hs)]`. Establish `hpre : (fun x : Fin n → 𝔸[K] => fun i => d i • x i) ⁻¹' Set.univ.pi s = Set.univ.pi fun i => (fun y => d i • y) ⁻¹' s i`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hpre, adeleMeasurePi, pi_pi]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hmap i, map_apply (hsm i) (hs i)]`. Establish `h2 : (Measure.pi fun i => c i • adeleMeasure K) = (∏ i, c i) • adeleMeasurePi K (ι` using `Fin n) := by`.
+
+Use `pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, adeleMeasurePi, pi_pi, ENNReal.smul_def, smul_eq_mul, ENNReal.ofNNReal_finsetProd, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[hf, h1, h2, ENNReal.smul_def, ENNReal.ofNNReal_finsetProd]`.
+
+Simplify using `only [hc]`.
+-/
 theorem map_vecMul_diagonal (d : Fin n → IdeleGroup K) :
     (adeleMeasurePi K).map (fun x => x ᵥ* Matrix.diagonal (fun i => (d i : 𝔸[K]))) =
       (∏ i, ENNReal.ofReal ((IdeleGroup.ideleModule K (d i) : ℝ))⁻¹) •
@@ -285,6 +366,23 @@ theorem map_vecMul_diagonal (d : Fin n → IdeleGroup K) :
   rw [hf, h1, h2, ENNReal.smul_def, ENNReal.ofNNReal_finsetProd]
   simp only [hc]
 
+/- English proof (translation)
+Use `set M : Matrix (Fin n) (Fin n) 𝔸[K] := ↑b`. Establish `hup : M.IsUpperTriangular` using `hb`. Use `set d : Fin n → IdeleGroup K := fun i => (isUnit_apply_self_of_mem_adelicBorel hb i).unit`. Establish `hd : ∀ i, (d i : 𝔸[K]) = M i i` using `fun i => IsUnit.unit_spec _`. Use `set D : Matrix (Fin n) (Fin n) 𝔸[K] := Matrix.diagonal fun i => (d i : 𝔸[K])`.
+
+Use `set Dinv : Matrix (Fin n) (Fin n) 𝔸[K] := Matrix.diagonal fun i => ((d i)⁻¹ : IdeleGroup K)`. Use `set u : Matrix (Fin n) (Fin n) 𝔸[K] := Dinv * M`. Establish `hDD : D * Dinv = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hM : M = D * u` using `by rw [← Matrix.mul_assoc, hDD, Matrix.one_mul]`. Establish `hlow : ∀ i j : Fin n, j < i → u i j = 0`. Introduce `i j hij`.
+
+Use `show (Dinv * M) i j = 0`. Rewrite using `[Matrix.diagonal_mul, hup hij, mul_zero]`. Establish `hdiag : ∀ i, u i i = 1`. Introduce `i`. Use `show (Dinv * M) i i = 1`.
+
+Rewrite using `[Matrix.diagonal_mul, ← hd, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hdet : IdeleGroup.ideleModule K (Matrix.GeneralLinearGroup.det b) = ∏ i, IdeleGroup.ideleModule K (d i)`. Rewrite using `[← map_prod]`. Use `congr 1`. Use `ext`.
+
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Units.coe_prod]`. Use `show M.det = _`. Rewrite using `[Matrix.det_of_isUpperTriangular hup]`. Conclude with `Finset.prod_congr rfl fun i _ => (hd i).symm`. Establish `hcomp : (fun x : Fin n → 𝔸[K] => x ᵥ* M) = (fun x => x ᵥ* u) ∘ (fun x => x ᵥ* D)`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, hM, vecMul_vecMul]`. Establish `hmu : MeasurePreserving (fun x : Fin n → 𝔸[K] => x ᵥ* u) (adeleMeasurePi K) (adeleMeasurePi K)` using `measurePreserving_vecMul_unitriangular (adeleMeasure K) u hlow hdiag`. Establish `hDm : Measurable fun x : Fin n → 𝔸[K] => x ᵥ* D` using `(continuous_id.matrix_vecMul continuous_const).measurable`. Rewrite using `[hcomp, ← map_map hmu.measurable hDm, map_vecMul_diagonal, Measure.map_smul, hmu.map_eq, hdet]`.
+
+Use `congr 1`. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg (fun i _ => inv_nonneg.2 (IdeleGroup.ideleModule K (d i)).2.le), Finset.prod_inv_distrib, coe_finset_prod_pos]`.
+-/
 theorem map_vecMul_adelicBorel' {b : GL (Fin n) 𝔸[K]}
     (hb : b ∈ (adelicBorel : Subgroup (AdelicGLn.AdelicGL K n))) :
     (adeleMeasurePi K).map (fun x => x ᵥ* (b : Matrix (Fin n) (Fin n) 𝔸[K])) =
@@ -335,6 +433,9 @@ theorem map_vecMul_adelicBorel' {b : GL (Fin n) 𝔸[K]}
   rw [← ENNReal.ofReal_prod_of_nonneg (fun i _ => inv_nonneg.2 (IdeleGroup.ideleModule K (d i)).2.le),
     Finset.prod_inv_distrib, coe_finset_prod_pos]
 
+/- English proof (translation)
+Take `⟨b, hb, k, hk, rfl⟩` from `exists_adelicBorel_mul_maxCompact (K := K) (n := n) g`. Establish `hcomp : (fun x : Fin n → 𝔸[K] => x ᵥ* ((b * k : GL (Fin n) 𝔸[K]) : Matrix (Fin n) (Fin n) 𝔸[K])) = (fun x => x ᵥ* (k : Matrix (Fin n) (Fin n) 𝔸[K])) ∘ (fun x => x ᵥ* (b : Matrix (Fin n) (Fin n) 𝔸[K]))`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Units.val_mul, vecMul_vecMul]`. Rewrite using `[hcomp, ← map_map (measurable_vecMul' k) (measurable_vecMul' b), map_vecMul_adelicBorel' hb, Measure.map_smul, map_vecMul_maxCompact' hk, map_mul, map_mul, ideleModule_det_of_mem_maxCompact' hk, mul_one]`.
+-/
 theorem map_vecMul_adeleMeasurePi (g : GL (Fin n) 𝔸[K]) :
     (adeleMeasurePi K).map (fun x => x ᵥ* (g : Matrix (Fin n) (Fin n) 𝔸[K])) =
       ENNReal.ofReal ((IdeleGroup.ideleModule K (Matrix.GeneralLinearGroup.det g) : ℝ))⁻¹ •

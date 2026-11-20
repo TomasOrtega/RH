@@ -9,6 +9,13 @@ section Generic
 
 variable {L : Type} [Field L] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `h1`. Take `⟨B, hB⟩` from `h2`. Establish `inj : Function.Injective (RingHom.mapMatrix (m` using `n) O.subtype) := by`. Introduce `X Y h`. Use extensionality with `i j`.
+
+Simplify using `using congrFun (congrFun h i) j`. Establish `hAB : A * B = 1` using `inj (by rw [map_mul, map_one, hA, hB, Units.mul_inv])`. Establish `hBA : B * A = 1` using `inj (by rw [map_mul, map_one, hA, hB, Units.inv_mul])`. Use `⟨⟨A, B, hAB, hBA⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `: 1`.
+
+Simplify using `only [bc, Units.coe_map]`. Conclude with `hA`.
+-/
 theorem glint_mem_range_of_integral (O : Subring L) (U : GL n L)
     (h1 : (U : Matrix n n L) ∈ (RingHom.mapMatrix (m := n) O.subtype).range)
     (h2 : ((U⁻¹ : GL n L) : Matrix n n L) ∈ (RingHom.mapMatrix (m := n) O.subtype).range) :
@@ -26,6 +33,19 @@ theorem glint_mem_range_of_integral (O : Subring L) (U : GL n L)
   simp only [bc, Units.coe_map]
   exact hA
 
+/- English proof (translation)
+Establish `hm : RingHom.mapMatrix (m` using `n) (Ideal.Quotient.mk (Ideal.span {c * c})) (h : Matrix n n O) = RingHom.mapMatrix (m := n) (Ideal.Quotient.mk (Ideal.span {c * c})) 1 := by`. Rewrite using `[map_one]`. Conclude with `congrArg Units.val hh`. Establish `hent : ∀ a b, (h : Matrix n n O) a b - (1 : Matrix n n O) a b ∈ Ideal.span {c * c}`. Introduce `a b`.
+
+Rewrite using `[← Ideal.Quotient.eq]`. Simplify `congrFun (congrFun hm a) b` using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`. Use `choose e he using fun a b => Ideal.mem_span_singleton'.1 (hent a b)`. Set `E : Matrix n n O` to `Matrix.of e`. Establish `hL : ∀ a b, (((h : Matrix n n O) a b : O) : L) = (1 : Matrix n n L) a b + (c : L) * (c : L) * ((e a b : O) : L)`.
+
+Introduce `a b`. Establish `h1` using `he a b`. Rewrite `h1`, the goal using `[Matrix.one_apply]`. Use `split_ifs at h1 ⊢ with hab`. Use `congrArg Subtype.val h1` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Take the linear combination `-this`. Use `congrArg Subtype.val h1` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `-this`.
+
+Establish `hkey : ((bc (n` using `n) O.subtype h : GL n L) : Matrix n n L) = 1 + ((c : L) * (c : L)) • RingHom.mapMatrix (m := n) O.subtype E := by`. Use extensionality with `a b`. Simplify using `only [bc, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, E, Matrix.of_apply, Subring.coe_subtype]`. Conclude with `hL a b`. Establish `hcalc : ((g⁻¹ * bc (n` using `n) O.subtype h * g : GL n L) : Matrix n n L) = 1 + ((c : L) • ((g⁻¹ : GL n L) : Matrix n n L)) * RingHom.mapMatrix (m := n) O.subtype E * ((c : L) • (g : Matrix n n L)) := by`.
+
+Rewrite using `[Units.val_mul, Units.val_mul, hkey, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Use `congr 1`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`. Rewrite using `[hcalc]`. Conclude with `add_mem (one_mem _) (mul_mem (mul_mem hg' ⟨E, rfl⟩) hg)`.
+-/
 theorem glint_conj_integral (O : Subring L) (g : GL n L) (c : O)
     (hg : (c : L) • (g : Matrix n n L) ∈ (RingHom.mapMatrix (m := n) O.subtype).range)
     (hg' : (c : L) • ((g⁻¹ : GL n L) : Matrix n n L) ∈ (RingHom.mapMatrix (m := n) O.subtype).range)
@@ -70,6 +90,13 @@ theorem glint_conj_integral (O : Subring L) (g : GL n L) (c : O)
   rw [hcalc]
   exact add_mem (one_mem _) (mul_mem (mul_mem hg' ⟨E, rfl⟩) hg)
 
+/- English proof (translation)
+Introduce `k hk`. Simplify using `only [princ, congPre] at hk`. Take `⟨h, hh, rfl⟩` from `Subgroup.mem_map.1 hk`. Establish `hh' : redGL (n` using `n) (Ideal.span {c * c}) h = 1 := by`. Simplify `hh` using `only [Subgroup.mem_comap, Subgroup.mem_bot]`.
+
+Establish `hh'' : redGL (n` using `n) (Ideal.span {c * c}) h⁻¹ = 1 := by rw [map_inv, hh', inv_one]`. Use `Subgroup.mem_map.2 ⟨g⁻¹ * bc (n := n) O.subtype h * g, ?_, ?_⟩` and prove the remaining obligations. Apply `glint_mem_range_of_integral` to reduce the goal to its premises. Conclude with `glint_conj_integral O g c hg hg' h hh'`. Establish `: (g⁻¹ * bc (n` using `n) O.subtype h * g)⁻¹ = g⁻¹ * bc (n := n) O.subtype h⁻¹ * g := by`.
+
+Rewrite using `[map_inv]`. Use `group`. Rewrite using `[this]`. Conclude with `glint_conj_integral O g c hg hg' h⁻¹ hh''`. Simplify using `[MulAut.conj_apply, mul_assoc]`.
+-/
 theorem glint_princ_le_map_conj (O : Subring L) (g : GL n L) (c : O)
     (hg : (c : L) • (g : Matrix n n L) ∈ (RingHom.mapMatrix (m := n) O.subtype).range)
     (hg' : (c : L) • ((g⁻¹ : GL n L) : Matrix n n L) ∈ (RingHom.mapMatrix (m := n) O.subtype).range) :
@@ -90,6 +117,13 @@ theorem glint_princ_le_map_conj (O : Subring L) (g : GL n L) (c : O)
       exact glint_conj_integral O g c hg hg' h⁻¹ hh''
   · simp [MulAut.conj_apply, mul_assoc]
 
+/- English proof (translation)
+Establish `: Finite (Matrix n n (O ⧸ I))` using `inferInstanceAs (Finite (n → n → O ⧸ I))`. Establish `hN : (redGL (n` using `n) I).ker.index ≠ 0 := by`. Rewrite using `[Subgroup.index_ker]`. Conclude with `Nat.card_pos.ne'`. Establish `hsup : ((redGL (n` using `n) I).ker ⊔ (bc (n := n) O.subtype).ker).index ≠ 0 := by`.
+
+Introduce `h`. Apply `hN` to reduce the goal to its premises. Establish `hd` using `Subgroup.index_dvd_of_le (le_sup_left : (redGL (n := n) I).ker ≤ (redGL (n := n) I).ker ⊔ (bc (n := n) O.subtype).ker)`. Rewrite `hd` using `[h]`. Conclude with `Nat.eq_zero_of_zero_dvd hd`.
+
+Establish `hprinc : princ (n` using `n) O.subtype I = ((redGL (n := n) I).ker).map (bc (n := n) O.subtype) := by`. Unfold `princ congPre`. Rewrite using `[MonoidHom.comap_bot]`. Rewrite using `[hprinc, MonoidHom.range_eq_map, Subgroup.relIndex_map_map, top_sup_eq, Subgroup.relIndex_top_right]`. Conclude with `hsup`.
+-/
 theorem glint_princ_relIndex_ne_zero (O : Subring L) (I : Ideal O) [Finite (O ⧸ I)] :
     (princ (n := n) O.subtype I).relIndex (bc (n := n) O.subtype).range ≠ 0 := by
   classical
@@ -111,6 +145,17 @@ theorem glint_princ_relIndex_ne_zero (O : Subring L) (I : Ideal O) [Finite (O �
     Subgroup.relIndex_top_right]
   exact hsup
 
+/- English proof (translation)
+Set `f : (n × n) ⊕ (n × n) → L` to `fun i => match i with`. Consider the case `.inl p => (g : Matrix n n L) p.1 p.2`. Consider the case `.inr p => ((g⁻¹ : GL n L) : Matrix n n L) p.1 p.2`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors A) f`. Establish `hmem : ∀ i, (b : L) * f i ∈ A`.
+
+Introduce `i`. Take `⟨y, hy⟩` from `hb i`. Rewrite `hy` using `[Algebra.smul_def]`. Establish `: (b : L) * f i = (y : L)` using `hy.symm`. Rewrite using `[this]`.
+
+Conclude with `y.2`. Use `⟨⟨(b : A), (b : A).2⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `nonZeroDivisors.ne_zero b.2` to reduce the goal to its premises. Conclude with `Subtype.ext (congrArg Subtype.val h0)`.
+
+Use `⟨Matrix.of fun i j => ⟨(b : L) * (g : Matrix n n L) i j, hmem (.inl (i, j))⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using the standard rewrite rules. Use `⟨Matrix.of fun i j => ⟨(b : L) * ((g⁻¹ : GL n L) : Matrix n n L) i j, hmem (.inr (i, j))⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem glint_exists_denom (A : ValuationSubring L) (g : GL n L) :
     ∃ c : A.toSubring, c ≠ 0 ∧
       (c : L) • (g : Matrix n n L) ∈ (RingHom.mapMatrix (m := n) A.toSubring.subtype).range ∧
@@ -148,10 +193,24 @@ open scoped WithZero
 
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.NearbyExistence.goal1 .. | (apply Bl.NearbyExistence.goal1 <;> assumption) | (intros; apply Bl.NearbyExistence.goal1 <;> assumption) | (apply @Bl.NearbyExistence.goal1 <;> assumption) | (intros; apply @Bl.NearbyExistence.goal1 <;> assumption) | (apply @Bl.NearbyE …`.
+-/
 theorem glint_exists_approx (x : v.adicCompletionIntegers F) :
     ∃ r : 𝓞 F, Valued.v ((x : v.adicCompletion F) - algebraMap (𝓞 F) (v.adicCompletion F) r) < 1 := by
   first | exact Bl.NearbyExistence.goal1 .. | (apply Bl.NearbyExistence.goal1 <;> assumption) | (intros; apply Bl.NearbyExistence.goal1 <;> assumption) | (apply @Bl.NearbyExistence.goal1 <;> assumption) | (intros; apply @Bl.NearbyExistence.goal1 <;> assumption) | (apply @Bl.NearbyExistence.goal1 <;> first | assumption | infer_instance)
 
+/- English proof (translation)
+Set `φ : 𝓞 F →+* IsLocalRing.ResidueField (v.adicCompletionIntegers F)` to `(IsLocalRing.residue _).comp (algebraMap (𝓞 F) (v.adicCompletionIntegers F))`. Establish `hmem : ∀ y : v.adicCompletionIntegers F, Valued.v (y : v.adicCompletion F) < 1 → y ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)` using `fun y hy => (Valuation.mem_maximalIdeal_iff (v := (Valued.v : Valuation (v.adicCompletion F) ℤᵐ⁰))).2 hy`. Establish `hker : ∀ r ∈ v.asIdeal, φ r = 0`. Introduce `r hr`. Simplify using `only [φ, RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff]`.
+
+Apply `hmem` to reduce the goal to its premises. Rewrite using `[algebraMap_adicCompletionIntegers_apply, adicCompletion.valued_coe (K := F) (v := v), valuation_of_algebraMap]`. Conclude with `(intValuation_lt_one_iff_mem v r).2 hr`. Establish `hsurj : Function.Surjective φ`. Introduce `y`.
+
+Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨r, hr⟩` from `glint_exists_approx v x`. Use `⟨r, ?_⟩` and prove the remaining obligations. Simplify using `only [φ, RingHom.comp_apply]`. Use `show Ideal.Quotient.mk _ _ = Ideal.Quotient.mk _ _`.
+
+Rewrite using `[Ideal.Quotient.eq]`. Apply `hmem` to reduce the goal to its premises. Establish `e : ((algebraMap (𝓞 F) (v.adicCompletionIntegers F) r - x : v.adicCompletionIntegers F) : v.adicCompletion F) = -((x : v.adicCompletion F) - algebraMap (𝓞 F) (v.adicCompletion F) r)`. Rewrite using `[AddSubgroupClass.coe_sub, neg_sub, algebraMap_adicCompletionIntegers_apply, IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F), algebraMap_adicCompletion]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, Valuation.map_neg]`. Conclude with `hr`. Use `v.isMaximal` as an intermediate fact. Establish `hs : Function.Surjective (Ideal.Quotient.lift v.asIdeal φ hker)` using `Ideal.Quotient.lift_surjective_of_surjective _ _ hsurj`. Conclude with `Finite.of_surjective _ hs`.
+-/
 theorem glint_finite_residueField :
     Finite (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) := by
   let φ : 𝓞 F →+* IsLocalRing.ResidueField (v.adicCompletionIntegers F) :=
@@ -187,6 +246,15 @@ theorem glint_finite_residueField :
     Ideal.Quotient.lift_surjective_of_surjective _ _ hsurj
   exact Finite.of_surjective _ hs
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Take `⟨m, hm⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hI hϖ`. Establish `hmax` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Establish `key : ∀ k : ℕ, Finite (R ⧸ IsLocalRing.maximalIdeal R ^ k)`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [pow_zero, Ideal.one_eq_top]`. Conclude with `Finite.of_fintype (R ⧸ ⊤)`. Consider the case `succ k ih`.
+
+Establish `hle : IsLocalRing.maximalIdeal R ^ (k + 1) ≤ IsLocalRing.maximalIdeal R ^ k` using `Ideal.pow_le_pow_right (by simp)`. Use `replace ih := Finite.of_equiv _ (DoubleQuot.quotQuotEquivQuotOfLE hle).symm.toEquiv`. It suffices to establish `Finite (Ideal.map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal R ^ (k + 1))) (IsLocalRing.maximalIdeal R ^ k)) from .of_ideal_quotient (.map (Ideal.Quotient.mk _) (IsLocalRing.maximalIdeal R ^ k))`. Conclude with `@Finite.of_equiv _ _ h ((Ideal.quotEquivPowQuotPowSuccEquiv (IsPrincipalIdealRing.principal _) (IsDiscreteValuationRing.not_a_field _) k).trans (Ideal.powQuotPowSuccEquivMapMkPowSuccPow _ k))`. Establish `: I = IsLocalRing.maximalIdeal R ^ m`.
+
+Rewrite using `[hm, hmax, Ideal.span_singleton_pow]`. Rewrite using `[this]`. Conclude with `key m`.
+-/
 theorem glint_finite_quotient_of_dvr {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     (h : Finite (IsLocalRing.ResidueField R)) (I : Ideal R) (hI : I ≠ ⊥) : Finite (R ⧸ I) := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible R
@@ -216,6 +284,13 @@ theorem glint_finite_quotient_of_dvr {R : Type*} [CommRing R] [IsDomain R] [IsDi
 
 end Adic
 
+/- English proof (translation)
+Introduce `F _ _ v n g`. Take `⟨c, hc0, hg, hg'⟩` from `glint_exists_denom (v.adicCompletionIntegers F) g`. Establish `hP` using `glint_princ_le_map_conj (v.adicCompletionIntegers F).toSubring g c hg hg'`. Establish `hres : Finite (IsLocalRing.ResidueField (v.adicCompletionIntegers F))` using `glint_finite_residueField v`. Establish `hI : Ideal.span {c * c} ≠ (⊥ : Ideal (v.adicCompletionIntegers F).toSubring)`.
+
+Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `mul_ne_zero hc0 hc0`. Establish `hfin : Finite ((v.adicCompletionIntegers F).toSubring ⧸ Ideal.span {c * c})` using `glint_finite_quotient_of_dvr hres _ hI`. Establish `hne` using `glint_princ_relIndex_ne_zero (n := Fin n) (v.adicCompletionIntegers F).toSubring (Ideal.span {c * c})`. Establish `hd` using `Subgroup.relIndex_dvd_of_le_left (bc (n := Fin n) (v.adicCompletionIntegers F).toSubring.subtype).range hP`.
+
+Introduce `h0`. Apply `hne` to reduce the goal to its premises. Unfold `GLint at h0 hd`. Rewrite `hd` using `[h0]`. Conclude with `Nat.eq_zero_of_zero_dvd hd`.
+-/
 theorem GL_integral_hecke_commute : Formalism.UG.GLintComm := by
   intro F _ _ v n g
   obtain ⟨c, hc0, hg, hg'⟩ := glint_exists_denom (v.adicCompletionIntegers F) g

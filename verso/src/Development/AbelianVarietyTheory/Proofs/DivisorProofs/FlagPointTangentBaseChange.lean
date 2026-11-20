@@ -20,6 +20,9 @@ open scoped CategoryTheory.Obj
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero φ).2 fun w hw => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hb w`. Simplify using `only [map_sum, map_smulₛₗ] at hw`. Establish `h0 : ∀ i, a i = 0` using `fun i => (map_eq_zero σ).1 (Fintype.linearIndependent_iff.1 li _ hw i)`. Simplify using `[h0]`.
+-/
 theorem injective_of_map_basis {K L M N J : Type} [Field K] [Field L] [AddCommGroup M] [Module K M] [AddCommGroup N]
     [Module L N] [Fintype J] {σ : K →+* L} (φ : M →ₛₗ[σ] N) (b : J → M) (hb : ∀ w, ∃ a : J → K, w = ∑ i, a i • b i)
     (li : LinearIndependent L fun i => φ (b i)) : Function.Injective φ := by
@@ -29,6 +32,29 @@ theorem injective_of_map_basis {K L M N J : Type} [Field K] [Field L] [AddCommGr
   have h0 : ∀ i, a i = 0 := fun i => (map_eq_zero σ).1 (Fintype.linearIndependent_iff.1 li _ hw i)
   simp [h0]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z y K _ io fK yK hio hK n e b hb`. Establish `hx : spMap io ≫ yK ≫ genι Z = y.y ≫ genι Z` using `by rw [← Category.assoc, hio]`. Establish `hf : io.comp fK = y.fK`. Establish `h1 : spMap (io.comp fK) = spMap y.fK`. Rewrite using `[← GlobalTheory.TanDescent.sp_comp, ← hK, ← Category.assoc, hio, y.y_over]`.
+
+Conclude with `congrArg (fun f => f.hom) (Spec.map_injective h1)`. Establish `hf' : ∀ a, io (fK a) = y.fK a` using `fun a => RingHom.congr_fun hf a`. Take `⟨B, hB⟩` from `exists_eigBasis y.frame`. Set `φ : TanM (yK ≫ genι Z) Z.t.G →ₛₗ[io] TanM (y.y ≫ genι Z) Z.t.G` to `bcTan io hx`. Establish `hφ : ∀ i, φ (b i) = B (e i)` using `fun i => by`.
+
+Rewrite using `[hB]`. Conclude with `tan_ext (hb i)`. Establish `hact : ∀ (a : 𝓞 E) v, φ (actR Z.t.act a v) = actR Z.t.act a (φ v)` using `fun a v => tan_ext (Category.assoc _ _ _).symm`. Establish `li : LinearIndependent Qb fun i => φ (b i)`. Simplify using `only [hφ]`.
+
+Conclude with `B.linearIndependent.comp e e.injective`. Establish `hK' : ∀ w : TanM (yK ≫ genι Z) Z.t.G, ∃! a : Fin n → K, w = ∑ i, a i • b i` using `fun w => by`. Use `(existsUnique_congr fun a => isComb_iff b a w).1 ((GlobalTheory.TanDescent.basis_descent Z.t io (yK ≫ genι Z) (fun j => (tv (b j)).left) (fun j => ?_) fun w' hw' => ?_).2 _ (isTan_tv w))` and prove the remaining obligations. Rewrite using `[hx]`. Conclude with `isTan_tv (φ (b j))`.
+
+Rewrite `hw'`, the goal using `[hx]`. Use `(existsUnique_congr fun a => isComb_iff (fun j => φ (b j)) a (tanOf hw')).2 ?_` and prove the remaining obligations. Use `⟨fun i => B.repr (tanOf hw') (e i), ?_, fun a ha => ?_⟩` and prove the remaining obligations. Simplify using `only [hφ]`. Rewrite using `[e.sum_comp fun z => B.repr (tanOf hw') z • B z, B.sum_repr]`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[ha]`. Simplify using `[hφ, Finsupp.single_apply]`. Establish `inj : Function.Injective φ` using `injective_of_map_basis φ b (fun w => (hK' w).exists) li`. Establish `liK : LinearIndependent K b` using `Fintype.linearIndependent_iff.2 fun a ha => congrFun ((hK' 0).unique ha.symm (y₂ := 0) (by simp))`.
+
+Use `⟨⟨liK, top_unique fun w _ => ?_⟩, EigFrame.ofVec (fun τ i => b (e.symm ⟨τ, i⟩)) (fun τ i a => inj ?_) (fun τ w hw => ?_), fun z => tan_ext rfl⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(hK' w).exists`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[hact, map_smulₛₗ, hφ, e.apply_symm_apply, hB, hf']`. Conclude with `y.frame.act_vec τ i a`.
+
+Take `⟨a, ha⟩` from `(hK' w).exists`. Take `⟨a', ha'⟩` from `(y.frame.existsUnique_sum τ (φ w) fun s => by rw [← hact, hw, map_smulₛₗ, hf']).exists`. Establish `h0 : ∀ z : Letter Dw, z.1 ≠ τ → a (e.symm z) = 0` using `fun z hz => by`. Establish `h1 : B.repr (φ w) z = io (a (e.symm z))`. Take `⟨j, rfl⟩` from `e.surjective z`.
+
+Rewrite using `[ha]`. Simplify using `[hφ, map_smulₛₗ, Finsupp.single_apply]`. Establish `h2 : B.repr (φ w) z = 0`. Establish `h3 : ∀ i, y.frame.vec τ i = B ⟨τ, i⟩` using `fun i => (hB ⟨τ, i⟩).symm`. Rewrite using `[ha', map_sum, Finsupp.finset_sum_apply]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h3, map_smul, B.repr_self, Finsupp.smul_apply, Finsupp.single_eq_of_ne fun h => hz (congrArg Sigma.fst h), smul_zero]`. Conclude with `(map_eq_zero io).1 (h1.symm.trans h2)`. Use `existsUnique_of_exists_of_unique ⟨fun i => a (e.symm ⟨τ, i⟩), ?_⟩ fun a₁ a₂ h₁ h₂ => ?_` and prove the remaining obligations. Rewrite using `[ha, ← e.symm.sum_comp, Fintype.sum_sigma, Finset.sum_eq_single τ (fun τ' _ h => by simp [h0 ⟨τ', _⟩ h]) (by simp)]`.
+
+Conclude with `funext (Fintype.linearIndependent_iffₛ.1 (liK.comp (fun i => e.symm ⟨τ, i⟩) (e.symm.injective.comp sigma_mk_injective)) a₁ a₂ (h₁.symm.trans h₂))`.
+-/
 theorem tanBasis_and_eigFrame_of_baseChange : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} (y : FlagPt Z Qb) {K : Type} [Field K] (io : K →+* Qb) (fK : c.F →+* K) (yK : Sp K ⟶ gen Z) (hio : spMap io ≫ yK = y.y), yK ≫ genStr Z = spMap fK → ∀ {n : ℕ} (e : Fin n ≃ Letter Dw) (b : Fin n → TanM (yK ≫ genι Z) Z.t.G), (∀ i, spMap (dualMap io) ≫ (tv (b i)).left = y.u (e i).1 (e i).2) → TanBasis Z.t b ∧ ∃ g : EigFrame Z fK (yK ≫ genι Z), ∀ z : Letter Dw, g.vec z.1 z.2 = b (e.symm z) := by
   intro E _ _ _ H Dw l Xo c O _ β Z y K _ io fK yK hio hK n e b hb
   classical

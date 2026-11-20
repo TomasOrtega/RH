@@ -16,12 +16,22 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ConjSeq
 
+/- English proof (translation)
+Establish `e : (c - (x - y)) ^ p = 0`. Rewrite using `[← frobR_apply p B hB, map_sub, map_sub, frobR_apply, frobR_apply, frobR_apply, h, sub_self]`. Conclude with `sub_eq_zero.1 (IsReduced.eq_zero _ ⟨p, e⟩)`.
+-/
 theorem eq_sub_of_pow_eq_sub (p : ℕ) [Fact p.Prime] {B : Type} [CommRing B] [IsReduced B]
     (hB : (p : B) = 0) {c x y : B} (h : c ^ p = x ^ p - y ^ p) : c = x - y := by
   have e : (c - (x - y)) ^ p = 0 := by
     rw [← frobR_apply p B hB, map_sub, map_sub, frobR_apply, frobR_apply, frobR_apply, h, sub_self]
   exact sub_eq_zero.1 (IsReduced.eq_zero _ ⟨p, e⟩)
 
+/- English proof (translation)
+Introduce `p _ k _ _ hk X _ s _ hX h c hc`. Take `⟨f, rfl⟩` from `GlobalTheory.CatCoh.H1.mk_surjective _ c`. Take `⟨u, hu, hf⟩` from `GlobalTheory.T.exists_closed_pow_transition_of_frobenius_kills_class p k hk X s hX h f hc`. Use `choose w hw using fun U : GlobalTheory.CechDR.AffOp X ↦ GlobalTheory.T.exists_pow_eq_of_kaehlerD_eq_zero_smooth_affineOpen p k hk X s U.unop (u U) (hu U)`. Use `LinearMap.mem_ker.2 (GlobalTheory.CechDR.cmpO_injective k X s ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_zero, ← GlobalTheory.CechDR.structureSheaf_comparison_comm, GlobalTheory.CechDR.comparison_mk]`. Use `GlobalTheory.CatCoh.H1.mk_eq_zero.2 ⟨w, funext fun U ↦ funext fun V ↦ funext fun a ↦ ?_⟩` and prove the remaining obligations. Establish `: IsReduced (GlobalTheory.CechDR.Sec s V.unop.1)` using `inferInstanceAs (_root_.IsReduced Γ(X, V.unop.1))`. Establish `hp : (p : GlobalTheory.CechDR.Sec s V.unop.1) = 0`. Rewrite using `[← map_natCast (algebraMap k (GlobalTheory.CechDR.Sec s V.unop.1)), hk, map_zero]`.
+
+Establish `e` using `hf U V a`. Rewrite `e` using `[← hw V, ← hw U, map_pow]`. Conclude with `(eq_sub_of_pow_eq_sub p hp e).symm`.
+-/
 theorem mem_hodgeFiltrationOne_of_absoluteFrobenius_pull_zero : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [IsAlgClosed k] (hk : (p : k) = 0) (X : Scheme.{0}) [IsIntegral X] (s : X ⟶ Sp k) [Smooth s] (hX : (p : Γ(X, ⊤)) = 0) (h : IsMor (dp0 k) s (dp0 k) s (frobR p k hk) (GlobalTheory.VB.frob X p hX)) (c : FirstDeRham s), h.pull1 c = 0 → c ∈ F1 s := by
   intro p _ k _ _ hk X _ s _ hX h c hc
   obtain ⟨f, rfl⟩ := GlobalTheory.CatCoh.H1.mk_surjective _ c

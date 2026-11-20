@@ -18,18 +18,36 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Aff.ModelWeil
 
+/- English proof (translation)
+Simplify using `[spMap, Spec.map_base]`. Both sides reduce to the same expression.
+-/
 theorem spMap_apply {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (x : Sp B) :
     spMap f x = PrimeSpectrum.comap f x := by
   simp [spMap, Spec.map_base]; rfl
 
+/- English proof (translation)
+Rewrite using `[spMap_apply, spMap_apply, spMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_apply {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : B →+* C) (s : A →+* B) (x : Sp C) :
     spMap (g.comp s) x = spMap s (spMap g x) := by
   rw [spMap_apply, spMap_apply, spMap_apply]; rfl
 
+/- English proof (translation)
+Rewrite using `[spMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem mem_asIdeal_spMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (x : Sp B) (a : A) :
     a ∈ PrimeSpectrum.asIdeal (spMap f x) ↔ f a ∈ PrimeSpectrum.asIdeal x := by
   rw [spMap_apply]; rfl
 
+/- English proof (translation)
+Take `⟨pt⟩ : Nonempty (Sp k)` from `inferInstance`. Set `U : Set (Sp R)` to `(fun x => spMap s x) ⁻¹' (V : Set (Sp A))`. Establish `hU : IsOpen U` using `V.isOpen.preimage (spMap s).continuous`. Establish `hq : spMap (algebraMap R k) pt ∈ U`. Use `h ⟨pt, rfl⟩` as an intermediate fact.
+
+Rewrite `this` using `[spMap_comp_apply]`. Conclude with `this`. Take `⟨_, ⟨r, rfl⟩, hqr, hrU⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hq hU`. Use `⟨r, fun h0 => hqr ?_, fun B _ _ hu => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `r ∈ PrimeSpectrum.asIdeal (spMap (algebraMap R k) pt)`.
+
+Rewrite using `[mem_asIdeal_spMap, h0]`. Conclude with `zero_mem _`. Introduce and unpack `_ ⟨P, rfl⟩`. Rewrite using `[spMap_comp_apply]`. Apply `hrU` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `r ∉ PrimeSpectrum.asIdeal (spMap (algebraMap R B) P)`. Rewrite using `[mem_asIdeal_spMap]`. Conclude with `fun hm => (PrimeSpectrum.isPrime P).ne_top (Ideal.eq_top_of_isUnit_mem _ hm hu)`.
+-/
 theorem exists_unit_range_subset {R A : Type} [CommRing R] [CommRing A] (V : (Sp A).Opens) (s : A →+* R)
     (k : Type) [Field k] [Algebra R k] (h : Set.range (spMap ((algebraMap R k).comp s)) ⊆ V) :
     ∃ r : R, algebraMap R k r ≠ 0 ∧ ∀ (B : Type) [CommRing B] [Algebra R B], IsUnit (algebraMap R B r) →
@@ -53,11 +71,17 @@ theorem exists_unit_range_subset {R A : Type} [CommRing R] [CommRing A] (V : (Sp
     rw [mem_asIdeal_spMap]
     exact fun hm => (PrimeSpectrum.isPrime P).ne_top (Ideal.eq_top_of_isUnit_mem _ hm hu)
 
+/- English proof (translation)
+Take `⟨pt⟩ : Nonempty (Sp k)` from `inferInstance`. Conclude with `h ⟨pt, rfl⟩ k f ⟨pt, rfl⟩`.
+-/
 theorem isProper_of_range_subset_abLocus {S : Scheme.{0}} (G : Over S) {k : Type} [Field k] [IsAlgClosed k]
     (f : Sp k ⟶ S) (h : Set.range f ⊆ abLocus G) : IsProper (pullback.snd G.hom f) := by
   obtain ⟨pt⟩ : Nonempty (Sp k) := inferInstance
   exact h ⟨pt, rfl⟩ k f ⟨pt, rfl⟩
 
+/- English proof (translation)
+Establish `h` using `apply_charElem (tateMap GG GG.dual R φ c) n (toConv s.toLinearMap)`. Rewrite `h` using `[tateMap_pt]`. Conclude with `h`.
+-/
 theorem apply_charElem_tateMap {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] (GG : PDivGroup p R) (φ : GG ⟶ GG.dual)
     (c : GG.Tate) (n : ℕ) (s : GG.A n →ₐ[R] R) :
     s (charElem (tateMap GG GG.dual R φ c) n) = c.pt n (φ.app n (toConv s.toLinearMap)) := by
@@ -71,6 +95,33 @@ namespace GlobalTheory.GroupBplus.Aff
 
 open ModelWeil in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw p _ R K _ _ _ _ _ _ _ _ t t₀ mK GG₀ act₀ pol₀ θ₀ ε₀ τ₀ hT hP GG θ e hM hC φ hφ τ hτ n k _ _ _ hp hk x x' y u hx' hu`. Take `⟨hfin, hsep, -⟩` from `GlobalTheory.HopfPoints.finite_points_separate_rank R K (GG.A n)`. Use `haveI := hfin`. Take `⟨s, hs⟩` from `GlobalTheory.finiteAlg_fieldPoint_factors_through_base R K (GG.A n) hsep k (θ.pt n k x)`. Use `set s' : GG.A n →ₐ[R] R := (τ y).pt n with hs'`.
+
+Take `⟨V, hV⟩` from `(hM n).opn`. Establish `hVk : ∀ σ : GG.A n →ₐ[R] R, (Algebra.ofId R k).comp σ ∈ Set.range (θ.pt n k) → ∃ r : R, algebraMap R k r ≠ 0 ∧ ∀ (B : Type) [CommRing B] [Algebra R B], IsUnit (algebraMap R B r) → (Algebra.ofId R B).comp σ ∈ {φ : GG.A n →ₐ[R] B | Set.range (spMap (φ : GG.A n →+* B)) ⊆ V}`. Introduce and unpack `σ ⟨w, hw⟩`. Use `(hV k).mapsTo (Set.mem_univ w)` as an intermediate fact. Express the relevant statement in the definitionally equal form `Set.range (spMap ((θ.pt n k w : GG.A n →ₐ[R] k) : GG.A n →+* k)) ⊆ V at this`.
+
+Rewrite `this` using `[hw]`. Take `⟨r, hr, hB⟩` from `exists_unit_range_subset V (σ : GG.A n →+* R) k this`. Use `⟨r, hr, fun B _ _ hu => ?_⟩` and prove the remaining obligations. Establish `e : (((Algebra.ofId R B).comp σ : GG.A n →ₐ[R] B) : GG.A n →+* B) = (algebraMap R B).comp (σ : GG.A n →+* R)` using `RingHom.ext fun _ => rfl`. Use `show Set.range (spMap (((Algebra.ofId R B).comp σ : GG.A n →ₐ[R] B) : GG.A n →+* B)) ⊆ V`.
+
+Rewrite using `[e]`. Conclude with `hB B hu`. Take `⟨r₁, hr₁, hV₁⟩` from `hVk s ⟨x, hs⟩`. Take `⟨r₂, hr₂, hV₂⟩` from `hVk s' ⟨x', hx'⟩`. Use `set r := r₁ * r₂ with hr`.
+
+Establish `hrk : algebraMap R k r ≠ 0` using `by rw [map_mul]; exact mul_ne_zero hr₁ hr₂`. Establish `hr0 : r ≠ 0` using `fun h0 => hrk (by rw [h0, map_zero])`. Set `S` to `Localization.Away r`. Establish `huS : IsUnit (algebraMap R S r)` using `IsLocalization.Away.algebraMap_isUnit r`. Establish `huS₁ : IsUnit (algebraMap R S r₁)` using `isUnit_of_mul_isUnit_left (by rw [← map_mul]; exact huS)`.
+
+Establish `huS₂ : IsUnit (algebraMap R S r₂)` using `isUnit_of_mul_isUnit_right (by rw [← map_mul]; exact huS)`. Take `⟨z, -, hz⟩` from `(hV S).surjOn (hV₁ S huS₁)`. Take `⟨z', -, hz'⟩` from `(hV S).surjOn (hV₂ S huS₂)`. Express the relevant statement in the definitionally equal form `θ.pt n S z = (Algebra.ofId R S).comp s at hz`. Express the relevant statement in the definitionally equal form `θ.pt n S z' = (Algebra.ofId R S).comp s' at hz'`.
+
+Set `ψ : S →ₐ[R] k` to `IsLocalization.Away.liftAlgHom (S := S) r (f := Algebra.ofId R k) (isUnit_iff_ne_zero.2 hrk)`. Establish `hrK : algebraMap R K r ≠ 0` using `fun h0 => hr0 (IsFractionRing.injective R K (by rw [h0, map_zero]))`. Set `ιK : S →ₐ[R] K` to `IsLocalization.Away.liftAlgHom (S := S) r (f := Algebra.ofId R K) (isUnit_iff_ne_zero.2 hrK)`. Establish `hofId : ∀ (C : Type) [CommRing C] [Algebra R C] (χ : S →ₐ[R] C) (σ : GG.A n →ₐ[R] R), χ.comp ((Algebra.ofId R S).comp σ) = (Algebra.ofId R C).comp σ` using `fun C _ _ χ σ => by`. Rewrite using `[← AlgHom.comp_assoc, Subsingleton.elim (χ.comp (Algebra.ofId R S)) (Algebra.ofId R C)]`.
+
+Establish `hinj : ∀ w w' : Tors t.G (p ^ n) k, θ.pt n k w = θ.pt n k w' → w = w'` using `fun w w' h => (hV k).injOn (Set.mem_univ w) (Set.mem_univ w') h`. Establish `hxz : torsMap ψ z = x` using `hinj _ _ (by rw [θ.nat n S k ψ z _ rfl, hz, hofId, hs])`. Establish `hxz' : torsMap ψ z' = x'` using `hinj _ _ (by rw [θ.nat n S k ψ z' _ rfl, hz', hofId, hx'])`. Take `⟨ζ, hζ⟩` from `exists_unit_cubWeil_torsMap E H R t (p ^ n) S z z'`. Establish `hK` using `CubPair.cubWeil_eq_transport E H Dw p R K t t₀ mK GG₀ act₀ pol₀ θ₀ ε₀ τ₀ hT hP GG θ e hM hC n (torsMap ιK z) (torsMap ιK z') (Units.map (ιK : S →* K) ζ) s s' (by rw [θ.nat n S K ιK z _ rfl, hz, hofId]) (by rw [θ.nat n S K ιK z' _ rfl, hz', hofId]) (hζ K ιK)`.
+
+Rewrite `hK` using `[hφ, Iso.inv_hom_id_assoc]`. Express the relevant statement in the definitionally equal form `(ιK ζ : K) = Algebra.TensorProduct.lift (AlgHom.id K K) ((Algebra.ofId R K).comp s') _ ((1 : K) ⊗ₜ[R] φ.app n (toConv s.toLinearMap)) at hK`. Rewrite `hK` using `[Algebra.TensorProduct.lift_tmul, AlgHom.id_apply, _root_.one_mul, AlgHom.comp_apply, ← apply_charElem_tateMap]`. Use `set w := s (charElem (tateMap GG GG.dual R φ (τ y)) n) with hw`. Establish `hιK : Function.Injective ιK`.
+
+Express the relevant statement in the definitionally equal form `Function.Injective (IsLocalization.lift (M := Submonoid.powers r) (S := S) _)`. Rewrite using `[IsLocalization.lift_injective_iff]`. Introduce `a b`. Rewrite using `[(IsLocalization.injective S (powers_le_nonZeroDivisors_of_noZeroDivisors hr0)).eq_iff]`. Conclude with `(IsFractionRing.injective R K).eq_iff.symm`.
+
+Establish `hζS : (ζ : S) = algebraMap R S w` using `hιK (by rw [hK]; exact (ιK.commutes w).symm)`. Establish `hψζ : Units.map (ψ : S →* k) ζ = u` using `Units.ext (by`. Express the relevant statement in the definitionally equal form `ψ ζ = (u : k)`. Rewrite using `[hζS, ψ.commutes, hu, hs]`. Use the proof step `rfl)`.
+
+Establish `hcub` using `hζ k ψ`. Rewrite `hcub` using `[hxz, hxz', hψζ]`. Establish `hpr` using `isProper_of_range_subset_abLocus t.G (spMap (algebraMap R k)) hk`. Establish `key : ∀ g : Sp k ⟶ Sp R, 𝟙 _ ≫ spMap (algebraMap R k) = g → ∀ (a b : Over.mk g ⟶ t.G) (c : Γ(Sp k, ⊤)ˣ), GlobalTheory.UU.CubWeil t.cub (p ^ n) a b c → Out.WeilIs t.G t.PP.L ((p ^ n : ℕ) : ℤ) a b c`. Introduce and unpack `_ rfl a b c h`.
+
+Conclude with `GlobalTheory.FlatTors.weilIs_of_cubWeil_of_proper (spMap (algebraMap R k)) t.G t.semi hpr t.cub (p ^ n) (Over.mk (𝟙 _)) a b c h`. Conclude with `key _ (Category.id_comp _) x.1 x'.1 _ hcub`.
+-/
 theorem weilIs_model_pol : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (t : SAB H (Sp R)) (t₀ : SAB H (Sp K)) (mK : SABMap t₀ t (spMap (algebraMap R K))) (GG₀ : PDivGroup p K) (act₀ : Action (𝓞 E) GG₀) (pol₀ : GG₀ ≅ GG₀.dual) (θ₀ : TorsionMap t₀.G GG₀) (ε₀ : (PDivGroup.mu p K).Tate) (τ₀ : Dw.La →+ GG₀.Tate), IsOfType Dw t₀ → IsPropG Dw t₀ GG₀ act₀ pol₀ θ₀ ε₀ τ₀ → ∀ (GG : PDivGroup p R) (θ : TorsionMap t.G GG) (e : GG₀ ≅ GG.baseChange K), IsModel K θ → GenCompat mK.φ θ θ₀ e → ∀ φ : GG ⟶ GG.dual, pol₀.hom ≫ dualHom _ _ e.inv ≫ (dualBaseChange K GG).hom = e.hom ≫ PDivGroup.baseChangeMap K φ → ∀ τ : Dw.La →+ GG.Tate, (∀ x, tateMap _ _ K e.hom (τ₀ x) = bcTate K (τ x)) → ∀ (n : ℕ) (k : Type) [Field k] [IsAlgClosed k] [Algebra R k], (p : k) ≠ 0 → Set.range (spMap (algebraMap R k)) ⊆ abLocus t.G → ∀ (x x' : Tors t.G (p ^ n) k) (y : Dw.La) (u : kˣ), θ.pt n k x' = tatePt (τ y) n k → (u : k) = θ.pt n k x (charElem (tateMap GG GG.dual R φ (τ y)) n) → Out.WeilIs t.G t.PP.L ((p ^ n : ℕ) : ℤ) x.1 x'.1 (unitOn u) := by
   intro E _ _ _ H Dw p _ R K _ _ _ _ _ _ _ _ t t₀ mK GG₀ act₀ pol₀ θ₀ ε₀ τ₀ hT hP GG θ e hM hC φ hφ τ hτ n k _ _ _ hp hk
     x x' y u hx' hu

@@ -47,6 +47,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : TensorProduct Zl O Ai}
     {E : EtTie W (TensorProduct Zl O Ai) RW inclR φR gR πA} {ιdR : Ai →+* BdR} {p1 : Ai} {tS zS : BdR}
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F' b S η m hset`. Establish `hCA` using `hset.1`. Establish `h11` using `hset.2.1`. Conclude with `Formalism.MainNotions.N.Pv.LocalLengthBound.contentBoundLevel_of W h5 h9 (hLev hCA h11) (fun T hT c ζ hζ x k hk j hj => by`. Take `⟨τ, hτ⟩` from `hpt hCA h11 c ζ hζ`.
+
+Conclude with `(((h4 T hT).2 c ζ τ hτ).1.1 x k hk j).2 hj)`. Use `hT2 hTH hGs hE hC hQ d T₁ T₂ F' b S η m hset`.
+-/
 theorem content_bound_level_of_dcris_exact [NeZero n] {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} (h4 : Formalism.MainNotions.DeltaInvariantLattices.P4W W Pt)
     (h5 : Formalism.MainNotions.DeltaInvariantLattices.P5W W) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
     (hLev : Formalism.MainNotions.LiftingTheory.CaseA W → 11 ≤ PD.p → Formalism.MainNotions.WachCoordinates.LevelMapHodgeFiltration W)
@@ -64,6 +69,13 @@ theorem content_bound_level_of_dcris_exact [NeZero n] {Pt : ZMod n → LL → (K
       exact (((h4 T hT).2 c ζ τ hτ).1.1 x k hk j).2 hj)
     hT2 hTH hGs hE hC hQ d T₁ T₂ F' b S η m hset
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F' b S η m hset`. Establish `hCA` using `hset.1`. Establish `h11` using `hset.2.1`. Take `⟨_, -, hFrac⟩` from `hset.2.2.2.1`. Establish `hL` using `hLev hCA h11`.
+
+Establish `hMC` using `Formalism.MainNotions.N.Pv.LocalLengthBound.memCrit_of W hCA hFrac h1 h3 hL h5 hQ`. Establish `hG` using `Formalism.MainNotions.N.Pv.LocalLengthBound.gam_of_tie W hCA.2.1 Ct`. Establish `hGΔ` using `Formalism.MainNotions.N.Pv.LocalLengthBound.gamΔ_of_tie W Ct`. Establish `hP` using `hPT hCA h11`. Use `Formalism.MainNotions.N.Pv.LocalLengthBound.length_bound_of_hypotheses W h3 h5 h9 hL hE hC hQ hMC hH2 hL41 hDN hDN0 (((W.χΓ W.gam).isUnit.map (algebraMap O LL)).ne_zero) (Formalism.MainNotions.N.Pv.LocalLengthBound.chi_zpow_ne_one W hCA) (fun T hT c ζ hζ x hx hγx k => hG.1 T hT c …` and prove the remaining obligations.
+
+Introduce `T hT c ζ ζ₀ hζ hζ₀`. Take `⟨δ, hδ, a, hζa, hv⟩` from `hP ζ ζ₀ hζ hζ₀`. Conclude with `⟨δ, hδ, algebraMap O LL (W.χΓ δ : O), ((W.χΓ δ).isUnit.map (algebraMap O LL)).ne_zero, fun x hx k => hGΔ T hT c ζ ζ₀ δ a hζ hζa hv x hx k, fun f => Ct.lev_Γ δ c ζ ζ₀ 1 a (by rwa [pow_one]) hv hζa f⟩`.
+-/
 theorem frobenius_lift_lemmas_general [NeZero n] (h1 : Formalism.MainNotions.DeltaInvariantLattices.WachLatticeFree W) (h3 : Formalism.MainNotions.DeltaInvariantLattices.P3W W) (h5 : Formalism.MainNotions.DeltaInvariantLattices.P5W W)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL) (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL)
     (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL) (Ct : CmpTie W E ιdR p1 tS zS)
@@ -95,6 +107,11 @@ section Rec
 
 variable (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
 
+/- English proof (translation)
+Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Use `⟨fun x hx => ?_, by rw [← hpl]; exact hCA.2.2, hg⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hCA.1.2 ⟨x, hx⟩`. Establish `h2` using `y.2.2`. Establish `: ((y : ↥(K0 K)) : Om l) = x` using `congrArg Subtype.val hy`.
+
+Rewrite `h2` using `[this]`. Conclude with `h2`.
+-/
 theorem caseA_loc {l : ℕ} [Fact l.Prime] {K LL : Loc.FinExt l} (hg : Loc.Good K 1 LL)
     (hCA : Formalism.MainNotions.LiftingTheory.CaseA ((HW l).W K 1 LL hg)) : Loc.CaseA K LL := by
   have hpl : ((D.loc l).PD K).p = l := (D.loc l).PD_p K
@@ -107,18 +124,35 @@ theorem caseA_loc {l : ℕ} [Fact l.Prime] {K LL : Loc.FinExt l} (hg : Loc.Good 
 
 variable {CR CA CB CK : ℝ}
 
+/- English proof (translation)
+Introduce `l _ K s LL h` and use `(hA.1 l K s LL h).2.2.1`.
+-/
 theorem crystalline_clause_of_admitted (hA : admitted D HW F Cm CR CA CB CK) : Formalism.MainNotions.DeltaInvariantLattices.P3 D HW F Cm :=
   fun l _ K s LL h => (hA.1 l K s LL h).2.2.1
 
+/- English proof (translation)
+Introduce `l _ K s LL h` and use `(hA.1 l K s LL h).2.2.2.1`.
+-/
 theorem laurent_clause_of_admitted (hA : admitted D HW F Cm CR CA CB CK) : Formalism.MainNotions.DeltaInvariantLattices.P4 D HW F Cm :=
   fun l _ K s LL h => (hA.1 l K s LL h).2.2.2.1
 
+/- English proof (translation)
+Introduce `l _ K s LL h` and use `(hA.1 l K s LL h).2.2.2.2.2.2.2.2.1`.
+-/
 theorem gamma_sub_one_in_coordinates (hA : admitted D HW F Cm CR CA CB CK) : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F :=
   fun l _ K s LL h => (hA.1 l K s LL h).2.2.2.2.2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.UnusedSlot80.tools_unramified_statement D HW F Cm ⟨crystalline_clause_of_admitted D HW F Cm hA, laurent_clause_of_admitted D HW F Cm hA, gamma_sub_one_in_coordinates D HW F Cm hA⟩`.
+-/
 theorem level_tools_of_admitted (hA : admitted D HW F Cm CR CA CB CK) : Formalism.MainNotions.WachCoordinates.adm7 D HW F Cm :=
   Formalism.MainNotions.UnusedSlot80.tools_unramified_statement D HW F Cm ⟨crystalline_clause_of_admitted D HW F Cm hA, laurent_clause_of_admitted D HW F Cm hA, gamma_sub_one_in_coordinates D HW F Cm hA⟩
 
+/- English proof (translation)
+Use `⟨Formalism.MainNotions.CrystallineLiftingInputs.TToolAlg_holds, fun l _ K LL hg _ => ?_⟩` and prove the remaining obligations. Establish `hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K 1 LL hg)` using `(hA.1 l K 1 LL hg).2.2.2.2.2.2.2.2.1`. Establish `hinj : Function.Injective (algebraMap ↥(OL LL) ↥LL.1)` using `Subtype.val_injective`. Establish `hO2 : ∀ x : ↥LL.1, 0 ≤ (D.loc l).v LL x → ∃ o : ↥(OL LL), algebraMap ↥(OL LL) ↥LL.1 o = x` using `fun x hx => ⟨⟨x, ((D.loc l).v_O LL x).1 hx⟩, rfl⟩`. Use `haveI : IsLocalRing ↥(OL LL) := Formalism.MainNotions.LiftingTheory.lkd_local (D.loc l) LL`.
+
+Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal ↥(OL LL)) ↥(OL LL) := Formalism.MainNotions.RamifiedCoefficientChains.S9.DLev.complete_max LL`. Establish `hlm : (((((D.loc l).PD K).p : ℕ)) : ↥(OL LL)) ∈ IsLocalRing.maximalIdeal ↥(OL LL)`. Rewrite using `[(D.loc l).PD_p K]`. Conclude with `Formalism.BasicNotions.Examples₂.LB.l_mem_max LL`. Conclude with `⟨Formalism.MainNotions.CrystallineLiftingInputs.truncatedSeriesData.tTool1_of _ hinj hO2 hP9 (hA.2.2.2.2.2.2.2.1 l K 1 LL hg), Formalism.MainNotions.CrystallineLiftingInputs.truncatedSeriesData.tTool2_of _ hinj hO2 hlm hP9 (hA.2.2.2.2.2.2.2.1 l K 1 LL hg) (hA.2.2.2.2.2.2.2.2.1 l …`.
+-/
 theorem truncation_clause_of_admitted (hA : admitted D HW F Cm CR CA CB CK) : Formalism.MainNotions.CrystallineLiftingInputs.adm15 D HW F Cm := by
   refine ⟨Formalism.MainNotions.CrystallineLiftingInputs.TToolAlg_holds, fun l _ K LL hg _ => ?_⟩
   have hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K 1 LL hg) := (hA.1 l K 1 LL hg).2.2.2.2.2.2.2.2.1
@@ -132,12 +166,26 @@ theorem truncation_clause_of_admitted (hA : admitted D HW F Cm CR CA CB CK) : Fo
   exact ⟨Formalism.MainNotions.CrystallineLiftingInputs.truncatedSeriesData.tTool1_of _ hinj hO2 hP9 (hA.2.2.2.2.2.2.2.1 l K 1 LL hg),
     Formalism.MainNotions.CrystallineLiftingInputs.truncatedSeriesData.tTool2_of _ hinj hO2 hlm hP9 (hA.2.2.2.2.2.2.2.1 l K 1 LL hg) (hA.2.2.2.2.2.2.2.2.1 l K 1 LL hg)⟩
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.N.Pv.LocalLengthBound.rhoLift_D D HW F Cm CR CA CB CK hA fun l _ K LL hg _ => ⟨((truncation_clause_of_admitted D HW F Cm hA).2 l K LL hg).2, Formalism.MainNotions.CrystallineLiftingInputs.Tools.local_clause_of_admitted_statements D HW F Cm hA l K LL hg⟩`.
+-/
 theorem rhoLift_of_Adm (hA : admitted D HW F Cm CR CA CB CK) : rhoLift D HW F :=
   Formalism.MainNotions.N.Pv.LocalLengthBound.rhoLift_D D HW F Cm CR CA CB CK hA fun l _ K LL hg _ =>
     ⟨((truncation_clause_of_admitted D HW F Cm hA).2 l K LL hg).2, Formalism.MainNotions.CrystallineLiftingInputs.Tools.local_clause_of_admitted_statements D HW F Cm hA l K LL hg⟩
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F' b S η m hset`. Establish `hCA : Formalism.MainNotions.LiftingTheory.CaseA ((HW l).W K 1 LL hg)` using `hset.1`. Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hCAl : Loc.CaseA K LL` using `caseA_loc D HW hg hCA`. Establish `h5l : 5 ≤ l` using `by have := hset.2.1; rw [hpl] at this; omega`.
+
+Establish `h1` using `hA.1 l K 1 LL hg`. Take `⟨hE, hC, hQ⟩` from `hA.2.2.2.2.2.2.2.2.2.2.1 l K LL`. Establish `hs : ((HW l).W K 1 LL hg).s = 1` using `hCA.2.1`. Establish `C` using `((Cm l).C K 1 LL hg).tie`. Establish `hG` using `Formalism.MainNotions.N.Pv.LocalLengthBound.gam_of_tie _ hs C`.
+
+Establish `hLev : Formalism.MainNotions.WachCoordinates.LevelMapHodgeFiltration ((HW l).W K 1 LL hg)` using `(level_tools_of_admitted D HW F Cm hA l K LL hCAl h5l).2`. Use `haveI : IsAdicComplete (Ideal.span {((((D.loc l).PD K).p : ℕ) : ↥(OL LL))}) ↥(OL LL) := Formalism.MainNotions.UnusedSlot80.eq_sum_herm_smul_frame_of_inW (D.loc l) K LL`. Establish `hΔ : IsUnit ((((HW l).W K 1 LL hg).DelF.card : ℕ) : ↥(OL LL))` using `by haveI : IsLocalRing ↥(OL LL) := Formalism.MainNotions.LiftingTheory.lkd_local (D.loc l) LL`. Establish `hcard : ((HW l).W K 1 LL hg).DelF.card = l - 1` using `Formalism.MainNotions.UnusedSlot80.LevR.card_delF D HW F (gamma_sub_one_in_coordinates D HW F Cm hA) l K LL hCAl`. Assume the negation of the conclusion as `hnu`.
+
+Establish `hm : ((((HW l).W K 1 LL hg).DelF.card : ℕ) : ↥(OL LL)) ∈ IsLocalRing.maximalIdeal ↥(OL LL)` using `hnu`. Establish `hlm` using `Formalism.BasicNotions.Examples₂.LB.l_mem_max LL`. Establish `e : ((l : ℕ) : ↥(OL LL)) - ((((HW l).W K 1 LL hg).DelF.card : ℕ) : ↥(OL LL)) = 1`. Rewrite using `[hcard, Nat.cast_sub (by omega)]; simp`. Establish `h3` using `Submodule.sub_mem _ hlm hm`.
+
+Rewrite `h3` using `[e]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal ↥(OL LL)).ne_top ((Ideal.eq_top_iff_one _).2 h3)`. Conclude with `Formalism.MainNotions.N.Pv.LocalLengthBound.h2Bound_of_hypotheses _ Subtype.val_injective hΔ Formalism.MainNotions.CrystallineLiftingInputs.power_series_dvr_factorisation h1.2.2.2.2.1 h1.2.2.2.2.2.2.2.2.1 hLev ((truncation_clause_of_admitted D HW F Cm hA).2 l K LL hg).2 (Formalis …`.
+-/
 theorem h2_bound_of_admitted (hA : admitted D HW F Cm CR CA CB CK) (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l)
     (hg : Loc.Good K 1 LL) [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))] :
     Formalism.MainNotions.N.Pv.LocalLengthBound.H2Bound ((HW l).W K 1 LL hg) := by
@@ -175,6 +223,19 @@ theorem h2_bound_of_admitted (hA : admitted D HW F Cm CR CA CB CK) (l : ℕ) [Fa
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `h9` using `(hA.1 l K 1 LL hg).2.2.2.2.2.2.2.2.1`. Establish `h5` using `(hA.1 l K 1 LL hg).2.2.2.2.1`. Establish `hT2` using `((truncation_clause_of_admitted D HW F Cm hA).2 l K LL hg).2`. Establish `hTH` using `Formalism.MainNotions.CrystallineLiftingInputs.Tools.frobenius_power_congruence_of_admitted D HW F Cm hA l K LL hg`. Take `⟨hE, hC, hQ⟩` from `hA.2.2.2.2.2.2.2.2.2.2.1 l K LL`.
+
+Establish `hP9` using `gamma_sub_one_in_coordinates D HW F Cm hA`. Establish `hLev` using `Formalism.MainNotions.UnusedSlot80.levCoeff_of_pt D HW F Cm (laurent_clause_of_admitted D HW F Cm hA) (Formalism.MainNotions.UnusedSlot80.points_exist_of_ring_condition D HW F hP9)`. Establish `hB : ∀ (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l) (hg : Loc.Good K 1 LL) [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))], Formalism.MainNotions.RamifiedCoefficientChains.Sh.BasTool ((HW l).W K 1 LL hg)`. Introduce `l _ K LL hg _`. Use `haveI : IsFractionRing ↥(OL LL) ↥LL.1 := Formalism.MainNotions.UnusedSlot80.BCF.isFrac_OL LL`.
+
+Conclude with `Formalism.MainNotions.RamifiedCoefficientChains.Sh.basTool_of _ (hA.1 l K 1 LL hg).2.2.2.2.2.2.2.2.1`. Establish `hEC` using `Formalism.MainNotions.N.Pv.LocalLengthBound.expCrit_D' D HW F Cm CR CA CB CK hA hLev hB`. Establish `hCT` using `((Cm l).C K 1 LL hg).tie`. Introduce `d T₁ T₂ F' b S η m hS`. Establish `hCA` using `hS.1`.
+
+Establish `hl11 : 11 ≤ ((D.loc l).PD K).p` using `hS.2.1`. Rewrite `hl11` using `[(D.loc l).PD_p K]`. Establish `hrec : Loc.CaseA K LL` using `caseA_loc D HW hg hCA`. Establish `hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP ((HW l).W K 1 LL hg)` using `Formalism.MainNotions.UnusedSlot80.ring_condition_uniformizer_polynomial D HW F hP9 l K LL hrec`. Take `⟨hGN, hGA⟩` from `Formalism.MainNotions.N.Pv.LocalLengthBound.gam_of_tie ((HW l).W K 1 LL hg) hCA.2.1 hCT`.
+
+Establish `hER : Formalism.MainNotions.RamifiedCoefficientChains.Sh.ExpRing ((HW l).W K 1 LL hg)` using `Formalism.MainNotions.N.Pv.LocalLengthBound.expRing_of ((HW l).W K 1 LL hg) hR`. Establish `h4L : Formalism.MainNotions.WachCoordinates.LevelMapHodgeFiltration ((HW l).W K 1 LL hg)` using `hLev l K LL hrec (by omega)`. Establish `hEU : Formalism.MainNotions.RamifiedCoefficientChains.Sh.ExpRules ((HW l).W K 1 LL hg)` using `Formalism.MainNotions.N.Pv.LocalLengthBound.expRules_of ((HW l).W K 1 LL hg) h4L hGN hGA`. Establish `hla : LemGA_la ((HW l).W K 1 LL hg)` using `lemGA_la_of_adm ((HW l).W K 1 LL hg) hT2 h9 h5 hE hC hQ`. Establish `hlR : Formalism.MainNotions.LiftingTheory.lifta_Ring ((HW l).W K 1 LL hg)` using `liftRing_of_uniformizer_clause ((HW l).W K 1 LL hg) h9 hCA T₂ hS.2.2.2.2.2.1.2.1`.
+
+Establish `hx : GammaActionLemma ((HW l).W K 1 LL hg)` using `lemGA_x_of ((HW l).W K 1 LL hg) hER hEU (hEC l K LL hrec (by omega)) hTH h9 h5 hlR (jumps_in_letter_of_crystalline ((HW l).W K 1 LL hg) hE hC hQ)`. Establish `h0 : LemGA_0 ((HW l).W K 1 LL hg)` using `lemGA0_of_tools ((HW l).W K 1 LL hg) hCT hTH h9`. Conclude with `lemGA_of_pieces ((HW l).W K 1 LL hg) hla hx h0 d T₁ T₂ F' b S η m hS`.
+-/
 theorem lemGA_rec (hA : admitted D HW F Cm CR CA CB CK) (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l)
     (hg : Loc.Good K 1 LL) [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))] :
     LemGA ((HW l).W K 1 LL hg) := by
@@ -215,6 +276,9 @@ theorem lemGA_rec (hA : admitted D HW F Cm CR CA CB CK) (l : ℕ) [Fact l.Prime]
   have h0 : LemGA_0 ((HW l).W K 1 LL hg) := lemGA0_of_tools ((HW l).W K 1 LL hg) hCT hTH h9
   exact lemGA_of_pieces ((HW l).W K 1 LL hg) hla hx h0 d T₁ T₂ F' b S η m hS
 
+/- English proof (translation)
+Establish `hQ` using `Formalism.MainNotions.CrystallineLiftingInputs.Tools.level_clause_of_admitted_statements D HW F Cm hA h23 l K LL hg`. Establish `h9` using `(hA.1 l K 1 LL hg).2.2.2.2.2.2.2.2.1`. Use `lemGB_of _ hQ (fun hCA => Formalism.MainNotions.CrystallineLiftingInputs.RToolNum_holds (D.loc l) (HW l) K LL hg hCA) (hC4 l K 1 LL hg) h9 (Formalism.MainNotions.LiftingTheory.lattice_clause_every_situation D HW F l K 1 LL hg) (fun _ => lemmaGD_cc (HW l) hg) (fun _ => ?_) (Formal …` and prove the remaining obligations. Rewrite using `[(D.loc l).PD_p K]`. Conclude with `Formalism.MainNotions.UnusedSlot80.Split2.isUnit_pred l LL`.
+-/
 theorem lemGB_rec (hA : admitted D HW F Cm CR CA CB CK) (h23 : Formalism.MainNotions.LiftingTheory.adm23 D HW F)
     (hC4 : Formalism.MainNotions.N.LetterConditionGlobal D HW F) (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l)
     (hg : Loc.Good K 1 LL) [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))] :
@@ -228,12 +292,18 @@ theorem lemGB_rec (hA : admitted D HW F Cm CR CA CB CK) (h23 : Formalism.MainNot
   rw [(D.loc l).PD_p K]
   exact Formalism.MainNotions.UnusedSlot80.Split2.isUnit_pred l LL
 
+/- English proof (translation)
+The claim follows from `lemmaGs_of_lemGAB _ (lemGA_rec D HW F Cm hA l K LL hg) (lemGB_rec D HW F Cm hA h23 hC4 l K LL hg)`.
+-/
 theorem lemmaGs_rec (hA : admitted D HW F Cm CR CA CB CK) (h23 : Formalism.MainNotions.LiftingTheory.adm23 D HW F)
     (hC4 : Formalism.MainNotions.N.LetterConditionGlobal D HW F) (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l)
     (hg : Loc.Good K 1 LL) [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))] :
     LemmaGs ((HW l).W K 1 LL hg) :=
   lemmaGs_of_lemGAB _ (lemGA_rec D HW F Cm hA l K LL hg) (lemGB_rec D HW F Cm hA h23 hC4 l K LL hg)
 
+/- English proof (translation)
+The claim follows from `content_bound_level_of_dcris_exact _ (hA.1 l K 1 LL hg).2.2.2.1 (hA.1 l K 1 LL hg).2.2.2.2.1 (hA.1 l K 1 LL hg).2.2.2.2.2.2.2.2.1 (fun hCA h11 => (level_tools_of_admitted D HW F Cm hA l K LL (caseA_loc D HW hg hCA) (by rw [(D.loc l).PD_p K] at h11; omega)).2) (fun hCA h11 c ζ hζ …`.
+-/
 theorem wach_basis_lemma_of_admitted (hA : admitted D HW F Cm CR CA CB CK)
     (hGs : ∀ (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l) (hg : Loc.Good K 1 LL)
       [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))], LemmaGs ((HW l).W K 1 LL hg))
@@ -248,6 +318,9 @@ theorem wach_basis_lemma_of_admitted (hA : admitted D HW F Cm CR CA CB CK)
     (hGs l K LL hg) (hA.2.2.2.2.2.2.2.2.2.2.1 l K LL).1 (hA.2.2.2.2.2.2.2.2.2.2.1 l K LL).2.1
     (hA.2.2.2.2.2.2.2.2.2.2.1 l K LL).2.2
 
+/- English proof (translation)
+Introduce `l _ K LL hg _` and use `frobenius_lift_lemmas_general _ (hA.1 l K 1 LL hg).1 (hA.1 l K 1 LL hg).2.2.1 (hA.1 l K 1 LL hg).2.2.2.2.1 (hA.1 l K 1 LL hg).2.2.2.2.2.2.2.2.1 (hA.2.2.2.2.2.2.2.2.2.2.1 l K LL).1 (hA.2.2.2.2.2.2.2.2.2.2.1 l K LL).2.1 (hA.2.2.2.2.2.2.2.2.2.2.1 l K LL).2.2 ((Cm l).C K 1 LL hg).tie …`.
+-/
 theorem frobenius_lift_lemmas_of_admitted (hA : admitted D HW F Cm CR CA CB CK)
     (hH2 : ∀ (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l) (hg : Loc.Good K 1 LL)
       [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))], Formalism.MainNotions.N.Pv.LocalLengthBound.H2Bound ((HW l).W K 1 LL hg))
@@ -269,6 +342,9 @@ theorem frobenius_lift_lemmas_of_admitted (hA : admitted D HW F Cm CR CA CB CK)
 
 end Rec
 
+/- English proof (translation)
+The claim follows from `stmt_of_lemmas D HW F Cm CR CA CB CK fun hA => have hG : ∀ (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l) (hg : Loc.Good K 1 LL) [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))], LemmaGs ((HW l).W K 1 LL hg) := fun l _ K LL hg _ => lemmaGs_rec D HW F Cm hA h23 hC4 l K LL hg have hDN : ∀ …`.
+-/
 theorem theorem_of_local_lemmas (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (CR CA CB CK : ℝ)
     (h12 : admitted D HW F Cm CR CA CB CK → cocyclesToWachVectorsBoundAtGoodExtensions D HW F)
@@ -289,6 +365,9 @@ theorem theorem_of_local_lemmas (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.lo
         (Formalism.MainNotions.N.Pv.LocalLengthBound.steps6_of D HW F Cm CR CA CB CK hA hG hDN hDN0 l K LL hg),
       rhoLift_of_Adm D HW F Cm hA⟩
 
+/- English proof (translation)
+The claim follows from `theorem_of_local_lemmas D HW F Cm CR CA CB CK (fun hA => Formalism.MainNotions.RamifiedCoefficientChains.S9.LocalLemmasFromLiterature.local_lemmas_of_literature D HW F Cm hA h23 hHerr a22 hFont) h23 hC4`.
+-/
 theorem theorem_of_literature_hypotheses (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (CR CA CB CK : ℝ) (h23 : Formalism.MainNotions.LiftingTheory.adm23 D HW F) (hC4 : Formalism.MainNotions.N.LetterConditionGlobal D HW F)
     (hHerr : Formalism.MainNotions.ElementDenominator.HerrClassNaturalExtension D.loc D.locA HW F) (a22 : Formalism.MainNotions.CrystallineLiftingBounds.adm22 D HW F)

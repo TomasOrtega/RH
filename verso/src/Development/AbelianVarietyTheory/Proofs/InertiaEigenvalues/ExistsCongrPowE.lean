@@ -12,11 +12,21 @@ noncomputable section
 
 namespace GlobalTheory.BKLim.WApprox
 
+/- English proof (translation)
+Establish `hl1 : (1 : ℝ≥0) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `he : (0 : ℝ) < bk.Ep.natDegree` using `by exact_mod_cast bk.deg_pos`. Conclude with `NNReal.rpow_lt_one_of_one_lt_of_neg hl1 (by simp only [neg_neg_iff_pos]; positivity)`.
+-/
 theorem ρ₀_lt_one {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K) : bk.ρ₀ < 1 := by
   have hl1 : (1 : ℝ≥0) < l := by exact_mod_cast hl.out.one_lt
   have he : (0 : ℝ) < bk.Ep.natDegree := by exact_mod_cast bk.deg_pos
   exact NNReal.rpow_lt_one_of_one_lt_of_neg hl1 (by simp only [neg_neg_iff_pos]; positivity)
 
+/- English proof (translation)
+Introduce `l _ K bk m`. Proceed by induction on `m with`. Consider the case `zero => intro x; exact ⟨0, 0, by simp⟩`. Consider the case `succ m ih`. Introduce `x`.
+
+Take `⟨q, k, r, -, hx⟩` from `WDiv.weierstrass_div l K bk bk.ρ₀ le_rfl (ρ₀_lt_one bk) x`. Take `⟨k', s', w, hw⟩` from `ih q`. Use `⟨k + k', bk.E * s' + (l : bk.S) ^ k' * (r : bk.S), w, ?_⟩` and prove the remaining obligations. Establish `hq : (l : bk.DS bk.ρ₀) ^ k' * q = toDisc l (X : bk.S) bk.ρ₀ s' + toDisc l (X : bk.S) bk.ρ₀ bk.E ^ m * w` using `by rw [← hw]; ring`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hx, map_add, map_mul, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = toDisc l (X : bk.S) bk.ρ₀ bk.E ^ (m + 1) * w := by rw [hq]; ring`.
+-/
 theorem exists_congr_pow_E : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (m : ℕ) (x : bk.DS bk.ρ₀),
     ∃ (k : ℕ) (s : bk.S), toDisc l (X : bk.S) bk.ρ₀ bk.E ^ m ∣
       (l : bk.DS bk.ρ₀) ^ k * x - toDisc l (X : bk.S) bk.ρ₀ s := by

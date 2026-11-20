@@ -16,6 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[star_smul, Complex.star_def, Complex.conj_ofReal, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← _root_.mul_assoc, ← Complex.ofReal_mul, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem posn_quad_hom {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ) (r : ℝ) :
     (((r : ℂ) • z) ⬝ᵥ H.mulVec (star ((r : ℂ) • z))).re = r ^ 2 * (z ⬝ᵥ H.mulVec (star z)).re := by
   rw [star_smul, Complex.star_def, Complex.conj_ofReal, Matrix.mulVec_smul, smul_dotProduct,
@@ -23,6 +26,9 @@ theorem posn_quad_hom {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → 
     Complex.re_ofReal_mul]
   ring
 
+/- English proof (translation)
+Establish `h1 : (n • H₀).mulVec (star z) = n • H₀.mulVec (star z)`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.smul_sum, smul_mul_assoc, _root_.mul_assoc]`. Rewrite using `[Matrix.add_mulVec, dotProduct_add, h1, dotProduct_smul, Complex.add_re, nsmul_eq_mul, ← Complex.ofReal_natCast, Complex.re_ofReal_mul]`.
+-/
 theorem posn_quad_add {g : ℕ} (H₀ Hm : Matrix (Fin g) (Fin g) ℂ) (n : ℕ) (z : Fin g → ℂ) :
     (z ⬝ᵥ (Hm + n • H₀).mulVec (star z)).re
       = (z ⬝ᵥ Hm.mulVec (star z)).re + n * (z ⬝ᵥ H₀.mulVec (star z)).re := by
@@ -31,10 +37,28 @@ theorem posn_quad_add {g : ℕ} (H₀ Hm : Matrix (Fin g) (Fin g) ℂ) (n : ℕ)
   rw [Matrix.add_mulVec, dotProduct_add, h1, dotProduct_smul, Complex.add_re, nsmul_eq_mul,
     ← Complex.ofReal_natCast, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Use `fun_prop`.
+-/
 theorem posn_cont {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ) :
     Continuous fun z : Fin g → ℂ => (z ⬝ᵥ H.mulVec (star z)).re := by
   fun_prop
 
+/- English proof (translation)
+Introduce `g H₀ Hm hpos`. Establish `hnorm : ∀ z : Fin g → ℂ, z ≠ 0 → ((((‖z‖⁻¹ : ℝ) : ℂ) • z) ∈ Metric.sphere (0 : Fin g → ℂ) 1)`. Introduce `z hz`. Establish `hr : 0 < ‖z‖` using `norm_pos_iff.mpr hz`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hr), inv_mul_cancel₀ hr.ne']`.
+
+Establish `hred : ∀ (H : Matrix (Fin g) (Fin g) ℂ), (∀ w ∈ Metric.sphere (0 : Fin g → ℂ) 1, 0 < (w ⬝ᵥ H.mulVec (star w)).re) → ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ H.mulVec (star z)).re`. Introduce `H hS z hz`. Establish `h` using `hS _ (hnorm z hz)`. Rewrite `h` using `[posn_quad_hom]`. Conclude with `pos_of_mul_pos_right h (sq_nonneg _)`.
+
+Distinguish the cases in `hne : (Metric.sphere (0 : Fin g → ℂ) 1).Nonempty`. Establish `hK : IsCompact (Metric.sphere (0 : Fin g → ℂ) 1)` using `isCompact_sphere 0 1`. Take `⟨w₀, hw₀, hmin⟩` from `hK.exists_isMinOn hne (posn_cont H₀).continuousOn`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (posn_cont Hm).continuousOn`. Establish `hw₀ne : w₀ ≠ 0`.
+
+Introduce `h`. Rewrite `hw₀` using `[h, mem_sphere_zero_iff_norm, norm_zero]`. Conclude with `zero_ne_one hw₀`. Use `set m := (w₀ ⬝ᵥ H₀.mulVec (star w₀)).re with hm`. Establish `hm0 : 0 < m` using `hpos w₀ hw₀ne`.
+
+Take `⟨n, hn⟩` from `exists_nat_gt (C / m)`. Use `⟨n, hred _ ?_⟩` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[posn_quad_add]`. Establish `h1 : m ≤ (w ⬝ᵥ H₀.mulVec (star w)).re` using `hmin hw`.
+
+Establish `h2 : |(w ⬝ᵥ Hm.mulVec (star w)).re| ≤ C`. Simplify `hC w hw` using `[Real.norm_eq_abs]`. Establish `h3 : C < n * m` using `by rwa [div_lt_iff₀ hm0] at hn`. Establish `h4 : (n : ℝ) * m ≤ n * (w ⬝ᵥ H₀.mulVec (star w)).re` using `mul_le_mul_of_nonneg_left h1 (Nat.cast_nonneg n)`. Establish `h5` using `neg_abs_le (w ⬝ᵥ Hm.mulVec (star w)).re`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨0, fun z hz => absurd ⟨_, hnorm z hz⟩ hne⟩` and prove the remaining obligations.
+-/
 theorem posn_main : ∀ (g : ℕ) (H₀ Hm : Matrix (Fin g) (Fin g) ℂ),
     (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ H₀.mulVec (star z)).re) →
     ∃ n : ℕ, ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ (Hm + n • H₀).mulVec (star z)).re := by

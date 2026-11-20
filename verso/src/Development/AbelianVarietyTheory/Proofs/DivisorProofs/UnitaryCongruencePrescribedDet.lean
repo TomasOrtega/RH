@@ -4,6 +4,31 @@ open Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hHij : ∀ i j, τ (H j i) = H i j` using `fun i j => by`. Use `congrFun (congrFun hH i) j` as an intermediate fact. Simplify `this` using `[Formalism.UG.cT]`. Use `set a := Formalism.UG.hform τ H e e with ha_def`. Take `⟨b, hab⟩ : ∃ b, a * b = 1` from `⟨ha.unit⁻¹.1, ha.mul_val_inv⟩`.
+
+Establish `hτa : τ a = a`. Simplify using `only [ha_def, Formalism.UG.hform, map_sum, map_mul, hτ, hHij]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hτb : τ b = b`. Establish `h1 : a * τ b = 1` using `by rw [← hτa, ← map_mul, hab, map_one]`. Combine the equalities or inequalities in the displayed calculation. Use `set r : n → R := fun j => ∑ i, τ (e i) * H i j with hr`. Establish `hre : r ⬝ᵥ e = a`.
+
+Simplify using `only [dotProduct, hr, ha_def, Formalism.UG.hform, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hτr : ∀ i, τ (r i) = ∑ l, H i l * e l` using `fun i => by`. Simplify using `only [hr, map_sum, map_mul, hτ, hHij]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set X : Matrix n n R := vecMulVec e r with hX`. Establish `hXH : Formalism.UG.cT τ X * H = H * X`. Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, mul_apply, transpose_apply, map_apply, hX, vecMulVec_apply, map_mul]`.
+
+Rewrite using `[hτr i]`. Simplify using `only [hr, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hXX : X * X = a • X`. Rewrite using `[hX, vecMulVec_mul_vecMulVec, hre]`. Use extensionality with `i j`. Simplify using `[vecMulVec_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `set c := (u - 1) * b with hc`. Establish `hcT : Formalism.UG.cT τ (1 + c • X) = 1 + τ c • Formalism.UG.cT τ X`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, one_apply, eq_comm]`. Establish `hkey : c + τ c + τ c * c * a = 0`.
+
+Establish `hτu : τ u - 1 = τ (u - 1)` using `by simp`. Rewrite using `[hc, map_mul, hτb]`. Establish `: (u - 1) * b + (τ u - 1) * b + (τ u - 1) * b * ((u - 1) * b) * a = b * (u * τ u - 1) + (τ u - 1) * (u - 1) * b * (a * b - 1)` using `by ring`. Rewrite using `[map_sub, map_one, this, hu, hab]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨1 + c • X, (s * b) • X, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcT]`. Establish `: (1 + τ c • Formalism.UG.cT τ X) * H * (1 + c • X) = H + (c + τ c + τ c * c * a) • (H * X)`. Simplify using `only [add_mul, mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, hXH, smul_smul, add_smul]`. Rewrite using `[Matrix.mul_assoc H X X, hXX, Matrix.mul_smul, smul_smul]`.
+
+Rewrite using `[mul_comm c (τ c)]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, hkey, zero_smul, add_zero]`. Rewrite using `[hX, ← vecMulVec_smul, vecMulVec_eq Unit, det_one_add_replicateCol_mul_replicateRow, smul_dotProduct, hre, smul_eq_mul, hc]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[smul_smul, hc, hu1]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem detfix_unitary_transvection {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
     (τ : R →+* R) (H : Matrix n n R) (e : n → R) (p u s : R) (k : ℕ)
     (hτ : ∀ a, τ (τ a) = a) (hH : Formalism.UG.cT τ H = H) (ha : IsUnit (Formalism.UG.hform τ H e e))

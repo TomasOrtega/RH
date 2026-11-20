@@ -13,6 +13,9 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 open Formalism.UG (cT)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HypAdapt.Cmpl.exists_selfDual_complement | exact GlobalTheory.HypAdapt.Cmpl.exists_selfDual_complement | (intros; apply GlobalTheory.HypAdapt.Cmpl.exists_selfDual_complement <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.self_dual_lattice_projection_criterion : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n m r : ℕ) (J : Matrix (Fin n) (Fin n) E), J.det ≠ 0 →
     ∀ L₀ : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E L₀ → (∀ v, IsSelfDualAt σ J L₀ v) → (∀ (K : Submodule E (Fin n → E)) (y : Fin n → E), (∀ z ∈ L₀, z ∈ K → hE σ J z y ∈ (algebraMap (𝓞 E) E).range) →

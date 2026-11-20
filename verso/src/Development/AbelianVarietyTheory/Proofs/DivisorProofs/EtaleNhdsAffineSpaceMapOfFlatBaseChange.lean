@@ -13,6 +13,17 @@ namespace GlobalTheory.EtaleAtDescent
 
 open TensorProduct
 
+/- English proof (translation)
+Rewrite `hQ`, the goal using `[Module.notMem_support_iff']`. Introduce `x`. Assume the negation of the conclusion as `hx`. Use `push Not at hx`. Take `⟨f, hf, hfx⟩` from `hQ (φ x)`.
+
+Establish `h0 : f ⊗ₜ[B] x = 0` using `hφ (by simpa using hfx)`. Establish `hex` using `Module.Flat.lTensor_exact D (LinearMap.exact_subtype_ker_map (LinearMap.toSpanSingleton B M x))`. Take `⟨z, hz⟩` from `(hex (f ⊗ₜ[B] 1)).1 (by simpa using h0)`. Establish `key : ∀ z : D ⊗[B] LinearMap.ker (LinearMap.toSpanSingleton B M x), TensorProduct.rid B D (LinearMap.lTensor D (LinearMap.ker (LinearMap.toSpanSingleton B M x)).subtype z) ∈ Q.asIdeal`. Introduce `z`.
+
+Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add]`. Conclude with `Q.asIdeal.add_mem ha hb`. Consider the case `tmul d r`.
+
+Establish `hr : algebraMap B D r.1 ∈ Q.asIdeal`. Assume the negation of the conclusion as `h`. Conclude with `hx r.1 h (LinearMap.mem_ker.1 r.2)`. Simplify `Q.asIdeal.mul_mem_right d hr` using `[Algebra.smul_def]`. Use `key z` as an intermediate fact.
+
+Rewrite `this` using `[hz]`. Conclude with `hf (by simpa using this)`.
+-/
 theorem notMem_support_of_flat {B D M N : Type} [CommRing B] [CommRing D] [Algebra B D] [Module.Flat B D]
     [AddCommGroup M] [Module B M] [AddCommGroup N] [Module B N] [Module D N] [IsScalarTower B D N]
     (φ : M →ₗ[B] N) (hφ : Function.Injective (φ.liftBaseChange D)) (Q : PrimeSpectrum D)
@@ -43,6 +54,17 @@ theorem notMem_support_of_flat {B D M N : Type} [CommRing B] [CommRing D] [Algeb
 
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 
+/- English proof (translation)
+Rewrite `hQ`, the goal using `[Algebra.etaleLocus_eq_compl_support]`. Use `haveI : Module.Flat B (C ⊗[A] B) := Module.Flat.of_linearEquiv (Algebra.IsPushout.equiv A B C (C ⊗[A] B)).toLinearEquiv.symm`. Use `⟨notMem_support_of_flat (KaehlerDifferential.map A C B (C ⊗[A] B)) ?_ Q hQ.1, notMem_support_of_flat (Algebra.H1Cotangent.map A C B (C ⊗[A] B)) ?_ Q hQ.2⟩` and prove the remaining obligations. Establish `hc : (KaehlerDifferential.tensorKaehlerEquivBase A C B (C ⊗[A] B) : _ → _) = (KaehlerDifferential.map A C B (C ⊗[A] B)).liftBaseChange (C ⊗[A] B) ∘ (Algebra.IsPushout.cancelBaseChange A C B (C ⊗[A] B) Ω[B⁄A]).symm`. Use function extensionality and compare the values at `z`.
+
+Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [Function.comp_apply, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`. Consider the case `tmul s m`.
+
+Rewrite using `[KaehlerDifferential.tensorKaehlerEquivBase_tmul, Function.comp_apply, Algebra.IsPushout.cancelBaseChange_symm_tmul, LinearMap.liftBaseChange_tmul, algebraMap_smul]`. Establish `hi` using `(KaehlerDifferential.tensorKaehlerEquivBase A C B (C ⊗[A] B)).injective`. Rewrite `hi` using `[hc]`. Conclude with `hi.of_comp_right (LinearEquiv.surjective _)`. Establish `hc : (Algebra.tensorH1CotangentOfFlat A B C : _ → _) = (Algebra.H1Cotangent.map A C B (C ⊗[A] B)).liftBaseChange (C ⊗[A] B) ∘ (Algebra.IsPushout.cancelBaseChange A C B (C ⊗[A] B) (Algebra.H1Cotangent A B)).symm`.
+
+Use function extensionality and compare the values at `z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [Function.comp_apply, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+
+Consider the case `tmul s m`. Rewrite using `[Algebra.tensorH1CotangentOfFlat_tmul, Function.comp_apply, Algebra.IsPushout.cancelBaseChange_symm_tmul, LinearMap.liftBaseChange_tmul, algebraMap_smul]`. Establish `hi` using `(Algebra.tensorH1CotangentOfFlat A B C).injective`. Rewrite `hi` using `[hc]`. Conclude with `hi.of_comp_right (LinearEquiv.surjective _)`.
+-/
 theorem mem_etaleLocus_of_flat {A B C : Type} [CommRing A] [CommRing B] [CommRing C] [Algebra A B] [Algebra A C]
     [Module.Flat A C] (Q : PrimeSpectrum (C ⊗[A] B)) (hQ : Q ∈ Algebra.etaleLocus C (C ⊗[A] B)) :
     PrimeSpectrum.comap (algebraMap B (C ⊗[A] B)) Q ∈ Algebra.etaleLocus A B := by
@@ -80,6 +102,15 @@ theorem mem_etaleLocus_of_flat {A B C : Type} [CommRing A] [CommRing B] [CommRin
 
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 
+/- English proof (translation)
+Take `⟨_, ⟨_, ⟨f, rfl⟩, rfl⟩, hpf, hf⟩` from `PrimeSpectrum.isBasis_basic_opens.exists_subset_of_mem_open hp W.isOpen`. Set `j` to `Spec.map (CommRingCat.ofHom (algebraMap (C ⊗[A] B) (Localization.Away f)))`. Establish `hj : Set.range j ⊆ Set.range W.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Use `subset_trans ?_ hf` and prove the remaining obligations.
+
+Conclude with `(PrimeSpectrum.localization_away_comap_range (Localization.Away f) f).le`. Establish `h1 : Etale (IsOpenImmersion.lift W.ι j hj ≫ W.ι ≫ Spec.map (CommRingCat.ofHom (algebraMap C (C ⊗[A] B))))` using `inferInstance`. Rewrite `h1` using `[IsOpenImmersion.lift_fac_assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq, HasRingHomProperty.Spec_iff (P := @Etale), CommRingCat.hom_ofHom, RingHom.etale_algebraMap]`. Establish `h2` using `mem_etaleLocus_of_flat p (Algebra.basicOpen_subset_etaleLocus_iff_etale.2 h1 hpf)`. Rewrite `h2` using `[Algebra.mem_etaleLocus_iff]`.
+
+Take `⟨g, hg, hE⟩` from `Algebra.exists_etale_of_isEtaleAt (R := A) (PrimeSpectrum.comap (algebraMap B (C ⊗[A] B)) p).asIdeal`. Set `i` to `Spec.map (CommRingCat.ofHom (algebraMap B (Localization.Away g)))`. Use `⟨i.opensRange, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(PrimeSpectrum.localization_away_comap_range (Localization.Away g) g).ge hg`. Establish `h3 : Etale (i ≫ Spec.map (CommRingCat.ofHom (algebraMap A B)))`.
+
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq, HasRingHomProperty.Spec_iff (P := @Etale), CommRingCat.hom_ofHom, RingHom.etale_algebraMap]`. Conclude with `hE`. Rewrite using `[← i.isoOpensRange_inv_comp, Category.assoc]`. Use `infer_instance`.
+-/
 theorem exists_etale_spec {A B C : Type} [CommRing A] [CommRing B] [CommRing C] [Algebra A B] [Algebra A C]
     [Module.Flat A C] [Algebra.FinitePresentation A B] (W : (Spec (.of (C ⊗[A] B))).Opens)
     (p : Spec (.of (C ⊗[A] B))) (hp : p ∈ W)
@@ -111,6 +142,23 @@ theorem exists_etale_spec {A B C : Type} [CommRing A] [CommRing B] [CommRing C] 
     rw [← i.isoOpensRange_inv_comp, Category.assoc]
     infer_instance
 
+/- English proof (translation)
+Take `⟨B, i, _, q, hq⟩` from `U.exists_Spec_apply_eq (pullback.fst τ h p)`. Take `⟨C, k, _, t, ht⟩` from `T.exists_Spec_apply_eq (pullback.snd τ h p)`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (i ≫ τ ≫ S.isoSpec.hom)`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (k ≫ h ≫ S.isoSpec.hom)`. Use `letI := φ.hom.toAlgebra`.
+
+Use `letI := ψ.hom.toAlgebra`. Use `letI : Algebra B (C ⊗[Γ(S, ⊤)] B) := Algebra.TensorProduct.rightAlgebra`. Use `haveI : Algebra.FinitePresentation Γ(S, ⊤) B := by`. Establish `: LocallyOfFinitePresentation (Spec.map φ)` using `by rw [hφ]; infer_instance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFinitePresentation)).1 this`.
+
+Use `haveI : Module.Flat Γ(S, ⊤) C := by`. Establish `: Flat (Spec.map ψ)` using `by rw [hψ]; infer_instance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @Flat)).1 this`. Establish `hpb : IsPullback (Spec.map (CommRingCat.ofHom (algebraMap B (C ⊗[Γ(S, ⊤)] B)))) (Spec.map (CommRingCat.ofHom (algebraMap C (C ⊗[Γ(S, ⊤)] B)))) (Spec.map φ) (Spec.map ψ)` using `(isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct Γ(S, ⊤) C B)).flip`. Set `m` to `pullback.map (Spec.map φ) (Spec.map ψ) τ h i k S.isoSpec.inv (by simp [hφ]) (by simp [hψ])`.
+
+Establish `hm : IsOpenImmersion m` using `inferInstance`. Establish `hpm : p ∈ Set.range m`. Rewrite using `[Scheme.Pullback.range_map]`. Conclude with `⟨⟨q, hq⟩, ⟨t, ht⟩⟩`. Set `j` to `hpb.isoPullback.hom ≫ m`.
+
+Establish `j1 : j ≫ pullback.fst τ h = Spec.map (CommRingCat.ofHom (algebraMap B (C ⊗[Γ(S, ⊤)] B))) ≫ i`. Simplify using `only [j, m, pullback.map, Category.assoc, pullback.lift_fst, IsPullback.isoPullback_hom_fst_assoc]`. Establish `j2 : j ≫ pullback.snd τ h = Spec.map (CommRingCat.ofHom (algebraMap C (C ⊗[Γ(S, ⊤)] B))) ≫ k`. Simplify using `only [j, m, pullback.map, Category.assoc, pullback.lift_snd, IsPullback.isoPullback_hom_snd_assoc]`. Choose the witnesses or unpack the hypotheses as in `⟨p', rfl⟩ : ∃ p', j p' = p := by`.
+
+Take `⟨p₀, rfl⟩` from `hpm`. Take `⟨p₁, rfl⟩` from `hpb.isoPullback.hom.surjective p₀`. Conclude with `⟨p₁, by simp [j]⟩`. Establish `h1 : Etale ((j ∣_ W) ≫ W.ι ≫ pullback.snd τ h)` using `inferInstance`. Rewrite `h1` using `[morphismRestrict_ι_assoc, j2, ← Category.assoc]`.
+
+Establish `h2` using `Etale.of_comp ((j ⁻¹ᵁ W).ι ≫ Spec.map (CommRingCat.ofHom (algebraMap C (C ⊗[Γ(S, ⊤)] B)))) k`. Take `⟨V, hV, hE⟩` from `exists_etale_spec (j ⁻¹ᵁ W) p' hp h2`. Use `⟨i ''ᵁ V, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, j1, Scheme.Hom.comp_apply]`. Conclude with `⟨_, hV, rfl⟩`.
+
+Establish `hE' : Etale (V.ι ≫ Spec.map φ)` using `hE`. Establish `e : (i ''ᵁ V).ι ≫ τ = (i.isoImage V).inv ≫ (V.ι ≫ Spec.map φ) ≫ S.isoSpec.inv`. Simplify using `[hφ]`. Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem exists_etale_of_isAffine {U T S : Scheme.{0}} [IsAffine S] (τ : U ⟶ S) (h : T ⟶ S)
     [LocallyOfFinitePresentation τ] [Flat h] (W : (pullback τ h).Opens) (p : ↥(pullback τ h)) (hp : p ∈ W)
     (hW : Etale (W.ι ≫ pullback.snd τ h)) : ∃ V : U.Opens, pullback.fst τ h p ∈ V ∧ Etale (V.ι ≫ τ) := by
@@ -157,6 +205,11 @@ theorem exists_etale_of_isAffine {U T S : Scheme.{0}} [IsAffine S] (τ : U ⟶ S
     rw [e]
     infer_instance
 
+/- English proof (translation)
+Introduce `R _ _ _ hR U g τ hU hτ T h hh W p hp hW`. Use `haveI := hR.1`. Use `haveI : LocallyOfFiniteType (τ ≫ (𝔸(Fin g; Sp R) ↘ Sp R)) := by rw [hτ]; exact hU`. Use `haveI : LocallyOfFiniteType τ := locallyOfFiniteType_of_comp τ (𝔸(Fin g; Sp R) ↘ Sp R)`. Use `haveI : IsLocallyNoetherian 𝔸(Fin g; Sp R) := LocallyOfFiniteType.isLocallyNoetherian (𝔸(Fin g; Sp R) ↘ Sp R)`.
+
+Conclude with `exists_etale_of_isAffine τ h W p hp hW`.
+-/
 theorem etale_nhds_of_flat_baseChange : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (U : Over (Sp R)) (g : ℕ) (τ : U.left ⟶ 𝔸(Fin g; Sp R)), LocallyOfFiniteType U.hom → τ ≫ (𝔸(Fin g; Sp R) ↘ Sp R) = U.hom → ∀ (T : Scheme.{0}) (h : T ⟶ 𝔸(Fin g; Sp R)), Flat h → ∀ (W : (pullback τ h).Opens) (p : ↥(pullback τ h)), p ∈ W → Etale (W.ι ≫ pullback.snd τ h) → ∃ V : U.left.Opens, pullback.fst τ h p ∈ V ∧ Etale (V.ι ≫ τ) := by
   intro R _ _ _ hR U g τ hU hτ T h hh W p hp hW
   haveI := hR.1

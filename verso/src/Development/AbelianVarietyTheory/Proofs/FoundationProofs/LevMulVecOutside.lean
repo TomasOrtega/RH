@@ -12,6 +12,9 @@ open GlobalTheory.LevelUnitary
 
 variable (k i r' : ℕ)
 
+/- English proof (translation)
+Use extensionality with `p`. Establish `h` using `incl_mul k i r' (Matrix.of fun a (_ : Unit) => v a) p ()`. Conclude with `h.symm`.
+-/
 theorem liftVec_eq (v : Fin (2 * r' + k + 1) → ℂ) : liftVec k i r' v = incl k i r' *ᵥ v := by
   ext p
   have h := incl_mul k i r' (Matrix.of fun a (_ : Unit) => v a) p ()

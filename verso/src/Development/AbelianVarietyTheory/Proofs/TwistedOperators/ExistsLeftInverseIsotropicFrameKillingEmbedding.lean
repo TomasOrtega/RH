@@ -10,6 +10,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HalfAverage
 
+/- English proof (translation)
+Introduce `D V V' r C B hs`. Establish `hadj : ∀ {m n : ℕ} (X : Matrix (Fin m) (Fin n) D.host.E), adj D X = Xᴴ` using `fun X => rfl`. Establish `hG : V.gramᴴ = V.gram`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, GlobalTheory.LatVac.gram_star]`.
+
+Establish `hBC : adj D B * V.gram * C = 0`. Establish `h` using `congrArg Matrix.conjTranspose hs.orth`. Rewrite `h`, the goal using `[hadj]`. Simplify `h` using `[Matrix.conjTranspose_mul, hG, Matrix.mul_assoc]`. Set `f` to `C.mulVecLin.coprod B.mulVecLin`.
+
+Establish `hf : ∀ c b, f (c, b) = C *ᵥ c + B *ᵥ b` using `fun c b => rfl`. Establish `hker : LinearMap.ker f = ⊥`. Use `LinearMap.ker_eq_bot'.2 fun ⟨c, b⟩ h => ?_` and prove the remaining obligations. Rewrite `h` using `[hf]`. Establish `h1` using `congrArg ((adj D B * V.gram).mulVec) h`.
+
+Rewrite `h1` using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hBC, hs.isom, Matrix.zero_mulVec, zero_add, Matrix.mulVec_zero]`. Establish `hb : b = 0` using `Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 (GlobalTheory.LatVac.gram_det_isUnit V')) (by rw [h1, Matrix.mulVec_zero])`. Substitute `hb` using the available equality. Rewrite `h` using `[Matrix.mulVec_zero, add_zero]`. Establish `hc : c = 0` using `Matrix.mulVec_injective_iff.2 hs.frame.2.1 (by rw [h, Matrix.mulVec_zero])`.
+
+Substitute `hc` using the available equality. Both sides reduce to the same expression. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective f hker`. Establish `key : ∀ c b, g (C *ᵥ c + B *ᵥ b) = (c, b)` using `fun c b => by`. Rewrite using `[← hf]`.
+
+Conclude with `LinearMap.congr_fun hg (c, b)`. Establish `k1 : ∀ c, g (C *ᵥ c) = (c, 0)` using `fun c => by simpa using key c 0`. Establish `k2 : ∀ b, g (B *ᵥ b) = (0, b)` using `fun b => by simpa using key 0 b`. Use `⟨LinearMap.toMatrix' (LinearMap.fst _ _ _ ∘ₗ g), ?_, ?_⟩` and prove the remaining obligations. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
+
+Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `[Matrix.toLin'_mul, Matrix.toLin'_apply, k1]`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `[Matrix.toLin'_mul, Matrix.toLin'_apply, k2]`.
+-/
 theorem exists_leftInv_frame_kill_emb : ∀ (D : D7) (V V' : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∃ K : Matrix (Fin r) (Fin V.rank) D.host.E, K * C = 1 ∧ K * B = 0 := by
   intro D V V' r C B hs
   have hadj : ∀ {m n : ℕ} (X : Matrix (Fin m) (Fin n) D.host.E), adj D X = Xᴴ := fun X => rfl

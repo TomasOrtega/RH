@@ -15,6 +15,11 @@ variable {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
 variable (π : BanachRep G E)
 
+/- English proof (translation)
+Establish `h0` using `h.hasDerivAt_derivOp π hv X`. Establish `h0' : HasDerivAt (fun s : ℝ => π (h.expG (s • X)) v) (h.derivOp π X v) (t - t)`. Rewrite using `[sub_self]`. Conclude with `h0`. Establish `h1 : HasDerivAt (fun s : ℝ => π (h.expG ((s - t) • X)) v) (h.derivOp π X v) t` using `h0'.comp_sub_const t t`.
+
+Establish `h2` using `((π (h.expG (t • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t h1`. Use `h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, ContinuousLinearMap.coe_restrictScalars']`. Rewrite using `[← BanachRep.map_mul_apply, ← h.expG_add_smul, add_sub_cancel]`.
+-/
 theorem hasDerivAt_orbit_smul {v : E} (hv : h.IsSmoothVector π v) (X : 𝔤) (t : ℝ) :
     HasDerivAt (fun s : ℝ => π (h.expG (s • X)) v) (π (h.expG (t • X)) (h.derivOp π X v)) t := by
   have h0 := h.hasDerivAt_derivOp π hv X
@@ -30,6 +35,17 @@ theorem hasDerivAt_orbit_smul {v : E} (hv : h.IsSmoothVector π v) (X : 𝔤) (t
 variable [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant]
   [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+Use `secondCountableTopology_subgroup_units G` as an intermediate fact. Establish `hfc` using `hf.continuous h`. Establish `hint : Integrable (fun g => f g • u g) μ` using `(hfc.smul hu).integrable_of_hasCompactSupport hf.2.smul_right`. Use `set F : ℝ → G → E := fun t g => f g • π (h.expG (t • X)) (u g) with hF`. Use `set F' : ℝ → G → E := fun t g => f g • π (h.expG (t • X)) (h.derivOp π X (u g)) with hF'`.
+
+Establish `hcontF : ∀ t, Continuous (F t)` using `fun t => hfc.smul ((π (h.expG (t • X))).continuous.comp hu)`. Establish `hcontF' : ∀ t, Continuous (F' t)` using `fun t => hfc.smul ((π (h.expG (t • X))).continuous.comp hdu)`. Establish `hbound_int : Integrable (fun g => ‖f g‖ * ‖h.derivOp π X (u g)‖) μ` using `((continuous_norm.comp hfc).mul (continuous_norm.comp hdu)).integrable_of_hasCompactSupport (hf.2.norm.mul_right)`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (F := F) (x₀ := 0) (bound := fun g => ‖f g‖ * ‖h.derivOp π X (u g)‖) (univ_mem) (Eventually.of_forall fun t => (hcontF t).aestronglyMeasurable) ((hcontF 0).integrable_of_hasCompactSupport (by`. Simplify using `only [hF]`.
+
+Conclude with `hf.2.smul_right))`. Use the proof step `(F' := F') (hcontF' 0).aestronglyMeasurable`. Use the proof step `(Eventually.of_forall fun g t _ => by`. Simplify using `only [hF', norm_smul]`. Use `gcongr`.
+
+Combine the equalities or inequalities in the displayed calculation. Use the proof step `(Eventually.of_forall fun g t _ => (h.hasDerivAt_orbit_smul π (hus g) X t).const_smul (f g))`. Establish `e1 : (fun t : ℝ => ∫ g, F t g ∂μ) = fun t => π (h.expG (t • X)) (∫ g, f g • u g ∂μ)`. Use function extensionality and compare the values at `t`. Rewrite using `[← (π (h.expG (t • X))).integral_comp_comm hint]`.
+
+Simplify using `[hF]`. Establish `e2 : (∫ g, F' 0 g ∂μ) = ∫ g, f g • h.derivOp π X (u g) ∂μ`. Simplify using `[hF']`. Rewrite `key` using `[e1, e2]`. Conclude with `(h.hasDerivAt_derivOp π hz X).unique key.2`.
+-/
 theorem derivOp_integral (hπ : ∀ g, ‖π g‖ ≤ 1) {f : G → ℂ} (hf : h.IsTestFunction f)
     {u : G → E} (hu : Continuous u) (hus : ∀ g, h.IsSmoothVector π (u g)) (X : 𝔤)
     (hdu : Continuous fun g => h.derivOp π X (u g))
@@ -71,6 +87,9 @@ theorem derivOp_integral (hπ : ∀ g, ‖π g‖ ≤ 1) {f : G → ℂ} (hf : h
   rw [e1, e2] at key
   exact (h.hasDerivAt_derivOp π hz X).unique key.2
 
+/- English proof (translation)
+The claim follows from `| 0, _ => rfl | k + 1, Y => by rw [wordOp_succ, wordOp_integrated hπ hw hf (Fin.tail Y)] have hus : ∀ g, h.IsSmoothVector π (h.wordOp π (Fin.tail Y) (π g w)) := fun g => h.isSmoothVector_wordOp π (h.isSmoothVector_map π hw g) _ have hz : h.IsSmoothVector π (∫ g, f g • h.wordOp π …`.
+-/
 theorem wordOp_integrated (hπ : ∀ g, ‖π g‖ ≤ 1) {w : E} (hw : h.IsSmoothVector π w)
     {f : G → ℂ} (hf : h.IsTestFunction f) :
     ∀ {k : ℕ} (Y : Fin k → 𝔤),
@@ -108,12 +127,24 @@ variable (π : BanachRep G E)
 noncomputable def testDeriv (X : 𝔤) (f : G → ℂ) (g : G) : ℂ :=
   deriv (fun t : ℝ => f (h.expG (-(t • X)) * g)) 0
 
+/- English proof (translation)
+Use `h.contDiff_comp_expG_mul_expG hf.1 (φ₁ := fun q : ℝ × 𝔤 => -(q.1 • X)) (contDiff_fst.smul contDiff_const).neg g₀ (φ₂ := fun q : ℝ × 𝔤 => q.2) contDiff_snd` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 theorem contDiff_testDeriv_exp {f : G → ℂ} (hf : h.IsTestFunction f) (X : 𝔤) (g₀ : G) :
     ContDiff ℝ ∞ (fun q : ℝ × 𝔤 => f (h.expG (-(q.1 • X)) * (g₀ * h.expG q.2))) := by
   have := h.contDiff_comp_expG_mul_expG hf.1 (φ₁ := fun q : ℝ × 𝔤 => -(q.1 • X)) (contDiff_fst.smul contDiff_const).neg g₀
     (φ₂ := fun q : ℝ × 𝔤 => q.2) contDiff_snd
   simpa [mul_assoc] using this
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h.contMDiff_iff_expG]`. Introduce `g₀`. Establish `hΨ : ContDiff ℝ ∞ (fun p : 𝔤 × ℝ => f (h.expG (-(p.2 • X)) * (g₀ * h.expG p.1)))`. Use `h.contDiff_testDeriv_exp hf X g₀` as an intermediate fact.
+
+Conclude with `this.comp (contDiff_snd.prodMk contDiff_fst)`. Establish `hd : ContDiff ℝ ∞ (fun Z : 𝔤 => fderiv ℝ (fun t : ℝ => f (h.expG (-(t • X)) * (g₀ * h.expG Z))) 0)` using `ContDiff.fderiv (f := fun Z t => f (h.expG (-(t • X)) * (g₀ * h.expG Z))) hΨ contDiff_const (by simp)`. Conclude with `hd.clm_apply contDiff_const`. Use `HasCompactSupport.mono' hf.2 fun g hg => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hgs`.
+
+Apply `hg` to reduce the goal to its premises. Establish `hopen : IsOpen (tsupport f)ᶜ` using `(isClosed_tsupport f).isOpen_compl`. Establish `hc : Continuous fun t : ℝ => h.expG (-(t • X)) * g` using `(h.continuous_expG.comp (continuous_id.smul continuous_const).neg).mul continuous_const`. Establish `hev : ∀ᶠ t in 𝓝 (0 : ℝ), f (h.expG (-(t • X)) * g) = 0`. Establish `: (fun t : ℝ => h.expG (-(t • X)) * g) ⁻¹' (tsupport f)ᶜ ∈ 𝓝 (0 : ℝ)` using `hc.continuousAt.preimage_mem_nhds (hopen.mem_nhds (by simpa using hgs))`.
+
+Use `filter_upwards [this] with t ht`. Conclude with `image_eq_zero_of_notMem_tsupport ht`. Use `show deriv _ 0 = 0`. Rewrite using `[Filter.EventuallyEq.deriv_eq (f := fun _ => (0 : ℂ)) hev]`. Simplify using the standard rewrite rules.
+-/
 theorem isTestFunction_testDeriv {f : G → ℂ} (hf : h.IsTestFunction f) (X : 𝔤) :
     h.IsTestFunction (h.testDeriv X f) := by
   refine ⟨?_, ?_⟩
@@ -145,6 +176,11 @@ theorem isTestFunction_testDeriv {f : G → ℂ} (hf : h.IsTestFunction f) (X : 
 variable [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant]
   [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+Use `secondCountableTopology_subgroup_units G` as an intermediate fact. Rewrite using `[BanachRep.integrated, ← (π (h.expG Y)).integral_comp_comm (h.integrable_smul_orbit π μ hf x)]`. Rewrite using `[← integral_mul_left_eq_self (fun g => f (h.expG (-Y) * g) • π g x) (h.expG Y)]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [map_smul, ← BanachRep.map_mul_apply, expG_neg, inv_mul_cancel_left]`.
+-/
 theorem map_expG_integrated {f : G → ℂ} (hf : h.IsTestFunction f) (x : E) (Y : 𝔤) :
     π (h.expG Y) (π.integrated μ f x) = ∫ g, f (h.expG (-Y) * g) • π g x ∂μ := by
   have := secondCountableTopology_subgroup_units G
@@ -154,6 +190,33 @@ theorem map_expG_integrated {f : G → ℂ} (hf : h.IsTestFunction f) (x : E) (Y
   funext g
   simp only [map_smul, ← BanachRep.map_mul_apply, expG_neg, inv_mul_cancel_left]
 
+/- English proof (translation)
+Use `secondCountableTopology_subgroup_units G` as an intermediate fact. Establish `hz` using `h.isSmoothVector_integrated π μ hf x`. Use `set ψ : ℝ → G → ℂ := fun s g => f (h.expG (-(s • X)) * g) with hψ`. Use `set D : ℝ → G → ℂ := fun t g => deriv (fun s => ψ s g) t with hD`. Establish `hψs : ∀ g, ContDiff ℝ ∞ (fun s => ψ s g)` using `fun g => by`.
+
+Establish `e : (fun s => ψ s g) = (fun q : ℝ × 𝔤 => f (h.expG (-(q.1 • X)) * (g * h.expG q.2))) ∘ (fun s : ℝ => (s, (0 : 𝔤)))`. Use function extensionality and compare the values at `s`. Simplify using `[hψ]`. Rewrite using `[e]`. Conclude with `(h.contDiff_testDeriv_exp hf X g).comp (contDiff_id.prodMk contDiff_const)`.
+
+Establish `hDcont : Continuous (fun p : ℝ × G => D p.1 p.2)`. Establish `hc` using `h.continuous_iteratedFDeriv_param ψ (fun g₀ => by`. Simplify `h.contDiff_testDeriv_exp hf X g₀) 1` using `[hψ]`. Establish `e : (fun p : ℝ × G => D p.1 p.2) = fun p => iteratedFDeriv ℝ 1 (fun s => ψ s p.2) p.1 (fun _ => 1)`. Use function extensionality and compare the values at `p`.
+
+Rewrite using `[iteratedFDeriv_one_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(ContinuousMultilinearMap.apply ℝ (fun _ : Fin 1 => ℝ) ℂ (fun _ => (1 : ℝ))).continuous.comp hc`. Use `set K' : Set G := (fun p : ℝ × G => h.expG (p.1 • X) * p.2) '' (Icc (-1) 1 ×ˢ tsupport f) with hK'`.
+
+Establish `hK'c : IsCompact K'` using `(isCompact_Icc.prod hf.2).image ((h.continuous_expG.comp (continuous_fst.smul continuous_const)).mul continuous_snd)`. Establish `hDzero : ∀ t ∈ ball (0 : ℝ) 1, ∀ g ∉ K', D t g = 0`. Introduce `t ht g hg`. Establish `hopen : IsOpen (ball (0 : ℝ) 1)` using `isOpen_ball`. Establish `hev : ∀ᶠ s in 𝓝 t, ψ s g = 0` using `by filter_upwards [hopen.mem_nhds ht] with s hs show f (h.expG (-(s • X)) * g) = 0`.
+
+Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `hmem`. Apply `hg` to reduce the goal to its premises. Use `⟨(s, h.expG (-(s • X)) * g), ⟨?_, hmem⟩, ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[mem_ball, Real.dist_eq, sub_zero]`.
+
+Conclude with `⟨by linarith [neg_abs_le s], by linarith [le_abs_self s]⟩`. Simplify using `[expG_neg]`. Use `show deriv _ t = 0`. Rewrite using `[Filter.EventuallyEq.deriv_eq (f := fun _ => (0 : ℂ)) hev]`. Simplify using the standard rewrite rules.
+
+Take `⟨M, hM⟩` from `((isCompact_Icc (a := (-1 : ℝ)) (b := 1)).prod hK'c).exists_bound_of_continuousOn (f := fun p : ℝ × G => D p.1 p.2) hDcont.continuousOn`. Use `set F : ℝ → G → E := fun t g => ψ t g • π g x with hF`. Use `set F' : ℝ → G → E := fun t g => D t g • π g x with hF'`. Establish `hcontF : ∀ t, Continuous (F t)` using `fun t => (hf.continuous h |>.comp ((h.continuous_expG.comp continuous_const).mul continuous_id)).smul (π.continuous_orbit x)`. Establish `hbound : Integrable (K'.indicator fun _ => M * ‖x‖) μ` using `(integrable_indicator_iff hK'c.measurableSet).2 (integrableOn_const hK'c.measure_lt_top.ne)`.
+
+Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (F := F) (x₀ := 0) (bound := K'.indicator fun _ => M * ‖x‖) (ball_mem_nhds 0 one_pos) (Eventually.of_forall fun t => (hcontF t).aestronglyMeasurable) ((hcontF 0).integrable_of_hasCompactSupport (by`. Simplify using `only [hF, hψ, zero_smul, neg_zero, expG_zero, one_mul]`. Conclude with `hf.2.smul_right))`. Use the proof step `(F' := F') ((hDcont.comp (continuous_const.prodMk continuous_id)).smul (π.continuous_orbit x)).aestronglyMeasurable`. Use the proof step `(Eventually.of_forall fun g t ht => by`.
+
+Simplify using `only [hF', norm_smul]`. Distinguish the cases in `hg : g ∈ K'`. Rewrite using `[indicator_of_mem hg]`. Establish `h1 : ‖D t g‖ ≤ M` using `hM (t, g) ⟨⟨by`. Rewrite `ht` using `[mem_ball, Real.dist_eq, sub_zero]`.
+
+Combine the linear relations using `[neg_abs_le t], by`. Rewrite `ht` using `[mem_ball, Real.dist_eq, sub_zero]`. Combine the linear relations using `[le_abs_self t]⟩, hg⟩`. Establish `h2 : ‖π g x‖ ≤ ‖x‖`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `mul_le_mul h1 h2 (norm_nonneg _) (le_trans (norm_nonneg _) h1)`. Rewrite using `[indicator_of_notMem hg, hDzero t ht g hg, norm_zero, zero_mul])`. Use `hbound`. Use the proof step `(Eventually.of_forall fun g t _ => ((hψs g).differentiable (by simp) t).hasDerivAt.smul_const (π g x))`. Establish `e1 : (fun t : ℝ => ∫ g, F t g ∂μ) = fun t => π (h.expG (t • X)) (π.integrated μ f x)`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[h.map_expG_integrated π μ hf x]`. Rewrite `key` using `[e1]`. Conclude with `(h.hasDerivAt_derivOp π hz X).unique key.2`.
+-/
 theorem derivOp_integrated (hπ : ∀ g, ‖π g‖ ≤ 1) {f : G → ℂ} (hf : h.IsTestFunction f)
     (x : E) (X : 𝔤) :
     h.derivOp π X (π.integrated μ f x) = π.integrated μ (h.testDeriv X f) x := by
@@ -239,6 +302,9 @@ theorem derivOp_integrated (hπ : ∀ g, ‖π g‖ ≤ 1) {f : G → ℂ} (hf :
   rw [e1] at key
   exact (h.hasDerivAt_derivOp π hz X).unique key.2
 
+/- English proof (translation)
+The claim follows from `| 0, _ => ⟨f, hf, fun _ => rfl⟩ | k + 1, Y => by obtain ⟨f', hf', e⟩ := exists_wordOp_integrated hπ hf (Fin.tail Y) refine ⟨h.testDeriv (Y 0) f', h.isTestFunction_testDeriv hf' (Y 0), fun x => ?_⟩ rw [wordOp_succ, e, h.derivOp_integrated π μ hπ hf' x (Y 0)]`.
+-/
 theorem exists_wordOp_integrated (hπ : ∀ g, ‖π g‖ ≤ 1) {f : G → ℂ} (hf : h.IsTestFunction f) :
     ∀ {k : ℕ} (Y : Fin k → 𝔤), ∃ f' : G → ℂ, h.IsTestFunction f' ∧
       ∀ x : E, h.wordOp π Y (π.integrated μ f x) = π.integrated μ f' x
@@ -248,6 +314,11 @@ theorem exists_wordOp_integrated (hπ : ∀ g, ‖π g‖ ≤ 1) {f : G → ℂ}
     refine ⟨h.testDeriv (Y 0) f', h.isTestFunction_testDeriv hf' (Y 0), fun x => ?_⟩
     rw [wordOp_succ, e, h.derivOp_integrated π μ hπ hf' x (Y 0)]
 
+/- English proof (translation)
+Use `secondCountableTopology_subgroup_units G` as an intermediate fact. Rewrite using `[BanachRep.integrated]`. Combine the equalities or inequalities in the displayed calculation. Use `integral_mono_of_nonneg (Eventually.of_forall fun _ => norm_nonneg _) (((hf.continuous h).norm.mul continuous_const).integrable_of_hasCompactSupport hf.2.norm.mul_right) (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show ‖f g • π g x‖ ≤ ‖f g‖ * ‖x‖`.
+
+Rewrite using `[norm_smul]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (∫ g, ‖f g‖ ∂μ) * ‖x‖ := integral_mul_const _ _`.
+-/
 theorem norm_integrated_le (hπ : ∀ g, ‖π g‖ ≤ 1) {f : G → ℂ} (hf : h.IsTestFunction f) (x : E) :
     ‖π.integrated μ f x‖ ≤ (∫ g, ‖f g‖ ∂μ) * ‖x‖ := by
   have := secondCountableTopology_subgroup_units G
@@ -283,6 +354,9 @@ variable {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
 variable (π : BanachRep G E)
 
+/- English proof (translation)
+Use `secondCountableTopology_subgroup_units G` as an intermediate fact. Establish `hi : ∀ z : E, Integrable (fun g => f g • π g z) μ` using `fun z => ((hf.continuous h).smul (π.continuous_orbit z)).integrable_of_hasCompactSupport hf.2.smul_right`. Simplify using `only [BanachRep.integrated, map_add, smul_add]`. Conclude with `integral_add (hi x) (hi y)`.
+-/
 theorem integrated_add [MeasurableSpace G] [BorelSpace G] {μ : Measure G}
     [IsFiniteMeasureOnCompacts μ] {f : G → ℂ} (hf : h.IsTestFunction f) (x y : E) :
     π.integrated μ f (x + y) = π.integrated μ f x + π.integrated μ f y := by
@@ -292,17 +366,88 @@ theorem integrated_add [MeasurableSpace G] [BorelSpace G] {μ : Measure G}
   simp only [BanachRep.integrated, map_add, smul_add]
   exact integral_add (hi x) (hi y)
 
+/- English proof (translation)
+Simplify using `only [BanachRep.integrated, map_smul, smul_comm _ c]`. Conclude with `integral_smul c _`.
+-/
 theorem integrated_smul [MeasurableSpace G] [BorelSpace G] {μ : Measure G}
     (f : G → ℂ) (c : ℂ) (x : E) :
     π.integrated μ f (c • x) = c • π.integrated μ f x := by
   simp only [BanachRep.integrated, map_smul, smul_comm _ c]
   exact integral_smul c _
 
+/- English proof (translation)
+Use `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : ι => E) i).integral_comp_comm hF` as an intermediate fact. Simplify using `using this.symm`.
+-/
 theorem integral_pi_apply [MeasurableSpace G] {ι : Type*} [Fintype ι] {μ : Measure G} {F : G → ι → E}
     (hF : Integrable F μ) (i : ι) : (∫ g, F g ∂μ) i = ∫ g, F g i ∂μ := by
   have := (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : ι => E) i).integral_comp_comm hF
   simpa using this.symm
 
+/- English proof (translation)
+Set `_ : MeasurableSpace G` to `borel G`. Establish `: BorelSpace G` using `⟨rfl⟩`. Use `h.locallyCompactSpace` as an intermediate fact. Use `secondCountableTopology_subgroup_units G` as an intermediate fact. Use `set μ : Measure G := Measure.haar`.
+
+Take `⟨s, C, hC⟩` from `hl`. Set `J : h.smoothVectors π →ₗ[ℂ] (s → E)` to `{ toFun := fun w Y => h.wordOp π Y.1.2 (w : E) map_add' := fun w w' => by`. Use function extensionality and compare the values at `Y`. Simplify using `only [Submodule.coe_add, Pi.add_apply]`. Conclude with `h.wordOp_add π w.2 w'.2 _`.
+
+Use the proof step `map_smul' := fun c w => by`. Use function extensionality and compare the values at `Y`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, RingHom.id_apply]`. Conclude with `h.wordOp_smul π w.2 c _ }`. Establish `hJ : ∀ w, J w = fun Y => h.wordOp π Y.1.2 (w : E)` using `fun _ => rfl`.
+
+Establish `hbd : ∀ w, ‖l w‖ ≤ |C| * s.card * ‖J w‖`. Introduce `w`. Use `(hC w).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_le_pi_norm (J w) ⟨Y, hY⟩`.
+
+Use `_ = |C| * s.card * ‖J w‖ := by rw [Finset.sum_const, nsmul_eq_mul]; ring`. Establish `hker : LinearMap.ker J ≤ LinearMap.ker l`. Introduce `w hw`. Rewrite `hw`, the goal using `[LinearMap.mem_ker]`. Use `hbd w` as an intermediate fact.
+
+Rewrite `this` using `[hw, norm_zero, mul_zero]`. Conclude with `norm_le_zero_iff.1 this`. Set `Λ₀ : LinearMap.range J →ₗ[ℂ] ℂ` to `((LinearMap.ker J).liftQ l hker).comp (J.quotKerEquivRange.symm : LinearMap.range J ≃ₗ[ℂ] _).toLinearMap`. Establish `hΛ₀ : ∀ w, Λ₀ ⟨J w, LinearMap.mem_range_self J w⟩ = l w`. Introduce `w`.
+
+Establish `: (J.quotKerEquivRange.symm ⟨J w, LinearMap.mem_range_self J w⟩) = Submodule.Quotient.mk w`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [Λ₀, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, this, Submodule.liftQ_apply]`. Set `Λ₀c : LinearMap.range J →L[ℂ] ℂ` to `Λ₀.mkContinuous (|C| * s.card) (by`.
+
+Introduce and unpack `⟨z, w, rfl⟩`. Rewrite using `[hΛ₀]`. Conclude with `hbd w)`. Take `⟨Λ, hΛ, -⟩` from `exists_extension_norm_eq (LinearMap.range J) Λ₀c`. Establish `hlΛ : ∀ w, l w = Λ (J w)` using `fun w => by`.
+
+Rewrite using `[← hΛ₀ w]`. Conclude with `(hΛ ⟨J w, LinearMap.mem_range_self J w⟩).symm`. Establish `hint_orbit : ∀ (f : G → ℂ) (hf : h.IsTestFunction f) (w : E) (hw : h.IsSmoothVector π w), l ⟨π.integrated μ f w, h.isSmoothVector_integrated π μ hf w⟩ = ∫ g, f g * l (h.smoothMap π hw g) ∂μ`. Introduce `f hf w hw`. Establish `hJc : Continuous fun g => J (h.smoothMap π hw g)` using `continuous_pi fun Y => h.continuous_wordOp_map π hπ hw Y.1.2`.
+
+Establish `hFint : Integrable (fun g => f g • J (h.smoothMap π hw g)) μ` using `((hf.continuous h).smul hJc).integrable_of_hasCompactSupport hf.2.smul_right`. Establish `hJint : J ⟨π.integrated μ f w, h.isSmoothVector_integrated π μ hf w⟩ = ∫ g, f g • J (h.smoothMap π hw g) ∂μ`. Use function extensionality and compare the values at `Y`. Rewrite using `[integral_pi_apply hFint Y, hJ]`. Conclude with `h.wordOp_integrated π μ hπ hw hf Y.1.2`.
+
+Rewrite using `[hlΛ, hJint, ← Λ.integral_comp_comm hFint]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[map_smul, smul_eq_mul, ← hlΛ]`. Establish `hvanish : ∀ (f : G → ℂ) (hf : h.IsTestFunction f) (x : E), l ⟨π.integrated μ f x, h.isSmoothVector_integrated π μ hf x⟩ = 0`.
+
+Introduce `f hf`. Use `choose fY hfY hfYeq using fun Y : s => h.exists_wordOp_integrated π μ hπ hf Y.1.2`. Use `set B : ℝ := ∑ Y : s, ∫ g, ‖fY Y g‖ ∂μ with hB`. Set `T : E →ₗ[ℂ] (s → E)` to `{ toFun := fun x Y => π.integrated μ (fY Y) x map_add' := fun x y => by funext Y; exact h.integrated_add π (hfY Y) x y map_smul' := fun c x => by funext Y; exact integrated_smul π (fY Y) c x }`. Establish `hTb : ∀ x, ‖T x‖ ≤ B * ‖x‖`.
+
+Introduce `x`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun Y => ?_` and prove the remaining obligations. Use `(h.norm_integrated_le π μ hπ (hfY Y) x).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `Finset.single_le_sum (f := fun Y : s => ∫ g, ‖fY Y g‖ ∂μ) (fun Y _ => integral_nonneg fun g => norm_nonneg _) (Finset.mem_univ Y)`.
+
+Set `L : E →L[ℂ] ℂ` to `Λ.comp (T.mkContinuous B hTb)`. Establish `hL : ∀ x, L x = l ⟨π.integrated μ f x, h.isSmoothVector_integrated π μ hf x⟩`. Introduce `x`. Rewrite using `[hlΛ]`. Use `show Λ (T x) = _`.
+
+Use `congr 1`. Use function extensionality and compare the values at `Y`. Conclude with `(hfYeq Y x).symm`. Establish `horb : ∀ g, L (π g v) = 0`. Introduce `g`.
+
+Establish `hw : h.IsSmoothVector π (π g v)` using `h.isSmoothVector_map π hv g`. Rewrite using `[hL, hint_orbit f hf (π g v) hw]`. Establish `: ∀ g', l (h.smoothMap π hw g') = 0`. Introduce `g'`. Establish `e : h.smoothMap π hw g' = h.smoothMap π hv (g' * g)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[e, hvan]`. Simplify using `[this]`. Establish `hker : Submodule.span ℂ (range fun g => π g v) ≤ LinearMap.ker (L : E →ₗ[ℂ] ℂ)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `horb g`. Establish `hcl` using `Submodule.topologicalClosure_minimal _ hker L.isClosed_ker`. Rewrite `hcl` using `[hdense]`.
+
+Introduce `x`. Rewrite using `[← hL]`. Conclude with `hcl Submodule.mem_top`. Use extensionality with `⟨w, hw⟩`. Simplify using `only [LinearMap.zero_apply]`.
+
+Establish `hbound : ∀ ε > 0, ‖l ⟨w, hw⟩‖ ≤ |C| * s.card * ε`. Introduce `ε hε`. Establish `hev : ∀ᶠ g in 𝓝 (1 : G), ∀ Y ∈ s, ‖h.wordOp π Y.2 (π g w) - h.wordOp π Y.2 w‖ < ε`. Rewrite using `[Finset.eventually_all]`. Introduce `Y _`.
+
+Establish `hc` using `(h.continuous_wordOp_map π hπ hw Y.2).continuousAt (x := (1 : G))`. Rewrite `hc` using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Simplify using `only [BanachRep.map_one_apply] at hc`. Conclude with `hc.eventually (gt_mem_nhds hε)`. Set `_` to `h.chartedSpace`.
+
+Use `h.isManifold ∞` as an intermediate fact. Take `⟨b, -, hbU⟩` from `(SmoothBumpFunction.nhds_basis_tsupport (I := 𝓘(ℝ, 𝔤)) (1 : G)).mem_iff.1 hev`. Use `set c : ℝ := ∫ g, b g ∂μ with hcdef`. Establish `hc : 0 < c` using `b.continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero b.hasCompactSupport (fun x => b.nonneg) (x := 1) (by rw [b.eq_one]; exact one_ne_zero)`. Use `set f : G → ℂ := fun g => ((c⁻¹ * b g : ℝ) : ℂ) with hfdef`.
+
+Establish `hsupp : Function.support f ⊆ Function.support b`. Introduce `g hg hb`. Apply `hg` to reduce the goal to its premises. Simplify using `[hfdef, hb]`. Establish `hf : h.IsTestFunction f`.
+
+Use `⟨?_, b.hasCompactSupport.mono hsupp⟩` and prove the remaining obligations. Use `set L' : ℝ →L[ℝ] ℂ := c⁻¹ • Complex.ofRealCLM`. Establish `e : f = L' ∘ b` using `by funext g; simp [L', hfdef]`. Rewrite using `[e]`. Conclude with `L'.contDiff.comp_contMDiff b.contMDiff`.
+
+Establish `hfint : Integrable f μ` using `(hf.continuous h).integrable_of_hasCompactSupport hf.2`. Establish `hint1 : ∫ g, f g ∂μ = 1` using `by show ∫ g, ((c⁻¹ * b g : ℝ) : ℂ) ∂μ = 1`. Rewrite using `[integral_complex_ofReal, integral_const_mul, ← hcdef, inv_mul_cancel₀ hc.ne', Complex.ofReal_one]`. Establish `hnormf : ∀ g, ‖f g‖ = c⁻¹ * b g` using `fun g => by`. Rewrite using `[hfdef, Complex.norm_real, Real.norm_of_nonneg (mul_nonneg (inv_nonneg.2 hc.le) b.nonneg)]`.
+
+Establish `hz` using `h.isSmoothVector_integrated π μ hf w`. Establish `h0` using `hvanish f hf w`. Establish `hdiff : l ⟨w, hw⟩ = l ⟨w - π.integrated μ f w, (h.smoothVectors π).sub_mem hw hz⟩`. Establish `: (⟨w - π.integrated μ f w, (h.smoothVectors π).sub_mem hw hz⟩ : h.smoothVectors π) = ⟨w, hw⟩ - ⟨π.integrated μ f w, hz⟩` using `rfl`. Rewrite using `[this, map_sub, h0, sub_zero]`.
+
+Rewrite using `[hdiff]`. Use `(hC _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h.wordOp_sub π hw hz, h.wordOp_integrated π μ hπ hw hf]`. Establish `hiY : Integrable (fun g => f g • h.wordOp π Y.2 (π g w)) μ` using `((hf.continuous h).smul (h.continuous_wordOp_map π hπ hw Y.2)).integrable_of_hasCompactSupport hf.2.smul_right`.
+
+Establish `e : h.wordOp π Y.2 w - ∫ g, f g • h.wordOp π Y.2 (π g w) ∂μ = ∫ g, f g • (h.wordOp π Y.2 w - h.wordOp π Y.2 (π g w)) ∂μ`. Repeatedly rewrite using `[smul_sub]`. Rewrite using `[integral_sub (hfint.smul_const _) hiY, integral_smul_const, hint1, one_smul]`. Rewrite using `[e]`. Establish `hb : ∀ g, ‖f g • (h.wordOp π Y.2 w - h.wordOp π Y.2 (π g w))‖ ≤ (c⁻¹ * b g) * ε`.
+
+Introduce `g`. Rewrite using `[norm_smul, hnormf]`. Distinguish the cases in `hbg : b g = 0`. Simplify using `[hbg]`. Use `mul_le_mul_of_nonneg_left ?_ (mul_nonneg (inv_nonneg.2 hc.le) b.nonneg)` and prove the remaining obligations.
+
+Use `hbU (subset_tsupport _ hbg) Y hY` as an intermediate fact. Rewrite using `[norm_sub_rev]`. Conclude with `this.le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_mul_const, integral_const_mul, ← hcdef, inv_mul_cancel₀ hc.ne', one_mul]`.
+
+Use `_ = |C| * s.card * ε := by rw [Finset.sum_const, nsmul_eq_mul]; ring`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖l ⟨w, hw⟩‖` using `norm_pos_iff.2 hne`. Use `set K := |C| * s.card with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`.
+
+Use `hbound (‖l ⟨w, hw⟩‖ / (2 * (K + 1))) (by positivity)` as an intermediate fact. Establish `h2 : K * (‖l ⟨w, hw⟩‖ / (2 * (K + 1))) < ‖l ⟨w, hw⟩‖`. Rewrite using `[mul_div_assoc', div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_zero_of_forall_map_eq_zero (hπ : ∀ g, ‖π g‖ ≤ 1)
     {l : h.smoothVectors π →ₗ[ℂ] ℂ} (hl : h.IsSmoothContinuous π l) {v : E}
     (hv : h.IsSmoothVector π v)

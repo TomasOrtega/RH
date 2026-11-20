@@ -19,6 +19,25 @@ noncomputable section
 
 namespace GlobalTheory.CompHS
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y X Z M K _ _ z ho Q hQ hz v hv zv hl w hw Mx hM zw hlw`. Take `⟨W, zM, hzM⟩` from `hQ.exists_universal`. Establish `hWQ : FrMap (TrivSqZeroExt.fstHom c.F K (HIx Dw (psiSet H) → K)) W Q` using `GlobalTheory.FlagTan.frMap_comp (hzM 0).1 (hzM 0).2.1 fun a => by simp`. Take `⟨ZW, hZW⟩` from `FunDer.der_dir M hz ho hWQ`. Use `choose zz hzz using fun k : GlobalTheory.FlagTan.FIx Dw => (GlobalTheory.FlagTan.existsUnique_isVert Q (Pi.single k (1 : K))).exists`.
+
+Use `choose q hq hqO using fun k => exists_tanLift M (hzz k).isDef hz ho`. Establish `key : ∀ (w' : FrPt Xo c (DualNumber K)) (M' : HIx Dw (psiSet H) → K), IsDef Q w' → GlobalTheory.FlagTan.IsKS (psiSet H) Q w'.x M' → ∃ C : VIx Dw → K, ∀ (p : Sp (DualNumber K) ⟶ M.X), p ≫ toFlag M = X.ptY w' → ∀ (O : M.X.Opens) (g : Γ(M.X, O)) (hp : ⊤ ≤ p ⁻¹ᵁ O) (hzv : ∀ k : VIx D …`. Introduce `w' M' hw' hM'`. Take `⟨N, hN⟩` from `(hzM M').2.1.exists_isShift hw' (hQ.injective hw'.isTanX (hzM M').2.1.isTanX hM' (hzM M').2.2)`. Take `⟨p₀, hp₀, hp₀O⟩` from `exists_tanLift M (hzM M').2.1 hz ho`.
+
+Use `⟨fun k => N k.toF, fun p hp O g hpO hzv => ?_⟩` and prove the remaining obligations. Establish `hzO : ⊤ ≤ z ⁻¹ᵁ O`. Rewrite using `[← FunDer.red_eq M hz ho hw' hp]`. Conclude with `FunDer.top_le_comp _ _ _ hpO`. Take `⟨hZ, a0⟩` from `hZW M' _ p₀ (hzM M').1 hp₀ O g (hp₀O O hzO)`.
+
+Use `⟨hZ, ?_⟩` and prove the remaining obligations. Rewrite using `[FunDer.der_shift M hz ho (hzM M').2.1 hN hzz hp₀ hp hq O g (hp₀O O hzO) hpO (fun k => hqO k O hzO), a0, GlobalTheory.FlagTan.sum_FIx]`. Use `congr 1`. Establish `hz0 : ∑ k ∈ Finset.univ.filter (fun k => k ∉ Set.range GlobalTheory.FlagTan.VIx.toF), N k * (evalPt (q k) O (hqO k O hzO) g).snd = 0` using `Finset.sum_eq_zero fun k hk => by`. Establish `hN' : ∀ σ i j, i < j → (Pi.single k (1 : K) : GlobalTheory.FlagTan.FIx Dw → K) (some ⟨σ, i, j⟩) = 0` using `fun σ i j hij => by`.
+
+Use `Pi.single_eq_of_ne ?_ _` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `(Finset.mem_filter.1 hk).2 ⟨⟨σ, (i, j), hij⟩, rfl⟩`. Rewrite using `[FunDer.der_vert_eq_zero M hz ho (hzz k) hN' (hq k) O g _, mul_zero]`. Rewrite using `[hz0, add_zero]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e1 : zz k.toF = v (.inr k)` using `(GlobalTheory.FlagTan.existsUnique_isVert Q _).unique (hzz k.toF) (hv.2 k)`. Establish `e2 : q k.toF = zv (.inr k)` using `FunDer.lift_eq M (by rw [hq, hl, e1]) (hqO _ _ ho)`. Rewrite using `[FunDer.evalPt_eq_of_eq e2 O _ (hzv k) g]`. Take `⟨C, hC⟩` from `key w Mx hw hM`.
+
+Use `choose C' hC' using fun k => key _ _ (hv.1 k).1 (hv.1 k).2`. Use `⟨fun j => C j - ∑ k, Mx k * C' k j, fun O g hzw hzvO => ?_⟩` and prove the remaining obligations. Take `⟨hZ, a⟩` from `hC zw hlw O g hzw (fun k => hzvO _)`. Establish `b : ∀ k, (evalPt (zv (.inl k)) O (hzvO _) g).snd = (evalPt ZW O hZ g).snd k + ∑ j, C' k j * (evalPt (zv (.inr j)) O (hzvO _) g).snd` using `fun k => by`. Take `⟨hZ', b⟩` from `hC' k (zv (.inl k)) (hl _) O g (hzvO _) (fun j => hzvO _)`.
+
+Rewrite using `[b]`. Simplify using `[Pi.single_apply]`. Rewrite using `[a, Finset.sum_congr rfl fun k _ => congrArg (Mx k * ·) (b k)]`. Simplify using `only [mul_add, Finset.sum_add_distrib, sub_mul, Finset.sum_sub_distrib, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (VIx Dw)))]`.
+
+Simplify using `only [mul_comm _ (Mx _)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem der_fun_hor : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : GlobalTheory.FlagMod.FlagCover Y} {Z : Comp Xo c} (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw)) {K : Type} [Field K] [Algebra c.F K] (z : Sp K ⟶ M.X) (ho : ⊤ ≤ z ⁻¹ᵁ M.off)
     {Q : FrPt Xo c K} (hQ : KSIso (psiSet H) Q) (hz : z ≫ toFlag M = X.ptY Q)
     {v : TIx Dw (psiSet H) → FrPt Xo c (DualNumber K)} (hv : IsTanFrame (psiSet H) Q v)

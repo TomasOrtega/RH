@@ -7,6 +7,13 @@ noncomputable section
 
 namespace GlobalTheory.TorCls.OpenP
 
+/- English proof (translation)
+Set `A : Matrix (Fin n) (Fin n) S` to `Matrix.of fun i j => ⟨_, h1 i j⟩`. Set `B : Matrix (Fin n) (Fin n) S` to `Matrix.of fun i j => ⟨_, h2 i j⟩`. Establish `hA : A.map S.subtype = (X : Matrix (Fin n) (Fin n) R)` using `by ext i j; rfl`. Establish `hB : B.map S.subtype = ((X⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)` using `by ext i j; rfl`. Establish `inj : Function.Injective (fun M : Matrix (Fin n) (Fin n) S => M.map S.subtype)` using `Matrix.map_injective Subtype.val_injective`.
+
+Establish `hAB : A * B = 1` using `inj (by`. Simplify using `only [Matrix.map_mul, hA, hB, Matrix.map_one _ (map_zero S.subtype) (map_one S.subtype)]`. Conclude with `X.mul_inv)`. Establish `hBA : B * A = 1` using `inj (by`. Simplify using `only [Matrix.map_mul, hA, hB, Matrix.map_one _ (map_zero S.subtype) (map_one S.subtype)]`.
+
+Conclude with `X.inv_mul)`. Conclude with `⟨⟨A, B, hAB, hBA⟩, Units.ext hA⟩`.
+-/
 theorem mem_range_map_of_entries {R : Type} [CommRing R] (S : Subring R) {n : ℕ} (X : GL (Fin n) R)
     (h1 : ∀ i j, (X : Matrix (Fin n) (Fin n) R) i j ∈ S)
     (h2 : ∀ i j, ((X⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i j ∈ S) :
@@ -27,6 +34,11 @@ theorem mem_range_map_of_entries {R : Type} [CommRing R] (S : Subring R) {n : �
 
 variable (p : ℕ) [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hp : ‖(p : PadicAlgCl p)‖ < 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)), PadicAlgCl.norm_extends, Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (Nat.one_lt_cast.2 (Fact.out : p.Prime).one_lt)`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one (show 0 < 1 / (‖(x : PadicAlgCl p)‖ + 1) by positivity) hp`. Use `⟨N, ReciprocityTheory.DiscreteGroups.LocalClassField.mem_Obar_iff.2 ?_⟩` and prove the remaining obligations.
+
+Establish `e : (((p : L) ^ N * x : L) : PadicAlgCl p) = (p : PadicAlgCl p) ^ N * (x : PadicAlgCl p)`. Simplify using the standard rewrite rules. Rewrite using `[e, norm_mul, norm_pow]`. Establish `h0 : 0 ≤ ‖(x : PadicAlgCl p)‖` using `norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_pow_mul_mem (L : IntermediateField ℚ_[p] (PadicAlgCl p)) (x : L) :
     ∃ N : ℕ, (((p : L) ^ N * x : L) : PadicAlgCl p) ∈ ReciprocityTheory.DiscreteGroups.LocalClassField.Obar p := by
   have hp : ‖(p : PadicAlgCl p)‖ < 1 := by
@@ -47,23 +59,46 @@ end GlobalTheory.TorCls.OpenP
 namespace GlobalTheory.TorCls.OpenP
 variable (p : ℕ) [Fact p.Prime]
 
+/- English proof (translation)
+The claim follows from `pow_mem (natCast_mem _ p) N`.
+-/
 theorem natCast_pow_mem_intKQ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r N : ℕ) :
     (p : KQ p K r) ^ N ∈ intKQ p K r :=
   pow_mem (natCast_mem _ p) N
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inl ⟨⟨x, h⟩, rfl⟩)`.
+-/
 theorem inclK_mem_intKQ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ) (x : K)
     (h : (x : PadicAlgCl p) ∈ ReciprocityTheory.DiscreteGroups.LocalClassField.Obar p) : inclK p K r x ∈ intKQ p K r :=
   Subring.subset_closure (Or.inl ⟨⟨x, h⟩, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inr ⟨⟨x, h⟩, rfl⟩)`.
+-/
 theorem inclQ_mem_intKQ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ) (x : Qr p r)
     (h : (x : PadicAlgCl p) ∈ ReciprocityTheory.DiscreteGroups.LocalClassField.Obar p) : inclQ p K r x ∈ intKQ p K r :=
   Subring.subset_closure (Or.inr ⟨⟨x, h⟩, rfl⟩)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `a ⊗ₜ[ℚ_[p]] b = (a ⊗ₜ[ℚ_[p]] (1 : Qr p r)) * ((1 : K) ⊗ₜ[ℚ_[p]] b)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+-/
 theorem tmul_eq_inclK_mul_inclQ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ) (a : K) (b : Qr p r) :
     (show KQ p K r from a ⊗ₜ[ℚ_[p]] b) = inclK p K r a * inclQ p K r b := by
   change a ⊗ₜ[ℚ_[p]] b = (a ⊗ₜ[ℚ_[p]] (1 : Qr p r)) * ((1 : K) ⊗ₜ[ℚ_[p]] b)
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
 
+/- English proof (translation)
+Use `TensorProduct.induction_on (R := ℚ_[p]) (M := K) (N := Qr p r) (motive := fun y : K ⊗[ℚ_[p]] Qr p r => ∃ N : ℕ, (p : KQ p K r) ^ N * (show KQ p K r from y) ∈ intKQ p K r) x ⟨0, ?_⟩ ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(p : KQ p K r) ^ 0 * (0 : KQ p K r) ∈ intKQ p K r`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`. Introduce `a b`.
+
+Take `⟨N₁, h₁⟩` from `exists_pow_mul_mem p K a`. Take `⟨N₂, h₂⟩` from `exists_pow_mul_mem p (Qr p r) b`. Use `⟨N₁ + N₂, ?_⟩` and prove the remaining obligations. Rewrite using `[tmul_eq_inclK_mul_inclQ]`. Establish `e : (p : KQ p K r) ^ (N₁ + N₂) * (inclK p K r a * inclQ p K r b) = inclK p K r ((p : K) ^ N₁ * a) * inclQ p K r ((p : Qr p r) ^ N₂ * b)`.
+
+Rewrite using `[map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem (inclK_mem_intKQ p K r _ h₁) (inclQ_mem_intKQ p K r _ h₂)`. Introduce and unpack `x y ⟨N, hN⟩ ⟨M, hM⟩`.
+
+Use `⟨N + M, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(p : KQ p K r) ^ (N + M) * ((show KQ p K r from x) + (show KQ p K r from y)) ∈ intKQ p K r`. Generalize the expression as in `(show KQ p K r from x) = x' at hN ⊢`. Generalize the expression as in `(show KQ p K r from y) = y' at hM ⊢`. Establish `e : (p : KQ p K r) ^ (N + M) * (x' + y') = (p : KQ p K r) ^ M * ((p : KQ p K r) ^ N * x') + (p : KQ p K r) ^ N * ((p : KQ p K r) ^ M * y')`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (mul_mem (natCast_pow_mem_intKQ p K r M) hN) (mul_mem (natCast_pow_mem_intKQ p K r N) hM)`.
+-/
 theorem exists_pow_mul_mem_intKQ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ) (x : KQ p K r) :
     ∃ N : ℕ, (p : KQ p K r) ^ N * x ∈ intKQ p K r := by
   refine TensorProduct.induction_on (R := ℚ_[p]) (M := K) (N := Qr p r)
@@ -92,6 +127,11 @@ theorem exists_pow_mul_mem_intKQ (K : IntermediateField ℚ_[p] (PadicAlgCl p)) 
     rw [e]
     exact add_mem (mul_mem (natCast_pow_mem_intKQ p K r M) hN) (mul_mem (natCast_pow_mem_intKQ p K r N) hM)
 
+/- English proof (translation)
+Use `choose f hf using exists_pow_mul_mem_intKQ p K r`. Use `⟨Finset.univ.sup fun ij : Fin n × Fin n => f (A ij.1 ij.2), fun i j => ?_⟩` and prove the remaining obligations. Establish `hle : f (A i j) ≤ Finset.univ.sup fun ij : Fin n × Fin n => f (A ij.1 ij.2)` using `Finset.le_sup (f := fun ij : Fin n × Fin n => f (A ij.1 ij.2)) (Finset.mem_univ (i, j))`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite using `[hk, add_comm, pow_add, mul_assoc]`.
+
+Conclude with `mul_mem (natCast_pow_mem_intKQ p K r _) (hf _)`.
+-/
 theorem exists_pow_mul_entries_mem (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ) {n : ℕ}
     (A : Matrix (Fin n) (Fin n) (KQ p K r)) :
     ∃ N : ℕ, ∀ i j, (p : KQ p K r) ^ N * A i j ∈ intKQ p K r := by
@@ -108,9 +148,29 @@ end GlobalTheory.TorCls.OpenP
 namespace GlobalTheory.TorCls.OpenP
 variable (p : ℕ) [Fact p.Prime]
 
+/- English proof (translation)
+The claim follows from `norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`.
+-/
 theorem norm_p_pos : 0 < ‖(p : PadicAlgCl p)‖ :=
   norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)
 
+/- English proof (translation)
+Take `⟨N₁, h₁⟩` from `exists_pow_mul_entries_mem p K r (R : Matrix (Fin n) (Fin n) (KQ p K r))`. Take `⟨N₂, h₂⟩` from `exists_pow_mul_entries_mem p K r ((R⁻¹ : GL (Fin n) (KQ p K r)) : Matrix (Fin n) (Fin n) (KQ p K r))`. Use `⟨‖(p : PadicAlgCl p)‖ ^ (N₁ + N₂), pow_pos (norm_p_pos p) _, fun M hM i l => ?_⟩` and prove the remaining obligations. Establish `hp0 : (p : K) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `hsplit : M.map (inclK p K r) = 1 + (M - 1).map (inclK p K r)`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.map_apply, Matrix.sub_apply, Matrix.one_apply, map_sub]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hsplit, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Units.inv_mul]`. Use `add_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Rewrite using `[Matrix.mul_apply]`.
+
+Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Use `set B := (M - 1) j k with hB`. Use `set b : K := ((p : K) ^ (N₁ + N₂))⁻¹ * B with hb`.
+
+Establish `hBb : B = (p : K) ^ (N₁ + N₂) * b` using `by rw [hb, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hp0), one_mul]`. Establish `hbint : (b : PadicAlgCl p) ∈ ReciprocityTheory.DiscreteGroups.LocalClassField.Obar p`. Rewrite using `[ReciprocityTheory.DiscreteGroups.LocalClassField.mem_Obar_iff]`. Establish `h` using `hM j k`. Rewrite `h` using `[← hB, hBb]`.
+
+Establish `e : (((p : K) ^ (N₁ + N₂) * b : K) : PadicAlgCl p) = (p : PadicAlgCl p) ^ (N₁ + N₂) * (b : PadicAlgCl p)`. Simplify using the standard rewrite rules. Rewrite `h` using `[e, norm_mul, norm_pow]`. Establish `hpos` using `pow_pos (norm_p_pos p) (N₁ + N₂)`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Use the polynomial consequences of the given equalities and inequalities. Establish `e2 : ((R⁻¹ : GL (Fin n) (KQ p K r)) : Matrix (Fin n) (Fin n) (KQ p K r)) i j * ((M - 1).map (inclK p K r)) j k * (R : Matrix (Fin n) (Fin n) (KQ p K r)) k l = ((p : KQ p K r) ^ N₂ * ((R⁻¹ : GL (Fin n) (KQ p K r)) : Matrix (Fin n) (Fin n) (KQ p K r)) i j) * inclK p K r b * ((p : K …`. Rewrite using `[Matrix.map_apply, ← hB, hBb, map_mul, map_pow, map_natCast, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e2]`. Conclude with `mul_mem (mul_mem (h₂ i j) (inclK_mem_intKQ p K r b hbint)) (h₁ k l)`.
+-/
 theorem exists_conj_entries_mem (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ) {n : ℕ}
     (R : GL (Fin n) (KQ p K r)) :
     ∃ ε : ℝ, 0 < ε ∧ ∀ M : Matrix (Fin n) (Fin n) K,
@@ -160,10 +220,20 @@ end GlobalTheory.TorCls.OpenP
 
 namespace GlobalTheory.TorCls.OpenP
 
+/- English proof (translation)
+Use `fin_cases i`. Use `fin_cases j`. Simplify using `[GeneralLinearGroup.scalar]`.
+-/
 theorem scalar_one_entry {R : Type} [CommRing R] (u : Rˣ) (i j : Fin 1) :
     ((GeneralLinearGroup.scalar (Fin 1) u : GL (Fin 1) R) : Matrix (Fin 1) (Fin 1) R) i j = (u : R) := by
   fin_cases i; fin_cases j; simp [GeneralLinearGroup.scalar]
 
+/- English proof (translation)
+Establish `hfst : (psiP G z).1 = GeneralLinearGroup.scalar (Fin 1) (Units.map (algebraMap ℚ_[p] (Qr p 1)).toMonoidHom z.2)` using `rfl`. Establish `hmem : ∀ a : ℚ_[p], ‖a‖ ≤ 1 → algebraMap ℚ_[p] (Qr p 1) a ∈ GlobalTheory.LKLoc.intR p (Q0 p) 1`. Introduce `a ha`. Use `show ((algebraMap ℚ_[p] (Qr p 1) a : Qr p 1) : PadicAlgCl p) ∈ ReciprocityTheory.DiscreteGroups.LocalClassField.Obar p`. Rewrite using `[ReciprocityTheory.DiscreteGroups.LocalClassField.mem_Obar_iff, IntermediateField.coe_algebraMap_apply, PadicAlgCl.norm_extends]`.
+
+Conclude with `ha`. Use `mem_range_map_of_entries _ _ (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Rewrite using `[hfst, scalar_one_entry]`. Conclude with `hmem _ h1`. Rewrite using `[hfst, ← map_inv, scalar_one_entry, ← map_inv]`.
+
+Conclude with `hmem _ h2`.
+-/
 theorem psiP_fst_mem (p : ℕ) [Fact p.Prime] (G : HTGroup p) (z : (ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ)
     (h1 : ‖(z.2 : ℚ_[p])‖ ≤ 1) (h2 : ‖((z.2⁻¹ : ℚ_[p]ˣ) : ℚ_[p])‖ ≤ 1) :
     (psiP G z).1 ∈ GlobalTheory.LKLoc.Kint p (Q0 p) 1 1 := by
@@ -177,6 +247,23 @@ theorem psiP_fst_mem (p : ℕ) [Fact p.Prime] (G : HTGroup p) (z : (ℚ_[p] ⊗[
   · rw [hfst, scalar_one_entry]; exact hmem _ h1
   · rw [hfst, ← map_inv, scalar_one_entry, ← map_inv]; exact hmem _ h2
 
+/- English proof (translation)
+Introduce `p _ G r₂`. Use `letI : TopologicalSpace (ℚ_[p] ⊗[ℚ] G.C) := moduleTopology ℚ_[p] (ℚ_[p] ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology ℚ_[p] (ℚ_[p] ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `choose ε hε hM using fun w : Fin G.m => exists_conj_entries_mem p (G.Fw w) 1 (r₂.2 w)`. Set `e : ∀ (w : Fin G.m) (i j : Fin G.n), ℚ_[p] ⊗[ℚ] G.C → PadicAlgCl p` to `fun w i j g => (((G.locW w g - 1) i j : G.Fw w) : PadicAlgCl p)`.
+
+Establish `hcont : ∀ w i j, Continuous (e w i j)`. Introduce `w i j`. Set `L : ℚ_[p] ⊗[ℚ] G.C →ₗ[ℚ_[p]] PadicAlgCl p` to `(G.Fw w).val.toLinearMap ∘ₗ (Matrix.entryLinearMap ℚ_[p] (G.Fw w) i j) ∘ₗ (G.locW w).toLinearMap`. Establish `he : e w i j = fun g => L g - (((1 : Matrix (Fin G.n) (Fin G.n) (G.Fw w)) i j : G.Fw w) : PadicAlgCl p)`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[e, L, Matrix.sub_apply]`. Rewrite using `[he]`. Conclude with `(IsModuleTopology.continuous_of_linearMap L).sub continuous_const`. Establish `hent : ∀ (w : Fin G.m) (z' : (ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ), (∀ i j, ‖e w i j (z'.1 : ℚ_[p] ⊗[ℚ] G.C)‖ < ε w) → ∀ i l, (((r₂⁻¹ * psiP G z' * r₂).2 w : GL (Fin G.n) (KQ p (G.Fw w) 1)) : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) 1)) i l ∈ intKQ p (G.Fw w) 1`. Introduce `w z' h i l`.
+
+Establish `hv : (((r₂⁻¹ * psiP G z' * r₂).2 w : GL (Fin G.n) (KQ p (G.Fw w) 1)) : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) 1)) = (((r₂.2 w)⁻¹ : GL (Fin G.n) (KQ p (G.Fw w) 1)) : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw w) 1)) * (G.locW w (z'.1 : ℚ_[p] ⊗[ℚ] G.C)).map (inclK p (G.Fw w) 1) * (( …` using `rfl`. Rewrite using `[hv]`. Conclude with `hM w _ h i l`. Use `⟨{z | ‖(z.2 : ℚ_[p])‖ ≤ 1 ∧ ‖((z.2⁻¹ : ℚ_[p]ˣ) : ℚ_[p])‖ ≤ 1 ∧ ∀ w i j, ‖e w i j (z.1 : ℚ_[p] ⊗[ℚ] G.C)‖ < ε w ∧ ‖e w i j (((z.1)⁻¹ : (ℚ_[p] ⊗[ℚ] G.C)ˣ) : ℚ_[p] ⊗[ℚ] G.C)‖ < ε w}, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hball : IsOpen {x : ℚ_[p] | ‖x‖ ≤ 1}`.
+
+Use `IsUltrametricDist.isOpen_closedBall (0 : ℚ_[p]) (one_ne_zero : (1 : ℝ) ≠ 0)` as an intermediate fact. Simplify `this` using `[Metric.closedBall, dist_zero_right]`. Simplify using `only [Set.setOf_and, Set.setOf_forall]`. Use `(hball.preimage ((Units.continuous_val (M := ℚ_[p])).comp (continuous_snd (X := (ℚ_[p] ⊗[ℚ] G.C)ˣ) (Y := ℚ_[p]ˣ)))).inter ((hball.preimage ((Units.continuous_coe_inv (M := ℚ_[p])).comp (continuous_snd (X := (ℚ_[p] ⊗[ℚ] G.C)ˣ) (Y := ℚ_[p]ˣ)))).inter ?_)` and prove the remaining obligations. Use `isOpen_iInter_of_finite fun w => isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations.
+
+Conclude with `(isOpen_lt (continuous_norm.comp ((hcont w i j).comp ((Units.continuous_val (M := ℚ_[p] ⊗[ℚ] G.C)).comp continuous_fst))) continuous_const).inter (isOpen_lt (continuous_norm.comp ((hcont w i j).comp ((Units.continuous_coe_inv (M := ℚ_[p] ⊗[ℚ] G.C)).comp continuous_fst))) continuo …`. Apply the tactic sequence `refine ⟨by simp, by simp, fun w i j => ⟨?_, ?_⟩⟩ <;> simp [e, hε w]`. Introduce and unpack `z ⟨h1, h2, h3⟩`. Use `Subgroup.mem_prod.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `hk` using `psiP_fst_mem p G z h1 h2`.
+
+Use `(normal_of_gl_one (GlobalTheory.LKLoc.Kint p (Q0 p) 1 1)).conj_mem _ hk r₂.1⁻¹` as an intermediate fact. Simplify using `using this`. Use `(Subgroup.mem_pi _).2 fun w _ => ?_` and prove the remaining obligations. Use `mem_range_map_of_entries _ _ (hent w z fun i j => (h3 w i j).1) ?_` and prove the remaining obligations. Establish `hinv : ((r₂⁻¹ * psiP G z * r₂).2 w)⁻¹ = (r₂⁻¹ * psiP G z⁻¹ * r₂).2 w`.
+
+Establish `hg : (r₂⁻¹ * psiP G z * r₂)⁻¹ = r₂⁻¹ * psiP G z⁻¹ * r₂` using `by rw [map_inv]; group`. Rewrite using `[show ((r₂⁻¹ * psiP G z * r₂).2 w)⁻¹ = ((r₂⁻¹ * psiP G z * r₂)⁻¹).2 w from rfl, hg]`. Rewrite using `[hinv]`. Conclude with `hent w z⁻¹ fun i j => (h3 w i j).2`.
+-/
 theorem openp : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (r₂ : Gr G 1),
     letI : TopologicalSpace (ℚ_[p] ⊗[ℚ] G.C) := moduleTopology ℚ_[p] (ℚ_[p] ⊗[ℚ] G.C);
     ∃ O : Set ((ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ), IsOpen O ∧ 1 ∈ O ∧ ∀ z ∈ O, r₂⁻¹ * psiP G z * r₂ ∈ KHT p G.m G.n 1 G.Fw := by

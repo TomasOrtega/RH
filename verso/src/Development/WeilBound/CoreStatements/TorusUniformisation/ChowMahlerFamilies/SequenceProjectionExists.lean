@@ -27,6 +27,9 @@ def locAt (Ω : Type) [Field Ω] [Algebra R Ω] (𝔮 : Ideal R) [h : 𝔮.IsPri
     rw [map_add, map_mul, map_mul, map_mul, ← e, ← e']; ring
   algebraMap_mem' := fun r => ⟨r, 1, (Ideal.ne_top_iff_one 𝔮).1 h.ne_top, by simp⟩
 
+/- English proof (translation)
+Establish `h0 : algebraMap R Ω v ≠ 0` using `fun e => hv (by`. Establish `: v = 0` using `hinj (by rw [e, map_zero])`. Rewrite using `[this]`. Conclude with `𝔮.zero_mem)`. Conclude with `⟨h0, 1, v, hv, by rw [inv_mul_cancel₀ h0, map_one]⟩`.
+-/
 theorem inv_mem (hinj : Function.Injective (algebraMap R Ω)) (𝔮 : Ideal R) [h : 𝔮.IsPrime] {v : R} (hv : v ∉ 𝔮) :
     algebraMap R Ω v ≠ 0 ∧ (algebraMap R Ω v)⁻¹ ∈ locAt Ω 𝔮 := by
   have h0 : algebraMap R Ω v ≠ 0 := fun e => hv (by
@@ -34,6 +37,11 @@ theorem inv_mem (hinj : Function.Injective (algebraMap R Ω)) (𝔮 : Ideal R) [
     rw [this]; exact 𝔮.zero_mem)
   exact ⟨h0, 1, v, hv, by rw [inv_mul_cancel₀ h0, map_one]⟩
 
+/- English proof (translation)
+Use `(isLocalization_iff _ _).2 ⟨fun y => ?_, fun z => ?_, fun {x y} e => ?_⟩` and prove the remaining obligations. Take `⟨h0, h1⟩` from `inv_mem hinj 𝔮 y.2`. Conclude with `IsUnit.of_mul_eq_one ⟨_, h1⟩ (Subtype.ext (mul_inv_cancel₀ h0))`. Take `⟨u, v, hv, e⟩` from `z.2`. Conclude with `⟨(u, ⟨v, hv⟩), Subtype.ext e⟩`.
+
+Establish `: x = y` using `hinj (congrArg Subtype.val e)`. Conclude with `⟨1, by rw [this]⟩`.
+-/
 theorem isLoc (hinj : Function.Injective (algebraMap R Ω)) (𝔮 : Ideal R) [h : 𝔮.IsPrime] :
     IsLocalization.AtPrime (locAt Ω 𝔮) 𝔮 := by
   refine (isLocalization_iff _ _).2 ⟨fun y => ?_, fun z => ?_, fun {x y} e => ?_⟩
@@ -45,6 +53,11 @@ theorem isLoc (hinj : Function.Injective (algebraMap R Ω)) (𝔮 : Ideal R) [h 
     exact ⟨1, by rw [this]⟩
 
 attribute [local instance] RingHomInvPair.of_ringEquiv RingHomInvPair.of_ringEquiv_symm in
+/- English proof (translation)
+Use `letI : Algebra Rp (Localization S) := (IsLocalization.algEquiv S Rp (Localization S)).toRingHom.toAlgebra`. Use `haveI : IsScalarTower R Rp (Localization S) := IsScalarTower.of_algebraMap_eq fun r => ((IsLocalization.algEquiv S Rp (Localization S)).commutes r).symm`. Use `letI : Module (Localization S) Mp := Module.compHom Mp (IsLocalization.algEquiv S Rp (Localization S)).symm.toRingHom`. Use `haveI : IsScalarTower R (Localization S) Mp := IsScalarTower.of_algebraMap_smul fun r x => by`. Express the relevant statement in the definitionally equal form `(IsLocalization.algEquiv S Rp (Localization S)).symm (algebraMap R _ r) • x = r • x`.
+
+Rewrite using `[AlgEquiv.commutes, algebraMap_smul]`. Use `haveI : Module.Projective (Localization S) Mp := Module.Projective.of_equiv (M := Mp) (R := Rp) (σ := (IsLocalization.algEquiv S Rp (Localization S)).toRingEquiv) { __ := AddEquiv.refl Mp map_smul' := fun r x => by`. Express the relevant statement in the definitionally equal form `r • x = (IsLocalization.algEquiv S Rp (Localization S)).symm (IsLocalization.algEquiv S Rp (Localization S) r) • x`. Rewrite using `[AlgEquiv.symm_apply_apply] }`. Conclude with `Module.Projective.of_equiv ((IsLocalizedModule.iso S f).symm.extendScalarsOfIsLocalization S (Localization S))`.
+-/
 theorem proj_transfer {R M Rp Mp : Type} [CommRing R] [AddCommGroup M] [Module R M] [CommRing Rp] [Algebra R Rp]
     [AddCommGroup Mp] [Module R Mp] [Module Rp Mp] [IsScalarTower R Rp Mp] (S : Submonoid R) [IsLocalization S Rp]
     (f : M →ₗ[R] Mp) [IsLocalizedModule S f] (h : Module.Projective Rp Mp) :
@@ -66,6 +79,13 @@ theorem proj_transfer {R M Rp Mp : Type} [CommRing R] [AddCommGroup M] [Module R
   exact Module.Projective.of_equiv
     ((IsLocalizedModule.iso S f).symm.extendScalarsOfIsLocalization S (Localization S))
 
+/- English proof (translation)
+Use `haveI : Module.Finite R M := Module.Finite.iff_fg.2 hM`. Use `haveI : Module.FinitePresentation R M := Module.finitePresentation_of_finite R M`. Use `Module.projective_of_localization_maximal fun P hP => ?_` and prove the remaining obligations. Use `haveI : IsLocalization.AtPrime (locAt Ω P) P := isLoc hinj P`. Use `haveI : IsLocalizedModule P.primeCompl (LinearMap.id : V →ₗ[R] V) := isLocalizedModule_id P.primeCompl V (locAt Ω P)`.
+
+Use `proj_transfer P.primeCompl (Rp := locAt Ω P) (M.toLocalized' (locAt Ω P) P.primeCompl LinearMap.id) ?_` and prove the remaining obligations. Establish `h` using `H P`. Establish `e : Submodule.span (locAt Ω P) (M : Set V) = M.localized' (locAt Ω P) P.primeCompl LinearMap.id`. Rewrite using `[Submodule.localized'_eq_span]`. Simplify using the standard rewrite rules.
+
+Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem proj_of_loc [IsNoetherianRing R] (hinj : Function.Injective (algebraMap R Ω)) (M : Submodule R V) (hM : M.FG)
     (H : ∀ (𝔮 : Ideal R) [𝔮.IsPrime], Module.Projective (locAt Ω 𝔮) (Submodule.span (locAt Ω 𝔮) (M : Set V))) :
     Module.Projective R M := by
@@ -82,6 +102,11 @@ theorem proj_of_loc [IsNoetherianRing R] (hinj : Function.Injective (algebraMap 
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Use `haveI : IsLocalization.AtPrime (locAt Ω P) P := isLoc hinj P`. Use `haveI : IsLocalizedModule P.primeCompl (LinearMap.id : V →ₗ[R] V) := isLocalizedModule_id P.primeCompl V (locAt Ω P)`. Establish `e : Submodule.span (locAt Ω P) (M : Set V) = M.localized' (locAt Ω P) P.primeCompl LinearMap.id`. Rewrite using `[Submodule.localized'_eq_span]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e]`. Conclude with `Module.projective_of_isLocalizedModule P.primeCompl (M.toLocalized' (locAt Ω P) P.primeCompl LinearMap.id)`.
+-/
 theorem loc_of_proj (hinj : Function.Injective (algebraMap R Ω)) (M : Submodule R V) [Module.Projective R M]
     (P : Ideal R) [P.IsPrime] : Module.Projective (locAt Ω P) (Submodule.span (locAt Ω P) (M : Set V)) := by
   haveI : IsLocalization.AtPrime (locAt Ω P) P := isLoc hinj P
@@ -93,6 +118,11 @@ theorem loc_of_proj (hinj : Function.Injective (algebraMap R Ω)) (M : Submodule
   exact Module.projective_of_isLocalizedModule P.primeCompl (M.toLocalized' (locAt Ω P) P.primeCompl LinearMap.id)
 
 omit [Module R V] [IsScalarTower R Ω V] in
+/- English proof (translation)
+Establish `hBS : B = S.toSubring` using `Subring.ext hB`. Substitute `hBS` using the available equality. Establish `e' : Submodule.span S (Set.range b) = Submodule.span S M` using `e`. Rewrite using `[← e']`. Establish `hb' : LinearIndependent S b` using `hb.restrict_scalars' S`.
+
+Use `haveI := Module.Free.of_basis (Module.Basis.span hb')`. Use `infer_instance`.
+-/
 theorem proj_of_frame (B : Subring Ω) (S : Subalgebra R Ω) (hB : ∀ x, x ∈ B ↔ x ∈ S) (M : Set V) {r : ℕ}
     (b : Fin r → V) (hb : LinearIndependent Ω b) (e : Submodule.span B (Set.range b) = Submodule.span B M) :
     Module.Projective S (Submodule.span S M) := by
@@ -115,14 +145,27 @@ variable {A K : Type} [CommRing A] [Field K] [Algebra A K] {E : Type} [Field E] 
   {V : Type} [AddCommGroup V] [Module K V] [Module A V] [IsScalarTower A K V]
   (D : HTChart A K c p R N V)
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sup_right ⟨x, hx, rfl⟩`.
+-/
 theorem pow_mem {x : V} (hx : x ∈ D.om) : ((p : A) ^ R) • x ∈ D.om' :=
   Submodule.mem_sup_right ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Use `sup_le (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `D.h_mem x`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `D.om.smul_mem _ hx`.
+-/
 theorem om'_le : D.om' ≤ D.om := by
   refine sup_le (Submodule.span_le.2 ?_) ?_
   · rintro _ ⟨x, rfl⟩; exact D.h_mem x
   · rintro _ ⟨x, hx, rfl⟩; exact D.om.smul_mem _ hx
 
+/- English proof (translation)
+Establish `: D.om' ≤ D.om'.comap ((D.ρΩ a).restrictScalars A)`. Use `sup_le (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨w, hw, e⟩` from `D.h_lin a z`. Establish `e' : D.ρΩ a (D.h z) = D.h (a • z) - ((p : A) ^ R) • w`.
+
+Rewrite using `[e, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `D.ρΩ a (D.h z) ∈ D.om'`. Rewrite using `[e']`. Conclude with `D.om'.sub_mem (Submodule.mem_sup_left (Submodule.subset_span ⟨_, rfl⟩)) (pow_mem D hw)`.
+
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Express the relevant statement in the definitionally equal form `D.ρΩ a (((p : A) ^ R) • z) ∈ D.om'`. Rewrite using `[LinearMap.map_smul_of_tower]`. Conclude with `pow_mem D (D.om_stable a z hz)`. Conclude with `this hx`.
+-/
 theorem om'_stable (a : 𝓞 E) {x : V} (hx : x ∈ D.om') : D.ρΩ a x ∈ D.om' := by
   have : D.om' ≤ D.om'.comap ((D.ρΩ a).restrictScalars A) := by
     refine sup_le (Submodule.span_le.2 ?_) ?_
@@ -139,6 +182,13 @@ theorem om'_stable (a : 𝓞 E) {x : V} (hx : x ∈ D.om') : D.ρΩ a x ∈ D.om
       exact pow_mem D (D.om_stable a z hz)
   exact this hx
 
+/- English proof (translation)
+Establish `hle : D.omHT σ ≤ D.om'`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Express the relevant statement in the definitionally equal form `eigProj D.ρΩ σ x ∈ D.om'`. Simplify using `only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `hσ k`. Rewrite using `[← ha, algebraMap_smul]`. Conclude with `D.om'.smul_mem a (om'_stable D _ hx)`. Use `Module.Projective.of_split (Submodule.inclusion hle) (((eigProj D.ρΩ σ).restrictScalars A).restrict (p := D.om') (q := D.omHT σ) fun x hx => ⟨x, hx, rfl⟩) ?_` and prove the remaining obligations. Use extensionality with `z`.
+
+Conclude with `LatBasic.eigProj_of_mem (LatBasic.eigQuot_le_eigSp D.ρΩ σ D.om' z.2)`.
+-/
 theorem omHT_proj (σ : E →+* K) (hσ : ∀ k, ∃ a : A, algebraMap A K a = σ (dualInt E k))
     [Module.Projective A D.om'] : Module.Projective A (D.omHT σ) := by
   have hle : D.omHT σ ≤ D.om' := by
@@ -154,6 +204,11 @@ theorem omHT_proj (σ : E →+* K) (hσ : ∀ k, ∃ a : A, algebraMap A K a = �
   ext z
   exact LatBasic.eigProj_of_mem (LatBasic.eigQuot_le_eigSp D.ρΩ σ D.om' z.2)
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_mono (om'_le D)) (Submodule.span_le.2 fun x hx => ?_)` and prove the remaining obligations. Take `⟨h0, h1⟩` from `inv_mem hinj 𝔮 (v := (p : A) ^ R) fun hh => hp (h.mem_of_pow_mem _ hh)`. Establish `h2` using `Submodule.smul_mem (Submodule.span (locAt K 𝔮) (D.om' : Set V)) ⟨_, h1⟩ (Submodule.subset_span (pow_mem D hx))`. Establish `e : (⟨_, h1⟩ : locAt K 𝔮) • ((p : A) ^ R) • x = x`. Express the relevant statement in the definitionally equal form `(algebraMap A K ((p : A) ^ R))⁻¹ • ((p : A) ^ R) • x = x`.
+
+Rewrite using `[← algebraMap_smul K ((p : A) ^ R) x, smul_smul, inv_mul_cancel₀ h0, one_smul]`. Rewrite `h2` using `[e]`. Conclude with `h2`.
+-/
 theorem span_eq_of_notMem (hinj : Function.Injective (algebraMap A K)) (𝔮 : Ideal A) [h : 𝔮.IsPrime]
     (hp : (p : A) ∉ 𝔮) :
     Submodule.span (locAt K 𝔮) (D.om' : Set V) = Submodule.span (locAt K 𝔮) (D.om : Set V) := by
@@ -172,6 +227,19 @@ end Chart
 end PositivityTheory.Xgn.SequenceProjection
 
 open PositivityTheory.Xgn.SequenceProjection in
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d _ _ p _ _ hfree hp A _ _ _ m _ hm O _ _ _ _ _ _ _ G c' _ P hN hpt hloc`. Establish `hinj : Function.Injective (algebraMap (CR O y c') Ω)` using `Subtype.val_injective`. Establish `h1 : Module.Projective (CR O y c') P.Dh.om'`. Use `proj_of_loc hinj _ (by haveI := isNoetherian_of_fg_of_noetherian _ P.Dh.om_lat.fg` and prove the remaining obligations. Conclude with `isNoetherian_submodule.1 this _ (om'_le P.Dh)) fun 𝔮 h𝔮 => ?_`.
+
+Distinguish the cases in `hq : (p : CR O y c') ∈ 𝔮`. Take `⟨q, hc, hO, hr⟩` from `hpt 𝔮 h𝔮`. Establish `hf : InFibre 𝔐.ξ p q`. Introduce and unpack `⟨h0, -, hi⟩`. Take `⟨u, v, hv, e⟩` from `(hr _).1 hi`.
+
+Apply `hv` to reduce the goal to its premises. Establish `: v = (p : CR O y c') * u`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e1 : (((p : CR O y c') * u : CR O y c') : Ω) = (p : Ω) * (u : Ω)` using `by simp`. Rewrite using `[e1, ← e, ← _root_.mul_assoc, mul_inv_cancel₀ h0, _root_.one_mul]`.
+
+Rewrite using `[this]`. Conclude with `𝔮.mul_mem_right _ hq`. Take `⟨U, hU, b, -, hb⟩` from `hfree.1 q hf`. Take `⟨hli, hsp⟩` from `hb q hf hU`. Conclude with `proj_of_frame (regAt 𝔐.ξ q) (locAt Ω 𝔮) hr _ b hli (hsp.symm.trans (hloc q hc hO))`.
+
+Rewrite using `[span_eq_of_notMem P.Dh hinj 𝔮 hq] haveI := P.Dh.om_proj`. Conclude with `loc_of_proj hinj _ 𝔮`. Use `⟨h1, fun t σ _ => omHT_proj P.Dh σ fun k => ?_⟩` and prove the remaining obligations. Take `⟨hint, x, hx, o, ho⟩` from `PositivityTheory.Xgn.SequenceDifferentials.main E Ω p hp A m hm O σ`. Take `⟨z, hz⟩` from `HT.exists_different_mul_dualInt E x hx k`.
+
+Take `⟨o', ho'⟩` from `hint z`. Use `⟨algebraMap O _ (o * o'), ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply, map_mul, ho', hz, map_mul, ← _root_.mul_assoc, ho, _root_.one_mul]`.
+-/
 theorem PositivityTheory.Xgn.sequence_projection_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → 0 < D.p + D.q → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → HT.HTFree 𝔐 p → ¬ (p : ℤ) ∣ NumberField.discr E → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω], ∀ (G : GenTors 𝔐 p) (c' : ∀ k, J k), mseg y c' ≠ 0 → ∀ (P : ChartPack G O c'), IsNoetherianRing (CR O y c') → (∀ 𝔮 : Ideal (CR O y c'), 𝔮.IsPrime → ∃ q : Cpt 𝔐.ξ, InChart 𝔐.ξ (mseg y) c' q ∧ (∀ o : O, algebraMap O Ω o ∈ regAt 𝔐.ξ q) ∧ ∀ x : Ω, x ∈ regAt 𝔐.ξ q ↔ ∃ u v : CR O y c', v ∉ 𝔮 ∧ x * (v : Ω) = (u : Ω)) → (∀ q : Cpt 𝔐.ξ, InChart 𝔐.ξ (mseg y) c' q → (∀ o : O, algebraMap O Ω o ∈ regAt 𝔐.ξ q) → HT.omP 𝔐 p q = Submodule.span (regAt 𝔐.ξ q) (P.Dh.om' : Set (Module.Dual Ω 𝔐.Li))) → Module.Projective (CR O y c') P.Dh.om' ∧ ∀ t : CMType H ⊕ CMType H, ∀ σ : E →+* Ω, (∀ a : 𝓞 E, σ (a : E) = 𝔐.emb t a) → Module.Projective (CR O y c') (P.Dh.omHT σ) := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d _ _ p _ _ hfree hp A _ _ _ m _ hm O _ _ _ _ _ _ _ G c' _ P
     hN hpt hloc

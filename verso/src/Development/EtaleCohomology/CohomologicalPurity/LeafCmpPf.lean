@@ -14,10 +14,26 @@ def LeafCmpNb : Prop := ∀ (X : Scheme.{0}) (B B₀ : Type) [CommRing B] [CommR
 def LeafCmpId : Prop := ∀ (d : ℕ) (P : SP d) (F F₀ : Frame P) (C : Type) [CommRing C] (φ : F.B →+* C) (ψ : F₀.B →+* C),
   Spec.map (CommRingCat.ofHom φ) ≫ F.w = Spec.map (CommRingCat.ofHom ψ) ≫ F₀.w → F.I.map φ = F₀.I.map ψ
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spec_comp_ofHom {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     Spec.map (CommRingCat.ofHom (g.comp f)) = Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom f) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Introduce `d P F F₀ h₀ y hy`. Take `⟨C, _, φ, ψ, ho, ⟨z, rfl⟩, e⟩` from `hNb P.X F.B F₀.B F.w F₀.w h₀ y hy`. Establish `hI` using `hId d P F F₀ C φ ψ e`. Take `⟨M, hdet, hM⟩` from `hMat d C (ψ ∘ F₀.x) (φ ∘ F.x) (by rw [span_comp, span_comp, F.hx, F₀.hx, hI]) z`. Set `g : C` to `M.det`.
+
+Set `l : C →+* Localization.Away g` to `algebraMap C (Localization.Away g)`. Establish `hl : IsOpenImmersion (Spec.map (CommRingCat.ofHom l))` using `Scheme.isOpenImmersion_SpecMap_localizationAway (R := CommRingCat.of C) g`. Use `⟨Localization.Away g, inferInstance, l.comp φ, l.comp ψ, M.map l, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[spec_comp_ofHom φ l]`. Use `infer_instance`.
+
+Establish `hr : z ∈ Set.range (PrimeSpectrum.comap l)`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away g) g]`. Conclude with `hdet`. Take `⟨z', hz'⟩` from `hr`. Use `⟨show Spec (CommRingCat.of (Localization.Away g)) from z', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[spec_comp_ofHom φ l]`. Use `show (Spec.map (CommRingCat.ofHom φ)) ((Spec.map (CommRingCat.ofHom l)) z') = _`. Conclude with `congrArg (Spec.map (CommRingCat.ofHom φ)) hz'`. Rewrite using `[spec_comp_ofHom φ l, spec_comp_ofHom ψ l, Category.assoc, Category.assoc, e]`. Rewrite using `[← Ideal.map_map, ← Ideal.map_map, hI]`.
+
+Express the relevant statement in the definitionally equal form `IsUnit (l.mapMatrix M).det`. Rewrite using `[← RingHom.map_det]`. Conclude with `IsLocalization.Away.algebraMap_isUnit g`. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `l (φ (F.x j)) = _`.
+
+Rewrite using `[show φ (F.x j) = (φ ∘ F.x) j from rfl, hM, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem LeafCmp_of (hMat : LeafMat) (hNb : LeafCmpNb) (hId : LeafCmpId) : LeafCmp := by
   intro d P F F₀ h₀ y hy
   obtain ⟨C, _, φ, ψ, ho, ⟨z, rfl⟩, e⟩ := hNb P.X F.B F₀.B F.w F₀.w h₀ y hy

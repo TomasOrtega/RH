@@ -7,6 +7,17 @@ open NumberField IsDedekindDomain
 
 namespace Formalism.L2.SG.Pf.LatEx
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ p P hp hPm hpP hpP2 h`. Use `haveI : P.IsPrime := hPm.isPrime`. Establish `hDE : differentIdeal ℤ (𝓞 E) ≤ P`. Rewrite using `[differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 F) (𝓞 E)]`. Conclude with `le_trans Ideal.mul_le_right h`.
+
+Establish `hdvd : P ∣ differentIdeal ℤ (𝓞 E)` using `Ideal.dvd_iff_le.mpr hDE`. Rewrite `hdvd` using `[dvd_differentIdeal_iff, Algebra.isUnramifiedAt_iff_of_isDedekindDomain]`. Apply `hdvd` to reduce the goal to its premises. Establish `hpu : ((p : ℤ)) ∈ P.under ℤ` using `by show (p : ℤ) ∈ Ideal.comap (algebraMap ℤ (𝓞 E)) P`. Rewrite using `[Ideal.mem_comap]`.
+
+Simplify using `using hpP`. Establish `hne : P.under ℤ ≠ ⊥`. Introduce `h0`. Rewrite `hpu` using `[h0, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hpu)`.
+
+Use `haveI : P.LiesOver (P.under ℤ) := ⟨rfl⟩`. Rewrite using `[← Ideal.ramificationIdx_eq_ramificationIdx' (P.under ℤ) P hne]`. Apply `Ideal.ramificationIdx'_spec` to reduce the goal to its premises. Rewrite using `[pow_one]`. Conclude with `Ideal.map_comap_le`.
+
+Introduce `hle`. Establish `h2` using `hle (Ideal.mem_map_of_mem (algebraMap ℤ (𝓞 E)) hpu)`. Apply `hpP2` to reduce the goal to its premises. Simplify using `using h2`.
+-/
 theorem splitDiff_holds : SplitDiff := by
   intro F E _ _ _ _ _ p P hp hPm hpP hpP2 h
   haveI : P.IsPrime := hPm.isPrime

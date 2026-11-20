@@ -24,16 +24,28 @@ variable {X : Scheme.{u}}
 def transitionMap (d : BlowupSequenceData X) {i i' : ℕ} (h : i ≤ i') : d.obj i' ⟶ d.obj i :=
   d.toSequenceOfBlowups.transitionMap h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toSequenceOfBlowups_transitionMap (d : BlowupSequenceData X) {i i' : ℕ} (h : i ≤ i') :
     d.toSequenceOfBlowups.transitionMap h = d.transitionMap h := rfl
 
+/- English proof (translation)
+The claim follows from `d.toSequenceOfBlowups.transitionMap_trans hij hjl`.
+-/
 theorem transitionMap_comp_transitionMap (d : BlowupSequenceData X) {i j l : ℕ} (hij : i ≤ j) (hjl : j ≤ l) :
     d.transitionMap hjl ≫ d.transitionMap hij = d.transitionMap (hij.trans hjl) :=
   d.toSequenceOfBlowups.transitionMap_trans hij hjl
 
+/- English proof (translation)
+Conclude with `d.toSequenceOfBlowups.transitionMap_self_eq_id (le_refl i)`.
+-/
 theorem transitionMap_refl (d : BlowupSequenceData X) (i : ℕ) : d.transitionMap (le_refl i) = 𝟙 (d.obj i) := by
   exact d.toSequenceOfBlowups.transitionMap_self_eq_id (le_refl i)
 
+/- English proof (translation)
+Establish `h1 : d.toSequenceOfBlowups.transitionMapSucc i = d.map i` using `d.toSequenceOfBlowups_blowupMorphism i`. Establish `h2 : d.toSequenceOfBlowups.transitionMapSucc i = d.toSequenceOfBlowups.transitionMap (Nat.le_succ i)` using `d.toSequenceOfBlowups.blowupMorphism_eq_transitionMap i`. Conclude with `h2.symm.trans h1`. Use the proof step `@[reassoc]`.
+-/
 theorem transitionMap_succ (d : BlowupSequenceData X) (i : ℕ) : d.transitionMap (Nat.le_succ i) = d.map i := by
   have h1 : d.toSequenceOfBlowups.transitionMapSucc i = d.map i := d.toSequenceOfBlowups_blowupMorphism i
   have h2 : d.toSequenceOfBlowups.transitionMapSucc i = d.toSequenceOfBlowups.transitionMap (Nat.le_succ i) :=
@@ -41,17 +53,26 @@ theorem transitionMap_succ (d : BlowupSequenceData X) (i : ℕ) : d.transitionMa
   exact h2.symm.trans h1
 
 @[reassoc]
+/- English proof (translation)
+Establish `h` using `d.toSequenceOfBlowups.projectionToBase_def n`. Rewrite `h` using `[BlowupSequenceData.toSequenceOfBlowups_projectionToBase, BlowupSequenceData.toSequenceOfBlowups_transitionMap, BlowupSequenceData.toSequenceOfBlowups_isoObjZero]`. Conclude with `h.symm`.
+-/
 theorem transitionMap_zero_comp_isoObjZero_hom (d : BlowupSequenceData X) (n : ℕ) :
     d.transitionMap (Nat.zero_le n) ≫ d.isoZero.hom = d.projectionToBase n := by
   have h := d.toSequenceOfBlowups.projectionToBase_def n
   rw [BlowupSequenceData.toSequenceOfBlowups_projectionToBase, BlowupSequenceData.toSequenceOfBlowups_transitionMap, BlowupSequenceData.toSequenceOfBlowups_isoObjZero] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `h : s.length + 0 ≤ s.length` using `le_of_eq (Nat.add_zero _)`. Conclude with `(append_schemeAt_of_le_length s t h).trans (congrArg s.obj (Nat.add_zero _))`.
+-/
 private theorem append_schemeAt_length_add_zero (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length)) :
     (s.append t).obj (s.length + 0) = s.obj s.length := by
   have h : s.length + 0 ≤ s.length := le_of_eq (Nat.add_zero _)
   exact (append_schemeAt_of_le_length s t h).trans (congrArg s.obj (Nat.add_zero _))
 
+/- English proof (translation)
+Establish `h : s.length < s.length + (i + 1)` using `by omega`. Establish `h2 : s.length + (i + 1) - s.length = i + 1` using `by omega`. Rewrite using `[append_schemeAt_of_length_lt s t h, h2]`.
+-/
 private theorem append_schemeAt_length_add_succ (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (i : ℕ) : (s.append t).obj (s.length + (i + 1)) = t.obj (i + 1) := by
   have h : s.length < s.length + (i + 1) := by omega
@@ -63,6 +84,9 @@ def concatObjAddIso (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.
   | 0 => eqToIso (append_schemeAt_length_add_zero s t) ≪≫ t.isoZero.symm
   | (i + 1) => eqToIso (append_schemeAt_length_add_succ s t i)
 
+/- English proof (translation)
+Substitute `h2` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem eqToHom_comp_blowupMorphism_zero_isoObjZero_cancel {Y : Scheme.{u}} (d : BlowupSequenceData Y) {U V : Scheme.{u}}
     (h1 : U = d.obj 1) (h2 : Y = V) (h3 : V = Y) (h4 : U = d.obj 1) :
     (eqToHom h1 ≫ d.map 0 ≫ d.isoZero.hom ≫ eqToHom h2) ≫ eqToHom h3 ≫ d.isoZero.inv =
@@ -70,6 +94,9 @@ private theorem eqToHom_comp_blowupMorphism_zero_isoObjZero_cancel {Y : Scheme.{
   subst h2
   simp
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Substitute `hU` using the available equality. Substitute `hV` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem eqToHom_comp_blowupMorphism_congr {Y : Scheme.{u}} (d : BlowupSequenceData Y) {a b : ℕ} (hab : a = b)
     {U V : Scheme.{u}} (hU : U = d.obj (a + 1)) (hV : V = d.obj a)
     (e1 : V = d.obj b) (e2 : U = d.obj (b + 1)) :
@@ -79,6 +106,9 @@ private theorem eqToHom_comp_blowupMorphism_congr {Y : Scheme.{u}} (d : BlowupSe
   subst hV
   simp
 
+/- English proof (translation)
+Rewrite using `[append_blowupMorphism_length s t]`. Conclude with `eqToHom_comp_blowupMorphism_zero_isoObjZero_cancel t (append_schemeAt_length_succ s t) (append_schemeAt_of_le_length s t (le_refl s.length)).symm (append_schemeAt_length_add_zero s t) (append_schemeAt_length_add_succ s t 0)`.
+-/
 private theorem append_blowupMorphism_zero_comp_concatObjAddIso (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length)) :
     (s.append t).map s.length ≫ (concatObjAddIso s t 0).hom =
       (concatObjAddIso s t 1).hom ≫ t.map 0 := by
@@ -87,6 +117,9 @@ private theorem append_blowupMorphism_zero_comp_concatObjAddIso (s : BlowupSeque
     (append_schemeAt_of_le_length s t (le_refl s.length)).symm (append_schemeAt_length_add_zero s t)
     (append_schemeAt_length_add_succ s t 0)
 
+/- English proof (translation)
+Establish `hgt : s.length < s.length + (k + 1)` using `by omega`. Establish `hab : s.length + (k + 1) - s.length = k + 1` using `by omega`. Rewrite using `[append_blowupMorphism_of_length_lt s t hgt]`. Conclude with `eqToHom_comp_blowupMorphism_congr t hab (append_schemeAt_succ_of_length_lt s t hgt) (append_schemeAt_of_length_lt s t hgt) (append_schemeAt_length_add_succ s t k) (append_schemeAt_length_add_succ s t (k + 1))`. Use the proof step `@[reassoc]`.
+-/
 private theorem append_blowupMorphism_succ_comp_concatObjAddIso (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length)) (k : ℕ) :
     (s.append t).map (s.length + (k + 1)) ≫ (concatObjAddIso s t (k + 1)).hom =
       (concatObjAddIso s t (k + 1 + 1)).hom ≫ t.map (k + 1) := by
@@ -97,6 +130,9 @@ private theorem append_blowupMorphism_succ_comp_concatObjAddIso (s : BlowupSeque
     (append_schemeAt_length_add_succ s t k) (append_schemeAt_length_add_succ s t (k + 1))
 
 @[reassoc]
+/- English proof (translation)
+Consider the cases of `i with`. Consider the case `zero => exact append_blowupMorphism_zero_comp_concatObjAddIso s t`. Consider the case `succ k => exact append_blowupMorphism_succ_comp_concatObjAddIso s t k`. Use the proof step `@[reassoc]`.
+-/
 theorem append_blowupMorphism_comp_concatObjAddIso (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length)) (i : ℕ) :
     (s.append t).map (s.length + i) ≫ (concatObjAddIso s t i).hom =
       (concatObjAddIso s t (i + 1)).hom ≫ t.map i := by
@@ -105,6 +141,15 @@ theorem append_blowupMorphism_comp_concatObjAddIso (s : BlowupSequenceData X) (t
   | succ k => exact append_blowupMorphism_succ_comp_concatObjAddIso s t k
 
 @[reassoc]
+/- English proof (translation)
+Proceed by induction on `i', h using Nat.le_induction with`. Consider the case `base`. Rewrite using `[transitionMap_refl, transitionMap_refl, Category.id_comp, Category.comp_id]`. Consider the case `succ n hn ih`. Establish `e1 : (s.append t).transitionMap (Nat.le_succ (s.length + n)) ≫ (s.append t).transitionMap (Nat.add_le_add_left hn s.length) = (s.append t).transitionMap (Nat.add_le_add_left (Nat.le_succ_of_le hn) s.length)` using `(s.append t).transitionMap_comp_transitionMap (Nat.add_le_add_left hn s.length) (Nat.le_succ (s.length + n))`.
+
+Establish `e2 : (s.append t).transitionMap (Nat.le_succ (s.length + n)) = (s.append t).map (s.length + n)` using `(s.append t).transitionMap_succ (s.length + n)`. Establish `e3 : t.transitionMap (Nat.le_succ n) ≫ t.transitionMap hn = t.transitionMap (Nat.le_succ_of_le hn)` using `t.transitionMap_comp_transitionMap hn (Nat.le_succ n)`. Establish `e4 : t.transitionMap (Nat.le_succ n) = t.map n` using `t.transitionMap_succ n`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e2, e1]`.
+
+Use `_ = (s.append t).map (s.length + n) ≫ ((s.append t).transitionMap (Nat.add_le_add_left hn s.length) ≫ (concatObjAddIso s t i).hom) := Category.assoc _ _ _`. Use `_ = (s.append t).map (s.length + n) ≫ ((concatObjAddIso s t n).hom ≫ t.transitionMap hn) := by`. Rewrite using `[ih]`. Use `_ = ((s.append t).map (s.length + n) ≫ (concatObjAddIso s t n).hom) ≫ t.transitionMap hn := (Category.assoc _ _ _).symm`. Use `_ = ((concatObjAddIso s t (n + 1)).hom ≫ t.map n) ≫ t.transitionMap hn := by`.
+
+Rewrite using `[append_blowupMorphism_comp_concatObjAddIso]`. Use `_ = (concatObjAddIso s t (n + 1)).hom ≫ (t.map n ≫ t.transitionMap hn) := Category.assoc _ _ _`. Use `_ = (concatObjAddIso s t (n + 1)).hom ≫ t.transitionMap (Nat.le_succ_of_le hn) := by`. Rewrite using `[← e4, e3]`.
+-/
 theorem append_transitionMap_comp_concatObjAddIso (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length)) {i i' : ℕ}
     (h : i ≤ i') :
     (s.append t).transitionMap (Nat.add_le_add_left h s.length) ≫ (concatObjAddIso s t i).hom =
@@ -171,6 +216,9 @@ def lastMap {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceO
     s'.schemeAt s'.length ⟶ s.schemeAt s.length :=
   c.map s'.length le_rfl ≫ eqToHom (congrArg s.schemeAt c.idx_length)
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Rewrite using `[eqToHom_refl, Category.comp_id]`. Conclude with `h`.
+-/
 private theorem isPullback_comp_eqToHom {A B Y : Scheme.{u}} {ψ : B ⟶ A} {t : SequenceOfBlowups A}
     {n m : ℕ} (hn : n = m) (f : Y ⟶ t.schemeAt n) (g : Y ⟶ B)
     (h : IsPullback f g (t.projectionToBase n) ψ) :
@@ -179,6 +227,9 @@ private theorem isPullback_comp_eqToHom {A B Y : Scheme.{u}} {ψ : B ⟶ A} {t :
   rw [eqToHom_refl, Category.comp_id]
   exact h
 
+/- English proof (translation)
+Use `show IsPullback (c.map s'.length le_rfl ≫ eqToHom (congrArg s.schemeAt c.idx_length)) (s'.projectionToBase s'.length) (s.projectionToBase s.length) φ`. Conclude with `isPullback_comp_eqToHom c.idx_length _ _ (c.isPullback s'.length le_rfl)`.
+-/
 theorem isPullback_lastMap {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (c : SequenceOfBlowupsPullback φ s' s) :
     IsPullback c.lastMap (s'.projectionToBase s'.length) (s.projectionToBase s.length) φ := by
@@ -186,6 +237,13 @@ theorem isPullback_lastMap {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
       (s'.projectionToBase s'.length) (s.projectionToBase s.length) φ
   exact isPullback_comp_eqToHom c.idx_length _ _ (c.isPullback s'.length le_rfl)
 
+/- English proof (translation)
+Introduce `i j`. Proceed by induction on `j with`. Consider the case `zero => intro _ h`. Conclude with `absurd h (Nat.not_lt_zero i)`. Consider the case `succ n ih`.
+
+Introduce `hn hij`. Establish `hn' : n < s'.length` using `Nat.lt_of_succ_le hn`. Establish `hstep : c.idx n < c.idx (n + 1)` using `c.idx_strictMono n hn'`. Distinguish the cases in `hcase : i < n`. Conclude with `lt_trans (ih (le_of_lt hn') hcase) hstep`.
+
+Establish `hie : i = n` using `by omega`. Substitute `hie` using the available equality. Conclude with `hstep`.
+-/
 private theorem index_lt_index_of_lt {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (c : SequenceOfBlowupsPullback φ s' s) :
     ∀ i j : ℕ, j ≤ s'.length → i < j → c.idx i < c.idx j := by
@@ -202,6 +260,9 @@ private theorem index_lt_index_of_lt {s' : SequenceOfBlowups X'} {s : SequenceOf
         subst hie
         exact hstep
 
+/- English proof (translation)
+Establish `h : (pullback.fst f g ≫ f).base x = (pullback.snd f g ≫ g).base x`. Rewrite using `[pullback.condition]`. Simplify using `using h`.
+-/
 private theorem pullback_condition_base_apply {Y Z W : Scheme.{u}} (f : Y ⟶ W) (g : Z ⟶ W)
     (x : ↥(pullback f g)) :
     f.base ((pullback.fst f g).base x) = g.base ((pullback.snd f g).base x) := by
@@ -209,6 +270,11 @@ private theorem pullback_condition_base_apply {Y Z W : Scheme.{u}} (f : Y ⟶ W)
     rw [pullback.condition]
   simpa using h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hb : J.support = ⊥`. Use extensionality with `y`. Simplify using `using hc y`.
+
+Conclude with `h ((AlgebraicGeometry.Scheme.IdealSheafData.support_eq_bot_iff J).mp hb)`.
+-/
 private theorem exists_mem_support_of_ne_top {Y : Scheme.{u}} (J : Y.IdealSheafData) (h : J ≠ ⊤) :
     ∃ x : ↥Y, x ∈ J.support := by
   by_contra hc
@@ -222,16 +288,33 @@ private def isoPullback {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c
     (i : ℕ) (hi : i ≤ s'.length) : s'.schemeAt i ≅ pullback φ (s.projectionToBase (c.idx i)) :=
   ((c.isPullback i hi).flip).isoPullback
 
+/- English proof (translation)
+The claim follows from `IsPullback.isoPullback_hom_fst _`.
+-/
 private theorem pullbackIso_hom_fst {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (c : SequenceOfBlowupsPullback φ s' s) (i : ℕ) (hi : i ≤ s'.length) :
     (isoPullback c i hi).hom ≫ pullback.fst φ (s.projectionToBase (c.idx i)) = s'.projectionToBase i :=
   IsPullback.isoPullback_hom_fst _
 
+/- English proof (translation)
+The claim follows from `IsPullback.isoPullback_hom_snd _`.
+-/
 private theorem pullbackIso_hom_snd {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (c : SequenceOfBlowupsPullback φ s' s) (i : ℕ) (hi : i ≤ s'.length) :
     (isoPullback c i hi).hom ≫ pullback.snd φ (s.projectionToBase (c.idx i)) = c.map i hi :=
   IsPullback.isoPullback_hom_snd _
 
+/- English proof (translation)
+Use `⟨c.idx, fun i hi => isoPullback c i hi, c.idx_lt, index_lt_index_of_lt c, c.idx_length, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Conclude with `c.omitted i hi hcon _ (Scheme.IdealSheafData.mem_support_comap.mp hx) _ (pullback_condition_base_apply φ (s.projectionToBase i) x)`. Introduce and unpack `⟨j, hj, rfl⟩`. Use `exists_mem_support_of_ne_top _ ?_` and prove the remaining obligations. Introduce `htop`.
+
+Use `c.center_ne_top j hj ?_` and prove the remaining obligations. Rewrite using `[c.center_comap j hj, ← pullbackIso_hom_snd c j (le_of_lt hj), Scheme.IdealSheafData.comap_comp, htop, AlgebraicGeometry.Scheme.IdealSheafData.comap_top]`. Introduce `i hi`. Conclude with `pullbackIso_hom_fst c i hi`. Introduce `i hi hr`.
+
+Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, pullbackIso_hom_fst, Category.assoc, SequenceOfBlowups.pullbackTransitionMap_comp_fst, pullbackIso_hom_fst, SequenceOfBlowups.blowupMorphism_eq_transitionMap, SequenceOfBlowups.transitionMap_comp_projectionToBase]`. Rewrite using `[Category.assoc, pullbackIso_hom_snd, Category.assoc, SequenceOfBlowups.pullbackTransitionMap_comp_snd, ← Category.assoc, pullbackIso_hom_snd]`. Conclude with `c.step i hi`. Introduce `i hi`.
+
+Rewrite using `[pullbackIso_hom_snd]`. Conclude with `c.center_comap i hi`.
+-/
 theorem isPullbackSequenceOfBlowups {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (c : SequenceOfBlowupsPullback φ s' s) : IsPullbackBlowupSequence φ s' s := by
   refine ⟨c.idx, fun i hi => isoPullback c i hi, c.idx_lt, index_lt_index_of_lt c, c.idx_length,
@@ -263,6 +346,9 @@ theorem isPullbackSequenceOfBlowups {s' : SequenceOfBlowups X'} {s : SequenceOfB
     rw [pullbackIso_hom_snd]
     exact c.center_comap i hi
 
+/- English proof (translation)
+Establish `h : j < d'.toSequenceOfBlowups.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length]`. Conclude with `hj`. Establish `h2` using `c.idx_lt j h`. Rewrite `h2` using `[BlowupSequenceData.toSequenceOfBlowups_length]`. Then use the resulting hypothesis.
+-/
 theorem blowupSequenceData_index_lt_length {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (j : ℕ) (hj : j < d'.length) :
     c.idx j < d.length := by
@@ -272,16 +358,27 @@ theorem blowupSequenceData_index_lt_length {d' : BlowupSequenceData X'} {d : Blo
   have h2 := c.idx_lt j h
   rwa [BlowupSequenceData.toSequenceOfBlowups_length] at h2
 
+/- English proof (translation)
+The claim follows from `c.idx_strictMono j (by rw [BlowupSequenceData.toSequenceOfBlowups_length]; exact hj)`.
+-/
 theorem blowupSequenceData_index_lt_index_succ {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (j : ℕ) (hj : j < d'.length) :
     c.idx j < c.idx (j + 1) :=
   c.idx_strictMono j (by rw [BlowupSequenceData.toSequenceOfBlowups_length]; exact hj)
 
+/- English proof (translation)
+Simplify `c.idx_length` using `only [BlowupSequenceData.toSequenceOfBlowups_length]`. Use the proof step `@[reassoc]`.
+-/
 theorem index_length_eq_length {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) : c.idx d'.length = d.length := by
   simpa only [BlowupSequenceData.toSequenceOfBlowups_length] using c.idx_length
 
 @[reassoc]
+/- English proof (translation)
+Establish `hj' : j < d'.toSequenceOfBlowups.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length]`. Conclude with `hj`. Establish `h` using `c.step j hj'`. Rewrite `h` using `[BlowupSequenceData.toSequenceOfBlowups_blowupMorphism]`.
+
+Conclude with `h`.
+-/
 theorem blowupSequenceData_blowupMorphism_comp_map {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (j : ℕ) (hj : j < d'.length) :
     d'.map j ≫ c.map j (le_of_lt hj) =
@@ -301,18 +398,27 @@ def concatIndex (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.leng
     (e : SequenceOfBlowupsPullback c.lastMap t'.toSequenceOfBlowups t.toSequenceOfBlowups) (j : ℕ) : ℕ :=
   if j < s'.length then c.idx j else s.length + e.idx (j - s'.length)
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem concatIndex_of_lt (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
     (e : SequenceOfBlowupsPullback c.lastMap t'.toSequenceOfBlowups t.toSequenceOfBlowups) (j : ℕ) (h : j < s'.length) :
     concatIndex s t s' t' c e j = c.idx j := if_pos h
 
+/- English proof (translation)
+The claim follows from `if_neg (not_lt.2 h)`.
+-/
 theorem concatIndex_of_ge (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
     (e : SequenceOfBlowupsPullback c.lastMap t'.toSequenceOfBlowups t.toSequenceOfBlowups) (j : ℕ) (h : s'.length ≤ j) :
     concatIndex s t s' t' c e j = s.length + e.idx (j - s'.length) := if_neg (not_lt.2 h)
 
+/- English proof (translation)
+Rewrite using `[concatIndex_of_lt s t s' t' c e j h]`. Conclude with `(BlowupSequenceData.append_schemeAt_of_le_length s t (le_of_lt (c.blowupSequenceData_index_lt_length j h))).symm`.
+-/
 private theorem append_schemeAt_concatIndex_of_lt (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -321,12 +427,18 @@ private theorem append_schemeAt_concatIndex_of_lt (s : BlowupSequenceData X) (t 
   rw [concatIndex_of_lt s t s' t' c e j h]
   exact (BlowupSequenceData.append_schemeAt_of_le_length s t (le_of_lt (c.blowupSequenceData_index_lt_length j h))).symm
 
+/- English proof (translation)
+Establish `h2 : s'.length + (j - s'.length) = j` using `by omega`. Rewrite using `[h2]`.
+-/
 private theorem append_schemeAt_eq_length_add_sub (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (j : ℕ) (h : s'.length ≤ j) :
     (s'.append t').obj j = (s'.append t').obj (s'.length + (j - s'.length)) := by
   have h2 : s'.length + (j - s'.length) = j := by omega
   rw [h2]
 
+/- English proof (translation)
+Rewrite using `[concatIndex_of_ge s t s' t' c e j h]`.
+-/
 private theorem append_schemeAt_concatIndex_of_le (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -335,6 +447,9 @@ private theorem append_schemeAt_concatIndex_of_le (s : BlowupSequenceData X) (t 
       (s.append t).obj (concatIndex s t s' t' c e j) := by
   rw [concatIndex_of_ge s t s' t' c e j h]
 
+/- English proof (translation)
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem sub_length_le_of_le_length_add (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (j : ℕ) (hj : j ≤ s'.length + t'.length) : j - s'.length ≤ t'.length := by
   omega
@@ -366,6 +481,9 @@ def concatMap (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length
       concatMapAddLength s t s' t' c e (j - s'.length) (sub_length_le_of_le_length_add s' t' j hj) ≫
       eqToHom (append_schemeAt_concatIndex_of_le s t s' t' c e j (not_lt.1 h))
 
+/- English proof (translation)
+Rewrite using `[concatIndex_of_ge s t s' t' c e (s'.length + t'.length) (Nat.le_add_right _ _)]`. Establish `h : s'.length + t'.length - s'.length = t'.length` using `by omega`. Rewrite using `[h, e.index_length_eq_length]`.
+-/
 private theorem concatIndex_length_add_length (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -375,6 +493,11 @@ private theorem concatIndex_length_add_length (s : BlowupSequenceData X) (t : Bl
   have h : s'.length + t'.length - s'.length = t'.length := by omega
   rw [h, e.index_length_eq_length]
 
+/- English proof (translation)
+Distinguish the cases in `h : j < s'.length`. Rewrite using `[concatIndex_of_lt s t s' t' c e j h]`. Establish `hc` using `c.blowupSequenceData_index_lt_length j h`. Use linear arithmetic over natural numbers and integers. Establish `hge : s'.length ≤ j` using `not_lt.1 h`.
+
+Rewrite using `[concatIndex_of_ge s t s' t' c e j hge]`. Establish `hlt : j - s'.length < t'.length` using `by omega`. Establish `he` using `e.blowupSequenceData_index_lt_length (j - s'.length) hlt`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem concatIndex_lt_length_add_length (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -391,6 +514,13 @@ private theorem concatIndex_lt_length_add_length (s : BlowupSequenceData X) (t :
     have he := e.blowupSequenceData_index_lt_length (j - s'.length) hlt
     omega
 
+/- English proof (translation)
+Distinguish the cases in `h : j < s'.length`. Rewrite using `[concatIndex_of_lt s t s' t' c e j h]`. Distinguish the cases in `h2 : j + 1 < s'.length`. Rewrite using `[concatIndex_of_lt s t s' t' c e (j + 1) h2]`. Conclude with `c.blowupSequenceData_index_lt_index_succ j h`.
+
+Rewrite using `[concatIndex_of_ge s t s' t' c e (j + 1) (by omega)]`. Establish `hlt : c.idx j < s.length` using `c.blowupSequenceData_index_lt_length j h`. Use linear arithmetic over natural numbers and integers. Establish `hge : s'.length ≤ j` using `by omega`. Rewrite using `[concatIndex_of_ge s t s' t' c e j hge, concatIndex_of_ge s t s' t' c e (j + 1) (by omega)]`.
+
+Establish `hsub : j + 1 - s'.length = (j - s'.length) + 1` using `by omega`. Rewrite using `[hsub]`. Establish `hlt : j - s'.length < t'.length` using `by omega`. Establish `hstep : e.idx (j - s'.length) < e.idx ((j - s'.length) + 1)` using `e.blowupSequenceData_index_lt_index_succ (j - s'.length) hlt`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem concatIndex_lt_concatIndex_succ (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -415,6 +545,9 @@ private theorem concatIndex_lt_concatIndex_succ (s : BlowupSequenceData X) (t : 
       e.blowupSequenceData_index_lt_index_succ (j - s'.length) hlt
     omega
 
+/- English proof (translation)
+Establish `h1 : IsPullback u.hom (u.hom ≫ g) g (𝟙 Y)` using `IsPullback.of_horiz_isIso ⟨by simp⟩`. Establish `h2` using `h1.paste_horiz h`. Simplify using `using h2`.
+-/
 private theorem isPullback_iso_hom_comp {A A' B Y Z : Scheme.{u}} (u : A' ≅ A)
     {f : A ⟶ B} {g : A ⟶ Y} {k : B ⟶ Z} {ψ : Y ⟶ Z} (h : IsPullback f g k ψ) :
     IsPullback (u.hom ≫ f) (u.hom ≫ g) k ψ := by
@@ -422,6 +555,9 @@ private theorem isPullback_iso_hom_comp {A A' B Y Z : Scheme.{u}} (u : A' ≅ A)
   have h2 := h1.paste_horiz h
   simpa using h2
 
+/- English proof (translation)
+Establish `h1 : IsPullback v.hom k (v.inv ≫ k) (𝟙 Z)` using `IsPullback.of_horiz_isIso ⟨by simp⟩`. Establish `h2` using `h.paste_horiz h1`. Simplify using `using h2`.
+-/
 private theorem isPullback_comp_iso_hom {A B B' Y Z : Scheme.{u}} (v : B ≅ B')
     {f : A ⟶ B} {g : A ⟶ Y} {k : B ⟶ Z} {ψ : Y ⟶ Z} (h : IsPullback f g k ψ) :
     IsPullback (f ≫ v.hom) g (v.inv ≫ k) ψ := by
@@ -429,6 +565,9 @@ private theorem isPullback_comp_iso_hom {A B B' Y Z : Scheme.{u}} (v : B ≅ B')
   have h2 := h.paste_horiz h1
   simpa using h2
 
+/- English proof (translation)
+Substitute `hF` using the available equality. Substitute `hG` using the available equality. Substitute `hK` using the available equality. Conclude with `isPullback_iso_hom_comp u (isPullback_comp_iso_hom v h)`.
+-/
 private theorem isPullback_of_iso {A A' B B' Y Z : Scheme.{u}} (u : A' ≅ A) (v : B ≅ B')
     {f : A ⟶ B} {g : A ⟶ Y} {k : B ⟶ Z} {ψ : Y ⟶ Z}
     {F : A' ⟶ B'} {G : A' ⟶ Y} {K : B' ⟶ Z} (h : IsPullback f g k ψ)
@@ -439,11 +578,17 @@ private theorem isPullback_of_iso {A A' B B' Y Z : Scheme.{u}} (u : A' ≅ A) (v
   subst hK
   exact isPullback_iso_hom_comp u (isPullback_comp_iso_hom v h)
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private theorem comp_assoc_outer {A B C D E F : Scheme.{u}} (p : A ⟶ B) (q : B ⟶ C)
     (f : C ⟶ D) (g : D ⟶ E) (w : E ⟶ F) :
     p ≫ (q ≫ f ≫ g) ≫ w = (p ≫ q) ≫ f ≫ g ≫ w := by
   simp
 
+/- English proof (translation)
+Establish `h1` using `BlowupSequenceData.projectionToBase_append_of_le_length a b (le_refl a.length)`. Establish `h2 : (BlowupSequenceData.concatObjAddIso a b 0).hom = eqToHom (BlowupSequenceData.append_schemeAt_length_add_zero a b) ≫ b.isoZero.inv` using `rfl`. Use `show (a.append b).projectionToBase a.length = (BlowupSequenceData.concatObjAddIso a b 0).hom ≫ b.projectionToBase 0 ≫ a.projectionToBase a.length`. Rewrite using `[h1, h2, b.projectionToBase_zero]`. Simplify using the standard rewrite rules.
+-/
 private theorem append_projectionToBase_length_add_zero {Y : Scheme.{u}} (a : BlowupSequenceData Y)
     (b : BlowupSequenceData (a.obj a.length)) :
     (a.append b).projectionToBase (a.length + 0) =
@@ -456,6 +601,11 @@ private theorem append_projectionToBase_length_add_zero {Y : Scheme.{u}} (a : Bl
   rw [h1, h2, b.projectionToBase_zero]
   simp
 
+/- English proof (translation)
+Establish `hgt : a.length < a.length + (n + 1)` using `by omega`. Establish `hsub : a.length + (n + 1) - a.length = n + 1` using `by omega`. Establish `h1` using `BlowupSequenceData.projectionToBase_append_of_length_lt a b hgt`. Establish `h2` using `BlowupSequenceData.projectionToBase_congr b hsub`. Establish `h3 : (BlowupSequenceData.concatObjAddIso a b (n + 1)).hom = eqToHom (BlowupSequenceData.append_schemeAt_length_add_succ a b n)` using `rfl`.
+
+Rewrite using `[h1, h2, h3]`. Simplify using the standard rewrite rules.
+-/
 private theorem append_projectionToBase_length_add_succ {Y : Scheme.{u}} (a : BlowupSequenceData Y)
     (b : BlowupSequenceData (a.obj a.length)) (n : ℕ) :
     (a.append b).projectionToBase (a.length + (n + 1)) =
@@ -469,6 +619,9 @@ private theorem append_projectionToBase_length_add_succ {Y : Scheme.{u}} (a : Bl
   rw [h1, h2, h3]
   simp
 
+/- English proof (translation)
+Consider the cases of `i with`. Consider the case `zero => exact append_projectionToBase_length_add_zero a b`. Consider the case `succ n => exact append_projectionToBase_length_add_succ a b n`.
+-/
 private theorem append_projectionToBase_length_add {Y : Scheme.{u}} (a : BlowupSequenceData Y)
     (b : BlowupSequenceData (a.obj a.length)) (i : ℕ) :
     (a.append b).projectionToBase (a.length + i) =
@@ -477,6 +630,9 @@ private theorem append_projectionToBase_length_add {Y : Scheme.{u}} (a : BlowupS
   | zero => exact append_projectionToBase_length_add_zero a b
   | succ n => exact append_projectionToBase_length_add_succ a b n
 
+/- English proof (translation)
+Substitute `hni` using the available equality. Establish `h1` using `BlowupSequenceData.projectionToBase_append_of_le_length a b hi`. Simplify using `only [BlowupSequenceData.toSequenceOfBlowups_projectionToBase, h1]`. Both sides reduce to the same expression.
+-/
 private theorem append_projectionToBase_eq_of_le_length {Y : Scheme.{u}} (a : BlowupSequenceData Y)
     (b : BlowupSequenceData (a.obj a.length)) {n i : ℕ} (hni : n = i) (hi : i ≤ a.length)
     (hobj : a.obj i = (a.append b).obj n) :
@@ -486,6 +642,9 @@ private theorem append_projectionToBase_eq_of_le_length {Y : Scheme.{u}} (a : Bl
   simp only [BlowupSequenceData.toSequenceOfBlowups_projectionToBase, h1]
   rfl
 
+/- English proof (translation)
+Substitute `hni` using the available equality. Simplify using `only [BlowupSequenceData.toSequenceOfBlowups_projectionToBase, append_projectionToBase_length_add a b i, eqToHom_refl, Category.id_comp]`. Both sides reduce to the same expression.
+-/
 private theorem append_projectionToBase_eq_of_eq_length_add {Y : Scheme.{u}} (a : BlowupSequenceData Y)
     (b : BlowupSequenceData (a.obj a.length)) {n i : ℕ} (hni : n = a.length + i)
     (hobj : (a.append b).obj n = (a.append b).obj (a.length + i)) :
@@ -496,6 +655,15 @@ private theorem append_projectionToBase_eq_of_eq_length_add {Y : Scheme.{u}} (a 
   simp only [BlowupSequenceData.toSequenceOfBlowups_projectionToBase, append_projectionToBase_length_add a b i, eqToHom_refl, Category.id_comp]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : j < s'.length`. Establish `hmap : concatMap s t s' t' c e j hj = concatMapOfLtLength s t s' t' c e j h` using `dif_pos h`. Establish `hidx : concatIndex s t s' t' c e j = c.idx j` using `concatIndex_of_lt s t s' t' c e j h`. Establish `hobj : s.obj (c.idx j) = (s.append t).obj (concatIndex s t s' t' c e j)` using `append_schemeAt_concatIndex_of_lt s t s' t' c e j h`. Use `isPullback_of_iso (eqToIso (BlowupSequenceData.append_schemeAt_of_le_length s' t' (le_of_lt h))) (eqToIso hobj) (c.isPullback j (le_of_lt h)) ?_ ?_ ?_` and prove the remaining obligations.
+
+Conclude with `hmap`. Conclude with `append_projectionToBase_eq_of_le_length s' t' (show j = j from rfl) (le_of_lt h) (BlowupSequenceData.append_schemeAt_of_le_length s' t' (le_of_lt h)).symm`. Conclude with `append_projectionToBase_eq_of_le_length s t hidx (le_of_lt (c.blowupSequenceData_index_lt_length j h)) hobj`. Establish `hge : s'.length ≤ j` using `not_lt.1 h`. Establish `hji : j = s'.length + (j - s'.length)` using `by omega`.
+
+Establish `hidx : concatIndex s t s' t' c e j = s.length + e.idx (j - s'.length)` using `concatIndex_of_ge s t s' t' c e j hge`. Establish `hmap : concatMap s t s' t' c e j hj = eqToHom (append_schemeAt_eq_length_add_sub s' t' j hge) ≫ concatMapAddLength s t s' t' c e (j - s'.length) (sub_length_le_of_le_length_add s' t' j hj) ≫ eqToHom (append_schemeAt_concatIndex_of_le s t s' t' c e j hge)` using `dif_neg h`. Use `isPullback_of_iso (eqToIso (append_schemeAt_eq_length_add_sub s' t' j hge) ≪≫ BlowupSequenceData.concatObjAddIso s' t' (j - s'.length)) ((BlowupSequenceData.concatObjAddIso s t (e.idx (j - s'.length))).symm ≪≫ eqToIso (append_schemeAt_concatIndex_of_le s t s' t' c e j hge)) ((e.i …` and prove the remaining obligations. Rewrite using `[hmap]`. Simplify using `only [Iso.trans_hom, Iso.symm_hom, eqToIso.hom]`.
+
+Conclude with `comp_assoc_outer _ _ _ _ _`. Conclude with `append_projectionToBase_eq_of_eq_length_add s' t' hji (append_schemeAt_eq_length_add_sub s' t' j hge)`. Conclude with `append_projectionToBase_eq_of_eq_length_add s t hidx (append_schemeAt_concatIndex_of_le s t s' t' c e j hge).symm`.
+-/
 private theorem isPullback_concatMap (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -535,6 +703,9 @@ private theorem isPullback_concatMap (s : BlowupSequenceData X) (t : BlowupSeque
     · exact append_projectionToBase_eq_of_eq_length_add s' t' hji (append_schemeAt_eq_length_add_sub s' t' j hge)
     · exact append_projectionToBase_eq_of_eq_length_add s t hidx (append_schemeAt_concatIndex_of_le s t s' t' c e j hge).symm
 
+/- English proof (translation)
+Rewrite using `[Category.assoc]`.
+-/
 private theorem comp_assoc_inner_pair {A B C D E F : Scheme.{u}}
     (f1 : A ⟶ B) (f2 : B ⟶ C) (f3 : C ⟶ D) (f4 : D ⟶ E) (f5 : E ⟶ F) :
     f1 ≫ f2 ≫ f3 ≫ f4 ≫ f5 = f1 ≫ (f2 ≫ f3) ≫ f4 ≫ f5 := by
@@ -550,12 +721,18 @@ private def mapOverLastMap {s' : BlowupSequenceData X'} {s : BlowupSequenceData 
     (e : SequenceOfBlowupsPullback c.lastMap t'.toSequenceOfBlowups t.toSequenceOfBlowups) (i : ℕ) (hi : i ≤ t'.length) :
     t'.obj i ⟶ t.obj (e.idx i) := e.map i hi
 
+/- English proof (translation)
+The claim follows from `c.blowupSequenceData_blowupMorphism_comp_map j hj`.
+-/
 private theorem blowupMorphism_comp_lowerMap {s' : BlowupSequenceData X'} {s : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups) (j : ℕ) (hj : j < s'.length) :
     s'.map j ≫ mapOfToSequenceOfBlowups c j (le_of_lt hj) =
       mapOfToSequenceOfBlowups c (j + 1) hj ≫ s.transitionMap (le_of_lt (c.blowupSequenceData_index_lt_index_succ j hj)) :=
   c.blowupSequenceData_blowupMorphism_comp_map j hj
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, blowupMorphism_comp_lowerMap, Category.assoc]`.
+-/
 private theorem blowupMorphism_comp_lowerMap_assoc {s' : BlowupSequenceData X'} {s : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups) (j : ℕ) (hj : j < s'.length)
     {W : Scheme.{u}} (g : s.obj (c.idx j) ⟶ W) :
@@ -563,6 +740,9 @@ private theorem blowupMorphism_comp_lowerMap_assoc {s' : BlowupSequenceData X'} 
       mapOfToSequenceOfBlowups c (j + 1) hj ≫ s.transitionMap (le_of_lt (c.blowupSequenceData_index_lt_index_succ j hj)) ≫ g := by
   rw [← Category.assoc, blowupMorphism_comp_lowerMap, Category.assoc]
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem lowerMap_congr {s' : BlowupSequenceData X'} {s : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups) {a b : ℕ} (hab : a = b)
     (ha : a ≤ s'.length) (hb : b ≤ s'.length)
@@ -571,11 +751,17 @@ private theorem lowerMap_congr {s' : BlowupSequenceData X'} {s : BlowupSequenceD
   subst hab
   simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem lastMap_eq_lowerMap {s' : BlowupSequenceData X'} {s : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
     (E : s.obj (c.idx s'.length) = s.obj s.length) :
     c.lastMap = mapOfToSequenceOfBlowups c s'.length le_rfl ≫ eqToHom E := rfl
 
+/- English proof (translation)
+The claim follows from `e.blowupSequenceData_blowupMorphism_comp_map i hi`.
+-/
 private theorem blowupMorphism_comp_upperMap {s' : BlowupSequenceData X'} {s : BlowupSequenceData X}
     {t' : BlowupSequenceData (s'.obj s'.length)} {t : BlowupSequenceData (s.obj s.length)}
     {c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups}
@@ -584,6 +770,9 @@ private theorem blowupMorphism_comp_upperMap {s' : BlowupSequenceData X'} {s : B
       mapOverLastMap e (i + 1) hi ≫ t.transitionMap (le_of_lt (e.blowupSequenceData_index_lt_index_succ i hi)) :=
   e.blowupSequenceData_blowupMorphism_comp_map i hi
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, blowupMorphism_comp_upperMap, Category.assoc]`.
+-/
 private theorem blowupMorphism_comp_upperMap_assoc {s' : BlowupSequenceData X'} {s : BlowupSequenceData X}
     {t' : BlowupSequenceData (s'.obj s'.length)} {t : BlowupSequenceData (s.obj s.length)}
     {c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups}
@@ -593,6 +782,11 @@ private theorem blowupMorphism_comp_upperMap_assoc {s' : BlowupSequenceData X'} 
       mapOverLastMap e (i + 1) hi ≫ t.transitionMap (le_of_lt (e.blowupSequenceData_index_lt_index_succ i hi)) ≫ g := by
   rw [← Category.assoc, blowupMorphism_comp_upperMap, Category.assoc]
 
+/- English proof (translation)
+Establish `e1 : t.transitionMap (Nat.zero_le (e.idx 0)) ≫ t.isoZero.hom = t.toSequenceOfBlowups.projectionToBase (e.idx 0)` using `(BlowupSequenceData.transitionMap_zero_comp_isoObjZero_hom t (e.idx 0)).trans (BlowupSequenceData.toSequenceOfBlowups_projectionToBase t (e.idx 0)).symm`. Establish `e2 : t'.toSequenceOfBlowups.projectionToBase 0 = t'.isoZero.hom` using `(BlowupSequenceData.toSequenceOfBlowups_projectionToBase t' 0).trans (BlowupSequenceData.projectionToBase_zero t')`. Establish `hw` using `(e.isPullback 0 (Nat.zero_le _)).w`. Establish `A : mapOverLastMap e 0 (Nat.zero_le _) ≫ t.transitionMap (Nat.zero_le (e.idx 0)) ≫ t.isoZero.hom = e.map 0 (Nat.zero_le _) ≫ t.toSequenceOfBlowups.projectionToBase (e.idx 0)` using `congrArg (fun g => e.map 0 (Nat.zero_le _) ≫ g) e1`. Establish `B : t'.toSequenceOfBlowups.projectionToBase 0 ≫ c.lastMap = t'.isoZero.hom ≫ c.lastMap` using `congrArg (fun g => g ≫ c.lastMap) e2`.
+
+Conclude with `A.trans (hw.trans B)`.
+-/
 private theorem upperMap_zero_comp_isoObjZero {s' : BlowupSequenceData X'} {s : BlowupSequenceData X}
     {t' : BlowupSequenceData (s'.obj s'.length)} {t : BlowupSequenceData (s.obj s.length)}
     {c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups}
@@ -612,6 +806,9 @@ private theorem upperMap_zero_comp_isoObjZero {s' : BlowupSequenceData X'} {s : 
     congrArg (fun g => g ≫ c.lastMap) e2
   exact A.trans (hw.trans B)
 
+/- English proof (translation)
+Establish `h` using `upperMap_zero_comp_isoObjZero e`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Category.assoc]`. Use `_ = (t'.isoZero.hom ≫ c.lastMap) ≫ g := congrArg (fun m => m ≫ g) h`. Use `_ = t'.isoZero.hom ≫ c.lastMap ≫ g := Category.assoc _ _ _`.
+-/
 private theorem upperMap_zero_comp_isoObjZero_assoc {s' : BlowupSequenceData X'} {s : BlowupSequenceData X}
     {t' : BlowupSequenceData (s'.obj s'.length)} {t : BlowupSequenceData (s.obj s.length)}
     {c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups}
@@ -627,6 +824,9 @@ private theorem upperMap_zero_comp_isoObjZero_assoc {s' : BlowupSequenceData X'}
     _ = (t'.isoZero.hom ≫ c.lastMap) ≫ g := congrArg (fun m => m ≫ g) h
     _ = t'.isoZero.hom ≫ c.lastMap ≫ g := Category.assoc _ _ _
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Substitute `hb` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem transitionMap_congr {Y : Scheme.{u}} (d : BlowupSequenceData Y) {a b a' b' : ℕ}
     (ha : a = a') (hb : b = b') (h : a ≤ b) (h' : a' ≤ b')
     (E1 : d.obj b = d.obj b') (E2 : d.obj a' = d.obj a) :
@@ -635,6 +835,13 @@ private theorem transitionMap_congr {Y : Scheme.{u}} (d : BlowupSequenceData Y) 
   subst hb
   simp
 
+/- English proof (translation)
+Use `revert hb`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base`. Introduce `hb`. Rewrite using `[BlowupSequenceData.transitionMap_refl, BlowupSequenceData.transitionMap_refl]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ m hm ih`. Introduce `hb`. Establish `hmlt : m < s.length` using `hb`. Establish `hm' : m ≤ s.length` using `le_of_lt hmlt`.
+
+Rewrite using `[← BlowupSequenceData.transitionMap_comp_transitionMap (s.append t) hm (Nat.le_succ m), BlowupSequenceData.transitionMap_succ, BlowupSequenceData.append_blowupMorphism_of_lt_length s t hmlt, ih hm', ← BlowupSequenceData.transitionMap_comp_transitionMap s hm (Nat.le_succ m), ← Blo …`. Simplify using the standard rewrite rules.
+-/
 private theorem append_transitionMap_of_le_length {Y : Scheme.{u}} (s : BlowupSequenceData Y)
     (t : BlowupSequenceData (s.obj s.length)) {a b : ℕ} (hab : a ≤ b) (hb : b ≤ s.length) :
     (s.append t).transitionMap hab =
@@ -655,6 +862,9 @@ private theorem append_transitionMap_of_le_length {Y : Scheme.{u}} (s : BlowupSe
         ← BlowupSequenceData.transitionMap_succ s m]
       simp
 
+/- English proof (translation)
+Establish `key` using `BlowupSequenceData.append_transitionMap_comp_concatObjAddIso s t h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem concatObjAddIso_inv_comp_transitionMap {Y : Scheme.{u}} (s : BlowupSequenceData Y)
     (t : BlowupSequenceData (s.obj s.length)) {a b : ℕ} (h : a ≤ b) (hd : s.length + a ≤ s.length + b) :
     (BlowupSequenceData.concatObjAddIso s t b).inv ≫ (s.append t).transitionMap hd =
@@ -669,6 +879,9 @@ private theorem concatObjAddIso_inv_comp_transitionMap {Y : Scheme.{u}} (s : Blo
             (BlowupSequenceData.concatObjAddIso s t a).inv := by rw [key]
     _ = t.transitionMap h ≫ (BlowupSequenceData.concatObjAddIso s t a).inv := by simp
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, concatObjAddIso_inv_comp_transitionMap s t h hd, Category.assoc]`.
+-/
 private theorem concatObjAddIso_inv_comp_transitionMap_assoc {Y : Scheme.{u}} (s : BlowupSequenceData Y)
     (t : BlowupSequenceData (s.obj s.length)) {a b : ℕ} (h : a ≤ b) (hd : s.length + a ≤ s.length + b)
     {W : Scheme.{u}} (g : (s.append t).obj (s.length + a) ⟶ W) :
@@ -676,6 +889,11 @@ private theorem concatObjAddIso_inv_comp_transitionMap_assoc {Y : Scheme.{u}} (s
       t.transitionMap h ≫ (BlowupSequenceData.concatObjAddIso s t a).inv ≫ g := by
   rw [← Category.assoc, concatObjAddIso_inv_comp_transitionMap s t h hd, Category.assoc]
 
+/- English proof (translation)
+Establish `h2 : (BlowupSequenceData.concatObjAddIso s t 0).inv = t.isoZero.hom ≫ eqToHom (BlowupSequenceData.append_schemeAt_of_le_length s t (le_refl s.length)).symm` using `rfl`. Establish `h1 : (BlowupSequenceData.concatObjAddIso s t i).inv ≫ (s.append t).transitionMap (Nat.le_add_right s.length i) = t.transitionMap (Nat.zero_le i) ≫ (BlowupSequenceData.concatObjAddIso s t 0).inv` using `concatObjAddIso_inv_comp_transitionMap s t (Nat.zero_le i) (Nat.le_add_right s.length i)`. Establish `h3 : (s.append t).transitionMap hm = eqToHom (BlowupSequenceData.append_schemeAt_of_le_length s t (le_refl s.length)) ≫ s.transitionMap hm ≫ eqToHom (BlowupSequenceData.append_schemeAt_of_le_length s t hm).symm` using `append_transitionMap_of_le_length s t hm (le_refl s.length)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[BlowupSequenceData.transitionMap_comp_transitionMap]`.
+
+Use `_ = (t.transitionMap (Nat.zero_le i) ≫ (BlowupSequenceData.concatObjAddIso s t 0).inv) ≫ (s.append t).transitionMap hm := by`. Rewrite using `[← Category.assoc, h1]`. Use `_ = t.transitionMap (Nat.zero_le i) ≫ t.isoZero.hom ≫ s.transitionMap hm ≫ eqToHom (BlowupSequenceData.append_schemeAt_of_le_length s t hm).symm := by`. Rewrite using `[h2, h3]`. Simplify using the standard rewrite rules.
+-/
 private theorem concatObjAddIso_inv_comp_transitionMap_of_le_length {Y : Scheme.{u}} (s : BlowupSequenceData Y)
     (t : BlowupSequenceData (s.obj s.length)) {m i : ℕ} (hm : m ≤ s.length) (h : m ≤ s.length + i) :
     (BlowupSequenceData.concatObjAddIso s t i).inv ≫ (s.append t).transitionMap h =
@@ -702,6 +920,9 @@ private theorem concatObjAddIso_inv_comp_transitionMap_of_le_length {Y : Scheme.
         rw [h2, h3]
         simp
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, concatObjAddIso_inv_comp_transitionMap_of_le_length s t hm h]`. Simplify using the standard rewrite rules.
+-/
 private theorem concatObjAddIso_inv_comp_transitionMap_of_le_length_assoc {Y : Scheme.{u}} (s : BlowupSequenceData Y)
     (t : BlowupSequenceData (s.obj s.length)) {m i : ℕ} (hm : m ≤ s.length) (h : m ≤ s.length + i)
     {W : Scheme.{u}} (g : (s.append t).obj m ⟶ W) :
@@ -711,6 +932,9 @@ private theorem concatObjAddIso_inv_comp_transitionMap_of_le_length_assoc {Y : S
   rw [← Category.assoc, concatObjAddIso_inv_comp_transitionMap_of_le_length s t hm h]
   simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem concatObjAddIso_zero_hom {Y : Scheme.{u}} (s : BlowupSequenceData Y)
     (t : BlowupSequenceData (s.obj s.length)) :
     (BlowupSequenceData.concatObjAddIso s t 0).hom =
@@ -724,6 +948,9 @@ private def appendMapAdd (s : BlowupSequenceData X) (t : BlowupSequenceData (s.o
   (BlowupSequenceData.concatObjAddIso s' t' i).hom ≫ mapOverLastMap e i hi ≫
     (BlowupSequenceData.concatObjAddIso s t (e.idx i)).inv
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem upperConcatMap_congr (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -739,6 +966,9 @@ private theorem upperConcatMap_congr (s : BlowupSequenceData X) (t : BlowupSeque
   subst hr
   rfl
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 private theorem concatMap_eq_lowerMap_of_lt (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -749,6 +979,9 @@ private theorem concatMap_eq_lowerMap_of_lt (s : BlowupSequenceData X) (t : Blow
     concatMap s t s' t' c e j hj = eqToHom A ≫ mapOfToSequenceOfBlowups c j (le_of_lt h) ≫ eqToHom B :=
   dif_pos h
 
+/- English proof (translation)
+Establish `h0 : concatMap s t s' t' c e j hj = eqToHom (append_schemeAt_eq_length_add_sub s' t' j hge) ≫ appendMapAdd s t s' t' c e (j - s'.length) (sub_length_le_of_le_length_add s' t' j hj) ≫ eqToHom (append_schemeAt_concatIndex_of_le s t s' t' c e j hge)` using `dif_neg (not_lt.2 hge)`. Conclude with `h0.trans (upperConcatMap_congr s t s' t' c e hjq (sub_length_le_of_le_length_add s' t' j hj) hq (append_schemeAt_eq_length_add_sub s' t' j hge) (append_schemeAt_concatIndex_of_le s t s' t' c e j hge) E1 E2)`.
+-/
 private theorem concatMap_eq_upperConcatMap_of_le (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (s' : BlowupSequenceData X')
     (t' : BlowupSequenceData (s'.obj s'.length))
@@ -768,6 +1001,21 @@ private theorem concatMap_eq_upperConcatMap_of_le (s : BlowupSequenceData X)
   exact h0.trans (upperConcatMap_congr s t s' t' c e hjq (sub_length_le_of_le_length_add s' t' j hj) hq
     (append_schemeAt_eq_length_add_sub s' t' j hge) (append_schemeAt_concatIndex_of_le s t s' t' c e j hge) E1 E2)
 
+/- English proof (translation)
+Distinguish the cases in `hlt : j < s'.length`. Distinguish the cases in `h1 : j + 1 < s'.length`. Establish `hcj : c.idx j < s.length` using `c.blowupSequenceData_index_lt_length j hlt`. Establish `hc1 : c.idx (j + 1) < s.length` using `c.blowupSequenceData_index_lt_length (j + 1) h1`. Establish `hmono : c.idx j ≤ c.idx (j + 1)` using `le_of_lt (c.blowupSequenceData_index_lt_index_succ j hlt)`.
+
+Rewrite using `[BlowupSequenceData.append_blowupMorphism_of_lt_length s' t' hlt, concatMap_eq_lowerMap_of_lt s t s' t' c e j (le_of_lt hj) hlt (BlowupSequenceData.append_schemeAt_of_le_length s' t' (le_of_lt hlt)) (append_schemeAt_concatIndex_of_lt s t s' t' c e j hlt), concatMap_eq_lowerMap_of …`. Simplify using `[blowupMorphism_comp_lowerMap_assoc c j hlt]`. Establish `hjn : j + 1 = s'.length` using `by omega`. Establish `hcj : c.idx j < s.length` using `c.blowupSequenceData_index_lt_length j hlt`. Establish `hidxlen' : c.idx s'.length = s.length` using `c.index_length_eq_length`.
+
+Establish `hidxlen : c.idx (j + 1) = s.length` using `by rw [hjn]; exact hidxlen'`. Establish `hidx0 : concatIndex s t s' t' c e j = c.idx j` using `concatIndex_of_lt s t s' t' c e j hlt`. Establish `hidx1 : concatIndex s t s' t' c e (j + 1) = s.length + e.idx 0`. Rewrite using `[concatIndex_of_ge s t s' t' c e (j + 1) (le_of_eq hjn.symm), show j + 1 - s'.length = 0 by omega]`. Establish `hdle : c.idx j ≤ s.length + e.idx 0` using `le_trans (le_of_lt hcj) (Nat.le_add_right _ _)`.
+
+Rewrite using `[BlowupSequenceData.append_blowupMorphism_of_lt_length s' t' hlt, concatMap_eq_lowerMap_of_lt s t s' t' c e j (le_of_lt hj) hlt (BlowupSequenceData.append_schemeAt_of_le_length s' t' (le_of_lt hlt)) (append_schemeAt_concatIndex_of_lt s t s' t' c e j hlt), concatMap_eq_upperConcat …`. Simplify using `only [appendMapAdd, concatObjAddIso_zero_hom, Category.assoc, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp]`. Rewrite using `[concatObjAddIso_inv_comp_transitionMap_of_le_length_assoc s t (le_of_lt hcj) hdle, upperMap_zero_comp_isoObjZero_assoc e, blowupMorphism_comp_lowerMap_assoc c j hlt, lowerMap_congr c hjn hlt le_rfl (congrArg s'.obj hjn) (congrArg (fun n => s.obj (c.idx n)) hjn.symm), transitionM …`. Simplify using the standard rewrite rules. Apply the tactic sequence `all_goals exact comp_assoc_inner_pair _ _ _ _ _`.
+
+Establish `hge : s'.length ≤ j` using `not_lt.1 hlt`. Take `⟨q, rfl⟩ : ∃ q, j = s'.length + q` from `⟨j - s'.length, by omega⟩`. Establish `hq1 : q < t'.length` using `by omega`. Establish `hmono : e.idx q < e.idx (q + 1)` using `e.blowupSequenceData_index_lt_index_succ q hq1`. Establish `hidxj : concatIndex s t s' t' c e (s'.length + q) = s.length + e.idx q`.
+
+Rewrite using `[concatIndex_of_ge s t s' t' c e (s'.length + q) (Nat.le_add_right _ _), show s'.length + q - s'.length = q by omega]`. Establish `hidxj1 : concatIndex s t s' t' c e (s'.length + q + 1) = s.length + e.idx (q + 1)`. Rewrite using `[concatIndex_of_ge s t s' t' c e (s'.length + q + 1) (by omega), show s'.length + q + 1 - s'.length = q + 1 by omega]`. Rewrite using `[concatMap_eq_upperConcatMap_of_le s t s' t' c e (s'.length + q) q (le_of_lt hj) (Nat.le_add_right _ _) (show s'.length + q - s'.length = q by omega) (le_of_lt hq1) rfl (congrArg (s.append t).obj hidxj.symm), concatMap_eq_upperConcatMap_of_le s t s' t' c e (s'.length + q + 1) (q …`. Simplify using `only [appendMapAdd, Category.assoc, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp]`.
+
+Rewrite using `[BlowupSequenceData.append_blowupMorphism_comp_concatObjAddIso_assoc, blowupMorphism_comp_upperMap_assoc e q hq1, concatObjAddIso_inv_comp_transitionMap_assoc s t (le_of_lt hmono)]`.
+-/
 private theorem blowupMorphism_comp_concatMap (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -852,6 +1100,9 @@ private theorem blowupMorphism_comp_concatMap (s : BlowupSequenceData X) (t : Bl
     rw [BlowupSequenceData.append_blowupMorphism_comp_concatObjAddIso_assoc, blowupMorphism_comp_upperMap_assoc e q hq1,
       concatObjAddIso_inv_comp_transitionMap_assoc s t (le_of_lt hmono)]
 
+/- English proof (translation)
+Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_blowupMorphism]`. Conclude with `blowupMorphism_comp_concatMap s t s' t' c e j hj _`.
+-/
 private theorem toSequenceOfBlowups_blowupMorphism_comp_concatMap (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -863,16 +1114,25 @@ private theorem toSequenceOfBlowups_blowupMorphism_comp_concatMap (s : BlowupSeq
   rw [BlowupSequenceData.toSequenceOfBlowups_blowupMorphism]
   exact blowupMorphism_comp_concatMap s t s' t' c e j hj _
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+-/
 private theorem comp_comp_inv_comp_hom {A B C D : Scheme.{u}} (g : A ⟶ B) (m : B ⟶ C) (ι : D ≅ C) :
     (g ≫ m ≫ ι.inv) ≫ ι.hom = g ≫ m := by
   rw [Category.assoc, Category.assoc, Iso.inv_hom_id, Category.comp_id]
 
+/- English proof (translation)
+Substitute `h1` using the available equality. Simplify using `only [eqToHom_refl, Category.comp_id]`.
+-/
 private theorem comp_comp_eqToHom_comp_eqToHom {A B C D : Scheme.{u}} (g : A ⟶ B) (f : B ⟶ C)
     (h1 : C = D) (h2 : D = C) :
     (g ≫ f ≫ eqToHom h1) ≫ eqToHom h2 = g ≫ f := by
   subst h1
   simp only [eqToHom_refl, Category.comp_id]
 
+/- English proof (translation)
+The claim follows from `comp_comp_inv_comp_hom (BlowupSequenceData.concatObjAddIso s' t' i).hom (e.map i hi) (BlowupSequenceData.concatObjAddIso s t (e.idx i))`.
+-/
 private theorem concatMapAddLength_comp_concatObjAddIso_hom (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -882,12 +1142,18 @@ private theorem concatMapAddLength_comp_concatObjAddIso_hom (s : BlowupSequenceD
   comp_comp_inv_comp_hom (BlowupSequenceData.concatObjAddIso s' t' i).hom (e.map i hi)
     (BlowupSequenceData.concatObjAddIso s t (e.idx i))
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem center_comap_eqToHom_congr {Y : Scheme.{u}} (d : BlowupSequenceData Y) {a b : ℕ}
     (hab : a = b) {W : Scheme.{u}} (hW : W = d.obj a) (hW' : W = d.obj b) :
     (d.center a).comap (eqToHom hW) = (d.center b).comap (eqToHom hW') := by
   subst hab
   rfl
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem center_comap_comp_eqToHom_congr {Y : Scheme.{u}} (d : BlowupSequenceData Y) {a b : ℕ}
     (hab : a = b) {Z Z' W : Scheme.{u}} (p : Z ⟶ Z') (f : Z' ⟶ W)
     (hW : W = d.obj a) (hW' : W = d.obj b) :
@@ -895,12 +1161,20 @@ private theorem center_comap_comp_eqToHom_congr {Y : Scheme.{u}} (d : BlowupSequ
   subst hab
   rfl
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem center_comap_comp_eqToHom {Y : Scheme.{u}} (d : BlowupSequenceData Y) {a b : ℕ}
     (hab : b = a) {Z : Scheme.{u}} (v : Z ⟶ d.obj b) (q : d.obj b = d.obj a) :
     (d.center a).comap (v ≫ eqToHom q) = (d.center b).comap v := by
   subst hab
   simp
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Use `Eq.trans (BlowupSequenceData.append_center_length s t) ?_` and prove the remaining obligations. Conclude with `(Scheme.IdealSheafData.comap_comp (t.center 0) (eqToHom (BlowupSequenceData.append_schemeAt_of_le_length s t (le_refl s.length))) t.isoZero.inv).symm`. Consider the case `succ k`.
+
+Establish `hlt : s.length < s.length + (k + 1)` using `by omega`. Establish `hsub : s.length + (k + 1) - s.length = k + 1` using `by omega`. Use `Eq.trans (BlowupSequenceData.append_center_of_length_lt s t hlt) ?_` and prove the remaining obligations. Conclude with `center_comap_eqToHom_congr t hsub (BlowupSequenceData.append_schemeAt_of_length_lt s t hlt) (BlowupSequenceData.append_schemeAt_length_add_succ s t k)`.
+-/
 private theorem append_center_length_add (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (n : ℕ) :
     (s.append t).center (s.length + n) =
@@ -917,6 +1191,9 @@ private theorem append_center_length_add (s : BlowupSequenceData X) (t : BlowupS
     exact center_comap_eqToHom_congr t hsub (BlowupSequenceData.append_schemeAt_of_length_lt s t hlt)
       (BlowupSequenceData.append_schemeAt_length_add_succ s t k)
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Rewrite using `[eqToHom_refl, Category.id_comp]`.
+-/
 private theorem concatMapAddLength_congr (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -930,6 +1207,9 @@ private theorem concatMapAddLength_congr (s : BlowupSequenceData X) (t : BlowupS
   subst hab
   rw [eqToHom_refl, Category.id_comp]
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 private theorem concatMap_eq_map_of_lt (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -939,6 +1219,17 @@ private theorem concatMap_eq_map_of_lt (s : BlowupSequenceData X) (t : BlowupSeq
       eqToHom (BlowupSequenceData.append_schemeAt_of_le_length s' t' (le_of_lt h)) ≫ c.map j (le_of_lt h) ≫
         eqToHom (append_schemeAt_concatIndex_of_lt s t s' t' c e j h) := dif_pos h
 
+/- English proof (translation)
+Use `show (s'.append t').center j = ((s.append t).center (concatIndex s t s' t' c e j)).comap (concatMap s t s' t' c e j (le_of_lt hj))`. Distinguish the cases in `h : j < s'.length`. Establish `hci : c.idx j < s.length` using `c.blowupSequenceData_index_lt_length j h`. Establish `hidxA : concatIndex s t s' t' c e j = c.idx j` using `concatIndex_of_lt s t s' t' c e j h`. Establish `hc : s'.center j = (s.center (c.idx j)).comap (c.map j (le_of_lt h))` using `c.center_comap j (by rw [BlowupSequenceData.toSequenceOfBlowups_length]; exact h)`.
+
+Establish `hmA : (eqToHom (BlowupSequenceData.append_schemeAt_of_le_length s' t' (le_of_lt h)) ≫ c.map j (le_of_lt h) ≫ eqToHom (BlowupSequenceData.append_schemeAt_of_le_length s t (le_of_lt hci)).symm) ≫ eqToHom (BlowupSequenceData.append_schemeAt_of_le_length s t (le_of_lt hci)) = eqToHom …` using `comp_comp_eqToHom_comp_eqToHom _ _ _ _`. Rewrite using `[concatMap_eq_map_of_lt s t s' t' c e j (le_of_lt hj) h, center_comap_comp_eqToHom_congr (s.append t) hidxA (eqToHom (BlowupSequenceData.append_schemeAt_of_le_length s' t' (le_of_lt h))) (c.map j (le_of_lt h)) (append_schemeAt_concatIndex_of_lt s t s' t' c e j h) (BlowupSequenceD …`. Conclude with `(Scheme.IdealSheafData.comap_comp _ _ _).symm`. Establish `hge : s'.length ≤ j` using `not_lt.1 h`. Take `⟨i, rfl⟩ : ∃ i, j = s'.length + i` from `⟨j - s'.length, by omega⟩`.
+
+Establish `hit : i < t'.length` using `by omega`. Establish `hile : i ≤ t'.length` using `le_of_lt hit`. Establish `hsub : s'.length + i - s'.length = i` using `by omega`. Establish `hidx : concatIndex s t s' t' c e (s'.length + i) = s.length + e.idx i`. Rewrite using `[concatIndex_of_ge s t s' t' c e (s'.length + i) hge, hsub]`.
+
+Establish `hmapGe : concatMap s t s' t' c e (s'.length + i) (le_of_lt hj) = eqToHom (append_schemeAt_eq_length_add_sub s' t' (s'.length + i) hge) ≫ concatMapAddLength s t s' t' c e (s'.length + i - s'.length) (sub_length_le_of_le_length_add s' t' (s'.length + i) (le_of_lt hj)) ≫ eqToHom (ap …` using `dif_neg (not_lt.2 hge)`. Establish `hshift` using `concatMapAddLength_congr s t s' t' c e hsub (sub_length_le_of_le_length_add s' t' (s'.length + i) (le_of_lt hj)) hile (append_schemeAt_eq_length_add_sub s' t' (s'.length + i) hge) (append_schemeAt_concatIndex_of_le s t s' t' c e (s'.length + i) hge) (congrArg (s.append t).obj hid …`. Establish `hmor : concatMapAddLength s t s' t' c e i hile ≫ (BlowupSequenceData.concatObjAddIso s t (e.idx i)).hom = (BlowupSequenceData.concatObjAddIso s' t' i).hom ≫ e.map i hile` using `concatMapAddLength_comp_concatObjAddIso_hom s t s' t' c e i hile`. Establish `hcen : t'.center i = (t.center (e.idx i)).comap (e.map i hile)` using `e.center_comap i (by rw [BlowupSequenceData.toSequenceOfBlowups_length]; exact hit)`. Rewrite using `[hmapGe, hshift, center_comap_comp_eqToHom (s.append t) hidx.symm (concatMapAddLength s t s' t' c e i hile) (congrArg (s.append t).obj hidx.symm), append_center_length_add s t (e.idx i), ← Scheme.IdealSheafData.comap_comp, hmor, append_center_length_add s' t' i, hcen]`.
+
+Conclude with `(Scheme.IdealSheafData.comap_comp _ _ _).symm`.
+-/
 private theorem append_center_eq_comap_concatMap (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -998,6 +1289,11 @@ private theorem append_center_eq_comap_concatMap (s : BlowupSequenceData X) (t :
       append_center_length_add s' t' i, hcen]
     exact (Scheme.IdealSheafData.comap_comp _ _ _).symm
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `exists_mem_support_of_ne_top J hJ`. Establish `h1 : (g.inv ≫ g.hom).base x ∈ J.support`. Rewrite using `[g.inv_hom_id]`. Simplify using `using hx`. Establish `h2 : g.hom.base (g.inv.base x) ∈ J.support` using `by simpa using h1`.
+
+Conclude with `AlgebraicGeometry.Scheme.IdealSheafData.ne_top_of_mem_support (J.comap g.hom) (g.inv.base x) (AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.mpr h2)`.
+-/
 private theorem comap_iso_hom_ne_top {Y Z : Scheme.{u}} (g : Y ≅ Z) (J : Z.IdealSheafData)
     (hJ : J ≠ ⊤) : J.comap g.hom ≠ ⊤ := by
   obtain ⟨x, hx⟩ := exists_mem_support_of_ne_top J hJ
@@ -1008,10 +1304,20 @@ private theorem comap_iso_hom_ne_top {Y Z : Scheme.{u}} (g : Y ≅ Z) (J : Z.Ide
   exact AlgebraicGeometry.Scheme.IdealSheafData.ne_top_of_mem_support (J.comap g.hom)
     (g.inv.base x) (AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.mpr h2)
 
+/- English proof (translation)
+The claim follows from `comap_iso_hom_ne_top (eqToIso h) J hJ`.
+-/
 private theorem comap_eqToHom_ne_top {Y Z : Scheme.{u}} (h : Y = Z) (J : Z.IdealSheafData)
     (hJ : J ≠ ⊤) : J.comap (eqToHom h) ≠ ⊤ :=
   comap_iso_hom_ne_top (eqToIso h) J hJ
 
+/- English proof (translation)
+Use `show (s'.append t').center j ≠ ⊤`. Break down `lt_trichotomy j s'.length with h | h | h` into its components or cases. Establish `hne : s'.center j ≠ ⊤` using `c.center_ne_top j (by rw [BlowupSequenceData.toSequenceOfBlowups_length]; exact h)`. Rewrite using `[BlowupSequenceData.append_center_of_lt_length s' t' h]`. Conclude with `comap_eqToHom_ne_top _ _ hne`.
+
+Substitute `h` using the available equality. Establish `ht : 0 < t'.length` using `by omega`. Establish `h0 : t'.center 0 ≠ ⊤` using `e.center_ne_top 0 (by rw [BlowupSequenceData.toSequenceOfBlowups_length]; exact ht)`. Establish `h2' : (t'.center 0).comap t'.isoZero.inv ≠ ⊤` using `comap_iso_hom_ne_top t'.isoZero.symm (t'.center 0) h0`. Rewrite using `[BlowupSequenceData.append_center_length s' t']`.
+
+Conclude with `comap_eqToHom_ne_top _ _ h2'`. Establish `hsub : j - s'.length < t'.length` using `by omega`. Establish `hne : t'.center (j - s'.length) ≠ ⊤` using `e.center_ne_top (j - s'.length) (by rw [BlowupSequenceData.toSequenceOfBlowups_length]; exact hsub)`. Rewrite using `[BlowupSequenceData.append_center_of_length_lt s' t' h]`. Conclude with `comap_eqToHom_ne_top _ _ hne`.
+-/
 private theorem append_center_ne_top (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -1037,6 +1343,11 @@ private theorem append_center_ne_top (s : BlowupSequenceData X) (t : BlowupSeque
     rw [BlowupSequenceData.append_center_of_length_lt s' t' h]
     exact comap_eqToHom_ne_top _ _ hne
 
+/- English proof (translation)
+Take `⟨w, hw1, _hw2⟩` from `AlgebraicGeometry.Scheme.Pullback.exists_preimage_pullback a b hab`. Use `⟨h.isoPullback.inv.base w, ?_⟩` and prove the remaining obligations. Establish `h2 : h.isoPullback.hom ≫ pullback.fst f g = p` using `h.isoPullback_hom_fst`. Establish `key : h.isoPullback.inv ≫ p = pullback.fst f g`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_preimage_of_isPullback {A A' Z Z' : Scheme.{u}} {p : A' ⟶ A} {q : A' ⟶ Z'}
     {f : A ⟶ Z} {g : Z' ⟶ Z} (h : IsPullback p q f g) (a : ↥A) (b : ↥Z')
     (hab : f.base a = g.base b) : ∃ a' : ↥A', p.base a' = a := by
@@ -1052,18 +1363,29 @@ private theorem exists_preimage_of_isPullback {A A' Z Z' : Scheme.{u}} {p : A' �
     _ = (pullback.fst f g).base w := by rw [key]
     _ = a := hw1
 
+/- English proof (translation)
+Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_center]`. Conclude with `hw`.
+-/
 private theorem mem_toSequenceOfBlowups_center_support {Y : Scheme.{u}} (d : BlowupSequenceData Y) (i : ℕ)
     (w : ↥(d.toSequenceOfBlowups.schemeAt i)) (hw : w ∈ (d.center i).support) :
     w ∈ (d.toSequenceOfBlowups.center i).support := by
   rw [BlowupSequenceData.toSequenceOfBlowups_center]
   exact hw
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem eqToHom_comp_projectionToBase_length_add_zero {Y : Scheme.{u}} (s : BlowupSequenceData Y)
     (t : BlowupSequenceData (s.obj s.length))
     (h1 : (s.append t).obj (s.length + 0) = s.obj (s.length + 0))
     (h2 : (s.append t).obj (s.length + 0) = s.obj s.length) :
     eqToHom h1 ≫ s.projectionToBase (s.length + 0) = eqToHom h2 ≫ s.projectionToBase s.length := rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `hA : (BlowupSequenceData.concatObjAddIso s t 0).hom ≫ t.projectionToBase 0 ≫ s.projectionToBase s.length = eqToHom (BlowupSequenceData.append_schemeAt_length_add_zero s t) ≫ s.projectionToBase s.length`. Rewrite using `[concatObjAddIso_zero_hom, BlowupSequenceData.projectionToBase_zero, Category.assoc, Iso.inv_hom_id_assoc]`. Conclude with `((BlowupSequenceData.projectionToBase_append_of_le_length s t (le_of_eq (Nat.add_zero s.length))).trans (eqToHom_comp_projectionToBase_length_add_zero s t _ _)).trans hA.symm`.
+
+Consider the case `succ n ih`. Establish `hs : (s.append t).projectionToBase (s.length + (n + 1)) = (s.append t).map (s.length + n) ≫ (s.append t).projectionToBase (s.length + n)` using `BlowupSequenceData.projectionToBase_succ (s.append t) (s.length + n)`. Rewrite using `[hs, ih, BlowupSequenceData.append_blowupMorphism_comp_concatObjAddIso_assoc, ← Category.assoc (t.map n), ← BlowupSequenceData.projectionToBase_succ]`.
+-/
 private theorem projectionToBase_append_length_add {Y : Scheme.{u}} (s : BlowupSequenceData Y)
     (t : BlowupSequenceData (s.obj s.length)) (n : ℕ) :
     (s.append t).projectionToBase (s.length + n) =
@@ -1082,6 +1404,21 @@ private theorem projectionToBase_append_length_add {Y : Scheme.{u}} (s : BlowupS
       rw [hs, ih, BlowupSequenceData.append_blowupMorphism_comp_concatObjAddIso_assoc, ← Category.assoc (t.map n),
         ← BlowupSequenceData.projectionToBase_succ]
 
+/- English proof (translation)
+Introduce `heq`. Establish `hzc : z ∈ ((s.append t).center i).support`. Rewrite `hz` using `[BlowupSequenceData.toSequenceOfBlowups_center]`. Conclude with `hz`. Establish `heqp : φ.base x' = ((s.append t).projectionToBase i).base z` using `heq.trans (congrArg (fun m : (s.append t).toSequenceOfBlowups.schemeAt i ⟶ X => m.base z) (BlowupSequenceData.toSequenceOfBlowups_projectionToBase (s.append t) i))`.
+
+Distinguish the cases in `hlt : i < s.length`. Establish `hobj : (s.append t).obj i = s.obj i` using `BlowupSequenceData.append_schemeAt_of_le_length s t (le_of_lt hlt)`. Rewrite `hzc` using `[BlowupSequenceData.append_center_of_lt_length s t hlt]`. Establish `hzs : (eqToHom hobj).base z ∈ (s.center i).support` using `Scheme.IdealSheafData.mem_support_comap.mp hzc`. Establish `heq2 : φ.base x' = (s.projectionToBase i).base ((eqToHom hobj).base z)` using `(heqp.trans (congrArg (fun m : (s.append t).obj i ⟶ X => m.base z) (BlowupSequenceData.projectionToBase_append_of_le_length s t (le_of_lt hlt)))).trans rfl`.
+
+Use `c.omitted i ?_ ?_ ((eqToHom hobj).base z) ?_ x' ?_` and prove the remaining obligations. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length]`. Conclude with `hlt`. Introduce `j hj hji`. Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_length]`.
+
+Conclude with `hmiss j (by omega) ((concatIndex_of_lt s t s' t' c e j hj).trans hji)`. Conclude with `mem_toSequenceOfBlowups_center_support s i _ hzs`. Conclude with `heq2.trans (congrArg (fun m : s.obj i ⟶ X => m.base ((eqToHom hobj).base z)) (BlowupSequenceData.toSequenceOfBlowups_projectionToBase s i)).symm`. Establish `hge : s.length ≤ i` using `not_lt.1 hlt`. Take `⟨n, rfl⟩ : ∃ n, i = s.length + n` from `⟨i - s.length, by omega⟩`.
+
+Establish `hn : n < t.length` using `by omega`. Rewrite `hzc` using `[append_center_length_add s t n]`. Establish `hzt : ((BlowupSequenceData.concatObjAddIso s t n).hom).base z ∈ (t.center n).support` using `Scheme.IdealSheafData.mem_support_comap.mp hzc`. Establish `heq2 : φ.base x' = (s.projectionToBase s.length).base ((t.projectionToBase n).base (((BlowupSequenceData.concatObjAddIso s t n).hom).base z))` using `(heqp.trans (congrArg (fun m : (s.append t).obj (s.length + n) ⟶ X => m.base z) (projectionToBase_append_length_add s t n))).trans rfl`. Establish `hsm : (s.toSequenceOfBlowups.projectionToBase s.toSequenceOfBlowups.length).base ((t.projectionToBase n).base (((BlowupSequenceData.concatObjAddIso s t n).hom).base z)) = φ.base x'` using `(congrArg (fun m : s.obj s.length ⟶ X => m.base ((t.projectionToBase n).base (((BlowupSequenceData.concatObjAddIso s t n).hom).base z))) (BlowupSequenceData.toSequenceOfBlowups_projectionToBase s s.toSequenceOfBlowups.length)).trans heq2.symm`.
+
+Take `⟨a', ha'⟩` from `exists_preimage_of_isPullback c.isPullback_lastMap ((t.projectionToBase n).base (((BlowupSequenceData.concatObjAddIso s t n).hom).base z)) x' hsm`. Use `e.omitted n ?_ ?_ (((BlowupSequenceData.concatObjAddIso s t n).hom).base z) ?_ a' ?_` and prove the remaining obligations. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length]`. Conclude with `hn`. Introduce `m hm hmn`.
+
+Rewrite `hm` using `[BlowupSequenceData.toSequenceOfBlowups_length]`. Use `hmiss (s'.length + m) (by omega) ?_` and prove the remaining obligations. Rewrite using `[concatIndex_of_ge s t s' t' c e (s'.length + m) (Nat.le_add_right _ _), show s'.length + m - s'.length = m by omega, hmn]`. Conclude with `mem_toSequenceOfBlowups_center_support t n _ hzt`. Conclude with `ha'.trans (congrArg (fun m : t.obj n ⟶ s.obj s.length => m.base (((BlowupSequenceData.concatObjAddIso s t n).hom).base z)) (BlowupSequenceData.toSequenceOfBlowups_projectionToBase t n)).symm`.
+-/
 private theorem append_projectionToBase_ne_of_forall_concatIndex_ne (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
     (s' : BlowupSequenceData X') (t' : BlowupSequenceData (s'.obj s'.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -1165,6 +1502,19 @@ end
 
 end SequenceOfBlowupsPullback
 
+/- English proof (translation)
+Take `⟨idx, e, hlt, hmono, hlen, hsup, hfst, hstep, hcen⟩` from `h`. Use `⟨{ idx := idx map := fun j hj => (e j hj).hom ≫ pullback.snd φ (s.projectionToBase (idx j)) idx_length := hlen idx_lt := hlt idx_strictMono := fun j hj => hmono j (j + 1) hj (Nat.lt_succ_self j) isPullback := ?_ step := ?_ center_comap := ?_ center_ne_top := ?_ omitted := ?_ }⟩` and prove the remaining obligations. Introduce `j hj`. Establish `hp : IsPullback ((e j hj).hom ≫ pullback.snd φ (s.projectionToBase (idx j))) ((e j hj).hom ≫ pullback.fst φ (s.projectionToBase (idx j))) (s.projectionToBase (idx j)) φ` using `SequenceOfBlowupsPullback.isPullback_iso_hom_comp (e j hj) (IsPullback.of_hasPullback φ (s.projectionToBase (idx j))).flip`. Rewrite `hp` using `[hfst j hj]`.
+
+Conclude with `hp`. Introduce `j hj`. Establish `hr : idx j ≤ idx (j + 1)` using `le_of_lt (hmono j (j + 1) hj (Nat.lt_succ_self j))`. Establish `hs2 : (s'.transitionMapSucc j ≫ (e j (le_of_lt hj)).hom) ≫ pullback.snd φ (s.projectionToBase (idx j)) = ((e (j + 1) hj).hom ≫ s.pullbackTransitionMap φ hr) ≫ pullback.snd φ (s.projectionToBase (idx j))` using `congrArg (fun m => m ≫ pullback.snd φ (s.projectionToBase (idx j))) (hstep j hj hr)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[SequenceOfBlowups.pullbackTransitionMap_comp_snd]`. Use `_ = ((e (j + 1) hj).hom ≫ pullback.snd φ (s.projectionToBase (idx (j + 1)))) ≫ s.transitionMap hr := (Category.assoc _ _ _).symm`. Conclude with `hcen`. Introduce `j hj htop`. Take `⟨x, hx⟩` from `(hsup (idx j) (hlt j hj)).mpr ⟨j, hj, rfl⟩`.
+
+Use `AlgebraicGeometry.Scheme.IdealSheafData.ne_top_of_mem_support _ x hx ?_` and prove the remaining obligations. Establish `h1 : (s.center (idx j)).comap ((e j (le_of_lt hj)).hom ≫ pullback.snd φ (s.projectionToBase (idx j))) = ⊤` using `(hcen j hj).symm.trans htop`. Establish `h2 : ((s.center (idx j)).comap ((e j (le_of_lt hj)).hom ≫ pullback.snd φ (s.projectionToBase (idx j)))).comap (e j (le_of_lt hj)).inv = (⊤ : (s'.schemeAt j).IdealSheafData).comap (e j (le_of_lt hj)).inv`. Rewrite using `[h1]`. Rewrite `h2` using `[← Scheme.IdealSheafData.comap_comp, Iso.inv_hom_id_assoc, AlgebraicGeometry.Scheme.IdealSheafData.comap_top]`.
+
+Conclude with `h2`. Introduce `i hi hmiss z hz x' heq`. Take `⟨w, _, hw2⟩` from `AlgebraicGeometry.Scheme.Pullback.exists_preimage_pullback x' z heq`. Establish `hmem : w ∈ ((s.center i).comap (pullback.snd φ (s.projectionToBase i))).support`. Establish `hw : (pullback.snd φ (s.projectionToBase i)).base w ∈ (s.center i).support`.
+
+Rewrite using `[hw2]`. Conclude with `hz`. Conclude with `AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.mpr hw`. Take `⟨j, hj, hji⟩` from `(hsup i hi).mp ⟨w, hmem⟩`. Conclude with `hmiss j hj hji`.
+-/
 theorem IsPullbackBlowupSequence.nonempty_sequenceOfBlowupsPullback {X X' : Scheme.{u}} {φ : X' ⟶ X}
     {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (h : IsPullbackBlowupSequence φ s' s) :
     Nonempty (SequenceOfBlowupsPullback φ s' s) := by
@@ -1231,6 +1581,9 @@ theorem IsPullbackBlowupSequence.nonempty_sequenceOfBlowupsPullback {X X' : Sche
     obtain ⟨j, hj, hji⟩ := (hsup i hi).mp ⟨w, hmem⟩
     exact hmiss j hj hji
 
+/- English proof (translation)
+Establish `C : SequenceOfBlowupsPullback φ (S'.toBlowupSequenceData.append T'.toBlowupSequenceData).toSequenceOfBlowups (S.toBlowupSequenceData.append T.toBlowupSequenceData).toSequenceOfBlowups` using `SequenceOfBlowupsPullback.concat S.toBlowupSequenceData T.toBlowupSequenceData S'.toBlowupSequenceData T'.toBlowupSequenceData c e`. Establish `h1 : (S.append T hinv).toMarkedSequenceOfBlowups.toSequenceOfBlowups = (S.toBlowupSequenceData.append T.toBlowupSequenceData).toSequenceOfBlowups` using `MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups (S.append T hinv)`. Establish `h2 : (S'.append T' hinv).toMarkedSequenceOfBlowups.toSequenceOfBlowups = (S'.toBlowupSequenceData.append T'.toBlowupSequenceData).toSequenceOfBlowups` using `MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups (S'.append T' hinv)`. Rewrite using `[h1, h2]`. Conclude with `C.isPullbackSequenceOfBlowups`.
+-/
 theorem isPullbackBlowupSequence_append_same_field {k : Type u} [Field k] {X X' : Scheme.{u}} (φ : X' ⟶ X)
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
     {E : List X.IdealSheafData}
@@ -1259,6 +1612,9 @@ theorem isPullbackBlowupSequence_append_same_field {k : Type u} [Field k] {X X' 
   rw [h1, h2]
   exact C.isPullbackSequenceOfBlowups
 
+/- English proof (translation)
+Establish `C : SequenceOfBlowupsPullback φ (S'.toBlowupSequenceData.append T'.toBlowupSequenceData).toSequenceOfBlowups (S.toBlowupSequenceData.append T.toBlowupSequenceData).toSequenceOfBlowups` using `SequenceOfBlowupsPullback.concat S.toBlowupSequenceData T.toBlowupSequenceData S'.toBlowupSequenceData T'.toBlowupSequenceData c e`. Establish `h1 : (S.append T hinv).toMarkedSequenceOfBlowups.toSequenceOfBlowups = (S.toBlowupSequenceData.append T.toBlowupSequenceData).toSequenceOfBlowups` using `MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups (S.append T hinv)`. Establish `h2 : (S'.append T' hinv).toMarkedSequenceOfBlowups.toSequenceOfBlowups = (S'.toBlowupSequenceData.append T'.toBlowupSequenceData).toSequenceOfBlowups` using `MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups (S'.append T' hinv)`. Rewrite using `[h1, h2]`. Conclude with `C.isPullbackSequenceOfBlowups`.
+-/
 theorem isPullbackBlowupSequence_append_of_two_fields {k k' : Type u} [Field k] [Field k']
     {X X' : Scheme.{u}} (φ : X' ⟶ X)
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}

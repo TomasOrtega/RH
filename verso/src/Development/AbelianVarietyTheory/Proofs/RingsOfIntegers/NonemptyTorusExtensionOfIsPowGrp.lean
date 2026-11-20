@@ -20,6 +20,11 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.PowGrp
 
+/- English proof (translation)
+Introduce `K _ G' G _ _ j p hT`. Take `⟨T⟩` from `hT`. Consider the cases of `T with`. Consider the case `mk X B hB q hqm0 hqf0 hqs0 hqc0 i him0 hker`. Establish `pB` using `ReciprocityTheory.ChartRestriction.G.Out.powIsPowGrp B j`.
+
+Establish `pT` using `GlobalTheory.SplitTorusPow.isPowGrp (Spec (CommRingCat.of K)) (AddEquiv.refl (Fin j → X))`. Take `⟨q', hq, hqm, hqf, hqs, hqc, -⟩` from `GlobalTheory.PowMap.main _ G' G _ B j p pB q`. Take `⟨i', hi, him, -⟩` from `GlobalTheory.PowMap.main _ _ _ G' G j pT p i`. Conclude with `⟨{ X := Fin j → X addCommGroup := inferInstance free := inferInstance finite := inferInstance B := ReciprocityTheory.ChartRestriction.G.Out.powObj B j grpB := inferInstance isAbelian := (GlobalTheory.PowGrp.powers _ _ _ j pB).2.2.2.1 hB q := q' q_hom := hqm hqm0 q_flat := hqf hqf …`.
+-/
 theorem nonempty_torusExtension_of_isPowGrp : ∀ (K : Type) [Field K] (G' G : Over (Spec (CommRingCat.of K))) [GrpObj G'] [GrpObj G] (j : ℕ), IsPowGrp G' G j → Nonempty (TorusExtension G) → Nonempty (TorusExtension G') := by
   intro K _ G' G _ _ j p hT
   obtain ⟨T⟩ := hT
@@ -45,6 +50,11 @@ theorem nonempty_torusExtension_of_isPowGrp : ∀ (K : Type) [Field K] (G' G : O
              i_hom := him him0
              isKernel := GlobalTheory.PowKernel.main _ _ _ G' G _ _ j pT p pB i q i' q' hi hq hker }⟩
 
+/- English proof (translation)
+Introduce `S G' G _ _ _ _ j p' hG`. Take `⟨_, hs, hsep, hqc, hgc, hf⟩` from `hG`. Establish `hpow` using `GlobalTheory.PowGrp.powers S G' G j p'`. Establish `hqg` using `GlobalTheory.PowGrp.quasiCompact_geomConnected_pow S G' G j p'`. Use `⟨inferInstance, hpow.1 hs, hpow.2.1 hsep, hqg.1 hqc, hqg.2 hs hgc, ?_⟩` and prove the remaining obligations.
+
+Introduce `Ω _ _ x`. Take `⟨px, -⟩` from `GlobalTheory.isPowGrp_baseChange S _ x G' G j p'`. Conclude with `nonempty_torusExtension_of_isPowGrp Ω _ _ j px (hf Ω x)`.
+-/
 theorem isSemiAbelian_pow : ∀ (S : Scheme.{0}) (G' G : Over S) [GrpObj G'] [IsCommMonObj G'] [GrpObj G] [IsCommMonObj G] (j : ℕ) (p : IsPowGrp G' G j), IsSemiAbelian G → IsSemiAbelian G' := by
   intro S G' G _ _ _ _ j p' hG
   obtain ⟨_, hs, hsep, hqc, hgc, hf⟩ := hG

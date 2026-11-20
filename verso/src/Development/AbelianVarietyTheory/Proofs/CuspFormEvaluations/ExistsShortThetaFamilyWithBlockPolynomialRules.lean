@@ -25,6 +25,11 @@ namespace GlobalTheory.BlockTh
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps Formalism.L2.Pj GlobalTheory.RunIn GlobalTheory.BlockTh GlobalTheory.EtaAn ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i | k, rfl⟩`. Rewrite using `[← hu]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+
+Conclude with `hv k`. Rewrite using `[← hu]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨Sum.inl i, rfl⟩`.
+-/
 theorem span_sum_elim {R M ι κ : Type} [CommRing R] [AddCommGroup M] [Module R M] (S : Submodule R M) (u : ι → M)
     (v : κ → M) (hu : Submodule.span R (Set.range u) = S) (hv : ∀ k, v k ∈ S) :
     Submodule.span R (Set.range (Sum.elim u v)) = S := by
@@ -39,6 +44,9 @@ theorem span_sum_elim {R M ι κ : Type} [CommRing R] [AddCommGroup M] [Module R
     rintro _ ⟨i, rfl⟩
     exact ⟨Sum.inl i, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[show Set.range (fun k => Sum.elim w0 v (e k)) = Set.range (Sum.elim w0 v) from EquivLike.range_comp (Sum.elim w0 v) e]`. Conclude with `span_sum_elim _ w0 v h0 hv`.
+-/
 private theorem span_range_sum_elim_eq_thAll {D : D7} {Pr : ModuliIntegralCharts.Prov D} {j : ℕ} (B : WeightFamilies.Prov D) (X : PJ D B Pr j)
     (w : WeightFamilies.Wt D j) {N M' : ℕ} {ι : Type} (w0 : Fin N → B.Cusp j w) (v : ι → B.Cusp j w) (e : Fin M' ≃ Fin N ⊕ ι)
     (h0 : Submodule.span (𝓞 B.KO) (Set.range w0) = X.thAll w) (hv : ∀ q, v q ∈ X.thAll w) :
@@ -49,6 +57,61 @@ private theorem span_range_sum_elim_eq_thAll {D : D7} {Pr : ModuliIntegralCharts
 
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `hC D T h hG large₂ j hj w hP hL hr hlast hn`. Take `⟨N0, w0, hspan, hN0, hsup0⟩` from `GlobalTheory.T.exists_short_finite_generators_thetaLattice hC D T h hG large₂ j hj w hP hL hr hlast`. Take `⟨-, ⟨hM, -⟩, -, hdat⟩` from `h.toLawsCore.pins`. Take `⟨hp, hq, -⟩` from `hdat j hj`. Establish `hpq : (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r`.
+
+Rewrite using `[hp, hq]`. Conclude with `Formalism.L2.Geo.sigW_sum D hj.1 hj.2`. Establish `hfE : I2.PT.f D.host.E = D.R.f` using `by dsimp only [I2.PT.f]`. Rewrite using `[Formalism.MainNotions.StandardLattice.finrank_host D]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `he : ∀ {m : ℕ} (g : Fin m → ℕ), Antitone g → ∀ i k : ℕ, i ≤ k → ext0 g k ≤ ext0 g i`. Introduce `m g hg i k hik`. Simplify using `only [ext0]`. Apply the tactic sequence `by_cases h1 : k < m <;> by_cases h2 : i < m`. Rewrite using `[dif_pos h1, dif_pos h2]`.
+
+Conclude with `hg (Fin.mk_le_mk.2 hik)`. Conclude with `absurd (lt_of_le_of_lt hik h1) h2`. Rewrite using `[dif_neg h1]`. Conclude with `Nat.zero_le _`. Rewrite using `[dif_neg h1, dif_neg h2]`.
+
+Establish `hanti : ∀ τ i k, i ≤ k → wtA w (τ, k) ≤ wtA w (τ, i)`. Introduce `τ i k hik`. Simplify using `only [wtA]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `t _`.
+
+Apply `add_le_add` to reduce the goal to its premises. Use `split_ifs`. Conclude with `he _ (w.aPlus_antitone t) i k hik`. Conclude with `le_rfl`. Use `split_ifs`.
+
+Conclude with `he _ (w.aM_anti t) i k hik`. Conclude with `le_rfl`. Take `⟨P, hPh, hPb, hPdeg, hPl1⟩` from `GlobalTheory.T.exists_blockProduct_mem_integralHarmonic D.host.E T.Q.H (T.Q.Dw j) T.Q.l T.Q.c (wtA w) w.n hanti (by rw [hfE, hpq]; exact hn)`. Establish `hdom : Dom (wtA w) w.n` using `dom_wtA w`. Establish `hlp : LastPos (T.Q.Dw j) (wtA w)` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.lastPos_wtA h hj w hlast`.
+
+Take `⟨_, hnab⟩` from `h.nabPin j hj`. Establish `hex : ∀ q : Fin w.n → LevQ (T.Q.Dw j) T.Q.l, ∃ f : T.R j, IsThRule (T.Q.Xo j) T.Q.c (T.nab j) (fun b => levRep (q b)) P f` using `fun q => by`. Take `⟨⟨f, hf, -⟩, -⟩` from `GlobalTheory.thetaRule_exists_and_eval hC D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c (T.nab j) hnab (wtA w) w.n (fun b => levRep (q b)) P hPh`. Conclude with `⟨f, hf⟩`. Use `choose f hf using hex`.
+
+Establish `hfC : ∀ q, f q ∈ cutR T.C j w`. Introduce `q`. Establish `h1 : f q ∈ T.C j w` using `h.thCusp j hj (wtA w) w.n hdom hlp (f q) ⟨fun b => levRep (q b), P, hPh, hf q⟩`. Simplify using `only [cutR]`. Conclude with `Submodule.mem_inf.2 ⟨h1, (Submodule.mem_iInf _).2 fun hn' => absurd hj hn'⟩`.
+
+Set `v : (Fin w.n → LevQ (T.Q.Dw j) T.Q.l) → (recB h.toLawsCore).Cusp j w` to `fun q => (⟨f q, hfC q⟩ : cutR T.C j w)`. Establish `hv1 : ∀ q, ((v q : cutR T.C j w) : T.R j) = f q` using `fun q => rfl`. Take `⟨hfin, hcard⟩` from `GlobalTheory.T.card_lattice_quotient_half_level D.host.E T.Q.H (T.Q.Dw j) T.Q.l`. Set `_ : Fintype (LevQ (T.Q.Dw j) T.Q.l)` to `Fintype.ofFinite _`. Set `e : Fin (N0 + Fintype.card (Fin w.n → LevQ (T.Q.Dw j) T.Q.l)) ≃ Fin N0 ⊕ (Fin w.n → LevQ (T.Q.Dw j) T.Q.l)` to `finSumFinEquiv.symm.trans (Equiv.sumCongr (Equiv.refl _) (Fintype.equivFin _).symm)`.
+
+Set `W : Fin (N0 + Fintype.card (Fin w.n → LevQ (T.Q.Dw j) T.Q.l)) → (recB h.toLawsCore).Cusp j w` to `fun k => Sum.elim w0 v (e k)`. Establish `hWq : ∀ q, W (e.symm (Sum.inr q)) = v q`. Introduce `q`. Simplify using `only [W, Equiv.apply_symm_apply, Sum.elim_inr]`. Use `⟨_, W, P, hPh, hPb, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `⟨fun q => e.symm (Sum.inr q), fun a b hab => Sum.inr_injective (e.symm.injective hab), fun q => ⟨f q, hf q, fun p y => ?_⟩⟩ show (W (e.symm (Sum.inr q))).1 p y = _` and prove the remaining obligations. Rewrite using `[hWq q, map_one, one_mul]`. Use `span_range_sum_elim_eq_thAll (recB h.toLawsCore) (recPJ h j hj) w w0 v e hspan fun q => ?_ dsimp only [recPJ, mkX, spanIn]` and prove the remaining obligations. Simplify using `only [Submodule.mem_comap]`. Conclude with `Submodule.subset_span (show f q ∈ T.th j w from ⟨fun b => levRep (q b), P, hPh, hf q⟩)`.
+
+Establish `hfd : FD.fdeg D.host.E = D.R.f` using `by dsimp only [FD.fdeg]`. Rewrite using `[Formalism.MainNotions.StandardLattice.finrank_host D]`. Use linear arithmetic over natural numbers and integers. Establish `hc : Fintype.card (Fin w.n → LevQ (T.Q.Dw j) T.Q.l) = (D.host.g 0 * D.host.g 1) ^ (D.R.f * D.R.r * w.n)`. Rewrite using `[Fintype.card_fun, Fintype.card_fin, ← Nat.card_eq_fintype_card, hcard, hM, hpq, hfd, ← pow_mul]`.
+
+Establish `hB1 : 0 < Module.finrank ℚ (recB h.toLawsCore).KO * (1 + WeightAlgebra.DF w) ^ (D.R.f * D.R.r * w.n)` using `Nat.mul_pos Module.finrank_pos (pow_pos (by omega) _)`. Establish `hGX` using `Nat.le_mul_of_pos_right ((D.host.g 0 * D.host.g 1) ^ (D.R.f * D.R.r * w.n)) hB1`. Rewrite using `[hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `k σ`.
+
+Take `⟨x, rfl⟩ : ∃ x, e.symm x = k` from `⟨e k, e.symm_apply_apply k⟩`. Break down `x with i | q` into its components or cases. Establish `h0 : W (e.symm (Sum.inl i)) = w0 i`. Simplify using `only [W, Equiv.apply_symm_apply, Sum.elim_inl]`. Rewrite using `[h0]`.
+
+Conclude with `hsup0 i σ`. Rewrite using `[hWq q]`. Establish `hs : (recB h.toLawsCore).supN j w σ (v q) = T.Ns j w σ (f q)`. Express the relevant statement in the definitionally equal form `cutN T.C T.Ns j w σ (v q) = _`. Simplify using `only [cutN]`.
+
+Rewrite using `[if_pos hj]`. Rewrite using `[hs]`. Establish `h2 : ((Formalism.MainNotions.WeightAlgebra.DF w : ℕ) : ℝ) = Formalism.MainNotions.WeightAlgebra.absA w` using `by dsimp only [Formalism.MainNotions.WeightAlgebra.DF, Formalism.MainNotions.WeightAlgebra.degP, Formalism.MainNotions.WeightAlgebra.absA]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `hDF : (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ) ≤ Formalism.MainNotions.WeightAlgebra.absA w`. Rewrite using `[← h2]`. Conclude with `ReciprocityTheory.ChartRestriction.G.PullbackSections.DF_wtA_le T j w` after adjusting the coercions. Establish `hA0 : 0 ≤ Formalism.MainNotions.WeightAlgebra.absA w`. Rewrite using `[← h2]`.
+
+Check the signs of the components of the expression. Rewrite `hPl1` using `[hpq]`. Establish `hℓ0 : 0 ≤ Real.log (max 1 ((D.R.r : ℝ) ^ Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w)))` using `Real.log_nonneg (le_max_left _ _)`. Establish `hℓexp : l1At σ P ≤ Real.exp (Real.log (max 1 ((D.R.r : ℝ) ^ Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w))))`. Rewrite using `[Real.exp_log (lt_of_lt_of_le one_pos (le_max_left _ _))]`.
+
+Simplify using `only [l1At]`. Conclude with `le_trans (hPl1 σ) (le_max_right _ _)`. Establish `hℓle : Real.log (max 1 ((D.R.r : ℝ) ^ Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w))) ≤ (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ) * D.R.r`. Break down `Nat.eq_zero_or_pos D.R.r with h0 | h0` into its components or cases. Rewrite using `[h0, Nat.cast_zero, mul_zero, max_eq_left (pow_le_one₀ le_rfl zero_le_one), Real.log_one]`.
+
+Establish `h1 : (1 : ℝ) ≤ (D.R.r : ℝ) ^ Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w)` using `one_le_pow₀ (by exact_mod_cast h0)`. Rewrite using `[max_eq_right h1, Real.log_pow]`. Conclude with `mul_le_mul_of_nonneg_left (Real.log_le_self (by positivity)) (by positivity)`. Establish `hNs` using `GlobalTheory.T.log_supNorm_thetaGenerator_le hC D T h hG large₂ j hj w hP hL hr hlp (fun b => levRep (q b)) P hPh (f q) (hf q) σ _ hℓ0 hℓexp`. Establish `hL0 : (0 : ℝ) ≤ large₂.sc.L` using `by linarith`.
+
+Establish `hr0 : (0 : ℝ) ≤ D.R.r` using `Nat.cast_nonneg _`. Establish `t1 : 0 ≤ 3 * (D.R.f : ℝ) * D.R.r * w.n * large₂.sc.L` using `mul_nonneg (by positivity) hL0`. Establish `t2 : 0 ≤ 5 * Real.log (Module.finrank ℚ (recB h.toLawsCore).KO : ℝ)` using `mul_nonneg (by norm_num) (Real.log_nonneg (Nat.one_le_cast.2 Module.finrank_pos))`. Establish `t3 : 0 ≤ Real.log |((NumberField.discr (recB h.toLawsCore).KO : ℤ) : ℝ)| / (Module.finrank ℚ (recB h.toLawsCore).KO : ℝ)`. Apply `div_nonneg _ (Nat.cast_nonneg _)` to reduce the goal to its premises.
+
+Apply `Real.log_nonneg` to reduce the goal to its premises. Rewrite using `[← Int.cast_abs]`. Conclude with `Int.one_le_abs (NumberField.discr_ne_zero _)` after adjusting the coercions. Break down `Nat.eq_zero_or_pos w.n with hn0 | hwn` into its components or cases. Establish `hr0' : D.R.r = 0` using `by omega`.
+
+Establish `hs1 : (D.R.sigW j).1 = 0` using `by omega`. Establish `hs2 : (D.R.sigW j).2 = 0` using `by omega`. Establish `hA : Formalism.MainNotions.WeightAlgebra.absA w = 0`. Establish `: IsEmpty (Fin (D.R.sigW j).1)` using `by rw [hs1]; infer_instance`. Establish `: IsEmpty (Fin (D.R.sigW j).2)` using `by rw [hs2]; infer_instance`.
+
+Simplify using `[Formalism.MainNotions.WeightAlgebra.absA]`. Establish `hZ0 : Zb D large₂ = 0` using `by simp [Zb, hr0']`. Establish `hrc : (D.R.r : ℝ) = 0` using `by exact_mod_cast hr0'`. Rewrite `hNs` using `[hA, hrc]`. Rewrite `hℓle` using `[hrc]`.
+
+Rewrite using `[hZ0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h9430` using `(GlobalTheory.T.supBounds_le_generatorConstant_mul_size D (recB h.toLawsCore) large₂ j w 0 hL hwn).1`. Establish `hk1 : (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ) * D.R.r ≤ 140 * D.R.r * large₂.sc.L * Formalism.MainNotions.WeightAlgebra.absA w`. Establish `: (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ) * D.R.r ≤ Formalism.MainNotions.WeightAlgebra.absA w * D.R.r` using `mul_le_mul_of_nonneg_right hDF hr0`.
+
+Use polynomial arithmetic with `[mul_nonneg hA0 hr0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem theta_family_block : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (h : LawsP T), GamAt T.toCore → ∀ (large₂ : SizeData₂ D) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j), ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → 2 ≤ large₂.sc.L → D.R.r ≤ w.n → w.LastPos → D.R.f * D.R.r * (D.R.r + 1) ≤ 2 * w.n → ∃ (N : ℕ) (w0 : Fin N → (recB h.toLawsCore).Cusp j w) (P₁ : MvPolynomial (LtN (T.Q.Dw j) w.n) T.Q.c.F), P₁ ∈ harmA T.Q.c (wtA w) w.n ∧ IsBlockProd P₁ ∧ ContainsTh (T.Q.Xo j) T.Q.c (T.nab j) 1 P₁ (fun k => ((w0 k).1 : T.R j)) ∧ (fun (B : WeightFamilies.Prov D) (X : PJ D B T.G.P j) (w1 : Fin N → B.Cusp j w) => Submodule.span (𝓞 B.KO) (Set.range w1) = X.thAll w) (recB h.toLawsCore) (recPJ h j hj) w0 ∧ N ≤ 2 * ((D.host.g 0 * D.host.g 1) ^ (D.R.f * D.R.r * w.n) * (Module.finrank ℚ (recB h.toLawsCore).KO * (1 + WeightAlgebra.DF w) ^ (D.R.f * D.R.r * w.n))) ∧ ∀ k σ, Real.log ((recB h.toLawsCore).supN j w σ (w0 k)) ≤ 400 * Zb D large₂ * w.size + 3 * D.R.f * D.R.r * w.n * large₂.sc.L + 5 * Real.log (Module.finrank ℚ (recB h.toLawsCore).KO) + Real.log |((NumberField.discr (recB h.toLawsCore).KO : ℤ) : ℝ)| / Module.finrank ℚ (recB h.toLawsCore).KO + 2 := by
   intro hC D T h hG large₂ j hj w hP hL hr hlast hn
   obtain ⟨N0, w0, hspan, hN0, hsup0⟩ := GlobalTheory.T.exists_short_finite_generators_thetaLattice hC D T h hG large₂ j hj w hP hL hr hlast

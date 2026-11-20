@@ -1,6 +1,9 @@
 import Mathlib
 import Development.AutomorphicArithmetic.PrimeDiscriminants.SlopeTestRemainingChoices
 
+/- English proof (translation)
+Unfold `Formalism.HC.HostRaw.vdH`. Establish `h1 : (1 : ℝ) ≤ (Module.finrank ℚ H.E : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Establish `h2 : padicValNat p (NumberField.discr H.E).natAbs ≤ (NumberField.discr H.E).natAbs` using `(padicValNat_le_nat_log _).trans (Nat.log_le_self _ _)`. Establish `h3 : (padicValNat p (NumberField.discr H.E).natAbs : ℝ) ≤ ((NumberField.discr H.E).natAbs : ℝ)` using `by exact_mod_cast h2`. Conclude with `(div_le_self (Nat.cast_nonneg _) h1).trans h3`.
+-/
 theorem Formalism.HC.HostRaw.vdH_le_natAbs {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ) (p : ℕ) :
     H.vdH p ≤ ((NumberField.discr H.E).natAbs : ℝ) := by
   unfold Formalism.HC.HostRaw.vdH

@@ -16,11 +16,17 @@ def stdI {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L)) (r : Option ℤ) 
     | none => IdF.bot _
     | some r => sFil Q r).sup (IdF.span _ c)
 
+/- English proof (translation)
+Introduce `T x hx`. Apply the tactic sequence `cases r <;> exact hx`.
+-/
 theorem incl_std {b : Base} {L : b.Fun} {Q Q' : ObjectProperty (Thick L)} (h : Q' ≤ Q) (r : Option ℤ) (c : b.R) :
     (incl h).Le (stdI Q r c) (stdI Q' r c) := by
   intro T x hx
   cases r <;> exact hx
 
+/- English proof (translation)
+Introduce `T x hx`. Conclude with `hx`.
+-/
 theorem incl_fil {b : Base} {L : b.Fun} {Q Q' : ObjectProperty (Thick L)} (h : Q' ≤ Q) (r : ℤ) :
     (incl h).Le (sFil Q r) (sFil Q' r) := by
   intro T x hx

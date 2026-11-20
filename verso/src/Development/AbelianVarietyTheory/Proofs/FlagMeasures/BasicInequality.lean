@@ -9,6 +9,13 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.HL.BasicIneq
 
+/- English proof (translation)
+Rewrite using `[ofReal_norm_eq_enorm]`. Unfold `Frames.amp Frames.mass`. Use `enorm_tsum_le_tsum_enorm.trans (ENNReal.tsum_le_tsum fun o => ?_)` and prove the remaining obligations. Use `split_ifs with h`. Take `⟨p, hp⟩` from `h.1`.
+
+Establish `h1 : ‖S.om d o.out‖ = 1` using `(WitIndep.witness_independence L r k S d _ _ _ hp).2.2.2.2`. Establish `h2 : 0 ≤ S.mu o.out`. Unfold `Frames.mu invVol`. Check the signs of the components of the expression. Rewrite using `[← ofReal_norm_eq_enorm, norm_mul, h1, mul_one, Complex.norm_real, Real.norm_of_nonneg h2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem amp_le_mass {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) (r k : ℕ)
     (S : Frames L r k) (d : S.Datum) (P : Submodule L.O S.V → Prop) :
@@ -25,6 +32,13 @@ theorem amp_le_mass {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [
     rw [← ofReal_norm_eq_enorm, norm_mul, h1, mul_one, Complex.norm_real, Real.norm_of_nonneg h2]
   · simp
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S _`. Use `⟨amp_le_mass L r k S, fun P B ε hε hB hA => ?_⟩` and prove the remaining obligations. Unfold `Frames.ampSq Frames.sumData`. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun o => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_left_comm]`. Use `mul_le_mul_right ?_ _` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ENNReal.ofReal_mul (sq_nonneg ε), ENNReal.ofReal_pow hε]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hA _`. Use `_ = ENNReal.ofReal ε ^ 2 * S.mass o.out (P o.out) * S.mass o.out (P o.out) := by ring`. Use `_ ≤ ENNReal.ofReal ε ^ 2 * ENNReal.ofReal B * S.mass o.out (P o.out) := by gcongr`. Conclude with `hB _`.
+-/
 theorem basic_inequality : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 1 ≤ k → (∀ d P, ENNReal.ofReal (‖S.amp d P‖) ≤ S.mass d P) ∧ ∀ (P : S.Datum → Submodule L.O S.V → Prop) (B ε : ℝ), 0 ≤ ε → (∀ d, S.mass d (P d) ≤ ENNReal.ofReal (B)) → (∀ d, ENNReal.ofReal (‖S.amp d (P d)‖) ≤ ENNReal.ofReal (ε) * S.mass d (P d)) → S.ampSq P ≤ ENNReal.ofReal (ε ^ 2 * B) * S.sumData fun d => S.mass d (P d) := by
   intro F _ _ _ _ _ E _ _ _ L r k S _
   refine ⟨amp_le_mass L r k S, fun P B ε hε hB hA => ?_⟩

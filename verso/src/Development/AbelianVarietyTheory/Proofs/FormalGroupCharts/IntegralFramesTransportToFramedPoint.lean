@@ -34,12 +34,18 @@ open MvPolynomial (X)
 
 namespace GlobalTheory.FrameMove
 
+/- English proof (translation)
+The claim follows from `corr_of_val hL fun _ _ hJ => (val_corr hJ h _).trans (val_corr hJ h' _)`.
+-/
 theorem corr_trans {Z Y : Scheme.{0}} {L : LB Z} (hL : L.IsLB) {K K' K'' : Type} [Fintype K] [Fintype K'] [Fintype K'']
     {φ : K → (Y ⟶ Z)} {ε : K → ℤ} {φ' : K' → (Y ⟶ Z)} {ε' : K' → ℤ} {φ'' : K'' → (Y ⟶ Z)} {ε'' : K'' → ℤ}
     {a : LB.Gen (LB.LinComb L φ ε)} {b : LB.Gen (LB.LinComb L φ' ε')} {c : LB.Gen (LB.LinComb L φ'' ε'')}
     (h : LB.Gen.Corr L φ ε φ' ε' a b) (h' : LB.Gen.Corr L φ' ε' φ'' ε'' b c) : LB.Gen.Corr L φ ε φ'' ε'' a c :=
   corr_of_val hL fun _ _ hJ => (val_corr hJ h _).trans (val_corr hJ h' _)
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.GaugeAdjoint.constantCoeff_ev (a := (![0, pt R d 0] : Fin 2 → Pt R 1 d)) (fun j i => by fin_cases j`. Simplify using the standard rewrite rules. Simplify using `[pt]) (B.ad a)`. Rewrite `h` using `[B.adjoint_zero_fst a, map_one]`. Conclude with `h.symm`.
+-/
 theorem ad_const {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : Germ.FB R d O) (a : O) :
     MvPowerSeries.constantCoeff (B.ad a) = 1 := by
   have h := GlobalTheory.GaugeAdjoint.constantCoeff_ev (a := (![0, pt R d 0] : Fin 2 → Pt R 1 d)) (fun j i => by
@@ -49,6 +55,13 @@ theorem ad_const {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [Star
   rw [B.adjoint_zero_fst a, map_one] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `laws : Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `cub` using `GlobalTheory.T.rigidifiedIso_maps_cubical_generator laws.globalFns E H X0 (Sp S) t t' x0 mp w hw hab`. Establish `p1` using `GlobalTheory.T.frame_firstPartialLaw_iff_pullback E H X0 t S x0 t' mp w hw d x x' hx cub e e' he he' tie F ph1`. Establish `p2` using `GlobalTheory.T.frame_second_partial_law_iff_pullback_alt E H X0 t S x0 t' mp w hw d x x' hx cub e e' he he' tie F ph2`. Establish `p3` using `GlobalTheory.T.frame_symmetry_iff_pullback E H X0 t S x0 t' mp w hw d x x' hx e e' he he' tie sy`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨he', ?_, ?_, p3.1 h.sy, fun a => GlobalTheory.T.adjointSeries_frames_pullback E H X0 t S x0 t' mp w hw d x x' hx e e' he he' tie act ad a hact ha (h.ad a)⟩` and prove the remaining obligations. Apply the tactic sequence `first | exact (p1 hF hl).1 h.ph1 | exact p1.1 fun _ _ => h.ph1`. Apply the tactic sequence `first | exact (p2 hF hl).1 h.ph2 | exact p2.1 fun _ _ => h.ph2`.
+
+Introduce `h`. Use `⟨he, ?_, ?_, p3.2 h.sy, fun a => GlobalTheory.T.frame_adjointness_series_of_pullback laws E H X0 t S x0 t' mp w hw d x x' hx hab h0 e e' he he' tie act ad a ha hact (had a) (h.ad a)⟩` and prove the remaining obligations. Apply the tactic sequence `first | exact (p1 hF hl).2 h.ph1 | exact p1.2 h.ph1 hF hl`. Apply the tactic sequence `first | exact (p2 hF hl).2 h.ph2 | exact p2.2 h.ph2 hF hl`.
+-/
 theorem isFrame_pull_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}}
     (t : SAB H X0) {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (t' : SAB H (Sp S)) (mp : SABMap t' t x0)
     (w : LB.Iso t'.PP.L (t.PP.L.pull mp.φ)) (hw : RigIso mp w) (hab : IsAbelianScheme t'.G) (d : ℕ)
@@ -92,6 +105,23 @@ end GlobalTheory.FrameMove
 open GlobalTheory.FrameMove in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ _ T io y I d B B' tgT xT eT wPT hF hA h1 h2 hs had hch hfr hpr _ hrig`. Use `letI := io.toAlgebra`. Introduce `x x' hx2 hx1`. Take `⟨wP, hwP, wP', hwP', tw2, tw1⟩` from `GlobalTheory.T.integralFramedPoint_diagonalBiextensionIso_compatible E H Dw l Xo c T io y I wPT hpr`. Establish `hab : IsAbelianScheme I.t'.G` using `GlobalTheory.T.isAbelianScheme_pullback_universalTriple E H Dw l Xo _ I.t' _ I.m1`.
+
+Set `ψ : T.V →+* T.Fr` to `algebraMap T.V T.Fr`. Establish `hb : spMap ψ = spMap ψ ≫ 𝟙 (Sp T.V)` using `(Category.comp_id _).symm`. Take `⟨x'', hx''⟩ : ∃ x'' : ∀ m, jOG (spMap ψ) d m 1 ⟶ I.G.G, ∀ m, (x' m).left ≫ I.m2.φ = (x'' m).left` from `⟨fun m => Over.homMk ((x' m).left ≫ I.m2.φ) (by`. Establish `h` using `Over.w (x' m)`. Rewrite using `[Category.assoc, I.m2.cart.1.w, ← Category.assoc, h]`.
+
+Simplify using `[ψ]), fun m => rfl⟩`. Establish `hx3 : ∀ m, (x'' m).left = spMap (jetCoef ψ (Fin 1 × Fin d) m) ≫ (xT m).left` using `fun m => (hx'' m).symm.trans (hx2 m)`. Establish `eF : B'.G.F = fun i => MvPowerSeries.map ψ (B.G.F i)` using `funext hF`. Establish `eA : B'.A.act = fun a i => MvPowerSeries.map ψ (B.A.act a i)` using `funext fun a => funext (hA a)`. Establish `ead : B'.ad = fun a => MvPowerSeries.map ψ (B.ad a)` using `funext had`.
+
+Take `⟨e'', he'', hc''⟩` from `GlobalTheory.T.exists_frames_coefficientRing_baseChange E H _ I.G T.V T.Fr ψ _ _ hb d xT x'' hx3 eT hfr.gen`. Establish `fr'' : IsFrameG I.G (spMap ψ) d x'' B'.G.F B'.A.act B'.ph1 B'.ph2 B'.sy B'.ad e''`. Rewrite using `[eF, eA, ead, h1, h2, hs]`. Conclude with `GlobalTheory.T.isFrameG_coefficientRing_baseChange E H _ I.G T.V T.Fr ψ _ _ hb d xT x'' hx3 eT e'' hfr.gen he'' hc'' _ _ _ _ _ _ hfr`. Establish `rig'' : Rig0G I.G (spMap ψ) d x'' B'.A.act e'' wPT`.
+
+Rewrite using `[eA]`. Conclude with `GlobalTheory.T.rigidificationAtOrigin_baseChange_alt E H _ I.G T.V T.Fr ψ _ _ hb d xT x'' hx3 eT e'' hfr.gen he'' hc'' _ wPT hpr.1 hrig`. Take `⟨z'', l'', a''⟩` from `GlobalTheory.T.jetPoints_unit_law_action_baseChange E H _ I.G T.V T.Fr ψ _ _ hb d xT x'' hx3`. Take `⟨z', l', a'⟩` from `GlobalTheory.T.jetPoints_unit_law_action_iff_pullback E H _ I.G T.Fr _ I.t' I.m2 I.w2 I.rig2 d x'' x' hx''`. Establish `h0` using `z'.1 (z'' hch.zero) 0`.
+
+Establish `hl` using `(l' B'.G.F).1 (by rw [eF]; exact l'' _ B.G.const hch.law)`. Establish `ha` using `(a' B'.A.act).1 (by rw [eA]; exact a'' _ B.A.const hch.act)`. Take `⟨e', he', tie2⟩` from `GlobalTheory.T.cubeFrames_move_to_pullback_triple E H _ I.G T.Fr _ I.t' I.m2 I.w2 I.rig2 d x'' x' hx'' e'' he''`. Establish `fr'` using `(isFrame_pull_iff I.G _ I.t' I.m2 I.w2 I.rig2 hab d x'' x' hx'' e'' e' he'' he' tie2 _ _ _ _ _ _ B'.G.const B'.A.const (ad_const B') h0 hl ha).1 fr''`. Establish `rig'` using `(GlobalTheory.T.rigidificationAtOrigin_iff_pullback E H _ I.G T.Fr _ I.t' I.m2 I.w2 I.rig2 d x'' x' hx'' e'' e' he'' he' tie2 wPT wP' hpr.1 hwP' tw2 _ h0 B'.A.const).1 rig''`.
+
+Take `⟨e, he, tie1⟩` from `GlobalTheory.T.exists_cubeFrames_from_pullback_triple E H _ Xo.univ.t T.Fr _ I.t' I.m1 I.w1 I.rig1 d x x' hx1 e' he'`. Establish `fr` using `(isFrame_pull_iff Xo.univ.t _ I.t' I.m1 I.w1 I.rig1 hab d x x' hx1 e e' he he' tie1 _ _ _ _ _ _ B'.G.const B'.A.const (ad_const B') h0 hl ha).2 fr'`. Establish `rig` using `(GlobalTheory.T.rigidificationAtOrigin_iff_pullback E H _ Xo.univ.t T.Fr _ I.t' I.m1 I.w1 I.rig1 d x x' hx1 e e' he he' tie1 wP wP' ((isPrim_iff wP).1 hwP).1 hwP' tw1 _ h0 B'.A.const).2 rig'`. Use `⟨e, wP, (isFrame_iff y.1 d x _ _ _ _ _ _ e).2 fr, hwP, rig, ⟨e', fun m => ⟨he' m, ?_, tie1 m⟩⟩, wP', hwP', tw2, tw1⟩` and prove the remaining obligations. Take `⟨c₂, k₁, k₂⟩` from `tie2 m`.
+
+Conclude with `⟨c₂, corr_trans I.G.PP.isLB k₁ (hc'' m), k₂⟩`.
+-/
 theorem GlobalTheory.chartFrameTransport : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], ChartFrameTrSt Xo c := by
   intro E _ _ _ H Dw l Xo c _ _ T io y I d B B' tgT xT eT wPT hF hA h1 h2 hs had hch hfr hpr _ hrig

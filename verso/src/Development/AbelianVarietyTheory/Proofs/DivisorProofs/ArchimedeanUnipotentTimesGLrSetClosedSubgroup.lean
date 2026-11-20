@@ -7,6 +7,13 @@ open scoped FourierTransform ContDiff
 
 namespace GlobalTheory.JSW.MirCinf
 
+/- English proof (translation)
+Introduce `E _ _ n r`. Use `⟨fun g hg h hh w => ?_, fun g hg w => ?_, fun u hu => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(levSet_closed_subgroup n r).1 _ (hg w) _ (hh w)`. Rewrite using `[map_inv]`.
+
+Conclude with `(levSet_closed_subgroup n r).2.1 _ (hg w)`. Take `⟨h0, h1⟩` from `(GlobalTheory.SmGL.mem_unipB (Cinf E)).1 hu`. Conclude with `mem_levSetInf.2 fun i _ => ⟨fun j hj => h0 i j hj, h1 i⟩`. Establish `hc : ∀ i j : Fin n, Continuous fun g : GL (Fin n) (Cinf E) => (g : Matrix (Fin n) (Fin n) (Cinf E)) i j` using `fun i j => (Units.continuous_val (M := Matrix (Fin n) (Fin n) (Cinf E))).matrix_elem i j`. Establish `hs : levSetInf E n r = {g : GL (Fin n) (Cinf E) | ∀ i : Fin n, r ≤ (i : ℕ) → (∀ j, j < i → (g : Matrix (Fin n) (Fin n) (Cinf E)) i j = 0) ∧ (g : Matrix (Fin n) (Fin n) (Cinf E)) i i = 1}` using `Set.ext fun g => mem_levSetInf`.
+
+Rewrite using `[hs]`. Simplify using `only [Set.setOf_forall, Set.setOf_and]`. Use `isClosed_iInter fun i => isClosed_iInter fun _ => IsClosed.inter ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (hc i j) continuous_const`. Conclude with `isClosed_eq (hc i i) continuous_const`.
+-/
 theorem levSetInf_closed_subgroup : ∀ (E : Type) [Field E] [NumberField E] (n r : ℕ),
     (∀ g ∈ levSetInf E n r, ∀ h ∈ levSetInf E n r, g * h ∈ levSetInf E n r) ∧
     (∀ g ∈ levSetInf E n r, g⁻¹ ∈ levSetInf E n r) ∧

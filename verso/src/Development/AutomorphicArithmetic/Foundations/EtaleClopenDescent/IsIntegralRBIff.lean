@@ -16,6 +16,11 @@ variable {k F K L : Type} [Field k] [Field F] [Field K] [Field L] [Algebra k F] 
   [Algebra F K] [Algebra F L] [Algebra K L] [IsScalarTower k F K] [IsScalarTower k F L] [IsScalarTower k K L]
   [IsScalarTower F K L] {d : ℕ} (x : Fin (d + 1) → F) (I : Finset (Fin (d + 1)))
 
+/- English proof (translation)
+Set `j : rA k x I →+* rB k K x I` to `{ toFun := fun a => ⟨algebraMap F K a, (integralClosure (rA k x I) K).algebraMap_mem a⟩ map_one' := Subtype.ext (map_one _) map_mul' := fun a b => Subtype.ext (map_mul _ _ _) map_zero' := Subtype.ext (map_zero _) map_add' := fun a b => Subtype.ext (map_add _ _ _) }`. Use `letI : Algebra (rA k x I) (rB k K x I) := j.toAlgebra`. Use `haveI : IsScalarTower (rA k x I) (rB k K x I) L := .of_algebraMap_eq fun a => by`. Express the relevant statement in the definitionally equal form `algebraMap F L a = algebraMap K L (algebraMap F K a)`. Conclude with `IsScalarTower.algebraMap_apply F K L _`.
+
+Use `haveI : Algebra.IsIntegral (rA k x I) (rB k K x I) := ⟨fun b => by`. Establish `hb : IsIntegral (rA k x I) (b : K)` using `b.2`. Use `haveI : IsScalarTower (rA k x I) (rB k K x I) K := .of_algebraMap_eq fun a => rfl`. Conclude with `(isIntegral_algebraMap_iff (A := rB k K x I) (B := K) Subtype.val_injective).1 hb⟩`. Conclude with `⟨fun h => h.tower_top, fun h => isIntegral_trans y h⟩`.
+-/
 theorem isIntegral_rB_iff (y : L) :
     IsIntegral (rA k x I) y ↔ IsIntegral (rB k K x I) y := by
   let j : rA k x I →+* rB k K x I :=
@@ -43,6 +48,9 @@ variable {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y] {p : Z ⟶ Sp ℂ} {p'
   [Algebra F Y.functionField] [IsScalarTower ℂ F Z.functionField] [IsScalarTower ℂ F Y.functionField]
   [IsScalarTower F Z.functionField Y.functionField] {x : Fin (d + 1) → F} {U : Fin (d + 1) → Z.Opens}
 
+/- English proof (translation)
+Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s _ ih`. Rewrite using `[Finset.inf_insert, Finset.inf_insert, ih]`. Both sides reduce to the same expression.
+-/
 theorem preimage_inf (c : Y ⟶ Z) {ι : Type} (U : ι → Z.Opens) (I : Finset ι) :
     (I.inf fun i => c ⁻¹ᵁ U i) = c ⁻¹ᵁ (I.inf U) := by
   classical
@@ -52,6 +60,11 @@ theorem preimage_inf (c : Y ⟶ Z) {ι : Type} (U : ι → Z.Opens) (I : Finset 
     rw [Finset.inf_insert, Finset.inf_insert, ih]
     rfl
 
+/- English proof (translation)
+Rewrite `e` using `[preimage_inf]`. Substitute `e` using the available equality. Establish `hff` using `GlobalTheory.T.finiteEtale_functionField_integralClosure_differentials Z Y p p' c hc inferInstance inferInstance d hK hL hg`. Take `⟨hi1, -, hi3, -⟩` from `hff.2 (I.inf U) (hU.ne I) hV' (rB ℂ Z.functionField x I) (ringOn p' hL _ hV') (hU.affine I hI) (fun y => hU.ring I hI y) (fun y => Iff.rfl)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Conclude with `hi3 y ((isIntegral_rB_iff x I y).1 hy)`. Introduce `hy`. Conclude with `(isIntegral_rB_iff x I y).2 (hi1 y hy)`.
+-/
 theorem mem_rB_pull (hc : c ≫ p = p') [IsFinite c] [Etale c] (hK : instK = ffAlg p) (hL : instL = ffAlg p')
     (hg : ∀ (V : Z.Opens) (hV : genericPoint Z ∈ V) (hV' : genericPoint Y ∈ c ⁻¹ᵁ V) (g : Γ(Z, V)),
       (Y.presheaf.germ (c ⁻¹ᵁ V) (genericPoint Y) hV').hom ((c.app V).hom g) =
@@ -70,6 +83,17 @@ theorem mem_rB_pull (hc : c ≫ p = p') [IsFinite c] [Etale c] (hK : instK = ffA
   · intro hy
     exact (isIntegral_rB_iff x I y).2 (hi1 y hy)
 
+/- English proof (translation)
+Establish `hff` using `GlobalTheory.T.finiteEtale_functionField_integralClosure_differentials Z Y p p' c hc inferInstance inferInstance d hK hL hg`. Establish `hgen : ∀ i, genericPoint Y ∈ c ⁻¹ᵁ U i` using `fun i => by`. Express the relevant statement in the definitionally equal form `c (genericPoint Y) ∈ U i`. Rewrite using `[generic_map c]`. Simplify using `using hU.ne {i}`.
+
+Establish `hne` using `generic_mem_inf (fun i => c ⁻¹ᵁ U i) hgen`. Establish `haff : ∀ I : Finset (Fin (d + 1)), I.Nonempty → IsAffineOpen (I.inf fun i => c ⁻¹ᵁ U i)` using `fun I hI => by`. Rewrite using `[preimage_inf]`. Conclude with `(hU.affine I hI).preimage c`. Establish `hcov : IsAffCover p' (fun i => c ⁻¹ᵁ U i) (rB ℂ Y.functionField x)`.
+
+Use `⟨by subst hL; rfl, haff, ?_, hne, fun I hI y => mem_rB_pull hc hK hL hg hU I hI _ rfl (hne I) y⟩` and prove the remaining obligations. Use `top_le_iff.1 fun z _ => ?_` and prove the remaining obligations. Establish `hz : c z ∈ (⊤ : Z.Opens)` using `trivial`. Rewrite `hz` using `[← hU.cover]`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩`. Use `⟨?_, hcov⟩` and prove the remaining obligations. Use `haveI : CharZero F := charZero_of_injective_algebraMap (algebraMap ℂ F).injective`. Use `haveI := hx.fin`. Use `haveI := hff.1`.
+
+Use `haveI : FiniteDimensional F Y.functionField := FiniteDimensional.trans F Z.functionField Y.functionField`. Use `IsFinCover.of_charZero hx.pd inferInstance fun i => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.smooth_sections_in_functionField Y p' (SmoothOfRelativeDimension.smooth d p') hL _ (haff {i} ⟨i, by simp⟩) (hne {i}) _ fun y => mem_rB_pull hc hK hL hg hU {i} ⟨i, by simp⟩ _ rfl (hne {i}) y`.
+-/
 theorem isFinCover_pull (hc : c ≫ p = p') [IsFinite c] [Etale c] (hK : instK = ffAlg p) (hL : instL = ffAlg p')
     (hg : ∀ (V : Z.Opens) (hV : genericPoint Z ∈ V) (hV' : genericPoint Y ∈ c ⁻¹ᵁ V) (g : Γ(Z, V)),
       (Y.presheaf.germ (c ⁻¹ᵁ V) (genericPoint Y) hV').hom ((c.app V).hom g) =

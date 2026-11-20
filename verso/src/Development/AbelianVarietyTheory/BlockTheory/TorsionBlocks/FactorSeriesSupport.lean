@@ -25,10 +25,26 @@ def atFactor {ι : Type} {G : ι → Type} [∀ i, Group (G i)] (i : ι) :
   open Classical in MonoidAlgebra.mapDomainAlgHom ℂ ℂ (MonoidHom.mulSingle G i)
 
 open Classical in
+/- English proof (translation)
+Simplify using `[atFactor]`.
+-/
 theorem atFactor_single {ι : Type} {G : ι → Type} [∀ i, Group (G i)] (i : ι) (γ : G i) (c : ℂ) :
     atFactor i (MonoidAlgebra.single γ c) = MonoidAlgebra.single (Pi.mulSingle i γ) c := by
   simp [atFactor]
 
+/- English proof (translation)
+Rewrite using `[Subalgebra.mem_center_iff]`. Establish `key : ∀ (δ : ∀ i, G i), δ i = 1 → ∀ y : MonoidAlgebra ℂ (G i), MonoidAlgebra.single δ (1 : ℂ) * atFactor i y = atFactor i y * MonoidAlgebra.single δ 1`. Introduce `δ hδ y`. Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => rw [map_add, mul_add, add_mul, ha, hb]`. Consider the case `single γ c`. Rewrite using `[atFactor_single, MonoidAlgebra.single_mul_single, MonoidAlgebra.single_mul_single, one_mul, mul_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[hδ]`. Simplify using `[Pi.mulSingle_eq_of_ne hj]`. Introduce `b`.
+
+Proceed by induction on `b using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [mul_add, add_mul, ha, hb]`. Consider the case `single γ c`. Establish `h1 : MonoidAlgebra.single γ c = MonoidAlgebra.single (Function.update γ i 1) (1 : ℂ) * atFactor i (MonoidAlgebra.single (γ i) c)`.
+
+Rewrite using `[atFactor_single, MonoidAlgebra.single_mul_single, one_mul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne hj, Function.update_of_ne hj]`. Rewrite using `[h1, mul_assoc, ← map_mul, ← hz, map_mul, ← mul_assoc, key _ (Function.update_self _ _ _), mul_assoc]`.
+-/
 theorem atFactor_central {ι : Type} {G : ι → Type} [∀ i, Group (G i)] (i : ι)
     (z : MonoidAlgebra ℂ (G i)) (hz : ∀ b, z * b = b * z) :
     atFactor i z ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (∀ i, G i)) := by
@@ -97,9 +113,15 @@ def SupportAllBlocks : Prop :=
 
 def SeriesLocal : Prop := GaloisAction D ∧ SupportOneBlock D ∧ SupportAllBlocks D
 
+/- English proof (translation)
+Simplify using `[IsPowLabel]`.
+-/
 example {g : ℕ} [Fact g.Prime] (f : (ZMod g)[X]) : IsPowLabel 1 f f := by
   simp [IsPowLabel]
 
+/- English proof (translation)
+Establish `h : Formalism.CyclotomicNorms.rootsBar f₁ = Formalism.CyclotomicNorms.rootsBar f₂` using `h₁.trans h₂.symm`. Apply `Polynomial.map_injective (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)) (RingHom.injective _)` to reduce the goal to its premises. Establish `e : ∀ p : (ZMod g)[X], p.Monic → p.map (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)) = ((Formalism.CyclotomicNorms.rootsBar p).map fun x => X - C x).prod` using `fun p hp => (Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq (hp.map _) (IsAlgClosed.card_roots_eq_natDegree)).symm`. Rewrite using `[e f₁ m₁, e f₂ m₂, h]`.
+-/
 theorem IsPowLabel.unique {g : ℕ} [Fact g.Prime] {a : ℤ} {f f₁ f₂ : (ZMod g)[X]}
     (h₁ : IsPowLabel a f f₁) (h₂ : IsPowLabel a f f₂) (m₁ : f₁.Monic) (m₂ : f₂.Monic) : f₁ = f₂ := by
   have h : Formalism.CyclotomicNorms.rootsBar f₁ = Formalism.CyclotomicNorms.rootsBar f₂ := h₁.trans h₂.symm
@@ -110,6 +132,11 @@ theorem IsPowLabel.unique {g : ℕ} [Fact g.Prime] {a : ℤ} {f f₁ f₂ : (ZMo
       (IsAlgClosed.card_roots_eq_natDegree)).symm
   rw [e f₁ m₁, e f₂ m₂, h]
 
+/- English proof (translation)
+Unfold `rootExp`. Rewrite using `[Ne, Finset.lcm_eq_zero_iff]`. Introduce and unpack `⟨d, hd, h⟩`. Establish `hd1 : d ≠ 0` using `by have := (Finset.mem_Icc.1 hd).1; omega`. Establish `: 1 < g ^ d` using `Nat.one_lt_pow hd1 (by omega)`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem rootExp_ne_zero (N g : ℕ) (hg : 2 ≤ g) : rootExp N g ≠ 0 := by
   unfold rootExp
   rw [Ne, Finset.lcm_eq_zero_iff]

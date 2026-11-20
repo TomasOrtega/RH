@@ -5,6 +5,15 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardSubtypeEqOfMult
 open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheory.LKTrip GlobalTheory.LKGeo UpperTheory.Gal.W2.Seed
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `hiff : ∀ i : Fin n, r i < 0 ↔ ¬ 0 < r i`. Introduce `i`. Distinguish the cases in `hi : (i : ℕ) = 0`. Establish `hp` using `h0 i hi`. Conclude with `⟨fun h => by linarith, fun h => absurd hp h⟩`.
+
+Establish `hq` using `h1 i hi`. Conclude with `⟨fun _ h' => by linarith, fun _ => hq⟩`. Establish `hc1 : Fintype.card {i // 0 < r i} = 1`. Rewrite using `[Fintype.card_eq_one_iff]`. Use `⟨⟨⟨0, hn⟩, h0 _ rfl⟩, fun ⟨j, hj⟩ => ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Assume the negation of the conclusion as `hne`. Conclude with `absurd hj (not_lt.mpr (le_of_lt (h1 j hne)))`. Use `⟨hc1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Fintype.card_congr (Equiv.subtypeEquivRight hiff), Fintype.card_subtype_compl, hc1, Fintype.card_fin]`.
+-/
 private theorem UpperTheory.Gal.W2.Seed.card_signs {n : ℕ} (hn : 1 ≤ n) (r : Fin n → ℝ)
     (h0 : ∀ i : Fin n, (i : ℕ) = 0 → 0 < r i) (h1 : ∀ i : Fin n, (i : ℕ) ≠ 0 → r i < 0) :
     Fintype.card {i // 0 < r i} = 1 ∧ Fintype.card {i // r i < 0} = n - 1 := by
@@ -26,6 +35,17 @@ private theorem UpperTheory.Gal.W2.Seed.card_signs {n : ℕ} (hn : 1 ≤ n) (r :
   rw [Fintype.card_congr (Equiv.subtypeEquivRight hiff), Fintype.card_subtype_compl, hc1,
     Fintype.card_fin]
 
+/- English proof (translation)
+Introduce `hS E _ _ _ A n hn τ`. Establish `hdiag : gramAt (A.H n) τ = diagonal (fun i => ((τ (A.hd n i : E)).re : ℂ))`. Use extensionality with `i j`. Simplify using `only [gramAt, Arith.H, transpose_apply, map_apply, diagonal_apply]`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, Complex.ext_iff]`. Simplify using `[(hS E A n τ i).1]`. Simplify using `[h, Ne.symm h]`. Establish `aux : ∀ (r : Fin n → ℝ) (M : Matrix (Fin n) (Fin n) ℂ) (hM : M.IsHermitian), M = diagonal (fun i => (r i : ℂ)) → sigPosH hM = Fintype.card {i // 0 < r i} ∧ sigNegH hM = Fintype.card {i // r i < 0}`.
+
+Introduce and unpack `r M hM rfl`. Conclude with `sigPosH_sigNegH_diagonal n r hM`. Take `⟨hp, hneg⟩` from `aux _ _ (isHermitian_gramAt (A.herm n) τ) hdiag`. Use `⟨fun hτ => ?_, fun hτ => ?_⟩` and prove the remaining obligations. Establish `hcs` using `card_signs hn _ (fun i hi => (hS E A n τ i).2.2.1 ⟨hτ, hi⟩) (fun i hi => (hS E A n τ i).2.2.2 (fun h => hi h.2))`.
+
+Conclude with `⟨hp.trans hcs.1, hneg.trans hcs.2⟩`. Establish `hall : ∀ i : Fin n, (τ (A.hd n i : E)).re < 0` using `fun i => (hS E A n τ i).2.2.2 (fun h => hτ h.1)`. Use `⟨hp.trans ?_, hneg.trans ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.card_eq_zero_iff]`. Conclude with `⟨fun ⟨i, hi⟩ => absurd hi (not_lt.mpr (le_of_lt (hall i)))⟩`.
+
+Rewrite using `[Fintype.card_congr (Equiv.subtypeUnivEquiv hall), Fintype.card_fin]`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pSigSt :
     HdSign → SigSt := by
   intro hS E _ _ _ A n hn τ

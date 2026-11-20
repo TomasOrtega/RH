@@ -7,6 +7,9 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h : f.app V (restrictGlobal X V a) = restrictGlobal Y (f ⁻¹ᵁ V) (f.appTop a)` using `ConcreteCategory.congr_hom (f.naturality (homOfLE le_top : V ⟶ ⊤).op) _`. Rewrite using `[← h, Scheme.Hom.app_eq_appLE]`.
+-/
 theorem restrictGlobal_appTop_eq_appLE {X Y : Scheme.{0}} (f : Y ⟶ X) (V : X.Opens)
     (a : Γ(X, ⊤)) :
     restrictGlobal Y (f ⁻¹ᵁ V) (f.appTop a) = f.appLE V (f ⁻¹ᵁ V) le_rfl (restrictGlobal X V a) := by
@@ -14,6 +17,17 @@ theorem restrictGlobal_appTop_eq_appLE {X Y : Scheme.{0}} (f : Y ⟶ X) (V : X.O
     ConcreteCategory.congr_hom (f.naturality (homOfLE le_top : V ⟶ ⊤).op) _
   rw [← h, Scheme.Hom.app_eq_appLE]
 
+/- English proof (translation)
+Rewrite `hfree` using `[Scheme.Hom.app_eq_appLE]`. Use `letI := appLEAlgebra f (le_refl (f ⁻¹ᵁ V))`. Use `letI := appLEModule f ((Scheme.Modules.pullback f).obj G) (le_refl (f ⁻¹ᵁ V))`. Use `haveI := appLE_isScalarTower f ((Scheme.Modules.pullback f).obj G) (le_refl (f ⁻¹ᵁ V))`. Take `⟨hF, hFin, hr⟩` from `hfree`.
+
+Establish `hbc` using `isBaseChange_pullbackSections f G hU hV (le_refl (f ⁻¹ᵁ V))`. Set `b` to `Module.Free.chooseBasis Γ(X, V) Γ(Y, f ⁻¹ᵁ V)`. Set `ι` to `Module.Free.ChooseBasisIndex Γ(X, V) Γ(Y, f ⁻¹ᵁ V)`. Set `E : Γ((Scheme.Modules.pullback f).obj G, f ⁻¹ᵁ V) ≃ₗ[Γ(X, V)] (ι → Γ(G, V))` to `(hbc.equiv.restrictScalars Γ(X, V)).symm ≪≫ₗ TensorProduct.congr b.equivFun (LinearEquiv.refl Γ(X, V) Γ(G, V)) ≪≫ₗ TensorProduct.comm _ _ _ ≪≫ₗ TensorProduct.piScalarRight _ _ _ _`. Set `A : sectionsOn ((Scheme.Modules.pullback f).obj G) (f ⁻¹ᵁ V) ≃+ (ι → sectionsOn G V)` to `(sectionsOn.toΓ _ _).trans (E.toAddEquiv.trans (AddEquiv.piCongrRight fun _ ↦ (sectionsOn.toΓ G V).symm))`.
+
+Set `Φ : sectionsOn ((Scheme.Modules.pullback f).obj G) (f ⁻¹ᵁ V) ≃ₗ[O] (ι → sectionsOn G V)` to `A.toLinearEquiv fun r x ↦ by`. Use function extensionality and compare the values at `i`. Apply `(sectionsOn.toΓ G V).injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `sectionsOn.toΓ G V ((sectionsOn.toΓ G V).symm (E (sectionsOn.toΓ _ _ (r • x)) i)) = sectionsOn.toΓ G V (r • (sectionsOn.toΓ G V).symm (E (sectionsOn.toΓ _ _ x) i))`. Rewrite using `[AddEquiv.apply_symm_apply, sectionsOn.toΓ_smul, sectionsOn.toΓ_smul, AddEquiv.apply_symm_apply, ← hO, restrictGlobal_appTop_eq_appLE]`.
+
+Rewrite using `[← appLEModule_smul, E.map_smul]`. Both sides reduce to the same expression. Rewrite using `[Φ.length_eq, Module.length_pi_of_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Break down `subsingleton_or_nontrivial Γ(X, V) with hA | hA` into its components or cases. Use `haveI : Subsingleton Γ(G, V) := Module.subsingleton Γ(X, V) Γ(G, V) haveI : Subsingleton (sectionsOn G V) := (sectionsOn.toΓ G V).toEquiv.subsingleton_congr.2 this`.
+
+Rewrite using `[Module.length_eq_zero_iff.2 this, mul_zero, mul_zero]`. Rewrite using `[← hr, Module.finrank_eq_card_chooseBasisIndex]`.
+-/
 theorem length_sectionsOn_pullback_of_free (O : Type) [CommRing O] {X Y : Scheme.{0}}
     [Algebra O Γ(X, ⊤)] [Algebra O Γ(Y, ⊤)] (f : Y ⟶ X)
     (hO : ∀ r : O, f.appTop (algebraMap O Γ(X, ⊤) r) = algebraMap O Γ(Y, ⊤) r)

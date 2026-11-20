@@ -23,6 +23,17 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Set `σ' : E ≃ₐ[F] E` to `AlgEquiv.ofAlgHom σ σ (AlgHom.ext fun y => hinv y) (AlgHom.ext fun y => hinv y)`. Establish `hσ' : ∀ y, σ' y = σ y` using `fun y => rfl`. Establish `hne : (1 : E ≃ₐ[F] E) ≠ σ'`. Take `⟨y, hy⟩` from `hnt`.
+
+Introduce `h`. Apply `hy` to reduce the goal to its premises. Establish `h2` using `congrArg (fun f : E ≃ₐ[F] E => f y) h`. Simplify using `only [AlgEquiv.one_apply] at h2`. Rewrite using `[← hσ', ← h2]`.
+
+Establish `hle : Nat.card (E ≃ₐ[F] E) ≤ 2`. Rewrite using `[← hfin]`. Combine the equalities or inequalities in the displayed calculation. Establish `huniv : (Finset.univ : Finset (E ≃ₐ[F] E)) = {1, σ'}`. Use `symm`.
+
+Apply `Finset.eq_of_subset_of_card_le (Finset.subset_univ _)` to reduce the goal to its premises. Rewrite using `[Finset.card_pair hne, Finset.card_univ, ← Nat.card_eq_fintype_card]`. Conclude with `hle`. Use `haveI hgal : IsGalois F E := by`. Apply `IsGalois.of_card_aut_eq_finrank` to reduce the goal to its premises.
+
+Rewrite using `[hfin]`. Apply `le_antisymm hle` to reduce the goal to its premises. Rewrite using `[Nat.card_eq_fintype_card, ← Finset.card_univ, huniv, Finset.card_pair hne]`. Rewrite using `[trace_eq_sum_automorphisms, huniv, Finset.sum_pair hne]`. Both sides reduce to the same expression.
+-/
 theorem trace_eq_add (σ : E →ₐ[F] E) (hinv : ∀ y, σ (σ y) = y) (hnt : ∃ x, σ x ≠ x)
     (hfin : Module.finrank F E = 2) (x : E) :
     algebraMap F E (Algebra.trace F E x) = x + σ x := by
@@ -58,34 +69,68 @@ theorem trace_eq_add (σ : E →ₐ[F] E) (hinv : ∀ y, σ (σ y) = y) (hnt : �
 
 variable (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sc_eq (c : Fv F v) : sc (E := E) v c = algebraMap (Fv F v) (Fv F v ⊗[F] E) c := rfl
 
+/- English proof (translation)
+Conclude with `Submodule.subset_span ⟨a, Set.mem_univ _, rfl⟩`.
+-/
 theorem inclR_mem' (a : 𝓞 E) : inclR (F := F) (Fv F v) (a : E) ∈ OEv (E := E) v := by
   exact Submodule.subset_span ⟨a, Set.mem_univ _, rfl⟩
 
+/- English proof (translation)
+Conclude with `Submodule.smul_mem _ (⟨c, hc⟩ : v.adicCompletionIntegers F) hx`.
+-/
 theorem oev_smul' {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) {x : Fv F v ⊗[F] E}
     (hx : x ∈ OEv (E := E) v) : c • x ∈ OEv (E := E) v := by
   exact Submodule.smul_mem _ (⟨c, hc⟩ : v.adicCompletionIntegers F) hx
 
+/- English proof (translation)
+Establish `h` using `inclR_mem' v (1 : 𝓞 E)`. Simplify using `using h`.
+-/
 theorem one_mem : (1 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := by
   have h := inclR_mem' v (1 : 𝓞 E)
   simpa using h
 
+/- English proof (translation)
+Establish `h` using `v.coe_mem_adicCompletionIntegers (K := F) r`. Use `h using 1` and compare the differences between its conclusion and the goal. Conclude with `(IsScalarTower.algebraMap_apply (𝓞 F) F (Fv F v) r).symm`.
+-/
 theorem int_mem (r : 𝓞 F) : algebraMap F (Fv F v) (r : F) ∈ v.adicCompletionIntegers F := by
   have h := v.coe_mem_adicCompletionIntegers (K := F) r
   convert h using 1
   exact (IsScalarTower.algebraMap_apply (𝓞 F) F (Fv F v) r).symm
 
+/- English proof (translation)
+Use `show (Algebra.TensorProduct.includeRight : E →ₐ[F] Fv F v ⊗[F] E) (algebraMap F E a) = _`. Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply F (Fv F v) (Fv F v ⊗[F] E)]`.
+-/
 theorem inclR_alg (a : F) : inclR (F := F) (Fv F v) (algebraMap F E a) =
     algebraMap (Fv F v) (Fv F v ⊗[F] E) (algebraMap F (Fv F v) a) := by
   show (Algebra.TensorProduct.includeRight : E →ₐ[F] Fv F v ⊗[F] E) (algebraMap F E a) = _
   rw [AlgHom.commutes, IsScalarTower.algebraMap_apply F (Fv F v) (Fv F v ⊗[F] E)]
 
+/- English proof (translation)
+Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `oev_smul' v hc (one_mem v)`.
+-/
 theorem alg_mem {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) :
     algebraMap (Fv F v) (Fv F v ⊗[F] E) c ∈ OEv (E := E) v := by
   rw [Algebra.algebraMap_eq_smul_one]
   exact oev_smul' v hc (one_mem v)
 
+/- English proof (translation)
+Establish `hx' : x ∈ Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F` using `F) (Fv F v) (x : E)) '' Set.univ) := hx`. Establish `hy' : y ∈ Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F` using `F) (Fv F v) (x : E)) '' Set.univ) := hy`. Use `show x * y ∈ Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ)`. Use `clear hx hy`. Proceed by induction on `hx' using Submodule.span_induction with`.
+
+Consider the case `mem a ha`. Take `⟨a, -, rfl⟩` from `ha`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem b hb`. Take `⟨b, -, rfl⟩` from `hb`.
+
+Conclude with `Submodule.subset_span ⟨a * b, Set.mem_univ _, by simp⟩`. Consider the case `zero`. Rewrite using `[mul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz`.
+
+Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem _ c hy`.
+
+Consider the case `zero`. Rewrite using `[zero_mul]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x z _ _ hx hz`. Rewrite using `[add_mul]`.
+
+Conclude with `Submodule.add_mem _ hx hz`. Consider the case `smul c x _ hx`. Rewrite using `[smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem mul_mem {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ OEv (E := E) v) :
     x * y ∈ OEv (E := E) v := by
   have hx' : x ∈ Submodule.span (v.adicCompletionIntegers F)
@@ -121,6 +166,19 @@ theorem mul_mem {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ 
     rw [smul_mul_assoc]
     exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hgen : ∀ a : 𝓞 E, Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (inclR (F` using `F) (Fv F v) (a : E)) ∈ v.adicCompletionIntegers F := by`. Introduce `a`. Establish `ht : Algebra.trace (Fv F v) (Fv F v ⊗[F] E) ((1 : Fv F v) ⊗ₜ (a : E)) = algebraMap F (Fv F v) (Algebra.trace F E (a : E))`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply]`.
+
+Establish `h : Algebra.lmul (Fv F v) (Fv F v ⊗[F] E) ((1 : Fv F v) ⊗ₜ (a : E)) = (Algebra.lmul F E (a : E)).baseChange (Fv F v)`. Use extensionality with `k`. Simplify using the standard rewrite rules. Rewrite using `[h, LinearMap.trace_baseChange]`. Establish `hint : IsIntegral ℤ (Algebra.trace F E (a : E))` using `Algebra.isIntegral_trace a.2`.
+
+Establish `h2` using `int_mem v (⟨_, hint⟩ : 𝓞 F)`. Use `show Algebra.trace _ _ ((1 : Fv F v) ⊗ₜ (a : E)) ∈ _`. Rewrite using `[ht]`. Conclude with `h2`. Establish `hx' : x ∈ Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F` using `F) (Fv F v) (x : E)) '' Set.univ) := hx`.
+
+Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, -, rfl⟩` from `hy`. Conclude with `hgen a`.
+
+Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `(v.adicCompletionIntegers F).zero_mem`. Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[show c • y = (c : Fv F v) • y from rfl, map_smul, smul_eq_mul]`. Conclude with `(v.adicCompletionIntegers F).mul_mem _ _ c.2 hy`.
+-/
 theorem trace_mem {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) :
     Algebra.trace (Fv F v) (Fv F v ⊗[F] E) x ∈ v.adicCompletionIntegers F := by
   haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -157,6 +215,15 @@ theorem trace_mem {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) :
     rw [show c • y = (c : Fv F v) • y from rfl, map_smul, smul_eq_mul]
     exact (v.adicCompletionIntegers F).mul_mem _ _ c.2 hy
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Establish `h1 : ∀ e : E, algebraMap (Fv F v) (Fv F v ⊗[F] E) (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) ((1 : Fv F v) ⊗ₜ e)) = (1 : Fv F v) ⊗ₜ e + (1 : Fv F v) ⊗ₜ σ e`. Introduce `e`. Establish `ht : Algebra.trace (Fv F v) (Fv F v ⊗[F] E) ((1 : Fv F v) ⊗ₜ e) = algebraMap F (Fv F v) (Algebra.trace F E e)`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply]`.
+
+Establish `h : Algebra.lmul (Fv F v) (Fv F v ⊗[F] E) ((1 : Fv F v) ⊗ₜ e) = (Algebra.lmul F E e).baseChange (Fv F v)`. Use extensionality with `k`. Simplify using the standard rewrite rules. Rewrite using `[h, LinearMap.trace_baseChange]`. Rewrite using `[ht, ← inclR_alg v, trace_eq_add σ hinv hnt hfin e, map_add]`.
+
+Both sides reduce to the same expression. Establish `hL : (Algebra.linearMap (Fv F v) (Fv F v ⊗[F] E)) ∘ₗ (Algebra.trace (Fv F v) (Fv F v ⊗[F] E)) = LinearMap.id + σ.toLinearMap.baseChange (Fv F v)`. Use extensionality with `e`. Simplify using `using h1 e`. Establish `hw` using `LinearMap.congr_fun hL w`.
+
+Simplify using `only [LinearMap.comp_apply, Algebra.linearMap_apply, LinearMap.add_apply, LinearMap.id_apply] at hw`. Rewrite using `[hw]`. Use `congr 1`.
+-/
 theorem trace_v (σ : E →ₐ[F] E) (hinv : ∀ y, σ (σ y) = y) (hnt : ∃ x, σ x ≠ x)
     (hfin : Module.finrank F E = 2) (w : Fv F v ⊗[F] E) :
     algebraMap (Fv F v) (Fv F v ⊗[F] E) (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) w) =
@@ -187,6 +254,21 @@ theorem trace_v (σ : E →ₐ[F] E) (hinv : ∀ y, σ (σ y) = y) (hnt : ∃ x,
   rw [hw]
   congr 1
 
+/- English proof (translation)
+Use `set A := Algebra.trace (Fv F v) (Fv F v ⊗[F] E) z with hAdef`. Use `set B := Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (inclR (F := F) (Fv F v) (θ : E) * z) with hBdef`. Establish `hA : A ∈ v.adicCompletionIntegers F` using `by simpa using hz 1 (one_mem v)`. Establish `hB : B ∈ v.adicCompletionIntegers F` using `hz _ (inclR_mem' v θ)`. Establish `tA` using `trace_v v σ hinv hnt hfin z`.
+
+Establish `tB` using `trace_v v σ hinv hnt hfin (inclR (F := F) (Fv F v) (θ : E) * z)`. Establish `hsθ : sigR (Fv F v) σ (inclR (F` using `F) (Fv F v) (θ : E)) = inclR (F := F) (Fv F v) (t : E) := by`. Simplify using `[sigR, inclR, ht]`. Use `set Δ := inclR (F := F) (Fv F v) ((θ : E) - t) with hΔ`. Establish `key : Δ * z = algebraMap (Fv F v) (Fv F v ⊗[F] E) B - inclR (F` using `F) (Fv F v) (t : E) * algebraMap (Fv F v) (Fv F v ⊗[F] E) A := by`.
+
+Rewrite using `[tA, tB, map_mul, hsθ, hΔ, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `hΔ2 : Δ * Δ = algebraMap (Fv F v) (Fv F v ⊗[F] E) (algebraMap F (Fv F v) (e : F))`. Rewrite using `[hΔ, ← map_mul, ← sq, he, inclR_alg]`. Establish `hΔm : Δ ∈ OEv (E` using `E) v := by`.
+
+Use `inclR_mem' (E := E) v (θ - t)` as an intermediate fact. Simplify `this` using `[hΔ]`. Establish `hmem : Δ * (algebraMap (Fv F v) (Fv F v ⊗[F] E) B - inclR (F` using `F) (Fv F v) (t : E) * algebraMap (Fv F v) (Fv F v ⊗[F] E) A) ∈ OEv (E := E) v := mul_mem v hΔm (Submodule.sub_mem _ (alg_mem v hB) (mul_mem v (inclR_mem' v t) (alg_mem v hA)))`. Establish `hval : Valued.v (algebraMap F (Fv F v) (e : F)) = 1`. Establish `h` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (R := 𝓞 F) v (algebraMap (𝓞 F) F e)`.
+
+Rewrite `h` using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.2 hev]`. Conclude with `h`. Establish `he0 : algebraMap F (Fv F v) (e : F) ≠ 0`. Introduce `h0`. Rewrite `hval` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hval`. Establish `hinvm : (algebraMap F (Fv F v) (e : F))⁻¹ ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hval, inv_one]`. Establish `hzeq : z = (algebraMap F (Fv F v) (e : F))⁻¹ • (Δ * (algebraMap (Fv F v) (Fv F v ⊗[F] E) B - inclR (F` using `F) (Fv F v) (t : E) * algebraMap (Fv F v) (Fv F v ⊗[F] E) A)) := by`. Rewrite using `[← key, ← mul_assoc, hΔ2, ← Algebra.smul_def, smul_smul, inv_mul_cancel₀ he0, one_smul]`.
+
+Rewrite using `[hzeq]`. Conclude with `oev_smul' v hinvm hmem`.
+-/
 theorem dual_mem (σ : E →ₐ[F] E) (hinv : ∀ y, σ (σ y) = y) (hnt : ∃ x, σ x ≠ x)
     (hfin : Module.finrank F E = 2) (θ t : 𝓞 E) (ht : σ (θ : E) = (t : E)) (e : 𝓞 F)
     (he : ((θ : E) - t) ^ 2 = algebraMap F E (e : F)) (hev : e ∉ v.asIdeal) (z : Fv F v ⊗[F] E)
@@ -235,6 +317,31 @@ end TrW
 
 open TrW in
 
+/- English proof (translation)
+Introduce `hψ hs v y`. Establish `hmax : v.asIdeal.IsMaximal` using `v.isMaximal`. Take `⟨P, hPmax, hPv⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 X.B.I.E) v.asIdeal (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).mp (FaithfulSMul.algebraMap_injective (𝓞 X.B.I.F) (𝓞 X.B.I.E))]`. Conclude with `bot_le)`.
+
+Take `⟨θ, t, htθ, hnot⟩` from `X.B.I.cm.cmUnram.2.2 P hPmax`. Use `set σ := X.B.I.cm.sig with hσ`. Establish `hσx : ∀ x, σ x = star x` using `fun x => rfl`. Establish `hinv : ∀ y, σ (σ y) = y` using `fun y => by rw [hσx, hσx, star_star]`. Establish `ht : σ (θ : X.B.I.E) = (t : X.B.I.E)` using `by rw [hσx]; exact htθ.symm`.
+
+Establish `hne : (θ : X.B.I.E) ≠ t`. Introduce `h`. Apply `hnot` to reduce the goal to its premises. Establish `: θ - t = 0` using `by ext; simp [h]`. Rewrite using `[this]`.
+
+Conclude with `P.zero_mem`. Establish `hnt : ∃ x, σ x ≠ x` using `⟨θ, by rw [ht]; exact fun h => hne h.symm⟩`. Establish `hfix : star (((θ : X.B.I.E) - t) ^ 2) = ((θ : X.B.I.E) - t) ^ 2`. Establish `htθ' : (t : X.B.I.E) = star (θ : X.B.I.E)` using `htθ`. Establish `h1 : star (t : X.B.I.E) = θ` using `by rw [htθ', star_star]`.
+
+Rewrite using `[star_pow, star_sub, h1, ← htθ']`. Expand and normalize the polynomial expressions, which then agree. Take `⟨f, hf⟩` from `(X.B.I.cm.fixed _).1 hfix`. Establish `hint : IsIntegral ℤ (algebraMap X.B.I.F X.B.I.E f)`. Rewrite using `[hf]`.
+
+Establish `h1 : (((θ - t) ^ 2 : 𝓞 X.B.I.E) : X.B.I.E) = ((θ : X.B.I.E) - t) ^ 2` using `by push_cast; ring`. Rewrite using `[← h1]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Establish `hfint : IsIntegral ℤ f` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ X.B.I.F X.B.I.E) (algebraMap X.B.I.F X.B.I.E).injective).mp hint`. Use `set e : 𝓞 X.B.I.F := ⟨f, hfint⟩ with he`.
+
+Establish `he2 : ((θ : X.B.I.E) - t) ^ 2 = algebraMap X.B.I.F X.B.I.E (e : X.B.I.F)` using `hf.symm`. Establish `hev : e ∉ v.asIdeal`. Introduce `hm`. Rewrite `hm` using `[← hPv]`. Establish `hm' : algebraMap (𝓞 X.B.I.F) (𝓞 X.B.I.E) e ∈ P` using `hm`.
+
+Establish `heq : algebraMap (𝓞 X.B.I.F) (𝓞 X.B.I.E) e = (θ - t) ^ 2`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[← IsScalarTower.algebraMap_apply (𝓞 X.B.I.F) (𝓞 X.B.I.E) X.B.I.E, IsScalarTower.algebraMap_apply (𝓞 X.B.I.F) X.B.I.F X.B.I.E, map_pow, map_sub]`. Conclude with `he2.symm`. Rewrite `hm'` using `[heq]`.
+
+Conclude with `hnot (hPmax.isPrime.mem_of_pow_mem 2 hm')`. Establish `hfin` using `X.B.I.cm.deg2`. Establish `hTr : ∀ x, Algebra.trace (Fv X.B.I.F v) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E) (x * (sc (E` using `X.B.I.E) v (dV v) * y)) = dV v * Algebra.trace (Fv X.B.I.F v) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E) (x * y) := by`. Introduce `x`. Rewrite using `[sc_eq, ← Algebra.smul_def, mul_smul_comm, map_smul, smul_eq_mul]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `dual_mem v σ hinv hnt hfin θ t ht e he2 hev _ fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hTr]`. Use `(hC X.B.I.F X.B.I.cm.totReal ψ hψ hs v _).1 fun s hs' => ?_` and prove the remaining obligations.
+
+Establish `e3 : Algebra.trace (Fv X.B.I.F v) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E) (x * y) * s = Algebra.trace (Fv X.B.I.F v) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E) ((s • x) * y)`. Rewrite using `[smul_mul_assoc, map_smul, smul_eq_mul, mul_comm]`. Rewrite using `[e3]`. Conclude with `h _ (oev_smul' v hs' hx)`. Introduce `h x hx`.
+
+Establish `hm` using `trace_mem v (mul_mem v hx h)`. Rewrite `hm` using `[hTr]`. Use `(hC X.B.I.F X.B.I.cm.totReal ψ hψ hs v _).2 hm 1 (one_mem _)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem annX_of {D : D7} (X : HidaSetting D) (ψ : AddChar (AF X.B.I.F) ℂ) (hC : Formalism.L2.SG.Pf.NcVal.CondAll) : AnnX X ψ := by
   intro hψ hs v y
   have hmax : v.asIdeal.IsMaximal := v.isMaximal

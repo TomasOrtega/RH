@@ -12,6 +12,9 @@ attribute [local instance] SplitExt.free SplitExt.finite
 
 namespace GlobalTheory.ZH.UFib
 
+/- English proof (translation)
+Establish `a : splitTorusPointsEquiv S X Z τ (Multiplicative.ofAdd 0) = pullU τ.left ⊤ (charUnit S X 0)` using `Units.ext (splitTorusPointsEquiv_val S X Z τ 0)`. Establish `b : pullU τ.left ⊤ (charUnit S X 0) = 1` using `a.symm.trans (map_one _)`. Establish `c` using `gm_pull (𝟙 Z.left) τ.left z ⊤ trivial (charUnit S X 0)`. Rewrite `c` using `[b, map_one, Category.id_comp]`. Conclude with `c.symm`.
+-/
 theorem gm_charUnit_zero {S : Scheme.{0}} {X : Type} [AddCommGroup X] {Z : Over S} (τ : Z ⟶ splitTorus S X)
     (z : Z.left) : gm τ.left z ⊤ (charUnit S X 0) = 1 := by
   have a : splitTorusPointsEquiv S X Z τ (Multiplicative.ofAdd 0) = pullU τ.left ⊤ (charUnit S X 0) :=
@@ -21,12 +24,18 @@ theorem gm_charUnit_zero {S : Scheme.{0}} {X : Type} [AddCommGroup X] {Z : Over 
   rw [b, map_one, Category.id_comp] at c
   exact c.symm
 
+/- English proof (translation)
+Establish `e` using `gs_pull (𝟙 Z) r z U (h trivial) f`. Rewrite `e` using `[Category.id_comp]`. Conclude with `(gs_res (𝟙 Z) z h trivial _).trans e`.
+-/
 theorem gs_id_appLE {X Z : Scheme.{0}} (r : Z ⟶ X) (U : X.Opens) (h : ⊤ ≤ r ⁻¹ᵁ U) (z : Z) (f : Γ(X, U)) :
     gs (𝟙 Z) z ⊤ ((r.appLE U ⊤ h).hom f) = gs r z U f := by
   have e := gs_pull (𝟙 Z) r z U (h trivial) f
   rw [Category.id_comp] at e
   exact (gs_res (𝟙 Z) z h trivial _).trans e
 
+/- English proof (translation)
+Introduce `k _ _ E G _ D W f hf`. Use `D.q_affine` as an intermediate fact. Use `(invariant_functions_descend _ G E.B _ D.q D.i D.q_hom D.i_hom D.q_flat D.q_surjective inferInstance D.isKernel W).2.2 f fun Z t g h₁ h₂ => fn_ext fun z _ => ?_` and prove the remaining obligations. Rewrite using `[gs_id_appLE, gs_id_appLE, hf Z t g z (h₂ trivial), gm_charUnit_zero, Units.val_one, _root_.one_mul]`.
+-/
 theorem exists_app_eq_of_hasWt_zero : ∀ (k : Type) [Field k] [IsAlgClosed k] (E : SplitExt (Sp k)) (G : Over (Sp k)) [GrpObj G] (D : E.GtDatum G) (W : E.B.left.Opens) (f : Γ(G.left, D.q.left ⁻¹ᵁ W)), UFib.HasWt D.i (D.q.left ⁻¹ᵁ W) f 0 → ∃ a : Γ(E.B.left, W), (D.q.left.app W).hom a = f := by
   intro k _ _ E G _ D W f hf
   have := D.q_affine

@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ n _ _ A B a b ha hb hA hB i j`. Rewrite using `[Matrix.mul_apply]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha hb)` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (hA i k) (hB k j) (norm_nonneg _) ha`.
+-/
 theorem matrix_mul_entry_norm_le_ultrametric :
     ∀ (E : Type) [NormedField E] [IsUltrametricDist E] (n : Type) [Fintype n] [DecidableEq n]
       (A B : Matrix n n E) (a b : ℝ), 0 ≤ a → 0 ≤ b → (∀ i j, ‖A i j‖ ≤ a) → (∀ i j, ‖B i j‖ ≤ b) →

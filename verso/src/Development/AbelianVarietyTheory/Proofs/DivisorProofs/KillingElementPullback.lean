@@ -8,6 +8,11 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 
 namespace GlobalTheory.MixedLocalChains
 
+/- English proof (translation)
+Introduce `h`. Unfold `Kills at h ⊢`. Establish `h1 : smulHom ((Scheme.Modules.pullback f.f).obj P.mod) (f.f.appTop g) = 0`. Rewrite using `[← GlobalTheory.VB.pullback_map_smulHom, h, Functor.map_zero]`. Establish `h2 : smulHom (P.pull f).mod (f.f.appTop g) = (P.pullModIso f).hom ≫ smulHom _ (f.f.appTop g) ≫ (P.pullModIso f).inv`.
+
+Rewrite using `[← smulHom_comp_assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[h2, h1, zero_comp, comp_zero]`.
+-/
 theorem Pres.kills_pull (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B B' : GlobalTheory.Vert.Model O)
     (f : GlobalTheory.Vert.Model.Hom B' B) (P : Pres B) (g : Γ(B.X, ⊤)) :
     Kills g P.mod → Kills (f.f.appTop g) (P.pull f).mod := by

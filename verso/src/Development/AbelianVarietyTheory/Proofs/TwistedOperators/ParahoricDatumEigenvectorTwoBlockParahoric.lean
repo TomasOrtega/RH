@@ -7,6 +7,13 @@ namespace GlobalTheory.DatumEigen
 
 variable {k : Type} [Field k] [ValuativeRel k]
 
+/- English proof (translation)
+Establish `key : ∀ x : 𝒪[k], IsLocalRing.residue 𝒪[k] x = 0 ↔ valuation k (algebraMap 𝒪[k] k x) < 1`. Introduce `x`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Conclude with `⟨fun h => lt_of_le_of_ne x.2 h, fun h => h.ne⟩`. Set `M' : Matrix m m 𝒪[k]` to `fun i j => ⟨M i j, hM i j⟩`.
+
+Set `N' : Matrix m m 𝒪[k]` to `fun i j => ⟨N i j, hN i j⟩`. Establish `eM : M = (algebraMap 𝒪[k] k).mapMatrix M'` using `rfl`. Establish `eN : N = (algebraMap 𝒪[k] k).mapMatrix N'` using `rfl`. Establish `hres : (IsLocalRing.residue 𝒪[k]).mapMatrix M' = (IsLocalRing.residue 𝒪[k]).mapMatrix N'`. Use extensionality with `i j`.
+
+Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite using `[← sub_eq_zero, ← map_sub, key]`. Conclude with `h i j`. Rewrite using `[eM, eN, ← RingHom.map_det, ← RingHom.map_det, ← map_sub, ← key, map_sub, RingHom.map_det, RingHom.map_det, hres, sub_self]`.
+-/
 theorem val_det_sub_lt {m : Type} [Fintype m] [DecidableEq m] {M N : Matrix m m k}
     (hM : ∀ i j, M i j ∈ 𝒪[k]) (hN : ∀ i j, N i j ∈ 𝒪[k]) (h : ∀ i j, valuation k (M i j - N i j) < 1) :
     valuation k (M.det - N.det) < 1 := by
@@ -27,10 +34,16 @@ theorem val_det_sub_lt {m : Type} [Fintype m] [DecidableEq m] {M N : Matrix m m 
   rw [eM, eN, ← RingHom.map_det, ← RingHom.map_det, ← map_sub, ← key, map_sub, RingHom.map_det,
     RingHom.map_det, hres, sub_self]
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' ha).trans_lt hb`.
+-/
 theorem val_mul_lt {a b : k} (ha : valuation k a ≤ 1) (hb : valuation k b < 1) : valuation k (a * b) < 1 := by
   rw [map_mul]
   exact (mul_le_of_le_one_left' ha).trans_lt hb
 
+/- English proof (translation)
+Set `M' : Matrix m m 𝒪[k]` to `fun i j => ⟨M i j, hM i j⟩`. Establish `eM : M = (algebraMap 𝒪[k] k).mapMatrix M'` using `rfl`. Rewrite using `[eM, ← RingHom.map_det]`. Conclude with `(M'.det).2`.
+-/
 theorem det_int {m : Type} [Fintype m] [DecidableEq m] {M : Matrix m m k} (hM : ∀ i j, M i j ∈ 𝒪[k]) :
     M.det ∈ 𝒪[k] := by
   let M' : Matrix m m 𝒪[k] := fun i j => ⟨M i j, hM i j⟩
@@ -38,6 +51,9 @@ theorem det_int {m : Type} [Fintype m] [DecidableEq m] {M : Matrix m m k} (hM : 
   rw [eM, ← RingHom.map_det]
   exact (M'.det).2
 
+/- English proof (translation)
+Use `le_antisymm ha ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `replace hlt := not_le.1 hlt`. Establish `: a * b < 1` using `(mul_le_of_le_one_right' hb).trans_lt hlt`. Conclude with `this.ne h`.
+-/
 theorem eq_one_of_mul {a b : ValueGroupWithZero k} (ha : a ≤ 1) (hb : b ≤ 1) (h : a * b = 1) : a = 1 := by
   refine le_antisymm ha ?_
   by_contra hlt
@@ -45,6 +61,11 @@ theorem eq_one_of_mul {a b : ValueGroupWithZero k} (ha : a ≤ 1) (hb : b ≤ 1)
   have : a * b < 1 := (mul_le_of_le_one_right' hb).trans_lt hlt
   exact this.ne h
 
+/- English proof (translation)
+Establish `hb0 : (b : k) ≠ 0` using `b.ne_zero`. Establish `h1 : ξ (a * b⁻¹) = 1`. Apply `hξ` to reduce the goal to its premises. Establish `e : ((a * b⁻¹ : kˣ) : k) - 1 = ((a : k) - b) * (b : k)⁻¹`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_mul, map_inv₀, hb, inv_one, mul_one]`. Conclude with `h`. Rewrite `h1` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h1`.
+-/
 theorem tame_eq {ξ : kˣ →* ℂˣ} (hξ : IsTame ξ) {a b : kˣ} (hb : valuation k (b : k) = 1)
     (h : valuation k ((a : k) - b) < 1) : ξ a = ξ b := by
   have hb0 : (b : k) ≠ 0 := b.ne_zero
@@ -63,9 +84,17 @@ section Blocks
 
 variable {A D E : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] [Fintype E] [DecidableEq E]
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.SplitFlip.mem_KO_iff j).1 (mem_parahoric.1 hj).1).1 i l`.
+-/
 theorem int_of_mem {j : GL (A ⊕ D) k} (hj : j ∈ parahoric k A D) (i l : A ⊕ D) : j.val i l ∈ 𝒪[k] :=
   ((GlobalTheory.SplitFlip.mem_KO_iff j).1 (mem_parahoric.1 hj).1).1 i l
 
+/- English proof (translation)
+Establish `hJ` using `int_of_mem hj`. Establish `hl` using `(mem_parahoric.1 hj).2`. Rewrite using `[← det_fromBlocks_zero₂₁ j.val.toBlocks₁₁ j.val.toBlocks₁₂ j.val.toBlocks₂₂]`. Use `val_det_sub_lt hJ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `rintro (i | i) (l | l) <;> simp [toBlocks₁₁, toBlocks₁₂, toBlocks₂₂, hJ]`.
+
+Apply the tactic sequence `rintro (i | i) (l | l) <;> simp [toBlocks₁₁, toBlocks₁₂, toBlocks₂₂, hl]`.
+-/
 theorem det_cong {j : GL (A ⊕ D) k} (hj : j ∈ parahoric k A D) :
     valuation k (j.val.det - j.val.toBlocks₁₁.det * j.val.toBlocks₂₂.det) < 1 := by
   have hJ := int_of_mem hj
@@ -75,6 +104,13 @@ theorem det_cong {j : GL (A ⊕ D) k} (hj : j ∈ parahoric k A D) :
   · rintro (i | i) (l | l) <;> simp [toBlocks₁₁, toBlocks₁₂, toBlocks₂₂, hJ]
   · rintro (i | i) (l | l) <;> simp [toBlocks₁₁, toBlocks₁₂, toBlocks₂₂, hl]
 
+/- English proof (translation)
+Establish `hJ` using `int_of_mem hj`. Establish `h1 : valuation k j.val.det = 1`. Use `nabs_det_of_mem_KO (mem_parahoric.1 hj).1` as an intermediate fact. Rewrite `this` using `[nabs_eq_one_iff]`. Then use the resulting hypothesis. Establish `h2` using `Valuation.map_eq_of_sub_lt _ (show valuation k (j.val.toBlocks₁₁.det * j.val.toBlocks₂₂.det - j.val.det) < valuation k j.val.det by`.
+
+Rewrite using `[h1, ← Valuation.map_neg, neg_sub]`. Conclude with `det_cong hj)`. Rewrite `h2` using `[h1, map_mul]`. Establish `i11 : valuation k j.val.toBlocks₁₁.det ≤ 1` using `det_int fun i l => hJ _ _`. Establish `i22 : valuation k j.val.toBlocks₂₂.det ≤ 1` using `det_int fun i l => hJ _ _`.
+
+Conclude with `⟨eq_one_of_mul i11 i22 h2, eq_one_of_mul i22 i11 (by rw [mul_comm]; exact h2)⟩`.
+-/
 theorem val_det_blocks {j : GL (A ⊕ D) k} (hj : j ∈ parahoric k A D) :
     valuation k j.val.toBlocks₁₁.det = 1 ∧ valuation k j.val.toBlocks₂₂.det = 1 := by
   have hJ := int_of_mem hj
@@ -91,6 +127,19 @@ theorem val_det_blocks {j : GL (A ⊕ D) k} (hj : j ∈ parahoric k A D) :
 
 omit [Fintype E] [DecidableEq E] in
 
+/- English proof (translation)
+Establish `hJ` using `int_of_mem hj`. Establish `hl` using `(mem_parahoric.1 hj).2`. Take `⟨hxi, hxd, hxl⟩` from `hx`. Establish `hprod : ∀ i l, (x * j.val) i l ∈ 𝒪[k]` using `fun i l => by`. Rewrite using `[mul_apply]`.
+
+Conclude with `sum_mem fun m _ => mul_mem (hxi i m) (hJ m l)`. Establish `hcong : valuation k ((x * j.val).toBlocks₁₁.det - x.toBlocks₁₁.det * j.val.toBlocks₁₁.det) < 1`. Rewrite using `[← det_mul]`. Use `val_det_sub_lt (fun i l => hprod _ _) (fun i l => ?_) (fun i l => ?_)` and prove the remaining obligations. Rewrite using `[mul_apply]`.
+
+Conclude with `sum_mem fun m _ => mul_mem (hxi _ _) (hJ _ _)`. Simplify using `only [toBlocks₁₁, of_apply, mul_apply, Fintype.sum_sum_type, add_sub_cancel_left]`. Conclude with `Valuation.map_sum_lt _ one_ne_zero fun m _ => val_mul_lt (hxi _ _) (hl _ _)`. Establish `hd1 : valuation k (x.toBlocks₁₁.det * j.val.toBlocks₁₁.det) = 1`. Rewrite using `[map_mul, hxd, one_mul, (val_det_blocks hj).1]`.
+
+Use `⟨⟨hprod, ?_, ?_⟩, hcong⟩` and prove the remaining obligations. Rewrite using `[← hd1]`. Use `Valuation.map_eq_of_sub_lt _ ?_` and prove the remaining obligations. Rewrite using `[hd1]`. Conclude with `hcong`.
+
+Introduce `e a`. Rewrite using `[mul_apply, Fintype.sum_sum_type]`. Use `Valuation.map_add_lt _ (Valuation.map_sum_lt _ one_ne_zero fun m _ => ?_) (Valuation.map_sum_lt _ one_ne_zero fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `val_mul_lt (hJ _ _) (hxl _ _)`.
+
+Conclude with `val_mul_lt (hxi _ _) (hl _ _)`.
+-/
 theorem inSupp_mul {x : Matrix (A ⊕ E) (A ⊕ D) k} (hx : InSupp x) {j : GL (A ⊕ D) k}
     (hj : j ∈ parahoric k A D) : InSupp (x * j.val) ∧
       valuation k ((x * j.val).toBlocks₁₁.det - x.toBlocks₁₁.det * j.val.toBlocks₁₁.det) < 1 := by
@@ -120,6 +169,21 @@ theorem inSupp_mul {x : Matrix (A ⊕ E) (A ⊕ D) k} (hx : InSupp x) {j : GL (A
 
 end Blocks
 
+/- English proof (translation)
+Introduce `k _ _ _ _ A D E _ _ _ _ _ _ ξ μ₀ hξ hμ j hj d hd`. Use function extensionality and compare the values at `x`. Establish `hK` using `(mem_parahoric.1 hj).1`. Establish `hdetv : valuation k (GeneralLinearGroup.det j : k) = 1` using `(nabs_eq_one_iff _).1 (nabs_det_of_mem_KO hK)`. Establish `hμj : μ₀ (GeneralLinearGroup.det j) = 1` using `hμ _ hdetv`.
+
+Simplify using `only [om, nabs_det_of_mem_KO hK, MonoidHom.mul_apply, hμj, one_mul, map_one, mul_one, inv_one, Units.val_one, Real.one_rpow, Complex.ofReal_one]`. Rewrite using `[show nabs k 1 = 1 by simp [nabs], Real.one_rpow, Complex.ofReal_one, mul_one, Matrix.one_mul]`. Unfold `datum`. Take `⟨h11, h22⟩` from `val_det_blocks hj`. Distinguish the cases in `hx : InSupp x`.
+
+Take `⟨hs, hc⟩` from `inSupp_mul hx hj`. Establish `n11 : j.val.toBlocks₁₁.det ≠ 0` using `fun h0 => by rw [h0, map_zero] at h11; exact zero_ne_one h11`. Use `set u : kˣ := Units.mk0 _ n11 with hu`. Establish `hdv : valuation k (d : k) = 1` using `by rw [hd]; exact h22`. Establish `t1 : ξ (GeneralLinearGroup.det j) = ξ (u * d)`.
+
+Use `tame_eq hξ (by rw [Units.val_mul, map_mul, hdv, mul_one]; exact h11) ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, hd, GeneralLinearGroup.val_det_apply]`. Conclude with `det_cong hj`. Establish `t2 : ξ (Units.mk0 _ hs.det_ne) = ξ (Units.mk0 _ hx.det_ne * u)`. Use `tame_eq hξ (by rw [Units.val_mul, map_mul, Units.val_mk0, hx.2.1, one_mul]; exact h11) ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, Units.val_mk0, Units.val_mk0]`. Conclude with `hc`. Rewrite using `[dif_pos hs, dif_pos hx, t1, t2, map_mul, map_mul]`. Simplify using `only [Units.val_mul, _root_.mul_inv_rev, Units.val_inv_eq_inv_val]`. Establish `a1 : (ξ u : ℂ) ≠ 0` using `Units.ne_zero _`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hs : ¬ InSupp (x * j.val)` using `fun hs => by`. Use `(inSupp_mul hs (inv_mem hj)).1` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Conclude with `hx this`.
+
+Rewrite using `[dif_neg hs, dif_neg hx, mul_zero, mul_zero]`.
+-/
 theorem om_datum : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A D E : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] [Fintype E] [DecidableEq E]
     (ξ μ₀ : kˣ →* ℂˣ), IsTame ξ → IsUnram μ₀ →

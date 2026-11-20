@@ -12,6 +12,19 @@ namespace GlobalTheory.CompanionTheory.BmuTorBound
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Take `⟨hpos, hpair, hmid, hf⟩` from `hd`. Distinguish the cases in `h1 : j < r`. Conclude with `ha ⟨j, h1⟩`. Distinguish the cases in `h2 : r + k ≤ j`. Establish `hlt : 2 * r + k - j - 1 < r` using `by omega`.
+
+Establish `h` using `ha ⟨2 * r + k - j - 1, hlt⟩`. Establish `p1` using `hpair ⟨j, by omega⟩ (nxt k r ⟨2 * r + k - j - 1, hlt⟩) (Or.inr h2) (by simp only [nxt]; omega)`. Establish `p2` using `hpair ⟨j + 1, hj⟩ (eI k r ⟨2 * r + k - j - 1, hlt⟩) (Or.inr (by simp only; omega)) (by simp only [eI]; omega)`. Establish `q1` using `hpos ⟨j, by omega⟩`. Establish `q2` using `hpos ⟨j + 1, hj⟩`.
+
+Generalize the expression as in `d ⟨j, by omega⟩ = x at *`. Generalize the expression as in `d ⟨j + 1, hj⟩ = y at *`. Generalize the expression as in `d (nxt k r ⟨2 * r + k - j - 1, hlt⟩) = u at *`. Generalize the expression as in `d (eI k r ⟨2 * r + k - j - 1, hlt⟩) = v at *`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `a1 : d ⟨j, by omega⟩ ≤ 1`. Distinguish the cases in `h3 : j = r`. Establish `: (⟨j, by omega⟩ : Fin (2 * r + k + 1)) = wI k r 0` using `Fin.ext (by simp [wI, h3])`. Rewrite using `[this]`. Conclude with `hf`.
+
+Conclude with `(hmid _ (by simp only [outer]; omega)).le`. Establish `a2 : 1 ≤ d ⟨j + 1, hj⟩`. Distinguish the cases in `h3 : j + 1 = r + k`. Establish `p` using `hpair ⟨j + 1, hj⟩ (wI k r 0) (Or.inr (by simp only; omega)) (by simp [wI]; omega)`. Establish `q` using `hpos ⟨j + 1, hj⟩`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `(hmid _ (by simp only [outer]; omega)).ge`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem step_le (k r : ℕ) (d : Fin (2 * r + k + 1) → ℝ) (M : ℝ) (hd : IsTor k r d) (hM : 1 ≤ M)
     (ha : ∀ a : Fin r, d (eI k r a) ≤ M * d (nxt k r a)) (j : ℕ) (hj : j + 1 < 2 * r + k + 1) :
     d ⟨j, by omega⟩ ≤ M * d ⟨j + 1, hj⟩ := by
@@ -47,6 +60,11 @@ theorem step_le (k r : ℕ) (d : Fin (2 * r + k + 1) → ℝ) (M : ℝ) (hd : Is
     · exact (hmid _ (by simp only [outer]; omega)).ge
   nlinarith
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `h1` using `ih (by omega)`. Establish `h2` using `hs (j + m) h`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem chain_le {n : ℕ} (d : Fin n → ℝ) (M : ℝ) (hM : 1 ≤ M)
     (hs : ∀ (j : ℕ) (hj : j + 1 < n), d ⟨j, by omega⟩ ≤ M * d ⟨j + 1, hj⟩) (j m : ℕ) (h : j + m < n) :
     d ⟨j, by omega⟩ ≤ M ^ m * d ⟨j + m, h⟩ := by
@@ -59,6 +77,13 @@ theorem chain_le {n : ℕ} (d : Fin n → ℝ) (M : ℝ) (hM : 1 ≤ M)
       _ ≤ M ^ m * (M * d ⟨j + m + 1, h⟩) := mul_le_mul_of_nonneg_left h2 (by positivity)
       _ = M ^ (m + 1) * d ⟨j + (m + 1), h⟩ := by rw [pow_succ, mul_assoc]; rfl
 
+/- English proof (translation)
+Distinguish the cases in `hij : i < j`. Establish `hi : ¬ outer k r i` using `fun h' => h ⟨hij, Or.inl h'⟩`. Establish `hj : ¬ outer k r j` using `fun h' => h ⟨hij, Or.inr h'⟩`. Rewrite using `[hd.2.2.1 i hi, hd.2.2.1 j hj, mul_one]`. Conclude with `one_le_pow₀ hM`.
+
+Establish `hji : j.val ≤ i.val`. Use `not_lt.mp hij` as an intermediate fact. Conclude with `this`. Establish `hc` using `chain_le d M hM (step_le k r d M hd hM ha) j.val (i.val - j.val) (by have := i.2; omega)`. Establish `e : (⟨j.val + (i.val - j.val), by have` using `i.2; omega⟩ : Fin (2 * r + k + 1)) = i := Fin.ext (by simp only; omega)`.
+
+Rewrite `hc` using `[e]`. Use `hc.trans (mul_le_mul_of_nonneg_right ?_ (hd.1 i).le)` and prove the remaining obligations. Conclude with `pow_le_pow_right₀ hM (by have := i.2; omega)`.
+-/
 theorem ratio_le (k r : ℕ) (d : Fin (2 * r + k + 1) → ℝ) (M : ℝ) (hd : IsTor k r d) (hM : 1 ≤ M)
     (ha : ∀ a : Fin r, d (eI k r a) ≤ M * d (nxt k r a)) (i j : Fin (2 * r + k + 1)) (h : ¬ up k r i j) :
     d j ≤ M ^ (2 * r + k + 1) * d i := by
@@ -77,6 +102,15 @@ theorem ratio_le (k r : ℕ) (d : Fin (2 * r + k + 1) → ℝ) (M : ℝ) (hd : I
     refine hc.trans (mul_le_mul_of_nonneg_right ?_ (hd.1 i).le)
     exact pow_le_pow_right₀ hM (by have := i.2; omega)
 
+/- English proof (translation)
+Establish `hU : R ∈ Matrix.unitaryGroup (Fin n) ℂ` using `Matrix.mem_unitaryGroup_iff'.mpr hR`. Establish `he : ∀ i j, ‖R i j‖ ≤ 1` using `fun i j => entry_norm_bound_of_unitary hU i j`. Rewrite using `[Matrix.norm_le_iff (by positivity)]`. Introduce `i j`. Establish `h1 : ∀ l, ‖(Rᴴ * B) i l‖ ≤ n * ‖B‖`.
+
+Introduce `l`. Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_card_nsmul _ _ ‖B‖ ?_).trans (by simp)` and prove the remaining obligations. Introduce `x _`.
+
+Rewrite using `[norm_mul, Matrix.conjTranspose_apply, norm_star]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_card_nsmul _ _ (n * ‖B‖) ?_).trans (by simp [sq, mul_assoc])` and prove the remaining obligations.
+
+Introduce `x _`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem unitary_conj_le {n : ℕ} (R B : Mat n) (hR : Rᴴ * R = 1) : ‖Rᴴ * B * R‖ ≤ (n : ℝ) ^ 2 * ‖B‖ := by
   have hU : R ∈ Matrix.unitaryGroup (Fin n) ℂ := Matrix.mem_unitaryGroup_iff'.mpr hR
   have he : ∀ i j, ‖R i j‖ ≤ 1 := fun i j => entry_norm_bound_of_unitary hU i j
@@ -101,6 +135,21 @@ theorem unitary_conj_le {n : ℕ} (R B : Mat n) (hR : Rᴴ * R = 1) : ‖Rᴴ * 
         mul_le_mul (h1 x) (he x j) (norm_nonneg _) (by positivity)
     _ = n * ‖B‖ := mul_one _
 
+/- English proof (translation)
+Introduce `k r d R A M _ hd hR hM ha hA`. Establish `hpos` using `hd.1`. Establish `hinv : (dg d * R)⁻¹ = Rᴴ * dg (fun i => (d i)⁻¹)`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Establish `: dg (fun i => (d i)⁻¹) * dg d = 1`.
+
+Unfold `dg`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← Complex.ofReal_mul, inv_mul_cancel₀ (hpos i).ne', Complex.ofReal_one]`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (dg _), this, Matrix.one_mul, hR]`. Establish `e : (dg d * R)⁻¹ * A * (dg d * R) = Rᴴ * (dg (fun i => (d i)⁻¹) * A * dg d) * R`. Rewrite using `[hinv]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e]`.
+
+Use `(unitary_conj_le R _ hR).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc _ ‖A‖]`. Use `mul_le_mul_of_nonneg_left ?_ (sq_nonneg _)` and prove the remaining obligations. Rewrite using `[Matrix.norm_le_iff (by positivity)]`. Introduce `i j`.
+
+Unfold `dg`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `hu : up k r i j`. Rewrite using `[hA i j hu]`. Simplify using `only [mul_zero, zero_mul, norm_zero]`.
+
+Check the signs of the components of the expression. Establish `hr` using `ratio_le k r d M hd hM ha i j hu`. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg (hpos j).le, Real.norm_of_nonneg (inv_pos.mpr (hpos i)).le]`. Establish `h2 : (d i)⁻¹ * d j ≤ M ^ (2 * r + k + 1)`. Rewrite using `[inv_mul_le_iff₀ (hpos i), mul_comm]`.
+
+Conclude with `hr`. Establish `hi` using `hpos i`. Establish `hj` using `hpos j`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem torBound : TorBound := by
   intro k r d R A M _ hd hR hM ha hA
   have hpos := hd.1

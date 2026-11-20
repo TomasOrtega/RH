@@ -31,6 +31,15 @@ def shift : Prop := ∀ (R : Type) [CommRing R] (I : Cx R) {A B : Shv R} (φ : A
   (Function.Injective (cpull ((CochainComplex.singleFunctor (Shv R) 0).map φ) I (j - p)) →
     Function.Injective (cpull ((CochainComplex.singleFunctor (Shv R) (-(p : ℤ))).map φ) I j))
 
+/- English proof (translation)
+Introduce `R _ I _ hI K L _ _ g n hlow hn h0`. Take `⟨hb, hlim⟩` from `hS R I hI g`. Establish `base : Good (trm g 0) I (n + 1)` using `⟨fun j _ => hb h0 j, (hb h0 (n + 1)).1⟩`. Establish `step : ∀ N : ℕ, Good (trm g N) I (n + 1)`. Introduce `N`.
+
+Proceed by induction on `N with`. Consider the case `zero => exact base`. Consider the case `succ N ih`. Use `hL R I hI g (n + 1) N ⟨fun j hj => ?_, ?_⟩ ih` and prove the remaining obligations. Conclude with `(hH R I (g.f (-((N + 1 : ℕ) : ℤ))) (N + 1) j).1 (hlow (N + 1) (j - ((N + 1 : ℕ) : ℤ)) (by omega))`.
+
+Apply `(hH R I (g.f (-((N + 1 : ℕ) : ℤ))) (N + 1) (n + 1)).2` to reduce the goal to its premises. Break down `Nat.eq_zero_or_pos N with h | h` into its components or cases. Substitute `h` using the available equality. Establish `e : n + 1 - ((0 + 1 : ℕ) : ℤ) = n` using `by omega`. Rewrite using `[e]`.
+
+Conclude with `hn (0 + 1)`. Conclude with `(hlow (N + 1) _ (by omega)).1`. Establish `hg` using `hlim (n + 1) (n + 2).toNat (by omega) (step _)`. Conclude with `⟨hg.1, hg.2⟩`.
+-/
 theorem CxDesc_of (hS : stupid) (hL : long) (hH : shift) : LateralTheory.E.DescStepPf.CxDesc := by
   intro R _ I _ hI K L _ _ g n hlow hn h0
   obtain ⟨hb, hlim⟩ := hS R I hI g

@@ -11,10 +11,18 @@ def small (ϖ : k) (n l : ℕ) : Set (GL (Fin n) k) :=
     ∀ i j, valuation k (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j
         - (1 : Matrix (Fin n) (Fin n) k) i j) ≤ valuation k ϖ ^ l}
 
+/- English proof (translation)
+Introduce `_ _ hab _ hg` and use `⟨fun i j => (hg.1 i j).trans (pow_le_pow_right_of_le_one' h.le hab), fun i j => (hg.2 i j).trans (pow_le_pow_right_of_le_one' h.le hab)⟩`.
+-/
 theorem small_antitone {ϖ : k} (h : valuation k ϖ < 1) (n : ℕ) : Antitone (small ϖ n) :=
   fun _ _ hab _ hg => ⟨fun i j => (hg.1 i j).trans (pow_le_pow_right_of_le_one' h.le hab),
     fun i j => (hg.2 i j).trans (pow_le_pow_right_of_le_one' h.le hab)⟩
 
+/- English proof (translation)
+Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero' k).tendsto_right_iff]`. Introduce `γ hγ`. Establish `: MulArchimedean (ValueGroupWithZero k)` using `ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Take `⟨l, hl⟩` from `exists_pow_lt₀ h (Units.mk0 γ hγ)`. Use `mem_iInf_of_mem l (mem_principal.2 fun a ha => ?_)` and prove the remaining obligations.
+
+Conclude with `lt_of_le_of_lt (hf l a ha) hl`.
+-/
 theorem tendsto_zero_of_le_pow {ϖ : k} (h : valuation k ϖ < 1) {α : Type} {s : ℕ → Set α} (f : α → k)
     (hf : ∀ l, ∀ a ∈ s l, valuation k (f a) ≤ valuation k ϖ ^ l) :
     Tendsto f (⨅ l, 𝓟 (s l)) (𝓝 0) := by
@@ -26,6 +34,9 @@ theorem tendsto_zero_of_le_pow {ϖ : k} (h : valuation k ϖ < 1) {α : Type} {s 
   refine mem_iInf_of_mem l (mem_principal.2 fun a ha => ?_)
   exact lt_of_le_of_lt (hf l a ha) hl
 
+/- English proof (translation)
+Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Establish `h0` using `(tendsto_zero_of_le_pow h (fun a => f a i j - (1 : Matrix (Fin n) (Fin n) k) i j) (fun l a ha => hf l a ha i j)).add_const ((1 : Matrix (Fin n) (Fin n) k) i j)`. Simplify using `using h0`.
+-/
 theorem tendsto_one_of_le_pow {ϖ : k} (h : valuation k ϖ < 1) {n : ℕ} {α : Type} {s : ℕ → Set α}
     (f : α → Matrix (Fin n) (Fin n) k)
     (hf : ∀ l, ∀ a ∈ s l, ∀ i j,
@@ -37,6 +48,15 @@ theorem tendsto_one_of_le_pow {ϖ : k} (h : valuation k ϖ < 1) {n : ℕ} {α : 
     (fun l a ha => hf l a ha i j)).add_const ((1 : Matrix (Fin n) (Fin n) k) i j)
   simpa using h0
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n U hU h1 ϖ hϖ`. Establish `ha : Tendsto (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k)) (⨅ l, 𝓟 (small ϖ n l)) (𝓝 1)` using `tendsto_one_of_le_pow hϖ _ fun l _ ha => ha.1`. Establish `hb : Tendsto (fun g : GL (Fin n) k => ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) (⨅ l, 𝓟 (small ϖ n l)) (𝓝 1)` using `tendsto_one_of_le_pow hϖ _ fun l _ ha => ha.2`. Establish `ht : Tendsto (id : GL (Fin n) k → GL (Fin n) k) (⨅ l, 𝓟 (small ϖ n l)) (𝓝 1)`. Rewrite using `[Units.isInducing_embedProduct.tendsto_nhds_iff]`.
+
+Establish `hc` using `ha.prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp hb)`. Rewrite using `[map_one]`. Conclude with `hc`. Establish `hU' : U ∈ ⨅ l, 𝓟 (small ϖ n l)` using `ht (hU.mem_nhds h1)`. Establish `hd : Directed (· ≥ ·) fun l => 𝓟 (small ϖ n l)` using `(monotone_principal.comp_antitone (small_antitone hϖ n)).directed_ge`.
+
+Take `⟨l, hl⟩` from `(mem_iInf_of_directed hd U).1 hU'`. Use `⟨l, fun g hg hg' => mem_principal.1 hl ⟨fun i j => ?_, fun i j => ?_⟩⟩` and prove the remaining obligations. Take `⟨μ, hμ, e⟩` from `hg i j`. Rewrite using `[e, map_mul, map_pow]`. Conclude with `mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).1 hμ)`.
+
+Take `⟨μ, hμ, e⟩` from `hg' i j`. Rewrite using `[e, map_mul, map_pow]`. Conclude with `mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).1 hμ)`.
+-/
 theorem exists_congruence_subset : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (U : Set (GL (Fin n) k)), IsOpen U →
     (1 : GL (Fin n) k) ∈ U → ∀ ϖ : k, valuation k ϖ < 1 → ∃ l : ℕ, ∀ g : GL (Fin n) k,

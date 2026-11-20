@@ -11,6 +11,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColSec
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColSecOn
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.VB GlobalTheory.FlagZ GlobalTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.VB.exists_iso_of_frames_app_eq | exact GlobalTheory.VB.exists_iso_of_frames_app_eq | (intros; apply GlobalTheory.VB.exists_iso_of_frames_app_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.modules_iso_of_matching_frames : ∀ {X : Scheme.{0}} {F₁ F₂ E : X.Modules} (m₁ : F₁ ⟶ E) (m₂ : F₂ ⟶ E) [Mono m₂] (r : ℕ),
     (∀ x : X, ∃ (U : X.Opens) (s₁ : Fin r → Γ(F₁, U)) (s₂ : Fin r → Γ(F₂, U)), x ∈ U ∧ IsFrame s₁ ∧ IsFrame s₂ ∧
       ∀ j, m₁.app U (s₁ j) = m₂.app U (s₂ j)) →

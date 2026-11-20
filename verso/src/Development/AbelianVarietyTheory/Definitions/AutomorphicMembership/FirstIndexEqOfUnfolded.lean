@@ -21,11 +21,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 def flagConst (r : ℕ) : ℝ := ∏ i ∈ Finset.range r, (i.factorial : ℝ) / Real.pi ^ i
 
+/- English proof (translation)
+The claim follows from `Finset.prod_pos fun i _ => div_pos (by exact_mod_cast i.factorial_pos) (pow_pos Real.pi_pos _)`.
+-/
 theorem flagConst_pos (r : ℕ) : 0 < flagConst r :=
   Finset.prod_pos fun i _ => div_pos (by exact_mod_cast i.factorial_pos) (pow_pos Real.pi_pos _)
 
 def grassConst (p q : ℕ) : ℝ := (∏ i ∈ Finset.range p, ((q + i).factorial : ℝ) / i.factorial) / Real.pi ^ (p * q)
 
+/- English proof (translation)
+Establish `hπ` using `Real.pi_pos.ne'`. Proceed by induction on `p with`. Consider the case `zero => simp [flagConst, grassConst]`. Consider the case `succ p ih`. Establish `h1 : ((p.factorial : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast p.factorial_ne_zero`.
+
+Establish `e1 : flagConst (p + 1 + q) = flagConst (p + q) * (((q + p).factorial : ℝ) / Real.pi ^ (q + p))`. Rewrite using `[show p + 1 + q = (p + q) + 1 by ring, flagConst, Finset.prod_range_succ, add_comm q p]; rfl`. Establish `e2 : flagConst (p + 1) = flagConst p * ((p.factorial : ℝ) / Real.pi ^ p)` using `Finset.prod_range_succ _ _`. Establish `e3 : grassConst (p + 1) q = grassConst p q * (((q + p).factorial : ℝ) / p.factorial) / Real.pi ^ q`. Rewrite using `[grassConst, Finset.prod_range_succ, grassConst, add_mul, one_mul, pow_add]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, e2, e3, ih, pow_add]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem flagConst_add (p q : ℕ) : flagConst (p + q) = grassConst p q * flagConst p * flagConst q := by
   have hπ := Real.pi_pos.ne'
   induction p with
@@ -41,12 +51,34 @@ theorem flagConst_add (p q : ℕ) : flagConst (p + q) = grassConst p q * flagCon
     rw [e1, e2, e3, ih, pow_add]
     field_simp
 
+/- English proof (translation)
+Simplify using `[flagConst, Finset.prod_range_succ]`.
+-/
 example : flagConst 2 = 1 / Real.pi := by simp [flagConst, Finset.prod_range_succ]
 
+/- English proof (translation)
+Simplify using `[grassConst]`.
+-/
 example : grassConst 1 1 = 1 / Real.pi := by simp [grassConst]
 
+/- English proof (translation)
+Introduce `τ` and use `(X.signature τ).choose_spec.2`.
+-/
 theorem isOrth_x0F (X : Data E r) : IsOrth X (x0F X) := fun τ => (X.signature τ).choose_spec.2
 
+/- English proof (translation)
+Use `KU.countable_Γ X` as an intermediate fact. Establish `hM` using `measInv_holds (E := E)`. Establish `hS1 : MeasurableSet (KU.Sset X x1 CechHodgeFiltration)` using `KU.meas_S X ho1 hF1.1`. Use `set Bad : Set (Frame X.Ψ r) := ⋂ γ : X.Γ, (lact γ.1⁻¹ ⁻¹' KU.Sset X x1 CechHodgeFiltration)ᶜ with hBaddef`. Establish `hBad : MeasurableSet Bad` using `MeasurableSet.iInter fun γ => ((KU.cont_lact X γ.1⁻¹).measurable hS1).compl`.
+
+Establish `hBadB : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, Bad.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (rmul x b) = Bad.indicator 1 x`. Introduce `x _ b hb`. Establish `e : rmul x b ∈ Bad ↔ x ∈ Bad`. Simplify using `only [hBaddef, Set.mem_iInter, Set.mem_compl_iff, Set.mem_preimage, KU.lact_rmul', KU.rmul_mem_S X hb]`. Simplify using `only [Set.indicator_apply, e, Pi.one_apply]`.
+
+Establish `hm : ∀ x : Frame X.Ψ r, Measurable fun z => Bad.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (cpt X x z)` using `fun x => (measurable_one.indicator hBad).comp (KU.cont_cpt X x).measurable`. Establish `h1 : ∫⁻ z, Bad.indicator 1 (cpt X x1 z) ∂muF X x1 = 0`. Rewrite using `[lintegral_eq_zero_iff (hm x1)]`. Use `filter_upwards [KU.cover X hF1] with z ⟨γ, hγ, hSz⟩`. Establish `: cpt X x1 z ∉ Bad` using `fun h => (Set.mem_iInter.mp h ⟨γ, hγ⟩) hSz`.
+
+Simplify using `[Set.indicator_of_notMem this]`. Rewrite `h1` using `[← hM r X x0 x1 ho ho1 _ (measurable_one.indicator hBad) hBadB, lintegral_eq_zero_iff (hm x0)]`. Establish `hle` using `GlobalTheory.Unfold.lintegral_fundSet_inter_le hM r X x0 x1 ho ho1 FF hF (fun _ => 1) measurable_const (fun _ _ _ _ _ _ => rfl) CechHodgeFiltration hF1.1 hF1.2.1`. Establish `hset : (FF ∩ {z | ∃ y ∈ CechHodgeFiltration, ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, cpt X x0 z = lact γ (rmul (cpt X x1 y) b)} : Set (V (nd X))) =ᵐ[muF X x0] FF` using `by filter_upwards [h1] with z hz`. Use `propext ⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hb : cpt X x0 z ∉ Bad` using `fun hb => by simp [Set.indicator_of_mem hb] at hz`. Simplify using `only [hBaddef, Set.mem_iInter, not_forall, Set.mem_compl_iff, not_not, Set.mem_preimage] at hb`. Take `⟨γ, ⟨y, b⟩, ⟨hy, hb⟩, e⟩` from `hb`. Use `⟨y, hy, γ.1, γ.2, b, hb, ?_⟩` and prove the remaining obligations. Establish `e' : rmul (cpt X x1 y) b = lact γ.1⁻¹ (cpt X x0 z)` using `e`.
+
+Rewrite using `[e', KU.lact_lact, mul_inv_cancel, KU.lact_one]`. Rewrite `hle` using `[setLIntegral_congr hset]`. Simplify using `using hle`.
+-/
 theorem muF_fundSet_le (X : Data E r) {x0 x1 : Frame X.Ψ r} (ho : IsOrth X x0) (ho1 : IsOrth X x1)
     {FF CechHodgeFiltration : Set (V (nd X))} (hF : IsFundSet X x0 FF) (hF1 : IsFundSet X x1 CechHodgeFiltration) :
     muF X x0 FF ≤ muF X x1 CechHodgeFiltration := by
@@ -89,12 +121,18 @@ theorem muF_fundSet_le (X : Data E r) {x0 x1 : Frame X.Ψ r} (ho : IsOrth X x0) 
 def covol (X : Data E r) : ℝ :=
   flagConst r ^ X.Ψ.card * (muF X (x0F X) (GlobalTheory.MetricWeightTest.exists_fundSet_orth X (isOrth_x0F X)).choose).toReal
 
+/- English proof (translation)
+Establish `h0` using `(GlobalTheory.MetricWeightTest.exists_fundSet_orth X (isOrth_x0F X)).choose_spec`. Use `⟨FundSetMeasStatement_holds r X x0 FF ho hF (GlobalTheory.finMu_all_data E r X), ?_⟩` and prove the remaining obligations. Rewrite using `[covol, le_antisymm (muF_fundSet_le X (isOrth_x0F X) ho h0 hF) (muF_fundSet_le X ho (isOrth_x0F X) hF h0)]`.
+-/
 theorem covol_eq (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {FF : Set (V (nd X))} (hF : IsFundSet X x0 FF) :
     muF X x0 FF < ⊤ ∧ covol X = flagConst r ^ X.Ψ.card * (muF X x0 FF).toReal := by
   have h0 := (GlobalTheory.MetricWeightTest.exists_fundSet_orth X (isOrth_x0F X)).choose_spec
   refine ⟨FundSetMeasStatement_holds r X x0 FF ho hF (GlobalTheory.finMu_all_data E r X), ?_⟩
   rw [covol, le_antisymm (muF_fundSet_le X (isOrth_x0F X) ho h0 hF) (muF_fundSet_le X ho (isOrth_x0F X) hF h0)]
 
+/- English proof (translation)
+Establish `h0` using `(GlobalTheory.MetricWeightTest.exists_fundSet_orth X (isOrth_x0F X)).choose_spec`. Conclude with `mul_pos (pow_pos (flagConst_pos r) _) (ENNReal.toReal_pos (GlobalTheory.MetricWeightTest.fundSet_pos X (isOrth_x0F X) h0) (covol_eq X (isOrth_x0F X) h0).1.ne)`.
+-/
 theorem covol_pos (X : Data E r) : 0 < covol X := by
   have h0 := (GlobalTheory.MetricWeightTest.exists_fundSet_orth X (isOrth_x0F X)).choose_spec
   exact mul_pos (pow_pos (flagConst_pos r) _) (ENNReal.toReal_pos
@@ -103,12 +141,23 @@ theorem covol_pos (X : Data E r) : 0 < covol X := by
 def idx {r j : ℕ} (h : j ≤ r) : Fin r ≃ Fin j ⊕ Fin (r - j) :=
   ((finCongr (Nat.sub_add_cancel h).symm).trans finSumFinEquiv.symm).trans (Equiv.sumComm _ _)
 
+/- English proof (translation)
+Simplify using `[idx]`.
+-/
 theorem idx_symm_inl {r j : ℕ} (h : j ≤ r) (a : Fin j) : ((idx h).symm (Sum.inl a) : ℕ) = r - j + a := by
   simp [idx]
 
+/- English proof (translation)
+Simplify using `[idx]`.
+-/
 theorem idx_symm_inr {r j : ℕ} (h : j ≤ r) (a : Fin (r - j)) : ((idx h).symm (Sum.inr a) : ℕ) = a := by
   simp [idx]
 
+/- English proof (translation)
+Establish `e : Jpq j (r - j) = diagonal (Sum.elim (fun _ => 1) fun _ => -1)`. Rewrite using `[Jpq, ← fromBlocks_diagonal]`. Simplify using `[← diagonal_neg]`. Rewrite using `[reindex_apply, submatrix_diagonal_equiv, e, diagonal_neg]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Break down `a with a | a` into its components or cases. Simplify using `[sgn, idx_symm_inl]`. Simplify using `[sgn, idx_symm_inr]`.
+-/
 theorem reindex_sgn {r j : ℕ} (h : j ≤ r) :
     reindex (idx h) (idx h) (diagonal fun a : Fin r => ((sgn (r - j) (a : ℕ) : ℝ) : ℂ)) = -Jpq j (r - j) := by
   have e : Jpq j (r - j) = diagonal (Sum.elim (fun _ => 1) fun _ => -1) := by
@@ -121,6 +170,9 @@ theorem reindex_sgn {r j : ℕ} (h : j ≤ r) :
   · simp [sgn, idx_symm_inr]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, transpose_apply, of_apply, mul_apply, conjTranspose_apply, map_apply, Finset.sum_mul, RCLike.star_def]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem gram_eq_mul (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
     (gram τ G x)ᵀ = xᴴ * (G.map τ)ᵀ * x := by
   ext a b
@@ -130,6 +182,9 @@ theorem gram_eq_mul (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matri
 
 variable (X : Data E r) {j : ℕ} (hj : j ≤ r) {Tau : Type} (ι : Tau → X.Ψ)
 
+/- English proof (translation)
+The claim follows from `(X.signature τ).choose_spec.1`.
+-/
 theorem det_x0F (τ : X.Ψ) : (mat (x0F X) τ).det ≠ 0 := (X.signature τ).choose_spec.1
 
 def frameCo (x : Frame X.Ψ r) (τ : X.Ψ) : Matrix (Fin j ⊕ Fin (r - j)) (Fin j ⊕ Fin (r - j)) ℂ :=
@@ -142,6 +197,11 @@ def baseGL (τ : X.Ψ) : GL (Fin j ⊕ Fin (r - j)) ℂ :=
 def toUpq : GL (Fin r) E →* (Tau → GL (Fin j ⊕ Fin (r - j)) ℂ) :=
   embI (fun t => (ι t).1) (fun _ => idx hj) fun t => baseGL X hj (ι t)
 
+/- English proof (translation)
+Use `show ((baseGL X hj (ι t))⁻¹).1 * reindex (idx hj) (idx hj) (γ.1.map (ι t).1) * ((baseGL X hj (ι t))⁻¹⁻¹).1 = _`. Rewrite using `[inv_inv, coe_units_inv]`. Use `show (reindex (idx hj) (idx hj) (mat (x0F X) (ι t)))⁻¹ * _ * reindex (idx hj) (idx hj) (mat (x0F X) (ι t)) = _`. Rewrite using `[inv_reindex]`. Simplify using `only [frameCo, reindex_apply, submatrix_mul_equiv, Matrix.mul_assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem toUpq_val (γ : GL (Fin r) E) (t : Tau) :
     (toUpq X hj ι γ t).1 = frameCo X hj (lact γ (x0F X)) (ι t) := by
   show ((baseGL X hj (ι t))⁻¹).1 * reindex (idx hj) (idx hj) (γ.1.map (ι t).1) * ((baseGL X hj (ι t))⁻¹⁻¹).1 = _
@@ -153,6 +213,13 @@ theorem toUpq_val (γ : GL (Fin r) E) (t : Tau) :
 
 def gammaU : Subgroup (Tau → GL (Fin j ⊕ Fin (r - j)) ℂ) := X.Γ.map (toUpq X hj ι)
 
+/- English proof (translation)
+Establish `h0` using `congrArg transpose (isOrth_x0F X τ)`. Establish `h1` using `congrArg transpose (hx τ)`. Rewrite `h0`, `h1` using `[gram_eq_mul, diagonal_transpose, hp]`. Use `set M := (mat (x0F X) τ)⁻¹ * mat x τ with hM`. Establish `e : mat x τ = mat (x0F X) τ * M`.
+
+Rewrite using `[hM, mul_nonsing_inv_cancel_left _ _ (det_x0F X τ).isUnit]`. Establish `h2 : Mᴴ * (diagonal fun a : Fin r => ((sgn (r - j) (a : ℕ) : ℝ) : ℂ)) * M = diagonal fun a : Fin r => ((sgn (r - j) (a : ℕ) : ℝ) : ℂ)` using `by conv_rhs => rw [← h1, e]`. Rewrite using `[← h0]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Establish `h3` using `congrArg (reindex (idx hj) (idx hj)) h2`.
+
+Establish `h4` using `reindex_sgn hj`. Rewrite `h3` using `[h4]`. Rewrite using `[← neg_inj, ← h3, ← Matrix.neg_mul, ← Matrix.mul_neg, ← h4]`. Simplify using `only [frameCo, reindex_apply, conjTranspose_submatrix, submatrix_mul_equiv, ← hM]`.
+-/
 theorem frameCo_orth (hp : X.p0 = r - j) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) :
     (frameCo X hj x τ)ᴴ * Jpq j (r - j) * frameCo X hj x τ = Jpq j (r - j) := by
   have h0 := congrArg transpose (isOrth_x0F X τ)
@@ -172,6 +239,9 @@ theorem frameCo_orth (hp : X.p0 = r - j) {x : Frame X.Ψ r} (hx : IsOrth X x) (�
   rw [← neg_inj, ← h3, ← Matrix.neg_mul, ← Matrix.mul_neg, ← h4]
   simp only [frameCo, reindex_apply, conjTranspose_submatrix, submatrix_mul_equiv, ← hM]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨γ, hγ, rfl⟩ t -`. Use `upq_iff.2 ?_` and prove the remaining obligations. Rewrite using `[toUpq_val]`. Conclude with `frameCo_orth X hj hp (KU.isOrth_lact X hγ (isOrth_x0F X)) _`.
+-/
 theorem gammaU_le [Fintype Tau] (hp : X.p0 = r - j) : gammaU X hj ι ≤ UpqI Tau j (r - j) := by
   rintro _ ⟨γ, hγ, rfl⟩ t -
   refine upq_iff.2 ?_
@@ -180,9 +250,19 @@ theorem gammaU_le [Fintype Tau] (hp : X.p0 = r - j) : gammaU X hj ι ≤ UpqI Ta
 
 def domPt (x : Frame X.Ψ r) : Pt Tau j (r - j) := fun t => moeb (frameCo X hj x (ι t)) 0
 
+/- English proof (translation)
+Simplify using `[moeb]`.
+-/
 theorem moeb_zero {p q : ℕ} (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) :
     moeb g 0 = g.toBlocks₁₂ * g.toBlocks₂₂⁻¹ := by simp [moeb]
 
+/- English proof (translation)
+Use `set B := reindex (idx hj) (idx hj) (mat b τ) with hB`. Establish `h12 : B.toBlocks₁₂ = 0`. Use extensionality with `a c`. Use `(hb τ).2 _ _ ?_` and prove the remaining obligations. Rewrite using `[Fin.lt_def, idx_symm_inl, idx_symm_inr]`.
+
+Use `c.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hd : B.det ≠ 0` using `by rw [hB, det_reindex_self]; exact (hb τ).1`. Rewrite `hd` using `[← fromBlocks_toBlocks B, h12, det_fromBlocks_zero₁₂]`. Establish `e : frameCo X hj (rmul x b) τ = frameCo X hj x τ * B`.
+
+Simplify using `only [frameCo, hB, reindex_apply, submatrix_mul_equiv, Matrix.mul_assoc]`. Both sides reduce to the same expression. Apply the tactic sequence `refine ⟨B.toBlocks₂₂, (right_ne_zero_of_mul hd).isUnit, ?_, ?_⟩ <;>`. Rewrite using `[e] conv_lhs => rw [← fromBlocks_toBlocks (frameCo X hj x τ), ← fromBlocks_toBlocks B, h12, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+-/
 theorem frameCo_rmul_blocks {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (x : Frame X.Ψ r) (τ : X.Ψ) :
     ∃ B : Matrix (Fin (r - j)) (Fin (r - j)) ℂ, IsUnit B.det ∧
       (frameCo X hj (rmul x b) τ).toBlocks₁₂ = (frameCo X hj x τ).toBlocks₁₂ * B ∧
@@ -203,6 +283,9 @@ theorem frameCo_rmul_blocks {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (x : Fram
     conv_lhs => rw [← fromBlocks_toBlocks (frameCo X hj x τ), ← fromBlocks_toBlocks B, h12, fromBlocks_multiply]
     simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Take `⟨B, hB, h1, h2⟩` from `frameCo_rmul_blocks X hj hb x (ι t)`. Simplify using `only [domPt, moeb_zero]`. Rewrite using `[h1, h2, Matrix.mul_inv_rev, ← Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ hB]`.
+-/
 theorem domPt_rmul {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (x : Frame X.Ψ r) :
     domPt X hj ι (rmul x b) = domPt X hj ι x := by
   funext t
@@ -210,9 +293,17 @@ theorem domPt_rmul {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (x : Frame X.Ψ r)
   simp only [domPt, moeb_zero]
   rw [h1, h2, Matrix.mul_inv_rev, ← Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ hB]
 
+/- English proof (translation)
+Simplify `PosDef.one` using `[hcDom]`.
+-/
 theorem zero_mem_hcDom (p q : ℕ) : (0 : Matrix (Fin p) (Fin q) ℂ) ∈ hcDom p q := by
   simpa [hcDom] using PosDef.one
 
+/- English proof (translation)
+Establish `h` using `frameCo_orth X hj hp hx τ`. Establish `hd : (frameCo X hj x τ).det ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg det h`. Establish `h2` using `congrArg det (Jpq_sq (p := j) (q := r - j))`.
+
+Rewrite `h1` using `[det_mul, h0, mul_zero]`. Rewrite `h2` using `[det_mul, ← h1]`. Simplify using `at h2`. Conclude with `⟨GeneralLinearGroup.mkOfDetNeZero _ hd, upq_iff.2 h, rfl⟩`.
+-/
 theorem exists_upq_of_orth (hp : X.p0 = r - j) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) :
     ∃ g ∈ Upq j (r - j), g.1 = frameCo X hj x τ := by
   have h := frameCo_orth X hj hp hx τ
@@ -225,6 +316,11 @@ theorem exists_upq_of_orth (hp : X.p0 = r - j) {x : Frame X.Ψ r} (hx : IsOrth X
     simp at h2
   exact ⟨GeneralLinearGroup.mkOfDetNeZero _ hd, upq_iff.2 h, rfl⟩
 
+/- English proof (translation)
+Take `⟨x1, h1, b, hb, rfl⟩` from `ortho_holds r X x hx`. Rewrite using `[domPt_rmul X hj ι hb]`. Introduce `t`. Take `⟨g, hg, e⟩` from `exists_upq_of_orth X hj hp h1 (ι t)`. Use `moeb_mem hg (zero_mem_hcDom _ _)` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem domPt_mem (hp : X.p0 = r - j) {x : Frame X.Ψ r} (hx : x ∈ X.dom) : domPt X hj ι x ∈ DomI Tau j (r - j) := by
   obtain ⟨x1, h1, b, hb, rfl⟩ := ortho_holds r X x hx
   rw [domPt_rmul X hj ι hb]
@@ -233,6 +329,11 @@ theorem domPt_mem (hp : X.p0 = r - j) {x : Frame X.Ψ r} (hx : x ∈ X.dom) : do
   have := moeb_mem hg (zero_mem_hcDom _ _)
   rwa [e] at this
 
+/- English proof (translation)
+Take `⟨x1, h1, b, hb, rfl⟩` from `ortho_holds r X x hx`. Take `⟨B, hB, -, h2⟩` from `frameCo_rmul_blocks X hj hb x1 τ`. Take `⟨g, hg, e⟩` from `exists_upq_of_orth X hj hp h1 τ`. Use `kapQ_isUnit hg (zero_mem_hcDom _ _)` as an intermediate fact. Rewrite `this` using `[kapQ, Matrix.mul_zero, zero_add, e]`.
+
+Rewrite using `[h2, det_mul]`. Conclude with `this.mul hB`.
+-/
 theorem frameCo_isUnit₂₂ (hp : X.p0 = r - j) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) :
     IsUnit (frameCo X hj x τ).toBlocks₂₂.det := by
   obtain ⟨x1, h1, b, hb, rfl⟩ := ortho_holds r X x hx
@@ -243,6 +344,15 @@ theorem frameCo_isUnit₂₂ (hp : X.p0 = r - j) {x : Frame X.Ψ r} (hx : x ∈ 
   rw [h2, det_mul]
   exact this.mul hB
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Establish `hu` using `frameCo_isUnit₂₂ X hj hp hx (ι t)`. Establish `e : frameCo X hj (lact γ x) (ι t) = (toUpq X hj ι γ t).1 * frameCo X hj x (ι t)`. Rewrite using `[toUpq_val]`. Simplify using `only [frameCo, reindex_apply, submatrix_mul_equiv]`.
+
+Use `congr 1`. Use `show _ * (γ.1.map (ι t).1 * mat x (ι t)) = _ * (γ.1.map (ι t).1 * mat (x0F X) (ι t)) * _`. Simplify using `only [Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ (det_x0F X (ι t)).isUnit]`. Simplify using `only [domPt, moebI, moeb_zero]`. Rewrite using `[e]`.
+
+Use `set g := (toUpq X hj ι γ t).1`. Use `set f := frameCo X hj x (ι t)`. Establish `e1 : (g * f).toBlocks₁₂ = (g.toBlocks₁₁ * (f.toBlocks₁₂ * f.toBlocks₂₂⁻¹) + g.toBlocks₁₂) * f.toBlocks₂₂` using `by conv_lhs => rw [← fromBlocks_toBlocks g, ← fromBlocks_toBlocks f, fromBlocks_multiply]`. Simplify using `[Matrix.add_mul, Matrix.mul_assoc, nonsing_inv_mul _ hu]`. Establish `e2 : (g * f).toBlocks₂₂ = (g.toBlocks₂₁ * (f.toBlocks₁₂ * f.toBlocks₂₂⁻¹) + g.toBlocks₂₂) * f.toBlocks₂₂` using `by conv_lhs => rw [← fromBlocks_toBlocks g, ← fromBlocks_toBlocks f, fromBlocks_multiply]`.
+
+Simplify using `[Matrix.add_mul, Matrix.mul_assoc, nonsing_inv_mul _ hu]`. Rewrite using `[e1, e2, Matrix.mul_inv_rev, ← Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ hu, moeb]`.
+-/
 theorem domPt_lact [Fintype Tau] (hp : X.p0 = r - j) (γ : GL (Fin r) E) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     domPt X hj ι (lact γ x) = moebI (toUpq X hj ι γ) (domPt X hj ι x) := by
   funext t
@@ -267,15 +377,24 @@ theorem domPt_lact [Fintype Tau] (hp : X.p0 = r - j) (γ : GL (Fin r) E) {x : Fr
 
 def hodgeC (t : Tau) : ℝ := Real.pi * X.c (ι t)
 
+/- English proof (translation)
+The claim follows from `mul_pos Real.pi_pos (mul_pos two_pos (norm_pos_iff.2 ((map_ne_zero _).2 X.ξ0_ne)))`.
+-/
 theorem hodgeC_pos (t : Tau) : 0 < hodgeC X ι t :=
   mul_pos Real.pi_pos (mul_pos two_pos (norm_pos_iff.2 ((map_ne_zero _).2 X.ξ0_ne)))
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : τ ∈ X.Ψ`. Conclude with `⟨⟨τ, h⟩⟩`. Conclude with `⟨⟨ComplexEmbedding.conjugate τ, by_contra fun h' => h ((X.cmType τ).2 h')⟩⟩`.
+-/
 theorem psi_nonempty : Nonempty X.Ψ := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   by_cases h : τ ∈ X.Ψ
   · exact ⟨⟨τ, h⟩⟩
   · exact ⟨⟨ComplexEmbedding.conjugate τ, by_contra fun h' => h ((X.cmType τ).2 h')⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨idx hj ⟨0, hr⟩⟩`.
+-/
 theorem sum_nonempty {r j : ℕ} (hj : j ≤ r) (hr : 0 < r) : Nonempty (Fin j ⊕ Fin (r - j)) := ⟨idx hj ⟨0, hr⟩⟩
 
 section Models
@@ -305,6 +424,9 @@ def cxOfModels : CxPkg Tau r j Comp where
 def ptOfFrame (k : Comp) (x : (Y k).dom) : (cxOfModels hj Y hr hp κ B s).XC :=
   ⟨k, Quot.mk _ ⟨domPt (Y k) hj (κ k) x, domPt_mem (Y k) hj (κ k) (hp k) x.2⟩⟩
 
+/- English proof (translation)
+Use `congrArg (Sigma.mk k) (Quot.sound ⟨_, ⟨γ, hγ, rfl⟩, ?_⟩)` and prove the remaining obligations. Use `show moebI _ (domPt (Y k) hj (κ k) x) = domPt (Y k) hj (κ k) x'`. Rewrite using `[e, domPt_rmul _ _ _ hb, domPt_lact _ _ _ (hp k) _ x.2]`.
+-/
 theorem ptOfFrame_eq (k : Comp) (x x' : (Y k).dom) {γ : GL (Fin r) E} (hγ : γ ∈ (Y k).Γ) {b : Frame (Y k).Ψ r}
     (hb : b ∈ Bor (Y k).Ψ r) (e : x'.1 = rmul (lact γ x.1) b) :
     ptOfFrame hj Y hr hp κ B s k x = ptOfFrame hj Y hr hp κ B s k x' := by
@@ -325,9 +447,15 @@ variable {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff
   (U : Unf Xo c σ r) (hU : IsUnf U) (e : Dw.p = j)
 
 include hU e in
+/- English proof (translation)
+Use `hU.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_of_isUnf : j ≤ r := by have := hU.1; omega
 
 include hU e in
+/- English proof (translation)
+Use `hU.1` as an intermediate fact. Use `(hU.2.1 k).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem first_index_eq_of_unfolded (k : U.Comp) : (U.X k).p0 = r - j := by
   have := hU.1; have := (hU.2.1 k).1; omega
 
@@ -345,6 +473,9 @@ variable [Fintype Tau] (hr : 0 < r) (T : Tau ≃ {τ : E →+* ℂ // τ (H.rt :
 def cxTrue : CxPkg Tau r j U.Comp :=
   cxOfModels (le_of_isUnf U hU e) U.X hr (first_index_eq_of_unfolded U hU e) (cmEquiv U hU T) B s
 
+/- English proof (translation)
+Take `⟨γ, hγ, b, hb, h1⟩` from `(hU.2.2.2.1 k k' x x').1 h`. Take `⟨rfl, h2⟩` from `Sigma.mk.inj h1`. Conclude with `ptOfFrame_eq _ _ _ _ _ _ _ _ x x' hγ hb (eq_of_heq h2)`.
+-/
 theorem ptOfFrame_eq_of_frBor {k k' : U.Comp} (x : (U.X k).dom) (x' : (U.X k').dom)
     (h : ∃ t : Ix Dw → (CAt σ)ˣ, FrBor t (U.un k x) (U.un k' x')) :
     ptOfFrame (le_of_isUnf U hU e) U.X hr (first_index_eq_of_unfolded U hU e) (cmEquiv U hU T) B s k x =

@@ -25,6 +25,17 @@ open GlobalTheory.UU GlobalTheory.LN
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨X, _, _, _, Q₀, P₀, hlev, hev⟩` from `hE`. Establish `hG' : IsSemiAbelian ((Over.pullback (spMap φ)).obj G)` using `IsSemiAbelian.pullback _ G hS`. Take `⟨ψ, sq'⟩` from `ClosedPol.exists_generic_square φ hφ`. Take `⟨A', gen', hgen', hA'⟩` from `ClosedPol.exists_fibre_pull laws sq' P.L.isLB A gen hA`. Take `⟨P', wP, hP', H⟩` from `exists_cp_pull _ _ (spMap φ) G ((Over.pullback (spMap φ)).obj G) _ _ (toBase_mul_pullback G (spMap φ)) P`.
+
+Rewrite `hA'` using `[← hP']`. Take `⟨P₀', w₀, H₀⟩` from `exists_isLevelCP (maximalIdeal V) 0 P'`. Establish `le : maximalIdeal R ^ (0 + 1) ≤ (maximalIdeal V ^ (0 + 1)).comap φ`. Rewrite using `[zero_add, pow_one, pow_one]`. Conclude with `hI`.
+
+Set `b : R ⧸ maximalIdeal R ^ (0 + 1) →+* V ⧸ maximalIdeal V ^ (0 + 1)` to `Ideal.quotientMap _ φ le`. Establish `sq : spMap b ≫ thick R (maximalIdeal R) 0 = thick V (maximalIdeal V) 0 ≫ spMap φ`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, Ideal.quotientMap_comp_mk]`. Take `⟨wl, hl⟩` from `hlev`. Take `⟨F, pF, w₃, k₃⟩` from `ClosedPol.exists_fourth (G := G) (G' := (Over.pullback (spMap φ)).obj G) (H := thickObj R (maximalIdeal R) 0 G) (H' := thickObj V (maximalIdeal V) 0 ((Over.pullback (spMap φ)).obj G)) (P := P) (P' := P') (N := P₀) (N' := P₀') sq (isGrpPullback_pullback G (spMap φ)) (isGrpPullback …`.
+
+Use `hS.smooth` as an intermediate fact. Use `hS.geomConnected` as an intermediate fact. Establish `: Smooth (thickObj R (maximalIdeal R) 0 G).hom` using `by show Smooth (pullback.snd _ _); infer_instance`. Establish `: GeometricallyConnected (thickObj R (maximalIdeal R) 0 G).hom` using `by show GeometricallyConnected (pullback.snd _ _); infer_instance`. Take `⟨D₀⟩` from `TowerEx.nonempty_desc _ (TowerEx.isNilpotent_max 0) _ P₀ Q₀ hev`.
+
+Take `⟨Q₀', D₀', -, -, -⟩` from `ClosedPol.exists_desc_pull pF Q₀ D₀ k₃`. Establish `ev` using `UniformizationSetting.exists_even_of_desc D₀'`. Take `⟨wA, hwA⟩` from `hA'`. Conclude with `⟨A', ⟨hV, hG', gen', hgen', P', wA, hwA, _, Q₀', P₀', ⟨w₀, H₀⟩, ev⟩, wP, H⟩`.
+-/
 theorem exists_setting_of_evenOn (laws : Laws) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (P : CP G) (hS : IsSemiAbelian G) (hE : EvenOn P)
     (A : PolAV (Sp (FractionRing R))) (gen : (Over.pullback (jK R)).obj G ≅ A.A) [IsMonHom gen.hom]

@@ -4,6 +4,13 @@ namespace GlobalTheory.MeasurableFundamentalDomain
 
 open Set Topology
 
+/- English proof (translation)
+Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hfin : ((K ∩ (↑Γ : Set G)) \ {1}).Finite` using `(hΓ K hK).subset sdiff_subset`. Establish `hcl : IsClosed ((K ∩ (↑Γ : Set G)) \ {1})` using `hfin.isClosed`. Establish `h1 : ((K ∩ (↑Γ : Set G)) \ {1})ᶜ ∈ 𝓝 (1 : G)` using `hcl.isOpen_compl.mem_nhds (by simp)`. Establish `hW : K ∩ ((K ∩ (↑Γ : Set G)) \ {1})ᶜ ∈ 𝓝 (1 : G)` using `Filter.inter_mem hK1 h1`.
+
+Take `⟨V, hV, hVW⟩` from `exists_nhds_split_inv hW`. Use `⟨interior V, isOpen_interior, mem_interior_iff_mem_nhds.2 hV, ?_⟩` and prove the remaining obligations. Introduce `a ha b hb hab`. Establish `h` using `hVW a (interior_subset ha) b (interior_subset hb)`. Rewrite `h` using `[div_eq_mul_inv]`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `h.2 ⟨⟨h.1, hab⟩, hne⟩`.
+-/
 theorem exists_small_open {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [T2Space G] [LocallyCompactSpace G] (Γ : Subgroup G)
     (hΓ : ∀ C : Set G, IsCompact C → Set.Finite (C ∩ (↑Γ : Set G))) :
@@ -22,6 +29,23 @@ theorem exists_small_open {G : Type} [Group G] [TopologicalSpace G] [IsTopologic
   by_contra hne
   exact h.2 ⟨⟨h.1, hab⟩, hne⟩
 
+/- English proof (translation)
+Take `⟨V, hVo, hV1, hV⟩` from `exists_small_open Γ hΓ`. Take `⟨g, hg⟩` from `TopologicalSpace.exists_dense_seq G`. Set `U : ℕ → Set G` to `fun n => {y | y * (g n)⁻¹ ∈ V}`. Set `S : ℕ → Set G` to `fun n => ⋃ γ ∈ Γ, {y | γ * y ∈ U n}`. Establish `hUo : ∀ n, IsOpen (U n)` using `fun n => hVo.preimage (continuous_id.mul continuous_const)`.
+
+Establish `hSo : ∀ n, IsOpen (S n)` using `fun n => isOpen_biUnion fun γ _ => (hUo n).preimage (continuous_const.mul continuous_id)`. Establish `hS : ∀ n y, y ∈ S n ↔ ∃ γ ∈ Γ, γ * y ∈ U n`. Introduce `n y`. Simplify using `[S]`. Establish `hSinv : ∀ n, ∀ γ ∈ Γ, ∀ y, γ * y ∈ S n → y ∈ S n`.
+
+Introduce `n γ hγ y hy`. Take `⟨δ, hδ, h⟩` from `(hS _ _).1 hy`. Conclude with `(hS _ _).2 ⟨δ * γ, Γ.mul_mem hδ hγ, by rwa [mul_assoc]⟩`. Use `⟨⋃ n, (U n \ ⋃ m ∈ Set.Iio n, S m), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `MeasurableSet.iUnion fun n => (hUo n).measurableSet.diff (isOpen_biUnion fun m _ => hSo m).measurableSet`.
+
+Introduce `y`. Establish `hex : ∃ n, y ∈ S n`. Establish `ho : IsOpen {x : G | y * x⁻¹ ∈ V}` using `hVo.preimage (continuous_const.mul continuous_inv)`. Take `⟨n, hn⟩` from `hg.exists_mem_open ho ⟨y, by simpa using hV1⟩`. Conclude with `⟨n, (hS _ _).2 ⟨1, Γ.one_mem, by rw [one_mul]; exact hn⟩⟩`.
+
+Take `⟨γ, hγ, h⟩` from `(hS _ _).1 (Nat.find_spec hex)`. Use `⟨γ, hγ, mem_iUnion.2 ⟨Nat.find hex, h, ?_⟩⟩` and prove the remaining obligations. Introduce `hm`. Take `⟨m, hm, hy⟩` from `mem_iUnion₂.1 hm`. Conclude with `Nat.find_min hex hm (hSinv m γ hγ y hy)`.
+
+Introduce `γ hγ y hy hγy`. Take `⟨n, hn, hn'⟩` from `mem_iUnion.1 hy`. Take `⟨m, hm, hm'⟩` from `mem_iUnion.1 hγy`. Establish `hnm : n = m`. Break down `lt_trichotomy n m with h | h | h` into its components or cases.
+
+Conclude with `absurd (mem_iUnion₂.2 ⟨n, h, (hS _ _).2 ⟨γ⁻¹, Γ.inv_mem hγ, by rwa [inv_mul_cancel_left]⟩⟩) hm'`. Conclude with `h`. Conclude with `absurd (mem_iUnion₂.2 ⟨m, h, (hS _ _).2 ⟨γ, hγ, hm⟩⟩) hn'`. Substitute `hnm` using the available equality. Establish `e : (γ * y * (g n)⁻¹) * (y * (g n)⁻¹)⁻¹ = γ` using `by group`.
+
+Use `hV _ hm _ hn (by rw [e]; exact hγ)` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem exists_measurable_fundamental_domain {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G]
     [MeasurableSpace G] [OpensMeasurableSpace G] (Γ : Subgroup G) [Countable ↥Γ]

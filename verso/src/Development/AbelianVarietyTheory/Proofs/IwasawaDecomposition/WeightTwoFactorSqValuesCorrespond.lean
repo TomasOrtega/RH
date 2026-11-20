@@ -18,6 +18,11 @@ namespace GlobalTheory.PsiCompare
 
 open ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+Establish `a₀ : y.left ≫ D.famφB α 0 = y.left` using `Category.comp_id _`. Establish `a₁ : y.left ≫ D.famφB α 1 = (y * cP D T α).left` using `congrArg (fun z => z.left) ((MonObj.comp_mul y (𝟙 _) (cP D _ α)).trans (congrArg₂ (· * ·) (Category.comp_id _) (comp_cP D _ α)))`. Establish `a₂ : y.left ≫ D.famφB α 2 = (cP D T α).left` using `congrArg (fun z => z.left) (comp_cP D y α)`. Establish `a₃ : y.left ≫ D.famφB α 3 = (1 : T ⟶ D.P.A).left` using `congrArg (fun z : _ ⟶ D.P.A => z.left) (MonObj.comp_one (M := D.P.A) y)`. Rewrite using `[Fin.prod_univ_four, a₀, a₁, a₂, a₃]`.
+
+Use `show _ ^ (((2 : ℕ) : ℤ) - 1) * _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) * _ ^ (1 : ℤ) = _`. Evaluate the numerical expressions.
+-/
 theorem prod_famB_wtTwo {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {T : Over (Spec (CommRingCat.of R))}
     (y : T ⟶ D.P.A) (α : D.X) {U : Type} [CommGroup U] (h : (T.left ⟶ D.P.A.left) → U) :
     ∏ i, h (y.left ≫ D.famφB α i) ^ DegPre.famε 2 i =
@@ -32,6 +37,13 @@ theorem prod_famB_wtTwo {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {T :
   show _ ^ (((2 : ℕ) : ℤ) - 1) * _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) * _ ^ (1 : ℤ) = _
   norm_num
 
+/- English proof (translation)
+Establish `hs' : s' ≠ 0`. Introduce and unpack `rfl`. Rewrite `h₄` using `[zero_pow two_ne_zero, MulZeroClass.mul_zero]`. Conclude with `hs (pow_eq_zero_iff two_ne_zero |>.1 h₄)`. Establish `E : ωa * ωa * ω1⁻¹ * ω1 * (θ * V) ^ 2 = ωx * ωam * ωm2⁻¹ * ω1 * (θ' * V') ^ 2` using `Units.ext (mul_left_cancel₀ (pow_ne_zero 2 hs') (by`.
+
+Rewrite `h₃` using `[h₁, h₂]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val] at h₃ h₄ ⊢`. Take the linear combination `h₃ - ((θ : A) * V) ^ 2 * h₄))`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `E'` using `congrArg Additive.ofMul E`.
+
+Establish `h₅'` using `congrArg Additive.ofMul h₅`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow] at E' h₅' ⊢`. Take the linear combination `(norm := abel) h₅' - E'`.
+-/
 theorem sq_unit_cancel {A : Type} [CommRing A] [IsDomain A] {s s' F₁ F₁' : A}
     {θ θ' V V' ωx ωam ωm2 ω1 ωa ωm : Aˣ} (hs : s ≠ 0)
     (h₁ : F₁ = s * (θ * V).val) (h₂ : F₁' = s' * (θ' * V').val)
@@ -58,6 +70,23 @@ end GlobalTheory.PsiCompare
 
 open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.PsiCompare in
 
+/- English proof (translation)
+Introduce `R _ _ _ D D' Φ w hΦ xe hc f f' hf hf' hcorr hcub y z J J' hJ hJ' hdom h0`. Use `haveI := hΦ`. Use `haveI := hdom`. Use `set κ : DegPre.BF D.toPre (FractionRing R) ⟶ TF (R := R) (FractionRing R) := fst (TF (R := R) (FractionRing R)) D.toPre.P.A with hκ`. Use `set pB : DegPre.BF D.toPre (FractionRing R) ⟶ D.toPre.P.A := DegPre.prB D.toPre (FractionRing R) with hpB`.
+
+Use `set m' : DegPre.BF D.toPre (FractionRing R) ⟶ D'.toPre.P.A := cP D'.toPre (DegPre.BF D.toPre (FractionRing R)) (2 • y) with hm'`. Use `set a : DegPre.BF D.toPre (FractionRing R) ⟶ D'.toPre.P.A := pB ≫ Φ.inv with ha`. Use `set x' : DegPre.BF D.toPre (FractionRing R) ⟶ D'.toPre.P.A := a * m'⁻¹ with hx'`. Set `T` to `DegPre.BF D.toPre (FractionRing R)`. Establish `hxm : x' * m' = a` using `inv_mul_cancel_right _ _`.
+
+Establish `hmΦ : m' ≫ Φ.hom = cP D.toPre T (xe (2 • y))` using `cP_comp Φ.hom (hc y) T`. Establish `haΦ : a ≫ Φ.hom = pB` using `by rw [ha, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Establish `hx'Φ : (x' ≫ Φ.hom) * cP D.toPre T (xe (2 • y)) = pB`. Rewrite using `[← hmΦ, ← MonObj.mul_comp, hxm, haΦ]`. Establish `e₁` using `hf (xe (2 • y)) 0 T κ (x' ≫ Φ.hom) z J hJ`.
+
+Establish `u₁ : uVal D.toPre (FractionRing R) 2 0 (cP D.toPre _ (xe (2 • y))) (lift κ (x' ≫ Φ.hom)) z J = cubV D.toPre.cub z J (cP D.toPre T (xe (2 • y))) (cP D.toPre T (xe (2 • y))) (x' ≫ Φ.hom)`. Establish `C` using `isCub_cubV D.toPre.cub hJ`. Establish `ρ₂ : lift κ (x' ≫ Φ.hom) ≫ DegPre.prB D.toPre (FractionRing R) = x' ≫ Φ.hom` using `lift_snd _ _`. Rewrite using `[uVal, cPoint_zero, cubN, ρ₂, comp_cP, comp_cP]`. Simplify using `only [Finset.prod_range_succ, Finset.prod_range_zero, pow_zero, pow_one, _root_.one_mul, _root_.mul_one, C.face, inv_one]`.
+
+Both sides reduce to the same expression. Rewrite `e₁` using `[u₁, hx'Φ, zero_add]`. Establish `e₂` using `hf' (2 • y) 0 T κ x' z J' hJ'`. Establish `u₂ : uVal D'.toPre (FractionRing R) 2 0 (cP D'.toPre _ (2 • y)) (lift κ x') z J' = cubV D'.toPre.cub z J' m' m' x'`. Establish `C` using `isCub_cubV D'.toPre.cub hJ'`.
+
+Establish `ρ₂ : lift κ x' ≫ DegPre.prB D'.toPre (FractionRing R) = x'` using `lift_snd _ _`. Rewrite using `[uVal, cPoint_zero, cubN, ρ₂, comp_cP, comp_cP]`. Simplify using `only [Finset.prod_range_succ, Finset.prod_range_zero, pow_zero, pow_one, _root_.one_mul, _root_.mul_one, C.face, inv_one]`. Both sides reduce to the same expression. Rewrite `e₂` using `[u₂, hxm, zero_add]`.
+
+Establish `e₃` using `hcorr (2 • y) T.left x'.left z J J' hJ hJ'`. Establish `p₄ : x' * m' ^ 2 = a * m'` using `by rw [pow_two, ← _root_.mul_assoc, hxm]`. Rewrite `e₃` using `[prod_famB_wtTwo, cPoint_nsmul, ← hm', p₄, map_nsmul]`. Establish `e₄` using `hcorr 0 T.left a.left z J J' hJ hJ'`. Rewrite `e₄` using `[prod_famB_wtTwo, smul_zero, map_zero, cPoint_zero, _root_.mul_one, show a.left ≫ Φ.hom.left = pB.left from congrArg (fun q => q.left) haΦ]`.
+
+Establish `e₅` using `hcub T z J J' hJ hJ' _ rfl m' m' x'`. Establish `p₁ : m' * m' * x' = a * m'` using `by rw [mul_comm (m' * m') x', ← _root_.mul_assoc, hxm]`. Establish `p₃ : m' * x' = a` using `by rw [mul_comm, hxm]`. Rewrite `e₅` using `[hmΦ, p₁, p₃, ← sq]`. Conclude with `sq_unit_cancel h0 e₁ e₂ e₃ e₄ e₅`.
+-/
 theorem GlobalTheory.PsiCompare.famMult_sq_corr : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], ∀ (D D' : DegData R (maximalIdeal R)), ∀ (Φ : D'.toPre.P.A ≅ D.toPre.P.A) (w : LB.Iso (LB.LinComb D'.toPre.P.L (K := Fin 1) (fun _ => 𝟙 D'.toPre.P.A.left) (fun _ => 2)) ((LB.LinComb D.toPre.P.L (K := Fin 1) (fun _ => 𝟙 D.toPre.P.A.left) (fun _ => 2)).pull Φ.hom.left)), IsMonHom Φ.hom → ∀ xe : D'.toPre.X ≃+ D.toPre.X, (∀ x : D'.toPre.X, D'.toPre.c (2 • x) ≫ Φ.hom = D.toPre.c (xe (2 • x))) → ∀ (f : ∀ α : D.toPre.X, D.toPre.SecB 2 α) (f' : ∀ α : D'.toPre.X, D'.toPre.SecB 2 α), (∀ (mu α : D.toPre.X) (T : Over (Sp R)) (κ : T ⟶ TF (R := R) (FractionRing R)) (y : T ⟶ D.toPre.P.A) (z : T.left) (J : (T.left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι), Geo.Tor.Good D.toPre.P.L z J → sval (f (α + 2 • mu)) y.left z J = sval (f α) (y * ReciprocityTheory.ChartRestriction.G.DVR.cP D.toPre T mu).left z J * (ReciprocityTheory.ChartRestriction.G.DVR.uVal D.toPre (FractionRing R) 2 α (ReciprocityTheory.ChartRestriction.G.DVR.cP D.toPre _ mu) (CartesianMonoidalCategory.lift κ y) z J * val (DegPre.famMult D.toPre (FractionRing R) 2 mu α) κ.left z J).val) → (∀ (mu α : D'.toPre.X) (T : Over (Sp R)) (κ : T ⟶ TF (R := R) (FractionRing R)) (y : T ⟶ D'.toPre.P.A) (z : T.left) (J : (T.left ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι), Geo.Tor.Good D'.toPre.P.L z J → sval (f' (α + 2 • mu)) y.left z J = sval (f' α) (y * ReciprocityTheory.ChartRestriction.G.DVR.cP D'.toPre T mu).left z J * (ReciprocityTheory.ChartRestriction.G.DVR.uVal D'.toPre (FractionRing R) 2 α (ReciprocityTheory.ChartRestriction.G.DVR.cP D'.toPre _ mu) (CartesianMonoidalCategory.lift κ y) z J * val (DegPre.famMult D'.toPre (FractionRing R) 2 mu α) κ.left z J).val) → (∀ (β : D'.toPre.X) (Z : Scheme.{0}) (ρ : Z ⟶ D'.toPre.P.A.left) (z : Z) (J : (Z ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι) (J' : (Z ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι), Geo.Tor.Good D.toPre.P.L z J → Geo.Tor.Good D'.toPre.P.L z J' → sval (f (xe (2 • β))) (ρ ≫ Φ.hom.left) z J ^ 2 = (∏ κ, ExpTrans.om w z (fun q _ => J q) (fun q _ => J' q) (ρ ≫ D'.toPre.famφB (2 • β) κ) ^ DegPre.famε 2 κ).val * sval (f' (2 • β)) ρ z J' ^ 2) → (∀ (T : Over (Sp R)) (z : T.left) (J : (T.left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι) (J' : (T.left ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι), Geo.Tor.Good D.toPre.P.L z J → Geo.Tor.Good D'.toPre.P.L z J' → ∀ (Ω : (T ⟶ D'.toPre.P.A) → (T.left.presheaf.stalk z)ˣ), Ω = (fun x => ExpTrans.om w z (fun q _ => J q) (fun q _ => J' q) x.left) → ∀ (a b c : T ⟶ D'.toPre.P.A), cubV D.toPre.cub z J (a ≫ Φ.hom) (b ≫ Φ.hom) (c ≫ Φ.hom) ^ 2 = Ω (a * b * c) * (Ω (a * b))⁻¹ * (Ω (a * c))⁻¹ * (Ω (b * c))⁻¹ * Ω a * Ω b * Ω c * (Ω 1)⁻¹ * cubV D'.toPre.cub z J' a b c ^ 2) → ∀ (y : D'.toPre.X) (z : (DegPre.BF D.toPre (FractionRing R)).left) (J : ((DegPre.BF D.toPre (FractionRing R)).left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι) (J' : ((DegPre.BF D.toPre (FractionRing R)).left ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι), Geo.Tor.Good D.toPre.P.L z J → Geo.Tor.Good D'.toPre.P.L z J' → IsDomain ((DegPre.BF D.toPre (FractionRing R)).left.presheaf.stalk z) → sval (f 0) (DegPre.prB D.toPre (FractionRing R)).left z J ≠ 0 → val (DegPre.famMult D'.toPre (FractionRing R) 2 (2 • y) 0) (fst (TF (R := R) (FractionRing R)) D.toPre.P.A).left z J' ^ 2 = (ExpTrans.om w z (fun q _ => J q) (fun q _ => J' q) (ReciprocityTheory.ChartRestriction.G.DVR.cP D'.toPre (DegPre.BF D.toPre (FractionRing R)) (2 • y)).left * (ExpTrans.om w z (fun q _ => J q) (fun q _ => J' q) (1 : (DegPre.BF D.toPre (FractionRing R)) ⟶ D'.toPre.P.A).left)⁻¹) ^ 2 * val (DegPre.famMult D.toPre (FractionRing R) 2 (xe (2 • y)) 0) (fst (TF (R := R) (FractionRing R)) D.toPre.P.A).left z J ^ 2 := by
   intro R _ _ _ D D' Φ w hΦ xe hc f f' hf hf' hcorr hcub y z J J' hJ hJ' hdom h0
   haveI := hΦ

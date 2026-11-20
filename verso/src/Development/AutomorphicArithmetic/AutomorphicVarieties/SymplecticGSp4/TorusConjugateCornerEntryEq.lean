@@ -9,6 +9,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.PtI
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.LMemMax
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
+/- English proof (translation)
+Unfold `Ge`. Use `exists_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[h g]`. Simplify using `[tconj]`.
+-/
 private theorem linked_iff_torus_conjugate {H K : Type} [Group H] [Field K] {r r' : H →* M4 K} {t : Kˣ × Kˣ}
     (h : ∀ g, r g = tconj t (r' g)) (i j : Fin 4) : Ge r i j ↔ Ge r' i j := by
   unfold Ge
@@ -16,11 +19,19 @@ private theorem linked_iff_torus_conjugate {H K : Type} [Group H] [Field K] {r r
   rw [h g]
   simp [tconj]
 
+/- English proof (translation)
+Rewrite using `[h g]`. Simplify using `[tconj, wv, wt]`.
+-/
 private theorem torus_conjugate_corner_entry_eq {H K : Type} [Group H] [Field K] {r r' : H →* M4 K} {t : Kˣ × Kˣ}
     (h : ∀ g, r g = tconj t (r' g)) (g : H) : r g 0 0 = r' g 0 0 := by
   rw [h g]
   simp [tconj, wv, wt]
 
+/- English proof (translation)
+Take `⟨t, r, hr, h⟩` from `ptScale D hD M hF ξ`. Take `⟨s1, s2, -⟩` from `signs D hD M hF ξ`. Establish `hd' : DiagType r` using `fun i j hij a b => hd i j hij ((linked_iff_torus_conjugate h i j).1 a) ((linked_iff_torus_conjugate h j i).1 b)`. Establish `hs : (D.s0 : G ℚ Ω) ∈ D.Ip l` using `hD.decompSigma_mem.1.1`. Break down `diagCases D hD hS r hr hd' with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases.
+
+Conclude with `Or.inl ⟨(torus_conjugate_corner_entry_eq h _).symm.trans (a _ hs), s1 fun i j hij e => b i j hij ((linked_iff_torus_conjugate h i j).2 e)⟩`. Conclude with `Or.inr ⟨(torus_conjugate_corner_entry_eq h _).symm.trans (a _ hs), s2 fun i j hij e => b i j hij ((linked_iff_torus_conjugate h i j).2 e)⟩`.
+-/
 private theorem diagonal_type_corner_cases {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (D : Raw Ω c) (hD : D.Good) (M : Model D) [GradedAlgebra M.gr] (hS : SoV Ω l) (hF : D.Fin0)
     (ξ : M.SS →ₐ[c.O] PadicAlgCl l) (hd : DiagType (M.rep ξ)) :
@@ -34,6 +45,21 @@ private theorem diagonal_type_corner_cases {Ω : Type} [Field Ω] [CharZero Ω] 
   · exact Or.inl ⟨(torus_conjugate_corner_entry_eq h _).symm.trans (a _ hs), s1 fun i j hij e => b i j hij ((linked_iff_torus_conjugate h i j).2 e)⟩
   · exact Or.inr ⟨(torus_conjugate_corner_entry_eq h _).symm.trans (a _ hs), s2 fun i j hij e => b i j hij ((linked_iff_torus_conjugate h i j).2 e)⟩
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD M _ hL hS hF x₁ h1 hn hp _`. Take `⟨ξ₁, rfl⟩` from `ptLift D hD M x₁ h1`. Take `⟨t, r, hr, h⟩` from `ptScale D hD M hF ξ₁`. Take `⟨-, -, s3, -, s5⟩` from `signs D hD M hF ξ₁`. Establish `n02 : ¬ Ge r 0 2` using `fun e => s3 hp ((linked_iff_torus_conjugate h 0 2).1 e)`.
+
+Establish `hd : DiagType (M.rep ξ₁)`. Break down `tri D hD hL r hr with a | a | a` into its components or cases. Take `⟨p1, -, -, -, -, p6, -⟩` from `ptIn D hD _ r hr`. Conclude with `absurd ((geAlg _ r _ p1 p6).2.2.2.2.1.1 a 0 2) n02`. Conclude with `fun i j hij u v => a i j hij ((linked_iff_torus_conjugate h i j).2 u) ((linked_iff_torus_conjugate h j i).2 v)`.
+
+Conclude with `absurd a.1 n02`. Establish `hne : ((D.th D.s0 : c.O) : PadicAlgCl l) ≠ ((D.al D.s0 : c.O) : PadicAlgCl l)` using `fun e => by`. Establish `hinj` using `(facts D hD).2.2.2.2.2.2.1`. Establish `: (0 : Fin 4) = 2` using `hinj (Subtype.ext e)`. Conclude with `absurd this (by decide)`.
+
+Establish `key : ∀ x : M.A →ₐ[c.O] PadicAlgCl l, OnS M.eqns.ideal x → Same0 M.gr x (ξ₁.comp M.toSS) → (M.rep ξ₁ D.s0 0 0 = ((D.th D.s0 : c.O) : PadicAlgCl l) ∧ NegZero M.gr x) ∨ (M.rep ξ₁ D.s0 0 0 = ((D.al D.s0 : c.O) : PadicAlgCl l) ∧ PosZero M.gr x)`. Introduce `x hx h0`. Take `⟨ξ, rfl⟩` from `ptLift D hD M x hx`. Take `⟨q1, q2⟩` from `s5 ξ fun b hb => (h0 b hb).symm`. Rewrite using `[q1]`.
+
+Conclude with `diagonal_type_corner_cases D hD M hS hF ξ (q2 hd)`. Break down `diagonal_type_corner_cases D hD M hS hF ξ₁ hd with ⟨a, -⟩ | ⟨a, -⟩` into its components or cases. Use `Or.inr ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx, -, hnn, h0⟩`. Break down `key x hx h0 with ⟨-, b⟩ | ⟨b, -⟩` into its components or cases.
+
+Conclude with `hnn b`. Conclude with `hne (a.symm.trans b)`. Use `Or.inl ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx, -, hnn, h0⟩`. Break down `key x hx h0 with ⟨b, -⟩ | ⟨-, b⟩` into its components or cases.
+
+Conclude with `hne (b.symm.trans a)`. Conclude with `hnn b`.
+-/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.m3 :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ M : Model D, ∀ [GradedAlgebra M.gr], Loc.LocalPublishedTheorems → SoV Ω l → D.Fin0 → M3 M.gr (PadicAlgCl l) M.x0 M.eqns.ideal := by
   intro Ω _ _ _ l _ c D hD M _ hL hS hF x₁ h1 hn hp _

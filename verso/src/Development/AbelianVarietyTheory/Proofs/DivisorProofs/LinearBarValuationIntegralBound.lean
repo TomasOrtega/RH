@@ -27,6 +27,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Matrix
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT ι hι h hh _hint hdet c hc`. Take `⟨χ, hχ⟩` from `GlobalTheory.T.exists_character_local_functional_equivariant hP F E σ B a a' G X om om' hT ι hι`. Establish `hu : ValuativeRel.valuation (Fv F B.v₁) ((Matrix.GeneralLinearGroup.det (GlobalTheory.LocalUnitSubgroupClosure.cmpGL B.τ₁ h) : (Fv F B.v₁)ˣ) : Fv F B.v₁) = 1`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, GlobalTheory.LocalUnitSubgroupClosure.cmpGL_val]`. Conclude with `hdet`.
+
+Take `⟨k, hk, hkdet⟩` from `GlobalTheory.T.exists_compact_element_of_unit_determinant hP F E σ B a a' G X om om' hT _ hu`. Take `⟨⟨ck, hck⟩, hkχ⟩` from `hχ k hk.1`. Establish `hvSB` using `(hT.geo.hM'.vac B.v₁).1`. Establish `e0` using `congrFun (hck _ hvSB _ hvSB (GlobalTheory.T.spherical_vacuum_fixed_by_maximal_compact hP F E σ B a a' G X om om' hT k hk)) 0`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.zero_mul] at e0`.
+
+Establish `h0` using `GlobalTheory.T.vacuum_value_ne_zero_of_linear_functional hP F E σ B a a' G X om om' hT ι hι`. Establish `hck1 : ck = 1`. Establish `: (ck - 1) * ι (G.M'.vac B.v₁) 0 = 0` using `by linear_combination -e0`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right h0)`. Rewrite using `[(hχ h hh).2 c hc, ← hkdet, ← hkχ ck hck, hck1]`.
+-/
 theorem GlobalTheory.WRightUnram.scalar_eq_one : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ ι, G.M'.IsLinBar B.ψ B.τ₁ 1 1 ι → ∀ h ∈ UAt σ G.W (evFin F B.v₁),

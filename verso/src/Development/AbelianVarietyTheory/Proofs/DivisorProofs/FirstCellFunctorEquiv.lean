@@ -23,34 +23,57 @@ def cols (u v : ℕ) : ∀ j, (Σ i, Fin ((cellFirst u v).1 i j)) ≃ Two (Fin 1
 def what₂ (u v : ℕ) : ∀ i, (Σ j, Fin ((cellFirst u v).1 i j)) ≃ Two (Fin (u + 1)) (Fin v) i :=
   (cellFirst u v).nonempty_rows.some
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> simp [modExp, Finset.sum_filter, Fintype.sum_bool]`.
+-/
 theorem modExp_bool (m : Bool → Type) [∀ a, Fintype (m a)] :
     modExp m false = Fintype.card (m true) ∧ modExp m true = -Fintype.card (m false) := by
   constructor <;> simp [modExp, Finset.sum_filter, Fintype.sum_bool]
 
+/- English proof (translation)
+The claim follows from `Fintype.card_fin _`.
+-/
 theorem card_b (u v : ℕ) (i j : Bool) : Fintype.card (Fin ((cellFirst u v).1 i j)) = (cellFirst u v).1 i j :=
   Fintype.card_fin _
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `modExp_bool (fun j => Fin ((cellFirst u v).1 false j))`. Conclude with `⟨h1.trans (by rw [card_b]; rfl), h2.trans (by rw [card_b]; rfl)⟩`.
+-/
 theorem modExp_rowF (u v : ℕ) : modExp (fun j => Fin ((cellFirst u v).1 false j)) false = u ∧
     modExp (fun j => Fin ((cellFirst u v).1 false j)) true = -1 := by
   obtain ⟨h1, h2⟩ := modExp_bool (fun j => Fin ((cellFirst u v).1 false j))
   exact ⟨h1.trans (by rw [card_b]; rfl), h2.trans (by rw [card_b]; rfl)⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `modExp_bool (fun i => Fin ((cellFirst u v).1 i true))`. Conclude with `⟨h1.trans (by rw [card_b]; rfl), h2.trans (by rw [card_b]; rfl)⟩`.
+-/
 theorem modExp_colT (u v : ℕ) : modExp (fun i => Fin ((cellFirst u v).1 i true)) false = v ∧
     modExp (fun i => Fin ((cellFirst u v).1 i true)) true = -u := by
   obtain ⟨h1, h2⟩ := modExp_bool (fun i => Fin ((cellFirst u v).1 i true))
   exact ⟨h1.trans (by rw [card_b]; rfl), h2.trans (by rw [card_b]; rfl)⟩
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> simp [modExp, Finset.sum_filter, Fintype.sum_bool]`.
+-/
 theorem modExp_two (u v : ℕ) : modExp (Two (Fin u) (Fin v)) false = v ∧
     modExp (Two (Fin u) (Fin v)) true = -u := by
   constructor <;> simp [modExp, Finset.sum_filter, Fintype.sum_bool]
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `ext`. Simplify using `[Matrix.det_isEmpty]`.
+-/
 theorem det_eq_one_of_card {n : ℕ} (h : n = 0) (g : GL (Fin n) k) : GeneralLinearGroup.det g = 1 := by
   subst h
   ext
   simp [Matrix.det_isEmpty]
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Rewrite using `[extTensor_tmul]`. Simplify using `only [detRep, ofChar_apply, detChar_apply, Units.val_mul]`.
+
+Rewrite using `[← smul_eq_mul, ← smul_eq_mul, TensorProduct.smul_tmul', TensorProduct.tmul_smul, ← TensorProduct.smul_tmul', smul_smul, mul_comm]`. Conclude with `TensorProduct.smul_tmul' _ _ _`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`.
+-/
 theorem extTensor_detRep_apply {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
     (χ ψ : kˣ →* ℂˣ) (g : GL a k × GL b k) (w : ℂ ⊗[ℂ] ℂ) :
     extTensor (detRep a χ) (detRep b ψ) g w =
@@ -71,11 +94,17 @@ abbrev detPair : Representation ℂ (Levi k (Two (Fin (u + 1)) (Fin v))) (ℂ �
   (extTensor (detRep (Fin (u + 1)) χ₁) (detRep (Fin v) χ₂)).comp
     (leviTwo k (Fin (u + 1)) (Fin v)).symm.toMonoidHom
 
+/- English proof (translation)
+The claim follows from `extTensor_detRep_apply χ₁ χ₂ _ w`.
+-/
 theorem detPair_apply (g : Levi k (Two (Fin (u + 1)) (Fin v))) (w : ℂ ⊗[ℂ] ℂ) :
     detPair χ₁ χ₂ u v g w =
       ((χ₁ (GeneralLinearGroup.det (g false)) * χ₂ (GeneralLinearGroup.det (g true)) : ℂˣ) : ℂ) • w :=
   extTensor_detRep_apply χ₁ χ₂ _ w
 
+/- English proof (translation)
+Use `Submodule.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, w, rfl⟩`. Establish `h : ∀ i, GeneralLinearGroup.det ((n : Levi k (Two (Fin (u + 1)) (Fin v))) i) = 1` using `fun i => det_eq_one_of_mem_unipRad k (n.2 i trivial)`. Rewrite using `[detPair_apply, h, h]`. Simplify using the standard rewrite rules.
+-/
 theorem twKer_detPair : twKer (detPair χ₁ χ₂ u v) (relUnip k (what₂ u v)) 1 = ⊥ := by
   refine Submodule.span_eq_bot.2 ?_
   rintro _ ⟨n, w, rfl⟩
@@ -97,6 +126,21 @@ def kappa (p : relParab k (cols u v)) : ℂˣ :=
       ((χ₁ * absPow k (1 / 2)) (GeneralLinearGroup.det (ltwo u v p false)) *
         χ₂ (GeneralLinearGroup.det (ltwo u v p true)))
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Simplify using `only [cellRep, MonoidHom.comp_apply, twist_apply]`. Rewrite using `[relJac_mk, detPair_apply, Submodule.Quotient.mk_smul, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`.
+
+Use `congr 1`. Establish `hdet : ∀ i, GeneralLinearGroup.det (relEmb k (what₂ u v) (swapBlocks k (fun i j => Fin ((cellFirst u v).1 i j)) (relProj k (cols u v) p)) i) = GeneralLinearGroup.det (relProj k (cols u v) p true i) * GeneralLinearGroup.det (relProj k (cols u v) p false i)` using `fun i => by`. Rewrite using `[relEmb_apply, det_leviEmb, Fintype.prod_bool]`. Both sides reduce to the same expression. Establish `h0 : GeneralLinearGroup.det (relProj k (cols u v) p false true) = 1` using `det_eq_one_of_card rfl _`.
+
+Establish `hpf : GeneralLinearGroup.det (p.1 false) = GeneralLinearGroup.det (relProj k (cols u v) p false false)`. Use `det_parab k (cols u v false) ⟨p.1 false, p.2 false trivial⟩` as an intermediate fact. Rewrite `this` using `[Fintype.prod_bool]`. Use `this.trans ?_` and prove the remaining obligations. Use `show GeneralLinearGroup.det (relProj k (cols u v) p false true) * _ = _`.
+
+Rewrite using `[h0, one_mul]`. Both sides reduce to the same expression. Establish `hrowT : deltaHalf k (fun j => Fin ((cellFirst u v).1 true j)) (swapBlocks k (fun i j => Fin ((cellFirst u v).1 i j)) (relProj k (cols u v) p) true) = 1` using `OneBlockCell.deltaHalf_eq_one_of_single (n := fun j => (cellFirst u v).1 true j) true (fun j hj => by cases j; rfl; exact absurd rfl hj) _`. Establish `hcolF : deltaHalf k (fun i => Fin ((cellFirst u v).1 i false)) (relProj k (cols u v) p false) = 1` using `OneBlockCell.deltaHalf_eq_one_of_single (n := fun i => (cellFirst u v).1 i false) false (fun i hi => by cases i; exact absurd rfl hi; rfl) _`. Rewrite using `[relDeltaHalf_apply, relDeltaHalf_apply, Fintype.prod_bool, Fintype.prod_bool, hrowT, hcolF, hdet, hdet, h0, deltaHalf_apply, deltaHalf_apply, Fintype.prod_bool, Fintype.prod_bool, (modExp_rowF u v).1, (modExp_rowF u v).2, (modExp_colT u v).1, (modExp_colT u v).2]`.
+
+Simplify using `only [kappa, hpf, deltaHalf_apply, Fintype.prod_bool, (modExp_two u v).1, (modExp_two u v).2]`. Establish `hB : GeneralLinearGroup.det (ltwo u v p false) = GeneralLinearGroup.det (relProj k (cols u v) p true false)` using `rfl`. Establish `hC : GeneralLinearGroup.det (ltwo u v p true) = GeneralLinearGroup.det (relProj k (cols u v) p true true)` using `rfl`. Establish `hs1 : GeneralLinearGroup.det ((swapBlocks k fun i j ↦ Fin ((cellFirst u v).1 i j)) (relProj k (cols u v) p) false true) = GeneralLinearGroup.det (relProj k (cols u v) p true false)` using `rfl`. Establish `hs2 : GeneralLinearGroup.det ((swapBlocks k fun i j ↦ Fin ((cellFirst u v).1 i j)) (relProj k (cols u v) p) false false) = GeneralLinearGroup.det (relProj k (cols u v) p false false)` using `rfl`.
+
+Rewrite using `[hB, hC, hs1, hs2]`. Generalize the expression as in `GeneralLinearGroup.det (relProj k (cols u v) p false false) = A`. Generalize the expression as in `GeneralLinearGroup.det (relProj k (cols u v) p true false) = B`. Generalize the expression as in `GeneralLinearGroup.det (relProj k (cols u v) p true true) = C`. Simplify using `only [MonoidHom.mul_apply, map_mul, mul_one, one_mul, Int.cast_neg, Int.cast_natCast, Int.cast_one, neg_div, absPow_neg, MonoidHom.inv_apply]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, _root_.mul_inv_rev, inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cellRep_apply (p : relParab k (cols u v)) (w : Jacquet (detPair χ₁ χ₂ u v) (relUnip k (what₂ u v))) :
     cellRep χ₁ χ₂ u v p w = (kappa χ₁ χ₂ u v p : ℂ) • w := by
   obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ w
@@ -153,6 +197,9 @@ abbrev rho2 : Representation ℂ (Levi k (Two (Fin u) (Fin v))) (ℂ ⊗[ℂ] �
 abbrev theta : Jacquet (detPair χ₁ χ₂ u v) (relUnip k (what₂ u v)) ≃ₗ[ℂ] ℂ ⊗[ℂ] ℂ :=
   Submodule.quotEquivOfEqBot _ (twKer_detPair χ₁ χ₂ u v)
 
+/- English proof (translation)
+Introduce `j _`. Consider the cases of `j`. Conclude with `DiagCell.mem_parab_of_single (n := fun i => (cellFirst u v).1 i false) (cols u v false) false (fun i hi => by cases i; exact absurd rfl hi; rfl) a`. Conclude with `(parab k _).one_mem`.
+-/
 theorem mem_relParab_left (a : GL (Fin 1) k) :
     leviTwo k (Fin 1) (Fin (u + v)) (a, 1) ∈ relParab k (cols u v) := by
   intro j _
@@ -161,6 +208,9 @@ theorem mem_relParab_left (a : GL (Fin 1) k) :
       (fun i hi => by cases i; exact absurd rfl hi; rfl) a
   · exact (parab k _).one_mem
 
+/- English proof (translation)
+Introduce `j _`. Consider the cases of `j`. Conclude with `(parab k _).one_mem`. Conclude with `hq`.
+-/
 theorem mem_relParab_right (q : GL (Fin (u + v)) k) (hq : q ∈ parab k (two (stdSum (rfl : u + v = u + v)))) :
     leviTwo k (Fin 1) (Fin (u + v)) (1, q) ∈ relParab k (cols u v) := by
   intro j _
@@ -168,6 +218,9 @@ theorem mem_relParab_right (q : GL (Fin (u + v)) k) (hq : q ∈ parab k (two (st
   · exact (parab k _).one_mem
   · exact hq
 
+/- English proof (translation)
+Establish `h : ltwo u v ⟨_, mem_relParab_left u v a⟩ = 1` using `map_one (leviProj k (two (stdSum (rfl : u + v = u + v))))`. Simplify using `only [kappa, h, map_one, Pi.one_apply, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem kappa_left (a : GL (Fin 1) k) :
     kappa χ₁ χ₂ u v ⟨_, mem_relParab_left u v a⟩ =
       (χ₁ * absPow k (-(u : ℂ) / 2)) (GeneralLinearGroup.det a) := by
@@ -175,6 +228,9 @@ theorem kappa_left (a : GL (Fin 1) k) :
   simp only [kappa, h, map_one, Pi.one_apply, mul_one]
   rfl
 
+/- English proof (translation)
+Establish `h : GeneralLinearGroup.det ((leviTwo k (Fin 1) (Fin (u + v)) (1, q)) false) = 1` using `map_one _`. Simplify using `only [kappa, h, map_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem kappa_right (q : GL (Fin (u + v)) k) (hq : q ∈ parab k (two (stdSum (rfl : u + v = u + v)))) :
     kappa χ₁ χ₂ u v ⟨_, mem_relParab_right u v q hq⟩ =
       deltaHalf k (Two (Fin u) (Fin v)) (leviProj k (two (stdSum (rfl : u + v = u + v))) ⟨q, hq⟩) *
@@ -188,6 +244,9 @@ abbrev CellSp := smoothPart (ind (relParab k (cols u v)) (cellRep χ₁ χ₂ u 
 
 abbrev ProdSp := IndSp (two (stdSum (rfl : u + v = u + v))) (rho2 χ₁ χ₂ u v)
 
+/- English proof (translation)
+Establish `h : leviTwo k (Fin 1) (Fin (u + v)) (a, y) = leviTwo k (Fin 1) (Fin (u + v)) (a, 1) * leviTwo k (Fin 1) (Fin (u + v)) (1, y)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`. Rewrite using `[h]`. Use `(F.1.2 ⟨_, mem_relParab_left u v a⟩ _).trans ((cellRep_apply χ₁ χ₂ u v _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[kappa_left]`.
+-/
 theorem cell_left (F : CellSp χ₁ χ₂ u v) (a : GL (Fin 1) k) (y : GL (Fin (u + v)) k) :
     F.1.1 (leviTwo k (Fin 1) (Fin (u + v)) (a, y)) =
       ((χ₁ * absPow k (-(u : ℂ) / 2)) (GeneralLinearGroup.det a) : ℂ) •
@@ -202,6 +261,9 @@ theorem cell_left (F : CellSp χ₁ χ₂ u v) (a : GL (Fin 1) k) (y : GL (Fin (
 abbrev sigma2 := (twist (rho2 χ₁ χ₂ u v) (deltaHalf k (Two (Fin u) (Fin v)))).comp
   (leviProj k (two (stdSum (rfl : u + v = u + v))))
 
+/- English proof (translation)
+Simplify using `only [sigma2, MonoidHom.comp_apply, twist_apply]`. Rewrite using `[extTensor_detRep_apply, smul_smul, ← Units.val_mul]`. Both sides reduce to the same expression.
+-/
 theorem sigma2_apply (q : parab k (two (stdSum (rfl : u + v = u + v)))) (w : ℂ ⊗[ℂ] ℂ) :
     sigma2 χ₁ χ₂ u v q w =
       ((deltaHalf k (Two (Fin u) (Fin v)) (leviProj k (two (stdSum (rfl : u + v = u + v))) q) *
@@ -225,12 +287,27 @@ def toIndFun (F : CellSp χ₁ χ₂ u v) : indSpace (parab k (two (stdSum (rfl 
       exact congrArg (fun c : ℂˣ => (c : ℂ) • theta χ₁ χ₂ u v (F.1.1 (leviTwo k (Fin 1) (Fin (u + v)) (1, y))))
         (kappa_right χ₁ χ₂ u v q q.2)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toIndFun_apply (F : CellSp χ₁ χ₂ u v) (y : GL (Fin (u + v)) k) :
     (toIndFun χ₁ χ₂ u v F).1 y = theta χ₁ χ₂ u v (F.1.1 (leviTwo k (Fin 1) (Fin (u + v)) (1, y))) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ind_val_apply {G H W : Type} [Group G] [AddCommGroup W] [Module ℂ W] {P : Subgroup G}
     (σ : Representation ℂ P W) (g x : G) (f : indSpace P σ) : (ind P σ g f).1 x = f.1 (x * g) := rfl
 
+/- English proof (translation)
+Use `mem_smoothPart_of_nhds ?_` and prove the remaining obligations. Establish `hc : Continuous fun y : GL (Fin (u + v)) k => leviTwo k (Fin 1) (Fin (u + v)) (1, y)` using `(continuous_leviTwo k).comp (Continuous.prodMk continuous_const continuous_id)`. Establish `hF : IsOpen {g | ind (relParab k (cols u v)) (cellRep χ₁ χ₂ u v) g F.1 = F.1}` using `F.2`. Establish `h0 : ind (relParab k (cols u v)) (cellRep χ₁ χ₂ u v) 1 F.1 = F.1` using `LinearMap.congr_fun (map_one (ind (relParab k (cols u v)) (cellRep χ₁ χ₂ u v))) F.1`. Establish `h1 : {g | ind (relParab k (cols u v)) (cellRep χ₁ χ₂ u v) g F.1 = F.1} ∈ nhds (leviTwo k (Fin 1) (Fin (u + v)) (1, 1))`.
+
+Establish `: leviTwo k (Fin 1) (Fin (u + v)) (1, 1) = 1` using `map_one _`. Rewrite using `[this]`. Conclude with `hF.mem_nhds h0`. Use `Filter.mem_of_superset (hc.continuousAt.preimage_mem_nhds h1) fun y hy => ?_` and prove the remaining obligations. Establish `hy' : ind (relParab k (cols u v)) (cellRep χ₁ χ₂ u v) (leviTwo k (Fin 1) (Fin (u + v)) (1, y)) F.1 = F.1` using `hy`.
+
+Use `show ind (parab k (two (stdSum (rfl : u + v = u + v)))) (sigma2 χ₁ χ₂ u v) y (toIndFun χ₁ χ₂ u v F) = toIndFun χ₁ χ₂ u v F`. Use `Subtype.ext (funext fun z => ?_)` and prove the remaining obligations. Simplify using `only [ind_val_apply, toIndFun_apply]`. Establish `h2` using `congrArg (fun f => f.1 (leviTwo k (Fin 1) (Fin (u + v)) (1, z))) hy'`. Simplify using `only [ind_val_apply] at h2`.
+
+Use `congrArg (theta χ₁ χ₂ u v) ((congrArg F.1.1 ?_).trans h2)` and prove the remaining obligations. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`.
+-/
 theorem toIndFun_smooth (F : CellSp χ₁ χ₂ u v) :
     toIndFun χ₁ χ₂ u v F ∈ smoothPart (ind (parab k (two (stdSum (rfl : u + v = u + v)))) (sigma2 χ₁ χ₂ u v)) := by
   refine mem_smoothPart_of_nhds ?_
@@ -270,10 +347,22 @@ def ofIndFun (φ : ProdSp χ₁ χ₂ u v) : indSpace (relParab k (cols u v)) (c
     simp only [kappa, Units.val_mul]
     ring⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofIndFun_apply (φ : ProdSp χ₁ χ₂ u v) (x : Levi k (Two (Fin 1) (Fin (u + v)))) :
     (ofIndFun χ₁ χ₂ u v φ).1 x = ((χ₁ * absPow k (-(u : ℂ) / 2)) (GeneralLinearGroup.det (x false)) : ℂ) •
       (theta χ₁ χ₂ u v).symm (φ.1.1 (x true)) := rfl
 
+/- English proof (translation)
+Use `mem_smoothPart_of_nhds ?_` and prove the remaining obligations. Establish `hχ : IsSmoothChar (detChar (Fin 1) (χ₁ * absPow k (-(u : ℂ) / 2)))` using `(hχ₁.mul (isSmoothChar_of_isUnram (isUnram_absPow k _))).detChar`. Establish `hφ : IsOpen {g | ind (parab k (two (stdSum (rfl : u + v = u + v)))) (sigma2 χ₁ χ₂ u v) g φ.1 = φ.1}` using `φ.2`. Establish `ho` using `(hχ.preimage (continuous_apply (A := fun j => GL (Two (Fin 1) (Fin (u + v)) j) k) false)).inter (hφ.preimage (continuous_apply (A := fun j => GL (Two (Fin 1) (Fin (u + v)) j) k) true))`. Establish `h0 : ind (parab k (two (stdSum (rfl : u + v = u + v)))) (sigma2 χ₁ χ₂ u v) 1 φ.1 = φ.1` using `LinearMap.congr_fun (map_one (ind (parab k (two (stdSum (rfl : u + v = u + v)))) (sigma2 χ₁ χ₂ u v))) φ.1`.
+
+Use `Filter.mem_of_superset (ho.mem_nhds ⟨MonoidHom.mem_ker.2 (map_one _), h0⟩) fun x hx => ?_` and prove the remaining obligations. Take `⟨hx1, hx2⟩` from `hx`. Establish `hx1' : (χ₁ * absPow k (-(u : ℂ) / 2)) (GeneralLinearGroup.det (x false)) = 1` using `MonoidHom.mem_ker.1 hx1`. Establish `hx2' : ind (parab k (two (stdSum (rfl : u + v = u + v)))) (sigma2 χ₁ χ₂ u v) (x true) φ.1 = φ.1` using `hx2`. Use `Subtype.ext (funext fun z => ?_)` and prove the remaining obligations.
+
+Simplify using `only [ind_val_apply, ofIndFun_apply]`. Establish `h2` using `congrArg (fun f => f.1 (z true)) hx2'`. Simplify using `only [ind_val_apply] at h2`. Establish `h3 : (z * x) false = z false * x false` using `rfl`. Establish `h4 : (z * x) true = z true * x true` using `rfl`.
+
+Rewrite using `[h3, h4, h2, map_mul, map_mul, hx1', mul_one]`.
+-/
 theorem ofIndFun_smooth (hχ₁ : IsSmoothChar χ₁) (φ : ProdSp χ₁ χ₂ u v) :
     ofIndFun χ₁ χ₂ u v φ ∈ smoothPart (ind (relParab k (cols u v)) (cellRep χ₁ χ₂ u v)) := by
   refine mem_smoothPart_of_nhds ?_
@@ -314,15 +403,27 @@ def cellEquiv (hχ₁ : IsSmoothChar χ₁) : CellSp χ₁ χ₂ u v ≃ₗ[ℂ]
     have e2 : (leviTwo k (Fin 1) (Fin (u + v)) (1, y)) true = y := rfl
     rw [e1, e2, map_one, map_one, Units.val_one, one_smul, LinearEquiv.apply_symm_apply]))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cellEquiv_val (hχ₁ : IsSmoothChar χ₁) (F : CellSp χ₁ χ₂ u v) (y : GL (Fin (u + v)) k) :
     (cellEquiv χ₁ χ₂ u v hχ₁ F).1.1 y = theta χ₁ χ₂ u v (F.1.1 (leviTwo k (Fin 1) (Fin (u + v)) (1, y))) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prod₂_val (φ : ProdSp χ₁ χ₂ u v) (x y : GL (Fin (u + v)) k) :
     (prod₂ (detRep (Fin u) (χ₁ * absPow k (1 / 2))) (detRep (Fin v) χ₂) x φ).1.1 y = φ.1.1 (y * x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cellFunctor_val (F : CellSp χ₁ χ₂ u v) (x y : Levi k (Two (Fin 1) (Fin (u + v)))) :
     (cellFunctor (what₂ u v) (cols u v) (detPair χ₁ χ₂ u v) x F).1.1 y = F.1.1 (y * x) := rfl
 
+/- English proof (translation)
+Use `Subtype.ext (Subtype.ext (funext fun y => ?_))` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, cellEquiv_val, prod₂_val, cellFunctor_val]`. Establish `hmul : leviTwo k (Fin 1) (Fin (u + v)) (1, y) * leviTwo k (Fin 1) (Fin (u + v)) g = leviTwo k (Fin 1) (Fin (u + v)) (g.1, y * g.2)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[hmul, cell_left, map_smul]`.
+-/
 theorem cellEquiv_act (hχ₁ : IsSmoothChar χ₁) (F : CellSp χ₁ χ₂ u v) (g : GL (Fin 1) k × GL (Fin (u + v)) k) :
     cellEquiv χ₁ χ₂ u v hχ₁ (cellFunctor (what₂ u v) (cols u v) (detPair χ₁ χ₂ u v) (leviTwo k (Fin 1) (Fin (u + v)) g) F) =
       ((χ₁ * absPow k (-(u : ℂ) / 2)) (GeneralLinearGroup.det g.1) : ℂ) •
@@ -334,6 +435,11 @@ theorem cellEquiv_act (hχ₁ : IsSmoothChar χ₁) (F : CellSp χ₁ χ₂ u v)
     rw [← map_mul, Prod.mk_mul_mk, one_mul]
   rw [hmul, cell_left, map_smul]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ χ₁ χ₂ h₁ _ u v`. Use `⟨what₂ u v, cols u v, ⟨.mk ((cellEquiv χ₁ χ₂ u v h₁).trans (TensorProduct.lid ℂ _).symm) fun g => ?_⟩⟩` and prove the remaining obligations. Use `LinearMap.ext fun F => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.trans_apply, TensorProduct.lid_symm_apply, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom]`. Use `(congrArg (fun w => (1 : ℂ) ⊗ₜ[ℂ] w) (cellEquiv_act χ₁ χ₂ u v h₁ F g)).trans ?_` and prove the remaining obligations.
+
+Establish `hc : ((χ₁ * absPow k (-(u : ℂ) / 2)) (GeneralLinearGroup.det g.1) : ℂ) • (1 : ℂ) = detRep (Fin 1) (χ₁ * absPow k (-(u : ℂ) / 2)) g.1 1`. Rewrite using `[detRep, ofChar_apply, detChar_apply, smul_eq_mul, mul_one]`. Simplify using `only [extTensor_tmul, TensorProduct.tmul_smul, TensorProduct.smul_tmul', hc]`.
+-/
 theorem cellFirst_det_equiv : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₁ → IsSmoothChar χ₂ → ∀ (u v : ℕ), ∃ (f : ∀ i, (Σ j, Fin ((GlobalTheory.DetProdCells.cellFirst u v).1 i j)) ≃ Two (Fin (u + 1)) (Fin v) i) (g : ∀ j, (Σ i, Fin ((GlobalTheory.DetProdCells.cellFirst u v).1 i j)) ≃ Two (Fin 1) (Fin (u + v)) j), Nonempty (Representation.Equiv ((cellFunctor f g ((extTensor (detRep (Fin (u + 1)) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin (u + 1)) (Fin v)).symm.toMonoidHom)).comp (leviTwo k (Fin 1) (Fin (u + v))).toMonoidHom) (extTensor (detRep (Fin 1) (χ₁ * absPow k (-(u : ℂ) / 2))) (prod₂ (detRep (Fin u) (χ₁ * absPow k (1 / 2))) (detRep (Fin v) χ₂)))) := by
   intro k _ _ _ _ χ₁ χ₂ h₁ _ u v
   refine ⟨what₂ u v, cols u v, ⟨.mk ((cellEquiv χ₁ χ₂ u v h₁).trans (TensorProduct.lid ℂ _).symm) fun g => ?_⟩⟩

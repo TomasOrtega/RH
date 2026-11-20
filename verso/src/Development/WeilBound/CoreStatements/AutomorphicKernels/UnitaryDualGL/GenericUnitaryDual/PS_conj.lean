@@ -19,6 +19,9 @@ section Gen
 variable {G V W U : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [AddCommGroup U]
   [Module ℂ U]
 
+/- English proof (translation)
+Take `⟨φ, hφ, hc⟩` from `h`. Use `⟨(e.toLinearEquiv.toLinearMap).comp φ, e.toLinearEquiv.bijective.comp hφ, fun g v => ?_⟩` and prove the remaining obligations. Use `Representation.IntertwiningMap.isIntertwining σ τ e.toIntertwiningMap g (φ v)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, hc]`. Conclude with `this`.
+-/
 theorem conjEquiv_trans_equiv {π : Representation ℂ G V} {σ : Representation ℂ G W} {τ : Representation ℂ G U}
     (h : ConjEquiv π σ) (e : σ.Equiv τ) : ConjEquiv π τ := by
   obtain ⟨φ, hφ, hc⟩ := h
@@ -27,6 +30,11 @@ theorem conjEquiv_trans_equiv {π : Representation ℂ G V} {σ : Representation
   simp only [LinearMap.comp_apply, hc]
   exact this
 
+/- English proof (translation)
+Take `⟨φ, hφ, hc⟩` from `h`. Use `⟨φ.comp (e.toLinearEquiv.toLinearMap), hφ.comp e.toLinearEquiv.bijective, fun g v => ?_⟩` and prove the remaining obligations. Use `Representation.IntertwiningMap.isIntertwining ρ π e.toIntertwiningMap g v` as an intermediate fact. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← hc]`.
+
+Conclude with `congrArg φ this`.
+-/
 theorem equiv_trans_conjEquiv {ρ : Representation ℂ G U} {π : Representation ℂ G V} {σ : Representation ℂ G W}
     (e : ρ.Equiv π) (h : ConjEquiv π σ) : ConjEquiv ρ σ := by
   obtain ⟨φ, hφ, hc⟩ := h
@@ -36,6 +44,17 @@ theorem equiv_trans_conjEquiv {ρ : Representation ℂ G U} {π : Representation
   rw [← hc]
   exact congrArg φ this
 
+/- English proof (translation)
+Take `⟨φ, hφ, hc⟩` from `h₁`. Take `⟨ψ, hψ, hc'⟩` from `h₂`. Set `inv` to `PositivityTheory.RgGu.NR.ConjProd.semiInv φ hφ`. Establish `h1 : ∀ w, φ (inv w) = w` using `PositivityTheory.RgGu.NR.ConjProd.semiInv_apply φ hφ`. Establish `h2 : ∀ v, inv (φ v) = v` using `PositivityTheory.RgGu.NR.ConjProd.semiInv_apply' φ hφ`.
+
+Establish `hinv : ∀ g w, inv (σ g w) = π g (inv w)` using `fun g w => hφ.1 (by rw [hc, h1, h1])`. Set `L : W →ₗ[ℂ] U` to `{ toFun := fun w => ψ (inv w) map_add' := fun a b => by simp only [map_add] map_smul' := fun c a => by`. Simplify using `only [map_smulₛₗ, RingHom.id_apply]`. Simplify using `}`. Establish `hL : ∀ w, L w = ψ (inv w)` using `fun _ => rfl`.
+
+Establish `hbij : Function.Bijective L`. Use `⟨fun a b hab => ?_, fun u => ?_⟩` and prove the remaining obligations. Rewrite `hab` using `[hL, hL]`. Use `hψ.1 hab` as an intermediate fact. Rewrite using `[← h1 a, ← h1 b, this]`.
+
+Take `⟨v, rfl⟩` from `hψ.2 u`. Conclude with `⟨φ v, by rw [hL, h2]⟩`. Set `f : σ.IntertwiningMap τ` to `{ toLinearMap := L isIntertwining' := fun g => by`. Use extensionality with `w`. Use `show ψ (inv (σ g w)) = τ g (ψ (inv w))`.
+
+Rewrite using `[hinv, hc'] }`. Conclude with `⟨equivOfBijective f hbij⟩`.
+-/
 theorem nonempty_equiv_of_conj {π : Representation ℂ G V} {σ : Representation ℂ G W} {τ : Representation ℂ G U}
     (h₁ : ConjEquiv π σ) (h₂ : ConjEquiv π τ) : Nonempty (σ.Equiv τ) := by
   obtain ⟨φ, hφ, hc⟩ := h₁
@@ -72,17 +91,26 @@ section Local
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨Representation.Equiv.refl _⟩`.
+-/
 theorem nonempty_equiv_prodIrr_of_eq {h N : ℕ} {z y : Fin h → IrrGL k} (e : z = y) (hz : ∑ a, (z a).1 = N)
     (hy : ∑ a, (y a).1 = N) : Nonempty ((prodIrr z hz).Equiv (prodIrr y hy)) := by
   subst e
   exact ⟨Representation.Equiv.refl _⟩
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+The claim follows from `MonoidHom.one_comp _`.
+-/
 theorem detChar_one (n : ℕ) : detChar (Fin n) (1 : kˣ →* ℂˣ) = 1 := MonoidHom.one_comp _
 
 def C1 (x y : IrrGL k) : Prop :=
   ∃ (n : ℕ) (c c' : IrrCl (GL (Fin n) k)), x = ⟨n, c⟩ ∧ y = ⟨n, c'⟩ ∧ ConjEquiv c.rep.ρ c'.rep.ρ
 
+/- English proof (translation)
+Establish `h0 : ConjEquiv P (contra P)`. Use `PositivityTheory.RgGu.NR.conjDual k N _ P hs hi hu 0` as an intermediate fact. Simplify `this` using `only [Complex.ofReal_zero, absPow_zero, detChar_one, twist_one]`. Conclude with `nonempty_equiv_of_conj h0 h`.
+-/
 theorem contra_equiv_of_conj {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (P : Representation ℂ (GL (Fin N) k) V) (Q : Representation ℂ (GL (Fin N) k) W) (hs : IsSmooth P) (hi : P.IsIrreducible)
     (hu : IsUnitarisable P) (h : ConjEquiv P Q) : Nonempty ((contra P).Equiv Q) := by
@@ -100,32 +128,53 @@ def ctr {n : ℕ} (A : BR k n) : BR k n := ⟨_, contra A.ρ⟩
 def IU {n : ℕ} (A : BR k n) : Prop := A.ρ.IsIrreducible ∧ IsUnitarisable A.ρ
 
 unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.Sm in
+/- English proof (translation)
+The claim follows from `contra_equiv_of_conj A.ρ C.ρ hs h.1 h.2 hc unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.Sm in`.
+-/
 theorem iso_ctr {n : ℕ} {A C : BR k n} (hs : Sm A) (h : IU A) (hc : CjB A C) : Iso (ctr A) C :=
   contra_equiv_of_conj A.ρ C.ρ hs h.1 h.2 hc
 
 unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.Sm in
+/- English proof (translation)
+The claim follows from `PositivityTheory.RgGu.NR.conjProd k h N n hd _ _ (fun a => (A a).ρ) (fun a => (C a).ρ) hc unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.Sm in`.
+-/
 theorem cj_mp {h N : ℕ} (n : Fin h → ℕ) (hd : ∑ j, n j = N) (A C : ∀ a, BR k (n a)) (hc : ∀ a, CjB (A a) (C a)) :
     CjB (mp n hd A) (mp n hd C) :=
   PositivityTheory.RgGu.NR.conjProd k h N n hd _ _ (fun a => (A a).ρ) (fun a => (C a).ρ) hc
 
 unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.Sm in
+/- English proof (translation)
+The claim follows from `h unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.Sm in`.
+-/
 theorem cj_one {n : ℕ} (c c' : IrrCl (GL (Fin n) k)) (h : ConjEquiv c.rep.ρ c'.rep.ρ) : CjB (one ⟨n, c⟩) (one ⟨n, c'⟩) := h
 
 unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.Sm in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hi, hu⟩ unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.Sm in`.
+-/
 theorem iu_pr {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ j, (x j).1 = N) (hi : (prodIrr x hd).IsIrreducible)
     (hu : IsUnitarisable (prodIrr x hd)) : IU (pr x hd) := ⟨hi, hu⟩
 
 unseal GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.Sm in
+/- English proof (translation)
+The claim follows from `H`.
+-/
 theorem of_iso_ctr {h N : ℕ} (x y : Fin h → IrrGL k) (hd : ∑ j, (x j).1 = N) (hd' : ∑ j, (y j).1 = N)
     (H : Iso (ctr (pr x hd)) (pr y hd')) : Nonempty ((contra (prodIrr x hd)).Equiv (prodIrr y hd')) := H
 
 attribute [irreducible] CjB ctr IU
 
 unseal GlobalTheory.ProdFlatten.pr in
+/- English proof (translation)
+The claim follows from `cj_mp n hd (fun a => one ⟨n a, c a⟩) (fun a => one ⟨n a, c' a⟩) fun a => cj_one (c a) (c' a) (hc a)`.
+-/
 theorem cj_pr {h N : ℕ} (n : Fin h → ℕ) (c c' : ∀ a, IrrCl (GL (Fin (n a)) k)) (hd : ∑ j, n j = N)
     (hc : ∀ a, ConjEquiv (c a).rep.ρ (c' a).rep.ρ) : CjB (pr (fun a => ⟨n a, c a⟩) hd) (pr (fun a => ⟨n a, c' a⟩) hd) :=
   cj_mp n hd (fun a => one ⟨n a, c a⟩) (fun a => one ⟨n a, c' a⟩) fun a => cj_one (c a) (c' a) (hc a)
 
+/- English proof (translation)
+Use `choose n c c' e e' hc using H`. Take `rfl : x = fun a => ⟨n a, c a⟩` from `funext e`. Take `rfl : y = fun a => ⟨n a, c' a⟩` from `funext e'`. Conclude with `⟨hd, cj_pr n c c' hd hc⟩`.
+-/
 theorem conjugate_product_of_pairs {h N : ℕ} (x y : Fin h → IrrGL k) (H : ∀ a, C1 (x a) (y a)) (hd : ∑ j, (x j).1 = N) :
     ∃ hd' : ∑ j, (y j).1 = N, CjB (pr x hd) (pr y hd') := by
   choose n c c' e e' hc using H
@@ -133,11 +182,19 @@ theorem conjugate_product_of_pairs {h N : ℕ} (x y : Fin h → IrrGL k) (H : �
   obtain rfl : y = fun a => ⟨n a, c' a⟩ := funext e'
   exact ⟨hd, cj_pr n c c' hd hc⟩
 
+/- English proof (translation)
+The claim follows from `(conjugate_product_of_pairs x y H hd).imp fun hd' hc => of_iso_ctr x y hd hd' (iso_ctr (sm_pr x hd) (iu_pr x hd hi hu) hc)`.
+-/
 theorem contragredient_product_of_pairs {h N : ℕ} (x y : Fin h → IrrGL k) (H : ∀ a, C1 (x a) (y a)) (hd : ∑ j, (x j).1 = N)
     (hi : (prodIrr x hd).IsIrreducible) (hu : IsUnitarisable (prodIrr x hd)) :
     ∃ hd' : ∑ j, (y j).1 = N, Nonempty ((contra (prodIrr x hd)).Equiv (prodIrr y hd')) :=
   (conjugate_product_of_pairs x y H hd).imp fun hd' hc => of_iso_ctr x y hd hd' (iso_ctr (sm_pr x hd) (iu_pr x hd hi hu) hc)
 
+/- English proof (translation)
+Establish `hs : IsSmooth (twist (contra δ.rep) (detChar (Fin δ.1) (absPow k (s : ℂ))))` using `isSmooth_twist (isSmooth_contra _) (isSmoothChar_absPow _).detChar`. Establish `hi : (twist (contra δ.rep) (detChar (Fin δ.1) (absPow k (s : ℂ)))).IsIrreducible` using `isIrreducible_twist (GlobalTheory.CompanionTheory.ZcDual.isIrreducible_contra hA _ δ.2.rep.smooth δ.2.rep.irr) _`. Use `⟨δ.1, (δ.nu s).2, (IrrGL.of _ hs hi).2, rfl, ?_, ?_⟩` and prove the remaining obligations. Use `show _ = IrrGL.of _ hs hi`. Rewrite using `[GlobalTheory.CompanionTheory.ZcDual.dualCl_eq hA, IrrGL.nu, IrrGL.tw_of]`.
+
+Conclude with `conjEquiv_trans_equiv (equiv_trans_conjEquiv (IrrGL.twEquiv δ (absPow k (s : ℂ)) (isSmoothChar_absPow _)).symm (PositivityTheory.RgGu.NR.conjDual k δ.1 _ δ.rep δ.2.rep.smooth δ.2.rep.irr hu s)) (IrrGL.equivOf _ hs hi)`.
+-/
 theorem contragredient_pair_twist (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (δ : IrrGL k) (hu : IsUnitarisable δ.rep) (s : ℝ) :
     C1 (δ.nu s) ((Zc.dualCl δ).nu s) := by
   have hs : IsSmooth (twist (contra δ.rep) (detChar (Fin δ.1) (absPow k (s : ℂ)))) :=
@@ -150,6 +207,9 @@ theorem contragredient_pair_twist (hA : GlobalTheory.Published.IrreducibleAdmiss
   · exact conjEquiv_trans_equiv (equiv_trans_conjEquiv (IrrGL.twEquiv δ (absPow k (s : ℂ)) (isSmoothChar_absPow _)).symm
       (PositivityTheory.RgGu.NR.conjDual k δ.1 _ δ.rep δ.2.rep.smooth δ.2.rep.irr hu s)) (IrrGL.equivOf _ hs hi)
 
+/- English proof (translation)
+The claim follows from `contragredient_product_of_pairs (fun j => (δ j).nu (s j)) (fun j => (Zc.dualCl (δ j)).nu (s j)) (fun j => contragredient_pair_twist hA (δ j) (hδu j) (s j)) hd hi hu`.
+-/
 theorem conj_side (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h N : ℕ} (δ : Fin h → IrrGL k) (s : Fin h → ℝ)
     (hδu : ∀ j, IsUnitarisable (δ j).rep) (hd : ∑ j, ((δ j).nu (s j)).1 = N)
     (hi : (prodIrr (fun j => (δ j).nu (s j)) hd).IsIrreducible)

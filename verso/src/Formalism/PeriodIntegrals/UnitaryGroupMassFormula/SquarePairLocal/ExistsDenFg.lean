@@ -9,6 +9,17 @@ namespace PI.SqPairLocal
 
 open PI.SqPair Formalism.L2.PairingIndexBounds.Eq.SqG
 
+/- English proof (translation)
+Introduce `E _ _ Q hQ c hc`. Use `hQ.isPrime` as an intermediate fact. Establish `hQ0 : Q ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hQ (NumberField.RingOfIntegers.not_isField E)`. Establish `: IsDiscreteValuationRing (Localization.AtPrime Q)` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 E) hQ0 _`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (Localization.AtPrime Q)`.
+
+Establish `hc' : algebraMap (𝓞 E) (Localization.AtPrime Q) c ≠ 0`. Introduce `h`. Apply `hc` to reduce the goal to its premises. Apply `IsLocalization.injective (Localization.AtPrime Q) (Ideal.primeCompl_le_nonZeroDivisors Q)` to reduce the goal to its premises. Rewrite using `[h, map_zero]`.
+
+Take `⟨K, hK⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible (s := Ideal.span {algebraMap (𝓞 E) (Localization.AtPrime Q) c}) (by rwa [Ne, Ideal.span_singleton_eq_bot]) hϖ`. Use `⟨K, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hmax : IsLocalRing.maximalIdeal (Localization.AtPrime Q) = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ`. Establish `hxA : algebraMap (𝓞 E) (Localization.AtPrime Q) x ∈ Ideal.span {algebraMap (𝓞 E) (Localization.AtPrime Q) c}`. Rewrite using `[hK, ← Ideal.span_singleton_pow, ← hmax, ← IsLocalization.AtPrime.map_eq_maximalIdeal (p := Q), ← Ideal.map_pow]`.
+
+Conclude with `Ideal.mem_map_of_mem _ hx`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp hxA`. Take `⟨⟨w, s⟩, rfl⟩` from `IsLocalization.mk'_surjective Q.primeCompl y`. Establish `key : algebraMap (𝓞 E) (Localization.AtPrime Q) (c * w) = algebraMap (𝓞 E) (Localization.AtPrime Q) (s * x)`. Rewrite using `[map_mul, map_mul, ← hy, ← IsLocalization.mk'_spec (Localization.AtPrime Q) w s]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨t, ht⟩` from `(IsLocalization.eq_iff_exists Q.primeCompl (Localization.AtPrime Q)).mp key`. Use `⟨(t * s : Q.primeCompl), (t * s : Q.primeCompl).2, t * w, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `-ht`.
+-/
 theorem powLoc : PowLoc := by
   intro E _ _ Q hQ c hc
   have := hQ.isPrime
@@ -43,6 +54,27 @@ theorem powLoc : PowLoc := by
   push_cast
   linear_combination -ht
 
+/- English proof (translation)
+Introduce `E _ _ W _ _ X x p hp hloc`. Set `J : Ideal (𝓞 E)` to `X.comap (LinearMap.toSpanSingleton (𝓞 E) W x)`. Establish `hJ : ∀ a, a ∈ J ↔ a • x ∈ X` using `fun a => by`. Simplify using `[J, LinearMap.toSpanSingleton_apply]`. Establish `htop : J ⊔ Ideal.span {(p : 𝓞 E)} = ⊤`.
+
+Assume the negation of the conclusion as `h`. Take `⟨Q, hQ, hle⟩` from `Ideal.exists_le_maximal _ h`. Take `⟨s, hs, hsx⟩` from `hloc Q hQ (hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))`. Conclude with `hs (hle (Ideal.mem_sup_left ((hJ s).mpr hsx)))`. Establish `hpnu : Ideal.span {(p : 𝓞 E)} ≠ ⊤`.
+
+Introduce `h`. Establish `h2` using `congrArg Ideal.absNorm h`. Rewrite `h2` using `[Ideal.absNorm_span_singleton, Algebra.norm_natCast, Ideal.absNorm_top, Int.natAbs_pow, Int.natAbs_natCast]`. Establish `hd : 0 < Module.finrank ℤ (𝓞 E)` using `Module.finrank_pos`. Break down `Nat.pow_eq_one.mp h2 with h1 | h1` into its components or cases.
+
+Conclude with `hp.one_lt.ne' h1`. Use linear arithmetic over natural numbers and integers. Establish `hJ0 : J ≠ ⊥`. Introduce and unpack `h`. Rewrite `htop` using `[h, bot_sup_eq]`.
+
+Conclude with `hpnu htop`. Establish `: Finite (𝓞 E ⧸ J)` using `(Ideal.absNorm_ne_zero_iff J).mp (by rwa [Ne, Ideal.absNorm_eq_zero_iff])`. Establish `h1 : (1 : 𝓞 E) ∈ J ⊔ Ideal.span {(p : 𝓞 E)}` using `by rw [htop]; exact Submodule.mem_top`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp h1`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hb`.
+
+Establish `hunit : Ideal.Quotient.mk J r * Ideal.Quotient.mk J (p : 𝓞 E) = 1`. Rewrite using `[← map_mul, ← map_one (Ideal.Quotient.mk J), ← hab, Ideal.Quotient.eq]`. Establish `: r * (p : 𝓞 E) - (a + r * (p : 𝓞 E)) = -a` using `by ring`. Rewrite using `[this]`. Conclude with `J.neg_mem ha`.
+
+Establish `hndvd : ¬ p ∣ Ideal.absNorm J`. Introduce `hdvd`. Use `Fact.mk hp` as an intermediate fact. Set `` to `Fintype.ofFinite (𝓞 E ⧸ J)`. Rewrite `hdvd` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`.
+
+Take `⟨z, hz⟩` from `exists_prime_addOrderOf_dvd_card p hdvd`. Establish `hpz : Ideal.Quotient.mk J (p : 𝓞 E) * z = 0`. Rewrite using `[map_natCast, ← nsmul_eq_mul, ← hz, addOrderOf_nsmul_eq_zero]`. Establish `hz0 : z = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `hz` using `[hz0, addOrderOf_zero]`. Conclude with `hp.one_lt.ne hz`. Use `⟨Ideal.absNorm J, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hndvd` after adjusting the coercions. Rewrite using `[Int.cast_natCast, ← hJ]`.
+
+Conclude with `Ideal.absNorm_mem J`.
+-/
 theorem locGlob : LocGlob := by
   intro E _ _ W _ _ X x p hp hloc
   let J : Ideal (𝓞 E) := X.comap (LinearMap.toSpanSingleton (𝓞 E) W x)
@@ -98,11 +130,21 @@ section IntMulSec
 
 variable {E : Type} [Field E] [NumberField E] {N : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_left_bis.goal1 .. | (apply Bl.general_b_fact_left_bis.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_bis.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_bis.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_bis.go …`.
+-/
 theorem exists_den (L'' : Submodule (𝓞 E) (Fin N → E))
     (hsp : Submodule.span E (L'' : Set (Fin N → E)) = ⊤) (v : Fin N → E) :
     ∃ d : 𝓞 E, d ≠ 0 ∧ d • v ∈ L'' := by
   first | exact Bl.general_b_fact_left_bis.goal1 .. | (apply Bl.general_b_fact_left_bis.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_bis.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_bis.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_bis.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_bis.goal1 <;> first | assumption | infer_instance)
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hfg`. Use `choose f hf0 hf using fun v => exists_den L'' hsp v`. Use `⟨∏ g ∈ S, f g, Finset.prod_ne_zero_iff.mpr (fun g _ => hf0 g), fun y hy => ?_⟩` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem g hg`.
+
+Rewrite using `[← Finset.mul_prod_erase S f (Finset.mem_coe.mp hg), mul_comm, mul_smul]`. Conclude with `L''.smul_mem _ (hf g)`. Consider the case `zero => rw [smul_zero]`. Conclude with `L''.zero_mem`. Consider the case `add y z _ _ hy hz => rw [smul_add]`.
+
+Conclude with `L''.add_mem hy hz`. Consider the case `smul r y _ h => rw [smul_comm]`. Conclude with `L''.smul_mem r h`.
+-/
 theorem exists_den_fg (L' L'' : Submodule (𝓞 E) (Fin N → E)) (hfg : L'.FG)
     (hsp : Submodule.span E (L'' : Set (Fin N → E)) = ⊤) :
     ∃ d : 𝓞 E, d ≠ 0 ∧ ∀ y ∈ L', d • y ∈ L'' := by
@@ -118,6 +160,9 @@ theorem exists_den_fg (L' L'' : Submodule (𝓞 E) (Fin N → E)) (hfg : L'.FG)
   | add y z _ _ hy hz => rw [smul_add]; exact L''.add_mem hy hz
   | smul r y _ h => rw [smul_comm]; exact L''.smul_mem r h
 
+/- English proof (translation)
+Take `⟨d', hd'⟩` from `Ideal.mem_span_singleton.mp (Ideal.absNorm_mem (Ideal.span {d}))`. Use `⟨d', hd', ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hd`.
+-/
 theorem nat_mul (d : 𝓞 E) (hd : d ≠ 0) :
     ∃ d' : 𝓞 E, ((Ideal.absNorm (Ideal.span {d}) : ℕ) : 𝓞 E) = d * d' ∧
       Ideal.absNorm (Ideal.span {d}) ≠ 0 := by
@@ -128,6 +173,15 @@ theorem nat_mul (d : 𝓞 E) (hd : d ≠ 0) :
 
 end IntMulSec
 
+/- English proof (translation)
+Introduce `E _ _ _ N L' L'' h' h'' n hn`. Take `⟨d1, hd1, k1⟩` from `exists_den_fg L' L'' h'.1 h''.2.1`. Take `⟨d2, hd2, k2⟩` from `exists_den_fg L'' L' h''.1 h'.2.1`. Take `⟨D', hD', hD0⟩` from `nat_mul (d1 * d2) (mul_ne_zero hd1 hd2)`. Take `⟨n', hn', hn0⟩` from `nat_mul n hn`.
+
+Use `⟨Ideal.absNorm (Ideal.span {d1 * d2}) * Ideal.absNorm (Ideal.span {n}), mul_ne_zero hD0 hn0, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hDy : (d1 * d2) • y ∈ L' ∧ (d1 * d2) • y ∈ L''`. Break down `hy with hy | hy` into its components or cases. Establish `e : (d1 * d2) • y = d2 • (d1 • y)` using `by rw [smul_smul, mul_comm]`. Conclude with `⟨L'.smul_mem _ hy, e ▸ L''.smul_mem d2 (k1 y hy)⟩`.
+
+Establish `e : (d1 * d2) • y = d1 • (d2 • y)` using `by rw [smul_smul]`. Conclude with `⟨e ▸ L'.smul_mem d1 (k2 y hy), L''.smul_mem _ hy⟩`. Use `⟨(D' * n') • ((d1 * d2) • y), L'.smul_mem _ hDy.1, L''.smul_mem _ hDy.2, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, hD', hn', smul_smul, smul_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem intMul : IntMul := by
   intro E _ _ _ N L' L'' h' h'' n hn
   obtain ⟨d1, hd1, k1⟩ := exists_den_fg L' L'' h'.1 h''.2.1

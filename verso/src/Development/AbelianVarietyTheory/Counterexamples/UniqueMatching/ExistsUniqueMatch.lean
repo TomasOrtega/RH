@@ -18,6 +18,9 @@ namespace GlobalTheory.ArcTieProbe
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
+/- English proof (translation)
+Use `Y.jQ_open` as an intermediate fact. Unfold `Model.j`. Use `infer_instance`.
+-/
 theorem mono_j (Y : Model Xo c β) [Mono (spMap β)] : Mono Y.j := by
   have := Y.jQ_open
   unfold Model.j

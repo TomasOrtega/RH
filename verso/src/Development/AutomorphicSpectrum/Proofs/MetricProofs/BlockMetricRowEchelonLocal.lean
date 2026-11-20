@@ -11,6 +11,13 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.StepW
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 
+/- English proof (translation)
+Introduce `e`. Establish `hN` using `i.2`. Distinguish the cases in `hi : (i : ℕ) + 1 ≤ j`. Establish `hlt : N - j < N` using `by omega`. Establish `hm : (⟨N - j, hlt⟩ : Fin N) ∈ stepCols N j i`.
+
+Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_pos hi]`. Use linear arithmetic over natural numbers and integers. Rewrite `hm` using `[e]`. Simplify using `at hm`. Establish `hlt : 0 < N` using `by omega`.
+
+Establish `hm : (⟨0, hlt⟩ : Fin N) ∈ stepCols N j i`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_neg hi]`. Use linear arithmetic over natural numbers and integers. Rewrite `hm` using `[e]`. Simplify using `at hm`.
+-/
 theorem stepCols_ne_empty_of_le {N j : ℕ} (hj : j ≤ N) (i : Fin N) : stepCols N j i ≠ ∅ := by
   intro e
   have hN := i.2
@@ -28,6 +35,13 @@ theorem stepCols_ne_empty_of_le {N j : ℕ} (hj : j ≤ N) (i : Fin N) : stepCol
     rw [e] at hm
     simp at hm
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n BM p k₀ l x₀ z hp hx hz hO`. Take `⟨h, a, hb, -, ha, hpl, hzk⟩` from `GlobalTheory.T.block_metric_grassmann_chart_local K ι Φ y Ψ N j M n BM p k₀ l x₀ z hp hx hz hO`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hmin : ∀ I, minorIJ h I (stepCols N j p.2) = 0` using `fun I => by`.
+
+Distinguish the cases in `hI : IsStepRows N j p.2 I`. Establish `e` using `hpl I hI`. Rewrite `e` using `[hcon I hI]`. Conclude with `(mul_eq_zero.1 e.symm).resolve_left ha`. Conclude with `((GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j p.2 M.j_le).2.1 h I hb hI).resolve_right (stepCols_ne_empty_of_le M.j_le p.2)`.
+
+Take `⟨m, hm⟩` from `hz.1 k₀`. Conclude with `hm (by rw [hzk m]; simp [hmin])`.
+-/
 theorem exists_plk_ne_zero : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (BM : BaseMetric M n) (p : Ψ × Fin N) (k₀ : K) (l : Fin BM.q) (x₀ : BM.Rb.X) (z : (Σ k, ι k) → ℂ), M.blk p = some k₀ → x₀ ∈ BM.O l → z ∈ mcPts (mCoordIdeal y) → SameOrbit (basePart M.blk z) (BM.Rb.lift x₀ x₀) → ∃ I₀, IsStepRows N j p.2 I₀ ∧ plk M (BM.F l) k₀ z I₀ ≠ 0 := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n BM p k₀ l x₀ z hp hx hz hO
   obtain ⟨h, a, hb, -, ha, hpl, hzk⟩ := GlobalTheory.T.block_metric_grassmann_chart_local K ι Φ y Ψ N j M n BM p k₀ l x₀ z hp hx hz hO

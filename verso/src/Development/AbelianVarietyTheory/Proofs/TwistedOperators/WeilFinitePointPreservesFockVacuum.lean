@@ -19,10 +19,20 @@ noncomputable section
 
 namespace GlobalTheory.FockRealMove
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LocWeil.CompactPart.infMat_of_fin V (θ τ) hx`.
+-/
 theorem compAt_mt_of_mem_GfC {D : D7} (θ : InfFam D) (τ : D.what₂.Tau) (V : HSp D) {x : GA D V} (hx : x ∈ GfC V) :
     compAt θ τ (mt V x) = 1 :=
   GlobalTheory.LocWeil.CompactPart.infMat_of_fin V (θ τ) hx
 
+/- English proof (translation)
+Introduce `D ψ θ S T χS χT om hW hθ sS sT f hf hvac x hx y hy`. Use `⟨hW.om_pres _ _ hf, fun τ z => ?_⟩` and prove the remaining obligations. Establish `hS : sS τ * compAt θ τ (mt S x) = compAt θ τ (mt S x) * sS τ`. Rewrite using `[compAt_mt_of_mem_GfC θ τ S hx, Matrix.mul_one, Matrix.one_mul]`. Establish `hT : sT τ * compAt θ τ (mt T y) = compAt θ τ (mt T y) * sT τ`.
+
+Rewrite using `[compAt_mt_of_mem_GfC θ τ T hy, Matrix.mul_one, Matrix.one_mul]`. Establish `key` using `GlobalTheory.FockMove.om_annih hW hθ x y τ hS hT (compAt θ τ (mt T y⁻¹) * z * compAt θ τ (mt S x)) hf`. Rewrite `key` using `[hvac τ, map_zero]`. Establish `e : compAt θ τ (mt T y) * (compAt θ τ (mt T y⁻¹) * z * compAt θ τ (mt S x)) * compAt θ τ (mt S x⁻¹) = z`. Rewrite using `[compAt_mt_of_mem_GfC θ τ S hx, compAt_mt_of_mem_GfC θ τ S (inv_mem hx), compAt_mt_of_mem_GfC θ τ T hy, compAt_mt_of_mem_GfC θ τ T (inv_mem hy)]`.
+
+Simplify using the standard rewrite rules. Rewrite `key` using `[e]`. Conclude with `key.symm`.
+-/
 theorem om_fin_fockVac : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → IsInfFam θ → ∀ (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f) → ∀ x ∈ GfC S, ∀ y ∈ GfC T, IsThetaFunO ψ S T (om (x, y) f) ∧ ∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) (om (x, y) f) := by
   intro D ψ θ S T χS χT om hW hθ sS sT f hf hvac x hx y hy
   refine ⟨hW.om_pres _ _ hf, fun τ z => ?_⟩

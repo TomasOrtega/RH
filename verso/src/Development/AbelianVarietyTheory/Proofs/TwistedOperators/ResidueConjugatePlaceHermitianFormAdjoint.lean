@@ -19,6 +19,11 @@ namespace GlobalTheory.SeeConjAdj
 open GlobalTheory.SeeConjChar Matrix
 variable {D : D7}
 
+/- English proof (translation)
+Establish `e2 : ∀ a b, Formalism.UG.hform σ J a b = (σ ∘ a) ⬝ᵥ J *ᵥ b`. Introduce `a b`. Simplify using `only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, Function.comp_apply, mul_assoc]`. Establish `e3 : σ ∘ (M.val *ᵥ u) = (σ ∘ u) ᵥ* Formalism.UG.cT σ M.val`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Formalism.UG.cT, Matrix.vecMul_transpose, Function.comp_apply, RingHom.map_mulVec]`. Establish `hM' : Formalism.UG.cT σ M.val * J * M.val = J` using `hM`. Rewrite using `[e2, e2, e3, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hM']`.
+-/
 theorem hform_unitary {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (σ : A →+* A)
     (J : Matrix n n A) {M : GL n A} (hM : M ∈ Formalism.UG.UJ σ J) (u v : n → A) :
     Formalism.UG.hform σ J (M.val *ᵥ u) (M.val *ᵥ v) = Formalism.UG.hform σ J u v := by
@@ -31,6 +36,11 @@ theorem hform_unitary {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableE
   have hM' : Formalism.UG.cT σ M.val * J * M.val = J := hM
   rw [e2, e2, e3, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hM']
 
+/- English proof (translation)
+Establish `hle : idS D.host.F PP.asIdeal ≤ RingHom.ker f`. Unfold `idS`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `p hp`. Conclude with `hf p hp`.
+
+Use `hle hb` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `this`.
+-/
 theorem eq_of_kill {R : Type} [CommRing R] (PP : Pl D.host.E) (f : Formalism.L2.Herm.intAf D.host.F D.host.E →+* R)
     (hf : ∀ p ∈ PP.asIdeal, f (oToS D.host.F D.host.E p) = 0) (s : Formalism.L2.Herm.intAf D.host.F D.host.E)
     (b : 𝓞 D.host.E) (hb : s - oToS D.host.F D.host.E b ∈ idS D.host.F PP.asIdeal) :
@@ -44,6 +54,11 @@ theorem eq_of_kill {R : Type} [CommRing R] (PP : Pl D.host.E) (f : Formalism.L2.
   rw [RingHom.mem_ker, map_sub, sub_eq_zero] at this
   exact this
 
+/- English proof (translation)
+Take `⟨bq, hb⟩` from `cmpS_surj (F := D.host.F) PP.asIdeal PP.ne_bot (Ideal.Quotient.mk _ s)`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective bq`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (oToS D.host.F D.host.E b) = _ at hb`. Establish `hb' : s - oToS D.host.F D.host.E b ∈ idS D.host.F PP.asIdeal`. Rewrite using `[← Ideal.Quotient.eq]`.
+
+Conclude with `hb.symm`. Establish `h1` using `eq_of_kill PP f (fun p hp => (hfg p).trans (hg p hp)) s b hb'`. Establish `h2` using `eq_of_kill PP g hg s b hb'`. Rewrite using `[h1, h2, hfg]`.
+-/
 theorem ext_oToS {R : Type} [CommRing R] (PP : Pl D.host.E) (f g : Formalism.L2.Herm.intAf D.host.F D.host.E →+* R)
     (hfg : ∀ a, f (oToS D.host.F D.host.E a) = g (oToS D.host.F D.host.E a))
     (hg : ∀ p ∈ PP.asIdeal, g (oToS D.host.F D.host.E p) = 0) (s : Formalism.L2.Herm.intAf D.host.F D.host.E) :
@@ -62,9 +77,21 @@ noncomputable def cjS (D : D7) : Formalism.L2.Herm.intAf D.host.F D.host.E →+*
   (GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.cjA D).restrict (Formalism.L2.Herm.intAf D.host.F D.host.E) (Formalism.L2.Herm.intAf D.host.F D.host.E)
     (fun _ h => GlobalTheory.AdIsom.cjA_mem h)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext rfl`.
+-/
 theorem cjS_oToS (a : 𝓞 D.host.E) :
     cjS D (oToS D.host.F D.host.E a) = oToS D.host.F D.host.E (GlobalTheory.IdemSupport.cO D a) := Subtype.ext rfl
 
+/- English proof (translation)
+Distinguish the cases in `hz : z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Establish `hz' : GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.cjA D z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `GlobalTheory.AdIsom.cjA_mem hz`. Rewrite using `[resT, dif_pos hz', resT, dif_pos hz]`. Set `f1 : Formalism.L2.Herm.intAf D.host.F D.host.E →+* kP (GlobalTheory.IdemSupport.cP PP)` to `(resS D.host.F (GlobalTheory.IdemSupport.cP PP)).comp (cjS D)`. Set `f2 : Formalism.L2.Herm.intAf D.host.F D.host.E →+* kP (GlobalTheory.IdemSupport.cP PP)` to `(conjRes PP).toRingHom.comp (resS D.host.F PP)`.
+
+Establish `hO : ∀ a : 𝓞 D.host.E, f1 (oToS D.host.F D.host.E a) = f2 (oToS D.host.F D.host.E a)`. Introduce `a`. Use `show resS D.host.F (GlobalTheory.IdemSupport.cP PP) (cjS D (oToS D.host.F D.host.E a)) = conjRes PP (resS D.host.F PP (oToS D.host.F D.host.E a))`. Rewrite using `[cjS_oToS, resS_oToS, resS_oToS]`. Conclude with `(Ideal.quotientEquiv_mk _ _ _ _ _).symm`.
+
+Establish `hg : ∀ p ∈ PP.asIdeal, f2 (oToS D.host.F D.host.E p) = 0`. Introduce `p hp`. Use `show conjRes PP (resS D.host.F PP (oToS D.host.F D.host.E p)) = 0`. Rewrite using `[resS_oToS, Ideal.Quotient.eq_zero_iff_mem.2 hp, map_zero]`. Establish `hfin` using `ext_oToS PP f1 f2 hO hg ⟨z, hz⟩`.
+
+Establish `e : (⟨GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.cjA D z, hz'⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = cjS D ⟨z, hz⟩` using `Subtype.ext rfl`. Rewrite using `[e]`. Conclude with `hfin`. Establish `hz' : GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.cjA D z ∉ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun h => hz (GlobalTheory.AdIsom.cjA_mem_iff.1 h)`. Rewrite using `[resT, dif_neg hz', resT, dif_neg hz, map_zero]`.
+-/
 theorem resT_cjA (PP : Pl D.host.E) (z : EAf D) :
     resT (GlobalTheory.IdemSupport.cP PP) (GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.cjA D z) = conjRes PP (resT PP z) := by
   by_cases hz : z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E
@@ -92,6 +119,17 @@ theorem resT_cjA (PP : Pl D.host.E) (z : EAf D) :
       fun h => hz (GlobalTheory.AdIsom.cjA_mem_iff.1 h)
     rw [resT, dif_neg hz', resT, dif_neg hz, map_zero]
 
+/- English proof (translation)
+Introduce `D X h PP κ x y`. Establish `hH : ∀ u v, GlobalTheory.SeeConjChar.hT X h u v = Formalism.UG.hform (GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.cjA D) ((Yc D 0).gram.map (GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.inc D)) u v`. Introduce `u v`. Take `⟨⟨I⟩⟩` from `X`. Simplify using `only at h`.
+
+Substitute `h` using the available equality. Both sides reduce to the same expression. Establish `hU : finE (Yc D 0) κ ∈ Formalism.UG.UJ (GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.cjA D) ((Yc D 0).gram.map (GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.inc D))`. Establish `hf` using `Formalism.L2.SG.EvalTIota.finE_brg_i (Formalism.IndefR.RationalEmbedding.iota D κ)`. Rewrite `hf` using `[(Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply κ]`.
+
+Use `((Formalism.IndefR.RationalEmbedding.iota D κ).2).2` as an intermediate fact. Conclude with `hf ▸ this`. Establish `key : GlobalTheory.SeeConjChar.hT X h x ((finE (Yc D 0) κ).val *ᵥ y) = GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.cjA D (GlobalTheory.SeeConjChar.hT X h y (((finE (Yc D 0) κ)⁻¹).val *ᵥ x))`. Rewrite using `[hH, hH]`. Establish `e1 : x = (finE (Yc D 0) κ).val *ᵥ (((finE (Yc D 0) κ)⁻¹).val *ᵥ x)`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `e2` using `GlobalTheory.AdIsom.cjA_hA (Yc D 0) (((finE (Yc D 0) κ)⁻¹).val *ᵥ x) y`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.hA] at e2`. Rewrite using `[e2]`. Use `conv_lhs => rw [e1]`.
+
+Conclude with `hform_unitary _ _ hU _ _`. Rewrite using `[key]`. Conclude with `⟨GlobalTheory.AdIsom.cjA_mem_iff, resT_cjA PP _⟩`.
+-/
 theorem resCP_adjoint : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (PP : Pl D.host.E) (κ : GA D (Yc D 0)) (x y : Fin (Yc D 0).rank → EAf D), (GlobalTheory.SeeConjChar.hT X h x (Matrix.mulVec (finE (Yc D 0) κ).val y) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔ GlobalTheory.SeeConjChar.hT X h y (Matrix.mulVec ((finE (Yc D 0) κ)⁻¹).val x) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) ∧ GlobalTheory.SeeConjChar.resT (GlobalTheory.IdemSupport.cP PP) (GlobalTheory.SeeConjChar.hT X h x (Matrix.mulVec (finE (Yc D 0) κ).val y)) = GlobalTheory.SeeConjChar.conjRes PP (GlobalTheory.SeeConjChar.resT PP (GlobalTheory.SeeConjChar.hT X h y (Matrix.mulVec ((finE (Yc D 0) κ)⁻¹).val x))) := by
   intro D X h PP κ x y
   have hH : ∀ u v, GlobalTheory.SeeConjChar.hT X h u v =

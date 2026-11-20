@@ -44,14 +44,26 @@ def toPts (a : OAct O G) : Lie a →ₗ[O] Pts a (epsR R) := (tangentSub a).subt
 
 def hom (v : Lie a) : epsR R ⟶ G := (toPts a v).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hom_toPts (v : Lie a) : (toPts a v).hom = v.hom := rfl
 
+/- English proof (translation)
+The claim follows from `v.2`.
+-/
 theorem isTangent (v : Lie a) : IsTangent v.hom := v.2
 
 def mk (a : OAct O G) (w : epsR R ⟶ G) (hw : IsTangent w) : Lie a := ⟨Pts.mk a w, hw⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hom_mk (w : epsR R ⟶ G) (hw : IsTangent w) : (mk a w hw).hom = w := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext h`.
+-/
 @[ext] theorem ext {v w : Lie a} (h : v.hom = w.hom) : v = w := Subtype.ext h
 
 def equivTangent (a : OAct O G) : Lie a ≃ {w : epsR R ⟶ G // IsTangent w} where
@@ -60,14 +72,29 @@ def equivTangent (a : OAct O G) : Lie a ≃ {w : epsR R ⟶ G // IsTangent w} wh
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hom_zero : (0 : Lie a).hom = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hom_add (v w : Lie a) : (v + w).hom = v.hom * w.hom := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hom_neg (v : Lie a) : (-v).hom = v.hom⁻¹ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hom_act_smul (x : O) (v : Lie a) : (x • v).hom = v.hom ≫ a.act x := rfl
 
+/- English proof (translation)
+Rewrite using `[← hom_toPts, map_sum, Pts.hom_sum]`. Both sides reduce to the same expression.
+-/
 theorem hom_sum {I : Type*} (s : Finset I) (v : I → Lie a) :
     (∑ i ∈ s, v i).hom = ∏ i ∈ s, (v i).hom := by
   rw [← hom_toPts, map_sum, Pts.hom_sum]; rfl
@@ -83,8 +110,14 @@ instance baseModule : Module R (Lie a) where
   add_smul r s v := ext (epsScale_add_comp r s v.isTangent)
   zero_smul v := ext (epsScale_zero_comp v.isTangent)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hom_smul (r : R) (v : Lie a) : (r • v).hom = epsScale r ≫ v.hom := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hom_smul_left (r : R) (v : Lie a) :
     (r • v).hom.left = spMap (epsScaleR r) ≫ v.hom.left := rfl
 
@@ -98,18 +131,36 @@ def map (a : OAct O G) (b : OAct O' H) (f : G ⟶ H) [IsMonHom f] : Lie a →ₗ
   map_add' v w := ext (MonObj.mul_comp v.hom w.hom f)
   map_smul' r v := ext (Category.assoc (epsScale r) v.hom f)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hom_map (f : G ⟶ H) [IsMonHom f] (v : Lie a) : (map a b f v).hom = v.hom ≫ f := rfl
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem map_id : map a a (𝟙 G) = LinearMap.id := by ext v; simp
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using the standard rewrite rules.
+-/
 theorem map_comp (f : G ⟶ H) (g : H ⟶ K) [IsMonHom f] [IsMonHom g] :
     map a c (f ≫ g) = map b c g ∘ₗ map a b f := by ext v; simp
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `[MonObj.comp_mul]`.
+-/
 theorem map_mul (f g : G ⟶ H) [IsMonHom f] [IsMonHom g] [IsMonHom (f * g)] :
     map a b (f * g) = map a b f + map a b g := by ext v; simp [MonObj.comp_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_act (x : O) [IsMonHom (a.act x)] (v : Lie a) : map a a (a.act x) v = x • v := rfl
 
+/- English proof (translation)
+Use `ext`. Simplify using `[hf.comm]`.
+-/
 theorem map_act_smul {b : OAct O H} {f : G ⟶ H} [IsMonHom f] (hf : IsLinearHom a b f) (x : O)
     (v : Lie a) : map a b f (x • v) = x • map a b f v := by ext; simp [hf.comm]
 
@@ -117,12 +168,18 @@ def mapLinear {b : OAct O H} {f : G ⟶ H} (hf : IsLinearHom a b f) : Lie a →�
   haveI := hf.isMonHom
   { (map a b f).toAddHom with map_smul' := map_act_smul hf }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hom_mapLinear {b : OAct O H} {f : G ⟶ H} (hf : IsLinearHom a b f) (v : Lie a) :
     (mapLinear hf v).hom = v.hom ≫ f := rfl
 
 def changeAct (a : OAct O G) (a' : OAct O' G) : Lie a ≃ₗ[R] Lie a' :=
   LinearEquiv.ofLinearMap (map a a' (𝟙 G)) (map a' a (𝟙 G)) (by ext; simp) (by ext; simp)
 
+/- English proof (translation)
+The claim follows from `Category.comp_id (X := epsR R) _`.
+-/
 @[simp] theorem hom_changeAct (a' : OAct O' G) (v : Lie a) : (changeAct a a' v).hom = v.hom :=
   Category.comp_id (X := epsR R) _
 
@@ -133,19 +190,31 @@ def proj (a : OAct O G) : Pts a (epsR R) →ₗ[O] Lie a :=
     rw [div_eq_mul_inv, MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc, ← Category.assoc,
       toUnit_unique (epsZero R ≫ toUnit _) (𝟙 _), Category.id_comp, mul_inv_cancel]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toPts_comp_proj :
     toPts a ∘ₗ proj a = LinearMap.id - Pts.pre a (toUnit _ ≫ epsZero R) := rfl
 
+/- English proof (translation)
+The claim follows from `Pts.ext (by rw [Pts.hom_pre, Category.assoc, hom_toPts, (isTangent_iff _).mp v.isTangent, MonObj.comp_one, Pts.hom_zero])`.
+-/
 theorem pre_toPts (v : Lie a) : Pts.pre a (toUnit (epsR R) ≫ epsZero R) (toPts a v) = 0 :=
   Pts.ext (by
     rw [Pts.hom_pre, Category.assoc, hom_toPts, (isTangent_iff _).mp v.isTangent, MonObj.comp_one,
       Pts.hom_zero])
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun v ↦ Subtype.ext (by change toPts a v - Pts.pre a _ (toPts a v) = toPts a v rw [pre_toPts, sub_zero])`.
+-/
 theorem proj_comp_toPts : proj a ∘ₗ toPts a = LinearMap.id :=
   LinearMap.ext fun v ↦ Subtype.ext (by
     change toPts a v - Pts.pre a _ (toPts a v) = toPts a v
     rw [pre_toPts, sub_zero])
 
+/- English proof (translation)
+Rewrite using `[hom_sum, ← List.prod_ofFn]`. Use `⟨?_, fun h ↦ ⟨_, fun _ ↦ rfl, h⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨u, hu, rfl⟩`. Take `rfl : u = fun i ↦ (r i • v i).hom` from `funext fun i ↦ Over.OverMorphism.ext (hu i)`. Both sides reduce to the same expression.
+-/
 theorem isLieComb_iff {n : ℕ} (r : Fin n → R) (v : Fin n → Lie a) (w : epsR R ⟶ G) :
     IsLieComb r (fun i ↦ (v i).hom) w ↔ w = (∑ i, r i • v i).hom := by
   rw [hom_sum, ← List.prod_ofFn]
@@ -154,6 +223,9 @@ theorem isLieComb_iff {n : ℕ} (r : Fin n → R) (v : Fin n → Lie a) (w : eps
   obtain rfl : u = fun i ↦ (r i • v i).hom := funext fun i ↦ Over.OverMorphism.ext (hu i)
   rfl
 
+/- English proof (translation)
+Rewrite using `[Function.bijective_iff_existsUnique]`. Simplify using `only [IsLieBasis, isLieComb_iff, Fintype.linearCombination_apply]`. Use `⟨fun h w ↦ (existsUnique_congr fun r ↦ ⟨fun e ↦ ext e.symm, fun e ↦ by rw [e]⟩).mp (h.2 w.hom w.isTangent), fun h ↦ ⟨fun i ↦ (v i).isTangent, fun w hw ↦ ?_⟩⟩` and prove the remaining obligations. Conclude with `(existsUnique_congr fun r ↦ ⟨fun e ↦ by rw [e, hom_mk], fun e ↦ ext e.symm⟩).mp (h (mk a w hw))`.
+-/
 theorem isLieBasis_iff {n : ℕ} (v : Fin n → Lie a) :
     IsLieBasis (fun i ↦ (v i).hom) ↔ Function.Bijective (Fintype.linearCombination R v) := by
   rw [Function.bijective_iff_existsUnique]
@@ -168,10 +240,16 @@ def basis (a : OAct O G) {n : ℕ} {v : Fin n → (epsR R ⟶ G)} (hv : IsLieBas
   Module.Basis.ofEquivFun
     (LinearEquiv.ofBijective _ ((isLieBasis_iff fun i ↦ mk a (v i) (hv.1 i)).mp hv)).symm
 
+/- English proof (translation)
+Simplify using `[basis, Module.Basis.coe_ofEquivFun]`.
+-/
 @[simp] theorem hom_basis {n : ℕ} {v : Fin n → (epsR R ⟶ G)} (hv : IsLieBasis v) (i : Fin n) :
     (basis a hv i).hom = v i := by
   simp [basis, Module.Basis.coe_ofEquivFun]
 
+/- English proof (translation)
+Rewrite using `[isLieBasis_iff]`. Use `v.equivFun.symm.bijective using 1` and compare the differences between its conclusion and the goal. Use extensionality with `r`. Simplify using `[Fintype.linearCombination_apply]`.
+-/
 theorem isLieBasis_basis {n : ℕ} (v : Module.Basis (Fin n) R (Lie a)) :
     IsLieBasis fun i ↦ (v i).hom := by
   rw [isLieBasis_iff]
@@ -179,6 +257,13 @@ theorem isLieBasis_basis {n : ℕ} (v : Module.Basis (Fin n) R (Lie a)) :
   ext r
   simp [Fintype.linearCombination_apply]
 
+/- English proof (translation)
+Establish `hinj : ∀ {T : Over (Sp R)} {x y : T ⟶ K}, x ≫ i = y ≫ i → x = y` using `fun e ↦ h.hom_ext e (toUnit_unique _ _)`. Use `⟨fun v w e ↦ ext (hinj (congrArg hom e)), fun w ↦ ⟨fun e ↦ ?_, ?_⟩⟩` and prove the remaining obligations. Establish `e' : w.hom ≫ f = toUnit _ ≫ η[H]` using `congrArg hom e`. Use `⟨mk c (h.lift w.hom (toUnit _) e') ((isTangent_iff _).mpr (hinj ?_)),` and prove the remaining obligations. Use extensionality with `(h.lift_fst _ _ _)⟩`.
+
+Rewrite using `[Category.assoc, h.lift_fst, MonObj.one_comp]`. Conclude with `(isTangent_iff _).mp w.isTangent`. Introduce and unpack `⟨v, rfl⟩`. Use `ext`. Simplify using `only [hom_map, Category.assoc, h.w, hom_zero]`.
+
+Rewrite using `[← Category.assoc, toUnit_unique (v.hom ≫ toUnit K) (toUnit _)]`. Both sides reduce to the same expression.
+-/
 theorem map_kernel {i : K ⟶ G} {f : G ⟶ H} [IsMonHom i] [IsMonHom f]
     (h : IsPullback i (toUnit K) f η[H]) :
     Function.Injective (map c a i) ∧ Function.Exact (map c a i) (map a b f) := by
@@ -210,6 +295,9 @@ def lieMap : M ⊗[O] Lie a →ₗ[O] Lie b :=
     (fun m n v ↦ by ext; simp [tmul_add, MonObj.comp_mul])
     (fun x m v ↦ by ext; simp [tmul_smul]) (fun m v w ↦ map_add _ _ _) (fun x m v ↦ map_smul _ _ _))
 
+/- English proof (translation)
+Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul m v => ext`. Simplify using `[lieMap]`. Consider the case `add z w hz hw => simp only [map_add, hz, hw]`.
+-/
 theorem toPts_lieMap (z : M ⊗[O] Lie a) :
     Lie.toPts b (h.lieMap z) = h.equiv (epsR R) ((Lie.toPts a).lTensor M z) := by
   induction z with
@@ -231,12 +319,21 @@ def lieEquiv : M ⊗[O] Lie a ≃ₗ[O] Lie b :=
         LinearEquiv.symm_apply_apply]
       rw [← LinearMap.lTensor_comp_apply, Lie.proj_comp_toPts, LinearMap.lTensor_id])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hom_lieEquiv_tmul (m : M) (v : Lie a) :
     (h.lieEquiv (m ⊗ₜ v)).hom = v.hom ≫ h.tmul m := rfl
 
+/- English proof (translation)
+The claim follows from `h.toPts_lieMap z`.
+-/
 theorem toPts_lieEquiv (z : M ⊗[O] Lie a) :
     Lie.toPts b (h.lieEquiv z) = h.equiv (epsR R) ((Lie.toPts a).lTensor M z) := h.toPts_lieMap z
 
+/- English proof (translation)
+Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul m v => ext`. Simplify using the standard rewrite rules. Consider the case `add z w hz hw => simp only [map_add, smul_add, hz, hw]`.
+-/
 theorem lieEquiv_smul (r : R) (z : M ⊗[O] Lie a) :
     h.lieEquiv ((DistribSMul.toLinearMap O (Lie a) r).lTensor M z) = r • h.lieEquiv z := by
   induction z with
@@ -244,6 +341,9 @@ theorem lieEquiv_smul (r : R) (z : M ⊗[O] Lie a) :
   | tmul m v => ext; simp
   | add z w hz hw => simp only [map_add, smul_add, hz, hw]
 
+/- English proof (translation)
+Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul m v => ext`. Simplify using the standard rewrite rules. Consider the case `add z w hz hw => simp only [map_add, hz, hw]`.
+-/
 theorem map_lieEquiv (h' : IsTensor H' b' G' a' M') (φ : M →ₗ[O] M') {f : G ⟶ G'}
     (hf : IsLinearHom a a' f) (z : M ⊗[O] Lie a) :
     Lie.map b b' (h.map h' φ hf) (h.lieEquiv z) =
@@ -253,6 +353,9 @@ theorem map_lieEquiv (h' : IsTensor H' b' G' a' M') (φ : M →ₗ[O] M') {f : G
   | tmul m v => ext; simp
   | add z w hz hw => simp only [map_add, hz, hw]
 
+/- English proof (translation)
+Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul m v => ext`. Simplify using the standard rewrite rules. Consider the case `add z w hz hw => simp only [map_add, hz, hw]`.
+-/
 theorem mapLeft_lieEquiv (h' : IsTensor H' b' G a M') (φ : M →ₗ[O] M') (z : M ⊗[O] Lie a) :
     Lie.map b b' (h.mapLeft h' φ) (h.lieEquiv z) = h'.lieEquiv (φ.rTensor _ z) := by
   induction z with
@@ -271,6 +374,9 @@ def lieEquivBase (b₁ : OAct O' H) : Lie a ⊗[O] M ≃ₗ[R] Lie b₁ :=
       | add z w hz hw => simp only [map_add, smul_add, hz, hw] } :
     Lie a ⊗[O] M ≃ₗ[R] Lie b) ≪≫ₗ Lie.changeAct b b₁
 
+/- English proof (translation)
+The claim follows from `Category.comp_id (X := epsR R) _`.
+-/
 @[simp] theorem hom_lieEquivBase_tmul (b₁ : OAct O' H) (v : Lie a) (m : M) :
     (h.lieEquivBase b₁ (v ⊗ₜ m)).hom = v.hom ≫ h.tmul m :=
   Category.comp_id (X := epsR R) _
@@ -290,10 +396,16 @@ def lieAlgEquiv : M ⊗[O] Lie a ≃ₗ[O'] Lie (h.algAct O') :=
       | tmul m v => ext; simp [smul_tmul']
       | add z w hz hw => simp only [map_add, smul_add, hz, hw] }
 
+/- English proof (translation)
+The claim follows from `Category.comp_id (X := epsR R) _`.
+-/
 @[simp] theorem hom_lieAlgEquiv (z : M ⊗[O] Lie a) :
     (h.lieAlgEquiv O' z).hom = (h.lieEquiv z).hom :=
   Category.comp_id (X := epsR R) _
 
+/- English proof (translation)
+Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul v m => ext`. Simplify using the standard rewrite rules. Consider the case `add z w hz hw => simp only [map_add, smul_add, hz, hw]`.
+-/
 theorem lieEquivBase_smul (x : O') (z : Lie a ⊗[O] M) :
     h.lieEquivBase (h.algAct O') ((Algebra.lsmul O O M x).lTensor _ z) =
       x • h.lieEquivBase (h.algAct O') z := by
@@ -323,13 +435,22 @@ def eig (a : OAct O G) (τ : O →+* R) : Submodule R (Lie a) where
   zero_mem' x := by rw [smul_zero, smul_zero]
   smul_mem' r v hv x := by rw [smul_comm, hv, smul_comm]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_eig_iff {τ : O →+* R} {v : Lie a} : v ∈ eig a τ ↔ ∀ x : O, x • v = τ x • v := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun _ ↦ ⟨fun h ↦ congrArg (fun w : Lie a ↦ w.hom.left) h, fun h ↦ ext (Over.OverMorphism.ext h)⟩`.
+-/
 theorem mem_eig_iff_left {τ : O →+* R} {v : Lie a} : v ∈ eig a τ ↔
     ∀ x : O, (v.hom ≫ a.act x).left = spMap (epsScaleR (τ x)) ≫ v.hom.left :=
   forall_congr' fun _ ↦ ⟨fun h ↦ congrArg (fun w : Lie a ↦ w.hom.left) h,
     fun h ↦ ext (Over.OverMorphism.ext h)⟩
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← (basis a hv).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `mem_eig_iff_left.mpr (by simpa only [hom_basis] using hτ i)`.
+-/
 theorem eig_eq_top {τ : O →+* R} {n : ℕ} {v : Fin n → (epsR R ⟶ G)} (hv : IsLieBasis v)
     (hτ : ∀ i x, (v i ≫ a.act x).left = spMap (epsScaleR (τ x)) ≫ (v i).left) : eig a τ = ⊤ := by
   rw [eq_top_iff, ← (basis a hv).span_eq, Submodule.span_le]
@@ -350,6 +471,9 @@ def lieEquivScalar (b₁ : OAct O' H) {N : Type} [AddCommGroup N] [Module R N] [
     rw [Algebra.smul_def, mul_smul, Lie.mem_eig_iff.mp (hτ.ge Submodule.mem_top) x]⟩
   AlgebraTensorModule.congr e (LinearEquiv.refl O M) ≪≫ₗ h.lieEquivBase b₁
 
+/- English proof (translation)
+The claim follows from `h.hom_lieEquivBase_tmul b₁ (e n) m`.
+-/
 @[simp] theorem hom_lieEquivScalar_tmul (b₁ : OAct O' H) {N : Type} [AddCommGroup N] [Module R N]
     [Module O N] [IsScalarTower O R N] (e : N ≃ₗ[R] Lie a) (hτ : Lie.eig a (algebraMap O R) = ⊤)
     (n : N) (m : M) : (h.lieEquivScalar b₁ e hτ (n ⊗ₜ m)).hom = (e n).hom ≫ h.tmul m :=
@@ -361,6 +485,9 @@ def lieEquivLine (b₁ : OAct O' H) {v : epsR R ⟶ G} (hv : IsLieBasis ![v])
   h.lieEquivScalar b₁ ((Lie.basis a hv).equivFun ≪≫ₗ LinearEquiv.funUnique (Fin 1) R R).symm
     (Lie.eig_eq_top hv fun i ↦ by rw [Subsingleton.elim i 0]; exact hτ)
 
+/- English proof (translation)
+Simplify using `[lieEquivLine]`.
+-/
 @[simp] theorem hom_lieEquivLine_tmul (b₁ : OAct O' H) {v : epsR R ⟶ G} (hv : IsLieBasis ![v])
     (hτ : ∀ x, (v ≫ a.act x).left = spMap (epsScaleR (algebraMap O R x)) ≫ v.left) (r : R) (m : M) :
     (h.lieEquivLine b₁ hv hτ (r ⊗ₜ m)).hom = epsScale r ≫ v ≫ h.tmul m := by
@@ -368,6 +495,9 @@ def lieEquivLine (b₁ : OAct O' H) {v : epsR R ⟶ G} (hv : IsLieBasis ![v])
 
 variable [Algebra O O'] [Module O' M] [IsScalarTower O O' M]
 
+/- English proof (translation)
+Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul v m => ext`. Simplify using the standard rewrite rules. Consider the case `add z w hz hw => simp only [map_add, smul_add, hz, hw]`.
+-/
 theorem lieEquivLine_smul {v : epsR R ⟶ G} (hv : IsLieBasis ![v])
     (hτ : ∀ x, (v ≫ a.act x).left = spMap (epsScaleR (algebraMap O R x)) ≫ v.left) (x : O')
     (z : R ⊗[O] M) :
@@ -378,6 +508,11 @@ theorem lieEquivLine_smul {v : epsR R ⟶ G} (hv : IsLieBasis ![v])
   | tmul v m => ext; simp
   | add z w hz hw => simp only [map_add, smul_add, hz, hw]
 
+/- English proof (translation)
+Take `⟨s, hs₁, hs₂⟩` from `exists_eigen_tensor (O := O) (O' := O') (M := M) ((Lie.eig a (algebraMap O R)).subtype ∘ₗ e.toLinearMap) (Subtype.val_injective.comp e.injective) fun l ↦ by`. Rewrite using `[LinearMap.range_comp, LinearEquiv.range, Submodule.map_subtype_top]`. Both sides reduce to the same expression. Set `F` to `(h.lieEquivBase (h.algAct O')).toLinearMap ∘ₗ s`. Use `⟨LinearEquiv.ofInjective F ((h.lieEquivBase _).injective.comp hs₁) ≪≫ₗ LinearEquiv.ofEq _ _ (Submodule.ext fun w ↦ ?_)⟩` and prove the remaining obligations.
+
+Take `⟨z, rfl⟩` from `(h.lieEquivBase (h.algAct O')).surjective w`. Simplify using `only [Lie.mem_eig_iff, ← h.lieEquivBase_smul, ← map_smul, EmbeddingLike.apply_eq_iff_eq, ← hs₂]`. Conclude with `exists_congr fun y ↦ (h.lieEquivBase (h.algAct O')).injective.eq_iff`.
+-/
 theorem nonempty_eig_equiv [Algebra O' R] [IsScalarTower O O' R] [Module.Finite O M]
     [Module.Projective O M] [Algebra.FormallyUnramified R (R ⊗[O] O')]
     [Algebra.EssFiniteType R (R ⊗[O] O')] {N : Type} [AddCommGroup N] [Module R N] [Module O N]
@@ -404,6 +539,9 @@ section Mult
 
 variable {k : Type} [Field k] {O O' : Type} [CommRing O] [CommRing O']
 
+/- English proof (translation)
+The claim follows from `haveI : IsMonHom (Iso.refl G).hom := inferInstanceAs (IsMonHom (𝟙 G)) ⟨isGrpPullback_of_iso (Iso.refl G), fun _ ↦ by simp⟩`.
+-/
 theorem IsLinearPullback.id {S : Scheme.{0}} {G : Over S} [GrpObj G] (a : OAct O G) :
     IsLinearPullback a a (𝟙 S) (𝟙 G.left) :=
   haveI : IsMonHom (Iso.refl G).hom := inferInstanceAs (IsMonHom (𝟙 G))
@@ -413,6 +551,9 @@ namespace Lie
 
 variable {G₁ : Over (Sp k)} [GrpObj G₁] [IsCommMonObj G₁] (a₁ : OAct O G₁)
 
+/- English proof (translation)
+Establish `h` using `(iSupIndep_eigen (fun x : O ↦ DistribSMul.toLinearMap k (Lie a₁) x) fun x y ↦ LinearMap.ext fun v ↦ smul_comm x y v).comp (DFunLike.coe_injective (F := O →+* k))`. Use `h.mono fun τ v hv ↦ ?_` and prove the remaining obligations. Simplify using `only [Function.comp, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`. Conclude with `hv`.
+-/
 theorem iSupIndep_eig : iSupIndep (eig a₁) := by
   have h := (iSupIndep_eigen (fun x : O ↦ DistribSMul.toLinearMap k (Lie a₁) x)
     fun x y ↦ LinearMap.ext fun v ↦ smul_comm x y v).comp
@@ -421,6 +562,17 @@ theorem iSupIndep_eig : iSupIndep (eig a₁) := by
   simp only [Function.comp, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]
   exact hv
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `LiePull.exists_pushEquiv (IsLinearPullback.id a₁).1 (epsR k) (spMap (algebraMap k (DualNumber k)) ≫ 𝟙 _) rfl`. Use `replace he : ∀ x, (e x).left = x.left := fun x ↦ (he x).trans (Category.comp_id _)`. Set `P (v : epsR k ⟶ G₁) : Prop` to `IsTangent v ∧ ∀ x : O, (v ≫ a₁.act x).left = spMap (epsScaleR (τ x)) ≫ v.left`. Establish `hP : ∀ v, P v ↔ IsLieEigen a₁ (𝟙 _) τ (e v)` using `fun v ↦ by`. Establish `: (1 : Over.mk (𝟙 (Sp k)) ⟶ G₁).left = η[G₁].left` using `congrArg Over.Hom.left (one_eq_one (M := G₁)).symm`.
+
+Simplify using `only [IsLieEigen, Over.comp_left, he, this]`. Both sides reduce to the same expression. Establish `hR : ∀ (c : k) (u v : epsR k ⟶ G₁), u.left = spMap (epsScaleR c) ≫ v.left ↔ (e u).left = spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScale c) ≫ (e v).left` using `fun c u v ↦ by`. Rewrite using `[he, he]`. Both sides reduce to the same expression.
+
+Establish `key : LieMult a₁ (𝟙 (Sp k)) τ n ↔ ∃ v : Fin n → (epsR k ⟶ G₁), (∀ i, P (v i)) ∧ ∀ w, P w → ∃! c : Fin n → k, IsLieComb c v w` using `⟨LiePull.basis_transport e.symm (P := IsLieEigen a₁ (𝟙 _) τ) (Q := P) (R := fun c u v ↦ u.left = spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScale c) ≫ v.left) (R' := fun c u v ↦ u.left = spMap (epsScaleR c) ≫ v.left) (fun v ↦ by rw [hP, e.apply_symm_apply]) (fun c u v …`. Establish `comb : ∀ (v : Fin n → eig a₁ τ) (w : eig a₁ τ) (c : Fin n → k), IsLieComb c (fun i ↦ (v i).1.hom) w.1.hom ↔ Fintype.linearCombination k v c = w` using `fun v w c ↦ by`. Rewrite using `[isLieComb_iff, Fintype.linearCombination_apply, Subtype.ext_iff, Submodule.coe_sum]`. Conclude with `⟨fun h ↦ ext h.symm, fun h ↦ (congrArg hom h).symm⟩`. Rewrite using `[key]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, H⟩`. Set `v' (i : Fin n) : eig a₁ τ` to `⟨mk a₁ (v i) (hv i).1, mem_eig_iff_left.mpr (hv i).2⟩`. Conclude with `⟨Module.Basis.ofEquivFun (LinearEquiv.ofBijective (Fintype.linearCombination k v') ((Function.bijective_iff_existsUnique _).mpr fun w ↦ (existsUnique_congr (comb v' w)).mp (H w.1.hom ⟨w.1.isTangent, mem_eig_iff_left.mp w.2⟩))).symm⟩`. Introduce and unpack `⟨v⟩`.
+
+Use `⟨fun i ↦ (v i).1.hom, fun i ↦ ⟨(v i).1.isTangent, mem_eig_iff_left.mp (v i).2⟩, fun w hw ↦ (existsUnique_congr (comb v ⟨mk a₁ w hw.1, mem_eig_iff_left.mpr hw.2⟩)).mpr ?_⟩` and prove the remaining obligations. Use `(Function.bijective_iff_existsUnique _).mp ?_ _` and prove the remaining obligations. Use `v.equivFun.symm.bijective using 1` and compare the differences between its conclusion and the goal. Use extensionality with `r`. Simplify using `[Fintype.linearCombination_apply]`.
+-/
 theorem lieMult_id_iff (τ : O →+* k) (n : ℕ) :
     LieMult a₁ (𝟙 (Sp k)) τ n ↔ Nonempty (Module.Basis (Fin n) k (eig a₁ τ)) := by
   obtain ⟨e, he⟩ := LiePull.exists_pushEquiv (IsLinearPullback.id a₁).1 (epsR k)
@@ -469,10 +621,16 @@ theorem lieMult_id_iff (τ : O →+* k) (n : ℕ) :
 variable {a₁} {S : Scheme.{0}} {G : Over S} [GrpObj G] {a : OAct O G} {t : Sp k ⟶ S}
   {φ : G₁.left ⟶ G.left}
 
+/- English proof (translation)
+Rewrite using `[← lieMult_id_iff, LiePull.lieMult_pull O _ _ G G₁ t φ a a₁ hφ.1 hφ.2, Category.id_comp]`.
+-/
 theorem lieMult_iff_basis (hφ : IsLinearPullback a₁ a t φ) (τ : O →+* k) (n : ℕ) :
     LieMult a t τ n ↔ Nonempty (Module.Basis (Fin n) k (eig a₁ τ)) := by
   rw [← lieMult_id_iff, LiePull.lieMult_pull O _ _ G G₁ t φ a a₁ hφ.1 hφ.2, Category.id_comp]
 
+/- English proof (translation)
+Rewrite using `[lieMult_iff_basis hφ]`. Conclude with `⟨fun ⟨v⟩ ↦ ⟨.of_basis v, (Module.finrank_eq_card_basis v).trans (Fintype.card_fin n)⟩, fun ⟨_, h⟩ ↦ ⟨Module.finBasisOfFinrankEq _ _ h⟩⟩`.
+-/
 theorem lieMult_iff_finrank (hφ : IsLinearPullback a₁ a t φ) (τ : O →+* k) (n : ℕ) :
     LieMult a t τ n ↔ Module.Finite k (eig a₁ τ) ∧ Module.finrank k (eig a₁ τ) = n := by
   rw [lieMult_iff_basis hφ]
@@ -481,6 +639,11 @@ theorem lieMult_iff_finrank (hφ : IsLinearPullback a₁ a t φ) (τ : O →+* k
 
 variable (a₁) in
 
+/- English proof (translation)
+Establish `h` using `eig_eq_top hv hτ`. Use `⟨(lieMult_id_iff _ _ _).mpr ⟨(basis a₁ hv).map (LinearEquiv.ofTop _ h).symm⟩, fun τ hne ↦ (lieMult_id_iff _ _ _).mpr ?_⟩` and prove the remaining obligations. Establish `hd : Disjoint (eig a₁ τ) (eig a₁ τ₀)` using `(iSupIndep_eig a₁).pairwiseDisjoint hne`. Rewrite `hd` using `[h, disjoint_top]`. Rewrite using `[hd]`.
+
+Conclude with `⟨Module.Basis.empty _⟩`.
+-/
 theorem lieMult_of_isLieBasis {τ₀ : O →+* k} {n : ℕ} {v : Fin n → (epsR k ⟶ G₁)}
     (hv : IsLieBasis v)
     (hτ : ∀ i x, (v i ≫ a₁.act x).left = spMap (epsScaleR (τ₀ x)) ≫ (v i).left) :
@@ -499,6 +662,9 @@ namespace IsTensor
 
 variable {S : Scheme.{0}} {G H : Over S} [GrpObj G] [GrpObj H] [IsCommMonObj G] [IsCommMonObj H]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isGrpPullback_pullback H f, fun _ ↦ (congrArg (fun g ↦ g.left ≫ pullback.fst H.hom f) (h.pullback_mapLeft h f _)).trans (Limits.pullback.lift_fst _ _ _)⟩`.
+-/
 theorem isLinearPullback_algAct {a : OAct O G} {b : OAct O H} {M : Type} [AddCommGroup M]
     [Module O M] (h : IsTensor H b G a M) [Algebra O O'] [Module O' M] [IsScalarTower O O' M]
     {S' : Scheme.{0}} (f : S' ⟶ S) :
@@ -507,6 +673,11 @@ theorem isLinearPullback_algAct {a : OAct O G} {b : OAct O H} {M : Type} [AddCom
     (congrArg (fun g ↦ g.left ≫ pullback.fst H.hom f) (h.pullback_mapLeft h f _)).trans
       (Limits.pullback.lift_fst _ _ _)⟩
 
+/- English proof (translation)
+Take `⟨v⟩` from `(Lie.lieMult_iff_basis (isLinearPullback_pullback a t) _ _).mp hn`. Take `⟨e⟩` from `(h.pullback t).nonempty_eig_equiv (O' := O') v.equivFun.symm`. Establish `: Module.Finite O' M` using `.of_restrictScalars_finite O O' M`. Set `e'` to `AlgebraTensorModule.cancelBaseChange O' k k (Fin n → k) M ≪≫ₗ e`. Rewrite using `[Lie.lieMult_iff_finrank (h.isLinearPullback_algAct t)]`.
+
+Use `⟨.equiv e', ?_⟩` and prove the remaining obligations. Rewrite using `[← e'.finrank_eq, Module.finrank_tensorProduct, Module.finrank_fin_fun]`.
+-/
 theorem lieMult_of_unramified {a : OAct O G} {b : OAct O H} {M : Type} [AddCommGroup M]
     [Module O M] (h : IsTensor H b G a M) [Algebra O O'] [Module O' M] [IsScalarTower O O' M]
     [Module.Finite O M] [Module.Projective O M] [Algebra O k] [Algebra O' k] [IsScalarTower O O' k]
@@ -532,6 +703,13 @@ variable {M : Type} [AddCommGroup M] [Module (𝓞 K) M] [Module (𝓞 E) M]
   [IsScalarTower (𝓞 K) (𝓞 E) M] [Module.Finite (𝓞 E) M] [Module.Projective (𝓞 E) M]
   (h : IsTensor H b G a M)
 
+/- English proof (translation)
+Set `: Algebra (𝓞 E) k` to `τ.toAlgebra`. Set `: Algebra (𝓞 K) k` to `(τ.comp (algebraMap (𝓞 K) (𝓞 E))).toAlgebra`. Establish `: IsScalarTower (𝓞 K) (𝓞 E) k` using `.of_algebraMap_eq' rfl`. Use `formallyUnramified_ringOfIntegers k K E` as an intermediate fact. Establish `: Module.Finite (𝓞 K) M` using `.trans (𝓞 E) M`.
+
+Establish `: Module.Flat (𝓞 K) M` using `.trans (𝓞 K) (𝓞 E) M`. Establish `: Module.FinitePresentation (𝓞 K) M` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Projective (𝓞 K) M` using `Module.Flat.projective_of_finitePresentation`. Establish `: FaithfulSMul (𝓞 E) k` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (ringOfIntegers_injective k E τ)`. Rewrite using `[← (TensorProduct.isBaseChange (𝓞 E) M k).finrank_eq]`.
+
+Conclude with `h.lieMult_of_unramified t hn`.
+-/
 theorem lieMult (t : Sp k ⟶ S) (τ : 𝓞 E →+* k) {n : ℕ}
     (hn : LieMult a t (τ.comp (algebraMap (𝓞 K) (𝓞 E))) n) :
     LieMult (h.algAct (𝓞 E)) t τ (n * Module.finrank (𝓞 E) M) := by
@@ -548,6 +726,9 @@ theorem lieMult (t : Sp k ⟶ S) (τ : 𝓞 E →+* k) {n : ℕ}
   rw [← (TensorProduct.isBaseChange (𝓞 E) M k).finrank_eq]
   exact h.lieMult_of_unramified t hn
 
+/- English proof (translation)
+The claim follows from `fun τ ↦ by rw [hp, hq, ← hr] exact ⟨fun e ↦ h.lieMult t τ ((hG _).1 e), fun e ↦ h.lieMult t τ ((hG _).2 e)⟩`.
+-/
 theorem detCond [IsCMField E] {X : Host E} (D : Datum X) (t : Sp k ⟶ S) (ρ : k) (r : 𝓞 K)
     (hr : algebraMap (𝓞 K) (𝓞 E) r = X.rt) {p₀ q₀ : ℕ}
     (hG : ∀ σ : 𝓞 K →+* k, (σ r = ρ → LieMult a t σ p₀) ∧ (σ r ≠ ρ → LieMult a t σ q₀))
@@ -556,6 +737,13 @@ theorem detCond [IsCMField E] {X : Host E} (D : Datum X) (t : Sp k ⟶ S) (ρ : 
   rw [hp, hq, ← hr]
   exact ⟨fun e ↦ h.lieMult t τ ((hG _).1 e), fun e ↦ h.lieMult t τ ((hG _).2 e)⟩
 
+/- English proof (translation)
+Establish `H` using `Lie.lieMult_of_isLieBasis a₁ hv (τ₀ := τ₀) fun i ↦ by`. Rewrite using `[Subsingleton.elim i 0]`. Conclude with `hτ`. Use `h.detCond D _ _ r hr (p₀ := 1) (q₀ := 0) (fun σ ↦ ⟨fun e ↦ ?_, fun e ↦ H.2 σ ?_⟩) (by rw [hp, _root_.one_mul]) (by rw [hq, zero_mul])` and prove the remaining obligations. Set `l (σ : 𝓞 K →+* k) : K →ₐ[ℚ] k` to `(IsFractionRing.lift (ringOfIntegers_injective k K σ)).toRatAlgHom`.
+
+Establish `hl : ∀ σ (x : 𝓞 K), l σ x = σ x` using `fun σ x ↦ IsFractionRing.lift_algebraMap (ringOfIntegers_injective k K σ) x`. Establish `: l σ = l τ₀` using `AlgHom.ext_of_adjoin_eq_top hK fun x hx ↦ by`. Rewrite using `[Set.mem_singleton_iff.mp hx, hl, hl, e]`. Take `rfl : σ = τ₀` from `RingHom.ext fun x ↦ by rw [← hl, this, hl]`. Conclude with `H.1`.
+
+Introduce and unpack `rfl`. Conclude with `e rfl`.
+-/
 theorem detCond_line {G₁ H₁ : Over (Sp k)} [GrpObj G₁] [GrpObj H₁] [IsCommMonObj G₁]
     [IsCommMonObj H₁] {a₁ : OAct (𝓞 K) G₁} {b₁ : OAct (𝓞 K) H₁} (h : IsTensor H₁ b₁ G₁ a₁ M)
     [IsCMField E] {X : Host E} (D : Datum X) (r : 𝓞 K) (hr : algebraMap (𝓞 K) (𝓞 E) r = X.rt)
@@ -584,6 +772,9 @@ section Ideal
 
 variable {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E}
 
+/- English proof (translation)
+Simplify `h.lieMult t τ hn` using `only [finrank_fractionalIdeal E hI, _root_.mul_one]`.
+-/
 theorem lieMult_fractionalIdeal (h : IsTensor H b G a I) (hI : I ≠ 0) (t : Sp k ⟶ S)
     (τ : 𝓞 E →+* k) {n : ℕ} (hn : LieMult a t (τ.comp (algebraMap (𝓞 K) (𝓞 E))) n) :
     LieMult (h.algAct (𝓞 E)) t τ n := by
@@ -592,6 +783,9 @@ theorem lieMult_fractionalIdeal (h : IsTensor H b G a I) (hI : I ≠ 0) (t : Sp 
 variable {G₁ H₁ : Over (Sp k)} [GrpObj G₁] [GrpObj H₁] [IsCommMonObj G₁] [IsCommMonObj H₁]
   {a₁ : OAct (𝓞 K) G₁} {b₁ : OAct (𝓞 K) H₁}
 
+/- English proof (translation)
+Establish `H` using `Lie.lieMult_of_isLieBasis a₁ hv (τ₀ := τ₀) fun i ↦ by`. Rewrite using `[Subsingleton.elim i 0]`. Conclude with `hτ`. Conclude with `⟨fun e ↦ h.lieMult_fractionalIdeal hI _ τ (e ▸ H.1), fun e ↦ h.lieMult_fractionalIdeal hI _ τ (H.2 _ e)⟩`.
+-/
 theorem lieMult_line (h : IsTensor H₁ b₁ G₁ a₁ I) (hI : I ≠ 0) {τ₀ : 𝓞 K →+* k}
     {v : epsR k ⟶ G₁} (hv : IsLieBasis ![v])
     (hτ : ∀ x, (v ≫ a₁.act x).left = spMap (epsScaleR (τ₀ x)) ≫ v.left) (τ : 𝓞 E →+* k) :
@@ -602,6 +796,15 @@ theorem lieMult_line (h : IsTensor H₁ b₁ G₁ a₁ I) (hI : I ≠ 0) {τ₀ 
   exact ⟨fun e ↦ h.lieMult_fractionalIdeal hI _ τ (e ▸ H.1),
     fun e ↦ h.lieMult_fractionalIdeal hI _ τ (H.2 _ e)⟩
 
+/- English proof (translation)
+Set `r (σ : E →ₐ[K] k) : 𝓞 E →+* k` to `(σ : E →+* k).comp (algebraMap (𝓞 E) E)`. Establish `hr : Function.Injective r` using `fun σ σ' e ↦ AlgHom.coe_ringHom_injective (IsFractionRing.ringHom_ext (A := 𝓞 E) fun x ↦ congr($e x))`. Establish `hind : iSupIndep fun σ ↦ Lie.eig (h.algAct (𝓞 E)) (r σ)` using `(Lie.iSupIndep_eig _).comp hr`. Use `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hind ?_` and prove the remaining obligations. Establish `hw : ∀ σ, ∃ w ∈ Lie.eig (h.algAct (𝓞 E)) (r σ), w ≠ 0` using `fun σ ↦ by`.
+
+Take `⟨u⟩` from `(Lie.lieMult_id_iff _ _ _).mp ((h.lieMult_line hI (τ₀ := (algebraMap K k).comp (algebraMap (𝓞 K) K)) hv hτ (r σ)).1 (RingHom.ext fun x ↦ σ.commutes x))`. Conclude with `⟨u 0, (u 0).2, fun e ↦ u.ne_zero 0 (Subtype.ext e)⟩`. Use `choose w hw hw₀ using hw`. Set `: Algebra (𝓞 K) k` to `((algebraMap K k).comp (algebraMap (𝓞 K) K)).toAlgebra`. Establish `: FaithfulSMul (𝓞 K) k` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (ringOfIntegers_injective k K _)`.
+
+Set `e` to `h.lieEquivLine (h.algAct (𝓞 E)) hv hτ`. Establish `: Module.Finite k (Lie (h.algAct (𝓞 E)))` using `.equiv e`. Establish `hspan` using `(hind.linearIndependent _ hw hw₀).span_eq_top_of_card_eq_finrank' (by`. Rewrite using `[AlgHom.card_of_splits K E k hk, ← e.finrank_eq, (TensorProduct.isBaseChange (𝓞 K) I k).finrank_eq, finrank_fractionalIdeal_restrict K E hI])`. Rewrite using `[eq_top_iff, ← hspan, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨σ, rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem σ (hw σ)`.
+-/
 theorem isInternal_eig [Algebra K k] [DecidableEq (E →ₐ[K] k)] (h : IsTensor H₁ b₁ G₁ a₁ I)
     (hI : I ≠ 0) (hk : ∀ x : E, ((minpoly K x).map (algebraMap K k)).Splits)
     {v : epsR k ⟶ G₁} (hv : IsLieBasis ![v])
@@ -646,6 +849,9 @@ def Lie.splitTorusEquiv {R O X : Type} [CommRing R] [CommRing O] [AddCommGroup X
     ⟨fun _ _ e ↦ Diag.lieVec_injective (congrArg Lie.hom e), fun v ↦
       ((Diag.isTangent_iff_exists _).mp v.isTangent).imp fun _ e ↦ Lie.ext e⟩
 
+/- English proof (translation)
+Establish `e` using `(isTensor (Fin 2 → ℤ) (intAct (ReciprocityTheory.ChartRestriction.G.Semi.splitTorus (Sp ℚ) ℤ))).lieEquivScalar (tensorAct (Fin 2 → ℤ) _) (N := ℚ) ((addMonoidHomLequivInt ℚ ≪≫ₗ LinearMap.ringLmapEquivSelf ℤ ℚ ℚ).symm ≪≫ₗ Lie.splitTorusEquiv _) (by`. Use `eq_top_iff.mpr fun v _ x ↦ ?_` and prove the remaining obligations. Rewrite using `[algebraMap_int_eq, eq_intCast, Int.cast_smul_eq_zsmul]`. Conclude with `int_smul_eq_zsmul Lie.actModule x v)`. Rewrite using `[← e.finrank_eq, Module.finrank_baseChange, Module.finrank_fin_fun]`.
+-/
 example : Module.finrank ℚ
     (Lie (tensorAct (Fin 2 → ℤ) (intAct (ReciprocityTheory.ChartRestriction.G.Semi.splitTorus (Sp ℚ) ℤ)))) = 2 := by
   have e := (isTensor (Fin 2 → ℤ) (intAct (ReciprocityTheory.ChartRestriction.G.Semi.splitTorus (Sp ℚ) ℤ))).lieEquivScalar
@@ -659,6 +865,11 @@ example : Module.finrank ℚ
 
 open NumberField in
 
+/- English proof (translation)
+Use `⟨fun R O _ _ G _ _ a ↦ ⟨fun w ↦ ⟨fun hw ↦ ⟨Lie.mk a w hw, rfl⟩, ?_⟩, fun _ _ ↦ Lie.ext, Lie.hom_add, Lie.hom_smul_left, Lie.hom_act_smul, smul_comm, fun n v ↦ ⟨fun hv ↦ ⟨Lie.basis a hv, Lie.hom_basis hv⟩, ?_⟩, fun H K _ _ _ _ b c i f _ _ h ↦ Lie.map_kernel h⟩, fun R O _ _ G H _ _ …` and prove the remaining obligations. Introduce and unpack `⟨v, rfl⟩`. Conclude with `v.isTangent`. Introduce and unpack `⟨u, hu⟩`. Take `rfl : (fun i ↦ (u i).hom) = v` from `funext hu`.
+
+Conclude with `Lie.isLieBasis_basis u`. Rewrite using `[IsTensor.hom_lieEquivLine_tmul, epsScale_one, Category.id_comp]`.
+-/
 theorem lie_tensor :
     (∀ (R O : Type) [CommRing R] [CommRing O] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
       (a : OAct O G),

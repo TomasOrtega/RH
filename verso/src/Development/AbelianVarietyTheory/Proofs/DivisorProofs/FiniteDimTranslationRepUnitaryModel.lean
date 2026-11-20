@@ -17,6 +17,17 @@ noncomputable section
 
 namespace GlobalTheory.ThetaCplV.UnitaryTrick
 
+/- English proof (translation)
+Use `letI cd : InnerProductSpace.Core ℂ V := c`. Use `letI : NormedAddCommGroup V := @InnerProductSpace.Core.toNormedAddCommGroup ℂ V _ _ _ cd`. Use `letI : InnerProductSpace ℂ V := InnerProductSpace.ofCore cd.toCore`. Set `b` to `stdOrthonormalBasis ℂ V`. Set `e : V ≃ₗ[ℂ] EuclideanSpace ℂ (Fin (Module.finrank ℂ V))` to `b.repr.toLinearEquiv`.
+
+Set `τ : K → (EuclideanSpace ℂ (Fin (Module.finrank ℂ V)) →L[ℂ] EuclideanSpace ℂ (Fin (Module.finrank ℂ V)))` to `fun g => LinearMap.toContinuousLinearMap (e.toLinearMap ∘ₗ ρ g ∘ₗ e.symm.toLinearMap)`. Establish `hτ : ∀ g x, τ g x = e (ρ g (e.symm x))` using `fun _ _ => rfl`. Establish `hn : ∀ g (y : V), ‖ρ g y‖ = ‖y‖`. Introduce `g y`. Establish `h1 : inner ℂ (ρ g y) (ρ g y) = inner ℂ y y` using `hc g y y`.
+
+Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, h1]`. Use `⟨_, τ, e, ⟨?_, fun a c => ?_, fun g x => ?_, fun x => ?_⟩, fun g v => ?_⟩` and prove the remaining obligations. Use `ext1 x`. Simplify using `[hτ]`. Use `ext1 x`.
+
+Simplify using `[hτ, map_mul]`. Rewrite using `[hτ]`. Express the relevant statement in the definitionally equal form `‖b.repr (ρ g (b.repr.symm x))‖ = ‖x‖`. Rewrite using `[LinearIsometryEquiv.norm_map, hn, ← LinearIsometryEquiv.norm_map b.repr, LinearIsometryEquiv.apply_symm_apply]`. Simplify using `only [hτ]`.
+
+Conclude with `GlobalTheory.UniTrick.continuous_lin ρ hρ e.toLinearMap _`. Rewrite using `[hτ, LinearEquiv.symm_apply_apply]`.
+-/
 theorem exists_isURep_of_core {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] {V : Type} [AddCommGroup V]
     [Module ℂ V] [FiniteDimensional ℂ V] (ρ : Representation ℂ K V)
     (hρ : ∀ (φ : V →ₗ[ℂ] ℂ) (v : V), Continuous fun k => φ (ρ k v))
@@ -52,6 +63,15 @@ namespace GlobalTheory.ThetaCplV
 
 open UnitaryTrick in
 
+/- English proof (translation)
+Introduce `G _ _ _ K _ _ _ _ j hj H hjH T hT hcont hst`. Set `ρ : Representation ℂ K T` to `{ toFun := fun k => (rt H ⟨j k, hjH k⟩).restrict (fun t ht => hst _ t ht) map_one' := by ext t x; simp map_mul' := fun a b => by ext t x; simp [mul_assoc] }`. Establish `hρv : ∀ k (v : T), ((ρ k v : T) : G → ℂ) = fun x => (v : G → ℂ) (x * j k)` using `fun _ _ => rfl`. Establish `hρc : ∀ v : T, Continuous fun k => ρ k v`. Introduce `v`.
+
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun k => fun x => (v : G → ℂ) (x * j k)`. Conclude with `continuous_pi fun x => (hcont v v.2).comp (continuous_const.mul hj)`. Establish `hρφ : ∀ (φ : T →ₗ[ℂ] ℂ) (v : T), Continuous fun k => φ (ρ k v)` using `fun φ v => (LinearMap.continuous_of_finiteDimensional φ).comp (hρc v)`. Take `⟨c, hc⟩` from `GlobalTheory.exists_invariant_core ρ hρc`.
+
+Take `⟨d, τ, e, hτ, he⟩` from `exists_isURep_of_core ρ hρφ c hc`. Use `⟨d, τ, hτ, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨L₀, -, heq, t, rfl⟩` from `hf`. Use `⟨L₀ ∘ₗ e.symm.toLinearMap, fun k w x => ?_, ⟨e t, by simp⟩⟩` and prove the remaining obligations. Establish `h1 : e.symm (τ k w) = ρ k (e.symm w)`.
+
+Rewrite using `[LinearEquiv.symm_apply_eq, he, LinearEquiv.apply_symm_apply]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, h1]`. Rewrite using `[heq ⟨j k, hjH k⟩ (e.symm w) (ρ k (e.symm w)) rfl, rt_apply]`.
+-/
 theorem exists_isURep_of_stable : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] (j : K →* G), Continuous j → ∀ H : Subgroup G, (∀ k, j k ∈ H) → ∀ T : Submodule ℂ (G → ℂ), FiniteDimensional ℂ T → (∀ t ∈ T, Continuous t) → (∀ h, ∀ t ∈ T, GlobalTheory.ThetaCplV.rt H h t ∈ T) → ∃ (m : ℕ) (τ : K → (EuclideanSpace ℂ (Fin m) →L[ℂ] EuclideanSpace ℂ (Fin m))), GlobalTheory.Dec.IsURep τ ∧ ∀ f ∈ GlobalTheory.ThetaCplV.typeSet (GlobalTheory.ThetaCplV.rt H) ⊤ T, ∃ L : EuclideanSpace ℂ (Fin m) →ₗ[ℂ] (G → ℂ), (∀ k w x, L (τ k w) x = L w (x * j k)) ∧ f ∈ LinearMap.range L := by
   intro G _ _ _ K _ _ _ _ j hj H hjH T hT hcont hst
   let ρ : Representation ℂ K T :=

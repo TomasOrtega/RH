@@ -12,10 +12,24 @@ noncomputable section
 
 namespace GlobalTheory.ElRep
 
+/- English proof (translation)
+The claim follows from `pullback.hom_ext h₁ h₂`.
+-/
 theorem sq_ext {S : Scheme.{0}} (A : Over S) {X : Scheme.{0}} (f g : X ⟶ (A ⊗ A).left)
     (h₁ : f ≫ (fst A A).left = g ≫ (fst A A).left) (h₂ : f ≫ (snd A A).left = g ≫ (snd A A).left) : f = g :=
   pullback.hom_ext h₁ h₂
 
+/- English proof (translation)
+Introduce `S A _ _ Q hQ O _ bar r e W d hbar hspan hW hd hsum T t A' _ _ φ' φ₂' B' _ φB pr' hApb hsq hBpb hpr' hprφ huniq act hact hadj Φ hΦ`. Establish `hQ' : QHyp A' (Q.pull φ₂')` using `GlobalTheory.T.symmetricBiextensionHyp_pullback_of_groupPullback S T t A A' φ' φ₂' Q hApb hsq hQ`. Take `⟨hA', hL', g₁, g₂, hsym', hamp'⟩` from `hQ'`. Establish `C` using `GlobalTheory.CasimirPull.main T A' (Q.pull φ₂') hA' hL' g₁ g₂ hsym' hamp' O bar r e W d hbar hspan hW hd hsum act hact hadj B' pr' hpr' huniq Φ hΦ`. Establish `hQL : Q.IsLB` using `hQ.2.1`.
+
+Establish `e₁ : ∀ u v : Fin r, (lift (pr' u) (pr' v)).left ≫ φ₂' = φB ≫ (lift (Out.powPr A (n` using `r) u) (Out.powPr A (n := r) v)).left := fun u v => by`. Apply `sq_ext A` to reduce the goal to its premises. Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, hprφ, Category.assoc, ← Over.comp_left, lift_fst]`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, hprφ, Category.assoc, ← Over.comp_left, lift_snd]`. Establish `e₂ : (lift (𝟙 A') (𝟙 A')).left ≫ φ₂' = φ' ≫ (lift (𝟙 A) (𝟙 A)).left`.
+
+Apply `sq_ext A` to reduce the goal to its premises. Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, Over.id_left, Category.id_comp, Category.assoc, ← Over.comp_left, lift_fst, Over.id_left, Category.comp_id]`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, Over.id_left, Category.id_comp, Category.assoc, ← Over.comp_left, lift_snd, Over.id_left, Category.comp_id]`. Establish `C'` using `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB (LB.isLB_linComb hL' _ _) _) (LB.isLB_linComb hL' _ _)).2 C`. Rewrite `C'` using `[GlobalTheory.CechPic.cls_pull (LB.isLB_linComb hL' _ _), GlobalTheory.CechPic.cls_linComb hL', GlobalTheory.CechPic.cls_linComb hL', GlobalTheory.CechPic.cls_pull hQL]`.
+
+Simplify using `only [map_sum, map_zsmul, ← GlobalTheory.CechPic.pull_comp, Category.assoc, e₁, e₂] at C'`. Unfold `diagPow formLB`. Use `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB (LB.isLB_linComb hQL _ _) _) (pull_isLB (pull_isLB (LB.isLB_linComb hQL _ _) _) _)).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_pull (LB.isLB_linComb hQL _ _), GlobalTheory.CechPic.cls_pull (pull_isLB (LB.isLB_linComb hQL _ _) _), GlobalTheory.CechPic.cls_pull (LB.isLB_linComb hQL _ _), GlobalTheory.CechPic.cls_linComb hQL, GlobalTheory.CechPic.cls_linComb hQL]`. Simplify using `only [map_sum, map_zsmul, ← GlobalTheory.CechPic.pull_comp, Category.assoc]`.
+
+Conclude with `C'.symm`.
+-/
 theorem main : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (Q : LB (A ⊗ A).left), QHyp A Q → ∀ (O : Type) [Ring O] (bar : O → O) (r : ℕ) (e : Fin r → O) (W : Matrix (Fin r) (Fin r) ℤ) (d : ℕ), (∀ a b, bar (a + b) = bar a + bar b) → Submodule.span ℤ (Set.range e) = ⊤ → ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → 0 < d → ∑ i, ∑ j, W i j • (e j * bar (e i)) = (d : O) → ∀ (T : Scheme.{0}) (t : T ⟶ S) (A' : Over T) [GrpObj A'] [IsCommMonObj A'] (φ' : A'.left ⟶ A.left) (φ₂' : (A' ⊗ A').left ⟶ (A ⊗ A).left) (B' : Over T) [GrpObj B'] (φB : B'.left ⟶ (Out.powObj A r).left) (pr' : Fin r → (B' ⟶ A')), IsGrpPullback A' A t φ' → IsSquare φ' φ₂' → IsGrpPullback B' (Out.powObj A r) t φB → (∀ u, IsMonHom (pr' u)) → (∀ u, (pr' u).left ≫ φ' = φB ≫ (Out.powPr A u).left) → (∀ (X : Over T) (y : Fin r → (X ⟶ A')), ∃! x : X ⟶ B', ∀ u, x ≫ pr' u = y u) → ∀ (act : O → (A' ⟶ A')), IsRAct A' act → Adj A' (Q.pull φ₂') bar act → ∀ Φ : A' ⟶ B', (∀ u, Φ ≫ pr' u = act (e u)) → LBIso ((diagPow A Q d).pull φ') (((formLB A Q (Out.powPr A (n := r)) W).pull φB).pull Φ.left) := by
   intro S A _ _ Q hQ O _ bar r e W d hbar hspan hW hd hsum T t A' _ _ φ' φ₂' B' _ φB pr' hApb hsq hBpb hpr' hprφ
     huniq act hact hadj Φ hΦ

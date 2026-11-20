@@ -4,11 +4,19 @@ open CategoryTheory Limits TensorProduct
 
 namespace GlobalTheory.RatHomology
 
+/- English proof (translation)
+Rewrite using `[← IsLocalizedModule.finrank_eq (nonZeroDivisors ℤ) (TensorProduct.mk ℤ ℚ M 1) le_rfl, ← IsFractionRing.finrank_right_eq ℤ ℚ]`.
+-/
 theorem finrank_rat_tensor (M : Type) [AddCommGroup M] [Module ℤ M] :
     Module.finrank ℚ (ℚ ⊗[ℤ] M) = Module.finrank ℤ M := by
   rw [← IsLocalizedModule.finrank_eq (nonZeroDivisors ℤ) (TensorProduct.mk ℤ ℚ M 1) le_rfl,
     ← IsFractionRing.finrank_right_eq ℤ ℚ]
 
+/- English proof (translation)
+Take `⟨e⟩` from `GlobalTheory.FieldChangeInter.nonempty_homology_equiv ℚ C n`. Establish `h` using `e.finrank_eq`. Establish `hφ : algebraMap ℤ ℚ = Int.castRingHom ℚ` using `rfl`. Rewrite `h` using `[hφ]`. Rewrite using `[h]`.
+
+Conclude with `finrank_rat_tensor (C.homology n)`.
+-/
 theorem finrank_rat_homology (C : CochainComplex (ModuleCat.{0} ℤ) ℕ) (n : ℕ)
     (_ : Module.Finite ℤ (C.homology n)) :
     Module.finrank ℚ ((((ModuleCat.extendScalars (Int.castRingHom ℚ)).mapHomologicalComplex

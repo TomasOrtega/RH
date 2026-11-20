@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw
 noncomputable section
 namespace GlobalTheory.HeightCounting.Up
+/- English proof (translation)
+Introduce `hA hH` and use `_root_.GlobalTheory.T.exists_bare_form_of_saturation hA hH (GlobalTheory.T.adelicData_extend_largerFields_of_hypotheses hH.cover hA.a5 hA.a6 hA.a7 hA.a8 hA.a9 hA.a10)`.
+-/
 theorem weightOne_saturated_of_hypotheses : _root_.GlobalTheory.Mem.Top.Bl.HypAAlt → _root_.GlobalTheory.Mem.Top.Bl.MultiplicityCoverHypotheses → ExistsUnlocalizedSaturatedState := fun hA hH =>
   _root_.GlobalTheory.T.exists_bare_form_of_saturation hA hH (GlobalTheory.T.adelicData_extend_largerFields_of_hypotheses hH.cover hA.a5 hA.a6 hA.a7 hA.a8 hA.a9 hA.a10)
 end GlobalTheory.HeightCounting.Up
@@ -22,6 +25,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.weightOne_saturated_of_hypotheses | exact _root_.GlobalTheory.HeightCounting.Up.weightOne_saturated_of_hypotheses | (intros; apply _root_.GlobalTheory.HeightCounting.Up.weightOne_saturated_of_hypotheses <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.compatibleSystem_weightOne_saturated : _root_.GlobalTheory.Mem.Top.Bl.HypAAlt → _root_.GlobalTheory.Mem.Top.Bl.MultiplicityCoverHypotheses → ExistsUnlocalizedSaturatedState := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.weightOne_saturated_of_hypotheses | exact _root_.GlobalTheory.HeightCounting.Up.weightOne_saturated_of_hypotheses | (intros; apply _root_.GlobalTheory.HeightCounting.Up.weightOne_saturated_of_hypotheses <;> assumption)
 end

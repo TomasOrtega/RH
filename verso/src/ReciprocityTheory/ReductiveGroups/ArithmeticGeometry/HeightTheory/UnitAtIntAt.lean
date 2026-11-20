@@ -24,6 +24,9 @@ variable {p : Ideal R} [hP : p.IsPrime]
 include hP
 
 omit [IsDomain R] [IsFractionRing R F] in
+/- English proof (translation)
+Take `⟨a, s, hs, hxs⟩` from `hx`. Take `⟨b, t, ht, hyt⟩` from `hy`. Use `⟨a * b, s * t, fun h => (hP.mem_or_mem h).elim hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← hxs, ← hyt]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem intAt_mul {x y : F} (hx : IntAt p x) (hy : IntAt p y) : IntAt p (x * y) := by
   obtain ⟨a, s, hs, hxs⟩ := hx
   obtain ⟨b, t, ht, hyt⟩ := hy
@@ -32,6 +35,9 @@ theorem intAt_mul {x y : F} (hx : IntAt p x) (hy : IntAt p y) : IntAt p (x * y) 
   ring
 
 omit [IsDomain R] [IsFractionRing R F] in
+/- English proof (translation)
+Take `⟨a, s, ha, hs, hxs⟩` from `hx`. Take `⟨b, t, hb, ht, hyt⟩` from `hy`. Use `⟨a * b, s * t, fun h => (hP.mem_or_mem h).elim ha hb, fun h => (hP.mem_or_mem h).elim hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← hxs, ← hyt]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem unitAt_mul {x y : F} (hx : UnitAt p x) (hy : UnitAt p y) : UnitAt p (x * y) := by
   obtain ⟨a, s, ha, hs, hxs⟩ := hx
   obtain ⟨b, t, hb, ht, hyt⟩ := hy
@@ -41,20 +47,36 @@ theorem unitAt_mul {x y : F} (hx : UnitAt p x) (hy : UnitAt p y) : UnitAt p (x *
   ring
 
 omit [IsDomain R] [IsFractionRing R F] in
+/- English proof (translation)
+Establish `h1 : (1 : R) ∉ p` using `fun h => hP.ne_top ((Ideal.eq_top_iff_one p).mpr h)`. Conclude with `⟨1, 1, h1, h1, by simp⟩`.
+-/
 theorem unitAt_one : UnitAt p (1 : F) := by
   have h1 : (1 : R) ∉ p := fun h => hP.ne_top ((Ideal.eq_top_iff_one p).mpr h)
   exact ⟨1, 1, h1, h1, by simp⟩
 
 omit [IsDomain R] [IsFractionRing R F] in
+/- English proof (translation)
+Take `⟨a, s, _, hs, h⟩` from `hx`. Conclude with `⟨a, s, hs, h⟩`.
+-/
 theorem unitAt_intAt {x : F} (hx : UnitAt p x) : IntAt p x := by
   obtain ⟨a, s, _, hs, h⟩ := hx
   exact ⟨a, s, hs, h⟩
 
 omit [IsDomain R] [IsFractionRing R F] in
+/- English proof (translation)
+Establish `h1 : (1 : R) ∉ p` using `fun h => hP.ne_top ((Ideal.eq_top_iff_one p).mpr h)`. Conclude with `⟨r, 1, hr, h1, by simp⟩`.
+-/
 theorem unitAt_alg {r : R} (hr : r ∉ p) : UnitAt p (algebraMap R F r) := by
   have h1 : (1 : R) ∉ p := fun h => hP.ne_top ((Ideal.eq_top_iff_one p).mpr h)
   exact ⟨r, 1, hr, h1, by simp⟩
 
+/- English proof (translation)
+Take `⟨a, s, ha, hs, h⟩` from `hx`. Use `⟨s, a, hs, ha, ?_⟩` and prove the remaining obligations. Establish `ha0 : algebraMap R F a ≠ 0`. Introduce `h0`. Apply `ha` to reduce the goal to its premises.
+
+Establish `h00 : a = 0` using `IsFractionRing.injective R F (by rw [h0, map_zero])`. Rewrite using `[h00]`. Conclude with `p.zero_mem`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+
+Apply `ha0` to reduce the goal to its premises. Rewrite using `[← h, zero_mul]`. Rewrite using `[← h, ← mul_assoc, inv_mul_cancel₀ hx0, one_mul]`.
+-/
 theorem unitAt_inv {x : F} (hx : UnitAt p x) : UnitAt p x⁻¹ := by
   obtain ⟨a, s, ha, hs, h⟩ := hx
   refine ⟨s, a, hs, ha, ?_⟩
@@ -71,11 +93,19 @@ theorem unitAt_inv {x : F} (hx : UnitAt p x) : UnitAt p x⁻¹ := by
   rw [← h, ← mul_assoc, inv_mul_cancel₀ hx0, one_mul]
 
 omit [IsDomain R] [IsFractionRing R F] in
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `unitAt_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `unitAt_mul ih hx`.
+-/
 theorem unitAt_pow {x : F} (hx : UnitAt p x) (n : ℕ) : UnitAt p (x ^ n) := by
   induction n with
   | zero => rw [pow_zero]; exact unitAt_one
   | succ n ih => rw [pow_succ]; exact unitAt_mul ih hx
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `ofNat n => show UnitAt p (x ^ (n : ℤ))`. Rewrite using `[zpow_natCast]`. Conclude with `unitAt_pow hx n`. Consider the case `negSucc n`.
+
+Rewrite using `[zpow_negSucc]`. Conclude with `unitAt_inv (unitAt_pow hx (n + 1))`.
+-/
 theorem unitAt_zpow {x : F} (hx : UnitAt p x) (n : ℤ) : UnitAt p (x ^ n) := by
   cases n with
   | ofNat n =>
@@ -87,6 +117,11 @@ theorem unitAt_zpow {x : F} (hx : UnitAt p x) (n : ℤ) : UnitAt p (x ^ n) := by
     exact unitAt_inv (unitAt_pow hx (n + 1))
 
 omit [IsDomain R] [IsFractionRing R F] in
+/- English proof (translation)
+Use `revert hf`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.prod_empty]`. Conclude with `unitAt_one`.
+
+Introduce `i s hi ih hf`. Rewrite using `[Finset.prod_insert hi]`. Conclude with `unitAt_mul (hf i (Finset.mem_insert_self i s)) (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem unitAt_prod {κ : Type*} (s : Finset κ) (f : κ → F) (hf : ∀ i ∈ s, UnitAt p (f i)) :
     UnitAt p (∏ i ∈ s, f i) := by
   classical
@@ -113,9 +148,15 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+The claim follows from `ValUFD.gen_prime (fun p hp hh => d.gen_span ⟨hp, hh⟩) hq`.
+-/
 theorem gen_prime' {q : Ideal (KTp K d.D d.N)} (hq : q ∈ d.HtOne) : Prime (d.gen q) :=
   ValUFD.gen_prime (fun p hp hh => d.gen_span ⟨hp, hh⟩) hq
 
+/- English proof (translation)
+Introduce `hm`. Rewrite `hm` using `[d.gen_span hp, Ideal.mem_span_singleton]`. Establish `e` using `(ValUFD.gen_dvd_iff (fun p hp hh => d.gen_span ⟨hp, hh⟩) hp (d.gen_prime' hq)).mp hm`. Conclude with `hqp (by rw [e, ← d.gen_span hq])`.
+-/
 theorem gen_not_mem {p q : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) (hq : q ∈ d.HtOne)
     (hqp : q ≠ p) : d.gen q ∉ p := by
   intro hm
@@ -123,6 +164,17 @@ theorem gen_not_mem {p q : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) (hq : q �
   have e := (ValUFD.gen_dvd_iff (fun p hp hh => d.gen_span ⟨hp, hh⟩) hp (d.gen_prime' hq)).mp hm
   exact hqp (by rw [e, ← d.gen_span hq])
 
+/- English proof (translation)
+Use `haveI := hp.1`. Establish `hfin : ((d.HtOne \ {p}) ∩ Function.mulSupport (fun q => algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen q) ^ E q)).Finite`. Use `hE.subset ?_` and prove the remaining obligations. Introduce and unpack `q ⟨⟨hq, _⟩, hq1⟩`. Use `⟨hq, fun h0 => (Function.mem_mulSupport.mp hq1) ?_⟩` and prove the remaining obligations.
+
+Simplify using `[h0]`. Use `⟨∏ᶠ (q : Ideal (KTp K d.D d.N)) (_ : q ∈ d.HtOne \ {p}), algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen q) ^ E q, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← finprod_mem_inter_mulSupport, finprod_mem_eq_finite_toFinset_prod _ hfin]`. Apply `LocAt.unitAt_prod` to reduce the goal to its premises. Introduce `q hq`.
+
+Rewrite `hq` using `[Set.Finite.mem_toFinset]`. Take `⟨⟨hq1, hq2⟩, _⟩` from `hq`. Conclude with `LocAt.unitAt_zpow (LocAt.unitAt_alg (d.gen_not_mem hp hq1 (fun h => hq2 (Set.mem_singleton_iff.mpr h)))) _`. Establish `hins : d.HtOne = insert p (d.HtOne \ {p})`. Use extensionality with `x`.
+
+Distinguish the cases in `hx : x = p`. Substitute `hx` using the available equality. Simplify using `[hp]`. Simplify using `[hx]`. Use `conv_lhs => rw [hins]`.
+
+Rewrite using `[finprod_mem_insert' _ (fun h => h.2 (Set.mem_singleton p)) hfin]`.
+-/
 theorem split_at (E : Ideal (KTp K d.D d.N) → ℤ) (hE : {q | q ∈ d.HtOne ∧ E q ≠ 0}.Finite)
     {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) :
     ∃ V : KTf K d.D d.N, LocAt.UnitAt p V ∧
@@ -153,6 +205,19 @@ theorem split_at (E : Ideal (KTp K d.D d.N) → ℤ) (hE : {q | q ∈ d.HtOne �
     conv_lhs => rw [hins]
     rw [finprod_mem_insert' _ (fun h => h.2 (Set.mem_singleton p)) hfin]
 
+/- English proof (translation)
+Take `⟨he, -, -⟩` from `hd.a4.choose_spec`. Take `⟨heF, he0⟩` from `he c`. Establish `hadm` using `d.good_adm hd h c hp hw`. Establish `hthpF : d.thp (hd.sel k) c ∈ 𝒜 c d.wF` using `hd.thp_mem _ c`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : Ω c, d.thp (hd.sel k) c = a • hd.a4.choose c := by`.
+
+Establish `he0' : (⟨hd.a4.choose c, heF⟩ : 𝒜 c d.wF) ≠ 0`. Introduce `h0`. Conclude with `he0 (congrArg Subtype.val h0)`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' _ he0').mp (hd.finrank_one c d.wF) ⟨_, hthpF⟩`. Conclude with `⟨a, (congrArg Subtype.val ha).symm⟩`.
+
+Establish `hb : d.bvecG hd.sel hd.a4.choose k c = algebraMap (Ω c) (OmS (Ω c) d.D d.N) a`. Simplify using `only [bvecG]`. Rewrite using `[ValuationResidueLemmas.ratio_eq he0 ha]`. Rewrite using `[hb]`. Express the relevant statement in the definitionally equal form `0 ≤ d.Wres c w a + _`.
+
+Distinguish the cases in `ha0 : a = 0`. Rewrite using `[ha0, AddValuation.map_zero, top_add]`. Conclude with `le_top`. Establish `hth0 : d.thp (hd.sel k) c ≠ 0`. Rewrite using `[ha]`.
+
+Conclude with `smul_ne_zero ha0 he0`. Rewrite using `[← hd.ord_smul c _ hadm a heF he0 ha0, ← ha]`. Establish `hmem : d.thp (hd.sel k) ∈ d.Thp`. Rewrite using `[hd.Thp_span]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`.
+
+Conclude with `hd.ord_nonneg_Thp c _ hadm _ hmem hth0` after adjusting the coercions.
+-/
 theorem b_mem_p (hd : d.AxH 𝒜) (h : d.S1) {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne)
     (k : Fin d.del) (c : ι) (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ))
     (hw : w ∈ d.GoodP c p) :
@@ -184,6 +249,25 @@ theorem b_mem_p (hd : d.AxH 𝒜) (h : d.S1) {p : Ideal (KTp K d.D d.N)} (hp : p
     rw [hd.Thp_span]; exact Submodule.subset_span ⟨_, rfl⟩
   exact_mod_cast hd.ord_nonneg_Thp c _ hadm _ hmem hth0
 
+/- English proof (translation)
+Use `letI : ∀ c, Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := fun c => (d.KTtoS h c).toAlgebra`. Use `haveI : ∀ c, FiniteDimensional (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := fun c => (d.omS_finite hd h c).1`. Use `haveI : CharZero (KTf K d.D d.N) := charZero_of_injective_algebraMap (algebraMap K (KTf K d.D d.N)).injective`. Use `haveI : ∀ c, Algebra.IsSeparable (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := fun c => Algebra.IsSeparable.of_integral _ _`. Use `haveI := hp.1`.
+
+Establish `hsH : ∀ c x, d.sH c x = algebraMap (KTf K d.D d.N) (OmS (Ω c) d.D d.N) (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) x)` using `fun c x => (IsFractionRing.lift_algebraMap (A := KTp K d.D d.N) (g := (d.sH c).toRingHom) (h c) x).symm`. Establish `hOver : ∀ c, d.OverP c p = HNm.OverR (KTp K d.D d.N) (KTf K d.D d.N) (OmS (Ω c) d.D d.N) p`. Introduce `c`. Use extensionality with `w`. Simplify using `only [OverP, HNm.OverR, Set.mem_ofPred_eq, hsH]`.
+
+Set `n : ∀ c, AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ) → ℤ` to `fun c w => if w ∈ d.GoodP c p then d.ord c (d.Wres c w) d.wF (hd.a4.choose c) else 0`. Establish `hb : ∀ k c, ∀ w ∈ HNm.OverR (KTp K d.D d.N) (KTf K d.D d.N) (OmS (Ω c) d.D d.N) p, 0 ≤ w (d.bvecG hd.sel hd.a4.choose k c) + (n c w : WithTop ℤ)`. Introduce `k c w hw`. Rewrite `hw` using `[← hOver c]`. Distinguish the cases in `hg : w ∈ d.GoodP c p`.
+
+Simplify using `only [n, if_pos hg]`. Conclude with `d.b_mem_p hd h hp k c w hg`. Simplify using `only [n, if_neg hg, WithTop.coe_zero, add_zero]`. Establish `hz : ∀ a : Ω c, a ≠ 0 → d.Wres c w a = 0` using `fun a ha =>`. Assume the negation of the conclusion as `fun hne => hg ⟨hw, a, ha, hne⟩`.
+
+Express the relevant statement in the definitionally equal form `0 ≤ d.Wres c w _`. Distinguish the cases in `hr : ratio (Ω := Ω c) (d.thp (hd.sel k) c) (hd.a4.choose c) = 0`. Rewrite using `[hr, AddValuation.map_zero]`. Conclude with `le_top`. Rewrite using `[hz _ hr]`.
+
+Establish `hexp : ∀ c, (∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ HNm.OverR (KTp K d.D d.N) (KTf K d.D d.N) (OmS (Ω c) d.D d.N) p), (HNm.fz (KTf K d.D d.N) w : ℤ) * n c w) = d.nP h c d.wF (hd.a4.choose c) p`. Introduce `c`. Rewrite using `[← hOver c]`. Simplify using `only [nP]`. Rewrite using `[finsum_mem_def, finsum_mem_def]`.
+
+Use `finsum_congr fun w => ?_` and prove the remaining obligations. Simplify using `only [Set.indicator_apply, n]`. Distinguish the cases in `hg : w ∈ d.GoodP c p`. Establish `hg1 : w ∈ d.OverP c p` using `hg.1`. Simplify using `only [hg, hg1, if_true]`.
+
+Both sides reduce to the same expression. Simplify using `only [hg, if_false, mul_zero, ite_self]`. Take `⟨a, s, hs, he⟩` from `HDiscOmL.disc_local (R := KTp K d.D d.N) (F := KTf K d.D d.N) (L := fun c => OmS (Ω c) d.D d.N) p hp.2 (d.gen p) (d.gen_span hp) n (d.del_eq hd h) (d.bvecG hd.sel hd.a4.choose) (d.b_linIndep hd h) hb`. Use `⟨a, s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`.
+
+Simplify using `only [hexp]`. Both sides reduce to the same expression.
+-/
 theorem de_local (hd : d.AxH 𝒜) (h : d.S1) {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) :
     LocAt.IntAt p (d.De hd h * algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^
       (2 * ∑ c, d.nP h c d.wF (hd.a4.choose c) p)) := by

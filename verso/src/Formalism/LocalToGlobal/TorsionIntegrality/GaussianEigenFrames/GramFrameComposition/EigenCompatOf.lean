@@ -17,6 +17,9 @@ section Norm
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+-/
 lemma nsum {α : Type} (s : Finset α) (f : α → K) (h : ∀ i ∈ s, ‖f i‖ ≤ 1) : ‖∑ i ∈ s, f i‖ ≤ 1 := by
   classical
   induction s using Finset.induction_on with
@@ -27,28 +30,50 @@ lemma nsum {α : Type} (s : Finset α) (f : α → K) (h : ∀ i ∈ s, ‖f i�
       (max_le (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hx (norm_nonneg _) hy`.
+-/
 lemma nmul {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x * y‖ ≤ 1 := by
   rw [norm_mul]
   exact mul_le_one₀ hx (norm_nonneg _) hy
 
+/- English proof (translation)
+Conclude with `(IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`.
+-/
 lemma nadd {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x + y‖ ≤ 1 := by
   exact (IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Rewrite using `[norm_neg]`. Conclude with `hx`.
+-/
 lemma nneg {x : K} (hx : ‖x‖ ≤ 1) : ‖-x‖ ≤ 1 := by
   rw [norm_neg]
   exact hx
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `nadd hx (nneg hy)`.
+-/
 lemma nsub {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x - y‖ ≤ 1 := by
   rw [sub_eq_add_neg]
   exact nadd hx (nneg hy)
 
+/- English proof (translation)
+Conclude with `nsum _ _ fun j _ => nsum _ _ fun k _ => nmul (nmul (hX j) (hq j k)) (hY k)`.
+-/
 lemma nbil {J : Type} [Fintype J] {q : J → J → K} {X Y : J → K} (hq : ∀ j k, ‖q j k‖ ≤ 1) (hX : ∀ j, ‖X j‖ ≤ 1)
     (hY : ∀ j, ‖Y j‖ ≤ 1) : ‖∑ j, ∑ k, X j * q j k * Y k‖ ≤ 1 := by
   exact nsum _ _ fun j _ => nsum _ _ fun k _ => nmul (nmul (hX j) (hq j k)) (hY k)
 
 end Norm
 
+/- English proof (translation)
+Establish `hW : ∀ j k, W j k = ∑ w, D w j * D w k - θ * q j k` using `fun j k => by rw [hQ]; ring`. Establish `e1 : ∑ j, ∑ k, X j * (∑ w, D w j * D w k) * Y k = ∑ w, (∑ j, X j * D w j) * (∑ k, Y k * D w k)`. Establish `r1 : ∀ w, (∑ j, X j * D w j) * (∑ k, Y k * D w k) = ∑ j, ∑ k, X j * D w j * (Y k * D w k)` using `fun w => by rw [Finset.sum_mul_sum]`. Establish `l1 : ∀ j k, X j * (∑ w, D w j * D w k) * Y k = ∑ w, X j * D w j * (Y k * D w k)` using `fun j k => by`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun w _ => by ring`. Simplify using `only [r1, l1]`. Conclude with `(Finset.sum_congr rfl fun j _ => Finset.sum_comm).trans Finset.sum_comm`. Simplify using `only [hW, mul_sub, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[e1]`.
+
+Use `congr 1`. Simplify using `only [Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring`.
+-/
 lemma bb_eq {K : Type} [Field K] {J Wt : Type} [Fintype J] [Fintype Wt] (W q : J → J → K) (D : Wt → J → K) (θ : K)
     (hQ : ∀ j k, ∑ w, D w j * D w k = W j k + θ * q j k) (X Y : J → K) :
     ∑ j, ∑ k, X j * W j k * Y k =
@@ -70,6 +95,11 @@ lemma bb_eq {K : Type} [Field K] {J Wt : Type} [Fintype J] [Fintype Wt] (W q : J
   simp only [Finset.mul_sum]
   exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Use `conv_lhs => rw [show y = ∑ i', y i' • Pi.single i' (1 : ℂ) by`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]]`. Rewrite using `[map_sum, Finset.sum_apply]`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+-/
 lemma lin_apply {n m : Type} [Fintype n] [DecidableEq n] (T : (n → ℂ) →ₗ[ℂ] (m → ℂ)) (y : n → ℂ) (i : m) :
     T y i = ∑ i', T (Pi.single i' 1) i * y i' := by
   conv_lhs => rw [show y = ∑ i', y i' • Pi.single i' (1 : ℂ) by
@@ -79,6 +109,11 @@ lemma lin_apply {n m : Type} [Fintype n] [DecidableEq n] (T : (n → ℂ) →ₗ
   simp only [map_smul, Pi.smul_apply, smul_eq_mul]
   exact Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `h' : ∀ w', ∑ w, g.symm (Pi.single w 1) w' * ι.symm (u w) = 0` using `fun w' => by`. Establish `h1` using `congrArg ι.symm (h w')`. Simplify `h1` using `[map_sum, map_mul]`. Establish `hz : g.symm (fun w => ι.symm (u w)) = 0`. Use extensionality with `w'`.
+
+Rewrite using `[show g.symm (fun w => ι.symm (u w)) w' = (g.symm : (Wt → ℂ) →ₗ[ℂ] (Wt → ℂ)) (fun w => ι.symm (u w)) w' from rfl, lin_apply]`. Conclude with `h' w'`. Establish `h2` using `congrArg (fun f => f w) (g.symm.injective (hz.trans (map_zero g.symm).symm))`. Simplify using `using h2`.
+-/
 lemma gamma_inj {K : Type} [Field K] (ι : ℂ ≃+* K) {Wt : Type} [Fintype Wt] [DecidableEq Wt]
     (g : (Wt → ℂ) ≃ₗ[ℂ] (Wt → ℂ)) (u : Wt → K)
     (h : ∀ w', ∑ w, ι (g.symm (Pi.single w 1) w') * u w = 0) (w : Wt) : u w = 0 := by
@@ -96,6 +131,11 @@ lemma gamma_inj {K : Type} [Field K] (ι : ℂ ≃+* K) {Wt : Type} [Fintype Wt]
 def cf {K : Type} [Field K] (ι : ℂ ≃+* K) (L : PeriodPair) {n : Type} [Fintype n] (h : Matrix n n ℂ) (y : n → ℂ) (i : n) : K :=
   ι (((Formalism.L2.Th1.F.area L : ℝ) : ℂ) * ∑ i', h i i' * conj (y i'))
 
+/- English proof (translation)
+Unfold `hOK cf`. Establish `e : ((Formalism.L2.Th1.F.area L : ℝ) : ℂ) * matH h x y = ∑ i, x i * (((Formalism.L2.Th1.F.area L : ℝ) : ℂ) * ∑ i', h i i' * conj (y i'))`. Simplify using `only [matH, LinearMap.mk₂'ₛₗ_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[e, map_sum]`.
+
+Simplify using `only [map_mul]`.
+-/
 lemma iota_hOK {K : Type} [Field K] (ι : ℂ ≃+* K) (L : PeriodPair) {n : Type} [Fintype n] (h : Matrix n n ℂ) (x y : n → ℂ) :
     ι (hOK L h x y) = ∑ i, ι (x i) * cf ι L h y i := by
   unfold hOK cf
@@ -106,6 +146,9 @@ lemma iota_hOK {K : Type} [Field K] (ι : ℂ ≃+* K) (L : PeriodPair) {n : Typ
   rw [e, map_sum]
   simp only [map_mul]
 
+/- English proof (translation)
+Simplify using `only [iota_hOK, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 lemma first_position {K : Type} [Field K] (ι : ℂ ≃+* K) (L : PeriodPair) {n : Type} [Fintype n] (h : Matrix n n ℂ)
     {J : Type} [Fintype J] (x : J → n → ℂ) (a : J → K) (y : n → ℂ) :
     ∑ j, a j * ι (hOK L h (x j) y) = ∑ i, (∑ j, a j * ι (x j i)) * cf ι L h y i := by
@@ -113,6 +156,11 @@ lemma first_position {K : Type} [Field K] (ι : ℂ ≃+* K) (L : PeriodPair) {n
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Establish `hv : ∀ j, ι (T (v j) i) = ∑ i', ι (T (Pi.single i' 1) i) * ι (v j i')` using `fun j => by`. Rewrite using `[lin_apply T (v j) i, map_sum]`. Simplify using `only [map_mul]`. Unfold `mapVec`. Simplify using `only [hv, RingEquiv.coe_toRingHom, Finset.mul_sum, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 lemma mapVec_comb {K : Type} [Field K] (ι : ℂ ≃+* K) {n : Type} [Fintype n] [DecidableEq n]
     (T : (n → ℂ) →ₗ[ℂ] (n → ℂ)) {J : Type} [Fintype J] (v : J → n → ℂ) (X : J → K) (i : n) :
     mapVec (ι : ℂ →+* K) T (fun i' => ∑ j, ι (v j i') * X j) i = ∑ j, ι (T (v j) i) * X j := by
@@ -128,6 +176,29 @@ end GramDeterminantPositive
 
 open GramDeterminantPositive
 
+/- English proof (translation)
+Introduce `a b c d ha hd lam hlam hcm n _ _ h Λ g hg p _ ι hp J _ v hv B' B hB' hB`. Take `⟨D, q0, hD, hq0, hDg, hDD⟩` from `hG a b c d ha hd lam hlam hcm n h Λ g hg p ι hp J v hv`. Establish `hd4 : d % 4 = 3` using `by have := hcm.2.2.1; omega`. Establish `hθ : ‖ι (Complex.I * ((Real.sqrt d : ℝ) : ℂ))‖ ≤ 1`. Rewrite using `[(hI d hd4 p ι).1]`.
+
+Conclude with `Real.rpow_le_one (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one _ _) (by norm_num)`. Set `W : Fin 4 × J → Fin 4 × J → ℂ_[p]` to `fun x y => if x.1 = y.1 then ι (hOK (cmL a b d ha hd lam hlam) h (v x.2) (v y.2)) else 0`. Establish `hQ : ∀ x y, ∑ w, D w x * D w y = W x y + ι (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) * q0 x y` using `hDD`. Set `ext : (J → ℂ_[p]) → Fin 4 × J → ℂ_[p]` to `fun B0 x => if x.1 = 0 then B0 x.2 else 0`. Establish `hext : ∀ B0 : J → ℂ_[p], (∀ j, ‖B0 j‖ ≤ 1) → ∀ x, ‖ext B0 x‖ ≤ 1`.
+
+Introduce `B0 hB0 x`. Simplify using `only [ext]`. Use `split_ifs`. Conclude with `hB0 _`. Simplify using the standard rewrite rules.
+
+Establish `hS : ∀ B1 B2 : J → ℂ_[p], ∑ x, ∑ y, ext B1 x * W x y * ext B2 y = ∑ j, ∑ k, B1 j * ι (hOK (cmL a b d ha hd lam hlam) h (v j) (v k)) * B2 k`. Introduce `B1 B2`. Simplify using `[ext, W, Fintype.sum_prod_type, Fin.sum_univ_four]`. Establish `hbb` using `fun B1 B2 => bb_eq W q0 D (ι (Complex.I * ((Real.sqrt d : ℝ) : ℂ))) hQ (ext B1) (ext B2)`. Establish `hPn : ∀ B1 B2 : J → ℂ_[p], (∀ j, ‖B1 j‖ ≤ 1) → (∀ j, ‖B2 j‖ ≤ 1) → ‖∑ w, (∑ x, ext B1 x * D w x) * (∑ y, ext B2 y * D w y)‖ ≤ 1` using `fun B1 B2 h1 h2 => nsum _ _ fun w _ => nmul (nsum _ _ fun x _ => nmul (hext B1 h1 x) (hD w x)) (nsum _ _ fun y _ => nmul (hext B2 h2 y) (hD w y))`.
+
+Establish `hu : ∀ B0 : J → ℂ_[p], (∀ i, ∑ k, B0 k * ι (v k i) = 0) → ∀ w, ∑ y, ext B0 y * D w y = 0`. Introduce `B0 h0 w`. Use `gamma_inj ι g (fun w => ∑ y, ext B0 y * D w y) (fun w' => ?_) w` and prove the remaining obligations. Take `⟨a', i⟩` from `w'`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Use `_ = 0 := by`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single (0 : Fin 4)]`.
+
+Simplify using `only [ext, hDg]`. Distinguish the cases in `ha' : a' = 0`. Simplify using `[ha', h0 i]`. Simplify using `[ha']`. Introduce `b' _ hb'`.
+
+Simplify using `[ext, hb']`. Simplify using the standard rewrite rules. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hS B' B, hbb]`. Conclude with `nsub (hPn B' B hB' hB) (nmul hθ (nbil hq0 (hext B' hB') (hext B hB)))`.
+
+Establish `hP : ∑ w, (∑ x, ext B' x * D w x) * (∑ y, ext B y * D w y) = ∑ w, (∑ x, ext B x * D w x) * (∑ y, ext B' y * D w y)` using `Finset.sum_congr rfl fun w _ => mul_comm _ _`. Use `⟨_, nsub (nbil hq0 (hext B hB) (hext B' hB')) (nbil hq0 (hext B' hB') (hext B hB)), ?_⟩` and prove the remaining obligations. Rewrite using `[← hS B' B, ← hS B B', hbb, hbb]`. Take the linear combination `hP`. Introduce `h0`.
+
+Use `⟨_, nneg (nbil hq0 (hext B' hB') (hext B hB)), ?_⟩` and prove the remaining obligations. Rewrite using `[← hS B' B, hbb, Finset.sum_eq_zero fun w _ => by rw [hu B h0 w, mul_zero]]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h0`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, first_position ι _ h v B' (v k)]`. Simplify using `[h0]`.
+-/
 theorem GramBasic_of (hG : GramTransfer) (hI : IotaOK) : GramBasic := by
   intro a b c d ha hd lam hlam hcm n _ _ h Λ g hg p _ ι hp J _ v hv B' B hB' hB
   obtain ⟨D, q0, hD, hq0, hDg, hDD⟩ := hG a b c d ha hd lam hlam hcm n h Λ g hg p ι hp J v hv
@@ -191,6 +262,31 @@ theorem GramBasic_of (hG : GramTransfer) (hI : IotaOK) : GramBasic := by
     rw [← Finset.sum_mul, first_position ι _ h v B' (v k)]
     simp [h0]
 
+/- English proof (translation)
+Introduce `a b c d ha hd lam hlam hcm n _ _ h Λ g hg p _ ι hp J _ v hv T T' hTT' hΛ B' B χ χ' hB'n hBn hχ' hT hT'`. Set `v2 : J ⊕ J → n → ℂ` to `Sum.elim v fun k => T' (v k)`. Establish `hv2 : ∀ x, InMul (cmL a b d ha hd lam hlam) Λ (v2 x)`. Introduce and unpack `(j | k)`. Conclude with `hv j`.
+
+Introduce `ω hω show ω • T' (v k) ∈ Λ`. Rewrite using `[← map_smul]`. Conclude with `hΛ _ (hv k ω hω)`. Set `B1 : J ⊕ J → ℂ_[p]` to `Sum.elim B' 0`. Set `C : J ⊕ J → ℂ_[p]` to `Sum.elim (fun k => -χ' * B k) B`.
+
+Establish `hB1 : ∀ x, ‖B1 x‖ ≤ 1`. Introduce and unpack `(j | k)`. Conclude with `hB'n j`. Simplify using `[B1]`. Establish `hC : ∀ x, ‖C x‖ ≤ 1`.
+
+Introduce and unpack `(j | k)`. Simplify using `only [C, Sum.elim_inl, norm_neg, norm_mul]`. Conclude with `mul_le_one₀ hχ' (norm_nonneg _) (hBn j)`. Conclude with `hBn k`. Take `⟨-, -, h3, -⟩` from `hB a b c d ha hd lam hlam hcm n h Λ g hg p ι hp (J ⊕ J) v2 hv2 B1 C hB1 hC`.
+
+Establish `hCz : ∀ i, ∑ x, C x * ι (v2 x i) = 0`. Introduce `i`. Establish `e1 : ∑ k, B k * ι (T' (v k) i) = χ' * ∑ k, B k * ι (v k i)`. Establish `h1` using `hT' i`. Rewrite `h1` using `[mapVec_comb]`.
+
+Simplify `h1` using `only [mul_comm (B _)]`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [C, v2, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[e1, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_eq_zero fun k _ => by ring`.
+
+Take `⟨e, he, hSe⟩` from `h3 hCz`. Use `⟨e, he, ?_⟩` and prove the remaining obligations. Rewrite using `[← hSe]`. Establish `key : ∀ k, ∑ j, B' j * ι (hOK (cmL a b d ha hd lam hlam) h (v j) (T' (v k))) = χ * ∑ j, B' j * ι (hOK (cmL a b d ha hd lam hlam) h (v j) (v k))`. Introduce `k`.
+
+Establish `hadj : ∀ j, hOK (cmL a b d ha hd lam hlam) h (v j) (T' (v k)) = hOK (cmL a b d ha hd lam hlam) h (T (v j)) (v k)` using `fun j => by`. Simplify using `only [hOK, hTT']`. Simplify using `only [hadj]`. Rewrite using `[first_position ι _ h (fun j => T (v j)) B' (v k), first_position ι _ h v B' (v k), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `h1` using `hT i`. Rewrite `h1` using `[mapVec_comb]`. Rewrite using `[← mul_assoc]`. Use `congr 1`. Simplify `h1` using `only [mul_comm (B' _)]`.
+
+Establish `key2 : ∑ j, ∑ k, B' j * ι (hOK (cmL a b d ha hd lam hlam) h (v j) (T' (v k))) * B k = χ * ∑ j, ∑ k, B' j * ι (hOK (cmL a b d ha hd lam hlam) h (v j) (v k)) * B k`. Establish `hk : ∀ k, ∑ j, B' j * ι (hOK (cmL a b d ha hd lam hlam) h (v j) (T' (v k))) * B k = χ * ∑ j, B' j * ι (hOK (cmL a b d ha hd lam hlam) h (v j) (v k)) * B k` using `fun k => by`. Rewrite using `[← Finset.sum_mul, key, ← Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun k _ => hk k, ← Finset.mul_sum, Finset.sum_comm]`. Simplify using `only [Fintype.sum_sum_type, B1, C, v2, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zero_mul, Finset.sum_const_zero, add_zero, Finset.sum_add_distrib]`.
+
+Rewrite using `[key2, sub_mul]`. Establish `key3 : ∑ j, ∑ k, B' j * ι (hOK (cmL a b d ha hd lam hlam) h (v j) (v k)) * (-χ' * B k) = -(χ' * ∑ j, ∑ k, B' j * ι (hOK (cmL a b d ha hd lam hlam) h (v j) (v k)) * B k)`. Rewrite using `[← neg_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[key3]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem EigenCompat_of (hB : GramBasic) : EigenCompat := by
   intro a b c d ha hd lam hlam hcm n _ _ h Λ g hg p _ ι hp J _ v hv T T' hTT' hΛ B' B χ χ' hB'n hBn hχ'
     hT hT'

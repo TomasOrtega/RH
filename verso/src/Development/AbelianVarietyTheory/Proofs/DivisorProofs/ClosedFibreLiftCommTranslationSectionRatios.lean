@@ -23,6 +23,9 @@ set_option autoImplicit false
 
 noncomputable section
 
+/- English proof (translation)
+Take `rfl : inst = Ring.toIntAlgebra R` from `Subsingleton.elim _ _`. Conclude with `heat_acts_on_terms R Dd O oa Y n v dd hv D h hb k α σ`.
+-/
 theorem GlobalTheory.HeatRatioW.exists_acts {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
     [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (Dd : DegData R (maximalIdeal R)) {O : Type} [CommRing O]
     [StarRing O] [Module O Dd.toPre.X] {oa : Dd.toPre.OAct O} (Y : Ray oa) {n : ℕ}
@@ -34,6 +37,29 @@ theorem GlobalTheory.HeatRatioW.exists_acts {R : Type} [CommRing R] [IsDomain R]
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H k _ _ m d t P gam hmon hli hab Y n' v' dd hdd D q hq h hb hdef hΘ ρ hρ A₀ grp m₀ hpb dl hdl hdesc y T₀ hT₀ hT₀' N hN σ σ' U f hf`. Use `letI := H.starRing`. Use `haveI : IsAdicComplete (maximalIdeal k) k := by rw [maximalIdeal_eq_bot]; infer_instance`. Use `haveI : IsAdicComplete (maximalIdeal (ChartRing k m d)) (ChartRing k m d) := GlobalTheory.PlaceInt.isAdicComplete_mvPowerSeries_finite (V := k) _`. Establish `hr : GlobalTheory.HeatRatio.IsRatio P.D.toPre σ σ' U f` using `hf`.
+
+Establish `hN2 : 1 ≤ 2 * N` using `by omega`. Take `⟨ρ₁, ρ₁', hr2⟩` from `GlobalTheory.HeatRatio.isRatio_square _ P.D.toPre N σ σ' U f hN hr`. Establish `HA` using `fun (k' : ℕ) (α : P.D.toPre.X) (s : P.D.toPre.SecB k' α) => GlobalTheory.HeatRatioW.exists_acts P.D Y v' dd hdd _ D h hb k' α s`. Take `⟨σp, a1⟩` from `HA N 0 σ`. Take `⟨σp', a2⟩` from `HA N 0 σ'`.
+
+Take `⟨ρp, a3⟩` from `HA (2 * N) 0 ρ₁`. Take `⟨ρp', a4⟩` from `HA (2 * N) 0 ρ₁'`. Take `⟨g₁, hg₁⟩` from `GlobalTheory.HeatRatio.exists_isRem _ P.D.toPre N 0 σ σ' σp σp' U f hr`. Take `⟨g₂, hg₂⟩` from `GlobalTheory.HeatRatio.exists_isRem _ P.D.toPre (2 * N) 0 ρ₁ ρ₁' ρp ρp' U f hr2`. Establish `e1` using `GlobalTheory.HeatRatio.Closed.closed_fibre_rem_indep E H k m d t P gam hmon hli hab Y n' v' dd hdd D q hq h hb hΘ ρ hρ A₀ grp m₀ hpb dl hdl hdesc N (2 * N) hN hN2 0 0 σ σ' σp σp' ρ₁ ρ₁' ρp ρp' U f g₁ g₂ hr hr2 a1 a2 a3 a4 hg₁ hg₂`.
+
+Take `⟨β₁, s, s', sp, sp', b1, b2, b3, b4⟩` from `GlobalTheory.T.translation_carries_ratioDatum_remainder E H k m d t P gam hmon hli hab Y n' v' dd hdd D q hq h hb hdef y N hN σ σ' σp σp' U f g₁ hr a1 a2 hg₁`. Take `⟨β₂, r, r', rp, rp', c1, c2, c3, c4⟩` from `GlobalTheory.T.translation_carries_ratioDatum_remainder E H k m d t P gam hmon hli hab Y n' v' dd hdd D q hq h hb hdef y (2 * N) hN2 ρ₁ ρ₁' ρp ρp' U f g₂ hr2 a3 a4 hg₂`. Establish `e2` using `GlobalTheory.HeatRatio.Closed.closed_fibre_rem_indep E H k m d t P gam hmon hli hab Y n' v' dd hdd D q hq h hb hΘ ρ hρ A₀ grp m₀ hpb dl hdl hdesc N (2 * N) hN hN2 β₁ β₂ s s' sp sp' r r' rp rp' _ _ _ _ b1 c1 b2 b3 c2 c3 b4 c4`. Use `set T := (lift (toUnit P.D.toPre.P.A ≫ P.D.toPre.c y) (𝟙 P.D.toPre.P.A) ≫ μ[P.D.toPre.P.A]).left with hTdef`. Establish `hle : m₀ ⁻¹ᵁ (T ⁻¹ᵁ U) ≤ T₀ ⁻¹ᵁ (m₀ ⁻¹ᵁ U)`.
+
+Introduce `x hx`. Establish `e : (T₀ ≫ m₀) x = (m₀ ≫ T) x` using `by rw [hT₀]`. Use `show m₀ (T₀ x) ∈ U`. Establish `e' : m₀ (T₀ x) = T (m₀ x)` using `by simpa using e`. Rewrite using `[e']`.
+
+Conclude with `hx`. Establish `key : ∀ (φ ψ : A₀.left ⟶ P.D.toPre.P.A.left), φ = ψ → ∀ (h1 : m₀ ⁻¹ᵁ (T ⁻¹ᵁ U) ≤ φ ⁻¹ᵁ U) (h2 : m₀ ⁻¹ᵁ (T ⁻¹ᵁ U) ≤ ψ ⁻¹ᵁ U), φ.appLE U _ h1 = ψ.appLE U _ h2`. Introduce and unpack `φ _ rfl _ _`. Both sides reduce to the same expression. Establish `L5 : ∀ g : Γ(P.D.toPre.P.A.left, U), (m₀.app (T ⁻¹ᵁ U)).hom ((T.app U).hom g) = (T₀.appLE (m₀ ⁻¹ᵁ U) (m₀ ⁻¹ᵁ (T ⁻¹ᵁ U)) hle).hom ((m₀.app U).hom g)`.
+
+Introduce `g`. Establish `c1` using `Scheme.Hom.comp_appLE m₀ T U (m₀ ⁻¹ᵁ (T ⁻¹ᵁ U)) le_rfl`. Establish `c2` using `Scheme.Hom.comp_appLE T₀ m₀ U (m₀ ⁻¹ᵁ (T ⁻¹ᵁ U)) (le_trans hle le_rfl)`. Establish `c3` using `key _ _ hT₀ (le_trans hle le_rfl) le_rfl`. Use `congrArg (fun φ => φ.hom g) (c2.symm.trans (c3.trans c1))` as an intermediate fact.
+
+Simplify `this.symm` using `[Scheme.Hom.app_eq_appLE]`. Rewrite using `[pbT, dif_pos hle]`. Use `set φ := (T₀.appLE (m₀ ⁻¹ᵁ U) (m₀ ⁻¹ᵁ (T ⁻¹ᵁ U)) hle).hom`. Rewrite `e2` using `[L5, L5]`. Establish `h1 : (2 * N : Γ(A₀.left, m₀ ⁻¹ᵁ U)) * dl U f = (m₀.app U).hom g₂ - (m₀.app U).hom g₁`.
+
+Move the coercions through the operations in `at e1`. Take the linear combination `e1`. Establish `h2 : (2 * N : Γ(A₀.left, m₀ ⁻¹ᵁ (T ⁻¹ᵁ U))) * dl _ ((T.app U).hom f) = φ ((m₀.app U).hom g₂) - φ ((m₀.app U).hom g₁)`. Move the coercions through the operations in `at e2`. Take the linear combination `e2`.
+
+Rewrite `h2` using `[← map_sub, ← h1, map_mul, map_mul, map_ofNat, map_natCast]`. Establish `hu : IsUnit (2 * N : Γ(A₀.left, m₀ ⁻¹ᵁ (T ⁻¹ᵁ U)))`. Set `ψ : k →+* Γ(A₀.left, m₀ ⁻¹ᵁ (T ⁻¹ᵁ U))` to `(A₀.hom.appLE ⊤ (m₀ ⁻¹ᵁ (T ⁻¹ᵁ U)) le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom`. Establish `hk : IsUnit (2 * N : k)`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations.
+
+Conclude with `(by omega : 2 * N ≠ 0)` after adjusting the coercions. Use `hk.map ψ` as an intermediate fact. Rewrite `this` using `[map_mul, map_ofNat, map_natCast]`. Then use the resulting hypothesis. Conclude with `hu.mul_left_cancel h2`.
+-/
 theorem GlobalTheory.HeatRatioW.dl_comm_transl_ratio : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k : Type) [Field k] [CharZero k] (m d : ℕ) (t : SAB H (Sp (ChartRing k m d))) (P : PELUnif (maximalIdeal (ChartRing k m d)) t) (gam : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), IsMonomial P.D.toPre (bdParam k m d) gam → LinearIndependent ℤ gam → (∀ p : Sp (ChartRing k m d), p ∈ abLocus t.G ↔ ∏ i, bdParam k m d i ∉ p.asIdeal) → letI := H.starRing; ∀ (Y : Ray P.oD) (n' : ℕ) (v' : Module.Basis (Fin n') (ChartRing k m d) (TanM (𝟙 (Sp (ChartRing k m d))) Y.H)) (dd : Fin n' → Fld Y.H.left), (∀ a, IsInv Y.H (v' a) (dd a)) → ∀ (D : Derivation ℤ (ChartRing k m d) (ChartRing k m d)) (q : Fin m → ChartRing k m d), (∀ i, D (bdParam k m d i) = q i * bdParam k m d i) → ∀ h : Heat Y.H Y.q.left P.D.toPre.P.L dd ⇑D, IsBasic Y h → HasDefect Y h (fun _ _ _ => 0) → (∀ a b, h.Θ a b ∈ maximalIdeal (ChartRing k m d)) → ∀ ρ : ChartRing k m d →+* DualNumber k, (∀ r, ρ r = TrivSqZeroExt.inl (MvPowerSeries.constantCoeff r) + TrivSqZeroExt.inr (MvPowerSeries.constantCoeff (D r)))  → ∀ (A₀ : Over (Sp k)) (_ : GrpObj A₀) (m₀ : A₀.left ⟶ P.D.toPre.P.A.left), IsGrpPullback A₀ P.D.toPre.P.A (spMap ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ)) m₀ → ∀ dl : ∀ W : P.D.toPre.P.A.left.Opens, Γ(P.D.toPre.P.A.left, W) → Γ(A₀.left, m₀ ⁻¹ᵁ W), GlobalTheory.KS.LocDerK A₀.hom P.D.toPre.P.A.hom m₀ (fun r => (ρ r).snd) ⊤ dl → (∀ (Z' : Scheme.{0}) (a : Z' ⟶ Y.H.left) (b : Z' ⟶ A₀.left), a ≫ Y.q.left = b ≫ m₀ → ∀ (i : h.J) (W : P.D.toPre.P.A.left.Opens), Y.q.left ⁻¹ᵁ W ≤ h.W i → ∀ f, pbT b (dl W f) (b ⁻¹ᵁ (m₀ ⁻¹ᵁ W)) = pbT a (h.d i _ ((Y.q.left.app W).hom f)) (b ⁻¹ᵁ (m₀ ⁻¹ᵁ W))) → ∀ (y : P.D.toPre.X) (T₀ : A₀.left ⟶ A₀.left), T₀ ≫ m₀ = m₀ ≫ (lift (toUnit P.D.toPre.P.A ≫ P.D.toPre.c y) (𝟙 P.D.toPre.P.A) ≫ μ[P.D.toPre.P.A]).left → T₀ ≫ A₀.hom = A₀.hom → ∀ (N : ℕ), 1 ≤ N → ∀ (σ σ' : P.D.toPre.SecB N 0) (U : P.D.toPre.P.A.left.Opens) (f : Γ(P.D.toPre.P.A.left, U)), (∀ z ∈ U, ∀ J, Good P.D.toPre.P.L z J → IsUnit (sval σ' (𝟙 _) z J) ∧ sval σ (𝟙 _) z J = gs (𝟙 _) z U f * sval σ' (𝟙 _) z J) → dl ((lift (toUnit P.D.toPre.P.A ≫ P.D.toPre.c y) (𝟙 P.D.toPre.P.A) ≫ μ[P.D.toPre.P.A]).left ⁻¹ᵁ U) (((lift (toUnit P.D.toPre.P.A ≫ P.D.toPre.c y) (𝟙 P.D.toPre.P.A) ≫ μ[P.D.toPre.P.A]).left.app U).hom f) = pbT T₀ (dl U f) (m₀ ⁻¹ᵁ ((lift (toUnit P.D.toPre.P.A ≫ P.D.toPre.c y) (𝟙 P.D.toPre.P.A) ≫ μ[P.D.toPre.P.A]).left ⁻¹ᵁ U)) := by
   intro E _ _ _ H k _ _ m d t P gam hmon hli hab Y n' v' dd hdd D q hq h hb hdef hΘ ρ hρ A₀ grp m₀ hpb dl hdl
     hdesc y T₀ hT₀ hT₀' N hN σ σ' U f hf

@@ -21,6 +21,9 @@ section Blocks
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Simplify using `only [bl]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+-/
 theorem block_mul₂ (hn : ρ + p = n) (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b' : Matrix (Fin ρ) (Fin p) R)
     (c c' : Matrix (Fin p) (Fin ρ) R) (d d' : Matrix (Fin p) (Fin p) R) :
     bl hn a b c d * bl hn a' b' c' d' =
@@ -28,14 +31,23 @@ theorem block_mul₂ (hn : ρ + p = n) (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b'
   simp only [bl]
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Simplify using `only [bl, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`.
+-/
 theorem blockRowSubstitution_one (hn : ρ + p = n) : bl hn (1 : Matrix (Fin ρ) (Fin ρ) R) 0 0 (1 : Matrix (Fin p) (Fin p) R) = 1 := by
   simp only [bl, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
 
+/- English proof (translation)
+Simplify using `only [bl, Matrix.fromBlocks_zero]`. Both sides reduce to the same expression.
+-/
 theorem blockMatrix_zero (hn : ρ + p = n) :
     bl hn (0 : Matrix (Fin ρ) (Fin ρ) R) 0 0 (0 : Matrix (Fin p) (Fin p) R) = 0 := by
   simp only [bl, Matrix.fromBlocks_zero]
   rfl
 
+/- English proof (translation)
+Simplify using `only [bl]`. Rewrite using `[← Matrix.fromBlocks_add]`. Both sides reduce to the same expression.
+-/
 theorem bl_add (hn : ρ + p = n) (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b' : Matrix (Fin ρ) (Fin p) R)
     (c c' : Matrix (Fin p) (Fin ρ) R) (d d' : Matrix (Fin p) (Fin p) R) :
     bl hn a b c d + bl hn a' b' c' d' = bl hn (a + a') (b + b') (c + c') (d + d') := by
@@ -43,6 +55,9 @@ theorem bl_add (hn : ρ + p = n) (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b' : Mat
   rw [← Matrix.fromBlocks_add]
   rfl
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun M => M.submatrix (finSumFinEquiv.trans (finCongr hn)) (finSumFinEquiv.trans (finCongr hn))) h`. Simplify using `only [bl, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id] at h2`. Conclude with `Matrix.fromBlocks_inj.1 h2`.
+-/
 theorem blockMatrix_inj (hn : ρ + p = n) {a a' : Matrix (Fin ρ) (Fin ρ) R} {b b' : Matrix (Fin ρ) (Fin p) R}
     {c c' : Matrix (Fin p) (Fin ρ) R} {d d' : Matrix (Fin p) (Fin p) R}
     (h : bl hn a b c d = bl hn a' b' c' d') : a = a' ∧ b = b' ∧ c = c' ∧ d = d' := by
@@ -50,6 +65,9 @@ theorem blockMatrix_inj (hn : ρ + p = n) {a a' : Matrix (Fin ρ) (Fin ρ) R} {b
   simp only [bl, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id] at h2
   exact Matrix.fromBlocks_inj.1 h2
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun M => M.submatrix finSumFinEquiv finSumFinEquiv) h`. Simplify using `only [blk4, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id] at h2`. Conclude with `Matrix.fromBlocks_inj.1 h2`.
+-/
 theorem block_matrix_injective {a a' b b' c c' d d' : Matrix (Fin n) (Fin n) R}
     (h : blk4 a b c d = blk4 a' b' c' d') : a = a' ∧ b = b' ∧ c = c' ∧ d = d' := by
   have h2 := congrArg (fun M => M.submatrix finSumFinEquiv finSumFinEquiv) h
@@ -58,6 +76,11 @@ theorem block_matrix_injective {a a' b b' c c' d d' : Matrix (Fin n) (Fin n) R}
 
 end Blocks
 
+/- English proof (translation)
+Rewrite using `[mat_mul', M.nzx_mat, M.sh_mat, submatrix_fromBlocks_mul]`. Use `congr 1`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.mul_zero, zero_add, block_mul₂]`. Simplify using `[sub_eq_add_neg]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem mat_nzx_sh (M : Maps D hn) (z : hermA D ρ) (x y : Mx D ρ p) :
     mat (M.nzx z x * M.sh y) = blk4 (bl hn 1 y 0 1) (bl hn (z.1 - x ⬝ adj y) x (adj x) 0) 0 (bl hn 1 0 (-adj y) 1) := by
   rw [mat_mul', M.nzx_mat, M.sh_mat, submatrix_fromBlocks_mul]
@@ -68,6 +91,11 @@ theorem mat_nzx_sh (M : Maps D hn) (z : hermA D ρ) (x y : Mx D ρ p) :
   · simp
   · simp
 
+/- English proof (translation)
+Establish `h2` using `congrArg mat h`. Rewrite `h2` using `[mat_nzx_sh, mat_nzx_sh]`. Take `⟨h3, h4, -, -⟩` from `block_matrix_injective h2`. Take `⟨-, rfl, -, -⟩` from `blockMatrix_inj hn h3`. Take `⟨h5, rfl, -, -⟩` from `blockMatrix_inj hn h4`.
+
+Conclude with `⟨Subtype.ext (sub_left_injective h5), rfl, rfl⟩`.
+-/
 theorem nzx_sh_inj (M : Maps D hn) {z z' : hermA D ρ} {x x' y y' : Mx D ρ p}
     (h : M.nzx z x * M.sh y = M.nzx z' x' * M.sh y') : z = z' ∧ x = x' ∧ y = y' := by
   have h2 := congrArg mat h
@@ -78,6 +106,13 @@ theorem nzx_sh_inj (M : Maps D hn) {z z' : hermA D ρ} {x x' y y' : Mx D ρ p}
   exact ⟨Subtype.ext (sub_left_injective h5), rfl, rfl⟩
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `h1 : (a⁻¹).1 * a.1 = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h2 : adj a.1 * adj (a⁻¹).1 = 1`. Use `adj_mul (a⁻¹).1 a.1` as an intermediate fact. Rewrite `this` using `[show HMul.hMul (a⁻¹).1 a.1 = (1 : Mx D p p) from h1, adj_one]`. Conclude with `this.symm`.
+
+Establish `hE` using `M.emb_mat g _ _ _ _ hg`. Apply `mat_injective'` to reduce the goal to its premises. Rewrite using `[mat_mul' (M.emb g), mat_mul' _ (M.emb g), mat_nzx_sh, mat_nzx_sh, hE, blockMatrix_zero, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Establish `h3 : ∀ w : Mx D p ρ, adj a.1 ⬝ (adj (a⁻¹).1 ⬝ w) = w` using `fun w => by`. Rewrite using `[← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+
+Establish `h4 : ∀ w : Mx D ρ p, w ⬝ adj a.1 ⬝ adj (a⁻¹).1 = w` using `fun w => by`. Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_one]`. Establish `h5 : ∀ w : Mx D ρ p, w ⬝ (a⁻¹).1 ⬝ a.1 = w` using `fun w => by`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_one]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, block_mul₂, adj_mul, adj_adj, Matrix.one_mul, Matrix.mul_one, h4, h5, Matrix.mul_assoc x, h3, Matrix.mul_neg, Matrix.neg_mul, neg_zero]`.
+-/
 theorem gl_levi (M : Maps D hn) (g : G D p) (a : GL (Fin p) (AE D)) (hg : mat g = blk4 a.1 0 0 (adj (a⁻¹).1))
     (z : hermA D ρ) (x y : Mx D ρ p) :
     M.emb g * (M.nzx z x * M.sh y) = M.nzx z (x ⬝ adj a.1) * M.sh (y ⬝ (a⁻¹).1) * M.emb g := by
@@ -98,6 +133,9 @@ theorem gl_levi (M : Maps D hn) (g : G D p) (a : GL (Fin p) (AE D)) (hg : mat g 
   simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, block_mul₂, adj_mul, adj_adj, Matrix.one_mul,
     Matrix.mul_one, h4, h5, Matrix.mul_assoc x, h3, Matrix.mul_neg, Matrix.neg_mul, neg_zero]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, adj_add, adj_neg, sub_eq_add_neg]`.
+-/
 theorem adj_sub' {k l : ℕ} (u v : Mx D k l) : adj (u - v) = adj u - adj v := by
   rw [sub_eq_add_neg, adj_add, adj_neg, sub_eq_add_neg]
 
@@ -107,6 +145,11 @@ def zU (z : hermA D ρ) (y : Mx D ρ p) (b : Mx D p p) (hb : adj b = b) : hermA 
     rw [adj_sub', adj_mul, adj_mul, adj_adj, hb, z.2, Matrix.mul_assoc]⟩
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hE` using `M.emb_mat g _ _ _ _ hg`. Apply `mat_injective'` to reduce the goal to its premises. Rewrite using `[mat_mul' (M.emb g), mat_mul' _ (M.emb g), mat_nzx_sh, mat_nzx_sh, hE, blockMatrix_zero, blockRowSubstitution_one, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_one, block_mul₂, bl_add, adj_sub', adj_mul, hb]`. Establish `e1 : (zU z y b hb).1 - (x - y ⬝ b) ⬝ adj y = z.1 - x ⬝ adj y`.
+
+Simplify using `only [zU, Matrix.sub_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Establish `e2 : y ⬝ b + (x - y ⬝ b) = x` using `by abel`. Establish `e3 : adj x + b ⬝ -adj y = adj x - b ⬝ adj y` using `by rw [Matrix.mul_neg, sub_eq_add_neg]`. Rewrite using `[e1, e2, e3]`.
+-/
 theorem gl_unip (M : Maps D hn) (g : G D p) (b : Mx D p p) (hb : adj b = b) (hg : mat g = blk4 1 b 0 1)
     (z : hermA D ρ) (x y : Mx D ρ p) :
     M.emb g * (M.nzx z x * M.sh y) = M.nzx (zU z y b hb) (x - y ⬝ b) * M.sh y * M.emb g := by
@@ -128,6 +171,11 @@ def zW (z : hermA D ρ) (x y : Mx D ρ p) : hermA D ρ :=
     abel⟩
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hE` using `M.emb_mat g _ _ _ _ hg`. Apply `mat_injective'` to reduce the goal to its premises. Rewrite using `[mat_mul' (M.emb g), mat_mul' _ (M.emb g), mat_nzx_sh, mat_nzx_sh, hE, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Establish `e1 : (zW z x y).1 - -y ⬝ adj x = z.1 - x ⬝ adj y`. Simplify using `only [zW, Matrix.neg_mul]`.
+
+Normalize the expressions using the abelian group laws. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, block_mul₂, bl_add, adj_neg, Matrix.one_mul, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, neg_neg, neg_zero]`. Rewrite using `[show (zW z x y).1 - -(y ⬝ adj x) = z.1 - x ⬝ adj y by rw [← Matrix.neg_mul]; exact e1]`.
+-/
 theorem gl_weyl (M : Maps D hn) (g : G D p) (hg : mat g = blk4 0 1 (-1) 0)
     (z : hermA D ρ) (x y : Mx D ρ p) :
     M.emb g * (M.nzx z x * M.sh y) = M.nzx (zW z x y) (-y) * M.sh x * M.emb g := by

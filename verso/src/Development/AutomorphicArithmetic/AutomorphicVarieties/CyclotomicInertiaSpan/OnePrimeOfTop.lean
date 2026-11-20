@@ -15,6 +15,9 @@ section Cyc
 variable (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (N : ℕ) [NeZero N]
 
 include F in
+/- English proof (translation)
+Use `haveI := IsAlgClosure.isAlgClosed F (K := Ω)`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω N`. Conclude with `hζ.card_rootsOfUnity`.
+-/
 theorem natCard_roots : Nat.card (rootsOfUnity N Ω) = N := by
   haveI := IsAlgClosure.isAlgClosed F (K := Ω)
   haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective
@@ -24,6 +27,11 @@ theorem natCard_roots : Nat.card (rootsOfUnity N Ω) = N := by
 def cycN : G F Ω →* (ZMod N)ˣ :=
   (modularCyclotomicCharacter Ω (natCard_roots F Ω N)).comp (MulSemiringAction.toRingAut (G F Ω) Ω)
 
+/- English proof (translation)
+Establish `hz : ζ ≠ 0`. Introduce and unpack `rfl`. Simplify using `[NeZero.ne N] at h`. Establish `hu : Units.mk0 ζ hz ∈ rootsOfUnity N Ω`. Rewrite using `[mem_rootsOfUnity]`.
+
+Use `ext`. Simplify using `[h]`. Establish `key` using `modularCyclotomicCharacter.spec Ω (natCard_roots F Ω N) (MulSemiringAction.toRingAut (G F Ω) Ω g) hu`. Simplify `key` using `[cycN]`.
+-/
 theorem cycN_spec (g : G F Ω) {ζ : Ω} (h : ζ ^ N = 1) : g ζ = ζ ^ (cycN F Ω N g : ZMod N).val := by
   have hz : ζ ≠ 0 := by
     rintro rfl
@@ -36,6 +44,13 @@ theorem cycN_spec (g : G F Ω) {ζ : Ω} (h : ζ ^ N = 1) : g ζ = ζ ^ (cycN F 
     (MulSemiringAction.toRingAut (G F Ω) Ω g) hu
   simpa [cycN] using key
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl ζ hζ`. Conclude with `cycN_spec F Ω N g hζ`. Introduce `hb`. Establish `hz : ∀ t ∈ rootsOfUnity N Ω, (MulSemiringAction.toRingAut (G F Ω) Ω g) (t : Ω) = (t : Ω) ^ (b : ZMod N).val`.
+
+Introduce `t ht`. Establish `ht' : (t : Ω) ^ N = 1`. Rewrite `ht` using `[mem_rootsOfUnity]`. Simplify using `using congrArg Units.val ht`. Simplify using `using hb t ht'`.
+
+Use `modularCyclotomicCharacter.unique Ω (natCard_roots F Ω N) (MulSemiringAction.toRingAut (G F Ω) Ω g) hz` as an intermediate fact. Use `ext`. Conclude with `this.symm`.
+-/
 theorem cycN_eq_iff (g : G F Ω) (b : (ZMod N)ˣ) :
     cycN F Ω N g = b ↔ ∀ ζ : Ω, ζ ^ N = 1 → g ζ = ζ ^ (b : ZMod N).val := by
   constructor
@@ -72,10 +87,19 @@ instance : NeZero (lev n q d) :=
   ⟨mul_ne_zero (mul_ne_zero (pow_ne_zero _ two_ne_zero) (Fact.out : q.Prime).ne_zero) (Fact.out : d.Prime).ne_zero⟩
 
 omit [Fact q.Prime] [Fact d.Prime] in
+/- English proof (translation)
+The claim follows from `(dvd_mul_right _ _).mul_right _`.
+-/
 theorem two_dvd_lev : 2 ^ n ∣ lev n q d := (dvd_mul_right _ _).mul_right _
 omit [Fact q.Prime] [Fact d.Prime] in
+/- English proof (translation)
+The claim follows from `(dvd_mul_left _ _).mul_right _`.
+-/
 theorem q_dvd_lev : q ∣ lev n q d := (dvd_mul_left _ _).mul_right _
 omit [Fact q.Prime] [Fact d.Prime] in
+/- English proof (translation)
+The claim follows from `dvd_mul_left _ _`.
+-/
 theorem d_dvd_lev : d ∣ lev n q d := dvd_mul_left _ _
 
 abbrev Co (n : ℕ) : Type := (ZMod (2 ^ n))ˣ × ℤˣ × ℤˣ

@@ -16,10 +16,18 @@ noncomputable section
 
 namespace GlobalTheory.TanPull
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem one_left_congr {X Z : Scheme.{0}} {G : Over X} [GrpObj G] {f g : Z ⟶ X} (h : f = g) :
     (1 : Over.mk f ⟶ G).left = (1 : Over.mk g ⟶ G).left := by
   subst h; rfl
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ψ.cart.1.w, ← Category.assoc, Over.w w]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, hw]`. Use `(Formalism.L2.Pj.grpPull_one ψ.cart (ptOver V V)).symm.trans (one_left_congr ?_)` and prove the remaining obligations.
+
+Use `show spMap (algebraMap V V) ≫ x = x`. Establish `: spMap (algebraMap V V) = 𝟙 _`. Rewrite using `[Algebra.algebraMap_self]`. Conclude with `Spec.map_id _`. Rewrite using `[this, Category.id_comp]`.
+-/
 theorem isTanAtG_comp
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
@@ -35,6 +43,9 @@ theorem isTanAtG_comp
       rw [Algebra.algebraMap_self]; exact Spec.map_id _
     rw [this, Category.id_comp]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ReciprocityTheory.ChartRestriction.G.PullbackSections.mkT (Formalism.L2.Pj.ovT (isTanAtG_comp x G ψ w hw)) (Formalism.L2.Pj.smT_zero_ovT _), rfl⟩`.
+-/
 theorem exists_tanM_of_isTan
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}

@@ -24,6 +24,9 @@ variable {m : ℕ} {L : Lev (per l K) m} (hL : L.Good) (M : Model l K) {s s' : �
   (rH : ∀ n j, M.Hc false n j →ₛₗ[L.lam] HM (QA L M s) none ((l : L.A) ^ n) j)
   (rH' : ∀ n j, M.Hc false n j →ₛₗ[L.lam] HM (QA L M s') none ((l : L.A) ^ n) j)
 
+/- English proof (translation)
+The claim follows from `rfl lam c := rfl ι a := rfl o k := rfl tS n j x := rfl r n j x := hr n j x red n j z := GlobalTheory.CompanionTheory.RedPull.incl_redM (ts_le L.γ M.p l h {⊤}) none ((l : L.A) ^ n) j z b j z := bMap_incl hL M h hQ hQ' j z μ j v := GlobalTheory.CompanionTheory.MuThick.muB_incl L.γB …`.
+-/
 theorem homS_good_of_inclHM (hr : ∀ n j x, inclHM M h n j (rH' n j x) = rH n j x) :
     (homS hL M h hQ hQ' rH rH').Good where
   ℓ := rfl

@@ -9,6 +9,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
+/- English proof (translation)
+Use `haveI : NeZero n := ⟨hn⟩`. Establish `hle : χ.range ≤ rootsOfUnity n O`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `(mem_rootsOfUnity _ _).mpr (hχ g)`. Use `haveI : Finite χ.range := Finite.of_injective (Subgroup.inclusion hle) (Subgroup.inclusion_injective hle)`.
+
+Take `⟨x, hx⟩` from `IsCyclic.exists_generator (α := χ.range)`. Take `⟨g0, hg0⟩` from `x.2`. Establish `hpow : ∀ g, ∃ k : ℕ, χ g = χ g0 ^ k`. Introduce `g`. Take `⟨k, hk⟩ : (⟨χ g, g, rfl⟩ : χ.range) ∈ Submonoid.powers x` from `mem_powers_iff_mem_zpowers.mpr (hx _)`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `e : ((x ^ k : χ.range) : Oˣ) = χ g` using `congrArg Subtype.val hk`. Rewrite `e` using `[SubmonoidClass.coe_pow, ← hg0]`. Conclude with `e.symm`. Establish `hord : orderOf (χ g0) ≠ 0` using `(orderOf_pos_iff.mpr (isOfFinOrder_iff_pow_eq_one.mpr ⟨n, Nat.pos_of_ne_zero hn, hχ g0⟩)).ne'`.
+
+Use `haveI : NeZero (orderOf (χ g0)) := ⟨hord⟩`. Establish `hηm : η g0 ∈ rootsOfUnity (orderOf (χ g0)) O`. Rewrite using `[mem_rootsOfUnity, ← map_pow]`. Apply `h` to reduce the goal to its premises. Rewrite using `[map_pow, pow_orderOf_eq_one]`.
+
+Take `⟨j, -, hj⟩` from `(IsPrimitiveRoot.orderOf (χ g0)).eq_pow_of_mem_rootsOfUnity hηm`. Use `⟨j, fun g => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hpow g`. Establish `hker : χ (g * (g0 ^ k)⁻¹) = 1` using `by rw [map_mul, map_inv, map_pow, hk, mul_inv_cancel]`. Establish `hη` using `h _ hker`.
+
+Rewrite `hη` using `[map_mul, map_inv, mul_inv_eq_one, map_pow]`. Rewrite using `[hη, hk, ← hj, ← pow_mul, ← pow_mul, mul_comm]`.
+-/
 private theorem gdIff_pow {Γ O : Type} [Group Γ] [CommRing O] [IsDomain O] (χ η : Γ →* Oˣ) {n : ℕ} (hn : n ≠ 0)
     (hχ : ∀ g, χ g ^ n = 1) (h : ∀ g, χ g = 1 → η g = 1) : ∃ j : ℕ, ∀ g, η g = χ g ^ j := by
   classical
@@ -43,6 +56,15 @@ private theorem gdIff_pow {Γ O : Type} [Group Γ] [CommRing O] [IsDomain O] (χ
   rw [map_mul, map_inv, mul_inv_eq_one, map_pow] at hη
   rw [hη, hk, ← hj, ← pow_mul, ← pow_mul, mul_comm]
 
+/- English proof (translation)
+Establish `hne : (-1 : Oˣ) ≠ 1`. Introduce `h1`. Establish `h2` using `congrArg (fun u : Oˣ => (u : O)) h1`. Simplify using `only [Units.val_neg, Units.val_one] at h2`. Establish `h3 : (2 : O) = 0` using `by linear_combination -h2`.
+
+Conclude with `two_ne_zero h3`. Set `η : Γ →* Oˣ` to `{ toFun := fun g => if g ∈ H then 1 else -1 map_one' := by simp [H.one_mem] map_mul' := by`. Introduce `a b`. Apply the tactic sequence `by_cases ha : a ∈ H <;> by_cases hb : b ∈ H <;>`. Simplify using `[ha, hb, Subgroup.mul_mem_iff_of_index_two h] }`.
+
+Use `⟨η, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `g`. Rewrite using `[MonoidHom.mem_ker]`. Distinguish the cases in `hg : g ∈ H`. Simplify using `[η, hg]`.
+
+Simplify using `[η, hg, hne]`. Introduce `g`. Distinguish the cases in `hg : g ∈ H`. Simplify using `[η, hg]`. Simplify using `[η, hg]`.
+-/
 private theorem gdIff_sign {Γ O : Type} [Group Γ] [CommRing O] [IsDomain O] [CharZero O] (H : Subgroup Γ) (h : H.index = 2) :
     ∃ η : Γ →* Oˣ, η.ker = H ∧ ∀ g, η g ^ 2 = 1 := by
   classical
@@ -70,11 +92,81 @@ private theorem gdIff_sign {Γ O : Type} [Group Γ] [CommRing O] [IsDomain O] [C
     · simp [η, hg]
     · simp [η, hg]
 
+/- English proof (translation)
+Establish `: IsAlgClosure K Ω` using `⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`. Conclude with `(galEmbTop ℚ K Ω).2.2`.
+-/
 private theorem gdIff_index (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K] [Algebra K Ω] :
     (galOf ℚ K Ω).index = Module.finrank ℚ K := by
   have : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩
   exact (galEmbTop ℚ K Ω).2.2
 
+/- English proof (translation)
+Introduce `Ω _ _ _ K _ _ _ l _ c e N _ ψ`. Establish `hl : l.Prime` using `Fact.out`. Take `⟨A0, hA0⟩` from `(Chr.placesQ Ω).1 l hl`. Establish `F1 : ∀ w : G ℚ Ω →* c.Oˣ, IsOmT c w → (∀ χ1 χ2 : DirichletCharacter c.O N, Chr.dirG ℚ Ω (χ1 * χ2) = Chr.dirG ℚ Ω χ1 * Chr.dirG ℚ Ω χ2) ∧ (∀ χ : DirichletCharacter c.O N, Chr.dirG ℚ Ω χ⁻¹ = (Chr.dirG ℚ Ω χ)⁻¹) ∧ (∀ χ1 χ2 : DirichletCharacter c.O N, Chr.dirG ℚ Ω χ1 = Chr.dirG ℚ Ω χ …`. Introduce `w hw`.
+
+Establish `hm : ∀ χ1 χ2 : DirichletCharacter c.O N, Chr.dirG ℚ Ω (χ1 * χ2) = Chr.dirG ℚ Ω χ1 * Chr.dirG ℚ Ω χ2` using `fun χ1 χ2 => ((psiBar Ω l c w hw N χ1).2.2.2 χ2).1`. Establish `h1 : Chr.dirG ℚ Ω (1 : DirichletCharacter c.O N) = 1`. Use `hm 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(mul_left_cancel (a := Chr.dirG ℚ Ω (1 : DirichletCharacter c.O N)) (by rw [mul_one]; exact this)).symm`.
+
+Use `⟨hm, fun χ => ?_, fun χ1 χ2 h => ((psiBar Ω l c w hw N χ1).2.2.2 χ2).2 h, h1⟩` and prove the remaining obligations. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← hm, inv_mul_cancel, h1]`. Establish `Uq : ∀ w : G ℚ Ω →* c.Oˣ, IsOmT c w → ∀ u v : ℕ, u < l - 1 → v < l - 1 → (∀ σ ∈ Ine A0, w σ ^ u = w σ ^ v) → u = v`. Introduce `w hw`.
+
+Establish `OM` using `(omT Ω l c).2 w hw`. Establish `key : ∀ u v : ℕ, u < l - 1 → v < l - 1 → u ≤ v → (∀ σ ∈ Ine A0, w σ ^ u = w σ ^ v) → u = v`. Introduce `u v hu hv huv h`. Establish `hd : l - 1 ∣ v - u` using `OM.2.2.2.2.2.2.1 A0 hA0 (v - u) (fun σ hσ => by`. Rewrite using `[MonoidHom.mem_ker]`.
+
+Use `show w σ ^ (v - u) = 1`. Use `h σ hσ` as an intermediate fact. Rewrite `this` using `[← Nat.add_sub_cancel' huv, pow_add]`. Conclude with `mul_left_cancel (this.symm.trans (mul_one _).symm))`. Use `Nat.eq_zero_of_dvd_of_lt hd (by omega)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Introduce `u v hu hv h`. Break down `le_total u v with huv | huv` into its components or cases. Conclude with `key u v hu hv huv h`. Conclude with `(key v u hv hu huv (fun σ hσ => (h σ hσ).symm)).symm`.
+
+Establish `TH : ¬ l ∣ orderOf ψ → th0 l ψ = ψ`. Introduce `hord`. Conclude with `((partOrd (DirichletCharacter c.O N) l hl ψ (Nat.pos_of_ne_zero (fun h0 => hord (h0 ▸ dvd_zero l)))).2.2.2.2.2.1 hord).2`. Establish `HC : ∀ (w η : G ℚ Ω →* c.Oˣ) (a : ℕ), GDlit c K e ψ w η a → Chr.dirG ℚ Ω (comp l ψ) = w ^ a ∧ Chr.dirG ℚ Ω (chiP l ψ) = Chr.dirG ℚ Ω ψ * (w ^ a)⁻¹ ∧ ¬ l ∣ orderOf ψ`. Introduce `w η a hL`.
+
+Take `⟨hm, hinv, -, -⟩` from `F1 w hL.om`. Establish `hord : ¬ l ∣ orderOf ψ`. Rewrite using `[← (psiBar Ω l c w hL.om N ψ).2.2.1]`. Conclude with `hL.ord`. Establish `hth` using `TH hord`.
+
+Take `⟨b, hb, hcb, -⟩` from `(psiBar Ω l c w hL.om N ψ).1`. Rewrite `hcb` using `[hth]`. Establish `hab : a = b` using `Uq w hL.om a b hL.a_lt hb (fun σ hσ => by`. Establish `e1` using `hL.ine A0 hA0 σ hσ`. Establish `e2` using `((compIne Ω N l hl A0 hA0).2 c.O ψ).1 σ hσ`.
+
+Rewrite `e2` using `[hcb]`. Conclude with `e1.symm.trans e2)`. Substitute `hab` using the available equality. Use `⟨hcb, ?_, hord⟩` and prove the remaining obligations. Unfold `chiP`.
+
+Rewrite using `[hth, hm, hinv, hcb]`. Use `⟨⟨?_, ?_⟩, fun w η a hL => (HC w η a hL).2.1⟩` and prove the remaining obligations. Introduce `hG`. Take `⟨⟨w, hw, -⟩, -⟩` from `omT Ω l c`. Take `⟨hm, hinv, -, h1⟩` from `F1 w hw`.
+
+Establish `OM` using `(omT Ω l c).2 w hw`. Establish `hord` using `hG.ord`. Establish `hth` using `TH hord`. Take `⟨b, hb, hcb, -⟩` from `(psiBar Ω l c w hw N ψ).1`. Rewrite `hcb` using `[hth]`.
+
+Establish `hidx : (galOf ℚ K Ω).index = 2` using `by rw [gdIff_index, hG.quad]`. Take `⟨η, hηk, hη2⟩` from `gdIff_sign (O := c.O) (galOf ℚ K Ω) hidx`. Establish `hχ' : Chr.dirG ℚ Ω (chiP l ψ) = Chr.dirG ℚ Ω ψ * (w ^ b)⁻¹`. Unfold `chiP`. Rewrite using `[hth, hm, hinv, hcb]`.
+
+Establish `h2b : l - 1 ∣ 2 * b`. Rewrite using `[← OM.2.2.1]`. Apply `orderOf_dvd_of_pow_eq_one` to reduce the goal to its premises. Establish `: Chr.dirG ℚ Ω (comp l ψ ^ 2) = 1` using `by rw [hG.ine, h1]`. Rewrite `this` using `[pow_two, hm, hcb, ← pow_add, ← two_mul]`.
+
+Conclude with `this`. Use `⟨w, η, b, ⟨hw, hηk, hG.l_odd, hG.e_pos, hG.N_even, ?_, ?_, hb, h2b, ?_, hG.quad, hG.imag, hG.l_cop, hG.cop, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(psiBar Ω l c w hw N ψ).2.2.1]`. Conclude with `hord`. Introduce `A hA σ hσ`.
+
+Express the relevant statement in the definitionally equal form `Chr.dirG ℚ Ω ψ σ = (w ^ b) σ`. Rewrite using `[((compIne Ω N l hl A hA).2 c.O ψ).1 σ hσ, hcb]`. Introduce `σ hσ`. Conclude with `((psiBar Ω l c w hw N ψ).2.1 e).mp hG.par σ hσ`. Introduce `i j hC`.
+
+Apply `hG.eta` to reduce the goal to its premises. Establish `hd1 : Chr.dirG ℚ Ω ψ ^ orderOf ψ = 1`. Rewrite using `[← (psiBar Ω l c w hw N ψ).2.2.1]`. Conclude with `pow_orderOf_eq_one _`. Establish `hwS : w ∈ (powMonoidHom (2 * ((l - 1) * orderOf ψ)) : (G ℚ Ω →* c.Oˣ) →* _).ker`.
+
+Rewrite using `[MonoidHom.mem_ker, powMonoidHom_apply, show 2 * ((l - 1) * orderOf ψ) = (l - 1) * (2 * orderOf ψ) by ring, pow_mul, hw.1, one_pow]`. Establish `hψS : Chr.dirG ℚ Ω ψ ∈ (powMonoidHom (2 * ((l - 1) * orderOf ψ)) : (G ℚ Ω →* c.Oˣ) →* _).ker`. Rewrite using `[MonoidHom.mem_ker, powMonoidHom_apply, show 2 * ((l - 1) * orderOf ψ) = orderOf ψ * (2 * (l - 1)) by ring, pow_mul, hd1, one_pow]`. Establish `hXS` using `Subgroup.mul_mem _ (Subgroup.pow_mem _ hwS i) (Subgroup.pow_mem _ (Subgroup.mul_mem _ hψS (Subgroup.inv_mem _ (Subgroup.pow_mem _ hwS b))) j)`. Rewrite `hXS` using `[MonoidHom.mem_ker, powMonoidHom_apply]`.
+
+Establish `hηm : η ^ (2 * ((l - 1) * orderOf ψ)) = 1`. Use `MonoidHom.ext fun σ => ?_` and prove the remaining obligations. Use `show η σ ^ (2 * ((l - 1) * orderOf ψ)) = 1`. Rewrite using `[pow_mul, hη2, one_pow]`. Establish `hlm : ¬ l ∣ 2 * ((l - 1) * orderOf ψ)`.
+
+Introduce `hdiv`. Break down `(Nat.Prime.dvd_mul hl).mp hdiv with h2 | h'` into its components or cases. Conclude with `hG.l_odd ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).mp h2)`. Break down `(Nat.Prime.dvd_mul hl).mp h' with h3 | h4` into its components or cases. Use `hl.two_le` as an intermediate fact.
+
+Use `Nat.le_of_dvd (by omega) h3` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `hord h4`. Establish `heq` using `(congrFacts Ω l c).2.2.2.2 η _ _ hlm hηm hXS hC`. Rewrite using `[← OM.1, hχ', ← hηk, heq]`.
+
+Introduce `σ hσ`. Take `⟨hσ1, hσ2⟩` from `Subgroup.mem_inf.mp hσ`. Rewrite `hσ1`, `hσ2`, the goal using `[MonoidHom.mem_ker]`. Use `show w σ ^ i * ((Chr.dirG ℚ Ω ψ * (w ^ b)⁻¹) σ) ^ j = 1`. Rewrite using `[hσ2, hσ1, one_pow, one_pow, one_mul]`.
+
+Introduce `hd`. Apply `hG.gen` to reduce the goal to its premises. Conclude with `(Nat.dvd_add_right h2b).mp (by rw [show 2 * b + 2 * e = 2 * (e + b) by ring]; exact hd)`. Introduce and unpack `⟨w, η, a, hL⟩`. Take `⟨hm, hinv, hinj, h1⟩` from `F1 w hL.om`.
+
+Establish `OM` using `(omT Ω l c).2 w hL.om`. Take `⟨hcomp, hχ', hord⟩` from `HC w η a hL`. Establish `h2a : w ^ (2 * a) = 1`. Take `⟨k, hk⟩` from `hL.two_a`. Rewrite using `[hk, pow_mul, hL.om.1, one_pow]`.
+
+Use `⟨hL.l_odd, hL.e_pos, hL.N_even, hord, ?_, ?_, hL.quad, hL.imag, hL.l_cop, hL.cop, ?_, ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Rewrite using `[pow_two, hm, hcomp, h1, ← pow_add, ← two_mul, h2a]`. Conclude with `((psiBar Ω l c w hL.om N ψ).2.1 e).mpr hL.par`. Introduce `hle`.
+
+Take `⟨χ', hχ'e⟩ : ∃ χ' : G ℚ Ω →* c.Oˣ, χ' = Chr.dirG ℚ Ω ψ * (w ^ a)⁻¹` from `⟨_, rfl⟩`. Rewrite `hle` using `[← OM.1, hχ', ← hχ'e]`. Establish `hn : orderOf (Chr.dirG ℚ Ω ψ) * (l - 1) ≠ 0` using `mul_ne_zero (fun h0 => hL.ord (h0 ▸ dvd_zero l)) (by have := hl.two_le; omega)`. Establish `hwS : w ∈ (powMonoidHom (orderOf (Chr.dirG ℚ Ω ψ) * (l - 1)) : (G ℚ Ω →* c.Oˣ) →* _).ker`. Rewrite using `[MonoidHom.mem_ker, powMonoidHom_apply, mul_comm, pow_mul, hL.om.1, one_pow]`.
+
+Establish `hψS : Chr.dirG ℚ Ω ψ ∈ (powMonoidHom (orderOf (Chr.dirG ℚ Ω ψ) * (l - 1)) : (G ℚ Ω →* c.Oˣ) →* _).ker`. Rewrite using `[MonoidHom.mem_ker, powMonoidHom_apply, pow_mul, pow_orderOf_eq_one, one_pow]`. Establish `hχS : χ' ∈ (powMonoidHom (orderOf (Chr.dirG ℚ Ω ψ) * (l - 1)) : (G ℚ Ω →* c.Oˣ) →* _).ker`. Rewrite using `[hχ'e]`. Conclude with `Subgroup.mul_mem _ hψS (Subgroup.inv_mem _ (Subgroup.pow_mem _ hwS a))`.
+
+Rewrite `hχS` using `[MonoidHom.mem_ker, powMonoidHom_apply]`. Establish `hpowχ : ∀ g, (χ'.comp w.ker.subtype) g ^ (orderOf (Chr.dirG ℚ Ω ψ) * (l - 1)) = 1` using `fun g => congrArg (fun f : G ℚ Ω →* c.Oˣ => f g) hχS`. Establish `hker : ∀ g, (χ'.comp w.ker.subtype) g = 1 → (η.comp w.ker.subtype) g = 1`. Introduce `g hg`. Establish `: (g : G ℚ Ω) ∈ η.ker`.
+
+Rewrite using `[hL.eta_ker]`. Conclude with `hle ⟨g.2, hg⟩`. Conclude with `this`. Take `⟨j, hj⟩` from `gdIff_pow (χ'.comp w.ker.subtype) (η.comp w.ker.subtype) hn hpowχ hker`. Establish `hθ : w.ker ≤ (η * (χ' ^ j)⁻¹).ker`.
+
+Introduce `σ hσ`. Rewrite using `[MonoidHom.mem_ker]`. Use `show η σ * ((χ' σ) ^ j)⁻¹ = 1`. Use `hj ⟨σ, hσ⟩` as an intermediate fact. Rewrite using `[show η σ = χ' σ ^ j from this, mul_inv_cancel]`.
+
+Take `⟨b', -, hb'⟩` from `OM.2.2.2.2.2.2.2 _ hθ`. Apply `hL.eta b' j` to reduce the goal to its premises. Rewrite using `[← hχ'e]`. Establish `heq : η = w ^ b' * χ' ^ j`. Rewrite using `[← hb']`.
+
+Conclude with `(inv_mul_cancel_right η (χ' ^ j)).symm`. Rewrite using `[← heq]`. Conclude with `(congrFacts Ω l c).1.refl _`. Introduce `hd`. Apply `hL.gen` to reduce the goal to its premises.
+
+Rewrite using `[show 2 * (e + a) = 2 * e + 2 * a by ring]`. Conclude with `dvd_add hd hL.two_a`.
+-/
 theorem UpperTheory.V.HV.gdIff :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K] [Algebra K Ω] (l : ℕ) [Fact l.Prime] (c : Coef l) (e N : ℕ) [NeZero N]
       (ψ : DirichletCharacter c.O N), (GD Ω K l e ψ ↔ ∃ (w η : G ℚ Ω →* c.Oˣ) (a : ℕ), GDlit c K e ψ w η a) ∧

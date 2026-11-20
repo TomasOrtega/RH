@@ -17,6 +17,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.WeierstrassCurve
 
+/- English proof (translation)
+Establish `: Module.Finite (Polynomial R) W.toAffine.CoordinateRing` using `.of_basis (WeierstrassCurve.Affine.CoordinateRing.basis W.toAffine)`. Establish `: FaithfulSMul (Polynomial R) W.toAffine.CoordinateRing` using `⟨fun {p q} h => by`. Establish `e` using `congrArg (fun a => (WeierstrassCurve.Affine.CoordinateRing.basis W.toAffine).repr a 0) (h (WeierstrassCurve.Affine.CoordinateRing.basis W.toAffine 0))`. Simplify using `only [map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul] at e`. Conclude with `(mul_one p).symm.trans (e.trans (mul_one q))⟩`.
+
+Take `⟨y, hy⟩` from `Algebra.IsIntegral.comap_surjective (Polynomial R) W.toAffine.CoordinateRing (PrimeSpectrum.comap (Polynomial.evalRingHom 0) s)`. Use `⟨chartZ W y, ?_, (opensRange_chartZ W).le ⟨y, rfl⟩⟩` and prove the remaining obligations. Use `(Scheme.Hom.comp_apply (chartZ W) (toSpec W) y).symm.trans ?_` and prove the remaining obligations. Rewrite using `[chartZ_toSpec]`. Express the relevant statement in the definitionally equal form `PrimeSpectrum.comap (algebraMap R W.toAffine.CoordinateRing) y = s`.
+
+Rewrite using `[IsScalarTower.algebraMap_eq R (Polynomial R), PrimeSpectrum.comap_comp_apply, hy]`. Establish `e : (Polynomial.evalRingHom (0 : R)).comp (algebraMap R (Polynomial R)) = RingHom.id R` using `by ext; simp`. Conclude with `congrArg (fun f => PrimeSpectrum.comap f s) e`.
+-/
 theorem exists_mem_coordOpen_two {R : Type} [CommRing R] (W : WeierstrassCurve R) (s : Sp R) :
     ∃ x : scheme W, toSpec W x = s ∧ x ∈ coordOpen W 2 := by
   have : Module.Finite (Polynomial R) W.toAffine.CoordinateRing :=
@@ -38,6 +45,11 @@ theorem exists_mem_coordOpen_two {R : Type} [CommRing R] (W : WeierstrassCurve R
     ext; simp
   exact congrArg (fun f => PrimeSpectrum.comap f s) e
 
+/- English proof (translation)
+Take `⟨G, hc, h0, -⟩` from `GlobalTheory.T.exists_commGrpObj_weierstrassScheme R W W.isUnit_Δ`. Take `⟨hr, hs, ha, hk⟩` from `originLB_polarisation R W hc h0`. Set `P : Out.PolAV (Sp R)` to `{ A := schemeOver W isAb := isAbelianScheme_schemeOver R W W.isUnit_Δ hc g := 1 smoothDim := smoothOfRelativeDimension_toSpec W L := originLB W isLB := originLB_isLB W rigid := hr sym := hs ample := ha ktriv := hk }`. Take `⟨rig, hrig⟩` from `P.rigid`. Take `⟨v, -, hv⟩` from `WeierstrassLie.isLieBasis_eps R W h0`.
+
+Use `⟨⟨P, le_rfl, rig, hrig, originSec W, fun s => ?_, ![v], hv⟩, Iso.refl _, rfl, (Category.comp_id _).trans h0, nonzeroLocus_originSec W⟩` and prove the remaining obligations. Take `⟨x, hx, hx'⟩` from `exists_mem_coordOpen_two W s`. Conclude with `⟨x, hx, (nonzeroLocus_originSec W).ge hx'⟩`.
+-/
 theorem exists_keyIn_iso_elliptic (R : Type) [CommRing R] (W : WeierstrassCurve R) [W.IsElliptic] :
     ∃ (x : KeyIn R) (e : x.P.A ≅ schemeOver W), x.P.g = 1 ∧ eSec x.P.A ≫ e.hom.left = zero W ∧
       Out.nonzeroLocus x.th = e.hom.left ⁻¹ᵁ coordOpen W 2 := by
@@ -61,6 +73,9 @@ theorem exists_keyIn_iso_elliptic (R : Type) [CommRing R] (W : WeierstrassCurve 
   obtain ⟨x, hx, hx'⟩ := exists_mem_coordOpen_two W s
   exact ⟨x, hx, (nonzeroLocus_originSec W).ge hx'⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨x, _, h, _⟩ := exists_keyIn_iso_elliptic R W ⟨x, h⟩`.
+-/
 theorem exists_keyIn_elliptic (R : Type) [CommRing R] [IsLocalRing R] (W : WeierstrassCurve R) [W.IsElliptic] :
     ∃ x : KeyIn R, x.P.g = 1 :=
   let ⟨x, _, h, _⟩ := exists_keyIn_iso_elliptic R W

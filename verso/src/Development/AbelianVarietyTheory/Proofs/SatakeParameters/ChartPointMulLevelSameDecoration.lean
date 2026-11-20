@@ -16,6 +16,15 @@ open scoped TensorProduct
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Y : DivX D} {cX : ExtraC}
   {ex : Extra D L hT Gi Gl Kc Y cX} {t : KerEntTied ex} {u : D.what₂.Word} {μ : D.what₂.Tup} {St : ChainCharts D u μ}
 
+/- English proof (translation)
+Establish `hpi : t.Pr.piT (t.word u) ∈ P.1.asIdeal`. Establish `h` using `P.2`. Unfold `Formalism.L2.Col.Primes.vT Formalism.L2.Col.divs at h`. Use `split_ifs at h with hf`. Simplify using `using h`.
+
+Simplify using `at h`. Establish `hT : ((t.Pr.T (t.word u) : ℕ) : 𝓞 t.X.E) ∈ P.1.asIdeal`. Rewrite using `[← t.pr_ok.piT_norm]`. Conclude with `Ideal.mul_mem_right _ _ hpi`. Establish `hTQ : (((St j hj).T : ℕ) : 𝓞 D.host.E) ∈ (seamP t.seam P.1).asIdeal`.
+
+Rewrite using `[H.T_eq j hj, ← t.T_rec u, ← map_natCast (RingOfIntegers.mapRingEquiv t.seam.iE), mem_seamP]`. Conclude with `hT`. Establish `hT0 : (((St j hj).T : ℕ) : 𝓞 D.host.F) ≠ 0`. Rewrite using `[H.T_eq j hj, ← t.T_rec u]`. Conclude with `Nat.cast_ne_zero.2 (t.pr_ok.T_prime _).ne_zero`.
+
+Establish `hmem : (((St j hj).T : ℕ) : 𝓞 D.host.F) ∈ (seamP t.seam P.1).asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hTQ`. Set `v : HeightOneSpectrum (𝓞 D.host.F)` to `⟨(seamP t.seam P.1).asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)), Ideal.IsPrime.comap _, fun h => hT0 (by rw [h] at hmem; exact (Ideal.mem_bot.1 hmem))⟩`. Conclude with `⟨v, hmem, rfl⟩`.
+-/
 theorem exists_basePlace_contains_every_chartLevelPrime {A : AdData t u μ St} {dtU : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm →* D.Dt} {a : 𝓞 D.host.E} (H : AdTie A dtU a)
     (j : ℕ) (hj : j ≤ D.R.m) (P : t.Pr.vT (t.word u)) :
     ∃ v : HeightOneSpectrum (𝓞 D.host.F), ∃ h : (((St j hj).T : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal, IsOver v (seamP t.seam P.1) := by
@@ -42,11 +51,27 @@ theorem exists_basePlace_contains_every_chartLevelPrime {A : AdData t u μ St} {
     Ideal.IsPrime.comap _, fun h => hT0 (by rw [h] at hmem; exact (Ideal.mem_bot.1 hmem))⟩
   exact ⟨v, hmem, rfl⟩
 
+/- English proof (translation)
+Use `show _ = latBack t.seam (latCo D.sp (gramN D j hj) (A.crd j hj) a y.1 ((St j hj).K β).lev.Lb)`. Rewrite using `[← hq.lat, latBack_seam_lat]`.
+-/
 theorem N_eq_latAdX {A : AdData t u μ St} {a : 𝓞 D.host.E} {j : ℕ} {hj : j ≤ D.R.m} {β : (St j hj).Ch} {y : UA D j hj}
     {q : ChPt (R := D.R) t.sel (t.tup μ) (t.word u) j} (hq : IsPtAd A a j hj β y q) : q.deco.1.N = latAdX A a j hj β y.1 := by
   show _ = latBack t.seam (latCo D.sp (gramN D j hj) (A.crd j hj) a y.1 ((St j hj).K β).lev.Lb)
   rw [← hq.lat, latBack_seam_lat]
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a _ H j hj β x x₁ κ hx p p₁ hp hp₁`. Establish `hN : p₁.deco.1.N = p.deco.1.N`. Rewrite using `[N_eq_latAdX hp₁, N_eq_latAdX hp, hx, latAdX_mul_lev]`. Use `⟨hN, fun P w => ?_⟩` and prove the remaining obligations. Take `⟨v, hTv, hov⟩` from `exists_basePlace_contains_every_chartLevelPrime H j hj P`.
+
+Distinguish the cases in `hw : w ∈ p.deco.1.at P.1`. Establish `hw₁ : w ∈ p₁.deco.1.at P.1` using `by simpa only [Deco.at, hN] using hw`. Take `⟨s, hs, hsw⟩` from `(mem_locP _ _ _).1 hw`. Establish `h2 : s • w ∈ p₁.deco.1.N` using `hN ▸ hsw`. Establish `hy : (fun b => t.seam.iE ((s • w) b)) ∈ latCo D.sp (gramN D j hj) (A.crd j hj) a x₁.1 ((St j hj).K β).lev.Lb`.
+
+Rewrite using `[← hp₁.lat]`. Conclude with `Submodule.subset_span ⟨_, h2, rfl⟩`. Set `z : latS (F` to `D.host.F) (v.adicCompletion D.host.F) (intV D.host.E v) (Submodule.span (𝓞 D.host.E) (dualSet (sigD D : D.host.E →+* D.host.E) (gramN D j hj) ((St j hj).K β).lev.Lb)) := ⟨_, GlobalTheory.T.pulledLatticeVector_mem_dualBaseLatticeCompletion D.sp (gramN D j hj) (Formalism.L2.GlobalT …`. Establish `H1` using `GlobalTheory.CplPt.funMoved_mul_lev t.seam ((St j hj).K β).lev P v hTv _ _ p.deco.1 κ (hp.fnl P v hTv hov)`. Rewrite `H1` using `[mul_assoc, ← hx]`.
+
+Establish `e1` using `H1 _ hsw z rfl`. Establish `e2` using `hp₁.fnl P v hTv hov _ h2 z rfl`. Establish `e3 : p₁.deco.1.f P (s • w) = p.deco.1.f P (s • w)` using `e2.trans e1.symm`. Rewrite `e3` using `[p₁.deco.2.f_smul P _ w hw₁, p.deco.2.f_smul P _ w hw]`. Use `haveI hP := P.1.isPrime`.
+
+Establish `hu : Ideal.Quotient.mk P.1.asIdeal s ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hs`. Conclude with `mul_left_cancel₀ hu e3`. Establish `hw₁ : w ∉ p₁.deco.1.at P.1` using `by simpa only [Deco.at, hN] using hw`.
+
+Rewrite using `[p₁.deco.2.f_off P w hw₁, p.deco.2.f_off P w hw]`.
+-/
 theorem ptAd_mul_lev_deco : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
     ∀ j (hj : j ≤ D.R.m) (β : (St j hj).Ch) (x x₁ : UA D j hj) (κ : ((St j hj).K β).lev.U), x₁.1 = x.1 * κ.1 →
     ∀ p p₁, IsPtAd A a j hj β x p → IsPtAd A a j hj β x₁ p₁ →

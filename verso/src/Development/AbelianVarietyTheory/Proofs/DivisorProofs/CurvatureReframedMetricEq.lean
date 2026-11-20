@@ -18,6 +18,9 @@ open scoped ContDiff
 
 namespace GlobalTheory.TorsionForm.Gauge
 
+/- English proof (translation)
+Simplify using `only [superconn, map_add, map_smul]`. Rewrite using `[GlobalTheory.T.nabla_gauge_reframe_compat B τ γ h β s hτ hτ' hh hpos hs P hP, GlobalTheory.T.dbar_gauge_reframe_compat B τ γ s hτ hτ' hs P hP, GlobalTheory.T.dbar_adjoint_gauge_reframe_compat B τ γ h s hτ hτ' hh hpos hs P hP]`.
+-/
 theorem gauge_superconn {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     {g n : ℕ} (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (γ : Sp g) (h : Pt E g → ℝ)
     (β : Fin n → E) (u : ℝ) (s : Pt E g → Ext (n + n + g))
@@ -30,6 +33,15 @@ theorem gauge_superconn {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [F
   rw [GlobalTheory.T.nabla_gauge_reframe_compat B τ γ h β s hτ hτ' hh hpos hs P hP, GlobalTheory.T.dbar_gauge_reframe_compat B τ γ s hτ hτ' hs P hP,
     GlobalTheory.T.dbar_adjoint_gauge_reframe_compat B τ γ h s hτ hτ' hh hpos hs P hP]
 
+/- English proof (translation)
+Establish `hcov : IsOpen (cov B g)` using `hτ.1.prod isOpen_univ`. Establish `hR` using `GlobalTheory.T.contDiffOn_reframe B τ γ hτ hτ'`. Establish `hmaps : MapsTo (reframe τ γ) (cov B g) (cov B g)` using `fun P hP => ⟨hP.1, trivial⟩`. Establish `hh₁ : ContDiffOn ℝ ∞ (fun P => h (reframe τ γ P)) (cov B g)` using `hh.comp hR hmaps`. Establish `hpos₁ : ∀ P ∈ cov B g, 0 < h (reframe τ γ P)` using `fun P hP => hpos _ (hmaps hP)`.
+
+Establish `hc₁ : ContDiffOn ℝ ∞ (fun P : Pt E g => f P.2) (cov B g)` using `(hf.comp contDiff_snd).contDiffOn`. Establish `hΨ : ContDiffOn ℝ ∞ (gauge n τ γ (fun P : Pt E g => f P.2)) (cov B g)`. Establish `hF : ContDiffOn ℝ ∞ (fun P : Pt E g => frameAt n τ γ P.1) (cov B g)` using `(GlobalTheory.T.contDiffOn_frameAt_of_isPeriodMap n B τ γ hτ hτ').comp contDiffOn_fst (fun (P : Pt E g) (hP : P ∈ cov B g) => hP.1)`. Establish `hF' : ContDiffOn ℝ ∞ (fun P : Pt E g => (frameAt n τ γ P.1).restrictScalars ℝ) (cov B g)` using `(ContinuousLinearMap.restrictScalarsL ℂ (Ext (n + n + g)) (Ext (n + n + g)) ℝ ℝ).contDiff.comp_contDiffOn hF`. Conclude with `hF'.clm_apply (hc₁.comp hR hmaps)`.
+
+Establish `hlin : ContDiff ℝ ∞ (fun y : Fin g → ℂ => y ᵥ* (den γ (τ b))⁻¹)` using `((Matrix.vecMulLinear (den γ (τ b))⁻¹).restrictScalars ℝ).toContinuousLinearMap.contDiff`. Establish `hc : ContDiffOn ℝ ∞ (fun P : Pt E g => frameMap n (den γ (τ b)) (f (P.2 ᵥ* (den γ (τ b))⁻¹))) (cov B g)` using `(((frameMap n (den γ (τ b))).restrictScalars ℝ).contDiff.comp (hf.comp (hlin.comp contDiff_snd))).contDiffOn`. Establish `hB` using `GlobalTheory.T.superconn_fibre_agreement B τ (fun P => h (reframe τ γ P)) β u _ _ hτ hh₁ hpos₁ hc hΨ b hb (fun z => rfl) z`. Unfold `curv`. Rewrite using `[hB]`.
+
+Establish `hev : superconn τ (fun P => h (reframe τ γ P)) β u (gauge n τ γ (fun P : Pt E g => f P.2)) =ᶠ[𝓝 (b, z)] gauge n τ γ (superconn (fun b => moeb γ (τ b)) h β u (fun P : Pt E g => f P.2))` using `by filter_upwards [hcov.mem_nhds (show (b, z) ∈ cov B g from ⟨hb, trivial⟩)] with Q hQ`. Conclude with `gauge_superconn B τ γ h β u _ hτ hτ' hh hpos (hc₁.differentiableOn (by simp)) Q hQ`. Rewrite using `[Pullback.superconn_congr τ _ β u hev]`. Rewrite using `[gauge_superconn B τ γ h β u _ hτ hτ' hh hpos ((GlobalTheory.T.contDiffOn_superconn_of_period B _ h β u _ hτ' hh hpos hc₁).differentiableOn (by simp)) (b, z) ⟨hb, trivial⟩]`. Both sides reduce to the same expression.
+-/
 theorem curv_reframe_conj {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     {g n : ℕ} (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (γ : Sp g) (h : Pt E g → ℝ)
     (β : Fin n → E) (b : E) (u : ℝ) (f : (Fin g → ℂ) → Ext (n + n + g))
@@ -66,6 +78,9 @@ theorem curv_reframe_conj {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] 
   rw [gauge_superconn B τ γ h β u _ hτ hτ' hh hpos ((GlobalTheory.T.contDiffOn_superconn_of_period B _ h β u _ hτ' hh hpos hc₁).differentiableOn (by simp)) (b, z) ⟨hb, trivial⟩]
   rfl
 
+/- English proof (translation)
+Introduce `B τ γ h β b u f hτ hτ' hh hpos hb hf z` and use `curv_reframe_conj B τ γ h β b u f hτ hτ' hh hpos hb hf z`.
+-/
 theorem curv_conj_closed : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g n : ℕ} (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (γ : Sp g) (h : Pt E g → ℝ) (β : Fin n → E) (b : E) (u : ℝ) (f : (Fin g → ℂ) → Ext (n + n + g)), IsPeriodMap B τ → IsPeriodMap B (fun b => moeb γ (τ b)) → ContDiffOn ℝ ∞ h (cov B g) → (∀ P ∈ cov B g, 0 < h P) → b ∈ B → ContDiff ℝ ∞ f → ∀ z, curv τ (fun P => h (reframe τ γ P)) β b u (fun y => frameMap n (den γ (τ b)) (f (y ᵥ* (den γ (τ b))⁻¹))) z = frameMap n (den γ (τ b)) (curv (fun b => moeb γ (τ b)) h β b u f (z ᵥ* (den γ (τ b))⁻¹)) :=
   fun B τ γ h β b u f hτ hτ' hh hpos hb hf z => curv_reframe_conj B τ γ h β b u f hτ hτ' hh hpos hb hf z
 

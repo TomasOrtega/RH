@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HolDict
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Take `rfl : Kf' = Kf` from `Subgroup.ext hK`. Take `⟨th, hr', h1, h2⟩` from `hu`. Take `⟨hr'', h3⟩` from `hm`. Conclude with `⟨⟨th, h1, h2⟩, h3, hmu, hc⟩`.
+-/
 theorem castDict_laws {D : D7} {V W : HSp D} (hV : V = W) {r : ℕ} (hr : W.rank = r) {Comp : Type}
     (X : Comp → ReciprocityTheory.ChartRestriction.G.FD.Data D.host.E r) (dict : GA D V → Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame (X k).Ψ r)
     (mu : GA D V → ℂ) (Kf : Subgroup (GA D V)) (Kf' : Subgroup (GA D W))
@@ -25,6 +28,13 @@ theorem castDict_laws {D : D7} {V W : HSp D} (hV : V = W) {r : ℕ} (hr : W.rank
   obtain ⟨hr'', h3⟩ := hm
   exact ⟨⟨th, h1, h2⟩, h3, hmu, hc⟩
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hL hM h hpb i σ hσ hV w hw`. Take `⟨hK, -, hfin, hopen⟩` from `GlobalTheory.T.realisation_principalLevel_eq_coreLevel_open D G Pl0 T0 A T R κ v₀ hL hM h hpb i σ hσ hV`. Establish `hj : InR D ((i : ℕ) + 1)` using `inR i`. Take `⟨h1, h2, h3, h4⟩` from `castDict_laws hV (rank_Wc i) _ _ (T.mu ((i : ℕ) + 1) (res T σ)) _ _ hK (h.laws.dictU _ hj _ hσ) (h.laws.modelW _ hj _ hσ) (h.laws.muUnit _ hj _ hσ) (h.laws.muCont _ hj _ hσ)`. Establish `hc : ∀ k, ‖T.cE ((i : ℕ) + 1) (res T σ) k‖ = 1` using `h.laws.cUnit _ hj _ hσ`.
+
+Conclude with `{ inf := hM.inf base := GlobalTheory.T.base_frame_of_realization_models D G Pl0 T0 A T R κ v₀ hM h i σ hσ hV unif := h1 model := h2 muUnit := h3 muCont := h4 chi := h.laws.chiTriv _ hj _ hσ _ _ (dom_wtA (κ i)) cNe := fun k h0 => by`. Use `hc k` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Use `cBdd := ⟨1, fun k => (hc k).le⟩`.
+
+Use `fin := @Finite.of_fintype _ (T.U ((i : ℕ) + 1) (res T σ)).fin`. Use `levFin := hfin`. Use `levOpen := hopen`. Use `muK := GlobalTheory.T.dictionaryChar_eq_one_on_principalLevel D G Pl0 T0 A T R κ v₀ hL hM h hpb i σ hσ hV`. Use `wt := GlobalTheory.T.extremalWeight_eq_character_exponent_add D G Pl0 T0 A T R κ v₀ hM h i σ hσ hV w hw }`.
+-/
 theorem goodDict_core : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.toLevCh.Is A.μ0 → R.IsModels → TieIn T R κ v₀ → T.pb = R.C.P.pb → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), GoodEmb T.Q.c (res T σ) → ∀ hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i, ∀ w, WtIs (R.MW i σ) w → GoodDict R.θ (R.MW i σ) w (rank_Wc i) (T.U ((i : ℕ) + 1) (res T σ)).X (laU (T.U ((i : ℕ) + 1) (res T σ)) (wtA (κ i)) (κ i).n) (castDict hV (T.dict ((i : ℕ) + 1) (res T σ))) (castDict hV (T.mu ((i : ℕ) + 1) (res T σ))) (T.cE ((i : ℕ) + 1) (res T σ)) (levG (Wc D i) (R.βW i) (R.datWp i R.triv)) := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hL hM h hpb i σ hσ hV w hw
   obtain ⟨hK, -, hfin, hopen⟩ := GlobalTheory.T.realisation_principalLevel_eq_coreLevel_open D G Pl0 T0 A T R κ v₀ hL hM h hpb i σ hσ hV

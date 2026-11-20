@@ -49,6 +49,9 @@ def LatticeContinuous [TopologicalSpace Γ] [TopologicalSpace O] {a : ℕ}
     (ρ : Γ →* GL (Fin a) O) : Prop :=
   Continuous fun g => ((ρ g : GL (Fin a) O) : Matrix (Fin a) (Fin a) O)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockRep_apply {a : ℕ} (ρ : Γ →* GL (Fin a) O) (χ : ℕ → (Γ →* Oˣ)) (t : ℕ) (g : Γ)
     (v : (Fin a → FractionRing O) × (Fin t → FractionRing O)) :
     blockRep ρ χ t g v =
@@ -57,6 +60,9 @@ theorem blockRep_apply {a : ℕ} (ρ : Γ →* GL (Fin a) O) (χ : ℕ → (Γ �
         fun c : Fin t => algebraMap O (FractionRing O) ((χ (c.1 + 1) g : Oˣ) : O) * v.2 c) := by
   rfl
 
+/- English proof (translation)
+Take `⟨e, -⟩` from `h`. Simplify using `using e.finrank_eq`.
+-/
 theorem IsoBlock.rank_eq {n a t : ℕ} {r : Γ →* GL (Fin n) O} {ρ : Γ →* GL (Fin a) O}
     {χ : ℕ → (Γ →* Oˣ)} (h : IsoBlock r ρ χ t) : n = a + t := by
   obtain ⟨e, -⟩ := h
@@ -97,6 +103,9 @@ def Complement_at (D : D7) : Prop :=
     ∀ r₀ : G D.host.E D.nd.Om →* GL (Fin D.R.nV) (D.nd.O i), IsHeckeGalois D.nd i π r₀ →
       ∃ ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O i), IsComplement D.nd i r₀ ρ
 
+/- English proof (translation)
+Use `⟨fun π => if hπ : π ∈ D.nd.Z i then (h i π hπ (r π) (hr π)).choose else 1, fun π hπ => ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos hπ]`. Conclude with `(h i π hπ (r π) (hr π)).choose_spec`.
+-/
 theorem Complement_at.family {D : D7} (h : Complement_at D) (i : D.nd.Loc)
     (r : D.nd.X i → (G D.host.E D.nd.Om →* GL (Fin D.R.nV) (D.nd.O i))) (hr : GoodR D.nd i r) :
     ∃ ρ, IsComplementFamily D.nd i r ρ := by

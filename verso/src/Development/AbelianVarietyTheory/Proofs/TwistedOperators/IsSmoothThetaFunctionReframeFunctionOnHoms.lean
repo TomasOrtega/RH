@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.AdSpan.ReVec.ThetaCarry
 
+/- English proof (translation)
+Use `haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Conclude with `(continuous_id.matrix_mul continuous_const : Continuous fun x : Matrix (Fin T.rank) (Fin S.rank) (AE D) => HMul.hMul (α := Matrix (Fin T.rank) (Fin S.rank) (AE D)) x ((frPinv S b).map (incA D)))`.
+-/
 theorem continuous_reW {D : D7} (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) :
     Continuous (reW S T b : WO (reS S b) T → WO S T) := by
   haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
@@ -20,6 +23,9 @@ theorem continuous_reW {D : D7} (S T : HSp D) (b : Module.Basis (Fin S.rank) D.h
     Continuous fun x : Matrix (Fin T.rank) (Fin S.rank) (AE D) =>
       HMul.hMul (α := Matrix (Fin T.rank) (Fin S.rank) (AE D)) x ((frPinv S b).map (incA D)))
 
+/- English proof (translation)
+Unfold `reW ratW`. Rewrite using `[Matrix.map_mul]`. Both sides reduce to the same expression.
+-/
 theorem reW_ratW {D : D7} (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V)
     (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     reW S T b (ratW T (reS S b) γ) = ratW T S (γ * frPinv S b) := by
@@ -27,18 +33,33 @@ theorem reW_ratW {D : D7} (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E 
   rw [Matrix.map_mul]
   rfl
 
+/- English proof (translation)
+Use `(Matrix.map_mul (L := (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from u)) (M := (frPinv S b).map (incA D)) (f := infPart D)).trans ?_` and prove the remaining obligations. Rewrite using `[show (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from u).map (infPart D) = 0 from hu, Matrix.zero_mul]`.
+-/
 theorem reW_map_inf {D : D7} (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) {u : WO (reS S b) T}
     (hu : u.map (infPart D) = 0) : (reW S T b u).map (infPart D) = 0 := by
   refine (Matrix.map_mul (L := (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from u))
     (M := (frPinv S b).map (incA D)) (f := infPart D)).trans ?_
   rw [show (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from u).map (infPart D) = 0 from hu, Matrix.zero_mul]
 
+/- English proof (translation)
+Use `(Matrix.map_mul (L := (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from u)) (M := (frPinv S b).map (incA D)) (f := finPart D)).trans ?_` and prove the remaining obligations. Rewrite using `[show (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from u).map (finPart D) = 0 from hu, Matrix.zero_mul]`.
+-/
 theorem reW_map_fin {D : D7} (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) {u : WO (reS S b) T}
     (hu : u.map (finPart D) = 0) : (reW S T b u).map (finPart D) = 0 := by
   refine (Matrix.map_mul (L := (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from u))
     (M := (frPinv S b).map (incA D)) (f := finPart D)).trans ?_
   rw [show (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from u).map (finPart D) = 0 from hu, Matrix.zero_mul]
 
+/- English proof (translation)
+Introduce `D ψ S T b hs f hf`. Establish `hsH : ∀ x y : WO (reS S b) T, symplOH (reS S b) T x y = symplOH S T (reW S T b x) (reW S T b y)`. Introduce `x y`. Unfold `symplOH`. Rewrite using `[hs]`.
+
+Establish `hc` using `continuous_reW S T b`. Use `⟨fun γ w => ?_, ?_, hf.cont.comp hc, fun k L h1 h2 w => ?_⟩` and prove the remaining obligations. Establish `e` using `reW_ratW S T b γ`. Rewrite using `[reF_apply, reF_apply, reW_add, hsH]`. Use `erw [e]`.
+
+Conclude with `hf.quasi _ _`. Take `⟨U, hU, h⟩` from `hf.level`. Use `⟨U.comap (reWHom S T b), hU.preimage hc, fun u hu h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[heisO_reF S T b ψ hs u f, h (reW S T b u) hu (reW_map_inf S T b h0)]`. Use `hf.smooth k ((reWHom S T b).comp L) (hc.comp h1) (fun t => reW_map_fin S T b (h2 t)) (reW S T b w)` as an intermediate fact.
+
+Simplify using `only [reF_apply, reW_add]`. Conclude with `this`.
+-/
 theorem isThetaFunO_reF : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V), (∀ x y : WO (reS S b) T, symplO (reS S b) T x y = symplO S T (reW S T b x) (reW S T b y)) → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ (reS S b) T (reF S T b f) := by
   intro D ψ S T b hs f hf
   have hsH : ∀ x y : WO (reS S b) T, symplOH (reS S b) T x y = symplOH S T (reW S T b x) (reW S T b y) := by

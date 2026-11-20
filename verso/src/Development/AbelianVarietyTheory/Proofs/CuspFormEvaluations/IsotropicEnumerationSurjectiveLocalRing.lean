@@ -20,12 +20,20 @@ namespace IsotropicEnum
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp [MonObj.comp_one]`. Consider the case `cons x L ih => simp [MonObj.comp_mul, ih]`.
+-/
 theorem comp_list_prod {S : Scheme.{0}} {G T T' : Over S} [GrpObj G] (h : T' ⟶ T) (L : List (T ⟶ G)) :
     h ≫ L.prod = (L.map fun x => h ≫ x).prod := by
   induction L with
   | nil => simp [MonObj.comp_one]
   | cons x L ih => simp [MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Use `⟨fun b => ?_, fun mu hmu cm hcm i => ?_⟩` and prove the remaining obligations. Rewrite using `[← MonObj.comp_pow, ha.1 b, MonObj.comp_one]`. Establish `h1` using `ha.2 mu hmu cm hcm i`. Establish `hl : (List.ofFn fun j => (h ≫ a j) ≫ Xo.univ.t.act.act (cm i j)) = (List.ofFn fun j => a j ≫ Xo.univ.t.act.act (cm i j)).map fun y => h ≫ y`. Simplify using `[List.map_ofFn, Function.comp_def, Category.assoc]`.
+
+Rewrite using `[hl, ← comp_list_prod, h1, MonObj.comp_one]`.
+-/
 theorem inZh_comp (Xo : Moduli Dw l) {n : ℕ} (Λ : GenLat E n) (N : ℕ) {T T' : Over Xo.X} (h : T' ⟶ T)
     {a : Fin n → (T ⟶ Xo.univ.t.G)} (ha : InZh Xo Λ N a) : InZh Xo Λ N (fun b => h ≫ a b) := by
   refine ⟨fun b => ?_, fun mu hmu cm hcm i => ?_⟩
@@ -36,6 +44,11 @@ theorem inZh_comp (Xo : Moduli Dw l) {n : ℕ} (Λ : GenLat E n) (N : ℕ) {T T'
       simp [List.map_ofFn, Function.comp_def, Category.assoc]
     rw [hl, ← comp_list_prod, h1, MonObj.comp_one]
 
+/- English proof (translation)
+Establish `h0 : I.ev m 0 = 1`. Establish `h` using `I.add m 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`. Proceed by induction on `n with`.
+
+Consider the case `zero => simp [h0]`. Consider the case `succ n ih => rw [Fin.sum_univ_succ, I.add, ih (fun j => v j.succ), List.ofFn_succ, List.prod_cons]`.
+-/
 theorem ev_sum {k : Type} [Field k] {Q : Type} [Group Q] {act : 𝓞 E → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
     (I : TateIso Dw k Q act e) {m : ℕ} (hm : 0 < m) {n : ℕ} (v : Fin n → Dw.La) :
     I.ev m (∑ j, v j) = (List.ofFn fun j => I.ev m (v j)).prod := by
@@ -48,6 +61,25 @@ theorem ev_sum {k : Type} [Field k] {Q : Type} [Group Q] {act : 𝓞 E → Q →
   | zero => simp [h0]
   | succ n ih => rw [Fin.sum_univ_succ, I.add, ih (fun j => v j.succ), List.ofFn_succ, List.prod_cons]
 
+/- English proof (translation)
+Take `⟨-, I, -⟩` from `Xo.univ.geom K x (Spec.preimage (x ≫ Xo.s)).hom (by simp only [spMap, CommRingCat.ofHom_hom, Spec.map_preimage])`. Establish `hM : 0 < N ^ 2` using `pow_pos hN 2`. Establish `evEq : ∀ u u' : Dw.La, Dw.ModN (N ^ 2) (u - u') → I.ev (N ^ 2) u = I.ev (N ^ 2) u'`. Introduce `u u' h`. Establish `h1 : I.ev (N ^ 2) (u - u') = 1` using `(I.ker _ hM _).2 h`.
+
+Establish `h2` using `I.add (N ^ 2) (u - u') u'`. Rewrite `h2` using `[sub_add_cancel, h1, _root_.one_mul]`. Conclude with `h2`. Establish `key : ∀ c : Fin n → (ptO Xo x ⟶ Xo.univ.t.G), InZh Xo Λ N c → ∃ y : Fin n → Dw.La, (∀ (mu : Matrix (Fin n) (Fin n) E), (∀ v ∈ Λ.La, mu.mulVec v ∈ stdLat E n) → ∀ cm : Fin n → Fin n → 𝓞 E, (∀ i j, (cm i j : E) = (N : E) * mu i j) → ∀ i, Dw.ModN (N ^ 2) (∑ j, cm i j • y j)) ∧ ∀ b, …`. Introduce `c hc`.
+
+Establish `hy : ∀ b, ∃ y, I.ev (N ^ 2) y = c b` using `fun b => (I.onto _ hM (c b)).1 (hc.1 b)`. Use `choose y hy using hy`. Use `⟨y, fun mu hmu cm hcm i => ?_, hy⟩` and prove the remaining obligations. Establish `h1` using `hc.2 mu hmu cm hcm i`. Use `(I.ker _ hM _).1 ?_` and prove the remaining obligations.
+
+Establish `hfun : (fun j => I.ev (N ^ 2) (cm i j • y j)) = fun j => c j ≫ Xo.univ.t.act.act (cm i j)`. Use function extensionality and compare the values at `j`. Simplify using `only [I.lin, hy]`. Rewrite using `[ev_sum I hM, hfun]`. Conclude with `h1`.
+
+Take `⟨zz, -, -, hcover⟩` from `ZCount.exists_class_representatives E H Dw n Λ N hΛ hN hle`. Establish `hf : ∀ i, ∃ j, w i = fun b => I.ev (N ^ 2) (zz j b)`. Introduce `i`. Take `⟨y, hy, hyw⟩` from `key (w i) (hw i)`. Take `⟨j, hj⟩` from `hcover y hy`.
+
+Use `⟨j, funext fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[← hyw b]`. Conclude with `evEq _ _ (hj b)`. Use `choose f hf using hf`. Establish `finj : Function.Injective f`.
+
+Introduce `i i' h`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hf i, hf i', h]`. Establish `fsurj : Function.Surjective f` using `Finite.surjective_of_injective finj`. Take `⟨y, hy, hya⟩` from `key a ha`.
+
+Take `⟨j, hj⟩` from `hcover y hy`. Take `⟨i, rfl⟩` from `fsurj j`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[hf i]`. Use function extensionality and compare the values at `b`.
+
+Rewrite using `[← hya b]`. Conclude with `(evEq _ _ (hj b)).symm`.
+-/
 theorem exists_eq_of_isAlgClosed (Xo : Moduli Dw l) {K : Type} [Field K] [IsAlgClosed K] (x : Sp K ⟶ Xo.X)
     {n : ℕ} (Λ : GenLat E n) {N : ℕ} (hΛ : Λ.Unimod) (hN : 0 < N)
     (hle : Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ Λ.La)
@@ -108,6 +140,21 @@ end IsotropicEnum
 
 open IsotropicEnum in
 
+/- English proof (translation)
+Introduce `hL E _ _ _ H Dw l Xo T _ _ x0 n Λ N hΛ hN hle z hz hzi`. Set `ψ : T →+* AlgebraicClosure (IsLocalRing.ResidueField T)` to `(algebraMap (IsLocalRing.ResidueField T) (AlgebraicClosure (IsLocalRing.ResidueField T))).comp (IsLocalRing.residue T)`. Set `g : ptO Xo (spMap ψ ≫ x0) ⟶ ptO Xo x0` to `Over.homMk (spMap ψ) rfl`. Establish `hA : ∀ (zz : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G)), (∀ i, InZh Xo Λ N (zz i)) → GeoInj Xo x0 zz → ∀ a, InZh Xo Λ N a → ∃ i, zz i = a`. Introduce `zz hzz hgi a ha`.
+
+Take `⟨i, hi⟩` from `exists_eq_of_isAlgClosed Xo (spMap ψ ≫ x0) Λ hΛ hN hle (fun i b => g ≫ zz i b) (fun i => inZh_comp Xo Λ N g (hzz i)) (hgi _ ψ g rfl) (fun b => g ≫ a b) (inZh_comp Xo Λ N g ha)`. Use `⟨i, funext fun b => ?_⟩` and prove the remaining obligations. Establish `hib : g ≫ zz i b = g ≫ a b` using `congrFun hi b`. Take `⟨e, he, hiff⟩` from `exists_isIdempotentElem_torsion_eq hL E H Dw l Xo T x0 (N ^ 2) (pow_pos hN 2) (zz i b) (a b) ((hzz i).1 b) (ha.1 b)`. Establish `hψ : ψ e = 1` using `(hiff _ ψ).2 (congrArg (fun f => f.left) hib)`.
+
+Establish `hmul : e * (1 - e) = 0` using `by rw [mul_sub, _root_.mul_one, he.eq, sub_self]`. Establish `he1 : e = 1`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self e with hu | hu` into its components or cases. Conclude with `(sub_eq_zero.1 ((hu.mul_right_eq_zero).1 hmul)).symm`. Rewrite `hψ` using `[(hu.mul_left_eq_zero).1 hmul, map_zero]`.
+
+Conclude with `absurd hψ zero_ne_one`. Establish `hid` using `(hiff T (RingHom.id T)).1 (by rw [he1, map_one])`. Establish `hsp : spMap (RingHom.id T) = 𝟙 _` using `by simp [spMap]`. Rewrite `hid` using `[hsp, Category.id_comp, Category.id_comp]`. Conclude with `Over.OverMorphism.ext hid`.
+
+Use `⟨hA z hz hzi, fun z' hz' hzi' => ?_⟩` and prove the remaining obligations. Establish `hsel : ∀ i, ∃ j, z j = z' i` using `fun i => hA z hz hzi (z' i) (hz' i)`. Use `choose σ' hσ' using hsel`. Establish `hinj' : Function.Injective z'`. Introduce `i i' h`.
+
+Apply `hzi' _ ψ g rfl` to reduce the goal to its premises. Use `show (fun b => g ≫ z' i b) = fun b => g ≫ z' i' b`. Rewrite using `[h]`. Establish `σinj : Function.Injective σ'`. Introduce `i i' h`.
+
+Apply `hinj'` to reduce the goal to its premises. Rewrite using `[← hσ' i, ← hσ' i', h]`. Conclude with `⟨Equiv.ofBijective σ' ⟨σinj, Finite.surjective_of_injective σinj⟩, fun i => (hσ' i).symm⟩`.
+-/
 theorem isotropic_enumeration_onto_of_isLocalRing :
     Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (T : Type) [CommRing T] [IsLocalRing T] (x0 : Sp T ⟶ Xo.X) (n : ℕ) (Λ : GenLat E n) (N : ℕ), Λ.Unimod → 0 < N → Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ Λ.La → ∀ z : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G), (∀ i, InZh Xo Λ N (z i)) → GeoInj Xo x0 z → (∀ a, InZh Xo Λ N a → ∃ i, z i = a) ∧ ∀ z' : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G), (∀ i, InZh Xo Λ N (z' i)) → GeoInj Xo x0 z' → ∃ σ : Equiv.Perm (Fin (Λ.zCard N (Dw.p + Dw.q))), ∀ i, z' i = z (σ i) := by
   intro hL E _ _ _ H Dw l Xo T _ _ x0 n Λ N hΛ hN hle z hz hzi

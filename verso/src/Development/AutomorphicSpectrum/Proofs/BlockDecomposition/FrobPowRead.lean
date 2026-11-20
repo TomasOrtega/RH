@@ -23,6 +23,9 @@ open GlobalTheory.CompanionTheory.LTPer.Tilt
 
 namespace GlobalTheory.CompanionTheory.LTPer.Tilt
 
+/- English proof (translation)
+Rewrite using `[sub_pow_char_pow, sum_pow_char_pow]`. Use `congrArg _ (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul, mul_comm i]`.
+-/
 theorem frob_pow_read {l : ℕ} [Fact l.Prime] (N : ℕ) (a y : Tl l) (b : ℕ → Tl l) (D : ℕ) :
     (a - ∑ i ∈ Finset.range D, b i * y ^ i) ^ l ^ N =
       a ^ l ^ N - ∑ i ∈ Finset.range D, b i ^ l ^ N * (y ^ l ^ N) ^ i := by
@@ -30,8 +33,16 @@ theorem frob_pow_read {l : ℕ} [Fact l.Prime] (N : ℕ) (a y : Tl l) (b : ℕ �
   refine congrArg _ (Finset.sum_congr rfl fun i _ => ?_)
   rw [mul_pow, ← pow_mul, ← pow_mul, mul_comm i]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem oc_eq {l : ℕ} [Fact l.Prime] (K : FinExt l) (c : ↥(OL K)) : oc K c = omC (((c : ↥K.1) : Om l)) := rfl
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `e : u (n + (m + 1)) ^ l ^ (f * (m + 1)) = (u (n + m + 1) ^ l ^ f) ^ l ^ (f * m)`. Rewrite using `[← pow_mul, ← pow_add, ← add_assoc]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, h, ih]`.
+-/
 theorem sys_pow_iter {l : ℕ} [Fact l.Prime] {f : ℕ} {u : ℕ → Tl l} (h : ∀ n, u (n + 1) ^ l ^ f = u n)
     (n m : ℕ) : u (n + m) ^ l ^ (f * m) = u n := by
   induction m with
@@ -43,6 +54,17 @@ theorem sys_pow_iter {l : ℕ} [Fact l.Prime] {f : ℕ} {u : ℕ → Tl l} (h : 
       ring
     rw [e, h, ih]
 
+/- English proof (translation)
+Establish `hex : ∀ c : ↥(OL K), ∃ y : Tl l, y ^ l ^ f = y ∧ ‖sh y - oc K c‖ ≤ ‖oc K π‖` using `fun c => GlobalTheory.T.teichmuller_fixed_point_approximation f _ hf hl h1 (oc K c) (norm_oc_le_one K c) (hfer c)`. Use `choose F hF1 hF2 using hex`. Establish `huniq : ∀ (x : Tl l) (A : ↥(OL K)), x ^ l ^ f = x → ‖sh x - oc K A‖ ≤ ‖oc K π‖ → F A = x`. Introduce `x A hx hA`. Apply `fixed_unique hf (hF1 A) hx` to reduce the goal to its premises.
+
+Use `lt_of_le_of_lt (norm_sub_le_of_near hl ?_) h1` and prove the remaining obligations. Establish `e : sh (F A) - sh x = (sh (F A) - oc K A) - (sh x - oc K A)` using `by ring`. Rewrite using `[e]`. Rewrite using `[sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hF2 A) (by rw [norm_neg]; exact hA))`.
+
+Use `⟨{ toFun := F, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, hF1, hF2⟩` and prove the remaining obligations. Conclude with `huniq 1 1 (one_pow _) (by rw [map_one, sh_one, sub_self, norm_zero]; exact norm_nonneg _)`. Introduce `a b`. Use `huniq _ _ (by rw [mul_pow, hF1, hF1]) ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `near_mul (norm_oc_le_one K b) (hF2 a) (hF2 b)`. Conclude with `huniq 0 0 (zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)) (by rw [map_zero, sh_zero, sub_self, norm_zero]; exact norm_nonneg _)`. Introduce `a b`. Use `huniq _ _ (by rw [add_pow_char_pow, hF1, hF1]) ?_` and prove the remaining obligations. Rewrite using `[map_add]`.
+
+Conclude with `near_add hl (hF2 a) (hF2 b)`.
+-/
 theorem fix_ringHom {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (f : ℕ) (hf : 0 < f)
     (hl : ‖(l : ℂ_[l])‖ ≤ ‖oc K π‖) (h1 : ‖oc K π‖ < 1)
     (hfer : ∀ c : ↥(OL K), ‖oc K c ^ l ^ f - oc K c‖ ≤ ‖oc K π‖) :
@@ -71,6 +93,11 @@ theorem fix_ringHom {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (f 
     rw [map_add]
     exact near_add hl (hF2 a) (hF2 b)
 
+/- English proof (translation)
+Establish `hq2 : 2 ≤ l ^ f`. Use `Nat.pow_le_pow_right (Fact.out : l.Prime).pos hf` as an intermediate fact. Establish `h2` using `(Fact.out : l.Prime).two_le`. Simplify using `only [pow_one] at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hyf : y ^ l ^ f = y`. Apply `omC.injective` to reduce the goal to its premises. Rewrite using `[map_pow, ← hy, ← sh_pow, hx]`. Conclude with `GlobalTheory.T.teichmuller_character_eq_residue_lift (l ^ f) hq2 (dvd_pow_self l hf.ne') x y hx hyf hy`.
+-/
 theorem tch_eq {l : ℕ} [Fact l.Prime] (f : ℕ) (hf : 0 < f) (x : Tl l) (hx : x ^ l ^ f = x) (y : Om l)
     (hy : sh x = omC y) : tch l x = rB l y := by
   have hq2 : 2 ≤ l ^ f := by
@@ -83,6 +110,13 @@ theorem tch_eq {l : ℕ} [Fact l.Prime] (f : ℕ) (hf : 0 < f) (x : Tl l) (hx : 
     rw [map_pow, ← hy, ← sh_pow, hx]
   exact GlobalTheory.T.teichmuller_character_eq_residue_lift (l ^ f) hq2 (dvd_pow_self l hf.ne') x y hx hyf hy
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `GlobalTheory.T.exists_galois_extension_of_embedding K μ`. Use `haveI := hmax`. Use `haveI := hfin`. Use `letI : Field (↥(OL K) ⧸ Ideal.span {π}) := Ideal.Quotient.field _`. Establish `hker : ∀ a ∈ Ideal.span {π}, r₀ a = 0`.
+
+Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[map_mul, hrπ, mul_zero]`. Set `α : (↥(OL K) ⧸ Ideal.span {π}) →+* Tl l` to `Ideal.Quotient.lift _ r₀ hker`. Take `⟨i, hi⟩` from `GlobalTheory.T.finite_field_embeddings_differ_frobenius (l := l) (k := ↥(OL K) ⧸ Ideal.span {π}) (D := Tl l) α ((actT g).comp α)`.
+
+Use `⟨i, fun c => ?_⟩` and prove the remaining obligations. Take `⟨c', hc'⟩` from `GlobalTheory.T.teichmuller_residue_congruence K π f hf hqf hl h1 hπ0 (r₀ c) c (hr1 c) (hr2 c)`. Use `⟨c', ?_⟩` and prove the remaining obligations. Establish `h : actT g (r₀ c) = r₀ c ^ l ^ i` using `hi (Ideal.Quotient.mk _ c)`. Rewrite using `[← h, sh_actT, hc', oc_eq, galCp_omC, hg]`.
+-/
 theorem exp_twist {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (f : ℕ) (hf : 0 < f) (hqf : qOf π = l ^ f)
     (hl : ‖(l : ℂ_[l])‖ ≤ ‖oc K π‖) (h1 : ‖oc K π‖ < 1) (hπ0 : π ≠ 0)
     (hmax : (Ideal.span {π}).IsMaximal) (hfin : Finite (↥(OL K) ⧸ Ideal.span {π}))
@@ -105,6 +139,11 @@ theorem exp_twist {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (f : 
   have h : actT g (r₀ c) = r₀ c ^ l ^ i := hi (Ideal.Quotient.mk _ c)
   rw [← h, sh_actT, hc', oc_eq, galCp_omC, hg]
 
+/- English proof (translation)
+Introduce `c`. Take `⟨c', hc'⟩` from `hic c`. Use `⟨c', ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, iterateFrobenius_def]`. Establish `hfix : (r₀ c ^ l ^ i) ^ l ^ f = r₀ c ^ l ^ i`.
+
+Rewrite using `[← pow_mul, mul_comm, pow_mul, hr1]`. Rewrite using `[tch_eq f hf _ hfix _ hc']`. Simplify using `only [oB, RingHom.comp_apply]`. Both sides reduce to the same expression.
+-/
 theorem tch_clause {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (f : ℕ) (hf : 0 < f)
     (μ : ↥K.1 →ₐ[ℚ_[l]] Om l) (r₀ : ↥(OL K) →+* Tl l) (hr1 : ∀ c, r₀ c ^ l ^ f = r₀ c) (i : ℕ)
     (hic : ∀ c, ∃ c' : ↥(OL K), sh (r₀ c ^ l ^ i) = omC (μ ((c + π * c' : ↥(OL K)) : ↥K.1))) :
@@ -119,6 +158,11 @@ theorem tch_clause {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (f :
   simp only [oB, RingHom.comp_apply]
   rfl
 
+/- English proof (translation)
+Establish `h` using `pow_dvd_pow_of_dvd hd (l ^ i)`. Rewrite `h` using `[frob_pow_read]`. Establish `e1 : (x ^ l ^ i) ^ D = (x ^ D) ^ l ^ i` using `by rw [← pow_mul, ← pow_mul, mul_comm]`. Establish `e2 : actT g (x ^ l ^ i) = actT g x ^ l ^ i` using `map_pow _ _ _`. Establish `e3 : ∀ j, ((iterateFrobenius (Tl l) l i).comp r₀) (c j) = r₀ (c j) ^ l ^ i` using `fun j => by`.
+
+Rewrite using `[RingHom.comp_apply, iterateFrobenius_def]`. Simplify using `only [e1, e2, e3]`. Conclude with `h`.
+-/
 theorem gal_clause {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] (g : GQ l) (r₀ : R →+* Tl l) (i : ℕ)
     (x : Tl l) (c : ℕ → R) (D : ℕ) (hd : x ^ D ∣ actT g x - ∑ j ∈ Finset.range D, r₀ (c j) * x ^ j) :
     (x ^ l ^ i) ^ D ∣ actT g (x ^ l ^ i) -
@@ -136,6 +180,37 @@ end GlobalTheory.CompanionTheory.LTPer.Tilt
 
 open GlobalTheory.CompanionTheory.LTPer.Tilt in
 
+/- English proof (translation)
+Introduce `l _ K χ π z hLT μ`. Take `⟨hirr, hz0, hz1, hrec, hgal⟩` from `hLT`. Take `⟨hq2, hlq, hπl, hπ1, -⟩` from `GlobalTheory.CompanionTheory.LTPer.uniformiser_facts K π hirr`. Take `⟨hmax, hfin, f, hf, hqf⟩` from `GlobalTheory.T.uniformizer_residue_field_finite_power K π hirr`. Establish `hπ1' : ‖oc K π‖ < 1` using `by rw [oc_apply]; exact hπ1`.
+
+Establish `hl : ‖(l : ℂ_[l])‖ ≤ ‖oc K π‖`. Take `⟨a, ha⟩` from `hπl`. Establish `e : (l : ℂ_[l]) = oc K π * oc K a` using `by rw [← map_mul, ← ha, map_natCast]`. Rewrite using `[e, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (norm_oc_le_one K a)`.
+
+Establish `hπ0 : π ≠ 0` using `hirr.ne_zero`. Take `⟨hzlt, hzgt⟩` from `GlobalTheory.T.lubin_tate_sequence_norm_bounds K χ π z ⟨hirr, hz0, hz1, hrec, hgal⟩ hq2 hπ1'`. Establish `hrec' : ∀ n, z (n + 1) ^ l ^ f + ((π : ↥K.1) : Om l) * z (n + 1) = z n`. Introduce `n`. Establish `h` using `hrec n`.
+
+Rewrite `h` using `[show Nat.card (↥(OL K) ⧸ Ideal.span {π}) = l ^ f from hqf]`. Then use the resulting hypothesis. Establish `hZ : ∀ n, ‖omC (z (n + 1)) ^ l ^ f - omC (z n)‖ ≤ ‖oc K π‖`. Introduce `n`. Establish `e : omC (z (n + 1)) ^ l ^ f - omC (z n) = -(oc K π * omC (z (n + 1)))`. Rewrite using `[← hrec' n, map_add, map_mul, map_pow, oc_eq]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_neg, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hzlt _).le`. Take `⟨u, hu1, hu2⟩` from `GlobalTheory.T.teichmuller_compatible_sequence_approximation f ‖oc K π‖ hf hl hπ1' (fun n => omC (z n)) (fun n => (hzlt n).le) hZ`. Establish `hu0 : ∀ n, u n ≠ 0`.
+
+Establish `h2 : ∀ n, 2 ≤ n → u n ≠ 0`. Introduce `n hn h0`. Establish `h` using `hu2 n`. Rewrite `h` using `[h0, sh_zero, zero_sub, norm_neg]`. Conclude with `absurd (hzgt n hn) (not_lt.2 h)`.
+
+Introduce `n`. Rewrite using `[← sys_pow_iter hu1 n 2]`. Conclude with `pow_ne_zero _ (h2 _ (by omega))`. Establish `hfer : ∀ c : ↥(OL K), ‖oc K c ^ l ^ f - oc K c‖ ≤ ‖oc K π‖`. Introduce `c`.
+
+Take `⟨a, ha⟩` from `GlobalTheory.T.uniformizer_divides_frobenius_difference K π hmax hfin c`. Rewrite `ha` using `[hqf]`. Rewrite using `[← map_pow, ← map_sub, ha, map_mul, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (norm_oc_le_one K a)`. Take `⟨r₀, hr1, hr2⟩` from `fix_ringHom K π f hf hl hπ1' hfer`.
+
+Establish `hrπ : r₀ π = 0`. Apply `fixed_unique hf (hr1 π) (zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero))` to reduce the goal to its premises. Use `lt_of_le_of_lt (norm_sub_le_of_near hl ?_) hπ1'` and prove the remaining obligations. Rewrite using `[sh_zero, sub_zero]`. Establish `e : sh (r₀ π) = (sh (r₀ π) - oc K π) + oc K π` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hr2 π) le_rfl)`. Establish `hexp : ∃ i : ℕ, (μ = K.1.val → i = 0) ∧ ∀ c, ∃ c' : ↥(OL K), sh (r₀ c ^ l ^ i) = omC (μ ((c + π * c' : ↥(OL K)) : ↥K.1))`. Distinguish the cases in `hμ : μ = K.1.val`. Use `⟨0, fun _ => rfl, fun c => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c', hc'⟩` from `GlobalTheory.T.teichmuller_residue_congruence K π f hf hqf hl hπ1' hπ0 (r₀ c) c (hr1 c) (hr2 c)`. Use `⟨c', ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, pow_one, hc', hμ]`. Both sides reduce to the same expression. Take `⟨i, hi⟩` from `exp_twist K π f hf hqf hl hπ1' hπ0 hmax hfin r₀ hr1 hr2 hrπ μ`.
+
+Conclude with `⟨i, fun h => absurd h hμ, hi⟩`. Take `⟨i, hi0, hic⟩` from `hexp`. Use `⟨(iterateFrobenius (Tl l) l i).comp r₀, fun n => u n ^ l ^ i, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n show (u (n + 1) ^ l ^ i) ^ qOf π = u n ^ l ^ i`. Rewrite using `[hqf, ← pow_mul, mul_comm, pow_mul, hu1]`.
+
+Conclude with `pow_ne_zero _ (hu0 0)`. Use `show ‖thB l (tch l (u 0 ^ l ^ i))‖ < 1`. Rewrite using `[thB_tch, sh_pow, norm_pow]`. Establish `h` using `hu2 0`. Rewrite `h` using `[hz0, map_zero, sub_zero]`.
+
+Conclude with `pow_lt_one₀ (norm_nonneg _) (h.trans_lt hπ1') (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)`. Conclude with `tch_clause K π f hf μ r₀ hr1 i hic`. Introduce `g hg φ h0 h1 hcomm n D`. Establish `hs` using `hgal ⟨g, hg⟩ φ h0 h1 hcomm`. Establish `hd` using `GlobalTheory.T.lubin_tate_teichmuller_sequence_compatibility K π z f hf hl hπ1' hzlt hzgt u hu1 hu2 r₀ hr1 hr2 hu0 g (fun k => PowerSeries.coeff k φ) hs n D`.
+
+Conclude with `gal_clause g r₀ i (u n) (fun k => PowerSeries.coeff k φ) D hd`. Introduce `hμ n show ‖thB l (tch l (u n ^ l ^ i)) - _‖ ≤ _`. Rewrite using `[hi0 hμ, pow_zero, pow_one, thB_tch, ← omC_apply, ← oc_apply]`. Conclude with `hu2 n`.
+-/
 theorem GlobalTheory.CompanionTheory.LTPer.Tilt.tilt_period : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ) (π : ↥(OL K)) (z : ℕ → Om l),
     LTData K χ π z → ∀ μ : ↥K.1 →ₐ[ℚ_[l]] Om l,
     ∃ (r : ↥(OL K) →+* Tl l) (v : ℕ → Tl l),

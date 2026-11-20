@@ -19,6 +19,13 @@ namespace GlobalTheory.Mum.DiagPic
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Take `⟨U, hU, ht⟩` from `A.sym (default : PrimeSpectrum K)`. Establish `h` using `(cls_eq_zero_iff (LB.isLB_linComb A.isLB _ _)).2 ht`. Rewrite `h` using `[cls_linComb A.isLB, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, add_neg_eq_zero] at h`. Establish `hr : Set.range (𝟙 A.A.left : A.A.left ⟶ A.A.left) ⊆ Set.range (A.A.hom ⁻¹ᵁ U).ι`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Introduce `x _`. Establish `e : A.A.hom x = (default : PrimeSpectrum K)` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Use `show A.A.hom x ∈ U`. Rewrite using `[e]`.
+
+Conclude with `hU`. Establish `h'` using `congrArg (pull (IsOpenImmersion.lift (A.A.hom ⁻¹ᵁ U).ι (𝟙 _) hr)) h`. Rewrite `h'` using `[← pull_comp, ← pull_comp, IsOpenImmersion.lift_fac_assoc, IsOpenImmersion.lift_fac, Category.id_comp, pull_id]`. Then use the resulting hypothesis.
+-/
 theorem pull_inv {K : Type} [Field K] (A : PolAV (Sp K)) :
     pull (GrpObj.inv : A.A ⟶ A.A).left (cls A.L A.isLB) = cls A.L A.isLB := by
   obtain ⟨U, hU, ht⟩ := A.sym (default : PrimeSpectrum K)
@@ -36,6 +43,9 @@ theorem pull_inv {K : Type} [Field K] (A : PolAV (Sp K)) :
   rwa [← pull_comp, ← pull_comp, IsOpenImmersion.lift_fac_assoc, IsOpenImmersion.lift_fac, Category.id_comp,
     pull_id] at h'
 
+/- English proof (translation)
+Establish `h` using `(cls_eq_zero_iff (pull_isLB A.isLB _)).2 A.rigid`. Rewrite `h` using `[cls_pull A.isLB]`. Rewrite using `[Hom.one_def, Over.comp_left, pull_comp]`. Conclude with `(congrArg _ h).trans (map_zero _)`.
+-/
 theorem pull_one {S : Scheme.{0}} (A : PolAV S) {T : Over S} :
     pull (1 : T ⟶ A.A).left (cls A.L A.isLB) = 0 := by
   have h := (cls_eq_zero_iff (pull_isLB A.isLB _)).2 A.rigid
@@ -43,6 +53,11 @@ theorem pull_one {S : Scheme.{0}} (A : PolAV S) {T : Over S} :
   rw [Hom.one_def, Over.comp_left, pull_comp]
   exact (congrArg _ h).trans (map_zero _)
 
+/- English proof (translation)
+Establish `h` using `lam_mul_left A.isLB (GlobalTheory.Moduli.cube_of_isLB _ A A.L A.isLB) (𝟙 A.A) (𝟙 A.A)⁻¹ (𝟙 A.A)`. Rewrite `h` using `[mul_inv_cancel, lam_one_left]`. Establish `e : lam (cls A.L A.isLB) (𝟙 A.A)⁻¹ (𝟙 A.A) = -(2 • cls A.L A.isLB)`. Rewrite using `[lam, inv_mul_cancel, pull_one, Hom.inv_def, Category.id_comp, pull_inv, Over.id_left, pull_id]`. Normalize the expressions using the abelian group laws.
+
+Rewrite `h` using `[e]`. Conclude with `(add_neg_eq_zero.1 h.symm)`.
+-/
 theorem lam_self {K : Type} [Field K] (A : PolAV (Sp K)) :
     lam (cls A.L A.isLB) (𝟙 A.A) (𝟙 A.A) = 2 • cls A.L A.isLB := by
   have h := lam_mul_left A.isLB (GlobalTheory.Moduli.cube_of_isLB _ A A.L A.isLB) (𝟙 A.A) (𝟙 A.A)⁻¹ (𝟙 A.A)
@@ -53,6 +68,9 @@ theorem lam_self {K : Type} [Field K] (A : PolAV (Sp K)) :
   rw [e] at h
   exact (add_neg_eq_zero.1 h.symm)
 
+/- English proof (translation)
+Establish `h` using `lam_self A`. Rewrite `h` using `[lam, pull_one, Over.id_left, pull_id, add_zero, sub_sub, sub_eq_iff_eq_add]`. Rewrite using `[pow_two, h]`. Normalize the expressions using the abelian group laws.
+-/
 theorem pull_sq {K : Type} [Field K] (A : PolAV (Sp K)) :
     pull ((𝟙 A.A) ^ 2 : A.A ⟶ A.A).left (cls A.L A.isLB) = 4 • cls A.L A.isLB := by
   have h := lam_self A
@@ -66,6 +84,21 @@ namespace GlobalTheory.Mum
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Introduce `R _ _ G _ _ A gen hgen PP hExt c d hL hP hc hd`. Establish `: IsCommMonObj ((Over.pullback (jK R)).obj G)` using `Functor.isCommMonObj_obj`. Establish `hc' : c = pull gen.hom.left (cls A.L A.isLB)` using `hc`. Use `⟨?_, ((𝟙 ((Over.pullback (jK R)).obj G)) ^ 2 : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G).left, ?_, ?_⟩` and prove the remaining obligations. Take `⟨g₂, hg₂, -⟩` from `lbIso_lam_pull_of_isGrpPullback _ _ _ G ((Over.pullback (jK R)).obj G) _ (isGrpPullback_pullback G (jK R))`.
+
+Establish `h₁` using `(cls_eq_iff (LB.isLB_linComb hL _ _) (pull_isLB hExt.1 g₂)).2 (hExt.2 g₂ hg₂)`. Establish `h₂` using `(cls_cube_two hL (fst _ _) (snd _ _) (LB.isLB_linComb hL _ _)).symm.trans h₁`. Establish `h₃` using `congrArg (pull (lift (𝟙 ((Over.pullback (jK R)).obj G)) (𝟙 ((Over.pullback (jK R)).obj G))).left) h₂`. Establish `e : (lift (𝟙 ((Over.pullback (jK R)).obj G)) (𝟙 ((Over.pullback (jK R)).obj G))).left ≫ g₂ = pullback.fst G.hom (jK R) ≫ (lift (𝟙 G) (𝟙 G) : G ⟶ G2 G).left`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Use `show (_ ≫ g₂) ≫ (fst G G).left = (_ ≫ _) ≫ (fst G G).left`. Rewrite using `[Category.assoc, hg₂.1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst, Over.id_left, Over.id_left]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Use `show (_ ≫ g₂) ≫ (snd G G).left = (_ ≫ _) ≫ (snd G G).left`. Rewrite using `[Category.assoc, hg₂.2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd, Over.id_left, Over.id_left]`.
+
+Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Rewrite `h₃` using `[pull_lam, lift_fst, lift_snd, cls_pull hExt.1, ← pull_comp, e, pull_comp, cls_pull A.isLB, lam_pull, Category.id_comp]`. Establish `h₄` using `pull_lam gen.hom (cls A.L A.isLB) (𝟙 _) (𝟙 _)`. Rewrite `h₄` using `[Category.comp_id, DiagPic.lam_self, map_nsmul]`. Rewrite using `[hc', hd]`.
+
+Conclude with `h₄.trans h₃`. Establish `e : ((𝟙 ((Over.pullback (jK R)).obj G)) ^ 2 : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G) = (Over.pullback (jK R)).map ((𝟙 G) ^ 2)`. Rewrite using `[pow_two, pow_two, Functor.map_mul, CategoryTheory.Functor.map_id]`. Rewrite using `[e]`. Conclude with `pullback.lift_fst _ _ _`.
+
+Establish `e : ((𝟙 ((Over.pullback (jK R)).obj G)) ^ 2 : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G) ≫ gen.hom = gen.hom ≫ (𝟙 A.A) ^ 2`. Rewrite using `[MonObj.pow_comp, MonObj.comp_pow, Category.id_comp, Category.comp_id]`. Establish `h` using `congrArg (pull gen.hom.left) (DiagPic.pull_sq A)`. Rewrite `h` using `[← pull_comp, ← Over.comp_left, ← e, Over.comp_left, pull_comp, map_nsmul]`. Rewrite using `[hc']`.
+
+Conclude with `h`.
+-/
 theorem two_smul_cls_eq_pull_diag_and_pull_sq : ∀ (R : Type) [CommRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (A : PolAV (Sp (FractionRing R))) (gen : ((Over.pullback (jK R)).obj G) ≅ A.A), IsMonHom gen.hom → ∀ PP : LB (G2 G).left, ExtLam G (A.L.pull gen.hom.left) PP → ∀ (c : GlobalTheory.CechPic.Pic (pullback G.hom (jK R))) (d : GlobalTheory.CechPic.Pic G.left) (hL : (A.L.pull gen.hom.left).IsLB) (hP : (PP.pull (lift (𝟙 G) (𝟙 G) : G ⟶ G2 G).left).IsLB), c = GlobalTheory.CechPic.cls (A.L.pull gen.hom.left) hL → d = GlobalTheory.CechPic.cls (PP.pull (lift (𝟙 G) (𝟙 G) : G ⟶ G2 G).left) hP → 2 • c = GlobalTheory.CechPic.pull (pullback.fst G.hom (jK R)) d ∧ ∃ φ : pullback G.hom (jK R) ⟶ pullback G.hom (jK R), φ ≫ pullback.fst G.hom (jK R) = pullback.fst G.hom (jK R) ≫ ((𝟙 G) ^ 2 : G ⟶ G).left ∧ GlobalTheory.CechPic.pull φ c = 4 • c := by
   intro R _ _ G _ _ A gen hgen PP hExt c d hL hP hc hd
   have : IsCommMonObj ((Over.pullback (jK R)).obj G) := Functor.isCommMonObj_obj

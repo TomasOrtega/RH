@@ -15,6 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.ThetaInj
 
+/- English proof (translation)
+Establish `hd : ∀ u v : κ' → R, (u ∘ σ) ⬝ᵥ (v ∘ σ) = u ⬝ᵥ v` using `fun u v => Equiv.sum_comp σ fun i => u i * v i`. Simplify using `only [GlobalTheory.WeilM.schr, hd]`. Both sides reduce to the same expression.
+-/
 theorem schr_reindex {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ κ' : Type}
     [Fintype κ] [Fintype κ'] (σ : κ ≃ κ') (w : (κ' → R) × (κ' → R)) (φ : (κ → R) → ℂ) (x : κ' → R) :
     GlobalTheory.WeilM.schr ψ w (fun u : κ' → R => φ (u ∘ σ)) x =
@@ -24,6 +27,9 @@ theorem schr_reindex {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar 
   simp only [GlobalTheory.WeilM.schr, hd]
   rfl
 
+/- English proof (translation)
+Unfold `GlobalTheory.WeilM.thetaSum`. Conclude with `(Equiv.arrowCongr σ.symm (Equiv.refl F)).tsum_eq (fun ξ : κ → F => Φ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)))`.
+-/
 theorem thetaSum_reindex (F : Type) [Field F] [NumberField F] {κ κ' : Type} (σ : κ ≃ κ')
     (Φ : (κ → AdeleRing (𝓞 F) F) → ℂ) :
     GlobalTheory.WeilM.thetaSum F (fun u : κ' → AdeleRing (𝓞 F) F => Φ (u ∘ σ)) = GlobalTheory.WeilM.thetaSum F Φ := by
@@ -31,6 +37,13 @@ theorem thetaSum_reindex (F : Type) [Field F] [NumberField F] {κ κ' : Type} (�
   exact (Equiv.arrowCongr σ.symm (Equiv.refl F)).tsum_eq
     (fun ξ : κ → F => Φ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)))
 
+/- English proof (translation)
+Introduce `D ψ hψ κ _ Φ hΦ Φ' hΦ' h`. Establish `hR : IsTotallyReal D.host.F` using `inferInstance`. Set `σ` to `Fintype.equivFin κ`. Establish `key : ∀ (Ψ : (κ → AF D.host.F) → ℂ) (w : GlobalTheory.ThetaTransform.VA D.host.F (Fintype.card κ)), GlobalTheory.ThetaTransform.thV ψ (fun u : Fin (Fintype.card κ) → AF D.host.F => Ψ (u ∘ σ)) w = GlobalTheory.WeilM.thetaSum D.host.F (GlobalTheory.WeilM.schr ψ (w.1 ∘ σ, w.2 ∘ σ) Ψ …`. Introduce `Ψ w`.
+
+Rewrite using `[← thetaSum_reindex D.host.F σ (GlobalTheory.WeilM.schr ψ (w.1 ∘ σ, w.2 ∘ σ) Ψ)]`. Unfold `GlobalTheory.ThetaTransform.thV`. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `schr_reindex ψ σ w Ψ x`.
+
+Establish `e` using `GlobalTheory.ThetaTransform.thV_injOn hR hψ.1 (GlobalTheory.ThetaTransform.comp_mem_schA σ hΦ) (GlobalTheory.ThetaTransform.comp_mem_schA σ hΦ') (funext fun w => by rw [key, key]; exact h _)`. Use function extensionality and compare the values at `x`. Use `congrFun e (x ∘ σ.symm)` as an intermediate fact. Simplify `this` using `[Function.comp_assoc]`.
+-/
 theorem theta_transform_injOn : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (κ : Type) [Fintype κ],
     ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F κ, ∀ Φ' ∈ GlobalTheory.WeilM.schA D.host.F κ,
       (∀ w, GlobalTheory.WeilM.thetaSum D.host.F (GlobalTheory.WeilM.schr ψ w Φ) = GlobalTheory.WeilM.thetaSum D.host.F (GlobalTheory.WeilM.schr ψ w Φ')) →
@@ -68,6 +81,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact @ThetaInjectivity.GlobalTheory.CompanionTheory.ThetaInj.theta_transform_injOn | exact ThetaInjectivity.GlobalTheory.CompanionTheory.ThetaInj.theta_transform_injOn | (intros; apply ThetaInjectivity.GlobalTheory.CompanionTheory.ThetaInj.theta_transform_injOn <;> assum …`.
+-/
 theorem _root_.GlobalTheory.Adopt.thetaTransform_injOn_adelicSchwartzSpace : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (κ : Type) [Fintype κ],
     ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F κ, ∀ Φ' ∈ GlobalTheory.WeilM.schA D.host.F κ,
       (∀ w, GlobalTheory.WeilM.thetaSum D.host.F (GlobalTheory.WeilM.schr ψ w Φ) = GlobalTheory.WeilM.thetaSum D.host.F (GlobalTheory.WeilM.schr ψ w Φ')) →

@@ -8,28 +8,49 @@ namespace RingPf
 
 variable {q : ℕ} {E : Spc}
 
+/- English proof (translation)
+Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cast_heq {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E n i) : HEq (x.cast hn hi) x := by
   subst hn hi; rfl
 
+/- English proof (translation)
+Substitute `h1 h2 h3 h4` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cast_cast {n i n' i' n'' i'' : ℤ} (h1 : n = n') (h2 : i = i') (h3 : n' = n'') (h4 : i' = i'') (x : Ht q E n i) :
     (x.cast h1 h2).cast h3 h4 = x.cast (h1.trans h3) (h2.trans h4) := by
   subst h1 h2 h3 h4; rfl
 
+/- English proof (translation)
+Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cast_zero {n i n' i' : ℤ} (hn : n = n') (hi : i = i') : (0 : Ht q E n i).cast hn hi = 0 := by
   subst hn hi; rfl
 
+/- English proof (translation)
+Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cast_add {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x y : Ht q E n i) :
     (x + y).cast hn hi = x.cast hn hi + y.cast hn hi := by
   subst hn hi; rfl
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cup_cast_left {n m i j n' i' : ℤ} (h1 : n = n') (h2 : i = i') (a : Ht q E n i) (b : Ht q E m j) :
     cup q (a.cast h1 h2) b = (cup q a b).cast (by rw [h1]) (by rw [h2]) := by
   subst h1 h2; rfl
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cup_cast_right {n m i j m' j' : ℤ} (h1 : m = m') (h2 : j = j') (a : Ht q E n i) (b : Ht q E m j) :
     cup q a (b.cast h1 h2) = (cup q a b).cast (by rw [h1]) (by rw [h2]) := by
   subst h1 h2; rfl
 
+/- English proof (translation)
+Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+-/
 theorem pull_cast {E' : Spc} (f : E ⟶ E') {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E' n i) :
     pull _ f _ _ (x.cast hn hi) = Ht.cast hn hi (pull _ f _ _ x) := by
   subst hn hi; rfl
@@ -44,6 +65,9 @@ def gone (q : ℕ) (E : Spc) : A q E 0 := (one q E).cast (by simp) (by simp)
 instance : GradedMonoid.GMul (A q E) := ⟨gmul⟩
 instance : GradedMonoid.GOne (A q E) := ⟨gone q E⟩
 
+/- English proof (translation)
+The claim follows from `Int.negOnePow_even _ ⟨2 * i * j, by ring⟩`.
+-/
 theorem negOnePow_even (i j : ℕ) : (2 * (i : ℤ) * (2 * (j : ℤ))).negOnePow = 1 :=
   Int.negOnePow_even _ ⟨2 * i * j, by ring⟩
 
@@ -51,19 +75,31 @@ section
 variable (hr : DivisorRingCompatibility) [NeZero q]
 include hr
 
+/- English proof (translation)
+The claim follows from `(hr q E).1 h a`.
+-/
 theorem one_cup (h : Inv q E) {n i : ℤ} (a : Ht q E n i) : cup q (one q E) a = a.cast (by ring) (by ring) :=
   (hr q E).1 h a
 
+/- English proof (translation)
+Rewrite using `[(hr q E).2.2 a (one q E), (hr q E).1 h, cast_cast]`. Simplify using the standard rewrite rules.
+-/
 theorem cup_one (h : Inv q E) {n i : ℤ} (a : Ht q E n i) : cup q a (one q E) = a.cast (by ring) (by ring) := by
   rw [(hr q E).2.2 a (one q E), (hr q E).1 h, cast_cast]
   simp
 
+/- English proof (translation)
+Simplify using `only [gmul, cup_cast_left, cup_cast_right, cast_cast]`. Rewrite using `[(hr q E).2.1 a b c, cast_cast]`. Conclude with `(cast_heq _ _ _).trans (cast_heq _ _ _).symm`.
+-/
 theorem gmul_assoc {i j k : ℕ} (a : A q E i) (b : A q E j) (c : A q E k) :
     HEq (gmul (gmul a b) c) (gmul a (gmul b c)) := by
   simp only [gmul, cup_cast_left, cup_cast_right, cast_cast]
   rw [(hr q E).2.1 a b c, cast_cast]
   exact (cast_heq _ _ _).trans (cast_heq _ _ _).symm
 
+/- English proof (translation)
+Simplify using `only [gmul]`. Rewrite using `[(hr q E).2.2 a b, negOnePow_even, one_smul, cast_cast]`. Conclude with `(cast_heq _ _ _).trans (cast_heq _ _ _).symm`.
+-/
 theorem gmul_comm {i j : ℕ} (a : A q E i) (b : A q E j) : HEq (gmul a b) (gmul b a) := by
   simp only [gmul]
   rw [(hr q E).2.2 a b, negOnePow_even, one_smul, cast_cast]
@@ -139,6 +175,9 @@ def mapOf {E E' : Spc} (f : E ⟶ E') (h : Inv q E) (h' : Inv q E') :
       simp only [gmul, pull_cast, (hn q).1 f])
 
 include hn in
+/- English proof (translation)
+Use `letI := gcr hr h`. Use `letI := gcr hr h'`. Conclude with `DirectSum.toSemiring_of _ _ _ k a`.
+-/
 theorem mapOf_of {E E' : Spc} (f : E ⟶ E') (h : Inv q E) (h' : Inv q E') (k : ℕ) (a : A q E' k) :
     mapOf hn hr f h h' (DirectSum.of (A q E') k a) = DirectSum.of (A q E) k (pull (ZMod q) f (tw q k) (2 * (k : ℤ)) a) := by
   letI := gcr hr h; letI := gcr hr h'
@@ -149,6 +188,23 @@ end
 end RingPf
 
 open RingPf in
+/- English proof (translation)
+Introduce `q _`. Conclude with `⟨{ R := fun E _ => DirectSum ℕ (A q E)`. Use `ring := fun E h => ringOf hr E h`. Use `ι := fun {E} _ k => DirectSum.of (A q E) k`. Use `π := fun {E} _ k => projOf E k`.
+
+Use `map := fun f h h' => mapOf hn hr f h h'`. Use `π_ι := fun {E} _ k a => by show (DirectSum.of (A q E) k a) k = a`. Conclude with `DirectSum.of_eq_same (β := A q E) k a`. Use `ι_one := fun {E} _ => rfl`. Use `ι_mul := fun {E} h k l a b => by`.
+
+Use `letI := gcr hr h`. Conclude with `(DirectSum.of_mul_of (A := A q E) a b).symm`. Use `ι_cpow := fun {E} h k x => by`. Use `letI := gcr hr h`. Proceed by induction on `k with`.
+
+Consider the case `zero => rw [pow_zero, cpow_zero]`. Both sides reduce to the same expression. Consider the case `succ k ih`. Rewrite using `[pow_succ, ← ih, cpow_succ]`. Use `show _ = DirectSum.of (A q E) k _ * DirectSum.of (A q E) 1 _`.
+
+Rewrite using `[DirectSum.of_mul_of]`. Use `congr 1`. Use `map_ι := fun {E E'} f h h' k a => by`. Conclude with `mapOf_of hn hr f h h' k a`. Use `π_map := fun {E E'} f h h' k r => by`.
+
+Use `letI := gcr hr h`. Use `letI := gcr hr h'`. Proceed by induction on `r using DirectSum.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `of j a => show projOf E k (mapOf hn hr f h h' (DirectSum.of (A q E') j a)) = _`.
+
+Rewrite using `[mapOf_of]`. Use `show (DirectSum.of (A q E) j (pull (ZMod q) f _ _ a)) k = pull (ZMod q) f _ _ ((DirectSum.of (A q E') j a) k)`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Rewrite using `[DirectSum.of_eq_same, DirectSum.of_eq_same]`.
+
+Rewrite using `[DirectSum.of_eq_of_ne _ _ _ (Ne.symm hjk), DirectSum.of_eq_of_ne _ _ _ (Ne.symm hjk), map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy] }⟩`.
+-/
 theorem etale_even_cohomology_graded_commRing_of_cup_ring_axioms (hn : DivisorNaturality) (hr : DivisorRingCompatibility) : LeafRing := by
   intro q _
   exact ⟨{
@@ -188,6 +244,9 @@ theorem etale_even_cohomology_graded_commRing_of_cup_ring_axioms (hn : DivisorNa
         · rw [DirectSum.of_eq_of_ne _ _ _ (Ne.symm hjk), DirectSum.of_eq_of_ne _ _ _ (Ne.symm hjk), map_zero]
       | add x y hx hy => simp only [map_add, hx, hy] }⟩
 
+/- English proof (translation)
+The claim follows from `etale_even_cohomology_graded_commRing_of_cup_ring_axioms hn hr`.
+-/
 theorem LeafRing_of (hn : LeafA6nat) (hr : LeafA6ring) : LeafRing := etale_even_cohomology_graded_commRing_of_cup_ring_axioms hn hr
 
 end LateralTheory.E.D2

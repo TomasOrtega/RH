@@ -18,6 +18,11 @@ namespace GlobalTheory.HTLine.GenInd
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Use `show ((embK c τ a : c.F) : ℂ) ∈ W`. Rewrite using `[embK_coe]`. Establish `h1 : IsIntegral ℤ (τ (a : E))` using `(NumberField.RingOfIntegers.isIntegral_coe a).map τ.toIntAlgHom`. Establish `h2 : IsIntegral W (τ (a : E))` using `h1.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`.
+
+Rewrite using `[← hy]`. Conclude with `y.2`.
+-/
 theorem embK_mem {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) (τ : E →+* ℂ) (a : 𝓞 E) :
     embK c τ a ∈ c.V W := by
   show ((embK c τ a : c.F) : ℂ) ∈ W
@@ -28,6 +33,11 @@ theorem embK_mem {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) (τ : E 
   rw [← hy]
   exact y.2
 
+/- English proof (translation)
+Take `⟨h0, h1⟩` from `(ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal).1 hW`. Rewrite `h1`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Set `g : c.V W →+* W` to `(c.F.val.toRingHom.comp (c.V W).subtype).codRestrict W (fun x => x.2)`. Apply `h1` to reduce the goal to its premises.
+
+Use `hu.map g` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext (by simp)`.
+-/
 theorem natCast_mem_max {l : Level H} (c : Coeff l) {W : ValuationSubring ℂ} {p : ℕ} (hW : (p : ℂ) ∈ W.nonunits) :
     (p : c.V W) ∈ IsLocalRing.maximalIdeal (c.V W) := by
   obtain ⟨h0, h1⟩ := (ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal).1 hW
@@ -40,6 +50,13 @@ theorem natCast_mem_max {l : Level H} (c : Coeff l) {W : ValuationSubring ℂ} {
   convert this using 1
   exact Subtype.ext (by simp)
 
+/- English proof (translation)
+Establish `hker : RingHom.ker g = ⊥`. Assume the negation of the conclusion as `h`. Establish `hm : (RingHom.ker g).IsMaximal` using `Ideal.IsPrime.isMaximal (RingHom.ker_isPrime g) h`. Establish `he` using `IsLocalRing.eq_maximalIdeal hm`. Apply `hk` to reduce the goal to its premises.
+
+Establish `: (p : V) ∈ RingHom.ker g` using `he ▸ hp`. Simplify using `using this`. Establish `hinj : Function.Injective g` using `(injective_iff_map_eq_zero g).2 fun x hx => by`. Establish `: x ∈ RingHom.ker g` using `hx`. Rewrite `this` using `[hker]`. Then use the resulting hypothesis.
+
+Conclude with `⟨IsFractionRing.lift hinj, fun v => IsFractionRing.lift_algebraMap (K := F) hinj v⟩`.
+-/
 theorem exists_ext {F : Type} [Field F] (V : ValuationSubring F) [IsDiscreteValuationRing V] (p : ℕ)
     (hp : (p : V) ∈ IsLocalRing.maximalIdeal V) {k : Type} [Field k] (g : V →+* k) (hk : (p : k) ≠ 0) :
     ∃ f : F →+* k, ∀ v : V, f v = g v := by
@@ -55,10 +72,16 @@ theorem exists_ext {F : Type} [Field F] (V : ValuationSubring F) [IsDiscreteValu
     rwa [hker] at this
   exact ⟨IsFractionRing.lift hinj, fun v => IsFractionRing.lift_algebraMap (K := F) hinj v⟩
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Use `RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[dualMap, epsMul]`. Simplify using `[dualMap, epsMul, mul_comm]`.
+-/
 theorem dualMap_epsMul {R k : Type} [CommRing R] [CommRing k] (ψ : R →+* k) (r : R) :
     (dualMap ψ).comp (epsMul r) = (epsMul (ψ r)).comp (dualMap ψ) := by
   refine RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_
@@ -67,6 +90,15 @@ theorem dualMap_epsMul {R k : Type} [CommRing R] [CommRing k] (ψ : R →+* k) (
 
 variable {X : Scheme.{0}} {t : SAB H X}
 
+/- English proof (translation)
+Establish `hT : ∀ j, IsTanAtG t (spMap ψ ≫ x) (spMap (dualMap ψ) ≫ v j)` using `fun j => GlobalTheory.LieMet.isTan_map ψ rfl (hv.1 j)`. Use `⟨fun i => hT (e i), fun cf cf' w h h' => ?_⟩` and prove the remaining obligations. Set `V : Fin n → ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM (spMap ψ ≫ x) t.G` to `fun j => GlobalTheory.LieMet.tanOf (hT j)`. Establish `hs : ∀ d : Fin m → k, ∑ j, Function.extend e d 0 j • V j = ∑ i, d i • V (e i)` using `fun d => by`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.map e)) (fun j _ hj => by`.
+
+Rewrite using `[Function.extend_apply' _ _ _ (fun ⟨i, hi⟩ => hj (Finset.mem_map.2 ⟨i, Finset.mem_univ _, hi⟩)), Pi.zero_apply, zero_smul]), Finset.sum_map]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [e.injective.extend_apply]`. Establish `hc : ∀ d, IsCombAtG t (spMap ψ ≫ x) (fun i => spMap (dualMap ψ) ≫ v (e i)) d w → IsCombAtG t (spMap ψ ≫ x) (fun j => spMap (dualMap ψ) ≫ v j) (Function.extend e d 0) w` using `fun d hd => by`. Establish `h1` using `(Pull.comb_iff (fun i => V (e i)) d w).1 hd`. Conclude with `(Pull.comb_iff V _ w).2 (by rw [hs]; exact h1)`.
+
+Establish `hw : IsTanAtG t (spMap ψ ≫ x) w`. Rewrite using `[(Pull.comb_iff (fun i => V (e i)) cf w).1 h]`. Conclude with `GlobalTheory.LieMet.isTan_tv _`. Use `(hv.2 k ψ w hw).unique (hc cf h) (hc cf' h')` as an intermediate fact. Use function extensionality and compare the values at `i`.
+
+Establish `h2` using `congrFun this (e i)`. Rewrite `h2` using `[e.injective.extend_apply, e.injective.extend_apply]`. Then use the resulting hypothesis.
+-/
 theorem ind_of_basis {R k : Type} [CommRing R] [Field k] {x : Sp R ⟶ X} {n m : ℕ}
     {v : Fin n → (Sp (DualNumber R) ⟶ t.G.left)} (hv : GlobalTheory.LineNorm.IsTanBasis t x v) (e : Fin m ↪ Fin n)
     (ψ : R →+* k) : Pull.Ind t (spMap ψ ≫ x) (fun i => spMap (dualMap ψ) ≫ v (e i)) := by
@@ -90,6 +122,17 @@ theorem ind_of_basis {R k : Type} [CommRing R] [Field k] {x : Sp R ⟶ X} {n m :
   have h2 := congrFun this (e i)
   rwa [e.injective.extend_apply, e.injective.extend_apply] at h2
 
+/- English proof (translation)
+Use `⟨fun i => (hI _).1 _, fun cf cf' w h h' => ?_⟩` and prove the remaining obligations. Set `_ : Algebra c.F k` to `f.toAlgebra`. Set `U : (y : GlobalTheory.ShFam.Pad.Letter Dw) → ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM x t.G` to `fun y => GlobalTheory.LieMet.tanOf ((hI y.1).1 y.2)`. Set `e` to `Equiv.ofBijective _ (GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective Dw)`. Establish `hc : ∀ cf w, IsCombAtG t x (fun i : Fin (letters Dw).length => u ((letters Dw).get i).1 ((letters Dw).get i).2) cf w ↔ w = (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv (∑ y, cf (e.symm y) • U y)).left` using `fun cf w => by`.
+
+Rewrite using `[← Equiv.sum_comp e]`. Simplify using `only [Equiv.symm_apply_apply]`. Conclude with `GlobalTheory.Proof.frame_combination_coeff_unique.comb_iff (fun i => U (e i)) cf w`. Establish `hτ : ∀ τ cf w, IsCombAtG t x (u τ) cf w ↔ w = (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv (∑ i, cf i • U ⟨τ, i⟩)).left` using `fun τ cf w => GlobalTheory.Proof.frame_combination_coeff_unique.comb_iff (fun i => U ⟨τ, i⟩) cf w`. Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`.
+
+Take `⟨α, hinj, -, -⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.exists_sepElt (E := E) (F := c.F) c.F.val.toRingHom (embK c) (fun τ a => embK_coe c τ a)`. Set `ρ` to `ReciprocityTheory.ChartRestriction.G.PullbackSections.actR (x0 := x) (S := k) t.act`. Establish `hEv : ∀ τ (v : ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM x t.G), ReciprocityTheory.ChartRestriction.G.PullbackSections.IsEigV ρ (embK c τ) v ↔ ∀ a : 𝓞 E, (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv v).left ≫ (t.act.act a).left = spMap (epsMul (f (em …` using `fun τ v => forall_congr' fun a => ⟨fun h => congrArg (fun z => (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv z).left) h, fun h => GlobalTheory.LieMet.tan_ext h⟩`. Establish `hS : ∀ τ (a : Fin (Dw.mult τ) → k), ReciprocityTheory.ChartRestriction.G.PullbackSections.IsEigV ρ (embK c τ) (∑ i, a i • U ⟨τ, i⟩)` using `fun τ a s => by`. Rewrite using `[map_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, (hEv τ (U ⟨τ, i⟩)).2 (hE τ i) s, smul_comm]`. Establish `h1` using `GlobalTheory.LieMet.tan_ext (((hc cf w).1 h).symm.trans ((hc cf' w).1 h'))`. Rewrite `h1` using `[Fintype.sum_sigma, Fintype.sum_sigma]`. Use function extensionality and compare the values at `i`.
+
+Take `⟨⟨τ, i⟩, rfl⟩` from `e.symm.surjective i`. Establish `h2` using `congrArg (ReciprocityTheory.ChartRestriction.G.PullbackSections.proj ρ (embK c) α τ) h1`. Rewrite `h2` using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.proj_sum_eig ρ (embK c) α hinj _ (fun τ' => hS τ' _), ReciprocityTheory.ChartRestriction.G.PullbackSections.proj_sum_eig ρ (embK c) α hinj _ (fun τ' => hS τ' _)]`. Conclude with `congrFun ((hI τ).2 _ _ _ ((hτ τ _ _).2 rfl) ((hτ τ _ _).2 (congrArg (fun z => (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv z).left) h2))) i`.
+-/
 theorem ind_concat {Dw : Datum H} {l : Level H} (c : Coeff l) {k : Type} [Field k] (f : c.F →+* k) {x : Sp k ⟶ X}
     (u : Vecs Dw t k) (hE : ∀ τ i (a : 𝓞 E), u τ i ≫ (t.act.act a).left = spMap (epsMul (f (embK c τ a))) ≫ u τ i)
     (hI : ∀ τ, Pull.Ind t x (u τ)) :
@@ -134,6 +177,17 @@ end GlobalTheory.HTLine.GenInd
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ hp hW Z U hU w hw k _ ψ hk`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b : Z.i.c.V W →+* Γ(Z.X, U), hU.fromSpec ≫ Z.s = spMap b := by`. Use `⟨(Spec.preimage (hU.fromSpec ≫ Z.s)).hom, ?_⟩` and prove the remaining obligations. Conclude with `(Spec.map_preimage (hU.fromSpec ≫ Z.s)).symm`. Use `GlobalTheory.ProjBlowup.isDiscreteValuationRing_coeff (W := W) Z.i.c hp.ne_zero hW` as an intermediate fact.
+
+Take `⟨f, hf⟩` from `GlobalTheory.HTLine.GenInd.exists_ext (Z.i.c.V W) p (GlobalTheory.HTLine.GenInd.natCast_mem_max Z.i.c hW) (ψ.comp b) hk`. Establish `hE : ∀ τ i (a : 𝓞 E), w.bc ψ τ i ≫ ((Y Z.i).t.act.act a).left = spMap (epsMul (f (embK Z.i.c τ a))) ≫ w.bc ψ τ i`. Introduce `τ i a`. Establish `h` using `GlobalTheory.HTLine.GenInd.embK_mem Z.i.c W τ a`. Establish `h1` using `GlobalTheory.T.integral_frame_valuation_bound E H Dw Xo p W Y i₀ Z U hU w hw b hb τ i a h`.
+
+Establish `h2 : f (embK Z.i.c τ a) = ψ (b ⟨_, h⟩)` using `hf ⟨_, h⟩`. Use `show spMap (dualMap ψ) ≫ w τ i ≫ _ = spMap (epsMul _) ≫ spMap (dualMap ψ) ≫ w τ i`. Rewrite using `[h1, h2, ← Category.assoc, ← Category.assoc, GlobalTheory.HTLine.GenInd.spMap_comp', GlobalTheory.HTLine.GenInd.spMap_comp', GlobalTheory.HTLine.GenInd.dualMap_epsMul]`. Establish `hI : ∀ τ, Pull.Ind (Y Z.i).t (spMap ψ ≫ hU.fromSpec ≫ Z.π) (w.bc ψ τ)`. Introduce `τ`.
+
+Take `⟨n, v, e, hve, hvt, hvu⟩` from `hw.1 τ`. Establish `hB` using `GlobalTheory.T.isTanBasis_of_unique_combination E H _ (Y Z.i).t _ (hU.fromSpec ≫ Z.π) n v hvt hvu`. Establish `h3` using `GlobalTheory.HTLine.GenInd.ind_of_basis hB e ψ`. Simplify using `only [hve] at h3`. Conclude with `h3`.
+
+Use `⟨hI, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.HTLine.GenInd.ind_concat (t := (Y Z.i).t) (x := spMap ψ ≫ hU.fromSpec ≫ Z.π) (Dw := Dw) Z.i.c f (w.bc ψ) hE hI`.
+-/
 theorem GlobalTheory.HTLine.GenInd.ind_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Z : Mdl Y i₀) (U : Z.X.Opens) (hU : IsAffineOpen U) (w : Vecs Dw (Y Z.i).t Γ(Z.X, U)), IntFrame Z hU w → ∀ (k : Type) [Field k] (ψ : Γ(Z.X, U) →+* k), (p : k) ≠ 0 → (∀ τ, Pull.Ind (Y Z.i).t (spMap ψ ≫ hU.fromSpec ≫ Z.π) (w.bc ψ τ)) ∧ Pull.Ind (Y Z.i).t (spMap ψ ≫ hU.fromSpec ≫ Z.π) (fun i : Fin (letters Dw).length => w.bc ψ ((letters Dw).get i).1 ((letters Dw).get i).2) := by
   intro E _ _ _ H Dw Xo p W Y i₀ hp hW Z U hU w hw k _ ψ hk
   obtain ⟨b, hb⟩ : ∃ b : Z.i.c.V W →+* Γ(Z.X, U), hU.fromSpec ≫ Z.s = spMap b := by

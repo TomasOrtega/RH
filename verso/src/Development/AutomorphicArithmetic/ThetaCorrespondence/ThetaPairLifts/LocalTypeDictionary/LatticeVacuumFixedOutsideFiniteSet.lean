@@ -15,6 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.LatStabVac
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT`. Take `⟨S₁, hS₁⟩` from `_root_.GlobalTheory.T.split_spherical_left_fixes_vacuum hP F E σ B a a' G X om om' hT`. Take `⟨S₂, hS₂⟩` from `_root_.GlobalTheory.T.split_vprime_stabilizer_fixes_vacuum hP F E σ B a a' G X om om' hT`. Use `⟨X.T ∪ S₁ ∪ S₂, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_union, not_or] at hv`.
+
+Take `⟨⟨hvT, hv₁⟩, hv₂⟩` from `hv`. Break down `GlobalTheory.KFinLoc.split_or_inert F E σ B hT.base v with hs | ⟨w, hw⟩` into its components or cases. Conclude with `⟨hS₁ v hv₁ hs, hS₂ v hv₂ hs⟩`. Use `⟨fun k hk => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.inert_place_both_stabilisers_fix_vacuum F E σ B a a' G X om om' hT v w hw hvT k hk 1 (GlobalTheory.InertSph.one_mem_KAt σ G.W v)`.
+
+Conclude with `GlobalTheory.T.inertPlace_stabilizer_fixes_vacuum_left F E σ B a a' G X om om' hT v w hw hvT k hk`.
+-/
 theorem lattice_vacuum_fixed_outside_finite_set : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' →
@@ -48,6 +55,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.LatStabVac.lattice_vacuum_fixed_outside_finite_set | exact _root_.GlobalTheory.LatStabVac.lattice_vacuum_fixed_outside_finite_set | (intros; apply _root_.GlobalTheory.LatStabVac.lattice_vacuum_fixed_outside_finite_set <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lattice_stabilizer_fixes_vacuum_vector : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' →

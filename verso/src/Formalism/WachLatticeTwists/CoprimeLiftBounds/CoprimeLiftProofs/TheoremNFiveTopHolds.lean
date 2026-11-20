@@ -11,6 +11,23 @@ namespace Formalism.RepresentationBoundsCohomology.BR
 open Formalism.NG
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `O _ _ _ X X' T T' Z p q b ha hb d _ _ R' _ hc Tc _ _ _ _ G _ r χ E e₁ δ ι _ _ colIdx hinj D j e' Kc k0 hEE hee hpts g₀ n hspan π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard hcard1 sE tE δO ℓ cB what₂ qs deg s vhE H0 Sha hEsum hk0 NNc cols eO vδ N h0 L _ _ _ tens v₁ κ HcG Hc F …`. Establish `hlen : ∀ c : Fin (t + 1), c ≠ 0 → (fun w => Module.length O (LinearMap.ker (DistribSMul.toLinearMap O (blockRestrictedRepresentationType bl ρk c) (ζO w - 1)))) = fun w => IsDiscreteValuationRing.addVal O (ζO w - 1)`. Introduce `c hc0`. Use function extensionality and compare the values at `w`. Establish `h` using `KernelLengthBounds.length_ker_smul_pi (O := O) {a // bl a = c} (ζO w - 1)`.
+
+Rewrite `h` using `[hcard1 c hc0, Nat.cast_one, one_mul]`. Conclude with `h`. Establish `h0b` using `bridgeRho O R' Tc G (blockRestrictedRepresentationType bl ρk 0) r χ E e₁ δ δO ι colIdx D j e' Kc k0 ℓ what₂ s L tens v₁ κ (HcG 0) (Hc 0) (F 0) Vo Io ε T₁ T₂ ρ₁ ρ₂ inc π γ lam Cs cls pr Fs Im hee hE0 hk0 (fun m => by rw [algebraMap_smul]; exact hδ0 m) hIn0`. Use `n5 O X X' T T' Z p q b ha hb d R' hc Tc G r χ E e₁ δ ι colIdx hinj D j e' Kc k0 hEE hee hpts g₀ n hspan π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard hcard1 sE tE δO ℓ cB what₂ qs (fun w => Module.length O (Fs w ⧸ (Im w).comap (Fs w).subtype)) deg (fun w => IsDiscreteValuationRing.ad …` and prove the remaining obligations. Establish `h02` using `h0b.2`.
+
+Unfold `OutRho at h02`. Take `⟨F', Q', x1, x2, x3, x4⟩` from `h02`. Use `⟨F', Q', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `x1`. Conclude with `x2`.
+
+Conclude with `x3`. Conclude with `x4`. Introduce `c hc2`. Take `⟨a1, a2, a3, a4, a5, hIn⟩` from `hC c hc2`. Establish `hc0 : c ≠ 0`.
+
+Introduce `h`. Rewrite `hc2` using `[h]`. Simplify using `at hc2`. Establish `hout` using `bridgeChiC O R' Tc G (blockRestrictedRepresentationType bl ρk c) r χ E e₁ δ ι colIdx D j Kc k0 ℓ cB what₂ qs deg (cT c) (Sha ((c : ℕ) - 1)) (HcG c) (Hc c) (F c) Vo VS Io IS I γQ ζ ζO nQ a1 a2 hk0 hIn`. Rewrite `hout` using `[hlen c hc0]`.
+
+Unfold `OutChi at hout`. Conclude with `⟨a1, a2, a3, a4, a5, hout⟩`. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, hIn⟩` from `hOne`. Establish `hc0 : (⟨1, by omega⟩ : Fin (t + 1)) ≠ 0`. Introduce `h`.
+
+Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Establish `hout` using `bridgeChiOne O R' Tc G (blockRestrictedRepresentationType bl ρk ⟨1, by omega⟩) r χ E e₁ δ δO ι colIdx D j e' Kc k0 ℓ cB what₂ qs deg (cT _) vhE (HcG _) (Hc _) (F _) Vo VS Io IS I γQ ζ ζO nQ u a1 a2 a3 (fun m => by rw [algebraMap_smul]; exact a4 m) a5 a6 a7 a8 hIn`. Rewrite `hout` using `[hlen _ hc0]`. Unfold `OutChi at hout`.
+
+Conclude with `⟨a1, a2, a3, a4, hout.1, hout.2⟩`.
+-/
 theorem theorem_n_five_top_holds : WachTwistTheorem := by
   intro O _ _ _ X X' T T' Z p q b ha hb d _ _ R' _ hc Tc _ _ _ _ G _ r χ E e₁ δ ι _ _ colIdx hinj
     D j e' Kc k0 hEE hee hpts g₀ n hspan π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard hcard1

@@ -27,10 +27,22 @@ namespace Formalism.L2.SG.NGLeaves
 
 open Formalism.BasicNotions Formalism.L2.SG.NGCut Formalism.L2.SG.NGAnalytic
 
+/- English proof (translation)
+Introduce `hk` and use `Formalism.L2.SG.NGDict.local_counting_bound_thirty_nine _ _ hk (Formalism.L2.SG.Pf.glue_constant_thirty_nine _ _) (hD _ _ hk)`.
+-/
 theorem ranks_of_dictionary (hD : ∀ k r : ℕ, 4 * r + 7 ≤ k → Formalism.L2.SG.NGDict.DictAll k r) (D : D7) :
     Formalism.MainNotions.NonGenericAndKTwoTheorems.Conclusion1 D 39 := fun hk =>
   Formalism.L2.SG.NGDict.local_counting_bound_thirty_nine _ _ hk (Formalism.L2.SG.Pf.glue_constant_thirty_nine _ _) (hD _ _ hk)
 
+/- English proof (translation)
+Introduce `D X`. Establish `hn : 2 * D.R.rS + 2 ≤ X.B.I.n`. Rewrite using `[X.n_eq]`. Establish `h1` using `D.R.rS_two`. Establish `h2` using `D.R.r_eq`.
+
+Establish `h3` using `D.R.k_ge`. Use linear arithmetic over natural numbers and integers. Establish `hH : ∀ i j, star (X.B.I.J j i) = X.B.I.J i j` using `fun i j => by`. Use `congrFun (congrFun X.B.I.J_herm i) j` as an intermediate fact. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply] at this`.
+
+Conclude with `this`. Take `⟨X0, hX⟩` from `exists_nondegenerate X.B.I.E X.B.I.n (2 * D.R.rS + 2) hn X.B.I.J hH X.B.I.J_det`. Use `⟨X0, ?_⟩` and prove the remaining obligations. Establish `e : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.gramE X.B.I.cm.sig X.B.I.J X0 = PI.NormGramAtOrigin.gram (starRingEnd _) X.B.I.J X0`. Use extensionality with `a b`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hX`.
+-/
 theorem nondegenerate_gram_tuple : NondegenerateGramTuple := by
   intro D X
   have hn : 2 * D.R.rS + 2 ≤ X.B.I.n := by
@@ -49,6 +61,9 @@ theorem nondegenerate_gram_tuple : NondegenerateGramTuple := by
     ext a b; rfl
   rw [e]; exact hX
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.NGLocModel.rowNGC_of_fam Formalism.FourierDecayAlt.Final.pn_rowNGJoint Formalism.FourierDecayAlt.P.norm_chain (ranks_of_dictionary hDict) hX hB hE (Formalism.L2.SG.NGVanish.stepTermVanish_of_form hF) hFam (Formalism.L2.SG.Pf.BDatR.stepThmBPinnedC_ofR hB3 hAmp hPt …`.
+-/
 theorem rowNGC_of_leaves
     (hOV : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word),
       Formalism.L2.SG.TermOp.KExpCut.OOVanish (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') (X := X))
@@ -64,6 +79,9 @@ theorem rowNGC_of_leaves
     (Formalism.L2.SG.NGCut.NormalInvariants.stepNormals_of hNml hNC (Formalism.L2.SG.NGCut.VanishingOrbitalPoints.stepNormOne_of_ooVanish hOV))
     (Formalism.L2.SG.NGCut.VanishingOrbitalPoints.stepPoints_of_ooVanish hOV) (Formalism.L2.SG.NGCut.VanishingOrbitalPoints.stepNormOne_of_ooVanish hOV)
 
+/- English proof (translation)
+The claim follows from `rowNGC_of_leaves hOV hNml hNC hB3 hAmp hPt hRB hDict nondegenerate_gram_tuple hB hE hF hFam`.
+-/
 theorem rowNGC_of_leaves'
     (hOV : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word),
       Formalism.L2.SG.TermOp.KExpCut.OOVanish (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') (X := X))
@@ -75,6 +93,9 @@ theorem rowNGC_of_leaves'
     (hFam : Formalism.L2.SG.NGLocModel.StepFamC) : Formalism.L2.SG.RowsConc.RowNGC :=
   rowNGC_of_leaves hOV hNml hNC hB3 hAmp hPt hRB hDict nondegenerate_gram_tuple hB hE hF hFam
 
+/- English proof (translation)
+The claim follows from `rowNGC_of_leaves' hOV hNml hNC hB3 hAmp hPt hRB hDict hB (Formalism.L2.SG.NGPin.stepPinExists_of_place hPl) (Formalism.L2.SG.NGVanish.formNGC_of_rel hF) (Formalism.L2.SG.FamDefs.stepFamC_of hG6 hH hG5 hW hG4 hE)`.
+-/
 theorem rowNGC_of_leaves2
     (hOV : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word),
       Formalism.L2.SG.TermOp.KExpCut.OOVanish (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') (X := X))
@@ -89,6 +110,9 @@ theorem rowNGC_of_leaves2
   rowNGC_of_leaves' hOV hNml hNC hB3 hAmp hPt hRB hDict hB (Formalism.L2.SG.NGPin.stepPinExists_of_place hPl)
     (Formalism.L2.SG.NGVanish.formNGC_of_rel hF) (Formalism.L2.SG.FamDefs.stepFamC_of hG6 hH hG5 hW hG4 hE)
 
+/- English proof (translation)
+The claim follows from `rowNGC_of_leaves' hOV Formalism.L2.SG.NGCut.NormalVectorPairings.NmlInv_holds Formalism.L2.SG.NGCut.NormalCount.NormCount_holds hB3 hAmp Formalism.L2.SG.PointUniformity.ptUnif' hRB hDict hB Formalism.L2.SG.NGPin.stepPinExists Formalism.L2.SG.Pf.formNGC_holds (Formalism.L2.SG.FamD …`.
+-/
 theorem rowNGC_of_leaves3
     (hOV : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word),
       Formalism.L2.SG.TermOp.KExpCut.OOVanish (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') (X := X))

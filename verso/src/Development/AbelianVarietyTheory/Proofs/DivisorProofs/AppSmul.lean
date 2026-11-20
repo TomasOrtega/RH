@@ -50,24 +50,40 @@ def wordR (T : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ((κ → mixedEmbe
     (κ → AF F) → ℂ :=
   zs.foldr (dR F T c) f
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [dD, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[deriv_const_mul_field']`.
+-/
 theorem dD_smul {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : κ → mixedEmbedding.mixedSpace F)
     (c : ℂ) (f : (κ → AF F) → ℂ) : dD F v (c • f) = c • dD F v f := by
   funext x
   simp only [dD, Pi.smul_apply, smul_eq_mul]
   rw [deriv_const_mul_field']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [mM, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mM_smul {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (l : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) (c : ℂ) (f : (κ → AF F) → ℂ) : mM F l (c • f) = c • mM F l f := by
   funext x
   simp only [mM, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `inl v => exact dD_smul v c f`. Consider the case `inr l => exact mM_smul l c f`.
+-/
 theorem app_smul {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (o : Op F κ) (c : ℂ)
     (f : (κ → AF F) → ℂ) : app F o (c • f) = c • app F o f := by
   cases o with
   | inl v => exact dD_smul v c f
   | inr l => exact mM_smul l c f
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `e : ∀ t : ℝ, (x + fun i => infAd F (t • (0 : κ → mixedEmbedding.mixedSpace F) i)) = x`. Introduce `t`. Use function extensionality and compare the values at `i`. Establish `h0 : infAd F (0 : mixedEmbedding.mixedSpace F) = 0` using `by unfold infAd; rw [map_zero, map_zero]; rfl`.
+
+Use `show x i + infAd F (t • (0 : κ → mixedEmbedding.mixedSpace F) i) = x i`. Rewrite using `[Pi.zero_apply, smul_zero, h0, add_zero]`. Use `show deriv (fun t : ℝ => f (x + fun i => infAd F (t • (0 : κ → mixedEmbedding.mixedSpace F) i))) 0 = 0`. Rewrite using `[show (fun t : ℝ => f (x + fun i => infAd F (t • (0 : κ → mixedEmbedding.mixedSpace F) i))) = fun _ => f x from`. Use function extensionality and compare the values at `fun t => by rw [e t]]`.
+
+Conclude with `deriv_const 0 (f x)`.
+-/
 theorem dD_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : (κ → AF F) → ℂ) :
     dD F 0 f = 0 := by
   funext x
@@ -82,6 +98,9 @@ theorem dD_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f
     funext fun t => by rw [e t]]
   exact deriv_const 0 (f x)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[mM]`.
+-/
 theorem mM_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : (κ → AF F) → ℂ) :
     mM F 0 f = 0 := by
   funext x

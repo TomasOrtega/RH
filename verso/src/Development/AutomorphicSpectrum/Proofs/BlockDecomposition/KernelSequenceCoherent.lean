@@ -11,6 +11,13 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 
 namespace GlobalTheory.CompanionTheory.GE
 
+/- English proof (translation)
+Use `haveI : ∀ i, SheafOfModules.IsQuasicoherent (F i) := fun i => (hF i).1`. Use `⟨isQuasicoherent_biproduct F, fun U hU => ?_⟩` and prove the remaining obligations. Use `haveI : ∀ i, Module.Finite Γ(X, U) ((F i).presheaf.obj (Opposite.op U)) := fun i => (hF i).2 U hU`. Set `L : ∀ j, (F j).presheaf.obj (Opposite.op U) →ₗ[Γ(X, U)] (⨁ F).presheaf.obj (Opposite.op U)` to `fun j => { toFun := fun x => ConcreteCategory.hom (Scheme.Modules.Hom.app (biproduct.ι F j) U) x map_add' := fun x y => map_add _ x y map_smul' := fun r x => by`. Conclude with `Scheme.Modules.Hom.app_smul _ r x }`.
+
+Set `f : (∀ j, (F j).presheaf.obj (Opposite.op U)) →ₗ[Γ(X, U)] (⨁ F).presheaf.obj (Opposite.op U)` to `∑ j, (L j).comp (LinearMap.proj j)`. Use `Module.Finite.of_surjective f ?_` and prove the remaining obligations. Introduce `m`. Use `⟨fun j => ConcreteCategory.hom (Scheme.Modules.Hom.app (biproduct.π F j) U) m, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`.
+
+Conclude with `(biproduct_app_eq_sum F U m).symm`.
+-/
 theorem isCoherent_biproduct {X : Scheme.{0}} {ι : Type} [Fintype ι] [DecidableEq ι]
     (F : ι → X.Modules) (hF : ∀ i, IsCoherent (F i)) : IsCoherent (⨁ F) := by
   haveI : ∀ i, SheafOfModules.IsQuasicoherent (F i) := fun i => (hF i).1
@@ -30,6 +37,9 @@ theorem isCoherent_biproduct {X : Scheme.{0}} {ι : Type} [Fintype ι] [Decidabl
   rw [LinearMap.sum_apply]
   exact (biproduct_app_eq_sum F U m).symm
 
+/- English proof (translation)
+Introduce `X _ k M T d h e`. Use `haveI : SheafOfModules.IsQuasicoherent (M (d + e + 1)) := (h.coherent _).1`. Conclude with `isCoherent_kernel (KerSeq.sumMap T d e) (isCoherent_biproduct _ fun _ => h.coherent _)`.
+-/
 theorem isCoherent_kerSeq : ∀ {X : Scheme.{0}} [IsLocallyNoetherian X] {k : ℕ} {M : ℕ → X.Modules}
     {T : Fin k → ∀ e, M e ⟶ M (e + 1)} {d : ℕ}, OpSeq k M T d →
     ∀ e, IsCoherent (KerSeq.kerSeq T d e) := by

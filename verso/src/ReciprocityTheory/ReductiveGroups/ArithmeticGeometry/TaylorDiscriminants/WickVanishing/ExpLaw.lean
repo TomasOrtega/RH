@@ -19,6 +19,13 @@ def ExpLawSt : Prop :=
     comp1 ℓ (G.add (pt k (n := 2) d 0) (pt k (n := 2) d 1)) = comp1 ℓ (pt k (n := 2) d 0) + comp1 ℓ (pt k (n := 2) d 1) →
     ∃ ε : Pt k 1 d, IsInvPair ε ℓ ∧ transF G.F ε ℓ = pt k (n := 2) d 0 + pt k (n := 2) d 1
 
+/- English proof (translation)
+Use `⟨fun p => h0 p.2, fun j i => ?_⟩` and prove the remaining obligations. Take `⟨j1, j2⟩` from `j`. Take `⟨i1, i2⟩` from `i`. Establish `hj : j1 = 0` using `Subsingleton.elim _ _`. Establish `hi : i1 = 0` using `Subsingleton.elim _ _`.
+
+Substitute `hj hi` using the available equality. Use `congrFun (congrFun h1 j2) i2` as an intermediate fact. Simplify using `only [dLin, Matrix.one_apply] at this`. Simplify using `only [this, Prod.mk.injEq, true_and]`. Distinguish the cases in `h : i2 = j2`.
+
+Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+-/
 theorem idMod2_of {d : ℕ} (ℓ : Pt k 1 d) (h0 : ∀ i, constantCoeff (ℓ i) = 0) (h1 : dLin ℓ = 1) :
     Formalism.FG.IsIdMod2 (fun p : Fin 1 × Fin d => ℓ p.2) := by
   refine ⟨fun p => h0 p.2, fun j i => ?_⟩
@@ -34,6 +41,9 @@ theorem idMod2_of {d : ℕ} (ℓ : Pt k 1 d) (h0 : ∀ i, constantCoeff (ℓ i) 
   · simp [h]
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem subst_single_point_family {d : ℕ} {τ : Type} (ε : Fin d → MvPowerSeries τ k) :
     (fun p : Fin 1 × Fin d => (![ε] : Fin 1 → Fin d → MvPowerSeries τ k) p.1 p.2) = fun p => ε p.2 := by
   funext p
@@ -41,17 +51,31 @@ theorem subst_single_point_family {d : ℕ} {τ : Type} (ε : Fin d → MvPowerS
   fin_cases j
   rfl
 
+/- English proof (translation)
+Unfold `ev`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_pts a ha) (fun p => ha p.1 p.2) hf`.
+-/
 theorem cc_ev {n m d : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j i, constantCoeff (a j i) = 0) {f : PS k m d}
     (hf : constantCoeff f = 0) : constantCoeff (ev a f) = 0 := by
   unfold ev
   exact constantCoeff_subst_eq_zero (hasSubst_pts a ha) (fun p => ha p.1 p.2) hf
 
+/- English proof (translation)
+Simplify using `[pt]`.
+-/
 theorem cc_pt {n d : ℕ} (j : Fin n) (i : Fin d) : constantCoeff (pt k d j i) = 0 := by simp [pt]
 
+/- English proof (translation)
+The claim follows from `cc_ev _ (fun j i => by fin_cases j; exact ha i) (hφ i)`.
+-/
 theorem cc_comp1 {n d : ℕ} (φ : Pt k 1 d) (a : Pt k n d) (hφ : ∀ i, constantCoeff (φ i) = 0)
     (ha : ∀ i, constantCoeff (a i) = 0) (i : Fin d) : constantCoeff (comp1 φ a i) = 0 :=
   cc_ev _ (fun j i => by fin_cases j; exact ha i) (hφ i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Unfold `comp1`. Rewrite using `[ev_ev (![ψ] : Fin 1 → Pt k 1 d) (![a] : Fin 1 → Pt k n d) (fun j i => by fin_cases j; exact hψ i) (fun j i => by fin_cases j; exact ha i)]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem germComp1_germComp1_eq_substitute {n d : ℕ} (φ ψ : Pt k 1 d) (a : Pt k n d) (hψ : ∀ i, constantCoeff (ψ i) = 0)
     (ha : ∀ i, constantCoeff (a i) = 0) : comp1 φ (comp1 ψ a) = comp1 (comp1 φ ψ) a := by
   funext i
@@ -63,11 +87,43 @@ theorem germComp1_germComp1_eq_substitute {n d : ℕ} (φ ψ : Pt k 1 d) (a : Pt
   fin_cases j
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Unfold `comp1`. Conclude with `ev_X (![a] : Fin 1 → Pt k n d) (fun j i => by fin_cases j; exact ha i) 0 i`.
+-/
 theorem germCompOne_identityPoint_left {n d : ℕ} (a : Pt k n d) (ha : ∀ i, constantCoeff (a i) = 0) : comp1 (pt k d 0) a = a := by
   funext i
   unfold comp1
   exact ev_X (![a] : Fin 1 → Pt k n d) (fun j i => by fin_cases j; exact ha i) 0 i
 
+/- English proof (translation)
+Introduce `k _ _ d G ℓ h0 h1 hadd`. Establish `hid` using `idMod2_of ℓ h0 h1`. Take `⟨h, hh0, hh⟩` from `Formalism.FG.solve_exists_vector k (Fin 1 × Fin d) (Fin 1 × Fin d) (fun p => ℓ p.2) X hid (fun j => by simp)`. Set `ε : Pt k 1 d` to `fun i => h (0, i)`. Establish `hε0 : ∀ i, constantCoeff (ε i) = 0` using `fun i => hh0 (0, i)`.
+
+Establish `hhε : h = fun p => ε p.2`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Use `fin_cases j`. Both sides reduce to the same expression.
+
+Establish `hLε : comp1 ℓ ε = pt k d 0`. Use function extensionality and compare the values at `i`. Use `show ev ![ε] (ℓ i) = X (0, i)`. Unfold `ev`. Rewrite using `[subst_single_point_family, ← hhε]`.
+
+Conclude with `hh (0, i)`. Establish `hsL : HasSubst (fun p : Fin 1 × Fin d => ℓ p.2)` using `hasSubst_of_constantCoeff_zero fun p => h0 p.2`. Establish `hsh : HasSubst h` using `hasSubst_of_constantCoeff_zero hh0`. Establish `hinj` using `Formalism.FG.subst_injective_vector k (Fin 1 × Fin d) (Fin 1 × Fin d) (fun p => ℓ p.2) (fun p => subst (fun q : Fin 1 × Fin d => ℓ q.2) (h p)) X hid (fun p => constantCoeff_subst_eq_zero hsL (fun q => h0 q.2) (hh0 p)) (fun p => by simp) (fun j => by`. Rewrite using `[← subst_comp_subst_apply hsh hsL, hh j, subst_X hsL, subst_self]`.
+
+Use the proof step `rfl)`. Establish `hεL : comp1 ε ℓ = pt k d 0`. Use function extensionality and compare the values at `i`. Use `show ev ![ℓ] (ε i) = X (0, i)`. Unfold `ev`.
+
+Rewrite using `[subst_single_point_family]`. Conclude with `congrFun hinj (0, i)`. Use `⟨ε, ⟨hε0, h0, hεL, hLε⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `e : ev (n` using `2) ![G.add (pt k d 0) (pt k d 1)] (ℓ i) = ev (n := 2) ![pt k d 0] (ℓ i) + ev (n := 2) ![pt k d 1] (ℓ i) := congrFun hadd i`.
+
+Set `b : Fin 2 → Pt k 2 d` to `![comp1 ε (pt k d 0), comp1 ε (pt k d 1)]`. Establish `hb : ∀ j i, constantCoeff (b j i) = 0`. Introduce `j i`. Use `fin_cases j`. Conclude with `cc_comp1 ε _ hε0 (cc_pt 0) i`.
+
+Conclude with `cc_comp1 ε _ hε0 (cc_pt 1) i`. Establish `hadd0 : ∀ j i, constantCoeff ((![G.add (pt k d 0) (pt k d 1)] : Fin 1 → Pt k 2 d) j i) = 0`. Introduce `j i`. Use `fin_cases j`. Apply the tactic sequence `exact cc_ev _ (fun j i => by fin_cases j <;> exact cc_pt _ i) (G.const i)`.
+
+Establish `hp0 : ∀ (l : Fin 2) j i, constantCoeff ((![pt k d l] : Fin 1 → Pt k 2 d) j i) = 0`. Introduce `l j i`. Use `fin_cases j`. Conclude with `cc_pt l i`. Establish `e2` using `congrArg (ev b) e`.
+
+Rewrite `e2` using `[ev_ev _ _ hadd0 hb, ev_add' _ hb, ev_ev _ _ (hp0 0) hb, ev_ev _ _ (hp0 1) hb]`. Establish `L1 : (fun (j : Fin 1) (m : Fin d) => ev b ((![G.add (pt k d 0) (pt k d 1)] : Fin 1 → Pt k 2 d) j m)) = ![addOf G.F (comp1 ε (pt k d 0)) (comp1 ε (pt k d 1))]`. Use function extensionality and compare the values at `j m`. Use `fin_cases j`. Use `show ev b (ev ![pt k d 0, pt k d 1] (G.F m)) = ev b (G.F m)`.
+
+Apply the tactic sequence `rw [ev_ev _ _ (fun j i => by fin_cases j <;> exact cc_pt _ i) hb]`. Use `congr 1`. Use function extensionality and compare the values at `j' m'`. Apply the tactic sequence `fin_cases j' <;> exact ev_X b hb _ m'`. Establish `L2 : ∀ l : Fin 2, (fun (j : Fin 1) (m : Fin d) => ev b ((![pt k d l] : Fin 1 → Pt k 2 d) j m)) = ![comp1 ε (pt k d l)]`.
+
+Introduce `l`. Use function extensionality and compare the values at `j m`. Use `fin_cases j`. Apply the tactic sequence `fin_cases l <;> exact ev_X b hb _ m`. Establish `L3 : ∀ l : Fin 2, ev (n` using `2) ![comp1 ε (pt k d l)] (ℓ i) = pt k d l i := by`.
+
+Introduce `l`. Use `congrFun (germComp1_germComp1_eq_substitute ℓ ε (pt k (n := 2) d l) hε0 (cc_pt l)) i` as an intermediate fact. Rewrite `this` using `[hLε, germCompOne_identityPoint_left _ (cc_pt l)]`. Conclude with `this`. Rewrite `e2` using `[L1, L2 0, L2 1, L3 0, L3 1]`.
+
+Conclude with `e2`.
+-/
 theorem formal_exp_law : ExpLawSt := by
   intro k _ _ d G ℓ h0 h1 hadd
   have hid := idMod2_of ℓ h0 h1
@@ -144,6 +200,19 @@ theorem formal_exp_law : ExpLawSt := by
 
 open Formalism.FG.SolveVAux in
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [dLin, Matrix.mul_apply]`. Use `show coeff (Finsupp.single ((0 : Fin 1), j) 1) (ev ![ψ] (φ i)) = _`. Unfold `ev`. Rewrite using `[subst_single_point_family]`.
+
+Establish `hs : HasSubst (fun p : Fin 1 × Fin d => ψ p.2)` using `hasSubst_of_constantCoeff_zero fun p => hψ p.2`. Establish `hlow : ∀ p : Fin 1 × Fin d, Low 1 (ψ p.2)` using `fun p => (low_one_iff _).2 (hψ p.2)`. Rewrite using `[coeff_subst hs, finsum_eq_sum_of_support_subset _ (s := Finset.univ.image (fun p : Fin 1 × Fin d => Finsupp.single p 1))]`. Rewrite using `[Finset.sum_image (fun p _ q _ h => Finsupp.single_left_injective one_ne_zero h), Fintype.sum_prod_type, Fin.sum_univ_one]`. Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[Finsupp.prod_single_index (h := fun (s : Fin 1 × Fin d) (e : ℕ) => ψ s.2 ^ e) (pow_zero _), pow_one, smul_eq_mul]`. Introduce `e he`. Rewrite `he` using `[Function.mem_support]`. Assume the negation of the conclusion as `hne`.
+
+Apply `he` to reduce the goal to its premises. Establish `hz : coeff (Finsupp.single ((0 : Fin 1), j) 1) (e.prod fun s n => (fun p : Fin 1 × Fin d => ψ p.2) s ^ n) = 0`. Break down `Nat.lt_or_ge e.degree 2 with hd | hd` into its components or cases. Break down `Nat.lt_or_ge e.degree 1 with hd1 | hd1` into its components or cases. Establish `he0 : e = 0`.
+
+Establish `: e.degree = 0` using `by omega`. Conclude with `(Finsupp.degree_eq_zero_iff e).1 this`. Rewrite using `[he0, Finsupp.prod_zero_index, coeff_one, if_neg]`. Conclude with `Finsupp.single_ne_zero.2 one_ne_zero`. Take `⟨p, rfl⟩` from `degree_eq_one e (by omega)`.
+
+Conclude with `absurd (Finset.mem_coe.2 (Finset.mem_image_of_mem _ (Finset.mem_univ p))) hne`. Establish `hl` using `low_P hlow e`. Conclude with `hl _ (by rw [Finsupp.degree_single]; omega)`. Rewrite using `[hz, smul_zero]`.
+-/
 theorem dLin_comp1 {d : ℕ} (φ ψ : Pt k 1 d) (hψ : ∀ i, constantCoeff (ψ i) = 0) :
     dLin (comp1 φ ψ) = dLin φ * dLin ψ := by
   classical
@@ -181,6 +250,11 @@ theorem dLin_comp1 {d : ℕ} (φ ψ : Pt k 1 d) (hψ : ∀ i, constantCoeff (ψ 
         exact hl _ (by rw [Finsupp.degree_single]; omega)
     rw [hz, smul_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Unfold `comp1`. Use `ev_pt (k := k) (n := 1) (d := d) (φ i)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+
+Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem composition_identity_point_right {d : ℕ} (φ : Pt k 1 d) : comp1 φ (pt k d 0) = φ := by
   funext i
   unfold comp1
@@ -190,6 +264,23 @@ theorem composition_identity_point_right {d : ℕ} (φ : Pt k 1 d) : comp1 φ (p
   fin_cases j
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `e : ev (n` using `2) ![G.add (pt k d 0) (pt k d 1)] (ℓ i) = ev (n := 2) ![pt k d 0] (ℓ i) + ev (n := 2) ![pt k d 1] (ℓ i) := congrFun hadd i`. Set `b : Fin 2 → Pt k n d` to `![u, v]`. Establish `hb : ∀ j i, constantCoeff (b j i) = 0`. Introduce `j i`.
+
+Use `fin_cases j`. Conclude with `hu i`. Conclude with `hv i`. Establish `hadd0 : ∀ j i, constantCoeff ((![G.add (pt k d 0) (pt k d 1)] : Fin 1 → Pt k 2 d) j i) = 0`. Introduce `j i`.
+
+Use `fin_cases j`. Apply the tactic sequence `exact cc_ev _ (fun j i => by fin_cases j <;> exact cc_pt _ i) (G.const i)`. Establish `hp0 : ∀ (l : Fin 2) j i, constantCoeff ((![pt k d l] : Fin 1 → Pt k 2 d) j i) = 0`. Introduce `l j i`. Use `fin_cases j`.
+
+Conclude with `cc_pt l i`. Establish `e2` using `congrArg (ev b) e`. Rewrite `e2` using `[ev_ev _ _ hadd0 hb, ev_add' _ hb, ev_ev _ _ (hp0 0) hb, ev_ev _ _ (hp0 1) hb]`. Establish `L1 : (fun (j : Fin 1) (m : Fin d) => ev b ((![G.add (pt k d 0) (pt k d 1)] : Fin 1 → Pt k 2 d) j m)) = ![addOf G.F u v]`. Use function extensionality and compare the values at `j m`.
+
+Use `fin_cases j`. Use `show ev b (ev ![pt k d 0, pt k d 1] (G.F m)) = ev b (G.F m)`. Apply the tactic sequence `rw [ev_ev _ _ (fun j i => by fin_cases j <;> exact cc_pt _ i) hb]`. Use `congr 1`. Use function extensionality and compare the values at `j' m'`.
+
+Apply the tactic sequence `fin_cases j' <;> exact ev_X b hb _ m'`. Establish `L2 : (fun (j : Fin 1) (m : Fin d) => ev b ((![pt k d 0] : Fin 1 → Pt k 2 d) j m)) = ![u]`. Use function extensionality and compare the values at `j m`. Use `fin_cases j`. Conclude with `ev_X b hb 0 m`.
+
+Establish `L3 : (fun (j : Fin 1) (m : Fin d) => ev b ((![pt k d 1] : Fin 1 → Pt k 2 d) j m)) = ![v]`. Use function extensionality and compare the values at `j m`. Use `fin_cases j`. Conclude with `ev_X b hb 1 m`. Rewrite `e2` using `[L1, L2, L3]`.
+
+Conclude with `e2`.
+-/
 theorem add_at {d : ℕ} (G : FGLaw k d) (ℓ : Pt k 1 d)
     (hadd : comp1 ℓ (G.add (pt k (n := 2) d 0) (pt k (n := 2) d 1)) =
       comp1 ℓ (pt k (n := 2) d 0) + comp1 ℓ (pt k (n := 2) d 1))
@@ -243,6 +334,27 @@ def LogUniqueSt : Prop :=
       comp1 ℓ' (pt k (n := 2) d 0) + comp1 ℓ' (pt k (n := 2) d 1) → ℓ = ℓ'
 
 open Formalism.FG.SolveVAux in
+/- English proof (translation)
+Introduce `k _ _ d G ℓ ℓ' h0 h1 hadd h0' h1' hadd'`. Take `⟨ε, ⟨hε0, -, hεL, hLε⟩, htr⟩` from `formal_exp_law k d G ℓ h0 h1 hadd`. Establish `hp2 : ∀ (l : Fin 2) (i : Fin d), constantCoeff (pt k (n` using `2) d l i) = 0 := fun l i => cc_pt l i`. Establish `hsum0 : ∀ i, constantCoeff ((pt k (n` using `2) d 0 + pt k (n := 2) d 1) i) = 0 := fun i => by simp [pt]`. Establish `hεp : ∀ (l : Fin 2) i, constantCoeff (comp1 ε (pt k (n` using `2) d l) i) = 0 := fun l i => cc_comp1 ε _ hε0 (hp2 l) i`.
+
+Establish `hA : addOf G.F (comp1 ε (pt k (n` using `2) d 0)) (comp1 ε (pt k (n := 2) d 1)) = comp1 ε (pt k (n := 2) d 0 + pt k (n := 2) d 1) := by`. Apply the tactic sequence `have hAc : ∀ i, constantCoeff (addOf G.F (comp1 ε (pt k (n := 2) d 0)) (comp1 ε (pt k (n := 2) d 1)) i) = 0 := fun i => cc_ev _ (fun j i => by fin_cases j <;> exact hεp _ i) (G.const i)`. Establish `e : comp1 ℓ (addOf G.F (comp1 ε (pt k (n` using `2) d 0)) (comp1 ε (pt k (n := 2) d 1))) = pt k (n := 2) d 0 + pt k (n := 2) d 1 := htr`. Establish `e2` using `congrArg (comp1 ε) e`. Rewrite `e2` using `[germComp1_germComp1_eq_substitute ε ℓ _ h0 hAc, hεL, germCompOne_identityPoint_left _ hAc]`.
+
+Conclude with `e2`. Use `set δ := comp1 ℓ' ε with hδ`. Establish `hδ0 : ∀ i, constantCoeff (δ i) = 0` using `fun i => cc_comp1 ℓ' ε h0' hε0 i`. Establish `hδadd : comp1 δ (pt k (n` using `2) d 0 + pt k (n := 2) d 1) = comp1 δ (pt k (n := 2) d 0) + comp1 δ (pt k (n := 2) d 1) := by`. Rewrite using `[hδ, ← germComp1_germComp1_eq_substitute ℓ' ε _ hε0 hsum0, ← germComp1_germComp1_eq_substitute ℓ' ε _ hε0 (hp2 0), ← germComp1_germComp1_eq_substitute ℓ' ε _ hε0 (hp2 1), ← hA]`.
+
+Conclude with `add_at G ℓ' hadd' _ _ (hεp 0) (hεp 1)`. Establish `hdε : dLin ε = 1`. Use `dLin_comp1 ℓ ε hε0` as an intermediate fact. Rewrite `this` using `[hLε, h1, _root_.one_mul]`. Rewrite using `[← this]`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [dLin, pt, Matrix.one_apply, coeff_X, Finsupp.single_left_inj one_ne_zero, Prod.mk.injEq, true_and]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+
+Establish `hdδ : dLin δ = 1` using `by rw [hδ, dLin_comp1 ℓ' ε hε0, h1', hdε, _root_.one_mul]`. Establish `hδid : δ = pt k d 0`. Use function extensionality and compare the values at `i`. Use extensionality with `e`. Break down `eq_or_ne e.degree 1 with he | he` into its components or cases.
+
+Take `⟨⟨j0, j⟩, rfl⟩` from `degree_eq_one e he`. Establish `hj0 : j0 = 0` using `Subsingleton.elim _ _`. Substitute `hj0` using the available equality. Use `congrFun (congrFun hdδ i) j` as an intermediate fact. Simplify using `only [dLin, Matrix.one_apply] at this`.
+
+Rewrite using `[this]`. Simplify using `only [pt, coeff_X, Finsupp.single_left_inj one_ne_zero, Prod.mk.injEq, true_and]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+
+Rewrite using `[addition_linear k d (δ i) (congrFun hδadd i) e he]`. Simplify using `only [pt, coeff_X]`. Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Conclude with `he (Finsupp.degree_single _ _)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem formal_log_unique : LogUniqueSt := by
   intro k _ _ d G ℓ ℓ' h0 h1 hadd h0' h1' hadd'
   classical

@@ -9,6 +9,13 @@ namespace GlobalTheory.PolFan
 
 section RadicalFree
 
+/- English proof (translation)
+Establish `key : ∀ k : ℤ, 0 ≤ 2 * k * β x y + β y y` using `fun k => by`. Establish `h` using `hn (k • x + y)`. Simplify using `only [map_add, map_zsmul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hx, hs y x] at h`. Use the polynomial consequences of the given equalities and inequalities. Establish `hc` using `hn y`.
+
+Break down `lt_trichotomy (β x y) 0 with h | h | h` into its components or cases. Establish `h1` using `key (β y y + 1)`. Establish `hb : β x y ≤ -1` using `by omega`. Use `mul_le_mul_of_nonneg_left hb (by linarith : (0 : ℤ) ≤ β y y + 1)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Conclude with `h`. Establish `h1` using `key (-(β y y + 1))`. Establish `hb : 1 ≤ β x y` using `by omega`. Use `mul_le_mul_of_nonneg_left hb (by linarith : (0 : ℤ) ≤ β y y + 1)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem bilin_eq_zero_of_self_eq_zero {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm ℤ X)
     (hs : ∀ y z, β y z = β z y) (hn : ∀ y, 0 ≤ β y y) {x : X} (hx : β x x = 0) (y : X) : β x y = 0 := by
   have key : ∀ k : ℤ, 0 ≤ 2 * k * β x y + β y y := fun k => by
@@ -27,6 +34,23 @@ theorem bilin_eq_zero_of_self_eq_zero {X : Type} [AddCommGroup X] (β : LinearMa
     have := mul_le_mul_of_nonneg_left hb (by linarith : (0 : ℤ) ≤ β y y + 1)
     nlinarith
 
+/- English proof (translation)
+Establish `hw : ∀ a a' b b', q a = q a' → q b = q b' → F a b = F a' b'`. Introduce `a a' b b' ha hb`. Establish `h1 : q (a - a') = 0` using `by rw [map_sub, ha, sub_self]`. Establish `h2 : q (b - b') = 0` using `by rw [map_sub, hb, sub_self]`. Establish `e1` using `hL _ h1 b`.
+
+Establish `e2` using `hR _ h2 a'`. Rewrite `e1` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`. Rewrite `e2` using `[map_sub, sub_eq_zero]`. Rewrite using `[e1, e2]`. Set `p` to `Function.surjInv hq`.
+
+Establish `hp : ∀ x, q (p x) = x` using `Function.surjInv_eq hq`. Set `f : X₁ → X₁ → M` to `fun x y => F (p x) (p y)`. Establish `hf : ∀ a b, f (q a) (q b) = F a b` using `fun a b => hw _ _ _ _ (hp _) (hp _)`. Use `⟨LinearMap.mk₂ ℤ f ?_ ?_ ?_ ?_, fun a b => hf a b⟩` and prove the remaining obligations. Introduce `x x' y`.
+
+Take `⟨a, rfl⟩` from `hq x`. Take `⟨a', rfl⟩` from `hq x'`. Take `⟨b, rfl⟩` from `hq y`. Rewrite using `[← map_add, hf, hf, hf, map_add, LinearMap.add_apply]`. Introduce `c x y`.
+
+Take `⟨a, rfl⟩` from `hq x`. Take `⟨b, rfl⟩` from `hq y`. Rewrite using `[← map_zsmul, hf, hf]`. Set `g : X →+ M` to `AddMonoidHom.mk' (fun a => F a b) fun a a' => by rw [map_add, LinearMap.add_apply]`. Conclude with `(map_zsmul g c a).trans (int_smul_eq_zsmul iM c (F a b)).symm`.
+
+Introduce `x y y'`. Take `⟨a, rfl⟩` from `hq x`. Take `⟨b, rfl⟩` from `hq y`. Take `⟨b', rfl⟩` from `hq y'`. Rewrite using `[← map_add, hf, hf, hf, map_add]`.
+
+Introduce `c x y`. Take `⟨a, rfl⟩` from `hq x`. Take `⟨b, rfl⟩` from `hq y`. Rewrite using `[← map_zsmul, hf, hf]`. Set `g : X →+ M` to `AddMonoidHom.mk' (fun b => F a b) fun b b' => map_add (F a) b b'`.
+
+Conclude with `(map_zsmul g c b).trans (int_smul_eq_zsmul iM c (F a b)).symm`.
+-/
 theorem exists_descent {X X₁ M F' : Type} [AddCommGroup X] [AddCommGroup X₁] [AddCommGroup M] [iM : Module ℤ M]
     [FunLike F' X X₁] [AddMonoidHomClass F' X X₁] (q : F') (hq : Function.Surjective q) (F : X →ₗ[ℤ] X →ₗ[ℤ] M)
     (hL : ∀ x, q x = 0 → ∀ y, F x y = 0) (hR : ∀ x, q x = 0 → ∀ y, F y x = 0) :
@@ -68,6 +92,9 @@ theorem exists_descent {X X₁ M F' : Type} [AddCommGroup X] [AddCommGroup X₁]
     let g : X →+ M := AddMonoidHom.mk' (fun b => F a b) fun b b' => map_add (F a) b b'
     exact (map_zsmul g c b).trans (int_smul_eq_zsmul iM c (F a b)).symm
 
+/- English proof (translation)
+The claim follows from `(Fintype.sum_of_injective s s.injective (fun j => g (s j)) g (fun i hi => by_contra fun h' => hi (h i h')) fun _ => rfl).symm`.
+-/
 theorem sum_eq_sum_emb {M : Type} [AddCommMonoid M] {m k : ℕ} (s : Fin k ↪ Fin m) (g : Fin m → M)
     (h : ∀ i, g i ≠ 0 → ∃ j, s j = i) : ∑ i, g i = ∑ j, g (s j) :=
   (Fintype.sum_of_injective s s.injective (fun j => g (s j)) g
@@ -75,6 +102,9 @@ theorem sum_eq_sum_emb {M : Type} [AddCommMonoid M] {m k : ℕ} (s : Fin k ↪ F
 
 variable {X : Type} [AddCommGroup X] {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X}
 
+/- English proof (translation)
+Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul] at hx`. Establish `h0` using `(Finset.sum_eq_zero_iff_of_nonneg fun j _ => mul_nonneg (hc j) (by exact_mod_cast hn j x)).1 hx i (Finset.mem_univ _)`. Conclude with `(mul_eq_zero.1 h0).resolve_left hi` after adjusting the coercions.
+-/
 theorem self_eq_zero_of_sum (hn : ∀ i y, 0 ≤ γ i y y) {c : Fin m → ℝ} (hc : ∀ i, 0 ≤ c i) {x : X}
     (hx : (∑ i, c i • toReal (γ i)) x x = 0) (i : Fin m) (hi : c i ≠ 0) : γ i x x = 0 := by
   simp only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul] at hx
@@ -82,22 +112,36 @@ theorem self_eq_zero_of_sum (hn : ∀ i y, 0 ≤ γ i y y) {c : Fin m → ℝ} (
     (Finset.mem_univ _)
   exact_mod_cast (mul_eq_zero.1 h0).resolve_left hi
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `hG`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul]`. Conclude with `Finset.sum_nonneg fun i _ => mul_nonneg (hc i) (by exact_mod_cast hn i y)`.
+-/
 theorem rcone_self_nonneg (hn : ∀ i y, 0 ≤ γ i y y) {G : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} (hG : G ∈ rcone γ) (y : X) :
     0 ≤ G y y := by
   obtain ⟨c, hc, rfl⟩ := hG
   simp only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul]
   exact Finset.sum_nonneg fun i _ => mul_nonneg (hc i) (by exact_mod_cast hn i y)
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `hG`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul, hs _ y z]`.
+-/
 theorem rcone_symm (hs : ∀ i y z, γ i y z = γ i z y) {G : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} (hG : G ∈ rcone γ) (y z : X) :
     G y z = G z y := by
   obtain ⟨c, hc, rfl⟩ := hG
   simp only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul, hs _ y z]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `hG`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul, fun i => (hb i).2 a y z]`.
+-/
 theorem rcone_bal {O : Type} [CommRing O] {bar : O → O} [Module O X] (hb : ∀ i, γ i ∈ balForms bar X)
     {G : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} (hG : G ∈ rcone γ) (a : O) (y z : X) : G (a • y) z = G y (bar a • z) := by
   obtain ⟨c, hc, rfl⟩ := hG
   simp only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul, fun i => (hb i).2 a y z]
 
+/- English proof (translation)
+Use `LinearMap.ext₂ fun x y => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hq x`. Take `⟨b, rfl⟩` from `hq y`. Rewrite using `[hG]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul, hγ₁]`.
+
+Conclude with `sum_eq_sum_emb s _ fun i hi => hcs i (left_ne_zero_of_mul hi)`.
+-/
 theorem descend_rcone {X₁ F' : Type} [AddCommGroup X₁] [FunLike F' X X₁] [AddMonoidHomClass F' X X₁] (q : F')
     (hq : Function.Surjective q) {k : ℕ} (s : Fin k ↪ Fin m) (γ₁ : Fin k → LinearMap.BilinForm ℤ X₁)
     (hγ₁ : ∀ j a b, γ₁ j (q a) (q b) = γ (s j) a b) {c : Fin m → ℝ} (hcs : ∀ i, c i ≠ 0 → ∃ j, s j = i)
@@ -110,6 +154,11 @@ theorem descend_rcone {X₁ F' : Type} [AddCommGroup X₁] [FunLike F' X X₁] [
   simp only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul, hγ₁]
   exact sum_eq_sum_emb s _ fun i hi => hcs i (left_ne_zero_of_mul hi)
 
+/- English proof (translation)
+Use `⟨fun y z => ?_, fun c y z => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hq y`. Take `⟨b, rfl⟩` from `hq z`. Conclude with `h.1 a b`. Take `⟨a, rfl⟩` from `hq y`.
+
+Take `⟨b, rfl⟩` from `hq z`. Use `h.2 c a b` as an intermediate fact. Simplify using `only [pull_apply, map_smul] at this`. Conclude with `this`.
+-/
 theorem mem_balForms_of_pull {O : Type} [CommRing O] {bar : O → O} [Module O X] {X₁ : Type} [AddCommGroup X₁]
     [Module O X₁] {q : X →ₗ[O] X₁} (hq : Function.Surjective q) {β : LinearMap.BilinForm ℤ X₁}
     (h : pull q β ∈ balForms bar X) : β ∈ balForms bar X₁ := by
@@ -129,6 +178,37 @@ section Depth
 
 variable {O : Type} [CommRing O] {bar : O → O} {ψ w : InvFun O}
 
+/- English proof (translation)
+Establish `hs : ∀ i y z, γ i y z = γ i z y` using `fun i => (hγ.mem i).1`. Establish `hn` using `hγ.nonneg`. Set `S : Finset (Fin m)` to `Finset.univ.filter fun i => ∀ x, q x = 0 → ∀ y, γ i x y = 0`. Set `s : Fin S.card ↪ Fin m` to `(S.orderEmbOfFin rfl).toEmbedding`. Establish `hS : ∀ i, i ∈ S → ∃ j, s j = i` using `fun i hi => by`.
+
+Establish `: i ∈ Set.range (S.orderEmbOfFin rfl)` using `by rw [Finset.range_orderEmbOfFin]; exact hi`. Conclude with `this`. Establish `hsS : ∀ j, ∀ x, q x = 0 → ∀ y, γ (s j) x y = 0` using `fun j => (Finset.mem_filter.1 (Finset.orderEmbOfFin_mem S rfl j)).2`. Establish `hcoef : ∀ c : Fin m → ℝ, (∀ i, 0 ≤ c i) → (∀ x, q x = 0 → (∑ i, c i • toReal (γ i)) x x = 0) → ∀ i, c i ≠ 0 → ∃ j, s j = i` using `fun c hc h i hi => hS i (Finset.mem_filter.2 ⟨Finset.mem_univ _, fun x hx y => bilin_eq_zero_of_self_eq_zero _ (hs i) (hn i) (self_eq_zero_of_sum hn hc (h x hx) i hi) y⟩)`. Establish `hBs : ∀ y z, B y z = B z y` using `rcone_symm hs hB`.
+
+Establish `hBL : ∀ x, q x = 0 → ∀ y, B x y = 0` using `fun x hx => (hq0 x).1 hx`. Establish `hBR : ∀ x, q x = 0 → ∀ y, B y x = 0` using `fun x hx y => by rw [hBs]; exact hBL x hx y`. Establish `hvL : ∀ x, q x = 0 → ∀ y, v x y = 0` using `fun x hx => by`. Establish `h1` using `rcone_self_nonneg hn hBt x`. Establish `h2 : B x x = 0` using `hBL x hx x`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul, h2] at h1`. Establish `h3 : (v x x : ℝ) ≤ 0` using `by nlinarith`. Establish `h4 : v x x = 0` using `le_antisymm (by exact_mod_cast h3) (hvn x)`. Conclude with `bilin_eq_zero_of_self_eq_zero v hv.1 hvn h4`. Establish `hvR : ∀ x, q x = 0 → ∀ y, v y x = 0` using `fun x hx y => by rw [hv.1]; exact hvL x hx y`.
+
+Use `choose γ₁ hγ₁ using fun j => exists_descent q hq (γ (s j)) (hsS j) fun x hx y => by`. Rewrite using `[hs]`. Conclude with `hsS j x hx y`. Take `⟨v₁, hv₁⟩` from `exists_descent q hq v hvL hvR`. Take `⟨B₁, hB₁⟩` from `exists_descent q hq B hBL hBR`.
+
+Establish `hpull : ∀ j, pull q (γ₁ j) = γ (s j)` using `fun j => LinearMap.ext₂ fun a b => hγ₁ j a b`. Establish `hvpull : pull q v₁ = v` using `LinearMap.ext₂ fun a b => hv₁ a b`. Establish `hrc : ∀ {G₁ : X₁ →ₗ[ℤ] X₁ →ₗ[ℤ] ℝ} {G : X →ₗ[ℤ] X →ₗ[ℤ] ℝ}, G ∈ rcone γ → (∀ a b, G₁ (q a) (q b) = G a b) → G₁ ∈ rcone γ₁`. Introduce and unpack `G₁ G ⟨c, hc, rfl⟩ hG`. Use `⟨fun j => c (s j), fun j => hc _, descend_rcone q hq s γ₁ hγ₁ (hcoef c hc fun x hx => ?_) hG⟩` and prove the remaining obligations.
+
+Rewrite using `[← hG x x, hx]`. Simplify using the standard rewrite rules. Establish `hcell : IsCell bar ψ γ₁`. Use `⟨fun j => mem_balForms_of_pull hq (by rw [hpull]; exact hγ.mem _), fun j y => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hq y`.
+
+Rewrite using `[hγ₁]`. Conclude with `hn _ a`. Use `(linearOn_pull_iff hq).1 ?_` and prove the remaining obligations. Simplify using `only [hpull]`. Conclude with `linearOn_comp hγ.linear s`.
+
+Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hγ.strict`. Set `P : LinearMap.BilinForm ℤ X₁ →ₗ[ℤ] LinearMap.BilinForm ℤ X` to `{ toFun := pull q, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Use `⟨N, ℓ ∘ₗ P, hN, fun j => ?_, fun β hβ hp => ?_, fun β hβ hp he => ?_⟩` and prove the remaining obligations. Use `show (ℓ (pull q (γ₁ j)) : ℝ) = N * ψ.evalZ (γ₁ j)`. Rewrite using `[← evalZ_pull ψ hq, hpull]`.
+
+Conclude with `h1 (s j)`. Use `show N * ψ.evalZ β ≤ (ℓ (pull q β) : ℝ)`. Rewrite using `[← evalZ_pull ψ hq]`. Conclude with `h2 _ (pull_mem q hβ) fun y => hp _`. Establish `he' : N * ψ.evalZ (pull q β) = ℓ (pull q β)` using `by rw [evalZ_pull ψ hq]; exact he`.
+
+Take `⟨k, c, hk, hc⟩` from `h3 _ (pull_mem q hβ) (fun y => hp _) he'`. Establish `hcS : ∀ i, c i ≠ 0 → ∃ j, s j = i` using `fun i hi => hS i (Finset.mem_filter.2 ⟨Finset.mem_univ _, fun x hx y => by`. Establish `h0` using `LinearMap.congr_fun₂ hc x x`. Simplify using `only [LinearMap.smul_apply, pull_apply, hx, map_zero, LinearMap.zero_apply, smul_zero, LinearMap.sum_apply] at h0`. Establish `h4` using `(Finset.sum_eq_zero_iff_of_nonneg fun j _ => nsmul_nonneg (hn j x) _).1 h0.symm i (Finset.mem_univ _)`.
+
+Conclude with `bilin_eq_zero_of_self_eq_zero _ (hs i) (hn i) ((smul_eq_zero.1 h4).resolve_left hi) y⟩)`. Use `⟨k, fun j => c (s j), hk, LinearMap.ext₂ fun x y => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hq x`. Take `⟨b, rfl⟩` from `hq y`. Establish `h0` using `LinearMap.congr_fun₂ hc a b`.
+
+Simplify using `only [LinearMap.smul_apply, pull_apply, LinearMap.sum_apply] at h0`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, hγ₁]`. Rewrite using `[h0]`. Conclude with `sum_eq_sum_emb s _ fun i hi => hcS i fun h => hi (by rw [h, zero_smul])`. Use `⟨X₁, inferInstance, inferInstance, inferInstance, q ∘ₗ π, B₁, hq.comp hπ, fun x hx => ?_, fun a b => (hB₁ (π a) (π b)).symm, ht.le, S.card, γ₁, v₁, hcell, mem_balForms_of_pull hq (by rw [hvpull]; exact hv), fun y => ?_, ?_, hrc hvc fun a b => ?_, hrc hB hB₁, hrc hBt fun a b => ?_ …` and prove the remaining obligations.
+
+Take `⟨a, rfl⟩` from `hq x`. Conclude with `(hq0 a).2 fun y => by rw [← hB₁]; exact hx (q y)`. Take `⟨a, rfl⟩` from `hq y`. Rewrite using `[hv₁]`. Conclude with `hvn a`.
+
+Rewrite using `[← evalZ_pull w hq, hvpull]`. Conclude with `hvw`. Simplify using `only [toReal_apply, hv₁]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, toReal_apply, hB₁, hv₁]`.
+-/
 theorem mem_depthSet_of_quot {X X₁ : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
     [AddCommGroup X₁] [Module O X₁] [Module.Finite O X₁] (q : X →ₗ[O] X₁) (hq : Function.Surjective q)
     {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} {v : LinearMap.BilinForm ℤ X} {t : ℝ}
@@ -229,6 +309,11 @@ theorem mem_depthSet_of_quot {X X₁ : Type} [AddCommGroup X] [Module O X] [Modu
 
 end Depth
 
+/- English proof (translation)
+Introduce `O _ bar ψ w X _ _ _ m γ B v t hγ hB hv hvn hvw hvc ht hBt n π hπ`. Set `R : Submodule O X` to `{ carrier := {x | ∀ y, B x y = 0} add_mem' := fun {x x'} hx hx' y => by`. Simplify using `only [Set.mem_setOf_eq, map_add, LinearMap.add_apply, hx y, hx' y, add_zero]`. Use the proof step `zero_mem' := fun y => by simp`. Use the proof step `smul_mem' := fun c x hx y => by show B (c • x) y = 0`.
+
+Rewrite using `[rcone_bal hγ.mem hB c x y]`. Conclude with `hx _ }`. Conclude with `mem_depthSet_of_quot R.mkQ R.mkQ_surjective hγ hB hv hvn hvw hvc ht hBt (fun x => Submodule.Quotient.mk_eq_zero R) hπ`.
+-/
 theorem mem_depthSet_of_rcone : ∀ (O : Type) [CommRing O] (bar : O → O) (ψ w : InvFun O) (X : Type) [AddCommGroup X]
     [Module O X] [Module.Finite O X] (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X) (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ)
     (v : LinearMap.BilinForm ℤ X) (t : ℝ), IsCell bar ψ γ → B ∈ rcone γ → v ∈ balForms bar X → (∀ y, 0 ≤ v y y) →

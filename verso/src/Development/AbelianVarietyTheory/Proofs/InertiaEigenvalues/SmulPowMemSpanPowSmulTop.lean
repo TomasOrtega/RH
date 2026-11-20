@@ -3,6 +3,9 @@ open scoped PowerSeries Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_singleton_pow]`. Establish `e : l ^ j • x = l ^ n • (l ^ (j - n) • x)`. Rewrite using `[smul_smul, ← pow_add, Nat.add_sub_cancel' h]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`.
+-/
 theorem smul_pow_mem_span_pow_smul_top {O M : Type} [CommRing O] [AddCommGroup M] [Module O M]
     (l : O) (j n : ℕ) (x : M) (h : n ≤ j) :
     l ^ j • x ∈ (Ideal.span {l}) ^ n • (⊤ : Submodule O M) := by
@@ -12,6 +15,11 @@ theorem smul_pow_mem_span_pow_smul_top {O M : Type} [CommRing O] [AddCommGroup M
   rw [e]
   exact Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top
 
+/- English proof (translation)
+Establish `hle : I ^ n • (⊤ : Submodule O M) ≤ (I ^ n • (⊤ : Submodule O N)).comap f`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr y _`. Simplify using `only [Submodule.mem_comap, map_smul]`. Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`.
+
+Conclude with `hle hx`.
+-/
 theorem map_mem_pow_smul_top {O M N : Type} [CommRing O] [AddCommGroup M] [Module O M]
     [AddCommGroup N] [Module O N] (I : Ideal O) (n : ℕ) (f : M →ₗ[O] N) {x : M}
     (hx : x ∈ I ^ n • (⊤ : Submodule O M)) : f x ∈ I ^ n • (⊤ : Submodule O N) := by
@@ -22,6 +30,33 @@ theorem map_mem_pow_smul_top {O M N : Type} [CommRing O] [AddCommGroup M] [Modul
     exact Submodule.smul_mem_smul hr Submodule.mem_top
   exact hle hx
 
+/- English proof (translation)
+Introduce `O Y Z _ _ _ _ _ l _ _ Lc P W c k hck hW hsat hrange y₀`. Establish `hsatn : ∀ n z, l ^ n • z ∈ W → z ∈ W`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro z h`.
+
+Simplify using `using h`. Consider the case `succ n ih`. Introduce `z h`. Apply `ih` to reduce the goal to its premises. Apply `hsat` to reduce the goal to its premises.
+
+Rewrite using `[smul_smul, ← pow_succ']` and apply the resulting hypothesis. Establish `hPW : ∀ y, P y ∈ W`. Introduce `y`. Apply `hsatn k` to reduce the goal to its premises. Establish `h` using `W.sub_mem (hW y).2 (hW y).1`.
+
+Simplify `h` using `[LinearMap.add_apply, LinearMap.smul_apply]`. Establish `hg : ∀ v, ∃ u, Lc u = l ^ c • P v` using `fun v => by`. Take `⟨u, hu⟩` from `hrange _ (hPW v)`. Conclude with `⟨u, hu⟩`. Use `choose g hg using hg`.
+
+Take `⟨d, hd, hk⟩ : ∃ d, 1 ≤ d ∧ k = d + c` from `⟨k - c, by omega, by omega⟩`. Set `L' : Y →ₗ[O] Z` to `Lc + l ^ k • P`. Establish `hL' : ∀ y, L' y = Lc y + l ^ k • P y` using `fun y => rfl`. Set `s : ℕ → Y × Y` to `fun n => Nat.rec (y₀, -y₀) (fun i p => (p.1 + l ^ ((i + 1) * d) • g p.2, -g p.2)) n`. Establish `s_succ : ∀ n, s (n + 1) = ((s n).1 + l ^ ((n + 1) * d) • g (s n).2, -g (s n).2)` using `fun n => rfl`.
+
+Establish `s_zero : s 0 = (y₀, -y₀)` using `rfl`. Establish `inv : ∀ n, Lc y₀ - L' (s n).1 = l ^ (n * d) • l ^ k • P (s n).2`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Rewrite using `[s_zero, hL']`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[s_succ]`. Simplify using `only`.
+
+Rewrite using `[map_add, map_smul, ← sub_sub, ih, hL', hg, map_neg, smul_neg, smul_add, smul_smul, smul_smul, smul_smul, ← pow_add, ← pow_add, ← pow_add]`. Establish `e : n * d + k = (n + 1) * d + c`. Rewrite using `[hk, add_mul, one_mul, add_assoc]`. Rewrite using `[e, sub_add_eq_sub_sub, sub_self, zero_sub, smul_neg, smul_smul, ← pow_add]`. Establish `hcauchy : ∀ a b, a ≤ b → (s a).1 ≡ (s b).1 [SMOD (Ideal.span {l}) ^ a • (⊤ : Submodule O Y)]`.
+
+Introduce `a b hab`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ b hab ih`. Rewrite `ih`, the goal using `[SModEq.sub_mem]`.
+
+Rewrite using `[s_succ]`. Simplify using `only`. Establish `h2` using `smul_pow_mem_span_pow_smul_top l ((b + 1) * d) a (g (s b).2) (by nlinarith)`. Use `Submodule.sub_mem _ ih h2` as an intermediate fact. Rewrite `this` using `[sub_sub]`. Then use the resulting hypothesis.
+
+Take `⟨y, hy⟩` from `IsPrecomplete.prec (IsAdicComplete.toIsPrecomplete) (fun {a b} h => hcauchy a b h)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `key : Lc y₀ - L' y = 0`. Apply `IsHausdorff.haus' (I := Ideal.span {l})` to reduce the goal to its premises. Introduce `n`.
+
+Rewrite using `[SModEq.sub_mem, sub_zero]`. Establish `h1 : Lc y₀ - L' y = (Lc y₀ - L' (s n).1) + L' ((s n).1 - y)`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[h1, inv, smul_smul, ← pow_add]`.
+
+Use `Submodule.add_mem _ (smul_pow_mem_span_pow_smul_top l _ n _ (by nlinarith)) ?_` and prove the remaining obligations. Conclude with `map_mem_pow_smul_top _ n L' ((SModEq.sub_mem).mp (hy n))`. Conclude with `(sub_eq_zero.mp key).symm`.
+-/
 theorem successive_approximation : ∀ {O Y Z : Type} [CommRing O] [AddCommGroup Y] [Module O Y]
     [AddCommGroup Z] [Module O Z] (l : O) [IsAdicComplete (Ideal.span {l}) Y]
     [IsHausdorff (Ideal.span {l}) Z] (Lc P : Y →ₗ[O] Z) (W : Submodule O Z) (c k : ℕ), c < k →

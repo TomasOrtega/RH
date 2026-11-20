@@ -10,6 +10,13 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Apply `discreteTopology_of_isOpen_singleton_zero` to reduce the goal to its premises. Establish `e : ({0} : Set H) = Subtype.val ⁻¹' Metric.ball (0 : E) r`. Use extensionality with `z`. Simplify using `only [Set.mem_singleton_iff, Set.mem_preimage, Metric.mem_ball, dist_zero_right]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `rfl`. Simplify using `using hr`. Introduce `hz`. Use `h z z.2 hz` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[e]`. Conclude with `Metric.isOpen_ball.preimage continuous_subtype_val`.
+-/
 theorem latCont_discrete {E : Type} [NormedAddCommGroup E] (H : AddSubgroup E) (r : ℝ) (hr : 0 < r)
     (h : ∀ z ∈ H, ‖z‖ < r → z = 0) : DiscreteTopology H := by
   apply discreteTopology_of_isOpen_singleton_zero
@@ -29,10 +36,16 @@ noncomputable def latContMap {E J : Type} [NormedAddCommGroup E] [NormedSpace �
     (v : J → E) : (J → ℝ) →L[ℝ] E :=
   ∑ i, (ContinuousLinearMap.proj i : (J → ℝ) →L[ℝ] ℝ).smulRight (v i)
 
+/- English proof (translation)
+Simplify using `[latContMap]`.
+-/
 theorem latContMap_apply {E J : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [Fintype J]
     (v : J → E) (c : J → ℝ) : latContMap v c = ∑ i, c i • v i := by
   simp [latContMap]
 
+/- English proof (translation)
+Rewrite using `[latContMap_apply, Module.Basis.equivFun_symm_apply, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]`.
+-/
 theorem latContMap_repr {La E J : Type} [AddCommGroup La] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [Fintype J] (e : Module.Basis J ℤ La) (p : La →+ E) (n : J → ℤ) :
     latContMap (fun i => p (e i)) (fun i => (n i : ℝ)) = p (e.equivFun.symm n) := by
@@ -40,6 +53,13 @@ theorem latContMap_repr {La E J : Type} [AddCommGroup La] [NormedAddCommGroup E]
   refine Finset.sum_congr rfl (fun i _ => ?_)
   rw [map_zsmul, Int.cast_smul_eq_zsmul]
 
+/- English proof (translation)
+Set `L : Submodule ℤ E` to `AddSubgroup.toIntSubmodule p.range`. Establish `: DiscreteTopology L` using `hd`. Establish `: IsZLattice ℝ L` using `⟨by simpa [L] using hs⟩`. Establish `h1 : Module.finrank ℤ L = Module.finrank ℝ E` using `ZLattice.rank (K := ℝ) (L := L)`. Establish `hL : LinearMap.range p.toIntLinearMap = L`.
+
+Use extensionality with `x`. Simplify using `[L]`. Establish `h2 : Module.finrank ℤ La = Module.finrank ℤ L`. Rewrite using `[← hL]`. Conclude with `(LinearEquiv.ofInjective p.toIntLinearMap hi).finrank_eq`.
+
+Rewrite using `[Module.finrank_fintype_fun_eq_card, ← Module.finrank_eq_card_basis e, h2, h1]`.
+-/
 theorem latCont_card {La E J : Type} [AddCommGroup La] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [Fintype J] (e : Module.Basis J ℤ La) (p : La →+ E)
     (hd : DiscreteTopology p.range) (hi : Function.Injective p)
@@ -57,6 +77,43 @@ theorem latCont_card {La E J : Type} [AddCommGroup La] [NormedAddCommGroup E] [N
     exact (LinearEquiv.ofInjective p.toIntLinearMap hi).finrank_eq
   rw [Module.finrank_fintype_fun_eq_card, ← Module.finrank_eq_card_basis e, h2, h1]
 
+/- English proof (translation)
+Introduce `La _ _ _ g m B b₀ K P r hB hb₀ hr hdisc hclosed hcont hle heq hinj hspan`. Take `⟨J, _, ⟨e⟩⟩ : ∃ (J : Type) (_ : Fintype J), Nonempty (Module.Basis J ℤ La)` from `⟨_, inferInstance, ⟨Module.Free.chooseBasis ℤ La⟩⟩`. Establish `hrepr : ∀ b (k : J → ℤ), P b (e.equivFun.symm k) = ∑ j, ((k j : ℤ) : ℝ) • P b (e j)`. Introduce `b k`. Rewrite using `[← latContMap_repr e (P b) k, latContMap_apply]`.
+
+Establish `hcoord : ∀ b x, P b x = ∑ j, ((e.equivFun x j : ℤ) : ℝ) • P b (e j)`. Introduce `b x`. Rewrite using `[← hrepr]`. Simplify using the standard rewrite rules. Establish `hdiscR : ∀ b ∈ B, DiscreteTopology (P b).range` using `fun b hb => latCont_discrete _ r hr (fun z hz hzr => hdisc b hb z (hle b hb hz) hzr)`.
+
+Establish `hcard : Fintype.card J = Module.finrank ℝ (Fin g → ℂ)`. Rewrite using `[← Module.finrank_fintype_fun_eq_card ℝ]`. Conclude with `latCont_card e (P b₀) (hdiscR b₀ hb₀) hinj hspan`. Establish `hspan0 : ⊤ ≤ Submodule.span ℝ (Set.range (fun j => P b₀ (e j)))`. Rewrite using `[← hspan]`.
+
+Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[hcoord]`. Conclude with `Submodule.sum_mem _ (fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))`. Establish `hli0 : LinearIndependent ℝ (fun j => P b₀ (e j))` using `linearIndependent_of_top_le_span_of_card_eq_finrank hspan0 hcard`.
+
+Establish `hvc : ContinuousAt (fun b => fun j => P b (e j)) b₀` using `continuousAt_pi.mpr (fun j => hcont (e j))`. Establish `hev_li : ∀ᶠ b in nhds b₀, LinearIndependent ℝ (fun j => P b (e j))` using `hvc.tendsto.eventually hli0.eventually`. Establish `hev_B : ∀ᶠ b in nhds b₀, b ∈ B` using `hB.mem_nhds hb₀`. Establish `hspanv : ∀ b, LinearIndependent ℝ (fun j => P b (e j)) → Submodule.span ℝ (Set.range (fun j => P b (e j))) = ⊤` using `fun b hb => hb.span_eq_top_of_card_eq_finrank' hcard`. Establish `hsurj : ∀ b, LinearIndependent ℝ (fun j => P b (e j)) → ∀ z, ∃ c : J → ℝ, ∑ j, c j • P b (e j) = z`.
+
+Introduce `b hb z`. Establish `hz : z ∈ Submodule.span ℝ (Set.range (fun j => P b (e j)))`. Rewrite using `[hspanv b hb]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `(Submodule.mem_span_range_iff_exists_fun ℝ).mp hz`.
+
+Establish `hev_eq : ∀ᶠ b in nhds b₀, ∀ z ∈ K b, z ∈ (P b).range`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Filter.not_eventually]`. Establish `hfr : ∃ᶠ b in nhds b₀, b ∈ B ∧ LinearIndependent ℝ (fun j => P b (e j)) ∧ ∃ z ∈ K b, z ∉ (P b).range`. Use `(hne.and_eventually (hev_B.and hev_li)).mono ?_` and prove the remaining obligations.
+
+Introduce and unpack `b ⟨h1, h2, h3⟩`. Use `push Not at h1`. Conclude with `⟨h2, h3, h1⟩`. Take `⟨bs, hbs, hprop⟩` from `Filter.exists_seq_forall_of_frequently hfr`. Use `choose hbsB hbsli z hzK hzR using hprop`.
+
+Use `choose c hc using fun i => hsurj (bs i) (hbsli i) (z i)`. Establish `hshift : ∀ i (k : J → ℤ), (∑ j, (Int.fract (c i j) - (k j : ℝ)) • P (bs i) (e j)) ∈ K (bs i) ∧ (∑ j, (Int.fract (c i j) - (k j : ℝ)) • P (bs i) (e j)) ∉ (P (bs i)).range`. Introduce `i k`. Establish `e1 : ∑ j, (Int.fract (c i j) - (k j : ℝ)) • P (bs i) (e j) = z i - P (bs i) (e.equivFun.symm (fun j => ⌊c i j⌋ + k j))`. Rewrite using `[hrepr, ← hc i, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← sub_smul]`. Use `congr 1`. Use `push_cast`. Rewrite using `[← Int.self_sub_floor]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Establish `hmem : P (bs i) (e.equivFun.symm (fun j => ⌊c i j⌋ + k j)) ∈ (P (bs i)).range` using `⟨_, rfl⟩`. Use `⟨sub_mem (hzK i) (hle _ (hbsB i) hmem), fun h => hzR i ?_⟩` and prove the remaining obligations. Use `add_mem h hmem` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hIcc : ∀ i, (fun j => Int.fract (c i j)) ∈ Set.Icc (0 : J → ℝ) 1` using `fun i => ⟨fun j => Int.fract_nonneg _, fun j => (Int.fract_lt_one _).le⟩`. Take `⟨a, -, φ, hφ, ha⟩` from `(isCompact_Icc (a := (0 : J → ℝ)) (b := 1)).tendsto_subseq hIcc`. Establish `hbφ : Filter.Tendsto (bs ∘ φ) Filter.atTop (nhds b₀)` using `hbs.comp hφ.tendsto_atTop`. Establish `hvφ : ∀ j, Filter.Tendsto (fun i => P (bs (φ i)) (e j)) Filter.atTop (nhds (P b₀ (e j)))` using `fun j => (hcont (e j)).tendsto.comp hbφ`.
+
+Establish `haj : ∀ j, Filter.Tendsto (fun i => Int.fract (c (φ i) j)) Filter.atTop (nhds (a j))` using `fun j => ((continuous_apply j).tendsto a).comp ha`. Establish `hlim : ∀ k : J → ℤ, Filter.Tendsto (fun i => ∑ j, (Int.fract (c (φ i) j) - (k j : ℝ)) • P (bs (φ i)) (e j)) Filter.atTop (nhds (∑ j, (a j - (k j : ℝ)) • P b₀ (e j)))` using `fun k => tendsto_finsetSum _ (fun j _ => ((haj j).sub_const _).smul (hvφ j))`. Establish `hz0 : (∑ j, (a j - ((0 : J → ℤ) j : ℝ)) • P b₀ (e j)) ∈ K b₀` using `hclosed (bs ∘ φ) _ _ hbφ (hlim 0) (fun i => (hshift (φ i) 0).1)`. Simplify using `only [Pi.zero_apply, Int.cast_zero, sub_zero] at hz0`. Rewrite `hz0` using `[← heq]`.
+
+Take `⟨x, hx⟩` from `AddMonoidHom.mem_range.mp hz0`. Establish `hzero : ∑ j, (a j - ((e.equivFun x j : ℤ) : ℝ)) • P b₀ (e j) = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← hcoord b₀ x, ← hx, sub_self]`. Establish `hlim0` using `hlim (e.equivFun x)`.
+
+Rewrite `hlim0` using `[hzero]`. Take `⟨i, hi⟩` from `(hlim0.eventually (Metric.ball_mem_nhds (0 : Fin g → ℂ) hr)).exists`. Rewrite `hi` using `[dist_zero_right]`. Take `⟨hK', hR'⟩` from `hshift (φ i) (e.equivFun x)`. Conclude with `hR' (by rw [hdisc _ (hbsB (φ i)) _ hK' hi]; exact zero_mem _)`.
+
+Use `filter_upwards [hev_B, hev_li, hev_eq] with b hb hli hrange`. Use `⟨le_antisymm (hle b hb) (fun z hz => hrange z hz), ?_, ?_, hdiscR b hb⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Rewrite `hx` using `[hcoord]`.
+
+Establish `h0` using `(Fintype.linearIndependent_iff.mp hli) _ hx`. Establish `h1 : e.equivFun x = 0` using `funext fun j => by simpa using h0 j`. Simplify using `using congrArg e.equivFun.symm h1`. Rewrite using `[eq_top_iff, ← hspanv b hli]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨e j, rfl⟩`.
+-/
 theorem latContinuation : ∀ (La : Type) [AddCommGroup La] [Module.Free ℤ La] [Module.Finite ℤ La] (g m : ℕ) (B : Set (Fin m → ℂ)) (b₀ : Fin m → ℂ) (K : (Fin m → ℂ) → AddSubgroup (Fin g → ℂ)) (P : (Fin m → ℂ) → (La →+ (Fin g → ℂ))) (r : ℝ), IsOpen B → b₀ ∈ B → 0 < r → (∀ b ∈ B, ∀ z ∈ K b, ‖z‖ < r → z = 0) → (∀ (b : ℕ → (Fin m → ℂ)) (z : ℕ → (Fin g → ℂ)) (z₀ : Fin g → ℂ), Filter.Tendsto b Filter.atTop (nhds b₀) → Filter.Tendsto z Filter.atTop (nhds z₀) → (∀ i, z i ∈ K (b i)) → z₀ ∈ K b₀) → (∀ x, ContinuousAt (fun b => P b x) b₀) → (∀ b ∈ B, (P b).range ≤ K b) → (P b₀).range = K b₀ → Function.Injective (P b₀) → Submodule.span ℝ (Set.range (P b₀)) = ⊤ → ∀ᶠ b in nhds b₀, (P b).range = K b ∧ Function.Injective (P b) ∧ Submodule.span ℝ (Set.range (P b)) = ⊤ ∧ DiscreteTopology (P b).range := by
   intro La _ _ _ g m B b₀ K P r hB hb₀ hr hdisc hclosed hcont hle heq hinj hspan
   obtain ⟨J, _, ⟨e⟩⟩ : ∃ (J : Type) (_ : Fintype J), Nonempty (Module.Basis J ℤ La) :=

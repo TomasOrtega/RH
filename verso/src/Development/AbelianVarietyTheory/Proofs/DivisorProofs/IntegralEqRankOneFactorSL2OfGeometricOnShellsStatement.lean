@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvUAbsU
 open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeBound GlobalTheory.WeylCell Formalism.UG
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.integral_geometric_shells | exact GlobalTheory.integral_geometric_shells | (intros; apply GlobalTheory.integral_geometric_shells <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_eq_rankOneFactorSL2_of_geometric_on_shells : ∀ {X : Type} [MeasurableSpace X] (μ : Measure X) (q : ℕ), 2 ≤ q → ∀ (a : ℂ), ‖a‖ < 1 →
     ∀ (H : ℕ → Set X), (∀ j, MeasurableSet (H j)) → Monotone H → ⋃ j, H j = Set.univ →
     (∀ j, μ (H j) = (q : ENNReal) ^ j) → ∀ (F : X → ℂ), (∀ x ∈ H 0, F x = 1) →

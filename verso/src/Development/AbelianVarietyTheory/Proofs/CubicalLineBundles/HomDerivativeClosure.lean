@@ -11,6 +11,11 @@ open scoped CategoryTheory.Obj UpperHalfPlane
 
 namespace GlobalTheory.HomDerivative
 
+/- English proof (translation)
+Take `⟨y, hy⟩ : ∃ y, IsLieComb ![-a] ![v] y` from `⟨_, (GlobalTheory.LieMultiple.isLieComb_one_iff_comp (-a) v _).2 rfl⟩`. Establish `hsum` using `(GlobalTheory.LieMultiple.lieMultiple_calculus R G G v x y a (-a)).2.1 hv hx hy`. Establish `hone` using `(GlobalTheory.LieMultiple.lieMultiple_calculus R G G v x y a (-a)).2.2.2.2.2 hv`. Rewrite `hsum` using `[add_neg_cancel]`. Establish `hxy : x * y = 1` using `((GlobalTheory.LieMultiple.isLieComb_one_iff_comp 0 v _).1 hsum).trans ((GlobalTheory.LieMultiple.isLieComb_one_iff_comp 0 v _).1 hone).symm`.
+
+Rewrite using `[← eq_inv_of_mul_eq_one_right hxy]`. Conclude with `hy`.
+-/
 theorem isLieComb_inv {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {v x : epsR R ⟶ G} {a : R}
     (hv : IsTangent v) (hx : IsLieComb ![a] ![v] x) : IsLieComb ![-a] ![v] x⁻¹ := by
   obtain ⟨y, hy⟩ : ∃ y, IsLieComb ![-a] ![v] y :=
@@ -24,6 +29,19 @@ theorem isLieComb_inv {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {v x 
   rw [← eq_inv_of_mul_eq_one_right hxy]
   exact hy
 
+/- English proof (translation)
+Introduce `_ R _ P Q v t R₁ _ ρ S ht hS a ha`. Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `mem a h => exact hS a h`. Consider the case `zero`. Introduce `P₁ Q₁ φ₁ ψ₁ v₁ t₁ hP hQ hv ht₁`.
+
+Establish `hT : IsTangent t₁` using `IsVecOver.isTangent hQ.2.1 ht₁ ht`. Use `⟨toUnit _ ≫ η, inferInstance, ?_⟩` and prove the remaining obligations. Establish `h1 : v₁ ≫ toUnit P₁.A ≫ η[Q₁.A] = 1`. Rewrite using `[← Category.assoc, CartesianMonoidalCategory.toUnit_unique (v₁ ≫ toUnit _) (toUnit _)]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1]`. Conclude with `(GlobalTheory.LieMultiple.lieMultiple_calculus R₁ Q₁.A Q₁.A t₁ t₁ t₁ 0 0).2.2.2.2.2 hT`. Consider the case `add a b _ _ iha ihb`. Introduce `P₁ Q₁ φ₁ ψ₁ v₁ t₁ hP hQ hv ht₁`. Establish `hT : IsTangent t₁` using `IsVecOver.isTangent hQ.2.1 ht₁ ht`.
+
+Take `⟨f, hf, hfa⟩` from `iha P₁ Q₁ φ₁ ψ₁ v₁ t₁ hP hQ hv ht₁`. Take `⟨g, hg, hgb⟩` from `ihb P₁ Q₁ φ₁ ψ₁ v₁ t₁ hP hQ hv ht₁`. Use `⟨lift f g ≫ μ, inferInstance, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsLieComb _ _ (v₁ ≫ (f * g))`. Rewrite using `[MonObj.comp_mul]`.
+
+Conclude with `(GlobalTheory.LieMultiple.lieMultiple_calculus R₁ Q₁.A Q₁.A t₁ (v₁ ≫ f) (v₁ ≫ g) a b).2.1 hT hfa hgb`. Consider the case `neg a _ iha`. Introduce `P₁ Q₁ φ₁ ψ₁ v₁ t₁ hP hQ hv ht₁`. Establish `hT : IsTangent t₁` using `IsVecOver.isTangent hQ.2.1 ht₁ ht`. Take `⟨f, hf, hfa⟩` from `iha P₁ Q₁ φ₁ ψ₁ v₁ t₁ hP hQ hv ht₁`.
+
+Use `⟨f⁻¹, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[GrpObj.comp_inv]`. Conclude with `isLieComb_inv hT hfa`.
+-/
 theorem hom_derivative_closure : Out.PolBaseChangeSt → ∀ (R : Type) [CommRing R] (P Q : Out.PolAV (Sp R)) (v : epsR R ⟶ P.A) (t : epsR R ⟶ Q.A) (R₁ : Type) [CommRing R₁] (ρ : R →+* R₁) (S : Set R₁), IsTangent t → (∀ a ∈ S, (∀ (P₁ Q₁ : Out.PolAV (Sp R₁)) (φ₁ : P₁.A.left ⟶ P.A.left) (ψ₁ : Q₁.A.left ⟶ Q.A.left) (v₁ : epsR R₁ ⟶ P₁.A) (t₁ : epsR R₁ ⟶ Q₁.A), IsPolFibre ρ P P₁ φ₁ → IsPolFibre ρ Q Q₁ ψ₁ → IsVecOver ρ φ₁ v v₁ → IsVecOver ρ ψ₁ t t₁ → ∃ f₁ : P₁.A ⟶ Q₁.A, IsMonHom f₁ ∧ IsLieComb ![a] ![t₁] (v₁ ≫ f₁))) → ∀ a ∈ AddSubgroup.closure S, (∀ (P₁ Q₁ : Out.PolAV (Sp R₁)) (φ₁ : P₁.A.left ⟶ P.A.left) (ψ₁ : Q₁.A.left ⟶ Q.A.left) (v₁ : epsR R₁ ⟶ P₁.A) (t₁ : epsR R₁ ⟶ Q₁.A), IsPolFibre ρ P P₁ φ₁ → IsPolFibre ρ Q Q₁ ψ₁ → IsVecOver ρ φ₁ v v₁ → IsVecOver ρ ψ₁ t t₁ → ∃ f₁ : P₁.A ⟶ Q₁.A, IsMonHom f₁ ∧ IsLieComb ![a] ![t₁] (v₁ ≫ f₁)) := by
   intro _ R _ P Q v t R₁ _ ρ S ht hS a ha
   induction ha using AddSubgroup.closure_induction with

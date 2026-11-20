@@ -23,6 +23,19 @@ noncomputable section
 
 namespace GlobalTheory.UnitDiffSpan
 
+/- English proof (translation)
+Take `⟨U, W, hxU, -, c⟩` from `GlobalTheory.Conormal.exists_isChart (GlobalTheory.LieVB.sec_hom (MonObj.one (X := G))) (x := j (y.1 (IsLocalRing.closedPoint ℂ))) (V := ⊤) trivial`. Take `⟨V, hV, hxV, hle⟩` from `GlobalTheory.QCoh.exists_affine_mem_le (U := ch.U ⊓ j ⁻¹ᵁ U) (y.1 (IsLocalRing.closedPoint ℂ)) ⟨mem_ptsIn.1 hy, hxU⟩`. Establish `e : V ≤ j ⁻¹ᵁ U` using `hle.trans inf_le_right`. Establish `hyV : y ∈ ptsIn q ρ V` using `mem_ptsIn.2 hxV`. Use `⟨U, W, c.le, mem_ptsIn.2 hxU, ?_⟩` and prove the remaining obligations.
+
+Establish `key (t : Γ((Scheme.Modules.pullback j).obj (omega G), V)) : ch.crd q ρ t y ∈ Submodule.span ℂ (Set.range fun f : Γ(G.left, W) => ch.crd q ρ (pullbackSections j _ (le_refl (j ⁻¹ᵁ U)) (dUnit G c.le f)) y)`. Use `letI := GlobalTheory.QCoh.appLEAlgebra j e`. Use `letI := GlobalTheory.QCoh.appLEModule j ((Scheme.Modules.pullback j).obj (omega G)) e`. Use `haveI := GlobalTheory.QCoh.appLE_isScalarTower j ((Scheme.Modules.pullback j).obj (omega G)) e`. Proceed by induction on `t using (GlobalTheory.QCoh.isBaseChange_pullbackSections j (omega G) hV c.affine_base e).inductionOn with`.
+
+Consider the case `zero => rw [Chart.crd_zero]`. Conclude with `zero_mem _`. Consider the case `tmul m`. Take `⟨a, rfl⟩` from `c.d_surjective (GlobalTheory.LieVB.sec_hom (MonObj.one (X := G))) m`. Use `Submodule.subset_span ⟨a, ?_⟩` and prove the remaining obligations.
+
+Use `(ch.crd_resM _ e hyV).symm.trans (congrArg (ch.crd q ρ · y) ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.QCoh.res_pullbackSections j (omega G) le_rfl e _`. Consider the case `smul a t ht => rw [Chart.crd_smul]`. Conclude with `Submodule.smul_mem _ _ ht`. Consider the case `add t t' ht ht' => rw [Chart.crd_add]`.
+
+Conclude with `add_mem ht ht'`. Use `eq_top_iff.2 ((Pi.basisFun ℂ (Fin g)).span_eq.ge.trans (Submodule.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `h` using `key (GlobalTheory.Twist.resM _ (hle.trans inf_le_left) (ch.e a))`. Rewrite `h` using `[ch.crd_resM _ _ hyV, ch.crd_frame hy]`.
+
+Rewrite using `[Pi.basisFun_apply]`. Conclude with `h`.
+-/
 theorem span_crd_dUnit {k : Type} [CommRing k] {S T : Scheme.{0}} (G : Over S) [GrpObj G]
     [QuasiSeparated G.hom] (j : T ⟶ S) {q : T ⟶ Sp k} {g : ℕ} (ρ : k →+* ℂ) (y : CxPts q ρ)
     (ch : Chart ((Scheme.Modules.pullback j).obj (omega G)) g) (hy : y ∈ ptsIn q ρ ch.U) :
@@ -59,6 +72,9 @@ theorem span_crd_dUnit {k : Type} [CommRing k] {S T : Scheme.{0}} (G : Over S) [
   rw [Pi.basisFun_apply]
   exact h
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Oz _ β Z T j q g ρ y ch hy`. Establish `: QuasiSeparated Z.t.G.hom` using `have := Z.t.semi.separated`. Use `inferInstance`. Conclude with `span_crd_dUnit Z.t.G j ρ y ch hy`.
+-/
 theorem span_crd_dUnit_model : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz] {β : Oz →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {T : Scheme.{0}} (j : T ⟶ Z.X) {q : T ⟶ Sp Oz} {g : ℕ} (ρ : Oz →+* ℂ) (y : CxPts q ρ) (ch : Chart ((Scheme.Modules.pullback j).obj (omega Z.t.G)) g), y ∈ ptsIn q ρ ch.U → ∃ (U : Z.X.Opens) (W : Z.t.G.left.Opens) (hU : U ≤ unitSec Z.t.G ⁻¹ᵁ W), y ∈ ptsIn q ρ (j ⁻¹ᵁ U) ∧ Submodule.span ℂ (Set.range fun f : Γ(Z.t.G.left, W) => ch.crd q ρ (pullbackSections j _ (le_refl (j ⁻¹ᵁ U)) (dUnit Z.t.G hU f)) y) = ⊤ := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z T j q g ρ y ch hy
   have : QuasiSeparated Z.t.G.hom := have := Z.t.semi.separated; inferInstance

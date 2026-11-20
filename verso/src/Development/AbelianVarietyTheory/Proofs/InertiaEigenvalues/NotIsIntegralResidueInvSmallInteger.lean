@@ -5,6 +5,13 @@ open GlobalTheory.UnitLemma Polynomial
 
 namespace GlobalTheory.NotIntegral
 
+/- English proof (translation)
+Introduce `K B a ha m hint`. Take `⟨ha0, hmax, -⟩` from `ha`. Use `haveI : m.asIdeal.IsMaximal := m.isMaximal`. Use `letI : Field (B.A ⧸ m.asIdeal) := Ideal.Quotient.field m.asIdeal`. Set `f : K.E →ₐ[K.O] (B.A ⧸ m.asIdeal)` to `IsScalarTower.toAlgHom K.O K.E (B.A ⧸ m.asIdeal)`.
+
+Establish `hf : Function.Injective f` using `(algebraMap K.E (B.A ⧸ m.asIdeal)).injective`. Establish `hE : IsIntegral K.O (algebraMap K.O K.E a)⁻¹` using `(isIntegral_algHom_iff f hf).1 hint`. Take `⟨b, hb⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hE`. Establish `hne : algebraMap K.O K.E a ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective K.O K.E)]`.
+
+Conclude with `ha0`. Establish `hab : a * b = 1`. Apply `IsFractionRing.injective K.O K.E` to reduce the goal to its premises. Rewrite using `[map_mul, hb, map_one, mul_inv_cancel₀ hne]`. Conclude with `(IsLocalRing.mem_maximalIdeal a).1 hmax ⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, rfl⟩`.
+-/
 theorem inv_small_not_integral : ∀ (K : UQ) (B : InvAlg K) (a : K.O), K.Small a → ∀ m : MaximalSpectrum B.A, ¬ IsIntegral K.O (algebraMap K.E (B.A ⧸ m.asIdeal) (algebraMap K.O K.E a)⁻¹) := by
   intro K B a ha m hint
   obtain ⟨ha0, hmax, -⟩ := ha

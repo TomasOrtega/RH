@@ -24,15 +24,24 @@ namespace GlobalTheory.VacComb
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify `(contDiff_const : ContDiff ℝ _ fun _ : Fin _ → ℝ => (0 : ℂ))` using `level := ⟨⊤, isOpen_univ, fun _ _ _ => funext fun _ => by simp [heisO]⟩ cont := continuous_const smooth _ _ _ _ _ := by simpa`.
+-/
 theorem isThetaFunO_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) : IsThetaFunO ψ S T 0 where
   quasi _ _ := by simp
   level := ⟨⊤, isOpen_univ, fun _ _ _ => funext fun _ => by simp [heisO]⟩
   cont := continuous_const
   smooth _ _ _ _ _ := by simpa using (contDiff_const : ContDiff ℝ _ fun _ : Fin _ → ℝ => (0 : ℂ))
 
+/- English proof (translation)
+The claim follows from `funext fun _ => by simp [heisO]`.
+-/
 theorem heisO_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) : heisO ψ S T u 0 = 0 :=
   funext fun _ => by simp [heisO]
 
+/- English proof (translation)
+The claim follows from `isThetaFunO_zero ψ S T trans _ _ _ _ := by simp [heisO_zero] modul _ _ _ _ _ := by simp [heisO_zero]`.
+-/
 theorem isModel_zero {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y']
     [DecidableEq Y'] (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) :
@@ -41,6 +50,9 @@ theorem isModel_zero {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
   trans _ _ _ _ := by simp [heisO_zero]
   modul _ _ _ _ _ := by simp [heisO_zero]
 
+/- English proof (translation)
+Introduce `h`. Use `(GlobalTheory.T.localSchrodingerModel_uniq_transport_exists D k p Y Y' S T FS FT ψ hψ).1 Tm 0 hTm (isModel_zero p ψ FS FT) O hO (by simpa using h)` as an intermediate fact. Conclude with `h₀ (by rw [this]; rfl)`.
+-/
 theorem model_ne_zero {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {Y Y' : Type} [Fintype Y]
     [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] {FS : Frame k S.rank Y'} {FT : Frame k T.rank Y} {Tm}
@@ -54,6 +66,15 @@ end GlobalTheory.VacComb
 
 namespace GlobalTheory.VacComb
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ q S M hM Y _ _ F`. Take `⟨gl, h1, h2⟩` from `GlobalTheory.T.exists_GL_embedding_unitaryAdelic_splitPlace_basis D k q S Y F.β F.γ F.βγ F.γβ`. Set `α : GlobalTheory.FinPl.Frame q S Y` to `⟨F.β, F.γ, F.βγ, F.γβ, gl, h1, h2⟩`. Take `⟨Λ, hΛ, hα, -⟩` from `GlobalTheory.FinPl.FrameLat.exists_lat D k q S Y α M hM`. Use `haveI := hΛ`.
+
+Take `⟨g, hg⟩` from `GlobalTheory.LatPair.exists_smul_lat (GlobalTheory.LatPair.stdLat k Y) Λ`. Establish `hgg : g.1 * (g⁻¹).1 = 1` using `by rw [← Matrix.GeneralLinearGroup.coe_mul, mul_inv_cancel, Matrix.GeneralLinearGroup.coe_one]`. Establish `hgg' : (g⁻¹).1 * g.1 = 1` using `by rw [← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel, Matrix.GeneralLinearGroup.coe_one]`. Use `⟨⟨F.β * g.1, (g⁻¹).1 * F.γ, ?_, ?_⟩, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc g.1, hgg, Matrix.one_mul, F.βγ]`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc F.γ, F.γβ, Matrix.one_mul, hgg']`. Establish `e1 : (∀ i, y i ∈ 𝒪[k]) ↔ g • y ∈ Λ`. Rewrite using `[← hg, GlobalTheory.LatPair.mem_smul_iff, inv_smul_smul, GlobalTheory.LatPair.mem_stdLat]`. Rewrite using `[e1, hα (g • y)]`. Use `show _ ∈ _ ↔ _ ∈ _`.
+
+Establish `e2 : F.β *ᵥ (g • y) = (F.β * g.1) *ᵥ y`. Rewrite using `[← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(fun i => q.sec ((F.β *ᵥ (g • y)) i)) ∈ _ ↔ _`. Rewrite using `[e2]`.
+-/
 theorem exists_adapted_frame : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (S : HSp D) (M : GlobalTheory.FinPl.Lat S), IsSelfDualC S M → ∀ (Y : Type) [Fintype Y] [DecidableEq Y] (F : Frame k S.rank Y), ∃ G : Frame k S.rank Y, ∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((G.β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV S M (· = q.v) := by
   intro D k _ _ _ _ q S M hM Y _ _ F
   obtain ⟨gl, h1, h2⟩ := GlobalTheory.T.exists_GL_embedding_unitaryAdelic_splitPlace_basis D k q S Y F.β F.γ F.βγ F.γβ
@@ -81,6 +102,9 @@ namespace GlobalTheory.VacComb
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `Place.down Place.up`. Establish `h : ((FT.β * x * FS.γ).map p.ι : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π = FT.β * x * FS.γ`. Use extensionality with `i j`. Simplify using `[p.π_ι]`. Rewrite using `[h, Matrix.mul_assoc FT.β, ← Matrix.mul_assoc FT.γ, FT.γβ, Matrix.one_mul, Matrix.mul_assoc, FS.γβ, Matrix.mul_one]`.
+-/
 theorem down_up {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {S T : HSp D} {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
     (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (x : Matrix Y Y' k) : p.down FS FT (p.up FS FT x) = x := by
@@ -89,6 +113,17 @@ theorem down_up {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNo
     ext i j; simp [p.π_ι]
   rw [h, Matrix.mul_assoc FT.β, ← Matrix.mul_assoc FT.γ, FT.γβ, Matrix.one_mul, Matrix.mul_assoc, FS.γβ, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ q hU Y Y' _ _ _ _ S T FS FT ψ hψ M M' hM hM' G hG`. Take `⟨GS, hGS⟩` from `exists_adapted_frame D k q S M hM Y' FS`. Take `⟨GT, hGT⟩` from `exists_adapted_frame D k q T M' hM' Y FT`. Take `⟨ψk, hch, hcond⟩` from `GlobalTheory.SplitWeilChar.weil_char_conductor_one D k q ψ hψ hU`. Take `⟨Tm', hTm', hO'⟩` from `(GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D k q hU Y Y' S T GS GT ψ ψk hψ hch hcond M M' hM hM' hGS hGT).2 G hG`.
+
+Take `⟨Tm, hTm, hrel⟩` from `GlobalTheory.LocMod.Place.exists_isModel_chg D k (ofSplit q) Y Y' S T GS GT Y Y' FS FT ψ Tm' hTm'`. Take `⟨O, hO, -⟩` from `GlobalTheory.LocMod.PinModel.exists_isOne (k := k) (Y := Y) (Y' := Y')`. Use `⟨Tm, hTm, fun Φ₀ h₀ => ?_⟩` and prove the remaining obligations. Rewrite using `[hrel O Φ₀ ?_, hO' O hO]`. Introduce `x`.
+
+Establish `hup : (ofSplit q).up FS FT (FT.γ * GT.β * x * (GS.γ * FS.β)) = (ofSplit q).up GS GT x` using `GlobalTheory.LocMod.Place.up_chg (ofSplit q) GS GT FS FT x`. Rewrite using `[hO, h₀]`. Distinguish the cases in `hx : ∀ r s, x r s ∈ 𝒪[k]`. Rewrite using `[Set.indicator_of_mem (show x ∈ {x : Matrix Y Y' k | ∀ r s, x r s ∈ 𝒪[k]} from hx), Set.indicator_of_mem] show (ofSplit q).up FS FT (FT.γ * GT.β * x * (GS.γ * FS.β)) ∈ latO S T (M : Set (Fin S.rank → D.host.E)) (M' : Set (Fin T.rank → D.host.E)) (· = q.v)`. Rewrite using `[hup]`.
+
+Conclude with `GlobalTheory.T.up_image_integral_matrix_mem_completed_hom_lattice D k q hU Y Y' S T GS GT M M' hM hM' hGS hGT x hx`. Rewrite using `[Set.indicator_of_notMem (show x ∉ {x : Matrix Y Y' k | ∀ r s, x r s ∈ 𝒪[k]} from hx), Set.indicator_of_notMem]`. Introduce `hmem`. Express the relevant statement in the definitionally equal form `(ofSplit q).up FS FT (FT.γ * GT.β * x * (GS.γ * FS.β)) ∈ latO S T (M : Set (Fin S.rank → D.host.E)) (M' : Set (Fin T.rank → D.host.E)) (· = q.v) at hmem`. Rewrite `hmem` using `[hup]`.
+
+Take `⟨x', hx', he⟩` from `GlobalTheory.T.exists_integral_matrix_up_image_completed_hom_lattice D k q hU Y Y' S T GS GT M M' hM hM' hGS hGT _ hmem (GlobalTheory.LocMod.Witness.up_half (ofSplit q) GS GT x)`. Establish `: x = x'` using `by rw [← down_up (ofSplit q) GS GT x, he, down_up]`. Conclude with `hx (this ▸ hx')`.
+-/
 theorem exists_model_vac : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k), q.UnitAA → ∀ (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (S T : HSp D) (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (M : GlobalTheory.FinPl.Lat S) (M' : GlobalTheory.FinPl.Lat T), IsSelfDualC S M → IsSelfDualC T M' → ∀ G, GlobalTheory.FinPl.Vac ψ S T M M' (· = q.v) G → ∃ Tm, (ofSplit q).IsModel ψ FS FT Tm ∧ ∀ Φ₀ : SB (Matrix Y Y' k), Φ₀.1 = Set.indicator {x | (ofSplit q).up FS FT x ∈ latO S T (M : Set (Fin S.rank → D.host.E)) (M' : Set (Fin T.rank → D.host.E)) (· = q.v)} (fun _ => 1) → Tm Φ₀ = G := by
   intro D k _ _ _ _ q hU Y Y' _ _ _ _ S T FS FT ψ hψ M M' hM hM' G hG
   obtain ⟨GS, hGS⟩ := exists_adapted_frame D k q S M hM Y' FS
@@ -123,6 +158,11 @@ namespace GlobalTheory.VacComb
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨Tm, hTm, hTG⟩` from `exists_model_vac D L.k L.q L.unit L.Y L.Y' S T L.FS L.FT ψ hψ M M' hM hM' G hG`. Take `⟨Φ₀, h₀⟩` from `GlobalTheory.SeeSaw.LocPlModel.exists_latInd L.q L.unit L.FS L.FT hM hM'`. Take `⟨O, hO, hO0⟩` from `GlobalTheory.LocMod.PinModel.exists_isOne (k := L.k) (Y := L.Y) (Y' := L.Y')`. Establish `hO' : O ≠ 0` using `by rintro rfl; simp at hO0`. Rewrite using `[← hTG Φ₀ h₀, ← L.o_is Tm hTm Φ₀ O hO h₀]`.
+
+Conclude with `model_ne_zero _ hψ hTm (by rwa [hTG Φ₀ h₀]) hO'`.
+-/
 theorem comb_o_ne_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     {M : GlobalTheory.FinPl.Lat S} {M' : GlobalTheory.FinPl.Lat T} (hM : IsSelfDualC S M) (hM' : IsSelfDualC T M')
     (L : LocPl ψ S T M M') {G : WO S T → ℂ} (hG : GlobalTheory.FinPl.Vac ψ S T M M' (· = L.q.v) G) (hG0 : G ≠ 0) :
@@ -134,10 +174,22 @@ theorem comb_o_ne_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-
   rw [← hTG Φ₀ h₀, ← L.o_is Tm hTm Φ₀ O hO h₀]
   exact model_ne_zero _ hψ hTm (by rwa [hTG Φ₀ h₀]) hO'
 
+/- English proof (translation)
+Introduce `u hu r c` and use `(GlobalTheory.FinPl.FrameLat.idem_iff L.q _).2 (L.o_at u hu r c)`.
+-/
 theorem combAt_o {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {M : GlobalTheory.FinPl.Lat S} {M' : GlobalTheory.FinPl.Lat T}
     (L : LocPl ψ S T M M') : GlobalTheory.FinPl.CombAt (· = L.q.v) L.o := fun u hu r c =>
   (GlobalTheory.FinPl.FrameLat.idem_iff L.q _).2 (L.o_at u hu r c)
 
+/- English proof (translation)
+Introduce `D ψ hψ S T M M' hM hM' n L hL F hF hF0`. Establish `hI` using `fun P P' hd => GlobalTheory.T.heisenbergCombination_disjoint_places_commute_vacua D ψ hψ S T P P' hd`. Set `g : Fin n → (WO S T → ℂ) → (WO S T → ℂ)` to `fun i f => comb ψ S T (L i).o f`. Establish `key : ∀ l : List (Fin n), l.Nodup → l.foldr g F ≠ 0 ∧ ∀ j, j ∉ l → GlobalTheory.FinPl.Vac ψ S T M M' (· = (L j).q.v) (l.foldr g F)`. Introduce `l`.
+
+Proceed by induction on `l with`. Consider the case `nil`. Introduce `_`. Conclude with `⟨hF0, fun j _ => GlobalTheory.GSuppComb.vac_mono (fun _ _ => trivial) hF⟩`. Consider the case `cons a l ih`.
+
+Introduce `hl`. Take `⟨ha, hl'⟩` from `List.nodup_cons.1 hl`. Take `⟨h0, hv⟩` from `ih hl'`. Establish `hdisj : ∀ j, j ≠ a → ∀ p, p = (L a).q.v → ¬ p = (L j).q.v` using `fun j hj p hp hq => hj (hL (hq.symm.trans hp))`. Use `⟨comb_o_ne_zero hψ hM hM' (L a) (hv a ha) h0, fun j hj => ?_⟩` and prove the remaining obligations.
+
+Establish `hja : j ≠ a` using `fun h => hj (h ▸ List.mem_cons_self)`. Establish `hjl : j ∉ l` using `fun h => hj (List.mem_cons_of_mem _ h)`. Conclude with `((hI _ _ (hdisj j hja)).2.1 _ (combAt_o (L a))).2 M M' _ (hv j hjl)`. Conclude with `(key _ (List.nodup_finRange n)).1`.
+-/
 theorem foldr_comb_ne_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (M : GlobalTheory.FinPl.Lat S) (M' : GlobalTheory.FinPl.Lat T), IsSelfDualC S M → IsSelfDualC T M' → ∀ (n : ℕ) (L : Fin n → GlobalTheory.SeeSaw.LocPl ψ S T M M'), (Function.Injective fun i => (L i).q.v) → ∀ F, GlobalTheory.FinPl.Vac ψ S T M M' (fun _ => True) F → F ≠ 0 → (List.finRange n).foldr (fun i g => comb ψ S T (L i).o g) F ≠ 0 := by
   intro D ψ hψ S T M M' hM hM' n L hL F hF hF0
   have hI := fun P P' hd => GlobalTheory.T.heisenbergCombination_disjoint_places_commute_vacua D ψ hψ S T P P' hd

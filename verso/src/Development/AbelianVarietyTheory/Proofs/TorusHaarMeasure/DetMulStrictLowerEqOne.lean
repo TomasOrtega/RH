@@ -5,6 +5,13 @@ open scoped ContDiff ENNReal Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `letI L : LinearOrder {p : Fin r × Fin r // p.2 < p.1} := LinearOrder.lift' (fun p => toLex p.1) (fun p q h => Subtype.ext (toLex.injective h))`. Establish `key` using `@Matrix.det_of_lowerTriangular {p : Fin r × Fin r // p.2 < p.1} ℂ _ _ _ L (Matrix.of fun p q : {p : Fin r × Fin r // p.2 < p.1} => if p.1.2 = q.1.2 then N p.1.1 q.1.1 else 0) (by`. Introduce `p q hpq`. Establish `hlt : toLex p.1 < toLex q.1` using `hpq`. Rewrite using `[Matrix.of_apply]`.
+
+Use `split_ifs with h`. Break down `Prod.Lex.toLex_lt_toLex.1 hlt with h2 | ⟨_, h3⟩` into its components or cases. Conclude with `h0 _ _ h2`. Conclude with `absurd h (ne_of_lt h3)`. Use the proof step `rfl)`.
+
+Rewrite using `[key]`. Simplify using `[h1]`.
+-/
 theorem det_mul_strictLower_eq_one (r : ℕ) (N : Matrix (Fin r) (Fin r) ℂ)
     (h0 : ∀ a c : Fin r, a < c → N a c = 0) (h1 : ∀ a, N a a = 1) :
     (Matrix.of fun p q : {p : Fin r × Fin r // p.2 < p.1} =>

@@ -8,6 +8,17 @@ namespace Formalism.BasicNotions.Examples₂.NZ
 
 open Polynomial Formalism.CyclotomicNorms
 
+/- English proof (translation)
+Use `set n := orderOf x with hn`. Establish `hn0 : n ≠ 0` using `(orderOf_pos_iff.mpr hx).ne'`. Use `set a := n.factorization ℓ`. Use `set m := n / ℓ ^ a with hm`. Establish `hnm : ℓ ^ a * m = n` using `Nat.ordProj_mul_ordCompl_eq_self n ℓ`.
+
+Establish `hc : Nat.Coprime (ℓ ^ a) m` using `(Nat.coprime_ordCompl hℓ hn0).pow_left a`. Use `set u := (((ℓ ^ a : ℕ) : ZMod m)⁻¹).val`. Establish `h1 : ((ℓ ^ a * u : ℕ) : ZMod m) = 1`. Establish `hm0 : NeZero m` using `⟨fun h => hn0 (by rw [← hnm, h, mul_zero])⟩`. Rewrite using `[Nat.cast_mul, ZMod.natCast_zmod_val]`.
+
+Conclude with `ZMod.coe_mul_inv_eq_one _ hc`. Establish `h2 : ℓ ^ a * u ≡ 1 [MOD m]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff, h1, Nat.cast_one]`. Unfold `primeToPart`. Rewrite using `[← pow_mul]`.
+
+Establish `h3 : ℓ ^ a * u * ℓ ^ a ≡ ℓ ^ a [MOD n]`. Use `h2.mul_left' (ℓ ^ a)` as an intermediate fact. Rewrite `this` using `[mul_one, hnm]`. Rewrite using `[mul_comm (ℓ ^ a * u) (ℓ ^ a)]` and apply the resulting hypothesis. Rewrite using `[← pow_mod_orderOf x (ℓ ^ a * u * ℓ ^ a), ← pow_mod_orderOf x (ℓ ^ a)]`.
+
+Conclude with `congrArg _ h3`.
+-/
 theorem pow_primeToPart {M : Type*} [Monoid M] {ℓ : ℕ} (hℓ : ℓ.Prime) (x : M) (hx : IsOfFinOrder x) :
     primeToPart ℓ x ^ (ℓ ^ (orderOf x).factorization ℓ) = x ^ (ℓ ^ (orderOf x).factorization ℓ) := by
   set n := orderOf x with hn
@@ -32,6 +43,9 @@ theorem pow_primeToPart {M : Type*} [Monoid M] {ℓ : ℕ} (hℓ : ℓ.Prime) (x
   rw [← pow_mod_orderOf x (ℓ ^ a * u * ℓ ^ a), ← pow_mod_orderOf x (ℓ ^ a)]
   exact congrArg _ h3
 
+/- English proof (translation)
+Use `⟨(orderOf x).factorization ℓ + (orderOf y).factorization ℓ, ?_⟩` and prove the remaining obligations. Establish `h1` using `pow_primeToPart hℓ x hx`. Establish `h2` using `pow_primeToPart hℓ y hy`. Rewrite using `[pow_add, pow_mul, ← h1, h, ← pow_mul, mul_comm, pow_mul, h2, ← pow_mul]`.
+-/
 theorem exists_pow_eq {M : Type*} [Monoid M] {ℓ : ℕ} (hℓ : ℓ.Prime) (x y : M) (hx : IsOfFinOrder x)
     (hy : IsOfFinOrder y) (h : primeToPart ℓ x = primeToPart ℓ y) : ∃ c : ℕ, x ^ ℓ ^ c = y ^ ℓ ^ c := by
   refine ⟨(orderOf x).factorization ℓ + (orderOf y).factorization ℓ, ?_⟩
@@ -39,6 +53,31 @@ theorem exists_pow_eq {M : Type*} [Monoid M] {ℓ : ℕ} (hℓ : ℓ.Prime) (x y
   have h2 := pow_primeToPart hℓ y hy
   rw [pow_add, pow_mul, ← h1, h, ← pow_mul, mul_comm, pow_mul, h2, ← pow_mul]
 
+/- English proof (translation)
+Use `⟨hℓ, ?_⟩` and prove the remaining obligations. Use `set G := g ^ d with hG`. Establish `hG3 : 3 ≤ G`. Establish `h2 : 2 ≤ d`. Establish `: 1 ≤ Nat.gcd d e` using `Nat.gcd_pos_of_pos_left e hd`.
+
+Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Establish `hn0 : G - 1 ≠ 0` using `by omega`. Establish `: Fact ℓ.Prime` using `⟨hℓ⟩`. Use `set v := padicValNat ℓ (G - 1) with hv`.
+
+Establish `hfac : (G - 1).factorization ℓ = v` using `Nat.factorization_def _ hℓ`. Use `set B := (G - 1) / ℓ ^ v with hB`. Establish `hAB : ℓ ^ v * B = G - 1`. Use `Nat.ordProj_mul_ordCompl_eq_self (G - 1) ℓ` as an intermediate fact. Rewrite `this` using `[hfac]`. Then use the resulting hypothesis.
+
+Establish `hcop : Nat.Coprime ℓ B`. Use `Nat.coprime_ordCompl hℓ hn0` as an intermediate fact. Rewrite `this` using `[hfac]`. Then use the resulting hypothesis. Establish `hB1 : B ∣ g ^ e - 1` using `(Nat.Coprime.pow_left c hcop).symm.dvd_of_dvd_mul_left ((Dvd.intro_left _ hAB).trans h)`. Establish `hB2 : B ∣ g ^ Nat.gcd d e - 1`.
+
+Rewrite using `[← Nat.pow_sub_one_gcd_pow_sub_one]`. Conclude with `Nat.dvd_gcd (Dvd.intro_left _ hAB) hB1`. Use `set s := Nat.gcd d e`. Establish `hs1 : 1 ≤ s` using `Nat.gcd_pos_of_pos_left e hd`. Establish `hgs : 2 ≤ g ^ s` using `le_trans hg (Nat.le_self_pow (by omega) g)`.
+
+Establish `hBle : B ≤ g ^ s - 1` using `Nat.le_of_dvd (by omega) hB2`. Establish `hBsq : B * B ≤ G - 1`. Establish `h1 : g ^ s * g ^ s ≤ G`. Rewrite using `[← pow_add, hG]; exact Nat.pow_le_pow_right (by omega) (by omega)`. Establish `h2 : B * B ≤ (g ^ s - 1) * (g ^ s - 1)` using `Nat.mul_le_mul hBle hBle`.
+
+Establish `h3 : (g ^ s - 1) * (g ^ s - 1) + 1 ≤ g ^ s * g ^ s`. Take `⟨t, ht⟩ : ∃ t, g ^ s = t + 2` from `⟨g ^ s - 2, by omega⟩`. Rewrite using `[ht]; simp only [show t + 2 - 1 = t + 1 by omega]; nlinarith`. Use linear arithmetic over natural numbers and integers. Use `set A := ℓ ^ v`.
+
+Establish `hA2 : G - 1 ≤ A * A`. Establish `h1 : (A * A) * (B * B) = (G - 1) * (G - 1)` using `by rw [← hAB]; ring`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hBpos : 0 < B * B`.
+
+Break down `Nat.eq_zero_or_pos (B * B) with h0 | h0` into its components or cases. Rewrite `h1` using `[h0, mul_zero]`. Establish `: 0 < (G - 1) * (G - 1)` using `Nat.mul_pos (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers. Conclude with `h0`.
+
+Establish `: (A * A) * (B * B) < (G - 1) * (G - 1)`. Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers. Establish `hA4 : ℓ ^ (4 * v) = (A * A) * (A * A)` using `by show ℓ ^ (4 * v) = (ℓ ^ v * ℓ ^ v) * (ℓ ^ v * ℓ ^ v)`. Rewrite using `[← pow_add, ← pow_add]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hA4]`. Establish `h5 : (G - 1) * (G - 1) ≤ (A * A) * (A * A)` using `Nat.mul_le_mul hA2 hA2`. Establish `h6 : G < (G - 1) * (G - 1)`.
+
+Take `⟨t, ht⟩ : ∃ t, G = t + 3` from `⟨G - 3, by omega⟩`. Rewrite using `[ht]; simp only [show t + 3 - 1 = t + 2 by omega]; nlinarith`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exc_of_dvd {g d e ℓ c : ℕ} (hg : 2 ≤ g) (hℓ : ℓ.Prime) (hd : 1 ≤ d) (he : 2 * Nat.gcd d e ≤ d)
     (h : g ^ d - 1 ∣ ℓ ^ c * (g ^ e - 1)) : Exc g d ℓ := by
   refine ⟨hℓ, ?_⟩

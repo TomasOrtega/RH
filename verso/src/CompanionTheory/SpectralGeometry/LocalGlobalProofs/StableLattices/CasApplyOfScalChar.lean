@@ -9,9 +9,17 @@ open Formalism.REAL (GlRel IsUnitary KHighest Cas etr epow)
 
 namespace GlobalTheory.CompanionTheory.RgExhUnit
 
+/- English proof (translation)
+Simplify using `[etr, Cas, epow]`.
+-/
 theorem etr_two_eq_cas {A : Type*} [Ring A] {n : ℕ} (E : Fin n → Fin n → A) : etr E 2 = Cas E := by
   simp [etr, Cas, epow]
 
+/- English proof (translation)
+Break down `n with _ | m` into its components or cases. Simplify using `[Cas]`. Establish `h` using `GlobalTheory.CompanionTheory.CapelliGelfand.etr_eq_gelfVal_of_capelli V m E χ u hE (fun Y => by`. Use `LinearMap.congr_fun (hS Y) u` as an intermediate fact. Simplify using `using this) 2`.
+
+Rewrite `h` using `[etr_two_eq_cas, GlobalTheory.CasimirEigen.gelfVal_two_eq]`. Conclude with `h`.
+-/
 theorem cas_apply_of_scalChar {n : ℕ} (V : Type) [AddCommGroup V] [Module ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (χ : Fin n → ℂ)
     (hS : CompanionTheory.RgExh.ScalChar ⟨V, E, hE⟩ χ) (u : V) :
@@ -26,12 +34,28 @@ theorem cas_apply_of_scalChar {n : ℕ} (V : Type) [AddCommGroup V] [Module ℂ 
     rw [etr_two_eq_cas, GlobalTheory.CasimirEigen.gelfVal_two_eq] at h
     exact h
 
+/- English proof (translation)
+Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re, sq]`.
+-/
 theorem re_sum_mul_self {n : ℕ} (χ : Fin n → ℂ) :
     (∑ a, χ a * χ a).re = ∑ a, ((χ a).re ^ 2 - (χ a).im ^ 2) := by
   rw [Complex.re_sum]
   refine Finset.sum_congr rfl fun a _ => ?_
   simp [Complex.mul_re, sq]
 
+/- English proof (translation)
+Introduce `n`. Use `⟨∑ a, Formalism.QuantumDeterminants.rhoStd n a * Formalism.QuantumDeterminants.rhoStd n a, ?_⟩` and prove the remaining obligations. Introduce `ε V _ _ E hE χ γ u hU hS hu hK`. Establish `h1` using `Formalism.REAL.wdCas V n ε E γ u hE hU hK`. Establish `hin : ⟪u, u⟫_ℂ = ((‖u‖ ^ 2 : ℝ) : ℂ)`.
+
+Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[cas_apply_of_scalChar V E hE χ hS u, inner_smul_right, hin]`. Establish `h2` using `congrArg Complex.re h1`. Establish `hpos : 0 < ‖u‖ ^ 2` using `by positivity`.
+
+Establish `hsum : 0 ≤ ∑ a, ∑ b, (if ε a = ε b then 0 else ‖E a b u‖ ^ 2)`. Use `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> positivity`. Establish `hrho : (∑ a, ((Formalism.QuantumDeterminants.rhoStd n a : ℝ) : ℂ) * ((Formalism.QuantumDeterminants.rhoStd n a : ℝ) : ℂ)).re = ∑ a, Formalism.QuantumDeterminants.rhoStd n a * Formalism.QuantumDeterminants.rhoStd n a`. Rewrite using `[Complex.re_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re]`. Establish `hc : (∑ a, ((χ a).re ^ 2 - (χ a).im ^ 2) - ∑ a, Formalism.QuantumDeterminants.rhoStd n a * Formalism.QuantumDeterminants.rhoStd n a) * ‖u‖ ^ 2 = (Formalism.REAL.nsq (γ + Formalism.REAL.rhoC ε) - Formalism.REAL.nsq (Formalism.REAL.rhoC ε)) * ‖u‖ ^ 2 - ∑ a, ∑ b, (if ε a = ε b then …`. Rewrite `h2` using `[Complex.re_mul_ofReal, Complex.ofReal_re, Complex.sub_re, re_sum_mul_self, hrho]`. Conclude with `h2`.
+
+Establish `hnn : 0 ≤ Formalism.REAL.nsq (Formalism.REAL.rhoC ε)` using `by show 0 ≤ ∑ a, Formalism.REAL.rhoC ε a * Formalism.REAL.rhoC ε a`. Conclude with `Finset.sum_nonneg fun a _ => mul_self_nonneg _`. Establish `hle : ∑ a, ((χ a).re ^ 2 - (χ a).im ^ 2) - ∑ a, Formalism.QuantumDeterminants.rhoStd n a * Formalism.QuantumDeterminants.rhoStd n a ≤ Formalism.REAL.nsq (γ + Formalism.REAL.rhoC ε) - Formalism.REAL.nsq (Formalism.REAL.rhoC ε)`. Use `le_of_mul_le_mul_right ?_ hpos` and prove the remaining obligations. Rewrite using `[hc]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `show _ ≤ Formalism.REAL.nsq (γ + Formalism.REAL.rhoC ε) + _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem unitIneq : CompanionTheory.RgExh.U.UnitIneq := by
   intro n
   refine ⟨∑ a, Formalism.QuantumDeterminants.rhoStd n a * Formalism.QuantumDeterminants.rhoStd n a, ?_⟩

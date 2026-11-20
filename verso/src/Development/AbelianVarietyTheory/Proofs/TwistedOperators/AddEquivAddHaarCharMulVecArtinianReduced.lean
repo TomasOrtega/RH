@@ -10,6 +10,21 @@ noncomputable section
 
 namespace GlobalTheory.ModuArtin
 
+/- English proof (translation)
+Introduce `hA hR κ _ _ inst hB M hM`. Establish `heq : inst = MeasurableSpace.pi`. Conclude with `hB.measurable_eq.trans (@BorelSpace.measurable_eq (κ → B) _ MeasurableSpace.pi Pi.borelSpace).symm`. Substitute `heq` using the available equality. Use `set ν : Measure B := Measure.addHaar`.
+
+Use `set μ : Measure (κ → B) := Measure.pi fun _ : κ => ν`. Establish `h1` using `addEquivAddHaarChar_smul_map μ (mulVecCE M hM)`. Establish `h2 : (modu B M.det : ℝ≥0∞) • Measure.map M.mulVec μ = μ` using `GlobalTheory.GaugeEx.ModDet.smul_map_mulVec_pi ν M hM`. Establish `hfun : ⇑(mulVecCE M hM) = M.mulVec` using `funext fun x => mulVecCE_apply M hM x`. Rewrite `h1` using `[hfun]`.
+
+Take `⟨K⟩` from `(inferInstance : Nonempty (TopologicalSpace.PositiveCompacts (κ → B)))`. Establish `hpos : μ K ≠ 0` using `((isOpen_interior.measure_pos μ K.interior_nonempty).trans_le (measure_mono interior_subset)).ne'`. Establish `hfin : μ K ≠ ⊤` using `K.isCompact.measure_lt_top.ne`. Use `set m := (Measure.map M.mulVec μ) (K : Set (κ → B))`. Establish `e1 : (addEquivAddHaarChar (mulVecCE M hM) : ℝ≥0∞) * m = μ K` using `by conv_rhs => rw [← h1]`.
+
+Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `e2 : (modu B M.det : ℝ≥0∞) * m = μ K` using `by conv_rhs => rw [← h2]`. Rewrite using `[Measure.smul_apply, smul_eq_mul]`. Establish `hm0 : m ≠ 0`. Introduce `h`.
+
+Rewrite `e1` using `[h, mul_zero]`. Conclude with `hpos e1.symm`. Establish `hmt : m ≠ ⊤`. Introduce `h`. Rewrite `e1` using `[h]`.
+
+Establish `hc : (addEquivAddHaarChar (mulVecCE M hM) : ℝ≥0∞) ≠ 0`. Conclude with `(addEquivAddHaarChar_pos (mulVecCE M hM)).ne'` after adjusting the coercions. Rewrite `e1` using `[ENNReal.mul_top hc]`. Conclude with `hfin e1.symm`. Use `(ENNReal.mul_left_inj hm0 hmt).1 (e1.trans e2.symm)` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions.
+-/
 theorem addEquivAddHaarChar_mulVecCE (B : Type) [CommRing B] [TopologicalSpace B] [IsTopologicalRing B]
     [LocallyCompactSpace B] [T2Space B] [SecondCountableTopology B] [MeasurableSpace B] [BorelSpace B] :
     IsArtinianRing B → IsReduced B → ∀ (κ : Type) [Fintype κ] [DecidableEq κ] [MeasurableSpace (κ → B)]

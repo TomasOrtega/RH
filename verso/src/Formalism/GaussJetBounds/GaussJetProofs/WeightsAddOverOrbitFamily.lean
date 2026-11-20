@@ -10,6 +10,35 @@ namespace Formalism.DworkPowerSeriesWeights
 
 open Formalism.IncomingBounds
 
+/- English proof (translation)
+Introduce `K _ _ _ l N0 N1 hl hodd hpi K0 hK0 ζ hζ be hbe ep hep ι _ M hM1 sgn hsgn`. Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl.two_le`. Establish `hl3 : 3 ≤ l`. Take `⟨k, hk⟩` from `hodd`. Use `hl.two_le` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨hOR1, hOR2⟩` from `oneLetterRadiusIdentity l hl3`. Establish `h0 : 0 < ‖(l : K)‖` using `norm_pos_iff.mpr (Nat.cast_ne_zero.mpr hl.ne_zero)`. Establish `h1 : ‖(l : K)‖ ≤ 1` using `hpi.le`. Establish `hrho : 0 ≤ rho l`.
+
+Unfold `rho`. Apply `div_nonneg zero_le_one` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `hrg : gam l = 1 / ((l : ℝ) - 1) - rho l`. Establish `ha : (l : ℝ) - 1 ≠ 0` using `by linarith`.
+
+Establish `hb : (l : ℝ) ^ 2 - 1 ≠ 0` using `by nlinarith`. Unfold `gam rho`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨R, hR⟩ : ∃ R : ℝ, R = rho l + 1 / ((l : ℝ) + 1)` from `⟨_, rfl⟩`.
+
+Establish `hRρ : rho l ≤ R`. Establish `: 0 ≤ 1 / ((l : ℝ) + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hS1, hS2⟩` from `lemmaS K l 2 hl hodd le_rfl even_two hpi K0 hK0 ζ hζ be hbe`. Establish `hbe0 : MvPowerSeries.constantCoeff be = 0`.
+
+Assume the negation of the conclusion as `h`. Establish `h' : MvPowerSeries.coeff 0 be ≠ 0`. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply]` and apply the resulting hypothesis. Use `(hbe.2.2.1 0 h').1` as an intermediate fact. Simplify using `[degE] at this`.
+
+Establish `hbeR : WtGe ‖(l : K)‖ (fun _ : ZMod 2 => R) (1 / ((l : ℝ) - 1)) be`. Introduce `n`. Distinguish the cases in `hb : IsBiPower l n`. Take `⟨s, s', α, β, hs, hs', _, hsum, rfl⟩` from `hb`. Establish `hodd' : Odd (α + β)`.
+
+Establish `key : ((α + β : ℕ) : ZMod 2) = 1`. Use `push_cast`. Conclude with `asmOne_zmod2 s s' _ _ hs hs' hsum`. Conclude with `ZMod.natCast_eq_one_iff_odd.mp key`. Establish `hq` using `hOR1 α β hodd'`.
+
+Establish `hn` using `hS1 (Finsupp.single s (l ^ α) + Finsupp.single s' (l ^ β))`. Rewrite `hn`, the goal using `[monoWtGe_iff]`. Use `le_trans hn (Real.rpow_le_rpow_of_exponent_ge h0 h1 ?_)` and prove the remaining obligations. Simplify using `only [dot_add, asmR_dot_single, Nat.cast_pow]`. Establish `e : (l : ℝ) ^ α * R + (l : ℝ) ^ β * R = (l : ℝ) ^ α * rho l + (l : ℝ) ^ β * rho l + ((l : ℝ) ^ α + (l : ℝ) ^ β) / ((l : ℝ) + 1)`.
+
+Rewrite using `[hR]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `asmR_monoWtGe_rad h0 h1 (fun _ => hRρ) (hS2 n hb)`. Establish `hc1 : ∀ s : ZMod 2, ‖(if s = 0 then (1 : K) else ep)‖ ≤ 1`.
+
+Introduce `s`. Use `split_ifs`. Simplify using the standard rewrite rules. Conclude with `hep.le`. Establish `ha0 : ∀ (x : Fin N0 × Fin N1) (s : ZMod 2), MvPowerSeries.constantCoeff ((if s = 0 then (1 : K) else ep) • ∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i) = 0` using `fun x s => asmOne_smul_const _ (asmOne_lin_const _)`.
+
+Establish `haw : ∀ (x : Fin N0 × Fin N1) (s : ZMod 2), WtGe ‖(l : K)‖ (fun _ : ι => R) R ((if s = 0 then (1 : K) else ep) • ∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i)` using `fun x s => asmOne_smul_wt (hc1 s) (asmOne_lin_wt h0 (M x) (hM1 x) R)`. Establish `hsub : ∀ x : Fin N0 × Fin N1, WtGe ‖(l : K)‖ (fun _ : ι => R) (1 / ((l : ℝ) - 1)) (MvPowerSeries.subst (fun s : ZMod 2 => (if s = 0 then (1 : K) else ep) • ∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i) be)` using `fun x => substitution_weight_bound K ‖(l : K)‖ h0 hpi (ZMod 2) ι _ (fun _ => R) (fun _ => R) (1 / ((l : ℝ) - 1)) be (ha0 x) (haw x) hbeR`. Establish `hsgn1 : ‖sgn / 2‖ ≤ 1`. Apply the tactic sequence `have hs1 : ‖sgn‖ = 1 := by rcases hsgn with h | h <;> simp [h]`. Establish `h2` using `asmOne_one_le_norm_two (K := K) hodd hpi`.
+
+Rewrite using `[norm_div, hs1]`. Conclude with `(div_le_one (lt_of_lt_of_le one_pos h2)).mpr h2`. Establish `hBw : WtGe ‖(l : K)‖ (fun _ : ι => R) (1 / ((l : ℝ) - 1)) ((sgn / 2) • ∑ x : Fin N0 × Fin N1, MvPowerSeries.subst (fun s : ZMod 2 => (if s = 0 then (1 : K) else ep) • ∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i) be)` using `asmOne_smul_wt hsgn1 (wtGe_sum h0 Finset.univ _ fun x _ => hsub x)`. Establish `hBc : MvPowerSeries.constantCoeff ((sgn / 2) • ∑ x : Fin N0 × Fin N1, MvPowerSeries.subst (fun s : ZMod 2 => (if s = 0 then (1 : K) else ep) • ∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i) be) = 0`. Use `asmOne_smul_const _ ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero (ha0 x)) (ha0 x) hbe0`. Substitute `hR` using the available equality. Conclude with `⟨hBc, hBw⟩`.
+-/
 theorem one_letter_exponent_weight : OneLetterWt.{u, v} := by
   intro K _ _ _ l N0 N1 hl hodd hpi K0 hK0 ζ hζ be hbe ep hep ι _ M hM1 sgn hsgn
   have hl2 : (2 : ℝ) ≤ l := by exact_mod_cast hl.two_le

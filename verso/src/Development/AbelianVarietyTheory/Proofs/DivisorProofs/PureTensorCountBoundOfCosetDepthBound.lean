@@ -15,6 +15,17 @@ open scoped TensorProduct
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `haveI : Module.Finite ℤ M := Module.Finite.iff_fg.2 hM`. Use `haveI : IsAddTorsionFree V := IsAddTorsionFree.of_module_rat V`. Use `haveI : Module.Free ℤ M := inferInstance`. Set `b` to `Module.finBasis ℤ M`. Establish `h1 : LinearIndependent ℤ (fun i => (b i : V))` using `b.linearIndependent.map' M.subtype M.ker_subtype`.
+
+Establish `h2 : LinearIndependent ℚ (fun i => (b i : V))` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 h1`. Establish `h3 : Module.finrank ℤ M ≤ Module.finrank ℚ V` using `by simpa using h2.fintype_card_le_finrank`. Use `⟨Finset.univ.image fun c : Fin (Module.finrank ℤ M) → Fin n => ∑ i, ((c i : ℕ) : ℤ) • (b i : V), ?_, fun u hu => ?_⟩` and prove the remaining obligations. Use `Finset.card_image_le.trans ?_` and prove the remaining obligations. Simplify using `only [Finset.card_univ, Fintype.card_fun, Fintype.card_fin]`.
+
+Conclude with `Nat.pow_le_pow_right hn h3`. Establish `hn' : (0 : ℤ) < n` using `by exact_mod_cast hn`. Set `c` to `b.repr ⟨u, hu⟩`. Establish `hlt : ∀ i, (c i % n).toNat < n` using `fun i => by`. Use `Int.emod_lt_of_pos (c i) hn'` as an intermediate fact.
+
+Use `Int.emod_nonneg (c i) hn'.ne'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨_, Finset.mem_image_of_mem _ (Finset.mem_univ fun i => (⟨_, hlt i⟩ : Fin n)), ∑ i, (c i / n) • (b i : V), M.sum_mem fun i _ => M.smul_mem _ (b i).2, ?_⟩` and prove the remaining obligations. Establish `e : u = ∑ i, c i • (b i : V)`. Use `congrArg M.subtype (b.sum_repr ⟨u, hu⟩)` as an intermediate fact.
+
+Rewrite `this` using `[map_sum]`. Conclude with `this.symm`. Rewrite using `[e, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ, smul_smul, ← add_smul, Int.toNat_of_nonneg (Int.emod_nonneg _ hn'.ne'), Int.emod_add_mul_ediv]`.
+-/
 private theorem reps_fg {V : Type} [AddCommGroup V] [Module ℚ V] [Module.Finite ℚ V] (M : Submodule ℤ V) (hM : M.FG) (n : ℕ)
     (hn : 0 < n) : ∃ R : Finset V, R.card ≤ n ^ Module.finrank ℚ V ∧ ∀ u ∈ M, ∃ r ∈ R, ∃ v ∈ M, u = r + n • v := by
   classical
@@ -47,6 +58,33 @@ private theorem reps_fg {V : Type} [AddCommGroup V] [Module ℚ V] [Module.Finit
 
 variable {D : D7}
 
+/- English proof (translation)
+Set `gen : D.host.E → (Fin S.rank → D.host.E) → (Fin T.rank → D.host.E) → Matrix (Fin T.rank) (Fin S.rank) D.host.E` to `fun a s t => Matrix.of fun i j => a * t i * ∑ k, star (s k) * S.gram k j`. Set `M : Submodule ℤ (Matrix (Fin T.rank) (Fin S.rank) D.host.E)` to `Submodule.span ℤ {w | ∃ a ∈ D.host.AA, ∃ s ∈ LS, ∃ t ∈ LT, w = gen a s t}`. Establish `hM : M.FG`. Set `ρ : Fin S.rank → (Fin S.rank → D.host.E) →+ D.host.E` to `fun j => { toFun := fun s => ∑ k, star (s k) * S.gram k j map_zero' := by simp map_add' := fun s s' => by simp [add_mul, Finset.sum_add_distrib] }`. Establish `hA : ((D.host.AA : Submodule (𝓞 D.host.E) D.host.E).restrictScalars ℤ).FG` using `Submodule.FG.restrictScalars (FractionalIdeal.fg_of_isNoetherianRing le_rfl _)`.
+
+Establish `hS' : (LS.restrictScalars ℤ).FG` using `Submodule.FG.restrictScalars hS`. Establish `hT' : (LT.restrictScalars ℤ).FG` using `Submodule.FG.restrictScalars hT`. Set `N : Fin T.rank → Fin S.rank → Submodule ℤ D.host.E` to `fun i j => (D.host.AA : Submodule (𝓞 D.host.E) D.host.E).restrictScalars ℤ * (LT.restrictScalars ℤ).map (LinearMap.proj i) * (LS.restrictScalars ℤ).map (ρ j).toIntLinearMap`. Establish `hN : (Submodule.pi Set.univ fun i => Submodule.pi Set.univ fun j => N i j).FG` using `Submodule.fg_pi fun i => Submodule.fg_pi fun j => (hA.mul (hT'.map _)).mul (hS'.map _)`. Use `Submodule.FG.of_le (R := ℤ) hN (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, ha, s, hs, t, ht, rfl⟩ i - j -`. Conclude with `Submodule.mul_mem_mul (Submodule.mul_mem_mul ha ⟨t, ht, rfl⟩) ⟨s, hs, rfl⟩`. Take `⟨R, hR, hR'⟩` from `reps_fg M hM n hn`. Rewrite `hR` using `[Module.finrank_matrix, Fintype.card_fin, Fintype.card_fin, Formalism.MainNotions.StandardLattice.finrank_host D]`. Set `φ : Matrix (Fin T.rank) (Fin S.rank) D.host.E →+ WO S T` to `{ toFun := fun x => Matrix.of fun i j => (pairA D.host.F 0 1) ⊗ₜ[D.host.F] x i j map_zero' := by ext i j; simp map_add' := fun x y => by ext i j; simp [TensorProduct.tmul_add] }`.
+
+Use `set Λ := latO S T (LS : Set _) (LT : Set _) (fun _ => True) with hΛ`. Establish `h1 : (1 : Af D.host.F) ∈ intAf D.host.F` using `fun v => by rw [map_one]; exact one_mem _`. Establish `hφ : ∀ x ∈ M, φ x ∈ Λ` using `fun x hx => by`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨a, ha, s, hs, t, ht, rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨1, h1, fun v h => absurd trivial h, a, ha, s, hs, t, ht, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_zsmul]`. Conclude with `zsmul_mem hx c`. Establish `key : ∀ u ∈ Λ, ∃ x ∈ M, ∃ v ∈ Λ, u = φ x + n • v` using `fun u hu => by`. Proceed by induction on `hu using AddSubgroup.closure_induction with`.
+
+Consider the case `mem w hw`. Take `⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Take `⟨c, β, hβ, e⟩` from `Formalism.MainNotions.BridgeLevelGenB.dense_mod n hn α hα`. Use `⟨gen a s (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c • t), Submodule.subset_span ⟨a, ha, s, hs, _, LT.smul_mem _ ht, rfl⟩, _, AddSubgroup.subset_closure ⟨β, hβ, fun v h => absurd trivial h, a, ha, s, hs, t, ht, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : pairA D.host.F 0 α = (c : D.host.F) • pairA D.host.F 0 1 + n • pairA D.host.F 0 β`.
+
+Rewrite using `[e]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (0 : Ainf D.host.F) = (c : D.host.F) • (0 : Ainf D.host.F) + n • (0 : Ainf D.host.F)`. Simplify using the standard rewrite rules. Use `show _ + _ = (c : D.host.F) • (1 : Af D.host.F) + n • β`.
+
+Rewrite using `[Algebra.smul_def, mul_one, nsmul_eq_mul]`. Use extensionality with `i j`. Use `show _ ⊗ₜ[D.host.F] _ = (pairA D.host.F 0 1) ⊗ₜ[D.host.F] _ + n • (_ ⊗ₜ[D.host.F] _)`. Rewrite using `[e1, TensorProduct.add_tmul, TensorProduct.smul_tmul, TensorProduct.smul_tmul']`. Use `congr 2`.
+
+Use `show _ = a * (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c • t i) * _`. Establish `e2 : algebraMap (𝓞 D.host.E) D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c) = algebraMap D.host.F D.host.E (c : D.host.F)` using `rfl`. Rewrite using `[Algebra.smul_def (c : D.host.F), Algebra.smul_def _ (t i), e2]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨0, zero_mem _, 0, zero_mem _, by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, v, hv, rfl⟩` from `hx`. Take `⟨a', ha', v', hv', rfl⟩` from `hy`. Conclude with `⟨a + a', add_mem ha ha', v + v', add_mem hv hv', by rw [map_add, nsmul_add]; abel⟩`. Consider the case `neg x _ hx`.
+
+Take `⟨a, ha, v, hv, rfl⟩` from `hx`. Conclude with `⟨-a, neg_mem ha, -v, neg_mem hv, by rw [map_neg, smul_neg]; abel⟩`. Use `⟨R.image φ, Finset.card_image_le.trans hR, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, v, hv, rfl⟩` from `key u hu`. Take `⟨r, hr, y, hy, rfl⟩` from `hR' x hx`.
+
+Conclude with `⟨φ r, Finset.mem_image_of_mem _ hr, φ y + v, add_mem (hφ y hy) hv, by rw [map_add, map_nsmul, nsmul_add]; abel⟩`.
+-/
 private theorem reps_latO (S T : HSp D) (LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (hS : LS.FG) (hT : LT.FG) (n : ℕ) (hn : 0 < n) :
     ∃ R : Finset (WO S T), R.card ≤ n ^ (T.rank * S.rank * (2 * D.R.f)) ∧
@@ -127,6 +165,15 @@ private theorem reps_latO (S T : HSp D) (LS : Submodule (𝓞 D.host.E) (Fin S.r
   obtain ⟨r, hr, y, hy, rfl⟩ := hR' x hx
   exact ⟨φ r, Finset.mem_image_of_mem _ hr, φ y + v, add_mem (hφ y hy) hv, by rw [map_add, map_nsmul, nsmul_add]; abel⟩
 
+/- English proof (translation)
+Establish `inv : incA D (k : D.host.E)⁻¹ * (k : AE D) = 1`. Rewrite using `[← map_natCast (incA D), ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hk.ne'), map_one]`. Establish `inj : ∀ x y : Mx D a b, k • x = k • y → x = y` using `fun x y h => by`. Establish `h'` using `congrArg (fun z : Mx D a b => incA D (k : D.host.E)⁻¹ • z) h`. Rewrite `h'` using `[← Nat.cast_smul_eq_nsmul (AE D), ← Nat.cast_smul_eq_nsmul (AE D), smul_smul, smul_smul, inv, one_smul, one_smul]`. Then use the resulting hypothesis.
+
+Set `P : Mx D a b → Mx D a b → Prop` to `fun r x => IsHalf e x ∧ ∃ v ∈ Λ, k • x = r + (k * k) • v`. Use `⟨R.image fun r => (halfCoset e Λ k (Classical.epsilon (P r))).indicator 1, Finset.card_image_le, fun x hx hx' => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, v, hv, h⟩` from `hR _ hx'`. Take `⟨hy, v', hv', h'⟩` from `Classical.epsilon_spec (p := P r) ⟨x, hx, v, hv, h⟩`. Use `Finset.mem_image.2 ⟨r, hr, ?_⟩` and prove the remaining obligations.
+
+Use `set y := Classical.epsilon (P r)`. Establish `e1 : x = y + k • (v - v')` using `inj _ _ (by rw [nsmul_add, h, h', ← mul_nsmul', nsmul_sub]; abel)`. Establish `e2 : IsHalf e (v - v')`. Establish `e3 : (v - v').map (e * ·) = v - v'` using `inj _ _ (by`. Use extensionality with `i j`.
+
+Establish `e4 : (k • (v - v')) i j = x i j - y i j` using `by rw [e1]; simp`. Rewrite using `[e4, ← hx i j, ← hy i j, ← mul_sub, ← e4]`. Simplify using `[mul_left_comm])`. Conclude with `fun i j => congrFun (congrFun e3 i) j`. Rewrite using `[halfCoset_eq (x := x) ⟨v - v', sub_mem hv hv', e2, e1⟩]`.
+-/
 private theorem coset_fns {a b : ℕ} (e : AE D) (Λ : AddSubgroup (Mx D a b)) {k : ℕ} (hk : 0 < k) (R : Finset (Mx D a b))
     (hR : ∀ u ∈ Λ, ∃ r ∈ R, ∃ v ∈ Λ, u = r + (k * k) • v) :
     ∃ Fn : Finset (Mx D a b → ℂ), Fn.card ≤ R.card ∧
@@ -156,6 +203,17 @@ private theorem coset_fns {a b : ℕ} (e : AE D) (Λ : AddSubgroup (Mx D a b)) {
 
 variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Apply the tactic sequence `have hX : X.InRange D.R.m := by cases X <;> simp only [DefNode, Node.InRange] at h ⊢ <;> omega`. Establish `hV : (G.node X).IsV (X.rank D) (X.neg D.R.m)`. Distinguish the cases in `h0 : ∀ j, X ≠ .grid 0 j`. Conclude with `G.isV hX h0`. Use `push Not at h0`.
+
+Take `⟨j, rfl⟩` from `h0`. Conclude with `GlobalTheory.ChiGrid.colY_isV D T L μ hL j hX.2`. Use `⟨hV.sd.1.fg, hV.rank.trans_le ?_⟩` and prove the remaining obligations. Use `D.R.two_le_m` as an intermediate fact. Break down `X with ⟨i, j⟩ | i | j` into its components or cases.
+
+Take `⟨h1, rfl⟩` from `h`. Use `Nat.mul_le_mul_right (sLen D) h1` as an intermediate fact. Simplify using `only [Node.rank, rankV, bigN, mul_add, mul_one, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Conclude with `h.elim`.
+
+Use `Nat.mul_le_mul_right (D.R.t + 1) (show j ≤ D.R.m from h)` as an intermediate fact. Establish `e : sLen D = sLen D - 1 + 1` using `by unfold sLen; omega`. Simplify using `only [Node.rank, rankX, rankP, nRk, bigN]`. Rewrite using `[e]`. Simplify using `only [mul_add, mul_one, Ranks.r, Nat.add_sub_cancel] at this ⊢`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem rank_le {μ : T} (hL : L.Is μ) {X : Node} (h : DefNode D.R.m X) :
     (G.Λ X).FG ∧ (G.V X).rank ≤ bigN D := by
   have hX : X.InRange D.R.m := by cases X <;> simp only [DefNode, Node.InRange] at h ⊢ <;> omega
@@ -180,6 +238,15 @@ private theorem rank_le {μ : T} (hL : L.Is μ) {X : Node} (h : DefNode D.R.m X)
     simp only [mul_add, mul_one, Ranks.r, Nat.add_sub_cancel] at this ⊢
     omega
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hp.nodes`. Take `⟨a1, a2⟩` from `rank_le (G := G) hL h1`. Take `⟨b1, b2⟩` from `rank_le (G := G) hL h2`. Establish `key : (G.latS p).FG ∧ (G.latT p).FG ∧ (G.pS p).rank ≤ bigN D ∧ (G.pT p).rank ≤ bigN D`. Consider the cases of `p`.
+
+Conclude with `⟨b1, a1, b2, a2⟩`. Conclude with `⟨a1, b1, a2, b2⟩`. Conclude with `⟨b1, a1, b2, a2⟩`. Conclude with `⟨a1, b1, a2, b2⟩`. Take `⟨R, hR, hR'⟩` from `reps_latO _ _ _ _ key.1 key.2.1 (k * k) (Nat.mul_pos hk hk)`.
+
+Take `⟨Fn, hF, hF'⟩` from `coset_fns e _ hk R hR'`. Use `⟨Fn, hF.trans (hR.trans ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[← sq, ← pow_mul]`. Use `Nat.pow_le_pow_right hk ?_` and prove the remaining obligations. Use `Nat.mul_le_mul key.2.2.2 key.2.2.1` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `t d rfl ⟨x, hx, hx', h⟩`. Rewrite using `[h]`. Conclude with `hF' x hx hx'`.
+-/
 private theorem pair_fns {μ : T} (hL : L.Is μ) {p : Pair T} (hp : DefPair D.R.m p) (e : AE D) {k : ℕ} (hk : 0 < k) :
     ∃ Fn : Finset (WO (G.pS p) (G.pT p) → ℂ), Fn.card ≤ k ^ (4 * D.R.f * bigN D ^ 2) ∧
       ∀ t (d : FinDatum G t p), d.e = e → IsCosetDatum k d → d.fn ∈ Fn := by
@@ -204,6 +271,17 @@ private theorem pair_fns {μ : T} (hL : L.Is μ) {p : Pair T} (hp : DefPair D.R.
     rw [h]
     exact hF' x hx hx'
 
+/- English proof (translation)
+Take `⟨hk, ⟨e, -, h1, -⟩, h3⟩` from `h`. Establish `ext : ∀ {p : Pair T} (a b : FinDatum G t p), a.P = b.P → a.e = b.e → a.fn = b.fn → a.z = b.z → a = b`. Introduce and unpack `p ⟨⟩ ⟨⟩ h1 h2 h3 h4`. Simplify using `only at h1 h2 h3 h4`. Substitute `h1 h2 h3 h4` using the available equality.
+
+Both sides reduce to the same expression. Use `choose F1 c1 m1 using fun j : Fin D.R.m => pair_fns (G := G) hL (p := .top t j) j.2 e hk`. Use `choose F2 c2 m2 using fun i : Fin D.R.m => pair_fns (G := G) hL (p := .chi i D.R.m) ⟨i.2, rfl⟩ e hk`. Establish `hle : τ.support.card ≤ (Fintype.piFinset F1 ×ˢ Fintype.piFinset F2).card`. Use `Finset.card_le_card_of_injOn (fun d => (fun j => (d.1 j).fn, fun i => (d.2 i).fn)) (fun d hd => ?_) fun d hd d' hd' hh => ?_` and prove the remaining obligations.
+
+Conclude with `Finset.mem_product.2 ⟨Fintype.mem_piFinset.2 fun j => m1 j t _ ((h1 d hd).1 j).2.1 ((h3 d hd).1 j), Fintype.mem_piFinset.2 fun i => m2 i t _ ((h1 d hd).2 i).2.1 ((h3 d hd).2 i)⟩`. Use `Prod.ext (funext fun j => ?_) (funext fun i => ?_)` and prove the remaining obligations. Take `⟨a1, a2, a3⟩` from `(h1 d hd).1 j`. Take `⟨b1, b2, b3⟩` from `(h1 d' hd').1 j`. Conclude with `ext _ _ (a1.trans b1.symm) (a2.trans b2.symm) (congrFun (congrArg Prod.fst hh) j) (a3.trans b3.symm)`.
+
+Take `⟨a1, a2, a3⟩` from `(h1 d hd).2 i`. Take `⟨b1, b2, b3⟩` from `(h1 d' hd').2 i`. Conclude with `ext _ _ (a1.trans b1.symm) (a2.trans b2.symm) (congrFun (congrArg Prod.snd hh) i) (a3.trans b3.symm)`. Use `hle.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_product, Fintype.card_piFinset, Fintype.card_piFinset]`.
+
+Use `(Nat.mul_le_mul (Finset.prod_le_pow_card _ _ _ fun j _ => c1 j) (Finset.prod_le_pow_card _ _ _ fun j _ => c2 j)).trans_eq ?_` and prove the remaining obligations. Rewrite using `[Finset.card_univ, Fintype.card_fin, ← pow_mul, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem card_support {μ : T} (hL : L.Is μ) {W : G.Weil} {U : Set T} {S : GridChoice W U} {t Φ β k τ}
     (h : IsCosetExpansion S t Φ β k τ) : τ.support.card ≤ k ^ (8 * D.R.f * D.R.m * bigN D ^ 2) := by
   classical
@@ -234,6 +312,23 @@ private theorem card_support {μ : T} (hL : L.Is μ) {W : G.Weil} {U : Set T} {S
   congr 1
   ring
 
+/- English proof (translation)
+Use `set P := q0 D * (D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde') with hP`. Establish `hP0 : P ≠ 0` using `mul_ne_zero (leastSplitAuxiliaryPrimeThetaChain_spec D).1.ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero) D.host.pde_prime.ne_zero) D.host.pde'_prime.ne_zero)`. Use `Nat.le_of_dvd (Nat.pos_of_ne_zero (pow_ne_zero _ hP0)) ?_` and prove the remaining obligations. Use `(Nat.factorization_prime_le_iff_dvd hk.ne' (pow_ne_zero _ hP0)).1 fun l hl => ?_` and prove the remaining obligations. Rewrite using `[Nat.factorization_def _ hl, Nat.factorization_pow]`.
+
+Use `(h l hl).trans (Finset.sup_le fun w hw => ?_)` and prove the remaining obligations. Take `⟨hw, hlw⟩` from `Finset.mem_filter.1 hw`. Take `⟨v, hv, rfl⟩ : ∃ v ∈ G.pl.S0, G.pl.w v = w` from `by simpa [Places.W0] using hw`. Establish `h1 : (P : 𝓞 D.host.F) ∈ v.asIdeal`. Rewrite using `[hP]`.
+
+Use `push_cast`. Break down `G.pl.mem_S0_of_sum_eq.1 hv with rfl | h` into its components or cases. Conclude with `Ideal.mul_mem_right _ _ G.pl.basePlace_over_qZero`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Break down `(S1_mem_OmF D).1 h with h | h | h | h` into its components or cases.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ h))`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ h))`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ h)`. Conclude with `Ideal.mul_mem_left _ _ h`. Establish `h2 : (P : 𝓞 D.host.E) ∈ (G.pl.w v).asIdeal`.
+
+Rewrite `h1` using `[← G.pl.under_w hv]`. Establish `: algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (P : 𝓞 D.host.F) ∈ (G.pl.w v).asIdeal` using `h1`. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h3 : l ∣ P`. Assume the negation of the conclusion as `hn`.
+
+Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hl).2 hn)`. Use `(G.pl.w v).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Use `congrArg (Int.cast : ℤ → 𝓞 D.host.E) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[← this]`.
+
+Conclude with `add_mem (Ideal.mul_mem_left _ _ hlw) (Ideal.mul_mem_left _ _ h2)`. Establish `h4 : 1 ≤ P.factorization l` using `(hl.dvd_iff_one_le_factorization hP0).1 h3`. Establish `h5 : depthAt G (G.pl.w v) ≤ depth0 D sc.cDep sc.b + 2`. Rewrite using `[(depthAt_w G hv).2, Places.depth]`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Rewrite using `[Finsupp.smul_apply, smul_eq_mul]`. Conclude with `h5.trans (Nat.le_mul_of_pos_right _ h4)`.
+-/
 private theorem depth_le {k : ℕ} (hk : 0 < k) (h : ∀ l : ℕ, l.Prime → padicValNat l k ≤ depL G l) :
     k ≤ (q0 D * (D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde')) ^ (depth0 D sc.cDep sc.b + 2) := by
   classical
@@ -276,6 +371,43 @@ private theorem depth_le {k : ℕ} (hk : 0 < k) (h : ∀ l : ℕ, l.Prime → pa
   rw [Finsupp.smul_apply, smul_eq_mul]
   exact h5.trans (Nat.le_mul_of_pos_right _ h4)
 
+/- English proof (translation)
+Take `⟨-, hz, -, -, -, -, -, hg, hq, hrd, hc, -⟩` from `hs`. Take `⟨-, -, -, -, -, hcond, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, ⟨hp, hp'⟩, -⟩` from `hz`. Unfold `SizeCond at hcond`. Establish `hb : Real.log large₂.sc.b = large₂.sc.L` using `Real.log_exp _`. Establish `hb0 : 0 < large₂.sc.b` using `Real.exp_pos _`.
+
+Establish `hL : 1 ≤ large₂.sc.L` using `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`. Use `set L := large₂.sc.L with hLdef`. Establish `pos : ∀ {n : ℕ}, n.Prime → (0 : ℝ) < n` using `fun h => by exact_mod_cast h.pos`. Establish `p0` using `pos (D.host.g_prime 0)`. Establish `p1` using `pos (D.host.g_prime 1)`.
+
+Establish `p2` using `pos D.host.pde_prime`. Establish `p3` using `pos D.host.pde'_prime`. Establish `p4` using `pos (leastSplitAuxiliaryPrimeThetaChain_spec D).1`. Establish `n1` using `D.R.rank_add_five_le`. Establish `n2` using `D.R.two_le_m`.
+
+Establish `n3` using `D.R.f_le_k`. Establish `nf : D.R.f ≤ D.R.t` using `by unfold Ranks.f Ranks.n; omega`. Establish `nn : nRk D ≤ D.R.t` using `by unfold nRk Ranks.r; omega`. Establish `nN : bigN D ≤ 5 * D.R.t ^ 2`. Establish `a1 : D.R.m * (D.R.t + sLen D + 1) ≤ D.R.t * (4 * D.R.t)` using `Nat.mul_le_mul (by omega) (by unfold sLen Ranks.r; omega)`.
+
+Establish `a2 : D.R.t * 1 ≤ D.R.t * D.R.t` using `Nat.mul_le_mul_left _ (by omega)`. Establish `a3 : D.R.k ≤ D.R.t` using `by omega`. Unfold `bigN`. Use the polynomial consequences of the given equalities and inequalities. Establish `t1 : (1 : ℝ) ≤ D.R.t` using `by exact_mod_cast (by omega : 1 ≤ D.R.t)`.
+
+Establish `tf : (D.R.f : ℝ) ≤ D.R.t` using `by exact_mod_cast nf`. Establish `tn : (nRk D : ℝ) ≤ D.R.t` using `by exact_mod_cast nn`. Establish `tN : (bigN D : ℝ) ≤ 5 * (D.R.t : ℝ) ^ 2` using `by exact_mod_cast nN`. Establish `n0 : (0 : ℝ) < nRk D` using `by exact_mod_cast (by unfold nRk; omega : 0 < nRk D)`. Establish `f0 : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`.
+
+Generalize the expression as in `(D.R.t : ℝ) = t at t1 tf tn tN hcond`. Establish `d1 : (1 : ℝ) ≤ |((discr D.host.E : ℤ) : ℝ)|` using `by exact_mod_cast Int.one_le_abs (discr_ne_zero D.host.E)`. Establish `hd : Real.log |((discr D.host.E : ℤ) : ℝ)| ≤ t * L`. Establish `e : Real.log |((discr D.host.E : ℤ) : ℝ)| = 2 * D.R.f * Real.log D.host.rdE`. Establish `: (Module.finrank ℚ D.host.E : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`.
+
+Establish `e2 : (2 * D.R.f : ℝ) = Module.finrank ℚ D.host.E` using `by rw [Formalism.MainNotions.StandardLattice.finrank_host D]; push_cast; ring`. Unfold `Host.rdE`. Rewrite using `[Real.log_rpow (by linarith), e2]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Use `mul_le_mul_of_nonneg_left (hrd.trans hc) f0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hlog : Real.log (large₂.sc.b * nRk D * D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde' * |(discr D.host.E : ℝ)|) ≤ 25 * (t * L)`. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), hb]`. Establish `a1` using `(Real.log_le_sub_one_of_pos n0)`.
+
+Establish `a2 : L ≤ t * L` using `le_mul_of_one_le_left (by linarith) t1`. Establish `a3 : t ≤ t * L` using `le_mul_of_one_le_right (by linarith) hL`. Combine the linear relations using `[hg 0, hg 1]`. Establish `hS : sizeP D CF large₂.sc.b ≤ 25 * CF * (t ^ 9 * L)`. Unfold `sizeP`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `tL : 1 ≤ t ^ 9 * L` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ t1) hL`. Establish `lq : 1 / 2 ≤ Real.log (q0 D)`. Establish `: (2 : ℝ) ≤ q0 D` using `by exact_mod_cast (leastSplitAuxiliaryPrimeThetaChain_spec D).1.two_le`. Combine the linear relations using `[Real.log_two_gt_d9, Real.log_le_log two_pos this]`.
+
+Establish `hM : ((depth0 D CF large₂.sc.b + 2 : ℕ) : ℝ) ≤ (50 * CF + 3) * (t ^ 9 * L)`. Establish `a1 : sizeP D CF large₂.sc.b / Real.log (q0 D) ≤ 50 * CF * (t ^ 9 * L)`. Rewrite using `[div_le_iff₀ (by linarith)]`. Establish `: 0 ≤ 50 * CF * (t ^ 9 * L)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `a2 : (⌊sizeP D CF large₂.sc.b / Real.log (q0 D)⌋₊ : ℝ) ≤ 50 * CF * (t ^ 9 * L)` using `(Nat.cast_le.2 (Nat.floor_le_floor a1)).trans (Nat.floor_le (by positivity))`. Unfold `depth0`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk' : Real.log k ≤ (50 * CF + 3) * (t ^ 9 * L) * (23 * L)`.
+
+Establish `a1 : (k : ℝ) ≤ ((q0 D : ℝ) * (D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde')) ^ (depth0 D CF large₂.sc.b + 2)`. Conclude with `h` after adjusting the coercions. Use `(Real.log_le_log (by exact_mod_cast hk) a1).trans ?_` and prove the remaining obligations. Rewrite using `[Real.log_pow]`. Establish `a2 : Real.log ((q0 D : ℝ) * (D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde')) ≤ 23 * L`.
+
+Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity)]`. Combine the linear relations using `[hg 0, hg 1]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcond1 : 1 ≤ szCond large₂`. Establish `e : szCond large₂ = (LevelStarExponents.condE D : ℝ)` using `by unfold szCond LevelStarExponents.condE; push_cast; rfl`.
+
+Establish `h1` using `(rPr_spec D).2`. Establish `: LevelStarExponents.condE D ≠ 0` using `fun z => h1 (by rw [z]; simp)`. Rewrite using `[e]`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Establish `s1 : t ^ 11 ≤ Real.sqrt large₂.sc.b`.
+
+Use `le_trans ?_ hcond` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `s2 : L / 2 ≤ Real.sqrt large₂.sc.b`. Establish `: Real.sqrt large₂.sc.b = Real.exp (L / 2)` using `(Real.exp_half L).symm`. Combine the linear relations using `[Real.add_one_le_exp (L / 2)]`.
+
+Establish `s3 : t ^ 11 * (L / 2) ≤ large₂.sc.b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hb]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem size_le (large₂ : SizeData₂ D) (hs : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂) {CF : ℝ} (hCF : 0 ≤ CF) {k : ℕ} (hk : 0 < k)
     (h : k ≤ (q0 D * (D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde')) ^ (depth0 D CF large₂.sc.b + 2)) :
     8 * (bigN D : ℝ) * Real.log k ≤ 1840 * (50 * CF + 3) * large₂.sc.b * Real.log large₂.sc.b := by
@@ -389,6 +521,27 @@ end
 
 open GlobalTheory.SumCount GlobalTheory.SumSize
 open GlobalTheory.SumCount.Pure Formalism.BasicNotions Formalism.IndefR.Links GlobalTheory.ChiGrid GlobalTheory.RowTest NumberField IsDedekindDomain in
+/- English proof (translation)
+Introduce and unpack `⟨a, h⟩`. Use `⟨max a 0, fun CF hCF => ?_⟩` and prove the remaining obligations. Establish `hCF0 : 0 ≤ CF` using `le_of_max_le_right hCF`. Take `⟨c, h⟩` from `h CF (le_of_max_le_left hCF)`. Use `⟨max c (1840 * (50 * CF + 3)), fun ε C hC => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, h⟩` from `h ε C (le_of_max_le_left hC)`. Use `⟨x, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch i j k Φ β hβ τ hτ => ?_⟩` and prove the remaining obligations. Establish `hd` using `(h D large₂ e hx Γ Pl0 T A Ks R F s ch i j k A.μ0 Φ β hβ).2`. Establish `hL : R.toLevCh.Is A.μ0` using `s.core.lev`. Establish `hQ : R.toLevCh.Q A.μ0 = ∅` using `Finset.eq_empty_of_forall_notMem fun PP hP => (hL.Q_ram A.μ0 PP).2 (Or.inl hP) (by`.
+
+Rewrite using `[hL.xi_base]`. Conclude with `fun _ _ => rfl)`. Establish `hk` using `hτ.1`. Establish `h1` using `card_support hL hτ`. Use `set n := expDepth ch.S.toGridChoice A.μ0 Φ β`.
+
+Establish `h2` using `depth_le (G := ch.G) hk fun l hl => by haveI : (Ideal.span {(l : ℤ)}).IsPrime := (Ideal.span_singleton_prime (by exact_mod_cast hl.ne_zero)).2 (Nat.prime_iff_prime_int.1 hl)`. Take `⟨Q, hQ1, hQ2⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain (S := 𝓞 D.what₂.LL) (Ideal.span {(l : ℤ)}) (by rw [(RingHom.injective_iff_ker_eq_bot _).1 (algebraMap ℤ (𝓞 D.what₂.LL)).injective_int]; exact bot_le)`. Establish `hm : (l : 𝓞 D.what₂.LL) ∈ Q`. Establish `: (l : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 D.what₂.LL))` using `by rw [hQ2]; exact Ideal.mem_span_singleton_self _`. Simplify using `using this`.
+
+Use `hd ⟨Q, hQ1, fun z => ?_⟩ l hl hm fun PP hP => ?_` and prove the remaining obligations. Rewrite `hm` using `[z, Ideal.mem_bot]`. Conclude with `hl.ne_zero (by exact_mod_cast hm)`. Rewrite `hP` using `[hQ]`. Conclude with `absurd hP (Finset.notMem_empty _)`.
+
+Establish `e1 : ch.sc.cDep = CF` using `by rw [j]`. Establish `e2 : ch.sc.b = large₂.sc.b` using `by rw [j]`. Rewrite `h2` using `[e1, e2]`. Establish `h3` using `size_le large₂ s.size hCF0 hk h2`. Establish `hC1 : 1840 * (50 * CF + 3) ≤ C` using `le_of_max_le_right hC`.
+
+Establish `hC0 : 0 ≤ C` using `le_trans (by positivity) hC1`. Establish `hb0 : 0 < large₂.sc.b` using `Real.exp_pos _`. Establish `hb1 : 0 ≤ Real.log large₂.sc.b`. Rewrite using `[Scale.b, Real.log_exp]`. Conclude with `Real.rpow_nonneg (zero_le_one.trans large₂.sc.one_lt_alt.le) _`.
+
+Establish `hs : 0 ≤ sig ch.G` using `Finset.sum_nonneg fun v _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)`. Establish `hk' : (0 : ℝ) < n` using `by exact_mod_cast hk`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_log (pow_pos hk' _), Real.log_pow]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by`. Use `Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _))` and prove the remaining obligations. Establish `h4 : 8 * (bigN D : ℝ) * Real.log n ≤ C * large₂.sc.b * Real.log large₂.sc.b` using `h3.trans (by gcongr)`.
+
+Establish `h5 : 0 ≤ C * D.R.m * (bigN D : ℝ) ^ 2 * sig ch.G` using `by positivity`. Establish `h6` using `mul_le_mul_of_nonneg_left h4 (show (0 : ℝ) ≤ D.R.f * bigN D by positivity)`. Unfold `aOne`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem _root_.GlobalTheory.T.pureTensorCountBound_of_cosetDepthBound : GlobalTheory.SumSize.DepthK → GlobalTheory.SumCount.PureK := by
   rintro ⟨a, h⟩
   refine ⟨max a 0, fun CF hCF => ?_⟩

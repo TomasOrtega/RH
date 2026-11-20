@@ -20,6 +20,13 @@ namespace GlobalTheory.RatFinIso
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `set u : WO S T := ratW T S v - GlobalTheory.VacUnique.finRat S T v with hu`. Establish `hfin : u.map (finPart D) = 0`. Use function extensionality and compare the values at `i j`. Establish `e1` using `congrFun (congrFun (GlobalTheory.VacUnique.finRat_fin S T v) i) j`. Use `show finPart D (ratW T S v i j - GlobalTheory.VacUnique.finRat S T v i j) = 0`.
+
+Rewrite using `[RingHom.map_sub]`. Simplify using `only [Matrix.map_apply] at e1`. Rewrite using `[e1, sub_self]`. Establish `hr : ratW T S v = u + GlobalTheory.VacUnique.finRat S T v` using `by rw [hu, sub_add_cancel]`. Rewrite using `[hr, GlobalTheory.FinTranslate.symplOH_add_left, map_neg, GlobalTheory.FinTranslate.symplOH_neg_right, GlobalTheory.FinTranslate.symplOH_neg_right, GlobalTheory.FinTranslate.symplOH_self, GlobalTheory.FinTranslate.symplOH_real_fin (GlobalTheory.VacUnique.finRat_inf S T v) hfin]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem symplOH_ratW_finRat_neg (S T : HSp D) (v : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     symplOH S T (ratW T S v) (GlobalTheory.VacUnique.finRat S T (-v)) = 0 := by
   set u : WO S T := ratW T S v - GlobalTheory.VacUnique.finRat S T v with hu
@@ -36,6 +43,9 @@ theorem symplOH_ratW_finRat_neg (S T : HSp D) (v : Matrix (Fin T.rank) (Fin S.ra
     GlobalTheory.FinTranslate.symplOH_real_fin (GlobalTheory.VacUnique.finRat_inf S T v) hfin]
   simp
 
+/- English proof (translation)
+Introduce `S T v` and use `symplOH_ratW_finRat_neg S T v`.
+-/
 theorem isotropic : ∀ {D : D7} (S T : HSp D) (v : Matrix (Fin T.rank) (Fin S.rank) D.host.E),
     symplOH S T (ratW T S v) (GlobalTheory.VacUnique.finRat S T (-v)) = 0 :=
   fun S T v => symplOH_ratW_finRat_neg S T v

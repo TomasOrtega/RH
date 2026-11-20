@@ -63,6 +63,11 @@ def NFTopIdAllS : Prop :=
     NFHypS Cb Cc p f A₀ p₀ χ N → ∀ w, TBB.AdmW P p.l0 Y w → w.length ≤ N →
       NFTopId p χ (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀) w
 
+/- English proof (translation)
+Unfold `NFHypS NFHyp at *`. Take `⟨⟨h1, h2, h3, h4, h5, h6⟩, h7, h8⟩` from `hH`. Use `⟨⟨h1, h2, h3, h4, le_trans ?_ h5, h6⟩, h7, h8⟩` and prove the remaining obligations. Establish `hX : 0 ≤ ((P.r : ℝ) + 1) ^ 4` using `by positivity`. Establish `hY : 0 ≤ (N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3` using `by positivity`.
+
+Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hc hX) hY`.
+-/
 theorem nfHypS_monoC {Cb C c : ℝ} {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
     {p : KB.Pl P Wp Wq} {f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} {A₀ : ℝ} {p₀ : ℕ} {χ : ℝ → ℝ} {N : ℕ}

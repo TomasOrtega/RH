@@ -13,6 +13,9 @@ namespace GlobalTheory.AbelianLetters
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory NumberField in
 open CategoryTheory.MonObj in
 
+/- English proof (translation)
+Set `e : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `key` using `h.2 T x y (e ≫ x ≫ f) (e ≫ y ≫ f) (by simp [e]) (by simp [e])`. Rewrite `key` using `[← MonObj.comp_mul]`. Use `ext1`. Simplify `key.symm` using `[e]`.
+-/
 theorem _root_.GlobalTheory.AbelianLetters.mul_comp_of_isGrpPullback_id {S : Scheme.{0}} {G' G : Over S} [GrpObj G'] [GrpObj G] (f : G' ⟶ G)
     (h : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback G' G (𝟙 S) f.left) {T : Over S} (x y : T ⟶ G') : (x * y) ≫ f = (x ≫ f) * (y ≫ f) := by
   let e : Over.mk (T.hom ≫ 𝟙 S) ⟶ T := Over.homMk (𝟙 T.left) (by simp)
@@ -24,6 +27,33 @@ theorem _root_.GlobalTheory.AbelianLetters.mul_comp_of_isGrpPullback_id {S : Sch
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory NumberField in
 open CategoryTheory.MonObj in
 
+/- English proof (translation)
+Introduce `P P' φ hφ u g T i hi G hG hhol`. Take `⟨h1, h2, -⟩` from `_root_.GlobalTheory.AnyUnif.tangent_and_unimodular _root_.GlobalTheory.thetaUnifAV_all P' u`. Establish `hlift` using `_root_.GlobalTheory.existsUnique_linear_lift_of_isHolTo P'.A P'.isAb P'.L P'.g g u h1 h2`. Establish `hpb : IsPullback φ P'.A.hom P.A.hom (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (RingHom.id ℂ))` using `hφ.1`. Rewrite `hpb` using `[_root_.GlobalTheory.Cris.spMap_id]`.
+
+Use `haveI : IsIso φ := hpb.isIso_fst_of_isIso`. Take `⟨e, he⟩` from `_root_.GlobalTheory.LiePull.exists_pushEquiv hφ (𝟙_ (Over (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ))) _ rfl`. Set `j : Over.mk ((𝟙_ (Over (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ))).hom ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (RingHom.id ℂ)) ⟶ T` to `Over.homMk i (by simp [hi, _root_.GlobalTheory.Cris.spMap_id, Over.tensorUnit_hom])`. Set `G' : (Fin g → ℂ) → (𝟙_ (Over (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)) ⟶ P'.A)` to `fun z => e.symm (j ≫ G z)`. Establish `hG'φ : ∀ z, (G' z).left ≫ φ = i ≫ (G z).left`.
+
+Introduce `z`. Rewrite using `[← he]`. Simplify using `[G', j]`. Establish `hG'add : ∀ z w, G' (z + w) = G' z * G' w`. Introduce `z w`.
+
+Simplify using `only [G', hG, MonObj.comp_mul, map_mul]`. Establish `hG'fun : (fun z => (G' z).left) = fun z => (i ≫ (G z).left) ≫ inv φ`. Use function extensionality and compare the values at `z`. Rewrite using `[← hG'φ z, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Establish `hG'hol : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsHolTo Set.univ fun z => (G' z).left`.
+
+Rewrite using `[hG'fun]`. Conclude with `_root_.GlobalTheory.HolHom.isHolTo_of_holAt isOpen_univ fun z _ => (_root_.GlobalTheory.HolHom.holAt_of_isHolTo hhol (Set.mem_univ z)).comp (inv φ)`. Take `⟨F, hF, -⟩` from `hlift G' hG'add hG'hol`. Use `⟨F, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z`.
+
+Rewrite using `[hF]`. Conclude with `hG'φ z`. Introduce `z hz`. Rewrite using `[← u.ker, hF]`. Simplify using `[G', hz, MonObj.comp_one]`.
+
+Introduce `z z' η' hder hdiff`. Establish `hfam : (fun w => (u.ex (F w)).left) = fun w => (i ≫ (G w).left) ≫ inv φ`. Use function extensionality and compare the values at `w`. Rewrite using `[hF, ← hG'φ w, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Establish `h3 : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsDerivAt0 (fun w => (u.ex (F w)).left) z η'.left`.
+
+Establish `hd` using `(_root_.GlobalTheory.HolHom.isDerivAt0_iff _ _ _).1 hder`. Establish `hd'` using `hd.comp (inv φ)`. Establish `hη : (η'.left ≫ φ) ≫ inv φ = η'.left` using `by simp`. Rewrite `hd'` using `[hη]`. Rewrite using `[hfam, _root_.GlobalTheory.HolHom.isDerivAt0_iff]`.
+
+Conclude with `hd'`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsDerivAt0 at h3`. Take `⟨hbase, hdF⟩` from `h3`. Establish `hF0 : F 0 = 0` using `map_zero F`. Establish `htan : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsTangent η'`.
+
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsTangent`. Rewrite using `[hbase]`. Simplify using `only [hF0]`. Conclude with `_root_.GlobalTheory.TangentOrigin.ex_zero_left u`. Establish `hdiffF : u.IsDiff (F z) η'`.
+
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.HolUnif.IsDiff`. Introduce `U hU f`. Rewrite using `[hdF U hU f]`. Establish `h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U` using `_root_.GlobalTheory.HomLinear.top_le_ex_zero u htan U hU`. Establish `hd : DifferentiableAt ℂ (fun w => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (u.ex w).left U f) (LinearMap.toContinuousLinearMap F 0)`.
+
+Rewrite using `[map_zero]`. Conclude with `_root_.GlobalTheory.TangentOrigin.differentiableAt_val u h0 f`. Establish `hc` using `hd.hasFDerivAt.comp (0 : Fin g → ℂ) (LinearMap.toContinuousLinearMap F).hasFDerivAt`. Rewrite `hc` using `[map_zero]`. Establish `hfun : ((fun w => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (u.ex w).left U f) ∘ LinearMap.toContinuousLinearMap F) = fun w => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (u.ex (F w)).left U f` using `rfl`.
+
+Rewrite `hc` using `[hfun]`. Rewrite using `[hc.fderiv]`. Both sides reduce to the same expression. Take `⟨w, -, huniq⟩` from `h1 η' htan`. Conclude with `(huniq z' hdiff).trans (huniq (F z) hdiffF).symm`.
+-/
 theorem _root_.GlobalTheory.AbelianLetters.exists_linear_lift_of_isGrpPullback :
     ∀ (P P' : _root_.ReciprocityTheory.ChartRestriction.G.Out.PolAV (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)) (φ : P'.A.left ⟶ P.A.left), _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback P'.A P.A (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (RingHom.id ℂ)) φ →
     ∀ (u : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.HolUnif P'.A P'.L P'.g) (g : ℕ) (T : Over (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)) (i : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ T.left), i ≫ T.hom = 𝟙 _ →

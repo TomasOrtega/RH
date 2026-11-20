@@ -11,18 +11,32 @@ def dl (c : Fin n → B) : (Fin n → B) →ₗ[B] B where
   map_add' x y := dotProduct_add c x y
   map_smul' a y := by simp [dotProduct_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dl_apply (c y : Fin n → B) : dl c y = c ⬝ᵥ y := rfl
 
 omit [CommRing O] [Algebra O B] in
+/- English proof (translation)
+Simplify using `[map_sum, dl_apply, dotProduct_smul, h]`.
+-/
 theorem dl_sum_ite (c : Fin n → B) (v : Fin r → Fin n → B) (d : Fin r → B) (b : Fin r)
     (h : ∀ a, c ⬝ᵥ v a = if a = b then 1 else 0) : dl c (∑ a, d a • v a) = d b := by
   simp [map_sum, dl_apply, dotProduct_smul, h]
 
 omit [CommRing O] [Algebra O B] in
+/- English proof (translation)
+Simplify using `[map_sum, dl_apply, dotProduct_smul, h]`.
+-/
 theorem dl_sum_zero (c : Fin n → B) (v : Fin r → Fin n → B) (d : Fin r → B)
     (h : ∀ a, c ⬝ᵥ v a = 0) : dl c (∑ a, d a • v a) = 0 := by
   simp [map_sum, dl_apply, dotProduct_smul, h]
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hG x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem mulVec_span_stable (A : Matrix (Fin n) (Fin n) B) (G : Set (Fin n → B))
     (hG : ∀ x ∈ G, A.mulVec x ∈ span O G) : ∀ x ∈ span O G, A.mulVec x ∈ span O G := by
   intro x hx
@@ -32,6 +46,13 @@ theorem mulVec_span_stable (A : Matrix (Fin n) (Fin n) B) (G : Set (Fin n → B)
   | add x y _ _ hx hy => rw [Matrix.mulVec_add]; exact add_mem hx hy
   | smul a x _ hx => rw [Matrix.mulVec_smul]; exact Submodule.smul_mem _ a hx
 
+/- English proof (translation)
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a', rfl⟩` from `hx`. Simplify using `[h]`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy`. Simplify using `only [dotProduct_add, add_smul, Finset.sum_add_distrib]`. Rewrite using `[← hx, ← hy]`. Consider the case `smul s x _ hx`. Simplify using `only [dotProduct_smul, smul_eq_mul, mul_smul]`.
+
+Rewrite using `[← Finset.smul_sum, ← hx]`.
+-/
 private theorem sep_lemma' (c v : Fin r → Fin n → B)
     (h : ∀ a b, c b ⬝ᵥ v a = if a = b then 1 else 0) (g : Fin n → B)
     (hg : g ∈ span B (Set.range v)) : g = ∑ a, (c a ⬝ᵥ g) • v a := by
@@ -47,6 +68,11 @@ private theorem sep_lemma' (c v : Fin r → Fin n → B)
     simp only [dotProduct_smul, smul_eq_mul, mul_smul]
     rw [← Finset.smul_sum, ← hx]
 
+/- English proof (translation)
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a', rfl⟩` from `hx`. Conclude with `h _ _`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [dotProduct_add, hx, hy, add_zero]`. Consider the case `smul s x _ hx => rw [dotProduct_smul, hx, smul_zero]`.
+-/
 private theorem units_eq_of_res_eq_of_le_iSup (c v : Fin r → Fin n → B) (h : ∀ a b, c b ⬝ᵥ v a = 0) (g : Fin n → B)
     (hg : g ∈ span B (Set.range v)) (b : Fin r) : c b ⬝ᵥ g = 0 := by
   induction hg using Submodule.span_induction with
@@ -57,6 +83,21 @@ private theorem units_eq_of_res_eq_of_le_iSup (c v : Fin r → Fin n → B) (h :
   | add x y _ _ hx hy => rw [dotProduct_add, hx, hy, add_zero]
   | smul s x _ hx => rw [dotProduct_smul, hx, smul_zero]
 
+/- English proof (translation)
+Rewrite `hy` using `[Submodule.span_union, Submodule.span_union]`. Take `⟨s, hs, u, hu, rfl⟩` from `Submodule.mem_sup.mp hy`. Take `⟨x, hx, w, hw, rfl⟩` from `Submodule.mem_sup.mp hs`. Establish `hxB : x ∈ span B (Set.range e)` using `Submodule.span_le.mpr hGX (Submodule.span_le_restrictScalars O B GX hx)`. Establish `huB : u ∈ span B (Set.range f)` using `Submodule.span_le.mpr hGY (Submodule.span_le_restrictScalars O B GY hu)`.
+
+Establish `hwW' : ∀ v ∈ span O GW, ∀ b, ce b ⬝ᵥ v = 0 ∧ cf b ⬝ᵥ v = 0`. Introduce `v0 hv0 b`. Proceed by induction on `hv0 using Submodule.span_induction with`. Consider the case `mem v hv => exact hGW v hv b`. Consider the case `zero => simp`.
+
+Consider the case `add v v' _ _ h1 h2 => simp [dotProduct_add, h1.1, h1.2, h2.1, h2.2]`. Consider the case `smul o v _ h1 => simp [dotProduct_smul, h1.1, h1.2]`. Establish `hwW` using `hwW' w hw`. Establish `hceu : ∀ b, ce b ⬝ᵥ u = 0`. Introduce `b`.
+
+Establish `h2 : ce b ⬝ᵥ (z - (x + w + u)) = 0` using `units_eq_of_res_eq_of_le_iSup ce e hee _ hzy b`. Establish `h3 : ce b ⬝ᵥ x = 0` using `units_eq_of_res_eq_of_le_iSup ce e hee _ hxB b`. Rewrite `h2` using `[dotProduct_sub, dotProduct_add, dotProduct_add, (hz b).1, h3, (hwW b).1]`. Take the linear combination `-h2`. Establish `hu0 : u = 0`.
+
+Rewrite using `[sep_lemma' ce f hef u huB]`. Simplify using `[hceu]`. Establish `hzy'` using `sep_lemma' cf e hfe _ hzy`. Establish `hxe` using `sep_lemma' cf e hfe x hxB`. Establish `hcoef : ∀ a, cf a ⬝ᵥ (z - (x + w + u)) = -(cf a ⬝ᵥ x)`.
+
+Introduce `a`. Rewrite using `[hu0, dotProduct_sub, dotProduct_add, dotProduct_add, (hz a).2, (hwW a).2, dotProduct_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzx : z - (x + w + u) = -x`. Rewrite using `[hzy']`.
+
+Repeatedly rewrite using `[hcoef, neg_smul, Finset.sum_neg_distrib]`. Rewrite using `[← hxe]`. Rewrite `hzx` using `[hu0, add_zero, sub_eq_iff_eq_add]`. Rewrite using `[hzx, neg_add_cancel_left]`. Conclude with `Submodule.span_mono (fun v hv => Or.inl (Or.inr hv)) hw`.
+-/
 theorem sep (e f ce cf : Fin r → Fin n → B)
     (hee : ∀ a b, ce b ⬝ᵥ e a = 0)
     (hef : ∀ a b, ce b ⬝ᵥ f a = if a = b then 1 else 0)

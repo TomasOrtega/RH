@@ -193,6 +193,9 @@ def AdFormK : Prop :=
       (∀ (W : VK) h g, (U ⟨fun x => W.1 (x * h), hVK.stable _ W.2 h⟩ : G3K K → ℂ) g = (U W : G3K K → ℂ) (g * h)) ∧
       ∀ (W : VK) X, U ⟨_, hVK.lie _ W.2 X⟩ = EAK X (U W)
 
+/- English proof (translation)
+Introduce `hd hc D V hV hq`. Take `⟨DK, hk, hb, ha⟩` from `h7 hd hc D V hV hq`. Take `⟨VK, hVK, hg⟩` from `h5 hd hc h1 h2 h3 h4 DK ha`. Conclude with `⟨DK, hk, hb, VK, hVK, hg, h6 VK hVK hg.1⟩`.
+-/
 theorem adFormK_of (h1 : LocFG) (h2 : LocU) (h3 : LocC) (h4 : MellinK K) (h5 : GlobK K) (h6 : ConvAK K) (h7 : ThK K) :
     AdFormK K := by
   intro hd hc D V hV hq

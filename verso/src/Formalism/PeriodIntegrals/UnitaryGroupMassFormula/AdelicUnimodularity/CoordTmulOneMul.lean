@@ -16,16 +16,29 @@ def coord : E ⊗[F] B →ₗ[F] (ι → B) :=
     (fun e a₁ a₂ => by funext k; simp [smul_add])
     (fun c e a => by funext k; simp [smul_comm c]))
 
+/- English proof (translation)
+Simplify using `[coord]`.
+-/
 theorem coord_tmul (e : E) (a : B) : coord b (e ⊗ₜ[F] a) = fun k => b.repr e k • a := by
   simp [coord]
 
 def emb (c : ι → B) : E ⊗[F] B := ∑ i, b i ⊗ₜ[F] c i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [emb, map_sum, coord_tmul, Finset.sum_apply, Module.Basis.repr_self]`. Simplify using `[Finsupp.single_apply]`.
+-/
 theorem coord_emb (c : ι → B) : coord b (emb b c) = c := by
   funext k
   simp only [emb, map_sum, coord_tmul, Finset.sum_apply, Module.Basis.repr_self]
   simp [Finsupp.single_apply]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [emb]`. Consider the case `tmul e a`. Simplify using `only [emb, coord_tmul]`. Use `conv_rhs => rw [← b.sum_repr e]`.
+
+Rewrite using `[TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul]`. Consider the case `add x y hx hy`. Establish `: emb b (coord b (x + y)) = emb b (coord b x) + emb b (coord b y)`.
+
+Simplify using `[emb, map_add, TensorProduct.tmul_add, Finset.sum_add_distrib]`. Rewrite using `[this, hx, hy]`.
+-/
 theorem emb_coord (x : E ⊗[F] B) : emb b (coord b x) = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp [emb]
@@ -40,9 +53,15 @@ theorem emb_coord (x : E ⊗[F] B) : emb b (coord b x) = x := by
       simp [emb, map_add, TensorProduct.tmul_add, Finset.sum_add_distrib]
     rw [this, hx, hy]
 
+/- English proof (translation)
+The claim follows from `Function.LeftInverse.injective (emb_coord b)`.
+-/
 theorem coord_injective : Function.Injective (coord b : E ⊗[F] B → ι → B) :=
   Function.LeftInverse.injective (emb_coord b)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← emb_coord b x, ← emb_coord b y]`. Simplify using `only [emb, Finset.sum_mul_sum, Algebra.TensorProduct.tmul_mul_tmul, map_sum, coord_tmul]`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply]`.
+-/
 theorem coord_mul (x y : E ⊗[F] B) :
     coord b (x * y) = fun k => ∑ i, ∑ j, b.repr (b i * b j) k • (coord b x i * coord b y j) := by
   conv_lhs => rw [← emb_coord b x, ← emb_coord b y]
@@ -50,13 +69,22 @@ theorem coord_mul (x y : E ⊗[F] B) :
   funext k
   simp [Finset.sum_apply]
 
+/- English proof (translation)
+The claim follows from `map_smul _ _ _`.
+-/
 theorem coord_smul (c : F) (x : E ⊗[F] B) : coord b (c • x) = c • coord b x := map_smul _ _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[Algebra.TensorProduct.includeLeftRingHom_apply, coord_tmul, Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem coord_incl (e : E) :
     coord b (Algebra.TensorProduct.includeLeftRingHom (R := F) (B := B) e) = fun k => algebraMap F B (b.repr e k) := by
   funext k
   simp [Algebra.TensorProduct.includeLeftRingHom_apply, coord_tmul, Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← emb_coord b x]`. Simplify using `only [emb, map_sum, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, coord_tmul]`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply]`.
+-/
 theorem coord_map (σ : E →ₐ[F] E) (x : E ⊗[F] B) :
     coord b (Algebra.TensorProduct.map σ (AlgHom.id F B) x) =
       fun k => ∑ i, b.repr (σ (b i)) k • coord b x i := by
@@ -69,6 +97,9 @@ section Topology
 
 variable [TopologicalSpace B] [IsTopologicalRing B]
 
+/- English proof (translation)
+Repeatedly rewrite using `[Algebra.smul_def]`. Conclude with `continuous_const.mul hh`.
+-/
 theorem cont_smul {X : Type*} [TopologicalSpace X] (c : F) {h : X → B} (hh : Continuous h) :
     Continuous (fun x => c • h x) := by
   simp_rw [Algebra.smul_def]
@@ -80,23 +111,38 @@ def CtsA {X : Type*} [TopologicalSpace X] (f : X → E ⊗[F] B) : Prop :=
 variable {b}
 variable {X : Type*} [TopologicalSpace X]
 
+/- English proof (translation)
+The claim follows from `continuous_const`.
+-/
 theorem ctsA_const (y : E ⊗[F] B) : CtsA b (fun _ : X => y) := continuous_const
 
+/- English proof (translation)
+Simplify `hg` using `[CtsA, coord_emb]`.
+-/
 theorem ctsA_emb {g : X → ι → B} (hg : Continuous g) : CtsA b (fun x => emb b (g x)) := by
   simpa [CtsA, coord_emb] using hg
 
+/- English proof (translation)
+Unfold `CtsA`. Simplify using `only [map_sum]`. Conclude with `continuous_finset_sum _ hf`.
+-/
 theorem ctsA_sum {κ : Type*} (s : Finset κ) {f : κ → X → E ⊗[F] B} (hf : ∀ i ∈ s, CtsA b (f i)) :
     CtsA b (fun x => ∑ i ∈ s, f i x) := by
   unfold CtsA
   simp only [map_sum]
   exact continuous_finset_sum _ hf
 
+/- English proof (translation)
+Unfold `CtsA`. Simplify using `only [coord_mul]`. Use `continuous_pi fun k => continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `cont_smul _ (((continuous_apply i).comp hf).mul ((continuous_apply j).comp hg))`.
+-/
 theorem ctsA_mul {f g : X → E ⊗[F] B} (hf : CtsA b f) (hg : CtsA b g) : CtsA b (fun x => f x * g x) := by
   unfold CtsA
   simp only [coord_mul]
   refine continuous_pi fun k => continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_
   exact cont_smul _ (((continuous_apply i).comp hf).mul ((continuous_apply j).comp hg))
 
+/- English proof (translation)
+Unfold `CtsA`. Simplify using `only [coord_map]`. Conclude with `continuous_pi fun k => continuous_finset_sum _ fun i _ => cont_smul _ ((continuous_apply i).comp hf)`.
+-/
 theorem ctsA_map (σ : E →ₐ[F] E) {f : X → E ⊗[F] B} (hf : CtsA b f) :
     CtsA b (fun x => Algebra.TensorProduct.map σ (AlgHom.id F B) (f x)) := by
   unfold CtsA

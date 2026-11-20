@@ -21,6 +21,11 @@ variable {G : Type} [Group G]
 
 def dc (I : Subgroup G) (t : G) : Set G := {y | ∃ x ∈ I, ∃ z ∈ I, y = x * t * z}
 
+/- English proof (translation)
+Take `⟨x, hx, y, hy, rfl⟩` from `h1`. Take `⟨p, hp, r, hr, e⟩` from `h2`. Take `⟨a, -, b, -, hab, ha, hb⟩` from `hf (y * p) (mul_mem hy hp)`. Use `⟨x * (t * a * t⁻¹), mul_mem hx ha, (t'⁻¹ * b * t') * r, mul_mem hb hr, ?_⟩` and prove the remaining obligations. Establish `: m = x * t * (y * p) * t' * r`.
+
+Establish `e' : m = (x * t * y) * (p * t' * r)` using `by rw [← e]; group`. Rewrite using `[e']`. Use `group`. Rewrite using `[this, hab]`. Use `group`.
+-/
 theorem mem_dc_mul {I : Subgroup G} {t t' : G}
     (hf : ∀ g ∈ I, ∃ a ∈ I, ∃ b ∈ I, g = a * b ∧ t * a * t⁻¹ ∈ I ∧ t'⁻¹ * b * t' ∈ I)
     {z m : G} (h1 : z ∈ dc I t) (h2 : z⁻¹ * m ∈ dc I t') : m ∈ dc I (t * t') := by
@@ -33,6 +38,19 @@ theorem mem_dc_mul {I : Subgroup G} {t t' : G}
     rw [e']; group
   rw [this, hab]; group
 
+/- English proof (translation)
+Take `⟨x, hx, y, hy, rfl⟩` from `h1`. Take `⟨p, hp, r, hr, e⟩` from `h2`. Take `⟨a, haI, b, -, hab, ha, hb⟩` from `hf (y * p) (mul_mem hy hp)`. Establish `e1 : t * t' = x * t * (y * p) * t' * r`. Establish `e' : t * t' = (x * t * y) * (p * t' * r)` using `by rw [← e]; group`.
+
+Rewrite using `[e']`. Use `group`. Rewrite `e1` using `[hab]`. Use `set j := t * a * t⁻¹ with hj`. Use `set c := (t'⁻¹ * b * t') * r with hcd`.
+
+Establish `hcI : c ∈ I` using `mul_mem hb hr`. Establish `e2 : t * t' = (x * j) * (t * t') * c`. Rewrite using `[hcd, hj]`. Use `e1.trans ?_` and prove the remaining obligations. Use `group`.
+
+Establish `e3 : (t * t')⁻¹ * (x * j) * (t * t') = c⁻¹`. Establish `: (x * j) * (t * t') = (t * t') * c⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq]`. Conclude with `e2.symm`. Rewrite using `[mul_assoc, this]`.
+
+Use `group`. Establish `h3` using `hc (x * j) (mul_mem hx ha) (e3 ▸ inv_mem hcI)`. Establish `h4 : t⁻¹ * x * t = (t⁻¹ * (x * j) * t) * a⁻¹` using `by rw [hj]; group`. Establish `h5 : t⁻¹ * x * t ∈ I` using `h4 ▸ mul_mem h3 (inv_mem haI)`. Establish `h6 : t⁻¹ * (x * t * y) = (t⁻¹ * x * t) * y` using `by group`.
+
+Rewrite using `[h6]`. Conclude with `mul_mem h5 hy`.
+-/
 theorem inv_mul_mem_of_dc {I : Subgroup G} {t t' : G}
     (hf : ∀ g ∈ I, ∃ a ∈ I, ∃ b ∈ I, g = a * b ∧ t * a * t⁻¹ ∈ I ∧ t'⁻¹ * b * t' ∈ I)
     (hc : ∀ g ∈ I, (t * t')⁻¹ * g * (t * t') ∈ I → t⁻¹ * g * t ∈ I)
@@ -62,6 +80,17 @@ theorem inv_mul_mem_of_dc {I : Subgroup G} {t t' : G}
   rw [h6]
   exact mul_mem h5 hy
 
+/- English proof (translation)
+Establish `hR : rStab u ⊓ K = I`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, -⟩`. Establish `h' : u (z₀ * g) = u z₀` using `h z₀`.
+
+Rewrite `h'` using `[hu, hu, inv_mul_cancel, if_pos (one_mem _), inv_mul_cancel_left]`. Assume the negation of the conclusion as `hg`. Rewrite `h'` using `[if_neg hg]`. Conclude with `zero_ne_one h'`. Introduce `hg`.
+
+Use `⟨fun x => ?_, hIK hg⟩` and prove the remaining obligations. Rewrite using `[hu, hu]`. Establish `: z₀⁻¹ * (x * g) ∈ I ↔ z₀⁻¹ * x ∈ I`. Rewrite using `[← mul_assoc]`. Conclude with `Subgroup.mul_mem_cancel_right _ hg`.
+
+Simplify using `only [this]`. Unfold `hint`. Rewrite using `[hR, finsum_eq_single _ (z₀ : G ⧸ I)]`. Rewrite using `[hu, if_pos (QuotientGroup.eq.1 (QuotientGroup.out_eq' _).symm), mul_one]`. Introduce `q hq`.
+
+Rewrite using `[hu, if_neg]`. Introduce `h`. Apply `hq` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `(QuotientGroup.eq.2 h).symm`.
+-/
 theorem hint_coset {K I : Subgroup G} (hIK : I ≤ K) {u : G → ℂ} (z₀ : G)
     (hu : ∀ z, u z = if z₀⁻¹ * z ∈ I then 1 else 0) : hint K u = ((I.relIndex K : ℕ) : ℂ)⁻¹ := by
   have hR : rStab u ⊓ K = I := by
@@ -89,10 +118,28 @@ theorem hint_coset {K I : Subgroup G} (hIK : I ≤ K) {u : G → ℂ} (z₀ : G)
     rw [← QuotientGroup.out_eq' q]
     exact (QuotientGroup.eq.2 h).symm
 
+/- English proof (translation)
+Unfold `hint`. Simplify using `[hu]`.
+-/
 theorem hint_zero (K : Subgroup G) {u : G → ℂ} (hu : ∀ z, u z = 0) : hint K u = 0 := by
   unfold hint
   simp [hu]
 
+/- English proof (translation)
+Distinguish the cases in `hm : m ∈ dc I (t * t')`. Rewrite using `[if_pos hm, mul_one]`. Take `⟨i, hi, i', hi', rfl⟩` from `hm`. Use `hint_coset hIK (i * t) fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : (i * t)⁻¹ * z ∈ I`.
+
+Establish `h1 : z ∈ dc I t` using `⟨i, hi, _, hz, by group⟩`. Establish `h2 : z⁻¹ * (i * (t * t') * i') ∈ dc I t'` using `⟨((i * t)⁻¹ * z)⁻¹, inv_mem hz, i', hi', by group⟩`. Rewrite using `[if_pos h1, if_pos h2, if_pos hz, one_mul]`. Rewrite using `[if_neg hz]`. Distinguish the cases in `h1 : z ∈ dc I t`.
+
+Distinguish the cases in `h2 : z⁻¹ * (i * (t * t') * i') ∈ dc I t'`. It suffices to derive a contradiction. Apply `hz` to reduce the goal to its premises. Establish `h1' : i⁻¹ * z ∈ dc I t`. Take `⟨x, hx, y, hy, rfl⟩` from `h1`.
+
+Conclude with `⟨i⁻¹ * x, mul_mem (inv_mem hi) hx, y, hy, by group⟩`. Establish `h2' : (i⁻¹ * z)⁻¹ * (t * t') ∈ dc I t'`. Take `⟨x, hx, y, hy, e⟩` from `h2`. Use `⟨x, hx, y * i'⁻¹, mul_mem hy (inv_mem hi'), ?_⟩` and prove the remaining obligations. Establish `: (i⁻¹ * z)⁻¹ * (t * t') = z⁻¹ * (i * (t * t') * i') * i'⁻¹` using `by group`.
+
+Rewrite using `[this, e]`. Use `group`. Use `inv_mul_mem_of_dc hf hc h1' h2'` as an intermediate fact. Establish `e : (i * t)⁻¹ * z = t⁻¹ * (i⁻¹ * z)` using `by group`. Rewrite using `[e]` and apply the resulting hypothesis.
+
+Rewrite using `[if_neg h2, mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`. Rewrite using `[if_neg hm, mul_zero]`. Use `hint_zero K fun z => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : z ∈ dc I t`.
+
+Distinguish the cases in `h2 : z⁻¹ * m ∈ dc I t'`. Conclude with `absurd (mem_dc_mul hf h1 h2) hm`. Rewrite using `[if_neg h2, mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`.
+-/
 theorem hint_conv {K I : Subgroup G} (hIK : I ≤ K) {t t' : G}
     (hf : ∀ g ∈ I, ∃ a ∈ I, ∃ b ∈ I, g = a * b ∧ t * a * t⁻¹ ∈ I ∧ t'⁻¹ * b * t' ∈ I)
     (hc : ∀ g ∈ I, (t * t')⁻¹ * g * (t * t') ∈ I → t⁻¹ * g * t ∈ I) (m : G) :
@@ -139,6 +186,11 @@ section Local
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `e` using `ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Establish `h1 : Valued.v (ϖ : w.adicCompletion E) < 1` using `GlobalTheory.CompanionTheory.IwahoriContraction.v_lt_one_of_ordL_eq_one w ϖ.ne_zero hϖ.1`. Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective (ValuativeRel.uniformizer (w.adicCompletion E))`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[ValuativeRel.le_uniformizer_iff]`. Conclude with `e.lt_one_iff_lt_one.2 h1`. Rewrite using `[← hy]`. Establish `h2 : Valued.v y < 1` using `e.lt_one_iff_lt_one.1 (hy ▸ ValuativeRel.uniformizer_lt_one)`. Conclude with `(e _ _).2 (GlobalTheory.CompanionTheory.IwahoriContraction.v_le_of_ordL_eq_one w ϖ.ne_zero hϖ.1 h2)`.
+-/
 theorem val_unif {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) :
     ValuativeRel.valuation (w.adicCompletion E) (ϖ : w.adicCompletion E) =
       ValuativeRel.uniformizer (w.adicCompletion E) := by
@@ -156,6 +208,9 @@ theorem val_unif {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) :
     have h2 : Valued.v y < 1 := e.lt_one_iff_lt_one.1 (hy ▸ ValuativeRel.uniformizer_lt_one)
     exact (e _ _).2 (GlobalTheory.CompanionTheory.IwahoriContraction.v_le_of_ordL_eq_one w ϖ.ne_zero hϖ.1 h2)
 
+/- English proof (translation)
+Unfold `tdiag`. Rewrite using `[← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[_root_.zpow_add]`.
+-/
 theorem tdiag_add {w : Pl E} {n : ℕ} (ϖ : (w.adicCompletion E)ˣ) (x x' : Fin n → ℤ) :
     tdiag ϖ (x + x') = tdiag ϖ x * tdiag ϖ x' := by
   unfold tdiag
@@ -164,6 +219,15 @@ theorem tdiag_add {w : Pl E} {n : ℕ} (ϖ : (w.adicCompletion E)ˣ) (x x' : Fin
   funext i
   simp [_root_.zpow_add]
 
+/- English proof (translation)
+Introduce `g hg`. Establish `c1` using `GlobalTheory.IwahoriTraceProof.dominantContracts (k := w.adicCompletion E) (n := Fin n) ϖ (val_unif hϖ) x hx`. Establish `c2` using `GlobalTheory.IwahoriTraceProof.dominantContracts (k := w.adicCompletion E) (n := Fin n) ϖ (val_unif hϖ) x' hx'`. Take `⟨u, hu, d, hd, c, hc, rfl⟩` from `GlobalTheory.IwahoriTraceProof.iwahori_factorisation hg`. Establish `hdI` using `GlobalTheory.SmGL.diagT_mem_iwahori hd`.
+
+Establish `huI` using `(GlobalTheory.IwahoriTraceProof.mem_unipO_iff hu.1).2 hu`. Establish `hcI` using `GlobalTheory.SmGL.KOne_le_iwahori _ _ hc.2`. Use `⟨_, mul_mem huI hdI, c, hcI, rfl, ?_, GlobalTheory.SmGL.KOne_le_iwahori _ _ (c2.2 c hc).2⟩` and prove the remaining obligations. Establish `hcomm : tdiag ϖ x * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) d * (tdiag ϖ x)⁻¹ = GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) d`. Unfold `tdiag`.
+
+Rewrite using `[← map_mul, mul_comm, map_mul]`. Use `group`. Establish `h1` using `c1.1 u hu`. Establish `h1I` using `(GlobalTheory.IwahoriTraceProof.mem_unipO_iff h1.1).2 h1`. Establish `e : tdiag ϖ x * (u * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) d) * (tdiag ϖ x)⁻¹ = (tdiag ϖ x * u * (tdiag ϖ x)⁻¹) * (tdiag ϖ x * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) d * (tdiag ϖ x)⁻¹)` using `by group`.
+
+Rewrite using `[e, hcomm]`. Conclude with `mul_mem h1I hdI`.
+-/
 theorem iw_fact {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) {n : ℕ} {x x' : Fin n → ℤ}
     (hx : Antitone x) (hx' : Antitone x') :
     ∀ g ∈ iwGL n w, ∃ a ∈ iwGL n w, ∃ b ∈ iwGL n w, g = a * b ∧
@@ -189,6 +253,11 @@ theorem iw_fact {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) {n 
   rw [e, hcomm]
   exact mul_mem h1I hdI
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.IwahoriTraceProof.diag_mul_mul_diag (k := w.adicCompletion E) (fun i => ϖ ^ x i)⁻¹ (fun i => ϖ ^ x i) g i j`. Rewrite `h` using `[map_inv]`. Unfold `tdiag`. Rewrite using `[h]`. Use `congr 2`.
+
+Rewrite using `[_root_.zpow_sub]`. Conclude with `mul_comm _ _`.
+-/
 theorem conj_entry {w : Pl E} {n : ℕ} (ϖ : (w.adicCompletion E)ˣ) (x : Fin n → ℤ) (g : GLw n w) (i j : Fin n) :
     ((tdiag ϖ x)⁻¹ * g * tdiag ϖ x).val i j = ((ϖ ^ (x j - x i) : (w.adicCompletion E)ˣ) : w.adicCompletion E) * g.val i j := by
   have h := GlobalTheory.IwahoriTraceProof.diag_mul_mul_diag (k := w.adicCompletion E) (fun i => ϖ ^ x i)⁻¹ (fun i => ϖ ^ x i) g i j
@@ -199,6 +268,9 @@ theorem conj_entry {w : Pl E} {n : ℕ} (ϖ : (w.adicCompletion E)ˣ) (x : Fin n
   rw [_root_.zpow_sub]
   exact mul_comm _ _
 
+/- English proof (translation)
+Establish `h1 : Valued.v (ϖ : w.adicCompletion E) < 1` using `GlobalTheory.CompanionTheory.IwahoriContraction.v_lt_one_of_ordL_eq_one w ϖ.ne_zero hϖ.1`. Establish `h0 : 0 < Valued.v (ϖ : w.adicCompletion E)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ϖ.ne_zero)`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀]`. Conclude with `zpow_le_one₀ h0 h1.le hk`.
+-/
 theorem v_zpow_le_one {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) {k : ℤ} (hk : 0 ≤ k) :
     Valued.v ((ϖ ^ k : (w.adicCompletion E)ˣ) : w.adicCompletion E) ≤ 1 := by
   have h1 : Valued.v (ϖ : w.adicCompletion E) < 1 :=
@@ -208,6 +280,13 @@ theorem v_zpow_le_one {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt �
   rw [Units.val_zpow_eq_zpow_val, map_zpow₀]
   exact zpow_le_one₀ h0 h1.le hk
 
+/- English proof (translation)
+Rewrite using `[conj_entry]`. Break down `le_total i j with h | h` into its components or cases. Establish `a1` using `hx' h`. Establish `e : ((ϖ ^ (x j - x i) : (w.adicCompletion E)ˣ) : w.adicCompletion E) * g.val i j = ((ϖ ^ (x' i - x' j) : (w.adicCompletion E)ˣ) : w.adicCompletion E) * (((tdiag ϖ (x + x'))⁻¹ * g * tdiag ϖ (x + x')).val i j)`. Rewrite using `[conj_entry, ← mul_assoc, ← Units.val_mul, ← _root_.zpow_add]`.
+
+Use `congr 3`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_mul]`. Conclude with `mul_le_one' (v_zpow_le_one hϖ (by omega)) (h2 i j)`.
+
+Establish `a1` using `hx h`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (v_zpow_le_one hϖ (by omega)) (h1 i j)`.
+-/
 theorem int_entries {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) {n : ℕ} {x x' : Fin n → ℤ}
     (hx : Antitone x) (hx' : Antitone x') {g : GLw n w} (h1 : ∀ i j, Valued.v (g.val i j) ≤ 1)
     (h2 : ∀ i j, Valued.v (((tdiag ϖ (x + x'))⁻¹ * g * tdiag ϖ (x + x')).val i j) ≤ 1) (i j : Fin n) :
@@ -228,6 +307,13 @@ theorem int_entries {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ)
     rw [map_mul]
     exact mul_le_one' (v_zpow_le_one hϖ (by omega)) (h1 i j)
 
+/- English proof (translation)
+Introduce `g hg hg'`. Rewrite `hg'` using `[← tdiag_add]`. Take `⟨h1, h2, h3⟩` from `(GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n g).1.1 hg`. Take `⟨p1, p2, -⟩` from `(GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n _).1.1 hg'`. Establish `e : ∀ t : GLw n w, (t⁻¹ * g * t)⁻¹ = t⁻¹ * g⁻¹ * t` using `fun t => by group`.
+
+Use `(GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n _).1.2 ⟨int_entries hϖ hx hx' h1 p1, ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `int_entries hϖ hx hx' h2 (by rw [← e]; exact p2)`. Rewrite using `[conj_entry, map_mul]`. Establish `a1` using `hx hij.le`.
+
+Conclude with `(mul_le_of_le_one_left' (v_zpow_le_one hϖ (by omega))).trans_lt (h3 i j hij)`.
+-/
 theorem iw_chain {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) {n : ℕ} {x x' : Fin n → ℤ}
     (hx : Antitone x) (hx' : Antitone x') :
     ∀ g ∈ iwGL n w, (tdiag ϖ x * tdiag ϖ x')⁻¹ * g * (tdiag ϖ x * tdiag ϖ x') ∈ iwGL n w →
@@ -245,10 +331,20 @@ theorem iw_chain {w : Pl E} {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) {n
     have a1 := hx hij.le
     exact (mul_le_of_le_one_left' (v_zpow_le_one hϖ (by omega))).trans_lt (h3 i j hij)
 
+/- English proof (translation)
+Introduce `g hg` and use `by obtain ⟨h1, h2, -⟩ := (GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n g).1.1 hg exact (GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n g).2.2 ⟨h1, h2⟩`.
+-/
 theorem iwGL_le (w : Pl E) (n : ℕ) : iwGL n w ≤ GlobalTheory.LFun.KGL w n := fun g hg => by
   obtain ⟨h1, h2, -⟩ := (GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n g).1.1 hg
   exact (GlobalTheory.CompanionTheory.IwEntries.iwGL_KGL_entries E w n g).2.2 ⟨h1, h2⟩
 
+/- English proof (translation)
+Establish `key : y ∈ dc ((iwGL a w).prod (iwGL b w)) (t, s) ↔ (∃ x ∈ iwGL a w, ∃ z ∈ iwGL a w, y.1 = x * t * z) ∧ ∃ x ∈ iwGL b w, ∃ z ∈ iwGL b w, y.2 = x * s * z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, q, hq, rfl⟩`. Conclude with `⟨⟨p.1, (Subgroup.mem_prod.1 hp).1, q.1, (Subgroup.mem_prod.1 hq).1, rfl⟩, ⟨p.2, (Subgroup.mem_prod.1 hp).2, q.2, (Subgroup.mem_prod.1 hq).2, rfl⟩⟩`. Introduce and unpack `⟨⟨p, hp, q, hq, e⟩, p', hp', q', hq', e'⟩`.
+
+Conclude with `⟨(p, p'), Subgroup.mem_prod.2 ⟨hp, hp'⟩, (q, q'), Subgroup.mem_prod.2 ⟨hq, hq'⟩, Prod.ext e e'⟩`. Unfold `dcos`. Distinguish the cases in `h1 : ∃ x ∈ iwGL a w, ∃ z ∈ iwGL a w, y.1 = x * t * z`. Distinguish the cases in `h2 : ∃ x ∈ iwGL b w, ∃ z ∈ iwGL b w, y.2 = x * s * z`. Rewrite using `[if_pos h1, if_pos h2, if_pos (key.2 ⟨h1, h2⟩), one_mul]`.
+
+Rewrite using `[if_neg h2, if_neg fun h => h2 (key.1 h).2, mul_zero]`. Rewrite using `[if_neg h1, if_neg fun h => h1 (key.1 h).1, zero_mul]`.
+-/
 theorem dcos_mul_eq {a b : ℕ} (w : Pl E) (t : GLw a w) (s : GLw b w) (y : GLw a w × GLw b w) :
     dcos a w t y.1 * dcos b w s y.2 = if y ∈ dc ((iwGL a w).prod (iwGL b w)) (t, s) then 1 else 0 := by
   have key : y ∈ dc ((iwGL a w).prod (iwGL b w)) (t, s) ↔
@@ -266,6 +362,17 @@ theorem dcos_mul_eq {a b : ℕ} (w : Pl E) (t : GLw a w) (s : GLw b w) (y : GLw 
     · rw [if_neg h2, if_neg fun h => h2 (key.1 h).2, mul_zero]
   · rw [if_neg h1, if_neg fun h => h1 (key.1 h).1, zero_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ w ϖ hϖ a b x x' y y' hx hx' hy hy'`. Use function extensionality and compare the values at `m`. Establish `hK : (iwGL a w).prod (iwGL b w) ≤ (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)` using `Subgroup.prod_mono (iwGL_le w a) (iwGL_le w b)`. Establish `hf : ∀ g ∈ (iwGL a w).prod (iwGL b w), ∃ p ∈ (iwGL a w).prod (iwGL b w), ∃ q ∈ (iwGL a w).prod (iwGL b w), g = p * q ∧ (tdiag ϖ x, tdiag ϖ y) * p * (tdiag ϖ x, tdiag ϖ y)⁻¹ ∈ (iwGL a w).prod (iwGL b w) ∧ (tdiag ϖ x', tdiag ϖ y')⁻¹ * q * (tdiag ϖ x', tdiag ϖ y') ∈ (iwGL a w).prod …`. Introduce `g hg`.
+
+Take `⟨g1, g2⟩` from `Subgroup.mem_prod.1 hg`. Take `⟨p1, hp1, q1, hq1, e1, c1, d1⟩` from `iw_fact hϖ hx hx' _ g1`. Take `⟨p2, hp2, q2, hq2, e2, c2, d2⟩` from `iw_fact hϖ hy hy' _ g2`. Conclude with `⟨(p1, p2), Subgroup.mem_prod.2 ⟨hp1, hp2⟩, (q1, q2), Subgroup.mem_prod.2 ⟨hq1, hq2⟩, Prod.ext e1 e2, Subgroup.mem_prod.2 ⟨c1, c2⟩, Subgroup.mem_prod.2 ⟨d1, d2⟩⟩`. Establish `hc : ∀ g ∈ (iwGL a w).prod (iwGL b w), ((tdiag ϖ x, tdiag ϖ y) * (tdiag ϖ x', tdiag ϖ y'))⁻¹ * g * ((tdiag ϖ x, tdiag ϖ y) * (tdiag ϖ x', tdiag ϖ y')) ∈ (iwGL a w).prod (iwGL b w) → (tdiag ϖ x, tdiag ϖ y)⁻¹ * g * (tdiag ϖ x, tdiag ϖ y) ∈ (iwGL a w).prod (iwGL b w)`.
+
+Introduce `g hg h`. Take `⟨g1, g2⟩` from `Subgroup.mem_prod.1 hg`. Take `⟨h1, h2⟩` from `Subgroup.mem_prod.1 h`. Conclude with `Subgroup.mem_prod.2 ⟨iw_chain hϖ hx hx' _ g1 h1, iw_chain hϖ hy hy' _ g2 h2⟩`. Establish `main` using `hint_conv hK hf hc m`.
+
+Establish `e : ((tdiag ϖ x, tdiag ϖ y) * (tdiag ϖ x', tdiag ϖ y') : GLw a w × GLw b w) = (tdiag ϖ (x + x'), tdiag ϖ (y + y'))`. Rewrite using `[tdiag_add, tdiag_add]`. Both sides reduce to the same expression. Rewrite `main` using `[e]`. Use `show hint _ (fun m' : GLw a w × GLw b w => (dcos a w (tdiag ϖ x) m'.1 * dcos b w (tdiag ϖ y) m'.2) * (dcos a w (tdiag ϖ x') (m'⁻¹ * m).1 * dcos b w (tdiag ϖ y') (m'⁻¹ * m).2)) = _`.
+
+Simplify using `only [dcos_mul_eq]`. Conclude with `main`.
+-/
 theorem dcosMul : DcosMul := by
   intro E _ _ _ w ϖ hϖ a b x x' y y' hx hx' hy hy'
   funext m

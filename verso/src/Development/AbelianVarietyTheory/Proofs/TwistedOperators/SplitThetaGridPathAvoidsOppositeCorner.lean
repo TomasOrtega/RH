@@ -5,9 +5,15 @@ namespace GlobalTheory.SplitFlip
 
 def vertexDiff (X : ℕ × ℕ) : ℤ := (X.1 : ℤ) - X.2
 
+/- English proof (translation)
+Apply the tactic sequence `cases e <;> simp [vertexDiff, Edge.src, Edge.tgt] <;> omega`.
+-/
 theorem vertexDiff_tgt (e : Edge) : vertexDiff e.tgt = vertexDiff e.src + 1 := by
   cases e <;> simp [vertexDiff, Edge.src, Edge.tgt] <;> omega
 
+/- English proof (translation)
+The claim follows from `| [], _ => List.Pairwise.nil | [_], _ => List.pairwise_singleton _ _ | a :: b :: t, h => by unfold IsPath at h rw [List.isChain_cons_cons] at h have ih := IsPath.pairwise_vertexDiff (γ := b :: t) h.2 have hab : vertexDiff a.src < vertexDiff b.src := by rw [← h.1, vertexDiff_tgt]; …`.
+-/
 theorem IsPath.pairwise_vertexDiff : ∀ {γ : List Edge}, IsPath γ →
     γ.Pairwise fun a b => vertexDiff a.src < vertexDiff b.src
   | [], _ => List.Pairwise.nil
@@ -23,6 +29,13 @@ theorem IsPath.pairwise_vertexDiff : ∀ {γ : List Edge}, IsPath γ →
     · exact hab
     · exact hab.trans (List.rel_of_pairwise_cons ih hc)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hpw` using `hγ.pairwise_vertexDiff`. Establish `key : ∀ {l : List Edge}, l.Pairwise (fun a b => vertexDiff a.src < vertexDiff b.src) → ∀ {a b : Edge}, a ∈ l → b ∈ l → a ≠ b → vertexDiff a.src ≠ vertexDiff b.src`. Introduce `l hl`. Proceed by induction on `hl with`.
+
+Consider the case `nil => intro a b ha`. Simplify using `at ha`. Consider the case `@cons x l hx _ ih`. Introduce `a b ha hb hab`. Apply the tactic sequence `rcases List.mem_cons.1 ha with rfl | ha' <;> rcases List.mem_cons.1 hb with rfl | hb'`.
+
+Conclude with `absurd rfl hab`. Conclude with `(hx b hb').ne`. Conclude with `(hx a ha').ne'`. Conclude with `ih ha' hb' hab`. Conclude with `key hpw ha hb hne h`.
+-/
 theorem IsPath.eq_of_vertexDiff_eq {γ : List Edge} (hγ : IsPath γ) {a b : Edge} (ha : a ∈ γ) (hb : b ∈ γ)
     (h : vertexDiff a.src = vertexDiff b.src) : a = b := by
   by_contra hne
@@ -41,6 +54,13 @@ theorem IsPath.eq_of_vertexDiff_eq {γ : List Edge} (hγ : IsPath γ) {a b : Edg
       · exact ih ha' hb' hab
   exact key hpw ha hb hne h
 
+/- English proof (translation)
+Introduce `γ i j hγ hp b hb`. Establish `hθ : Edge.theta i j ∈ γ` using `hp.subset (by simp)`. Establish `hx : Edge.ex i j ∈ γ` using `hp.subset (by simp)`. Use `⟨fun hs => ?_, fun ht => ?_⟩` and prove the remaining obligations. Use `hγ.eq_of_vertexDiff_eq hb hx (by rw [hs]; simp [vertexDiff, Edge.src])` as an intermediate fact.
+
+Substitute `this` using the available equality. Simplify using `[Edge.src] at hs`. Establish `h1` using `vertexDiff_tgt b`. Rewrite `h1` using `[ht]`. Use `hγ.eq_of_vertexDiff_eq hb hθ (by simp [vertexDiff, Edge.src] at h1 ⊢; omega)` as an intermediate fact.
+
+Substitute `this` using the available equality. Simplify using `[Edge.tgt] at ht`.
+-/
 theorem pathAvoid : ∀ {γ : List Edge} {i j : ℕ}, IsPath γ → PassesThrough i j γ →
     ∀ b ∈ γ, b.src ≠ (i + 1, j + 1) ∧ b.tgt ≠ (i + 1, j + 1) := by
   intro γ i j hγ hp b hb

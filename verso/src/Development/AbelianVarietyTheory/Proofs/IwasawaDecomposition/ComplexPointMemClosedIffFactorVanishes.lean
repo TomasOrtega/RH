@@ -15,6 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ShFam
 
+/- English proof (translation)
+Introduce `k _ Y p σ D U m f J h x hx`. Establish `h1` using `(ev_eq_zero_iff h hx).symm`. Rewrite `h1` using `[LiesIn]`. Rewrite using `[h1, CxPts.ev_eq hx, map_prod, Finset.prod_eq_zero_iff]`. Simplify using `only [CxPts.ev_eq hx]`.
+-/
 theorem mem_iff_exists_ev_eq_zero_of_ideal_eq_span_prod : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (D : TopologicalSpace.Closeds Y) (U : Y.affineOpens) (m : ℕ) (f : Fin m → Γ(Y, U.1)) (J : Finset (Fin m)), (Scheme.IdealSheafData.vanishingIdeal D).ideal U = Ideal.span {∏ i ∈ J, f i} → ∀ x : CxPts p σ, x ∈ CxPts.ptsIn p σ U.1 → (x.1 (IsLocalRing.closedPoint ℂ) ∈ D ↔ ∃ i ∈ J, CxPts.ev p σ U.1 (f i) x = 0) := by
   intro k _ Y p σ D U m f J h x hx
   have h1 := (ev_eq_zero_iff h hx).symm

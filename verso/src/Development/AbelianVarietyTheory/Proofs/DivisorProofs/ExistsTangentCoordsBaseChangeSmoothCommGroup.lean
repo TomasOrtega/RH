@@ -26,11 +26,17 @@ section Iso
 
 variable {W : Type} [CommRing W] {R' : Type} [CommRing R'] [Algebra W R']
 
+/- English proof (translation)
+Rewrite using `[Category.id_comp]`. Conclude with `(sp_hom_fB (R := W) (R' := R') (P := DualNumber R')).symm`.
+-/
 theorem epsHom_w : 𝟙 (Spec (CommRingCat.of (DualNumber R'))) ≫ (sp (R₀ := W) (DualNumber R')).hom =
     (epsPtR (spMap (algebraMap W R'))).hom := by
   rw [Category.id_comp]
   exact (sp_hom_fB (R := W) (R' := R') (P := DualNumber R')).symm
 
+/- English proof (translation)
+Rewrite using `[Category.id_comp]`. Conclude with `sp_hom_fB (R := W) (R' := R') (P := DualNumber R')`.
+-/
 theorem epsInv_w : 𝟙 (Spec (CommRingCat.of (DualNumber R'))) ≫ (epsPtR (spMap (algebraMap W R'))).hom =
     (sp (R₀ := W) (DualNumber R')).hom := by
   rw [Category.id_comp]
@@ -49,15 +55,27 @@ open GlobalTheory.SqZero
 variable {W : Type} [CommRing W] {G : Over (Sp W)} [GrpObj G] [IsCommMonObj G]
   {n : ℕ} {v : Fin n → (epsR W ⟶ G)} {R' : Type} [CommRing R'] [Algebra W R']
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (Category.id_comp (𝟙 (Spec (CommRingCat.of (DualNumber R')))))`.
+-/
 theorem epsHom_epsInv : epsHom (W := W) (R' := R') ≫ epsInv = 𝟙 _ :=
   Over.OverMorphism.ext (Category.id_comp (𝟙 (Spec (CommRingCat.of (DualNumber R')))))
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (Category.id_comp (𝟙 (Spec (CommRingCat.of (DualNumber R')))))`.
+-/
 theorem epsInv_epsHom : epsInv (W := W) (R' := R') ≫ epsHom = 𝟙 _ :=
   Over.OverMorphism.ext (Category.id_comp (𝟙 (Spec (CommRingCat.of (DualNumber R')))))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fst_left : (ReciprocityTheory.ChartRestriction.G.Chart.spMap (fstS W R')).left =
     spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom := rfl
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Over.comp_left, fst_left]`. Conclude with `(congrArg (spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ ·) (Category.id_comp (X := Spec (CommRingCat.of (DualNumber R'))) w.left)).trans hw`.
+-/
 theorem isTanOver_epsInv (w : epsPtR (spMap (algebraMap W R')) ⟶ G)
     (hw : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ w.left =
         (1 : Over.mk (spMap (algebraMap W R')) ⟶ G).left) : IsTanOver (epsInv ≫ w) := by
@@ -71,6 +89,9 @@ variable (v) in
 def coordPt (c : Fin n → R') : epsPtR (spMap (algebraMap W R')) ⟶ G :=
   epsHom ≫ tanExp v c
 
+/- English proof (translation)
+Introduce `c c' h`. Establish `h'` using `congrArg (epsInv ≫ ·) h`. Simplify using `only [coordPt] at h'`. Rewrite `h'` using `[← Category.assoc, ← Category.assoc, epsInv_epsHom, Category.id_comp, Category.id_comp]`. Conclude with `(LieTwo.isLieBasisOver_of_expBij (expBij (DualNumber R') hv)).1 c c' h'`.
+-/
 theorem coordPt_injective [Smooth G.hom] (hv : IsLieBasis v) :
     Function.Injective (coordPt (R' := R') v) := by
   intro c c' h
@@ -79,6 +100,11 @@ theorem coordPt_injective [Smooth G.hom] (hv : IsLieBasis v) :
   rw [← Category.assoc, ← Category.assoc, epsInv_epsHom, Category.id_comp, Category.id_comp] at h'
   exact (LieTwo.isLieBasisOver_of_expBij (expBij (DualNumber R') hv)).1 c c' h'
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hw`. Take `⟨s, hs⟩` from `(LieTwo.isLieBasisOver_of_expBij (expBij (DualNumber R') hv)).2 _ (isTanOver_epsInv w hw)`. Conclude with `⟨s, by rw [coordPt, ← hs, ← Category.assoc, epsHom_epsInv, Category.id_comp]⟩`. Introduce and unpack `⟨s, rfl⟩`.
+
+Use `congrArg (fun f => Over.Hom.left f) (isTanOver_tanExp (S := R') hv.1 s)` as an intermediate fact. Rewrite `this` using `[Over.comp_left, fst_left]`. Rewrite using `[coordPt, Over.comp_left]`. Conclude with `(congrArg (spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ ·) (Category.id_comp (X := Spec (CommRingCat.of (DualNumber R'))) (tanExp v s).left)).trans this`.
+-/
 theorem coordPt_range [Smooth G.hom] (hv : IsLieBasis v) (w : epsPtR (spMap (algebraMap W R')) ⟶ G) :
     spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ w.left =
         (1 : Over.mk (spMap (algebraMap W R')) ⟶ G).left ↔ w ∈ Set.range (coordPt v) := by
@@ -94,14 +120,23 @@ theorem coordPt_range [Smooth G.hom] (hv : IsLieBasis v) (w : epsPtR (spMap (alg
     exact (congrArg (spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ ·)
       (Category.id_comp (X := Spec (CommRingCat.of (DualNumber R'))) (tanExp v s).left)).trans this
 
+/- English proof (translation)
+Rewrite using `[coordPt, coordPt, coordPt, LieTwo.tanExp_add hv.1, MonObj.comp_mul]`.
+-/
 theorem coordPt_add (hv : IsLieBasis v) (c c' : Fin n → R') :
     coordPt v (c + c') = coordPt v c * coordPt v c' := by
   rw [coordPt, coordPt, coordPt, LieTwo.tanExp_add hv.1, MonObj.comp_mul]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScaleR]) (by simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScaleR, mul_comm])`.
+-/
 theorem dualScale_eq (s : R') : (dualScale W s).toRingHom = ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScaleR s :=
   RingHom.ext fun a => TrivSqZeroExt.ext (by simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScaleR])
     (by simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScaleR, mul_comm])
 
+/- English proof (translation)
+Establish `h1 : s • c = fun i => c i * s` using `funext fun i => by simp [mul_comm]`. Rewrite using `[coordPt, coordPt, Over.comp_left, Over.comp_left, h1, ← scl_tanExp, scl, Over.comp_left, ReciprocityTheory.ChartRestriction.G.Chart.spMap_left, dualScale_eq]`. Conclude with `(Category.id_comp (X := Spec (CommRingCat.of (DualNumber R'))) _).trans (congrArg (spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScaleR s) ≫ ·) (Category.id_comp (X := Spec (CommRingCat.of (DualNumber R'))) (tanExp v c).left)).symm`.
+-/
 theorem coordPt_smul (s : R') (c : Fin n → R') :
     (coordPt v (s • c)).left = spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScaleR s) ≫ (coordPt v c).left := by
   have h1 : s • c = fun i => c i * s := funext fun i => by simp [mul_comm]
@@ -118,11 +153,17 @@ def lieMat (hv : IsLieBasis v) (u : G ⟶ G) : Matrix (Fin n) (Fin n) W := by
   exact if h : ∀ i, IsTangent (v i ≫ u) then
     Matrix.transpose (Matrix.of fun i => (hv.2 _ (h i)).exists.choose) else 0
 
+/- English proof (translation)
+Unfold `IsTangent at *`. Rewrite using `[Over.comp_left, ← Category.assoc, hv i, ← Over.comp_left, IsMonHom.one_hom]`.
+-/
 theorem isTangent_comp (hv : ∀ i, IsTangent (v i)) (u : G ⟶ G) [IsMonHom u] (i : Fin n) :
     IsTangent (v i ≫ u) := by
   unfold IsTangent at *
   rw [Over.comp_left, ← Category.assoc, hv i, ← Over.comp_left, IsMonHom.one_hom]
 
+/- English proof (translation)
+Establish `h` using `isTangent_comp hv.1 u`. Establish `hc` using `(hv.2 _ (h i)).exists.choose_spec`. Rewrite `hc` using `[isLieComb_iff_lieExp]`. Rewrite using `[hc]`. Simplify using `only [lieMat, dif_pos h, Matrix.transpose_apply, Matrix.of_apply]`.
+-/
 theorem comp_eq_tanExp (hv : IsLieBasis v) (u : G ⟶ G) [IsMonHom u] (i : Fin n) :
     v i ≫ u = tanExp v (fun j => lieMat v hv u j i) := by
   have h := isTangent_comp hv.1 u
@@ -131,6 +172,13 @@ theorem comp_eq_tanExp (hv : IsLieBasis v) (u : G ⟶ G) [IsMonHom u] (i : Fin n
   rw [hc]
   simp only [lieMat, dif_pos h, Matrix.transpose_apply, Matrix.of_apply]
 
+/- English proof (translation)
+Establish `h1 : tanExp v c ≫ u = tanExp (fun i => v i ≫ u) c`. Simplify using `only [tanExp, lieExp]`. Conclude with `(map_prod (IsMonHom.monoidHom u (ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀ := W) (DualNumber R'))) _ _).trans (Finset.prod_congr rfl fun i _ => by show (_ ≫ v i) ≫ u = _`. Conclude with `Category.assoc _ _ _)`. Establish `hM : ∀ i, res (Algebra.ofId W R') (v i ≫ u) = tanExp v (Matrix.of (fun i j => algebraMap W R' (lieMat v hv u j i)) i)`.
+
+Introduce `i`. Rewrite using `[comp_eq_tanExp hv u i, res_tanExp]`. Both sides reduce to the same expression. Establish `key : Matrix.vecMul c (Matrix.of (fun i j => algebraMap W R' (lieMat v hv u j i))) = ((lieMat v hv u).map (algebraMap W R')).mulVec c`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[Matrix.vecMul, Matrix.mulVec, dotProduct, mul_comm]`. Rewrite using `[coordPt, coordPt, Category.assoc, h1, LieTwo.tanExp_eq_vecMul hv.1 hM, key]`.
+-/
 theorem coordPt_comp (hv : IsLieBasis v) (u : G ⟶ G) [IsMonHom u] (c : Fin n → R') :
     coordPt v c ≫ u = coordPt v (((lieMat v hv u).map (algebraMap W R')).mulVec c) := by
   have h1 : tanExp v c ≫ u = tanExp (fun i => v i ≫ u) c := by
@@ -152,6 +200,11 @@ theorem coordPt_comp (hv : IsLieBasis v) (u : G ⟶ G) [IsMonHom u] (c : Fin n �
 
 end Main
 
+/- English proof (translation)
+Introduce `W _ _ G _ _ hsm`. Use `haveI := hsm`. Take `⟨n, v, hv⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.exists_isLieBasis G hsm`. Use `⟨n, lieMat v hv, fun R' _ β => ?_⟩` and prove the remaining obligations. Use `letI := β.toAlgebra`.
+
+Conclude with `⟨coordPt v, coordPt_injective hv, coordPt_range hv, coordPt_add hv, coordPt_smul, fun u hu c => by haveI := hu; exact coordPt_comp hv u c⟩`.
+-/
 theorem exists_coords_baseChange : ∀ (W : Type) [CommRing W] [IsLocalRing W] (G : Over (Sp W)) [GrpObj G] [IsCommMonObj G], Smooth G.hom → ∃ (n : ℕ) (M : (G ⟶ G) → Matrix (Fin n) (Fin n) W), ∀ (R' : Type) [CommRing R'] (β : W →+* R'), ∃ T : (Fin n → R') → (epsPtR (spMap β) ⟶ G), Function.Injective T ∧ (∀ v : epsPtR (spMap β) ⟶ G, spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ v.left = (1 : Over.mk (spMap β) ⟶ G).left ↔ v ∈ Set.range T) ∧ (∀ c c', T (c + c') = T c * T c') ∧ (∀ (s : R') c, (T (s • c)).left = spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScaleR s) ≫ (T c).left) ∧ ∀ u : G ⟶ G, IsMonHom u → ∀ c, T c ≫ u = T (((M u).map β).mulVec c) := by
   intro W _ _ G _ _ hsm
   haveI := hsm

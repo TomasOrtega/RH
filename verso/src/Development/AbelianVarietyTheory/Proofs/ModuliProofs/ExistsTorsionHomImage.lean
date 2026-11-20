@@ -29,6 +29,11 @@ section Points
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R}
 
+/- English proof (translation)
+Take `⟨hb, hv⟩` from `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.isZero_iff h).1 hh`. Use `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.isIota_iff 0 h).2 ⟨hb.trans (cPoint_zero _).symm, fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Establish `t` using `tau_mul (𝟙 (TF (R := R) F)) hJ hB 0 0 χ`. Rewrite `t` using `[add_zero, cPoint_zero, C.face, _root_.mul_one]`.
+
+Conclude with `(hv χ y J hJ).trans (mul_eq_left.1 t.symm).symm`.
+-/
 theorem isIota_zero {F : Type} [Field F] [Algebra (FractionRing R) F] (hB : D.TauBimult) {h : GtPtF D F}
     (hh : h.IsZero) : GtPtF.IsIota 0 h := by
   obtain ⟨hb, hv⟩ := (ReciprocityTheory.ChartRestriction.G.Geo.Tor.isZero_iff h).1 hh
@@ -40,6 +45,11 @@ theorem isIota_zero {F : Type} [Field F] [Algebra (FractionRing R) F] (hB : D.Ta
 
 variable {Gt : Over (Sp R)} [GrpObj Gt] {Φ : ∀ T, (T ⟶ Gt) ≃ GtPt D T}
 
+/- English proof (translation)
+Take `⟨u, u0, us, rfl⟩` from `H`. Establish `: ∀ i : Fin (k + 1), u i = Φ T (x ^ (i : ℕ))` using `fun i => by`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero => exact isZero_unique u0 (by simpa using isZero_one hΦ T)`. Consider the case `succ i ih`.
+
+Establish `h` using `us i`. Rewrite `h` using `[ih]`. Rewrite using `[Fin.val_succ, pow_succ]`. Conclude with `isAdd_unique h (hΦ.2 T _ _)`. Conclude with `this (Fin.last k)`.
+-/
 theorem nsmul_eq (hΦ : Represents Φ) (k : ℕ) {T : Over (Sp R)} (x : T ⟶ Gt) {h : GtPt D T}
     (H : GtPt.IsNsmul k (Φ T x) h) : h = Φ T (x ^ k) := by
   obtain ⟨u, u0, us, rfl⟩ := H
@@ -53,6 +63,11 @@ theorem nsmul_eq (hΦ : Represents Φ) (k : ℕ) {T : Over (Sp R)} (x : T ⟶ Gt
       exact isAdd_unique h (hΦ.2 T _ _)
   exact this (Fin.last k)
 
+/- English proof (translation)
+Establish `key : ∀ (h : T' ⟶ T) (g' : GtPt D (overW W T')), GtPt.IsPull ((Over.map W.ι).map h).left g g' → g'.b = DegPre.cT D _ y ∧ ∀ χ z J, Good D.P.L z J → val (g'.s χ) (𝟙 _) z J = val (ψW.tau y χ) T'.hom z J` using `fun h g' H => by`. Use `⟨?_, fun χ z J hJ => ?_⟩` and prove the remaining obligations. Establish `: g'.b = (Over.map W.ι).map h ≫ g.b` using `Over.OverMorphism.ext H.1`. Rewrite using `[this, hg.1, DegPre.cT, comp_toUnit_assoc]`. Use `(val_corr hJ (H.2 χ) _).trans ((val_pull hJ _ _ _).trans ((val_corr hJ (hg.2 χ) _).trans ((val_pull hJ _ _ _).trans ?_)))` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp]`. Conclude with `congrArg (fun m => val (ψW.tau y χ) m z J) (Over.w h)`. Take `⟨a₁, b₁⟩` from `key h₁ g₁ H₁`. Take `⟨a₂, b₂⟩` from `key h₂ g₂ H₂`. Conclude with `pt_ext (a₁.trans a₂.symm) fun χ z J hJ => (b₁ χ z J hJ).trans (b₂ χ z J hJ).symm`.
+-/
 theorem iota_pull_eq {W : (Sp R).Opens} {ψW : PsiOn D W} {T T' : Over W.toScheme} (h₁ h₂ : T' ⟶ T) {y : D.X}
     {g : GtPt D (overW W T)} (hg : GtPt.IsIotaW ψW y g) {g₁ g₂ : GtPt D (overW W T')}
     (H₁ : GtPt.IsPull ((Over.map W.ι).map h₁).left g g₁) (H₂ : GtPt.IsPull ((Over.map W.ι).map h₂).left g g₂) :
@@ -71,6 +86,9 @@ theorem iota_pull_eq {W : (Sp R).Opens} {ψW : PsiOn D W} {T T' : Over W.toSchem
   obtain ⟨a₂, b₂⟩ := key h₂ g₂ H₂
   exact pt_ext (a₁.trans a₂.symm) fun χ z J hJ => (b₁ χ z J hJ).trans (b₂ χ z J hJ).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H => isPull_unique (k := σ) H (hΦ.1 _ _ σ x), fun H => (isPullF_iff_isPull _ _ _).2 (H ▸ hΦ.1 _ _ σ x)⟩`.
+-/
 theorem isPullF_iff_eq (hΦ : Represents Φ) {F : Type} [Field F] [Algebra (FractionRing R) F] {T : Over (Sp R)}
     (σ : TF (R := R) F ⟶ T) (x : T ⟶ Gt) (g : GtPtF D F) :
     GtPt.IsPullF F σ.left (Φ T x) g ↔ toT g = Φ _ (σ ≫ x) :=
@@ -81,6 +99,11 @@ end Points
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
   {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {t : SAB H (Sp R)}
 
+/- English proof (translation)
+Take `⟨f, f1, -, -, f4, -⟩` from `hP F k hk`. Take `⟨Ψ, hΨ⟩` from `GlobalTheory.LevelRatio.exists_ptsEquiv P.U.toUnifPre F`. Establish `key : ∀ {q : QkPt P.D.toPre F k} {v : TF (R` using `R) F ⟶ t.G}, IsImage P F k q v.left → v = Ψ (f q) := by`. Introduce and unpack `q v ⟨a, e, ha⟩`. Take `rfl` from `(f1 _ _).1 ha`.
+
+Conclude with `Over.OverMorphism.ext (e.symm.trans (hΨ _).symm)`. Rewrite using `[key h, key h', key h'', f4 _ _ _ hq, map_mul]`.
+-/
 theorem isImage_mul {P : PELUnif I t} (hP : P.TorsionIso) {F : Type} [Field F] [IsAlgClosed F]
     [Algebra (FractionRing R) F] {k : ℕ} (hk : 1 ≤ k) {q q' q'' : QkPt P.D.toPre F k} (hq : QkAdd q q' q'')
     {v v' v'' : TF (R := R) F ⟶ t.G} (h : IsImage P F k q v.left) (h' : IsImage P F k q' v'.left)
@@ -93,6 +116,29 @@ theorem isImage_mul {P : PELUnif I t} (hP : P.TorsionIso) {F : Type} [Field F] [
     exact Over.OverMorphism.ext (e.symm.trans (hΨ _).symm)
   rw [key h, key h', key h'', f4 _ _ _ hq, map_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ _ hR t P W hW hp ψW k hk y N p₀ hN`. Use `hR.1` as an intermediate fact. Use `hR.2.2.1` as an intermediate fact. Establish `hP` using `GlobalTheory.FlatTors.torsionIso_holds E H R _ hR t P`. Take `⟨u, hu, hu'⟩` from `GlobalTheory.T.generic_part_image_pullback E H R hR t P W hW hp ψW k hk y N p₀ hN`.
+
+Take `⟨Z, g₀, x₀, z1, z2, -, z3, z4, z5, z6⟩` from `GlobalTheory.FlatTors.exists_torsion_toG E H R hR t P W hW hp ψW k hk`. Establish `hZ : IsFinitePart P.U.toUnifPre k Z g₀ x₀` using `⟨z1, z2, z3, z4, z5, GlobalTheory.TorsMono.mono_torsion E H R hR t P W hW hp ψW k hk Z g₀ x₀ z1 z3 z4 z6, GlobalTheory.FiniteTorsLift.main E H R hR t P W hW hp ψW k hk Z g₀ x₀ z1 z3 z4 z6, z6⟩`. Establish `hgen` using `GlobalTheory.T.finite_part_image_generic E H R hR t P W hW hp ψW k hk Z g₀ x₀ hZ`. Take `⟨Gt, _, _, Φ, hΦ, -⟩` from `exists_represents P.D.toPre`. Take `⟨c₀, rfl⟩` from `(Φ Z).surjective g₀`.
+
+Establish `hc₀` using `(tors_iff hΦ k c₀).1 z3`. Take `⟨c, hc⟩` from `(Φ (overW W N)).surjective p₀.g`. Set `n₁ : overW W (N ⊗ N) ⟶ overW W N` to `(Over.map W.ι).map (fst N N)`. Set `n₂ : overW W (N ⊗ N) ⟶ overW W N` to `(Over.map W.ι).map (snd N N)`. Establish `hk₀ : GtPt.IsIotaW ψW p₀.y (Φ _ (c ^ k))`.
+
+Take `⟨h, h1, h2⟩` from `p₀.eq`. Rewrite `h1` using `[← hc]`. Rewrite `h2` using `[nsmul_eq hΦ k c h1]`. Then use the resulting hypothesis. Establish `hpow : n₁ ≫ c ^ k = n₂ ≫ c ^ k` using `(Φ _).injective (iota_pull_eq (fst N N) (snd N N) hk₀ (hΦ.1 _ _ _ _) (hΦ.1 _ _ _ _))`. Establish `hδ : ((n₂ ≫ c)⁻¹ * (n₁ ≫ c)) ^ k = 1`.
+
+Rewrite using `[mul_pow, inv_pow, ← MonObj.comp_pow, ← MonObj.comp_pow, hpow, inv_mul_cancel]`. Take `⟨e, he, -⟩` from `z4 _ _ ((tors_iff hΦ k _).2 hδ)`. Establish `he' : e ≫ c₀ = (n₂ ≫ c)⁻¹ * (n₁ ≫ c)` using `(isPull_iff_comp hΦ _ _ _).1 he`. Take `⟨v, hv, hv'⟩` from `GlobalTheory.T.torsion_descent_finite_etale_cover R W t.G k t.semi.separated (GlobalTheory.T.torsion_representable_finite_etale E H R hR t P W hW hp ψW k hk).2.1 N hN.1 hN.2.1 u (e ≫ x₀) hu (by rw [← MonObj.comp_pow, z5, MonObj.comp_one]) (fun F _ _ _ a b s ha hb => by`. Take `⟨qa, hqa, -⟩` from `(existsUnique_pair_iff (F := F) (a ≫ genι (overW W N)).left p₀).2 (Over.w (a ≫ genι (overW W N)))`.
+
+Take `⟨qb, hqb, -⟩` from `(existsUnique_pair_iff (F := F) (b ≫ genι (overW W N)).left p₀).2 (Over.w (b ≫ genι (overW W N)))`. Take `⟨g, hg⟩` from `exists_isPullF (s ≫ e) (Φ Z c₀)`. Take `⟨h, h1, h2⟩` from `z3`. Take `⟨h', hh⟩` from `exists_isPullF (s ≫ e) h`. Set `qd : QkPt P.D.toPre F k` to `⟨0, g, h', isNsmul_restrict hg hh h1, isIota_zero P.D.tau_bimult (isZero_restrict hh h2)⟩`.
+
+Establish `ia : IsImage P F k qa (a ≫ u).left` using `hu' F a.left (Over.w a) qa hqa`. Establish `ib : IsImage P F k qb (b ≫ u).left` using `hu' F b.left (Over.w b) qb hqb`. Establish `id : IsImage P F k qd (s ≫ e ≫ x₀).left`. Rewrite using `[← Category.assoc]`. Conclude with `hgen F (s ≫ e).left (Over.w _) qd rfl hg`.
+
+Use `isImage_mul hP hk ⟨qa, ?_, ?_, qk_equiv_refl P.D.tau_bimult qa⟩ ib id ia` and prove the remaining obligations. Conclude with `hqa.1.trans (hqb.1.symm.trans (add_zero _).symm)`. Establish `ea` using `hqa.2`. Establish `eb` using `hqb.2`. Rewrite `ea`, `eb` using `[← hc]`.
+
+Rewrite `ea`, `eb`, `hg` using `[isPullF_iff_eq hΦ]`. Establish `add` using `hΦ.2 _ ((b ≫ genι (overW W N)) ≫ c) ((s ≫ e) ≫ c₀)`. Establish `em : ((b ≫ genι (overW W N)) ≫ c) * ((s ≫ e) ≫ c₀) = (a ≫ genι (overW W N)) ≫ c`. Rewrite using `[← ha, ← hb, Category.assoc, Category.assoc, Category.assoc, he', ← MonObj.comp_mul, mul_inv_cancel_left]`. Rewrite `add` using `[em, ← ea, ← eb, ← hg]`.
+
+Conclude with `add)`. Use `⟨v, hv, fun F _ _ _ x hx q hq => ?_⟩` and prove the remaining obligations. Set `x' : Sp F ⟶ (genPart (overW W N)).left` to `pullback.lift x (jFK (R := R) F) hx`. Establish `e₁ : x' ≫ (genι (overW W N)).left = x` using `pullback.lift_fst _ _ _`. Use `hu' F x' (by show x' ≫ (genι (overW W N)).left ≫ _ = _` as an intermediate fact.
+
+Rewrite using `[← Category.assoc, e₁]`. Conclude with `hx) q (e₁.symm ▸ hq)`. Rewrite `this` using `[← hv', Over.comp_left, ← Category.assoc, e₁]`. Then use the resulting hypothesis.
+-/
 theorem exists_repMap : AllFlat fun {E} _ _ _ {H} {R} _ _ _ {t} P {W} ψW k => ∀ y N p₀, PairRep ψW k y N p₀ → ∃ v : overW W N ⟶ t.G, v ^ k = 1 ∧ ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (x : Sp F ⟶ N.left), OverGen F (overW W N) x → ∀ q : QkPt P.D.toPre F k, QkPtW.IsPullF F x p₀ q → IsImage P F k q (x ≫ v.left) := by
   intro E _ _ _ H R _ _ _ _ hR t P W hW hp ψW k hk y N p₀ hN
   have := hR.1

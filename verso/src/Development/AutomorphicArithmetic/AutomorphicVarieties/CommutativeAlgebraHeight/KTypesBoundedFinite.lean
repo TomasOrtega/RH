@@ -9,6 +9,15 @@ import ReciprocityTheory.CommutativeAlgebra.PolynomialHeights.PolyCM
 
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
+/- English proof (translation)
+Establish `hcop : Ideal.span {w} ⊔ x ^ n = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Use `haveI := hM.isPrime`. Establish `hxM : x ≤ M` using `Ideal.IsPrime.le_of_pow_le (le_trans le_sup_right hle)`.
+
+Establish `hMx : x = M` using `Ideal.IsMaximal.eq_of_le ‹x.IsMaximal› hM.ne_top hxM`. Apply `hw` to reduce the goal to its premises. Rewrite using `[hMx]`. Conclude with `hle (Ideal.mem_sup_left (Ideal.mem_span_singleton_self w))`. Establish `h1 : (1 : A) ∈ Ideal.span {w} ⊔ x ^ n`.
+
+Rewrite using `[hcop]`. Conclude with `Submodule.mem_top`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp h1`. Take `⟨v, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Use `⟨v, ?_⟩` and prove the remaining obligations.
+
+Establish `e : v * w - 1 = -z`. Rewrite using `[← hyz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(x ^ n).neg_mem hz`.
+-/
 private theorem exists_inverse_mod_maximal_pow {A : Type} [CommRing A] (x : Ideal A) [x.IsMaximal] (n : ℕ) (w : A)
     (hw : w ∉ x) : ∃ v : A, v * w - 1 ∈ x ^ n := by
   have hcop : Ideal.span {w} ⊔ x ^ n = ⊤ := by
@@ -32,6 +41,29 @@ private theorem exists_inverse_mod_maximal_pow {A : Type} [CommRing A] (x : Idea
   rw [e]
   exact (x ^ n).neg_mem hz
 
+/- English proof (translation)
+Establish `hmax : maximalIdeal (Localization.AtPrime x) = x.map (algebraMap A (Localization.AtPrime x))` using `(Localization.AtPrime.map_eq_maximalIdeal).symm`. Establish `hprim : ∀ n : ℕ, Ideal.comap (algebraMap A (Localization.AtPrime x)) (x.map (algebraMap A (Localization.AtPrime x)) ^ n) = x ^ n`. Introduce `n`. Rewrite using `[← Ideal.map_pow]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `a ha`. Rewrite `ha` using `[Ideal.mem_comap, IsLocalization.mem_map_algebraMap_iff x.primeCompl]`. Take `⟨⟨y, t⟩, hyt⟩` from `ha`. Rewrite `hyt` using `[← map_mul, IsLocalization.eq_iff_exists x.primeCompl]`. Take `⟨c, hc⟩` from `hyt`.
+
+Establish `hw : (c : A) * t ∉ x` using `fun hm => (Ideal.IsPrime.mem_or_mem inferInstance hm).elim c.2 t.2`. Take `⟨v, hv⟩` from `exists_inverse_mod_maximal_pow x n ((c : A) * t) hw`. Establish `hca : (c : A) * t * a ∈ x ^ n`. Establish `e1 : (c : A) * t * a = c * (a * t)` using `by ring`. Rewrite using `[e1, hc]`.
+
+Conclude with `Ideal.mul_mem_left _ _ y.2`. Establish `e2 : a = v * ((c : A) * t * a) - (v * ((c : A) * t) - 1) * a` using `by ring`. Rewrite using `[e2]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ hca) (Ideal.mul_mem_right _ _ hv)`. Conclude with `Ideal.le_comap_map`.
+
+Use `⟨h.noeth, h.complete, ?_, ?_⟩` and prove the remaining obligations. Introduce `n`. Rewrite using `[hcomp, ← Ideal.comap_comap, h.comap_pow n, hmax]`. Conclude with `hprim n`. Introduce `n r`.
+
+Take `⟨a, ha⟩` from `h.dense n r`. Take `⟨⟨s, t⟩, rfl⟩` from `IsLocalization.mk'_surjective x.primeCompl a`. Take `⟨u, hu⟩` from `exists_inverse_mod_maximal_pow x n (t : A) t.2`. Use `⟨s * u, ?_⟩` and prove the remaining obligations. Establish `e : IsLocalization.mk' (Localization.AtPrime x) s t - algebraMap A (Localization.AtPrime x) (s * u) = algebraMap A (Localization.AtPrime x) (s * (1 - u * t)) * IsLocalization.mk' (Localization.AtPrime x) (1 : A) t`.
+
+Establish `hsp` using `IsLocalization.mk'_spec (Localization.AtPrime x) (1 : A) t`. Rewrite using `[IsLocalization.mk'_eq_mul_mk'_one s t]`. Simplify using `only [map_mul, map_sub, map_one] at hsp ⊢`. Take the linear combination `(algebraMap A (Localization.AtPrime x) s * algebraMap A (Localization.AtPrime x) u) * hsp`. Establish `hmem : s * (1 - u * t) ∈ x ^ n`.
+
+Establish `e3 : s * (1 - u * t) = -(s * (u * t - 1))` using `by ring`. Rewrite using `[e3]`. Conclude with `neg_mem (Ideal.mul_mem_left _ _ hu)`. Establish `hdiff : IsLocalization.mk' (Localization.AtPrime x) s t - algebraMap A (Localization.AtPrime x) (s * u) ∈ maximalIdeal (Localization.AtPrime x) ^ n`. Rewrite using `[e, hmax, ← Ideal.map_pow]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hmem)`. Establish `hm1 : (maximalIdeal (Localization.AtPrime x)).map (algebraMap (Localization.AtPrime x) R') ≤ maximalIdeal R'`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Establish `h1` using `h.comap_pow 1`. Rewrite `h1` using `[pow_one, pow_one]`.
+
+Rewrite using `[h1]`. Establish `hmapR : (maximalIdeal (Localization.AtPrime x) ^ n).map (algebraMap (Localization.AtPrime x) R') ≤ maximalIdeal R' ^ n`. Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hm1 n`. Establish `h2` using `hmapR (Ideal.mem_map_of_mem (algebraMap (Localization.AtPrime x) R') hdiff)`.
+
+Rewrite `h2` using `[map_sub]`. Establish `h3` using `(maximalIdeal R' ^ n).add_mem ha h2`. Rewrite using `[hcomp, RingHom.comp_apply]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem isCplAt_of_localization_atPrime {A R' : Type} [CommRing A] [CommRing R'] [IsLocalRing R']
     (x : Ideal A) [x.IsMaximal] [Algebra (Localization.AtPrime x) R'] [Algebra A R']
     (hcomp : algebraMap A R' =
@@ -104,6 +136,53 @@ private theorem isCplAt_of_localization_atPrime {A R' : Type} [CommRing A] [Comm
     convert h3 using 1
     ring
 
+/- English proof (translation)
+Introduce `O _ _ _ _ B C R _ _ _ _ _ _ _ _ _ x _ hB hxB hR p _ hpx q hq`. Use `haveI : IsNoetherianRing B := hB.noeth`. Use `haveI : IsNoetherianRing C := Algebra.FiniteType.isNoetherianRing B C`. Establish `hcomapq : q.comap (algebraMap C R) = p`. Establish `h` using `(c3a x hR).2.2.2.2 p q hq`.
+
+Rewrite `h` using `[Ideal.minimalPrimes_eq_subsingleton_self]`. Conclude with `h`. Use `⟨le_antisymm ((c3c x hR).2 p q hcomapq.ge) ?_, hcomapq⟩` and prove the remaining obligations. Take `⟨P0, _, _, f0, hcm, hf0⟩` from `cl_cmquot O B hB`. Use `haveI : IsNoetherianRing P0 := hcm.1`.
+
+Take `⟨n, g, hg⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp (inferInstance : Algebra.FiniteType B C)`. Set `π : MvPolynomial (Fin n) P0 →+* C` to `(g : MvPolynomial (Fin n) B →+* C).comp (MvPolynomial.map f0)`. Establish `hπ : Function.Surjective π`. Introduce `c`. Take `⟨a, rfl⟩` from `hg c`.
+
+Take `⟨b, rfl⟩` from `MvPolynomial.map_surjective (f := f0) hf0 a`. Conclude with `⟨b, rfl⟩`. Use `set xt : Ideal (MvPolynomial (Fin n) P0) := Ideal.comap π x with hxt`. Use `haveI : xt.IsMaximal := Ideal.comap_isMaximal_of_surjective π hπ`. Establish `hxtC : Ideal.comap MvPolynomial.C xt = maximalIdeal P0`.
+
+Establish `e : π.comp MvPolynomial.C = (algebraMap B C).comp f0`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Use `show g (MvPolynomial.map f0 (MvPolynomial.C a)) = algebraMap B C (f0 a)`. Rewrite using `[MvPolynomial.map_C, ← MvPolynomial.algebraMap_eq, AlgHom.commutes]`. Rewrite using `[hxt, Ideal.comap_comap, e, ← Ideal.comap_comap, hxB]`.
+
+Conclude with `IsLocalRing.eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective f0 hf0)`. Take `⟨hScm, -⟩` from `isCM_localization_mvPolynomial hcm n xt hxtC`. Use `haveI : IsNoetherianRing (Localization.AtPrime xt) := hScm.1`. Take `⟨d, hd, -⟩` from `hScm.2`. Take `⟨hloc, hcpl⟩` from `cpl_is (Localization.AtPrime xt) (maximalIdeal (Localization.AtPrime xt))`.
+
+Take `⟨-, hDR', hDSx, hdimR'⟩` from `cpl_cm (Localization.AtPrime xt) (Cpl (maximalIdeal (Localization.AtPrime xt))) hcpl hScm`. Use `haveI : IsNoetherianRing (Cpl (maximalIdeal (Localization.AtPrime xt))) := hcpl.noeth`. Use `haveI : Module.Flat (Localization.AtPrime xt) (Cpl (maximalIdeal (Localization.AtPrime xt))) := (c3a (maximalIdeal (Localization.AtPrime xt)) hcpl).1`. Use `letI : Algebra (MvPolynomial (Fin n) P0) (Cpl (maximalIdeal (Localization.AtPrime xt))) := ((algebraMap (Localization.AtPrime xt) (Cpl (maximalIdeal (Localization.AtPrime xt)))).comp (algebraMap (MvPolynomial (Fin n) P0) (Localization.AtPrime xt))).toAlgebra`. Establish `hcplS : IsCplAt xt (Cpl (maximalIdeal (Localization.AtPrime xt)))` using `isCplAt_of_localization_atPrime xt rfl hcpl`.
+
+Take `⟨F, hFs, hFc, hFk⟩` from `cpl_quot xt hcplS C R π x hπ hxt.symm hR`. Use `set pt : Ideal (MvPolynomial (Fin n) P0) := Ideal.comap π p with hpt`. Use `haveI : pt.IsPrime := Ideal.comap_isPrime π p`. Establish `hptxt : pt ≤ xt` using `Ideal.comap_mono hpx`. Establish `hdisj : Disjoint (xt.primeCompl : Set (MvPolynomial (Fin n) P0)) (pt : Set _)`.
+
+Rewrite using `[Set.disjoint_left]`. Introduce `a ha hb`. Conclude with `ha (hptxt hb)`. Use `set ps : Ideal (Localization.AtPrime xt) := pt.map (algebraMap _ (Localization.AtPrime xt)) with hps`. Use `haveI : ps.IsPrime := IsLocalization.isPrime_of_isPrime_disjoint xt.primeCompl _ pt inferInstance hdisj`.
+
+Use `haveI : q.IsPrime := hq.1.1`. Use `set Q' : Ideal (Cpl (maximalIdeal (Localization.AtPrime xt))) := Ideal.comap F q with hQ'`. Use `haveI : Q'.IsPrime := Ideal.comap_isPrime F q`. Establish `hkerle : RingHom.ker π ≤ pt` using `fun a ha => by`. Rewrite using `[hpt, Ideal.mem_comap, RingHom.mem_ker.mp ha]`.
+
+Conclude with `p.zero_mem`. Establish `hmapS : pt.map (algebraMap (MvPolynomial (Fin n) P0) (Cpl (maximalIdeal (Localization.AtPrime xt)))) = ps.map (algebraMap (Localization.AtPrime xt) (Cpl (maximalIdeal (Localization.AtPrime xt))))`. Rewrite using `[hps, Ideal.map_map]`. Both sides reduce to the same expression. Establish `hFmap : (pt.map (algebraMap (MvPolynomial (Fin n) P0) (Cpl (maximalIdeal (Localization.AtPrime xt))))).map F = p.map (algebraMap C R)`.
+
+Rewrite using `[Ideal.map_map, hFc, ← Ideal.map_map, hpt, Ideal.map_comap_of_surjective π hπ]`. Establish `hQmin : Q' ∈ (ps.map (algebraMap (Localization.AtPrime xt) (Cpl (maximalIdeal (Localization.AtPrime xt))))).minimalPrimes`. Rewrite using `[← hmapS]`. Use `⟨⟨inferInstance, ?_⟩, fun Q'' hQ'' hle => ?_⟩` and prove the remaining obligations. Conclude with `Ideal.map_le_iff_le_comap.mp (hFmap ▸ hq.1.2)`.
+
+Take `⟨hQ''p, hQ''le⟩` from `hQ'' haveI := hQ''p`. Establish `hkF : RingHom.ker F ≤ Q''`. Rewrite using `[hFk]`. Conclude with `le_trans (Ideal.map_mono hkerle) hQ''le`. Use `haveI hmp : (Q''.map F).IsPrime := Ideal.map_isPrime_of_surjective hFs hkF`.
+
+Establish `h1 : p.map (algebraMap C R) ≤ Q''.map F`. Rewrite using `[← hFmap]`. Conclude with `Ideal.map_mono hQ''le`. Establish `h2 : Q''.map F ≤ q`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : q ≤ Q''.map F` using `hq.2 ⟨hmp, h1⟩ h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ideal.comap_map_of_surjective F hFs, sup_eq_left]`. Conclude with `fun a ha => hkF ha`. Take `⟨-, hdimeq⟩` from `g_ratliff (Localization.AtPrime xt) (Cpl (maximalIdeal (Localization.AtPrime xt))) d hDSx hDR' hd (hdimR'.trans hd) ps Q' hQmin`.
+
+Establish `hsurjq : Function.Surjective ((Ideal.Quotient.mk q).comp F)` using `fun z => by`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨r', rfl⟩` from `hFs r`. Conclude with `⟨r', rfl⟩`. Establish `hkerq : RingHom.ker ((Ideal.Quotient.mk q).comp F) = Q'`.
+
+Rewrite using `[← RingHom.comap_ker, Ideal.mk_ker]`. Establish `hiso : ringKrullDim (R ⧸ q) = ringKrullDim (Cpl (maximalIdeal (Localization.AtPrime xt)) ⧸ Q')`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective hsurjq), hkerq]`. Set `φ` to `Localization.localRingHom xt x π hxt`. Establish `hφ : Function.Surjective φ`.
+
+Introduce `z`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective x.primeCompl z`. Take `⟨r', rfl⟩` from `hπ r`. Take `⟨s', hs'⟩` from `hπ (s : C)`. Establish `hs'p : s' ∈ xt.primeCompl`.
+
+Introduce `h`. Apply `s.2` to reduce the goal to its premises. Establish `h' : π s' ∈ x` using `h`. Rewrite `h'` using `[hs']`. Conclude with `h'`.
+
+Use `⟨IsLocalization.mk' (Localization.AtPrime xt) r' ⟨s', hs'p⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Localization.localRingHom_mk']`. Use `congr 1`. Conclude with `Subtype.ext hs'`. Establish `hφq : Function.Surjective ((Ideal.Quotient.mk (p.map (algebraMap C (Localization.AtPrime x)))).comp φ)` using `fun z => by`.
+
+Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨r', rfl⟩` from `hφ r`. Conclude with `⟨r', rfl⟩`. Establish `hkerφ : ∀ a ∈ ps, ((Ideal.Quotient.mk (p.map (algebraMap C (Localization.AtPrime x)))).comp φ) a = 0`. Establish `hle : ps ≤ RingHom.ker ((Ideal.Quotient.mk (p.map (algebraMap C (Localization.AtPrime x)))).comp φ)`.
+
+Rewrite using `[hps, Ideal.map_le_iff_le_comap]`. Introduce `b hb`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, RingHom.comp_apply, Localization.localRingHom_to_map, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ hb`. Conclude with `fun a ha => hle ha`.
+
+Establish `hfin` using `ringKrullDim_le_of_surjective _ (Ideal.Quotient.lift_surjective_of_surjective ps hkerφ hφq)`. Rewrite using `[hiso, hdimeq]`. Conclude with `hfin`.
+-/
 theorem UpperTheory.V.CA.c3d :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] {B C R : Type} [CommRing B] [Algebra O B] [IsLocalRing B] [CommRing C] [Algebra B C] [Algebra.FiniteType B C] [CommRing R] [Algebra C R] [IsLocalRing R] (x : Ideal C) [x.IsMaximal], IsCL O B → x.comap (algebraMap B C) = maximalIdeal B → IsCplAt x R → ∀ (p : Ideal C) [p.IsPrime], p ≤ x → ∀ q ∈ (p.map (algebraMap C R)).minimalPrimes, ringKrullDim (R ⧸ q) = dimAt x p ∧ q.comap (algebraMap C R) = p := by
   intro O _ _ _ _ B C R _ _ _ _ _ _ _ _ _ x _ hB hxB hR p _ hpx q hq

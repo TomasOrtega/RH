@@ -12,12 +12,44 @@ def updCLM (n : ℕ) (k : Fin n) : ((Fin n → ℂ) × ℂ) →L[ℂ] (Fin n →
     if i = k then ContinuousLinearMap.snd ℂ (Fin n → ℂ) ℂ
     else (ContinuousLinearMap.proj i).comp (ContinuousLinearMap.fst ℂ (Fin n → ℂ) ℂ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [updCLM, ContinuousLinearMap.pi_apply, Function.update_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem updCLM_apply (n : ℕ) (k : Fin n) (p : (Fin n → ℂ) × ℂ) :
     updCLM n k p = Function.update p.1 k p.2 := by
   funext i
   simp only [updCLM, ContinuousLinearMap.pi_apply, Function.update_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `n U k f z₀ r hr hz₀ hU hball hf`. Use `set V : Set (Fin n → ℂ) := {z | z ∈ U ∧ z k ≠ 0} with hVdef`. Establish `hV : IsOpen V` using `hU.inter (isOpen_ne_fun (continuous_apply k) continuous_const)`. Establish `hfa : AnalyticOnNhd ℂ f V` using `ReciprocityTheory.AnForm.Osgood.osgood n V f hV hf`. Use `set Φ : (Fin n → ℂ) × ℂ → ℂ := fun p => (p.2 - p.1 k)⁻¹ • f (Function.update p.1 k p.2) with hΦdef`.
+
+Use `set Wd : Set ((Fin n → ℂ) × ℂ) := {p | Function.update p.1 k p.2 ∈ V ∧ p.2 - p.1 k ≠ 0} with hWdef`. Establish `hupd : Continuous fun p : (Fin n → ℂ) × ℂ => Function.update p.1 k p.2` using `continuous_fst.update k continuous_snd`. Establish `hWo : IsOpen Wd` using `(hV.preimage hupd).inter (isOpen_ne_fun (continuous_snd.sub ((continuous_apply k).comp continuous_fst)) continuous_const)`. Establish `hΦa : AnalyticOnNhd ℂ Φ Wd`. Introduce `p hp`.
+
+Establish `h1 : AnalyticAt ℂ (fun p : (Fin n → ℂ) × ℂ => Function.update p.1 k p.2) p`. Establish `he : (fun p : (Fin n → ℂ) × ℂ => Function.update p.1 k p.2) = updCLM n k`. Use function extensionality and compare the values at `fun p => (updCLM_apply n k p).symm`. Rewrite using `[he]`. Conclude with `(updCLM n k).analyticAt p`.
+
+Establish `h2 : AnalyticAt ℂ (fun p : (Fin n → ℂ) × ℂ => f (Function.update p.1 k p.2)) p` using `AnalyticAt.comp (g := f) (f := fun p : (Fin n → ℂ) × ℂ => Function.update p.1 k p.2) (hfa _ hp.1) h1`. Establish `h3 : AnalyticAt ℂ (fun p : (Fin n → ℂ) × ℂ => p.2 - p.1 k) p` using `analyticAt_snd.sub (((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) k).analyticAt _).comp analyticAt_fst)`. Conclude with `(h3.inv hp.2).smul h2`. Establish `hΦc : ContinuousOn Φ Wd` using `hΦa.continuousOn`. Establish `hD : ContinuousOn (fun p => fderiv ℂ Φ p) Wd` using `(hΦa.contDiffOn_of_completeSpace (n := 1)).continuousOn_fderiv_of_isOpen hWo le_rfl`.
+
+Use `set K : Set ((Fin n → ℂ) × ℂ) := closedBall z₀ (r / 2) ×ˢ sphere (0 : ℂ) r`. Establish `hKc : IsCompact K` using `(isCompact_closedBall _ _).prod (isCompact_sphere _ _)`. Establish `hKW : K ⊆ Wd`. Introduce and unpack `⟨z, t⟩ ⟨hz, ht⟩`. Simplify using `only [mem_closedBall, mem_sphere_iff_norm, sub_zero] at hz ht`.
+
+Establish `hzk : ‖z k‖ ≤ r / 2`. Use `dist_le_pi_dist z z₀ k` as an intermediate fact. Rewrite `this` using `[hz₀, dist_zero_right]`. Combine the linear relations using `[this]`. Use `⟨⟨hball ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_closedBall, dist_pi_le_iff hr.le]`. Introduce `i`. Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality. Simplify using `[hz₀, ht]`.
+
+Rewrite using `[Function.update_of_ne hi]`. Conclude with `(dist_le_pi_dist z z₀ i).trans (by linarith)`. Simplify using `only [Function.update_self]`. Introduce `h`. Rewrite `ht` using `[h, norm_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h`. Establish `: t = z k` using `sub_eq_zero.mp h`. Rewrite `ht` using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨B, hB⟩` from `hKc.exists_bound_of_continuousOn (hD.mono hKW)`. Establish `hcirc : ∀ θ : ℝ, circleMap 0 r θ ∈ sphere (0 : ℂ) r` using `fun θ => circleMap_mem_sphere 0 hr.le θ`. Establish `hmemW : ∀ z ∈ closedBall z₀ (r / 2), ∀ θ : ℝ, (z, circleMap 0 r θ) ∈ Wd` using `fun z hz θ => hKW ⟨hz, hcirc θ⟩`. Establish `hderc : Continuous fun θ => deriv (circleMap 0 r) θ`. Establish `: (fun θ => deriv (circleMap 0 r) θ) = fun θ => circleMap 0 r θ * Complex.I`.
+
+Use function extensionality and compare the values at `fun θ => deriv_circleMap 0 r θ`. Rewrite using `[this]`. Conclude with `(continuous_circleMap 0 r).mul continuous_const`. Establish `hpath : ∀ z : Fin n → ℂ, Continuous fun θ : ℝ => (z, circleMap 0 r θ)` using `fun z => continuous_const.prodMk (continuous_circleMap 0 r)`. Establish `hr2 : 0 < r / 2` using `half_pos hr`.
+
+Use `set F : (Fin n → ℂ) → ℝ → ℂ := fun z θ => deriv (circleMap 0 r) θ • Φ (z, circleMap 0 r θ)`. Use `set F' : (Fin n → ℂ) → ℝ → (Fin n → ℂ) →L[ℂ] ℂ := fun z θ => deriv (circleMap 0 r) θ • (fderiv ℂ Φ (z, circleMap 0 r θ)).comp (ContinuousLinearMap.inl ℂ (Fin n → ℂ) ℂ)`. Establish `hFc : ∀ z ∈ closedBall z₀ (r / 2), Continuous (F z)` using `fun z hz => hderc.smul (hΦc.comp_continuous (hpath z) (hmemW z hz))`. Establish `hF'c : Continuous (F' z₀)` using `hderc.smul ((hD.comp_continuous (hpath z₀) (hmemW z₀ (mem_closedBall_self hr2.le))).clm_comp continuous_const)`. Establish `key` using `intervalIntegral.hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := MeasureTheory.volume) (a := 0) (b := 2 * Real.pi) (F := F) (F' := F') (x₀ := z₀) (bound := fun _ => r * (B * ‖ContinuousLinearMap.inl ℂ (Fin n → ℂ) ℂ‖)) (ball_mem_nhds z₀ hr2) (eventually_of_mem (ball_mem_nhds …`.
+
+Simplify using `only [F', norm_smul]`. Rewrite using `[deriv_circleMap, norm_mul, Complex.norm_I, mul_one, norm_circleMap_zero, abs_of_pos hr]`. Conclude with `mul_le_mul_of_nonneg_left ((ContinuousLinearMap.opNorm_comp_le _ _).trans (mul_le_mul_of_nonneg_right (hB _ ⟨ball_subset_closedBall hz, hcirc θ⟩) (norm_nonneg _))) hr.le)`. Use `intervalIntegrable_const`. Use the proof step `(MeasureTheory.ae_of_all _ fun θ _ z hz => by`.
+
+Establish `hd : DifferentiableAt ℂ Φ (z, circleMap 0 r θ)` using `(hΦa _ (hmemW z (ball_subset_closedBall hz) θ)).differentiableAt`. Conclude with `(hd.hasFDerivAt.comp z (hasFDerivAt_prodMk_left (𝕜 := ℂ) z (circleMap 0 r θ))).const_smul (deriv (circleMap 0 r) θ))`. Conclude with `key.differentiableAt`.
+-/
 theorem cauchyCoord_differentiableAt :
     ∀ (n : ℕ) (U : Set (Fin n → ℂ)) (k : Fin n) (f : (Fin n → ℂ) → ℂ) (z₀ : Fin n → ℂ) (r : ℝ),
       0 < r → z₀ k = 0 → IsOpen U → Metric.closedBall z₀ r ⊆ U →

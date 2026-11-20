@@ -14,6 +14,15 @@ variable {R : Type} [CommRing R] [IsDedekindDomain R] {K : Type} [Field K] [Alge
   {la : HeightOneSpectrum R} {V : Type} {K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   [Field K'] [Algebra V K'] [IsFractionRing V K']
 
+/- English proof (translation)
+Unfold `nval`. Use `split_ifs with h0`. Conclude with `le_top`. Take `⟨y, rfl⟩` from `hx`. Unfold `vV`.
+
+Establish `hv : valV V ((algebraMap V K') y) ≤ 1`. Unfold `valV`. Conclude with `HeightOneSpectrum.valuation_le_one _ y`. Establish `hne : valV V ((algebraMap V K') y) ≠ 0` using `(Valuation.ne_zero_iff _).mpr h0`. Establish `hl : ((valV V) ((algebraMap V K') y)).log ≤ 0` using `by first`.
+
+Consider the case `exact (WithZero.log_le_log hne one_ne_zero).mpr hv |>.trans_eq WithZero.log_one`. Consider the case `exact WithZero.log_nonpos hv`. Consider the case `exact WithZero.log_le_zero_iff.mpr hv`. Consider the case `simpa using WithZero.log_mono hne hv`. Establish `h1 : (0:ℝ) ≤ ((-(valV V ((algebraMap V K') y)).log : ℤ) : ℝ) / (e : ℝ)` using `div_nonneg (by exact_mod_cast (by omega : (0:ℤ) ≤ -(valV V ((algebraMap V K') y)).log)) (Nat.cast_nonneg _)`.
+
+Conclude with `EReal.coe_nonneg.mpr h1`.
+-/
 theorem nval_nonneg_of_int (e : ℕ) {x : K'} (hx : x ∈ (algebraMap V K').range) : 0 ≤ nval V e x := by
   unfold nval
   split_ifs with h0
@@ -34,6 +43,17 @@ theorem nval_nonneg_of_int (e : ℕ) {x : K'} (hx : x ∈ (algebraMap V K').rang
       div_nonneg (by exact_mod_cast (by omega : (0:ℤ) ≤ -(valV V ((algebraMap V K') y)).log)) (Nat.cast_nonneg _)
     exact EReal.coe_nonneg.mpr h1
 
+/- English proof (translation)
+Take `⟨he, hv⟩` from `ho`. Establish `hιa : ι a ≠ 0` using `(map_ne_zero ι).2 ha`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Unfold `nval`.
+
+Rewrite using `[mul_zero, if_pos rfl]`. Conclude with `(EReal.coe_add_top _).symm`. Establish `hprod : ι a ^ n * x ≠ 0` using `mul_ne_zero (pow_ne_zero _ hιa) hx`. Establish `hva : valV V (ι a) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hιa`. Establish `hvx : valV V x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`.
+
+Establish `hmul : vV V (ι a ^ n * x) = n * vV V (ι a) + vV V x`. Unfold `vV`. Rewrite using `[map_mul, map_pow]`. Use `first`. Consider the case `(rw [WithZero.log_mul (pow_ne_zero _ hva) hvx, WithZero.log_pow]; ring)`.
+
+Consider the case `(rw [WithZero.log_mul (pow_ne_zero _ hva) hvx, WithZero.log_pow]; push_cast; ring)`. Consider the case `(simp [WithZero.log_mul, WithZero.log_pow, hva, hvx]; ring)`. Unfold `nval`. Rewrite using `[if_neg hprod, if_neg hx, hmul, hv a, ← EReal.coe_add]`. Establish `he' : (e : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`.
+
+Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem nval_pow_smul {ι : K →+* K'} {e : ℕ} (ho : OverLa la V ι e) {a : K} (ha : a ≠ 0) (n : ℕ) (x : K') :
     nval V e (ι a ^ n * x) = ((((n : ℤ) * vLa la a : ℤ) : ℝ) : EReal) + nval V e x := by
   obtain ⟨he, hv⟩ := ho
@@ -60,6 +80,13 @@ theorem nval_pow_smul {ι : K →+* K'} {e : ℕ} (ho : OverLa la V ι e) {a : K
     push_cast
     field_simp
 
+/- English proof (translation)
+Establish `h0` using `nval_nonneg_of_int e hx`. Rewrite `h0` using `[nval_pow_smul ho ha, nval_pow_smul ho hb]`. Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality. Unfold `nval`.
+
+Simplify using the standard rewrite rules. Establish `hN : nval V e x = ((((vV V x : ℤ) : ℝ) / (e : ℝ) : ℝ) : EReal)`. Unfold `nval`. Rewrite using `[if_neg hx0]`. Rewrite `h0`, the goal using `[hN]`.
+
+Rewrite `h0` using `[← EReal.coe_add, ← EReal.coe_add, EReal.coe_nonneg]`. Rewrite using `[EReal.coe_le_coe_iff]`. Move the coercions through the operations in `at h0 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem neg_le_nval_of_mem {ι : K →+* K'} {e : ℕ} (ho : OverLa la V ι e) {a b : K} (ha : a ≠ 0) (hb : b ≠ 0)
     (p m : ℕ) (x : K') (hx : ι a ^ p * (ι b ^ m * x) ∈ (algebraMap V K').range) :
     (((-(((vLa la a : ℤ) : ℝ) * (p : ℝ) + ((vLa la b : ℤ) : ℝ) * (m : ℝ))) : ℝ) : EReal) ≤ nval V e x := by
@@ -93,6 +120,17 @@ def NnIntCSt : Prop :=
       io (embK T.Q.c τ πE) ^ (∑ t, ∑ k, w.aP t k) *
         (io (embK T.Q.c τ (T.Q.H.bar πE)) ^ (∑ t, ∑ k, w.aM t k) * evI yI f) ∈ (algebraMap Tc.V Tc.Fr).range
 
+/- English proof (translation)
+Introduce `D T h j hj nab hadm w x P hP f hf la y i πE τ hτ hπ hM hg hgq`. Take `⟨Tc, io, e, ho, yI, hy, eta, heta, hq⟩` from `y.2`. Establish `hv : vAtV y f = nval Tc.V e (evI yI f)` using `by show y.1.1 f = _`. Rewrite using `[hq]`. Both sides reduce to the same expression.
+
+Rewrite using `[hv]`. Establish `hgi : (D.host.g i : 𝓞 D.host.E) ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg (algebraMap (𝓞 D.host.E) D.host.E) h0`. Simplify using `only [map_natCast, map_zero, Nat.cast_eq_zero] at h1`.
+
+Conclude with `(D.host.g_prime i).ne_zero h1`. Establish `hπ0 : πE ≠ 0`. Introduce and unpack `rfl`. Conclude with `hgi (by rw [← hπ, zero_mul])`. Establish `hπb0 : T.Q.H.bar πE ≠ 0`.
+
+Introduce `h0`. Conclude with `hgi (by rw [← hπ, h0, mul_zero])`. Establish `hemb : ∀ a : 𝓞 D.host.E, a ≠ 0 → embK T.Q.c τ a ≠ 0`. Introduce `a ha h0`. Establish `h1` using `embK_coe T.Q.c τ a`.
+
+Rewrite `h1` using `[h0]`. Establish `h2 : τ (a : D.host.E) = 0` using `by rw [← h1]; simp`. Establish `h3 : (a : D.host.E) = 0` using `(map_eq_zero τ).1 h2`. Conclude with `ha (RingOfIntegers.coe_injective (by simpa using h3))`. Conclude with `neg_le_nval_of_mem ho (hemb πE hπ0) (hemb _ hπb0) _ _ _ (hI D T h j hj nab hadm w x P hP f hf Tc io yI e la ho hy i πE τ hτ hπ hM hg hgq)`.
+-/
 theorem place_bound_split_of_integral (hI : NnIntCSt) : PlaceBoundSplitPrime := by
   intro D T h j hj nab hadm w x P hP f hf la y i πE τ hτ hπ hM hg hgq
   obtain ⟨Tc, io, e, ho, yI, hy, eta, heta, hq⟩ := y.2

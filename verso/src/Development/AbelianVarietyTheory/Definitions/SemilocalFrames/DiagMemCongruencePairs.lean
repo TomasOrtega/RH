@@ -109,16 +109,25 @@ variable {σ : E →+* E} {n m r : ℕ} {J : Matrix (Fin n) (Fin n) E} {Jb : Mat
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_spanX (P : Matrix (Fin n) (Fin (r + 1)) E) (v : Fin n → E) :
     v ∈ spanX P ↔ ∃ c, eOf P *ᵥ c = v := Iff.rfl
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_perpX (P : Matrix (Fin n) (Fin (r + 1)) E) (v : Fin n → E) :
     v ∈ perpX σ J P ↔ (cT σ (eOf P) * J) *ᵥ v = 0 := Iff.rfl
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Rewrite using `[mem_perpX, ← Matrix.mulVec_mulVec, funext_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_perpX_iff_form (P : Matrix (Fin n) (Fin (r + 1)) E) (v : Fin n → E) :
     v ∈ perpX σ J P ↔ ∀ a : Fin r, form σ J v (fun i => P i a.castSucc) = 0 := by
   rw [mem_perpX, ← Matrix.mulVec_mulVec, funext_iff]
@@ -126,6 +135,9 @@ theorem mem_perpX_iff_form (P : Matrix (Fin n) (Fin (r + 1)) E) (v : Fin n → E
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Simplify using `only [mulLat, Submodule.mem_map, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem mem_mulLat (g : ℕ) (Λ : Submodule (𝓞 E) (Fin n → E)) (v : Fin n → E) :
     v ∈ mulLat g Λ ↔ ∃ w ∈ Λ, (g : E) • w = v := by
   simp only [mulLat, Submodule.mem_map, LinearMap.smul_apply, LinearMap.id_apply,
@@ -133,17 +145,26 @@ theorem mem_mulLat (g : ℕ) (Λ : Submodule (𝓞 E) (Fin n → E)) (v : Fin n 
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `Λ.smul_mem _ hw`.
+-/
 theorem mulLat_le (g : ℕ) (Λ : Submodule (𝓞 E) (Fin n → E)) : mulLat g Λ ≤ Λ := by
   rintro _ ⟨w, hw, rfl⟩
   exact Λ.smul_mem _ hw
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latMap (γ : Matrix (Fin n) (Fin n) E) (Λ : Submodule (𝓞 E) (Fin n → E)) (v : Fin n → E) :
     v ∈ latMap γ Λ ↔ ∃ w ∈ Λ, γ *ᵥ w = v := Iff.rfl
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Rewrite using `[← h.2.2.2.1]`. Both sides reduce to the same expression.
+-/
 theorem IsRed.mem_iff {Λ : Submodule (𝓞 E) (Fin n → E)} {P : Matrix (Fin n) (Fin (r + 1)) E} {x : Lz E m}
     {al : Matrix (Fin m) (Fin n) E} (h : IsRed σ J Jb Λ P x al) (y : Fin m → E) :
     y ∈ x.1 ↔ ∃ v ∈ latIn Λ (perpX σ J P), al *ᵥ v = y := by
@@ -152,6 +173,11 @@ theorem IsRed.mem_iff {Λ : Submodule (𝓞 E) (Fin n → E)} {P : Matrix (Fin n
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Rewrite using `[mem_perpX_iff_form]`. Introduce `a`. Establish `h1` using `congrFun (congrFun h.2 a.castSucc) b`. Rewrite `h1` using `[pairM, Matrix.mul_assoc]`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Simplify using `[TF, Matrix.diagonal_apply, (Fin.castSucc_lt_last a).ne]`.
+-/
 theorem col_mem_perpX {T : E} {P : Matrix (Fin n) (Fin (r + 1)) E} (h : IsFrame σ J T P)
     (b : Fin (r + 1)) : (fun i => P i b) ∈ perpX σ J P := by
   rw [mem_perpX_iff_form]
@@ -163,11 +189,19 @@ theorem col_mem_perpX {T : E} {P : Matrix (Fin n) (Fin (r + 1)) E} (h : IsFrame 
 
 omit [NumberField E] in
 
+/- English proof (translation)
+The claim follows from `col_mem_perpX h _`.
+-/
 theorem zOf_mem_perpX {T : E} {P : Matrix (Fin n) (Fin (r + 1)) E} (h : IsFrame σ J T P) :
     zOf P ∈ perpX σ J P := col_mem_perpX h _
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Use `⟨fun v hv => by rw [hb v hv, h.1 v hv], fun y => ?_, fun v hv w hw => by rw [hb v hv, hb w hw, h.2.2.1 v hv w hw], ?_, (hb _ (zOf_mem_perpX hP)).trans h.2.2.2.2⟩` and prove the remaining obligations. Take `⟨v, hv, rfl⟩` from `h.2.1 y`. Conclude with `⟨v, hv, hb v hv⟩`. Use extensionality with `y`. Rewrite using `[h.mem_iff]`.
+
+Conclude with `⟨fun ⟨v, hv, e⟩ => ⟨v, hv, (hb v hv.2).symm.trans e⟩, fun ⟨v, hv, e⟩ => ⟨v, hv, (hb v hv.2).trans e⟩⟩`.
+-/
 theorem IsRed.congr {T : E} {Λ : Submodule (𝓞 E) (Fin n → E)} {P : Matrix (Fin n) (Fin (r + 1)) E}
     {x : Lz E m} {al bl : Matrix (Fin m) (Fin n) E} (h : IsRed σ J Jb Λ P x al) (hP : IsFrame σ J T P)
     (hb : ∀ v ∈ perpX σ J P, bl *ᵥ v = al *ᵥ v) : IsRed σ J Jb Λ P x bl := by
@@ -183,6 +217,9 @@ theorem IsRed.congr {T : E} {Λ : Submodule (𝓞 E) (Fin n → E)} {P : Matrix 
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `e : (fun i => σ ((γ *ᵥ w) i)) = (fun i => σ (w i)) ᵥ* cT σ γ`. Use extensionality with `i`. Simplify using `[cT, Matrix.mulVec, Matrix.vecMul, dotProduct, mul_comm]`. Rewrite using `[form, e, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h, form]`.
+-/
 theorem form_mulVec {γ : Matrix (Fin n) (Fin n) E} (h : IsUn σ J γ) (v w : Fin n → E) :
     form σ J (γ *ᵥ v) (γ *ᵥ w) = form σ J v w := by
   have e : (fun i => σ ((γ *ᵥ w) i)) = (fun i => σ (w i)) ᵥ* cT σ γ := by
@@ -192,6 +229,9 @@ theorem form_mulVec {γ : Matrix (Fin n) (Fin n) E} (h : IsUn σ J γ) (v w : Fi
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `e` using `congrArg Matrix.det h`. Rewrite `e` using `[Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right (e ▸ hJ)`.
+-/
 theorem isUnit_det_of_isUn {γ : Matrix (Fin n) (Fin n) E} (hJ : IsUnit J.det) (h : IsUn σ J γ) :
     IsUnit γ.det := by
   have e := congrArg Matrix.det h
@@ -200,6 +240,9 @@ theorem isUnit_det_of_isUn {γ : Matrix (Fin n) (Fin n) E} (hJ : IsUnit J.det) (
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Simplify using `only [mem_perpX_iff_form]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[← form_mulVec h v]`. Both sides reduce to the same expression.
+-/
 theorem mulVec_mem_perpX {γ : Matrix (Fin n) (Fin n) E} (h : IsUn σ J γ)
     (P : Matrix (Fin n) (Fin (r + 1)) E) (v : Fin n → E) :
     γ *ᵥ v ∈ perpX σ J (γ * P) ↔ v ∈ perpX σ J P := by
@@ -210,6 +253,13 @@ theorem mulVec_mem_perpX {γ : Matrix (Fin n) (Fin n) E} (h : IsUn σ J γ)
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `hu : IsUnit γ` using `(Matrix.isUnit_iff_isUnit_det γ).2 (isUnit_det_of_isUn hJ hγ.1)`. Use `⟨fun v hv => ?_, fun w => ?_, fun v hv w hw => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h.1 v hv, ← Matrix.mulVec_mulVec]`. Conclude with `⟨fun e => Matrix.mulVec_injective_iff_isUnit.2 hu (e.trans (Matrix.mulVec_zero γ).symm), fun e => by rw [e, Matrix.mulVec_zero]⟩`. Take `⟨w', rfl⟩` from `Matrix.mulVec_surjective_iff_isUnit.2 hu w`.
+
+Take `⟨v, hv, rfl⟩` from `h.2.1 w'`. Conclude with `⟨v, hv, (Matrix.mulVec_mulVec _ _ _).symm⟩`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, form_mulVec hγ.1, h.2.2.1 v hv w hw]`. Rewrite using `[← hγ.2.1, ← h.2.2.2.1, latMap, ← Submodule.map_comp, Matrix.mulVecLin_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[← Matrix.mulVec_mulVec, h.2.2.2.2, hγ.2.2]`.
+-/
 theorem IsRed.comp {Λ : Submodule (𝓞 E) (Fin n → E)} {P : Matrix (Fin n) (Fin (r + 1)) E} {x y : Lz E m}
     {al : Matrix (Fin m) (Fin n) E} (h : IsRed σ J Jb Λ P x al) (hJ : IsUnit Jb.det)
     {γ : Matrix (Fin m) (Fin m) E} (hγ : IsoLz σ Jb γ x y) : IsRed σ J Jb Λ P y (γ * al) := by
@@ -240,11 +290,17 @@ variable {σ : E →+* E} {n m r : ℕ} {J : Matrix (Fin n) (Fin n) E} {Jb : Mat
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Simplify using `[IsUn, cT, Matrix.map_one]`.
+-/
 theorem isUn_one : IsUn σ J 1 := by
   simp [IsUn, cT, Matrix.map_one]
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `e : cT σ (γ * δ) = cT σ δ * cT σ γ` using `by rw [cT, Matrix.map_mul, Matrix.transpose_mul]; rfl`. Rewrite using `[IsUn, e, show cT σ δ * cT σ γ * J * (γ * δ) = cT σ δ * (cT σ γ * J * γ) * δ by`. Simplify using `only [Matrix.mul_assoc], hγ, hδ]`.
+-/
 theorem isUn_mul {γ δ : Matrix (Fin n) (Fin n) E} (hγ : IsUn σ J γ) (hδ : IsUn σ J δ) :
     IsUn σ J (γ * δ) := by
   have e : cT σ (γ * δ) = cT σ δ * cT σ γ := by rw [cT, Matrix.map_mul, Matrix.transpose_mul]; rfl
@@ -253,6 +309,9 @@ theorem isUn_mul {γ δ : Matrix (Fin n) (Fin n) E} (hγ : IsUn σ J γ) (hδ : 
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `e : cT σ δ * cT σ γ = 1`. Rewrite using `[cT, cT, ← Matrix.transpose_mul, ← Matrix.map_mul, h]`. Simplify using `[Matrix.map_one]`. Rewrite using `[IsUn, ← hγ, show cT σ δ * (cT σ γ * J * γ) * δ = cT σ δ * cT σ γ * J * (γ * δ) by`. Simplify using `only [Matrix.mul_assoc], e, h, Matrix.one_mul, Matrix.mul_one, hγ]`.
+-/
 theorem isUn_of_mul_eq_one {γ δ : Matrix (Fin n) (Fin n) E} (hγ : IsUn σ J γ) (h : γ * δ = 1) :
     IsUn σ J δ := by
   have e : cT σ δ * cT σ γ = 1 := by
@@ -261,15 +320,24 @@ theorem isUn_of_mul_eq_one {γ δ : Matrix (Fin n) (Fin n) E} (hγ : IsUn σ J �
   rw [IsUn, ← hγ, show cT σ δ * (cT σ γ * J * γ) * δ = cT σ δ * cT σ γ * J * (γ * δ) by
     simp only [Matrix.mul_assoc], e, h, Matrix.one_mul, Matrix.mul_one, hγ]
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `[mem_latMap]`.
+-/
 theorem latMap_one (Λ : Submodule (𝓞 E) (Fin n → E)) : latMap 1 Λ = Λ := by
   ext v
   simp [mem_latMap]
 
+/- English proof (translation)
+Rewrite using `[latMap, latMap, latMap, ← Submodule.map_comp, Matrix.mulVecLin_mul]`. Both sides reduce to the same expression.
+-/
 theorem latMap_mul (γ δ : Matrix (Fin n) (Fin n) E) (Λ : Submodule (𝓞 E) (Fin n → E)) :
     latMap (γ * δ) Λ = latMap γ (latMap δ Λ) := by
   rw [latMap, latMap, latMap, ← Submodule.map_comp, Matrix.mulVecLin_mul]
   rfl
 
+/- English proof (translation)
+Take `⟨⟨h1, h2, h3, h4⟩, h5, h6⟩` from `h`. Take `⟨⟨k1, k2, k3, k4⟩, k5, k6⟩` from `k`. Use `⟨⟨isUn_mul k1 h1, by rw [latMap_mul, h2, k2], by rw [Matrix.mul_assoc, h3, k3], by rw [Matrix.mul_assoc, h4, k4]⟩, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, k5 _ (h3 ▸ (mulVec_mem_perpX h1 _ v).2 hv), h5 v hv]`. Rewrite using `[← Matrix.mulVec_mulVec, k6 _ (h4 ▸ (mulVec_mem_perpX h1 _ v).2 hv), h6 v hv]`.
+-/
 theorem IsoRig.mul {γ δ : Matrix (Fin n) (Fin n) E} {c d e : Rig E n m r} (h : IsoRig σ J γ c d)
     (k : IsoRig σ J δ d e) : IsoRig σ J (δ * γ) c e := by
   obtain ⟨⟨h1, h2, h3, h4⟩, h5, h6⟩ := h
@@ -279,6 +347,11 @@ theorem IsoRig.mul {γ δ : Matrix (Fin n) (Fin n) E} {c d e : Rig E n m r} (h :
   · rw [← Matrix.mulVec_mulVec, k5 _ (h3 ▸ (mulVec_mem_perpX h1 _ v).2 hv), h5 v hv]
   · rw [← Matrix.mulVec_mulVec, k6 _ (h4 ▸ (mulVec_mem_perpX h1 _ v).2 hv), h6 v hv]
 
+/- English proof (translation)
+Take `⟨⟨h1, h2, h3, h4⟩, h5, h6⟩` from `h`. Establish `hu` using `isUnit_det_of_isUn hJ h1`. Establish `l` using `Matrix.nonsing_inv_mul γ hu`. Establish `s` using `Matrix.mul_nonsing_inv γ hu`. Establish `e (v : Fin n → E) : γ *ᵥ (γ⁻¹ *ᵥ v) = v` using `by rw [Matrix.mulVec_mulVec, s, Matrix.one_mulVec]`.
+
+Use `⟨⟨isUn_of_mul_eq_one h1 s, by rw [← h2, ← latMap_mul, l, latMap_one], by rw [← h3, ← Matrix.mul_assoc, l, Matrix.one_mul], by rw [← h4, ← Matrix.mul_assoc, l, Matrix.one_mul]⟩, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← h5 _ ((mulVec_mem_perpX h1 _ _).1 (by rwa [e, h3])), e]`. Rewrite using `[← h6 _ ((mulVec_mem_perpX h1 _ _).1 (by rwa [e, h4])), e]`.
+-/
 theorem IsoRig.inv (hJ : IsUnit J.det) {γ : Matrix (Fin n) (Fin n) E} {c d : Rig E n m r}
     (h : IsoRig σ J γ c d) : IsoRig σ J γ⁻¹ d c := by
   obtain ⟨⟨h1, h2, h3, h4⟩, h5, h6⟩ := h
@@ -292,6 +365,17 @@ theorem IsoRig.inv (hJ : IsUnit J.det) {γ : Matrix (Fin n) (Fin n) E} {c d : Ri
   · rw [← h5 _ ((mulVec_mem_perpX h1 _ _).1 (by rwa [e, h3])), e]
   · rw [← h6 _ ((mulVec_mem_perpX h1 _ _).1 (by rwa [e, h4])), e]
 
+/- English proof (translation)
+Establish `hu : IsUnit γ` using `(Matrix.isUnit_iff_isUnit_det γ).2 (isUnit_det_of_isUn hJ hγ)`. Establish `hs` using `Matrix.mulVec_surjective_iff_isUnit.2 hu`. Establish `he : eOf (γ * P) = γ * eOf P` using `rfl`. Use `⟨fun v hv => ?_, fun y => ?_, fun v hv w hw => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hs v`.
+
+Rewrite `hv` using `[mulVec_mem_perpX hγ]`. Rewrite using `[hb v hv, h.1 v hv, mem_spanX, mem_spanX, he]`. Use `exists_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `(Matrix.mulVec_injective_iff_isUnit.2 hu).eq_iff.symm`.
+
+Take `⟨v, hv, rfl⟩` from `h.2.1 y`. Conclude with `⟨_, (mulVec_mem_perpX hγ P v).2 hv, hb v hv⟩`. Take `⟨v, rfl⟩` from `hs v`. Take `⟨w, rfl⟩` from `hs w`. Rewrite `hv`, `hw` using `[mulVec_mem_perpX hγ]`.
+
+Rewrite using `[hb v hv, hb w hw, h.2.2.1 v hv w hw, form_mulVec hγ]`. Use extensionality with `y`. Rewrite using `[h.mem_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨⟨v, hv, rfl⟩, hv'⟩, rfl⟩`.
+
+Establish `hv''` using `(mulVec_mem_perpX hγ P v).1 hv'`. Conclude with `⟨v, ⟨hv, hv''⟩, (hb v hv'').symm⟩`. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨γ *ᵥ v, ⟨⟨v, hv.1, rfl⟩, (mulVec_mem_perpX hγ P v).2 hv.2⟩, hb v hv.2⟩`. Conclude with `(hb _ (zOf_mem_perpX hP)).trans h.2.2.2.2`.
+-/
 theorem IsRed.transport (hJ : IsUnit J.det) {T : E} {Λ : Submodule (𝓞 E) (Fin n → E)}
     {P : Matrix (Fin n) (Fin (r + 1)) E} {x : Lz E m} {al bl : Matrix (Fin m) (Fin n) E}
     (h : IsRed σ J Jb Λ P x al) (hP : IsFrame σ J T P) {γ : Matrix (Fin n) (Fin n) E} (hγ : IsUn σ J γ)
@@ -328,11 +412,19 @@ section Unip
 
 variable {n r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[dInv, pow_add]`. Conclude with `FractionalIdeal.mul_mem_mul ha hb`.
+-/
 theorem mul_mem_dInv {i j : ℕ} {a b : E} (ha : a ∈ dInv E i) (hb : b ∈ dInv E j) :
     a * b ∈ dInv E (i + j) := by
   rw [dInv, pow_add]
   exact FractionalIdeal.mul_mem_mul ha hb
 
+/- English proof (translation)
+Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Conclude with `hu.2 a b h`. Rewrite using `[(hu.1 a a).2 rfl, Nat.sub_self, dInv, pow_zero]`. Conclude with `FractionalIdeal.one_mem_one _`. Rewrite using `[(hu.1 a b).1 h]`.
+
+Conclude with `FractionalIdeal.zero_mem _`.
+-/
 theorem UO.entry_mem {u : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hu : u ∈ UO E r) (a b : Fin (r + 1)) :
     u a b ∈ dInv E ((b : ℕ) - a) := by
   rcases lt_trichotomy a b with h | rfl | h
@@ -342,10 +434,22 @@ theorem UO.entry_mem {u : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hu : u ∈ UO E
   · rw [(hu.1 a b).1 h]
     exact FractionalIdeal.zero_mem _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => ⟨fun h => Matrix.one_apply_ne h.ne', fun h => h ▸ Matrix.one_apply_eq _⟩, fun _ _ h => by rw [Matrix.one_apply_ne h.ne]; exact FractionalIdeal.zero_mem _⟩`.
+-/
 theorem one_mem_UO : (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) ∈ UO E r :=
   ⟨fun _ _ => ⟨fun h => Matrix.one_apply_ne h.ne', fun h => h ▸ Matrix.one_apply_eq _⟩,
     fun _ _ h => by rw [Matrix.one_apply_ne h.ne]; exact FractionalIdeal.zero_mem _⟩
 
+/- English proof (translation)
+Rewrite using `[frameLat, Submodule.span_le]`. Introduce and unpack `_ ⟨b, c, hc, rfl⟩`. Establish `e : (c • fun i => (P * u) i b) = ∑ a, (c * u a b) • fun i => P i a`. Use extensionality with `i`. Simplify using `only [Matrix.mul_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_apply, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Break down `lt_or_ge b a with h | h` into its components or cases. Rewrite using `[(hu.1 a b).1 h, mul_zero, zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`. Use `Submodule.subset_span ⟨a, _, ?_, rfl⟩` and prove the remaining obligations. Establish `h1 : (a : ℕ) ≤ b` using `h`. Establish `h2` using `b.2`. Rewrite using `[show r - (a : ℕ) = r - (b : ℕ) + ((b : ℕ) - a) by omega]`.
+
+Conclude with `mul_mem_dInv hc (UO.entry_mem hu a b)`.
+-/
 theorem frameLat_mul_le (P : Matrix (Fin n) (Fin (r + 1)) E) {u : Matrix (Fin (r + 1)) (Fin (r + 1)) E}
     (hu : u ∈ UO E r) : frameLat (P * u) ≤ frameLat P := by
   rw [frameLat, Submodule.span_le]
@@ -371,6 +475,15 @@ section Examples
 
 variable {σ : E →+* E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Establish `hp (v : Fin 3 → E) : v ∈ perpX (r` using `1) σ !![0, 1, 0; 1, 0, 0; 0, 0, -1] !![1, 0; 0, 0; 0, 1] ↔ v 1 = 0 := by`. Simplify using `[mem_perpX_iff_form, form, dotProduct, Matrix.mulVec, Fin.sum_univ_three]`. Use `⟨_, fun v hv => ?_, fun y => ⟨![0, 0, y 0], (hp _).2 rfl, ?_⟩, fun v hv w hw => ?_, rfl, ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[hp]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h2 : v 2 = 0` using `by simpa [Matrix.mulVec, dotProduct, Fin.sum_univ_three] using congrFun h 0`. Use `⟨![v 0], ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [eOf, Matrix.mulVec, dotProduct, hv, h2]`.
+
+Introduce and unpack `⟨c, rfl⟩`. Use extensionality with `i`. Use `fin_cases i`. Simplify using `[eOf, Matrix.mulVec, dotProduct, Fin.sum_univ_three]`. Use extensionality with `i fin_cases i`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_three]`. Rewrite `hv`, `hw` using `[hp]`. Simplify using `[form, Matrix.mulVec, dotProduct, Fin.sum_univ_three, hv, hw]`. Use extensionality with `i fin_cases i`. Simplify using `[zOf, Matrix.mulVec, dotProduct, Fin.sum_univ_three]`.
+-/
 example (σ : E →+* E) (Λ : Submodule (𝓞 E) (Fin 3 → E)) :
     ∃ L, IsRed (r := 1) σ !![0, 1, 0; 1, 0, 0; 0, 0, -1] !![-1] Λ !![1, 0; 0, 0; 0, 1] (L, ![1])
       !![0, 0, 1] := by
@@ -398,6 +511,9 @@ example (σ : E →+* E) (Λ : Submodule (𝓞 E) (Fin 3 → E)) :
     fin_cases i
     simp [zOf, Matrix.mulVec, dotProduct, Fin.sum_univ_three]
 
+/- English proof (translation)
+Use `⟨fun h => h.2 0 1 (by decide), fun h => ⟨fun i j => ?_, fun a b hab => ?_⟩⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first | exact h | exact absurd hab (by decide)`.
+-/
 example (t : E) : (!![1, t; 0, 1] : Matrix (Fin (1 + 1)) (Fin (1 + 1)) E) ∈ UO E 1 ↔ t ∈ dInv E 1 := by
   refine ⟨fun h => h.2 0 1 (by decide), fun h => ⟨fun i j => ?_, fun a b hab => ?_⟩⟩
   · fin_cases i <;> fin_cases j <;> simp

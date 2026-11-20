@@ -11,6 +11,9 @@ open GlobalTheory.PRep Formalism.UG GlobalTheory.LFun PositivityTheory.Spherical
 
 namespace GlobalTheory.CompanionTheory.EigTorus
 
+/- English proof (translation)
+The claim follows from `eigU_of GlobalTheory.T.iwahori_unipotent_datum GlobalTheory.T.dominant_unipotent_contraction GlobalTheory.CompanionTheory.KUFactsU.kuFacts (fun G _ _ _ => GlobalTheory.T.jacquet_lemma_holds G)`.
+-/
 theorem eigU_complete :
     ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q n : ℕ)
     (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GU σ n) V),

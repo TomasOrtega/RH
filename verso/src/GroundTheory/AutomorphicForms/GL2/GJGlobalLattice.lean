@@ -16,6 +16,11 @@ open GroundTheory.Global GJMatrix
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[homeomorphMixedSpace_apply, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Distinguish the cases in `hw : w.IsReal`. Use `le_trans ?_ (norm_fst_le _)` and prove the remaining obligations. Use `le_trans ?_ (norm_le_pi_norm _ ⟨w, hw⟩)` and prove the remaining obligations. Simplify using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero]`.
+
+Use `le_trans ?_ (norm_snd_le _)` and prove the remaining obligations. Use `le_trans ?_ (norm_le_pi_norm _ ⟨w, InfinitePlace.not_isReal_iff_isComplex.1 hw⟩)` and prove the remaining obligations. Simplify using `[(InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero]`.
+-/
 theorem norm_apply_le_norm_homeomorphMixedSpace (x : InfiniteAdeleRing K) (w : InfinitePlace K) :
     ‖x w‖ ≤ ‖homeomorphMixedSpace K x‖ := by
   rw [homeomorphMixedSpace_apply, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]
@@ -27,6 +32,11 @@ theorem norm_apply_le_norm_homeomorphMixedSpace (x : InfiniteAdeleRing K) (w : I
     refine le_trans ?_ (norm_le_pi_norm _ ⟨w, InfinitePlace.not_isReal_iff_isComplex.1 hw⟩)
     simp [(InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero]
 
+/- English proof (translation)
+Rewrite using `[homeomorphMixedSpace_apply, InfiniteAdeleRing.ringEquiv_mixedSpace_apply, Prod.norm_def]`. Establish `hs : ∀ w, ‖x w‖ ≤ ∑ w, ‖x w‖` using `fun w => Finset.single_le_sum (f := fun w => ‖x w‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ w)`. Establish `h0 : 0 ≤ ∑ w, ‖x w‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Use `max_le ?_ ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg h0).2 fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).norm_map_of_map_zero (map_zero _)]`. Conclude with `hs v`. Use `(pi_norm_le_iff_of_nonneg h0).2 fun v => ?_` and prove the remaining obligations. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v.1).norm_map_of_map_zero (map_zero _)]`. Conclude with `hs v`.
+-/
 theorem norm_homeomorphMixedSpace_le_sum (x : InfiniteAdeleRing K) :
     ‖homeomorphMixedSpace K x‖ ≤ ∑ w, ‖x w‖ := by
   rw [homeomorphMixedSpace_apply, InfiniteAdeleRing.ringEquiv_mixedSpace_apply, Prod.norm_def]
@@ -48,10 +58,16 @@ variable {n : ℕ}
 def infNorm (X : Matrix (Fin n) (Fin n) 𝔸[K]) : ℝ :=
   ∑ i, ∑ j, ∑ w : InfinitePlace K, ‖(X i j).1 w‖
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+-/
 theorem infNorm_nonneg (X : Matrix (Fin n) (Fin n) 𝔸[K]) : 0 ≤ infNorm X :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
     norm_nonneg _
 
+/- English proof (translation)
+Unfold `infNorm`. Use `le_trans ?_ (Finset.single_le_sum (f := fun i => ∑ j, ∑ w : InfinitePlace K, ‖(X i j).1 w‖) (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun j => ∑ w : InfinitePlace K, ‖(X i j).1 w‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ j))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun w : InfinitePlace K => ‖(X i j).1 w‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ w)`.
+-/
 theorem norm_apply_le_infNorm (X : Matrix (Fin n) (Fin n) 𝔸[K]) (i j : Fin n)
     (w : InfinitePlace K) : ‖(X i j).1 w‖ ≤ infNorm X := by
   unfold infNorm
@@ -63,12 +79,26 @@ theorem norm_apply_le_infNorm (X : Matrix (Fin n) (Fin n) 𝔸[K]) (i j : Fin n)
   exact Finset.single_le_sum (f := fun w : InfinitePlace K => ‖(X i j).1 w‖)
     (fun _ _ => norm_nonneg _) (Finset.mem_univ w)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Reduction.infEval w ((X * Y) i j) = ∑ k, Reduction.infEval w (X i k) * Reduction.infEval w (Y k j)`. Rewrite using `[Matrix.mul_apply, map_sum]`. Simplify using `only [map_mul]`.
+-/
 theorem mul_apply_fst_apply (X Y : Matrix (Fin n) (Fin n) 𝔸[K]) (i j : Fin n)
     (w : InfinitePlace K) : ((X * Y) i j).1 w = ∑ k, (X i k).1 w * (Y k j).1 w := by
   change Reduction.infEval w ((X * Y) i j) = ∑ k, Reduction.infEval w (X i k) * Reduction.infEval w (Y k j)
   rw [Matrix.mul_apply, map_sum]
   simp only [map_mul]
 
+/- English proof (translation)
+Establish `key : ∀ i j (w : InfinitePlace K), ‖((X * Y) i j).1 w‖ ≤ ∑ k, ‖(X i k).1 w‖ * ‖(Y k j).1 w‖` using `fun i j w => by`. Rewrite using `[mul_apply_fst_apply]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun k _ => norm_mul _ _`. Use `set B : Fin n → ℝ := fun j => ∑ k, ∑ w : InfinitePlace K, ‖(Y k j).1 w‖ with hB`.
+
+Establish `hb : ∀ k j (w : InfinitePlace K), ‖(Y k j).1 w‖ ≤ B j` using `fun k j w => by`. Use `le_trans ?_ (Finset.single_le_sum (f := fun k => ∑ w : InfinitePlace K, ‖(Y k j).1 w‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ k))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun w : InfinitePlace K => ‖(Y k j).1 w‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ w)`. Establish `hBsum : ∑ j, B j = infNorm Y`. Simplify using `only [hB, infNorm]`.
+
+Conclude with `Finset.sum_comm`. Establish `hA : ∑ i, ∑ w : InfinitePlace K, ∑ k, ‖(X i k).1 w‖ = infNorm X`. Simplify using `only [infNorm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_comm`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `_ = infNorm X * infNorm Y := by rw [hA, hBsum]`.
+-/
 theorem infNorm_mul_le (X Y : Matrix (Fin n) (Fin n) 𝔸[K]) :
     infNorm (X * Y) ≤ infNorm X * infNorm Y := by
   have key : ∀ i j (w : InfinitePlace K),
@@ -102,6 +132,11 @@ theorem infNorm_mul_le (X Y : Matrix (Fin n) (Fin n) 𝔸[K]) :
         rw [Finset.sum_mul]
     _ = infNorm X * infNorm Y := by rw [hA, hBsum]
 
+/- English proof (translation)
+Unfold `infNorm`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `‖a.1 w * (X i j).1 w‖ = _`.
+
+Rewrite using `[norm_mul, ha w]`.
+-/
 theorem infNorm_smul {a : 𝔸[K]} {ρ : ℝ} (ha : ∀ w, ‖a.1 w‖ = ρ) (X : Matrix (Fin n) (Fin n) 𝔸[K]) :
     infNorm (a • X) = ρ * infNorm X := by
   unfold infNorm
@@ -112,6 +147,9 @@ theorem infNorm_smul {a : 𝔸[K]} {ρ : ℝ} (ha : ∀ w, ‖a.1 w‖ = ρ) (X 
   change ‖a.1 w * (X i j).1 w‖ = _
   rw [norm_mul, ha w]
 
+/- English proof (translation)
+Establish `h : ∀ i j (w : InfinitePlace K), ‖(X i j).1 w‖ ≤ ‖infPartPi (matrixCoordEquiv X)‖` using `fun i j w => (norm_apply_le_norm_homeomorphMixedSpace _ w).trans (norm_le_pi_norm (infPartPi (matrixCoordEquiv X)) (i, j))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem infNorm_le_norm_infPartPi (X : Matrix (Fin n) (Fin n) 𝔸[K]) :
     infNorm X ≤ (n * n * Fintype.card (InfinitePlace K) : ℝ) *
       ‖infPartPi (matrixCoordEquiv X)‖ := by
@@ -124,6 +162,13 @@ theorem infNorm_le_norm_infPartPi (X : Matrix (Fin n) (Fin n) 𝔸[K]) :
           h i j w
     _ = _ := by simp [Finset.sum_const, Finset.card_univ]; ring
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (infNorm_nonneg _)).2 fun p => ?_` and prove the remaining obligations. Establish `h1 : embPi K (matrixCoordEquiv ξ) p = homeomorphMixedSpace K (algebraMap K (InfiniteAdeleRing K) (ξ p.1 p.2))`. Rewrite using `[homeomorphMixedSpace_algebraMap]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+
+Use `(norm_homeomorphMixedSpace_le_sum _).trans ?_` and prove the remaining obligations. Establish `h2 : ∀ w : InfinitePlace K, ‖(algebraMap K (InfiniteAdeleRing K) (ξ p.1 p.2)) w‖ = ‖(ratMat ξ p.1 p.2).1 w‖` using `fun w => rfl`. Simplify using `only [h2]`. Unfold `infNorm`. Use `le_trans ?_ (Finset.single_le_sum (f := fun i => ∑ j, ∑ w : InfinitePlace K, ‖(ratMat ξ i j).1 w‖) (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ p.1))` and prove the remaining obligations.
+
+Conclude with `Finset.single_le_sum (f := fun j => ∑ w : InfinitePlace K, ‖(ratMat ξ p.1 j).1 w‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ p.2)`.
+-/
 theorem norm_embPi_le_infNorm (ξ : Matrix (Fin n) (Fin n) K) :
     ‖embPi K (matrixCoordEquiv ξ)‖ ≤ infNorm (ratMat ξ) := by
   refine (pi_norm_le_iff_of_nonneg (infNorm_nonneg _)).2 fun p => ?_
@@ -146,6 +191,19 @@ section Majorant
 
 variable {ι : Type*} [Fintype ι]
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Take `⟨C₁, hC₁, h₁⟩` from `exists_norm_le_inv_one_add_pow φ M`. Establish `hgc : Continuous g` using `((mem_finiteSchwartzBruhatPi K).mp hg).1.continuous`.
+
+Establish `hgs : HasCompactSupport g` using `((mem_finiteSchwartzBruhatPi K).mp hg).2`. Take `⟨C₂, h₂⟩` from `hgc.bounded_above_of_compact_support hgs`. Use `⟨C₁ * max C₂ 0, mul_nonneg hC₁ (le_max_right _ _), tsupport g, hgs.isCompact, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [schwartzBruhatTensorPi, norm_mul]`. Distinguish the cases in `hx : finPartPi x ∈ tsupport g`.
+
+Rewrite using `[indicator_of_mem hx, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[indicator_of_notMem hx, mul_zero, image_eq_zero_of_notMem_tsupport hx, norm_zero, mul_zero]`. Consider the case `zero`. Conclude with `⟨0, le_rfl, ∅, isCompact_empty, fun x => by simp⟩`.
+
+Consider the case `add G H _ _ hG hH`. Take `⟨C₁, hC₁, L₁, hL₁, h₁⟩` from `hG`. Take `⟨C₂, hC₂, L₂, hL₂, h₂⟩` from `hH`. Use `⟨C₁ + C₂, add_nonneg hC₁ hC₂, L₁ ∪ L₂, hL₁.union hL₂, fun x => ?_⟩` and prove the remaining obligations. Establish `hi₁ : L₁.indicator (fun _ => (1 : ℝ)) (finPartPi x) ≤ (L₁ ∪ L₂).indicator (fun _ => (1 : ℝ)) (finPartPi x)` using `indicator_le_indicator_of_subset subset_union_left (fun _ => zero_le_one) _`.
+
+Establish `hi₂ : L₂.indicator (fun _ => (1 : ℝ)) (finPartPi x) ≤ (L₁ ∪ L₂).indicator (fun _ => (1 : ℝ)) (finPartPi x)` using `indicator_le_indicator_of_subset subset_union_right (fun _ => zero_le_one) _`. Establish `hp : 0 ≤ ((1 + ‖infPartPi x‖) ^ M)⁻¹` using `inv_nonneg.2 (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Consider the case `smul c G _ hG`. Take `⟨C, hC, L, hL, h⟩` from `hG`.
+
+Use `⟨‖c‖ * C, mul_nonneg (norm_nonneg c) hC, L, hL, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left ((h x).trans (le_of_eq (by ring))) (norm_nonneg c)`.
+-/
 theorem exists_majorant_pi {F : (ι → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhatPi K ι) (M : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∃ L : Set (ι → 𝔸ᶠ[K]), IsCompact L ∧ ∀ x,
       ‖F x‖ ≤ C * ((1 + ‖infPartPi x‖) ^ M)⁻¹ * L.indicator (fun _ => (1 : ℝ)) (finPartPi x) := by
@@ -206,6 +264,19 @@ variable {n : ℕ}
 def IsInBox (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (X : Matrix (Fin n) (Fin n) 𝔸[K]) : Prop :=
   ∀ i j, (X i j).2 ∈ idealFiniteAdeles I
 
+/- English proof (translation)
+Take `⟨C, hC, L, hL, h⟩` from `exists_majorant_pi (mem_matrixSchwartzBruhat.mp hΦ) M`. Use `set L' : Set 𝔸ᶠ[K] := ⋃ p : Fin n × Fin n, (fun q => q p) '' L with hL'`. Establish `hL'c : IsCompact L'` using `isCompact_iUnion fun p => hL.image (continuous_apply p)`. Take `⟨I, hI⟩` from `exists_subset_idealFiniteAdeles hL'c`. Use `set c : ℝ := max 1 (n * n * Fintype.card (InfinitePlace K) : ℝ) with hc`.
+
+Establish `hc1 : 1 ≤ c` using `le_max_left _ _`. Use `⟨C * c ^ M, mul_nonneg hC (pow_nonneg (zero_le_one.trans hc1) _), I, fun X => ?_⟩` and prove the remaining obligations. Establish `hX : Φ X = (fun z => Φ (Matrix.of fun i j => z (i, j))) (matrixCoordEquiv X)` using `rfl`. Rewrite using `[hX]`. Use `(h _).trans ?_` and prove the remaining obligations.
+
+Use `set a := ‖infPartPi (matrixCoordEquiv X)‖ with ha`. Establish `ha0 : 0 ≤ a` using `norm_nonneg _`. Establish `hb0 : 0 ≤ infNorm X` using `infNorm_nonneg X`. Establish `hc0 : 0 < c` using `zero_lt_one.trans_le hc1`. Establish `h1 : 1 + infNorm X ≤ c * (1 + a)`.
+
+Use `infNorm_le_norm_infPartPi X` as an intermediate fact. Establish `h2 : (n * n * Fintype.card (InfinitePlace K) : ℝ) ≤ c` using `le_max_right _ _`. Use the polynomial consequences of the given equalities and inequalities. Establish `hinf : ((1 + a) ^ M)⁻¹ ≤ c ^ M * ((1 + infNorm X) ^ M)⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_pow, mul_inv, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hc0.ne'), one_mul]`. Use `_ ≤ c ^ M * ((1 + infNorm X) ^ M)⁻¹ := mul_le_mul_of_nonneg_left (inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity) h1 M)) (by positivity)`. Establish `hind : L.indicator (fun _ => (1 : ℝ)) (finPartPi (matrixCoordEquiv X)) ≤ (if IsInBox I X then 1 else 0)`. Distinguish the cases in `hmem : finPartPi (matrixCoordEquiv X) ∈ L`. Establish `hbox : IsInBox I X` using `fun i j => hI (mem_iUnion.2 ⟨(i, j), _, hmem, rfl⟩)`.
+
+Rewrite using `[indicator_of_mem hmem, if_pos hbox]`. Apply the tactic sequence `rw [indicator_of_notMem hmem] split_ifs <;> norm_num`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_majorant {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΦ : Φ ∈ matrixSchwartzBruhat K n) (M : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∃ I : (FractionalIdeal (𝓞 K)⁰ K)ˣ, ∀ X : Matrix (Fin n) (Fin n) 𝔸[K],
@@ -250,15 +321,29 @@ theorem exists_majorant {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
 def finMat (X : Matrix (Fin n) (Fin n) 𝔸[K]) : Matrix (Fin n) (Fin n) 𝔸ᶠ[K] :=
   X.map (RingHom.snd (InfiniteAdeleRing K) 𝔸ᶠ[K])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finMat_apply (X : Matrix (Fin n) (Fin n) 𝔸[K]) (i j : Fin n) : finMat X i j = (X i j).2 :=
   rfl
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul`.
+-/
 theorem finMat_mul (X Y : Matrix (Fin n) (Fin n) 𝔸[K]) : finMat (X * Y) = finMat X * finMat Y :=
   Matrix.map_mul
 
+/- English proof (translation)
+The claim follows from `continuous_id.matrix_map continuous_snd`.
+-/
 theorem continuous_finMat : Continuous (finMat (K := K) (n := n)) :=
   continuous_id.matrix_map continuous_snd
 
+/- English proof (translation)
+Use `set B : Set (Matrix (Fin n) (Fin n) 𝔸ᶠ[K]) := Set.pi univ fun _ => Set.pi univ fun _ => (idealFiniteAdeles I : Set 𝔸ᶠ[K]) with hB`. Establish `hBc : IsCompact B` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_idealFiniteAdeles I`. Use `set S : Set 𝔸ᶠ[K] := ⋃ p : Fin n × Fin n, (fun q : (Matrix (Fin n) (Fin n) 𝔸ᶠ[K] × Matrix (Fin n) (Fin n) 𝔸ᶠ[K]) × Matrix (Fin n) (Fin n) 𝔸ᶠ[K] => (q.1.1 * q.2 * q.1.2) p.1 p.2) '' ((Q ×ˢ Q) ×ˢ B) with hS`. Establish `hSc : IsCompact S`. Use `isCompact_iUnion fun p => ((hQ.prod hQ).prod hBc).image ?_` and prove the remaining obligations.
+
+Establish `hm : Continuous fun q : (Matrix (Fin n) (Fin n) 𝔸ᶠ[K] × Matrix (Fin n) (Fin n) 𝔸ᶠ[K]) × Matrix (Fin n) (Fin n) 𝔸ᶠ[K] => q.1.1 * q.2 * q.1.2` using `((continuous_fst.comp continuous_fst).matrix_mul continuous_snd).matrix_mul (continuous_snd.comp continuous_fst)`. Conclude with `(continuous_apply p.2).comp ((continuous_apply p.1).comp hm)`. Take `⟨J, hJ⟩` from `exists_subset_idealFiniteAdeles hSc`. Use `⟨J, fun a ha b hb X hX i j => hJ (mem_iUnion.2 ⟨(i, j), ((a, b), X), ⟨⟨ha, hb⟩, fun i _ => fun j _ => hX i j⟩, rfl⟩)⟩` and prove the remaining obligations.
+-/
 theorem exists_ideal_mul_mul {Q : Set (Matrix (Fin n) (Fin n) 𝔸ᶠ[K])} (hQ : IsCompact Q)
     (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : ∃ J : (FractionalIdeal (𝓞 K)⁰ K)ˣ,
       ∀ a ∈ Q, ∀ b ∈ Q, ∀ X : Matrix (Fin n) (Fin n) 𝔸ᶠ[K],
@@ -285,6 +370,9 @@ theorem exists_ideal_mul_mul {Q : Set (Matrix (Fin n) (Fin n) 𝔸ᶠ[K])} (hQ :
 def latticeWeight (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (M : ℕ) (ξ : Matrix (Fin n) (Fin n) K) : ℝ :=
   if ∀ i j, ξ i j ∈ (J : FractionalIdeal (𝓞 K)⁰ K) then ((1 + infNorm (ratMat ξ)) ^ M)⁻¹ else 0
 
+/- English proof (translation)
+Unfold `latticeWeight`. Use `split_ifs`. Conclude with `inv_nonneg.2 (pow_nonneg (by linarith [infNorm_nonneg (ratMat ξ)]) _)`. Conclude with `le_rfl`.
+-/
 theorem latticeWeight_nonneg (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (M : ℕ)
     (ξ : Matrix (Fin n) (Fin n) K) : 0 ≤ latticeWeight J M ξ := by
   unfold latticeWeight
@@ -292,6 +380,25 @@ theorem latticeWeight_nonneg (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (M : ℕ)
   · exact inv_nonneg.2 (pow_nonneg (by linarith [infNorm_nonneg (ratMat ξ)]) _)
   · exact le_rfl
 
+/- English proof (translation)
+Use `set L := idealLatticePi (K := K) (fun _ : Fin n × Fin n => J) with hL`. Establish `hrank : Module.finrank ℤ L < M` using `by rw [ZLattice.rank ℝ L]; exact hM`. Establish `hsL : Summable fun z : L => ((1 + ‖(z : Fin n × Fin n → mixedEmbedding.mixedSpace K)‖) ^ M)⁻¹`. Establish `hs` using `ZLattice.summable_norm_pow_inv L M hrank`. Use `Summable.of_norm_bounded_eventually hs ?_` and prove the remaining obligations.
+
+Use `filter_upwards [(Set.finite_singleton (0 : L)).compl_mem_cofinite] with z hz`. Establish `hpos : 0 < ‖z‖` using `norm_pos_iff.mpr hz`. Rewrite using `[Real.norm_of_nonneg (inv_nonneg.2 (by positivity)), inv_pow]`. Use `gcongr`. Express the relevant statement in the definitionally equal form `‖(z : Fin n × Fin n → mixedEmbedding.mixedSpace K)‖ ≤ _`.
+
+Combine the linear relations using `[show ‖z‖ = ‖(z : Fin n × Fin n → mixedEmbedding.mixedSpace K)‖ from rfl]`. Use `set T : Set (Matrix (Fin n) (Fin n) K) := {ξ | ∀ i j, ξ i j ∈ (J : FractionalIdeal (𝓞 K)⁰ K)}`. Establish `hmem : ∀ ξ : T, embPi K (matrixCoordEquiv (ξ : Matrix (Fin n) (Fin n) K)) ∈ L`. Introduce `ξ`. Rewrite using `[hL, mem_idealLatticePi]`.
+
+Introduce `p`. Conclude with `(mixedEmbedding.mem_idealLattice K J).2 ⟨_, ξ.2 p.1 p.2, rfl⟩`. Use `set e : T → L := fun ξ => ⟨_, hmem ξ⟩ with he`. Establish `he_inj : Function.Injective e`. Introduce `ξ η h`.
+
+Establish `h1` using `congrArg (fun z : L => (z : Fin n × Fin n → mixedEmbedding.mixedSpace K)) h`. Use `Subtype.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h2` using `congrFun h1 (i, j)`. Conclude with `(mixedEmbedding K).injective h2`. Establish `hsT : Summable fun ξ : T => ((1 + ‖((e ξ : L) : Fin n × Fin n → mixedEmbedding.mixedSpace K)‖) ^ M)⁻¹` using `hsL.comp_injective he_inj`.
+
+Establish `hsT' : Summable fun ξ : T => ((1 + infNorm (ratMat (ξ : Matrix (Fin n) (Fin n) K))) ^ M)⁻¹`. Establish `h0 : ∀ ξ : T, 0 ≤ ((1 + infNorm (ratMat (ξ : Matrix (Fin n) (Fin n) K))) ^ M)⁻¹` using `fun ξ => inv_nonneg.2 (pow_nonneg (by`. Use `infNorm_nonneg (ratMat (ξ : Matrix (Fin n) (Fin n) K))` as an intermediate fact. Use the proof step `linarith) _)`. Use `hsT.of_nonneg_of_le h0 fun ξ => ?_` and prove the remaining obligations.
+
+Use `inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity) ?_ M)` and prove the remaining obligations. Use `norm_embPi_le_infNorm (ξ : Matrix (Fin n) (Fin n) K)` as an intermediate fact. Express the relevant statement in the definitionally equal form `1 + ‖embPi K (matrixCoordEquiv (ξ : Matrix (Fin n) (Fin n) K))‖ ≤ _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `heq : latticeWeight (n` using `n) J M = T.indicator fun ξ => ((1 + infNorm (ratMat ξ)) ^ M)⁻¹ := by`.
+
+Use function extensionality and compare the values at `ξ`. Unfold `latticeWeight`. Distinguish the cases in `h : ∀ i j, ξ i j ∈ (J : FractionalIdeal (𝓞 K)⁰ K)`. Rewrite using `[if_pos h, indicator_of_mem (show ξ ∈ T from h)]`. Rewrite using `[if_neg h, indicator_of_notMem (show ξ ∉ T from h)]`.
+
+Rewrite using `[heq, ← summable_subtype_iff_indicator]`. Conclude with `hsT'`.
+-/
 theorem summable_latticeWeight (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {M : ℕ}
     (hM : Module.finrank ℝ (Fin n × Fin n → mixedEmbedding.mixedSpace K) < M) :
     Summable (latticeWeight (n := n) J M) := by
@@ -347,6 +454,9 @@ def twistedWeight (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (M : ℕ) (x y : Adeli
     (if IsInBox I (((x⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ξ *
       (y : Matrix (Fin n) (Fin n) 𝔸[K])) then 1 else 0)
 
+/- English proof (translation)
+Unfold `twistedWeight`. Apply the tactic sequence `refine mul_nonneg (inv_nonneg.2 (pow_nonneg ?_ _)) (by split_ifs <;> norm_num)`. Combine the linear relations using `[infNorm_nonneg (((x⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ξ * (y : Matrix (Fin n) (Fin n) 𝔸[K]))]`.
+-/
 theorem twistedWeight_nonneg (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (M : ℕ)
     (x y : AdelicGLn.AdelicGL K n) (ξ : Matrix (Fin n) (Fin n) K) : 0 ≤ twistedWeight I M x y ξ := by
   unfold twistedWeight
@@ -354,10 +464,28 @@ theorem twistedWeight_nonneg (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (M : ℕ)
   linarith [infNorm_nonneg (((x⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) *
     ratMat ξ * (y : Matrix (Fin n) (Fin n) 𝔸[K]))]
 
+/- English proof (translation)
+The claim follows from `adeleRing_algebraMap_snd _`.
+-/
 theorem ratMat_apply_snd (ξ : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
     (ratMat ξ i j).2 = algebraMap K 𝔸ᶠ[K] (ξ i j) :=
   adeleRing_algebraMap_snd _
 
+/- English proof (translation)
+Take `⟨W, hW⟩ : ∃ W, W = ((x⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ξ * (y : Matrix (Fin n) (Fin n) 𝔸[K])` from `⟨_, rfl⟩`. Take `⟨a, ha⟩ : ∃ a, a = infNorm (x : Matrix (Fin n) (Fin n) 𝔸[K])` from `⟨_, rfl⟩`. Take `⟨b, hb⟩ : ∃ b, b = infNorm ((y⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])` from `⟨_, rfl⟩`. Rewrite using `[← ha, ← hb]`. Establish `ha0 : 0 ≤ a` using `ha ▸ infNorm_nonneg _`.
+
+Establish `hb0 : 0 ≤ b` using `hb ▸ infNorm_nonneg _`. Establish `hw0 : 0 ≤ infNorm W` using `infNorm_nonneg _`. Rewrite using `[twistedWeight, ← hW]`. Distinguish the cases in `hbox : IsInBox I W`. Rewrite using `[if_pos hbox, mul_one]`.
+
+Establish `hξ : ratMat ξ = (x : Matrix (Fin n) (Fin n) 𝔸[K]) * W * ((y⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])`. Rewrite using `[hW, Matrix.mul_assoc, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Establish `hmemJ : ∀ i j, ξ i j ∈ (J : FractionalIdeal (𝓞 K)⁰ K)`. Introduce `i j`. Establish `h1` using `hJ _ hx _ hy (finMat W) (fun i j => hbox i j) i j`.
+
+Rewrite `h1` using `[← finMat_mul, ← finMat_mul, ← hξ, finMat_apply, ratMat_apply_snd]`. Conclude with `(algebraMap_mem_idealFiniteAdeles_iff J _).1 h1`. Establish `hlw : latticeWeight J M ξ = ((1 + infNorm (ratMat ξ)) ^ M)⁻¹`. Unfold `latticeWeight`. Rewrite using `[if_pos hmemJ]`.
+
+Rewrite using `[hlw]`. Establish `hR : infNorm (ratMat ξ) ≤ a * infNorm W * b`. Rewrite using `[hξ, ha, hb]`. Conclude with `(infNorm_mul_le _ _).trans (mul_le_mul_of_nonneg_right (infNorm_mul_le _ _) (infNorm_nonneg _))`. Establish `hR0 : 0 ≤ infNorm (ratMat ξ)` using `infNorm_nonneg _`.
+
+Establish `h1 : 1 + infNorm (ratMat ξ) ≤ (1 + a) * (1 + b) * (1 + infNorm W)`. Use polynomial arithmetic with `[mul_nonneg ha0 hb0, mul_nonneg (mul_nonneg ha0 hb0) hw0, mul_nonneg ha0 hw0, mul_nonneg hb0 hw0]`. Establish `hpos : 0 < (1 + a) * (1 + b)` using `mul_pos (by linarith) (by linarith)`. Establish `hRp : 0 < 1 + infNorm (ratMat ξ)` using `by linarith`. Establish `hWp : 0 < 1 + infNorm W` using `by linarith`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow ((1 + a) * (1 + b)), mul_inv, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hpos.ne'), one_mul]`. Use `_ ≤ ((1 + a) * (1 + b)) ^ M * ((1 + infNorm (ratMat ξ)) ^ M)⁻¹ := mul_le_mul_of_nonneg_left (inv_anti₀ (pow_pos hRp M) (pow_le_pow_left₀ hRp.le h1 M)) (pow_nonneg hpos.le M)`. Rewrite using `[if_neg hbox, mul_zero]`. Conclude with `mul_nonneg (pow_nonneg (mul_nonneg (by linarith) (by linarith)) M) (latticeWeight_nonneg J M ξ)`.
+-/
 theorem twistedWeight_le {I J : (FractionalIdeal (𝓞 K)⁰ K)ˣ}
     {Q : Set (Matrix (Fin n) (Fin n) 𝔸ᶠ[K])}
     (hJ : ∀ a ∈ Q, ∀ b ∈ Q, ∀ X : Matrix (Fin n) (Fin n) 𝔸ᶠ[K],
@@ -414,6 +542,11 @@ theorem twistedWeight_le {I J : (FractionalIdeal (𝓞 K)⁰ K)ˣ}
     exact mul_nonneg (pow_nonneg (mul_nonneg (by linarith) (by linarith)) M)
       (latticeWeight_nonneg J M ξ)
 
+/- English proof (translation)
+Take `⟨J, hJ⟩` from `exists_ideal_mul_mul hQ I`. Establish `hs` using `summable_latticeWeight (n := n) J hM`. Use `⟨∑' ξ : Matrix (Fin n) (Fin n) K, latticeWeight J M ξ, tsum_nonneg (latticeWeight_nonneg J M), fun x y hx hy => ?_⟩` and prove the remaining obligations. Establish `hle` using `twistedWeight_le hJ M hx hy`. Establish `hs'` using `hs.mul_left (((1 + infNorm (x : Matrix (Fin n) (Fin n) 𝔸[K])) * (1 + infNorm ((y⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]))) ^ M)`.
+
+Establish `hsum : Summable (twistedWeight I M x y)` using `hs'.of_nonneg_of_le (twistedWeight_nonneg I M x y) hle`. Use `⟨hsum, (hsum.tsum_le_tsum hle hs').trans (le_of_eq (tsum_mul_left))⟩` and prove the remaining obligations.
+-/
 theorem exists_tsum_twistedWeight_le {Q : Set (Matrix (Fin n) (Fin n) 𝔸ᶠ[K])} (hQ : IsCompact Q)
     (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {M : ℕ}
     (hM : Module.finrank ℝ (Fin n × Fin n → mixedEmbedding.mixedSpace K) < M) :
@@ -436,9 +569,17 @@ theorem exists_tsum_twistedWeight_le {Q : Set (Matrix (Fin n) (Fin n) 𝔸ᶠ[K]
 def centralScale (n : ℕ) (t : {r : ℝ // 0 < r}) : ℝ :=
   (t : ℝ) ^ ((n * Module.finrank ℚ K : ℝ))⁻¹
 
+/- English proof (translation)
+The claim follows from `Real.rpow_pos_of_pos t.2 _`.
+-/
 theorem centralScale_pos (n : ℕ) (t : {r : ℝ // 0 < r}) : 0 < centralScale (K := K) n t :=
   Real.rpow_pos_of_pos t.2 _
 
+/- English proof (translation)
+Use `set a : 𝔸[K] := ((Reduction.posIdele (centralScale (K := K) n t) (centralScale_pos n t) : IdeleGroup K) : 𝔸[K]) with ha`. Use `⟨a, fun w => Reduction.norm_posIdele_infinite _ _ w, ?_, fun X => ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Establish `h` using `Reduction.posIdele_finite (K := K) (centralScale (K := K) n t) (centralScale_pos (K := K) n t) v`. Rewrite using `[ha, h]`.
+
+Both sides reduce to the same expression. Rewrite using `[Matrix.smul_eq_diagonal_mul]`. Both sides reduce to the same expression.
+-/
 theorem exists_centralSection_mul_eq (t : {r : ℝ // 0 < r}) :
     ∃ a : 𝔸[K], (∀ w, ‖a.1 w‖ = centralScale (K := K) n t) ∧ a.2 = 1 ∧
       ∀ X : Matrix (Fin n) (Fin n) 𝔸[K],
@@ -455,12 +596,22 @@ theorem exists_centralSection_mul_eq (t : {r : ℝ // 0 < r}) :
   · rw [Matrix.smul_eq_diagonal_mul]
     rfl
 
+/- English proof (translation)
+Unfold `IsInBox`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, show (a * X i j).2 = a.2 * (X i j).2 from rfl, ha, one_mul]`.
+-/
 theorem isInBox_smul_iff {a : 𝔸[K]} (ha : a.2 = 1) (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
     (X : Matrix (Fin n) (Fin n) 𝔸[K]) : IsInBox I (a • X) ↔ IsInBox I X := by
   unfold IsInBox
   refine forall_congr' fun i => forall_congr' fun j => ?_
   rw [Matrix.smul_apply, smul_eq_mul, show (a * X i j).2 = a.2 * (X i j).2 from rfl, ha, one_mul]
 
+/- English proof (translation)
+Establish `hm1 : 1 ≤ max 1 ρ⁻¹` using `le_max_left _ _`. Establish `hm0 : 0 < max 1 ρ⁻¹` using `zero_lt_one.trans_le hm1`. Establish `hmρ : 1 ≤ max 1 ρ⁻¹ * ρ`. Break down `le_total 1 ρ⁻¹ with h | h` into its components or cases. Rewrite using `[max_eq_right h, inv_mul_cancel₀ hρ.ne']`.
+
+Rewrite using `[max_eq_left h, one_mul]`. Conclude with `(inv_le_one₀ hρ).1 h`. Establish `h1 : 1 + w ≤ max 1 ρ⁻¹ * (1 + ρ * w)` using `by nlinarith`. Establish `hp : 0 < 1 + ρ * w` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_pow, mul_inv, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hm0.ne'), one_mul]`. Use `_ ≤ (max 1 ρ⁻¹) ^ M * ((1 + w) ^ M)⁻¹ := mul_le_mul_of_nonneg_left (inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity) h1 M)) (by positivity)`.
+-/
 theorem inv_one_add_mul_pow_le {ρ w : ℝ} (hρ : 0 < ρ) (hw : 0 ≤ w) (M : ℕ) :
     ((1 + ρ * w) ^ M)⁻¹ ≤ (max 1 ρ⁻¹) ^ M * ((1 + w) ^ M)⁻¹ := by
   have hm1 : 1 ≤ max 1 ρ⁻¹ := le_max_left _ _
@@ -478,6 +629,11 @@ theorem inv_one_add_mul_pow_le {ρ w : ℝ} (hρ : 0 < ρ) (hw : 0 ≤ w) (M : �
         mul_le_mul_of_nonneg_left (inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity)
           h1 M)) (by positivity)
 
+/- English proof (translation)
+Establish `hw0 : 0 ≤ w` using `hc.le.trans hw`. Establish `h1 : 1 + w ≤ 1 + ρ * w` using `by nlinarith`. Establish `h2 : ρ * c ≤ 1 + ρ * w` using `by nlinarith`. Establish `hρc : 0 < ρ * c` using `mul_pos (zero_lt_one.trans_le hρ) hc`. Rewrite using `[pow_add, mul_inv, mul_comm]`.
+
+Conclude with `mul_le_mul (inv_anti₀ (pow_pos hρc M') (pow_le_pow_left₀ hρc.le h2 M')) (inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity) h1 M)) (by positivity) (by positivity)`.
+-/
 theorem inv_one_add_mul_pow_add_le {ρ w c : ℝ} (hρ : 1 ≤ ρ) (hc : 0 < c) (hw : c ≤ w)
     (M M' : ℕ) : ((1 + ρ * w) ^ (M + M'))⁻¹ ≤ ((ρ * c) ^ M')⁻¹ * ((1 + w) ^ M)⁻¹ := by
   have hw0 : 0 ≤ w := hc.le.trans hw
@@ -489,6 +645,13 @@ theorem inv_one_add_mul_pow_add_le {ρ w c : ℝ} (hρ : 1 ≤ ρ) (hc : 0 < c) 
     (inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity) h1 M)) (by positivity)
     (by positivity)
 
+/- English proof (translation)
+Take `⟨a, ha1, ha2, hmul⟩` from `exists_centralSection_mul_eq (K := K) (n := n) t`. Use `set W := ((x⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ξ * (y : Matrix (Fin n) (Fin n) 𝔸[K]) with hW`. Establish `heq : ((Reduction.centralSection K n t * x⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * ratMat ξ * (y : Matrix (Fin n) (Fin n) 𝔸[K]) = a • W`. Rewrite using `[Units.val_mul, hW, ← hmul, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc]`. Rewrite using `[heq]`.
+
+Use `(hmaj _).trans ?_` and prove the remaining obligations. Rewrite using `[infNorm_smul ha1, isInBox_smul_iff ha2]`. Unfold `twistedWeight`. Rewrite using `[← hW]`. Apply the tactic sequence `have hb : (0 : ℝ) ≤ if IsInBox I W then 1 else 0 := by split_ifs <;> norm_num`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_le_twistedWeight {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ} {C : ℝ} (hC : 0 ≤ C)
     {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {M : ℕ}
     (hmaj : ∀ X, ‖Φ X‖ ≤ C * ((1 + infNorm X) ^ M)⁻¹ * (if IsInBox I X then 1 else 0))
@@ -515,6 +678,15 @@ theorem norm_le_twistedWeight {Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ} {C :
           (centralScale_pos n t) (infNorm_nonneg W) M) hC) hb
     _ = _ := by ring
 
+/- English proof (translation)
+Use `set O := IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers K v`. Use `set A' : Matrix (Fin n) (Fin n) O := fun i j => ⟨t⁻¹ * A i j, hA i j⟩`. Establish `hmap : A'.map O.subtype = t⁻¹ • A`. Use extensionality with `i j`. Both sides reduce to the same expression.
+
+Establish `hdet : (t⁻¹ • A).det ∈ O`. Establish `h` using `RingHom.map_det O.subtype A'`. Rewrite `h` using `[RingHom.mapMatrix_apply, hmap]`. Rewrite using `[← h]`. Conclude with `(A'.det).2`.
+
+Rewrite `hdet` using `[Matrix.det_smul, Fintype.card_fin]`. Establish `h1` using `Reduction.norm_le_one_of_mem v hdet`. Rewrite `h1` using `[norm_mul, norm_pow, norm_inv]`. Establish `htp : 0 < ‖t‖ ^ n` using `pow_pos (norm_pos_iff.2 ht) n`. Rewrite `h1` using `[inv_pow, inv_mul_le_iff₀ htp, mul_one]`.
+
+Conclude with `h1`.
+-/
 theorem norm_det_le_of_mem {v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)}
     {t : v.adicCompletion K} (ht : t ≠ 0) {A : Matrix (Fin n) (Fin n) (v.adicCompletion K)}
     (hA : ∀ i j, t⁻¹ * A i j ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers K v) :
@@ -535,6 +707,33 @@ theorem norm_det_le_of_mem {v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)}
   rw [inv_pow, inv_mul_le_iff₀ htp, mul_one] at h1
   exact h1
 
+/- English proof (translation)
+Use `set tI := idealIdele I with htI`. Use `set B : ℝ := ∏ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), ‖(tI : 𝔸ᶠ[K]) v‖ ^ n with hB`. Use `set d := Module.finrank ℚ K with hd`. Establish `hd1 : 1 ≤ d` using `Module.finrank_pos`. Establish `hB0 : 0 ≤ B` using `finprod_nonneg fun _ => pow_nonneg (norm_nonneg _) _`.
+
+Use `set D : ℝ := max B 1 * (n.factorial : ℝ) ^ d with hD`. Establish `hD0 : 0 < D` using `mul_pos (zero_lt_one.trans_le (le_max_right _ _)) (pow_pos (by exact_mod_cast Nat.factorial_pos n) d)`. Use `⟨min 1 D⁻¹, lt_min one_pos (inv_pos.2 hD0), fun W hW hbox => ?_⟩` and prove the remaining obligations. Use `set X := infNorm (W : Matrix (Fin n) (Fin n) 𝔸[K]) with hX`. Establish `hX0 : 0 ≤ X` using `infNorm_nonneg _`.
+
+Take `⟨u, hu⟩ : ∃ u : IdeleGroup K, u = AdelicGLn.det K n W` from `⟨_, rfl⟩`. Establish `hu1 : (IdeleGroup.ideleModule K u : ℝ) = 1` using `hu ▸ hW`. Rewrite `hu1` using `[IdeleGroup.ideleModule_eq]`. Establish `hfin : ∀ v, ‖((u : 𝔸[K])).2 v‖ ≤ ‖(tI : 𝔸ᶠ[K]) v‖ ^ n`. Introduce `v`.
+
+Establish `h1 : ((u : 𝔸[K])).2 v = ((W : Matrix (Fin n) (Fin n) 𝔸[K]).map (Reduction.finEval v)).det`. Express the relevant statement in the definitionally equal form `Reduction.finEval v (u : 𝔸[K]) = _`. Rewrite using `[hu, AdelicGLn.coe_det, RingHom.map_det, RingHom.mapMatrix_apply]`. Rewrite using `[h1]`. Establish `hne : (tI : 𝔸ᶠ[K]) v ≠ 0`.
+
+Establish `h` using `congrArg (fun a : 𝔸ᶠ[K] => a v) (Units.mul_inv tI)`. Establish `h' : (tI : 𝔸ᶠ[K]) v * ((tI⁻¹ : (𝔸ᶠ[K])ˣ) : 𝔸ᶠ[K]) v = 1` using `h`. Conclude with `left_ne_zero_of_mul_eq_one h'`. Use `norm_det_le_of_mem hne fun i j => ?_` and prove the remaining obligations. Establish `hmem` using `hbox i j`.
+
+Rewrite `hmem` using `[← SetLike.mem_coe, idealFiniteAdeles_eq_smul, mem_units_smul_integralFiniteAdeles_iff]`. Conclude with `hmem v`. Establish `hPf : ∏ᶠ v, ‖((u : 𝔸[K])).2 v‖ ≤ B`. Use `Reduction.finprod_le_finprod_of_nonneg (IdeleGroup.finite_mulSupport_norm u) ?_ (fun _ => norm_nonneg _) hfin` and prove the remaining obligations. Use `(finite_mulSupport_nnnorm_units tI).subset fun v hv => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.mem_mulSupport] at hv ⊢`. Introduce `h1`. Apply `hv` to reduce the goal to its premises. Establish `: ‖(tI : 𝔸ᶠ[K]) v‖ = 1` using `by rw [← coe_nnnorm, h1, NNReal.coe_one]`. Rewrite using `[this, one_pow]`.
+
+Establish `hinf : ∀ w : InfinitePlace K, ‖((u : 𝔸[K])).1 w‖ ≤ (n.factorial : ℝ) * X ^ n`. Introduce `w`. Establish `h1 : ((u : 𝔸[K])).1 w = ((W : Matrix (Fin n) (Fin n) 𝔸[K]).map (Reduction.infEval w)).det`. Express the relevant statement in the definitionally equal form `Reduction.infEval w (u : 𝔸[K]) = _`. Rewrite using `[hu, AdelicGLn.coe_det, RingHom.map_det, RingHom.mapMatrix_apply]`.
+
+Rewrite using `[h1]`. Establish `h2` using `Matrix.det_le (abv := NormedField.toAbsoluteValue w.Completion) (x := X) (A := (W : Matrix (Fin n) (Fin n) 𝔸[K]).map (Reduction.infEval w)) (fun i j => norm_apply_le_infNorm _ i j w)`. Rewrite `h2` using `[Fintype.card_fin, nsmul_eq_mul]`. Conclude with `h2`. Establish `hPinf : ∏ w : InfinitePlace K, ‖((u : 𝔸[K])).1 w‖ ^ w.mult ≤ ((n.factorial : ℝ) * X ^ n) ^ d`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_pow_eq_pow_sum, InfinitePlace.sum_mult_eq]`. Establish `hfac0 : (0 : ℝ) ≤ n.factorial` using `Nat.cast_nonneg _`. Establish `h1 : 1 ≤ ((n.factorial : ℝ) * X ^ n) ^ d * B`. Rewrite using `[← hu1]`.
+
+Conclude with `mul_le_mul hPinf hPf (finprod_nonneg fun _ => norm_nonneg _) (pow_nonneg (mul_nonneg hfac0 (pow_nonneg hX0 _)) _)`. Distinguish the cases in `hX1 : 1 ≤ X`. Conclude with `(min_le_left _ _).trans hX1`. Use `push Not at hX1`. Establish `hXn : X ^ n ≤ X` using `pow_le_of_le_one hX0 hX1.le hn.ne'`.
+
+Establish `hXd : X ^ d ≤ X` using `pow_le_of_le_one hX0 hX1.le (by omega)`. Establish `h2 : ((n.factorial : ℝ) * X ^ n) ^ d ≤ (n.factorial : ℝ) ^ d * X`. Rewrite using `[mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left ((pow_le_pow_left₀ (pow_nonneg hX0 _) hXn d).trans hXd) (pow_nonneg hfac0 _)`. Establish `h3 : 1 ≤ D * X`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `(min_le_right _ _).trans ?_` and prove the remaining obligations. Rewrite using `[inv_le_iff_one_le_mul₀ hD0]`. Combine the linear relations using `[mul_comm D X]`.
+-/
 theorem exists_le_infNorm_of_isInBox (hn : 0 < n) (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ W : AdelicGLn.AdelicGL K n, (Reduction.detModule K n W : ℝ) = 1 →
       IsInBox I (W : Matrix (Fin n) (Fin n) 𝔸[K]) →

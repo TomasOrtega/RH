@@ -8,6 +8,17 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.L3.LIOrb.OrbF
 
+/- English proof (translation)
+Set `s : Setoid X` to `⟨r, hr⟩`. Set `pick : Quotient s → X` to `fun c => if H : ∃ t ∈ X₀, Quotient.mk s t = c then H.choose else Quotient.out c`. Establish `hp1 : ∀ x ∈ X₀, pick (Quotient.mk s x) ∈ X₀ ∧ Quotient.mk s (pick (Quotient.mk s x)) = Quotient.mk s x`. Introduce `x hx`. Establish `H : ∃ t ∈ X₀, Quotient.mk s t = Quotient.mk s x` using `⟨x, hx, rfl⟩`.
+
+Simplify using `only [pick, dif_pos H]`. Conclude with `H.choose_spec`. Use `⟨hfin.toFinset.image (fun x => pick (Quotient.mk s x)), ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp ht`.
+
+Conclude with `(hp1 x (hfin.mem_toFinset.mp hx)).1`. Introduce `x hx`. Take `⟨t₀, ht₀, h0⟩` from `hcov x hx`. Use `⟨pick (Quotient.mk s t₀), ⟨Finset.mem_image.mpr ⟨t₀, hfin.mem_toFinset.mpr ht₀, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `hr.trans (Quotient.exact (hp1 t₀ ht₀).2) h0`.
+
+Introduce and unpack `t' ⟨ht', h1⟩`. Take `⟨x', hx', rfl⟩` from `Finset.mem_image.mp ht'`. Establish `e1` using `(hp1 x' (hfin.mem_toFinset.mp hx')).2`. Establish `e2 : Quotient.mk s x' = Quotient.mk s t₀`. Rewrite using `[← e1]`.
+
+Conclude with `Quotient.sound (hr.trans h1 (hr.symm h0))`. Rewrite using `[e2]`.
+-/
 theorem exists_reps {X : Type*} (r : X → X → Prop) (hr : Equivalence r) (A X₀ : Set X)
     (hfin : X₀.Finite) (hcov : ∀ x ∈ A, ∃ t ∈ X₀, r t x) :
     ∃ R : Finset X, (∀ t ∈ R, t ∈ X₀) ∧ ∀ x ∈ A, ∃! t, t ∈ R ∧ r t x := by
@@ -62,6 +73,11 @@ variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K
   one_smul T := autSub_gmap_one T
   mul_smul _ _ _ := autSub_gmap_mul _ _ _
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Conclude with `⟨SplitBAux.extOf_mem_isom hs S g.2, e⟩`.
+
+Introduce `e`. Conclude with `e.2`.
+-/
 theorem stab_actV (hs : h.IsSymm) (S : VecSplit h h') (M : Submodule (𝓞 K) V) :
     @MulAction.stabilizer _ _ _ (actV S) M = (autExt S M).subgroupOf (Formalism.HermitianLatticesTheory.isom h') := by
   ext g
@@ -72,21 +88,35 @@ theorem stab_actV (hs : h.IsSymm) (S : VecSplit h h') (M : Submodule (𝓞 K) V)
   · intro e
     exact e.2
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[Subgroup.mem_subgroupOf]`. Conclude with `⟨fun hg => ⟨g.2, hg⟩, fun hg => hg.2⟩`.
+-/
 theorem stab_actV' (T : Submodule (𝓞 K) V') :
     @MulAction.stabilizer _ _ _ (actV' h') T = (autSub h' T).subgroupOf (Formalism.HermitianLatticesTheory.isom h') := by
   ext g
   rw [Subgroup.mem_subgroupOf]
   exact ⟨fun hg => ⟨g.2, hg⟩, fun hg => hg.2⟩
 
+/- English proof (translation)
+Introduce `_ hg` and use `hg.1`.
+-/
 theorem autSub_le_isom (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K) V) :
     autSub h A ≤ Formalism.HermitianLatticesTheory.isom h := fun _ hg => hg.1
 
+/- English proof (translation)
+Rewrite using `[stab_actV hs, stab_actV', Subgroup.relIndex_subgroupOf (autSub_le_isom h' _)]`. Both sides reduce to the same expression.
+-/
 theorem relIndex_stab (hs : h.IsSymm) (S : VecSplit h h') (M : Submodule (𝓞 K) V) :
     (@MulAction.stabilizer _ _ _ (actV S) M).relIndex
       (@MulAction.stabilizer _ _ _ (actV' h') (S.cut M)) = oM S M := by
   rw [stab_actV hs, stab_actV', Subgroup.relIndex_subgroupOf (autSub_le_isom h' _)]
   rfl
 
+/- English proof (translation)
+Apply `LinearEquiv.toLinearMap_injective` to reduce the goal to its premises. Apply `SplitBAux.linearMap_ext S` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `SplitBAux.extOf S _ S.x₀ = g S.x₀`. Rewrite using `[SplitBAux.extOf_x₀, hx]`. Introduce `a`.
+
+Express the relevant statement in the definitionally equal form `SplitBAux.extOf S _ (S.ι a) = g (S.ι a)`. Rewrite using `[SplitBAux.extOf_ι, SplitBAux.res_spec]`.
+-/
 theorem extOf_res (S : VecSplit h h') {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h)
     (hx : g S.x₀ = S.x₀) : SplitBAux.extOf S (SplitBAux.res S g hg hx) = g := by
   apply LinearEquiv.toLinearMap_injective
@@ -97,19 +127,35 @@ theorem extOf_res (S : VecSplit h h') {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.
     change SplitBAux.extOf S _ (S.ι a) = g (S.ι a)
     rw [SplitBAux.extOf_ι, SplitBAux.res_spec]
 
+/- English proof (translation)
+The claim follows from `Submodule.map_smul'' _ _ _`.
+-/
 theorem gmap_smul (g : V ≃ₗ[K] V) (I : Ideal (𝓞 K)) (A : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap g (I • A) = I • Formalism.HermitianLatticesTheory.gmap g A := Submodule.map_smul'' _ _ _
 
+/- English proof (translation)
+Use `⟨mul_mem (mul_mem hg hu.1) (inv_mem hg), ?_⟩` and prove the remaining obligations. Rewrite using `[autSub_gmap_mul, autSub_gmap_mul, ← autSub_gmap_mul g⁻¹ g, inv_mul_cancel, autSub_gmap_one, hu.2]`.
+-/
 theorem conj_mem_autSub {g u : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h) {A : Submodule (𝓞 K) V}
     (hu : u ∈ autSub h A) : g * u * g⁻¹ ∈ autSub h (Formalism.HermitianLatticesTheory.gmap g A) := by
   refine ⟨mul_mem (mul_mem hg hu.1) (inv_mem hg), ?_⟩
   rw [autSub_gmap_mul, autSub_gmap_mul, ← autSub_gmap_mul g⁻¹ g, inv_mul_cancel, autSub_gmap_one, hu.2]
 
+/- English proof (translation)
+Use `⟨mul_mem (mul_mem (inv_mem hg) hu.1) hg, ?_⟩` and prove the remaining obligations. Rewrite using `[autSub_gmap_mul, autSub_gmap_mul, hu.2, ← autSub_gmap_mul, inv_mul_cancel, autSub_gmap_one]`.
+-/
 theorem conj_mem_autSub' {g u : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h) {A : Submodule (𝓞 K) V}
     (hu : u ∈ autSub h (Formalism.HermitianLatticesTheory.gmap g A)) : g⁻¹ * u * g ∈ autSub h A := by
   refine ⟨mul_mem (mul_mem (inv_mem hg) hu.1) hg, ?_⟩
   rw [autSub_gmap_mul, autSub_gmap_mul, hu.2, ← autSub_gmap_mul, inv_mul_cancel, autSub_gmap_one]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hm⟩`. Use `⟨g⁻¹ * u * g, conj_mem_autSub' hg hu, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[← gmap_smul, Formalism.HermitianLatticesTheory.isomAct_mem_gmap, map_sub, g.symm_apply_apply]`. Express the relevant statement in the definitionally equal form `y - g.symm (u (g (g.symm x))) ∈ _`.
+
+Rewrite using `[g.apply_symm_apply]` and apply the resulting hypothesis. Introduce and unpack `⟨u, hu, hm⟩`. Use `⟨g * u * g⁻¹, conj_mem_autSub hg hu, ?_⟩` and prove the remaining obligations. Rewrite using `[← gmap_smul, Formalism.HermitianLatticesTheory.isomAct_mem_gmap]`. Express the relevant statement in the definitionally equal form `g.symm (g y - g (u (g.symm x))) ∈ _`.
+
+Rewrite using `[← map_sub, g.symm_apply_apply]` and apply the resulting hypothesis.
+-/
 theorem mem_tube_gmap {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h) (A : Submodule (𝓞 K) V)
     (𝔭 : Ideal (𝓞 F)) (J : ℕ) (x y : V) :
     g y ∈ tube (autSub h (Formalism.HermitianLatticesTheory.gmap g A)) (Formalism.HermitianLatticesTheory.gmap g A) 𝔭 J x ↔
@@ -126,6 +172,11 @@ theorem mem_tube_gmap {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLattice
     change g.symm (g y - g (u (g.symm x))) ∈ _
     rwa [← map_sub, g.symm_apply_apply]
 
+/- English proof (translation)
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(mem_tube_gmap hg A 𝔭 J x y).2 hy`. Introduce `hz`.
+
+Use `⟨g.symm z, (mem_tube_gmap hg A 𝔭 J x _).1 ?_, g.apply_symm_apply z⟩` and prove the remaining obligations. Rewrite using `[g.apply_symm_apply]` and apply the resulting hypothesis.
+-/
 theorem image_tube {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h) (A : Submodule (𝓞 K) V)
     (𝔭 : Ideal (𝓞 F)) (J : ℕ) (x : V) :
     g '' tube (autSub h A) A 𝔭 J (g.symm x) =
@@ -138,6 +189,15 @@ theorem image_tube {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTh
     refine ⟨g.symm z, (mem_tube_gmap hg A 𝔭 J x _).1 ?_, g.apply_symm_apply z⟩
     rwa [g.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[LocalizedFibreSets.gmap_locF]`. Rewrite using `[LocalizedFibreSets.cut_locF]`. Use `⟨LocalizedFibreSets.locF_idem _ _, GoodPrimeTerms.isIntegralAt_locF h𝔭.isPrime hF (UnimodularLocalization.isIntegralLat_cut S (UnimodularLocalization.isIntegralLat_gmap hg hLi)), ?_⟩` and prove the remaining obligations. Rewrite using `[UnimodularLocalization.fibLoc_locF]`. Take `⟨t, ht, hx⟩` from `(LocF.mem_locF_iff h𝔭.isPrime _ _).mp hx`.
+
+Establish `hc : algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) t) ≠ 0`. Introduce `e`. Establish `e1 : algebraMap (𝓞 F) (𝓞 K) t = 0` using `Formalism.HermitianLatticesTheory.genusCovol_hinj (by rw [e, map_zero])`. Establish `e2 : t = 0` using `FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 K) (by rw [e1, map_zero])`. Conclude with `ht (e2 ▸ 𝔭.zero_mem)`.
+
+Establish `hgood` using `BrB.good_cut (F := F) hK hF hs hd (BrB.scaleSplit S _ hc) (LocalizedFibreSets.isLattice_gmap g hL) (UnimodularLocalization.isIntegralLat_gmap hg hLi) (by change algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) t) • S.x₀ ∈ _`. Rewrite using `[algebraMap_smul]`. Conclude with `hx)`. Establish `h1` using `hgood.2 ⟨𝔭, h𝔭⟩`. Rewrite `h1` using `[BrB.fibLoc_scale S L h𝔭.isPrime hg ht hc]`.
+
+Conclude with `h1`.
+-/
 theorem cut_props (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm) (hd : IsTotPosDef h)
     (S : VecSplit h h') {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {𝔭 : Ideal (𝓞 F)}

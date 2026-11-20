@@ -26,46 +26,85 @@ variable {p : ℕ} [Fact p.Prime] {σ : Type*}
 noncomputable def intSub (p : ℕ) [Fact p.Prime] : Subring ℂ_[p] :=
   _root_.UpperTheory.Reformulated.B.PadicComplexIntegerSubring.intSub p
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intSub {x : ℂ_[p]} : x ∈ intSub p ↔ IsIntP x := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.IsIntegralNatCast.isPadicIntegral_natCast n`.
+-/
 theorem isPadicIntegral_natCast (n : ℕ) : IsIntP (n : ℂ_[p]) :=
   _root_.UpperTheory.Reformulated.B.IsIntegralNatCast.isPadicIntegral_natCast n
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.IntegralMvPowerSeriesOverPadicComplex.intMv_zero`.
+-/
 theorem intMv_zero : IntegralMv (0 : MvPowerSeries σ ℂ_[p]) :=
   _root_.UpperTheory.Reformulated.B.IntegralMvPowerSeriesOverPadicComplex.intMv_zero
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Gwb3.intMv_one`.
+-/
 theorem intMv_one : IntegralMv (1 : MvPowerSeries σ ℂ_[p]) :=
   _root_.UpperTheory.Reformulated.B.Gwb3.intMv_one
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.IntegralPolynomialFirst.intMv_add hF hG`.
+-/
 theorem intMv_add {F G : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) (hG : IntegralMv G) :
     IntegralMv (F + G) :=
   _root_.UpperTheory.Reformulated.B.IntegralPolynomialFirst.intMv_add hF hG
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.IntegralPolynomialFourth.intMv_neg hF`.
+-/
 theorem intMv_neg {F : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) : IntegralMv (-F) :=
   _root_.UpperTheory.Reformulated.B.IntegralPolynomialFourth.intMv_neg hF
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `intMv_add hF (intMv_neg hG)`.
+-/
 theorem intMv_sub {F G : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) (hG : IntegralMv G) :
     IntegralMv (F - G) := by
   rw [sub_eq_add_neg]; exact intMv_add hF (intMv_neg hG)
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.IntegralPolynomialSecond.intMv_mul hF hG`.
+-/
 theorem intMv_mul {F G : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) (hG : IntegralMv G) :
     IntegralMv (F * G) :=
   _root_.UpperTheory.Reformulated.B.IntegralPolynomialSecond.intMv_mul hF hG
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.IntegralPolynomialThird.intMv_C hc`.
+-/
 theorem intMv_C {c : ℂ_[p]} (hc : IsIntP c) : IntegralMv (C c : MvPowerSeries σ ℂ_[p]) :=
   _root_.UpperTheory.Reformulated.B.IntegralPolynomialThird.intMv_C hc
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.intMv_X i`.
+-/
 theorem intMv_X (i : σ) : IntegralMv (X i : MvPowerSeries σ ℂ_[p]) :=
   _root_.UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.intMv_X i
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Gwb7.intMv_pderiv i hF`.
+-/
 theorem intMv_pderiv {F : MvPowerSeries σ ℂ_[p]} (i : σ) (hF : IntegralMv F) :
     IntegralMv (pderiv ℂ_[p] i F) :=
   _root_.UpperTheory.Reformulated.B.Gwb7.intMv_pderiv i hF
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.UnitBallLemmas.intMv_inv hF h1`.
+-/
 theorem intMv_inv {F : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) (h1 : constantCoeff F = 1) :
     ∃ G : MvPowerSeries σ ℂ_[p], IntegralMv G ∧ F * G = 1 :=
   _root_.UpperTheory.Reformulated.B.UnitBallLemmas.intMv_inv hF h1
 
+/- English proof (translation)
+Apply `coeff_of_lt_order` to reduce the goal to its premises. Conclude with `lt_of_lt_of_le (by exact_mod_cast h) (le_order_pow_of_constantCoeff_eq_zero n hf)`.
+-/
 theorem coeff_pow_eq_zero {f : MvPowerSeries σ ℂ_[p]} (hf : constantCoeff f = 0) {n : ℕ}
     {α : σ →₀ ℕ} (h : Finsupp.degree α < n) : coeff α (f ^ n) = 0 := by
   apply coeff_of_lt_order
@@ -74,14 +113,25 @@ theorem coeff_pow_eq_zero {f : MvPowerSeries σ ℂ_[p]} (hf : constantCoeff f =
 def expT (f : MvPowerSeries σ ℂ_[p]) (N : ℕ) : MvPowerSeries σ ℂ_[p] :=
   ∑ n ∈ Finset.range N, ((n.factorial : ℂ_[p])⁻¹) • f ^ n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_expMv (f : MvPowerSeries σ ℂ_[p]) (α : σ →₀ ℕ) :
     coeff α (expMv f) =
       ∑ n ∈ Finset.range (Finsupp.degree α + 1), coeff α (f ^ n) / (n.factorial : ℂ_[p]) := rfl
 
+/- English proof (translation)
+Simplify using `only [expT, map_sum, map_smul, smul_eq_mul, div_eq_inv_mul]`.
+-/
 theorem coeff_expT (f : MvPowerSeries σ ℂ_[p]) (N : ℕ) (α : σ →₀ ℕ) :
     coeff α (expT f N) = ∑ n ∈ Finset.range N, coeff α (f ^ n) / (n.factorial : ℂ_[p]) := by
   simp only [expT, map_sum, map_smul, smul_eq_mul, div_eq_inv_mul]
 
+/- English proof (translation)
+Rewrite using `[coeff_expMv, coeff_expT]`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `n hn`. Simplify using `only [Finset.mem_range] at *`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `n _ hn`. Simplify using `only [Finset.mem_range, not_lt] at hn`. Rewrite using `[coeff_pow_eq_zero hf (by omega), zero_div]`.
+-/
 theorem coeff_expMv_eq_expT {f : MvPowerSeries σ ℂ_[p]} (hf : constantCoeff f = 0) {α : σ →₀ ℕ}
     {N : ℕ} (hN : Finsupp.degree α < N) : coeff α (expMv f) = coeff α (expT f N) := by
   rw [coeff_expMv, coeff_expT]
@@ -91,6 +141,13 @@ theorem coeff_expMv_eq_expT {f : MvPowerSeries σ ℂ_[p]} (hf : constantCoeff f
     simp only [Finset.mem_range, not_lt] at hn
     rw [coeff_pow_eq_zero hf (by omega), zero_div]
 
+/- English proof (translation)
+Simplify using `only [expT, map_sum, Derivation.map_smul, Finset.mul_sum]`. Rewrite using `[Finset.sum_range_succ']`. Simplify using `only [pow_zero, Derivation.map_one_eq_zero, smul_zero, add_zero]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_pow, Nat.add_sub_cancel, smul_eq_C_mul, smul_eq_C_mul]`.
+
+Establish `hn : ((n + 1 : ℕ) : MvPowerSeries σ ℂ_[p]) = C ((n + 1 : ℕ) : ℂ_[p])` using `(map_natCast C _).symm`. Establish `key : ((n + 1).factorial : ℂ_[p])⁻¹ * ((n + 1 : ℕ) : ℂ_[p]) = (n.factorial : ℂ_[p])⁻¹`. Establish `h1 : ((n + 1 : ℕ) : ℂ_[p]) ≠ 0` using `by exact_mod_cast n.succ_ne_zero`. Rewrite using `[Nat.factorial_succ, Nat.cast_mul, mul_inv, mul_comm, ← mul_assoc, mul_inv_cancel₀ h1, one_mul]`. Rewrite using `[hn]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = pderiv ℂ_[p] i f * (C (n.factorial : ℂ_[p])⁻¹ * f ^ n) := by rw [key]; ring`.
+-/
 theorem pderiv_expT (f : MvPowerSeries σ ℂ_[p]) (i : σ) (N : ℕ) :
     pderiv ℂ_[p] i (expT f (N + 1)) = pderiv ℂ_[p] i f * expT f N := by
   simp only [expT, map_sum, Derivation.map_smul, Finset.mul_sum]
@@ -108,6 +165,13 @@ theorem pderiv_expT (f : MvPowerSeries σ ℂ_[p]) (i : σ) (N : ℕ) :
         rw [map_mul]; ring
     _ = pderiv ℂ_[p] i f * (C (n.factorial : ℂ_[p])⁻¹ * f ^ n) := by rw [key]; ring
 
+/- English proof (translation)
+Use extensionality with `α`. Establish `h1 : coeff α (pderiv ℂ_[p] i (expMv f)) = coeff α (pderiv ℂ_[p] i (expT f (Finsupp.degree α + 1 + 1)))`. Rewrite using `[coeff_pderiv, coeff_pderiv, coeff_expMv_eq_expT hf]`. Rewrite using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[h1, pderiv_expT, coeff_mul, coeff_mul]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Use `congr 1`. Use `(coeff_expMv_eq_expT hf ?_).symm` and prove the remaining obligations. Use `congrArg Finsupp.degree (Finset.HasAntidiagonal.mem_antidiagonal.1 hx)` as an intermediate fact.
+
+Rewrite `this` using `[map_add]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem pderiv_expMv {f : MvPowerSeries σ ℂ_[p]} (hf : constantCoeff f = 0) (i : σ) :
     pderiv ℂ_[p] i (expMv f) = pderiv ℂ_[p] i f * expMv f := by
   ext α
@@ -122,10 +186,16 @@ theorem pderiv_expMv {f : MvPowerSeries σ ℂ_[p]} (hf : constantCoeff f = 0) (
   have := congrArg Finsupp.degree (Finset.HasAntidiagonal.mem_antidiagonal.1 hx)
   rw [map_add] at this; omega
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_expMv]`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_expMv (f : MvPowerSeries σ ℂ_[p]) : constantCoeff (expMv f) = 1 := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_expMv]
   simp
 
+/- English proof (translation)
+Take `⟨G, hG, hEG⟩` from `intMv_inv hE (constantCoeff_expMv f)`. Establish `: c * pderiv ℂ_[p] i f = c * pderiv ℂ_[p] i (expMv f) * G`. Rewrite using `[pderiv_expMv hf, mul_assoc, mul_assoc, hEG, mul_one]`. Rewrite using `[this]`. Conclude with `intMv_mul (intMv_mul hc (intMv_pderiv i hE)) hG`.
+-/
 theorem L0 {f c : MvPowerSeries σ ℂ_[p]} (i : σ) (hf : constantCoeff f = 0)
     (hE : IntegralMv (expMv f)) (hc : IntegralMv c) : IntegralMv (c * pderiv ℂ_[p] i f) := by
   obtain ⟨G, hG, hEG⟩ := intMv_inv hE (constantCoeff_expMv f)
@@ -134,6 +204,9 @@ theorem L0 {f c : MvPowerSeries σ ℂ_[p]} (i : σ) (hf : constantCoeff f = 0)
   rw [this]
   exact intMv_mul (intMv_mul hc (intMv_pderiv i hE)) hG
 
+/- English proof (translation)
+The claim follows from `L0 i h.1 h.2 hc`.
+-/
 theorem integral_of_simeq_alt {F G c : MvPowerSeries σ ℂ_[p]} (i : σ) (h : Simeq F G) (hc : IntegralMv c) :
     IntegralMv (c * pderiv ℂ_[p] i (F - G)) :=
   L0 i h.1 h.2 hc

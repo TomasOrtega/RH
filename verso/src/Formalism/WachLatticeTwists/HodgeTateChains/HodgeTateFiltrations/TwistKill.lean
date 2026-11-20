@@ -5,6 +5,17 @@ noncomputable section
 
 namespace Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
+/- English proof (translation)
+Introduce `ℓ _ u s hs h2 hu j hj E T ⟨hI1, hI2⟩ hT4 hT3 y`. Take `⟨hne, hval⟩` from `Formalism.WindowSums.valuation_zpow_sub_one ℓ u s hs h2 hu j hj`. Take `⟨a, x, hax⟩` from `(hI1 ((ℓ : ℤ_[ℓ]) • y)).1 (by rw [map_smul]; exact hT4 _)`. Choose the witnesses or unpack the hypotheses as in `⟨c, hu'⟩ : ∃ c : ℤ_[ℓ]ˣ, (((u ^ j : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) - 1) = (c : ℤ_[ℓ]) * (ℓ : ℤ_[ℓ]) ^ (s + padicValInt ℓ j) := by`. Establish `h` using `PadicInt.unitCoeff_spec hne`.
+
+Rewrite `h` using `[hval]`. Conclude with `⟨_, h⟩`. Establish `h4 : T.infm (((ℓ : ℤ_[ℓ]) ^ (s + padicValInt ℓ j)) • a) + T.infX (((ℓ : ℤ_[ℓ]) ^ (s + padicValInt ℓ j)) • x) = 0`. Apply `(hI2 _ _).2` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+
+Use `⟨((c⁻¹ : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) • a, ?_⟩` and prove the remaining obligations. Establish `h5 : ∀ (t : ℤ_[ℓ]) (v : T.Wm), t • v - v = (t - 1) • v`. Introduce `t v`. Rewrite using `[sub_smul, one_smul]`. Rewrite using `[h5, smul_smul]`.
+
+Use `conv_rhs => rw [hu', mul_right_comm, Units.mul_inv, one_mul]`. Take `⟨x'', hx''⟩` from `hT3 x`. Use `⟨((ℓ : ℤ_[ℓ]) ^ (s + padicValInt ℓ j - 1)) • x'', ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_sub, ← hx'', smul_smul, ← pow_succ, Nat.sub_add_cancel (by omega)]`. Establish `h6 : 1 + s + padicValInt ℓ j = (s + padicValInt ℓ j) + 1` using `by ring`.
+
+Rewrite using `[h6, pow_succ, mul_smul, hax, smul_add, ← map_smul, ← map_smul]`. Conclude with `h4`.
+-/
 theorem twistKill : StatTwistKill := by
   intro ℓ _ u s hs h2 hu j hj E T ⟨hI1, hI2⟩ hT4 hT3 y
   obtain ⟨hne, hval⟩ := Formalism.WindowSums.valuation_zpow_sub_one ℓ u s hs h2 hu j hj
@@ -29,6 +40,11 @@ theorem twistKill : StatTwistKill := by
   rw [h6, pow_succ, mul_smul, hax, smul_add, ← map_smul, ← map_smul]
   exact h4
 
+/- English proof (translation)
+Introduce `ℓ _ u s hs h2 hu e K ⟨h0, hex, htw⟩ x`. Use `killSum ℓ (fun k => K.H k) (fun k => K.Gr k) K.f K.p (fun k => 1 + s + padicValNat ℓ (e - k)) e h0 hex (fun k hk y => ?_) x` and prove the remaining obligations. Take `⟨hI, hT4, hT3⟩` from `htw k hk`. Establish `h` using `twistKill ℓ u s hs h2 hu ((k : ℤ) - e) (by omega) (K.Gr k) (K.tw k) hI hT4 hT3 y`. Establish `hv : padicValInt ℓ ((k : ℤ) - e) = padicValNat ℓ (e - k)`.
+
+Unfold `padicValInt`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[hv]`. Conclude with `h`.
+-/
 theorem kill3 : StatKill3 := by
   intro ℓ _ u s hs h2 hu e K ⟨h0, hex, htw⟩ x
   refine killSum ℓ (fun k => K.H k) (fun k => K.Gr k) K.f K.p
@@ -42,6 +58,13 @@ theorem kill3 : StatKill3 := by
   rw [hv] at h
   exact h
 
+/- English proof (translation)
+Introduce `ℓ _ N G HB T b La0 ⟨hI1, hI2⟩ hT4 hT3 htf hlog x`. Take `⟨a, y, hay⟩` from `(hI1 ((ℓ : ℤ_[ℓ]) • x)).1 (by rw [map_smul]; exact hT4 _)`. Take `⟨y', hy'⟩` from `hT3 y`. Establish `h1 : T.infX ((ℓ : ℤ_[ℓ]) • y) = 0`. Use `(hI2 0 ((ℓ : ℤ_[ℓ]) • y)).2 ⟨⟨0, by simp⟩, y', hy'⟩` as an intermediate fact.
+
+Rewrite `this` using `[map_zero, zero_add]`. Conclude with `this`. Establish `h2 : b (T.infX y) = 0` using `htf _ (by rw [← map_smul, ← map_smul, h1, map_zero])`. Establish `h3 : (ℓ : ℤ_[ℓ]) • b x = b (T.infm a)` using `by rw [← map_smul, hay, map_add, h2, add_zero]`. Rewrite using `[add_comm, pow_succ, mul_smul, h3]`.
+
+Conclude with `hlog a`.
+-/
 theorem free3 : StatFree3 := by
   intro ℓ _ N G HB T b La0 ⟨hI1, hI2⟩ hT4 hT3 htf hlog x
   obtain ⟨a, y, hay⟩ := (hI1 ((ℓ : ℤ_[ℓ]) • x)).1 (by rw [map_smul]; exact hT4 _)
@@ -55,6 +78,13 @@ theorem free3 : StatFree3 := by
   rw [add_comm, pow_succ, mul_smul, h3]
   exact hlog a
 
+/- English proof (translation)
+Introduce `ℓ _ u w s m e d hs h2 hsm hu hw U D L K T φ ψ hd hP hLES hT5 hCR hK hTI hT4 hT3 htf hlog hC hL hdR hH2 hR hCor`. Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `hLL` using `ll ℓ w m (by omega) (fun h => le_trans (h2 h) hsm) hw U 0 (e + 1) (ℓ ^ (m - s)) L (pow_ne_zero _ hℓ.ne_zero) hP hLES hT5 hCR`. Establish `hcast : (0 : ℤ) + ((e + 1 : ℕ) : ℤ) = (e : ℤ) + 1` using `by push_cast; ring`. Rewrite `hLL` using `[hcast]`.
+
+Establish `hLL' : TorsKilled ℓ D.HYL (cLL ℓ m U 0 ((e : ℤ) + 1) (ℓ ^ (m - s)))` using `fun x ⟨k, hk⟩ => φ.injective (by`. Rewrite using `[map_smul, map_zero]`. Conclude with `hLL _ ⟨k, by rw [← map_smul, hk, map_zero]⟩)`. Establish `hK3 : D.Kill3 s e` using `fun x => ψ.injective (by rw [map_smul, map_zero]; exact kill3 ℓ u s hs h2 hu e K hK _)`. Establish `hF3 : D.Free3 s e` using `fun x => by`.
+
+Establish `h` using `free3 ℓ (s + ceilE ℓ e) D.HGe D.HB T (D.bW ∘ₗ D.gE) D.La0 hTI hT4 hT3 htf hlog x`. Rewrite `h` using `[← add_assoc]`. Conclude with `h`. Conclude with `tb ℓ s m e d U D hd hC hL hdR hLL' hH2 hK3 hF3 hR hCor`.
+-/
 theorem tbFull : StatTBFull := by
   intro ℓ _ u w s m e d hs h2 hsm hu hw U D L K T φ ψ hd hP hLES hT5 hCR hK hTI hT4 hT3 htf hlog
     hC hL hdR hH2 hR hCor

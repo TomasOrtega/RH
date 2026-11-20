@@ -43,6 +43,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 variable (c σ) in
 
+/- English proof (translation)
+Establish `hcoe : ∀ x : E, ((embF c τ' x : c.F) : ℂ) = τ' x` using `fun x => by first`. Consider the case `rfl`. Consider the case `simp [embF]`. Establish `hsq : (τ' (H.rt : E)) ^ 2 = H.rt0 ^ 2`. Rewrite using `[H.sqrt_neg_disc_sq, ← map_pow]`.
+
+Establish `h1 : ((H.rt : E)) ^ 2 = -((H.d : ℕ) : E)`. Establish `h2` using `congrArg (fun y : 𝓞 E => (y : E)) H.rt_sq`. Simplify using `using h2`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+
+Establish `hne : H.rt0 ≠ 0`. Introduce `h0`. Establish `h3` using `H.sqrt_neg_disc_sq`. Rewrite `h3` using `[h0]`. Establish `hd` using `H.d_prime.pos`.
+
+Establish `: ((H.d : ℕ) : ℂ) = 0`. Establish `h4 : (0 : ℂ) ^ 2 = -((H.d : ℕ) : ℂ)` using `h3`. Simplify using `using h4.symm`. Conclude with `hd.ne' (by exact_mod_cast this)`. Establish `hσρ : σ ⟨H.rt0, c.le (IntermediateField.subset_adjoin _ _ (by simp))⟩ = H.rt0` using `hσ`.
+
+Unfold `relab`. Simplify using `only [RingHom.comp_apply]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with h | h` into its components or cases. Establish `e : embF c τ' (H.rt : E) = ⟨H.rt0, c.le (IntermediateField.subset_adjoin _ _ (by simp))⟩` using `Subtype.ext (by rw [hcoe, h])`. Rewrite using `[e, hσρ]`.
+
+Conclude with `⟨fun _ => h, fun _ => rfl⟩`. Establish `e : embF c τ' (H.rt : E) = -⟨H.rt0, c.le (IntermediateField.subset_adjoin _ _ (by simp))⟩` using `Subtype.ext (by rw [hcoe, h]; rfl)`. Rewrite using `[e, map_neg, hσρ, h]`.
+-/
 theorem relab_rt_iff (hσ : GoodEmb c σ) (τ' : E →+* ℂ) :
     relab c σ τ' (H.rt : E) = H.rt0 ↔ τ' (H.rt : E) = H.rt0 := by
   have hcoe : ∀ x : E, ((embF c τ' x : c.F) : ℂ) = τ' x := fun x => by
@@ -77,6 +90,9 @@ theorem relab_rt_iff (hσ : GoodEmb c σ) (τ' : E →+* ℂ) :
       Subtype.ext (by rw [hcoe, h]; rfl)
     rw [e, map_neg, hσρ, h]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[conjEmb, NumberField.ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem conjEmb_eq' (τ : E →+* ℂ) : conjEmb τ = NumberField.ComplexEmbedding.conjugate τ := by
   ext x
   simp [conjEmb, NumberField.ComplexEmbedding.conjugate_coe_eq]
@@ -86,6 +102,9 @@ variable (M) in
 def AM (k : Fin F.n) (b : Frame (M.X k).Ψ r) : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ :=
   fun τ i l => Ablk (M.X k) b (relab c σ τ) i l
 
+/- English proof (translation)
+Establish `h1` using `(hb τ').1`. Establish `ht : (mat b τ').BlockTriangular id` using `fun a c hca => (hb τ').2 a c hca`. Rewrite `h1` using `[Matrix.det_of_upperTriangular ht]`. Conclude with `(Finset.prod_ne_zero_iff.1 h1) j (Finset.mem_univ _)`.
+-/
 theorem bor_diag_ne (X : Data E r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (τ' : X.Ψ) (j : Fin r) :
     b τ' j j ≠ 0 := by
   have h1 := (hb τ').1

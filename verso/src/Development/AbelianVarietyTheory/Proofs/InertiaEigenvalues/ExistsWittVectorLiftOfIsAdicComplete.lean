@@ -11,11 +11,19 @@ namespace GlobalTheory.WittLift
 
 variable (l : ℕ) [hl : Fact l.Prime] {C : Type} [CommRing C] (J : Ideal C)
 
+/- English proof (translation)
+Rewrite using `[_root_.WittVector.ghostComponent_apply, aeval_wittPolynomial]`.
+-/
 theorem ghost_eq (n : ℕ) (x : _root_.WittVector l C) :
     _root_.WittVector.ghostComponent n x =
       ∑ i ∈ Finset.range (n + 1), (l : C) ^ i * x.coeff i ^ l ^ (n - i) := by
   rw [_root_.WittVector.ghostComponent_apply, aeval_wittPolynomial]
 
+/- English proof (translation)
+Rewrite using `[ghost_eq]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h1 : (l : C) ^ i ∈ J ^ i` using `Ideal.pow_mem_pow hlJ i`. Establish `h2 : x.coeff i ^ l ^ (n - i) ∈ J ^ (l ^ (n - i))` using `Ideal.pow_mem_pow (hx i) _`. Establish `h3 : (l : C) ^ i * x.coeff i ^ l ^ (n - i) ∈ J ^ (i + l ^ (n - i))`.
+
+Rewrite using `[pow_add]`. Conclude with `Ideal.mul_mem_mul h1 h2`. Use `Ideal.pow_le_pow_right ?_ h3` and prove the remaining obligations. Establish `: n - i < l ^ (n - i)` using `Nat.lt_pow_self hl.out.one_lt`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ghost_mem_pow (hlJ : (l : C) ∈ J) (n : ℕ) (x : _root_.WittVector l C)
     (hx : ∀ i, x.coeff i ∈ J) : _root_.WittVector.ghostComponent n x ∈ J ^ n := by
   rw [ghost_eq]
@@ -31,6 +39,9 @@ theorem ghost_mem_pow (hlJ : (l : C) ∈ J) (n : ℕ) (x : _root_.WittVector l C
 def liftW (y : _root_.WittVector l (C ⧸ J)) : _root_.WittVector l C :=
   _root_.WittVector.mk l (fun i => Function.surjInv Ideal.Quotient.mk_surjective (y.coeff i))
 
+/- English proof (translation)
+Use extensionality with `i`. Rewrite using `[_root_.WittVector.map_coeff]`. Simplify using `only [liftW, _root_.WittVector.coeff_mk]`. Conclude with `Function.surjInv_eq Ideal.Quotient.mk_surjective _`.
+-/
 theorem map_liftW (y : _root_.WittVector l (C ⧸ J)) :
     _root_.WittVector.map (Ideal.Quotient.mk J) (liftW l J y) = y := by
   ext i
@@ -47,6 +58,9 @@ def gh (hlJ : (l : C) ∈ J) (n : ℕ) : _root_.WittVector l (C ⧸ J) →+* C �
       rw [← Ideal.Quotient.eq_zero_iff_mem, ← _root_.WittVector.map_coeff, hx,
         _root_.WittVector.zero_coeff]⟩
 
+/- English proof (translation)
+The claim follows from `RingHom.liftOfRightInverse_comp_apply _ _ _ _ x`.
+-/
 theorem gh_map (hlJ : (l : C) ∈ J) (n : ℕ) (x : _root_.WittVector l C) :
     gh l J hlJ n (_root_.WittVector.map (Ideal.Quotient.mk J) x) =
       Ideal.Quotient.mk (J ^ n) (_root_.WittVector.ghostComponent n x) :=
@@ -59,12 +73,18 @@ namespace GlobalTheory.WittLift
 variable (l : ℕ) [hl : Fact l.Prime] {C : Type} [CommRing C] (J : Ideal C)
 variable (k : Type) [CommRing k] [CharP k l] [PerfectRing k l]
 
+/- English proof (translation)
+Apply `(iterateFrobeniusEquiv k l n).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, iterateFrobeniusEquiv_def, ← pow_mul, ← pow_succ', ← iterateFrobeniusEquiv_def k l (n + 1), RingEquiv.apply_symm_apply]`.
+-/
 theorem symm_iter_pow (n : ℕ) (x : k) :
     (iterateFrobeniusEquiv k l (n + 1)).symm x ^ l = (iterateFrobeniusEquiv k l n).symm x := by
   apply (iterateFrobeniusEquiv k l n).injective
   rw [RingEquiv.apply_symm_apply, iterateFrobeniusEquiv_def, ← pow_mul, ← pow_succ',
     ← iterateFrobeniusEquiv_def k l (n + 1), RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Apply `(iterateFrobeniusEquiv k l 0).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, iterateFrobeniusEquiv_zero_apply]`.
+-/
 theorem symm_iter_zero (x : k) : (iterateFrobeniusEquiv k l 0).symm x = x := by
   apply (iterateFrobeniusEquiv k l 0).injective
   rw [RingEquiv.apply_symm_apply, iterateFrobeniusEquiv_zero_apply]
@@ -76,6 +96,9 @@ def wn (n : ℕ) : _root_.WittVector l k →+* _root_.WittVector l (C ⧸ J) :=
 
 def yh (n : ℕ) (w : _root_.WittVector l k) : _root_.WittVector l C := liftW l J (wn l J ψ n w)
 
+/- English proof (translation)
+Rewrite using `[← _root_.WittVector.map_coeff, yh, map_liftW, wn, _root_.WittVector.map_coeff]`. Both sides reduce to the same expression.
+-/
 theorem mk_yh_coeff (n : ℕ) (w : _root_.WittVector l k) (i : ℕ) :
     Ideal.Quotient.mk J ((yh l J ψ n w).coeff i) = ψ ((iterateFrobeniusEquiv k l n).symm (w.coeff i)) := by
   rw [← _root_.WittVector.map_coeff, yh, map_liftW, wn, _root_.WittVector.map_coeff]
@@ -84,10 +107,26 @@ theorem mk_yh_coeff (n : ℕ) (w : _root_.WittVector l k) (i : ℕ) :
 def fn (hlJ : (l : C) ∈ J) (n : ℕ) : _root_.WittVector l k →+* C ⧸ J ^ n :=
   (gh l J hlJ n).comp (wn l J ψ n)
 
+/- English proof (translation)
+Rewrite using `[fn, RingHom.comp_apply, ← gh_map l J hlJ n, yh, map_liftW]`.
+-/
 theorem fn_apply (hlJ : (l : C) ∈ J) (n : ℕ) (w : _root_.WittVector l k) :
     fn l J ψ hlJ n w = Ideal.Quotient.mk (J ^ n) (_root_.WittVector.ghostComponent n (yh l J ψ n w)) := by
   rw [fn, RingHom.comp_apply, ← gh_map l J hlJ n, yh, map_liftW]
 
+/- English proof (translation)
+Use `set y := yh l J ψ (n + 1) w with hy`. Set `z : _root_.WittVector l C` to `_root_.WittVector.mk l (fun i => y.coeff i ^ l)`. Establish `hz : _root_.WittVector.map (Ideal.Quotient.mk J) z = wn l J ψ n w`. Use extensionality with `i`. Rewrite using `[_root_.WittVector.map_coeff, _root_.WittVector.coeff_mk, map_pow, hy, mk_yh_coeff, ← map_pow, symm_iter_pow, wn, _root_.WittVector.map_coeff]`.
+
+Both sides reduce to the same expression. Establish `h1 : _root_.WittVector.ghostComponent n (yh l J ψ n w) - _root_.WittVector.ghostComponent n z ∈ J ^ n`. Rewrite using `[← Ideal.Quotient.eq, ← fn_apply, ← gh_map l J hlJ, hz, fn, RingHom.comp_apply]`. Establish `h2 : _root_.WittVector.ghostComponent (n + 1) y - _root_.WittVector.ghostComponent n z = (l : C) ^ (n + 1) * y.coeff (n + 1)`. Establish `ha : _root_.WittVector.ghostComponent (n + 1) y = (∑ i ∈ Finset.range (n + 1), (l : C) ^ i * y.coeff i ^ l ^ (n + 1 - i)) + (l : C) ^ (n + 1) * y.coeff (n + 1)`.
+
+Rewrite using `[ghost_eq, Finset.sum_range_succ, Nat.sub_self, pow_zero, pow_one]`. Establish `hb : _root_.WittVector.ghostComponent n z = ∑ i ∈ Finset.range (n + 1), (l : C) ^ i * y.coeff i ^ l ^ (n + 1 - i)`. Rewrite using `[ghost_eq]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.mp hi`.
+
+Simplify using `only [z, _root_.WittVector.coeff_mk]`. Rewrite using `[← pow_mul, ← pow_succ']`. Use `congr 3`. Use linear arithmetic over natural numbers and integers. Rewrite using `[ha, hb]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (l : C) ^ (n + 1) * y.coeff (n + 1) ∈ J ^ n` using `Ideal.pow_le_pow_right (Nat.le_succ n) (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hlJ _))`. Rewrite `h3` using `[← h2]`. Use `Ideal.sub_mem _ h3 h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem step (hlJ : (l : C) ∈ J) (n : ℕ) (w : _root_.WittVector l k) :
     _root_.WittVector.ghostComponent (n + 1) (yh l J ψ (n + 1) w) -
       _root_.WittVector.ghostComponent n (yh l J ψ n w) ∈ J ^ n := by
@@ -123,6 +162,11 @@ theorem step (hlJ : (l : C) ∈ J) (n : ℕ) (w : _root_.WittVector l k) :
   convert this using 1
   abel
 
+/- English proof (translation)
+Proceed by induction on `n, hle using Nat.le_induction with`. Consider the case `base => rw [sub_self]`. Conclude with `Ideal.zero_mem _`. Consider the case `succ n hmn ih`. Use `Ideal.add_mem _ (Ideal.pow_le_pow_right hmn (step l J ψ hlJ n w)) ih` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem compat (hlJ : (l : C) ∈ J) (w : _root_.WittVector l k) {m n : ℕ} (hle : m ≤ n) :
     _root_.WittVector.ghostComponent n (yh l J ψ n w) -
       _root_.WittVector.ghostComponent m (yh l J ψ m w) ∈ J ^ m := by
@@ -140,6 +184,9 @@ namespace GlobalTheory.WittLift
 variable (l : ℕ) [hl : Fact l.Prime] {C : Type} [CommRing C] (J : Ideal C)
 variable {k : Type} [CommRing k] [CharP k l] [PerfectRing k l] (ψ : k →+* C ⧸ J)
 
+/- English proof (translation)
+Use `RingHom.ext fun w => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, fn_apply, fn_apply, Ideal.Quotient.factor_mk, Ideal.Quotient.eq]`. Conclude with `compat l J ψ hlJ w hle`.
+-/
 theorem fn_compat (hlJ : (l : C) ∈ J) {m n : ℕ} (hle : m ≤ n) :
     (Ideal.Quotient.factorPow J hle).comp (fn l J ψ hlJ n) = fn l J ψ hlJ m := by
   refine RingHom.ext fun w => ?_
@@ -150,6 +197,11 @@ end GlobalTheory.WittLift
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ k _ _ _ C _ J hlJ hC ψ`. Use `haveI := hC`. Use `⟨IsAdicComplete.liftRingHom J (WittLift.fn l J ψ hlJ) (WittLift.fn_compat l J ψ hlJ), fun w => ?_⟩` and prove the remaining obligations. Establish `h0 : Ideal.Quotient.mk (J ^ 1) (IsAdicComplete.liftRingHom J (WittLift.fn l J ψ hlJ) (WittLift.fn_compat l J ψ hlJ) w) = Ideal.Quotient.mk (J ^ 1) (_root_.WittVector.ghostComponent 1 (WittLift.yh l J ψ 1 w))`. Rewrite using `[IsAdicComplete.mk_liftRingHom, WittLift.fn_apply]`.
+
+Establish `h1` using `Ideal.Quotient.eq.mp h0`. Rewrite `h1` using `[pow_one]`. Rewrite using `[Ideal.Quotient.eq.mpr h1, WittLift.ghost_eq, Finset.sum_range_succ, Finset.sum_range_one]`. Simplify using `only [pow_zero, one_mul, Nat.sub_zero, pow_one, Nat.sub_self, map_add, map_mul, map_pow]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr hlJ, zero_mul, add_zero, WittLift.mk_yh_coeff, ← map_pow, WittLift.symm_iter_pow, WittLift.symm_iter_zero]`.
+-/
 theorem exists_wittVector_lift_of_isAdicComplete :
     ∀ (l : ℕ) [Fact l.Prime] (k : Type) [CommRing k] [CharP k l] [PerfectRing k l] (C : Type) [CommRing C]
       (J : Ideal C), (l : C) ∈ J → IsAdicComplete J C → ∀ ψ : k →+* C ⧸ J,

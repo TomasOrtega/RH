@@ -11,6 +11,17 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.SncRes
 
+/- English proof (translation)
+Establish `hmem : ∀ a : Γ(X, W₀), valR ξ W₀ a ∈ IntermediateField.adjoin ℚ (A : Set Ω)` using `fun a => by`. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises. Rewrite using `[valR_eq ξ W₀ h₀, ← hA]`. Conclude with `⟨a, rfl⟩`. Set `z : Sp Ω` to `IsLocalRing.closedPoint Ω`.
+
+Take `⟨b, hbO, hxb⟩` from `hW₀.exists_basicOpen_le (V := O) ⟨ξ z, hO trivial⟩ (h₀ trivial)`. Establish `hD : ⊤ ≤ ξ ⁻¹ᵁ X.basicOpen b` using `fun y _ => by`. Rewrite using `[Subsingleton.elim y z]`. Conclude with `hxb`. Establish `hloc` using `hW₀.isLocalization_basicOpen b`.
+
+Take `⟨⟨a, ⟨_, n, rfl⟩⟩, h⟩` from `IsLocalization.surj (Submonoid.powers b) ((X.presheaf.map (homOfLE hbO).op).hom t)`. Establish `hres : ∀ c : Γ(X, W₀), valR ξ (X.basicOpen b) (algebraMap Γ(X, W₀) Γ(X, X.basicOpen b) c) = valR ξ W₀ c` using `fun c => valR_res ξ (X.basicOpen_le b) hD c`. Establish `hv` using `congrArg (valR ξ (X.basicOpen b)) h`. Simplify using `only at hv`. Rewrite `hv` using `[valR_mul ξ _ hD, valR_res ξ hbO hD, hres, hres, valR_pow ξ _ h₀]`.
+
+Establish `hunit : valR ξ W₀ b ≠ 0` using `((le_preimage_basicOpen_iff ξ h₀ b).1 hD).ne_zero`. Establish `e : valR ξ O t = valR ξ W₀ a / valR ξ W₀ b ^ n`. Rewrite using `[eq_div_iff (pow_ne_zero n hunit)]`. Conclude with `hv`. Rewrite using `[e]`.
+
+Conclude with `div_mem (hmem a) (pow_mem (hmem b) n)`.
+-/
 theorem valR_mem_adjoin_of_affine {Ω : Type} [Field Ω] [CharZero Ω] {X : Scheme.{0}} (ξ : Sp Ω ⟶ X)
     {W₀ : X.Opens} (hW₀ : IsAffineOpen W₀) (h₀ : ⊤ ≤ ξ ⁻¹ᵁ W₀) (A : Subalgebra ℚ Ω)
     (hA : Set.range (valMap ξ W₀ h₀).hom = A) {O : X.Opens} (hO : ⊤ ≤ ξ ⁻¹ᵁ O) (t : Γ(X, O)) :
@@ -39,6 +50,9 @@ theorem valR_mem_adjoin_of_affine {Ω : Type} [Field Ω] [CharZero Ω] {X : Sche
   rw [e]
   exact div_mem (hmem a) (pow_mem (hmem b) n)
 
+/- English proof (translation)
+Rewrite using `[← valR_appLE y r (r.preimage_image_eq V).ge h, ← Scheme.Hom.appIso_hom']`. Use `congr 1`. Conclude with `congrArg (fun φ => φ.hom t) (r.appIso V).inv_hom_id`.
+-/
 theorem valR_appIso_inv {C : Type} [CommRing C] {X Y : Scheme.{0}} (r : Y ⟶ X) [IsOpenImmersion r] (y : Sp C ⟶ Y)
     (V : Y.Opens) (h : ⊤ ≤ y ⁻¹ᵁ V) (t : Γ(Y, V)) :
     valR (y ≫ r) (r ''ᵁ V) ((r.appIso V).inv.hom t) = valR y V t := by
@@ -46,6 +60,15 @@ theorem valR_appIso_inv {C : Type} [CommRing C] {X Y : Scheme.{0}} (r : Y ⟶ X)
   congr 1
   exact congrArg (fun φ => φ.hom t) (r.appIso V).inv_hom_id
 
+/- English proof (translation)
+Introduce `Ω _ _ X X' ξ _ _ f U _ ζ hζ hU W₀ hW₀ h₀ A hA W' h' s`. Use `haveI : IsOpenImmersion ((f ⁻¹ᵁ U).ι ≫ f) := by`. Rewrite using `[← morphismRestrict_ι]`. Use `infer_instance`. Establish `hr : Set.range ζ ⊆ Set.range (f ⁻¹ᵁ U).ι`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `hU (Set.mem_univ y)`. Set `y : Sp Ω ⟶ (f ⁻¹ᵁ U).toScheme` to `IsOpenImmersion.lift (f ⁻¹ᵁ U).ι ζ hr`. Establish `hy : y ≫ (f ⁻¹ᵁ U).ι = ζ` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Establish `hyr : y ≫ ((f ⁻¹ᵁ U).ι ≫ f) = ξ` using `by rw [← Category.assoc, hy, hζ]`. Establish `hV : ⊤ ≤ y ⁻¹ᵁ ((f ⁻¹ᵁ U).ι ⁻¹ᵁ W')` using `fun z hz => by`. Establish `: z ∈ ζ ⁻¹ᵁ W'` using `h' hz`. Rewrite `this` using `[← hy]`. Conclude with `this`.
+
+Establish `e1 : valR ζ W' s = valR y _ (((f ⁻¹ᵁ U).ι.app W').hom s)` using `by conv_lhs => rw [← hy]`. Conclude with `valR_comp y _ W' s`. Rewrite using `[e1, ← valR_appIso_inv ((f ⁻¹ᵁ U).ι ≫ f) y _ hV]`. Substitute `hyr` using the available equality. Conclude with `valR_mem_adjoin_of_affine _ hW₀ h₀ A hA (fun z hz => ((( (f ⁻¹ᵁ U).ι ≫ f).preimage_image_eq _).ge (hV hz) : _)) _`.
+-/
 theorem valR_mem_adjoin_of_modification : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (X X' : Scheme.{0}) (ξ : Sp Ω ⟶ X) [IsDominant ξ] [IsReduced X] (f : X' ⟶ X) (U : X.Opens) [IsIso (f ∣_ U)] (ζ : Sp Ω ⟶ X') (hζ : ζ ≫ f = ξ) (hU : ⊤ ≤ ζ ⁻¹ᵁ (f ⁻¹ᵁ U)) (W₀ : X.Opens) (hW₀ : IsAffineOpen W₀) (h₀ : ⊤ ≤ ξ ⁻¹ᵁ W₀) (A : Subalgebra ℚ Ω) (hA : Set.range (valMap ξ W₀ h₀).hom = A) (W' : X'.Opens) (h' : ⊤ ≤ ζ ⁻¹ᵁ W') (s : Γ(X', W')), valR ζ W' s ∈ IntermediateField.adjoin ℚ (A : Set Ω) := by
   intro Ω _ _ X X' ξ _ _ f U _ ζ hζ hU W₀ hW₀ h₀ A hA W' h' s
   haveI : IsOpenImmersion ((f ⁻¹ᵁ U).ι ≫ f) := by

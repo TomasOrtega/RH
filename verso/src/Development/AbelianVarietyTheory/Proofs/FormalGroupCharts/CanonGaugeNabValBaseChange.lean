@@ -20,19 +20,31 @@ section
 
 variable {k k' : Type} [CommRing k] [CommRing k'] (φ : k →+* k') {d : ℕ}
 
+/- English proof (translation)
+Rewrite using `[map_ev φ _ (pair_points_zero_constant ha hb)]`. Use `congr 1`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+-/
 theorem map_ev_two {n : ℕ} (a b : Pt k n d) (ha : GP a) (hb : GP b) (f : PS k 2 d) :
     MvPowerSeries.map φ (ev ![a, b] f) = ev ![mapP φ a, mapP φ b] (MvPowerSeries.map φ f) := by
   rw [map_ev φ _ (pair_points_zero_constant ha hb)]
   congr 1
   funext j; fin_cases j <;> rfl
 
+/- English proof (translation)
+The claim follows from `funext fun _ => map_zero _`.
+-/
 theorem baseChange_zero₂ {n : ℕ} : mapP φ (0 : Pt k n d) = 0 := funext fun _ => map_zero _
 
+/- English proof (translation)
+Unfold `FB.expS`. Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero hf), PowerSeries.map_exp]`.
+-/
 theorem map_expS [Algebra ℚ k] [Algebra ℚ k'] {n : ℕ} (f : PS k n d) (hf : constantCoeff f = 0) :
     MvPowerSeries.map φ (FB.expS k f) = FB.expS k' (MvPowerSeries.map φ f) := by
   unfold FB.expS
   rw [PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero hf), PowerSeries.map_exp]
 
+/- English proof (translation)
+Rewrite using `[GE.dpolyOf_eq_sum_of_subset _ _ (MvPolynomial.map φ P) P.support (MvPolynomial.support_map_subset _ _), DpolyOf, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_C, GlobalTheory.map_dmonOf, MvPolynomial.coeff_map]`. Both sides reduce to the same expression.
+-/
 theorem map_dpolyOf (F : Fin d → PS k 2 d) {ι : Type} [Fintype ι] (u : ι → Fin d → k)
     (P : MvPolynomial ι k) (f : PS k 1 d) :
     MvPowerSeries.map φ (DpolyOf F u P f) =
@@ -48,28 +60,61 @@ end
 variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB R d O)
   {k k' : Type} [CommRing k] [Algebra R k] [CommRing k'] [Algebra R k'] (β : k →ₐ[R] k')
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `[coeff_map]`.
+-/
 theorem map_map_alg {σ : Type} (f : MvPowerSeries σ R) :
     MvPowerSeries.map (β : k →+* k') (MvPowerSeries.map (algebraMap R k) f) =
       MvPowerSeries.map (algebraMap R k') f := by
   ext m
   simp [coeff_map]
 
+/- English proof (translation)
+The claim follows from `funext fun i => map_map_alg β (B.G.F i)`.
+-/
 theorem mapP_FK : mapP (β : k →+* k') (B.FK k) = B.FK k' :=
   funext fun i => map_map_alg β (B.G.F i)
 
+/- English proof (translation)
+The claim follows from `funext fun i => map_map_alg β (B.A.act a i)`.
+-/
 theorem baseChange_actK (a : O) : mapP (β : k →+* k') (B.actK k a) = B.actK k' a :=
   funext fun i => map_map_alg β (B.A.act a i)
 
+/- English proof (translation)
+The claim follows from `constantCoeff_mapP_eq_zero (algebraMap R k) _ B.G.const`.
+-/
 theorem gp_FK : GP (B.FK k) := constantCoeff_mapP_eq_zero (algebraMap R k) _ B.G.const
 
+/- English proof (translation)
+The claim follows from `constantCoeff_mapP_eq_zero (algebraMap R k) _ (B.A.const a)`.
+-/
 theorem gp_actK (a : O) : GP (B.actK k a) := constantCoeff_mapP_eq_zero (algebraMap R k) _ (B.A.const a)
 
+/- English proof (translation)
+Use `gt_const_ev_eq (n := 1) ![0, pt k d 0] (pair_points_zero_constant gp_zero₂ (gp_pt 0)) h` as an intermediate fact. Rewrite using `[← this, h0, map_zero]`.
+-/
 theorem const_of_axis {h : PS k 2 d} (h0 : ev (n := 1) ![0, pt k d 0] h = 0) : constantCoeff h = 0 := by
   have := gt_const_ev_eq (n := 1) ![0, pt k d 0] (pair_points_zero_constant gp_zero₂ (gp_pt 0)) h
   rw [← this, h0, map_zero]
 
 variable [Algebra ℚ k] [Algebra ℚ k']
 
+/- English proof (translation)
+Establish `hc` using `const_of_axis H.ax0`. Establish `c2 : ∀ {n : ℕ} (a b : Pt k n d), GP a → GP b → constantCoeff (ev ![a, b] h) = 0` using `fun a b ha hb => gt_const_ev _ (pair_points_zero_constant ha hb) h hc`. Establish `gA : ∀ {n : ℕ} (i j : Fin n), GP (addOf (B.FK k) (pt k d i) (pt k d j))` using `fun i j => gp_addOf _ (gp_FK B) _ _ (gp_pt i) (gp_pt j)`. Establish `gC : ∀ {n : ℕ} (a : O) (i : Fin n), GP (comp1 (B.actK k a) (pt k d i))` using `fun a i => gp_comp1 _ _ (gp_actK B a) (gp_pt i)`. Use `⟨?_, ?_, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (MvPowerSeries.map (β : k →+* k')) H.ax0` as an intermediate fact. Rewrite `this` using `[map_ev_two _ _ _ gp_zero₂ (gp_pt 0), baseChange_zero₂, baseChange_pt, map_zero]`. Then use the resulting hypothesis. Use `congrArg (MvPowerSeries.map (β : k →+* k')) H.ax1` as an intermediate fact. Rewrite `this` using `[map_ev_two _ _ _ (gp_pt 0) gp_zero₂, baseChange_zero₂, baseChange_pt, map_zero]`. Then use the resulting hypothesis. Use `congrArg (MvPowerSeries.map (β : k →+* k')) H.ph1` as an intermediate fact.
+
+Rewrite using `[map_map_alg, map_expS _ _ (by`. Rewrite using `[map_sub, map_add, c2 _ _ (gp_pt _) (gp_pt _), c2 _ _ (gp_pt _) (gp_pt _), c2 _ _ (gA _ _) (gp_pt _), add_zero, sub_zero]), map_sub, map_add,`. Use `map_ev_two _ _ _ (gp_pt _) (gp_pt _), map_ev_two _ _ _ (gp_pt _) (gp_pt _),`. Use `map_ev_two _ _ _ (gA _ _) (gp_pt _), baseChange_addOf _ _ _ _ (gp_pt _) (gp_pt _), mapP_FK] at this`. Simplify `this` using `only [baseChange_pt]`.
+
+Use `congrArg (MvPowerSeries.map (β : k →+* k')) H.ph2` as an intermediate fact. Rewrite using `[map_map_alg, map_expS _ _ (by`. Rewrite using `[map_sub, map_add, c2 _ _ (gp_pt _) (gp_pt _), c2 _ _ (gp_pt _) (gp_pt _), c2 _ _ (gp_pt _) (gA _ _), add_zero, sub_zero]), map_sub, map_add,`. Use `map_ev_two _ _ _ (gp_pt _) (gp_pt _), map_ev_two _ _ _ (gp_pt _) (gp_pt _),`. Use `map_ev_two _ _ _ (gp_pt _) (gA _ _), baseChange_addOf _ _ _ _ (gp_pt _) (gp_pt _), mapP_FK] at this`.
+
+Simplify `this` using `only [baseChange_pt]`. Use `congrArg (MvPowerSeries.map (β : k →+* k')) H.sy` as an intermediate fact. Rewrite using `[map_map_alg, map_expS _ _ (by`. Rewrite using `[map_sub, c2 _ _ (gp_pt _) (gp_pt _), hc, sub_zero]), map_sub,`. Use `map_ev_two _ _ _ (gp_pt _) (gp_pt _)] at this`.
+
+Simplify `this` using `only [baseChange_pt]`. Use `congrArg (MvPowerSeries.map (β : k →+* k')) (H.ad a)` as an intermediate fact. Rewrite using `[map_map_alg, map_expS _ _ (by`. Rewrite using `[map_sub, c2 _ _ (gC _ _) (gp_pt _), c2 _ _ (gp_pt _) (gC _ _), sub_zero]), map_sub,`. Use `map_ev_two _ _ _ (gC _ _) (gp_pt _), map_ev_two _ _ _ (gp_pt _) (gC _ _),`.
+
+Use `baseChange_comp1 _ _ _ (gp_pt _), baseChange_comp1 _ _ _ (gp_pt _), baseChange_actK, baseChange_actK] at this`. Simplify `this` using `only [baseChange_pt]`.
+-/
 theorem isCanonGauge_map {h : PS k 2 d} (H : B.IsCanonGauge k h) :
     B.IsCanonGauge k' (MvPowerSeries.map (β : k →+* k') h) := by
   have hc := const_of_axis H.ax0
@@ -110,6 +155,11 @@ theorem isCanonGauge_map {h : PS k 2 d} (H : B.IsCanonGauge k h) :
       baseChange_comp1 _ _ _ (gp_pt _), baseChange_comp1 _ _ _ (gp_pt _), baseChange_actK, baseChange_actK] at this
     simpa only [baseChange_pt] using this
 
+/- English proof (translation)
+Establish `gC : GP (comp1 (B.actK k w0) (pt k (n` using `1) d 0)) := gp_comp1 _ _ (gp_actK B w0) (gp_pt 0)`. Establish `cL : constantCoeff (B.hL k h w0) = 0` using `gt_const_ev _ (pair_points_zero_constant (gp_pt 0) gC) h hc`. Establish `eL : MvPowerSeries.map (β : k →+* k') (B.hL k h w0) = B.hL k' (MvPowerSeries.map (β : k →+* k') h) w0`. Unfold `FB.hL`. Rewrite using `[map_ev_two _ _ _ (gp_pt _) gC, baseChange_comp1 _ _ _ (gp_pt _), baseChange_actK, baseChange_pt]`.
+
+Unfold `FB.nabVal`. Express the relevant statement in the definitionally equal form `_ = (β : k →+* k') _`. Rewrite using `[← MvPowerSeries.constantCoeff_map, map_dpolyOf, mapP_FK, map_mul, map_expS _ _ (by rw [MvPowerSeries.smul_eq_C_mul, map_mul, cL, mul_zero]), MvPowerSeries.smul_eq_C_mul, MvPowerSeries.smul_eq_C_mul, map_mul, map_C, map_natCast (β : k →+* k'), eL]`. Both sides reduce to the same expression.
+-/
 theorem nabVal_map {h : PS k 2 d} (hc : constantCoeff h = 0) (w0 : O) (m : ℕ) (f : PS k 1 d) {Λ : Type}
     [Fintype Λ] (u : Λ → Fin d → k) (Q : MvPolynomial Λ k) :
     B.nabVal k' (MvPowerSeries.map (β : k →+* k') h) w0 m (MvPowerSeries.map (β : k →+* k') f)
@@ -131,6 +181,9 @@ end GlobalTheory.GaugeBaseChange
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ d O _ _ B k k' _ _ _ _ _ _ β h H`. Conclude with `⟨GaugeBaseChange.isCanonGauge_map B β H, fun w0 m f _ _ u Q => GaugeBaseChange.nabVal_map B β (GaugeBaseChange.const_of_axis H.ax0) w0 m f u Q⟩`.
+-/
 theorem canonGauge_nabVal_baseChange : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (k k' : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] [CommRing k'] [Algebra ℚ k'] [Algebra R k'] (β : k →ₐ[R] k') (h : PS k 2 d), B.IsCanonGauge k h → B.IsCanonGauge k' (MvPowerSeries.map (β : k →+* k') h) ∧ ∀ (w0 : O) (m : ℕ) (f : PS k 1 d) (Λ : Type) [Fintype Λ] (u : Λ → Fin d → k) (Q : MvPolynomial Λ k), B.nabVal k' (MvPowerSeries.map (β : k →+* k') h) w0 m (MvPowerSeries.map (β : k →+* k') f) (fun l i => β (u l i)) (MvPolynomial.map (β : k →+* k') Q) = β (B.nabVal k h w0 m f u Q) := by
   intro R _ d O _ _ B k k' _ _ _ _ _ _ β h H
   exact ⟨GaugeBaseChange.isCanonGauge_map B β H, fun w0 m f _ _ u Q =>

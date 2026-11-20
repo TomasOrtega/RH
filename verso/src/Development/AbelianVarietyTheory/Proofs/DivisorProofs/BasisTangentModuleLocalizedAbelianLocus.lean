@@ -29,6 +29,17 @@ namespace GlobalTheory.CechAff
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `h` using `isGrpPullback_pullback t.G f`. Take `⟨hL, hr, ⟨c', hc'⟩, hs⟩` from `Out.CubePf.cubePull S S' t.G _ (cubeMapOf h) t.PP t.cub`. Establish `hact : ∀ a, ((OAct.pullback f t.G t.act).act a).left ≫ pullback.fst t.G.hom f = pullback.fst t.G.hom f ≫ (t.act.act a).left` using `fun a => pullback.lift_fst _ _ _`. Establish `pa : ∀ {T : Over S'} (x : T ⟶ (Over.pullback f).obj t.G) a, pushPt h.1.w (x ≫ (OAct.pullback f t.G t.act).act a) = pushPt h.1.w x ≫ t.act.act a` using `fun x a => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, hact, Category.assoc])`.
+
+Use `⟨⟨(Over.pullback f).obj t.G, IsSemiAbelian.pullback f t.G t.semi, OAct.pullback f t.G t.act, (cubeMapOf h).rigLB t.PP hL hr, c', hs t.sym, fun a => ?_, ?_⟩, ⟨cubeMapOf h, h, rfl, hact, hc'⟩, fun a _ => a, fun a => ?_, fun a b => ?_⟩` and prove the remaining obligations. Set `U` to `lift (pushPt h.1.w (fst ((Over.pullback f).obj t.G) ((Over.pullback f).obj t.G))) (pushPt h.1.w (snd ((Over.pullback f).obj t.G) ((Over.pullback f).obj t.G)))`. Use `LBIso.chartPull (chartPullLinComb t.PP.L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) (chartPullLinComb t.PP.L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) (t.adj a)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `(pa _ a).trans (by simp [U])`.
+
+Simplify using `[U]`. Use `fin_cases i`. Simplify using `[U]`. Conclude with `(pa _ _).trans (by simp [U])`. Set `U` to `pushPt h.1.w (𝟙 ((Over.pullback f).obj t.G))`.
+
+Use `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull t.PP.L _ U.left (Category.id_comp _)) (chartPullLinComb t.PP.L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) t.prim` and prove the remaining obligations. Use `fin_cases i`. Simplify using `[U]`. Conclude with `(congrArg (pushPt h.1.w) (Category.id_comp _).symm).trans (pa _ _)`. Use extensionality with `y`.
+
+Conclude with `mem_pull`. Use `(GlobalTheory.chartPull_g_appLE _ _ _ _ _ (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull t.PP.L (pullback.fst t.G.hom f) (pullback.fst t.G.hom f) rfl) (fun _ => a) (fun _ => b)).trans ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.KS.pbT_of_le _ _ _).symm`.
+-/
 theorem exists_pull_charts {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
     ∃ (t' : SAB H S') (m : SABMap t' t f) (k : t.PP.L.ι → t'.PP.L.ι),
       (∀ a, t'.PP.L.U (k a) = m.φ ⁻¹ᵁ t.PP.L.U a) ∧
@@ -75,6 +86,13 @@ namespace GlobalTheory.CechAff
 
 open GlobalTheory.KS in
 
+/- English proof (translation)
+Take `⟨σ, σ₁, σ₂⟩` from `GlobalTheory.LogKSBal.exists_section io`. Establish `hpi : ∀ O : Y'.Opens, O ≤ io ⁻¹ᵁ (io ''ᵁ O)` using `fun O => (io.preimage_image_eq O).ge`. Establish `hσ : ∀ (O : Y'.Opens) (O₀ : Y.Opens) (h : io ''ᵁ O ≤ O₀) (f : Γ(Y, O₀)), σ O (pbT io f O) = resG _ h f` using `fun O O₀ h f => by`. Rewrite using `[← pbT_rsT io h (hpi O), σ₂, rsT_of_le h]`. Use `⟨fun O f => pbT io (d (io ''ᵁ O) (σ O f)) O, ⟨fun O _ f f' => ?_, fun O _ f f' => ?_, fun O O' h _ f => ?_⟩, fun O₁ O h f => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_add, hd.1 _ le_top, pbT_add]`. Simplify using `only [map_mul, hd.2.1 _ le_top, pbT_add, pbT_mul, σ₁]`. Establish `h'` using `io.image_mono h`. Establish `e : σ O' (resG _ h f) = resG _ h' (σ O f)`. Rewrite using `[← hσ O' _ h', ← rsT_pbT io (hpi O) h, σ₁, rsT_of_le h]`.
+
+Use `show pbT io (d (io ''ᵁ O') (σ O' (resG _ h f))) O' = resG _ h (pbT io (d (io ''ᵁ O) (σ O f)) O)`. Rewrite using `[e, hd.2.2 _ _ h' le_top, ← rsT_of_le h', pbT_rsT _ h' (hpi O'), ← rsT_of_le h, rsT_pbT _ (hpi O) h]`. Establish `hO : io ''ᵁ O ≤ O₁` using `(io.image_mono h).trans (io.image_preimage_le _) show pbT io (d (io ''ᵁ O) (σ O _)) O = _`. Rewrite using `[← pbT_of_le io h, hσ O O₁ hO, hd.2.2 _ _ hO le_top, ← rsT_of_le hO, pbT_rsT _ hO (hpi O), pbT_of_le io h]`.
+-/
 theorem exists_pullField {Y Y' : Scheme.{0}} (io : Y' ⟶ Y) [IsOpenImmersion io] (d : Fld Y) (hd : IsField ⊤ d) :
     ∃ δ : Fld Y', IsField ⊤ δ ∧ ∀ (O₁ : Y.Opens) (O : Y'.Opens) (h : O ≤ io ⁻¹ᵁ O₁) (f : Γ(Y, O₁)),
       δ O ((io.appLE O₁ O h).hom f) = (io.appLE O₁ O h).hom (d O₁ f) := by
@@ -102,6 +120,13 @@ namespace GlobalTheory.CechAff
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨g', v', h₁, h₂, h₃⟩` from `hw'`. Establish `hsq : m.φ ≫ t.G.hom = t'.G.hom ≫ j` using `m.cart.1.w`. Set `T : Over X'` to `tEpsG (g₀' ≫ t'.G.hom)`. Establish `heq : (tEpsG ((g₀' ≫ m.φ) ≫ t.G.hom)).hom = T.hom ≫ j` using `by show spMap _ ≫ (g₀' ≫ m.φ) ≫ t.G.hom = (spMap _ ≫ g₀' ≫ t'.G.hom) ≫ j`. Rewrite using `[Category.assoc, Category.assoc, Category.assoc, hsq]`.
+
+Set `e : tEpsG ((g₀' ≫ m.φ) ≫ t.G.hom) ⟶ Over.mk (T.hom ≫ j)` to `Over.homMk (𝟙 _) (by rw [Category.id_comp]; exact heq.symm)`. Use `⟨e ≫ pushHom m.cart T g', e ≫ pushHom m.cart T v', ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show 𝟙 _ ≫ g'.left ≫ m.φ = _`. Rewrite using `[Category.id_comp, h₁, Category.assoc]`. Use `show 𝟙 _ ≫ v'.left ≫ m.φ = _`.
+
+Rewrite using `[Category.id_comp, h₂, Category.assoc, huu, ← Category.assoc, GlobalTheory.TransLift.spMap_comp'', GlobalTheory.TransLift.dualMap_comp'']`. Rewrite using `[← MonObj.comp_mul, ← map_mul] show 𝟙 _ ≫ (g' * v').left ≫ m.φ = _`. Rewrite using `[Category.id_comp, h₃]`.
+-/
 theorem isTranslate_push {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {j : X' ⟶ X} (m : SABMap t' t j)
     {R R' : Type} [CommRing R] [CommRing R'] (ψ : R →+* R') (u : Sp (DualNumber R) ⟶ t.G.left)
     (u' : Sp (DualNumber R') ⟶ t'.G.left) (huu : u' ≫ m.φ = spMap (dualMap ψ) ≫ u) {S : Type} [CommRing S]
@@ -132,6 +157,59 @@ namespace GlobalTheory.CechAff
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.KS in
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ _ _ _ t P m tt htt hab c hc n v' dd' hinv J W j hW hcov hWj hWaff z hz`. Substitute `hc` using the available equality. Use `set U : (Sp R).affineOpens := GlobalTheory.HeatV.bo R (∏ i, tt i) with hUdef`. Set `ρ : R →+* Γ(Sp R, U.1)` to `GlobalTheory.HeatV.resV R (∏ i, tt i)`. Establish `hcU : spMap ρ ≫ 𝟙 (Sp R) = chart U`.
+
+Rewrite using `[Category.comp_id]`. Use `show Spec.map _ = U.2.fromSpec`. Rewrite using `[← (isAffineOpen_top (Sp R)).map_fromSpec U.2 (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec]`. Rewrite using `[show CommRingCat.ofHom ρ = (Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (Sp R).presheaf.map (homOfLE ((Sp R).basicOpen_le (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (∏ i, tt i)))).op from rfl]`. Use `erw [Spec.map_comp]`.
+
+Both sides reduce to the same expression. Take `⟨hv, hb⟩` from `GlobalTheory.KSAbLocus.tanBasis_of_basis t v' ρ`. Rewrite `hv`, `hb` using `[hcU]`. Use `haveI : IsOpenImmersion (chart U) := U.2.isOpenImmersion_fromSpec`. Take `⟨t', mm, k, hkU, hkg⟩` from `exists_pull_charts (chart U) t`.
+
+Establish `h2 : (U.1 : (Sp R).Opens) = PrimeSpectrum.basicOpen (∏ i, tt i)` using `basicOpen_eq_of_affine (R := CommRingCat.of R) (∏ i, tt i)`. Establish `h4 : ∀ q : Sp R, q ∈ ((U.1 : (Sp R).Opens) : Set (Sp R)) → ∏ i, tt i ∉ q.asIdeal`. Introduce `q hq`. Rewrite `hq` using `[h2]`. Conclude with `hq`.
+
+Establish `hx : ∀ s, ∏ i, tt i ∉ ((chart U) s).asIdeal` using `fun s => h4 _ (by rw [← U.2.range_fromSpec]; exact ⟨s, rfl⟩)`. Take `⟨hP, hA, hK⟩` from `GlobalTheory.AbLocusPol.isProper_relAmple_kTriv_of_abLocus E H R t P m tt htt hab _ (chart U) t' hx ⟨mm⟩`. Set `U' : (Sp Γ(Sp R, U.1)).affineOpens` to `⟨⊤, isAffineOpen_top _⟩`. Establish `hU : chart U ''ᵁ U'.1 = U.1` using `by show chart U ''ᵁ ⊤ = U.1`. Rewrite using `[Scheme.Hom.image_top_eq_opensRange]`.
+
+Conclude with `U.2.opensRange_fromSpec`. Establish `e : U'.1 ≤ chart U ⁻¹ᵁ U.1` using `U.2.fromSpec_preimage_self.ge`. Set `ψ : Γ(Sp R, U.1) ≃+* Γ(Sp Γ(Sp R, U.1), U'.1)` to `RingEquiv.ofBijective _ (GlobalTheory.KSOpen.bijective_appLE (chart U) hU e)`. Establish `hch : chart U' ≫ chart U = spMap ψ.toRingHom ≫ chart U` using `(IsAffineOpen.SpecMap_appLE_fromSpec (chart U) U.2 U'.2 e).symm`. Take `⟨v, hvv, hvt, hvb⟩` from `GlobalTheory.SabTan.tanBasis_sabMap E H (Sp R) _ t t' (chart U) mm _ _ ψ.toRingHom (chart U) (chart U') hch n _ hv hb`.
+
+Take `⟨hoi, hrange⟩` from `GlobalTheory.sabMap_isOpenImmersion_opensRange E H (Sp R) _ t t' (chart U) mm`. Establish `sq : mm.φ ≫ t.G.hom = t'.G.hom ≫ chart U` using `mm.cart.1.w`. Establish `hrg : mm.φ.opensRange = t.G.hom ⁻¹ᵁ U.1`. Rewrite using `[hrange, show (chart U).opensRange = U.1 from U.2.opensRange_fromSpec]`. Use `choose δ hδF hδ using fun a => exists_pullField mm.φ (dd' a) (hinv a).1`.
+
+Set `W' : J → t'.G.left.Opens` to `fun i => mm.φ ⁻¹ᵁ W i`. Establish `hWr : ∀ i, W i ≤ mm.φ.opensRange` using `fun i => (hW i).trans hrg.ge`. Establish `hW'aff : ∀ i, IsAffineOpen (W' i)` using `fun i => (hWaff i).preimage_of_isOpenImmersion mm.φ (hWr i)`. Establish `hW'U : ∀ i, W' i ≤ t'.G.hom ⁻¹ᵁ U'.1` using `fun _ => le_top`. Establish `hW'cov : ⨆ i, W' i = t'.G.hom ⁻¹ᵁ U'.1`.
+
+Use `le_antisymm (iSup_le fun i => hW'U i) fun x _ => ?_` and prove the remaining obligations. Establish `hx1 : mm.φ x ∈ t.G.hom ⁻¹ᵁ U.1` using `hrg ▸ ⟨x, rfl⟩`. Rewrite `hx1` using `[← hcov]`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx1`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩`.
+
+Establish `hj' : ∀ i, W' i ≤ t'.PP.L.U (k (j i))` using `fun i => by`. Rewrite using `[hkU]`. Conclude with `mm.φ.preimage_mono (hWj i)`. Set `z' : ∀ i i' : J, Γ(t'.G.left, W' i ⊓ W' i')` to `fun i i' => pbT mm.φ (z i i') (W' i ⊓ W' i')`. Establish `hz' : ∀ i i' i'', resG t'.G.left (inf_le_left : W' i ⊓ W' i' ⊓ W' i'' ≤ W' i ⊓ W' i') (z' i i') + resG t'.G.left (le_inf (inf_le_left.trans inf_le_right) inf_le_right : W' i ⊓ W' i' ⊓ W' i'' ≤ W' i' ⊓ W' i'') (z' i' i'') = resG t'.G.left (le_inf (inf_le_left.trans inf_le_left) in …`.
+
+Introduce `i i' i''`. Establish `hT : W' i ⊓ W' i' ⊓ W' i'' ≤ mm.φ ⁻¹ᵁ (W i ⊓ W i' ⊓ W i'')` using `le_rfl`. Establish `key` using `congrArg (fun s => pbT mm.φ s (W' i ⊓ W' i' ⊓ W' i'')) (hz i i' i'')`. Simplify using `only [pbT_add] at key`. Rewrite `key` using `[pbT_rsT _ (inf_le_left : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i') hT, pbT_rsT _ (le_inf (inf_le_left.trans inf_le_right) inf_le_right : W i ⊓ W i' ⊓ W i'' ≤ W i' ⊓ W i'') hT, pbT_rsT _ (le_inf (inf_le_left.trans inf_le_left) inf_le_right : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i'') hT]`.
+
+Simplify using `only [z', ← rsT_of_le]`. Rewrite using `[rsT_pbT mm.φ (le_rfl : W' i ⊓ W' i' ≤ mm.φ ⁻¹ᵁ (W i ⊓ W i')) inf_le_left, rsT_pbT mm.φ (le_rfl : W' i' ⊓ W' i'' ≤ mm.φ ⁻¹ᵁ (W i' ⊓ W i'')) (le_inf (inf_le_left.trans inf_le_right) inf_le_right), rsT_pbT mm.φ (le_rfl : W' i ⊓ W' i'' ≤ mm.φ ⁻¹ᵁ (W i ⊓ W i'')) (le_inf (inf_le_left. …`. Conclude with `key`. Establish `hF3 : ∀ a (O : t'.G.left.Opens), O ≤ t'.G.hom ⁻¹ᵁ U'.1 → ∀ (f : Γ(t'.G.left, O)) (S : Type) [CommRing S] (φ : Γ(Sp Γ(Sp R, U.1), U'.1) →+* S) (g₀ : Sp S ⟶ t'.G.left) (w : Sp (DualNumber S) ⟶ t'.G.left), g₀ ≫ t'.G.hom = spMap φ ≫ chart U' → ⊤ ≤ g₀ ⁻¹ᵁ O → IsTranslate t' φ g₀ (v a) …`. Introduce `a O hO f S _ φ g₀ w hg hO₀ hT`.
+
+Establish `hpi : O ≤ mm.φ ⁻¹ᵁ (mm.φ ''ᵁ O)` using `(mm.φ.preimage_image_eq O).ge`. Take `⟨f₁, rfl⟩` from `(GlobalTheory.KSOpen.bijective_appLE mm.φ (rfl : mm.φ ''ᵁ O = mm.φ ''ᵁ O) hpi).2 f`. Rewrite using `[hδ a _ O hpi f₁]`. Establish `hw₀ : ⊤ ≤ w ⁻¹ᵁ O` using `GlobalTheory.CechKS.le_preimage_of_red (GlobalTheory.LogKS.IsTranslate.fst_comp E H _ t' _ S φ (chart U') g₀ (v a) w hg (hvt a) hT) hO₀`. Rewrite using `[← GlobalTheory.KSOpen.valR_comp_appLE g₀ mm.φ hpi hO₀, ← GlobalTheory.KSOpen.valR_comp_appLE w mm.φ hpi hw₀]`.
+
+Establish `hTr : IsTr t.G ((φ.comp ψ.toRingHom).comp ρ) (g₀ ≫ mm.φ) (v' a) (w ≫ mm.φ)`. Take `⟨g', v'', h₁, h₂, h₃⟩` from `isTranslate_push mm ψ.toRingHom _ (v a) (hvv a) φ g₀ w hT`. Conclude with `⟨g', v'', h₁, by rw [h₂, ← Category.assoc, GlobalTheory.TransLift.spMap_comp'', GlobalTheory.TransLift.dualMap_comp''], h₃⟩`. Establish `hgg : (g₀ ≫ mm.φ) ≫ t.G.hom = spMap ((φ.comp ψ.toRingHom).comp ρ)`. Rewrite using `[Category.assoc, sq, ← Category.assoc, hg, Category.assoc, hch, ← hcU, Category.comp_id, ← Category.assoc, GlobalTheory.TransLift.spMap_comp'', GlobalTheory.TransLift.spMap_comp'']`.
+
+Conclude with `((hinv a).2 S _ (g₀ ≫ mm.φ) (w ≫ mm.φ) _ f₁ hgg (fun p hp => hpi (hO₀ hp)) hTr).symm`. Establish `hF2 : ∀ a (O : t'.G.left.Opens) (h : O ≤ t'.G.hom ⁻¹ᵁ U'.1) (r : Γ(Sp Γ(Sp R, U.1), U'.1)), δ a O ((t'.G.hom.appLE U'.1 O h).hom r) = 0`. Introduce `a O hO r`. Use `GlobalTheory.LogKSBal.ext_valR _ _ fun B _ y hy => ?_` and prove the remaining obligations. Use `haveI : IsIso (chart U') := by show IsIso (isAffineOpen_top (Sp Γ(Sp R, U.1))).fromSpec`.
+
+Rewrite using `[IsAffineOpen.fromSpec_top]`. Use `infer_instance`. Take `⟨φ', hφ'⟩` from `Spec.map_surjective (R := CommRingCat.of Γ(Sp Γ(Sp R, U.1), U'.1)) (S := CommRingCat.of B) (y ≫ t'.G.hom ≫ inv (chart U'))`. Establish `hg : y ≫ t'.G.hom = spMap φ'.hom ≫ chart U'` using `by show _ = Spec.map φ' ≫ _`. Rewrite using `[hφ', Category.assoc, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`.
+
+Take `⟨w, hw, -⟩` from `existsUnique_isTranslate t' φ'.hom hg (hvt a)`. Rewrite using `[hF3 a O hO _ B φ'.hom y w hg hy hw]`. Establish `hw₀ : ⊤ ≤ w ⁻¹ᵁ O` using `GlobalTheory.CechKS.le_preimage_of_red (GlobalTheory.LogKS.IsTranslate.fst_comp E H _ t' _ B φ'.hom (chart U') y (v a) w hg (hvt a) hw) hy`. Rewrite using `[← GlobalTheory.KSOpen.valR_comp_appLE w t'.G.hom hO hw₀]`. Establish `hwb : w ≫ t'.G.hom = spMap ((algebraMap B (DualNumber B)).comp φ'.hom) ≫ chart U'`.
+
+Take `⟨g', v'', h₁, -, h₃⟩` from `hw`. Rewrite using `[← h₃, Over.w (g' * v'')]`. Use `show spMap _ ≫ y ≫ t'.G.hom = _`. Rewrite using `[hg, ← Category.assoc, GlobalTheory.TransLift.spMap_comp'']`. Rewrite using `[hwb, GlobalTheory.LogKSBal.valR_chart]`.
+
+Simplify using `[valR, TrivSqZeroExt.algebraMap_eq_inl]`. Take `⟨θ, h, hid⟩` from `GlobalTheory.T.cechCocycle_eq_coboundary_add_logDerivatives_affine E H _ t' hP hA hK U' n v hvt hvb δ (fun a => ⟨fun O _ => (hδF a).1 O le_top, fun O _ => (hδF a).2.1 O le_top, fun O O' hO _ => (hδF a).2.2 O O' hO le_top⟩) hF2 hF3 J W' (fun i => k (j i)) hW'aff hW'cov hW'U hj' z' …`. Establish `hWim : ∀ i, mm.φ ''ᵁ W' i = W i` using `fun i => by`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, inf_eq_right.2 (hWr i)]`. Use `choose y hy using fun i => (GlobalTheory.KSOpen.bijective_appLE mm.φ (hWim i) le_rfl).2 (-h i)`.
+
+Establish `hkg' : ∀ a b, ((t'.PP.L.g (k a) (k b))⁻¹).val = pbT mm.φ ((t.PP.L.g a b)⁻¹).val (t'.PP.L.U (k a) ⊓ t'.PP.L.U (k b))` using `fun a b => by`. Establish `hle : t'.PP.L.U (k a) ⊓ t'.PP.L.U (k b) ≤ mm.φ ⁻¹ᵁ (t.PP.L.U a ⊓ t.PP.L.U b)`. Rewrite using `[hkU, hkU]`. Both sides reduce to the same expression. Conclude with `Units.inv_eq_of_mul_eq_one_right (by rw [hkg, ← pbT_mul, Units.mul_inv, pbT_one _ hle])`.
+
+Use `⟨fun b => ψ.symm (θ b), y, fun i i' => ?_⟩` and prove the remaining obligations. Establish `hle : W' i ⊓ W' i' ≤ mm.φ ⁻¹ᵁ (W i ⊓ W i')` using `le_rfl`. Establish `hWim2 : mm.φ ''ᵁ (W' i ⊓ W' i') = W i ⊓ W i'` using `by show mm.φ ''ᵁ (mm.φ ⁻¹ᵁ (W i ⊓ W i')) = _`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, inf_eq_right.2 (inf_le_left.trans (hWr i))]`. Apply `(GlobalTheory.KSOpen.bijective_appLE mm.φ hWim2 hle).1` to reduce the goal to its premises.
+
+Rewrite using `[← pbT_of_le mm.φ hle, ← pbT_of_le mm.φ hle]`. Establish `e1 : ∀ l (hl : W i ⊓ W i' ≤ W l) (hl' : W' i ⊓ W' i' ≤ W' l), pbT mm.φ (rsT (y l) (W i ⊓ W i')) (W' i ⊓ W' i') = resG t'.G.left hl' (-h l)` using `fun l hl hl' => by`. Rewrite using `[pbT_rsT mm.φ hl hle, ← rsT_pbT mm.φ (le_rfl : W' l ≤ mm.φ ⁻¹ᵁ W l) hl', pbT_of_le mm.φ le_rfl, hy, rsT_of_le hl']`. Establish `e2 : ∀ b, pbT mm.φ (GlobalTheory.HeatV.cst t.G.hom U.1 (inf_le_left.trans (hW i)) (ψ.symm (θ b))) (W' i ⊓ W' i') = (t'.G.hom.appLE U'.1 (W' i ⊓ W' i') (inf_le_left.trans (hW'U i))).hom (θ b)` using `fun b => by`. Rewrite using `[pbT_of_le mm.φ hle]`.
+
+Use `GlobalTheory.KSOpen.app_appLE sq e (inf_le_left.trans (hW i)) (show mm.φ ⁻¹ᵁ (W i ⊓ W i') ≤ t'.G.hom ⁻¹ᵁ U'.1 from (inf_le_left : W' i ⊓ W' i' ≤ W' i).trans (hW'U i)) (ψ.symm (θ b))` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.app_eq_appLE]`. Conclude with `this.trans (congrArg _ (ψ.apply_symm_apply (θ b)))`. Establish `e3 : ∀ b (X : Γ(t.G.left, W i ⊓ W i')), pbT mm.φ (dd' b (W i ⊓ W i') X) (W' i ⊓ W' i') = δ b (W' i ⊓ W' i') (pbT mm.φ X (W' i ⊓ W' i'))` using `fun b X => by`. Rewrite using `[pbT_of_le mm.φ hle, pbT_of_le mm.φ hle, hδ]`.
+
+Establish `hUU : t'.PP.L.U (k (j i)) ⊓ t'.PP.L.U (k (j i')) ≤ mm.φ ⁻¹ᵁ (t.PP.L.U (j i) ⊓ t.PP.L.U (j i'))`. Rewrite using `[hkU, hkU]`. Both sides reduce to the same expression. Establish `e4 : pbT mm.φ (rsT (t.PP.L.g (j i) (j i')).val (W i ⊓ W i')) (W' i ⊓ W' i') = resG t'.G.left (inf_le_inf (hj' i) (hj' i')) (t'.PP.L.g (k (j i)) (k (j i'))).val`. Rewrite using `[pbT_rsT mm.φ (inf_le_inf (hWj i) (hWj i')) hle, hkg, ← rsT_of_le, rsT_pbT mm.φ hUU (inf_le_inf (hj' i) (hj' i'))]`.
+
+Establish `e5 : pbT mm.φ (rsT (t.PP.L.g (j i) (j i'))⁻¹.val (W i ⊓ W i')) (W' i ⊓ W' i') = resG t'.G.left (inf_le_inf (hj' i) (hj' i')) (t'.PP.L.g (k (j i)) (k (j i')))⁻¹.val`. Rewrite using `[pbT_rsT mm.φ (inf_le_inf (hWj i) (hWj i')) hle, hkg', ← rsT_of_le, rsT_pbT mm.φ hUU (inf_le_inf (hj' i) (hj' i'))]`. Use `show z' i i' = _`. Establish `hs : pbT mm.φ (∑ b, GlobalTheory.HeatV.cst t.G.hom U.1 (inf_le_left.trans (hW i)) (ψ.symm (θ b)) * (dd' b (W i ⊓ W i') (rsT (t.PP.L.g (j i) (j i')).val (W i ⊓ W i')) * rsT (t.PP.L.g (j i) (j i'))⁻¹.val (W i ⊓ W i'))) (W' i ⊓ W' i') = ∑ b, (t'.G.hom.appLE U'.1 (W' i ⊓ W' i') (inf_ …`. Rewrite using `[pbT_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun b _ => by rw [pbT_mul, pbT_mul, e2 b, e3 b, e4, e5]`. Rewrite using `[hid i i', pbT_add, pbT_sub, e1 i' inf_le_right inf_le_right, e1 i inf_le_left inf_le_left]`. Rewrite using `[hs, map_neg, map_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_dlog_add_coboundary_affine : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (m : ℕ) (tt : Fin m → R), (∀ i, tt i ≠ 0) → (∀ p : Sp R, p ∈ abLocus t.G ↔ ∏ i, tt i ∉ p.asIdeal) → ∀ (c : R), c = ∏ i, tt i → ∀ (n : ℕ) (v' : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) t.G)) (dd' : Fin n → Fld t.G.left), (∀ a, IsInv t.G (v' a) (dd' a)) → ∀ (J : Type) (W : J → t.G.left.Opens) (j : J → t.PP.L.ι) (hW : ∀ i, W i ≤ t.G.hom ⁻¹ᵁ (GlobalTheory.HeatV.bo R c).1), ⨆ i, W i = t.G.hom ⁻¹ᵁ (GlobalTheory.HeatV.bo R c).1 → (∀ i, W i ≤ t.PP.L.U (j i)) → (∀ i, IsAffineOpen (W i)) → ∀ z : C1 W, IsCoc W z → ∃ (cc : Fin n → Γ(Sp R, (GlobalTheory.HeatV.bo R c).1)) (y : ∀ i, Γ(t.G.left, W i)), ∀ i i', z i i' = ∑ b, GlobalTheory.HeatV.cst t.G.hom (GlobalTheory.HeatV.bo R c).1 (inf_le_left.trans (hW i)) (cc b) * (dd' b (W i ⊓ W i') (rsT (t.PP.L.g (j i) (j i')).val (W i ⊓ W i')) * rsT (t.PP.L.g (j i) (j i'))⁻¹.val (W i ⊓ W i')) + (rsT (y i') (W i ⊓ W i') - rsT (y i) (W i ⊓ W i')) := by
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt htt hab c hc n v' dd' hinv J W j hW hcov hWj hWaff z hz
   subst hc

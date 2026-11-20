@@ -18,6 +18,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SecTower
 
+/- English proof (translation)
+Establish `hL` using `LB.isLB_pull hH (pullback.fst f (Spec.map (CommRingCat.ofHom g)))`. Establish `hw` using `CubePf.idIsoL_isGen hL`. Use `choose s' hs' using fun j => GlobalTheory.SecPullIso.exists_pull _ H (H.pull _) _ hH hL hw (s j)`. Use `⟨s', GlobalTheory.AbLaw.VeryAmplePull.veryAmpleBy_pull R X f H n s hH hs R' g _ _ _ pullback.condition ?_ _ _ s' hL hw hs'⟩` and prove the remaining obligations. Rewrite using `[pullback.lift_fst_snd]`.
+
+Use `infer_instance`.
+-/
 theorem exists_veryAmpleBy_pullback {R R' : Type} [CommRing R] [CommRing R'] (g : R →+* R') {X : Scheme.{0}}
     (f : X ⟶ Spec (CommRingCat.of R)) {H : LB X} {n : ℕ} {s : Fin (n + 1) → LB.Sec H} (hH : H.IsLB)
     (hs : VeryAmpleBy f H s) :
@@ -32,6 +37,15 @@ theorem exists_veryAmpleBy_pullback {R R' : Type} [CommRing R] [CommRing R'] (g 
   rw [pullback.lift_fst_snd]
   infer_instance
 
+/- English proof (translation)
+Set `g' : ∀ e : ℕ, R ⧸ I ^ (e + 1) →+* S` to `fun e => Ideal.Quotient.lift _ g fun x hx => hg x (Ideal.pow_le_self (Nat.succ_ne_zero e) hx)`. Establish `hg' : ∀ e, (g' e).comp (Ideal.Quotient.mk _) = g` using `fun e => RingHom.ext fun x => rfl`. Establish `hc : ∀ e, Spec.map (CommRingCat.ofHom (g' e)) ≫ thick R I e = Spec.map (CommRingCat.ofHom g)` using `fun e => by`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hg']`. Establish `ht : ∀ e, Spec.map (CommRingCat.ofHom (g' e)) ≫ thickTrans R I e = Spec.map (CommRingCat.ofHom (g' (e + 1)))` using `fun e => by`.
+
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `x`. Both sides reduce to the same expression. Use `⟨g', fun e => pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ Spec.map (CommRingCat.ofHom (g' e))) (by rw [Category.assoc, hc]; exact pullback.condition), hg', fun e => ?_, fun e => pullback.lift_fst _ _ _, fun e => ?_⟩` and prove the remaining obligations.
+
+Use `IsPullback.of_right (h₁₂ := pullback.fst Y.hom (thick R I e)) (h₂₂ := thick R I e) (v₁₃ := Y.hom) ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[hc, pullback.lift_fst]`. Conclude with `IsPullback.of_hasPullback _ _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `erw [Category.assoc, pullback.lift_fst, pullback.lift_fst, pullback.lift_fst]`.
+
+Use `erw [Category.assoc, pullback.lift_snd, pullback.lift_snd, ← Category.assoc, pullback.lift_snd, Category.assoc, ht]`.
+-/
 theorem exists_test_maps {R S : Type} [CommRing R] [CommRing S] (I : Ideal R) (g : R →+* S) (hg : ∀ x ∈ I, g x = 0)
     (Y : Over (Spec (CommRingCat.of R))) :
     ∃ (g' : ∀ e : ℕ, R ⧸ I ^ (e + 1) →+* S)
@@ -63,6 +77,9 @@ theorem exists_test_maps {R S : Type} [CommRing R] [CommRing S] (I : Ideal R) (g
     · erw [Category.assoc, pullback.lift_snd, pullback.lift_snd, ← Category.assoc, pullback.lift_snd,
         Category.assoc, ht]
 
+/- English proof (translation)
+Use `IsPullback.of_right (h₁₂ := pullback.fst Y.hom (thick R I (e + 1))) (h₂₂ := thick R I (e + 1)) (v₁₃ := Y.hom) ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[thickTrans_comp, pullback.lift_fst, Category.comp_id]`. Conclude with `IsPullback.of_hasPullback _ _`.
+-/
 theorem isPullback_thickMap {R : Type} [CommRing R] (I : Ideal R) (Y : Over (Spec (CommRingCat.of R))) (e : ℕ) :
     IsPullback (thickMap R I e Y) (thickObj R I e Y).hom (thickObj R I (e + 1) Y).hom (thickTrans R I e) := by
   refine IsPullback.of_right (h₁₂ := pullback.fst Y.hom (thick R I (e + 1))) (h₂₂ := thick R I (e + 1))
@@ -70,6 +87,17 @@ theorem isPullback_thickMap {R : Type} [CommRing R] (I : Ideal R) (Y : Over (Spe
   rw [thickTrans_comp, pullback.lift_fst, Category.comp_id]
   exact IsPullback.of_hasPullback _ _
 
+/- English proof (translation)
+Introduce `R _ _ I Y H n s hsm hH hs f hf`. Take `⟨S, _, g, hS, hg, hker⟩` from `GlobalTheory.exists_graded_ring_kernel_lift R I`. Take `⟨g', σ, hg', hσ, hσa, hσt⟩` from `exists_test_maps I g hg Y`. Establish `hσb : ∀ e, σ e ≫ f e = σ 0 ≫ f 0` using `fun e => by`. Proceed by induction on `e with`.
+
+Consider the case `zero => rfl`. Consider the case `succ e ih => rw [← hσt, Category.assoc, hf, ih]`. Take `⟨sS, hsS⟩` from `exists_veryAmpleBy_pullback g Y.hom hH hs`. Establish `hva` using `fun e : ℕ => exists_veryAmpleBy_pullback (Ideal.Quotient.mk (I ^ (e + 1))) Y.hom hH hs`. Take `⟨t₁, h₁⟩` from `GlobalTheory.T.exists_h1Vanishes_generated_pullbackPow_tensor_dual S _ _ _ H _ (σ 0 ≫ f 0) n sS hH hsS`.
+
+Take `⟨s₀, hs₀⟩` from `hva 0`. Take `⟨t₂, h₂⟩` from `GlobalTheory.T.exists_h1Vanishes_generated_pullbackPow_tensor_dual _ _ _ _ H _ (f 0) n s₀ hH hs₀`. Take `⟨m, u₀, hu₀⟩` from `(h₂ (max t₁ t₂) (le_max_right _ _)).2`. Establish `hZ` using `(h₁ (max t₁ t₂) (le_max_left _ _)).1`. Establish `step : ∀ (e : ℕ) (v : LB.Sec (LB.LinComb H (Y` using `(thickObj R I e Y).left) (K := Fin 2) ![pullback.fst Y.hom (thick R I e), f e] ![max t₁ t₂, -1])), ∃ v' : LB.Sec (LB.LinComb H (Y := (thickObj R I (e + 1) Y).left) (K := Fin 2) ![pullback.fst Y.hom (thick R I (e + 1)), f (e + 1)] ![max t₁ t₂, -1]), ∀ z J, Good H z J → sval v' (th …`.
+
+Take `⟨s₁, hs₁⟩` from `hva (e + 1)`. Use `GlobalTheory.T.exists_section_lift_baseChange_h1Vanishing_testRing _ _ S _ (g' (e + 1)) (hker e (g' (e + 1)) (hg' _)) _ _ _ (thickObj R I (e + 1) Y).hom (thickObj R I e Y).hom _ (thickMap R I e Y) (σ (e + 1)) (inferInstanceAs (Smooth (pullback.snd Y.hom (thick R I (e + 1))))) ⟨_, …` and prove the remaining obligations. Use `fin_cases k`. Conclude with `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Conclude with `hf e`.
+
+Use `choose F hF using step`. Conclude with `⟨max t₁ t₂, m, fun e => Nat.rec (motive := fun e => Fin (m + 1) → LB.Sec (LB.LinComb H (Y := (thickObj R I e Y).left) (K := Fin 2) ![pullback.fst Y.hom (thick R I e), f e] ![max t₁ t₂, -1])) u₀ (fun e v i => F e (v i)) e, hu₀, fun e i => hF e _⟩`.
+-/
 theorem exists_tower : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R) (Y : Over (Spec (CommRingCat.of R))) (H : LB Y.left) (n : ℕ) (s : Fin (n + 1) → LB.Sec H), Smooth Y.hom → H.IsLB → VeryAmpleBy Y.hom H s → ∀ f : ∀ e, (thickObj R I e Y).left ⟶ Y.left, (∀ e, thickMap R I e Y ≫ f (e + 1) = f e) → ∃ (t : ℤ) (m : ℕ) (u : ∀ e, Fin (m + 1) → LB.Sec (LB.LinComb H (Y := (thickObj R I e Y).left) (K := Fin 2) ![pullback.fst Y.hom (thick R I e), f e] ![t, -1])), (⨆ i, nonzeroLocus (u 0 i) = ⊤) ∧ ∀ e i z J, Good H z J → sval (u (e + 1) i) (thickMap R I e Y) z J = sval (u e i) (𝟙 _) z J := by
   intro R _ _ I Y H n s hsm hH hs f hf
   obtain ⟨S, _, g, hS, hg, hker⟩ := GlobalTheory.exists_graded_ring_kernel_lift R I

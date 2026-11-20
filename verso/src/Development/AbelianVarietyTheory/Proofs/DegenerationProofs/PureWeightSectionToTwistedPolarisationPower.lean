@@ -25,30 +25,52 @@ def Cob (W : I → X.Opens) (c : ∀ y : X, I → I → (X.presheaf.stalk y)ˣ) 
 variable {W : I → X.Opens} {W' : I' → X.Opens} {c c₁ : ∀ y : X, I → I → (X.presheaf.stalk y)ˣ}
   {c' : ∀ y : X, I' → I' → (X.presheaf.stalk y)ˣ}
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Conclude with `⟨fun i => res (le i) (u (τ i)), fun y i j hi hj => by`. Rewrite using `[gm_res _ y _ hi, gm_res _ y _ hj, hu y _ _ (le i hi) (le j hj)]⟩`.
+-/
 theorem Cob.refine (h : Cob W c) (τ : I' → I) (le : ∀ i, W' i ≤ W (τ i)) :
     Cob W' (fun y i j => c y (τ i) (τ j)) := by
   obtain ⟨u, hu⟩ := h
   exact ⟨fun i => res (le i) (u (τ i)), fun y i j hi hj => by
     rw [gm_res _ y _ hi, gm_res _ y _ hj, hu y _ _ (le i hi) (le j hj)]⟩
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Conclude with `⟨u, fun y i j hi hj => by rw [hu y i j hi hj, e y i j hi hj]⟩`.
+-/
 theorem Cob.congr (h : Cob W c) (e : ∀ y i j, y ∈ W i → y ∈ W j → c₁ y i j = c y i j) : Cob W c₁ := by
   obtain ⟨u, hu⟩ := h
   exact ⟨u, fun y i j hi hj => by rw [hu y i j hi hj, e y i j hi hj]⟩
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Take `⟨v, hv⟩` from `h₁`. Conclude with `⟨fun i => u i * v i, fun y i j hi hj => by`. Rewrite using `[map_mul, map_mul, hu y i j hi hj, hv y i j hi hj, _root_.mul_mul_mul_comm]⟩`.
+-/
 theorem Cob.mul (h : Cob W c) (h₁ : Cob W c₁) : Cob W (fun y i j => c y i j * c₁ y i j) := by
   obtain ⟨u, hu⟩ := h
   obtain ⟨v, hv⟩ := h₁
   exact ⟨fun i => u i * v i, fun y i j hi hj => by
     rw [map_mul, map_mul, hu y i j hi hj, hv y i j hi hj, _root_.mul_mul_mul_comm]⟩
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Conclude with `⟨fun i => u i ^ n, fun y i j hi hj => by`. Rewrite using `[map_zpow, map_zpow, hu y i j hi hj, mul_zpow]⟩`.
+-/
 theorem Cob.zpow (h : Cob W c) (n : ℤ) : Cob W (fun y i j => c y i j ^ n) := by
   obtain ⟨u, hu⟩ := h
   exact ⟨fun i => u i ^ n, fun y i j hi hj => by
     rw [map_zpow, map_zpow, hu y i j hi hj, mul_zpow]⟩
 
+/- English proof (translation)
+Simplify `h.zpow (-1)` using `only [zpow_neg, zpow_one]`.
+-/
 theorem Cob.inv (h : Cob W c) : Cob W (fun y i j => (c y i j)⁻¹) := by
   simpa only [zpow_neg, zpow_one] using h.zpow (-1)
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Establish `glue : ∀ i, ∃ s : Γ(X, W i)ˣ, ∀ i' (_ : τ i' = i) y, y ∈ W' i' → gm (𝟙 X) y (W i) s = gm (𝟙 X) y (W' i') (u i')`. Introduce `i`. Take `⟨s, hs⟩` from `glue_unit (J := {i' // τ i' = i}) (W i) (fun p => W' p.1) (fun p => (le p.1).trans (by rw [p.2])) (fun y hy => by`. Take `⟨i', e, h⟩` from `cov i y hy`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨i', e⟩, h⟩) (fun p => u p.1) (fun p q y hy => by`. Use `hu y p.1 q.1 hy.1 hy.2` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, p.2, q.2, one y i (by rw [← p.2]; exact le p.1 hy.1), _root_.one_mul])`. Conclude with `⟨s, fun i' e y hy => by rw [← hs ⟨i', e⟩, gm_res _ y _ hy]⟩`.
+
+Use `choose s hs using glue`. Use `⟨s, fun y i j hi hj => ?_⟩` and prove the remaining obligations. Take `⟨i', rfl, hi'⟩` from `cov i y hi`. Take `⟨j', rfl, hj'⟩` from `cov j y hj`. Rewrite using `[hs _ i' rfl y hi', hs _ j' rfl y hj', hu y i' j' hi' hj']`.
+-/
 theorem Cob.descend (τ : I' → I) (le : ∀ i, W' i ≤ W (τ i)) (cov : ∀ i, ∀ y ∈ W i, ∃ i', τ i' = i ∧ y ∈ W' i')
     (one : ∀ y i, y ∈ W i → c y i i = 1) (h : Cob W' (fun y i j => c y (τ i) (τ j))) : Cob W c := by
   obtain ⟨u, hu⟩ := h
@@ -69,6 +91,15 @@ theorem Cob.descend (τ : I' → I) (le : ∀ i, W' i ≤ W (τ i)) (cov : ∀ i
   obtain ⟨j', rfl, hj'⟩ := cov j y hj
   rw [hs _ i' rfl y hi', hs _ j' rfl y hj', hu y i' j' hi' hj']
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Set `v : ∀ i j, Γ(X, W' i ⊓ W j)` to `fun i j => (u (i, j)).val * resG X inf_le_right (a j)`. Establish `hv : ∀ y i j, y ∈ W' i ⊓ W j → gs (𝟙 X) y _ (v i j) = (gm (𝟙 X) y (W' i ⊓ W j) (u (i, j))).val * gs (𝟙 X) y (W j) (a j)` using `fun y i j hy => (gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) (gs_unit _ y _ hy _) (gs_res _ y _ hy _))`. Establish `rel : ∀ y i j i' j', y ∈ W' i ⊓ W j → y ∈ W' i' ⊓ W j' → gs (𝟙 X) y _ (v i j) = (c' y i i').val * gs (𝟙 X) y _ (v i' j')` using `fun y i j i' j' h h' => by`. Establish `e` using `hu y (i, j) (i', j') h h'`.
+
+Simplify using `only at e`. Rewrite using `[hv y i j h, hv y i' j' h', e, ha y j j' h.2 h'.2, ← _root_.mul_assoc, ← _root_.mul_assoc, ← Units.val_mul, ← Units.val_mul, mul_right_comm, inv_mul_cancel_right]`. Establish `glue : ∀ i, ∃ b : Γ(X, W' i), ∀ j y, y ∈ W' i ⊓ W j → gs (𝟙 X) y (W' i) b = gs (𝟙 X) y _ (v i j)`. Introduce `i`. Take `⟨b, hb, -⟩` from `X.sheaf.existsUnique_gluing' (fun j => W' i ⊓ W j) (W' i) (fun _ => homOfLE inf_le_left) (fun y hy => by`.
+
+Take `⟨j, hj⟩` from `cov y`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, hy, hj⟩) (v i)`. Use the proof step `(fun j j' => fn_ext (V := W' i ⊓ W j ⊓ (W' i ⊓ W j')) fun y hy => by`. Use `(gs_res (𝟙 X) y inf_le_left hy _).trans (Eq.trans ?_ (gs_res (𝟙 X) y inf_le_right hy _).symm)` and prove the remaining obligations. Rewrite using `[rel y i j i j' hy.1 hy.2, one y i hy.1.1, Units.val_one, _root_.one_mul])`.
+
+Conclude with `⟨b, fun j y hy => (gs_res (𝟙 X) y inf_le_left hy b).symm.trans (congrArg (gs (𝟙 X) y _) (hb j))⟩`. Use `choose b hb using glue`. Use `⟨b, fun y i i' hi hi' => ?_, fun y i j hi hj => ⟨_, (hb i j y ⟨hi, hj⟩).trans (hv y i j ⟨hi, hj⟩)⟩⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `cov y`. Rewrite using `[hb i j y ⟨hi, hj⟩, hb i' j y ⟨hi', hj⟩, rel y i j i' j ⟨hi, hj⟩ ⟨hi', hj⟩]`.
+-/
 theorem Fam.move {a : ∀ i, Γ(X, W i)} (ha : Fam W c a) (cov : ∀ y, ∃ i, y ∈ W i)
     (one : ∀ y i, y ∈ W' i → c' y i i = 1)
     (h : Cob (fun p : I' × I => W' p.1 ⊓ W p.2) (fun y p q => c' y p.1 q.1 * (c y p.2 q.2)⁻¹)) :
@@ -102,6 +133,9 @@ theorem Fam.move {a : ∀ i, Γ(X, W i)} (ha : Fam W c a) (cov : ∀ y, ∃ i, y
 
 abbrev tr (L : LB X) (r : Z ⟶ X) (z : Z) (i j : L.ι) : (Z.presheaf.stalk z)ˣ := gm r z (L.U i ⊓ L.U j) (L.g i j)
 
+/- English proof (translation)
+Establish `hm : r z ∈ L.U i ⊓ L.U j` using `⟨hi, hj⟩`. Establish `e` using `congrArg (gs r z _) (θ.compat i j)`. Rewrite `e` using `[gs_res _ z _ hm, gs_mul _ z _ hm, gs_res _ z _ hm, gs_unit _ z _ hm]`. Then use the resulting hypothesis.
+-/
 theorem gs_sec {L : LB X} (θ : LB.Sec L) (r : Z ⟶ X) (z : Z) {i j : L.ι} (hi : r z ∈ L.U i) (hj : r z ∈ L.U j) :
     gs r z _ (θ.f i) = (tr L r z i j).val * gs r z _ (θ.f j) := by
   have hm : r z ∈ L.U i ⊓ L.U j := ⟨hi, hj⟩
@@ -112,6 +146,9 @@ def Fam.sec {L : LB X} {a : ∀ i, Γ(X, L.U i)} (h : Fam L.U (tr L (𝟙 X)) a)
   ⟨a, fun i j => fn_ext fun y hy => by
     rw [gs_res _ y _ hy, gs_mul _ y _ hy, gs_res _ y _ hy, gs_unit _ y _ hy, h y i j hy.1 hy.2]⟩
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `h`. Use `⟨t.s, fun y i j hi hj => ?_⟩` and prove the remaining obligations. Establish `hm : (𝟙 X : X ⟶ X) y ∈ L.U i ⊓ L.U j` using `⟨hi, hj⟩`. Establish `e` using `congrArg (gm (𝟙 X) y _) (ht i j)`. Rewrite `e` using `[map_mul, gm_res _ y _ hm, gm_res _ y _ hm]`. Then use the resulting hypothesis.
+-/
 theorem cob_gen {L : LB X} (h : ∃ t : LB.Gen L, t.IsGen) : Cob L.U (tr L (𝟙 X)) := by
   obtain ⟨t, ht⟩ := h
   refine ⟨t.s, fun y i j hi hj => ?_⟩
@@ -119,15 +156,24 @@ theorem cob_gen {L : LB X} (h : ∃ t : LB.Gen L, t.IsGen) : Cob L.U (tr L (𝟙
   have e := congrArg (gm (𝟙 X) y _) (ht i j)
   rwa [map_mul, gm_res _ y _ hm, gm_res _ y _ hm] at e
 
+/- English proof (translation)
+The claim follows from `(cob_gen h).congr fun y p q hp hq => (gm_div L M (𝟙 X) y p q ⟨hp, hq⟩).symm`.
+-/
 theorem cob_iso {L M : LB X} (h : LBIso L M) : Cob (fun p : M.ι × L.ι => M.U p.1 ⊓ L.U p.2)
     (fun y p q => tr M (𝟙 X) y p.1 q.1 * (tr L (𝟙 X) y p.2 q.2)⁻¹) :=
   (cob_gen h).congr fun y p q hp hq => (gm_div L M (𝟙 X) y p q ⟨hp, hq⟩).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun p => L.g p.1 p.2, fun y p q hp hq => by rw [← gm_cocycle hL (𝟙 X) y hp.1 hq.1 hp.2, ← gm_cocycle hL (𝟙 X) y hq.1 hp.2 hq.2, _root_.mul_assoc, mul_comm (gm _ _ _ (L.g q.1 p.2)), inv_mul_cancel_left]⟩`.
+-/
 theorem cob_self {L : LB X} (hL : L.IsLB) : Cob (fun p : L.ι × L.ι => L.U p.1 ⊓ L.U p.2)
     (fun y p q => tr L (𝟙 X) y p.1 q.1 * (tr L (𝟙 X) y p.2 q.2)⁻¹) :=
   ⟨fun p => L.g p.1 p.2, fun y p q hp hq => by
     rw [← gm_cocycle hL (𝟙 X) y hp.1 hq.1 hp.2, ← gm_cocycle hL (𝟙 X) y hq.1 hp.2 hq.2, _root_.mul_assoc, mul_comm (gm _ _ _ (L.g q.1 p.2)), inv_mul_cancel_left]⟩
 
+/- English proof (translation)
+Rewrite using `[gs_eq r z U h]`. Use `((Z.mem_basicOpen ((r.app U).hom a) z h).symm).trans ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.preimage_basicOpen]`. Both sides reduce to the same expression.
+-/
 theorem isUnit_gs_iff (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a : Γ(X, U)) :
     IsUnit (gs r z U a) ↔ r z ∈ X.basicOpen a := by
   rw [gs_eq r z U h]
@@ -135,6 +181,11 @@ theorem isUnit_gs_iff (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a : �
   rw [← Scheme.Hom.preimage_basicOpen]
   rfl
 
+/- English proof (translation)
+Rewrite using `[isUnit_gs_iff r z _ hk]`. Use `⟨fun h => ?_, fun h => TopologicalSpace.Opens.mem_iSup.2 ⟨k, h⟩⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Establish `hj' : r z ∈ L.U j` using `X.basicOpen_le _ hj`. Rewrite using `[← isUnit_gs_iff r z _ hk, gs_sec θ r z hk hj']`.
+
+Conclude with `(Units.isUnit _).mul ((isUnit_gs_iff r z _ hj' _).2 hj)`.
+-/
 theorem mem_locus_iff {L : LB X} (θ : LB.Sec L) (r : Z ⟶ X) (z : Z) {k : L.ι}
     (hk : r z ∈ L.U k) : r z ∈ Out.nonzeroLocus θ ↔ IsUnit (gs r z _ (θ.f k)) := by
   rw [isUnit_gs_iff r z _ hk]
@@ -144,14 +195,25 @@ theorem mem_locus_iff {L : LB X} (θ : LB.Sec L) (r : Z ⟶ X) (z : Z) {k : L.ι
   rw [← isUnit_gs_iff r z _ hk, gs_sec θ r z hk hj']
   exact (Units.isUnit _).mul ((isUnit_gs_iff r z _ hj' _).2 hj)
 
+/- English proof (translation)
+The claim follows from `Units.ext ((gs_unit r z U h f).symm.trans ((gs_stalkMap r z U h _).trans (congrArg (r.stalkMap z).hom (gs_unit (𝟙 X) (r z) U h f))))`.
+-/
 theorem gm_stalkMap (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (f : Γ(X, U)ˣ) :
     gm r z U f = Units.map (r.stalkMap z).hom.toMonoidHom (gm (𝟙 X) (r z) U f) :=
   Units.ext ((gs_unit r z U h f).symm.trans ((gs_stalkMap r z U h _).trans
     (congrArg (r.stalkMap z).hom (gs_unit (𝟙 X) (r z) U h f))))
 
+/- English proof (translation)
+The claim follows from `(injective_iff_map_eq_zero _).2 fun a ha => zero_dvd_iff.1 (dvd_descend r z (by rw [ha, map_zero]))`.
+-/
 theorem stalkMap_inj (r : Z ⟶ X) [Flat r] (z : Z) : Function.Injective (r.stalkMap z).hom :=
   (injective_iff_map_eq_zero _).2 fun a ha => zero_dvd_iff.1 (dvd_descend r z (by rw [ha, map_zero]))
 
+/- English proof (translation)
+Take `rfl : ψ = fun k => h ≫ φ k` from `funext e`. Establish `le` using `Out.wchart_comp_le L φ h`. Set `a : ∀ j, Γ(Y', (LB.LinComb L (fun k => h ≫ φ k) ε).U j)` to `fun j => resG _ (le j) ((h.app _).hom (s.f j))`. Establish `ha : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y') (z : Z) (j : K → L.ι), r z ∈ LB.wchart L (fun k => h ≫ φ k) j → gs r z (LB.wchart L (fun k => h ≫ φ k) j) (a j) = gs (r ≫ h) z (LB.wchart L φ j) (s.f j)` using `fun Z r z j hz => (gs_res r z (le j) hz _).trans (gs_pull r h z _ (le j hz) _)`. Use `⟨Fam.sec (a := a) fun y i j hi hj => ?_, ha⟩` and prove the remaining obligations.
+
+Use `(ha _ (𝟙 Y') y i hi).trans ((sec_trans s (𝟙 Y' ≫ h) y (le i hi) (le j hj)).trans (congrArg₂ (· * ·) (congrArg Units.val ?_) (ha _ (𝟙 Y') y j hj).symm))` and prove the remaining obligations. Use `Eq.trans ?_ (gm_linComb L _ ε (𝟙 Y') y i j hi hj).symm` and prove the remaining obligations. Simplify using `only [trF, Category.assoc]`.
+-/
 theorem exists_pull {Y' : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ψ : K → (Y' ⟶ X)) (ε : K → ℤ)
     (h : Y' ⟶ Y) (e : ∀ k, ψ k = h ≫ φ k) (s : LB.Sec (LB.LinComb L φ ε)) : ∃ s' : LB.Sec (LB.LinComb L ψ ε),
       ∀ (Z : Scheme.{0}) (r : Z ⟶ Y') (z : Z) (j : K → L.ι), r z ∈ LB.wchart L ψ j →
@@ -176,24 +238,39 @@ variable {S Z : Scheme.{0}} (E : SplitExt S)
 def cb (χ : E.X) (r : Z ⟶ E.B.left) (z : Z) (j j' : E.ChartIdx) : (Z.presheaf.stalk z)ˣ :=
   ∏ k, tr (E.O (E.basis k)).L r z (j k) (j' k) ^ E.basis.repr χ k
 
+/- English proof (translation)
+Simplify using `only [cb, map_add, Finsupp.add_apply, zpow_add, Finset.prod_mul_distrib]`.
+-/
 theorem cb_add (χ χ' : E.X) (r : Z ⟶ E.B.left) (z : Z) (j j' : E.ChartIdx) :
     cb E (χ + χ') r z j j' = cb E χ r z j j' * cb E χ' r z j j' := by
   simp only [cb, map_add, Finsupp.add_apply, zpow_add, Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Simplify using `only [cb, map_zero, Finsupp.zero_apply, zpow_zero, Finset.prod_const_one]`.
+-/
 theorem cb_zero (r : Z ⟶ E.B.left) (z : Z) (j j' : E.ChartIdx) : cb E 0 r z j j' = 1 := by
   simp only [cb, map_zero, Finsupp.zero_apply, zpow_zero, Finset.prod_const_one]
 
+/- English proof (translation)
+Rewrite using `[cb, Finset.prod_eq_single k (fun k' _ h => by rw [E.basis.repr_self_apply, if_neg h.symm, zpow_zero]) (fun h => absurd (Finset.mem_univ k) h), E.basis.repr_self_apply, if_pos rfl, zpow_one]`.
+-/
 theorem cb_basis (k) (r : Z ⟶ E.B.left) (z : Z) (j j' : E.ChartIdx) :
     cb E (E.basis k) r z j j' = tr (E.O (E.basis k)).L r z (j k) (j' k) := by
   classical
   rw [cb, Finset.prod_eq_single k (fun k' _ h => by rw [E.basis.repr_self_apply, if_neg h.symm, zpow_zero])
     (fun h => absurd (Finset.mem_univ k) h), E.basis.repr_self_apply, if_pos rfl, zpow_one]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_eq_one fun k _ => by rw [tr, gm_self (E.O (E.basis k)).isLB r z (E.chart_le j k h), one_zpow]`.
+-/
 theorem cb_self (χ : E.X) (r : Z ⟶ E.B.left) (z : Z) (j : E.ChartIdx) (h : r z ∈ E.chart j) :
     cb E χ r z j j = 1 :=
   Finset.prod_eq_one fun k _ => by
     rw [tr, gm_self (E.O (E.basis k)).isLB r z (E.chart_le j k h), one_zpow]
 
+/- English proof (translation)
+Rewrite using `[cb, cb, map_prod]`. Conclude with `Finset.prod_congr rfl fun k _ => by`. Rewrite using `[map_zpow, tr, gm_stalkMap r z (_ ⊓ _) ⟨E.chart_le j k h, E.chart_le j' k h'⟩]`.
+-/
 theorem cb_stalkMap (χ : E.X) (r : Z ⟶ E.B.left) (z : Z) (j j' : E.ChartIdx) (h : r z ∈ E.chart j)
     (h' : r z ∈ E.chart j') :
     cb E χ r z j j' = Units.map (r.stalkMap z).hom.toMonoidHom (cb E χ (𝟙 _) (r z) j j') := by
@@ -205,6 +282,9 @@ def IsProd (χ : E.X) : Prop :=
   Cob (fun p : (E.O χ).L.ι × E.ChartIdx => (E.O χ).L.U p.1 ⊓ E.chart p.2)
     (fun y p q => tr (E.O χ).L (𝟙 _) y p.1 q.1 * (cb E χ (𝟙 _) y p.2 q.2)⁻¹)
 
+/- English proof (translation)
+The claim follows from `(cob_iso (E.addIso χ χ')).congr fun y p q hp hq => congrArg (· * _) (gm_div _ _ (𝟙 _) y p.1 q.1 ⟨hp.1, hq.1⟩).symm`.
+-/
 theorem cob_add (χ χ' : E.X) : Cob (fun p : ((E.O (χ + χ')).L.ι × (E.O χ).L.ι) × (E.O χ').L.ι =>
       (E.O (χ + χ')).L.U p.1.1 ⊓ (E.O χ).L.U p.1.2 ⊓ (E.O χ').L.U p.2)
     (fun y p q => tr (E.O (χ + χ')).L (𝟙 _) y p.1.1 q.1.1 * (tr (E.O χ).L (𝟙 _) y p.1.2 q.1.2)⁻¹ *
@@ -212,12 +292,20 @@ theorem cob_add (χ χ' : E.X) : Cob (fun p : ((E.O (χ + χ')).L.ι × (E.O χ)
   (cob_iso (E.addIso χ χ')).congr fun y p q hp hq =>
     congrArg (· * _) (gm_div _ _ (𝟙 _) y p.1 q.1 ⟨hp.1, hq.1⟩).symm
 
+/- English proof (translation)
+Rewrite using `[tr, gm_self (E.O χ).isLB (𝟙 _) y h.1, cb_self E χ (𝟙 _) y _ h.2, inv_one, _root_.mul_one]`.
+-/
 theorem one_of (χ : E.X) (y : E.B.left) (p : (E.O χ).L.ι × E.ChartIdx) (h : y ∈ (E.O χ).L.U p.1 ⊓ E.chart p.2) :
     tr (E.O χ).L (𝟙 _) y p.1 p.1 * (cb E χ (𝟙 _) y p.2 p.2)⁻¹ = 1 := by
   rw [tr, gm_self (E.O χ).isLB (𝟙 _) y h.1, cb_self E χ (𝟙 _) y _ h.2, inv_one, _root_.mul_one]
 
 variable {E}
 
+/- English proof (translation)
+Set `W : ((E.O (χ + χ')).L.ι × E.ChartIdx) × (E.O χ).L.ι × (E.O χ').L.ι → E.B.left.Opens` to `fun p => (E.O (χ + χ')).L.U p.1.1 ⊓ E.chart p.1.2 ⊓ ((E.O χ).L.U p.2.1 ⊓ (E.O χ').L.U p.2.2)`. Use `Cob.descend (W' := W) Prod.fst (fun _ => inf_le_left) (fun p y hy => ?_) (one_of E _) ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_chart (E.O χ).isLB y`. Take `⟨b, hb⟩` from `exists_chart (E.O χ').isLB y`. Conclude with `⟨(p, a, b), rfl, hy, ha, hb⟩`.
+
+Use `(((cob_add E χ χ').refine (W' := W) (fun p => ((p.1.1, p.2.1), p.2.2)) fun p y hy => ⟨⟨hy.1.1, hy.2.1⟩, hy.2.2⟩).mul ((Cob.refine (W' := W) h (fun p => (p.2.1, p.1.2)) fun p y hy => ⟨hy.2.1, hy.1.2⟩).mul (Cob.refine (W' := W) h' (fun p => (p.2.2, p.1.2)) fun p y hy => ⟨hy.2.2, hy …` and prove the remaining obligations. Rewrite using `[cb_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem IsProd.add {χ χ' : E.X} (h : IsProd E χ) (h' : IsProd E χ') : IsProd E (χ + χ') := by
   let W : ((E.O (χ + χ')).L.ι × E.ChartIdx) × (E.O χ).L.ι × (E.O χ').L.ι → E.B.left.Opens := fun p =>
     (E.O (χ + χ')).L.U p.1.1 ⊓ E.chart p.1.2 ⊓ ((E.O χ).L.U p.2.1 ⊓ (E.O χ').L.U p.2.2)
@@ -233,6 +321,11 @@ theorem IsProd.add {χ χ' : E.X} (h : IsProd E χ) (h' : IsProd E χ') : IsProd
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Set `W : ((E.O χ').L.ι × E.ChartIdx) × (E.O χ).L.ι × (E.O (χ + χ')).L.ι → E.B.left.Opens` to `fun p => (E.O χ').L.U p.1.1 ⊓ E.chart p.1.2 ⊓ ((E.O χ).L.U p.2.1 ⊓ (E.O (χ + χ')).L.U p.2.2)`. Use `Cob.descend (W' := W) Prod.fst (fun _ => inf_le_left) (fun p y hy => ?_) (one_of E _) ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_chart (E.O χ).isLB y`. Take `⟨b, hb⟩` from `exists_chart (E.O (χ + χ')).isLB y`. Conclude with `⟨(p, a, b), rfl, hy, ha, hb⟩`.
+
+Use `(((cob_add E χ χ').refine (W' := W) (fun p => ((p.2.2, p.2.1), p.1.1)) fun p y hy => ⟨⟨hy.2.2, hy.2.1⟩, hy.1.1⟩).inv.mul ((Cob.refine (W' := W) h (fun p => (p.2.1, p.1.2)) fun p y hy => ⟨hy.2.1, hy.1.2⟩).inv.mul (Cob.refine (W' := W) h' (fun p => (p.2.2, p.1.2)) fun p y hy => ⟨hy …` and prove the remaining obligations. Rewrite using `[cb_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem IsProd.sub {χ χ' : E.X} (h : IsProd E χ) (h' : IsProd E (χ + χ')) : IsProd E χ' := by
   let W : ((E.O χ').L.ι × E.ChartIdx) × (E.O χ).L.ι × (E.O (χ + χ')).L.ι → E.B.left.Opens := fun p =>
     (E.O χ').L.U p.1.1 ⊓ E.chart p.1.2 ⊓ ((E.O χ).L.U p.2.1 ⊓ (E.O (χ + χ')).L.U p.2.2)
@@ -250,10 +343,16 @@ theorem IsProd.sub {χ χ' : E.X} (h : IsProd E χ) (h' : IsProd E (χ + χ')) :
 
 variable (E)
 
+/- English proof (translation)
+The claim follows from `((cob_gen E.zeroTriv).refine Prod.fst fun _ => inf_le_left).congr fun y p q _ _ => by rw [cb_zero, inv_one, _root_.mul_one]`.
+-/
 theorem isProd_zero : IsProd E 0 :=
   ((cob_gen E.zeroTriv).refine Prod.fst fun _ => inf_le_left).congr fun y p q _ _ => by
     rw [cb_zero, inv_one, _root_.mul_one]
 
+/- English proof (translation)
+Set `H : AddSubgroup E.X` to `{ carrier := {χ | IsProd E χ} add_mem' := IsProd.add zero_mem' := isProd_zero E neg_mem' := fun {χ} h => IsProd.sub h (by rw [add_neg_cancel]; exact isProd_zero E) }`. Rewrite using `[← E.basis.sum_repr χ]`. Use `H.sum_mem fun k _ => H.zsmul_mem ?_ _` and prove the remaining obligations. Conclude with `((cob_self (E.O (E.basis k)).isLB).refine (fun p : _ × E.ChartIdx => (p.1, p.2 k)) fun p => inf_le_inf_left _ (E.chart_le _ _)).congr fun y p q _ _ => by rw [cb_basis]`.
+-/
 theorem isProd (χ : E.X) : IsProd E χ := by
   let H : AddSubgroup E.X :=
     { carrier := {χ | IsProd E χ}
@@ -270,6 +369,9 @@ variable {E} {G : Over S} [GrpObj G] (D : E.GtDatum G)
 def mg (χ : E.X) (z : G.left) (j : E.ChartIdx) : (G.left.presheaf.stalk z)ˣ :=
   ∏ k, gm (𝟙 _) z (D.q.left ⁻¹ᵁ E.chart j) (D.u j k) ^ E.basis.repr χ k
 
+/- English proof (translation)
+Use `(gs_unit (𝟙 _) z (D.q.left ⁻¹ᵁ V) hz (Additive.toMul (E.basis.constr ℤ (fun k => Additive.ofMul (res (Scheme.Hom.preimage_mono D.q.left h) (D.u j k))) χ))).trans (congrArg Units.val ?_)` and prove the remaining obligations. Rewrite using `[Module.Basis.constr_apply_fintype, toMul_sum, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[toMul_zsmul, map_zpow, toMul_ofMul, gm_res (𝟙 _) z _ hz]`. Both sides reduce to the same expression.
+-/
 theorem gs_mono (χ : E.X) (z : G.left) (j : E.ChartIdx) (V : E.B.left.Opens) (h : V ≤ E.chart j)
     (hz : D.q.left z ∈ V) :
     gs (𝟙 _) z (D.q.left ⁻¹ᵁ V) (WtPart.mono D j V h (Multiplicative.ofAdd χ)) = (mg D χ z j).val := by
@@ -280,6 +382,11 @@ theorem gs_mono (χ : E.X) (z : G.left) (j : E.ChartIdx) (V : E.B.left.Opens) (h
   rw [toMul_zsmul, map_zpow, toMul_ofMul, gm_res (𝟙 _) z _ hz]
   rfl
 
+/- English proof (translation)
+Rewrite using `[mg, mg, cb, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hm : D.q.left ((𝟙 G.left : G.left ⟶ G.left) z) ∈ E.chart j ⊓ E.chart j'` using `⟨h, h'⟩`. Establish `e` using `congrArg (gm (𝟙 _) z (D.q.left ⁻¹ᵁ (E.chart j ⊓ E.chart j'))) (D.trans j j' k)`. Establish `e'` using `(gm_res (𝟙 _) z _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_pull (𝟙 _) D.q.left z _ hm _).trans (gm_res (𝟙 _ ≫ D.q.left) z _ hm _)) (gm_res (𝟙 _) z _ hm _))))`.
+
+Rewrite using `[e', mul_zpow, Category.id_comp]`.
+-/
 theorem mg_trans (χ : E.X) (z : G.left) (j j' : E.ChartIdx) (h : D.q.left z ∈ E.chart j)
     (h' : D.q.left z ∈ E.chart j') : mg D χ z j' = cb E χ D.q.left z j j' * mg D χ z j := by
   rw [mg, mg, cb, ← Finset.prod_mul_distrib]
@@ -298,12 +405,18 @@ variable {k : Type} [Field k] (Φ : FibPre k) (d : ℕ) (α : Φ.E.X)
 def cP (y : Φ.E.B.left) (l l' : Φ.N₀.ι) : (Φ.E.B.left.presheaf.stalk y)ˣ :=
   tr Φ.N₀ (𝟙 _) y l l' ^ d * cb Φ.E α (𝟙 _) y (Φ.ch l) (Φ.ch l')
 
+/- English proof (translation)
+Rewrite using `[cP, tr, gm_self Φ.isLB (𝟙 _) y h, cb_self _ _ (𝟙 _) y _ (Φ.le l h), one_pow, _root_.one_mul]`.
+-/
 theorem cPoint_self (y : Φ.E.B.left) (l : Φ.N₀.ι) (h : y ∈ Φ.N₀.U l) : cP Φ d α y l l = 1 := by
   rw [cP, tr, gm_self Φ.isLB (𝟙 _) y h, cb_self _ _ (𝟙 _) y _ (Φ.le l h), one_pow, _root_.one_mul]
 
 def term (l : Φ.N₀.ι) (w : Γ(Φ.E.B.left, Φ.N₀.U l)) : Γ(Φ.G.left, (Φ.H d).U l) :=
   (Φ.D.q.left.app (Φ.N₀.U l)).hom w * WtPart.mono Φ.D (Φ.ch l) _ (Φ.le l) (Multiplicative.ofAdd α)
 
+/- English proof (translation)
+The claim follows from `(gs_mul (𝟙 _) z (Φ.D.q.left ⁻¹ᵁ Φ.N₀.U l) hz _ _).trans (congrArg₂ (· * ·) ((gs_pull (𝟙 _) Φ.D.q.left z _ hz w).trans (by rw [Category.id_comp, gs_stalkMap _ z _ hz])) (gs_mono Φ.D α z _ _ _ hz))`.
+-/
 theorem gs_term (l : Φ.N₀.ι) (w : Γ(Φ.E.B.left, Φ.N₀.U l)) (z : Φ.G.left) (hz : Φ.D.q.left z ∈ Φ.N₀.U l) :
     gs (𝟙 _) z ((Φ.H d).U l) (term Φ d α l w) =
       (Φ.D.q.left.stalkMap z).hom (gs (𝟙 _) (Φ.D.q.left z) _ w) * (mg Φ.D α z (Φ.ch l)).val :=
@@ -311,6 +424,9 @@ theorem gs_term (l : Φ.N₀.ι) (w : Γ(Φ.E.B.left, Φ.N₀.U l)) (z : Φ.G.le
     ((gs_pull (𝟙 _) Φ.D.q.left z _ hz w).trans (by rw [Category.id_comp, gs_stalkMap _ z _ hz]))
     (gs_mono Φ.D α z _ _ _ hz))
 
+/- English proof (translation)
+Establish `hm : Φ.D.q.left z ∈ Φ.N₀.U l ⊓ Φ.N₀.U l'` using `⟨h, h'⟩`. Establish `e : tr (Φ.H d) (𝟙 _) z l l' = tr Φ.N₀ Φ.D.q.left z l l' ^ d` using `(map_pow _ _ _).trans (congrArg (· ^ d) ((gm_pull (𝟙 _) Φ.D.q.left z _ hm _).trans (by rw [Category.id_comp])))`. Rewrite using `[e, mg_trans Φ.D α z (Φ.ch l) (Φ.ch l') (Φ.le l h) (Φ.le l' h'), cP, map_mul, map_pow, ← cb_stalkMap _ _ _ _ _ _ (Φ.le l h) (Φ.le l' h'), tr, gm_stalkMap _ z _ hm, _root_.mul_assoc]`.
+-/
 theorem tr_mg (z : Φ.G.left) (l l' : Φ.N₀.ι) (h : Φ.D.q.left z ∈ Φ.N₀.U l) (h' : Φ.D.q.left z ∈ Φ.N₀.U l') :
     tr (Φ.H d) (𝟙 _) z l l' * mg Φ.D α z (Φ.ch l') =
       Units.map (Φ.D.q.left.stalkMap z).hom.toMonoidHom (cP Φ d α (Φ.D.q.left z) l l') * mg Φ.D α z (Φ.ch l) := by
@@ -322,6 +438,11 @@ theorem tr_mg (z : Φ.G.left) (l l' : Φ.N₀.ι) (h : Φ.D.q.left z ∈ Φ.N₀
 
 variable {Φ d α}
 
+/- English proof (translation)
+Use `WtPart.cf_ext (Φ.D.coord (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l)) fun β => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (WtPart.cf_mono (Φ.D.coord (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l)) β α _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Φ.wt φ β l = _`. Use `split_ifs with e`. Rewrite using `[e]`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `e (h ⟨l, hn⟩).symm`.
+-/
 theorem eq_term {φ : (Φ.H d).Sec} (h : Φ.Pure α φ) (l : Φ.N₀.ι) : φ.f l = term Φ d α l (Φ.wt φ α l) := by
   refine WtPart.cf_ext (Φ.D.coord (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l)) fun β => ?_
   refine Eq.trans ?_ (WtPart.cf_mono (Φ.D.coord (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l)) β α _).symm
@@ -331,6 +452,11 @@ theorem eq_term {φ : (Φ.H d).Sec} (h : Φ.Pure α φ) (l : Φ.N₀.ι) : φ.f 
   · by_contra hn
     exact e (h ⟨l, hn⟩).symm
 
+/- English proof (translation)
+Introduce `y l l' hl hl'`. Take `⟨z, rfl⟩` from `Φ.D.q_surjective.surj y`. Use `Φ.D.q_flat` as an intermediate fact. Establish `e` using `gs_sec φ (𝟙 _) z (i := l) (j := l') hl hl'`. Use `erw [h l, h l'] at e`.
+
+Rewrite `e` using `[gs_term Φ d α l _ z hl, gs_term Φ d α l' _ z hl', mul_left_comm, ← Units.val_mul, tr_mg Φ d α z l l' hl hl', Units.val_mul, ← _root_.mul_assoc]`. Use `stalkMap_inj Φ.D.q.left z ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_comm]`. Conclude with `(Units.mul_left_inj _).1 e`.
+-/
 theorem fam_of_term {φ : (Φ.H d).Sec} {w : ∀ l, Γ(Φ.E.B.left, Φ.N₀.U l)} (h : ∀ l : Φ.N₀.ι, φ.f l = term Φ d α l (w l)) :
     Fam Φ.N₀.U (cP Φ d α) w := by
   intro y l l' hl hl'
@@ -344,6 +470,11 @@ theorem fam_of_term {φ : (Φ.H d).Sec} {w : ∀ l, Γ(Φ.E.B.left, Φ.N₀.U l)
   rw [map_mul, mul_comm]
   exact (Units.mul_left_inj _).1 e
 
+/- English proof (translation)
+Use `⟨Fam.sec (a := fun l => term Φ d α l (w l)) fun z l l' hl hl' => ?_, ?_, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[gs_term Φ d α l _ z hl, gs_term Φ d α l' _ z hl', mul_left_comm, ← Units.val_mul, tr_mg Φ d α z l l' hl hl', h _ l l' hl hl', map_mul, Units.val_mul, ← _root_.mul_assoc, mul_comm _ (Units.val (Units.map _ _))]`. Both sides reduce to the same expression. Introduce and unpack `β ⟨l, hl⟩`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `hl ((WtPart.cf_mono (Φ.D.coord (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l)) β α _).trans (if_neg fun e => hn e.symm))`.
+-/
 theorem exists_term {w : ∀ l, Γ(Φ.E.B.left, Φ.N₀.U l)} (h : Fam Φ.N₀.U (cP Φ d α) w) :
     ∃ φ : (Φ.H d).Sec, Φ.Pure α φ ∧ ∀ l, φ.f l = term Φ d α l (w l) := by
   refine ⟨Fam.sec (a := fun l => term Φ d α l (w l)) fun z l l' hl hl' => ?_, ?_, fun _ => rfl⟩
@@ -355,6 +486,9 @@ theorem exists_term {w : ∀ l, Γ(Φ.E.B.left, Φ.N₀.U l)} (h : Fam Φ.N₀.U
     exact hl ((WtPart.cf_mono (Φ.D.coord (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l)) β α _).trans
       (if_neg fun e => hn e.symm))
 
+/- English proof (translation)
+Use `(mem_locus_iff φ (𝟙 _) z (k := l) hl).trans ?_` and prove the remaining obligations. Use `erw [h l]`. Rewrite using `[gs_term Φ d α l _ z hl, Units.isUnit_mul_units, isUnit_map_iff]`.
+-/
 theorem mem_locus_term {φ : (Φ.H d).Sec} {w : ∀ l, Γ(Φ.E.B.left, Φ.N₀.U l)} (h : ∀ l : Φ.N₀.ι, φ.f l = term Φ d α l (w l))
     (z : Φ.G.left) (l : Φ.N₀.ι) (hl : Φ.D.q.left z ∈ Φ.N₀.U l) :
     z ∈ Out.nonzeroLocus φ ↔ IsUnit (gs (𝟙 _) (Φ.D.q.left z) _ (w l)) := by
@@ -371,6 +505,17 @@ variable (d)
 
 abbrev tw : LB Φ.E.B.left := LB.LinComb π.PB.L (ψ α π) ![((N * d : ℕ) : ℤ) - 1, 1]
 
+/- English proof (translation)
+Establish `hT : (tw d α π).IsLB` using `LB.isLB_linComb π.PB.isLB _ _`. Set `W : ((tw d α π).ι × Φ.N₀.ι) × (Φ.E.O α).L.ι → Φ.E.B.left.Opens` to `fun p => (tw d α π).U p.1.1 ⊓ Φ.N₀.U p.1.2 ⊓ (Φ.E.O α).L.U p.2`. Use `Cob.descend (W' := W) Prod.fst (fun _ => inf_le_left) (fun p y hy => ?_) (fun y p hy => ?_) ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_chart (Φ.E.O α).isLB y`. Conclude with `⟨(p, a), rfl, hy, ha⟩`.
+
+Rewrite using `[tr, gm_self hT (𝟙 _) y hy.1, cPoint_self Φ d α y _ hy.2, inv_one, _root_.mul_one]`. Establish `m₀ : ∀ (j : (tw d α π).ι) y, y ∈ (tw d α π).U j → π.β.hom.left y ∈ (lbPow π.PB.L N).U (fun _ => j 0)` using `fun j y hy => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy 0`. Establish `m₁ : ∀ (j : (tw d α π).ι) y, y ∈ (tw d α π).U j → y ∈ LB.wchart π.PB.L ![ψ α π 1, ψ α π 0] ![j 1, j 0]` using `fun j y hy => Set.mem_iInter.2 (Fin.forall_fin_two.2 ⟨Set.mem_iInter.1 hy 1, Set.mem_iInter.1 hy 0⟩)`. Use `((((cob_iso π.w₀).refine (W' := W) (fun p => (fun _ _ => p.1.1 0, p.1.2)) fun p y hy => ⟨mem_pull.2 (m₀ _ y hy.1.1), hy.1.2⟩).zpow d).mul (((cob_iso (π.wO α)).refine (W' := W) (fun p => (![p.1.1 1, p.1.1 0], p.2)) fun p y hy => ⟨m₁ _ y hy.1.1, hy.2⟩).mul (Cob.refine (W' := W) (is …` and prove the remaining obligations. Establish `e₁` using `gm_linComb π.PB.L (ψ α π) ![((N * d : ℕ) : ℤ) - 1, 1] (𝟙 _) y p.1.1 q.1.1 hp.1.1 hq.1.1`.
+
+Establish `e₂` using `gm_linComb π.PB.L ![ψ α π 1, ψ α π 0] ![1, -1] (𝟙 _) y _ _ (m₁ _ y hp.1.1) (m₁ _ y hq.1.1)`. Establish `e₃` using `(gm_pull_g (lbPow π.PB.L N) π.β.hom.left (𝟙 _) y (fun _ _ => p.1.1 0) (fun _ _ => q.1.1 0) (mem_pull.2 (m₀ _ y hp.1.1)) (mem_pull.2 (m₀ _ y hq.1.1))).trans (gm_linComb π.PB.L (fun _ : PUnit => 𝟙 _) (fun _ => (N : ℤ)) (𝟙 _ ≫ π.β.hom.left) y _ _ (m₀ _ y hp.1.1) (m₀ _ y hq.1.1))`. Rewrite `e₁`, `e₂` using `[Fin.prod_univ_two]`. Rewrite `e₃` using `[Fintype.prod_unique, Category.comp_id]`. Use `(congrArg (· * _) e₁).trans (Eq.trans ?_ (congrArg₂ (· * ·) (congrArg (fun t => (t * _) ^ (d : ℤ)) e₃) (congrArg (fun t => (t * _) * _) e₂)).symm)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `tr π.PB.L (𝟙 _ ≫ π.β.hom.left) y (p.1.1 0) (q.1.1 0) ^ (((N * d : ℕ) : ℤ) - 1) * tr π.PB.L (𝟙 _ ≫ ψ α π 1) y (p.1.1 1) (q.1.1 1) ^ (1 : ℤ) * _ = (tr π.PB.L (𝟙 _ ≫ π.β.hom.left) y (p.1.1 0) (q.1.1 0) ^ (N : ℤ) * _) ^ (d : ℤ) * (tr π.PB.L (𝟙 _ ≫ ψ α π 1) y (p.1.1 1) (q.1.1 1) ^ (1 …`. Rewrite using `[cP]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Use `push_cast`.
+
+Use `module`.
+-/
 theorem cob_tw : Cob (fun p : (tw d α π).ι × Φ.N₀.ι => (tw d α π).U p.1 ⊓ Φ.N₀.U p.2)
     (fun y p q => tr (tw d α π) (𝟙 _) y p.1 q.1 * (cP Φ d α y p.2 q.2)⁻¹) := by
   have hT : (tw d α π).IsLB := LB.isLB_linComb π.PB.isLB _ _
@@ -414,9 +559,15 @@ variable {α d}
 
 def ρ : Φ.E.B ⟶ Out.baseOver (Sp k) ⊗ π.PB.A := lift (Over.homMk Φ.E.B.hom (Category.comp_id _)) π.β.hom
 
+/- English proof (translation)
+The claim follows from `Over.mkIdTerminal.hom_ext f g`.
+-/
 theorem base_ext {T : Over (Sp k)} (f g : T ⟶ Out.baseOver (Sp k)) : f = g :=
   Over.mkIdTerminal.hom_ext f g
 
+/- English proof (translation)
+Use `π.PB.isAb.comm` as an intermediate fact. Use `revert i`. Use `Fin.forall_fin_two.2 ⟨congrArg (fun f => f.left) (lift_snd _ π.β.hom).symm, ?_⟩` and prove the remaining obligations. Use `congrArg (fun f => f.left) (?_ : _ = ρ π ≫ Out.translPt π.PB.A (π.c α))` and prove the remaining obligations. Rewrite using `[_root_.mul_comm, Hom.mul_def, Out.translPt, ρ, comp_lift_assoc, lift_fst_assoc, lift_snd]`.
+-/
 theorem ψ_eq (i : Fin 2) : ψ α π i = (ρ π).left ≫
     ![(snd (Out.baseOver (Sp k)) π.PB.A).left, (Out.translPt π.PB.A (π.c α)).left] i := by
   have := π.PB.isAb.comm
@@ -425,14 +576,23 @@ theorem ψ_eq (i : Fin 2) : ψ α π i = (ρ π).left ≫
   refine congrArg (fun f => f.left) (?_ : _ = ρ π ≫ Out.translPt π.PB.A (π.c α))
   rw [_root_.mul_comm, Hom.mul_def, Out.translPt, ρ, comp_lift_assoc, lift_fst_assoc, lift_snd]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun f => f.left) (by rw [ρ, lift_snd_assoc, Iso.hom_inv_id] : ρ π ≫ snd (Out.baseOver (Sp k)) π.PB.A ≫ π.β.inv = 𝟙 _)`.
+-/
 theorem ρ_inv : (ρ π).left ≫ (snd (Out.baseOver (Sp k)) π.PB.A ≫ π.β.inv).left = 𝟙 _ :=
   congrArg (fun f => f.left) (by rw [ρ, lift_snd_assoc, Iso.hom_inv_id] :
     ρ π ≫ snd (Out.baseOver (Sp k)) π.PB.A ≫ π.β.inv = 𝟙 _)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun f => f.left) (CartesianMonoidalCategory.hom_ext _ _ (base_ext _ _) (by simp [ρ]) : (snd (Out.baseOver (Sp k)) π.PB.A ≫ π.β.inv) ≫ ρ π = 𝟙 _)`.
+-/
 theorem inv_ρ : (snd (Out.baseOver (Sp k)) π.PB.A ≫ π.β.inv).left ≫ (ρ π).left = 𝟙 _ :=
   congrArg (fun f => f.left) (CartesianMonoidalCategory.hom_ext _ _ (base_ext _ _) (by simp [ρ]) :
     (snd (Out.baseOver (Sp k)) π.PB.A ≫ π.β.inv) ≫ ρ π = 𝟙 _)
 
+/- English proof (translation)
+The claim follows from `Set.mem_iInter.2 fun i => by have h : ψ α π i y ∈ π.PB.L.U (j i) := Set.mem_iInter.1 hy i rw [ψ_eq] at h exact h`.
+-/
 theorem ρ_mem (n : ℕ) (j : Fin 2 → π.PB.L.ι) (y : Φ.E.B.left) (hy : y ∈ (tw d α π).U j) :
     (ρ π).left y ∈ (Out.twistLB π.PB.A π.PB.L n (π.c α)).U j :=
   Set.mem_iInter.2 fun i => by
@@ -440,6 +600,11 @@ theorem ρ_mem (n : ℕ) (j : Fin 2 → π.PB.L.ι) (y : Φ.E.B.left) (hy : y �
     rw [ψ_eq] at h
     exact h
 
+/- English proof (translation)
+Establish `e : Out.ptSecT π.PB.A (x ≫ Φ.D.q ≫ π.β.hom) = x ≫ Φ.D.q ≫ ρ π` using `CartesianMonoidalCategory.hom_ext _ _ (base_ext _ _) (by simp [ρ, Out.ptSecT])`. Establish `key : ∀ z : Φ.G.left, z ∈ Out.nonzeroLocus φ ↔ (ρ π).left (Φ.D.q.left z) ∈ Out.nonzeroLocus s` using `fun z => by`. Take `⟨l, hl⟩` from `exists_chart Φ.isLB (Φ.D.q.left z)`. Take `⟨j, hj⟩` from `exists_chart (L := tw d α π) (LB.isLB_linComb π.PB.isLB _ _) (Φ.D.q.left z)`. Rewrite using `[mem_locus_term h z l hl, ← H _ j l hj hl, mem_locus_iff s _ _ (ρ_mem π _ j _ hj)]`.
+
+Rewrite using `[e]`. Conclude with `forall₂_congr fun p _ => key (x.left p)`.
+-/
 theorem locus_iff {φ : (Φ.H d).Sec} {w : ∀ l, Γ(Φ.E.B.left, Φ.N₀.U l)} (h : ∀ l : Φ.N₀.ι, φ.f l = term Φ d α l (w l))
     (s : LB.Sec (Out.twistLB π.PB.A π.PB.L (N * d) (π.c α)))
     (H : ∀ y j l, y ∈ (tw d α π).U j → y ∈ Φ.N₀.U l →
@@ -457,6 +622,19 @@ theorem locus_iff {φ : (Φ.H d).Sec} {w : ∀ l, Γ(Φ.E.B.left, Φ.N₀.U l)} 
 
 end Fibre
 
+/- English proof (translation)
+Introduce `k _ _ Φ N d π α _ _`. Establish `hT : (tw d α π).IsLB` using `LB.isLB_linComb π.PB.isLB _ _`. Use `⟨fun φ hφ => ?_, fun s => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, hu⟩` from `(fam_of_term (eq_term hφ)).move (W' := (tw d α π).U) (c' := tr (tw d α π) (𝟙 _)) (exists_chart Φ.isLB) (fun y j hy => gm_self hT (𝟙 _) y hy) (cob_tw d α π)`. Take `⟨s, hs⟩` from `exists_pull π.PB.L (ψ α π) ![(snd (Out.baseOver (Sp k)) π.PB.A).left, (Out.translPt π.PB.A (π.c α)).left] ![((N * d : ℕ) : ℤ) - 1, 1] (snd (Out.baseOver (Sp k)) π.PB.A ≫ π.β.inv).left (fun i => by rw [ψ_eq, ← Category.assoc, inv_ρ, Category.id_comp]) (Fam.sec (L := tw d α π) hb)`.
+
+Establish `hv : ∀ y j, y ∈ (tw d α π).U j → gs (ρ π).left y ((Out.twistLB π.PB.A π.PB.L (N * d) (π.c α)).U j) (s.f j) = gs (𝟙 _) y ((tw d α π).U j) (b j)` using `fun y j hj => (hs _ (ρ π).left y j (ρ_mem π (N * d) j y hj)).trans (by rw [ρ_inv]; rfl)`. Use `⟨s, fun h0 l => ?_, locus_iff π (eq_term hφ) s fun y j l hj hl => ?_⟩` and prove the remaining obligations. Establish `hw : Φ.wt φ α l = 0` using `fn_ext fun y hy => by`. Take `⟨j, hj⟩` from `exists_chart hT y`. Take `⟨u, e⟩` from `hu y j l hj hy`.
+
+Establish `e₀ : gs (𝟙 _) y ((tw d α π).U j) (b j) = 0` using `(hv y j hj).symm.trans ((congrArg (gs (ρ π).left y _) (h0 j)).trans ((gs_eq _ y _ (ρ_mem π (N * d) j y hj) _).trans (by rw [map_zero, map_zero])))`. Rewrite using `[(Units.mul_right_eq_zero u).1 (e.symm.trans e₀), gs_eq (𝟙 _) y _ hy, map_zero, map_zero]`. Use `(eq_term hφ l).trans ?_` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `(congrArg (· * _) (map_zero (Φ.D.q.left.app (Φ.N₀.U l)).hom)).trans (zero_mul _)`.
+
+Take `⟨u, e⟩` from `hu y j l hj hl`. Rewrite using `[(hv y j hj).trans e, Units.isUnit_units_mul]`. Take `⟨s', hs⟩` from `exists_pull π.PB.L _ (ψ α π) _ (ρ π).left (ψ_eq π) s`. Take `⟨w, hw, hu⟩` from `Fam.move (W := (tw d α π).U) (c := tr (tw d α π) (𝟙 _)) (a := s'.f) (fun y i j hi hj => gs_sec s' (𝟙 _) y hi hj) (exists_chart hT) (cPoint_self Φ d α) (((cob_tw d α π).refine Prod.swap fun p => (inf_comm _ _).le).inv.congr fun y p q _ _ => by`. Rewrite using `[mul_inv_rev, inv_inv]`.
+
+Use the proof step `rfl)`. Take `⟨φ, hφ, e⟩` from `exists_term hw`. Use `⟨φ, hφ, locus_iff π e s fun y j l hj hl => ?_⟩` and prove the remaining obligations. Take `⟨u, e'⟩` from `hu y l j hl hj`. Establish `e₁` using `hs _ (𝟙 _) y j hj`.
+
+Rewrite `e₁` using `[Category.id_comp]`. Rewrite using `[e', Units.isUnit_units_mul]`. Conclude with `(congrArg IsUnit e₁).symm.to_iff`.
+-/
 theorem pure_sec_twist : (∀ (k : Type) [Field k] [IsAlgClosed k] (Φ : FibPre k) (N d : ℕ) (π : Φ.Pol N) (α : Φ.E.X), 1 ≤ N → 1 ≤ d → (∀ φ : (Φ.H d).Sec, Φ.Pure α φ → ∃ s : LB.Sec (Out.twistLB π.PB.A π.PB.L (N * d) (π.c α)), ((∀ j, s.f j = 0) → ∀ l, φ.f l = 0) ∧ ∀ x : Φ.Pt, (⊤ ≤ x.left ⁻¹ᵁ Out.nonzeroLocus φ ↔ ⊤ ≤ (Out.ptSecT π.PB.A (x ≫ Φ.D.q ≫ π.β.hom)).left ⁻¹ᵁ Out.nonzeroLocus s)) ∧ ∀ s : LB.Sec (Out.twistLB π.PB.A π.PB.L (N * d) (π.c α)), ∃ φ : (Φ.H d).Sec, Φ.Pure α φ ∧ ∀ x : Φ.Pt, (⊤ ≤ x.left ⁻¹ᵁ Out.nonzeroLocus φ ↔ ⊤ ≤ (Out.ptSecT π.PB.A (x ≫ Φ.D.q ≫ π.β.hom)).left ⁻¹ᵁ Out.nonzeroLocus s)) := by
   intro k _ _ Φ N d π α _ _
   have hT : (tw d α π).IsLB := LB.isLB_linComb π.PB.isLB _ _

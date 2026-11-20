@@ -26,6 +26,9 @@ attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
 local instance borelIdeleT (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     BorelSpace (AE F E)ˣ := ⟨rfl⟩
 
+/- English proof (translation)
+Unfold `decay`. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `inv_nonneg.mpr (pow_nonneg (add_nonneg zero_le_one (size_nonneg _)) _)`.
+-/
 theorem decay_le (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (N m : ℕ)
     (l : (AE F E)ˣ) : decay F E N m l ≤ ((1 + size F E l.1) ^ N)⁻¹ := by
   unfold decay
@@ -33,6 +36,29 @@ theorem decay_le (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E
   · exact le_rfl
   · exact inv_nonneg.mpr (pow_nonneg (add_nonneg zero_le_one (size_nonneg _)) _)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ s m hs hm`. Take `⟨N, hN⟩` from `GlobalTheory.T.idele_stabilizer_decay_integral_finite F E s (by omega)`. Take `⟨b, hb1, hb2, hb3⟩` from `GlobalTheory.T.idele_coset_representatives_summable F E s m hs hm`. Use `⟨N, fun μ hμ => ?_⟩` and prove the remaining obligations. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`.
+
+Use `haveI : MeasurableMul (AE F E)ˣ := ContinuousMul.measurableMul`. Use `set f : (AE F E)ˣ → ℝ := fun l => decay F E N m l * (absE F E l : ℝ) ^ s with hf`. Establish `f_nn : ∀ l, 0 ≤ f l` using `fun l => mul_nonneg (decay_nonneg _ _ _) (pow_nonneg (NNReal.coe_nonneg _) _)`. Establish `fmeas : Measurable f` using `(GlobalTheory.T.idele_decay_measurable F E N m).mul ((GlobalTheory.Doubling.continuous_absE (F := F) (E := E)).measurable.coe_nnreal_real.pow_const s)`. Use `set g : (AE F E)ˣ → ℝ := fun h => ((1 + size F E h.1) ^ N)⁻¹ * (absInf F E h : ℝ) ^ s with hg`.
+
+Use `set c : ℕ → ℝ := fun j => (absFin F E (b j) : ℝ) ^ s with hc`. Establish `c_nn : ∀ j, 0 ≤ c j` using `fun j => pow_nonneg (NNReal.coe_nonneg _) _`. Use `set T : ℕ → Set (AE F E)ˣ := fun j => (fun l => (b j)⁻¹ * l) ⁻¹' (stab F E : Set (AE F E)ˣ) with hT`. Establish `Tmeas : ∀ j, MeasurableSet (T j)` using `fun j => ((GlobalTheory.T.idele_stabilizer_isOpen F E).preimage (continuous_const.mul continuous_id)).measurableSet`. Establish `key : ∀ j, ∀ h ∈ stab F E, f (b j * h) ≤ c j * g h`.
+
+Introduce `j h hh`. Establish `e1 : absE F E (b j * h) = absFin F E (b j) * absInf F E h`. Rewrite using `[map_mul, absE_eq, absE_eq, absInf_eq_one (hb1 j), GlobalTheory.T.idele_stabilizer_abs_finite_eq_one F E h hh]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hf, hg, hc]`.
+
+Rewrite using `[e1, NNReal.coe_mul, mul_pow]`. Use `decay_le F E N m (b j * h)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.T.idele_decay_size_archimedean_unit_invariant F E (b j) h (hb1 j)]`. Combine the equalities or inequalities in the displayed calculation. Establish `cover : ∀ l, ENNReal.ofReal (f l) ≤ ∑' j, (T j).indicator (fun l => ENNReal.ofReal (f l)) l`.
+
+Introduce `l`. Distinguish the cases in `hl : ∀ i v, evFin F v ((m : AF F) * coord F E l.1 i) ∈ v.adicCompletionIntegers F`. Take `⟨j, hj⟩` from `hb2 l hl`. Use `le_trans (le_of_eq ?_) (ENNReal.le_tsum j)` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (show l ∈ T j from hj)]`.
+
+Establish `: f l = 0`. Simplify using `only [hf, decay, if_neg hl, zero_mul]`. Rewrite using `[this, ENNReal.ofReal_zero]`. Conclude with `bot_le`. Establish `term : ∀ j, ∫⁻ l, (T j).indicator (fun l => ENNReal.ofReal (f l)) l ∂μ ≤ ENNReal.ofReal (c j) * ∫⁻ h in (stab F E : Set (AE F E)ˣ), ENNReal.ofReal (g h) ∂μ`.
+
+Introduce `j`. Rewrite using `[← lintegral_mul_left_eq_self _ (b j)]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun h => ?_` and prove the remaining obligations. Distinguish the cases in `hh : h ∈ stab F E`.
+
+Establish `hT' : b j * h ∈ T j` using `by simpa [hT] using hh`. Rewrite using `[Set.indicator_of_mem hT', Set.indicator_of_mem (show h ∈ (stab F E : Set (AE F E)ˣ) from hh), ← ENNReal.ofReal_mul (c_nn j)]`. Conclude with `ENNReal.ofReal_le_ofReal (key j h hh)`. Establish `hT' : b j * h ∉ T j` using `by simpa [hT] using hh`. Rewrite using `[Set.indicator_of_notMem hT']`.
+
+Conclude with `bot_le`. Use `_ = ENNReal.ofReal (c j) * ∫⁻ h in (stab F E : Set (AE F E)ˣ), ENNReal.ofReal (g h) ∂μ := by`. Rewrite using `[lintegral_indicator (GlobalTheory.T.idele_stabilizer_isOpen F E).measurableSet, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Establish `hfin : ∫⁻ l, ENNReal.ofReal (f l) ∂μ < ⊤`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[ENNReal.ofReal_tsum_of_nonneg c_nn hb3]`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hN μ hμ)`. Use `⟨fmeas.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall f_nn)]`. Conclude with `hfin`.
+-/
 theorem integrable_decay_mul_absE : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (s m : ℕ), 2 ≤ s → 0 < m →
     ∃ N : ℕ, ∀ μ : Measure (AE F E)ˣ, μ.IsHaarMeasure →

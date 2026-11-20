@@ -8,6 +8,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.FilRed
 
+/- English proof (translation)
+Introduce `P R R₁ R₀ _ _ _ I J I₁ κ π hJ ρ κ₁ π₁ hS g A₀ _ A₁ _ A _ i₁ i₂ i h₁ h₂ h e hA hg M F F₁ hF`. Establish `hπ : Function.Surjective π` using `hS.comp ▸ hS.surj₁.comp hS.surj`. Establish `H` using `canonical_of_abelianDeRham P hS.nil hπ hS.ker`. Establish `hb` using `H.crysToDR_bijective h hA hg`. Establish `hs` using `(H g A₀ A i h hA hg).1.2`.
+
+Establish `e' : i₁ ≫ i₂ = 𝟙 _ ≫ i` using `by rw [e, Category.id_comp]`. Establish `key : ∀ d d₁, (redMor h₂).Corr (crysToDR κ h d) (crysToDR κ₁ h₁ d₁) ↔ M.Corr d d₁`. Introduce `d d₁`. Use `⟨fun H' c' ↦ ?_, fun H' ↦ crysToDR_corr κ h h₁ M (redMor h₂) e' H'⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hs c'`.
+
+Establish `k` using `(liftMor κ h).comp M`. Rewrite using `[GrpMor.pull_pull (liftMor κ h) M k (fun _ ↦ rfl) rfl c, ← GrpMor.pull_pull (redMor h₂) (liftMor κ₁ h₁) k (fun _ ↦ rfl) e' c]`. Conclude with `H' c`. Use `⟨fun d₁ ↦ ?_, (canonical_of_abelianDeRham P (isDPNilpotent_squareZero hJ) hS.surj hS.kerJ g A₁ A i₂ h₂ hA hg).2.2⟩` and prove the remaining obligations. Rewrite using `[hF]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, c⟩`. Take `⟨d, rfl⟩` from `hb.2 x`. Conclude with `⟨d, hx, (key d d₁).1 c⟩`. Introduce and unpack `⟨d, hd, c⟩`.
+
+Conclude with `⟨_, hd, (key d d₁).2 c⟩`.
+-/
 theorem filtration_reduction : AbelianDeRham → ∀ (R R₁ R₀ : Type) [CommRing R] [CommRing R₁] [CommRing R₀] (I J : Ideal R) (I₁ : Ideal R₁) (κ : DividedPowers I) (π : R →+* R₀)
     (hJ : J ^ 2 = 0) (ρ : R →+* R₁) (κ₁ : DividedPowers I₁) (π₁ : R₁ →+* R₀), IsStep κ π hJ ρ κ₁ π₁ →
     ∀ (g : ℕ) (A₀ : Over (Sp R₀)) [GrpObj A₀] (A₁ : Over (Sp R₁)) [GrpObj A₁] (A : Over (Sp R)) [GrpObj A]

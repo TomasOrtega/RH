@@ -19,6 +19,11 @@ section Gen
 
 variable {G : Type*} [Group G] [TopologicalSpace G]
 
+/- English proof (translation)
+Establish `hcl : IsClopen (U : Set G)` using `⟨hc.isClosed, ho⟩`. Use `⟨(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_, HasCompactSupport.intro hc (fun x hx => Set.indicator_of_notMem hx _)⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (U : Set G)`. Use `filter_upwards [ho.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`.
+
+Both sides reduce to the same expression. Use `filter_upwards [hcl.compl.isOpen.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`.
+-/
 private theorem ind_test [T2Space G] (U : Subgroup G) (hc : IsCompact (U : Set G)) (ho : IsOpen (U : Set G)) :
     IsLocallyConstant ((U : Set G).indicator (1 : G → ℂ)) ∧ HasCompactSupport ((U : Set G).indicator (1 : G → ℂ)) := by
   have hcl : IsClopen (U : Set G) := ⟨hc.isClosed, ho⟩
@@ -31,6 +36,9 @@ private theorem ind_test [T2Space G] (U : Subgroup G) (hc : IsCompact (U : Set G
   · filter_upwards [hcl.compl.isOpen.mem_nhds hx] with y hy
     rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]
 
+/- English proof (translation)
+Distinguish the cases in `h : g ∈ U`. Rewrite using `[Set.indicator_of_mem (show u * g ∈ (U : Set G) from U.mul_mem hu h), Set.indicator_of_mem (show g ∈ (U : Set G) from h)]`. Both sides reduce to the same expression. Establish `h' : u * g ∉ U` using `fun h' => h ((Subgroup.mul_mem_cancel_left U hu).1 h')`. Rewrite using `[Set.indicator_of_notMem (show u * g ∉ (U : Set G) from h'), Set.indicator_of_notMem (show g ∉ (U : Set G) from h)]`.
+-/
 private theorem ind_left (U : Subgroup G) {u : G} (hu : u ∈ U) (g : G) :
     (U : Set G).indicator (1 : G → ℂ) (u * g) = (U : Set G).indicator (1 : G → ℂ) g := by
   by_cases h : g ∈ U
@@ -41,6 +49,21 @@ private theorem ind_left (U : Subgroup G) {u : G} (hu : u ∈ U) (g : G) :
     rw [Set.indicator_of_notMem (show u * g ∉ (U : Set G) from h'),
       Set.indicator_of_notMem (show g ∉ (U : Set G) from h)]
 
+/- English proof (translation)
+Establish `hK : IsCompact (tsupport φ)` using `h2`. Establish `key : ∃ B : OpenSubgroup G, ∀ b ∈ B, ∀ y ∈ tsupport φ, φ (b * y) = φ y`. Use `hK.induction_on (p := fun s => ∃ B : OpenSubgroup G, ∀ b ∈ B, ∀ y ∈ s, φ (b * y) = φ y) ⟨⊤, by simp⟩ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `s t hst ⟨B, hB⟩`. Conclude with `⟨B, fun b hb y hy => hB b hb y (hst hy)⟩`.
+
+Introduce and unpack `s t ⟨B, hB⟩ ⟨C, hC⟩`. Use `⟨B ⊓ C, fun b hb y hy => ?_⟩` and prove the remaining obligations. Establish `hb'` using `OpenSubgroup.mem_inf.1 hb`. Break down `hy with hy | hy` into its components or cases. Conclude with `hB b hb'.1 y hy`.
+
+Conclude with `hC b hb'.2 y hy`. Introduce `x _`. Establish `hW : IsOpen {z : G | φ (z * x) = φ x}` using `(h1.isOpen_fiber (φ x)).preimage (continuous_mul_right x)`. Establish `h1W : {z : G | φ (z * x) = φ x} ∈ nhds (1 : G)` using `hW.mem_nhds (by simp)`. Take `⟨B, -, hB⟩` from `exists_openSubgroup_isCompact_subset h1W`.
+
+Use `⟨{y | y * x⁻¹ ∈ B}, mem_nhdsWithin_of_mem_nhds ?_, B, ?_⟩` and prove the remaining obligations. Conclude with `(B.isOpen.preimage (continuous_mul_right x⁻¹)).mem_nhds (by simp [one_mem])`. Introduce `b hb y hy`. Establish `hy' : y * x⁻¹ ∈ B` using `hy`. Establish `e1 : φ (b * (y * x⁻¹) * x) = φ x` using `hB (mul_mem hb hy')`.
+
+Establish `e2 : φ ((y * x⁻¹) * x) = φ x` using `hB hy'`. Simplify using `only [mul_assoc, inv_mul_cancel, mul_one] at e1 e2`. Rewrite using `[e1, e2]`. Take `⟨B, hB⟩` from `key`. Use `⟨B, fun b hb g => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hg : g ∈ tsupport φ`. Conclude with `hB b hb g hg`. Distinguish the cases in `hbg : b * g ∈ tsupport φ`. Use `hB b⁻¹ (inv_mem hb) (b * g) hbg` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`.
+
+Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hg, image_eq_zero_of_notMem_tsupport hbg]`.
+-/
 private theorem exists_left_inv [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
     (φ : G → ℂ) (h1 : IsLocallyConstant φ) (h2 : HasCompactSupport φ) :
     ∃ B : OpenSubgroup G, ∀ b ∈ B, ∀ g, φ (b * g) = φ g := by
@@ -86,10 +109,16 @@ section Semi
 variable {ι : Type*} [Fintype ι] {R : ι → Type*} [∀ i, CommRing (R i)] [∀ i, TopologicalSpace (R i)]
   [∀ i, IsTopologicalRing (R i)] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `(continuous_id.matrix_elem a b).comp Units.continuous_val`.
+-/
 private theorem ent (T : Type*) [CommRing T] [TopologicalSpace T] (a b : Fin n) :
     Continuous fun u : GL (Fin n) T => (u : Matrix (Fin n) (Fin n) T) a b :=
   (continuous_id.matrix_elem a b).comp Units.continuous_val
 
+/- English proof (translation)
+The claim follows from `(continuous_id.matrix_elem a b).comp Units.continuous_coe_inv`.
+-/
 private theorem entInv (T : Type*) [CommRing T] [TopologicalSpace T] (a b : Fin n) :
     Continuous fun u : GL (Fin n) T => ((u⁻¹ : GL (Fin n) T) : Matrix (Fin n) (Fin n) T) a b :=
   (continuous_id.matrix_elem a b).comp Units.continuous_coe_inv
@@ -132,9 +161,15 @@ private def piGL : GL (Fin n) (∀ i, R i) ≃ₜ (∀ i, GL (Fin n) (R i)) wher
     · refine continuous_matrix fun a b => continuous_pi fun i => ?_
       exact (entInv (R i) a b).comp (continuous_apply i)
 
+/- English proof (translation)
+The claim follows from `(continuous_apply i).comp (piGL (R := R) (n := n)).continuous`.
+-/
 private theorem cont_ev (i : ι) : Continuous (mapGL n (Pi.evalRingHom R i)) :=
   (continuous_apply i).comp (piGL (R := R) (n := n)).continuous
 
+/- English proof (translation)
+Use `(piGL (R := R) (n := n)).isCompact_preimage.2 (isCompact_univ_pi hC)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `[piGL]`.
+-/
 private theorem compact_ev (C : ∀ i, Set (GL (Fin n) (R i))) (hC : ∀ i, IsCompact (C i)) :
     IsCompact {g : GL (Fin n) (∀ i, R i) | ∀ i, mapGL n (Pi.evalRingHom R i) g ∈ C i} := by
   have := (piGL (R := R) (n := n)).isCompact_preimage.2 (isCompact_univ_pi hC)
@@ -142,6 +177,9 @@ private theorem compact_ev (C : ∀ i, Set (GL (Fin n) (R i))) (hC : ∀ i, IsCo
   ext g
   simp [piGL]
 
+/- English proof (translation)
+Establish `: {g : GL (Fin n) (∀ i, R i) | ∀ i, mapGL n (Pi.evalRingHom R i) g ∈ C i} = ⋂ i, mapGL n (Pi.evalRingHom R i) ⁻¹' C i`. Use extensionality with `g`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => (hC i).preimage (cont_ev i)`.
+-/
 private theorem open_ev (C : ∀ i, Set (GL (Fin n) (R i))) (hC : ∀ i, IsOpen (C i)) :
     IsOpen {g : GL (Fin n) (∀ i, R i) | ∀ i, mapGL n (Pi.evalRingHom R i) g ∈ C i} := by
   have : {g : GL (Fin n) (∀ i, R i) | ∀ i, mapGL n (Pi.evalRingHom R i) g ∈ C i} =
@@ -151,6 +189,13 @@ private theorem open_ev (C : ∀ i, Set (GL (Fin n) (R i))) (hC : ∀ i, IsOpen 
   rw [this]
   exact isOpen_iInter_of_finite fun i => (hC i).preimage (cont_ev i)
 
+/- English proof (translation)
+Use `compact_ev (n := n) (R := R) (Function.update (fun _ => Set.univ) i₀ K) (fun i => by` as an intermediate fact. Take `rfl` from `h i`. Simplify using `using hK)`. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hg i`. Take `rfl` from `h i`. Simplify using `using hg`. Introduce `hg`.
+
+Simplify using `using hg i₀`.
+-/
 private theorem compact_ev_one (i₀ : ι) (h : ∀ i, i = i₀) (K : Set (GL (Fin n) (R i₀))) (hK : IsCompact K) :
     IsCompact {g : GL (Fin n) (∀ i, R i) | mapGL n (Pi.evalRingHom R i₀) g ∈ K} := by
   have := compact_ev (n := n) (R := R) (Function.update (fun _ => Set.univ) i₀ K) (fun i => by
@@ -172,6 +217,9 @@ section Scale
 variable {n : ℕ} {R S : Type*} [CommRing R] [CommRing S] [TopologicalSpace R]
   [MeasurableSpace (GL (Fin n) R)] [MeasurableSpace (GL (Fin n) S)]
 
+/- English proof (translation)
+Unfold `orb quotInt`. Use `split_ifs with h`. Simplify using `only [mul_assoc]`. Rewrite using `[integral_const_mul]`. Simplify using the standard rewrite rules.
+-/
 private theorem orb_scale (μ : Measure (GL (Fin n) R)) (γ : GL (Fin n) R) (ν : Measure (Subgroup.centralizer {γ}))
     (a : ℂ) (f : GL (Fin n) R → ℂ) : orb μ γ ν (fun g => a * f g) = a * orb μ γ ν f := by
   unfold orb quotInt
@@ -180,6 +228,11 @@ private theorem orb_scale (μ : Measure (GL (Fin n) R)) (γ : GL (Fin n) R) (ν 
     rw [integral_const_mul]
   · simp
 
+/- English proof (translation)
+Introduce `γ hγ ν hν`. Take `⟨h1, h2⟩` from `h γ hγ ν hν`. Use `⟨fun δ hδ => ?_, fun hn => ?_⟩` and prove the remaining obligations. Rewrite using `[h1 δ hδ, orb_scale, one_mul]`. Use `h2 hn` as an intermediate fact.
+
+Rewrite `this` using `[orb_scale]`. Conclude with `(mul_eq_zero.1 this).resolve_left ha`.
+-/
 private theorem match_scale (ι : R →+* S) (s : S →+* S) (l : ℕ) (μS : Measure (GL (Fin n) S)) (μR : Measure (GL (Fin n) R))
     {a : ℂ} (ha : a ≠ 0) (φ : GL (Fin n) S → ℂ) (f : GL (Fin n) R → ℂ)
     (h : Match ι s l μS μR 1 φ (fun g => a * f g)) : Match ι s l μS μR a φ f := by
@@ -197,6 +250,17 @@ section Conv
 
 variable {G : Type*} [Group G] [MeasurableSpace G]
 
+/- English proof (translation)
+Unfold `cv`. Distinguish the cases in `hx : x ∈ U`. Establish `: (fun y => (U : Set G).indicator (1 : G → ℂ) y * (c * (U : Set G).indicator (1 : G → ℂ) (y⁻¹ * x))) = (U : Set G).indicator (fun _ => c)`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ U`.
+
+Establish `h' : y⁻¹ * x ∈ U` using `U.mul_mem (U.inv_mem hy) hx`. Rewrite using `[Set.indicator_of_mem (show y ∈ (U : Set G) from hy), Set.indicator_of_mem (show y⁻¹ * x ∈ (U : Set G) from h'), Set.indicator_of_mem (show y ∈ (U : Set G) from hy)]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (show y ∉ (U : Set G) from hy), Set.indicator_of_notMem (show y ∉ (U : Set G) from hy)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, integral_indicator_const _ hU, Set.indicator_of_mem (show x ∈ (U : Set G) from hx)]`. Simplify using the standard rewrite rules. Establish `: (fun y => (U : Set G).indicator (1 : G → ℂ) y * (c * (U : Set G).indicator (1 : G → ℂ) (y⁻¹ * x))) = 0`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ U`.
+
+Establish `h' : y⁻¹ * x ∉ U` using `fun h' => hx (by simpa using U.mul_mem hy h')`. Rewrite using `[Set.indicator_of_notMem (show y⁻¹ * x ∉ (U : Set G) from h')]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (show y ∉ (U : Set G) from hy)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, Set.indicator_of_notMem (show x ∉ (U : Set G) from hx)]`. Simplify using the standard rewrite rules.
+-/
 private theorem cv_ind (μ : Measure G) (U : Subgroup G) (hU : MeasurableSet (U : Set G)) (c : ℂ) (x : G) :
     cv μ ((U : Set G).indicator (1 : G → ℂ)) (fun g => c * (U : Set G).indicator (1 : G → ℂ) g) x =
       ((μ.real (U : Set G) : ℂ) * c) * (U : Set G).indicator (1 : G → ℂ) x := by
@@ -225,6 +289,11 @@ private theorem cv_ind (μ : Measure G) (U : Subgroup G) (hU : MeasurableSet (U 
     rw [this, Set.indicator_of_notMem (show x ∉ (U : Set G) from hx)]
     simp
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => funext g`. Simplify using `[cvAll]`. Consider the case `succ m ih`. Use function extensionality and compare the values at `g`.
+
+Establish `: Fin.tail (fun _ : Fin (m + 1 + 1) => (U : Set G).indicator (1 : G → ℂ)) = fun _ : Fin (m + 1) => (U : Set G).indicator (1 : G → ℂ)` using `rfl`. Simplify using `only [cvAll, this, ih]`. Rewrite using `[cv_ind μ U hU, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem cvAll_ind (μ : Measure G) (U : Subgroup G) (hU : MeasurableSet (U : Set G)) (m : ℕ) :
     cvAll μ m (fun _ => (U : Set G).indicator (1 : G → ℂ)) =
       fun g => ((μ.real (U : Set G) : ℂ) ^ m) * (U : Set G).indicator (1 : G → ℂ) g := by
@@ -240,6 +309,11 @@ private theorem cvAll_ind (μ : Measure G) (U : Subgroup G) (hU : MeasurableSet 
 
 end Conv
 
+/- English proof (translation)
+Establish `: UpperTheory.ConvolutionTheory.Loc.ball n ρ = ⋂ i : Fin n, ⋂ j : Fin n, {g : GL (Fin n) k | valuation k ((g : Matrix (Fin n) (Fin n) k) i j - (1 : Matrix (Fin n) (Fin n) k) i j) ≤ ρ}`. Use extensionality with `g`. Simplify using `[UpperTheory.ConvolutionTheory.Loc.ball]`. Establish `ho : IsOpen (UpperTheory.ConvolutionTheory.Loc.ball (E` using `k) n ρ) := by`. Rewrite using `[this]`.
+
+Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `exact (GLnLocal.isOpen_valuation_le k h.ne').preimage ((GLnLocal.continuous_entry k n i j).sub continuous_const)`. Conclude with `ho.mem_nhds fun i j => by simp`.
+-/
 private theorem ball_nhds {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) (ρ : ValueGroupWithZero k) (h : 0 < ρ) : UpperTheory.ConvolutionTheory.Loc.ball n ρ ∈ nhds (1 : GL (Fin n) k) := by
   have : UpperTheory.ConvolutionTheory.Loc.ball n ρ =
@@ -253,6 +327,9 @@ private theorem ball_nhds {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
     exact (GLnLocal.isOpen_valuation_le k h.ne').preimage ((GLnLocal.continuous_entry k n i j).sub continuous_const)
   exact ho.mem_nhds fun i j => by simp
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `GLnLocal.isLocallyProfinite k n`. Establish `hm : (U₀ : Set (GL (Fin n) k)) ∩ (GLnLocal.integralGL k n : Set (GL (Fin n) k)) ∩ N ∈ nhds (1 : GL (Fin n) k)` using `Filter.inter_mem (Filter.inter_mem (hU₀.mem_nhds (one_mem U₀)) ((GLnLocal.isOpen_integralGL k n).mem_nhds (one_mem _))) hN`. Take `⟨K, hK, hs⟩` from `exists_openSubgroup_isCompact_subset hm`. Conclude with `⟨K.toSubgroup, hK, K.isOpen, fun x hx => (hs hx).1.1, fun x hx => (hs hx).1.2, fun x hx => (hs hx).2⟩`.
+-/
 private theorem small_level {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) (U₀ : Subgroup (GL (Fin n) k)) (hU₀ : IsOpen (U₀ : Set (GL (Fin n) k))) {N : Set (GL (Fin n) k)}
     (hN : N ∈ nhds (1 : GL (Fin n) k)) :
@@ -278,17 +355,34 @@ private def Pack (σ : E ≃ₐ[F] E) (n : ℕ) (v : HeightOneSpectrum (𝓞 F))
   ((∀ u ∈ UE, ∀ g, φ (u * g) = φ g) ∧ ∀ u ∈ UF, ∀ g, f (u * g) = f g) ∧
   GM.MatchAt σ v c φ f ∧ c ≠ 0 ∧ UF ≤ U₀ ∧ f = (UF : Set (GL (Fin n) (v.adicCompletion F))).indicator 1
 
+/- English proof (translation)
+Introduce `i1 i2 i3 i4 mE mF h1 h2 h3 h4`. Conclude with `match_scale _ _ _ _ _ ha _ _ (h mE mF h1 h2 h3 h4)`.
+-/
 private theorem matchAt_scale {σ : E ≃ₐ[F] E} {n : ℕ} {v : HeightOneSpectrum (𝓞 F)} {a : ℂ} (ha : a ≠ 0)
     {φ : GL (Fin n) (CompletionsOver E v) → ℂ} {f : GL (Fin n) (v.adicCompletion F) → ℂ}
     (h : GM.MatchAt σ v 1 φ (fun g => a * f g)) : GM.MatchAt σ v a φ f := by
   intro i1 i2 i3 i4 mE mF h1 h2 h3 h4
   exact match_scale _ _ _ _ _ ha _ _ (h mE mF h1 h2 h3 h4)
 
+/- English proof (translation)
+Use `haveI : ∀ u : PlacesOver E v, T2Space (GL (Fin n) (u.1.adicCompletion E)) := fun u => (GLnLocal.isLocallyProfinite (u.1.adicCompletion E) n).2.2.1`. Conclude with `(piGL (R := fun w : PlacesOver E v => w.1.adicCompletion E) (n := n)).isEmbedding.t2Space`.
+-/
 private theorem t2Space_generalLinearGroup_completionsOver (n : ℕ) (v : HeightOneSpectrum (𝓞 F)) : T2Space (GL (Fin n) (CompletionsOver E v)) := by
   haveI : ∀ u : PlacesOver E v, T2Space (GL (Fin n) (u.1.adicCompletion E)) :=
     fun u => (GLnLocal.isLocallyProfinite (u.1.adicCompletion E) n).2.2.1
   exact (piGL (R := fun w : PlacesOver E v => w.1.adicCompletion E) (n := n)).isEmbedding.t2Space
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (GL (Fin n) (CompletionsOver E v)) := borel _`. Use `haveI : BorelSpace (GL (Fin n) (CompletionsOver E v)) := ⟨rfl⟩`. Use `letI : MeasurableSpace (GL (Fin n) (v.adicCompletion F)) := borel _`. Use `haveI : BorelSpace (GL (Fin n) (v.adicCompletion F)) := ⟨rfl⟩`. Take `⟨mE, mF, hE, hF, -, -, hM⟩` from `UpperTheory.ConvolutionTheory.T.matchOne F E σ n v`.
+
+Take `⟨ρ, hρ, hup⟩` from `UpperTheory.ConvolutionTheory.Loc.placeUp F E σ hσ v w hw n mE mF hE hF`. Take `⟨UF, hc, ho, h0, hI, hb⟩` from `small_level n U₀ hU₀ (ball_nhds n ρ hρ)`. Take `⟨t1, t2⟩` from `ind_test UF hc ho`. Take `⟨φ₀, hφ₀, hm⟩` from `hup _ ⟨t1, t2⟩ (fun x hx => hb (by by_contra hn; exact hx (Set.indicator_of_notMem hn _)))`. Take `⟨l1, l2, l3, l4⟩` from `GLnLocal.isLocallyProfinite (w.1.adicCompletion E) n`.
+
+Take `⟨B, hB⟩` from `exists_left_inv φ₀ hφ₀.1 hφ₀.2`. Establish `hcont` using `cont_ev (n := n) (R := fun w : PlacesOver E v => w.1.adicCompletion E) w`. Use `⟨_, _, 1, (B.toSubgroup ⊓ GLnLocal.integralGL (w.1.adicCompletion E) n).comap (GM.cmp w), UF, ⟨⟨hφ₀.1.comp_continuous hcont, ?_, t1, t2⟩, ⟨?_, ?_, ho, hI⟩, ⟨?_, fun u hu g => ind_left UF hu g⟩, hM 1 _ _ hm, one_ne_zero, h0, rfl⟩⟩` and prove the remaining obligations. Use `haveI := t2Space_generalLinearGroup_completionsOver (E := E) n v`. Establish `hK` using `compact_ev_one (n := n) (R := fun w : PlacesOver E v => w.1.adicCompletion E) w hw _ hφ₀.2`.
+
+Conclude with `HasCompactSupport.intro' hK hK.isClosed fun g hg => (show φ₀ _ = 0 from image_eq_zero_of_notMem_tsupport hg)`. Conclude with `(B.isOpen.inter (GLnLocal.isOpen_integralGL _ n)).preimage hcont`. Introduce `g hg u`. Take `rfl` from `hw u`. Conclude with `hg.2`.
+
+Introduce `u hu g`. Use `hB _ hu.1 (GM.cmp w g)` as an intermediate fact. Simplify `this` using `[GM.cmp]`.
+-/
 private theorem pack_nonsplit [IsGalois F E] (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) (n : ℕ)
     (v : HeightOneSpectrum (𝓞 F)) (w : PlacesOver E v) (hw : ∀ w' : PlacesOver E v, w' = w)
     (U₀ : Subgroup (GL (Fin n) (v.adicCompletion F))) (hU₀ : IsOpen (U₀ : Set (GL (Fin n) (v.adicCompletion F)))) :
@@ -320,6 +414,41 @@ private theorem pack_nonsplit [IsGalois F E] (σ : E ≃ₐ[F] E) (hσ : ∀ τ 
     have := hB _ hu.1 (GM.cmp w g)
     simpa [GM.cmp] using this
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (GL (Fin n) (CompletionsOver E v)) := borel _`. Use `haveI : BorelSpace (GL (Fin n) (CompletionsOver E v)) := ⟨rfl⟩`. Use `letI iF : MeasurableSpace (GL (Fin n) (v.adicCompletion F)) := borel _`. Use `haveI bF : BorelSpace (GL (Fin n) (v.adicCompletion F)) := ⟨rfl⟩`. Take `⟨UF, hc, ho, h0, hI, -⟩` from `small_level n U₀ hU₀ Filter.univ_mem`.
+
+Take `⟨t1, t2⟩` from `ind_test UF hc ho`. Use `haveI := t2Space_generalLinearGroup_completionsOver (E := E) n v`. Establish `hsl` using `fun u : PlacesOver E v => UpperTheory.ConvolutionTheory.L1.splitLoc F E v u (hv u) n`. Establish `he₀` using `fun u : PlacesOver E v => (hsl u).1`. Use `choose e he using he₀`.
+
+Set `B : ∀ u : PlacesOver E v, Subgroup (GL (Fin n) (u.1.adicCompletion E))` to `fun u => UF.comap (e u).symm.toMulEquiv.toMonoidHom`. Establish `hBm : ∀ (u : PlacesOver E v) x, x ∈ B u ↔ (e u).symm x ∈ UF` using `fun u x => Iff.rfl`. Establish `hB : ∀ (u : PlacesOver E v) g, mapGL n (completionMap v u.1) g ∈ B u ↔ g ∈ UF`. Introduce `u g`. Rewrite using `[hBm, ← he u g]`.
+
+Simplify using the standard rewrite rules. Establish `hBc : ∀ u : PlacesOver E v, IsCompact (B u : Set (GL (Fin n) (u.1.adicCompletion E)))` using `fun u => (e u).symm.toHomeomorph.isCompact_preimage.2 hc`. Establish `hBo : ∀ u : PlacesOver E v, IsOpen (B u : Set (GL (Fin n) (u.1.adicCompletion E)))` using `fun u => ho.preimage (e u).symm.continuous`. Set `h : ∀ u : PlacesOver E v, GL (Fin n) (u.1.adicCompletion E) → ℂ` to `fun u => (B u : Set (GL (Fin n) (u.1.adicCompletion E))).indicator 1`. Set `UE : Subgroup (GL (Fin n) (CompletionsOver E v))` to `⨅ u, (B u).comap (GM.cmp u)`.
+
+Establish `hUEm : ∀ g, g ∈ UE ↔ ∀ u, GM.cmp u g ∈ B u`. Introduce `g`. Simplify using `[UE, Subgroup.mem_iInf]`. Establish `hUEs : (UE : Set (GL (Fin n) (CompletionsOver E v))) = {g | ∀ u, mapGL n (Pi.evalRingHom (fun w : PlacesOver E v => w.1.adicCompletion E) u) g ∈ (B u : Set (GL (Fin n) (u.1.adicCompletion E)))}`. Use extensionality with `g`.
+
+Conclude with `hUEm g`. Establish `hUEc : IsCompact (UE : Set (GL (Fin n) (CompletionsOver E v)))`. Rewrite using `[hUEs]`. Conclude with `compact_ev _ hBc`. Establish `hUEo : IsOpen (UE : Set (GL (Fin n) (CompletionsOver E v)))`.
+
+Rewrite using `[hUEs]`. Conclude with `open_ev _ hBo`. Establish `hφ : GM.prodFn h = (UE : Set (GL (Fin n) (CompletionsOver E v))).indicator 1`. Use function extensionality and compare the values at `g`. Unfold `GM.prodFn`.
+
+Rewrite using `[finprod_eq_prod_of_fintype]`. Distinguish the cases in `hg : g ∈ UE`. Rewrite using `[Set.indicator_of_mem (show g ∈ (UE : Set _) from hg)]`. Use `Finset.prod_eq_one fun u _ => ?_` and prove the remaining obligations. Use `show (B u : Set (GL (Fin n) (u.1.adicCompletion E))).indicator 1 (GM.cmp u g) = 1`.
+
+Rewrite using `[Set.indicator_of_mem (show GM.cmp u g ∈ (B u : Set (GL (Fin n) (u.1.adicCompletion E))) from (hUEm g).1 hg u)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show g ∉ (UE : Set _) from hg)]`. Take `⟨u, hu⟩` from `not_forall.1 (fun hh => hg ((hUEm g).2 hh))`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ u) (Set.indicator_of_notMem (show GM.cmp u g ∉ (B u : Set (GL (Fin n) (u.1.adicCompletion E))) from hu) _)`.
+
+Take `⟨mE, mF, hE, hF, -, hF1, -⟩` from `UpperTheory.ConvolutionTheory.T.matchOne F E σ n v`. Take `⟨w, -, hM⟩` from `UpperTheory.ConvolutionTheory.L1.matchProd F E σ hσ m hm n v w₀ hv`. Establish `hht : ∀ u : PlacesOver E v, Continuous (h u) ∧ HasCompactSupport (h u)` using `fun u => by`. Use `GLnLocal.isLocallyProfinite (u.1.adicCompletion E) n` as an intermediate fact. Take `⟨-, -, l3, -⟩` from `this`.
+
+Take `⟨s1, s2⟩` from `ind_test (B u) (hBc u) (hBo u)`. Conclude with `⟨s1.continuous, s2⟩`. Establish `hMA : GM.MatchAt σ v 1 (GM.prodFn h) (cvAll mF m fun i g => h (w i) (mapGL n (completionMap v (w i).1) g))`. Introduce `i1 i2 i3 i4 mE' mF' a1 a2 a3 a4`. Conclude with `@hM h hht iF bF mF hF hF1 i1 i2 i3 i4 mE' mF' a1 a2 a3 a4`.
+
+Establish `hfun : (fun (i : Fin (m + 1)) g => h (w i) (mapGL n (completionMap v (w i).1) g)) = fun _ => (UF : Set (GL (Fin n) (v.adicCompletion F))).indicator (1 : GL (Fin n) (v.adicCompletion F) → ℂ)`. Use function extensionality and compare the values at `i g`. Distinguish the cases in `hg : g ∈ UF`. Rewrite using `[Set.indicator_of_mem (show g ∈ (UF : Set _) from hg)]`. Conclude with `Set.indicator_of_mem (show _ ∈ (B (w i) : Set (GL (Fin n) ((w i).1.adicCompletion E))) from (hB (w i) g).2 hg) _`.
+
+Rewrite using `[Set.indicator_of_notMem (show g ∉ (UF : Set _) from hg)]`. Conclude with `Set.indicator_of_notMem (show _ ∉ (B (w i) : Set (GL (Fin n) ((w i).1.adicCompletion E))) from fun hh => hg ((hB (w i) g).1 hh)) _`. Rewrite `hMA` using `[hfun, cvAll_ind mF UF ho.measurableSet m]`. Take `⟨g1, g2, g3, g4⟩` from `GLnLocal.isLocallyProfinite (v.adicCompletion F) n`. Use `haveI := hF`.
+
+Establish `hpos : mF.real (UF : Set (GL (Fin n) (v.adicCompletion F))) ≠ 0`. Establish `a1 : mF (UF : Set (GL (Fin n) (v.adicCompletion F))) ≠ 0` using `ho.measure_ne_zero mF ⟨1, one_mem UF⟩`. Establish `a2 : mF (UF : Set (GL (Fin n) (v.adicCompletion F))) ≠ ⊤` using `hc.measure_lt_top.ne`. Conclude with `(ENNReal.toReal_pos a1 a2).ne'`. Establish `ha : ((mF.real (UF : Set (GL (Fin n) (v.adicCompletion F))) : ℂ) ^ m) ≠ 0` using `pow_ne_zero _ (Complex.ofReal_ne_zero.2 hpos)`.
+
+Use `⟨GM.prodFn h, _, _, UE, UF, ⟨?_, ⟨hUEo, ?_, ho, hI⟩, ⟨?_, fun u hu g => ind_left UF hu g⟩, matchAt_scale ha hMA, ha, h0, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Take `⟨s1, s2⟩` from `ind_test UE hUEc hUEo`. Conclude with `⟨s1, s2, t1, t2⟩`. Introduce `g hg u`.
+
+Establish `hu` using `(hUEm g).1 hg u`. Establish `hx : (e u).symm (GM.cmp u g) ∈ UF` using `hu`. Use `(((hsl u).2.1) ((e u).symm (GM.cmp u g))).2 (hI hx)` as an intermediate fact. Rewrite `this` using `[← he u]`. Establish `h2 : GM.cmp u g ∈ GLnLocal.integralGL (u.1.adicCompletion E) n` using `by simpa using this`.
+
+Conclude with `h2`. Rewrite using `[hφ]`. Conclude with `fun u hu g => ind_left UE hu g`.
+-/
 private theorem pack_split [IsGalois F E] (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) (m : ℕ)
     (hm : Module.finrank F E = m + 1) (n : ℕ) (v : HeightOneSpectrum (𝓞 F)) (w₀ : PlacesOver E v) (hv : GM.Split E v)
     (U₀ : Subgroup (GL (Fin n) (v.adicCompletion F))) (hU₀ : IsOpen (U₀ : Set (GL (Fin n) (v.adicCompletion F)))) :
@@ -422,6 +551,23 @@ private theorem pack_split [IsGalois F E] (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E
 
 end Pack
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp n hn q w₀ S hq hS U₀ hU₀`. Establish `hpl` using `UpperTheory.ConvolutionTheory.T.places F E hp`. Take `⟨-, -, hne, huniq, -, -⟩` from `hpl`. Take `⟨m, hm⟩ : ∃ m, Module.finrank F E = m + 1` from `⟨Module.finrank F E - 1, by have := hp.pos; omega⟩`. Establish `hex : ∀ v : HeightOneSpectrum (𝓞 F), ∃ φ f c UE UF, Pack σ n v (U₀ v) φ f c UE UF`.
+
+Introduce `v`. Take `⟨w⟩` from `hne v`. Distinguish the cases in `hv : GM.Split E v`. Conclude with `pack_split σ hσ m hm n v w hv (U₀ v) (hU₀ v)`. Conclude with `pack_nonsplit σ hσ n v w (huniq v hv w) (U₀ v) (hU₀ v)`.
+
+Use `choose φ₁ f₁ c₁ UE₁ UF₁ hP using hex`. Set `unitG : ∀ v : HeightOneSpectrum (𝓞 F), Subgroup (GL (Fin n) (CompletionsOver E v))` to `fun v => ⨅ u : PlacesOver E v, (GLnLocal.integralGL (u.1.adicCompletion E) n).comap (GM.cmp u)`. Establish `hunit : ∀ v, (unitG v : Set (GL (Fin n) (CompletionsOver E v))) = unitSet E n v`. Introduce `v`. Use extensionality with `g`.
+
+Simplify using `[unitG, unitSet, Subgroup.mem_iInf, GM.cmp]`. Set `iwG : Subgroup (GL (Fin n) (CompletionsOver E q))` to `⨅ u : PlacesOver E q, (GLnLocal.iwahori (u.1.adicCompletion E) n).comap (GM.cmp u)`. Use `⟨{ S := S q_not := hq unr := hS φ := fun v => if v ∈ S then φ₁ v else if h : v = q then h ▸ GM.iwFn w₀ 0 else (unitSet E n v).indicator 1 f := fun v => if v ∈ S then f₁ v else if h : v = q then h ▸ (GM.iwCoset q 0).indicator 1 else (GLnLocal.integralGL (v.adicCompletion F) n : Se …` and prove the remaining obligations. Simplify using `only [if_pos hv]`. Conclude with `(hP v).1`.
+
+Use `lev := fun v hv => by`. Simplify using `only [if_pos hv]`. Conclude with `(hP v).2.1`. Use `inv := fun v hv => by`. Simplify using `only [if_pos hv]`.
+
+Conclude with `(hP v).2.2.1`. Use `mat := fun v hv => by`. Simplify using `only [if_pos hv]`. Conclude with `(hP v).2.2.2.1`. Use `at_q := by`.
+
+Simplify using `only [if_neg hq, dif_pos, if_true]`. Use `⟨trivial, trivial, fun g => ?_, trivial⟩` and prove the remaining obligations. Simplify using `[iwG, Subgroup.mem_iInf]`. Use `off := fun v hv hvq => by`. Simplify using `only [if_neg hv, dif_neg hvq, if_neg hvq]`.
+
+Conclude with `⟨trivial, trivial, hunit v, trivial⟩ }, rfl, fun v hv => ?_⟩`. Simplify using `only [if_pos hv]`. Conclude with `⟨(hP v).2.2.2.2.1, (hP v).2.2.2.2.2.1, (hP v).2.2.2.2.2.2⟩`.
+-/
 theorem locUp : UpperTheory.ConvolutionTheory.T.LocUp := by
   intro F E _ _ _ _ _ _ _ _ σ hσ hp n hn q w₀ S hq hS U₀ hU₀
   have hpl := UpperTheory.ConvolutionTheory.T.places F E hp

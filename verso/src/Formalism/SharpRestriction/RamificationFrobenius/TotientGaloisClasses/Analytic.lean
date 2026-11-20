@@ -26,6 +26,9 @@ def gChi {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (y : ℝ) : ℂ :=
 def Induces {N : ℕ} (χ : DirichletCharacter ℂ N) (f : ℕ → ℂ) (M : ℕ) : Prop :=
   χ.IsPrimitive ∧ ∀ a : ℕ, a.Coprime M → χ (a : ZMod N) = f a
 
+/- English proof (translation)
+Consider the cases of `ψ`. Consider the cases of `ψ'`. Consider the cases of `hN`. Consider the cases of `hχ`. Both sides reduce to the same expression.
+-/
 private theorem pchar_ext_of_N_eq_of_heq (ψ ψ' : PChar) (hN : ψ.N = ψ'.N) (hχ : HEq ψ.χ ψ'.χ) : ψ = ψ' := by
   cases ψ
   cases ψ'
@@ -33,12 +36,24 @@ private theorem pchar_ext_of_N_eq_of_heq (ψ ψ' : PChar) (hN : ψ.N = ψ'.N) (h
   cases hχ
   rfl
 
+/- English proof (translation)
+Substitute `hNN` using the available equality. Conclude with `heq_of_eq (DirichletCharacter.changeLevel_injective d1 heq)`.
+-/
 private theorem heq_of_changeLevel_eq_of_level_eq {N N' L : ℕ} [NeZero L] (χ : DirichletCharacter ℂ N)
     (χ' : DirichletCharacter ℂ N') (d1 : N ∣ L) (d2 : N' ∣ L) (hNN : N = N')
     (heq : DirichletCharacter.changeLevel d1 χ = DirichletCharacter.changeLevel d2 χ') : HEq χ χ' := by
   subst hNN
   exact heq_of_eq (DirichletCharacter.changeLevel_injective d1 heq)
 
+/- English proof (translation)
+Use `haveI := ψ.ne`. Use `haveI := ψ'.ne`. Establish `hN0 : ψ.N ≠ 0` using `NeZero.ne _`. Establish `hN0' : ψ'.N ≠ 0` using `NeZero.ne _`. Use `haveI : NeZero (ψ.N * ψ'.N * M) := ⟨mul_ne_zero (mul_ne_zero hN0 hN0') hM⟩`.
+
+Establish `d1 : ψ.N ∣ ψ.N * ψ'.N * M` using `⟨ψ'.N * M, by ring⟩`. Establish `d2 : ψ'.N ∣ ψ.N * ψ'.N * M` using `⟨ψ.N * M, by ring⟩`. Establish `heq : DirichletCharacter.changeLevel d1 ψ.χ = DirichletCharacter.changeLevel d2 ψ'.χ`. Apply `MulChar.ext` to reduce the goal to its premises. Introduce `u`.
+
+Rewrite using `[DirichletCharacter.changeLevel_eq_cast_of_dvd, DirichletCharacter.changeLevel_eq_cast_of_dvd]`. Establish `hcop : (u : ZMod (ψ.N * ψ'.N * M)).val.Coprime (ψ.N * ψ'.N * M)` using `ZMod.val_coe_unit_coprime u`. Establish `hcM : (u : ZMod (ψ.N * ψ'.N * M)).val.Coprime M` using `Nat.Coprime.coprime_dvd_right (dvd_mul_left M (ψ.N * ψ'.N)) hcop`. Rewrite using `[ZMod.cast_eq_val, ZMod.cast_eq_val, h.2 _ hcM, h'.2 _ hcM]`. Establish `hc : ψ.N = ψ'.N`.
+
+Establish `e1` using `DirichletCharacter.conductor_changeLevel ψ.χ d1`. Establish `e2` using `DirichletCharacter.conductor_changeLevel ψ'.χ d2`. Rewrite `e1` using `[heq, e2]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `pchar_ext_of_N_eq_of_heq ψ ψ' hc (heq_of_changeLevel_eq_of_level_eq ψ.χ ψ'.χ d1 d2 hc heq)`.
+-/
 theorem Induces.unique {ψ ψ' : PChar} {f : ℕ → ℂ} {M : ℕ} (hM : M ≠ 0) (h : Induces ψ.χ f M) (h' : Induces ψ'.χ f M) :
     ψ = ψ' := by
   haveI := ψ.ne
@@ -65,6 +80,9 @@ theorem Induces.unique {ψ ψ' : PChar} {f : ℕ → ℂ} {M : ℕ} (hM : M ≠ 
       _ = ψ'.N := (DirichletCharacter.isPrimitive_def ψ'.χ).mp ψ'.prim
   exact pchar_ext_of_N_eq_of_heq ψ ψ' hc (heq_of_changeLevel_eq_of_level_eq ψ.χ ψ'.χ d1 d2 hc heq)
 
+/- English proof (translation)
+Use `⟨DirichletCharacter.primitiveCharacter_isPrimitive χ, fun a ha => ?_⟩` and prove the remaining obligations. Use `show χ.primitiveCharacter (a : ZMod χ.conductor) = χ (a : ZMod N)`. Establish `hu : ((ZMod.unitOfCoprime a ha : (ZMod N)ˣ) : ZMod N) = (a : ZMod N)` using `ZMod.coe_unitOfCoprime a ha`. Use `conv_rhs => rw [← DirichletCharacter.changeLevel_primitiveCharacter χ, ← hu, DirichletCharacter.changeLevel_eq_cast_of_dvd, hu, ZMod.cast_natCast (DirichletCharacter.conductor_dvd_level χ)]`.
+-/
 theorem induces_of {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) :
     Induces (PChar.of χ).χ (fun a => χ (a : ZMod N)) N := by
   refine ⟨DirichletCharacter.primitiveCharacter_isPrimitive χ, fun a ha => ?_⟩
@@ -107,9 +125,17 @@ def IsPrimOf (θ : φ.Char) {N : ℕ} (χ : DirichletCharacter ℂ N) : Prop := 
 
 def prim (θ : φ.Char) : PChar := PChar.of (H.dir θ)
 
+/- English proof (translation)
+The claim follows from `An.induces_of (H.dir θ)`.
+-/
 theorem isPrimOf_prim (θ : φ.Char) : H.IsPrimOf θ (H.prim θ).χ :=
   An.induces_of (H.dir θ)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hN : H.condN ≠ 0` using `NeZero.ne _`. Conclude with `An.Induces.unique hN h (H.isPrimOf_prim θ)`. Introduce and unpack `rfl`.
+
+Conclude with `H.isPrimOf_prim θ`.
+-/
 theorem isPrimOf_iff (θ : φ.Char) (ψ : PChar) : H.IsPrimOf θ ψ.χ ↔ ψ = H.prim θ := by
   constructor
   · intro h
@@ -118,6 +144,9 @@ theorem isPrimOf_iff (θ : φ.Char) (ψ : PChar) : H.IsPrimOf θ ψ.χ ↔ ψ = 
   · rintro rfl
     exact H.isPrimOf_prim θ
 
+/- English proof (translation)
+Rewrite using `[dir, MulChar.ofUnitHom_coe]`. Both sides reduce to the same expression.
+-/
 theorem dir_unit (θ : φ.Char) (u : (ZMod H.condN)ˣ) : H.dir θ u = θ (H.art u) := by
   rw [dir, MulChar.ofUnitHom_coe]
   rfl
@@ -126,6 +155,9 @@ def IsCharE {N : ℕ} (χ : DirichletCharacter ℂ N) : Prop := ∃ θ : φ.Char
 
 def Kept (S : Finset PChar) (θ : φ.Char) : Prop := ∃ ψ ∈ S, H.IsPrimOf θ ψ.χ
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ψ, hψ, h⟩`. Rewrite `hψ` using `[(H.isPrimOf_iff θ ψ).mp h]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `⟨H.prim θ, h, H.isPrimOf_prim θ⟩`.
+-/
 theorem kept_iff (S : Finset PChar) (θ : φ.Char) : H.Kept S θ ↔ H.prim θ ∈ S := by
   constructor
   · rintro ⟨ψ, hψ, h⟩

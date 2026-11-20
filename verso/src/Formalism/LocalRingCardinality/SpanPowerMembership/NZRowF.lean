@@ -13,17 +13,34 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] (σ : K →+* ℂ)
   (hstar : ∀ z, σ (star z) = starRingEnd ℂ (σ z)) {n : ℕ}
   {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (b : OrthonormalBasis (Fin n) ℂ V)
 
+/- English proof (translation)
+Rewrite using `[← b.repr.inner_map_map, PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[repr_jB, repr_jB, RCLike.inner_apply, mul_comm]`.
+-/
 theorem inner_jB (a x : Fin n → K) :
     inner ℂ (jB σ b a) (jB σ b x) = ∑ i, starRingEnd ℂ (σ (a i)) * σ (x i) := by
   rw [← b.repr.inner_map_map, PiLp.inner_apply]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [repr_jB, repr_jB, RCLike.inner_apply, mul_comm]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨star (c : K), map_isIntegral_int (starRingEnd K) (RingOfIntegers.isIntegral_coe c)⟩, rfl⟩`.
+-/
 theorem star_int (c : 𝓞 K) : ∃ c' : 𝓞 K, star (c : K) = (c' : K) :=
   ⟨⟨star (c : K), map_isIntegral_int (starRingEnd K) (RingOfIntegers.isIntegral_coe c)⟩, rfl⟩
 
 include hstar in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[mem_stdL]`. Introduce `i`. Take `⟨c, hc⟩` from `h (Pi.basisFun K (Fin n) i) (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Use `⟨c, σ.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, inner_jB, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Rewrite using `[Pi.basisFun_apply, Pi.single_eq_of_ne hk, map_zero, map_zero, zero_mul]`.
+
+Simplify using the standard rewrite rules. Introduce `hx a ha`. Rewrite `hx`, `ha` using `[mem_stdL]`. Use `choose cx hcx using hx`. Use `choose ca hca using ha`.
+
+Use `choose ca' hca' using fun i => star_int (ca i)`. Use `⟨∑ i, ca' i * cx i, ?_⟩` and prove the remaining obligations. Establish `hc : ((∑ i, ca' i * cx i : 𝓞 K) : K) = ∑ i, star (a i) * x i`. Rewrite using `[show ((∑ i, ca' i * cx i : 𝓞 K) : K) = algebraMap (𝓞 K) K (∑ i, ca' i * cx i) from rfl, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hca i, hcx i, hca' i]`. Rewrite using `[inner_jB, hc, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hstar]`.
+-/
 theorem dual_std (x : Fin n → K) :
     (∀ a ∈ (stdH K n).L, ∃ c : 𝓞 K, inner ℂ (jB σ b a) (jB σ b x) = σ (c : K)) ↔ x ∈ (stdH K n).L := by
   constructor
@@ -57,6 +74,9 @@ section Sharp
 
 variable (D : D7)
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => show ((RowSide.sharp D).downTo μ j).comp (D.what₂.io μ j) = (D.what₂.downTo μ j).comp (D.what₂.io μ j)`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+-/
 theorem sharp_downTo (μ) (j : ℕ) : (RowSide.sharp D).downTo μ j = D.what₂.downTo μ j := by
   induction j with
   | zero => rfl
@@ -64,31 +84,52 @@ theorem sharp_downTo (μ) (j : ℕ) : (RowSide.sharp D).downTo μ j = D.what₂.
     show ((RowSide.sharp D).downTo μ j).comp (D.what₂.io μ j) = (D.what₂.downTo μ j).comp (D.what₂.io μ j)
     rw [ih]; rfl
 
+/- English proof (translation)
+Unfold `RowSide.iota Rows.Data.iota`. Rewrite using `[sharp_downTo]`. Both sides reduce to the same expression.
+-/
 theorem sharp_iota (μ) : (RowSide.sharp D).iota μ = D.what₂.iota μ := by
   unfold RowSide.iota Rows.Data.iota
   rw [sharp_downTo]; rfl
 
+/- English proof (translation)
+Unfold `RowSide.Usp Rows.Data.Usp`. Rewrite using `[sharp_iota]`. Both sides reduce to the same expression.
+-/
 theorem sharp_Usp (μ) : (RowSide.sharp D).Usp μ = D.what₂.Usp μ := by
   unfold RowSide.Usp Rows.Data.Usp
   rw [sharp_iota]; rfl
 
+/- English proof (translation)
+Unfold `RowSide.Qsp Rows.Data.Qsp`. Rewrite using `[sharp_Usp]`. Both sides reduce to the same expression.
+-/
 theorem sharp_Qsp (μ) : (RowSide.sharp D).Qsp μ = D.what₂.Qsp μ := by
   unfold RowSide.Qsp Rows.Data.Qsp
   rw [sharp_Usp]; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem starProj_congr {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {A B : Submodule ℂ V}
     (h : A = B) (iA : A.HasOrthogonalProjection) (iB : B.HasOrthogonalProjection) (x : V) :
     A.starProjection x = B.starProjection x := by
   subst h; rfl
 
+/- English proof (translation)
+Unfold `RowSide.LamSet Rows.Data.LamSet`. Conclude with `Set.image_congr' fun x => starProj_congr (sharp_Qsp D μ) _ _ x`.
+-/
 theorem sharp_LamSet (μ) : (RowSide.sharp D).LamSet μ = D.what₂.LamSet μ := by
   unfold RowSide.LamSet Rows.Data.LamSet
   exact Set.image_congr' fun x => starProj_congr (sharp_Qsp D μ) _ _ x
 
+/- English proof (translation)
+Unfold `RowSide.RRset Rows.Data.RRset`. Rewrite using `[sharp_iota, sharp_LamSet]`. Both sides reduce to the same expression.
+-/
 theorem sharp_RRset (μ) : (RowSide.sharp D).RRset μ = D.what₂.RRset μ := by
   unfold RowSide.RRset Rows.Data.RRset
   rw [sharp_iota, sharp_LamSet]; rfl
 
+/- English proof (translation)
+Unfold `DV.RRDef RowSide.RRDef`. Simplify using `only [sharp_RRset]`. Both sides reduce to the same expression.
+-/
 theorem rrDef_sharp_iff : DV.RRDef D ↔ (RowSide.sharp D).RRDef := by
   unfold DV.RRDef RowSide.RRDef
   simp only [sharp_RRset]
@@ -142,13 +183,30 @@ variable (Lb : Lbl H) (hT2 : ∀ u, T u ≠ 2) (per : ∀ u : W, Bool → FK ((K
 
 local notation "DR" => (hostLevelRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
 
+/- English proof (translation)
+Introduce `z` and use `⟨fun ⟨y, hy⟩ => ⟨y, hy.symm⟩, fun ⟨c, hc⟩ => ⟨c, hc.symm⟩⟩`.
+-/
 theorem row_OFull : OFull DR := fun z =>
   ⟨fun ⟨y, hy⟩ => ⟨y, hy.symm⟩, fun ⟨c, hc⟩ => ⟨c, hc.symm⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem row_Drows : (DR).what₂.Drows = d := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rowRecord_baseDimension : (DR).what₂.D0 = d0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem row_Dall : (DR).what₂.Dall = Dall := rfl
 
+/- English proof (translation)
+Use `letI : StarRing H.E := H.cmStar`. Rewrite using `[rrDef_sharp_iff]`. Use `rrDef_of (RowSide.sharp DR) (stdH H.E d).L (fun w y => ?_) rfl` and prove the remaining obligations. Establish `hi : (RowSide.sharp DR).iota ((DR).what₂.muAt w) = (LinearMap.id : En d →ₗ[ℂ] En d)` using `(sharp_iota DR _).trans (rowsN_iota (hd := hd) _)`. Rewrite using `[RRset_eq _ rfl (by rw [hi]; exact Function.injective_id), hi]`.
+
+Establish `e : (⇑(LinearMap.id : En d →ₗ[ℂ] En d)) '' ((RowSide.sharp DR).Mtilde ((DR).what₂.muAt w)).carrier = (oB (eb d) (H.φ₀.comp (algebraMap (𝓞 H.E) H.E))).carrier` using `Set.image_id _`. Conclude with `(iff_of_eq (congrArg (fun s => jB H.φ₀ (eb d) y ∈ s) e)).trans (jB_mem_oB H.φ₀ (eb d) (algebraMap (𝓞 H.E) H.E) (row_OFull H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hl …`.
+-/
 theorem row_rrDef : DV.RRDef DR := by
   letI : StarRing H.E := H.cmStar
   rw [rrDef_sharp_iff]
@@ -161,6 +219,9 @@ theorem row_rrDef : DV.RRDef DR := by
   exact (iff_of_eq (congrArg (fun s => jB H.φ₀ (eb d) y ∈ s) e)).trans
     (jB_mem_oB H.φ₀ (eb d) (algebraMap (𝓞 H.E) H.E) (row_OFull H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat) y)
 
+/- English proof (translation)
+The claim follows from `letI : StarRing H.E := H.cmStar (stdH_good H.E d).2`.
+-/
 theorem row_rrFull : (RowSide.sharp DR).RRFull :=
   letI : StarRing H.E := H.cmStar
   (stdH_good H.E d).2
@@ -170,8 +231,14 @@ def levelRecordSharpAmbientForm : AmbForm DR (RowSide.sharp DR) :=
 
 def levelRecordDivisor : DivX DR := divXStd DR (fun _ => d0) (fun _ => eb d0) (fun _ => rfl) 1 one_pos
 
+/- English proof (translation)
+The claim follows from `rowsN_buDefQ H.E H.φ₀ _ (Tau2 R) _ Dst _ _ _ _ kb ks tw htw W _ d Dall d0 hd FT ft ft0 _ _ _`.
+-/
 theorem row_buDef : Rows.BuDefQ (DR).what₂ := rowsN_buDefQ H.E H.φ₀ _ (Tau2 R) _ Dst _ _ _ _ kb ks tw htw W _ d Dall d0 hd FT ft ft0 _ _ _
 
+/- English proof (translation)
+Use `lamDef_of DR fun μ j π x _ => ?_` and prove the remaining obligations. Establish `h : (DR).what₂.thetaT μ j = (LinearMap.id : En d0 →ₗ[ℂ] En d0)` using `rowsN_thetaT (hd := hd) μ j`. Rewrite using `[h]`. Use `show x = ((1 : ℝ) : ℂ) • x`. Simplify using the standard rewrite rules.
+-/
 theorem row_lamDef : DV.LamDef DR := by
   refine lamDef_of DR fun μ j π x _ => ?_
   have h : (DR).what₂.thetaT μ j = (LinearMap.id : En d0 →ₗ[ℂ] En d0) := rowsN_thetaT (hd := hd) μ j
@@ -179,12 +246,22 @@ theorem row_lamDef : DV.LamDef DR := by
   show x = ((1 : ℝ) : ℂ) • x
   simp
 
+/- English proof (translation)
+Establish `hi : (RowSide.sharp DR).iota (DR).what₂.mu0 = (LinearMap.id : En d →ₗ[ℂ] En d)` using `(sharp_iota DR _).trans (rowsN_iota (hd := hd) _)`. Conclude with `(kapOf_one (RowSide.sharp DR) _ (iiStar_id _ rfl (fun x y => by rw [hi]; rfl) (by rw [hi]; exact Function.surjective_id)) (fun _ _ => rfl)).symm`.
+-/
 theorem row_kapR : DV.KapRBase (levelRecordDivisor H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat) := by
   have hi : (RowSide.sharp DR).iota (DR).what₂.mu0 = (LinearMap.id : En d →ₗ[ℂ] En d) :=
     (sharp_iota DR _).trans (rowsN_iota (hd := hd) _)
   exact (kapOf_one (RowSide.sharp DR) _ (iiStar_id _ rfl (fun x y => by rw [hi]; rfl)
     (by rw [hi]; exact Function.surjective_id)) (fun _ _ => rfl)).symm
 
+/- English proof (translation)
+Use `letI : StarRing H.E := H.cmStar`. Establish `hset : ∀ y : Fin d0 → H.E, (DR).what₂.jMt μ j y ∈ (DR).what₂.TjSet μ j ↔ y ∈ (stdH H.E d0).L` using `fun y => by`. Establish `e : (DR).what₂.TjSet μ j = (oB (eb d0) (H.φ₀.comp (algebraMap (𝓞 H.E) H.E))).carrier` using `rowsN_TjSet (hd := hd) μ j`. Rewrite using `[e]`. Conclude with `jB_mem_oB H.φ₀ (eb d0) (algebraMap (𝓞 H.E) H.E) (row_OFull H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hga …`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact (hset y).mp hy`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `smul a y _ hy`. Conclude with `(stdH H.E d0).L.smul_mem a hy`. Introduce `hx`. Conclude with `Submodule.subset_span ((hset x).mpr hx)`.
+-/
 theorem row_memTjL (μ j) (x : Fin d0 → H.E) :
     x ∈ Idx.TjL DR μ j ↔ x ∈ (@stdH H.E _ _ H.cmStar d0).L := by
   letI : StarRing H.E := H.cmStar
@@ -203,6 +280,15 @@ theorem row_memTjL (μ j) (x : Fin d0 → H.E) :
   · intro hx
     exact Submodule.subset_span ((hset x).mpr hx)
 
+/- English proof (translation)
+Use `letI : StarRing H.E := H.cmStar`. Use `⟨fun μ j w _ _ => (ijIdx_zero _ μ j w ?_).symm, fun μ j w _ _ => (jwIdx_zero DR μ j w ?_).symm⟩` and prove the remaining obligations. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Conclude with `⟨y, (row_memTjL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat μ j y).mpr hy, rfl⟩`. Introduce and unpack `⟨x, hx, e⟩`. Establish `: y = x` using `jB_inj H.φ₀ (eb d0) e`. Rewrite using `[this]`. Conclude with `(row_memTjL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat μ j x).mp hx`.
+
+Use extensionality with `x`. Use `(row_memTjL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat μ j x).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨Submodule.subset_span ((row_memTjL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat μ j x).mpr hx), fun a …` and prove the remaining obligations.
+
+Conclude with `(dual_std H.φ₀ (fun z => emb_star H H.φ₀ z) (eb d0) x).mpr hx a ((row_memTjL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb h …`. Introduce and unpack `⟨-, h⟩`. Conclude with `(dual_std H.φ₀ (fun z => emb_star H H.φ₀ z) (eb d0) x).mp fun a ha => h a ((row_memTjL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT f …`.
+-/
 theorem row_idx : IdxDefs DR (levelRecordDivisor H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat) := by
   letI : StarRing H.E := H.cmStar
   refine ⟨fun μ j w _ _ => (ijIdx_zero _ μ j w ?_).symm, fun μ j w _ _ => (jwIdx_zero DR μ j w ?_).symm⟩
@@ -225,12 +311,21 @@ theorem row_idx : IdxDefs DR (levelRecordDivisor H u0 hcW hv0 hb0 he0 hf0 hl0 De
       exact (dual_std H.φ₀ (fun z => emb_star H H.φ₀ z) (eb d0) x).mp fun a ha =>
         h a ((row_memTjL H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat μ j a).mpr ha)
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem row_ftOcc (h : ∀ π : FT, (∃ σ, ft σ = π) ∨ ∃ σ, ft0 σ = π) :
     ∀ π, (∃ σ, (DR).what₂.ft σ = π) ∨ ∃ σ, (DR).what₂.ft0 σ = π := h
 
+/- English proof (translation)
+The claim follows from `goodRow_ndG H Lb (rowsHN H hcW K Dst kb ks tw htw d Dall d0 hd FT ft ft0 per) (nHypN H hcW K Dst kb ks tw htw d Dall d0 hd FT ft ft0 per hg)`.
+-/
 theorem row_goodFT : ∀ σ, (DR).nd.goodRow σ :=
   goodRow_ndG H Lb (rowsHN H hcW K Dst kb ks tw htw d Dall d0 hd FT ft ft0 per) (nHypN H hcW K Dst kb ks tw htw d Dall d0 hd FT ft ft0 per hg)
 
+/- English proof (translation)
+The claim follows from `labelNewtypes_idempotent_ne_zero H Lb _ _ ht G.tame`.
+-/
 theorem rowRecord_idempotent_ne_zero : (DR).ntypes.e0 ≠ 0 := labelNewtypes_idempotent_ne_zero H Lb _ _ ht G.tame
 
 def levelRecordCentralCharacterOne : CentralCharacterOne DR where
@@ -244,8 +339,14 @@ def levelRecordCentralCharacterOne : CentralCharacterOne DR where
 
 def levelRecordBaseSide : BaseLevelRowSide DR := standardBaseSide DR (levelRecordCentralCharacterOne H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
 
+/- English proof (translation)
+The claim follows from `standardBaseSide_latticeDefined DR _ (row_OFull H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)`.
+-/
 theorem row_rr0Def : (levelRecordBaseSide H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat).s.RRDef := standardBaseSide_latticeDefined DR _ (row_OFull H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
 
+/- English proof (translation)
+The claim follows from `letI : StarRing H.E := H.cmStar (stdH_good H.E d0).2`.
+-/
 theorem row_rr0Full : (levelRecordBaseSide H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat).BaseRowLatticeFull :=
   letI : StarRing H.E := H.cmStar
   (stdH_good H.E d0).2

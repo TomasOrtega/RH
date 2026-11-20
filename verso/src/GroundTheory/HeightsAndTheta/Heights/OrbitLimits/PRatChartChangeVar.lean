@@ -18,6 +18,9 @@ namespace RatChartChangeVar
 
 variable {n d : ℕ}
 
+/- English proof (translation)
+Unfold `RatChart.ratAbsDens RatChart.ratDens RatChart.ratPosDens RatChart.ratSheetSum`. Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ hfin, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Apply the tactic sequence `refine ⟨Finset.sum_congr rfl fun x _ => ?_, Finset.sum_congr rfl fun x _ => ?_⟩ <;> split_ifs <;> simp only [Pi.neg_apply, neg_mul, max_zero_add_max_neg_zero_eq_abs_self, max_zero_sub_max_neg_zero_eq_self, add_zero, sub_zero]`.
+-/
 theorem ratDens_eq_posParts {J : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin d → MvPolynomial (Fin n) ℂ}
     {q : MvPolynomial (Fin n) ℂ} (f : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ) (y : Fin d → ℂ)
     (hfin : (RatChart.ratFibre J p q y).Finite) :
@@ -30,12 +33,18 @@ theorem ratDens_eq_posParts {J : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin d �
     split_ifs <;> simp only [Pi.neg_apply, neg_mul, max_zero_add_max_neg_zero_eq_abs_self,
       max_zero_sub_max_neg_zero_eq_self, add_zero, sub_zero]
 
+/- English proof (translation)
+Unfold `RatChart.ratPosDens RatChart.ratSheetSum`. Apply the tactic sequence `exact finsum_nonneg fun x => finsum_nonneg fun _ => by split_ifs <;> simp`.
+-/
 theorem ratPosDens_nonneg (J : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin d → MvPolynomial (Fin n) ℂ)
     (q : MvPolynomial (Fin n) ℂ) (f : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ) (y : Fin d → ℂ) :
     0 ≤ RatChart.ratPosDens J p q f φ y := by
   unfold RatChart.ratPosDens RatChart.ratSheetSum
   exact finsum_nonneg fun x => finsum_nonneg fun _ => by split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `hM n d J p q (fun a b => max (a * b) 0) f φ hfin ((continuous_fst.mul continuous_snd).max continuous_const).measurable hf`.
+-/
 theorem measurable_ratPosDens (hM : RatSheetSumMeasurable.Statement) {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {p : Fin d → MvPolynomial (Fin n) ℂ} {q : MvPolynomial (Fin n) ℂ}
     (hfin : ∀ y, (RatChart.ratFibre J p q y).Finite) {f : (Fin n → ℂ) → ℝ} (hf : Measurable f)
@@ -43,6 +52,17 @@ theorem measurable_ratPosDens (hM : RatSheetSumMeasurable.Statement) {J : Ideal 
   hM n d J p q (fun a b => max (a * b) 0) f φ hfin
     ((continuous_fst.mul continuous_snd).max continuous_const).measurable hf
 
+/- English proof (translation)
+Establish `h0` using `ratPosDens_nonneg J p q f φ`. Establish `h1` using `ratPosDens_nonneg J p q (-f) φ`. Establish `m0` using `measurable_ratPosDens hM hfin hf φ`. Establish `m1` using `measurable_ratPosDens hM hfin hf.neg φ`. Establish `habs : RatChart.ratAbsDens J p q f φ = fun y => RatChart.ratPosDens J p q f φ y + RatChart.ratPosDens J p q (-f) φ y`.
+
+Use function extensionality and compare the values at `fun y => (ratDens_eq_posParts f φ y (hfin y)).1`. Establish `hlin : ∫⁻ y, ENNReal.ofReal (RatChart.ratAbsDens J p q f φ y) = (∫⁻ y, ENNReal.ofReal (RatChart.ratPosDens J p q f φ y)) + ∫⁻ y, ENNReal.ofReal (RatChart.ratPosDens J p q (-f) φ y)`. Rewrite using `[habs, ← lintegral_add_left m0.ennreal_ofReal]`. Conclude with `lintegral_congr fun y => ENNReal.ofReal_add (h0 y) (h1 y)`. Establish `hint : Integrable (RatChart.ratAbsDens J p q f φ) ↔ ∫⁻ y, ENNReal.ofReal (RatChart.ratAbsDens J p q f φ y) < ⊤`.
+
+Rewrite using `[habs, Integrable, hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun y => add_nonneg (h0 y) (h1 y))]`. Conclude with `and_iff_right (m0.add m1).aestronglyMeasurable`. Use `⟨hint.trans (by rw [hlin]), fun hi => ?_⟩` and prove the remaining obligations. Establish `hi0 : Integrable (RatChart.ratPosDens J p q f φ)` using `hi.mono' m0.aestronglyMeasurable (Filter.Eventually.of_forall fun y => by`. Rewrite using `[Real.norm_of_nonneg (h0 y), habs]`.
+
+Combine the linear relations using `[h1 y])`. Establish `hi1 : Integrable (RatChart.ratPosDens J p q (-f) φ)` using `hi.mono' m1.aestronglyMeasurable (Filter.Eventually.of_forall fun y => by`. Rewrite using `[Real.norm_of_nonneg (h1 y), habs]`. Combine the linear relations using `[h0 y])`. Establish `hd : RatChart.ratDens J p q f φ = fun y => RatChart.ratPosDens J p q f φ y - RatChart.ratPosDens J p q (-f) φ y`.
+
+Use function extensionality and compare the values at `fun y => (ratDens_eq_posParts f φ y (hfin y)).2`. Rewrite using `[hd, integral_sub hi0 hi1, integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall h0) m0.aestronglyMeasurable, integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall h1) m1.aestronglyMeasurable]`.
+-/
 theorem ratInt_eq_posParts (hM : RatSheetSumMeasurable.Statement) {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {p : Fin d → MvPolynomial (Fin n) ℂ} {q : MvPolynomial (Fin n) ℂ}
     (hfin : ∀ y, (RatChart.ratFibre J p q y).Finite) {f : (Fin n → ℂ) → ℝ} (hf : Measurable f)
@@ -84,6 +104,15 @@ theorem ratInt_eq_posParts (hM : RatSheetSumMeasurable.Statement) {J : Ideal (Mv
     integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall h0) m0.aestronglyMeasurable,
     integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall h1) m1.aestronglyMeasurable]
 
+/- English proof (translation)
+Unfold `RatChart.ratPosDens RatChart.ratSheetSum`. Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ hfin]`. Use `set T : ((Fin n → ℂ) → ℝ) → (Fin n → ℂ) → ℝ := fun g x => if h : ∃ s, RatChart.IsRatSheetAt J p q x s then max (g x * ReciprocityTheory.AnForm.maDens (fun k => φ k ∘ h.choose) y) 0 else 0 with hT`. Establish `hT0 : ∀ g x, 0 ≤ T g x` using `fun g x => by`. Apply the tactic sequence `simp only [hT]; split_ifs <;> simp`.
+
+Establish `hpt : ∀ x ∈ hfin.toFinset, ENNReal.ofReal (T f x) = ∑' k, ENNReal.ofReal (T ((E k).indicator f) x)`. Introduce `x hx`. Establish `hx' : x ∈ RatChart.ratFibre J p q y` using `hfin.mem_toFinset.mp hx`. Distinguish the cases in `hs : ∃ s, RatChart.IsRatSheetAt J p q x s`. Take `⟨k₀, hk₀⟩` from `hcov x hx' hs`.
+
+Rewrite using `[tsum_eq_single k₀]`. Simplify using `only [hT, dif_pos hs, Set.indicator_of_mem hk₀]`. Introduce `k hk`. Establish `hxk : x ∉ E k` using `fun hxk => Set.disjoint_left.mp (hE hk) hxk hk₀`. Simplify using `[hT, dif_pos hs, Set.indicator_of_notMem hxk]`.
+
+Simplify using `[hT, dif_neg hs]`. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun x _ => hT0 f x), Finset.sum_congr rfl hpt, ← Summable.tsum_finsetSum (fun _ _ => ENNReal.summable)]`. Conclude with `tsum_congr fun k => (ENNReal.ofReal_sum_of_nonneg (fun x _ => hT0 _ x)).symm`.
+-/
 theorem ratPosDens_split {J : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin d → MvPolynomial (Fin n) ℂ}
     {q : MvPolynomial (Fin n) ℂ} (f : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ)
     (E : ℕ → Set (Fin n → ℂ)) (y : Fin d → ℂ) (hfin : (RatChart.ratFibre J p q y).Finite)
@@ -115,6 +144,21 @@ theorem ratPosDens_split {J : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin d → M
     ← Summable.tsum_finsetSum (fun _ _ => ENNReal.summable)]
   exact tsum_congr fun k => (ENNReal.ofReal_sum_of_nonneg (fun x _ => hT0 _ x)).symm
 
+/- English proof (translation)
+Establish `key : ∀ x : Fin n → ℂ, ∃ W : Set (Fin n → ℂ), IsOpen W ∧ ((∃ s, IsSheetAt J A x s) → (∃ s', RatChart.IsRatSheetAt J p q x s') → x ∈ W) ∧ ∀ E : Set (Fin n → ℂ), MeasurableSet E → E ⊆ W → ∫⁻ y, ENNReal.ofReal (RatChart.ratPosDens J p q (E.indicator f) φ y) = ∫⁻ y, ENNReal.ofReal (c …`. Introduce `x`. Distinguish the cases in `hx : (∃ s, IsSheetAt J A x s) ∧ ∃ s', RatChart.IsRatSheetAt J p q x s'`. Take `⟨W, hW, hxW, hWE⟩` from `hL n d J A p q f φ x hf hφ hx.1 hx.2`. Conclude with `⟨W, hW, fun _ _ => hxW, fun E hE hEW => (hWE E hE hEW).symm⟩`.
+
+Use `⟨∅, isOpen_empty, fun h1 h2 => absurd ⟨h1, h2⟩ hx, fun E _ hE => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.subset_empty_iff.1 hE, Set.indicator_empty]`. Simplify using `[chartPosDens, sheetSum, RatChart.ratPosDens, RatChart.ratSheetSum]`. Use `choose W hWo hxW hWE using key`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable W hWo`.
+
+Take `⟨e, he⟩` from `(hTc.insert 0).exists_eq_range (Set.insert_nonempty 0 T)`. Use `set E : ℕ → Set (Fin n → ℂ) := fun k => zeroSet J ∩ disjointed (fun k => W (e k)) k with hE`. Establish `hEm : ∀ k, MeasurableSet (E k)` using `fun k => (SheetSumMeasurable.isClosed_zeroSet J).measurableSet.inter (MeasurableSet.disjointed (fun k => (hWo (e k)).measurableSet) k)`. Establish `hEW : ∀ k, E k ⊆ W (e k)` using `fun k x hx => disjointed_subset (fun k => W (e k)) k hx.2`. Establish `hEd : Pairwise (Function.onFun Disjoint E)` using `fun i j hij => ((disjoint_disjointed (fun k => W (e k))) hij).mono Set.inter_subset_right Set.inter_subset_right`.
+
+Establish `hcov : ∀ x ∈ zeroSet J, (∃ s, IsSheetAt J A x s) → (∃ s', RatChart.IsRatSheetAt J p q x s') → ∃ k, x ∈ E k`. Introduce `x hxZ h1 h2`. Establish `: x ∈ ⋃ i ∈ T, W i` using `hTU ▸ Set.mem_iUnion.2 ⟨x, hxW x h1 h2⟩`. Take `⟨i, hiT, hxi⟩` from `Set.mem_iUnion₂.1 this`. Take `⟨m, rfl⟩ : i ∈ Set.range e` from `he ▸ Set.mem_insert_of_mem 0 hiT`.
+
+Establish `: x ∈ ⋃ k, disjointed (fun k => W (e k)) k`. Rewrite using `[iUnion_disjointed]`. Conclude with `Set.mem_iUnion.2 ⟨m, hxi⟩`. Take `⟨k, hk⟩` from `Set.mem_iUnion.1 this`. Conclude with `⟨k, hxZ, hk⟩`.
+
+Establish `haeR : ∀ᵐ y, ENNReal.ofReal (RatChart.ratPosDens J p q f φ y) = ∑' k, ENNReal.ofReal (RatChart.ratPosDens J p q ((E k).indicator f) φ y)` using `by filter_upwards [measure_eq_zero_iff_ae_notMem.1 (hN1 n d J A p q hJ hd hA hfin)] with y hy`. Use `ratPosDens_split f φ E y (hfin y) hEd fun x hx hs => hcov x hx.1 ?_ hs` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hy ⟨x, ⟨hx.1, hs, hn⟩, hx.2.2⟩`. Establish `haeA : ∀ᵐ y, ENNReal.ofReal (chartPosDens J A f φ y) = ∑' k, ENNReal.ofReal (chartPosDens J A ((E k).indicator f) φ y)` using `by filter_upwards [measure_eq_zero_iff_ae_notMem.1 (hN2 n d J A p q hJ hd hA hq hfin)] with y hy`.
+
+Use `PosPartSplit.proof n d J A f φ E y hA hEd fun x hx hs => hcov x hx.1 hs ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hy ⟨x, ⟨hx.1, hs, hn⟩, hx.2⟩`. Rewrite using `[lintegral_congr_ae haeR, lintegral_congr_ae haeA, lintegral_tsum fun k => (measurable_ratPosDens hM hfin (hf.indicator (hEm k)) φ).ennreal_ofReal.aemeasurable, lintegral_tsum fun k => (IntegralIndep.measurable_chartPosDens hA (hf.indicator (hEm k)) φ).ennreal_ofReal.aemeasurable …`. Conclude with `tsum_congr fun k => hWE (e k) (E k) (hEm k) (hEW k)`.
+-/
 theorem posPart_eq (hM : RatSheetSumMeasurable.Statement) (hN1 : RatSheetNoChartNull.Statement)
     (hN2 : ChartSheetNoRatNull.Statement) (hL : RatPosPartLocal.Statement)
     {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
@@ -181,6 +225,11 @@ theorem posPart_eq (hM : RatSheetSumMeasurable.Statement) (hN1 : RatSheetNoChart
 
 end RatChartChangeVar
 
+/- English proof (translation)
+Introduce `n d J A p q f φ hJ hd hA hq hfin hf hφ`. Establish `m1 : Measurable (RatChart.ratDens J p q f φ)` using `hM n d J p q (fun a b => a * b) f φ hfin (continuous_fst.mul continuous_snd).measurable hf`. Establish `m2 : Measurable (RatChart.ratAbsDens J p q f φ)` using `hM n d J p q (fun a b => |a * b|) f φ hfin (continuous_fst.mul continuous_snd).abs.measurable hf`. Use `⟨m1.aestronglyMeasurable, m2.aestronglyMeasurable, fun hi => ?_⟩` and prove the remaining obligations. Establish `e0` using `RatChartChangeVar.posPart_eq hM hN1 hN2 hL hJ hd hA hq hfin hf hφ`.
+
+Establish `e1` using `RatChartChangeVar.posPart_eq hM hN1 hN2 hL hJ hd hA hq hfin hf.neg hφ`. Take `⟨iR, cR⟩` from `RatChartChangeVar.ratInt_eq_posParts hM hfin hf φ`. Take `⟨iA, cA⟩` from `IntegralIndep.chartInt_eq_posParts hA hf φ`. Establish `hi' : Integrable (chartAbsDens J A f φ)` using `iA.2 (by rw [← e0, ← e1]; exact iR.1 hi)`. Conclude with `⟨hi', by rw [cR hi, cA hi', e0, e1]⟩`.
+-/
 theorem RatChartChangeVar.proof (hM : RatSheetSumMeasurable.Statement) (hN1 : RatSheetNoChartNull.Statement)
     (hN2 : ChartSheetNoRatNull.Statement) (hL : RatPosPartLocal.Statement) :
     RatChartChangeVar.Statement := by

@@ -3,6 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Take `⟨o, ho⟩` from `IsLocalRing.residue_surjective x.fst`. Establish `ha : (algebraMap O (DualNumber (ResidueField O)) o).fst = x.fst`. Rewrite using `[← ho]`. Use `first`. Consider the case `rfl`.
+
+Consider the case `rw [TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_inl, IsLocalRing.ResidueField.algebraMap_eq]`. Establish `hfst : (x - algebraMap O _ o).fst = 0`. Rewrite using `[TrivSqZeroExt.fst_sub, ha, sub_self]`. Establish `hsq : (x - algebraMap O _ o) * (x - algebraMap O _ o) = 0`. Use `ext`.
+
+Rewrite using `[TrivSqZeroExt.fst_mul, hfst, mul_zero, TrivSqZeroExt.fst_zero]`. Rewrite using `[TrivSqZeroExt.snd_mul, hfst, zero_smul, MulOpposite.op_zero, zero_smul, add_zero, TrivSqZeroExt.snd_zero]`. Establish `hmem : x - algebraMap O _ o ∈ maximalIdeal (DualNumber (ResidueField O))`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+
+Establish `h2` using `hu.mul hu`. Rewrite `h2` using `[hsq]`. Conclude with `not_isUnit_zero h2`. Establish `h0` using `(res_eq_zero_iff O _ _).2 hmem`. Rewrite `h0` using `[map_sub, AlgHom.commutes, sub_eq_zero]`.
+
+Rewrite using `[h0, ← ha]`. Use `first`. Consider the case `rfl`. Consider the case `rw [TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_inl]`.
+-/
 private theorem res_dual (O : Type) [CommRing O] [IsLocalRing O] [IsCO O (DualNumber (ResidueField O))]
     (x : DualNumber (ResidueField O)) : res O _ x = x.fst := by
   obtain ⟨o, ho⟩ := IsLocalRing.residue_surjective x.fst
@@ -30,6 +41,17 @@ private theorem res_dual (O : Type) [CommRing O] [IsLocalRing O] [IsCO O (DualNu
     | rfl
     | rw [TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_inl]
 
+/- English proof (translation)
+Introduce `l _ k _ _ F C₀ n hF O _ _ _ R _ _ _ ρ B hU hOf ρ' r' hc' hbar hnu hatc hres`. Take `⟨g, hg, -⟩` from `hU.univ _ ρ' hc' hbar`. Establish `hfst : ∀ x, (g x).fst = res O R x` using `fun x => by`. Rewrite using `[← res_dual O (g x), res_map]`. Set `Dd : R →ₗ[O] ResidueField O` to `{ toFun := fun x => (g x).snd map_add' := fun x y => by`.
+
+Simplify using `only [map_add, TrivSqZeroExt.snd_add]`. Use the proof step `map_smul' := fun a x => by`. Simplify using `only [map_smul, TrivSqZeroExt.snd_smul, RingHom.id_apply] }`. Establish `hDd : ∀ x, Dd x = (g x).snd` using `fun _ => rfl`. Establish `hof` using `hOf.map (g : R →+* DualNumber (ResidueField O))`.
+
+Establish `hr : (Box.map (g : R →+* DualNumber (ResidueField O)) B).r = r'`. Use `pr_ext hF _ _ _ (Box.nu _) hnu ?_ ?_` and prove the remaining obligations. Rewrite using `[hof.atc, hatc]`. Introduce `s`. Rewrite using `[hof.res, hg, hres]`.
+
+Use `⟨Dd, ?_, fun s => ?_⟩` and prove the remaining obligations. Introduce `f h`. Rewrite using `[hDd, hDd, hDd, map_mul, TrivSqZeroExt.snd_mul, hfst, hfst, op_smul_eq_smul]`. Rewrite using `[← hr] show ((B.r s).mat.map g).map TrivSqZeroExt.snd = ((B.r s).mat.map Dd * ((((Box.bar O B).r s).left⁻¹ : GL (Fin n) (ResidueField O)) : Matrix (Fin n) (Fin n) (ResidueField O))) * ((((Box.bar O B).r s).left : GL (Fin n) (ResidueField O)) : Matrix (Fin n) (Fin n) (ResidueField …`. Rewrite using `[mul_assoc, Units.inv_mul, mul_one, Matrix.map_map]`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Fr.pr_dof :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ [IsCO O (DualNumber (ResidueField O))] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (ρ : NRep F n R) (B : Box F n R), ρ.Univ O → B.Of ρ → ∀ (ρ' : NRep F n (DualNumber (ResidueField O))) (r' : F.Γ →* GG n (DualNumber (ResidueField O))), ρ'.Cont (maximalIdeal _) → ρ'.bar O = ρ.bar O → (∀ s, (r' s).right = F.del s) → (r' F.c).mat = 1 → (∀ s : F.G0, (r' s).mat = ρ'.r s) → ∃ D ∈ Tan O R, ∀ s, (r' s).mat.map TrivSqZeroExt.snd = B.tanCo O D s * ((B.bar O).r s).mat := by
   intro l _ k _ _ F C₀ n hF O _ _ _ R _ _ _ ρ B hU hOf ρ' r' hc' hbar hnu hatc hres

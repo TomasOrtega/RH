@@ -19,6 +19,11 @@ open Classical in
 def vertWeight {n : ℕ} (L : Fin n → HermLine ι) (W : Ideal (MRing ι)) : ℝ :=
   if IsHorizontal W then 0 else (geoNum n W (fun j => (L j).a) : ℝ) * Real.log (charOf W)
 
+/- English proof (translation)
+Rewrite using `[vertR, finsum_mem_def]`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Simplify using `only [Set.indicator, divCycle, Finsupp.ofSupportFinite_coe, vertWeight]`. Distinguish the cases in `hW : W ∈ divSupp P s`. Rewrite using `[if_pos hW, if_pos hW]`.
+
+Rewrite using `[if_neg hW, if_neg hW, Nat.cast_zero, zero_mul]`.
+-/
 theorem vertR_eq_finsum (P : Ideal (MRing ι)) {n : ℕ} (L : Fin n → HermLine ι) (s : MRing ι) :
     vertR P L s = ∑ᶠ W, (divCycle P s W : ℝ) * vertWeight L W := by
   classical
@@ -29,11 +34,21 @@ theorem vertR_eq_finsum (P : Ideal (MRing ι)) {n : ℕ} (L : Fin n → HermLine
   · rw [if_pos hW, if_pos hW]
   · rw [if_neg hW, if_neg hW, Nat.cast_zero, zero_mul]
 
+/- English proof (translation)
+The claim follows from `(divCycle P s).support.finite_toSet.subset fun W hW => Finsupp.mem_support_iff.mpr fun h0 => hW (by simp [h0])`.
+-/
 theorem finite_support (P : Ideal (MRing ι)) {n : ℕ} (L : Fin n → HermLine ι) (s : MRing ι) :
     (Function.support fun W => (divCycle P s W : ℝ) * vertWeight L W).Finite :=
   (divCycle P s).support.finite_toSet.subset fun W hW =>
     Finsupp.mem_support_iff.mpr fun h0 => hW (by simp [h0])
 
+/- English proof (translation)
+Rewrite using `[vertR_eq_finsum, vertR_eq_finsum, ← finsum_sub_distrib (finite_support P L s₁) (finite_support P L s₂)]`. Establish `hpt : ∀ W, (divCycle P s₁ W : ℝ) * vertWeight L W - (divCycle P s₂ W : ℝ) * vertWeight L W = if W = E then -vertWeight L E else 0`. Introduce `W`. Distinguish the cases in `hWh : IsHorizontal W`. Establish `hne : W ≠ E` using `fun h => hhor (h ▸ hWh)`.
+
+Simplify using `[vertWeight, hWh, hne]`. Distinguish the cases in `hWE : W = E`. Substitute `hWE` using the available equality. Establish `hR : (divCycle P s₂ W : ℝ) = divCycle P s₁ W + 1` using `by exact_mod_cast hE`. Rewrite using `[if_pos rfl, hR]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hWE, hW W hWh hWE, sub_self]`. Rewrite using `[finsum_congr hpt, finsum_eq_single _ E (fun W hW => if_neg hW), if_pos rfl]`. Simplify using `[vertWeight, hhor]`.
+-/
 theorem vertR_sub (P : Ideal (MRing ι)) {n : ℕ} (L : Fin n → HermLine ι) (s₁ s₂ : MRing ι)
     (E : Ideal (MRing ι)) (hhor : ¬ IsHorizontal E)
     (hE : (divCycle P s₂ E : ℤ) = divCycle P s₁ E + 1)
@@ -60,6 +75,11 @@ end StackedGraphFibre
 
 open StackedGraphFibre in
 
+/- English proof (translation)
+Introduce `K _ _ i F F' T _ _ b b' a hi hlt hcov hab t L hL`. Take `⟨E, hE, hhor, hEt⟩` from `hCyc K i F F' T b b' a hi hlt hcov hab`. Establish `key` using `vertR_sub (stackedGraph b' a) L (graphSecond t) (C (a t) * graphFirst t) E hhor (hEt t).1 (hEt t).2`. Establish `ha : ∀ s, a s ≠ 0` using `fun s hs => b.ne_zero s (Subtype.ext (by rw [hab s, hs, zero_smul]; rfl))`. Use `⟨fun hall => ?_, fun ⟨j, hj⟩ => ?_⟩` and prove the remaining obligations.
+
+Establish `hd : (fun j => (L j).a) = fun _ => degSecond` using `funext hall`. Rewrite using `[key, hd, hSec K i F F' T b b' a hi hlt hcov hab E hE, ← DualLatticeIndex.proof K i F F' hlt.le, DualStackedDegreeAlt.relIndex_stacked hlt.le b b' a hab, Real.log_prod (fun s _ => abs_ne_zero.mpr (Int.cast_ne_zero.mpr (ha s)))]`. Rewrite using `[key, hFir K i F F' T b b' a hi hlt hcov hab E hE (fun j => (L j).a) hL ⟨j, hj⟩]`. Simplify using the standard rewrite rules.
+-/
 theorem DualStackedGraphFibre.proof (hCyc : DualStackedExcCycle.Statement)
     (hSec : DualStackedExcGeoSecond.Statement) (hFir : DualStackedExcGeoFirst.Statement) :
     DualStackedGraphFibre.Statement := by

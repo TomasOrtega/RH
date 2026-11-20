@@ -8,6 +8,9 @@ namespace GlobalTheory.CompanionTheory.SW.ThW
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core GlobalTheory.CompanionTheory.SW.ThW
 open scoped ENNReal NNReal MatrixGroups Kronecker
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Take `⟨i, w⟩` from `p`. Simplify using `only [mulVec, dotProduct, DM, emb, Fintype.sum_prod_type, blockDiagonal_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `[map_sum, map_mul]`.
+-/
 theorem DM_mulVec_emb {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
     [DecidableEq (InfinitePlace F)] (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ))
     (y : ι → F) : DM B ρ *ᵥ emb ρ y = emb ρ (B *ᵥ y) := by
@@ -17,6 +20,9 @@ theorem DM_mulVec_emb {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype 
   rw [Finset.sum_comm]
   simp [map_sum, map_mul]
 
+/- English proof (translation)
+Simplify using `only [mulVec, dotProduct, gM, transpose_apply, Matrix.smul_apply, kroneckerMap_apply, EM, Matrix.one_apply, Fintype.sum_prod_type, smul_eq_mul]`. Rewrite using `[Finset.mul_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[Finset.sum_ite_eq, mul_assoc]`.
+-/
 theorem gM_transpose_mulVec {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι]
     [DecidableEq ι] [DecidableEq (InfinitePlace F)] (ρ : InfinitePlace F → (F →+* ℝ))
     (b : InfinitePlace F → 𝓞 F) (N : ℕ) (z : ι × InfinitePlace F → ℝ) (i : ι)
@@ -28,6 +34,11 @@ theorem gM_transpose_mulVec {F : Type} [Field F] [NumberField F] {ι : Type} [Fi
   refine Finset.sum_congr rfl fun w _ => ?_
   simp [Finset.sum_ite_eq, mul_assoc]
 
+/- English proof (translation)
+Introduce `F _ _ ι _ _ _ M B ρ P hQ b N y`. Take `⟨hT, -, -, -, hρ, -, -⟩` from `hQ`. Use function extensionality and compare the values at `p`. Take `⟨i, v⟩` from `p`. Rewrite using `[DM_mulVec_emb, gM_transpose_mulVec]`.
+
+Establish `h` using `sum_rho_eq_trace hT hρ ((b v : F) * (B *ᵥ y) i)`. Simplify using `only [emb, ← map_mul]`. Rewrite using `[h]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem gM_DM_emb_eq_trace : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι] [DecidableEq (InfinitePlace F)] (M : ℕ) (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ), QSetup M B ρ P → ∀ (b : InfinitePlace F → 𝓞 F) (N : ℕ) (y : ι → F), (gM ρ b N)ᵀ *ᵥ (DM B ρ *ᵥ emb ρ y) = fun p => (((N : ℚ) * Algebra.trace ℚ F ((b p.2 : F) * (B *ᵥ y) p.1) : ℚ) : ℝ) := by
   intro F _ _ ι _ _ _ M B ρ P hQ b N y
   obtain ⟨hT, -, -, -, hρ, -, -⟩ := hQ

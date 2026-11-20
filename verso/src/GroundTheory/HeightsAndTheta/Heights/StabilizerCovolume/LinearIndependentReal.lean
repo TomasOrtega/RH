@@ -10,6 +10,13 @@ open NumberField GroundTheory.Heights₂.Heights.LowerBoundFree
 
 variable {Em : Type} [Field Em] [NumberField Em] [IsCMField Em] {Ψ : Type} [Fintype Ψ] {N j : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ τ, A.emb τ = σ`. Take `⟨τ, hτ⟩` from `h`. Conclude with `⟨τ, Or.inl hτ⟩`. Establish `h' : ∃ τ, A.emb τ = (starRingEnd ℂ).comp σ`. Assume the negation of the conclusion as `h''`.
+
+Conclude with `h ((A.cmType σ).2 h'')`. Take `⟨τ, hτ⟩` from `h'`. Use `⟨τ, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[hτ]`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem HermDatum.exists_emb_or_conj (A : HermDatum Em Ψ N j) (σ : Em →+* ℂ) :
     ∃ τ, A.emb τ = σ ∨ (starRingEnd ℂ).comp (A.emb τ) = σ := by
   by_cases h : ∃ τ, A.emb τ = σ
@@ -24,6 +31,15 @@ theorem HermDatum.exists_emb_or_conj (A : HermDatum Em Ψ N j) (σ : Em →+* �
     ext x
     simp
 
+/- English proof (translation)
+Set `g : Ψ ⊕ Ψ → (Em →+* ℂ)` to `Sum.elim A.emb fun τ => (starRingEnd ℂ).comp (A.emb τ)`. Establish `hconj : ∀ τ τ', A.emb τ ≠ (starRingEnd ℂ).comp (A.emb τ')`. Introduce `τ τ' h`. Establish `h1` using `(A.cmType (A.emb τ')).1 ⟨τ', rfl⟩`. Use `h1 ⟨τ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h]`. Establish `hg : Function.Bijective g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(a | a) (b | b) h`. Conclude with `congrArg Sum.inl (A.emb_inj h)`.
+
+Conclude with `absurd h (hconj a b)`. Conclude with `absurd h.symm (hconj b a)`. Use `congrArg Sum.inr (A.emb_inj (RingHom.ext fun x => ?_))` and prove the remaining obligations. Use `congrArg (fun φ : Em →+* ℂ => starRingEnd ℂ (φ x)) h` as an intermediate fact. Simplify `this` using `[g]`.
+
+Introduce `σ`. Take `⟨τ, h | h⟩` from `A.exists_emb_or_conj σ`. Use `exacts [⟨Sum.inl τ, h⟩, ⟨Sum.inr τ, h⟩]`. Rewrite using `[← NumberField.Embeddings.card Em ℂ, ← Fintype.card_of_bijective hg, Fintype.card_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HermDatum.finrank_eq (A : HermDatum Em Ψ N j) : Module.finrank ℚ Em = 2 * Fintype.card Ψ := by
   classical
   let g : Ψ ⊕ Ψ → (Em →+* ℂ) := Sum.elim A.emb fun τ => (starRingEnd ℂ).comp (A.emb τ)
@@ -47,6 +63,31 @@ theorem HermDatum.finrank_eq (A : HermDatum Em Ψ N j) : Module.finrank ℚ Em =
   rw [← NumberField.Embeddings.card Em ℂ, ← Fintype.card_of_bijective hg, Fintype.card_sum]
   ring
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `h1 : ∀ τ a, ∑ k, (c k : ℂ) * A.emb τ (x k a) = 0`. Introduce `τ a`. Use `congr_fun hc (τ, a)` as an intermediate fact.
+
+Simplify `this` using `[Finset.sum_apply, Complex.real_smul]`. Establish `h2 : ∀ (σ : Em →+* ℂ) a, ∑ k, (c k : ℂ) * σ (x k a) = 0`. Introduce `σ a`. Take `⟨τ, h | h⟩` from `A.exists_emb_or_conj σ`. Rewrite using `[← h]`.
+
+Conclude with `h1 τ a`. Rewrite using `[← h]`. Use `congrArg (starRingEnd ℂ) (h1 τ a)` as an intermediate fact. Simplify `this` using `[map_sum, Complex.conj_ofReal]`. Use `set ω := NumberField.integralBasis Em`.
+
+Establish `hxω : ∀ (σ : Em →+* ℂ) (y : Em), σ y = ∑ i, ((ω.repr y i : ℚ) : ℂ) * σ (ω i)`. Introduce `σ y`. Use `conv_lhs => rw [← ω.sum_repr y]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, map_mul, eq_ratCast, map_ratCast]`. Establish `h3 : ∀ a i, ∑ k, c k * (ω.repr (x k a) i : ℝ) = 0`. Introduce `a`. Establish `key : ∀ (σ : Em →+* ℂ), ∑ i, ((∑ k, c k * (ω.repr (x k a) i : ℝ) : ℝ) : ℂ) * σ (ω i) = 0`. Introduce `σ`.
+
+Rewrite using `[← h2 σ a]`. Simplify using `only [hxω σ (x _ a)]`. Use `push_cast`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations. Establish `hli` using `(NumberField.mixedEmbedding.latticeBasis Em).linearIndependent`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use `hli _ (Prod.ext (funext fun w => ?_) (funext fun w => ?_))` and prove the remaining obligations. Simplify using `only [Prod.fst_sum, Finset.sum_apply, Prod.smul_fst, Pi.smul_apply, NumberField.mixedEmbedding.latticeBasis_apply, NumberField.mixedEmbedding.mixedEmbedding_apply_isReal, smul_eq_mul, Prod.fst_zero, Pi.zero_apply]`.
+
+Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Simplify using `only [InfinitePlace.embedding_of_isReal_apply]`. Establish `hk` using `key w.1.embedding`. Move the coercions through the operations in `at hk`.
+
+Conclude with `hk`. Simplify using `only [Prod.snd_sum, Finset.sum_apply, Prod.smul_snd, Pi.smul_apply, NumberField.mixedEmbedding.latticeBasis_apply, NumberField.mixedEmbedding.mixedEmbedding_apply_isComplex, Complex.real_smul, Prod.snd_zero, Pi.zero_apply]`. Conclude with `key _`. Introduce `k`. Rewrite using `[← Module.forall_dual_apply_eq_zero_iff ℚ (c k)]`.
+
+Introduce `φ`. Establish `h4 : ∑ k, φ (c k) • x k = 0`. Use function extensionality and compare the values at `a`. Apply `ω.repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+
+Use `congrArg φ (h3 a i)` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, map_sum, map_smul, Finsupp.coe_finsetSum, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm (c k), ← Rat.smul_def, map_smul, smul_eq_mul, mul_comm]`. Conclude with `Fintype.linearIndependent_iff.1 hx _ h4 k`.
+-/
 theorem HermDatum.linearIndependent_real (A : HermDatum Em Ψ N j) {m : ℕ} {x : Fin m → Fin N → Em}
     (hx : LinearIndependent ℚ x) :
     LinearIndependent ℝ fun k (p : Ψ × Fin N) => A.emb p.1 (x k p.2) := by
@@ -117,6 +158,13 @@ theorem HermDatum.linearIndependent_real (A : HermDatum Em Ψ N j) {m : ℕ} {x 
     rw [mul_comm (c k), ← Rat.smul_def, map_smul, smul_eq_mul, mul_comm]
   exact Fintype.linearIndependent_iff.1 hx _ h4 k
 
+/- English proof (translation)
+Establish `hL : IsNoetherian ℤ (A.L.restrictScalars ℤ)` using `isNoetherian_of_fg_of_noetherian _ A.fg`. Establish `hJ : IsNoetherian ℤ (I.restrictScalars ℤ)` using `isNoetherian_of_le (s := I.restrictScalars ℤ) (t := A.L.restrictScalars ℤ) hI`. Establish `hfin : Module.Finite ℤ (I.restrictScalars ℤ)` using `inferInstance`. Establish `htf : Module.IsTorsionFree ℤ (I.restrictScalars ℤ)` using `inferInstance`. Establish `hfree : Module.Free ℤ (I.restrictScalars ℤ)` using `Module.free_of_finite_type_torsion_free'`.
+
+Set `B` to `Module.finBasis ℤ (I.restrictScalars ℤ)`. Establish `hspan : Submodule.span ℤ (Set.range fun k => (B k : Fin N → Em)) = I.restrictScalars ℤ`. Establish `e : (Set.range fun k => (B k : Fin N → Em)) = (I.restrictScalars ℤ).subtype '' Set.range B` using `Set.range_comp _ _`. Rewrite using `[e, Submodule.span_image, B.span_eq, Submodule.map_subtype_top]`. Establish `hli : LinearIndependent ℤ ((I.restrictScalars ℤ).subtype ∘ B)` using `B.linearIndependent.map' (I.restrictScalars ℤ).subtype (Submodule.ker_subtype _)`.
+
+Use `⟨_, fun k => (B k : Fin N → Em), hli, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hspan]`. Both sides reduce to the same expression.
+-/
 theorem HermDatum.exists_isZBasis (A : HermDatum Em Ψ N j) {I : Submodule (𝓞 Em) (Fin N → Em)}
     (hI : I ≤ A.L) : ∃ m, ∃ b : Fin m → Fin N → Em, IsZBasis I b := by
   classical
@@ -139,6 +187,21 @@ theorem HermDatum.exists_isZBasis (A : HermDatum Em Ψ N j) {I : Submodule (𝓞
 
 omit [IsCMField Em] in
 
+/- English proof (translation)
+Use `set ω := NumberField.integralBasis Em`. Establish `hbQ : LinearIndependent ℚ b` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 hb.1`. Establish `hvE : LinearIndependent Em v` using `(LinearIndependent.iff_fractionRing (𝓞 Em) Em).1 hv.2.2.1`. Use `set w : _ × Fin ρ → Fin N → Em := fun p => ω p.1 • v p.2`. Establish `hw : LinearIndependent ℚ w` using `linearIndependent_smul ω.linearIndependent hvE`.
+
+Establish `hspan : Submodule.span ℚ (Set.range b) = Submodule.span ℚ (Set.range w)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hbk : b k ∈ I` using `(hb.2 _).2 (Submodule.subset_span ⟨k, rfl⟩)`.
+
+Use `set T := Submodule.span (𝓞 Em) (Set.range v)`. Establish `hmem : T.toAddSubgroup.relIndex I.toAddSubgroup • b k ∈ T.toAddSubgroup` using `AddSubgroup.nsmul_relIndex_mem _ hbk`. Establish `hT : ∀ t ∈ T, t ∈ Submodule.span ℚ (Set.range w)`. Introduce `t ht`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 Em)).1 ht`.
+
+Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul Em (a k) (v k), ← ω.sum_repr (algebraMap (𝓞 Em) Em (a k)), Finset.sum_smul]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(i, k), rfl⟩)`.
+
+Establish `hn : (T.toAddSubgroup.relIndex I.toAddSubgroup : ℚ) ≠ 0` using `by exact_mod_cast hv.2.2.2`. Use `Submodule.smul_mem _ ((T.toAddSubgroup.relIndex I.toAddSubgroup : ℚ)⁻¹) (hT _ hmem)` as an intermediate fact. Rewrite `this` using `[← Nat.cast_smul_eq_nsmul ℚ, smul_smul, inv_mul_cancel₀ hn, one_smul]`. Then use the resulting hypothesis. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Establish `hpI : w p ∈ I` using `by show ω p.1 • v p.2 ∈ I`. Rewrite using `[integralBasis_apply, algebraMap_smul]`. Conclude with `I.smul_mem _ (hv.2.1 p.2)`. Conclude with `Submodule.span_le_restrictScalars ℤ ℚ _ ((hb.2 _).1 hpI)`. Establish `h1` using `finrank_span_eq_card hbQ`.
+
+Establish `h2` using `finrank_span_eq_card hw`. Rewrite `h1` using `[hspan, h2, Fintype.card_prod, Fintype.card_fin, ← Module.finrank_eq_card_basis ω]`. Simplify using `using h1.symm`.
+-/
 theorem card_eq_of_isZBasis {I : Submodule (𝓞 Em) (Fin N → Em)} {ρ : ℕ} {v : Fin ρ → Fin N → Em}
     (hv : IsNzFamily I ρ v) {m : ℕ} {b : Fin m → Fin N → Em} (hb : IsZBasis I b) :
     m = Module.finrank ℚ Em * ρ := by

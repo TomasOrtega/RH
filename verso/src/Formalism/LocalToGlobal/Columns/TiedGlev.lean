@@ -18,6 +18,11 @@ variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST : Fin
   (halg : ∀ a : v.adicCompletion F, spl ((1 : E) ⊗ₜ[F] a) = (a, a))
   (w : Pl E) (hw : ∀ a ∈ w.asIdeal, gloRho v spl halg (oToS F E a) = 0)
 
+/- English proof (translation)
+Establish `hxS : x ∈ stabGL (Formalism.L2.Herm.locL v (stdLat E n))`. Rewrite using `[← rll_locL_base n ST v hT]`. Conclude with `hx.2`. Establish `hS` using `rll_put_mem_St n v hxS`. Use `⟨redAt 1 w ⟨rll_put n v x, hS⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[gco_red_map n v spl halg w hw hS, rll_put_self]`.
+-/
 theorem gco_exists_red (hT : v ∉ plUnder F ST) (x : GL (Fin n) (E ⊗[F] v.adicCompletion F))
     (hx : x ∈ levelVL hc.sig (1 : Matrix (Fin n) (Fin n) E) v (baseLb E n ST)) :
     ∃ M : GL (Fin n) (kP w), (M : Matrix (Fin n) (Fin n) (kP w)).map (gloE v spl halg w hw) =
@@ -52,6 +57,11 @@ def glvD (c : (v.adicCompletionIntegers F)ˣ) : GL (Fin n) (v.adicCompletion F) 
     funext b
     exact congrArg Subtype.val (glvU n v c b).inv_mul
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show Matrix.diagonal _ = 1`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+
+Unfold `glvU`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem glvD_one : glvD n v 1 = 1 := by
   apply Units.ext
   show Matrix.diagonal _ = 1
@@ -61,6 +71,9 @@ theorem glvD_one : glvD n v 1 = 1 := by
   unfold glvU
   split_ifs <;> rfl
 
+/- English proof (translation)
+Unfold `glvU`. Use `split_ifs`. Conclude with `hc1`. Rewrite using `[Units.val_one, map_one]`.
+-/
 theorem glvU_res {c : (v.adicCompletionIntegers F)ˣ} (hc1 : IsLocalRing.residue (v.adicCompletionIntegers F) c = 1) (b : Fin n) :
     IsLocalRing.residue (v.adicCompletionIntegers F) (glvU n v c b) = 1 := by
   unfold glvU
@@ -68,11 +81,21 @@ theorem glvU_res {c : (v.adicCompletionIntegers F)ˣ} (hc1 : IsLocalRing.residue
   · exact hc1
   · rw [Units.val_one, map_one]
 
+/- English proof (translation)
+Establish `h` using `congrArg (IsLocalRing.residue (v.adicCompletionIntegers F)) (glvU n v c b).inv_mul`. Rewrite `h` using `[map_mul, glvU_res n v hc1, mul_one, map_one]`. Then use the resulting hypothesis.
+-/
 theorem glvU_res_inv {c : (v.adicCompletionIntegers F)ˣ} (hc1 : IsLocalRing.residue (v.adicCompletionIntegers F) c = 1) (b : Fin n) :
     IsLocalRing.residue (v.adicCompletionIntegers F) ((glvU n v c b)⁻¹ : (v.adicCompletionIntegers F)ˣ) = 1 := by
   have h := congrArg (IsLocalRing.residue (v.adicCompletionIntegers F)) (glvU n v c b).inv_mul
   rwa [map_mul, glvU_res n v hc1, mul_one, map_one] at h
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `e : ((((glvD n v c)⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * A * (glvD n v c : Matrix (Fin n) (Fin n) (v.adicCompletion F))) a b = (((((glvU n v c a)⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) * ⟨A a b, hA a b⟩ * …` using `by show ((Matrix.diagonal (fun b => ((((glvU n v c b)⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) : v.adicCompletion F)) * A : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * Matrix.diagonal (fun b => ((glvU n v c b : v.adicCompletionIntegers F) : v.adicComple …`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Both sides reduce to the same expression. Establish `hm : ((((glvD n v c)⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * A * (glvD n v c : Matrix (Fin n) (Fin n) (v.adicCompletion F))) a b ∈ v.adicCompletionIntegers F`.
+
+Rewrite using `[e]`. Conclude with `Subtype.mem _`. Unfold `redM`. Rewrite using `[dif_pos (hA a b), dif_pos hm]`. Establish `e2 : (⟨_, hm⟩ : v.adicCompletionIntegers F) = (((glvU n v c a)⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) * ⟨A a b, hA a b⟩ * (glvU n v c b : v.adicCompletionIntegers F)` using `Subtype.ext e`.
+
+Rewrite using `[e2, map_mul, map_mul, glvU_res n v hc1, glvU_res_inv n v hc1, one_mul, mul_one]`.
+-/
 theorem glv_red_conj {c : (v.adicCompletionIntegers F)ˣ} (hc1 : IsLocalRing.residue (v.adicCompletionIntegers F) c = 1)
     (A : Matrix (Fin n) (Fin n) (v.adicCompletion F)) (hA : ∀ a b, A a b ∈ v.adicCompletionIntegers F) :
     redM F v ((((glvD n v c)⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * A *
@@ -97,6 +120,13 @@ theorem glv_red_conj {c : (v.adicCompletionIntegers F)ˣ} (hc1 : IsLocalRing.res
         v.adicCompletionIntegers F) := Subtype.ext e
   rw [e2, map_mul, map_mul, glvU_res n v hc1, glvU_res_inv n v hc1, one_mul, mul_one]
 
+/- English proof (translation)
+Use `forall_congr' fun b => ?_` and prove the remaining obligations. Establish `e : (((glvD n v c)⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)).mulVec x b = ((((glvU n v c b)⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) : v.adicCompletion F) * x b` using `by show (Matrix.diagonal (fun b => ((((glvU n v c b)⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) : v.adicCompletion F))).mulVec x b = _`. Rewrite using `[Matrix.mulVec_diagonal]`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h2` using `mul_mem (glvU n v c b : v.adicCompletionIntegers F).2 h`. Rewrite `h2` using `[← mul_assoc]`. Establish `h3 : ((glvU n v c b : v.adicCompletionIntegers F) : v.adicCompletion F) * ((((glvU n v c b)⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) : v.adicCompletion F) = 1` using `congrArg Subtype.val (glvU n v c b).mul_inv`. Rewrite `h2` using `[h3, one_mul]`. Then use the resulting hypothesis.
+
+Introduce `h`. Conclude with `mul_mem (Subtype.mem _) h`.
+-/
 theorem glv_mulVec_int (c : (v.adicCompletionIntegers F)ˣ) (x : Fin n → v.adicCompletion F) :
     (∀ b, (((glvD n v c)⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)).mulVec x b ∈
       v.adicCompletionIntegers F) ↔ ∀ b, x b ∈ v.adicCompletionIntegers F := by
@@ -126,12 +156,18 @@ variable {X : Fields} {Pr : Primes X} {hc : Formalism.BasicNotions.CMData X.F X.
   (Ch : Chars X Pr m) (σ₀ : X.K →+* ℂ) (hCh : Ch.Ok)
   {n : ℕ} [NeZero n] {ST : Finset (Pl X.E)} {π : 𝓞 X.E} {T f : ℕ} (Λ : LevFam X.E X.K n Pr.vGs)
 
+/- English proof (translation)
+Establish `h1 : Λ.chr h = (∏ i : Pr.vGs, ((Λ i).lam).comp (piProj (fun w => (Λ w).H) i)) (show ↥(Subgroup.pi Set.univ fun w : Pr.vGs => (Λ w).H) from h)` using `rfl`. Rewrite using `[h1, MonoidHom.finsetProd_apply]`. Both sides reduce to the same expression.
+-/
 theorem glv_chr (h : ↥Λ.grp) : Λ.chr h = ∏ w : Pr.vGs, (Λ w).lam ⟨h.1 w, h.2 w (Set.mem_univ w)⟩ := by
   have h1 : Λ.chr h = (∏ i : Pr.vGs, ((Λ i).lam).comp (piProj (fun w => (Λ w).H) i))
       (show ↥(Subgroup.pi Set.univ fun w : Pr.vGs => (Λ w).H) from h) := rfl
   rw [h1, MonoidHom.finsetProd_apply]
   rfl
 
+/- English proof (translation)
+The claim follows from `glv_red_conj n v hc1 _ fun a b => gloPhi_int v (S.sp i v h) (S.sp_alg i v h) _ (hx a b)`.
+-/
 theorem glv_mat_red (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal)
     {c : (v.adicCompletionIntegers X.F)ˣ} (hc1 : IsLocalRing.residue (v.adicCompletionIntegers X.F) c = 1)
     (x : GL (Fin n) (X.E ⊗[X.F] v.adicCompletion X.F))

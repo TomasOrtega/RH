@@ -20,6 +20,9 @@ variable {R₁ R₂ R₃ R₄ : Type} [CommRing R₁] [CommRing R₂] [CommRing 
   {F₁ : C₁ ⥤ ModuleCat.{0} R₁} {F₂ : C₂ ⥤ ModuleCat.{0} R₂} {F₃ : C₃ ⥤ ModuleCat.{0} R₃} {F₄ : C₄ ⥤ ModuleCat.{0} R₄}
   {σ₁ : R₁ →+* R₂} {σ₂ : R₂ →+* R₄} {σ₃ : R₁ →+* R₃} {σ₄ : R₃ →+* R₄}
 
+/- English proof (translation)
+Use `haveI : RingHomCompTriple σ₁ σ₂ (σ₂.comp σ₁) := ⟨rfl⟩`. Use `haveI : RingHomCompTriple σ₃ σ₄ (σ₂.comp σ₁) := ⟨RingHom.ext hσ⟩`. Rewrite using `[pull_pull (σ₂.comp σ₁), pull_pull (σ₂.comp σ₁)]`. Conclude with `CrystallineSemistableComparison.P.prism (m₁.comp m₂) (m₃.comp m₄) η hτ j x`.
+-/
 theorem sq4 (m₁ : CH.Mor F₁ F₂ σ₁) (m₂ : CH.Mor F₂ F₄ σ₂) (m₃ : CH.Mor F₁ F₃ σ₃) (m₄ : CH.Mor F₃ F₄ σ₄)
     (hσ : ∀ a, σ₄ (σ₃ a) = σ₂ (σ₁ a)) (η : m₂.G ⋙ m₁.G ⟶ m₄.G ⋙ m₃.G)
     (hτ : ∀ (T : C₄) (x : F₁.obj (m₁.G.obj (m₂.G.obj T))),
@@ -39,6 +42,9 @@ def smulMor (c : R₂) (m : CH.Mor F₁ F₂ σ₁) : CH.Mor F₁ F₂ σ₁ whe
     change c • m.τ _ _ = (F₂.map φ).hom (c • m.τ _ x)
     rw [m.nat, map_smul]
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem smulMor_pull (c : R₂) (m : CH.Mor F₁ F₂ σ₁) (j : ℕ) (x : CH.H F₁ j) : (smulMor c m).pull j x = c • m.pull j x := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rfl
@@ -58,6 +64,9 @@ def nlHom {T T' : Thick (nlFun γ p X q κ)} (φ : T.B →+* T'.B) (comm : ∀ r
       (show PtOver X q κ _ from T'.y).1.1 (Ideal.Quotient.mk _ r)
     rw [h1, h2, Ideal.quotientMap_mk, comm])) (hpt _)))
 
+/- English proof (translation)
+Establish `e : Ideal.quotientMap J (RingHom.id B₀) h = RingHom.id _` using `by ext; rfl`. Rewrite using `[e, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`.
+-/
 theorem spec_id {B₀ : Type} [CommRing B₀] (J : Ideal B₀) (h) {Z : Scheme.{0}} (y : Spec (CommRingCat.of (B₀ ⧸ J)) ⟶ Z) :
     Spec.map (CommRingCat.ofHom (Ideal.quotientMap J (RingHom.id B₀) h)) ≫ y = y := by
   have e : Ideal.quotientMap J (RingHom.id B₀) h = RingHom.id _ := by ext; rfl
@@ -73,6 +82,9 @@ variable {R₁ R₂ R₃ R₄ : Type} [CommRing R₁] [CommRing R₂] [CommRing 
   (m₁ : SMor Φ₁ Φ₂ σ₁) (m₂ : SMor Φ₂ Φ₄ σ₂) (m₃ : SMor Φ₁ Φ₃ σ₃) (m₄ : SMor Φ₃ Φ₄ σ₄)
   {a₁ b₁ : IdF Φ₁.A} {a₂ b₂ : IdF Φ₂.A} {a₃ b₃ : IdF Φ₃.A} {a₄ b₄ : IdF Φ₄.A}
 
+/- English proof (translation)
+Use `sq4 (m₁.sq h₁ k₁) (m₂.sq h₂ k₂) (m₃.sq h₃ k₃) (m₄.sq h₄ k₄) hσ η (fun T x => ?_) j x` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `sq_surj _ _ x`. Conclude with `Subtype.ext (congrArg (Ideal.Quotient.mk _) (hρ T y))`.
+-/
 theorem genA (hσ : ∀ a, σ₄ (σ₃ a) = σ₂ (σ₁ a)) (η : m₂.G ⋙ m₁.G ⟶ m₄.G ⋙ m₃.G)
     (hρ : ∀ (T : C₄) (x : Φ₁.A.obj (m₁.G.obj (m₂.G.obj T))), m₄.ρ T (m₃.ρ _ ((Φ₁.A.map (η.app T)).hom x)) = m₂.ρ T (m₁.ρ _ x))
     (h₁ : m₁.Le a₁ a₂) (k₁ : m₁.Le b₁ b₂) (h₂ : m₂.Le a₂ a₄) (k₂ : m₂.Le b₂ b₄) (h₃ : m₃.Le a₁ a₃) (k₃ : m₃.Le b₁ b₃)
@@ -82,6 +94,11 @@ theorem genA (hσ : ∀ a, σ₄ (σ₃ a) = σ₂ (σ₁ a)) (η : m₂.G ⋙ m
   obtain ⟨y, hy, rfl⟩ := sq_surj _ _ x
   exact Subtype.ext (congrArg (Ideal.Quotient.mk _) (hρ T y))
 
+/- English proof (translation)
+Use `Eq.trans ?_ (smulMor_pull c (m₄.sqC c₄ h₄ k₄) j _)` and prove the remaining obligations. Use `sq4 (m₁.sqC c₁ h₁ k₁) (m₂.sq h₂ k₂) (m₃.sq h₃ k₃) (smulMor c (m₄.sqC c₄ h₄ k₄)) hσ η (fun T x => ?_) j x` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `sq_surj _ _ x`. Establish `e : c • (algebraMap R₄ _ c₄ * m₄.ρ T (m₃.ρ _ ((Φ₁.A.map (η.app T)).hom y))) = m₂.ρ T (algebraMap R₂ _ c₁ * m₁.ρ (m₂.G.obj T) y)`. Rewrite using `[hρ, map_mul, m₂.comm, hc, map_mul, Algebra.smul_def, mul_assoc]`.
+
+Conclude with `Subtype.ext (congrArg (Ideal.Quotient.mk _) e)`.
+-/
 theorem genB (c₁ : R₂) (c c₄ : R₄) (hσ : ∀ a, σ₄ (σ₃ a) = σ₂ (σ₁ a)) (hc : σ₂ c₁ = c * c₄) (η : m₂.G ⋙ m₁.G ⟶ m₄.G ⋙ m₃.G)
     (hρ : ∀ (T : C₄) (x : Φ₁.A.obj (m₁.G.obj (m₂.G.obj T))), m₄.ρ T (m₃.ρ _ ((Φ₁.A.map (η.app T)).hom x)) = m₂.ρ T (m₁.ρ _ x))
     (h₁ : m₁.LeC c₁ a₁ a₂) (k₁ : m₁.LeC c₁ b₁ b₂) (h₂ : m₂.Le a₂ a₄) (k₂ : m₂.Le b₂ b₄) (h₃ : m₃.Le a₁ a₃) (k₃ : m₃.Le b₁ b₃)
@@ -95,6 +112,11 @@ theorem genB (c₁ : R₂) (c c₄ : R₄) (hσ : ∀ a, σ₄ (σ₃ a) = σ₂
     rw [hρ, map_mul, m₂.comm, hc, map_mul, Algebra.smul_def, mul_assoc]
   exact Subtype.ext (congrArg (Ideal.Quotient.mk _) e)
 
+/- English proof (translation)
+Use `sq4 (m₁.sq h k) (sqLe e₂ f₂) (sqLe e₁ f₁) (m₁.sq h' k') (fun _ => rfl) (𝟙 m₁.G) (fun T x => ?_) j x` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `sq_surj _ _ x`. Use `Subtype.ext (congrArg (Ideal.Quotient.mk _) ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `m₁.ρ T ((Φ₁.A.map (𝟙 _)).hom y) = m₁.ρ T y`. Rewrite using `[Φ₁.A.map_id]`.
+
+Both sides reduce to the same expression.
+-/
 theorem genC {a₁' b₁' : IdF Φ₁.A} {a₂' b₂' : IdF Φ₂.A} (h : m₁.Le a₁ a₂) (k : m₁.Le b₁ b₂) (h' : m₁.Le a₁' a₂') (k' : m₁.Le b₁' b₂')
     (e₁ : ∀ T, a₁.S T ≤ a₁'.S T) (f₁ : ∀ T, b₁.S T ≤ b₁'.S T) (e₂ : ∀ T, a₂.S T ≤ a₂'.S T) (f₂ : ∀ T, b₂.S T ≤ b₂'.S T)
     (j : ℕ) (x : CH.H (sq a₁ b₁) j) :
@@ -120,6 +142,9 @@ variable {O : Type} [CommRing O] {A A' : Type} [CommRing A] [CommRing A'] [Algeb
   (hpt : ∀ (B₀ : CommRingCat.{0}) (y : (nlFun δ l X' q' κ).Pt.obj B₀),
     (show PtOver X q κ B₀ from mm.pt.app B₀ y).1.2 = (show PtOver X' q' κ B₀ from y).1.2 ≫ nm.u)
 
+/- English proof (translation)
+Introduce `T x hx`. Establish `e : T.obj.i (sA ((l : A) ^ n)) = T.obj.i ((l : A') ^ n)` using `by rw [map_pow sA, map_natCast]`. Establish `hx' : (show T.obj.B from x) ∈ T.obj.pdPow r.toNat ⊔ Ideal.span {T.obj.i (sA ((l : A) ^ n))}` using `hx`. Rewrite `hx'` using `[e]`. Conclude with `hx'`.
+-/
 theorem std_le (r : ℤ) : (nm.smor _ _ hm).Le (stdI (TS γ q l s {⊤}) (some r) ((l : A) ^ n)) (stdI (TS γ' q' l s' {⊤}) (some r) ((l : A') ^ n)) := by
   intro T x hx
   have e : T.obj.i (sA ((l : A) ^ n)) = T.obj.i ((l : A') ^ n) := by rw [map_pow sA, map_natCast]
@@ -128,6 +153,9 @@ theorem std_le (r : ℤ) : (nm.smor _ _ hm).Le (stdI (TS γ q l s {⊤}) (some r
   exact hx'
 
 include hd in
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (d.ρ x)`. Rewrite using `[hd x a ha.symm, ← ha]`. Both sides reduce to the same expression.
+-/
 theorem r_comm (T : Thick (nlFun γ' 0 X' q' (κA O I'))) (x : R) :
     iBar ((nm.mor 0).obj T) l n (d.ρ x) = iBar T l n (d'.ρ (σ x)) := by
   obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (d.ρ x)
@@ -141,6 +169,9 @@ def rEta (T : (TS γ' q' l s' {⊤}).FullSubcategory) :
     (DPMorphism.id (redδ T.obj T.property.1 n)).isDPMorphism fun e => (spec_id _ e _).trans
       ((Category.assoc _ _ _).symm.trans (hpt _ ((redG q' s' d' {⊤}).obj T).y).symm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rEta_φ (T : (TS γ' q' l s' {⊤}).FullSubcategory) : (rEta nm hm d d' hd mm hpt T).φ = RingHom.id (T.obj.B ⧸ lnT T.obj l n) := rfl
 
 def rNat : (nm.smor _ _ hm).G ⋙ redG q s d {⊤} ⟶ redG q' s' d' {⊤} ⋙ mm.functor where
@@ -149,6 +180,9 @@ def rNat : (nm.smor _ _ hm).G ⋙ redG q s d {⊤} ⟶ redG q' s' d' {⊤} ⋙ m
     (lnMap f.hom.φ l le_rfl).comp (RingHom.id (T.obj.B ⧸ lnT T.obj l n)) from rfl)
 
 include hd hpt in
+/- English proof (translation)
+Establish `key` using `sq4 (F₁ := (B.pdS (nlFun δ l X q κ) c r).fn) (F₃ := (B.pdS (nlFun δ l X' q' κ) c r).fn) (redSub q s {⊤} d c lam hc r) ((nm.smor _ _ hm).sq (std_le nm hm (r : ℤ)) (std_le nm hm ((r : ℤ) + 1))) (pdOm (L := nlFun δ l X q κ) (L' := nlFun δ l X' q' κ) (c := c) (c' := c) mm sΛ hs r) (r …`. Use `key (fun T x => ?_) j x` and prove the remaining obligations. Take `⟨x, hx⟩` from `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective (I := lnT T.obj l n) x`. Conclude with `Subtype.ext rfl`.
+-/
 theorem genD {Λ : Type} [CommRing Λ] (c : Λ →+* R) (lam : Λ →+* A) (lam' : Λ →+* A') (hc : ∀ a, d.ρ (c a) = Ideal.Quotient.mk _ (lam a))
     (hc' : ∀ a, d'.ρ (c a) = Ideal.Quotient.mk _ (lam' a)) (sΛ : Λ →+* Λ) (hs : ∀ a, σ (c a) = c (sΛ a))
     (hl : ∀ a, lam' (sΛ a) = sA (lam a)) (r j : ℕ) (x : CH.H (B.pdS (nlFun δ l X q κ) c r).fn j) :

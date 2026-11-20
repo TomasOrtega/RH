@@ -8,9 +8,15 @@ noncomputable section
 
 variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 
+/- English proof (translation)
+The claim follows from `Real.rpow_nonneg (Nat.cast_nonneg p) _`.
+-/
 theorem rpow_neg_div_nonneg (i : ℕ) : 0 ≤ (p : ℝ) ^ (- (i : ℝ) / eK p K) :=
   Real.rpow_nonneg (Nat.cast_nonneg p) _
 
+/- English proof (translation)
+Establish `he' : (0 : ℝ) < eK p K` using `by positivity`. Establish `hi' : (0 : ℝ) < i` using `by positivity`. Conclude with `Real.rpow_lt_one_of_one_lt_of_neg (one_lt_p_real p) (div_neg_of_neg_of_pos (by linarith) he')`.
+-/
 theorem rpow_neg_div_lt_one (he : 0 < eK p K) {i : ℕ} (hi : 0 < i) : (p : ℝ) ^ (- (i : ℝ) / eK p K) < 1 := by
   have he' : (0 : ℝ) < eK p K := by positivity
   have hi' : (0 : ℝ) < i := by positivity
@@ -42,9 +48,15 @@ def UKi (i : ℕ) : Subgroup Kˣ where
     show ‖(((x⁻¹ : Kˣ) : K) : PadicAlgCl p) - 1‖ ≤ _
     rw [h, norm_neg, norm_mul, norm_inv, hx1, inv_one, mul_one]; exact hx.2⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_UKi_iff (i : ℕ) (x : Kˣ) :
     x ∈ UKi p K i ↔ x ∈ UK p K ∧ ‖((x : K) : PadicAlgCl p) - 1‖ ≤ (p : ℝ) ^ (- (i : ℝ) / eK p K) := Iff.rfl
 
+/- English proof (translation)
+Establish `h` using `norm_eq_rpow_vK p K hK (π ^ i)`. Rewrite `h` using `[vK_pow, hπ, mul_one, Int.cast_natCast, Units.val_pow_eq_pow_val, SubmonoidClass.coe_pow, norm_pow]`. Conclude with `h`.
+-/
 theorem norm_pow_uniformiser (hK : FiniteDimensional ℚ_[p] K) {π : Kˣ} (hπ : vK p K π = 1) (i : ℕ) :
     ‖((π : K) : PadicAlgCl p)‖ ^ i = (p : ℝ) ^ (- (i : ℝ) / eK p K) := by
   have h := norm_eq_rpow_vK p K hK (π ^ i)

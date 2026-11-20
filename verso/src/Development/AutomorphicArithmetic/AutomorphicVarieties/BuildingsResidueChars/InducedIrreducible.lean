@@ -7,6 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.Ho
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Base UpperTheory.V.Sd UpperTheory.V.Ws UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Sd.S2
 
+/- English proof (translation)
+Establish `hn : j.range.Normal` using `Subgroup.normal_of_index_eq_two hi`. Establish `: ∀ h, ∃ h', j h' = t⁻¹ * j h * t` using `fun h => hn.conj_mem' _ ⟨h, rfl⟩ t`. Use `choose c hc using this`. Use `⟨MonoidHom.mk' c fun a b => hj ?_, hc⟩` and prove the remaining obligations. Rewrite using `[map_mul, hc, hc, hc, map_mul]`.
+
+Use `group`.
+-/
 private theorem conjHom {Γ₀ Γ : Type} [Group Γ₀] [Group Γ] (j : Γ₀ →* Γ) (hj : Function.Injective j) (hi : j.range.index = 2)
     (t : Γ) : ∃ c : Γ₀ →* Γ₀, ∀ h, j (c h) = t⁻¹ * j h * t := by
   have hn : j.range.Normal := Subgroup.normal_of_index_eq_two hi
@@ -15,11 +20,19 @@ private theorem conjHom {Γ₀ Γ : Type} [Group Γ₀] [Group Γ] (j : Γ₀ �
   refine ⟨MonoidHom.mk' c fun a b => hj ?_, hc⟩
   rw [map_mul, hc, hc, hc, map_mul]; group
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv]`. Conclude with `Matrix.charpoly_units_conj g _`.
+-/
 private theorem cp_conj {K : Type} [Field K] (g r : GL (Fin 2) K) :
     ((g * r * g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K).charpoly = (r : Matrix (Fin 2) (Fin 2) K).charpoly := by
   rw [Units.val_mul, Units.val_mul, Matrix.coe_units_inv]
   exact Matrix.charpoly_units_conj g _
 
+/- English proof (translation)
+Take `⟨κ, ⟨g, hg⟩, hκ, -⟩` from `h`. Set `s' : ↥(Dec (F` to `F) A) := ⟨s, Ine_le_Dec A hs⟩`. Establish `h0` using `(hg s').2 0`. Establish `h1` using `(hg s').2 1`. Rewrite `h0` using `[hκ 0 s' hs]`.
+
+Rewrite `h1` using `[hκ 1 s' hs]`. Rewrite using `[← cp_conj g, Matrix.charpoly_of_isUpperTriangular _ (fun i j hij => (hg s').1 i j hij), Fin.prod_univ_two]`. Conclude with `congrArg₂ (fun x y => (X - C x) * (X - C y)) h0 h1`.
+-/
 private theorem cp_ord {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime]
     {r : G F Ω →* GL (Fin 2) (Qbar l)} {a b : ℤ} {ψ : Fin 2 → G F Ω →* (Qbar l)ˣ} {A : ValuationSubring Ω}
     (h : OrdAt r ![a, b] ψ A) {s : G F Ω} (hs : s ∈ Ine (F := F) A) :
@@ -34,6 +47,13 @@ private theorem cp_ord {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algeb
   rw [← cp_conj g, Matrix.charpoly_of_isUpperTriangular _ (fun i j hij => (hg s').1 i j hij), Fin.prod_univ_two]
   exact congrArg₂ (fun x y => (X - C x) * (X - C y)) h0 h1
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg (Polynomial.eval 1) h`. Simplify using `only [eval_mul, eval_sub, eval_X, eval_C, zpow_zero, Units.val_one, sub_self, mul_zero, mul_eq_zero] at h1`. Establish `hinj` using `injective_zpow_iff_not_isOfFinOrder.2 he`. Break down `h1 with h1 | h1` into its components or cases.
+
+Establish `: e ^ ((k : ℤ) + t) = e ^ (0 : ℤ)` using `Units.ext (by rw [zpow_zero, Units.val_one]; exact (sub_eq_zero.1 h1).symm)`. Use `hinj this` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `: e ^ (-(t : ℤ)) = e ^ (0 : ℤ)` using `Units.ext (by rw [zpow_zero, Units.val_one]; exact (sub_eq_zero.1 h1).symm)`. Use `hinj this` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem cp_ne {K : Type} [Field K] (e : Kˣ) (he : ¬ IsOfFinOrder e) (k t : ℕ) (ht : 2 ≤ t) :
     (X - C ((e ^ ((k : ℤ) + t) : Kˣ) : K)) * (X - C ((e ^ (-(t : ℤ)) : Kˣ) : K)) ≠
       (X - C ((e ^ (k : ℤ) : Kˣ) : K)) * (X - C ((e ^ (0 : ℤ) : Kˣ) : K)) := by
@@ -49,6 +69,9 @@ private theorem cp_ne {K : Type} [Field K] (e : Kˣ) (he : ¬ IsOfFinOrder e) (k
     have := hinj this
     omega
 
+/- English proof (translation)
+Use `(range_galEmb ℚ E Ω).trans ?_` and prove the remaining obligations. Use extensionality with `g`. Rewrite using `[mem_galOf, IntermediateField.mem_fixingSubgroup_iff]`. Conclude with `⟨fun h x hx => h ⟨x, hx⟩, fun h x => h x x.2⟩`.
+-/
 private theorem range_res {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (E : IntermediateField ℚ Ω) :
     (resQ E).range = E.fixingSubgroup := by
   refine (range_galEmb ℚ E Ω).trans ?_
@@ -56,11 +79,43 @@ private theorem range_res {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ
   rw [mem_galOf, IntermediateField.mem_fixingSubgroup_iff]
   exact ⟨fun h x hx => h ⟨x, hx⟩, fun h x => h x x.2⟩
 
+/- English proof (translation)
+Establish `h : UpperTheory.V.IsLift (RingEquiv.refl ℚ) g.toRingEquiv` using `fun x => g.commutes x`. Conclude with `UpperTheory.V.conjGal_mem_Ine h (fun _ => Iff.rfl) hx`.
+-/
 private theorem ine_move {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω) (g x : G ℚ Ω)
     (hx : x ∈ Ine (F := ℚ) A) : g⁻¹ * x * g ∈ Ine (F := ℚ) (A.comap g.toRingEquiv.toRingHom) := by
   have h : UpperTheory.V.IsLift (RingEquiv.refl ℚ) g.toRingEquiv := fun x => g.commutes x
   exact UpperTheory.V.conjGal_mem_Ine h (fun _ => Iff.rfl) hx
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T k₀ _ _ φ ι k t r α β R δ hd`. Use `haveI : IsGalois ℚ Ω := {}`. Use `haveI : IsAlgClosure k₀ Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) k₀⟩`. Use `set τ : G ℚ Ω := resQ T.F T.g0 with hτ`. Set `V : Subgroup (G ℚ Ω)` to `T.F.fixingSubgroup ⊓ T.K.fixingSubgroup`.
+
+Set `U : Subgroup (G ℚ Ω)` to `V ⊓ (cycZ ℚ Ω l).ker`. Establish `hV : IsOpen (V : Set (G ℚ Ω))` using `T.F.fixingSubgroup_isOpen.inter T.K.fixingSubgroup_isOpen`. Establish `hU : ∀ g ∈ T.G', resQ T.F g ∈ U` using `fun g hg => ⟨⟨range_res T.F ▸ ⟨g, rfl⟩, hg.1⟩, hg.2⟩`. Establish `hU' : ∀ g ∈ U, ∃ g' ∈ T.G', resQ T.F g' = g`. Introduce `g hg`.
+
+Take `⟨g', rfl⟩ : g ∈ (resQ T.F).range` from `range_res T.F ▸ hg.1.1`. Conclude with `⟨g', ⟨hg.1.2, hg.2⟩, rfl⟩`. Establish `hcont : Continuous (resQ k₀)` using `(resFacts ℚ k₀ Ω l 1 1).1`. Establish `hirr : IsIrr (r.comp (U.comap (resQ k₀)).subtype)`. Use `irrAb l _ 2 r hd.dat.cont hd.dat.irr (V.comap (resQ k₀)) _ (hV.preimage hcont) (Subgroup.comap_mono inf_le_left) ?_` and prove the remaining obligations.
+
+Introduce `a ha b hb`. Use `⟨(V.comap (resQ k₀)).mul_mem (mul_mem (mul_mem ha hb) (inv_mem ha)) (inv_mem hb), ?_⟩` and prove the remaining obligations. Use `show cycZ ℚ Ω l (resQ k₀ (a * b * a⁻¹ * b⁻¹)) = 1`. Simplify using `only [map_mul, map_inv]`. Rewrite using `[mul_inv_cancel_comm, mul_inv_cancel]`.
+
+Establish `key : IsIrr (R.comp U.subtype)`. Use `UpperTheory.mix_invariant_plane_decomposition _ _ _ (resQ k₀) τ α β r R hd.mix U ?_ hirr ?_` and prove the remaining obligations. Take `⟨g, hg, hne⟩` from `UpperTheory.residual_characters_psi_ne Ω l c D T hd.hyp.good hd.hyp.ok hd.hyp.two`. Introduce `hle`. Conclude with `hne ((hd.hyp.ps g).2 (range_res k₀ ▸ hle (hU g hg)))`.
+
+Introduce and unpack `⟨M, hM⟩`. Take `⟨cj, hcj⟩` from `conjHom (resQ k₀) hd.mix.inj hd.mix.index τ`. Establish `hchar : ∀ (χ : G ℚ Ω →* (Qbar l)ˣ) (h : G k₀ Ω), χ (resQ k₀ (cj h)) = χ (resQ k₀ h)`. Introduce `χ h`. Rewrite using `[hcj, map_mul, map_mul, map_inv, inv_mul_cancel_comm]`.
+
+Establish `hcyc : ∀ h, cycBar k₀ Ω l (cj h) = cycBar k₀ Ω l h` using `hchar (cycBar ℚ Ω l)`. Set `H : Subgroup (G ℚ Ω)` to `V ⊓ k₀.fixingSubgroup`. Establish `hH : IsOpen (H : Set (G ℚ Ω))` using `hV.inter k₀.fixingSubgroup_isOpen`. Use `haveI : Finite (G ℚ Ω ⧸ H) := Subgroup.quotient_finite_of_isOpen H hH`. Use `haveI : H.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`.
+
+Take `⟨n, hn, -, hnH⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (H := H) Subgroup.FiniteIndex.index_ne_zero (D.s0 : G ℚ Ω)`. Take `⟨s, hs⟩ : (D.s0 : G ℚ Ω) ^ n ∈ (resQ k₀).range` from `range_res k₀ ▸ hnH.2`. Establish `hsV : resQ k₀ s ∈ V` using `hs ▸ hnH.1`. Establish `hsI : resQ k₀ (s * s) ∈ Ine (F` using `ℚ) (D.pl l) := by`. Rewrite using `[map_mul, hs]`.
+
+Conclude with `mul_mem (pow_mem hd.hyp.good.decompSigma_mem.1.1 n) (pow_mem hd.hyp.good.decompSigma_mem.1.1 n)`. Establish `hdet : ∀ h, Matrix.GeneralLinearGroup.det (r h) = cycBar k₀ Ω l h ^ k * up D.ξ (resQ k₀ h)` using `fun h => DFunLike.congr_fun hd.dat.det h`. Establish `hsq` using `UpperTheory.mix_sign_twist _ _ r (r.comp cj) (U.comap (resQ k₀)) M hirr (fun h hh => hM h (cj h) hh (hcj h)) s (fun h hh => ⟨(V.comap (resQ k₀)).mul_mem ((V.comap (resQ k₀)).mul_mem hsV hh.1) ((V.comap (resQ k₀)).inv_mem hsV), by`. Establish `h1 : cycZ ℚ Ω l (resQ k₀ h) = 1` using `hh.2`. Use `show cycZ ℚ Ω l (resQ k₀ (s * h * s⁻¹)) = 1`.
+
+Simplify using `only [map_mul, map_inv, h1, mul_one, mul_inv_cancel]⟩)`. Use the proof step `(by rw [MonoidHom.comp_apply, hdet, hdet, hcyc, hchar])`. Establish `hcp : (r (cj (s * s)) : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly = (r (s * s) : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly`. Rewrite using `[← cp_conj M (r (s * s)), ← hsq]`. Both sides reduce to the same expression.
+
+Establish `hI : s * s ∈ Ine (F` using `k₀) (D.pl l) := mem_Ine.2 (mem_Ine.1 hsI)`. Establish `hI' : cj (s * s) ∈ Ine (F` using `k₀) ((D.pl l).comap τ.toRingEquiv.toRingHom) := by`. Use `ine_move (D.pl l) τ _ hsI` as an intermediate fact. Rewrite `this` using `[← hcj]`. Conclude with `mem_Ine.2 (mem_Ine.1 this)`.
+
+Establish `he : ¬ IsOfFinOrder (cycBar k₀ Ω l (s * s))`. Establish `hinj : Function.Injective (Units.map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom)` using `Units.map_injective ((algebraMap ℚ_[l] (Qbar l)).injective.comp Subtype.val_injective)`. Introduce `hf`. Establish `h1 : IsOfFinOrder (cycZ ℚ Ω l (resQ k₀ (s * s)))` using `(hinj.isOfFinOrder_iff).1 hf`. Rewrite `h1` using `[map_mul, hs, ← pow_add, map_pow]`.
+
+Conclude with `hd.hyp.good.decompSigma_ord (h1.of_pow (by omega))`. Break down `hd.dat.above (D.pl l) ((D.pl l).comap τ.toRingEquiv.toRingHom) (hd.hyp.good.pl_over l Fact.out) τ hd.chars.out (fun _ => Iff.rfl) with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Rewrite `hcp` using `[cp_ord h1 hI, cp_ord h2 hI', hcyc]`. Conclude with `cp_ne _ he k t hd.dat.ht hcp.symm`. Rewrite `hcp` using `[cp_ord h1 hI, cp_ord h2 hI', hcyc]`.
+
+Conclude with `cp_ne _ he k t hd.dat.ht hcp`. Use `⟨key.1, fun _ _ _ => trivial, fun W hW hi => key.2.2 W hW ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g, hg⟩ v hv`. Take `⟨g', hg', rfl⟩` from `hU' g hg`. Conclude with `hi ⟨g', hg'⟩ v hv`.
+-/
 theorem UpperTheory.induced_irreducible :
     UpperTheory.V.Sd.S2.IndIrr := by
   intro Ω _ _ _ l _ c D T k₀ _ _ φ ι k t r α β R δ hd

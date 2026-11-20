@@ -11,6 +11,9 @@ open GlobalTheory.CxPts
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Establish `hJ : y ∈ ptsIn p σ ((lbPow B 1).U J)` using `mem_pow_iff.2 hy`. Express the relevant statement in the definitionally equal form `ev p σ _ (resG X _ (s.f (J PUnit.unit) ^ 1)) y = _`. Conclude with `(ev_res _ hJ _).trans (congrArg (ev p σ _ · y) (pow_one _))`.
+-/
 theorem ev_secToPow_one {B : LB X} (s : B.Sec) {σ : k →+* ℂ} (J : PUnit → B.ι) (y : CxPts p σ)
     (hy : y ∈ ptsIn p σ (B.U (J PUnit.unit))) :
     ev p σ ((lbPow B 1).U J) ((secToPow s 1).f J) y = ev p σ (B.U (J PUnit.unit)) (s.f (J PUnit.unit)) y := by
@@ -18,6 +21,9 @@ theorem ev_secToPow_one {B : LB X} (s : B.Sec) {σ : k →+* ℂ} (J : PUnit →
   change ev p σ _ (resG X _ (s.f (J PUnit.unit) ^ 1)) y = _
   exact (ev_res _ hJ _).trans (congrArg (ev p σ _ · y) (pow_one _))
 
+/- English proof (translation)
+Establish `hi` using `mem_pick φ.isLB y`. Rewrite using `[(φ.pow 1).nsq_eq (secVal_mem _) (i := fun _ => pick φ.isLB y) (mem_pow_iff.2 hi), φ.nsq_eq (secVal_mem _) hi, Weight.zpow_φ]`. Use `congrArg₂ (fun a b => ‖a‖ ^ 2 * Real.exp b) (ev_secToPow_one s _ y hi) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem nsq_pow_one_secToPow {B : LB X} {σ : k →+* ℂ} (φ : Weight p σ B) (s : B.Sec) (y : CxPts p σ) :
     (φ.pow 1).nsq (secVal p σ (secToPow s 1)) y = φ.nsq (secVal p σ s) y := by
   have hi := mem_pick φ.isLB y
@@ -26,6 +32,15 @@ theorem nsq_pow_one_secToPow {B : LB X} {σ : k →+* ℂ} (φ : Weight p σ B) 
   refine congrArg₂ (fun a b => ‖a‖ ^ 2 * Real.exp b) (ev_secToPow_one s _ y hi) ?_
   simp
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX N s`. Use `hX.finite_emb` as an intermediate fact. Establish `hc : ∀ σ, ∃ M : ℝ, ∀ y : CxPts p σ, (N.φ σ).nsq (secVal p σ s) y ≤ M` using `fun σ => by`. Use `hX.compactSpace σ` as an intermediate fact. Take `⟨M, hM⟩` from `(isCompact_range ((N.cInf σ).continuous_nsq s)).bddAbove`.
+
+Conclude with `⟨M, fun y => hM ⟨y, rfl⟩⟩`. Use `choose M hM using hc`. Take `⟨B, hB⟩` from `Finite.exists_le M`. Use `⟨Real.log (max B 1) / 2, fun x hx hxa b hb => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.SmallSecHeight.le_ptHt k X p D hX N 1 (-(Real.log (max B 1) / 2)) b x (secToPow s 1) le_rfl (fun σ y => ?_) ((nonzeroLocus_secToPow s le_rfl).symm ▸ hx) hxa hb` and prove the remaining obligations.
+
+Use `(nsq_pow_one_secToPow ((N.shift _ _).φ σ) s y).trans_le ((N.nsq_shift _ _ (secVal p σ s) y).trans_le ?_)` and prove the remaining obligations. Establish `hpos : (0 : ℝ) < max B 1` using `lt_max_of_lt_right one_pos`. Establish `e : Real.exp (-(2 * -(-(Real.log (max B 1) / 2)))) = (max B 1)⁻¹`. Rewrite using `[show -(2 * -(-(Real.log (max B 1) / 2))) = -Real.log (max B 1) by ring, Real.exp_neg, Real.exp_log hpos]`. Rewrite using `[e, ← div_eq_mul_inv, div_le_one hpos]`.
+
+Conclude with `((hM σ y).trans (hB σ)).trans (le_max_left _ _)`.
+-/
 theorem exists_lower_bound : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (N : HermLB p) (s : N.B.Sec), ∃ c : ℝ, ∀ x : X, x ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s → IsAlgPt x →
       ∀ b : ℝ, IsPtHt N x b → -c ≤ b := by

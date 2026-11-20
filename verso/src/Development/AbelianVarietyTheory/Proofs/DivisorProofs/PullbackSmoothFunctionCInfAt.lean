@@ -10,6 +10,11 @@ open scoped ContDiff
 
 namespace GlobalTheory.Mean4O.OnModelCInf
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `(M.A a).cover ((I.pt a).symm y)`. Take `⟨c, hc⟩` from `I.alg a j`. Establish `h` using `hu a j`. Rewrite `h` using `[hc, Homeomorph.transOpenPartialHomeomorph_symm_apply, Homeomorph.transOpenPartialHomeomorph_target]`. Rewrite `hj` using `[hc, Homeomorph.transOpenPartialHomeomorph_source]`.
+
+Establish `h' : ContDiffOn ℝ ∞ ((fun w => u a ((I.pt a).symm w)) ∘ c.finChart.symm) (c.finChart.target ∩ c.finChart.symm ⁻¹' Set.univ)`. Simplify `h` using `[Function.comp_def]`. Use `cInfAt_of_chart isOpen_univ c ((c.contDiffOn_finChart_iff _ _ _).1 h') ?_ trivial` and prove the remaining obligations. Simplify using `using hj`.
+-/
 theorem cInfAt_of_manIs {F : Type} [Field F] {Y : Var F} {e : ℕ} {M : Man e} (I : ManIs M Y)
     {u : M.Fun} (hu : M.Smooth u) (a : Fin (M.n + 1)) (y : Pts Y (I.ε a)) :
     CInfAt (fun w => u a ((I.pt a).symm w)) y := by
@@ -24,6 +29,23 @@ theorem cInfAt_of_manIs {F : Type} [Field F] {Y : Var F} {e : ℕ} {M : Man e} (
   refine cInfAt_of_chart isOpen_univ c ((c.contDiffOn_finChart_iff _ _ _).1 h') ?_ trivial
   simpa using hj
 
+/- English proof (translation)
+Introduce `F _ _ X G p q j H τ σ m hm f z hz`. Take `⟨W, ι, _, g, Φ, O, h₁, h₂, h₃, h₄, h₅⟩` from `hz`. Take `⟨W', hle, hx, n, g', hn, hg⟩` from `GlobalTheory.T.exists_integral_multiple_extension F X G p q j H W _ (mem_ptsIn.1 h₁) ι g`. Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `hval (w : CxPts q τ) (hw : w ∈ ptsIn q τ (j ⁻¹ᵁ W')) (a : ι) : ev p σ W' (g' a) (m w) = n * ev q τ W (g a) w`.
+
+Rewrite using `[ev_of_comp hm, ← hg a, ev_mul, ev_res hle hw]`. Use `congr 1`. Rewrite using `[ev_eq hw, map_natCast]`. Establish `hστ : spMap σ = spMap τ ≫ spMap (algebraMap (𝓞 F) F)`. Rewrite using `[← (m z).2, hm, Category.assoc, H.w, ← Category.assoc, z.2]`.
+
+Set `s : CxPts p σ → CxPts q τ` to `fun y => ⟨H.lift y.1 (spMap τ) (y.2.trans hστ), H.lift_snd _ _ _⟩`. Establish `hms (y : CxPts p σ) : m (s y) = y` using `Subtype.ext ((hm _).trans (H.lift_fst _ _ _))`. Establish `hsm : s (m z) = z` using `Subtype.ext (H.hom_ext ((H.lift_fst _ _ _).trans (hm z)) ((H.lift_snd _ _ _).trans z.2.symm))`. Establish `hs : Continuous s`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations.
+
+Rewrite using `[(Points.isEmbedding_of_isPullback H).continuous_iff]`. Use `(continuous_subtype_val.prodMk (continuous_const (y := spMap τ))).congr fun y => ?_` and prove the remaining obligations. Conclude with `(Prod.ext (H.lift_fst _ _ _) (H.lift_snd _ _ _)).symm`. Establish `hz' : z ∈ ptsIn q τ (j ⁻¹ᵁ W')` using `mem_ptsIn.2 hx`. Establish `hmW : m z ∈ ptsIn p σ W'`.
+
+Rewrite using `[mem_ptsIn, hm]`. Conclude with `hx`. Establish `hd : ContDiff ℝ ∞ fun v : ι → ℂ => fun a => v a / (n : ℂ)` using `contDiff_pi.2 fun a => (contDiff_apply ℝ ℂ a).div_const _`. Use `⟨W', ι, inferInstance, g', fun v => Φ fun a => v a / n, (fun v : ι → ℂ => fun a => v a / (n : ℂ)) ⁻¹' O, hmW, h₂.preimage hd.continuous, ?_, h₄.comp hd.contDiffOn fun v hv => hv, ?_⟩` and prove the remaining obligations. Use `show (fun a => ev p σ W' (g' a) (m z) / n) ∈ O`.
+
+Simplify `h₃` using `only [hval z hz', mul_div_cancel_left₀ _ hn']`. Establish `ht : Filter.Tendsto s (nhds (m z)) (nhds z)`. Use `hs.continuousAt (x := m z)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, hsm]`. Then use the resulting hypothesis. Use `filter_upwards [ht.eventually h₅, ht.eventually ((isOpen_ptsIn _).mem_nhds hz')] with y e hy`.
+
+Establish `hv (a : ι) : ev p σ W' (g' a) y = n * ev q τ W (g a) (s y)`. Use `hval (s y) hy a` as an intermediate fact. Rewrite `this` using `[hms]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[hv, mul_div_cancel_left₀ _ hn']`.
+-/
 theorem baseChange_cInfAt : ∀ (F : Type) [Field F] [NumberField F] (X G : Scheme.{0}) (p : X ⟶ Sp (𝓞 F))
     (q : G ⟶ Sp F) (j : G ⟶ X), IsPullback j q p (spMap (algebraMap (𝓞 F) F)) →
     ∀ (τ : F →+* ℂ) (σ : 𝓞 F →+* ℂ) (m : CxPts q τ → CxPts p σ), (∀ z, (m z).1 = z.1 ≫ j) →
@@ -72,6 +94,17 @@ theorem baseChange_cInfAt : ∀ (F : Type) [Field F] [NumberField F] (X G : Sche
         funext a
         rw [hv, mul_div_cancel_left₀ _ hn']
 
+/- English proof (translation)
+Introduce `F _ _ Y V e M I ε π hD u hu σ z`. Take `⟨hσ, hw⟩` from `hD σ`. Establish `hm0 (w : CxPts (V.π ≫ Y.str) (I.ε (ε σ))) : (w.1 ≫ V.j) ≫ V.p = spMap σ`. Rewrite using `[Category.assoc, V.pb.w, ← Category.assoc, w.2, show spMap σ = _ from congrArg spMap hσ.symm, spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Set `m : CxPts (V.π ≫ Y.str) (I.ε (ε σ)) → CxPts V.p σ` to `fun w => ⟨w.1 ≫ V.j, hm0 w⟩`. Take `⟨w, hw1, hw2⟩` from `hw z`. Set `z' : CxPts (V.π ≫ Y.str) (I.ε (ε σ))` to `⟨w, by rw [← Category.assoc, hw2]; exact (I.pt _ (π σ z)).2⟩`. Establish `hz : m z' = z` using `Subtype.ext hw1`. Establish `key (w' : CxPts (V.π ≫ Y.str) (I.ε (ε σ))) : M.pull ε π u σ (m w') = u (ε σ) ((I.pt (ε σ)).symm (Points.PtsOver.map V.π rfl _ w'))`.
+
+Take `⟨w'', h1, h2⟩` from `hw (m w')`. Establish `e : w'' = w'.1` using `V.pb.hom_ext h1 (by`. Rewrite using `[← Category.assoc, h2, (I.pt _ (π σ (m w'))).2]`. Conclude with `w'.2.symm)`. Use `show u (ε σ) (π σ (m w')) = _`.
+
+Use `congr 1`. Apply `(I.pt (ε σ)).injective` to reduce the goal to its premises. Rewrite using `[Homeomorph.apply_symm_apply]`. Conclude with `Subtype.ext (h2.symm.trans (by rw [e]; rfl))`. Establish `hY` using `CInfAt.pull V.π rfl (cInfAt_of_manIs I hu (ε σ) (Points.PtsOver.map V.π rfl _ z'))`.
+
+Rewrite using `[← hz]`. Conclude with `baseChange_cInfAt F V.X V.G V.p (V.π ≫ Y.str) V.j V.pb _ σ m (fun _ => rfl) _ z' (hY.congr (.of_forall key))`.
+-/
 theorem cInfAt_pull : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (e : ℕ) (M : Man e) (I : ManIs M Y) (ε : (𝓞 F →+* ℂ) → Fin (M.n + 1)) (π : ∀ σ, CxPts V.p σ → M.X (ε σ)), V.IsDown I ε π → ∀ u : M.Fun, M.Smooth u → ∀ σ (z : CxPts V.p σ), CxPts.CInfAt (M.pull ε π u σ) z := by
   intro F _ _ Y V e M I ε π hD u hu σ z
   obtain ⟨hσ, hw⟩ := hD σ

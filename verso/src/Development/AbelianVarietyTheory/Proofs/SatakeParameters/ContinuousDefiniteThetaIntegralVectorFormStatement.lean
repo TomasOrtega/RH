@@ -9,6 +9,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped TensorProduct ComplexOrder
 open MeasureTheory Formalism.IndefR.Datum Formalism.L2.Theta Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThetaIntegralCont.continuous_theta_integral_vector | exact GlobalTheory.ThetaIntegralCont.continuous_theta_integral_vector | (intros; apply GlobalTheory.ThetaIntegralCont.continuous_theta_integral_vector <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.continuous_definiteThetaIntegral_vectorForm : ∀ {D : D7} (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ℂ) (V W : Formalism.BasicNotions.TH.HSp D)
     (χS χT : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)),
     IsWeilDatumO ψ V W χS χT om → (∀ τ, (gramAt D V τ).PosDef) →

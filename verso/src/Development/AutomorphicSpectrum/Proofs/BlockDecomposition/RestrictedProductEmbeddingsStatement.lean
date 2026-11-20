@@ -13,6 +13,9 @@ open scoped Classical
 open GlobalTheory.CompanionTheory.FinActS
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FinActS.exists_local_levels_le_open | exact GlobalTheory.CompanionTheory.FinActS.exists_local_levels_le_open | (intros; apply GlobalTheory.CompanionTheory.FinActS.exists_local_levels_le_open <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.restricted_product_embeddings : ∀ {ι Γ : Type} [Group Γ] {Hl : ι → Type} [∀ i, Group (Hl i)] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [∀ i, TopologicalSpace (Hl i)] [∀ i, T2Space (Hl i)]
     (p : ∀ i, Γ →* Hl i) (e : ∀ i, Hl i →* Γ) (K : Subgroup Γ) (KH : ∀ i, Subgroup (Hl i))
     (hpc : ∀ i, Continuous (p i)) (hec : ∀ i, Continuous (e i))

@@ -5,6 +5,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.ForSecondHalf
 
+/- English proof (translation)
+The claim follows from `LowerBoundFree.Z1.proof hM HilbertSamuel.BirationalModelExists.proof`.
+-/
 theorem Z1.of_moriwakiHS (hM : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement) : ReciprocityTheory.ChartRestriction.G.Geo.SuccessiveMinimaLowerBound :=
   LowerBoundFree.Z1.proof hM HilbertSamuel.BirationalModelExists.proof
 

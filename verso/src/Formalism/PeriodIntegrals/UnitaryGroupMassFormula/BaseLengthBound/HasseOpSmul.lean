@@ -6,6 +6,9 @@ open Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.BasicNo
 
 namespace PoleLengthBounds
 
+/- English proof (translation)
+Rewrite `hq` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[← hq, Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)]`. Conclude with `Nat.le_add_left _ _`.
+-/
 theorem sum_snd_le {D : D7} {j N : ℕ} {β : Idx D j N →₀ ℕ} {q : (Idx D j N →₀ ℕ) × (Idx D j N →₀ ℕ)}
     (hq : q ∈ Finset.HasAntidiagonal.antidiagonal β) :
     (q.2.sum fun _ n => n) ≤ (β.sum fun _ n => n) := by
@@ -16,6 +19,11 @@ theorem sum_snd_le {D : D7} {j N : ℕ} {β : Idx D j N →₀ ℕ} {q : (Idx D 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {wL wF : WeightFamilies.Wt D j}
   {la : HeightOneSpectrum (𝓞 B.KO)} {N : ℕ} {w : Fin N → B.Cusp j wL}
 
+/- English proof (translation)
+Establish `e1 : ((algebraMap (Op X la N) (Kp X la N) o • x : ↥(HK X la w wF)) : Lw X la w) = algebraMap (Rp X la N) (Lw X la w) (algebraMap (Op X la N) (Rp X la N) o) * (x : Lw X la w)`. Rewrite using `[Submodule.coe_smul_of_tower, Algebra.smul_def, IsScalarTower.algebraMap_apply (Kp X la N) (Rp X la N) (Lw X la w), ← IsScalarTower.algebraMap_apply (Op X la N) (Kp X la N) (Rp X la N)]`. Rewrite using `[e1]`. Use `(hasse_mul X la w β _ _).trans (Finset.sum_congr rfl fun q _ => ?_)` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`.
+
+Use `congr 1`. Rewrite using `[IsScalarTower.algebraMap_apply (Kp X la N) (Rp X la N) (Lc X la w), ← IsScalarTower.algebraMap_apply (Op X la N) (Kp X la N) (Rp X la N)]`. Conclude with `hasse_algebraMap_Op X la w q.1 o`.
+-/
 theorem hasse_Op_smul (o : Op X la N) (x : ↥(HK X la w wF)) (β : Idx D j N →₀ ℕ) :
     hasse X la w β (((algebraMap (Op X la N) (Kp X la N) o • x : ↥(HK X la w wF))) : Lw X la w) =
       ∑ q ∈ Finset.HasAntidiagonal.antidiagonal β,
@@ -33,6 +41,31 @@ theorem hasse_Op_smul (o : Op X la N) (x : ↥(HK X la w wF)) (β : Idx D j N �
     ← IsScalarTower.algebraMap_apply (Op X la N) (Kp X la N) (Rp X la N)]
   exact hasse_algebraMap_Op X la w q.1 o
 
+/- English proof (translation)
+Unfold `AARep`. Introduce `D B P j X ka wL wF G la Q S CRm T c hOk hw x hx`. Establish `hC : Q.InCurve` using `hOk.2.1`. Establish `hU` using `isUnif_of_curve Q hC`. Establish `: ∀ ζ : PtsG G la, IsDVRAt ζ` using `fun ζ => isDVRAt_of_curve Q hC ζ`.
+
+It suffices to establish `key : ∃ x' : ↥(HK X la G.w wF), (∃ hx' : ∀ β : Idx D j G.N →₀ ℕ, (β.sum fun _ n => n) ≤ a0 D j T - 1 → hasse X la G.w β (x' : Lw X la G.w) ∈ HK X la G.w wF, ∀ β hβ, toA0K X la G.w wF ⟨_, hx' β hβ⟩ ∈ Q.A0) ∧ toWK X la G.w wF (a0 D j T) x' = x by`. Take `⟨x', ⟨_, h2⟩, h3⟩` from `key`. Conclude with `⟨x', h3, fun β hβ _ => h2 β hβ⟩`. Unfold `LocalPointData.AA LocalPointData.AAp at hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨x0, ⟨hx0, hb0⟩, rfl⟩` from `hy`. Use `⟨x0, ⟨hx0, fun β hβ => ?_⟩, rfl⟩` and prove the remaining obligations. Unfold `LocalPointData.A0`. Rewrite using `[mem_ballO_iff Q.c hU hC.2.2]`.
+
+Introduce `ζ`. Establish `h` using `hb0 β hβ ζ`. Simplify `h` using `[LocalPointData.ordA]`. Consider the case `zero`. Establish `hz : ∀ β : Idx D j G.N →₀ ℕ, hasse X la G.w β ((0 : ↥(HK X la G.w wF)) : Lw X la G.w) = 0` using `fun β => by`.
+
+Conclude with `map_zero (hasse X la G.w β)`. Use `⟨0, ⟨fun β _ => by rw [hz]; exact (HK X la G.w wF).zero_mem, fun β hβ => ?_⟩, map_zero _⟩` and prove the remaining obligations. Use `Q.A0.zero_mem using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← map_zero (toA0K X la G.w wF)]`. Conclude with `congrArg _ (Subtype.ext (hz β))`.
+
+Consider the case `add a b _ _ ha hb`. Take `⟨xa, ⟨ha1, ha2⟩, rfl⟩` from `ha`. Take `⟨xb, ⟨hb1, hb2⟩, rfl⟩` from `hb`. Establish `hs : ∀ β : Idx D j G.N →₀ ℕ, hasse X la G.w β ((xa + xb : ↥(HK X la G.w wF)) : Lw X la G.w) = hasse X la G.w β (xa : Lw X la G.w) + hasse X la G.w β (xb : Lw X la G.w)` using `fun β => by`. Conclude with `map_add (hasse X la G.w β) _ _`.
+
+Use `⟨xa + xb, ⟨fun β hβ => by rw [hs]; exact add_mem (ha1 β hβ) (hb1 β hβ), fun β hβ => ?_⟩, map_add _ _ _⟩` and prove the remaining obligations. Use `Q.A0.add_mem (ha2 β hβ) (hb2 β hβ) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← map_add]`. Conclude with `congrArg _ (Subtype.ext (hs β))`. Consider the case `smul o y _ ih => classical`.
+
+Take `⟨x0, ⟨h1, h2⟩, rfl⟩` from `ih`. Set `g : (Idx D j G.N →₀ ℕ) × (Idx D j G.N →₀ ℕ) → ↥(HK X la G.w wF)` to `fun q => if h : hasse X la G.w q.2 (x0 : Lw X la G.w) ∈ HK X la G.w wF then ⟨_, h⟩ else 0`. Establish `hg' : ∀ q : (Idx D j G.N →₀ ℕ) × (Idx D j G.N →₀ ℕ), ∀ hq : (q.2.sum fun _ n => n) ≤ a0 D j T - 1, g q = ⟨_, h1 q.2 hq⟩` using `fun q hq => dif_pos (h1 q.2 hq)`. Set `F : (Idx D j G.N →₀ ℕ) → ↥(HK X la G.w wF)` to `fun β => ∑ q ∈ Finset.HasAntidiagonal.antidiagonal β, algebraMap (Op X la G.N) (Kp X la G.N) (hasseOp X la G.N q.1 o) • g q`. Establish `he : ∀ β : Idx D j G.N →₀ ℕ, (β.sum fun _ n => n) ≤ a0 D j T - 1 → hasse X la G.w β ((algebraMap (Op X la G.N) (Kp X la G.N) o • x0 : ↥(HK X la G.w wF)) : Lw X la G.w) = ((F β : ↥(HK X la G.w wF)) : Lw X la G.w)`.
+
+Introduce `β hβ`. Rewrite using `[hasse_Op_smul, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul_of_tower, hg' q ((sum_snd_le hq).trans hβ)]`. Both sides reduce to the same expression.
+
+Use `⟨algebraMap (Op X la G.N) (Kp X la G.N) o • x0, ⟨fun β hβ => ?_, fun β hβ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[he β hβ]`. Conclude with `Submodule.coe_mem _`. Establish `hm : toA0K X la G.w wF (F β) ∈ Q.A0`. Rewrite using `[map_sum]`.
+
+Use `Q.A0.sum_mem fun q hq => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower, algebraMap_smul, hg' q ((sum_snd_le hq).trans hβ)]`. Conclude with `Q.A0.smul_mem _ (h2 q.2 ((sum_snd_le hq).trans hβ))`. Use `hm using 1` and compare the differences between its conclusion and the goal. Conclude with `congrArg _ (Subtype.ext (he β hβ))`.
+
+Rewrite using `[LinearMap.map_smul_of_tower]`. Both sides reduce to the same expression.
+-/
 theorem aaRep_holds : AARep := by
   unfold AARep
   intro D B P j X ka wL wF G la Q S CRm T c hOk hw x hx

@@ -17,6 +17,9 @@ import GroundTheory.AutomorphicForms.MultiplicityOne.Injective
 open NumberField IsDedekindDomain MeasureTheory GlobalTheory.CuspRep Formalism.L2.Host Formalism.UG GlobalTheory.LFun
 open scoped ENNReal ComplexConjugate nonZeroDivisors
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CellEvalDet.detPow_tl_mul | exact GlobalTheory.CellEvalDet.detPow_tl_mul | (intros; apply GlobalTheory.CellEvalDet.detPow_tl_mul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.idelicAbsDetPow_diagonalUniformizer_mul : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (n : ℕ)
     (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ), (∀ w, IsUnifV E w (ϖ w : w.adicCompletion E)) →
     ∀ (l : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ)) (x : ℝ) (g : GA E n),

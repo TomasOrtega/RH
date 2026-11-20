@@ -10,6 +10,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `q i A B _ _ φ hA hB hq`. Take `⟨hAl, _⟩` from `hA`. Take `⟨hBl, _⟩` from `hB`. Take `⟨ζ⟩` from `GlobalTheory.T.nonempty_cyclotomicPrimitiveRoots_of_strictlyHenselian q A ⟨hAl, ‹_›⟩ hq`. Set `S : Scheme.{0}` to `Spec (CommRingCat.of A)`.
+
+Set `ζS : Prim q Γ(S, ⊤)` to `Prim.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom ζ`. Establish `hgen` using `GlobalTheory.T.tateTwist_isFreeRankOne_on_generatorSection q i S ζS`. Establish `hac : ∀ (C : Type) [CommRing C], SH C → AcycF (ZMod q) (sch.obj (Spec (CommRingCat.of C))) (tw q i)` using `fun C _ hC n hn => GlobalTheory.T.strictlyHenselianLocalRing_acyclic_every_sheaf (ZMod q) C hC (tw q i) n hn`. Use `GlobalTheory.T.etaleCohomologyEquiv_of_locallyConstant_bijective (ZMod q) (tw q i) S (twGen i ζS) hgen S (Spec (CommRingCat.of B)) (𝟙 S) (Spec.map (CommRingCat.ofHom φ)) (hac A ⟨hAl, ‹_›⟩) (hac B ⟨hBl, ‹_›⟩) ?_` and prove the remaining obligations. Establish `cA` using `GlobalTheory.T.locallyConstant_spec_localRing_const_bijective (ZMod q) A`.
+
+Establish `cB` using `GlobalTheory.T.locallyConstant_spec_localRing_const_bijective (ZMod q) B`. Establish `hcomp : (fun φ' : LocallyConstant S (ZMod q) => φ'.comap (Spec.map (CommRingCat.ofHom φ)).base.hom) ∘ (fun c : ZMod q => LocallyConstant.const S c) = fun c => LocallyConstant.const _ c`. Use function extensionality and compare the values at `c`. Use extensionality with `x`. Both sides reduce to the same expression.
+
+Use `(Function.Bijective.of_comp_iff _ cA).1 ?_` and prove the remaining obligations. Rewrite using `[hcomp]`. Conclude with `cB`.
+-/
 theorem sh_eqv_tw : ∀ (q : ℕ) (i : ℤ) (A B : Type) [CommRing A] [CommRing B] (φ : A →+* B), SH A → SH B → IsUnit (q : A) → Eqv _ (spMap φ) (tw q i) := by
   intro q i A B _ _ φ hA hB hq
   obtain ⟨hAl, _⟩ := hA

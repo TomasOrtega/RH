@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.StdUnn
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hcm` using `D.host.isCMField_hostE`. Establish `h1 : star (V.hT (V.frame j) (V.frame i)) = V.hT (V.frame i) (V.frame j)` using `V.herm.eq _ _`. Simplify using `only [Matrix.conjTranspose_apply, gramAt, Matrix.map_apply, HSpace.gram]`. Rewrite using `[← h1]`.
+
+Conclude with `(NumberField.IsCMField.complexEmbedding_complexConj _ (tauE D τ) _).symm`.
+-/
 theorem gramAt_conjTranspose {D : D7} (V : HSp D) (τ : D.what₂.Tau) : (gramAt D V τ)ᴴ = gramAt D V τ := by
   ext i j
   have hcm := D.host.isCMField_hostE
@@ -23,6 +28,9 @@ theorem gramAt_conjTranspose {D : D7} (V : HSp D) (τ : D.what₂.Tau) : (gramAt
   rw [← h1]
   exact (NumberField.IsCMField.complexEmbedding_complexConj _ (tauE D τ) _).symm
 
+/- English proof (translation)
+Establish `hcm` using `D.host.isCMField_hostE`. Rewrite using `[← NumberField.IsCMField.complexEmbedding_complexConj _ (tauE D τ) _]`. Establish `h` using `GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg D`. Express the relevant statement in the definitionally equal form `tauE D τ (star D.host.xi0) = _`. Rewrite using `[h, map_neg]`.
+-/
 theorem conj_complexPlace_traceZero_element (D : D7) (τ : D.what₂.Tau) : conj (tauE D τ D.host.xi0) = -tauE D τ D.host.xi0 := by
   have hcm := D.host.isCMField_hostE
   rw [← NumberField.IsCMField.complexEmbedding_complexConj _ (tauE D τ) _]
@@ -30,6 +38,13 @@ theorem conj_complexPlace_traceZero_element (D : D7) (τ : D.what₂.Tau) : conj
   change tauE D τ (star D.host.xi0) = _
   rw [h, map_neg]
 
+/- English proof (translation)
+Establish `ht : Matrix.trace (Xᴴ * G * Y) = conj (Matrix.trace (Yᴴ * G * X))`. Establish `h` using `Matrix.trace_conjTranspose (Yᴴ * G * X)`. Rewrite `h` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hG, ← Matrix.mul_assoc]`. Conclude with `h`. Rewrite using `[ht]`.
+
+Establish `hre : c.re = 0`. Use `congrArg Complex.re hc` as an intermediate fact. Simplify using `only [Complex.conj_re, Complex.neg_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Complex.mul_re, Complex.conj_re, Complex.conj_im, hre]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_trace_swap {n m : ℕ} (c : ℂ) (hc : conj c = -c) (G : Matrix (Fin n) (Fin n) ℂ) (hG : Gᴴ = G)
     (X Y : Matrix (Fin n) (Fin m) ℂ) :
     (c * Matrix.trace (Xᴴ * G * Y)).re = -(c * Matrix.trace (Yᴴ * G * X)).re := by
@@ -50,6 +65,33 @@ end GlobalTheory.StdUnn
 
 open GlobalTheory.Unf in
 
+/- English proof (translation)
+Introduce `D ψ hψ θ hθ A B ν 𝓨 hν f hf τ Y x`. Set `d` to `dblDec A`. Set `v : VolM D B.rank A.rank` to `⟨ν, 𝓨, hν⟩`. Establish `hL` using `GlobalTheory.OrientedHeis.isLineAt_lineAt (m := B.rank) (n := A.rank) hθ τ Y`. Establish `hq : compAt θ τ d.pY = d.qY.map (tauE D τ)`.
+
+Use extensionality with `i j`. Conclude with `(hθ τ).1 _`. Establish `hL' : IsLineAt θ τ (Y * compAt θ τ d.pY) ((d.extY B).comp (lineAt θ τ Y))`. Use `⟨?_, fun t => ?_, fun t τ' => ?_⟩` and prove the remaining obligations. Conclude with `hL.1.matrix_mul continuous_const`.
+
+Use `show ((lineAt θ τ Y t) * d.pY).map (finPart D) = 0`. Rewrite using `[Matrix.map_mul, hL.2.1 t, Matrix.zero_mul]`. Use `show compAt θ τ' ((lineAt θ τ Y t) * d.pY) = _`. Rewrite using `[GlobalTheory.OrientedHeis.compAt_mul, hL.2.2 t τ']`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Rewrite using `[Matrix.smul_mul]`. Rewrite using `[Matrix.zero_mul]`. Establish `hline` using `GlobalTheory.RealLineAt.lineAt_unique D θ hθ _ _ τ _ _ _ hL' (GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ _)`. Establish `hline' : ∀ t, d.extY B (lineAt θ τ Y t) = lineAt θ τ (Y * compAt θ τ d.pY) t` using `fun t => by`.
+
+Rewrite using `[← hline]`. Both sides reduce to the same expression. Establish `hder` using `GlobalTheory.Unf.hasDerivAt_mixS_extY D ψ hψ θ hθ (dblSp A) (zeroSp D) B A.rank d v f hf (lineAt θ τ Y) hL.1 hL.2.1 x 0`. Establish `hfun : (fun p => deriv (fun t : ℝ => heisO ψ (dblSp A) B (d.extY B (lineAt θ τ Y t)) f p) 0) = dRho (heisO ψ (dblSp A) B) θ τ (Y * compAt θ τ d.pY) f`. Use function extensionality and compare the values at `p`.
+
+Simplify using `only [hline']`. Both sides reduce to the same expression. Rewrite `hder` using `[hfun]`. Establish `hphase : ∀ t : ℝ, ψ (symplO (dblSp A) B (d.extX B x) (d.extY B (lineAt θ τ Y t))) = Complex.exp ((2 * Real.pi * Complex.I * (GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt (GlobalTheory.Size.posSp D A.rank) B τ Y (compAt θ τ x) : ℂ)) * t)`. Introduce `t`.
+
+Establish `e` using `GlobalTheory.ThetaDecay.psi_symplOH_lineAt hψ hθ (GlobalTheory.Size.posSp D A.rank) B x τ Y t`. Establish `e2 : symplOH (dblSp A) B (d.extX B x) (d.extY B (lineAt θ τ Y t)) = symplOH (GlobalTheory.Size.posSp D A.rank) B x (lineAt θ τ Y t)`. Rewrite using `[d.symplOH_extX_extY]`. Conclude with `(congrArg (trHalf D) (hO_posSp D B A.rank x _)).symm`. Establish `e3 : ψ (symplOH (dblSp A) B (d.extX B x) (d.extY B (lineAt θ τ Y t))) = Complex.exp ((Real.pi * Complex.I) * ((t * GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt (GlobalTheory.Size.posSp D A.rank) B τ Y (compAt θ τ x) : ℝ) : ℂ))`.
+
+Rewrite using `[e2]`. Conclude with `e`. Rewrite using `[symplO_eq_two_half, AddChar.map_add_eq_mul, e3, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hfun2 : (fun t : ℝ => ψ (symplO (dblSp A) B (d.extX B x) (d.extY B (lineAt θ τ Y t))) * d.mixS B ψ v.μ v.𝓕 f x 0) = fun t : ℝ => Complex.exp ((2 * Real.pi * Complex.I * (GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt (GlobalTheory.Size.posSp D A.rank) …`. Use function extensionality and compare the values at `fun t => by rw [hphase]`. Rewrite `hder` using `[hfun2]`. Use `set a : ℝ := GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt (GlobalTheory.Size.posSp D A.rank) B τ Y (compAt θ τ x) with ha_def`.
+
+Use `set M := d.mixS B ψ v.μ v.𝓕 f x 0 with hM`. Establish `hexp : HasDerivAt (fun t : ℝ => Complex.exp ((2 * Real.pi * Complex.I * (a : ℂ)) * t) * M) ((2 * Real.pi * Complex.I * (a : ℂ)) * M) 0`. Establish `h2 : HasDerivAt (fun u : ℂ => Complex.exp ((2 * Real.pi * Complex.I * (a : ℂ)) * u) * M) (Complex.exp ((2 * Real.pi * Complex.I * (a : ℂ)) * ((0:ℝ):ℂ)) * ((2 * Real.pi * Complex.I * (a : ℂ)) * 1) * M) ((0:ℝ):ℂ)` using `(((hasDerivAt_id _).const_mul (2 * Real.pi * Complex.I * (a : ℂ))).cexp).mul_const M`. Establish `h3` using `h2.comp_ofReal`. Use `h3.congr_deriv ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Establish `heq` using `hder.unique hexp`. Establish `ha : a = -(2 * (tauE D τ D.host.xi0 * Matrix.trace (Yᴴ * gramAt D B τ * compAt θ τ x)).re)`. Rewrite using `[ha_def]`. Use `(GlobalTheory.Unf.symplAt_posSp D B A.rank τ Y (compAt θ τ x)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.StdUnn.re_trace_swap _ (GlobalTheory.StdUnn.conj_complexPlace_traceZero_element D τ) _ (GlobalTheory.StdUnn.gramAt_conjTranspose B τ)]`. Expand and normalize the polynomial expressions, which then agree. Use `show d.mixS B ψ ν 𝓨 _ x 0 = _ * d.mixS B ψ ν 𝓨 f x 0`. Rewrite using `[← hq]`. Express the relevant statement in the definitionally equal form `d.mixS B ψ v.μ v.𝓕 _ x 0 = _ * M`.
+
+Rewrite using `[heq, ha]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.StdUnn.sch_dRho_dualHalf : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (A B : HSp D) (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ f, IsThetaFunO ψ (dblSp A) B f → ∀ (τ : D.what₂.Tau) (Y : Matrix (Fin B.rank) (Fin A.rank) ℂ) (x : Mx D B.rank A.rank), sch ψ A B ν 𝓨 (Formalism.IndefR.Datum.dRho (heisO ψ (dblSp A) B) θ τ (Y * (dblDec A).qY.map (tauE D τ)) f) x = -(2 * Real.pi * Complex.I) * ((2 * (tauE D τ D.host.xi0 * Matrix.trace (Yᴴ * gramAt D B τ * compAt θ τ x)).re : ℝ) : ℂ) * sch ψ A B ν 𝓨 f x := by
   intro D ψ hψ θ hθ A B ν 𝓨 hν f hf τ Y x
   let d := dblDec A

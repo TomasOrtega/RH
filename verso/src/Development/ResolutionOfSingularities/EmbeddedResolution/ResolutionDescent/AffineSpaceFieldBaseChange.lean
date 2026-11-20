@@ -17,6 +17,9 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `hA : IsPullback (baseChangeProjection (affineSpaceIndexedByToSpec k n) K) (baseChangeToSpec (affineSpaceIndexedByToSpec k n) K) (affineSpaceIndexedByToSpec k n) (specMapAlgebraMap k K)` using `IsPullback.of_hasPullback _ _`. Establish `hB : IsPullback (AlgebraicGeometry.AffineSpace.map n (specMapAlgebraMap k K)) (affineSpaceIndexedByToSpec K n) (affineSpaceIndexedByToSpec k n) (specMapAlgebraMap k K)` using `AlgebraicGeometry.AffineSpace.isPullback_map (n := n) (specMapAlgebraMap k K)`. Conclude with `⟨hA.isoIsPullback _ _ hB, hA.isoIsPullback_hom_snd _ _ hB⟩`.
+-/
 theorem exists_baseChangeAffineSpaceIso (k K : Type u) [Field k] [Field K] [Algebra k K]
     (n : Type u) :
     ∃ e : baseChange (affineSpaceIndexedByToSpec k n) K ≅ affineSpaceIndexedBy K n,
@@ -34,12 +37,18 @@ def baseChangeAffineSpaceIso (k K : Type u) [Field k] [Field K] [Algebra k K] (n
   (exists_baseChangeAffineSpaceIso k K n).choose
 
 @[simp]
+/- English proof (translation)
+The claim follows from `(exists_baseChangeAffineSpaceIso k K n).choose_spec`.
+-/
 theorem baseChangeAffineSpaceIso_hom_comp_toSpec (k K : Type u) [Field k] [Field K] [Algebra k K]
     (n : Type u) :
     (baseChangeAffineSpaceIso k K n).hom ≫ affineSpaceIndexedByToSpec K n =
       baseChangeToSpec (affineSpaceIndexedByToSpec k n) K :=
   (exists_baseChangeAffineSpaceIso k K n).choose_spec
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem affineSpaceEmbeddingDatum_baseChange_ambient_eq
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
     (hsm : AffineSpaceIsSmooth.{u}) (k K : Type u) [Field k] [CharZero k] [Field K] [CharZero K]
@@ -67,6 +76,9 @@ def affineSpaceChartBaseChangeAmbientIso
   eqToIso (affineSpaceEmbeddingDatum_baseChange_ambient_eq hemb hsnc hsm k K Y pY hker hsncK) ≪≫
     baseChangeAffineSpaceIso k K (ULift.{u, 0} (Fin (hemb k Y pY).choose))
 
+/- English proof (translation)
+Establish `hA : (baseChangeAffineSpaceIso k K (ULift.{u, 0} (Fin (hemb k Y pY).choose))).hom ≫ affineSpaceIndexedByToSpec K (ULift.{u, 0} (Fin (hemb k Y pY).choose)) = ((affineSpaceEmbeddingDatum hemb hsnc hsm k Y pY).baseChange K hker hsncK).ambientStruct` using `baseChangeAffineSpaceIso_hom_comp_toSpec k K _`. Establish `hB : (𝟙 (baseChange (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin (hemb k Y pY).choose))) K) ≫ (baseChangeAffineSpaceIso k K (ULift.{u, 0} (Fin (hemb k Y pY).choose))).hom) ≫ affineSpaceIndexedByToSpec K (ULift.{u, 0} (Fin (hemb k Y pY).choose)) = ((affineSpaceEmbeddingDatum h …`. Rewrite using `[Category.id_comp]`. Conclude with `hA`. Conclude with `hB`.
+-/
 private theorem affineSpaceChartBaseChangeAmbientIso_hom_comp
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
     (hsm : AffineSpaceIsSmooth.{u}) (k K : Type u) [Field k] [CharZero k] [Field K] [CharZero K]

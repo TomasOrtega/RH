@@ -26,6 +26,9 @@ def affineSpaceOrigin (k : Type u) [Field k] (m : ℕ) :
   AffineSpace.homOfVector (𝟙 (Spec (CommRingCat.of k))) (fun _ => 0)
 
 @[simp]
+/- English proof (translation)
+Unfold `affineSpaceOrigin`. Simplify using the standard rewrite rules. Use the proof step `@[simp]`.
+-/
 theorem affineSpaceOrigin_comp_toSpec (k : Type u) [Field k] (m : ℕ) :
     affineSpaceOrigin k m ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m)) =
       𝟙 (Spec (CommRingCat.of k)) := by
@@ -33,23 +36,35 @@ theorem affineSpaceOrigin_comp_toSpec (k : Type u) [Field k] (m : ℕ) :
   simp
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[← Category.assoc, affineSpaceOrigin_comp_toSpec, Category.id_comp]`.
+-/
 theorem affineSpaceOrigin_comp_toSpec_assoc (k : Type u) [Field k] (m : ℕ) {Z : Scheme.{u}}
     (g : Spec (CommRingCat.of k) ⟶ Z) :
     affineSpaceOrigin k m ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m)) ≫ g = g := by
   rw [← Category.assoc, affineSpaceOrigin_comp_toSpec, Category.id_comp]
 
+/- English proof (translation)
+Simplify using `[pullbackCoord_def, affineSpaceOrigin]`. Use the proof step `@[simp]`.
+-/
 theorem pullbackCoord_affineSpaceOrigin (k : Type u) [Field k] (m : ℕ)
     (i : ULift.{u, 0} (Fin m)) :
     pullbackCoord (affineSpaceOrigin k m) i = 0 := by
   simp [pullbackCoord_def, affineSpaceOrigin]
 
 @[simp]
+/- English proof (translation)
+Simplify using `[affineSpaceOrigin]`.
+-/
 theorem affineSpaceOrigin_appTop_coord (k : Type u) [Field k] (m : ℕ)
     (i : ULift.{u, 0} (Fin m)) :
     (ConcreteCategory.hom (Scheme.Hom.appTop (affineSpaceOrigin k m)))
         (AffineSpace.coord (Spec (CommRingCat.of k)) i) = 0 := by
   simp [affineSpaceOrigin]
 
+/- English proof (translation)
+Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Simplify `hf` using `only [affineSpaceOrigin, AffineSpace.homOfVector_over]`. Introduce `i`. Simplify `hcoord i` using `only [affineSpaceOrigin, AffineSpace.homOfVector_appTop_coord, pullbackCoord_def]`.
+-/
 theorem eq_affineSpaceOrigin_of_pullbackCoord_eq_zero (k : Type u) [Field k] (m : ℕ)
     (f : Spec (CommRingCat.of k) ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin m)))
     (hf : f ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m)) = 𝟙 (Spec (CommRingCat.of k)))
@@ -61,6 +76,13 @@ theorem eq_affineSpaceOrigin_of_pullbackCoord_eq_zero (k : Type u) [Field k] (m 
     simpa only [affineSpaceOrigin, AffineSpace.homOfVector_appTop_coord, pullbackCoord_def]
       using hcoord i
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective (ConcreteCategory.hom (Scheme.Hom.appTop (affineSpaceOrigin k m)))`. Introduce `x`. Use `⟨(ConcreteCategory.hom (Scheme.Hom.appTop (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m))))) x, ?_⟩` and prove the remaining obligations. Establish `h1 : Scheme.Hom.appTop (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m))) ≫ Scheme.Hom.appTop (affineSpaceOrigin k m) = Scheme.Hom.appTop (𝟙 (Spec (CommRingCat.of k)))`. Rewrite using `[← Scheme.Hom.comp_appTop, affineSpaceOrigin_comp_toSpec]`.
+
+Establish `h2 : (ConcreteCategory.hom (Scheme.Hom.appTop (affineSpaceOrigin k m))) ((ConcreteCategory.hom (Scheme.Hom.appTop (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m))))) x) = (ConcreteCategory.hom (Scheme.Hom.appTop (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m))) ≫ Scheme.H …`. Simplify using the standard rewrite rules. Rewrite using `[h2, h1]`. Simplify using the standard rewrite rules. Apply `IsClosedImmersion.of_surjective_of_isAffine` to reduce the goal to its premises.
+
+Conclude with `hsurj`.
+-/
 theorem isClosedImmersion_affineSpaceOrigin (k : Type u) [Field k] (m : ℕ) :
     IsClosedImmersion (affineSpaceOrigin k m) := by
   have hsurj : Function.Surjective
@@ -88,10 +110,16 @@ instance instIsClosedImmersionAffineSpaceOrigin (k : Type u) [Field k] (m : ℕ)
     IsClosedImmersion (affineSpaceOrigin k m) :=
   isClosedImmersion_affineSpaceOrigin k m
 
+/- English proof (translation)
+Simplify using `[Scheme.Hom.appTop]`.
+-/
 private theorem appTop_id (X : Scheme.{u}) :
     Scheme.Hom.appTop (𝟙 X) = 𝟙 (X.presheaf.obj (Opposite.op ⊤)) := by
   simp [Scheme.Hom.appTop]
 
+/- English proof (translation)
+Establish `h : Scheme.Hom.appTop e.inv ≫ Scheme.Hom.appTop e.hom = 𝟙 (X.presheaf.obj (Opposite.op ⊤))`. Rewrite using `[← Scheme.Hom.comp_appTop, e.hom_inv_id, appTop_id]`. Establish `h2` using `congrArg (fun φ => CommRingCat.Hom.hom φ x) h`. Simplify using `using h2`.
+-/
 private theorem appTop_hom_appTop_inv_apply {X Y : Scheme.{u}} (e : X ≅ Y)
     (x : ↑(X.presheaf.obj (Opposite.op ⊤))) :
     CommRingCat.Hom.hom (Scheme.Hom.appTop e.hom)
@@ -102,6 +130,9 @@ private theorem appTop_hom_appTop_inv_apply {X Y : Scheme.{u}} (e : X ≅ Y)
   have h2 := congrArg (fun φ => CommRingCat.Hom.hom φ x) h
   simpa using h2
 
+/- English proof (translation)
+Use `⟨⟨1, 0, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h3` using `congrArg (fun z => CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of k)).hom z) h`. Simplify using `only [map_one, map_zero] at h3`. Establish `h4 : (1 : k) = 0` using `h3`. Conclude with `one_ne_zero h4`.
+-/
 private theorem nontrivial_globalSections_spec (k : Type u) [Field k] :
     Nontrivial ↑((Spec (CommRingCat.of k)).presheaf.obj (Opposite.op ⊤)) := by
   refine ⟨⟨1, 0, fun h => ?_⟩⟩
@@ -119,6 +150,9 @@ private def mvPolynomialFinToAffineSpaceGlobalSections (k : Type u) [Field k] (m
     (CommRingCat.Hom.hom (Scheme.ΓSpecIso
       (CommRingCat.of (MvPolynomial (ULift.{u, 0} (Fin m)) k))).inv)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem mvPolynomialToSections_apply (k : Type u) [Field k] (m : ℕ)
     (x : MvPolynomial (ULift.{u, 0} (Fin m)) k) :
     mvPolynomialFinToAffineSpaceGlobalSections k m x =
@@ -127,6 +161,9 @@ private theorem mvPolynomialToSections_apply (k : Type u) [Field k] (m : ℕ)
         (CommRingCat.Hom.hom (Scheme.ΓSpecIso
           (CommRingCat.of (MvPolynomial (ULift.{u, 0} (Fin m)) k))).inv x) := rfl
 
+/- English proof (translation)
+Establish `hX : CommRingCat.Hom.hom (Scheme.Hom.appTop (AffineSpace.SpecIso (ULift.{u, 0} (Fin m)) (CommRingCat.of k)).inv) (AffineSpace.coord (Spec (CommRingCat.of k)) i) = CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u, 0} (Fin m)) k))).inv (MvPolynomial.X i)`. Conclude with `AffineSpace.SpecIso_inv_appTop_coord ..`. Rewrite using `[mvPolynomialToSections_apply, ← hX]`. Conclude with `appTop_hom_appTop_inv_apply _ _`.
+-/
 private theorem mvPolynomialToSections_X (k : Type u) [Field k] (m : ℕ)
     (i : ULift.{u, 0} (Fin m)) :
     mvPolynomialFinToAffineSpaceGlobalSections k m (MvPolynomial.X i) =
@@ -140,6 +177,9 @@ private theorem mvPolynomialToSections_X (k : Type u) [Field k] (m : ℕ)
   rw [mvPolynomialToSections_apply, ← hX]
   exact appTop_hom_appTop_inv_apply _ _
 
+/- English proof (translation)
+Introduce `x`. Use `⟨CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u, 0} (Fin m)) k))).hom (CommRingCat.Hom.hom (Scheme.Hom.appTop (AffineSpace.SpecIso (ULift.{u, 0} (Fin m)) (CommRingCat.of k)).inv) x), ?_⟩` and prove the remaining obligations. Establish `hinv : CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u, 0} (Fin m)) k))).inv (CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u, 0} (Fin m)) k))).hom (CommRingCat.Hom.hom (Scheme.Hom.appTop (AffineSpace.SpecIso (ULift.{u, 0} …`. Conclude with `CommRingCat.inv_hom_apply ..`. Rewrite using `[mvPolynomialToSections_apply, hinv, appTop_hom_appTop_inv_apply]`.
+-/
 private theorem mvPolynomialToSections_surjective (k : Type u) [Field k] (m : ℕ) :
     Function.Surjective (mvPolynomialFinToAffineSpaceGlobalSections k m) := by
   intro x
@@ -158,6 +198,13 @@ private theorem mvPolynomialToSections_surjective (k : Type u) [Field k] (m : �
     exact CommRingCat.inv_hom_apply ..
   rw [mvPolynomialToSections_apply, hinv, appTop_hom_appTop_inv_apply]
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on`. Name the introduced variables `a`. Simplify using `only [MvPolynomial.constantCoeff_C, sub_self]`. Conclude with `Ideal.zero_mem _`. Name the introduced variables `q r hq hr`.
+
+Establish `hadd : q + r - MvPolynomial.C (MvPolynomial.constantCoeff (q + r)) = (q - MvPolynomial.C (MvPolynomial.constantCoeff q)) + (r - MvPolynomial.C (MvPolynomial.constantCoeff r))`. Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hadd]`. Conclude with `Ideal.add_mem _ hq hr`.
+
+Name the introduced variables `q i hq`. Establish `hmul : q * MvPolynomial.X i - MvPolynomial.C (MvPolynomial.constantCoeff (q * MvPolynomial.X i)) = q * MvPolynomial.X i`. Simplify using the standard rewrite rules. Rewrite using `[hmul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+-/
 private theorem sub_C_constantCoeff_mem_span_X {σ : Type u} {A : Type u} [CommRing A]
     (p : MvPolynomial σ A) :
     p - MvPolynomial.C (MvPolynomial.constantCoeff p) ∈
@@ -182,6 +229,15 @@ private theorem sub_C_constantCoeff_mem_span_X {σ : Type u} {A : Type u} [CommR
     rw [hmul]
     exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Establish `hspan : Ideal.span (Set.range (MvPolynomial.X : σ → MvPolynomial σ K)) ≤ RingHom.ker g`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `x ⟨i, rfl⟩`. Simplify `hg i` using `[RingHom.mem_ker]`. Use `le_antisymm ?_ hspan` and prove the remaining obligations.
+
+Introduce `p hp`. Establish `hsub` using `sub_C_constantCoeff_mem_span_X (σ := σ) (A := K) p`. Establish `h1 : g (p - MvPolynomial.C (MvPolynomial.constantCoeff p)) = 0` using `RingHom.mem_ker.mp (hspan hsub)`. Establish `hp0 : g p = 0` using `RingHom.mem_ker.mp hp`. Establish `h0 : g (MvPolynomial.C (MvPolynomial.constantCoeff p)) = 0`.
+
+Rewrite `h1` using `[map_sub, hp0, zero_sub, neg_eq_zero]`. Conclude with `h1`. Establish `hc : MvPolynomial.constantCoeff p = 0`. Establish `hinj : Function.Injective (g.comp (MvPolynomial.C : K →+* MvPolynomial σ K))` using `RingHom.injective _`. Apply `hinj` to reduce the goal to its premises.
+
+Simplify using `using h0`. Establish `hpe : p = p - MvPolynomial.C (MvPolynomial.constantCoeff p)`. Rewrite using `[hc, map_zero, sub_zero]`. Rewrite using `[hpe]`. Conclude with `hsub`.
+-/
 private theorem ker_eq_span_range_X {σ : Type u} {K : Type u} [Field K] {T : Type u}
     [CommRing T] [Nontrivial T] (g : MvPolynomial σ K →+* T)
     (hg : ∀ i, g (MvPolynomial.X i) = 0) :
@@ -209,6 +265,11 @@ private theorem ker_eq_span_range_X {σ : Type u} {K : Type u} [Field K] {T : Ty
   rw [hpe]
   exact hsub
 
+/- English proof (translation)
+Establish `h1 : Ideal.comap ψ (RingHom.ker g) = Ideal.span s`. Rewrite using `[← h]`. Use extensionality with `x`. Simplify using `[RingHom.mem_ker, Ideal.mem_comap]`. Establish `h2 : Ideal.map ψ (Ideal.comap ψ (RingHom.ker g)) = RingHom.ker g` using `Ideal.map_comap_of_surjective ψ hsurj _`.
+
+Rewrite using `[← h2, h1, Ideal.map_span]`.
+-/
 private theorem ker_eq_span_image_of_surjective {A B C : Type u} [CommRing A] [CommRing B]
     [CommRing C] (ψ : A →+* B) (hsurj : Function.Surjective ψ) (g : B →+* C) (s : Set A)
     (h : RingHom.ker (g.comp ψ) = Ideal.span s) :
@@ -221,6 +282,15 @@ private theorem ker_eq_span_image_of_surjective {A B C : Type u} [CommRing A] [C
     Ideal.map_comap_of_surjective ψ hsurj _
   rw [← h2, h1, Ideal.map_span]
 
+/- English proof (translation)
+Use `nontrivial_globalSections_spec k` as an intermediate fact. Establish `hcomp : RingHom.ker ((CommRingCat.Hom.hom (Scheme.Hom.appTop (affineSpaceOrigin k m))).comp (mvPolynomialFinToAffineSpaceGlobalSections k m)) = Ideal.span (Set.range (MvPolynomial.X : ULift.{u, 0} (Fin m) → MvPolynomial (ULift.{u, 0} (Fin m)) k))`. Use `ker_eq_span_range_X _ ?_` and prove the remaining obligations. Introduce `i`. Rewrite using `[RingHom.comp_apply, mvPolynomialToSections_X k m i]`.
+
+Conclude with `affineSpaceOrigin_appTop_coord k m i`. Establish `main` using `ker_eq_span_image_of_surjective (mvPolynomialFinToAffineSpaceGlobalSections k m) (mvPolynomialToSections_surjective k m) (CommRingCat.Hom.hom (Scheme.Hom.appTop (affineSpaceOrigin k m))) _ hcomp`. Rewrite using `[main]`. Use `congr 1`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`. Take `⟨j, rfl⟩` from `hp`. Conclude with `⟨j.down, (mvPolynomialToSections_X k m j).symm⟩`. Introduce and unpack `⟨i, rfl⟩`.
+
+Conclude with `⟨MvPolynomial.X (ULift.up.{u, 0} i), Set.mem_range_self _, mvPolynomialToSections_X k m (ULift.up.{u, 0} i)⟩`.
+-/
 private theorem ker_appTop_affineSpaceOrigin (k : Type u) [Field k] (m : ℕ) :
     RingHom.ker (CommRingCat.Hom.hom (Scheme.Hom.appTop (affineSpaceOrigin k m))) =
       Ideal.span (Set.range fun i : Fin m =>
@@ -249,6 +319,9 @@ private theorem ker_appTop_affineSpaceOrigin (k : Type u) [Field k] (m : ℕ) :
     exact ⟨MvPolynomial.X (ULift.up.{u, 0} i), Set.mem_range_self _,
       mvPolynomialToSections_X k m (ULift.up.{u, 0} i)⟩
 
+/- English proof (translation)
+Establish `: QuasiCompact (affineSpaceOrigin k m)` using `inferInstance`. Establish `hker : RingHom.ker (CommRingCat.Hom.hom (Scheme.Hom.app (affineSpaceOrigin k m) ⊤)) = Ideal.span (Set.range fun i : Fin m => AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} i))` using `ker_appTop_affineSpaceOrigin k m`. Use `Scheme.IdealSheafData.ext_of_isAffine ?_` and prove the remaining obligations. Rewrite using `[coordSubspaceIdeal_eq_ofIdealTop_span_coord]`. Simplify using `using hker`.
+-/
 theorem ker_affineSpaceOrigin (k : Type u) [Field k] (m : ℕ) :
     Scheme.Hom.ker (affineSpaceOrigin k m) = coordSubspaceIdeal k m Finset.univ := by
   have : QuasiCompact (affineSpaceOrigin k m) := inferInstance
@@ -260,6 +333,9 @@ theorem ker_affineSpaceOrigin (k : Type u) [Field k] (m : ℕ) :
   rw [coordSubspaceIdeal_eq_ofIdealTop_span_coord]
   simpa using hker
 
+/- English proof (translation)
+Rewrite using `[pullbackCoord_def, pullbackCoord_def, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+-/
 private theorem pullbackCoord_comp_eq_hom_appTop_apply {k : Type u} [Field k]
     {Y Z : Scheme.{u}} {n : Type u} (f : Y ⟶ Z) (g : Z ⟶ affineSpaceIndexedBy k n) (i : n) :
     pullbackCoord (f ≫ g) i =
@@ -268,6 +344,11 @@ private theorem pullbackCoord_comp_eq_hom_appTop_apply {k : Type u} [Field k]
   rfl
 
 @[simp]
+/- English proof (translation)
+Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, projLeft_comp_affineSpaceIndexedByToSpec, affineSpaceInl_comp_affineSpaceIndexedByToSpec, Category.id_comp]`. Introduce and unpack `⟨a⟩`. Establish `h : pullbackCoord (affineSpaceInl k n m ≫ projLeft k n m) (ULift.up.{u, 0} a) = AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} a)`. Rewrite using `[pullbackCoord_comp_eq_hom_appTop_apply, pullbackCoord_def (projLeft k n m), projLeft_appTop_coord, ← pullbackCoord_def, pullbackCoord_affineSpaceInl_inl]`.
+
+Rewrite using `[← pullbackCoord_def, h]`. Simplify using the standard rewrite rules. Use the proof step `@[simp]`.
+-/
 theorem affineSpaceInl_comp_projLeft (k : Type u) [Field k] (n m : ℕ) :
     affineSpaceInl k n m ≫ projLeft k n m = 𝟙 (affineSpaceIndexedBy k (ULift.{u, 0} (Fin n))) := by
   refine AffineSpace.hom_ext ?_ ?_
@@ -281,12 +362,20 @@ theorem affineSpaceInl_comp_projLeft (k : Type u) [Field k] (n m : ℕ) :
     simp
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[← Category.assoc, affineSpaceInl_comp_projLeft, Category.id_comp]`. Use the proof step `@[simp]`.
+-/
 theorem affineSpaceInl_comp_projLeft_assoc (k : Type u) [Field k] (n m : ℕ) {Z : Scheme.{u}}
     (g : affineSpaceIndexedBy k (ULift.{u, 0} (Fin n)) ⟶ Z) :
     affineSpaceInl k n m ≫ projLeft k n m ≫ g = g := by
   rw [← Category.assoc, affineSpaceInl_comp_projLeft, Category.id_comp]
 
 @[simp]
+/- English proof (translation)
+Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, projRight_comp_affineSpaceIndexedByToSpec, affineSpaceInrEmbedding_comp_affineSpaceIndexedByToSpec, Category.id_comp]`. Introduce and unpack `⟨b⟩`. Establish `h : pullbackCoord (affineSpaceInrEmbedding k n m ≫ projRight k n m) (ULift.up.{u, 0} b) = AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} b)`. Rewrite using `[pullbackCoord_comp_eq_hom_appTop_apply, pullbackCoord_def (projRight k n m), projRight_appTop_coord, ← pullbackCoord_def, pullbackCoord_affineSpaceInrEmbedding_inr]`.
+
+Rewrite using `[← pullbackCoord_def, h]`. Simplify using the standard rewrite rules. Use the proof step `@[simp]`.
+-/
 theorem affineSpaceInrEmbedding_comp_projRight (k : Type u) [Field k] (n m : ℕ) :
     affineSpaceInrEmbedding k n m ≫ projRight k n m = 𝟙 (affineSpaceIndexedBy k (ULift.{u, 0} (Fin m))) := by
   refine AffineSpace.hom_ext ?_ ?_
@@ -300,11 +389,19 @@ theorem affineSpaceInrEmbedding_comp_projRight (k : Type u) [Field k] (n m : ℕ
     simp
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[← Category.assoc, affineSpaceInrEmbedding_comp_projRight, Category.id_comp]`.
+-/
 theorem affineSpaceInrEmbedding_comp_projRight_assoc (k : Type u) [Field k] (n m : ℕ) {Z : Scheme.{u}}
     (g : affineSpaceIndexedBy k (ULift.{u, 0} (Fin m)) ⟶ Z) :
     affineSpaceInrEmbedding k n m ≫ projRight k n m ≫ g = g := by
   rw [← Category.assoc, affineSpaceInrEmbedding_comp_projRight, Category.id_comp]
 
+/- English proof (translation)
+Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, projRight_comp_affineSpaceIndexedByToSpec, affineSpaceInl_comp_affineSpaceIndexedByToSpec, Category.assoc, affineSpaceOrigin_comp_toSpec, Category.comp_id]`. Introduce and unpack `⟨b⟩`. Establish `h : pullbackCoord (affineSpaceInl k n m ≫ projRight k n m) (ULift.up.{u, 0} b) = 0`. Rewrite using `[pullbackCoord_comp_eq_hom_appTop_apply, pullbackCoord_def (projRight k n m), projRight_appTop_coord, ← pullbackCoord_def, pullbackCoord_affineSpaceInl_inr]`.
+
+Establish `h2 : pullbackCoord (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n)) ≫ affineSpaceOrigin k m) (ULift.up.{u, 0} b) = 0`. Rewrite using `[pullbackCoord_comp_eq_hom_appTop_apply, pullbackCoord_affineSpaceOrigin, map_zero]`. Rewrite using `[← pullbackCoord_def, ← pullbackCoord_def, h, h2]`.
+-/
 theorem affineSpaceInl_comp_projRight (k : Type u) [Field k] (n m : ℕ) :
     affineSpaceInl k n m ≫ projRight k n m =
       affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n)) ≫ affineSpaceOrigin k m := by
@@ -321,6 +418,11 @@ theorem affineSpaceInl_comp_projRight (k : Type u) [Field k] (n m : ℕ) :
       rw [pullbackCoord_comp_eq_hom_appTop_apply, pullbackCoord_affineSpaceOrigin, map_zero]
     rw [← pullbackCoord_def, ← pullbackCoord_def, h, h2]
 
+/- English proof (translation)
+Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, projLeft_comp_affineSpaceIndexedByToSpec, affineSpaceInrEmbedding_comp_affineSpaceIndexedByToSpec, Category.assoc, affineSpaceOrigin_comp_toSpec, Category.comp_id]`. Introduce and unpack `⟨a⟩`. Establish `h : pullbackCoord (affineSpaceInrEmbedding k n m ≫ projLeft k n m) (ULift.up.{u, 0} a) = 0`. Rewrite using `[pullbackCoord_comp_eq_hom_appTop_apply, pullbackCoord_def (projLeft k n m), projLeft_appTop_coord, ← pullbackCoord_def, pullbackCoord_affineSpaceInrEmbedding_inl]`.
+
+Establish `h2 : pullbackCoord (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m)) ≫ affineSpaceOrigin k n) (ULift.up.{u, 0} a) = 0`. Rewrite using `[pullbackCoord_comp_eq_hom_appTop_apply, pullbackCoord_affineSpaceOrigin]`. Simplify using the standard rewrite rules. Rewrite using `[← pullbackCoord_def, ← pullbackCoord_def, h, h2]`.
+-/
 theorem affineSpaceInrEmbedding_comp_projLeft (k : Type u) [Field k] (n m : ℕ) :
     affineSpaceInrEmbedding k n m ≫ projLeft k n m =
       affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m)) ≫ affineSpaceOrigin k n := by
@@ -337,6 +439,11 @@ theorem affineSpaceInrEmbedding_comp_projLeft (k : Type u) [Field k] (n m : ℕ)
       simp
     rw [← pullbackCoord_def, ← pullbackCoord_def, h, h2]
 
+/- English proof (translation)
+Establish `hsmooth : AlgebraicGeometry.Smooth (projRight k n m)` using `smooth_projRight hsm k n m`. Establish `hflat : AlgebraicGeometry.Flat (projRight k n m)` using `inferInstance`. Establish `hbig : IsPullback (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n))) (affineSpaceInl k n m ≫ projLeft k n m) (affineSpaceOrigin k m ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n)))`. Rewrite using `[affineSpaceInl_comp_projLeft, affineSpaceOrigin_comp_toSpec]`. Conclude with `IsPullback.id_vert _`.
+
+Establish `hsq : IsPullback (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n))) (affineSpaceInl k n m) (affineSpaceOrigin k m) (projRight k n m)` using `IsPullback.of_bot hbig (affineSpaceInl_comp_projRight k n m).symm (isPullback_projLeft_projRight k n m).flip`. Establish `: QuasiCompact (affineSpaceOrigin k m)` using `inferInstance`. Establish `: QuasiCompact (affineSpaceInl k n m)` using `quasiCompact_of_isPullback hsq`. Conclude with `ker_eq_comap_ker_of_isPullback_of_flat hsq`.
+-/
 theorem ker_affineSpaceInl_eq_comap (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] (n m : ℕ) :
     Scheme.Hom.ker (affineSpaceInl k n m) =
       (Scheme.Hom.ker (affineSpaceOrigin k m)).comap (projRight k n m) := by
@@ -356,6 +463,9 @@ theorem ker_affineSpaceInl_eq_comap (hsm : AffineSpaceIsSmooth.{u}) (k : Type u)
   have : QuasiCompact (affineSpaceInl k n m) := quasiCompact_of_isPullback hsq
   exact ker_eq_comap_ker_of_isPullback_of_flat hsq
 
+/- English proof (translation)
+Establish `h0 : IsPullback (𝟙 (affineSpaceIndexedBy k (ULift.{u, 0} (Fin m)))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m))) (𝟙 (Spec (CommRingCat.of k)))` using `IsPullback.of_horiz_isIso ⟨by simp⟩`. Establish `s : IsPullback (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m))) (affineSpaceInrEmbedding k n m ≫ projRight k n m) (affineSpaceOrigin k n ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m)))`. Rewrite using `[affineSpaceInrEmbedding_comp_projRight, affineSpaceOrigin_comp_toSpec]`. Conclude with `h0.flip`. Conclude with `IsPullback.of_bot s (affineSpaceInrEmbedding_comp_projLeft k n m).symm (isPullback_projLeft_projRight k n m)`.
+-/
 private theorem isPullback_affineSpaceInrEmbedding_projLeft (k : Type u) [Field k] (n m : ℕ) :
     IsPullback (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m))) (affineSpaceInrEmbedding k n m)
       (affineSpaceOrigin k n) (projLeft k n m) := by
@@ -373,6 +483,9 @@ private theorem isPullback_affineSpaceInrEmbedding_projLeft (k : Type u) [Field 
   exact IsPullback.of_bot s (affineSpaceInrEmbedding_comp_projLeft k n m).symm
     (isPullback_projLeft_projRight k n m)
 
+/- English proof (translation)
+Establish `hsmooth : AlgebraicGeometry.Smooth (projLeft k n m)` using `smooth_projLeft hsm k n m`. Establish `hflat : AlgebraicGeometry.Flat (projLeft k n m)` using `inferInstance`. Establish `hq1 : AlgebraicGeometry.QuasiCompact (affineSpaceOrigin k n)` using `inferInstance`. Establish `hq2 : AlgebraicGeometry.QuasiCompact (affineSpaceInrEmbedding k n m)` using `inferInstance`. Conclude with `ker_eq_comap_ker_of_isPullback_of_flat (isPullback_affineSpaceInrEmbedding_projLeft k n m)`.
+-/
 theorem ker_affineSpaceInrEmbedding_eq_comap (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] (n m : ℕ) :
     Scheme.Hom.ker (affineSpaceInrEmbedding k n m) =
       (Scheme.Hom.ker (affineSpaceOrigin k n)).comap (projLeft k n m) := by
@@ -382,6 +495,11 @@ theorem ker_affineSpaceInrEmbedding_eq_comap (hsm : AffineSpaceIsSmooth.{u}) (k 
   have hq2 : AlgebraicGeometry.QuasiCompact (affineSpaceInrEmbedding k n m) := inferInstance
   exact ker_eq_comap_ker_of_isPullback_of_flat (isPullback_affineSpaceInrEmbedding_projLeft k n m)
 
+/- English proof (translation)
+Establish `hsp : AlgebraicGeometry.Smooth (projRight k n m)` using `smooth_projRight hsm k n m`. Introduce `x`. Use `⟨⊤, ?_, (⊤ : (affineSpaceIndexedBy k (ULift.{u, 0} (Fin n ⊕ Fin m))).Opens).ι ≫ projRight k n m, ?_, ?_, ?_⟩` and prove the remaining obligations. Discharge the goal by the elementary cases of `trivial`. Use `infer_instance`.
+
+Rewrite using `[Category.assoc, projRight_comp_affineSpaceIndexedByToSpec]`. Rewrite using `[restrictIdeal_eq_comap_ι, ker_affineSpaceInl_eq_comap hsm, ker_affineSpaceOrigin, Scheme.IdealSheafData.comap_comp]`.
+-/
 theorem hasSmoothCoordCodim_affineSpaceInl (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k]
     (n m : ℕ) :
     HasSmoothCoordCodim (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n ⊕ Fin m)))
@@ -396,6 +514,11 @@ theorem hasSmoothCoordCodim_affineSpaceInl (hsm : AffineSpaceIsSmooth.{u}) (k : 
   · rw [restrictIdeal_eq_comap_ι, ker_affineSpaceInl_eq_comap hsm, ker_affineSpaceOrigin,
       Scheme.IdealSheafData.comap_comp]
 
+/- English proof (translation)
+Establish `hsmooth : AlgebraicGeometry.Smooth (projLeft k n m)` using `smooth_projLeft hsm k n m`. Introduce `x`. Use `⟨⊤, by simp, (⊤ : (affineSpaceIndexedBy k (ULift.{u, 0} (Fin n ⊕ Fin m))).Opens).ι ≫ projLeft k n m, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, projLeft_comp_affineSpaceIndexedByToSpec]`. Rewrite using `[restrictIdeal_eq_comap_ι, ker_affineSpaceInrEmbedding_eq_comap hsm k n m, ker_affineSpaceOrigin k n]`.
+
+Simplify using `[Scheme.IdealSheafData.comap_comp]`.
+-/
 theorem hasSmoothCoordCodim_affineSpaceInrEmbedding (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k]
     (n m : ℕ) :
     HasSmoothCoordCodim (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n ⊕ Fin m)))

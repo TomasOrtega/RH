@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.StdUnn
 
+/- English proof (translation)
+Establish `hce : (1 - e) * e = 0` using `by rw [sub_mul, one_mul, hee, sub_self]`. Establish `hec : e * (1 - e) = 0` using `by rw [mul_sub, mul_one, hee, sub_self]`. Establish `hcc : (1 - e) * (1 - e) = 1 - e` using `by rw [sub_mul, one_mul, hec, sub_zero]`. Simplify using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, h1, h2, hce, hec, hcc, hee, zero_smul, add_zero, zero_add]`. Rewrite using `[← add_smul, sub_add_cancel, one_smul]`.
+-/
 theorem idem_glue_mul {R : Type} [CommRing R] {m : Type} [Fintype m] [DecidableEq m] {e : R} (hee : e * e = e)
     {x y x' y' : Matrix m m R} (h1 : x * x' = 1) (h2 : y * y' = 1) :
     ((1 - e) • x + e • y) * ((1 - e) • x' + e • y') = 1 := by
@@ -27,6 +30,9 @@ def idemGlue {R : Type} [CommRing R] {m : Type} [Fintype m] [DecidableEq m] (e :
     (1 - e) • ((x⁻¹ : GL m R) : Matrix m m R) + e • ((y⁻¹ : GL m R) : Matrix m m R),
     idem_glue_mul hee (Units.mul_inv x) (Units.mul_inv y), idem_glue_mul hee (Units.inv_mul x) (Units.inv_mul y)⟩
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show φ ((1 - e) * (x : Matrix m m R) i j + e * (y : Matrix m m R) i j) = φ ((x : Matrix m m R) i j)`. Rewrite using `[map_add, map_mul, map_mul, map_sub, map_one, h, sub_zero, one_mul, zero_mul, add_zero]`.
+-/
 theorem bc_idemGlue_of_zero {R S : Type} [CommRing R] [CommRing S] {m : Type} [Fintype m] [DecidableEq m] {e : R}
     (hee : e * e = e) (x y : GL m R) (φ : R →+* S) (h : φ e = 0) :
     Formalism.UG.bc φ (idemGlue e hee x y) = Formalism.UG.bc φ x := by
@@ -35,6 +41,9 @@ theorem bc_idemGlue_of_zero {R S : Type} [CommRing R] [CommRing S] {m : Type} [F
   show φ ((1 - e) * (x : Matrix m m R) i j + e * (y : Matrix m m R) i j) = φ ((x : Matrix m m R) i j)
   rw [map_add, map_mul, map_mul, map_sub, map_one, h, sub_zero, one_mul, zero_mul, add_zero]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show φ ((1 - e) * (x : Matrix m m R) i j + e * (y : Matrix m m R) i j) = φ ((y : Matrix m m R) i j)`. Rewrite using `[map_add, map_mul, map_mul, map_sub, map_one, h, sub_self, zero_mul, one_mul, zero_add]`.
+-/
 theorem bc_idemGlue_of_one {R S : Type} [CommRing R] [CommRing S] {m : Type} [Fintype m] [DecidableEq m] {e : R}
     (hee : e * e = e) (x y : GL m R) (φ : R →+* S) (h : φ e = 1) :
     Formalism.UG.bc φ (idemGlue e hee x y) = Formalism.UG.bc φ y := by
@@ -43,6 +52,9 @@ theorem bc_idemGlue_of_one {R S : Type} [CommRing R] [CommRing S] {m : Type} [Fi
   show φ ((1 - e) * (x : Matrix m m R) i j + e * (y : Matrix m m R) i j) = φ ((y : Matrix m m R) i j)
   rw [map_add, map_mul, map_mul, map_sub, map_one, h, sub_self, zero_mul, one_mul, zero_add]
 
+/- English proof (translation)
+Introduce `v z`. Rewrite using `[bc_idemGlue_of_zero hee x y _ (he v)]`. Conclude with `hx v z`.
+-/
 theorem isLatticeFrame_idemGlue {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
     {L : Submodule (𝓞 E) (Fin n → E)} {e : AF F ⊗[F] E} (hee : e * e = e) {x : GL (Fin n) (AF F ⊗[F] E)}
     (hx : IsLatticeFrame L x) (y : GL (Fin n) (AF F ⊗[F] E)) (he : ∀ v, compFin F E v e = 0) :
@@ -51,6 +63,9 @@ theorem isLatticeFrame_idemGlue {F E : Type} [Field F] [NumberField F] [Field E]
   rw [bc_idemGlue_of_zero hee x y _ (he v)]
   exact hx v z
 
+/- English proof (translation)
+Take `⟨b₀, hb₀, -⟩` from `Frames.exists_isLatticeFrame_isMajorantFrame (isCMExt_host D) (isHermND_gram A) (frameLat A)`. Take `⟨e, hee, -, hfin, hinf, -, -⟩` from `GlobalTheory.T.exists_realPlacesIdempotent_extensionAdeles D`. Conclude with `⟨idemGlue e hee b₀ a, isLatticeFrame_idemGlue hee hb₀ a hfin, fun w => bc_idemGlue_of_one hee b₀ a _ (hinf w)⟩`.
+-/
 theorem exists_isLatticeFrame_bc_eq (D : D7) (A : HSp D) (a : GL (Fin A.rank) (AE D)) :
     ∃ b : GL (Fin A.rank) (AE D), IsLatticeFrame (frameLat A) b ∧
       ∀ w, Formalism.UG.bc (compInf D.host.F D.host.E w) b = Formalism.UG.bc (compInf D.host.F D.host.E w) a := by

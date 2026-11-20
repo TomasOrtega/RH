@@ -5,6 +5,11 @@ open NumberField Filter Topology
 
 namespace ReciprocityTheory.Cheb
 
+/- English proof (translation)
+Establish `h1 : ‖-z‖ < 1` using `by rw [norm_neg]; linarith`. Establish `h` using `Complex.norm_log_one_add_sub_self_le h1`. Rewrite `h` using `[norm_neg]`. Establish `e : -Complex.log (1 - z) - z = -(Complex.log (1 + -z) - -z)` using `by ring_nf`. Rewrite using `[e, norm_neg]`.
+
+Use `h.trans ?_` and prove the remaining obligations. Establish `h0 : 0 ≤ ‖z‖` using `norm_nonneg _`. Establish `h2 : (1 - ‖z‖)⁻¹ ≤ 2`. Rewrite using `[inv_le_comm₀ (by linarith) (by norm_num)]; linarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_neg_log_one_sub_sub_le {z : ℂ} (hz : ‖z‖ ≤ 1 / 2) : ‖-Complex.log (1 - z) - z‖ ≤ ‖z‖ ^ 2 := by
   have h1 : ‖-z‖ < 1 := by rw [norm_neg]; linarith
   have h := Complex.norm_log_one_add_sub_self_le h1
@@ -18,6 +23,11 @@ theorem norm_neg_log_one_sub_sub_le {z : ℂ} (hz : ‖z‖ ≤ 1 / 2) : ‖-Com
   calc ‖z‖ ^ 2 * (1 - ‖z‖)⁻¹ / 2 ≤ ‖z‖ ^ 2 * 2 / 2 := by gcongr
     _ = ‖z‖ ^ 2 := by ring
 
+/- English proof (translation)
+Establish `hN : (0 : ℕ) < Nrm q` using `by have := two_le_Nrm q; omega`. Rewrite using `[norm_mul, Complex.norm_natCast_cpow_of_pos hN]`. Simplify using `only [Complex.neg_re, Complex.ofReal_re]`. Use `DirichletCharacter.norm_le_one χ ((Nrm q : ℕ) : ZMod l)` as an intermediate fact. Establish `hp : 0 ≤ ((Nrm q : ℕ) : ℝ) ^ (-s)` using `Real.rpow_nonneg (by positivity) _`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem psum_term_norm_le {E : Type} [Field E] [NumberField E] {l : ℕ} (χ : DirichletCharacter ℂ l) (s : ℝ)
     (q : Prm E) :
     ‖χ ((Nrm q : ℕ) : ZMod l) * ((Nrm q : ℕ) : ℂ) ^ (-(s : ℂ))‖ ≤ ((Nrm q : ℕ) : ℝ) ^ (-s) := by
@@ -28,12 +38,24 @@ theorem psum_term_norm_le {E : Type} [Field E] [NumberField E] {l : ℕ} (χ : D
   have hp : 0 ≤ ((Nrm q : ℕ) : ℝ) ^ (-s) := Real.rpow_nonneg (by positivity) _
   nlinarith
 
+/- English proof (translation)
+Establish `h2 : (2 : ℝ) ≤ ((Nrm q : ℕ) : ℝ)` using `by exact_mod_cast two_le_Nrm q`. Rewrite using `[← Real.rpow_neg_one]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`.
+-/
 theorem Nrm_rpow_neg_le_inv {E : Type} [Field E] [NumberField E] {s : ℝ} (hs : 1 < s) (q : Prm E) :
     ((Nrm q : ℕ) : ℝ) ^ (-s) ≤ ((Nrm q : ℕ) : ℝ)⁻¹ := by
   have h2 : (2 : ℝ) ≤ ((Nrm q : ℕ) : ℝ) := by exact_mod_cast two_le_Nrm q
   rw [← Real.rpow_neg_one]
   exact Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)
 
+/- English proof (translation)
+Introduce `E _ _ l _ χ`. Use `⟨∑' q : Prm E, ((Nrm q : ℕ) : ℝ) ^ (-(2 : ℝ)), fun s hs => ?_⟩` and prove the remaining obligations. Use `set z : Prm E → ℂ := fun q => χ ((Nrm q : ℕ) : ZMod l) * ((Nrm q : ℕ) : ℂ) ^ (-(s : ℂ)) with hzdef`. Establish `hzb : ∀ q, ‖z q‖ ≤ ((Nrm q : ℕ) : ℝ) ^ (-s)` using `fun q => psum_term_norm_le χ s q`. Establish `hzs : Summable z` using `Summable.of_norm_bounded (summable_prm_rpow E hs) hzb`.
+
+Establish `hls : Summable (fun q => -Complex.log (1 - z q))` using `hzs.clog_one_sub.neg`. Establish `hsq : ∀ q, ‖-Complex.log (1 - z q) - z q‖ ≤ ((Nrm q : ℕ) : ℝ) ^ (-(2 : ℝ))`. Introduce `q`. Establish `h2 : (2 : ℝ) ≤ ((Nrm q : ℕ) : ℝ)` using `by exact_mod_cast two_le_Nrm q`. Establish `hz1 : ‖z q‖ ≤ ((Nrm q : ℕ) : ℝ)⁻¹` using `(hzb q).trans (Nrm_rpow_neg_le_inv hs q)`.
+
+Establish `hz2 : ‖z q‖ ≤ 1 / 2` using `hz1.trans (by rw [one_div]; exact inv_anti₀ (by norm_num) h2)`. Use `(norm_neg_log_one_sub_sub_le hz2).trans ?_` and prove the remaining obligations. Rewrite using `[Real.rpow_neg (by linarith), Real.rpow_two, ← inv_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hz1 2`. Establish `e : abelian₂ E χ s - Psum E χ s = ∑' q, (-Complex.log (1 - z q) - z q)`.
+
+Unfold `abelian₂ Psum`. Conclude with `(hls.tsum_sub hzs).symm`. Rewrite using `[e]`. Conclude with `tsum_of_norm_bounded (summable_prm_rpow E (by norm_num : (1 : ℝ) < 2)).hasSum hsq`.
+-/
 theorem casimirPower_surjective_symmetric' : CasimirPowerSurjectiveSymmetric := by
   intro E _ _ l _ χ
   refine ⟨∑' q : Prm E, ((Nrm q : ℕ) : ℝ) ^ (-(2 : ℝ)), fun s hs => ?_⟩

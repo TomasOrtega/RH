@@ -10,6 +10,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.DelEps
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψ h1 χ hχ`. Take `⟨⟨e, he, -⟩, hne⟩` from `existsUnique_isTateEps ψ hψ h1 χ hχ`. Establish `hx : ∃ e, IsTateEps ψ χ e` using `⟨e, he⟩`. Establish `hs : IsTateEps ψ χ (tateEps ψ χ)`. Unfold `tateEps`.
+
+Rewrite using `[dif_pos hx]`. Conclude with `hx.choose_spec`. Conclude with `⟨hs, hne _ hs⟩`.
+-/
 theorem isTateEps_tateEps_and_ne_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (χ : kˣ →* ℂˣ), IsSmoothChar χ →
     IsTateEps ψ χ (tateEps ψ χ) ∧ tateEps ψ χ ≠ 0 := by

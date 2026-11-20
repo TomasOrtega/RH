@@ -17,10 +17,16 @@ def polyDeriv (p : MvPolynomial (Fin n) ℂ) (x : EuclideanSpace ℂ (Fin n)) :
     EuclideanSpace ℂ (Fin n) →L[ℂ] ℂ :=
   ∑ l, eval (fun i => x i) (pderiv l p) • EuclideanSpace.proj l
 
+/- English proof (translation)
+Simplify using `[polyDeriv]`.
+-/
 theorem polyDeriv_apply (p : MvPolynomial (Fin n) ℂ) (x v : EuclideanSpace ℂ (Fin n)) :
     polyDeriv p x v = ∑ l, eval (fun i => x i) (pderiv l p) * v l := by
   simp [polyDeriv]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qi29.hasStrictFDerivAt_eval p x`.
+-/
 theorem hasStrictFDerivAt_eval (p : MvPolynomial (Fin n) ℂ) (x : EuclideanSpace ℂ (Fin n)) :
     HasStrictFDerivAt (fun y : EuclideanSpace ℂ (Fin n) => eval (fun i => y i) p) (polyDeriv p x) x :=
   _root_.UpperTheory.Reformulated.B.Qi29.hasStrictFDerivAt_eval p x
@@ -39,11 +45,29 @@ def phiDeriv (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n))) (I 
     EuclideanSpace ℂ (Fin n) →L[ℂ] (I → ℂ) × ({j // j ∉ I} → ℂ) :=
   (projCLM b I).prod (ContinuousLinearMap.pi fun k => polyDeriv (f k) x)
 
+/- English proof (translation)
+The claim follows from `(projCLM b I).hasStrictFDerivAt.prodMk (hasStrictFDerivAt_pi.2 fun k => hasStrictFDerivAt_eval (f k) x)`.
+-/
 theorem hasStrictFDerivAt_phi (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n)))
     (I : Finset (Fin n)) (f : {j // j ∉ I} → MvPolynomial (Fin n) ℂ) (x : EuclideanSpace ℂ (Fin n)) :
     HasStrictFDerivAt (phi b I f) (phiDeriv b I f x) x :=
   (projCLM b I).hasStrictFDerivAt.prodMk (hasStrictFDerivAt_pi.2 fun k => hasStrictFDerivAt_eval (f k) x)
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero (phiDeriv b I f x)).2 fun v hv => ?_` and prove the remaining obligations. Use `set c : Fin n → ℂ := fun j => inner ℂ (b j) v with hc`. Establish `h1 : ∀ i ∈ I, c i = 0` using `fun i hi => by`. Use `congrFun (congrArg Prod.fst hv) ⟨i, hi⟩` as an intermediate fact. Simplify `this` using `[phiDeriv, projCLM, c]`.
+
+Establish `hvl : ∀ l, v l = ∑ j, c j * b j l` using `fun l => by`. Use `congrArg (fun y : EuclideanSpace ℂ (Fin n) => y l) (b.sum_repr' v)` as an intermediate fact. Simplify `this.symm` using `[c, smul_eq_mul]`. Establish `h2 : ∀ k, ∑ j, c j * eval (fun i => x i) (frameDeriv b j (f k)) = 0` using `fun k => by`. Use `congrFun (congrArg Prod.snd hv) k` as an intermediate fact.
+
+Simplify using `only [phiDeriv, ContinuousLinearMap.prod_apply, ContinuousLinearMap.pi_apply, polyDeriv_apply, Prod.snd_zero, Pi.zero_apply] at this`. Rewrite using `[← this]`. Simplify using `only [frameDeriv, map_sum, map_mul, eval_C, hvl, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations.
+
+Set `M : Matrix {j // j ∉ I} {j // j ∉ I} ℂ` to `Matrix.of fun k j => eval (fun i => x i) (frameDeriv b j (f k))`. Establish `hM : M.det ≠ 0`. Establish `: eval (fun i => x i) (frameJacobianDet b I f) = M.det`. Rewrite using `[frameJacobianDet, RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite using `[← this]` and apply the resulting hypothesis. Establish `hMc : M.mulVec (fun j => c j) = 0`. Use function extensionality and compare the values at `k`. Rewrite using `[Pi.zero_apply, ← h2 k, ← Fintype.sum_subtype_add_sum_subtype (fun j => j ∈ I)]`. Simplify using `[M, Matrix.mulVec, dotProduct, h1, mul_comm]`.
+
+Establish `h3` using `Matrix.eq_zero_of_mulVec_eq_zero hM hMc`. Establish `hc0 : ∀ j, c j = 0` using `fun j => by`. Distinguish the cases in `hj : j ∈ I`. Conclude with `h1 j hj`. Conclude with `congrFun h3 ⟨j, hj⟩`.
+
+Establish `hv' : v = ∑ j, c j • b j` using `(b.sum_repr' v).symm`. Rewrite using `[hv']`. Simplify using `[hc0]`.
+-/
 theorem phiDeriv_injective (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n)))
     (I : Finset (Fin n)) (f : {j // j ∉ I} → MvPolynomial (Fin n) ℂ) (x : EuclideanSpace ℂ (Fin n))
     (hx : eval (fun i => x i) (frameJacobianDet b I f) ≠ 0) :
@@ -83,6 +107,11 @@ theorem phiDeriv_injective (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ
   rw [hv']
   simp [hc0]
 
+/- English proof (translation)
+Establish `h1 : Fintype.card {j // j ∉ I} = n - I.card`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_fin]`. Simplify using the standard rewrite rules. Establish `h2 : I.card ≤ n` using `by simpa using I.card_le_univ`. Simplify using `only [finrank_euclideanSpace, Fintype.card_fin, Module.finrank_prod, Module.finrank_fintype_fun_eq_card, h1, Fintype.card_coe]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_eq (I : Finset (Fin n)) :
     Module.finrank ℂ (EuclideanSpace ℂ (Fin n)) = Module.finrank ℂ ((I → ℂ) × ({j // j ∉ I} → ℂ)) := by
   have h1 : Fintype.card {j // j ∉ I} = n - I.card := by
@@ -93,6 +122,9 @@ theorem finrank_eq (I : Finset (Fin n)) :
     h1, Fintype.card_coe]
   omega
 
+/- English proof (translation)
+Use `⟨(LinearMap.linearEquivOfInjective (phiDeriv b I f x : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] _) (phiDeriv_injective b I f x hx) (finrank_eq I)).toContinuousLinearEquiv, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Apply the tactic sequence `all_goals simp [LinearMap.linearEquivOfInjective_apply]`.
+-/
 theorem phiDeriv_equiv (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n)))
     (I : Finset (Fin n)) (f : {j // j ∉ I} → MvPolynomial (Fin n) ℂ) (x : EuclideanSpace ℂ (Fin n))
     (hx : eval (fun i => x i) (frameJacobianDet b I f) ≠ 0) :
@@ -103,10 +135,32 @@ theorem phiDeriv_equiv (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fi
   ext v
   all_goals simp [LinearMap.linearEquivOfInjective_apply]
 
+/- English proof (translation)
+The claim follows from `continuous_iff_continuousAt.2 fun x => (hasStrictFDerivAt_eval p x).continuousAt`.
+-/
 theorem continuous_eval (p : MvPolynomial (Fin n) ℂ) :
     Continuous fun y : EuclideanSpace ℂ (Fin n) => eval (fun i => y i) p :=
   continuous_iff_continuousAt.2 fun x => (hasStrictFDerivAt_eval p x).continuousAt
 
+/- English proof (translation)
+Introduce `n b I f z hz hdet U hU hzU`. Take `⟨e0, he0⟩` from `phiDeriv_equiv b I f z hdet`. Establish `hs : HasStrictFDerivAt (phi b I f) (e0 : EuclideanSpace ℂ (Fin n) →L[ℂ] (I → ℂ) × ({j // j ∉ I} → ℂ)) z` using `he0 ▸ hasStrictFDerivAt_phi b I f z`. Set `e` to `hs.toOpenPartialHomeomorph (phi b I f)`. Establish `hecoe : (e : EuclideanSpace ℂ (Fin n) → (I → ℂ) × ({j // j ∉ I} → ℂ)) = phi b I f` using `rfl`.
+
+Set `W` to `{x : EuclideanSpace ℂ (Fin n) | eval (fun i => x i) (frameJacobianDet b I f) ≠ 0}`. Establish `hW : IsOpen W` using `isOpen_ne_fun (continuous_eval _) continuous_const`. Set `V` to `e.source ∩ U ∩ W`. Establish `hV : IsOpen V` using `(e.open_source.inter hU).inter hW`. Set `ι : (I → ℂ) → (I → ℂ) × ({j // j ∉ I} → ℂ)` to `fun w => (w, 0)`.
+
+Establish `hι : Continuous ι` using `continuous_id.prodMk continuous_const`. Use `⟨ι ⁻¹' (e.target ∩ e.symm ⁻¹' V), V, fun w => e.symm (ι w), (e.continuousOn_symm.isOpen_inter_preimage e.open_target hV).preimage hι, hV, ⟨⟨hs.mem_toOpenPartialHomeomorph_source, hzU⟩, hdet⟩, fun x hx => hx.1.2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Take `⟨ex, hex⟩` from `phiDeriv_equiv b I f _ hw.2.2`. Establish `hd : HasFDerivAt e (ex : EuclideanSpace ℂ (Fin n) →L[ℂ] (I → ℂ) × ({j // j ∉ I} → ℂ)) (e.symm (ι w))`.
+
+Rewrite using `[hecoe, hex]`. Conclude with `(hasStrictFDerivAt_phi b I f _).hasFDerivAt`. Establish `hιd : HasFDerivAt ι ((ContinuousLinearMap.id ℂ (I → ℂ)).prod 0) w` using `(hasFDerivAt_id w).prodMk (hasFDerivAt_const 0 w)`. Conclude with `((e.hasFDerivAt_symm hw.1 hd).comp w hιd).differentiableAt.differentiableWithinAt`. Introduce `w hw`.
+
+Use `congrArg Prod.fst (e.right_inv hw.1)` as an intermediate fact. Rewrite `this` using `[hecoe]`. Conclude with `this`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hx0, hxV⟩`. Establish `hex : e x = ι (frameProj b I x)`. Rewrite using `[hecoe]`. Conclude with `Prod.ext rfl (funext hx0)`. Use `⟨frameProj b I x, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hex]`. Conclude with `e.map_source hxV.1.1`. Use `show e.symm (ι (frameProj b I x)) ∈ V`. Rewrite using `[← hex, e.left_inv hxV.1.1]`. Conclude with `hxV`.
+
+Use `show e.symm (ι (frameProj b I x)) = x`. Rewrite using `[← hex, e.left_inv hxV.1.1]`. Introduce and unpack `⟨w, hw, rfl⟩`. Use `⟨fun k => ?_, hw.2⟩` and prove the remaining obligations. Use `congrArg (fun p => p.2 k) (e.right_inv hw.1)` as an intermediate fact.
+
+Rewrite `this` using `[hecoe]`. Conclude with `this`.
+-/
 theorem proof : FrameImplicitGraph.Statement := by
   intro n b I f z hz hdet U hU hzU
   obtain ⟨e0, he0⟩ := phiDeriv_equiv b I f z hdet

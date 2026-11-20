@@ -4,6 +4,19 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 
 namespace GlobalTheory.CompanionTheory.Cot
 
+/- English proof (translation)
+Introduce `R W _ _ _ g h`. Use `choose r hr hfree hfin hrank using h`. Establish `hs : Ideal.span (Set.range r) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+
+Conclude with `hr ⟨m, hm.isPrime⟩ (hle (Ideal.subset_span ⟨_, rfl⟩))`. Establish `hfp : Module.FinitePresentation R W`. Use `Module.FinitePresentation.of_localizationSpan' (Set.range r) hs (Rₚ := fun x => Localization.Away x.1) (Mₚ := fun x => Localization.Away x.1 ⊗[R] W) (fun x => TensorProduct.mk R (Localization.Away x.1) W 1) (fun x => ?_)` and prove the remaining obligations. Take `⟨x, p, rfl⟩` from `x`. Use `hfree p` as an intermediate fact.
+
+Use `hfin p` as an intermediate fact. Conclude with `Module.finitePresentation_of_projective (Localization.Away (r p)) (Localization.Away (r p) ⊗[R] W)`. Establish `hproj : Module.Projective R W`. Rewrite using `[← Module.freeLocus_eq_univ_iff, Set.eq_univ_iff_forall]`. Introduce `p`.
+
+Establish `hsub : (PrimeSpectrum.basicOpen (r p) : Set (PrimeSpectrum R)) ⊆ Module.freeLocus R W`. Rewrite using `[Module.basicOpen_subset_freeLocus_iff]`. Use `hfree p` as an intermediate fact. Conclude with `Module.Projective.of_equiv (LocalizedModule.equivTensorProduct (Submonoid.powers (r p)) W).symm`. Conclude with `hsub (hr p)`.
+
+Use `⟨inferInstance, hproj, fun p => ?_⟩` and prove the remaining obligations. Establish `hfl` using `hfree p`. Establish `hfi` using `hfin p`. Establish `hrange` using `PrimeSpectrum.localization_away_comap_range (Localization.Away (r p)) (r p)`. Establish `hp : p ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.Away (r p))))`.
+
+Rewrite using `[hrange]`. Conclude with `hr p`. Take `⟨q', hq'⟩` from `hp`. Rewrite using `[← hq', ← Module.rankAtStalk_baseChange q', Module.rankAtStalk_eq_finrank_of_free]`. Conclude with `hrank p`.
+-/
 theorem vb_of_free_on_basicOpens :
     ∀ (R W : Type) [CommRing R] [AddCommGroup W] [Module R W] (g : ℕ),
       (∀ p : PrimeSpectrum R, ∃ r : R, r ∉ p.asIdeal ∧

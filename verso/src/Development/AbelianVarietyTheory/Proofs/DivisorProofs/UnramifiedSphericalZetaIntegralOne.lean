@@ -9,6 +9,23 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
 namespace GlobalTheory.GJReg
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n ν s hν`. Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `hS : {X : Matrix (Fin n) (Fin n) k | ∃ g ∈ KO k (Fin n), g.val = X} = Units.val '' (KO k (Fin n) : Set _)`. Use extensionality with `X`. Simplify using `[eq_comm]`.
+
+Establish `hrange : IsOpen (Set.range (fun g : GL (Fin n) k => g.val))`. Establish `: Set.range (fun g : GL (Fin n) k => g.val) = {X : Matrix (Fin n) (Fin n) k | X.det ≠ 0}`. Use extensionality with `X`. Simplify using `only [Set.mem_range, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨g, rfl⟩`. Conclude with `g.det_ne_zero`. Introduce `h`. Conclude with `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero X h, rfl⟩`. Rewrite using `[this]`.
+
+Conclude with `isOpen_ne_fun (continuous_id.matrix_det) continuous_const`. Establish `hoe : Topology.IsOpenEmbedding (fun g : GL (Fin n) k => g.val)` using `⟨isEmbedding_val_GL, hrange⟩`. Establish `hc : IsCompact (Units.val '' (KO k (Fin n) : Set (GL (Fin n) k)))` using `isCompact_KO.image Units.continuous_val`. Establish `ho : IsOpen (Units.val '' (KO k (Fin n) : Set (GL (Fin n) k)))` using `hoe.isOpenMap _ isOpen_KO`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `kInd`. Rewrite using `[hS]`. Establish `hK : IsClopen (Units.val '' (KO k (Fin n) : Set (GL (Fin n) k)))` using `⟨hc.isClosed, ho⟩`. Conclude with `⟨(LocallyConstant.indicator (1 : LocallyConstant _ ℂ) hK).isLocallyConstant, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩`. Unfold `gjZ`.
+
+Establish `hf : (fun g : GL (Fin n) k => kInd k n g.val * (ν (gdet g) : ℂ) * apow (gdet g) s) = (KO k (Fin n) : Set (GL (Fin n) k)).indicator (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ KO k (Fin n)`. Establish `h1 : kInd k n g.val = 1` using `Set.indicator_of_mem (show g.val ∈ {X : Matrix (Fin n) (Fin n) k | ∃ g ∈ KO k (Fin n), g.val = X} from ⟨g, hg, rfl⟩) _`. Establish `h2` using `chiS_of_mem_KO hν s hg`.
+
+Unfold `chiS at h2`. Rewrite using `[Set.indicator_of_mem (show g ∈ (KO k (Fin n) : Set (GL (Fin n) k)) from hg), h1, one_mul, h2]`. Establish `h1 : kInd k n g.val = 0`. Use `Set.indicator_of_notMem ?_ _` and prove the remaining obligations. Introduce and unpack `⟨h, hh, he⟩`.
+
+Conclude with `hg (by rwa [show h = g from Units.ext he] at hh)`. Rewrite using `[Set.indicator_of_notMem (show g ∉ (KO k (Fin n) : Set (GL (Fin n) k)) from hg), h1]`. Simplify using the standard rewrite rules. Rewrite using `[hf, integral_indicator_const _ isOpen_KO.measurableSet, measureReal_def, haarVol_self isOpen_KO le_rfl]`. Simplify using the standard rewrite rules.
+-/
 theorem kInd_mem_SB_and_gjZ_eq_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k]
     [BorelSpace k] (n : ℕ) (ν : kˣ →* ℂˣ) (s : ℂ), IsUnram ν →
     kInd k n ∈ SB (Matrix (Fin n) (Fin n) k) ∧ gjZ ν s (kInd k n) = 1 := by

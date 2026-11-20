@@ -31,6 +31,17 @@ def firstCols (X : Matrix (Fin V.rank) (Fin r) D.host.E) (j : Fin r) :
 
 def root (t : Fin r → ℝ) (j : Fin r) : ℝ := if h : j.val + 1 < r then t j / t ⟨j.val + 1, h⟩ else t j
 
+/- English proof (translation)
+Use `⟨Nat.succ_pos _, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : LinearIndependent D.host.E (fun i : Fin r => fun a : Fin V.rank => X a i)`. Use `Fintype.linearIndependent_iff.2 fun g hg i => ?_` and prove the remaining obligations. Establish `h3 : ∀ a, ∑ l, g l * X a l = 0` using `fun a => by`. Use `congrFun hg a` as an intermediate fact.
+
+Simplify `this` using `[Finset.sum_apply, mul_comm]`. Establish `h4 : (fun l => (D.sp.cm.sig : D.host.E →+* D.host.E) (g l)) ᵥ* Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) X = 0`. Use function extensionality and compare the values at `a`. Use `congrArg (D.sp.cm.sig : D.host.E →+* D.host.E) (h3 a)` as an intermediate fact. Simplify using `only [map_sum, map_mul, map_zero] at this`.
+
+Simplify `this` using `[Matrix.vecMul, dotProduct, Formalism.UG.cT]`. Establish `h5` using `congrArg (fun v => v ᵥ* (V.gram * Y)) h4`. Simplify using `only [Matrix.vecMul_vecMul, Matrix.zero_vecMul, ← Matrix.mul_assoc, hW.xy, Matrix.vecMul_one] at h5`. Establish `h6` using `congrFun h5 i`. Simplify using `using h6`.
+
+Establish `h2 : (firstCols X j).transpose = (fun i : Fin r => fun a : Fin V.rank => X a i) ∘ Fin.castLE j.2`. Use function extensionality and compare the values at `i a`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `LinearIndependent D.host.E (firstCols X j).transpose`. Rewrite using `[h2]`.
+
+Conclude with `h1.comp _ (Fin.castLE_injective _)`. Establish `h` using `hW.xx`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `congrFun (congrFun h (Fin.castLE j.2 a)) (Fin.castLE j.2 b)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Formalism.UG.cT, firstCols]`.
+-/
 theorem isIsoFrame_firstCols {X Y : Matrix (Fin V.rank) (Fin r) D.host.E}
     (hW : GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y) (j : Fin r) : IsIsoFrame V (firstCols X j) := by
   refine ⟨Nat.succ_pos _, ?_, ?_⟩

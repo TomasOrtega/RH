@@ -14,6 +14,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or z τ b h hi hf`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Establish `hmem : ∀ w, Or.i τ w ∈ Or.𝔐.Vgen (Or.bg τ) ⊔ Or.𝔐.Vgen (Or.sm τ)` using `fun w => by`. Rewrite using `[← Or.i_range τ]`. Conclude with `LinearMap.mem_range_self _ w`.
+
+Set `φ : W τ →ₗ[Ω] ↥(Or.𝔐.Vgen (Or.bg τ) ⊔ Or.𝔐.Vgen (Or.sm τ))` to `(Or.i τ).codRestrict _ hmem`. Establish `hφi : Function.Injective φ` using `fun x y hxy => Or.i_inj τ (congrArg Subtype.val hxy)`. Establish `hφs : Function.Surjective φ` using `fun x => by`. Establish `hx : (x : Or.𝔐.Li) ∈ LinearMap.range (Or.i τ)`. Rewrite using `[Or.i_range τ]`.
+
+Conclude with `x.2`. Take `⟨w, hw⟩` from `hx`. Conclude with `⟨w, Subtype.ext hw⟩`. Establish `hpol` using `GlobalTheory.T.interior_point_polarised E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 z hi`. Establish `hframe : (Lat.comap (fun p => Or.𝔐.V (Or.bg τ) p ⊔ Or.𝔐.V (Or.sm τ) p) (Or.𝔐.Vgen (Or.bg τ) ⊔ Or.𝔐.Vgen (Or.sm τ)).subtype).IsFrameAt (fun k => φ (b k)) ⟨centre z, h⟩`.
+
+Use `⟨hf.1.map' φ (LinearMap.ker_eq_bot.2 hφi), ?_⟩` and prove the remaining obligations. Establish `hs` using `hf.2`. Use extensionality with `x`. Take `⟨w, rfl⟩` from `hφs x`. Establish `hrange : Set.range (fun k => φ (b k)) = φ '' Set.range b`.
+
+Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Establish `hspan : Submodule.span (regAt Or.𝔐.ξ ⟨centre z, h⟩) (Set.range (fun k => φ (b k))) = (Submodule.span (regAt Or.𝔐.ξ ⟨centre z, h⟩) (Set.range b)).map (φ.restrictScalars (regAt Or.𝔐.ξ ⟨centre z, h⟩))`. Rewrite using `[hrange, Submodule.map_span]`. Both sides reduce to the same expression.
+
+Rewrite using `[hspan, ← hs]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨w, hx, rfl⟩`. Introduce and unpack `⟨w', hw', e⟩`.
+
+Establish `: w' = w` using `hφi e`. Substitute `this` using the available equality. Conclude with `hw'`. Take `⟨G, h1, h2⟩` from `GlobalTheory.T.pair_sum_frame_at_point E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 (Or.bg τ) (Or.sm τ) Dc.N (fun k => φ (b k)) z h hpol hframe`. Conclude with `⟨G, h1, h2⟩`.
+-/
 theorem gramAt_posDef_of_isFrameAt_blocks : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X) (τ : CMType H) (b : Fin Dc.N → W τ) (h : genPt Or.𝔐.ξ ⤳ centre z), Or.𝔐.Interior z → (Lat.comap (fun p => Or.𝔐.V (Or.bg τ) p ⊔ Or.𝔐.V (Or.sm τ) p) (Or.i τ)).IsFrameAt b ⟨centre z, h⟩ → ∃ G : Matrix (Fin Dc.N) (Fin Dc.N) ℂ, Or.𝔐.M.GramAt Or.𝔐.t.PP.L z (fun k => Or.i τ (b k)) G ∧ G.PosDef := by
   intro E _ _ _ H D l Xo c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or z τ b h hi hf
   haveI : CharZero Ω := algebraRat.charZero Ω

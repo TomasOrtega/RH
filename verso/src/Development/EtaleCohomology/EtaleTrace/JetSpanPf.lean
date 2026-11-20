@@ -7,10 +7,20 @@ namespace LateralTheory.EtaleTrace.JetSpanPf
 
 variable {k K : Type} [Field k] [Field K] [Algebra k K]
 
+/- English proof (translation)
+Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨g, rfl⟩`.
+-/
 lemma aeval_mem_adj {n : ℕ} (v : Fin n → K) (g : MvPolynomial (Fin n) k) :
     aeval v g ∈ Algebra.adjoin k (Set.range v) := by
   rw [Algebra.adjoin_range_eq_range_aeval]; exact ⟨g, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Algebra.essFiniteType_iff]`. Use `⟨Finset.univ.image v, fun z => ?_⟩` and prove the remaining obligations. Establish `hs : ((Finset.univ.image v : Finset K) : Set K) = Set.range v` using `by simp`. Rewrite using `[hs]`. Take `⟨f, g, rfl⟩` from `hz z`.
+
+Distinguish the cases in `h : aeval v f = 0`. Use `⟨1, Subalgebra.one_mem _, isUnit_one, ?_⟩` and prove the remaining obligations. Simplify using `[h]`. Use `⟨aeval v f, aeval_mem_adj v f, IsUnit.mk0 _ h, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_cancel₀ _ h]`.
+
+Conclude with `aeval_mem_adj v g`.
+-/
 lemma essFT {n : ℕ} (v : Fin n → K)
     (hz : ∀ z : K, ∃ f g : MvPolynomial (Fin n) k, z = aeval v g / aeval v f) :
     Algebra.EssFiniteType k K := by
@@ -29,12 +39,18 @@ lemma essFT {n : ℕ} (v : Fin n → K)
 def T {n : ℕ} (v : Fin n → K) : Submodule K Ω[K⁄k] :=
   (Submodule.span K (Set.range (LateralTheory.EtaleTrace.Cov.jet k v))).comap (LinearMap.inr K K Ω[K⁄k])
 
+/- English proof (translation)
+Establish `h` using `Submodule.smul_mem (Submodule.span K (Set.range (LateralTheory.EtaleTrace.Cov.jet k v))) x (Submodule.subset_span ⟨i, rfl⟩)`. Simplify `h` using `[LateralTheory.EtaleTrace.Cov.jet, hi]`.
+-/
 lemma fst_mem {n : ℕ} (v : Fin n → K) (i : Fin n) (hi : v i = 1) (x : K) :
     ((x, 0) : K × Ω[K⁄k]) ∈ Submodule.span K (Set.range (LateralTheory.EtaleTrace.Cov.jet k v)) := by
   have h := Submodule.smul_mem (Submodule.span K (Set.range (LateralTheory.EtaleTrace.Cov.jet k v))) x
     (Submodule.subset_span ⟨i, rfl⟩)
   simpa [LateralTheory.EtaleTrace.Cov.jet, hi] using h
 
+/- English proof (translation)
+Establish `h1 : LateralTheory.EtaleTrace.Cov.jet k v j ∈ Submodule.span K (Set.range (LateralTheory.EtaleTrace.Cov.jet k v))` using `Submodule.subset_span ⟨j, rfl⟩`. Establish `h2` using `Submodule.sub_mem _ h1 (fst_mem v i hi (v j))`. Use `show LinearMap.inr K K Ω[K⁄k] (KaehlerDifferential.D k K (v j)) ∈ Submodule.span K (Set.range (LateralTheory.EtaleTrace.Cov.jet k v))`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `[LateralTheory.EtaleTrace.Cov.jet]`.
+-/
 lemma dv_mem {n : ℕ} (v : Fin n → K) (i : Fin n) (hi : v i = 1) (j : Fin n) :
     KaehlerDifferential.D k K (v j) ∈ T v := by
   have h1 : LateralTheory.EtaleTrace.Cov.jet k v j ∈ Submodule.span K (Set.range (LateralTheory.EtaleTrace.Cov.jet k v)) :=
@@ -45,6 +61,11 @@ lemma dv_mem {n : ℕ} (v : Fin n → K) (i : Fin n) (hi : v i = 1) (j : Fin n) 
   convert h2 using 1
   simp [LateralTheory.EtaleTrace.Cov.jet]
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hp hq`. Consider the case `mul_X p j hp`.
+
+Rewrite using `[map_mul, aeval_X, Derivation.leibniz]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (dv_mem v i hi j)) (Submodule.smul_mem _ _ hp)`.
+-/
 lemma dpoly_mem {n : ℕ} (v : Fin n → K) (i : Fin n) (hi : v i = 1) (g : MvPolynomial (Fin n) k) :
     KaehlerDifferential.D k K (aeval v g) ∈ T v := by
   induction g using MvPolynomial.induction_on with
@@ -54,6 +75,13 @@ lemma dpoly_mem {n : ℕ} (v : Fin n → K) (i : Fin n) (hi : v i = 1) (g : MvPo
     rw [map_mul, aeval_X, Derivation.leibniz]
     exact Submodule.add_mem _ (Submodule.smul_mem _ _ (dv_mem v i hi j)) (Submodule.smul_mem _ _ hp)
 
+/- English proof (translation)
+Take `⟨f, g, hfg⟩` from `hz z`. Distinguish the cases in `h : aeval v f = 0`. Rewrite using `[hfg, h, div_zero, map_zero]`. Conclude with `Submodule.zero_mem _`. Establish `hg : aeval v g = z * aeval v f` using `by rw [hfg, div_mul_cancel₀ _ h]`.
+
+Establish `key` using `congrArg (KaehlerDifferential.D k K) hg`. Rewrite `key` using `[Derivation.leibniz]`. Establish `: KaehlerDifferential.D k K z = (aeval v f)⁻¹ • (KaehlerDifferential.D k K (aeval v g) - z • KaehlerDifferential.D k K (aeval v f))`. Rewrite using `[key, add_sub_cancel_left, smul_smul, inv_mul_cancel₀ h, one_smul]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (dpoly_mem v i hi g) (Submodule.smul_mem _ _ (dpoly_mem v i hi f)))`.
+-/
 lemma dall_mem {n : ℕ} (v : Fin n → K) (i : Fin n) (hi : v i = 1)
     (hz : ∀ z : K, ∃ f g : MvPolynomial (Fin n) k, z = aeval v g / aeval v f) (z : K) :
     KaehlerDifferential.D k K z ∈ T v := by
@@ -74,6 +102,13 @@ lemma dall_mem {n : ℕ} (v : Fin n → K) (i : Fin n) (hi : v i = 1)
 end LateralTheory.EtaleTrace.JetSpanPf
 
 open LateralTheory.EtaleTrace.JetSpanPf in
+/- English proof (translation)
+Introduce `k K _ _ _ n v i hi hz`. Use `⟨?_, essFT v hz⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨x, ω⟩ -`. Establish `hω : ω ∈ T (k` using `k) v := by`.
+
+Establish `: (⊤ : Submodule K Ω[K⁄k]) ≤ T v`. Rewrite using `[← KaehlerDifferential.span_range_derivation, Submodule.span_le]`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `dall_mem v i hi hz z`. Conclude with `this Submodule.mem_top`.
+
+Establish `: ((x, ω) : K × Ω[K⁄k]) = (x, 0) + LinearMap.inr K K Ω[K⁄k] ω` using `by simp`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (fst_mem v i hi x) hω`.
+-/
 theorem LateralTheory.EtaleTrace.Cov.JetSpan_of : LateralTheory.EtaleTrace.Cov.JetSpan := by
   intro k K _ _ _ n v i hi hz
   refine ⟨?_, essFT v hz⟩

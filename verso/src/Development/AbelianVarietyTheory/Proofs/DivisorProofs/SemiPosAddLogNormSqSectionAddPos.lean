@@ -22,6 +22,9 @@ namespace GlobalTheory.Mix.RegLog
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
+/- English proof (translation)
+Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Establish `e : f y = F (fun a => ev p σ W (g a) y)` using `h₅.eq_of_nhds`. Use `⟨W, ι, inferInstance, g, G ∘ F, O ∩ F ⁻¹' T, h₁, h₄.continuousOn.isOpen_inter_preimage h₂ hT, ⟨h₃, show F _ ∈ T from e ▸ hf y⟩, hG.comp (h₄.mono inter_subset_left) fun v hv => hv.2, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h₅] with z hz`. Simplify using `only [Function.comp_apply, hz]`.
+-/
 theorem cInfAt_comp {f : CxPts p σ → ℝ} {y : CxPts p σ} (h : CInfAt f y) {G : ℝ → ℝ} {T : Set ℝ}
     (hT : IsOpen T) (hG : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) G T) (hf : ∀ z, f z ∈ T) :
     CInfAt (fun z => G (f z)) y := by
@@ -32,11 +35,17 @@ theorem cInfAt_comp {f : CxPts p σ → ℝ} {y : CxPts p σ} (h : CInfAt f y) {
   filter_upwards [h₅] with z hz
   simp only [Function.comp_apply, hz]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨W, Unit, inferInstance, fun _ => g, fun v => ‖v ()‖ ^ 2, univ, hy, isOpen_univ, trivial, ((contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ ())).contDiffOn, EventuallyEq.rfl⟩`.
+-/
 theorem cInfAt_normSq_ev {W : X.Opens} (g : Γ(X, W)) {y : CxPts p σ} (hy : y ∈ ptsIn p σ W) :
     CInfAt (fun z => ‖ev p σ W g z‖ ^ 2) y :=
   ⟨W, Unit, inferInstance, fun _ => g, fun v => ‖v ()‖ ^ 2, univ, hy, isOpen_univ, trivial,
     ((contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ ())).contDiffOn, EventuallyEq.rfl⟩
 
+/- English proof (translation)
+Establish `hi` using `mem_pick φ.isLB y`. Establish `h` using `(cInfAt_normSq_ev (s.f (pick φ.isLB y)) hi).comp₂ (hφ _ y hi) (G := fun x => x.1 * Real.exp (-x.2)) (contDiff_fst.mul (Real.contDiff_exp.comp contDiff_snd.neg))`. Use `h.congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn (p := p) (σ := σ) _).mem_nhds hi] with z hz`. Conclude with `φ.nsq_eq (secVal_mem s) hz`.
+-/
 theorem cInfAt_nsq {B : LB X} (φ : Weight p σ B) (hφ : φ.IsCInf) (s : B.Sec) (y : CxPts p σ) :
     CInfAt (φ.nsq (secVal p σ s)) y := by
   have hi := mem_pick φ.isLB y
@@ -50,6 +59,23 @@ end GlobalTheory.Mix.RegLog
 
 open GlobalTheory.Mix.RegLog in
 
+/- English proof (translation)
+Introduce `k _ X p σ D N hN t δ hδ`. Establish `hC : ∀ y, CInfAt (fun y => Real.log (N.φ.nsq (secVal p σ t) y + δ)) y` using `fun y => cInfAt_comp ((cInfAt_nsq N.φ N.cInf t y).add (cInfAt_const δ y)) isOpen_compl_singleton Real.contDiffOn_log fun z => (add_pos_of_nonneg_of_pos (N.φ.nsq_nonneg _ z) hδ).ne'`. Use `⟨hC, ?_⟩` and prove the remaining obligations. Introduce `i c y hy ξ`. Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (N.B.U i))`.
+
+Establish `hm` using `mem_over c.e hy.1 hy.2`. Establish `hf : ContDiffAt ℂ 2 (ev p σ (N.B.U i) (t.f i) ∘ c.e.symm) (c.e y)` using `ReciprocityTheory.L2DbarEstimates.Y.contDiffAt_two_of_holo ho (c.holo _ (t.f i)) hm`. Establish `hψ : ContDiffAt ℝ 2 (fun v => N.φ.φ i (c.e.symm v)) (c.e y)` using `N.cInf.contDiffAt c hy.1 hy.2`. Establish `hψ' : ContDiffAt ℝ 2 (fun v => 1 * N.φ.φ i (c.e.symm v) + Real.log δ) (c.e y)` using `(contDiffAt_const.mul hψ).add contDiffAt_const`. Set `w : Fin 2 → ReciprocityTheory.L2DbarEstimates.V D → ℝ` to `![fun v => Complex.normSq ((ev p σ (N.B.U i) (t.f i) ∘ c.e.symm) v), fun v => Real.exp (1 * N.φ.φ i (c.e.symm v) + Real.log δ)]`.
+
+Establish `hu : ∀ j, ContDiffAt ℝ 2 (w j) (c.e y)`. Introduce `j`. Use `fin_cases j`. Conclude with `ReciprocityTheory.L2DbarEstimates.contDiffAt_normSq_comp hf`. Conclude with `Real.contDiff_exp.contDiffAt.comp _ hψ'`.
+
+Establish `hl : ∀ j, ReciprocityTheory.L2DbarEstimates.LogPshAt D (w j) (c.e y)`. Introduce `j`. Use `fin_cases j`. Conclude with `ReciprocityTheory.L2DbarEstimates.logPshAt_normSq hf`. Use `ReciprocityTheory.L2DbarEstimates.logPshAt_exp hψ' fun ζ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ReciprocityTheory.L2DbarEstimates.Y.leviV_const_mul hψ 1 (Real.log δ) ζ, Complex.ofReal_one, one_mul]`. Conclude with `hN i c y hy ζ`. Establish `hpos : 0 < ∑ j, w j (c.e y)`. Simplify using `only [Fin.sum_univ_two, w, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`. Conclude with `add_pos_of_nonneg_of_pos (Complex.normSq_nonneg _) (Real.exp_pos _)`.
+
+Establish `key` using `ReciprocityTheory.L2DbarEstimates.leviV_log_sum_nonneg hu hl hpos ξ`. Establish `e : (fun v => (((N.φ.addFn fun y => Real.log (N.φ.nsq (secVal p σ t) y + δ)).φ i (c.e.symm v) : ℝ) : ℂ)) =ᶠ[𝓝 (c.e y)] fun v => ((Real.log (∑ j, w j v) : ℝ) : ℂ)` using `by filter_upwards [ho.mem_nhds hm] with v hv`. Establish `hz : c.e.symm v ∈ ptsIn p σ (N.B.U i)` using `hv.2`. Use `congr 1`. Simplify using `only [Weight.addFn, N.φ.nsq_eq (secVal_mem t) hz, Fin.sum_univ_two, w, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Function.comp_apply, secVal_apply]`.
+
+Use `set a := N.φ.φ i (c.e.symm v)`. Use `set b := ev p σ (N.B.U i) (t.f i) (c.e.symm v)`. Establish `h1 : ‖b‖ ^ 2 * Real.exp (-a) + δ = Real.exp (-a) * (Complex.normSq b + Real.exp (1 * a + Real.log δ))`. Rewrite using `[Complex.normSq_eq_norm_sq, Real.exp_add, Real.exp_log hδ, one_mul, Real.exp_neg]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[h1, Real.log_mul (Real.exp_pos _).ne' (add_pos_of_nonneg_of_pos (Complex.normSq_nonneg _) (Real.exp_pos _)).ne', Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ReciprocityTheory.L2DbarEstimates.leviV_congr e]`. Conclude with `key`.
+-/
 theorem GlobalTheory.Mix.semiPosReg_addFn_log_nsq : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (N : MLine p σ), N.φ.SemiPosReg D → ∀ (t : N.B.Sec) (δ : ℝ), 0 < δ → (∀ y, CInfAt (fun y => Real.log (N.φ.nsq (secVal p σ t) y + δ)) y) ∧ (N.φ.addFn fun y => Real.log (N.φ.nsq (secVal p σ t) y + δ)).SemiPosReg D := by
   intro k _ X p σ D N hN t δ hδ
   have hC : ∀ y, CInfAt (fun y => Real.log (N.φ.nsq (secVal p σ t) y + δ)) y := fun y =>

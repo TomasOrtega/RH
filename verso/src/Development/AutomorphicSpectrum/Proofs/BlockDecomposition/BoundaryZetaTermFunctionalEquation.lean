@@ -10,6 +10,15 @@ open Ad3 Ad3.R
 
 namespace GlobalTheory.CompanionTheory.RSZeta
 
+/- English proof (translation)
+Take `⟨h1, hz, hT⟩` from `hG μ 𝓕 mK 𝓓 h0`. Take `⟨z, hz2, -⟩` from `hz 2 (by norm_num)`. Establish `hinv` using `(hT (fun g => dg2 z z * g) (Or.inr (Or.inr ⟨z, rfl⟩))).1`. Establish `hS : MeasurableSet {g : G2 | Dt g ∈ ({2} : Set ℝ)}` using `measurable_Dt (measurableSet_singleton _)`. Establish `hS1 : MeasurableSet {g : G2 | Dt g = 1}` using `measurable_Dt (measurableSet_singleton (1 : ℝ))`.
+
+Establish `key` using `hinv (Set.indicator {g : G2 | Dt g ∈ ({2} : Set ℝ)} (fun _ => (1 : ℝ≥0∞))) (measurable_const.indicator hS) (linv_ind (fun _ _ => rfl) _)`. Establish `e1 : (fun g : G2 => Set.indicator {g : G2 | Dt g ∈ ({2} : Set ℝ)} (fun _ => (1 : ℝ≥0∞)) (dg2 z z * g)) = Set.indicator {g : G2 | Dt g = 1} (fun _ => (1 : ℝ≥0∞))`. Use function extensionality and compare the values at `g`. Establish `: (dg2 z z * g ∈ {g : G2 | Dt g ∈ ({2} : Set ℝ)}) ↔ g ∈ {g : G2 | Dt g = 1}`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff, Dt_dg, hz2]`.
+
+Apply the tactic sequence `constructor <;> intro h <;> linarith`. Distinguish the cases in `hg : g ∈ {g : G2 | Dt g = 1}`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (this.2 hg)]`. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem (fun h => hg (this.1 h))]`. Rewrite `key` using `[e1, lintegral_indicator_const hS1, lintegral_indicator_const hS, one_mul, one_mul]`.
+
+Rewrite using `[← key]`. Conclude with `le_antisymm ((Measure.restrict_apply_le _ _).trans h1.le) bot_le`.
+-/
 theorem restrict_Dt_two_null {μ : Measure G2} {𝓕 : Set G2} {mK : Measure KA} {𝓓 : Set Jd}
     (hG : Ad3.R.G1a) (h0 : Set0 μ 𝓕 mK 𝓓) : (μ.restrict 𝓕) {g | Dt g ∈ ({2} : Set ℝ)} = 0 := by
   obtain ⟨h1, hz, hT⟩ := hG μ 𝓕 mK 𝓓 h0
@@ -32,6 +41,35 @@ theorem restrict_Dt_two_null {μ : Measure G2} {𝓕 : Set G2} {mK : Measure KA}
   rw [← key]
   exact le_antisymm ((Measure.restrict_apply_le _ _).trans h1.le) bot_le
 
+/- English proof (translation)
+Introduce `μ 𝓕 mK 𝓓 H c hG h0 hH hc s`. Establish `hnull2` using `restrict_Dt_two_null hG h0`. Take `⟨h1, hz, hT⟩` from `hG μ 𝓕 mK 𝓓 h0`. Take `⟨z, hz2, hzc⟩` from `hz (1 / 2) (by norm_num)`. Establish `hzc` using `hzc c hc`.
+
+Use `set w : G2 → ℂ := fun g => H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ s with hw`. Use `set w' : G2 → ℂ := fun g => H g * cdet c⁻¹ g * ((Dt g : ℝ) : ℂ) ^ (-s) with hw'`. Establish `mS : ∀ A : Set ℝ, MeasurableSet A → MeasurableSet {g : G2 | Dt g ∈ A}` using `fun A hA => measurable_Dt hA`. Establish `hband : band = {g : G2 | Dt g ∈ Set.Ico (1 : ℝ) 2}` using `rfl`. Establish `mB : MeasurableSet band` using `hband ▸ mS _ measurableSet_Ico`.
+
+Establish `b1 : Bd μ 𝓕 H c⁻¹ (-s) = ∫ g in 𝓕, Set.indicator {g : G2 | Dt g ∈ Set.Ico (1 : ℝ) 2} w' g ∂μ`. Rewrite using `[setIntegral_indicator (mS _ measurableSet_Ico)]`. Both sides reduce to the same expression. Establish `b2 : Bd μ 𝓕 H c s = ∫ g in 𝓕, Set.indicator {g : G2 | Dt g ∈ Set.Ico (1 : ℝ) 2} w g ∂μ`. Rewrite using `[setIntegral_indicator (mS _ measurableSet_Ico)]`.
+
+Both sides reduce to the same expression. Establish `r1` using `(hT Ad3.R.inv2 (Or.inl rfl)).2 (Set.indicator {g : G2 | Dt g ∈ Set.Ico (1 : ℝ) 2} w') ((measurable_w hH c⁻¹ (-s)).indicator (mS _ measurableSet_Ico)) (linv_ind (linv_w hH c⁻¹ (-s)) _)`. Establish `e1 : (fun g : G2 => Set.indicator {g : G2 | Dt g ∈ Set.Ico (1 : ℝ) 2} w' (Ad3.R.inv2 g)) = Set.indicator {g : G2 | Dt g ∈ Set.Ioc (1 / 2 : ℝ) 1} w`. Use function extensionality and compare the values at `g`. Establish `hp` using `Dt_pos g`.
+
+Establish `hm : (Ad3.R.inv2 g ∈ {g : G2 | Dt g ∈ Set.Ico (1 : ℝ) 2}) ↔ g ∈ {g : G2 | Dt g ∈ Set.Ioc (1 / 2 : ℝ) 1}`. Simplify using `only [Set.mem_setOf_eq, Set.mem_Ico, Set.mem_Ioc, module_det_inverse_twist]`. Rewrite using `[one_le_inv₀ hp, inv_lt_comm₀ hp (by norm_num)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩; exact ⟨by norm_num at b ⊢; linarith, a⟩`.
+
+Introduce and unpack `⟨a, b⟩; exact ⟨b, by norm_num at a ⊢; linarith⟩`. Establish `hv : w' (Ad3.R.inv2 g) = w g`. Simplify using `only [hw, hw', Aut.inv2 hH, character_det_inverse_twist, module_cpow_det_inverse_twist, inv_inv, neg_neg]`. Distinguish the cases in `hg : g ∈ {g : G2 | Dt g ∈ Set.Ioc (1 / 2 : ℝ) 1}`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (hm.2 hg), hv]`.
+
+Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem (fun h => hg (hm.1 h))]`. Establish `r2` using `(hT (fun g => dg2 z z * g) (Or.inr (Or.inr ⟨z, rfl⟩))).2 (Set.indicator {g : G2 | Dt g ∈ Set.Ioc (1 / 2 : ℝ) 1} w) ((measurable_w hH c s).indicator (mS _ measurableSet_Ioc)) (linv_ind (linv_w hH c s) _)`. Establish `hhalf : (((1 / 2 : ℝ) : ℝ) : ℂ) ^ s = 2 ^ (-s)`. Establish `: (((1 / 2 : ℝ) : ℝ) : ℂ) = (2 : ℂ)⁻¹` using `by push_cast; norm_num`. Rewrite using `[this, Complex.inv_cpow _ _ (by simpa using Real.pi_pos.ne), Complex.cpow_neg]`.
+
+Establish `e2 : (fun g : G2 => Set.indicator {g : G2 | Dt g ∈ Set.Ioc (1 / 2 : ℝ) 1} w (dg2 z z * g)) = fun g => 2 ^ (-s) * Set.indicator {g : G2 | Dt g ∈ Set.Ioc (1 : ℝ) 2} w g`. Use function extensionality and compare the values at `g`. Establish `hm : (dg2 z z * g ∈ {g : G2 | Dt g ∈ Set.Ioc (1 / 2 : ℝ) 1}) ↔ g ∈ {g : G2 | Dt g ∈ Set.Ioc (1 : ℝ) 2}`. Simplify using `only [Set.mem_setOf_eq, Set.mem_Ioc, Dt_dg, hz2]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, b⟩; exact ⟨by linarith, by linarith⟩`. Introduce and unpack `⟨a, b⟩; exact ⟨by linarith, by linarith⟩`. Establish `hv : w (dg2 z z * g) = 2 ^ (-s) * w g`. Simplify using `only [hw]`. Rewrite using `[hH.cen, cdet_dg c z hzc, cpow_dg, hz2, hhalf]`.
+
+Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hg : g ∈ {g : G2 | Dt g ∈ Set.Ioc (1 : ℝ) 2}`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (hm.2 hg), hv]`. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem (fun h => hg (hm.1 h)), mul_zero]`. Establish `ae1 : ∀ᵐ g ∂(μ.restrict 𝓕), Dt g ≠ 1` using `ae_restrict_of_ae (measure_eq_zero_iff_ae_notMem.1 h1)`.
+
+Establish `ae2 : ∀ᵐ g ∂(μ.restrict 𝓕), Dt g ≠ 2`. Use `measure_eq_zero_iff_ae_notMem.1 hnull2` as an intermediate fact. Simplify using `using this`. Establish `r3 : ∫ g in 𝓕, Set.indicator {g : G2 | Dt g ∈ Set.Ioc (1 : ℝ) 2} w g ∂μ = ∫ g in 𝓕, Set.indicator {g : G2 | Dt g ∈ Set.Ico (1 : ℝ) 2} w g ∂μ`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ae1, ae2] with g g1 g2`. Establish `hm : g ∈ {g : G2 | Dt g ∈ Set.Ioc (1 : ℝ) 2} ↔ g ∈ {g : G2 | Dt g ∈ Set.Ico (1 : ℝ) 2}`. Simplify using `only [Set.mem_setOf_eq, Set.mem_Ioc, Set.mem_Ico]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩`.
+
+Conclude with `⟨a.le, lt_of_le_of_ne b g2⟩`. Introduce and unpack `⟨a, b⟩`. Conclude with `⟨lt_of_le_of_ne a (Ne.symm g1), b.le⟩`. Distinguish the cases in `hg : g ∈ {g : G2 | Dt g ∈ Set.Ioc (1 : ℝ) 2}`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (hm.1 hg)]`.
+
+Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem (fun h => hg (hm.2 h))]`. Rewrite using `[b1, b2, ← r1, e1, ← r2, e2, integral_const_mul, r3]`.
+-/
 theorem Bd_reflect : ∀ (μ : Measure G2) (𝓕 : Set G2) (mK : Measure KA) (𝓓 : Set Jd) (H : G2 → ℂ) (c : HeckeCharacter ℚ),
     Ad3.R.G1a → Set0 μ 𝓕 mK 𝓓 → Aut H → IsOfFinOrder c → ∀ s : ℂ,
       GlobalTheory.CompanionTheory.RSZeta.Bd μ 𝓕 H c⁻¹ (-s) = 2 ^ (-s) * GlobalTheory.CompanionTheory.RSZeta.Bd μ 𝓕 H c s := by

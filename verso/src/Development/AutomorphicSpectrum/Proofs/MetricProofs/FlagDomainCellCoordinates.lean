@@ -19,6 +19,9 @@ def headEquiv {r k : ℕ} (hk : k ≤ r) : Fin k ≃ {a : Fin r // (a : ℕ) < k
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Both sides reduce to the same expression.
+-/
 theorem submatrix_neg_transpose {r k : ℕ} (hk : k ≤ r) (s : Fin r → ℝ) (n : Matrix (Fin r) (Fin r) ℂ) :
     (-(gramOf s n)ᵀ).submatrix (Fin.castLE hk) (Fin.castLE hk) =
       ((-gramHead s k n).submatrix (headEquiv hk) (headEquiv hk))ᵀ := by
@@ -26,6 +29,13 @@ theorem submatrix_neg_transpose {r k : ℕ} (hk : k ≤ r) (s : Fin r → ℝ) (
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `hs : PoinPf.Jd X = -diagonal (fun i => ((sigForm r j i : ℝ) : ℂ))`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[PoinPf.Jd, sgn, sigForm, hp]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[PoinPf.Jd, hab]`. Establish `hc : ((mat (nmat X w) τ)ᴴ)ᵀ = (mat (nmat X w) τ).map (starRingEnd ℂ)`. Use extensionality with `a b`. Both sides reduce to the same expression.
+
+Rewrite using `[PoinPf.Gw, hs, gramOf, Matrix.transpose_mul, Matrix.transpose_mul, diagonal_transpose, hc]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`.
+-/
 theorem Gw_eq (X : Data E r) {j : ℕ} (hp : X.p0 = r - j) (w : ReciprocityTheory.L2DbarEstimates.V (nd X)) (τ : X.Ψ) :
     PoinPf.Gw X w τ = -(gramOf (sigForm r j) (mat (nmat X w) τ))ᵀ := by
   have hs : PoinPf.Jd X = -diagonal (fun i => ((sigForm r j i : ℝ) : ℂ)) := by
@@ -40,12 +50,18 @@ theorem Gw_eq (X : Data E r) {j : ℕ} (hp : X.p0 = r - j) (w : ReciprocityTheor
   rw [PoinPf.Gw, hs, gramOf, Matrix.transpose_mul, Matrix.transpose_mul, diagonal_transpose, hc]
   simp only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `show gram τ.1 X.Gm (mat x τ * mat (nmat X w) τ) = _`. Rewrite using `[FrameDegreeData.gram_mul, hx τ]`. Both sides reduce to the same expression.
+-/
 theorem gram_cpt (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (w : ReciprocityTheory.L2DbarEstimates.V (nd X)) (τ : X.Ψ) :
     gram τ.1 X.Gm (mat (cpt X x w) τ) = PoinPf.Gw X w τ := by
   show gram τ.1 X.Gm (mat x τ * mat (nmat X w) τ) = _
   rw [FrameDegreeData.gram_mul, hx τ]
   rfl
 
+/- English proof (translation)
+Establish `hi : (i : ℕ) ≤ r` using `Nat.le_of_lt_succ i.isLt`. Rewrite using `[PoinPf.dmin_cpt_orth X hx, lminor, Gw_eq X hp, submatrix_neg_transpose hi, det_transpose, det_submatrix_equiv_self, Matrix.det_neg]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_dmin_eq (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) {j : ℕ} (hp : X.p0 = r - j)
     (w : ReciprocityTheory.L2DbarEstimates.V (nd X)) (τ : X.Ψ) (i : Fin (r + 1)) :
     ‖dmin X.Gm (cpt X x w) τ i‖ = ‖(gramHead (sigForm r j) i (mat (nmat X w) τ)).det‖ := by
@@ -54,6 +70,13 @@ theorem norm_dmin_eq (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) {j : �
     det_submatrix_equiv_self, Matrix.det_neg]
   simp
 
+/- English proof (translation)
+Establish `h : X.gramPos (cpt X x w) τ = ((-gramHead (sigForm r j) X.p0 (mat (nmat X w) τ)).submatrix (headEquiv X.p0_le) (headEquiv X.p0_le))ᵀ`. Rewrite using `[← submatrix_neg_transpose, ← Gw_eq X hp, ← gram_cpt X hx]`. Both sides reduce to the same expression. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hP`. Establish `h1` using `hP.transpose`. Rewrite `h1` using `[transpose_transpose]`. Establish `h2` using `h1.submatrix (e := (headEquiv X.p0_le).symm) (headEquiv X.p0_le).symm.injective`. Simplify using `using h2`.
+
+Introduce `hP`. Conclude with `(hP.submatrix (e := headEquiv X.p0_le) (headEquiv X.p0_le).injective).transpose`.
+-/
 theorem gramPos_iff (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) {j : ℕ} (hp : X.p0 = r - j)
     (w : ReciprocityTheory.L2DbarEstimates.V (nd X)) (τ : X.Ψ) :
     (X.gramPos (cpt X x w) τ).PosDef ↔ (-gramHead (sigForm r j) X.p0 (mat (nmat X w) τ)).PosDef := by
@@ -83,6 +106,9 @@ def toChart (X : Data E r) (lab : Ψ ≃ X.Ψ) (q : LowEnt Ψ r ≃ Fin e) :
   (MeasurableEquiv.piCongrLeft (fun _ : Fin (nd X) => ℂ) (sig X lab q).symm).trans
     (MeasurableEquiv.toLp 2 (Fin (nd X) → ℂ))
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[toChart, sig, MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft_apply_eq_cast]`. Both sides reduce to the same expression.
+-/
 theorem toChart_apply (X : Data E r) (lab : Ψ ≃ X.Ψ) (q : LowEnt Ψ r ≃ Fin e) (z : Fin e → ℂ) :
     toChart X lab q z = (WithLp.toLp 2 fun i => z (q ((Equiv.prodCongr lab (Equiv.refl _)).symm
       ((Fintype.equivFin (Ent X)).symm i))) : ReciprocityTheory.L2DbarEstimates.V (nd X)) := by
@@ -90,12 +116,20 @@ theorem toChart_apply (X : Data E r) (lab : Ψ ≃ X.Ψ) (q : LowEnt Ψ r ≃ Fi
   simp [toChart, sig, MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft_apply_eq_cast]
   rfl
 
+/- English proof (translation)
+Establish `hl : MeasurePreserving (MeasurableEquiv.toLp 2 (Fin (nd X) → ℂ)).symm` using `GlobalTheory.volume_preserving_ofLp_complex (Fin (nd X))`. Conclude with `hl.symm.comp (volume_measurePreserving_piCongrLeft (fun _ : Fin (nd X) => ℂ) (sig X lab q).symm)`.
+-/
 theorem toChart_preserving (X : Data E r) (lab : Ψ ≃ X.Ψ) (q : LowEnt Ψ r ≃ Fin e) :
     MeasurePreserving (toChart X lab q) volume volume := by
   have hl : MeasurePreserving (MeasurableEquiv.toLp 2 (Fin (nd X) → ℂ)).symm :=
     GlobalTheory.volume_preserving_ofLp_complex (Fin (nd X))
   exact hl.symm.comp (volume_measurePreserving_piCongrLeft (fun _ : Fin (nd X) => ℂ) (sig X lab q).symm)
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[toChart_apply]`. Simplify using `only [mat, nmat, lowMat, Matrix.of_apply]`. Use `split_ifs with h`. Simplify using `[PiLp.toLp_apply]`.
+
+Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem mat_nmat_toChart (X : Data E r) (lab : Ψ ≃ X.Ψ) (q : LowEnt Ψ r ≃ Fin e) (z : Fin e → ℂ) (t : Ψ) :
     mat (nmat X (toChart X lab q z)) (lab t) = lowMat q z t := by
   ext a b
@@ -106,6 +140,15 @@ theorem mat_nmat_toChart (X : Data E r) (lab : Ψ ≃ X.Ψ) (q : LowEnt Ψ r ≃
   · rfl
   · rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hz show cpt X x0 _ ∈ X.dom`. Use `ExF.mem_dom_of_gramPos X fun τ => ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `lab.surjective τ`. Establish `h` using `hz t`.
+
+Rewrite `h` using `[InFlagDomain, ← mat_nmat_toChart X lab q z t, ← hp]`. Use `⟨?_, (gramPos_iff X ho hp _ _).2 h.2⟩` and prove the remaining obligations. Use `show (mat x0 _ * mat (nmat X _) _).det ≠ 0`. Rewrite using `[det_mul]`. Conclude with `mul_ne_zero (KU.orth_dom X ho _).1 h.1.ne_zero`.
+
+Introduce `hz t`. Establish `hz' : cpt X x0 (toChart X lab q z) ∈ X.dom` using `hz`. Establish `hd : (mat x0 (lab t) * mat (nmat X (toChart X lab q z)) (lab t)).det ≠ 0` using `(hz' (lab t)).1`. Establish `hP` using `(gramPos_iff X ho hp _ _).1 (X.gramPos_posDef hz' (lab t))`. Rewrite `hd` using `[det_mul]`.
+
+Rewrite `hP`, `hd` using `[mat_nmat_toChart]`. Rewrite using `[InFlagDomain, ← hp]`. Conclude with `⟨isUnit_iff_ne_zero.2 (right_ne_zero_of_mul hd), hP⟩`.
+-/
 theorem mem_iff (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {j : ℕ} (hp : X.p0 = r - j)
     (lab : Ψ ≃ X.Ψ) (q : LowEnt Ψ r ≃ Fin e) (z : Fin e → ℂ) :
     z ∈ cellDom j q ↔ toChart X lab q z ∈ OmF X x0 := by
@@ -129,6 +172,13 @@ theorem mem_iff (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {j : ℕ} 
     rw [InFlagDomain, ← hp]
     exact ⟨isUnit_iff_ne_zero.2 (right_ne_zero_of_mul hd), hP⟩
 
+/- English proof (translation)
+Unfold `densF cellDens`. Rewrite using `[← Equiv.prod_comp lab]`. Use `Finset.prod_congr rfl fun t _ => Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hz' : cpt X x0 (toChart X lab q z) ∈ X.dom` using `hz`. Establish `hne : dmin X.Gm (cpt X x0 (toChart X lab q z)) (lab t) i.castSucc ≠ 0`.
+
+Introduce `h0`. Establish `h1` using `(hz' (lab t)).2 i.castSucc`. Rewrite `h1` using `[h0]`. Simplify using `at h1`. Establish `hn` using `norm_dmin_eq X ho hp (toChart X lab q z) (lab t) i.castSucc`.
+
+Rewrite `hn` using `[mat_nmat_toChart, Fin.val_castSucc]`. Establish `hd : 0 < ‖(gramHead (sigForm r j) i (lowMat q z t)).det‖`. Rewrite using `[← hn]`. Conclude with `norm_pos_iff.2 hne`. Rewrite using `[hn, gramLog, show (-4 : ℝ) * (1 / 2 * Real.log ‖(gramHead (sigForm r j) i (lowMat q z t)).det‖) = Real.log ‖(gramHead (sigForm r j) i (lowMat q z t)).det‖ * ((-2 : ℤ) : ℝ) by push_cast; ring, ← Real.rpow_def_of_pos hd, Real.rpow_intCast]`.
+-/
 theorem dens_eq (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {j : ℕ} (hp : X.p0 = r - j)
     (lab : Ψ ≃ X.Ψ) (q : LowEnt Ψ r ≃ Fin e) {z : Fin e → ℂ} (hz : toChart X lab q z ∈ OmF X x0) :
     densF X x0 (toChart X lab q z) = cellDens j q z := by
@@ -149,6 +199,9 @@ theorem dens_eq (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {j : ℕ} 
       Real.log ‖(gramHead (sigForm r j) i (lowMat q z t)).det‖ * ((-2 : ℤ) : ℝ) by push_cast; ring,
     ← Real.rpow_def_of_pos hd, Real.rpow_intCast]
 
+/- English proof (translation)
+Establish `hM` using `toChart_preserving X lab q`. Rewrite using `[muF, withDensity_apply _ hFF, Measure.restrict_restrict hFF, Set.inter_eq_left.2 hsub, cellVol, ← hM.setLIntegral_comp_preimage_emb (toChart X lab q).measurableEmbedding]`. Use `setLIntegral_congr_fun ((toChart X lab q).measurable hFF) fun z hz => ?_` and prove the remaining obligations. Simplify using `only [dens_eq X ho hp lab q (hsub hz)]`.
+-/
 theorem muF_eq (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {j : ℕ} (hp : X.p0 = r - j)
     (lab : Ψ ≃ X.Ψ) (q : LowEnt Ψ r ≃ Fin e) {FF : Set (ReciprocityTheory.L2DbarEstimates.V (nd X))}
     (hFF : MeasurableSet FF) (hsub : FF ⊆ OmF X x0) :
@@ -165,6 +218,11 @@ end GlobalTheory.CompanionTheory.Ar.Cmp.OrthBridge
 
 namespace GlobalTheory.CompanionTheory.Ar.Cmp
 
+/- English proof (translation)
+Introduce `E _ _ _ r j e X x0 Ψ _ lab q ho _ hp`. Use `⟨fun z => ?_, fun FF hFF hsub => ?_⟩` and prove the remaining obligations. Rewrite using `[← OrthBridge.toChart_apply]`. Conclude with `OrthBridge.mem_iff X ho hp lab q z`. Establish `h : {z : Fin e → ℂ | (WithLp.toLp 2 fun i => z (q ((Equiv.prodCongr lab (Equiv.refl _)).symm ((Fintype.equivFin (Ent X)).symm i))) : ReciprocityTheory.L2DbarEstimates.V (nd X)) ∈ FF} = OrthBridge.toChart X lab q ⁻¹' FF`.
+
+Use extensionality with `z`. Rewrite using `[Set.mem_preimage, OrthBridge.toChart_apply]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `OrthBridge.muF_eq X ho hp lab q hFF hsub`.
+-/
 theorem muF_orth_eq_cellVol : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r j e : ℕ) (X : Data E r) (x0 : Frame X.Ψ r) (Ψ : Type) [Fintype Ψ] (lab : Ψ ≃ X.Ψ) (q : LowEnt Ψ r ≃ Fin e), IsOrth X x0 → j ≤ r → X.p0 = r - j → (∀ z : Fin e → ℂ, z ∈ cellDom j q ↔ (WithLp.toLp 2 fun i => z (q ((Equiv.prodCongr lab (Equiv.refl _)).symm ((Fintype.equivFin (Ent X)).symm i))) : ReciprocityTheory.L2DbarEstimates.V (nd X)) ∈ OmF X x0) ∧ ∀ FF : Set (ReciprocityTheory.L2DbarEstimates.V (nd X)), MeasurableSet FF → FF ⊆ OmF X x0 → muF X x0 FF = cellVol j q {z | (WithLp.toLp 2 fun i => z (q ((Equiv.prodCongr lab (Equiv.refl _)).symm ((Fintype.equivFin (Ent X)).symm i))) : ReciprocityTheory.L2DbarEstimates.V (nd X)) ∈ FF} := by
   intro E _ _ _ r j e X x0 Ψ _ lab q ho _ hp
   refine ⟨fun z => ?_, fun FF hFF hsub => ?_⟩

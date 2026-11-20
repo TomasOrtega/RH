@@ -61,6 +61,9 @@ def wchart (L : LB X) {K : Type u} [Fintype K] (φ : K → (Y ⟶ X)) (j : K →
   ⟨⋂ k, (φ k).base ⁻¹' (L.U (j k) : Set X),
     isOpen_iInter_of_finite fun k => (L.U (j k)).isOpen.preimage (φ k).base.hom.continuous⟩
 
+/- English proof (translation)
+Introduce `_ hy` and use `Set.mem_iInter.1 hy k`.
+-/
 lemma wchart_le (L : LB X) {K : Type u} [Fintype K] (φ : K → (Y ⟶ X)) (j : K → L.ι) (k : K) :
     wchart L φ j ≤ φ k ⁻¹ᵁ L.U (j k) :=
   fun _ hy => Set.mem_iInter.1 hy k

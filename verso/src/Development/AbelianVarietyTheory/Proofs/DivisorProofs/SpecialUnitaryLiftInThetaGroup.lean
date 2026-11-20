@@ -9,6 +9,15 @@ namespace GlobalTheory.MassLift
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain
 open scoped Matrix
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `hs' : GlobalTheory.UCls.IsUA c Jᵀ s` using `hs`. Use `show IsUnit s.det ∧ Formalism.UG.cT (sigR (FiniteAdeleRing (𝓞 F) F) σ) s * JR (FiniteAdeleRing (𝓞 F) F) J * s = JR (FiniteAdeleRing (𝓞 F) F) J`. Use `⟨hs'.1, ?_⟩` and prove the remaining obligations. Establish `hsg : ∀ z : GlobalTheory.AdLat.RA F E, sigR (FiniteAdeleRing (𝓞 F) F) σ z = GlobalTheory.AdLat.sg (FiniteAdeleRing (𝓞 F) F) c z`.
+
+Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [sigR, GlobalTheory.AdLat.sg, hσ]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+
+Use extensionality with `a b`. Establish `e` using `hs'.2 (Pi.single b 1) (Pi.single a 1)`. Simplify using `only [GlobalTheory.AdLat.hermA, Matrix.mulVec_single, mul_one] at e`. Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, JR, inclR, Matrix.transpose_apply, Matrix.map_apply, hsg, Finset.sum_mul]`. Simplify using `only [MulOpposite.op_one, one_smul, Matrix.col_apply, Matrix.transpose_apply, Pi.single_apply, ite_mul, one_mul, zero_mul] at e`.
+
+Simplify using `only [apply_ite (GlobalTheory.AdLat.sg (FiniteAdeleRing (𝓞 F) F) c), map_one, map_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_irrel, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_const_zero] at e`. Simplify using `only [RingHom.coe_coe, AlgHom.toRingHom_eq_coe, Algebra.TensorProduct.includeRight_apply]`. Use `Eq.trans ?_ e` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem key {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (c : E ≃ₐ[F] E) (σ : E →ₐ[F] E) (hσ : ∀ x, σ x = c x) {n r : ℕ} (h : n = r)
     (J : Matrix (Fin n) (Fin n) E) (s : Matrix (Fin r) (Fin r) (GlobalTheory.AdLat.RA F E))
@@ -38,6 +47,15 @@ theorem key {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   refine Eq.trans ?_ e
   exact Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Introduce `D i`. Use `letI : IsCMField D.host.E := D.host.isCMField_hostE`. Introduce `s hs`. Take `⟨hdet, hU⟩` from `key (IsCMField.complexConj D.host.E) D.sp.cm.sig (fun _ => rfl) (rank_Wc i) (Wc D i).gram s hs.1`. Set `b : GL (Fin (Wc D i).rank) (GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)` to `((Matrix.isUnit_iff_isUnit_det _).2 hdet).unit`.
+
+Establish `hb : b ∈ HR (Af D.host.F) D.sp.cm.sig (Wc D i).gram` using `hU`. Take `⟨h1, h2⟩` from `GlobalTheory.Mass.parts_spec D.sp.cm.sig (Wc D i).gram`. Take `⟨g, g1, g2⟩` from `h2 1 b`. Establish `hg : g ∈ HR (AF D.host.F) D.sp.cm.sig (Wc D i).gram` using `(h1 g).2 ⟨g1 ▸ one_mem _, g2 ▸ hb⟩`. Establish `hex : ∃ k : Theta.GA D (Wc D i), k ∈ Theta.GfC (Wc D i) ∧ (((Theta.finHom (Wc D i) k).val : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) (GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E))) = s.submatrix (Fin.cast (rank_Wc i)) (Fin.cast (rank_Wc i))`.
+
+Use `⟨⟨g, hg⟩, g1, ?_⟩` and prove the remaining obligations. Establish `e : Theta.finHom (Wc D i) ⟨g, hg⟩ = b` using `g2`. Rewrite using `[e]`. Both sides reduce to the same expression. Unfold `GlobalTheory.MassLink.lift`.
+
+Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+-/
 theorem lift_spec : ∀ (D : D7) (i : Fin D.R.m), letI : IsCMField D.host.E := D.host.isCMField_hostE; ∀ s : Matrix (Fin D.R.r) (Fin D.R.r) (GlobalTheory.AdLat.RA (maximalRealSubfield D.host.E) D.host.E), GlobalTheory.SUVol.IsSA (GlobalTheory.MassLink.gm D i) s → GlobalTheory.MassLink.lift D i s ∈ Theta.GfC (Wc D i) ∧ ((Theta.finHom (Wc D i) (GlobalTheory.MassLink.lift D i s)).val : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) (GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) = s.submatrix (Fin.cast (rank_Wc i)) (Fin.cast (rank_Wc i)) := by
   intro D i
   letI : IsCMField D.host.E := D.host.isCMField_hostE

@@ -22,10 +22,18 @@ open Matrix GlobalTheory.ThK.FlagSemi GlobalTheory.LeviUnitary
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n n₁ n₂ : ℕ}
 
+/- English proof (translation)
+Rewrite using `[ιTwo, incM_mul, mulVec_mulVec]`.
+-/
 theorem incM_ιTwo_mulVec (H₁ : Plane E n n₁) (H₂ : Plane E n₁ n₂) (z : Fin n₂ → AE F E) :
     incM F (ιTwo H₁ H₂) *ᵥ z = incM F H₁.ι *ᵥ (incM F H₂.ι *ᵥ z) := by
   rw [ιTwo, incM_mul, mulVec_mulVec]
 
+/- English proof (translation)
+Rewrite `hm`, the goal using `[GlobalTheory.UnipCT.unip_eq]`. Take `⟨hm1, hm2⟩` from `hm`. Establish `hfix : ∀ g : UA σ J₁, mat (hF.1.levi g) *ᵥ incV F H.x = incV F H.x` using `fun g => hF.1.levi_fix g hF.πx`. Rewrite using `[← map_inv]`. Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mat_mul, mat_mul, ← mulVec_mulVec, ← mulVec_mulVec, hfix, hm1, hfix]`. Take `⟨a, ha⟩` from `hm2 (mat h⁻¹ *ᵥ z)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul, mat_mul, ← mulVec_mulVec, ← mulVec_mulVec, hF.1.levi_ι, ha, mulVec_add, mulVec_smul, hfix, hF.1.levi_ι, Matrix.mulVec_mulVec z (mat h) (mat h⁻¹), mat_mul_inv, one_mulVec]`.
+-/
 theorem levi_conj_mem {Y : Spc F E n} {J₁ : Matrix (Fin n₁) (Fin n₁) E} {H : Plane E n n₁}
     {π : Matrix (Fin n₁) (Fin n) E} (hF : IsFrame σ Y.J J₁ H π) (m : UA σ Y.J) (hm : m ∈ unip σ Y H) (h : UA σ J₁) :
     hF.1.levi h * m * (hF.1.levi h)⁻¹ ∈ unip σ Y H := by
@@ -40,6 +48,9 @@ theorem levi_conj_mem {Y : Spc F E n} {J₁ : Matrix (Fin n₁) (Fin n₁) E} {H
     rw [mat_mul, mat_mul, ← mulVec_mulVec, ← mulVec_mulVec, hF.1.levi_ι, ha, mulVec_add, mulVec_smul, hfix,
       hF.1.levi_ι, Matrix.mulVec_mulVec z (mat h) (mat h⁻¹), mat_mul_inv, one_mulVec]
 
+/- English proof (translation)
+Rewrite `hm` using `[GlobalTheory.UnipCT.unip_eq]`. Take `⟨hm1, hm2⟩` from `hm`. Take `⟨a, ha⟩` from `hm2 y`. Rewrite using `[mulVec_add, mulVec_smul, hm1, ha, mulVec_add, mulVec_add, mulVec_smul, mulVec_smul, hF.πx, hF.1.π_ι]`. Simplify using the standard rewrite rules.
+-/
 theorem proj_unip {Y : Spc F E n} {J₁ : Matrix (Fin n₁) (Fin n₁) E} {H : Plane E n n₁}
     {π : Matrix (Fin n₁) (Fin n) E} (hF : IsFrame σ Y.J J₁ H π) {m : UA σ Y.J} (hm : m ∈ unip σ Y H)
     (y : Fin n₁ → AE F E) (c : AE F E) :

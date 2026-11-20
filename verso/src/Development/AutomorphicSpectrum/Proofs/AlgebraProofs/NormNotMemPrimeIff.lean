@@ -11,6 +11,11 @@ namespace GlobalTheory.CompanionTheory.NormPrime
 
 open TensorProduct in
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_apply, Algebra.norm_apply, ← LinearMap.det_baseChange]`. Use `congr 1`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul x y => simp [LinearMap.baseChange_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem norm_one_tmul {A B K : Type} [CommRing A] [CommRing B] [Algebra A B] [Module.Free A B]
     [Module.Finite A B] [Field K] [Algebra A K] (e : B) :
     Algebra.norm K ((1 : K) ⊗ₜ[A] e : K ⊗[A] B) = algebraMap A K (Algebra.norm A e) := by
@@ -22,6 +27,13 @@ theorem norm_one_tmul {A B K : Type} [CommRing A] [CommRing B] [Algebra A B] [Mo
   | tmul x y => simp [LinearMap.baseChange_tmul]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Use `set χ := (Algebra.lmul A B e).charpoly with hχ`. Establish `h2 : Polynomial.aeval e χ = 0`. Apply `Algebra.lmul_injective (R := A)` to reduce the goal to its premises. Rewrite using `[map_zero, ← Polynomial.aeval_algHom_apply]`. Conclude with `LinearMap.aeval_self_charpoly _`.
+
+Establish `h3` using `congrArg (Polynomial.aeval e) (Polynomial.divX_mul_X_add χ)`. Rewrite `h3` using `[h2, map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C]`. Establish `h4 : algebraMap A B (χ.coeff 0) ∈ q`. Establish `h5 : algebraMap A B (χ.coeff 0) = -(Polynomial.aeval e χ.divX * e)` using `eq_neg_of_add_eq_zero_right h3`. Rewrite using `[h5]`.
+
+Conclude with `q.neg_mem (q.mul_mem_left _ he)`. Rewrite using `[Algebra.norm_apply, LinearMap.det_eq_sign_charpoly_coeff]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_comap.2 h4)`.
+-/
 theorem norm_mem_comap {A B : Type} [CommRing A] [CommRing B] [Algebra A B] [Module.Free A B]
     [Module.Finite A B] (e : B) (q : Ideal B) (he : e ∈ q) :
     Algebra.norm A e ∈ q.comap (algebraMap A B) := by
@@ -42,6 +54,19 @@ theorem norm_mem_comap {A B : Type} [CommRing A] [CommRing B] [Algebra A B] [Mod
 
 open TensorProduct in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hN q _ hc he`. Conclude with `hN (hc ▸ norm_mem_comap e q he)`. Introduce `H hN`. Establish `h0 : Algebra.norm p.ResidueField ((1 : p.ResidueField) ⊗ₜ[A] e : p.ResidueField ⊗[A] B) = 0`.
+
+Rewrite using `[norm_one_tmul]`. Conclude with `(Ideal.algebraMap_residueField_eq_zero).2 hN`. Establish `hnu : ¬ IsUnit ((1 : p.ResidueField) ⊗ₜ[A] e : p.ResidueField ⊗[A] B)` using `fun hu => by`. Use `hu.map (Algebra.norm p.ResidueField)` as an intermediate fact. Rewrite `this` using `[h0]`.
+
+Conclude with `not_isUnit_zero this`. Take `⟨m, hm, hem⟩` from `exists_max_ideal_of_mem_nonunits hnu`. Set `f : B →ₐ[A] p.ResidueField ⊗[A] B` to `Algebra.TensorProduct.includeRight`. Establish `hmp : m.IsPrime` using `hm.isPrime`. Use `H (m.comap f) (Ideal.comap_isPrime f m) ?_ (Ideal.mem_comap.2 hem)` and prove the remaining obligations.
+
+Use extensionality with `a`. Establish `hfa : f (algebraMap A B a) = algebraMap p.ResidueField (p.ResidueField ⊗[A] B) (algebraMap A p.ResidueField a)`. Rewrite using `[f.commutes, IsScalarTower.algebraMap_apply A p.ResidueField]`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hfa]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `ha`. Assume the negation of the conclusion as `hap`. Establish `hne : algebraMap A p.ResidueField a ≠ 0` using `fun h => hap ((Ideal.algebraMap_residueField_eq_zero).1 h)`. Conclude with `hm.ne_top (Ideal.eq_top_of_isUnit_mem _ ha ((isUnit_iff_ne_zero.2 hne).map _))`. Introduce `ha`.
+
+Rewrite using `[(Ideal.algebraMap_residueField_eq_zero).2 ha, map_zero]`. Conclude with `m.zero_mem`.
+-/
 theorem norm_notMem_iff {A B : Type} [CommRing A] [CommRing B] [Algebra A B] [Module.Free A B]
     [Module.Finite A B] (e : B) (p : Ideal A) (hp : p.IsPrime) :
     Algebra.norm A e ∉ p ↔ ∀ q : Ideal B, q.IsPrime → q.comap (algebraMap A B) = p → e ∉ q := by

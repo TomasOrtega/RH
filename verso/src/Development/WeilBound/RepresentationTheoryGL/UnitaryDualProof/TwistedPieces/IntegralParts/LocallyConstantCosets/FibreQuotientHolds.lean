@@ -13,6 +13,21 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
   {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
+/- English proof (translation)
+Introduce `F hFm`. Take `⟨j, S, hSZ, hF⟩` from `dec hZ hL ht hFm`. Establish `hM : IsLat Z (((t ^ j : kˣ) : k) • L)` using `isLat_smul hL (t ^ j)`. Establish `hML : ((t ^ j : kˣ) : k) • L ≤ L` using `lat_smul_le hL ht j`. Establish `hex : ∀ c, c ∈ S → ∃ g ∈ supportedIn (UU : Set (Sp k n)), ∀ p ∈ OO Z, g p = psi Z ((((t ^ j : kˣ) : k) • L : AddSubgroup _) : Set (Matrix (Fin n) (Fin n) k)) (fun q => F (tr c q)) p` using `fun c _ => exists_lift_of_lattice_average hZ hM (tr_mem hFm c)`.
+
+Use `choose! g hgm hge using hex`. Establish `hz : ∀ c ∈ S, ζ (g c) = 0`. Introduce `c hc`. Take `⟨fL, hfL, efL⟩` from `exists_lift_of_lattice_average hZ hL (tr_mem hFm c)`. Establish `e` using `ind hZ hg hL hM hML (tr_mem hFm c) hfL (hgm c hc) efL (hge c hc)`.
+
+Rewrite `e` using `[h0 _ (tr_mem hFm c) fL hfL efL]`. Establish `hne : ((((t ^ j : kˣ) : k) • L).relIndex L : ℂ) ≠ 0`. Conclude with `lat_index_pos hL hM hML` after adjusting the coercions. Conclude with `((mul_eq_zero.1 e.symm).resolve_left hne)`. Set `G : Sp k n → ℂ` to `∑ c ∈ S, fun p => g c (tr (-c) p)`.
+
+Establish `hGm : G ∈ supportedIn (UU : Set (Sp k n))` using `Submodule.sum_mem _ fun c hc => tr_mem (hgm c hc) _`. Establish `e1 : ζ F = ζ G`. Use `agree hg.2 hFm hGm fun p hp => ?_` and prove the remaining obligations. Rewrite using `[hF p hp]`. Simplify using `only [G, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations. Establish `hcZ : -c ∈ Z` using `Z.neg_mem (hSZ c hc)`. Rewrite using `[hge c hc _ (tr_OO hZ hcZ hp)]`. Use `congrFun (psi_tr hZ ((((t ^ j : kˣ) : k) • L : AddSubgroup _) : Set (Matrix (Fin n) (Fin n) k)) (fun q => F (tr c q)) hcZ) p` as an intermediate fact. Rewrite using `[this]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `a`. Rewrite using `[sub_neg_eq_add]`. Rewrite using `[e1, map_sum]`. Use `Finset.sum_eq_zero fun c hc => ?_` and prove the remaining obligations.
+
+Rewrite using `[good_tr hg (Z.neg_mem (hSZ c hc)) (hgm c hc)]`. Conclude with `hz c hc`.
+-/
 theorem lemB (hZ : CR Z) {ζ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hg : Good Z ζ) {L : AddSubgroup (Matrix (Fin n) (Fin n) k)}
     (hL : IsLat Z L) {t : kˣ} (ht : nabs k t < 1)
     (h0 : ∀ h ∈ supportedIn (UU : Set (Sp k n)), ∀ f ∈ supportedIn (UU : Set (Sp k n)),
@@ -55,13 +70,26 @@ theorem lemB (hZ : CR Z) {ζ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hg : Good Z ζ
   rw [good_tr hg (Z.neg_mem (hSZ c hc)) (hgm c hc)]
   exact hz c hc
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun z hz f hf => by simp [h.1 z hz f hf, h'.1 z hz f hf], fun f hf h0 => by simp [h.2 f hf h0, h'.2 f hf h0]⟩`.
+-/
 theorem good_sub {ζ ζ' : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (h : Good Z ζ) (h' : Good Z ζ') : Good Z (ζ - ζ') :=
   ⟨fun z hz f hf => by simp [h.1 z hz f hf, h'.1 z hz f hf],
     fun f hf h0 => by simp [h.2 f hf h0, h'.2 f hf h0]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun z hz f hf => by simp [h.1 z hz f hf], fun f hf h0 => by simp [h.2 f hf h0]⟩`.
+-/
 theorem good_smul {ζ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (h : Good Z ζ) (c : ℂ) : Good Z (c • ζ) :=
   ⟨fun z hz f hf => by simp [h.1 z hz f hf], fun f hf h0 => by simp [h.2 f hf h0]⟩
 
+/- English proof (translation)
+Use `⟨fun z hz f hf => ?_, fun f hf h0 => ?_⟩` and prove the remaining obligations. Use `show ζ (fun p => f ((t : k) • p.1 + z, p.2)) = ζ (fun p => f ((t : k) • p.1, p.2))`. Establish `hz' : ((t⁻¹ : kˣ) : k) • z ∈ Z` using `Z.smul_mem hz _`. Establish `hf' : (fun p : Sp k n => f ((t : k) • p.1, p.2)) ∈ supportedIn (Set.univ : Set (Sp k n))` using `comp_mem_univ (e := homH t) hf`. Use `h.1 _ hz' _ hf'` as an intermediate fact.
+
+Rewrite using `[← this]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Use `congr 2`. Rewrite using `[smul_add, smul_smul, Units.mul_inv, one_smul]`.
+
+Use `show ζ (fun p => f (hom t p)) = 0`. Use `h.2 _ (hom_mem hf t) fun p hp => h0 _ ⟨(cc_smul hZ (t : k) hp.1).1, Set.mem_univ _⟩` and prove the remaining obligations.
+-/
 theorem good_pull (hZ : CR Z) {ζ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (h : Good Z ζ) (t : kˣ) : Good Z (pullH t ζ) := by
   refine ⟨fun z hz f hf => ?_, fun f hf h0 => ?_⟩
   · show ζ (fun p => f ((t : k) • p.1 + z, p.2)) = ζ (fun p => f ((t : k) • p.1, p.2))
@@ -77,13 +105,44 @@ theorem good_pull (hZ : CR Z) {ζ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (h : Good 
   · show ζ (fun p => f (hom t p)) = 0
     refine h.2 _ (hom_mem hf t) fun p hp => h0 _ ⟨(cc_smul hZ (t : k) hp.1).1, Set.mem_univ _⟩
 
+/- English proof (translation)
+Simplify using `[polyH]`.
+-/
 theorem polyH_nil (t : kˣ) (ζ : (Sp k n → ℂ) →ₗ[ℂ] ℂ) : polyH t [] ζ = ζ := by
   simp [polyH]
 
+/- English proof (translation)
+Simplify using `[polyH, List.map_cons, List.prod_cons, Module.End.mul_apply]`.
+-/
 theorem polyH_cons (t : kˣ) (x : ℝ) (a : List ℝ) (ζ : (Sp k n → ℂ) →ₗ[ℂ] ℂ) :
     polyH t (x :: a) ζ = pullH t (polyH t a ζ) - ((((nabs k t)⁻¹ : ℝ) ^ x : ℝ) : ℂ) • polyH t a ζ := by
   simp [polyH, List.map_cons, List.prod_cons, Module.End.mul_apply]
 
+/- English proof (translation)
+Introduce `n Z hZ η _ hInv hTr hSU`. Establish `hg0 : Good Z η` using `⟨hTr, hSU⟩`. Take `⟨L, hL⟩` from `exists_lat Z`. Establish `hlift : ∀ h : supportedIn (UU : Set (Sp k n)), ∃ f ∈ supportedIn (UU : Set (Sp k n)), ∀ p ∈ OO Z, f p = psi Z (L : Set (Matrix (Fin n) (Fin n) k)) h p` using `fun h => exists_lift_of_lattice_average hZ hL h.2`. Use `choose F0 hF0 hF0e using hlift`.
+
+Establish `K0 : ∀ (h : supportedIn (UU : Set (Sp k n))) (f : Sp k n → ℂ), f ∈ supportedIn (UU : Set (Sp k n)) → (∀ p ∈ OO Z, f p = psi Z (L : Set (Matrix (Fin n) (Fin n) k)) h p) → η (F0 h) = η f` using `fun h f hf ef => agree hg0.2 (hF0 h) hf fun p hp => by rw [hF0e h p hp, ef p hp]`. Set `η0 : supportedIn (UU : Set (Sp k n)) →ₗ[ℂ] ℂ` to `{ toFun := fun h => η (F0 h) map_add' := fun h h' => by`. Rewrite using `[K0 (h + h') (F0 h + F0 h') (Submodule.add_mem _ (hF0 h) (hF0 h')) fun p hp => by`. Rewrite using `[Pi.add_apply, hF0e h p hp, hF0e h' p hp, Submodule.coe_add, psi_add, Pi.add_apply], map_add]`. Use the proof step `map_smul' := fun c h => by`.
+
+Rewrite using `[K0 (c • h) (c • F0 h) (Submodule.smul_mem _ c (hF0 h)) fun p hp => by`. Rewrite using `[Pi.smul_apply, hF0e h p hp, Submodule.coe_smul, psi_smul, Pi.smul_apply], map_smul]`. Use `rfl }`. Take `⟨η', hη'⟩` from `LinearMap.exists_extend η0`. Establish `E0 : ∀ h (hh : h ∈ supportedIn (UU : Set (Sp k n))) (f : Sp k n → ℂ), f ∈ supportedIn (UU : Set (Sp k n)) → (∀ p ∈ OO Z, f p = psi Z (L : Set (Matrix (Fin n) (Fin n) k)) h p) → η' h = η f`.
+
+Introduce `h hh f hf ef`. Use `congrArg (fun φ => φ ⟨h, hh⟩) hη'` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Submodule.coe_subtype, Function.comp_apply] at this`. Rewrite using `[this]`. Conclude with `K0 ⟨h, hh⟩ f hf ef`.
+
+Use `⟨η', fun h hh h0 => ?_, fun g hg h hh => ?_, fun t ht a hK => ?_⟩` and prove the remaining obligations. Rewrite using `[E0 h hh 0 (Submodule.zero_mem _) fun p _ => by rw [psi_zero hZ _ h0], map_zero]`. Establish `hOO : ∀ p ∈ OO Z, act g p ∈ OO Z` using `fun p hp => ⟨(cc_conj hZ hg hp.1).1, fun h0 => hp.2 (by`. Use `congrArg (fun v => (g⁻¹ : GL (Fin n) k).val *ᵥ v) h0` as an intermediate fact. Simplify `this)⟩` using `[act, Matrix.mulVec_mulVec]`.
+
+Rewrite using `[E0 _ (act_mem hh g) (fun p => F0 ⟨h, hh⟩ (act g p)) (act_mem (hF0 _) g) fun p hp => by`. Rewrite using `[hF0e _ _ (hOO p hp), ← psi_act hZ _ h hg]]`. Rewrite using `[hInv g hg _ (supportedIn_mono (Set.subset_univ _) (hF0 _)), E0 h hh (F0 ⟨h, hh⟩) (hF0 _) (hF0e ⟨h, hh⟩)]`. Use `set N : ℂ := (((nabs k t)⁻¹ ^ Module.finrank k Z : ℝ) : ℂ) with hN`. Establish `hpos : 0 < (nabs k t)⁻¹` using `inv_pos.2 (NNReal.coe_pos.mpr MeasureTheory.distribHaarChar_pos)`.
+
+Establish `claim : ∀ b : List ℝ, Good Z (polyH t (b.map (· + (Module.finrank k Z : ℝ))) η) ∧ ∀ h ∈ supportedIn (UU : Set (Sp k n)), ∀ f ∈ supportedIn (UU : Set (Sp k n)), (∀ p ∈ OO Z, f p = psi Z (L : Set (Matrix (Fin n) (Fin n) k)) h p) → polyH t (b.map (· + (Module.finrank k Z : ℝ))) η f …`. Introduce `b`. Proceed by induction on `b with`. Consider the case `nil`. Use `⟨by simpa [polyH_nil] using hg0, fun h hh f hf ef => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [List.map_nil, polyH_nil, List.length_nil, pow_zero, one_mul]`. Conclude with `(E0 h hh f hf ef).symm`. Consider the case `cons x b ih`. Take `⟨hgb, hb⟩` from `ih`. Simplify using `only [List.map_cons]`.
+
+Use `⟨?_, fun h hh f hf ef => ?_⟩` and prove the remaining obligations. Rewrite using `[show polyH t ((x + (Module.finrank k Z : ℝ)) :: b.map (· + (Module.finrank k Z : ℝ))) η = pullH t _ - _ from polyH_cons t _ _ η]`. Conclude with `good_sub (good_pull hZ hgb t) (good_smul hgb _)`. Rewrite using `[polyH_cons, polyH_cons, LinearMap.sub_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`. Take `⟨f', hf', ef'⟩` from `exists_lift_of_lattice_average hZ hL (hom_mem hh t)`.
+
+Establish `e1 : pullH t (polyH t (b.map (· + (Module.finrank k Z : ℝ))) η) f = N * (N ^ b.length * polyH t b η' (fun q => h (hom t q)))` using `by show polyH t (b.map (· + (Module.finrank k Z : ℝ))) η (fun p => f (hom t p)) = _`. Rewrite using `[scale hZ hgb hL ht hh hf hf' ef ef', hb _ (hom_mem hh t) f' hf' ef']`. Rewrite using `[e1, hb h hh f hf ef]`. Use `show _ = N ^ (b.length + 1) * (polyH t b η' (fun q => h (hom t q)) - _ * polyH t b η' h)`. Establish `hc : ((((nabs k t)⁻¹ : ℝ) ^ (x + (Module.finrank k Z : ℝ)) : ℝ) : ℂ) = ((((nabs k t)⁻¹ : ℝ) ^ x : ℝ) : ℂ) * N`.
+
+Rewrite using `[Real.rpow_add hpos, Real.rpow_natCast, hN]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨hgA, hA⟩` from `claim a`. Use `lemB hZ hgA hL ht fun h hh f hf ef => ?_` and prove the remaining obligations. Rewrite using `[hA h hh f hf ef, hK h hh, mul_zero]`.
+-/
 theorem fibre_quotient_holds : FibQ k := by
   classical
   intro n Z hZ η _ hInv hTr hSU
@@ -160,6 +219,9 @@ theorem fibre_quotient_holds : FibQ k := by
     refine lemB hZ hgA hL ht fun h hh f hf ef => ?_
     rw [hA h hh f hf ef, hK h hh, mul_zero]
 
+/- English proof (translation)
+The claim follows from `fibre_quotient_holds`.
+-/
 theorem fibQ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] : FibQ k :=
   fibre_quotient_holds
 

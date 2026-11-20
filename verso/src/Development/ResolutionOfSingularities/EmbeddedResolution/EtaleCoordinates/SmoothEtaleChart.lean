@@ -8,6 +8,11 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace SmoothEtaleChart
 
+/- English proof (translation)
+Use `set E : MvPolynomial (ULift.{u} (Fin n)) R ≃+* MvPolynomial (Fin n) R := (MvPolynomial.renameEquiv R (Equiv.ulift : ULift.{u} (Fin n) ≃ Fin n)).toRingEquiv with hE`. Use `⟨g.comp E.toRingHom, ?_, RingHom.Etale.respectsIso.right g E hg⟩` and prove the remaining obligations. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Establish `h1 : E (MvPolynomial.C a) = MvPolynomial.C a`. Simplify using `[hE]`.
+
+Establish `h2 : g (MvPolynomial.C a) = f a` using `by rw [← hf]; rfl`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, h1, h2]`.
+-/
 private theorem exists_etale_mvPolynomial_ulift {R S : Type u} [CommRing R] [CommRing S] {n : ℕ}
     (g : MvPolynomial (Fin n) R →+* S) (hg : g.Etale) (f : R →+* S)
     (hf : g.comp MvPolynomial.C = f) :
@@ -23,6 +28,11 @@ private theorem exists_etale_mvPolynomial_ulift {R S : Type u} [CommRing R] [Com
   simp only [RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe,
     RingEquiv.coe_toRingHom, h1, h2]
 
+/- English proof (translation)
+Take `⟨n, gr, hgrC, hgrEt⟩` from `hφ.exists_etale_mvPolynomial`. Take `⟨g', hg'C, hg'Et⟩` from `exists_etale_mvPolynomial_ulift gr hgrEt _ hgrC`. Establish `hSpecEt : Etale (Spec.map (CommRingCat.ofHom g'))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Etale)]`. Conclude with `hg'Et`.
+
+Establish `hcomp : CommRingCat.ofHom (MvPolynomial.C : ↑R →+* MvPolynomial (ULift.{u} (Fin n)) ↑R) ≫ CommRingCat.ofHom g' = φ` using `CommRingCat.hom_ext hg'C`. Use `⟨n, Spec.map (CommRingCat.ofHom g') ≫ (AffineSpace.SpecIso (ULift.{u} (Fin n)) R).inv, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, AffineSpace.SpecIso_inv_over, ← Spec.map_comp]`. Conclude with `congrArg Spec.map hcomp`.
+-/
 private theorem exists_etale_over_affineSpace_of_isStandardSmooth {R S : CommRingCat.{u}}
     (φ : R ⟶ S) (hφ : RingHom.IsStandardSmooth (CommRingCat.Hom.hom φ)) :
     ∃ (d : ℕ) (g : Spec S ⟶ AffineSpace (ULift.{u} (Fin d)) (Spec R)),
@@ -41,6 +51,9 @@ private theorem exists_etale_over_affineSpace_of_isStandardSmooth {R S : CommRin
   rw [Category.assoc, AffineSpace.SpecIso_inv_over, ← Spec.map_comp]
   exact congrArg Spec.map hcomp
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono W.ι, Scheme.Hom.resLE_comp_ι]`. Simplify using `only [Category.assoc]`. Rewrite using `[hW.isoSpec_inv_ι, IsAffineOpen.SpecMap_appLE_fromSpec h hW hV e, ← hV.isoSpec_inv_ι]`. Simplify using the standard rewrite rules.
+-/
 private theorem resLE_eq_isoSpec_conj_SpecMap_appLE {X Y : Scheme.{u}} (h : Y ⟶ X) {W : X.Opens}
     {V : Y.Opens} (hW : IsAffineOpen W) (hV : IsAffineOpen V) (e : V ≤ h ⁻¹ᵁ W) :
     hV.isoSpec.hom ≫ Spec.map (h.appLE W V e) ≫ hW.isoSpec.inv = h.resLE W V e := by
@@ -49,6 +62,11 @@ private theorem resLE_eq_isoSpec_conj_SpecMap_appLE {X Y : Scheme.{u}} (h : Y �
   rw [hW.isoSpec_inv_ι, IsAffineOpen.SpecMap_appLE_fromSpec h hW hV e, ← hV.isoSpec_inv_ι]
   simp
 
+/- English proof (translation)
+Take `⟨d, g₀, hg₀et, hg₀⟩` from `exists_etale_over_affineSpace_of_isStandardSmooth (h.appLE W V e) hstd`. Use `hg₀et` as an intermediate fact. Establish `: IsIso (AffineSpace.map (ULift.{u} (Fin d)) hW.isoSpec.inv)` using `⟨⟨AffineSpace.map (ULift.{u} (Fin d)) hW.isoSpec.hom, by`. Rewrite using `[← AffineSpace.map_comp, Iso.inv_hom_id, AffineSpace.map_id], by`. Rewrite using `[← AffineSpace.map_comp, Iso.hom_inv_id, AffineSpace.map_id]⟩⟩`.
+
+Establish `: Etale hV.isoSpec.hom` using `inferInstance`. Establish `: Etale (AffineSpace.map (ULift.{u} (Fin d)) hW.isoSpec.inv)` using `inferInstance`. Use `⟨d, hV.isoSpec.hom ≫ g₀ ≫ AffineSpace.map (ULift.{u} (Fin d)) hW.isoSpec.inv, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, AffineSpace.map_over, ← Category.assoc g₀, hg₀]`. Conclude with `resLE_eq_isoSpec_conj_SpecMap_appLE h hW hV e`.
+-/
 private theorem exists_etale_over_affineSpace_resLE_of_isStandardSmooth {X Y : Scheme.{u}} (h : Y ⟶ X)
     {W : X.Opens} {V : Y.Opens}
     (hW : IsAffineOpen W) (hV : IsAffineOpen V) (e : V ≤ h ⁻¹ᵁ W)
@@ -70,6 +88,9 @@ private theorem exists_etale_over_affineSpace_resLE_of_isStandardSmooth {X Y : S
   rw [Category.assoc, Category.assoc, AffineSpace.map_over, ← Category.assoc g₀, hg₀]
   exact resLE_eq_isoSpec_conj_SpecMap_appLE h hW hV e
 
+/- English proof (translation)
+Rewrite using `[HasRingHomProperty.iff_appLE (P := @Smooth)]`. Introduce `U U' e'`. Rewrite using `[Scheme.Hom.resLE_appLE]`. Conclude with `HasRingHomProperty.appLE @Smooth h ‹Smooth h› ⟨W.ι ''ᵁ U.1, U.2.image_of_isOpenImmersion _⟩ ⟨V.ι ''ᵁ U'.1, U'.2.image_of_isOpenImmersion _⟩ _`.
+-/
 private theorem smooth_resLE {X Y : Scheme.{u}} (h : Y ⟶ X) [Smooth h] (W : X.Opens)
     (V : Y.Opens) (e : V ≤ h ⁻¹ᵁ W) : Smooth (h.resLE W V e) := by
   rw [HasRingHomProperty.iff_appLE (P := @Smooth)]
@@ -79,6 +100,17 @@ private theorem smooth_resLE {X Y : Scheme.{u}} (h : Y ⟶ X) [Smooth h] (W : X.
     ⟨W.ι ''ᵁ U.1, U.2.image_of_isOpenImmersion _⟩
     ⟨V.ι ''ᵁ U'.1, U'.2.image_of_isOpenImmersion _⟩ _
 
+/- English proof (translation)
+Establish `e₀ : (V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens) ≤ h ⁻¹ᵁ W₀` using `inf_le_right`. Establish `hy' : y ∈ (V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens)` using `⟨hV₀, hW₀⟩`. Establish `: Smooth (h.resLE W₀ (V₀ ⊓ h ⁻¹ᵁ W₀) e₀)` using `smooth_resLE h W₀ _ e₀`. Take `⟨W', hW', V', hV', hyV', e', hstd⟩` from `Smooth.exists_isStandardSmooth (h.resLE W₀ (V₀ ⊓ h ⁻¹ᵁ W₀) e₀) ⟨y, hy'⟩`. Establish `h1 : h.resLE W₀ (V₀ ⊓ h ⁻¹ᵁ W₀) e₀ ≫ W₀.ι = (V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens).ι ≫ h`.
+
+Rewrite using `[Scheme.Hom.resLE_comp_ι]`. Establish `hb : ∀ z : ↥(V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens), h.base ((V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens).ι.base z) = W₀.ι.base ((h.resLE W₀ (V₀ ⊓ h ⁻¹ᵁ W₀) e₀).base z)`. Introduce `z`. Conclude with `(congrArg (fun m : (V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens).toScheme ⟶ X => m.base z) h1).symm`. Establish `hWle : (W₀.ι ''ᵁ W' : X.Opens) ≤ W₀`.
+
+Introduce and unpack `x ⟨z, -, rfl⟩`. Conclude with `z.2`. Establish `hVle : ((V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens).ι ''ᵁ V' : Y.Opens) ≤ V₀`. Introduce and unpack `x ⟨z, -, rfl⟩`. Conclude with `z.2.1`.
+
+Establish `e : ((V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens).ι ''ᵁ V' : Y.Opens) ≤ h ⁻¹ᵁ (W₀.ι ''ᵁ W')`. Introduce and unpack `x ⟨z, hz, rfl⟩`. Conclude with `⟨(h.resLE W₀ (V₀ ⊓ h ⁻¹ᵁ W₀) e₀).base z, e' hz, (hb z).symm⟩`. Establish `hWaff : IsAffineOpen (W₀.ι ''ᵁ W' : X.Opens)` using `hW'.image_of_isOpenImmersion W₀.ι`. Establish `hVaff : IsAffineOpen ((V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens).ι ''ᵁ V' : Y.Opens)` using `hV'.image_of_isOpenImmersion _`.
+
+Establish `happ : (h.resLE W₀ (V₀ ⊓ h ⁻¹ᵁ W₀) e₀).appLE W' V' e' = h.appLE (W₀.ι ''ᵁ W') ((V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens).ι ''ᵁ V') e` using `Scheme.Hom.resLE_appLE h e₀ W' V' e'`. Rewrite `hstd` using `[happ]`. Take `⟨d, g, hg, hgπ⟩` from `exists_etale_over_affineSpace_resLE_of_isStandardSmooth h hWaff hVaff e hstd`. Conclude with `⟨W₀.ι ''ᵁ W', (V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens).ι ''ᵁ V', d, e, hWaff, hVaff, ⟨⟨y, hy'⟩, hyV', rfl⟩, hWle, hVle, g, hg, hgπ⟩`.
+-/
 private theorem exists_affineOpen_etale_over_affineSpace_resLE_le {X Y : Scheme.{u}} (h : Y ⟶ X) [Smooth h]
     (y : Y) (W₀ : X.Opens) (hW₀ : h.base y ∈ W₀) (V₀ : Y.Opens) (hV₀ : y ∈ V₀) :
     ∃ (W : X.Opens) (V : Y.Opens) (d : ℕ) (e : V ≤ h ⁻¹ᵁ W),
@@ -118,6 +150,9 @@ private theorem exists_affineOpen_etale_over_affineSpace_resLE_le {X Y : Scheme.
   exact ⟨W₀.ι ''ᵁ W', (V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens).ι ''ᵁ V', d, e, hWaff, hVaff,
     ⟨⟨y, hy'⟩, hyV', rfl⟩, hWle, hVle, g, hg, hgπ⟩
 
+/- English proof (translation)
+The claim follows from `exists_affineOpen_etale_over_affineSpace_resLE_le h y W₀ hW₀ V₀ hV₀`.
+-/
 theorem exists_isAffineOpen_etale_resLE_le {X Y : Scheme.{u}} (h : Y ⟶ X) [Smooth h]
     (y : Y) (W₀ : X.Opens) (hW₀ : h.base y ∈ W₀) (V₀ : Y.Opens) (hV₀ : y ∈ V₀) :
     ∃ (W : X.Opens) (V : Y.Opens) (d : ℕ) (e : V ≤ h ⁻¹ᵁ W),

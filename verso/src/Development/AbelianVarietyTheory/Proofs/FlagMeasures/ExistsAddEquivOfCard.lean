@@ -8,6 +8,11 @@ open scoped InnerProductSpace ComplexOrder TensorProduct Pointwise Classical
 
 namespace GlobalTheory.RowLev
 
+/- English proof (translation)
+Establish `: Finite Q` using `Nat.finite_of_card_ne_zero (by rw [hc]; exact pow_ne_zero _ hp.out.ne_zero)`. Establish `hr : Module.finrank (ZMod p) Q = N`. Apply `Nat.pow_right_injective hp.out.two_le` to reduce the goal to its premises. Use `Module.natCard_eq_pow_finrank (K := ZMod p) (V := Q)` as an intermediate fact. Rewrite `this` using `[Nat.card_zmod, hc]`.
+
+Conclude with `this.symm`. Conclude with `⟨(Module.finBasisOfFinrankEq (ZMod p) Q hr).equivFun.toAddEquiv⟩`.
+-/
 theorem exists_addEquiv_of_card {Q : Type} [AddCommGroup Q] {p N : ℕ} [hp : Fact p.Prime] [Module (ZMod p) Q]
     (hc : Nat.card Q = p ^ N) : Nonempty (Q ≃+ (Fin N → ZMod p)) := by
   have : Finite Q := Nat.finite_of_card_ne_zero (by rw [hc]; exact pow_ne_zero _ hp.out.ne_zero)
@@ -18,6 +23,15 @@ theorem exists_addEquiv_of_card {Q : Type} [AddCommGroup Q] {p N : ℕ} [hp : Fa
     exact this.symm
   exact ⟨(Module.finBasisOfFinrankEq (ZMod p) Q hr).equivFun.toAddEquiv⟩
 
+/- English proof (translation)
+Establish `: Fact p.Prime` using `⟨hp⟩`. Use `set S : Submodule R M := RingHom.ker r • (⊤ : Submodule R M) with hS`. Establish `hk : ∀ a : R, r a = 0 → ∀ q : M ⧸ S, a • q = 0`. Introduce `a ha q`. Take `⟨y, rfl⟩` from `S.mkQ_surjective q`.
+
+Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_smul ha Submodule.mem_top`. Establish `hpq : ∀ q : M ⧸ S, p • q = 0` using `fun q => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul R]`. Conclude with `hk _ (by rw [map_natCast, ZMod.natCast_self]) q`.
+
+Take `⟨e⟩` from `@exists_addEquiv_of_card (M ⧸ S) _ p N _ (AddCommGroup.zmodModule hpq) hc`. Establish `hs : ∀ (a : R) (q : M ⧸ S), e (a • q) = r a • e q`. Introduce `a q`. Establish `h1 : (a - ((r a).val : R)) • q = 0` using `hk _ (by simp) q`. Rewrite `h1` using `[sub_smul, sub_eq_zero]`.
+
+Rewrite using `[h1, Nat.cast_smul_eq_nsmul, map_nsmul, ← Nat.cast_smul_eq_nsmul (ZMod p), ZMod.natCast_zmod_val]`. Use `⟨{ toFun := fun y => e (S.mkQ y) map_add' := fun x y => by rw [map_add, map_add] map_smul' := fun a y => by rw [map_smul, hs] }, e.surjective.comp S.mkQ_surjective, fun y => ?_⟩` and prove the remaining obligations. Use `show e (S.mkQ y) = 0 ↔ _`. Rewrite using `[map_eq_zero_iff _ e.injective, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+-/
 theorem exists_coords_of_card {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {p N : ℕ} (hp : p.Prime)
     (r : R →+* ZMod p) (hc : Nat.card (M ⧸ (RingHom.ker r • (⊤ : Submodule R M))) = p ^ N) :
     ∃ c : M →ₛₗ[r] (Fin N → ZMod p), Function.Surjective c ∧
@@ -45,6 +59,13 @@ theorem exists_coords_of_card {R M : Type} [CommRing R] [AddCommGroup M] [Module
   show e (S.mkQ y) = 0 ↔ _
   rw [map_eq_zero_iff _ e.injective, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
 
+/- English proof (translation)
+Introduce `I N p w hN hp hw`. Use `⟨?_, fun fr y => fr.c_ker y⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `Inhab.exists_reduction (F := I.F) p hp w hw`. Establish `hk` using `Inhab.ker_eq_extId hp.ne_zero r hr`. Establish `hc` using `GlobalTheory.T.card_lattice_quot_prime I p w hp hw`.
+
+Substitute `hN` using the available equality. Rewrite `hc` using `[← hk]`. Take `⟨c, h1, h2⟩` from `exists_coords_of_card hp r hc`. Use `⟨⟨r, fun a _ => hr a, c, h1, fun y => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h2, hk]`.
+
+Conclude with `Submodule.mem_smul_top_iff _ _ y`.
+-/
 theorem plFrame_nonempty : ∀ (I : AutInst) (N p : ℕ) (w : HeightOneSpectrum (𝓞 I.E)), I.n = N → p.Prime → Ideal.absNorm w.asIdeal = p → Nonempty (PlFrame I N p w) ∧ ∀ (fr : PlFrame I N p w) (y : I.Lf), fr.c y = 0 ↔ (y : Fin I.n → (I.E ⊗[I.F] Af I.F)) ∈ extId I w.asIdeal • I.Lf := by
   intro I N p w hN hp hw
   refine ⟨?_, fun fr y => fr.c_ker y⟩

@@ -10,6 +10,9 @@ open GlobalTheory.AboveL
 
 namespace GlobalTheory.AboveL
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ _ A v h n m a b hc`. Establish `ha` using `(Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule a.ρ).1 (GlobalTheory.WeilDeligne.WDRep.isSemisimpleRepresentation_rho K Ω A v h n a)`. Establish `hb` using `(Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule b.ρ).1 (GlobalTheory.WeilDeligne.WDRep.isSemisimpleRepresentation_rho K Ω A v h m b)`. Take `⟨e, he⟩` from `Formalism.IrreducibleCountingLemmas.Z.brauer_nesbitt ℂ (Weil h) _ _ a.ρ b.ρ ha hb hc`. Conclude with `⟨e, fun σ z => LinearMap.congr_fun (he σ) z⟩`.
+-/
 theorem weil_rep_equiv_of_charpoly_eq : ∀ (K Ω : Type) [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (h : IsPlaceOver A v) (n m : ℕ) (a : WDRep h (Fin n → ℂ)) (b : WDRep h (Fin m → ℂ)), (∀ σ : Weil h, (a.ρ σ).charpoly = (b.ρ σ).charpoly) → ∃ e : (Fin n → ℂ) ≃ₗ[ℂ] (Fin m → ℂ), ∀ σ z, e (a.ρ σ z) = b.ρ σ (e z) := by
   intro K Ω _ _ _ _ _ A v h n m a b hc
   have ha := (Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule a.ρ).1

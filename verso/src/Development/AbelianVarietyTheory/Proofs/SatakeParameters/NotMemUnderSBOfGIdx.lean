@@ -11,6 +11,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwU
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex t u w hg μ hQ v hv hmem`. Take `⟨P, hP, hvP⟩` from `hv`. Establish `h1 : ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.E) ∈ (seamP t.seam P).asIdeal`. Establish `h0 : ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∈ (seamP t.seam P).asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))` using `hvP ▸ hmem`. Rewrite `h0` using `[Ideal.mem_comap, map_natCast]`.
+
+Conclude with `h0`. Establish `h2 : ((D.what₂.places.resChar w : ℕ) : 𝓞 t.X.E) ∈ P.asIdeal`. Rewrite using `[← mem_seamP t.seam P, map_natCast]`. Conclude with `h1`. Break down `Finset.mem_union.1 hP with hG | hQE` into its components or cases.
+
+Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, P ∈ t.Pr.vG k := by`. Break down `Finset.mem_union.1 hG with h | h` into its components or cases. Use `exacts [⟨0, h⟩, ⟨1, h⟩]`. Establish `hgk : ((t.Pr.g k : ℕ) : 𝓞 t.X.E) ∈ P.asIdeal`. Rewrite using `[← t.pr_ok.vG_norm k P hk]`.
+
+Conclude with `Ideal.absNorm_mem P.asIdeal`. Establish `hnd : ¬ D.what₂.places.resChar w ∣ t.Pr.g k`. Rewrite using `[t.g_rec]`. Introduce `hd`. Conclude with `hg.2.2.2.2.1 (((Nat.prime_dvd_prime_iff_eq hg.1 (D.host.g_prime k)).1 hd) ▸ D.host.g_level k)`.
+
+Establish `hc : IsCoprime ((D.what₂.places.resChar w : ℕ) : ℤ) ((t.Pr.g k : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hg.1).2 hnd)`. Take `⟨a, b, hab⟩` from `hc.map (Int.castRingHom (𝓞 t.X.E))`. Establish `hone : (1 : 𝓞 t.X.E) ∈ P.asIdeal`. Rewrite using `[← hab]`. Use `P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ ?_) (P.asIdeal.mul_mem_left _ ?_)` and prove the remaining obligations.
+
+Simplify using `using h2`. Simplify using `using hgk`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 hone)`. Conclude with `hQ ((t.Q_rec μ _).2 ⟨hg.1, P, hQE, h2⟩)`.
+-/
 theorem not_mem_underSB_of_gIdx : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (μ : D.what₂.Tup), (D.what₂.places.resChar w) ∉ Dx.Qp μ → ∀ v, GlobalTheory.TwU.UnderSB t μ v → ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal := by
   intro D L hT Gi Gl Kc Dx cX ex t u w hg μ hQ v hv hmem
   classical

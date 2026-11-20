@@ -9,6 +9,13 @@ open GlobalTheory GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL Glo
 
 namespace GlobalTheory.SmGL.UnramFixed
 
+/- English proof (translation)
+Take `⟨S, T, h1, h2, h3⟩` from `hr`. Establish `hst : ∀ (P : Subrepresentation ρ) (g : G) (v : V), v ∈ P.toSubmodule → τ g v ∈ P.toSubmodule` using `fun P g v hv => by`. Rewrite using `[h]`. Conclude with `P.toSubmodule.smul_mem _ (P.apply_mem_toSubmodule g hv)`. Use `⟨fun i => ⟨(S i).toSubmodule, hst (S i)⟩, fun i => ⟨(T i).toSubmodule, hst (T i)⟩, fun i => h1 i, fun i j hij => h2 i j hij, fun i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨f, hsurj, hint, hker⟩` from `step_iff.1 (h3 i)`. Use `step_iff.2 ⟨f, hsurj, fun g v hv => ?_, hker⟩` and prove the remaining obligations. Establish `e` using `hint g v hv`. Rewrite `e` using `[ofChar_apply]`. Use `show f (τ g v) = ofChar η g (f v)`.
+
+Rewrite using `[h, map_smul, e, ofChar_apply, hη, Units.val_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem occursTimes_of_twist {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {ρ τ : Representation ℂ G V} {δ θ η : G →* ℂˣ} (h : ∀ g v, τ g v = (δ g : ℂ) • ρ g v)
     (hη : ∀ g, η g = θ g * δ g) {r : ℕ} (hr : OccursTimes (ofChar θ) ρ r) :
@@ -28,6 +35,9 @@ theorem occursTimes_of_twist {G V : Type} [Group G] [AddCommGroup V] [Module ℂ
   rw [h, map_smul, e, ofChar_apply, hη, Units.val_mul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `key : ∀ r, OccursTimes (ofChar θ) τ r ↔ OccursTimes (ofChar (θ * δ)) ρ r` using `fun r => ⟨occursTimes_of_twist (δ := δ) (fun g v => by rw [h, smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]) (fun g => MonoidHom.mul_apply θ δ g), occursTimes_of_twist (δ := δ⁻¹) (fun g v => by rw [MonoidHom.inv_apply]; exact h g v) (fun g => by rw [MonoidH …`. Simplify using `only [jhMult, key]`.
+-/
 theorem jhMult_of_twist {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {ρ τ : Representation ℂ G V} {δ : G →* ℂˣ} (θ : G →* ℂˣ)
     (h : ∀ g v, τ g v = (((δ g)⁻¹ : ℂˣ) : ℂ) • ρ g v) :
@@ -40,6 +50,13 @@ theorem jhMult_of_twist {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
         (fun g => by rw [MonoidHom.mul_apply, MonoidHom.inv_apply, mul_inv_cancel_right])⟩
   simp only [jhMult, key]
 
+/- English proof (translation)
+Take `⟨U, -, hU, hUv⟩` from `GlobalTheory.LocGL.exists_normal_fix hρ hH v`. Use `haveI : U.FiniteIndex := hU`. Use `letI : Fintype (H ⧸ U) := Subgroup.fintypeQuotientOfFiniteIndex`. Use `⟨GlobalTheory.LocGL.idem hρ hH v, GlobalTheory.LocGL.idem_mem hρ hH v, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LocGL.idem_eq_cosetSum hρ hH U hUv]`.
+
+Conclude with `S.toSubmodule.smul_mem _ (S.toSubmodule.sum_mem fun q _ => S.apply_mem_toSubmodule _ hv)`. Rewrite using `[GlobalTheory.LocGL.idem_eq_cosetSum hρ hH U hUv, map_smul, map_sum]`. Establish `hq : ∀ q : H ⧸ U, f (ρ (q.out : H) v) = f v` using `fun q => by`. Rewrite using `[hf _ v hv, ofChar_apply, hθ _ (q.out).2, Units.val_one, one_mul]`. Establish `hc : (Fintype.card (H ⧸ U) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`.
+
+Simplify using `only [hq, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, smul_eq_mul]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hc, one_mul]`.
+-/
 private lemma pres_iterate_zero {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) {H : Subgroup G}
     (hH : IsCompact (H : Set G)) {θ : G →* ℂˣ} (hθ : ∀ t ∈ H, θ t = 1) (S : Subrepresentation ρ)
@@ -59,6 +76,13 @@ private lemma pres_iterate_zero {G V : Type} [Group G] [TopologicalSpace G] [IsT
     simp only [hq, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, smul_eq_mul]
     rw [← mul_assoc, inv_mul_cancel₀ hc, one_mul]
 
+/- English proof (translation)
+Set `ι : (onFixed ρ H (MonoidHom.id G) hn).IntertwiningMap ρ` to `{ toLinearMap := (fixed ρ H).subtype isIntertwining' := fun g => by ext v; rfl }`. Establish `hι : Function.Injective ι` using `Subtype.val_injective`. Establish `key : ∀ r, OccursTimes (ofChar θ) ρ r ↔ OccursTimes (ofChar θ) (onFixed ρ H (MonoidHom.id G) hn) r`. Introduce `r`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨S, T, h1, h2, h3⟩`. Use `⟨fun i => subComap ι (S i), fun i => subComap ι (T i), fun i => subComap_mono ι (h1 i), fun i j hij => subComap_mono ι (h2 i j hij), fun i => ?_⟩` and prove the remaining obligations. Take `⟨f, hsurj, hint, hker⟩` from `step_iff.1 (h3 i)`. Use `step_iff.2 ⟨f ∘ₗ (fixed ρ H).subtype, fun w => ?_, fun g u hu => hint g u.1 hu, fun u hu => hker u.1 hu⟩` and prove the remaining obligations. Take `⟨v, hv, rfl⟩` from `hsurj w`.
+
+Take `⟨u, huF, huS, hfu⟩` from `pres_iterate_zero hρ hH hθ (S i) f hint v hv`. Conclude with `⟨⟨u, huF⟩, huS, hfu⟩`. Introduce and unpack `⟨S, T, h1, h2, h3⟩`. Conclude with `⟨fun i => subMap ι (S i), fun i => subMap ι (T i), fun i => subMap_mono ι (h1 i), fun i j hij => subMap_mono ι (h2 i j hij), fun i => step_iff.2 (step_map ι hι (step_iff.1 (h3 i)))⟩`. Simplify using `only [jhMult, key]`.
+-/
 theorem jhMult_onFixed {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) {H : Subgroup G}
     (hH : IsCompact (H : Set G)) (hn : ∀ g, MonoidHom.id G g ∈ Subgroup.normalizer (H : Set G))
@@ -89,6 +113,15 @@ theorem jhMult_onFixed {G V : Type} [Group G] [TopologicalSpace G] [IsTopologica
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `haveI : T1Space k := IsTopologicalAddGroup.t1Space k (by first`. Consider the case `exact isClosed_singleton`. Consider the case `(convert (Valuation.isClosed_sphere (v := valuation k) 0) using 1`. Use extensionality with `x`. Use the proof step `simp))`.
+
+Establish `hS : IsCompact (((valuation k).integer.toSubmonoid : Submonoid k) : Set k)` using `IsNonarchimedeanLocalField.isCompact_closedBall k 1`. Use `Submonoid.units_isCompact hS using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Establish `h0 : valuation k (x : k) ≠ 0` using `by simp`. Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, Submonoid.mem_units_iff, Subring.mem_toSubmonoid, Valuation.mem_integer_iff, Units.val_inv_eq_inv_val, map_inv₀]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Simplify using `[hx]`. Introduce and unpack `⟨h1, h2⟩`. Rewrite `h2` using `[inv_le_one₀ (zero_lt_iff.2 h0)]`.
+
+Conclude with `le_antisymm h1 h2`.
+-/
 theorem isCompact_unitsO : IsCompact {x : kˣ | valuation k (x : k) = 1} := by
   haveI : T1Space k := IsTopologicalAddGroup.t1Space k (by
     first
@@ -110,9 +143,17 @@ theorem isCompact_unitsO : IsCompact {x : kˣ | valuation k (x : k) = 1} := by
     rw [inv_le_one₀ (zero_lt_iff.2 h0)] at h2
     exact le_antisymm h1 h2
 
+/- English proof (translation)
+The claim follows from `isCompact_pi_infinite fun _ => isCompact_unitsO k`.
+-/
 theorem isCompact_torusO (n : Type) : IsCompact (torusO k n : Set (n → kˣ)) :=
   isCompact_pi_infinite fun _ => isCompact_unitsO k
 
+/- English proof (translation)
+Rewrite using `[deltaHalf_apply]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `hdet : Matrix.GeneralLinearGroup.det (leviTorus k n t a) = t a` using `congrFun ((leviTorus k n).symm_apply_apply t) a`. Establish `hv : valuation k (t a : k) = 1` using `(show ∀ i, valuation k (t i : k) = 1 from ht) a`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[hdet, val_absPow, nabs_eq_one k hv, Units.val_one]`. Simplify using the standard rewrite rules.
+-/
 theorem deltaHalf_torusO {n : Type} [Fintype n] [LinearOrder n] {t : n → kˣ} (ht : t ∈ torusO k n) :
     deltaHalf k (fun _ : n => Unit) (leviTorus k n t) = 1 := by
   rw [deltaHalf_apply]
@@ -126,6 +167,9 @@ theorem deltaHalf_torusO {n : Type} [Fintype n] [LinearOrder n] {t : n → kˣ} 
 
 variable {k} {n V : Type} [Fintype n] [DecidableEq n] [LinearOrder n] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact twist_apply (jacU (points n) π) (deltaHalf k fun _ : n => Unit)⁻¹ (leviTorus k n g) v`. Consider the case `(show twist (jacU (points n) π) (deltaHalf k fun _ : n => Unit)⁻¹ (leviTorus k n g) v = _`. Rewrite using `[twist_apply]`. Use the proof step `rfl)`.
+-/
 theorem jacB_apply (π : Representation ℂ (GL n k) V) (g : n → kˣ) (v : Jacquet π (unipB k n)) :
     jacB π g v = (((((deltaHalf k fun _ : n => Unit).comp
       (leviTorus k n).toMonoidHom) g)⁻¹ : ℂˣ) : ℂ) • jacBU π g v := by
@@ -135,12 +179,18 @@ theorem jacB_apply (π : Representation ℂ (GL n k) V) (g : n → kˣ) (v : Jac
        rw [twist_apply]
        rfl)
 
+/- English proof (translation)
+Unfold `expMult jacBUFixed`. Conclude with `jhMult_onFixed (isSmooth_jacBU hπ) (isCompact_torusO k n) _ hθ`.
+-/
 theorem jhMult_jacBU_eq_expMult {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π)
     {θ : (n → kˣ) →* ℂˣ} (hθ : ∀ t ∈ torusO k n, θ t = 1) :
     jhMult (ofChar θ) (jacBU π) = expMult π θ := by
   unfold expMult jacBUFixed
   exact jhMult_onFixed (isSmooth_jacBU hπ) (isCompact_torusO k n) _ hθ
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n V _ _ π hπ θ hθ`. Rewrite using `[jhMult_of_twist θ (fun g v => jacB_apply π g v)]`. Use `jhMult_jacBU_eq_expMult hπ fun t ht => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, hθ t ht, one_mul]`. Conclude with `deltaHalf_torusO k ht`.
+-/
 theorem jhMult_jacB_eq_expMult : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), IsSmooth π → ∀ θ : (Fin n → kˣ) →* ℂˣ, (∀ t ∈ torusO k (Fin n), θ t = 1) → jhMult (ofChar θ) (jacB π) = expMult π (θ * (deltaHalf k fun _ : Fin n => Unit).comp (leviTorus k (Fin n)).toMonoidHom) := by
   intro k _ _ _ _ n V _ _ π hπ θ hθ
   rw [jhMult_of_twist θ (fun g v => jacB_apply π g v)]

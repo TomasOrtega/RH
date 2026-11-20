@@ -10,6 +10,9 @@ open UpperTheory.Gal.crystallineComparison.Mod (Std TjD KerAt)
 open scoped TensorProduct
 open UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Use `⟨AlgebraicClosure (P.residueField p), inferInstance, inferInstance, Spec.map (CommRingCat.ofHom (algebraMap (P.residueField p) (AlgebraicClosure (P.residueField p)))) ≫ P.fromSpecResidueField p, IsLocalRing.closedPoint _, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(P.fromSpecResidueField p) ((Spec.map (CommRingCat.ofHom (algebraMap (P.residueField p) (AlgebraicClosure (P.residueField p))))) (IsLocalRing.closedPoint _)) = p`. Conclude with `Scheme.fromSpecResidueField_apply p _`.
+-/
 private theorem exists_geomPoint (P : Scheme.{0}) (p : P) :
     ∃ (Ω : Type) (_ : Field Ω) (_ : IsAlgClosed Ω) (t : Sp Ω ⟶ P) (q : Sp Ω), t q = p := by
   refine ⟨AlgebraicClosure (P.residueField p), inferInstance, inferInstance,
@@ -19,6 +22,13 @@ private theorem exists_geomPoint (P : Scheme.{0}) (p : P) :
     (AlgebraicClosure (P.residueField p))))) (IsLocalRing.closedPoint _)) = p
   exact Scheme.fromSpecResidueField_apply p _
 
+/- English proof (translation)
+Use `⟨fun x => ?_⟩` and prove the remaining obligations. Set `gp : Sp E` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum E)`. Establish `hgp : spMap (algebraMap O E) gp ⤳ s x`. Use `(PrimeSpectrum.le_iff_specializes (R := O) _ _).1 ?_` and prove the remaining obligations. Use `show Ideal.comap (algebraMap O E) ⊥ ≤ _`.
+
+Rewrite using `[Ideal.comap_bot_of_injective _ (IsFractionRing.injective O E)]`. Conclude with `bot_le`. Take `⟨x', hx', e⟩` from `Flat.generalizingMap s hgp`. Use `hx'.mem_closed isClosed_closure (subset_closure ?_)` and prove the remaining obligations. Rewrite using `[Scheme.Pullback.range_fst]`.
+
+Conclude with `⟨gp, e.symm⟩`.
+-/
 private theorem isDominant_genericFibre (O E : Type) [CommRing O] [IsDomain O] [Field E] [Algebra O E]
     [IsFractionRing O E] {X : Scheme.{0}} (s : X ⟶ Sp O) [Flat s] :
     IsDominant (pullback.fst s (spMap (algebraMap O E))) := by
@@ -34,6 +44,17 @@ private theorem isDominant_genericFibre (O E : Type) [CommRing O] [IsDomain O] [
   rw [Scheme.Pullback.range_fst]
   exact ⟨gp, e.symm⟩
 
+/- English proof (translation)
+Set `d : P ⟶ pullback g g` to `pullback.lift a b hab`. Set `k₀ : pullback d (pullback.diagonal g) ⟶ P` to `pullback.fst d (pullback.diagonal g)`. Establish `hd₁ : d ≫ pullback.fst g g = a` using `pullback.lift_fst _ _ _`. Establish `hd₂ : d ≫ pullback.snd g g = b` using `pullback.lift_snd _ _ _`. Establish `hc : k₀ ≫ d = pullback.snd d (pullback.diagonal g) ≫ pullback.diagonal g` using `pullback.condition`.
+
+Establish `hk : k₀ ≫ a = k₀ ≫ b`. Establish `h1 : k₀ ≫ a = pullback.snd d (pullback.diagonal g)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : k₀ ≫ b = pullback.snd d (pullback.diagonal g)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h1, h2]`. Establish `hsur : Surjective k₀` using `⟨fun p => by`. Take `⟨Ω, _, _, t, q, rfl⟩` from `exists_geomPoint P p`. Establish `hd : t ≫ d = (t ≫ a) ≫ pullback.diagonal g`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hd₁]`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, hd₂, ← h Ω t]`. Simplify using the standard rewrite rules. Use `⟨(pullback.lift t (t ≫ a) hd : Sp Ω ⟶ _) q, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.comp_apply]`. Conclude with `congrArg (fun m : Sp Ω ⟶ P => m q) (pullback.lift_fst _ _ _)⟩`. Establish `: IsDominant k₀` using `inferInstance`. Conclude with `ext_of_isDominant_of_isSeparated g hab k₀ hk`.
+-/
 private theorem eq_of_geomPoints {P Y B : Scheme.{0}} [IsReduced P] (a b : P ⟶ Y) (g : Y ⟶ B) [IsSeparated g]
     (hab : a ≫ g = b ≫ g)
     (h : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (t : Sp Ω ⟶ P), t ≫ a = t ≫ b) : a = b := by
@@ -62,6 +83,25 @@ private theorem eq_of_geomPoints {P Y B : Scheme.{0}} [IsReduced P] (a b : P ⟶
   have : IsDominant k₀ := inferInstance
   exact ext_of_isDominant_of_isSeparated g hab k₀ hk
 
+/- English proof (translation)
+Introduce `hN O E _ _ _ _ _ _ V X Y B s σ j ov hs hfin het hgeo f g y hg hy hker`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `: IsLocalization.Away ϖ E` using `GlobalTheory.Reg.ChartOpens.away_irreducible hϖ`. Establish `: IsOpenImmersion (spMap (algebraMap O E))` using `IsOpenImmersion.of_isLocalization ϖ`. Set `e : Sp E ⟶ Sp O` to `spMap (algebraMap O E)`.
+
+Set `u : pullback s e ⟶ X` to `pullback.fst s e`. Set `j' : V ⟶ pullback s e` to `pullback.lift j σ ov`. Establish `hj' : j' ≫ u = j` using `pullback.lift_fst _ _ _`. Establish `hjσ : j' ≫ pullback.snd s e = σ` using `pullback.lift_snd _ _ _`. Establish `hdom : IsDominant u` using `isDominant_genericFibre O E s`.
+
+Establish `hsurj : Surjective j'` using `⟨fun w => by`. Take `⟨Ω, _, _, t, q, rfl⟩` from `exists_geomPoint _ w`. Take `⟨v, hv₁, hv₂⟩` from `hgeo Ω (t ≫ u) (t ≫ pullback.snd s e) (by`. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg (t ≫ ·) pullback.condition)`.
+
+Establish `hv : v ≫ j' = t`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc]`. Express the relevant statement in the definitionally equal form `v ≫ j' ≫ u = t ≫ u`. Rewrite using `[hj', hv₁]`.
+
+Rewrite using `[Category.assoc, hjσ, hv₂]`. Use `⟨v q, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hv]⟩`. Establish `hsm : Smooth (pullback.fst j' j' ≫ j' ≫ u ≫ s)` using `inferInstance`. Establish `hred : IsReduced (pullback j' j')`.
+
+Establish `: ∀ x : (pullback j' j' : Scheme.{0}), _root_.IsReduced ((pullback j' j' : Scheme.{0}).presheaf.stalk x)` using `fun x => by`. Use `(GlobalTheory.ESOrdM.stalk_normal_of_smooth O _ (pullback.fst j' j' ≫ j' ≫ u ≫ s) x).1` as an intermediate fact. Use `infer_instance`. Conclude with `isReduced_of_isReduced_stalk _`. Establish `hP : pullback.fst j' j' ≫ y = pullback.snd j' j' ≫ y`.
+
+Use `eq_of_geomPoints _ _ g ?_ fun Ω _ _ t => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hy, ← hj', Category.assoc, pullback.condition_assoc]`. Rewrite using `[← Category.assoc, ← Category.assoc]`. Use `hker Ω _ _ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← hj', pullback.condition_assoc]`.
+
+Establish `hee : EffectiveEpi j'` using `inferInstance`. Set `z : pullback s e ⟶ Y` to `EffectiveEpi.desc j' y (fun {T} g₁ g₂ h => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc, Category.assoc, hP]`. Use `_ = g₂ ≫ y := by rw [pullback.lift_snd])`.
+
+Establish `hz : j' ≫ z = y` using `EffectiveEpi.fac _ _ _`. Establish `hzg : z ≫ g = u ≫ f`. Rewrite using `[← cancel_epi j', ← Category.assoc, hz, hy, ← hj', Category.assoc]`. Take `⟨y', h₁, h₂⟩` from `hN _ X Y B u f g z inferInstance hdom (LocallyOfFiniteType.isLocallyNoetherian s) (fun x => (GlobalTheory.ESOrdM.stalk_normal_of_smooth O X s x).1) (fun x => (GlobalTheory.ESOrdM.stalk_normal_of_smooth O X s x).2) hg hzg`. Conclude with `⟨y', by rw [← hj', Category.assoc, h₁, hz], h₂⟩`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.descExt_of :
     NormExt → DescExt := by
   intro hN O E _ _ _ _ _ _ V X Y B s σ j ov hs hfin het hgeo f g y hg hy hker

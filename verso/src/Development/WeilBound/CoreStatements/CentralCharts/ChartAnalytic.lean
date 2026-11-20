@@ -16,6 +16,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open Filter Topology
 open scoped ComplexOrder
 
+/- English proof (translation)
+Establish `hspan : (Submodule.span (regAt ξ p) (Set.range bb)).map (W.subtype.restrictScalars (regAt ξ p)) = Submodule.span (regAt ξ p) (Set.range fun k => (bb k : V))`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Use `⟨LinearIndependent.of_comp W.subtype hb.1, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1 : (x : V) ∈ L p ⊔ L p` using `hx`. Rewrite `h1` using `[sup_idem, hb.2, ← hspan]`. Take `⟨x', hx', e⟩` from `h1`.
+
+Establish `e' : x' = x` using `Subtype.ext e`. Conclude with `e' ▸ hx'`. Introduce `hx show (x : V) ∈ L p ⊔ L p`. Rewrite using `[sup_idem, hb.2, ← hspan]`. Conclude with `⟨x, hx, rfl⟩`.
+-/
 theorem frame_sup {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {V : Type}
     [AddCommGroup V] [Module Ω V] (L : Lat ξ V) (W : Submodule Ω V) {r : ℕ} (bb : Fin r → W) (p : Cpt ξ)
     (hb : L.IsFrameAt (fun k => (bb k : V)) p) : (Lat.comap (fun p => L p ⊔ L p) W.subtype).IsFrameAt bb p := by
@@ -37,6 +44,9 @@ theorem frame_sup {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCa
     rw [sup_idem, hb.2, ← hspan]
     exact ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+The claim follows from `((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : (Σ k, J k) => ℂ) q).analyticAt _).comp (χ.analytic 0 (Metric.mem_ball_self one_pos))`.
+-/
 theorem chart_analytic {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {P : Ideal (MRing J)} {n : ℕ}
     {Bd : Set ((Σ k, J k) → ℂ)} (χ : SncChart P n Bd) (q : Σ k, J k) : AnalyticAt ℂ (fun t => χ.γ t q) 0 :=
   ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : (Σ k, J k) => ℂ) q).analyticAt _).comp
@@ -47,6 +57,27 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ} {Ω : Type} [Field Ω] [CharZero Ω]
   {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Establish `hβ : Function.Injective (algebraMap (𝓞 c.F) c.F)` using `RingOfIntegers.coe_injective`. Establish `hgen : genPt 𝔐.ξ ⤳ centre z₀` using `𝔐.all _`. Take `⟨V, hV, b, hflag, hb⟩` from `Fl.sub s ⟨centre z₀, hgen⟩ trivial`. Establish `hb0` using `hb ⟨centre z₀, hgen⟩ trivial hV`. Take `⟨cc, f, hdom, -, hsub⟩` from `exists_basic 𝔐.tie hz₀ hgen V hV`.
+
+Take `⟨hVd, -, -⟩` from `GlobalTheory.T.hodge_cpt_away_from_primes E H D l (Xo l) c _ _ Y S Ω K J y 𝔐 hβ ⟨centre z₀, hgen⟩ fun r hr => GrNorm.not_inFibre 𝔐.tie.gen hgen hr`. Establish `hmem : ∀ k, b k ∈ 𝔐.Vgen s ⊔ 𝔐.Vgen s` using `fun k => by`. Establish `h1 : b k ∈ 𝔐.V s ⟨centre z₀, hgen⟩`. Rewrite using `[hb0.2]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`.
+
+Rewrite `h1` using `[hVd s]`. Conclude with `Submodule.mem_sup_left h1.2`. Set `bb : Fin (labelRk D s) → ↥(𝔐.Vgen s ⊔ 𝔐.Vgen s)` to `fun k => ⟨b k, hmem k⟩`. Take `⟨a₀, g, Λ, _, L, π, ρ, U, hρ, hρ1, hU, hli, ha, hP⟩` from `GlobalTheory.T.global_pair_sum_gram_bound hG E H D Xo l c Y S Ω K J y 𝔐 hGl s s _ bb n Bd χ 0 cc f hBd (Metric.mem_ball_self one_pos) (fun p h1 h2 => frame_sup (𝔐.V s) _ bb p (hb p trivial (hsub p h1 h2))) hdom`. Set `M : ℕ → (Fin n → ℂ) → ℝ` to `fun m t => Real.log (leadMinor (HodgeMetric.periodGram L U (HodgeMetric.uncentre 0 ρ π t)) m)`.
+
+Establish `hM : ∀ m (h : m ≤ labelRk D s), M m = fun t => Real.log (HodgeMetric.periodGram L (fun j => U (Fin.castLE h j)) (HodgeMetric.uncentre 0 ρ π t)).det.re`. Introduce `m h`. Use function extensionality and compare the values at `t`. Simplify using `only [M, leadMinor, dif_pos h]`. Both sides reduce to the same expression.
+
+Use `⟨b, M, hflag, hb0, fun t => by simp [M, leadMinor_size_zero], fun m hm => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hM m hm]`. Establish `hli' : LinearIndependent ℂ fun j : Fin m => U (Fin.castLE hm j) 0` using `hli.comp _ (Fin.castLE_injective hm)`. Use `⟨tame_logdet L _ π ρ hρ hρ1 (fun j => hU _) hli' fun i hi => (ha i hi).1, fun h0 => ?_⟩` and prove the remaining obligations. Establish `: a₀ = 0`.
+
+Assume the negation of the conclusion as `hne`. Establish `hle` using `L.a_le`. Use `(ha ⟨0, by omega⟩ (Nat.pos_of_ne_zero hne)).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute `this` using the available equality.
+
+Conclude with `pshAt0_logdet L _ π ρ hρ (fun j => hU _) hli'`. Use `filter_upwards [Metric.ball_mem_nhds (0 : Fin n → ℂ) hρ] with t ht hoff z hz`. Establish `hu` using `HodgeMetric.uncentre_mem_ball (t₀ := 0) (t := t) hρ π (by simpa using ht)`. Take `⟨h1, h2, h3, h4⟩` from `hP _ hu`. Rewrite `h1`, `h2`, `h3`, `h4` using `[HodgeMetric.recentre_uncentre 0 hρ π t]`.
+
+Establish `hnb : χ.γ t ∉ Bd` using `fun h => by`. Take `⟨i, hi, h0⟩` from `(χ.boundary t h1).1 h`. Conclude with `hoff i hi h0`. Establish `hi : 𝔐.Interior z` using `by_contra fun h => hnb ((hBd z _ hz).2 h)`. Establish `hc` using `GlobalTheory.T.frame_domain_in_segre_chart 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie z _ cc f (𝔐.all _) hz h2`.
+
+Establish `hfr` using `hb _ trivial (hsub _ hc.1 hc.2)`. Establish `hΓ` using `h4 (h3.1 hnb) z hz`. Take `⟨Γ, g1, g2⟩` from `RootGram.exists_gram 𝔐 hi s hfr`. Establish `e` using `GlobalTheory.T.gram_matrix_change_frame E H D l (Xo l) c Y S Ω K J y 𝔐 z _ b _ _ (GlobalTheory.T.interior_point_polarised E H D l (Xo l) c Y S Ω K J y 𝔐 z hi) g1 hΓ`. Use `⟨hi, hfr, Γ, g1, g2, fun m _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`.
+-/
 theorem label_data (hG : Top.Given) (hGl : Top.IsGlobal Xo l c Y) (𝔐 : HodgeCpt Y S y) (Fl : 𝔐.Flag) {n : ℕ}
     {Bd : Set ((Σ k, J k) → ℂ)}
     (hBd : ∀ (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) w, CoordsAt 𝔐.ξ y z w → (w ∈ Bd ↔ ¬ 𝔐.Interior z))
@@ -112,6 +143,23 @@ theorem label_data (hG : Top.Given) (hGl : Top.IsGlobal Xo l c Y) (𝔐 : HodgeC
     refine ⟨hi, hfr, Γ, g1, g2, fun m _ => ?_⟩
     rw [e]
 
+/- English proof (translation)
+Establish `pts : ∀ w ∈ mcPts (mCoordIdeal y), ∃ z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X, CoordsAt 𝔐.ξ y z w` using `fun w hw => by`. Take `⟨z, -, hz⟩` from `(GlobalTheory.T.complex_points_iff_centres 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie w).1 hw`. Conclude with `⟨z, hz⟩`. Take `⟨z₀, hz₀⟩` from `pts _ (χ.mem 0 (Metric.mem_ball_self one_pos))`. Establish `hgen : genPt 𝔐.ξ ⤳ centre z₀` using `𝔐.all _`.
+
+Use `choose b M hflag hb0 hM0 hM hev using label_data hG hGl 𝔐 Fl hBd χ hz₀`. Take `⟨cc, f, hdom, hch, -⟩` from `exists_basic 𝔐.tie hz₀ hgen ⊤ trivial`. Establish `hcc : ∀ᶠ t in 𝓝 (0 : Fin n → ℂ), ∀ k, χ.γ t ⟨k, cc k⟩ ≠ 0` using `eventually_all.2 fun k => (chart_analytic χ _).continuousAt.eventually_ne (hdom.1 k)`. Establish `key : ∀ r : CMType H × Fin (D.p + D.q), ∃ F : (Fin n → ℂ) → ℂ, (AnalyticAt ℂ F 0 ∧ F 0 ≠ 0) ∧ ∀ᶠ t in 𝓝 (0 : Fin n → ℂ), (∀ i : Fin n, (i : ℕ) < χ.a → t i ≠ 0) → Real.log ((hx r).h (χ.γ t)) = Real.log ‖F t‖ - (HodgeCpt.rootSgn D r : ℝ) / 2 * (M (HodgeCpt.rootIdx D r).1 (((HodgeCp …`. Introduce `r`.
+
+Take `⟨τ, hτ⟩` from `GrNorm.exists_sub_mem_flagStep (b := Fl.b (HodgeCpt.rootIdx D r).1) (HodgeCpt.rootIdx D r).2 (x := b _ (HodgeCpt.rootIdx D r).2) (by`. Rewrite using `[← hflag]`. Conclude with `Submodule.subset_span ⟨_, Nat.lt_succ_self _, rfl⟩)`. Establish `hu` using `GlobalTheory.T.root_lines_flag_degree E H D l (Xo l) c Y S Ω K J y 𝔐 Fl xdeg e r _ cc _ τ hroot hch (hflag _) (hb0 _) hτ`. Take `⟨v, hv0, hv⟩` from `exists_val_ne hgen hu`.
+
+Establish `hv'` using `CxVal.inv hv hv0`. Rewrite `hv'` using `[inv_div]`. Take `⟨F₁, hF₁, hF0, hF⟩` from `exists_val_fam 𝔐.tie 𝔐.all (chart_analytic χ) hz₀ hv'`. Establish `hne : F₁ 0 * ∏ k, χ.γ 0 ⟨k, cc k⟩ ^ xdeg r k ≠ 0` using `mul_ne_zero (by rw [hF0]; exact inv_ne_zero hv0) (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hdom.1 k))`. Use `⟨fun t => F₁ t * ∏ k, χ.γ t ⟨k, cc k⟩ ^ xdeg r k, ⟨hF₁.fun_mul (Finset.analyticAt_fun_prod _ fun k _ => (chart_analytic χ _).fun_zpow (hdom.1 k)), hne⟩, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hev (HodgeCpt.rootIdx D r).1, hF, hcc, Metric.ball_mem_nhds (0 : Fin n → ℂ) one_pos] with t h1 h2 h3 h4 hoff`. Take `⟨z, hz⟩` from `pts _ (χ.mem t h4)`. Take `⟨hi, hfr, Γ, g1, g2, g3⟩` from `h1 hoff z hz`. Establish `hN` using `hhod r z _ hz hi τ _ ⟨𝔐.all _, _, Γ, hflag _, hfr, hτ, g1, g2, rfl⟩`. Take `⟨u, hu1, hu2⟩` from `hN.2.2 cc h3`.
+
+Rewrite `hu1`, `hu2` using `[hdg]`. Rewrite `hu2` using `[CxVal.unique hu1 (h2 z hz)]`. Establish `p1` using `leadMinor_pos_of_posDef g2 (s := ((HodgeCpt.rootIdx D r).2 : ℕ) + 1) (HodgeCpt.rootIdx D r).2.2`. Establish `p2` using `leadMinor_pos_of_posDef g2 (s := ((HodgeCpt.rootIdx D r).2 : ℕ)) (HodgeCpt.rootIdx D r).2.2.le`. Establish `p3 : 0 < (hx r).h (χ.γ t)` using `(hx r).pos _ fun k => ⟨cc k, h3 k⟩`.
+
+Establish `e1` using `congrArg Real.log hu2`. Rewrite `e1` using `[Real.log_mul (zpow_ne_zero _ (Real.sqrt_pos.2 (div_pos p1 p2)).ne') p3.ne', Real.log_zpow, Real.log_sqrt (div_pos p1 p2).le, Real.log_div p1.ne' p2.ne', g3 _ (HodgeCpt.rootIdx D r).2.2, g3 _ (HodgeCpt.rootIdx D r).2.2.le]`. Simplify using `only [norm_mul, norm_prod, norm_zpow]`. Rewrite using `[← e1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `choose F hF hF' using key`. Conclude with `⟨M, F, hM0, hM, hF, hF'⟩`.
+-/
 theorem root_data (hG : Top.Given) (hGl : Top.IsGlobal Xo l c Y) (𝔐 : HodgeCpt Y S y) (Fl : 𝔐.Flag) {n : ℕ}
     {Bd : Set ((Σ k, J k) → ℂ)}
     (hBd : ∀ (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) w, CoordsAt 𝔐.ξ y z w → (w ∈ Bd ↔ ¬ 𝔐.Interior z))

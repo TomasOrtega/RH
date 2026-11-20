@@ -10,10 +10,16 @@ def nP {n : ℕ} (f : Fin n → ℚ) : ℕ := (Finset.univ.filter fun i => 0 < f
 
 def nN {n : ℕ} (f : Fin n → ℚ) : ℕ := (Finset.univ.filter fun i => f i < 0).card
 
+/- English proof (translation)
+Unfold `nP`. Conclude with `(Finset.card_filter_le _ _).trans (Finset.card_fin n).le`.
+-/
 theorem nP_le_nW {n : ℕ} (f : Fin n → ℚ) : nP f ≤ n := by
   unfold nP
   exact (Finset.card_filter_le _ _).trans (Finset.card_fin n).le
 
+/- English proof (translation)
+Unfold `nN`. Conclude with `(Finset.card_filter_le _ _).trans (Finset.card_fin n).le`.
+-/
 theorem nN_le {n : ℕ} (f : Fin n → ℚ) : nN f ≤ n := by
   unfold nN
   exact (Finset.card_filter_le _ _).trans (Finset.card_fin n).le

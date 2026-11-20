@@ -7,6 +7,19 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ZH
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ Y M q hq hp p _ y`. Apply the tactic sequence `have hq' : Y.pt ≫ q = spMap (AlgHom.id o Ω).toRingHom ≫ M.pt := by first | exact hq | exact hq.1 | exact hq.2`. Establish `hsurj : Function.Surjective q`. Establish `hc : IsClosed (Set.range q)` using `q.isClosedMap.isClosed_range`. Establish `hg : genericPoint M.Z ∈ Set.range q`.
+
+Establish `w : Sp Ω` using `IsLocalRing.closedPoint Ω`. Use `⟨Y.pt w, ?_⟩` and prove the remaining obligations. Establish `h1 : (Y.pt ≫ q) w = (spMap (AlgHom.id o Ω).toRingHom ≫ M.pt) w` using `by rw [hq']`. Rewrite `h1` using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, M.pt_apply]`. Conclude with `h1`.
+
+Introduce `z`. Conclude with `(genericPoint_specializes z).mem_closed hc hg`. Take `⟨K', _, σ, y₁, hσ, hy₁⟩` from `exists_finite_ext_point_lift_of_surjective_lft q inferInstance hsurj (PadicAlgCl p) (gPt p ≫ y)`. Establish `hbij : Function.Bijective σ`. Use `letI := σ.toAlgebra`.
+
+Use `haveI : Module.Finite (PadicAlgCl p) K' := hσ`. Conclude with `IsAlgClosed.algebraMap_bijective_of_isIntegral (k := PadicAlgCl p) (K := K')`. Set `e` to `RingEquiv.ofBijective σ hbij`. Establish `he : e.symm.toRingHom.comp σ = RingHom.id _` using `RingHom.ext fun x => e.symm_apply_apply x`. Establish `h2 : (spMap e.symm.toRingHom ≫ y₁) ≫ q = gPt p ≫ y`.
+
+Rewrite using `[Category.assoc, hy₁, ← Category.assoc, ← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, he]`. Establish `: spMap (RingHom.id (PadicAlgCl p)) = 𝟙 _` using `Spec.map_id _`. Rewrite using `[this, Category.id_comp]`. Establish `hE : ValuativeCriterion.Existence q` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed q) : (ValuativeCriterion.Existence ⊓ @QuasiCompact) q).1`. Take `⟨⟨l⟩⟩` from `hE { R := OO p, K := PadicAlgCl p, i₁ := spMap e.symm.toRingHom ≫ y₁, i₂ := y, commSq := ⟨h2⟩ }`.
+
+Conclude with `⟨l.l, l.fac_right⟩`.
+-/
 theorem exists_lift_of_isProper_of_isHom_id :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (Y M : RatModel o Ω) (q : Y.Z ⟶ M.Z),
       M.IsHom Y (AlgHom.id o Ω) q → IsProper q → ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z),

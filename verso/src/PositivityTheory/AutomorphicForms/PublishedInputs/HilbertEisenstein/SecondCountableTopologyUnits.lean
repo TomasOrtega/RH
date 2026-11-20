@@ -22,6 +22,9 @@ instance regular_multHaar : (multHaar K).Regular :=
 instance isInvInvariant_multHaar : (multHaar K).IsInvInvariant :=
   Measure.IsHaarMeasure.isInvInvariant_of_regular (multHaar K)
 
+/- English proof (translation)
+Establish `h1 : (fun x => f (t * x⁻¹)) = fun x => f (t / x)`. Use function extensionality and compare the values at `x`. Rewrite using `[div_eq_mul_inv]`. Rewrite using `[h1]`. Conclude with `⟨(integrable_comp_div_left f t).symm, (integral_div_left_eq_self f (multHaar K) t).symm⟩`.
+-/
 theorem inv_subst (f : Kˣ → ℂ) (t : Kˣ) :
     (Integrable f (multHaar K) ↔ Integrable (fun x => f (t * x⁻¹)) (multHaar K)) ∧
     ∫ a, f a ∂multHaar K = ∫ x, f (t * x⁻¹) ∂multHaar K := by

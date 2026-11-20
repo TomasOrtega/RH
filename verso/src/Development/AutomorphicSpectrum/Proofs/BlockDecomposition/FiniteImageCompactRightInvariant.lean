@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory.CompanionTheory.TopGroup
 
+/- English proof (translation)
+Introduce `Γ X _ _ _ K hK Gf hS`. Establish `hU : ∀ k ∈ K, {y : Γ | k⁻¹ * y ∈ {s : Γ | ∀ x, Gf (x * s) = Gf x}} ∈ nhds k`. Introduce `k _`. Establish `hc : Continuous fun y : Γ => k⁻¹ * y` using `continuous_const.mul continuous_id`. Use `hc.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations.
+
+Use `show _ ∈ nhds (k⁻¹ * k)`. Rewrite using `[inv_mul_cancel]`. Conclude with `hS`. Take `⟨t, -, hcover⟩` from `hK.elim_nhds_subcover _ hU`. Use `(t.finite_toSet.image Gf).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨k, hk, hyk⟩` from `Set.mem_iUnion₂.1 (hcover hy)`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Establish `h` using `hyk k`. Rewrite `h` using `[mul_inv_cancel_left]`.
+
+Conclude with `h.symm`.
+-/
 theorem finite_image_of_right_invariant_near_one :
     ∀ {Γ X : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (K : Set Γ),
       IsCompact K → ∀ Gf : Γ → X, {s : Γ | ∀ x, Gf (x * s) = Gf x} ∈ nhds (1 : Γ) →

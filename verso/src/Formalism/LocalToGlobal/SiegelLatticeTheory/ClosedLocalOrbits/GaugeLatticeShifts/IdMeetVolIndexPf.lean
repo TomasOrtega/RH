@@ -15,6 +15,13 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.TermOp Formalism.L2.SG.TermOp.IdBlocks Formalism.L2.SG.Full
   Formalism.L2.SG.PoincareInHH.Cut
 
+/- English proof (translation)
+Set `f` to `Subgroup.quotientSubgroupOfEmbeddingOfLE U' hRU`. Establish `hs : Function.Surjective f`. Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H x`.
+
+Take `⟨r, hr, hrx⟩` from `hd x x.2`. Use `⟨QuotientGroup.mk ⟨r, hr⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.quotientSubgroupOfEmbeddingOfLE_apply_mk, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using hrx`. Use `show Nat.card (R ⧸ U'.subgroupOf R) = Nat.card (U ⧸ U'.subgroupOf U)`.
+
+Conclude with `Nat.card_congr (Equiv.ofBijective f ⟨f.injective, hs⟩)`.
+-/
 theorem relIndex_eq_of_dense {G : Type*} [Group G] {R U U' : Subgroup G} (hRU : R ≤ U)
     (hd : ∀ x ∈ U, ∃ r ∈ R, r⁻¹ * x ∈ U') : U'.relIndex R = U'.relIndex U := by
   let f := Subgroup.quotientSubgroupOfEmbeddingOfLE U' hRU
@@ -31,6 +38,13 @@ theorem relIndex_eq_of_dense {G : Type*} [Group G] {R U U' : Subgroup G} (hRU : 
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Establish `e : c⁻¹ * ((MulAut.conj c).toMonoidHom k) * c = k`. Simplify using `[MulAut.conj_apply]`. Use `group`.
+
+Rewrite using `[e]`. Conclude with `hk`. Introduce `h`. Use `⟨c⁻¹ * y * c, h, ?_⟩` and prove the remaining obligations. Simplify using `[MulAut.conj_apply]`.
+
+Use `group`.
+-/
 theorem mem_conj_level_subgroup (hK : X.LevelSubgroupCharacter) (c y : X.B.I.Gf) :
     y ∈ (concreteLevelAdelicSubset X hK).map (MulAut.conj c).toMonoidHom ↔ c⁻¹ * y * c ∈ X.K2 := by
   constructor
@@ -42,24 +56,44 @@ theorem mem_conj_level_subgroup (hK : X.LevelSubgroupCharacter) (c y : X.B.I.Gf)
     refine ⟨c⁻¹ * y * c, h, ?_⟩
     simp [MulAut.conj_apply]; group
 
+/- English proof (translation)
+Use extensionality with `y`. Conclude with `mem_conj_level_subgroup X hK c y`.
+-/
 theorem coe_conj_level_subgroup (hK : X.LevelSubgroupCharacter) (c : X.B.I.Gf) :
     (((concreteLevelAdelicSubset X hK).map (MulAut.conj c).toMonoidHom : Subgroup X.B.I.Gf) : Set X.B.I.Gf) =
       (fun y => c⁻¹ * y * c) ⁻¹' X.K2 := by
   ext y
   exact mem_conj_level_subgroup X hK c y
 
+/- English proof (translation)
+Establish `h1 : (q⁻¹ * s).1 = 1` using `by rw [Prod.fst_mul, Prod.fst_inv, h, inv_mul_cancel]`. Use `Formalism.L2.SG.Pf.SlabCoverPf.finite_infinite_injective D X (q⁻¹ * s) (mul_mem (inv_mem hq) hs) h1` as an intermediate fact. Conclude with `(inv_mul_eq_one.1 this)`.
+-/
 theorem rat_fst_inj {q s : X.B.I.GA} (hq : q ∈ Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (hs : s ∈ Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I)
     (h : q.1 = s.1) : q = s := by
   have h1 : (q⁻¹ * s).1 = 1 := by rw [Prod.fst_mul, Prod.fst_inv, h, inv_mul_cancel]
   have := Formalism.L2.SG.Pf.SlabCoverPf.finite_infinite_injective D X (q⁻¹ * s) (mul_mem (inv_mem hq) hs) h1
   exact (inv_mul_eq_one.1 this)
 
+/- English proof (translation)
+Unfold `RcS`. Rewrite using `[Subgroup.mem_inf, Subgroup.mem_prod]`.
+-/
 theorem mem_RcS (hK : X.LevelSubgroupCharacter) (c : X.B.I.Gf) (s : X.B.I.GA) :
     s ∈ RcS X u hK c ↔ s ∈ Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I ∧
       s.1 ∈ Formalism.L2.SG.Pf.NinfSub (I := X.B.I) X.eR (X.zR u) ∧ s.2 ∈ UcS X u hK c := by
   unfold RcS
   rw [Subgroup.mem_inf, Subgroup.mem_prod]
 
+/- English proof (translation)
+Set `φ : RcS X u hK c →* X.B.I.Ginf` to `(MonoidHom.fst _ _).comp (RcS X u hK c).subtype`. Set `ψ : RcS X u hK c →* X.B.I.Gf` to `(MonoidHom.snd _ _).comp (RcS X u hK c).subtype`. Establish `hφ : GcS X u hK c = φ.range`. Unfold `GcS`. Rewrite using `[MonoidHom.range_comp, Subgroup.range_subtype]`.
+
+Establish `hψ : (RcS X u hK c).map (MonoidHom.snd _ _) = ψ.range`. Rewrite using `[MonoidHom.range_comp, Subgroup.range_subtype]`. Establish `hcomap : (GcS X u hK c').comap φ = (UcS X u hK c').comap ψ`. Use extensionality with `r`. Take `⟨r, hr⟩` from `r`.
+
+Rewrite using `[Subgroup.mem_comap, Subgroup.mem_comap]`. Use `show r.1 ∈ GcS X u hK c' ↔ r.2 ∈ UcS X u hK c'`. Take `⟨hrQ, hr1, -⟩` from `(mem_RcS X u hK c r).1 hr`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hs1⟩`.
+
+Take `⟨hsQ, -, hs2⟩` from `(mem_RcS X u hK c' s).1 hs`. Establish `e : s = r` using `rat_fst_inj X hsQ hrQ hs1`. Rewrite using `[← e]`. Conclude with `hs2`. Introduce `h2`.
+
+Conclude with `⟨r, (mem_RcS X u hK c' r).2 ⟨hrQ, hr1, h2⟩, rfl⟩`. Rewrite using `[hφ, hψ, ← Subgroup.index_comap, ← Subgroup.index_comap, hcomap]`.
+-/
 theorem relIndex_gc (hK : X.LevelSubgroupCharacter) (c c' : X.B.I.Gf) :
     (GcS X u hK c').relIndex (GcS X u hK c) =
       (UcS X u hK c').relIndex ((RcS X u hK c).map (MonoidHom.snd _ _)) := by
@@ -85,12 +119,20 @@ theorem relIndex_gc (hK : X.LevelSubgroupCharacter) (c c' : X.B.I.Gf) :
       exact ⟨r, (mem_RcS X u hK c' r).2 ⟨hrQ, hr1, h2⟩, rfl⟩
   rw [hφ, hψ, ← Subgroup.index_comap, ← Subgroup.index_comap, hcomap]
 
+/- English proof (translation)
+Rewrite using `[coe_conj_level_subgroup]`. Conclude with `(level_subgroup_isClopen X hK (Formalism.L2.SG.Closed.level_subgroup_properties X)).isOpen.preimage ((continuous_const.mul continuous_id).mul continuous_const)`.
+-/
 theorem isOpen_conj_level_subgroup (hK : X.LevelSubgroupCharacter) (c : X.B.I.Gf) :
     IsOpen (((concreteLevelAdelicSubset X hK).map (MulAut.conj c).toMonoidHom : Subgroup X.B.I.Gf) : Set X.B.I.Gf) := by
   rw [coe_conj_level_subgroup]
   exact (level_subgroup_isClopen X hK (Formalism.L2.SG.Closed.level_subgroup_properties X)).isOpen.preimage
     ((continuous_const.mul continuous_id).mul continuous_const)
 
+/- English proof (translation)
+Establish `hKL` using `Formalism.L2.SG.Closed.level_subgroup_properties X`. Establish `hK2 : IsCompact X.K2` using `(PI.WAU.Cpt.isCompact_Kset X.B.I).of_isClosed_subset (level_subgroup_isClopen X hK hKL).isClosed hKL.2.1`. Establish `e : (((concreteLevelAdelicSubset X hK).map (MulAut.conj c).toMonoidHom : Subgroup X.B.I.Gf) : Set X.B.I.Gf) = (fun k => c * k * c⁻¹) '' X.K2`. Rewrite using `[Subgroup.coe_map]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `hK2.image ((continuous_const.mul continuous_id).mul continuous_const)`.
+-/
 theorem isCompact_conj_level_subgroup (hK : X.LevelSubgroupCharacter) (c : X.B.I.Gf) :
     IsCompact (((concreteLevelAdelicSubset X hK).map (MulAut.conj c).toMonoidHom : Subgroup X.B.I.Gf) : Set X.B.I.Gf) := by
   have hKL := Formalism.L2.SG.Closed.level_subgroup_properties X
@@ -103,6 +145,15 @@ theorem isCompact_conj_level_subgroup (hK : X.LevelSubgroupCharacter) (c : X.B.I
   rw [e]
   exact hK2.image ((continuous_const.mul continuous_id).mul continuous_const)
 
+/- English proof (translation)
+Use `set N := Formalism.L2.SG.Pf.NfinSub (I := X.B.I) X.eR (X.zR u)`. Use `set C := (concreteLevelAdelicSubset X hK).map (MulAut.conj c).toMonoidHom`. Use `set C' := (concreteLevelAdelicSubset X hK).map (MulAut.conj c').toMonoidHom`. Establish `hU : UcS X u hK c = N ⊓ C` using `rfl`. Establish `hU' : UcS X u hK c' = N ⊓ C'` using `rfl`.
+
+Establish `hCC : C'.relIndex C ≠ 0`. Establish `: CompactSpace C` using `isCompact_iff_compactSpace.mp (isCompact_conj_level_subgroup X hK c)`. Establish `ho : IsOpen ((C'.subgroupOf C : Subgroup C) : Set C)` using `(isOpen_conj_level_subgroup X hK c').preimage continuous_subtype_val`. Use `Subgroup.quotient_finite_of_isOpen (C'.subgroupOf C) ho` as an intermediate fact. Conclude with `Subgroup.index_ne_zero_of_finite`.
+
+Establish `e1 : (N ⊓ C').relIndex (N ⊓ C) = C'.relIndex (N ⊓ C)`. Rewrite using `[← Subgroup.inf_relIndex_right (N ⊓ C'), ← Subgroup.inf_relIndex_right C' (N ⊓ C)]`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Subgroup.mem_inf]`.
+
+The claim follows by propositional logic. Rewrite using `[hU, hU', e1]`. Introduce `h0`. Conclude with `hCC (Subgroup.relIndex_eq_zero_of_le_right inf_le_right h0)`.
+-/
 theorem relIndex_uc_ne_zero (hK : X.LevelSubgroupCharacter) (c c' : X.B.I.Gf) :
     (UcS X u hK c').relIndex (UcS X u hK c) ≠ 0 := by
   set N := Formalism.L2.SG.Pf.NfinSub (I := X.B.I) X.eR (X.zR u)
@@ -126,6 +177,17 @@ theorem relIndex_uc_ne_zero (hK : X.LevelSubgroupCharacter) (c c' : X.B.I.Gf) :
   intro h0
   exact hCC (Subgroup.relIndex_eq_zero_of_le_right inf_le_right h0)
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨hxN, hxC⟩` from `Subgroup.mem_inf.1 hx`. Establish `hxK : c⁻¹ * x * c ∈ X.K2` using `(mem_conj_level_subgroup X hK c x).1 hxC`. Establish `hKo` using `(level_subgroup_isClopen X hK (Formalism.L2.SG.Closed.level_subgroup_properties X)).isOpen`. Set `O : Set X.B.I.Gf` to `{y | c⁻¹ * (x⁻¹ * y) * c ∈ X.K2 ∧ c'⁻¹ * (x⁻¹ * y) * c' ∈ X.K2}`.
+
+Establish `hO : IsOpen O`. Use `(hKo.preimage ?_).inter (hKo.preimage ?_)` and prove the remaining obligations. Conclude with `(continuous_const.mul (continuous_const.mul continuous_id)).mul continuous_const`. Conclude with `(continuous_const.mul (continuous_const.mul continuous_id)).mul continuous_const`. Establish `hxO : x ∈ O`.
+
+Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> simpa using hK.1`. Take `⟨ν, hνQ, hν1, hν2, hνO⟩` from `Formalism.L2.SG.Pf.SlabNDensePf.nilradical_strong_approximation D X u x hxN O hO hxO`. Take `⟨hk1, hk2⟩` from `hνO`. Establish `hν2C : c⁻¹ * ν.2 * c ∈ X.K2`. Establish `e : c⁻¹ * ν.2 * c = (c⁻¹ * x * c) * (c⁻¹ * (x⁻¹ * ν.2) * c)` using `by group`.
+
+Rewrite using `[e]`. Conclude with `hK.2.1 _ hxK _ hk1`. Establish `hνR : ν ∈ RcS X u hK c` using `(mem_RcS X u hK c ν).2 ⟨hνQ, hν1, Subgroup.mem_inf.2 ⟨hν2, (mem_conj_level_subgroup X hK c _).2 hν2C⟩⟩`. Use `⟨ν.2, ⟨ν, hνR, rfl⟩, Subgroup.mem_inf.2 ⟨?_, (mem_conj_level_subgroup X hK c' _).2 ?_⟩⟩` and prove the remaining obligations. Conclude with `mul_mem (inv_mem (show ν.2 ∈ Formalism.L2.SG.Pf.NfinSub (I := X.B.I) X.eR (X.zR u) from hν2)) hxN`.
+
+Establish `e : c'⁻¹ * (ν.2⁻¹ * x) * c' = (c'⁻¹ * (x⁻¹ * ν.2) * c')⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `hK.2.2.1 _ hk2`.
+-/
 theorem dense_uc (hK : X.LevelSubgroupCharacter) (c c' : X.B.I.Gf) :
     ∀ x ∈ UcS X u hK c, ∃ y ∈ (RcS X u hK c).map (MonoidHom.snd _ _), y⁻¹ * x ∈ UcS X u hK c' := by
   intro x hx
@@ -151,6 +213,11 @@ theorem dense_uc (hK : X.LevelSubgroupCharacter) (c c' : X.B.I.Gf) :
   · have e : c'⁻¹ * (ν.2⁻¹ * x) * c' = (c'⁻¹ * (x⁻¹ * ν.2) * c')⁻¹ := by group
     rw [e]; exact hK.2.2.1 _ hk2
 
+/- English proof (translation)
+Introduce `D X u hK g h`. Use `set c := (g : X.B.I.Gf) * X.xu u`. Use `set c' := (h : X.B.I.Gf) * X.xu u`. Establish `hle : (RcS X u hK c).map (MonoidHom.snd _ _) ≤ UcS X u hK c`. Introduce and unpack `_ ⟨s, hs, rfl⟩`.
+
+Conclude with `((mem_RcS X u hK c s).1 hs).2.2`. Use `⟨?_, relIndex_uc_ne_zero X u hK c c'⟩` and prove the remaining obligations. Rewrite using `[relIndex_gc X u hK c c']`. Conclude with `relIndex_eq_of_dense hle (dense_uc X u hK c c')`.
+-/
 theorem indexTransferC_holds : IndexTransferC := by
   intro D X u hK g h
   set c := (g : X.B.I.Gf) * X.xu u

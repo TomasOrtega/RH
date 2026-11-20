@@ -8,6 +8,23 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
+/- English proof (translation)
+Introduce `K _ ι _ P hP hrel F hF`. Establish `hrad` using `hR (Σ k, ι k) P hP`. Apply `hrad` to reduce the goal to its premises. Rewrite using `[← Ideal.sInf_minimalPrimes]`. Use `Ideal.mem_sInf.2 fun {Q} hQ => ?_` and prove the remaining obligations.
+
+Establish `hQp : Q.IsPrime` using `hQ.1.1`. Establish `hc` using `hM (Σ k, ι k) P hP Q hQ`. Use `choose i hi using hrel`. Set `h0 : MRing ι` to `∏ k, X ⟨k, i k⟩`. Establish `h0P : h0 ∉ P`.
+
+Introduce `hmem`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hP)).1 hmem`. Conclude with `hi k hk`. Establish `hQh : map (Int.castRingHom ℂ) h0 ∉ Q`. Introduce `hmem`.
+
+Apply `h0P` to reduce the goal to its premises. Rewrite using `[← hc]`. Conclude with `Ideal.mem_comap.2 hmem`. Establish `hPQ : ∀ f ∈ P, map (Int.castRingHom ℂ) f ∈ Q`. Introduce `f hf`.
+
+Rewrite `hf` using `[← hc]`. Conclude with `Ideal.mem_comap.1 hf`. Establish `hv : F * map (Int.castRingHom ℂ) h0 ∈ vanishingIdeal ℂ (zeroLocus ℂ Q)`. Rewrite using `[mem_vanishingIdeal_iff]`. Introduce `z hz`.
+
+Establish `hz : ∀ p ∈ Q, eval z p = 0` using `hz`. Express the relevant statement in the definitionally equal form `eval z _ = 0`. Establish `hzh : eval z (map (Int.castRingHom ℂ) h0) = ∏ k, z ⟨k, i k⟩`. Simplify using `[h0, map_prod]`. Distinguish the cases in `h0z : eval z (map (Int.castRingHom ℂ) h0) = 0`.
+
+Rewrite using `[map_mul, h0z, mul_zero]`. Establish `hne : ∀ k, z ⟨k, i k⟩ ≠ 0`. Rewrite `h0z` using `[hzh]`. Conclude with `fun k => Finset.prod_ne_zero_iff.1 h0z k (Finset.mem_univ k)`. Establish `hzP : z ∈ mcPts P` using `⟨fun k => ⟨i k, hne k⟩, fun f hf => hz _ (hPQ f hf)⟩`.
+
+Rewrite using `[map_mul, hF z hzP, zero_mul]`. Rewrite `hv` using `[vanishingIdeal_zeroLocus_eq_radical, hQp.radical]`. Conclude with `(hQp.mem_or_mem hv).resolve_right hQh`.
+-/
 theorem ComplexFormsOnPoints.proof (hR : PrimeComplexRadical.Statement)
     (hM : ComplexMinimalPrimesContract.Statement) : ComplexFormsOnPoints.Statement := by
   intro K _ ι _ P hP hrel F hF

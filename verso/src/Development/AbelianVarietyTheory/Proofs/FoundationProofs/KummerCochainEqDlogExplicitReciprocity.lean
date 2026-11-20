@@ -17,6 +17,11 @@ section Der
 
 variable {R S M : Type*} [CommRing R] [CommRing S] [Algebra R S] [AddCommGroup M] [Module R M] [Module S M]
 
+/- English proof (translation)
+Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Derivation.leibniz_pow, ← Nat.cast_smul_eq_nsmul S, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[Nat.add_sub_cancel]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem smul_der_pow (d : Derivation R S M) (x : S) (n : ℕ) : x • d (x ^ n) = ((n : S) * x ^ n) • d x := by
   rcases n with _ | n
   · simp
@@ -24,6 +29,9 @@ theorem smul_der_pow (d : Derivation R S M) (x : S) (n : ℕ) : x • d (x ^ n) 
     congr 1
     rw [Nat.add_sub_cancel]; ring
 
+/- English proof (translation)
+Establish `a1` using `smul_der_pow d V L`. Establish `a2` using `smul_der_pow d Z n`. Take the linear combination `(norm := module) (-((L : S) * V ^ L * Z)) • h1 - (e * Z) • a1 + (e * Z * V) • h2 + (e * V * p) • a2`.
+-/
 theorem rel_one (d : Derivation R S M) (e V Z p y : S) (L n : ℕ) (h1 : e • d V = y • d Z)
     (h2 : d (V ^ L) = p • d (Z ^ n)) :
     ((L : S) * V ^ L * Z * y - e * V * p * n * Z ^ n) • d Z = 0 := by
@@ -32,6 +40,9 @@ theorem rel_one (d : Derivation R S M) (e V Z p y : S) (L n : ℕ) (h1 : e • d
   linear_combination (norm := module) (-((L : S) * V ^ L * Z)) • h1 - (e * Z) • a1 + (e * Z * V) • h2 +
     (e * V * p) • a2
 
+/- English proof (translation)
+Establish `a1` using `smul_der_pow d Z c`. Establish `a2` using `smul_der_pow d Z (n * k)`. Rewrite `a2` using `[pow_mul, Nat.cast_mul]`. Rewrite `h2` using `[Derivation.leibniz]`. Take the linear combination `(norm := module) (Z * (Z ^ n) ^ k) • h1 - y' • a1 - Z • h2 + (e * V) • a2`.
+-/
 theorem rel_two (d : Derivation R S M) (e V Z y y' : S) (n k c : ℕ) (h1 : e • d V = y • d Z)
     (h2 : e • d ((Z ^ n) ^ k * V) = y' • d (Z ^ c)) :
     (y' * c * Z ^ c - Z * (Z ^ n) ^ k * y - e * V * k * n * (Z ^ n) ^ k) • d Z = 0 := by
@@ -43,6 +54,11 @@ theorem rel_two (d : Derivation R S M) (e V Z y y' : S) (n k c : ℕ) (h1 : e �
 
 end Der
 
+/- English proof (translation)
+Establish `h3 : (α * L * L) * (l ^ 6 * k * u * K * V - l ^ 6 * t * ζ * p * K * V - w' + w * K) = (α * L * L) * (L * (l ^ 6 * e * ζ * p * K * V + (t + e * L) * w' - w₂ * u))`. Substitute `hc` using the available equality. Take the linear combination `(-(L * u)) * h2 + (1 + t * L + e * L * L) * h1' - K * h1`. Establish `h4` using `mul_left_cancel₀ (mul_ne_zero (mul_ne_zero hα hL) hL) h3`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `h4`.
+-/
 theorem field_step {F : Type*} [Field F] (l L α u V Z ζ K p y y' Z' w w' w₂ k t c e : F) (hL : L ≠ 0) (hα : α ≠ 0)
     (hu : u ≠ 0) (hV : V ≠ 0) (hK : K ≠ 0)
     (h1 : l ^ 4 * (L * u * Z * y - l ^ 2 * V * p * (α * L) * ζ) = α * L * L * w)
@@ -59,6 +75,53 @@ theorem field_step {F : Type*} [Field F] (l L α u V Z ζ K p y y' Z' w w' w₂ 
   field_simp
   linear_combination h4
 
+/- English proof (translation)
+Introduce `l hl hl2`. Use `⟨6, ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ _ A hA m ζ ζ' hζ hζ' P hP hu hu' hu0`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`.
+
+Establish `hlp : l.Prime` using `Fact.out`. Establish `hl0 : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hlp.ne_zero`. Establish `hpos : ∀ j : ℕ, 0 < l ^ j` using `fun j => pow_pos hlp.pos j`. Use `haveI : ∀ j : ℕ, NeZero (l ^ j) := fun j => ⟨(hpos j).ne'⟩`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases.
+
+Use `⟨0, A.zero_mem, fun s _ _ k t _ _ => ⟨0, A.zero_mem, ?_⟩⟩` and prove the remaining obligations. Establish `hk : k.val = 0` using `by have := ZMod.val_lt k; simpa using this`. Establish `ht : t.val = 0` using `by have := ZMod.val_lt t; simpa using this`. Rewrite using `[hk, ht]`. Simplify using the standard rewrite rules.
+
+Use `set φ : fixA A →+* Ω := A.subtype.comp (fixA A).subtype with hφ`. Choose the witnesses or unpack the hypotheses as in `⟨Q, rfl⟩ : ∃ Q : Polynomial (fixA A), Q.map φ = P := by`. Rewrite using `[← Polynomial.mem_lifts, Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Distinguish the cases in `h0 : P.coeff n = 0`.
+
+Conclude with `⟨0, by simp [h0]⟩`. Take `⟨h1, h2⟩` from `hP _ (Polynomial.coeff_mem_coeffs h0)`. Conclude with `⟨⟨⟨P.coeff n, h1⟩, h2⟩, rfl⟩`. Establish `hev : ∀ (R : Polynomial (fixA A)) (x : A), ((Polynomial.aeval x R : A) : Ω) = (R.map φ).eval (x : Ω)`. Introduce `R x`.
+
+Rewrite using `[Polynomial.eval_map, Polynomial.aeval_def]`. Conclude with `Polynomial.hom_eval₂ R (algebraMap (fixA A) A) A.subtype x`. Establish `hsev : ∀ s ∈ Ine (F` using `ℚ) A, ∀ (R : Polynomial (fixA A)) (x : Ω), s ((R.map φ).eval x) = (R.map φ).eval (s x) := by`. Introduce `s hs R x`. Rewrite using `[Polynomial.eval_map, Polynomial.eval_map]`.
+
+Establish `h` using `Polynomial.hom_eval₂ R φ (s : Ω →+* Ω) x`. Establish `e : (s : Ω →+* Ω).comp φ = φ` using `RingHom.ext fun a => a.2 s hs`. Rewrite `h` using `[e]`. Conclude with `h`. Rewrite using `[Polynomial.derivative_map]`.
+
+Use `set u := (Q.map φ).eval ζ with hudef`. Use `set p := ((Polynomial.derivative Q).map φ).eval ζ with hpdef`. Take `⟨V, hV⟩` from `IsAlgClosed.exists_pow_nat_eq u (hpos m)`. Establish `hV0 : V ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hu0 (by rw [← hV, zero_pow (hpos m).ne'])`. Establish `hVA : V ∈ A` using `mem_of_pow_mem A (hpos m).ne' (hV ▸ hu)`. Establish `hVA' : V⁻¹ ∈ A` using `mem_of_pow_mem A (hpos m).ne' (by rw [inv_pow, hV]; exact hu')`. Take `⟨α, hα⟩` from `GlobalTheory.T.sq_prime_smul_kaehlerDerivation_eq_smul_rootOfUnity l hl2 Ω A hA ⟨V, hVA⟩`. Take `⟨Z, hZ⟩` from `IsAlgClosed.exists_pow_nat_eq ζ' (hpos α)`.
+
+Establish `hZζ : Z ^ l ^ (α + m) = ζ` using `by rw [pow_add, pow_mul, hZ, hζ']`. Establish `hZp : IsPrimitiveRoot Z (l ^ (α + m + m))`. Take `⟨m', rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`. Establish `h1 : ¬ Z ^ l ^ (α + (m' + 1) + m') = 1`. Rewrite using `[pow_add, pow_mul, hZζ]`.
+
+Conclude with `hζ.pow_ne_one_of_pos_of_lt (hpos m').ne' (Nat.pow_lt_pow_right hlp.one_lt (by omega))`. Establish `h2 : Z ^ l ^ (α + (m' + 1) + m' + 1) = 1`. Rewrite using `[add_assoc (α + (m' + 1)), pow_add, pow_mul, hZζ, hζ.pow_eq_one]`. Establish `h3` using `orderOf_eq_prime_pow h1 h2`. Establish `h4` using `IsPrimitiveRoot.orderOf Z`.
+
+Rewrite `h4` using `[h3]`. Then use the resulting hypothesis. Establish `hZA : Z ∈ A` using `mem_of_pow_mem A (hpos (α + m + m)).ne' (by rw [hZp.pow_eq_one]; exact A.one_mem)`. Establish `hζA : ζ ∈ A` using `hZζ ▸ pow_mem hZA _`. Establish `hζA' : ζ⁻¹ ∈ A` using `mem_of_pow_mem A (hpos m).ne' (by rw [inv_pow, hζ.pow_eq_one, inv_one]; exact A.one_mem)`. Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero (hpos m).ne'`.
+
+Use `set VA : A := ⟨V, hVA⟩`. Use `set ZA : A := ⟨Z, hZA⟩`. Take `⟨y, hy⟩` from `hα (α + m + m) (by omega) ZA hZp`. Establish `hZAζ : ((ZA ^ l ^ (α + m) : A) : Ω) = ζ` using `by simpa using hZζ`. Use `set pA : A := Polynomial.aeval (ZA ^ l ^ (α + m)) (Polynomial.derivative Q) with hpA`.
+
+Establish `hpAp : (pA : Ω) = p` using `by rw [hpA, hev, hZAζ]`. Establish `hpmem : p ∈ A` using `hpAp ▸ pA.2`. Establish `hVu : VA ^ l ^ m = Polynomial.aeval (ZA ^ l ^ (α + m)) Q`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hev, hZAζ]`.
+
+Simplify using `using hV`. Establish `hd : dA A (VA ^ l ^ m) = pA • dA A (ZA ^ l ^ (α + m))`. Rewrite using `[hVu, Derivation.map_aeval]`. Take `⟨w, hwA, hw⟩` from `GlobalTheory.T.annihilator_kaehlerDerivation_primitiveRoot l hl2 Ω A hA _ ZA hZp _ (rel_one (dA A) _ VA ZA pA y _ _ hy hd)`. Establish `hw1 : (l : Ω) ^ 4 * ((l : Ω) ^ m * u * Z * y - (l : Ω) ^ 2 * V * p * ((l : Ω) ^ α * (l : Ω) ^ m) * ζ) = (l : Ω) ^ α * (l : Ω) ^ m * (l : Ω) ^ m * w`.
+
+Rewrite using `[← hV, ← hpAp, ← hZζ, ← pow_add, ← pow_add, ← hw]`. Use `push_cast`. Both sides reduce to the same expression. Use `⟨w * u⁻¹ * V⁻¹, mul_mem (mul_mem hwA hu') hVA', ?_⟩` and prove the remaining obligations. Introduce and unpack `s hs hcyc k t ⟨v, hv, hsv⟩ hst`.
+
+Establish `hsA : ∀ x ∈ A, s x ∈ A` using `fun x hx => (apply_mem_iff_of_mem_Dec (Ine_le_Dec A hs) x).2 hx`. Establish `hsζ : s ζ = ζ` using `GlobalTheory.Col.fix_of_cycMod le_rfl hcyc hζ.pow_eq_one`. Establish `hsu : s u = u` using `by rw [hudef, hsev s hs, hsζ]`. Establish `hsp : s p = p` using `by rw [hpdef, hsev s hs, hsζ]`. Establish `hsV : s V = ζ ^ k.val * V`.
+
+Establish `h1 : (v / V) ^ l ^ m = 1` using `by rw [div_pow, hv, hV, div_self hu0]`. Take `⟨j, -, hj⟩` from `hζ.eq_pow_of_pow_eq_one h1`. Establish `h2 : v = ζ ^ j * V` using `by rw [hj]; field_simp`. Rewrite `hsv` using `[h2, map_mul, map_pow, hsζ]`. Conclude with `mul_left_cancel₀ (pow_ne_zero j hζ0) (by rw [hsv]; ring)`.
+
+Take `⟨c, -, hc⟩` from `hZp.eq_pow_of_pow_eq_one (ξ := s Z) (by rw [← map_pow, hZp.pow_eq_one, map_one])`. Establish `htr` using `GlobalTheory.T.inertia_transports_kaehler_relations_over_invariants Ω A s hs ((l : A) ^ 2) VA y ZA ((l : A) ^ 2) ((ZA ^ l ^ (α + m)) ^ k.val * VA) ⟨s y, hsA _ y.2⟩ (ZA ^ c) (by simp) (by push_cast; rw [hZζ]; exact hsV.symm) rfl (by simpa using hc) hy`. Take `⟨w₂, hw₂A, hw₂⟩` from `GlobalTheory.T.annihilator_kaehlerDerivation_primitiveRoot l hl2 Ω A hA _ ZA hZp _ (rel_two (dA A) _ VA ZA y _ _ _ _ hy htr)`. Establish `hw2 : (l : Ω) ^ 4 * (s y * (c : Ω) * s Z - Z * ζ ^ k.val * y - (l : Ω) ^ 2 * V * (k.val : Ω) * ((l : Ω) ^ α * (l : Ω) ^ m) * ζ ^ k.val) = (l : Ω) ^ α * (l : Ω) ^ m * (l : Ω) ^ m * w₂`. Rewrite using `[← hc, ← hZζ, ← pow_add, ← pow_add, ← hw₂]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hw1'` using `congrArg s hw1`. Simplify using `only [map_mul, map_sub, map_pow, map_natCast, hsu, hsp, hsζ, hsV] at hw1'`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : ℤ, (c : Ω) = 1 + (t.val : Ω) * (l : Ω) ^ m + (e : Ω) * (l : Ω) ^ m * (l : Ω) ^ m := by`.
+
+Establish `h1 : Z ^ (c * l ^ α) = Z ^ (l ^ (α + m) * t.val + l ^ α)`. Rewrite using `[pow_mul, hc, ← map_pow, hZ, hst, pow_add, pow_mul, hZζ, hZ]`. Rewrite `h1` using `[(hZp.isOfFinOrder (hpos _).ne').pow_eq_pow_iff_modEq, ← hZp.eq_orderOf, Nat.modEq_iff_dvd]`. Take `⟨e, he⟩` from `h1`. Use `⟨-e, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `congrArg (Int.cast : ℤ → Ω) he`. Move the coercions through the operations in `at h2`. Apply `mul_left_cancel₀ (pow_ne_zero α hl0)` to reduce the goal to its premises. Use `push_cast`. Take the linear combination `-h2`.
+
+Establish `hfin` using `field_step (l : Ω) ((l : Ω) ^ m) ((l : Ω) ^ α) u V Z ζ (ζ ^ k.val) p y (s y) (s Z) w (s w) w₂ (k.val : Ω) (t.val : Ω) (c : Ω) (e : Ω) (pow_ne_zero _ hl0) (pow_ne_zero _ hl0) hu0 hV0 (pow_ne_zero _ hζ0) hw1 hw1' hw2 he`. Establish `hlA : (l : Ω) ∈ A` using `natCast_mem A l`. Establish `hKV : (ζ ^ k.val)⁻¹ * V⁻¹ ∈ A` using `mul_mem (by rw [← inv_pow]; exact pow_mem hζA' _) hVA'`. Use `⟨_, ?_, by rw [map_mul, map_mul, map_inv₀, map_inv₀, hsu, hsV]; exact hfin⟩` and prove the remaining obligations. Use `sub_mem (add_mem (mul_mem (mul_mem (pow_mem hlA _) (intCast_mem A e)) (mul_mem (mul_mem hζA hpmem) hu')) (mul_mem (add_mem (natCast_mem A _) (mul_mem (intCast_mem A e) (pow_mem hlA _))) (mul_mem (mul_mem (hsA w hwA) hu') hKV))) (mul_mem hw₂A hKV)` and prove the remaining obligations.
+-/
 theorem kummer_eq_dlog_one : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∃ c : ℕ, ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω), OverL l A →
   ∀ (m : ℕ) (ζ ζ' : Ω), IsPrimitiveRoot ζ (l ^ m) → ζ' ^ (l ^ m) = ζ →
   ∀ P : Polynomial Ω, (∀ x ∈ P.coeffs, x ∈ A ∧ ∀ s ∈ Ine (F := ℚ) A, s x = x) → P.eval ζ ∈ A → (P.eval ζ)⁻¹ ∈ A → P.eval ζ ≠ 0 →

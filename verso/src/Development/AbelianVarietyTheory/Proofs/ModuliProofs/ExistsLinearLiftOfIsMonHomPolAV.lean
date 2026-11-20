@@ -13,6 +13,9 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `P P' L L' u u' f hf`. Take `⟨F, hF, -⟩` from `GlobalTheory.HomLinear.exists_linear_of_isMonHom P.A P'.A P.3 P'.3 L L' P.g P'.g u u' (GlobalTheory.TorusTransfer.tangent_bijective u' P'.5).1 (GlobalTheory.TorusTransfer.tangent_bijective u' P'.5).2 f hf`. Conclude with `⟨F, hF⟩`.
+-/
 theorem exists_linear_lift_of_isMonHom_polAV :
     ∀ (P P' : Out.PolAV (Sp ℂ)) (L : LB P.A.left) (L' : LB P'.A.left) (u : HolUnif P.A L P.g) (u' : HolUnif P'.A L' P'.g) (f : P.A ⟶ P'.A), IsMonHom f → ∃ F : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P'.g → ℂ), ∀ z, u'.ex (F z) = u.ex z ≫ f := by
   intro P P' L L' u u' f hf

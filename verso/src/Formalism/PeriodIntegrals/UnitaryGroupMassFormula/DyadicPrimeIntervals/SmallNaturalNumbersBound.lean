@@ -10,6 +10,15 @@ namespace PI.PrimesDyadicRS.K
 
 open Real
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Assume the negation of the conclusion as `hp`. Establish `hmf` using `Nat.minFac_sq_le_self (by omega) hp`. Establish `hle : m.minFac ≤ k`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `: (k + 1) ^ 2 ≤ m.minFac ^ 2` using `Nat.pow_le_pow_left hc 2`. Use linear arithmetic over natural numbers and integers. Establish `hd : m.minFac ∣ Nat.gcd m k.factorial` using `Nat.dvd_gcd (Nat.minFac_dvd m) (Nat.dvd_factorial (Nat.minFac_pos m) hle)`.
+
+Rewrite `hd` using `[hg, Nat.dvd_one, Nat.minFac_eq_one_iff]`. Use linear arithmetic over natural numbers and integers. Introduce `hp`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hp).2 fun hd => by`. Use `(Nat.Prime.dvd_factorial hp).1 hd` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem gcd_fact_iff {m k : ℕ} (h2 : 2 ≤ m) (hk : k < m) (hm : m < (k + 1) ^ 2) :
     Nat.gcd m k.factorial = 1 ↔ m.Prime := by
   constructor
@@ -30,6 +39,13 @@ theorem gcd_fact_iff {m k : ℕ} (h2 : 2 ≤ m) (hk : k < m) (hm : m < (k + 1) ^
       have := (Nat.Prime.dvd_factorial hp).1 hd
       omega
 
+/- English proof (translation)
+Distinguish the cases in `h1 : m ≤ 362`. Establish `e` using `gcd_fact_iff (k := m - 1) h2 (by omega) (by rw [show m - 1 + 1 = m by omega]; nlinarith)`. Simplify using `only [pr, if_pos h1]`. Distinguish the cases in `hp : m.Prime`. Rewrite using `[if_pos (e.2 hp), if_pos hp]`.
+
+Rewrite using `[if_neg (fun h => hp (e.1 h)), if_neg hp]`. Establish `e` using `gcd_fact_iff (k := 362) h2 (by omega) (by norm_num; omega)`. Simplify using `only [pr, if_neg h1, hQ]`. Distinguish the cases in `hp : m.Prime`. Rewrite using `[if_pos (e.2 hp), if_pos hp]`.
+
+Rewrite using `[if_neg (fun h => hp (e.1 h)), if_neg hp]`.
+-/
 theorem pr_eq {Q m : ℕ} (hQ : Q = Nat.factorial 362) (h2 : 2 ≤ m) (hm : m < 131769) :
     pr Q m = if m.Prime then 1 else 0 := by
   by_cases h1 : m ≤ 362
@@ -45,18 +61,33 @@ theorem pr_eq {Q m : ℕ} (hQ : Q = Nat.factorial 362) (h2 : 2 ≤ m) (hm : m < 
     · rw [if_pos (e.2 hp), if_pos hp]
     · rw [if_neg (fun h => hp (e.1 h)), if_neg hp]
 
+/- English proof (translation)
+Simplify using `only [Nat.primeCounting, Nat.primeCounting', Nat.count_succ]`.
+-/
 theorem pc_succ (n : ℕ) :
     Nat.primeCounting (n + 1) = Nat.primeCounting n + if (n + 1).Prime then 1 else 0 := by
   simp only [Nat.primeCounting, Nat.primeCounting', Nat.count_succ]
 
 def D (h : ℕ) : ℕ := Nat.primeCounting h - Nat.primeCounting (h / 2)
 
+/- English proof (translation)
+Establish `h1` using `pc_succ 1`. Rewrite `h1` using `[Nat.primeCounting_one, if_pos Nat.prime_two]`. Simplify using `only [D, show (2 : ℕ) / 2 = 1 by norm_num, Nat.primeCounting_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem D_two : D 2 = 1 := by
   have h1 := pc_succ 1
   rw [Nat.primeCounting_one, if_pos Nat.prime_two] at h1
   simp only [D, show (2 : ℕ) / 2 = 1 by norm_num, Nat.primeCounting_one]
   omega
 
+/- English proof (translation)
+Establish `hA` using `pr_eq (m := h + 1) hQ (by omega) (by omega)`. Establish `hs` using `pc_succ h`. Unfold `nxt D`. Rewrite using `[hA, hs]`. Distinguish the cases in `he : (h + 1) % 2 = 0`.
+
+Establish `hq : (h + 1) / 2 = h / 2 + 1` using `by omega`. Establish `hB` using `pr_eq (m := (h + 1) / 2) hQ (by omega) (by omega)`. Establish `hs2` using `pc_succ (h / 2)`. Establish `hmono : Nat.primeCounting (h / 2 + 1) ≤ Nat.primeCounting h` using `Nat.monotone_primeCounting (by omega)`. Rewrite using `[if_pos he, hB, hq, hs2]`.
+
+Rewrite `hmono` using `[hs2]`. Apply the tactic sequence `split_ifs at hmono ⊢ <;> omega`. Establish `hq : (h + 1) / 2 = h / 2` using `by omega`. Establish `hmono : Nat.primeCounting (h / 2) ≤ Nat.primeCounting h` using `Nat.monotone_primeCounting (by omega)`. Rewrite using `[if_neg he, hq]`.
+
+Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem nxt_eq {Q h : ℕ} (hQ : Q = Nat.factorial 362) (h2 : 2 ≤ h) (hh : h < 131072) :
     nxt Q h (D h) = D (h + 1) := by
   have hA := pr_eq (m := h + 1) hQ (by omega) (by omega)
@@ -78,6 +109,17 @@ theorem nxt_eq {Q h : ℕ} (hQ : Q = Nat.factorial 362) (h2 : 2 ≤ h) (hh : h <
     rw [if_neg he, hq]
     split_ifs <;> omega
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `h d hl _ _ hd`. Simplify using `only [loop, Bool.and_eq_true, beq_iff_eq] at hl`.
+
+Take `⟨e1, e2⟩` from `hl`. Substitute `e1 e2 hd` using the available equality. Conclude with `⟨⟨rfl, rfl⟩, fun m h1 h2 _ => by omega⟩`. Consider the case `succ k ih`. Introduce `h d hl h2 hk hd`.
+
+Rewrite `hl` using `[loop, force_eq, force_eq, Bool.and_eq_true]`. Take `⟨ht, hl⟩` from `hl`. Substitute `hd` using the available equality. Rewrite `hl` using `[nxt_eq hQ h2 (by omega)]`. Take `⟨⟨e1, e2⟩, hall⟩` from `ih (h + 1) (D (h + 1)) hl (by omega) (by omega) rfl`.
+
+Use `⟨⟨by omega, e2⟩, fun m hm1 hm2 hm3 => ?_⟩` and prove the remaining obligations. Break down `Nat.eq_or_lt_of_le hm1 with rfl | hlt` into its components or cases. Rewrite `ht` using `[Bool.or_eq_true, Nat.blt_eq]`. Break down `ht with ht | ht` into its components or cases. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `ht`. Conclude with `hall m hlt (by omega) hm3`.
+-/
 theorem loop_sound {Q hT dT : ℕ} (hQ : Q = Nat.factorial 362) :
     ∀ k h d : ℕ, loop Q hT dT k h d = true → 2 ≤ h → h + k ≤ 131072 → d = D h →
       (hT = h + k ∧ dT = D hT) ∧ ∀ m, h ≤ m → m < h + k → 41 ≤ m → tstR m (D m) = true := by
@@ -104,6 +146,17 @@ theorem loop_sound {Q hT dT : ℕ} (hQ : Q = Nat.factorial 362) :
       · exact ht
     · exact hall m hlt (by omega) hm3
 
+/- English proof (translation)
+Simplify using `only [tstR, Bool.and_eq_true, Nat.blt_eq, Nat.ble_eq] at ht`. Take `⟨hd, hp⟩` from `ht`. Establish `hB : 0 < 10 * d * 6931471803` using `by positivity`. Establish `hlt0 : 7680000000000 * (h + 1) < (10 * d * 6931471803) * (7680000000000 * (h + 1) / (10 * d * 6931471803) + 1)` using `Nat.lt_mul_div_succ _ hB`. Generalize the expression as in `7680000000000 * (h + 1) / (10 * d * 6931471803) = q at hp hlt0`.
+
+Establish `hlt : ((7680000000000 * (h + 1) : ℕ) : ℝ) < ((10 * d * 6931471803) * (q + 1) : ℕ)`. Conclude with `hlt0` after adjusting the coercions. Move the coercions through the operations in `at hlt`. Establish `hh0 : (0 : ℝ) < h` using `by exact_mod_cast (by omega : 0 < h)`. Establish `hpow : ((2 : ℝ)) ^ (q + 257) ≤ (h : ℝ) ^ 256` using `by exact_mod_cast hp`.
+
+Establish `hlog` using `Real.log_le_log (by positivity) hpow`. Rewrite `hlog` using `[Real.log_pow, Real.log_pow]`. Establish `hl2 : Real.log ((h : ℝ) / 2) = Real.log h - Real.log 2` using `Real.log_div hh0.ne' (by norm_num)`. Establish `hB2 : ((q : ℝ) + 1) * Real.log 2 ≤ 256 * Real.log ((h : ℝ) / 2)`. Rewrite using `[hl2]`.
+
+Move the coercions through the operations in `at hlog`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL2` using `Real.log_two_gt_d9`. Establish `hd0 : (0 : ℝ) ≤ d` using `by positivity`. Establish `hq0 : (0 : ℝ) ≤ q` using `by positivity`.
+
+Establish `hC : ((q : ℝ) + 1) * (10 * d) * 0.6931471803 ≤ ((q : ℝ) + 1) * (10 * d) * Real.log 2` using `mul_le_mul_of_nonneg_left hL2.le (by positivity)`. Establish `hE : (10 * (d : ℝ)) * (((q : ℝ) + 1) * Real.log 2) ≤ (10 * (d : ℝ)) * (256 * Real.log ((h : ℝ) / 2))` using `mul_le_mul_of_nonneg_left hB2 (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem tstR_sound {h d : ℕ} (ht : tstR h d = true) (h2 : 2 ≤ h) :
     3 * ((h : ℝ) + 1) < 10 * (d : ℝ) * Real.log ((h : ℝ) / 2) := by
   simp only [tstR, Bool.and_eq_true, Nat.blt_eq, Nat.ble_eq] at ht
@@ -131,6 +184,15 @@ theorem tstR_sound {h d : ℕ} (ht : tstR h d = true) (h2 : 2 ≤ h) :
     mul_le_mul_of_nonneg_left hB2 (by positivity)
   nlinarith
 
+/- English proof (translation)
+Establish `r1` using `run1`. Establish `r2` using `run2`. Establish `r3` using `run3`. Establish `r4` using `run4`. Rewrite `r1`, `r2`, `r3`, `r4` using `[run, force_eq]`.
+
+Take `⟨⟨_, e1⟩, t1⟩` from `loop_sound rfl _ _ _ r1 (by norm_num) (by norm_num) D_two.symm`. Take `⟨⟨_, e2⟩, t2⟩` from `loop_sound rfl _ _ _ r2 (by norm_num) (by norm_num) e1`. Take `⟨⟨_, e3⟩, t3⟩` from `loop_sound rfl _ _ _ r3 (by norm_num) (by norm_num) e2`. Take `⟨_, t4⟩` from `loop_sound rfl _ _ _ r4 (by norm_num) (by norm_num) e3`. Introduce `m h1 h2`.
+
+Distinguish the cases in `a1 : m < 32768`. Conclude with `t1 m (by omega) (by omega) h1`. Distinguish the cases in `a2 : m < 65536`. Conclude with `t2 m (by omega) (by omega) h1`. Distinguish the cases in `a3 : m < 98304`.
+
+Conclude with `t3 m (by omega) (by omega) h1`. Conclude with `t4 m (by omega) (by omega) h1`.
+-/
 theorem tests : ∀ m, 41 ≤ m → m < 131072 → tstR m (D m) = true := by
   have r1 := run1
   have r2 := run2
@@ -150,6 +212,11 @@ theorem tests : ∀ m, 41 ≤ m → m < 131072 → tstR m (D m) = true := by
   · exact t3 m (by omega) (by omega) h1
   · exact t4 m (by omega) (by omega) h1
 
+/- English proof (translation)
+Introduce `h h1 h2`. Establish `ht` using `tstR_sound (tests h h1 h2) (by omega)`. Establish `hmono : Nat.primeCounting (h / 2) ≤ Nat.primeCounting h` using `Nat.monotone_primeCounting (Nat.div_le_self h 2)`. Establish `hc : ((D h : ℕ) : ℝ) = (Nat.primeCounting h : ℝ) - (Nat.primeCounting (h / 2) : ℝ)`. Rewrite using `[D, Nat.cast_sub hmono]`.
+
+Rewrite `ht` using `[hc]`. Conclude with `ht`.
+-/
 theorem small_natural_numbers_bound : PI.PrimesDyadicRS.W.SmallNat := by
   intro h h1 h2
   have ht := tstR_sound (tests h h1 h2) (by omega)

@@ -27,6 +27,9 @@ namespace GlobalTheory.Heat.WtDec
 variable {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X]
   {oa : Q.OAct O}
 
+/- English proof (translation)
+Establish `h` using `((GlobalTheory.TorusModel.isAdd_iff _ _ _).1 (Y.rep.2 T x (t ≫ Y.i))).2 χ y J hJ`. Establish `C : IsCub (DVR.th Q (T` using `T) y J) := isCub_cubV Q.cub hJ`. Rewrite `h` using `[(Y.Φ_i t).1, C.face₃, _root_.mul_one]`. Rewrite using `[mul_comm (t ≫ Y.i) x, h, Units.val_mul, (Y.Φ_i t).2 χ y J hJ, _root_.mul_comm]`. Conclude with `congrArg (fun s => gs (𝟙 T.left) y ⊤ s * _) (GlobalTheory.SplitTorusPoints.coord_single t χ)`.
+-/
 theorem cv_act (Y : Ray oa) {T : Over (Sp R)} (t : T ⟶ splitTorus (Sp R) (GlobalTheory.RayEv.Chr Q)) (x : T ⟶ Y.H) (χ : Q.X)
     (y : T.left) (J : (T.left ⟶ Q.P.A.left) → Q.P.L.ι) (hJ : Good Q.P.L y J) :
     (GlobalTheory.TorusModel.cv (Y.Φ T ((t ≫ Y.i) * x)) χ y J : T.left.presheaf.stalk y) =
@@ -38,6 +41,9 @@ theorem cv_act (Y : Ray oa) {T : Over (Sp R)} (t : T ⟶ splitTorus (Sp R) (Glob
   rw [mul_comm (t ≫ Y.i) x, h, Units.val_mul, (Y.Φ_i t).2 χ y J hJ, _root_.mul_comm]
   exact congrArg (fun s => gs (𝟙 T.left) y ⊤ s * _) (GlobalTheory.SplitTorusPoints.coord_single t χ)
 
+/- English proof (translation)
+Use `Y.q_linear.isMonHom` as an intermediate fact. Conclude with `fun p hp => GlobalTheory.LevelExpansion.act_mem Y.isKernel _ _ p hp`.
+-/
 theorem preimage_stable (Y : Ray oa) (W : Q.P.A.left.Opens) :
     (snd (splitTorus (Sp R) (GlobalTheory.RayEv.Chr Q)) Y.H).left ⁻¹ᵁ (Y.q.left ⁻¹ᵁ W) ≤
       ((fst (splitTorus (Sp R) (GlobalTheory.RayEv.Chr Q)) Y.H ≫ Y.i) * snd (splitTorus (Sp R) (GlobalTheory.RayEv.Chr Q)) Y.H).left ⁻¹ᵁ
@@ -51,6 +57,23 @@ namespace GlobalTheory.Heat.WtDec
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.RayEv in
 
+/- English proof (translation)
+Introduce `R _ _ D O _ _ _ oa Y`. Take `⟨c⟩` from `GlobalTheory.TorusModel.nonempty_gtCoord GlobalTheory.allSixLaws.1.globalFns Y.isGt ⊥ 0`. Use `c.q_affine` as an intermediate fact. Set `F` to `fstG (⊥ : Ideal R) 0 Y.H`. Set `j` to `inv F.left`.
+
+Establish `hF : F.left ≫ Y.H.hom = (thickObj R ⊥ 0 Y.H).hom ≫ thick R ⊥ 0` using `Over.w F`. Set `ξ` to `Y.Φ Y.H (𝟙 _)`. Take `⟨x, hx⟩` from `GlobalTheory.TorusCoord.exists_point c (T := Y.H) (Y.H.hom ≫ inv (thick R ⊥ 0)) (by simp) ξ`. Take `⟨ξ', hξ'⟩` from `GlobalTheory.TorusCoord.exists_isPointOf c (T := Y.H) j (by`. Rewrite using `[← hF]`.
+
+Conclude with `IsIso.inv_hom_id_assoc _ _)`. Set `b : Y.H ⟶ Y.H` to `(Y.Φ Y.H).symm ξ'`. Establish `hb : Y.Φ Y.H b = ξ'` using `Equiv.apply_symm_apply _ _`. Set `a` to `x ≫ F.left`. Establish `ha : a ≫ Y.H.hom = Y.H.hom`.
+
+Rewrite using `[Category.assoc, hF]`. Conclude with `GlobalTheory.TorusCoord.IsPointOf.comp_hom c hx`. Set `a' : Y.H ⟶ Y.H` to `Over.homMk a ha`. Establish `haj : a ≫ j = x` using `by simp [a, j]`. Establish `e1 : b.left ≫ x = j`.
+
+Establish `h1 : GtPt.IsPull b.left ξ (Y.Φ Y.H (b ≫ 𝟙 _))` using `Y.rep.1 Y.H Y.H b (𝟙 _)`. Rewrite `h1` using `[Category.comp_id, hb]`. Conclude with `(GlobalTheory.TorusCoord.IsPointOf.pull c hx h1).unique_left c hξ'`. Establish `e1' : b.left ≫ a = 𝟙 _`. Rewrite using `[← Category.assoc, e1]`.
+
+Simplify using `[j]`. Establish `e2 : a' ≫ b = 𝟙 _`. Establish `h2 : GtPt.IsPull a (Y.Φ Y.H b) (Y.Φ Y.H (a' ≫ b))` using `Y.rep.1 Y.H Y.H a' b`. Rewrite `h2` using `[hb]`. Establish `h3` using `GlobalTheory.TorusCoord.IsPointOf.pull c hξ' h2`.
+
+Rewrite `h3` using `[haj]`. Conclude with `(Y.Φ Y.H).injective (h3.unique_right c hx)`. Establish `e2' : a ≫ b.left = 𝟙 _` using `congrArg (·.left) e2`. Establish `: IsIso a` using `⟨⟨b.left, e2', e1'⟩⟩`. Establish `hq : Y.q.left = a ≫ j ≫ c.q.left ≫ pullback.fst D.P.A.hom (thick R ⊥ 0)`.
+
+Rewrite using `[← Category.assoc a j, haj, ← GlobalTheory.TorusCoord.pG_left]`. Conclude with `hx.1`. Rewrite using `[hq]`. Use `infer_instance`.
+-/
 theorem isAffineHom_q : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O]
     [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa), IsAffineHom Y.q.left := by
   intro R _ _ D O _ _ _ oa Y
@@ -95,6 +118,15 @@ end GlobalTheory.Heat.WtDec
 
 namespace GlobalTheory.Heat.WtDec
 
+/- English proof (translation)
+Introduce `R _ _ Q O _ _ _ oa Y V u χ h S _ φ x x' c a a' ha ha' hV hV' hq hc`. Substitute `ha ha'` using the available equality. Establish `hqm : IsMonHom Y.q` using `Y.q_linear.isMonHom`. Establish `w : (x' * x⁻¹) ≫ Y.q = toUnit _ ≫ η[Q.P.A]`. Rewrite using `[← Hom.one_def, MonObj.mul_comp, hq, ← MonObj.mul_comp, mul_inv_cancel, MonObj.one_comp]`.
+
+Set `t` to `Y.isKernel.lift (x' * x⁻¹) (toUnit _) w`. Establish `ht : t ≫ Y.i = x' * x⁻¹` using `Y.isKernel.lift_fst _ _ _`. Establish `hx' : (t ≫ Y.i) * x = x'` using `by rw [ht, _root_.mul_assoc, inv_mul_cancel, _root_.mul_one]`. Establish `key : t.left.appTop.hom (charUnit (Sp R) (GlobalTheory.RayEv.Chr Q) χ).val = (Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom (c χ)` using `fn_ext fun y _ => by choose J hJ using fun ψ : Sp S ⟶ Q.P.A.left => exists_chart Q.P.isLB (ψ y)`. Establish `e1` using `cv_act Y t x χ y J hJ`.
+
+Rewrite `e1` using `[hx']`. Establish `e2` using `congrArg Units.val (hc χ y J hJ)`. Rewrite `e2` using `[Units.val_mul, ← gs_unit _ y ⊤ trivial]`. Conclude with `(Units.mul_left_inj _).1 (e1.symm.trans e2)`. Establish `h₁ : ⊤ ≤ ((t ≫ Y.i) * x).left ⁻¹ᵁ V` using `by rw [hx']; exact hV'`.
+
+Rewrite using `[WtAlg.valR_eq' _ _ hV', WtAlg.valR_eq' _ _ hV, ← GlobalTheory.TorusGrading.val_congr hx' h₁ hV' u, h _ t x h₁ hV, map_mul, key, Iso.inv_hom_id_apply]`.
+-/
 theorem isWt_of_uu : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O]
     [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa) (V : Y.H.left.Opens) (u : Γ(Y.H.left, V)) (χ : Q.X),
     GlobalTheory.UU.IsWt Y.i V u χ → IsWt Y χ V u := by
@@ -122,6 +154,23 @@ end GlobalTheory.Heat.WtDec
 
 namespace GlobalTheory.Heat.WtDec
 
+/- English proof (translation)
+Introduce `R _ _ Q O _ _ _ oa Y V u χ h`. Use `(GlobalTheory.CubCompare.isWt_iff_germ _ _ _ _).2 fun T z t x hx hx' => ?_` and prove the remaining obligations. Take `⟨U, hU, hzU, hUle⟩` from `exists_isAffineOpen_mem_and_subset (x := z) (U := x.left ⁻¹ᵁ V ⊓ ((t ≫ Y.i) * x).left ⁻¹ᵁ V) ⟨hx, hx'⟩`. Set `ρ : Sp Γ(T.left, U) ⟶ T.left` to `hU.fromSpec`. Set `φ : R →+* Γ(T.left, U)` to `(Spec.preimage (ρ ≫ T.hom)).hom`.
+
+Establish `hφ : ρ ≫ T.hom = spMap φ` using `by simp [spMap, φ]`. Set `k : Over.mk (spMap φ) ⟶ T` to `Over.homMk ρ hφ`. Establish `hr : ∀ p, ρ p ∈ U` using `fun p => by`. Establish `: ρ p ∈ Set.range ρ` using `⟨p, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis.
+
+Take `⟨z', rfl⟩ : z ∈ Set.range ρ` from `by rw [hU.range_fromSpec]; exact hzU`. Establish `hV₁ : ⊤ ≤ (k ≫ x).left ⁻¹ᵁ V` using `fun p _ => (hUle (hr p)).1`. Establish `hV₂ : ⊤ ≤ (k ≫ ((t ≫ Y.i) * x)).left ⁻¹ᵁ V` using `fun p _ => (hUle (hr p)).2`. Set `c : Q.X → (Γ(T.left, U))ˣ` to `fun χ' => Units.map (Scheme.ΓSpecIso (CommRingCat.of Γ(T.left, U))).hom.hom.toMonoidHom (Units.map (k ≫ t).left.appTop.hom.toMonoidHom (charUnit (Sp R) (GlobalTheory.RayEv.Chr Q) χ'))`. Establish `hcv : ∀ χ', (unitOn (c χ')).val = (k ≫ t).left.appTop.hom (charUnit (Sp R) (GlobalTheory.RayEv.Chr Q) χ').val` using `fun χ' => by show (Scheme.ΓSpecIso (CommRingCat.of Γ(T.left, U))).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of Γ(T.left, U))).hom.hom ((k ≫ t).left.appTop.hom (charUnit (Sp R) (GlobalTheory.RayEv.Chr Q) χ').val)) = _`.
+
+Conclude with `Iso.hom_inv_id_apply _ _`. Establish `e : k ≫ ((t ≫ Y.i) * x) = ((k ≫ t) ≫ Y.i) * (k ≫ x)` using `by rw [MonObj.comp_mul, Category.assoc]`. Establish `hc : ∀ χ' y J, Good Q.P.L y J → val ((Y.Φ _ (k ≫ ((t ≫ Y.i) * x))).s χ') (𝟙 _) y J = gm (𝟙 (Over.mk (spMap φ)).left) y ⊤ (unitOn (c χ')) * val ((Y.Φ _ (k ≫ x)).s χ') (𝟙 _) y J`. Introduce `χ' y J hJ`. Rewrite using `[e]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, ← gs_unit _ y ⊤ trivial, hcv]`. Conclude with `cv_act Y (k ≫ t) (k ≫ x) χ' y J hJ`. Establish `hq : (k ≫ ((t ≫ Y.i) * x)) ≫ Y.q = (k ≫ x) ≫ Y.q`. Use `Y.q_linear.isMonHom` as an intermediate fact.
+
+Conclude with `Over.OverMorphism.ext (by simp only [Over.comp_left, Category.assoc, GlobalTheory.LevelExpansion.act_q Y.isKernel t x])`. Establish `E` using `h Γ(T.left, U) φ (k ≫ x) (k ≫ ((t ≫ Y.i) * x)) c _ _ rfl rfl hV₁ hV₂ hq hc`. Rewrite `E` using `[WtAlg.valR_eq' _ _ hV₂, WtAlg.valR_eq' _ _ hV₁]`. Establish `E'` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of Γ(T.left, U))).inv.hom E`. Rewrite `E'` using `[Iso.hom_inv_id_apply, map_mul, Iso.hom_inv_id_apply]`.
+
+Establish `E''` using `congrArg (gs (𝟙 _) z' ⊤) E'`. Rewrite `E''` using `[GlobalTheory.CubCompare.gs_appLE, gs_mul _ z' ⊤ trivial, GlobalTheory.CubCompare.gs_appLE]`. Establish `hcv' : (Scheme.ΓSpecIso (CommRingCat.of Γ(T.left, U))).inv.hom (c χ : Γ(T.left, U)) = (k ≫ t).left.appTop.hom (charUnit (Sp R) (GlobalTheory.RayEv.Chr Q) χ).val` using `hcv χ`. Establish `g1 : gs (𝟙 _) z' ⊤ ((k ≫ t).left.appTop.hom (charUnit (Sp R) (GlobalTheory.RayEv.Chr Q) χ).val) = gs (k ≫ t).left z' ⊤ (charUnit (Sp R) (GlobalTheory.RayEv.Chr Q) χ).val` using `(gs_pull (𝟙 _) (k ≫ t).left z' ⊤ trivial _).trans (by rw [Category.id_comp])`. Rewrite `E''` using `[hcv', g1]`.
+
+Apply `(ConcreteCategory.bijective_of_isIso (ρ.stalkMap z')).1` to reduce the goal to its premises. Use `show (ρ.stalkMap z').hom _ = (ρ.stalkMap z').hom _`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.CubicalSymmetricTriv.charV`. Rewrite using `[map_mul, ← GlobalTheory.CubCompare.gs_comp ρ _ V z' hx' u, ← GlobalTheory.CubCompare.gs_comp ρ _ V z' hx u, ← gs_unit _ _ ⊤ trivial, ← GlobalTheory.CubCompare.gs_comp ρ _ ⊤ z' trivial]`. Conclude with `E''`.
+-/
 theorem uu_of_isWt : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O]
     [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa) (V : Y.H.left.Opens) (u : Γ(Y.H.left, V)) (χ : Q.X),
     IsWt Y χ V u → GlobalTheory.UU.IsWt Y.i V u χ := by
@@ -179,6 +228,11 @@ end GlobalTheory.Heat.WtDec
 
 namespace GlobalTheory.Heat.WtDec
 
+/- English proof (translation)
+Introduce `R _ _ Q O _ _ _ oa Y W hW f`. Establish `hi : IsMonHom Y.i` using `Y.i_linear.isMonHom`. Use `isAffineHom_q Y` as an intermediate fact. Take `⟨ex, un⟩` from `GlobalTheory.functions_graded_by_weights (Sp R) Y.H (GlobalTheory.RayEv.Chr Q) Y.i hi _ (hW.preimage Y.q.left) (preimage_stable Y W)`. Take `⟨a, ha, rfl⟩` from `ex f`.
+
+Use `⟨a, ⟨fun χ => isWt_of_uu Y _ _ χ (ha χ), rfl⟩, fun F hF => ?_⟩` and prove the remaining obligations. Set `F' : GlobalTheory.RayEv.Chr Q →₀ Γ(Y.H.left, Y.q.left ⁻¹ᵁ W)` to `F`. Establish `e` using `un (F' - a) (fun χ => uu_of_isWt Y _ _ χ (WtAlg.isWt_sub (hF.1 χ) (isWt_of_uu Y _ _ χ (ha χ)))) (by rw [Finsupp.sum_sub_index (fun _ _ _ => rfl)]; exact sub_eq_zero.2 hF.2.symm)`. Conclude with `sub_eq_zero.1 e`.
+-/
 theorem existsUnique_weights : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (W : Q.P.A.left.Opens), IsAffineOpen W → ∀ f : Γ(Y.H.left, Y.q.left ⁻¹ᵁ W), ∃! F : Q.X →₀ Γ(Y.H.left, Y.q.left ⁻¹ᵁ W), (∀ χ, IsWt Y χ _ (F χ)) ∧ f = F.sum (fun _ t => t) := by
   intro R _ _ Q O _ _ _ oa Y W hW f
   have hi : IsMonHom Y.i := Y.i_linear.isMonHom

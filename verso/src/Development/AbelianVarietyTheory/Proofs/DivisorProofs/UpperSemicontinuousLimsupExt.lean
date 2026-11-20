@@ -9,6 +9,13 @@ open Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `y b hb`. Take `⟨c, hc, hcb⟩` from `exists_between hb`. Establish `hev : ∀ᶠ y' in 𝓝[S] y, (u y' : EReal) < c` using `Filter.eventually_lt_of_limsup_lt hc`. Take `⟨O, hOy, hO⟩` from `mem_nhdsWithin_iff_exists_mem_nhds_inter.mp hev`. Take `⟨O', hO'O, hO'open, hyO'⟩` from `mem_nhds_iff.mp hOy`.
+
+Use `filter_upwards [hO'open.mem_nhds hyO'] with y'' hy''`. Establish `h2 : ∀ᶠ y' in 𝓝[S] y'', (u y' : EReal) ≤ c`. Establish `: S ∩ O ∈ 𝓝[S] y''` using `inter_mem_nhdsWithin S (mem_of_superset (hO'open.mem_nhds hy'') hO'O)`. Use `filter_upwards [this] with z hz using (hO ⟨hz.2, hz.1⟩).le`. Establish `: GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.limsupExt S u y'' ≤ c`.
+
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.limsupExt`. Conclude with `Filter.limsup_le_of_le (by isBoundedDefault) h2`. Conclude with `lt_of_le_of_lt this hcb`.
+-/
 theorem limsupExt_upperSemicontinuous (Y : Type) [TopologicalSpace Y] (S : Set Y) (u : Y → ℝ) :
     UpperSemicontinuous (GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.limsupExt S u) := by
   intro y b hb
@@ -27,6 +34,9 @@ theorem limsupExt_upperSemicontinuous (Y : Type) [TopologicalSpace Y] (S : Set Y
     exact Filter.limsup_le_of_le (by isBoundedDefault) h2
   exact lt_of_le_of_lt this hcb
 
+/- English proof (translation)
+Introduce `Y _ S u` and use `limsupExt_upperSemicontinuous Y S u`.
+-/
 theorem limsupExt_usc_all : ∀ (Y : Type) [TopologicalSpace Y] (S : Set Y) (u : Y → ℝ),
     UpperSemicontinuous (GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.limsupExt S u) :=
   fun Y _ S u => limsupExt_upperSemicontinuous Y S u

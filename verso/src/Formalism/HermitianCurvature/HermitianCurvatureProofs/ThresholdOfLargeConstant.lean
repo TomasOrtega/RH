@@ -12,6 +12,13 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.C6
 
+/- English proof (translation)
+Establish `hs : ∀ x : ℝ, star (Complex.exp (Complex.I * (x : ℂ))) = Complex.exp (-(Complex.I * (x : ℂ)))`. Introduce `x`. Use `show (starRingEnd ℂ) (Complex.exp (Complex.I * (x : ℂ))) = _`. Rewrite using `[← Complex.exp_conj]`. Use `congr 1`.
+
+Simplify using `[Complex.conj_ofReal]`. Simplify using `only [JF.xiP, B.xiTau, psi, B.lam, hs]`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem xi_eq_xiTau_one_one {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (p : B.SS k r) :
     JF.xiP D p = B.xiTau D (1, 1) p := by
@@ -27,6 +34,15 @@ theorem xi_eq_xiTau_one_one {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `JF.TransportedAlt`. Unfold `AV at hA`. Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hCV' : (19 : ℝ) ≤ CV` using `by exact_mod_cast hCV`. Establish `hn1 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ 2 * r + k + 1)`.
+
+Simplify using `only [Nat.cast_zero, mul_zero, sub_zero]`. Rewrite using `[lt_div_iff₀ (by positivity)]`. Establish `h1 : (r : ℝ) * ((CV : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2) ≤ A`. Use `le_trans ?_ hA` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises.
+
+Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Establish `: 0 ≤ (r : ℝ) ^ 3 * ((2 * r + k + 1 : ℕ) : ℝ)` using `by positivity`. Establish `: 0 ≤ (r : ℝ) ^ 4` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (r : ℝ) * (19 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2) ≤ (r : ℝ) * ((CV : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2)`.
+
+Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right hCV' (by positivity)`. Establish `h3 : 0 ≤ ((r : ℝ) - 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2` using `mul_nonneg (by linarith) (sq_nonneg _)`. Establish `h4 : 0 < (r : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem threshold_of_large_constant {k r CV : ℕ} {A : ℝ} (hr : 1 ≤ r) (hCV : 19 ≤ CV)
     (hA : (r : ℝ) * AV CV r (2 * r + k + 1) ≤ A) : JF.TransportedAlt k r A 0 := by
   unfold JF.TransportedAlt
@@ -52,6 +68,25 @@ theorem threshold_of_large_constant {k r CV : ℕ} {A : ℝ} (hr : 1 ≤ r) (hCV
   have h4 : 0 < (r : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 := by positivity
   nlinarith
 
+/- English proof (translation)
+Introduce `hR`. Use `⟨19, ?_⟩` and prove the remaining obligations. Introduce `CV hCV k r Wp Wq _ _ _ _ _ _ D A ε mm F' γ H hγ hrel O`. Take `⟨hr, hε, hA, hmm, hF, hsupp, hbig⟩` from `H`. Establish `hRs : Rset γ = {1}` using `hR k r Wp Wq D γ hγ hrel`.
+
+Establish `hconc : O.μR ({(1 : B.Mat k r)} : Set (Mt k r))ᶜ = 0`. Use `O.haarR.conc` as an intermediate fact. Rewrite `this` using `[hRs]`. Conclude with `this`. Establish `hone : O.μR ({(1 : B.Mat k r)} : Set (Mt k r)) < ⊤` using `O.haarR.finite_compact _ isCompact_singleton`.
+
+Establish `hfin : O.μR Set.univ < ⊤`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.union_compl_self]`. Use `_ ≤ O.μR ({(1 : B.Mat k r)} : Set (Mt k r)) + O.μR ({(1 : B.Mat k r)} : Set (Mt k r))ᶜ := measure_union_le _ _`. Use `_ < ⊤ := by rw [hconc, add_zero]; exact hone`.
+
+Establish `hne : O.μR Set.univ ≠ 0` using `Measure.measure_univ_ne_zero.mpr O.haarR.ne_zero`. Use `set c : ℝ := O.μR.real Set.univ with hc_def`. Establish `hc : 0 < c`. Rewrite using `[hc_def, measureReal_def]`. Conclude with `ENNReal.toReal_pos hne hfin.ne`.
+
+Establish `hγOm : γ ∈ JF.Om k r D.z D.z'` using `⟨hγ.1, fun l _ => hγ.2.2 l (Finset.mem_univ _), hγ.2.1⟩`. Establish `hThr : JF.TransportedAlt k r A 0` using `threshold_of_large_constant hr hCV hA`. Establish `hint0` using `(bessel_integral_converges k r Wp Wq D A F' hThr (DifferentialOperatorClasses.inCC_mono (Nat.zero_le mm) hF)).1 γ hγOm`. Establish `hθ : ∀ p : B.SS k r, D.inSS p → ∫ x, (fun _ : B.SS k r => c⁻¹) (actR γ (Matrix.of x) p) ∂O.μR = 1`. Introduce `p _`.
+
+Simplify using `only [integral_const, smul_eq_mul]`. Rewrite using `[← hc_def]`. Clear the denominators using the available nonvanishing facts. Establish `hfun : (fun p : B.SS k r => (fun _ : B.SS k r => c⁻¹) p • (B.xiTau D (1, 1) p • B.rho D p F' γ)) = fun p => c⁻¹ • JF.integrand D F' γ p`. Use function extensionality and compare the values at `p`.
+
+Simplify using `only [JF.integrand, xi_eq_xiTau_one_one]`. Establish `hint : Integrable (fun p : B.SS k r => (fun _ : B.SS k r => c⁻¹) p • (B.xiTau D (1, 1) p • B.rho D p F' γ)) D.μSS`. Rewrite using `[hfun]`. Conclude with `hint0.smul c⁻¹`. Establish `hw` using `O.weil F' (fun _ => c⁻¹) measurable_const (fun _ => by positivity) hθ hint`.
+
+Rewrite using `[← hw, integral_smul]`. Establish `hJ : ∫ p, B.xiTau D (1, 1) p • B.rho D p F' γ ∂D.μSS = 0`. Establish `h1 : B.Jtau D (1, 1) F' γ = B.JF D F' γ` using `bessel_function_trivial_index k r Wp Wq D F' γ`. Rewrite `h1` using `[hbig γ hγ]`. Conclude with `h1`.
+
+Rewrite using `[hJ, smul_zero]`.
+-/
 theorem big_cell_density_of_parts : Formalism.FourierDecayAlt.DensityAveraging.DensBigOfParts := by
   intro hR
   refine ⟨19, ?_⟩

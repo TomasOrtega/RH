@@ -19,6 +19,9 @@ variable {D : D7}
 def badPlaces (D : D7) : Finset (HeightOneSpectrum (𝓞 D.host.F)) :=
   Formalism.L2.DIV.primesOf (((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F))
 
+/- English proof (translation)
+Unfold `badPlaces`. Rewrite using `[Formalism.L2.DIV.mem_primesOf, and_iff_right]`. Conclude with `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero` after adjusting the coercions.
+-/
 theorem mem_badPlaces (v : HeightOneSpectrum (𝓞 D.host.F)) :
     v ∈ badPlaces D ↔ ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal := by
   unfold badPlaces
@@ -68,13 +71,22 @@ def eLin (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (L : Formalism.L2.DIV.LevDat
     · simp only [Pi.smul_apply, smul_eq_mul]; ring
     · simp
 
+/- English proof (translation)
+Rewrite using `[D.sp.Y_rank 0 (Nat.zero_le _)]`. Simplify using `[Ranks.rankY]`.
+-/
 theorem rank_le_first_space_rank (D : D7) : D.R.r ≤ (D.sp.Y 0).rank := by
   rw [D.sp.Y_rank 0 (Nat.zero_le _)]
   simp [Ranks.rankY]
 
+/- English proof (translation)
+The claim follows from `(D.sp.W_rank j h1 h2).ge`.
+-/
 theorem r_le_rank_Wc (D : D7) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : D.R.r ≤ (D.sp.W j).rank :=
   (D.sp.W_rank j h1 h2).ge
 
+/- English proof (translation)
+Rewrite using `[D.sp.W_rank j h1 h2, D.sp.Y_rank 0 (Nat.zero_le _)]`. Simplify using `[Ranks.rankY]`.
+-/
 theorem rank_W_eq (D : D7) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : (D.sp.W j).rank = (D.sp.Y 0).rank := by
   rw [D.sp.W_rank j h1 h2, D.sp.Y_rank 0 (Nat.zero_le _)]
   simp [Ranks.rankY]
@@ -110,6 +122,9 @@ def Matched (V V' : HSp D) (h : V'.rank = V.rank) (Pg : Finset (Formalism.L2.DIV
     (∀ PP ∈ Pg, Formalism.UG.bc (Formalism.L2.DIV.resS D.host.F PP) y = 1) ∧
     gramIn V' (β' * Formalism.L2.DIV.intGL D.host.F D.host.E V'.rank y) = (gramIn V β).submatrix (Fin.cast h) (Fin.cast h)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun _ _ => map_one _, by rw [map_one, mul_one]; rfl⟩`.
+-/
 example (V : HSp D) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) (β : GL (Fin V.rank) (EAf D)) : Matched V V rfl Pg β β :=
   ⟨1, fun _ _ => map_one _, by rw [map_one, mul_one]; rfl⟩
 
@@ -146,11 +161,17 @@ def DimPartsSharp : Prop := DimPartsFor (fun D Pg ψ => Formalism.L2.DIV.Psharp 
 def DimPartsSharpSym : Prop :=
   DimPartsFor (fun D Pg ψ => Formalism.L2.DIV.PsharpSym Pg D.R.r D.R.rS D.R.k ψ) (fun _ _ _ _ _ _ _ => True)
 
+/- English proof (translation)
+Introduce `D L hP θ hθ Pg hPg b hb φ om hom ψ hψ M₀ β₀ hβ₀ c`. Take `⟨d, h0, hj⟩` from `h D L hP θ hθ Pg hPg b hb φ om hom ψ hψ M₀ β₀ hβ₀ c`. Conclude with `⟨d, h0, fun j h1 h2 M β hβ _ => hj j h1 h2 M β hβ trivial⟩`.
+-/
 theorem DimParts.matched (h : DimParts) : DimPartsMatched := by
   intro D L hP θ hθ Pg hPg b hb φ om hom ψ hψ M₀ β₀ hβ₀ c
   obtain ⟨d, h0, hj⟩ := h D L hP θ hθ Pg hPg b hb φ om hom ψ hψ M₀ β₀ hβ₀ c
   exact ⟨d, h0, fun j h1 h2 M β hβ _ => hj j h1 h2 M β hβ trivial⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 example (V : HSp D) (hr : D.R.r ≤ V.rank) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) (P : Formalism.L2.DIV.LevelP Pg D.R.r ℂ) :
     (datR V hr Pg P Lev.Frm.A).P = P.conj ∧ (datR V hr Pg P Lev.Frm.B).P = P := ⟨rfl, rfl⟩
 

@@ -11,6 +11,9 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 open AlgebraicGeometry MeasureTheory GlobalTheory.ChernReg GlobalTheory.ShFam GlobalTheory.CxPts Filter Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LogMean.regLog_le_log_log | exact GlobalTheory.LogMean.regLog_le_log_log | (intros; apply GlobalTheory.LogMean.regLog_le_log_log <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.log_metric_cutoff_integrable : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.HeightParts.KernelSt → GlobalTheory.HeightParts.OnCore fun _ O _ P =>
     ∃ C t₀ : ℝ, 0 < C ∧ 0 < t₀ ∧ ∀ t : ℝ, 0 < t → t ≤ t₀ → ∀ (c : O.s.Comp) (σ : _ →+* ℂ)
       (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim) (y : GlobalTheory.TrueGeo.Pts (O.var c) σ), y ∈ ch.e.source →

@@ -6,6 +6,9 @@ open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨f, rfl⟩ : ∃ f : R₀ →+* R, inst = f.toAlgebra` from `⟨_, toAlgebra_algebraMap.symm⟩`. Conclude with `⟨NatIso.ofComponents (fun s => Iso.refl _) fun h => by`. Rewrite using `[Iso.refl_hom, Iso.refl_hom]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm⟩`.
+-/
 theorem Cube.nonempty_extendScalars_iso_baseChange {ι : Type} {R₀ R : Type} [CommRing R₀]
     [CommRing R] [inst : Algebra R₀ R] (C : Cube.{0} ι R₀) :
     Nonempty (C ⋙ ModuleCat.extendScalars.{0, 0, 0} (algebraMap R₀ R) ≅ Cube.baseChange R C) := by
@@ -14,6 +17,9 @@ theorem Cube.nonempty_extendScalars_iso_baseChange {ι : Type} {R₀ R : Type} [
     rw [Iso.refl_hom, Iso.refl_hom]
     exact (Category.comp_id _).trans (Category.id_comp _).symm⟩
 
+/- English proof (translation)
+Use `letI := f.toAlgebra`. Conclude with `⟨inferInstanceAs (Module.Finite R (R ⊗[R₀] M)), inferInstanceAs (Module.Projective R (R ⊗[R₀] M))⟩`.
+-/
 theorem finite_projective_extendScalars_obj {R₀ R : Type} [CommRing R₀] [CommRing R]
     (f : R₀ →+* R) (M : ModuleCat.{0} R₀) [Module.Finite R₀ M] [Module.Projective R₀ M] :
     Module.Finite R ((ModuleCat.extendScalars.{0, 0, 0} f).obj M) ∧
@@ -22,6 +28,9 @@ theorem finite_projective_extendScalars_obj {R₀ R : Type} [CommRing R₀] [Com
   exact ⟨inferInstanceAs (Module.Finite R (R ⊗[R₀] M)),
     inferInstanceAs (Module.Projective R (R ⊗[R₀] M))⟩
 
+/- English proof (translation)
+Set `e` to `NatIso.mapHomologicalComplex (ModuleCat.extendScalarsComp.{0} f g) (ComplexShape.up ℕ)`. Establish `h' : QuasiIso (((ModuleCat.extendScalars.{0, 0, 0} f ⋙ ModuleCat.extendScalars.{0, 0, 0} g).mapHomologicalComplex _).map φ)`. Rewrite using `[← NatIso.naturality_1 e φ]`. Use `infer_instance`. Conclude with `h'`.
+-/
 theorem quasiIso_extendScalars_extendScalars {R₀ R R' : Type} [CommRing R₀] [CommRing R]
     [CommRing R'] (f : R₀ →+* R) (g : R →+* R') {K L : CochainComplex (ModuleCat.{0} R₀) ℕ}
     (φ : K ⟶ L)
@@ -36,6 +45,13 @@ theorem quasiIso_extendScalars_extendScalars {R₀ R R' : Type} [CommRing R₀] 
     infer_instance
   exact h'
 
+/- English proof (translation)
+Introduce `ι _ _ R₀ R _ _ _ _ C₀ A θ hflat hfin hθ`. Take `⟨K₀, φ₀, h0, h1, -, h2, -, -, h3⟩` from `exists_finite_projective_complex_quasiIso.{0, 0} (cechComplex C₀) (Fintype.card ι - 1) (fun p hp => isZero_cechComplex_X C₀ (by omega)) (fun p => Cube.flat_term C₀ (p + 1) fun s hs => hflat s (Finset.card_pos.1 (by omega))) hfin`. Take `⟨e⟩` from `Cube.nonempty_extendScalars_iso_baseChange (R := R) C₀`. Set `F` to `(ModuleCat.extendScalars.{0, 0, 0} (algebraMap R₀ R)).mapHomologicalComplex (ComplexShape.up ℕ)`. Set `ψ : F.obj (cechComplex C₀) ≅ cechComplex A` to `cechExtendScalarsIso (algebraMap R₀ R) C₀ ≪≫ (cechFunctor ι R).mapIso e ≪≫ @asIso _ _ _ _ (cechComplexMap θ) (isIso_cechComplexMap θ hθ)`.
+
+Use `⟨F.obj K₀, F.map φ₀ ≫ ψ.hom, fun p hp => ?_, fun p => ?_, fun R' _ _ => ?_⟩` and prove the remaining obligations. Conclude with `(ModuleCat.extendScalars.{0, 0, 0} (algebraMap R₀ R)).map_isZero (h0 _ (by omega))`. Use `h1 p` as an intermediate fact. Use `h2 p` as an intermediate fact. Conclude with `finite_projective_extendScalars_obj (algebraMap R₀ R) (K₀.X p)`.
+
+Use `letI := ((algebraMap R R').comp (algebraMap R₀ R)).toAlgebra`. Use `quasiIso_extendScalars_extendScalars (algebraMap R₀ R) (algebraMap R R') φ₀ (h3 R')` as an intermediate fact. Rewrite using `[Functor.map_comp]`. Use `infer_instance`.
+-/
 theorem exists_finite_projective_complex_of_noetherian_model :
     ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R₀ R : Type) [CommRing R₀] [IsNoetherianRing R₀] [CommRing R] [Algebra R₀ R] (C₀ : Cube.{0} ι R₀) (A : Cube.{0} ι R) (θ : Cube.baseChange R C₀ ⟶ A), (∀ s : Finset ι, s.Nonempty → Module.Flat R₀ (C₀.obj s)) → (∀ p, Module.Finite R₀ ((cechComplex C₀).homology p)) → (∀ s : Finset ι, s.Nonempty → Function.Bijective (θ.app s).hom) → ∃ (K : CochainComplex (ModuleCat.{0} R) ℕ) (φ : K ⟶ cechComplex A), (∀ p, Fintype.card ι ≤ p + 1 → IsZero (K.X (p + 1))) ∧ (∀ p, Module.Finite R (K.X p) ∧ Module.Projective R (K.X p)) ∧ ∀ (R' : Type) [CommRing R'] [Algebra R R'], QuasiIso (((ModuleCat.extendScalars.{0, 0, 0} (algebraMap R R')).mapHomologicalComplex _).map φ) := by
   intro ι _ _ R₀ R _ _ _ _ C₀ A θ hflat hfin hθ

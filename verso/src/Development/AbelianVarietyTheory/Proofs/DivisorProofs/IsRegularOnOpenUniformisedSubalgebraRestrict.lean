@@ -11,6 +11,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RegAlg
 
+/- English proof (translation)
+Introduce `A _ g L u U`. Use `⟨fun a => ?_, fun k k' hk hk' => ?_, fun k k' hk he => ?_, fun V hV k hk => ?_, fun k hk => ?_, fun n k hk => ?_⟩` and prove the remaining obligations. Use `⟨constFn A.hom U a, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hp : (u.ex z).left ≫ A.hom = 𝟙 _`. Simplify using `using Over.w (u.ex z)`.
+
+Conclude with `(GlobalTheory.valAt'_constFn (u.ex z).left A.hom hp U a hz).symm`. Take `⟨b, hb⟩` from `hk`. Take `⟨b', hb'⟩` from `hk'`. Use `⟨⟨b + b', fun z hz => ?_⟩, ⟨b - b', fun z hz => ?_⟩, ⟨b * b', fun z hz => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, val, GlobalTheory.valAt'_add, hb z hz, hb' z hz]`.
+
+Simplify using `only [Pi.sub_apply, val, GlobalTheory.valAt'_sub, hb z hz, hb' z hz]`. Simplify using `only [Pi.mul_apply, val, GlobalTheory.valAt'_mul, hb z hz, hb' z hz]`. Take `⟨b, hb⟩` from `hk`. Conclude with `⟨b, fun z hz => (he z hz).trans (hb z hz)⟩`. Take `⟨b, hb⟩` from `hk`.
+
+Use `⟨resG A.left hV b, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hzU : z ∈ pre u.ex U` using `GlobalTheory.top_le_preimage_mono _ hV hz`. Rewrite using `[hb z hzU]`. Conclude with `(GlobalTheory.valAt'_res (u.ex z).left hV b hz).symm`. Take `⟨b, hb⟩` from `hk`.
+
+Conclude with `(u.hol U b).2.congr fun z hz => hb z hz`. Use `choose b hb using hk`. Use `⟨∑ i, b i, fun z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [val, GlobalTheory.valAt'_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hb i z hz`.
+-/
 theorem main : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), ∀ U : A.left.Opens, (∀ a : ℂ, IsReg u.ex U fun _ => a) ∧ (∀ k k', IsReg u.ex U k → IsReg u.ex U k' → IsReg u.ex U (k + k') ∧ IsReg u.ex U (k - k') ∧ IsReg u.ex U (k * k')) ∧ (∀ k k', IsReg u.ex U k → (∀ z ∈ pre u.ex U, k' z = k z) → IsReg u.ex U k') ∧ (∀ V, V ≤ U → ∀ k, IsReg u.ex U k → IsReg u.ex V k) ∧ (∀ k, IsReg u.ex U k → DifferentiableOn ℂ k (pre u.ex U)) ∧ ∀ (n : ℕ) (k : Fin n → (Fin g → ℂ) → ℂ), (∀ i, IsReg u.ex U (k i)) → IsReg u.ex U (fun z => ∑ i, k i z) := by
   intro A _ g L u U
   refine ⟨fun a => ?_, fun k k' hk hk' => ?_, fun k k' hk he => ?_, fun V hV k hk => ?_, fun k hk => ?_, fun n k hk => ?_⟩

@@ -15,6 +15,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formal
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
 
+/- English proof (translation)
+Establish `e : N = Formalism.UG.CS.globLat g (stdLat E n)`. Establish `h1` using `Formalism.UG.P.global_lattice_one_holds F E (Fin n) N (Module.Finite.iff_fg.2 hN.fg) hN.span_eq_top`. Use extensionality with `v`. Use `conv_lhs => rw [← h1]`. Establish `e1 : ∀ (x : GL (Fin n) (AfE F E)) (Λ : Submodule (𝓞 E) (Fin n → E)) (v : Fin n → E), v ∈ Formalism.UG.CS.globLat x Λ ↔ ((x⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ (fun i => Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (v i)) ∈ Formalism.L2.Herm.hatL (F := F) Λ := fun _ _ _ => Iff.rfl`.
+
+Rewrite using `[e1, e1, inv_one, Units.val_one, Matrix.one_mulVec]`. Conclude with `hg _`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `hz i`.
+
+Conclude with `PtExist.valued_pullV_le g hz i`. Introduce `h`. Establish `h' : ∀ i, IntAtA (F` using `F) P (Formalism.L2.Col.pullV g z i) := fun i => (AdT.AdelicValuationDictionary.intAtA_iff P _).2 (h i)`. Use `choose s hs hsz using h'`. Establish `hT : (∏ i, s i) ∉ P.asIdeal`.
+
+Introduce `hm`. Take `⟨i, -, hi⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := P.isPrime)).1 hm`. Conclude with `hs i hi`. Use `(mem_locP P _ z).2 ⟨∏ i, s i, hT, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_globLat]`.
+
+Introduce `i`. Rewrite using `[pullV_osmul, ← Finset.prod_erase_mul Finset.univ s (Finset.mem_univ i), map_mul, map_mul, mul_assoc]`. Conclude with `mul_mem (iA_mem _) (hsz i)`.
+-/
 theorem mem_localization_iff {n : ℕ} {g : GL (Fin n) (AfE F E)} {N : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E N)
     (hg : Formalism.L2.Herm.Carries g (stdLat E n) N) (P : HeightOneSpectrum (𝓞 E)) (z : Sp E n) :
     z ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal N ↔ ∀ i, Valued.v (adAt F P (Col2.pullV g z i)) ≤ 1 := by
@@ -48,6 +59,9 @@ theorem mem_localization_iff {n : ℕ} {g : GL (Fin n) (AfE F E)} {N : Submodule
 
 variable {hc : Formalism.BasicNotions.CMData F E}
 
+/- English proof (translation)
+Take `⟨s, hs, hsz⟩` from `(mem_locP P.1 _ z).1 hz`. Establish `h` using `hg.f P _ hsz i hi`. Rewrite `h` using `[Splice.adAt_pullV_osmul, p.deco.2.f_smul P s z hz]`. Conclude with `Splice.hasRes_of_mul hs h`.
+-/
 theorem hasRes_f {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))} {g : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q}
     (hg : IsPtOf hc g p) (P : ST) {z : Sp E n} (hz : z ∈ p.deco.1.at P.1) {i : Fin n} (hi : i.1 + 1 = n) :
     HasRes P.1 (adAt F P.1 (Col2.pullV g z i)) (p.deco.1.f P z) := by
@@ -56,6 +70,17 @@ theorem hasRes_f {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))} {g : 
   rw [Splice.adAt_pullV_osmul, p.deco.2.f_smul P s z hz] at h
   exact Splice.hasRes_of_mul hs h
 
+/- English proof (translation)
+Establish `key : ∀ u ∈ Formalism.L2.Herm.hatL (F` using `F) N, T (c ⬝ᵥ u) := by`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`.
+
+Conclude with `h v hv`. Consider the case `zero => rwa [dotProduct_zero]`. Consider the case `add x y _ _ hx hy`. Rewrite using `[dotProduct_add]`. Conclude with `hadd _ _ hx hy`.
+
+Consider the case `smul a x _ hx`. Establish `e0 : a • x = (a : AfE F E) • x` using `rfl`. Rewrite using `[e0, dotProduct_smul, smul_eq_mul]`. Conclude with `hmul _ a.2 _ hx`. Establish `hu : (fun l => (g : Matrix (Fin n) (Fin n) (AfE F E)) l s) ∈ Formalism.L2.Herm.hatL (F` using `F) N := by`.
+
+Use `(hg _).2 ((mem_latS_std _).2 fun l => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[← Matrix.mul_apply, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+
+Conclude with `key _ hu`.
+-/
 theorem row_of_lat {n : ℕ} {g : GL (Fin n) (AfE F E)} {N : Submodule (𝓞 E) (Sp E n)}
     (hg : Formalism.L2.Herm.Carries g (stdLat E n) N) (T : AfE F E → Prop) (h0 : T 0) (hadd : ∀ a b, T a → T b → T (a + b))
     (hmul : ∀ c ∈ RInt F E, ∀ a, T a → T (c * a)) (c : Fin n → AfE F E)
@@ -93,6 +118,11 @@ def mid (g : GL (Fin a) (AfE F E)) (g' : GL (Fin b) (AfE F E)) (x : HomE E a b) 
 
 omit [StarRing E] in
 
+/- English proof (translation)
+Unfold `Col2.pullV`. Rewrite using `[← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← LinearMap.toMatrix'_mulVec x z]`.
+
+Conclude with `RingHom.map_mulVec _ _ _ i`.
+-/
 theorem pullV_map (g' : GL (Fin b) (AfE F E)) (x : HomE E a b) (z : Sp E a) :
     Col2.pullV g' (x z) = (((g'⁻¹ : GL (Fin b) (AfE F E)) : Matrix (Fin b) (Fin b) (AfE F E)) * adMat F x) *ᵥ
       fun j => Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (z j) := by
@@ -105,6 +135,9 @@ theorem pullV_map (g' : GL (Fin b) (AfE F E)) (x : HomE E a b) (z : Sp E a) :
 
 omit [StarRing E] in
 
+/- English proof (translation)
+Rewrite using `[pullV_map]`. Unfold `Col2.pullV mid`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc (_ * _), ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`.
+-/
 theorem pullV_mid (g : GL (Fin a) (AfE F E)) (g' : GL (Fin b) (AfE F E)) (x : HomE E a b) (z : Sp E a) :
     Col2.pullV g' (x z) = mid g g' x *ᵥ Col2.pullV g z := by
   rw [pullV_map]
@@ -116,6 +149,9 @@ def Good (P : HeightOneSpectrum (𝓞 E)) (ia : Fin a) (ib : Fin b) (X : Matrix 
 
 omit [StarRing E] in
 
+/- English proof (translation)
+Use `⟨fun r s => ?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_add_cancel (Y r s) (X r s), map_add]`. Conclude with `Valuation.map_add_le _ (hXY r s).le (h.1 r s)`. Rewrite using `[← sub_add_sub_cancel (Y ib s) (X ib s), map_add]`. Conclude with `Valuation.map_add_lt _ (hXY ib s) (h.2 s)`.
+-/
 theorem Good.congr {P : HeightOneSpectrum (𝓞 E)} {ia : Fin a} {ib : Fin b} {X Y : Matrix (Fin b) (Fin a) (AfE F E)}
     (h : Good P ia ib X) (hXY : ∀ r s, Valued.v (adAt F P (Y r s - X r s)) < 1) : Good P ia ib Y := by
   refine ⟨fun r s => ?_, fun s => ?_⟩
@@ -126,6 +162,27 @@ theorem Good.congr {P : HeightOneSpectrum (𝓞 E)} {ia : Fin a} {ib : Fin b} {X
 
 variable {ST SG Q SG' Q' : Finset (HeightOneSpectrum (𝓞 E))}
 
+/- English proof (translation)
+Establish `hint : ∀ c ∈ RInt F E, Valued.v (adAt F P.1 c) ≤ 1` using `fun c hc => (mem_rInt_iff F E _).1 hc P.1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun r s => ?_, fun s => ?_⟩` and prove the remaining obligations. Use `row_of_lat hg.lat (fun t => Valued.v (adAt F P.1 t) ≤ 1) (by simp) (fun t t' ht ht' => ?_) (fun c hc t ht => ?_) ((((g'⁻¹ : GL (Fin b) (AfE F E)) : Matrix (Fin b) (Fin b) (AfE F E)) * adMat F x) r) (fun z hz => ?_) s` and prove the remaining obligations.
+
+Rewrite using `[map_add]`. Conclude with `Valuation.map_add_le _ ht ht'`. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_le_one' (hint c hc) ht`. Establish `h1` using `(mem_localization_iff p'.deco.2.lat hg'.lat P.1 _).1 (h z (le_locP _ _ hz)).1 r`.
+
+Rewrite `h1` using `[pullV_map]`. Conclude with `h1`. Establish `h2` using `row_of_lat hg.lat (fun t => Valued.v (adAt F P.1 t) < 1) (by simp) (fun t t' ht ht' => ?_) (fun c hc t ht => ?_) ((((g'⁻¹ : GL (Fin b) (AfE F E)) : Matrix (Fin b) (Fin b) (AfE F E)) * adMat F x) ib - ((g⁻¹ : GL (Fin a) (AfE F E)) : Matrix (Fin a) (Fin a) (AfE F E)) ia) (fun z hz …`. Rewrite `h2` using `[Matrix.sub_vecMul, Pi.sub_apply]`. Establish `e : (((g⁻¹ : GL (Fin a) (AfE F E)) : Matrix (Fin a) (Fin a) (AfE F E)) ia ᵥ* (g : Matrix (Fin a) (Fin a) (AfE F E))) s = (1 : Matrix (Fin a) (Fin a) (AfE F E)) ia s`.
+
+Rewrite using `[← Units.val_one, ← inv_mul_cancel g, Units.val_mul]`. Both sides reduce to the same expression. Rewrite `h2` using `[e]`. Conclude with `h2`. Rewrite using `[map_add]`.
+
+Conclude with `Valuation.map_add_lt _ ht ht'`. Rewrite using `[map_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hint c hc)) ht`. Establish `hz'` using `le_locP P.1 _ hz`. Establish `h1` using `hasRes_f hg' P (h z hz').1 hb`.
+
+Rewrite `h1` using `[(h z hz').2]`. Establish `h3` using `PtStab.val_sub_lt_of_hasRes h1 (hasRes_f hg P hz' ha)`. Rewrite `h3` using `[← map_sub, pullV_map]`. Rewrite using `[sub_dotProduct]`. Conclude with `h3`.
+
+Introduce and unpack `⟨h1, h2⟩ z hz`. Establish `hw` using `(mem_localization_iff p.deco.2.lat hg.lat P.1 z).1 hz`. Establish `hxz : x z ∈ p'.deco.1.at P.1`. Use `(mem_localization_iff p'.deco.2.lat hg'.lat P.1 _).2 fun r => ?_` and prove the remaining obligations. Rewrite using `[pullV_mid g]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Conclude with `Valuation.map_sum_le _ fun s _ => by`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (h1 r s) (hw s)`. Use `⟨hxz, HasRes.unique (hasRes_f hg' P hxz hb) (PtStab.hasRes_of_sub (hasRes_f hg P hz ha) ?_)⟩` and prove the remaining obligations.
+
+Establish `e : Col2.pullV g' (x z) ib - Col2.pullV g z ia = ∑ s, (mid g g' x ib s - (1 : Matrix (Fin a) (Fin a) (AfE F E)) ia s) * Col2.pullV g z s`. Establish `e1 : Col2.pullV g z ia = ((1 : Matrix (Fin a) (Fin a) (AfE F E)) *ᵥ Col2.pullV g z) ia` using `by rw [Matrix.one_mulVec]`. Rewrite using `[pullV_mid g, e1]`. Simplify using `only [Matrix.mulVec, dotProduct, _root_.sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[Valuation.map_sub_swap, ← map_sub, e, map_sum]`.
+
+Use `Valuation.map_sum_lt _ one_ne_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (hw s)) (h2 s)`.
+-/
 theorem cond_iff {g : GL (Fin a) (AfE F E)} {g' : GL (Fin b) (AfE F E)} {p : DecoF E a ST SG Q} {p' : DecoF E b ST SG' Q'}
     (hg : IsPtOf hc g p) (hg' : IsPtOf hc g' p') (P : ST) {ia : Fin a} {ib : Fin b} (ha : ia.1 + 1 = a) (hb : ib.1 + 1 = b)
     (x : HomE E a b) :
@@ -186,6 +243,11 @@ theorem cond_iff {g : GL (Fin a) (AfE F E)} {g' : GL (Fin b) (AfE F E)} {p : Dec
 
 omit [StarRing E] in
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, map_sum]`. Use `Valuation.map_sum_lt _ one_ne_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Use `lt_of_le_of_lt (mul_le_of_le_one_right' (hC j s)) ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, map_sum]`.
+
+Use `Valuation.map_sum_lt _ one_ne_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hA r l)) (hD l j)`.
+-/
 theorem val_mul_mul_lt (P : HeightOneSpectrum (𝓞 E)) {A : Matrix (Fin b) (Fin b) (AfE F E)} {D : Matrix (Fin b) (Fin a) (AfE F E)}
     {C : Matrix (Fin a) (Fin a) (AfE F E)} (hA : ∀ r s, Valued.v (adAt F P (A r s)) ≤ 1) (hD : ∀ r s, Valued.v (adAt F P (D r s)) < 1)
     (hC : ∀ r s, Valued.v (adAt F P (C r s)) ≤ 1) (r : Fin b) (s : Fin a) : Valued.v (adAt F P ((A * D * C) r s)) < 1 := by
@@ -198,9 +260,25 @@ theorem val_mul_mul_lt (P : HeightOneSpectrum (𝓞 E)) {A : Matrix (Fin b) (Fin
   rw [map_mul, map_mul]
   exact lt_of_le_of_lt (mul_le_of_le_one_left' (hA r l)) (hD l j)
 
+/- English proof (translation)
+Introduce `x` and use `by simp`.
+-/
 theorem carries_one (n : ℕ) : Formalism.L2.Herm.Carries (1 : GL (Fin n) (AfE F E)) (stdLat E n) (stdLat E n) :=
   fun x => by simp
 
+/- English proof (translation)
+Set `ia : Fin a` to `⟨a - 1, by omega⟩`. Set `ib : Fin b` to `⟨b - 1, by omega⟩`. Establish `hia : ia.1 + 1 = a` using `by show a - 1 + 1 = a; omega`. Establish `hib : ib.1 + 1 = b` using `by show b - 1 + 1 = b; omega`. Establish `hd : mid (y * k) (y' * k') x - mid k k' x₀ = ((k'⁻¹ : GL (Fin b) (AfE F E)) : Matrix (Fin b) (Fin b) (AfE F E)) * (mid y y' x - adMat F x₀) * (k : Matrix (Fin a) (Fin a) (AfE F E))`.
+
+Unfold `mid`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Units.val_mul, Matrix.mul_sub, Matrix.sub_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `key : ∀ P : ST, ((∀ z ∈ p.deco.1.at P.1, x₀ z ∈ p'.deco.1.at P.1 ∧ p'.deco.1.f P (x₀ z) = p.deco.1.f P z) ↔ (∀ z ∈ q.deco.1.at P.1, x z ∈ q'.deco.1.at P.1 ∧ q'.deco.1.f P (x z) = q.deco.1.f P z))`. Introduce `P`.
+
+Rewrite using `[cond_iff hp hp' P hia hib, cond_iff hq hq' P hia hib]`. Establish `hlt : ∀ r s, Valued.v (adAt F P.1 (mid (y * k) (y' * k') x r s - mid k k' x₀ r s)) < 1`. Introduce `r s`. Rewrite using `[← Matrix.sub_apply, hd]`. Use `val_mul_mul_lt P.1 (fun r s => ?_) (h P.1 P.2) (fun r s => ?_) r s` and prove the remaining obligations.
+
+Use `Splice.valued_inv_mul_le (w := P.1) (hpN' ▸ hp'.lat) (carries_one (F := F) b) le_rfl r s` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Use `Splice.valued_inv_mul_le (w := P.1) (carries_one (F := F) a) (hpN ▸ hp.lat) le_rfl r s` as an intermediate fact. Rewrite `this` using `[inv_one, one_mul]`. Then use the resulting hypothesis. Use `⟨fun hG => hG.congr hlt, fun hG => hG.congr fun r s => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub, Valuation.map_sub_swap, ← map_sub]`. Conclude with `hlt r s`. Unfold `phiT`. Establish `key'` using `forall_congr' key`. Use `split_ifs with h1 h2 h2`.
+
+Both sides reduce to the same expression. Conclude with `absurd (key'.1 h1) h2`. Conclude with `absurd (key'.2 h2) h1`. Both sides reduce to the same expression.
+-/
 theorem phiT_eq (K : Type) [Field K] (ha : 0 < a) (hb : 0 < b) {k y : GL (Fin a) (AfE F E)} {k' y' : GL (Fin b) (AfE F E)}
     {p q : DecoF E a ST SG Q} {p' q' : DecoF E b ST SG' Q'}
     (hp : IsPtOf hc k p) (hpN : p.deco.1.N = stdLat E a) (hp' : IsPtOf hc k' p') (hpN' : p'.deco.1.N = stdLat E b)
@@ -242,6 +320,11 @@ theorem phiT_eq (K : Type) [Field K] (ha : 0 < a) (hb : 0 < b) {k y : GL (Fin a)
 
 omit [StarRing E] in
 
+/- English proof (translation)
+Establish `e : ((M : ℕ) : P.adicCompletion E) = algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E ((M : ℕ) : 𝓞 E))`. Simplify using the standard rewrite rules. Rewrite using `[e, valued_algebraMap]`. Use `(HeightOneSpectrum.valuation_lt_one_iff_mem _ _).2 ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(Finset.dvd_prod_of_mem _ hP).trans hM`.
+
+Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`.
+-/
 theorem val_natCast_lt {S : Finset (HeightOneSpectrum (𝓞 E))} {M : ℕ} (hM : (∏ P ∈ S, Ideal.absNorm P.asIdeal) ∣ M)
     {P : HeightOneSpectrum (𝓞 E)} (hP : P ∈ S) : Valued.v ((M : ℕ) : P.adicCompletion E) < 1 := by
   have e : ((M : ℕ) : P.adicCompletion E) = algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E ((M : ℕ) : 𝓞 E)) := by

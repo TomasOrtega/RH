@@ -14,21 +14,45 @@ namespace KerJet
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Rewrite using `[cntVec_apply, Fintype.card_subtype]`.
+-/
 theorem card_fib {k : ℕ} (f : Fin k → n) (i : n) :
     Fintype.card {a // f a = i} = cntVec f i := by
   rw [cntVec_apply, Fintype.card_subtype]
 
+/- English proof (translation)
+Use `⟨Equiv.ofFiberEquiv (f := f) (g := g) (fun i => Fintype.equivOfCardEq (by rw [card_fib, card_fib, h])), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Conclude with `Equiv.ofFiberEquiv_map _ a`.
+-/
 theorem perm_of_cnt {k : ℕ} (f g : Fin k → n) (h : cntVec f = cntVec g) :
     ∃ σ : Equiv.Perm (Fin k), g ∘ σ = f := by
   refine ⟨Equiv.ofFiberEquiv (f := f) (g := g) (fun i => Fintype.equivOfCardEq (by rw [card_fib, card_fib, h])), ?_⟩
   funext a
   exact Equiv.ofFiberEquiv_map _ a
 
+/- English proof (translation)
+Use extensionality with `i`. Rewrite using `[cntVec_apply, cntVec_apply, ← Fintype.card_subtype, ← Fintype.card_subtype]`. Conclude with `Fintype.card_congr (σ.subtypeEquiv (fun a => Iff.rfl))`.
+-/
 theorem cnt_comp_perm {k : ℕ} (g : Fin k → n) (σ : Equiv.Perm (Fin k)) : cntVec (g ∘ σ) = cntVec g := by
   ext i
   rw [cntVec_apply, cntVec_apply, ← Fintype.card_subtype, ← Fintype.card_subtype]
   exact Fintype.card_congr (σ.subtypeEquiv (fun a => Iff.rfl))
 
+/- English proof (translation)
+Use `set t := Finset.univ.filter fun f : Fin k → n => cntVec f = cntVec g with ht`. Establish `hstab : (Finset.univ.filter fun τ : Equiv.Perm (Fin k) => g ∘ τ = g).card = ∏ i, (cntVec g i).factorial`. Rewrite using `[← Fintype.card_subtype, DomMulAct.stabilizer_card]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [card_fib]`. Establish `hfib : ∀ f ∈ t, ((Finset.univ : Finset (Equiv.Perm (Fin k))).filter fun σ : Equiv.Perm (Fin k) => g ∘ ⇑σ = f).card = (Finset.univ.filter fun τ : Equiv.Perm (Fin k) => g ∘ τ = g).card`.
+
+Introduce `f hf`. Take `⟨σ₀, hσ₀⟩` from `perm_of_cnt f g (Finset.mem_filter.1 hf).2`. Use `Finset.card_bij' (fun (σ : Equiv.Perm (Fin k)) _ => σ * σ₀⁻¹) (fun (τ : Equiv.Perm (Fin k)) _ => τ * σ₀) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ hσ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hσ ⊢`.
+
+Use function extensionality and compare the values at `x`. Establish `h1` using `congrFun hσ (σ₀⁻¹ x)`. Establish `h2` using `congrFun hσ₀ (σ₀⁻¹ x)`. Simplify using `only [Function.comp_apply, Equiv.Perm.mul_apply] at h1 h2 ⊢`. Rewrite using `[h1, ← h2]`.
+
+Simplify using the standard rewrite rules. Introduce `τ hτ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hτ ⊢`. Use function extensionality and compare the values at `x`. Establish `h1` using `congrFun hτ (σ₀ x)`.
+
+Simplify using `only [Function.comp_apply, Equiv.Perm.mul_apply] at h1 ⊢`. Rewrite using `[h1, ← hσ₀]`. Both sides reduce to the same expression. Introduce `σ _`. Simplify using the standard rewrite rules.
+
+Introduce `τ _`. Simplify using the standard rewrite rules. Establish `hall : ∀ σ ∈ (Finset.univ : Finset (Equiv.Perm (Fin k))), g ∘ σ ∈ t`. Introduce `σ _`. Rewrite using `[ht, Finset.mem_filter]`.
+
+Conclude with `⟨Finset.mem_univ _, cnt_comp_perm g σ⟩`. Establish `hsum` using `Finset.card_eq_sum_card_fiberwise hall`. Rewrite `hsum` using `[Finset.sum_congr rfl hfib, Finset.sum_const, smul_eq_mul, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, hstab]`. Conclude with `hsum.symm`.
+-/
 theorem card_cnt {k : ℕ} (g : Fin k → n) :
     (Finset.univ.filter fun f : Fin k → n => cntVec f = cntVec g).card * ∏ i, (cntVec g i).factorial =
       k.factorial := by
@@ -70,6 +94,11 @@ end KerJet
 
 open KerJet
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Simplify using `only [flat, LinearEquiv.coe_mk, LinearMap.coe_mk, AddHom.coe_mk, coordX, Pi.single_apply]`. Distinguish the cases in `h : τ = k.1 ∧ i = k.2.1 ∧ j = k.2.2`. Rewrite using `[if_pos h, if_pos]`. Take `⟨h1, h2, h3⟩` from `h`.
+
+Substitute `h1 h2 h3` using the available equality. Both sides reduce to the same expression. Rewrite using `[if_neg h, if_neg]`. Introduce and unpack `rfl`. Conclude with `h ⟨rfl, rfl, rfl⟩`.
+-/
 theorem flat_single (T : Type) [Fintype T] [DecidableEq T] (a b : ℕ) (k : DVar T a b) :
     flat T a b (Pi.single k (1 : ℂ)) = coordX k := by
   funext τ i j
@@ -82,6 +111,23 @@ theorem flat_single (T : Type) [Fintype T] [DecidableEq T] (a b : ℕ) (k : DVar
     rintro rfl
     exact h ⟨rfl, rfl, rfl⟩
 
+/- English proof (translation)
+Introduce `T _ _ a b G hG m`. Use `set K := Multiset.card m.toMultiset with hKdef`. Use `set l := m.toMultiset.toList with hldef`. Establish `hl : l.length = K` using `by simp [hldef, hKdef]`. Set `g0 : Fin K → DVar T a b` to `fun i => l.get ⟨i, by simp [hl]⟩`.
+
+Establish `hof : List.ofFn g0 = l`. Use `List.ext_get (by simp [hl]) fun i h1 h2 => ?_` and prove the remaining obligations. Simplify using `[g0]`. Establish `hg0 : cntVec g0 = m`. Use extensionality with `i`.
+
+Establish `h1 : (Finset.univ.filter fun j => g0 j = i).card = Multiset.count i ((Finset.univ : Finset (Fin K)).val.map g0)`. Rewrite using `[Multiset.count_map, Finset.card_def, Finset.filter_val]`. Use `congr 1`. Conclude with `Multiset.filter_congr fun x _ => eq_comm`. Rewrite using `[cntVec_apply, h1, Fin.univ_val_map, hof, hldef, Multiset.coe_toList, Finsupp.count_toMultiset]`.
+
+Establish `hdeg : m.degree = K`. Rewrite using `[Finsupp.degree_eq_sum, hKdef, Finsupp.card_toMultiset, Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Both sides reduce to the same expression. Establish `hGc : ContDiff ℂ ⊤ G` using `hG.contDiff`. Set `L : (DVar T a b → ℂ) →L[ℂ] VCx T a b` to `((flat T a b).toContinuousLinearEquiv : (DVar T a b → ℂ) →L[ℂ] VCx T a b)`.
+
+Establish `hFL : (fun z => G (flat T a b z)) = G ∘ L` using `rfl`. Establish `hterm : ∀ f : Fin K → DVar T a b, cntVec f = m → iteratedFDeriv ℂ K (fun z => G (flat T a b z)) 0 (fun j => Pi.single (f j) (1 : ℂ)) = derivAt0 G m`. Introduce `f hf`. Take `⟨σ, hσ⟩` from `perm_of_cnt f g0 (hf.trans hg0.symm)`. Rewrite using `[hFL, L.iteratedFDeriv_comp_right hGc 0 (by exact_mod_cast le_top), ContinuousMultilinearMap.compContinuousLinearMap_apply]`.
+
+Establish `hv : (fun j => L (Pi.single (f j) (1 : ℂ))) = (fun i => coordX (g0 i)) ∘ σ`. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← hσ]`. Conclude with `flat_single T a b _`.
+
+Rewrite using `[map_zero, hv, (hGc.contDiffAt).iteratedFDeriv_comp_perm]`. Both sides reduce to the same expression. Rewrite using `[taylorMv_coeff _ K m hdeg, Finset.sum_congr rfl fun f hf => hterm f (Finset.mem_filter.1 hf).2, Finset.sum_const, nsmul_eq_mul]`. Establish `hc` using `card_cnt g0`. Rewrite `hc` using `[hg0]`.
+
+Establish `hmf : mfact m = ∏ i, (m i).factorial` using `Finsupp.prod_fintype _ _ (fun _ => rfl)`. Rewrite `hc` using `[← hmf]`. Establish `hc' : (((Finset.univ.filter fun f : Fin K → DVar T a b => cntVec f = m).card : ℕ) : ℂ) * (mfact m : ℂ) = (K.factorial : ℂ)` using `by exact_mod_cast hc`. Establish `hK0 : (K.factorial : ℂ) ≠ 0` using `by exact_mod_cast K.factorial_ne_zero`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem taylor_jet_expansion : TaylorJet := by
   intro T _ _ a b G hG m
   set K := Multiset.card m.toMultiset with hKdef

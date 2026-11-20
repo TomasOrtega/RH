@@ -15,6 +15,9 @@ namespace TailLogOfMass
 variable {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X} {Yo : Set X}
   {th : LocPot X} {u : Fin D → X → ℝ}
 
+/- English proof (translation)
+Establish `h1` using `ReciprocityTheory.AnForm.M.pot_contDiffAt_two hth x k hy hyU`. Establish `ho : IsOpen ((A.chart k).target ∩ (A.chart k).symm ⁻¹' Yo)` using `(A.chart k).isOpen_inter_preimage_symm hYo`. Establish `h2 : ContDiffAt ℝ 2 (u i ∘ (A.chart k).symm) y` using `((hu i k).contDiffAt (ho.mem_nhds ⟨hy, hyYo⟩)).of_le (WithTop.coe_le_coe.2 le_top)`. Conclude with `h1.add h2`.
+-/
 theorem potForm_contDiffAt (hYo : IsOpen Yo) (hth : IsPotential A th)
     (hu : ∀ i, A.SmoothOn Yo (u i)) (i : Fin D) (x : X) (k : Fin A.n) {y : Fin D → ℂ}
     (hy : y ∈ (A.chart k).target) (hyYo : (A.chart k).symm y ∈ Yo)
@@ -27,6 +30,9 @@ theorem potForm_contDiffAt (hYo : IsOpen Yo) (hth : IsPotential A th)
     ((hu i k).contDiffAt (ho.mem_nhds ⟨hy, hyYo⟩)).of_le (WithTop.coe_le_coe.2 le_top)
   exact h1.add h2
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.AnForm.A.maDens_nonneg_of_posSemidef _ y fun i => ReciprocityTheory.AnForm.M.hessC_posSemidef_of_levi _ y (potForm_contDiffAt hYo hth hu i _ j hy hyYo (th.mem_U _)) (fun w => hnn i _ j y ⟨hy, hyYo, (potForm th (u i)).mem_U _⟩ w)`.
+-/
 theorem locDens_nonneg_on (hYo : IsOpen Yo) (hth : IsPotential A th)
     (hu : ∀ i, A.SmoothOn Yo (u i)) (hnn : ∀ i, FormNonneg A Yo (potForm th (u i)))
     (j : Fin A.n) {y : Fin D → ℂ} (hy : y ∈ (A.chart j).target) (hyYo : (A.chart j).symm y ∈ Yo) :
@@ -36,6 +42,17 @@ theorem locDens_nonneg_on (hYo : IsOpen Yo) (hth : IsPotential A th)
       (potForm_contDiffAt hYo hth hu i _ j hy hyYo (th.mem_U _))
       (fun w => hnn i _ j y ⟨hy, hyYo, (potForm th (u i)).mem_U _⟩ w)
 
+/- English proof (translation)
+Use `set Φ : Fin D → LocPot X := fun i => potForm th (u i) with hΦ`. Establish `hτ : AnalyticAt ℂ (A.chart k ∘ (A.chart j).symm) y` using `A.holo j k y ⟨hy, hyk⟩`. Establish `hsk : (A.chart k).symm (A.chart k ((A.chart j).symm y)) = (A.chart j).symm y` using `(A.chart k).left_inv hyk`. Establish `htk : A.chart k ((A.chart j).symm y) ∈ (A.chart k).target` using `(A.chart k).map_source hyk`. Establish `hL : locDens A Φ k (A.chart k ((A.chart j).symm y)) = ReciprocityTheory.AnForm.maDens (fun i y' => (Φ i).φ ((A.chart j).symm y) ((A.chart k).symm y')) (A.chart k ((A.chart j).symm y))`.
+
+Simplify using `only [locDens, hsk]`. Establish `hsm : ∀ i, ContDiffAt ℝ 2 (fun y' => (Φ i).φ ((A.chart j).symm y) ((A.chart k).symm y')) ((A.chart k ∘ (A.chart j).symm) y)` using `fun i => potForm_contDiffAt hYo hth hu i _ k htk (show (A.chart k).symm (A.chart k ((A.chart j).symm y)) ∈ Yo by rw [hsk]; exact hyYo) (show (A.chart k).symm (A.chart k ((A.chart j).symm y)) ∈ th.U ((A.chart j).symm y) by`. Rewrite using `[hsk]`. Conclude with `th.mem_U _)`. Establish `hcomp` using `ReciprocityTheory.AnForm.A.maDens_comp (fun i y' => (Φ i).φ ((A.chart j).symm y) ((A.chart k).symm y')) (A.chart k ∘ (A.chart j).symm) y hτ hsm`.
+
+Establish `key : locDens A Φ j y = ReciprocityTheory.AnForm.maDens (fun i => (fun y' => (Φ i).φ ((A.chart j).symm y) ((A.chart k).symm y')) ∘ (A.chart k ∘ (A.chart j).symm)) y`. Unfold `locDens`. Apply `ReciprocityTheory.AnForm.M.maDens_congr_hessC` to reduce the goal to its premises. Introduce `i`. Apply `ReciprocityTheory.AnForm.M.hessCGerm` to reduce the goal to its premises.
+
+Establish `hWo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart k).source)` using `(A.chart j).isOpen_inter_preimage_symm (A.chart k).open_source`. Use `filter_upwards [hWo.mem_nhds (show y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart k).source from ⟨hy, hyk⟩)] with w hw`. Simplify using `only [Function.comp_apply]`. Rewrite using `[(A.chart k).left_inv hw.2]`. Rewrite using `[hL, key]`.
+
+Conclude with `hcomp`.
+-/
 theorem locDens_chart_on (hYo : IsOpen Yo) (hth : IsPotential A th)
     (hu : ∀ i, A.SmoothOn Yo (u i)) (j k : Fin A.n) {y : Fin D → ℂ} (hy : y ∈ (A.chart j).target)
     (hyk : (A.chart j).symm y ∈ (A.chart k).source) (hyYo : (A.chart j).symm y ∈ Yo) :
@@ -76,6 +93,9 @@ theorem locDens_chart_on (hYo : IsOpen Yo) (hth : IsPotential A th)
   rw [hL, key]
   exact hcomp
 
+/- English proof (translation)
+Distinguish the cases in `hzY : (A.chart i).symm z ∈ Yo`. Conclude with `mul_nonneg (mul_nonneg (P.nonneg i _) (h0 _)) (locDens_nonneg_on hYo hth hu hnn i hz hzY)`. Rewrite using `[hoff _ hzY]`. Simplify using the standard rewrite rules.
+-/
 theorem weight_nonneg (hYo : IsOpen Yo) (hth : IsPotential A th)
     (hu : ∀ i, A.SmoothOn Yo (u i)) (hnn : ∀ i, FormNonneg A Yo (potForm th (u i)))
     (P : ChartPartition A) (h : X → ℝ) (h0 : ∀ x, 0 ≤ h x) (hoff : ∀ x, x ∉ Yo → h x = 0)
@@ -85,6 +105,25 @@ theorem weight_nonneg (hYo : IsOpen Yo) (hth : IsPotential A th)
   · exact mul_nonneg (mul_nonneg (P.nonneg i _) (h0 _)) (locDens_nonneg_on hYo hth hu hnn i hz hzY)
   · rw [hoff _ hzY]; simp
 
+/- English proof (translation)
+Establish `hT : MeasurableSet (A.chart j).target` using `(A.chart j).open_target.measurableSet`. Establish `hχ : ∀ i, ContinuousOn (fun y => P.χ i ((A.chart j).symm y)) (A.chart j).target`. Introduce `i`. Use `(P.smooth i j).continuousOn` as an intermediate fact. Rewrite `this` using `[Set.preimage_univ, Set.inter_univ]`.
+
+Conclude with `this`. Establish `hsplit : ∀ y ∈ (A.chart j).target, ENNReal.ofReal (h ((A.chart j).symm y) * locDens A (fun i => potForm th (u i)) j y) = ∑ i, ENNReal.ofReal (P.χ i ((A.chart j).symm y) * (h ((A.chart j).symm y) * locDens A (fun i => potForm th (u i)) j y))`. Introduce `y hy`. Distinguish the cases in `hyY : (A.chart j).symm y ∈ Yo`. Establish `ha : 0 ≤ h ((A.chart j).symm y) * locDens A (fun i => potForm th (u i)) j y` using `mul_nonneg (h0 _) (locDens_nonneg_on hYo hth hu hnn j hy hyY)`.
+
+Rewrite using `[← ENNReal.ofReal_sum_of_nonneg (fun i _ => mul_nonneg (P.nonneg i _) ha), ← Finset.sum_mul, P.sum_eq_one, one_mul]`. Simplify using `[hoff _ hyY]`. Rewrite using `[setLIntegral_congr_fun hT hsplit, lintegral_finsetSum' (f := fun i y => ENNReal.ofReal (P.χ i ((A.chart j).symm y) * (h ((A.chart j).symm y) * locDens A (fun i => potForm th (u i)) j y))) _ (fun i _ => ENNReal.measurable_ofReal.comp_aemeasurable (((hχ i).aemeasurable hT).mul hm) …`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `hU : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart i).source)` using `(A.chart j).isOpen_inter_preimage_symm (A.chart i).open_source`.
+
+Establish `hτ : AnalyticOnNhd ℂ (A.chart i ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart i).source)` using `A.holo j i`. Establish `hinj : Set.InjOn (A.chart i ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart i).source)`. Introduce `a ha b hb hab`. Conclude with `(A.chart j).symm.injOn ha.1 hb.1 ((A.chart i).injOn ha.2 hb.2 hab)`. Establish `himg : (A.chart i ∘ (A.chart j).symm) '' ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart i).source) ⊆ (A.chart i).target`.
+
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `(A.chart i).map_source hz.2`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_congr_fun hT fun y hy => ?_` and prove the remaining obligations. Distinguish the cases in `hyU : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart i).source`.
+
+Rewrite using `[indicator_of_mem hyU]`. Rewrite using `[indicator_of_notMem hyU]`. Establish `h1 : (A.chart j).symm y ∉ (A.chart i).source` using `fun h' => hyU ⟨hy, h'⟩`. Establish `h2 : (A.chart j).symm y ∉ tsupport (P.χ i)` using `fun h' => h1 (P.tsupport_subset i h')`. Simplify using `[image_eq_zero_of_notMem_tsupport h2]`.
+
+Use `_ ≤ ∫⁻ y, ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart i).source).indicator (fun y => ENNReal.ofReal (P.χ i ((A.chart j).symm y) * (h ((A.chart j).symm y) * locDens A (fun i => potForm th (u i)) j y))) y := setLIntegral_le_lintegral _ _`. Use `_ = ∫⁻ y in (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart i).source, ENNReal.ofReal (P.χ i ((A.chart j).symm y) * (h ((A.chart j).symm y) * locDens A (fun i => potForm th (u i)) j y)) := lintegral_indicator hU.measurableSet _`. Use `_ = ∫⁻ y in (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart i).source, ENNReal.ofReal (Complex.normSq (ReciprocityTheory.AnForm.A.jacC (A.chart i ∘ (A.chart j).symm) y).det) * (fun z => ENNReal.ofReal (P.χ i ((A.chart i).symm z) * h ((A.chart i).symm z) * locDens A (fun i => p …`. Use `setLIntegral_congr_fun hU.measurableSet fun y hy => ?_` and prove the remaining obligations. Establish `hs : (A.chart i).symm (A.chart i ((A.chart j).symm y)) = (A.chart j).symm y` using `(A.chart i).left_inv hy.2`.
+
+Use `show ENNReal.ofReal (P.χ i ((A.chart j).symm y) * (h ((A.chart j).symm y) * locDens A (fun i => potForm th (u i)) j y)) = ENNReal.ofReal (Complex.normSq (ReciprocityTheory.AnForm.A.jacC (A.chart i ∘ (A.chart j).symm) y).det) * ENNReal.ofReal (P.χ i ((A.chart i).symm (A.chart i (( …`. Rewrite using `[hs, ← ENNReal.ofReal_mul (Complex.normSq_nonneg _)]`. Distinguish the cases in `hyY : (A.chart j).symm y ∈ Yo`. Rewrite using `[locDens_chart_on hYo hth hu j i hy.1 hy.2 hyY]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `[hoff _ hyY]`. Use `_ = ∫⁻ z in (A.chart i ∘ (A.chart j).symm) '' ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart i).source), ENNReal.ofReal (P.χ i ((A.chart i).symm z) * h ((A.chart i).symm z) * locDens A (fun i => potForm th (u i)) i z) := (ReciprocityTheory.AnForm.A.lintegral_image_eq_lintegr …`. Use `_ ≤ ∫⁻ z in (A.chart i).target, ENNReal.ofReal (P.χ i ((A.chart i).symm z) * h ((A.chart i).symm z) * locDens A (fun i => potForm th (u i)) i z) := lintegral_mono_set himg`.
+-/
 theorem lintegral_target_le (hYo : IsOpen Yo) (hth : IsPotential A th)
     (hu : ∀ i, A.SmoothOn Yo (u i)) (hnn : ∀ i, FormNonneg A Yo (potForm th (u i)))
     (P : ChartPartition A) (h : X → ℝ) (h0 : ∀ x, 0 ≤ h x) (hoff : ∀ x, x ∉ Yo → h x = 0)
@@ -176,6 +215,9 @@ theorem lintegral_target_le (hYo : IsOpen Yo) (hth : IsPotential A th)
       _ ≤ ∫⁻ z in (A.chart i).target, ENNReal.ofReal (P.χ i ((A.chart i).symm z) *
             h ((A.chart i).symm z) * locDens A (fun i => potForm th (u i)) i z) := lintegral_mono_set himg
 
+/- English proof (translation)
+Unfold `mInt`. Use `split_ifs with hP`. Conclude with `Finset.sum_nonneg fun i _ => setIntegral_nonneg (A.chart i).open_target.measurableSet fun z hz => weight_nonneg hYo hth hu hnn _ h h0 hoff i hz`. Conclude with `le_rfl`.
+-/
 theorem mInt_nonneg_of (hYo : IsOpen Yo) (hth : IsPotential A th)
     (hu : ∀ i, A.SmoothOn Yo (u i)) (hnn : ∀ i, FormNonneg A Yo (potForm th (u i)))
     (h : X → ℝ) (h0 : ∀ x, 0 ≤ h x) (hoff : ∀ x, x ∉ Yo → h x = 0) :
@@ -186,6 +228,9 @@ theorem mInt_nonneg_of (hYo : IsOpen Yo) (hth : IsPotential A th)
       fun z hz => weight_nonneg hYo hth hu hnn _ h h0 hoff i hz
   · exact le_rfl
 
+/- English proof (translation)
+Rewrite using `[mInt, dif_pos (ReciprocityTheory.AnForm.M.existsPartition A)]`. Unfold `ReciprocityTheory.AnForm.M.integralWith`. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun i _ => setIntegral_nonneg (A.chart i).open_target.measurableSet fun z hz => weight_nonneg hYo hth hu hnn _ h h0 hoff i hz)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(ofReal_integral_eq_lintegral_ofReal (ReciprocityTheory.AnForm.M.integrableOn_weight A _ _ h hI i) (ae_restrict_of_forall_mem (A.chart i).open_target.measurableSet fun z hz => weight_nonneg hYo hth hu hnn _ h h0 hoff i hz)).symm`.
+-/
 theorem sum_lintegral_eq_mInt [CompactSpace X] [T2Space X] (hYo : IsOpen Yo)
     (hth : IsPotential A th) (hu : ∀ i, A.SmoothOn Yo (u i))
     (hnn : ∀ i, FormNonneg A Yo (potForm th (u i))) (h : X → ℝ) (h0 : ∀ x, 0 ≤ h x)

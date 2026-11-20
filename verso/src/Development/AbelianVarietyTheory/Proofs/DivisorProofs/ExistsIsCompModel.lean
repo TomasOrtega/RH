@@ -14,6 +14,9 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory GlobalTheory.ProjVar Gl
 
 namespace GlobalTheory.Mean4O.CompModel
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+-/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) :=
   (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
@@ -24,6 +27,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F}
 
+/- English proof (translation)
+Set `ρ : c.F →+* C.Y.X.presheaf.stalk z` to `(Spec.preimage (stalkPt C.Y z ≫ C.π ≫ genStr Z)).hom`. Establish `h0 : spMap ρ = stalkPt C.Y z ≫ C.π ≫ genStr Z` using `Spec.map_preimage _`. Set `j` to `algebraMap (C.Y.X.presheaf.stalk z) C.Y.X.functionField`. Use `letI := (constF e C.Y).toAlgebra`. Establish `hgen : spMap j ≫ stalkPt C.Y z = genericPt C.Y` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec C.Y.X).specializes trivial)`.
+
+Establish `h1 : spMap (j.comp ρ) = spMap (constF e C.Y)`. Rewrite using `[← sp_comp, h0, ← Category.assoc, ← Category.assoc, hgen]`. Conclude with `(congrArg (· ≫ genStr Z) C.y0_x.symm).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) Z.jQ_over).trans (pullback.lift_snd _ _ _)))`. Establish `h2 : j.comp ρ = constF e C.Y` using `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`. Establish `h3 : ρ = φ` using `RingHom.ext fun r => IsFractionRing.injective (C.Y.X.presheaf.stalk z) C.Y.X.functionField ((RingHom.congr_fun h2 r).trans (RingHom.congr_fun hφ r))`.
+
+Rewrite using `[← h0, h3]`.
+-/
 theorem stalkPt_genStr (C : FlagCpt Z e) (z : C.Y.X) (φ : c.F →+* C.Y.X.presheaf.stalk z)
     (hφ : constF e C.Y = (algebraMap (C.Y.X.presheaf.stalk z) C.Y.X.functionField).comp φ) :
     stalkPt C.Y z ≫ C.π ≫ genStr Z = spMap φ := by
@@ -42,6 +52,13 @@ theorem stalkPt_genStr (C : FlagCpt Z e) (z : C.Y.X) (φ : c.F →+* C.Y.X.presh
       ((RingHom.congr_fun h2 r).trans (RingHom.congr_fun hφ r))
   rw [← h0, h3]
 
+/- English proof (translation)
+Take `⟨φ, f, t, hT, -⟩` from `C.gr_spec (below p)`. Set `ψ : C.Y.X.presheaf.stalk (below p) →+* K` to `(Scheme.stalkClosedPointTo p).hom`. Establish `hp : p = spMap ψ ≫ stalkPt C.Y (below p)` using `(Scheme.Spec_stalkClosedPointTo_fromSpecStalk p).symm`. Establish `hx : spMap ψ ≫ stalkPt C.Y (below p) ≫ C.π ≫ genι Z = (p ≫ C.π) ≫ genι Z`. Rewrite using `[← Category.assoc, ← hp, Category.assoc]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : EigFrame Z (ψ.comp φ) ((p ≫ C.π) ≫ genι Z), ∀ τ i, g.v τ i = spMap (dualMap ψ) ≫ f.v τ i := by`. Rewrite using `[← hx]`. Conclude with `EigFrame.exists_baseChange E H Dw l Xo c O β Z _ _ φ _ f ψ`. Establish `ho : (p ≫ C.π) ≫ genStr Z = spMap (ψ.comp φ)`. Rewrite using `[← sp_comp, ← stalkPt_genStr C _ φ hT.2.1, ← Category.assoc (spMap ψ), ← hp, Category.assoc]`.
+
+Use `⟨⟨ψ.comp φ, p ≫ C.π, ho, g.v, g.tan, g.eig, g.basis⟩, rfl, below p, ψ, φ, f, t, 1, hp, hT, hx.symm, rfl, fun τ i => ⟨Pi.single i 1, by simp, fun k hk => Pi.single_eq_of_ne hk.ne' _, ?_⟩⟩` and prove the remaining obligations. Use `isCombAtG_single Z.t _ (g.tan τ) i` as an intermediate fact. Rewrite using `[show (fun k => spMap (dualMap ψ) ≫ f.v τ k) = g.v τ from funext fun k => (hg τ k).symm]`. Conclude with `this`.
+-/
 theorem exists_flagPt (C : FlagCpt Z e) {K : Type} [Field K] (p : Sp K ⟶ C.Y.X) :
     ∃ y : FlagPt Z K, p ≫ C.π = y.y ∧ C.Carries p y.frame := by
   obtain ⟨φ, f, t, hT, -⟩ := C.gr_spec (below p)
@@ -66,6 +83,9 @@ section Model
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} (M : TrueGeo.Model Y)
 
+/- English proof (translation)
+Use `M.ar.isIntegral` as an intermediate fact. Use `SmallSec.isPreimmersion_j M` as an intermediate fact. Establish `hd : DenseRange M.j` using `fun x => (genericPoint_specializes x).mem_closed isClosed_closure (subset_closure (SmallSec.mem_range_j M (SmallSec.asIdeal_p_gen M)))`. Conclude with `(IsDenseInducing.mk M.j.isEmbedding.isInducing hd).dense_image`.
+-/
 theorem dense_image_j (S : Set Y.X) : Dense (M.j '' S) ↔ Dense S := by
   have := M.ar.isIntegral
   have := SmallSec.isPreimmersion_j M
@@ -74,6 +94,9 @@ theorem dense_image_j (S : Set Y.X) : Dense (M.j '' S) ↔ Dense S := by
       (subset_closure (SmallSec.mem_range_j M (SmallSec.asIdeal_p_gen M)))
   exact (IsDenseInducing.mk M.j.isEmbedding.isInducing hd).dense_image
 
+/- English proof (translation)
+Establish `h` using `((IsPullback.of_hasPullback Y.str (spMap σ)).paste_horiz M.pb)`. Rewrite `h` using `[sp_comp]`. Establish `: IsIntegral (pullback Y.str (spMap σ))` using `GeometricallyIntegral.geometrically_isIntegral (f := Y.str) _ _ _ (IsPullback.of_hasPullback Y.str (spMap σ))`. Conclude with `h.isoPullback.hom.homeomorph.irreducibleSpace_iff.1 inferInstance`.
+-/
 theorem irreducible_fibre {K : Type} [Field K] (σ : F →+* K) :
     IrreducibleSpace ↥(pullback M.p (spMap (σ.comp (algebraMap (𝓞 F) F)))) := by
   have h := ((IsPullback.of_hasPullback Y.str (spMap σ)).paste_horiz M.pb)
@@ -82,6 +105,13 @@ theorem irreducible_fibre {K : Type} [Field K] (σ : F →+* K) :
     GeometricallyIntegral.geometrically_isIntegral (f := Y.str) _ _ _ (IsPullback.of_hasPullback Y.str (spMap σ))
   exact h.isoPullback.hom.homeomorph.irreducibleSpace_iff.1 inferInstance
 
+/- English proof (translation)
+Establish `hb {K K' : Type} [Field K] [Field K'] (a : K →+* K') (p : Sp K ⟶ Y.X) : below (spMap a ≫ p) = below p` using `congrArg p (Subsingleton.elim (α := PrimeSpectrum K) _ _)`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Set `σ : F →+* AlgebraicClosure ℚ` to `(IsAlgClosed.lift (R := ℚ) (S := F) (M := AlgebraicClosure ℚ)).toRingHom`. Take `⟨z, rfl⟩` from `exists_geomPt M.ar (σ.comp (algebraMap (𝓞 F) F)) hx`.
+
+Establish `hz : z.1 ≫ M.p = spMap σ ≫ spMap (algebraMap (𝓞 F) F)` using `by rw [sp_comp]; exact z.2`. Use `⟨spMap ε.symm.toRingHom ≫ M.pb.lift z.1 (spMap σ) hz, ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Conclude with `congrArg (fun q : Sp (AlgebraicClosure ℚ) ⟶ M.X => q (IsLocalRing.closedPoint _)) (M.pb.lift_fst z.1 (spMap σ) hz)`. Introduce and unpack `⟨p, rfl⟩`.
+
+Rewrite using `[← hb ε.toRingHom p]`. Set `q` to `spMap ε.toRingHom ≫ p`. Conclude with `GeomPt.isAlgPt (ι := (Spec.preimage ((q ≫ M.j) ≫ M.p)).hom) M.ar ⟨q ≫ M.j, (Spec.map_preimage _).symm⟩`.
+-/
 theorem isAlgPt_iff {K : Type} [Field K] (ε : K ≃+* AlgebraicClosure ℚ) (x : M.X) :
     IsAlgPt x ↔ ∃ p : Sp K ⟶ Y.X, M.j (below p) = x := by
   have hb {K K' : Type} [Field K] [Field K'] (a : K →+* K') (p : Sp K ⟶ Y.X) : below (spMap a ≫ p) = below p :=
@@ -101,6 +131,15 @@ theorem isAlgPt_iff {K : Type} [Field K] (ε : K ≃+* AlgebraicClosure ℚ) (x 
 
 end Model
 
+/- English proof (translation)
+Introduce `D O A hA c M hM`. Establish `: IsAlgClosure ℚ Qb` using `algebraicClosure.isAlgClosure ℚ ℂ`. Establish `: IsAlgClosure ℚ (AlgebraicClosure ℚ)` using `⟨inferInstance, AlgebraicClosure.isAlgebraic ℚ⟩`. Set `ε : Qb ≃+* AlgebraicClosure ℚ` to `(IsAlgClosure.equiv ℚ Qb (AlgebraicClosure ℚ)).toRingEquiv`. Use `⟨fun y : ShFam.Pad.Pt O.s => M.j (baseOn O.Φ c y), fun _ _ => rfl, ⟨_, irreducible_fibre M (IsAlgClosed.lift (R := ℚ) (S := D.what₂.LL) (M := AlgebraicClosure ℚ)).toRingHom⟩, ?_, fun Z => ?_⟩` and prove the remaining obligations.
+
+Use `Set.ext fun x : M.X => Iff.trans ?_ (isAlgPt_iff M ε x).symm` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `rfl : compPt O.s y = c` from `hy`. Take `⟨p, -, -, hp⟩` from `liesUnder_basePt O.Φ y`.
+
+Conclude with `⟨p, congrArg M.j hp⟩`. Introduce and unpack `⟨p, rfl⟩`. Take `⟨y, h₁, h₂⟩` from `exists_flagPt (O.Φ.C c) p`. Establish `h : LiesUnder O.Φ c y (below p)` using `⟨p, h₁, h₂, rfl⟩`. Take `rfl : compPt O.s y = c` from `h.compPt_eq`.
+
+Conclude with `⟨y, rfl, congrArg M.j ((existsUnique_liesUnder O.Φ y).unique (liesUnder_basePt O.Φ y) h)⟩`. Use `(hA.dense c Z).trans (and_congr Iff.rfl ?_)` and prove the remaining obligations. Conclude with `(dense_image_j M _).symm.trans (iff_of_eq (congrArg Dense (Set.image_image _ _ (Z : Set (ShFam.Pad.Pt O.s)))))`.
+-/
 theorem exists_isCompModel : ∀ (D : D7) (O : Setup D) (A : SlopeTestRemainingChoices O.Y), O.IsFlagHeightData A → ∀ (c : O.s.Comp) (M : TrueGeo.Model (O.var c)) (hM : IsArithVar M.p (Formalism.MainNotions.WeightThresholdDefs.dimY O.Y)), ∃ b : O.Y.Pt → M.X, (∀ y : ShFam.Pad.Pt O.s, ShFam.Pad.compPt O.s y = c → b y = M.j (baseOn O.Φ c y)) ∧ IsCompModel A c (@ArMod.mk _ (𝓞 D.what₂.LL) _ M.X hM.isIntegral M.p hM) b := by
   intro D O A hA c M hM
   have : IsAlgClosure ℚ Qb := algebraicClosure.isAlgClosure ℚ ℂ

@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FRatioSelf
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAffCoverSpec
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EtProj.Transv.exists_forms_transversal | exact GlobalTheory.EtProj.Transv.exists_forms_transversal | exact @GlobalTheory.EtProj.Transv.exists_transversal_forms_first_separate | exact GlobalTheory.EtProj.Transv.exists_transversal_forms_first_separate`.
+-/
 theorem _root_.GlobalTheory.T.exists_forms_transversal_at_complexPoints : ∀ (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d p] (N : ℕ)
     (ι : X ⟶ PSpace ℂ N), IsClosedImmersion ι → ι ≫ PSpace.str ℂ N = p → ∀ S : Finset (CxPts p (RingHom.id ℂ)),
     ∃ (n : ℕ) (f : Fin (d + 1) → MvPolynomial (Fin (N + 1)) ℂ) (hf : ∀ i, f i ∈ GlobalTheory.ProjSpace.grading ℂ N n), 0 < n ∧

@@ -5,6 +5,25 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `X Ω _ ξ E _ _ L r b p h`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨v, hv, rfl⟩`. Establish `hc : ∀ i, ∃ c : Fin r → regAt ξ p, ∑ j, c j • b j = v i` using `fun i => by`.
+
+Use `hv i` as an intermediate fact. Rewrite `this` using `[h.2]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun _).1 this`. Use `choose c hc using hc`. Establish `hv' : v = fun i => ∑ j, ((c i j : Ω)) • b j`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[← hc i]`. Both sides reduce to the same expression. Establish `hsum : exteriorPower.ιMulti Ω r v = ∑ f : Fin r → Fin r, (∏ i, c i (f i)) • exteriorPower.ιMulti Ω r (fun i => b (f i))`. Rewrite using `[hv']`.
+
+Use `(exteriorPower.ιMulti Ω r (M := E)).toMultilinearMap.map_sum (fun i j => ((c i j : Ω)) • b j)` as an intermediate fact. Use `this.trans (Finset.sum_congr rfl fun f _ => ?_)` and prove the remaining obligations. Establish `h2` using `(exteriorPower.ιMulti Ω r (M := E)).toMultilinearMap.map_smul_univ (fun i => (c i (f i) : Ω)) (fun i => b (f i))`. Use `h2.trans ?_` and prove the remaining obligations. Establish `h3 : ((∏ i, c i (f i) : regAt ξ p) : Ω) = ∏ i, (c i (f i) : Ω)` using `by simp`.
+
+Rewrite using `[← h3]`. Both sides reduce to the same expression. Rewrite using `[SetLike.mem_coe, hsum]`. Use `Submodule.sum_mem _ fun f _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Distinguish the cases in `hf : Function.Injective f`.
+
+Set `σ : Equiv.Perm (Fin r)` to `Equiv.ofBijective f (Finite.injective_iff_bijective.1 hf)`. Establish `h4` using `(exteriorPower.ιMulti Ω r (M := E)).map_perm b σ`. Establish `h5 : (fun i => b (f i)) = b ∘ σ` using `rfl`. Rewrite using `[h5, h4]`. Establish `hm` using `Submodule.mem_span_singleton_self (R := regAt ξ p) (exteriorPower.ιMulti Ω r b)`.
+
+Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs` into its components or cases. Rewrite using `[hs, one_smul]`. Conclude with `hm`. Rewrite using `[hs, Units.neg_smul, one_smul]`. Conclude with `neg_mem hm`.
+
+Establish `h6 : ¬ Function.Injective (fun i => b (f i))` using `fun hh => hf (Function.Injective.of_comp (f := b) hh)`. Rewrite using `[(exteriorPower.ιMulti Ω r (M := E)).map_eq_zero_of_not_injective _ h6]`. Conclude with `zero_mem _`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `w rfl`.
+
+Use `⟨b, fun i => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[h.2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+-/
 theorem Lat.wedge_eq_span_of_isFrameAt :
     ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E]
       [Module Ω E] (L : Lat ξ E) (r : ℕ) (b : Fin r → E) (p : Cpt ξ), L.IsFrameAt b p →

@@ -32,6 +32,13 @@ def SerAlgAlt : Prop := _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x h
         ν • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P = ∑ k, z k • evW p.nexp p.v₀ j (g k).val
 end GlobalTheory.BigOn.Exp
 namespace GlobalTheory.BigOn.Exp
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.BigOn.Exp.ExpAlgAlt _root_.GlobalTheory.BigOn.Exp.SerAlgAlt _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt at *`. Use `hS.imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `h`. Use `⟨x0, fun x hx hle i p hp hm w hw j ρ hρ ν hpin hN hR0 s h P hd hP f hf => ?_⟩` and prove the remaining obligations. Take `⟨n, z, g, hz, hsum⟩` from `hx0 x hx hle i p hp hm w hw j ρ hρ ν hpin hN hR0 s h P hd hP`.
+
+Take `⟨Z⟩` from `hm.2.2.series`. Establish `hU : p.R.toRealDat.LUnif` using `hp.prim.unif`. Establish `hW : p.R.toRealDat.models_HW` using `p.charW.base.models.HW`. Establish `hK : (p.Sx.A ((j : ℕ) + 1)).IsKsForm` using `GlobalTheory.isKsForm_of_formsIso _ _ (p.nexp.fi j) (p.fw.ks j)`. Use `exists_algExp p.nexp p.v₀ hρ _ j _ hU hW (Z.vec j) hK _ z g hz ?_` and prove the remaining obligations.
+
+Rewrite using `[← hsum, ← hf]`. Conclude with `(smul_inv_smul₀ hN.1 _).symm`.
+-/
 theorem expAlg_of_serAlg_alt (hS : _root_.GlobalTheory.BigOn.Exp.SerAlgAlt) : _root_.GlobalTheory.BigOn.Exp.ExpAlgAlt := by
   unfold _root_.GlobalTheory.BigOn.Exp.ExpAlgAlt _root_.GlobalTheory.BigOn.Exp.SerAlgAlt _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt at *
   refine hS.imp fun Fm CH _ h => ?_
@@ -56,6 +63,15 @@ def SerRefAlt : Prop := _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x h
       P ∈ ρ.lat ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) (smallInt (Fm.D x i)) h →
         ∃ (n : ℕ) (z : Fin n → ℂ) (g : Fin n → NX.FmK p.Sx ((j : ℕ) + 1)), (∀ k, IsAlgebraic ℚ (z k)) ∧
           ν₀ • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P = ∑ k, z k • evW p.nexp p.v₀ j (g k).val
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.BigOn.Exp.SerAlgAlt _root_.GlobalTheory.BigOn.Exp.SerRefAlt _root_.GlobalTheory.BigOn.Exp.ScaleRootAltBis _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt at *`. Use `(Formalism.MainNotions.Closed.and hR hS).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `h.1.and h.2`. Use `⟨x0, fun x hx hle i p hp hm w hw j ρ hρ ν hpin hN hR0 s h P hd hP => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2⟩` from `hx0 x hx hle i p hp`.
+
+Take `⟨ν₀, hN₀, hR₀, hexp⟩` from `a1 hm w hw j ρ hρ ν hpin hN hR0`. Take `⟨n, z, g, hz, hsum⟩` from `hexp s h P hd hP`. Distinguish the cases in `hθ : ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P = 0`. Use `⟨0, Fin.elim0, Fin.elim0, fun k => Fin.elim0 k, ?_⟩` and prove the remaining obligations. Rewrite using `[hθ, smul_zero, Finset.univ_eq_empty, Finset.sum_empty]`.
+
+Take `⟨m, hm0, hpow⟩` from `a2 hm w hw j ρ ρ hρ hρ ν₀ ν hpin hpin ⟨rfl, rfl, rfl, rfl, rfl⟩ hN₀ hN hR₀ hR0 s h P hd hP hθ`. Establish `h0 : ν₀ ≠ 0` using `hN₀.1`. Establish `hζ : (ν / ν₀) ^ m = 1` using `by rw [div_pow, hpow, div_self (pow_ne_zero _ h0)]`. Use `⟨n, fun k => ν / ν₀ * z k, g, fun k => ?_, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ y : ℂ, y ∈ algebraicClosure ℚ ℂ ↔ IsAlgebraic ℚ y` using `fun y => mem_algebraicClosure_iff`.
+
+Conclude with `(hmem _).1 (mul_mem ((hmem _).2 (isAlgebraic_of_pow_eq_one hm0 hζ)) ((hmem _).2 (hz k)))`. Use `conv_lhs => rw [← div_mul_cancel₀ ν h0]`. Rewrite using `[mul_smul, hsum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+-/
 theorem serAlg_of_serRef_scaleRoot (hR : _root_.GlobalTheory.BigOn.Exp.SerRefAlt) (hS : _root_.GlobalTheory.BigOn.Exp.ScaleRootAltBis) : _root_.GlobalTheory.BigOn.Exp.SerAlgAlt := by
   unfold _root_.GlobalTheory.BigOn.Exp.SerAlgAlt _root_.GlobalTheory.BigOn.Exp.SerRefAlt _root_.GlobalTheory.BigOn.Exp.ScaleRootAltBis _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt at *
   refine (Formalism.MainNotions.Closed.and hR hS).imp fun Fm CH _ h => ?_

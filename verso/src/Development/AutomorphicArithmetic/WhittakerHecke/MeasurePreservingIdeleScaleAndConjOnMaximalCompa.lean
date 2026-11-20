@@ -6,6 +6,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.RankTwoDesce
 open scoped Classical ENNReal NNReal
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
+/- English proof (translation)
+Introduce `M₀ t u hu`. Use `haveI := M₀.prob`. Set `c : IdeleGroup ℚ` to `(iy (Real.exp t) * u : (A ℚ)ˣ)`. Establish `h1 : MeasurePreserving (fun z : IdeleGroup ℚ => c * z⁻¹) (ideleMeasure ℚ) (ideleMeasure ℚ)` using `(measurePreserving_mul_left (ideleMeasure ℚ) c).comp (Measure.measurePreserving_inv (ideleMeasure ℚ))`. Establish `h2 : MeasurePreserving (cD u : G1 ℚ → G1 ℚ) M₀.κ M₀.κ` using `⟨(M.continuous_cD u).measurable, UpperTheory.maximalCompact_measure_map_conjDiag_eq M₀ u hu⟩`.
+
+Set `e1 : IdeleGroup ℚ ≃ᵐ IdeleGroup ℚ` to `(MeasurableEquiv.inv (IdeleGroup ℚ)).trans (MeasurableEquiv.mulLeft c)`. Set `e2 : G1 ℚ ≃ᵐ G1 ℚ` to `{ toFun := cD u invFun := cD (u⁻¹ : (A ℚ)ˣ) left_inv := fun g => by rw [M.cD_cD, inv_mul_cancel, M.cD_one] right_inv := fun g => by rw [M.cD_cD, mul_inv_cancel, M.cD_one] measurable_toFun := (M.continuous_cD u).measurable measurable_invFun := (M.continuous_cD _).measurable }`. Conclude with `⟨h1.prod h2, (e1.prodCongr e2).measurableEmbedding⟩`.
+-/
 theorem UpperTheory.measurePreserving_idele_scale_and_conj_on_maximalCompact :
     ∀ (M₀ : Meas ℚ) (t : ℝ) (u : IdeleGroup ℚ), u ∈ UU →
         MeasurePreserving (fun p : IdeleGroup ℚ × G1 ℚ => (Un.aa t u p.1, cD u p.2)) M₀.ν M₀.ν ∧

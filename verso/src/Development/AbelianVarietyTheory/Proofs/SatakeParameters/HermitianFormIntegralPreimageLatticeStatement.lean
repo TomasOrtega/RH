@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Hk3.HoweG.GramA.hform_integral | exact GlobalTheory.Hk3.HoweG.GramA.hform_integral | (intros; apply GlobalTheory.Hk3.HoweG.GramA.hform_integral <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hermitianForm_integral_preimage_lattice : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L),
     (∀ z, σ (σ z) = z) → (∀ z, Valued.v (σ z) = Valued.v z) →
     JS ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) → JT ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L) →

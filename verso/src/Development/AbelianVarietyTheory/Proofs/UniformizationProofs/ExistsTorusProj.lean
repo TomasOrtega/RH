@@ -22,6 +22,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {j : ℕ} {D D' : De
   {pD : IsPowDeg D'.toPre D.toPre j} {pA : IsPowPolAV A' A j} {pG : IsPowGrp G' G j}
   {U' : Unif I D' A' G'} {U : Unif I D A G}
 
+/- English proof (translation)
+Use `pD.pw.hom i` as an intermediate fact. Establish `hd : ((U'.gt e).i ≫ (Over.pullback (thick R I e)).map (pG.pr i)) ≫ (U.gt e).q = toUnit _ ≫ η[thickObj R I e D.toPre.P.A]`. Rewrite using `[Category.assoc, ← P.q_pr e i, ← Category.assoc, (U'.gt e).isKernel.w, Category.assoc]`. Conclude with `congrArg (toUnit _ ≫ ·) (IsMonHom.one_hom ((Over.pullback (thick R I e)).map (pD.pw.pr i)))`. Conclude with `⟨(U.gt e).isKernel.lift _ _ hd, (U.gt e).isKernel.lift_fst _ _ _⟩`.
+-/
 theorem exists_factor (P : UnifPowOf pD pA pG U' U) (e : ℕ) (i : Fin j) :
     ∃ h : splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D'.toPre.X ⟶
         splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X,
@@ -35,6 +38,13 @@ theorem exists_factor (P : UnifPowOf pD pA pG U' U) (e : ℕ) (i : Fin j) :
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨J, hJ₀⟩` from `TLinPf.idx_exists D.toPre.P.L D.toPre.P.isLB z`. Establish `hJ : Good D.toPre.P.L z J` using `hJ₀`. Take `⟨J', hJ₁⟩` from `TLinPf.idx_exists D'.toPre.P.L D'.toPre.P.isLB z`. Establish `hJ' : Good D'.toPre.P.L z J'` using `hJ₁`. Take `⟨hψ, H⟩` from `P.t_pr e x`.
+
+Establish `E` using `box_gen_val_along pD.w hψ _ (fun i => (U.gt e).t (pD.xe x i)) H (U'.gt e).i.left z hJ hJ'`. Establish `E₁` using `prod_on_torus (U'.gt e) x (omB pD z J J')`. Establish `E₂` using `val_on_torus (U'.gt e) x hJ' (𝟙 _)`. Rewrite `E₂` using `[Category.id_comp]`. Use `E₂.symm.trans ((_root_.one_mul _).symm.trans ((congrArg (· * _) E₁.symm).trans (E.trans (Finset.prod_congr rfl fun i _ => ?_))))` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (val_on_torus (U.gt e) (pD.xe x i) hJ (h i))` and prove the remaining obligations. Rewrite using `[hh i]`. Both sides reduce to the same expression.
+-/
 theorem char_prod (P : UnifPowOf2 pD pA pG U' U) (e : ℕ)
     (h : Fin j → (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D'.toPre.X ⟶
         splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X))
@@ -58,6 +68,13 @@ theorem char_prod (P : UnifPowOf2 pD pA pG U' U) (e : ℕ)
 
 end Pow
 
+/- English proof (translation)
+Introduce `R _ _ I j D D' A A' G G' _ _ _ _ pD pA pG U' U P e s`. Use `choose h hh using exists_factor P.toUnifPowOf e`. Use `⟨h s, (hh s).symm, fun χ => fn_ext fun z _ => ?_⟩` and prove the remaining obligations. Establish `E` using `char_prod P e h hh (pD.xe.symm (Pi.single s χ)) z`. Rewrite using `[AddEquiv.apply_symm_apply, Finset.prod_eq_single s (fun k _ hk => by`.
+
+Rewrite using `[Pi.single_eq_of_ne hk]`. Conclude with `gm_char_zero _ z) (fun hi => (hi (Finset.mem_univ s)).elim),`. Use the proof step `Pi.single_eq_same] at E`. Establish `a` using `gs_pull (𝟙 _) (h s).left z ⊤ trivial (charUnit _ D.toPre.X χ).val`. Rewrite `a` using `[Category.id_comp]`.
+
+Conclude with `a.trans ((gs_unit _ z ⊤ trivial _).trans ((congrArg Units.val E.symm).trans (gs_unit _ z ⊤ trivial _).symm))`.
+-/
 theorem exists_torus_proj : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (j : ℕ) (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G G' : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] (pD : IsPowDeg D'.toPre D.toPre j) (pA : IsPowPolAV A' A j) (pG : IsPowGrp G' G j) (U' : Unif I D' A' G') (U : Unif I D A G) (_ : UnifPowOf2 pD pA pG U' U) (e : ℕ) (s : Fin j), ∃ t : splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D'.toPre.X ⟶ splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X, (U'.gt e).i ≫ (Over.pullback (thick R I e)).map (pG.pr s) = t ≫ (U.gt e).i ∧ ∀ χ : D.toPre.X, t.left.appTop.hom (charUnit _ D.toPre.X χ).val = (charUnit _ D'.toPre.X (pD.xe.symm (Pi.single s χ))).val := by
   intro R _ _ I j D D' A A' G G' _ _ _ _ pD pA pG U' U P e s
   choose h hh using exists_factor P.toUnifPowOf e

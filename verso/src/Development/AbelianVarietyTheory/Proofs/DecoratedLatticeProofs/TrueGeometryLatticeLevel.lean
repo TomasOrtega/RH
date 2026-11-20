@@ -18,6 +18,9 @@ open GlobalTheory.StepData GlobalTheory.SplitWeil
 noncomputable section
 namespace GlobalTheory.LevOnto
 
+/- English proof (translation)
+The claim follows from `| [], _ => by simp | b :: l, hl => by rw [List.nodup_cons] at hl rw [List.map_cons, List.prod_cons, list_prod_map_mulSingle x k l hl.2] by_cases hb : b = k · subst hb simp [hl.1] · rw [Pi.mulSingle_eq_of_ne (Ne.symm hb), one_mul] simp [List.mem_cons, Ne.symm hb]`.
+-/
 theorem list_prod_map_mulSingle {n : ℕ} {G : Fin n → Type*} [∀ i, Monoid (G i)] (x : ∀ i, G i) (k : Fin n) :
     ∀ l : List (Fin n), l.Nodup → ((l.map fun i => Pi.mulSingle i (x i) k).prod = if k ∈ l then x k else 1)
   | [], _ => by simp
@@ -30,6 +33,9 @@ theorem list_prod_map_mulSingle {n : ℕ} {G : Fin n → Type*} [∀ i, Monoid (
     · rw [Pi.mulSingle_eq_of_ne (Ne.symm hb), one_mul]
       simp [List.mem_cons, Ne.symm hb]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Rewrite using `[Pi.list_prod_apply, List.map_map]`. Use `list_prod_map_mulSingle x k (List.finRange n) (List.nodup_finRange n)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+-/
 theorem list_prod_mulSingle {n : ℕ} {G : Fin n → Type*} [∀ i, Monoid (G i)] (x : ∀ i, G i) :
     ((List.finRange n).map fun i => Pi.mulSingle i (x i)).prod = x := by
   funext k
@@ -37,6 +43,15 @@ theorem list_prod_mulSingle {n : ℕ} {G : Fin n → Type*} [∀ i, Monoid (G i)
   have := list_prod_map_mulSingle x k (List.finRange n) (List.nodup_finRange n)
   simpa [Function.comp_def] using this
 
+/- English proof (translation)
+Take `⟨ε, hε, hE⟩` from `q.above`. Take `⟨ε', hε', hE'⟩` from `q'.above`. Rewrite `hE` using `[GlobalTheory.SplitCut.eFin_of_placeIdem hε]`. Rewrite `hE'` using `[GlobalTheory.SplitCut.eFin_of_placeIdem hε']`. Establish `hsp` using `q'.split`.
+
+Establish `h0 : q'.e * (q.e + cA D q.e) = 0`. Establish `h1 : q'.e = q'.e * (q'.e + cA D q'.e)` using `by rw [mul_add, hsp.1, hsp.2.1, add_zero]`. Rewrite using `[h1, mul_assoc, hE', hE, ← map_mul, GlobalTheory.LocWeil.PlaceIdem.eFin_mul_eFin _ (Ne.symm hv), map_zero, mul_zero]`. Establish `hpr : q'.pr (q.e + cA D q.e) = 0`. Rewrite using `[← q'.pr_sec (q'.pr _), q'.sec_pr, h0, map_zero]`.
+
+Use extensionality with `a b`. Rewrite using `[Matrix.map_apply]`. Establish `h2 : mt V g a b = (mt V g - 1) a b + (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) a b`. Rewrite using `[Matrix.sub_apply, sub_add_cancel]`. Rewrite using `[h2, map_add, ← hg a b, map_mul, hpr, zero_mul, zero_add]`.
+
+Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`.
+-/
 theorem map_pr_eq_one {D : D7} {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
     (q : GlobalTheory.FinPl.SplitPt D k) (q' : GlobalTheory.FinPl.SplitPt D k') (V : HSp D) (g : GA D V)
@@ -58,6 +73,9 @@ theorem map_pr_eq_one {D : D7} {k k' : Type} [Field k] [ValuativeRel k] [Topolog
   rw [h2, map_add, ← hg a b, map_mul, hpr, zero_mul, zero_add]
   by_cases hab : a = b <;> simp [Matrix.one_apply, hab]
 
+/- English proof (translation)
+Use `((GlobalTheory.LevIdx.eq_locHom_iff q' V F g 1).1 ?_).symm` and prove the remaining obligations. Rewrite using `[map_pr_eq_one q q' V g hg hv, Units.val_one, Matrix.mul_one, F.βγ]`.
+-/
 theorem locHom_eq_one {D : D7} {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] {Y : Type} [Fintype Y] [DecidableEq Y]
     (q : GlobalTheory.FinPl.SplitPt D k) (q' : GlobalTheory.FinPl.SplitPt D k') (V : HSp D) (F : Frame k' V.rank Y) (g : GA D V)
@@ -67,12 +85,18 @@ theorem locHom_eq_one {D : D7} {k k' : Type} [Field k] [ValuativeRel k] [Topolog
 
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : RealPack ex} {u : B.Word} {a : GeoAll W u}
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.Fam.QJPlaces.places_under W hW u a ha hTr t J hJ).2 i`. Establish `h2` using `(GlobalTheory.Fam.QJPlaces.places_under W hW u a ha hTr t₂ J₂ hJ₂).2 i₂`. Conclude with `hW.pk.sel _ _ ⟨t, J.mem i⟩ ⟨t₂, J₂.mem i₂⟩ (h1.symm.trans (h.trans h2))`.
+-/
 theorem same_pl (hW : AllTrue W) (ha : a.Is) (hTr : a.True) {t t₂ : W.P.T} (J : QJ a t) (hJ : J.Reads) (J₂ : QJ a t₂)
     (hJ₂ : J₂.Reads) (i : Fin J.r) (i₂ : Fin J₂.r) (h : (J.G i).q.v = (J₂.G i₂).q.v) : J.pl i = J₂.pl i₂ := by
   have h1 := (GlobalTheory.Fam.QJPlaces.places_under W hW u a ha hTr t J hJ).2 i
   have h2 := (GlobalTheory.Fam.QJPlaces.places_under W hW u a ha hTr t₂ J₂ hJ₂).2 i₂
   exact hW.pk.sel _ _ ⟨t, J.mem i⟩ ⟨t₂, J₂.mem i₂⟩ (h1.symm.trans (h.trans h2))
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.LevIdx.eq_locHom_iff _ _ _ _ _).1 (hgl y)).symm`.
+-/
 theorem locHom_gl (j : ℕ) {PP} (h₁ h₂ : QAll W PP) (hj₁ : j ≤ (a.Q PP h₁).s + 1) (hj₂ : j ≤ (a.Q PP h₂).s + 1)
     (gl : GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (a.Q PP h₂).k →* GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j))
     (hgl : ∀ y, (mt _ (gl y)).map (a.Q PP h₂).q.pr = ((a.Q PP h₂).FX j hj₂).β * y.val * ((a.Q PP h₂).FX j hj₂).γ) (y) :
@@ -85,6 +109,15 @@ end
 namespace GlobalTheory.LevOnto
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : RealPack ex} {u : B.Word} {a : GeoAll W u}
 
+/- English proof (translation)
+Establish `hAt : ∀ P : GlobalTheory.FinPl.Pl (I.rec7 l Z) → Prop, P (J₂.G i).q.v → gl y ∈ GlobalTheory.FinPl.grpAt _ P` using `GlobalTheory.SuppGrp.mem_grpAt_of_suppAt _ _ _ _ _ (hgl y).1`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨?_, GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ (hAt (· = (J₂.G i).q.v) rfl)⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : GlobalTheory.LevProd.twAt J (J₂.G i).q.v`. Conclude with `Subgroup.mem_sup_right (hAt _ hv)`. Conclude with `Subgroup.mem_sup_left (GlobalTheory.T.true_geometry_lattice_open W hW u a ha hTr j hj t J hJ α t₂ J₂ hJ₂ i hv gl hgl y hy)`.
+
+Rewrite using `[Subgroup.mem_comap, Subgroup.mem_pi]`. Introduce `i' _`. Use `show GlobalTheory.LevIdx.locHom (J.G i').q _ ((J.G i').FX j _) (gl y) ∈ KO (J.G i').k _`. Distinguish the cases in `hv : (J.G i').q.v = (J₂.G i).q.v`. Establish `e` using `same_pl hW ha hTr J hJ J₂ hJ₂ i' i hv`.
+
+Establish `key : ∀ P (hP : P ∈ (pk W).Q t) (hj₁ : j ≤ (a.Q P ⟨t, hP⟩).s + 1), P = J₂.pl i → GlobalTheory.LevIdx.locHom (a.Q P ⟨t, hP⟩).q _ ((a.Q P ⟨t, hP⟩).FX j hj₁) (gl y) ∈ KO (a.Q P ⟨t, hP⟩).k (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j)`. Introduce and unpack `P hP hj₁ rfl`. Rewrite using `[locHom_gl j _ _ hj₁ _ gl (fun y => (hgl y).2) y]`. Conclude with `hy`. Conclude with `key _ (J.mem i') _ e`.
+
+Rewrite using `[locHom_eq_one (J₂.G i).q (J.G i').q _ _ (gl y) (hgl y).1 (Ne.symm hv)]`. Conclude with `one_mem _`.
+-/
 theorem mem_relax (hW : AllTrue W) (ha : a.Is) (hTr : a.True) (j : ℕ) (hj : j + 2 ≤ B.R.m) {t t₂ : W.P.T} (J : QJ a t) (hJ : J.Reads)
     (α : J.Ch j) (J₂ : QJ a t₂) (hJ₂ : J₂.Reads) (i : Fin J₂.r)
     (gl : GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (J₂.G i).k →* GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j))
@@ -112,6 +145,19 @@ theorem mem_relax (hW : AllTrue W) (ha : a.Is) (hTr : a.True) (j : ℕ) (hj : j 
     · rw [locHom_eq_one (J₂.G i).q (J.G i').q _ _ (gl y) (hgl y).1 (Ne.symm hv)]
       exact one_mem _
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α x hx`. Establish `hex : ∃ t, ∃ J : QJ a t, J.Reads ∧ Nonempty (J.Ch j)` using `⟨t, J, hJ, ⟨α⟩⟩`. Establish `hUp : GlobalTheory.LevProd.Up a j hj = GlobalTheory.LevProd.relax hex.choose_spec.choose j hj hex.choose_spec.choose_spec.2.some`. Unfold `GlobalTheory.LevProd.Up`. Rewrite using `[dif_pos hex]`.
+
+Establish `hJ₀ : hex.choose_spec.choose.Reads` using `hex.choose_spec.choose_spec.1`. Establish `hgl` using `fun i : Fin J.r => GlobalTheory.LocEmb.exists_gl _ _ (J.G i).q ((I.rec7 l Z).sp.X j) (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) ((J.G i).FX j (by have := GlobalTheory.LevProd.step_index_le_s J i hj; omega))`. Use `choose gl _ hglp _ using hgl`. Use `⟨((List.finRange J.r).map fun i => gl i (x i)).prod, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hUp]`.
+
+Apply `Subgroup.list_prod_mem` to reduce the goal to its premises. Introduce `g hg`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hg`. Conclude with `mem_relax hW ha hTr j hj _ hJ₀ _ J hJ i (gl i) (hglp i) (x i) (hx i)`. Rewrite using `[map_list_prod, List.map_map]`.
+
+Establish `hphi : ∀ i, GlobalTheory.LevProd.phi J j hj (gl i (x i)) = Pi.mulSingle i (x i)`. Introduce `i`. Use function extensionality and compare the values at `i'`. Use `show GlobalTheory.LevIdx.locHom (J.G i').q _ ((J.G i').FX j _) (gl i (x i)) = _`. Distinguish the cases in `h : i' = i`.
+
+Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `((GlobalTheory.LevIdx.eq_locHom_iff _ _ _ _ _).1 ((hglp i' (x i')).2)).symm`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Use `locHom_eq_one (J.G i).q (J.G i').q _ _ _ (hglp i (x i)).1 fun hv => h ?_` and prove the remaining obligations.
+
+Conclude with `hJ.inj (same_pl hW ha hTr J hJ J hJ i' i hv.symm)`. Simplify using `only [Function.comp_def, hphi]`. Conclude with `list_prod_mulSingle x`.
+-/
 theorem onto : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 2 ≤ B.R.m), ∀ t (J : QJ a t), J.Reads → J.Ch j → ∀ x : (i : Fin J.r) → GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (J.G i).k, (∀ i, x i ∈ KO (J.G i).k _) → ∃ g ∈ GlobalTheory.LevProd.Up a j hj, GlobalTheory.LevProd.phi J j hj g = x := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α x hx
   have hex : ∃ t, ∃ J : QJ a t, J.Reads ∧ Nonempty (J.Ch j) := ⟨t, J, hJ, ⟨α⟩⟩

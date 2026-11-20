@@ -19,6 +19,9 @@ def rpowHom (e : ℝ) : {r : ℝ // 0 < r} →* {r : ℝ // 0 < r} where
   map_one' := Subtype.ext (Real.one_rpow e)
   map_mul' s t := Subtype.ext (Real.mul_rpow s.2.le t.2.le)
 
+/- English proof (translation)
+The claim follows from `(continuous_subtype_val.rpow_const fun s => Or.inl s.2.ne').subtype_mk _`.
+-/
 theorem continuous_rpowHom (e : ℝ) : Continuous (rpowHom e) :=
   (continuous_subtype_val.rpow_const fun s => Or.inl s.2.ne').subtype_mk _
 
@@ -39,8 +42,14 @@ def posIdeleHom : {r : ℝ // 0 < r} →* IdeleGroup K where
     congr 1
     exact Subtype.ext (by simp only [Positive.val_mul, mul_pow])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem posIdeleHom_apply (s : {r : ℝ // 0 < r}) : posIdeleHom K s = posIdele s.1 s.2 := rfl
 
+/- English proof (translation)
+The claim follows from `continuous_posIdele_subtype`.
+-/
 theorem continuous_posIdeleHom : Continuous (posIdeleHom K) :=
   continuous_posIdele_subtype
 
@@ -50,11 +59,20 @@ def scalarUnits : IdeleGroup K →* AdelicGLn.AdelicGL K n :=
   (diagUnits n).comp
     { toFun := fun u _ => u, map_one' := rfl, map_mul' := fun _ _ => rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem scalarUnits_apply (u : IdeleGroup K) : scalarUnits K n u = diagUnits n fun _ => u := rfl
 
+/- English proof (translation)
+The claim follows from `(continuous_diagUnits n).comp (continuous_pi fun _ => continuous_id)`.
+-/
 theorem continuous_scalarUnits : Continuous (scalarUnits K n) :=
   (continuous_diagUnits n).comp (continuous_pi fun _ => continuous_id)
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Simplify using `only [Units.val_mul, scalarUnits_apply, coe_diagUnits]`. Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal, mul_comm]`.
+-/
 theorem scalarUnits_mul_comm (u : IdeleGroup K) (g : AdelicGLn.AdelicGL K n) :
     scalarUnits K n u * g = g * scalarUnits K n u := by
   refine Units.ext ?_
@@ -67,9 +85,15 @@ variable (K) in
 def centralSection (n : ℕ) : {r : ℝ // 0 < r} →* AdelicGLn.AdelicGL K n :=
   (scalarUnits K n).comp ((posIdeleHom K).comp (rpowHom ((n * Module.finrank ℚ K : ℝ))⁻¹))
 
+/- English proof (translation)
+The claim follows from `continuous_scalarUnits.comp (continuous_posIdeleHom.comp (continuous_rpowHom _))`.
+-/
 theorem continuous_centralSection : Continuous (centralSection K n) :=
   continuous_scalarUnits.comp (continuous_posIdeleHom.comp (continuous_rpowHom _))
 
+/- English proof (translation)
+The claim follows from `scalarUnits_mul_comm _ g`.
+-/
 theorem centralSection_mul_comm (s : {r : ℝ // 0 < r}) (g : AdelicGLn.AdelicGL K n) :
     centralSection K n s * g = g * centralSection K n s :=
   scalarUnits_mul_comm _ g
@@ -79,15 +103,26 @@ variable (K n) in
 def detModule : AdelicGLn.AdelicGL K n →* {r : ℝ // 0 < r} :=
   (ideleModule K).comp (AdelicGLn.det K n)
 
+/- English proof (translation)
+The claim follows from `continuous_ideleModule.comp (AdelicGLn.continuous_det K n)`.
+-/
 theorem continuous_detModule : Continuous (detModule K n) :=
   continuous_ideleModule.comp (AdelicGLn.continuous_det K n)
 
+/- English proof (translation)
+Rewrite using `[mem_normOneGL]`. Conclude with `⟨fun h => Subtype.ext (h.trans Positive.val_one.symm), fun h => (congrArg Subtype.val h).trans Positive.val_one⟩`.
+-/
 theorem mem_normOneGL_iff_detModule {g : AdelicGLn.AdelicGL K n} :
     g ∈ normOneGL K n ↔ detModule K n g = 1 := by
   rw [mem_normOneGL]
   exact ⟨fun h => Subtype.ext (h.trans Positive.val_one.symm),
     fun h => (congrArg Subtype.val h).trans Positive.val_one⟩
 
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Establish `hd0 : 0 < Module.finrank ℚ K` using `Module.finrank_pos`. Establish `h1 : (detModule K n (centralSection K n s) : ℝ) = ∏ _i : Fin n, (ideleModule K (posIdeleHom K (rpowHom ((n * Module.finrank ℚ K : ℝ))⁻¹ s)) : ℝ)`. Rewrite using `[detModule, MonoidHom.comp_apply, centralSection, MonoidHom.comp_apply, MonoidHom.comp_apply, scalarUnits_apply, det_diagUnits, map_prod, coe_finset_prod_pos]`. Rewrite using `[h1, Finset.prod_const, Finset.card_univ, Fintype.card_fin, posIdeleHom_apply, ideleModule_posIdele]`.
+
+Express the relevant statement in the definitionally equal form `((s.1 ^ ((n * Module.finrank ℚ K : ℝ))⁻¹) ^ Module.finrank ℚ K) ^ n = s.1`. Rewrite using `[← pow_mul, ← Real.rpow_natCast, ← Real.rpow_mul s.2.le]`. Establish `hne : (n * Module.finrank ℚ K : ℝ) ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 hn.ne') (Nat.cast_ne_zero.2 hd0.ne')`. Rewrite using `[show ((n * Module.finrank ℚ K : ℝ))⁻¹ * ((Module.finrank ℚ K * n : ℕ) : ℝ) = 1 by push_cast; field_simp, Real.rpow_one]`.
+-/
 theorem detModule_centralSection (hn : 0 < n) (s : {r : ℝ // 0 < r}) :
     detModule K n (centralSection K n s) = s := by
   refine Subtype.ext ?_
@@ -111,10 +146,26 @@ def glNormOneSplitting (hn : 0 < n) :
     continuous_centralSection (detModule_centralSection hn) centralSection_mul_comm (normOneGL K n)
     (fun _ => mem_normOneGL_iff_detModule)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem glNormOneSplitting_symm_apply (hn : 0 < n) (p : normOneGL K n × {r : ℝ // 0 < r}) :
     (glNormOneSplitting (K := K) hn).symm p = (p.1 : AdelicGLn.AdelicGL K n) * centralSection K n p.2 := by
   rfl
 
+/- English proof (translation)
+Establish `: SecondCountableTopology (normOneGL K n)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Use `set Φ : AdelicGLn.AdelicGL K n ≃ₜ* normOneGL K n × {r : ℝ // 0 < r} := GroundTheory.Variant₂.N1.centralSplitting (detModule K n) continuous_detModule (centralSection K n) continuous_centralSection (detModule_centralSection hn) centralSection_mul_comm (normOneGL K n) (fun _ => mem …`. Establish `hΦs : ∀ p : normOneGL K n × {r : ℝ // 0 < r}, Φ.symm p = (p.1 : AdelicGLn.AdelicGL K n) * centralSection K n p.2` using `fun p => rfl`. Establish `hΦm : Measurable (Φ : AdelicGLn.AdelicGL K n → normOneGL K n × {r : ℝ // 0 < r})` using `Φ.continuous.measurable`. Use `set lam : Measure (normOneGL K n × {r : ℝ // 0 < r}) := μ.map Φ with hlam`.
+
+Establish `hlamH : lam.IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map μ Φ`. Establish `hν : posRealMeasure posRealUnitInterval = 1` using `posRealMeasure_posRealUnitInterval`. Use `set ρ : Measure (normOneGL K n) := Measure.map Prod.fst (lam.restrict (Set.univ ×ˢ posRealUnitInterval)) with hρ`. Establish `hρH : ρ.IsHaarMeasure` using `isHaarMeasure_map_fst_restrict lam posRealMeasure hν`. Establish `hμ₁ : μ₁ = Measure.haarScalarFactor μ₁ ρ • ρ` using `Measure.isMulLeftInvariant_eq_smul μ₁ ρ`.
+
+Use `⟨(Measure.haarScalarFactor μ₁ ρ : ℝ≥0∞), ENNReal.coe_ne_top, fun E hE => ?_⟩` and prove the remaining obligations. Establish `hS : MeasurableSet posRealUnitInterval` using `measurableSet_posRealUnitInterval`. Establish `hρE : ρ E = μ (Φ ⁻¹' (E ×ˢ posRealUnitInterval))`. Rewrite using `[hρ, Measure.map_apply measurable_fst hE, Measure.restrict_apply (measurable_fst hE), hlam, Measure.map_apply hΦm]`. Use `congr 1`.
+
+Use extensionality with `p`. Simplify using `[and_comm]`. Conclude with `(measurable_fst hE).inter (MeasurableSet.univ.prod hS)`. Establish `himg : Φ ⁻¹' (E ×ˢ posRealUnitInterval) = (fun p : normOneGL K n × {r : ℝ // 0 < r} => (p.1 : AdelicGLn.AdelicGL K n) * centralSection K n p.2) '' (E ×ˢ posRealUnitInterval)`. Use extensionality with `g`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Conclude with `⟨Φ g, hg, (hΦs (Φ g)).symm.trans (Φ.symm_apply_apply g)⟩`. Introduce and unpack `⟨p, hp, rfl⟩ show Φ ((p.1 : AdelicGLn.AdelicGL K n) * centralSection K n p.2) ∈ E ×ˢ posRealUnitInterval`. Rewrite using `[← hΦs p, ContinuousMulEquiv.apply_symm_apply]`.
+
+Conclude with `hp`. Establish `h1 : μ₁ E = (Measure.haarScalarFactor μ₁ ρ • ρ) E` using `congrArg (fun m : Measure (normOneGL K n) => m E) hμ₁`. Rewrite using `[h1, Measure.smul_apply, hρE, himg, ENNReal.smul_def, smul_eq_mul]`.
+-/
 theorem exists_measure_eq_mul_measure_image (hn : 0 < n)
     [SecondCountableTopology (AdelicGLn.AdelicGL K n)] [MeasurableSpace (AdelicGLn.AdelicGL K n)]
     [BorelSpace (AdelicGLn.AdelicGL K n)]

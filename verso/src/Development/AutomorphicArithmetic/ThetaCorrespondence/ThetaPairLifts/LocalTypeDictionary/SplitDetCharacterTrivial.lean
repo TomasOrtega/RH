@@ -11,6 +11,17 @@ namespace GlobalTheory.SplitDetChr
 open GlobalTheory.LFun GlobalTheory.Doubling
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 end GlobalTheory.SplitDetChr
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hTr v _ hvT _ _ _ t ht`. Take `⟨ht1, ht2⟩` from `ht`. Establish `e1` using `GlobalTheory.InertDetChr.eq_ideleAt (GlobalTheory.InertDetChr.at_det_sub_one v t ht1)`. Use `haveI : Submodule.IsLattice E G.W.L := hTr.geo.hW.lat`. Take `⟨P0, h1, h2⟩` from `GlobalTheory.AdelicU.Frames.exists_rational_frame G.W.L v`.
+
+Establish `hP` using `GlobalTheory.AdelicU.Frames.frame_of_rational P0 h1 h2`. Use `set T := Formalism.UG.bc (compFin F E v) t with hTdef`. Establish `hT : ∀ y ∈ latLoc F G.W.L v, T.1 *ᵥ y ∈ latLoc F G.W.L v` using `GlobalTheory.SplitDetChr.mulVec_mem_latLoc G.W v _ (fun z hz => (ht2 z hz).1)`. Establish `hT' : ∀ y ∈ latLoc F G.W.L v, (T⁻¹).1 *ᵥ y ∈ latLoc F G.W.L v`. Rewrite using `[hTdef, ← map_inv]`.
+
+Conclude with `GlobalTheory.SplitDetChr.mulVec_mem_latLoc G.W v _ (fun z hz => (ht2 z hz).2)`. Establish `hd : GlobalTheory.Doubling.unitFin F E v (Matrix.GeneralLinearGroup.det t) = Matrix.GeneralLinearGroup.det T`. Use `Units.ext ?_` and prove the remaining obligations. Use `show compFin F E v ((Matrix.GeneralLinearGroup.det t : (AE F E)ˣ) : AE F E) = _`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`.
+
+Both sides reduce to the same expression. Establish `hy` using `GlobalTheory.SplitDetChr.det_mem_intLoc _ hP T hT`. Establish `hy'` using `GlobalTheory.SplitDetChr.det_mem_intLoc _ hP T⁻¹ hT'`. Rewrite using `[e1]`. Use `show GlobalTheory.Doubling.charAt X.α v _ = 1`.
+
+Rewrite using `[hd]`. Use `GlobalTheory.LFun.charAt_eq_one_of_unrAt X.α v _ hy (by rwa [← map_inv]) (fun w hw => hTr.chars.unrα w ?_)` and prove the remaining obligations. Use `show ¬ (w.under (𝓞 F) ∈ (X.T : Set (Pl F)))`. Rewrite using `[hw]`. Conclude with `hvT` after adjusting the coercions.
+-/
 theorem GlobalTheory.SplitDetChr.split_det_character_eq_one : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → v ∉ X.T → PsiUnr B.ψ v → (2 : 𝓞 F) ∉ v.asIdeal →
@@ -51,6 +62,9 @@ section
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SplitDetChr.split_det_character_eq_one | exact _root_.GlobalTheory.SplitDetChr.split_det_character_eq_one | (intros; apply _root_.GlobalTheory.SplitDetChr.split_det_character_eq_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.split_det_character_trivial : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → v ∉ X.T → PsiUnr B.ψ v → (2 : 𝓞 F) ∉ v.asIdeal →

@@ -13,12 +13,20 @@ namespace GlobalTheory.ShFam.KeyRel
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, zero_smul]`. Conclude with `GlobalTheory.AllWt.one_mem_secZ`. Consider the case `succ m ih => rw [pow_succ, succ_nsmul]`. Conclude with `GlobalTheory.AllWt.mul_mem_secZ ih hg`.
+-/
 theorem pow_mem_secZ {e : Ix Dw → ℤ} {g : Rul Xo c} (hg : g ∈ GlobalTheory.AllWt.secZ Xo c e) (m : ℕ) :
     g ^ m ∈ GlobalTheory.AllWt.secZ Xo c (m • e) := by
   induction m with
   | zero => rw [pow_zero, zero_smul]; exact GlobalTheory.AllWt.one_mem_secZ
   | succ m ih => rw [pow_succ, succ_nsmul]; exact GlobalTheory.AllWt.mul_mem_secZ ih hg
 
+/- English proof (translation)
+Take `⟨g0, a, -, hc⟩` from `(GlobalTheory.Frames.frChg_exists_unique E H Dw l Xo c S y y').1 h.1.symm`. Establish `h1` using `(GlobalTheory.Frames.frChg_calculus E H Dw l Xo c S).2.1 y`. Set `T : Ix Dw → Sˣ` to `fun k => k.elim a fun _ => 1`. Establish `hb : FrBor T y y'` using `((GlobalTheory.Frames.frChg_calculus E H Dw l Xo c S).2.2.2 T y y').2 ⟨fun _ => 1, fun τ i => Matrix.one_apply_eq i, fun τ i j hij => Matrix.one_apply_ne hij.ne, hc.1, fun τ i => h.2 τ i ▸ h1.2.1 τ i, hc.2.2⟩`. Rewrite using `[GlobalTheory.FlagTan.evR_frBor hg hb, Fintype.prod_option, he, zpow_zero, _root_.one_mul]`.
+
+Simplify using `[T]`.
+-/
 theorem evR_sameLie {S : Type} [CommRing S] [Algebra c.F S] [IsLocalRing S] {e : Ix Dw → ℤ} (he : e none = 0)
     {g : Rul Xo c} (hg : g ∈ GlobalTheory.AllWt.secZ Xo c e) {y y' : FrPt Xo c S} (h : SameLie y y') :
     evR Xo c g y' = evR Xo c g y := by

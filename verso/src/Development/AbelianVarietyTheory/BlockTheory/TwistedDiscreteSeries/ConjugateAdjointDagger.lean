@@ -82,6 +82,9 @@ structure TensorTarget (ψ : AddChar (AF D.host.F) ℂ) {T A B : HSp D} (d : Ort
 
 def cj {X Y : Type} (e : Y → X) (f : X → ℂ) : Y → ℂ := fun y => starRingEnd ℂ (f (e y))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[cj, h]`.
+-/
 theorem cj_cj {X Y : Type} (e : Y → X) (e' : X → Y) (h : ∀ x, e (e' x) = x) (f : X → ℂ) : cj e' (cj e f) = f := by
   funext x; simp [cj, h]
 
@@ -99,6 +102,9 @@ def cjEnd {X Y : Type} (e : Y ≃ X) : Module.End ℂ (X → ℂ) →* Module.En
     show cj e (L (L' (cj e.symm f))) = cj e (L (cj e.symm (cj e (L' (cj e.symm f)))))
     rw [cj_cj e e.symm e.apply_symm_apply]
 
+/- English proof (translation)
+Use `show cj e (L (cj e.symm (cj e f))) = _`. Rewrite using `[cj_cj e e.symm e.apply_symm_apply]`.
+-/
 theorem cjEnd_cj {X Y : Type} (e : Y ≃ X) (L : Module.End ℂ (X → ℂ)) (f : X → ℂ) : cjEnd e L (cj e f) = cj e (L f) := by
   show cj e (L (cj e.symm (cj e f))) = _
   rw [cj_cj e e.symm e.apply_symm_apply]
@@ -111,6 +117,9 @@ def conjSource {S T : HSp D} (om : Rep S T) : Rep (negSp S) T :=
 
 def dagger (S T : HSp D) (x : WO S T) : WO T S := giA S ⬝ (adj x ⬝ gA T)
 
+/- English proof (translation)
+Simplify using `only [dagger, adj_mul, adj_adj, adj_gA, adj_giA, Matrix.mul_assoc, giA_mul_gA, Matrix.mul_one, giA_gA_cancel]`.
+-/
 theorem dagger_dagger (S T : HSp D) (x : WO S T) : dagger T S (dagger S T x) = x := by
   simp only [dagger, adj_mul, adj_adj, adj_gA, adj_giA, Matrix.mul_assoc, giA_mul_gA, Matrix.mul_one, giA_gA_cancel]
 
@@ -161,20 +170,32 @@ def TensorRule (D : D7) : Prop :=
     (∀ (T A B : HSp D) (d : OrthDec T A B) (S : HSp D), TensorTarget ψ d S) ∧
     ∀ S T : HSp D, ConjAdjoint ψ S T
 
+/- English proof (translation)
+Use `cjEnd_cj (Equiv.refl (WO S T)) (om (g, h)) f` as an intermediate fact. Simplify `this` using `[conjTarget]`.
+-/
 example {S T : HSp D} (om : Rep S T) (g : GA D S) (h : GA D T) (f : WO S T → ℂ) :
     conjTarget om (g, negGA T h) (cj id f) = cj id (om (g, h) f) := by
   have := cjEnd_cj (Equiv.refl (WO S T)) (om (g, h)) f
   simpa [conjTarget] using this
 
+/- English proof (translation)
+The claim follows from `cjEnd_cj (daggerEquiv S T) (om (g, h)) f`.
+-/
 example {S T : HSp D} (om : Rep S T) (g : GA D S) (h : GA D T) (f : WO S T → ℂ) :
     conjAdjoint om (h, g) (cj (dagger T S) f) = cj (dagger T S) (om (g, h) f) :=
   cjEnd_cj (daggerEquiv S T) (om (g, h)) f
 
+/- English proof (translation)
+Simplify using `only [dagger, actO_eq, adj_mul, mt_inv S g, mt_inv T h, adj_adj, adj_gA, adj_giA, Matrix.mul_assoc, giA_gA_cancel, gA_giA_cancel]`.
+-/
 example (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) :
     dagger S T (actO S T g h x) = actO T S h g (dagger S T x) := by
   simp only [dagger, actO_eq, adj_mul, mt_inv S g, mt_inv T h, adj_adj, adj_gA, adj_giA, Matrix.mul_assoc,
     giA_gA_cancel, gA_giA_cancel]
 
+/- English proof (translation)
+Simplify using `only [splitFacO, map_mul, MonoidHom.mul_apply, _root_.mul_inv_rev]`. The two sides agree by associativity and commutativity.
+-/
 example (χA χB χT : Chr D) (x x' y : (AE D)ˣ) :
     splitFacO (χA * χB) χT (x * x') y = splitFacO χA χT x y * splitFacO χB χT x' y := by
   simp only [splitFacO, map_mul, MonoidHom.mul_apply, _root_.mul_inv_rev]

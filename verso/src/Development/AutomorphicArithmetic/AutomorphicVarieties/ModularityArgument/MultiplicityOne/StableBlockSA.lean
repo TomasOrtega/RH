@@ -9,12 +9,21 @@ open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GaloisFromTrace
 
 namespace UpperTheory.V.Z.Mult
 
+/- English proof (translation)
+The claim follows from `stableSA (enlarge Th.stUnit hecke_eigenvalues_unitary_one_factor unitary_one_characters_separated_by_eigenvalues Asm.places) Asm.places (stableGA Pi.piFin_holds Pi.piAdm_pf Pi.growthPiJ_holds (UpperTheory.Zero.ConvolutionTheory.EB.cmbPiA piTermA Pi.twTrSum_pf) cuspReadI)`.
+-/
 theorem stableBlockSA : StableBlockSA :=
   stableSA (enlarge Th.stUnit hecke_eigenvalues_unitary_one_factor unitary_one_characters_separated_by_eigenvalues Asm.places) Asm.places
     (stableGA Pi.piFin_holds Pi.piAdm_pf Pi.growthPiJ_holds (UpperTheory.Zero.ConvolutionTheory.EB.cmbPiA piTermA Pi.twTrSum_pf) cuspReadI)
 
+/- English proof (translation)
+The claim follows from `mult_of hW (compOf' hW) stableBlockSA`.
+-/
 theorem mult (hW : GalWeak 4) : Mult := mult_of hW (compOf' hW) stableBlockSA
 
+/- English proof (translation)
+The claim follows from `mult (galWeak_of_litN P 4)`.
+-/
 theorem mult_of_litN (P : GlobalTheory.Mem.LiteralAutomorphy.LitN) : Mult := mult (galWeak_of_litN P 4)
 
 end UpperTheory.V.Z.Mult

@@ -23,6 +23,19 @@ open Formalism.IndefR.Mult Matrix
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨H, _, _, σ, lam, ε, P, hE, hD, hP, hJ, fun x => ?_⟩` and prove the remaining obligations. Take `⟨n, L, v, hv, hφ⟩` from `h x`. Set `vv : ℕ → H` to `fun i => if hi : i < n then v ⟨i, hi⟩ else 0`. Set `ll : ℕ → (H →ₗ[ℂ] ℂ)` to `fun i => if hi : i < n then ((L ⟨i, hi⟩ : H →L[ℂ] ℂ) : H →ₗ[ℂ] ℂ) else 0`. Set `CC : ℕ → ℝ` to `fun i => if hi : i < n then ‖L ⟨i, hi⟩‖ else 0`.
+
+Establish `hb : ∀ i w, ‖ll i w‖ ≤ CC i * ‖w‖` using `fun i w => by`. Distinguish the cases in `hi : i < n`. Simplify using `only [ll, CC, dif_pos hi]`. Conclude with `(L ⟨i, hi⟩).le_opNorm w`. Simplify using `[ll, CC, dif_neg hi]`.
+
+Use `⟨vv, fun i => ?_, ll, fun i => ⟨[[]], CC i, by simp, fun w _ => by simpa using hb i w⟩, ⟨[[]], CC, by simp, fun i w _ => by simpa using hb i w, fun S' _ => ?_, fun _ => 1, continuous_const, fun g hg w _ => ?_⟩, fun g hg => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : i < n`. Simplify using `only [vv, dif_pos hi]`. Conclude with `hv _`. Simplify using `only [vv, dif_neg hi]`.
+
+Introduce `k Xs _`. Simplify using `using contDiff_const`. Use `summable_of_ne_finset_zero (s := Finset.range n) fun i hi => ?_` and prove the remaining obligations. Establish `: ¬ i < n` using `by simpa using hi`. Simplify using `[CC, dif_neg this]`.
+
+Simplify using `[hD.2.2.1.2.1 _ (GlobalTheory.TypeAtCompare.conj_mem hP hJ hg) w]`. Rewrite using `[hφ g hg]`. Use `hasSum_sum_of_ne_finset_zero (s := Finset.range n) (f := fun i => ll i (σ (P * g * P⁻¹) (vv i))) (fun i hi => by` and compare the differences between its conclusion and the goal. Establish `: ¬ i < n` using `by simpa using hi`. Simplify `1` using `[ll, dif_neg this])`.
+
+Rewrite using `[Finset.sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[ll, vv, i.2]`. Use `infer_instance`.
+-/
 theorem isTypeAt_of_finSum (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) {S : SPar}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin V.rank) (Fin V.rank) ℂ → (H →L[ℂ] H)} {lam : Fin V.rank → ℝ} {ε : Fin V.rank → Bool}
@@ -76,6 +89,9 @@ def conjFun {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Norm
         rw [star_mul', Complex.star_def, Complex.conj_conj] }
     ‖ℓ‖ (fun w => by simpa using ℓ.le_opNorm (c w))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjFun_apply {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup H']
     [InnerProductSpace ℂ H'] (c : H' ≃ₗᵢ⋆[ℂ] H) (ℓ : H →L[ℂ] ℂ) (w : H') : conjFun c ℓ w = star (ℓ (c w)) := rfl
 
@@ -87,6 +103,17 @@ open Formalism.IndefR.Mult Matrix
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `z using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Take `⟨ℓ, -, hℓ⟩` from `GlobalTheory.DefiniteEnd.exists_sobCont M τ T f x`. Establish `hw : c.symm (f τ) ∈ M'.sm τ` using `(hsm _).2 (by simp)`. Establish `hsv : SmoothVec (lieAt V τ) (fun g => M'.σ τ (M'.fr τ * g * (M'.fr τ)⁻¹)) (c.symm (f τ))`.
+
+Rewrite `hw` using `[GlobalTheory.SmVec.sm_eq M' τ]`. Conclude with `hw`. Use `⟨1, fun _ => star r • conjFun c (LinearMap.toContinuousLinearMap ℓ), fun _ => c.symm (f τ), fun _ => hsv, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e1` using `congrFun (hT.equiv τ g hg f ⟨M.rep τ g (f τ), GlobalTheory.ConjMult.rep_mem_sm M τ hg (f τ).2⟩ rfl) x`. Establish `e3 : T f (x * atTau θ V τ g) = ℓ (M.rep τ g (f τ))`.
+
+Rewrite using `[hℓ ⟨M.rep τ g (f τ), GlobalTheory.ConjMult.rep_mem_sm M τ hg (f τ).2⟩]`. Conclude with `e1.symm`. Establish `e2 : M.rep τ g (f τ) = c (M'.rep τ g (c.symm (f τ)))`. Rewrite using `[hc g hg, LinearIsometryEquiv.apply_symm_apply]`. Rewrite using `[Fin.sum_univ_one, map_smul, PiTensorProduct.lift.tprod, Pi.smul_apply, ContinuousLinearMap.smul_apply, conjFun_apply, smul_eq_mul, smul_eq_mul, star_mul', e3, LinearMap.coe_toContinuousLinearMap', e2]`.
+
+Both sides reduce to the same expression. Consider the case `add a b ha hb`. Take `⟨n₁, L₁, v₁, hv₁, h₁⟩` from `ha`. Take `⟨n₂, L₂, v₂, hv₂, h₂⟩` from `hb`. Use `⟨n₁ + n₂, Fin.append L₁ L₂, Fin.append v₁ v₂, fun i => ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hv₁ i`. Simplify using `using hv₂ i`. Rewrite using `[Fin.sum_univ_add, map_add, Pi.add_apply, star_add, h₁ g hg, h₂ g hg]`. Simplify using the standard rewrite rules.
+-/
 theorem conj_finSum {V : HSp D} {S S' : D.what₂.Tau → SPar} {θ : InfFam D} (M : DSModel V S) (M' : DSModel V S')
     (τ : D.what₂.Tau) [FiniteDimensional ℂ (M.H τ)] (c : M'.H τ ≃ₗᵢ⋆[ℂ] M.H τ)
     (hc : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w, c (M'.rep τ g w) = M.rep τ g (c w))
@@ -132,6 +159,11 @@ open Formalism.IndefR.Mult Matrix
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `z using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Rewrite using `[map_smul, PiTensorProduct.lift.tprod]`. Conclude with `GlobalTheory.Mem.AutSpace.isAutFunSm_smul r (hT.aut f)`. Consider the case `add a b ha hb`.
+
+Rewrite using `[map_add]`. Conclude with `GlobalTheory.Mem.AutSpace.isAutFunSm_add ha hb`.
+-/
 theorem isAutFunSm_lift {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S} {J : Set (GA D V)}
     {χ : GA D V → ℂ} {T : MMap M} (hT : IsMultMap θ M J χ T) (z : SmT M) :
     IsAutFunSm θ V (PiTensorProduct.lift T z) := by
@@ -148,6 +180,13 @@ variable {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hx` using `(hH t).2.1.le (LinearMap.mem_range_self (R.HX t).e y)`. Establish `hT` using `GlobalTheory.DefiniteEnd.isMultMap_toMap hθ D.sp.X'_sig (GlobalTheory.DefiniteEnd.end_definite D) R.MX hc hpr hx`. Establish `e : d.formX t y = PiTensorProduct.lift (PiTensorProduct.lift.symm (R.cX.toMap R.prX ((R.HX t).e y))) d.v`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Use `⟨isAutFunSm_lift hT _, GlobalTheory.DefiniteEnd.isCuspFun_of_definite D.sp.X'_sig (GlobalTheory.DefiniteEnd.end_definite D) _, fun τ => ?_⟩` and prove the remaining obligations. Use `haveI := GlobalTheory.DefiniteEnd.finiteDimensional_model D.sp.X'_sig (GlobalTheory.DefiniteEnd.end_definite D) R.MX τ`. Take `⟨M', c, hc'⟩` from `@GlobalTheory.ConjDS.exists_conjModel D D.sp.X' (parB (Ptw D) D.R.m) R.MX`. Establish `hsm` using `(GlobalTheory.ConjMult.conj_mult R.θ R.MX M' c hc').1 τ`.
+
+Establish `hE` using `M'.enum τ`. Simplify using `only [parB, dualPar_dualPar] at hE`. Conclude with `isTypeAt_of_finSum R.θ D.sp.X' τ hE (M'.ds τ) (M'.fr_unit τ) (M'.fr_gram τ) _ fun x => conj_finSum R.MX M' τ (c τ) (hc' τ) hsm hT x d.v`.
+-/
 theorem formX_props (R : RealDat D A Ks) (hθ : R.models_inf) (hc : R.models_cX) (hpr : R.models_prX) (hH : R.models_HX)
     (d : ChainVec R) (t : T) (y : (R.HX t).H) :
     IsAutFunSm R.θ D.sp.X' (d.formX t y) ∧ IsCuspFun D.sp.X' (d.formX t y) ∧
@@ -168,6 +207,9 @@ theorem formX_props (R : RealDat D A Ks) (hθ : R.models_inf) (hc : R.models_cX)
   exact isTypeAt_of_finSum R.θ D.sp.X' τ hE (M'.ds τ) (M'.fr_unit τ) (M'.fr_gram τ) _
     fun x => conj_finSum R.MX M' τ (c τ) (hc' τ) hsm hT x d.v
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨h1, h2, h3⟩`.
+-/
 theorem props_cast (θ : InfFam D) (S : D.what₂.Tau → SPar) {Λ : Submodule (𝓞 D.host.E) (Fin D.sp.X'.rank → D.host.E)}
     (X : LSp D) (h : X = ⟨D.sp.X', Λ⟩) (φ : GA D D.sp.X' → ℂ) (h1 : IsAutFunSm θ D.sp.X' φ) (h2 : IsCuspFun D.sp.X' φ)
     (h3 : ∀ τ, IsTypeAt θ D.sp.X' τ (S τ) fun g => star (φ g)) :
@@ -181,6 +223,13 @@ end GlobalTheory.EndCusp
 
 namespace GlobalTheory.EndCusp
 
+/- English proof (translation)
+Introduce `_`. Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t y`. Establish `hm` using `hS.core.models`. Take `⟨h1, h2, h3⟩` from `formX_props R hm.inf hm.cX hm.prX hm.HX ch.cv t y`.
+
+Establish `hθ : ch.W.θ = R.θ` using `hch.toIsBase.weil.θ`. Take `⟨k1, k2, k3⟩` from `props_cast R.θ (fun τ => Node.par D ch.sc.cGap (.grid 0 D.R.m) τ) (columnBlock R.toLevCh D.R.m) (colY_m R.toLevCh) (ch.cv.formX t y) h1 h2 (fun τ => by`. Rewrite using `[show Node.par D ch.sc.cGap (.grid 0 D.R.m) τ = (Ptw D).Dpar D.R.m τ from parV_zero D _ le_rfl τ]`. Conclude with `h3 τ)`. Rewrite using `[hθ]`.
+
+Conclude with `⟨k1, k2, k3⟩`.
+-/
 theorem formTop_isCuspListed : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (y : (R.HX t).H), GlobalTheory.FlipRun.IsCuspListed ch.W.θ (.grid 0 D.R.m) (GlobalTheory.RowClaim.formTop ch t y) := by
   intro _
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch _ => ?_⟩⟩

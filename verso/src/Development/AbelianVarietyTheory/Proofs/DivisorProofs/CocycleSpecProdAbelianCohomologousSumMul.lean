@@ -21,6 +21,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PtExt.SurjD
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `TensorProduct.exists_finset z`. Use `⟨S.card, fun i ↦ (S.equivFin.symm i).1.1, fun i ↦ (S.equivFin.symm i).1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hS, ← Finset.sum_coe_sort S]`. Conclude with `(Equiv.sum_comp S.equivFin.symm (fun p : S ↦ p.1.1 ⊗ₜ p.1.2)).symm`.
+-/
 theorem exists_fin_sum_tmul {R D M : Type*} [CommRing R] [CommRing D] [Algebra R D] [AddCommGroup M]
     [Module R M] (z : D ⊗[R] M) : ∃ (n : ℕ) (d : Fin n → D) (m : Fin n → M), z = ∑ i, d i ⊗ₜ m i := by
   obtain ⟨S, hS⟩ := TensorProduct.exists_finset z
@@ -28,6 +31,11 @@ theorem exists_fin_sum_tmul {R D M : Type*} [CommRing R] [CommRing D] [Algebra R
   rw [hS, ← Finset.sum_coe_sort S]
   exact (Equiv.sum_comp S.equivFin.symm (fun p : S ↦ p.1.1 ⊗ₜ p.1.2)).symm
 
+/- English proof (translation)
+Take `⟨k₀, hk₀⟩` from `h`. Use `⟨fun D _ _ x ↦ k₀ D x + k D x, ?_⟩` and prove the remaining obligations. Introduce `D _ _ D' _ _ φ x hx`. Establish `h1` using `hk₀ D D' φ x hx`. Establish `h2` using `hk D D' φ x hx`.
+
+Establish `h3` using `ha D D' φ x`. Simplify using `only [Fn1.add, Fn1.neg] at h1 ⊢`. Rewrite using `[map_add]`. Take the linear combination `h1 + h2 + h3`.
+-/
 theorem cohom_of_cob {R : Type} [CommRing R] {X : Over (Sp R)} {K : Type} {W : K → X.left.Opens}
     {u a b c : Fn1 X} (h : Cohom W u a) (k : Fn0 X) (hk : IsCob W c k)
     (ha : ∀ (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D']
@@ -46,6 +54,29 @@ end GlobalTheory.PtExt.SurjD
 
 open GlobalTheory.PtExt.SurjD in
 
+/- English proof (translation)
+Introduce `H R _ B _ g hB hg D _ _ u hu`. Take `⟨B', _, π, q, hpb, hB', hg', hq, hfst, hsnd⟩` from `GlobalTheory.T.exists_abelianScheme_baseChange_spec_algebra_prod R D B g hB hg`. Establish `w : q ≫ (SpAlg R D ⊗ B).hom = B'.hom ≫ spMap (algebraMap R D)`. Rewrite using `[← Over.w (fst (SpAlg R D) B), ← Category.assoc, hfst]`. Both sides reduce to the same expression.
+
+Establish `hu'` using `(GlobalTheory.T.pointCochainPullbackBaseChange_cocycle_coboundary_whole R D (algebraMap R D) _ B' q w u).1 hu`. Establish `hsurj` using `GlobalTheory.PtExt.toH1O_surjective_of_abelian H D B' g hB' hg'`. Take `⟨f', hf'⟩` from `GlobalTheory.PtExt.cohom_fv_of_toH1O_surjective D B' hsurj (bcPull w u) hu'`. Take `⟨hFree, -, hBC⟩` from `GlobalTheory.T.abelianSchemeDeRham_free_hodgeSequence_baseChange H`. Establish `hbc` using `(hBC R B g hB hg D B' π hpb).1`.
+
+Establish `hall : prim (dp0 D) (𝟙 _) B' = ⊤` using `(hFree D B' g hB' hg').1`. Establish `hmem : H1.mk _ f' ∈ prim (dp0 D) (𝟙 _) B'` using `by rw [hall]; exact Submodule.mem_top`. Take `⟨z, hz⟩` from `hbc.2 ⟨H1.mk _ f', hmem⟩`. Take `⟨n, d, m, rfl⟩` from `exists_fin_sum_tmul z`. Use `choose β hβ using fun i ↦ H1.mk_surjective _ (m i).1`.
+
+Use `⟨n, d, β, ?_⟩` and prove the remaining obligations. Set `mB` to `(GlobalTheory.Published.AbelianDeRham.bcMor hpb).isMor`. Set `S : Z1 (O (dp0 D) (B'.hom ≫ 𝟙 _))` to `∑ i, d i • mB.coef.pullbackOneCocycle (β i)`. Establish `hcl : H1.mk _ f' = H1.mk _ S`. Establish `e` using `congrArg Subtype.val hz`.
+
+Simplify using `only [map_sum, liftSemi_tmul] at e`. Rewrite using `[← e]`. Simplify using `only [S, map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, GrpMor.coe_pull]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← hβ i]`.
+
+Both sides reduce to the same expression. Take `⟨g₀, hg₀⟩` from `H1.mk_eq_mk.1 hcl`. Take `⟨hadd, -, hcob⟩` from `GlobalTheory.T.crystallineCocycleOnTrivialThickenings_additive_linear D B'`. Take `⟨k, hk⟩` from `hcob g₀`. Establish `hsplit : f' = ⟨d0 _ g₀, commAlgFunctorCoboundaryZero_mem_cocyclesOne _ g₀⟩ + S` using `Subtype.ext (by simp [hg₀])`.
+
+Establish `hC : Cohom (whole B') (bcPull w u) (fv S)`. Use `cohom_of_cob hf' k hk ?_` and prove the remaining obligations. Rewrite using `[hsplit, hadd]`. Use `intros`. Both sides reduce to the same expression.
+
+Establish `hsum` using `GlobalTheory.T.baseChangePull_sum_mul_pointValue_eq R D B B' q w π hfst hsnd mB (Fin n) d β`. Choose the witnesses or unpack the hypotheses as in `⟨k', hk'⟩ : ∃ k, IsCob (whole B') (bcPull w (u.add (sumMul d fun i ↦ fv (β i)).neg)) k := by`. Take `⟨k', hk'⟩` from `hC`. Use `⟨k', ?_⟩` and prove the remaining obligations. Establish `e : bcPull w (u.add (sumMul d fun i ↦ fv (β i)).neg) = (bcPull w u).add (fv S).neg`.
+
+Rewrite using `[← hsum]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hk'`. Establish `hsm : IsCoc (whole _) (sumMul d fun i ↦ fv (β i))` using `(GlobalTheory.PtExt.SumMulFacts.main R D B (Fin n) d _).1 fun i ↦ (fv_isCoc_and_ev_eq R B (β i)).1`.
+
+Establish `hdiff : IsCoc (whole _) (u.add (sumMul d fun i ↦ fv (β i)).neg)`. Introduce `E _ _ E' _ _ E'' _ _ φ ψ x hx`. Establish `h1` using `hu E E' E'' φ ψ x hx`. Establish `h2` using `hsm E E' E'' φ ψ x hx`. Simplify using `only [Fn1.add, Fn1.neg, map_add, map_neg]`.
+
+Take the linear combination `h1 - h2`. Conclude with `GlobalTheory.T.isPointwiseCoboundary_of_pullbackBaseChange_isIso R D (algebraMap R D) _ B' q w hq _ hdiff ⟨k', hk'⟩`.
+-/
 theorem GlobalTheory.PtExt.cohom_sumMul_fv_of_abelian : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (B : Over (Sp R)) [GrpObj B] (g : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → ∀ (D : Type) [CommRing D] [Algebra R D] (u : Fn1 (SpAlg R D ⊗ B)), IsCoc (whole _) u → ∃ (n : ℕ) (d : Fin n → D) (β : Fin n → Z1 (O (dp0 R) (B.hom ≫ 𝟙 _))), Cohom (whole _) u (sumMul d fun i ↦ fv (β i)) := by
   intro H R _ B _ g hB hg D _ _ u hu
   obtain ⟨B', _, π, q, hpb, hB', hg', hq, hfst, hsnd⟩ := GlobalTheory.T.exists_abelianScheme_baseChange_spec_algebra_prod R D B g hB hg

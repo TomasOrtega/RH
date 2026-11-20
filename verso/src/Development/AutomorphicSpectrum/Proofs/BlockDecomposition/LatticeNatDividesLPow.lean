@@ -6,6 +6,9 @@ open DividedPowers CrystallineSemistableComparison.Pb
 
 namespace GlobalTheory.CompanionTheory.LatticeUnit
 
+/- English proof (translation)
+Introduce `W B _ _ _ f ξ l M m h n hn`. Take `⟨k, u, hu⟩` from `h.unit n hn`. Use `⟨k, Lat.ofW f ξ l M u, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (Lat.ofW f ξ l M) n, ← map_mul, hu, map_pow, map_natCast]`.
+-/
 theorem natCast_dvd_pow :
     ∀ {W B : Type} [CommRing W] [CommRing B] [Algebra ℚ B] (f : W →+* B) (ξ : W) (l M : ℕ) (m : ℕ),
       Lat.Hyp f ξ l m → ∀ n : ℕ, n ≠ 0 →

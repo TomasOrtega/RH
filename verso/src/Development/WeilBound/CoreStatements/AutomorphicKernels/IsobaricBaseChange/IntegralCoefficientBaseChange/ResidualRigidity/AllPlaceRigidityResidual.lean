@@ -21,6 +21,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.Rigid
 
+/- English proof (translation)
+Unfold `strings`. Rewrite using `[Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_multiset_sum]`. Conclude with `(Multiset.sum_map_singleton _).symm.trans (by rw [Multiset.map_map]; rfl)`.
+-/
 theorem strings_eq_map {X ι : Type} [Fintype ι] (p : ι → X) (d : ι → ℕ) :
     strings p d = ∑ x : (Σ i, Fin (d i)), ({(p x.1, spehExp (d x.1) x.2)} : Multiset (X × ℝ)) := by
   unfold strings
@@ -29,6 +32,9 @@ theorem strings_eq_map {X ι : Type} [Fintype ι] (p : ι → X) (d : ι → ℕ
   rw [Finset.sum_eq_multiset_sum]
   exact (Multiset.sum_map_singleton _).symm.trans (by rw [Multiset.map_map]; rfl)
 
+/- English proof (translation)
+Rewrite using `[strings_eq_map, strings_eq_map]`. Use `Fintype.sum_equiv s _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[(hs x).1, (hs x).2]`.
+-/
 theorem strings_eq_of_equiv {X ι κ : Type} [Fintype ι] [Fintype κ] (p : ι → X) (d : ι → ℕ) (p' : κ → X) (d' : κ → ℕ)
     (s : (Σ i, Fin (d i)) ≃ (Σ j, Fin (d' j)))
     (hs : ∀ x, p x.1 = p' (s x).1 ∧ spehExp (d x.1) x.2 = spehExp (d' (s x).1) (s x).2) :

@@ -18,6 +18,21 @@ namespace GlobalTheory.LeviArch
 open GlobalTheory.LeviPlane
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `set c : AE F E →+* AE F E := (cA σ).toRingHom with hcdef`. Establish `hσ` using `sigma_invol hcm`. Establish `hc : ∀ x, c (c x) = x` using `fun x => cA_invol hσ x`. Establish `hJ : ∀ i j, c (incM F W.J j i) = -incM F W.J i j`. Introduce `i j`.
+
+Simplify using `only [hcdef, incM, Matrix.map_apply, cAr_inclR, hW.skew, map_neg]`. Establish `hxx : fm c (incM F W.J) (incV F H'.x) (incV F H'.x) = 0` using `by rw [fm_inc, hH.xx, map_zero]`. Establish `hyy : fm c (incM F W.J) (incV F H'.y) (incV F H'.y) = 0` using `by rw [fm_inc, hH.yy, map_zero]`. Establish `hxy : fm c (incM F W.J) (incV F H'.x) (incV F H'.y) = 1` using `by rw [fm_inc, hH.xy, map_one]`. Establish `hι : ∀ j, fm c (incM F W.J) (fun i => incM F H'.ι i j) (incV F H'.x) = 0 ∧ fm c (incM F W.J) (fun i => incM F H'.ι i j) (incV F H'.y) = 0`.
+
+Introduce `j`. Establish `hcol : (fun i => incM F H'.ι i j) = incV F (H'.ι *ᵥ Pi.single j 1)`. Use extensionality with `i`. Simplify using `[incV, incM, Matrix.mulVec_single_one]`. Rewrite using `[hcol, fm_inc, fm_inc, (hH.orth _).1, (hH.orth _).2, map_zero]`.
+
+Conclude with `⟨rfl, rfl⟩`. Set `L : AE F E → AE F E → Matrix (Fin d) (Fin d) (AE F E)` to `fun s r => lev c (incM F W.J) (incV F H'.x) (incV F H'.y) s r`. Establish `hmul : ∀ s r s' r', L s r * L s' r' = L (s * s') (r * r')` using `fun s r s' r' => lev_mul hc hJ hxx hyy hxy s r s' r'`. Establish `h1 : L 1 1 = 1` using `lev_one hc hJ hxx hyy hxy`. Set `g : GL (Fin d) (AE F E)` to `⟨L (t : AE F E) (cA σ ((t⁻¹ : (AE F E)ˣ) : AE F E)), L ((t⁻¹ : (AE F E)ˣ) : AE F E) (cA σ (t : AE F E)), by rw [hmul, ← map_mul, Units.mul_inv, Units.inv_mul, map_one, h1], by rw [hmul, ← map_mul, Units.inv_mul, Units.mul_inv, map_one, h1]⟩`.
+
+Establish `hg : g ∈ GlobalTheory.WeilM.UG (cA σ) (incM F W.J)` using `by show (L _ _)ᵀ * incM F W.J * (L _ _).map (cA σ) = incM F W.J`. Conclude with `lev_unitary hc hJ hxx hyy hxy (t : AE F E) (cA σ ((t⁻¹ : (AE F E)ˣ) : AE F E)) (by show (t : AE F E) * cA σ (cA σ _) = 1; rw [cA_invol hσ, Units.mul_inv])`. Set `m : UA σ W.J` to `⟨g, hg⟩`. Establish `hm : IsLevi (W₁` using `W₁) H' t 1 m := by`. Use `⟨lev_X hxx hxy _ _, lev_Y hc hJ hxx hyy hxy _ _, ?_⟩` and prove the remaining obligations.
+
+Establish `: mat (1 : UA σ W₁.J) = 1` using `rfl`. Rewrite using `[this, Matrix.mul_one]`. Conclude with `lev_mul_ι _ hι _ _`. Establish `e : leviElt σ W W₁ H' t = m` using `GlobalTheory.LeviUniq.levi_unique F E σ B d r s W hW d₁ W₁ H' i₀ i₁ hH t _ _ (isLevi_leviElt ⟨_, hm⟩) hm`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem leviElt_mat (σ : E →ₐ[F] E) (B : Base F E) (hcm : IsCMExt F E σ) {d r s : ℕ} (W : Spc F E d)
     (hW : W.IsSkew σ B r s) {d₁ : ℕ} (W₁ : Spc F E d₁) (H' : Plane E d d₁) {i₀ i₁ : ℕ}
     (hH : H'.IsAdapted σ B W W₁ i₀ i₁) (t : (AE F E)ˣ) :
@@ -62,6 +77,9 @@ theorem leviElt_mat (σ : E →ₐ[F] E) (B : Base F E) (hcm : IsCMExt F E σ) {
   rw [e]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [lev, Matrix.map_apply, Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, Matrix.one_apply, smul_eq_mul, map_add, map_sub, map_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_lev {R S : Type} [CommRing R] [CommRing S] (c : R →+* R) (φ : R →+* S) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) R) (X Y : Fin n → R) (s r : R) :
     (lev c J X Y s r).map φ = 1 + (φ s - 1) • Matrix.vecMulVec (fun i => φ (X i)) (fun i => φ ((J *ᵥ fun k => c (Y k)) i))
@@ -71,9 +89,15 @@ theorem map_lev {R S : Type} [CommRing R] [CommRing S] (c : R →+* R) (φ : R �
     Matrix.one_apply, smul_eq_mul, map_add, map_sub, map_mul]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `[piInf, compInf, inclR, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem piInf_inclR {w : InfinitePlace F} (τ : EmbOver E w) (e : E) : piInf τ (inclR (F := F) (AF F) e) = τ.1 e := by
   simp [piInf, compInf, inclR, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e => rfl`.
+-/
 theorem compInf_cA (σ : E →ₐ[F] E) (w : InfinitePlace F) (b : AE F E) :
     compInf F E w (cA σ b) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ (compInf F E w b) := by
   induction b using TensorProduct.induction_on with
@@ -81,6 +105,9 @@ theorem compInf_cA (σ : E →ₐ[F] E) (w : InfinitePlace F) (b : AE F E) :
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul a e => rfl
 
+/- English proof (translation)
+Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e => rfl`.
+-/
 theorem compFin_cA (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (b : AE F E) :
     compFin F E v (cA σ b) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ (compFin F E v b) := by
   induction b using TensorProduct.induction_on with
@@ -88,11 +115,21 @@ theorem compFin_cA (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (b : AE
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul a e => rfl
 
+/- English proof (translation)
+Simplify using `only [piInf, RingHom.comp_apply, compInf_cA]`. Conclude with `(infEmb_sigR hcm τ _).symm`.
+-/
 theorem piInf_cA {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (b : AE F E) :
     piInf τ (cA σ b) = star (piInf τ b) := by
   simp only [piInf, RingHom.comp_apply, compInf_cA]
   exact (infEmb_sigR hcm τ _).symm
 
+/- English proof (translation)
+Set `u : AF F` to `(0, 1)`. Establish `hu : evI F u = 0` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : InfiniteAdeleRing F) = 0`. Conclude with `map_zero _`. Establish `h0 : u • ((t : AE F E) - 1) = 0` using `ht u hu`. Establish `hs : compFin F E v (algebraMap (AF F) (AE F E) u) = 1`.
+
+Establish `h2 : sndA F u = 1` using `rfl`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Use `show Algebra.TensorProduct.map (evFin F v) (AlgHom.id F E) (u ⊗ₜ[F] (1 : E)) = 1`. Rewrite using `[Algebra.TensorProduct.map_tmul, evFin, AlgHom.comp_apply, h2, map_one, AlgHom.id_apply]`. Both sides reduce to the same expression.
+
+Establish `h1` using `congrArg (compFin F E v) h0`. Rewrite `h1` using `[Algebra.smul_def, map_mul, hs, one_mul, map_sub, map_one, map_zero]`. Conclude with `sub_eq_zero.1 h1`.
+-/
 theorem compFin_of_mem {t : (AE F E)ˣ} (ht : t ∈ idelesInf F E) (v : HeightOneSpectrum (𝓞 F)) :
     compFin F E v (t : AE F E) = 1 := by
   let u : AF F := (0, 1)
@@ -110,6 +147,27 @@ theorem compFin_of_mem {t : (AE F E)ˣ} (ht : t ∈ idelesInf F E) (v : HeightOn
   rw [Algebra.smul_def, map_mul, hs, one_mul, map_sub, map_one, map_zero] at h1
   exact sub_eq_zero.1 h1
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hcm d r s W hW hσ c hc hcs d₁ W₁ H' i₀ i₁ hH a ha`. Use `set g := toGAd hσ W.J hc (leviElt σ W W₁ H' a) with hg`. Establish `hM : ((matHom _ σ (c • W.J.map σ) g : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = lev (cA σ).toRingHom (incM F W.J) (incV F H'.x) (incV F H'.y) (a : AE F E) (cA σ ((a⁻¹ : (AE F E)ˣ) : AE F E))`. Rewrite using `[matHom_apply, hg, toGAd_mat]`. Conclude with `leviElt_mat σ B hcm W hW W₁ H' hH a`.
+
+Use `⟨?_, fun w τ => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_infPts_iff_forall]`. Introduce `v`. Apply `matHom_injective` to reduce the goal to its premises. Rewrite using `[matHom_proj, map_one]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use `show (((matHom _ σ (c • W.J.map σ) g : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)).map (compFin F E v)) = 1`. Establish `h1` using `compFin_of_mem ha v`. Establish `h2 : compFin F E v ((a⁻¹ : (AE F E)ˣ) : AE F E) = 1`. Use `congrArg (compFin F E v) a.mul_inv` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, h1, one_mul, map_one]`. Then use the resulting hypothesis. Rewrite using `[hM, map_lev, compFin_cA, h1, h2, map_one]`. Simplify using the standard rewrite rules. Establish `hz : piInf τ (a : AE F E) ≠ 0`. Introduce `h`.
+
+Use `congrArg (piInf τ) a.mul_inv` as an intermediate fact. Rewrite `this` using `[map_mul, h, zero_mul, map_one]`. Conclude with `zero_ne_one this`. Use `⟨piInf τ (a : AE F E), hz, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Orb.archMat_apply, matHom_projArch]`.
+
+Express the relevant statement in the definitionally equal form `((((matHom _ σ (c • W.J.map σ) g : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)).map (compInf F E w)).map (infEmb τ)) = _`. Rewrite using `[hM, Matrix.map_map]`. Express the relevant statement in the definitionally equal form `(lev _ _ _ _ _ _).map (piInf τ) = _`. Establish `hinv : piInf τ ((a⁻¹ : (AE F E)ˣ) : AE F E) = (piInf τ (a : AE F E))⁻¹`. Use `congrArg (piInf τ) a.mul_inv` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_one]`. Conclude with `eq_inv_of_mul_eq_one_right this`. Rewrite using `[map_lev, piInf_cA hcm, hinv, star_inv₀]`. Establish `hst : ∀ e : E, star (τ.1 e) = τ.1 (σ e)` using `fun e => (hcm.2.2.2 τ.1 e).symm`. Establish `hcc : τ.1 c⁻¹ * τ.1 c = 1` using `by rw [← map_mul, inv_mul_cancel₀ hc, map_one]`.
+
+Use `set z := piInf τ (a : AE F E)`. Use extensionality with `i j`. Simplify using `only [torMat, projL, Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, Matrix.mulVec, Matrix.vecMul, dotProduct, map_sum, map_mul, incV, incM, Matrix.map_apply, piInf_inclR, AlgHom.coe_toRingHom, cA_inclR, Pi.star_apply, hst]`. Establish `hτc : τ.1 c ≠ 0` using `(map_ne_zero _).2 hc`. Establish `hs1 : ∀ k, star (τ.1 c⁻¹ * τ.1 (H'.y k)) * (τ.1 c * τ.1 (σ (W.J k j))) = τ.1 (W.J j k) * τ.1 (σ (H'.y k))`.
+
+Introduce `k`. Rewrite using `[star_mul', hst, hst, hW.skew, map_inv₀, hcs]`. Simplify using `only [map_neg, map_inv₀, inv_neg]`. Clear the denominators using the available nonvanishing facts. Establish `hs2 : ∀ k, τ.1 (σ (H'.x k)) * (τ.1 c * τ.1 (σ (W.J k j))) = -τ.1 c * (τ.1 (W.J j k) * τ.1 (σ (H'.x k)))`.
+
+Introduce `k`. Rewrite using `[hW.skew, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [cAr_inclR, piInf_inclR, hs1, hs2, ← Finset.mul_sum]`. Take the linear combination `((star z)⁻¹ - 1) * τ.1 (H'.y i) * (∑ k, τ.1 (W.J j k) * τ.1 (σ (H'.x k))) * hcc`.
+-/
 theorem leviElt_arch : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), IsCMExt F E σ → ∀ (d r s : ℕ) (W : Spc F E d), W.IsSkew σ B r s → ∀ (hσ : ∀ x, σ (σ x) = x) (c : E) (hc : c ≠ 0), σ c = -c → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ a ∈ idelesInf F E, toGAd hσ W.J hc (leviElt σ W W₁ H' a) ∈ infPts σ (c • W.J.map σ) ∧ ∀ (w : InfinitePlace F) (τ : EmbOver E w), ∃ z : ℂ, z ≠ 0 ∧ GlobalTheory.Orb.archMat σ (c • W.J.map σ) τ (projArch σ (c • W.J.map σ) w (toGAd hσ W.J hc (leviElt σ W W₁ H' a))) = torMat ((c • W.J.map σ).map τ.1) (fun i => τ.1 (H'.x i)) (fun i => τ.1 (c⁻¹ * H'.y i)) z := by
   intro F E _ _ _ _ _ σ B hcm d r s W hW hσ c hc hcs d₁ W₁ H' i₀ i₁ hH a ha
   set g := toGAd hσ W.J hc (leviElt σ W W₁ H' a) with hg

@@ -16,6 +16,33 @@ section Lattices
 variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Set `q : V →ₗ[𝓞 K] V ⧸ W` to `W.mkQ.restrictScalars (𝓞 K)`. Set `Lb : Submodule (𝓞 K) (V ⧸ W)` to `L.map q`. Establish `hfin : Module.Finite (𝓞 K) Lb` using `Module.Finite.iff_fg.2 (hfg.map q)`. Establish `hcancel : ∀ (d : 𝓞 K) (x : V ⧸ W), d ≠ 0 → d • x = 0 → x = 0`. Introduce `d x hd h`.
+
+Rewrite `h` using `[← IsScalarTower.algebraMap_smul K d x]`. Conclude with `(smul_eq_zero.1 h).resolve_left (by simpa using hd)`. Establish `hflat : Module.Flat (𝓞 K) Lb`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]`. Introduce and unpack `x ⟨d, hd⟩`.
+
+Establish `: (d : 𝓞 K) • (x : V ⧸ W) = 0` using `congrArg Subtype.val hd`. Conclude with `Subtype.ext (hcancel d x (nonZeroDivisors.coe_ne_zero d) this)`. Establish `hfp : Module.FinitePresentation (𝓞 K) Lb` using `Module.finitePresentation_of_finite _ _`. Establish `hproj : Module.Projective (𝓞 K) Lb` using `Module.Flat.projective_of_finitePresentation`. Set `qL : L →ₗ[𝓞 K] Lb` to `q.submoduleMap L`.
+
+Take `⟨s, hs⟩` from `Module.projective_lifting_property qL LinearMap.id (LinearMap.submoduleMap_surjective q L)`. Establish `hs' : ∀ y : Lb, q (s y : V) = y` using `fun y => congrArg Subtype.val (LinearMap.congr_fun hs y)`. Set `p0 : L →ₗ[𝓞 K] V` to `L.subtype - L.subtype ∘ₗ s ∘ₗ qL`. Establish `hp0 : ∀ x : L, p0 x = (x : V) - s (qL x)` using `fun x => rfl`. Establish `hden : ∀ v : V, ∃ d : 𝓞 K, d ≠ 0 ∧ d • v ∈ L`.
+
+Introduce `v`. Establish `hv : v ∈ Submodule.span K (L : Set V)` using `by rw [hsp]; trivial`. Take `⟨d, hd⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 K)) K (L : Set V) v hv`. Rewrite `hd` using `[Submodule.span_eq]`. Conclude with `⟨d, nonZeroDivisors.coe_ne_zero d, hd⟩`.
+
+Establish `hunit : ∀ x : nonZeroDivisors (𝓞 K), IsUnit (algebraMap (𝓞 K) (Module.End (𝓞 K) V) x)` using `(isLocalizedModule_id (nonZeroDivisors (𝓞 K)) V K).map_units`. Use `haveI hloc : IsLocalizedModule (nonZeroDivisors (𝓞 K)) L.subtype := by`. Use `⟨hunit, fun v => ?_, fun {x y} h => ⟨1, by simpa using Subtype.ext h⟩⟩` and prove the remaining obligations. Take `⟨d, hd, hv⟩` from `hden v`. Conclude with `⟨(⟨d • v, hv⟩, ⟨d, mem_nonZeroDivisors_of_ne_zero hd⟩), rfl⟩`.
+
+Set `P0 : V →ₗ[𝓞 K] V` to `IsLocalizedModule.lift (nonZeroDivisors (𝓞 K)) L.subtype p0 hunit`. Establish `hP0 : ∀ x : L, P0 (x : V) = p0 x` using `fun x => IsLocalizedModule.lift_apply _ L.subtype p0 hunit x`. Set `P : V →ₗ[K] V` to `P0.extendScalarsOfIsLocalization (nonZeroDivisors (𝓞 K)) K`. Establish `hP : ∀ v, P v = P0 v` using `fun v => rfl`. Establish `hW : ∀ x : L, p0 x ∈ W`.
+
+Introduce `x`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Express the relevant statement in the definitionally equal form `q (p0 x) = 0`. Rewrite using `[hp0, map_sub, hs']`. Conclude with `sub_self _`.
+
+Use `⟨P, fun v => ?_, fun w hw => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, hv⟩` from `hden v`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Apply `hcancel d _ hd` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `d • q (P0 v) = 0`.
+
+Rewrite using `[← map_smul, ← map_smul, show d • v = ((⟨d • v, hv⟩ : L) : V) from rfl, hP0]`. Conclude with `(Submodule.Quotient.mk_eq_zero W).2 (hW _)`. Take `⟨d, hd, hv⟩` from `hden w`. Establish `h0 : qL ⟨d • w, hv⟩ = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `q (d • w) = 0`. Rewrite using `[map_smul]`. Express the relevant statement in the definitionally equal form `d • (Submodule.Quotient.mk w : V ⧸ W) = 0`. Rewrite using `[(Submodule.Quotient.mk_eq_zero W).2 hw, smul_zero]`. Establish `h1 : d • P0 w = d • w`.
+
+Rewrite using `[← map_smul, show d • w = ((⟨d • w, hv⟩ : L) : V) from rfl, hP0, hp0, h0, map_zero]`. Simplify using the standard rewrite rules. Rewrite using `[hP]`. Rewrite `h1` using `[← IsScalarTower.algebraMap_smul K d, ← IsScalarTower.algebraMap_smul K d w]`. Conclude with `smul_right_injective V (by simpa using hd) h1`.
+
+Rewrite using `[hP, show v = ((⟨v, hv⟩ : L) : V) from rfl, hP0, hp0]`. Conclude with `L.sub_mem hv (s _).2`.
+-/
 theorem exists_proj (L : Submodule (𝓞 K) V) (hfg : L.FG) (hsp : Submodule.span K (L : Set V) = ⊤) (W : Submodule K V) :
     ∃ P : V →ₗ[K] V, (∀ v, P v ∈ W) ∧ (∀ w ∈ W, P w = w) ∧ ∀ v ∈ L, P v ∈ L := by
   classical
@@ -83,6 +110,25 @@ theorem exists_proj (L : Submodule (𝓞 K) V) (hfg : L.FG) (hsp : Submodule.spa
   · rw [hP, show v = ((⟨v, hv⟩ : L) : V) from rfl, hP0, hp0]
     exact L.sub_mem hv (s _).2
 
+/- English proof (translation)
+Take `⟨P, hPW, hPid, hPL⟩` from `exists_proj L hfg hsp (LinearMap.range i)`. Set `ei` to `LinearEquiv.ofInjective i hi`. Set `p : V →ₗ[K] N` to `ei.symm.toLinearMap ∘ₗ P.codRestrict _ hPW`. Establish `hip : ∀ v, i (p v) = P v` using `fun v => congrArg Subtype.val (ei.apply_symm_apply ⟨P v, hPW v⟩)`. Establish `hpi : ∀ x, p (i x) = x` using `fun x => hi (by rw [hip, hPid _ ⟨x, rfl⟩])`.
+
+Establish `hγi : ∀ x, i (p (γ x)) = γ x` using `fun x => by rw [hip, hPid _ (hr ▸ ⟨x, rfl⟩)]`. Establish `hbij : Function.Bijective (p ∘ₗ γ)`. Use `⟨fun x y h => hγ ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hγi, ← hγi y]`. Conclude with `congrArg i h`.
+
+Take `⟨y, hy⟩ : i x ∈ LinearMap.range γ` from `hr ▸ ⟨x, rfl⟩`. Conclude with `⟨y, by rw [LinearMap.comp_apply, hy, hpi]⟩`. Set `a` to `LinearEquiv.ofBijective _ hbij`. Establish `ha : ∀ x, i (a x) = γ x` using `hγi`. Establish `ha' : ∀ x, γ (a.symm x) = i x` using `fun x => by rw [← ha, a.apply_symm_apply]`.
+
+Establish `hpγ : ∀ x, p (γ x) = a x` using `fun x => rfl`. Set `f : V →ₗ[K] V` to `LinearMap.id + γ ∘ₗ p - i ∘ₗ p`. Set `g : V →ₗ[K] V` to `LinearMap.id + i ∘ₗ a.symm.toLinearMap ∘ₗ p - i ∘ₗ p`. Establish `hf : ∀ v, f v = v + γ (p v) - i (p v)` using `fun v => rfl`. Establish `hg : ∀ v, g v = v + i (a.symm (p v)) - i (p v)` using `fun v => rfl`.
+
+Establish `hgf : ∀ v, g (f v) = v` using `fun v => by`. Establish `: p (f v) = a (p v)` using `by rw [hf, map_sub, map_add, hpi, hpγ]; abel`. Rewrite using `[hg, this, a.symm_apply_apply, ha, hf]`. Normalize the expressions using the abelian group laws. Establish `hfg' : ∀ v, f (g v) = v` using `fun v => by`.
+
+Establish `: p (g v) = a.symm (p v)` using `by rw [hg, map_sub, map_add, hpi, hpi]; abel`. Rewrite using `[hf, this, ha', hg]`. Normalize the expressions using the abelian group laws. Use `⟨LinearEquiv.ofLinear f g (LinearMap.ext hfg') (LinearMap.ext hgf), fun x => ?_, fun v => ⟨fun h => ?_, fun h => ?_⟩, fun v => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (i x) = γ x`.
+
+Rewrite using `[hf, hpi]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `f v ∈ L`. Establish `h1 : i (p v) ∈ L` using `hip v ▸ hPL v h`. Conclude with `L.sub_mem (L.add_mem h ((hL _).1 h1)) h1`.
+
+Express the relevant statement in the definitionally equal form `f v ∈ L at h`. Rewrite using `[← hgf v, hg]`. Establish `h1 : i (p (f v)) ∈ L` using `hip (f v) ▸ hPL _ h`. Conclude with `L.sub_mem (L.add_mem h ((hL _).2 (ha' _ ▸ h1))) h1`. Express the relevant statement in the definitionally equal form `f v ∈ _`.
+
+Conclude with `Submodule.sub_mem _ (Submodule.add_mem _ h (hr ▸ ⟨_, rfl⟩)) ⟨_, rfl⟩`. Express the relevant statement in the definitionally equal form `f v ∈ _ at h`. Rewrite using `[← hgf v, hg]`. Conclude with `Submodule.sub_mem _ (Submodule.add_mem _ h ⟨_, rfl⟩) ⟨_, rfl⟩`.
+-/
 theorem exists_extension {N : Type} [AddCommGroup N] [Module K N] (L : Submodule (𝓞 K) V) (hfg : L.FG)
     (hsp : Submodule.span K (L : Set V) = ⊤) (i γ : N →ₗ[K] V) (hi : Function.Injective i) (hγ : Function.Injective γ)
     (hr : LinearMap.range γ = LinearMap.range i) (hL : ∀ x, i x ∈ L ↔ γ x ∈ L) :
@@ -132,6 +178,13 @@ theorem exists_extension {N : Type} [AddCommGroup N] [Module K N] (L : Submodule
 
 end Lattices
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h n v hv`. Set `e : Fin n → (Finset.univ.image v : Finset M)` to `fun a => ⟨v a, Finset.mem_image_of_mem v (Finset.mem_univ a)⟩`. Establish `he : Function.Bijective e`. Use `⟨fun a b hab => hv.injective (congrArg Subtype.val hab), fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, -, ha⟩` from `Finset.mem_image.1 x.2`. Conclude with `⟨a, Subtype.ext ha⟩`. Establish `h1` using `h (Finset.univ.image v) ((linearIndependent_equiv (Equiv.ofBijective e he)).1 hv)`. Conclude with `h1.comp e he.1`. Introduce `h s hs`.
+
+Establish `h1` using `h _ _ (hs.comp s.equivFin.symm s.equivFin.symm.injective)`. Conclude with `(linearIndependent_equiv s.equivFin.symm).1 h1`.
+-/
 theorem indep_iff {K C M N : Type} [Field K] [Field C] [AddCommGroup M] [Module K M] [AddCommGroup N] [Module C N] (j : M → N) :
     (∀ s : Finset M, LinearIndependent K (fun x : s => (x : M)) → LinearIndependent C (fun x : s => j x)) ↔
       ∀ (n : ℕ) (v : Fin n → M), LinearIndependent K v → LinearIndependent C (fun a => j (v a)) := by
@@ -151,6 +204,15 @@ theorem indep_iff {K C M N : Type} [Field K] [Field C] [AddCommGroup M] [Module 
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_product', Finset.univ_product_univ, Nat.cast_sum]`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.filter fun y : Fin b × Fin a => (τ, y) ∈ e.support))]`. Use `Finset.sum_bij (fun k _ => k.2) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `k hk`. Take `⟨h1, rfl⟩` from `Finset.mem_filter.1 hk`.
+
+Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, h1⟩`. Introduce `k hk k' hk' h`. Conclude with `Prod.ext ((Finset.mem_filter.1 hk).2.trans (Finset.mem_filter.1 hk').2.symm) h`. Introduce `y hy`. Conclude with `⟨(τ, y), Finset.mem_filter.2 ⟨(Finset.mem_filter.1 hy).2, rfl⟩, rfl⟩`.
+
+Introduce `k hk`. Take `⟨-, rfl⟩` from `Finset.mem_filter.1 hk`. Both sides reduce to the same expression. Introduce `y _ hy`. Establish `: (τ, y) ∉ e.support` using `fun h => hy (Finset.mem_filter.2 ⟨Finset.mem_univ _, h⟩)`.
+
+Rewrite using `[show (τ, y.1, y.2) = (τ, y) from rfl, Finsupp.notMem_support_iff.1 this, Nat.cast_zero]`.
+-/
 theorem deg_eq {ι : Type} {a b : ℕ} (e : ι × Fin b × Fin a →₀ ℕ) (τ : ι) :
     ((∑ k ∈ e.support.filter (fun k => k.1 = τ), e k : ℕ) : ℤ) = ∑ β, ∑ α, (e (τ, β, α) : ℤ) := by
   rw [← Finset.sum_product', Finset.univ_product_univ, Nat.cast_sum]
@@ -172,8 +234,14 @@ theorem deg_eq {ι : Type} {a b : ℕ} (e : ι × Fin b × Fin a →₀ ℕ) (τ
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wts_eq (D : D7) (EX : ErrX D) : BadPrimesPeriodBound.recWts EX = ColumnAvoidanceConditions.wtsOf D EX := rfl
 
+/- English proof (translation)
+Introduce and unpack `⟨v, hv, h⟩`. Establish `h2` using `(Subgroup.mem_inf.1 ξ.2).2`. Simplify using `only [Subgroup.mem_iInf] at h2`. Conclude with `hv (h2 v fun hg => hg.2.2 (Or.inr (Or.inl ⟨u, h.symm⟩)))`.
+-/
 theorem T_notMem (D : D7) (ξ : BadPrimesPeriodBound.Twist D) (u : D.what₂.Word) :
     (D.mem u).A.T ∉ QprimeN (ξ : Chr D.host.F D.host.E D.what₂.LL) := by
   rintro ⟨v, hv, h⟩
@@ -181,6 +249,25 @@ theorem T_notMem (D : D7) (ξ : BadPrimesPeriodBound.Twist D) (u : D.what₂.Wor
   simp only [Subgroup.mem_iInf] at h2
   exact hv (h2 v fun hg => hg.2.2 (Or.inr (Or.inl ⟨u, h.symm⟩)))
 
+/- English proof (translation)
+Use `set π := Pr.piG i with hπ`. Use `set ρ := X.conjO π with hρ`. Establish `hg` using `hP.g_prime i`. Establish `hn : π * ρ = (Pr.g i : 𝓞 X.E)` using `hP.piG_norm i`. Establish `hmem : ∀ w ∈ Pr.vG i, ρ ∈ w.asIdeal`.
+
+Introduce `w hw`. Unfold `Primes.vG divs at hw`. Use `split_ifs at hw with h`. Simplify using `using hw`. Simplify using `at hw`.
+
+Use `⟨hn ▸ Ideal.mul_mem_left _ _ (hmem P hv), fun hsq => ?_⟩` and prove the remaining obligations. Take `⟨a, b, hab⟩` from `hP.piG_cop i`. Establish `hρ2 : ρ ∈ P.asIdeal ^ 2`. Establish `: ρ = a * (π * ρ) + b * ρ ^ 2` using `by linear_combination (-ρ) * hab`. Rewrite using `[this, hn]`.
+
+Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hsq) (Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow (hmem P hv) 2))`. Establish `hdvd : (∏ w ∈ Pr.vG i, w.asIdeal ^ (if w = P then 2 else 1)) ∣ Ideal.span {ρ}`. Use `Finset.prod_dvd_of_coprime (fun w _ w' _ hne => ?_) (fun w hw => ?_)` and prove the remaining obligations. Conclude with `((HeightOneSpectrum.isCoprime_of_ne w w' hne).pow)`. Rewrite using `[Ideal.dvd_span_singleton] split_ifs with h`.
+
+Conclude with `h ▸ hρ2`. Simplify using `using hmem w hw`. Establish `h1 : Pr.g i ^ (X.f + 1) ∣ Ideal.absNorm (Ideal.span {ρ})`. Establish `h2` using `map_dvd Ideal.absNorm hdvd`. Apply the tactic sequence `rw [map_prod, Finset.prod_congr rfl (g := fun w => Pr.g i ^ (if w = P then 2 else 1)) (fun w hw => by rw [map_pow, hP.vG_norm i w hw]), Finset.prod_pow_eq_pow_sum, Finset.sum_congr rfl (g := fun w => 1 + if w = P then 1 else 0) (fun w _ => by split_ifs <;> rfl), Finset.sum_add_di …`.
+
+Conclude with `h2`. Establish `hnorm : Algebra.norm ℤ ρ = Algebra.norm ℤ π`. Set `e : 𝓞 X.E ≃+* 𝓞 X.E` to `RingOfIntegers.mapRingEquiv (starRingAut : X.E ≃+* X.E)`. Conclude with `Algebra.norm_eq_of_algEquiv e.toIntAlgEquiv π`. Establish `hdeg : Module.finrank ℤ (𝓞 X.E) = 2 * X.f`.
+
+Rewrite using `[RingOfIntegers.rank, ← Module.finrank_mul_finrank ℚ X.F X.E, hX.rankE, Fields.f, hX.card_Tau, mul_comm]`. Establish `h3 : Ideal.absNorm (Ideal.span {ρ}) ^ 2 = (Pr.g i ^ X.f) ^ 2`. Establish `h4 : Algebra.norm ℤ ρ ^ 2 = ((Pr.g i : ℤ) ^ X.f) ^ 2`. Rewrite using `[sq, ← pow_mul, mul_comm X.f, ← hdeg]`. Use `nth_rewrite 1 [hnorm]`.
+
+Rewrite using `[← map_mul, hn, ← Algebra.norm_algebraMap]`. Simplify using the standard rewrite rules. Rewrite using `[Ideal.absNorm_span_singleton, ← Int.natAbs_pow, h4]`. Simplify using `[Int.natAbs_pow]`. Rewrite `h3` using `[(Nat.pow_left_injective two_ne_zero).eq_iff]`.
+
+Rewrite `h1` using `[h3]`. Use `(Nat.pow_dvd_pow_iff_le_right hg.one_lt).1 h1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem g_notMem_sq {X : Fields} (hX : X.Ok) {Pr : Primes X} (hP : Pr.Ok) (i : Fin 2) (P : HeightOneSpectrum (𝓞 X.E))
     (hv : P ∈ Pr.vG i) : ((Pr.g i : ℕ) : 𝓞 X.E) ∈ P.asIdeal ∧ ((Pr.g i : ℕ) : 𝓞 X.E) ∉ P.asIdeal ^ 2 := by
   classical

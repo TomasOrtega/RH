@@ -7,6 +7,9 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 
 namespace GlobalTheory.Pass
 
+/- English proof (translation)
+Introduce `l _ LL` and use `(GlobalTheory.LocalIntegers.good_integers l LL).1`.
+-/
 theorem goodO_ringOfIntegers :
     ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l), GoodO (Qp := ℚ_[l]) ↥LL.1 ↥(OL LL) :=
   fun l _ LL => (GlobalTheory.LocalIntegers.good_integers l LL).1

@@ -7,6 +7,29 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W`. Establish `hS` using `hatSt F E D W`. Set `P : G1 F → Prop` to `fun g => ∀ (p : (Fin 2 → A F) → ℂ) (φ φ' : S4 F), (∀ v, hat φ'.1 v = p ![v 0, v 1] * hat φ.1 v) → ∀ v, hat (W.Om g φ').1 v = p (![v 0, v 1] ᵥ* g.1) * hat (W.Om g φ).1 v`. Establish `hone : P 1`. Introduce `p φ φ' h v`.
+
+Simplify using `using h v`. Establish `hmul : ∀ a b, P a → P b → P (a * b)`. Introduce `a b ha hb p φ φ' h v`. Establish `h1` using `ha (fun r => p (r ᵥ* b.1)) (W.Om b φ) (W.Om b φ') (hb p φ φ' h) v`. Simplify using `only [map_mul, Module.End.mul_apply, Matrix.SpecialLinearGroup.coe_mul]`.
+
+Rewrite using `[h1, Matrix.vecMul_vecMul]`. Establish `hn : ∀ b, P (nU b)`. Introduce `b p φ φ' h v`. Rewrite using `[hS.n, hS.n, h]`. Establish `e : ![Function.update v 1 (v 1 + b * v 0) 0, Function.update v 1 (v 1 + b * v 0) 1] = ![v 0, v 1] ᵥ* (nU b).1`.
+
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [nU, Matrix.vecMul, dotProduct, Fin.sum_univ_two, add_comm, mul_comm]`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Establish `hw : P (wW F)`.
+
+Introduce `p φ φ' h v`. Rewrite using `[hS.w, hS.w]`. Establish `e : ![-v 1, v 0] = ![v 0, v 1] ᵥ* (wW F).1`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [wW, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+
+Rewrite using `[← e, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [h]`. Simplify using `[mul_assoc]`. Establish `hninv : ∀ b : A F, (nU b)⁻¹ = nU (-b)`.
+
+Introduce `b`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Use `Subtype.ext ?_` and prove the remaining obligations. Use `show (nU b).1 * (nU (-b)).1 = 1`. Simplify using `[nU, Matrix.one_fin_two, Matrix.mul_fin_two]`.
+
+Establish `hwinv : (wW F)⁻¹ = wW F * wW F * wW F`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Use `Subtype.ext ?_` and prove the remaining obligations. Use `show (wW F).1 * ((wW F).1 * (wW F).1 * (wW F).1) = 1`. Simplify using `[wW, Matrix.one_fin_two, Matrix.mul_fin_two]`.
+
+Set `T : Subgroup (G1 F)` to `{ carrier := {g | P g ∧ P g⁻¹} mul_mem' := fun {a b} ha hb => ⟨hmul a b ha.1 hb.1, by`. Rewrite using `[_root_.mul_inv_rev]`. Conclude with `hmul _ _ hb.2 ha.2⟩`. Use the proof step `one_mem' := ⟨hone, by rw [inv_one]; exact hone⟩`. Use the proof step `inv_mem' := fun {a} ha => ⟨ha.2, by rw [inv_inv]; exact ha.1⟩ }`.
+
+Establish `hle : Subgroup.closure (Set.range (nU (F` using `F)) ∪ {wW F}) ≤ T := by`. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨b, rfl⟩ | rfl)`. Conclude with `⟨hn b, by rw [hninv]; exact hn _⟩`. Conclude with `⟨hw, by rw [hwinv]; exact hmul _ _ (hmul _ _ hw hw) hw⟩`.
+
+Introduce `p φ φ' h g v`. Establish `hg : g ∈ T` using `hle (by rw [(gen F).1]; exact Subgroup.mem_top g)`. Conclude with `hg.1 p φ φ' h v`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.G.rowMul :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (p : (Fin 2 → A F) → ℂ) (φ φ' : S4 F), (∀ v, hat φ'.1 v = p ![v 0, v 1] * hat φ.1 v) →
     ∀ (g : G1 F) v, hat (W.Om g φ').1 v = p (![v 0, v 1] ᵥ* g.1) * hat (W.Om g φ).1 v := by

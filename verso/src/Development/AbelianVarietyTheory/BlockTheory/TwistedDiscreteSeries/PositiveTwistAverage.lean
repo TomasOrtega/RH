@@ -111,12 +111,18 @@ def UniformExchange : Prop :=
 
 omit [MeasurableSpace k] [BorelSpace k] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[omTw]`.
+-/
 theorem omTw_one {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ)
     (g : GL a k) (h : GL b k) (Φ : Matrix b a k → ℂ) : omTw μ 1 1 g h Φ = om μ g h Φ := by
   funext x; simp [omTw]
 
 omit [MeasurableSpace k] [BorelSpace k] in
 
+/- English proof (translation)
+Simplify using `[IsPosTw, IsPos]`.
+-/
 theorem isPosTw_one (ψ : AddChar k Circle) (p : ℕ) (π : Representation ℂ (GL n k) P)
     (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (b : P →ₗ[ℂ] A →ₗ[ℂ] ℂ) :
     IsPosTw ψ 1 p π σ b ↔ IsPos ψ p π σ b := by
@@ -124,6 +130,9 @@ theorem isPosTw_one (ψ : AddChar k Circle) (p : ℕ) (π : Representation ℂ (
 
 omit [MeasurableSpace k] [BorelSpace k] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ => by simp⟩`.
+-/
 theorem isUnramUnitary_one : IsUnramUnitary (1 : kˣ →* ℂˣ) := ⟨fun _ _ => rfl, fun _ => by simp⟩
 
 end GlobalTheory.IndefiniteRowSideFullHecke.PositiveTwistAverage

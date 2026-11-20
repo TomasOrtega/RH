@@ -7,6 +7,13 @@ noncomputable section
 
 namespace GlobalTheory.HTSympCover
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use `⟨fun i => u i / M, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `hi : ((u i : ℤ) : ZMod M) = 0` using `congrFun hu i`.
+
+Rewrite `hi` using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul]`. Conclude with `(Int.mul_ediv_cancel' hi).symm`. Introduce and unpack `⟨c, rfl⟩`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[reduceMod]`.
+-/
 theorem reduceMod_eq_zero_iff {h : ℕ} (M : ℕ) (u : Fin h ⊕ Fin h → ℤ) :
     reduceMod M u = 0 ↔ ∃ c, u = M • c := by
   constructor
@@ -21,10 +28,48 @@ theorem reduceMod_eq_zero_iff {h : ℕ} (M : ℕ) (u : Fin h ⊕ Fin h → ℤ) 
     funext i
     simp [reduceMod]
 
+/- English proof (translation)
+Simplify using `[omegaStd, omegaMod, reduceMod]`.
+-/
 theorem omegaStd_cast {h : ℕ} (M : ℕ) (u v : Fin h ⊕ Fin h → ℤ) :
     ((omegaStd u v : ℤ) : ZMod M) = omegaMod M (reduceMod M u) (reduceMod M v) := by
   simp [omegaStd, omegaMod, reduceMod]
 
+/- English proof (translation)
+Introduce `p _ D R _ b N h M hM S t o T t₁ lv hlv a n σ hn hσ`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Take `⟨hadd, htor, hgeo⟩` from `hlv`. Set `φ : Multiplicative (Fin h ⊕ Fin h → ℤ) →* (T ⟶ o.A)` to `MonoidHom.mk' (fun u => lv (Multiplicative.toAdd u)) (fun u v => hadd _ _)`. Establish `hsm : ∀ (k : ℕ) (w : Fin h ⊕ Fin h → ℤ), lv (k • w) = lv w ^ k`.
+
+Introduce `k w`. Use `map_pow φ (Multiplicative.ofAdd w) k` as an intermediate fact. Simplify `this` using `[φ, ← ofAdd_nsmul]`. Establish `per : ∀ {u v : Fin h ⊕ Fin h → ℤ}, reduceMod M u = reduceMod M v → lv u = lv v`. Introduce `u v huv`.
+
+Establish `h0 : reduceMod M (u - v) = 0`. Use function extensionality and compare the values at `i`. Use `congrFun huv i` as an intermediate fact. Simplify using `only [reduceMod, Pi.sub_apply, Pi.zero_apply, Int.cast_sub] at this ⊢`. Rewrite using `[this, sub_self]`.
+
+Take `⟨w, hw⟩` from `(reduceMod_eq_zero_iff M _).1 h0`. Establish `: u = v + M • w` using `by rw [← hw]; abel`. Rewrite using `[this, hadd, hsm, htor, _root_.mul_one]`. Set `g` to `(a : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M))`. Establish `tw : ∀ u, sympTwist a lv u = lv (liftMod (g (reduceMod M u)))` using `fun u => rfl`.
+
+Establish `redAdd : ∀ u v : Fin h ⊕ Fin h → ℤ, reduceMod M (u + v) = reduceMod M u + reduceMod M v`. Introduce `u v`. Use function extensionality and compare the values at `i`. Simplify using `[reduceMod]`. Use `⟨fun u c => ?_, fun u => ?_, fun k _ _ x β' z' hx' hz' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[tw, tw, tw, ← hadd]`. Apply `per` to reduce the goal to its premises. Rewrite using `[reduceMod_liftMod, redAdd, redAdd, reduceMod_liftMod, reduceMod_liftMod, map_add]`. Rewrite using `[tw]`. Conclude with `htor _`.
+
+Use `set β : cycAway M →+* k := (Spec.preimage (x ≫ t₁)).hom with hβdef`. Establish `hβ : x ≫ t₁ = spMap β`. Simplify using `only [spMap, hβdef, CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hβ' : β' = β.comp σ`. Establish `e : spMap β' = spMap (β.comp σ)`.
+
+Rewrite using `[spMap_comp, ← hx', ← hβ, Category.assoc]`. Use `Spec.map_injective e` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`. Establish `hζM : β (zetaAway M) ^ M = 1`. Rewrite using `[← map_pow, zetaAway_pow_self M hM.ne', map_one]`.
+
+Establish `hne : β (zetaAway M) ≠ 0`. Introduce `h0`. Rewrite `hζM` using `[h0, zero_pow hM.ne']`. Conclude with `zero_ne_one hζM`. Use `set z : kˣ := Units.mk0 (β (zetaAway M)) hne with hzdef`.
+
+Establish `hz : (z : k) = β (zetaAway M)` using `rfl`. Establish `hzz : z' = z ^ n`. Use `ext`. Rewrite using `[hz', hβ', RingHom.comp_apply, hσ, map_pow, Units.val_pow_eq_pow_val, hz]`. Establish `hzM : z ^ (M : ℤ) = 1`.
+
+Rewrite using `[zpow_natCast]`. Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val, hz, hζM]`. Both sides reduce to the same expression. Take `⟨hK, hS, hW⟩` from `hgeo k x β z hβ hz`.
+
+Use `⟨fun u => ?_, fun g' hg' => ?_, fun u c => ?_⟩` and prove the remaining obligations. Rewrite using `[tw, hK]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Apply `(reduceMod_eq_zero_iff M u).1` to reduce the goal to its premises.
+
+Establish `: g (reduceMod M u) = 0`. Rewrite using `[← reduceMod_liftMod (g (reduceMod M u)), hc]`. Conclude with `(reduceMod_eq_zero_iff M _).2 ⟨c, rfl⟩`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 this`. Introduce `hu`.
+
+Apply `(reduceMod_eq_zero_iff M _).1` to reduce the goal to its premises. Rewrite using `[reduceMod_liftMod, (reduceMod_eq_zero_iff M u).2 hu, map_zero]`. Take `⟨u₀, hu₀⟩` from `hS g' hg'`. Use `⟨liftMod (g.symm (reduceMod M u₀)), ?_⟩` and prove the remaining obligations. Rewrite using `[tw, reduceMod_liftMod, LinearEquiv.apply_symm_apply, per (reduceMod_liftMod _)]`.
+
+Conclude with `hu₀`. Rewrite using `[tw, tw] set u' := liftMod (g (reduceMod M u)) set c' := liftMod (g (reduceMod M c))`. Establish `hcast : ((2 * omegaStd u' c' : ℤ) : ZMod M) = (((n : ℤ) * (2 * omegaStd u c) : ℤ) : ZMod M)`. Use `push_cast`. Rewrite using `[omegaStd_cast, omegaStd_cast, reduceMod_liftMod, reduceMod_liftMod]`.
+
+Rewrite using `[show omegaMod M (g (reduceMod M u)) (g (reduceMod M c)) = n * omegaMod M (reduceMod M u) (reduceMod M c) from hn _ _]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : z' ^ (2 * omegaStd u c) = z ^ (2 * omegaStd u' c')`. Rewrite using `[hzz, ← zpow_natCast z, ← zpow_mul, zpow_eq_zpow_emod _ hzM, zpow_eq_zpow_emod (2 * omegaStd u' c') hzM]`. Use `congr 1`.
+
+Conclude with `((ZMod.intCast_eq_intCast_iff' _ _ _).1 hcast).symm`. Rewrite using `[e]`. Conclude with `hW u' c'`.
+-/
 theorem sympCond_twist : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N h M : ℕ), 0 < M →
   ∀ (S : Scheme.{0}) (t : S ⟶ Sp R) (o : Obj b N t) (T : Over S) (t₁ : T.left ⟶ Sp (cycAway M))
     (lv : (Fin h ⊕ Fin h → ℤ) → (T ⟶ o.A)), SympCond o h M T t₁ lv →

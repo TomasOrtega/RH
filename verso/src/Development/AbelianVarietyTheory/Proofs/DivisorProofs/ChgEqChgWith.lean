@@ -19,6 +19,9 @@ def psiOf {D : D7} {O : Setup D} {A : SlopeTestRemainingChoices O.Y} {T : Real0 
     (x' : GlobalTheory.ShFam.ToroidalCompactificationData O.s) (R : ℝ) (u : Wt O.Y) (c : O.Y.Comp) : (T.M c).Fun :=
   fun a z => chgWith O (metsOf x' O.Φ) c (some R) u ((h.man c).ε a) ((h.man c).pt a z)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a z`. Use `((h.an c).phR R hR u a z).trans ?_` and prove the remaining obligations. Unfold `psiOf`. Rewrite using `[← hC.hm_eq]`. Both sides reduce to the same expression.
+-/
 theorem phR_eq_psiOf {D : D7} {O : Setup D} {A : SlopeTestRemainingChoices O.Y} {T : Real0 O.Y} {H : Ht O.Y} (h : O.Reads A T H)
     {x : GlobalTheory.ShFam.ToroidalCompactificationData O.s} {P : PolOf x O.Φ} (hC : O.CoreWith x P) {R : ℝ} (hR : 2 ≤ R) (u : Wt O.Y)
     (c : O.Y.Comp) : (T.F c).phR R u = psiOf h x R u c := by

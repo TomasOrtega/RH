@@ -8,6 +8,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _`. Use `⟨fun R _ _ hft hred => ?_, fun p => ⟨inferInstance, ?_⟩⟩` and prove the remaining obligations. Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 hft`. Establish `hrad : (RingHom.ker f).IsRadical`. Introduce `x hx`.
+
+Take `⟨m, hm⟩` from `hx`. Rewrite `hm` using `[RingHom.mem_ker, map_pow]`. Conclude with `(RingHom.mem_ker).2 (IsReduced.eq_zero _ ⟨m, hm⟩)`. Conclude with `⟨⟨n, RingHom.ker f, hrad⟩, ⟨Ideal.quotientKerAlgEquivOfSurjective hf⟩⟩`. Conclude with `(Ideal.isRadical_iff_quotient_reduced p.I).1 p.3`.
+-/
 theorem reduced_finiteType_iff_testRing :
     ∀ (K : Type) [Field K], (∀ (R : Type) [CommRing R] [Algebra K R], Algebra.FiniteType K R → IsReduced R → ∃ p : TRing K, Nonempty (p.R ≃ₐ[K] R)) ∧ ∀ p : TRing K, Algebra.FiniteType K p.R ∧ IsReduced p.R := by
   intro K _

@@ -2,6 +2,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Z.Win
 
+/- English proof (translation)
+Introduce `k _ n M M' B d hd hM hM' hMd hM'd hB`. Establish `key : ∀ m : ℕ, ∀ i j : Fin n, j.val + (n - i.val) = m → j < i → B i j = 0`. Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`.
+
+Introduce `i j hm hji`. Establish `h1 : (B * M) i j = B i j * d j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j, hMd]`. Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases.
+
+Establish `hv : b.val < j.val` using `h`. Rewrite using `[ih (b.val + (n - i.val)) (by omega) i b rfl (h.trans hji), zero_mul]`. Rewrite using `[hM b j h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+
+Establish `h2 : (M' * B) i j = d i * B i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i, hM'd]`. Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases. Rewrite using `[hM' i b h, zero_mul]`.
+
+Establish `hv : i.val < b.val` using `h`. Establish `hb' : b.val < n` using `b.isLt`. Rewrite using `[ih (j.val + (n - b.val)) (by omega) b j rfl (hji.trans h), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+
+Establish `h3 : B i j * (d j - d i) = 0`. Rewrite `h1` using `[hB, h2]`. Rewrite using `[mul_sub, ← h1, mul_comm, sub_self]`. Break down `mul_eq_zero.mp h3 with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd (hd (sub_eq_zero.mp h)) hji.ne`. Introduce `i j hji`. Conclude with `key _ i j rfl hji`.
+-/
 theorem UpperTheory.V.Keep.upTri :
     UpperTheory.V.Keep.UpTri := by
   intro k _ n M M' B d hd hM hM' hMd hM'd hB

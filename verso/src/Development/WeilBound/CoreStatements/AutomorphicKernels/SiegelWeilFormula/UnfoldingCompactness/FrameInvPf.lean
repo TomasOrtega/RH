@@ -8,10 +8,20 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace PositivityTheory.SiegelWeilFormula.kunf
 
+/- English proof (translation)
+Rewrite using `[jw, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem jw_sq_ks {R : Type} [CommRing R] (n : ℕ) (e : R) : jw n e * jw n e = e • 1 := by
   rw [jw, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul]
   simp
 
+/- English proof (translation)
+Unfold `jw`. Rewrite using `[Matrix.fromBlocks_map]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, Matrix.smul_apply, h, hse]`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem map_jw_eq_self_of_involution {R : Type} [CommRing R] (s : R →+* R) (hs : ∀ x, s (s x) = x) {n : ℕ} (e : R)
     (hse : s e = e) : (jw n e).map s = jw n e := by
   unfold jw
@@ -23,6 +33,13 @@ private theorem map_jw_eq_self_of_involution {R : Type} [CommRing R] (s : R →+
     by_cases h : i = j <;> simp [Matrix.one_apply, Matrix.smul_apply, h, hse]
   · ext i j; simp
 
+/- English proof (translation)
+Use `set N := Matrix.fromBlocks (M.toBlocks₂₂.map s)ᵀ (e • (M.toBlocks₁₂.map s)ᵀ) (e • (M.toBlocks₂₁.map s)ᵀ) (M.toBlocks₁₁.map s)ᵀ with hN`. Establish `hss : (M.map s).map s = M` using `by ext i j; simp [hs]`. Establish `hM' : (M.map s)ᵀ * jw n e * M = jw n e`. Use `congrArg (fun X => X.map s) hM` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, map_jw_eq_self_of_involution s hs e hse, hss] at this`.
+
+Simplify `this` using `[Matrix.transpose_map]`. Establish `hJ : jw n e * jw n e = e • 1` using `jw_sq_ks n e`. Establish `hK : N = e • (jw n e * (M.map s)ᵀ * jw n e)` using `by conv_rhs => rw [← Matrix.fromBlocks_toBlocks (M.map s)]`. Simplify using `only [jw, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul, hN]`. Simplify using `[Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, smul_smul, he]`.
+
+Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> ext <;> simp`. Establish `h1 : N * M = 1`. Rewrite using `[hK, Matrix.smul_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (M.map s)ᵀ, hM', hJ, smul_smul, he, one_smul]`. Conclude with `⟨mul_eq_one_comm.mp h1, h1⟩`.
+-/
 theorem frame_inv_pf {R : Type} [CommRing R] (s : R →+* R) (hs : ∀ x, s (s x) = x) {n : ℕ} (e : R) (he : e * e = 1)
     (hse : s e = e) (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R) (hM : Mᵀ * jw n e * M.map s = jw n e) :
     M * Matrix.fromBlocks (M.toBlocks₂₂.map s)ᵀ (e • (M.toBlocks₁₂.map s)ᵀ) (e • (M.toBlocks₂₁.map s)ᵀ)

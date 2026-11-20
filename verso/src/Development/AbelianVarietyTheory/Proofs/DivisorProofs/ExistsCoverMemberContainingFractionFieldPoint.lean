@@ -12,6 +12,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ G Ω _ _ φ x' hx c hc J W hW`. Use `set K := FractionRing Ω`. Establish `hK : (⊤ : (Sp K).Opens) ≤ (spMap (algebraMap Ω K) ≫ x') ⁻¹ᵁ (⨆ i, W i)`. Rewrite using `[hW, ← Scheme.Hom.comp_preimage]`. Rewrite using `[Category.assoc, hx]`.
+
+Simplify using `only [GlobalTheory.HeatV.bo, Scheme.affineBasicOpen_coe, Scheme.preimage_basicOpen_top]`. Rewrite using `[Scheme.basicOpen_of_isUnit]`. Establish `e : spMap (algebraMap Ω K) ≫ spMap φ = Spec.map (CommRingCat.ofHom ((algebraMap Ω K).comp φ))`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Establish `h1` using `congrArg (fun f => f.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ((algebraMap Ω K).comp φ)))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h1`. Rewrite using `[← h1]`. Use `IsUnit.map _ ?_` and prove the remaining obligations.
+
+Use `isUnit_iff_ne_zero.mpr ?_` and prove the remaining obligations. Introduce `h0`. Conclude with `hc ((IsFractionRing.injective Ω K) (by simpa using h0))`. Take `⟨p⟩ : Nonempty (Sp K)` from `inferInstance`. Establish `hp` using `hK (Set.mem_univ p)`.
+
+Take `⟨i, hi⟩` from `(TopologicalSpace.Opens.mem_iSup).mp hp`. Use `⟨i, fun q _ => ?_⟩` and prove the remaining obligations. Establish `: q = p` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Conclude with `hi`.
+-/
 theorem genPt_mem_cover : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) (Ω : Type) [CommRing Ω] [IsDomain Ω] (φ : R →+* Ω) (x' : Sp Ω ⟶ G.left), x' ≫ G.hom = spMap φ → ∀ (c : R), φ c ≠ 0 → ∀ (J : Type) (W : J → G.left.Opens), ⨆ i, W i = G.hom ⁻¹ᵁ (GlobalTheory.HeatV.bo R c).1 → ∃ i, ⊤ ≤ (spMap (algebraMap Ω (FractionRing Ω)) ≫ x') ⁻¹ᵁ W i := by
   intro R _ G Ω _ _ φ x' hx c hc J W hW
   set K := FractionRing Ω

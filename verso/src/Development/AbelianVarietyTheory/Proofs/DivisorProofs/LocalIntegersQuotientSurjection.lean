@@ -16,10 +16,16 @@ section Residue
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Rewrite using `[← Algebra.smul_def, ← TensorProduct.smul_tmul, Algebra.smul_def]`.
+-/
 theorem tmul_algebraMap_mul_eq {F E' A : Type} [Field F] [Field E'] [Algebra F E'] [CommRing A] [Algebra F A]
     (c : F) (a : A) (y : E') : a ⊗ₜ[F] (algebraMap F E' c * y) = (algebraMap F A c * a) ⊗ₜ[F] y := by
   rw [← Algebra.smul_def, ← TensorProduct.smul_tmul, Algebra.smul_def]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `exact (IsScalarTower.algebraMap_apply (𝓞 (maximalRealSubfield E)) (𝓞 E) E t).symm.trans (IsScalarTower.algebraMap_apply (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) E t)`.
+-/
 theorem coe_algebraMap_ringOfIntegers (t : 𝓞 (maximalRealSubfield E)) :
     ((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) t : 𝓞 E) : E) =
       algebraMap (maximalRealSubfield E) E (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) t) := by
@@ -28,6 +34,29 @@ theorem coe_algebraMap_ringOfIntegers (t : 𝓞 (maximalRealSubfield E)) :
   | exact (IsScalarTower.algebraMap_apply (𝓞 (maximalRealSubfield E)) (𝓞 E) E t).symm.trans
       (IsScalarTower.algebraMap_apply (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) E t)
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `v.intValuation_exists_uniformizer`. Establish `hπv : v.valuation (maximalRealSubfield E) (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) π) = WithZero.exp (-1)` using `(v.valuation_of_algebraMap (K := maximalRealSubfield E) π).trans hπ`. Set `S : Ideal (intLoc (maximalRealSubfield E) E v)` to `{ carrier := {z | (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) π)⁻¹ • (z : Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E) ∈ intLoc (maximalRealSubfield E) E v} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, AddMemClass.coe_add, smul_add] at ha hb ⊢`. Conclude with `add_mem ha hb`.
+
+Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c z hz => by`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, MulMemClass.coe_mul] at hz ⊢`. Rewrite using `[← mul_smul_comm]`. Conclude with `mul_mem c.2 hz }`.
+
+Establish `hval : ∀ c : maximalRealSubfield E, Valued.v (algebraMap (maximalRealSubfield E) (Fv (maximalRealSubfield E) v) c) = v.valuation (maximalRealSubfield E) c` using `fun c => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v c`. Establish `hIS : (extIdeal v).map (intLocIncl v) ≤ S`. Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.map_le_iff_le_comap]`. Introduce `t ht`. Express the relevant statement in the definitionally equal form `(algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) π)⁻¹ • ((intLocIncl v (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) t) : intLoc (maximalRealSubfield E) E v) : Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E) ∈ intLoc (maximalRealSubfield E) E v`.
+
+Rewrite using `[coe_intLocIncl, coe_algebraMap_ringOfIntegers, ← mul_one (algebraMap (maximalRealSubfield E) E _), tmul_algebraMap_mul_eq, TensorProduct.smul_tmul']`. Establish `h1 : v.valuation (maximalRealSubfield E) (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) t) ≤ WithZero.exp (-1)`. Use `(v.valuation_of_algebraMap (K := maximalRealSubfield E) t).trans_le ?_` and prove the remaining obligations. Use `(v.intValuation_le_pow_iff_mem t 1).2 (by rwa [pow_one])` as an intermediate fact. Simplify using `using this`.
+
+Establish `hmem : (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) π)⁻¹ • (algebraMap (maximalRealSubfield E) (Fv (maximalRealSubfield E) v) (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) t) * 1) ∈ v.adicCompletionIntegers (maximalRealSubfield E)`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, Algebra.smul_def, mul_one, ← map_mul, hval, map_mul, map_inv₀, hπv]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `tmul_mem_intLoc (E := E) hmem (1 : 𝓞 E)`. Establish `hxS` using `hIS hx`.
+
+Express the relevant statement in the definitionally equal form `(algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) π)⁻¹ • ((intLocIncl v x : intLoc (maximalRealSubfield E) E v) : Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E) ∈ intLoc (maximalRealSubfield E) E v at hxS`. Rewrite `hxS` using `[coe_intLocIncl, ← TensorProduct.tmul_smul]`. Take `⟨k, s, φ, hφ, hsum⟩` from `GlobalTheory.AdelicU.SelfDual.exists_dualFamily_integers (F := maximalRealSubfield E) (E := E)`. Establish `hr : ∀ j, ∃ r : 𝓞 (maximalRealSubfield E), r ∈ v.asIdeal ∧ φ j (x : E) = algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) r`. Introduce `j`.
+
+Take `⟨r, hr⟩` from `hφ x j`. Use `⟨r, ?_, hr.symm⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.AdelicU.SelfDual.valuation_le_one_of_intLoc (v := v) (φ j) (hφ · j) (e := (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) π)⁻¹ • (x : E)) hxS`. Rewrite `h1` using `[map_smul, smul_eq_mul, map_mul, map_inv₀, hπv, ← hr]`. Rewrite using `[← v.valuation_lt_one_iff_mem (K := maximalRealSubfield E)]`.
+
+Establish `h2 : v.valuation (maximalRealSubfield E) (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) r) ≤ WithZero.exp (-1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, mul_inv_cancel₀ WithZero.exp_ne_zero, one_mul]`. Use `_ ≤ WithZero.exp (-1) * 1 := by gcongr`. Use `_ = _ := mul_one _`.
+
+Conclude with `h2.trans_lt (by rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; omega)`. Use `choose r hrv hr using hr`. Establish `hx' : x = ∑ j, algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) (r j) * s j`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `conv_lhs => rw [← hsum (x : E)]`.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hr j, Algebra.smul_def]`. Use `congr 1`. Rewrite using `[hx']`.
+
+Conclude with `sum_mem fun j _ => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (hrv j))`.
+-/
 theorem mem_extIdeal_of_intLocIncl_mem (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (x : 𝓞 E)
     (hx : intLocIncl v x ∈ (extIdeal v).map (intLocIncl v)) : x ∈ extIdeal v := by
   obtain ⟨π, hπ⟩ := v.intValuation_exists_uniformizer
@@ -106,6 +135,23 @@ theorem mem_extIdeal_of_intLocIncl_mem (v : HeightOneSpectrum (𝓞 (maximalReal
   rw [hx']
   exact sum_mem fun j _ => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (hrv j))
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `v.intValuation_exists_uniformizer`. Establish `hπv : v.valuation (maximalRealSubfield E) (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) π) = WithZero.exp (-1)` using `(v.valuation_of_algebraMap (K := maximalRealSubfield E) π).trans hπ`. Establish `hπI : π ∈ v.asIdeal`. Use `(v.intValuation_le_pow_iff_mem π 1).1 (by rw [hπ]; simp)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+
+It suffices to establish `H : ∀ y ∈ intLoc (maximalRealSubfield E) E v, ∃ x : 𝓞 E, ∃ w ∈ (extIdeal v).map (intLocIncl v), y = (intLocIncl v x : Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E) + (w : Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E) by`. Take `⟨x, w, hw, h⟩` from `H z z.2`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `: z - intLocIncl v x = w` using `Subtype.ext (by simp [h])`. Rewrite using `[this]`.
+
+Conclude with `hw`. Introduce `y hy`. Use `intLoc_induction (p := fun y => ∃ x : 𝓞 E, ∃ w ∈ (extIdeal v).map (intLocIncl v), y = (intLocIncl v x : Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E) + (w : Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E)) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce `a ha y'`. Take `⟨s, hs⟩` from `GlobalTheory.Idele.exists_valued_sub_le (R := 𝓞 (maximalRealSubfield E)) (K := maximalRealSubfield E) v ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 ha) 1`.
+
+Establish `hval : ∀ c : maximalRealSubfield E, Valued.v (algebraMap (maximalRealSubfield E) (Fv (maximalRealSubfield E) v) c) = v.valuation (maximalRealSubfield E) c` using `fun c => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v c`. Establish `hπ0 : algebraMap (maximalRealSubfield E) (Fv (maximalRealSubfield E) v) (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) π) ≠ 0`. Introduce `h`. Use `congrArg Valued.v h` as an intermediate fact. Rewrite `this` using `[hval, hπv, map_zero]`.
+
+Conclude with `WithZero.exp_ne_zero this`. Use `set b := (a - algebraMap (maximalRealSubfield E) (Fv (maximalRealSubfield E) v) (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) s)) * (algebraMap (maximalRealSubfield E) (Fv (maximalRealSubfield E) v) (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) …`. Establish `hb : b ∈ v.adicCompletionIntegers (maximalRealSubfield E)`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hb_def, map_mul, map_inv₀, hval, hπv]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s * y', intLocIncl v (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) π) * ⟨b ⊗ₜ[maximalRealSubfield E] (y' : E), tmul_mem_intLoc hb y'⟩, Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ hπI)), ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.coe_mul, coe_intLocIncl, coe_intLocIncl, Algebra.TensorProduct.tmul_mul_tmul]`. Use `show a ⊗ₜ[maximalRealSubfield E] (y' : E) = (1 : Fv (maximalRealSubfield E) v) ⊗ₜ[maximalRealSubfield E] (algebraMap (maximalRealSubfield E) E (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) s) * (y' : E)) + (1 * b) ⊗ₜ[maximalRealSubfield E] (algebraMap (maximalRe …`. Rewrite using `[tmul_algebraMap_mul_eq, tmul_algebraMap_mul_eq, ← TensorProduct.add_tmul]`. Use `congr 1`.
+
+Rewrite using `[hb_def]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨0, 0, zero_mem _, by simp⟩`. Introduce and unpack `_ _ ⟨x, w, hw, rfl⟩ ⟨x', w', hw', rfl⟩`.
+
+Conclude with `⟨x + x', w + w', add_mem hw hw', by simp only [map_add, Subring.coe_add]; abel⟩`. Introduce and unpack `_ ⟨x, w, hw, rfl⟩`. Conclude with `⟨-x, -w, neg_mem hw, by simp only [map_neg, Subring.coe_neg]; abel⟩`.
+-/
 theorem exists_sub_intLocIncl_mem_map (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
     (z : intLoc (maximalRealSubfield E) E v) :
     ∃ x : 𝓞 E, z - intLocIncl v x ∈ (extIdeal v).map (intLocIncl v) := by
@@ -172,6 +218,15 @@ theorem exists_sub_intLocIncl_mem_map (v : HeightOneSpectrum (𝓞 (maximalRealS
 
 end Residue
 
+/- English proof (translation)
+Introduce `E _ _ _ _ v`. Establish `H : extIdeal v ≤ ((extIdeal v).map (intLocIncl v)).comap (intLocIncl v)` using `Ideal.le_comap_map`. Establish `hinj : Function.Injective (Ideal.quotientMap ((extIdeal v).map (intLocIncl v)) (intLocIncl v) H)` using `Ideal.quotientMap_injective' fun x hx => mem_extIdeal_of_intLocIncl_mem v x hx`. Establish `hsurj : Function.Surjective (Ideal.quotientMap ((extIdeal v).map (intLocIncl v)) (intLocIncl v) H)`. Introduce `q`.
+
+Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Take `⟨x, hx⟩` from `exists_sub_intLocIncl_mem_map v z`. Conclude with `⟨Ideal.Quotient.mk _ x, by rw [Ideal.quotientMap_mk]; exact (Ideal.Quotient.eq.2 hx).symm⟩`. Take `⟨e, he⟩ : ∃ e : 𝓞 E ⧸ extIdeal v ≃+* intLoc (maximalRealSubfield E) E v ⧸ (extIdeal v).map (intLocIncl v), ∀ q, e q = Ideal.quotientMap ((extIdeal v).map (intLocIncl v)) (intLocIncl v) H q` from `⟨RingEquiv.ofBijective _ ⟨hinj, hsurj⟩, fun _ => rfl⟩`. Use `⟨e.symm.toRingHom.comp (Ideal.Quotient.mk ((extIdeal v).map (intLocIncl v))), ?_, fun x => ?_, fun z => ?_⟩` and prove the remaining obligations.
+
+Introduce `q`. Take `⟨z, hz⟩` from `Ideal.Quotient.mk_surjective (e q)`. Conclude with `⟨z, by simp only [RingHom.comp_apply, hz]; exact e.symm_apply_apply q⟩`. Use `show e.symm (Ideal.Quotient.mk _ (intLocIncl v x)) = _`. Conclude with `e.symm_apply_eq.2 ((he _).trans Ideal.quotientMap_mk).symm`.
+
+Use `show e.symm (Ideal.Quotient.mk _ z) = 0 ↔ _`. Conclude with `(map_eq_zero_iff _ e.symm.injective).trans Ideal.Quotient.eq_zero_iff_mem`.
+-/
 theorem exists_residueMap_intLoc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E →
     ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), ∃ ρ : intLoc (maximalRealSubfield E) E v →+* 𝓞 E ⧸ extIdeal v,
       Function.Surjective ρ ∧ (∀ x, ρ (intLocIncl v x) = Ideal.Quotient.mk (extIdeal v) x) ∧

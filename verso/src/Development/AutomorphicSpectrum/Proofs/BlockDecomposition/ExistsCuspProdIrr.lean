@@ -13,6 +13,9 @@ namespace GlobalTheory.CompanionTheory.Ysupp
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `(IsSubquotient.of_surjective E.toIntertwiningMap E.toLinearEquiv.surjective).trans ((GlobalTheory.CompanionTheory.ProdSubquot.prod₂_isSubquotient k r t U A W B σ α ρ β hα hβ h₁ h₂).trans (.of_injective F.toIntertwiningMap F.toLinearEquiv.injective))`.
+-/
 theorem isSubquotient_of_prod₂_equiv {r t : ℕ} {U W A B C D : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup W]
     [Module ℂ W] [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module ℂ B] [AddCommGroup C] [Module ℂ C]
     [AddCommGroup D] [Module ℂ D] {σ : Representation ℂ (GL (Fin r) k) U} {ρ : Representation ℂ (GL (Fin t) k) W}
@@ -24,6 +27,9 @@ theorem isSubquotient_of_prod₂_equiv {r t : ℕ} {U W A B C D : Type} [AddComm
     ((GlobalTheory.CompanionTheory.ProdSubquot.prod₂_isSubquotient k r t U A W B σ α ρ β hα hβ h₁ h₂).trans
       (.of_injective F.toIntertwiningMap F.toLinearEquiv.injective))
 
+/- English proof (translation)
+Use `GlobalTheory.SmGL.MultiIrr.nonempty_prod₂_equiv_multiProd_succ (k := k) (fun a => (y a).1) hd fun a => (y a).rep` as an intermediate fact. Conclude with `this`.
+-/
 theorem nonempty_prod₂_equiv_prodIrr_succ {c : ℕ} (y : Fin (c + 1) → IrrGL k)
     (hd : ∑ a, (y a).1 = (y 0).1 + ∑ a : Fin c, (y a.succ).1) :
     Nonempty ((prod₂ (y 0).rep (prodIrr (fun a : Fin c => y a.succ) rfl)).Equiv (prodIrr y hd)) := by

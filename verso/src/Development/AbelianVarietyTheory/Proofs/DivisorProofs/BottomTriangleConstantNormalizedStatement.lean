@@ -13,6 +13,9 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BotFormula.bottom_formula | exact GlobalTheory.BotFormula.bottom_formula | (intros; apply GlobalTheory.BotFormula.bottom_formula <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bottom_triangle_constant_normalized : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ),

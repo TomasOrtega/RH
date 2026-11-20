@@ -5,6 +5,17 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.OffZero
 
 open CategoryTheory AlgebraicGeometry NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj GlobalTheory.CompanionTheory.Ar.OntoDef GlobalTheory.CompHS
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c r σ V T e k P h hR m as ss he x hx`. Use `haveI : IsLocalRing (CAt σ) := (inferInstance : IsLocalRing ℂ)`. Take `⟨i, hz⟩` from `GlobalTheory.FlagMod.exists_chart_of_isLocalRing T.X.F.cover (T.X.ptY (V.un k ⟨x, hx⟩))`. Establish `hl` using `T.X.lies_ptY (V.un k ⟨x, hx⟩)`. Take `⟨Q, hQ⟩` from `T.X.top.exists_chartFr (GlobalTheory.FlagMod.frX_snd (V.un k ⟨x, hx⟩)) hl.1 i hz`.
+
+Take `⟨t, ht⟩` from `hQ.exists_frBor hl`. Establish `hO : ⊤ ≤ T.X.ptY (V.un k ⟨x, hx⟩) ⁻¹ᵁ flagOpen T.X`. Rewrite using `[← T.X.pt_inc]`. Conclude with `GlobalTheory.FlagMod.le_preimage_map T.X.inc (top_le_inc T.X) le_top`. Set `y : GlobalTheory.CxPts (flagStr T.X) σ` to `⟨(T.X.ptY (S := CAt σ) (V.un k ⟨x, hx⟩) :), ptY_str (S := CAt σ) T.X (V.un k ⟨x, hx⟩)⟩`.
+
+Establish `hy : y ∈ GlobalTheory.CxPts.ptsIn (flagStr T.X) σ ((T.X.LL e).U i)` using `hz`. Use `haveI : _root_.IsReduced (CAt σ) := (inferInstance : _root_.IsReduced ℂ)`. Establish `hs : h i y = ∑ j, as j * GlobalTheory.CxPts.secVal (flagStr T.X) σ (ss j) i y`. Rewrite using `[he]`. Conclude with `(congrFun (Finset.sum_apply (show (T.X.LL e).ι from i) _ _) y).trans (Finset.sum_apply y _ _)`.
+
+Rewrite using `[hR x hx i y hz Q t rfl hQ ht, hs, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `a : rdU V (ruleTop T.X e (GlobalTheory.Vanishing.H0.ofSec (flagStr T.X) ⊤ (ss j))) k x = toC (evR Xo c (ruleTop T.X e (GlobalTheory.Vanishing.H0.ofSec (flagStr T.X) ⊤ (ss j))) (V.un k ⟨x, hx⟩))` using `dif_pos hx`. Establish `b : GlobalTheory.CxPts.secVal (flagStr T.X) σ (ss j) i y = _` using `GlobalTheory.CxPts.ev_eq hy _`. Establish `d` using `evR_ruleTop (GlobalTheory.Vanishing.H0.ofSec (flagStr T.X) ⊤ (ss j)) hO hQ ht`.
+
+Establish `f` using `GlobalTheory.Vanishing.H0.val_ofSec (p := flagStr T.X) (O := ⊤) (B := T.X.LL e) (T.X.ptY (V.un k ⟨x, hx⟩)) i le_top hz (ss j)`. Rewrite using `[a, d, f, b, mul_left_comm]`. Both sides reduce to the same expression.
+-/
 theorem DifferentiableLines.holomorphic_extension_sections : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (r : ℕ) (σ : c.F →+* ℂ) (V : Unf Xo c σ r) (T : GlobalTheory.CompHS.TorFlag Xo c) (e : Ix D → ℤ) (k : V.Comp) (P : Frame (V.X k).Ψ r → ℂ) (h : (T.X.LL e).ι → GlobalTheory.CxPts (GlobalTheory.CompHS.flagStr T.X) σ → ℂ), GlobalTheory.CompanionTheory.Ar.HolExt.Reads V T e k P h → ∀ (m : ℕ) (as : Fin m → ℂ) (ss : Fin m → (T.X.LL e).Sec), h = ∑ j, as j • GlobalTheory.CxPts.secVal (GlobalTheory.CompHS.flagStr T.X) σ (ss j) → ∀ x ∈ (V.X k).dom, P x = ∑ j, as j * rdU V (GlobalTheory.CompanionTheory.Ar.OntoDef.ruleTop T.X e (GlobalTheory.Vanishing.H0.ofSec (GlobalTheory.CompHS.flagStr T.X) ⊤ (ss j))) k x := by
   intro E _ _ _ H D l Xo c r σ V T e k P h hR m as ss he x hx
   classical

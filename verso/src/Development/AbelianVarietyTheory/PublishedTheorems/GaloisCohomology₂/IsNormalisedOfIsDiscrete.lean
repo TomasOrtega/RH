@@ -69,10 +69,18 @@ structure HasSpehComp (V : Submodule ℂ (Sm E N)) (π : CuspSub E a) (d : ℕ) 
     GlobalTheory.LocGL.IsSpeh (GlobalTheory.LocGL.IrrGL.of σ.ρ σ.smooth σ.irred) d σ'.ρ
   inf : ∀ τ, ∃ m, π.HasInfChar τ m ∧ HasInfCharGL V τ (GlobalTheory.SphGal.spehInf d m)
 
+/- English proof (translation)
+Take `⟨h, -⟩` from `h`. Simplify using `using h`.
+-/
 theorem IsSpehOf.mul_eq {V : Submodule ℂ (Sm E N)} {π : CuspSub E a} (h : IsSpehOf V π d) : d * a = N := by
   obtain ⟨h, -⟩ := h
   simpa using h
 
+/- English proof (translation)
+Establish `h1 : Finset.univ.filter (fun b => i < b) = Finset.Ioi i` using `by ext; simp`. Establish `h2 : Finset.univ.filter (fun b => b < i) = Finset.Iio i` using `by ext; simp`. Establish `h3 : ((d - 1 - i : ℕ) : ℝ) = d - 1 - (i : ℕ)`. Use `i.2` as an intermediate fact. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega), Nat.cast_one]`.
+
+Simplify using `only [modExp, h1, h2, Finset.sum_const, Fin.card_Ioi, Fin.card_Iio, nsmul_eq_mul, Fintype.card_fin, spehExp]`. Use `push_cast`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_spehExp (a d : ℕ) (i : Fin d) : a * spehExp d i = (modExp (fun _ : Fin d => Fin a) i : ℝ) / 2 := by
   have h1 : Finset.univ.filter (fun b => i < b) = Finset.Ioi i := by ext; simp
   have h2 : Finset.univ.filter (fun b => b < i) = Finset.Iio i := by ext; simp
@@ -84,6 +92,13 @@ theorem mul_spehExp (a d : ℕ) (i : Fin d) : a * spehExp d i = (modExp (fun _ :
   rw [h3]
   ring
 
+/- English proof (translation)
+Use `⟨fun u hu g => ?_, GlobalTheory.PRep.smoothPart_stable _ x φ hφ.2.1, ?_, fun k g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (u * g * _) = φ.1 (g * _)`. Rewrite using `[mul_assoc, hφ.1 u hu]`. Establish `: FiniteDimensional _ _` using `hφ.2.2.1`. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep E N k φ)).map (finRep E N x)) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨_, Submodule.subset_span ⟨k, rfl⟩, Subtype.ext (funext fun g => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (g * finGL E N x * infGL E N _) = φ.1 (g * infGL E N _ * finGL E N x)`. Rewrite using `[mul_assoc, mul_assoc, infGL_comm]`. Use `hφ.2.2.2 k (g * x)` as an intermediate fact.
+
+Rewrite `this` using `[map_mul]`. Use `this using 2 with m` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `φ.1 (_ * finGL E N x) = _`. Simplify using `only [mul_assoc]`.
+-/
 theorem fin_mem_indForms {h : ∑ i, n i = N} {π : ∀ i, CuspSub E (n i)} {φ : Sm E N} (hφ : φ ∈ indForms h π)
     (x : GL (Fin N) (Af E)) : act (.fin x) φ ∈ indForms h π := by
   refine ⟨fun u hu g => ?_, GlobalTheory.PRep.smoothPart_stable _ x φ hφ.2.1, ?_, fun k g => ?_⟩
@@ -102,6 +117,19 @@ theorem fin_mem_indForms {h : ∑ i, n i = N} {π : ∀ i, CuspSub E (n i)} {φ 
     change φ.1 (_ * finGL E N x) = _
     simp only [mul_assoc]
 
+/- English proof (translation)
+Establish `he : ∀ b i, stdBlocks (fun _ : Fin 1 => a) h ⟨b, i⟩ = i` using `fun b i => Fin.ext (by`. Rewrite using `[stdBlocks_val, Subsingleton.elim b 0]`. Use the proof step `simp)`. Establish `hl : ∀ m, leviEmb (Ad E) (stdBlocks (fun _ : Fin 1 => a) h) m = m 0` using `fun m => by`. Use extensionality with `i j`.
+
+Use `leviEmb_apply_same (Ad E) (stdBlocks (fun _ : Fin 1 => a) h) m 0 i j` as an intermediate fact. Rewrite `this` using `[he, he]`. Then use the resulting hypothesis. Use `le_antisymm (fun φ hφ => ?_) fun φ hφ => ⟨fun u hu g => ?_, (π.cusp φ hφ).1.level, (π.cusp φ hφ).1.kfin, fun k g => Submodule.subset_span ⟨fun _ => ⟨_, π.stable (.cpt k) _ (π.stable (.fin g) φ hφ)⟩, funext fun m => ?_⟩⟩` and prove the remaining obligations. Establish `key : ∀ F ∈ tensorForms fun _ : Fin 1 => π, ∃ ψ ∈ π.V, ∀ g, F (fun _ => g) = ψ.1 g` using `fun F hF => by`. Proceed by induction on `hF using Submodule.span_induction with`.
+
+Consider the case `mem F hF`. Take `⟨ψ, rfl⟩` from `hF`. Conclude with `⟨ψ 0, (ψ 0).2, fun g => by simp⟩`. Consider the case `zero => exact ⟨0, zero_mem _, fun _ => rfl⟩`. Consider the case `add F G _ _ hF hG`.
+
+Take `⟨x, hx, e⟩` from `hF`. Take `⟨y, hy, e'⟩` from `hG`. Conclude with `⟨x + y, add_mem hx hy, fun g => congrArg₂ (· + ·) (e g) (e' g)⟩`. Consider the case `smul z F _ hF`. Take `⟨x, hx, e⟩` from `hF`.
+
+Conclude with `⟨z • x, Submodule.smul_mem _ _ hx, fun g => congrArg (z • ·) (e g)⟩`. Take `⟨ψ, h1, h2⟩` from `key _ (hφ.2.2.2 1 1)`. Rewrite using `[show φ = ψ from Subtype.ext (funext fun g => by simpa [hl] using h2 g)]` and apply the resulting hypothesis. Rewrite using `[show u = 1 from Units.ext (Matrix.ext fun i j => by`. Use `(mem_unipRad.1 hu).2 0 i j` as an intermediate fact.
+
+Rewrite using `[he, he] at this), one_mul]` and apply the resulting hypothesis. Rewrite using `[hl, Fin.prod_univ_one, ← mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem indForms_one (h : ∑ _ : Fin 1, a = a) (π : CuspSub E a) : indForms h (fun _ => π) = π.V := by
   have he : ∀ b i, stdBlocks (fun _ : Fin 1 => a) h ⟨b, i⟩ = i := fun b i => Fin.ext (by
     rw [stdBlocks_val, Subsingleton.elim b 0]; simp)
@@ -132,6 +160,11 @@ theorem indForms_one (h : ∑ _ : Fin 1, a = a) (π : CuspSub E a) : indForms h 
   · rw [hl, Fin.prod_univ_one, ← mul_assoc]
     rfl
 
+/- English proof (translation)
+Use `⟨by simp, fun _ => 1, fun i => ?_, LinearMap.id, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Establish `: spehExp 1 i + a * spehExp 1 i = 0` using `by simp [spehExp]`. Rewrite using `[this]`. Conclude with `⟨fun _ _ _ => rfl, fun _ => by simp [HChar.val, HChar.locK], fun _ => by simp [HChar.inf]⟩`. Simplify using `only [Submodule.map_id, CuspSub.twist_one]`.
+
+Conclude with `indForms_one _ π`.
+-/
 theorem isSpehOf_one (π : CuspSub E a) : IsSpehOf π.V π 1 := by
   refine ⟨by simp, fun _ => 1, fun i => ?_, LinearMap.id, ?_, fun _ _ _ => rfl⟩
   · have : spehExp 1 i + a * spehExp 1 i = 0 := by simp [spehExp]
@@ -140,13 +173,22 @@ theorem isSpehOf_one (π : CuspSub E a) : IsSpehOf π.V π 1 := by
   · simp only [Submodule.map_id, CuspSub.twist_one]
     exact indForms_one _ π
 
+/- English proof (translation)
+Introduce `φ hφ _ _` and use `by obtain ⟨z, rfl⟩ := Submodule.mem_span_singleton.1 hφ rfl`.
+-/
 theorem isNormalised_triv (ha : a ≤ 1) : IsNormalised (CuspSub.triv E ha) := fun φ hφ _ _ => by
   obtain ⟨z, rfl⟩ := Submodule.mem_span_singleton.1 hφ
   rfl
 
+/- English proof (translation)
+Introduce `φ hφ` and use `(h.sqInt φ hφ).1`.
+-/
 theorem isNormalised_of_isDiscrete {π : CuspSub E a} (h : IsDiscrete π.V) : IsNormalised π :=
   fun φ hφ => (h.sqInt φ hφ).1
 
+/- English proof (translation)
+Use `exists_congr fun T => ⟨fun h o φ => Subtype.ext (h o φ _ rfl), fun h o φ ψ e => ?_⟩` and prove the remaining obligations. Rewrite using `[show ψ = π.op o φ from Subtype.ext e, h]`. Both sides reduce to the same expression.
+-/
 theorem isIsoGL_iff (π π' : CuspSub E a) : IsIsoGL π.V π'.V ↔ π.Iso π' := by
   refine exists_congr fun T => ⟨fun h o φ => Subtype.ext (h o φ _ rfl), fun h o φ ψ e => ?_⟩
   rw [show ψ = π.op o φ from Subtype.ext e, h]
@@ -171,6 +213,9 @@ def DiscreteSpectrumGL : Prop :=
     ∀ V : Submodule ℂ (Sm E N), IsDiscrete V → ∀ (a d : ℕ) (π : CuspSub E a),
       IsNormalised π → IsSpehOf V π d → HasSpehComp V π d
 
+/- English proof (translation)
+The claim follows from `Quotient.exact (eq_of_heq (Sigma.mk.inj ((H E N hN).2.2.1 V hV a d a d π π' h h' e e').2).2)`.
+-/
 theorem DiscreteSpectrumGL.iso (H : DiscreteSpectrumGL) {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
     {N a d : ℕ} (hN : 1 ≤ N) {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) {π π' : CuspSub E a} (h : IsNormalised π)
     (h' : IsNormalised π') (e : IsSpehOf V π d) (e' : IsSpehOf V π' d) : π.Iso π' :=

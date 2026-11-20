@@ -7,21 +7,33 @@ namespace Formalism.CohomologicalDescent.LD
 
 open Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Introduce `h l p q w M lam2 hl ha hw eL heL i μ hd`. Establish `h0 : Antitone (0 : Fin (q + p) → ℤ)` using `fun _ _ _ => le_rfl`. Use `h l p q w M lam2 0 hl ha hw h0 0 eL (fun μ2 _ => heL μ2) i μ hd ?_` and prove the remaining obligations. Simplify using `[depth2]`.
+-/
 theorem lastGradedImpliesLast : LastGradedImpliesLast := by
   intro h l p q w M lam2 hl ha hw eL heL i μ hd
   have h0 : Antitone (0 : Fin (q + p) → ℤ) := fun _ _ _ => le_rfl
   refine h l p q w M lam2 0 hl ha hw h0 0 eL (fun μ2 _ => heL μ2) i μ hd ?_
   simp [depth2]
 
+/- English proof (translation)
+Introduce `h l q w M lam2 ξ hl ha hw hξ` and use `h l 1 q w M lam2 ξ hl ha hw hξ`.
+-/
 theorem last_graded_implies_one_block' : OneRowBoundOfLastGraded :=
   fun h l q w M lam2 ξ hl ha hw hξ => h l 1 q w M lam2 ξ hl ha hw hξ
 
+/- English proof (translation)
+Introduce `p q w lam2 μ2 ξ`. Unfold `depth2 blockWtLast`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `[Fin.append_left, Fin.append_right]`.
+-/
 theorem depth2Levi : Depth2Levi := by
   intro p q w lam2 μ2 ξ
   unfold depth2 blockWtLast
   rw [Fin.sum_univ_add]
   simp [Fin.append_left, Fin.append_right]
 
+/- English proof (translation)
+Unfold `depth2 blockWtLast`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `[Fin.append_left, Finset.sum_sub_distrib]`.
+-/
 theorem depth_two_block_eq_sum_diff (p q w : ℕ) (lam2 : Fin q → ℕ) (μ : Fin (q + p) → ℕ) :
     depth2 (fun a : Fin (q + p) => if a.val < q then 1 else 0) (blockWtLast p q w lam2) μ =
       ((∑ b, lam2 b : ℕ) : ℤ) - ((∑ b : Fin q, μ (Fin.castAdd p b) : ℕ) : ℤ) := by
@@ -29,12 +41,18 @@ theorem depth_two_block_eq_sum_diff (p q w : ℕ) (lam2 : Fin q → ℕ) (μ : F
   rw [Fin.sum_univ_add]
   simp [Fin.append_left, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Unfold `blockWtLast`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `[Fin.append_left, Fin.append_right]`.
+-/
 theorem sum_block_weight_last (p q w : ℕ) (lam2 : Fin q → ℕ) :
     ∑ a, blockWtLast p q w lam2 a = ∑ b, lam2 b + p * w := by
   unfold blockWtLast
   rw [Fin.sum_univ_add]
   simp [Fin.append_left, Fin.append_right]
 
+/- English proof (translation)
+Introduce `p q w i lam2 μ hsum`. Rewrite `*` using `[depth_two_block_eq_sum_diff, sum_block_weight_last, Fin.sum_univ_add]`. Unfold `IsDepthLast`. Generalize the expression as in `p * w = pw at *`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem depthLastIff : DepthLastIff := by
   intro p q w i lam2 μ hsum
   rw [depth_two_block_eq_sum_diff, sum_block_weight_last, Fin.sum_univ_add] at *
@@ -42,6 +60,11 @@ theorem depthLastIff : DepthLastIff := by
   generalize p * w = pw at *
   omega
 
+/- English proof (translation)
+Introduce `r M ξ lam μ hl hm`. Prove the components needed by the constructor for the conclusion. Unfold `depth2`. Rewrite using `[← Equiv.sum_comp Fin.revPerm fun a => ξ a * ((lam a : ℤ) - (μ a : ℤ))]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_sub (hl _), Nat.cast_sub (hm _)]`. Simplify using `only [Fin.revPerm_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `hξ a b hab`. Conclude with `neg_le_neg (hξ (Fin.rev_le_rev.mpr hab))`.
+-/
 theorem depth2Dual : Depth2Dual := by
   intro r M ξ lam μ hl hm
   constructor
@@ -54,12 +77,20 @@ theorem depth2Dual : Depth2Dual := by
   · intro hξ a b hab
     exact neg_le_neg (hξ (Fin.rev_le_rev.mpr hab))
 
+/- English proof (translation)
+Simplify using `[shapes, Fintype.mem_piFinset, Finset.mem_Icc]`.
+-/
 theorem mem_shapes_iff (p w i q : ℕ) (lam2 tau : Fin q → ℕ) :
     tau ∈ shapes p w i lam2 ↔ (∀ a, lam2 a ≤ tau a ∧ tau a ≤ lam2 a + i) ∧
       (∀ a b : Fin q, a ≤ b → tau b ≤ tau a) ∧ ∑ a, tau a = ∑ a, lam2 a + i ∧
       (∀ b : Fin q, ∀ j < tau b, colLen lam2 tau j ≤ p) ∧ boxesOfContent lam2 tau (w : ℤ) = 0 := by
   simp [shapes, Fintype.mem_piFinset, Finset.mem_Icc]
 
+/- English proof (translation)
+Unfold `boxesOfContent`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use `push_cast`.
+
+Apply the tactic sequence `constructor <;> rintro ⟨h1, h2⟩ <;> constructor <;> omega`.
+-/
 theorem boxes_of_content_shift (q c : ℕ) (lam2 tau : Fin q → ℕ) (x : ℤ) :
     boxesOfContent (fun b => lam2 b + c) (fun b => tau b + c) (x + (c : ℤ)) = boxesOfContent lam2 tau x := by
   unfold boxesOfContent
@@ -69,6 +100,9 @@ theorem boxes_of_content_shift (q c : ℕ) (lam2 tau : Fin q → ℕ) (x : ℤ) 
   push_cast
   constructor <;> rintro ⟨h1, h2⟩ <;> constructor <;> omega
 
+/- English proof (translation)
+Unfold `colLen`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `constructor <;> rintro ⟨h1, h2⟩ <;> constructor <;> omega`.
+-/
 theorem column_length_shift (q c : ℕ) (lam2 tau : Fin q → ℕ) (j : ℕ) :
     colLen (fun b => lam2 b + c) (fun b => tau b + c) (j + c) = colLen lam2 tau j := by
   unfold colLen
@@ -77,6 +111,9 @@ theorem column_length_shift (q c : ℕ) (lam2 tau : Fin q → ℕ) (j : ℕ) :
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
   constructor <;> rintro ⟨h1, h2⟩ <;> constructor <;> omega
 
+/- English proof (translation)
+Unfold `colLen`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce and unpack `a _ ⟨h1, _⟩`. Establish `h1' : lam2 a + c ≤ j` using `h1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem column_length_below_shift (q c : ℕ) (lam2 tau : Fin q → ℕ) (j : ℕ) (hj : j < c) :
     colLen (fun b => lam2 b + c) (fun b => tau b + c) j = 0 := by
   unfold colLen
@@ -85,6 +122,19 @@ theorem column_length_below_shift (q c : ℕ) (lam2 tau : Fin q → ℕ) (j : �
   have h1' : lam2 a + c ≤ j := h1
   omega
 
+/- English proof (translation)
+Rewrite using `[mem_shapes_iff, mem_shapes_iff]`. Establish `hbx : boxesOfContent (fun b => lam2 b + c) (fun b => tau b + c) ((w + c : ℕ) : ℤ) = boxesOfContent lam2 tau (w : ℤ)`. Rewrite using `[Nat.cast_add]`. Conclude with `boxes_of_content_shift q c lam2 tau w`. Rewrite using `[hbx, Finset.sum_add_distrib, Finset.sum_add_distrib]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4, h5⟩`. Use `⟨fun a => ?_, fun a b hab => ?_, by omega, fun b j hj => ?_, h5⟩` and prove the remaining obligations. Use `h1 a` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `h2 a b hab` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[← column_length_shift q c]`. Conclude with `h4 b (j + c) (by omega)`. Introduce and unpack `⟨h1, h2, h3, h4, h5⟩`.
+
+Use `⟨fun a => ?_, fun a b hab => ?_, by omega, fun b j hj => ?_, h5⟩` and prove the remaining obligations. Use `h1 a` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `h2 a b hab` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Distinguish the cases in `hjc : j < c`. Rewrite using `[column_length_below_shift q c lam2 tau j hjc]`. Conclude with `Nat.zero_le _`. Take `⟨j', rfl⟩ : ∃ j', j = j' + c` from `⟨j - c, by omega⟩`. Rewrite using `[column_length_shift]`.
+
+Conclude with `h4 b j' (by omega)`.
+-/
 theorem shapes_shift_iff (p w i q c : ℕ) (lam2 tau : Fin q → ℕ) :
     (fun b => tau b + c) ∈ shapes p (w + c) i (fun b => lam2 b + c) ↔ tau ∈ shapes p w i lam2 := by
   rw [mem_shapes_iff, mem_shapes_iff]
@@ -115,6 +165,13 @@ theorem shapes_shift_iff (p w i q c : ℕ) (lam2 tau : Fin q → ℕ) :
         rw [column_length_shift]
         exact h4 b j' (by omega)
 
+/- English proof (translation)
+Unfold `mu`. Apply `le_antisymm` to reduce the goal to its premises. Use `Finset.sup_le fun tau' htau' => ?_` and prove the remaining obligations. Establish `hge : ∀ a, c ≤ tau' a` using `fun a => by`. Use `((mem_shapes_iff _ _ _ _ _ _).mp htau').1 a` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `he : tau' = fun b => (tau' b - c) + c` using `funext fun b => by`. Use `hge b` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `htau'`, the goal using `[he]`.
+
+Rewrite using `[boxes_of_content_shift]`. Conclude with `Finset.le_sup (f := fun tau => boxesOfContent lam2 tau x) ((shapes_shift_iff _ _ _ _ _ _ _).mp htau')`. Use `Finset.sup_le fun tau htau => ?_` and prove the remaining obligations. Rewrite using `[← boxes_of_content_shift q c lam2 tau x]`. Conclude with `Finset.le_sup (f := fun tau => boxesOfContent (fun b => lam2 b + c) tau (x + (c : ℤ))) ((shapes_shift_iff _ _ _ _ _ _ _).mpr htau)`.
+-/
 theorem multiplicity_shift_invariant (p w i q c : ℕ) (lam2 : Fin q → ℕ) (x : ℤ) :
     mu p (w + c) i (fun b => lam2 b + c) (x + (c : ℤ)) = mu p w i lam2 x := by
   unfold mu
@@ -134,6 +191,17 @@ theorem multiplicity_shift_invariant (p w i q c : ℕ) (lam2 : Fin q → ℕ) (x
     exact Finset.le_sup (f := fun tau => boxesOfContent (fun b => lam2 b + c) tau (x + (c : ℤ)))
       ((shapes_shift_iff _ _ _ _ _ _ _).mpr htau)
 
+/- English proof (translation)
+Introduce `p w i q c lam2 hb`. Unfold `Dn`. Establish `hr : q + (w + c) + i = c + (q + w + i)` using `by omega`. Rewrite using `[hr, Finset.prod_range_add]`. Establish `h1 : ∏ k ∈ Finset.range c, (((w + c : ℕ) : ℤ) - ((k : ℤ) - (q : ℤ))) ^ mu p (w + c) i (fun b => lam2 b + c) ((k : ℤ) - (q : ℤ)) = 1`.
+
+Use `Finset.prod_eq_one fun k hk => ?_` and prove the remaining obligations. Establish `hk'` using `Finset.mem_range.mp hk`. Establish `hz : mu p (w + c) i (fun b => lam2 b + c) ((k : ℤ) - (q : ℤ)) = 0`. Assume the negation of the conclusion as `hne`. Use `(muRange p (w + c) i q c (fun b => lam2 b + c) _ (fun b => ⟨Nat.le_add_left _ _, Nat.add_le_add_right (hb b) c⟩) hne).1` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hz, pow_zero]`. Rewrite using `[h1, one_mul]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e1 : (((c + k : ℕ) : ℤ) - (q : ℤ)) = ((k : ℤ) - (q : ℤ)) + (c : ℤ)`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, multiplicity_shift_invariant]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dnShift : DnShift := by
   intro p w i q c lam2 hb
   unfold Dn
@@ -159,6 +227,13 @@ theorem dnShift : DnShift := by
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `p w i q M M' lam2 hwM hb hMM`. Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le hMM`. Establish `e1 : M + c - w = (M - w) + c` using `by omega`. Establish `e2 : (fun b : Fin q => M + c - lam2 (Fin.rev b)) = fun b => (M - lam2 (Fin.rev b)) + c`. Use function extensionality and compare the values at `fun b => by`.
+
+Use `hb (Fin.rev b)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1, e2]`. Conclude with `dnShift p (M - w) i q c (fun b => M - lam2 (Fin.rev b)) fun b => by`. Use `hb (Fin.rev b)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem dnLastIndep : DnLastIndep := by
   intro p w i q M M' lam2 hwM hb hMM
   obtain ⟨c, rfl⟩ := Nat.exists_eq_add_of_le hMM
@@ -172,6 +247,11 @@ theorem dnLastIndep : DnLastIndep := by
     have := hb (Fin.rev b)
     omega
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `MvPolynomial.support_nonempty.mpr hne`. Establish `hdom` using `dualWeylDominanceZ r r ν le_rfl hν x hx.1 d hd`. Establish `hwt : Finsupp.weight (rowW r r) d = μ` using `hx.2 (MvPolynomial.mem_support_iff.mp hd)`. Establish `h1 : ∀ a, rowDeg d a = μ a` using `fun a => by rw [← ldrow_weight_rowW, hwt]`. Establish `h2 : ∀ a : Fin r, rowNu (r` using `r) ν a = ν a := fun a => by`.
+
+Unfold `rowNu`. Rewrite using `[dif_pos a.isLt]`. Simplify using `only [h1, h2] at hdom`. Conclude with `hdom`.
+-/
 theorem dominance_of_nabla_weight (r : ℕ) (ν μ : Fin r → ℕ) (hν : Antitone ν) (x : MvPolynomial (Fin r × Fin r) ℤ)
     (hx : x ∈ nablaWt r ν μ) (hne : x ≠ 0) :
     (∀ k : ℕ, (∑ a : Fin r with a.val < k, μ a) ≤ ∑ a : Fin r with a.val < k, ν a) ∧ ∑ a, μ a = ∑ a, ν a := by
@@ -185,6 +265,11 @@ theorem dominance_of_nabla_weight (r : ℕ) (ν μ : Fin r → ℕ) (hν : Antit
   simp only [h1, h2] at hdom
   exact hdom
 
+/- English proof (translation)
+Introduce `x hx`. Distinguish the cases in `h0 : x = 0`. Use `⟨1, (Nat.prime_iff_prime_int.mp hl).not_dvd_one, ?_⟩` and prove the remaining obligations. Rewrite using `[h0, smul_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Conclude with `H x hx h0 x hx`.
+-/
 theorem exp_le_of_nonzero_weight_vectors (l r : ℕ) (ν μ : Fin r → ℕ) (e : ℕ) (hl : l.Prime)
     (H : ∀ x ∈ nablaWt r ν μ, x ≠ 0 → ExpLe l r ν μ e) : ExpLe l r ν μ e := by
   intro x hx
@@ -194,6 +279,15 @@ theorem exp_le_of_nonzero_weight_vectors (l r : ℕ) (ν μ : Fin r → ℕ) (e 
     exact Submodule.zero_mem _
   · exact H x hx h0 x hx
 
+/- English proof (translation)
+Introduce `a b`. Unfold `blockWtLast`. Apply the tactic sequence `refine Fin.addCases (fun a' => ?_) (fun a' => ?_) a <;>`. Apply the tactic sequence `refine Fin.addCases (fun b' => ?_) (fun b' => ?_) b <;> intro hab`. Rewrite using `[Fin.append_left, Fin.append_left]`.
+
+Use `ha ?_` and prove the remaining obligations. Establish `h1 : (Fin.castAdd p a').val ≤ (Fin.castAdd p b').val` using `hab`. Simplify using `only [Fin.val_castAdd] at h1`. Conclude with `Fin.le_def.mpr h1`. Rewrite using `[Fin.append_left, Fin.append_right]`.
+
+Conclude with `hb a'`. It suffices to derive a contradiction. Establish `h1 : (Fin.natAdd q a').val ≤ (Fin.castAdd p b').val` using `hab`. Establish `h2` using `b'.isLt`. Simplify using `only [Fin.val_natAdd, Fin.val_castAdd] at h1`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.append_right, Fin.append_right]`.
+-/
 theorem block_weight_last_antitone (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : ∀ b, w ≤ lam2 b) :
     Antitone (blockWtLast p q w lam2) := by
   intro a b
@@ -214,11 +308,19 @@ theorem block_weight_last_antitone (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : An
     omega
   · rw [Fin.append_right, Fin.append_right]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Fin.sum_univ_add]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_lt_q_eq_sum_cast_add (p q : ℕ) (f : Fin (q + p) → ℕ) :
     (∑ a : Fin (q + p) with a.val < q, f a) = ∑ b : Fin q, f (Fin.castAdd p b) := by
   rw [Finset.sum_filter, Fin.sum_univ_add]
   simp
 
+/- English proof (translation)
+Take `⟨hdom, htot⟩` from `dominance_of_nabla_weight _ _ μ (block_weight_last_antitone p q w lam2 ha hb) x hx hne`. Establish `h1` using `hdom q`. Rewrite `h1` using `[sum_lt_q_eq_sum_cast_add, sum_lt_q_eq_sum_cast_add]`. Establish `h2 : ∀ b : Fin q, blockWtLast p q w lam2 (Fin.castAdd p b) = lam2 b` using `fun b => Fin.append_left _ _ b`. Simplify using `only [h2] at h1`.
+
+Use `⟨∑ b, lam2 b - ∑ b : Fin q, μ (Fin.castAdd p b), ?_⟩` and prove the remaining obligations. Establish `hiff` using `depthLastIff p q w (∑ b, lam2 b - ∑ b : Fin q, μ (Fin.castAdd p b)) lam2 μ htot`. Establish `h3 : depth2 (fun a : Fin (q + p) => if a.val < q then 1 else 0) (blockWtLast p q w lam2) μ = ((∑ b, lam2 b - ∑ b : Fin q, μ (Fin.castAdd p b) : ℕ) : ℤ)`. Rewrite using `[depth_two_block_eq_sum_diff, Nat.cast_sub h1]`. Conclude with `⟨hiff.mpr h3, h3⟩`.
+-/
 theorem depth_exists_last_block (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : ∀ b, w ≤ lam2 b)
     (μ : Fin (q + p) → ℕ) (x : MvPolynomial (Fin (q + p) × Fin (q + p)) ℤ)
     (hx : x ∈ nablaWt (q + p) (blockWtLast p q w lam2) μ) (hne : x ≠ 0) :
@@ -236,6 +338,15 @@ theorem depth_exists_last_block (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antit
     rw [depth_two_block_eq_sum_diff, Nat.cast_sub h1]
   exact ⟨hiff.mpr h3, h3⟩
 
+/- English proof (translation)
+Introduce `hD l q w M lam2 ξ hl ha hb hξ i' eL heL μ hμ`. Establish `hl1 : 0 < l - 1` using `by have := hl.two_le; omega`. Use `exp_le_of_nonzero_weight_vectors l _ _ μ _ hl fun x hx hne => ?_` and prove the remaining obligations. Take `⟨i, hd, _⟩` from `depth_exists_last_block 1 q w lam2 ha (fun b => (hb b).1) μ x hx hne`. Establish `h1` using `hD l q w M lam2 ξ hl ha hb hξ i' eL heL i μ hd hμ`.
+
+Use `expLeMono l _ _ μ _ _ ?_ h1` and prove the remaining obligations. Use `Nat.add_le_add_left ?_ eL` and prove the remaining obligations. Use `(Nat.le_div_iff_mul_le hl1).mpr ?_` and prove the remaining obligations. Establish `h2` using `dnVal l 1 (M - w) i q 0 (fun b : Fin q => M - lam2 (Fin.rev b)) hl fun b => by`. Use `hb (Fin.rev b)` as an intermediate fact.
+
+Conclude with `⟨Nat.zero_le _, by omega⟩`. Rewrite `h2` using `[one_mul]`. Rewrite using `[mul_comm]`. Use `le_trans h2 ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos q with hq | hq` into its components or cases.
+
+Use linear arithmetic over natural numbers and integers. Use `hb ⟨0, hq⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem peelBoundLast : PeelBoundLast := by
   intro hD l q w M lam2 ξ hl ha hb hξ i' eL heL μ hμ
   have hl1 : 0 < l - 1 := by have := hl.two_le; omega
@@ -256,10 +367,26 @@ theorem peelBoundLast : PeelBoundLast := by
   · have := hb ⟨0, hq⟩
     omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Apply the tactic sequence `fin_cases a <;> rfl`.
+-/
 theorem block_weight_last_one_one (w y : ℕ) : blockWtLast 1 1 w (fun _ : Fin 1 => y) = wt2 y w := by
   funext a
   fin_cases a <;> rfl
 
+/- English proof (translation)
+Introduce `l w y M ξ hl hwy hyM _ i' e _ i μ hd _`. Establish `hd' : μ 1 = w + i` using `by simpa [IsDepthLast] using hd`. Rewrite using `[block_weight_last_one_one]`. Use `show ExpLe l 2 (wt2 y w) μ (e + padicValInt l (Dn 1 (M - w) i fun _ : Fin 1 => M - y))`. Rewrite using `[expLeIffKilled l 2 _ μ e _ hl (dnNeZero 1 (M - w) i 1 _)]`.
+
+Introduce `x hx`. Use `⟨1, (Nat.prime_iff_prime_int.mp hl).not_dvd_one, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hex : ∃ j, w + j ≤ y ∧ μ = wt2 (y - j) (w + j)`. Take `⟨j, hj, rfl⟩` from `hex`. Establish `hd'' : w + j = w + i` using `hd'`.
+
+Establish `hij : j = i` using `by omega`. Substitute `hij` using the available equality. Rewrite `hx` using `[(rank2Exact y w j hj).1]`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hx`. Rewrite using `[dn2 1 (M - w) (M - y) j le_rfl (by omega), smul_smul]`.
+
+Establish `hyw : M - w - (M - y) = y - w` using `by omega`. Rewrite using `[hyw]`. Establish `: (1 * ((l : ℤ) ^ e * ((j.factorial * (y - w).choose j : ℕ) : ℤ)) * c) = ((l : ℤ) ^ e * (j.factorial : ℤ) * c) * ((y - w).choose j : ℤ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (ld_gen_mem_weyl y w j)`. Establish `hbot` using `rank2Other y w μ hwy (fun j hj hμ => hex ⟨j, hj, hμ⟩)`. Rewrite `hx` using `[hbot]`. Rewrite using `[(Submodule.mem_bot ℤ).mp hx, smul_zero]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem lemmaDLastGraded_rank2 : LemmaDLastGraded_rank2 := by
   intro l w y M ξ hl hwy hyM _ i' e _ i μ hd _
   have hd' : μ 1 = w + i := by simpa [IsDepthLast] using hd
@@ -289,6 +416,11 @@ theorem lemmaDLastGraded_rank2 : LemmaDLastGraded_rank2 := by
     rw [(Submodule.mem_bot ℤ).mp hx, smul_zero]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Unfold `blockWtLast`. Use `Fin.addCases (fun b => ?_) (fun b => ?_) a` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Both sides reduce to the same expression.
+
+Rewrite using `[Fin.append_right] show lam (Fin.natAdd n b).val = lam n`. Rewrite using `[Fin.val_natAdd]`. Conclude with `hc _ (Nat.le_add_right _ _) (Nat.add_lt_add_left b.isLt n)`.
+-/
 theorem restriction_eq_block_weight (n t : ℕ) (lam : ℕ → ℕ) (hc : ∀ a, n ≤ a → a < n + t → lam a = lam n) :
     res (n + t) lam = blockWtLast t n (lam n) (res n lam) := by
   funext a
@@ -301,9 +433,17 @@ theorem restriction_eq_block_weight (n t : ℕ) (lam : ℕ → ℕ) (hc : ∀ a,
     rw [Fin.val_natAdd]
     exact hc _ (Nat.le_add_right _ _) (Nat.add_lt_add_left b.isLt n)
 
+/- English proof (translation)
+Introduce `a b hab` and use `ha a.val b.val hab b.isLt`.
+-/
 theorem restriction_antitone (n : ℕ) (lam : ℕ → ℕ) (ha : ∀ a b, a ≤ b → b < n → lam b ≤ lam a) : Antitone (res n lam) :=
   fun a b hab => ha a.val b.val hab b.isLt
 
+/- English proof (translation)
+Introduce `μ hμ`. Establish `hres` using `restriction_eq_block_weight n 1 lam (fun a h1 h2 => by`. Establish `: a = n` using `by omega`. Rewrite using `[this])`. Rewrite `hμ`, the goal using `[hres]`.
+
+Use `peelBoundLast hD l n (lam n) (lam 0) (res n lam) (res (n + 1) ξ) hl (restriction_antitone n lam fun a b hab hb => ha a b hab (by omega)) (fun b => ⟨ha b.val n (le_of_lt b.isLt) (by omega), ha 0 b.val (Nat.zero_le _) (by have := b.isLt; omega)⟩) (fun a b hab => hξ hab) I e (fun μ2 …` and prove the remaining obligations. Rewrite `h2` using `[depth2Levi]`. Conclude with `h2`.
+-/
 theorem exponent_bound_peel_one_row (hD : BranchingBoundLastGradedOneRow) (l n : ℕ) (lam : ℕ → ℕ) (ξ : ℕ → ℤ) (hl : l.Prime)
     (ha : ∀ a b, a ≤ b → b < n + 1 → lam b ≤ lam a) (hξ : Antitone ξ) (I : ℤ) (e : ℕ)
     (hE : ExpUpTo l n lam ξ I e) : ExpUpTo l (n + 1) lam ξ I (e + (lam 0 + n - lam n - 1) / (l - 1)) := by
@@ -319,6 +459,15 @@ theorem exponent_bound_peel_one_row (hD : BranchingBoundLastGradedOneRow) (l n :
   rw [depth2Levi] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `hD l n s h lam ξ hl ha hh hξ I e hE`. Proceed by induction on `s with`. Consider the case `zero => simpa using hE`. Consider the case `succ s ih`. Establish `ih'` using `ih (fun a b hab hb => ha a b hab (by omega)) (by`.
+
+Use `ha (n + s - 1) (n + s) (by omega) (by omega)` as an intermediate fact. Establish `e1 : n + (s + 1) - 1 = n + s` using `by omega`. Rewrite `hh` using `[e1]`. Use the proof step `omega)`. Establish `h1` using `exponent_bound_peel_one_row hD l (n + s) lam ξ hl (fun a b hab hb => ha a b hab (by omega)) hξ I _ ih'`.
+
+Introduce `μ hμ`. Use `expLeMono l _ _ μ _ _ ?_ (h1 μ hμ)` and prove the remaining obligations. Establish `e1 : n + (s + 1) - 1 = n + s` using `by omega`. Rewrite `hh` using `[e1]`. Establish `h2 : (lam 0 + (n + s) - lam (n + s) - 1) / (l - 1) ≤ (h - 1) / (l - 1)` using `Nat.div_le_div_right (by omega)`.
+
+Rewrite using `[Nat.succ_mul]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem peelRows : PeelRows := by
   intro hD l n s h lam ξ hl ha hh hξ I e hE
   induction s with
@@ -339,6 +488,13 @@ theorem peelRows : PeelRows := by
     rw [Nat.succ_mul]
     omega
 
+/- English proof (translation)
+Introduce `hD l n t lam hl ht ha hc eL heL I μ hμ`. Establish `hres` using `restriction_eq_block_weight n t lam hc`. Establish `hanti : Antitone (res n lam)` using `restriction_antitone n lam fun a b hab hb => ha a b hab (by omega)`. Establish `hb : ∀ b : Fin n, lam n ≤ res n lam b ∧ res n lam b ≤ lam 0` using `fun b => ⟨ha b.val n (le_of_lt b.isLt) (by omega), ha 0 b.val (Nat.zero_le _) (by have := b.isLt; omega)⟩`. Rewrite `hμ`, the goal using `[hres]`.
+
+Use `exp_le_of_nonzero_weight_vectors l _ _ μ _ hl fun x hx hne => ?_` and prove the remaining obligations. Take `⟨i, hd, hi⟩` from `depth_exists_last_block t n (lam n) (res n lam) hanti (fun b => (hb b).1) μ x hx hne`. Establish `hμ' : depth2 (fun a : Fin (n + t) => if a.val < n then 1 else 0) (blockWtLast t n (lam n) (res n lam)) μ ≤ (I : ℤ)` using `hμ`. Rewrite `hμ'` using `[hi]`. Establish `hiI : i ≤ I` using `by exact_mod_cast hμ'`.
+
+Establish `h1` using `hD l t n (lam n) (lam 0) (res n lam) hl hanti hb eL heL i μ hd`. Use `expLeMono l _ _ μ _ _ (Nat.add_le_add_left ?_ eL) h1` and prove the remaining obligations. Unfold `blockCost`. Conclude with `Finset.le_sup (f := fun i => padicValInt l (Dn t (lam 0 - lam n) i fun b : Fin n => lam 0 - res n lam (Fin.rev b))) (Finset.mem_range.mpr (by omega))`.
+-/
 theorem blockStep : BlockStep := by
   intro hD l n t lam hl ht ha hc eL heL I μ hμ
   have hres := restriction_eq_block_weight n t lam hc
@@ -358,11 +514,21 @@ theorem blockStep : BlockStep := by
   exact Finset.le_sup (f := fun i => padicValInt l (Dn t (lam 0 - lam n) i fun b : Fin n => lam 0 - res n lam (Fin.rev b)))
     (Finset.mem_range.mpr (by omega))
 
+/- English proof (translation)
+Introduce `a b hab`. Unfold `varpi`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem varpi_antitone (c : ℕ) : Antitone (varpi c) := by
   intro a b hab
   unfold varpi
   split_ifs <;> omega
 
+/- English proof (translation)
+Introduce `hD l k j t q h lam hl ht ha hc hh ecl hecl I`. Establish `hP1` using `last_graded_implies_one_block' hD`. Establish `hLast` using `lastGradedImpliesLast hD`. Establish `s3` using `peelRows hP1 l k j h lam (fun _ => 0) hl (fun a b hab hb => ha a b hab (by omega)) (by`. Use `ha (k + j - 1) (k + j + t + q - 1) (by omega) (by omega)` as an intermediate fact.
+
+Use the proof step `omega) (fun _ _ _ => le_rfl) 0 ecl (fun μ _ => hecl μ)`. Establish `s3' : ∀ μ2 : Fin (k + j) → ℕ, ExpLe l (k + j) (res (k + j) lam) μ2 (ecl + j * ((h - 1) / (l - 1)))` using `fun μ2 => s3 μ2 (by simp [depth2, res])`. Establish `s2` using `blockStep hLast l (k + j) t lam hl ht (fun a b hab hb => ha a b hab (by omega)) hc _ s3' I`. Establish `s1` using `peelRows hP1 l (k + j + t) q h lam (varpi (k + j)) hl ha hh (varpi_antitone _) I _ s2`. Establish `e : q * ((h - 1) / (l - 1)) + blockCost l (k + j) t I lam + j * ((h - 1) / (l - 1)) + ecl = ecl + j * ((h - 1) / (l - 1)) + blockCost l (k + j) t I lam + q * ((h - 1) / (l - 1))` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `s1`.
+-/
 theorem applicationSteps : ApplicationSteps := by
   intro hD l k j t q h lam hl ht ha hc hh ecl hecl I
   have hP1 := last_graded_implies_one_block' hD
@@ -379,17 +545,53 @@ theorem applicationSteps : ApplicationSteps := by
   rw [e]
   exact s1
 
+/- English proof (translation)
+The claim follows from `lastGradedImpliesLast`.
+-/
 theorem last_graded_implies_last : LastGradedImpliesLast := lastGradedImpliesLast
+/- English proof (translation)
+The claim follows from `last_graded_implies_one_block'`.
+-/
 theorem last_graded_implies_one_block : OneRowBoundOfLastGraded := last_graded_implies_one_block'
+/- English proof (translation)
+The claim follows from `depth2Levi`.
+-/
 theorem depth_two_levi : Depth2Levi := depth2Levi
+/- English proof (translation)
+The claim follows from `depthLastIff`.
+-/
 theorem depth_last_iff : DepthLastIff := depthLastIff
+/- English proof (translation)
+The claim follows from `depth2Dual`.
+-/
 theorem depth_two_duality : Depth2Dual := depth2Dual
+/- English proof (translation)
+The claim follows from `dnShift`.
+-/
 theorem d_n_shift : DnShift := dnShift
+/- English proof (translation)
+The claim follows from `dnLastIndep`.
+-/
 theorem d_n_last_independent : DnLastIndep := dnLastIndep
+/- English proof (translation)
+The claim follows from `lemmaDLastGraded_rank2`.
+-/
 theorem lemma_d_last_graded_rank_two : LemmaDLastGraded_rank2 := lemmaDLastGraded_rank2
+/- English proof (translation)
+The claim follows from `peelBoundLast`.
+-/
 theorem peel_bound_last : PeelBoundLast := peelBoundLast
+/- English proof (translation)
+The claim follows from `peelRows`.
+-/
 theorem peel_rows : PeelRows := peelRows
+/- English proof (translation)
+The claim follows from `blockStep`.
+-/
 theorem block_induction' : BlockStep := blockStep
+/- English proof (translation)
+The claim follows from `applicationSteps`.
+-/
 theorem application_steps : ApplicationSteps := applicationSteps
 
 end Formalism.CohomologicalDescent.LD

@@ -12,12 +12,20 @@ set_option autoImplicit false
 
 namespace GlobalTheory.LBObs
 
+/- English proof (translation)
+Establish `h` using `Ideal.mul_mem_mul hx hx'`. Rewrite `h` using `[← Ideal.map_mul, ← pow_two, hI, Ideal.zero_eq_bot, Ideal.map_bot]`. Conclude with `(Submodule.mem_bot _).1 h`.
+-/
 theorem mul_eq_zero_of_mem_map {R B : Type} [CommRing R] [CommRing B] [Algebra R B] {I : Ideal R} (hI : I ^ 2 = 0)
     {x x' : B} (hx : x ∈ I.map (algebraMap R B)) (hx' : x' ∈ I.map (algebraMap R B)) : x * x' = 0 := by
   have h := Ideal.mul_mem_mul hx hx'
   rw [← Ideal.map_mul, ← pow_two, hI, Ideal.zero_eq_bot, Ideal.map_bot] at h
   exact (Submodule.mem_bot _).1 h
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r b₀`. Take `⟨b, rfl⟩` from `hp b₀`. Rewrite using `[hσ, hσ']`.
+
+Consider the case `add x x' hx hx' => rw [map_add, map_add, hx, hx']`.
+-/
 theorem isSig_unique {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {π : R →+* R₀} {R₁ : Type} [CommRing R₁]
     [Algebra R₀ R₁] (α : Aug I π R₁) {B B₀ : Type} [CommRing B] [Algebra R B] [CommRing B₀] [Algebra R₀ B₀]
     (p : B →+* B₀) (hp : Function.Surjective p) (σ σ' : R₁ ⊗[R₀] B₀ →+ B) (hσ : α.IsSig p σ) (hσ' : α.IsSig p σ')
@@ -29,6 +37,31 @@ theorem isSig_unique {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} 
     rw [hσ, hσ']
   | add x x' hx hx' => rw [map_add, map_add, hx, hx']
 
+/- English proof (translation)
+Introduce `R R₀ _ _ I hI π hπ hk R₁ _ _ α C _ F L u c c' h h'`. Take `⟨v, σ, z, hv, hσ, rfl, hz⟩` from `h`. Take `⟨v', σ', z', hv', hσ', rfl, hz'⟩` from `h'`. Establish `hσσ : ∀ T y, σ' T y = σ T y` using `fun T y ↦ isSig_unique α (L.p T) (L.surj T) (σ T) (σ' T) (hσ T) (hσ' T) y`. Establish `hy : ∀ (T T' : C) (a : T ⟶ T'), ∃ y : R₁ ⊗[R₀] F.obj T', α.KerQ y ∧ σ T' y = (v' T T' a : L.B T') * ((v T T' a)⁻¹ : (L.B T')ˣ) - 1`.
+
+Introduce `T T' a`. Use `(sig_basic R R₀ I hI π hπ hk R₁ α (L.B T') (F.obj T') (L.p T') (L.semi T') (L.surj T') (L.ker T') (σ T') (hσ T')).2.2.2 _ ((L.ker T' _).1 ?_)` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, hv', ← hv, ← map_mul, Units.mul_inv, map_one, sub_self]`. Use `choose y hyK hyσ using hy`. Rewrite using `[H2.mk_eq_mk]`.
+
+Use `⟨fun T T' a ↦ -y T T' a, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' a b`. Use `haveI := L.smooth T''`. Use `haveI : Module.Flat R (L.B T'') := Algebra.Smooth.flat R _`. Establish `nat` using `sig_natural R R₀ I hI π hπ hk R₁ α (L.B T') (F.obj T') (L.p T') (L.semi T') (L.surj T') (L.ker T') (L.B T'') (F.obj T'') (L.p T'') (L.semi T'') (L.surj T'') (L.ker T'') (L.ρ b) (mp F b) (L.nat b) (σ T') (σ T'') (hσ T') (hσ T'')`.
+
+Establish `bas` using `sig_basic R R₀ I hI π hπ hk R₁ α (L.B T'') (F.obj T'') (L.p T'') (L.semi T'') (L.surj T'') (L.ker T'') (σ T'') (hσ T'')`. Establish `em : ∀ x, mp (ext R₁ F) b x = extHom R₁ (mp F b) x` using `fun _ ↦ rfl`. Simplify using `only [d1_apply, Pi.sub_apply, map_neg, em]`. Rewrite using `[← sub_eq_zero]`. Apply `sig_inj_of_flat R R₀ I hI π hπ hk R₁ α (L.B T'') (F.obj T'') (L.p T'') (L.semi T'') (L.surj T'') (L.ker T'') (σ T'') (hσ T'')` to reduce the goal to its premises.
+
+Establish `k1` using `nat.2 _ (hyK T T' a)`. Establish `k2` using `hyK T T'' (a ≫ b)`. Establish `k3` using `hyK T' T'' b`. Establish `k4` using `(hz T T' T'' a b).1`. Establish `k5` using `(hz' T T' T'' a b).1`.
+
+Unfold `Aug.KerQ at k1 k2 k3 k4 k5 ⊢`. Simplify using `only [map_sub, map_add, map_neg, k1, k2, k3, k4, k5]`. Simplify using the standard rewrite rules. Establish `e1` using `(hz T T' T'' a b).2`. Establish `e2` using `(hz' T T' T'' a b).2`.
+
+Rewrite `e2` using `[hσσ]`. Use `set P := σ T'' (extHom R₁ (mp F b) (y T T' a)) with hP`. Use `set Q := σ T'' (y T' T'' b) with hQ`. Use `set Y := σ T'' (y T T'' (a ≫ b)) with hY`. Use `set Z := σ T'' (z.1 T T' T'' a b) with hZ`.
+
+Use `set Z' := σ T'' (z'.1 T T' T'' a b) with hZ'`. Establish `va : (v' T T' a : L.B T') = (1 + σ T' (y T T' a)) * (v T T' a : L.B T')`. Rewrite using `[hyσ, add_sub_cancel, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]`. Establish `vb : (v' T' T'' b : L.B T'') = (1 + Q) * (v T' T'' b : L.B T'')`. Rewrite using `[hQ, hyσ, add_sub_cancel, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]`.
+
+Establish `vab : (v' T T'' (a ≫ b) : L.B T'') = (1 + Y) * (v T T'' (a ≫ b) : L.B T'')`. Rewrite using `[hY, hyσ, add_sub_cancel, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]`. Rewrite `e2` using `[va, vb, vab, map_mul, map_add, map_one, nat.1]`. Rewrite `e2` using `[← hP]`. Establish `mem : ∀ x, σ T'' x ∈ I.map (algebraMap R (L.B T''))` using `bas.1`.
+
+Establish `sq : ∀ x x', σ T'' x * σ T'' x' = 0` using `fun x x' ↦ mul_eq_zero_of_mem_map hI (mem x) (mem x')`. Establish `hPQ : P * Q = 0` using `sq _ _`. Establish `hPZ : P * Z = 0` using `sq _ _`. Establish `hQZ : Q * Z = 0` using `sq _ _`. Establish `hZY : Z' * Y = 0` using `sq _ _`.
+
+Establish `hV : (v T T'' (a ≫ b) : L.B T'') * ((v T T'' (a ≫ b))⁻¹ : (L.B T'')ˣ) = 1` using `Units.mul_inv _`. Simplify using `only [map_sub, map_add, map_neg]`. Rewrite using `[← hP, ← hQ, ← hY, ← hZ, ← hZ']`. Establish `E : (1 + P) * (1 + Q) * (1 + Z) * (v T T'' (a ≫ b) : L.B T'') = (1 + Z') * (1 + Y) * (v T T'' (a ≫ b) : L.B T'')`. Take the linear combination `e2 - (1 + P) * (1 + Q) * e1`.
+
+Take the linear combination `-(((v T T'' (a ≫ b))⁻¹ : (L.B T'')ˣ) : L.B T'') * E + ((1 + P) * (1 + Q) * (1 + Z) - (1 + Z') * (1 + Y)) * hV + (1 + Z) * hPQ + hPZ + hQZ - hZY`.
+-/
 theorem isObU_unique : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (R₁ : Type) [CommRing R₁] [Algebra R₀ R₁] (α : Aug I π R₁) (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R₀) (L : Pre I π F) (u : ∀ (T T' : C) (_ : T ⟶ T'), (F.obj T')ˣ) (c c' : GlobalTheory.CatCoh.H2 (ext R₁ F)), IsObU L α u c → IsObU L α u c' → c = c' := by
   intro R R₀ _ _ I hI π hπ hk R₁ _ _ α C _ F L u c c' h h'
   obtain ⟨v, σ, z, hv, hσ, rfl, hz⟩ := h

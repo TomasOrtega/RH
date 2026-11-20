@@ -7,5 +7,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots GlobalTheory.Tr
 open GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups (mapH diagH)
 open scoped TensorProduct ComplexConjugate Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TrEllSum.ellipticPart | exact GlobalTheory.TrEllSum.ellipticPart | (intros; apply GlobalTheory.TrEllSum.ellipticPart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.elliptic_part : GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.EllipticPart := by
   first | exact @GlobalTheory.TrEllSum.ellipticPart | exact GlobalTheory.TrEllSum.ellipticPart | (intros; apply GlobalTheory.TrEllSum.ellipticPart <;> assumption)

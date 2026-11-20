@@ -21,12 +21,18 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.HodgeLocGeo.RootModel
 
 open GlobalTheory.GradedNorm in
+/- English proof (translation)
+Establish `e (k : Fin (m + 1)) : ReciprocityTheory.ChartRestriction.G.FD.lminor Mᵀ k = ReciprocityTheory.ChartRestriction.G.FD.lminor M k`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.lminor`. Rewrite using `[← transpose_submatrix, det_transpose]`. Rewrite using `[grSq, grSq, e, e]`.
+-/
 theorem grSq_transpose' {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (i : Fin m) : grSq Mᵀ i = grSq M i := by
   have e (k : Fin (m + 1)) : ReciprocityTheory.ChartRestriction.G.FD.lminor Mᵀ k = ReciprocityTheory.ChartRestriction.G.FD.lminor M k := by
     unfold ReciprocityTheory.ChartRestriction.G.FD.lminor
     rw [← transpose_submatrix, det_transpose]
   rw [grSq, grSq, e, e]
 
+/- English proof (translation)
+Establish `e : (Bᴴ)ᵀ = (Bᵀ)ᴴ` using `by ext; simp`. Rewrite using `[transpose_mul, transpose_mul, h, conjTranspose_mul, e]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`.
+-/
 theorem conj_gram_transpose {m n : ℕ} (c : ℝ) (B : Matrix (Fin m) (Fin m) ℂ) (Gm : Matrix (Fin m) (Fin n) ℂ)
     (P : Matrix (Fin n) (Fin n) ℂ) (Gr : Matrix (Fin m) (Fin m) ℂ) (h : Grᵀ = (c : ℂ) • (Gm * P * Gmᴴ)) :
     (Bᴴ * Gr * B)ᵀ = (c : ℂ) • ((Bᵀ * Gm) * P * (Bᵀ * Gm)ᴴ) := by
@@ -35,6 +41,9 @@ theorem conj_gram_transpose {m n : ℕ} (c : ℝ) (B : Matrix (Fin m) (Fin m) �
   simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]
 
 open GlobalTheory.GradedNorm in
+/- English proof (translation)
+Substitute `hm hp hq` using the available equality. Rewrite using `[← grSq_transpose', conj_gram_transpose c B Gm _ Gr h]`. Simplify using `[wLine]`.
+-/
 theorem grSq_wLine_of {m p q p' q' : ℕ} (hm : m = p) (hp : p = p') (hq : q = q') (c : ℝ)
     (B Gm Gr : Matrix (Fin m) (Fin m) ℂ) (zz : Matrix (Fin p) (Fin q) ℂ)
     (h : Grᵀ = (c : ℂ) • (Gm * reindex (finCongr hm.symm) (finCongr hm.symm)
@@ -46,6 +55,9 @@ theorem grSq_wLine_of {m p q p' q' : ℕ} (hm : m = p) (hp : p = p') (hq : q = q
   simp [wLine]
 
 open GlobalTheory.GradedNorm in
+/- English proof (translation)
+Substitute `hm hp hq` using the available equality. Rewrite using `[← grSq_transpose', conj_gram_transpose c B Gm _ Gr h]`. Simplify using `[oLine]`.
+-/
 theorem grSq_oLine_of {m p q p' q' : ℕ} (hm : m = q) (hp : p = p') (hq : q = q') (c : ℝ)
     (B Gm Gr : Matrix (Fin m) (Fin m) ℂ) (zz : Matrix (Fin p) (Fin q) ℂ)
     (h : Grᵀ = (c : ℂ) • (Gm * reindex (finCongr hm.symm) (finCongr hm.symm) (1 - zzᴴ * zz)⁻¹ * Gmᴴ)) (i : Fin m) :
@@ -56,6 +68,41 @@ theorem grSq_oLine_of {m p q p' q' : ℕ} (hm : m = q) (hp : p = p') (hq : q = q
   simp [oLine]
 
 open GlobalTheory.GradedNorm in
+/- English proof (translation)
+Introduce `D A N j S κ s x Φ k σ e c' p0 hp0 hbd`. Take `⟨U, t, V, φ, Fr, Am, hU, hφ, hV, ht, hev⟩` from `GlobalTheory.T.algebraic_chart_affine_neighbourhood _ _ _ _ _ _ _ _ _ _ _ (Φ.C k) σ e c' p0 hp0`. Take `⟨G, z, cc, hcc, hmod⟩` from `(em (Formalism.L2.PjFree.GoodEmb κ.c (embOf κ.e σ))).elim (fun hg => GlobalTheory.T.eigen_frame_chart_off_boundary D A N j S κ s x Φ k σ hg e c' p0 hp0 hbd V φ Fr hφ hV) (fun hg => GlobalTheory.T.eigen_frame_chart_off_boundary_second D A N j S κ s x Φ k σ hg e c' p0 hp0 hbd V φ F …`. Establish `hp : S.Dw.p = j` using `S.p_eq`. Establish `hq : S.Dw.q = N - j` using `by have := S.rank_eq; omega`.
+
+Establish `hin : ∀ r : D.what₂.Tau, DV.tauEmb D r (A.H.rt : D.host.E) = A.H.rt0` using `A.cm`. Establish `hout : ∀ r : D.what₂.Tau, ¬ conjEmb (DV.tauEmb D r) (A.H.rt : D.host.E) = A.H.rt0` using `GlobalTheory.FlagAmple.BorelWeil.conjEmb_tauEmb_rt A`. Establish `hmW : ∀ r : D.what₂.Tau, S.Dw.mult (DV.tauEmb D r) = S.Dw.p` using `fun r => GlobalTheory.PointChern.mult_of_mem S.Dw (hin r)`. Establish `hmO : ∀ r : D.what₂.Tau, S.Dw.mult (conjEmb (DV.tauEmb D r)) = S.Dw.q` using `fun r => GlobalTheory.PointChern.mult_of_not_mem S.Dw (hout r)`. Use `⟨t, U, fun r w => (z w ⟨DV.tauEmb D r, hin r⟩).submatrix (Fin.cast hp.symm) (Fin.cast hq.symm), fun r w => ((Am (DV.tauEmb D r) w)ᵀ * G w (DV.tauEmb D r)).submatrix (Fin.cast ((hmW r).trans hp).symm) (Fin.cast ((hmW r).trans hp).symm), fun r w => ((Am (conjEmb (DV.tauEmb D r)) w) …` and prove the remaining obligations.
+
+Use `filter_upwards [hev, hmod] with v hv1 hv2`. Take `⟨hAm, hv, g, f, had, hmap, hco⟩` from `hv1`. Take `⟨hG, hz, hGu, hzd, hv', hgr⟩` from `hv2`. Establish `hunit : ∀ τ, IsUnit (Am τ v).det` using `fun τ => hco τ ▸ EigFrame.isUnit_det_co f g τ`. Use `⟨fun r a b => hz _ _ _, fun r a b => ?_, fun r a b => ?_, fun r => ?_, fun r => ?_, fun r => ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.HodgeGramGen.an_mul (A := fun w => (Am (DV.tauEmb D r) w)ᵀ) (fun i k => hAm _ k i) (fun i k => hG _ i k) _ _`. Conclude with `GlobalTheory.HodgeGramGen.an_mul (A := fun w => (Am (conjEmb (DV.tauEmb D r)) w)ᵀ) (fun i k => hAm _ k i) (fun i k => hG _ i k) _ _`. Establish `e : (1 - ((z v ⟨DV.tauEmb D r, hin r⟩).submatrix (Fin.cast hp.symm) (Fin.cast hq.symm))ᴴ * (z v ⟨DV.tauEmb D r, hin r⟩).submatrix (Fin.cast hp.symm) (Fin.cast hq.symm)) = (1 - (z v ⟨DV.tauEmb D r, hin r⟩)ᴴ * z v ⟨DV.tauEmb D r, hin r⟩).submatrix (finCongr hq.symm) (finCongr hq.sy …`. Use extensionality with `a b`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, conjTranspose_apply, submatrix_apply, one_apply, finCongr_apply]`.
+
+Use `congr 1`. Simplify using `[Fin.ext_iff]`. Conclude with `Fintype.sum_equiv (finCongr hp.symm) _ _ fun _ => rfl`. Rewrite using `[e]`. Conclude with `(hzd _).submatrix (finCongr hq.symm).injective`.
+
+Rewrite using `[show (Fin.cast ((hmW r).trans hp).symm : Fin j → Fin (S.Dw.mult (DV.tauEmb D r))) = ⇑(finCongr ((hmW r).trans hp).symm) from rfl, det_submatrix_equiv_self, det_mul, det_transpose]`. Conclude with `(hunit _).mul (hGu _)`. Rewrite using `[show (Fin.cast ((hmO r).trans hq).symm : Fin (N - j) → Fin (S.Dw.mult (conjEmb (DV.tauEmb D r)))) = ⇑(finCongr ((hmO r).trans hq).symm) from rfl, det_submatrix_equiv_self, det_mul, det_transpose]`. Conclude with `(hunit _).mul (hGu _)`. Introduce and unpack `⟨τr, i⟩`.
+
+Establish `hgram : ∀ τ, (x.hodge (embOf κ.e σ)).gram ((Φ.C k).down (c'.finChart.symm v)) g τ = (Am τ v)ᴴ * (x.hodge (embOf κ.e σ)).gram ((Φ.C k).down (c'.finChart.symm v)) f τ * Am τ v` using `fun τ => by`. Rewrite using `[(x.hodge (embOf κ.e σ)).change _ f g τ, hco τ]`. Use `show ((Φ.C k).met (x.hodge (embOf κ.e σ)) _).h _ _ = _`. Rewrite using `[FlagCpt.met_h _ _ had]`. Simplify using `only [prodPow, Pi.one_apply, _root_.one_zpow, Finset.prod_const_one, Units.val_one, norm_one, one_pow, div_one]`.
+
+Rewrite using `[FlagCpt.genSq, rootNorm]`. Use `set τ := DV.tauEmb D τr with hτ`. Use `split_ifs with hi`. Establish `hi' : (i : ℕ) < S.Dw.p` using `by omega`. Set `L : Letter S.Dw` to `⟨τ, ⟨i, by rw [hmW]; exact hi'⟩⟩`.
+
+Rewrite using `[Finset.prod_eq_single L ?_ (by simp)]`. Rewrite using `[GlobalTheory.FlagAmple.BorelWeil.rootEx_apply, if_pos hi', if_pos ⟨rfl, rfl⟩, zpow_one, hgram]`. Establish `hmg : GlobalTheory.PointChern.modelGram A.H S.Dw (z v) τ = reindex (finCongr (hmW τr).symm) (finCongr (hmW τr).symm) (1 - (z v ⟨τ, hin τr⟩).map (starRingEnd ℂ) * (z v ⟨τ, hin τr⟩)ᵀ)⁻¹`. Unfold `GlobalTheory.PointChern.modelGram`. Rewrite using `[dif_pos (show τ (A.H.rt : D.host.E) = A.H.rt0 from hin τr)]`.
+
+Establish `h` using `hgr f hmap τ`. Rewrite `h` using `[hmg]`. Conclude with `grSq_wLine_of (hmW τr) hp hq _ _ _ _ _ h L.2`. Introduce `b _ hb`. Rewrite using `[GlobalTheory.FlagAmple.BorelWeil.rootEx_apply, if_pos hi', if_neg, zpow_zero]`.
+
+Introduce and unpack `⟨h1, h2⟩`. Apply `hb` to reduce the goal to its premises. Take `⟨ρ, a⟩` from `b`. Take `rfl : τ = ρ` from `h1`. Conclude with `Sigma.ext rfl (heq_of_eq (Fin.ext h2.symm))`.
+
+Establish `hi' : ¬ (i : ℕ) < S.Dw.p` using `by omega`. Establish `hiN : (i : ℕ) < S.Dw.p + S.Dw.q` using `by have := S.rank_eq; have := i.isLt; omega`. Set `L : Letter S.Dw` to `⟨conjEmb τ, ⟨S.Dw.p + S.Dw.q - 1 - i, by rw [hmO]; omega⟩⟩`. Rewrite using `[Finset.prod_eq_single L ?_ (by simp)]`. Rewrite using `[GlobalTheory.FlagAmple.BorelWeil.rootEx_apply, if_neg hi', if_pos ⟨rfl, rfl⟩, _root_.zpow_neg_one, hgram]`.
+
+Establish `h' : conjEmb (conjEmb τ) (A.H.rt : D.host.E) = A.H.rt0`. Rewrite using `[show conjEmb (conjEmb τ) = τ from RingHom.ext fun a => Complex.conj_conj _]`. Conclude with `hin τr`. Establish `hψ : (⟨conjEmb (conjEmb τ), h'⟩ : GlobalTheory.AllWt.Psi A.H) = ⟨τ, hin τr⟩` using `Subtype.ext (RingHom.ext fun a => Complex.conj_conj _)`. Establish `hmg : GlobalTheory.PointChern.modelGram A.H S.Dw (z v) (conjEmb τ) = reindex (finCongr (hmO τr).symm) (finCongr (hmO τr).symm) (1 - (z v ⟨τ, hin τr⟩)ᴴ * z v ⟨τ, hin τr⟩)⁻¹`.
+
+Unfold `GlobalTheory.PointChern.modelGram`. Rewrite using `[dif_neg (show ¬ conjEmb τ (A.H.rt : D.host.E) = A.H.rt0 from hout τr), dif_pos h', hψ]`. Establish `h` using `hgr f hmap (conjEmb τ)`. Rewrite `h` using `[hmg]`. Use `congr 1`.
+
+Rewrite using `[grSq_oLine_of (hmO τr) hp hq _ _ _ _ _ h L.2]`. Use `congr 1`. Use `ext`. Simplify using `only [Fin.coe_cast, L]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `b _ hb`. Rewrite using `[GlobalTheory.FlagAmple.BorelWeil.rootEx_apply, if_neg hi', if_neg, neg_zero, zpow_zero]`. Introduce and unpack `⟨h1, h2⟩`. Apply `hb` to reduce the goal to its premises. Take `⟨ρ, a⟩` from `b`.
+
+Take `rfl : conjEmb τ = ρ` from `h1`. Conclude with `Sigma.ext rfl (heq_of_eq (Fin.ext h2.symm))`.
+-/
 theorem hodge_root_norm_model : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (Φ : s.Flag)
     (k : s.Comp) (σ : D.what₂.LL →+* ℂ) (e : ℕ) (c' : AlgChart (Φ.C k).Y.str σ e) (p0 : (Φ.C k).Y.pts σ),
     p0 ∈ c'.finChart.source → (Φ.C k).π (under p0) ∉ genBd s.T.Z →

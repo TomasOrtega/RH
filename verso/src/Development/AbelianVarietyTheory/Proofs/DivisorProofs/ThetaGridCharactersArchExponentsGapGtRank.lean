@@ -26,9 +26,17 @@ open GlobalTheory.Chain.StepVac
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, by simp, h, fun θ _ x _ _ => by simp⟩`.
+-/
 theorem hasInfExp_one_of (τ : D.what₂.Tau) (h : ∃ θ, IsInfFam (D := D) θ) : HasInfExp D (1 : (AE D)ˣ →* Circle) τ 0 :=
   ⟨0, by simp, h, fun θ _ x _ _ => by simp⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Take `⟨_, _, hθ, _⟩` from `h`. Simplify using `using hasInfExp_one_of τ hθ`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ]`. Use `hasInfExp_mul ih h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasInfExp_pow {η : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} {b : ℚ} (h : HasInfExp D η τ b) (n : ℕ) :
     HasInfExp D (η ^ n) τ (n * b) := by
   induction n with
@@ -41,10 +49,18 @@ theorem hasInfExp_pow {η : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} {b : ℚ}
     convert this using 1
     push_cast; ring
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hL.eta (hasInfQ_tau (a := fun _ => 1 / 2) ⟨_, fun _ => by norm_num, L.C.isEta.inf⟩) τ`.
+-/
 theorem eta_exp {μ₀ : T} (hL : L.Is μ₀) (τ : D.what₂.Tau) : HasInfExp D L.eta τ (1 / 2) :=
   GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hL.eta
     (hasInfQ_tau (a := fun _ => 1 / 2) ⟨_, fun _ => by norm_num, L.C.isEta.inf⟩) τ
 
+/- English proof (translation)
+Take `⟨n, hn, ho⟩` from `hL.xi_fin t`. Establish `h0` using `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ (hL.mu0 ⟨j, hj⟩) (hasInfQ_tau (L.C.isMu0 ⟨j, hj⟩).inf) τ`. Take `⟨θ, hθ⟩ : ∃ θ, IsInfFam (D` from `D) θ := by`. Take `⟨_, _, hθ, _⟩` from `h0`. Conclude with `hθ`.
+
+Establish `h1 : HasInfExp D (L.mu t (j + 1)) τ (-(D.hc τ).e ⟨j, hj⟩)`. Use `hasInfExp_mul h0 (hasInfExp_of_order hθ (hL.xi t) hn ho τ)` as an intermediate fact. Rewrite `this` using `[add_zero, Formalism.L2.Host.eExp, Equiv.symm_apply_apply]`. Conclude with `this`. Conclude with `hasInfExp_mul h1 (hasInfExp_pow (eta_exp hL τ) _)`.
+-/
 theorem alpha_exp {μ₀ : T} (hL : L.Is μ₀) (t : T) (i j : ℕ) (hj : j < D.R.m) (τ : D.what₂.Tau) :
     HasInfExp D (alpha G t i j) τ (-(D.hc τ).e ⟨j, hj⟩ + (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps G i j : ℚ) * (1 / 2)) := by
   obtain ⟨n, hn, ho⟩ := hL.xi_fin t
@@ -58,6 +74,9 @@ theorem alpha_exp {μ₀ : T} (hL : L.Is μ₀) (t : T) (i j : ℕ) (hj : j < D.
     exact this
   exact hasInfExp_mul h1 (hasInfExp_pow (eta_exp hL τ) _)
 
+/- English proof (translation)
+Establish `hm1 : 1 ≤ D.R.m - i` using `by omega`. Establish `hm2 : D.R.m - i ≤ D.R.m` using `by omega`. Establish `h0 : HasInfExp D (G.ch.chi (D.R.m - i)) τ (cen D sc.cGap τ (D.R.m - i) : ℚ)` using `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ (fun τ => (cen D sc.cGap τ (D.R.m - i) : ℚ)) (G.ch.chi_eq _ hm1 hm2) ⟨fun τ => 2 * cen D sc.cGap τ (D.R.m - i), fun τ => by push_cast; ring, G.ch.inf _ hm1 hm2⟩ τ`. Conclude with `hasInfExp_mul h0 (hasInfExp_pow (eta_exp hL τ) _)`.
+-/
 theorem beta_exp {μ₀ : T} (hL : L.Is μ₀) (i j : ℕ) (hi : i < D.R.m) (τ : D.what₂.Tau) :
     HasInfExp D (beta G i j) τ ((cen D sc.cGap τ (D.R.m - i) : ℚ) + (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps G i j : ℚ) * (1 / 2)) := by
   have hm1 : 1 ≤ D.R.m - i := by omega
@@ -67,6 +86,15 @@ theorem beta_exp {μ₀ : T} (hL : L.Is μ₀) (i j : ℕ) (hi : i < D.R.m) (τ 
       ⟨fun τ => 2 * cen D sc.cGap τ (D.R.m - i), fun τ => by push_cast; ring, G.ch.inf _ hm1 hm2⟩ τ
   exact hasInfExp_mul h0 (hasInfExp_pow (eta_exp hL τ) _)
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL t i j _ τf hτf`. Take `⟨mα, hα, eα⟩` from `GlobalTheory.T.hasArchimedeanCharExponents_conj_of_hasInfExp _ _ (fun τ => alpha_exp (G := G) hL t i j j.2 τ) τf hτf`. Take `⟨mβ, hβ, eβ⟩` from `GlobalTheory.T.hasArchimedeanCharExponents_conj_of_hasInfExp _ _ (fun τ => beta_exp (G := G) hL i j i.2 τ) τf hτf`. Use `⟨mα, mβ, hα, hβ, fun w => ?_⟩` and prove the remaining obligations. Establish `hr : ∀ a b, a ≤ D.R.m → b ≤ D.R.m → (G.V (.grid a b)).rank = rankV D a b` using `fun a b ha hb => (node_isV G hL (X := .grid a b) ⟨ha, hb⟩).rank`.
+
+Establish `key` using `GlobalTheory.T.chiGridVertexRank_add_lt_two_exponent_add_centre sc.cGap (τf w) i j i.2 j.2`. Establish `e1 : (spW G i j).rank = rankV D (i + 1) (j + 1)` using `hr _ _ (by omega) (by omega)`. Establish `e2 : (spW₁ G i j).rank = rankV D i j` using `hr _ _ (by omega) (by omega)`. Rewrite using `[e1, e2]`. Establish `h1` using `eα w`.
+
+Establish `h2` using `eβ w`. Establish `: (((rankV D (i + 1) (j + 1) + rankV D i j : ℕ) : ℤ) : ℚ) < ((mα w - mβ w : ℤ) : ℚ)`. Move the coercions through the operations in `at h1 h2 key ⊢`. Rewrite using `[h1, h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `this` after adjusting the coercions.
+-/
 theorem exps : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m), SquareStanding G t → ∀ (τf : InfinitePlace D.host.F → D.what₂.Tau)
     (hτf : ∀ w, ((starRingEnd ℂ).comp (tauE D (τf w))).comp (algebraMap D.host.F D.host.E) = w.embedding),

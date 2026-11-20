@@ -24,11 +24,17 @@ def GV (c : S.J → Ω) (a : Q.L.L.ι) (K : Type) [Field K] (x : Sp K ⟶ Q.G.le
 
 variable {K : Type} [Field K] {c : S.J → Ω} {a a' : Q.L.L.ι}
 
+/- English proof (translation)
+The claim follows from `le_inf' (le_wchart _ _ _ fun _ => h) (le_wchart _ _ _ fun _ => h')`.
+-/
 theorem le_w {g : Sp K ⟶ pullback ρ.P.A.hom Q.u₀} {jP : ρ.P.L.ι}
     (h : ⊤ ≤ (g ≫ pullback.fst ρ.P.A.hom Q.u₀) ⁻¹ᵁ ρ.P.L.U jP) (h' : ⊤ ≤ (g ≫ Q.φ) ⁻¹ᵁ Q.L.L.U a) :
     ⊤ ≤ g ⁻¹ᵁ (LB.div (ρ.P.L.pull (pullback.fst ρ.P.A.hom Q.u₀)) (Q.L.L.pull Q.φ)).U (fun _ => jP, fun _ => a) :=
   le_inf' (le_wchart _ _ _ fun _ => h) (le_wchart _ _ _ fun _ => h')
 
+/- English proof (translation)
+Use `(val_gen Q.w_gen g (le_w Q h h') (le_w Q k k')).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Use `(val_div_g _ _ _ _ g (le_w Q h h') (le_w Q k k')).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (fun x y => x * y⁻¹) ((val_linComb_g (I := PUnit) _ _ 1 _ _ g h k).trans (zpow_one _)) ((val_linComb_g (I := PUnit) _ _ 1 _ _ g h' k').trans (zpow_one _))`.
+-/
 theorem val_w {g : Sp K ⟶ pullback ρ.P.A.hom Q.u₀} {jP jP' : ρ.P.L.ι}
     (h : ⊤ ≤ (g ≫ pullback.fst ρ.P.A.hom Q.u₀) ⁻¹ᵁ ρ.P.L.U jP) (h' : ⊤ ≤ (g ≫ Q.φ) ⁻¹ᵁ Q.L.L.U a)
     (k : ⊤ ≤ (g ≫ pullback.fst ρ.P.A.hom Q.u₀) ⁻¹ᵁ ρ.P.L.U jP') (k' : ⊤ ≤ (g ≫ Q.φ) ⁻¹ᵁ Q.L.L.U a') :
@@ -41,6 +47,9 @@ theorem val_w {g : Sp K ⟶ pullback ρ.P.A.hom Q.u₀} {jP jP' : ρ.P.L.ι}
     ((val_linComb_g (I := PUnit) _ _ 1 _ _ g h' k').trans (zpow_one _))
 
 omit Q in
+/- English proof (translation)
+The claim follows from `(val_sec (ρ.s i) r (j := fun _ => jP) (k := fun _ => jP') (le_wchart _ _ _ fun _ => h) (le_wchart _ _ _ fun _ => k)).trans (congrArg (· * _) (val_linComb_g (I := Fin 1) _ _ _ _ _ r h k))`.
+-/
 theorem thetaSystem_baseSection_value_chart {r : Sp K ⟶ (baseOver (Sp S.R) ⊗ ρ.P.A).left} {jP jP' : ρ.P.L.ι}
     (h : ⊤ ≤ (r ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left) ⁻¹ᵁ ρ.P.L.U jP)
     (k : ⊤ ≤ (r ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left) ⁻¹ᵁ ρ.P.L.U jP') (i : S.J) :
@@ -50,6 +59,11 @@ theorem thetaSystem_baseSection_value_chart {r : Sp K ⟶ (baseOver (Sp S.R) ⊗
   (val_sec (ρ.s i) r (j := fun _ => jP) (k := fun _ => jP') (le_wchart _ _ _ fun _ => h)
     (le_wchart _ _ _ fun _ => k)).trans (congrArg (· * _) (val_linComb_g (I := Fin 1) _ _ _ _ _ r h k))
 
+/- English proof (translation)
+Establish `hr : Set.range (κ ≫ M.pt) ⊆ Set.range U₀.ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `M.top_le_preimage_pt hU (x := κ w) trivial`. Set `y : Y ⟶ U₀.toScheme` to `IsOpenImmersion.lift U₀.ι (κ ≫ M.pt) hr`.
+
+Establish `hy : y ≫ U₀.ι = κ ≫ M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Set `g : Y ⟶ pullback ρ.P.A.hom Q.u₀` to `Q.cart.1.lift x y (h.trans hy.symm)`. Establish `hg2 : g ≫ pullback.snd _ _ = y` using `Q.cart.1.lift_snd x y _`. Use `⟨g, pullback.lift ((g ≫ pullback.fst _ _) ≫ ρ.P.A.hom) (g ≫ pullback.fst _ _) (Category.comp_id _), Q.cart.1.lift_fst x y _, ?_, pullback.lift_snd _ _ _⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hg2, hy]`.
+-/
 theorem exists_data (hU : (U₀ : Set M.Z).Nonempty) {Y : Scheme.{0}} (x : Y ⟶ Q.G.left) (κ : Y ⟶ Sp Ω)
     (h : x ≫ Q.G.hom = κ ≫ M.pt) : ∃ (g : Y ⟶ pullback ρ.P.A.hom Q.u₀) (r : Y ⟶ (baseOver (Sp S.R) ⊗ ρ.P.A).left),
       g ≫ Q.φ = x ∧ g ≫ pullback.snd _ _ ≫ U₀.ι = κ ≫ M.pt ∧
@@ -66,6 +80,9 @@ theorem exists_data (hU : (U₀ : Set M.Z).Nonempty) {Y : Scheme.{0}} (x : Y ⟶
     (Category.comp_id _), Q.cart.1.lift_fst x y _, ?_, pullback.lift_snd _ _ _⟩
   rw [← Category.assoc, hg2, hy]
 
+/- English proof (translation)
+Take `⟨g, r, h1, h2, h3⟩` from `exists_data Q hU x _ h`. Take `⟨jP, hj⟩` from `exists_le_preimage_of_iSup_eq_top (g ≫ pullback.fst ρ.P.A.hom Q.u₀) ρ.P.isLB.cover`. Conclude with `⟨g, r, jP, h1, h2, h3, hj⟩`.
+-/
 theorem exists_data' (hU : (U₀ : Set M.Z).Nonempty) (x : Sp K ⟶ Q.G.left) (β : Ω →+* K)
     (h : x ≫ Q.G.hom = spMap β ≫ M.pt) : ∃ (g : Sp K ⟶ pullback ρ.P.A.hom Q.u₀)
       (r : Sp K ⟶ (baseOver (Sp S.R) ⊗ ρ.P.A).left) (jP : ρ.P.L.ι),
@@ -78,12 +95,18 @@ theorem exists_data' (hU : (U₀ : Set M.Z).Nonempty) (x : Sp K ⟶ Q.G.left) (�
 
 variable {Q} {x : Sp K ⟶ Q.G.left} {v v' : K}
 
+/- English proof (translation)
+Take `⟨g, r, jP, rfl, h2, h3, hj⟩` from `exists_data' Q hU x β h`. Conclude with `mul_left_cancel₀ (zpow_ne_zero _ (val_unit_ne g (le_w Q hj ha) _)) ((H β g r jP rfl h2 h3 hj).symm.trans (H' β g r jP rfl h2 h3 hj))`.
+-/
 theorem GV.unique (hU : (U₀ : Set M.Z).Nonempty) {β : Ω →+* K} (h : x ≫ Q.G.hom = spMap β ≫ M.pt)
     (ha : ⊤ ≤ x ⁻¹ᵁ Q.L.L.U a) (H : GV Q c a K x v) (H' : GV Q c a K x v') : v = v' := by
   obtain ⟨g, r, jP, rfl, h2, h3, hj⟩ := exists_data' Q hU x β h
   exact mul_left_cancel₀ (zpow_ne_zero _ (val_unit_ne g (le_w Q hj ha) _))
     ((H β g r jP rfl h2 h3 hj).symm.trans (H' β g r jP rfl h2 h3 hj))
 
+/- English proof (translation)
+Introduce and unpack `β g r jP rfl h2 h3 hj`. Establish `h0` using `zpow_ne_zero (S.N : ℤ) (val_unit_ne _ (le_inf' ha' ha) (Q.L.L.g a' a))`. Rewrite using `[H β g r jP rfl h2 h3 hj, val_w Q hj ha' hj ha, val_g_self ρ.P.isLB _ hj, _root_.one_mul, mul_zpow, inv_zpow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem GV.chart (ha : ⊤ ≤ x ⁻¹ᵁ Q.L.L.U a) (ha' : ⊤ ≤ x ⁻¹ᵁ Q.L.L.U a') (H : GV Q c a K x v) :
     GV Q c a' K x (valF x _ (Q.L.L.g a' a).val ^ (S.N : ℤ) * v) := by
   rintro β g r jP rfl h2 h3 hj
@@ -91,6 +114,13 @@ theorem GV.chart (ha : ⊤ ≤ x ⁻¹ᵁ Q.L.L.U a) (ha' : ⊤ ≤ x ⁻¹ᵁ Q
   rw [H β g r jP rfl h2 h3 hj, val_w Q hj ha' hj ha, val_g_self ρ.P.isLB _ hj, _root_.one_mul, mul_zpow, inv_zpow]
   field_simp
 
+/- English proof (translation)
+Introduce `β' g' r' jP' k1 k2 k3 kj`. Establish `: Mono Q.φ` using `(MorphismProperty.monomorphisms _).of_isPullback Q.cart.1.flip (inferInstanceAs (Mono U₀.ι))`. Use `EndoExtend.isPreimmersion_pt M` as an intermediate fact. Establish `: Mono (snd (baseOver (Sp S.R)) ρ.P.A).left` using `inferInstanceAs (Mono (pullback.snd (𝟙 _) ρ.P.A.hom))`. Take `rfl : g' = g` from `(cancel_mono Q.φ).1 (k1.trans h1.symm)`.
+
+Take `rfl : r' = r` from `(cancel_mono _).1 (k3.trans h3.symm)`. Take `rfl : β' = β` from `congrArg (·.hom) (Spec.map_injective ((cancel_mono M.pt).1 (k2.symm.trans h2)))`. Substitute `h1` using the available equality. Rewrite using `[val_w Q kj ha hj ha, val_g_self Q.L.isLB _ ha, inv_one, _root_.mul_one, mul_zpow, _root_.mul_assoc, ← H, Finset.mul_sum, ← h3]`. Rewrite `kj`, `hj` using `[← h3]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [thetaSystem_baseSection_value_chart kj hj, mul_left_comm]`.
+-/
 theorem GV.of_one {β : Ω →+* K} {g : Sp K ⟶ pullback ρ.P.A.hom Q.u₀}
     {r : Sp K ⟶ (baseOver (Sp S.R) ⊗ ρ.P.A).left} {jP : ρ.P.L.ι} (ha : ⊤ ≤ x ⁻¹ᵁ Q.L.L.U a) (h1 : g ≫ Q.φ = x)
     (h2 : g ≫ pullback.snd _ _ ≫ U₀.ι = spMap β ≫ M.pt)
@@ -114,9 +144,17 @@ theorem GV.of_one {β : Ω →+* K} {g : Sp K ⟶ pullback ρ.P.A.hom Q.u₀}
 
 section Ratio
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.residueField y, inferInstance, X.fromSpecResidueField _, fun _ => Scheme.fromSpecResidueField_apply _ _⟩`.
+-/
 theorem exists_pt {X : Scheme.{0}} (y : X) : ∃ (F : Type) (_ : Field F) (g : Sp F ⟶ X), ∀ w, g w = y :=
   ⟨X.residueField y, inferInstance, X.fromSpecResidueField _, fun _ => Scheme.fromSpecResidueField_apply _ _⟩
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `exists_le_preimage_of_iSup_eq_top h hτ`. Take `⟨k', hk'⟩` from `TopologicalSpace.Opens.mem_iSup.1 ((le_preimage_iff h _).1 hi)`. Establish `h1` using `(le_preimage_iff h _).2 hk'`. Establish `h2` using `le_preimage_mono h (P.basicOpen_le _) h1`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[val_sec (τ i) h hk h2]`. Conclude with `mul_ne_zero (val_unit_ne h (le_inf' hk h2) _) ((le_preimage_basicOpen_iff h h2 _).1 h1).ne_zero`.
+-/
 theorem exists_ne {P : Scheme.{0}} {O : LB P} {I : Type} {τ : I → O.Sec} (hτ : ⨆ i, nonzeroLocus (τ i) = ⊤)
     (h : Sp K ⟶ P) {k : O.ι} (hk : ⊤ ≤ h ⁻¹ᵁ O.U k) : ∃ i, valF h _ ((τ i).f k) ≠ 0 := by
   obtain ⟨i, hi⟩ := exists_le_preimage_of_iSup_eq_top h hτ
@@ -127,6 +165,9 @@ theorem exists_ne {P : Scheme.{0}} {O : LB P} {I : Type} {τ : I → O.Sec} (hτ
   rw [val_sec (τ i) h hk h2]
   exact mul_ne_zero (val_unit_ne h (le_inf' hk h2) _) ((le_preimage_basicOpen_iff h h2 _).1 h1).ne_zero
 
+/- English proof (translation)
+Take `⟨F, _, g, hg⟩` from `exists_pt y`. Establish `h1 : ⊤ ≤ g ⁻¹ᵁ O.U k` using `fun w _ => show g w ∈ O.U k from Set.mem_of_eq_of_mem (hg w) hk`. Take `⟨i, hi⟩` from `exists_ne hτ g h1`. Conclude with `⟨i, Set.mem_of_eq_of_mem (hg (IsLocalRing.closedPoint F)).symm ((le_preimage_basicOpen_iff g h1 _).2 hi.isUnit trivial)⟩`.
+-/
 theorem exists_mem_basicOpen {P : Scheme.{0}} {O : LB P} {I : Type} {τ : I → O.Sec}
     (hτ : ⨆ i, nonzeroLocus (τ i) = ⊤) (y : P) {k : O.ι} (hk : y ∈ O.U k) : ∃ i, y ∈ P.basicOpen ((τ i).f k) := by
   obtain ⟨F, _, g, hg⟩ := exists_pt y
@@ -142,12 +183,18 @@ def Ratio (a : Q.L.L.ι) (k : O.ι) (K : Type) [Field K] (h : Sp K ⟶ P) (v : K
 
 variable {Q ν τ b} {k k' : O.ι} {h : Sp K ⟶ P}
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `exists_ne hτ h hk`. Conclude with `mul_right_cancel₀ hi ((H.2 i).unique hU e ha (H'.2 i))`.
+-/
 theorem Ratio.unique (hU : (U₀ : Set M.Z).Nonempty) (hτ : ⨆ i, nonzeroLocus (τ i) = ⊤) {β : Ω →+* K}
     (e : (h ≫ ν) ≫ Q.G.hom = spMap β ≫ M.pt) (ha : ⊤ ≤ (h ≫ ν) ⁻¹ᵁ Q.L.L.U a) (hk : ⊤ ≤ h ⁻¹ᵁ O.U k)
     (H : Ratio Q ν τ b a k K h v) (H' : Ratio Q ν τ b a k K h v') : v = v' := by
   obtain ⟨i, hi⟩ := exists_ne hτ h hk
   exact mul_right_cancel₀ hi ((H.2 i).unique hU e ha (H'.2 i))
 
+/- English proof (translation)
+Establish `h1` using `val_unit_ne _ (le_inf' hk' hk) (O.g k' k)`. Use `⟨mul_ne_zero (mul_ne_zero (zpow_ne_zero _ (val_unit_ne _ (le_inf' ha' ha) _)) (inv_ne_zero h1)) H.1, fun i => ?_⟩` and prove the remaining obligations. Use `(H.2 i).chart ha ha' using 1` and compare the differences between its conclusion and the goal. Rewrite using `[val_sec (τ i) h hk' hk]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem Ratio.chart (ha : ⊤ ≤ (h ≫ ν) ⁻¹ᵁ Q.L.L.U a) (hk : ⊤ ≤ h ⁻¹ᵁ O.U k)
     (ha' : ⊤ ≤ (h ≫ ν) ⁻¹ᵁ Q.L.L.U a') (hk' : ⊤ ≤ h ⁻¹ᵁ O.U k') (H : Ratio Q ν τ b a k K h v) :
     Ratio Q ν τ b a' k' K h
@@ -159,6 +206,23 @@ theorem Ratio.chart (ha : ⊤ ≤ (h ≫ ν) ⁻¹ᵁ Q.L.L.U a) (hk : ⊤ ≤ h
   rw [val_sec (τ i) h hk' hk]
   field_simp
 
+/- English proof (translation)
+Establish `hβ : ∀ {K : Type} [Field K] (h : Sp K ⟶ Y), spMap (Spec.preimage (h ≫ κ)).hom = h ≫ κ` using `fun h => Spec.map_preimage _`. Establish `he : ∀ {K : Type} [Field K] (h : Sp K ⟶ Y), ((h ≫ J) ≫ ν) ≫ Q.G.hom = spMap (Spec.preimage (h ≫ κ)).hom ≫ M.pt` using `fun h => by`. Rewrite using `[hβ, Category.assoc h κ, ← hJ]`. Simplify using `only [Category.assoc]`. Establish `ha : ∀ {K : Type} [Field K] (h : Sp K ⟶ Y), ⊤ ≤ h ⁻¹ᵁ V → ⊤ ≤ ((h ≫ J) ≫ ν) ⁻¹ᵁ Q.L.L.U a` using `fun h hh => le_preimage_mono h hV hh`.
+
+Establish `hk : ∀ {K : Type} [Field K] (h : Sp K ⟶ Y), ⊤ ≤ h ⁻¹ᵁ V → ⊤ ≤ (h ≫ J) ⁻¹ᵁ O.U k` using `fun h hh => le_preimage_mono h hV' hh`. Take `⟨F, _, ξ, hξ⟩` from `exists_generic Y`. Take `⟨g, r, g1, g2, g3⟩` from `exists_data Q hU _ κ hJ`. Take `⟨f, hf⟩` from `exists_glue V (fun K _ h v => Ratio Q ν τ b a k K (h ≫ J) v) ξ hξ (fun hh v v' H H' => H.unique hU hτ (he ξ) (ha ξ hh) (hk ξ hh) H') (fun y hy => by`. Take `⟨jP, hj⟩` from `exists_chart ρ.P.isLB ((g ≫ pullback.fst ρ.P.A.hom Q.u₀) y)`.
+
+Take `⟨i, hi⟩` from `exists_mem_basicOpen hτ (J y) (hV' hy)`. Establish `m1 : r y ∈ (LPow ρ.P.A ρ.P.L S.N (baseOver (Sp S.R))).U (fun _ => jP)` using `Set.mem_iInter.2 fun _ => by rw [← g3] at hj; exact hj`. Establish `m2 : g y ∈ (pullback ρ.P.A.hom Q.u₀).basicOpen (Q.w.s (fun _ => jP, fun _ => a)).val`. Rewrite using `[Scheme.basicOpen_of_isUnit _ (Units.isUnit _)]`. Use `hV hy` as an intermediate fact.
+
+Rewrite `this` using `[← g1]`. Conclude with `⟨Set.mem_iInter.2 fun _ => hj, Set.mem_iInter.2 fun _ => this⟩`. Take `⟨W, f, hW, hf⟩` from `((Reg.sum Finset.univ fun l => (Reg.val κ (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (b i l)) trivial).mul (Reg.val r ((ρ.s l).f _) m1)).mul ((Reg.inv g _ m2).pow S.N)).mul (Reg.inv J _ hi)`. Use `⟨W ⊓ ((g ≫ pullback.fst ρ.P.A.hom Q.u₀) ⁻¹ᵁ ρ.P.L.U jP ⊓ J ⁻¹ᵁ P.basicOpen ((τ i).f k)), resG Y inf_le_left f, ⟨hW, hj, hi⟩, fun K _ h h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hp K _ _ (he h) (ha h h2) (hk h h2)`.
+
+Establish `n1 : ⊤ ≤ ((h ≫ g) ≫ pullback.fst ρ.P.A.hom Q.u₀) ⁻¹ᵁ ρ.P.L.U jP` using `le_preimage_mono h (inf_le_right.trans inf_le_left) h1`. Establish `n2 : ⊤ ≤ (h ≫ J) ⁻¹ᵁ P.basicOpen ((τ i).f k)` using `le_preimage_mono h (inf_le_right.trans inf_le_right) h1`. Establish `n3 : (h ≫ g) ≫ Q.φ = (h ≫ J) ≫ ν` using `by rw [Category.assoc, g1, Category.assoc]`. Establish `e` using `hv.2 i _ (h ≫ g) (h ≫ r) jP n3 (by rw [Category.assoc, g2, hβ, Category.assoc]) (by rw [Category.assoc, g3, Category.assoc]) n1`. Establish `z1 : valF (h ≫ J) _ ((τ i).f k) ≠ 0` using `((le_preimage_basicOpen_iff _ (hk h h2) _).1 n2).ne_zero`.
+
+Establish `z2` using `val_unit_ne (h ≫ g) (le_w Q n1 (n3 ▸ ha h h2)) (Q.w.s (fun _ => jP, fun _ => a))`. Use `hv using 1` and compare the differences between its conclusion and the goal. Use `(valR_res h _ h1 _).trans ((hf K h (le_preimage_mono h inf_le_left h1)).trans ?_)` and prove the remaining obligations. Rewrite `e` using `[zpow_natCast]`. Establish `key : ∀ (A w t : K), w ≠ 0 → t ≠ 0 → A = w ^ S.N * (v * t) → A * (w⁻¹) ^ S.N * t⁻¹ = v`.
+
+Introduce and unpack `_ w t h1 h2 rfl`. Rewrite using `[inv_pow]`. Clear the denominators using the available nonvanishing facts. Use `key _ _ _ z2 z1 (Eq.trans (Finset.sum_congr rfl fun l _ => ?_) e)` and prove the remaining obligations. Rewrite using `[preimage_apply (h ≫ κ) (b i l)]`.
+
+Use the proof step `rfl)`. Conclude with `⟨(isUnit_of_val f fun K _ h hh => (hf K h hh).1).unit, hf⟩`.
+-/
 theorem exists_unit (hU : (U₀ : Set M.Z).Nonempty) (hτ : ⨆ i, nonzeroLocus (τ i) = ⊤)
     (hp : ∀ (K : Type) [Field K] (β : Ω →+* K) (h : Sp K ⟶ P), (h ≫ ν) ≫ Q.G.hom = spMap β ≫ M.pt →
       ⊤ ≤ (h ≫ ν) ⁻¹ᵁ Q.L.L.U a → ⊤ ≤ h ⁻¹ᵁ O.U k → ∃ v, Ratio Q ν τ b a k K h v)

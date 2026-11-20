@@ -12,6 +12,15 @@ open MvPolynomial Formalism.GradedWeylDivisibility
 
 namespace GlobalTheory.HighWt
 
+/- English proof (translation)
+Rewrite `hf` using `[standardMonomialSpanDomain O N N ν]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨K, sz, hsz, I, hshape, rfl⟩` from `hx`. Introduce `m hm`.
+
+Establish `h` using `bideterminantDominance O N N K sz hsz I m hm`. Rewrite `h` using `[hshape]`. Conclude with `h`. Consider the case `zero`. Introduce `m hm`.
+
+Simplify using `at hm`. Consider the case `add x y _ _ hx hy`. Introduce `m hm`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases. Conclude with `hx m h`.
+
+Conclude with `hy m h`. Consider the case `smul c x _ hx`. Introduce `m hm`. Conclude with `hx m (support_smul hm)`.
+-/
 theorem dualWeyl_rowDeg_dominance (O : Type) [CommRing O] [IsDomain O] (N : ℕ) (ν : Fin N → ℕ)
     (f : MvPolynomial (Fin N × Fin N) O) (hf : f ∈ dualWeyl O N N ν) : ∀ m ∈ f.support,
       (∀ k : ℕ, (∑ a : Fin N with a.val < k, rowDeg m a) ≤ ∑ t : Fin N with t.val < k, ν t) ∧
@@ -37,6 +46,11 @@ theorem dualWeyl_rowDeg_dominance (O : Type) [CommRing O] [IsDomain O] (N : ℕ)
     intro m hm
     exact hx m (support_smul hm)
 
+/- English proof (translation)
+Establish `h : (rename (fun v : Fin N × Fin N => (σ v.1, v.2)) : MvPolynomial (Fin N × Fin N) O →ₐ[O] _) = rowAct O (Matrix.of fun a b : Fin N => if σ a = b then (1 : O) else 0)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[rowAct]`. Rewrite using `[h]`.
+
+Conclude with `dualWeylRowStable O N N ν _ f hf`.
+-/
 theorem rename_rowPerm_mem (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ) (σ : Equiv.Perm (Fin N))
     (f : MvPolynomial (Fin N × Fin N) O) (hf : f ∈ dualWeyl O N N ν) :
     rename (fun v : Fin N × Fin N => (σ v.1, v.2)) f ∈ dualWeyl O N N ν := by
@@ -49,6 +63,11 @@ theorem rename_rowPerm_mem (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ
   rw [h]
   exact dualWeylRowStable O N N ν _ f hf
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_prod_type]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using `[rowW, rowDeg]`. Introduce `b _ hb`. Simplify using `[rowW, Ne.symm hb]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem weight_rowW_eq_rowDeg {N : ℕ} (m : Fin N × Fin N →₀ ℕ) (a : Fin N) :
     Finsupp.weight (rowW N N) m a = rowDeg m a := by
   rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_prod_type]
@@ -64,12 +83,20 @@ namespace GlobalTheory.HighWt
 
 open MvPolynomial Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single_of_mem (⟨0, h⟩ : Fin N) (by simp)]`. Introduce `b hb hne`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Conclude with `absurd (Fin.ext (by simp; omega)) hne`.
+-/
 theorem sum_fin_lt_one {N : ℕ} (h : 0 < N) (g : Fin N → ℕ) : ∑ b : Fin N with b.val < 1, g b = g ⟨0, h⟩ := by
   rw [Finset.sum_eq_single_of_mem (⟨0, h⟩ : Fin N) (by simp)]
   intro b hb hne
   simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hb
   exact absurd (Fin.ext (by simp; omega)) hne
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun b : Fin N => b.val < N - 1)]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single_of_mem (⟨N - 1, by omega⟩ : Fin N) (by simp; omega)]`. Introduce `b hb hne`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt] at hb`.
+
+Conclude with `absurd (Fin.ext (by simp; omega)) hne`.
+-/
 theorem sum_fin_split_last {N : ℕ} (h : 0 < N) (g : Fin N → ℕ) :
     ∑ b : Fin N, g b = ∑ b : Fin N with b.val < N - 1, g b + g ⟨N - 1, by omega⟩ := by
   rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun b : Fin N => b.val < N - 1)]
@@ -79,6 +106,33 @@ theorem sum_fin_split_last {N : ℕ} (h : 0 < N) (g : Fin N → ℕ) :
   simp only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt] at hb
   exact absurd (Fin.ext (by simp; omega)) hne
 
+/- English proof (translation)
+Introduce `O _ _ _ _ N ι _ _ lam _ Gm _ _ w hw τ`. Take `⟨z, hz0, hz⟩` from `hw`. Take `⟨a0, ha0, -⟩` from `GlobalTheory.ExpFrame.exists_unique_isProj O N ι lam τ (w τ)`. Establish `hmem : a0 ∈ alg O N lam` using `Algebra.subset_adjoin (Or.inr ⟨τ, w τ, ha0⟩)`. Establish `hex : ∃ x : ∀ τ, dualWeyl O N N (res N (lam τ)), weightedHomogeneousComponent (rowW N N) (w τ) (x τ : MvPolynomial (Fin N × Fin N) O) ≠ 0`.
+
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `ha0z : a0 = 0`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises.
+
+Introduce `x`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.zero_apply]`. Rewrite using `[ha0 x 0 (by simp [hne x])]`. Conclude with `MultilinearMap.map_coord_zero _ τ (by simp)`. Establish `h1` using `hz τ ⟨a0, hmem⟩ ha0`.
+
+Establish `h0 : (⟨a0, hmem⟩ : alg O N lam) = 0` using `Subtype.ext ha0z`. Rewrite `h1` using `[h0, zero_smul]`. Conclude with `hz0 h1.symm`. Take `⟨x, hx⟩` from `hex`. Use `set f := weightedHomogeneousComponent (rowW N N) (w τ) (x τ : MvPolynomial (Fin N × Fin N) O) with hfdef`.
+
+Establish `hfmem : f ∈ dualWeyl O N N (res N (lam τ))` using `dualWeylRowGraded O N N _ _ _ (x τ).2`. Establish `hfhom : IsWeightedHomogeneous (rowW N N) f (w τ)` using `weightedHomogeneousComponent_isWeightedHomogeneous _ _`. Take `⟨m, hm⟩` from `support_nonempty.2 hx`. Establish `hrd : ∀ a, rowDeg m a = w τ a` using `fun a => by`. Rewrite using `[← weight_rowW_eq_rowDeg, hfhom (mem_support_iff.1 hm)]`.
+
+Establish `key : ∀ σ : Equiv.Perm (Fin N), (∀ k : ℕ, (∑ b : Fin N with b.val < k, w τ (σ.symm b)) ≤ ∑ t : Fin N with t.val < k, res N (lam τ) t) ∧ ∑ b : Fin N, w τ (σ.symm b) = ∑ t : Fin N, res N (lam τ) t`. Introduce `σ`. Set `e : Fin N × Fin N → Fin N × Fin N` to `fun v => (σ v.1, v.2)`. Establish `he : Function.Injective e`. Introduce `u v huv`.
+
+Simplify using `only [e, Prod.mk.injEq] at huv`. Conclude with `Prod.ext (σ.injective huv.1) huv.2`. Establish `hm' : m.mapDomain e ∈ (rename e f).support`. Rewrite using `[mem_support_iff, coeff_rename_mapDomain e he]`. Conclude with `mem_support_iff.1 hm`.
+
+Establish `hrd' : ∀ b, rowDeg (m.mapDomain e) b = w τ (σ.symm b)`. Introduce `b`. Rewrite using `[← hrd]`. Unfold `rowDeg`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Establish `: (b, s) = e (σ.symm b, s)` using `by simp [e]`. Rewrite using `[this, Finsupp.mapDomain_apply he]`. Establish `hd` using `dualWeyl_rowDeg_dominance O N _ _ (rename_rowPerm_mem O N _ σ f hfmem) _ hm'`. Simplify using `only [hrd'] at hd`. Conclude with `hd`.
+
+Establish `hres : ∀ t : Fin N, res N (lam τ) t = lam τ t` using `fun t => rfl`. Use `⟨?_, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h` using `(key (Equiv.refl _)).2`. Simplify `h` using `[hres]`. Establish `hN : 0 < N` using `lt_of_le_of_lt (Nat.zero_le _) a.isLt`.
+
+Take `⟨h1, h2⟩` from `key (Equiv.swap ⟨N - 1, by omega⟩ a)`. Establish `h3` using `h1 (N - 1)`. Rewrite `h2` using `[sum_fin_split_last hN, sum_fin_split_last hN]`. Establish `h4 : w τ ((Equiv.swap ⟨N - 1, by omega⟩ a).symm ⟨N - 1, by omega⟩) = w τ a` using `by simp`. Rewrite `h2` using `[h4]`.
+
+Establish `h5 : res N (lam τ) ⟨N - 1, by omega⟩ = lam τ (N - 1)` using `rfl`. Rewrite `h2` using `[h5]`. Use linear arithmetic over natural numbers and integers. Establish `hN : 0 < N` using `lt_of_le_of_lt (Nat.zero_le _) a.isLt`. Establish `h1` using `(key (Equiv.swap ⟨0, hN⟩ a)).1 1`.
+
+Rewrite `h1` using `[sum_fin_lt_one hN, sum_fin_lt_one hN]`. Establish `h2 : w τ a ≤ res N (lam τ) ⟨0, hN⟩` using `by simpa using h1`. Conclude with `h2`.
+-/
 theorem jointWt_bounds : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (N : ℕ) (ι : Type) [Fintype ι]
     [DecidableEq ι] (lam : ι → ℕ → ℕ), (∀ τ, Antitone (res N (lam τ))) → ∀ (Gm : Type) [AddCommGroup Gm] [Module (alg O N lam) Gm]
     (w : ι → Fin N → ℕ), GlobalTheory.HighWt.JointWt O N lam Gm w → ∀ τ, ∑ a : Fin N, w τ a = ∑ a : Fin N, lam τ a ∧

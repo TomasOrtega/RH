@@ -31,6 +31,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.StabUnfold
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Take `⟨c₀, h0, -, hu⟩` from `GlobalTheory.T.riemannianHaarGauge_exists_pos_unique m ε'`. Establish `hpos : 0 < c'` using `hu c' hc' ▸ h0`. Establish `hne : ENNReal.ofReal c' ≠ 0` using `(ENNReal.ofReal_pos.2 hpos).ne'`. Establish `hinv : (ENNReal.ofReal c')⁻¹ ≠ ⊤` using `ENNReal.inv_ne_top.2 hne`.
+
+Establish `hmul : ENNReal.ofReal c' * (ENNReal.ofReal c')⁻¹ = 1` using `ENNReal.mul_inv_cancel hne ENNReal.ofReal_ne_top`. Establish `key` using `GlobalTheory.T.gauge_measure_quotient_unitaryJ_vector_stabiliser m ε ε' s x₀ B j h1 h2 h3 h4 c c' hc hc' (fun g => (ENNReal.ofReal c')⁻¹ * b g) (hb.const_mul _) (fun g => by`. Rewrite using `[lintegral_const_mul' _ _ hinv, hb1, mul_one, hmul])`. Rewrite using `[← key]`. Repeatedly rewrite using `[mul_left_comm _ (ENNReal.ofReal c')⁻¹]`.
+
+Rewrite using `[lintegral_const_mul' _ _ hinv, mul_left_comm _ (ENNReal.ofReal c')⁻¹, ← mul_assoc (ENNReal.ofReal c'), hmul, one_mul]`.
+-/
 theorem real_quot {n m : ℕ} (ε : Fin n → Bool) (ε' : Fin m → Bool) (s : Bool) (x₀ : Fin n → ℂ)
     (B : Matrix (Fin n) (Fin m) ℂ) (j : Formalism.REAL.UJ ε' →* Formalism.REAL.UJ ε) (hn : m + 1 = n)
     (h1 : qEps ε x₀ = sgn ℝ s) (h2 : star x₀ ᵥ* (Formalism.REAL.Jm ε * B) = 0)
@@ -55,6 +62,11 @@ theorem real_quot {n m : ℕ} (ε : Fin n → Bool) (ε' : Fin m → Bool) (s : 
   rw [lintegral_const_mul' _ _ hinv, mul_left_comm _ (ENNReal.ofReal c')⁻¹, ← mul_assoc (ENNReal.ofReal c'),
     hmul, one_mul]
 
+/- English proof (translation)
+Take `⟨⟨Γ, hΓ⟩, hc, hf⟩` from `GlobalTheory.T.rationalPoints_countable_discrete_subgroup_adelic I`. Take `⟨-, -, h3, h4⟩` from `GlobalTheory.T.adelicLatticeStabiliser_isCompact_isOpen I`. Use `⟨Γ, hΓ, hΓ ▸ hc, ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hC1⟩` from `exists_compact_mem_nhds (1 : I.GA)`. Establish `hfin : ((fun γ : Γ => (γ : I.GA)) ⁻¹' C).Finite`.
+
+Use `Set.Finite.subset (Set.Finite.preimage Subtype.val_injective.injOn (hf C hC)) ?_` and prove the remaining obligations. Introduce `γ hγ`. Conclude with `⟨hΓ ▸ γ.2, hγ⟩`. Establish `hn : ((fun γ : Γ => (γ : I.GA)) ⁻¹' C) ∈ nhds (1 : Γ)` using `continuous_subtype_val.continuousAt.preimage_mem_nhds hC1`. Conclude with `discreteTopology_of_isOpen_singleton_one (isOpen_singleton_of_finite_mem_nhds _ hn hfin)`.
+-/
 theorem exists_rat (I : AutInst) : ∃ Γ : Subgroup I.GA, (Γ : Set I.GA) = I.GFset ∧ (Γ : Set I.GA).Countable ∧
     DiscreteTopology Γ := by
   obtain ⟨⟨Γ, hΓ⟩, hc, hf⟩ := GlobalTheory.T.rationalPoints_countable_discrete_subgroup_adelic I
@@ -69,10 +81,18 @@ theorem exists_rat (I : AutInst) : ∃ Γ : Subgroup I.GA, (Γ : Set I.GA) = I.G
     continuous_subtype_val.continuousAt.preimage_mem_nhds hC1
   exact discreteTopology_of_isOpen_singleton_one (isOpen_singleton_of_finite_mem_nhds _ hn hfin)
 
+/- English proof (translation)
+Take `⟨c₀, h0, -, hu⟩` from `GlobalTheory.T.riemannianHaarGauge_exists_pos_unique n ε`. Conclude with `hu c h ▸ h0`.
+-/
 theorem gauge_pos {n : ℕ} {ε : Fin n → Bool} {c : ℝ} (h : IsGauge ε c) : 0 < c := by
   obtain ⟨c₀, h0, -, hu⟩ := GlobalTheory.T.riemannianHaarGauge_exists_pos_unique n ε
   exact hu c h ▸ h0
 
+/- English proof (translation)
+Take `⟨-, -, h3, h4⟩` from `GlobalTheory.T.adelicLatticeStabiliser_isCompact_isOpen I`. Use `GlobalTheory.T.secondCountable_finiteAdelicUnitaryPoints I` as an intermediate fact. Use `⟨?_, ⟨(GlobalTheory.T.adelicUnitaryHaar_bi_invariant I μf).2.1⟩⟩` and prove the remaining obligations. Unfold `AutInst.muA`. Use `haveI : (Measure.pi fun v => Formalism.REAL.muG (I.ε v)).IsHaarMeasure := Measure.pi.isHaarMeasure _`.
+
+Conclude with `Measure.prod.instIsHaarMeasure _ _`.
+-/
 theorem haar_muA (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure] :
     (I.muA μf).IsHaarMeasure ∧ (I.muA μf).IsMulRightInvariant := by
   obtain ⟨-, -, h3, h4⟩ := GlobalTheory.T.adelicLatticeStabiliser_isCompact_isOpen I
@@ -82,6 +102,37 @@ theorem haar_muA (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaa
   haveI : (Measure.pi fun v => Formalism.REAL.muG (I.ε v)).IsHaarMeasure := Measure.pi.isHaarMeasure _
   exact Measure.prod.instIsHaarMeasure _ _
 
+/- English proof (translation)
+Take `⟨hKc, hKo, i1, i2⟩` from `GlobalTheory.T.adelicLatticeStabiliser_isCompact_isOpen I`. Take `⟨hKc', hKo', i1', i2'⟩` from `GlobalTheory.T.adelicLatticeStabiliser_isCompact_isOpen D.inst`. Establish `i3` using `GlobalTheory.T.secondCountable_finiteAdelicUnitaryPoints I`. Establish `i3'` using `GlobalTheory.T.secondCountable_finiteAdelicUnitaryPoints D.inst`. Take `⟨i4, -⟩` from `haar_muA I μf`.
+
+Take `⟨i4', i5'⟩` from `haar_muA D.inst μf'`. Establish `i6' : μf'.IsMulRightInvariant` using `⟨(GlobalTheory.T.adelicUnitaryHaar_bi_invariant D.inst μf').2.2.2.1⟩`. Take `⟨jf, hjf, hrange⟩` from `GlobalTheory.T.exists_finiteAdelic_orthogonal_stabilizer_embedding I D s x A xf hp`. Establish `hloc` using `GlobalTheory.T.isOrthComplementOfUnitVector_at_real_place I D s x A xf hp`. Use `choose jv hjc hjv using fun v => GlobalTheory.T.exists_closedEmbedding_orthogonalUnitary_realPlace I.n D.n (I.ε v) (D.ε v) s _ _ hp.1 (hloc v).1 (hloc v).2.1 (hloc v).2.2`.
+
+Take `⟨hK, hKg⟩` from `GlobalTheory.T.mem_congruence_level_iff_orthEmbedding I D s x A xf hp jf hjf`. Establish `hjfc` using `GlobalTheory.T.isClosedEmbedding_of_congruenceSubgroups_conj I D.inst jf xf hKg`. Establish `hj : Topology.IsClosedEmbedding (embA D jv jf)` using `(Topology.IsClosedEmbedding.piMap hjc).prodMap hjfc`. Take `⟨Γ, hΓ, hΓc, -⟩` from `exists_rat I`. Take `⟨Γ', hΓ', -, hΓd⟩` from `exists_rat D.inst`.
+
+Establish `hS : ((Γ'.map (embA D jv jf) : Subgroup I.GA) : Set I.GA) = stabF I x`. Rewrite using `[Subgroup.coe_map, hΓ']`. Conclude with `GlobalTheory.T.image_rationalOrthComplementUnitary_eq_rationalStabilizer I D s x A xf hp jv jf hjv hjf`. Take `⟨hopen, hmv, hleft, hright, hreal⟩` from `GlobalTheory.T.gaussianTerm_measurable_and_stabilizer_invariant I x`. Establish `hind : Measurable ({h : I.Gf | x ∈ lamX I (1, h)}.indicator (1 : I.Gf → ENNReal))` using `measurable_one.indicator hopen.measurableSet`.
+
+Establish `hΦ : Measurable (gaussAt I x)`. Unfold `gaussAt`. Conclude with `(Finset.measurable_prod _ fun v _ => (hmv v).comp ((measurable_pi_apply v).comp measurable_fst)).mul (hind.comp measurable_snd)`. Establish `hinv : ∀ h g, gaussAt I x (embA D jv jf h * g) = gaussAt I x g`. Introduce `h g`.
+
+Unfold `gaussAt`. Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun y => ENNReal.ofReal (gauss y)) (hreal v _ (g.1 v) (hjv v (h.1 v)).1)`. Use `hleft (jf h.2) g.2 (hjf h.2).1` as an intermediate fact.
+
+Rewrite using `[show (embA D jv jf h * g).2 = jf h.2 * g.2 from rfl]`. Distinguish the cases in `hg : x ∈ lamX I (1, g.2)`. Rewrite using `[Set.indicator_of_mem (show _ ∈ {h : I.Gf | x ∈ lamX I (1, h)} from this.2 hg), Set.indicator_of_mem (show _ ∈ {h : I.Gf | x ∈ lamX I (1, h)} from hg)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show _ ∉ {h : I.Gf | x ∈ lamX I (1, h)} from fun h' => hg (this.1 h')), Set.indicator_of_notMem (show _ ∉ {h : I.Gf | x ∈ lamX I (1, h)} from hg)]`.
+
+Take `⟨ι, hι, r, hr1, hr2, hr3⟩` from `GlobalTheory.T.latticeGaussianSumOfLength_eq_tsum_stabilizer_cosets I s x hp.2.1`. Establish `hmem : ∀ γ, γ ∈ Γ ↔ γ ∈ I.GFset` using `fun γ => by rw [← hΓ]; rfl`. Establish `hmemS : ∀ γ, γ ∈ Γ'.map (embA D jv jf) ↔ γ ∈ stabF I x` using `fun γ => by rw [← hS]; rfl`. Establish `horb` using `GlobalTheory.T.lintegral_tsum_cosets_fundamentalDomain_eq_covol I.GA Γ (Γ'.map (embA D jv jf)) (I.muA μf) fund (gaussAt I x) ι r hΓc (fun γ h => (hmem γ).2 ((hmemS γ).1 h).1) (fun γ _ => (GlobalTheory.T.adelicUnitaryHaar_bi_invariant I μf).1 γ) hf.1 (fun y => by obtain ⟨γ, h1, h2 …`. Establish `i7 : ∀ v, (Formalism.REAL.muG (D.ε v)).IsMulRightInvariant` using `fun v => ⟨Formalism.REAL.indefinite_unitary_unimodular _ _⟩`.
+
+Use `choose bv hbv hbv1 using fun v => GlobalTheory.T.exists_measurable_lintegral_coset_eq_one_closedSubgroup _ _ (Formalism.REAL.muG (D.ε v)) (jv v) (hjc v)`. Take `⟨bf, hbf, hbf1, hbf2⟩` from `GlobalTheory.T.exists_massOne_cutoff_doubleCoset_integral I.Gf D.inst.Gf μf μf' jf hjfc (Ksub I) (Ksub D.inst) xf {h : I.Gf | x ∈ lamX I (1, h)} hKo hKo' hKc' hK (fun g => by`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨h, h1, k, hk, e⟩` from `GlobalTheory.T.stabilizer_transitive_adelic_unit_length_vectors I s x xf g hp.2.1 hp.2.2.2.2.1 hg`.
+
+Take `⟨h', rfl⟩` from `hrange h h1`. Conclude with `⟨h', k, hk, e⟩`. Introduce and unpack `⟨h, k, hk, rfl⟩`. Conclude with `(hright _ k hk).2 ((hleft _ _ (hjf h).1).2 hp.2.2.2.2.1))`. Establish `hb : Measurable fun g : I.GA => (∏ v, bv v (g.1 v)) * bf g.2` using `(Finset.measurable_prod _ fun v _ => (hbv v).comp ((measurable_pi_apply v).comp measurable_fst)).mul (hbf.comp measurable_snd)`.
+
+Establish `hb1 : ∀ g : I.GA, ∫⁻ h, (∏ v, bv v ((embA D jv jf h * g).1 v)) * bf (embA D jv jf h * g).2 ∂(D.inst.muA μf') = 1`. Introduce `g`. Use `GlobalTheory.T.lintegral_pi_prod_mul_fintype_product _ _ (fun v => Formalism.REAL.muG (D.ε v)) _ μf' (fun v h => bv v (jv v h * g.1 v)) (fun h => bf (jf h * g.2)) (fun v => (hbv v).comp (((hjc v).continuous.mul continuous_const).measurable)) (hbf.comp ((hjfc.continuous.mul contin …` as an intermediate fact. Simplify using `only [hbv1, hbf1, Finset.prod_const_one, mul_one] at this`. Conclude with `this`.
+
+Establish `hun` using `GlobalTheory.T.leftQuotientCovolume_withDensity_unfold_subgroup I.GA D.inst.GA (I.muA μf) (D.inst.muA μf') (embA D jv jf) hj Γ' (gaussAt I x) _ hΦ hb hinv hb1`. Establish `hint : ∫⁻ g, gaussAt I x g * ((∏ v, bv v (g.1 v)) * bf g.2) ∂(I.muA μf) = (∏ v, ∫⁻ g, ENNReal.ofReal (gauss ((uMat g)⁻¹ *ᵥ infVec I v x)) * bv v g ∂(Formalism.REAL.muG (I.ε v))) * (μf I.Kset / μf' D.inst.Kset)`. Use `GlobalTheory.T.lintegral_pi_prod_mul_fintype_product _ _ (fun v => Formalism.REAL.muG (I.ε v)) _ μf (fun v g => ENNReal.ofReal (gauss ((uMat g)⁻¹ *ᵥ infVec I v x)) * bv v g) (fun g => {h : I.Gf | x ∈ lamX I (1, h)}.indicator 1 g * bf g) (fun v => (hmv v).mul (hbv v)) (hind.mul hb …` as an intermediate fact. Rewrite `this` using `[hbf2]`. Use `Eq.trans (lintegral_congr fun g => ?_) this` and prove the remaining obligations.
+
+Unfold `gaussAt`. Rewrite using `[Finset.prod_mul_distrib, mul_mul_mul_comm]`. Establish `hq` using `fun v => real_quot (I.ε v) (D.ε v) s _ _ (jv v) hp.1 (hloc v).1 (hloc v).2.1 (hloc v).2.2 (hjv v) (c v) (c' v) (hc v) (hc' v) (bv v) (hbv v) (hbv1 v)`. Apply the tactic sequence `have hs : sgn ℝ s ≠ 0 := by unfold sgn; split_ifs <;> norm_num`. Establish `hd : ∀ v, 0 ≤ gaussDens (I.ε v) (sgn ℝ s)` using `fun v => ((GlobalTheory.T.gaussianQuadricDensity_exists_pos_continuous _ (I.ε v)).1 _ hs).2`.
+
+Establish `hprod` using `Finset.prod_congr (s₁ := Finset.univ) rfl fun v _ => hq v`. Rewrite `hprod` using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, ← ENNReal.ofReal_prod_of_nonneg fun v _ => (gauge_pos (hc v)).le, ← ENNReal.ofReal_prod_of_nonneg fun v _ => (gauge_pos (hc' v)).le, ← ENNReal.ofReal_prod_of_nonneg fun v _ => mul_nonneg (by positivity) (hd v), Finset.prod_mul_di …`. Establish `hK0 : μf I.Kset ≠ 0` using `(hKo.measure_pos μf ⟨1, (Ksub I).one_mem⟩).ne'`. Establish `hKt : μf I.Kset ≠ ⊤` using `hKc.measure_lt_top.ne`. Repeatedly rewrite using `[hr3]`.
+
+Rewrite using `[horb, hun, hint, hΓ', gaugeVol, div_eq_mul_inv, div_eq_mul_inv, div_eq_mul_inv]`. Generalize the expression as in `covol D.inst.GFset (D.inst.muA μf') Set.univ = a`. Generalize the expression as in `(μf' D.inst.Kset)⁻¹ = t`. Establish `h1` using `ENNReal.mul_inv_cancel hK0 hKt`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem unfold_sib (I : AutInst) (D : Sib I) (s : Bool) (x : Fin I.n → I.E)
     (A : Matrix (Fin I.n) (Fin D.n) I.E) (xf : I.Gf) (hp : IsPerp D s x A xf)
     (c : InfinitePlace I.F → ℝ) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure]
@@ -196,6 +247,11 @@ theorem unfold_sib (I : AutInst) (D : Sib I) (s : Bool) (x : Fin I.n → I.E)
         bv v g ∂(Formalism.REAL.muG (I.ε v))) * (μf I.Kset * (μf I.Kset)⁻¹) := by ring
     _ = _ := by rw [hprod, h1]; ring
 
+/- English proof (translation)
+Introduce `I I' e s x A xf _ hp c μf _ _ c' μf' _ _ fund hc hc' hf`. Take `⟨D, B, hD, hvol⟩` from `GlobalTheory.T.exists_orthComplement_unitVector_same_fields I I' e s x A xf hp`. Take `⟨μ, h1, h2⟩` from `GlobalTheory.T.exists_sigmaFinite_haar_finiteAdelicUnitary D.inst`. Use `choose d _ hd _ using fun v => GlobalTheory.T.riemannianHaarGauge_exists_pos_unique D.n (D.ε v)`. Rewrite using `[← hvol d μ c' μf' hd hc']`.
+
+Conclude with `unfold_sib I D s x B xf hD c μf d μ fund hc hd hf`.
+-/
 theorem gaugeUnfold : GaugeUnfold := by
   intro I I' e s x A xf _ hp c μf _ _ c' μf' _ _ fund hc hc' hf
   obtain ⟨D, B, hD, hvol⟩ := GlobalTheory.T.exists_orthComplement_unitVector_same_fields I I' e s x A xf hp

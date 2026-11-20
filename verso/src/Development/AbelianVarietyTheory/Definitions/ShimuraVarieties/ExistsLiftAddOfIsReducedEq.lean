@@ -19,6 +19,11 @@ variable {R : Type u} [CommRing R] (W : WeierstrassCurve R)
 instance isSeparated_over_hom : IsSeparated (schemeOver W).hom :=
   inferInstanceAs (IsSeparated (toSpec W))
 
+/- English proof (translation)
+Establish `: ∀ i, IsReduced ((X.affineOpenCover.openCover.pullback₁ (pullback.fst f (toSpec W))).X i)` using `fun i => by`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (X.affineOpenCover.f i ≫ f)`. Establish `: _root_.IsReduced (X.affineOpenCover.X i)` using `(affine_isReduced_iff _).mp (@isReduced_of_isOpenImmersion _ _ _ (X.affineOpenCover.map_prop i) _)`. Establish `h` using `(IsPullback.of_hasPullback (pullback.fst f (toSpec W)) (X.affineOpenCover.f i)).paste_horiz (IsPullback.of_hasPullback f (toSpec W)).flip`. Rewrite `h` using `[← hφ]`.
+
+Use `isReduced_scheme (W.map φ.hom)` as an intermediate fact. Set `e : _ ≅ scheme (W.map φ.hom)` to `h.isoIsPullback _ _ (isPullback_mapHom W φ.hom rfl)`. Conclude with `@isReduced_of_isOpenImmersion _ _ e.hom (@IsOpenImmersion.of_isIso _ _ _ e.isIso_hom) _`. Conclude with `.of_openCover _ (X.affineOpenCover.openCover.pullback₁ (pullback.fst f (toSpec W)))`.
+-/
 theorem isReduced_pullback_toSpec {X : Scheme.{u}} [IsReduced X] (f : X ⟶ Spec (.of R)) :
     IsReduced (pullback f (toSpec W)) := by
   have : ∀ i, IsReduced ((X.affineOpenCover.openCover.pullback₁
@@ -49,6 +54,9 @@ variable [_root_.IsReduced R] [W.IsElliptic]
 def addOfIsReduced : schemeOver W ⊗ schemeOver W ⟶ schemeOver W :=
   (exists_sum W (fst (schemeOver W) (schemeOver W)) (snd _ _)).choose
 
+/- English proof (translation)
+Establish `h` using `(exists_sum W (fst (schemeOver W) (schemeOver W)) (snd _ _)).choose_spec k (lift a b)`. Rewrite `h` using `[lift_fst, lift_snd]`. Then use the resulting hypothesis. Use the proof step `@[instance_reducible]`.
+-/
 theorem lift_addOfIsReduced (k : Type u) [Field k] [Algebra R k]
     (a b : specOver R k ⟶ schemeOver W) : lift a b ≫ addOfIsReduced W = fieldAdd W k a b := by
   have h := (exists_sum W (fst (schemeOver W) (schemeOver W)) (snd _ _)).choose_spec k (lift a b)
@@ -65,6 +73,9 @@ def grpObjOfIsReduced : GrpObj (schemeOver W) :=
         rintro @⟨⟨P⟩, hP⟩
         exact ptOver_negOver W P (.of_nonsingular hP)⟩
 
+/- English proof (translation)
+Set `` to `grpObjOfIsReduced W`. Use `⟨over_hom_eq_iff_forall_field_algebra.mpr fun k _ _ x => ?_⟩` and prove the remaining obligations. Rewrite using `[← lift_comp_fst_snd x, lift_braiding_hom_assoc]`. Express the relevant statement in the definitionally equal form `lift _ _ ≫ addOfIsReduced W = lift _ _ ≫ addOfIsReduced W`. Rewrite using `[lift_addOfIsReduced, lift_addOfIsReduced, fieldAdd, fieldAdd, add_comm]`.
+-/
 theorem isCommMonObj_of_isReduced :
     letI := grpObjOfIsReduced W
     IsCommMonObj (schemeOver W) := by
@@ -74,6 +85,23 @@ theorem isCommMonObj_of_isReduced :
   change lift _ _ ≫ addOfIsReduced W = lift _ _ ≫ addOfIsReduced W
   rw [lift_addOfIsReduced, lift_addOfIsReduced, fieldAdd, fieldAdd, add_comm]
 
+/- English proof (translation)
+Use `set z := lift (ptOver W P hP) (ptOver W Q hQ) with hz`. Set `t` to `z.left (IsLocalRing.closedPoint A)`. Set `B : Type u` to `(schemeOver W ⊗ schemeOver W).left.presheaf.stalk t`. Take `⟨ρ, hρ⟩` from `Spec.map_surjective ((schemeOver W ⊗ schemeOver W).left.fromSpecStalk t ≫ (schemeOver W ⊗ schemeOver W).hom)`. Set `: Algebra R B` to `ρ.hom.toAlgebra`.
+
+Set `j : specOver R B ⟶ schemeOver W ⊗ schemeOver W` to `Over.homMk ((schemeOver W ⊗ schemeOver W).left.fromSpecStalk t) hρ.symm`. Establish `e₀` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of A) z.left`. Set `x : specOver R A ⟶ specOver R B` to `Over.homMk (Spec.map (Scheme.stalkClosedPointTo (R := .of A) z.left)) (by`. Use `(congrArg (_ ≫ ·) hρ).trans ?_` and prove the remaining obligations. Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) e₀)).trans (Over.w z))`.
+
+Establish `hx : x ≫ j = z` using `Over.OverMorphism.ext e₀`. Take `⟨g, hg⟩` from `exists_eq_specOverMap x`. Take `⟨P₀, hP₀, eP⟩` from `exists_eq_ptOver W (j ≫ fst _ _)`. Take `⟨Q₀, hQ₀, eQ⟩` from `exists_eq_ptOver W (j ≫ snd _ _)`. Establish `: IsReduced (specOver R B).left` using `inferInstanceAs (IsReduced (Spec (.of B)))`.
+
+Establish `key : ∀ S₀, IsSumTriple (W.baseChange B) P₀ Q₀ S₀ → (∃ i, S₀ i ∉ IsLocalRing.maximalIdeal B) → ∃ hS : IsUnimodularSol (W.baseChange A) (g ∘ S₀), z ≫ addOfIsReduced W = ptOver W (g ∘ S₀) hS`. Introduce and unpack `S₀ h ⟨i, hi⟩`. Establish `hS₀ : IsUnimodularSol (W.baseChange B) S₀` using `.of_isUnit (h.equation_of_isReduced hP₀ hQ₀) i (IsLocalRing.notMem_maximalIdeal.mp hi)`. Establish `: j ≫ addOfIsReduced W = ptOver W S₀ hS₀` using `over_hom_eq_iff_forall_field_algebra.mpr fun k _ _ y => by`. Rewrite using `[comp_ptOver_eq_fieldAdd W hP₀ hQ₀ hS₀ h, ← lift_addOfIsReduced, ← eP, ← eQ, ← comp_lift, lift_comp_fst_snd, Category.assoc]`.
+
+Conclude with `⟨hS₀.baseChange g, by rw [← hx, Category.assoc, this, hg, specOverMap_ptOver]⟩`. Take `⟨a, ha⟩` from `(ptOver_eq_ptOver_iff W (hP₀.baseChange g) hP).mp (by`. Rewrite using `[← specOverMap_ptOver W g P₀ hP₀, ← eP, ← hg, ← Category.assoc, hx, hz, lift_fst])`. Take `⟨b, hb⟩` from `(ptOver_eq_ptOver_iff W (hQ₀.baseChange g) hQ).mp (by`. Rewrite using `[← specOverMap_ptOver W g Q₀ hQ₀, ← eQ, ← hg, ← Category.assoc, hx, hz, lift_snd])`.
+
+Establish `hu : IsUnit (((a : A) * b) ^ 2)` using `(a.isUnit.mul b.isUnit).pow 2`. Establish `hW : (W.baseChange B).map (g : B →+* A) = W.baseChange A` using `WeierstrassCurve.map_baseChange ..`. Break down `exists_law_notMem hP₀ hQ₀ (IsLocalRing.maximalIdeal B) with h | h` into its components or cases. Take `⟨hS, e⟩` from `key _ (isSumTriple_addXYZ hP₀.equation hQ₀.equation) h`. Use `⟨_, hS.smul hu, Or.inl ?_, e.trans (Over.OverMorphism.ext (pt_smul W _ hS hu).symm)⟩` and prove the remaining obligations.
+
+Rewrite using `[ha, hb, WeierstrassCurve.Projective.addXYZ_smul, ← hW]`. Conclude with `congrArg _ (WeierstrassCurve.Projective.map_addXYZ (g : B →+* A) P₀ Q₀).symm`. Take `⟨hS, e⟩` from `key _ (isSumTriple_diagXYZ hP₀.equation hQ₀.equation) h`. Use `⟨_, hS.smul hu, Or.inr ?_, e.trans (Over.OverMorphism.ext (pt_smul W _ hS hu).symm)⟩` and prove the remaining obligations. Rewrite using `[ha, hb, diagXYZ_smul, ← hW]`.
+
+Conclude with `congrArg _ (map_diagXYZ (g : B →+* A) P₀ Q₀).symm`.
+-/
 theorem exists_lift_addOfIsReduced_eq {A : Type u} [CommRing A] [IsLocalRing A] [Algebra R A]
     {P Q : Fin 3 → A} (hP : IsUnimodularSol (W.baseChange A) P)
     (hQ : IsUnimodularSol (W.baseChange A) Q) :
@@ -148,6 +176,9 @@ instance isElliptic_universalCurve : universalCurve.{u}.IsElliptic :=
 def coeffHom : MvPolynomial (ULift.{u} (Fin 5)) ℤ →+* R :=
   MvPolynomial.eval₂Hom (Int.castRingHom R) fun i => ![W.a₁, W.a₂, W.a₃, W.a₄, W.a₆] i.down
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [genericCurve, coeffHom]`.
+-/
 theorem map_coeffHom : genericCurve.map (coeffHom W) = W := by
   ext <;> simp [genericCurve, coeffHom]
 
@@ -156,10 +187,16 @@ def classifyingHom [W.IsElliptic] : UniversalRing.{u} →+* R :=
     rw [← WeierstrassCurve.map_Δ, map_coeffHom]
     exact W.isUnit_Δ)
 
+/- English proof (translation)
+Rewrite using `[universalCurve, WeierstrassCurve.map_map, classifyingHom, IsLocalization.Away.lift_comp, map_coeffHom]`.
+-/
 theorem map_classifyingHom [W.IsElliptic] : universalCurve.map (classifyingHom W) = W := by
   rw [universalCurve, WeierstrassCurve.map_map, classifyingHom, IsLocalization.Away.lift_comp,
     map_coeffHom]
 
+/- English proof (translation)
+Establish `e` using `h.trans (map_classifyingHom W).symm`. Use `IsLocalization.ringHom_ext (.powers genericCurve.Δ) (MvPolynomial.ringHom_ext (fun n => by simp) ?_)` and prove the remaining obligations. Introduce and unpack `⟨i⟩`. Use `fin_cases i`. Use `exacts [congrArg (·.a₁) e, congrArg (·.a₂) e, congrArg (·.a₃) e, congrArg (·.a₄) e, congrArg (·.a₆) e]`.
+-/
 theorem eq_classifyingHom [W.IsElliptic] {φ : UniversalRing.{u} →+* R}
     (h : universalCurve.map φ = W) : φ = classifyingHom W := by
   have e := h.trans (map_classifyingHom W).symm
@@ -170,6 +207,9 @@ theorem eq_classifyingHom [W.IsElliptic] {φ : UniversalRing.{u} →+* R}
   exacts [congrArg (·.a₁) e, congrArg (·.a₂) e, congrArg (·.a₃) e, congrArg (·.a₄) e,
     congrArg (·.a₆) e]
 
+/- English proof (translation)
+The claim follows from `isPullback_mapHom ..`.
+-/
 theorem isPullback_universalCurve [W.IsElliptic] :
     IsPullback (mapHom universalCurve (classifyingHom W) (map_classifyingHom W))
       (schemeOver W).hom (schemeOver universalCurve).hom
@@ -189,6 +229,9 @@ instance isCommMonObj : IsCommMonObj (schemeOver W) :=
     (grpObjOfIsReduced universalCurve) (isCommMonObj_of_isReduced universalCurve)
     (isPullback_universalCurve W)
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext ((isPullback_universalCurve W).hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Use `((isPullback_universalCurve W).lift_fst ..).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (zero_mapHom ..).symm` and prove the remaining obligations. Conclude with `congrArg (· ≫ zero universalCurve) (Category.id_comp _)`.
+-/
 theorem one_eq_zeroUnit : η[schemeOver W] = zeroUnit W := by
   refine Over.OverMorphism.ext ((isPullback_universalCurve W).hom_ext ?_
     ((Over.w _).trans (Over.w _).symm))
@@ -196,6 +239,9 @@ theorem one_eq_zeroUnit : η[schemeOver W] = zeroUnit W := by
   refine Eq.trans ?_ (zero_mapHom ..).symm
   exact congrArg (· ≫ zero universalCurve) (Category.id_comp _)
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext ((isPullback_universalCurve W).hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Use `((isPullback_universalCurve W).lift_fst ..).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (negHom_mapHom ..).symm` and prove the remaining obligations. Conclude with `congrArg (· ≫ negHom universalCurve) (Category.id_comp _)`.
+-/
 theorem inv_eq_negOver : ι[schemeOver W] = negOver W := by
   refine Over.OverMorphism.ext ((isPullback_universalCurve W).hom_ext ?_
     ((Over.w _).trans (Over.w _).symm))
@@ -203,15 +249,27 @@ theorem inv_eq_negOver : ι[schemeOver W] = negOver W := by
   refine Eq.trans ?_ (negHom_mapHom ..).symm
   exact congrArg (· ≫ negHom universalCurve) (Category.id_comp _)
 
+/- English proof (translation)
+The claim follows from `congrArg (·.left) (one_eq_zeroUnit W)`.
+-/
 @[simp] theorem one_left : η[schemeOver W].left = zero W := congrArg (·.left) (one_eq_zeroUnit W)
 
+/- English proof (translation)
+The claim follows from `congrArg (·.left) (inv_eq_negOver W)`.
+-/
 @[simp] theorem inv_left : ι[schemeOver W].left = negHom W := congrArg (·.left) (inv_eq_negOver W)
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def, one_eq_zeroUnit]`. Both sides reduce to the same expression.
+-/
 theorem hom_one_left (T : Over (Spec (.of R))) :
     (1 : T ⟶ schemeOver W).left = T.hom ≫ zero W := by
   rw [Hom.one_def, one_eq_zeroUnit]
   rfl
 
+/- English proof (translation)
+The claim follows from `@mul_left_comp_of_pullbackPointEquiv_mul _ _ (schemeOver universalCurve) (schemeOver W) _ _ (grpObjOfIsReduced universalCurve) (grpObj W) (isPullback_universalCurve W) _ _ t _ _ _ _ (@pullbackPointEquiv_mul _ _ (schemeOver universalCurve) (schemeOver W) _ _ (grpObjOfIsReduced uni …`.
+-/
 theorem mul_left_mapHom_universal {T' : Over (Spec (.of R))}
     {T : Over (Spec (.of UniversalRing.{u}))} (t : T'.left ⟶ T.left) {x' y' : T' ⟶ schemeOver W}
     {x y : T ⟶ schemeOver universalCurve}
@@ -229,6 +287,13 @@ section BaseChange
 variable {R' : Type u} [CommRing R'] {W' : WeierstrassCurve R'} [W'.IsElliptic] (f : R →+* R')
   (h : W.map f = W')
 
+/- English proof (translation)
+Establish `e : mapHom W f h ≫ mapHom universalCurve (classifyingHom W) (map_classifyingHom W) = mapHom universalCurve (classifyingHom W') (map_classifyingHom W')`. Rewrite using `[mapHom_comp]`. Use `congr 1`. Conclude with `eq_classifyingHom W' ((map_comp_eq (map_classifyingHom W) f).trans h)`. Use `(isPullback_universalCurve W).hom_ext ?_ ?_` and prove the remaining obligations.
+
+Establish `e₁` using `mul_left_mapHom_universal W (𝟙 T.left) (x := pullbackPointEquiv (isPullback_universalCurve W) T x) (y := pullbackPointEquiv (isPullback_universalCurve W) T y) (x' := x) (y' := y) (Category.id_comp _).symm (Category.id_comp _).symm`. Establish `e₂` using `mul_left_mapHom_universal W' t (x := pullbackPointEquiv (isPullback_universalCurve W) T x) (y := pullbackPointEquiv (isPullback_universalCurve W) T y) (x' := x') (y' := y') (by rw [← e, reassoc_of% hx]; rfl) (by rw [← e, reassoc_of% hy]; rfl)`. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) e).trans (e₂.trans ?_))` and prove the remaining obligations. Conclude with `((Category.assoc _ _ _).trans (congrArg (t ≫ ·) (e₁.trans (Category.id_comp _)))).symm`. Establish `w : ∀ z : T' ⟶ schemeOver W', (z.left ≫ mapHom W f h) ≫ (schemeOver W).hom = T'.hom ≫ Spec.map (CommRingCat.ofHom f)` using `fun z => (Category.assoc _ _ _).trans ((congrArg (z.left ≫ ·) (mapHom_toSpec W f h)).trans (Over.w_assoc z _))`.
+
+Rewrite using `[w, ← w x', hx, Category.assoc, Category.assoc, Over.w, Over.w]`.
+-/
 theorem mul_left_mapHom {T' : Over (Spec (.of R'))} {T : Over (Spec (.of R))}
     (t : T'.left ⟶ T.left) {x' y' : T' ⟶ schemeOver W'} {x y : T ⟶ schemeOver W}
     (hx : x'.left ≫ mapHom W f h = t ≫ x.left) (hy : y'.left ≫ mapHom W f h = t ≫ y.left) :
@@ -257,6 +322,9 @@ theorem mul_left_mapHom {T' : Over (Spec (.of R'))} {T : Over (Spec (.of R))}
 
 end BaseChange
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isPullback_mapHom W f h, fun T _ _ x₀ y₀ hx hy => ((mul_left_mapHom W f h (𝟙 T.left) (x := x₀) (y := y₀) (hx.symm.trans (Category.id_comp _).symm) (hy.symm.trans (Category.id_comp _).symm)).trans (Category.id_comp _)).symm⟩`.
+-/
 theorem isGrpPullback_mapHom {R R' : Type} [CommRing R] [CommRing R'] (W : WeierstrassCurve R)
     [W.IsElliptic] {W' : WeierstrassCurve R'} [W'.IsElliptic] (f : R →+* R') (h : W.map f = W') :
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback (schemeOver W') (schemeOver W)
@@ -269,17 +337,31 @@ section Ring
 
 variable {A : Type u} [CommRing A] [Algebra R A] {P Q T : Fin 3 → A}
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (hom_one_left W _)`.
+-/
 theorem one_eq_zeroOver : (1 : specOver R A ⟶ schemeOver W) = zeroOver W A :=
   Over.OverMorphism.ext (hom_one_left W _)
 
+/- English proof (translation)
+The claim follows from `(one_eq_zeroOver W).trans (zeroOver_eq_ptOver W A)`.
+-/
 theorem one_eq_ptOver :
     (1 : specOver R A ⟶ schemeOver W) = ptOver W ![0, 1, 0] (isUnimodularSol_zero _) :=
   (one_eq_zeroOver W).trans (zeroOver_eq_ptOver W A)
 
+/- English proof (translation)
+Rewrite using `[Hom.inv_def, inv_eq_negOver, ptOver_negOver]`.
+-/
 theorem ptOver_inv (hP : IsUnimodularSol (W.baseChange A) P) :
     (ptOver W P hP)⁻¹ = ptOver W ((W.baseChange A).toProjective.neg P) hP.neg := by
   rw [Hom.inv_def, inv_eq_negOver, ptOver_negOver]
 
+/- English proof (translation)
+Set `: Algebra UniversalRing.{u} A` to `((algebraMap R A).comp (classifyingHom W)).toAlgebra`. Establish `e : universalCurve.baseChange A = W.baseChange A` using `map_comp_eq (map_classifyingHom W) _`. Establish `key : ∀ (S : Fin 3 → A) (hS : IsUnimodularSol (W.baseChange A) S) (hS' : IsUnimodularSol (universalCurve.baseChange A) S), pt W S hS ≫ mapHom universalCurve (classifyingHom W) (map_classifyingHom W) = 𝟙 _ ≫ pt universalCurve S hS'` using `fun S hS hS' => (ptHom_mapHom ..).trans (Category.id_comp _).symm`. Take `⟨S, hS, h, eS⟩` from `exists_lift_addOfIsReduced_eq universalCurve (e ▸ hP) (e ▸ hQ)`. Rewrite `h` using `[e]`.
+
+Use `⟨S, e ▸ hS, h, Over.OverMorphism.ext ((isPullback_universalCurve W).hom_ext ?_ ((Over.w _).trans (Over.w _).symm))⟩` and prove the remaining obligations. Use `(mul_left_mapHom_universal W (𝟙 _) (x := ptOver universalCurve P (e ▸ hP)) (y := ptOver universalCurve Q (e ▸ hQ)) (key P hP (e ▸ hP)) (key Q hQ (e ▸ hQ))).trans ?_` and prove the remaining obligations. Rewrite using `[eS]`. Conclude with `(key S (e ▸ hS) hS).symm`.
+-/
 theorem exists_ptOver_mul_ptOver_eq [IsLocalRing A] (hP : IsUnimodularSol (W.baseChange A) P)
     (hQ : IsUnimodularSol (W.baseChange A) Q) :
     ∃ (S : Fin 3 → A) (hS : IsUnimodularSol (W.baseChange A) S),
@@ -302,6 +384,11 @@ theorem exists_ptOver_mul_ptOver_eq [IsLocalRing A] (hP : IsUnimodularSol (W.bas
   rw [eS]
   exact (key S (e ▸ hS) hS).symm
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext (hom_ext_of_isLocalRing fun B _ _ φ => ?_)` and prove the remaining obligations. Set `: Algebra R B` to `(φ.comp (algebraMap R A)).toAlgebra`. Set `g : A →ₐ[R] B` to `⟨φ, fun _ => rfl⟩`. It suffices to establish `specOverMap g ≫ (ptOver W P hP * ptOver W Q hQ) = specOverMap g ≫ ptOver W T hT from congrArg (·.left) this`. Take `⟨S, hS, h', e⟩` from `exists_ptOver_mul_ptOver_eq W (hP.baseChange g) (hQ.baseChange g)`.
+
+Rewrite using `[MonObj.comp_mul, specOverMap_ptOver, specOverMap_ptOver, specOverMap_ptOver, e]`. Use `Over.OverMorphism.ext ((pt_eq_pt_iff_minors W (hT.baseChange g) hS).mpr ?_).symm` and prove the remaining obligations. Break down `h' with rfl | rfl` into its components or cases. Use `exacts [(h.baseChange g).add, (h.baseChange g).diag]`.
+-/
 theorem ptOver_mul_ptOver (hP : IsUnimodularSol (W.baseChange A) P)
     (hQ : IsUnimodularSol (W.baseChange A) Q) (hT : IsUnimodularSol (W.baseChange A) T)
     (h : IsSumTriple (W.baseChange A) P Q T) :
@@ -317,6 +404,15 @@ theorem ptOver_mul_ptOver (hP : IsUnimodularSol (W.baseChange A) P)
   rcases h' with rfl | rfl
   exacts [(h.baseChange g).add, (h.baseChange g).diag]
 
+/- English proof (translation)
+Use `eq_zero_of_localization _ fun p _ => ?_` and prove the remaining obligations. Set `g` to `algebraMap A (Localization.AtPrime p)`. Take `⟨S, hS, h', -⟩` from `exists_ptOver_mul_ptOver_eq V (A := Localization.AtPrime p) (hP.map g) (hQ.map g)`. Establish `hp : Proportional (g ∘ T) S`. Break down `h' with rfl | rfl` into its components or cases.
+
+Use `exacts [(h.map g).add, (h.map g).diag]`. Take `⟨i, v, hv⟩` from `hS.exists_isUnit`. Establish `e : g ∘ T = ((g ∘ T) i * (v⁻¹ : (Localization.AtPrime p)ˣ)) • S`. Use extensionality with `j`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_right_comm, hp i j, ← hv, Units.mul_inv_cancel_right]`.
+
+Establish `h₀ : (V.toProjective.map g).Equation (g ∘ T)`. Establish `h₁ : MvPolynomial.eval₂ (RingHom.id _) S (V.map g).toProjective.polynomial = 0` using `hS.equation`. Establish `h₂` using `eval₂_smul_of_isHomogeneous (RingHom.id _) (isHomogeneous_polynomial (V.map g)) ((g ∘ T) i * (v⁻¹ : (Localization.AtPrime p)ˣ)) S`. Rewrite `h₂` using `[← e, h₁, mul_zero]`. Conclude with `h₂`.
+
+Rewrite `h₀` using `[WeierstrassCurve.Projective.Equation, WeierstrassCurve.Projective.map_polynomial, MvPolynomial.eval_map, ← MvPolynomial.eval₂_comp]`. Then use the resulting hypothesis.
+-/
 theorem IsSumTriple.equation {V : WeierstrassCurve A} [V.IsElliptic] (h : IsSumTriple V P Q T)
     (hP : IsUnimodularSol V P) (hQ : IsUnimodularSol V Q) : V.toProjective.Equation T := by
   refine eq_zero_of_localization _ fun p _ => ?_
@@ -340,6 +436,9 @@ theorem IsSumTriple.equation {V : WeierstrassCurve A} [V.IsElliptic] (h : IsSumT
   rwa [WeierstrassCurve.Projective.Equation, WeierstrassCurve.Projective.map_polynomial,
     MvPolynomial.eval_map, ← MvPolynomial.eval₂_comp] at h₀
 
+/- English proof (translation)
+Use `ptOver_mul_ptOver W hP hP hT ⟨fun i j => ?_, (diagXYZ_self hP.equation).symm ▸ h⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Projective.addXYZ_self]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+-/
 theorem ptOver_mul_self (hP : IsUnimodularSol (W.baseChange A) P)
     (hT : IsUnimodularSol (W.baseChange A) T)
     (h : Proportional T ((W.baseChange A).toProjective.dblXYZ P)) :
@@ -354,6 +453,13 @@ section Field
 
 variable (k : Type u) [Field k] [Algebra R k]
 
+/- English proof (translation)
+Take `@⟨⟨P⟩, hP⟩` from `p`. Take `@⟨⟨Q⟩, hQ⟩` from `q`. Establish `hP' : IsUnimodularSol (W.baseChange k) P` using `.of_nonsingular hP`. Establish `hQ' : IsUnimodularSol (W.baseChange k) Q` using `.of_nonsingular hQ`. Take `⟨S, hS, h, e⟩` from `exists_ptOver_mul_ptOver_eq W hP' hQ'`.
+
+Establish `h' : IsSumTriple (W.baseChange k) P Q S`. Break down `h with rfl | rfl` into its components or cases. Use `exacts [isSumTriple_addXYZ hP'.equation hQ'.equation, isSumTriple_diagXYZ hP'.equation hQ'.equation]`. Use `Eq.trans ?_ ((fieldAdd_ptOver W hP' hQ' hS h').trans e.symm)` and prove the remaining obligations. Rewrite using `[fieldAdd, projectivePointEquiv_symm_ptOver, projectivePointEquiv_symm_ptOver]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ofProjectivePoint_add (p q : (W.baseChange k).toProjective.Point) :
     ofProjectivePoint W k (p + q) = ofProjectivePoint W k p * ofProjectivePoint W k q := by
   obtain @⟨⟨P⟩, hP⟩ := p
@@ -374,11 +480,17 @@ def projectivePointMulEquiv :
   toEquiv := Multiplicative.toAdd.trans (projectivePointEquiv W k)
   map_mul' p q := ofProjectivePoint_add W k p.toAdd q.toAdd
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem projectivePointMulEquiv_ofAdd (p : (W.baseChange k).toProjective.Point) :
     projectivePointMulEquiv W k (.ofAdd p) = ofProjectivePoint W k p := rfl
 
 variable [DecidableEq k]
 
+/- English proof (translation)
+The claim follows from `(congrArg (ofProjectivePoint W k) (map_add (WeierstrassCurve.Projective.Point.toAffineAddEquiv (W.baseChange k).toProjective).symm p q)).trans (ofProjectivePoint_add W k _ _)`.
+-/
 theorem ofAffinePoint_add (p q : (W.baseChange k).toAffine.Point) :
     ofAffinePoint W k (p + q) = ofAffinePoint W k p * ofAffinePoint W k q :=
   (congrArg (ofProjectivePoint W k) (map_add (WeierstrassCurve.Projective.Point.toAffineAddEquiv
@@ -389,9 +501,15 @@ def affinePointMulEquiv :
   toEquiv := Multiplicative.toAdd.trans (affinePointEquiv W k)
   map_mul' p q := ofAffinePoint_add W k p.toAdd q.toAdd
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem affinePointMulEquiv_ofAdd (p : (W.baseChange k).toAffine.Point) :
     affinePointMulEquiv W k (.ofAdd p) = ofAffinePoint W k p := rfl
 
+/- English proof (translation)
+The claim follows from `map_zpow (affinePointMulEquiv W k) (.ofAdd p) n`.
+-/
 theorem ofAffinePoint_zsmul (n : ℤ) (p : (W.baseChange k).toAffine.Point) :
     ofAffinePoint W k (n • p) = ofAffinePoint W k p ^ n :=
   map_zpow (affinePointMulEquiv W k) (.ofAdd p) n
@@ -412,6 +530,9 @@ private instance : sampleCurve.IsElliptic := ⟨Ne.isUnit (by
   norm_num [sampleCurve, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄,
     WeierstrassCurve.b₆, WeierstrassCurve.b₈])⟩
 
+/- English proof (translation)
+The claim follows from `isUnimodularSol_some (by rw [WeierstrassCurve.Affine.equation_iff] simp only [sampleCurve, WeierstrassCurve.baseChange, WeierstrassCurve.map, map_zero, map_one, map_neg] linear_combination h)`.
+-/
 private theorem sample_sol {a b : ℚ} (h : b ^ 2 + b = a ^ 3 - a) :
     IsUnimodularSol (sampleCurve.baseChange ℚ) ![a, b, 1] :=
   isUnimodularSol_some (by
@@ -420,6 +541,9 @@ private theorem sample_sol {a b : ℚ} (h : b ^ 2 + b = a ^ 3 - a) :
       map_neg]
     linear_combination h)
 
+/- English proof (translation)
+Rewrite using `[ptOver_inv]`. Use `congr 1`. Simplify using `[WeierstrassCurve.Projective.neg, WeierstrassCurve.Projective.negY, sampleCurve, WeierstrassCurve.baseChange]`.
+-/
 example : (ptOver sampleCurve ![0, 0, 1] (sample_sol (by norm_num)))⁻¹ =
     ptOver sampleCurve (A := ℚ) ![0, -1, 1] (sample_sol (by norm_num)) := by
   rw [ptOver_inv]
@@ -427,6 +551,9 @@ example : (ptOver sampleCurve ![0, 0, 1] (sample_sol (by norm_num)))⁻¹ =
   simp [WeierstrassCurve.Projective.neg, WeierstrassCurve.Projective.negY, sampleCurve,
     WeierstrassCurve.baseChange]
 
+/- English proof (translation)
+Use `ptOver_mul_self _ _ _ fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [WeierstrassCurve.Projective.dblXYZ, WeierstrassCurve.Projective.dblX, WeierstrassCurve.Projective.dblY, WeierstrassCurve.Projective.dblZ, WeierstrassCurve.Projective.negDblY, WeierstrassCurve.Projective.negY, sampleCurve, WeierstrassCurve.baseChange] <;> norm_num`.
+-/
 example : ptOver sampleCurve ![0, 0, 1] (sample_sol (by norm_num)) *
     ptOver sampleCurve ![0, 0, 1] (sample_sol (by norm_num)) =
     ptOver sampleCurve (A := ℚ) ![1, 0, 1] (sample_sol (by norm_num)) := by
@@ -437,6 +564,9 @@ example : ptOver sampleCurve ![0, 0, 1] (sample_sol (by norm_num)) *
       WeierstrassCurve.Projective.negDblY, WeierstrassCurve.Projective.negY, sampleCurve,
       WeierstrassCurve.baseChange] <;> norm_num
 
+/- English proof (translation)
+Rewrite using `[one_eq_ptOver]`. Introduce `e`. Take `⟨v, hv⟩` from `(ptOver_eq_ptOver_iff _ _ _).mp e`. Simplify using `using congrFun hv 1`.
+-/
 example : ptOver sampleCurve (A := ℚ) ![0, 0, 1] (sample_sol (by norm_num)) ≠ 1 := by
   rw [one_eq_ptOver]
   intro e

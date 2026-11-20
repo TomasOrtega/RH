@@ -19,9 +19,21 @@ def IsAutQA (ι : Qbar l ≃+* ℂ) (r : G F Ω →* GL (Fin n) (Qbar l)) : Prop
       (∃ π : CuspSub K n, (CG.mk π).IsRegAlg ∧ AttC ι (r.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω)) π) ∧
         WitA ι (r.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω))
 
+/- English proof (translation)
+The claim follows from `@IsAutCsdA`.
+-/
 example : type_of% @IsAutCsd := @IsAutCsdA
+/- English proof (translation)
+The claim follows from `@IsAutQA`.
+-/
 example : type_of% @IsAutQ := @IsAutQA
+/- English proof (translation)
+The claim follows from `@WitA`.
+-/
 example : type_of% @Wit := @WitA
+/- English proof (translation)
+The claim follows from `@WitAQ`.
+-/
 example : type_of% @WitQ := @WitAQ
 
 end UpperTheory.V.Z.Win

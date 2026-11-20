@@ -20,6 +20,13 @@ section SBProof
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hlt : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Establish `hc : valuation k ((ϖ ^ c : kˣ) : k) ≤ 1`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow]`. Conclude with `pow_le_one' hlt.le c`. Establish `he : valuation k ((ϖ ^ (c + 1) : kˣ) : k) = valuation k ((ϖ ^ c : kˣ) : k) * valuation k (ϖ : k)`.
+
+Rewrite using `[pow_succ, Units.val_mul, map_mul]`. Use `⟨?_, ?_, hc⟩` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hc) hlt`. Rewrite using `[he]`.
+
+Conclude with `mul_le_of_le_one_right' hlt.le`.
+-/
 theorem unif_pow_facts {ϖ : kˣ} (hϖ : GlobalTheory.SplitFlip.IsUnif ϖ) (c : ℕ) :
     valuation k ((ϖ ^ (c + 1) : kˣ) : k) < 1 ∧
       valuation k ((ϖ ^ (c + 1) : kˣ) : k) ≤ valuation k ((ϖ ^ c : kˣ) : k) ∧
@@ -33,6 +40,9 @@ theorem unif_pow_facts {ϖ : kˣ} (hϖ : GlobalTheory.SplitFlip.IsUnif ϖ) (c : 
   · rw [he]; exact lt_of_le_of_lt (mul_le_of_le_one_left' hc) hlt
   · rw [he]; exact mul_le_of_le_one_right' hlt.le
 
+/- English proof (translation)
+Take `⟨-, hec, -⟩` from `unif_pow_facts hϖ c`. Simplify using `only [GlobalTheory.SplitWeil.cball, Set.mem_setOf_eq] at hx ⊢`. Establish `: y = (y - x) + x` using `by ring`. Rewrite using `[this]`. Conclude with `Valuation.map_add_le _ (hxy.trans hec) hx`.
+-/
 theorem cball_stable {c : ℕ} {ϖ : kˣ} (hϖ : GlobalTheory.SplitFlip.IsUnif ϖ) {x y : k}
     (hxy : valuation k (y - x) ≤ valuation k ((ϖ ^ (c + 1) : kˣ) : k)) (hx : x ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)) :
     y ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c) := by
@@ -42,6 +52,13 @@ theorem cball_stable {c : ℕ} {ϖ : kˣ} (hϖ : GlobalTheory.SplitFlip.IsUnif �
   rw [this]
   exact Valuation.map_add_le _ (hxy.trans hec) hx
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `X`. Establish `: ∀ᶠ Y in 𝓝 X, ∀ i j, valuation k (Y i j - X i j) ≤ valuation k (s : k)`. Rewrite using `[Filter.eventually_all]`. Introduce `i`.
+
+Rewrite using `[Filter.eventually_all]`. Introduce `j`. Establish `hc : Continuous fun Y : Matrix (Fin m) (Fin n) k => Y i j - X i j` using `(continuous_id.matrix_elem i j).sub continuous_const`. Establish `ht` using `hc.tendsto X`. Simplify using `only [sub_self] at ht`.
+
+Conclude with `ht (GlobalTheory.SplitWeil.cball_mem_nhds s)`. Conclude with `this.mono fun Y hY => hf X Y hY`.
+-/
 theorem isLocallyConstant_of_close {m n : ℕ} (s : kˣ) (f : Matrix (Fin m) (Fin n) k → ℂ)
     (hf : ∀ X Y : Matrix (Fin m) (Fin n) k, (∀ i j, valuation k (Y i j - X i j) ≤ valuation k (s : k)) → f Y = f X) :
     IsLocallyConstant f := by
@@ -57,6 +74,9 @@ theorem isLocallyConstant_of_close {m n : ℕ} (s : kˣ) (f : Matrix (Fin m) (Fi
     exact ht (GlobalTheory.SplitWeil.cball_mem_nhds s)
   exact this.mono fun Y hY => hf X Y hY
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Establish `hK` using `isCompact_univ_pi fun _ : Fin m => isCompact_univ_pi fun _ : Fin n => GlobalTheory.SplitWeil.isCompact_int k`. Use `HasCompactSupport.intro (f := f) hK fun X hX => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hX (Set.mem_univ_pi.2 fun i => Set.mem_univ_pi.2 fun j => hf X h i j)`.
+-/
 theorem hasCompactSupport_of_int {m n : ℕ} (f : Matrix (Fin m) (Fin n) k → ℂ)
     (hf : ∀ X, f X ≠ 0 → ∀ i j, X i j ∈ 𝒪[k]) : HasCompactSupport f := by
   haveI := GlobalTheory.SplitWeil.t2Space k

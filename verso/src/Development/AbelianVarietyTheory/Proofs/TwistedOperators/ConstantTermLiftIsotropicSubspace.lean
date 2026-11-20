@@ -8,6 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TowerConstTermObj
 
+/- English proof (translation)
+Introduce `D V V' W r C B hsplit ψ χS χT χT' ω ω' hω hω'`. Establish `hcomp : GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.Compatible ψ V V' W C B ω ω'` using `GlobalTheory.T.weilCompatible_of_sameSplittingCharacter D V V' W r C B hsplit ψ χS χT χT' ω ω' hω hω'`. Conclude with `GlobalTheory.T.thetaLift_constantTerm_compatibleWeil D V V' W r C B hsplit ψ χS χT χS χT' ω ω' hω hω' hcomp`.
+-/
 theorem towerConstTerm : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.TowerConstTerm D := by
 
   intro D V V' W r C B hsplit ψ χS χT χT' ω ω' hω hω'

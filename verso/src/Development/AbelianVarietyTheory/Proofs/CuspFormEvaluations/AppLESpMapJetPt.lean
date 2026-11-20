@@ -11,6 +11,11 @@ namespace GlobalTheory.AnValJetGlob
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `hU : q 0 cpt ∈ U`. Establish `: (spMap χ ≫ jetPt q hq m) (IsLocalRing.closedPoint _) ∈ U` using `h (show IsLocalRing.closedPoint _ ∈ (⊤ : (Spec _).Opens) from trivial)`. Rewrite `this` using `[Scheme.Hom.comp_apply, spMap, Spec_closedPoint, jetPt_closedPoint]`. Then use the resulting hypothesis. Use `⟨hU, fun f => ?_⟩` and prove the remaining obligations. Establish `hp : ⊤ ≤ jetPt q hq m ⁻¹ᵁ U` using `(Scheme.preimage_eq_top_of_closedPoint_mem (jetPt q hq m) (by rw [jetPt_closedPoint]; exact hU)).ge`.
+
+Establish `k` using `specMap_comp_appLE (CommRingCat.ofHom χ) (jetPt q hq m) U h hp`. Rewrite `k` using `[jetPt_appLE q hq m U hU hp, Category.assoc, Iso.inv_hom_id_assoc, ← Iso.eq_comp_inv]`. Establish `k'` using `ConcreteCategory.congr_hom k f`. Rewrite `k'` using `[ConcreteCategory.comp_apply, ConcreteCategory.comp_apply, jetψ_apply]`. Conclude with `k'`.
+-/
 theorem appLE_spMap_jetPt {N m : ℕ} {I : Type} {Z : Scheme.{0}} (q : (Fin N → ℂ) → (Sp ℂ ⟶ Z)) (hq : IsHolFam q)
     (χ : Jet ℂ (Fin 1 × Fin N) m →+* Jet ℂ I m) [IsLocalHom χ] (U : Z.Opens)
     (h : ⊤ ≤ (spMap χ ≫ jetPt q hq m) ⁻¹ᵁ U) :
@@ -31,6 +36,19 @@ theorem appLE_spMap_jetPt {N m : ℕ} {I : Type} {Z : Scheme.{0}} (q : (Fin N �
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `S A _ _ L x0 g Φ n m Z K _ φ ε t Λ q hq H`. Use `⟨fun k => ?_, fun j h => ?_⟩` and prove the remaining obligations. Establish `he : ∀ v, q v ≫ φ k = (Φ.e (Λ k (colsOf n g v))).left` using `fun v => (H v).1 k`. Establish `hol : IsHolFam (fun v : Fin (n * g) → ℂ => (Φ.e (Λ k (colsOf n g v))).left)`. Establish `h` using `isHolFam_comp q hq (φ k)`.
+
+Rewrite `h` using `[show (fun v => q v ≫ φ k) = fun v => (Φ.e (Λ k (colsOf n g v))).left from funext he]`. Then use the resulting hypothesis. Use `⟨hol, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Category.assoc, jetPt_comp q hq (φ k) _ hol he]`. Establish `: IsLocalHom (renN n g m : Jet ℂ (Fin 1 × Fin (n * g)) m →+* Jet ℂ (Fin n × Fin g) m)` using `isLocalHom_jetMap (K := ℂ) (m := m) _ _`.
+
+Establish `h' : ⊤ ≤ (spMap (renN n g m : Jet ℂ (Fin 1 × Fin (n * g)) m →+* Jet ℂ (Fin n × Fin g) m) ≫ jetPt q hq m) ⁻¹ᵁ LB.wchart L.L φ j`. Introduce `x hx`. Establish `hx'` using `h hx`. Simplify using `only [LB.wchart] at hx' ⊢`. Conclude with `Set.mem_iInter.2 fun k => by`.
+
+Use `Set.mem_iInter.1 hx' k` as an intermediate fact. Simplify `this` using `only [Set.mem_preimage, Scheme.Hom.comp_apply]`. Take `⟨hU, hf⟩` from `appLE_spMap_jetPt q hq _ _ h'`. Establish `hj : jetOf m (fun v => valAt' (q v) (LB.wchart L.L φ j) (t.s j).val) = jetOf m (fun v => ∏ k, Φ.fr (j k) (Λ k (colsOf n g v)) ^ ε k)`. Use `jetOf_congr m ((eventually_mem q hq hU).mono fun v hv => ?_)` and prove the remaining obligations.
+
+Use `(H v).2 j hv` as an intermediate fact. Rewrite `this` using `[_root_.one_mul]`. Conclude with `this`. Establish `hf'` using `hf (t.s j).val`. Rewrite `hf'` using `[hj]`.
+
+Use `Eq.trans ?_ hf'` and prove the remaining obligations. Rewrite using `[Scheme.Hom.appLE, CommRingCat.comp_apply]`. Use `show ((Sp (Jet ℂ (Fin n × Fin g) m)).presheaf.map (homOfLE h).op).hom (((Sp (Jet ℂ (Fin n × Fin g) m)).presheaf.map (homOfLE _).op).hom _) = _`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem jetRd_pullGen : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : RigLB A) (x0 : Sp ℂ ⟶ S) (g : ℕ) (Φ : AnFr A L x0 g), ∀ (n m : ℕ) (Z : Scheme.{0}) (K : Type) [Fintype K] (φ : K → (Z ⟶ A.left)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L.L φ ε)) (Λ : K → (Fin n → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (q : (Fin (n * g) → ℂ) → (Sp ℂ ⟶ Z)) (hq : IsHolFam q), (∀ v, Φ.GenRd φ ε t (q v) (fun k => Λ k (colsOf n g v)) 1) → Φ.JetRd m (fun k => (spMap (renN n g m : Jet ℂ (Fin 1 × Fin (n * g)) m →+* Jet ℂ (Fin n × Fin g) m) ≫ jetPt q hq m) ≫ φ k) ε (LB.pullGen L.L φ ε t (spMap (renN n g m : Jet ℂ (Fin 1 × Fin (n * g)) m →+* Jet ℂ (Fin n × Fin g) m) ≫ jetPt q hq m)) Λ := by
   intro S A _ _ L x0 g Φ n m Z K _ φ ε t Λ q hq H
   refine ⟨fun k => ?_, fun j h => ?_⟩

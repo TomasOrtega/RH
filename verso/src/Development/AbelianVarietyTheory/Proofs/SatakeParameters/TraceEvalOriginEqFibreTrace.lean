@@ -16,6 +16,25 @@ namespace GlobalTheory.PD.TraceOrigin
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Introduce `k _ _ F K _ _ _ _ _ _ d x hc ev hker h a ha`. Use `haveI : Module.IsTorsionFree (rA k x {0}) (integralClosure (rA k x {0}) K) := inferInstance`. Use `haveI : IsFractionRing (rA k x {0}) F := (GlobalTheory.T.standardOpenCoordinateRing_isFractionRing_isNoetherianRing k F d x hc.pd {0} (Finset.singleton_nonempty 0)).1`. Take `⟨e, he⟩` from `GlobalTheory.T.standardAffineOpen_ring_polynomialEquiv k F d x hc.pd 0`. Use `haveI : IsIntegrallyClosed (rA k x {0}) := haveI : UniqueFactorizationMonoid (MvPolynomial (Fin d) k) := inferInstance haveI : UniqueFactorizationMonoid (rA k x {0}) := (MulEquiv.uniqueFactorizationMonoid e.toMulEquiv inferInstance) inferInstance`.
+
+Use `haveI := hc.fin`. Use `haveI : Module.Finite (rA k x {0}) (integralClosure (rA k x {0}) K) := (GlobalTheory.T.finite_cover_chart_smooth_normal k F K d x hc {0} (Finset.singleton_nonempty 0)).1`. Use `haveI := GlobalTheory.T.integralClosure_projective_over_standardOpenRing k F K d x hc 0`. Use `haveI : IsIntegrallyClosed (integralClosure (rA k x {0}) K) := integralClosure.isIntegrallyClosedOfFiniteExtension F`. Establish `hsurj : Function.Surjective ev` using `fun c => ⟨algebraMap k _ c, ev.commutes c⟩`.
+
+Use `haveI hmax : (RingHom.ker ev).IsMaximal := RingHom.ker_isMaximal_of_surjective ev hsurj`. Set `h' : integralClosure (rA k x {0}) K` to `⟨h.1, h.2⟩`. Establish `hint : a = Algebra.intTrace (rA k x {0}) (integralClosure (rA k x {0}) K) h'`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `ha.trans (Algebra.algebraMap_intTrace (A := rA k x {0}) (K := F) (L := K) h').symm`.
+
+Establish `key` using `GlobalTheory.trace_quotient_eq_of_projective (rA k x {0}) (integralClosure (rA k x {0}) K) (RingHom.ker ev) h'`. Use `set p := RingHom.ker ev with hp`. Set `e₁ : (rA k x {0}) ⧸ p ≃+* k` to `(Ideal.quotientKerAlgEquivOfSurjective hsurj).toRingEquiv`. Establish `he₁ : ∀ y, e₁ (Ideal.Quotient.mk p y) = ev y` using `fun y => rfl`. Set `φ : integralClosure (rA k x {0}) K ≃+* rB k K x {0}` to `{ toFun := fun b => ⟨b.1, b.2⟩, invFun := fun b => ⟨b.1, b.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl, map_mul' := fun _ _ => rfl, map_add' := fun _ _ => rfl }`.
+
+Use `set J : Ideal (rB k K x {0}) := Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem k K x j⟩ : (rB k K x {0}))) with hJdef`. Establish `hJ : J = (p.map (algebraMap (rA k x {0}) (integralClosure (rA k x {0}) K))).map φ`. Rewrite using `[hker, Ideal.map_span, Ideal.map_span, ← Set.range_comp, ← Set.range_comp]`. Both sides reduce to the same expression. Set `e₂` to `Ideal.quotientEquiv (p.map (algebraMap (rA k x {0}) (integralClosure (rA k x {0}) K))) J φ hJ`.
+
+Establish `hcomm : (algebraMap k (rB k K x {0} ⧸ J)).comp e₁.toRingHom = e₂.toRingHom.comp (algebraMap _ _)`. Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J (algebraMap k _ (ev y)) = Ideal.Quotient.mk J (φ (algebraMap _ _ y))`. Rewrite using `[Ideal.Quotient.eq]`. Establish `hmem : y - algebraMap k _ (ev y) ∈ p`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Establish `h3 : φ (algebraMap (rA k x {0}) (integralClosure (rA k x {0}) K) (y - algebraMap k _ (ev y))) ∈ J` using `hJ ▸ Ideal.mem_map_of_mem φ (Ideal.mem_map_of_mem _ hmem)`. Use `J.neg_mem h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, map_sub, neg_sub]`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap k K (ev y) = algebraMap F K (algebraMap k F (ev y))`. Conclude with `IsScalarTower.algebraMap_apply k F K _`. Establish `htr` using `Algebra.trace_eq_of_equiv_equiv e₁ e₂ hcomm (Ideal.Quotient.mk _ h')`. Rewrite `htr` using `[key]`.
+
+Establish `h2 : e₂ (Ideal.Quotient.mk _ h') = Ideal.Quotient.mk J h` using `rfl`. Use `congrArg e₁ htr` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply, h2, he₁]`. Rewrite using `[hint, this]`.
+-/
 theorem ev_eq_trace_quot : ∀ (k : Type) [Field k] [CharZero k] (F K : Type) [Field F] [Field K] [Algebra k F] [Algebra k K] [Algebra F K] [IsScalarTower k F K] (d : ℕ) (x : Fin (d + 1) → F), IsFinCover k K x → ∀ ev : rA k x {0} →ₐ[k] k, RingHom.ker ev = Ideal.span (Set.range fun j : Fin d => (⟨x j.succ / x 0, Algebra.subset_adjoin ⟨0, Finset.mem_singleton_self 0, j.succ, rfl⟩⟩ : rA k x {0})) → ∀ (h : rB k K x {0}) (a : rA k x {0}), (a : F) = Algebra.trace F K (h : K) → ev a = Algebra.trace k ((rB k K x {0}) ⧸ (Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem k K x j⟩ : (rB k K x {0}))))) (Ideal.Quotient.mk _ h) := by
   intro k _ _ F K _ _ _ _ _ _ d x hc ev hker h a ha
   haveI : Module.IsTorsionFree (rA k x {0}) (integralClosure (rA k x {0}) K) := inferInstance

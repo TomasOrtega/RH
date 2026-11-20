@@ -16,6 +16,13 @@ open scoped Classical
 
 namespace GlobalTheory.ConeDecompWeil
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h`. Take `⟨r, g, hg, hspan⟩` from `GlobalTheory.T.seesaw_evaluation_haar_unfolding hKP F E σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h`. Take `⟨r', g', c, hg'span, hlag⟩` from `GlobalTheory.T.finite_span_function_interpolation_basis _ r g`. Use `choose S hS hSc using fun j : Fin r' => GlobalTheory.T.seesaw_evaluation_haar_level_measure hKP F E σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h (c j)`. Establish `hle : Submodule.span ℂ (Set.range g) ≤ SB (Fin b × Fin (a + b) → FiniteAdeleRing (𝓞 F) F)` using `Submodule.span_le.mpr (Set.range_subset_iff.mpr hg)`.
+
+Use `⟨r', g', S, fun j => hle (hg'span j), ?_, hSc, fun j m n => GlobalTheory.T.seesaw_evaluation_haar_local_factor hKP F E σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h (c j) (S j) (hS j) m n⟩` and prove the remaining obligations. Introduce `k l y`. Establish `key : e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ')) y = ∑ j, e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ')) (fun i => (((y i).1, c j i) : AdeleRing (𝓞 F) F)) * g' j (fun i => (y i).2)` using `hlag _ (hspan k l (fun i => (y i).1)) (fun i => (y i).2)`. Simplify using `only [pureA, hS, RingEquiv.symm_apply_apply]`. Rewrite using `[key]`.
+
+Simplify using `only [Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem cone_integrand_decomp : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b)
     (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ e', IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ (K : Subgroup (UA σ G.V'.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →

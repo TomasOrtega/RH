@@ -15,6 +15,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 variable {d : SD σ}
 
+/- English proof (translation)
+Take `⟨C, c, s, ν, νf, hC, hs, hν, hνf, hB⟩` from `B_vline hT hU hH hA hF R`. Take `⟨χ, hχ, heig⟩` from `om_rot_vac' hT hLO hLI R 1`. Set `W : Vw d → Mx F E d.m d.n` to `fun ξ => jn R (s⁻¹ • ξ) 0`. Establish `hW : ∀ ξ, finOne F • W ξ = 0` using `fun ξ => (fin_eq_zero_iff _).1 (fin_jn R _ _)`. Establish `hsW : ∀ ξ, s • arc R (W ξ) = ξ` using `fun ξ => by`.
+
+Simplify using `only [W, arc_jn, smul_smul, mul_inv_cancel₀ hs, one_smul]`. Use `⟨rot R 1, Complex.exp (-((1 : ℝ) * Complex.I)), χ, C, c, ν, νf, fun ξ z => vline R (W ξ) z, rot_mem R 1, ?_, ?_, hχ, hC, hν, hνf, heig, fun ξ z => actB_rot_vline' R 1 (hW ξ) z, fun g hg Ω hΩ hTΩ Φ hΦ ξ z => ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules. Introduce `j hj h`.
+
+Rewrite `h` using `[← Complex.exp_nat_mul, Complex.exp_eq_one_iff]`. Take `⟨k, hk⟩` from `h`. Establish `h3 : -(j : ℝ) = 2 * Real.pi * k`. Use `congrArg Complex.im hk` as an intermediate fact. Simplify using `at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk0 : (k : ℝ) ≠ 0`. Introduce `h0`. Rewrite `h3` using `[h0, mul_zero, neg_eq_zero]`. Conclude with `(Nat.cast_pos.2 hj).ne' h3`.
+
+Use `irrational_pi ⟨-(j : ℚ) / (2 * k), ?_⟩` and prove the remaining obligations. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Use `hB g hg Ω hΩ hTΩ Φ hΦ (W ξ) (hW ξ) z` as an intermediate fact.
+
+Rewrite `this` using `[hsW]`. Then use the resulting hypothesis.
+-/
 theorem line_data (hT : TAll) (hU : TUnit) (hH : THeis) (hA : AuxiliaryPrimeFunction) (hF : FockMem) (hLO : LocOpEx) (hLI : LocInst)
     (R : RD d) :
     ∃ (k : d.G) (ω χ C : ℂ) (c : ℝ) (ν : Measure (Mx F E d.m d.n)) (νf : Measure (Yf d))
@@ -55,6 +68,9 @@ theorem line_data (hT : TAll) (hU : TUnit) (hH : THeis) (hA : AuxiliaryPrimeFunc
   · have := hB g hg Ω hΩ hTΩ Φ hΦ (W ξ) (hW ξ) z
     rwa [hsW] at this
 
+/- English proof (translation)
+Conclude with `B_rel' hT hU hν hχ hΩ hk hΦ q hq v`.
+-/
 theorem B_rel (hT : TAll) (hU : TUnit) {ν : Measure (Mx F E d.m d.n)} (hν : ν.IsAddHaarMeasure) {k : d.G} {χ : ℂ}
     (hχ : χ ≠ 0) {Ω : d.Fn} (hΩ : Ω ∈ d.sch) (hk : d.om k Ω = χ • Ω) {Φ : d.Fn} (hΦ : Φ ∈ d.sch) (q : Polynomial ℂ)
     (hq : ∑ i ∈ Finset.range (q.natDegree + 1), q.coeff i • d.om (k ^ i) Φ = 0)

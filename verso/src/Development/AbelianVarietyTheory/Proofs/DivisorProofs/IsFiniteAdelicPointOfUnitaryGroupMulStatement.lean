@@ -16,6 +16,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral (IsDefinit
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinPtMul.isFinPt_mul | exact GlobalTheory.FinPtMul.isFinPt_mul | (intros; apply GlobalTheory.FinPtMul.isFinPt_mul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isFiniteAdelicPointOfUnitaryGroup_mul : ∀ {D : D7} (V : HSp D) {n : ℕ} (g g' : GA D V) (x x' : Formalism.MainNotions.StandardLatticesGL3.GA D n),
   IsFinPt V g x → IsFinPt V g' x' → IsFinPt V (g * g') (x * x') := by
   first | exact @GlobalTheory.FinPtMul.isFinPt_mul | exact GlobalTheory.FinPtMul.isFinPt_mul | (intros; apply GlobalTheory.FinPtMul.isFinPt_mul <;> assumption)

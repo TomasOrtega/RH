@@ -24,6 +24,9 @@ def PV (W : Matrix (Fin r) (Fin r) ℤ) (e : N'.X → Fin r → N.X) (χ' : N'.X
       (N.θ (N.c (e χ' j)) (vs j).b (N.c (e χ' i)) * N.θ (N.c (e χ' j)) (vs j).b (vs i).b *
         N.θ (N.c (e χ' i)) (vs i).b (N.c (e χ' j) * (vs j).b))) ^ W i j : Fˣ) : F)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem gtRelV_iff (W : Matrix (Fin r) (Fin r) ℤ) (φ : N'.A → Fin r → N.A) (e : N'.X → Fin r → N.X) (wv : N'.A → F)
     (v' : N'.Gt) (vs : Fin r → N.Gt) :
     GtRelV W φ e wv v' vs ↔ (∀ j, φ v'.b j = (vs j).b) ∧ ∀ χ' : N'.X,
@@ -46,6 +49,11 @@ def RosVT (T : Tens D D' W) (ν : NumOf D F N) (ν' : NumOf D' F N') (f g : D'.P
       (LB.oneGen (LB.LinComb D.P.L (tensφ T.pr) (tensε W))) ∧
     ∀ b b', ρ b b' = vF u (lift (ν'.eA b) (ν'.eA b')).left (tensJ T ν)
 
+/- English proof (translation)
+Use `letI := D.P.isAb.comm`. Set `P : (D'.P.A ⟶ D.P.A) →* (TF (R` to `R) F ⟶ D.P.A) := { toFun := fun f => ν'.eA b ≫ f map_one' := MonObj.comp_one _ map_mul' := fun f g => MonObj.comp_mul _ _ _ }`. Establish `e : ν'.eA (GlobalTheory.Relabel.actV ν' o.onB x b) ≫ T.pr j = P (∏ k, T.pr k ^ ρ x j k)`. Rewrite using `[GlobalTheory.Relabel.actV, MulEquiv.apply_symm_apply, Category.assoc, hact.2 x j]`. Both sides reduce to the same expression.
+
+Rewrite using `[GlobalTheory.Mum.TensTor.cmp, e, map_prod, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, map_zpow]`. Both sides reduce to the same expression.
+-/
 theorem cmp_actV {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
     (T : Tens D D' W) {F : Type} [Field F] [Algebra (FractionRing R) F] {N N' : NumD F} (ν : NumOf D F N)
     (ν' : NumOf D' F N') {O : Type} [CommRing O] [StarRing O] [Module O D'.X] (o : D'.OAct O)
@@ -63,6 +71,9 @@ theorem cmp_actV {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ
   rw [map_zpow, map_zpow]
   rfl
 
+/- English proof (translation)
+Apply `ν'.eA.injective` to reduce the goal to its premises. Rewrite using `[GlobalTheory.Relabel.actV, MulEquiv.apply_symm_apply, ν'.c_eq, ν'.c_eq, AddEquiv.apply_symm_apply]`. Use `show (toUnit _ ≫ D'.c _) ≫ _ = toUnit _ ≫ D'.c _`. Rewrite using `[o.c_lin, Category.assoc]`.
+-/
 theorem c_actV {R : Type} [CommRing R] [IsDomain R] {D' : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] {N' : NumD F} (ν' : NumOf D' F N') {O : Type} [CommRing O] [StarRing O]
     [Module O D'.X] (o : D'.OAct O) (a : O) (χ : N'.X) :

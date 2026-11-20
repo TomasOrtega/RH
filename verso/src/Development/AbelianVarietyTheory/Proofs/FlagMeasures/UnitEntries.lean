@@ -21,6 +21,13 @@ def UpU (s : Matrix (Fin n) (Fin n) E) : Prop := (∀ i j, j < i → s i j = 0) 
 
 def UnitIn (O : Subring E) (x : E) : Prop := x ∈ O ∧ ∃ y ∈ O, x * y = 1
 
+/- English proof (translation)
+Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Break down `lt_or_ge c i with h1 | h1` into its components or cases. Rewrite using `[hs.1 i c h1, zero_mul]`.
+
+Rewrite using `[ht.1 c j (lt_of_lt_of_le h h1), mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i, hs.2, ht.2, one_mul]`. Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with h1 | h1` into its components or cases. Rewrite using `[hs.1 i c h1, zero_mul]`.
+
+Rewrite using `[ht.1 c i h1, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem UpU.mul {s t : Matrix (Fin n) (Fin n) E} (hs : UpU s) (ht : UpU t) : UpU (s * t) := by
   refine ⟨fun i j h => ?_, fun i => ?_⟩
   · rw [Matrix.mul_apply]
@@ -35,10 +42,20 @@ theorem UpU.mul {s t : Matrix (Fin n) (Fin n) E} (hs : UpU s) (ht : UpU t) : UpU
       · rw [ht.1 c i h1, mul_zero]
     · simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular (M := s) (fun i j h => hs.1 i j h)]`. Simplify using `[hs.2]`.
+-/
 theorem UpU.det {s : Matrix (Fin n) (Fin n) E} (hs : UpU s) : s.det = 1 := by
   rw [Matrix.det_of_upperTriangular (M := s) (fun i j h => hs.1 i j h)]
   simp [hs.2]
 
+/- English proof (translation)
+Establish `hd : IsUnit s.det` using `by rw [hs.det]; exact isUnit_one`. Use `letI := Matrix.invertibleOfIsUnitDet s hd`. Establish `hb : s.BlockTriangular id` using `fun i j h => hs.1 i j h`. Establish `hi` using `Matrix.blockTriangular_inv_of_blockTriangular hb`. Establish `h1 : s⁻¹ * s = 1` using `Matrix.nonsing_inv_mul s hd`.
+
+Use `⟨s⁻¹, ⟨fun i j h => hi h, fun i => ?_⟩, h1⟩` and prove the remaining obligations. Establish `h2` using `congrFun (congrFun h1 i) i`. Rewrite `h2` using `[Matrix.mul_apply, Finset.sum_eq_single i, hs.2, mul_one, Matrix.one_apply_eq]`. Conclude with `h2`. Introduce `c _ hc`.
+
+Break down `lt_or_gt_of_ne hc with h1 | h1` into its components or cases. Rewrite using `[hi (show id c < id i from h1), zero_mul]`. Rewrite using `[hs.1 c i h1, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem UpU.inv {s : Matrix (Fin n) (Fin n) E} (hs : UpU s) :
     ∃ t : Matrix (Fin n) (Fin n) E, UpU t ∧ t * s = 1 := by
   have hd : IsUnit s.det := by rw [hs.det]; exact isUnit_one
@@ -56,6 +73,15 @@ theorem UpU.inv {s : Matrix (Fin n) (Fin n) E} (hs : UpU s) :
     · rw [hs.1 c i h1, mul_zero]
   · simp
 
+/- English proof (translation)
+Proceed by induction on `m using WellFoundedLT.induction with`. Consider the case `ind m ih`. Establish `key : ∀ i j, (∀ c, m < c → M i c * U c j = 0) → M i m * U m j ∈ O`. Introduce `i j h`. Establish `h1` using `hZ i j`.
+
+Rewrite `h1` using `[Matrix.mul_apply, ← Finset.add_sum_erase _ _ (Finset.mem_univ m)]`. Establish `h2 : ∑ c ∈ Finset.univ.erase m, M i c * U c j ∈ O`. Use `O.sum_mem fun c hc => ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hc) with h3 | h3` into its components or cases. Conclude with `O.mul_mem ((ih c h3).1 i) ((ih c h3).2 j)`.
+
+Rewrite using `[h c h3]`. Conclude with `O.zero_mem`. Simplify using `using O.sub_mem h1 h2`. Use `⟨fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Use `key i m fun c hc => by rw [hU.1 c m hc, mul_zero]` as an intermediate fact.
+
+Rewrite `this` using `[hU.2, mul_one]`. Then use the resulting hypothesis. Take `⟨i, ⟨_, y, hy, hy1⟩, h0⟩` from `hM m`. Use `O.mul_mem hy (key i j fun c hc => by rw [h0 c hc, zero_mul])` as an intermediate fact. Rewrite `this` using `[← mul_assoc, mul_comm y, hy1, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem int_of_mul (O : Subring E) (M U : Matrix (Fin n) (Fin n) E) (hU : UpU U)
     (hM : ∀ m, ∃ i, UnitIn O (M i m) ∧ ∀ m', m < m' → M i m' = 0)
     (hZ : ∀ i j, (M * U) i j ∈ O) (m : Fin n) : (∀ i, M i m ∈ O) ∧ ∀ j, U m j ∈ O := by
@@ -78,6 +104,43 @@ theorem int_of_mul (O : Subring E) (M U : Matrix (Fin n) (Fin n) E) (hU : UpU U)
     have := O.mul_mem hy (key i j fun c hc => by rw [h0 c hc, zero_mul])
     rwa [← mul_assoc, mul_comm y, hy1, one_mul] at this
 
+/- English proof (translation)
+Use `choose e he using fun a => (hu a).2`. Set `β : Fin n → ℕ` to `fun a => (a : ℕ) + σ a`. Establish `hβ : ∀ a, β (σ a) = β a` using `fun a => by simp only [β, hσ]; omega`. Establish `hWl : ∀ (X : Matrix (Fin n) (Fin n) E) a b, (W * X) a b = W a (σ a) * X (σ a) b`. Introduce `X a b`.
+
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (σ a)]`. Introduce `c _ hc`. Rewrite using `[h0 a c hc, zero_mul]`. Simplify using the standard rewrite rules. Establish `hWr : ∀ (X : Matrix (Fin n) (Fin n) E) a b, (X * W) a b = X a (σ b) * W (σ b) b`.
+
+Introduce `X a b`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (σ b)]`. Introduce `c _ hc; rw [h0 c b (fun h => hc (by rw [h, hσ])), mul_zero]`. Simplify using the standard rewrite rules. Set `D : Matrix (Fin n) (Fin n) E` to `fun a b => if β a = β b then L a b else 0`.
+
+Establish `hD : UpU D.transpose`. Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `hL.1 i j h` as an intermediate fact. Simplify using `only [Matrix.transpose_apply] at this ⊢`. Simplify using `[D, this]`.
+
+Use `hL.2 i` as an intermediate fact. Simplify using `only [Matrix.transpose_apply] at this ⊢`. Simplify using `[D, this]`. Establish `hd : IsUnit D.det` using `by rw [← Matrix.det_transpose, hD.det]; exact isUnit_one`. Use `letI := Matrix.invertibleOfIsUnitDet D hd`.
+
+Establish `hb : D.BlockTriangular (OrderDual.toDual ∘ β)`. Introduce `i j h`. Establish `h' : β i < β j` using `h`. Simplify using `[D, h'.ne]`. Establish `hi` using `Matrix.blockTriangular_inv_of_blockTriangular hb`.
+
+Establish `hL1 : ∀ a b, β a ≤ β b → (L * D⁻¹) a b = (1 : Matrix (Fin n) (Fin n) E) a b`. Introduce `a b hab`. Rewrite using `[← Matrix.mul_nonsing_inv D hd, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy (β a) (β c) with h | h | h` into its components or cases.
+
+Establish `h3 : a < c`. Assume the negation of the conclusion as `h4`. Conclude with `absurd (hmono c a (not_lt.1 h4)) (not_le.2 h)`. Use `hL.1 c a h3` as an intermediate fact. Simplify using `only [Matrix.transpose_apply] at this`.
+
+Simplify using `[D, this]`. Simplify using `[D, h]`. Establish `h' : β c < β b` using `lt_of_lt_of_le h hab`. Rewrite using `[hi (show (OrderDual.toDual ∘ β) b < (OrderDual.toDual ∘ β) c from h'), mul_zero, mul_zero]`. Set `V : Matrix (Fin n) (Fin n) E` to `fun a b => e (σ a) * D (σ a) (σ b) * W (σ b) b`.
+
+Establish `hV : UpU V`. Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : β (σ i) = β (σ j)`. Establish `h2 : σ i < σ j`. Simplify using `only [β, hσ] at h1`.
+
+Rewrite `h`, the goal using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Use `hD.1 _ _ h2` as an intermediate fact. Simplify using `only [Matrix.transpose_apply] at this`. Simplify using `only [V, this, mul_zero, zero_mul]`.
+
+Simplify using `[V, D, h1]`. Establish `h1` using `hD.2 (σ i)`. Establish `h2` using `(he (σ i)).2`. Simplify using `only [Matrix.transpose_apply] at h1`. Rewrite `h2` using `[hσ]`.
+
+Simplify using `only [V, h1, mul_one]`. Rewrite using `[mul_comm, h2]`. Establish `hDW : D * W = W * V`. Use extensionality with `a b`. Rewrite using `[hWl, hWr]`.
+
+Simplify using `only [V, hσ]`. Take the linear combination `(-(D a (σ b) * W (σ b) b)) * (he a).2`. Take `⟨V', hV', hVV⟩` from `hV.inv`. Establish `hLD : L = L * D⁻¹ * D`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul D hd, Matrix.mul_one]`.
+
+Establish `hint` using `int_of_mul O (L * D⁻¹ * W) (V * U) (hV.mul hU) (fun m => ⟨σ m, by`. Rewrite using `[hWr, hL1 _ _ le_rfl, Matrix.one_apply_eq, one_mul]`. Use `hu (σ m)` as an intermediate fact. Rewrite using `[hσ] at this, fun m' hm => by` and apply the resulting hypothesis. Rewrite using `[hWr, hL1 _ _ (by rw [hβ, hβ]; exact hmono _ _ hm.le), Matrix.one_apply_ne, zero_mul]`.
+
+Introduce `h`. Conclude with `hm.ne (by rw [← hσ m, h, hσ])⟩) (by`. Establish `: L * D⁻¹ * W * (V * U) = L * W * U` using `by conv_rhs => rw [hLD]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc W, ← hDW, Matrix.mul_assoc]`.
+
+Rewrite using `[this])` and apply the resulting hypothesis. Use `⟨D, L * D⁻¹, V', V * U, hD, ⟨fun i j h => ?_, fun i => ?_⟩, hV', hV.mul hU, fun i j => ?_, fun i j => (hint i).2 j, hLD, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.transpose_apply, hL1 _ _ (hmono _ _ h.le), Matrix.one_apply_ne h.ne]`. Rewrite using `[Matrix.transpose_apply, hL1 _ _ le_rfl, Matrix.one_apply_eq]`. Use `O.mul_mem ((hint (σ j)).1 i) (he j).1` as an intermediate fact.
+
+Rewrite `this` using `[hWr, hσ, mul_assoc, (he j).2, mul_one]`. Then use the resulting hypothesis. Rewrite using `[← Matrix.mul_assoc, hVV, Matrix.one_mul]`. Rewrite using `[hDW, Matrix.mul_assoc, mul_eq_one_comm.1 hVV, Matrix.mul_one]`.
+-/
 theorem decomp (O : Subring E) (W : Matrix (Fin n) (Fin n) E) (σ : Fin n → Fin n)
     (hσ : ∀ a, σ (σ a) = a) (hmono : ∀ a b : Fin n, a ≤ b → (a : ℕ) + σ a ≤ b + σ b)
     (h0 : ∀ a b, b ≠ σ a → W a b = 0) (hu : ∀ a, UnitIn O (W a (σ a)))
@@ -181,11 +244,17 @@ section Blocks
 open GlobalTheory.FrameBasic
 variable {E : Type} [CommRing E]
 
+/- English proof (translation)
+Take `⟨h1, a, ha, ha1⟩` from `hx`. Take `⟨h2, b, hb, hb1⟩` from `hy`. Conclude with `⟨O.mul_mem h1 h2, a * b, O.mul_mem ha hb, by linear_combination (y * b) * ha1 + hb1⟩`.
+-/
 theorem UnitIn.mul {O : Subring E} {x y : E} (hx : UnitIn O x) (hy : UnitIn O y) : UnitIn O (x * y) := by
   obtain ⟨h1, a, ha, ha1⟩ := hx
   obtain ⟨h2, b, hb, hb1⟩ := hy
   exact ⟨O.mul_mem h1 h2, a * b, O.mul_mem ha hb, by linear_combination (y * b) * ha1 + hb1⟩
 
+/- English proof (translation)
+Take `⟨h1, a, ha, ha1⟩` from `hx`. Take `⟨h2, b, hb, hb1⟩` from `hy`. Use `⟨?_, x * b, O.mul_mem h1 hb, by linear_combination hb1⟩` and prove the remaining obligations. Use `O.mul_mem ha h2` as an intermediate fact. Rewrite `this` using `[← mul_assoc, mul_comm a, ha1, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem UnitIn.cancel {O : Subring E} {x y : E} (hx : UnitIn O x) (hy : UnitIn O (x * y)) :
     UnitIn O y := by
   obtain ⟨h1, a, ha, ha1⟩ := hx
@@ -194,14 +263,23 @@ theorem UnitIn.cancel {O : Subring E} {x y : E} (hx : UnitIn O x) (hy : UnitIn O
   have := O.mul_mem ha h2
   rwa [← mul_assoc, mul_comm a, ha1, one_mul] at this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨O.pow_mem (O.neg_mem O.one_mem) m, (-1) ^ m, O.pow_mem (O.neg_mem O.one_mem) m, by rw [← mul_pow]; simp⟩`.
+-/
 theorem unitIn_sign (O : Subring E) (m : ℕ) : UnitIn O ((-1) ^ m) :=
   ⟨O.pow_mem (O.neg_mem O.one_mem) m, (-1) ^ m, O.pow_mem (O.neg_mem O.one_mem) m, by
     rw [← mul_pow]; simp⟩
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction g (UnitIn O) (fun _ _ => UnitIn.mul) ⟨O.one_mem, 1, O.one_mem, one_mul 1⟩ h`.
+-/
 theorem unitIn_prod (O : Subring E) {ι : Type} (s : Finset ι) (g : ι → E) (h : ∀ i ∈ s, UnitIn O (g i)) :
     UnitIn O (∏ i ∈ s, g i) :=
   Finset.prod_induction g (UnitIn O) (fun _ _ => UnitIn.mul) ⟨O.one_mem, 1, O.one_mem, one_mul 1⟩ h
 
+/- English proof (translation)
+The claim follows from `| [], a, b, h => by change a + a ≤ b + b; omega | (t, s) :: bs, a, b, h => by have := sig_mono bs (a - s) (b - s) (by omega) simp only [sig_cons] split_ifs <;> omega`.
+-/
 theorem sig_mono : ∀ (bs : List (Eˣ × ℕ+)) (a b : ℕ), a ≤ b → a + sig bs a ≤ b + sig bs b
   | [], a, b, h => by change a + a ≤ b + b; omega
   | (t, s) :: bs, a, b, h => by
@@ -209,6 +287,9 @@ theorem sig_mono : ∀ (bs : List (Eˣ × ℕ+)) (a b : ℕ), a ≤ b → a + si
     simp only [sig_cons]
     split_ifs <;> omega
 
+/- English proof (translation)
+The claim follows from `| [], _, a, h => by simp at h | (t, s) :: bs, H, a, h => by simp only [List.map_cons, List.sum_cons] at h H have e1 : ∀ c < (s : ℕ), ptEntryL ((t, s) :: bs) c (sig ((t, s) :: bs) c) = t := by intro c hc simp only [sig_cons, ptEntryL, hc, if_true] rw [if_pos ⟨trivial, by omega⟩, i …`.
+-/
 theorem unit_entries (O : Subring E) (hO : ∀ (x : E) (s : ℕ), 0 < s → x ^ s ∈ O → x ∈ O) :
     ∀ bs : List (Eˣ × ℕ+), (∀ l ≤ (bs.map (fun b => (b.2 : ℕ))).sum, (∀ a < l, sig bs a < l) →
       UnitIn O (∏ a ∈ Finset.range l, ptEntryL bs a (sig bs a))) →
@@ -248,6 +329,25 @@ theorem unit_entries (O : Subring E) (hO : ∀ (x : E) (s : ℕ), 0 < s → x ^ 
       simp only [e2] at h2
       exact h1.cancel h2
 
+/- English proof (translation)
+Establish `hs : ∀ a : Fin n, sig w.blocks a < n` using `fun a => by`. Use `(entry_unit w.blocks a (by rw [w.size]; omega)).1` as an intermediate fact. Rewrite `this` using `[w.size]`. Then use the resulting hypothesis. Use `⟨fun a => ⟨_, hs a⟩, fun a => Fin.ext (sig_sig _ _), fun a b hab => sig_mono _ _ _ hab, fun a b hb => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hZ, Pt.mat, entry_zero, zero_mul]`.
+
+Conclude with `fun h => hb (Fin.ext h)`. Rewrite using `[hZ]`. Use `UnitIn.mul ?_ (unitIn_sign O _)` and prove the remaining obligations. Use `unit_entries O hO w.blocks (fun l hl hsl => ?_) a (by rw [w.size]; exact a.2)` and prove the remaining obligations. Rewrite `hl` using `[w.size]`.
+
+Set `τ : Fin l → Fin l` to `fun a => ⟨_, hsl a a.2⟩`. Establish `hτ : Function.Injective τ`. Introduce `a b hab`. Establish `h1 : sig w.blocks a = sig w.blocks b` using `congrArg Fin.val hab`. Apply `Fin.ext` to reduce the goal to its premises.
+
+Rewrite using `[← sig_sig w.blocks a, h1, sig_sig]`. Establish `h1 : lead Z ⟨l, Nat.lt_succ_of_le hl⟩ = _` using `det_mono (Z.submatrix (Fin.castLE hl) (Fin.castLE hl)) τ (fun a b hb => by`. Rewrite using `[Matrix.submatrix_apply, hZ, Pt.mat, entry_zero, zero_mul]`. Conclude with `fun h => hb (Fin.ext h))`. Establish `h2 : UnitIn O ((1 : Matrix (Fin l) (Fin l) E).submatrix τ id).det`.
+
+Establish `hb` using `Finite.injective_iff_bijective.1 hτ`. Use `Matrix.det_permute (Equiv.ofBijective τ hb) (1 : Matrix (Fin l) (Fin l) E)` as an intermediate fact. Rewrite `this` using `[Equiv.coe_ofBijective]`. Rewrite using `[this, Matrix.det_one, mul_one]`. Break down `Int.units_eq_one_or (Equiv.Perm.sign (Equiv.ofBijective τ hb)) with h3 | h3` into its components or cases.
+
+Rewrite using `[h3]`. Simplify using `using unitIn_sign O 0`. Rewrite using `[h3]`. Simplify using `using unitIn_sign O 1`. Establish `h3 : ∏ a, Z.submatrix (Fin.castLE hl) (Fin.castLE hl) a (τ a) = (∏ a : Fin l, (-1 : E) ^ ε (Fin.castLE hl (τ a))) * ∏ a ∈ Finset.range l, ptEntryL w.blocks a (sig w.blocks a)`.
+
+Rewrite using `[Finset.prod_range, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_apply, hZ, mul_comm]`. Both sides reduce to the same expression. Establish `h4` using `unitIn_prod O Finset.univ (fun a : Fin l => (-1 : E) ^ ε (Fin.castLE hl (τ a))) fun a _ => unitIn_sign O _`.
+
+Rewrite `h1` using `[h3, mul_comm, ← mul_assoc]`. Establish `h5` using `h2.mul h4`. Use `h5.cancel (h1 ▸ h _ ?_)` and prove the remaining obligations. Rewrite using `[h1]`. Use `IsUnit.ne_zero (IsUnit.mul ?_ ?_)` and prove the remaining obligations.
+
+Take `⟨_, y, _, hy⟩` from `h5`. Conclude with `IsUnit.of_mul_eq_one y hy`. Rewrite using `[IsUnit.prod_iff]`. Introduce `a ha`. Conclude with `(entry_unit w.blocks a (by rw [w.size]; have := Finset.mem_range.1 ha; omega)).2`.
+-/
 theorem unit_of_lead [Nontrivial E] (O : Subring E) (hO : ∀ (x : E) (s : ℕ), 0 < s → x ^ s ∈ O → x ∈ O)
     {n : ℕ} (w : Pt E n) (ε : Fin n → ℕ) (Z : Matrix (Fin n) (Fin n) E)
     (hZ : ∀ a b, Z a b = w.mat a b * (-1) ^ ε b) (h : ∀ l, lead Z l ≠ 0 → UnitIn O (lead Z l)) :
@@ -307,6 +407,13 @@ section Main
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
+/- English proof (translation)
+Establish `key : ∀ (α : Fin (r + 1) → E) (g : Fin (r + 1) → S.V) (y : S.V), hf L S.Hm (∑ i, α i • g i) y = ∑ i, α i * hf L S.Hm (g i) y` using `fun α g y => by`. Express the relevant statement in the definitionally equal form `GlobalTheory.FrameBasic.hfL L S.Hm y _ = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul]; rfl`. Simplify using `only [Frames.h, Matrix.mul_apply, Frames.Zh, Matrix.of_apply, cT]`.
+
+Rewrite using `[key]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FrameBasic.hf_conj L S.herm.1, key, map_sum, mul_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, ← GlobalTheory.FrameBasic.hf_conj L S.herm.1]`.
+-/
 theorem pair_comb {L : LocE F E} {r k : ℕ} (S : Frames L r k)
     (A A' : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (a b : Fin (r + 1)) :
     S.h (∑ i, A' i b • S.f' i) (∑ i, A i a • S.f i) = (cT L A * S.Zh * A') a b := by
@@ -323,6 +430,9 @@ theorem pair_comb {L : LocE F E} {r k : ℕ} (S : Frames L r k)
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [map_mul, ← GlobalTheory.FrameBasic.hf_conj L S.herm.1]
 
+/- English proof (translation)
+Simplify using `only [Finset.smul_sum, Matrix.mul_apply, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+-/
 theorem comb_mul {V ι : Type} [AddCommGroup V] [Module E V] [Fintype ι] (g : ι → V)
     (s A : Matrix ι ι E) (j : ι) :
     ∑ i, A i j • ∑ c, s c i • g c = ∑ c, (s * A) c j • g c := by
@@ -330,23 +440,38 @@ theorem comb_mul {V ι : Type} [AddCommGroup V] [Module E V] [Fintype ι] (g : �
   rw [Finset.sum_comm]
   simp only [mul_comm]
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact L.O.sum_mem fun c _ => L.O.mul_mem (hA i c) (hB c j)`.
+-/
 theorem int_mul {L : LocE F E} {n : ℕ} {A B : Matrix (Fin n) (Fin n) E} (hA : IsIntM L A)
     (hB : IsIntM L B) : IsIntM L (A * B) := fun i j => by
   rw [Matrix.mul_apply]
   exact L.O.sum_mem fun c _ => L.O.mul_mem (hA i c) (hB c j)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j h => by have := hA.1 i j h; rw [Matrix.transpose_apply] at this; simp [cT, this], fun i => by have := hA.2 i; rw [Matrix.transpose_apply] at this; simp [cT, this]⟩`.
+-/
 theorem up_cT (L : LocE F E) {n : ℕ} {A : Matrix (Fin n) (Fin n) E} (hA : UpU A.transpose) :
     UpU (cT L A) :=
   ⟨fun i j h => by have := hA.1 i j h; rw [Matrix.transpose_apply] at this; simp [cT, this],
     fun i => by have := hA.2 i; rw [Matrix.transpose_apply] at this; simp [cT, this]⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, L.cj_cj]`.
+-/
 theorem cT_cT (L : LocE F E) {n : ℕ} (A : Matrix (Fin n) (Fin n) E) : cT L (cT L A) = A := by
   ext i j; simp [cT, L.cj_cj]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, Matrix.mul_apply, mul_comm]`.
+-/
 theorem cT_mul (L : LocE F E) {n : ℕ} (A B : Matrix (Fin n) (Fin n) E) :
     cT L (A * B) = cT L B * cT L A := by
   ext i j; simp [cT, Matrix.mul_apply, mul_comm]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨A, A', iA, iA', fun i j hij => ⟨hA.1 i j hij, hA'.1 i j hij⟩, fun i => ⟨hA.2 i, hA'.2 i⟩, fun i j => ⟨_, L.O.sub_mem (iA' i j) (iA i j), by simp [Frames.th, hg]⟩, h, h'⟩`.
+-/
 theorem mem_cls {L : LocE F E} {r k : ℕ} (S : Frames L r k) (hg : S.gg = false)
     (g g' : Fin (r + 1) → S.V) (p : S.FrP) {A A' : Matrix (Fin (r + 1)) (Fin (r + 1)) E}
     (hA : UpU A) (hA' : UpU A') (iA : IsIntM L A) (iA' : IsIntM L A')
@@ -355,6 +480,9 @@ theorem mem_cls {L : LocE F E} {r k : ℕ} (S : Frames L r k) (hg : S.gg = false
   ⟨A, A', iA, iA', fun i j hij => ⟨hA.1 i j hij, hA'.1 i j hij⟩, fun i => ⟨hA.2 i, hA'.2 i⟩,
     fun i j => ⟨_, L.O.sub_mem (iA' i j) (iA i j), by simp [Frames.th, hg]⟩, h, h'⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.smul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `h (g j) ∈ Submodule.span L.O (Set.range g)`. Rewrite using `[hA]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ (⟨A i j, iA i j⟩ : L.O) (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem smul_span_le {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g : Fin (r + 1) → S.V) (h : S.GLV)
     {A : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (iA : IsIntM L A) (hA : ∀ j, h (g j) = ∑ i, A i j • g i) :
     h • Submodule.span L.O (Set.range g) ≤ Submodule.span L.O (Set.range g) := by
@@ -365,6 +493,11 @@ theorem smul_span_le {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g : Fin (r +
   exact Submodule.sum_mem _ fun i _ =>
     Submodule.smul_mem _ (⟨A i j, iA i j⟩ : L.O) (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Introduce `i j`. Establish `h1 : h • g j ∈ Submodule.span L.O (Set.range g)`. Rewrite using `[← hh]`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun L.O).1 h1`.
+
+Establish `h2 : ∑ i, (c i : E) • g i = ∑ i, A i j • g i` using `by rw [← hA]; exact hc`. Rewrite using `[← Fintype.linearIndependent_iffₛ.1 hg _ _ h2 i]`. Conclude with `(c i).2`.
+-/
 theorem int_of_stab {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g : Fin (r + 1) → S.V)
     (hg : LinearIndependent E g) (h : S.GLV)
     (hh : h • Submodule.span L.O (Set.range g) = Submodule.span L.O (Set.range g))
@@ -378,6 +511,33 @@ theorem int_of_stab {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g : Fin (r + 
   rw [← Fintype.linearIndependent_iffₛ.1 hg _ _ h2 i]
   exact (c i).2
 
+/- English proof (translation)
+Establish `: Nontrivial E`. Use `L.free` as an intermediate fact. Conclude with `Module.nontrivial_of_finrank_pos (R := F) (by rw [L.rank]; norm_num)`. Establish `hcj : ∀ x ∈ L.O, L.cj x ∈ L.O` using `fun x hx => ((GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr).2.1 x hx).1`. Establish `icT : ∀ {A : Matrix (Fin (r + 1)) (Fin (r + 1)) E}, IsIntM L A → IsIntM L (cT L A)` using `fun hA i j => hcj _ (hA j i)`.
+
+Establish `hcls` using `GlobalTheory.HL.FrameClass.frame_classes L r k S`. Take `⟨hN, hN', -⟩` from `GlobalTheory.HL.FrameOnto.unipotent_onto L r k S`. Establish `hli` using `(GlobalTheory.FrameBasic.main L r k S).1`. Establish `hli1 : LinearIndependent E S.f` using `hli.comp Sum.inl Sum.inl_injective`. Establish `hli2 : LinearIndependent E S.f'` using `hli.comp Sum.inr Sum.inr_injective`.
+
+Take `⟨σ, hσ, hmono, h0, hu⟩` from `unit_of_lead L.O (fun x s hs hx => (L.O_def x).2 (IsIntegral.of_pow hs ((L.O_def _).1 hx))) S.w (fun b => r - (b : ℕ)) S.Zh (fun a b => S.relevant a b) hD`. Establish `iZ : IsIntM L S.Zh` using `fun a b => by`. Distinguish the cases in `hb : b = σ a`. Rewrite using `[hb]`. Conclude with `(hu a).1`.
+
+Rewrite using `[h0 a b hb]`. Conclude with `L.O.zero_mem`. Use `⟨⟨⟨1, one_mem _, 1, one_mem _, rfl⟩, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `p ⟨A, A', iA, iA', -, -, -, h1, h2⟩ a b`. Rewrite using `[h1, h2, pair_comb]`.
+
+Conclude with `int_mul (int_mul (icT iA) iZ) iA' a b`. Establish `: S.St ⊓ MulAction.stabilizer S.GLV (S.frameCls S.f S.f') = S.K0`. Establish `key : ∀ h ∈ MulAction.stabilizer S.GLV (S.frameCls S.f S.f'), h • Submodule.span L.O (Set.range S.f) ≤ Submodule.span L.O (Set.range S.f) ∧ h • Submodule.span L.O (Set.range S.f') ≤ Submodule.span L.O (Set.range S.f')`. Introduce `h hh`. Establish `h1` using `(hcls (fun b => h (S.f b)) (fun b => h (S.f' b))).1`.
+
+Rewrite `h1` using `[← (hcls S.f S.f').2.2 h, MulAction.mem_stabilizer_iff.1 hh]`. Take `⟨A, A', iA, iA', -, -, -, h1, h2⟩` from `h1`. Conclude with `⟨smul_span_le S _ h iA h1, smul_span_le S _ h iA' h2⟩`. Use extensionality with `h`. Simplify using `only [Frames.K0, Subgroup.mem_inf]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `k1` using `key h h2`. Establish `k2` using `key h⁻¹ (inv_mem h2)`. Establish `k3` using `smul_mono_right h k2.1`.
+
+Establish `k4` using `smul_mono_right h k2.2`. Rewrite `k3`, `k4` using `[smul_inv_smul]`. Conclude with `⟨⟨h1, le_antisymm k1.1 k3⟩, le_antisymm k1.2 k4⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+
+Take `⟨s, hs, es⟩` from `hN h h1.1`. Take `⟨s', hs', es'⟩` from `hN' h h1.2`. Rewrite using `[MulAction.mem_stabilizer_iff, (hcls S.f S.f').2.2 h]`. Conclude with `((hcls S.f S.f').2.1 (fun b => h (S.f b), fun b => h (S.f' b)) (mem_cls S hg _ _ _ hs hs' (int_of_stab S _ hli1 h h2 es) (int_of_stab S _ hli2 h h3 es') es es')).1`. Rewrite using `[Frames.wC, this, invVol, Subgroup.relIndex_self]`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `C ⟨⟨n, hn, n', hn', rfl⟩, hC⟩`. Take `⟨u, hu1, eu⟩` from `hN n hn`. Take `⟨u', hu1', eu'⟩` from `hN' n' hn'`. Take `⟨D, L₁, V, U₁, hD1, hL₁, hV, hU₁, iL, iU, e1, e2, e3⟩` from `decomp L.O S.Zh σ hσ hmono h0 hu (cT L u) u' ⟨fun i j h => by simp [cT, hu1.1 i j h], fun i => by simp [cT, hu1.2 i]⟩ hu1' (fun a b => by`.
+
+Use `hC _ (hcls _ _).1 a b` as an intermediate fact. Simplify using `only [eu, eu'] at this`. Rewrite using `[pair_comb] at this)` and apply the resulting hypothesis. Take `⟨h, hh, eh, eh'⟩` from `((GlobalTheory.HL.FrameStab.stab_eq L r k S).2 (cT L D) V (up_cT L hD1) hV).1 (by rw [cT_cT, e3])`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[(hcls S.f S.f').2.2 h]`. Use `((hcls _ _).2.1 (fun b => n (S.f b), fun b => n' (S.f' b)) (mem_cls S hg _ _ _ (up_cT L hL₁) hU₁ (icT iL) iU (fun j => ?_) (fun j => ?_))).1` and prove the remaining obligations. Simplify using `only [eh, eu]`. Rewrite using `[comb_mul, ← cT_mul, ← e1, cT_cT]`. Simplify using `only [eh', eu']`.
+
+Rewrite using `[comb_mul, ← e2]`.
+-/
 theorem one_class {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E]
     [TopologicalSpace E] (L : LocE F E) (r k : ℕ) (S : Frames L r k) (hg : S.gg = false)

@@ -105,6 +105,11 @@ def FlatDegreeStatement : Prop :=
           D.q * (2 * Real.log (rootDiscr (quadField H)) - Real.log (rootDiscr E)) ∧
         |c₁ + ((D.p : ℝ) - D.q) * logOmega H / 2| ≤ D.q * Real.log (rootDiscr E)
 
+/- English proof (translation)
+Establish `h2 : ringChar (ZMod H.d) ≠ 2`. Rewrite using `[ZMod.ringChar_zmod_n]`. Use `H.d_mod` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+
+Apply `quadraticChar_ne_one h2` to reduce the goal to its premises. Use `MulChar.injective_ringHomComp (f := Int.castRingHom ℂ) Int.cast_injective ?_` and prove the remaining obligations. Simplify `h` using `[quadChar, MulChar.ringHomComp_one]`.
+-/
 theorem quadChar_ne_one (H : Host E) : quadChar H ≠ 1 := by
   have h2 : ringChar (ZMod H.d) ≠ 2 := by
     rw [ZMod.ringChar_zmod_n]; have := H.d_mod; omega
@@ -113,12 +118,21 @@ theorem quadChar_ne_one (H : Host E) : quadChar H ≠ 1 := by
   refine MulChar.injective_ringHomComp (f := Int.castRingHom ℂ) Int.cast_injective ?_
   simpa [quadChar, MulChar.ringHomComp_one] using h
 
+/- English proof (translation)
+The claim follows from `DirichletCharacter.LFunction_apply_one_ne_zero (quadChar_ne_one H)`.
+-/
 theorem LFunction_one_ne_zero (H : Host E) : (quadChar H).LFunction 1 ≠ 0 :=
   DirichletCharacter.LFunction_apply_one_ne_zero (quadChar_ne_one H)
 
+/- English proof (translation)
+Simplify using `[adelicDeg]`.
+-/
 example (k : Type) [Field k] [NumberField k] : adelicDeg k (fun _ => 1) (fun _ => 1) = 0 := by
   simp [adelicDeg]
 
+/- English proof (translation)
+Establish `h : (Module.finrank ℚ k : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Module.finrank_pos.ne'`. Simplify using `[adelicDeg, Embeddings.card]`. Clear the denominators using the available nonvanishing facts.
+-/
 example (k : Type) [Field k] [NumberField k] (s : ℝ) : adelicDeg k (fun _ => 1) (fun _ => s ^ 2) = -Real.log s := by
   have h : (Module.finrank ℚ k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr Module.finrank_pos.ne'
   simp [adelicDeg, Embeddings.card]

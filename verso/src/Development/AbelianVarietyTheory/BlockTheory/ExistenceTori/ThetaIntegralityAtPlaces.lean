@@ -51,9 +51,15 @@ def ThIntegral : Prop :=
     (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c),
     IsNab Xo c nab → ThIntegralAt Xo c nab
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, Nat.coprime_one_left k, by simp, by simp⟩`.
+-/
 example (E : Type) [Field E] [NumberField E] (n k : ℕ) : GenLat.TrivAt (⟨stdLat E n⟩ : GenLat E n) k :=
   ⟨1, Nat.coprime_one_left k, by simp, by simp⟩
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Use `h.2.2.2.1` as an intermediate fact. Conclude with `absurd (Nat.Coprime.eq_one_of_dvd this (Dvd.intro _ rfl)) (by decide)`.
+-/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l)
     (la : HeightOneSpectrum (𝓞 c.F)) (ℓ N : ℕ) (h : GoodPlace c la ℓ N) : ℓ ≠ 2 := by
   rintro rfl

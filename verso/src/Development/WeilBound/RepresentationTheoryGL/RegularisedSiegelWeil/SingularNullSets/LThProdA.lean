@@ -23,6 +23,21 @@ namespace PositivityTheory.Rg.Rsw.L.LThProd
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `exists_base b₀ hdet`. Take `⟨ψ₀, h₀, lam, hlam0, hlam⟩` from `GlobalTheory.ThetaAllChar.exists_std hψ`. Establish `hne : lam * c ≠ 0` using `mul_ne_zero hlam0 hc0`. Take `⟨hψ₁, -⟩` from `exists_par ψ₀ h₀ θ hθ (lam * c) hne`. Establish `hs : ∀ t, shift ψ₀ (lam * c) t = ψ (algebraMap D.host.F (AF D.host.F) c * t)`.
+
+Introduce `t`. Rewrite using `[hlam]`. Simplify using `[shift, AddChar.mulShift_apply, map_mul, mul_assoc]`. Take `⟨ω, hω⟩` from `GlobalTheory.StdUnn.Inhab.weil_exists D p (V1 D) ψ₀ h₀ (lam * c) hne χ hχ hr θ hθ μ 𝓕 hμ`. Set `Φ : schwartzA θ (V1 D).rank p` to `⟨η, hη⟩`.
+
+Establish `hM` using `hW D p (V1 D) _ hψ₁ χ hχ hr θ hθ μ ⟨𝓕, hμ⟩ ω hω Φ`. Establish `e : ∀ g h : G D p, ω (g * h) Φ = ω g (ω h Φ)` using `fun g h => by rw [map_mul]; rfl`. Use `⟨fun h => (ω h Φ).1, { mem := fun h => (ω h Φ).2 cont := hM.1 maj := hM.2 levi := by` and prove the remaining obligations. Introduce `g a hg h y`. Use `show (ω (g * h) Φ).1 y = _`.
+
+Rewrite using `[e]`. Conclude with `hω.levi g a hg _ y`. Use `unip := by`. Introduce `g b hg h y`. Use `show (ω (g * h) Φ).1 y = _`.
+
+Rewrite using `[e, hω.unip g b hg _ y, hs, pr_eq b₀ c hc, Matrix.mul_smul, Matrix.trace_smul, halfTr_smul]`. Use `weyl := by`. Introduce `g hg h x`. Use `show (ω (g * h) Φ).1 x = _`. Rewrite using `[e, hω.weyl g hg _ x]`.
+
+Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show _ * shift ψ₀ (lam * c) _ = _ * ψ _`. Rewrite using `[hs, pr_eq b₀ c hc x y, Matrix.trace_smul, trA_smul] }, ?_⟩`. Use `show (ω 1 Φ).1 = η`. Rewrite using `[map_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem oneTh (hW : L.WMaj) {p : ℕ} (μ : Measure (Mx D 1 p)) (𝓕 : Set (Mx D 1 p)) (hμ : IsCovolOne (ratMx D 1 p) μ 𝓕)
     {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D 1) (hdet : b₀.1.det ≠ 0)
     {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hr : ResEta D χ 1) {θ : InfFam D} (hθ : IsInfFam θ)
@@ -64,6 +79,11 @@ theorem oneTh (hW : L.WMaj) {p : ℕ} (μ : Measure (Mx D 1 p)) (𝓕 : Set (Mx 
   rw [map_one]
   rfl
 
+/- English proof (translation)
+Establish `e : ⇑(χ * ε⁻¹) = fun x => χ x * (ε x)⁻¹`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `hχ.1.mul hε.1.inv`. Rewrite using `[e]`. Simplify using `only [hχ.2 x, hε.2 x, inv_one, mul_one]`.
+-/
 theorem hecke_mul_inv {χ ε : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hε : IsHeckeChar D ε) :
     IsHeckeChar D (χ * ε⁻¹) := by
   have e : ⇑(χ * ε⁻¹) = fun x => χ x * (ε x)⁻¹ := by
@@ -75,6 +95,9 @@ theorem hecke_mul_inv {χ ε : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (h
   · rw [e]
     simp only [hχ.2 x, hε.2 x, inv_one, mul_one]
 
+/- English proof (translation)
+Use `⟨hχ.1, fun η hη a => ?_⟩` and prove the remaining obligations. Establish `h1` using `hχ.2 η hη a`. Establish `h2` using `hε.2 η hη a`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, h1, h2, pow_succ, pow_one, mul_inv_cancel_right]`.
+-/
 theorem resEta_mul_inv {χ ε : (AE D)ˣ →* Circle} {k : ℕ} (hχ : ResEta D χ (k + 1)) (hε : ResEta D ε 1) :
     ResEta D (χ * ε⁻¹) k := by
   refine ⟨hχ.1, fun η hη a => ?_⟩
@@ -92,26 +115,45 @@ def botH {m : ℕ} (b : HermE D (m + 1)) : HermE D 1 :=
     funext i j
     exact congrFun (congrFun b.2 (Fin.last m)) (Fin.last m)⟩
 
+/- English proof (translation)
+Establish `e : Matrix.diagonal (Matrix.diag b.1) = b.1` using `h.1.diagonal_diag`. Establish `hd` using `h.2`. Rewrite `hd` using `[← e, Matrix.det_diagonal]`. Conclude with `(Finset.prod_ne_zero_iff.1 hd) i (Finset.mem_univ _)`.
+-/
 theorem diag_ne {m : ℕ} {b : HermE D m} (h : IsDiagInv b) (i : Fin m) : b.1 i i ≠ 0 := by
   have e : Matrix.diagonal (Matrix.diag b.1) = b.1 := h.1.diagonal_diag
   have hd := h.2
   rw [← e, Matrix.det_diagonal] at hd
   exact (Finset.prod_ne_zero_iff.1 hd) i (Finset.mem_univ _)
 
+/- English proof (translation)
+Use `⟨h.1.submatrix (Fin.castSucc_injective m), ?_⟩` and prove the remaining obligations. Establish `e : Matrix.diagonal (Matrix.diag (topH b).1) = (topH b).1` using `(h.1.submatrix (Fin.castSucc_injective m)).diagonal_diag`. Rewrite using `[← e, Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => diag_ne h _`.
+-/
 theorem topH_diag {m : ℕ} {b : HermE D (m + 1)} (h : IsDiagInv b) : IsDiagInv (topH b) := by
   refine ⟨h.1.submatrix (Fin.castSucc_injective m), ?_⟩
   have e : Matrix.diagonal (Matrix.diag (topH b).1) = (topH b).1 := (h.1.submatrix (Fin.castSucc_injective m)).diagonal_diag
   rw [← e, Matrix.det_diagonal]
   exact Finset.prod_ne_zero_iff.2 fun i _ => diag_ne h _
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_fin_one]`. Conclude with `diag_ne h (Fin.last m)`.
+-/
 theorem botH_det {m : ℕ} {b : HermE D (m + 1)} (h : IsDiagInv b) : (botH b).1.det ≠ 0 := by
   rw [Matrix.det_fin_one]
   exact diag_ne h (Fin.last m)
 
+/- English proof (translation)
+Use `ext`. Simplify using `[Fin.fin_one_eq_zero a]`.
+-/
 theorem natAdd_one {m : ℕ} (a : Fin 1) : Fin.natAdd m a = Fin.last m := by
   ext
   simp [Fin.fin_one_eq_zero a]
 
+/- English proof (translation)
+Use `⟨fun i j => rfl, fun i j => ?_, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `show b.1 _ _ = b.1 _ _`. Rewrite using `[natAdd_one, natAdd_one]`. Use `h.1 ?_` and prove the remaining obligations. Introduce `e`.
+
+Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Use `h.1 ?_` and prove the remaining obligations. Introduce `e`.
+
+Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem diagonal_hermitian_is_block {m : ℕ} {b : HermE D (m + 1)} (h : IsDiagInv b) : IsBlockSL2Embedding (r := m) (s := 1) b (topH b) (botH b) := by
   refine ⟨fun i j => rfl, fun i j => ?_, fun i j => ?_, fun i j => ?_⟩
   · show b.1 _ _ = b.1 _ _

@@ -4,6 +4,25 @@ open Matrix Filter Topology ValuativeRel
 
 namespace GlobalTheory.CompanionTheory.LocalFieldChar
 
+/- English proof (translation)
+Establish `hsq : ∀ w : Circle, (w : ℂ).re ^ 2 + (w : ℂ).im ^ 2 = 1`. Introduce `w`. Use `Circle.normSq_coe w` as an intermediate fact. Rewrite `this` using `[Complex.normSq_apply]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Assume the negation of the conclusion as `hz`. Establish `ha0 : (z : ℂ).re < 1`. Assume the negation of the conclusion as `hge`. Use `push_neg at hge`. Establish `h2` using `hsq z`.
+
+Establish `him : (z : ℂ).im = 0` using `by nlinarith [sq_nonneg (z : ℂ).im, sq_nonneg ((z : ℂ).re - 1)]`. Establish `hre : (z : ℂ).re = 1`. Rewrite `h2` using `[him]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `hz (Circle.ext (Complex.ext (by simpa using hre) (by simpa using him)))`.
+
+Use `set a : ℕ → ℝ := fun j => ((z ^ (2 ^ j) : Circle) : ℂ).re with ha`. Establish `hstep : ∀ j, a (j + 1) = 2 * a j ^ 2 - 1`. Introduce `j`. Establish `h2` using `hsq (z ^ (2 ^ j))`. Establish `hp : z ^ (2 ^ (j + 1)) = z ^ (2 ^ j) * z ^ (2 ^ j)`.
+
+Rewrite using `[pow_succ, pow_mul, sq]`. Simplify using `only [ha]`. Rewrite using `[hp, Circle.coe_mul, Complex.mul_re]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlow : ∀ j, (2 : ℝ) ^ j * (1 - (z : ℂ).re) ≤ 1 - a j`.
+
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp [ha]`. Consider the case `succ j ih`. Establish `hpos : 0 < a j` using `h _`.
+
+Establish `hle : a j ≤ 1`. Use `hsq (z ^ (2 ^ j))` as an intermediate fact. Establish `h3 : a j ^ 2 ≤ 1`. Simplify using `only [ha]`. Use polynomial arithmetic with `[sq_nonneg ((z ^ (2 ^ j) : Circle) : ℂ).im]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hstep, pow_succ]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨j, hj⟩` from `pow_unbounded_of_one_lt (1 / (1 - (z : ℂ).re)) (by norm_num : (1 : ℝ) < 2)`. Establish `hd : 0 < 1 - (z : ℂ).re` using `by linarith`.
+
+Rewrite `hj` using `[div_lt_iff₀ hd]`. Use `hlow j` as an intermediate fact. Establish `hpos : 0 < a j` using `h _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem circle_eq_one_of_forall_re_pow_pos (z : Circle)
     (h : ∀ n : ℕ, 0 < ((z ^ n : Circle) : ℂ).re) : z = 1 := by
   have hsq : ∀ w : Circle, (w : ℂ).re ^ 2 + (w : ℂ).im ^ 2 = 1 := by
@@ -51,6 +70,17 @@ theorem circle_eq_one_of_forall_re_pow_pos (z : Circle)
   have hpos : 0 < a j := h _
   linarith
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψ`. Set `H : AddSubgroup k` to `{ carrier := {x | ψ x = 1} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[AddChar.map_add_eq_mul, ha, hb, one_mul]`. Use the proof step `zero_mem' := by simp`.
+
+Use the proof step `neg_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Rewrite using `[AddChar.map_neg_eq_inv, ha, inv_one] }`. Establish `hV : IsOpen {z : Circle | 0 < (z : ℂ).re}` using `isOpen_lt continuous_const (Complex.continuous_re.comp continuous_induced_dom)`. Establish `hU : ψ ⁻¹' {z : Circle | 0 < (z : ℂ).re} ∈ 𝓝 (0 : k)` using `(hV.preimage hψ).mem_nhds (by simp)`.
+
+Take `⟨γ, hγ, hball⟩` from `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.1 hU`. Establish `hsmul : ∀ x : k, valuation k x < γ → ∀ n : ℕ, valuation k (n • x) < γ`. Introduce `x hx n`. Proceed by induction on `n with`. Consider the case `zero => simpa using zero_lt_iff.2 hγ`.
+
+Consider the case `succ n ih`. Rewrite using `[succ_nsmul]`. Conclude with `Valuation.map_add_lt _ ih hx`. Establish `hone : ∀ x : k, valuation k x < γ → x ∈ H`. Introduce `x hx`.
+
+Use `circle_eq_one_of_forall_re_pow_pos (ψ x) fun n => ?_` and prove the remaining obligations. Establish `h1 : 0 < ((ψ (n • x) : Circle) : ℂ).re` using `hball (hsmul x hx n)`. Rewrite `h1` using `[AddChar.map_nsmul_eq_pow]`. Then use the resulting hypothesis. Establish `hnh : (H : Set k) ∈ 𝓝 (0 : k)` using `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.2 ⟨γ, hγ, fun x hx => hone x hx⟩`. Conclude with `H.isOpen_of_mem_nhds hnh`.
+-/
 theorem isOpen_addChar_ker : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ →
     IsOpen {x : k | ψ x = 1} := by

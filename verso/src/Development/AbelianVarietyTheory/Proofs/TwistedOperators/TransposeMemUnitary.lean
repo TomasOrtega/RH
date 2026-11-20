@@ -25,11 +25,17 @@ namespace GlobalTheory.RealColAct
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `gramAt`. Rewrite using `[hV]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem gramAt_of_gram_one {V : HSp D} (hV : HSpace.gram V = 1) (τ : D.what₂.Tau) : gramAt D V τ = 1 := by
   unfold gramAt
   rw [hV]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.StdUnn.CartanMove.compAt_isom hθ V g τ`. Rewrite `h` using `[gramAt_of_gram_one hV, Matrix.mul_one]`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Conclude with `h`.
+-/
 theorem compAt_mem_unitary {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} (hV : HSpace.gram V = 1) (g : GA D V)
     (τ : D.what₂.Tau) : compAt θ τ (Formalism.L2.Theta.mt V g) ∈ Matrix.unitaryGroup (Fin V.rank) ℂ := by
   have h := GlobalTheory.StdUnn.CartanMove.compAt_isom hθ V g τ
@@ -37,6 +43,11 @@ theorem compAt_mem_unitary {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} (hV :
   rw [Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]
   exact h
 
+/- English proof (translation)
+Establish `h2 : K * star K = 1` using `Matrix.mem_unitaryGroup_iff.1 hK`. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Establish `e : star Kᵀ = (star K)ᵀ`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.star_eq_conjTranspose]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, ← Matrix.transpose_mul, h2, Matrix.transpose_one]`.
+-/
 theorem transpose_mem_unitary {n : ℕ} {K : Matrix (Fin n) (Fin n) ℂ} (hK : K ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     Kᵀ ∈ Matrix.unitaryGroup (Fin n) ℂ := by
   have h2 : K * star K = 1 := Matrix.mem_unitaryGroup_iff.1 hK
@@ -59,6 +70,9 @@ def realCol (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (hV : HSpace.gram V 
     simp only [Subgroup.coe_mul, mul_inv_rev, GlobalTheory.StdUnn.CartanMove.compAt_mt_mul, Matrix.transpose_mul, Pi.mul_apply]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem realCol_apply (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (hV : HSpace.gram V = 1) (g : GinfC V) (τ : D.what₂.Tau) :
     (realCol θ hθ V hV g τ : Matrix (Fin V.rank) (Fin V.rank) ℂ) = (compAt θ τ (Formalism.L2.Theta.mt V ((g : GA D V)⁻¹)))ᵀ := rfl
 

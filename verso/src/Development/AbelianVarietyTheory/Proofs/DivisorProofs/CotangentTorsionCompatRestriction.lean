@@ -15,6 +15,13 @@ open GlobalTheory.OpenOmega
 
 namespace GlobalTheory.OpenOmega
 
+/- English proof (translation)
+Introduce `p _ R _ G _ GG θ n hs hs' hspec w`. Set `z' : Tors G (p ^ (n + 1)) (TrivSqZeroExt R (Cot R (GG.A n)))` to `⟨(univPt θ n hs).1, by rw [pow_succ, pow_mul, (univPt θ n hs).2, one_pow]⟩`. Establish `hz' : zeroSec R (Cot R (GG.A n)) ≫ z'.1 = η[G]` using `(univPt_spec θ n hs).1`. Establish `hpt : θ.pt (n + 1) _ z' = (univ GG n).comp (GG.res n : GG.A (n + 1) →ₐ[R] GG.A n)`. Rewrite using `[θ.res n _ (univPt θ n hs) z' rfl, (univPt_spec θ n hs).2]`.
+
+Establish `hlin : AugCot.sqZeroEquiv (Bialgebra.counitAlgHom R (GG.A (n + 1))) (Cot R (GG.A n)) ⟨θ.pt (n + 1) _ z', fst_comp_pt θ (n + 1) z' hz'⟩ = cotMap (GG.res n)` using `AugCot.hom_ext fun a => by`. Rewrite using `[AugCot.sqZeroEquiv_d]`. Use `Eq.trans ?_ (cotMap_d (GG.res n) a).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(θ.pt (n + 1) _ z' a).snd = _`. Rewrite using `[hpt]`.
+
+Simplify using `[univ]`. Establish `h` using `hspec _ z' hz' w`. Rewrite `h` using `[hlin]`. Conclude with `h.symm`.
+-/
 theorem cotMap_res_cnθ : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (GG : PDivGroup p R) (θ : TorsionMap G GG) (n : ℕ) (hs : PtSurj θ n) (hs' : PtSurj θ (n + 1)), SpecProp θ (n + 1) hs' → ∀ w : Wmod G, cotMap (GG.res n) (cnθ θ (n + 1) hs' w) = cnθ θ n hs w := by
   intro p _ R _ G _ GG θ n hs hs' hspec w
   let z' : Tors G (p ^ (n + 1)) (TrivSqZeroExt R (Cot R (GG.A n))) :=

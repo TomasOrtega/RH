@@ -17,16 +17,27 @@ section SlopeTestRemainingChoices
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+The claim follows from `mem_stdAt.2 fun l => by have h := intAt_form_of_mem_stdAt (1 : E) (LinearMap.proj l ∘ₗ f) (fun i => by simpa using hf i l) hv simpa using h`.
+-/
 theorem hom_mem_stdAt {n m : ℕ} (f : HomE E n m) (hf : ∀ j l, IntAt P (f (Pi.single j 1) l)) {v : Sp E n}
     (hv : v ∈ stdAt E n P) : f v ∈ stdAt E m P :=
   mem_stdAt.2 fun l => by
     have h := intAt_form_of_mem_stdAt (1 : E) (LinearMap.proj l ∘ₗ f) (fun i => by simpa using hf i l) hv
     simpa using h
 
+/- English proof (translation)
+The claim follows from `(hκ (κ.symm w)).1 (by rw [LinearEquiv.apply_symm_apply]; exact hw)`.
+-/
 theorem symm_mem_stdAt {n : ℕ} {κ : Sp E n ≃ₗ[E] Sp E n} (hκ : κ ∈ GLint E n P) {w : Sp E n} (hw : w ∈ stdAt E n P) :
     κ.symm w ∈ stdAt E n P :=
   (hκ (κ.symm w)).1 (by rw [LinearEquiv.apply_symm_apply]; exact hw)
 
+/- English proof (translation)
+Establish `h` using `hD _ (symm_mem_stdAt hκ hw)`. Rewrite `h` using `[LinearEquiv.apply_symm_apply]`. Establish `e : ((qOf P : E) ^ D)⁻¹ • (κ.symm w - w) = -(((qOf P : E) ^ D)⁻¹ • (w - κ.symm w))`. Rewrite using `[← smul_neg, neg_sub]`. Rewrite using `[e]`.
+
+Conclude with `Submodule.neg_mem _ h`.
+-/
 theorem symm_near {n D : ℕ} {κ : Sp E n ≃ₗ[E] Sp E n} (hκ : κ ∈ GLint E n P)
     (hD : ∀ w ∈ stdAt E n P, ((qOf P : E) ^ D)⁻¹ • (κ w - w) ∈ stdAt E n P) {w : Sp E n} (hw : w ∈ stdAt E n P) :
     ((qOf P : E) ^ D)⁻¹ • (κ.symm w - w) ∈ stdAt E n P := by
@@ -39,6 +50,37 @@ theorem symm_near {n D : ℕ} {κ : Sp E n ≃ₗ[E] Sp E n} (hκ : κ ∈ GLint
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie P hP κ κ' hκ hκD hκ' hκ'D y y'' hy''`. Establish `hok` using `t.idx_ok μ`. Establish `hc` using `hok.cst_ok`. Establish `hn : TopNum D.R (t.m2 + 1)` using `topNum_of (m_eq t μ)`. Establish `hX : t.X.Ok` using `hPin.fields.ok`.
+
+Establish `hPr` using `t.pr_ok`. Establish `hq0 : (qOf P.1 : t.X.E) ≠ 0` using `qOf_ne_zero`. Take `⟨d, hd⟩ : ∃ d, (t.cst μ).D P = d + 1` from `⟨(t.cst μ).D P - 1, by have := hc.D_pos P; omega⟩`. Distinguish the cases in `hI : ∀ j l, IntAt P.1 (y (Pi.single j 1) l)`. Establish `hA : topDat t.Ch t.sel (t.tup μ) (t.cst μ) (t.m2 + 1) P (κ'.symm.toLinearMap ∘ₗ y ∘ₗ κ.toLinearMap) (κ.symm y'') = topDat t.Ch t.sel (t.tup μ) (t.cst μ) (t.m2 + 1) P y (κ.symm y'')`.
+
+Use `topDat_congr t.Ch t.sel (t.tup μ) (t.cst μ) hX hPr hc hn P hP _ _ _ ?_ ?_` and prove the remaining obligations. Establish `h1 : κ.symm ((qOf P.1 : t.X.E) • y'') ∈ stdAt t.X.E _ P.1` using `symm_mem_stdAt hκ (mem_stdAt.2 hy'')`. Rewrite `h1` using `[map_smul]`. Introduce `j`. Simplify using `using mem_stdAt.1 h1 j`.
+
+Introduce `j`. Establish `hkj : κ (Pi.single j 1) ∈ stdAt t.X.E _ P.1` using `(hκ _).2 (single_mem_stdAt j)`. Establish `hv : y (κ (Pi.single j 1)) ∈ stdAt t.X.E _ P.1` using `hom_mem_stdAt y hI hkj`. Establish `hz : κ'.symm (y (κ (Pi.single j 1))) ∈ stdAt t.X.E _ P.1` using `symm_mem_stdAt hκ' hv`. Establish `hzI : ∀ l, IntAt P.1 ((κ'.symm.toLinearMap ∘ₗ y ∘ₗ κ.toLinearMap) (Pi.single j 1) l)` using `fun l => mem_stdAt.1 hz l`.
+
+Use `⟨iff_of_true hzI (hI j), fun _ l => ?_⟩` and prove the remaining obligations. Use `set s := ((qOf P.1 : t.X.E) ^ (t.cst μ).D P)⁻¹ • (κ (Pi.single j 1) - Pi.single j 1) with hs`. Use `set s' := ((qOf P.1 : t.X.E) ^ (t.cst μ).D P)⁻¹ • (κ'.symm (y (κ (Pi.single j 1))) - y (κ (Pi.single j 1))) with hs'`. Establish `hsI : s ∈ stdAt t.X.E _ P.1` using `hκD _ (single_mem_stdAt j)`. Establish `hs'I : s' ∈ stdAt t.X.E _ P.1` using `symm_near hκ' hκ'D hv`.
+
+Establish `hys : IntAt P.1 (y s l)` using `mem_stdAt.1 (hom_mem_stdAt y hI hsI) l`. Establish `e1 : y s l = ((qOf P.1 : t.X.E) ^ (t.cst μ).D P)⁻¹ * (y (κ (Pi.single j 1)) l - y (Pi.single j 1) l)`. Rewrite using `[hs, map_smul, map_sub]`. Both sides reduce to the same expression. Establish `e2 : s' l = ((qOf P.1 : t.X.E) ^ (t.cst μ).D P)⁻¹ * (κ'.symm (y (κ (Pi.single j 1))) l - y (κ (Pi.single j 1)) l)`.
+
+Rewrite using `[hs']`. Both sides reduce to the same expression. Establish `key : (κ'.symm.toLinearMap ∘ₗ y ∘ₗ κ.toLinearMap) (Pi.single j 1) l = y (Pi.single j 1) l + (qOf P.1 : t.X.E) * ((qOf P.1 : t.X.E) ^ d * (y s l + s' l))`. Rewrite using `[e1, e2, hd]`. Use `show κ'.symm (y (κ (Pi.single j 1))) l = _`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, redP_add_q ((intAt_pow (intAt_nat _) d).mul (hys.add (mem_stdAt.1 hs'I l)))]`. Establish `hB : topDat t.Ch t.sel (t.tup μ) (t.cst μ) (t.m2 + 1) P y (κ.symm y'') = topDat t.Ch t.sel (t.tup μ) (t.cst μ) (t.m2 + 1) P y y''`. Unfold `topDat`.
+
+Use `congr 1`. Establish `hw : (qOf P.1 : t.X.E) • y'' ∈ stdAt t.X.E _ P.1` using `mem_stdAt.2 hy''`. Establish `hsw` using `symm_near hκ hκD hw`. Establish `hdiff : κ.symm y'' - y'' ∈ stdAt t.X.E _ P.1`. Use `mem_stdAt.2 fun i => ?_` and prove the remaining obligations.
+
+Establish `hi` using `mem_stdAt.1 hsw i`. Establish `e : (κ.symm y'' - y'') i = (qOf P.1 : t.X.E) ^ d * ((((qOf P.1 : t.X.E) ^ (t.cst μ).D P)⁻¹ • (κ.symm ((qOf P.1 : t.X.E) • y'') - (qOf P.1 : t.X.E) • y'')) i)`. Rewrite using `[map_smul, hd]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(intAt_pow (intAt_nat _) d).mul hi`. Establish `h` using `ftY_comp_glint t.sel (t.tup μ) (t.cst μ) hc P (fun h => absurd hP h) (κ := 1) (atNL t.X.E (D.R.N (t.m2 + 1 + 1)) (D.R.N (t.m2 + 1 + 1) - 1) ∘ₗ y) y'' (κ.symm y'') (fun _ => hy'') (fun h => absurd hP h) (fun _ => hdiff) (fun h => absurd hP h)`. Conclude with `h`.
+
+Conclude with `hA.trans hB`. Use `push_neg at hI`. Take `⟨j, l, hjl⟩` from `hI`. Establish `h0 : topDat t.Ch t.sel (t.tup μ) (t.cst μ) (t.m2 + 1) P y y'' = 0`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hjl (topDat_int t.Ch t.sel (t.tup μ) (t.cst μ) hn P hP y y'' h j l)`. Establish `h1 : topDat t.Ch t.sel (t.tup μ) (t.cst μ) (t.m2 + 1) P (κ'.symm.toLinearMap ∘ₗ y ∘ₗ κ.toLinearMap) (κ.symm y'') = 0`. Assume the negation of the conclusion as `h`. Establish `hzI` using `topDat_int t.Ch t.sel (t.tup μ) (t.cst μ) hn P hP _ _ h`. Apply `hjl` to reduce the goal to its premises.
+
+Establish `hm : (κ'.symm.toLinearMap ∘ₗ y ∘ₗ κ.toLinearMap) (κ.symm (Pi.single j 1)) ∈ stdAt t.X.E _ P.1` using `hom_mem_stdAt _ hzI (symm_mem_stdAt hκ (single_mem_stdAt j))`. Establish `e : (κ'.symm.toLinearMap ∘ₗ y ∘ₗ κ.toLinearMap) (κ.symm (Pi.single j 1)) = κ'.symm (y (Pi.single j 1))`. Simplify using the standard rewrite rules. Rewrite `hm` using `[e]`. Establish `hm'` using `(hκ' _).2 hm`.
+
+Rewrite `hm'` using `[LinearEquiv.apply_symm_apply]`. Conclude with `mem_stdAt.1 hm' l`. Rewrite using `[h0, h1]`.
+-/
 theorem topDat_frames_vGs : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ (P : SB t μ), P.1 ∈ t.Pr.vGs →
   ∀ (κ : Sp t.X.E (D.R.N (t.m2 + 1)) ≃ₗ[t.X.E] Sp t.X.E (D.R.N (t.m2 + 1)))
     (κ' : Sp t.X.E (D.R.N (t.m2 + 1 + 1)) ≃ₗ[t.X.E] Sp t.X.E (D.R.N (t.m2 + 1 + 1))),

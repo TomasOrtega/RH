@@ -8,6 +8,19 @@ noncomputable section
 
 namespace GlobalTheory.CellLieAlg
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨X, hX, rfl⟩` from `hy`.
+
+Establish `e : unrealify ((WithLp.equiv 2 _).symm (realifyFun X)) = X`. Use extensionality with `i j`. Both sides reduce to the same expression. Use `show unrealify ((WithLp.equiv 2 _).symm (realifyFun X)) ∈ P`. Rewrite using `[e]`.
+
+Conclude with `(hP X).1 hX`. Consider the case `zero`. Establish `e : unrealify (0 : EuclideanSpace ℝ (Fin m × Fin m × Bool)) = 0`. Apply the tactic sequence `ext i j; apply Complex.ext <;> simp [unrealify]`. Rewrite using `[e]`.
+
+Conclude with `P.zero_mem`. Consider the case `add x y _ _ hx hy`. Establish `e : unrealify (x + y) = unrealify x + unrealify y`. Apply the tactic sequence `ext i j; apply Complex.ext <;> simp [unrealify]`. Rewrite using `[e]`.
+
+Conclude with `P.add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `e : unrealify (c • x) = c • unrealify x`. Apply the tactic sequence `ext i j; apply Complex.ext <;> simp [unrealify]`. Rewrite using `[e]`.
+
+Conclude with `P.smul_mem c hx`. Introduce `hx`. Use `Submodule.subset_span ⟨unrealify x, (hP _).2 hx, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨i, j, b⟩`. Apply the tactic sequence `cases b <;> rfl`.
+-/
 theorem mem_lieE_iff {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} (P : Submodule ℝ (Matrix (Fin m) (Fin m) ℂ))
     (hP : ∀ X, X ∈ lieOf S ↔ X ∈ P) (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
     x ∈ lieE S ↔ unrealify x ∈ P := by
@@ -38,6 +51,17 @@ theorem mem_lieE_iff {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} (P : Submo
     cases b <;> rfl
 
 open scoped Matrix.Norms.Operator in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hc : (fun t : ℝ => NormedSpace.exp (t • Xᴴ) * H * NormedSpace.exp (t • X)) = fun _ => H`. Use function extensionality and compare the values at `t`. Establish `h1 : (NormedSpace.exp ((t : ℂ) • X))ᴴ * H * NormedSpace.exp ((t : ℂ) • X) = H` using `h t`.
+
+Rewrite `h1` using `[← Matrix.exp_conjTranspose, Complex.coe_smul, Matrix.conjTranspose_smul, star_trivial]`. Conclude with `h1`. Establish `hd : HasDerivAt (fun t : ℝ => NormedSpace.exp (t • Xᴴ) * H * NormedSpace.exp (t • X)) _ 0` using `((hasDerivAt_exp_smul_const (𝕂 := ℝ) Xᴴ 0).mul_const H).mul (hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0)`. Rewrite `hd` using `[hc]`. Use `hd.unique (hasDerivAt_const _ _)` as an intermediate fact.
+
+Simplify using `using this`. Introduce `hX t set Y : Matrix (Fin N) (Fin N) ℂ := (t : ℂ) • X with hYdef`. Establish `hY : Yᴴ * H + H * Y = 0`. Rewrite using `[hYdef, Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]`. Establish `hinv : H⁻¹ = H` using `Matrix.inv_eq_right_inv hH`.
+
+Establish `hu : IsUnit H` using `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_left_inverse hH)`. Establish `hYh : Yᴴ = H * (-Y) * H⁻¹`. Establish `e : Yᴴ * H = -(H * Y)` using `eq_neg_of_add_eq_zero_left hY`. Combine the equalities or inequalities in the displayed calculation. Establish `hexp : (NormedSpace.exp Y)ᴴ = H * NormedSpace.exp (-Y) * H`.
+
+Rewrite using `[← Matrix.exp_conjTranspose, hYh, Matrix.exp_conj _ _ hu, hinv]`. Establish `hc : NormedSpace.exp (-Y) * NormedSpace.exp Y = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl Y)), neg_add_cancel, NormedSpace.exp_zero]`. Use `show (NormedSpace.exp Y)ᴴ * H * NormedSpace.exp Y = H`. Rewrite using `[hexp, Matrix.mul_assoc (H * NormedSpace.exp (-Y)) H H, hH, Matrix.mul_one, Matrix.mul_assoc, hc, Matrix.mul_one]`.
+-/
 theorem mem_lieOf_UH {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (hH : H * H = 1) (X : Matrix (Fin N) (Fin N) ℂ) :
     X ∈ lieOf (UH H) ↔ Xᴴ * H + H * X = 0 := by
   constructor
@@ -74,6 +98,11 @@ theorem mem_lieOf_UH {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (hH : H * H = 1)
       Matrix.mul_one, Matrix.mul_assoc, hc, Matrix.mul_one]
 
 open scoped Matrix.Norms.Operator in
+/- English proof (translation)
+Establish `hd : ∀ t : ℝ, HasDerivAt (fun t : ℝ => NormedSpace.exp (t • X) * E) (NormedSpace.exp (t • X) * X * E) t` using `fun t => (hasDerivAt_exp_smul_const (𝕂 := ℝ) X t).mul_const E`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0` using `hd 0`. Rewrite `h0` using `[show (fun t : ℝ => NormedSpace.exp (t • X) * E) = fun _ => E from funext h]`.
+
+Simplify using `using h0.unique (hasDerivAt_const _ _)`. Introduce `h t`. Use `is_const_of_deriv_eq_zero (fun t => (hd t).differentiableAt) (fun t => by rw [(hd t).deriv, Matrix.mul_assoc, h, Matrix.mul_zero]) t 0` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exp_mul_eq_iff {N : ℕ} (X E : Matrix (Fin N) (Fin N) ℂ) :
     (∀ t : ℝ, NormedSpace.exp (t • X) * E = E) ↔ X * E = 0 := by
   have hd : ∀ t : ℝ, HasDerivAt (fun t : ℝ => NormedSpace.exp (t • X) * E)
@@ -89,6 +118,13 @@ theorem exp_mul_eq_iff {N : ℕ} (X E : Matrix (Fin N) (Fin N) ℂ) :
       (fun t => by rw [(hd t).deriv, Matrix.mul_assoc, h, Matrix.mul_zero]) t 0
     simpa using this
 
+/- English proof (translation)
+Simplify using `only [bvec, Matrix.mulVec_single_one]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Use function extensionality and compare the values at `i`. Simplify using `using congrFun (congrFun e i) j`.
+
+Introduce `e`. Use extensionality with `i l`. Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality. Simplify using `using congrFun e i`.
+
+Rewrite using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ hl, Matrix.mul_single_apply_of_ne _ _ _ _ _ hl]`.
+-/
 theorem mul_single_eq_iff {N : ℕ} (g h : Matrix (Fin N) (Fin N) ℂ) (j : Fin N) :
     g * Matrix.single j j (1 : ℂ) = h * Matrix.single j j (1 : ℂ) ↔ g *ᵥ bvec j = h *ᵥ bvec j := by
   simp only [bvec, Matrix.mulVec_single_one]
@@ -103,6 +139,13 @@ theorem mul_single_eq_iff {N : ℕ} (g h : Matrix (Fin N) (Fin N) ℂ) (j : Fin 
       simpa using congrFun e i
     · rw [Matrix.mul_single_apply_of_ne _ _ _ _ _ hl, Matrix.mul_single_apply_of_ne _ _ _ _ _ hl]
 
+/- English proof (translation)
+Establish `h1` using `exp_mul_eq_iff X (Matrix.single j j (1 : ℂ))`. Establish `h2` using `mul_single_eq_iff X 0 j`. Rewrite `h2` using `[Matrix.zero_mul]`. Rewrite `h1` using `[h2]`. Establish `h3 : X *ᵥ bvec j = (0 : Matrix (Fin N) (Fin N) ℂ) *ᵥ bvec j ↔ ∀ i, X i j = 0`.
+
+Simplify using `[bvec, funext_iff]`. Rewrite using `[← h3, ← h1]`. Use `forall_congr' fun t => ?_` and prove the remaining obligations. Establish `h4` using `mul_single_eq_iff (NormedSpace.exp (t • X)) 1 j`. Rewrite `h4` using `[Matrix.one_mul, Matrix.one_mulVec]`.
+
+Rewrite using `[h4, Complex.coe_smul]`.
+-/
 theorem exp_fix_iff {N : ℕ} (X : Matrix (Fin N) (Fin N) ℂ) (j : Fin N) :
     (∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) *ᵥ bvec j = bvec j) ↔ ∀ i, X i j = 0 := by
   have h1 := exp_mul_eq_iff X (Matrix.single j j (1 : ℂ))
@@ -117,6 +160,17 @@ theorem exp_fix_iff {N : ℕ} (X : Matrix (Fin N) (Fin N) ℂ) (j : Fin N) :
   rw [Matrix.one_mul, Matrix.one_mulVec] at h4
   rw [h4, Complex.coe_smul]
 
+/- English proof (translation)
+Establish `hil` using `i.isLt`. Set `i' : Fin (2 * r + k + 1)` to `⟨2 * r + k - i.val, by omega⟩`. Establish `hv : i'.val = 2 * r + k - i.val` using `rfl`. Establish `h` using `congrFun (congrFun hX i') j`. Establish `h1 : (Xᴴ * Hpk k r) i' j = 0`.
+
+Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, hc i' (by omega) l, star_zero, zero_mul]`. Establish `h2 : (Hpk k r * X) i' j = X i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`.
+
+Establish `: Hpk k r i' i = 1`. Unfold `Hpk`. Apply the tactic sequence `split_ifs with a b c d <;> first | rfl | (exfalso; omega)`. Rewrite using `[this, one_mul]`. Introduce `l _ hl`.
+
+Establish `hl' : l.val ≠ i.val` using `fun e => hl (Fin.ext e)`. Establish `: Hpk k r i' l = 0`. Unfold `Hpk`. Apply the tactic sequence `split_ifs with a b c d <;> first | rfl | (exfalso; omega)`. Rewrite using `[this, zero_mul]`.
+
+Simplify using the standard rewrite rules. Rewrite `h` using `[Matrix.add_apply, h1, h2, zero_add]`. Conclude with `h`.
+-/
 theorem rows_zero {k r : ℕ} {X : Mat k r} (hX : Xᴴ * Hpk k r + Hpk k r * X = 0)
     (hc : ∀ j : Fin (2 * r + k + 1), ¬ (r ≤ j.val ∧ j.val ≤ r + k) → ∀ i, X i j = 0)
     (i : Fin (2 * r + k + 1)) (hi : ¬ (r ≤ i.val ∧ i.val ≤ r + k)) (j : Fin (2 * r + k + 1)) : X i j = 0 := by
@@ -144,6 +198,21 @@ theorem rows_zero {k r : ℕ} {X : Mat k r} (hX : Xᴴ * Hpk k r + Hpk k r * X =
   rw [Matrix.add_apply, h1, h2, zero_add] at h
   exact h
 
+/- English proof (translation)
+Establish `hH` using `(hpkFacts k r).2.1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hX` using `(mem_lieOf_UH _ hH X).1 fun t => (h t).1`. Establish `hc : ∀ j : Fin (2 * r + k + 1), ¬ (r ≤ j.val ∧ j.val ≤ r + k) → ∀ i, X i j = 0`.
+
+Introduce `j hj`. Establish `hjl` using `j.isLt`. Distinguish the cases in `hr : j.val < r`. Conclude with `(exp_fix_iff X j).1 fun t => ((h t).2 ⟨j.val, hr⟩).1`. Establish `e : esI k r ⟨2 * r + k - j.val, by omega⟩ = j`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [esI]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← e]`. Conclude with `(exp_fix_iff X _).1 fun t => ((h t).2 _).2`.
+
+Use `⟨hX, fun i j hij => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Conclude with `hc j (fun hj => hij ⟨hi, hj⟩) i`. Conclude with `rows_zero hX hc i hi j`. Introduce and unpack `⟨hX, h0⟩ t`.
+
+Use `⟨(mem_lieOf_UH _ hH X).2 hX t, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `(exp_fix_iff X _).2 (fun i => h0 i _ fun h => ?_) t` and prove the remaining obligations. Use `h.2.1` as an intermediate fact. Use `a.isLt` as an intermediate fact. Simplify using `only [eI] at *`.
+
+Use linear arithmetic over natural numbers and integers. Use `(exp_fix_iff X _).2 (fun i => h0 i _ fun h => ?_) t` and prove the remaining obligations. Use `h.2.2` as an intermediate fact. Use `a.isLt` as an intermediate fact. Simplify using `only [esI] at *`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem mem_lieOf_UWb (k r : ℕ) (X : Mat k r) :
     X ∈ lieOf (Formalism.FourierDecayAlt.B2.UWb k r) ↔ (Xᴴ * Hpk k r + Hpk k r * X = 0 ∧ ∀ i j : Fin (2 * r + k + 1),
       ¬ ((r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k)) → X i j = 0) := by
@@ -193,6 +262,9 @@ def midSub (k r : ℕ) : Submodule ℝ (Mat k r) where
   add_mem' {a b} ha hb := fun i j h => by rw [Matrix.add_apply, ha i j h, hb i j h, add_zero]
   smul_mem' c a ha := fun i j h => by rw [Matrix.smul_apply, ha i j h, smul_zero]
 
+/- English proof (translation)
+Introduce `k r x`. Establish `h2` using `mem_lieE_iff (S := Formalism.FourierDecayAlt.B2.UWb k r) (skewSub (Hpk k r) ⊓ midSub k r) (mem_lieOf_UWb k r) x`. Use `⟨mem_lieE_iff (skewSub (Hpk k r)) (mem_lieOf_UH _ (hpkFacts k r).2.1) x, h2, fun hx => ?_⟩` and prove the remaining obligations. Establish `h` using `(mem_lieOf_UWb k r _).2 (h2.1 hx) 1`. Simplify using `using h`.
+-/
 theorem lie_entries : ∀ (k r : ℕ) (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)), (x ∈ lieE (GG k r) ↔ (unrealify x)ᴴ * Hpk k r + Hpk k r * unrealify x = 0) ∧ (x ∈ lieE (Formalism.FourierDecayAlt.B2.UWb k r) ↔ ((unrealify x)ᴴ * Hpk k r + Hpk k r * unrealify x = 0 ∧ ∀ i j : Fin (2 * r + k + 1), ¬ ((r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k)) → unrealify x i j = 0)) ∧ (x ∈ lieE (Formalism.FourierDecayAlt.B2.UWb k r) → NormedSpace.exp (unrealify x) ∈ Formalism.FourierDecayAlt.B2.UWb k r) := by
   intro k r x
   have h2 := mem_lieE_iff (S := Formalism.FourierDecayAlt.B2.UWb k r) (skewSub (Hpk k r) ⊓ midSub k r) (mem_lieOf_UWb k r) x

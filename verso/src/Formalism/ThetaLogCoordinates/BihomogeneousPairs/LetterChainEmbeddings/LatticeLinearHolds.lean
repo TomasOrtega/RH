@@ -15,11 +15,17 @@ noncomputable def cmTiePL (w e : Fin r → σ) (zv sv : σ) (o n z : ℕ) :
     (((-1 : ℚ_[p]) ^ l) / (((l.factorial : ℚ_[p]) ^ 2) * ((o + n + r + z - 1).choose l : ℚ_[p]))) •
       ((tieEh w e zv sv) ^ l * ((tieF w e) ^ l * LinearMap.mulLeft ℚ_[p] (X zv ^ z)))
 
+/- English proof (translation)
+Simplify using `only [cmTiePL, tieP, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply, LinearMap.mulLeft_apply]`.
+-/
 theorem cm_tiePL_apply (w e : Fin r → σ) (zv sv : σ) (o n z : ℕ) (x : MvPolynomial σ ℚ_[p]) :
     cmTiePL w e zv sv o n z x = tieP w e zv sv o n z x := by
   simp only [cmTiePL, tieP, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply,
     LinearMap.mulLeft_apply]
 
+/- English proof (translation)
+Unfold `tieF`. Use `Commute.sum_left _ _ _ (fun c _ => Commute.sum_right _ _ _ (fun d _ => ?_))` and prove the remaining obligations. Simplify using `only [← Module.End.mul_eq_comp]`. Apply the tactic sequence `refine Commute.mul_left (Commute.mul_right ?_ ?_) (Commute.mul_right ?_ ?_) <;>`. Conclude with `PhiIntegrality.commute_pderiv _ _`.
+-/
 theorem cm_F_F {r' : ℕ} (w' e' : Fin r' → σ) (w e : Fin r → σ) :
     Commute (tieF (k := ℚ_[p]) w' e') (tieF w e) := by
   unfold tieF
@@ -28,12 +34,18 @@ theorem cm_F_F {r' : ℕ} (w' e' : Fin r' → σ) (w e : Fin r → σ) :
   refine Commute.mul_left (Commute.mul_right ?_ ?_) (Commute.mul_right ?_ ?_) <;>
     exact PhiIntegrality.commute_pderiv _ _
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun f => by simp only [Module.End.mul_apply, LinearMap.mulLeft_apply] exact tieF_mul_free w' e' q f hw he`.
+-/
 theorem cm_F_mul {r' : ℕ} (w' e' : Fin r' → σ) (q : MvPolynomial σ ℚ_[p]) (hw : ∀ c, pderiv (w' c) q = 0)
     (he : ∀ c, pderiv (e' c) q = 0) : Commute (tieF w' e') (LinearMap.mulLeft ℚ_[p] q) :=
   LinearMap.ext fun f => by
     simp only [Module.End.mul_apply, LinearMap.mulLeft_apply]
     exact tieF_mul_free w' e' q f hw he
 
+/- English proof (translation)
+Unfold `cmTiePL`. Use `Commute.sum_right _ _ _ (fun l _ => Commute.smul_right ?_ _)` and prove the remaining obligations. Use `Commute.mul_right (Commute.pow_right ?_ _) (Commute.mul_right (Commute.pow_right (cm_F_F _ _ _ _) _) ?_)` and prove the remaining obligations. Conclude with `cm_F_mul w' e' (ehP w e zv sv) (fun c => free_ehP (hw c).1 (hw c).2.1 (hw c).2.2.1 (hw c).2.2.2) (fun c => free_ehP (he c).1 (he c).2.1 (he c).2.2.1 (he c).2.2.2)`. Conclude with `cm_F_mul w' e' _ (fun c => free_pow (free_X (hw c).1) _) (fun c => free_pow (free_X (he c).1) _)`.
+-/
 theorem cm_F_P {r' : ℕ} (w' e' : Fin r' → σ) (w e : Fin r → σ) (zv sv : σ) (o n z : ℕ)
     (hw : ∀ c, zv ≠ w' c ∧ sv ≠ w' c ∧ (∀ d, w d ≠ w' c) ∧ ∀ d, e d ≠ w' c)
     (he : ∀ c, zv ≠ e' c ∧ sv ≠ e' c ∧ (∀ d, w d ≠ e' c) ∧ ∀ d, e d ≠ e' c) :
@@ -46,6 +58,9 @@ theorem cm_F_P {r' : ℕ} (w' e' : Fin r' → σ) (w e : Fin r → σ) (zv sv : 
       (fun c => free_ehP (he c).1 (he c).2.1 (he c).2.2.1 (he c).2.2.2)
   · exact cm_F_mul w' e' _ (fun c => free_pow (free_X (hw c).1) _) (fun c => free_pow (free_X (he c).1) _)
 
+/- English proof (translation)
+Establish `h` using `(cm_F_P (p := p) w' e' w e zv sv o n z hw he).pow_left m`. Establish `h2` using `LinearMap.congr_fun h.eq x`. Simplify `h2` using `only [Module.End.mul_apply, cm_tiePL_apply]`.
+-/
 theorem cm_Fpow_P {r' : ℕ} (w' e' : Fin r' → σ) (w e : Fin r → σ) (zv sv : σ) (o n z : ℕ)
     (hw : ∀ c, zv ≠ w' c ∧ sv ≠ w' c ∧ (∀ d, w d ≠ w' c) ∧ ∀ d, e d ≠ w' c)
     (he : ∀ c, zv ≠ e' c ∧ sv ≠ e' c ∧ (∀ d, w d ≠ e' c) ∧ ∀ d, e d ≠ e' c) (m : ℕ)
@@ -66,6 +81,11 @@ noncomputable def cmPLL (p : ℕ) [Fact p.Prime] {N r : ℕ} (D : BlockData N) (
     ((D.lettersAt j jp).deg (D.letterAt (D.T.pos i))) ((D.lettersAt j jp).deg (D.letterAt (D.T.pos i + 1)))
     (D.T.z i) * acc) 1
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons i L ih`. Establish `h1 : cmPLL (r` using `r) p D (i :: L) j jp = cmTiePL (wv D i) (ev D i) (zi D r i) (si D r i) ((D.lettersAt j jp).deg (D.letterAt (D.T.pos i))) ((D.lettersAt j jp).deg (D.letterAt (D.T.pos i + 1))) (D.T.z i) * cmPLL p D L j jp := rfl`. Rewrite using `[h1, Module.End.mul_apply, ih, cm_tiePL_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cm_PLL_apply (L : List (Fin D.T.t)) (j : Fin D.T.t → ℕ) (jp : ℕ)
     (x : MvPolynomial (BVar N r D.T.t) ℚ_[p]) : cmPLL p D L j jp x = PL p D L j jp x := by
   induction L with
@@ -81,12 +101,18 @@ noncomputable def cmPplusL (p : ℕ) [Fact p.Prime] {N r : ℕ} (D : BlockData N
     Module.End ℚ_[p] (MvPolynomial (BVar N r D.T.t) ℚ_[p]) :=
   cmTiePL (wU D) (xiVar N r D.T.t) (zP D r) (sP D r) (D.LL.deg D.uPos - jp) (D.B - jp) D.zPlus
 
+/- English proof (translation)
+Unfold `cmPplusL`. Rewrite using `[cm_tiePL_apply]`. Both sides reduce to the same expression.
+-/
 theorem cm_PplusL_apply (jp : ℕ) (x : MvPolynomial (BVar N r D.T.t) ℚ_[p]) :
     cmPplusL p D jp x = Pplus p D jp x := by
   unfold cmPplusL
   rw [cm_tiePL_apply]
   rfl
 
+/- English proof (translation)
+Introduce `h'`. Simplify using `only [wv, Sum.inl.injEq, Prod.mk.injEq] at h'`. Use `congrArg Fin.val h'.1` as an intermediate fact. Rewrite `this` using `[finPos_pos_val hB, finPos_pos_val hB]`. Conclude with `h (pos_inj hB this)`.
+-/
 theorem cm_wv_wv (hB : D.BlockOK) {i k : Fin D.T.t} (h : i ≠ k) (c d : Fin r) : wv D i d ≠ wv D k c := by
   intro h'
   simp only [wv, Sum.inl.injEq, Prod.mk.injEq] at h'
@@ -94,6 +120,9 @@ theorem cm_wv_wv (hB : D.BlockOK) {i k : Fin D.T.t} (h : i ≠ k) (c d : Fin r) 
   rw [finPos_pos_val hB, finPos_pos_val hB] at this
   exact h (pos_inj hB this)
 
+/- English proof (translation)
+Introduce `h'`. Simplify using `only [ev, Sum.inl.injEq, Prod.mk.injEq] at h'`. Use `congrArg Fin.val h'.1` as an intermediate fact. Rewrite `this` using `[finPos_succ_val hB, finPos_succ_val hB]`. Conclude with `h (pos_inj hB (by omega))`.
+-/
 theorem cm_ev_ev (hB : D.BlockOK) {i k : Fin D.T.t} (h : i ≠ k) (c d : Fin r) : ev D i d ≠ ev D k c := by
   intro h'
   simp only [ev, Sum.inl.injEq, Prod.mk.injEq] at h'
@@ -101,6 +130,9 @@ theorem cm_ev_ev (hB : D.BlockOK) {i k : Fin D.T.t} (h : i ≠ k) (c d : Fin r) 
   rw [finPos_succ_val hB, finPos_succ_val hB] at this
   exact h (pos_inj hB (by omega))
 
+/- English proof (translation)
+Introduce `h'`. Simplify using `only [wv, ev, Sum.inl.injEq, Prod.mk.injEq] at h'`. Use `congrArg Fin.val h'.1` as an intermediate fact. Rewrite `this` using `[finPos_pos_val hB, finPos_succ_val hB]`. Conclude with `pos_ne_succ hB i k this`.
+-/
 theorem cm_wv_ev (hB : D.BlockOK) (i k : Fin D.T.t) (c d : Fin r) : wv D i d ≠ ev D k c := by
   intro h'
   simp only [wv, ev, Sum.inl.injEq, Prod.mk.injEq] at h'
@@ -108,6 +140,11 @@ theorem cm_wv_ev (hB : D.BlockOK) (i k : Fin D.T.t) (c d : Fin r) : wv D i d ≠
   rw [finPos_pos_val hB, finPos_succ_val hB] at this
   exact pos_ne_succ hB i k this
 
+/- English proof (translation)
+Introduce `h'`. Simplify using `only [wv, wU, Sum.inl.injEq, Prod.mk.injEq] at h'`. Use `congrArg Fin.val h'.1` as an intermediate fact. Rewrite `this` using `[finPos_pos_val hB, Fin.val_castSucc]`. Use `pos_lt_u hB i` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem cm_wv_wU (hB : D.BlockOK) (i : Fin D.T.t) (c d : Fin r) : wv D i d ≠ wU D c := by
   intro h'
   simp only [wv, wU, Sum.inl.injEq, Prod.mk.injEq] at h'
@@ -116,6 +153,11 @@ theorem cm_wv_wU (hB : D.BlockOK) (i : Fin D.T.t) (c d : Fin r) : wv D i d ≠ w
   have := pos_lt_u hB i
   omega
 
+/- English proof (translation)
+Introduce `h'`. Simplify using `only [ev, wU, Sum.inl.injEq, Prod.mk.injEq] at h'`. Use `congrArg Fin.val h'.1` as an intermediate fact. Rewrite `this` using `[finPos_succ_val hB, Fin.val_castSucc]`. Use `pos_lt_u hB i` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem cm_ev_wU (hB : D.BlockOK) (i : Fin D.T.t) (c d : Fin r) : ev D i d ≠ wU D c := by
   intro h'
   simp only [ev, wU, Sum.inl.injEq, Prod.mk.injEq] at h'
@@ -124,6 +166,9 @@ theorem cm_ev_wU (hB : D.BlockOK) (i : Fin D.T.t) (c d : Fin r) : ev D i d ≠ w
   have := pos_lt_u hB i
   omega
 
+/- English proof (translation)
+The claim follows from `cm_Fpow_P (wv D k) (ev D k) (wv D i) (ev D i) (zi D r i) (si D r i) _ _ _ (fun c => ⟨Sum.inr_ne_inl, Sum.inr_ne_inl, fun d => cm_wv_wv hB h c d, fun d => (cm_wv_ev hB k i d c).symm⟩) (fun c => ⟨Sum.inr_ne_inl, Sum.inr_ne_inl, fun d => cm_wv_ev hB i k c d, fun d => cm_ev_ev hB h c …`.
+-/
 theorem cm_Pt_tie (hB : D.BlockOK) (j : Fin D.T.t → ℕ) (jp m : ℕ) {i k : Fin D.T.t} (h : i ≠ k)
     (x : MvPolynomial (BVar N r D.T.t) ℚ_[p]) :
     (tieF (wv D k) (ev D k) ^ m) (Pt p D j jp i x) = Pt p D j jp i ((tieF (wv D k) (ev D k) ^ m) x) :=
@@ -131,6 +176,9 @@ theorem cm_Pt_tie (hB : D.BlockOK) (j : Fin D.T.t → ℕ) (jp m : ℕ) {i k : F
     (fun c => ⟨Sum.inr_ne_inl, Sum.inr_ne_inl, fun d => cm_wv_wv hB h c d, fun d => (cm_wv_ev hB k i d c).symm⟩)
     (fun c => ⟨Sum.inr_ne_inl, Sum.inr_ne_inl, fun d => cm_wv_ev hB i k c d, fun d => cm_ev_ev hB h c d⟩) m x
 
+/- English proof (translation)
+The claim follows from `cm_Fpow_P (wU D) (xiVar N r D.T.t) (wv D i) (ev D i) (zi D r i) (si D r i) _ _ _ (fun c => ⟨Sum.inr_ne_inl, Sum.inr_ne_inl, fun d => cm_wv_wU hB i c d, fun d => cm_ev_wU hB i c d⟩) (fun c => ⟨Sum.inr_ne_inl, Sum.inr_ne_inl, fun d => wv_ne_xi hB i d c, fun d => ev_ne_xi hB i d c⟩) …`.
+-/
 theorem cm_Pt_plus (hB : D.BlockOK) (j : Fin D.T.t → ℕ) (jp m : ℕ) (i : Fin D.T.t)
     (x : MvPolynomial (BVar N r D.T.t) ℚ_[p]) :
     (tieF (wU D) (xiVar N r D.T.t) ^ m) (Pt p D j jp i x) =
@@ -139,17 +187,29 @@ theorem cm_Pt_plus (hB : D.BlockOK) (j : Fin D.T.t → ℕ) (jp m : ℕ) (i : Fi
     (fun c => ⟨Sum.inr_ne_inl, Sum.inr_ne_inl, fun d => cm_wv_wU hB i c d, fun d => cm_ev_wU hB i c d⟩)
     (fun c => ⟨Sum.inr_ne_inl, Sum.inr_ne_inl, fun d => wv_ne_xi hB i d c, fun d => ev_ne_xi hB i d c⟩) m x
 
+/- English proof (translation)
+Unfold `Pt`. Rewrite using `[deg_lettersAt_pos hB j jp, deg_lettersAt_pos_succ hB j jp, deg_lettersAt_pos hB j' jp', deg_lettersAt_pos_succ hB j' jp', h]`.
+-/
 theorem cm_Pt_param (hB : D.BlockOK) (j j' : Fin D.T.t → ℕ) (jp jp' : ℕ) (i : Fin D.T.t) (h : j i = j' i)
     (x : MvPolynomial (BVar N r D.T.t) ℚ_[p]) : Pt p D j jp i x = Pt p D j' jp' i x := by
   unfold Pt
   rw [deg_lettersAt_pos hB j jp, deg_lettersAt_pos_succ hB j jp, deg_lettersAt_pos hB j' jp', deg_lettersAt_pos_succ hB j' jp', h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cm_PL_nil (j : Fin D.T.t → ℕ) (jp : ℕ) (x : MvPolynomial (BVar N r D.T.t) ℚ_[p]) :
     PL p D [] j jp x = x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cm_PL_cons (i : Fin D.T.t) (L : List (Fin D.T.t)) (j : Fin D.T.t → ℕ) (jp : ℕ)
     (x : MvPolynomial (BVar N r D.T.t) ℚ_[p]) : PL p D (i :: L) j jp x = Pt p D j jp i (PL p D L j jp x) := rfl
 
+/- English proof (translation)
+Unfold `midGen`. Rewrite using `[List.drop_eq_nil_of_le (by simp), Finset.filter_true_of_mem (fun i _ => i.2)]`. Both sides reduce to the same expression.
+-/
 theorem cm_midGen_top (j : Fin D.T.t → ℕ) (jp : ℕ) (x : MvPolynomial (BVar N r D.T.t) ℚ_[p]) :
     midGen p D D.T.t j jp x = (∏ i, D.Ehat p (r := r) i ^ j i) * D.Eplus p (r := r) ^ jp *
       (∏ i, X (scalZ N r D.T.t (Fin.castSucc i)) ^ D.T.z i) * X (scalZ N r D.T.t (Fin.last D.T.t)) ^ D.zPlus *
@@ -160,10 +220,20 @@ theorem cm_midGen_top (j : Fin D.T.t → ℕ) (jp : ℕ) (x : MvPolynomial (BVar
 
 end block
 
+/- English proof (translation)
+Introduce `p _ N r _ D L j jp`. Conclude with `⟨⟨cmPLL p D L j jp, cm_PLL_apply L j jp⟩, ⟨cmPplusL p D jp, cm_PplusL_apply jp⟩⟩`.
+-/
 theorem lattice_linear_holds : PLLin := by
   intro p _ N r _ D L j jp
   exact ⟨⟨cmPLL p D L j jp, cm_PLL_apply L j jp⟩, ⟨cmPplusL p D jp, cm_PplusL_apply jp⟩⟩
 
+/- English proof (translation)
+Introduce `p _ N r _ D hB L j jp m x`. Proceed by induction on `L with`. Consider the case `nil => exact ⟨fun _ _ => rfl, rfl⟩`. Consider the case `cons i L ih`. Use `⟨fun k hk => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hki : i ≠ k` using `fun h => hk (by simp [h])`. Establish `hkL : k ∉ L` using `fun h => hk (by simp [h])`. Use `show (tieF (wv D k) (ev D k) ^ m) (Pt p D j jp i (PL p D L j jp x)) = Pt p D j jp i (PL p D L j jp ((tieF (wv D k) (ev D k) ^ m) x))`. Rewrite using `[cm_Pt_tie hB j jp m hki, ih.1 k hkL]`. Use `show (tieF (wU D) (xiVar N r D.T.t) ^ m) (Pt p D j jp i (PL p D L j jp x)) = Pt p D j jp i (PL p D L j jp ((tieF (wU D) (xiVar N r D.T.t) ^ m) x))`.
+
+Rewrite using `[cm_Pt_plus hB j jp m i, ih.2]`.
+-/
 theorem comm_lattice_holds : CommPL := by
   intro p _ N r _ D hB L j jp m x
   induction L with
@@ -179,6 +249,9 @@ theorem comm_lattice_holds : CommPL := by
         Pt p D j jp i (PL p D L j jp ((tieF (wU D) (xiVar N r D.T.t) ^ m) x))
       rw [cm_Pt_plus hB j jp m i, ih.2]
 
+/- English proof (translation)
+Introduce `p _ N r _ D hB L j j' jp jp' x h`. Proceed by induction on `L with`. Consider the case `nil => rw [cm_PL_nil, cm_PL_nil]`. Consider the case `cons i L ih`. Rewrite using `[cm_PL_cons, cm_PL_cons, ih (fun a ha => h a (by simp [ha])), cm_Pt_param hB j j' jp jp' i (h i (by simp))]`.
+-/
 theorem param_lattice_holds : ParamPL := by
   intro p _ N r _ D hB L j j' jp jp' x h
   induction L with
@@ -186,6 +259,15 @@ theorem param_lattice_holds : ParamPL := by
   | cons i L ih =>
     rw [cm_PL_cons, cm_PL_cons, ih (fun a ha => h a (by simp [ha])), cm_Pt_param hB j j' jp jp' i (h i (by simp))]
 
+/- English proof (translation)
+Introduce `p _ N r _ D`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `v ⟨j, jp, hok, x, hx, rfl⟩`. Rewrite using `[SetLike.mem_coe, cm_midGen_top, ← LinearMap.mulLeft_apply (R := ℚ_[p])]`.
+
+Use `span_map_mem _ _ _ ?_ x hx` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, g, hg, rfl⟩`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨j, jp, hok, y, hy, g, hg, by rw [LinearMap.mulLeft_apply, mul_assoc _ (rename _ y) g]⟩`.
+
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [Set.mem_iUnion] at hv`. Take `⟨j, jp, hok, y, hy, g, hg, rfl⟩` from `hv`. Use `Submodule.subset_span ⟨j, jp, hok, rename (chainEmb N r D.T.t) y * g, Submodule.subset_span ⟨y, hy, g, hg, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[cm_midGen_top, mul_assoc _ (rename _ y) g]`.
+-/
 theorem middle_top_holds : MidTop := by
   intro p _ N r _ D
   apply le_antisymm
@@ -205,6 +287,15 @@ theorem middle_top_holds : MidTop := by
       Submodule.subset_span ⟨y, hy, g, hg, rfl⟩, ?_⟩
     rw [cm_midGen_top, mul_assoc _ (rename _ y) g]
 
+/- English proof (translation)
+Introduce `p _ N r _ D`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `v ⟨j, jp, hok, x, hx, rfl⟩`. Establish `key : ∀ x' : MvPolynomial (BVar N r D.T.t) ℚ_[p], ((LinearMap.mulLeft ℚ_[p] ((∏ i, D.Ehat p (r` using `r) i ^ j i) * D.Eplus p (r := r) ^ jp) * (cmPplusL p D jp * cmPLL p D (List.finRange D.T.t) j jp) : Module.End ℚ_[p] (MvPolynomial (BVar N r D.T.t) ℚ_[p]))) x' = (∏ i, D.Ehat p (r := r) i ^ j i) * D.Eplus p (r := r) ^ jp * Pplus p D jp (PL p D (List.finRange D.T.t) j jp x') := by`.
+
+Introduce `x'`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, cm_PLL_apply, cm_PplusL_apply, LinearMap.mulLeft_apply]`. Rewrite using `[SetLike.mem_coe, ← key]`. Use `span_map_mem _ _ _ ?_ x hx` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, g, hg, rfl⟩`.
+
+Use `Submodule.subset_span ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨j, jp, hok, y, hy, g, hg, by rw [key, Pall_eq]⟩`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce `v hv`.
+
+Simplify using `only [Set.mem_iUnion] at hv`. Take `⟨j, jp, hok, y, hy, g, hg, rfl⟩` from `hv`. Conclude with `Submodule.subset_span ⟨j, jp, hok, rename (chainEmb N r D.T.t) y * g, Submodule.subset_span ⟨y, hy, g, hg, rfl⟩, by rw [Pall_eq]⟩`.
+-/
 theorem middle_p_eq_holds : MidPEq := by
   intro p _ N r _ D
   apply le_antisymm

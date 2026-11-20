@@ -9,5 +9,8 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Asc
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EmbHeight.unitaryAdelicHeight_wittEmbedding_le | exact GlobalTheory.EmbHeight.unitaryAdelicHeight_wittEmbedding_le | (intros; apply GlobalTheory.EmbHeight.unitaryAdelicHeight_wittEmbedding_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unitaryAdelicHeight_wittEmbedding_le_const_mul : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), ∃ C : ℝ, ∀ g : GA D S₀, height S (d.emb0 g) ≤ C * height S₀ g := by
   first | exact @GlobalTheory.EmbHeight.unitaryAdelicHeight_wittEmbedding_le | exact GlobalTheory.EmbHeight.unitaryAdelicHeight_wittEmbedding_le | (intros; apply GlobalTheory.EmbHeight.unitaryAdelicHeight_wittEmbedding_le <;> assumption)

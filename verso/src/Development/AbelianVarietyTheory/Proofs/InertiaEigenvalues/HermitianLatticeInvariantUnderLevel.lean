@@ -8,6 +8,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HLatLevel
 
+/- English proof (translation)
+Introduce `D V β Λ hΛ L y k hk`. Establish `h : Formalism.UG.bc (Lev.swapAE D) k.1 ∈ lev D.sp.cm V.gram β (Lev.flag1L L)` using `hk`. Establish `hq : Formalism.UG.bc (Lev.swapAE D) k.1 ∈ St β` using `parLev_St h.1`. Establish `hf : (1 : Bridge.Gf V).1 = Formalism.UG.bc (inclR (F` using `D.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F)) (1 : GL (Fin V.rank) D.host.E) := by`. Rewrite using `[map_one]`.
+
+Conclude with `OneMemClass.coe_one _`. Establish `e` using `GlobalTheory.HLatMove.hLat_mul hΛ 1 y k 1 hf hq`. Rewrite `e` using `[one_mul]`. Rewrite using `[e]`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem hLat_mul_lev : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), IsSDFrame V β Λ 1 → ∀ (L : LevDat D.host.E ℂ V.rank) (y k : Bridge.Gf V), k ∈ (levEnv V β L).J → Bridge.hLat V (y * k) = Bridge.hLat V y := by
   intro D V β Λ hΛ L y k hk
   have h : Formalism.UG.bc (Lev.swapAE D) k.1 ∈ lev D.sp.cm V.gram β (Lev.flag1L L) := hk

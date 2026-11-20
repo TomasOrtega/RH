@@ -10,6 +10,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.ArcKill
 
+/- English proof (translation)
+Introduce `hK E _ _ _ H Dw l Xo c K₁ _ _ _ d ι r U a' n n' La c₁ hG hU hFam hDom hT m a F f hF hB hf hfe`. Take `⟨⟨hob, -, hpush⟩, ⟨s⟩⟩` from `hFam`. Take `⟨k, ξ', fr, u₁, κ, hu, hiso, -, hfr, hid⟩` from `GlobalTheory.T.arcDatum_sectionValue_coeff_eq_fourierJacobi hK.laws hK.laws2 hK.ubc hK.laws5 hK.n5 E H Dw l Xo c K₁ d ι r U s.ξ s.ν₀ a' n (hK.ev E H Dw l Xo c) hG hU hob s.tan hpush s.rk s.ξ_ne s.beta hDom hT`. Use `GlobalTheory.T.coeff_eq_zero_of_vanish_on_invertibleLetterBlocks E H Dw l Xo c K₁ d ι m a F fun x hx => ?_` and prove the remaining obligations. Establish `hlin` using `GlobalTheory.T.fourierJacobi_coeff_linear_bounded_sections E r (U.X k) (laU U a' n k) m a (fun i => rdU U (F i) k) (f k) (fun i => hB i k) (hfe k) ξ' hiso (fun τ => (τ.1 s.ν₀).re) (fr x) (hfr x hx)`.
+
+Establish `htr : ∑ τ : (U.X k).Ψ, (τ.1 s.ν₀).re ≤ c₁`. Rewrite using `[GlobalTheory.sum_re_cmType_eq_half_trace E r (U.X k) s.ν₀]`. Conclude with `s.tr`. Establish `h0` using `(hf k).2 ξ' hiso (fun τ => (τ.1 s.ν₀).re) htr (fr x) (hfr x hx)`. Establish `hz : u₁ ^ d.jj ≠ 0` using `zpow_ne_zero _ hu`.
+
+Use `(mul_eq_zero.mp ?_).resolve_right hz` and prove the remaining obligations. Rewrite `hlin` using `[h0]`. Rewrite using `[Finset.sum_mul]`. Establish `: ∀ i, a i * ajAt d ι (F i) x * u₁ ^ d.jj = κ x * (a i * (U.X k).fj (laU U a' n k) ξ' (fun τ => (τ.1 s.ν₀).re) (rdU U (F i) k) (fr x))`. Introduce `i`.
+
+Rewrite using `[mul_assoc, hid (F i) (hF i) (hB i k) x hx]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun i _ => this i, ← Finset.mul_sum, ← hlin, mul_zero]`.
+-/
 theorem sum_cfOf_eq_zero : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (ι : K₁ →+* ℂ) (r : ℕ) (U : Unf Xo c (ι.comp (algebraMap c.F K₁)) r) (a' : (E →+* ℂ) × ℕ → ℕ) (n n' : ℕ) (La c₁ : ℝ), GoodEmb c (ι.comp (algebraMap c.F K₁)) → IsUnf U → Fam n' La c₁ d → Dom a' n → (∀ k, TransvIn (U.X k) l.M' (laU U a' n k)) → ∀ (m : ℕ) (a : Fin m → ℂ) (F : Fin m → Rul Xo c) (f : ∀ k : U.Comp, Frame (U.X k).Ψ r → ℂ), (∀ i, F i ∈ sec Xo c a' n) → (∀ i k, (U.X k).IsBddSec (laU U a' n k) (rdU U (F i) k)) → (∀ k, f k ∈ (U.X k).SSgt (laU U a' n k) c₁) → (∀ k, ∀ x ∈ (U.X k).dom, f k x = ∑ i, a i * rdU U (F i) k x) → ∀ μ : ArcLt Dw →₀ ℕ, ∑ i, a i * ι (cfOf d.yF μ d.jj (F i)) = 0 := by
   intro hK E _ _ _ H Dw l Xo c K₁ _ _ _ d ι r U a' n n' La c₁ hG hU hFam hDom hT m a F f hF hB hf hfe
   obtain ⟨⟨hob, -, hpush⟩, ⟨s⟩⟩ := hFam

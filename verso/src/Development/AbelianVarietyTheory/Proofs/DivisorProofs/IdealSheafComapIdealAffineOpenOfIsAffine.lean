@@ -4,6 +4,13 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : IsAffine (W.1 : Scheme) := W.2`. Establish `h1` using `Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion (K.comap f) W.1.ι ⟨⊤, isAffineOpen_top _⟩`. Rewrite `h1` using `[← Scheme.IdealSheafData.comap_comp, IdealSheafData.ideal_comap_top_of_isAffine]`. Establish `hc : (W.1.ι ≫ f).appTop ≫ (W.1.ι.appIso ⊤).inv = f.appLE ⊤ (W.1.ι ''ᵁ ⊤) (by simp)`. Simplify using `[Scheme.Hom.appLE]`.
+
+Conclude with `Category.comp_id _`. Establish `hs : Function.Surjective (W.1.ι.appIso ⊤).inv.hom` using `(W.1.ι.appIso ⊤).commRingCatIsoToRingEquiv.symm.surjective`. Establish `h2 : (K.comap f).ideal ⟨W.1.ι ''ᵁ ⊤, (isAffineOpen_top _).image_of_isOpenImmersion W.1.ι⟩ = Ideal.map (f.appLE ⊤ (Subtype.val (⟨W.1.ι ''ᵁ ⊤, (isAffineOpen_top _).image_of_isOpenImmersion W.1.ι⟩ : X.affineOpens)) (by simp)).hom (K.ideal ⟨⊤, isAffineOpen_top Y⟩)`. Rewrite using `[← hc, CommRingCat.hom_comp, ← Ideal.map_map, h1, Ideal.map_comap_of_surjective _ hs]`. Establish `hW : (⟨W.1.ι ''ᵁ ⊤, (isAffineOpen_top _).image_of_isOpenImmersion W.1.ι⟩ : X.affineOpens) = W` using `Subtype.ext (by simp)`.
+
+Establish `key : ∀ V : X.affineOpens, V = W → (K.comap f).ideal V = Ideal.map (f.appLE ⊤ V.1 (fun _ _ => trivial)).hom (K.ideal ⟨⊤, isAffineOpen_top Y⟩) → (K.comap f).ideal W = Ideal.map (f.appLE ⊤ W (fun _ _ => trivial)).hom (K.ideal ⟨⊤, isAffineOpen_top Y⟩)`. Introduce and unpack `V rfl h`. Conclude with `h`. Conclude with `key _ hW h2`.
+-/
 theorem IdealSheafData.ideal_comap_affineOpen_of_isAffine {X Y : Scheme.{0}} [IsAffine Y]
     (f : X ⟶ Y) (K : Y.IdealSheafData) (W : X.affineOpens) :
     (K.comap f).ideal W = Ideal.map (f.appLE ⊤ W (by simp)).hom (K.ideal ⟨⊤, isAffineOpen_top Y⟩) := by
@@ -30,6 +37,9 @@ theorem IdealSheafData.ideal_comap_affineOpen_of_isAffine {X Y : Scheme.{0}} [Is
     rintro V rfl h; exact h
   exact key _ hW h2
 
+/- English proof (translation)
+Introduce `f K W` and use `IdealSheafData.ideal_comap_affineOpen_of_isAffine f K W`.
+-/
 example : ∀ {X Y : Scheme.{0}} [IsAffine Y] (f : X ⟶ Y) (K : Y.IdealSheafData) (W : X.affineOpens), (K.comap f).ideal W = Ideal.map (f.appLE ⊤ W (by simp)).hom (K.ideal ⟨⊤, isAffineOpen_top Y⟩) :=
   fun f K W => IdealSheafData.ideal_comap_affineOpen_of_isAffine f K W
 

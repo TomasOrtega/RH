@@ -14,12 +14,20 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.Unf
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Apply the tactic sequence `ext <;> simp`.
+-/
 theorem om_comp_one {D : D7} {S T : HSp D} (om : Om S T) (g : GA D S) (h : GA D T) (f : WO S T → ℂ) :
     om (1, h) (om (g, 1) f) = om (g, h) f := by
   rw [← Module.End.mul_apply, ← map_mul]
   congr 2
   ext <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [rTrans, liftS_apply]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Establish `e : ((x, h) : GA D S × GA D T) * (g, 1) = (x * g, h)` using `by simp`.
+
+Rewrite using `[← e, map_mul, Module.End.mul_apply]`.
+-/
 theorem rTrans_liftS {D : D7} {S T : HSp D} (om : Om S T) (ν : Measure (GA D T)) (𝓕 : Set (GA D T))
     (G : GA D T → ℂ) (f : WO S T → ℂ) (g : GA D S) :
     rTrans g (liftS om ν 𝓕 G f) = liftS om ν 𝓕 G (om (g, 1) f) := by
@@ -30,6 +38,15 @@ theorem rTrans_liftS {D : D7} {S T : HSp D} (om : Om S T) (ν : Measure (GA D T)
   have e : ((x, h) : GA D S × GA D T) * (g, 1) = (x * g, h) := by simp
   rw [← e, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Introduce `D hBF hFB hLink hHand hFlat ψ σ B J B' s₁ s₂ l vL Φ₁ Φ₂ φ G g hΦ₁ hΦ₂ hφ hG hG'`. Establish `hfl` using `GlobalTheory.T.flatThetaMaps_preserve_thetaFunctions D hFlat ψ`. Establish `hΞ₁ : ∀ h₁, IsThetaFunO ψ B.V₀ J.W₀ (flatBF s₁ (s₁.om (g, h₁) Φ₁))` using `fun h₁ => hfl.1 _ B J s₁ _ (s₁.weil.om_pres _ _ hΦ₁)`. Establish `hΞ₂ : ∀ h₁ h₂, IsThetaFunO ψ J.W₀ B'.V₀ (flatFB s₂ (s₂.om (h₁, h₂) Φ₂))` using `fun h₁ h₂ => hfl.2 _ J B' s₂ _ (s₂.weil.om_pres _ _ hΦ₂)`. Establish `hL` using `fun h₁ => hLink ψ (σ + 1) B J s₁ B'.L B'.ζ B'.line l φ _ hφ (hΞ₁ h₁)`.
+
+Use `⟨fun h₁ h₂ => hHand ψ σ J B' s₂ vL _ _ (hL h₁).1 (hΞ₂ h₁ h₂), ?_⟩` and prove the remaining obligations. Use `⟨fun h₁ => J.perAll ψ B s₁.om₀ φ (rTrans h₁ (s₂.lift G Φ₂)) (flatBF s₁ (s₁.om (g, h₁) Φ₁)), ?_, ?_⟩` and prove the remaining obligations. Use `hBF ψ (σ + 1) B J s₁ φ (s₂.lift G Φ₂) (s₁.om (g, 1) Φ₁) hφ hG' (s₁.weil.om_pres _ _ hΦ₁)` as an intermediate fact. Simplify using `only [om_comp_one] at this`. Use `this using 2` and compare the differences between its conclusion and the goal.
+
+Conclude with `rTrans_liftS _ _ _ _ _ _`. Introduce `h₁`. Use `hFB ψ σ J B' s₂ vL _ G (s₂.om (h₁, 1) Φ₂) (hL h₁).1 hG (s₂.weil.om_pres _ _ hΦ₂)` as an intermediate fact. Simplify using `only [om_comp_one] at this`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Both sides reduce to the same expression. Use `show J.perAll ψ B s₁.om₀ φ (rTrans h₁ (s₂.lift G Φ₂)) (flatBF s₁ (s₁.om (g, h₁) Φ₁)) = _`. Rewrite using `[(hL h₁).2]`. Use `congr 1`. Conclude with `rTrans_liftS _ _ _ _ _ _`.
+-/
 theorem doubleStep_of_laws : ∀ D : D7, UnfBF D → UnfFB D → LinkLaw D → HandFBLaw D → FlatLaw D → DoubleStep D := by
   intro D hBF hFB hLink hHand hFlat ψ σ B J B' s₁ s₂ l vL Φ₁ Φ₂ φ G g hΦ₁ hΦ₂ hφ hG hG'
   have hfl := GlobalTheory.T.flatThetaMaps_preserve_thetaFunctions D hFlat ψ

@@ -17,6 +17,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.HSNef.TwistSmall
 
+/- English proof (translation)
+Introduce `x i j _ hj`. Establish `hx : x ∈ (⨆ i, P.L.B.U i)` using `by rw [P.L.isLB.cover]; trivial`. Take `⟨i', hi'⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Simplify `hs x i' j hi' hj` using `[Pair.loc]`.
+-/
 theorem mem_regular_sections_second_bundle_indep_first {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     (P : Pair p) (L' : HermLB p) (r : L'.B.ι → X.functionFieldˣ) (hr : IsRatSec L'.B r)
     {s : X.functionField} (hs : s ∈ P.H 0 1) :
@@ -26,6 +29,21 @@ theorem mem_regular_sections_second_bundle_indep_first {k : Type} [CommRing k] {
   obtain ⟨i', hi'⟩ := TopologicalSpace.Opens.mem_iSup.1 hx
   simpa [Pair.loc] using hs x i' j hi' hj
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX P N s hA hs hs0`. Take `⟨rN, hrN⟩` from `exists_isRatSec N.isLB`. Set `Q : Pair p` to `⟨N, P.A, rN, P.r', hrN, P.hr'⟩`. Take `⟨c₁, g, _, hg0, hg, -⟩` from `GlobalTheory.T.exists_clear_denominators_ampleHermLineBundle k X p D hX Q hA 1 Empty (fun e => e.elim)`. Use `⟨c₁, fun c hc hc0 => ?_⟩` and prove the remaining obligations.
+
+Establish `hsQ : s ∈ Q.H 0 1` using `mem_regular_sections_second_bundle_indep_first P N rN hrN hs`. Take `⟨hpow, -⟩` from `NuPow.pow_mem_H_and_nu_pow k X p Q 0 1 s hsQ (c - c₁)`. Take `⟨hf, -⟩` from `NuMul.mul_mem_H_and_nu_mul k X p Q 1 c₁ _ _ g (s ^ (c - c₁)) hg hpow`. Establish `e1 : (1 : ℤ) + ((c - c₁ : ℕ) : ℤ) * 0 = 1` using `by ring`. Establish `e2 : (c₁ : ℤ) + ((c - c₁ : ℕ) : ℤ) * 1 = c` using `by push_cast [Nat.cast_sub hc]; ring`.
+
+Rewrite `hf` using `[e1, e2]`. Take `⟨w, _, hw⟩` from `GlobalTheory.T.pairSection_mem_ball_exp_of_projArithVariety k X p D hX Q 1 c _ hf`. Establish `hcpos : (0 : ℝ) < c` using `by exact_mod_cast hc0`. Use `⟨w / c, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨-, hBl, -⟩` from `GlobalTheory.T.shiftSecondBundleNormPair_norm_ball_generation k X p Q u`.
+
+Establish `hwu : w ≤ (c : ℤ) * u`. Use `(div_le_iff₀ hcpos).1 hu` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmem : g * s ^ (c - c₁) ∈ (shiftA Q u).Bl 1 c 1`.
+
+Rewrite using `[hBl, one_mul]`. Conclude with `⟨hw.1, fun σ y => (hw.2 σ y).trans (Real.exp_le_exp.2 hwu)⟩`. Establish `hne : g * s ^ (c - c₁) ≠ 0` using `mul_ne_zero hg0 (pow_ne_zero _ hs0)`. Establish `hrepN` using `(Pair.rep_base k X p (shiftA Q u)).1`. Establish `hrepA` using `(Pair.rep_base k X p (shiftA Q u)).2.1`.
+
+Establish `hpowA` using `Pair.rep_pow k X p (shiftA Q u) 0 1 _ c hrepA`. Establish `hdual` using `Pair.rep_dual k X p (shiftA Q u) _ _ _ hpowA`. Establish `e3 : (1 : ℤ) - -((c : ℤ) * 0) = 1` using `by ring`. Establish `e4 : (0 : ℤ) - -((c : ℤ) * 1) = c` using `by ring`. Establish `hmem' : g * s ^ (c - c₁) ∈ (shiftA Q u).Bl (1 - -((c : ℤ) * 0)) (0 - -((c : ℤ) * 1)) 1`.
+
+Rewrite using `[e3, e4]`. Conclude with `hmem`. Conclude with `GlobalTheory.T.hermLBLeBySmallSection_of_rep k X p (shiftA Q u) 1 0 _ _ N _ _ hrepN hdual hne hmem'`.
+-/
 theorem le_dual_pow_shift : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (P : Pair p) (N : HermLB p) (s : X.functionField), IsAmpleLB P.A.B → s ∈ P.H 0 1 → s ≠ 0 →
     ∃ c₁ : ℕ, ∀ c, c₁ ≤ c → 0 < c → ∃ u₀ : ℝ, ∀ u, u₀ ≤ u → Le (((shiftA P u).A.pow c).dual) N := by

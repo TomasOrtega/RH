@@ -10,6 +10,9 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TwoLat.exists_base_deRham | exact GlobalTheory.TwoLat.exists_base_deRham | (intros; apply GlobalTheory.TwoLat.exists_base_deRham <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.model_base_change_number_field : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l}

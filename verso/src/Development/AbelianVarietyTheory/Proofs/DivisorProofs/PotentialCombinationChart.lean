@@ -7,6 +7,33 @@ open scoped Classical
 
 namespace GlobalTheory.ChernWeilLine
 
+/- English proof (translation)
+Introduce `F _ _ Y M I a Δ m Q hP hPot j c hc z hz g hg`. Establish `hsymm : ∀ y', ((M.A a).chart j).symm y' = (I.pt a).symm (c.finChart.symm y')` using `fun y' => by`. Rewrite using `[hc, Homeomorph.transOpenPartialHomeomorph_symm_apply]`. Both sides reduce to the same expression. Establish `hzt : z ∈ c.finChart.target`.
+
+Rewrite `hz` using `[hc]`. Simplify using `using hz`. Establish `hy0 : c.finChart.symm z ∈ c.e.source` using `c.finChart.map_target hzt`. Use `set x := ((M.A a).chart j).symm z with hxdef`. Establish `hx : I.pt a x = c.finChart.symm z` using `by rw [hxdef, hsymm, Homeomorph.apply_symm_apply]`.
+
+Take `⟨f, hf⟩` from `hP x`. Establish `hfx` using `hf x (Q.mem_U x)`. Rewrite `hfx` using `[hx]`. Take `⟨e, he⟩` from `Δ.exists_isEqn (under (c.finChart.symm z))`. Establish `hr : UnitAt (under (c.finChart.symm z)) (g * f⁻¹)`.
+
+Establish `h1` using `(he.generatesAt_iff.1 hg).mul (he.generatesAt_iff.1 hfx.1).inv`. Establish `hf0 : f ≠ 0` using `hfx.1.ne_zero`. Establish `he0 : (e : Y.Fn) ≠ 0` using `Units.ne_zero e`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+
+Take `⟨U0, hU0, hU0u⟩` from `hr.exists_nhds`. Take `⟨b, hb⟩` from `exists_unit_fnOf_eq hU0u`. Establish `hgen0` using `gen_mem hU0`. Establish `hb'` using `hb hgen0`. Establish `hv : c.e (c.finChart.symm z) = GlobalTheory.FinChart.toV Y.dim z`.
+
+Rewrite using `[← AlgChart.toV_finChart, c.finChart.right_inv hzt]`. Establish `hxs : (I.pt a).symm (c.finChart.symm z) = x` using `by rw [← hx, Homeomorph.symm_apply_apply]`. Establish `hS : IsOpen (ptsIn Y.str (I.ε a) U0 ∩ (I.pt a).symm ⁻¹' Q.U x)` using `(isOpen_ptsIn U0).inter ((Q.isOpen_U x).preimage (I.pt a).symm.continuous)`. Establish `hvO` using `mem_over c.e hy0 (S := ptsIn Y.str (I.ε a) U0 ∩ (I.pt a).symm ⁻¹' Q.U x) ⟨mem_ptsIn.2 hU0, by simpa [hxs] using Q.mem_U x⟩`. Establish `hRa : AnalyticAt ℂ (ev Y.str (I.ε a) U0 b.1 ∘ c.e.symm) (c.e (c.finChart.symm z))` using `GlobalTheory.SCV.analyticAt_of_differentiableOn (c.holo U0 b) ((isOpen_over c.e (isOpen_ptsIn U0)).mem_nhds (mem_over c.e hy0 (mem_ptsIn.2 hU0)))`.
+
+Use `⟨fun u => ev Y.str (I.ε a) U0 b.1 (c.e.symm u), hRa.contDiffAt, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [c.e.left_inv hy0]`. Conclude with `ev_ne_zero (mem_ptsIn.2 hU0) b.isUnit`. Establish `hsm` using `hPot.1 x j`. Establish `hzmem : z ∈ ((M.A a).chart j).target ∩ ((M.A a).chart j).symm ⁻¹' Q.U x` using `⟨hz, by simpa [← hxdef] using Q.mem_U x⟩`.
+
+Establish `hca : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (Q.φ x ∘ ((M.A a).chart j).symm) z` using `hsm.contDiffAt ((((M.A a).chart j).isOpen_inter_preimage_symm (Q.isOpen_U x)).mem_nhds hzmem)`. Establish `key : (fun u => Q.φ x ((I.pt a).symm (c.e.symm u))) = fun u => (Q.φ x ∘ ((M.A a).chart j).symm) ((GlobalTheory.FinChart.toV Y.dim).symm u)`. Use function extensionality and compare the values at `u`. Simplify using `[hsymm, AlgChart.finChart_symm_apply]`. Rewrite using `[key]`.
+
+Establish `hca' : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (Q.φ x ∘ ((M.A a).chart j).symm) ((GlobalTheory.FinChart.toV Y.dim).symm (c.e (c.finChart.symm z)))`. Rewrite using `[hv, ContinuousLinearEquiv.symm_apply_apply]`. Conclude with `hca`. Conclude with `(hca'.comp _ (GlobalTheory.FinChart.toV Y.dim).symm.contDiff.contDiffAt).of_le (WithTop.coe_le_coe.2 le_top)`. Use `filter_upwards [(isOpen_over c.e hS).mem_nhds hvO] with u hu`.
+
+Take `⟨-, h1, h2⟩` from `hu`. Take `⟨hgw, hpos, hφ⟩` from `hf _ h2`. Rewrite `hgw`, `hpos`, `hφ` using `[Homeomorph.apply_symm_apply]`. Establish `hUw` using `hU0u _ (mem_ptsIn.1 h1)`. Establish `hratv : ratVal (g * f⁻¹) (c.e.symm u) = ev Y.str (I.ε a) U0 b.1 (c.e.symm u)`.
+
+Rewrite using `[← hb', ratVal_fnOf h1]`. Establish `hpn : (cxSt F).pn Y (I.ε a) Δ m ((cxSt F).cx Y (I.ε a) g) (c.e.symm u) = ‖ratVal (g * f⁻¹) (c.e.symm u)‖ ^ 2 * (cxSt F).pn Y (I.ε a) Δ m ((cxSt F).cx Y (I.ε a) f) (c.e.symm u)`. Use `(cxSt F).pn_mul Y (I.ε a) Δ m (g * f⁻¹) f (c.e.symm u) hUw.regAt hgw.regularAt` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right₀ hgw.ne_zero]`. Then use the resulting hypothesis. Establish `hfpos : 0 < (cxSt F).pn Y (I.ε a) Δ m ((cxSt F).cx Y (I.ε a) f) (c.e.symm u)`.
+
+Take `⟨a', ha', e'⟩` from `exists_pn_eq (C := cxSt F) hgw`. Rewrite using `[e' m]`. Conclude with `mul_pos ha' hpos`. Establish `hexp : Real.exp (-2 * Q.φ x ((I.pt a).symm (c.e.symm u))) = (cxSt F).pn Y (I.ε a) Δ m ((cxSt F).cx Y (I.ε a) f) (c.e.symm u)`. Rewrite using `[hφ, lnN, show -2 * -(Real.log ((cxSt F).pn Y (I.ε a) Δ m ((cxSt F).cx Y (I.ε a) f) (c.e.symm u)) / 2) = Real.log ((cxSt F).pn Y (I.ε a) Δ m ((cxSt F).cx Y (I.ε a) f) (c.e.symm u)) by ring, Real.exp_log hfpos]`.
+
+Establish `hR0 : 0 < ‖ratVal (g * f⁻¹) (c.e.symm u)‖ ^ 2` using `pow_pos (norm_pos_iff.2 (ratVal_ne_zero hUw)) 2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hpn]`. Conclude with `mul_pos hR0 hfpos`. Rewrite using `[hpn, hexp, hratv]`.
+-/
 theorem pn_eq_normSq_mul_exp_pot : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {M : Man Y.dim} (I : ManIs M Y) (a : Fin (M.n + 1)) {Δ : Y.Dv} (m : (cxSt F).Met Y (I.ε a) Δ) (Q : LocPot (M.X a)), IsPot (I.pt a) m Q → IsPotential (M.A a) Q → ∀ (j : Fin (M.A a).n) (c : GlobalTheory.AlgChart Y.str (I.ε a) Y.dim), (M.A a).chart j = (I.pt a).transOpenPartialHomeomorph c.finChart → ∀ z ∈ ((M.A a).chart j).target, ∀ g : Y.Fn, Δ.GeneratesAt (under (c.finChart.symm z)) g → ∃ R : V Y.dim → ℂ, ContDiffAt ℂ 2 R (c.e (c.finChart.symm z)) ∧ R (c.e (c.finChart.symm z)) ≠ 0 ∧ ContDiffAt ℝ 2 (fun u => Q.φ (((M.A a).chart j).symm z) ((I.pt a).symm (c.e.symm u))) (c.e (c.finChart.symm z)) ∧ ∀ᶠ u in nhds (c.e (c.finChart.symm z)), 0 < (cxSt F).pn Y (I.ε a) Δ m ((cxSt F).cx Y (I.ε a) g) (c.e.symm u) ∧ (cxSt F).pn Y (I.ε a) Δ m ((cxSt F).cx Y (I.ε a) g) (c.e.symm u) = ‖R u‖ ^ 2 * Real.exp (-2 * Q.φ (((M.A a).chart j).symm z) ((I.pt a).symm (c.e.symm u))) := by
   intro F _ _ Y M I a Δ m Q hP hPot j c hc z hz g hg
   have hsymm : ∀ y', ((M.A a).chart j).symm y' = (I.pt a).symm (c.finChart.symm y') := fun y' => by
@@ -82,6 +109,13 @@ theorem pn_eq_normSq_mul_exp_pot : ∀ {F : Type} [Field F] [NumberField F] {Y :
 
 open GlobalTheory.FinChart in
 
+/- English proof (translation)
+Establish `h₁ : fderiv ℝ (h ∘ toV n) = fun w => (fderiv ℝ h (toV n w)).comp (toV n).toContinuousLinearMap`. Use function extensionality and compare the values at `fun _ => (toV n).comp_right_fderiv`. Establish `hD` using `((hh.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero).hasFDerivAt`. Establish `h₂` using `((hD.comp z (toV n).hasFDerivAt).clm_comp (hasFDerivAt_const (toV n).toContinuousLinearMap z)).fderiv`. Establish `hH (p q : Fin n → ℂ) : fderiv ℝ (fderiv ℝ (h ∘ toV n)) z p q = fderiv ℝ (fderiv ℝ h) (toV n z) (toV n p) (toV n q)`.
+
+Rewrite using `[h₁]`. Use `erw [h₂]`. Simplify using the standard rewrite rules. Establish `e₁ (a : Fin n) : toV n (Pi.single a 1) = coordVec a` using `rfl`. Establish `e₂ (a : Fin n) : toV n (Complex.I • Pi.single a 1) = Complex.I • coordVec a` using `rfl`.
+
+Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, GlobalTheory.leviForm_apply hh, hessC]`. Simplify using `only [hH, e₁, e₂]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hessC_comp_toV {n : ℕ} (h : V n → ℝ) (z : Fin n → ℂ) (hh : ContDiffAt ℝ 2 h (toV n z)) :
     hessC (h ∘ toV n) z = Matrix.of fun a b => GlobalTheory.leviForm h (toV n z) (coordVec a) (coordVec b) := by
   have h₁ : fderiv ℝ (h ∘ toV n) = fun w => (fderiv ℝ h (toV n w)).comp (toV n).toContinuousLinearMap :=
@@ -104,6 +138,29 @@ theorem hessC_comp_toV {n : ℕ} (h : V n → ℝ) (z : Fin n → ℂ) (hh : Con
 
 open GlobalTheory.FinChart in
 
+/- English proof (translation)
+Introduce `F _ _ Y M I ι _ Δ m t a Q hQ j c hc z hz A hA`. Establish `hsymm : ∀ y', ((M.A a).chart j).symm y' = (I.pt a).symm (c.e.symm (toV Y.dim y'))` using `fun y' => by`. Rewrite using `[hc, Homeomorph.transOpenPartialHomeomorph_symm_apply]`. Both sides reduce to the same expression. Establish `hzt : z ∈ c.finChart.target`.
+
+Rewrite `hz` using `[hc]`. Simplify using `using hz`. Establish `hv : c.e (c.finChart.symm z) = toV Y.dim z`. Rewrite using `[← AlgChart.toV_finChart, c.finChart.right_inv hzt]`. Establish `hgen : ∀ i, (Δ i).GeneratesAt (under (c.finChart.symm z)) (A i 0 0)` using `fun i => hA i`.
+
+Use `choose R hR hR0 hq hev using fun i => pn_eq_normSq_mul_exp_pot I a (m i (I.ε a)) (Q i) (hQ i).1 (hQ i).2 j c hc z hz (A i 0 0) (hgen i)`. Use `set v := c.e (c.finChart.symm z) with hvdef`. Set `q : ι → V Y.dim → ℝ` to `fun i u => (Q i).φ (((M.A a).chart j).symm z) ((I.pt a).symm (c.e.symm u))`. Set `g : ι → V Y.dim → ℝ` to `fun i u => (cxSt F).pn Y (I.ε a) (Δ i) (m i (I.ε a)) ((cxSt F).cx Y (I.ε a) (A i 0 0)) (c.e.symm u)`. Establish `hq : ∀ i, ContDiffAt ℝ 2 (q i) v` using `hq`.
+
+Establish `hev : ∀ i, ∀ᶠ u in nhds v, 0 < g i u ∧ g i u = ‖R i u‖ ^ 2 * Real.exp (-2 * q i u)` using `hev`. Establish `hR2 : ∀ i, ContDiffAt ℝ 2 (fun u => ‖R i u‖ ^ 2) v` using `fun i => ((hR i).restrict_scalars ℝ).norm_sq ℂ`. Establish `hg2 : ∀ i, ContDiffAt ℝ 2 (g i) v` using `fun i => ((hR2 i).mul ((contDiffAt_const.mul (hq i)).exp)).congr_of_eventuallyEq ((hev i).mono fun u hu => hu.2)`. Establish `hgpos : ∀ i, 0 < g i v` using `fun i => (hev i).self_of_nhds.1`. Establish `hlog : ∀ i, (fun u => Real.log (g i u)) =ᶠ[nhds v] fun u => Real.log (‖R i u‖ ^ 2) + (-2) * q i u` using `fun i => (hev i).mono fun u hu => by`.
+
+Take `⟨h1, h2⟩` from `hu`. Establish `hp : 0 < ‖R i u‖ ^ 2`. Rewrite `h1` using `[h2]`. Conclude with `(mul_pos_iff_of_pos_right (Real.exp_pos _)).1 h1`. Use `show Real.log (g i u) = Real.log (‖R i u‖ ^ 2) + -2 * q i u`.
+
+Rewrite using `[h2, Real.log_mul hp.ne' (Real.exp_pos _).ne', Real.log_exp]`. Establish `hl1 : ∀ i, ContDiffAt ℝ 2 (fun u => Real.log (‖R i u‖ ^ 2)) v` using `fun i => (hR2 i).log (pow_ne_zero 2 (norm_ne_zero_iff.2 (hR0 i)))`. Establish `hlev : ∀ i, GlobalTheory.leviForm (fun u => Real.log (g i u)) v = (-2 : ℂ) • GlobalTheory.leviForm (q i) v` using `fun i => by`. Rewrite using `[GlobalTheory.leviForm_congr (hlog i), GlobalTheory.leviForm_add (hl1 i) (contDiffAt_const.mul (hq i)), GlobalTheory.leviForm_log_normSq_eq_zero (hR i) (hR0 i), zero_add, GlobalTheory.leviForm_const_mul _ (hq i)]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hcurv : ∀ i (a' b' : Fin Y.dim), curv (fun u => lineGram (cxSt F) (fun i => m i (I.ε a)) A (c.e.symm u) i) v (coordVec a') (coordVec b') 0 0 = 2 * GlobalTheory.leviForm (q i) v (coordVec a') (coordVec b')` using `fun i a' b' => by`. Rewrite using `[curv_line (f := g i) (hg2 i) (hgpos i).ne' (Filter.Eventually.of_forall fun u => rfl), hlev i]`. Simplify using `only [ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hψ2 : ContDiffAt ℝ 2 (fun u => ∑ i, t i * q i u) v` using `ContDiffAt.sum fun i _ => contDiffAt_const.mul (hq i)`. Establish `hsum : (∑ i, (t i : ℂ) • Matrix.of fun a' b' => curv (fun u => lineGram (cxSt F) (fun i => m i (I.ε a)) A (c.e.symm u) i) v (coordVec a') (coordVec b') 0 0) = (2 : ℂ) • Matrix.of fun a' b' => GlobalTheory.leviForm (fun u => ∑ i, t i * q i u) v (coordVec a') (coordVec b')`. Use extensionality with `a' b'`. Simplify using `only [hcurv, Matrix.sum_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[GlobalTheory.leviForm_sum fun i _ => contDiffAt_const.mul (hq i)]`.
+
+Simplify using `only [ContinuousLinearMap.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.leviForm_const_mul _ (hq i)]`. Simplify using `only [ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hψ : (fun y' => (InhabCalc.combPot Q t 0).φ (((M.A a).chart j).symm z) (((M.A a).chart j).symm y')) = (fun u => ∑ i, t i * q i u) ∘ toV Y.dim`. Use function extensionality and compare the values at `y'`. Simplify using `[InhabCalc.combPot, hsymm, q]`. Rewrite using `[GlobalTheory.T.chern_top_pow_linear_sum, hsum, locDens, maDens, ReciprocityTheory.AnForm.A.mdisc_const, hψ, hessC_comp_toV _ _ (hv ▸ hψ2), ← hv, Matrix.det_smul, Fintype.card_fin]`. Rewrite using `[show ((2 : ℂ) ^ Y.dim) = ((2 ^ Y.dim : ℝ) : ℂ) by push_cast; rfl, Complex.re_ofReal_mul, div_pow]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem locDens_combPot_eq_chernTop : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {M : Man Y.dim} (I : ManIs M Y) {ι : Type} [Fintype ι] {Δ : ι → Y.Dv} (m : ∀ i σ, (cxSt F).Met Y σ (Δ i)) (t : ι → ℝ) (a : Fin (M.n + 1)) (Q : ι → LocPot (M.X a)), (∀ i, IsPot (I.pt a) (m i (I.ε a)) (Q i) ∧ IsPotential (M.A a) (Q i)) → ∀ (j : Fin (M.A a).n) (c : GlobalTheory.AlgChart Y.str (I.ε a) Y.dim), (M.A a).chart j = (I.pt a).transOpenPartialHomeomorph c.finChart → ∀ z ∈ ((M.A a).chart j).target, ∀ A ∈ (ofDivisors Δ).S (under (c.finChart.symm z)), locDens (M.A a) (fun _ => InhabCalc.combPot Q t 0) j z = chernTop ((∑ i, C (t i) * X (i, 1)) ^ Y.dim) (fun v => lineGram (cxSt F) (fun i => m i (I.ε a)) A (c.e.symm v)) (c.e (c.finChart.symm z)) := by
   intro F _ _ Y M I ι _ Δ m t a Q hQ j c hc z hz A hA
   have hsymm : ∀ y', ((M.A a).chart j).symm y' = (I.pt a).symm (c.e.symm (toV Y.dim y')) := fun y' => by

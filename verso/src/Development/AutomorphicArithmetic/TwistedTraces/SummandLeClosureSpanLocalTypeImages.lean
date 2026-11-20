@@ -5,6 +5,11 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.C.Sf
 open GroundTheory.Automorphic.AutomorphicForm
 
+/- English proof (translation)
+Take `⟨-, h2, -, -, h5⟩` from `UpperTheory.ConvolutionTheory.Tf.locEmb K n w`. Use `⟨finAt w (finEmb K n u), (AdelicGLn.localEmbedding w (finAt w (finEmb K n u)))⁻¹ * u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv_cancel_left]`. Use `h5 _ ?_` and prove the remaining obligations. Establish `e : finAt w (finEmb K n (AdelicGLn.localEmbedding w (finAt w (finEmb K n u)))) * finAt w (finEmb K n ((AdelicGLn.localEmbedding w (finAt w (finEmb K n u)))⁻¹ * u)) = finAt w (finEmb K n u)`.
+
+Rewrite using `[← finAt_mul, ← map_mul, mul_inv_cancel_left]`. Rewrite `e` using `[h2]`. Conclude with `mul_left_cancel (e.trans (mul_one _).symm)`.
+-/
 private theorem adelicSplit {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) (u : AdelicGLn.FiniteAdelicGL K n) :
     ∃ (a : Gw n w) (h : AdelicGLn.FiniteAdelicGL K n), u = AdelicGLn.localEmbedding w a * h ∧
       ∀ g : Gw n w, AdelicGLn.localEmbedding w g * h = h * AdelicGLn.localEmbedding w g := by
@@ -19,6 +24,11 @@ private theorem adelicSplit {K : Type} [Field K] [NumberField K] {n : ℕ} (w : 
     rw [h2] at e
     exact mul_left_cancel (e.trans (mul_one _).symm)
 
+/- English proof (translation)
+Establish `hE : Eqv τ ρ D (((π c : H →L[ℂ] H) : H →ₗ[ℂ] H) ∘ₗ f)`. Use `⟨fun y => hD c _ (hf.mem y), fun g y => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe]`. Rewrite using `[hf.map, hρ, hρ, ← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, hc g]`. Establish `hx : π (c * j a) (f y) = (((π c : H →L[ℂ] H) : H →ₗ[ℂ] H) ∘ₗ f) (τ a y)`.
+
+Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe]`. Rewrite using `[hf.map, hρ, UnitaryRep.map_mul_apply]`. Rewrite using `[hx]`. Conclude with `Submodule.subset_span ⟨_, hE, _, rfl⟩`.
+-/
 private theorem eqv_translate {L G H S : Type} [Group L] [TopologicalSpace L] [Group G] [TopologicalSpace G]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [AddCommGroup S] [Module ℂ S]
     (τ : Representation ℂ L S) (ρ : UnitaryRep L H) (π : UnitaryRep G H) (D : Submodule ℂ H) (hD : π.IsInvariant D)
@@ -34,6 +44,9 @@ private theorem eqv_translate {L G H S : Type} [Group L] [TopologicalSpace L] [G
   rw [hx]
   exact Submodule.subset_span ⟨_, hE, _, rfl⟩
 
+/- English proof (translation)
+Take `⟨A, u, rfl⟩` from `MultiplicityOne.exists_archProj_mul_finProj x`. Take `⟨a, h, rfl, hc⟩` from `adelicSplit w u`. Use `⟨archProj K n A * MultiplicityOne.finProj K n h, a, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hc a, map_mul, mul_assoc]`. Rewrite using `[mul_assoc, ← map_mul, ← hc g, map_mul, ← mul_assoc, ← mul_assoc, MultiplicityOne.finProj_mul_archProj_comm]`.
+-/
 private theorem exists_factor {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) (x : normOneGL K n) :
     ∃ (c : normOneGL K n) (a : Gw n w), x = c * MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w a) ∧
       ∀ g : Gw n w, c * MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g) =
@@ -45,6 +58,13 @@ private theorem exists_factor {K : Type} [Field K] [NumberField K] {n : ℕ} (w 
   · rw [mul_assoc, ← map_mul, ← hc g, map_mul, ← mul_assoc, ← mul_assoc,
       MultiplicityOne.finProj_mul_archProj_comm]
 
+/- English proof (translation)
+Establish `hle : spanAll τ ρ V ≤ V`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f', hf', x, rfl⟩`. Conclude with `hf'.mem x`. Establish `hCle : (spanAll τ ρ V).topologicalClosure ≤ V` using `Submodule.topologicalClosure_minimal _ hle hV.closed`.
+
+Establish `hne : (spanAll τ ρ V).topologicalClosure ≠ ⊥`. Introduce `hbot`. Apply `hf0` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h1 : f x ∈ (spanAll τ ρ V).topologicalClosure` using `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨f, hf, x, rfl⟩)`.
+
+Rewrite `h1` using `[hbot]`. Simplify using `using h1`. Break down `hV.irred _ hCle (Submodule.isClosed_topologicalClosure _) hinv.topologicalClosure with h | h` into its components or cases. Conclude with `absurd h hne`. Conclude with `h.ge`.
+-/
 private theorem dense_of_invariant {G H S L : Type} [Group G] [TopologicalSpace G] [Group L] [TopologicalSpace L]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [AddCommGroup S] [Module ℂ S]
     (π : UnitaryRep G H) (W V : Submodule ℂ H) (hV : IsSummandOf π W V) (τ : Representation ℂ L S) (ρ : UnitaryRep L H)
@@ -68,6 +88,13 @@ private theorem dense_of_invariant {G H S L : Type} [Group G] [TopologicalSpace 
   · exact absurd h hne
   · exact h.ge
 
+/- English proof (translation)
+Introduce `x v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨f', hf', y, rfl⟩` from `hv`. Conclude with `h x f' hf' y`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`.
+
+Conclude with `Submodule.smul_mem _ c ha`.
+-/
 private theorem invariant_of_translate {L G H S : Type} [Group L] [TopologicalSpace L] [Group G] [TopologicalSpace G]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [AddCommGroup S] [Module ℂ S]
     (τ : Representation ℂ L S) (ρ : UnitaryRep L H) (π : UnitaryRep G H) (D : Submodule ℂ H)
@@ -81,12 +108,20 @@ private theorem invariant_of_translate {L G H S : Type} [Group L] [TopologicalSp
   | add a b _ _ ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
   | smul c a _ ha => rw [map_smul]; exact Submodule.smul_mem _ c ha
 
+/- English proof (translation)
+Rewrite using `[locU_apply]`. Both sides reduce to the same expression.
+-/
 private theorem locU_eq {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (w : Pl K) (g : Gw n w) (v : LL μ) :
     locU μ w g v = rightRegularRep (rationalGLOne K n) μ (MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g)) v := by
   rw [locU_apply]
   rfl
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ V w σ hV hO`. Take `⟨f, hf0, hfm, hfe⟩` from `hO`. Establish `hf : Eqv σ.ρ (locU μ w) V f` using `⟨hfm, fun g x => by rw [hfe, locU_apply]⟩`. Use `dense_of_invariant (rightRegularRep (rationalGLOne K n) μ) (cuspidalL2 μ) V hV σ.ρ (locU μ w) f hf0 hf ?_` and prove the remaining obligations. Use `invariant_of_translate σ.ρ (locU μ w) _ V fun x f' hf' y => ?_` and prove the remaining obligations.
+
+Take `⟨c, a, rfl, hc⟩` from `exists_factor w x`. Conclude with `eqv_translate σ.ρ (locU μ w) (rightRegularRep (rationalGLOne K n) μ) V (IsSummandOf.inv hV) (fun g => MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g)) (locU_eq μ w) c hc f' hf' a y`.
+-/
 theorem UpperTheory.summand_le_closure_span_local_type_images :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (V : Submodule ℂ (LL μ)) (w : Pl K) (σ : SmIrr (Gw n w)), IsSummand μ V → Occurs μ V w σ → V ≤ (spanAll σ.ρ (locU μ w) V).topologicalClosure := by
   intro K _ _ n μ _ V w σ hV hO

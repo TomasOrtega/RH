@@ -6,6 +6,13 @@ namespace GlobalTheory.PsType
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Unfold `minor`. Establish `hdet : (g.val.toSquareBlockProp fun i => i ≤ m).det = ∏ i : {i : Fin n // i ≤ m}, g.val i i`. Break down `h with h | h` into its components or cases. Rewrite using `[Matrix.det_of_lowerTriangular]`. Both sides reduce to the same expression.
+
+Introduce `i j hij`. Conclude with `h i j (OrderDual.toDual_lt_toDual.1 hij)`. Rewrite using `[Matrix.det_of_upperTriangular]`. Both sides reduce to the same expression. Introduce `i j hij`.
+
+Conclude with `h i j hij`. Rewrite using `[hdet]`. Conclude with `(Finset.prod_subtype (Finset.univ.filter (fun i => i ≤ m)) (p := fun i => i ≤ m) (fun x => by simp) (fun i => g.val i i)).symm`.
+-/
 theorem minor_of_triangular (g : GL (Fin n) k) (m : Fin n)
     (h : (∀ i j : Fin n, i < j → g.val i j = 0) ∨ ∀ i j : Fin n, j < i → g.val i j = 0) :
     minor g m = ∏ i ∈ Finset.univ.filter (fun i => i ≤ m), g.val i i := by
@@ -24,6 +31,17 @@ theorem minor_of_triangular (g : GL (Fin n) k) (m : Fin n)
   exact (Finset.prod_subtype (Finset.univ.filter (fun i => i ≤ m)) (p := fun i => i ≤ m)
     (fun x => by simp) (fun i => g.val i i)).symm
 
+/- English proof (translation)
+Set `f : ℕ → ℂˣ` to `fun j => if h : j < n then ψ ⟨j, h⟩ u else 1`. Establish `hf : ∀ m : Fin n, f m = ψ m u` using `fun m => by show (if h : (m : ℕ) < n then ψ ⟨m, h⟩ u else 1) = ψ m u`. Rewrite using `[dif_pos m.isLt]`. Establish `hnx : ∀ m : Fin n, nxt ψ m u = f (m + 1)`. Introduce `m`.
+
+Unfold `nxt`. Use `split_ifs with h`. Simplify using `[f, h]`. Simplify using `[f, h]`. Set `G : ℕ → ℂˣ` to `fun j => if (a : ℕ) ≤ j then (f (j + 1))⁻¹ / (f j)⁻¹ else 1`.
+
+Rewrite using `[Finset.prod_filter]`. Establish `hterm : ∀ m : Fin n, (if a ≤ m then (ψ m / nxt ψ m) u else 1) = G m`. Introduce `m`. Simplify using `only [G, Fin.le_def, MonoidHom.div_apply, hnx, ← hf m, inv_div_inv]`. Rewrite using `[Finset.prod_congr rfl fun m _ => hterm m, Fin.prod_univ_eq_prod_range G n, ← Finset.prod_filter]`.
+
+Establish `hs : (Finset.range n).filter (fun j => (a : ℕ) ≤ j) = Finset.Ico (a : ℕ) n`. Use extensionality with `j`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[hs, Finset.prod_Ico_div (f := fun j => (f j)⁻¹) a.isLt.le]`.
+
+Simplify using `[f, hf a]`.
+-/
 theorem prod_div_nxt (ψ : Fin n → kˣ →* ℂˣ) (a : Fin n) (u : kˣ) :
     ∏ m ∈ Finset.univ.filter (fun m => a ≤ m), (ψ m / nxt ψ m) u = ψ a u := by
   let f : ℕ → ℂˣ := fun j => if h : j < n then ψ ⟨j, h⟩ u else 1
@@ -47,6 +65,17 @@ theorem prod_div_nxt (ψ : Fin n → kˣ →* ℂˣ) (a : Fin n) (u : kˣ) :
   rw [hs, Finset.prod_Ico_div (f := fun j => (f j)⁻¹) a.isLt.le]
   simp [f, hf a]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n ψ g t ht hd htri`. Establish `hmin : ∀ m, minor g m = ((∏ i ∈ Finset.univ.filter (fun i => i ≤ m), t i : kˣ) : k)`. Introduce `m`. Rewrite using `[minor_of_triangular g m htri, Units.coe_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => hd i`.
+
+Establish `hev : ∀ (χ : kˣ →* ℂˣ) (u : kˣ), valuation k (u : k) = 1 → ev χ u = χ u`. Introduce `χ u hu`. Unfold `ev`. Rewrite using `[dif_pos hu]`. Use `congr 2`.
+
+Use `ext`. Both sides reduce to the same expression. Establish `hval : ∀ s : Finset (Fin n), valuation k ((∏ i ∈ s, t i : kˣ) : k) = 1`. Introduce `s`. Rewrite using `[Units.coe_prod, map_prod]`.
+
+Conclude with `Finset.prod_eq_one fun i _ => ht i`. Unfold `theta`. Rewrite using `[Finset.prod_congr rfl fun m _ => by rw [hmin m, hev _ _ (hval _)]]`. Rewrite using `[← Units.coe_prod, ← Units.coe_prod]`. Use `congr 1`.
+
+Simplify using `only [map_prod]`. Rewrite using `[Finset.prod_comm' (t' := Finset.univ) (s' := fun i => Finset.univ.filter (fun m => i ≤ m)) (by intro x y; simp)]`. Conclude with `Finset.prod_congr rfl fun i _ => prod_div_nxt ψ i (t i)`.
+-/
 theorem theta_of_triangular : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (ψ : Fin n → kˣ →* ℂˣ) (g : GL (Fin n) k) (t : Fin n → kˣ), (∀ i, valuation k (t i : k) = 1) → (∀ i, g.val i i = t i) → ((∀ i j : Fin n, i < j → g.val i j = 0) ∨ ∀ i j : Fin n, j < i → g.val i j = 0) → theta ψ g = ∏ i, (ψ i (t i) : ℂ) := by
   intro k _ _ _ _ n ψ g t ht hd htri
   have hmin : ∀ m, minor g m = ((∏ i ∈ Finset.univ.filter (fun i => i ≤ m), t i : kˣ) : k) := by

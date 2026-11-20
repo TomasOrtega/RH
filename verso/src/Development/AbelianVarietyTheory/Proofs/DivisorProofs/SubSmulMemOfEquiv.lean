@@ -37,6 +37,19 @@ def cellSecond (u v : ℕ) (hv : 1 ≤ v) : SizeMatrix (Two (Fin (u + 1)) (Fin v
       · show (∑ i : Bool, cond i (v - 1) (u + 1)) = Fintype.card (Fin (u + v))
         simp [Fintype.sum_bool]; omega⟩
 
+/- English proof (translation)
+Take `⟨b, h1, h2⟩` from `b`. Establish `r0 : b false true + b false false = u + 1`. Use `h1 false` as an intermediate fact. Simplify using `only [Fintype.sum_bool] at this`. Express the relevant statement in the definitionally equal form `_ = Fintype.card (Fin (u + 1)) at this`.
+
+Simplify using `using this`. Establish `r1 : b true true + b true false = v`. Use `h1 true` as an intermediate fact. Simplify using `only [Fintype.sum_bool] at this`. Express the relevant statement in the definitionally equal form `_ = Fintype.card (Fin v) at this`.
+
+Simplify using `using this`. Establish `c0 : b true false + b false false = 1`. Use `h2 false` as an intermediate fact. Simplify using `only [Fintype.sum_bool] at this`. Express the relevant statement in the definitionally equal form `_ = Fintype.card (Fin 1) at this`.
+
+Simplify using `using this`. Establish `c1 : b true true + b false true = u + v`. Use `h2 true` as an intermediate fact. Simplify using `only [Fintype.sum_bool] at this`. Express the relevant statement in the definitionally equal form `_ = Fintype.card (Fin (u + v)) at this`.
+
+Simplify using `using this`. Break down `Nat.lt_or_ge (b false false) 1 with h | h` into its components or cases. Use `right`. Use `⟨by omega, Subtype.ext (funext fun i => funext fun j => ?_)⟩` and prove the remaining obligations. Apply the tactic sequence `cases i <;> cases j <;> simp [cellSecond] <;> omega`.
+
+Use `left`. Use `Subtype.ext (funext fun i => funext fun j => ?_)` and prove the remaining obligations. Apply the tactic sequence `cases i <;> cases j <;> simp [cellFirst] <;> omega`.
+-/
 theorem eq_cellFirst_or (u v : ℕ) (b : SizeMatrix (Two (Fin (u + 1)) (Fin v)) (Two (Fin 1) (Fin (u + v)))) :
     b = cellFirst u v ∨ ∃ hv : 1 ≤ v, b = cellSecond u v hv := by
   obtain ⟨b, h1, h2⟩ := b
@@ -65,6 +78,11 @@ section Generic
 variable {G H V X Y : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup X] [Module ℂ X]
   [AddCommGroup Y] [Module ℂ Y]
 
+/- English proof (translation)
+Introduce `w hw`. Set `x : S.toSubmodule ⧸ T.toSubmodule.comap S.toSubmodule.subtype` to `Submodule.Quotient.mk ⟨w, hw⟩`. Establish `hq : subQuot S T g x = c • x`. Apply `φ.toLinearEquiv.injective` to reduce the goal to its premises. Establish `h1 : φ.toLinearEquiv (subQuot S T g x) = τ g (φ.toLinearEquiv x)` using `Representation.IntertwiningMap.isIntertwining _ _ φ.toIntertwiningMap g x`.
+
+Rewrite using `[h1, hτ]`. Conclude with `(φ.toLinearEquiv.map_smul _ _).symm`. Establish `h2` using `(Submodule.Quotient.eq _).1 (show (Submodule.Quotient.mk (S.toRepresentation g ⟨w, hw⟩) : S.toSubmodule ⧸ T.toSubmodule.comap S.toSubmodule.subtype) = Submodule.Quotient.mk (c • (⟨w, hw⟩ : S.toSubmodule)) from hq)`. Conclude with `h2`.
+-/
 theorem sub_smul_mem_of_equiv {ρ : Representation ℂ G V} (S T : Subrepresentation ρ) {τ : Representation ℂ G X}
     (φ : (subQuot S T).Equiv τ) (g : G) (c : ℂ) (hτ : ∀ x, τ g x = c • x) :
     ∀ w ∈ S.toSubmodule, ρ g w - c • w ∈ T.toSubmodule := by
@@ -82,6 +100,9 @@ theorem sub_smul_mem_of_equiv {ρ : Representation ℂ G V} (S T : Subrepresenta
         Submodule.Quotient.mk (c • (⟨w, hw⟩ : S.toSubmodule)) from hq)
   exact h2
 
+/- English proof (translation)
+Introduce `x`. Apply `φ.toLinearEquiv.injective` to reduce the goal to its premises. Establish `h1 : φ.toLinearEquiv (σ g x) = τ g (φ.toLinearEquiv x)` using `Representation.IntertwiningMap.isIntertwining _ _ φ.toIntertwiningMap g x`. Rewrite using `[h1, hτ]`. Conclude with `(φ.toLinearEquiv.map_smul _ _).symm`.
+-/
 theorem smul_of_equiv {σ : Representation ℂ G V} {τ : Representation ℂ G X} (φ : σ.Equiv τ) (g : G) (c : ℂ)
     (hτ : ∀ x, τ g x = c • x) : ∀ x, σ g x = c • x := by
   intro x
@@ -104,6 +125,11 @@ def pullSubQuotEquiv {ρ : Representation ℂ G V} (s : H →* G) (S T : Subrepr
     induction x using Submodule.Quotient.induction_on
     rfl
 
+/- English proof (translation)
+Use `⟨fun t => pullSub s (S t), fun a b hab x hx => hmono hab hx, ?_, ?_, t₀, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subrepresentation.ext (show (S 0).toSubmodule = _ by rw [h0]; rfl)`. Conclude with `Subrepresentation.ext (show (S (Fin.last N)).toSubmodule = _ by rw [htop]; rfl)`. Take `⟨φ⟩` from `h1`. Conclude with `⟨(pullSubQuotEquiv s _ _).trans φ⟩`.
+
+Introduce `t ht w hw`. Conclude with `sub_smul_mem_of_equiv (pullSub s (S t.succ)) (pullSub s (S t.castSucc)) (pullSubQuotEquiv s _ _) z c (h2 t ht) w hw`.
+-/
 theorem assemble (ρ : Representation ℂ G V) (s : H →* G) {N : ℕ} (S : Fin (N + 1) → Subrepresentation ρ)
     (hmono : Monotone S) (h0 : S 0 = ⊥) (htop : S (Fin.last N) = ⊤) (τ : Representation ℂ H X) (z : H) (c : ℂ)
     (t₀ : Fin N) (h1 : Nonempty (Representation.Equiv ((subQuot (S t₀.succ) (S t₀.castSucc)).comp s) τ))

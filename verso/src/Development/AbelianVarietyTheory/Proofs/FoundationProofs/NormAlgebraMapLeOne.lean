@@ -4,6 +4,9 @@ namespace GlobalTheory.IntegralAlgebraMapNormBound
 
 open Polynomial
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Establish `h1 : ‖algebraMap ℚ_[l] (PadicAlgCl l) (algebraMap ℤ_[l] ℚ_[l] c)‖ = ‖algebraMap ℤ_[l] ℚ_[l] c‖` using `PadicAlgCl.norm_extends l _`. Rewrite using `[h1]`. Conclude with `PadicInt.norm_le_one c`.
+-/
 lemma norm_algebraMap_le_one {l : ℕ} [Fact (Nat.Prime l)] (c : ℤ_[l]) :
     ‖algebraMap ℤ_[l] (PadicAlgCl l) c‖ ≤ 1 := by
   rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l)]
@@ -12,6 +15,17 @@ lemma norm_algebraMap_le_one {l : ℕ} [Fact (Nat.Prime l)] (c : ℤ_[l]) :
   rw [h1]
   exact PadicInt.norm_le_one c
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨p, hmon, hp⟩` from `hx`. Use `set n := p.natDegree with hn`. Establish `hx0 : 0 < ‖x‖` using `lt_trans one_pos hlt`.
+
+Rewrite `hp` using `[eval₂_eq_sum_range, Finset.sum_range_succ, ← hn]`. Establish `hlead : p.coeff n = 1` using `hmon`. Rewrite `hp` using `[hlead, map_one, one_mul]`. Establish `heq : x ^ n = -∑ i ∈ Finset.range n, algebraMap ℤ_[l] (PadicAlgCl l) (p.coeff i) * x ^ i`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`.
+
+Conclude with `hp`. Establish `hbound : ‖∑ i ∈ Finset.range n, algebraMap ℤ_[l] (PadicAlgCl l) (p.coeff i) * x ^ i‖ ≤ ‖x‖ ^ n / ‖x‖`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`.
+
+Rewrite using `[norm_mul, norm_pow, le_div_iff₀ hx0]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_algebraMap_le_one _`. Use `_ = ‖x‖ ^ (i + 1) := by ring`. Use `_ ≤ ‖x‖ ^ n := pow_le_pow_right₀ hlt.le (by omega)`.
+
+Establish `hxn : ‖x‖ ^ n ≤ ‖x‖ ^ n / ‖x‖`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < ‖x‖ ^ n` using `pow_pos hx0 n`. Establish `: ‖x‖ ^ n / ‖x‖ < ‖x‖ ^ n` using `div_lt_self hpos hlt`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_le_one_of_isIntegral {l : ℕ} [Fact (Nat.Prime l)] (x : PadicAlgCl l)
     (hx : IsIntegral ℤ_[l] x) : ‖x‖ ≤ (1 : ℝ) := by
   by_contra hlt
@@ -44,6 +58,9 @@ theorem norm_le_one_of_isIntegral {l : ℕ} [Fact (Nat.Prime l)] (x : PadicAlgCl
   have : ‖x‖ ^ n / ‖x‖ < ‖x‖ ^ n := div_lt_self hpos hlt
   linarith
 
+/- English proof (translation)
+Introduce `x hx` and use `norm_le_one_of_isIntegral x hx`.
+-/
 theorem main : ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] (x : PadicAlgCl l),
     IsIntegral ℤ_[l] x → ‖x‖ ≤ (1 : ℝ) :=
   fun x hx => norm_le_one_of_isIntegral x hx

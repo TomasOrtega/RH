@@ -10,12 +10,26 @@ def pmat (R : Type) [CommRing R] {n' r k : ℕ} (hrk : r ≤ k) (A : Fin r → F
     Matrix (Fin r) (Fin r) (MvPolynomial (TV n' k) R) :=
   Matrix.of fun l i : Fin r => X (A l, Fin.castLE hrk i) ^ P l
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Use `congrArg Matrix.det (Matrix.ext fun l i => ?_)` and prove the remaining obligations. Simplify using `[pmat]`.
+-/
 theorem pmat_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {n' r k : ℕ} (hrk : r ≤ k)
     (A : Fin r → Fin n') (P : Fin r → ℕ) : map f (pmat R hrk A P).det = (pmat R' hrk A P).det := by
   rw [RingHom.map_det]
   refine congrArg Matrix.det (Matrix.ext fun l i => ?_)
   simp [pmat]
 
+/- English proof (translation)
+Introduce `h`. Set `x : TV n' k → R` to `fun v => if ∃ l : Fin r, A l = v.1 ∧ Fin.castLE hrk l = v.2 then 1 else 0`. Establish `hev : (MvPolynomial.eval x).mapMatrix (pmat R hrk A P) = 1`. Use extensionality with `l i`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, pmat, Matrix.of_apply, map_pow, eval_X, Matrix.one_apply]`.
+
+Distinguish the cases in `hli : l = i`. Substitute `hli` using the available equality. Establish `hx : x (A l, Fin.castLE hrk l) = 1`. Simplify using `only [x]`. Rewrite using `[if_pos ⟨l, rfl, rfl⟩]`.
+
+Rewrite using `[hx, one_pow, if_pos rfl]`. Establish `hx : x (A l, Fin.castLE hrk i) = 0`. Simplify using `only [x]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨l', h1, h2⟩`.
+
+Apply `hli` to reduce the goal to its premises. Establish `e1 : l' = l` using `hA h1`. Establish `e2 : l' = i` using `Fin.ext (by simpa using congrArg Fin.val h2)`. Rewrite using `[← e1, e2]`. Rewrite using `[hx, zero_pow (hP l), if_neg hli]`.
+
+Establish `h2` using `congrArg (MvPolynomial.eval x) h`. Rewrite `h2` using `[RingHom.map_det, hev, Matrix.det_one, map_zero]`. Conclude with `one_ne_zero h2`.
+-/
 theorem pmat_ne (R : Type) [CommRing R] [Nontrivial R] {n' r k : ℕ} (hrk : r ≤ k) (A : Fin r → Fin n')
     (P : Fin r → ℕ) (hA : Function.Injective A) (hP : ∀ l, P l ≠ 0) : (pmat R hrk A P).det ≠ 0 := by
   classical
@@ -49,6 +63,11 @@ section Fac
 variable {p n' : ℕ} [Fact p.Prime] [NeZero n'] {O : Type} [CommRing O] [IsDomain O] [Algebra (WF p n') O]
   {r k : ℕ}
 
+/- English proof (translation)
+Establish `hmono : StrictMono (Fin.castLE hrk)`. Introduce `a b hab`. Rewrite `hab`, the goal using `[Fin.lt_def]`. Simplify using `using hab`. Establish `h` using `Finset.orderEmbOfFin_unique (first_columns_card hrk) (f := Fin.castLE hrk) (fun x => by simp [Ifirst]) hmono`.
+
+Conclude with `(congrFun h i).symm`.
+-/
 theorem Ifirst_emb (hrk : r ≤ k) (i : Fin r) :
     (Ifirst r k).orderEmbOfFin (first_columns_card hrk) i = Fin.castLE hrk i := by
   have hmono : StrictMono (Fin.castLE hrk) := by
@@ -59,6 +78,13 @@ theorem Ifirst_emb (hrk : r ≤ k) (i : Fin r) :
     (fun x => by simp [Ifirst]) hmono
   exact (congrFun h i).symm
 
+/- English proof (translation)
+Establish `hIc` using `first_columns_card (k := k) hrk`. Simplify using `only [Del, minorI, dif_pos hIc, Ifirst_emb hrk]`. Rewrite using `[AlgHom.map_det, RingHom.map_det]`. Use `congr 1`. Use extensionality with `l i`.
+
+Establish `hE` using `(hV.2.2.2.2.1 j l.val l.2).2`. Establish `hnn : ¬ IsNormal r ((posOf n' (F.fr j l.val), Fin.castLE hrk i) : TV n' k)`. Simplify using `only [IsNormal]`. Rewrite using `[if_pos ((posOf_even hn _).mpr hE)]`. Simplify using `only [Fin.coe_castLE, not_le]`.
+
+Conclude with `i.2`. Simplify using `only [AlgHom.mapMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, twRow, pmat, map_pow, subst_xg w r hg hn _ hE, newVar, if_neg hnn, map_X]`.
+-/
 theorem subst_Del (w : O) (F : Frames n' r) {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁) (hn : Even n') (hrk : r ≤ k)
     {g : Matrix (Fin k) (Fin k) (WF p n')} (hg : IsGLW g) (j : ℤ) :
     subst p n' O w n' r g (Del p n' O F g j) = map (algebraMap O (KK O))
@@ -77,6 +103,11 @@ theorem subst_Del (w : O) (F : Frames n' r) {L₁ N₁ : ℕ} (hV : F.Valid L₁
   simp only [AlgHom.mapMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, twRow, pmat,
     map_pow, subst_xg w r hg hn _ hE, newVar, if_neg hnn, map_X]
 
+/- English proof (translation)
+Establish `hok : RowsEvenTopsBefore F s`. Introduce `l hl`. Rewrite using `[symbolGeneratorData.dv_Arow_get hV hn hr s l hl]`. Use `generalize_proofs hp`. Establish `hm` using `List.getElem_mem hp`.
+
+Simplify using `only [evensBefore, List.mem_reverse, Finset.mem_sort, Finset.mem_filter, Finset.mem_Ico] at hm`. Conclude with `⟨hm.2.2, hm.2.1, hm.1.2⟩`. Rewrite using `[subst_top_determinant w F hrk hg hn s hok]`. Both sides reduce to the same expression.
+-/
 theorem subst_Dtop' (w : O) (F : Frames n' r) {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁) (hn : Even n') (hr : 1 ≤ r)
     (hrk : r ≤ k) {g : Matrix (Fin k) (Fin k) (WF p n')} (hg : IsGLW g) (s : ℤ) :
     subst p n' O w n' r g (Dtop p n' O F hrk g s) = map (algebraMap O (KK O))

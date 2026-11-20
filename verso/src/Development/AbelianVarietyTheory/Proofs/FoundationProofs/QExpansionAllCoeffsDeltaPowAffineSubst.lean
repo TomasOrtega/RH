@@ -15,6 +15,11 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FNPole
 
+/- English proof (translation)
+Use `⟨fun n => if n = k then 1 else 0, fun τ => ?_, fun n => ?_⟩` and prove the remaining obligations. Use `hasSum_single (f := fun n : ℕ => (if n = k then (1 : ℂ) else 0) * Complex.exp (2 * Real.pi * Complex.I * n * τ / M)) k (fun n hn => by simp [hn])` as an intermediate fact. Simplify using `using this`. Simplify using `only`. Use `split_ifs`.
+
+Conclude with `E.one_mem`. Conclude with `E.zero_mem`.
+-/
 theorem qAll_monomial (E : Subring ℂ) (M k : ℕ) :
     QAll (· ∈ E) M fun τ => Complex.exp (2 * Real.pi * Complex.I * (k : ℂ) * τ / M) := by
   refine ⟨fun n => if n = k then 1 else 0, fun τ => ?_, fun n => ?_⟩
@@ -25,16 +30,41 @@ theorem qAll_monomial (E : Subring ℂ) (M k : ℕ) :
     · exact E.one_mem
     · exact E.zero_mem
 
+/- English proof (translation)
+Take `⟨c, -, hc⟩` from `h`. Conclude with `⟨_, hc, fun n => intCast_mem E (c n)⟩`.
+-/
 theorem qAll_of_int (E : Subring ℂ) {f : ℍ → ℂ} (h : ∃ c : ℕ → ℤ, c 0 = 1 ∧ HasQ 1 f fun n => (c n : ℂ)) :
     QAll (· ∈ E) 1 f := by
   obtain ⟨c, -, hc⟩ := h
   exact ⟨_, hc, fun n => intCast_mem E (c n)⟩
 
+/- English proof (translation)
+Establish `: f = g` using `funext h`. Conclude with `this ▸ hf`.
+-/
 theorem qAll_congr {p : ℂ → Prop} {N : ℕ} {f g : ℍ → ℂ} (hf : QAll p N f) (h : ∀ τ, f τ = g τ) :
     QAll p N g := by
   have : f = g := funext h
   exact this ▸ hf
 
+/- English proof (translation)
+Introduce `E N w a d b φ hE hN ha hd hφ`. Take `⟨d', rfl⟩ : ∃ d', d = d' + 1` from `⟨d - 1, by omega⟩`. Establish `hM : 0 < N * (a * (d' + 1))` using `by positivity`. Establish `RC` using `GlobalTheory.T.qExpansionCoeffsInSubring_ring_closed E (N * (a * (d' + 1))) hM`. Take `⟨hDq, hqD⟩` from `GlobalTheory.T.modularDiscriminant_div_q_integer_qExpansions`.
+
+Establish `h1` using `QAll.of_dvd hM ⟨a, by ring⟩ E.zero_mem (GlobalTheory.T.qExpansionAllCoeffs_comp_upper_triangular E N a (d' + 1) b _ hE hN ha (by omega) hφ)`. Establish `h2` using `QAll.of_dvd hM ⟨N * a, by ring⟩ E.zero_mem (GlobalTheory.T.qExpansionAllCoeffs_comp_upper_triangular E 1 a (d' + 1) b _ hE one_pos ha (by omega) (qAll_of_int E hqD))`. Establish `h3` using `QAll.of_dvd hM (one_dvd _) E.zero_mem (qAll_of_int E hDq)`. Establish `h2w` using `RC.2.2.2.2.1 _ w h2`. Establish `h3w` using `RC.2.2.2.2.1 _ (w * (a * (d' + 1))) h3`.
+
+Establish `h4` using `RC.1 _ (hE (-((w : ℚ) * b) / (d' + 1)))`. Establish `h5` using `qAll_monomial E (N * (a * (d' + 1))) (N * w * a * a * (d' * (d' + 2)))`. Establish `hP` using `RC.2.2.2.1 _ _ (RC.2.2.2.1 _ _ (RC.2.2.2.1 _ _ (RC.2.2.2.1 _ _ h1 h2w) h3w) h4) h5`. Use `qAll_congr hP fun τ => ?_` and prove the remaining obligations. Simplify using `only [up]`.
+
+Use `set U := UpperHalfPlane.ofComplex (((a : ℂ) * τ + b) / ((d' + 1 : ℕ) : ℂ)) with hUdef`. Establish `him : 0 < (((a : ℂ) * τ + b) / ((d' + 1 : ℕ) : ℂ)).im`. Establish `: (((a : ℂ) * τ + b) / ((d' + 1 : ℕ) : ℂ)).im = a * τ.im / (d' + 1)`. Rewrite using `[Complex.div_natCast_im]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Use `τ.im_pos` as an intermediate fact. Check the signs of the components of the expression. Establish `hU : (U : ℂ) = ((a : ℂ) * τ + b) / ((d' + 1 : ℕ) : ℂ)`. Rewrite using `[hUdef, UpperHalfPlane.ofComplex_apply_of_im_pos him]`.
+
+Establish `key : Complex.exp (2 * Real.pi * Complex.I * (U : ℂ)) ^ w * Complex.exp (2 * Real.pi * Complex.I * (((-((w : ℚ) * b) / (d' + 1) : ℚ)) : ℂ)) * Complex.exp (2 * Real.pi * Complex.I * ((N * w * a * a * (d' * (d' + 2)) : ℕ) : ℂ) * τ / ((N * (a * (d' + 1)) : ℕ) : ℂ)) = Complex.exp (2 …`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add, ← Complex.exp_add, hU]`. Use `congr 1`. Establish `hN' : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `ha' : (a : ℂ) ≠ 0` using `by exact_mod_cast ha.ne'`.
+
+Establish `hd' : (d' : ℂ) + 1 ≠ 0` using `by exact_mod_cast (Nat.succ_ne_zero d')`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hDU` using `ReciprocityTheory.ChartRestriction.L1.DD_ne_zero U`.
+
+Establish `hDτ` using `ReciprocityTheory.ChartRestriction.L1.DD_ne_zero τ`. Establish `e1` using `Complex.exp_ne_zero (2 * Real.pi * Complex.I * (U : ℂ))`. Establish `e2` using `Complex.exp_ne_zero (2 * Real.pi * Complex.I * (τ : ℂ))`. Establish `e3` using `Complex.exp_ne_zero (2 * Real.pi * Complex.I * (((-((w : ℚ) * b) / (d' + 1) : ℚ)) : ℂ))`. Establish `e4` using `Complex.exp_ne_zero (2 * Real.pi * Complex.I * ((N * w * a * a * (d' * (d' + 2)) : ℕ) : ℂ) * τ / ((N * (a * (d' + 1)) : ℕ) : ℂ))`.
+
+Rewrite using `[div_pow, div_pow, ← key]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem qAll_pole_affine : ∀ (E : Subring ℂ) (N w a d : ℕ) (b : ℤ) (φ : ℍ → ℂ),
     (∀ x : ℚ, Complex.exp (2 * Real.pi * Complex.I * (x : ℂ)) ∈ E) → 0 < N → 0 < a → 0 < d →
     QAll (· ∈ E) N (fun τ => DD τ ^ w * φ τ) →

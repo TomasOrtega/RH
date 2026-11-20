@@ -8,6 +8,13 @@ open ReciprocityTheory.ChartRestriction.G.Chart ReciprocityTheory.ChartRestricti
 attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.JetSer
 
+/- English proof (translation)
+Establish `hc : (Algebra.ofId R (JetR R κ 0)).comp (jetAug R κ 0) = AlgHom.id R _`. Apply `jet_ext` to reduce the goal to its premises. Introduce `j`. Rewrite using `[AlgHom.comp_apply, jetAug_zR, map_zero]`. Apply `jetAug_zero_injective κ` to reduce the goal to its premises.
+
+Rewrite using `[map_zero, AlgHom.id_apply, jetAug_zR]`. Establish `hid : spMap (R₀` using `R) (AlgHom.id R (JetR R κ 0)) = 𝟙 _ := by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[spMap_left]`. Conclude with `Spec.map_id _`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc, spMap_comp, hc]`. Use `_ = 1 := by rw [hy.2 0]; exact MonObj.comp_one _`.
+-/
 theorem IsFPt.zero_eq_one {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {κ : Type}
     {y : Fam G κ} (hy : IsFPt y) : y 0 = 1 := by
   have hc : (Algebra.ofId R (JetR R κ 0)).comp (jetAug R κ 0) = AlgHom.id R _ := by
@@ -25,6 +32,25 @@ theorem IsFPt.zero_eq_one {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.o
       rw [← Category.assoc, spMap_comp, hc]
     _ = 1 := by rw [hy.2 0]; exact MonObj.comp_one _
 
+/- English proof (translation)
+Take `⟨h1, -, h3, -, h5⟩` from `hR R G d x hx (Fin k × Fin d)`. Establish `hpt : ∀ (j : Fin k) (i : Fin d), constantCoeff (pt R (n` using `k) d j i) = 0 := fun j => ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.gp_pt j`. Use `choose y₀ hy₀ using fun j : Fin k => (h1 (pt R (n := k) d j) (hpt j)).exists`. Establish `hF : ∀ j, IsFPt (y₀ j)` using `fun j => h3 _ _ (hy₀ j)`. Establish `hcomp : ∀ m, (spMap (jetTruncR R (Fin k × Fin d) m)).left ≫ (L _ (fun j => y₀ j (m + 1))).left = (L _ (fun j => y₀ j m)).left`.
+
+Introduce `m`. Rewrite using `[← Over.comp_left, hL]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Conclude with `(hF j).1 m`.
+
+Establish `h0 : ⊤ ≤ (L _ (fun j => y₀ j 0)).left ⁻¹ᵁ U`. Establish `e : L _ (fun j => y₀ j 0) = toUnit _ ≫ L _ (fun _ => η[G])`. Rewrite using `[hL]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Conclude with `(hF j).zero_eq_one`. Rewrite using `[e, Over.comp_left, Scheme.Hom.comp_preimage]`. Introduce `p _`. Conclude with `hU (Set.mem_univ _)`. Take `⟨⟨τ, hτ⟩, -, -, hsub⟩` from `hS R (Fin k × Fin d) Y.left (fun m => (L _ (fun j => y₀ j m)).left) hcomp U h0`.
+
+Use `⟨τ f, fun n a y hy => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Set `b : Fin k × Fin d → MvPowerSeries (Fin n × Fin d) R` to `fun p => a p.1 p.2`. Establish `hb : ∀ p, constantCoeff (b p) = 0` using `fun p => (hy p.1).1 p.2`. Use `choose ψ hψ using fun m => ((hJ R (Fin n × Fin d)).2.2.2.2 (Fin k × Fin d) b hb m).1`. Establish `hyy : ∀ j, y j = fun m => spMap (ψ m) ≫ y₀ j m`.
+
+Introduce `j`. Establish `r` using `h5 (Fin n × Fin d) b ψ hb hψ _ _ (hy₀ j)`. Establish `e : (fun i => MvPowerSeries.subst b (pt R (n` using `k) d j i)) = a j := by`. Use function extensionality and compare the values at `i`. Conclude with `MvPowerSeries.subst_X (hasSubst_of_constantCoeff_zero hb) (j, i)`.
+
+Rewrite `r` using `[e]`. Conclude with `((hR R G d x hx (Fin n × Fin d)).1 (a j) (hy j).1).unique (hy j) r`. Establish `r` using `hsub (Fin n × Fin d) b ψ hb hψ f (τ f) ((hτ f _).2 rfl)`. Establish `e : (fun m => (L _ (fun j => y j m)).left) = fun m => (spMap (ψ m)).left ≫ (L _ (fun j => y₀ j m)).left`. Use function extensionality and compare the values at `m`.
+
+Rewrite using `[← Over.comp_left, hL]`. Simplify using `only [hyy]`. Rewrite using `[e]`. Conclude with `r`. Establish `r` using `hg k (fun j => pt R (n := k) d j) y₀ hy₀`.
+
+Establish `e : ev (fun j => pt R (n` using `k) d j) g = g := by`. Unfold `ev`. Conclude with `congrFun MvPowerSeries.subst_self g`. Rewrite `r` using `[e]`. Conclude with `(hτ f g).1 r`.
+-/
 theorem exUnique_ser (hJ : JetAlgSt) (hR : RepSt) (hS : SerSt) {R : Type} [CommRing R]
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {d : ℕ} {x : Fam G (Fin d)} (hx : IsUnivChart G d x)
     {k : ℕ} {Y : Over (Spec (CommRingCat.of R))}
@@ -84,6 +110,15 @@ theorem exUnique_ser (hJ : JetAlgSt) (hR : RepSt) (hS : SerSt) {R : Type} [CommR
     rw [e] at r
     exact (hτ f g).1 r
 
+/- English proof (translation)
+Introduce `hJ hR hS R _ G _ d x hx`. Use `⟨fun U hU f => ?_, fun U hU f => ?_, fun U hU f => ?_⟩` and prove the remaining obligations. Establish `H` using `exUnique_ser hJ hR hS hx (k := 1) (Y := G) (fun _ y => y 0) (fun _ _ _ _ => rfl) U hU f`. Use `(existsUnique_congr fun g => ⟨fun h n a y ha => ?_, fun h n a y ha => ?_⟩).1 H` and prove the remaining obligations. Conclude with `h n ![a] ![y] (fun j => by fin_cases j; exact ha)`.
+
+Establish `e : a = ![a 0]` using `by funext j; fin_cases j; rfl`. Rewrite using `[e]`. Conclude with `h n (a 0) (y 0) (ha 0)`. Establish `H` using `exUnique_ser hJ hR hS hx (k := 2) (Y := G ⊗ G) (fun _ y => lift (y 0) (y 1)) (fun _ _ _ _ => comp_lift _ _ _) U hU f`. Use `(existsUnique_congr fun g => ⟨fun h n a b y z ha hb => ?_, fun h n a y ha => ?_⟩).1 H` and prove the remaining obligations.
+
+Conclude with `h n ![a, b] ![y, z] (fun j => by fin_cases j; exacts [ha, hb])`. Apply the tactic sequence `have e : a = ![a 0, a 1] := by funext j; fin_cases j <;> rfl`. Rewrite using `[e]`. Conclude with `h n (a 0) (a 1) (y 0) (y 1) (ha 0) (ha 1)`. Establish `H` using `exUnique_ser hJ hR hS hx (k := 3) (Y := G ⊗ G ⊗ G) (fun _ y => lift (y 0) (lift (y 1) (y 2))) (fun _ _ _ _ => by rw [comp_lift, comp_lift]) U hU f`.
+
+Use `(existsUnique_congr fun g => ⟨fun h n a b c y z w ha hb hc => ?_, fun h n a y ha => ?_⟩).1 H` and prove the remaining obligations. Conclude with `h n ![a, b, c] ![y, z, w] (fun j => by fin_cases j; exacts [ha, hb, hc])`. Apply the tactic sequence `have e : a = ![a 0, a 1, a 2] := by funext j; fin_cases j <;> rfl`. Rewrite using `[e]`. Conclude with `h n (a 0) (a 1) (a 2) (y 0) (y 1) (y 2) (ha 0) (ha 1) (ha 2)`.
+-/
 theorem serEx : JetAlgSt → RepSt → SerSt → SerExSt := by
   intro hJ hR hS R _ G _ d x hx
   refine ⟨fun U hU f => ?_, fun U hU f => ?_, fun U hU f => ?_⟩

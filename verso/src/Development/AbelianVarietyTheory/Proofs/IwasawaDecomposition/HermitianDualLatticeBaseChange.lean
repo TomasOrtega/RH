@@ -12,6 +12,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`.
+-/
 theorem mem_dual_iff {d : ℕ} (H : Matrix (Fin d) (Fin d) K) (A : Submodule (𝓞 K) (Fin d → K)) (x : Fin d → K) :
     x ∈ Formalism.HermitianLatticesTheory.dual (Formalism.DivisionValues.hform H) A ↔
       ∀ y ∈ A, ∃ c : 𝓞 K, algebraMap (𝓞 K) K c = Formalism.DivisionValues.hform H y x := by
@@ -20,6 +23,9 @@ theorem mem_dual_iff {d : ℕ} (H : Matrix (Fin d) (Fin d) K) (A : Submodule (�
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Simplify using `only [Formalism.DivisionValues.hform, Matrix.toLinearMapₛₗ₂'_apply, starRingEnd_apply, RingHom.id_apply, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_eq {d : ℕ} (H : Matrix (Fin d) (Fin d) K) (x y : Fin d → K) :
     Formalism.DivisionValues.hform H x y = ∑ j, star (x j) * (H.mulVec y) j := by
   simp only [Formalism.DivisionValues.hform, Matrix.toLinearMapₛₗ₂'_apply, starRingEnd_apply, RingHom.id_apply,
@@ -30,10 +36,24 @@ theorem hform_eq {d : ℕ} (H : Matrix (Fin d) (Fin d) K) (x y : Fin d → K) :
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem star_int (c : 𝓞 K) : algebraMap (𝓞 K) K (Formalism.DivisionValues.cO K c) = star (algebraMap (𝓞 K) K c) := rfl
 
 omit [StarRing K] in
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap (𝓞 K) K)` using `FaithfulSMul.algebraMap_injective _ _`. Take `⟨s, hs, b, hb, hsA⟩` from `Formalism.HermitianLatticesTheory.dualLattice_basis (R := 𝓞 K) A hA.span_eq_top`. Take `⟨c, hc0, hc⟩` from `Formalism.HermitianLatticesTheory.dualLattice_denom (R := 𝓞 K) b A hA.fg`. Establish `hbA : ∀ i, b i ∈ A` using `fun i => by rw [hb i]; exact hsA i.2`. Set `F : (Fin d → K) →ₗ[K] K` to `b.constr K (fun i => algebraMap (𝓞 K) K (f ⟨b i, hbA i⟩))`.
+
+Set `F' : A →ₗ[𝓞 K] K` to `(F.restrictScalars (𝓞 K)).comp A.subtype`. Set `g' : A →ₗ[𝓞 K] K` to `(Algebra.linearMap (𝓞 K) K).comp f`. Set `P : Submodule (𝓞 K) (Fin d → K)` to `(LinearMap.eqLocus F' g').map A.subtype`. Establish `hspan : Submodule.span (𝓞 K) (Set.range b) ≤ P`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨⟨b i, hbA i⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show F (b i) = algebraMap (𝓞 K) K (f ⟨b i, hbA i⟩)`. Conclude with `b.constr_basis K _ i`. Use `⟨F, fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨z, hz, hzx⟩` from `hspan (hc x x.2)`. Establish `hz' : z = c • x` using `Subtype.ext (by simpa using hzx)`. Establish `hzF : F' z = g' z` using `hz`. Rewrite `hzF` using `[hz', map_smul, map_smul]`. Simplify using `only [F', g', LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.restrictScalars_apply, Algebra.linearMap_apply, Algebra.smul_def] at hzF`.
+
+Conclude with `mul_left_cancel₀ (by simpa using hc0) hzF`.
+-/
 theorem exists_extend {d : ℕ} (A : Submodule (𝓞 K) (Fin d → K)) (hA : Submodule.IsLattice K A)
     (f : A →ₗ[𝓞 K] 𝓞 K) :
     ∃ F : (Fin d → K) →ₗ[K] K, ∀ x : A, F x = algebraMap (𝓞 K) K (f x) := by
@@ -61,6 +81,27 @@ theorem exists_extend {d : ℕ} (A : Submodule (𝓞 K) (Fin d → K)) (hA : Sub
     Algebra.linearMap_apply, Algebra.smul_def] at hzF
   exact mul_left_cancel₀ (by simpa using hc0) hzF
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap (𝓞 K) K)` using `FaithfulSMul.algebraMap_injective _ _`. Take `⟨n, g, f, hgf⟩` from `Formalism.HermitianLatticesTheory.finitely_generated_projective_coords (K := K) A hA.fg hinj`. Use `choose F hF using fun i => exists_extend A hA (f i)`. Set `w : Fin n → Fin d → K` to `fun i => H⁻¹.mulVec (fun j => star (F i (Pi.single j 1)))`. Establish `hFcoord : ∀ i (y : Fin d → K), F i y = ∑ j, y j * F i (Pi.single j 1)`.
+
+Introduce `i y`. Use `conv_lhs => rw [← Finset.univ_sum_single y]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show (Pi.single j (y j) : Fin d → K) = y j • Pi.single j 1 by`.
+
+Apply the tactic sequence `ext k; by_cases hk : k = j <;> simp [hk], map_smul, smul_eq_mul]`. Establish `hw : ∀ i (y : Fin d → K), Formalism.DivisionValues.hform H y (w i) = star (F i y)`. Introduce `i y`. Rewrite using `[hform_eq, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hH, Matrix.one_mulVec, hFcoord, star_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[star_mul']`. Establish `hexp : ∀ y : Fin d → K, y = ∑ i, F i y • (g i : Fin d → K)`. Establish `hT : (∑ i, (F i).smulRight (g i : Fin d → K)) = LinearMap.id`. Use `LinearMap.ext_on hA.span_eq_top fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun v : A => (v : Fin d → K)) (hgf ⟨x, hx⟩)`.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h1`. Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.id_apply]`. Use `conv_rhs => rw [h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hF i ⟨x, hx⟩, algebraMap_smul]`.
+
+Introduce `y`. Use `LinearMap.congr_fun hT y` as an intermediate fact. Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.id_apply] at this`. Conclude with `this.symm`. Establish `hnd : ∀ z : Fin d → K, (∀ u, Formalism.DivisionValues.hform H u z = 0) → z = 0`.
+
+Introduce `z hz`. Establish `hHz : H.mulVec z = 0`. Use extensionality with `i`. Use `hz (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[hform_eq, Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp)]`.
+
+Simplify using `using this`. Rewrite using `[← Matrix.one_mulVec z, ← Matrix.nonsing_inv_mul _ hH, ← Matrix.mulVec_mulVec, hHz, Matrix.mulVec_zero]`. Use `⟨n, fun i => (g i : Fin d → K), w, fun i => (g i).2, fun i => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_dual_iff]`. Introduce `y hy`.
+
+Use `⟨Formalism.DivisionValues.cO K (f i ⟨y, hy⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[star_int, hw, hF i ⟨y, hy⟩]`. Use `(sub_eq_zero.1 (hnd _ fun u => ?_)).symm` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero, map_sum]`. Use `conv_rhs => rw [hexp u]`.
+
+Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smulₛₗ, LinearMap.smul_apply, hw, smul_eq_mul, smul_eq_mul, starRingEnd_apply, mul_comm]`.
+-/
 theorem exists_family {d : ℕ} (H : Matrix (Fin d) (Fin d) K) (hH : IsUnit H.det)
     (A : Submodule (𝓞 K) (Fin d → K)) (hA : Submodule.IsLattice K A) :
     ∃ (n : ℕ) (a b : Fin n → Fin d → K), (∀ i, a i ∈ A) ∧ (∀ i, b i ∈ Formalism.HermitianLatticesTheory.dual (Formalism.DivisionValues.hform H) A) ∧
@@ -119,6 +160,37 @@ theorem exists_family {d : ℕ} (H : Matrix (Fin d) (Fin d) K) (hH : IsUnit H.de
     rw [map_smul, map_smulₛₗ, LinearMap.smul_apply, hw, smul_eq_mul, smul_eq_mul,
       starRingEnd_apply, mul_comm]
 
+/- English proof (translation)
+Introduce `K K' _ _ _ _ _ _ φ d d' G hG H H' hHH' hH A hA`. Use `set ι : (Fin d → K) → (Fin d' → K') := fun x => Matrix.mulVec G fun k => φ (x k) with hι`. Establish `ι_add : ∀ x y, ι (x + y) = ι x + ι y`. Introduce `x y`. Simplify using `only [hι, Pi.add_apply, map_add]`.
+
+Rewrite using `[← Matrix.mulVec_add]`. Both sides reduce to the same expression. Establish `ι_smul : ∀ (c : K) x, ι (c • x) = φ c • ι x`. Introduce `c x`. Simplify using `only [hι, Pi.smul_apply, smul_eq_mul, map_mul]`.
+
+Rewrite using `[← Matrix.mulVec_smul]`. Both sides reduce to the same expression. Establish `ι_sum : ∀ {m : ℕ} (v : Fin m → Fin d → K), ι (∑ i, v i) = ∑ i, ι (v i)`. Introduce `m v`. Simplify using `only [hι, Finset.sum_apply, map_sum]`.
+
+Rewrite using `[← Matrix.mulVec_sum]`. Use `congr 1`. Use extensionality with `k`. Simplify using `[Finset.sum_apply]`. Establish `ι_single : ∀ k : Fin d, ι (Pi.single k 1) = G.mulVec (Pi.single k 1)`.
+
+Introduce `k`. Simplify using `only [hι]`. Use `congr 1`. Use extensionality with `j`. Apply the tactic sequence `by_cases hj : j = k <;> simp [hj]`.
+
+Establish `hspanι : Submodule.span K' (Set.range ι) = ⊤`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hG.2 z`. Rewrite using `[← Finset.univ_sum_single v, Matrix.mulVec_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[show (Pi.single k (v k) : Fin d → K') = v k • Pi.single k 1 by`. Apply the tactic sequence `ext j; by_cases hj : j = k <;> simp [hj], Matrix.mulVec_smul, ← ι_single]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Establish `hιH : ∀ x y, Formalism.DivisionValues.hform H' (ι x) (ι y) = φ (Formalism.DivisionValues.hform H x y)` using `hHH'`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `x hx`. Take `⟨n, a, b, ha, hb, hab⟩` from `exists_family H hH A hA`. Establish `hT : (∑ i, (Formalism.DivisionValues.hform H' (ι (a i))).smulRight (ι (b i))) = LinearMap.id`. Use `LinearMap.ext_on hspanι ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.id_apply, hιH]`. Use `conv_rhs => rw [hab y]`. Rewrite using `[ι_sum]`. Simplify using `only [ι_smul]`. Establish `hx' : x = ∑ i, Formalism.DivisionValues.hform H' (ι (a i)) x • ι (b i)`.
+
+Use `LinearMap.congr_fun hT x` as an intermediate fact. Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.id_apply] at this`. Conclude with `this.symm`. Rewrite using `[hx']`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `(mem_dual_iff H' _ x).1 hx (ι (a i)) (Submodule.subset_span ⟨a i, ha i, rfl⟩)`. Rewrite using `[← hc, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b i, hb i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, mem_dual_iff]`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨y, hy, rfl⟩` from `hy`.
+
+Take `⟨c, hc⟩` from `(mem_dual_iff H A z).1 hz y hy`. Use `⟨RingOfIntegers.mapRingHom φ c, ?_⟩` and prove the remaining obligations. Rewrite using `[hιH, ← hc]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, by simp⟩`.
+
+Consider the case `add y₁ y₂ _ _ h₁ h₂`. Take `⟨c₁, hc₁⟩` from `h₁`. Take `⟨c₂, hc₂⟩` from `h₂`. Conclude with `⟨c₁ + c₂, by rw [map_add, map_add, LinearMap.add_apply, hc₁, hc₂]⟩`. Consider the case `smul r y _ h`.
+
+Take `⟨c, hc⟩` from `h`. Use `⟨Formalism.DivisionValues.cO K' r * c, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K' r y, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_mul, hc, star_int, starRingEnd_apply]`.
+-/
 theorem dual_baseChange : ∀ (K K' : Type) [Field K] [NumberField K] [StarRing K] [Field K'] [NumberField K'] [StarRing K'] (φ : K →+* K') (d d' : ℕ)
   (G : Matrix (Fin d') (Fin d) K'), Function.Bijective G.mulVec → ∀ (H : Matrix (Fin d) (Fin d) K) (H' : Matrix (Fin d') (Fin d') K'),
   (∀ x y : Fin d → K, Formalism.DivisionValues.hform H' (Matrix.mulVec G fun k => φ (x k)) (Matrix.mulVec G fun k => φ (y k)) = φ (Formalism.DivisionValues.hform H x y)) →

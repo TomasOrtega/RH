@@ -11,6 +11,13 @@ section Gen
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hr : Module.rank ℤ_[p] M ≤ (Module.finrank ℚ_[p] W : Cardinal)`. Apply `rank_le` to reduce the goal to its premises. Introduce `s hs`. Establish `h1 : LinearIndependent ℤ_[p] (fun i : s => ((i : M) : V))` using `hs.map' M.subtype (Submodule.ker_subtype M)`. Establish `h2 : LinearIndependent ℚ_[p] (fun i : s => ((i : M) : V))` using `(LinearIndependent.iff_fractionRing ℤ_[p] ℚ_[p]).mp h1`.
+
+Establish `h3 : LinearIndependent ℚ_[p] (fun i : s => (⟨((i : M) : V), hMW _ (i : M).2⟩ : W))`. Use `LinearIndependent.of_comp W.subtype ?_` and prove the remaining obligations. Conclude with `h2`. Use `h3.fintype_card_le_finrank` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `Module.finrank_le_of_rank_le hr`.
+-/
 theorem finrank_zp_le {V : Type} [AddCommGroup V] [Module ℚ_[p] V] [Module ℤ_[p] V] [IsScalarTower ℤ_[p] ℚ_[p] V]
     (M : Submodule ℤ_[p] V) (W : Submodule ℚ_[p] V) [FiniteDimensional ℚ_[p] W] (hMW : ∀ x ∈ M, x ∈ W) :
     Module.finrank ℤ_[p] M ≤ Module.finrank ℚ_[p] W := by
@@ -39,6 +46,11 @@ open Classical in
 def xiMons (n : ℕ) : Finset (Formalism.GM.M.BVar N r G.T.t →₀ ℕ) :=
   (CountingStatementReduction.Ev r n).image (fun e => ∑ c : Fin r, Finsupp.single (Formalism.GM.M.xiVar N r G.T.t c) (e c))
 
+/- English proof (translation)
+Unfold `xiMons`. Use `(Finset.card_image_le).trans ?_` and prove the remaining obligations. Rewrite using `[CountingStatementReduction.card_Ev]`. Unfold `dXi`. Establish `hr : 1 ≤ r` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne r)`.
+
+Take `⟨r', rfl⟩ : ∃ r', r = r' + 1` from `⟨r - 1, by omega⟩`. Establish `e1 : r' + 1 + n - 1 = n + r'` using `by omega`. Establish `e2 : n + (r' + 1) - 1 = n + r'` using `by omega`. Rewrite using `[e1, e2, Nat.add_sub_cancel, Nat.choose_symm_add]`.
+-/
 theorem card_xiMons (n : ℕ) : (xiMons (r := r) G n).card ≤ dXi r n := by
   classical
   unfold xiMons
@@ -51,11 +63,29 @@ theorem card_xiMons (n : ℕ) : (xiMons (r := r) G n).card ≤ dXi r n := by
   have e2 : n + (r' + 1) - 1 = n + r' := by omega
   rw [e1, e2, Nat.add_sub_cancel, Nat.choose_symm_add]
 
+/- English proof (translation)
+Introduce `c d h`. Simplify using `only [Formalism.GM.M.xiVar, Sum.inl.injEq, Prod.mk.injEq] at h`. Conclude with `h.2`.
+-/
 theorem xiVar_inj : Function.Injective (Formalism.GM.M.xiVar N r G.T.t) := by
   intro c d h
   simp only [Formalism.GM.M.xiVar, Sum.inl.injEq, Prod.mk.injEq] at h
   exact h.2
 
+/- English proof (translation)
+Establish `hs` using `(Submodule.mem_inf.1 hg).1`. Rewrite `hs` using `[Submodule.restrictScalars_mem, MvPolynomial.mem_restrictSupport_iff]`. Rewrite using `[g.as_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hm'` using `hs hm`.
+
+Take `⟨hsupp, hsum⟩` from `hm'`. Establish `hmono : monomial m (coeff m g) = coeff m g • monomial m (1 : ℚ_[p])`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hmono]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, ?_, rfl⟩)` and prove the remaining obligations.
+
+Unfold `xiMons`. Rewrite using `[Finset.mem_coe, Finset.mem_image]`. Use `⟨fun c => m (Formalism.GM.M.xiVar N r G.T.t c), (CountingStatementReduction.mem_Ev _).2 hsum, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Rewrite using `[Finsupp.finsetSum_apply]`.
+
+Distinguish the cases in `hv : ∃ c, v = Formalism.GM.M.xiVar N r G.T.t c`. Take `⟨c, rfl⟩` from `hv`. Rewrite using `[Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `d _ hd`.
+
+Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hd (xiVar_inj G h)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ c) h`.
+
+Establish `h0 : m v = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hv (hsupp v (Finsupp.mem_support_iff.2 hne))`. Rewrite using `[h0]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hv ⟨c, h.symm⟩`.
+-/
 theorem xi_mem_span (n : ℕ) (g : MvPolynomial (Formalism.GM.M.BVar N r G.T.t) ℚ_[p])
     (hg : g ∈ Formalism.GM.M.XiPolZ p N r G.T.t n) :
     g ∈ Submodule.span ℚ_[p] ((fun m => (monomial m (1 : ℚ_[p]))) '' (xiMons (r := r) G n : Set _)) := by
@@ -93,6 +123,23 @@ theorem xi_mem_span (n : ℕ) (g : MvPolynomial (Formalism.GM.M.BVar N r G.T.t) 
     intro h
     exact hv ⟨c, h.symm⟩
 
+/- English proof (translation)
+Use `set Yq := Formalism.GM.M.Y p (r := r) (G.lettersAt j jp) G.T.J G.T.thr with hYq`. Use `haveI : FiniteDimensional ℚ_[p] (Formalism.GM.M.Pol p r (G.lettersAt j jp)) := Formalism.CountingSumsFrames.pol_finiteDimensional _`. Use `haveI : FiniteDimensional ℚ_[p] Yq := Submodule.finiteDimensional_of_le inf_le_left`. Set `bY` to `Module.finBasis ℚ_[p] Yq`. Set `Ms` to `xiMons (r := r) G (G.B - jp)`.
+
+Set `fam : Fin (Module.finrank ℚ_[p] Yq) × Ms → MvPolynomial (Formalism.GM.M.BVar N r G.T.t) ℚ_[p]` to `fun ab => rename (Formalism.GM.M.chainEmb N r G.T.t) ((bY ab.1 : Yq) : _) * monomial (ab.2 : _ →₀ ℕ) 1`. Set `W` to `Submodule.span ℚ_[p] (Set.range fam)`. Establish `hsub : ∀ x ∈ Ljj p (r` using `r) G j jp, x ∈ W := by`. Introduce `x hx`. Establish `hle : Ljj p (r` using `r) G j jp ≤ W.restrictScalars ℤ_[p] := by`.
+
+Unfold `Ljj`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, g, hg, rfl⟩`. Establish `hyY : y ∈ Yq` using `(Submodule.mem_inf.1 hy).1`. Establish `hy2 : y ∈ Submodule.span ℚ_[p] (Set.range fun a => ((bY a : Yq) : MvPolynomial _ ℚ_[p]))`.
+
+Establish `h3 : (⟨y, hyY⟩ : Yq) ∈ (⊤ : Submodule ℚ_[p] Yq)` using `Submodule.mem_top`. Rewrite `h3` using `[← bY.span_eq]`. Establish `h4` using `Submodule.mem_map_of_mem (f := Yq.subtype) h3`. Rewrite `h4` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h4`.
+
+Establish `hg2` using `xi_mem_span p G (G.B - jp) g hg`. Use `show rename (Formalism.GM.M.chainEmb N r G.T.t) y * g ∈ W`. Establish `hy3 : rename (Formalism.GM.M.chainEmb N r G.T.t) y ∈ Submodule.span ℚ_[p] (Set.range fun a => rename (Formalism.GM.M.chainEmb N r G.T.t) ((bY a : Yq) : MvPolynomial _ ℚ_[p]))`. Use `Submodule.mem_map_of_mem (f := (rename (Formalism.GM.M.chainEmb N r G.T.t) : MvPolynomial _ ℚ_[p] →ₐ[ℚ_[p]] MvPolynomial _ ℚ_[p]).toLinearMap) hy2` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp]`.
+
+Conclude with `this`. Establish `hmul` using `Submodule.mul_mem_mul hy3 hg2`. Rewrite `hmul` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ hmul` and prove the remaining obligations. Introduce and unpack `_ ⟨u, ⟨a, rfl⟩, v, ⟨m, hm, rfl⟩, rfl⟩`.
+
+Conclude with `⟨(a, ⟨m, hm⟩), rfl⟩`. Conclude with `hle hx`. Use `haveI : FiniteDimensional ℚ_[p] W := FiniteDimensional.span_of_finite ℚ_[p] (Set.finite_range fam)`. Establish `h1` using `finrank_zp_le (Ljj p (r := r) G j jp) W hsub`. Establish `h2 : Module.finrank ℚ_[p] W ≤ Fintype.card (Fin (Module.finrank ℚ_[p] Yq) × Ms)` using `finrank_range_le_card fam`.
+
+Rewrite `h2` using `[Fintype.card_prod, Fintype.card_fin, Fintype.card_coe]`. Establish `h3` using `card_xiMons (r := r) G (G.B - jp)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finrank_Ljj_le (j : Fin G.T.t → ℕ) (jp : ℕ) :
     Module.finrank ℤ_[p] (Ljj p (r := r) G j jp) ≤ dimY p (r := r) G j jp * dXi r (G.B - jp) := by
   classical
@@ -141,6 +188,9 @@ theorem finrank_Ljj_le (j : Fin G.T.t → ℕ) (jp : ℕ) :
 
 end Level
 
+/- English proof (translation)
+Introduce `dl _ aTop _ x _`. Conclude with `finrank_Ljj_le X.p (gB C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2`.
+-/
 theorem restRankL_proved (C0 CE1 CE2 : ℝ) (X : flipOneThree.Inst) : RestRankL C0 CE1 CE2 X := by
   intro dl _ aTop _ x _
   exact finrank_Ljj_le X.p (gB C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2

@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.closing_of_abelianSchemeLaws`.
+-/
 theorem complex_uniformisation_holds : N1c := GlobalTheory.closing_of_abelianSchemeLaws
 
 end GlobalTheory.CompanionTheory.Ar.Top

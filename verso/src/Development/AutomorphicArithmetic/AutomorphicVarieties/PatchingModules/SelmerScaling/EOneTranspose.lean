@@ -11,6 +11,9 @@ variable {A X : Type} [CommRing A] [CommRing X] [Algebra A X] {g n : ℕ}
 private def eOne (X : Type) [CommRing X] [Algebra A X] (j : Fin g) (M : Matrix (Fin n) (Fin n) A) :
     Matrix (Fin n) (Fin n) (DD X g) := DD.epM (Pi.single j (M.map (algebraMap A X)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem alg_eq (c : A) : algebraMap A (DD X g) c = DD.C (algebraMap A X c) := rfl
 
 end SlopeTestRemainingChoices
@@ -23,6 +26,9 @@ end Conj
 
 end UpperTheory.V.Pa
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [DD.zero_ep]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, DD.add_ep, ih]`.
+-/
 private theorem dd_ep_finset_sum {X : Type} [CommRing X] {g : ℕ} {ι : Type} (s : Finset ι) (f : ι → DD X g) (m : Fin g) :
     (∑ c ∈ s, f c).ep m = ∑ c ∈ s, (f c).ep m := by
   classical
@@ -30,6 +36,9 @@ private theorem dd_ep_finset_sum {X : Type} [CommRing X] {g : ℕ} {ι : Type} (
   | empty => simp [DD.zero_ep]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, DD.add_ep, ih]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [DD.zero_a]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, DD.add_a, ih]`.
+-/
 private theorem ep_component_add {X : Type} [CommRing X] {g : ℕ} {ι : Type} (s : Finset ι) (f : ι → DD X g) :
     (∑ c ∈ s, f c).a = ∑ c ∈ s, (f c).a := by
   classical
@@ -37,6 +46,9 @@ private theorem ep_component_add {X : Type} [CommRing X] {g : ℕ} {ι : Type} (
   | empty => simp [DD.zero_a]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, DD.add_a, ih]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [DD.zero_ep']`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, DD.add_ep', ih]`.
+-/
 private theorem dd_ep'_finset_sum {X : Type} [CommRing X] {g : ℕ} {ι : Type} (s : Finset ι) (f : ι → DD X g) (m : Fin g) :
     (∑ c ∈ s, f c).ep' m = ∑ c ∈ s, (f c).ep' m := by
   classical
@@ -44,6 +56,9 @@ private theorem dd_ep'_finset_sum {X : Type} [CommRing X] {g : ℕ} {ι : Type} 
   | empty => simp [DD.zero_ep']
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, DD.add_ep', ih]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [DD.zero_eta]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, DD.add_eta, ih]`.
+-/
 private theorem dd_eta_finset_sum {X : Type} [CommRing X] {g : ℕ} {ι : Type} (s : Finset ι) (f : ι → DD X g) :
     (∑ c ∈ s, f c).eta = ∑ c ∈ s, (f c).eta := by
   classical
@@ -51,6 +66,11 @@ private theorem dd_eta_finset_sum {X : Type} [CommRing X] {g : ℕ} {ι : Type} 
   | empty => simp [DD.zero_eta]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, DD.add_eta, ih]
 
+/- English proof (translation)
+Use `Matrix.ext fun a b => DD.ext ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[Matrix.mul_apply, ep_component_add, DD.mul_a, DD.epM, DD.zero_a]`. Use function extensionality and compare the values at `m`. Simplify using `[Matrix.mul_apply, dd_ep_finset_sum, DD.mul_ep, DD.epM, DD.zero_ep]`. Use function extensionality and compare the values at `m`.
+
+Simplify using `[Matrix.mul_apply, dd_ep'_finset_sum, DD.mul_ep', DD.epM, DD.zero_ep']`. Simplify using `[Matrix.mul_apply, dd_eta_finset_sum, DD.mul_eta, DD.epM, DD.zero_eta]`.
+-/
 private theorem epM_mul_epM_eq_zero {X : Type} [CommRing X] {g n : ℕ} (f f' : Fin g → Matrix (Fin n) (Fin n) X) :
     DD.epM f * DD.epM f' = 0 := by
   refine Matrix.ext fun a b => DD.ext ?_ ?_ ?_ ?_
@@ -61,6 +81,11 @@ private theorem epM_mul_epM_eq_zero {X : Type} [CommRing X] {g n : ℕ} (f f' : 
     simp [Matrix.mul_apply, dd_ep'_finset_sum, DD.mul_ep', DD.epM, DD.zero_ep']
   · simp [Matrix.mul_apply, dd_eta_finset_sum, DD.mul_eta, DD.epM, DD.zero_eta]
 
+/- English proof (translation)
+Use `Matrix.ext fun a b => DD.ext ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[Matrix.mul_apply, ep_component_add, DD.mul_a, DD.epM]`. Use function extensionality and compare the values at `m`. Simplify using `[Matrix.mul_apply, dd_ep_finset_sum, DD.mul_ep, DD.epM, DD.C_ep, DD.C_a]`. Use function extensionality and compare the values at `m`.
+
+Simplify using `[Matrix.mul_apply, dd_ep'_finset_sum, DD.mul_ep', DD.epM, DD.C_ep', DD.C_a]`. Simplify using `[Matrix.mul_apply, dd_eta_finset_sum, DD.mul_eta, DD.epM, DD.C_eta, DD.C_ep, DD.C_ep']`.
+-/
 private theorem map_C_mul_epM {X : Type} [CommRing X] {g n : ℕ} (P : Matrix (Fin n) (Fin n) X) (f : Fin g → Matrix (Fin n) (Fin n) X) :
     P.map DD.C * DD.epM f = DD.epM (fun m => P * f m) := by
   refine Matrix.ext fun a b => DD.ext ?_ ?_ ?_ ?_
@@ -71,6 +96,11 @@ private theorem map_C_mul_epM {X : Type} [CommRing X] {g n : ℕ} (P : Matrix (F
     simp [Matrix.mul_apply, dd_ep'_finset_sum, DD.mul_ep', DD.epM, DD.C_ep', DD.C_a]
   · simp [Matrix.mul_apply, dd_eta_finset_sum, DD.mul_eta, DD.epM, DD.C_eta, DD.C_ep, DD.C_ep']
 
+/- English proof (translation)
+Use `Matrix.ext fun a b => DD.ext ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[Matrix.mul_apply, ep_component_add, DD.mul_a, DD.epM]`. Use function extensionality and compare the values at `m`. Simplify using `[Matrix.mul_apply, dd_ep_finset_sum, DD.mul_ep, DD.epM, DD.C_ep, DD.C_a]`. Use function extensionality and compare the values at `m`.
+
+Simplify using `[Matrix.mul_apply, dd_ep'_finset_sum, DD.mul_ep', DD.epM, DD.C_ep', DD.C_a]`. Simplify using `[Matrix.mul_apply, dd_eta_finset_sum, DD.mul_eta, DD.epM, DD.C_eta, DD.C_ep, DD.C_ep']`.
+-/
 private theorem epM_mul_map_C {X : Type} [CommRing X] {g n : ℕ} (P : Matrix (Fin n) (Fin n) X) (f : Fin g → Matrix (Fin n) (Fin n) X) :
     DD.epM f * P.map DD.C = DD.epM (fun m => f m * P) := by
   refine Matrix.ext fun a b => DD.ext ?_ ?_ ?_ ?_
@@ -81,6 +111,11 @@ private theorem epM_mul_map_C {X : Type} [CommRing X] {g n : ℕ} (P : Matrix (F
     simp [Matrix.mul_apply, dd_ep'_finset_sum, DD.mul_ep', DD.epM, DD.C_ep', DD.C_a]
   · simp [Matrix.mul_apply, dd_eta_finset_sum, DD.mul_eta, DD.epM, DD.C_eta, DD.C_ep, DD.C_ep']
 
+/- English proof (translation)
+Use `Matrix.ext fun a b => DD.ext ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[DD.add_a, DD.epM]`. Use function extensionality and compare the values at `m`. Simplify using `[DD.add_ep, DD.epM]`. Use function extensionality and compare the values at `m`.
+
+Simplify using `[DD.add_ep', DD.epM]`. Simplify using `[DD.add_eta, DD.epM]`.
+-/
 private theorem epM_pi_add {X : Type} [CommRing X] {g n : ℕ} (f f' : Fin g → Matrix (Fin n) (Fin n) X) :
     DD.epM (f + f') = DD.epM f + DD.epM f' := by
   refine Matrix.ext fun a b => DD.ext ?_ ?_ ?_ ?_
@@ -91,6 +126,11 @@ private theorem epM_pi_add {X : Type} [CommRing X] {g n : ℕ} (f f' : Fin g →
     simp [DD.add_ep', DD.epM]
   · simp [DD.add_eta, DD.epM]
 
+/- English proof (translation)
+Use `Matrix.ext fun a b => DD.ext ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[DD.zero_a, DD.epM]`. Use function extensionality and compare the values at `m`. Simplify using `[DD.zero_ep, DD.epM]`. Use function extensionality and compare the values at `m`.
+
+Simplify using `[DD.zero_ep', DD.epM]`. Simplify using `[DD.zero_eta, DD.epM]`.
+-/
 private theorem epM_pi_zero {X : Type} [CommRing X] {g n : ℕ} :
     DD.epM (0 : Fin g → Matrix (Fin n) (Fin n) X) = 0 := by
   refine Matrix.ext fun a b => DD.ext ?_ ?_ ?_ ?_
@@ -101,6 +141,13 @@ private theorem epM_pi_zero {X : Type} [CommRing X] {g n : ℕ} :
     simp [DD.zero_ep', DD.epM]
   · simp [DD.zero_eta, DD.epM]
 
+/- English proof (translation)
+Establish `hn : ∀ y : DD X g, -y = 0 - y` using `fun y => (zero_sub y).symm`. Use `Matrix.ext fun a b => DD.ext ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[DD.neg_a, DD.epM]`. Use function extensionality and compare the values at `m`. Simplify using `[DD.neg_ep, DD.epM]`.
+
+Use function extensionality and compare the values at `m`. Establish `h1` using `DD.add_ep' (-(DD.epM f b a)) (DD.epM f b a) m`. Rewrite `h1` using `[neg_add_cancel, DD.zero_ep']`. Simplify using `[DD.epM] at h1 ⊢`. Establish `h1` using `DD.add_eta (-(DD.epM f b a)) (DD.epM f b a)`.
+
+Rewrite `h1` using `[neg_add_cancel, DD.zero_eta]`. Simplify using `[DD.epM] at h1 ⊢`.
+-/
 private theorem epM_neg_transpose {X : Type} [CommRing X] {g n : ℕ} (f : Fin g → Matrix (Fin n) (Fin n) X) :
     DD.epM (fun m => -(f m)ᵀ) = -(DD.epM f)ᵀ := by
   have hn : ∀ y : DD X g, -y = 0 - y := fun y => (zero_sub y).symm
@@ -116,16 +163,31 @@ private theorem epM_neg_transpose {X : Type} [CommRing X] {g n : ℕ} (f : Fin g
     rw [neg_add_cancel, DD.zero_eta] at h1
     simp [DD.epM] at h1 ⊢
 
+/- English proof (translation)
+Rewrite using `[mul_assoc (1 + DD.epM u), map_C_mul_epM, add_mul, one_mul, epM_mul_epM_eq_zero, add_zero, ← mul_assoc, mul_add, mul_one, epM_mul_epM_eq_zero, add_zero, epM_mul_map_C]`.
+-/
 private theorem one_add_epM_mul_map_C_mul_epM_mul_one_add_epM_mul_map_C {X : Type} [CommRing X] {g n : ℕ} (P P' : Matrix (Fin n) (Fin n) X) (f u u' : Fin g → Matrix (Fin n) (Fin n) X) :
     (1 + DD.epM u) * P.map DD.C * DD.epM f * ((1 + DD.epM u') * P'.map DD.C) = DD.epM (fun m => P * f m * P') := by
   rw [mul_assoc (1 + DD.epM u), map_C_mul_epM, add_mul, one_mul, epM_mul_epM_eq_zero, add_zero, ← mul_assoc,
     mul_add, mul_one, epM_mul_epM_eq_zero, add_zero, epM_mul_map_C]
 
+/- English proof (translation)
+Rewrite using `[mul_assoc (P.map DD.C), add_mul, one_mul, epM_mul_epM_eq_zero, add_zero, map_C_mul_epM, ← mul_assoc, mul_sub, mul_one, epM_mul_epM_eq_zero, sub_zero, epM_mul_map_C]`.
+-/
 private theorem map_C_mul_one_add_epM_mul_epM_mul_one_sub_epM_mul_map_C {X : Type} [CommRing X] {g n : ℕ} (P P' : Matrix (Fin n) (Fin n) X) (f u u' : Fin g → Matrix (Fin n) (Fin n) X) :
     P.map DD.C * (1 + DD.epM u) * DD.epM f * ((1 - DD.epM u') * P'.map DD.C) = DD.epM (fun m => P * f m * P') := by
   rw [mul_assoc (P.map DD.C), add_mul, one_mul, epM_mul_epM_eq_zero, add_zero, map_C_mul_epM, ← mul_assoc,
     mul_sub, mul_one, epM_mul_epM_eq_zero, sub_zero, epM_mul_map_C]
 
+/- English proof (translation)
+Unfold `W1 blkMat ddPart`. Unfold `Od at hM`. Introduce `r c`. Establish `hrc` using `hM r c`. Use `⟨fun hd => ?_, fun _ => ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : M r c = 0` using `by simpa using hrc.1 hd`. Use `⟨fun h => absurd h (by decide), fun _ => ?_, fun _ => ?_, fun _ => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Distinguish the cases in `hm : m = j`. Substitute `hm` using the available equality.
+
+Simplify using `[DD.epM, h0]`. Simplify using `[DD.epM, Pi.single_apply, hm]`. Use function extensionality and compare the values at `m`. Simplify using `[DD.epM]`. Simplify using `[DD.epM]`.
+
+Use `⟨fun _ => ?_, fun h => absurd h (by decide), fun _ => ?_, fun _ => ?_⟩` and prove the remaining obligations. Simplify using `[DD.epM]`. Use function extensionality and compare the values at `m`. Simplify using `[DD.epM]`. Simplify using `[DD.epM]`.
+-/
 private theorem epM_single_map_mem_W1_of_mem_Od {A X : Type} [CommRing A] [CommRing X] [Algebra A X] {n : ℕ} (g a : ℕ) (j : Fin g)
     (M : Matrix (Fin n) (Fin n) A) (hM : M ∈ Od A A n a) :
     DD.epM (Pi.single j (M.map (algebraMap A X))) ∈ W1 n A X g a := by
@@ -150,12 +212,28 @@ private theorem epM_single_map_mem_W1_of_mem_Od {A X : Type} [CommRing A] [CommR
       simp [DD.epM]
     · simp [DD.epM]
 
+/- English proof (translation)
+Unfold `AdicCont`. Introduce `N`. Conclude with `IsLocallyConstant.const _`.
+-/
 private theorem adicCont_const_fun {Γ R : Type} [TopologicalSpace Γ] [CommRing R] (I : Ideal R) (c : R) :
     AdicCont I (fun _ : Γ => c) := by
   unfold AdicCont
   intro N
   exact IsLocallyConstant.const _
 
+/- English proof (translation)
+Use `set ε : DD X g := DD.epM (Pi.single j (Matrix.of fun _ _ => (1 : X))) a b with hε`. Establish `he : ∀ c : A, ∀ M : Matrix (Fin n) (Fin n) A, M a b = c → DD.epM (Pi.single j (M.map (algebraMap A X))) a b = algebraMap A (DD X g) c * ε`. Introduce `c M hc`. Rewrite using `[alg_eq]`. Use `DD.ext ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Simplify using `[hε, DD.epM, DD.mul_a, DD.C_a]`. Use function extensionality and compare the values at `m`. Distinguish the cases in `hm : m = j`. Substitute `hm` using the available equality. Simplify using `[hε, DD.epM, DD.mul_ep, DD.C_a, DD.C_ep, hc]`.
+
+Simplify using `[hε, DD.epM, DD.mul_ep, DD.C_a, DD.C_ep, Pi.single_apply, hm]`. Use function extensionality and compare the values at `m`. Simplify using `[hε, DD.epM, DD.mul_ep', DD.C_a, DD.C_ep']`. Simplify using `[hε, DD.epM, DD.mul_eta, DD.C_eta, DD.C_ep, DD.C_ep']`. Unfold `AdicCont at hf ⊢`.
+
+Introduce `N`. Use `(IsLocallyConstant.iff_exists_open _).2 fun γ => ?_` and prove the remaining obligations. Take `⟨U, hU, hγ, hUe⟩` from `(IsLocallyConstant.iff_exists_open _).1 (hf N) γ`. Use `⟨U, hU, hγ, fun γ' hγ' => ?_⟩` and prove the remaining obligations. Establish `h1` using `hUe γ' hγ'`.
+
+Rewrite `h1`, the goal using `[Ideal.Quotient.eq]`. Rewrite `h1` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨d, hd⟩` from `h1`. Use `beta_reduce at hd ⊢`. Rewrite using `[he _ (F γ') rfl, he _ (F γ) rfl, ← sub_mul, ← map_sub, hd, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+
+Conclude with `⟨algebraMap A (DD X g) d * ε, by rw [map_mul, map_pow, mul_assoc]⟩`.
+-/
 private theorem adicCont_epM_single_map_apply {Γ A X : Type} [TopologicalSpace Γ] [CommRing A] [CommRing X] [Algebra A X] {g n : ℕ}
     (t : A) (j : Fin g) (F : Γ → Matrix (Fin n) (Fin n) A) (a b : Fin n)
     (hf : AdicCont (Ideal.span {t}) fun γ => F γ a b) :
@@ -188,6 +266,13 @@ private theorem adicCont_epM_single_map_apply {Γ A X : Type} [TopologicalSpace 
   rw [he _ (F γ') rfl, he _ (F γ) rfl, ← sub_mul, ← map_sub, hd, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
   exact ⟨algebraMap A (DD X g) d * ε, by rw [map_mul, map_pow, mul_assoc]⟩
 
+/- English proof (translation)
+Establish `hz : BndF t (fun _ : Γ => (0 : X))` using `⟨0, fun _ => 0, adicCont_const_fun _ _, fun _ => by simp⟩`. Unfold `BndD`. Introduce `a b`. Use `⟨?_, fun m => ?_, fun m => ?_, ?_⟩` and prove the remaining obligations. Simplify `hz` using `[DD.epM]`.
+
+Distinguish the cases in `hm : m = j`. Substitute `hm` using the available equality. Use `⟨0, fun γ => F γ a b, hf a b, fun γ => ?_⟩` and prove the remaining obligations. Simplify using `[DD.epM]`. Simplify `hz` using `[DD.epM, Pi.single_apply, hm]`.
+
+Simplify `hz` using `[DD.epM]`. Simplify `hz` using `[DD.epM]`.
+-/
 private theorem bndD_epM_single_map_of_adicCont {Γ A X : Type} [TopologicalSpace Γ] [CommRing A] [CommRing X] [Algebra A X] {g n : ℕ}
     (t : A) (j : Fin g) (F : Γ → Matrix (Fin n) (Fin n) A)
     (hf : ∀ a b : Fin n, AdicCont (Ideal.span {t}) fun γ => F γ a b) :
@@ -206,10 +291,18 @@ private theorem bndD_epM_single_map_of_adicCont {Γ A X : Type} [TopologicalSpac
   · simpa [DD.epM] using hz
   · simpa [DD.epM] using hz
 
+/- English proof (translation)
+Rewrite using `[eq_sub_iff_add_eq, ← epM_pi_add, sub_add_cancel]`.
+-/
 private theorem epM_pi_sub {X : Type} [CommRing X] {g n : ℕ} (f f' : Fin g → Matrix (Fin n) (Fin n) X) :
     DD.epM (f - f') = DD.epM f - DD.epM f' := by
   rw [eq_sub_iff_add_eq, ← epM_pi_add, sub_add_cancel]
 
+/- English proof (translation)
+Use `DD.ext ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[DD.epM, DD.zero_a]`. Use function extensionality and compare the values at `m`. Distinguish the cases in `hm : m = j`. Substitute `hm` using the available equality.
+
+Simplify using `[DD.epM, DD.zero_ep, hM]`. Simplify using `[DD.epM, DD.zero_ep, Pi.single_apply, hm]`. Use function extensionality and compare the values at `m`. Simplify using `[DD.epM, DD.zero_ep']`. Simplify using `[DD.epM, DD.zero_eta]`.
+-/
 private theorem epM_single_map_apply_eq_zero_of_apply_eq_zero {A X : Type} [CommRing A] [CommRing X] [Algebra A X] {g n : ℕ} (j : Fin g)
     (M : Matrix (Fin n) (Fin n) A) (r c : Fin n) (hM : M r c = 0) :
     DD.epM (Pi.single j (M.map (algebraMap A X))) r c = 0 := by
@@ -224,6 +317,37 @@ private theorem epM_single_map_apply_eq_zero_of_apply_eq_zero {A X : Type} [Comm
     simp [DD.epM, DD.zero_ep']
   · simp [DD.epM, DD.zero_eta]
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x k i j`. Establish `hm` using `k.mem i`. Simplify using `only [SelZ, Set.mem_setOf_eq] at hm`. Take `⟨hOd, hcont, hcoc, hconj, hIu, hloc⟩` from `hm`. Establish `hpc : Continuous h.p₀` using `Continuous.codRestrict (h.cont.comp continuous_subtype_val) _`.
+
+Establish `hc' : ∀ a b : Fin n, AdicCont (Ideal.span {x.t}) fun γ : G.frame.G₀ => k.κ i (h.p₀ γ) a b`. Introduce `a b`. Establish `h1` using `hcont a b`. Rewrite `h1` using `[Algebra.algebraMap_self, RingHom.id_apply]`. Unfold `AdicCont at h1 ⊢`.
+
+Introduce `N`. Conclude with `(h1 N).comp_continuous hpc`. Use `⟨?_, bndD_epM_single_map_of_adicCont x.t j (fun γ => k.κ i (h.p₀ γ)) hc'⟩` and prove the remaining obligations. Simplify using `only [Sel1, SelZ, Set.mem_setOf_eq]`. Use `⟨fun γ => epM_single_map_mem_W1_of_mem_Od _ _ j _ (hOd _), fun a b => adicCont_epM_single_map_apply x.t j _ a b (hc' a b), fun g g' => ?_, fun g => ?_, fun u g hg => ?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Use `show DD.epM (Pi.single j ((k.κ i (h.p₀ (g * g'))).map (algebraMap x.A x.Fr))) = DD.epM (Pi.single j ((k.κ i (h.p₀ g)).map (algebraMap x.A x.Fr))) + k.ρ1 x.Fr (h.p₀ g) * DD.epM (Pi.single j ((k.κ i (h.p₀ g')).map (algebraMap x.A x.Fr))) * k.ρ1 x.Fr (h.p₀ g⁻¹)`. Rewrite using `[map_mul, hcoc, Matrix.map_add _ (map_add _), Pi.single_add, epM_pi_add]`. Use `congr 1`. Unfold `Kap.ρ1`. Rewrite using `[show x.ρX (DD x.Fr k.g) (h.p₀ g) = (x.ρX x.Fr (h.p₀ g)).map DD.C from rfl, show x.ρX (DD x.Fr k.g) (h.p₀ g⁻¹) = (x.ρX x.Fr (h.p₀ g⁻¹)).map DD.C from rfl, one_add_epM_mul_map_C_mul_epM_mul_one_add_epM_mul_map_C]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `m`. Distinguish the cases in `hmj : m = j`. Substitute `hmj` using the available equality. Simplify using `only [Pi.single_eq_same, map_inv, Matrix.map_mul]`.
+
+Both sides reduce to the same expression. Simplify using `[Pi.single_apply, hmj]`. Establish `hcj : h.p₀ (G.frame.conj g) = G0.frame.conj (h.p₀ g)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Glob.Hom.p₀, Glob.frame, GFrame.conj, h.c]`.
+
+Use `show DD.epM (Pi.single j ((k.κ i (h.p₀ (G.frame.conj g))).map (algebraMap x.A x.Fr))) = -(DD.epM (Pi.single j ((k.κ i (h.p₀ g)).map (algebraMap x.A x.Fr))))ᵀ`. Rewrite using `[hcj, hconj, ← epM_neg_transpose]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Distinguish the cases in `hmj : m = j`.
+
+Substitute `hmj` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same, Matrix.map_neg _ (map_neg _), Matrix.transpose_map]`. Simplify using `[Pi.single_apply, hmj]`. Establish `hg' : h.p₀ g ∈ Subgroup.map (G0.φu u) (L.Ju u)`. Take `⟨a, ha, rfl⟩` from `hg`.
+
+Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Glob.Hom.p₀, h.φu]`. Use `show DD.epM (Pi.single j ((k.κ i (h.p₀ g)).map (algebraMap x.A x.Fr))) = 0`. Rewrite using `[hIu u _ hg', Matrix.map_zero _ (map_zero _), Pi.single_zero, epM_pi_zero]`.
+
+Take `⟨Y, hY, hLY⟩` from `hloc v`. Use `⟨DD.epM (Pi.single j (Y.map (algebraMap x.A x.Fr))), epM_single_map_mem_W1_of_mem_Od _ _ j _ hY, ?_⟩` and prove the remaining obligations. Unfold `LocAt at hLY ⊢`. Introduce `gv`. Take `⟨h1, h2⟩` from `hLY gv`.
+
+Establish `hφ : h.p₀ ((G.frame.φ v) gv) = (G0.frame.φ v) gv`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Glob.Hom.p₀, Glob.frame, h.φ]`. Establish `key : k.wi1 x.Fr v * (DD.epM (Pi.single j ((k.κ i (h.p₀ ((G.frame.φ v) gv))).map (algebraMap x.A x.Fr))) - dY G.frame (fun g => k.ρ1 x.Fr (h.p₀ g)) (DD.epM (Pi.single j (Y.map (algebraMap x.A x.Fr)))) ((G.frame.φ v) gv)) * k.w1 x.Fr v = DD.epM (Pi.single j ((x.wiX x.A v * (k.κ i …`. Unfold `dY Kap.ρ1 Kap.wi1 Kap.w1`.
+
+Use `beta_reduce`. Rewrite using `[map_inv, hφ, show x.ρX (DD x.Fr k.g) ((G0.frame.φ v) gv) = (x.ρX x.Fr ((G0.frame.φ v) gv)).map DD.C from rfl, show x.ρX (DD x.Fr k.g) ((G0.frame.φ v) gv)⁻¹ = (x.ρX x.Fr ((G0.frame.φ v) gv)⁻¹).map DD.C from rfl, show x.wiX (DD x.Fr k.g) v = (x.wiX x.Fr v).map DD.C from rfl, show …`. Use `congr 1`. Use function extensionality and compare the values at `m`. Distinguish the cases in `hmj : m = j`.
+
+Substitute `hmj` using the available equality. Simplify using `only [Pi.sub_apply, Pi.single_eq_same, Matrix.map_mul, Matrix.map_sub _ (map_sub (algebraMap x.A x.Fr))]`. Both sides reduce to the same expression. Simplify using `[Pi.single_apply, hmj]`. Use `⟨fun r c hrc => ?_, fun hmu r => ?_⟩` and prove the remaining obligations.
+
+Use `show (k.wi1 x.Fr v * (DD.epM (Pi.single j ((k.κ i (h.p₀ ((G.frame.φ v) gv))).map (algebraMap x.A x.Fr))) - dY G.frame (fun g => k.ρ1 x.Fr (h.p₀ g)) (DD.epM (Pi.single j (Y.map (algebraMap x.A x.Fr)))) ((G.frame.φ v) gv)) * k.w1 x.Fr v) r c = 0`. Rewrite using `[key]`. Conclude with `epM_single_map_apply_eq_zero_of_apply_eq_zero j _ r c (h1 r c hrc)`. Use `show (k.wi1 x.Fr v * (DD.epM (Pi.single j ((k.κ i (h.p₀ ((G.frame.φ v) gv))).map (algebraMap x.A x.Fr))) - dY G.frame (fun g => k.ρ1 x.Fr (h.p₀ g)) (DD.epM (Pi.single j (Y.map (algebraMap x.A x.Fr)))) ((G.frame.φ v) gv)) * k.w1 x.Fr v) r r = 0`. Rewrite using `[key]`.
+
+Conclude with `epM_single_map_apply_eq_zero_of_apply_eq_zero j _ r r (h2 hmu r)`.
+-/
 theorem UpperTheory.V.Pa.kapSel1 :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n), ∀ (k : Kap x), ∀ i j : Fin k.g, (fun γ => DD.epM (Pi.single j (kapF h k i γ))) ∈ Sel1 h x.Fr k ∧ BndD x.t fun γ => DD.epM (Pi.single j (kapF h k i γ)) := by
   intro l _ L G G0 h n x k i j

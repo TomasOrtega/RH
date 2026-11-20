@@ -15,6 +15,11 @@ namespace GlobalTheory.FockConjNeg
 variable {D : D7}
 
 open GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger in
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `show deriv (fun t : ℝ => heisO ψ S T (lineAt θ τ z t) (cj id g) x) 0 = starRingEnd ℂ (deriv (fun t : ℝ => heisO ψ (GlobalTheory.Grid.neg S) T (lineAt θ τ z t) g x) 0)`. Establish `e : (fun t : ℝ => heisO ψ S T (lineAt θ τ z t) (cj id g) x) = fun t => star (heisO ψ (GlobalTheory.Grid.neg S) T (lineAt θ τ z t) g x)`. Use function extensionality and compare the values at `t`. Rewrite using `[GlobalTheory.CjNeg.heis_negS' hψ]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, deriv.star]`. Both sides reduce to the same expression.
+-/
 theorem dRho_cj_neg {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (θ : InfFam D) (S T : HSp D)
     (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (g : WO (GlobalTheory.Grid.neg S) T → ℂ) :
     dRho (heisO ψ S T) θ τ z (cj id g) = cj id (dRho (heisO ψ (GlobalTheory.Grid.neg S) T) θ τ z g) := by
@@ -29,11 +34,19 @@ theorem dRho_cj_neg {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
   rw [e, deriv.star]
   rfl
 
+/- English proof (translation)
+Simplify using `[cplxO, Matrix.mul_neg, smul_neg]`.
+-/
 theorem cplxO_neg_left {m n : ℕ} (sS : Matrix (Fin n) (Fin n) ℂ) (sT : Matrix (Fin m) (Fin m) ℂ)
     (u : Matrix (Fin m) (Fin n) ℂ) : cplxO (-sS) sT u = -cplxO sS sT u := by
   simp [cplxO, Matrix.mul_neg, smul_neg]
 
 open GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger in
+/- English proof (translation)
+Establish `hn` using `GlobalTheory.FockAdjoint.dRho_neg' hψ hθ hg τ (cplxO sS sT u)`. Unfold `aPlus crea`. Rewrite using `[cplxO_neg_left, hn, dRho_cj_neg hψ, dRho_cj_neg hψ]`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, id_eq, Pi.smul_apply, Pi.sub_apply, Pi.neg_apply, smul_eq_mul, map_mul, map_sub, map_neg, map_inv₀, Complex.conj_ofReal, Complex.conj_I]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aPlus_cj_neg {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {S T : HSp D} {g : WO (GlobalTheory.Grid.neg S) T → ℂ} (hg : IsThetaFunO ψ (GlobalTheory.Grid.neg S) T g) (τ : D.what₂.Tau)
     (sS : Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -54,6 +67,9 @@ namespace GlobalTheory.FockConjNeg
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hc : (frSgn true (Fr.ofModel S.M)).cart = GlobalTheory.Grid.cartS true S`. Use function extensionality and compare the values at `fun τ => cart_frSgn true (Fr.ofModel S.M) τ`. Unfold `ptF`. Rewrite using `[hc]`. Both sides reduce to the same expression.
+-/
 theorem fock_true_eq_ptF (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : GlobalTheory.Grid.Node D)
     (f : WO S.V T.V → ℂ) (P : GlobalTheory.Grid.Pol S T) :
     GlobalTheory.Grid.fock ψ θ true S T f P = ptF ψ θ (frSgn true (Fr.ofModel S.M)) (Fr.ofModel T.M) f P := by
@@ -64,6 +80,13 @@ theorem fock_true_eq_ptF (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T :
   rfl
 
 open GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger in
+/- English proof (translation)
+Establish `hcf : IsThetaFunO ψ V W (cj id f)` using `GlobalTheory.CjNeg.theta_negS' hψ hf`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.map_C, ← mul_one (MvPolynomial.C a), ← mul_one (MvPolynomial.C (starRingEnd ℂ a)), GlobalTheory.FockAdjoint.ptF_C, GlobalTheory.FockAdjoint.ptF_one, GlobalTheory.FockAdjoint.ptF_C, GlobalTheory.FockAdjoint.ptF_one]`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, GlobalTheory.FockAdjoint.ptF_add, GlobalTheory.FockAdjoint.ptF_add, ← hp, ← hq]`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`.
+
+Consider the case `mul_X p v hp`. Rewrite using `[map_mul, MvPolynomial.map_X, mul_comm, GlobalTheory.FockAdjoint.ptF_X_mul hψ hθ (frSgn true A) B hf, mul_comm, GlobalTheory.FockAdjoint.ptF_X_mul hψ hθ A B hcf, ← hp, cart_frSgn]`. Conclude with `aPlus_cj_neg hψ hθ (GlobalTheory.FockAdjoint.ptF_theta hψ hθ (frSgn true A) B hf p) v.1 _ _ _`.
+-/
 theorem cj_ptF_neg {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {V W : HSp D} (A : Fr V) (B : Fr W) {f : WO V W → ℂ} (hf : IsThetaFunO ψ (GlobalTheory.Grid.neg V) W f)
     (P : PolF D W.rank V.rank) :
@@ -84,6 +107,9 @@ theorem cj_ptF_neg {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStd
       GlobalTheory.FockAdjoint.ptF_X_mul hψ hθ A B hcf, ← hp, cart_frSgn]
     exact aPlus_cj_neg hψ hθ (GlobalTheory.FockAdjoint.ptF_theta hψ hθ (frSgn true A) B hf p) v.1 _ _ _
 
+/- English proof (translation)
+Introduce `D S T ψ θ f hψ hθ hf P`. Rewrite using `[fock_true_eq_ptF, cj_ptF_neg hψ hθ _ _ hf]`. Both sides reduce to the same expression.
+-/
 theorem fock_neg_cj : ∀ {D : D7} (S T : GlobalTheory.Grid.Node D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (f : WO S.V T.V → ℂ), IsStdChar D ψ (-1) → IsInfFam θ → IsThetaFunO ψ (GlobalTheory.Grid.neg S.V) T.V f → ∀ P : GlobalTheory.Grid.Pol S T, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (GlobalTheory.Grid.fock ψ θ true S T f P) = GlobalTheory.Chain.ptOf ψ θ S.M T.M (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id f) (MvPolynomial.map (starRingEnd ℂ) P) := by
   intro D S T ψ θ f hψ hθ hf P
   rw [fock_true_eq_ptF, cj_ptF_neg hψ hθ _ _ hf]

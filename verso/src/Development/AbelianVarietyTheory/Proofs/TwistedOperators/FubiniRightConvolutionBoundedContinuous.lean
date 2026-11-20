@@ -3,6 +3,21 @@ open MeasureTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by simpa [Measure.restrict_apply_univ] using h𝓕⟩`. Use `set F : G → H → ℂ := fun x h => ψ x * (α h * φ (x * (h : G))) with hFdef`. Establish `hcont : Continuous (fun p : G × H => ψ p.1 * φ (p.1 * (p.2 : G)))` using `(hψ.comp continuous_fst).mul (hφ.comp (continuous_fst.mul (continuous_subtype_val.comp continuous_snd)))`. Establish `hmeas : AEStronglyMeasurable (Function.uncurry F) ((μ.restrict 𝓕).prod m)`. Establish `h1 : AEStronglyMeasurable (fun p : G × H => ψ p.1 * φ (p.1 * (p.2 : G))) ((μ.restrict 𝓕).prod m)` using `hcont.aestronglyMeasurable`.
+
+Establish `h2 : AEStronglyMeasurable (fun p : G × H => α p.2) ((μ.restrict 𝓕).prod m)` using `hα.aestronglyMeasurable.comp_snd`. Use `(h1.mul h2).congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [Function.uncurry, hFdef, Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbd : Integrable (fun p : G × H => (1 : ℝ) * ((A * B) * ‖α p.2‖)) ((μ.restrict 𝓕).prod m)` using `(integrable_const (1 : ℝ)).mul_prod (hα.norm.const_mul (A * B))`.
+
+Establish `hint : Integrable (Function.uncurry F) ((μ.restrict 𝓕).prod m)`. Use `hbd.mono' hmeas (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [Function.uncurry, hFdef, norm_mul, one_mul]`. Establish `hA0 : 0 ≤ A` using `(norm_nonneg _).trans (hA 1)`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hA _`. Conclude with `hB _`. Use `_ = A * B * ‖α p.2‖ := by ring`. Establish `hL : ∀ x, ∫ h, F x h ∂m = ψ x * ∫ h, α h * φ (x * (h : G)) ∂m` using `fun x => integral_const_mul _ _`. Establish `hR : ∀ h : H, ∫ x in 𝓕, F x h ∂μ = α h * ∫ x in 𝓕, ψ x * φ (x * (h : G)) ∂μ`.
+
+Introduce `h`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [hFdef]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `hint.integral_prod_left` as an intermediate fact. Conclude with `(by simpa [Function.uncurry, hL] using this : Integrable _ (μ.restrict 𝓕))`. Use `hint.integral_prod_right` as an intermediate fact.
+
+Simplify `this` using `[Function.uncurry, hR]`. Use `integral_integral_swap hint` as an intermediate fact. Simplify `this` using `[hL, hR]`.
+-/
 theorem fubini_right_convolution_bounded_continuous
     {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] {H : Subgroup G} (μ : Measure G) (𝓕 : Set G)

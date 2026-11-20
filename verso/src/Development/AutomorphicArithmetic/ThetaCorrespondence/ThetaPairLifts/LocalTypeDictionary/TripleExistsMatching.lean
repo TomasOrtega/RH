@@ -16,6 +16,11 @@ open scoped TensorProduct ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm
 namespace GlobalTheory.TripleRead
+/- English proof (translation)
+Introduce `hH hP _ hLM D ψ θ hψ hθ W W₁ X A A₁ B α β hT`. Take `⟨ωA, ωB, hA, hB⟩` from `_root_.GlobalTheory.T.weilRepresentation_square_comm hP D ψ hψ W W₁ X α β hT`. Take `⟨e, Bs, Γ, Xc, om, om', h, hTr, htA, htB⟩` from `_root_.GlobalTheory.T.exists_darboux_coordinates_triple hP D ψ hψ W W₁ X A A₁ B α β hT ωA ωB hA hB`. Take `⟨R, Rf, hM⟩` from `hLM D.host.F D.host.E D.sp.cm.sig Bs W.rank W₁.rank Γ Xc om om' hTr`. Take `⟨Pi, rf, rl, p, p', hm⟩` from `_root_.GlobalTheory.T.exists_matching_triple_for_theta_lift hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h htA htB R Rf hM`.
+
+Conclude with `⟨ωA, ωB, Pi, rf, rl, p, p', hm⟩`.
+-/
 theorem triple_exists_matching : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
@@ -40,6 +45,9 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.TripleRead.triple_exists_matching | exact _root_.GlobalTheory.TripleRead.triple_exists_matching | (intros; apply _root_.GlobalTheory.TripleRead.triple_exists_matching <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twist_triple_matches : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

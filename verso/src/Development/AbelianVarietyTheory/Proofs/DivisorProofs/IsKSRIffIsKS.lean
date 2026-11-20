@@ -32,9 +32,25 @@ def IsKSR (Φ : Finset (E →+* ℂ)) {S : Type} [CommRing S] [Algebra c.F S] (y
     ∀ (τ : Φ) (a : Fin (Dw.mult (conjEmb τ.1))), ∃ w, IsLieComb (fun b => M ⟨τ, a, b⟩) (ub τ.1) w ∧
       IsKSRow h ψ hb ⟨conjEmb τ.1, a⟩ w
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isKSR_iff_isKS {Φ : Finset (E →+* ℂ)} {K : Type} [Field K] [Algebra c.F K] {y : FrPt Xo c K}
     {x' : Sp (DualNumber K) ⟶ Xo.X} {M : HIx Dw Φ → K} : IsKSR Φ y x' M ↔ IsKS Φ y x' M := Iff.rfl
 
+/- English proof (translation)
+Take `⟨A, _, A', _, π, π', i, hi, b, ub, hb, hπ, hπ', e, hpol, hu, hl, hM⟩` from `hM`. Use `letI : Algebra S S' := ψ.toRingHom.toAlgebra`. Take `⟨B, _, φ, hφ⟩` from `exists_isGrpPullback A (spMap (algebraMap S S'))`. Take `⟨B', _, φ', hφ'⟩` from `exists_isGrpPullback A' (spMap (dualMap (algebraMap S S')))`. Establish `e₀ : spMap (algebraMap S S') ≫ epsRed S = epsRed S' ≫ spMap (dualMap (algebraMap S S'))`.
+
+Rewrite using `[← Cris.spMap_comp, ← Cris.spMap_comp]`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `w : (φ ≫ i) ≫ A'.hom = (B.hom ≫ epsRed S') ≫ spMap (dualMap (algebraMap S S'))`. Rewrite using `[(hφ.comp hi).1.w, e₀, Category.assoc]`.
+
+Establish `sq : hφ'.1.lift _ _ w ≫ φ' = φ ≫ i` using `hφ'.1.lift_fst _ _ _`. Establish `hj : IsGrpPullback B B' (epsRed S') (hφ'.1.lift _ _ w)` using `hφ'.cancel ((hφ.comp hi).congr e₀ sq.symm) (hφ'.1.lift_snd _ _ _)`. Establish `hU` using `ObjDim.isAbelianScheme Xo.univ`. Establish `hg` using `ObjDim.smoothOfRelativeDimension Xo.univ`. Establish `hA` using `PolPull.isAbelianScheme_of_isGrpPullback hU hπ`.
+
+Establish `gA` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ.1 hg`. Establish `hA'` using `PolPull.isAbelianScheme_of_isGrpPullback hU hπ'`. Establish `gA'` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ'.1 hg`. Take `⟨bc, hF⟩` from `P.2.2.1 S A _ hA gA S' B φ hφ`. Establish `hL` using `(P.2.1 S' B _ (PolPull.isAbelianScheme_of_isGrpPullback hA hφ) ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hφ.1 gA)).1`.
+
+Take `⟨b', hpol', eb⟩` from `hpol.pull_comp (AbelianDeRham.bcMor hφ) (UnivPol.pol Xo).isLB`. Use `choose tv htv using ArcQ.NormalForm.exists_baseChange hφ`. Use `choose th hth using bc.exists`. Use `⟨B, _, B', _, φ ≫ π, φ' ≫ π', _, hj, b', fun σ k => tv (ub σ k), fun k => th (hb k), (hφ.comp hπ).congr h.1.symm rfl, hφ'.comp hπ', by rw [← Category.assoc, sq, Category.assoc, e], hpol', fun σ k => ?_, fun σ k => (hl σ k).baseChange (hφ := hφ) hF hL (hth _) (htv _), fun τ a => ? …` and prove the remaining obligations. Rewrite using `[← Category.assoc, htv, Category.assoc, hu, h.2.1]`.
+
+Take `⟨w, hw, f, hf, hd, hv⟩` from `hM τ a`. Use `⟨tv w, ArcQ.NormalForm.isLieComb_baseChange hφ (fun _ => htv _) (htv w) hw, th f, mem_Fil_of_corr (hφ := hφ) hF (hth f) hf, fun k => ?_, hv.baseChange (hφ := hφ) P hA' gA' hj hφ' sq (hth f) (htv w)⟩` and prove the remaining obligations. Rewrite using `[eb _ _ _ _ (hth f) (hth _), hd]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem IsKSR.baseChange (P : AbelianDeRham) {Φ : Finset (E →+* ℂ)} {S S' : Type} [CommRing S] [Algebra c.F S]
     [CommRing S'] [Algebra c.F S'] {ψ : S →ₐ[c.F] S'} {y : FrPt Xo c S} {y' : FrPt Xo c S'} (h : FrMap ψ y y')
     {x : Sp (DualNumber S) ⟶ Xo.X} {M : HIx Dw Φ → S}

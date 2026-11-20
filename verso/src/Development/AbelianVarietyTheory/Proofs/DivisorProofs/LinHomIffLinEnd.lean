@@ -66,6 +66,9 @@ def LinHom (U₁ : UnifPre I D₁ A₁ G₁) (U₂ : UnifPre I D₂ A₂ G₂) (
     ∀ e, ∃ t : splitTorus (Sp (R ⧸ I ^ (e + 1))) D₁.toPre.X ⟶ splitTorus (Sp (R ⧸ I ^ (e + 1))) D₂.toPre.X,
       TorusHomOf h' t ∧ (U₁.gt e).i ≫ (Over.pullback (thick R I e)).map g = t ≫ (U₂.gt e).i
 
+/- English proof (translation)
+Introduce `χ` and use `by rw [← ht (k χ), ← hs χ] refine unit_ext fun z _ => ?_ refine ((gm_res (𝟙 _) z (V := ⊤) _ trivial _).trans (gm_pull (𝟙 _) _ z ⊤ trivial _)).trans ?_ refine Eq.symm (((gm_res (𝟙 _) z (V := ⊤) _ trivial _).trans (gm_pull (𝟙 _) _ z ⊤ trivial _)).trans ?_) refine ((gm_res _ z (V := …`.
+-/
 theorem TorusHomOf.comp {S : Scheme.{0}} {X₁ X₂ X₃ : Type} [AddCommGroup X₁] [AddCommGroup X₂] [AddCommGroup X₃]
     {h : X₂ → X₁} {k : X₃ → X₂} {t : splitTorus S X₁ ⟶ splitTorus S X₂} {s : splitTorus S X₂ ⟶ splitTorus S X₃}
     (ht : TorusHomOf h t) (hs : TorusHomOf k s) : TorusHomOf (fun χ => h (k χ)) (t ≫ s) := fun χ => by
@@ -76,13 +79,24 @@ theorem TorusHomOf.comp {S : Scheme.{0}} {X₁ X₂ X₃ : Type} [AddCommGroup X
   refine ((gm_res _ z (V := ⊤) _ trivial _).trans (gm_pull _ _ z ⊤ trivial _)).trans ?_
   rfl
 
+/- English proof (translation)
+Introduce `χ` and use `unit_ext fun z _ => ((gm_res (𝟙 _) z (V := ⊤) _ trivial _).trans (gm_pull (𝟙 _) _ z ⊤ trivial _)).trans rfl`.
+-/
 theorem TorusHomOf.id {S : Scheme.{0}} (X : Type) [AddCommGroup X] : TorusHomOf (fun χ : X => χ) (𝟙 (splitTorus S X)) :=
   fun χ => unit_ext fun z _ =>
     ((gm_res (𝟙 _) z (V := ⊤) _ trivial _).trans (gm_pull (𝟙 _) _ z ⊤ trivial _)).trans rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, fun e => by simp, fun e => ⟨𝟙 _, TorusHomOf.id _, by simp⟩⟩`.
+-/
 theorem LinHom.id (U : UnifPre I D₁ A₁ G₁) : LinHom U U (𝟙 _) (AddMonoidHom.id _) (𝟙 G₁) :=
   ⟨inferInstance, fun e => by simp, fun e => ⟨𝟙 _, TorusHomOf.id _, by simp⟩⟩
 
+/- English proof (translation)
+Take `⟨g₁, g₂, g₃⟩` from `hg`. Take `⟨f₁, f₂, f₃⟩` from `hf`. Use `⟨inferInstance, fun e => ?_, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[Functor.map_comp, Functor.map_comp, Category.assoc, f₂, ← Category.assoc, g₂, Category.assoc]`. Take `⟨t, ht, hi⟩` from `g₃ e`.
+
+Take `⟨s, hs, hj⟩` from `f₃ e`. Use `⟨t ≫ s, ht.comp hs, ?_⟩` and prove the remaining obligations. Rewrite using `[Functor.map_comp, ← Category.assoc, hi, Category.assoc, hj, Category.assoc]`.
+-/
 theorem LinHom.comp {U₁ : UnifPre I D₁ A₁ G₁} {U₂ : UnifPre I D₂ A₂ G₂} {U₃ : UnifPre I D₃ A₃ G₃} {a h' g b k' f}
     (hg : LinHom U₁ U₂ a h' g) (hf : LinHom U₂ U₃ b k' f) : LinHom U₁ U₃ (a ≫ b) (h'.comp k') (g ≫ f) := by
   obtain ⟨g₁, g₂, g₃⟩ := hg
@@ -94,6 +108,9 @@ theorem LinHom.comp {U₁ : UnifPre I D₁ A₁ G₁} {U₂ : UnifPre I D₂ A�
     refine ⟨t ≫ s, ht.comp hs, ?_⟩
     rw [Functor.map_comp, ← Category.assoc, hi, Category.assoc, hj, Category.assoc]
 
+/- English proof (translation)
+Use `⟨fun ⟨h₁, h₂, h₃⟩ => ⟨h₁, fun e => inferInstance, fun e => ?_, h₂, h₃⟩, fun ⟨h₁, _, _, h₂, h₃⟩ => ⟨h₁, h₂, h₃⟩⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [thickMap, Over.pullback_map_left, Category.assoc, pullback.map] erw [pullback.lift_fst, pullback.lift_fst, pullback.lift_fst_assoc, Category.comp_id, pullback.lift_fst]`. Simplify using `only [thickMap, Over.pullback_map_left, Category.assoc, pullback.map] erw [pullback.lift_snd, pullback.lift_snd, pullback.lift_snd_assoc]`.
+-/
 theorem linHom_iff_linEnd {U : UnifPre I D₁ A₁ G₁} {a h' g} : LinHom U U a h' g ↔ LinEnd U a h' g := by
   refine ⟨fun ⟨h₁, h₂, h₃⟩ => ⟨h₁, fun e => inferInstance, fun e => ?_, h₂, h₃⟩, fun ⟨h₁, _, _, h₂, h₃⟩ => ⟨h₁, h₂, h₃⟩⟩
   apply pullback.hom_ext

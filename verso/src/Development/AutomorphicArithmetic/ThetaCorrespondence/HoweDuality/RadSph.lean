@@ -9,6 +9,37 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchedMapsGauss
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open UpperTheory.Lit.HoweDuality GlobalTheory.HoweGlobalPair
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M ψ om v ω ρ hL hS K hrel hst hne`. Establish `one_mem : (1 : UA σ X.J) ∈ UAt σ X (evFin F v)` using `by show At _ (mat 1 - 1)`. Establish `h1 : mat (1 : UA σ X.J) = 1` using `Matrix.ext fun i => congrFun rfl`. Rewrite using `[h1, sub_self]`. Introduce `_ _`.
+
+Simplify using the standard rewrite rules. Establish `aug_le : augAt om v ≤ SB (Fin n × Fin d → Fv F v)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `z ⟨g, -, φ, hφ, φ₁, hφ₁, -, rfl⟩`. Conclude with `Submodule.sub_mem _ hφ₁ hφ`.
+
+Establish `hG : ∀ h ∈ UAt σ W (evFin F v), ∃ g ∈ opFin om v, ∀ x : ↥(SB (Fin n × Fin d → Fv F v)), (g x : (Fin n × Fin d → Fv F v) → ℂ) = ω (1, h) x`. Introduce `h hh`. Use `⟨{ toFun := fun x => ⟨ω (1, h) x, hL.pres 1 one_mem h hh x x.2⟩ map_add' := fun x y => by ext1; simp map_smul' := fun c x => by ext1; simp }, ⟨h, hh, fun φ => ?_⟩, fun x => rfl⟩` and prove the remaining obligations. Conclude with `(hL.acts 1 one_mem h hh φ φ.2 _).mpr rfl`. Use `choose g hgOp hgapp using hG`.
+
+Take `⟨s, hs⟩` from `hS ω ρ hL`. Set `s' : ↥(SB (Fin n × Fin d → Fv F v))` to `⟨s, hs.mem⟩`. Establish `hgen : Gen (opFin om v) (relFin om v) s'`. Introduce `P hP hPs hsP`. Establish `hle : augAt om v ⊔ Submodule.span ℂ {z | ∃ h ∈ UAt σ W (evFin F v), z = ω (1, h) s} ≤ P.map (SB (Fin n × Fin d → Fv F v)).subtype`.
+
+Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `z hz`. Conclude with `⟨⟨z, aug_le hz⟩, hP hz, rfl⟩`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `z ⟨h, hh, rfl⟩`.
+
+Conclude with `⟨g h hh s', hPs _ (hgOp h hh) _ hsP, hgapp h hh s'⟩`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨y, hy, hyx⟩` from `hle (hs.gen x x.2)`. Establish `hyx' : y = x` using `Subtype.ext hyx`.
+
+Rewrite using `[← hyx']`. Conclude with `hy`. Use `⟨s', hgen, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Take `⟨m, kk, w, c, hkw, hsum⟩` from `hs.line k k.2`.
+
+Set `e : Module.End ℂ ↥(SB (Fin n × Fin d → Fv F v))` to `((m + 1 : ℂ))⁻¹ • ∑ i, w i • g (kk i) (hkw i).1`. Establish `he_app : ∀ x : ↥(SB (Fin n × Fin d → Fv F v)), (e x : (Fin n × Fin d → Fv F v) → ℂ) = ((m + 1 : ℂ))⁻¹ • ∑ i, w i • ω (1, kk i) x`. Introduce `x`. Simplify using `[e, hgapp]`. Establish `hm : (m + 1 : ℂ) ≠ 0`.
+
+Use `norm_cast`. Establish `hes : e s' = s'` using `by ext1`. Rewrite using `[he_app]`. Establish `hsum' : ∑ i : Fin (m + 1), w i • ω (1, kk i) s = ∑ _i : Fin (m + 1), s` using `Finset.sum_congr rfl (fun i _ => (hkw i).2)`. Use `show ((m + 1 : ℂ))⁻¹ • ∑ i, w i • ω (1, kk i) s = s`.
+
+Rewrite using `[hsum', Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Use `push_cast`. Rewrite using `[inv_mul_cancel₀ hm, one_smul]`. Establish `heK : e k ∈ K` using `by show (((m + 1 : ℂ))⁻¹ • ∑ i, w i • g (kk i) (hkw i).1) k ∈ K`. Rewrite using `[LinearMap.smul_apply, LinearMap.sum_apply]`.
+
+Use `K.smul_mem _ (K.sum_mem fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`. Conclude with `K.smul_mem _ (hst _ (hgOp _ _) k hk)`. Establish `hrelv : e k - (((m + 1 : ℂ))⁻¹ * c) • s' ∈ relFin om v` using `by show ((e k - (((m + 1 : ℂ))⁻¹ * c) • s' : ↥(SB (Fin n × Fin d → Fv F v))) : (Fin n × Fin d → Fv F v) → ℂ) ∈ augAt om v`. Rewrite using `[Submodule.coe_sub, Submodule.coe_smul, he_app]`.
+
+Establish `hh` using `(augAt om v).smul_mem ((m + 1 : ℂ))⁻¹ hsum`. Rewrite `hh` using `[smul_sub, smul_smul]`. Conclude with `hh`. Distinguish the cases in `hc : ((m + 1 : ℂ))⁻¹ * c = 0`. Use `⟨e, ?_, hes, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Subalgebra.smul_mem _ (Subalgebra.sum_mem _ fun i _ => Subalgebra.smul_mem _ (Algebra.subset_adjoin (hgOp _ _)) _) _`. Rewrite `hrelv` using `[hc, zero_smul, sub_zero]`. Conclude with `hrelv`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises.
+
+Apply `hgen K hrel hst` to reduce the goal to its premises. Establish `h1 : (((m + 1 : ℂ))⁻¹ * c) • s' ∈ K`. Establish `h2` using `K.sub_mem heK (hrel hrelv)`. Rewrite `h2` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `h3` using `K.smul_mem (((m + 1 : ℂ))⁻¹ * c)⁻¹ h1`.
+
+Rewrite `h3` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Lit.HoweDuality.radSph :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {ψ : AddChar (AF F) ℂ} {om : Rep σ X W} {v : Pl F} {ω : UA σ X.J × UA σ W.J → Module.End ℂ (PositivityTheory.ThK.Fn F n d v)} {ρ : Matrix (Fin n) (Fin d) (AE F E) → Module.End ℂ (PositivityTheory.ThK.Fn F n d v)}, PositivityTheory.ThK.IsLocRep M ψ om v ω ρ → PositivityTheory.Sph.SphAt M ψ om v → ∀ K : Submodule ℂ ↥(SB (Fin n × Fin d → Fv F v)), relFin om v ≤ K → Stable (opFin om v) K → K ≠ ⊤ → Rad (opFin om v) (relFin om v) K := by
   intro F E _ _ _ _ _ σ n d X W M ψ om v ω ρ hL hS K hrel hst hne

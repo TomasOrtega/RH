@@ -21,6 +21,9 @@ def fsHerm (a : K → ℤ) : HermLine ι where
   pos _ hz := refNorm_pos a hz
   smul c z _ := refNorm_smul a c z
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fsHerm_h (a : K → ℤ) (z : (Σ k, ι k) → ℂ) : (fsHerm ι a).h z = refNorm a z := rfl
 
 end FS

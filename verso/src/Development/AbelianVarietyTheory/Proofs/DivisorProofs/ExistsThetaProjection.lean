@@ -4,6 +4,9 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 
 namespace GlobalTheory.DetInv
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul]`. Use `congr 1`. Use `hf a 1` as an intermediate fact. Simplify `this` using `[Algebra.TensorProduct.algebraMap_apply]`.
+-/
 theorem theta_map_smul_fontaine {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] {Λ : Type} [CommRing Λ] [Algebra ℤ_[p] Λ]
     (σ : Λ →+* O) (f : RL p O Λ →+* O) (hf : IsTheta σ f) (a : Ainf p O) (r : RL p O Λ) :
@@ -13,6 +16,15 @@ theorem theta_map_smul_fontaine {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O]
   have := hf a 1
   simpa [Algebra.TensorProduct.algebraMap_apply] using this
 
+/- English proof (translation)
+Introduce `hf`. Set `M : Matrix (Fin N) (Fin h) C` to `fun i j => algebraMap O C (f (e.symm (Pi.single j 1) i))`. Use `⟨Matrix.mulVecLin M, ?_⟩` and prove the remaining obligations. Introduce `w`. Establish `hw : w = ∑ j, e w j • e.symm (Pi.single j 1)`.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Simplify using `only [map_smul, LinearEquiv.apply_symm_apply]`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Use function extensionality and compare the values at `i`. Use `conv_rhs => rw [hw]`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, M, Finset.sum_apply, Pi.smul_apply, map_sum, theta_map_smul_fontaine σ f hf, map_mul]`. Use `show (M *ᵥ _) i = _`. Simplify using `only [Matrix.mulVec, dotProduct, M]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+-/
 theorem proj_exists (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (C : Type) [Field C] [Algebra O C] (Λ : Type)
     [CommRing Λ] [Algebra ℤ_[p] Λ] (N h : ℕ) (σ : Λ →+* O) (f : RL p O Λ →+* O)

@@ -10,6 +10,11 @@ namespace Formalism.MainNotions.G.CmpJ
 
 open Formalism.BasicNotions Formalism.MainNotions.G Formalism.L2.G Formalism.L2.G.Cmp Formalism.L2.Forms NumberField
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.locW at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span (h y hy)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add y z _ _ h1 h2 => rw [map_add]`. Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a y _ h1`. Rewrite using `[Subring.smul_def, map_smul, ← Subring.smul_def]`. Conclude with `Submodule.smul_mem _ _ h1`.
+-/
 theorem locW_map {LL : Type} [Field LL] [NumberField LL] (Pl : Rows.Places LL) (w : Pl.Pl) {V V' : Type} [AddCommGroup V] [Module LL V]
     [Module (𝓞 LL) V] [AddCommGroup V'] [Module LL V'] [Module (𝓞 LL) V'] (ε : V →ₗ[LL] V') (L : Submodule (𝓞 LL) V)
     (L' : Submodule (𝓞 LL) V') (h : ∀ x, x ∈ L → ε x ∈ L') (x : V) (hx : x ∈ Formalism.BasicNotions.locW Pl w L) :
@@ -23,6 +28,11 @@ theorem locW_map {LL : Type} [Field LL] [NumberField LL] (Pl : Rows.Places LL) (
     rw [Subring.smul_def, map_smul, ← Subring.smul_def]
     exact Submodule.smul_mem _ _ h1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `locW_map Pl w ε.toLinearMap L L' (fun x hx => (h x).1 hx) _ hy` as an intermediate fact. Rewrite `this` using `[LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `hy`.
+
+Conclude with `locW_map Pl w ε.symm.toLinearMap L' L (fun x hx => (h _).2 (by rw [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]; exact hx)) _ hy`.
+-/
 theorem locW_equiv {LL : Type} [Field LL] [NumberField LL] (Pl : Rows.Places LL) (w : Pl.Pl) {V V' : Type} [AddCommGroup V] [Module LL V]
     [Module (𝓞 LL) V] [AddCommGroup V'] [Module LL V'] [Module (𝓞 LL) V'] (ε : V ≃ₗ[LL] V') (L : Submodule (𝓞 LL) V)
     (L' : Submodule (𝓞 LL) V') (h : ∀ x, x ∈ L ↔ ε x ∈ L') (y : V') :
@@ -100,6 +110,9 @@ variable {c}
 def plc (Gt : GatTies D) (u : D.what₂.Word) (w : D.what₂.places.Pl) (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
     Fin (D.gat u w h).P.nV := ⟨0, Formalism.MainNotions.G.Inhab.gatHasPlaces_of_ties Gt u w h⟩
 
+/- English proof (translation)
+The claim follows from `StepIn.valIntJ_of (S := (I.at' j hj).st) (c.embW u w h) w (H.twUnit j hj) (H.valIntN j hj)`.
+-/
 theorem CmpJHyp.valInt {I : CmpJIn Tw u μ w h Lv} (H : CmpJHyp c I) (j : ℕ) (hj : j + 1 ≤ D.R.m) :
     (I.at' j hj).st.ValIntJ (c.embW u w h) w :=
   StepIn.valIntJ_of (S := (I.at' j hj).st) (c.embW u w h) w (H.twUnit j hj) (H.valIntN j hj)
@@ -112,6 +125,9 @@ def cmpSJ {I : CmpJIn Tw u μ w h Lv} (H : CmpJHyp c I) (hS : BlockRationalityFi
     (StepIn.cmpJL (S := (I.at' j hj).st) (c.embW u w h) (H.core j hj) hS).comp (I.at' j hj).eps.symm.toLinearMap
   else 0
 
+/- English proof (translation)
+Unfold `cmpSJ`. Rewrite using `[dif_pos hj]`. Both sides reduce to the same expression.
+-/
 theorem cmpSJ_apply {I : CmpJIn Tw u μ w h Lv} (H : CmpJHyp c I) (hS : BlockRationalityField) (j : ℕ) (hj : j + 1 ≤ D.R.m)
     (x : ((Tw.fm u μ).lat (j + 1)).V) :
     cmpSJ H hS j x = (I.at' j hj).st.cmpJ (c.embW u w h) ((I.at' j hj).eps.symm x) := by
@@ -119,6 +135,9 @@ theorem cmpSJ_apply {I : CmpJIn Tw u μ w h Lv} (H : CmpJHyp c I) (hS : BlockRat
   rw [dif_pos hj]
   rfl
 
+/- English proof (translation)
+Introduce `j hj`. Establish `: IsFractionRing (gatJ Lv (j + 1)).O (gatJ Lv (j + 1)).Kf` using `((D.gat u w h).P.setting (plc Gt u w h)).frac_O`. Conclude with `StepIn.desc (S := (I.at' j hj).st) (c.embW u w h) (H.core j hj) (H.iwF j hj) (D.plEq w) (fun x => (D.val_nonneg_iff w x).symm.trans (c.embW_int u w h x)) (H.fin j hj)`.
+-/
 theorem descUp {I : CmpJIn Tw u μ w h Lv} (H : CmpJHyp c I) (Gt : GatTies D) : DescUp c u w h Lv := by
   intro j hj
   have : IsFractionRing (gatJ Lv (j + 1)).O (gatJ Lv (j + 1)).Kf := ((D.gat u w h).P.setting (plc Gt u w h)).frac_O
@@ -150,6 +169,9 @@ def kerAtMu_cmpJ (K : KerLabelsMu Tw u μ w h Lv) {I : CmpJIn Tw u μ w h Lv} (H
     (Gt : GatTies D) : TwTie.KerAtMu D c Tw u μ w h (chainMu (stepsMu H hS Gt).up) :=
   kerAtMu K (stepsMu H hS Gt) (descUp H Gt) (plc Gt u w h)
 
+/- English proof (translation)
+The claim follows from `cmpSJ_apply H hS j hj x`.
+-/
 theorem kerAtMu_cmpJ_cmp (K : KerLabelsMu Tw u μ w h Lv) {I : CmpJIn Tw u μ w h Lv} (H : CmpJHyp c I) (hS : BlockRationalityField)
     (Gt : GatTies D) (j : ℕ) (hj : j + 1 ≤ D.R.m) (x : ((Tw.fm u μ).lat (j + 1)).V) :
     (kerAtMu_cmpJ K H hS Gt).cmp (j + 1) x = (I.at' j hj).st.cmpJ (c.embW u w h) ((I.at' j hj).eps.symm x) :=

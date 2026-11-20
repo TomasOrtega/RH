@@ -11,6 +11,13 @@ variable {ι : Type} [Fintype ι]
 
 open Classical
 
+/- English proof (translation)
+Take `⟨hT, -⟩` from `paTail hP hA Y hq hR0 hlat hR`. Establish `h0 : Summable (fun γ : lat Y.b => if (γ : EuclideanSpace ℂ ι) = 0 then (1 : ℝ) else 0)`. Use `summable_of_ne_finset_zero (s := {0}) fun γ hγ => ?_` and prove the remaining obligations. Establish `: (γ : EuclideanSpace ℂ ι) ≠ 0`. Introduce `h`.
+
+Apply `hγ` to reduce the goal to its premises. Rewrite using `[Finset.mem_singleton]`. Conclude with `Subtype.ext h`. Simplify using `[this]`. Use `(hT.add h0).congr fun γ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : (γ : EuclideanSpace ℂ ι) = 0`. Simplify using `[h]`. Simplify using `[h]`.
+-/
 theorem paSum_all (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι) {q : ℕ} {R0 : ℝ}
     (hq : 1 ≤ q) (hR0 : 0 < R0)
     (hlat : ∀ γ ∈ lat Y.b, γ ≠ 0 → R0 ≤ Real.sqrt (q * Real.pi) * ‖γ‖)
@@ -27,6 +34,25 @@ theorem paSum_all (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT �
   · simp [h]
   · simp [h]
 
+/- English proof (translation)
+Take `⟨C, hC0, hC⟩` from `paPoly_growth hF`. Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast hq`. Use `set b : ℝ := q * Real.pi with hb`. Establish `hb0 : 0 < b` using `by positivity`. Use `set R' := max R 0 with hR'`.
+
+Establish `hR'0 : 0 ≤ R'` using `le_max_right _ _`. Use `set K : ℝ := 2 ^ c * (2 + c.factorial * (2 / (5 / 16 * b)) ^ c) with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Use `set M : ℝ := C * Real.exp (2 * b * R' ^ 2) * (1 + R') ^ c * K with hM`. Use `⟨fun γ => M * Real.exp (-b * ‖(γ : EuclideanSpace ℂ ι)‖ ^ 2 / 16), (paSum_all hP hA Y hq hR0 hlat hR).mul_left M, fun γ v hv => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, Y.ka_abs γ γ.2, one_mul]`. Establish `hv' : ‖v‖ ≤ R'` using `hv.trans (le_max_left _ _)`. Use `set g0 : EuclideanSpace ℂ ι := (γ : EuclideanSpace ℂ ι) with hg0`. Use `set t := ‖g0‖ with ht`. Establish `ht0 : 0 ≤ t` using `norm_nonneg _`.
+
+Establish `hexp : ‖cexp (q * Real.pi * Hf v g0 - q * Real.pi * Hf g0 g0 / 2)‖ ≤ Real.exp (b * R' * t - b * t ^ 2 / 2)`. Rewrite using `[Complex.norm_exp]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `h1 : (Hf v g0).re ≤ R' * t`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h2 : (Hf g0 g0).re = t ^ 2`. Rewrite using `[Hf_eq_inner, inner_self_eq_norm_sq_to_K]`. Use `norm_cast`. Establish `e : ((q : ℂ) * Real.pi * Hf v g0 - q * Real.pi * Hf g0 g0 / 2).re = b * (Hf v g0).re - b * (Hf g0 g0).re / 2`. Simplify using `[hb, Complex.mul_re]`.
+
+Rewrite using `[e, h2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hFb : ‖F (v - g0)‖ ≤ C * ((1 + R') ^ c * (1 + t) ^ c)`. Use `(hC _).trans (mul_le_mul_of_nonneg_left ?_ hC0)` and prove the remaining obligations. Rewrite using `[← mul_pow]`.
+
+Use `pow_le_pow_left₀ (by positivity) ?_ c` and prove the remaining obligations. Use `norm_sub_le v g0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hG` using `pa_pow_gauss_le c (b := 5 / 16 * b) (by positivity) ht0`. Establish `hG' : (1 + t) ^ c * Real.exp (-(5 / 16 * b) * t ^ 2) ≤ K`.
+
+Use `hG.trans ?_` and prove the remaining obligations. Rewrite using `[← hK]`. Conclude with `mul_le_of_le_one_right hK0 (Real.exp_le_one_iff.mpr (by nlinarith [sq_nonneg t]))`. Establish `hsplit : Real.exp (b * R' * t - b * t ^ 2 / 2) ≤ Real.exp (2 * b * R' ^ 2) * (Real.exp (-(5 / 16 * b) * t ^ 2) * Real.exp (-b * t ^ 2 / 16))`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_nonneg hb0.le (sq_nonneg (R' - t / 4))]`. Unfold `paU`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem paTh_bound (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι) {q c : ℕ} {R0 : ℝ}
     (hq : 1 ≤ q) (hR0 : 0 < R0)
     (hlat : ∀ γ ∈ lat Y.b, γ ≠ 0 → R0 ≤ Real.sqrt (q * Real.pi) * ‖γ‖)
@@ -97,6 +123,13 @@ theorem paTh_bound (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT 
         gcongr
     _ = M * Real.exp (-b * t ^ 2 / 16) := by rw [hM]
 
+/- English proof (translation)
+Use `set g : ℂ → ℂ := fun t => H (y + t • EuclideanSpace.single j 1) with hgdef`. Establish `hl : HasDerivAt (fun t : ℂ => y + t • EuclideanSpace.single j (1 : ℂ)) (EuclideanSpace.single j 1) 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const (EuclideanSpace.single j (1 : ℂ))).const_add y`. Establish `hg : Differentiable ℂ g` using `fun t => (hH _).comp t (differentiableAt_const _ |>.add (differentiableAt_id.smul_const _))`. Establish `hd : deriv g 0 = fderiv ℂ H y (EuclideanSpace.single j 1)`.
+
+Establish `h2` using `(hH (y + (0 : ℂ) • EuclideanSpace.single j 1)).hasFDerivAt.comp_hasDerivAt (0 : ℂ) hl`. Simplify using `only [zero_smul, add_zero] at h2`. Conclude with `h2.deriv`. Rewrite using `[← hd]`. Establish `h3` using `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le (f := g) (c := 0) (R := 1) one_pos hg.diffContOnCl (fun t ht => hM t (by simpa using ht))`.
+
+Simplify using `using h3`.
+-/
 theorem pa_cauchy1 {H : EuclideanSpace ℂ ι → ℂ} (hH : Differentiable ℂ H) (y : EuclideanSpace ℂ ι)
     (j : ι) {M : ℝ} (hM : ∀ t : ℂ, ‖t‖ = 1 → ‖H (y + t • EuclideanSpace.single j 1)‖ ≤ M) :
     ‖fderiv ℂ H y (EuclideanSpace.single j 1)‖ ≤ M := by
@@ -114,6 +147,13 @@ theorem pa_cauchy1 {H : EuclideanSpace ℂ ι → ℂ} (hH : Differentiable ℂ 
     hg.diffContOnCl (fun t ht => hM t (by simpa using ht))
   simpa using h3
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ (Finset.sum_nonneg fun j _ => norm_nonneg _) fun v => ?_` and prove the remaining obligations. Establish `hv : v = ∑ j, v j • EuclideanSpace.single j (1 : ℂ)`. Use extensionality with `i`. Simplify using `[Pi.single_apply, mul_ite, Finset.sum_ite_eq]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Use `_ ≤ ∑ j, ‖v j‖ * ‖L (EuclideanSpace.single j 1)‖ := (norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun j _ => norm_smul _ _))`. Use `_ ≤ ∑ j, ‖v‖ * ‖L (EuclideanSpace.single j 1)‖ := Finset.sum_le_sum fun j _ => mul_le_mul_of_nonneg_right (PiLp.norm_apply_le v j) (norm_nonneg _)`. Use `_ = (∑ j, ‖L (EuclideanSpace.single j 1)‖) * ‖v‖ := by`.
+
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+-/
 theorem pa_opNorm_le (L : EuclideanSpace ℂ ι →L[ℂ] ℂ) :
     ‖L‖ ≤ ∑ j, ‖L (EuclideanSpace.single j 1)‖ := by
   refine ContinuousLinearMap.opNorm_le_bound _ (Finset.sum_nonneg fun j _ => norm_nonneg _) fun v => ?_
@@ -132,6 +172,9 @@ theorem pa_opNorm_le (L : EuclideanSpace ℂ ι →L[ℂ] ℂ) :
         rw [Finset.sum_mul]
         exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
+/- English proof (translation)
+Introduce `k y hy`. Use `pa_cauchy1 (hG k) y j fun t ht => hu k _ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pa_fderiv_bound {κ : Type} (G : κ → EuclideanSpace ℂ ι → ℂ) (hG : ∀ k, Differentiable ℂ (G k))
     (R : ℝ) (u : κ → ℝ) (hu : ∀ k v, ‖v‖ ≤ R + 1 → ‖G k v‖ ≤ u k) (j : ι) :
     ∀ k y, ‖y‖ ≤ R → ‖fderiv ℂ (G k) y (EuclideanSpace.single j 1)‖ ≤ u k := by
@@ -141,6 +184,9 @@ theorem pa_fderiv_bound {κ : Type} (G : κ → EuclideanSpace ℂ ι → ℂ) (
     _ = ‖y‖ + 1 := by rw [norm_smul, EuclideanSpace.norm_single, ht, norm_one, mul_one]
     _ ≤ R + 1 := by linarith
 
+/- English proof (translation)
+Introduce `k y hy`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pa_fderiv_norm {κ : Type} (G : κ → EuclideanSpace ℂ ι → ℂ) (hG : ∀ k, Differentiable ℂ (G k))
     (R : ℝ) (u : κ → ℝ) (hu : ∀ k v, ‖v‖ ≤ R + 1 → ‖G k v‖ ≤ u k) :
     ∀ k y, ‖y‖ ≤ R → ‖fderiv ℂ (G k) y‖ ≤ Fintype.card ι * u k := by
@@ -149,6 +195,11 @@ theorem pa_fderiv_norm {κ : Type} (G : κ → EuclideanSpace ℂ ι → ℂ) (h
     _ ≤ ∑ _j : ι, u k := Finset.sum_le_sum fun j _ => pa_fderiv_bound G hG R u hu j k y hy
     _ = Fintype.card ι * u k := by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
 
+/- English proof (translation)
+Take `⟨u, hsu, hu⟩` from `hb (‖x‖ + 1 + 1)`. Establish `hbd : ∀ k y, ‖y‖ ≤ ‖x‖ + 1 → ‖fderiv ℂ (G k) y‖ ≤ Fintype.card ι * u k` using `pa_fderiv_norm G hG (‖x‖ + 1) u hu`. Establish `hsu' : Summable (fun k => (Fintype.card ι : ℝ) * u k)` using `hsu.mul_left _`. Establish `hxs : x ∈ ball (0 : EuclideanSpace ℂ ι) (‖x‖ + 1)` using `by simp`. Establish `hball : ∀ y ∈ ball (0 : EuclideanSpace ℂ ι) (‖x‖ + 1), ‖y‖ ≤ ‖x‖ + 1` using `fun y hy => by`.
+
+Simplify using `using (mem_ball_zero_iff.1 hy).le`. Use `⟨hsu'.of_norm_bounded (fun k => hbd k x (by linarith)), ?_⟩` and prove the remaining obligations. Establish `hs0 : Summable (fun k => G k x)` using `hsu.of_norm_bounded (fun k => hu k x (by linarith [norm_nonneg x]))`. Conclude with `hasFDerivAt_tsum_of_isPreconnected hsu' isOpen_ball (convex_ball _ _).isPreconnected (fun k y _ => (hG k y).hasFDerivAt) (fun k y hy => hbd k y (hball y hy)) hxs hs0 hxs`.
+-/
 theorem pa_tsum_hasFDeriv {κ : Type} (G : κ → EuclideanSpace ℂ ι → ℂ) (hG : ∀ k, Differentiable ℂ (G k))
     (hb : ∀ R : ℝ, ∃ u : κ → ℝ, Summable u ∧ ∀ k v, ‖v‖ ≤ R → ‖G k v‖ ≤ u k)
     (x : EuclideanSpace ℂ ι) :
@@ -167,6 +218,11 @@ theorem pa_tsum_hasFDeriv {κ : Type} (G : κ → EuclideanSpace ℂ ι → ℂ)
   exact hasFDerivAt_tsum_of_isPreconnected hsu' isOpen_ball (convex_ball _ _).isPreconnected
     (fun k y _ => (hG k y).hasFDerivAt) (fun k y hy => hbd k y (hball y hy)) hxs hs0 hxs
 
+/- English proof (translation)
+Set `e : EuclideanSpace ℂ ι ≃L[ℂ] (Fin (Fintype.card ι) → ℂ)` to `(EuclideanSpace.equiv ι ℂ).trans (LinearEquiv.funCongrLeft ℂ ℂ (Fintype.equivFin ι).symm).toContinuousLinearEquiv`. Establish `h1 : Differentiable ℂ (S ∘ e.symm)` using `hS.comp e.symm.differentiable`. Establish `h2 : ContDiff ℂ (⊤ : ℕ∞) (S ∘ e.symm)` using `contDiff_of_differentiable h1`. Establish `h3` using `h2.comp e.contDiff`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules.
+-/
 theorem pa_contDiff_of_diff {S : EuclideanSpace ℂ ι → ℂ} (hS : Differentiable ℂ S) :
     ContDiff ℂ (⊤ : ℕ∞) S := by
   classical
@@ -180,6 +236,21 @@ theorem pa_contDiff_of_diff {S : EuclideanSpace ℂ ι → ℂ} (hS : Differenti
   funext v
   simp
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `κ G hG hb m x`. Simplify using `only [iteratedFDeriv_zero_apply]`. Take `⟨u, hu, hub⟩` from `hb ‖x‖`.
+
+Conclude with `(Summable.of_norm_bounded hu fun k => hub k x le_rfl).hasSum`. Consider the case `succ n ih`. Introduce `κ G hG hb m x`. Establish `hGd : ∀ k, Differentiable ℂ (G k)` using `fun k => (hG k).differentiable (by simp)`. Use `set j := m (Fin.last n) with hj`.
+
+Use `set G' : κ → EuclideanSpace ℂ ι → ℂ := fun k y => fderiv ℂ (G k) y (EuclideanSpace.single j 1) with hG'def`. Establish `hG' : ∀ k, ContDiff ℂ (⊤ : ℕ∞) (G' k)` using `fun k => ((hG k).fderiv_right (m := (⊤ : ℕ∞)) (by simp)).clm_apply contDiff_const`. Establish `hb' : ∀ R : ℝ, ∃ u : κ → ℝ, Summable u ∧ ∀ k v, ‖v‖ ≤ R → ‖G' k v‖ ≤ u k`. Introduce `R`. Take `⟨u, hu, hub⟩` from `hb (R + 1)`.
+
+Conclude with `⟨u, hu, pa_fderiv_bound G hGd R u hub j⟩`. Establish `hS` using `pa_tsum_hasFDeriv G hGd hb`. Establish `hSd : Differentiable ℂ (fun y => ∑' k, G k y)` using `fun y => (hS y).2.differentiableAt`. Establish `hSc` using `pa_contDiff_of_diff hSd`. Establish `hSj : (fun y => fderiv ℂ (fun y => ∑' k, G k y) y (EuclideanSpace.single j 1)) = fun y => ∑' k, G' k y`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[(hS y).2.fderiv]`. Conclude with `(ContinuousLinearMap.apply ℂ ℂ (EuclideanSpace.single j (1 : ℂ))).map_tsum (hS y).1`. Establish `key : iteratedFDeriv ℂ (n + 1) (fun y => ∑' k, G k y) x (fun i => EuclideanSpace.single (m i) 1) = iteratedFDeriv ℂ n (fun y => ∑' k, G' k y) x (fun i => EuclideanSpace.single (Fin.init m i) 1)`. Rewrite using `[iteratedFDeriv_succ_apply_right, ← iteratedFDeriv_clm_apply_const_apply (hSc.fderiv_right (m := (⊤ : ℕ∞)) (by simp)) (by exact_mod_cast le_top), ← hSj]`.
+
+Both sides reduce to the same expression. Establish `hk : ∀ k, iteratedFDeriv ℂ (n + 1) (G k) x (fun i => EuclideanSpace.single (m i) 1) = iteratedFDeriv ℂ n (G' k) x (fun i => EuclideanSpace.single (Fin.init m i) 1)`. Introduce `k`. Rewrite using `[iteratedFDeriv_succ_apply_right, ← iteratedFDeriv_clm_apply_const_apply ((hG k).fderiv_right (m := (⊤ : ℕ∞)) (by simp)) (by exact_mod_cast le_top)]`. Both sides reduce to the same expression.
+
+Rewrite using `[key, show (fun k => iteratedFDeriv ℂ (n + 1) (G k) x (fun i => EuclideanSpace.single (m i) 1)) = fun k => iteratedFDeriv ℂ n (G' k) x (fun i => EuclideanSpace.single (Fin.init m i) 1) from funext hk]`. Conclude with `ih G' hG' hb' (Fin.init m) x`.
+-/
 theorem pa_iter_tsum (n : ℕ) : ∀ {κ : Type} (G : κ → EuclideanSpace ℂ ι → ℂ),
     (∀ k, ContDiff ℂ (⊤ : ℕ∞) (G k)) →
     (∀ R : ℝ, ∃ u : κ → ℝ, Summable u ∧ ∀ k v, ‖v‖ ≤ R → ‖G k v‖ ≤ u k) →
@@ -230,6 +301,9 @@ theorem pa_iter_tsum (n : ℕ) : ∀ {κ : Type} (G : κ → EuclideanSpace ℂ 
       from funext hk]
     exact ih G' hG' hb' (Fin.init m) x
 
+/- English proof (translation)
+Establish `hGd : ∀ k, Differentiable ℂ (G k)` using `fun k => (hG k).differentiable (by simp)`. Use `⟨fun y => (pa_tsum_hasFDeriv G hGd hb y).2.differentiableAt, fun α => ?_⟩` and prove the remaining obligations. Unfold `paD polyDeriv`. Conclude with `hasSum_sum fun m _ => (pa_iter_tsum _ G hG hb (fun i => (Finsupp.toMultiset m).toList.get (i.cast (Multiset.length_toList _).symm)) 0).mul_left _`.
+-/
 theorem paD_tsum {κ : Type} (G : κ → EuclideanSpace ℂ ι → ℂ) (hG : ∀ k, ContDiff ℂ (⊤ : ℕ∞) (G k))
     (hb : ∀ R : ℝ, ∃ u : κ → ℝ, Summable u ∧ ∀ k v, ‖v‖ ≤ R → ‖G k v‖ ≤ u k) :
     Differentiable ℂ (fun v => ∑' k, G k v) ∧
@@ -240,15 +314,33 @@ theorem paD_tsum {κ : Type} (G : κ → EuclideanSpace ℂ ι → ℂ) (hG : �
   exact hasSum_sum fun m _ => (pa_iter_tsum _ G hG hb
     (fun i => (Finsupp.toMultiset m).toList.get (i.cast (Multiset.length_toList _).symm)) 0).mul_left _
 
+/- English proof (translation)
+Simplify using `[Hf, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem Hf_add_left (a b c : EuclideanSpace ℂ ι) : Hf (a + b) c = Hf a c + Hf b c := by
   simp [Hf, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[Hf, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem Hf_add_right (a b c : EuclideanSpace ℂ ι) : Hf a (b + c) = Hf a b + Hf a c := by
   simp [Hf, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[Hf, map_sum, mul_comm]`.
+-/
 theorem Hf_swap (a b : EuclideanSpace ℂ ι) : Hf b a = (starRingEnd ℂ) (Hf a b) := by
   simp [Hf, map_sum, mul_comm]
 
+/- English proof (translation)
+Use `set w := Hf g g' with hw`. Establish `hconj : Hf g' g = w - 2 * (w.im : ℂ) * I`. Rewrite using `[Hf_swap g g']`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Establish `him : w.im = -kk`.
+
+Establish `h1 : (Hf g' g).im = kk` using `hkk`. Rewrite `h1` using `[hconj]`. Simplify using `at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`.
+
+Use `Complex.exp_eq_exp_iff_exists_int.2 ⟨q * kk, ?_⟩` and prove the remaining obligations. Rewrite using `[Hf_add_left, Hf_add_right, Hf_add_right, Hf_add_left, Hf_add_right, Hf_add_right, hconj]`. Use `push_cast`. Rewrite using `[him]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pa_factor (q : ℕ) (v g g' : EuclideanSpace ℂ ι) (kk : ℤ) (hkk : (Hf g' g).im = kk) :
     cexp (-(Real.pi * q * (Hf g g').im) * I) *
       cexp (q * Real.pi * Hf (v + g') (g + g') - q * Real.pi * Hf (g + g') (g + g') / 2) =
@@ -271,6 +363,13 @@ theorem pa_factor (q : ℕ) (v g g' : EuclideanSpace ℂ ι) (kk : ℤ) (hkk : (
   push_cast
   ring
 
+/- English proof (translation)
+Use `⟨hd, fun γ hγ v => ?_⟩` and prove the remaining obligations. Use `show ∑' γ' : lat Y.b, Y.ka γ' * paU q γ' F (v + γ) = Y.ka γ * cexp (q * Real.pi * Hf v γ + q * Real.pi * Hf γ γ / 2) * ∑' γ' : lat Y.b, Y.ka γ' * paU q γ' F v`. Rewrite using `[← (Equiv.addRight (⟨γ, hγ⟩ : lat Y.b)).tsum_eq, ← tsum_mul_left]`. Use `tsum_congr fun γ'' => ?_` and prove the remaining obligations. Take `⟨kk, hkk⟩` from `Y.integral γ γ'' hγ γ''.2`.
+
+Simplify using `only [Equiv.coe_addRight, Submodule.coe_add, paU]`. Rewrite using `[hC _ γ''.2 _ hγ]`. Establish `hF : v + γ - ((γ'' : EuclideanSpace ℂ ι) + γ) = v - γ''` using `by abel`. Rewrite using `[hF]`. Establish `hfac` using `pa_factor q v (γ'' : EuclideanSpace ℂ ι) γ kk hkk`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem paTh_sec (Y : GT ι) {q : ℕ}
     (hC : ∀ γ ∈ lat Y.b, ∀ γ' ∈ lat Y.b,
       Y.ka (γ + γ') = Y.ka γ * Y.ka γ' * cexp (-(Real.pi * q * (Hf γ γ').im) * I))

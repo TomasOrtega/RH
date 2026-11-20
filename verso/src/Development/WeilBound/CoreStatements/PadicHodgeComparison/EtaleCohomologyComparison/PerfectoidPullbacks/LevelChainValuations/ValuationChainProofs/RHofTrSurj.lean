@@ -14,6 +14,19 @@ namespace CrystallineSemistableComparison.Pb.Kap
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Introduce and unpack `⟨y, hy⟩`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`. Establish `hx : xi0 l ∈ RingHom.ker (theta0 l)`.
+
+Rewrite using `[ker_theta0]`. Conclude with `Ideal.mem_span_singleton_self _`. Use `⟨⟨dpw k (xi0 l), ACris.dpow_mem hx k⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show awayW (RingHom.id (Ob l)) (dpw k (xi0 l)) = _`. Rewrite using `[awayW_id, RingHom.id_apply, dpw]`.
+
+Use `show _ = Ring.inverse _ * algebraMap _ _ (WittVector.map (RingHom.id (Ob l)) (xi0 l)) ^ k`. Rewrite using `[wmap_id]`. Both sides reduce to the same expression. Consider the case `algebraMap r`. Use `⟨algebraMap (Ainf l) (Acris0 l) r, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Use `show awayW (RingHom.id (Ob l)) (algebraMap (Ainf l) (WL l (Ob l)) r) = _`. Rewrite using `[awayW_id, RingHom.id_apply]`. Both sides reduce to the same expression. Consider the case `add x y hx hy ihx ihy`. Take `⟨a, ha⟩` from `ihx`.
+
+Take `⟨b, hb⟩` from `ihy`. Conclude with `⟨a + b, by rw [map_add, ha, hb]; rfl⟩`. Consider the case `mul x y hx hy ihx ihy`. Take `⟨a, ha⟩` from `ihx`. Take `⟨b, hb⟩` from `ihy`.
+
+Conclude with `⟨a * b, by rw [map_mul, ha, hb]; rfl⟩`.
+-/
 theorem acris_zero_surjective : Function.Surjective (PAlg.base l).cris0 := by
   rintro ⟨y, hy⟩
   induction hy using Algebra.adjoin_induction with
@@ -41,6 +54,9 @@ theorem acris_zero_surjective : Function.Surjective (PAlg.base l).cris0 := by
     obtain ⟨b, hb⟩ := ihy
     exact ⟨a * b, by rw [map_mul, ha, hb]; rfl⟩
 
+/- English proof (translation)
+Introduce `w`. Take `⟨y, rfl⟩` from `(PAlg.base l).mkAcr_surjective n w`. Take `⟨z, rfl⟩` from `acris_zero_surjective (l := l) y`. Conclude with `⟨AdicCompletion.of _ _ z, (PAlg.base l).cris_of n z⟩`.
+-/
 theorem acris_level_surjective (n : ℕ) : Function.Surjective ((PAlg.base l).cris n) := by
   intro w
   obtain ⟨y, rfl⟩ := (PAlg.base l).mkAcr_surjective n w

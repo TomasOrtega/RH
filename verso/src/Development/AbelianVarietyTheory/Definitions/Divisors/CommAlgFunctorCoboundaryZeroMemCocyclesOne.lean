@@ -16,10 +16,16 @@ variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ CommAl
 
 abbrev mp {T T' : C} (φ : T ⟶ T') : F.obj T →ₐ[R] F.obj T' := (F.map φ).hom
 
+/- English proof (translation)
+Simplify using `[mp]`.
+-/
 theorem mp_comp {T T' T'' : C} (φ : T ⟶ T') (ψ : T' ⟶ T'') (b : F.obj T) :
     mp F (φ ≫ ψ) b = mp F ψ (mp F φ b) := by
   simp [mp]
 
+/- English proof (translation)
+Simplify using `[mp]`.
+-/
 theorem mp_id (T : C) (b : F.obj T) : mp F (𝟙 T) b = b := by
   simp [mp]
 
@@ -40,8 +46,14 @@ def d1 : C1 F →ₗ[R] C2 F where
   map_smul' r g := by
     funext T T' T'' φ ψ; simp only [Pi.smul_apply, map_smul, smul_sub, smul_add, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem amitsur_d0_apply (g : C0 F) {T T' : C} (φ : T ⟶ T') : d0 F g T T' φ = g T' - mp F φ (g T) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem d1_apply (f : C1 F) {T T' T'' : C} (φ : T ⟶ T') (ψ : T' ⟶ T'') :
     d1 F f T T' T'' φ ψ = mp F ψ (f T T' φ) - f T T'' (φ ≫ ψ) + f T' T'' ψ := rfl
 
@@ -65,9 +77,15 @@ def Z2 : Submodule R (C2 F) where
 
 variable {F}
 
+/- English proof (translation)
+The claim follows from `f.2 φ ψ`.
+-/
 theorem Z1.comp (f : Z1 F) {T T' T'' : C} (φ : T ⟶ T') (ψ : T' ⟶ T'') :
     f.1 T T'' (φ ≫ ψ) = mp F ψ (f.1 T T' φ) + f.1 T' T'' ψ := f.2 φ ψ
 
+/- English proof (translation)
+Establish `h` using `Z1.comp f (𝟙 T) (𝟙 T)`. Rewrite `h` using `[Category.id_comp, mp_id]`. Take the linear combination `-h`.
+-/
 theorem Z1.id (f : Z1 F) (T : C) : f.1 T T (𝟙 T) = 0 := by
   have h := Z1.comp f (𝟙 T) (𝟙 T)
   rw [Category.id_comp, mp_id] at h
@@ -75,6 +93,13 @@ theorem Z1.id (f : Z1 F) (T : C) : f.1 T T (𝟙 T) = 0 := by
 
 variable (F)
 
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Use function extensionality and compare the values at `T T' T'' φ ψ`.
+
+Establish `h : f T T'' (φ ≫ ψ) = mp F ψ (f T T' φ) + f T' T'' ψ` using `hf φ ψ`. Use `show mp F ψ (f T T' φ) - f T T'' (φ ≫ ψ) + f T' T'' ψ = 0`. Take the linear combination `-h`. Introduce `hf T T' T'' φ ψ`. Establish `h` using `congrFun (congrFun (congrFun (congrFun (congrFun hf T) T') T'') φ) ψ`.
+
+Express the relevant statement in the definitionally equal form `mp F ψ (f T T' φ) - f T T'' (φ ≫ ψ) + f T' T'' ψ = 0 at h`. Use `show f T T'' (φ ≫ ψ) = mp F ψ (f T T' φ) + f T' T'' ψ`. Take the linear combination `-h`.
+-/
 theorem commAlgFunctorCocyclesOne_eq_ker : Z1 F = LinearMap.ker (d1 F) := by
   ext f
   rw [LinearMap.mem_ker]
@@ -90,11 +115,17 @@ theorem commAlgFunctorCocyclesOne_eq_ker : Z1 F = LinearMap.ker (d1 F) := by
     show f T T'' (φ ≫ ψ) = mp F ψ (f T T' φ) + f T' T'' ψ
     linear_combination -h
 
+/- English proof (translation)
+Introduce `T T' T'' φ ψ`. Simplify using `only [amitsur_d0_apply, mp_comp, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem commAlgFunctorCoboundaryZero_mem_cocyclesOne (g : C0 F) : d0 F g ∈ Z1 F := by
   intro T T' T'' φ ψ
   simp only [amitsur_d0_apply, mp_comp, map_sub]
   ring
 
+/- English proof (translation)
+Introduce `T T' T'' T''' φ ψ χ`. Simplify using `only [d1_apply, map_add, map_sub, mp_comp, Category.assoc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem differential_one_mem_scaled_lattice (f : C1 F) : d1 F f ∈ Z2 F := by
   intro T T' T'' T''' φ ψ χ
   simp only [d1_apply, map_add, map_sub, mp_comp, Category.assoc]
@@ -116,11 +147,17 @@ def H1.mk : Z1 F →ₗ[R] H1 F := Submodule.mkQ _
 
 def H2.mk : Z2 F →ₗ[R] H2 F := Submodule.mkQ _
 
+/- English proof (translation)
+Introduce `c`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Conclude with `⟨f, rfl⟩`.
+-/
 theorem H1.mk_surjective : Function.Surjective (H1.mk F) := by
   intro c
   obtain ⟨f, rfl⟩ := Submodule.Quotient.mk_surjective _ c
   exact ⟨f, rfl⟩
 
+/- English proof (translation)
+Introduce `c`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Conclude with `⟨z, rfl⟩`.
+-/
 theorem H2.mk_surjective : Function.Surjective (H2.mk F) := by
   intro c
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ c
@@ -128,6 +165,11 @@ theorem H2.mk_surjective : Function.Surjective (H2.mk F) := by
 
 variable {F}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk f = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Conclude with `⟨g, congrArg Subtype.val hg⟩`.
+
+Introduce and unpack `⟨g, hg⟩`. Conclude with `⟨g, Subtype.ext hg⟩`.
+-/
 theorem H1.mk_eq_zero {f : Z1 F} : H1.mk F f = 0 ↔ ∃ g, d0 F g = f.1 := by
   change Submodule.Quotient.mk f = 0 ↔ _
   rw [Submodule.Quotient.mk_eq_zero, LinearMap.mem_range]
@@ -137,6 +179,11 @@ theorem H1.mk_eq_zero {f : Z1 F} : H1.mk F f = 0 ↔ ∃ g, d0 F g = f.1 := by
   · rintro ⟨g, hg⟩
     exact ⟨g, Subtype.ext hg⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk z = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf⟩`. Conclude with `⟨f, congrArg Subtype.val hf⟩`.
+
+Introduce and unpack `⟨f, hf⟩`. Conclude with `⟨f, Subtype.ext hf⟩`.
+-/
 theorem H2.mk_eq_zero {z : Z2 F} : H2.mk F z = 0 ↔ ∃ f, d1 F f = z.1 := by
   change Submodule.Quotient.mk z = 0 ↔ _
   rw [Submodule.Quotient.mk_eq_zero, LinearMap.mem_range]
@@ -146,10 +193,16 @@ theorem H2.mk_eq_zero {z : Z2 F} : H2.mk F z = 0 ↔ ∃ f, d1 F f = z.1 := by
   · rintro ⟨f, hf⟩
     exact ⟨f, Subtype.ext hf⟩
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub, H1.mk_eq_zero]`. Conclude with `Iff.rfl`.
+-/
 theorem H1.mk_eq_mk {f f' : Z1 F} : H1.mk F f = H1.mk F f' ↔ ∃ g, d0 F g = f.1 - f'.1 := by
   rw [← sub_eq_zero, ← map_sub, H1.mk_eq_zero]
   exact Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub, H2.mk_eq_zero]`. Conclude with `Iff.rfl`.
+-/
 theorem H2.mk_eq_mk {z z' : Z2 F} : H2.mk F z = H2.mk F z' ↔ ∃ f, d1 F f = z.1 - z'.1 := by
   rw [← sub_eq_zero, ← map_sub, H2.mk_eq_zero]
   exact Iff.rfl
@@ -165,6 +218,9 @@ def cupZ : Z1 F →ₗ[R] Z1 F →ₗ[R] Z2 F :=
     (fun a b b' ↦ Subtype.ext (by funext T T' T'' φ ψ; simp [mul_add]))
     (fun r a b ↦ Subtype.ext (by funext T T' T'' φ ψ; simp))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cupZ_apply (a b : Z1 F) {T T' T'' : C} (φ : T ⟶ T') (ψ : T' ⟶ T'') :
     (cupZ F a b).1 T T' T'' φ ψ = mp F ψ (a.1 T T' φ) * b.1 T' T'' ψ := rfl
 
@@ -187,8 +243,16 @@ def cup : H1 F →ₗ[R] H1 F →ₗ[R] H2 F :=
         map_neg]
       ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cup_mk (a b : Z1 F) : cup F (H1.mk F a) (H1.mk F b) = H2.mk F (cupZ F a b) := rfl
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `H1.mk_surjective F c`. Use `H1.mk_eq_zero.2 ⟨fun T => f.1 T₀ T (h.to T), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`. Establish `e` using `Z1.comp f (h.to T) φ`. Rewrite `e` using `[h.hom_ext (h.to T ≫ φ) (h.to T')]`.
+
+Simplify using `only [amitsur_d0_apply]`. Take the linear combination `e`.
+-/
 theorem H1.eq_zero_of_isInitial {T₀ : C} (h : Limits.IsInitial T₀) (c : H1 F) : c = 0 := by
   obtain ⟨f, rfl⟩ := H1.mk_surjective F c
   refine H1.mk_eq_zero.2 ⟨fun T => f.1 T₀ T (h.to T), ?_⟩
@@ -252,9 +316,15 @@ def pullbackTwoCocycle : Z2 F →ₛₗ[σ] Z2 F' where
   map_add' f g := Subtype.ext (by funext T T' T'' φ ψ; simp)
   map_smul' r f := Subtype.ext (by funext T T' T'' φ ψ; simp [m.smul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullCocycleOne_apply (f : Z1 F) {T T' : C'} (φ : T ⟶ T') :
     (m.pullbackOneCocycle f).1 T T' φ = m.α T' (f.1 _ _ (m.G.map φ)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullCocycleTwo_apply (z : Z2 F) {T T' T'' : C'} (φ : T ⟶ T') (ψ : T' ⟶ T'') :
     (m.pullbackTwoCocycle z).1 T T' T'' φ ψ = m.α T'' (z.1 _ _ _ (m.G.map φ) (m.G.map ψ)) := rfl
 
@@ -273,10 +343,21 @@ def pull2 : H2 F →ₛₗ[σ] H2 F' :=
     simp only [LinearMap.codRestrict_apply, pullCocycleTwo_apply, d1_apply, map_sub, map_add, m.naturality,
       Functor.map_comp])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullCohomologyOne_class (f : Z1 F) : m.pull1 (H1.mk F f) = H1.mk F' (m.pullbackOneCocycle f) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullCohomologyTwo_class (z : Z2 F) : m.pull2 (H2.mk F z) = H2.mk F' (m.pullbackTwoCocycle z) := rfl
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `H1.mk_surjective F a`. Take `⟨b, rfl⟩` from `H1.mk_surjective F b`. Rewrite using `[cup_mk, pullCohomologyTwo_class, pullCohomologyOne_class, pullCohomologyOne_class, cup_mk]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `T T' T'' φ ψ`. Simplify using `only [pullCocycleTwo_apply, cupZ_apply, pullCocycleOne_apply, map_mul, m.naturality]`.
+-/
 theorem pullCohomologyTwo_cup (a b : H1 F) : m.pull2 (cup F a b) = cup F' (m.pull1 a) (m.pull1 b) := by
   obtain ⟨a, rfl⟩ := H1.mk_surjective F a
   obtain ⟨b, rfl⟩ := H1.mk_surjective F b
@@ -286,24 +367,43 @@ theorem pullCohomologyTwo_cup (a b : H1 F) : m.pull2 (cup F a b) = cup F' (m.pul
   funext T T' T'' φ ψ
   simp only [pullCocycleTwo_apply, cupZ_apply, pullCocycleOne_apply, map_mul, m.naturality]
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `H1.mk_surjective F c`. Both sides reduce to the same expression.
+-/
 theorem pullCohomologyOne_id (c : H1 F) : (id F).pull1 c = c := by
   obtain ⟨f, rfl⟩ := H1.mk_surjective F c
   rfl
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `H2.mk_surjective F c`. Both sides reduce to the same expression.
+-/
 theorem pullCohomologyTwo_id (c : H2 F) : (id F).pull2 c = c := by
   obtain ⟨z, rfl⟩ := H2.mk_surjective F c
   rfl
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `H1.mk_surjective F c`. Both sides reduce to the same expression.
+-/
 theorem pullCohomologyOne_comp (n : CoefMap τ F' F'') (c : H1 F) :
     (m.comp n).pull1 c = n.pull1 (m.pull1 c) := by
   obtain ⟨f, rfl⟩ := H1.mk_surjective F c
   rfl
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `H2.mk_surjective F c`. Both sides reduce to the same expression.
+-/
 theorem pullCohomologyTwo_comp (n : CoefMap τ F' F'') (c : H2 F) :
     (m.comp n).pull2 c = n.pull2 (m.pull2 c) := by
   obtain ⟨z, rfl⟩ := H2.mk_surjective F c
   rfl
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `H1.mk_surjective F c`. Rewrite using `[pullCohomologyOne_class, pullCohomologyOne_class, H1.mk_eq_mk]`. Use `⟨fun T => -(m'.α T (f.1 _ _ (θ.app T))), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`. Establish `h1` using `Z1.comp f (m.G.map φ) (θ.app T')`.
+
+Establish `h2` using `Z1.comp f (θ.app T) (m'.G.map φ)`. Rewrite `h1` using `[θ.naturality φ]`. Establish `h3` using `congrArg (m'.α T') (h1.symm.trans h2)`. Rewrite `h3` using `[map_add, map_add, h, m'.naturality]`. Simplify using `only [amitsur_d0_apply, map_neg, Pi.sub_apply, pullCocycleOne_apply]`.
+
+Take the linear combination `-h3`.
+-/
 theorem pullCohomologyOne_eq_of_natTrans {σ' : R →+* R'} (m' : CoefMap σ' F F') (θ : m.G ⟶ m'.G)
     (h : ∀ T b, m'.α T (mp F (θ.app T) b) = m.α T b) (c : H1 F) : m.pull1 c = m'.pull1 c := by
   obtain ⟨f, rfl⟩ := H1.mk_surjective F c
@@ -318,6 +418,15 @@ theorem pullCohomologyOne_eq_of_natTrans {σ' : R →+* R'} (m' : CoefMap σ' F 
   simp only [amitsur_d0_apply, map_neg, Pi.sub_apply, pullCocycleOne_apply]
   linear_combination -h3
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `H2.mk_surjective F c`. Rewrite using `[pullCohomologyTwo_class, pullCohomologyTwo_class, H2.mk_eq_mk]`. Use `⟨fun T T' φ => m'.α T' (z.1 _ _ _ (m.G.map φ) (θ.app T') - z.1 _ _ _ (θ.app T) (m'.G.map φ)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`. Establish `e1` using `z.2 (m.G.map φ) (m.G.map ψ) (θ.app T'')`.
+
+Establish `e2` using `z.2 (m.G.map φ) (θ.app T') (m'.G.map ψ)`. Establish `e3` using `z.2 (θ.app T) (m'.G.map φ) (m'.G.map ψ)`. Rewrite `e1` using `[θ.naturality ψ]`. Rewrite `e2` using `[θ.naturality φ]`. Establish `key : mp F (θ.app T'') (z.1 _ _ _ (m.G.map φ) (m.G.map ψ)) - z.1 _ _ _ (m'.G.map φ) (m'.G.map ψ) = mp F (m'.G.map ψ) (z.1 _ _ _ (m.G.map φ) (θ.app T') - z.1 _ _ _ (θ.app T) (m'.G.map φ)) - (z.1 _ _ _ (m.G.map φ ≫ m.G.map ψ) (θ.app T'') - z.1 _ _ _ (θ.app T) (m'.G.map φ ≫ m'.G.map …`.
+
+Rewrite using `[map_sub]`. Take the linear combination `e1 - e2 + e3`. Establish `e` using `congrArg (m'.α T'') key`. Simplify using `only [map_sub, map_add, h, m'.naturality] at e`. Simplify using `only [d1_apply, Pi.sub_apply, pullCocycleTwo_apply, Functor.map_comp, map_sub]`.
+
+Take the linear combination `-e`.
+-/
 theorem pullCohomologyTwo_eq_of_natTrans {σ' : R →+* R'} (m' : CoefMap σ' F F') (θ : m.G ⟶ m'.G)
     (h : ∀ T b, m'.α T (mp F (θ.app T) b) = m.α T b) (c : H2 F) : m.pull2 c = m'.pull2 c := by
   obtain ⟨z, rfl⟩ := H2.mk_surjective F c

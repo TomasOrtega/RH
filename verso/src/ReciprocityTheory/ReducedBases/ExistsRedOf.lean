@@ -7,6 +7,27 @@ namespace ReciprocityTheory.ReducedBases.T2
 
 open Finset InnerProductSpace
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `hlow`. Use `set S : Set ℝ := Set.range (fun e : Module.Basis (Fin d) ℤ (Fin d → ℤ) => pot (fun i => f (e i))) with hSdef`. Establish `hpos : ∀ e : Module.Basis (Fin d) ℤ (Fin d → ℤ), c ^ d ≤ pot (fun i => f (e i))`. Introduce `e`. Unfold `pot`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hne : S.Nonempty` using `⟨_, ⟨Pi.basisFun ℤ (Fin d), rfl⟩⟩`. Establish `hbdd : BddBelow S` using `⟨c ^ d, by rintro _ ⟨e, rfl⟩; exact hpos e⟩`. Establish `hm : c ^ d ≤ sInf S` using `le_csInf hne (by rintro _ ⟨e, rfl⟩; exact hpos e)`. Establish `hm0 : 0 < sInf S` using `lt_of_lt_of_le (pow_pos hc0 d) hm`.
+
+Take `⟨_, ⟨e0, rfl⟩, he0⟩` from `exists_lt_of_csInf_lt hne (show sInf S < 4 / 3 * sInf S by linarith)`. Take `⟨e1, hgs1, hsz1⟩` from `size_reduce f hli e0`. Establish `hpot1 : pot (fun i => f (e1 i)) = pot (fun i => f (e0 i))` using `by unfold pot; rw [hgs1]`. Establish `hb1` using `hli e1`. Assume the negation of the conclusion as `hnot`.
+
+Establish `hex : ∃ i j : Fin d, i.val = j.val + 1 ∧ 2 * ‖gs (fun i => f (e1 i)) i‖ ^ 2 < ‖gs (fun i => f (e1 i)) j‖ ^ 2`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hnot ⟨e1, hb1, hsz1, fun i j hij => h i j hij⟩`. Take `⟨j1, j, hj, hlt⟩` from `hex`.
+
+Establish `hjj1 : j < j1` using `by rw [Fin.lt_def]; omega`. Use `set e2 := e1.reindex (Equiv.swap j j1) with he2`. Establish `hb2 : (fun i => f (e2 i)) = (fun i => f (e1 i)) ∘ Equiv.swap j j1`. Use function extensionality and compare the values at `i`. Simplify using `[he2, Module.Basis.coe_reindex, Equiv.symm_swap]`.
+
+Establish `hp2` using `pot_swap _ hb1 j j1 hj`. Rewrite `hp2` using `[← hb2]`. Establish `hV` using `norm_swap_j (fun i => f (e1 i)) j j1 hj`. Establish `hsz` using `hsz1 j1 j hjj1`. Use `set m := mu (fun i => f (e1 i)) j1 j`.
+
+Use `set A := ‖gs (fun i => f (e1 i)) j‖ ^ 2 with hA`. Use `set B := ‖gs (fun i => f (e1 i)) j1‖ ^ 2`. Establish `hA0 : 0 < A` using `by have := gs_ne_zero _ hb1 j; positivity`. Establish `hm2 : m ^ 2 ≤ 1 / 4`. Rewrite using `[← sq_abs]`.
+
+Use polynomial arithmetic with `[abs_nonneg m]`. Establish `hVA : ‖gs (fun i => f (e1 i)) j1 + m • gs (fun i => f (e1 i)) j‖ ^ 2 / A < 3 / 4`. Rewrite using `[div_lt_iff₀ hA0, hV]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hP1 : 0 < pot (fun i => f (e1 i))` using `lt_of_lt_of_le (pow_pos hc0 d) (hpos e1)`.
+
+Establish `h2 : sInf S ≤ pot (fun i => f (e2 i))` using `csInf_le hbdd ⟨e2, rfl⟩`. Establish `h3 : pot (fun i => f (e2 i)) < pot (fun i => f (e1 i)) * (3 / 4)`. Rewrite using `[hp2]`. Conclude with `mul_lt_mul_of_pos_left hVA hP1`. Rewrite `h3` using `[hpot1]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_red_of {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {d : ℕ}
     (f : (Fin d → ℤ) →ₗ[ℤ] E)
     (hli : ∀ e : Module.Basis (Fin d) ℤ (Fin d → ℤ), LinearIndependent ℝ (fun i => f (e i)))

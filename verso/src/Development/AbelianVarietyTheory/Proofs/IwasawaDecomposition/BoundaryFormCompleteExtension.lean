@@ -10,6 +10,17 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.TraitCharRestrict
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ t P hR hT V _ _ _ hV ψ hψ hnl T f hf hfl u hu P'`. Establish `hg : ¬ IsLocalHom (f.comp ψ)`. Introduce `hloc`. Apply `hnl` to reduce the goal to its premises. Introduce `r hr`.
+
+Assume the negation of the conclusion as `h`. Establish `h1 : IsUnit (ψ r)`. Assume the negation of the conclusion as `h2`. Conclude with `h ((mem_maximalIdeal _).2 h2)`. Establish `h2 : IsUnit ((f.comp ψ) r)` using `h1.map f`.
+
+Conclude with `((mem_maximalIdeal _).1 hr) (hloc.map_nonunit r h2)`. Establish `hsp : spMap (f.comp ψ) = spMap f ≫ spMap ψ`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hT' : CDvr T.V` using `⟨inferInstance, inferInstance, inferInstance⟩`.
+
+Take `⟨ρ, hρ, hc⟩` from `GlobalTheory.T.boundary_form_base_change_dvr E H R t P hR hT T.V hT' (f.comp ψ) (hf.comp hψ) hg u (by rw [hsp]; exact hu) P'`. Use `⟨ρ, hρ, fun y => ?_⟩` and prove the remaining obligations. Use `haveI : CharZero R := hR.2.2.2`. Take `⟨⟨a, ha, -⟩, -⟩` from `GlobalTheory.PsiCoordLocal.main R P.D hR.2.1 y`. Take `⟨⟨b, hb, -⟩, -⟩` from `GlobalTheory.PsiCoordLocal.main T.V P'.D inferInstance (ρ y)`.
+
+Conclude with `⟨a, b, ha, hb, hc y a b ha hb⟩`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t),
     IsCN R → P.TorsionIso →

@@ -19,10 +19,20 @@ open Classical in
 
 def xiZ (ξ : kˣ →* Kˣ) (a : k) : K := if h : IsUnit a then ((ξ h.unit : Kˣ) : K) else 0
 
+/- English proof (translation)
+Unfold `xiZ`. Rewrite using `[dif_pos u.isUnit, IsUnit.unit_of_val_units]`.
+-/
 theorem xiZ_unit (ξ : kˣ →* Kˣ) (u : kˣ) : xiZ ξ (u : k) = ((ξ u : Kˣ) : K) := by
   unfold xiZ
   rw [dif_pos u.isUnit, IsUnit.unit_of_val_units]
 
+/- English proof (translation)
+Distinguish the cases in `ha : IsUnit a`. Distinguish the cases in `hb : IsUnit b`. Take `⟨u, rfl⟩` from `ha`. Take `⟨v, rfl⟩` from `hb`. Rewrite using `[← Units.val_mul, xiZ_unit, xiZ_unit, xiZ_unit, map_mul, Units.val_mul]`.
+
+Establish `h : ¬ IsUnit (a * b)` using `fun h => hb (isUnit_of_mul_isUnit_right h)`. Unfold `xiZ`. Rewrite using `[dif_neg h, dif_neg hb, mul_zero]`. Establish `h : ¬ IsUnit (a * b)` using `fun h => ha (isUnit_of_mul_isUnit_left h)`. Unfold `xiZ`.
+
+Rewrite using `[dif_neg h, dif_neg ha, zero_mul]`.
+-/
 theorem xiZ_mul (ξ : kˣ →* Kˣ) (a b : k) : xiZ ξ (a * b) = xiZ ξ a * xiZ ξ b := by
   by_cases ha : IsUnit a
   · by_cases hb : IsUnit b
@@ -38,6 +48,9 @@ theorem xiZ_mul (ξ : kˣ →* Kˣ) (a b : k) : xiZ ξ (a * b) = xiZ ξ a * xiZ 
 
 def LLz (r : ℕ) {a b : ℕ} (M : Matrix (Fin a) (Fin b) k) : Prop := ∀ i j, r ≤ i.1 → j.1 < r → M i j = 0
 
+/- English proof (translation)
+Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hb`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_add]`. Establish `h0 : ∑ s : Fin d, P i (Fin.natAdd r s) * Q (Fin.natAdd r s) j = 0` using `Finset.sum_eq_zero fun s _ => by rw [hQ _ _ (by simp) hj, mul_zero]`. Rewrite using `[h0, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem mul_colA {r a b c : ℕ} (hb : r ≤ b) (P : Matrix (Fin a) (Fin b) k) (Q : Matrix (Fin b) (Fin c) k) (hQ : LLz r Q)
     (i : Fin a) (j : Fin c) (hj : j.1 < r) :
     (P * Q) i j = ∑ s : Fin r, P i (Fin.castLE hb s) * Q (Fin.castLE hb s) j := by
@@ -48,12 +61,18 @@ theorem mul_colA {r a b c : ℕ} (hb : r ≤ b) (P : Matrix (Fin a) (Fin b) k) (
   rw [h0, add_zero]
   rfl
 
+/- English proof (translation)
+Introduce `i j hi hj`. Rewrite using `[mul_colA hb P Q hQ i j hj]`. Conclude with `Finset.sum_eq_zero fun s _ => by rw [hP _ _ hi (show (Fin.castLE hb s).1 < r from s.2), zero_mul]`.
+-/
 theorem LLz.mul {r a b c : ℕ} (hb : r ≤ b) {P : Matrix (Fin a) (Fin b) k} {Q : Matrix (Fin b) (Fin c) k} (hP : LLz r P) (hQ : LLz r Q) :
     LLz r (P * Q) := by
   intro i j hi hj
   rw [mul_colA hb P Q hQ i j hj]
   exact Finset.sum_eq_zero fun s _ => by rw [hP _ _ hi (show (Fin.castLE hb s).1 < r from s.2), zero_mul]
 
+/- English proof (translation)
+Use extensionality with `s t`. Rewrite using `[Matrix.submatrix_apply, mul_colA hb P Q hQ _ _ (show (Fin.castLE hc t).1 < r from t.2), Matrix.mul_apply]`. Both sides reduce to the same expression.
+-/
 theorem tl_mul {r a b c : ℕ} (ha : r ≤ a) (hb : r ≤ b) (hc : r ≤ c) (P : Matrix (Fin a) (Fin b) k) (Q : Matrix (Fin b) (Fin c) k)
     (hQ : LLz r Q) :
     (P * Q).submatrix (Fin.castLE ha) (Fin.castLE hc) =
@@ -67,6 +86,13 @@ open Classical in
 def phiZ (ξ : kˣ →* Kˣ) {r a b : ℕ} (ha : r ≤ a) (hb : r ≤ b) (M : Matrix (Fin a) (Fin b) k) : K :=
   if LLz r M then xiZ ξ (M.submatrix (Fin.castLE ha) (Fin.castLE hb)).det else 0
 
+/- English proof (translation)
+Establish `hiff : LLz r (A * M * B) ↔ LLz r M`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e : M = Ai * (A * M * B) * Bi`. Establish `e1 : Ai * (A * M * B) * Bi = (Ai * A) * M * (B * Bi)` using `by simp only [Matrix.mul_assoc]`.
+
+Rewrite using `[e1, h1, h2, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[e]`. Conclude with `(hAi.mul ha h).mul hb hBi`. Introduce `h`. Conclude with `(hA.mul ha h).mul hb hB`.
+
+Unfold `phiZ`. Distinguish the cases in `h : LLz r M`. Rewrite using `[if_pos h, if_pos (hiff.2 h), tl_mul ha hb hb _ _ hB, tl_mul ha ha hb _ _ h, Matrix.det_mul, Matrix.det_mul, xiZ_mul, xiZ_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg (mt hiff.1 h), mul_zero]`.
+-/
 theorem phiZ_law (ξ : kˣ →* Kˣ) {r a b : ℕ} (ha : r ≤ a) (hb : r ≤ b) (A Ai : Matrix (Fin a) (Fin a) k) (B Bi : Matrix (Fin b) (Fin b) k)
     (hA : LLz r A) (hAi : LLz r Ai) (hB : LLz r B) (hBi : LLz r Bi) (h1 : Ai * A = 1) (h2 : B * Bi = 1) (M : Matrix (Fin a) (Fin b) k) :
     phiZ ξ ha hb (A * M * B) = xiZ ξ (A.submatrix (Fin.castLE ha) (Fin.castLE ha)).det *
@@ -87,6 +113,11 @@ theorem phiZ_law (ξ : kˣ →* Kˣ) {r a b : ℕ} (ha : r ≤ a) (hb : r ≤ b)
     ring
   · rw [if_neg h, if_neg (mt hiff.1 h), mul_zero]
 
+/- English proof (translation)
+Establish `e : A.submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks (A.submatrix (Fin.castAdd d) (Fin.castAdd d)) (A.submatrix (Fin.castAdd d) (Fin.natAdd r)) 0 (A.submatrix (Fin.natAdd r) (Fin.natAdd r))`. Use extensionality with `(i | i) (j | j)`. Both sides reduce to the same expression. Both sides reduce to the same expression. Simplify using `only [Matrix.submatrix_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]`.
+
+Conclude with `hA _ _ (by simp) j.2`. Both sides reduce to the same expression. Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv A, e, Matrix.det_fromBlocks_zero₂₁]`.
+-/
 theorem det_LLz {r d : ℕ} (A : Matrix (Fin (r + d)) (Fin (r + d)) k) (hA : LLz r A) :
     A.det = (A.submatrix (Fin.castAdd d) (Fin.castAdd d)).det * (A.submatrix (Fin.natAdd r) (Fin.natAdd r)).det := by
   have e : A.submatrix finSumFinEquiv finSumFinEquiv =
@@ -103,6 +134,21 @@ theorem det_LLz {r d : ℕ} (A : Matrix (Fin (r + d)) (Fin (r + d)) k) (hA : LLz
 
 def brI {n r d : ℕ} (hn : n = r + d) (s : Fin d) : Fin n := ⟨r + s.1, by have := s.2; omega⟩
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Substitute `hn'` using the available equality. Establish `dA` using `det_LLz A hA`. Establish `dC` using `det_LLz C hC`. Establish `e1 : Ai.det * A.det = 1` using `by rw [← Matrix.det_mul, h1, Matrix.det_one]`.
+
+Establish `e2 : B.det * C.det = 1` using `by rw [← Matrix.det_mul, h2, Matrix.det_one]`. Establish `e3 : (B.submatrix (Fin.castLE hr') (Fin.castLE hr')).det * (C.submatrix (Fin.castLE hr') (Fin.castLE hr')).det = 1`. Rewrite using `[← Matrix.det_mul, ← tl_mul hr' hr' hr' B C hC, h2, Matrix.submatrix_one _ (Fin.castLE_injective hr'), Matrix.det_one]`. Establish `uA : IsUnit A.det` using `IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact e1)`. Establish `uC : IsUnit C.det` using `IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact e2)`.
+
+Rewrite `uA`, `e1` using `[dA]`. Rewrite `uC`, `e2` using `[dC]`. Take `⟨u₁, hu₁⟩` from `isUnit_of_mul_isUnit_left uA`. Take `⟨u₂, hu₂⟩` from `isUnit_of_mul_isUnit_right uA`. Take `⟨v₁, hv₁⟩` from `isUnit_of_mul_isUnit_left uC`.
+
+Take `⟨v₂, hv₂⟩` from `isUnit_of_mul_isUnit_right uC`. Establish `f1 : (A.submatrix (Fin.castLE hr) (Fin.castLE hr)).det = u₁` using `hu₁.symm`. Establish `f2 : (A.submatrix (brI rfl) (brI rfl)).det = u₂` using `hu₂.symm`. Establish `f3 : (C.submatrix (Fin.castLE hr') (Fin.castLE hr')).det = v₁` using `hv₁.symm`. Establish `f4 : (C.submatrix (brI rfl) (brI rfl)).det = v₂` using `hv₂.symm`.
+
+Rewrite `e1` using `[← hu₁, ← hu₂, ← Units.val_mul]`. Rewrite `e2` using `[← hv₁, ← hv₂, ← Units.val_mul]`. Rewrite `e3` using `[f3]`. Establish `g1 : Ai.det = ((u₁ * u₂)⁻¹ : kˣ)` using `Units.eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact e1)`. Establish `g2 : B.det = ((v₁ * v₂)⁻¹ : kˣ)` using `Units.eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact e2)`.
+
+Establish `g3 : (B.submatrix (Fin.castLE hr') (Fin.castLE hr')).det = (v₁⁻¹ : kˣ)` using `Units.eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact e3)`. Rewrite using `[g1, g2, g3, f1, f2, f4]`. Simplify using `only [xiZ_unit, map_inv, map_mul, MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val]`. Establish `n1 : ((ξ u₁ : Kˣ) : K) ≠ 0` using `Units.ne_zero _`. Establish `n2 : ((ξ u₂ : Kˣ) : K) ≠ 0` using `Units.ne_zero _`.
+
+Establish `n3 : ((ξ v₁ : Kˣ) : K) ≠ 0` using `Units.ne_zero _`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem scal_law (ξ : kˣ →* Kˣ) {r n n' d d' : ℕ} (hn : n = r + d) (hn' : n' = r + d') (hr : r ≤ n) (hr' : r ≤ n')
     (A Ai : Matrix (Fin n) (Fin n) k) (B C : Matrix (Fin n') (Fin n') k)
     (hA : LLz r A) (hC : LLz r C) (h1 : Ai * A = 1) (h2 : B * C = 1) :
@@ -150,10 +196,22 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectru
 
 def redMQ {a b : ℕ} (x : HomE E a b) : Matrix (Fin b) (Fin a) (𝓞 E ⧸ P.asIdeal) := Matrix.of fun l s => redP P (x (Pi.single s 1) l)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h _ hv => map_stdAt3 P x h hv, fun h s l => (ciMem_stdAt P _).1 (h _ (ciSingle_mem s)) l⟩`.
+-/
 theorem intM_iff {a b : ℕ} (x : HomE E a b) :
     (∀ s l, IntAt P (x (Pi.single s 1) l)) ↔ ∀ v ∈ stdAt E a P, x v ∈ stdAt E b P :=
   ⟨fun h _ hv => map_stdAt3 P x h hv, fun h s l => (ciMem_stdAt P _).1 (h _ (ciSingle_mem s)) l⟩
 
+/- English proof (translation)
+Establish `hv'` using `(ciMem_stdAt P v).1 hv`. Use function extensionality and compare the values at `l`. Establish `e : x v l = ∑ s, v s * x (Pi.single s 1) l`. Establish `h1 : x v = ∑ s, v s • x (Pi.single s 1)` using `by conv_lhs => rw [pi_eq_sum_univ v]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`.
+
+Rewrite using `[h1, Finset.sum_apply]`. Both sides reduce to the same expression. Use `show redP P (x v l) = _`. Rewrite using `[e, redP_sum _ _ fun s _ => (hv' s).mul (hx s l)]`. Simplify using `only [Matrix.mulVec, dotProduct, redMQ, Matrix.of_apply, redV]`.
+
+Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[reduction_mul (hv' s) (hx s l), mul_comm]`.
+-/
 theorem redV_map {a b : ℕ} (x : HomE E a b) (hx : ∀ s l, IntAt P (x (Pi.single s 1) l)) {v : Sp E a} (hv : v ∈ stdAt E a P) :
     redV P (x v) = (redMQ P x).mulVec (redV P v) := by
   classical
@@ -176,6 +234,11 @@ theorem redV_map {a b : ℕ} (x : HomE E a b) (hx : ∀ s l, IntAt P (x (Pi.sing
   refine Finset.sum_congr rfl fun s _ => ?_
   rw [reduction_mul (hv' s) (hx s l), mul_comm]
 
+/- English proof (translation)
+Use extensionality with `l s`. Establish `h` using `congrFun (hred _ (ciSingle_mem s)) l`. Rewrite `h` using `[ciRedV_single]`. Use `show redP P (x (Pi.single s 1) l) = _`. Unfold `redV at h`.
+
+Rewrite using `[h]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem redMQ_of {a b : ℕ} (x : HomE E a b) (H : Matrix (Fin b) (Fin a) (𝓞 E ⧸ P.asIdeal))
     (hred : ∀ v ∈ stdAt E a P, redV P (x v) = H.mulVec (redV P v)) : redMQ P x = H := by
   ext l s
@@ -186,9 +249,19 @@ theorem redMQ_of {a b : ℕ} (x : HomE E a b) (H : Matrix (Fin b) (Fin a) (𝓞 
   rw [h]
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+The claim follows from `(intM_iff P f.toLinearMap).2 fun v hv => (hf v).2 hv`.
+-/
 theorem glint_int {n : ℕ} {f : Sp E n ≃ₗ[E] Sp E n} (hf : f ∈ GLint E n P) : ∀ s l, IntAt P (f.toLinearMap (Pi.single s 1) l) :=
   (intM_iff P f.toLinearMap).2 fun v hv => (hf v).2 hv
 
+/- English proof (translation)
+Establish `hfi : (f⁻¹ : Sp E n ≃ₗ[E] Sp E n) ∈ GLint E n P` using `(GLint E n P).inv_mem hf`. Establish `h1 : redMQ P (LinearMap.id : HomE E n n) = redMQ P (f⁻¹ : Sp E n ≃ₗ[E] Sp E n).toLinearMap * redMQ P f.toLinearMap`. Use `redMQ_of P _ _ fun v hv => ?_` and prove the remaining obligations. Establish `a1 : redV P (f v) = (redMQ P f.toLinearMap).mulVec (redV P v)` using `redV_map P f.toLinearMap (glint_int P hf) hv`. Establish `a2 : redV P ((f⁻¹ : Sp E n ≃ₗ[E] Sp E n) (f v)) = (redMQ P (f⁻¹ : Sp E n ≃ₗ[E] Sp E n).toLinearMap).mulVec (redV P (f v))` using `redV_map P (f⁻¹ : Sp E n ≃ₗ[E] Sp E n).toLinearMap (glint_int P hfi) ((hf v).2 hv)`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, ← a1, ← a2]`. Use `show redV P v = redV P (f.symm (f v))`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Rewrite using `[← h1]`. Use `redMQ_of P _ _ fun v _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.one_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem redMQ_mul_inv {n : ℕ} {f : Sp E n ≃ₗ[E] Sp E n} (hf : f ∈ GLint E n P) :
     redMQ P (f⁻¹ : Sp E n ≃ₗ[E] Sp E n).toLinearMap * redMQ P f.toLinearMap = 1 := by
   have hfi : (f⁻¹ : Sp E n ≃ₗ[E] Sp E n) ∈ GLint E n P := (GLint E n P).inv_mem hf
@@ -205,6 +278,11 @@ theorem redMQ_mul_inv {n : ℕ} {f : Sp E n ≃ₗ[E] Sp E n} (hf : f ∈ GLint 
   rw [Matrix.one_mulVec]
   rfl
 
+/- English proof (translation)
+Use `redMQ_of P _ _ fun v hv => ?_` and prove the remaining obligations. Establish `h1 : f v ∈ stdAt E a P` using `(hf v).2 hv`. Establish `h2 : y (f v) ∈ stdAt E b P` using `map_stdAt3 P y hy h1`. Use `show redV P (g (y (f v))) = _`. Rewrite using `[hA _ h2, redV_map P y hy h1]`.
+
+Establish `h3 : redV P (f v) = (redMQ P f.toLinearMap).mulVec (redV P v)` using `redV_map P f.toLinearMap (glint_int P hf) hv`. Rewrite using `[h3, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+-/
 theorem redMQ_sandwich {a b : ℕ} {f : Sp E a ≃ₗ[E] Sp E a} (hf : f ∈ GLint E a P) (g : Sp E b ≃ₗ[E] Sp E b)
     (A : Matrix (Fin b) (Fin b) (𝓞 E ⧸ P.asIdeal))
     (hA : ∀ v ∈ stdAt E b P, redV P (g v) = A.mulVec (redV P v))
@@ -218,6 +296,11 @@ theorem redMQ_sandwich {a b : ℕ} {f : Sp E a ≃ₗ[E] Sp E a} (hf : f ∈ GLi
   have h3 : redV P (f v) = (redMQ P f.toLinearMap).mulVec (redV P v) := redV_map P f.toLinearMap (glint_int P hf) hv
   rw [h3, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Rewrite using `[intM_iff, intM_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Establish `h1` using `h (f.symm v) ((hf _).1 (by rw [LinearEquiv.apply_symm_apply]; exact hv))`. Establish `h2 : g (y v) ∈ stdAt E b P`.
+
+Simplify `h1` using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Conclude with `(hg _).1 h2`. Introduce `h v hv`. Conclude with `(hg _).2 (h _ ((hf v).2 hv))`.
+-/
 theorem intM_sandwich {a b : ℕ} {f : Sp E a ≃ₗ[E] Sp E a} (hf : f ∈ GLint E a P) {g : Sp E b ≃ₗ[E] Sp E b} (hg : g ∈ GLint E b P)
     (y : HomE E a b) :
     (∀ s l, IntAt P ((g.toLinearMap ∘ₗ y ∘ₗ f.toLinearMap) (Pi.single s 1) l)) ↔ ∀ s l, IntAt P (y (Pi.single s 1) l) := by
@@ -231,6 +314,11 @@ theorem intM_sandwich {a b : ℕ} {f : Sp E a ≃ₗ[E] Sp E a} (hf : f ∈ GLin
   · intro h v hv
     exact (hg _).2 (h _ ((hf v).2 hv))
 
+/- English proof (translation)
+Establish `hM : ∀ i j, LinearMap.toMatrix' f.toLinearMap i j = f.toLinearMap (Pi.single j 1) i`. Introduce `i j`. Simplify using `[LinearMap.toMatrix'_apply]`. Establish `hN : LinearMap.toMatrix' f.toLinearMap = Matrix.of fun i j => f.toLinearMap (Pi.single j 1) i`. Use extensionality with `i j`.
+
+Conclude with `hM i j`. Rewrite using `[LinearEquiv.coe_det, ← LinearMap.det_toMatrix', hN, redP_det (Matrix.of fun i j => f.toLinearMap (Pi.single j 1) i) fun i j => glint_int P hf j i]`. Conclude with `congrArg Matrix.det (Matrix.ext fun _ _ => rfl)`.
+-/
 theorem redP_detEquiv {n : ℕ} {f : Sp E n ≃ₗ[E] Sp E n} (hf : f ∈ GLint E n P) :
     redP P ((LinearEquiv.det f : Eˣ) : E) = (redMQ P f.toLinearMap).det := by
   have hM : ∀ i j, LinearMap.toMatrix' f.toLinearMap i j = f.toLinearMap (Pi.single j 1) i := by
@@ -245,10 +333,28 @@ theorem redP_detEquiv {n : ℕ} {f : Sp E n ≃ₗ[E] Sp E n} (hf : f ∈ GLint 
 
 variable {P} {K : Type} [Field K]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitV_eq (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a : E) : LocE.unitV χ a = xiZ χ (redP P a) := rfl
 
 open Classical in
 
+/- English proof (translation)
+Establish `hq0` using `ciQ_ne_zero hu`. Establish `hent : ∀ p p' (hp : p < n + 0) (hp' : p' < n' + 0), LocE.entB q k₀ 0 n' 0 n 0 0 x p p' = x (Pi.single ⟨p', hp'⟩ 1) ⟨p, hp⟩` using `fun p p' hp hp' => entB_inB q k₀ n' n 0 0 x hp hp'`. Unfold `LocE.PhiQ`. Distinguish the cases in `hI : ∀ s l, IntAt P (x (Pi.single s 1) l)`. Rewrite using `[if_pos hI]`.
+
+Establish `hC1 : ∀ p p', p < n + 0 → p' < n' + 0 → IntAt P (LocE.entB q k₀ 0 n' 0 n 0 0 x p p')` using `fun p p' hp hp' => by`. Rewrite using `[hent p p' hp hp']`. Conclude with `hI _ _`. Establish `hC2 : (∀ p p', r ≤ p → p < n + 0 → p' < r → IntAt P (LocE.entB q k₀ 0 n' 0 n 0 0 x p p' / (q : E))) ↔ LLz r (redMQ P x)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h i j hi hj`. Establish `h1` using `h i.1 j.1 hi i.2 hj`. Rewrite `h1` using `[hent _ _ i.2 j.2]`. Conclude with `(ciRed_of_div hq hq0 h1).2`. Introduce `h p p' hp1 hp2 hp'`.
+
+Establish `hp'' : p' < n' + 0` using `lt_of_lt_of_le hp' hn'`. Rewrite using `[hent p p' hp2 hp'']`. Conclude with `ciIntAt_div hq hu (hI _ _) (h ⟨p, hp2⟩ ⟨p', hp''⟩ hp1 hp')`. Unfold `phiZ`. Distinguish the cases in `hL : LLz r (redMQ P x)`.
+
+Rewrite using `[if_pos ⟨hC1, hC2.2 hL⟩, if_pos hL]`. Establish `hmat : (Matrix.of fun s t : Fin r => LocE.entB q k₀ 0 n' 0 n 0 0 x s.1 t.1) = Matrix.of fun s t : Fin r => x (Pi.single (Fin.castLE hn' t) 1) (Fin.castLE hn s)`. Use extensionality with `s t`. Conclude with `hent _ _ _ _`. Rewrite using `[hmat, unitV_eq, redP_det (Matrix.of fun s t : Fin r => x (Pi.single (Fin.castLE hn' t) 1) (Fin.castLE hn s)) fun s t => hI _ _]`.
+
+Conclude with `congrArg (fun N => xiZ ξ (Matrix.det N)) (Matrix.ext fun _ _ => rfl)`. Rewrite using `[if_neg (fun h => hL (hC2.1 h.2)), if_neg hL]`. Rewrite using `[if_neg hI, if_neg]`. Introduce `h`. Conclude with `hI fun s l => by`.
+
+Establish `h1` using `h.1 l.1 s.1 l.2 s.2`. Rewrite `h1` using `[hent _ _ l.2 s.2]`. Then use the resulting hypothesis.
+-/
 theorem phiQ_eq {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
     (k₀ r n' n : ℕ) (hn' : r ≤ n') (hn : r ≤ n) (x : HomE E (n' + 0) (n + 0)) :
     LocE.PhiQ q ξ k₀ r 0 n' 0 n x = if (∀ s l, IntAt P (x (Pi.single s 1) l)) then phiZ ξ hn hn' (redMQ P x) else 0 := by
@@ -287,9 +393,17 @@ theorem phiQ_eq {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : 
       have h1 := h.1 l.1 s.1 l.2 s.2
       rwa [hent _ _ l.2 s.2] at h1
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun _ => funext fun _ => rfl`.
+-/
 theorem funLeft_zero (n : ℕ) : (LinearMap.funLeft E E (Fin.castAdd 0) : Sp E (n + 0) →ₗ[E] Sp E n) = LinearMap.id :=
   LinearMap.ext fun _ => funext fun _ => rfl
 
+/- English proof (translation)
+Substitute `hc'` using the available equality. Rewrite using `[funLeft_zero]`. Establish `e1 : (g.toLinearMap ∘ₗ y ∘ₗ f.toLinearMap ∘ₗ (LinearMap.id : Sp E (n' + 0) →ₗ[E] Sp E (n' + 0)) : HomE E (n' + 0) (n + 0)) = g.toLinearMap ∘ₗ y ∘ₗ f.toLinearMap` using `rfl`. Establish `e2 : (y ∘ₗ (LinearMap.id : Sp E (n' + 0) →ₗ[E] Sp E (n' + 0)) : HomE E (n' + 0) (n + 0)) = y` using `rfl`. Rewrite using `[e1, e2, phiQ_eq hq hu ξ k₀ r n' n hn' hn, phiQ_eq hq hu ξ k₀ r n' n hn' hn]`.
+
+Use `split_ifs with k1 k2 k2`. Conclude with `(congrArg (phiZ ξ hn hn') (redMQ_sandwich P hf g A hA y k2)).trans (phiZ_law ξ hn hn' A Ai _ Bi lA lAi lB lBi h1 h2 _)`. Conclude with `absurd ((intM_sandwich P hf hg y).1 k1) k2`. Conclude with `absurd ((intM_sandwich P hf hg y).2 k2) k1`. Rewrite using `[mul_zero]`.
+-/
 theorem phiQ_law {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
     (k₀ r c' n' n : ℕ) (hc' : c' = 0) (hn' : r ≤ n') (hn : r ≤ n)
     {f : Sp E n' ≃ₗ[E] Sp E n'} (hf : f ∈ GLint E n' P) {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ GLint E n P)
@@ -318,11 +432,17 @@ end Red
 
 section Grp
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem det_castQ {R : Type} [CommRing R] {a b : ℕ} (h : a = b) (F : ℕ → ℕ → R) :
     (Matrix.of fun s t : Fin a => F s.1 t.1).det = (Matrix.of fun s t : Fin b => F s.1 t.1).det := by
   subst h
   rfl
 
+/- English proof (translation)
+Introduce `i j hi hj`. Use `(mem_btG.1 hM) i j ?_` and prove the remaining obligations. Rewrite using `[coarse_of_lt hj, coarse_of_le hi]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem hq_LLz {k : Type} [CommRing k] {n r d : ℕ} {M : GL (Fin n) k} (hM : M ∈ HQ k n r d) :
     LLz r (M : Matrix (Fin n) (Fin n) k) := by
   intro i j hi hj
@@ -330,6 +450,15 @@ theorem hq_LLz {k : Type} [CommRing k] {n r d : ℕ} {M : GL (Fin n) k} (hM : M 
   rw [coarse_of_lt hj, coarse_of_le hi]
   omega
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Rewrite using `[blkDet_val]`. Establish `hc : ∀ i : Fin (r + d), coarse r [d] i.1 = 1 ↔ r ≤ i.1`. Introduce `i`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Assume the negation of the conclusion as `h'`. Rewrite `h` using `[coarse_of_lt (Nat.not_le.mp h')]`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+
+Rewrite using `[coarse_of_le h]`. Establish `h2 : i.1 - r < d` using `by have := i.2; omega`. Simplify using `[blkIdx, h2]`. Set `e : Fin d ≃ {i : Fin (r + d) // coarse r [d] i.1 = 1}` to `{ toFun := fun s => ⟨brI rfl s, (hc _).2 (Nat.le_add_right _ _)⟩ invFun := fun i => ⟨i.1.1 - r, by have h1 := i.1.2; have h2 := (hc i.1).1 i.2; omega⟩ left_inv := fun s => Fin.ext (by simp [brI]) right_inv := fun i => Subtype.ext (Fin.ext (by`. Establish `h2` using `(hc i.1).1 i.2`.
+
+Use `show r + (i.1.1 - r) = i.1.1`. Use the proof step `omega)) }`. Rewrite using `[← Matrix.det_submatrix_equiv_self e]`. Both sides reduce to the same expression.
+-/
 theorem blkDet_br {k : Type} [CommRing k] {n r d : ℕ} (hn : n = r + d) (M : ↥(HQ k n r d)) :
     ((blkDet n k (coarse r [d]) 1 M : kˣ) : k) = ((M.1 : Matrix (Fin n) (Fin n) k).submatrix (brI hn) (brI hn)).det := by
   subst hn
@@ -356,6 +485,15 @@ theorem blkDet_br {k : Type} [CommRing k] {n r d : ℕ} (hn : n = r + d) (M : �
   rw [← Matrix.det_submatrix_equiv_self e]
   rfl
 
+/- English proof (translation)
+Establish `hL : LLz n (padM k n A)`. Introduce `i j hi hj`. Establish `hi' : i = Fin.last n` using `Fin.ext (by have := i.2; show i.1 = n; omega)`. Substitute `hi'` using the available equality. Take `⟨j', rfl⟩ : ∃ j' : Fin n, j = Fin.castSucc j'` from `⟨⟨j.1, hj⟩, rfl⟩`.
+
+Simplify using `[padM]`. Rewrite using `[det_LLz (padM k n A) hL]`. Establish `e1 : (padM k n A).submatrix (Fin.castAdd 1) (Fin.castAdd 1) = A`. Use extensionality with `i j`. Use `show padM k n A (Fin.castSucc i) (Fin.castSucc j) = A i j`.
+
+Simplify using `[padM]`. Establish `e2 : ((padM k n A).submatrix (Fin.natAdd n) (Fin.natAdd n)).det = 1`. Rewrite using `[Matrix.det_fin_one]`. Use `show padM k n A (Fin.last n) (Fin.last n) = 1`. Simplify using `[padM]`.
+
+Rewrite using `[e1, e2, mul_one]`.
+-/
 theorem det_padM {k : Type} [CommRing k] {n : ℕ} (A : Matrix (Fin n) (Fin n) k) : (padM k n A).det = A.det := by
   have hL : LLz n (padM k n A) := by
     intro i j hi hj
@@ -376,6 +514,9 @@ theorem det_padM {k : Type} [CommRing k] {n : ℕ} (A : Matrix (Fin n) (Fin n) k
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {K : Type} [Field K]
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Use `show ((extG h w : GL (Fin (n + 1)) (𝓞 E ⧸ w.1.asIdeal)).1).det = _`. Rewrite using `[extG_apply]`. Conclude with `det_padM _`.
+-/
 theorem det_extGH {N n : ℕ} (hN : N = n + 1) {SG : Finset (HeightOneSpectrum (𝓞 E))} (h : GLG E n SG) (w : SG) :
     ((extGH hN h w : GL (Fin N) (𝓞 E ⧸ w.1.asIdeal)) : Matrix (Fin N) (Fin N) (𝓞 E ⧸ w.1.asIdeal)).det =
       ((h w : GL (Fin n) (𝓞 E ⧸ w.1.asIdeal)) : Matrix (Fin n) (Fin n) (𝓞 E ⧸ w.1.asIdeal)).det := by
@@ -384,6 +525,9 @@ theorem det_extGH {N n : ℕ} (hN : N = n + 1) {SG : Finset (HeightOneSpectrum (
   rw [extG_apply]
   exact det_padM _
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx' : κ.symm x ∈ stdAt E N P` using `(hκ (κ.symm x)).1 (by rw [LinearEquiv.apply_symm_apply]; exact hx)`. Establish `h1` using `hred _ hx'`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[h1, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem red_symmQ {N : ℕ} {κ : Sp E N ≃ₗ[E] Sp E N} (hκ : κ ∈ GLint E N P) {H : GL (Fin N) (𝓞 E ⧸ P.asIdeal)}
     (hred : ∀ x ∈ stdAt E N P, redV P (κ x) = (H⁻¹).1.mulVec (redV P x)) :
     ∀ x ∈ stdAt E N P, redV P (κ.symm x) = H.1.mulVec (redV P x) := by
@@ -393,6 +537,19 @@ theorem red_symmQ {N : ℕ} {κ : Sp E N ≃ₗ[E] Sp E N} (hκ : κ ∈ GLint E
   rw [LinearEquiv.apply_symm_apply] at h1
   rw [h1, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Introduce `i j hi hj`. Establish `h1 : Loc.inX E n c (Pi.single j 1) ∈ LocE.parL P q kj n c`. Unfold `LocE.parL`. Rewrite using `[ciMem_sclLat]`. Introduce `l`.
+
+Rewrite using `[ciInX_apply]`. Distinguish the cases in `hl : l.1 < n`. Rewrite using `[dif_pos hl]`. Distinguish the cases in `hlj : (⟨l.1, hl⟩ : Fin n) = j`. Establish `h2 : ¬ (kj ≤ l.1 ∧ l.1 < n)`.
+
+Establish `h3 : l.1 = j.1` using `congrArg Fin.val hlj`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h2, hlj, Pi.single_eq_same, zpow_zero, inv_one, one_mul]`. Conclude with `ciIntAt_one`. Rewrite using `[Pi.single_eq_of_ne hlj, mul_zero]`.
+
+Conclude with `ciIntAt_zero`. Rewrite using `[dif_neg hl, mul_zero]`. Conclude with `ciIntAt_zero`. Establish `h2` using `(hr.2 _).2 h1`. Rewrite `h2` using `[hrg]`.
+
+Unfold `LocE.parL at h2`. Rewrite `h2` using `[ciMem_sclLat]`. Establish `h3` using `h2 (Fin.castAdd c i)`. Use `beta_reduce at h3`. Rewrite `h3` using `[ciInX_castAdd]`.
+
+Establish `h4 : (kj ≤ (Fin.castAdd c i).1 ∧ (Fin.castAdd c i).1 < n)` using `⟨hi, i.2⟩`. Rewrite `h3` using `[if_pos h4, zpow_one, inv_mul_eq_div]`. Conclude with `(ciRed_of_div hq hq0 h3).2`.
+-/
 theorem jq_LLz {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) {kj n c : ℕ} {g : Sp E n ≃ₗ[E] Sp E n}
     {rr : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hr : rr ∈ LocE.JQ P q kj n c)
     (hrg : ∀ x, rr (Loc.inX E n c x) = Loc.inX E n c (g x)) : LLz kj (redMQ P g.toLinearMap) := by
@@ -425,6 +582,15 @@ theorem jq_LLz {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E
   rw [if_pos h4, zpow_one, inv_mul_eq_div] at h3
   exact (ciRed_of_div hq hq0 h3).2
 
+/- English proof (translation)
+Substitute `hkj` using the available equality. Substitute `hn` using the available equality. Establish `hd : kj + d - kj = d` using `by omega`. Establish `e0` using `det_castQ hd (fun s t => Loc.atN (rr.toLinearMap (Loc.eN E (kj + d + c) (kj + t))) (kj + s))`. Establish `hm : (Matrix.of fun s t : Fin d => Loc.atN (rr.toLinearMap (Loc.eN E (kj + d + c) (kj + t.1))) (kj + s.1)) = Matrix.of fun s t : Fin d => g.toLinearMap (Pi.single (brI rfl t) 1) (brI rfl s)`.
+
+Use extensionality with `s t`. Establish `ht : kj + t.1 < kj + d` using `by have := t.2; omega`. Establish `hs : kj + s.1 < kj + d` using `by have := s.2; omega`. Use `show Loc.atN (rr (Loc.eN E (kj + d + c) (kj + t.1))) (kj + s.1) = _`. Rewrite using `[ciEN ht, hrg, ciAtN_inX hs]`.
+
+Both sides reduce to the same expression. Establish `e1 : redP P (Matrix.of fun s t : Fin (kj + d - kj) => Loc.atN (rr.toLinearMap (Loc.eN E (kj + d + c) (kj + t.1))) (kj + s.1)).det = ((redMQ P g.toLinearMap).submatrix (brI rfl) (brI rfl)).det`. Rewrite using `[e0, hm, redP_det (Matrix.of fun s t : Fin d => g.toLinearMap (Pi.single (brI rfl t) 1) (brI rfl s)) fun s t => glint_int P hg _ _]`. Conclude with `congrArg Matrix.det (Matrix.ext fun _ _ => rfl)`. Unfold `LocE.lamQB`.
+
+Rewrite using `[unitV_eq]`. Conclude with `congrArg (fun z => (xiZ ξ z)⁻¹) e1`.
+-/
 theorem lamQB_eq (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {kj r n c d : ℕ} (hkj : kj = r) (hn : n = r + d) {g : Sp E n ≃ₗ[E] Sp E n}
     (hg : g ∈ GLint E n P) {rr : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} (hrg : ∀ x, rr (Loc.inX E n c x) = Loc.inX E n c (g x)) :
     LocE.lamQB ξ kj n rr.toLinearMap = (xiZ ξ ((redMQ P g.toLinearMap).submatrix (brI hn) (brI hn)).det)⁻¹ := by
@@ -456,17 +622,28 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
 
+/- English proof (translation)
+Establish `h1 : (m2 + 1) * (R.t + 1) = (m2 + 1) * R.t + (m2 + 1)` using `by ring`. Unfold `Ranks.N Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_midQ {m2 : ℕ} (hm : R.m = m2 + 2) : R.N (m2 + 1) = R.r + (m2 + 1) * R.t := by
   have h1 : (m2 + 1) * (R.t + 1) = (m2 + 1) * R.t + (m2 + 1) := by ring
   unfold Ranks.N Ranks.r
   omega
 
+/- English proof (translation)
+Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem kj_midQ {m2 : ℕ} (hm : R.m = m2 + 2) : R.k + (m2 + 1) = R.r := by
   unfold Ranks.r
   omega
 
 open Classical in
 
+/- English proof (translation)
+Establish `e : rowTy Ch sel mu P w = rowTyQ R (mu : Chr X.F X.E X.K) (QE sel (mu : Chr X.F X.E X.K)) ⟨w.1, (Finset.mem_union.mp w.2).resolve_left hw⟩` using `LevFam.glue_of_not _ _ w hw`. Use `revert hH`. Use `show ∀ hH : H ∈ ((rowTy Ch sel mu P w).inv).H, ∃ hH' : H ∈ HQ (𝓞 X.E ⧸ w.1.asIdeal) (R.N R.m - 1) R.r (R.m * R.t), ((rowTy Ch sel mu P w).inv).lam ⟨H, hH⟩ = lamQ (resChar (mu : Chr X.F X.E X.K) w.1) (R.N R.m - 1) R.r (R.m * R.t) ⟨H, hH'⟩`. Rewrite using `[e]`. Introduce `hH`.
+
+Use `⟨hH, ?_⟩` and prove the remaining obligations. Use `show ((lamQP (mu : Chr X.F X.E X.K) w.1 (R.N R.m - 1) R.r (R.m * R.t))⁻¹)⁻¹ ⟨H, hH⟩ = _`. Rewrite using `[inv_inv]`. Both sides reduce to the same expression.
+-/
 theorem rowTy_inv_lamQ (P : LevFam X.E X.K R.r Pr.vGs) (w : rowSG Pr sel mu) (hw : w.1 ∉ Pr.vGs)
     (H : GL (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)) (hH : H ∈ ((rowTy Ch sel mu P).inv w).H) :
     ∃ hH' : H ∈ HQ (𝓞 X.E ⧸ w.1.asIdeal) (R.N R.m - 1) R.r (R.m * R.t),
@@ -486,6 +663,35 @@ theorem rowTy_inv_lamQ (P : LevFam X.E X.K R.r Pr.vGs) (w : rowSG Pr sel mu) (hw
 
 open Classical in
 
+/- English proof (translation)
+Introduce `w hw c h₁ hh₁ κr κt hκr hκt y`. Establish `hm` using `hOk.hm`. Establish `hwQ : w.1 ∈ QE sel (mu : Chr X.F X.E X.K)` using `(Finset.mem_union.mp w.2).resolve_left hw`. Establish `hq : ((qOf w.1 : ℕ) : 𝓞 X.E) ∈ w.1.asIdeal` using `qOf_memB w.1`. Establish `hu` using `hU w.1 hwQ`.
+
+Establish `hq0` using `ciQ_ne_zero hu`. Establish `hn'` using `rank_midQ (R := R) hm`. Establish `hn` using `rank_X'_eq R`. Establish `hkj` using `kj_midQ (R := R) hm`. Establish `hr' : R.r ≤ R.N (m2 + 1)` using `by rw [hn']; exact Nat.le_add_right _ _`.
+
+Establish `hgrp : ∀ c' : ↥(GLint X.E (R.N (m2 + 1)) w.1), c' ∈ (L.levQ (m2 + 1) b ⟨w.1, hwQ⟩).H → ∃ rr : AutY X R (m2 + 1), rr ∈ LocE.JQ w.1 (qOf w.1) (R.k + (m2 + 1)) (R.N (m2 + 1)) (cOf R (m2 + 1)) ∧ rr ∈ Loc.Cbe (Jat (Pr` using `Pr) cst.sharp (m2 + 1) w.1) (L.h (m2 + 1) b ⟨w.1, Finset.mem_union_right _ hwQ⟩) ∧ ∀ x, rr (Loc.inX X.E (R.N (m2 + 1)) (cOf R (m2 + 1)) x) = Loc.inX X.E (R.N (m2 + 1)) (cOf R (m2 + 1)) (c'.1 x) := by`. Introduce `c' h1`. Rewrite `h1` using `[hOk.grpQ (m2 + 1) b ⟨w.1, hwQ⟩, Subgroup.mem_subgroupOf]`. Unfold `prCat at h1`. Take `⟨rr, hrr, hx⟩` from `h1`.
+
+Use `⟨rr, ?_, hrr, hx⟩` and prove the remaining obligations. Establish `h2` using `hrr.2`. Rewrite `h2` using `[hOk.last_h]`. Establish `h3 : rr ∈ Jat (Pr` using `Pr) (R := R) cst.sharp (m2 + 1) w.1 := by simpa [MulAut.conj_apply] using h2`. Unfold `Jat at h3`.
+
+Rewrite `h3` using `[if_neg hw]`. Then use the resulting hypothesis. Take `⟨rc, hJc, hCc, hxc⟩` from `hgrp c.1 c.2`. Take `⟨ri, hJi, -, hxi⟩` from `hgrp c.1⁻¹ (Subgroup.inv_mem _ c.2)`. Establish `lC : LLz R.r (redMQ w.1 c.1.1.toLinearMap)`. Use `jq_LLz hq hq0 hJc hxc` as an intermediate fact.
+
+Rewrite `this` using `[hkj]`. Then use the resulting hypothesis. Establish `lB : LLz R.r (redMQ w.1 (c.1⁻¹).1.toLinearMap)`. Use `jq_LLz hq hq0 hJi hxi` as an intermediate fact. Rewrite `this` using `[hkj]`. Then use the resulting hypothesis. Establish `h2 : redMQ w.1 (c.1⁻¹).1.toLinearMap * redMQ w.1 c.1.1.toLinearMap = 1` using `redMQ_mul_inv w.1 c.1.2`.
+
+Take `⟨hH', hlamR⟩` from `rowTy_inv_lamQ Ch sel mu P w hw (h₁ w) hh₁`. Establish `lA : LLz R.r ((h₁ w : GL _ _) : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal))` using `hq_LLz hH'`. Establish `lAi : LLz R.r (((h₁ w)⁻¹ : GL _ _) : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal))` using `hq_LLz (Subgroup.inv_mem _ hH')`. Establish `h1 : (((h₁ w)⁻¹ : GL _ _) : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)) * ((h₁ w : GL _ _) : Matrix _ _ _) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+
+Establish `hA` using `red_symmQ κr.2 hκr`. Establish `hs1 : rhoS Ch sel mu (m2 + 1) w (LinearEquiv.det (c.1⁻¹).1 : X.Eˣ) = xiZ (resChar (mu : Chr X.F X.E X.K) w.1)⁻¹ (redMQ w.1 (c.1⁻¹).1.toLinearMap).det`. Unfold `rhoS`. Rewrite using `[if_neg hw, unitV_eq, redP_detEquiv w.1 (c.1⁻¹).2]`. Establish `hs2 : rhoT Ch sel mu (m2 + 1) w (LinearEquiv.det κt.1 : X.Eˣ) = xiZ (resChar (mu : Chr X.F X.E X.K) w.1) (((h₁ w)⁻¹ : GL _ _) : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)).det`.
+
+Unfold `rhoT`. Rewrite using `[if_neg hw, unitV_eq, redP_detEquiv w.1 κt.2, redMQ_of w.1 κt.1.toLinearMap _ hκt, ← Pi.inv_apply, ← map_inv, det_extGH]`. Both sides reduce to the same expression. Establish `hl1 : (((((rowTy Ch sel mu P).inv w).lam ⟨h₁ w, hh₁⟩)⁻¹ : X.Kˣ) : X.K) = (xiZ (resChar (mu : Chr X.F X.E X.K) w.1) (((h₁ w : GL _ _) : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal)).submatrix (brI hn) (brI hn)).det)⁻¹`. Rewrite using `[Units.val_inv_eq_inv_val, hlamR, lamQ_apply, ← xiZ_unit, blkDet_br hn]`.
+
+Establish `hl2 : ((((L.levQ (m2 + 1) b ⟨w.1, (Finset.mem_union.mp w.2).resolve_left hw⟩).lam c)⁻¹ : X.Kˣ) : X.K) = xiZ (resChar (mu : Chr X.F X.E X.K) w.1) ((redMQ w.1 c.1.1.toLinearMap).submatrix (brI hn') (brI hn')).det`. Rewrite using `[Units.val_inv_eq_inv_val, hOk.chrQ (m2 + 1) b ⟨w.1, hwQ⟩ c rc hCc hxc]`. Unfold `chiInv`. Rewrite using `[hOk.last_h]`. Establish `hrange : Finset.range (cOf R (m2 + 1) - 1) = ∅`.
+
+Rewrite using `[cOf_topB hm]`. Both sides reduce to the same expression. Establish `hn1 : Loc.n1Arg rc = 0`. Unfold `Loc.n1Arg`. Rewrite using `[hrange, Finset.sum_empty]`.
+
+Establish `hone : ((1 : AutY X R (m2 + 1))⁻¹ * rc * 1 : AutY X R (m2 + 1)) = rc` using `by simp`. Rewrite using `[hn1, hOk.cst_ok.psi_int _ 0 ciIntAt_zero, inv_one, one_mul, hone]`. Unfold `lamRow`. Rewrite using `[if_neg hw, lamQB_eq _ hkj hn' c.1.2 hxc, inv_inv]`. Establish `hP1 : PhiTop Ch mu cst.sharp m2 w.1 (κr.1.symm.toLinearMap ∘ₗ y ∘ₗ (c.1⁻¹).1.toLinearMap ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))) = xiZ (resChar (mu : Chr X.F X.E X.K) w.1) (((h₁ w : GL _ _) : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) (𝓞 X.E ⧸ w.1.asIdeal …`.
+
+Unfold `PhiTop`. Rewrite using `[if_neg hw]`. Conclude with `phiQ_law hq hu _ R.k R.r (cOf R (m2 + 1)) (R.N (m2 + 1)) (R.N R.m - 1) (cOf_topB hm) hr' (r_le_X' R) (c.1⁻¹).2 ((GLint X.E (R.N R.m - 1) w.1).inv_mem κr.2) _ _ _ hA lA lAi lB lC h1 h2 y`. Establish `hS` using `scal_law (resChar (mu : Chr X.F X.E X.K) w.1) hn hn' (r_le_X' R) hr' _ _ _ _ lA lC h1 h2`. Rewrite using `[hs1, hs2, hl1, hl2, hP1, ← hS]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem top_local_law_at_Q_primes {G : ChGlob X R.m} {m2 : ℕ} (hOk : L.Ok Ch sel mu cst G m2) (hU : QUnif sel mu)
     (P : LevFam X.E X.K R.r Pr.vGs) (b : L.β (m2 + 1)) : TopLawQ Ch sel mu cst L P m2 b := by
   intro w hw c h₁ hh₁ κr κt hκr hκt y
@@ -581,6 +787,11 @@ variable {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → He
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨y0, hy0, rfl⟩` from `hY`. Introduce `a ha a' ha'`. Establish `h1` using `(mem_locLat _ _ _ (a - y0)).1 ha w`. Establish `h2` using `(mem_locLat _ _ _ (a' - y0)).1 ha' w`. Simplify using `only [if_neg hw, zpow_natCast] at h1 h2`.
+
+Establish `e : a - a' = (a - y0) - (a' - y0)` using `by abel`. Rewrite using `[e, smul_sub]`. Conclude with `sub_mem h1 h2`.
+-/
 theorem ybSet_diffQ {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} {Y : Set (Sp X.E n)} (hY : Y ∈ ybSet sel mu cst N)
     (w : rowSG Pr sel mu) (hw : w.1 ∉ Pr.vGs) :
     ∀ a ∈ Y, ∀ a' ∈ Y, ((qOf w.1 : X.E) ^ cst.M)⁻¹ • (a - a') ∈ localization₂ w.1.asIdeal N := by
@@ -593,6 +804,29 @@ theorem ybSet_diffQ {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} {Y : Set (Sp
   rw [e, smul_sub]
   exact sub_mem h1 h2
 
+/- English proof (translation)
+Establish `hqn` using `intAt_qpow3 (X := X) w.1`. Establish `hq0 : (qOf w.1 : X.E) ^ cst.M ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (qOf_pos w.1).ne')`. Establish `hk : ∀ v, κ.1 v ∈ stdAt X.E n w.1 ↔ v ∈ stdAt X.E n w.1` using `κ.2`. Establish `hiff : (∀ i : Fin n, IntAt w.1 ((qOf w.1 : X.E) ^ cst.M * (η ∘ₗ κ.1.toLinearMap) (Pi.single i 1))) ↔ ∀ i : Fin n, IntAt w.1 ((qOf w.1 : X.E) ^ cst.M * η (Pi.single i 1))`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h i`. Establish `hm : κ.1.symm (Pi.single i 1) ∈ stdAt X.E n w.1` using `(hk _).1 (by rw [LinearEquiv.apply_symm_apply]; exact ciSingle_mem i)`. Use `intAt_linear_form_on_std w.1 (((qOf w.1 : X.E) ^ cst.M) • (η ∘ₗ κ.1.toLinearMap)) (fun j => by` as an intermediate fact. Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`. Conclude with `h j) hm`.
+
+Simplify using `using this`. Introduce `h i`. Use `intAt_linear_form_on_std w.1 (((qOf w.1 : X.E) ^ cst.M) • η) (fun j => by` as an intermediate fact. Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`. Conclude with `h j) ((hk _).2 (ciSingle_mem i))`.
+
+Simplify using `using this`. Unfold `ftY`. Rewrite using `[if_neg hw, if_neg hw]`. Distinguish the cases in `hI : ∀ i : Fin n, IntAt w.1 ((qOf w.1 : X.E) ^ cst.M * η (Pi.single i 1))`. Rewrite using `[if_pos (hiff.2 hI), if_pos hI]`.
+
+Establish `hL : ∀ v ∈ stdAt X.E n w.1, IntAt w.1 ((qOf w.1 : X.E) ^ cst.M * η v)`. Introduce `v hv`. Use `intAt_linear_form_on_std w.1 (((qOf w.1 : X.E) ^ cst.M) • η) (fun j => by` as an intermediate fact. Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`. Conclude with `hI j) hv`.
+
+Rewrite `this` using `[LinearMap.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis. Establish `e : (η ∘ₗ κ.1.toLinearMap) y₁ = η y + η (κ.1 y₁ - y)`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `heps : IntAt w.1 ((epsSg : ℤ) : X.E)`.
+
+Establish `: ((epsSg : ℤ) : X.E) = -1` using `by simp [epsSg]`. Rewrite using `[this]`. Conclude with `intAt_neg_kernel_local_factors (by simpa using intAt_natCast_kernel_local_factors w.1 1)`. Establish `h1 : IntAt w.1 (η (κ.1 y₁ - y))`. Use `hL _ hδ` as an intermediate fact.
+
+Rewrite `this` using `[map_smul, smul_eq_mul, mul_inv_cancel_left₀ hq0]`. Then use the resulting hypothesis. Establish `h2 : IntAt w.1 ((qOf w.1 : X.E) ^ cst.M * ((qOf w.1 : X.E) ^ cst.M * η y))`. Use `hL _ hq` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul]`. Then use the resulting hypothesis. Take `⟨k, hk'⟩ : ∃ k, cst.D w = k + (cst.M + cst.M)` from `⟨cst.D w - 2 * cst.M, by omega⟩`.
+
+Establish `hqD : ∀ a : X.E, IntAt w.1 ((qOf w.1 : X.E) ^ cst.M * ((qOf w.1 : X.E) ^ cst.M * a)) → IntAt w.1 ((qOf w.1 : X.E) ^ cst.D w * a)`. Introduce `a ha`. Establish `e' : (qOf w.1 : X.E) ^ cst.D w * a = (qOf w.1 : X.E) ^ k * ((qOf w.1 : X.E) ^ cst.M * ((qOf w.1 : X.E) ^ cst.M * a))`. Rewrite using `[hk', pow_add, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e']`. Conclude with `(hqn k).mul ha`. Rewrite using `[e, mul_add, hcst.psi_add w _ _ ?_ ?_, hcst.psi_int w _ (IntAt.mul heps h1), mul_one]`. Use `hqD _ ?_` and prove the remaining obligations. Establish `e' : (qOf w.1 : X.E) ^ cst.M * ((qOf w.1 : X.E) ^ cst.M * (((epsSg : ℤ) : X.E) * η y)) = ((epsSg : ℤ) : X.E) * ((qOf w.1 : X.E) ^ cst.M * ((qOf w.1 : X.E) ^ cst.M * η y))` using `by ring`.
+
+Rewrite using `[e']`. Conclude with `heps.mul h2`. Use `hqD _ ?_` and prove the remaining obligations. Conclude with `(hqn _).mul ((hqn _).mul (heps.mul h1))`. Rewrite using `[if_neg (mt hiff.1 hI), if_neg hI]`.
+-/
 theorem ftY_moveQ (hcst : cst.Ok) (w : rowSG Pr sel mu) (hw : w.1 ∉ Pr.vGs) (hD : 2 * cst.M ≤ cst.D w) {n : ℕ} (κ : ↥(GLint X.E n w.1))
     (η : Sp X.E n →ₗ[X.E] X.E) (y y₁ : Sp X.E n) (hδ : ((qOf w.1 : X.E) ^ cst.M)⁻¹ • (κ.1 y₁ - y) ∈ stdAt X.E n w.1)
     (hq : ((qOf w.1 : X.E) ^ cst.M) • y ∈ stdAt X.E n w.1) :
@@ -662,6 +896,13 @@ section ProdU
 
 open Classical in
 
+/- English proof (translation)
+Set `F : α → M` to `fun w => if h : w ∈ A then f ⟨w, h⟩ else if h' : w ∈ B then g ⟨w, h'⟩ else 1`. Establish `e0 : ∀ w : {w // w ∈ A ∪ B}, (if h : w.1 ∈ A then f ⟨w.1, h⟩ else g ⟨w.1, (Finset.mem_union.mp w.2).resolve_left h⟩) = F w.1`. Introduce `w`. Distinguish the cases in `h : w.1 ∈ A`. Simplify using `only [F, dif_pos h]`.
+
+Simplify using `only [F, dif_neg h, dif_pos ((Finset.mem_union.mp w.2).resolve_left h)]`. Establish `e1 : ∀ w : {w // w ∈ A}, f w = F w.1` using `fun w => by simp only [F, dif_pos w.2]`. Establish `e2 : ∀ P : {P // P ∈ B}, g P = F P.1` using `fun P => by simp only [F, dif_neg (hd P.1 P.2), dif_pos P.2]`. Rewrite using `[Fintype.prod_congr _ _ e0, Fintype.prod_congr _ _ e1, Fintype.prod_congr _ _ e2]`. Rewrite using `[Finset.univ_eq_attach, Finset.univ_eq_attach, Finset.univ_eq_attach, Finset.prod_attach (A ∪ B) F, Finset.prod_attach A F, Finset.prod_attach B F]`.
+
+Conclude with `Finset.prod_union (Finset.disjoint_left.2 fun a ha hb => hd a hb ha)`.
+-/
 theorem prod_uSG_dite {α M : Type} [CommMonoid M] {A B : Finset α} (hd : ∀ P ∈ B, P ∉ A) (f : {w // w ∈ A} → M) (g : {P // P ∈ B} → M) :
     ∏ w : {w // w ∈ A ∪ B}, (if h : w.1 ∈ A then f ⟨w.1, h⟩ else g ⟨w.1, (Finset.mem_union.mp w.2).resolve_left h⟩) =
       (∏ w : {w // w ∈ A}, f w) * ∏ P : {P // P ∈ B}, g P := by
@@ -688,6 +929,13 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨w0, hw0, rfl⟩` from `(mem_mulLat _ _ _).1 hz`. Establish `hphi : phiT X.K p.deco.1 (tilQ sel mu u d).1 (x + ((cBof sel mu cst u : ℕ) : 𝓞 X.E) • w0) = phiT X.K p.deco.1 (tilQ sel mu u d).1 x`. Use `phiT_add_mul X.K p.deco (tilQ sel mu u d) (Sall sel mu u) (fun P => Finset.mem_union_left _ P.2) (Pr.T u) (fun P => ?_) x _ ?_` and prove the remaining obligations. Establish `h1 : Pr.piT u ∈ P.1.asIdeal` using `mem_asIdeal_of_mem_divs P.2`. Rewrite using `[← hPr.piT_norm u]`.
+
+Conclude with `P.1.asIdeal.mul_mem_right _ h1`. Use `(mem_mulLat _ _ _).2 ⟨(((∏ P : rowSG Pr sel mu, Col.qOf P.1) ^ cst.B : ℕ) : 𝓞 X.E) • w0, Submodule.smul_mem _ _ hw0, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul]`. Unfold `cBof`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hoff` using `offCoupling_top_invariance Ch sel mu cst hTI hPr hcst hDQ hR p Y d hYm x w0 (fun P hP => hw0 P (Finset.mem_union_right _ hP))`. Unfold `offCpl2 at hoff`. Unfold `XiCpl2`. Rewrite using `[hphi, hoff]`.
+-/
 theorem xiCpl2_invQ (hPr : Pr.Ok) (hcst : cst.Ok) (hDQ : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → 2 * cst.M ≤ cst.D P) (hR : PosT sel mu u)
     {m2 : ℕ} (hTI : TopInvAt Ch sel mu cst m2)
     (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1)))) (d : RowPt Pr R sel mu)
@@ -723,6 +971,11 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
 
 open Classical in
 
+/- English proof (translation)
+Distinguish the cases in `hw : w.1 ∈ Pr.vGs`. Take `⟨κ, h1, h2⟩` from `frsF_smul sel mu p Λ Θ g w hw`. Conclude with `⟨κ, h1, fun _ => h2, fun h => absurd hw h⟩`. Use `⟨((g.2.2 : GLQ X.E (R.N j) (QE sel (mu : Chr X.F X.E X.K))) ⟨w.1, (Finset.mem_union.mp w.2).resolve_left hw⟩)⁻¹, ?_, fun h => absurd h hw, fun _ => rfl⟩` and prove the remaining obligations. Unfold `frsF`.
+
+Rewrite using `[dif_neg hw, dif_neg hw]`. Both sides reduce to the same expression.
+-/
 theorem frsF_smulQ {j : ℕ} (p : ChPt (R := R) sel mu u j)
     (Λ : LevFam X.E X.K (R.N j) Pr.vGs) (Θ : LevQFam X.E X.K (R.N j) (QE sel (mu : Chr X.F X.E X.K)))
     (g : FrmG Λ Θ) (w : rowSG Pr sel mu) :
@@ -741,6 +994,9 @@ theorem frsF_smulQ {j : ℕ} (p : ChPt (R := R) sel mu u j)
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_mul_distrib, prod_uSG_dite hS (fun w => ((((L.levG (m2 + 1) b w).lam ⟨(g.2.1 : GLG X.E (R.N (m2 + 1)) Pr.vGs) w, g.2.1.2 _ (Set.mem_univ _)⟩)⁻¹ : X.Kˣ) : X.K)) (fun Q => ((((L.levQ (m2 + 1) b Q).lam ⟨(g.2.2 : GLQ X.E (R.N (m2 + 1)) (QE sel (mu : Chr X.F X.E X.K))) Q, …`. Rewrite using `[Units.val_mul, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, levFam_chr_apply_coe, levFam_chr_apply_coe]`. Establish `hq : (((L.levQ (m2 + 1) b).chr g.2.2 : X.Kˣ) : X.K) = ∏ Q, (((L.levQ (m2 + 1) b Q).lam ⟨(g.2.2 : GLQ X.E (R.N (m2 + 1)) (QE sel (mu : Chr X.F X.E X.K))) Q, g.2.2.2 _ (Set.mem_univ _)⟩ : X.Kˣ) : X.K)` using `piChar_apply_coe' _ _ g.2.2`. Rewrite using `[hq]`. Simplify using `only [Units.val_inv_eq_inv_val, Finset.prod_inv_distrib]`.
+-/
 theorem coupled_scalar_at_Q_primes (hS : QSep Pr sel mu) (b : L.β (m2 + 1)) (P : LevFam X.E X.K R.r Pr.vGs)
     (g : FrmG (L.levG (m2 + 1) b) (L.levQ (m2 + 1) b)) (g₁ : ↥(rowTy Ch sel mu P).inv.grp) :
     ((((rowTy Ch sel mu P).inv.chr g₁)⁻¹ * (((L.levG (m2 + 1) b).chr g.2.1)⁻¹ * ((L.levQ (m2 + 1) b).chr g.2.2)⁻¹) : X.Kˣ) : X.K) =
@@ -764,6 +1020,13 @@ theorem coupled_scalar_at_Q_primes (hS : QSep Pr sel mu) (b : L.β (m2 + 1)) (P 
 
 variable {u m2}
 
+/- English proof (translation)
+Take `⟨a, ha, hra⟩ : repY ((fun v => γ.1 v) '' Y) ∈ (fun v => γ.1 v) '' Y` from `representative_mem (hne.image _)`. Establish `hra' : repY ((fun v => γ.1 v) '' Y) = γ.1 a` using `hra.symm`. Establish `e2 : (γ.1 * frsF sel mu p w * κ.1).symm (γ.1 a) = κ.1.symm ((frsF sel mu p w).symm a)`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Simplify using `only [LinearEquiv.mul_apply, LinearEquiv.apply_symm_apply]`.
+
+Establish `hA : (γ₁.1 * d.1.liftFr w * κr.1).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ ((extUH (N_m_succ R) γ₁).1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) ∘ₗ (γ.1 * frsF sel mu p w * κ.1).toLinearMap ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))) = κr.1.symm.toLinearMap ∘ₗ ((d.1.liftF …`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Simplify using `only [LinearEquiv.mul_apply, LinearEquiv.apply_symm_apply, LinearEquiv.symm_apply_apply, prXp_extUH2]`.
+
+Establish `hη : ((((Pr.piT u : 𝓞 X.E) : X.E))⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)) ∘ₗ ((extUH (N_m_succ R) γ₁).1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) ∘ₗ (γ.1 * frsF sel mu p w * κ.1).toLinearMap = (((((Pr.piT u : 𝓞 X.E) : X.E))⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)) ∘ₗ x ∘ₗ (frsF sel m …`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.mul_apply, LinearEquiv.symm_apply_apply, LinearMap.smul_apply, atNL_extUH2]`. Rewrite using `[hA, hη, hra', e2, hft _ a ha, ← mul_assoc, key ((d.1.liftFr w).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ x ∘ₗ (frsF sel mu p w).toLinearMap), mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem coupled_kernel_local_identity (w : rowSG Pr sel mu) (κ : ↥(GLint X.E (R.N (m2 + 1)) w.1)) (κr : ↥(GLint X.E (R.N R.m - 1) w.1)) (s c₀ : X.K)
     (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1)))) (d : RowPt Pr R sel mu)
     (γ : UF X.E (R.N (m2 + 1))) (γ₁ : UF X.E (R.N R.m - 1)) (x : HomE X.E (R.N (m2 + 1)) (R.N R.m)) (hne : Y.Nonempty)
@@ -810,6 +1073,15 @@ theorem coupled_kernel_local_identity (w : rowSG Pr sel mu) (κ : ↥(GLint X.E 
     key ((d.1.liftFr w).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ x ∘ₗ (frsF sel mu p w).toLinearMap), mul_assoc]
   rfl
 
+/- English proof (translation)
+Establish `hFst : ∀ z, z ∈ localization₂ w.1.asIdeal p.deco.1.N → (frsF sel mu p w).symm z ∈ stdAt X.E (R.N (m2 + 1)) w.1`. Introduce `z hz`. Apply `(frsF_isFr sel mu p w _).1` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `hz`.
+
+Establish `hr0 : repY Y ∈ Y` using `representative_mem ⟨a, ha⟩`. Distinguish the cases in `hw : w.1 ∈ Pr.vGs`. Take `⟨-, hdiff, hqm⟩` from `ybSet_props2 sel mu cst hYm w hw`. Use `ftY_move2 sel mu cst hcst w hw κ _ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply, ← map_sub]`.
+
+Conclude with `hFst _ (hdiff _ ha _ hr0)`. Rewrite using `[← LinearEquiv.map_smul]`. Conclude with `hFst _ (hqm _ hr0)`. Take `⟨-, hqm⟩` from `coupling_index_scaled_mem_local sel mu cst hYm w hw`. Use `ftY_moveQ sel mu cst hcst w hw (hDQ w hw) κ _ _ _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearEquiv.apply_symm_apply, ← map_sub, ← LinearEquiv.map_smul]`. Conclude with `hFst _ (ybSet_diffQ sel mu cst hYm w hw _ ha _ hr0)`. Rewrite using `[← LinearEquiv.map_smul]`. Conclude with `hFst _ (hqm _ hr0)`.
+-/
 theorem ftY_frame (hcst : cst.Ok) (hDQ : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → 2 * cst.M ≤ cst.D P)
     (w : rowSG Pr sel mu) (κ : ↥(GLint X.E (R.N (m2 + 1)) w.1))
     (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1)))) (hYm : Y ∈ ybSet sel mu cst p.deco.1.N)
@@ -839,6 +1111,27 @@ variable (u m2)
 
 open Classical in
 
+/- English proof (translation)
+Introduce `g g₁ p Y d hYm`. Express the relevant statement in the definitionally equal form `Y ∈ ybSet sel mu cst p.deco.1.N at hYm`. Use `choose κ hκ hκr hκQ using fun w : rowSG Pr sel mu => frsF_smulQ sel mu u p (L.levG (m2 + 1) b) (L.levQ (m2 + 1) b) g w`. Establish `hfr : frsF sel mu (g • p) = fun w => g.1.1 * frsF sel mu p w * (κ w).1` using `funext hκ`. Establish `hTc : ∀ Q : Pr.vT u, cO X.E (Pr.piT u) ∉ Q.1.asIdeal` using `conj_piT_notMem hPr u`.
+
+Establish `hGc : ∀ w : rowSG Pr sel mu, Pr.piT u ∉ w.1.asIdeal` using `fun w hw => ((hR ⟨w.1, (mem_divs (hPr.piT_ne_zero u) w.1).2 hw⟩).sg w).1 rfl`. Establish `hgd : g₁ • d = ((g₁.1, (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) : UF X.E (R.N R.m - 1) × GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)) • d` using `rfl`. Establish `htil : tilQ sel mu u (g₁ • d) = (extUH (N_m_succ R) g₁.1, extGH (N_m_succ R) (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) • tilQ sel mu u d`. Rewrite using `[hgd]`. Conclude with `DecoSet.tilH_smul (N_m_succ R) _ d hTc hGc`.
+
+Use `choose κt hκt hκtr using fun w : rowSG Pr sel mu => liftFr_smul (tilQ sel mu u d) (extUH (N_m_succ R) g₁.1, extGH (N_m_succ R) (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) w`. Establish `hfrT : frsT sel mu u (g₁ • d) = fun w => (extUH (N_m_succ R) g₁.1).1 * frsT sel mu u d w * (κt w).1`. Use function extensionality and compare the values at `w`. Unfold `frsT`. Rewrite using `[htil]`.
+
+Conclude with `hκt w`. Use `choose κr hκr' hκrr using fun w : rowSG Pr sel mu => liftFr_smul d ((g₁.1, (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) : UF X.E (R.N R.m - 1) × GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)) w`. Establish `hlr : ∀ w, (g₁ • d).1.liftFr w = g₁.1.1 * d.1.liftFr w * (κr w).1` using `fun w => hκr' w`. Establish `hN : IsSdLat p.deco.1.N` using `⟨p.deco.2.lat, p.deco.2.uni⟩`. Establish `hN' : IsSdLat (tilQ sel mu u d).1.N` using `⟨(tilQ sel mu u d).2.lat, (tilQ sel mu u d).2.uni⟩`.
+
+Establish `hdeco : (g • p).deco = (g.1, (g.2.1 : GLG X.E (R.N (m2 + 1)) Pr.vGs)) • p.deco` using `rfl`. Establish `hYm1 : (fun v => g.1.1 v) '' Y ∈ ybSet sel mu cst (gmap g.1.1 p.deco.1.N)` using `(ybSet_gmap sel mu cst p.deco.1.N g.1.1 Y).2 hYm`. Establish `hne : Y.Nonempty`. Take `⟨y0, -, rfl⟩` from `hYm`. Conclude with `⟨y0, by rw [Set.mem_ofPred_eq, sub_self]; exact zero_mem _⟩`.
+
+Unfold `cp2K`. Apply the tactic sequence `split_ifs with h1 h2 <;> first | exact absurd hYm1 h1 | exact absurd hYm h2 | skip`. Rewrite using `[hfr, hfrT, htil]`. Use `(kerOf_move hOk.top (cBof_pos sel mu cst u hT) hN hN' (frsF sel mu p) (frsT sel mu u d) g.1 (extUH (N_m_succ R) g₁.1) κ κt _ _ ((((rowTy Ch sel mu P).inv.chr g₁.2)⁻¹ * (((L.levG (m2 + 1) b).chr g.2.1)⁻¹ * ((L.levQ (m2 + 1) b).chr g.2.2)⁻¹) : X.Kˣ) : X.K) (fun x z hz => xiCpl2_inv …` and prove the remaining obligations. Introduce `x`.
+
+Unfold `XiCpl2`. Rewrite using `[hdeco, htil, phiT_smul]`. Simplify using `only [hfr, hlr]`. Rewrite using `[coupled_scalar_at_Q_primes Ch sel mu L m2 hS b P g g₁.2]`. Use `prod_mul_eq_of_forall_cross_mul_eq _ _ _ _ _ fun w => ?_` and prove the remaining obligations.
+
+Use `coupled_kernel_local_identity Ch sel mu cst w (κ w) (κr w) _ _ p Y d g.1 g₁.1 x hne ?_ (fun η a ha => ftY_frame sel mu cst hcst hDQ w (κ w) p Y hYm η a ha)` and prove the remaining obligations. Introduce `y`. Distinguish the cases in `hw : w.1 ∈ Pr.vGs`. Rewrite using `[dif_pos hw]`. Conclude with `hTop w hw ⟨(g.2.1 : GLG X.E (R.N (m2 + 1)) Pr.vGs) ⟨w.1, hw⟩, g.2.1.2 _ (Set.mem_univ _)⟩ (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)) (g₁.2.2 w (Set.mem_univ w)) (κ w) (κr w) (κt w) (hκr w hw) (hκrr w) (hκtr w) y`.
+
+Establish `key` using `hTopQ w hw ⟨(g.2.2 : GLQ X.E (R.N (m2 + 1)) (QE sel (mu : Chr X.F X.E X.K))) ⟨w.1, (Finset.mem_union.mp w.2).resolve_left hw⟩, g.2.2.2 _ (Set.mem_univ _)⟩ (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)) (g₁.2.2 w (Set.mem_univ w)) (κr w) (κt w) (hκrr w) (hκtr w) y`. Rewrite `key` using `[← hκQ w hw]`. Rewrite using `[dif_neg hw]`. Conclude with `key`. Use `show _ = (evRho W Ch sel mu P u g₁) ∘ₗ _ ∘ₗ (frmRho (colValF W sel mu u (m2 + 1)) (L.levG (m2 + 1) b) (L.levQ (m2 + 1) b) g⁻¹)`.
+
+Simplify using `only [evRho, frmRho, MonoidHom.coe_mk, OneHom.coe_mk, Prod.fst_inv, Prod.snd_inv, map_inv, LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]`. Use `congr 1`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cp2EquivOn_ofQ (hS : QSep Pr sel mu) (hR : PosT sel mu u) (hDQ : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → 2 * cst.M ≤ cst.D P)
     (hT : 0 < Pr.T u) (hPr : Pr.Ok) (hcst : cst.Ok)
     (hOk : ChTh.Ok (Ch := Ch) cst (chTh W Ch sel mu cst A u m2))
@@ -920,6 +1213,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
   (A : Amb X) (u : Pr.Word) (m2 : ℕ)
 
+/- English proof (translation)
+The claim follows from `cp2EquivOn_ofQ W Ch sel mu cst L A u m2 hS hR hL.depthQ hT hPr hL.cst_ok hOk b hY P (phiTop_inv Ch sel mu cst hL.hm) hTop (top_local_law_at_Q_primes Ch sel mu cst L hL hU P b)`.
+-/
 theorem cp2EquivOn_of_ok {G : ChGlob X R.m} (hL : L.Ok Ch sel mu cst G m2) (hS : QSep Pr sel mu) (hU : QUnif sel mu) (hR : PosT sel mu u)
     (hT : 0 < Pr.T u) (hPr : Pr.Ok) (hOk : ChTh.Ok (Ch := Ch) cst (chTh W Ch sel mu cst A u m2))
     (b : L.β (m2 + 1)) (hY : YbHyp (R := R) sel mu cst L u m2 b) (P : LevFam X.E X.K R.r Pr.vGs)
@@ -928,11 +1224,17 @@ theorem cp2EquivOn_of_ok {G : ChGlob X R.m} (hL : L.Ok Ch sel mu cst G m2) (hS :
   cp2EquivOn_ofQ W Ch sel mu cst L A u m2 hS hR hL.depthQ hT hPr hL.cst_ok hOk b hY P (phiTop_inv Ch sel mu cst hL.hm) hTop
     (top_local_law_at_Q_primes Ch sel mu cst L hL hU P b)
 
+/- English proof (translation)
+Introduce `P hP hw` and use `QE_disj mu hPr hsel hS P hw hP`.
+-/
 theorem qSep_of (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : ∀ i, Pr.g i ∈ S) : QSep Pr sel mu :=
   fun P hP hw => QE_disj mu hPr hsel hS P hw hP
 
 open Classical in
 
+/- English proof (translation)
+Introduce `P hP` and use `mq_rowSG_unif (Pr := Pr) mu hX hPr hsel ⟨P, Finset.mem_union_right _ hP⟩`.
+-/
 theorem qUnif_of (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) : QUnif sel mu :=
   fun P hP => mq_rowSG_unif (Pr := Pr) mu hX hPr hsel ⟨P, Finset.mem_union_right _ hP⟩
 

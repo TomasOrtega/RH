@@ -27,6 +27,25 @@ def FamilyDerivativeExpansion (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →
     (∀ μ, AEMeasurable fun c : Fin (P.r + 1) → ℂ =>
       ENNReal.ofReal (TBB.Ew p (fun _ => 1) (fam μ) (P.r + 1) [] (TBB.bigPt P.r c)))
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Introduce `a ha`. Set `Dop : Unit → Module.End ℂ ((Fin (P.r + 1) → ℂ) → (Wq →L[ℂ] Wp))` to `fun _ => { toFun := fun φ c => (D.ptMatN (TBB.bigPt P.r c) (P.r + 1)).det • φ c map_add' := fun φ ψ => by funext c; simp only [Pi.add_apply, smul_add] map_smul' := fun z φ => by`. Use function extensionality and compare the values at `c`. Simplify using `only [Pi.smul_apply, RingHom.id_apply]`.
+
+Rewrite using `[smul_comm] }`. Establish `hDop : ∀ (n : ℕ) (φ : (Fin (P.r + 1) → ℂ) → (Wq →L[ℂ] Wp)) (c : Fin (P.r + 1) → ℂ), ((Dop ()) ^ n) φ c = (D.ptMatN (TBB.bigPt P.r c) (P.r + 1)).det ^ n • φ c`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro φ c`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `φ c`. Rewrite using `[pow_succ]`. Use `show ((Dop ()) ^ n) ((Dop ()) φ) c = _`.
+
+Rewrite using `[ih, pow_succ, mul_smul]`. Both sides reduce to the same expression. Establish `key` using `Formalism.HermitianLatticeCounting.P.iterated_sum_bound_holds ((Fin (P.r + 1) → ℂ) → (Wq →L[ℂ] Wp)) Par Unit (fun μ c => p.V (fam μ) (TBB.bigPt P.r c)) Dop (fun _ => P.r + 1) N1 Ninf lam Gam c0 q0 hGam hN1 hNinf hN10 hNinf0 (fun μ _ hμ => hstep μ hμ) lam (List.replicate a ()) (by`. Simplify using `only [sub_self, hN10, List.map_replicate, List.sum_replicate, smul_eq_mul, zero_add]`. Use polynomial arithmetic with `[Nat.mul_le_mul_right (P.r + 1) ha])`.
+
+Take `⟨A, hA, hAn, -⟩` from `key`. Set `e` to `A.support.equivFin`. Use `⟨A.support.card, fun i => fam (lam + (e.symm i).1), fun i => A (e.symm i).1, ?_, fun i => hnorm _, fun i => hmeas _, ?_⟩` and prove the remaining obligations. Establish `h1 : ∑ i : Fin A.support.card, ‖A (e.symm i).1‖ = A.sum fun _ z => ‖z‖`. Rewrite using `[Finsupp.sum, ← Finset.sum_coe_sort A.support]`.
+
+Conclude with `e.symm.sum_comp (fun x : A.support => ‖A x.1‖)`. Rewrite using `[h1]`. Use `hAn.trans ?_` and prove the remaining obligations. Simplify using `only [List.map_replicate, List.sum_replicate, smul_eq_mul]`. Rewrite using `[pow_mul']`.
+
+Establish `hGp : 0 ≤ Gam ^ (P.r + 1)` using `pow_nonneg hGam _`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact pow_le_pow_left₀ hGp hGb a`. Consider the case `exact pow_le_pow_left hGp hGb a`. Use `_ = b ^ (C₃ * ((2 * P.r + 2 : ℕ) : ℝ) ^ 2 * (a : ℝ)) := by`.
+
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hb]`. Introduce `c _ _`. Establish `h2` using `congrFun hA c`. Rewrite `h2` using `[List.map_replicate, List.prod_replicate, hDop, Finsupp.sum, Finset.sum_apply]`. Simplify using `only [Pi.smul_apply] at h2`.
+
+Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_coe_sort A.support]`. Conclude with `(e.symm.sum_comp (fun x : A.support => A x.1 • p.V (fam (lam + x.1)) (TBB.bigPt P.r c))).symm`.
+-/
 theorem big_cell_expansion_of_subadditive (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (b C₃ Gam : ℝ) (a₁ : ℕ)
     (hb : 0 ≤ b) (hGam : 0 ≤ Gam) (Par : Type) [AddCommGroup Par] (fam : Par → B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (lam : Par) (hf : fam lam = f) (N1 Ninf : Par → ℕ) (c0 q0 : ℕ)
@@ -91,6 +110,9 @@ theorem big_cell_expansion_of_subadditive (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r
     rw [← Finset.sum_coe_sort A.support]
     exact (e.symm.sum_comp (fun x : A.support => A x.1 • p.V (fam (lam + x.1)) (TBB.bigPt P.r c))).symm
 
+/- English proof (translation)
+Take `⟨Par, _, fam, lam, N1, Ninf, c0, q0, Gam, hf, hGam, hN1, hNinf, hN10, hNinf0, hstep, hrange, hGb, hnorm, hmeas⟩` from `h`. Conclude with `big_cell_expansion_of_subadditive p f b C₃ Gam a₁ hb hGam Par fam lam hf N1 Ninf c0 q0 hN1 hNinf hN10 hNinf0 hstep hrange hGb hnorm hmeas`.
+-/
 theorem big_cell_expansion_of_family (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (b C₃ : ℝ) (a₁ : ℕ) (hb : 0 ≤ b)
     (h : FamilyDerivativeExpansion p f b C₃ a₁) : BigCellDerivativeExpansion p f b C₃ a₁ := by
   obtain ⟨Par, _, fam, lam, N1, Ninf, c0, q0, Gam, hf, hGam, hN1, hNinf, hN10, hNinf0, hstep, hrange, hGb, hnorm,

@@ -10,6 +10,11 @@ namespace CMLattice
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hσ` to reduce the goal to its premises. Rewrite using `[NumberField.ComplexEmbedding.isReal_iff]`. Use extensionality with `x`.
+
+Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) x`. Establish `key : ∀ y : 𝓞 K, starRingEnd ℂ (σ (algebraMap (𝓞 K) K y)) = σ (algebraMap (𝓞 K) K y)` using `fun y => Complex.conj_eq_iff_im.2 (hcon y)`. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq, map_div₀, map_div₀, key, key]`.
+-/
 theorem exists_im_ne_zero (σ : K →+* ℂ) (hσ : ¬ ComplexEmbedding.IsReal σ) :
     ∃ a : 𝓞 K, (σ (a : K)).im ≠ 0 := by
   by_contra hcon
@@ -22,9 +27,41 @@ theorem exists_im_ne_zero (σ : K →+* ℂ) (hσ : ¬ ComplexEmbedding.IsReal �
     fun y => Complex.conj_eq_iff_im.2 (hcon y)
   rw [NumberField.ComplexEmbedding.conjugate_coe_eq, map_div₀, map_div₀, key, key]
 
+/- English proof (translation)
+Simplify using `using L.indep.ne_zero 0`.
+-/
 theorem ω₁_ne_zero (L : PeriodPair) : L.ω₁ ≠ 0 := by
   simpa using L.indep.ne_zero 0
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_im_ne_zero σ hσ`. Establish `hω : L.ω₁ ≠ 0` using `ω₁_ne_zero L`. Take `⟨m, n, hmn⟩` from `PeriodPair.mem_lattice.1 (hL a _ L.ω₁_mem_lattice)`. Establish `hn : (n : ℂ) ≠ 0`. Introduce `h0`.
+
+Rewrite `hmn` using `[h0, zero_mul, add_zero]`. Establish `: σ (a : K) = m` using `(mul_right_cancel₀ hω hmn).symm`. Rewrite `ha` using `[this]`. Simplify using `at ha`. Use `set t : K := ((a : K) - m) / n with ht`.
+
+Establish `hσt : σ t * L.ω₁ = L.ω₂`. Rewrite using `[ht, map_div₀, map_sub, map_intCast, map_intCast, div_mul_eq_mul_div, div_eq_iff hn]`. Take the linear combination `(-1 : ℂ) * hmn`. Establish `hstab : ∀ (r : 𝓞 K) (p q : ℤ), ∃ p' q' : ℤ, (r : K) * (p + q * t) = p' + q' * t`. Introduce `r p q`.
+
+Establish `hmem : (p : ℂ) * L.ω₁ + q * L.ω₂ ∈ L.lattice` using `PeriodPair.mem_lattice.2 ⟨p, q, rfl⟩`. Take `⟨p', q', hpq⟩` from `PeriodPair.mem_lattice.1 (hL r _ hmem)`. Use `⟨p', q', σ.injective ?_⟩` and prove the remaining obligations. Apply `mul_right_cancel₀ hω` to reduce the goal to its premises. Simplify using `only [map_mul, map_add, map_intCast]`.
+
+Rewrite `hpq` using `[← hσt]`. Take the linear combination `(-1 : ℂ) * hpq`. Take `⟨u, v, hv, htuv⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) t`. Establish `hv0 : v ≠ 0` using `nonZeroDivisors.ne_zero hv`. Establish `hV0 : (v : K) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hv`.
+
+Establish `hσV : σ (v : K) ≠ 0` using `(map_ne_zero σ).2 hV0`. Establish `hu : (u : K) = (v : K) * t`. Rewrite using `[← htuv]`. Clear the denominators using the available nonvanishing facts. Set `𝔞 : Ideal (𝓞 K)` to `{ carrier := {x | ∃ p q : ℤ, (x : K) = (v : K) * (p + q * t)} add_mem' := by`.
+
+Introduce and unpack `x y ⟨p, q, hx⟩ ⟨p', q', hy⟩`. Conclude with `⟨p + p', q + q', by`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_add, ← RingOfIntegers.coe_eq_algebraMap, ← RingOfIntegers.coe_eq_algebraMap, hx, hy]`. Use `push_cast`. Use the proof step `ring⟩`.
+
+Use the proof step `zero_mem' := ⟨0, 0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r x ⟨p, q, hx⟩`. Take `⟨p', q', h'⟩` from `hstab r p q`. Use `⟨p', q', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_eq_mul, RingOfIntegers.coe_eq_algebraMap, map_mul, ← RingOfIntegers.coe_eq_algebraMap, ← RingOfIntegers.coe_eq_algebraMap, hx, ← h']`. Use `ring }`. Establish `hmem𝔞 : ∀ x : 𝓞 K, x ∈ 𝔞 ↔ ∃ p q : ℤ, (x : K) = (v : K) * (p + q * t)` using `fun x => Iff.rfl`. Use `⟨𝔞, L.ω₁ / σ (v : K), ?_, div_ne_zero hω hσV, ?_⟩` and prove the remaining obligations. Introduce `hbot`.
+
+Establish `h1 : v ∈ 𝔞` using `(hmem𝔞 v).2 ⟨1, 0, by simp⟩`. Rewrite `h1` using `[hbot]`. Conclude with `hv0 ((Submodule.mem_bot _).1 h1)`. Introduce `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hz`. Take `⟨p, q, rfl⟩` from `PeriodPair.mem_lattice.1 hz`. Use `⟨v * p + q * u, (hmem𝔞 _).2 ⟨p, q, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[RingOfIntegers.coe_eq_algebraMap]`. Simplify using `only [map_add, map_mul, map_intCast, ← RingOfIntegers.coe_eq_algebraMap, hu]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[RingOfIntegers.coe_eq_algebraMap]`. Simplify using `only [map_add, map_mul, map_intCast, ← RingOfIntegers.coe_eq_algebraMap, hu]`. Rewrite using `[← hσt]`. Clear the denominators using the available nonvanishing facts.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨p, q, hpq⟩` from `(hmem𝔞 x).1 hx`. Use `PeriodPair.mem_lattice.2 ⟨p, q, ?_⟩` and prove the remaining obligations. Rewrite using `[hpq, ← hσt]`. Simplify using `only [map_mul, map_add, map_intCast]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_ideal (σ : K →+* ℂ) (hσ : ¬ ComplexEmbedding.IsReal σ) (L : PeriodPair)
     (hL : ∀ (a : 𝓞 K), ∀ z ∈ L.lattice, σ (a : K) * z ∈ L.lattice) :
     ∃ (𝔞 : Ideal (𝓞 K)) (c : ℂ), 𝔞 ≠ ⊥ ∧ c ≠ 0 ∧
@@ -98,6 +135,11 @@ theorem exists_ideal (σ : K →+* ℂ) (hσ : ¬ ComplexEmbedding.IsReal σ) (L
       simp only [map_mul, map_add, map_intCast]
       field_simp
 
+/- English proof (translation)
+Establish `hv : ∀ j, σ (v j) = ∑ i, ((b.toMatrix v i j : ℚ) : ℂ) * σ (b i)`. Introduce `j`. Use `conv_lhs => rw [← b.sum_toMatrix_smul_self v j]`. Simplify using `[Rat.smul_def, map_mul, map_ratCast]`. Rewrite using `[hv 0, hv 1, Basis.det_apply, Matrix.det_fin_two]`.
+
+Simplify using `only [Fin.sum_univ_two, map_add, map_mul, map_ratCast, Complex.mul_im, Complex.mul_re, Complex.add_re, Complex.add_im, Complex.conj_re, Complex.conj_im, Complex.ratCast_re, Complex.ratCast_im]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem im_mul_conj_eq_det (σ : K →+* ℂ) (b : Basis (Fin 2) ℚ K) (v : Fin 2 → K) :
     (σ (v 0) * starRingEnd ℂ (σ (v 1))).im =
       (b.det v : ℚ) * (σ (b 0) * starRingEnd ℂ (σ (b 1))).im := by
@@ -112,6 +154,9 @@ theorem im_mul_conj_eq_det (σ : K →+* ℂ) (b : Basis (Fin 2) ℚ K) (v : Fin
   push_cast
   ring
 
+/- English proof (translation)
+The claim follows from `|(L.ω₁ * starRingEnd ℂ L.ω₂).im| = ‖c‖ ^ 2 * (FractionalIdeal.absNorm I : ℚ) * |(σ (b 0 : K) * starRingEnd ℂ (σ (b 1 : K))).im| := by obtain ⟨u0, hu0, e0⟩ := (h L.ω₁).1 L.ω₁_mem_lattice obtain ⟨u1, hu1, e1⟩ := (h L.ω₂).1 L.ω₂_mem_lattice let w : Fin 2 → (I : Submodule (𝓞 K) K) := …`.
+-/
 theorem covol_eq (σ : K →+* ℂ) (b : Basis (Fin 2) ℤ (𝓞 K)) (L : PeriodPair)
     (I : FractionalIdeal (𝓞 K)⁰ K) (c : ℂ) (hc : c ≠ 0)
     (h : ∀ z, z ∈ L.lattice ↔ ∃ x ∈ I, z = c * σ x) :
@@ -164,6 +209,19 @@ theorem covol_eq (σ : K →+* ℂ) (b : Basis (Fin 2) ℤ (𝓞 K)) (L : Period
   simp only [RingOfIntegers.coe_eq_algebraMap]
   ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hz y hy`. Conclude with `h2 y hy z hz`. Introduce `hz`. Establish `hb0 : (𝔟 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 h𝔟`.
+
+Establish `h1mem : (1 : K) ∈ (𝔟 : FractionalIdeal (𝓞 K)⁰ K)⁻¹ * 𝔟`. Rewrite using `[inv_mul_cancel₀ hb0]`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩`. Establish `key : σ 1 * z ∈ L'.lattice`. Use `FractionalIdeal.mul_induction_on (C := fun w => σ w * z ∈ L'.lattice) h1mem ?_ ?_` and prove the remaining obligations.
+
+Introduce `x hx y hy`. Take `⟨y', hy', rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hy`. Establish `hx' : ∀ b ∈ 𝔟, IsIntegral ℤ (x * (b : K))`. Introduce `b hb`. Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).1 ((FractionalIdeal.mem_inv_iff hb0).1 hx _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨b, hb, rfl⟩))`.
+
+Rewrite using `[RingOfIntegers.coe_eq_algebraMap, ← hr]`. Conclude with `RingOfIntegers.isIntegral_coe r`. Establish `hmem` using `h1 x hx' _ (hz y' hy')`. Establish `e : σ (x * algebraMap (𝓞 K) K y') * z = β * σ x * (β⁻¹ * σ (y' : K) * z)`. Rewrite using `[map_mul, RingOfIntegers.coe_eq_algebraMap]`.
+
+Clear the denominators using the available nonvanishing facts. Use `show σ (x * algebraMap (𝓞 K) K y') * z ∈ L'.lattice`. Rewrite using `[e]`. Conclude with `hmem`. Introduce `x y hx hy show σ (x + y) * z ∈ L'.lattice`.
+
+Rewrite using `[map_add, add_mul]`. Conclude with `add_mem hx hy`. Simplify using `using key`.
+-/
 theorem mem_iff (σ : K →+* ℂ) (L L' : PeriodPair) (𝔟 : Ideal (𝓞 K)) (β : ℂ) (h𝔟 : 𝔟 ≠ ⊥)
     (hβ : β ≠ 0)
     (h1 : ∀ x : K, (∀ b ∈ 𝔟, IsIntegral ℤ (x * (b : K))) → ∀ z ∈ L.lattice,
@@ -205,6 +263,9 @@ end CMLattice
 
 open CMLattice in
 
+/- English proof (translation)
+The claim follows from `|(L'.ω₁ * starRingEnd ℂ L'.ω₂).im| * Ideal.absNorm 𝔟 = ‖β‖ ^ 2 * |(L.ω₁ * starRingEnd ℂ L.ω₂).im| := by intro K _ _ hK σ hσ L L' hL refine ⟨exists_ideal σ hσ L hL, ?_⟩ intro 𝔟 β h𝔟 hβ h1 h2 have hmem := mem_iff σ L L' 𝔟 β h𝔟 hβ h1 h2 refine ⟨hmem, ?_⟩ obtain ⟨𝔞, c, -, hc, hLc⟩ := …`.
+-/
 theorem lattice_cm_eq_ideal_and_covolume :
     ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (σ : K →+* ℂ), ¬ NumberField.ComplexEmbedding.IsReal σ →
   ∀ (L L' : PeriodPair), (∀ (a : 𝓞 K), ∀ z ∈ L.lattice, σ (a : K) * z ∈ L.lattice) →

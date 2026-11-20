@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `R _ M N _ _ _ _ _`. Establish `h : ∀ x : TensorProduct R M N, x = 0`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rfl`.
+
+Consider the case `tmul m n => rw [Subsingleton.elim n 0, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`. Conclude with `⟨fun x y => (h x).trans (h y).symm⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qn17.tensor_sub_right.{u} :
     ∀ {R : Type} [inst : CommRing R] (M N : Type u) [inst_1 : AddCommMonoid M]
     [inst_2 : AddCommMonoid N] [inst_3 : _root_.Module R M] [inst_4 : _root_.Module R N] [Subsingleton N],

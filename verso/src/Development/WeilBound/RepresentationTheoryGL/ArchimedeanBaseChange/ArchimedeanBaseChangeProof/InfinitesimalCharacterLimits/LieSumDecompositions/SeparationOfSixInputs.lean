@@ -15,6 +15,11 @@ namespace TwistSymmetryDecomposition
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use extensionality with `ψ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨φ, hφ, rfl⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `mulChi N (Model.absC E (-w)) (mulChi N (Model.absC E w) φ) ∈ U`. Rewrite using `[ParabolicProjection.mulChi_absC_neg]`.
+
+Conclude with `hφ`. Introduce `h`. Conclude with `⟨mulChi N (Model.absC E w) ψ, ⟨ψ, h, rfl⟩, ParabolicProjection.mulChi_absC_neg N w ψ⟩`.
+-/
 theorem tw_tw_neg {N : ℕ} (U : Submodule ℂ (Sm E N)) (w : ℂ) : tw (tw U w) (-w) = U := by
   ext ψ
   constructor
@@ -25,10 +30,16 @@ theorem tw_tw_neg {N : ℕ} (U : Submodule ℂ (Sm E N)) (w : ℂ) : tw (tw U w)
   · intro h
     exact ⟨mulChi N (Model.absC E w) ψ, ⟨ψ, h, rfl⟩, ParabolicProjection.mulChi_absC_neg N w ψ⟩
 
+/- English proof (translation)
+Simplify using `[pE, Complex.sub_re, Complex.mul_re, hw]`.
+-/
 theorem pE_sub_imag (N r : ℕ) (c w : ℂ) (hw : w.re = 0) :
     pE E N r (c - w * r * (Module.finrank ℚ E : ℂ)) = pE E N r c := by
   simp [pE, Complex.sub_re, Complex.mul_re, hw]
 
+/- English proof (translation)
+Introduce `t m`. Rewrite using `[mulChi_apply, mulChi_apply, map_mul, Units.val_mul, hψ, ExponentTwist.splitCentre_eq, ExponentTwist.chiDet_aT le_rfl, add_mul, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem central_tw {a : ℕ} (w e : ℂ) (ψ : Sm E a)
     (hψ : ∀ (t : ℝ) m, ψ.1 (splitCentre E a t * m) = Complex.exp (e * t) * ψ.1 m) :
     ∀ (t : ℝ) m, (mulChi a (Model.absC E w) ψ).1 (splitCentre E a t * m) =
@@ -38,6 +49,19 @@ theorem central_tw {a : ℕ} (w e : ℂ) (ψ : Sm E a)
     add_mul, Complex.exp_add]
   ring
 
+/- English proof (translation)
+Take `⟨⟨hst, haut⟩, ⟨S, hSU, hS⟩, hnp, ⟨z, hz, hzU⟩, ⟨m, hm, hnd⟩, hreg⟩` from `hU`. Use `⟨⟨ParabolicProjection.isStable_tw hst w, ?_⟩, ⟨S.image (mulChi N (Model.absC E w)), ?_, ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Conclude with `(haut φ hφ).mulChi _`. Introduce `x hx`.
+
+Rewrite `hx` using `[Finset.coe_image]`. Take `⟨φ, hφ, rfl⟩` from `hx`. Conclude with `⟨φ, hSU hφ, rfl⟩`. Introduce `W' hW' hSW'`. Establish `h1 : U ≤ tw W' (-w)` using `hS _ (ParabolicProjection.isStable_tw hW' (-w)) fun φ hφ => ⟨mulChi N (Model.absC E w) φ, hSW' (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hφ)), ParabolicProjection.mulChi_absC_neg N w φ⟩`.
+
+Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Take `⟨ψ, hψ, e⟩` from `h1 hφ`. Express the relevant statement in the definitionally equal form `mulChi N (Model.absC E w) φ ∈ W'`. Rewrite using `[← e]`. Express the relevant statement in the definitionally equal form `mulChi N (Model.absC E w) (mulChi N (Model.absC E (-w)) ψ) ∈ W'`.
+
+Rewrite using `[ParabolicProjection.mulChi_absC_neg']`. Conclude with `hψ`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩ r hr hrN c hc`. Establish `h` using `expTw_holds E N φ w (haut φ hφ) r hr hrN c hc`. Establish `h2` using `hnp φ hφ r hr hrN _ h`.
+
+Rewrite `h2` using `[pE_sub_imag N r c w hw]`. Then use the resulting hypothesis. Use `⟨z + w * N * (Module.finrank ℚ E : ℂ), ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Complex.add_re, Complex.mul_re, hz, hw]`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩ t g`. Conclude with `central_tw w z φ (hzU φ hφ) t g`.
+
+Conclude with `⟨_, GlobalTheory.NormIndCap.hasInfCharGL_map_mulChi hm (Model.absC E w), hnd.map (add_left_injective _)⟩`. Introduce `τ'`. Take `⟨m', hm', hnd'⟩` from `hreg τ'`. Conclude with `⟨_, GlobalTheory.NormIndCap.hasInfCharGL_map_mulChi hm' (Model.absC E w), hnd'.map (add_left_injective _)⟩`.
+-/
 theorem hyp_tw {N : ℕ} {τ : E →+* ℂ} {U : Submodule ℂ (Sm E N)} (hU : Hyp τ U) (w : ℂ) (hw : w.re = 0) :
     Hyp τ (tw U w) := by
   obtain ⟨⟨hst, haut⟩, ⟨S, hSU, hS⟩, hnp, ⟨z, hz, hzU⟩, ⟨m, hm, hnd⟩, hreg⟩ := hU
@@ -73,6 +97,31 @@ theorem hyp_tw {N : ℕ} {τ : E →+* ℂ} {U : Submodule ℂ (Sm E N)} (hU : H
     obtain ⟨m', hm', hnd'⟩ := hreg τ'
     exact ⟨_, GlobalTheory.NormIndCap.hasInfCharGL_map_mulChi hm' (Model.absC E w), hnd'.map (add_left_injective _)⟩
 
+/- English proof (translation)
+Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `U hN hU φ hφ hne`. Distinguish the cases in `hneg : ∀ r, 0 < r → r < N → ∀ c ∈ Exp r φ.1, pE E N r c < 0`.
+
+Conclude with `h3 E N τ hN U hU φ hφ hneg hne`. Use `push_neg at hneg`. Take `⟨r, hr, hrN, c, hc, hc0⟩` from `hneg`. Establish `hc0' : pE E N r c = 0` using `le_antisymm (hU.2.2.1 φ hφ r hr hrN c hc) hc0`. Take `⟨s, rfl⟩ : ∃ s, N = r + s` from `⟨N - r, by omega⟩`.
+
+Establish `hs : 0 < s` using `by omega`. Take `⟨z, hz, hzU⟩` from `hU.2.2.2.1`. Establish `hd : (Module.finrank ℚ E : ℂ) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℚ) (M := E)).ne'` after adjusting the coercions. Establish `hN0 : ((r + s : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`.
+
+Take `⟨w, hwdef⟩ : ∃ w : ℂ, w = -z / (((r + s : ℕ) : ℂ) * (Module.finrank ℚ E : ℂ))` from `⟨_, rfl⟩`. Establish `hw : w.re = 0`. Establish `e : (((r + s : ℕ) : ℂ) * (Module.finrank ℚ E : ℂ)) = (((r + s) * Module.finrank ℚ E : ℕ) : ℂ)` using `by push_cast; ring`. Rewrite using `[hwdef, e, Complex.div_natCast_re, Complex.neg_re, hz, neg_zero, zero_div]`. Establish `hzw : z + w * ((r + s : ℕ) : ℂ) * (Module.finrank ℚ E : ℂ) = 0`.
+
+Rewrite using `[hwdef]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hU' : Hyp τ (tw U w)` using `hyp_tw hU w hw`. Establish `hsplit : SplitInv (tw U w)`.
+
+Introduce and unpack `_ ⟨ψ, hψ, rfl⟩ t g`. Conclude with `ChordArithmetic.central_twist w z hzw ψ (hzU ψ hψ) t g`. Establish `hφ' : mulChi (r + s) (Model.absC E w) φ ∈ tw U w` using `⟨φ, hφ, rfl⟩`. Establish `hne' : mulChi (r + s) (Model.absC E w) φ ≠ 0` using `(LinearEquiv.map_ne_zero_iff _).2 hne`. Establish `hc' : c - -w * r * (Module.finrank ℚ E : ℂ) ∈ Exp r (mulChi (r + s) (Model.absC E w) φ).1`.
+
+Use `expTw_holds E (r + s) (mulChi (r + s) (Model.absC E w) φ) (-w) ((hU.1.2 φ hφ).mulChi _) r hr hrN c ?_` and prove the remaining obligations. Rewrite using `[ParabolicProjection.mulChi_absC_neg]`. Conclude with `hc`. Establish `hpc' : pE E (r + s) r (c - -w * r * (Module.finrank ℚ E : ℂ)) = 0`. Rewrite using `[pE_sub_imag (r + s) r c (-w) (by simp [hw])]`.
+
+Conclude with `hc0'`. Take `⟨T, hT, hTφ⟩` from `h1 E r s hr hs (tw U w) hU'.1 hU'.2.1 hsplit hU'.2.2.2.2.2 _ hφ' _ hc'`. Take `⟨J, P, W₁, W₂, hW, hP, hsum, hind⟩` from `h2 E r s τ hr hs (tw U w) hU' hsplit _ T hT hpc'`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj, hPj⟩ : ∃ j ∈ J, P j (T (mulChi (r + s) (Model.absC E w) φ)) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Apply `hTφ` to reduce the goal to its premises. Rewrite using `[← hsum _ hφ']`. Conclude with `Finset.sum_eq_zero hcon`. Establish `hconc' : Conc (tw U w) (mulChi (r + s) (Model.absC E w) φ)`.
+
+Use `h4 E r s hr hs (tw U w) (W₁ j) (W₂ j) (P j ∘ₗ T) hU'.1 (hW j hj).1.1 (hW j hj).2.1 ?_ ?_ ?_ ?_ _ hφ' hPj` and prove the remaining obligations. Introduce `o ψ hψ`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hT.equiv o ψ hψ, hP j hj o ψ hψ]`. Introduce `ψ hψ`.
+
+Conclude with `hind j hj ψ hψ`. Introduce `ψ hψ hψ0`. Conclude with `ih r (by omega) (W₁ j) hr (hW j hj).1 ψ hψ hψ0`. Introduce `ψ hψ hψ0`. Conclude with `ih s (by omega) (W₂ j) hs (hW j hj).2 ψ hψ hψ0`.
+
+Establish `h` using `h6 E (r + s) (tw U w) (-w) (by simp [hw]) hU'.1 _ hφ' hconc'`. Rewrite `h` using `[tw_tw_neg, ParabolicProjection.mulChi_absC_neg]`. Then use the resulting hypothesis.
+-/
 theorem core (h1 : SliceU) (h2 : Blocks) (h3 : Leaf) (h4 : Node) (h6 : TwConc) (τ : E →+* ℂ) :
     ∀ (N : ℕ) (U : Submodule ℂ (Sm E N)), 0 < N → Hyp τ U → ∀ φ ∈ U, φ ≠ 0 → Conc U φ := by
   intro N
@@ -136,6 +185,21 @@ theorem core (h1 : SliceU) (h2 : Blocks) (h3 : Leaf) (h4 : Node) (h6 : TwConc) (
 
 def evalAt {N : ℕ} (h : GA E N) : Sm E N →ₗ[ℂ] ℂ := (LinearMap.proj h).comp (Sm E N).subtype
 
+/- English proof (translation)
+Take `⟨hK, hW⟩` from `hT`. Prove the components needed by the constructor for the conclusion. Introduce `u hu g`. Establish `e1 : act (Op.fin u) φ = φ` using `Subtype.ext (funext fun x => hK u hu x)`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `g set V : Submodule ℂ (Sm E N) := Submodule.span ℂ (Set.range fun k => cptRep E N k φ) with hV`. Establish `: FiniteDimensional ℂ V` using `(haut φ hφ).kfin`. Establish `hF : ∀ k, cptRep E N k φ ∈ V` using `fun k => Submodule.subset_span ⟨k, rfl⟩`. Set `Sd : Submodule ℂ (Module.Dual ℂ V)` to `Submodule.span ℂ (Set.range fun h : GA E N => evalAt h ∘ₗ V.subtype)`. Establish `hco : Sd.dualCoannihilator = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Rewrite `hv` using `[Submodule.mem_dualCoannihilator]`. Rewrite using `[Submodule.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `h`. Conclude with `hv _ (Submodule.subset_span ⟨h, rfl⟩)`. Establish `htop : Sd = ⊤`. Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := Sd), hco, Submodule.dualAnnihilator_bot]`.
+
+Establish `key : ∀ f ∈ Sd, (fun k => f ⟨cptRep E N k φ, hF k⟩) ∈ W`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`.
+
+Conclude with `hW h`. Consider the case `zero => exact W.zero_mem`. Consider the case `add x y _ _ hx hy => exact W.add_mem hx hy`. Consider the case `smul a x _ hx => exact W.smul_mem a hx`. Establish `hℓ` using `key (evalAt g ∘ₗ T ∘ₗ V.subtype) (htop ▸ Submodule.mem_top)`.
+
+Use `hℓ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `(T φ).1 (g * infGL E N (Unitary.toUnits k)) = (T (cptRep E N k φ)).1 g`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem typeB_map {N : ℕ} {K : Subgroup (GL (Fin N) (Af E))} {W : Submodule ℂ (Kinf E N → ℂ)}
     {U : Submodule ℂ (Sm E N)} {T : Sm E N →ₗ[ℂ] Sm E N} (haut : ∀ φ ∈ U, IsAutForm φ)
     (hTe : ∀ o, ∀ ψ ∈ U, T (act o ψ) = act o (T ψ)) {φ : Sm E N} (hφ : φ ∈ U) (hT : TypeB K W φ) :
@@ -180,12 +244,26 @@ theorem typeB_map {N : ℕ} {K : Subgroup (GL (Fin N) (Af E))} {W : Submodule �
 
 end TwistSymmetryDecomposition
 
+/- English proof (translation)
+The claim follows from `| _, .leaf _ _, hp, hq => ⟨hp, hq⟩ | _, .node t₁ t₂, hp, hq => ⟨allLeaves_and t₁ hp.1 hq.1, allLeaves_and t₂ hp.2 hq.2⟩`.
+-/
 theorem allLeaves_and {E : Type} [Field E] [NumberField E] [IsCMField E]
     {P Q : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop} : ∀ {N : ℕ} (t : Tr E N), t.AllLeaves P → t.AllLeaves Q →
       t.AllLeaves (fun M V => P M V ∧ Q M V)
   | _, .leaf _ _, hp, hq => ⟨hp, hq⟩
   | _, .node t₁ t₂, hp, hq => ⟨allLeaves_and t₁ hp.1 hq.1, allLeaves_and t₂ hp.2 hq.2⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ N W hW`. Take `⟨Ω, hΩ, hK⟩` from `h5 E N W hW`. Use `⟨Ω, hΩ, fun K hKo => ?_⟩` and prove the remaining obligations. Take `⟨Θ, hΘ, hty⟩` from `hK K hKo`. Use `⟨Θ, hΘ, ?_⟩` and prove the remaining obligations.
+
+Introduce `U hN hst haut hS hnp hci hreg hU0`. Take `⟨S, hSty, hSU, hSmin⟩` from `hS`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφS, hne⟩ : ∃ φ ∈ S, φ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Establish `hbot : IsStable (⊥ : Submodule ℂ (Sm E N))`. Introduce `o ψ hψ`. Rewrite `hψ`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hψ, map_zero]`. Conclude with `hU0 (eq_bot_iff.2 (hSmin ⊥ hbot fun ψ hψ => (Submodule.mem_bot ℂ).2 (hcon ψ hψ)))`.
+
+Establish `hφ : φ ∈ U` using `hSU hφS`. Establish `hfg : FinGen U` using `⟨S, hSU, hSmin⟩`. Set `τ : E →+* ℂ` to `Classical.arbitrary _`. Take `⟨m, hm, hnd⟩` from `hreg τ`. Take `⟨t, T, ht, hpos, hTe, hTs, hTφ⟩` from `TwistSymmetryDecomposition.core h1 h2 h3 h4 h6 τ N U hN ⟨⟨hst, haut⟩, hfg, hnp, hci, ⟨m, hm, hnd⟩, hreg⟩ φ hφ hne`.
+
+Conclude with `⟨t, T, ht, allLeaves_and t hpos (hty t (T φ) ht (hTs φ hφ) hTφ (TwistSymmetryDecomposition.typeB_map haut hTe hφ (hSty φ hφS))), hTe, hTs, φ, hφ, hTφ⟩`.
+-/
 theorem separation_of_six_inputs (h1 : SliceU) (h2 : Blocks) (h3 : Leaf) (h4 : Node) (h5 : Types) (h6 : TwConc) : Sep4 := by
   intro E _ _ _ N W hW
   obtain ⟨Ω, hΩ, hK⟩ := h5 E N W hW

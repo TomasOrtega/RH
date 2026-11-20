@@ -8,6 +8,9 @@ open Formalism.BasicNotions Formalism.MainNotions
 
 namespace Formalism.HC
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem An.logDerivative_at_one_eq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : An.logDerivativeAtOne χ = GlobalTheoryTheory.logDerivativeAtOne χ := rfl
 
 def EAt (Λ : Level) (D : D7) (x eps C : ℝ) : Prop := EAtH Λ D.host.toHostRaw D.host.TT x eps C

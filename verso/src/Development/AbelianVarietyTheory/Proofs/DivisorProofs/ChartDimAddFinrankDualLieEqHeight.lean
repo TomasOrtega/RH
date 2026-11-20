@@ -12,6 +12,15 @@ open TensorProduct
 
 namespace GlobalTheory.PDivGroup.DimSum
 
+/- English proof (translation)
+Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Use `⟨?_, LinearMap.lTensor_surjective k hf⟩` and prove the remaining obligations. Establish `hex : Function.Exact (a • LinearMap.id : M →ₗ[O] M) f`. Introduce `w`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hw`. Take `⟨v, rfl⟩` from `hk w hw`. Conclude with `⟨v, rfl⟩`. Introduce and unpack `⟨v, rfl⟩`. Conclude with `hfa v`.
+
+Establish `hex'` using `lTensor_exact k hex hf`. Establish `hz : LinearMap.lTensor k (a • LinearMap.id : M →ₗ[O] M) = 0`. Use `TensorProduct.ext' fun c m => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.lTensor_tmul, LinearMap.smul_apply, LinearMap.id_apply, ← TensorProduct.smul_tmul, Algebra.smul_def, ha, zero_mul, TensorProduct.zero_tmul, LinearMap.zero_apply]`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `x hx`. Take `⟨y, rfl⟩` from `(hex' x).1 hx`. Rewrite using `[hz, LinearMap.zero_apply]`.
+-/
 theorem baseChange_bijective_of_ker {O : Type} [CommRing O] {M N : Type} [AddCommGroup M] [Module O M]
     [AddCommGroup N] [Module O N] (k : Type) [CommRing k] [Algebra O k] (a : O)
     (ha : algebraMap O k a = 0) (f : M →ₗ[O] N) (hf : Function.Surjective f)
@@ -39,6 +48,11 @@ theorem baseChange_bijective_of_ker {O : Type} [CommRing O] {M N : Type} [AddCom
 
 open GlobalTheory.PDiv Module
 
+/- English proof (translation)
+Establish `h1 : Function.Bijective ((H.omegaLevel 1).baseChange k)` using `baseChange_bijective_of_ker k (p : O) hp (H.omegaLevel 1) (H.omegaLevel_surjective 1) (fun v => by`. Use `H.pow_smul_cot 1 (v.1 1)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Conclude with `this)`. Use the proof step `(fun w hw => by`.
+
+Take `⟨v, hv⟩` from `(H.omega_val_eq_zero_iff 1 w).1 hw`. Conclude with `⟨v, by rw [hv, pow_one]⟩)`. Set `e1` to `LinearEquiv.ofBijective _ h1`. Set `e2` to `LinearEquiv.ofBijective _ (liftSemi_toBaseChange_cot_bijective O k (H.A 1))`. Conclude with `(e1.trans e2).finrank_eq.symm`.
+-/
 theorem finrank_cot_baseChange_one {p : ℕ} {O : Type} [CommRing O] (H : PDivGroup p O) (k : Type)
     [Field k] [Algebra O k] (hp : algebraMap O k p = 0) :
     finrank k (Cot k (k ⊗[O] H.A 1)) = finrank k (k ⊗[O] H.omega) := by
@@ -55,6 +69,9 @@ theorem finrank_cot_baseChange_one {p : ℕ} {O : Type} [CommRing O] (H : PDivGr
   let e2 := LinearEquiv.ofBijective _ (liftSemi_toBaseChange_cot_bijective O k (H.A 1))
   exact (e1.trans e2).finrank_eq.symm
 
+/- English proof (translation)
+Establish `h1 : (e.symm : Y →ₐc[k] X).comp (e : X →ₐc[k] Y) = BialgHom.id k X` using `BialgHom.ext fun x => e.symm_apply_apply x`. Establish `h2 : (e : X →ₐc[k] Y).comp (e.symm : Y →ₐc[k] X) = BialgHom.id k Y` using `BialgHom.ext fun x => e.apply_symm_apply x`. Use `(LinearEquiv.ofLinear (cotMap (e : X →ₐc[k] Y)) (cotMap (e.symm : Y →ₐc[k] X)) ?_ ?_).finrank_eq` and prove the remaining obligations. Rewrite using `[← cotMap_comp, h2, cotMap_id]`. Rewrite using `[← cotMap_comp, h1, cotMap_id]`.
+-/
 theorem finrank_cot_congr {k X Y : Type} [Field k] [CommRing X] [CommRing Y] [Bialgebra k X]
     [Bialgebra k Y] (e : X ≃ₐc[k] Y) : finrank k (Cot k X) = finrank k (Cot k Y) := by
   have h1 : (e.symm : Y →ₐc[k] X).comp (e : X →ₐc[k] Y) = BialgHom.id k X :=
@@ -69,6 +86,19 @@ end GlobalTheory.PDivGroup.DimSum
 
 open Module PDiv in
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv G d c`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Set `k` to `IsLocalRing.ResidueField O`. Establish `hpk : algebraMap O k p = 0`. Express the relevant statement in the definitionally equal form `IsLocalRing.residue O p = 0`.
+
+Rewrite using `[IsLocalRing.residue_eq_zero_iff]`. Conclude with `(Fact.out : ¬IsUnit (p : O))`. Establish `hpk' : ((p : ℕ) : k) = 0` using `by rw [← map_natCast (algebraMap O k), hpk]`. Take `⟨hbij, -⟩` from `GlobalTheory.T.pdDivGroupChart_forms_basis_and_differential p C v O hv G d c`. Set `eG : (Fin d → O) ≃ₗ[O] G.omega` to `LinearEquiv.ofBijective _ hbij`.
+
+Use `haveI : Module.Free O G.omega := Module.Free.of_equiv eG`. Take `⟨hfin, hproj⟩` from `GlobalTheory.PDiv.omega_finite_projective p C v O hv G.dual`. Use `haveI : Module.Free O G.dual.omega := Module.free_of_flat_of_isLocalRing`. Establish `hd : finrank O G.omega = d` using `by rw [← eG.finrank_eq, Module.finrank_fin_fun]`. Establish `hLie : finrank O G.dual.Lie = finrank O G.dual.omega`.
+
+Set `b` to `Module.Free.chooseBasis O G.dual.omega`. Rewrite using `[finrank_eq_card_basis b.dualBasis, finrank_eq_card_basis b]`. Take `⟨-, -, -, hsum⟩` from `finrank_rigExt_omega p k hpk' (G.baseChange k)`. Establish `hA : finrank k (G.baseChange k).omega = finrank O G.omega`. Rewrite using `[(LinearEquiv.ofBijective _ ((G.baseChange k).omegaLevel_one_bijective hpk')).finrank_eq]`.
+
+Conclude with `(DimSum.finrank_cot_baseChange_one G k hpk).trans (Module.finrank_baseChange)`. Establish `hB : finrank k (G.baseChange k).dual.omega = finrank O G.dual.omega`. Rewrite using `[(LinearEquiv.ofBijective _ ((G.baseChange k).dual.omegaLevel_one_bijective hpk')).finrank_eq]`. Use `(DimSum.finrank_cot_congr (CartierDual.baseChange O k (G.A 1))).symm.trans ?_` and prove the remaining obligations. Conclude with `(DimSum.finrank_cot_baseChange_one G.dual k hpk).trans (Module.finrank_baseChange)`.
+
+Rewrite using `[hLie, ← hd, ← hA, ← hB]`. Conclude with `hsum`.
+-/
 theorem GlobalTheory.PDivGroup.chart_dim_add_finrank_dual_lie : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C]
     [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C]
     [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O →

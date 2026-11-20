@@ -22,6 +22,25 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hm1 : 1 ≤ m` using `Nat.pos_of_dvd_of_pos hm hN`. Establish `hdet0 : al.det ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det hal`. Rewrite `h1` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_smul, Matrix.det_one, _root_.mul_one]`.
+
+Conclude with `pow_ne_zero _ (by exact_mod_cast (by omega : m ≠ 0)) h1.symm`. Establish `hal' : al * al.transpose = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ)`. Establish `hreg` using `Matrix.isRegular_of_isLeftRegular_det (A := al) (IsRegular.of_ne_zero hdet0).left`. Apply `hreg.right` to reduce the goal to its premises. Simplify using `only [Matrix.mul_assoc, hal]`.
+
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul]`. Set `ψ : Fin (N ^ (2 * g)) → {x : G' // x ^ N = 1}` to `fun a => ⟨φ (ξ a), by rw [← map_pow, hξ, map_one]⟩`. Establish `hfin : Finite {x : G' // x ^ N = 1}` using `Nat.finite_of_card_ne_zero (by rw [hG N dvd_rfl]; positivity)`. Establish `hψ : Function.Bijective ψ` using `Function.Injective.bijective_of_nat_card_le (fun a a' h => hinj (congrArg Subtype.val h)) (by rw [hG N dvd_rfl, Nat.card_fin])`. Establish `hc` using `card_ker_int_matrix_four G' m (2 * g) al hm1 hal fun k hk => hG k (hk.trans hm)`.
+
+Establish `hfin2 : Finite {ζ : Fin 4 → G' // ∀ c, ∏ r', ζ r' ^ al r' c = 1}` using `Nat.finite_of_card_ne_zero (by rw [hc]; positivity)`. Choose the witnesses or unpack the hypotheses as in `⟨e⟩ : Nonempty ((Fin 4 → Fin (m ^ g)) ≃ {ζ : Fin 4 → G' // ∀ c, ∏ r', ζ r' ^ al r' c = 1}) := by`. Rewrite using `[← Finite.card_eq, hc, Nat.card_pi]`. Simplify using `only [Nat.card_fin, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `htor : ∀ I r, (e I).1 r ^ N = 1`. Introduce `I r`. Establish `h1 : ∏ c, (∏ r', (e I).1 r' ^ al r' c) ^ al r c = 1`. Simplify using `only [(e I).2, one_zpow, Finset.prod_const_one]`. Simplify using `only [← Finset.prod_zpow, ← zpow_mul] at h1`.
+
+Rewrite `h1` using `[Finset.prod_comm]`. Establish `h2 : ∀ r', ∏ c, (e I).1 r' ^ (al r' c * al r c) = if r' = r then (e I).1 r' ^ m else 1`. Introduce `r'`. Establish `h3` using `congrFun (congrFun hal' r') r`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul] at h3`.
+
+Establish `h4 : ∏ c, (e I).1 r' ^ (al r' c * al r c) = (e I).1 r' ^ (∑ c, al r' c * al r c)`. Simplify using `only [Fin.prod_univ_four, Fin.sum_univ_four, zpow_add]`. Rewrite using `[h4, h3]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [h2, Finset.prod_ite_eq', Finset.mem_univ, if_true] at h1`.
+
+Take `⟨q, rfl⟩` from `hm`. Rewrite using `[pow_mul, h1, one_pow]`. Use `choose a ha using fun I r => hψ.2 ⟨(e I).1 r, htor I r⟩`. Establish `ha' : ∀ I r, φ (ξ (a I r)) = (e I).1 r` using `fun I r => congrArg Subtype.val (ha I r)`. Use `⟨a, fun I I' h => e.injective (Subtype.ext (funext fun r => ?_)), fun I c => hker _ ?_ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ha', ← ha', h]`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_eq_one fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, _root_.mul_comm, zpow_mul, zpow_natCast, hξ, one_zpow]`. Simplify using `only [map_prod, map_zpow, ha', (e I).2]`.
+-/
 theorem exists_ker_int_matrix_four_of_torsion_lift {G G' : Type} [CommGroup G] [CommGroup G']
     (φ : G →* G') (N g m : ℕ) (hN : 1 ≤ N) (hm : m ∣ N) (ξ : Fin (N ^ (2 * g)) → G)
     (hξ : ∀ a, ξ a ^ N = 1) (hinj : Function.Injective fun a => φ (ξ a))
@@ -85,6 +104,21 @@ theorem exists_ker_int_matrix_four_of_torsion_lift {G G' : Type} [CommGroup G] [
     rw [← zpow_natCast, ← zpow_mul, _root_.mul_comm, zpow_mul, zpow_natCast, hξ, one_zpow]
   · simp only [map_prod, map_zpow, ha', (e I).2]
 
+/- English proof (translation)
+Use `haveI : IsCommMonObj P.A := P.isAb.comm`. Set `k` to `AlgebraicClosure (IsLocalRing.ResidueField R)`. Set `f : R →+* k` to `(algebraMap (IsLocalRing.ResidueField R) k).comp (IsLocalRing.residue R)`. Set `t : Sp k ⟶ Sp R` to `Spec.map (CommRingCat.ofHom f)`. Establish `hN1 : 1 ≤ N` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hN)`.
+
+Establish `hNk : (N : k) ≠ 0` using `by simpa using (hN.map f).ne_zero`. Use `letI : CommGroup (𝟙_ (Over (Sp R)) ⟶ P.A) := Hom.commGroup`. Use `letI : CommGroup (Over.mk t ⟶ P.A) := Hom.commGroup`. Set `φ : (𝟙_ (Over (Sp R)) ⟶ P.A) →* (Over.mk t ⟶ P.A)` to `MonoidHom.mk' (fun u => toUnit (Over.mk t) ≫ u) fun u v => MonObj.comp_mul _ _ _`. Establish `hφ : ∀ u, (φ u).left = (toUnit (Over.mk t)).left ≫ u.left` using `fun u => rfl`.
+
+Take `⟨p₀⟩ : Nonempty (Sp k)` from `inferInstance`. Take `⟨hf, -, -, het, -⟩` from `laws.mulN (Sp R) P N hN1`. Establish `het'` using `het (by simpa using hN.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)`. Establish `hmul : ∀ {Z : Over (Sp R)} (y : Z ⟶ P.A), y ≫ Out.mulA P.A N = y ^ N` using `fun y => by rw [Out.mulA, MonObj.comp_pow, Category.comp_id]`. Take `⟨a, ha, ha'⟩` from `exists_ker_int_matrix_four_of_torsion_lift φ N P.g m hN1 hm ξ hξ (fun a a' h => by`.
+
+Assume the negation of the conclusion as `hne`. Apply `hd a a' hne ((toUnit (Over.mk t)).left p₀)` to reduce the goal to its premises. Establish `h1 : (φ (ξ a)).left p₀ = (φ (ξ a')).left p₀` using `congrArg (fun q : Over.mk t ⟶ P.A => q.left p₀) h`. Simplify `h1)` using `only [hφ, Scheme.Hom.comp_apply]`. Use the proof step `(fun u hu h1 => by haveI : PreconnectedSpace (𝟙_ (Over (Sp R))).left := inferInstanceAs (PreconnectedSpace (PrimeSpectrum R)) haveI : Nonempty (Over.mk t).left := ⟨p₀⟩`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `eq_of_preconnected_of_unramified (Out.mulA P.A N).left ?_ (toUnit (Over.mk t)).left ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ← Over.comp_left, hmul, hmul, hu, one_pow]`. Rewrite using `[← hφ, ← hφ, h1, map_one])`. Use the proof step `(fun j hj => (laws.mulN (Sp R) P j (Nat.pos_of_dvd_of_pos hj hN1)).2.2.2.2 k t (by`.
+
+Take `⟨q, rfl⟩` from `hj`. Rewrite `hNk` using `[Nat.cast_mul]`. Conclude with `left_ne_zero_of_mul hNk)) al hal`. Use `⟨fun I r => ξ (a I r), fun I I' hI p => ?_, fun I c => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `Function.ne_iff.1 (ha.ne hI)`.
+
+Conclude with `⟨r, hd _ _ hr p⟩`. Rewrite using `[List.prod_ofFn]`. Conclude with `ha' I c`.
+-/
 theorem exists_split_ker_of_split_torsion (laws : Out.Laws) (R : Type) [CommRing R] [IsDomain R]
     [IsLocalRing R] [IsNoetherianRing R] (P : Out.PolAV (Sp R)) (N m : ℕ) (hN : IsUnit (N : R)) (hm : m ∣ N)
     (ξ : Fin (N ^ (2 * P.g)) → (𝟙_ (Over (Sp R)) ⟶ P.A)) (hξ : ∀ a, ξ a ^ N = 1)
@@ -134,6 +168,17 @@ theorem exists_split_ker_of_split_torsion (laws : Out.Laws) (R : Type) [CommRing
   · rw [List.prod_ofFn]
     exact ha' I c
 
+/- English proof (translation)
+Introduce `laws R _ _ _ _ x n l l' al d s z ch ξ ⟨hn, hl, hl', hal⟩ hu hz hξ hd`. Establish `key : ∀ L : ℕ, x.P.g * n < L → (∀ j ≤ x.P.g, L - j * n ∣ degProd x.P.g n l l') → ∃ (b : ∀ j, Fin ((L - j * n) ^ x.P.g) → RR x (L - j * n)) (lam : ℕ → Rˣ), ∀ j ≤ x.P.g, IsBasis x (b j) ∧ IsSquareDeterminantComparison x (L - j * n) (al (L - j * n)) (b j) (lam j)`. Introduce `L hL hdv`. Establish `h1 : ∀ j, ∃ (b : Fin ((L - j * n) ^ x.P.g) → RR x (L - j * n)) (lam : Rˣ), j ≤ x.P.g → IsBasis x b ∧ IsSquareDeterminantComparison x (L - j * n) (al (L - j * n)) b lam`. Introduce `j`.
+
+Distinguish the cases in `hj : j ≤ x.P.g`. Establish `h2 : j * n ≤ x.P.g * n` using `Nat.mul_le_mul_right n hj`. Take `⟨b, hb⟩` from `(GlobalTheory.KeyBasis.main laws R x (L - j * n) (by omega)).1`. Take `⟨ζ, h3, h4⟩` from `exists_split_ker_of_split_torsion laws R x.P _ _ hu (hdv j hj) ξ hξ hd _ (hal (L - j * n))`. Take `⟨lam, h5⟩` from `GlobalTheory.T.exists_l2Val_field_or_dvr_split_kernel laws R x _ _ b ζ (isUnit_of_dvd_unit (Nat.cast_dvd_cast (hdv j hj)) hu) (hal _) hb h3 h4`.
+
+Conclude with `⟨b, lam, fun _ => ⟨hb, h5⟩⟩`. Conclude with `⟨fun _ => ⟨fun _ => 0, fun _ _ => by rw [map_zero, map_zero, mul_zero]⟩, 1, fun h => absurd h hj⟩`. Use `choose b lam h using h1`. Conclude with `⟨b, lam, h⟩`. Establish `hdv : ∀ j ≤ x.P.g, (l - j * n) * (l' - j * n) ∣ degProd x.P.g n l l'` using `fun j hj => Finset.dvd_prod_of_mem (fun j => (l - j * n) * (l' - j * n)) (Finset.mem_range.2 (Nat.lt_succ_of_le hj))`.
+
+Take `⟨b, lam, hb⟩` from `key l hl fun j hj => (dvd_mul_right _ _).trans (hdv j hj)`. Take `⟨b', lam', hb'⟩` from `key l' (hl.trans hl') fun j hj => (dvd_mul_left _ _).trans (hdv j hj)`. Take `⟨rfl, t, ht⟩` from `GlobalTheory.KeyKa.KoszulEx.exists_kosVal laws R x n l d s b z ch (by omega) hl (fun j hj => (hb j hj).1) hz`. Take `⟨-, t', ht'⟩` from `GlobalTheory.KeyKa.KoszulEx.exists_kosVal laws R x n l' _ s b' z ch (by omega) (hl.trans hl') (fun j hj => (hb' j hj).1) hz`. Establish `hJ : IsUnit (∏ a, jac x s (z a) (ch a))` using `IsUnit.prod_univ_iff.2 hz.2.2.1`.
+
+Conclude with `⟨_, z, ch, b, b', t, t', hJ.unit, lam, lam', hz, hJ.unit_spec, hb, hb', ht, ht', rfl⟩`.
+-/
 theorem exists_kaVal_of_split :
     Out.Laws → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsPrincipalIdealRing R] (x : KeyIn R) (n l l' : ℕ) (al : ℕ → Matrix (Fin 4) (Fin 4) ℤ) (d : ℕ) (s : Fin x.P.g → RR x n) (z : Fin d → Pt x) (ch : Fin d → x.P.L.ι) (ξ : Fin (degProd x.P.g n l l' ^ (2 * x.P.g)) → Pt x), admitted x.P.g n l l' al → IsUnit ((degProd x.P.g n l l' : ℕ) : R) → EtZ x s z ch → (∀ a, ξ a ^ degProd x.P.g n l l' = 1) → (∀ a a', a ≠ a' → ∀ p : Sp R, (ξ a).left p ≠ (ξ a').left p) → ∃ κ, KaVal x n l l' al s κ := by
   intro laws R _ _ _ _ x n l l' al d s z ch ξ ⟨hn, hl, hl', hal⟩ hu hz hξ hd

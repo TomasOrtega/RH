@@ -22,13 +22,24 @@ open IsLocalRing Polynomial
 variable {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
   [IsFractionRing V K]
 
+/- English proof (translation)
+Simplify using `only [vV, map_zpow₀, WithZero.log_zpow, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vV_zpow (x : K) (n : ℤ) : vV V (x ^ n) = n * vV V x := by
   simp only [vV, map_zpow₀, WithZero.log_zpow, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `using vV_zpow (V := V) x n`.
+-/
 theorem vV_pow (x : K) (n : ℕ) : vV V (x ^ n) = n * vV V x := by
   simpa using vV_zpow (V := V) x n
 
+/- English proof (translation)
+Establish `h1 : valV V x = 1`. Establish `h2 : WithZero.log (valV V x) = 0` using `by simp only [vV] at h; omega`. Rewrite using `[← WithZero.exp_log (valV_ne_zero (V := V) hx), h2, WithZero.exp_zero]`. Take `⟨u, rfl⟩` from `IsDiscreteValuationRing.exists_lift_of_le_one (A := V) (K := K) (x := x) h1.le`. Use `⟨u, ?_, rfl⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hu`. Conclude with `((HeightOneSpectrum.valuation_lt_one_iff_mem (K := K) (IsDiscreteValuationRing.maximalIdeal V) u).2 hu).ne h1`.
+-/
 theorem exists_unit {x : K} (hx : x ≠ 0) (h : vV V x = 0) : ∃ u : V, IsUnit u ∧ algebraMap V K u = x := by
   have h1 : valV V x = 1 := by
     have h2 : WithZero.log (valV V x) = 0 := by simp only [vV] at h; omega
@@ -38,6 +49,13 @@ theorem exists_unit {x : K} (hx : x ≠ 0) (h : vV V x = 0) : ∃ u : V, IsUnit 
   by_contra hu
   exact ((HeightOneSpectrum.valuation_lt_one_iff_mem (K := K) (IsDiscreteValuationRing.maximalIdeal V) u).2 hu).ne h1
 
+/- English proof (translation)
+Use `set q := Fintype.card (ResidueField A) with hq`. Establish `hmon : (X ^ (q * m + 1) - C (u ^ (q - 1)) : A[X]).Monic` using `monic_X_pow_sub_C _ (Nat.succ_ne_zero _)`. Establish `h0 : (X ^ (q * m + 1) - C (u ^ (q - 1)) : A[X]).eval 1 ∈ maximalIdeal A`. Rewrite using `[← residue_eq_zero_iff]`. Establish `: residue A u ≠ 0` using `(hu.map (residue A)).ne_zero`.
+
+Simplify using `[FiniteField.pow_card_sub_one_eq_one _ this, hq]`. Establish `h1 : IsUnit (Ideal.Quotient.mk (maximalIdeal A) ((derivative (X ^ (q * m + 1) - C (u ^ (q - 1)) : A[X])).eval 1))`. Express the relevant statement in the definitionally equal form `IsUnit (residue A _)`. Establish `: ((q : ℕ) : ResidueField A) = 0` using `FiniteField.cast_card_eq_zero _`. Rewrite using `[derivative_sub, derivative_C, derivative_X_pow]`.
+
+Simplify using `[this]`. Take `⟨a, ha, -⟩` from `HenselianRing.is_henselian (I := maximalIdeal A) _ hmon 1 h0 h1`. Conclude with `⟨a, by simpa [sub_eq_zero] using ha⟩`.
+-/
 theorem exists_root {A : Type} [CommRing A] [IsLocalRing A] [IsAdicComplete (maximalIdeal A) A]
     [Fintype (ResidueField A)] {u : A} (hu : IsUnit u) (m : ℕ) :
     ∃ a : A, a ^ (Fintype.card (ResidueField A) * m + 1) = u ^ (Fintype.card (ResidueField A) - 1) := by
@@ -59,6 +77,17 @@ theorem exists_root {A : Type} [CommRing A] [IsLocalRing A] [IsAdicComplete (max
 variable {W L : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L]
   [IsFractionRing W L]
 
+/- English proof (translation)
+Use `Fintype.ofFinite (ResidueField V)` as an intermediate fact. Establish `hz : ∀ x : K, x ≠ 0 → vV V x = 0 → vV W (i x) = 0` using `fun x hx h => by`. Take `⟨u, hu, rfl⟩` from `exists_unit hx h`. Use `set q := Fintype.card (ResidueField V) with hq`. Establish `hq1 : 1 < q` using `Fintype.one_lt_card`.
+
+Use `set t := vV W (i (algebraMap V K u)) with ht`. Take `⟨a, ha⟩` from `exists_root hu (((q - 1 : ℕ) : ℤ) * t).natAbs`. Establish `h2` using `congrArg (fun z => vV W (i (algebraMap V K z))) ha`. Simplify using `only [map_pow, vV_pow, ← hq, ← ht] at h2`. Establish `h3 : ((q - 1 : ℕ) : ℤ) * t = 0`.
+
+Use `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs ⟨_, h2.symm⟩ ?_` and prove the remaining obligations. Rewrite using `[Int.natAbs_natCast]`. Conclude with `Nat.lt_succ_of_le (Nat.le_mul_of_pos_left _ (by omega))`. Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h4`. Take `⟨π, hπ⟩` from `(IsDiscreteValuationRing.maximalIdeal V).valuation_exists_uniformizer K`. Establish `hπ1 : vV V π = 1` using `by simp [vV, valV, hπ]`. Establish `hπ0 : π ≠ 0` using `fun h => by simp [h, vV] at hπ1`. Use `⟨vV W (i π), fun x => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx, vV]`. Establish `h` using `hz (x * π ^ (-vV V x)) (mul_ne_zero hx (zpow_ne_zero _ hπ0)) (by rw [vV_mul hx (zpow_ne_zero _ hπ0), vV_zpow, hπ1]; ring)`. Rewrite `h` using `[map_mul, map_zpow₀, vV_mul ((map_ne_zero i).2 hx) (zpow_ne_zero _ ((map_ne_zero i).2 hπ0)), vV_zpow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_scale [IsAdicComplete (maximalIdeal V) V] [Finite (ResidueField V)] (i : K →+* L) :
     ∃ r : ℤ, ∀ x : K, vV W (i x) = r * vV V x := by
   have := Fintype.ofFinite (ResidueField V)
@@ -90,6 +119,15 @@ theorem exists_scale [IsAdicComplete (maximalIdeal V) V] [Finite (ResidueField V
 
 end Valuations
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `ho'`. Establish `: Finite (IsLocalRing.ResidueField V.V)` using `hV`. Take `⟨r, hr⟩` from `exists_scale (V := V.V) (W := V'.V) i`. Take `⟨π, hπ⟩` from `la.valuation_exists_uniformizer F`.
+
+Establish `hπ1 : vLa la π = 1` using `by simp [vLa, hπ]`. Establish `h` using `ho'.2 π`. Rewrite `h` using `[RingHom.comp_apply, hr, ho.2, hπ1, _root_.mul_one, _root_.mul_one]`. Establish `he : (0 : ℤ) < e` using `by exact_mod_cast ho.1`. Establish `he' : (0 : ℤ) < e'` using `by exact_mod_cast ho'.1`.
+
+Establish `hr0 : 0 < r` using `by by_contra hn; nlinarith`. Use `lift r to ℕ using hr0.le`. Conclude with `⟨r, ⟨by exact_mod_cast hr0, fun a _ => hr a⟩, by exact_mod_cast h.symm⟩`. Introduce and unpack `⟨r, ⟨hr0, hr⟩, rfl⟩`. Use `ho.bc i hr0 fun a => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Rewrite using `[map_zero]`. Simplify using `[vV]`. Conclude with `hr a ha`.
+-/
 theorem overLa_iff {F : Type} [Field F] [NumberField F] {la : HeightOneSpectrum (𝓞 F)} {V V' : CDVR}
     {io : F →+* V.Fr} {e : ℕ} (ho : OverLa la V.V io e) (hV : V.FinRes) (i : V.Fr →+* V'.Fr) (e' : ℕ) :
     OverLa la V'.V (i.comp io) e' ↔ ∃ r, IsRamExt V V' i r ∧ e' = r * e := by
@@ -119,6 +157,11 @@ section Clauses
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Use `letI := (i.comp io).toAlgebra`. Use `⟨fun h => ⟨extAlg io i, rfl, h⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨φ, hφ, h⟩`. Establish `: φ = extAlg io i` using `AlgHom.ext fun a => RingHom.congr_fun hφ a`.
+
+Rewrite `h` using `[this]`. Conclude with `h`.
+-/
 theorem isBaseChange_iff {V V' : CDVR} {io : c.F →+* V.Fr} (i : V.Fr →+* V'.Fr) (y : IntFr Xo c V io)
     (y' : IntFr Xo c V' (i.comp io)) :
     IsBaseChange i y y' ↔
@@ -135,6 +178,9 @@ theorem isBaseChange_iff {V V' : CDVR} {io : c.F →+* V.Fr} (i : V.Fr →+* V'.
 
 variable [StarRing (𝓞 E)]
 
+/- English proof (translation)
+Rewrite using `[map_inv₀, map_pow, map_natCast, MvPolynomial.support_map_of_injective P io.injective]`. Use `congrArg _ (Finset.sum_congr rfl fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map]`.
+-/
 theorem rhs_eq {V : CDVR} {io : c.F →+* V.Fr} {y : IntFr Xo c V io} (C : IntegralChartA3 Xo c V io y) {n : ℕ}
     (P : MvPolynomial (LtN Dw n) c.F) (g : Fin n → Germ.PS V.Fr 1 (chD C.ch)) :
     letI := io.toAlgebra
@@ -200,6 +246,11 @@ def SecondForm (R : Comparison₂) : Prop :=
         (∀ b, IsLevelGerm C (F b) (g b)) ∧ (∀ b, IsIntPS V' (g b)) ∧
         i (evI y f) = ((T.Q.l.M : V'.Fr) ^ P.totalDegree)⁻¹ * harmComb C P g
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hA D T h j hj _ nab hnab w x P hP f hf V io y e la ho hy hM`. Take `⟨V', i, e', y', ho', hy', hR, C, F, g, hF, hg, hI, hv⟩` from `hA D T h j hj nab hnab w x P hP f hf V io y e la ho hy hM`. Take `⟨r, hr, -⟩` from `(overLa_iff ho hy i e').1 ho'`. Conclude with `⟨V', i, r, y', F, C, g, hr, hy', hR, hF, hg, hI, hv.trans (rhs_eq C P g)⟩`.
+
+Introduce `hB D T h j hj _ nab hnab w x P hP f hf V io y e la ho hy hM`. Take `⟨V', i, r, y', F, C, g, hr, hy', hR, hF, hg, hI, hv⟩` from `hB D T h j hj nab hnab w x P hP f hf V io y e la ho hy hM`. Conclude with `⟨V', i, r * e, y', (overLa_iff ho hy i _).2 ⟨r, hr, rfl⟩, hy', hR, C, F, g, hF, hg, hI, hv.trans (rhs_eq C P g).symm⟩`.
+-/
 theorem firstForm_iff_secondForm (R : Comparison₂) : FirstForm R ↔ SecondForm R := by
   constructor
   · intro hA D T h j hj _ nab hnab w x P hP f hf V io y e la ho hy hM
@@ -213,12 +264,20 @@ theorem firstForm_iff_secondForm (R : Comparison₂) : FirstForm R ↔ SecondFor
     exact ⟨V', i, r * e, y', (overLa_iff ho hy i _).2 ⟨r, hr, rfl⟩, hy', hR, C, F, g, hF, hg, hI,
       hv.trans (rhs_eq C P g).symm⟩
 
+/- English proof (translation)
+Introduce `D T h j hj _ nab hnab w x P hP f hf V io y e la ho hy hM`. Take `⟨V', i, e', y', ho', hy', h1, h2⟩` from `hA D T h j hj nab hnab w x P hP f hf V io y e la ho hy hM`. Conclude with `⟨V', i, e', y', ho', hy', hR _ _ _ _ _ _ _ _ _ h1, h2⟩`.
+-/
 theorem FirstForm.mono {R R' : Comparison₂} (hR : ∀ D T j V io V' i y y', R D T j V io V' i y y' → R' D T j V io V' i y y')
     (hA : FirstForm R) : FirstForm R' := by
   intro D T h j hj _ nab hnab w x P hP f hf V io y e la ho hy hM
   obtain ⟨V', i, e', y', ho', hy', h1, h2⟩ := hA D T h j hj nab hnab w x P hP f hf V io y e la ho hy hM
   exact ⟨V', i, e', y', ho', hy', hR _ _ _ _ _ _ _ _ _ h1, h2⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hA D T h j hj _ nab hnab w x P hP f hf V io y e la ho hy hM`. Take `⟨V', i, e', y', ho', hy', h2⟩` from `hA D T h j hj nab hnab w x P hP f hf V io y e la ho hy hM`. Conclude with `⟨V', i, e', y', ho', hy', trivial, h2⟩`. Introduce `hA D T h j hj _ nab hnab w x P hP f hf V io y e la ho hy hM`.
+
+Take `⟨V', i, e', y', ho', hy', -, h2⟩` from `hA D T h j hj nab hnab w x P hP f hf V io y e la ho hy hM`. Conclude with `⟨V', i, e', y', ho', hy', h2⟩`.
+-/
 theorem first_iff : HarmonicValueAfterExtension ↔ FirstForm trivialTieCondition := by
   constructor
   · intro hA D T h j hj _ nab hnab w x P hP f hf V io y e la ho hy hM
@@ -228,6 +287,11 @@ theorem first_iff : HarmonicValueAfterExtension ↔ FirstForm trivialTieConditio
     obtain ⟨V', i, e', y', ho', hy', -, h2⟩ := hA D T h j hj nab hnab w x P hP f hf V io y e la ho hy hM
     exact ⟨V', i, e', y', ho', hy', h2⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hB D T h j hj _ nab hnab w x P hP f hf V io y e la ho hy hM`. Take `⟨V', i, r, y', F, C, g, hr, hy', h1, h2, h3⟩` from `hB D T h j hj nab hnab w x P hP f hf V io y e la ho hy hM`. Conclude with `⟨V', i, r, y', F, C, g, hr, hy', ⟨h1, h2⟩, h3⟩`. Introduce `hB D T h j hj _ nab hnab w x P hP f hf V io y e la ho hy hM`.
+
+Take `⟨V', i, r, y', F, C, g, hr, hy', ⟨h1, h2⟩, h3⟩` from `hB D T h j hj nab hnab w x P hP f hf V io y e la ho hy hM`. Conclude with `⟨V', i, r, y', F, C, g, hr, hy', h1, h2, h3⟩`.
+-/
 theorem second_iff : ThetaValueIdentity ↔ SecondForm fullTie := by
   constructor
   · intro hB D T h j hj _ nab hnab w x P hP f hf V io y e la ho hy hM
@@ -238,9 +302,21 @@ theorem second_iff : ThetaValueIdentity ↔ SecondForm fullTie := by
       hB D T h j hj nab hnab w x P hP f hf V io y e la ho hy hM
     exact ⟨V', i, r, y', F, C, g, hr, hy', h1, h2, h3⟩
 
+/- English proof (translation)
+The claim follows from `first_iff.2 (((firstForm_iff_secondForm _).2 (second_iff.1 hB)).mono fun _ _ _ _ _ _ _ _ _ _ => trivial)`.
+-/
 theorem first_of_second (hB : ThetaValueIdentity) : HarmonicValueAfterExtension :=
   first_iff.2 (((firstForm_iff_secondForm _).2 (second_iff.1 hB)).mono fun _ _ _ _ _ _ _ _ _ _ => trivial)
 
+/- English proof (translation)
+Introduce `D T h j hj _ nab hnab w x P hP f hf Tc io yI e la ho hy hM`. Take `⟨T', iT, e', yI', ho', hy', C, F, g, -, -, hI, hv⟩` from `hA D T h j hj nab hnab w x P hP f hf Tc io yI e la ho hy hM`. Take `⟨r, ⟨hr0, hr⟩, rfl⟩` from `(overLa_iff ho hy iT e').1 ho'`. Establish `hi : ∀ a : Tc.Fr, vV T'.V (iT a) = (r : ℤ) * vV Tc.V a` using `fun a => by`. Distinguish the cases in `ha : a = 0`.
+
+Substitute `ha` using the available equality. Rewrite using `[map_zero]`. Simplify using `[vV]`. Conclude with `hr a ha`. Establish `hM0 : (T.Q.l.M : T.Q.c.F) ≠ 0`.
+
+Introduce `h0`. Apply `hM` to reduce the goal to its premises. Rewrite using `[Nat.cast_eq_zero.1 h0, Nat.cast_zero]`. Conclude with `la.asIdeal.zero_mem`. Use `⟨T', iT.comp io, r * e, yI', ho', hy', C, P.map (iT.comp io), g, ffvMap D.host.E T.Q.H (T.Q.Dw j) T.Q.l T.Q.c (wtA w) w.n P hP T' (iT.comp io), hI, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← nval_bc iT hr0 hi e (evI yI f), hv, nval_smul ho' (inv_ne_zero (pow_ne_zero _ hM0)), vLa_natCast_inv_pow la hM]`. Simplify using `only [Int.cast_zero, EReal.coe_zero, zero_add]`.
+-/
 theorem valuation_form_of_first (hA : HarmonicValueAfterExtension) : HarmonicValueAtIntegralPoint := by
   intro D T h j hj _ nab hnab w x P hP f hf Tc io yI e la ho hy hM
   obtain ⟨T', iT, e', yI', ho', hy', C, F, g, -, -, hI, hv⟩ :=
@@ -263,6 +339,9 @@ theorem valuation_form_of_first (hA : HarmonicValueAfterExtension) : HarmonicVal
     vLa_natCast_inv_pow la hM]
   simp only [Int.cast_zero, EReal.coe_zero, zero_add]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨firstForm_iff_secondForm, first_iff.trans (firstForm_iff_secondForm _), second_iff.trans (firstForm_iff_secondForm _).symm, first_of_second, valuation_form_of_first⟩`.
+-/
 theorem comparison :
     (∀ R : Comparison₂, FirstForm R ↔ SecondForm R) ∧
     (HarmonicValueAfterExtension ↔ SecondForm trivialTieCondition) ∧ (ThetaValueIdentity ↔ FirstForm fullTie) ∧
@@ -270,6 +349,19 @@ theorem comparison :
   ⟨firstForm_iff_secondForm, first_iff.trans (firstForm_iff_secondForm _),
     second_iff.trans (firstForm_iff_secondForm _).symm, first_of_second, valuation_form_of_first⟩
 
+/- English proof (translation)
+Use `second_iff.2 ((firstForm_iff_secondForm _).1 ?_)` and prove the remaining obligations. Introduce `D T h j hj _ nab hnab w x P hP f hf Tc io yI e la ho hy hM`. Take `⟨Tc', iT, e', he', hval, yI', hy', hsplit, hrest⟩` from `hFin D T h j hj nab ⟨inferInstance, hnab⟩ w x P hP f hf Tc io yI hy`. Use `letI := io.toAlgebra`. Use `letI := (iT.comp io).toAlgebra`.
+
+Take `⟨φ, F, hφ, hmap, hV, hth⟩` from `hrest`. Establish `ho' : OverLa la Tc'.V (iT.comp io) (e' * e)` using `(overLa_iff ho hy iT _).2 ⟨e', ⟨he', hval⟩, rfl⟩`. Take `⟨C₀, hgerm₀, hval₀⟩` from `hnab.2 Tc'.Fr yI'.1`. Take `⟨C, g, hgG, hgI⟩` from `hG D T h j hj hnab.1 Tc' (iT.comp io) yI' (e' * e) la ho' hy' hM hsplit x F hV`. Use `choose g₀ hg₀ using fun b => hgerm₀ (T.Q.l.M ^ 2) (zCast (T.Q.Xo j).univ.t.G (natCast_sq T.Q.l.M) (F b))`.
+
+Establish `hci` using `hCI D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c hnab.1 Tc'.Fr yI'.1 C₀ C.ch (T.Q.l.M ^ 2) w.n (fun b => zCast (T.Q.Xo j).univ.t.G (natCast_sq T.Q.l.M) (F b)) g₀ g hg₀ hgG (wtA w) P hP`. Establish `hte : thExpr (T.Q.Xo j) T.Q.c nab yI'.1 P F = algebraMap T.Q.c.F Tc'.Fr (((T.Q.l.M : T.Q.c.F) ^ P.totalDegree)⁻¹) * Formalism.MainNotions.ModuliIntegralCharts.H1.chartVal C₀ (T.Q.l.M ^ 2) g₀ P`. Unfold `thExpr Formalism.MainNotions.ModuliIntegralCharts.H1.chartVal`. Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Conclude with `(nab_zCast nab yI'.1 (natCast_sq T.Q.l.M) (F b) (colOf m b)).trans (hval₀ _ _ _ (hg₀ b) _)`. Use `⟨Tc', iT, e' * e, yI', ho', hy', ⟨(isBaseChange_iff iT yI yI').2 ⟨φ, hφ, hmap⟩, hsplit⟩, C, F, g, hV, hgG, hgI, ?_⟩` and prove the remaining obligations. Rewrite using `[hth, hte, hci]`.
+
+Use `congrArg _ ?_` and prove the remaining obligations. Unfold `Formalism.MainNotions.ModuliIntegralCharts.H1.chartVal`. Rewrite using `[MvPolynomial.support_map_of_injective P (iT.comp io).injective]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map]`.
+
+Both sides reduce to the same expression.
+-/
 theorem second_of_inputs (hFin : ThValFinExtSplitSt) (hCI : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2) (hG : GermChartSplitFibre) :
     ThetaValueIdentity := by
   refine second_iff.2 ((firstForm_iff_secondForm _).1 ?_)

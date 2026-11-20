@@ -9,6 +9,17 @@ open scoped CategoryTheory.Obj
 
 namespace PositivityTheory.Xgn.HermitianNormSquare
 
+/- English proof (translation)
+Use `letI : PreInnerProductSpace.Core ℂ V := c.toCore`. Establish `hl : ∀ (s : Finset (Fin n)) (f : Fin n → V) (y : V), c.inner (∑ a ∈ s, f a) y = ∑ a ∈ s, c.inner (f a) y`. Introduce `s f y`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using InnerProductSpace.Core.inner_zero_left (𝕜 := ℂ) y`.
+
+Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Conclude with `InnerProductSpace.Core.inner_add_left (𝕜 := ℂ) _ _ _`. Establish `hr : ∀ (s : Finset (Fin n)) (f : Fin n → V) (x : V), c.inner x (∑ a ∈ s, f a) = ∑ a ∈ s, c.inner x (f a)`. Introduce `s f x`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using InnerProductSpace.Core.inner_zero_right (𝕜 := ℂ) x`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Conclude with `InnerProductSpace.Core.inner_add_right (𝕜 := ℂ) _ _ _`.
+
+Rewrite using `[hl]`. Simplify using `only [dotProduct, mulVec, Matrix.of_apply, Pi.star_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[InnerProductSpace.Core.inner_smul_left (𝕜 := ℂ), hr, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[InnerProductSpace.Core.inner_smul_right (𝕜 := ℂ)]`. Simplify using `only [RCLike.star_def, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem core_sum {V : Type*} [AddCommGroup V] [Module ℂ V] (c : InnerProductSpace.Core ℂ V) {n : ℕ}
     (e : Fin n → V) (w : Fin n → ℂ) :
     c.inner (∑ a, w a • e a) (∑ a, w a • e a)
@@ -41,6 +52,13 @@ theorem core_sum {V : Type*} [AddCommGroup V] [Module ℂ V] (c : InnerProductSp
 
 end PositivityTheory.Xgn.HermitianNormSquare
 
+/- English proof (translation)
+Introduce `L _ _ B σ n ε Γ hΓ w`. Establish `hx : (∑ a, GroundTheory.Heights₂.Heights.ComplexAt.ofComplex σ (w a) ⊗ₜ[𝓞 L] ε a : GroundTheory.Heights₂.Heights.Fibre σ B.carrier) = ∑ a, w a • ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] ε a)`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul']`. Use `congr 1`.
+
+Express the relevant statement in the definitionally equal form `w a = w a * 1`. Rewrite using `[_root_.mul_one]`. Establish `hM : Γ = Matrix.of fun a b => (B.metric.form σ).inner ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] ε a) ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] ε b)`. Use extensionality with `a b`. Conclude with `hΓ a b`.
+
+Unfold `sqAt`. Rewrite using `[hx, hM, ← PositivityTheory.Xgn.HermitianNormSquare.core_sum]`.
+-/
 theorem PositivityTheory.Xgn.hermitian_norm_square_formula : ∀ (L : Type) [Field L] [NumberField L] (B : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (σ : L →+* ℂ) (n : ℕ)
     (ε : Fin n → B.carrier) (Γ : Matrix (Fin n) (Fin n) ℂ),
     (∀ a b, Γ a b = (B.metric.form σ).inner ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] ε a)

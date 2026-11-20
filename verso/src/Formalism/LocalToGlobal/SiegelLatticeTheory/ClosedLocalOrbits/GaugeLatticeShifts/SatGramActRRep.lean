@@ -17,6 +17,9 @@ variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u u' : D.what
   {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)} {F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)}
   {what₂ rows' : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, nlam_one _ _, 1, nlam_one _ _, by simp⟩ symm := by rintro p q ⟨n, hn, n', hn', h⟩ exact ⟨n⁻¹, nlam_inv hn, n'⁻¹, nlam_inv hn', by rw [h]; group⟩ trans := by rintro p q r ⟨n, hn, n', hn', h⟩ ⟨m, hm, m', hm', h'⟩ exact ⟨m * n, nlam_mul hm hn, n' * m', nlam_mul hn' hm', by rw [h …`.
+-/
 theorem grel_equiv (Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V) : Equivalence (GRel X u u' F0 F0' Λ Λ') where
   refl _ := ⟨1, nlam_one _ _, 1, nlam_one _ _, by simp⟩
   symm := by
@@ -26,14 +29,27 @@ theorem grel_equiv (Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V) : Equivalence (
     rintro p q r ⟨n, hn, n', hn', h⟩ ⟨m, hm, m', hm', h'⟩
     exact ⟨m * n, nlam_mul hm hn, n' * m', nlam_mul hn' hm', by rw [h', h]; group⟩
 
+/- English proof (translation)
+The claim follows from `@Quotient.exact _ ⟨GRel X u u' F0 F0' Λ Λ', grel_equiv Λ Λ'⟩ p q h`.
+-/
 theorem grel_of_mk_eq {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} {p q : GCar X u u' F0 F0' Λ Λ'}
     (h : Quot.mk (GRel X u u' F0 F0' Λ Λ') p = Quot.mk _ q) : GRel X u u' F0 F0' Λ Λ' p q :=
   @Quotient.exact _ ⟨GRel X u u' F0 F0' Λ Λ', grel_equiv Λ Λ'⟩ p q h
 
+/- English proof (translation)
+The claim follows from `grel_of_mk_eq ((Quot.out_eq t.cls).trans hp)`.
+-/
 theorem grel_rep (t : GTerm X u u' F0 F0' what₂ rows') (p : GCar X u u' F0 F0' t.lam t.lam')
     (hp : t.cls = Quot.mk _ p) : GRel X u u' F0 F0' t.lam t.lam' t.rep p :=
   grel_of_mk_eq ((Quot.out_eq t.cls).trans hp)
 
+/- English proof (translation)
+Establish `hG : Gt t = Gt s`. Unfold `Gt GTerm.G`. Rewrite using `[h]`. Establish `hg : t.generic ↔ s.generic`. Unfold `GTerm.generic`.
+
+Rewrite using `[h]`. Establish `hi : t.isId ↔ s.isId`. Unfold `GTerm.isId`. Rewrite using `[h]`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hS`.
+
+Apply the tactic sequence `rcases hS with rfl | rfl | rfl <;>`. Simplify using `only [Formalism.FourierDecayAlt.PB.Terms.genSet, Formalism.FourierDecayAlt.PB.Terms.ngSet, Formalism.FourierDecayAlt.PB.Terms.degSet, Set.mem_setOf_eq, tOf, hG, hg, hi]`.
+-/
 theorem mem_fam_iff (TR : TypedRed X) (cs : ColSys X u what₂) (cs' : ColSys X u' rows') (FdN FdN' : Set X.B.I.Ginf)
     {t s : GTerm X u u' F0 F0' what₂ rows'} (h : t.toTerm = s.toTerm)
     (S : Set (GTerm X u u' F0 F0' what₂ rows'))
@@ -85,12 +101,20 @@ def AmpRepN : Prop :=
 
 variable {F0 F0' TR cs cs'}
 
+/- English proof (translation)
+The claim follows from `(hI t.lam t.lam' t.mem t.mem' t.rep p (grel_rep t p hp)).symm`.
+-/
 theorem iotaOf_of_mk (hI : IotaRep F0 F0' TR cs cs') (t : GTerm X u u' F0 F0' what₂ rows')
     (p : GCar X u u' F0 F0' t.lam t.lam') (hp : t.cls = Quot.mk _ p) :
     iotaOf TR cs cs' t =
       levi TR (kOf X u u' (cs.h (cs.base t.lam) : X.B.I.Gf) (cs'.h (cs'.base t.lam') : X.B.I.Gf) p.1.1) :=
   (hI t.lam t.lam' t.mem t.mem' t.rep p (grel_rep t p hp)).symm
 
+/- English proof (translation)
+Establish `hFt : Formalism.L2.SG.HidaSetting.IsSFund X.B.I (ROinf t) (FundOf t)`. Establish `h` using `hF t`. Unfold `FundOf`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+
+Establish `key` using `hA t.lam t.lam' t.mem t.mem' t.rep p (grel_rep t p hp) (FundOf t) Ω hFt hΩ (hO t)`. Establish `hc` using `congrArg (fun z => ((scl FdN FdN' (X := X) (u := u) (u' := u') * X.volK2 : ℝ) : ℂ) • z) key`. Conclude with `hc`.
+-/
 theorem ampN_of_mk (FdN FdN' : Set X.B.I.Ginf) (hA : AmpRepN F0 F0' cs cs')
     (hF : FundExists X u u' F0 F0' what₂ rows') (hO : OOIntAll X u u' F0 F0' what₂ rows')
     (t : GTerm X u u' F0 F0' what₂ rows') (p : GCar X u u' F0 F0' t.lam t.lam') (hp : t.cls = Quot.mk _ p)

@@ -20,6 +20,11 @@ noncomputable section
 
 namespace GlobalTheory.FrameGlue
 
+/- English proof (translation)
+Introduce `F _ _ Y C N A p hp hloc`. Take `⟨V, W, ι, U, M, c, hW, hcov, hM, hunit, htest⟩` from `hloc`. Establish `hη` using `GlobalTheory.T.cover_map_generic_point_specializes F Y V`. Take `⟨c', hc', hfr⟩` from `GlobalTheory.T.frames_mod_p_generic_open F Y C N A p hp V hη W ι U M c hW hcov hM hunit htest`. Use `⟨V, fun V' π _ hlies L hL m hN Z _ ιZ hpZ => ?_⟩` and prove the remaining obligations.
+
+Establish `hπ` using `GlobalTheory.T.cover_morphism_generic_point_specializes F Y V V' π hlies`. Conclude with `GlobalTheory.T.modp_frames_power_sections_lift V'.X p ι N (fun a => π ⁻¹ᵁ U a) _ _ (GlobalTheory.T.modp_frames_pullback V.X V'.X π hπ p ι N U M c' hfr) L hL m (fun i => GlobalTheory.T.small_section_units_generic_open F Y C (A i) p hp V hη W ι U (fun a => c a i) (fun a => c' a i) …`.
+-/
 theorem flagAt_of_locFlag : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (C : CxSt F) (N : ℕ) (A : Fin N → Adl C Y) (p : ℕ), p.Prime → LocFlag A p → FlagAt A p := by
   intro F _ _ Y C N A p hp hloc
   obtain ⟨V, W, ι, U, M, c, hW, hcov, hM, hunit, htest⟩ := hloc

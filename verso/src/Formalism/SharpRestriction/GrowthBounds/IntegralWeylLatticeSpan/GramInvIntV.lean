@@ -20,11 +20,19 @@ abbrev piF : E ⊗[F] v.adicCompletion F →+* v.adicCompletion F := (RingHom.fs
 
 abbrev piE : E →+* v.adicCompletion F := (piF v φ).comp (inclE (F := F) (v.adicCompletion F))
 
+/- English proof (translation)
+Distinguish the cases in `h : a = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne h]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem single_intO (j a : Fin n) : (Pi.single j 1 : Fin n → v.adicCompletion F) a ∈ v.adicCompletionIntegers F := by
   by_cases h : a = j
   · subst h; rw [Pi.single_eq_same]; exact one_mem _
   · rw [Pi.single_eq_of_ne h]; exact zero_mem _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Conclude with `RingHom.map_mulVec (piF v φ) _ _ _`.
+-/
 theorem fst_mulVec' (M : GL (Fin n) (E ⊗[F] v.adicCompletion F)) (x : Fin n → E ⊗[F] v.adicCompletion F) :
     (fun a => (φ (((M : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) *ᵥ x) a)).1) =
       ((bc (piF v φ) M : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ
@@ -34,6 +42,9 @@ theorem fst_mulVec' (M : GL (Fin n) (E ⊗[F] v.adicCompletion F)) (x : Fin n �
 
 include halg in
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.Gaps.Loc.fr_lat_of v φ halg (latB B') B' (fun x hx => hx) 1 (by rw [Nat.cast_one]; exact v.asIdeal.ne_top_iff_one.1 v.isPrime.ne_top) (fun i => by rw [Nat.cast_one, one_smul]; exact latB_col B' i) t`.
+-/
 theorem fst_latB (B' : GL (Fin n) E) (t : Fin n → v.adicCompletion F) :
     (∃ x ∈ Formalism.L2.Herm.locL v (latB B'), ∀ a, (φ (x a)).1 = t a) ↔
       ∀ a, (((bc (piE v φ) B')⁻¹ : GL (Fin n) (v.adicCompletion F)) :
@@ -44,6 +55,17 @@ theorem fst_latB (B' : GL (Fin n) E) (t : Fin n → v.adicCompletion F) :
 
 include halg in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a b`. Take `⟨x, hx, hxt⟩` from `(hb (((bc (piE v φ) B : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ Pi.single b 1)).2 (fun a => by show ((((bc (piE v φ) B)⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ (((bc (piE v φ) B : GL (Fin n) …`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `single_intO v b a)`.
+
+Establish `hx' : (u : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) *ᵥ x ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) (latB B') := by`. Use `(hu _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `hx`. Establish `h3` using `(fst_latB v φ halg B' _).1 ⟨_, hx', fun a => rfl⟩ a`.
+
+Rewrite `h3` using `[fst_mulVec', (funext hxt : (fun a => (φ (x a)).1) = _)]`. Rewrite using `[entry_eq (((bc (piE v φ) B')⁻¹ * bc (piF v φ) u * bc (piE v φ) B : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) a b, Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `h3`. Introduce `a b`. Take `⟨x, hx, hxt⟩` from `(fst_latB v φ halg B' (((bc (piE v φ) B' : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ Pi.single b 1)).2 (fun a => by show ((((bc (piE v φ) B')⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ (((bc (piE …`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `single_intO v b a)`. Establish `hx'` using `(hu x).1 hx`. Establish `h3` using `(hb _).1 ⟨_, hx', fun a => rfl⟩ a`. Rewrite `h3` using `[fst_mulVec', (funext hxt : (fun a => (φ (x a)).1) = _), map_inv]`.
+
+Rewrite using `[entry_eq (((bc (piE v φ) B)⁻¹ * (bc (piF v φ) u)⁻¹ * bc (piE v φ) B' : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) a b, Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `h3`.
+-/
 theorem int_of_move {Lb : Submodule (𝓞 E) (Fin n → E)} (B B' : GL (Fin n) E)
     (hb : ∀ t : Fin n → v.adicCompletion F, (∃ x ∈ Formalism.L2.Herm.locL v Lb, ∀ a, (φ (x a)).1 = t a) ↔
       ∀ a, (((bc (piE v φ) B)⁻¹ : GL (Fin n) (v.adicCompletion F)) :
@@ -92,6 +114,9 @@ theorem int_of_move {Lb : Submodule (𝓞 E) (Fin n → E)} (B B' : GL (Fin n) E
 
 variable (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Rewrite using `[Formalism.UG.P.hform_mulVec, Formalism.UG.P.hform_single]`.
+-/
 theorem gram_entry (B' : GL (Fin n) E) (a b : Fin n) :
     (cT (σ : E →+* E) (B' : Matrix (Fin n) (Fin n) E) * J * (B' : Matrix (Fin n) (Fin n) E)) a b =
       hform (σ : E →+* E) J ((B' : Matrix (Fin n) (Fin n) E) *ᵥ Pi.single a 1) ((B' : Matrix (Fin n) (Fin n) E) *ᵥ Pi.single b 1) := by
@@ -99,12 +124,26 @@ theorem gram_entry (B' : GL (Fin n) E) (a b : Fin n) :
 
 variable {σ J}
 
+/- English proof (translation)
+Rewrite using `[gram_entry, ← hform_incl]`. Conclude with `(hsd _).1 (Submodule.subset_span ⟨_, latB_col B' b, rfl⟩) _ (Submodule.subset_span ⟨_, latB_col B' a, rfl⟩)`.
+-/
 theorem gram_intV (B' : GL (Fin n) E) (hsd : SelfDualAt σ J v (latB B')) (a b : Fin n) :
     inclE (F := F) (v.adicCompletion F)
       ((cT (σ : E →+* E) (B' : Matrix (Fin n) (Fin n) E) * J * (B' : Matrix (Fin n) (Fin n) E)) a b) ∈ intV E v := by
   rw [gram_entry, ← hform_incl]
   exact (hsd _).1 (Submodule.subset_span ⟨_, latB_col B' b, rfl⟩) _ (Submodule.subset_span ⟨_, latB_col B' a, rfl⟩)
 
+/- English proof (translation)
+Use `set Gm := cT (σ : E →+* E) (B' : Matrix (Fin n) (Fin n) E) * J * (B' : Matrix (Fin n) (Fin n) E) with hGm`. Establish `hdual : (B' : Matrix (Fin n) (Fin n) E) *ᵥ (Gm⁻¹ *ᵥ Pi.single b 1) ∈ dualSet (σ : E →+* E) J (latB B')`. Introduce `x hx`. Establish `hxB : x = (B' : Matrix (Fin n) (Fin n) E) *ᵥ (((B'⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ x)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Rewrite using `[hxB, Formalism.UG.P.hform_mulVec, ← hGm, Formalism.UG.P.hform_eq_dot, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hG, Matrix.one_mulVec, dotProduct_single, mul_one]`. Take `⟨c, hc⟩` from `hx b`. Use `show σ ((((B'⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ x) b) ∈ _`. Rewrite using `[← hc]`. Conclude with `sig_int σ c`.
+
+Establish `hmem` using `(hsd _).2 fun z hz => pair_int v σ J (latB B') _ hdual z hz`. Establish `h1` using `(mem_latS_latB v B' _).1 hmem a`. Rewrite `h1` using `[← map_inv]`. Establish `e` using `incl_mulVec v ((B'⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) ((B' : Matrix (Fin n) (Fin n) E) *ᵥ (Gm⁻¹ *ᵥ Pi.single b 1))`. Establish `e' : ((bc (inclE (F` using `F) (v.adicCompletion F)) B'⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) *ᵥ (fun i => inclE (F := F) (v.adicCompletion F) (((B' : Matrix (Fin n) (Fin n) E) *ᵥ (Gm⁻¹ *ᵥ Pi.single b 1)) i)) = _ := e`.
+
+Rewrite `h1` using `[e']`. Rewrite using `[entry_eq Gm⁻¹ a b]`. Establish `e2 : ((B'⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ ((B' : Matrix (Fin n) (Fin n) E) *ᵥ (Gm⁻¹ *ᵥ Pi.single b 1)) = Gm⁻¹ *ᵥ Pi.single b 1`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite `h1` using `[e2]`.
+
+Conclude with `h1`.
+-/
 theorem gramInv_intV (B' : GL (Fin n) E) (hsd : SelfDualAt σ J v (latB B'))
     (hG : IsUnit (cT (σ : E →+* E) (B' : Matrix (Fin n) (Fin n) E) * J * (B' : Matrix (Fin n) (Fin n) E)).det) (a b : Fin n) :
     inclE (F := F) (v.adicCompletion F)
@@ -142,6 +181,9 @@ section Pt
 
 variable {p : ℕ} {G : GAtP p} (A : LocAt F E n G)
 
+/- English proof (translation)
+Establish `h0` using `hh (Fin.cast A.rk a) (Fin.cast A.rk b)`. Establish `h1 : (bc ((A.eQ v : G.P.Qq v →+* (A.pl v).1.adicCompletion F)) (castGL A.rk (G.P.Qq v) h) : Matrix (Fin n) (Fin n) _) (Fin.cast A.rk a) (Fin.cast A.rk b) = A.eQ v ((castGL A.rk (G.P.Qq v) h : Matrix (Fin n) (Fin n) _) (Fin.cast A.rk a) (Fin.cast A.rk b))` using `rfl`. Rewrite `h0` using `[h1, castGL_apply]`. Conclude with `(hW v _).2 h0`.
+-/
 theorem int_back (hW : LocInt A) (v : Fin G.P.nV) (h : GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (hh : ∀ a b, (bc ((A.eQ v : G.P.Qq v →+* (A.pl v).1.adicCompletion F)) (castGL A.rk (G.P.Qq v) h) :
       Matrix (Fin n) (Fin n) _) a b ∈ (A.pl v).1.adicCompletionIntegers F) (a b : Fin (G.P.m + 1)) :
@@ -153,16 +195,31 @@ theorem int_back (hW : LocInt A) (v : Fin G.P.nV) (h : GL (Fin (G.P.m + 1)) (G.P
   rw [h1, castGL_apply] at h0
   exact (hW v _).2 h0
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `Matrix.ext fun a b => (A.eQ v).apply_symm_apply _`.
+-/
 theorem bc_eQ_iw (v : Fin G.P.nV) (N : GL (Fin n) E) :
     bc ((A.eQ v : G.P.Qq v →+* (A.pl v).1.adicCompletion F)) (bc (A.iw v) N) = bc (A.phE v) N := by
   apply Units.ext
   exact Matrix.ext fun a b => (A.eQ v).apply_symm_apply _
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `Matrix.ext fun a b => rfl`.
+-/
 theorem bc_ph_incl (v : Fin G.P.nV) (γ : GL (Fin n) E) :
     bc (A.ph v) (bc (prV (E := E) (A.pl v).1) (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ)) = bc (A.phE v) γ := by
   apply Units.ext
   exact Matrix.ext fun a b => rfl
 
+/- English proof (translation)
+Establish `key : bc ((A.eQ v : G.P.Qq v →+* (A.pl v).1.adicCompletion F)) (castGL A.rk (G.P.Qq v) (((castGL A.rk (G.P.Qq v)).symm (bc (A.iw v) (A.B⁻¹ * γ * B')))⁻¹ * g v)) = (bc (A.phE v) B')⁻¹ * bc (A.ph v) (bc (prV (E` using `E) (A.pl v).1) z) * bc (A.phE v) A.B := by`. Establish `h3` using `hpt.2 v`. Rewrite `h3` using `[map_mul, map_mul, bc_ph_incl]`. Establish `h4 : bc ((A.eQ v : G.P.Qq v →+* (A.pl v).1.adicCompletion F)) (castGL A.rk (G.P.Qq v) (g v)) = (bc (A.phE v) A.B)⁻¹ * (bc (A.phE v) γ * bc (A.ph v) (bc (prV (E` using `E) (A.pl v).1) z)) * bc (A.phE v) A.B := by`. Rewrite using `[h3]`.
+
+Use `group`. Rewrite using `[map_mul, map_mul, map_inv, map_inv, MulEquiv.apply_symm_apply, bc_eQ_iw, h4, map_mul, map_mul, map_inv]`. Use `group`. Rewrite using `[colSpan_eq, colSpan_eq, gMap_std_eq_iff, stabStd_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Use `int_back A hW v _ ?_` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `h1`. Use `int_back A hW v _ ?_` and prove the remaining obligations. Rewrite using `[map_inv, map_inv, key]`.
+
+Establish `e : ((bc (A.phE v) B')⁻¹ * bc (A.ph v) (bc (prV (E` using `E) (A.pl v).1) z) * bc (A.phE v) A.B)⁻¹ = (bc (A.phE v) A.B)⁻¹ * (bc (A.ph v) (bc (prV (E := E) (A.pl v).1) z))⁻¹ * bc (A.phE v) B' := by group`. Rewrite using `[e]`. Conclude with `h2`.
+-/
 theorem lat_of_int (hW : LocInt A) (i : G.comp) (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v)) (γ B' : GL (Fin n) E)
     (z : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (hpt : A.IsPt i g (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * z)) (v : Fin G.P.nV)

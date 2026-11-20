@@ -5,6 +5,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.Rg.BcB.F
 
+/- English proof (translation)
+The claim follows from `F5.runFin_of (runT_of peak_trace_bound_holds (setupEx_of setupAlg (dataEx_of (diagComm_of hD) genToData hG))) hF hW hQ`.
+-/
 theorem runFin_chain (hF : F5.FinFam) (hW : WeightEx) (hQ : PermSat) (hD : Eig.DiagAlg) (hG : GenEx) : One.RunFin :=
   F5.runFin_of (runT_of peak_trace_bound_holds (setupEx_of setupAlg (dataEx_of (diagComm_of hD) genToData hG))) hF hW hQ
 

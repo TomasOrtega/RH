@@ -78,6 +78,9 @@ def GreenMixedStatement : Prop :=
     Integrable (fun z : Fin (D + 1) → ℂ => (Real.log ‖z j‖ : ℂ) * ReciprocityTheory.AnForm.hessC u z a b) ∧
       ∫ z : Fin (D + 1) → ℂ, (Real.log ‖z j‖ : ℂ) * ReciprocityTheory.AnForm.hessC u z a b = 0
 
+/- English proof (translation)
+Set `b : ContDiffBump (0 : ℂ)` to `⟨1, 2, one_pos, one_lt_two⟩`. Conclude with `⟨b, b.contDiff, b.hasCompactSupport, b.one_of_mem_closedBall (by simpa using b.rIn_pos.le)⟩`.
+-/
 theorem hyp_inhabited_bump : ∃ u : ℂ → ℝ, ContDiff ℝ 2 u ∧ HasCompactSupport u ∧ u 0 = 1 := by
   let b : ContDiffBump (0 : ℂ) := ⟨1, 2, one_pos, one_lt_two⟩
   exact ⟨b, b.contDiff, b.hasCompactSupport, b.one_of_mem_closedBall (by simpa using b.rIn_pos.le)⟩

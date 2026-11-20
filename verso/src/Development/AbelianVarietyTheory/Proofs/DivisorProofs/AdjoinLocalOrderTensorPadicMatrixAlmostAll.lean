@@ -15,6 +15,9 @@ open GlobalTheory.LKInvGood
 
 namespace GlobalTheory.LocMatrix
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Algebra.adjoin_mono (Set.image_mono hle)`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `GlobalTheory.one_tmul_mem_locOrder_of_nsmul_mem OB x N hN (hNΛ x hx) ℓ hℓ`.
+-/
 theorem locOrder_eq_of_le {B : Type} [Ring B] [Algebra ℚ B] (OB Λ : Subring B) (hle : OB ≤ Λ)
     (N : ℕ) (hN : 0 < N) (hNΛ : ∀ x ∈ Λ, (N : B) * x ∈ OB) (ℓ : ℕ) [Fact ℓ.Prime] (hℓ : ¬ ℓ ∣ N) :
     locOrder ℓ OB = locOrder ℓ Λ := by
@@ -24,6 +27,17 @@ theorem locOrder_eq_of_le {B : Type} [Ring B] [Algebra ℚ B] (OB Λ : Subring B
     rintro _ ⟨x, hx, rfl⟩
     exact GlobalTheory.one_tmul_mem_locOrder_of_nsmul_mem OB x N hN (hNΛ x hx) ℓ hℓ
 
+/- English proof (translation)
+Introduce `F B _ _ _ _ _ _ _ _ _ n hn OB hfin hspan`. Take `⟨Λ, hle, hΛ, hΛfin, N₁, hN₁, hN₁Λ⟩` from `GlobalTheory.T.exists_order_containing_integers F B OB hfin hspan`. Establish `hspanΛ : ∀ b : B, ∃ m : ℕ, 0 < m ∧ (m : B) * b ∈ Λ` using `fun b => by`. Take `⟨m, hm, hmb⟩` from `hspan b`. Conclude with `⟨m, hm, hle hmb⟩`.
+
+Take `⟨N₂, hN₂, hfree⟩` from `GlobalTheory.T.localOrderTensorPadic_free_almost_all F B Λ hΛ hΛfin hspanΛ`. Take `⟨N₃, hN₃, hazu⟩` from `GlobalTheory.T.localOrderTensorPadic_isAzumaya_almost_all F B Λ hΛ hΛfin hspanΛ`. Use `⟨N₁ * N₂ * N₃, by positivity, fun ℓ _ hℓ => ?_⟩` and prove the remaining obligations. Establish `h₁ : ¬ ℓ ∣ N₁` using `fun h => hℓ (Dvd.dvd.mul_right (Dvd.dvd.mul_right h _) _)`. Establish `h₂ : ¬ ℓ ∣ N₂` using `fun h => hℓ (Dvd.dvd.mul_right (Dvd.dvd.mul_left h _) _)`.
+
+Establish `h₃ : ¬ ℓ ∣ N₃` using `fun h => hℓ (Dvd.dvd.mul_left h _)`. Establish `heq` using `locOrder_eq_of_le OB Λ hle N₁ hN₁ hN₁Λ ℓ h₁`. Use `letI := cenAlgebra ℓ F B Λ hΛ`. Use `haveI := isScalarTower_cenAlgebra ℓ F B Λ hΛ`. Use `haveI : Module.Finite ℤ_[ℓ] (cenOrder ℓ F) := GlobalTheory.cenOrder_finite F ℓ`.
+
+Take `⟨hF, hrank⟩` from `hfree ℓ h₂`. Use `haveI := hF`. Use `haveI := hazu ℓ h₃`. Take `⟨φ⟩` from `GlobalTheory.T.azumaya_matrix_of_finite_padic_algebra_of_local GlobalTheory.T.azumaya_free_rank_sq_equiv_matrix_over_local ℓ (cenOrder ℓ F) (locOrder ℓ Λ) n (hrank.trans hn)`. Use `⟨(Subalgebra.equivOfEq _ _ heq).trans (φ.restrictScalars ℤ_[ℓ]), fun a => ?_⟩` and prove the remaining obligations.
+
+Use `⟨heq ▸ cenMap_mem ℓ F B Λ hΛ a.2, ?_⟩` and prove the remaining obligations. Establish `h2 : (Subalgebra.equivOfEq _ _ heq) ⟨cenMap ℓ F B a, heq ▸ cenMap_mem ℓ F B Λ hΛ a.2⟩ = algebraMap (cenOrder ℓ F) (locOrder ℓ Λ) a` using `Subtype.ext rfl`. Rewrite using `[AlgEquiv.trans_apply, h2, AlgEquiv.restrictScalars_apply, AlgEquiv.commutes]`. Use extensionality with `i j`. Simplify using `[Matrix.algebraMap_matrix_apply, Matrix.scalar_apply, Matrix.diagonal_apply]`.
+-/
 theorem locOrder_matrix : ∀ (F B : Type) [Field F] [NumberField F] [Ring B] [Algebra F B] [Algebra ℚ B]
     [IsScalarTower ℚ F B] [Algebra.IsCentral F B] [IsSimpleRing B] [FiniteDimensional F B] (n : ℕ),
     Module.finrank F B = n ^ 2 → ∀ (OB : Subring B), Module.Finite ℤ OB →

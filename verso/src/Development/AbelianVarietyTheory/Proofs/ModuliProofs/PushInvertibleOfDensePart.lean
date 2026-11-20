@@ -21,27 +21,47 @@ open GlobalTheory.AbLocusPull
 
 variable {X Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[← gs_pull r q z U h, gs_stalkMap r z (q ⁻¹ᵁ U) h, gs_pull (𝟙 Y) q (r z) U h, Category.id_comp]`.
+-/
 theorem gs_comp_stalkMap (r : Z ⟶ Y) (q : Y ⟶ X) (z : Z) (U : X.Opens) (h : q (r z) ∈ U) (f : Γ(X, U)) :
     gs (r ≫ q) z U f = (r.stalkMap z).hom (gs q (r z) U f) := by
   rw [← gs_pull r q z U h, gs_stalkMap r z (q ⁻¹ᵁ U) h, gs_pull (𝟙 Y) q (r z) U h, Category.id_comp]
 
+/- English proof (translation)
+Rewrite using `[gs_eq (𝟙 X) x U h]`. Both sides reduce to the same expression.
+-/
 theorem gs_id (x : X) (U : X.Opens) (h : x ∈ U) (f : Γ(X, U)) :
     gs (𝟙 X) x U f = (X.presheaf.germ U x h).hom f := by
   rw [gs_eq (𝟙 X) x U h]; rfl
 
+/- English proof (translation)
+Simplify using `only [gs_eq f y U h, map_sub]`.
+-/
 theorem gs_sub (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a b : Γ(X, U)) :
     gs f y U (a - b) = gs f y U a - gs f y U b := by simp only [gs_eq f y U h, map_sub]
 
+/- English proof (translation)
+Establish `hy : r y ∈ U` using `(h.map r.continuous).mem_open U.2 hz`. Rewrite using `[gs_eq r z U hz, gs_eq r y U hy]`. Conclude with `TopCat.Presheaf.germ_stalkSpecializes_apply _ _ _ _`.
+-/
 theorem gs_specializes (r : Z ⟶ X) {y z : Z} (h : y ⤳ z) (U : X.Opens) (hz : r z ∈ U) (f : Γ(X, U)) :
     (Z.presheaf.stalkSpecializes h).hom (gs r z U f) = gs r y U f := by
   have hy : r y ∈ U := (h.map r.continuous).mem_open U.2 hz
   rw [gs_eq r z U hz, gs_eq r y U hy]
   exact TopCat.Presheaf.germ_stalkSpecializes_apply _ _ _ _
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun b hb => ?_` and prove the remaining obligations. Conclude with `zero_dvd_iff.1 (dvd_descend r z (a := 0) (b := b) (by rw [hb, map_zero]))`.
+-/
 theorem stalkMap_injective_of_flat (r : Z ⟶ X) [Flat r] (z : Z) : Function.Injective (r.stalkMap z).hom := by
   refine (injective_iff_map_eq_zero _).2 fun b hb => ?_
   exact zero_dvd_iff.1 (dvd_descend r z (a := 0) (b := b) (by rw [hb, map_zero]))
 
+/- English proof (translation)
+Use `letI := X.presheaf.algebra_section_stalk (⟨y, hy⟩ : A)`. Establish `h` using `hA.isLocalization_stalk ⟨y, hy⟩`. Take `⟨⟨a, b⟩, e⟩` from `IsLocalization.surj (hA.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl (S := X.presheaf.stalk ((⟨y, hy⟩ : A) : X)) κ`. Use `⟨a, b, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gs_id y A hy]`.
+
+Conclude with `IsLocalization.map_units (X.presheaf.stalk ((⟨y, hy⟩ : A) : X)) b`. Rewrite using `[gs_id y A hy, gs_id y A hy]`. Conclude with `e`.
+-/
 theorem exists_frac {A : X.Opens} (hA : IsAffineOpen A) {y : X} (hy : y ∈ A) (κ : X.presheaf.stalk y) :
     ∃ a b : Γ(X, A), IsUnit (gs (𝟙 X) y A b) ∧ κ * gs (𝟙 X) y A b = gs (𝟙 X) y A a := by
   letI := X.presheaf.algebra_section_stalk (⟨y, hy⟩ : A)
@@ -54,6 +74,15 @@ theorem exists_frac {A : X.Opens} (hA : IsAffineOpen A) {y : X} (hy : y ∈ A) (
   · rw [gs_id y A hy, gs_id y A hy]
     exact e
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun t ht => ?_` and prove the remaining obligations. Take `⟨A, hA, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := x) trivial`. Establish `hy : y ∈ A` using `h.mem_open A.2 hx`. Take `⟨a, b, hb, e⟩` from `exists_frac hA hx t`. Establish `ha : gs (𝟙 X) y A a = 0`.
+
+Rewrite using `[← gs_specializes (𝟙 X) h A hx, ← e, map_mul, ht, zero_mul]`. Use `letI := X.presheaf.algebra_section_stalk (⟨y, hy⟩ : A)`. Establish `hl` using `hA.isLocalization_stalk ⟨y, hy⟩`. Rewrite `ha` using `[gs_id y A hy]`. Take `⟨c, hc⟩` from `(IsLocalization.map_eq_zero_iff (hA.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl (X.presheaf.stalk ((⟨y, hy⟩ : A) : X)) a).1 ha`.
+
+Establish `hu : IsUnit (gs (𝟙 X) y A c)`. Rewrite using `[gs_id y A hy]`. Conclude with `IsLocalization.map_units (X.presheaf.stalk ((⟨y, hy⟩ : A) : X)) c`. Establish `hne : gs (𝟙 X) x A c ≠ 0` using `fun h0 => by`. Rewrite `hu` using `[← gs_specializes (𝟙 X) h A hx, h0, map_zero]`.
+
+Conclude with `not_isUnit_zero hu`. Establish `h0 : gs (𝟙 X) x A c * gs (𝟙 X) x A a = 0`. Rewrite using `[← gs_mul _ _ _ hx, hc, gs_id x A hx, map_zero]`. Rewrite `e` using `[(mul_eq_zero.1 h0).resolve_left hne]`. Conclude with `(hb.mul_left_eq_zero).1 e`.
+-/
 theorem stalkSpecializes_injective {x y : X} (h : y ⤳ x) [IsDomain (X.presheaf.stalk x)] :
     Function.Injective (X.presheaf.stalkSpecializes h).hom := by
   refine (injective_iff_map_eq_zero _).2 fun t ht => ?_
@@ -78,6 +107,11 @@ theorem stalkSpecializes_injective {x y : X} (h : y ⤳ x) [IsDomain (X.presheaf
   rw [(mul_eq_zero.1 h0).resolve_left hne] at e
   exact (hb.mul_left_eq_zero).1 e
 
+/- English proof (translation)
+Establish `h₂₃ : x ∈ U₂ ⊓ U₃` using `⟨h₂, h₃⟩`. Establish `m : ∀ z ∈ U₂ ⊓ U₃, gs (𝟙 X) z (U₂ ⊓ U₃) (resG X inf_le_left f₂ * resG X inf_le_right f₃) = gs (𝟙 X) z U₂ f₂ * gs (𝟙 X) z U₃ f₃` using `fun z hz => by`. Rewrite using `[gs_mul _ z _ hz, gs_res _ z _ hz, gs_res _ z _ hz]`. Rewrite `e` using `[← m x h₂₃, gs_id x _ h₁, gs_id x _ h₂₃]`. Take `⟨N, hN, i₁, i₂, e⟩` from `X.presheaf.germ_eq x h₁ h₂₃ _ _ e`.
+
+Use `⟨N, hN, le_inf (le_inf i₁.le (i₂.le.trans inf_le_left)) (i₂.le.trans inf_le_right), fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← m z (i₂.le hz), ← gs_res (𝟙 X) z i₁.le hz, ← gs_res (𝟙 X) z i₂.le hz]`. Conclude with `congrArg (gs (𝟙 X) z N) e`.
+-/
 theorem exists_nhds_of_gs_eq {U₁ U₂ U₃ : X.Opens} {x : X} (h₁ : x ∈ U₁) (h₂ : x ∈ U₂) (h₃ : x ∈ U₃)
     (f₁ : Γ(X, U₁)) (f₂ : Γ(X, U₂)) (f₃ : Γ(X, U₃))
     (e : gs (𝟙 X) x U₁ f₁ = gs (𝟙 X) x U₂ f₂ * gs (𝟙 X) x U₃ f₃) :
@@ -93,6 +127,19 @@ theorem exists_nhds_of_gs_eq {U₁ U₂ U₃ : X.Opens} {x : X} (h₁ : x ∈ U�
   rw [← m z (i₂.le hz), ← gs_res (𝟙 X) z i₁.le hz, ← gs_res (𝟙 X) z i₂.le hz]
   exact congrArg (gs (𝟙 X) z N) e
 
+/- English proof (translation)
+Establish `hw` using `(isGen_iff w).1 hw`. Establish `rel : ∀ (x : X') j j' k k', x ∈ W' → F x ∈ L.U j → F x ∈ L.U j' → x ∈ L'.U k → x ∈ L'.U k' → ((gw w (𝟙 X') x j k)⁻¹).val * gs F x _ (θ j) = (gm (𝟙 X') x (L'.U k ⊓ L'.U k') (L'.g k k')).val * (((gw w (𝟙 X') x j' k')⁻¹).val * gs F x _ (θ j'))`. Introduce `x j j' k k' hx hj hj' hk hk'`. Establish `e` using `hw _ (𝟙 X') x j j' k k' hj hj' hk hk'`. Rewrite `e` using `[Category.id_comp]`.
+
+Rewrite using `[gs_secOn hθ F x j j' (hW hx) hj hj', e, ← _root_.mul_assoc, ← _root_.mul_assoc, ← Units.val_mul, ← Units.val_mul]`. Use `congr 2`. Rewrite using `[mul_inv, mul_inv, inv_inv, _root_.mul_comm, ← _root_.mul_assoc, ← _root_.mul_assoc, mul_inv_cancel, _root_.one_mul]`. Establish `ex : ∀ k, ∃ b : Γ(X', W' ⊓ L'.U k), ∀ x j, x ∈ W' → x ∈ L'.U k → F x ∈ L.U j → gs (𝟙 X') x _ b = ((gw w (𝟙 X') x j k)⁻¹).val * gs F x _ (θ j)`. Introduce `k`.
+
+Set `O : L.ι → X'.Opens` to `fun j => W' ⊓ ((L.pull F).U (fun _ => j) ⊓ L'.U k)`. Establish `le : ∀ j, O j ≤ F ⁻¹ᵁ (W ⊓ L.U j)` using `fun j x hx => ⟨hW hx.1, mem_pull.1 hx.2.1⟩`. Set `u : ∀ j, Γ(X', (L.pull F).U (fun _ => j) ⊓ L'.U k)ˣ` to `fun j => w.s (fun _ => j, k)`. Set `a : ∀ j, Γ(X', O j)` to `fun j => resG X' inf_le_right ((u j)⁻¹).val * resG X' (le j) ((F.app _).hom (θ j))`. Establish `va : ∀ x j, x ∈ O j → gs (𝟙 X') x _ (a j) = ((gw w (𝟙 X') x j k)⁻¹).val * gs F x _ (θ j)`.
+
+Introduce `x j hx`. Use `(gs_mul _ x _ hx _ _).trans ?_` and prove the remaining obligations. Rewrite using `[gs_res _ x _ hx, gs_res _ x _ hx, gs_unit _ x _ hx.2, map_inv, gs_pull _ F x _ (le j hx), Category.id_comp]`. Both sides reduce to the same expression. Take `⟨b, hb⟩` from `glue_fn (W' ⊓ L'.U k) O (fun j x hx => ⟨hx.1, hx.2.2⟩) (fun x hx => (exists_chart hL (F x)).imp fun j hj => ⟨hx.1, mem_pull.2 hj, hx.2⟩) a (fun j j' x hj hj' => by`.
+
+Rewrite using `[va x j hj, va x j' hj', rel x j j' k k hj.1 (mem_pull.1 hj.2.1) (mem_pull.1 hj'.2.1) hj.2.2 hj.2.2, gm_self hL' (𝟙 X') x hj.2.2, Units.val_one, _root_.one_mul])`. Use `⟨b, fun x j hx hk hj => ?_⟩` and prove the remaining obligations. Establish `hm : x ∈ O j` using `⟨hx, mem_pull.2 hj, hk⟩`. Conclude with `(hb x j hm).trans (va x j hm)`. Use `choose θ' hθ' using ex`.
+
+Use `⟨θ', fun k k' => fn_ext fun x hx => ?_, hθ'⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart hL (F x)`. Rewrite using `[gs_res _ x _ hx, gs_mul _ x _ hx, gs_res _ x _ hx, gs_res _ x _ hx, gs_unit (𝟙 X') x (L'.U k ⊓ L'.U k') ⟨hx.1.2, hx.2⟩, hθ' k x j hx.1.1 hx.1.2 hj, hθ' k' x j hx.1.1 hx.2 hj]`. Conclude with `rel x j j k k' hx.1.1 hj hj hx.1.2 hx.2`.
+-/
 theorem exists_secOn_pull_germ {X' : Scheme.{0}} {F : X' ⟶ X} {L : LB X} {L' : LB X'} (hL : L.IsLB) (hL' : L'.IsLB)
     (w : LB.Iso L' (L.pull F)) (hw : w.IsGen) {W : X.Opens} {W' : X'.Opens} (hW : W' ≤ F ⁻¹ᵁ W)
     {θ : ∀ i, Γ(X, W ⊓ L.U i)} (hθ : θ ∈ secOn L W) :
@@ -134,6 +181,23 @@ theorem exists_secOn_pull_germ {X' : Scheme.{0}} {F : X' ⟶ X} {L : LB X} {L' :
     gs_unit (𝟙 X') x (L'.U k ⊓ L'.U k') ⟨hx.1.2, hx.2⟩, hθ' k x j hx.1.1 hx.1.2 hj, hθ' k' x j hx.1.1 hx.2 hj]
   exact rel x j j k k' hx.1.1 hj hj hx.1.2 hx.2
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hw`. Take `⟨V₀, hV₀, θ₀, -, gen, -⟩` from `h₀ (G₀.hom z)`. Take `⟨k, hk⟩` from `exists_chart hL₀ z`. Establish `hm : φ z ∈ G.hom ⁻¹ᵁ V ⊓ L.U i` using `G.left.basicOpen_le _ hz`. Establish `pt : ∀ y, G.hom (φ y) = j (G₀.hom y)` using `fun y => by`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, sq, Scheme.Hom.comp_apply]`. Establish `hjA : j (G₀.hom z) ∈ A` using `pt z ▸ hzA`. Establish `key : ∀ (W : X.Opens) (s : ∀ i, Γ(G.left, G.hom ⁻¹ᵁ W ⊓ L.U i)), s ∈ secOn L (G.hom ⁻¹ᵁ W) → G.hom (φ z) ∈ W → ∃ a b : Γ(X, A), IsUnit (gs (φ ≫ G.hom) z A b) ∧ gs (φ ≫ G.hom) z A b * gs φ z _ (s i) = gs (φ ≫ G.hom) z A a * ((gw w (𝟙 _) z i k).val * gs (𝟙 _) z _ (θ₀ k))`. Introduce `W s hs hzW`. Establish `hle : G₀.hom ⁻¹ᵁ (V₀ ⊓ j ⁻¹ᵁ W) ≤ φ ⁻¹ᵁ (G.hom ⁻¹ᵁ W)` using `fun y hy => by show G.hom (φ y) ∈ W`.
+
+Rewrite using `[pt]`. Conclude with `hy.2`. Establish `hu : G₀.hom z ∈ V₀ ⊓ j ⁻¹ᵁ W` using `⟨hV₀, show j (G₀.hom z) ∈ W from pt z ▸ hzW⟩`. Take `⟨s', hs', es⟩` from `exists_secOn_pull_germ hL hL₀ w hw hle hs`. Take `⟨c, hc, -⟩` from `gen _ inf_le_left s' hs'`.
+
+Establish `hz' : z ∈ G₀.hom ⁻¹ᵁ (V₀ ⊓ j ⁻¹ᵁ W) ⊓ L₀.U k` using `⟨hu, hk⟩`. Establish `e` using `congrArg (gs (𝟙 _) z _) (hc k)`. Rewrite `e` using `[es k z i hu hk hm.2, gs_mul _ z _ hz', gs_appLE _ _ _ _ _ z hz', gs_res _ z _ hz', Category.id_comp]`. Take `⟨κ, hκ⟩` from `j.stalkMap_surjective (G₀.hom z) (gs (𝟙 U) (G₀.hom z) _ c)`. Take `⟨a, b, hb, eab⟩` from `exists_frac hA hjA κ`.
+
+Establish `tr : ∀ f : Γ(X, A), gs (φ ≫ G.hom) z A f = (G₀.hom.stalkMap z).hom ((j.stalkMap (G₀.hom z)).hom (gs (𝟙 X) (j (G₀.hom z)) A f))` using `fun f => by`. Rewrite using `[sq, gs_comp_stalkMap _ _ z A hjA, gs_stalkMap j _ A hjA]`. Establish `e' : gs G₀.hom z _ c * gs (φ ≫ G.hom) z A b = gs (φ ≫ G.hom) z A a`. Rewrite using `[tr, tr, ← eab, map_mul, map_mul, gs_stalkMap G₀.hom z _ hu, ← hκ]`. Use `⟨a, b, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[tr]`. Conclude with `(hb.map _).map _`. Rewrite `e` using `[Units.inv_mul_eq_iff_eq_mul]`. Rewrite using `[e, ← e']`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨a, b, hb, e⟩` from `key W s hs hzW`. Take `⟨a', b', hb', e'⟩` from `key V θ hθ hm.1`. Establish `ha' : IsUnit (gs (φ ≫ G.hom) z A a')` using `isUnit_of_mul_isUnit_left (e' ▸ hb'.mul ((isUnit_gs_iff φ z _ hm _).2 hz))`. Establish `hzA' : (φ ≫ G.hom) z ∈ A` using `hzA`. Use `⟨a * b', b * a', ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[gs_mul _ z _ hzA']`. Conclude with `hb.mul ha'`. Rewrite using `[gs_mul _ z _ hzA', gs_mul _ z _ hzA']`. Take the linear combination `gs (φ ≫ G.hom) z A a' * e - gs (φ ≫ G.hom) z A a * e'`.
+-/
 theorem exists_ratio_above {U : Scheme.{0}} {j : U ⟶ X} [IsPreimmersion j] {G : Over X} {G₀ : Over U}
     {φ : G₀.left ⟶ G.left} {L : LB G.left} {L₀ : LB G₀.left} (sq : φ ≫ G.hom = G₀.hom ≫ j) (hL : L.IsLB)
     (hL₀ : L₀.IsLB) (hw : LBIso L₀ (L.pull φ)) (h₀ : PushInvertible G₀ L₀) {V W A : X.Opens} (hA : IsAffineOpen A)
@@ -185,6 +249,19 @@ theorem exists_ratio_above {U : Scheme.{0}} {j : U ⟶ X} [IsPreimmersion j] {G 
   · rw [gs_mul _ z _ hzA', gs_mul _ z _ hzA']
     linear_combination gs (φ ≫ G.hom) z A a' * e - gs (φ ≫ G.hom) z A a * e'
 
+/- English proof (translation)
+Establish `pl : ∀ z, π z ∈ W' → gs (𝟙 Y) z (π ⁻¹ᵁ W') ((π.app W').hom a) = gs π z W' a` using `fun z hz => by`. Rewrite using `[gs_pull (𝟙 Y) π z W' hz, Category.id_comp]`. Rewrite `e` using `[← pl g hW']`. Take `⟨N, hN, hle, eN⟩` from `exists_nhds_of_gs_eq (U₁ := π ⁻¹ᵁ W ⊓ L.U i) (U₂ := π ⁻¹ᵁ W') (U₃ := π ⁻¹ᵁ V ⊓ L.U i) ⟨hW, hi⟩ hW' ⟨hV, hi⟩ _ _ _ e`. Set `O : X.Opens` to `⟨π '' N, hπ _ N.2⟩`.
+
+Establish `o₁ : O ≤ W` using `by rintro _ ⟨z, hz, rfl⟩; exact (hle hz).1.1.1`. Establish `o₂ : O ≤ W'` using `by rintro _ ⟨z, hz, rfl⟩; exact (hle hz).1.2`. Establish `o₃ : O ≤ V` using `by rintro _ ⟨z, hz, rfl⟩; exact (hle hz).2.1`. Use `⟨O, ⟨g, hN, rfl⟩, o₁, o₂, fun k z hz hk => ?_⟩` and prove the remaining obligations. Set `t : Γ(Y, π ⁻¹ᵁ O ⊓ L.U k)` to `resG Y (inf_le_inf_right _ (π.preimage_mono o₁)) (s k) - (π.appLE W' _ (inf_le_left.trans (π.preimage_mono o₂))).hom a * resG Y (inf_le_inf_right _ (π.preimage_mono o₃)) (θ k)`.
+
+Establish `vt : ∀ z ∈ π ⁻¹ᵁ O ⊓ L.U k, gs (𝟙 Y) z _ t = gs (𝟙 Y) z _ (s k) - gs π z W' a * gs (𝟙 Y) z _ (θ k)` using `fun z hz => by`. Rewrite using `[gs_sub _ z _ hz, gs_mul _ z _ hz, gs_res _ z _ hz, gs_res _ z _ hz, gs_appLE _ _ _ _ _ z hz, Category.id_comp]`. Establish `ht : t = 0`. Rewrite using `[← basicOpen_eq_bot_iff, eq_bot_iff]`. Introduce `y hy`.
+
+Take `⟨y', hy', ey⟩` from `(Y.basicOpen_le _ hy).1`. Establish `irr : IsIrreducible (π ⁻¹' {π y})`. Rewrite using `[← π.range_fiberι, ← Set.image_univ]`. Conclude with `(IrreducibleSpace.isIrreducible_univ _).image _ (π.fiberι _).continuous.continuousOn`. Take `⟨q, -, hq, hq'⟩` from `irr.2 N (Y.basicOpen t) N.2 (Y.basicOpen t).2 ⟨y', ey, hy'⟩ ⟨y, rfl, hy⟩`.
+
+Establish `hm : q ∈ π ⁻¹ᵁ O ⊓ L.U k` using `Y.basicOpen_le _ hq'`. Establish `hu` using `(isUnit_gs_iff (𝟙 Y) q _ hm t).2 hq'`. Rewrite `hu` using `[vt q hm, gs_secOn hs (𝟙 Y) q k i (hle hq).1.1.1 hm.2 (hle hq).2.2, gs_secOn hθ (𝟙 Y) q k i (hle hq).2.1 hm.2 (hle hq).2.2, eN q hq, pl q (hle hq).1.2, mul_left_comm, sub_self]`. Conclude with `(not_isUnit_zero hu).elim`. Establish `hm : z ∈ π ⁻¹ᵁ O ⊓ L.U k` using `⟨hz, hk⟩`.
+
+Rewrite using `[← sub_eq_zero, ← vt z hm, ht, gs_id z _ hm, map_zero]`.
+-/
 theorem spread (π : Y ⟶ X) [GeometricallyIrreducible π] [IsReduced Y] (hπ : IsOpenMap π) {L : LB Y}
     {V W W' : X.Opens} {θ : ∀ i, Γ(Y, π ⁻¹ᵁ V ⊓ L.U i)} (hθ : θ ∈ secOn L (π ⁻¹ᵁ V))
     {s : ∀ i, Γ(Y, π ⁻¹ᵁ W ⊓ L.U i)} (hs : s ∈ secOn L (π ⁻¹ᵁ W)) (a : Γ(X, W')) (g : Y) (i : L.ι)
@@ -226,6 +303,9 @@ theorem spread (π : Y ⟶ X) [GeometricallyIrreducible π] [IsReduced Y] (hπ :
   have hm : z ∈ π ⁻¹ᵁ O ⊓ L.U k := ⟨hz, hk⟩
   rw [← sub_eq_zero, ← vt z hm, ht, gs_id z _ hm, map_zero]
 
+/- English proof (translation)
+Apply `stalkMap_injective_of_flat π g` to reduce the goal to its premises. Rewrite using `[← gs_stalkMap π g O h, ← gs_stalkMap π g O' h']`. Conclude with `hu.mul_right_cancel e`.
+-/
 theorem gs_eq_of_mul_eq (π : Y ⟶ X) [Flat π] {O O' : X.Opens} (a : Γ(X, O)) (a' : Γ(X, O')) (g : Y)
     (h : π g ∈ O) (h' : π g ∈ O') {u : Y.presheaf.stalk g} (hu : IsUnit u)
     (e : gs π g O a * u = gs π g O' a' * u) : gs (𝟙 X) (π g) O a = gs (𝟙 X) (π g) O' a' := by
@@ -233,6 +313,33 @@ theorem gs_eq_of_mul_eq (π : Y ⟶ X) [Flat π] {O O' : X.Opens} (a : Γ(X, O))
   rw [← gs_stalkMap π g O h, ← gs_stalkMap π g O' h']
   exact hu.mul_right_cancel e
 
+/- English proof (translation)
+Introduce `X U _ j hX _ _ _ _ G G₀ φ L L₀ _ _ sq hL hL₀ hw h₀ H x`. Take `⟨V, hx, θ, hθ, hne⟩` from `H x`. Use `⟨V, hx, θ, hθ, fun W hW s hs => ?_, hne⟩` and prove the remaining obligations. Establish `hG` using `forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth G.hom hX`. Establish `: IsReduced G.left`.
+
+Establish `: ∀ g : G.left, _root_.IsReduced (G.left.presheaf.stalk g)` using `fun g =>`. Use `(hG g).1` as an intermediate fact. Use `inferInstance`. Conclude with `isReduced_of_isReduced_stalk _`. Establish `: Flat φ` using `MorphismProperty.of_isPullback (P := @Flat) sq.flip ‹_›`.
+
+Establish `loc : ∀ y : W, ∃ (O : X.Opens) (a : Γ(X, O)), y.1 ∈ O ∧ O ≤ W ∧ ∀ k z, G.hom z ∈ O → z ∈ L.U k → gs (𝟙 _) z _ (s k) = gs G.hom z O a * gs (𝟙 _) z _ (θ k)`. Introduce and unpack `⟨y, hy⟩`. Take `⟨g, i, rfl, hg⟩` from `hne y (hW hy)`. Use `(hG g).1` as an intermediate fact. Establish `hm : g ∈ G.hom ⁻¹ᵁ V ⊓ L.U i` using `G.left.basicOpen_le _ hg`.
+
+Establish `hm' : g ∈ G.hom ⁻¹ᵁ W ⊓ L.U i` using `⟨hy, hm.2⟩`. Establish `hu` using `(isUnit_gs_iff (𝟙 _) g _ hm _).2 hg`. Choose the witnesses or unpack the hypotheses as in `⟨ξ, hξ, hsp⟩ : ∃ ξ ∈ genericPoints X, ξ ⤳ G.hom g := by`. Set `C : irreducibleComponents X` to `⟨_, irreducibleComponent_mem_irreducibleComponents (G.hom g)⟩`. Conclude with `⟨(genericPoints.ofComponent C).1, (genericPoints.ofComponent C).2, (genericPoints.isGenericPoint_ofComponent C).specializes mem_irreducibleComponent⟩`.
+
+Take `⟨u, rfl⟩` from `genericPoints_subset_range_of_isDominant j hξ`. Take `⟨ν, hν, eν⟩` from `Flat.generalizingMap G.hom hsp`. Take `⟨z, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback sq ν u eν`. Take `⟨A, hA, hgA, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := G.hom g) trivial`. Establish `hsp' : G.hom (φ z) ⤳ G.hom g` using `hν.map G.hom.continuous`.
+
+Establish `hzA : G.hom (φ z) ∈ A` using `hsp'.mem_open A.2 hgA`. Take `⟨a, b, hb, e⟩` from `exists_ratio_above sq.w hL hL₀ hw h₀ hA hθ hs z i hzA (hsp'.mem_open W.2 hy) (hν.mem_open (G.left.basicOpen _).2 hg)`. Establish `tr : ∀ f : Γ(X, A), gs (φ ≫ G.hom) z A f = (φ.stalkMap z).hom ((G.left.presheaf.stalkSpecializes hν).hom (gs G.hom g A f))` using `fun f => by`. Rewrite using `[gs_comp_stalkMap _ _ z A hzA, gs_specializes G.hom hν A hgA]`. Establish `tr' : ∀ (O : G.left.Opens) (f : Γ(G.left, O)), g ∈ O → gs φ z O f = (φ.stalkMap z).hom ((G.left.presheaf.stalkSpecializes hν).hom (gs (𝟙 _) g O f))` using `fun O f hO => by`.
+
+Rewrite using `[gs_stalkMap φ z O (hν.mem_open O.2 hO), gs_specializes (𝟙 _) hν O hO]`. Establish `e' : gs G.hom g A b * gs (𝟙 _) g _ (s i) = gs G.hom g A a * gs (𝟙 _) g _ (θ i)`. Apply `stalkSpecializes_injective hν` to reduce the goal to its premises. Apply `stalkMap_injective_of_flat φ z` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_mul, map_mul, ← tr, ← tr, ← tr' _ _ hm, ← tr' _ _ hm']`.
+
+Conclude with `e`. Establish `hb0 : gs G.hom g A b ≠ 0` using `fun h0 => by`. Rewrite `hb` using `[tr, h0, map_zero, map_zero]`. Conclude with `not_isUnit_zero hb`. Establish `hd : gs G.hom g A b ∣ gs G.hom g A a` using `(hu.dvd_mul_right).1 ⟨_, e'.symm⟩`.
+
+Establish `hd'` using `hd`. Rewrite `hd'` using `[gs_stalkMap G.hom g A hgA, gs_stalkMap G.hom g A hgA]`. Take `⟨c, hc⟩` from `dvd_descend G.hom g hd'`. Take `⟨W', hW', c, rfl⟩` from `X.presheaf.exists_germ_eq c`. Rewrite `hc` using `[← gs_id _ W' hW']`.
+
+Establish `ec : gs G.hom g A a = gs G.hom g A b * gs G.hom g W' c`. Rewrite using `[gs_stalkMap G.hom g A hgA a, hc, map_mul, ← gs_stalkMap G.hom g A hgA, ← gs_stalkMap G.hom g W' hW']`. Rewrite `e'` using `[ec, _root_.mul_assoc]`. Take `⟨O, hO, o₁, o₂, eO⟩` from `spread G.hom G.hom.isOpenMap hθ hs c g i hm.1 hy hW' hm.2 (mul_left_cancel₀ hb0 e')`. Conclude with `⟨O, resG X o₂ c, hO, o₁, fun k z hz hk => by rw [gs_res _ z _ hz]; exact eO k z hz hk⟩`.
+
+Use `choose O a hO hOW ea using loc`. Take `⟨b, hb⟩` from `glue_fn W O hOW (fun y hy => ⟨⟨y, hy⟩, hO _⟩) a (fun p q y hp hq => by`. Take `⟨g, i, rfl, hg⟩` from `hne y (hW (hOW p hp))`. Establish `hm : g ∈ G.hom ⁻¹ᵁ V ⊓ L.U i` using `G.left.basicOpen_le _ hg`. Conclude with `gs_eq_of_mul_eq G.hom _ _ g hp hq ((isUnit_gs_iff (𝟙 _) g _ hm _).2 hg) ((ea p i g hp hm.2).symm.trans (ea q i g hq hm.2)))`.
+
+Establish `val : ∀ (c : Γ(X, W)) i z (hz : z ∈ G.hom ⁻¹ᵁ W ⊓ L.U i), gs (𝟙 _) z _ ((G.hom.appLE W (G.hom ⁻¹ᵁ W ⊓ L.U i) inf_le_left).hom c * resG G.left (inf_le_inf_right _ (G.hom.preimage_mono hW)) (θ i)) = gs G.hom z W c * gs (𝟙 _) z _ (θ i)` using `fun c i z hz => by`. Rewrite using `[gs_mul _ z _ hz, gs_res _ z _ hz, gs_appLE _ _ _ _ _ z hz, Category.id_comp]`. Use `existsUnique_of_exists_of_unique ⟨b, fun i => fn_ext fun z hz => ?_⟩ fun c c' hc hc' => fn_ext fun y hy => ?_` and prove the remaining obligations. Rewrite using `[val b i z hz, ea ⟨G.hom z, hz.1⟩ i z (hO _) hz.2, gs_stalkMap G.hom z W hz.1, hb _ ⟨G.hom z, hz.1⟩ (hO _), ← gs_stalkMap G.hom z _ (hO ⟨G.hom z, hz.1⟩)]`. Take `⟨g, i, rfl, hg⟩` from `hne y (hW hy)`.
+
+Establish `hm : g ∈ G.hom ⁻¹ᵁ V ⊓ L.U i` using `G.left.basicOpen_le _ hg`. Establish `hm' : g ∈ G.hom ⁻¹ᵁ W ⊓ L.U i` using `⟨hy, hm.2⟩`. Use `gs_eq_of_mul_eq G.hom _ _ g hy hy ((isUnit_gs_iff (𝟙 _) g _ hm _).2 hg) ?_` and prove the remaining obligations. Rewrite using `[← val c i g hm', ← val c' i g hm', ← hc i, ← hc' i]`.
+-/
 theorem pushInvertible_of_densePart : ∀ (X U : Scheme.{0}) [IsLocallyNoetherian X] (j : U ⟶ X), IsNormalScheme X → IsPreimmersion j → Flat j → IsDominant j → QuasiCompact j → ∀ (G : Over X) (G₀ : Over U) (φ : G₀.left ⟶ G.left) (L : LB G.left) (L₀ : LB G₀.left), Smooth G.hom → GeometricallyIntegral G.hom → IsPullback φ G₀.hom G.hom j → L.IsLB → L₀.IsLB → LBIso L₀ (L.pull φ) → PushInvertible G₀ L₀ → (∀ x : X, ∃ V : X.Opens, x ∈ V ∧ ∃ θ ∈ secOn L (G.hom ⁻¹ᵁ V), ∀ y ∈ V, ∃ (g : G.left) (i : L.ι), G.hom g = y ∧ g ∈ G.left.basicOpen (θ i)) → PushInvertible G L := by
   intro X U _ j hX _ _ _ _ G G₀ φ L L₀ _ _ sq hL hL₀ hw h₀ H x
   obtain ⟨V, hx, θ, hθ, hne⟩ := H x

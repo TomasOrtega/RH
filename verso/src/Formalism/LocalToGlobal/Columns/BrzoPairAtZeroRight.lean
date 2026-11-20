@@ -34,6 +34,9 @@ def brzo_perp (x : A.V) : Submodule (𝓞 K) A.V where
 
 variable {A} {γ : Type} [DecidableEq γ] (N : γ → Submodule (𝓞 K) A.V)
 
+/- English proof (translation)
+Introduce `x hx y hy`. Establish `hle : (⨆ c ∈ s, N c) ≤ brzo_perp A x` using `iSup₂_le fun c hc z hz v => horth a c (fun h => ha (h ▸ hc)) x hx z hz v`. Rewrite using `[Formalism.HN.HeightGram.inner_realize]`. Conclude with `Finset.sum_eq_zero fun v _ => by rw [hle hy v]; rfl`.
+-/
 theorem brzo_orth_sup (horth : ∀ c c', c ≠ c' → ∀ x ∈ N c, ∀ y ∈ N c', ∀ v, majAt A.b A.X v x y = 0)
     (a : γ) (s : Finset γ) (ha : a ∉ s) : ∀ x ∈ N a, ∀ y ∈ ⨆ c ∈ s, N c,
     inner ℝ (realize A.b A.X x) (realize A.b A.X y) = 0 := by
@@ -43,6 +46,15 @@ theorem brzo_orth_sup (horth : ∀ c c', c ≠ c' → ∀ x ∈ N c, ∀ y ∈ N
   rw [Formalism.HN.HeightGram.inner_realize]
   exact Finset.sum_eq_zero fun v _ => by rw [hle hy v]; rfl
 
+/- English proof (translation)
+Establish `hlat : ∀ L : Submodule (𝓞 K) A.V, L.FG → Formalism.HN.IsLat (realize A.b A.X) L` using `fun L hL => (Formalism.HN.plLat K A.V A.ι A.b A.X hA L hL).1`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨?_, fun h => absurd h Finset.not_nonempty_empty⟩` and prove the remaining obligations. Simplify using `only [Finset.notMem_empty, iSup_false, iSup_bot, Finset.sum_empty]`.
+
+Conclude with `(Formalism.HN.satBasic (𝓞 K) A.V _ (realize A.b A.X) ⊥ (hlat ⊥ Submodule.fg_bot)).2.2.2.2.1`. Consider the case `insert a s ha ih`. Establish `hfs : (⨆ c ∈ s, N c).FG` using `Submodule.fg_biSup s N fun c _ => hfg c`. Take `⟨-, h2, h3⟩` from `(Formalism.HN.hnSum.{0, 0, 0, 0} (𝓞 K) A.V _ (realize A.b A.X)).2 (N a) (⨆ c ∈ s, N c) (hlat _ (hfg a)) (hlat _ hfs) (brzo_orth_sup N horth a s ha)`. Rewrite using `[Finset.iSup_insert, Finset.sum_insert ha]`.
+
+Use `⟨by rw [h2, ih.1], fun _ => ⟨fun h => hne a (eq_bot_iff.2 (h ▸ le_sup_left)), fun θ hθ => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hs : s.Nonempty`. Take `⟨i1, i2⟩` from `ih.2 hs`. Rewrite using `[(h3 (hne a) i1).1]`. Conclude with `max_le (hθ a (Finset.mem_insert_self _ _)) (i2 θ fun c hc => hθ c (Finset.mem_insert_of_mem hc))`.
+
+Rewrite `hs` using `[Finset.not_nonempty_iff_eq_empty]`. Substitute `hs` using the available equality. Simplify using `only [Finset.notMem_empty, iSup_false, iSup_bot, sup_bot_eq]`. Conclude with `hθ a (Finset.mem_insert_self _ _)`.
+-/
 theorem hlat_orth_fin (hA : FrameOK A) (hfg : ∀ c, (N c).FG) (hne : ∀ c, N c ≠ ⊥)
     (horth : ∀ c c', c ≠ c' → ∀ x ∈ N c, ∀ y ∈ N c', ∀ v, majAt A.b A.X v x y = 0) (s : Finset γ) :
     Formalism.HN.deg (realize A.b A.X) (⨆ c ∈ s, N c) = ∑ c ∈ s, Formalism.HN.deg (realize A.b A.X) (N c) ∧
@@ -70,6 +82,21 @@ theorem hlat_orth_fin (hA : FrameOK A) (hfg : ∀ c, (N c).FG) (hne : ∀ c, N c
       simp only [Finset.notMem_empty, iSup_false, iSup_bot, sup_bot_eq]
       exact hθ a (Finset.mem_insert_self _ _)
 
+/- English proof (translation)
+Establish `hsup : (⨆ c, N c) = ⨆ c ∈ (Finset.univ : Finset γ), N c` using `by simp`. Take `⟨h1, h2⟩` from `hlat_orth_fin N hA hfg hne horth Finset.univ`. Rewrite `h1`, `h2` using `[← hsup]`. Establish `hfT : (⨆ c, N c).FG` using `by rw [hsup]; exact Submodule.fg_biSup _ N fun c _ => hfg c`. Establish `hn : (0 : ℝ) < (Module.finrank ℚ K : ℝ)` using `by exact_mod_cast Module.finrank_pos`.
+
+Establish `hcard : (0 : ℝ) < (Fintype.card γ : ℝ)` using `by exact_mod_cast Fintype.card_pos`. Establish `hr' : (0 : ℝ) < (r : ℝ)` using `by exact_mod_cast hr`. Establish `hsl : ∀ c, Formalism.HN.slope (realize A.b A.X) (N c) = Formalism.HN.deg (realize A.b A.X) (N c) / ((Module.finrank ℚ K : ℝ) * r)`. Introduce `c`. Use `(Formalism.HN.plLat K A.V A.ι A.b A.X hA (N c) (hfg c)).2.1` as an intermediate fact.
+
+Use `show Formalism.HN.deg (realize A.b A.X) (N c) / ((Formalism.HN.rk (realize A.b A.X) (N c) : ℕ) : ℝ) = _`. Rewrite using `[this, hrk c]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hslT : Formalism.HN.slope (realize A.b A.X) (⨆ c, N c) = (∑ c, Formalism.HN.deg (realize A.b A.X) (N c)) / ((Module.finrank ℚ K : ℝ) * (Fintype.card γ * r))`.
+
+Use `(Formalism.HN.plLat K A.V A.ι A.b A.X hA _ hfT).2.1` as an intermediate fact. Use `show Formalism.HN.deg (realize A.b A.X) (⨆ c, N c) / ((Formalism.HN.rk (realize A.b A.X) (⨆ c, N c) : ℕ) : ℝ) = _`. Rewrite using `[this, hrkT, h1]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Prove the components needed by the constructor for the conclusion. Use `show Formalism.HN.muDef A.b A.X (⨆ c, N c) = mean fun c => Formalism.HN.muDef A.b A.X (N c)`. Unfold `Formalism.HN.muDef mean`. Rewrite using `[hslT]`. Simplify using `only [hsl]`.
+
+Rewrite using `[Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.sum_div, Finset.sum_const, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Take `⟨c, -, hc⟩` from `Finset.exists_max_image (Finset.univ : Finset γ) (fun c => Formalism.HN.muMax (realize A.b A.X) (N c)) Finset.univ_nonempty`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use `show Formalism.HN.muMaxDef A.b A.X (⨆ c, N c) ≤ Formalism.HN.muMaxDef A.b A.X (N c)`.
+
+Unfold `Formalism.HN.muMaxDef`. Use `(h2 Finset.univ_nonempty).2 _ hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem hlat_orth_sum [Fintype γ] [Nonempty γ] (hA : FrameOK A) (hfg : ∀ c, (N c).FG) (hne : ∀ c, N c ≠ ⊥)
     (horth : ∀ c c', c ≠ c' → ∀ x ∈ N c, ∀ y ∈ N c', ∀ v, majAt A.b A.X v x y = 0)
     (r : ℕ) (hr : 0 < r) (hrk : ∀ c, Formalism.HN.rkK (N c) = r) (hrkT : Formalism.HN.rkK (⨆ c, N c) = Fintype.card γ * r) :
@@ -125,6 +152,9 @@ def GSD.extZ (c : S.Cl) : S.V →ₗ[K] S.EqFun :=
   (S.resFree h S.outSec hf).symm.toLinearMap ∘ₗ LinearMap.single K (fun _ : S.Cl => S.V) c
 
 open Classical in
+/- English proof (translation)
+Establish `h1` using `congrFun ((S.resFree h S.outSec hf).apply_symm_apply (Pi.single c x)) c'`. Rewrite `h1` using `[GSD.resFree_apply]`. Rewrite `h1` using `[Pi.single_apply]`. Conclude with `h1`.
+-/
 theorem GSD.extZ_apply (c c' : S.Cl) (x : S.V) :
     ((S.extZ h hf c x : S.EqFun) : S.D → S.V) (S.outSec.rep c') = if c' = c then x else 0 := by
   have h1 := congrFun ((S.resFree h S.outSec hf).apply_symm_apply (Pi.single c x)) c'
@@ -132,6 +162,9 @@ theorem GSD.extZ_apply (c c' : S.Cl) (x : S.V) :
   rw [Pi.single_apply] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `h1` using `S.extZ_apply h hf c c x`. Establish `h2` using `S.extZ_apply h hf c c y`. Rewrite `h1`, `h2` using `[if_pos rfl]`. Rewrite using `[← h1, ← h2, hxy]`.
+-/
 theorem GSD.extZ_injective (c : S.Cl) : Function.Injective (S.extZ h hf c) := by
   classical
   intro x y hxy
@@ -140,14 +173,27 @@ theorem GSD.extZ_injective (c : S.Cl) : Function.Injective (S.extZ h hf c) := by
   rw [if_pos rfl] at h1 h2
   rw [← h1, ← h2, hxy]
 
+/- English proof (translation)
+Simplify using `[GSD.pairAt]`.
+-/
 theorem GSD.brzo_pairAt_zero_left (v : InfinitePlace K) (y : S.V) : S.pairAt v 0 y = 0 := by
   simp [GSD.pairAt]
 
+/- English proof (translation)
+Simplify using `[GSD.pairAt]`.
+-/
 theorem GSD.brzo_pairAt_zero_right (v : InfinitePlace K) (x : S.V) : S.pairAt v x 0 = 0 := by
   simp [GSD.pairAt]
 
 open Classical in
 
+/- English proof (translation)
+Unfold `GSD.ipAt`. Simplify using `only [S.extZ_apply h hf, S.wt_eq_one h S.outSec hf, Nat.cast_one, inv_one, one_mul]`. Set `_ : Fintype S.Cl` to `h.fintypeCl`. Rewrite using `[Finset.sum_eq_single c]`. Rewrite using `[if_pos rfl] split_ifs with hc`.
+
+Both sides reduce to the same expression. Conclude with `S.brzo_pairAt_zero_right v x`. Introduce `b _ hb`. Rewrite using `[if_neg hb]`. Conclude with `S.brzo_pairAt_zero_left v _`.
+
+Introduce `hc`. Conclude with `absurd (Finset.mem_univ _) hc`.
+-/
 theorem GSD.ipAt_extZ (v : InfinitePlace K) (c c' : S.Cl) (x y : S.V) :
     S.ipAt h v (S.extZ h hf c x) (S.extZ h hf c' y) = if c = c' then S.pairAt v x y else 0 := by
   unfold GSD.ipAt
@@ -167,6 +213,11 @@ theorem GSD.ipAt_extZ (v : InfinitePlace K) (c c' : S.Cl) (x y : S.V) :
 def GSD.extL (c : S.Cl) : Submodule (𝓞 K) S.EqFun :=
   (S.Del (S.outSec.rep c)).map ((S.extZ h hf c).restrictScalars (𝓞 K))
 
+/- English proof (translation)
+Establish `: Finite S.Cl` using `h.fin_orb`. Establish `e1 : S.intDel = (Submodule.pi Set.univ fun c => S.Del (S.outSec.rep c)).map (((S.resFree h S.outSec hf).symm : (S.Cl → S.V) →ₗ[K] S.EqFun).restrictScalars (𝓞 K))`. Rewrite using `[← S.map_intDel_free h S.outSec hf, ← Submodule.map_comp]`. Establish `: (((S.resFree h S.outSec hf).symm : (S.Cl → S.V) →ₗ[K] S.EqFun).restrictScalars (𝓞 K)) ∘ₗ ((S.resFree h S.outSec hf : S.EqFun →ₗ[K] (S.Cl → S.V)).restrictScalars (𝓞 K)) = LinearMap.id` using `by ext1 φ`. Conclude with `(S.resFree h S.outSec hf).symm_apply_apply φ`.
+
+Rewrite using `[this, Submodule.map_id]`. Rewrite using `[e1, ← Submodule.iSup_map_single, Submodule.map_iSup]`. Use `iSup_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem GSD.iSup_extL : (⨆ c, S.extL h hf c) = S.intDel := by
   classical
   have : Finite S.Cl := h.fin_orb
@@ -189,6 +240,25 @@ section GSDOrth2
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {S : GSD K}
 
+/- English proof (translation)
+Set `_ : Fintype S.Cl` to `h.fintypeCl`. Establish `hfin : Module.Finite K S.V` using `Module.Finite.of_basis S.bV`. Establish `hA : FrameOK (S.toH h S.intDel)` using `(R.posH h).frameOK _`. Establish `hmaj : ∀ v (φ ψ : S.EqFun), majAt (S.toH h S.intDel).b (S.toH h S.intDel).X v φ ψ = S.ipAt h v φ ψ` using `fun v φ ψ => R.maj_eq h v φ ψ`. Establish `hnorm : ∀ c v (x : S.V), normAt (S.valH (S.outSec.rep c)).b (S.valH (S.outSec.rep c)).X v x = normAt (S.toH h S.intDel).b (S.toH h S.intDel).X v (S.extZ h hf c x)`.
+
+Introduce `c v x`. Rewrite using `[(GSD.valH_spec R (S.outSec.rep c)).2.2 v x, normAt_eq_sqrt, hmaj, S.ipAt_extZ h hf, if_pos rfl]`. Establish `hnum` using `fun c => (emb_numbers K (S.valH (S.outSec.rep c)) (S.toH h S.intDel) (S.extZ h hf c) hA (S.extZ_injective h hf c) (hnorm c)).2 (S.Del (S.outSec.rep c))`. Establish `hrk : ∀ c, Formalism.HN.rkK (S.extL h hf c) = finrank K S.V`. Introduce `c`.
+
+Unfold `GSD.extL`. Rewrite using `[rkK_map _ (S.extZ_injective h hf c)]`. Unfold `Formalism.HN.rkK`. Rewrite using `[(hD _).span_eq_top, finrank_top]`. Establish `hr : 0 < finrank K S.V` using `Module.finrank_pos`.
+
+Establish `hne : ∀ c, S.extL h hf c ≠ ⊥`. Introduce `c h0`. Establish `h1` using `hrk c`. Rewrite `h1` using `[h0]`. Establish `h2 : Formalism.HN.rkK (⊥ : Submodule (𝓞 K) S.EqFun) = 0`.
+
+Unfold `Formalism.HN.rkK`. Rewrite using `[Submodule.bot_coe, Submodule.span_zero_singleton, finrank_bot]`. Use linear arithmetic over natural numbers and integers. Establish `hrkT : Formalism.HN.rkK (⨆ c, S.extL h hf c) = Fintype.card S.Cl * finrank K S.V`. Rewrite using `[S.iSup_extL h hf]`.
+
+Unfold `Formalism.HN.rkK`. Rewrite using `[(S.intDel_isLattice h hD).span_eq_top, finrank_top, S.finrank_free h hf, Nat.card_eq_fintype_card]`. Establish `key` using `hlat_orth_sum (A := S.toH h S.intDel) (S.extL h hf) hA (fun c => (hD _).fg.map _) hne (by`. Introduce `c c' hcc x hx y hy v`. Take `⟨x', -, rfl⟩` from `hx`.
+
+Take `⟨y', -, rfl⟩` from `hy`. Conclude with `(hmaj v _ _).trans ((S.ipAt_extZ h hf v c c' x' y').trans (if_neg hcc)))`. Use the proof step `(finrank K S.V) hr hrk hrkT`. Rewrite `key` using `[S.iSup_extL h hf]`. Prove the components needed by the constructor for the conclusion.
+
+Use `key.1.trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `c`. Conclude with `(((hnum c).2 (hD _).fg).1).symm`. Take `⟨c, hc⟩` from `key.2`.
+
+Conclude with `⟨c, hc.trans (le_of_eq (((hnum c).2 (hD _).fg).2.1).symm)⟩`.
+-/
 theorem GSD.orth_of_free (h : S.Ok) (hf : S.Free) [Nontrivial S.V] [Nonempty S.Cl] (R : S.Rat) (hD : ∀ d, Submodule.IsLattice K (S.Del d)) :
     S.OrthMean h ∧ S.OrthMax h := by
   classical
@@ -244,12 +314,18 @@ section Cols
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
 
+/- English proof (translation)
+The claim follows from `haveI := colCl_nonempty W Ch u haveI : Nontrivial (colGSD W Ch u 0).V := (colVal W u 0 (Pr.vT u) Pr.vGs).V_nontrivial (GSD.orth_of_free (colOk W Ch hX u 0) (colFree W Ch hX hPr hbig u) (colRat W Ch hX u 0) (thl_colDel_isLattice W Ch u 0)).1`.
+-/
 theorem col_orthMean (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) :
     (colGSD W Ch u 0).OrthMean (colOk W Ch hX u 0) :=
   haveI := colCl_nonempty W Ch u
   haveI : Nontrivial (colGSD W Ch u 0).V := (colVal W u 0 (Pr.vT u) Pr.vGs).V_nontrivial
   (GSD.orth_of_free (colOk W Ch hX u 0) (colFree W Ch hX hPr hbig u) (colRat W Ch hX u 0) (thl_colDel_isLattice W Ch u 0)).1
 
+/- English proof (translation)
+The claim follows from `haveI := colCl_nonempty W Ch u haveI : Nontrivial (colGSD W Ch u 0).V := (colVal W u 0 (Pr.vT u) Pr.vGs).V_nontrivial (GSD.orth_of_free (colOk W Ch hX u 0) (colFree W Ch hX hPr hbig u) (colRat W Ch hX u 0) (thl_colDel_isLattice W Ch u 0)).2`.
+-/
 theorem col_orthMax (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) :
     (colGSD W Ch u 0).OrthMax (colOk W Ch hX u 0) :=
   haveI := colCl_nonempty W Ch u
@@ -258,6 +334,9 @@ theorem col_orthMax (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1
 
 end Cols
 
+/- English proof (translation)
+Introduce `C₀ h0`. Take `⟨C, hC0, hC⟩` from `propZ_col C₀ h0`. Conclude with `⟨C, hC0, fun W Ch hX hPr hbig u a b' L eta S hN hW h5 h5' hD h4 => hC W Ch hX u a b' L eta S hN hW (col_orthMean W Ch hX hPr hbig u) (col_orthMax W Ch hX hPr hbig u) h5 h5' hD (fun τ => slopeLeMax _ _) h4⟩`.
+-/
 theorem propZ_col' : ∀ C₀ : ℝ, 0 ≤ C₀ → ∃ C : ℝ, 0 ≤ C ∧ ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
     (Ch : Chars X Pr R.m) (hX : X.Ok) (_ : Pr.Ok) (_ : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) (a b' L eta S : ℝ),
     NumbersC Pr R u C₀ a b' L eta S → WtWin W u C₀ a b' S → SummandSlopeAtDecoratedLattice W Ch u → MaxSlopeSummandWithConstant W Ch u C₀ →

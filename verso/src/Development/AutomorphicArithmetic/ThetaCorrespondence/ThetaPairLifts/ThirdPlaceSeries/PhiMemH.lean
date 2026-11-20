@@ -37,6 +37,23 @@ open GlobalTheory.StepData GlobalTheory.SplitWeil
 namespace GlobalTheory.LevProd.Fwd
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : B.Word} {a : _root_.GlobalTheory.Fam.GeometricFamily W u} {t : W.P.T}
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hjm : j ≤ B.R.m` using `by omega`. Establish `hA` using `hJ.is`. Establish `hI` using `hW.tr.ok`. Establish `hL` using `hI.idx_ok (W.P.I.tup t)`. Take `⟨hP⟩` from `hW.tr.pins`.
+
+Take `⟨c, rfl⟩` from `hA.chOf_onto j hjm β`. Take `⟨-, κ, hκ⟩` from `(hA.U j hjm _ g).1 hg`. Establish `hd : Disjoint (B.primes X).vGs (I.Q (W.P.I.tup t))` using `Finset.disjoint_of_subset_right (ColIn.Q_subset_SQ I _) (GlobalTheory.Mem.LevTwist.levOk_twists B X I hI).2.1`. Establish `huni : κ.1 ∈ Formalism.L2.Herm.UstdAf B.sp.cm (B.R.N j)`. Establish `hgram` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 j hjm).1`.
+
+Establish `huni : ∀ (S : StepLevel (I.rec7 l Z).host.F (I.rec7 l Z).host.E (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) j hjm) (B.T u) (I.rec7 l Z).R.f (J.A.bad j)) (x : TC.GA B (B.R.N j)), x ∈ S.U → x ∈ Formalism.L2.Herm.UstdAf B.sp.cm (B.R.N j)`. Introduce `S x hx`. Establish `h` using `((S.U_eq x).1 hx).1`. Rewrite `h` using `[hgram]`. Conclude with `h`.
+
+Conclude with `huni _ κ.1 κ.2`. Establish `hloc : ∀ PP i, J.pl i = PP → GlobalTheory.Mem.ColAd.locM (F` using `(I.rec7 l Z).host.F) (E := (I.rec7 l Z).host.E) PP κ.1 = GlobalTheory.Mem.ColAd.ratM PP (y i) := by`. Introduce and unpack `_ i rfl`. Conclude with `locM_of_pr (J.G i).q (J.pl i) (J.G i).idem _ _ g κ.1 hκ (y i) (hy i)`. Establish `hsurj : ∀ P : I.Q (W.P.I.tup t), ∃ i, J.pl i = P.1` using `fun P => hJ.surj P.1 ((hW.tq.Q t P.1).2 P.2)`.
+
+Use `choose ι hι using hsurj`. Establish `hmem : J.pl i ∈ I.Q (W.P.I.tup t)` using `(hW.tq.Q t _).1 (J.mem i)`. Take `⟨κ', hκ', e'⟩` from `mem_levQ I hI (hA.reads j hjm) c κ.1 huni κ.2 (fun P => by`. Rewrite using `[hJ.std j (by omega)]`. Use `Matrix.ext fun r s => ?_` and prove the remaining obligations.
+
+Use `(GlobalTheory.Fam.MovedJoin.adAt_kStd_of_twist hI _ ⟨P.1, Finset.mem_union_right _ P.2⟩ (Finset.disjoint_right.1 hd P.2) u _ r s).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp)`. Use the proof step `(fun P => y (ι P)) (fun P => hloc _ _ (hι P)) ⟨J.pl i, hmem⟩`. Establish `hii : ι ⟨J.pl i, hmem⟩ = i` using `hJ.inj (hι ⟨J.pl i, hmem⟩)`.
+
+Rewrite `e'` using `[hii]`. Establish `hb : levQAt I.sel (I.tup (W.P.I.tup t)) (I.idx (W.P.I.tup t)) (I.Tp (W.P.I.tup t)) j c.1 = (I.idx (W.P.I.tup t)).levQ j ((J.A.b0 j (J.A.chOf j c)).get (show j < B.R.m by omega))`. Rewrite using `[← (hA.rep j hjm c).1]`. Unfold `levQAt Idx.get`. Use `conv_lhs => rw [← Option.some_get (c.1.2.2 (show j < B.R.m by omega))]`.
+
+Both sides reduce to the same expression. Rewrite `hκ'` using `[hb, hL.grpQ, Subgroup.mem_subgroupOf, e']`. Establish `hPi : J.P i = ⟨J.pl i, Finset.mem_union_right _ hmem⟩` using `Subtype.ext (hJ.eq i)`. Rewrite using `[hPi]`. Conclude with `hκ'`.
+-/
 theorem mem_prCat_of_pr_eq (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t) (hJ : J.Reads) (j : ℕ) (hj : j + 2 ≤ B.R.m) (β : J.Ch₀ j)
     (g : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)) (hg : g ∈ J.A.U j β)
     (y : Fin J.r → (Formalism.L2.Col.Sp B.fields.E (B.R.N j) ≃ₗ[B.fields.E] Formalism.L2.Col.Sp B.fields.E (B.R.N j)))
@@ -93,6 +110,31 @@ end GlobalTheory.LevProd.Fwd
 namespace GlobalTheory.LevProd
 open GlobalTheory.LevProd.Fwd
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat j hj t J hJ α g hg`. Establish `hjm : j ≤ B.R.m` using `by omega`. Establish `hL` using `hW.tr.ok.idx_ok (W.P.I.tup t)`. Take `⟨hP⟩` from `hW.tr.pins`. Establish `hrk` using `rankN (I.rec7 l Z) j hjm`.
+
+Establish `hstd` using `fun i : Fin J.r => (ha.stdQ (J.pl i) ⟨t, J.mem i⟩).1 j (by have := _root_.GlobalTheory.LevProd.step_index_le_s_alt J i hj; exact this.trans (Nat.le_succ _))`. Use `choose e he hF using hstd`. Set `e₀ : Fin J.r → (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j ≃ Fin ((I.rec7 l Z).R.N j))` to `fun i => (e i).trans (finCongr hrk)`. Establish `key` using `fun i : Fin J.r => prCat_iff _ _ _ I.Ch I.sel _ (I.tup (W.P.I.tup t)) (I.cst (W.P.I.tup t)) B.embLL (J.P i) _ _ _ _ (J.G i).ν (J.G i).unitVol hL.cst_ok (hJ.tw i) j ((J.G i).s - j) (by have := _root_.GlobalTheory.LevProd.step_index_le_s_alt J i hj; omega) _ _ (hJ.rep i j ((J.G i). …`. Establish `hHo : ∀ i, IsOpen (_root_.GlobalTheory.LevProd.levelSubgroupAtPlace J j hj α i : Set (GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (J.G i).k))` using `fun i => by`.
+
+Establish `h` using `(key i).1`. Rewrite `h` using `[hJ.sec j hjm α i]`. Conclude with `h`. Establish `hHr : ∀ i y, y ∈ Formalism.L2.Col.prCat (Pr` using `B.primes X) (I.cst (W.P.I.tup t)).sharp j (J.P i).1 ((I.idx (W.P.I.tup t)).h j ((J.A.b0 j (J.ι j α)).get (show j < B.R.m by omega)) (J.P i)) → GlobalTheory.VolBridge.locHom ((J.G i).q.pr.comp (incA (I.rec7 l Z))) (e₀ i) y ∈ _root_.GlobalTheory.LevProd.levelSubgroupAtPlace J j hj …`. Establish `h` using `((key i).2 y).1 hy`.
+
+Rewrite `h` using `[hJ.sec j hjm α i]`. Conclude with `h`. Establish `hUo` using `(GlobalTheory.ChartReps.twDat_reps I hW.tr.ok hP l Z u _ _ J.A hJ.is j hjm (J.ι j α)).1.opn`. Establish `hgl` using `fun i : Fin J.r => GlobalTheory.LocEmb.exists_gl _ _ (J.G i).q ((I.rec7 l Z).sp.X j) (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) ((J.G i).FX j (by have := _root_.GlobalTheory.LevProd.step_index_le_s_alt J i hj; omega))`. Use `choose gl hglc hglp _ using hgl`.
+
+Establish `hAt : ∀ i x, gl i x ∈ GlobalTheory.FinPl.grpAt _ (· = (J.G i).q.v)` using `fun i x => GlobalTheory.SuppGrp.mem_grpAt_of_suppAt _ _ _ _ _ (hglp i x).1 _ rfl`. Establish `hVo : ∀ i, IsOpen {x | gl i x ∈ J.A.U j (J.ι j α)}` using `fun i => hUo.preimage (f := fun x => (⟨gl i x, GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ (hAt i x)⟩ : GfC _)) ((hglc i).subtype_mk _)`. Establish `hy : ∀ i, ∃ y, GlobalTheory.VolBridge.locHom ((J.G i).q.pr.comp (incA (I.rec7 l Z))) (e₀ i) y ∈ (fun v => (_root_.GlobalTheory.LevProd.localHomProduct J j hj g i)⁻¹ * v) ⁻¹' ((_root_.GlobalTheory.LevProd.levelSubgroupAtPlace J j hj α i : Set _) ∩ {x | gl i x ∈ J.A.U j (J.ι j α)})` using `fun i => GlobalTheory.denseGL_completion _ (J.G i).compl.dense (e₀ i) (_root_.GlobalTheory.LevProd.localHomProduct J j hj g i) _ (((hHo i).inter (hVo i)).preimage (continuous_const.mul continuous_id)) (by`. Rewrite using `[Set.mem_preimage, inv_mul_cancel]`. Conclude with `⟨one_mem _, by rw [Set.mem_setOf_eq, map_one]; exact one_mem _⟩)`.
+
+Use `choose y hy using hy`. Use `set x : (i : Fin J.r) → GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (J.G i).k := fun i => (_root_.GlobalTheory.LevProd.localHomProduct J j hj g i)⁻¹ * GlobalTheory.VolBridge.locHom ((J.G i).q.pr.comp (incA (I.rec7 l Z))) (e₀ i) (y i) with hx`. Establish `hphi : ∀ i, _root_.GlobalTheory.LevProd.localHomProduct J j hj (gl i (x i)) = Pi.mulSingle i (x i)`. Introduce `i`. Use function extensionality and compare the values at `i'`.
+
+Use `show GlobalTheory.LevIdx.locHom (J.G i').q _ ((J.G i').FX j _) (gl i (x i)) = _`. Distinguish the cases in `h : i' = i`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `((GlobalTheory.LevIdx.eq_locHom_iff _ _ _ _ _).1 ((hglp i' (x i')).2)).symm`.
+
+Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `locHom_eq_one (J.G i).q (J.G i').q _ _ (fun hv => h ((_root_.GlobalTheory.Fam.QJPlaces.places_under_alt W hW u a ha hat t J hJ).1 hv)) (hAt i _)`. Establish `hg' : g * ((List.finRange J.r).map fun i => gl i (x i)).prod ∈ J.A.U j (J.ι j α)`. Use `mul_mem hg (Subgroup.list_prod_mem _ fun z hz => ?_)` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hz`.
+
+Conclude with `(hy i).2`. Establish `hφ' : ∀ i, _root_.GlobalTheory.LevProd.localHomProduct J j hj (g * ((List.finRange J.r).map fun i => gl i (x i)).prod) i = GlobalTheory.VolBridge.locHom ((J.G i).q.pr.comp (incA (I.rec7 l Z))) (e₀ i) (y i)`. Introduce `i`. Rewrite using `[map_mul, map_list_prod, List.map_map]`. Simplify using `only [Function.comp_def, hphi]`.
+
+Rewrite using `[list_prod_mulSingle x, Pi.mul_apply]`. Conclude with `mul_inv_cancel_left _ _`. Introduce `i`. Establish `h1` using `hHr i _ (_root_.GlobalTheory.LevProd.Fwd.mem_prCat_of_pr_eq hW J hJ j hj _ _ hg' y (fun i r s => by`. Take `⟨r, rfl⟩` from `(e₀ i).surjective r`.
+
+Take `⟨s, rfl⟩` from `(e₀ i).surjective s`. Conclude with `(locHom_std (J.G i).q _ _ (e i) (hF i) _ r s).symm.trans (congrArg (fun z => z.val r s) (hφ' i))) i)`. Establish `h2 : x i ∈ _root_.GlobalTheory.LevProd.levelSubgroupAtPlace J j hj α i` using `(hy i).1`. Establish `h3` using `mul_mem h1 (inv_mem h2)`. Rewrite `h3` using `[hx]`.
+
+Simplify using `using h3`.
+-/
 theorem phi_mem_H_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ j (hj : j + 2 ≤ B.R.m), ∀ t (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → ∀ (α : J.Ch j), ∀ g ∈ J.A.U j (J.ι j α), ∀ i, _root_.GlobalTheory.LevProd.localHomProduct J j hj g i ∈ _root_.GlobalTheory.LevProd.levelSubgroupAtPlace J j hj α i := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat j hj t J hJ α g hg
   have hjm : j ≤ B.R.m := by omega

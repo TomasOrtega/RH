@@ -10,6 +10,23 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.CompRat
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo σ g ty F h1 h2 h3 τ hτ C io hio i P hP i' P' hP' hs hu s hact`. Take `⟨Φ, hΦ1, hΦ2, hΦ3, hΦ4⟩` from `GlobalTheory.T.exists_lattice_isometry_conj_split_point_any_level E H D l Xo σ g ty F h1 h2 h3 τ hτ C io hio i P hP i' P' hP' hs hu`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Establish `hA : 0 < l.A` using `l.A_pos`. Establish `hL : 0 < l.M'` using `Nat.lcm_pos hM hA`.
+
+Establish `hdiv : ∀ m : ℕ, m ∣ l.M' → C.ActsBy τ io m s` using `((GlobalTheory.CompRat.Acts.main E H C τ hτ io hio l.M' hL).2 s hact).2`. Use `⟨Φ, hΦ1, hΦ2, hΦ3, fun v a ha b hb hab => ?_, fun v hv a ha b hb hab => ?_⟩` and prove the remaining obligations. Establish `key` using `hΦ4 l.A s hA (hdiv _ (Nat.dvd_lcm_right _ _)) a ha b hb`. Establish `tu : ∀ y : Sp ℂ ⟶ Xo.X, (toUnit (Over.mk y) ≫ Xo.univ.etaA v).left = y ≫ (Xo.univ.etaA v).left`. Introduce `y`.
+
+Rewrite using `[Over.comp_left]`. Use `congr 1`. Establish `h0 : (l.A : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hA.ne'`. Rewrite `key` using `[← hab, ← F.ex_etaA i P hP v, tu, ← Category.assoc, hu, ← tu, F.ex_etaA i' P' hP' v]`. Use `set w := Φ (wE H s • a + H.bar (wE H s) • b) with hw`.
+
+Establish `e : F.ex i' P' ((l.A : ℂ)⁻¹ • P' (F.t i' v)) = F.ex i' P' ((l.A : ℂ)⁻¹ • P' w)` using `Over.OverMorphism.ext key`. Establish `e'` using `F.ex_add i' P' hP' ((l.A : ℂ)⁻¹ • P' (F.t i' v - w)) ((l.A : ℂ)⁻¹ • P' w)`. Rewrite `e'` using `[← smul_add, ← map_add, sub_add_cancel, e]`. Take `⟨x, hx⟩` from `(F.ex_ker i' P' hP' _).1 (mul_eq_right.1 e'.symm)`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← sub_eq_iff_eq_add']`. Apply `hP'.2.1` to reduce the goal to its premises. Rewrite using `[map_nsmul, hx, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ h0, one_smul]`. Establish `key` using `hΦ4 l.M s hM (hdiv _ (Nat.dvd_lcm_left _ _)) a ha b hb`. Establish `tu : ∀ y : Sp ℂ ⟶ Xo.X, (toUnit (Over.mk y) ≫ Xo.univ.eta v).left = y ≫ (Xo.univ.eta v).left`.
+
+Introduce `y`. Rewrite using `[Over.comp_left]`. Use `congr 1`. Establish `h0 : (l.M : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hM.ne'`. Rewrite `key` using `[← hab, ← F.ex_eta i P hP v hv, tu, ← Category.assoc, hu, ← tu, F.ex_eta i' P' hP' v hv]`.
+
+Use `set w := Φ (wE H s • a + H.bar (wE H s) • b) with hw`. Establish `e : F.ex i' P' ((l.M : ℂ)⁻¹ • P' (F.t i' v)) = F.ex i' P' ((l.M : ℂ)⁻¹ • P' w)` using `Over.OverMorphism.ext key`. Establish `e'` using `F.ex_add i' P' hP' ((l.M : ℂ)⁻¹ • P' (F.t i' v - w)) ((l.M : ℂ)⁻¹ • P' w)`. Rewrite `e'` using `[← smul_add, ← map_add, sub_add_cancel, e]`. Take `⟨x, hx⟩` from `(F.ex_ker i' P' hP' _).1 (mul_eq_right.1 e'.symm)`.
+
+Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_iff_eq_add']`. Apply `hP'.2.1` to reduce the goal to its premises. Rewrite using `[map_nsmul, hx, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ h0, one_smul]`.
+-/
 theorem marking_conj_lcm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ ty), 1 ≤ D.p + D.q → σ (baseKA l).ρ = H.rt0 → IsTypeFn H D.p D.q ty → ∀ τ : ℂ ≃+* ℂ, τ H.rt0 = H.rt0 → ∀ (C : Curve H) (io : C.P.A.left ⟶ C.P.A.left), IsGrpPullback C.P.A C.P.A (spMap (τ : ℂ →+* ℂ)) io → ∀ (i : Fin F.n) (P : (F.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (F.Di i) ty P), ∀ (i' : Fin F.n) (P' : (F.Di i').La →+ (Fin g → ℂ)) (hP' : IsPeriod (F.Di i') ty P'), IsSplit hP → spMap (τ : ℂ →+* ℂ) ≫ F.u i P = F.u i' P' → ∀ s, C.ActsBy τ io l.M' s → ∃ Φ : (F.Di i).La ≃ₗ[𝓞 E] (F.Di i').La, (∀ a b, (F.Di i').EF (Φ a) (Φ b) = (F.Di i).EF a b) ∧ (∀ a, Φ a ∈ lat hP' H.rt0 ↔ a ∈ lat hP H.rt0) ∧ (∀ a, Φ a ∈ lat hP' (-H.rt0) ↔ a ∈ lat hP (-H.rt0)) ∧ (∀ v : D.La, ∀ a ∈ lat hP H.rt0, ∀ b ∈ lat hP (-H.rt0), F.t i v = a + b → ∃ e, F.t i' v = Φ (wE H s • a + H.bar (wE H s) • b) + l.A • e) ∧ ∀ v ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), ∀ a ∈ lat hP H.rt0, ∀ b ∈ lat hP (-H.rt0), F.t i v = a + b → ∃ e, F.t i' v = Φ (wE H s • a + H.bar (wE H s) • b) + l.M • e := by
   intro E _ _ _ H D l Xo σ g ty F h1 h2 h3 τ hτ C io hio i P hP i' P' hP' hs hu s hact
   obtain ⟨Φ, hΦ1, hΦ2, hΦ3, hΦ4⟩ := GlobalTheory.T.exists_lattice_isometry_conj_split_point_any_level E H D l Xo σ g ty F h1 h2 h3 τ hτ C io hio i P hP i' P' hP' hs hu

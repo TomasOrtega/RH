@@ -17,6 +17,11 @@ open GlobalTheory.AdicColimit
 
 variable {R : Type} [CommRing R] [IsNoetherianRing R] (I : Ideal R) [IsAdicComplete I R]
 
+/- English proof (translation)
+Establish `hI : I ≤ (⊥ : Ideal R).jacobson` using `IsAdicComplete.le_jacobson_bot I`. Establish `key` using `Ideal.iInf_pow_smul_eq_bot_of_le_jacobson (M := A) I hI`. Establish `hx : x ∈ (⨅ i : ℕ, I ^ i • (⊤ : Submodule R A))`. Use `Submodule.mem_iInf _ |>.2 fun i => ?_` and prove the remaining obligations. Establish `h1 : x ∈ (I ^ (i + 1) • (⊤ : Submodule R A))`.
+
+Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `h i`. Conclude with `Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_succ i)) h1`. Rewrite `hx` using `[key]`. Simplify using `using hx`.
+-/
 theorem eq_zero_of_forall_mem_map (A : Type) [CommRing A] [Algebra R A] [Module.Finite R A] (x : A)
     (h : ∀ e : ℕ, x ∈ (I ^ (e + 1)).map (algebraMap R A)) : x = 0 := by
   have hI : I ≤ (⊥ : Ideal R).jacobson := IsAdicComplete.le_jacobson_bot I
@@ -30,6 +35,23 @@ theorem eq_zero_of_forall_mem_map (A : Type) [CommRing A] [Algebra R A] [Module.
   rw [key] at hx
   simpa using hx
 
+/- English proof (translation)
+Establish `: IsAffine X.left` using `isAffine_of_isAffineHom X.hom`. Establish `: IsAffine Y.left` using `isAffine_of_isAffineHom Y.hom`. Set `ψ : CommRingCat.of R ⟶ Γ(X.left, ⊤)` to `Spec.preimage (X.left.isoSpec.inv ≫ X.hom)`. Establish `hψ : Spec.map ψ = X.left.isoSpec.inv ≫ X.hom` using `Spec.map_preimage _`. Set `_ : Algebra R Γ(X.left, ⊤)` to `ψ.hom.toAlgebra`.
+
+Establish `hfin : IsFinite (Spec.map ψ)` using `by rw [hψ]; infer_instance`. Establish `hfin' : ψ.hom.Finite` using `(IsFinite.SpecMap_iff ψ).1 hfin`. Establish `: Module.Finite R Γ(X.left, ⊤)` using `hfin'`. Set `u : Spec Γ(X.left, ⊤) ⟶ Spec Γ(Y.left, ⊤)` to `X.left.isoSpec.inv ≫ f.left ≫ Y.left.isoSpec.hom`. Set `v : Spec Γ(X.left, ⊤) ⟶ Spec Γ(Y.left, ⊤)` to `X.left.isoSpec.inv ≫ g.left ≫ Y.left.isoSpec.hom`.
+
+Establish `hu : Spec.map (Spec.preimage u) = u` using `Spec.map_preimage _`. Establish `hv : Spec.map (Spec.preimage v) = v` using `Spec.map_preimage _`. Establish `hred : ∀ e : ℕ, Spec.preimage u ≫ CommRingCat.ofHom (Ideal.Quotient.mk ((I ^ (e + 1)).map (algebraMap R Γ(X.left, ⊤)))) = Spec.preimage v ≫ CommRingCat.ofHom (Ideal.Quotient.mk ((I ^ (e + 1)).map (algebraMap R Γ(X.left, ⊤))))`. Introduce `e`. Set `J` to `(I ^ (e + 1)).map (algebraMap R Γ(X.left, ⊤))`.
+
+Set `m : Spec (CommRingCat.of (Γ(X.left, ⊤) ⧸ J)) ⟶ Spec Γ(X.left, ⊤)` to `Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))`. Set `q : Spec (CommRingCat.of (Γ(X.left, ⊤) ⧸ J)) ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))` to `Spec.map (CommRingCat.ofHom (Ideal.quotientMap J (algebraMap R Γ(X.left, ⊤)) Ideal.le_comap_map))`. Establish `hcond : (m ≫ X.left.isoSpec.inv) ≫ X.hom = q ≫ thick R I e`. Rewrite using `[Category.assoc, ← hψ]`. Simplify using `only [m, q, thick, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Use `congr 1`. Set `t : Spec (CommRingCat.of (Γ(X.left, ⊤) ⧸ J)) ⟶ (thickObj R I e X).left` to `pullback.lift (m ≫ X.left.isoSpec.inv) q hcond`. Establish `ht : t ≫ thickι I e X = m ≫ X.left.isoSpec.inv` using `pullback.lift_fst _ _ _`. Establish `hfg : thickι I e X ≫ f.left = thickι I e X ≫ g.left`. Establish `hl : thickHom I e f = thickHom I e g` using `congrArg (fun φ => φ.left) (h e)`.
+
+Rewrite using `[← thickHom_ι, ← thickHom_ι, hl]`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_comp, hu, hv]`. Express the relevant statement in the definitionally equal form `m ≫ u = m ≫ v`. Simplify using `only [u, v]`.
+
+Rewrite using `[← Category.assoc m, ← Category.assoc m, ← ht, Category.assoc t, Category.assoc t, reassoc_of% hfg]`. Establish `hpre : Spec.preimage u = Spec.preimage v`. Use extensionality with `b`. Use `sub_eq_zero.1 (eq_zero_of_forall_mem_map I Γ(X.left, ⊤) _ fun e => ?_)` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq.1 (congrArg (fun φ => φ.hom b) (hred e))`.
+
+Establish `huv : u = v` using `by rw [← hu, ← hv, hpre]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h1 : f.left ≫ Y.left.isoSpec.hom = g.left ≫ Y.left.isoSpec.hom` using `(cancel_epi X.left.isoSpec.inv).1 huv`. Conclude with `(cancel_mono Y.left.isoSpec.hom).1 h1`.
+-/
 theorem eq_of_reductions (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R) [IsAdicComplete I R]
     (X Y : Over (Spec (CommRingCat.of R))) [IsFinite X.hom] [IsFinite Y.hom] (f g : X ⟶ Y)
     (h : ∀ e, (Over.pullback (thick R I e)).map f = (Over.pullback (thick R I e)).map g) : f = g := by

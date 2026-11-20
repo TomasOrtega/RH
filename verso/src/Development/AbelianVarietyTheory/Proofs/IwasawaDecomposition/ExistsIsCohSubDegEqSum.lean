@@ -20,6 +20,13 @@ abbrev spn (e : ∀ j, α ↪ κ j) (S : Finset α) (j : J) {V : C.Opens} (h : V
     Submodule Γ(C, V) Γ(F, V) :=
   Submodule.span Γ(C, V) ((fun a => resM F h (v j (e j a))) '' (S : Set α))
 
+/- English proof (translation)
+Establish `hB : (fun a => resM F h (v j (e j a))) '' (S : Set α) = ((hv j).basis h) '' ((e j) '' (S : Set α))`. Rewrite using `[Set.image_image]`. Simplify using `only [IsFrame.basis_apply]`. Rewrite using `[spn, hB, Module.Basis.mem_span_image]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hs b hb`. Assume the negation of the conclusion as `hne`. Take `⟨a, ha, rfl⟩` from `hs (Finsupp.mem_support_iff.2 hne)`. Conclude with `hb a ha rfl`. Introduce `H b hb`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `(Finsupp.mem_support_iff.1 hb) (H b fun a ha hab => hn ⟨a, ha, hab⟩)`.
+-/
 theorem mem_spn_iff (hv : ∀ j, IsFrame (v j)) {e : ∀ j, α ↪ κ j} {S : Finset α} {j : J}
     {V : C.Opens} (h : V ≤ T j) {x : Γ(F, V)} :
     x ∈ spn v e S j h ↔ ∀ b, (∀ a ∈ S, e j a ≠ b) → ((hv j).basis h).repr x b = 0 := by
@@ -55,6 +62,9 @@ def sub (hv : ∀ j, IsFrame (v j)) (e : ∀ j, α ↪ κ j) (S : Finset α) : S
     rw [resM_resM] at this
     rw [map_zero, ← IsFrame.repr_resM, resM_resM, this]
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_spn_iff hv]`. Introduce `b hb`. Rewrite using `[(hv j).repr_resM h h', hx b hb, map_zero]`.
+-/
 theorem res_mem_spn (hv : ∀ j, IsFrame (v j)) {e : ∀ j, α ↪ κ j} {S : Finset α} {j : J}
     {V W : C.Opens} (h : V ≤ T j) (h' : W ≤ V) {x : Γ(F, V)} (hx : x ∈ spn v e S j h) :
     resM F h' x ∈ spn v e S j (h'.trans h) := by
@@ -72,6 +82,11 @@ def IsTriangular (g : α → ∀ j j', Γ(C, T j ⊓ T j')) : Prop :=
 
 variable {g : α → ∀ j j', Γ(C, T j ⊓ T j')}
 
+/- English proof (translation)
+Take `⟨cf, h1, h2, h3⟩` from `H j j' a`. Use `⟨fun b => resG C (le_inf h h') (cf b), by dsimp only; rw [h1], fun b hb hr => by dsimp only; rw [h2 b hb hr, map_zero], ?_⟩` and prove the remaining obligations. Establish `e1 : resM F h' (v j' (e j' a)) = resM F (le_inf h h') (resM F inf_le_right (v j' (e j' a)))`. Rewrite using `[resM_resM]`. Rewrite using `[e1, h3, map_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[resM_smul, resM_resM]`.
+-/
 theorem IsTriangular.res (H : IsTriangular v rk e g) (j j' : J) (a : α) {V : C.Opens}
     (h : V ≤ T j) (h' : V ≤ T j') : ∃ cf : α → Γ(C, V), cf a = resG C (le_inf h h') (g a j j') ∧
       (∀ b, b ≠ a → rk a ≤ rk b → cf b = 0) ∧
@@ -84,6 +99,13 @@ theorem IsTriangular.res (H : IsTriangular v rk e g) (j j' : J) (a : α) {V : C.
   refine Finset.sum_congr rfl fun b _ => ?_
   rw [resM_smul, resM_resM]
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Take `⟨cf, -, h2, h3⟩` from `H.res j j' a h h'`. Express the relevant statement in the definitionally equal form `resM F h' (v j' (e j' a)) ∈ spn v e S j h`. Rewrite using `[h3]`.
+
+Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b = a ∨ rk b < rk a`. Establish `hbS : b ∈ S` using `hb.elim (fun hba => hba ▸ ha) (hS a ha b)`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hbS, rfl⟩)`. Use `push_neg at hb`.
+
+Rewrite using `[h2 b hb.1 hb.2, zero_smul]`. Conclude with `zero_mem _`.
+-/
 theorem IsTriangular.spn_le (H : IsTriangular v rk e g) {S : Finset α}
     (hS : ∀ a ∈ S, ∀ b, rk b < rk a → b ∈ S) (j j' : J) {V : C.Opens}
     (h : V ≤ T j) (h' : V ≤ T j') : spn v e S j' h' ≤ spn v e S j h := by
@@ -100,6 +122,11 @@ theorem IsTriangular.spn_le (H : IsTriangular v rk e g) {S : Finset α}
     rw [h2 b hb.1 hb.2, zero_smul]
     exact zero_mem _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `hx j V le_rfl h` as an intermediate fact. Rewrite `this` using `[resM_self]`. Then use the resulting hypothesis. Introduce `hx j' W h₁ h₂`.
+
+Conclude with `H.spn_le hS j' j h₂ (h₁.trans h) (res_mem_spn hv h h₁ hx)`.
+-/
 theorem IsTriangular.mem_sub_iff (H : IsTriangular v rk e g) (hv : ∀ j, IsFrame (v j))
     {S : Finset α} (hS : ∀ a ∈ S, ∀ b, rk b < rk a → b ∈ S) (j : J) {V : C.Opens}
     (h : V ≤ T j) {x : Γ(F, V)} : x ∈ (sub hv e S).sec V ↔ x ∈ spn v e S j h := by
@@ -110,6 +137,17 @@ theorem IsTriangular.mem_sub_iff (H : IsTriangular v rk e g) (hv : ∀ j, IsFram
   · intro hx j' W h₁ h₂
     exact H.spn_le hS j' j h₂ (h₁.trans h) (res_mem_spn hv h h₁ hx)
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, rfl⟩` from `hy`. Take `⟨cf, h1, h2, h3⟩` from `H.res j j' b h h'`. Establish `hcf : cf a = resG C (le_inf h h') (g a j j') * (if b = a then 1 else 0)`.
+
+Distinguish the cases in `hab : b = a`. Substitute `hab` using the available equality. Rewrite using `[if_pos rfl, mul_one, h1]`. Rewrite using `[if_neg hab, mul_zero]`. Conclude with `h2 a (Ne.symm hab) (ha b hb)`.
+
+Establish `hB : ∀ i, resM F h (v j i) = (hv j).basis h i` using `fun i => ((hv j).basis_apply h i).symm`. Establish `hr : ((hv j').basis h').repr (resM F h' (v j' (e j' b))) (e j' a) = if b = a then 1 else 0`. Rewrite using `[← (hv j').basis_apply h' (e j' b), Module.Basis.repr_self, Finsupp.single_apply, (e j').injective.eq_iff]`. Express the relevant statement in the definitionally equal form `((hv j).basis h).repr (resM F h' (v j' (e j' b))) (e j a) = resG C (le_inf h h') (g a j j') * ((hv j').basis h').repr (resM F h' (v j' (e j' b))) (e j' a)`. Rewrite using `[hr, h3, map_sum, Finsupp.coe_finset_sum, Finset.sum_apply]`.
+
+Simplify using `only [hB, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply, (e j).injective.eq_iff, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite `hcf` using `[mul_ite, mul_one, mul_zero]`. Then use the resulting hypothesis. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, map_add, Finsupp.add_apply, Finsupp.add_apply, hx, hy, mul_add]`.
+
+Consider the case `smul c x _ hx`. Rewrite using `[map_smul, map_smul, Finsupp.smul_apply, Finsupp.smul_apply, hx, smul_eq_mul, smul_eq_mul, mul_left_comm]`.
+-/
 theorem IsTriangular.repr_eq (H : IsTriangular v rk e g) (hv : ∀ j, IsFrame (v j))
     {S : Finset α} {a : α} (ha : ∀ b ∈ S, rk b ≤ rk a) (j j' : J) {V : C.Opens}
     (h : V ≤ T j) (h' : V ≤ T j') {x : Γ(F, V)} (hx : x ∈ spn v e S j' h') :
@@ -144,6 +182,23 @@ theorem IsTriangular.repr_eq (H : IsTriangular v rk e g) (hv : ∀ j, IsFrame (v
     rw [map_smul, map_smul, Finsupp.smul_apply, Finsupp.smul_apply, hx, smul_eq_mul, smul_eq_mul,
       mul_left_comm]
 
+/- English proof (translation)
+Introduce `x`. Choose the witnesses or unpack the hypotheses as in `⟨j, hxj⟩ : ∃ j, x ∈ T j := by`. Establish `hx : x ∈ (⨆ j, T j : C.Opens)` using `by rw [hT]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hx`. Set `σ : Fin S.card ≃ S` to `S.equivFin.symm`.
+
+Establish `hmem : ∀ b ∈ S, v j (e j b) ∈ (sub hv e S).sec (T j)`. Introduce `b hb`. Use `(H.mem_sub_iff hv hS j le_rfl).2 ?_` and prove the remaining obligations. Establish `h0 : resM F le_rfl (v j (e j b)) ∈ spn v e S j (le_rfl : T j ≤ T j)` using `Submodule.subset_span ⟨b, hb, rfl⟩`. Rewrite `h0` using `[resM_self]`. Then use the resulting hypothesis.
+
+Set `w : Fin S.card → Γ((sub hv e S).toMod, T j)` to `fun k => (sub hv e S).mkSec (v j (e j (σ k))) (hmem _ (σ k).2)`. Use `⟨T j, w, hxj, fun V h => ?_⟩` and prove the remaining obligations. Set `ι' : Fin S.card → κ j` to `fun k => e j (σ k)`. Establish `hι' : Function.Injective ι'` using `fun k l hkl => σ.injective (Subtype.ext ((e j).injective hkl))`. Establish `hinc : ∀ k, (sub hv e S).incl.app V (resM (sub hv e S).toMod h (w k)) = (hv j).basis h (ι' k)`.
+
+Introduce `k`. Rewrite using `[app_resM, Sub.incl_app_mkSec, IsFrame.basis_apply]`. Establish `hLC : ∀ c : Fin S.card → Γ(C, V), (sub hv e S).incl.app V (Fintype.linearCombination Γ(C, V) (fun k => resM (sub hv e S).toMod h (w k)) c) = ∑ k, c k • (hv j).basis h (ι' k)`. Introduce `c`. Rewrite using `[Fintype.linearCombination_apply, ← GlobalTheory.QCoh.appLinear_apply, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, GlobalTheory.QCoh.appLinear_apply, hinc]`. Establish `hli : LinearIndependent Γ(C, V) (fun k => (hv j).basis h (ι' k))` using `((hv j).basis h).linearIndependent.comp ι' hι'`. Prove the components needed by the constructor for the conclusion. Introduce `c d hcd`.
+
+Establish `h1` using `congrArg ((sub hv e S).incl.app V) hcd`. Rewrite `h1` using `[hLC, hLC]`. Establish `h2` using `Fintype.linearIndependent_iff.1 hli (c - d) (by`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h1, sub_self])`. Use function extensionality and compare the values at `k`.
+
+Conclude with `sub_eq_zero.1 (h2 k)`. Introduce `t`. Establish `ht : (sub hv e S).incl.app V t ∈ spn v e S j h` using `(H.mem_sub_iff hv hS j h).1 ((sub hv e S).incl_app_mem t)`. Use `⟨fun k => ((hv j).basis h).repr ((sub hv e S).incl.app V t) (ι' k), (sub hv e S).incl_app_injective V ?_⟩` and prove the remaining obligations. Rewrite using `[hLC]`.
+
+Use `conv_rhs => rw [← ((hv j).basis h).sum_repr ((sub hv e S).incl.app V t)]`. Use `Fintype.sum_of_injective ι' hι' _ _ (fun i hi => ?_) (fun k => rfl)` and prove the remaining obligations. Rewrite using `[(mem_spn_iff hv h).1 ht i ?_, zero_smul]`. Introduce `b hb hbi`. Conclude with `hi ⟨S.equivFin ⟨b, hb⟩, by simp [ι', σ, hbi]⟩`.
+-/
 theorem IsTriangular.isVB (H : IsTriangular v rk e g) (hT : ⨆ j, T j = ⊤)
     (hv : ∀ j, IsFrame (v j)) {S : Finset α} (hS : ∀ a ∈ S, ∀ b, rk b < rk a → b ∈ S) :
     IsVB (sub hv e S).toMod S.card := by
@@ -201,6 +256,9 @@ def refine (M : LB C) (idx : J → M.ι) (hle : ∀ j, T j ≤ M.U (idx j)) : LB
   U := T
   g j j' := res (inf_le_inf (hle j) (hle j')) (M.g (idx j) (idx j'))
 
+/- English proof (translation)
+The claim follows from `hT g_self j := by have hg : ((refine M idx hle).g j j).val = resG C (inf_le_inf (hle j) (hle j)) (M.g (idx j) (idx j)).val := GlobalTheory.LB.val_res _ _ have h0 := hM.g_self (idx j) rw [Units.ext_iff, GlobalTheory.LB.val_res, Units.val_one] at h0 apply Units.ext rw [GlobalTheory …`.
+-/
 theorem isLB_refine (hT : ⨆ j, T j = ⊤) {M : LB C} (hM : M.IsLB) (idx : J → M.ι)
     (hle : ∀ j, T j ≤ M.U (idx j)) : (refine M idx hle).IsLB where
   cover := hT
@@ -228,6 +286,11 @@ theorem isLB_refine (hT : ⨆ j, T j = ⊤) {M : LB C} (hM : M.IsLB) (idx : J �
     exact (congrArg₂ (· * ·) (resG_resG _ _ _) (resG_resG _ _ _)).trans
       (h1.trans (resG_resG _ _ _).symm)
 
+/- English proof (translation)
+Establish `c1` using `hM.cocycle i k k'`. Establish `c2` using `hM.cocycle i i' k'`. Rewrite `c1`, `c2` using `[Units.ext_iff, Units.val_mul, GlobalTheory.LB.val_res, GlobalTheory.LB.val_res, GlobalTheory.LB.val_res]`. Establish `d1` using `congrArg (resG C (le_inf (le_inf h₁ h₃) h₄)) c1`. Establish `d2` using `congrArg (resG C (le_inf (le_inf h₁ h₂) h₄)) c2`.
+
+Rewrite `d1`, `d2` using `[map_mul, resG_resG, resG_resG, resG_resG]`. Conclude with `d1.trans d2.symm`.
+-/
 private theorem res_transition_mul_comm_square {M : LB C} (hM : M.IsLB) (i i' k k' : M.ι) {W : C.Opens}
     (h₁ : W ≤ M.U i) (h₂ : W ≤ M.U i') (h₃ : W ≤ M.U k) (h₄ : W ≤ M.U k') :
     resG C (le_inf h₁ h₃) (M.g i k).val * resG C (le_inf h₃ h₄) (M.g k k').val =
@@ -240,6 +303,13 @@ private theorem res_transition_mul_comm_square {M : LB C} (hM : M.IsLB) (i i' k 
   rw [map_mul, resG_resG, resG_resG, resG_resG] at d1 d2
   exact d1.trans d2.symm
 
+/- English proof (translation)
+Establish `grp : ∀ {R : Type} [CommRing R] (X A B Y : Rˣ), X * B = A * Y → X = A * B⁻¹ * Y`. Introduce `R _ X A B Y h`. Rewrite using `[mul_right_comm, eq_mul_inv_iff_mul_eq, h]`. Establish `hv2 : ∀ {U V W : C.Opens} (h : V ≤ U) (h' : W ≤ V) (u : Γ(C, U)ˣ), ((res h' (res h u) : Γ(C, W)ˣ) : Γ(C, W)) = resG C (h'.trans h) (u : Γ(C, U))`. Introduce `U V W h h' u`.
+
+Rewrite using `[GlobalTheory.LB.val_res, GlobalTheory.LB.val_res, resG_resG]`. Use `⟨⟨fun p => res (show M.U p.1 ⊓ T p.2 ≤ M.U p.1 ⊓ M.U (idx p.2) from inf_le_inf le_rfl (hle p.2)) (M.g p.1 (idx p.2))⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩ ⟨i', j'⟩`. Apply `grp` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Establish `key` using `res_transition_mul_comm_square hM i i' (idx j) (idx j') (W := (M.U i ⊓ T j) ⊓ (M.U i' ⊓ T j')) (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left) ((inf_le_left.trans inf_le_right).trans (hle j)) ((inf_le_right.trans inf_le_right).trans (hle j'))`. Conclude with `((Units.val_mul _ _).trans ((congrArg₂ (· * ·) (hv2 _ _ _) (hv2 _ _ _)).trans (key.trans (congrArg₂ (· * ·) (GlobalTheory.LB.val_res _ _).symm (hv2 _ _ _).symm)))).trans (Units.val_mul _ _).symm`.
+-/
 theorem lbIso_refine {M : LB C} (hM : M.IsLB) (idx : J → M.ι)
     (hle : ∀ j, T j ≤ M.U (idx j)) : LBIso (refine M idx hle) M := by
   have grp : ∀ {R : Type} [CommRing R] (X A B Y : Rˣ), X * B = A * Y → X = A * B⁻¹ * Y := by
@@ -261,9 +331,29 @@ theorem lbIso_refine {M : LB C} (hM : M.IsLB) (idx : J → M.ι)
     (key.trans (congrArg₂ (· * ·) (GlobalTheory.LB.val_res _ _).symm (hv2 _ _ _).symm)))).trans
     (Units.val_mul _ _).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem coord_resM_eq_resG_coord {L : LB C} {V W : C.Opens} (h : W ≤ V) (s : Γ(toMod L, V)) (i : L.ι) :
     LB.coord (resM (toMod L) h s) i = resG C (inf_le_inf_right _ h) (LB.coord s i) := by rfl
 
+/- English proof (translation)
+Set `f : ∀ V : C.Opens, Γ((sub hv e S).toMod, V) → ∀ j, Γ(C, V ⊓ T j)` to `fun V s j => ((hv j).basis (inf_le_right : V ⊓ T j ≤ T j)).repr (resM F inf_le_left ((sub hv e S).incl.app V s)) (e j a)`. Establish `hf : ∀ (V : C.Opens) (s : Γ((sub hv e S).toMod, V)), f V s ∈ secOn (⟨J, T, u⟩ : LB C) V`. Introduce `V s i j`. Establish `hW₁ : V ⊓ T i ⊓ T j ≤ V` using `inf_le_left.trans inf_le_left`. Establish `hW₂ : V ⊓ T i ⊓ T j ≤ T i` using `inf_le_left.trans inf_le_right`.
+
+Establish `hW₃ : V ⊓ T i ⊓ T j ≤ T j` using `inf_le_right`. Establish `hy : resM F hW₁ ((sub hv e S).incl.app V s) ∈ spn v e S j hW₃` using `(sub hv e S).incl_app_mem s j _ hW₁ hW₃`. Establish `key` using `H.repr_eq hv ha' i j hW₂ hW₃ hy`. Rewrite `key` using `[hu]`. Establish `e1 : resG C (inf_le_left : V ⊓ T i ⊓ T j ≤ V ⊓ T i) (f V s i) = ((hv i).basis hW₂).repr (resM F hW₁ ((sub hv e S).incl.app V s)) (e i a)`.
+
+Simplify using `only [f]`. Rewrite using `[← IsFrame.repr_resM, resM_resM]`. Establish `e2 : resG C (le_inf (inf_le_left.trans inf_le_left) inf_le_right : V ⊓ T i ⊓ T j ≤ V ⊓ T j) (f V s j) = ((hv j).basis hW₃).repr (resM F hW₁ ((sub hv e S).incl.app V s)) (e j a)`. Simplify using `only [f]`. Rewrite using `[← IsFrame.repr_resM, resM_resM]`.
+
+Conclude with `e1.trans (key.trans (congrArg _ e2.symm))`. Set `hlin : ∀ V : C.Opens, Γ((sub hv e S).toMod, V) →ₗ[Γ(C, V)] Γ(toMod (⟨J, T, u⟩ : LB C), V)` to `fun V => { toFun := fun s => LB.mkSec (f V s) (hf V s) map_add' := fun s t => by`. Use `GlobalTheory.LB.sec_ext fun j => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LB.coord_add, GlobalTheory.LB.coord_mkSec, GlobalTheory.LB.coord_mkSec, GlobalTheory.LB.coord_mkSec]`. Simplify using `only [f, map_add, Finsupp.add_apply]`.
+
+Use the proof step `map_smul' := fun c s => by`. Use `GlobalTheory.LB.sec_ext fun j => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, GlobalTheory.LB.coord_smul, GlobalTheory.LB.coord_mkSec, GlobalTheory.LB.coord_mkSec]`. Simplify using `only [f]`. Rewrite using `[← GlobalTheory.QCoh.appLinear_apply (sub hv e S).incl, map_smul, GlobalTheory.QCoh.appLinear_apply, resM_smul, map_smul, Finsupp.smul_apply, smul_eq_mul] }`.
+
+Use `⟨GlobalTheory.LB.homOfLinear hlin ?_, ?_⟩` and prove the remaining obligations. Introduce `V W h s`. Use `GlobalTheory.LB.sec_ext fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `LB.coord (LB.mkSec (f W (resM _ h s)) (hf W _)) j = LB.coord (resM (toMod (⟨J, T, u⟩ : LB C)) h (LB.mkSec (f V s) (hf V s))) j`. Rewrite using `[coord_resM_eq_resG_coord, GlobalTheory.LB.coord_mkSec, GlobalTheory.LB.coord_mkSec]`.
+
+Simplify using `only [f]`. Rewrite using `[app_resM, resM_resM, ← IsFrame.repr_resM, resM_resM]`. Introduce `V s j W h₁ h₂`. Rewrite using `[GlobalTheory.LB.homOfLinear_app]`. Rewrite using `[show hlin V s = LB.mkSec (f V s) (hf V s) from rfl, GlobalTheory.LB.coord_mkSec]`.
+
+Simplify using `only [f]`. Rewrite using `[← IsFrame.repr_resM, resM_resM]`.
+-/
 theorem IsTriangular.exists_hom (H : IsTriangular v rk e g) (hv : ∀ j, IsFrame (v j))
     {S : Finset α} {a : α} (ha' : ∀ b ∈ S, rk b ≤ rk a)
     (u : ∀ j j', Γ(C, T j ⊓ T j')ˣ) (hu : ∀ j j', g a j j' = u j j') :
@@ -321,6 +411,51 @@ theorem IsTriangular.exists_hom (H : IsTriangular v rk e g) (hv : ∀ j, IsFrame
     simp only [f]
     rw [← IsFrame.repr_resM, resM_resM]
 
+/- English proof (translation)
+Establish `hsub : ∀ (V : C.Opens) (x : Γ(F, V)), x ∈ (sub hv e S).sec V → x ∈ (sub hv e (insert a S)).sec V` using `fun V x hx j W h₁ h₂ => Submodule.span_mono (Set.image_mono (Finset.coe_subset.2 (Finset.subset_insert a S))) (hx j W h₁ h₂)`. Set `f : (sub hv e S).toMod ⟶ (sub hv e (insert a S)).toMod` to `(sub hv e (insert a S)).lift (sub hv e S).incl fun V s => hsub V _ ((sub hv e S).incl_app_mem s)`. Establish `hf : f ≫ (sub hv e (insert a S)).incl = (sub hv e S).incl` using `Sub.lift_incl _ _ _`. Establish `ha' : ∀ b ∈ insert a S, rk b ≤ rk a`. Introduce `b hb`.
+
+Break down `Finset.mem_insert.1 hb with rfl | hb` into its components or cases. Conclude with `le_rfl`. Conclude with `ha b hb`. Take `⟨φ, hφ⟩` from `H.exists_hom hv ha' u hu`. Establish `hcoord : ∀ (V : C.Opens) (s : Γ((sub hv e (insert a S)).toMod, V)) (j : J), LB.coord (φ.app V s) j = ((hv j).basis (inf_le_right : V ⊓ T j ≤ T j)).repr (resM F inf_le_left ((sub hv e (insert a S)).incl.app V s)) (e j a)`.
+
+Introduce `V s j`. Establish `h0` using `hφ V s j (V ⊓ T j) inf_le_left inf_le_right`. Rewrite `h0` using `[resG_self]`. Then use the resulting hypothesis. Establish `hfs : ∀ (V : C.Opens) (s : Γ((sub hv e S).toMod, V)), (sub hv e (insert a S)).incl.app V (f.app V s) = (sub hv e S).incl.app V s`. Introduce `V s`.
+
+Establish `h0` using `congrArg (fun m => Scheme.Modules.Hom.app m V) hf`. Simplify using `only [Scheme.Modules.Hom.comp_app] at h0`. Rewrite using `[← h0]`. Both sides reduce to the same expression. Establish `hzero : f ≫ φ = 0`.
+
+Use `Scheme.Modules.hom_ext _ _ fun V => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.comp_app, Scheme.Modules.Hom.zero_app]`. Use extensionality with `s j`. Express the relevant statement in the definitionally equal form `LB.coord (φ.app V (f.app V s)) j = LB.coord (0 : Γ(toMod (⟨J, T, u⟩ : LB C), V)) j`. Rewrite using `[hcoord, hfs, GlobalTheory.LB.coord_zero]`.
+
+Establish `hx` using `(sub hv e S).incl_app_mem s j (V ⊓ T j) inf_le_left inf_le_right`. Use `(mem_spn_iff hv _).1 hx (e j a) fun b hb hba => ?_` and prove the remaining obligations. Conclude with `haS ((e j).injective hba ▸ hb)`. Establish `hmono : Mono f` using `mono_of_mono_fac hf`. Establish `hepi : Epi φ`.
+
+Rewrite using `[GlobalTheory.QCoh.epi_iff_stalkLinear_surjective]`. Introduce `x t`. Take `⟨U, hxU, τ, rfl⟩` from `(toMod (⟨J, T, u⟩ : LB C)).presheaf.exists_germ_eq t`. Choose the witnesses or unpack the hypotheses as in `⟨j, hxj⟩ : ∃ j, x ∈ T j := by`. Establish `hx : x ∈ (⨆ j, T j : C.Opens)` using `by rw [hT]; trivial`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.1 hx`. Establish `hxW : x ∈ U ⊓ T j` using `⟨hxU, hxj⟩`. Set `y0 : Γ(F, U ⊓ T j)` to `LB.coord τ j • resM F inf_le_right (v j (e j a))`. Establish `hy0 : y0 ∈ (sub hv e (insert a S)).sec (U ⊓ T j)`. Use `(H.mem_sub_iff hv hS' j inf_le_right).2 ?_` and prove the remaining obligations.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, Finset.mem_insert_self a S, rfl⟩)`. Use `⟨(sub hv e (insert a S)).toMod.presheaf.germ (U ⊓ T j) x hxW ((sub hv e (insert a S)).mkSec y0 hy0), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.QCoh.stalkLinear_germ, ← (toMod (⟨J, T, u⟩ : LB C)).presheaf.germ_res_apply (homOfLE (inf_le_left : U ⊓ T j ≤ U)) x hxW τ]`. Use `congr 1`. Use `GlobalTheory.LB.sec_ext fun j' => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = LB.coord (resM _ (inf_le_left : U ⊓ T j ≤ U) τ) j'`. Rewrite using `[coord_resM_eq_resG_coord, hcoord, Sub.incl_app_mkSec]`. Establish `hW1 : U ⊓ T j ⊓ T j' ≤ T j'` using `inf_le_right`. Establish `hW2 : U ⊓ T j ⊓ T j' ≤ T j` using `inf_le_left.trans inf_le_right`. Establish `hz` using `hy0 j (U ⊓ T j ⊓ T j') inf_le_left hW2`.
+
+Establish `key` using `H.repr_eq hv ha' j' j hW1 hW2 hz`. Rewrite `key` using `[hu]`. Establish `hrj : ((hv j).basis hW2).repr (resM F inf_le_left y0) (e j a) = resG C (inf_le_left : U ⊓ T j ⊓ T j' ≤ U ⊓ T j) (LB.coord τ j)`. Simplify using `only [y0]`. Rewrite using `[resM_smul, resM_resM, ← (hv j).basis_apply hW2 (e j a), map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul, mul_one]`.
+
+Rewrite using `[key, hrj]`. Establish `hc : _` using `(GlobalTheory.LB.coord_mem τ : _) j' j`. Establish `hc2` using `congrArg (resG C (show U ⊓ T j ⊓ T j' ≤ U ⊓ T j' ⊓ T j from le_inf (le_inf (inf_le_left.trans inf_le_left) inf_le_right) (inf_le_left.trans inf_le_right))) hc`. Rewrite `hc2` using `[map_mul, resG_resG, resG_resG, resG_resG]`. Conclude with `hc2.symm`.
+
+Establish `hex : (ShortComplex.mk f φ hzero).Exact`. Rewrite using `[GlobalTheory.QCoh.exact_iff_stalkLinear]`. Introduce `x t`. Take `⟨U, hxU, y, rfl⟩` from `(sub hv e (insert a S)).toMod.presheaf.exists_germ_eq t`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Express the relevant statement in the definitionally equal form `GlobalTheory.QCoh.stalkLinear φ x _ = 0 at hy`. Rewrite `hy` using `[GlobalTheory.QCoh.stalkLinear_germ]`. Establish `hy' : (toMod (⟨J, T, u⟩ : LB C)).presheaf.germ U x hxU (φ.app U y) = (toMod (⟨J, T, u⟩ : LB C)).presheaf.germ U x hxU 0`. Rewrite using `[hy, map_zero]`.
+
+Take `⟨W, hxW, iU, iV, hW⟩` from `TopCat.Presheaf.germ_eq _ x hxU hxU _ _ hy'`. Rewrite `hW` using `[map_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨j, hxj⟩ : ∃ j, x ∈ T j := by`. Establish `hx : x ∈ (⨆ j, T j : C.Opens)` using `by rw [hT]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hx`.
+
+Establish `hWU : W ≤ U` using `leOfHom iU`. Establish `hW' : W ⊓ T j ≤ U` using `inf_le_left.trans hWU`. Establish `hφ0 : resM _ hWU (φ.app U y) = 0` using `hW`. Establish `hzS : resM F hW' ((sub hv e (insert a S)).incl.app U y) ∈ (sub hv e S).sec (W ⊓ T j)`. Use `(H.mem_sub_iff hv hS j inf_le_right).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[mem_spn_iff hv]`. Introduce `b hb`. Establish `hz'` using `(sub hv e (insert a S)).incl_app_mem y j (W ⊓ T j) hW' inf_le_right`. Distinguish the cases in `hba : b = e j a`. Substitute `hba` using the available equality.
+
+Establish `h0` using `hφ W (resM _ hWU y) j (W ⊓ T j) inf_le_left inf_le_right`. Rewrite `h0` using `[app_resM, hφ0, GlobalTheory.LB.coord_zero, map_zero, app_resM, resM_resM]`. Conclude with `h0.symm`. Use `(mem_spn_iff hv _).1 hz' b fun c hc hcb => ?_` and prove the remaining obligations. Break down `Finset.mem_insert.1 hc with rfl | hc` into its components or cases.
+
+Conclude with `hba hcb.symm`. Conclude with `hb c hc hcb`. Establish `hxWj : x ∈ W ⊓ T j` using `⟨hxW, hxj⟩`. Establish `hgerm : GlobalTheory.QCoh.stalkLinear f x ((sub hv e S).toMod.presheaf.germ (W ⊓ T j) x hxWj ((sub hv e S).mkSec _ hzS)) = (sub hv e (insert a S)).toMod.presheaf.germ U x hxU y`. Rewrite using `[GlobalTheory.QCoh.stalkLinear_germ, ← (sub hv e (insert a S)).toMod.presheaf.germ_res_apply (homOfLE hW') x hxWj y]`.
+
+Use `congr 1`. Conclude with `⟨_, hgerm⟩`. Introduce and unpack `⟨t', ht'⟩`. Rewrite using `[← ht']`. Express the relevant statement in the definitionally equal form `GlobalTheory.QCoh.stalkLinear φ x (GlobalTheory.QCoh.stalkLinear f x t') = 0`.
+
+Rewrite using `[← LinearMap.comp_apply, ← GlobalTheory.QCoh.stalkLinear_comp, hzero, GlobalTheory.QCoh.stalkLinear_zero, LinearMap.zero_apply]`. Establish `hSE : (ShortComplex.mk f φ hzero).ShortExact` using `⟨hex⟩`. Use `haveI : GlobalTheory.QCoh.IsFiniteQC (sub hv e S).toMod := (H.isVB hT hv hS).isFiniteQC`. Use `haveI : GlobalTheory.QCoh.IsFiniteQC (sub hv e (insert a S)).toMod := (H.isVB hT hv hS').isFiniteQC`. Use `haveI : GlobalTheory.QCoh.IsFiniteQC (toMod (⟨J, T, u⟩ : LB C)) := (isVB_toMod hL).isFiniteQC`.
+
+Establish `h3` using `hC.deg_shortExact hSE`. Unfold `degLB`. Conclude with `h3`.
+-/
 theorem IsTriangular.deg_insert [DecidableEq α] {k : Type} [Field k] [Algebra k Γ(C, ⊤)]
     [IsIntegral C] (hC : IsProjCurve k C) (H : IsTriangular v rk e g) (hT : ⨆ j, T j = ⊤)
     (hv : ∀ j, IsFrame (v j)) {S : Finset α} {a : α} (haS : a ∉ S) (ha : ∀ b ∈ S, rk b ≤ rk a)
@@ -457,6 +592,21 @@ end GlobalTheory.TriangularFrames
 
 namespace GlobalTheory.TriangularFrames
 
+/- English proof (translation)
+Set `g : α → ∀ j j', Γ(C, T j ⊓ T j')` to `fun a j j' => resG C (inf_le_inf (hle a j) (hle a j')) ((M a).g (idx a j) (idx a j')).val`. Establish `HT : IsTriangular v rk e g` using `H`. Use `⟨(sub hv e S).toMod, (sub hv e S).incl, ⟨inferInstance, (HT.isVB hT hv hS).isFiniteQC⟩, ?_, fun j V h x => ((sub hv e S).mem_sec_iff).symm.trans (HT.mem_sub_iff hv hS j h)⟩` and prove the remaining obligations. Establish `key : ∀ n, ∀ S : Finset α, S.card = n → (∀ a ∈ S, ∀ b, rk b < rk a → b ∈ S) → deg k (sub hv e S).toMod = ∑ a ∈ S, degLB k (M a)`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `S hS0 hS`. Take `rfl` from `Finset.card_eq_zero.1 hS0`. Rewrite using `[Finset.sum_empty]`.
+
+Establish `h0` using `HT.isVB hT hv (S := ∅) (by simp)`. Rewrite `h0` using `[Finset.card_empty]`. Conclude with `deg_eq_zero_of_isZero k (isVB_zero_iff.1 h0)`. Consider the case `succ n ih`. Introduce `S hSn hS`.
+
+Establish `hne : S.Nonempty` using `Finset.card_pos.1 (by omega)`. Take `⟨a, haS, hamax⟩` from `S.exists_max_image rk hne`. Establish `hS'cl : ∀ c ∈ S.erase a, ∀ b, rk b < rk c → b ∈ S.erase a`. Introduce `c hc b hb`. Establish `hcS` using `Finset.mem_of_mem_erase hc`.
+
+Use `Finset.mem_erase.2 ⟨?_, hS c hcS b hb⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `absurd (hamax c hcS) (not_le.2 hb)`. Establish `hins : insert a (S.erase a) = S` using `Finset.insert_erase haS`. Establish `hcard : (S.erase a).card = n` using `by rw [Finset.card_erase_of_mem haS]; omega`.
+
+Set `u : ∀ j j', Γ(C, T j ⊓ T j')ˣ` to `fun j j' => res (inf_le_inf (hle a j) (hle a j')) ((M a).g (idx a j) (idx a j'))`. Establish `hu : ∀ j j', g a j j' = u j j'` using `fun j j' => (GlobalTheory.LB.val_res _ _).symm`. Establish `hLa : LB.IsLB (⟨J, T, u⟩ : LB C)` using `isLB_refine hT (hM a) (idx a) (hle a)`. Establish `hd` using `HT.deg_insert hC hT hv (Finset.notMem_erase a S) (fun b hb => hamax b (Finset.mem_of_mem_erase hb)) hS'cl (by rw [hins]; exact hS) u hu hLa`. Rewrite `hd` using `[hins]`.
+
+Rewrite using `[hd, ih (S.erase a) hcard hS'cl, ← Finset.sum_erase_add S _ haS]`. Use `congr 1`. Conclude with `degLB_congr hLa (hM a) (lbIso_refine (hM a) (idx a) (hle a))`. Conclude with `key _ S rfl hS`.
+-/
 theorem exists_isCohSub_deg_eq_sum (k : Type) [Field k] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)]
     [IsIntegral C] (hC : IsProjCurve k C) (F : C.Modules) (J : Type) (T : J → C.Opens)
     (hT : ⨆ j, T j = ⊤) (κ : J → Type) [∀ j, Fintype (κ j)] (v : ∀ j, κ j → Γ(F, T j))

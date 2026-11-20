@@ -7,6 +7,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SurjectionOntoH4
 open CrystallineSemistableComparison.Onto
 
+/- English proof (translation)
+Establish `hg' : (∀ l, 0 ≤ g (Sum.inl l)) ∧ (∀ j, j ∉ S → 0 ≤ g (Sum.inr j)) ∧ 0 ≤ tdeg g` using `hg`. Take `⟨h1, h2, _⟩` from `hg'`. Use `show (∀ l, 0 ≤ (g - oneE (Sum.inr k) : Gam n d) (Sum.inl l)) ∧ (∀ j, j ∉ S → 0 ≤ (g - oneE (Sum.inr k) : Gam n d) (Sum.inr j)) ∧ 0 ≤ tdeg (g - oneE (Sum.inr k))`. Use `⟨fun l => ?_, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [oneE, Pi.sub_apply]`.
+
+Rewrite using `[Pi.single_eq_of_ne Sum.inl_ne_inr, sub_zero]`. Conclude with `h1 l`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Establish `h1' : 1 ≤ g (Sum.inr j)` using `hk.resolve_left hj`.
+
+Simplify using `only [oneE, Pi.sub_apply, Pi.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [oneE, Pi.sub_apply]`. Rewrite using `[Pi.single_eq_of_ne (fun h => hjk (Sum.inr_injective h)), sub_zero]`. Conclude with `h2 j hj`.
+
+Establish `hs : ∑ j, (oneE (Sum.inr k) : Gam n d) (Sum.inr j) = 1`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using `[oneE]`. Introduce `b _ hb`. Simplify using `only [oneE]`.
+
+Conclude with `Pi.single_eq_of_ne (fun h => hb (Sum.inr_injective h)) _`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`. Use `show 0 ≤ ∑ j, (g - oneE (Sum.inr k) : Gam n d) (Sum.inr j)`. Simplify using `only [Pi.sub_apply, Finset.sum_sub_distrib]`.
+
+Rewrite using `[hs]`. Establish `ht' : 1 ≤ ∑ j, g (Sum.inr j)` using `ht`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sub_oneE_mem_cone {n d : ℕ} {S : Finset (Fin d)} {g : Gam n d}
     (hg : g ∈ (cone S : AddSubmonoid (Gam n d))) (ht : 1 ≤ tdeg g) (k : Fin d)
     (hk : k ∈ S ∨ 1 ≤ g (Sum.inr k)) :
@@ -41,6 +54,15 @@ theorem sub_oneE_mem_cone {n d : ℕ} {S : Finset (Fin d)} {g : Gam n d}
     have ht' : 1 ≤ ∑ j, g (Sum.inr j) := ht
     omega
 
+/- English proof (translation)
+Establish `hex : ∃ k, (S = ∅ ∨ k ∈ S) ∧ (k ∈ S ∨ 1 ≤ g (Sum.inr k))`. Distinguish the cases in `hS : S = ∅`. Assume the negation of the conclusion as `hno push_neg at hno`. Establish `hsum : ∑ j, g (Sum.inr j) ≤ 0` using `Finset.sum_nonpos fun j _ => by`. Use `(hno j (Or.inl hS)).2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `ht' : 1 ≤ ∑ j, g (Sum.inr j)` using `ht`. Use linear arithmetic over natural numbers and integers. Take `⟨k, hk⟩` from `Finset.nonempty_iff_ne_empty.2 hS`. Conclude with `⟨k, Or.inr hk, Or.inl hk⟩`.
+
+Take `⟨k, hkS, hk⟩` from `hex`. Establish `h'` using `sub_oneE_mem_cone hg ht k hk`. Establish `hmul : mon K g hg = mon K (oneE (Sum.inr k)) (oneE_mem S _) * mon K (g - oneE (Sum.inr k)) h'`. Simplify using `only [mon, AddMonoidAlgebra.single_mul_single, mul_one]`. Use `congr 1`.
+
+Use `ext1`. Simplify using the standard rewrite rules. Rewrite using `[hmul]`. Unfold `I0`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨k, hkS, rfl⟩)`.
+-/
 theorem monomial_mem_exceptional_ideal {K : Type} [Field K] {n d : ℕ} (S : Finset (Fin d)) (g : Gam n d)
     (hg : g ∈ (cone S : AddSubmonoid (Gam n d))) (ht : 1 ≤ tdeg g) : mon K g hg ∈ I0 n K S := by
   have hex : ∃ k, (S = ∅ ∨ k ∈ S) ∧ (k ∈ S ∨ 1 ≤ g (Sum.inr k)) := by

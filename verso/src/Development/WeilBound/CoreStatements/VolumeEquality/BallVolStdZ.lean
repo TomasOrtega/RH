@@ -23,6 +23,13 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype Ψ] {j j' n g : ℕ} {Λ : Type}
   [AddCommGroup Λ] [Module (𝓞 E) Λ] {F : UnivFam E Ψ j j' n g Λ} (C : LatEmb F)
 
+/- English proof (translation)
+Set `v : Λ →+ (Ψ → Fin (j + j') → ℂ)` to `AddMonoidHom.mk' C.vec fun a b => by`. Use function extensionality and compare the values at `τ i`. Simplify using `[LatEmb.vec]`. Establish `h : ((C.perExt R).toAddMonoidHom.comp v).toIntLinearMap = R.P.toIntLinearMap`. Use `C.lam.ext fun k => ?_` and prove the remaining obligations.
+
+Establish `e : C.vec (C.lam k) = C.bas k`. Use function extensionality and compare the values at `τ i`. Conclude with `(C.bas_eq k τ i).symm`. Use `show C.perExt R (C.vec (C.lam k)) = R.P (C.lam k)`. Rewrite using `[e, LatEmb.perExt, Module.Basis.constr_basis]`.
+
+Conclude with `LinearMap.congr_fun h x`.
+-/
 theorem stdZ_perExt_vec (R : RiemLat E g Λ) (x : Λ) : C.perExt R (C.vec x) = R.P x := by
   let v : Λ →+ (Ψ → Fin (j + j') → ℂ) := AddMonoidHom.mk' C.vec fun a b => by
     funext τ i
@@ -36,6 +43,11 @@ theorem stdZ_perExt_vec (R : RiemLat E g Λ) (x : Λ) : C.perExt R (C.vec x) = R
     rw [e, LatEmb.perExt, Module.Basis.constr_basis]
   exact LinearMap.congr_fun h x
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.T.adapted_frame_inverse_properties E Ψ j j' n g Λ F C τ A hA).2.1`. Establish `e : A' = A * (C.cinv A τ * A')` using `by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Unfold `IsSgU`. Generalize the expression as in `C.cinv A τ * A' = v at e ⊢`. Rewrite `hA'` using `[e]`.
+
+Use `Eq.trans ?_ hA'` and prove the remaining obligations. Rewrite using `[← hA]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+-/
 theorem stdZ_sgU (τ : Ψ) {A A' : Matrix (Fin (j + j')) (Sg j j') ℂ} (hA : Aᴴ * C.sgr τ * A = sgI j j')
     (hA' : A'ᴴ * C.sgr τ * A' = sgI j j') : IsSgU (C.cinv A τ * A') := by
   have h1 := (GlobalTheory.T.adapted_frame_inverse_properties E Ψ j j' n g Λ F C τ A hA).2.1
@@ -47,6 +59,9 @@ theorem stdZ_sgU (τ : Ψ) {A A' : Matrix (Fin (j + j')) (Sg j j') ℂ} (hA : A�
   rw [← hA]
   simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `h`. Use `⟨k.symm, fun x => ?_⟩` and prove the remaining obligations. Use `hk x` as an intermediate fact. Simplify using `only [LinearEquiv.coe_one, id_eq] at this ⊢`. Rewrite using `[this, LinearEquiv.symm_apply_apply]`.
+-/
 theorem stdZ_eqvBy_symm {R R' : RiemLat E g Λ} (h : R.EqvBy R' 1) : R'.EqvBy R 1 := by
   obtain ⟨k, hk⟩ := h
   refine ⟨k.symm, fun x => ?_⟩
@@ -55,6 +70,11 @@ theorem stdZ_eqvBy_symm {R R' : RiemLat E g Λ} (h : R.EqvBy R' 1) : R'.EqvBy R 
   rw [this, LinearEquiv.symm_apply_apply]
 
 omit [Fintype Ψ] in
+/- English proof (translation)
+Introduce `τ`. Establish `: ballMat q 0 τ = 0`. Use extensionality with `a b`. Simplify using `[ballMat]`. Rewrite using `[this]`.
+
+Simplify using `using Matrix.PosDef.one`.
+-/
 theorem stdZ_zero_mem (q : Ψ × Fin j × Fin j' ≃ Fin n) : (0 : Fin n → ℂ) ∈ ballDom q := by
   intro τ
   have : ballMat q 0 τ = 0 := by
@@ -63,6 +83,15 @@ theorem stdZ_zero_mem (q : Ψ × Fin j × Fin j' ≃ Fin n) : (0 : Fin n → ℂ
   rw [this]
   simpa using Matrix.PosDef.one
 
+/- English proof (translation)
+Establish `h0` using `stdZ_zero_mem F.q`. Take `⟨A0, hA0⟩` from `GlobalTheory.T.exists_adapted_frame_bis E Ψ j j' n g Λ F C (F.R 0) (F.form_eq 0) (F.sig 0 h0)`. Establish `f0` using `fun τ => GlobalTheory.T.adapted_frame_inverse_properties E Ψ j j' n g Λ F C τ (A0 τ) (hA0.unit τ)`. Establish `f1` using `fun τ => GlobalTheory.T.adapted_frame_inverse_properties E Ψ j j' n g Λ F C τ (A τ) (hA τ)`. Take `⟨R', h1, h2, -, h4⟩` from `GlobalTheory.T.exists_translated_riemann_lattice E Ψ j j' n g Λ F C (F.R 0) (fun τ => A τ * C.cinv (A0 τ) τ) (fun τ => A0 τ * C.cinv (A τ) τ) (F.form_eq 0) (fun τ => by`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (C.cinv (A0 τ) τ), (f0 τ).1, Matrix.one_mul, (f1 τ).2.1])`. Use the proof step `(fun τ => (f0 τ).2.2.2.2.2 _ (hA τ))`. Establish `h5` using `h4 A0 hA0`. Establish `e : (fun τ => A τ * C.cinv (A0 τ) τ * A0 τ) = A`. Use function extensionality and compare the values at `τ`.
+
+Rewrite using `[Matrix.mul_assoc, (f0 τ).1, Matrix.mul_one]`. Rewrite `h5` using `[e]`. Establish `hs : R'.HasSig F.σ j j'`. Use `F.sig 0 h0` as an intermediate fact. Unfold `RiemLat.HasSig at this ⊢`.
+
+Rewrite using `[h2]`. Conclude with `this`. Take `⟨t, ht, he⟩` from `(F.univ R' (h1.trans (F.form_eq 0)) hs).exists`. Conclude with `⟨t, ht, GlobalTheory.T.adapted_frame_of_equivalent E Ψ j j' n g Λ F C R' (F.R t) A h5 (stdZ_eqvBy_symm he)⟩`.
+-/
 theorem stdZ_reach (A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ) (hA : ∀ τ, (A τ)ᴴ * C.sgr τ * A τ = sgI j j') :
     ∃ t ∈ ballDom F.q, C.IsAdapted (F.R t) A := by
   have h0 := stdZ_zero_mem F.q
@@ -88,6 +117,39 @@ theorem stdZ_reach (A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ) (hA : ∀ τ
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F C`. Establish `h0` using `stdZ_zero_mem F.q`. Take `⟨A0, hA0⟩` from `GlobalTheory.T.exists_adapted_frame_bis E Ψ j j' n g Λ F C (F.R 0) (F.form_eq 0) (F.sig 0 h0)`. Establish `f0` using `fun τ => GlobalTheory.T.adapted_frame_inverse_properties E Ψ j j' n g Λ F C τ (A0 τ) (hA0.unit τ)`. Take `⟨Z, G, hZ, hG, hZeq, hpot⟩` from `GlobalTheory.T.holomorphic_adapted_frame_on_ball E Ψ j j' n g Λ F C A0 hA0`.
+
+Establish `had : ∀ t ∈ ballDom F.q, ∃ A, C.IsAdapted (F.R t) A` using `fun t ht => GlobalTheory.T.exists_adapted_frame_bis E Ψ j j' n g Λ F C (F.R t) (F.form_eq t) (F.sig t ht)`. Establish `hmaps : Set.MapsTo Z (ballDom F.q) (ballDom F.q)`. Introduce `t ht`. Take `⟨A, hA⟩` from `had t ht`. Rewrite using `[hZeq t ht A hA]`.
+
+Conclude with `(GlobalTheory.T.ball_mobius_holomorphic_potential_change Ψ j j' n F.q _ fun τ => stdZ_sgU C τ (hA0.unit τ) (hA.unit τ)).2.1 h0`. Establish `hinj : Set.InjOn Z (ballDom F.q)`. Introduce `t ht t' ht' h`. Take `⟨A, hA⟩` from `had t ht`. Take `⟨A', hA'⟩` from `had t' ht'`.
+
+Rewrite `h` using `[hZeq t ht A hA, hZeq t' ht' A' hA']`. Establish `e : (fun τ => C.cinv (A0 τ) τ * A' τ) = fun τ => (C.cinv (A0 τ) τ * A τ) * (C.cinv (A τ) τ * A' τ)`. Use function extensionality and compare the values at `τ`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (A τ), (GlobalTheory.T.adapted_frame_inverse_properties E Ψ j j' n g Λ F C τ (A τ) (hA.unit τ)).2.1, Matrix.one_mul]`. Rewrite `h` using `[e]`.
+
+Establish `h1` using `(GlobalTheory.T.ball_mobius_zero_eq_iff_unitary Ψ j j' n F.q _ _ (fun τ => stdZ_sgU C τ (hA0.unit τ) (hA.unit τ)) (fun τ => stdZ_sgU C τ (hA.unit τ) (hA'.unit τ))).1 h`. Establish `h2` using `(GlobalTheory.T.adapted_frame_change_unitary E Ψ j j' n g Λ F C (F.R t) A A' (F.form_eq t) hA hA'.unit).2 h1`. Establish `h3` using `GlobalTheory.T.adapted_frame_determines_lattice E Ψ j j' n g Λ F C (F.R t) (F.R t') A' (F.form_eq t) (F.form_eq t') h2 hA'`. Conclude with `(F.univ (F.R t') (F.form_eq _) (F.sig _ ht')).unique ⟨ht, h3⟩ ⟨ht', LinearEquiv.refl _ _, fun _ => rfl⟩`. Establish `hsurj : Set.SurjOn Z (ballDom F.q) (ballDom F.q)`.
+
+Introduce `s hs`. Take `⟨w, hw, hws⟩` from `GlobalTheory.T.ball_mobius_transitive Ψ j j' n F.q s hs`. Take `⟨t, ht, hA⟩` from `stdZ_reach C (fun τ => A0 τ * w τ) fun τ => by`. Establish `hw'` using `hw τ`. Unfold `IsSgU at hw'`.
+
+Rewrite using `[← hw']`. Use `conv_rhs => rw [← hA0.unit τ]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[hZeq t ht _ hA, ← hws]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[← Matrix.mul_assoc, (f0 τ).1, Matrix.one_mul]`. Use `⟨A0, hA0.unit, Z, ⟨hmaps, hinj, hsurj⟩, fun S hS hSD => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `hS.image_of_continuousOn_injOn (hZ.continuousOn.mono hSD) (hinj.mono hSD)`.
+
+Conclude with `ballMeas_image F.q hZ (fun t ht => hmaps ht) hinj (fun t ht => ballDens_transform F.q hZ hG (fun t ht => hmaps ht) hpot ht) hS hSD`. Introduce `γ δ hδ _ hu t ht t' ht'`. Take `⟨A, hA⟩` from `had t ht`. Set `a : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ` to `fun τ => (γ : Matrix (Fin (j + j')) (Fin (j + j')) E).map (embOf (F.σ τ))`. Set `ai : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ` to `fun τ => ((γ⁻¹ : GL (Fin (j + j')) E) : Matrix (Fin (j + j')) (Fin (j + j')) E).map (embOf (F.σ τ))`.
+
+Establish `hai : ∀ τ, a τ * ai τ = 1` using `fun τ => by`. Simplify using `only [a, ai]`. Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hia : ∀ τ, ai τ * a τ = 1` using `fun τ => mul_eq_one_comm.1 (hai τ)`. Take `⟨R', h1, -, h3, h4⟩` from `GlobalTheory.T.exists_translated_riemann_lattice E Ψ j j' n g Λ F C (F.R t) a ai (F.form_eq t) hai hu`.
+
+Establish `h5` using `h4 A hA`. Establish `hP : ∀ x, R'.P (δ x) = (F.R t).P x` using `fun x => by`. Rewrite using `[h3, ← stdZ_perExt_vec C (F.R t) x]`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
+
+Establish `hv : C.vec (δ x) τ = a τ *ᵥ C.vec x τ`. Use function extensionality and compare the values at `i`. Use `show embOf (F.σ τ) (C.e (δ x) i) = _`. Rewrite using `[hδ]`. Conclude with `RingHom.map_mulVec _ _ _ i`.
+
+Rewrite using `[hv, Matrix.mulVec_mulVec, hia, Matrix.one_mulVec]`. Establish `hm : moebBall F.q (rho (fun τ => embOf (F.σ τ)) A0 (fun τ => C.cinv (A0 τ) τ) γ) (Z t) = moebBall F.q (fun τ => C.cinv (A0 τ) τ * (a τ * A τ)) 0`. Establish `hU : ∀ τ, IsSgU (rho (fun τ => embOf (F.σ τ)) A0 (fun τ => C.cinv (A0 τ) τ) γ τ)` using `fun τ => ((f0 τ).2.2.2.2.1 _ _ (hai τ) (hu τ)).2.2.1`. Rewrite using `[hZeq t ht A hA, ← GlobalTheory.T.ball_mobius_mul Ψ j j' n F.q _ _ hU (fun τ => stdZ_sgU C τ (hA0.unit τ) (hA.unit τ)) 0 h0]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `τ`. Use `show C.cinv (A0 τ) τ * (a τ * A0 τ) * (C.cinv (A0 τ) τ * A τ) = _`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (A0 τ), (f0 τ).2.1, Matrix.one_mul]`. Rewrite using `[hm]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨k, hk⟩`. Use `hZeq t' ht' _ (GlobalTheory.T.adapted_frame_of_equivalent E Ψ j j' n g Λ F C R' (F.R t') _ h5 ⟨k, fun x => ?_⟩)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `δ.surjective x`. Conclude with `(hk y).trans (congrArg k (hP y).symm)`. Introduce `h`.
+
+Take `⟨t'', ht'', hA''⟩` from `stdZ_reach C _ h5.unit`. Take `rfl : t'' = t'` from `hinj ht'' ht' ((hZeq t'' ht'' _ hA'').trans h.symm)`. Take `⟨k, hk⟩` from `GlobalTheory.T.adapted_frame_determines_lattice E Ψ j j' n g Λ F C R' (F.R t'') _ (h1.trans (F.form_eq t)) (F.form_eq _) h5 hA''`. Conclude with `⟨k, fun x => (hk (δ x)).trans (congrArg k (hP x))⟩`.
+-/
 theorem stdZ : StdZ := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ F C
   have h0 := stdZ_zero_mem F.q

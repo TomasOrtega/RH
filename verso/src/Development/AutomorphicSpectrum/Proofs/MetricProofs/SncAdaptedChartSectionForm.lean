@@ -12,6 +12,9 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.LocalModel
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Establish `h1 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ (A.chart j)) p` using `ContinuousAt.comp (f := A.chart j) h ((A.chart j).continuousAt hp)`. Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hp] with z hz`. Simplify using `[(A.chart j).left_inv hz]`.
+-/
 theorem continuousAt_of_chart {E : Type} [TopologicalSpace E] (A : FinHolAtlas e X) (j : Fin A.n) {p : X}
     (hp : p ∈ (A.chart j).source) (f : X → E)
     (h : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j p)) : ContinuousAt f p := by
@@ -21,6 +24,9 @@ theorem continuousAt_of_chart {E : Type} [TopologicalSpace E] (A : FinHolAtlas e
   filter_upwards [(A.chart j).open_source.mem_nhds hp] with z hz
   simp [(A.chart j).left_inv hz]
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `A.cover p`. Use `continuousAt_of_chart A j hj g ?_` and prove the remaining obligations. Use `(hg j _ ⟨(A.chart j).map_source hj, ?_⟩).continuousAt` and prove the remaining obligations. Simplify `hp` using `[(A.chart j).left_inv hj]`.
+-/
 theorem continuousAt_of_holoOn (A : FinHolAtlas e X) {U : Set X} {g : X → ℂ} (hg : A.HoloOn U g)
     {p : X} (hp : p ∈ U) : ContinuousAt g p := by
   obtain ⟨j, hj⟩ := A.cover p
@@ -28,6 +34,9 @@ theorem continuousAt_of_holoOn (A : FinHolAtlas e X) {U : Set X} {g : X → ℂ}
   refine (hg j _ ⟨(A.chart j).map_source hj, ?_⟩).continuousAt
   simpa [(A.chart j).left_inv hj] using hp
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `A.cover p`. Use `continuousAt_of_chart A j hj f ?_` and prove the remaining obligations. Establish `hmem : A.chart j p ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U` using `⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hp⟩`. Conclude with `(hf j).continuousOn.continuousAt (((A.chart j).isOpen_inter_preimage_symm hU).mem_nhds hmem)`.
+-/
 theorem continuousAt_of_smoothOn (A : FinHolAtlas e X) {U : Set X} (hU : IsOpen U) {f : X → ℝ}
     (hf : A.SmoothOn U f) {p : X} (hp : p ∈ U) : ContinuousAt f p := by
   obtain ⟨j, hj⟩ := A.cover p
@@ -37,6 +46,35 @@ theorem continuousAt_of_smoothOn (A : FinHolAtlas e X) {U : Set X} (hU : IsOpen 
   exact (hf j).continuousOn.continuousAt
     (((A.chart j).isOpen_inter_preimage_symm hU).mem_nhds hmem)
 
+/- English proof (translation)
+Introduce `e X _ A L s hL hs x φ S μ v hφ hball hsrc hμ hv hv0 hsv`. Establish `glue : ∀ y ∈ φ.target, ‖s x (φ.symm y)‖ * Real.exp (-L.φ x (φ.symm y)) = ‖s (φ.symm y) (φ.symm y)‖ * Real.exp (-L.φ (φ.symm y) (φ.symm y))` using `fun y hy => hs.2 x (φ.symm y) (φ.symm y) ⟨hsrc (φ.map_target hy), L.mem_U _⟩`. Establish `hform : ∀ y ∈ φ.target, s x (φ.symm y) = v (φ.symm y) * ∏ i ∈ S, y i ^ μ i`. Introduce `y hy`. Rewrite using `[hsv _ (φ.map_target hy)]`.
+
+Simplify using `only [φ.right_inv hy]`. Establish `hzero : ∀ y ∈ φ.target, (φ.symm y ∈ bdry s ↔ ∃ i ∈ S, y i = 0)`. Introduce `y hy`. Establish `h1 : s (φ.symm y) (φ.symm y) = 0 ↔ s x (φ.symm y) = 0`. Establish `hg` using `glue y hy`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite `hg` using `[h0]`. Simplify `hg` using `[Real.exp_ne_zero]`. Introduce `h0`.
+
+Rewrite `hg` using `[h0, norm_zero, zero_mul]`. Break down `mul_eq_zero.1 hg.symm with h | h` into its components or cases. Conclude with `norm_eq_zero.1 h`. Conclude with `absurd h (Real.exp_ne_zero _)`. Express the relevant statement in the definitionally equal form `s (φ.symm y) (φ.symm y) = 0 ↔ _`.
+
+Rewrite using `[h1, hform y hy, mul_eq_zero, Finset.prod_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | ⟨i, hi, h⟩)`. Conclude with `absurd h (hv0 _ (φ.map_target hy))`. Conclude with `⟨i, hi, (pow_eq_zero_iff (Nat.one_le_iff_ne_zero.1 (hμ i hi))).1 h⟩`.
+
+Introduce and unpack `⟨i, hi, h⟩`. Use `Or.inr ⟨i, hi, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `zero_pow (Nat.one_le_iff_ne_zero.1 (hμ i hi))`. Use `⟨hzero, ?_⟩` and prove the remaining obligations.
+
+Establish `hcont : ContinuousOn (fun y => -2 * Real.log ‖v (φ.symm y)‖ + 2 * L.φ x (φ.symm y)) φ.target`. Introduce `y hy`. Establish `hp` using `φ.map_target hy`. Establish `cs : ContinuousAt φ.symm y` using `φ.continuousAt_symm hy`. Establish `c1 : ContinuousAt (fun y => v (φ.symm y)) y` using `ContinuousAt.comp (f := φ.symm) (continuousAt_of_holoOn A hv hp) cs`.
+
+Establish `c2 : ContinuousAt (fun y => L.φ x (φ.symm y)) y` using `ContinuousAt.comp (f := φ.symm) (continuousAt_of_smoothOn A (L.isOpen_U x) (hL.1 x) (hsrc hp)) cs`. Establish `c3 : ContinuousAt (fun y => Real.log ‖v (φ.symm y)‖) y` using `c1.norm.log (norm_ne_zero_iff.2 (hv0 _ hp))`. Conclude with `((continuousAt_const.mul c3).add (continuousAt_const.mul c2)).continuousWithinAt`. Take `⟨C, hC⟩` from `(isCompact_closedBall (0 : Fin e → ℂ) 2).exists_bound_of_continuousOn (hcont.mono hball)`. Use `⟨C + |(∑ i ∈ S, (μ i : ℝ)) * Real.log 4|, fun y hy hnb => ?_⟩` and prove the remaining obligations.
+
+Establish `hyt` using `hball hy`. Establish `hnz : ∀ i ∈ S, y i ≠ 0` using `fun i hi h0 => hnb ((hzero y hyt).2 ⟨i, hi, h0⟩)`. Establish `hs0 : s (φ.symm y) (φ.symm y) ≠ 0` using `hnb`. Establish `hvn : ‖v (φ.symm y)‖ ≠ 0` using `norm_ne_zero_iff.2 (hv0 _ (φ.map_target hyt))`. Establish `hlogS : Real.log (∏ i ∈ S, ‖y i‖ ^ μ i) = ∑ i ∈ S, (μ i : ℝ) * Real.log ‖y i‖`.
+
+Rewrite using `[Real.log_prod (fun i hi => pow_ne_zero _ (norm_ne_zero_iff.2 (hnz i hi)))]`. Conclude with `Finset.sum_congr rfl fun i _ => Real.log_pow _ _`. Establish `hlog : logNormSec L s (φ.symm y) = Real.log ‖v (φ.symm y)‖ + ∑ i ∈ S, (μ i : ℝ) * Real.log ‖y i‖ - L.φ x (φ.symm y)`. Unfold `logNormSec`. Rewrite using `[← glue y hyt, hform y hyt, norm_mul, norm_prod]`.
+
+Simplify using `only [norm_pow]`. Rewrite using `[Real.log_mul (mul_ne_zero hvn (Finset.prod_ne_zero_iff.2 fun i hi => pow_ne_zero _ (norm_ne_zero_iff.2 (hnz i hi)))) (Real.exp_ne_zero _), Real.log_mul hvn (Finset.prod_ne_zero_iff.2 fun i hi => pow_ne_zero _ (norm_ne_zero_iff.2 (hnz i hi))), hlogS, Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hloc : rLoc S μ y = Real.exp 1 + (∑ i ∈ S, (μ i : ℝ)) * Real.log 4 - 2 * ∑ i ∈ S, (μ i : ℝ) * Real.log ‖y i‖`. Unfold `rLoc`.
+
+Rewrite using `[Finset.sum_mul, Finset.mul_sum, add_sub_assoc, ← Finset.sum_sub_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hn : ‖y i‖ ≠ 0` using `norm_ne_zero_iff.2 (hnz i hi)`. Rewrite using `[Real.log_div (by norm_num) (pow_ne_zero _ hn), Real.log_pow]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hdiff : rW L s (φ.symm y) - rLoc S μ y = (-2 * Real.log ‖v (φ.symm y)‖ + 2 * L.φ x (φ.symm y)) - (∑ i ∈ S, (μ i : ℝ)) * Real.log 4`. Unfold `rW`. Rewrite using `[hlog, hloc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdiff]`. Establish `hb` using `hC y hy`. Rewrite `hb` using `[Real.norm_eq_abs]`. Conclude with `(abs_sub _ _).trans (add_le_add hb le_rfl)`.
+-/
 theorem zero_set_and_bound : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ), IsPotential A L → IsSection A L s → ∀ (x : X) (φ : OpenPartialHomeomorph X (Fin e → ℂ)) (S : Finset (Fin e)) (μ : Fin e → ℕ) (v : X → ℂ), IsCompatChart A φ → Metric.closedBall (0 : Fin e → ℂ) 2 ⊆ φ.target → φ.source ⊆ L.U x → (∀ i ∈ S, 1 ≤ μ i) → A.HoloOn φ.source v → (∀ y ∈ φ.source, v y ≠ 0) → (∀ y ∈ φ.source, s x y = v y * ∏ i ∈ S, φ y i ^ μ i) → (∀ y ∈ φ.target, (φ.symm y ∈ bdry s ↔ ∃ i ∈ S, y i = 0)) ∧ ∃ M : ℝ, ∀ y ∈ Metric.closedBall (0 : Fin e → ℂ) 2, φ.symm y ∉ bdry s → |rW L s (φ.symm y) - rLoc S μ y| ≤ M := by
   intro e X _ A L s hL hs x φ S μ v hφ hball hsrc hμ hv hv0 hsv
 

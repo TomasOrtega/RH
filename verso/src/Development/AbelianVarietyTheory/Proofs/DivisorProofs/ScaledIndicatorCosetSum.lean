@@ -11,14 +11,23 @@ namespace GlobalTheory.EvAdm.CosetSum
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finAdele_algebraMap_apply (x : F) (v : HeightOneSpectrum (𝓞 F)) :
     (algebraMap F (FiniteAdeleRing (𝓞 F) F) x) v = algebraMap F (v.adicCompletion F) x := rfl
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `iff_of_eq (congrArg (· ≤ 1) (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x))`.
+-/
 theorem algebraMap_mem_iff (v : HeightOneSpectrum (𝓞 F)) (x : F) :
     algebraMap F (v.adicCompletion F) x ∈ v.adicCompletionIntegers F ↔ v.valuation F x ≤ 1 := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers]
   exact iff_of_eq (congrArg (· ≤ 1) (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x))
 
+/- English proof (translation)
+Rewrite using `[algebraMap_mem_iff]`. Conclude with `v.valuation_le_one x`.
+-/
 theorem int_mem (v : HeightOneSpectrum (𝓞 F)) (x : 𝓞 F) :
     algebraMap F (v.adicCompletion F) (x : F) ∈ v.adicCompletionIntegers F := by
   rw [algebraMap_mem_iff]
@@ -26,6 +35,9 @@ theorem int_mem (v : HeightOneSpectrum (𝓞 F)) (x : 𝓞 F) :
 
 variable {κ : Type}
 
+/- English proof (translation)
+Rewrite using `[mem_scaledInt]`. Introduce `i v`. Rewrite using `[finAdele_algebraMap_apply, map_mul, ← mul_assoc, inv_mul_cancel₀ ((map_ne_zero (algebraMap F (v.adicCompletion F))).2 hb), one_mul]`. Conclude with `int_mem v (x i)`.
+-/
 theorem mul_int_mem {b : F} (hb : b ≠ 0) (x : κ → 𝓞 F) :
     (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (b * (x i : F))) ∈ scaledInt F κ b := by
   rw [mem_scaledInt]
@@ -34,6 +46,11 @@ theorem mul_int_mem {b : F} (hb : b ≠ 0) (x : κ → 𝓞 F) :
     inv_mul_cancel₀ ((map_ne_zero (algebraMap F (v.adicCompletion F))).2 hb), one_mul]
   exact int_mem v (x i)
 
+/- English proof (translation)
+Introduce `z hz`. Rewrite `hz`, the goal using `[mem_scaledInt]`. Introduce `i v`. Establish `hm' : algebraMap F (v.adicCompletion F) (m : F) ≠ 0` using `(map_ne_zero _).2 (by exact_mod_cast hm)`. Establish `e : (algebraMap F (v.adicCompletion F) a)⁻¹ * (z i) v = algebraMap F (v.adicCompletion F) (m : F) * ((algebraMap F (v.adicCompletion F) (a * m))⁻¹ * (z i) v)` using `by set A := algebraMap F (v.adicCompletion F) a set M := algebraMap F (v.adicCompletion F) (m : F)`.
+
+Rewrite using `[map_mul, mul_inv, ← mul_assoc, ← mul_assoc, mul_comm M A⁻¹, mul_assoc A⁻¹ M M⁻¹, mul_inv_cancel₀ hm', mul_one]`. Rewrite using `[e]`. Conclude with `mul_mem (int_mem v m) (hz i v)`.
+-/
 theorem scaledInt_mul_le {a : F} (ha : a ≠ 0) {m : 𝓞 F} (hm : m ≠ 0) :
     scaledInt F κ (a * m) ≤ scaledInt F κ a := by
   intro z hz
@@ -51,6 +68,11 @@ theorem scaledInt_mul_le {a : F} (ha : a ≠ 0) {m : 𝓞 F} (hm : m ≠ 0) :
   rw [e]
   exact mul_mem (int_mem v m) (hz i v)
 
+/- English proof (translation)
+Rewrite `h` using `[mem_scaledInt]`. Establish `hv : ∀ v : HeightOneSpectrum (𝓞 F), v.valuation F (ξ i / b) ≤ 1` using `fun v => by`. Rewrite using `[← algebraMap_mem_iff, div_eq_inv_mul, map_mul, map_inv₀]`. Conclude with `h i v`. Take `⟨x, hx⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one F (ξ i / b) hv`.
+
+Conclude with `⟨x, hx⟩`.
+-/
 theorem rat_mem {b : F} (hb : b ≠ 0) (ξ : κ → F)
     (h : (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) ∈ scaledInt F κ b) (i : κ) :
     ∃ x : 𝓞 F, (x : F) = ξ i / b := by
@@ -61,6 +83,47 @@ theorem rat_mem {b : F} (hb : b ≠ 0) (ξ : κ → F)
   obtain ⟨x, hx⟩ := HeightOneSpectrum.mem_integers_of_valuation_le_one F (ξ i / b) hv
   exact ⟨x, hx⟩
 
+/- English proof (translation)
+Introduce `F _ _ κ _ a ha m hm`. Use `set I : Ideal (𝓞 F) := Ideal.span {m} with hIdef`. Establish `hI : I ≠ ⊥`. Rewrite using `[hIdef, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hm`.
+
+Use `haveI : Finite (𝓞 F ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot I hI`. Use `haveI : Fintype (κ → 𝓞 F ⧸ I) := Fintype.ofFinite _`. Set `out : 𝓞 F ⧸ I → 𝓞 F` to `fun q => (Ideal.Quotient.mk_surjective q).choose`. Establish `hout : ∀ q, Ideal.Quotient.mk I (out q) = q` using `fun q => (Ideal.Quotient.mk_surjective q).choose_spec`. Set `rep : (κ → 𝓞 F ⧸ I) → (κ → F)` to `fun c i => a * ((out (c i) : 𝓞 F) : F)`.
+
+Set `ι : (κ → F) → (κ → FiniteAdeleRing (𝓞 F) F)` to `fun ξ i => algebraMap F _ (ξ i)`. Establish `hrep_inj : Function.Injective rep`. Introduce `c c' h`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun h i`.
+
+Simplify using `only [rep, mul_right_inj' ha] at h1`. Establish `h2 : out (c i) = out (c' i)` using `by exact_mod_cast h1`. Rewrite using `[← hout (c i), ← hout (c' i), h2]`. Establish `hrepS : ∀ c, ι (rep c) ∈ scaledInt F κ a` using `fun c => mul_int_mem ha (fun i => out (c i))`. Establish `hsub` using `scaledInt_mul_le (κ := κ) ha hm`.
+
+Establish `hm0 : (m : F) ≠ 0` using `by exact_mod_cast hm`. Establish `ham : a * (m : F) ≠ 0` using `mul_ne_zero ha hm0`. Establish `huniq : ∀ c c' (y : κ → FiniteAdeleRing (𝓞 F) F), y - ι (rep c) ∈ scaledInt F κ (a * m) → y - ι (rep c') ∈ scaledInt F κ (a * m) → c = c'`. Introduce `c c' y h h'`. Establish `hd : ι (fun i => rep c' i - rep c i) ∈ scaledInt F κ (a * m)`.
+
+Use `sub_mem h h'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `only [ι, map_sub, Pi.sub_apply]`. Normalize the expressions using the abelian group laws.
+
+Use function extensionality and compare the values at `i`. Take `⟨z, hz⟩` from `rat_mem ham _ hd i`. Establish `h3 : ((out (c' i) - out (c i) : 𝓞 F) : F) = ((z * m : 𝓞 F) : F)`. Establish `hz' : (z : F) * (a * m) = rep c' i - rep c i` using `by rw [hz, div_mul_cancel₀ _ ham]`. Simplify using `only [rep] at hz'`.
+
+Use `push_cast`. Apply `mul_left_cancel₀ ha` to reduce the goal to its premises. Take the linear combination `(-1 : F) * hz'`. Establish `h4 : out (c' i) - out (c i) ∈ I`. Rewrite using `[hIdef, Ideal.mem_span_singleton']`.
+
+Conclude with `⟨z, by exact_mod_cast h3.symm⟩`. Establish `h5` using `(Ideal.Quotient.eq).2 h4`. Rewrite `h5` using `[hout, hout]`. Conclude with `h5.symm`. Establish `hexist : ∀ y ∈ scaledInt F κ a, ∃ c, y - ι (rep c) ∈ scaledInt F κ (a * m)`.
+
+Introduce `y hy`. Establish `hd : DenseRange ι` using `DenseRange.piMap (fun _ => GroundTheory.Automorphic.AdelicGLn.denseRange_algebraMap_finiteAdeleRing F)`. Establish `hopen : IsOpen {z | y - z ∈ (scaledInt F κ (a * m) : Set (κ → FiniteAdeleRing (𝓞 F) F))}` using `(isOpen_scaledInt (a * m)).preimage (continuous_const.sub continuous_id)`. Take `⟨ξ, hξ⟩` from `hd.exists_mem_open hopen ⟨y, by simp [zero_mem]⟩`. Establish `hξ' : y - ι ξ ∈ scaledInt F κ (a * m)` using `hξ`.
+
+Establish `hξa : ι ξ ∈ scaledInt F κ a`. Use `sub_mem hy (hsub hξ')` as an intermediate fact. Simplify using `using this`. Use `choose x hx using fun i => rat_mem ha ξ hξa i`. Establish `ht : ∀ i, ∃ t : 𝓞 F, t * m = out (Ideal.Quotient.mk I (x i)) - x i` using `fun i => by`.
+
+Use `(Ideal.Quotient.eq).1 (hout (Ideal.Quotient.mk I (x i)))` as an intermediate fact. Conclude with `Ideal.mem_span_singleton'.1 this`. Use `choose t htm using ht`. Use `⟨fun i => Ideal.Quotient.mk I (x i), ?_⟩` and prove the remaining obligations. Establish `hF : ∀ i, rep (fun i => Ideal.Quotient.mk I (x i)) i = ξ i + a * m * (t i : F)` using `fun i => by`.
+
+Establish `e1 : ((t i * m : 𝓞 F) : F) = ((out (Ideal.Quotient.mk I (x i)) - x i : 𝓞 F) : F)` using `by rw [htm i]`. Move the coercions through the operations in `at e1`. Establish `e2 : ξ i = a * (x i : F)` using `by rw [hx i]; field_simp`. Simplify using `only [rep]`. Rewrite using `[e2]`.
+
+Take the linear combination `(-a) * e1`. Establish `hw : ι (fun i => a * m * (t i : F)) ∈ scaledInt F κ (a * m)` using `mul_int_mem ham t`. Establish `e : y - ι (rep (fun i => Ideal.Quotient.mk I (x i))) = (y - ι ξ) - ι (fun i => a * m * (t i : F))`. Use function extensionality and compare the values at `i`. Simplify using `only [ι, Pi.sub_apply]`.
+
+Rewrite using `[hF i, map_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem hξ' hw`. Use `⟨Finset.univ.image rep, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_image (fun c _ c' _ h => hrep_inj h)]`. Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply]`. Distinguish the cases in `hy : y ∈ scaledInt F κ a`. Take `⟨c0, hc0⟩` from `hexist y hy`.
+
+Rewrite using `[Set.indicator_of_mem (by exact hy), Finset.sum_eq_single c0]`. Rewrite using `[Set.indicator_of_mem (by exact hc0)]`. Introduce `c _ hc`. Rewrite using `[Set.indicator_of_notMem]`. Introduce `h`.
+
+Conclude with `hc (huniq c c0 y h hc0)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ c0) h`. Rewrite using `[Set.indicator_of_notMem (by exact hy)]`. Use `symm`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Rewrite using `[Set.indicator_of_notMem]`. Introduce `h`. Apply `hy` to reduce the goal to its premises.
+
+Rewrite using `[show y = (y - ι (rep c)) + ι (rep c) from (sub_add_cancel _ _).symm]`. Conclude with `add_mem (hsub h) (hrepS c)`.
+-/
 theorem indicator_scaledInt_eq_sum : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     ∀ m : 𝓞 F, m ≠ 0 →
     ∃ R : Finset (κ → F), (GlobalTheory.EvAdm.scaledInt F κ a : Set (κ → FiniteAdeleRing (𝓞 F) F)).indicator (fun _ => (1 : ℂ)) =

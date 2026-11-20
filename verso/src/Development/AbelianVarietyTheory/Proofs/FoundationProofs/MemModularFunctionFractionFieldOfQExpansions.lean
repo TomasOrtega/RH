@@ -14,6 +14,17 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FN
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε T a M hM _ hinv hexp`. Establish `hHs : ∀ τ : ℍ, (τ : ℂ) ∈ Hs` using `GlobalTheory.T.upperHalfPlane_germ_ringHom_and_restrict.2.2.2.2`. Establish `hmob : ∀ (γ : SL(2, ℤ)) (τ : ℍ), mob (ofSL γ) τ = ((γ • τ : ℍ) : ℂ)` using `GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties.2.2.2.1`. Use `set f : ℍ → ℂ := fun τ => a τ with hf`. Establish `hinvf : ∀ γ ∈ CongruenceSubgroup.Gamma M, ∀ τ : ℍ, f (γ • τ) = f τ`.
+
+Introduce `γ hγ τ`. Simplify using `only [hf]`. Rewrite using `[← hmob γ τ]`. Conclude with `hinv γ hγ τ (hHs τ)`. Establish `hw : ∀ γ : SL(2, ℤ), ∃ w : ℕ, QAll (· ∈ ε.range) M fun τ => DD τ ^ w * f (γ • τ)`.
+
+Introduce `γ`. Take `⟨c, n0, hc0, hs⟩` from `hexp γ`. Use `(GlobalTheory.T.exists_deltaPow_qExpansion_iff_laurentSeries ε.range M (fun τ => f (γ • τ)) hM).2 ⟨fun n => ε (c n), n0, fun n => ⟨c n, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `n hn`. Simplify using `[hc0 n hn]`.
+
+Introduce `τ`. Use `hs τ (hHs τ)` as an intermediate fact. Simplify using `only [hf]`. Rewrite using `[← hmob γ τ]`. Conclude with `this`.
+
+Take `⟨w, hLv⟩` from `GlobalTheory.T.exists_Lv_of_invariant_Gamma_of_forall_QAll ε.range M f hM hinvf hw`. Establish `hmem : f ∈ ring ε.range` using `mem_ring_of_inR ⟨M, w, hM, hLv⟩`. Use `⟨T.io ⟨f, hmem⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[T.an_io]`. Conclude with `GlobalTheory.T.upperHalfPlane_germ_ringHom_and_restrict.2.2.2.1 a`.
+-/
 theorem exists_of_qexp : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Frac Ω ε) (a : ℂ → ℂ) (M : ℕ), 0 < M → DifferentiableOn ℂ a Hs → (∀ γ ∈ CongruenceSubgroup.Gamma M, ∀ z ∈ Hs, a (mob (ofSL γ) z) = a z) → (∀ γ : SL(2, ℤ), ∃ (c : ℤ → Ω) (n0 : ℤ), (∀ n < n0, c n = 0) ∧ ∀ z ∈ Hs, HasSum (fun n : ℤ => ε (c n) * Complex.exp (2 * Real.pi * Complex.I * (n : ℂ) * z / M)) (a (mob (ofSL γ) z))) → ∃ f : T.K, T.an f = (a : Mero) := by
   intro Ω _ _ _ ε T a M hM _ hinv hexp
   have hHs : ∀ τ : ℍ, (τ : ℂ) ∈ Hs := GlobalTheory.T.upperHalfPlane_germ_ringHom_and_restrict.2.2.2.2

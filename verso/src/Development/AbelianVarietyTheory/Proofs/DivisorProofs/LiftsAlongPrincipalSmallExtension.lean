@@ -14,6 +14,15 @@ noncomputable section
 
 namespace GlobalTheory.DualOpen
 
+/- English proof (translation)
+Introduce `R _ A _ U M hM hSL B _ _ t ht hmt T N hN y u₀ h₀`. Establish `calc5` using `((GlobalTheory.FamCalc.famCalc (Sp R) A).2.2.2.2)`. Establish `hkill : ∀ a ∈ IsLocalRing.maximalIdeal B, a * t = 0` using `fun a ha ↦ by`. Establish `: a * t ∈ IsLocalRing.maximalIdeal B * Ideal.span {t}` using `Ideal.mul_mem_mul ha (Ideal.mem_span_singleton_self t)`. Rewrite `this` using `[hmt, Ideal.mem_bot]`. Then use the resulting hypothesis.
+
+Set `Y : Over (Sp R)` to `Over.mk (y ≫ T.hom)`. Set `yy : Y ⟶ T` to `Over.homMk y rfl`. Establish `hN' : Fam A (ev N (fst A Y) (snd A Y ≫ yy))` using `(GlobalTheory.FamCalc.famCalc (Sp R) A).1 T Y N yy hN`. Establish `key : ptMap (y ≫ T.hom) (Ideal.Quotient.mk (Ideal.span {t})) ≫ yy = (Over.homMk (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (Ideal.span {t}))) ≫ y) (by simp) : Over.mk (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (Ideal.span {t}))) ≫ y ≫ T.hom) ⟶ T)` using `by ext1; rfl`. Establish `h₁ : Same A (ev N (fst A Y) (snd A Y ≫ yy)) M (ptMap (y ≫ T.hom) (Ideal.Quotient.mk (Ideal.span {t}))) u₀`.
+
+Rewrite using `[calc5 T U Y _ N M yy _ u₀ hN.isLB hM.isLB, key]`. Conclude with `h₀`. Take `⟨u, hu⟩` from `hSL B t ht hkill (y ≫ T.hom) _ hN' u₀ h₁`. Use `⟨u, ?_⟩` and prove the remaining obligations. Use `(calc5 T U Y Y N M yy (𝟙 _) u hN.isLB hM.isLB).1 hu` as an intermediate fact.
+
+Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem liftsAlong_span_singleton : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (U : Over (Sp R)) (M : LB (A ⊗ U).left), Fam A M → SmallLift A M → ∀ (B : Type) [CommRing B] [IsLocalRing B] (t : B), t ∈ IsLocalRing.maximalIdeal B → IsLocalRing.maximalIdeal B * Ideal.span {t} = ⊥ → LiftsAlong A M B (Ideal.span {t}) := by
   intro R _ A _ U M hM hSL B _ _ t ht hmt T N hN y u₀ h₀
   have calc5 := ((GlobalTheory.FamCalc.famCalc (Sp R) A).2.2.2.2)

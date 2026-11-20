@@ -17,6 +17,59 @@ open scoped NNReal
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `E _ _ _ r Ψ G hG lam _`. Take `⟨hH, hD⟩` from `tangentHaar_realSU_of_det Ψ G hG lam`. Generalize the expression as in `tangentHaar (realSU Ψ G) (lam.map Subtype.val) = μ at hH hD ⊢`. Set `ι : realLie Ψ G →ₗᵢ[ℝ] (Ψ → Matrix (Fin r) (Fin r) ℂ)` to `⟨(incl Ψ G).toLinearMap, fun X => norm_incl Ψ G X⟩`. Set `L₀ : (Ψ → Matrix (Fin r) (Fin r) ℂ) →ₗ[ℝ] ((Ψ → Matrix (Fin r) (Fin r) ℂ) →L[ℝ] (Ψ → Matrix (Fin r) (Fin r) ℂ))` to `LinearMap.toContinuousLinearMap.toLinearMap ∘ₗ LinearMap.mul ℝ _`.
+
+Establish `hL₀ : Continuous L₀` using `L₀.continuous_of_finiteDimensional`. Establish `he : Continuous (chartExp Ψ G hG)` using `continuous_chartExp Ψ G hG`. Establish `he0 : chartExp Ψ G hG 0 = 1` using `chartExp_zero Ψ G hG`. Establish `hd : HasStrictFDerivAt (fun x => matR Ψ G (chartExp Ψ G hG x)) ι.toContinuousLinearMap 0` using `hasStrictFDerivAt_chart Ψ G hG`. Establish `hL : ContinuousAt (fun g => L₀ (matR Ψ G g)) 1` using `(hL₀.comp (continuous_matR Ψ G)).continuousAt`.
+
+Establish `hL1 : (fun g => L₀ (matR Ψ G g)) 1 = ContinuousLinearMap.id ℝ _` using `by ext1 A; exact one_mul A`. Establish `hm : ∀ g h, matR Ψ G (g * h) = (fun g => L₀ (matR Ψ G g)) g (matR Ψ G h)` using `fun g h => rfl`. Establish `hn : ∀ ρ : ℝ, 0 < ρ → chartExp Ψ G hG '' ball 0 ρ ∈ 𝓝 (1 : realSU Ψ G)` using `fun ε hε => (tendsto_iff_comap.1 ((continuous_matR Ψ G).tendsto 1)) (eventually_mem_image Ψ G hG (ball_mem_nhds 0 hε))`. Use `haveI : ProperSpace (realLie Ψ G) := FiniteDimensional.proper_real _`. Choose the witnesses or unpack the hypotheses as in `⟨δ₀, hδ₀, hinj⟩ : ∃ δ₀ : ℝ, 0 < δ₀ ∧ InjOn (chartExp Ψ G hG) (closedBall 0 δ₀) := by`.
+
+Take `⟨s, hs, ha⟩` from `hd.approximates_deriv_on_nhds (c := 1 / 2) (Or.inr (by norm_num))`. Take `⟨δ, hδ, hsub⟩` from `nhds_basis_closedBall.mem_iff.1 hs`. Use `⟨δ, hδ, fun x hx y hy hxy => ?_⟩` and prove the remaining obligations. Establish `h1` using `ha x (hsub hx) y (hsub hy)`. Simplify using `only [hxy, sub_self, zero_sub, norm_neg, LinearIsometry.coe_toContinuousLinearMap, LinearIsometry.norm_map] at h1`.
+
+Establish `h2 : ‖x - y‖ ≤ 0`. Establish `h3 : ((1 / 2 : ℝ≥0) : ℝ) = 1 / 2` using `by norm_num`. Rewrite `h1` using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 h2)`.
+
+Establish `hK : MeasurableSet (closedBall (0 : realLie Ψ G) δ₀)` using `measurableSet_closedBall`. Establish `hemb` using `ContinuousOn.measurableEmbedding hK he.continuousOn hinj`. Use `set ν : Measure (realLie Ψ G) := (μ.comap ((closedBall (0 : realLie Ψ G) δ₀).domRestrict (chartExp Ψ G hG))).map Subtype.val with hν`. Establish `hνS : ∀ S : Set (realLie Ψ G), MeasurableSet S → ν S = μ (chartExp Ψ G hG '' (S ∩ closedBall 0 δ₀))`. Introduce `S hS`.
+
+Rewrite using `[hν, Measure.map_apply measurable_subtype_coe hS, hemb.comap_apply]`. Use `congr 1`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Conclude with `⟨x.1, ⟨hx, x.2⟩, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨x, hx.2⟩, hx.1, rfl⟩`. Establish `hνsub : ∀ S : Set (realLie Ψ G), MeasurableSet S → S ⊆ closedBall 0 δ₀ → ν S = μ (chartExp Ψ G hG '' S)` using `fun S hS h => by rw [hνS S hS, inter_eq_left.2 h]`. Use `haveI : IsFiniteMeasure ν := by`.
+
+Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[hνS _ MeasurableSet.univ, univ_inter]`. Conclude with `((isCompact_closedBall _ _).image he).measure_lt_top`. Establish `hball : ∀ (X : realLie Ψ G) (ρ : ℝ), ‖X‖ + ρ ≤ δ₀ → ball X ρ ⊆ closedBall 0 δ₀`. Introduce `X ρ h y hy`.
+
+Rewrite `hy` using `[mem_ball_iff_norm]`. Rewrite using `[mem_closedBall_zero_iff]`. Use `norm_le_norm_add_norm_sub' y X` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : ∀ ρ > 0, 0 < ν (closedBall (0 : realLie Ψ G) ρ)`.
+
+Introduce `ρ hρ`. Establish `h1 : ν (ball 0 (min ρ δ₀)) ≠ 0`. Rewrite using `[hνsub _ measurableSet_ball (hball 0 _ (by simp))]`. Conclude with `(μ.measure_pos_of_mem_nhds (hn _ (lt_min hρ hδ₀))).ne'`. Conclude with `pos_iff_ne_zero.2 fun h => h1 (measure_mono_null ((ball_subset_closedBall).trans (closedBall_subset_closedBall (min_le_left _ _))) h)`.
+
+Establish `himg : ∀ (g : realSU Ψ G) (S : Set (realSU Ψ G)), μ ((fun h => g * h) '' S) = μ S` using `fun g S => by`. Rewrite using `[image_mul_left, measure_preimage_mul]`. Establish `hq : ∀ ε : ℝ, 0 < ε → ε < 1 → ∃ δ > 0, Formalism.BasicNotions.Examples₂.CD.QInv ν ε δ`. Introduce `ε hε0 hε1`. Take `⟨δ, hδ, H⟩` from `GlobalTheory.translate_chart_ball_distortion _ _ _ (chartExp Ψ G hG) (matR Ψ G) ι (fun g => L₀ (matR Ψ G g)) he he0 hd hL hL1 hm hn (1 + ε / 3) (by linarith)`.
+
+Use `⟨min (δ / 2) (δ₀ / 4), by positivity, fun X hX ρ hρ0 hρ => ?_⟩` and prove the remaining obligations. Establish `hXδ : ‖X‖ < δ / 2` using `lt_of_lt_of_le hX (min_le_left _ _)`. Establish `hX4 : ‖X‖ < δ₀ / 4` using `lt_of_lt_of_le hX (min_le_right _ _)`. Establish `hρδ : ρ < δ / 2` using `lt_of_lt_of_le hρ (min_le_left _ _)`. Establish `hρ4 : ρ < δ₀ / 4` using `lt_of_lt_of_le hρ (min_le_right _ _)`.
+
+Establish `hXb : X ∈ ball (0 : realLie Ψ G) δ` using `mem_ball_zero_iff.2 (by linarith)`. Establish `hκ0 : 0 < 1 + ε / 3` using `by linarith`. Establish `hκ2 : 1 + ε / 3 < 2` using `by linarith`. Establish `hcl0 : closedBall (0 : realLie Ψ G) ρ ⊆ closedBall 0 δ₀` using `closedBall_subset_closedBall (by linarith)`. Prove the components needed by the constructor for the conclusion.
+
+Establish `hr1 : 0 < ρ / (1 + ε / 3)` using `div_pos hρ0 hκ0`. Establish `hr2 : ρ / (1 + ε / 3) < ρ` using `div_lt_self hρ0 (by linarith)`. Establish `hr3 : (1 - ε) * ρ < ρ / (1 + ε / 3)`. Rewrite using `[lt_div_iff₀ hκ0]`. Use polynomial arithmetic with `[mul_pos hρ0 hε0, mul_pos (mul_pos hρ0 hε0) hε0]`.
+
+Establish `H2` using `(H X hXb (ρ / (1 + ε / 3)) ⟨hr1, by linarith⟩).2`. Rewrite `H2` using `[mul_div_cancel₀ _ hκ0.ne']`. Combine the equalities or inequalities in the displayed calculation. Establish `hr1 : 0 < (1 + ε / 3) * ρ` using `by positivity`. Establish `hr2 : (1 + ε / 3) * ρ < δ` using `by nlinarith`.
+
+Establish `H1` using `(H X hXb ((1 + ε / 3) * ρ) ⟨hr1, hr2⟩).1`. Establish `hsq : (1 + ε / 3) * ((1 + ε / 3) * ρ) ≤ (1 + ε) * ρ`. Use polynomial arithmetic with `[mul_pos (mul_pos hρ0 hε0) (by linarith : (0:ℝ) < 3 - ε)]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨c, hc0, hct, hup, hdown⟩` from `Formalism.BasicNotions.Examples₂.CD.exists_density lam ν hq hpos`.
+
+Establish `hνt : ∀ ε : ℝ, 0 < ε → (lam.map Subtype.val) (tanBall Ψ r ε) = lam (ball 0 ε)`. Introduce `ε hε`. Rewrite using `[Measure.map_apply measurable_subtype_coe, preimage_tanBall Ψ G hε]`. Rewrite using `[show tanBall Ψ r ε = ball (0 : Ψ → Fin r → Fin r → ℂ) ε by`. Use extensionality with `X`.
+
+Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff hε]`. Simplify using `only [pi_norm_lt_iff hε]`. Use the proof step `rfl]`. Conclude with `measurableSet_ball`. Establish `hc : ((2⁻¹ : ℝ≥0) : ℝ≥0∞) < c`.
+
+Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_lt]`. Establish `h34 : c < ((3 / 4 : ℝ≥0) : ℝ≥0∞)` using `lt_of_le_of_lt hcon (by rw [ENNReal.coe_lt_coe]; norm_num)`. Take `⟨δ₁, hδ₁, H1⟩` from `hup (3 / 4) h34`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht1, htn⟩ : ∃ t : ℝ, 1 < t ∧ t ^ Module.finrank ℝ (realLie Ψ G) < 4 / 3 := by`.
+
+Establish `h` using `((continuous_pow (Module.finrank ℝ (realLie Ψ G))).tendsto (1 : ℝ)).eventually (gt_mem_nhds (show (1 : ℝ) ^ Module.finrank ℝ (realLie Ψ G) < 4 / 3 by norm_num))`. Establish `h' : ∀ᶠ x in 𝓝[>] (1 : ℝ), x ^ Module.finrank ℝ (realLie Ψ G) < 4 / 3` using `h.filter_mono nhdsWithin_le_nhds`. Take `⟨t, h1, h2⟩` from `(h'.and self_mem_nhdsWithin).exists`. Conclude with `⟨t, h2, h1⟩`. Establish `ht0 : 0 < t` using `by linarith`.
+
+Establish `hev : ∀ᶠ ε in 𝓝[>] (0 : ℝ), μ (grpBall (realSU Ψ G) ε) / (lam.map Subtype.val) (tanBall Ψ r ε) ≤ ((3 / 4 : ℝ≥0) : ℝ≥0∞) * ENNReal.ofReal (t ^ Module.finrank ℝ (realLie Ψ G))` using `by filter_upwards [chart_squeeze Ψ G hG ht1, Ioo_mem_nhdsGT (show 0 < min δ₁ δ₀ / t by positivity)] with ε hsq hε`. Take `⟨hε0, hε1⟩` from `hε`. Establish `hte : t * ε < min δ₁ δ₀` using `by rw [mul_comm]; exact (lt_div_iff₀ ht0).1 hε1`. Rewrite `hte` using `[lt_min_iff]`. Rewrite using `[hνt ε hε0]`.
+
+Use `ENNReal.div_le_of_le_mul ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `le_of_tendsto hD hev`. Establish `h2 : ((3 / 4 : ℝ≥0) : ℝ≥0∞) * ENNReal.ofReal (t ^ Module.finrank ℝ (realLie Ψ G)) < 1`. Rewrite using `[← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_lt_one]`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd h1 (not_le.2 h2)`. Take `⟨δ₂, hδ₂, H2⟩` from `hdown 2⁻¹ hc`. Use `⟨min δ₂ δ₀, lt_min hδ₂ hδ₀, fun s hs hsub => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `H2 s (hsub.trans (ball_subset_ball (min_le_left _ _)))`. Establish `h2 : ν s = μ (chartExp Ψ G hG '' s)` using `hνsub s hs (hsub.trans ((ball_subset_ball (min_le_right _ _)).trans ball_subset_closedBall))`. Rewrite using `[← h2]`. Establish `h22 : (2 : ℝ≥0∞) * ((2⁻¹ : ℝ≥0) : ℝ≥0∞) = 1`. Rewrite using `[ENNReal.coe_inv two_ne_zero]`.
+
+Conclude with `ENNReal.mul_inv_cancel two_ne_zero ENNReal.ofNat_ne_top`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lam_le_two_mul_tangentHaar : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0) (lam : Measure (realLie Ψ G)) [lam.IsAddHaarMeasure], ∃ δ : ℝ, 0 < δ ∧ ∀ s : Set (realLie Ψ G), MeasurableSet s → s ⊆ Metric.ball 0 δ → lam s ≤ 2 * tangentHaar (realSU Ψ G) (lam.map Subtype.val) (GlobalTheory.SUVol.DensOne.chartExp Ψ G hG '' s) := by
   intro E _ _ _ r Ψ G hG lam _
   obtain ⟨hH, hD⟩ := tangentHaar_realSU_of_det Ψ G hG lam

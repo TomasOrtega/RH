@@ -6,6 +6,21 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `ha0 : a ≠ 0`. Introduce `h`.
+
+Rewrite `ha` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb0 : b ≠ 0`. Introduce `h`. Rewrite `hb` using `[h, norm_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hδ : 0 ≤ δ` using `le_trans (norm_nonneg _) hab`. Establish `key : 1 / a ^ (n + 1) - 1 / b ^ (n + 1) = (1 / a) * (1 / a ^ n - 1 / b ^ n) + (1 / b ^ n) * ((b - a) / (a * b))`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[key]`. Establish `h1 : ‖1 / a‖ ≤ 1 / η`. Rewrite using `[norm_div, norm_one]`. Conclude with `one_div_le_one_div_of_le hη ha`. Establish `h2 : ‖1 / b ^ n‖ ≤ 1 / η ^ n`.
+
+Rewrite using `[norm_div, norm_one, norm_pow]`. Conclude with `one_div_le_one_div_of_le (pow_pos hη n) (pow_le_pow_left₀ hη.le hb n)`. Establish `h3 : ‖(b - a) / (a * b)‖ ≤ δ / (η * η)`. Rewrite using `[norm_div, norm_mul]`. Conclude with `div_le_div₀ hδ hab (mul_pos hη hη) (mul_le_mul ha hb hη.le (norm_nonneg _))`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul]`. Use `_ ≤ 1 / η * (n * δ / η ^ (n + 1)) + 1 / η ^ n * (δ / (η * η)) := by gcongr`. Use `_ = _ := by`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem norm_inv_pow_sub_inv_pow_le (a b : ℂ) (η δ : ℝ) (hη : 0 < η) (ha : η ≤ ‖a‖) (hb : η ≤ ‖b‖)
     (hab : ‖b - a‖ ≤ δ) (n : ℕ) : ‖1 / a ^ n - 1 / b ^ n‖ ≤ n * δ / η ^ (n + 1) := by
   induction n with
@@ -43,6 +58,27 @@ private theorem norm_inv_pow_sub_inv_pow_le (a b : ℂ) (η δ : ℝ) (hη : 0 <
         field_simp
         ring
 
+/- English proof (translation)
+Establish `hre1 : (s - 1).re = η`. Rewrite using `[hs]`. Simplify using the standard rewrite rules. Establish `hre2 : (s - (β₁ : ℂ)).re = 1 + η - β₁`. Rewrite using `[hs]`.
+
+Simplify using the standard rewrite rules. Establish `him : (s - 1).im = γ`. Rewrite using `[hs]`. Simplify using the standard rewrite rules. Establish `hsa : η ≤ ‖s - 1‖`.
+
+Use `Complex.abs_re_le_norm (s - 1)` as an intermediate fact. Rewrite `this` using `[hre1, abs_of_pos hη]`. Conclude with `this`. Establish `hsb : η ≤ ‖s - (β₁ : ℂ)‖`. Use `Complex.re_le_norm (s - (β₁ : ℂ))` as an intermediate fact.
+
+Rewrite `this` using `[hre2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : ‖(s - (β₁ : ℂ)) - (s - 1)‖ ≤ 1 - β₁`. Establish `e : (s - (β₁ : ℂ)) - (s - 1) = ((1 - β₁ : ℝ) : ℂ)`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith)]`. Establish `h8 : (0 : ℝ) ≤ 8 ^ (k + 1)` using `by positivity`. Establish `hpos : 0 ≤ ((k : ℝ) + 1) * (1 - β₁) / η ^ (k + 2)`. Apply `div_nonneg` to reduce the goal to its premises.
+
+Apply `mul_nonneg` to reduce the goal to its premises. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Check the signs of the components of the expression. Use `split_ifs with h`.
+
+Use `norm_inv_pow_sub_inv_pow_le (s - 1) (s - β₁) η (1 - β₁) hη hsa hsb hd (k + 1)` as an intermediate fact. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hγ : 1 / 8 ≤ |γ|` using `hc h`. Establish `hs1 : 1 / 8 ≤ ‖s - 1‖`.
+
+Use `Complex.abs_im_le_norm (s - 1)` as an intermediate fact. Rewrite `this` using `[him]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[sub_zero, norm_div, norm_one, norm_pow]`. Establish `hb : 1 / ‖s - 1‖ ^ (k + 1) ≤ 8 ^ (k + 1)`.
+
+Rewrite using `[div_le_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_pow]`. Evaluate the numerical expressions. Use `_ ≤ 8 ^ (k + 1) * ‖s - 1‖ ^ (k + 1) := by gcongr`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem dhfShiftPoleN (η γ β₁ : ℝ) (hη : 0 < η) (hβ1 : β₁ < 1) (k : ℕ) (c : Prop) [Decidable c]
     (hc : ¬ c → 1 / 8 ≤ |γ|) (s : ℂ) (hs : s = ((1 + η : ℝ) : ℂ) + γ * I) :
     ‖1 / (s - 1) ^ (k + 1) - (if c then 1 / (s - β₁) ^ (k + 1) else 0)‖ ≤
@@ -94,6 +130,11 @@ theorem dhfShiftPoleN (η γ β₁ : ℝ) (hη : 0 < η) (hβ1 : β₁ < 1) (k :
         _ ≤ 8 ^ (k + 1) * ‖s - 1‖ ^ (k + 1) := by gcongr
     linarith
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Apply `h` to reduce the goal to its premises. Establish `hg : γ ^ 2 < 1 / 64`. Use `abs_lt.mp hlt` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[← sq_le_sq₀ (norm_nonneg _) (by norm_num), Complex.sq_norm, Complex.normSq_apply]`. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem one_eighth_le_abs_of_not_mem_pole_disc (γ β₁ : ℝ) (hβ1 : 19 / 20 ≤ β₁) (hβ2 : β₁ < 1)
     (h : ¬ ‖(β₁ : ℂ) - ((26 / 25 : ℂ) + γ * I)‖ ≤ 4 / 25) : 1 / 8 ≤ |γ| := by
   by_contra hlt
@@ -106,6 +147,19 @@ private theorem one_eighth_le_abs_of_not_mem_pole_disc (γ β₁ : ℝ) (hβ1 : 
   simp
   nlinarith
 
+/- English proof (translation)
+Establish `hpos : 0 ≤ ((k : ℝ) + 1) * (1 - β₁) / η ^ (k + 2) + 8 ^ (k + 1)`. Establish `: 0 ≤ ((k : ℝ) + 1) * (1 - β₁) / η ^ (k + 2)`. Apply `div_nonneg` to reduce the goal to its premises. Apply `mul_nonneg` to reduce the goal to its premises. Check the signs of the components of the expression.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Check the signs of the components of the expression. Conclude with `add_nonneg this (by positivity)`. Distinguish the cases in `h1 : χ = 1`. Establish `h2 : ¬ (χ * χ₁ = 1)`.
+
+Rewrite using `[h1, one_mul]`. Conclude with `hχ₁1`. Establish `h3n : ¬ c3` using `fun h => hχ₁1 ((h3' h).symm.trans h1)`. Simplify using `only [if_pos h1, if_neg h2, if_neg h3n, add_zero, sub_zero]`. Conclude with `dhfShiftPoleN η γ β₁ hη hβ2 k c4 (fun h => one_eighth_le_abs_of_not_mem_pole_disc γ β₁ hβ1 hβ2 (h4 h1 h)) s hs`.
+
+Distinguish the cases in `h2 : χ * χ₁ = 1`. Establish `hχ : χ = χ₁`. Establish `e : χ = χ * χ₁ * χ₁` using `by rw [mul_assoc, ← sq, hχ₁2, mul_one]`. Rewrite using `[e, h2, one_mul]`. Establish `h4n : ¬ c4` using `fun h => h1 (h4' h)`.
+
+Simplify using `only [if_neg h1, if_pos h2, if_neg h4n, zero_add, sub_zero]`. Conclude with `dhfShiftPoleN η γ β₁ hη hβ2 k c3 (fun h => one_eighth_le_abs_of_not_mem_pole_disc γ β₁ hβ1 hβ2 (h3 hχ h)) s hs`. Establish `h3n : ¬ c3` using `fun h => h2 (by rw [h3' h, ← sq, hχ₁2])`. Establish `h4n : ¬ c4` using `fun h => h1 (h4' h)`. Simplify using `only [if_neg h1, if_neg h2, if_neg h3n, if_neg h4n, add_zero, sub_zero, norm_zero]`.
+
+Conclude with `hpos`.
+-/
 theorem dhfPoles {M : ℕ} (χ₁ χ : DirichletCharacter ℂ M) (hχ₁2 : χ₁ ^ 2 = 1) (hχ₁1 : χ₁ ≠ 1)
     (η γ β₁ : ℝ) (hη : 0 < η) (hβ1 : 19 / 20 ≤ β₁) (hβ2 : β₁ < 1) (k : ℕ) (s : ℂ)
     (hs : s = ((1 + η : ℝ) : ℂ) + γ * I) [Decidable (χ = 1)] [Decidable (χ * χ₁ = 1)]
@@ -143,6 +197,11 @@ theorem dhfPoles {M : ℕ} (χ₁ χ : DirichletCharacter ℂ M) (hχ₁2 : χ�
       simp only [if_neg h1, if_neg h2, if_neg h3n, if_neg h4n, add_zero, sub_zero, norm_zero]
       exact hpos
 
+/- English proof (translation)
+Proceed by induction on `S using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a S ih`. Rewrite using `[Multiset.map_cons, Multiset.sum_cons, Complex.add_re]`. Establish `ha` using `h a (Multiset.mem_cons_self a S)`.
+
+Establish `h1 : 0 ≤ (1 / a).re`. Rewrite using `[one_div, Complex.inv_re]`. Conclude with `div_nonneg ha.le (Complex.normSq_nonneg a)`. Conclude with `add_nonneg h1 (ih fun x hx => h x (Multiset.mem_cons_of_mem hx))`.
+-/
 theorem dhfReNonneg (S : Multiset ℂ) (h : ∀ x ∈ S, 0 < x.re) :
     0 ≤ ((S.map (fun x : ℂ => 1 / x)).sum).re := by
   induction S using Multiset.induction_on with
@@ -155,6 +214,13 @@ theorem dhfReNonneg (S : Multiset ℂ) (h : ∀ x ∈ S, 0 < x.re) :
       exact div_nonneg ha.le (Complex.normSq_nonneg a)
     exact add_nonneg h1 (ih fun x hx => h x (Multiset.mem_cons_of_mem hx))
 
+/- English proof (translation)
+Establish `key : ((dhFam Z m s).map (fun x : ℂ => 1 / x ^ (k + 1))).sum = ∑ ρ ∈ Z, (m ρ : ℂ) / (s - ρ) ^ (k + 1)`. Unfold `dhFam`. Rewrite using `[Multiset.map_bind, Multiset.sum_bind, Finset.sum_eq_multiset_sum]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises.
+
+Introduce `ρ _`. Rewrite using `[Multiset.map_replicate, Multiset.sum_replicate, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `split_ifs with h`. Rewrite using `[← key, ← Multiset.sum_map_erase (hb h)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, sub_zero]`.
+-/
 theorem dhfEraseSum (Z : Finset ℂ) (m : ℂ → ℕ) (s b : ℂ) (c : Prop) [Decidable c]
     (hb : c → b ∈ dhFam Z m s) (k : ℕ) :
     ((if c then (dhFam Z m s).erase b else dhFam Z m s).map (fun x : ℂ => 1 / x ^ (k + 1))).sum =
@@ -173,6 +239,13 @@ theorem dhfEraseSum (Z : Finset ℂ) (m : ℂ → ℕ) (s b : ℂ) (c : Prop) [D
     ring
   · rw [key, sub_zero]
 
+/- English proof (translation)
+Establish `hnf : ‖(-1 : ℂ) ^ k / (k.factorial : ℂ)‖ = 1 / (k.factorial : ℝ)`. Rewrite using `[norm_div, norm_pow, norm_neg, norm_one, one_pow, Complex.norm_natCast]`. Establish `hD : ‖D3 + D4‖ ≤ Dom / (k.factorial : ℝ)`. Rewrite using `[hD3, hD4, ← mul_add, norm_mul, hnf, div_mul_eq_mul_div, one_mul]`. Use `gcongr`.
+
+Establish `e : (S3 - I3) + (S4 - I4) = ((D3 - P3 + S3) + (D4 - P4 + S4) - (D3 + D4)) + (P3 + P4 - I3 - I4)` using `by ring`. Rewrite using `[e]`. Establish `n1` using `norm_add_le ((D3 - P3 + S3) + (D4 - P4 + S4) - (D3 + D4)) (P3 + P4 - I3 - I4)`. Establish `n2` using `norm_sub_le ((D3 - P3 + S3) + (D4 - P4 + S4)) (D3 + D4)`. Establish `n3` using `norm_add_le (D3 - P3 + S3) (D4 - P4 + S4)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem dhfNormArith (D3 D4 P3 P4 S3 S4 I3 I4 A B : ℂ) (k : ℕ) (e3 e4 Dom X : ℝ)
     (h3 : ‖D3 - P3 + S3‖ ≤ e3) (h4 : ‖D4 - P4 + S4‖ ≤ e4)
     (hD3 : D3 = (-1 : ℂ) ^ k / (k.factorial : ℂ) * A) (hD4 : D4 = (-1 : ℂ) ^ k / (k.factorial : ℂ) * B)

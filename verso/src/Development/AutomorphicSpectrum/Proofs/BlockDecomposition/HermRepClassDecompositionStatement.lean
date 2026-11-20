@@ -16,5 +16,8 @@ open ReciprocityTheory.ChartRestriction.G.Geo (MRing IsMultiHomog IsRelevant IsM
 open GlobalTheory.CompanionTheory.MPDict GlobalTheory.CompanionTheory.MixZ GlobalTheory GlobalTheory.ProjBlowup
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MPDict.ClsRep.cls_eq_of_isHermRep | exact GlobalTheory.CompanionTheory.MPDict.ClsRep.cls_eq_of_isHermRep | (intros; apply GlobalTheory.CompanionTheory.MPDict.ClsRep.cls_eq_of_isHermRep <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hermRep_class_decomposition : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (M : HermLB (mpStr ℤ m n)) (A : Geo.HermLine (Bk n)), IsHermRep M A → cls M.B M.isLB = ∑ k, A.a k • cls (pullO (prB n k) 1) (isLB_pullO _ 1) := by
   first | exact @GlobalTheory.CompanionTheory.MPDict.ClsRep.cls_eq_of_isHermRep | exact GlobalTheory.CompanionTheory.MPDict.ClsRep.cls_eq_of_isHermRep | (intros; apply GlobalTheory.CompanionTheory.MPDict.ClsRep.cls_eq_of_isHermRep <;> assumption)

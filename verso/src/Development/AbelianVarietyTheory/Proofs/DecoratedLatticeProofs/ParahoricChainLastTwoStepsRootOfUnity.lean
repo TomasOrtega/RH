@@ -14,6 +14,9 @@ variable {n : Type} [Fintype n] [DecidableEq n]
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 variable {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.SplitFlip.mem_KO_iff, ← map_inv, _root_.GlobalTheory.StepData.reGL_val, _root_.GlobalTheory.StepData.reGL_val]`. Take `⟨h1, h2⟩` from `(_root_.GlobalTheory.SplitFlip.mem_KO_iff _).mp hg`. Conclude with `⟨fun i j => h1 _ _, fun i j => h2 _ _⟩`.
+-/
 private theorem reGL_mem_KO_of_mem_KO {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (e : a ≃ b) {g : GL a k} (hg : g ∈ _root_.GlobalTheory.SplitWeil.KO k a) :
     _root_.GlobalTheory.StepData.reGL e g ∈ _root_.GlobalTheory.SplitWeil.KO k b := by
   rw [_root_.GlobalTheory.SplitFlip.mem_KO_iff, ← map_inv, _root_.GlobalTheory.StepData.reGL_val, _root_.GlobalTheory.StepData.reGL_val]
@@ -21,6 +24,15 @@ private theorem reGL_mem_KO_of_mem_KO {k : Type} [Field k] [ValuativeRel k] [Top
   exact ⟨fun i j => h1 _ _, fun i j => h2 _ _⟩
 
 open MeasureTheory ValuativeRel Matrix in
+/- English proof (translation)
+Establish `hO` using `Valuation.integer.integers (valuation k)`. Set `x : 𝒪[k]` to `⟨u, by rw [Valuation.mem_integer_iff, hu]⟩`. Establish `hx : IsUnit x` using `hO.isUnit_iff_valuation_eq_one.mpr hu`. Use `letI := Fintype.ofFinite (IsLocalRing.ResidueField 𝒪[k])`. Establish `hr : IsLocalRing.residue 𝒪[k] x ≠ 0` using `(RingHom.isUnit_map _ hx).ne_zero`.
+
+Establish `hq : 1 < Fintype.card (IsLocalRing.ResidueField 𝒪[k])` using `Fintype.one_lt_card`. Use `⟨Fintype.card (IsLocalRing.ResidueField 𝒪[k]) - 1, by omega, ?_⟩` and prove the remaining obligations. Establish `hmem : x ^ (Fintype.card (IsLocalRing.ResidueField 𝒪[k]) - 1) - 1 ∈ IsLocalRing.maximalIdeal 𝒪[k]`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_pow, map_one, FiniteField.pow_card_sub_one_eq_one _ hr, sub_self]`. Establish `hnu` using `mem_nonunits_iff.mp ((IsLocalRing.mem_maximalIdeal _).mp hmem)`.
+
+Establish `hlt` using `lt_of_le_of_ne (hO.map_le_one _) (mt hO.isUnit_iff_valuation_eq_one.mpr hnu)`. Rewrite using `[← map_pow]`. Apply `hδ` to reduce the goal to its premises. Use `lt_of_eq_of_lt ?_ hlt` and prove the remaining obligations. Simplify using `[x]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem exists_pos_pow_eq_one_of_isTame_of_valuation_eq_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {δ : kˣ →* ℂˣ} (hδ : _root_.GlobalTheory.SplitWeil.IsTame δ) {u : kˣ} (hu : valuation k (u : k) = 1) : ∃ n : ℕ, 0 < n ∧ δ u ^ n = 1 := by
   classical
   have hO := Valuation.integer.integers (valuation k)
@@ -41,6 +53,11 @@ private theorem exists_pos_pow_eq_one_of_isTame_of_valuation_eq_one {k : Type} [
   rfl
 
 open MeasureTheory ValuativeRel Matrix in
+/- English proof (translation)
+Establish `key` using `congrFun (hΦ.2 ⟨g⁻¹, inv_mem hg⟩) B`. Establish `hn : _root_.GlobalTheory.SplitWeil.nabs k (GeneralLinearGroup.det g⁻¹) = 1` using `_root_.GlobalTheory.SplitWeil.nabs_eq_one_of_valuation_eq_one (_root_.GlobalTheory.StepData.valuation_det_of_mem_KO (inv_mem hgi))`. Establish `hl : Q.lam ⟨g⁻¹, inv_mem hg⟩ = (Q.lam ⟨g, hg⟩)⁻¹` using `map_inv Q.lam ⟨g, hg⟩`. Rewrite `hn` using `[map_inv]`. Simplify using `only [_root_.GlobalTheory.SplitWeil.om, Pi.smul_apply, Units.smul_def, inv_inv, Matrix.mul_one, hl, hn, map_one, Real.one_rpow, Units.val_one, one_mul, map_inv, Units.val_inv_eq_inv_val, Complex.ofReal_one, mul_one, Units.val_one, _root_.GlobalTheory.SplitWeil.nabs_one, smul_eq_m …`.
+
+Rewrite using `[mul_right_comm, ← key, mul_comm, ← mul_assoc, inv_mul_cancel₀ (Units.ne_zero _), one_mul]`.
+-/
 private theorem hasTypes_apply_mul_left_of_mem_J_KO {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] {μ : kˣ →* ℂˣ} {P : _root_.GlobalTheory.StepData.Level (GL a k)} {Q : _root_.GlobalTheory.StepData.Level (GL b k)} {Φ : Matrix b a k → ℂ} (hΦ : _root_.GlobalTheory.StepData.HasTypes μ P Q Φ) {g : GL b k} (hg : g ∈ Q.J) (hgi : g ∈ _root_.GlobalTheory.SplitWeil.KO k b) (B : Matrix b a k) :
     Φ (g.val * B) = ((Q.lam ⟨g, hg⟩ : ℂ) * ((μ (GeneralLinearGroup.det g) : ℂ))⁻¹) * Φ B := by
   have key := congrFun (hΦ.2 ⟨g⁻¹, inv_mem hg⟩) B
@@ -52,6 +69,9 @@ private theorem hasTypes_apply_mul_left_of_mem_J_KO {k : Type} [Field k] [Valuat
   rw [mul_right_comm, ← key, mul_comm, ← mul_assoc, inv_mul_cancel₀ (Units.ne_zero _), one_mul]
 
 open MeasureTheory ValuativeRel Matrix in
+/- English proof (translation)
+Establish `key` using `congrFun (hΦ.1 ⟨g, hg⟩) B`. Establish `hn : _root_.GlobalTheory.SplitWeil.nabs k (GeneralLinearGroup.det g) = 1` using `_root_.GlobalTheory.SplitWeil.nabs_eq_one_of_valuation_eq_one (_root_.GlobalTheory.StepData.valuation_det_of_mem_KO hgi)`. Simplify using `only [_root_.GlobalTheory.SplitWeil.om, Pi.smul_apply, Units.smul_def, inv_one, Matrix.one_mul, hn, map_one, Real.one_rpow, Units.val_one, one_mul, inv_one, Complex.ofReal_one, mul_one, _root_.GlobalTheory.SplitWeil.nabs_one, smul_eq_mul] at key`. Rewrite using `[mul_right_comm, ← key, mul_comm, ← mul_assoc, inv_mul_cancel₀ (Units.ne_zero _), one_mul]`.
+-/
 private theorem hasTypes_apply_mul_right_of_mem_J_KO {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] {μ : kˣ →* ℂˣ} {P : _root_.GlobalTheory.StepData.Level (GL a k)} {Q : _root_.GlobalTheory.StepData.Level (GL b k)} {Φ : Matrix b a k → ℂ} (hΦ : _root_.GlobalTheory.StepData.HasTypes μ P Q Φ) {g : GL a k} (hg : g ∈ P.J) (hgi : g ∈ _root_.GlobalTheory.SplitWeil.KO k a) (B : Matrix b a k) :
     Φ (B * g.val) = ((P.lam ⟨g, hg⟩ : ℂ) * ((μ (GeneralLinearGroup.det g) : ℂ))⁻¹) * Φ B := by
   have key := congrFun (hΦ.1 ⟨g, hg⟩) B
@@ -61,6 +81,9 @@ private theorem hasTypes_apply_mul_right_of_mem_J_KO {k : Type} [Field k] [Valua
   rw [mul_right_comm, ← key, mul_comm, ← mul_assoc, inv_mul_cancel₀ (Units.ne_zero _), one_mul]
 
 open MeasureTheory ValuativeRel Matrix in
+/- English proof (translation)
+Use extensionality with `(i | i) (j | j)`. Simplify using `[_root_.GlobalTheory.StepData.withCol, Matrix.mul_apply, Fintype.sum_sum_type, toBlocks₁₁]`. Simplify using `[_root_.GlobalTheory.StepData.withCol, Matrix.mul_apply, Fintype.sum_sum_type, toBlocks₁₁, mulVec, dotProduct]`. Conclude with `i.elim0`. Conclude with `i.elim0`.
+-/
 private theorem withCol_toBlocks11_mul_mulVec_eq_mul_withCol {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] (g : GL (n ⊕ Fin 0) k) (x : Matrix n n' k) (y : n → k) : _root_.GlobalTheory.StepData.withCol (g.val.toBlocks₁₁ * x) (g.val.toBlocks₁₁ *ᵥ y) = g.val * _root_.GlobalTheory.StepData.withCol x y := by
   ext (i | i) (j | j)
   · simp [_root_.GlobalTheory.StepData.withCol, Matrix.mul_apply, Fintype.sum_sum_type, toBlocks₁₁]
@@ -69,6 +92,9 @@ private theorem withCol_toBlocks11_mul_mulVec_eq_mul_withCol {k : Type} [Field k
   · exact i.elim0
 
 open MeasureTheory ValuativeRel Matrix in
+/- English proof (translation)
+Use extensionality with `i (j | j)`. Express the relevant statement in the definitionally equal form `_ = ∑ l, (x.toRows₁.fromCols (0 : Matrix m (Fin 0) k)) i l * (g : Matrix (n ⊕ Fin 0) (n ⊕ Fin 0) k) l (Sum.inl j)`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, toRows₁, toBlocks₁₁]`. Conclude with `j.elim0`.
+-/
 private theorem fromCols_zero_mul_toBlocks11_eq_mul_val {k : Type} [Field k] {n m : Type} [Fintype n] [DecidableEq n] (g : GL (n ⊕ Fin 0) k) (x : Matrix (m ⊕ Unit) n k) :
     (x * g.val.toBlocks₁₁).toRows₁.fromCols 0 = x.toRows₁.fromCols 0 * g.val := by
   ext i (j | j)
@@ -77,12 +103,20 @@ private theorem fromCols_zero_mul_toBlocks11_eq_mul_val {k : Type} [Field k] {n 
   · exact j.elim0
 
 open MeasureTheory ValuativeRel Matrix in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[Matrix.mul_apply, vecMul, dotProduct]`.
+-/
 private theorem mul_apply_inr_unit_eq_vecMul {k : Type} [Field k] {n m : Type} [Fintype n] (x : Matrix (m ⊕ Unit) n k) (B : Matrix n n k) :
     (x * B) (Sum.inr ()) = x (Sum.inr ()) ᵥ* B := by
   funext j
   simp [Matrix.mul_apply, vecMul, dotProduct]
 
 open MeasureTheory ValuativeRel Matrix in
+/- English proof (translation)
+Rewrite `hm`, the goal using `[_root_.GlobalTheory.StepData.mem_box]`. Introduce `i`. Establish `hGi` using `((_root_.GlobalTheory.SplitFlip.mem_KO_iff G).mp hG).1 i`. Use `(Valuation.map_sum_le _ fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(Valuation.mem_integer_iff _ _).mp (hGi j)`. Use `_ ≤ valuation k (w : k) := by rw [one_mul]; exact hm j`.
+-/
 private theorem mulVec_mem_box_of_mem_KO {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : Type} [Fintype n] [DecidableEq n] (G : GL n k) (hG : G ∈ _root_.GlobalTheory.SplitWeil.KO k n) (w : kˣ) {m : n → k} (hm : m ∈ _root_.GlobalTheory.StepData.box n w) : (G : Matrix n n k) *ᵥ m ∈ _root_.GlobalTheory.StepData.box n w := by
   rw [_root_.GlobalTheory.StepData.mem_box] at hm ⊢
   intro i
@@ -95,6 +129,15 @@ private theorem mulVec_mem_box_of_mem_KO {k : Type} [Field k] [ValuativeRel k] [
     _ ≤ valuation k (w : k) := by rw [one_mul]; exact hm j
 
 open MeasureTheory ValuativeRel Matrix in
+/- English proof (translation)
+Establish `hdet : _root_.GlobalTheory.SplitWeil.nabs k (GeneralLinearGroup.det G) = 1` using `_root_.GlobalTheory.SplitWeil.nabs_eq_one_of_valuation_eq_one (_root_.GlobalTheory.StepData.valuation_det_of_mem_KO hG)`. Establish `hiff : ∀ z : n → k, (Submodule.Quotient.mk (p` using `_root_.GlobalTheory.StepData.box n w) z = Submodule.Quotient.mk y) ↔ (Submodule.Quotient.mk (p := _root_.GlobalTheory.StepData.box n w) ((G : Matrix n n k) *ᵥ z) = Submodule.Quotient.mk ((G : Matrix n n k) *ᵥ y)) := by`. Introduce `z`. Simplify using `only [Submodule.Quotient.eq, ← mulVec_sub]`. Use `⟨mulVec_mem_box_of_mem_KO G hG w, fun h => ?_⟩` and prove the remaining obligations.
+
+Use `mulVec_mem_box_of_mem_KO G⁻¹ (inv_mem hG) w h` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, Units.inv_mul, one_mulVec]`. Then use the resulting hypothesis. Unfold `_root_.GlobalTheory.StepData.hat`. Establish `h` using `_root_.GlobalTheory.SplitWeil.integral_comp_mulVec_eq_smul ν G (fun z => _root_.GlobalTheory.StepData.cosetInd (_root_.GlobalTheory.StepData.box n w) (Submodule.Quotient.mk ((G : Matrix n n k) *ᵥ y)) z * ((ψ (ε * v ⬝ᵥ z) : Circle) : ℂ))`. Rewrite `h` using `[hdet, inv_one, one_smul]`.
+
+Rewrite using `[← h]`. Use `congr 1`. Use extensionality with `z`. Rewrite using `[dotProduct_mulVec]`. Use `congr 1`.
+
+Unfold `_root_.GlobalTheory.StepData.cosetInd`. Simplify using `only [Set.indicator_apply, Set.mem_setOf_eq]`. Rewrite using `[← hiff z]`.
+-/
 private theorem hat_cosetInd_box_vecMul_KO_eq_mulVec {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n] (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k Circle) (ε : k) (G : GL n k) (hG : G ∈ _root_.GlobalTheory.SplitWeil.KO k n) (w : kˣ) (y v : n → k) :
     _root_.GlobalTheory.StepData.hat ψ ν ε (_root_.GlobalTheory.StepData.cosetInd (_root_.GlobalTheory.StepData.box n w) (Submodule.Quotient.mk y)) (v ᵥ* (G : Matrix n n k)) =
       _root_.GlobalTheory.StepData.hat ψ ν ε (_root_.GlobalTheory.StepData.cosetInd (_root_.GlobalTheory.StepData.box n w) (Submodule.Quotient.mk ((G : Matrix n n k) *ᵥ y))) v := by
@@ -124,6 +167,31 @@ open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 variable {n : Type} [Fintype n] [DecidableEq n] in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ν hν s κ t _ _ _ _ δ hδ η hη g hg`. Use `haveI := hν.1`. Use `set F := _root_.GlobalTheory.StepData.plainFrame (k := k) (_root_.GlobalTheory.StepData.stdOrd κ t (l := s + 1) (s + 1) 0 rfl) with hF`. Establish `hg' : F.conj.symm g ∈ (_root_.GlobalTheory.StepData.parahoric (κ ⊕ Fin (s + 1)) (Fin (s + 1) × t) δ hδ).J` using `_root_.GlobalTheory.StepData.Level.mem_map.mp hg`. Establish `hgg : g = _root_.GlobalTheory.StepData.reGL F.ord (F.conj.symm g)`.
+
+Use `F.conj_apply (F.conj.symm g)` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Simplify `this` using `[hF, _root_.GlobalTheory.StepData.plainFrame]`. Establish `hlam : ((_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).lev (s + 1) 0 rfl).lam ⟨g, hg⟩ = (_root_.GlobalTheory.StepData.parahoric (κ ⊕ Fin (s + 1)) (Fin (s + 1) × t) δ hδ).lam ⟨F.conj.symm g, hg'⟩` using `_root_.GlobalTheory.StepData.Level.map_lam _ _ _`. Take `⟨hg'int, hg'low⟩` from `_root_.GlobalTheory.StepData.mem_parahoric.mp hg'`.
+
+Take `⟨⟨A, hA, hAeq⟩, ⟨D, -, hDeq⟩⟩` from `_root_.GlobalTheory.StepData.exists_diag_blocks hg'int hg'low`. Establish `hint : g ∈ _root_.GlobalTheory.SplitWeil.KO k _`. Rewrite using `[hgg]`. Conclude with `reGL_mem_KO_of_mem_KO _ hg'int`. Establish `hdet : GeneralLinearGroup.det g = GeneralLinearGroup.det (F.conj.symm g)` using `by conv_lhs => rw [hgg]`.
+
+Conclude with `_root_.GlobalTheory.StepData.det_reGL _ _`. Establish `hsplit` using `_root_.GlobalTheory.StepData.tame_det_blocks hδ hg'int hg'low hAeq hDeq`. Establish `hval` using `_root_.GlobalTheory.StepData.valuation_det_of_mem_KO hint`. Use `set c : ℂˣ := ((_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).lev (s + 1) 0 rfl).lam ⟨g, hg⟩ * (δ (GeneralLinearGroup.det g))⁻¹ with hc`. Establish `hcA : c = (δ (GeneralLinearGroup.det A))⁻¹`.
+
+Rewrite using `[hc, hlam, _root_.GlobalTheory.StepData.parahoric_lam _ D hDeq, hdet, hsplit, _root_.mul_inv_rev, mul_inv_cancel_left]`. Establish `hroot : ∃ n : ℕ, 0 < n ∧ (c : ℂ) ^ n = 1`. Take `⟨n, hn, hpow⟩` from `exists_pos_pow_eq_one_of_isTame_of_valuation_eq_one hδ (_root_.GlobalTheory.StepData.valuation_det_of_mem_KO hA)`. Conclude with `⟨n, hn, by rw [← Units.val_pow_eq_pow_val, hcA, inv_pow, hpow, inv_one, Units.val_one]⟩`. Establish `hL` using `_root_.GlobalTheory.StepData.Chain.ofTwist_laws δ hδ η hη (fun j c h ↦ _root_.GlobalTheory.StepData.plainFrame (_root_.GlobalTheory.StepData.stdOrd κ t j c h)) (_root_.GlobalTheory.StepData.LatFrame.refl k (_root_.GlobalTheory.StepData.Ix (κ ⊕ Fin (s + 1)) t (s + 2)))`.
+
+Establish `hmu : ∀ j, (_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).mu j (GeneralLinearGroup.det g) = δ (GeneralLinearGroup.det g)`. Introduce `j`. Express the relevant statement in the definitionally equal form `(η j * δ) (GeneralLinearGroup.det g) = _`. Rewrite using `[MonoidHom.mul_apply, hη j _ hval, one_mul]`. Establish `hΦ` using `hasTypes_apply_mul_left_of_mem_J_KO (μ := (_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).mu (s + 1)) (Φ := (_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).Phi s 0 rfl) (hL.1 s 0 rfl) hg hint`.
+
+Establish `hTop` using `hasTypes_apply_mul_right_of_mem_J_KO (μ := (_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).mu (s + 2)) (Φ := (_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).PhiTop) hL.2 hg hint`. Rewrite `hΦ`, `hTop` using `[hmu]`. Establish `hΦ' : ∀ B, (_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).Phi s 0 rfl (g.val * B) = c * (_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).Phi s 0 rfl B`. Introduce `B`. Rewrite using `[hΦ B, hc, Units.val_mul, Units.val_inv_eq_inv_val]`.
+
+Both sides reduce to the same expression. Establish `hTop' : ∀ B, (_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).PhiTop (B * g.val) = c * (_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).PhiTop B`. Introduce `B`. Rewrite using `[hTop B, hc, Units.val_mul, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+
+Take `⟨G, hGi, hGeq⟩ : ∃ G : GL (_root_.GlobalTheory.StepData.XIx κ t (s + 1)) k, G ∈ _root_.GlobalTheory.SplitWeil.KO k _ ∧ (G : Matrix _ _ k) = g.val.toBlocks₁₁` from `⟨_root_.GlobalTheory.StepData.reGL (Equiv.sumEmpty _ (Fin 0)) g, reGL_mem_KO_of_mem_KO _ hint, by`. Rewrite using `[_root_.GlobalTheory.StepData.reGL_val]`. Use the proof step `rfl⟩`. Use `⟨c, hroot, ?_, ?_⟩` and prove the remaining obligations. Introduce `h x₀ y`.
+
+Unfold `_root_.GlobalTheory.StepData.Chain.Psi`. Rewrite using `[withCol_toBlocks11_mul_mulVec_eq_mul_withCol]`. Simplify using `only [_root_.GlobalTheory.SplitWeil.om, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_assoc]`. Rewrite using `[hΦ']`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `ψ ε w y x`. Unfold `_root_.GlobalTheory.StepData.Chain.xiTop`. Rewrite using `[fromCols_zero_mul_toBlocks11_eq_mul_val, mul_apply_inr_unit_eq_vecMul]`. Use `erw [hTop']`. Rewrite using `[← hGeq, hat_cosetInd_box_vecMul_KO_eq_mulVec ν ψ ε G hGi w y]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.LevelLaw.last_steps_law : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), _root_.GlobalTheory.SplitWeil.IsUnitVol ν → ∀ (s : ℕ) (κ t : Type) [Fintype κ] [DecidableEq κ] [Fintype t] [DecidableEq t] (δ : kˣ →* ℂˣ) (hδ : _root_.GlobalTheory.SplitWeil.IsTame δ) (η : ℕ → kˣ →* ℂˣ), (∀ j, _root_.GlobalTheory.SplitWeil.IsUnram (η j)) → ∀ g : GL (_root_.GlobalTheory.StepData.XIx κ t (s + 1) ⊕ Fin 0) k, g ∈ ((_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).lev (s + 1) 0 rfl).J → ∃ c : ℂ, (∃ n : ℕ, 0 < n ∧ c ^ n = 1) ∧ (∀ h x₀ y, (_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).Psi h (g.val.toBlocks₁₁ * x₀) (g.val.toBlocks₁₁ *ᵥ y) = c * (_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).Psi h x₀ y) ∧ ∀ (ψ : AddChar k Circle) (ε : k) (w : kˣ) (y : _root_.GlobalTheory.StepData.XIx κ t (s + 1) → k) x, (_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).xiTop (_root_.GlobalTheory.StepData.box _ w) ψ ν ε (Submodule.Quotient.mk y) (x * g.val.toBlocks₁₁) = c * (_root_.GlobalTheory.StepData.twistChain s t κ δ hδ η).xiTop (_root_.GlobalTheory.StepData.box _ w) ψ ν ε (Submodule.Quotient.mk (g.val.toBlocks₁₁ *ᵥ y)) x := by
   intro k _ _ _ _ _ _ ν hν s κ t _ _ _ _ δ hδ η hη g hg
   haveI := hν.1

@@ -9,6 +9,19 @@ open Formalism.L2.Host (aboveF)
 
 namespace GlobalTheory.ThK.Bot.DenProd
 
+/- English proof (translation)
+Establish `hN1 : ∀ v, (1 : ℝ) < N v` using `fun v => by exact_mod_cast hN v`. Establish `hj' : (1 : ℝ) ≤ j` using `by exact_mod_cast hj`. Establish `hb : ∀ (a : ℝ) (s : ℂ), a ≤ s.re → ∀ v, ‖-(e v * (N v : ℂ) ^ (-(2 * s + (j : ℂ))))‖ ≤ (N v : ℝ) ^ (-(2 * a + 1))`. Introduce `a s hs v`. Rewrite using `[norm_neg, norm_mul, Complex.norm_natCast_cpow_of_pos (by linarith [hN v])]`.
+
+Use `(mul_le_of_le_one_left (by positivity) (he v)).trans ?_` and prove the remaining obligations. Use `Real.rpow_le_rpow_of_exponent_le (hN1 v).le ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : ∀ v, Differentiable ℂ fun s : ℂ => -(e v * (N v : ℂ) ^ (-(2 * s + (j : ℂ))))`.
+
+Introduce `v`. Use `((differentiable_const _).mul ?_).neg` and prove the remaining obligations. Use `Differentiable.const_cpow (by fun_prop) (Or.inl ?_)` and prove the remaining obligations. Conclude with `(by linarith [hN v] : 0 < N v).ne'` after adjusting the coercions. Establish `ho : ∀ a : ℝ, IsOpen {z : ℂ | a < z.re}` using `fun a => isOpen_lt continuous_const Complex.continuous_re`.
+
+Use `⟨fun s => ∏' v, (1 + -(e v * (N v : ℂ) ^ (-(2 * s + (j : ℂ))))), ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `DifferentiableOn.analyticOnNhd (fun s hs => ?_) (ho 0)` and prove the remaining obligations. Take `⟨a, h1, h2⟩` from `exists_between (show 0 < s.re from hs)`. Establish `h3` using `(hsum (2 * a + 1) (by linarith)).hasProdLocallyUniformlyOn_one_add (f := fun v z => -(e v * (N v : ℂ) ^ (-(2 * z + (j : ℂ))))) (ho a) (Filter.Eventually.of_forall fun v z hz => hb a z (le_of_lt hz) v) fun v => (hd v).continuous.continuousOn`. Establish `h4` using `(hasProdLocallyUniformlyOn_iff_tendstoLocallyUniformlyOn.1 h3).differentiableOn (Filter.Eventually.of_forall fun t => (Differentiable.fun_finsetProd fun v _ => (hd v).const_add 1).differentiableOn) (ho a)`.
+
+Conclude with `(h4.differentiableAt ((ho a).mem_nhds h2)).differentiableWithinAt`. Establish `hS : Summable fun v => ‖-(e v * (N v : ℂ) ^ (-(2 * s + (j : ℂ))))‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (hb s.re s le_rfl) (hsum _ (by linarith))`. Use `⟨tprod_one_add_ne_zero_of_summable (fun v h0 => ?_) hS, ?_⟩` and prove the remaining obligations. Establish `h1` using `(hb s.re s le_rfl v).trans_lt (Real.rpow_lt_one_of_one_lt_of_neg (hN1 v) (by linarith))`. Rewrite `h1` using `[eq_neg_of_add_eq_zero_right h0]`.
+
+Simplify using `at h1`. Simplify `(multipliable_one_add_of_summable hS).hasProd` using `only [sub_eq_add_neg]`.
+-/
 theorem exists_hasProd_factor {ι : Type} (N : ι → ℕ) (hN : ∀ v, 1 < N v)
     (hsum : ∀ σ : ℝ, 1 < σ → Summable fun v => (N v : ℝ) ^ (-σ)) (e : ι → ℂ) (he : ∀ v, ‖e v‖ ≤ 1)
     (j : ℕ) (hj : 1 ≤ j) :
@@ -50,6 +63,15 @@ theorem exists_hasProd_factor {ι : Type} (N : ι → ℕ) (hN : ∀ v, 1 < N v)
       simp at h1
     · simpa only [sub_eq_add_neg] using (multipliable_one_add_of_summable hS).hasProd
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n T`. Establish `key : ∀ j : ℕ, ∃ D : ℂ → ℂ, 1 ≤ j → (AnalyticOnNhd ℂ D {s | 0 < s.re} ∧ ∀ s : ℂ, 0 < s.re → D s ≠ 0 ∧ HasProd (fun v : {v : Pl F // v ∉ T} => 1 - etaAt E v.1 ^ (n - j) * ((Ideal.absNorm v.1.asIdeal : ℕ) : ℂ) ^ (-(2 * s + (j : ℂ)))) (D s))`. Introduce `j`. Distinguish the cases in `hj : 1 ≤ j`. Take `⟨D, hD⟩` from `exists_hasProd_factor (ι := {v : Pl F // v ∉ T}) (fun v => Ideal.absNorm v.1.asIdeal) (fun v => NumberField.HeightOneSpectrum.one_lt_absNorm v.1) (fun σ hσ => ((GlobalTheory.countable_ideal_and_summable_absNorm_rpow F).2 σ hσ).2.subtype {v | v ∉ T}) (fun v => etaAt E v.1 ^ (n - j …`.
+
+Rewrite using `[norm_pow]`. Use `pow_le_one₀ (norm_nonneg _) ?_` and prove the remaining obligations. Unfold `etaAt`. Apply the tactic sequence `split_ifs <;> simp) j hj`. Conclude with `⟨D, fun _ => hD⟩`.
+
+Conclude with `⟨0, fun h => absurd h hj⟩`. Use `choose D hD using key`. Use `⟨fun s => ∏ j ∈ Finset.Icc 1 n, D j s, ?_, fun s hs => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `Finset.analyticOnNhd_fun_prod _ fun j hj => (hD j (Finset.mem_Icc.1 hj).1).1`. Conclude with `Finset.prod_ne_zero_iff.2 fun j hj => ((hD j (Finset.mem_Icc.1 hj).1).2 s hs).1`.
+
+Conclude with `hasProd_prod fun j hj => ((hD j (Finset.mem_Icc.1 hj).1).2 s hs).2`.
+-/
 theorem exists_hasProd_denInv :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (T : Finset (Pl F)),
     ∃ D : ℂ → ℂ, AnalyticOnNhd ℂ D {s | 0 < s.re} ∧ ∀ s : ℂ, 0 < s.re → D s ≠ 0 ∧ HasProd (fun v : {v : Pl F // v ∉ T} => denInv E n v.1 s) (D s) := by

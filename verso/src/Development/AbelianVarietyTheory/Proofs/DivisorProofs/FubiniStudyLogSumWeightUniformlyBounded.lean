@@ -9,6 +9,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.HSAmp
 
+/- English proof (translation)
+The claim follows from `|((e : ℝ) * n)⁻¹ * Real.log (∑ l, v l ^ (2 * n))| ≤ Real.log (D + 1) + 2 * Real.log M + 2 * |Real.log m| := by obtain ⟨l₀, hl₀⟩ := hvm have hD : 0 ≤ Real.log (D + 1 : ℝ) := Real.log_nonneg (by linarith [(Nat.cast_nonneg D : (0 : ℝ) ≤ D)]) have hM' : 0 ≤ Real.log M := Real.log_non …`.
+-/
 theorem abs_log_sum_pow_le {D : ℕ} (v : Fin (D + 1) → ℝ) (hv : ∀ l, 0 ≤ v l) {m M : ℝ} (hm : 0 < m) (hM : 1 ≤ M)
     (hvM : ∀ l, v l ≤ M) (hvm : ∃ l, m ≤ v l) {e n : ℕ} (he : 0 < e) (hn : 1 ≤ n) :
     |((e : ℝ) * n)⁻¹ * Real.log (∑ l, v l ^ (2 * n))| ≤ Real.log (D + 1) + 2 * Real.log M + 2 * |Real.log m| := by
@@ -38,6 +41,23 @@ theorem abs_log_sum_pow_le {D : ℕ} (v : Fin (D + 1) → ℝ) (hv : ∀ l, 0 �
   constructor <;> nlinarith [mul_nonneg (sub_nonneg.2 hn') hD, mul_nonneg (sub_nonneg.2 hn') hM',
     mul_nonneg (sub_nonneg.2 hn') ha, mul_nonneg (zero_le_one.trans hn') (sub_nonneg.2 hb)]
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX P e x hx`. Establish `hnn : ∀ (σ : k →+* ℂ) (y : CxPts p σ) l, 0 ≤ P.nu e 0 σ y (x l)` using `fun σ y l => by`. Rewrite using `[← norm_val]`. Conclude with `norm_nonneg _`. Establish `hc` using `fun l => (GlobalTheory.HSAmp.continuous_val_and_bounded k X p D hX P e 0).2 (x l) (hx.mem l)`.
+
+Use `choose C hC using fun l => (hc l).2`. Establish `hlow : ∀ σ : k →+* ℂ, ∃ κ : ℝ, 0 < κ ∧ ∀ y : CxPts p σ, κ ≤ ∑ l, P.nu e 0 σ y (x l)` using `fun σ => by haveI := hX.compactSpace σ`. Establish `hcont : Continuous fun y : CxPts p σ => ∑ l, P.nu e 0 σ y (x l)` using `continuous_finsetSum _ fun l _ => (hc l).1 σ`. Establish `hpos : ∀ y : CxPts p σ, 0 < ∑ l, P.nu e 0 σ y (x l)` using `fun y => by`. Take `⟨l, hl⟩` from `hx.cover (under y)`.
+
+Conclude with `Finset.sum_pos' (fun l _ => hnn σ y l) ⟨l, Finset.mem_univ _, ((GlobalTheory.HSAmp.nv_rules k X p P e 0 (x l) (hx.mem l)).2.2.2.2 (x l) (hx.mem l) σ y hl).2⟩`. Break down `isEmpty_or_nonempty (CxPts p σ) with h | h` into its components or cases. Conclude with `⟨1, one_pos, fun y => h.elim y⟩`. Take `⟨y₀, -, hy₀⟩` from `isCompact_univ.exists_isMinOn Set.univ_nonempty hcont.continuousOn`. Conclude with `⟨_, hpos y₀, fun y => hy₀ (Set.mem_univ y)⟩`.
+
+Use `choose κ hκ hκ' using hlow`. Use `haveI := hX.finite_emb`. Use `haveI := Fintype.ofFinite (k →+* ℂ)`. Establish `hs : 0 ≤ ∑ σ, (κ σ)⁻¹` using `Finset.sum_nonneg fun σ _ => (inv_pos.2 (hκ σ)).le`. Establish `hκ₀ : ∀ σ, (1 + ∑ σ, (κ σ)⁻¹)⁻¹ ≤ κ σ` using `fun σ => by`.
+
+Use `inv_le_of_inv_le₀ (hκ σ) ?_` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun σ => (κ σ)⁻¹) (fun σ _ => (inv_pos.2 (hκ σ)).le) (Finset.mem_univ σ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs' : 0 ≤ ∑ l, |C l|` using `Finset.sum_nonneg fun l _ => abs_nonneg _`. Establish `hM : 1 ≤ 1 + ∑ l, |C l|` using `by linarith`.
+
+Use `⟨Real.log (D + 1) + 2 * Real.log (1 + ∑ l, |C l|) + 2 * |Real.log ((1 + ∑ σ, (κ σ)⁻¹)⁻¹ / (D + 1))|, ?_, fun n hn σ y => abs_log_sum_pow_le _ (hnn σ y) (by positivity) hM (fun l => ?_) ?_ hx.pos hn⟩` and prove the remaining obligations. Establish `h1 : 0 ≤ Real.log (D + 1 : ℝ)` using `Real.log_nonneg (by linarith [(Nat.cast_nonneg D : (0 : ℝ) ≤ D)])`. Establish `h2` using `Real.log_nonneg hM`. Check the signs of the components of the expression. Use `Finset.single_le_sum (f := fun l => |C l|) (fun l _ => abs_nonneg _) (Finset.mem_univ l)` as an intermediate fact.
+
+Combine the linear relations using `[hC l σ y, le_abs_self (C l)]`. Take `⟨l, -, hl⟩` from `Finset.exists_le_of_sum_le (s := Finset.univ) Finset.univ_nonempty (f := fun _ : Fin (D + 1) => (1 + ∑ σ, (κ σ)⁻¹)⁻¹ / (D + 1 : ℝ)) (g := fun l => P.nu e 0 σ y (x l)) (by`. Use `le_trans (le_of_eq ?_) ((hκ₀ σ).trans (hκ' σ y))` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`.
+
+Use the proof step `field_simp)`. Conclude with `⟨l, hl⟩`.
+-/
 theorem can_bound : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p) (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → ∃ B : ℝ, 0 ≤ B ∧ ∀ n : ℕ, 1 ≤ n → ∀ (σ : k →+* ℂ) (y : CxPts p σ), |((e : ℝ) * n)⁻¹ * Real.log (∑ l, P.nu e 0 σ y (x l) ^ (2 * n))| ≤ B := by
   intro k _ X _ p D hX P e x hx
   have hnn : ∀ (σ : k →+* ℂ) (y : CxPts p σ) l, 0 ≤ P.nu e 0 σ y (x l) := fun σ y l => by

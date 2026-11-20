@@ -27,6 +27,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 open GlobalTheory.PDiv in
 
+/- English proof (translation)
+Introduce `p O _ _ G A _ _ t x`. Establish `hfr` using `GlobalTheory.T.exists_cotangent_frame_smooth_groupScheme O A`. Use `haveI hq : (GlobalTheory.LieVB.omega A).IsQuasicoherent := GlobalTheory.OmegaGlobal.isQuasicoherent_of_frames hfr`. Take `⟨hfin, hproj⟩` from `GlobalTheory.T.finite_projective_cotangentGlobalSections_groupScheme O A hfr`. Establish `hnat` using `GlobalTheory.T.tangent_Phi_sqZero_naturality O`.
+
+Establish `hinj` using `GlobalTheory.T.sqZeroPoint_eq_of_cotangentForm_eq O A hq`. Establish `hsurj` using `GlobalTheory.T.tangent_Phi_surjective_onto_dual O A hq`. Establish `hspec` using `GlobalTheory.T.tangent_Phi_naturality_module p O G A t (hnat · · A)`. Establish `hl : ∀ n (c : O) w, cn t n (c • w) = c • cn t n w` using `fun n c w => GlobalTheory.T.tangent_Phi_smul O _ A _ _ c w`. Establish `hres` using `GlobalTheory.T.tangent_Phi_naturality_linear p O G A t (hnat · · A)`.
+
+Establish `hon` using `GlobalTheory.T.cotangent_inverse_limit_compatible p O G A t hfin (GlobalTheory.T.tangent_Phi_injective_criterion p O G A t hinj hspec) (GlobalTheory.T.tangent_Phi_naturality_family p O G A t hfin hproj (hnat · · A) hsurj hspec) hres hl`. Establish `htan` using `GlobalTheory.T.tangent_Phi_naturality_pair p O G A t (hnat · · A) hspec`. Set `c : Wmod A →ₗ[O] G.omega` to `{ toFun := fun w => ⟨fun n => cn t n w, fun n => hres n w⟩ map_add' := fun w w' => Subtype.ext (funext fun n => map_add (cn t n) w w') map_smul' := fun a w => Subtype.ext (funext fun n => hl n a w) }`. Establish `hmk : ∀ (n : ℕ) (a b : O), a ≡ b [SMOD (Ideal.span {(p : O)} ^ n • ⊤ : Submodule O O)] ↔ (Ideal.Quotient.mk _ a : ModPow p O n) = Ideal.Quotient.mk _ b` using `fun n a b => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.Quotient.eq]`.
+
+Establish `hu : ∀ a b : O, (∀ n, (Ideal.Quotient.mk _ a : ModPow p O n) = Ideal.Quotient.mk _ b) → a = b` using `fun a b h => sub_eq_zero.1 <| IsHausdorff.haus' (I := Ideal.span {(p : O)}) _ fun n => SModEq.zero.2 (SModEq.sub_mem.1 ((hmk n a b).2 (h n)))`. Take `⟨v, hv0, hvμ⟩` from `hsurj (x ∘ₗ c)`. Establish `hv : IsTangent v` using `congrArg Over.Hom.left hv0`. Use `⟨v, (t.lieCorr_iff hv x).2 fun n u => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hon u`.
+
+Establish `e : u = c w` using `Subtype.ext (funext fun n => (hw n).symm)`. Rewrite using `[← hw n, htan v hv hv0 n w, hvμ, e]`. Both sides reduce to the same expression. Establish `hy' : IsTangent y` using `hy.1`. Establish `hy0 : zeroSec O O ≫ y = η[A]` using `Over.OverMorphism.ext hy'`.
+
+Use `hinj O y v hy0 hv0 fun w => ?_` and prove the remaining obligations. Rewrite using `[hvμ]`. Use `hu _ _ fun n => ?_` and prove the remaining obligations. Rewrite using `[← htan y hy' hy0 n w]`. Conclude with `((t.lieCorr_iff hy' x).1 hy n (c w)).symm`.
+-/
 theorem GlobalTheory.PDivGroup.TorsionTower.existsUnique_tangent : ∀ (p : ℕ) (O : Type) [CommRing O]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (G : GlobalTheory.PDivGroup p O) (A : Over (Sp O))
     [GrpObj A] [Smooth A.hom] (t : G.TorsionTower A) (x : G.Lie), ∃! v : epsR O ⟶ A, t.LieCorr x v := by

@@ -8,6 +8,13 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 
 namespace GlobalTheory.SecGlue
 
+/- English proof (translation)
+Introduce `R R₀ _ _ π hπ hI X hX g₀ hg₀ κ _ f hf V hV hL`. Take `⟨e, he1, he2, he3⟩` from `GlobalTheory.T.squareZero_local_lifts_corrected_agree_on_overlaps R R₀ π hπ hI X hX g₀ hg₀ κ f hf V hV hL`. Take `⟨E, hE⟩` from `GlobalTheory.T.exists_glue_spec_localizationAway_morphisms R κ f hf X.left e he3`. Use `⟨E, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.specHom_ext_of_localizationAway_span_eq_top R κ f hf (Sp R) _ _ (fun k => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, hE k, he1 k, Category.comp_id]`. Establish `hf₀ : Ideal.span (Set.range (fun k => π (f k))) = ⊤`. Rewrite using `[show (fun k => π (f k)) = π ∘ f from rfl, Set.range_comp, ← Ideal.map_span, hf, Ideal.map_top]`. Use `GlobalTheory.T.specHom_ext_of_localizationAway_span_eq_top R₀ κ (fun k => π (f k)) hf₀ X.left _ _ (fun k => ?_)` and prove the remaining obligations. Rewrite using `[← he2 k, ← hE k, ← Category.assoc, ← Category.assoc]`.
+
+Use `congr 1`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `(IsLocalization.map_comp _).symm`.
+-/
 theorem exists_lift_of_chart_lifts : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ →
     ∀ (X : Over (Sp R)), Smooth X.hom → ∀ g₀ : Sp R₀ ⟶ X.left, g₀ ≫ X.hom = spMap π →
     ∀ (κ : Type) [Finite κ] (f : κ → R), Ideal.span (Set.range f) = ⊤ → ∀ V : κ → X.left.Opens, (∀ k, IsAffineOpen (V k)) →

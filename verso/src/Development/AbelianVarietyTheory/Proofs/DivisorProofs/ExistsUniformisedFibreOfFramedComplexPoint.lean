@@ -12,6 +12,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.DetLine
 
+/- English proof (translation)
+Use `choose v' hv' using fun i => FlatRow.exists_lift m.cart (v i)`. Establish `ix` using `FlatDegreeCompare.Indep.of_eigBasis (((FlatRow.fibre_iff m.cart hv').2 m.act χ).2 hv)`. Use `choose V hV using fun i => (hd _ (ix.1 i)).exists`. Conclude with `⟨V, fun i => ⟨v' i, hv' i, hV i⟩, FlatDegreeCompare.ArchExists.linearIndependent_of_indep u hd' ix hV⟩`.
+-/
 theorem exists_isVecs_of_eigBasis {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E}
     {S : Scheme.{0}} {t : SAB H S} {t' : SAB H (Sp ℂ)} {x : Sp ℂ ⟶ S} (m : SABMap t' t x) {g n : ℕ}
     (u : HolUnif t'.G t'.PP.L g) (hd : ∀ v, IsTangent v → ∃! z, u.IsDiff z v)
@@ -22,6 +25,11 @@ theorem exists_isVecs_of_eigBasis {E : Type} [Field E] [NumberField E] [IsCMFiel
   choose V hV using fun i => (hd _ (ix.1 i)).exists
   exact ⟨V, fun i => ⟨v' i, hv' i, hV i⟩, FlatDegreeCompare.ArchExists.linearIndependent_of_indep u hd' ix hV⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c U τ e y v w h`. Rewrite using `[← Category.assoc]`. Take `⟨t', ⟨n⟩⟩` from `exists_sab (y ≫ toX Xo c) Xo.univ.t`. Take `⟨T, hT, -⟩` from `CM.exists_pat_of_obj E H D l _ _ _ _ (ModelCompare.objOfSABMap Xo.univ n)`. Take `rfl : T.t = t'` from `hT`.
+
+Take `⟨rig, hrig⟩` from `T.pol.rigid`. Take `⟨u, Hm, κ, -, hA, -, hd, hd', -⟩` from `thetaUnifAV_all T.pol rig hrig`. Take `⟨V, hV, iV⟩` from `exists_isVecs_of_eigBasis n u hd hd' h.2.2.1`. Take `⟨W, hW, iW⟩` from `exists_isVecs_of_eigBasis n u hd hd' h.2.2.2`. Conclude with `⟨ModelCompare.objOfSABMap Xo.univ n, ModelCompare.objMapOfSABMap Xo.univ n, _, u, Hm, κ, V, W, hA, hV, hW, iV, iW⟩`.
+-/
 theorem exists_unif_of_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (e : c.F →+* ℂ) (y : Sp ℂ ⟶ Xo.XF c) v w, FrU Xo c U τ e y v w → ∃ (o : Obj D l (baseKA l) (y ≫ toX Xo c ≫ Xo.s)) (m : ObjMap o Xo.univ (y ≫ toX Xo c)) (g : ℕ) (u : HolUnif o.t.G o.t.PP.L g) (Hm : Matrix (Fin g) (Fin g) ℂ) (κ : u.Λ → ℂ) (V : Fin D.p → Fin g → ℂ) (W : Fin D.q → Fin g → ℂ), u.IsAH Hm κ ∧ IsVecs u m.toSABMap.φ v V ∧ IsVecs u m.toSABMap.φ w W ∧ LinearIndependent ℂ V ∧ LinearIndependent ℂ W := by
   intro E _ _ _ H D l Xo c U τ e y v w h
   rw [← Category.assoc]

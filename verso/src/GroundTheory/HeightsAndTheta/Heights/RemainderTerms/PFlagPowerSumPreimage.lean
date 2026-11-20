@@ -12,6 +12,11 @@ open MvPolynomial Finset
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hI : Finset.Icc 1 N = Finset.Ico 1 (N + 1)`. Use extensionality with `l`. Simplify using `only [Finset.mem_Icc, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => g (i + 1)), hI, Finset.sum_Ico_eq_sum_range, Nat.add_sub_cancel]`.
+
+Conclude with `Finset.sum_congr rfl (fun i _ => by rw [add_comm])`.
+-/
 theorem sum_Icc_one_eq_sum_fin {M : Type*} [AddCommMonoid M] (N : ℕ) (g : ℕ → M) :
     ∑ l ∈ Finset.Icc 1 N, g l = ∑ i : Fin N, g (i.val + 1) := by
   have hI : Finset.Icc 1 N = Finset.Ico 1 (N + 1) := by
@@ -22,6 +27,15 @@ theorem sum_Icc_one_eq_sum_fin {M : Type*} [AddCommMonoid M] (N : ℕ) (g : ℕ 
     Nat.add_sub_cancel]
   exact Finset.sum_congr rfl (fun i _ => by rw [add_comm])
 
+/- English proof (translation)
+Introduce `N T hT`. Use `choose Sf hSf using fun l => Flag.exists_powerSumHom_eq (hT l)`. Use `⟨∑ i : Fin N, X i * Sf (i.val + 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_Icc_one_eq_sum_fin N (fun l => psum (Fin N) ℚ l * T l), map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hSf]`. Simplify using `[powerSumHom]`. Introduce `k hk1 hkN set j : Fin N := ⟨k - 1, by omega⟩ with hj`. Rewrite using `[coeff_sum, Finset.sum_eq_single j]`. Rewrite using `[coeff_X_mul', if_pos (by simp), tsub_self, ← constantCoeff_eq, ← Flag.constantCoeff_powerSumHom, hSf]`.
+
+Establish `: j.val + 1 = k` using `by simp [hj]; omega`. Rewrite using `[this]`. Introduce `i _ hij`. Rewrite using `[coeff_X_mul', if_neg]`. Simplify using `only [Finsupp.mem_support_iff, ne_eq]`.
+
+Rewrite using `[Finsupp.single_apply, if_neg (fun h => hij h.symm)]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+-/
 theorem FlagPowerSumPreimage.proof : FlagPowerSumPreimage.Statement := by
   intro N T hT
   choose Sf hSf using fun l => Flag.exists_powerSumHom_eq (hT l)

@@ -75,6 +75,11 @@ def StringCsd : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   (P : CuspSub E a), 1 ≤ N → IsDiscrete V → RegAlg n V → P.IsUnitary → IsNormalised P → AscEmb V P d → P.IsCsd →
   IsCsdGL V
 
+/- English proof (translation)
+Introduce `E _ _ _ n N a d V P hN hV hr hu hn he hc`. Take `⟨V', hV', he', T, hT⟩` from `h2 E n N a d V P hN hV hr hu hn hc he`. Take `⟨U, hU⟩` from `h1 E n N a d V V' P hN hV hV' hr hu hn hc he he'`. Use `⟨T.trans U.symm, fun o φ ψ h => ?_⟩` and prove the remaining obligations. Establish `e : U ⟨act o (U.symm (T φ)).1, hV.stable o _ (U.symm (T φ)).2⟩ = T ψ` using `Subtype.ext (by rw [hU o (U.symm (T φ)) _ rfl, U.apply_symm_apply, hT o φ ψ h])`.
+
+Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[← e, U.symm_apply_apply]`.
+-/
 theorem stringCsd_of (h1 : AscIso) (h2 : ThetaAsc) : StringCsd := by
   intro E _ _ _ n N a d V P hN hV hr hu hn he hc
   obtain ⟨V', hV', he', T, hT⟩ := h2 E n N a d V P hN hV hr hu hn hc he
@@ -85,6 +90,9 @@ theorem stringCsd_of (h1 : AscIso) (h2 : ThetaAsc) : StringCsd := by
   simp only [LinearEquiv.trans_apply]
   rw [← e, U.symm_apply_apply]
 
+/- English proof (translation)
+Take `⟨a, d, P, ha, hd, hu, hn, he⟩` from `h1 E n D hr i`. Establish `e` using `he P (Setoid.refl (α := CuspSub E a) P)`. Conclude with `h3 E n _ a d _ P (D.pos i) (D.discrete i) (h0 E n D hr i) hu hn e (h2 E n D hr ht i a d P ha hd hu hn e)`.
+-/
 theorem csd_of (h0 : RegPart) (h1 : Strings) (h2 : CuspCsd) (h3 : StringCsd) (D : Pre E n) (hr : D.Reg) (ht : D.ThetaStable) (i : Fin D.c) :
     IsCsdGL (D.V i) := by
   obtain ⟨a, d, P, ha, hd, hu, hn, he⟩ := h1 E n D hr i
@@ -116,6 +124,11 @@ def PermSub : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n 
 def PermSat : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (D D' : Pre E n)
   (e : Fin D.c ≃ Fin D'.c) (w : HeightOneSpectrum (𝓞 E)), (∀ i, D.cls i w = D'.cls (e i) w) → ∀ B, D.Sat w B → D'.Sat w B
 
+/- English proof (translation)
+Introduce `E _ _ _ n _ π hπ D D' hD hD' w`. Establish `r : ∀ X : Datum E n, Weak π X → (pre X).Reg` using `fun X hX τ => (hW E n π hπ τ).imp fun lam h => hX.1 τ lam h`. Take `⟨e, he⟩` from `hL E n (pre D) (pre D') (r D hD) (r D' hD') (hG E n _ _ (r D hD) (r D' hD') (hT E n D) (hT E n D') (hS E n π hπ D D' hD hD'))`. Use `⟨hP E n (pre D) (pre D') e w fun i => he i w, fun B hB => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, hs⟩` from `hQ E n (pre D) (pre D') e w (fun i => he i w) _ ⟨B, hB, rfl⟩`.
+
+Conclude with `⟨b, hb, hs.symm⟩`.
+-/
 theorem rigid_of (hW : WeightEx) (hT : ThetaOfCsd) (hS : SplitSat) (hG : GalStep) (hL : LocRigid) (hP : PermSub)
     (hQ : PermSat) : Rigid := by
   intro E _ _ _ n _ π hπ D D' hD hD' w
@@ -145,6 +158,11 @@ def PreInert : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], U
       (∀ x : E, s (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x)) → IsUnramInv ϖ s q →
       ∀ α, HasSatAt π w s ϖ q α → B = GlobalTheory.LGrp.bcParam n α
 
+/- English proof (translation)
+Introduce `E _ _ _ hE n hn π hπ S hS1`. Take `⟨D, hD, hS, hI⟩` from `h E hE n hn π hπ S hS1`. Establish `hc` using `csd_of h0 h1 h2 h3 D (fun τ => (hW E n π hπ τ).imp fun lam h => hD.1 τ lam h) hD.2.2`. Conclude with `⟨D.toDatum hc, ⟨hD.1, hD.2.1⟩, hS, fun w a b => by`. Take `⟨_, b', hb, _⟩` from `hI w a b`.
+
+Conclude with `⟨b', hb⟩⟩`.
+-/
 theorem runSplit_of (hW : WeightEx) (h0 : RegPart) (h1 : Strings) (h2 : CuspCsd) (h3 : StringCsd) (h : PreSplit) : RunSplit := by
   intro E _ _ _ hE n hn π hπ S hS1
   obtain ⟨D, hD, hS, hI⟩ := h E hE n hn π hπ S hS1
@@ -153,12 +171,18 @@ theorem runSplit_of (hW : WeightEx) (h0 : RegPart) (h1 : Strings) (h2 : CuspCsd)
     obtain ⟨_, b', hb, _⟩ := hI w a b
     exact ⟨b', hb⟩⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ hE n hn π hπ w a b`. Take `⟨D, hD, hS⟩` from `h E hE n hn π hπ w a b`. Establish `hc` using `csd_of h0 h1 h2 h3 D (fun τ => (hW E n π hπ τ).imp fun lam h => hD.1 τ lam h) hD.2.2`. Conclude with `⟨D.toDatum hc, ⟨hD.1, hD.2.1⟩, fun B hB => hS _ ⟨B, hB, rfl⟩⟩`.
+-/
 theorem runInert_of (hW : WeightEx) (h0 : RegPart) (h1 : Strings) (h2 : CuspCsd) (h3 : StringCsd) (h : PreInert) : RunInert := by
   intro E _ _ _ hE n hn π hπ w a b
   obtain ⟨D, hD, hS⟩ := h E hE n hn π hπ w a b
   have hc := csd_of h0 h1 h2 h3 D (fun τ => (hW E n π hπ τ).imp fun lam h => hD.1 τ lam h) hD.2.2
   exact ⟨D.toDatum hc, ⟨hD.1, hD.2.1⟩, fun B hB => hS _ ⟨B, hB, rfl⟩⟩
 
+/- English proof (translation)
+The claim follows from `baseChangeIsobaric_of (runSplit_of hW h0 h1 h2 (stringCsd_of h3 h4) hA) (runInert_of hW h0 h1 h2 (stringCsd_of h3 h4) hB) (rigid_of hW hT hS (hG h75) hL hP hQ)`.
+-/
 theorem field_of (h75 : GlobalTheory.Published.GaloisRepOfPolarizedPair) (hW : WeightEx) (h0 : RegPart) (h1 : Strings) (h2 : CuspCsd)
     (h3 : AscIso) (h4 : ThetaAsc) (hT : ThetaOfCsd) (hS : SplitSat) (hG : GalStepOfHyp) (hL : LocRigid) (hP : PermSub) (hQ : PermSat)
     (hA : PreSplit) (hB : PreInert) : GlobalTheory.Published.BaseChangeIsobaric :=

@@ -14,6 +14,13 @@ open scoped Classical
 
 namespace GlobalTheory.SncStalk
 
+/- English proof (translation)
+Use `⟨?_, hy.2⟩` and prove the remaining obligations. Rewrite using `[← hy.1]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Rewrite using `[h i]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `: y i = ((u i)⁻¹ : Rˣ) * z i` using `by rw [h i, ← mul_assoc, Units.inv_mul, one_mul]`.
+
+Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+-/
 theorem rsp_of_units {R : Type} [CommRing R] [IsLocalRing R] {n : ℕ} (y z : Fin n → R) (u : Fin n → Rˣ)
     (h : ∀ i, z i = (u i : R) * y i) (hy : ReciprocityTheory.AnForm.R.FinalTheorems.Rsp R n y) :
     ReciprocityTheory.AnForm.R.FinalTheorems.Rsp R n z := by
@@ -30,6 +37,19 @@ theorem rsp_of_units {R : Type} [CommRing R] [IsLocalRing R] {n : ℕ} (y z : Fi
     rw [this]
     exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Introduce `X I hI U x hx`. Take `⟨hreg, U₁, hx₁, n, f, J, hR, hI₁⟩` from `hI x`. Use `⟨hreg, ?_⟩` and prove the remaining obligations. Use `letI : Algebra Γ(X, U.1) (X.presheaf.stalk x) := TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨x, hx⟩`. Use `haveI hloc := U.2.isLocalization_stalk ⟨x, hx⟩`.
+
+Establish `halg : ∀ r : Γ(X, U.1), algebraMap Γ(X, U.1) (X.presheaf.stalk x) r = (X.presheaf.germ U.1 x hx).hom r` using `fun r => rfl`. Establish `key : ∀ i : Fin n, ∃ (a : Γ(X, U.1)) (t : Γ(X, U.1)), IsUnit ((X.presheaf.germ U.1 x hx).hom t) ∧ (X.presheaf.germ U.1 x hx).hom a = (X.presheaf.germ U₁.1 x hx₁).hom (f i) * (X.presheaf.germ U.1 x hx).hom t`. Introduce `i`. Take `⟨⟨a, t⟩, hat⟩` from `IsLocalization.mk'_surjective (U.2.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl ((X.presheaf.germ U₁.1 x hx₁).hom (f i))`. Use `⟨a, t, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← halg]`. Conclude with `IsLocalization.map_units _ t`. Rewrite using `[← halg, ← halg, ← hat]`. Conclude with `(IsLocalization.mk'_spec _ a t).symm`. Use `choose a t ht hat using key`.
+
+Use `⟨n, a, J, ?_, ?_⟩` and prove the remaining obligations. Use `rsp_of_units _ _ (fun i => (ht i).unit) ?_ hR` and prove the remaining obligations. Introduce `i`. Rewrite using `[hat i, IsUnit.unit_spec, mul_comm]`. Rewrite using `[← ReciprocityTheory.AnForm.R.ds_stalkId_eq_map I U x hx, ReciprocityTheory.AnForm.R.ds_stalkId_eq_map I U₁ x hx₁, hI₁, Ideal.map_span, Set.image_singleton, map_prod, map_prod]`.
+
+Establish `: ∏ i ∈ J, (X.presheaf.germ U.1 x hx).hom (a i) = (∏ i ∈ J, (X.presheaf.germ U.1 x hx).hom (t i)) * ∏ i ∈ J, (X.presheaf.germ U₁.1 x hx₁).hom (f i)`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hat i, mul_comm]`. Rewrite using `[this, Ideal.span_singleton_mul_left_unit]`.
+
+Conclude with `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one fun i _ => ht i`.
+-/
 theorem stalk_snc : ∀ (X : Scheme.{0}) (I : X.IdealSheafData), ReciprocityTheory.AnForm.R.FinalTheorems.Snc I →
     ∀ (U : X.affineOpens) (x : X) (hx : x ∈ U.1), IsRegularLocalRing (X.presheaf.stalk x) ∧
       ∃ (m : ℕ) (a : Fin m → Γ(X, U.1)) (J : Finset (Fin m)),

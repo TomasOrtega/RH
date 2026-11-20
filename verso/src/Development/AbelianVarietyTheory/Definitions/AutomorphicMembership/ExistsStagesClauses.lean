@@ -14,6 +14,15 @@ namespace GlobalTheory.Mem.Top.V4.Model
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.FrobeniusOrbits Formalism.L2.Host Formalism.L2.GlobalTheoryTheory GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem NumberField IsDedekindDomain
 
+/- English proof (translation)
+Establish `L : ∀ {C : FC} {K K' : TransportedAlt} {CH : ℝ}, C.Large (K.sup K') CH → C.Large K CH ∧ C.Large K' CH` using `fun h => ⟨⟨fun c hc => (le_max_left _ _).trans (h.1 c hc), trivial, fun c hc => (le_max_left _ _).trans (h.2.2.1 c hc), fun c hc => (le_max_left _ _).trans (h.2.2.2 c hc)⟩, ⟨fun c hc => (le_max_right _ _).trans (h.1 c hc), trivial, fun c hc => (le_max_right _ _).trans (h.2.2.1 c …`. Take `⟨a, ha, hp⟩` from `hp`. Take `⟨b, hb, hq⟩` from `hq`. Use `⟨min a b, lt_min ha hb, fun e C8 he hle h52 h8 => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hp e C8 he (hle.trans (min_le_left _ _)) h52 h8`.
+
+Take `⟨K', hK'⟩` from `hq e C8 he (hle.trans (min_le_right _ _)) h52 h8`. Use `⟨K.sup K', fun C hC hC8 hL => ?_⟩` and prove the remaining obligations. Take `⟨a1, ha1⟩` from `hK C hC hC8 (L hL).1`. Take `⟨b1, hb1⟩` from `hK' C hC hC8 (L hL).2`. Use `⟨max a1 b1, fun cD hcD => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a2, ha2⟩` from `ha1 cD (le_trans (le_max_left _ _) hcD)`. Take `⟨b2, hb2⟩` from `hb1 cD (le_trans (le_max_right _ _) hcD)`. Use `⟨max a2 b2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨a3, ha3⟩` from `ha2 ch (le_trans (le_max_left _ _) hch)`. Take `⟨b3, hb3⟩` from `hb2 ch (le_trans (le_max_right _ _) hch)`.
+
+Conclude with `⟨max a3 b3, fun X h1 h2 h3 h4 hx => ⟨ha3 X h1 h2 h3 h4 (le_trans (le_max_left _ _) hx), hb3 X h1 h2 h3 h4 (le_trans (le_max_right _ _) hx)⟩⟩`.
+-/
 theorem ev_and {p q : Ctx → Prop} (hp : Ev p) (hq : Ev q) : Ev fun K => p K ∧ q K := by
   have L : ∀ {C : FC} {K K' : TransportedAlt} {CH : ℝ}, C.Large (K.sup K') CH → C.Large K CH ∧ C.Large K' CH := fun h =>
     ⟨⟨fun c hc => (le_max_left _ _).trans (h.1 c hc), trivial, fun c hc => (le_max_left _ _).trans (h.2.2.1 c hc),
@@ -37,6 +46,11 @@ theorem ev_and {p q : Ctx → Prop} (hp : Ev p) (hq : Ev q) : Ev fun K => p K �
   exact ⟨max a3 b3, fun X h1 h2 h3 h4 hx =>
     ⟨ha3 X h1 h2 h3 h4 (le_trans (le_max_left _ _) hx), hb3 X h1 h2 h3 h4 (le_trans (le_max_right _ _) hx)⟩⟩
 
+/- English proof (translation)
+Take `⟨ε0, h0, H⟩` from `hp`. Use `⟨ε0, h0, fun eps C8 a1 a2 a3 a4 => ?_⟩` and prove the remaining obligations. Take `⟨K0, H⟩` from `H eps C8 a1 a2 a3 a4`. Use `⟨K0, fun C b1 b2 b3 => ?_⟩` and prove the remaining obligations. Take `⟨c1, H⟩` from `H C b1 b2 b3`.
+
+Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, H⟩` from `H cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨x0, H⟩` from `H ch hch`. Conclude with `⟨x0, fun K d1 d2 d3 d4 d5 => h K (H K d1 d2 d3 d4 d5)⟩`.
+-/
 theorem ev_imp {p q : Ctx → Prop} (hp : Ev p) (h : ∀ K, p K → q K) : Ev q := by
   obtain ⟨ε0, h0, H⟩ := hp
   refine ⟨ε0, h0, fun eps C8 a1 a2 a3 a4 => ?_⟩
@@ -49,10 +63,16 @@ theorem ev_imp {p q : Ctx → Prop} (hp : Ev p) (h : ∀ K, p K → q K) : Ev q 
   obtain ⟨x0, H⟩ := H ch hch
   exact ⟨x0, fun K d1 d2 d3 d4 d5 => h K (H K d1 d2 d3 d4 d5)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => ⟨0, fun K _ _ _ _ _ => h K⟩⟩⟩⟩⟩`.
+-/
 theorem ev_all {p : Ctx → Prop} (h : ∀ K, p K) : Ev p :=
   ⟨1, one_pos, fun _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => ⟨0,
     fun K _ _ _ _ _ => h K⟩⟩⟩⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.untw, fun h => ⟨Y.rrDef, Y.rationalRoots_def, Y.kap_def, Y.lam_def, Y.ties.bu_def, Y.ties.ft_occ, h, Y.idx, Y.kapR_def⟩⟩`.
+-/
 theorem rowLay_iff {D : D7} (Y : Lay D) : RowLay D Y.p0 Y.X ↔ ∀ w, D.what₂.muAt w = D.what₂.mu0 → ∀ j, 1 ≤ j → j ≤ D.R.m →
     D.what₂.Ij D.what₂.mu0 j w = 0 ∧ D.what₂.jw D.what₂.mu0 j w = 0 :=
   ⟨fun h => h.untw, fun h => ⟨Y.rrDef, Y.rationalRoots_def, Y.kap_def, Y.lam_def, Y.ties.bu_def, Y.ties.ft_occ, h, Y.idx, Y.kapR_def⟩⟩
@@ -91,6 +111,15 @@ def coreOfLay {K : Ctx} {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} (Y : Lay
   nch_tie := Y.nch_tie
   nch_Q := nch_Q
 
+/- English proof (translation)
+Establish `hk : 0 + 1 < X.B.R.k - 1` using `by have := X.B.R.m_add_three_le_k; have := X.B.R.two_le_m; omega`. Establish `hne : Nonempty (Tau X.B.R)` using `Fintype.card_pos_iff.1 (by rw [card_Tau X.B.host]; unfold Ranks.f Ranks.n; positivity)`. Take `⟨τ⟩` from `hne`. Establish `h1` using `X.S.s.cloud_gap X.B.u₀ τ 0 hk`. Establish `key : ∀ (P : Pre), K.Over P → ∀ (τ : Tau P.R) (h : 0 + 1 < P.R.k - 1), (P.hcW P.u₀ τ).v ⟨0, by omega⟩ - (P.hcW P.u₀ τ).v ⟨0 + 1, h⟩ = 4 * (Delv K.s K.cD : ℚ)`.
+
+Introduce and unpack `_ ⟨sp, hT, hY, hA, hV, hz, rfl, -⟩ τ h`. Establish `a` using `(K.ok.hc K.P.u₀).1 τ ⟨0, by exact lt_of_le_of_lt (Nat.zero_le _) h⟩`. Establish `b` using `(K.ok.hc K.P.u₀).1 τ ⟨0 + 1, h⟩`. Establish `h' : 0 + 1 < K.P.R.k - 1` using `h`. Establish `e : ((K.P.R.k - 2 - 0 : ℕ) : ℚ) = ((K.P.R.k - 2 - (0 + 1) : ℕ) : ℚ) + 1`.
+
+Conclude with `(by omega : K.P.R.k - 2 - 0 = K.P.R.k - 2 - (0 + 1) + 1)` after adjusting the coercions. Use `(congrArg₂ (· - ·) a b).trans ?_` and prove the remaining obligations. Simplify using `only [e]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `key _ hO τ hk`.
+
+Rewrite `h1` using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem del_of_over (K : Ctx) (X : Stages) (hO : K.Over X.B.toPre) : X.S.s.Del = (Delv K.s K.cD : ℚ) := by
   have hk : 0 + 1 < X.B.R.k - 1 := by have := X.B.R.m_add_three_le_k; have := X.B.R.two_le_m; omega
   have hne : Nonempty (Tau X.B.R) := Fintype.card_pos_iff.1 (by rw [card_Tau X.B.host]; unfold Ranks.f Ranks.n; positivity)
@@ -111,11 +140,17 @@ theorem del_of_over (K : Ctx) (X : Stages) (hO : K.Over X.B.toPre) : X.S.s.Del =
   rw [h2] at h1
   linarith
 
+/- English proof (translation)
+Use `haveI : Fact (B.host.g k).Prime := ⟨B.host.g_prime k⟩`. Take `⟨w, hw⟩` from `IsCyclic.exists_ofOrder_eq_natCard (α := (ZMod (B.host.g k))ˣ)`. Conclude with `⟨w, by rw [hw, Nat.card_eq_fintype_card, ZMod.card_units]⟩`.
+-/
 theorem exists_generator (B : Base) (k : Fin 2) : ∃ w : (ZMod (B.host.g k))ˣ, orderOf w = B.host.g k - 1 := by
   haveI : Fact (B.host.g k).Prime := ⟨B.host.g_prime k⟩
   obtain ⟨w, hw⟩ := IsCyclic.exists_ofOrder_eq_natCard (α := (ZMod (B.host.g k))ˣ)
   exact ⟨w, by rw [hw, Nat.card_eq_fintype_card, ZMod.card_units]⟩
 
+/- English proof (translation)
+Use `⟨{P.host.g 0, P.host.g 1, P.host.d} ∪ Finset.range (⌊K.s.X'' P.R.n⌋₊ + 1), ?_⟩` and prove the remaining obligations. Introduce and unpack `p - (⟨i, rfl⟩ | rfl | h)`. Apply the tactic sequence `fin_cases i <;> simp`. Simplify using the standard rewrite rules. Conclude with `Finset.mem_union_right _ (Finset.mem_range.2 (Nat.lt_succ_of_le (Nat.le_floor h)))`.
+-/
 theorem exists_forced (K : Ctx) (P : Pre) : ∃ S : Finset ℕ,
     ∀ p : ℕ, p.Prime → ((∃ i, p = P.host.g i) ∨ p = P.host.d ∨ (p : ℝ) ≤ K.s.X'' P.R.n) → p ∈ S := by
   refine ⟨{P.host.g 0, P.host.g 1, P.host.d} ∪ Finset.range (⌊K.s.X'' P.R.n⌋₊ + 1), ?_⟩
@@ -124,15 +159,24 @@ theorem exists_forced (K : Ctx) (P : Pre) : ∃ S : Finset ℕ,
   · simp
   · exact Finset.mem_union_right _ (Finset.mem_range.2 (Nat.lt_succ_of_le (Nat.le_floor h)))
 
+/- English proof (translation)
+Use `choose S hS using exists_forced K`. Conclude with `⟨fun _ _ _ => ∅, fun P _ _ _ => S P, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun B _ _ _ _ h _ p hp h' => h (hS _ p hp h')⟩`.
+-/
 theorem lg_forced (K : Ctx) : large₂ K fun B _ T =>
     ∀ p : ℕ, p.Prime → ((∃ i, p = B.host.g i) ∨ p = B.host.d ∨ (p : ℝ) ≤ K.s.X'' B.R.n) → p ∈ T.pl := by
   choose S hS using exists_forced K
   exact ⟨fun _ _ _ => ∅, fun P _ _ _ => S P, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp,
     fun B _ _ _ _ h _ p hp h' => h (hS _ p hp h')⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun c => Finset.notMem_empty _ (c.forced _ (X.B.host.g_prime 0) (.inl ⟨0, rfl⟩))⟩`.
+-/
 theorem isEmpty_core_untw (K : Ctx) (X : Stages) (f : Fr X.B.toPre) : IsEmpty (Core K X f (TwDat.untw X.B ∅)) :=
   ⟨fun c => Finset.notMem_empty _ (c.forced _ (X.B.host.g_prime 0) (.inl ⟨0, rfl⟩))⟩
 
+/- English proof (translation)
+Use `⟨fun hw he => ?_, fun hw => by_contra fun hn => hw (h.off w hn)⟩` and prove the remaining obligations. Establish `h1` using `h.tw w`. Rewrite `h1` using `[← h.on w hw, he, h.mu0]`. Conclude with `(TwFin.tw_fin X.B f T).2.1 w h1.symm`.
+-/
 theorem mem_iff {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} {Wt : Set X.B.places.Pl} {xi : X.C.Tup → HChar X.B.host.E}
     (h : MuIsW X f T Wt xi) (w : X.B.places.Pl) : w ∈ Wt ↔ X.W.muAt w ≠ X.C.mu0 := by
   refine ⟨fun hw he => ?_, fun hw => by_contra fun hn => hw (h.off w hn)⟩
@@ -140,15 +184,28 @@ theorem mem_iff {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} {Wt : Set X.B.pl
   rw [← h.on w hw, he, h.mu0] at h1
   exact (TwFin.tw_fin X.B f T).2.1 w h1.symm
 
+/- English proof (translation)
+Rewrite using `[mem_iff h, X.W.muAt_conj]`. Conclude with `(mem_iff h w).1 hw`.
+-/
 theorem conj_mem {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} {Wt : Set X.B.places.Pl} {xi : X.C.Tup → HChar X.B.host.E}
     (h : MuIsW X f T Wt xi) {w : X.B.places.Pl} (hw : w ∈ Wt) : X.B.places.conj w ∈ Wt := by
   rw [mem_iff h, X.W.muAt_conj]
   exact (mem_iff h w).1 hw
 
+/- English proof (translation)
+The claim follows from `Finset.eq_empty_of_forall_notMem fun v => ((T.psi_is w).ram v).1 (h.supp w hw ▸ isClsF_one.unr v)`.
+-/
 theorem Q_off {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} {Wt : Set X.B.places.Pl} {xi : X.C.Tup → HChar X.B.host.E}
     (h : MuIsW X f T Wt xi) {w : X.B.places.Pl} (hw : w ∉ Wt) : T.Q w = ∅ :=
   Finset.eq_empty_of_forall_notMem fun v => ((T.psi_is w).ram v).1 (h.supp w hw ▸ isClsF_one.unr v)
 
+/- English proof (translation)
+Establish `hμ : xi μ ∈ T.set f` using `h.range ▸ Set.mem_range_self μ`. Break down `hμ with (e | e | e) | ⟨w, e⟩` into its components or cases. Conclude with `.inl (h.inj (e.trans h.mu0.symm))`. Conclude with `.inr (.inl (h.inj (e.trans h.star.symm)))`. Conclude with `.inr (.inr (.inl (h.inj (e.trans h.star'.symm))))`.
+
+Distinguish the cases in `hw : w ∈ Wt`. Conclude with `.inr (.inr (.inr ⟨w, hw, (h.inj (e.symm.trans (h.tw w).symm)).trans (h.on w hw).symm⟩))`. Unfold `TwDat.xiTw at e`. Rewrite `e` using `[h.supp w hw, mul_one]`. Use `split_ifs at e`.
+
+Conclude with `.inr (.inr (.inl (h.inj (e.symm.trans h.star'.symm))))`. Conclude with `.inr (.inl (h.inj (e.symm.trans h.star.symm)))`.
+-/
 theorem tup_cases {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} {Wt : Set X.B.places.Pl} {xi : X.C.Tup → HChar X.B.host.E}
     (h : MuIsW X f T Wt xi) (μ : X.C.Tup) : μ = X.C.mu0 ∨ μ = X.C.muStar ∨ μ = X.C.muStar' ∨ ∃ w ∈ Wt, μ = X.W.muAt w := by
   have hμ : xi μ ∈ T.set f := h.range ▸ Set.mem_range_self μ
@@ -164,11 +221,21 @@ theorem tup_cases {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} {Wt : Set X.B.
       · exact .inr (.inr (.inl (h.inj (e.symm.trans h.star'.symm))))
       · exact .inr (.inl (h.inj (e.symm.trans h.star.symm)))
 
+/- English proof (translation)
+The claim follows from `c.fval L a b d w fun h => (mem_iff c.mu w).1 h hw`.
+-/
 theorem fval_untw {K : Ctx} {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} (c : Core K X f T) (L : SizeData₂ X.toD7) (a : L.sc = K.s)
     (b : WtEq L K.a K.b) (d : Val K.C K.cD K.ch L) (w : X.B.places.Pl) (hw : X.W.muAt w = X.C.mu0) :
     ∀ j ∈ SizeData₂.lifts X.toD7, Fval L j w = 0 :=
   c.fval L a b d w fun h => (mem_iff c.mu w).1 h hw
 
+/- English proof (translation)
+Establish `hxp : 0 < L.sc.x` using `by linarith [L.sc.one_lt_alt]`. Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hb' : 0 < L.sc.b'` using `div_pos (mul_pos hxp hb) (Real.exp_pos _)`. Distinguish the cases in `c1 : (D.eTau τ : D.R.GG) ∈ D.host.thickPlaces`. Conclude with `hb.trans_le (L.win_thick j h1 h2 _ c1).1`.
+
+Distinguish the cases in `c2 : (D.eTau τ : D.R.GG) ∈ D.host.topPlaces`. Take `⟨t, ht, e⟩` from `Finset.mem_image.mp c2`. Establish `a1` using `(L.win_top j h1 h2 τ ⟨t, ht⟩ e.symm).1`. Establish `a2` using `L.bT_ge ⟨t, ht⟩`. Establish `a3` using `div_pos hb' hxp`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `lt_of_lt_of_le ?_ (L.win_thin j h1 h2 _ ⟨(D.eTau _).2, c2, c1⟩).1` and prove the remaining obligations. Establish `hn : (0 : ℝ) < D.R.n` using `by unfold Ranks.n; positivity`. Unfold `Scale.w''`. Check the signs of the components of the expression.
+-/
 theorem wj_pos {D : D7} (L : SizeData₂ D) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (τ : D.what₂.Tau) : 0 < wj D j τ := by
   have hxp : 0 < L.sc.x := by linarith [L.sc.one_lt_alt]
   have hb : 0 < L.sc.b := Real.exp_pos _
@@ -186,12 +253,18 @@ theorem wj_pos {D : D7} (L : SizeData₂ D) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤
     unfold Scale.w''
     positivity
 
+/- English proof (translation)
+Establish `hk : (1 : ℝ) < D.R.k` using `by have := D.R.m_add_three_le_k; exact_mod_cast (by omega : 1 < D.R.k)`. Unfold `FRamD`. Use `mul_neg_of_neg_of_pos (by linarith) (Finset.sum_pos (fun t _ => lt_min (wj_pos L j h1 h2 _) (wj_pos L j h1 h2 _)) ?_)` and prove the remaining obligations. Conclude with `⟨0, Finset.mem_univ _⟩`.
+-/
 theorem framD_neg {D : D7} (L : SizeData₂ D) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : FRamD D j < 0 := by
   have hk : (1 : ℝ) < D.R.k := by have := D.R.m_add_three_le_k; exact_mod_cast (by omega : 1 < D.R.k)
   unfold FRamD
   refine mul_neg_of_neg_of_pos (by linarith) (Finset.sum_pos (fun t _ => lt_min (wj_pos L j h1 h2 _) (wj_pos L j h1 h2 _)) ?_)
   exact ⟨0, Finset.mem_univ _⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Establish `hm : 1 ≤ X.toD7.R.m` using `by have := X.toD7.R.two_le_m; omega`. Establish `h` using `c.fval L a b d w hn 1 (Finset.mem_Icc.2 ⟨le_rfl, hm⟩)`. Establish `e : Fval L 1 w = FRamD X.toD7 1` using `FvalP_d L 1 hg hw`. Conclude with `(framD_neg L 1 le_rfl hm).ne (e.symm.trans h)`.
+-/
 theorem mem_of_ramD {K : Ctx} {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} (c : Core K X f T) (L : SizeData₂ X.toD7) (a : L.sc = K.s)
     (b : WtEq L K.a K.b) (d : Val K.C K.cD K.ch L) (w : X.B.places.Pl)
     (hg : X.B.places.resChar w ∉ L.gTypes) (hw : X.toD7.host.cls (X.B.places.resChar w) = PrimeClass.ramD) : w ∈ c.Wt := by
@@ -201,6 +274,9 @@ theorem mem_of_ramD {K : Ctx} {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} (c
   have e : Fval L 1 w = FRamD X.toD7 1 := FvalP_d L 1 hg hw
   exact (framD_neg L 1 le_rfl hm).ne (e.symm.trans h)
 
+/- English proof (translation)
+The claim follows from `ev_imp TamePow.tame_of_pow fun _ hK X _ T c => ⟨c.del, c.etaF, fun w hw j h1 h2 => by have a := c.row.untw w hw j h1 h2 have b := c.row.untw (X.toD7.what₂.places.conj w) ((X.toD7.what₂.muAt_conj w).trans hw) j h1 h2 unfold Rows.Data.Aj rw [hw, a.1, a.2, b.1] rfl, (TwFin.finite_pl …`.
+-/
 theorem ev_recOK : Ev fun K => ∀ (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (_ : Core K X f T), RecOK K.s K.C K.cD X.toD7 :=
   ev_imp TamePow.tame_of_pow fun _ hK X _ T c =>
     ⟨c.del, c.etaF, fun w hw j h1 h2 => by
@@ -212,6 +288,11 @@ theorem ev_recOK : Ev fun K => ∀ (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.
       (TwFin.finite_pl X.B T.pl).subset fun w hw => c.mu.sub w ((mem_iff c.mu w).2 hw),
       (Full.dgam_pos_and_full X.toD7).1, (Full.dgam_pos_and_full X.toD7).2, hK X c.isOver c.chiT, c.col.mink, c.col.atT⟩
 
+/- English proof (translation)
+Establish `h : Ev fun K => ∀ D : D7, Over D K.P K.Lv → RecOK K.s K.C K.cD D → ∃ L : SizeData₂ D, L.sc = K.s ∧ WtEq L K.a K.b ∧ Val K.C K.cD K.ch L`. Use `⟨1, one_pos, fun eps _ a1 _ a3 _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C b1 _ _ => ⟨0, fun cD hcD => ⟨402, fun ch hch => ?_⟩⟩⟩⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `exists_sizeData_over eps cD ch C a1 a3 b1 hcD hch`. Use `⟨x0, ?_⟩` and prove the remaining obligations. Introduce and unpack `K rfl rfl rfl d4 d5 D hO hR`.
+
+Conclude with `(h K.s K.P K.q1 K.a K.b K.c K.Lv D d4 d5 K.ok K.Gam_eq hO hR).2.1`. Use `ev_imp (ev_and h ev_recOK) fun K H X f T c => H.1 _ ?_ (H.2 X f T c)` and prove the remaining obligations. Take `⟨sp, hT, hY, hA, hV, hz, h, -⟩` from `c.isOver`. Conclude with `⟨sp, hT, hY, hA, hV, hz, X, h, rfl⟩`.
+-/
 theorem ev_exists_sizeData : Ev fun K => ∀ (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (_ : Core K X f T),
     ∃ L : SizeData₂ X.toD7, L.sc = K.s ∧ WtEq L K.a K.b ∧ Val K.C K.cD K.ch L := by
   have h : Ev fun K => ∀ D : D7, Over D K.P K.Lv → RecOK K.s K.C K.cD D →
@@ -226,6 +307,9 @@ theorem ev_exists_sizeData : Ev fun K => ∀ (X : Stages) (f : Fr X.B.toPre) (T 
   obtain ⟨sp, hT, hY, hA, hV, hz, h, -⟩ := c.isOver
   exact ⟨sp, hT, hY, hA, hV, hz, X, h, rfl⟩
 
+/- English proof (translation)
+The claim follows from `ev_imp ev_exists_sizeData fun K H X f T c w hw => by obtain ⟨L, a, b, d⟩ := H X f T c have hd : X.B.host.cls X.B.host.d = PrimeClass.ramD := primeClass_d X.B.host.toHostRaw have hg : ∀ i, X.B.host.d ≠ X.B.host.g i := fun i e => by have h := X.B.toPre.level_split _ (X.B.host.g_lev …`.
+-/
 theorem ev_ramD_mem : Ev fun K => ∀ (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (c : Core K X f T) (w : X.B.places.Pl),
     X.B.places.resChar w = X.B.host.d → w ∈ c.Wt :=
   ev_imp ev_exists_sizeData fun K H X f T c w hw => by
@@ -242,6 +326,13 @@ theorem ev_ramD_mem : Ev fun K => ∀ (X : Stages) (f : Fr X.B.toPre) (T : TwDat
     · exact hg 0 h
     · exact hg 1 (Finset.mem_singleton.1 h)
 
+/- English proof (translation)
+Establish `hx : c.xi = c'.xi`. Use function extensionality and compare the values at `μ`. Establish `hm : c.xi μ ∈ T.set f` using `c.mu.range ▸ Set.mem_range_self μ`. Break down `hm with (e | e | e) | ⟨w, e⟩` into its components or cases. Rewrite using `[c.mu.inj (e.trans c.mu.mu0.symm), c.mu.mu0, c'.mu.mu0]`.
+
+Rewrite using `[c.mu.inj (e.trans c.mu.star.symm), c.mu.star, c'.mu.star]`. Rewrite using `[c.mu.inj (e.trans c.mu.star'.symm), c.mu.star', c'.mu.star']`. Rewrite using `[c.mu.inj (e.symm.trans (c.mu.tw w).symm), c.mu.tw, c'.mu.tw]`. Establish `hW : c.Wt = c'.Wt` using `Set.ext fun w => (mem_iff c.mu w).trans (mem_iff c'.mu w).symm`. Consider the cases of `c`.
+
+Consider the cases of `c'`. Consider the cases of `h`. Consider the cases of `hx`. Consider the cases of `hW`. Both sides reduce to the same expression.
+-/
 theorem core_ext {K : Ctx} {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} (c c' : Core K X f T) (h : c.O = c'.O) : c = c' := by
   have hx : c.xi = c'.xi := by
     funext μ
@@ -258,9 +349,17 @@ theorem core_ext {K : Ctx} {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} (c c'
 
 def someBase (P : Pre) : Base := (BaseExt.exists_base P ∅ ∅ ∅ (by simp) (by simp) (by simp)).choose
 
+/- English proof (translation)
+The claim follows from `(BaseExt.exists_base P ∅ ∅ ∅ (by simp) (by simp) (by simp)).choose_spec.1`.
+-/
 theorem someBase_pre (P : Pre) : (someBase P).toPre = P :=
   (BaseExt.exists_base P ∅ ∅ ∅ (by simp) (by simp) (by simp)).choose_spec.1
 
+/- English proof (translation)
+Use `⟨ev_all fun K B₀ f₀ S₁ S₂ _ h₁ h₂ => ?_, fun B B' f f' e _ h => by rw [e.KsC_eq, e.1, h]⟩` and prove the remaining obligations. Take `⟨B₁, e₁, k₁, l₁⟩` from `Inh.exists_fixed (someBase B₀.toPre) (S₁ (someBase B₀.toPre).KsC) (h₁ _)`. Take `⟨B, e, l₂⟩` from `BaseEnl.exists_enl B₁ (S₂ (someBase B₀.toPre).KsC B₁.fixedCoefficientFieldInComplex) (h₂ _ _)`. Establish `hk : B.KsC = (someBase B₀.toPre).KsC` using `e.KsC_eq.trans k₁`. Establish `e' : B.toPre = B₀.toPre` using `(e.1.trans e₁).trans (someBase_pre _)`.
+
+Use `⟨B, e' ▸ f₀, e', by simp, by rw [hk, e'], ?_⟩` and prove the remaining obligations. Rewrite using `[hk, Has₂, e.fixedCoefficientField_eq]`. Conclude with `⟨l₁, l₂⟩`.
+-/
 theorem ksCond_fixed : KsCond fun B _ => B.KsC = (someBase B.toPre).KsC := by
   refine ⟨ev_all fun K B₀ f₀ S₁ S₂ _ h₁ h₂ => ?_, fun B B' f f' e _ h => by rw [e.KsC_eq, e.1, h]⟩
   obtain ⟨B₁, e₁, k₁, l₁⟩ := Inh.exists_fixed (someBase B₀.toPre) (S₁ (someBase B₀.toPre).KsC) (h₁ _)
@@ -275,6 +374,9 @@ variable (hH : DC.HostExQ) (hLP : LevelPrime) (hSP : SmallPrimeOne) (h2b : Stand
 
 include hH hLP hSP h2b in
 
+/- English proof (translation)
+Introduce `hE` and use `by refine Inh.not_ev_false hH hLP hSP h2b ?_ refine ev_imp (ev_and (ev_and (ev_preX_frame h2b) hK.ex) hE) ?_ rintro K ⟨⟨hfr, hks⟩, S₁, P₁, A, S₂, a₁, a₂, hlg⟩ obtain ⟨P, hP⟩ := Inh.exists_over K obtain ⟨B₀, rfl, -⟩ := BaseExt.exists_base P ∅ ∅ ∅ (by simp) (by simp) (by simp) obta …`.
+-/
 theorem not_exTrue_false {KP : ∀ B : Base, Fr B.toPre → Prop} (hK : KsCond KP) : ¬ ExTrue KP fun _ _ _ _ _ => False := fun hE => by
   refine Inh.not_ev_false hH hLP hSP h2b ?_
   refine ev_imp (ev_and (ev_and (ev_preX_frame h2b) hK.ex) hE) ?_
@@ -301,12 +403,18 @@ theorem not_exTrue_false {KP : ∀ B : Base, Fr B.toPre → Prop} (hK : KsCond K
 
 include hH hLP hSP h2b in
 
+/- English proof (translation)
+Introduce `hK` and use `not_exTrue_false hH hLP hSP h2b hK (ev_all fun _ => ⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun _ _ _ _ _ _ _ h => h.elim⟩)`.
+-/
 theorem not_ksCond_false : ¬ KsCond fun _ _ => False := fun hK =>
   not_exTrue_false hH hLP hSP h2b hK (ev_all fun _ => ⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅,
     by simp, by simp, fun _ _ _ _ _ _ _ h => h.elim⟩)
 
 include hH hLP hSP h2b in
 
+/- English proof (translation)
+Introduce `hE` and use `by classical refine Inh.not_ev_false hH hLP hSP h2b ?_ refine ev_imp (ev_and (ev_and (ev_preX_frame h2b) hK.ex) hE) ?_ rintro K ⟨⟨hfr, hks⟩, S₁, P₁, A, S₂, a₁, a₂, hlg⟩ obtain ⟨P, hP⟩ := Inh.exists_over K obtain ⟨B₀, rfl, -⟩ := BaseExt.exists_base P ∅ ∅ ∅ (by simp) (by simp) (by …`.
+-/
 theorem not_exTrue_confined {KP : ∀ B : Base, Fr B.toPre → Prop} (hK : KsCond KP) {Q : Slot}
     (g : Ctx → ∀ P : Pre, Fr P → IntermediateField ℚ ℂ → IntermediateField ℚ ℂ → Finset ℕ)
     (hQ : ∀ K X f T c, Q K X f T c → ∀ w ∈ c.Wt, X.B.places.resChar w ∈ g K X.B.toPre f X.B.KsC X.B.fixedCoefficientFieldInComplex) : ¬ ExTrue KP Q := fun hE => by
@@ -335,26 +443,41 @@ theorem not_exTrue_confined {KP : ∀ B : Base, Fr B.toPre → Prop} (hK : KsCon
   have hw' : w ∈ c.Wt := by_contra fun hn => t3 w (e ▸ Finset.mem_insert_self _ _) (c.mu.supp w hn)
   exact hl' _ _ (e ▸ hQ _ _ _ _ c h w hw')
 
+/- English proof (translation)
+The claim follows from `ev_imp hE fun _ hK => hK.imp fun _ _ _ _ H hp => let ⟨C, W, V, S, N, G, c, q⟩ := H hp ⟨C, W, V, S, N, G, c, h _ _ _ _ _ q⟩`.
+-/
 theorem exTrue_mono {KP : ∀ B : Base, Fr B.toPre → Prop} {Q Q' : Slot} (h : ∀ K X f T c, Q K X f T c → Q' K X f T c)
     (hE : ExTrue KP Q) : ExTrue KP Q' :=
   ev_imp hE fun _ hK => hK.imp fun _ _ _ _ H hp =>
     let ⟨C, W, V, S, N, G, c, q⟩ := H hp
     ⟨C, W, V, S, N, G, c, h _ _ _ _ _ q⟩
 
+/- English proof (translation)
+The claim follows from `ev_imp hE fun _ H X f T c q => H X f T c (h _ _ _ _ _ q)`.
+-/
 theorem export_anti {Q Q' : Slot} (h : ∀ K X f T c, Q' K X f T c → Q K X f T c) (hE : Export Q) : Export Q' :=
   ev_imp hE fun _ H X f T c q => H X f T c (h _ _ _ _ _ q)
 
+/- English proof (translation)
+The claim follows from `ev_imp hR fun _ H X f T c q e A S₂ hS => let ⟨B', f', T', a1, a2, a3, a4, a5, a6⟩ := H X f T c q e A S₂ hS ⟨B', f', T', a1, a2, a3, a4, a5, fun C W V S N G c' q' => (a6 C W V S N G c' q').imp_right (h _ _ _ _ _)⟩`.
+-/
 theorem retwist_mono {Q Q' Q'' : Slot} (h : ∀ K X f T c, Q' K X f T c → Q'' K X f T c) (hR : Retwist Q Q') : Retwist Q Q'' :=
   ev_imp hR fun _ H X f T c q e A S₂ hS =>
     let ⟨B', f', T', a1, a2, a3, a4, a5, a6⟩ := H X f T c q e A S₂ hS
     ⟨B', f', T', a1, a2, a3, a4, a5, fun C W V S N G c' q' => (a6 C W V S N G c' q').imp_right (h _ _ _ _ _)⟩
 
+/- English proof (translation)
+The claim follows from `ev_imp (ev_and hp hR) fun _ H X f T c q e A S₂ hS => let ⟨B', f', T', a1, a2, a3, a4, a5, a6⟩ := H.2 X f T c q e A S₂ hS ⟨B', f', T', a1, a2, a3, a4, a5, fun C W V S N G c' q' => (a6 C W V S N G c' q').imp_right fun h => ⟨h, q', H.1⟩⟩`.
+-/
 theorem retwist_and {Q Q' : Slot} {p : Ctx → Prop} (hp : Ev p) (hR : Retwist Q Q') :
     Retwist Q fun K X f T c => Q' K X f T c ∧ Q K X f T c ∧ p K :=
   ev_imp (ev_and hp hR) fun _ H X f T c q e A S₂ hS =>
     let ⟨B', f', T', a1, a2, a3, a4, a5, a6⟩ := H.2 X f T c q e A S₂ hS
     ⟨B', f', T', a1, a2, a3, a4, a5, fun C W V S N G c' q' => (a6 C W V S N G c' q').imp_right fun h => ⟨h, q', H.1⟩⟩
 
+/- English proof (translation)
+Take `⟨K, X, f, T, c, q, e⟩` from `h`. Take `⟨rfl, e2⟩` from `Sigma.mk.inj_iff.1 e`. Conclude with `⟨K, X, f, T, c, rfl, q, eq_of_heq e2⟩`.
+-/
 theorem FromCore.elim {Q : Slot} {D : D7} {Y : Lay D} (h : FromCore Q D Y) :
     ∃ (K : Ctx) (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (c : Core K X f T) (e : D = X.toD7), Q K X f T c ∧
       layObj (e ▸ Y) = c.O := by
@@ -430,6 +553,9 @@ def setRR {B : Base} {C : Cols B} {W : RowsRest B C} (V : DivStage B C W) (η : 
       HH := sFrame V.div.Nu V.div.h + R.muMax
       HH_ge := le_rfl } }
 
+/- English proof (translation)
+Rewrite using `[Subsingleton.elim A B]`. Unfold `Formalism.HermitianLatticesTheory.lidx`. Conclude with `sub_self _`.
+-/
 theorem lidx_zero {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] [Subsingleton V] (p : Ideal R) [p.IsPrime]
     (A B : Submodule R V) : Formalism.HermitianLatticesTheory.lidx p A B = 0 := by
   rw [Subsingleton.elim A B]
@@ -438,6 +564,15 @@ theorem lidx_zero {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] [Subsi
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨kb, ks, hk⟩` from `DV.exists_blocks X.toD7`. Set `W` to `plainRows X.W kb ks`. Take `⟨N, -⟩` from `GaloisStage.exists_nStage_of_rows X.B X.C W X.N.toLocStage (fun _ _ => rfl) (fun _ _ _ _ => rfl) (fun _ => rfl) (fun _ _ => rfl)`. Set `V₀ : DivStage X.B X.C W` to `{ X.V with }`. Set `S : SStage X.B X.C W` to `{ X.S with }`.
+
+Set `D` to `assemble X.B X.C W (setRR V₀ η) S N X.G`. Take `⟨p0, hp, -⟩` from `GlobalTheory.ProvRowSide.exists_p0Side D`. Use `haveI i1 : ∀ j, Subsingleton (D.what₂.Mj j) := fun _ => inferInstanceAs (Subsingleton (RowsModel.Euc 0))`. Use `haveI i2 : ∀ μ j, Subsingleton (D.what₂.MtL μ j) := fun _ _ => inferInstanceAs (Subsingleton (Fin 0 → X.B.LL))`. Take `⟨Z, hZ⟩` from `GlobalTheory.exists_provisionalDivX D fun j _ _ => ⟨0, Module.Basis.empty _, fun _ _ i => i.elim0⟩`.
+
+Use `⟨W, setRR V₀ η, S, N, rfl, rfl, rfl, rfl, fun (μ : X.C.Tup) a y hy => DQ.Model.sat_stable X.B.embLL (X.W.Mtilde μ) a y hy, p0, Z, fun _ => Iff.rfl, hp, fun j _ _ τ => hk j τ, fun _ _ _ _ _ h => absurd rfl h, fun u φ x => ?_, fun π => π.2.imp (fun h => ⟨⟨0, h⟩, rfl⟩) (fun h => ⟨⟨0 …` and prove the remaining obligations. Establish `h0 : D.what₂.sec D.what₂.mu0 x = 0`. Establish `: D.what₂.sec D.what₂.mu0 x ∈ D.what₂.Qsp D.what₂.mu0` using `Subtype.property _`. Take `⟨y, hy⟩` from `this.1`. Conclude with `hy.symm`.
+
+Conclude with `(h0 ▸ D.perCol_zero u φ).symm`. Use `haveI : Subsingleton (Z.MjH j).V := (Idx.jM_inj Z j).subsingleton`. Conclude with `(lidx_zero _ _ _).symm`.
+-/
 theorem exists_rowLay_of (X : Stages) (η : ℝ) :
     ∃ (W : RowsRest X.B X.C) (V : DivStage X.B X.C W) (S : SStage X.B X.C W) (N : NStage X.B X.C W),
       W.muAt = X.W.muAt ∧ W.muTw = X.W.muTw ∧ W.Drows = X.W.Drows ∧ V.div.etaF = η ∧ DQ.MtStableAt (assemble X.B X.C W V S N X.G) ∧
@@ -466,11 +601,21 @@ theorem exists_rowLay_of (X : Stages) (η : ℝ) :
   · haveI : Subsingleton (Z.MjH j).V := (Idx.jM_inj Z j).subsingleton
     exact (lidx_zero _ _ _).symm
 
+/- English proof (translation)
+Take `⟨X, h, -⟩` from `exists_stages`. Take `⟨W, V, S, N, -, -, h3, -, -, p0, Z, hR⟩` from `exists_rowLay_of X 0`. Conclude with `⟨_, p0, Z, h.trans_eq h3.symm, hR⟩`.
+-/
 theorem exists_rowLay : ∃ (D : D7) (p0 : BaseLevelRowSide D) (Z : DivX D), 0 < D.what₂.Drows ∧ RowLay D p0 Z := by
   obtain ⟨X, h, -⟩ := exists_stages
   obtain ⟨W, V, S, N, -, -, h3, -, -, p0, Z, hR⟩ := exists_rowLay_of X 0
   exact ⟨_, p0, Z, h.trans_eq h3.symm, hR⟩
 
+/- English proof (translation)
+Take `⟨sp, hT, hY, hA, hV, hz, rfl, -⟩` from `hO`. Establish `hx : 0 < K.s.x` using `by linarith [K.s.one_lt_alt]`. Use `⟨(Delv K.s K.cD : ℚ), K.c, ?_, K.ok.inj, fun u τ l h => ?_, K.ok.code⟩` and prove the remaining obligations. Conclude with `Nat.ceil_pos.2 (Real.rpow_pos_of_pos hx _)` after adjusting the coercions. Establish `a` using `(K.ok.hc u).1 τ ⟨l, by exact lt_of_le_of_lt (Nat.le_succ _) h⟩`.
+
+Establish `b` using `(K.ok.hc u).1 τ ⟨l + 1, h⟩`. Establish `h' : l + 1 < K.P.R.k - 1` using `h`. Establish `e : ((K.P.R.k - 2 - l : ℕ) : ℚ) = ((K.P.R.k - 2 - (l + 1) : ℕ) : ℚ) + 1`. Conclude with `(by omega : K.P.R.k - 2 - l = K.P.R.k - 2 - (l + 1) + 1)` after adjusting the coercions. Use `(congrArg₂ (· - ·) a b).trans ?_` and prove the remaining obligations.
+
+Simplify using `only [e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasLetters_of_over (K : Ctx) (P : Pre) (hO : K.Over P) : StagesInhab.HasLetters P := by
   obtain ⟨sp, hT, hY, hA, hV, hz, rfl, -⟩ := hO
   have hx : 0 < K.s.x := by linarith [K.s.one_lt_alt]
@@ -485,6 +630,9 @@ theorem hasLetters_of_over (K : Ctx) (P : Pre) (hO : K.Over P) : StagesInhab.Has
     simp only [e]
     ring
 
+/- English proof (translation)
+Take `⟨C, W₀, V₀, S₀, N₀, G, xi, h⟩` from `Inh.exists_muIs B hB f T`. Apply the tactic sequence `let W : RowsRest B C := { W₀ with muAt := fun w => if w ∈ Wt then W₀.muTw w else C.mu0 muAt_conj := fun w => by simp only [hc, W₀.muTw_conj] muAt_or := fun w => by split_ifs <;> simp }`. Take `⟨N, -⟩` from `GaloisStage.exists_nStage_adapt B _ W N₀.toLocStage`. Conclude with `⟨C, GaloisStage.adapt W, { V₀ with }, { S₀ with }, N, G, xi, h.inj, h.range, h.mu0, h.star, h.star', h.tw, fun w hw => if_pos hw, fun w hw => if_neg hw, hs, hu⟩`.
+-/
 theorem exists_muIsW (B : Base) (hB : StagesInhab.HasLetters B.toPre) (f : Fr B.toPre) (T : TwDat B) (Wt : Set B.places.Pl)
     (hc : ∀ w, B.places.conj w ∈ Wt ↔ w ∈ Wt) (hs : ∀ w ∈ Wt, B.places.resChar w ∈ T.pl) (hu : ∀ w, w ∉ Wt → T.psi w = 1) :
     ∃ (C : Cols B) (W : _) (V : _) (S : _) (N : _) (G : _) (xi : C.Tup → HChar B.host.E), MuIsW ⟨B, C, W, V, S, N, G⟩ f T Wt xi := by
@@ -499,6 +647,13 @@ theorem exists_muIsW (B : Base) (hB : StagesInhab.HasLetters B.toPre) (f : Fr B.
   exact ⟨C, GaloisStage.adapt W, { V₀ with }, { S₀ with }, N, G, xi, h.inj, h.range, h.mu0, h.star, h.star', h.tw,
     fun w hw => if_pos hw, fun w hw => if_neg hw, hs, hu⟩
 
+/- English proof (translation)
+Take `⟨P, hP, ⟨Y⟩, -⟩` from `StagesInhab.exists_pre_hasLetters`. Take `⟨f⟩` from `P.nonempty_hframe Y.e_even`. Take `⟨B, rfl, -⟩` from `BaseExt.exists_base P ∅ ∅ ∅ (by simp) (by simp) (by simp)`. Take `⟨Ξ, hΞ⟩` from `Inh.exists_family _ f {2} fun _ => ∅`. Take `⟨T, t1, -, t3, -⟩` from `hΞ B rfl`.
+
+Set `T' : TwDat B` to `{ T with pl := {2, 3}, off := fun w hw => T.off w (by rw [t1]; intro h; exact hw (by simp_all)) }`. Establish `pl : ∀ l : ℕ, l.Prime → ∃ w : B.places.Pl, B.places.resChar w = l` using `fun l hl =>`. Set `⟨w, hw⟩` to `GlobalTheory.Mem.PsiExist.exists_place_over B.LL hl`. Use the proof step `⟨w, Examples₂.PlacesToy.prime_mem_unique w (Examples₂.PlacesToy.resCharW_prime _) hl (Examples₂.PlacesToy.resCharW_mem w) hw⟩`. Take `⟨C, W, V, S, N, G, xi, h⟩` from `exists_muIsW B hP f T' {w | B.places.resChar w = 2} (fun w => by simp only [Set.mem_setOf_eq, TwFin.resChar_conj]) (fun w hw => by simp_all [T']) (fun w hw => (T.off w (by rw [t1]; simpa using hw)).1)`.
+
+Take `⟨w2, h2⟩` from `pl 2 Nat.prime_two`. Take `⟨w3, h3⟩` from `pl 3 Nat.prime_three`. Conclude with `⟨⟨B, C, W, V, S, N, G⟩, f, T', _, xi, h, ⟨w2, h2, t3 w2 (by simp [h2])⟩, w3, by simp [h3], by simp [T', h3]⟩`.
+-/
 theorem exists_muIsW_proper : ∃ (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (Wt : Set X.B.places.Pl) (xi : X.C.Tup → HChar X.B.host.E),
     MuIsW X f T Wt xi ∧ (∃ w ∈ Wt, T.psi w ≠ 1) ∧ ∃ w, w ∉ Wt ∧ X.B.places.resChar w ∈ T.pl := by
   classical
@@ -518,6 +673,11 @@ theorem exists_muIsW_proper : ∃ (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B
   obtain ⟨w3, h3⟩ := pl 3 Nat.prime_three
   exact ⟨⟨B, C, W, V, S, N, G⟩, f, T', _, xi, h, ⟨w2, h2, t3 w2 (by simp [h2])⟩, w3, by simp [h3], by simp [T', h3]⟩
 
+/- English proof (translation)
+Take `⟨C, W₀, V₀, S₀, N₀, G, xi, h⟩` from `exists_muIsW B (hasLetters_of_over K _ hO) f T Wt hc hs hu`. Take `⟨W, V, S, N, h1, h2, -, h4, h5, h6⟩` from `exists_rowLay_of ⟨B, C, W₀, V₀, S₀, N₀, G⟩ (6 * K.s.x ^ (-K.C.P.CF))`. Use `⟨C, W, V, S, N, G, xi, ⟨h.inj, h.range, h.mu0, h.star, h.star', fun w => ?_, fun w hw => ?_, fun w hw => ?_, hs, hu⟩, h5, del_of_over K ⟨B, C, W, V, S, N, G⟩ hO, h4, h6⟩` and prove the remaining obligations. Conclude with `(congrArg xi (congrFun h2 w)).trans (h.tw w)`. Conclude with `(congrFun h1 w).trans ((h.on w hw).trans (congrFun h2 w).symm)`.
+
+Conclude with `(congrFun h1 w).trans (h.off w hw)`.
+-/
 theorem exists_stages_clauses (K : Ctx) (B : Base) (hO : K.Over B.toPre) (f : Fr B.toPre) (T : TwDat B) (Wt : Set B.places.Pl)
     (hc : ∀ w, B.places.conj w ∈ Wt ↔ w ∈ Wt) (hs : ∀ w ∈ Wt, B.places.resChar w ∈ T.pl) (hu : ∀ w, w ∉ Wt → T.psi w = 1) :
     ∃ (C : Cols B) (W : RowsRest B C) (V : DivStage B C W) (S : SStage B C W) (N : NStage B C W) (G : GJStage B C)
@@ -535,6 +695,9 @@ theorem exists_stages_clauses (K : Ctx) (B : Base) (hO : K.Over B.toPre) (f : Fr
 def setData {K : Ctx} {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} (c : Core K X f T) (y : ThData X.toD7) : Core K X f T :=
   { c with O := { c.O with xd := y } }
 
+/- English proof (translation)
+The claim follows from `(c.nch_tie.Q_eq a).trans (c.nch_Q _ (by_contra fun h => X.N.nd.w_tw a (c.mu.off _ h))).1`.
+-/
 theorem loc_Q {K : Ctx} {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} (c : Core K X f T) (a : X.N.nd.Loc) :
     X.N.nd.Q a = T.Q (X.N.nd.w a) :=
   (c.nch_tie.Q_eq a).trans (c.nch_Q _ (by_contra fun h => X.N.nd.w_tw a (c.mu.off _ h))).1

@@ -15,6 +15,29 @@ noncomputable section
 
 namespace GlobalTheory.ListProdFactor
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP l hl h hh f φ φ₁ hφSB hφstd`. Proceed by induction on `l generalizing φ₁ with`. Consider the case `nil`. Introduce `_ hout`. Establish `e : φ₁ = φ` using `funext fun v => hout v (List.not_mem_nil)`.
+
+Substitute `e` using the available equality. Use `show om 1 _ = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Consider the case `cons a l' ih`.
+
+Introduce `hin hout`. Establish `ha : a ∉ l'` using `(List.nodup_cons.1 hl).1`. Establish `hl' : l'.Nodup` using `(List.nodup_cons.1 hl).2`. Set `φ₁' : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun v => if v ∈ l' then φ₁ v else φ v`. Establish `hφ₁'a : φ₁' a = φ a` using `by simp only [φ₁', if_neg ha]`.
+
+Establish `hIH : om (1, (l'.map h).prod) (pure f φ) = pure f φ₁'`. Use `ih hl' (fun v hv => hh v (List.mem_cons_of_mem a hv)) φ₁' ?_ ?_` and prove the remaining obligations. Introduce `v hv`. Use `hin v (List.mem_cons_of_mem a hv)` as an intermediate fact. Simplify using `only [φ₁', if_pos hv]`.
+
+Conclude with `this`. Introduce `v hv`. Simplify using `only [φ₁', if_neg hv]`. Establish `hSB' : ∀ v, φ₁' v ∈ SB _`. Introduce `v`.
+
+Distinguish the cases in `hv : v ∈ l'`. Simplify using `only [φ₁', if_pos hv]`. Conclude with `(hin v (List.mem_cons_of_mem a hv)).1`. Simplify using `only [φ₁', if_neg hv]`. Conclude with `hφSB v`.
+
+Establish `hstd' : ∀ᶠ v in Filter.cofinite, φ₁' v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Establish `hfin : ∀ᶠ v in Filter.cofinite, v ∉ l'` using `(l'.finite_toSet).compl_mem_cofinite`. Use `filter_upwards [hφstd, hP.good.std, hfin] with v h1 h2 h3`. Simplify using `only [φ₁', if_neg h3]`. Rewrite using `[h1, h2]`.
+
+Establish `hpure` using `GlobalTheory.TensUniq.pure_mem_schA f φ₁' hSB' hstd'`. Establish `hmul` using `fun x => GlobalTheory.PureFactor.mulSupport_finite φ₁' hstd' x`. Establish `hacts : Acts (evFin F a) (om (1, h a)) (φ₁' a) (φ₁ a)`. Rewrite using `[hφ₁'a]`. Conclude with `(hin a List.mem_cons_self).2`.
+
+Establish `hstep` using `GlobalTheory.ThK.LocalOps.acts_pure a (om (1, h a)) f φ₁' (φ₁ a) hpure hmul hacts`. Establish `hupd : Function.update φ₁' a (φ₁ a) = φ₁`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hva : v = a`. Substitute `hva` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hva]`. Distinguish the cases in `hv : v ∈ l'`. Simplify using `only [φ₁', if_pos hv]`. Simplify using `only [φ₁', if_neg hv]`.
+
+Conclude with `(hout v (by simp [hva, hv])).symm`. Establish `hsplit : ((1 : UA σ X.J), ((a :: l').map h).prod) = ((1 : UA σ X.J), h a) * (1, (l'.map h).prod)`. Rewrite using `[List.map_cons, List.prod_cons]`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[hsplit, map_mul, Module.End.mul_apply, hIH, hstep, hupd]`.
+-/
 theorem om_listProd_pure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

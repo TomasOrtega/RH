@@ -2,6 +2,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.T
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.MatrixExtendByZeroApply
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module Topology UpperTheory.V.Loc UpperTheory.V.U3
 
+/- English proof (translation)
+Introduce `l _ G _ _ _ φ hφ B _ _ _ _ _ _ κ hκ x y z ρ cx cy cz hρ hx h1 h2`. Establish `hc : Continuous fun g => (ρ g : Matrix (Fin 3) (Fin 3) B)`. Simplify using `only [hρ]`. Conclude with `continuous_triM (t := fun g i => κ i g) hκ cx cy cz`. Apply the tactic sequence `let f : (B × B) →ₗ[B] (Fin 3 → B) := { toFun := fun v => ![v.1, v.2, 0] map_add' := fun v w => by ext i; fin_cases i <;> simp map_smul' := fun c v => by ext i; fin_cases i <;> simp }`.
+
+Establish `hf : ∀ v, f v = ![v.1, v.2, 0]` using `fun _ => rfl`. Rewrite using `[← crOn_top]`. Use `crExt φ hφ (ext2 (κ 0) (κ 1) x hx) (colRep ρ) (contAction_charExtension_of_continuous_cocycle (hκ 0) (hκ 1) hx cx) (contAction_colRep hc) (κ 2) f (LinearMap.proj 2) ![0, 0, 1] (fun g => (z g, y g)) ?_ ?_ ?_ ?_ ?_ ⊤ (by simp) ((crOn_top _ _).2 h1) ((crOn_top _ _).2 h2)` and prove the remaining obligations. Introduce `v w h`. Conclude with `Prod.ext (congrFun h 0) (congrFun h 1)`.
+
+Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨(v 0, v 1), ?_⟩` and prove the remaining obligations. Establish `h' : v 2 = 0` using `h`.
+
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [hf, h']`. Introduce and unpack `⟨w, rfl⟩`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+
+Introduce `g v`. Rewrite using `[colRep_apply, hρ, characterExtensionRep_apply]`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [hf, triM, Matrix.mulVec, dotProduct, Fin.sum_univ_three]`. Introduce `g`.
+
+Rewrite using `[colRep_apply, hρ]`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [hf, triM, Matrix.mulVec, dotProduct, Fin.sum_univ_three, mul_comm]`.
+-/
 theorem UpperTheory.isCrystalline_upperTriangular_iff_mem_finiteCocycles :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [TopologicalSpace B] [IsModuleTopology ℚ_[l] B] [IsTopologicalRing B] (κ : Fin 3 → G →* Bˣ), (∀ i, Continuous fun g => (κ i g : B)) → ∀ (x y z : G → B) (ρ : G →* GL (Fin 3) B), Continuous x → Continuous y → Continuous z → (∀ g, (ρ g : Matrix (Fin 3) (Fin 3) B) = triM (fun i => κ i g) (x g) (y g) (z g)) → ∀ hx : ∀ g h, x (g * h) = x g + ((κ 0 / κ 1) g : Bˣ) * x h, IsCr φ (ext2 (κ 0) (κ 1) x hx) → IsCr φ (chRep (κ 2)) → (IsCr φ (colRep ρ) ↔ (fun g => (z g, y g)) ∈ UpperTheory.V.Loc.finiteCocycles φ (twist (κ 2)⁻¹ (ext2 (κ 0) (κ 1) x hx))) := by
   intro l _ G _ _ _ φ hφ B _ _ _ _ _ _ κ hκ x y z ρ cx cy cz hρ hx h1 h2

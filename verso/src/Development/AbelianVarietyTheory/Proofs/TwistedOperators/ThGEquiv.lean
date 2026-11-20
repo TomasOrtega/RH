@@ -14,6 +14,17 @@ noncomputable section
 
 namespace GlobalTheory.ThetaGoodEquiv
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R hL hM hP hgr _ i t g0 κ κ' hκ hκ' S hS y`. Establish `hinj` using `(hM.HW i (sg0 D A)).1`. Apply `hinj` to reduce the goal to its premises. Establish `hX` using `hP.thF_mem i t y`. Establish `hsh` using `GlobalTheory.ThetaShiftSmooth.thF_shift_all R hL hM hP i t g0 κ κ' hκ hκ' y (S y) (hS y)`.
+
+Establish `hcomm` using `(GlobalTheory.ProjComm.proj_comm R hL hgr).2`. Establish `e1` using `hP.thG i t (S y)`. Establish `e2` using `hM.gW i (sg0 D A) (R.eG.symm g0) (R.thG i t y)`. Establish `e3` using `hP.thG i t y`. Establish `hκ'' : IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG (R.eG.symm g0)) κ'`.
+
+Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `hκ'`. Establish `hT : ∀ v, HasType (Wc D i) (R.βW i) (R.datWp i R.triv) (R.thF i t y v)` using `fun v k hk h => (GlobalTheory.mult_value_left_cont_level R.θ (R.MW i (sg0 D A)) _ _ (R.thF i t y) hX v).2.2 k hk h`. Establish `h2` using `GlobalTheory.ThetaShiftSmooth.levChi_flag_eq_one R i κ'`. Establish `hUe : ∀ v, R.thF i t (S y) v = actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG (R.eG.symm g0)) (R.thF i t y v)` using `fun v => by`.
+
+Use function extensionality and compare the values at `z`. Establish `h1` using `level_action_spec (V := Wc D i) (β := R.βW i) (L := R.datWp i R.triv) (hT v) ⟨κ', hκ''⟩ κ' hκ'' z`. Establish `h3` using `congrArg (fun c : ℂ => c⁻¹ * R.thF i t y v (z * κ')) h2`. Establish `h4 : (1 : ℂ)⁻¹ * R.thF i t y v (z * κ') = R.thF i t y v (z * κ')` using `by simp`. Conclude with `(hsh v z).trans (h1.trans (h3.trans h4)).symm`.
+
+Establish `key : postOn _ (R.eWf i (sg0 D A)) (R.thF i t (S y)) = postOn _ (actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG (R.eG.symm g0))) (postOn _ (R.eWf i (sg0 D A)) (R.thF i t y))`. Use `MultilinearMap.ext fun v => ?_` and prove the remaining obligations. Conclude with `(congrArg (R.eWf i (sg0 D A)) (hUe v)).trans (hcomm i (sg0 D A) (R.eG.symm g0) (R.thF i t y v) (hT v))`. Conclude with `e1.trans (key.trans ((congrArg _ e3).symm.trans e2.symm))`.
+-/
 theorem thG_equiv : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.IsModels → R.IsThP → R.grp_record → A.v0 = InfinitePlace.mk D.what₂.embLL → ∀ (i : Fin D.R.m) (t : T) (g0 : G0 R.Pg D.R.r) (κ : GA D (Vc D i)) (κ' : GA D (Wc D i)), IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) g0 κ → IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) g0 κ' → ∀ S : (R.HV i t).H →ₗ[ℂ] (R.HV i t).H, (∀ y h, R.extV i t (S y) h = (levChi _ (R.βV i) (flagL (R.datVt i t)) κ)⁻¹ • R.extV i t y (h * κ)) → ∀ y, R.thG i t (S y) = R.gW i (sg0 D A) (R.eG.symm g0) (R.thG i t y) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R hL hM hP hgr _ i t g0 κ κ' hκ hκ' S hS y
   have hinj := (hM.HW i (sg0 D A)).1

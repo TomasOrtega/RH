@@ -25,6 +25,9 @@ noncomputable def rightMulProd (h : GL (Fin 3) ℂ) :
     (Ad3.K.LC.M23 × (Fin 2 → ℂ)) ≃L[ℝ] (Ad3.K.LC.M23 × (Fin 2 → ℂ)) :=
   ((rightMulLin h).prodCongr (LinearEquiv.refl ℝ (Fin 2 → ℂ))).toContinuousLinearEquiv
 
+/- English proof (translation)
+Introduce `h Ψ`. Conclude with `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (rightMulProd h) Ψ, fun X q => rfl⟩`.
+-/
 theorem exists_rightTranslate :
     ∀ (h : GL (Fin 3) ℂ) (Ψ : Ad3.K.LC.Sw), ∃ Ψ' : Ad3.K.LC.Sw,
       ∀ (X : Ad3.K.LC.M23) (q : Fin 2 → ℂ),

@@ -11,6 +11,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 
 namespace GlobalTheory.ProjSpace
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ f s hs` and use `GlobalTheory.ProjSpace.lbIso_pullback_O1_toProj f s hs`.
+-/
 theorem lbIso_pull_O1_toProj_of_isLB : ∀ (R : Type) [CommRing R] (N : ℕ) (X : Scheme.{0}) (L : LB X), L.IsLB → ∀ (f : X ⟶ Sp R) (s : Fin (N + 1) → L.Sec) (hs : ⨆ i, nonzeroLocus (s i) = ⊤), LBIso ((ProjSpace.O1 R N).pull (ProjSpace.toProj f s hs)) L :=
   fun _ _ _ _ _ _ f s hs => GlobalTheory.ProjSpace.lbIso_pullback_O1_toProj f s hs
 

@@ -28,10 +28,16 @@ def stabCol (d : DecoSet E n ST SG) : Subgroup (UF E n) :=
   (MulAction.stabilizer (UF E n × GLG E n SG) d ⊓ (⊤ : Subgroup (UF E n)).prod (levU E n SG)).map
     (MonoidHom.fst (UF E n) (GLG E n SG))
 
+/- English proof (translation)
+Take `⟨γ, k, hk, rfl⟩` from `h`. Conclude with `⟨γ⁻¹, k⁻¹, inv_mem hk, inv_smul_smul ((γ, k) : UF E n × GLG E n SG) d⟩`.
+-/
 theorem SameCls.symm {d d' : DecoSet E n ST SG} (h : SameCls d d') : SameCls d' d := by
   obtain ⟨γ, k, hk, rfl⟩ := h
   exact ⟨γ⁻¹, k⁻¹, inv_mem hk, inv_smul_smul ((γ, k) : UF E n × GLG E n SG) d⟩
 
+/- English proof (translation)
+Take `⟨γ, k, hk, rfl⟩` from `h`. Take `⟨γ', k', hk', rfl⟩` from `h'`. Conclude with `⟨γ' * γ, k' * k, mul_mem hk' hk, mul_smul ((γ', k') : UF E n × GLG E n SG) ((γ, k) : UF E n × GLG E n SG) d⟩`.
+-/
 theorem SameCls.trans {d d' d'' : DecoSet E n ST SG} (h : SameCls d d') (h' : SameCls d' d'') :
     SameCls d d'' := by
   obtain ⟨γ, k, hk, rfl⟩ := h

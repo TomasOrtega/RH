@@ -10,6 +10,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivPro
 
 open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult UpperTheory.Lit.Cas
 
+/- English proof (translation)
+Establish `hφ : ∀ b, ∃ φ : X b →ₗ[ℂ] ℂ, φ (y b) ≠ 0` using `fun b => by by_contra! h`. Conclude with `hy b ((Module.forall_dual_apply_eq_zero_iff ℂ (y b)).1 h)`. Use `choose φ hφ using hφ`. Introduce `h`. Establish `h1` using `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ α ℂ).compLinearMap φ)) h`.
+
+Rewrite `h1` using `[PiTensorProduct.lift.tprod, map_zero]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun b _ => hφ b) (by simpa using h1)`.
+-/
 private theorem detjac_tprod_ne_zero {α : Type} [Fintype α] {X : α → Type} [∀ a, AddCommGroup (X a)]
     [∀ a, Module ℂ (X a)] (y : ∀ a, X a) (hy : ∀ a, y a ≠ 0) : PiTensorProduct.tprod ℂ y ≠ 0 := by
   have hφ : ∀ b, ∃ φ : X b →ₗ[ℂ] ℂ, φ (y b) ≠ 0 := fun b => by
@@ -21,6 +26,13 @@ private theorem detjac_tprod_ne_zero {α : Type} [Fintype α] {X : α → Type} 
   rw [PiTensorProduct.lift.tprod, map_zero] at h1
   exact Finset.prod_ne_zero_iff.2 (fun b _ => hφ b) (by simpa using h1)
 
+/- English proof (translation)
+Use `choose x hx using fun a => exists_ne (0 : X a)`. Establish `h1` using `h (PiTensorProduct.tprod ℂ (Function.update x j v))`. Establish `h2 : (fun a => ρ a ((Pi.mulSingle j g : ∀ a, Γ a) a) (Function.update x j v a)) = Function.update x j (ρ j g v)`. Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : a = j`.
+
+Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne ha, Function.update_of_ne ha]`. Rewrite `h1` using `[piTensor_tprod, h2, ← MultilinearMap.map_update_smul, ← sub_eq_zero, ← MultilinearMap.map_update_sub]`. Assume the negation of the conclusion as `hne`.
+
+Use `detjac_tprod_ne_zero _ (fun a => ?_) h1` and prove the remaining obligations. Distinguish the cases in `ha : a = j`. Substitute `ha` using the available equality. Simplify `hne` using `[sub_eq_zero]`. Simplify `hx a` using `[Function.update_of_ne ha]`.
+-/
 private theorem detjac_scalar_factor {α : Type} [Fintype α] [DecidableEq α] {Γ X : α → Type} [∀ a, Group (Γ a)]
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a))
     (hX : ∀ a, Nontrivial (X a)) (j : α) (g : Γ j) (c : ℂ)
@@ -40,6 +52,11 @@ private theorem detjac_scalar_factor {α : Type} [Fintype α] [DecidableEq α] {
   · subst ha; simpa [sub_eq_zero] using hne
   · simpa [Function.update_of_ne ha] using hx a
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `h ?_` and prove the remaining obligations. Simplify using `only [jhMult, ENat.iSup_eq_zero]`. Introduce and unpack `r ⟨S, T, -, -, h3⟩`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases.
+
+Both sides reduce to the same expression. Take `⟨φ⟩` from `h3 ⟨0, hr⟩`. Use `absurd ?_ hn` and prove the remaining obligations. Use `(IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans ?_` and prove the remaining obligations. Conclude with `⟨S ⟨0, hr⟩, ⟨Submodule.mkQ _, fun g => rfl⟩, Submodule.mkQ_surjective _⟩`.
+-/
 private theorem detjac_isSubquotient {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (h : jhMult σ ρ ≠ 0) :
     IsSubquotient σ ρ := by
@@ -54,6 +71,13 @@ private theorem detjac_isSubquotient {G V W : Type} [Group G] [AddCommGroup V] [
   refine (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans ?_
   exact ⟨S ⟨0, hr⟩, ⟨Submodule.mkQ _, fun g => rfl⟩, Submodule.mkQ_surjective _⟩
 
+/- English proof (translation)
+Use `Model.nontrivial_of_isIrreducible hi` as an intermediate fact. Take `⟨x, hx⟩` from `exists_ne (0 : V)`. Set `f : (ofChar ψ).IntertwiningMap π` to `⟨LinearMap.toSpanSingleton ℂ V x, fun g => LinearMap.ext fun c => by`. Simplify using `[h, smul_smul]⟩`. Establish `hinj : Function.Injective f` using `smul_left_injective ℂ hx`.
+
+Use `⟨equivOfBijective f ⟨hinj, ?_⟩⟩` and prove the remaining obligations. Break down `eq_bot_or_eq_top f.range with h0 | h0` into its components or cases. Establish `: x ∈ f.range` using `⟨1, one_smul _ _⟩`. Rewrite `this` using `[h0]`. Conclude with `absurd this hx`.
+
+Introduce `v`. Establish `: v ∈ f.range` using `by rw [h0]; trivial`. Conclude with `this`.
+-/
 private theorem detjac_equiv {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {π : Representation ℂ G V}
     (hi : π.IsIrreducible) (ψ : G →* ℂˣ) (h : ∀ g v, π g v = (ψ g : ℂ) • v) : Nonempty ((ofChar ψ).Equiv π) := by
   have := Model.nontrivial_of_isIrreducible hi
@@ -70,6 +94,15 @@ private theorem detjac_equiv {G V : Type} [Group G] [AddCommGroup V] [Module ℂ
     have : v ∈ f.range := by rw [h0]; trivial
     exact this
 
+/- English proof (translation)
+Introduce `k _ _ _ _ t χ hχ q hq hpos hj`. Establish `hsub` using `detjac_isSubquotient hj`. Establish `hχ' : IsSmoothChar (χ * absPow k (-((t : ℂ) - 1) / 2))` using `hχ.mul (isSmoothChar_absPow _)`. Establish `hm : modExp (fun i : Fin 2 => Fin (q i).1) 0 = (q 1).1`. Establish `h1 : (Finset.univ.filter fun b : Fin 2 => (0 : Fin 2) < b) = {1}` using `by decide`.
+
+Simplify using `[modExp, h1]`. Establish `hc : χ * absPow k (-(modExp (fun i : Fin 2 => Fin (q i).1) 0 : ℂ) / 2) = (χ * absPow k (-((t : ℂ) - 1) / 2)) * absPow k (((((q 0).1 : ℕ) : ℂ) - 1) / 2)`. Rewrite using `[mul_assoc, ← absPow_add, hm, ← hq, Fin.sum_univ_two]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hact : ∀ g v, (q 0).rep g v = ((detChar (Fin (q 0).1) ((χ * absPow k (-((t : ℂ) - 1) / 2)) * absPow k (((((q 0).1 : ℕ) : ℂ) - 1) / 2))) g : ℂ) • v`. Introduce `g v`. Use `detjac_scalar_factor (fun a => (q a).rep) (fun a => Model.nontrivial_of_isIrreducible (q a).2.rep.irr) 0 g _ (fun w => ?_) v` and prove the remaining obligations. Rewrite using `[Model.scalar_of_isSubquotient hsub (Model.jac_detRep _ χ _) w, detLevi_apply, Fin.prod_univ_two, Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide), map_one, map_one, mul_one, hc, detChar_apply]`.
+
+Take `⟨φ⟩` from `detjac_equiv (q 0).2.rep.irr _ hact`. Use `⟨_, (hasSupport_detRep hχ' hpos).of_equiv φ, ?_⟩` and prove the remaining obligations. Use `Segment.mem_ms.2 (Segment.mem_carrier.2 ⟨0, hpos, ?_⟩)` and prove the remaining obligations. Rewrite using `[Nat.cast_zero, IrrGL.nu_zero, IrrGL.nu, IrrGL.tw_ofChar]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Lit.Mix.detjac :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (t : ℕ) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (q : Fin 2 → IrrGL k) (hq : ∑ a, (q a).1 = t), 0 < (q 0).1 → jm q hq (detRep (Fin t) χ) ≠ 0 → ∃ A : Multiset (IrrGL k), HasSupport (q 0).rep A ∧ (IrrGL.ofChar χ hχ).nu (-((t : ℂ) - 1) / 2) ∈ A := by
   intro k _ _ _ _ t χ hχ q hq hpos hj

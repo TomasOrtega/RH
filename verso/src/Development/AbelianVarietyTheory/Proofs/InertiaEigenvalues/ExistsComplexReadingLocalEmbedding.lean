@@ -8,6 +8,13 @@ open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNoti
 
 namespace GlobalTheory.ReadEmbEx
 
+/- English proof (translation)
+Set `f : FractionRing O →+* ↥B.LL.1` to `IsFractionRing.lift (GlobalTheory.EmbInj.toLL_inj B)`. Establish `hf : ∀ a : O, f (algebraMap O (FractionRing O) a) = B.toLL a` using `fun a => IsFractionRing.lift_algebraMap _ a`. Establish `hb : Function.Bijective f`. Use `⟨f.injective, fun y => ?_⟩` and prove the remaining obligations. Take `⟨n, d, hd, e⟩` from `GlobalTheory.EmbInj.exists_frac B y`.
+
+Establish `hd' : B.toLL d ≠ 0` using `fun h0 => hd (GlobalTheory.EmbInj.toLL_inj B (h0.trans (map_zero _).symm))`. Use `⟨algebraMap O _ n / algebraMap O _ d, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, hf, hf, ← e, mul_div_cancel_left₀ _ hd']`. Set `e` to `RingEquiv.ofBijective f hb`. Use `⟨ι.comp e.symm.toRingHom, fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hf]`. Conclude with `congrArg ι (e.symm_apply_apply _)`.
+-/
 theorem exists_read {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {Gw : Subgroup (Ω ≃ₐ[E] Ω)}
     {O : Type} [CommRing O] [IsDomain O] [Algebra ℤ_[l] O] [TopologicalSpace O] (B : LocBridge l E Ω Gw O)
     (ι : FractionRing O →+* ℂ) :
@@ -26,6 +33,11 @@ theorem exists_read {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] 
   rw [← hf]
   exact congrArg ι (e.symm_apply_apply _)
 
+/- English proof (translation)
+Introduce `D bkP i ι v hv τ`. Take `⟨φ, hφ⟩` from `exists_read (bkP.br i v hv) ι`. Set `c : D.host.E →+* ↥(bkP.br i v hv).Kw.1` to `((bkP.br i v hv).j.comp (algebraMap D.host.E D.nd.Om)).codRestrict (bkP.br i v hv).Kw.1 (bkP.br i v hv).j_E`. Establish `h : ReadEmb bkP i ι v hv τ ((φ.comp (AlgHom.toRingHom τ)).comp c)`. Introduce `x n d hx`.
+
+Use `congrArg φ hx.2` as an intermediate fact. Rewrite `this` using `[map_mul, hφ, hφ]`. Conclude with `this`. Conclude with `⟨_, h, fun v' hv' τ' hc x n d hx => h _ n d ((hc x n d).1 hx)⟩`.
+-/
 theorem exists_readEmb : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (ι : FractionRing (D.ntw.O0 i) →+* ℂ) (v : HeightOneSpectrum (𝓞 D.host.E)) (hv : v ∈ placesOver D.host.E (D.ntw.l i)) (τ : EmbV bkP i v hv), ∃ τc : D.host.E →+* ℂ, ReadEmb bkP i ι v hv τ τc ∧ ∀ (v' : HeightOneSpectrum (𝓞 D.host.E)) (hv' : v' ∈ placesOver D.host.E (D.ntw.l i)) (τ' : EmbV bkP i v' hv'), IsConjEmb bkP i v v' hv hv' τ τ' → ReadEmb bkP i ι v' hv' τ' (τc.comp (cj D)) := by
   intro D bkP i ι v hv τ
   obtain ⟨φ, hφ⟩ := exists_read (bkP.br i v hv) ι

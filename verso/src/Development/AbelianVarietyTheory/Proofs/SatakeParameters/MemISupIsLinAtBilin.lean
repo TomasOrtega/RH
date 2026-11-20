@@ -14,6 +14,9 @@ open GlobalTheory.SplitWeil
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n r : ℕ}
 
+/- English proof (translation)
+Take `⟨c, hc, hc', hι⟩` from `h`. Use `⟨c, hc, hc', fun h g hh hg Φ Φ' hΦ => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← hT _ _ (hP Φ), hι h g hh hg Φ Φ' hΦ, map_smul]`.
+-/
 theorem isLinAt_comp {Θ Ω : Type} [AddCommGroup Θ] [Module ℂ Θ] [AddCommGroup Ω] [Module ℂ Ω]
     (ω₁ : GAf E n × GAf E r →* Module.End ℂ Θ) (ω₂ : GAf E n × GAf E r →* Module.End ℂ Ω)
     (P : Θ → Prop) (T : Θ →ₗ[ℂ] Ω) (hT : ∀ p f, P f → T (ω₁ p f) = ω₂ p (T f))

@@ -35,6 +35,9 @@ def AdjInt : Prop :=
         ∫ x : Mt k r, B.hsInner (B.opAdj Θ (B.rho D p f) (Matrix.of x)) (φ (Matrix.of x)) ∂D.μG =
           ∫ x : Mt k r, B.hsInner (B.rho D p (B.opAdj Θ f) (Matrix.of x)) (φ (Matrix.of x)) ∂D.μG
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ D Θ hs hc f hf hfc hfs p hp g hg`. Take `⟨c1, c2⟩` from `hC k r Wp Wq D Θ hs f hf hfc hfs p hp`. Conclude with `hF k r Wp Wq D _ _ c1 c2 (fun φ h1 h2 h3 => hI k r Wp Wq D Θ hs hc f hf hfc hfs p hp φ h1 h2 h3) g hg`.
+-/
 theorem adjComm_of_parts (hF : FundG) (hC : AdjCont) (hI : AdjInt) : AdjComm := by
   intro k r Wp Wq _ _ _ _ _ _ D Θ hs hc f hf hfc hfs p hp g hg
   obtain ⟨c1, c2⟩ := hC k r Wp Wq D Θ hs f hf hfc hfs p hp

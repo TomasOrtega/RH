@@ -8,6 +8,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UCanon
 
+/- English proof (translation)
+Introduce `k _ B _ hB n hn x x' hpow h0`. Use `haveI : IsCommMonObj B := hB.comm`. Use `haveI hloc : IsLocalRing (DualNumber k) := IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by`. Simplify using `only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one, isUnit_iff_ne_zero]`. Distinguish the cases in `ha : a.fst = 0`.
+
+Use `right`. Rewrite using `[ha, sub_zero]`. Conclude with `one_ne_zero`. Use `left`. Conclude with `ha`.
+
+Establish `hnD : IsUnit (n : DualNumber k)`. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_natCast]`. Conclude with `hn.isUnit`. Establish `hnΓ : IsUnit (n : Γ(Sp (DualNumber k), ⊤))`. Simplify using `using hnD.map (Scheme.ΓSpecIso (CommRingCat.of (DualNumber k))).inv.hom`.
+
+Use `haveI : PreconnectedSpace (Sp (DualNumber k)) := by`. Establish `: PreconnectedSpace (PrimeSpectrum (DualNumber k))`. Use `⟨isPreconnected_of_forall (IsLocalRing.closedPoint (DualNumber k)) fun y _ => ⟨closure {y}, Set.subset_univ _, ?_, subset_closure rfl, isPreconnected_singleton.closure⟩⟩` and prove the remaining obligations. Conclude with `(IsLocalRing.specializes_closedPoint y).mem_closure`. Conclude with `this`.
+
+Use `haveI : PreconnectedSpace (𝟙_ (Over (Sp (DualNumber k)))).left := ‹PreconnectedSpace (Sp (DualNumber k))›`. Set `T : Over (Sp (DualNumber k))` to `Over.mk (spMap (TrivSqZeroExt.fstHom k k k).toRingHom)`. Use `haveI : Nonempty T.left := inferInstanceAs (Nonempty (Sp k))`. Establish `hw : (x * x'⁻¹) ^ n = 1` using `by rw [mul_pow, inv_pow, hpow, mul_inv_cancel]`. Take `⟨C, hC, hz⟩` from `GlobalTheory.TorsionCover.exists_clopen_eq_one B hB hnΓ (x * x'⁻¹) hw`.
+
+Establish `hT : toUnit T ≫ x = toUnit T ≫ x'`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Over.comp_left, GlobalTheory.ObjPull.toUnit_left']`. Conclude with `h0`. Establish `h1 : toUnit T ≫ (x * x'⁻¹) = 1` using `by show (preHom (toUnit T)) (x * x'⁻¹) = 1`.
+
+Rewrite using `[map_mul, map_inv]`. Use `show (toUnit T ≫ x) * (toUnit T ≫ x')⁻¹ = 1`. Rewrite using `[hT, mul_inv_cancel]`. Establish `hsub` using `(hz T (toUnit T)).1 h1`. Take `⟨p⟩` from `‹Nonempty T.left›`.
+
+Establish `hne : C.Nonempty` using `⟨_, hsub ⟨p, rfl⟩⟩`. Establish `huniv : C = Set.univ` using `hC.eq_univ hne`. Establish `h2 : 𝟙 _ ≫ (x * x'⁻¹) = 1` using `(hz _ (𝟙 _)).2 (by rw [huniv]; exact Set.subset_univ _)`. Rewrite `h2` using `[Category.id_comp]`. Conclude with `mul_inv_eq_one.1 h2`.
+-/
 theorem eq_of_pow_eq_of_eq_at_closed : ∀ (k : Type) [Field k] (B : Over (Sp (DualNumber k))) [GrpObj B], IsAbelianScheme B → ∀ n : ℕ, (n : k) ≠ 0 → ∀ x x' : 𝟙_ (Over (Sp (DualNumber k))) ⟶ B, x ^ n = x' ^ n → spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ x.left = spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ x'.left → x = x' := by
   intro k _ B _ hB n hn x x' hpow h0
   haveI : IsCommMonObj B := hB.comm

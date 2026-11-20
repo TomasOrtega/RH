@@ -20,12 +20,18 @@ namespace GlobalTheory.FockCauchySchwarz
 
 variable {ι : Type} [Fintype ι] {m : ℕ} (w : ι → DomWeight m)
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.BranchNorm.pairK_eq w (1 : ι → GL (Fin m) ℂ) x y`. Rewrite `h` using `[map_one]`. Conclude with `h`.
+-/
 theorem pairK_one (x y : VV ℂ w) :
     pairK w (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) x y = pairBK w (GlobalTheory.BranchNorm.cV w x) y := by
   have h := GlobalTheory.BranchNorm.pairK_eq w (1 : ι → GL (Fin m) ℂ) x y
   rw [map_one] at h
   exact h
 
+/- English proof (translation)
+Establish `hG : ∀ _ : ι, (1 : Matrix (Fin m) (Fin m) ℂ).PosDef` using `fun _ => Matrix.PosDef.one`. Rewrite using `[← GlobalTheory.CoefModel.inner_toHilb w hG, ← GlobalTheory.CoefModel.inner_toHilb w hG, ← GlobalTheory.CoefModel.inner_toHilb w hG]`. Establish `h` using `inner_mul_inner_self_le (𝕜 := ℂ) (GlobalTheory.CoefModel.toHilb w hG x) (GlobalTheory.CoefModel.toHilb w hG y)`. Rewrite `h` using `[norm_inner_symm (GlobalTheory.CoefModel.toHilb w hG y), ← sq]`. Conclude with `h`.
+-/
 theorem pairK_cs (x y : VV ℂ w) :
     ‖pairK w (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) x y‖ ^ 2 ≤
       (pairK w (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) x x).re *
@@ -36,6 +42,9 @@ theorem pairK_cs (x y : VV ℂ w) :
   rw [norm_inner_symm (GlobalTheory.CoefModel.toHilb w hG y), ← sq] at h
   exact h
 
+/- English proof (translation)
+Introduce `ι _ m w x y`. Establish `h` using `pairK_cs w (GlobalTheory.BranchNorm.cV w x) y`. Rewrite `h` using `[pairK_one, pairK_one w (GlobalTheory.BranchNorm.cV w x), GlobalTheory.BranchNorm.cV_cV]`. Rewrite using `[pairK_one w x x, pairBK_apply w (GlobalTheory.BranchNorm.cV w x), pairingBSymm_holds, ← pairBK_apply]`. Conclude with `h`.
+-/
 theorem pairBK_sq_le : ∀ {ι : Type} [Fintype ι] {m : ℕ} (w : ι → DomWeight m) (x y : VV ℂ w),
     ‖pairBK w x y‖ ^ 2 ≤ (pairK w (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) x x).re *
       (pairK w (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) y y).re := by

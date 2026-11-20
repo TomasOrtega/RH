@@ -2,6 +2,21 @@ import Mathlib
 import Development.AutomorphicArithmetic.LocalEmbeddings.ConeBDefs
 open MeasureTheory FreeSingleHomotopyEquivDiscreteChains.UpperTheory.Dv.ConeB
 
+/- English proof (translation)
+Introduce `α β _ _ _ _ _ _ _ _ μa μb _ _ _ _ _ _ F hF C hC h0 c hpos a₀ b₀ h₀`. Use `set G : α × β → ℂ := Function.uncurry F with hG`. Establish `hsub : Function.support G ⊆ C`. Introduce `p hp`. Assume the negation of the conclusion as `hpC`.
+
+Conclude with `hp (h0 p hpC)`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn hF.continuousOn`. Establish `hbound : ∀ p, ‖G p‖ ≤ max M 0`. Introduce `p`. Distinguish the cases in `hp : p ∈ C`.
+
+Conclude with `(hM p hp).trans (le_max_left _ _)`. Establish `: G p = 0` using `h0 p hp`. Rewrite using `[this, norm_zero]`. Conclude with `le_max_right _ _`. Establish `hintC : IntegrableOn G C (μa.prod μb)` using `Measure.integrableOn_of_bounded (M := max M 0) hC.measure_lt_top.ne hF.aestronglyMeasurable (Filter.Eventually.of_forall hbound)`.
+
+Establish `hint : Integrable G (μa.prod μb)` using `(integrableOn_iff_integrable_of_support_subset hsub).1 hintC`. Establish `hprod : ∫ p, G p ∂(μa.prod μb) = ∫ a, ∫ b, F a b ∂μb ∂μa` using `integral_prod G hint`. Introduce `hzero`. Establish `hint2 : Integrable (fun p => starRingEnd ℂ c * G p) (μa.prod μb)` using `hint.const_mul _`. Establish `hre : ∫ p, (starRingEnd ℂ c * G p).re ∂(μa.prod μb) = 0`.
+
+Use `integral_re hint2` as an intermediate fact. Rewrite `this` using `[integral_const_mul, hprod, hzero, mul_zero]`. Simplify using `using this`. Establish `hcont : Continuous (fun p : α × β => (starRingEnd ℂ c * G p).re)` using `Complex.continuous_re.comp (continuous_const.mul hF)`. Establish `hnn : 0 ≤ fun p : α × β => (starRingEnd ℂ c * G p).re` using `fun p => hpos p.1 p.2`.
+
+Establish `hpos2 : 0 < ∫ p, (starRingEnd ℂ c * G p).re ∂(μa.prod μb)`. Rewrite using `[integral_pos_iff_support_of_nonneg hnn (Complex.reCLM.integrable_comp hint2)]`. Establish `hopen : IsOpen (Function.support fun p : α × β => (starRingEnd ℂ c * G p).re)` using `hcont.isOpen_support`. Use `hopen.measure_pos _ ⟨(a₀, b₀), ?_⟩` and prove the remaining obligations. Conclude with `ne_of_gt h₀`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem iter_ne_zero : ∀ {α β : Type} [TopologicalSpace α] [MeasurableSpace α] [BorelSpace α] [SecondCountableTopology α]
     [TopologicalSpace β] [MeasurableSpace β] [BorelSpace β] [SecondCountableTopology β]
     (μa : Measure α) (μb : Measure β) [IsFiniteMeasureOnCompacts μa] [IsFiniteMeasureOnCompacts μb]
@@ -45,6 +60,13 @@ private theorem iter_ne_zero : ∀ {α β : Type} [TopologicalSpace α] [Measura
     exact ne_of_gt h₀
   linarith
 
+/- English proof (translation)
+Unfold `dwt`. Use `ContinuousOn.inv₀ (ContinuousOn.mul ?_ (Complex.continuous_ofReal.comp continuous_nm).continuousOn) ?_` and prove the remaining obligations. Unfold `wt`. Use `continuousOn_finset_prod _ fun w _ => ?_` and prove the remaining obligations. Establish `h : Continuous fun s : ι → ℂ => (‖s w‖ : ℂ)` using `Complex.continuous_ofReal.comp (continuous_apply w).norm`.
+
+Establish `h0 : ∀ s ∈ {y : ι → ℂ | ∀ w, y w ≠ 0}, (‖s w‖ : ℂ) ≠ 0` using `fun s hs => by`. Conclude with `norm_ne_zero_iff.2 (hs w)` after adjusting the coercions. Use `ContinuousOn.mul (ContinuousOn.zpow₀ ((continuous_apply w).continuousOn.div h.continuousOn h0) _ ?_) (h.pow _).continuousOn` and prove the remaining obligations. Conclude with `fun s hs => Or.inl (div_ne_zero (hs w) (h0 s hs))`. Introduce `y hy`.
+
+Conclude with `mul_ne_zero (wt_ne_zero κ e hy) (by exact_mod_cast (nm_pos hy).ne')`.
+-/
 private theorem contOn_dwt {ι : Type} [Fintype ι] (κ : ι → ℤ) (e : ℕ) :
     ContinuousOn (dwt κ e) {y : ι → ℂ | ∀ w, y w ≠ 0} := by
   unfold dwt
@@ -60,6 +82,15 @@ private theorem contOn_dwt {ι : Type} [Fintype ι] (κ : ι → ℤ) (e : ℕ) 
   · intro y hy
     exact mul_ne_zero (wt_ne_zero κ e hy) (by exact_mod_cast (nm_pos hy).ne')
 
+/- English proof (translation)
+Establish `hm : ∀ w : ι, ∃ m : ℝ, 0 < m ∧ ∀ k ∈ (Set.univ : Set K), m ≤ ‖fun i : Fin n => η k (i, w)‖`. Introduce `w`. Use `isCompact_univ.exists_forall_le' (Continuous.continuousOn (by fun_prop)) fun k _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `h0 k w`. Conclude with `norm_pos_iff.2 fun h => hi (congrFun h i)`.
+
+Use `choose m hm0 hm using hm`. Establish `hc : IsCompact ((Set.univ : Set K) ×ˢ (Set.pi Set.univ fun w : ι => Metric.closedBall (0 : ℂ) ((‖x‖ + r) / m w)))` using `isCompact_univ.prod (isCompact_univ_pi fun w => isCompact_closedBall _ _)`. Use `hc.of_isClosed_subset (Metric.isClosed_closedBall.preimage hπ) ?_` and prove the remaining obligations. Introduce and unpack `⟨k, y⟩ hp`. Use `⟨trivial, fun w _ => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ‖sc y (η k)‖ ≤ ‖x‖ + r` using `norm_le_of_mem_closedBall hp`. Establish `h2 : ‖y w • fun i : Fin n => η k (i, w)‖ ≤ ‖sc y (η k)‖` using `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => norm_le_pi_norm (sc y (η k)) (i, w)`. Rewrite `h2` using `[norm_smul]`. Rewrite using `[mem_closedBall_zero_iff, le_div_iff₀ (hm0 w)]`. Establish `h3` using `mul_le_mul_of_nonneg_left (hm w k trivial) (norm_nonneg (y w))`.
+
+Conclude with `h3.trans (h2.trans h1)`.
+-/
 private theorem compact_pre {ι : Type} [Fintype ι] {n : ℕ} {K : Type} [TopologicalSpace K] [CompactSpace K]
     (η : K → Fin n × ι → ℂ) (hη : Continuous η) (h0 : ∀ k w, ∃ i, η k (i, w) ≠ 0)
     (hπ : Continuous fun p : K × (ι → ℂ) => sc p.2 (η p.1)) (x : Fin n × ι → ℂ) (r : ℝ) :
@@ -83,6 +114,37 @@ private theorem compact_pre {ι : Type} [Fintype ι] {n : ℕ} {K : Type} [Topol
   have h3 := mul_le_mul_of_nonneg_left (hm w k trivial) (norm_nonneg (y w))
   exact h3.trans (h2.trans h1)
 
+/- English proof (translation)
+Introduce `ι _ n K _ _ _ _ _ μ _ _ η hη h0 G hG κ e k₀ y₀ hy₀ c hc`. Establish `hπ : Continuous fun p : K × (ι → ℂ) => sc p.2 (η p.1)`. Unfold `sc`. Use `fun_prop`. Use `set π : K × (ι → ℂ) → (Fin n × ι → ℂ) := fun p => sc p.2 (η p.1) with hπdef`.
+
+Use `set x₀ := sc y₀ (η k₀) with hx₀`. Use `set N : Set (K × (ι → ℂ)) := {p | ∀ w, p.2 w ≠ 0} with hN`. Establish `hNo : IsOpen N`. Establish `: N = ⋂ w, {p : K × (ι → ℂ) | p.2 w ≠ 0}` using `by ext p; simp [hN]`. Rewrite using `[this]`.
+
+Conclude with `isOpen_iInter_of_finite fun w => isOpen_ne_fun (by fun_prop) continuous_const`. Establish `hH : ContinuousOn (fun p : K × (ι → ℂ) => G p.1 p.2 * dwt κ e p.2) N` using `hG.continuousOn.mul ((contOn_dwt κ e).comp continuous_snd.continuousOn fun p hp => hp)`. Use `set O : Set (K × (ι → ℂ)) := N ∩ (fun p : K × (ι → ℂ) => (starRingEnd ℂ c * (G p.1 p.2 * dwt κ e p.2)).re) ⁻¹' Set.Ioi 0 with hO`. Establish `hOo : IsOpen O` using `ContinuousOn.isOpen_inter_preimage (Complex.continuous_re.comp_continuousOn (continuousOn_const.mul hH)) hNo isOpen_Ioi`. Establish `hfib : ∀ p, π p = x₀ → p ∈ O`.
+
+Introduce `p hp`. Use `⟨fun w hw => ?_, hc p.1 p.2 hp⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `h0 k₀ w`. Establish `h1 : p.2 w * η p.1 (i, w) = y₀ w * η k₀ (i, w)` using `congrFun hp (i, w)`. Rewrite `h1` using `[hw, zero_mul]`.
+
+Conclude with `mul_ne_zero (hy₀ w) hi h1.symm`. Establish `hT : IsCompact (π '' (π ⁻¹' Metric.closedBall x₀ 1 \ O))` using `((compact_pre η hη h0 hπ x₀ 1).diff hOo).image hπ`. Establish `hx : x₀ ∈ (π '' (π ⁻¹' Metric.closedBall x₀ 1 \ O))ᶜ`. Introduce and unpack `⟨p, hp, hpx⟩`. Conclude with `hp.2 (hfib p hpx)`.
+
+Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hT.isClosed.isOpen_compl x₀ hx`. Use `set r : ℝ := min (ε / 2) 1 with hr`. Establish `hr0 : 0 < r` using `lt_min (by linarith) one_pos`. Use `set C := π ⁻¹' Metric.closedBall x₀ r with hC`. Establish `hCc : IsCompact C` using `compact_pre η hη h0 hπ x₀ r`.
+
+Establish `hCcl : IsClosed C` using `Metric.isClosed_closedBall.preimage hπ`. Establish `hCO : C ⊆ O`. Introduce `p hp`. Assume the negation of the conclusion as `hpO`. Establish `h1 : dist (π p) x₀ ≤ r` using `hp`.
+
+Use `hball (a := π p) ?_ ⟨p, ⟨?_, hpO⟩, rfl⟩` and prove the remaining obligations. Conclude with `lt_of_le_of_lt (h1.trans (min_le_left _ _)) (by linarith)`. Conclude with `h1.trans (min_le_right _ _)`. Set `b : ContDiffBump x₀` to `⟨r / 2, r, by linarith, by linarith⟩`. Establish `hb0 : ∀ p ∉ C, b (π p) = 0` using `fun p hp => b.zero_of_le_dist (le_of_lt (not_le.1 hp))`.
+
+Establish `hbc : Continuous fun x => (b x : ℂ)` using `Complex.continuous_ofReal.comp b.continuous`. Establish `hz : ∀ p ∉ C, (b (π p) : ℂ) * G p.1 p.2 * dwt κ e p.2 = 0` using `fun p hp => by`. Rewrite using `[hb0 p hp]`. Simplify using the standard rewrite rules. Establish `hF : Continuous fun p : K × (ι → ℂ) => (b (π p) : ℂ) * G p.1 p.2 * dwt κ e p.2`.
+
+Use `continuous_iff_continuousAt.2 fun p => ?_` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ C`. Simplify using `only [mul_assoc]`. Conclude with `(hbc.comp hπ).continuousAt.mul (hH.continuousAt (hNo.mem_nhds (hCO hp).1))`. Use `(continuousAt_const (y := (0 : ℂ))).congr ?_ filter_upwards [hCcl.isOpen_compl.mem_nhds hp] with q hq` and prove the remaining obligations.
+
+Conclude with `(hz q hq).symm`. Establish `hFk : ∀ k, Continuous fun y => (b (sc y (η k)) : ℂ) * G k y * dwt κ e y` using `fun k => by`. Establish `h` using `hF.comp (Continuous.prodMk_right k)`. Simplify `h` using `only [Function.comp_def, hπdef]`. Establish `hre : ∀ p : K × (ι → ℂ), (starRingEnd ℂ c * ((b (π p) : ℂ) * G p.1 p.2 * dwt κ e p.2)).re = b (π p) * (starRingEnd ℂ c * (G p.1 p.2 * dwt κ e p.2)).re` using `fun p => by`.
+
+Rewrite using `[← Complex.re_ofReal_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun x => (b x : ℂ), Complex.ofRealCLM.contDiff.comp b.contDiff, b.hasCompactSupport.comp_left (g := fun t : ℝ => (t : ℂ)) Complex.ofReal_zero, fun k => ?_, ?_⟩` and prove the remaining obligations. Use `Continuous.integrable_of_hasCompactSupport (hFk k) ?_` and prove the remaining obligations.
+
+Use `HasCompactSupport.intro (hCc.image continuous_snd) fun y hy => ?_` and prove the remaining obligations. Conclude with `hz (k, y) fun h => hy ⟨(k, y), h, rfl⟩`. Use `iter_ne_zero μ volume (fun k y => (b (sc y (η k)) : ℂ) * G k y * dwt κ e y) hF C hCc hz c (fun k y => ?_) k₀ y₀ ?_` and prove the remaining obligations. Distinguish the cases in `hp : (k, y) ∈ C`. Rewrite using `[show (starRingEnd ℂ c * ((b (sc y (η k)) : ℂ) * G k y * dwt κ e y)).re = _ from hre (k, y)]`.
+
+Conclude with `mul_nonneg b.nonneg (le_of_lt (hCO hp).2)`. Rewrite using `[show (b (sc y (η k)) : ℂ) * G k y * dwt κ e y = 0 from hz (k, y) hp]`. Simplify using the standard rewrite rules. Rewrite using `[show (starRingEnd ℂ c * ((b (sc y₀ (η k₀)) : ℂ) * G k₀ y₀ * dwt κ e y₀)).re = _ from hre (k₀, y₀)]`. Use `mul_pos (b.pos_of_mem_ball ?_) (hc k₀ y₀ rfl)` and prove the remaining obligations.
+
+Conclude with `Metric.mem_ball_self hr0`.
+-/
 theorem UpperTheory.fourier_continuous_nonvanishing :
     ∀ {ι : Type} [Fintype ι] {n : ℕ} {K : Type} [TopologicalSpace K] [CompactSpace K] [SecondCountableTopology K]
         [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [IsFiniteMeasure μ] [μ.IsOpenPosMeasure]

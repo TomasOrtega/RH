@@ -23,12 +23,21 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V)
 
+/- English proof (translation)
+Simplify using `[Dcris, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_Dcris_iff (d : V ⊗[Qp] B) : d ∈ Dcris PD ρ ↔ ∀ g, actVB PD ρ g d = d := by
   simp [Dcris, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Simplify using `[DdR, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_DdR_iff (d : V ⊗[Qp] BdR) : d ∈ DdR PD ρ ↔ ∀ g, actVdR PD ρ g d = d := by
   simp [DdR, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Proceed by induction on `d using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul v b => simp [actVdR, mulVdR, ιV, actVB, PD.ι_comm]`.
+-/
 theorem act_mul_ι (g : G) (c : K) (d : V ⊗[Qp] B) :
     actVdR PD ρ g (mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c (ιV PD (LL := LL) (V := V) d)) =
       mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c (ιV PD (LL := LL) (V := V) (actVB PD ρ g d)) := by
@@ -37,12 +46,20 @@ theorem act_mul_ι (g : G) (c : K) (d : V ⊗[Qp] B) :
   | add a b ha hb => simp only [map_add, ha, hb]
   | tmul v b => simp [actVdR, mulVdR, ιV, actVB, PD.ι_comm]
 
+/- English proof (translation)
+Rewrite using `[mem_DdR_iff]`. Introduce `g`. Rewrite using `[act_mul_ι, (mem_Dcris_iff PD ρ d).1 hd g]`.
+-/
 theorem mul_ι_mem (c : K) {d : V ⊗[Qp] B} (hd : d ∈ Dcris PD ρ) :
     mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c (ιV PD (LL := LL) (V := V) d) ∈ DdR PD ρ := by
   rw [mem_DdR_iff]
   intro g
   rw [act_mul_ι, (mem_Dcris_iff PD ρ d).1 hd g]
 
+/- English proof (translation)
+Proceed by induction on `d using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, Finsupp.add_apply, ha, hb, mul_add]`. Consider the case `tmul v y`. Establish `h : ∀ q : Qp, PD.ι (q • y) = q • PD.ι y` using `fun q => (PD.ι.toLinearMap.restrictScalars Qp).map_smul q y`.
+
+Simplify using `[mulVdR, ιV, h]`.
+-/
 theorem coord_mul_ι {I : Type} [DecidableEq I] (b : Basis I Qp V) (j : I) (c : K) (d : V ⊗[Qp] B) :
     equivFinsuppOfBasisLeft b
       (mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c (ιV PD (LL := LL) (V := V) d)) j =
@@ -55,6 +72,11 @@ theorem coord_mul_ι {I : Type} [DecidableEq I] (b : Basis I Qp V) (j : I) (c : 
       (PD.ι.toLinearMap.restrictScalars Qp).map_smul q y
     simp [mulVdR, ιV, h]
 
+/- English proof (translation)
+Set `b` to `Basis.ofVectorSpace Qp V`. Apply `(equivFinsuppOfBasisLeft (N := B) b).injective` to reduce the goal to its premises. Use extensionality with `j`. Rewrite using `[map_zero, Finsupp.zero_apply]`. Use `hx (fun i => equivFinsuppOfBasisLeft b (d i) j) ?_ i` and prove the remaining obligations.
+
+Use `congrArg (fun z => equivFinsuppOfBasisLeft b z j) h` as an intermediate fact. Simplify using `only [map_sum, Finsupp.finset_sum_apply, coord_mul_ι, map_zero, Finsupp.zero_apply] at this`. Conclude with `this`.
+-/
 theorem eq_zero_of_sum {m : ℕ} (x : Fin m → K)
     (hx : ∀ b : Fin m → B, ∑ i, algebraMap K BdR (x i) * PD.ι (b i) = 0 → ∀ i, b i = 0)
     (d : Fin m → V ⊗[Qp] B)
@@ -78,11 +100,27 @@ def cmpMap {m : ℕ} (x : Fin m → K) : (Fin m → ↥(Dcris PD ρ)) →ₗ[LL]
       rw [LinearMap.sum_apply]
       exact Submodule.sum_mem _ fun i _ => mul_ι_mem PD ρ (x i) (d i).2)
 
+/- English proof (translation)
+Simplify using `[cmpMap, LinearMap.sum_apply]`.
+-/
 theorem cmpMap_apply {m : ℕ} (x : Fin m → K) (d : Fin m → ↥(Dcris PD ρ)) :
     (cmpMap PD ρ x d : V ⊗[Qp] BdR) =
       ∑ i, mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) (x i) (ιV PD (LL := LL) (V := V) (d i)) := by
   simp [cmpMap, LinearMap.sum_apply]
 
+/- English proof (translation)
+Use `haveI := PD.finK`. Use `haveI : FiniteDimensional K₀ K := Module.Finite.of_restrictScalars_finite Qp K₀ K`. Set `x` to `Module.finBasis K₀ K`. Establish `hinj : Function.Injective (cmpMap PD ρ x)`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `d hd`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Use `eq_zero_of_sum PD (LL := LL) x (hT _ x x.linearIndependent) (fun i => (d i : V ⊗[Qp] B)) ?_ i` and prove the remaining obligations. Rewrite using `[← cmpMap_apply, hd]`.
+
+Both sides reduce to the same expression. Use `haveI hfdS : FiniteDimensional LL (Fin (finrank K₀ K) → ↥(Dcris PD ρ)) := FiniteDimensional.of_injective _ hinj`. Establish `hpos : 0 < finrank K₀ K` using `finrank_pos`. Use `haveI : FiniteDimensional LL ↥(Dcris PD ρ) := Module.Finite.of_surjective (LinearMap.proj (R := LL) (φ := fun _ : Fin (finrank K₀ K) => ↥(Dcris PD ρ)) ⟨0, hpos⟩) (fun y => ⟨fun _ => y, rfl⟩)`. Establish `hS : finrank LL (Fin (finrank K₀ K) → ↥(Dcris PD ρ)) = finrank Qp K * finrank LL V`.
+
+Rewrite using `[finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Unfold `IsCrys at hc`. Rewrite using `[hc, ← finrank_mul_finrank Qp K₀ K]`. Expand and normalize the polynomial expressions, which then agree. Establish `hge` using `LinearMap.finrank_le_finrank_of_injective hinj`.
+
+Establish `heq : finrank LL ↥(DdR PD ρ) = finrank Qp K * finrank LL V` using `le_antisymm hle (hS ▸ hge)`. Use `⟨heq, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hsurj : Function.Surjective (cmpMap PD ρ x)` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (hS.trans heq.symm)).1 hinj`. Take `⟨d, hd⟩` from `hsurj ⟨y, hy⟩`. Use `⟨_, x, fun i => d i, fun i => (d i).2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← cmpMap_apply, hd]`.
+-/
 theorem abstract_cmp
     (hT : ∀ (m : ℕ) (x : Fin m → K), LinearIndependent K₀ x →
       ∀ b : Fin m → B, ∑ i, algebraMap K BdR (x i) * PD.ι (b i) = 0 → ∀ i, b i = 0)
@@ -126,6 +164,9 @@ theorem abstract_cmp
 
 end Abstract
 
+/- English proof (translation)
+Introduce `l _ P AI T K LL V _ _ _ _ _ ρ hc`. Take `⟨hfd, hle⟩` from `GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL V ρ`. Use `abstract_cmp (P.PD K) ρ (fun m x hx b hb => GlobalTheory.T.injective_tensor_Bcris_to_BdR l P AI T K m x hx b ?_) hfd hle hc` and prove the remaining obligations. Simplify `hb` using `only [P.PD_ι]`.
+-/
 theorem isDR_of_isCrys : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V), IsCrys (P.PD K) ρ → IsDR (P.PD K) ρ ∧ ∀ y ∈ DdR (P.PD K) ρ, ∃ (m : ℕ) (c : Fin m → ↥K.1) (d : Fin m → V ⊗[ℚ_[l]] P.R.B), (∀ i, d i ∈ Dcris (P.PD K) ρ) ∧ y = ∑ i, mulVdR (K := ↥K.1) (BdR := P.R.BdR) (V := V) (LL := ↥LL.1) (c i) (ιV (P.PD K) (LL := ↥LL.1) (V := V) (d i)) := by
   intro l _ P AI T K LL V _ _ _ _ _ ρ hc
   obtain ⟨hfd, hle⟩ := GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL V ρ

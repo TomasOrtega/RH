@@ -16,6 +16,9 @@ open GlobalTheory.FlatModel
 attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.unitChartAt_of_dvd | exact GlobalTheory.FlatModel.unitChartAt_of_dvd | (intros; apply GlobalTheory.FlatModel.unitChartAt_of_dvd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.localization_units_charts : ∀ (p n : ℕ) [Fact p.Prime] (X X' : Scheme.{0}) (π : X' ⟶ X) (Xw : X.Opens)
     (K : (Sp 𝓞_ℂ_[p] ⟶ X) → Set ℂ_[p]) (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (J : Type) (Q : J → R)
     (u : ∀ j, (Localization.Away ((p : R) * Q j))ˣ),

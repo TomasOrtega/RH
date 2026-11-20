@@ -19,6 +19,19 @@ namespace GlobalTheory.ConnOpen
 
 open GlobalTheory.AbLaw GlobalTheory.AbLaw.Seesaw ReciprocityTheory.ChartRestriction.G.Out
 
+/- English proof (translation)
+Use `⟨fun U W hU hW hc ⟨u, _, hu⟩ ⟨w, _, hw⟩ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Set `O : Bool → Y.Opens` to `fun i => bif i then ⟨U, hU⟩ else ⟨W, hW⟩`. Establish `hd : O true ⊓ O false = ⊥` using `le_bot_iff.1 fun y hy => hne ⟨y, trivial, hy⟩`. Establish `hcov : ⨆ i, O i = ⊤` using `top_unique fun y _ => by`.
+
+Break down `hc (Set.mem_univ y) with h | h` into its components or cases. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨true, h⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨false, h⟩`. Take `⟨s, hs⟩` from `TLinPf.glue O hcov (fun i => bif i then 1 else 0) (fun i j => by`. Establish `sub : ∀ T : Y.Opens, T = ⊥ → Subsingleton Γ(Y, T)` using `fun T hT => by`.
+
+Substitute `hT` using the available equality. Use `infer_instance`. Apply the tactic sequence `cases i <;> cases j`. Conclude with `(map_zero _).trans (map_zero _).symm`. Conclude with `(sub _ ((inf_comm _ _).trans hd)).elim _ _`.
+
+Conclude with `(sub _ hd).elim _ _`. Conclude with `(map_one _).trans (map_one _).symm)`. Break down `H s with h | h` into its components or cases. Establish `h₁ : u ∈ Y.basicOpen s` using `(mem_basicOpen_rs (le_top : O true ≤ ⊤) s hu).1 (by`. Rewrite using `[show rs Y (le_top : O true ≤ ⊤) s = 1 from hs true]`.
+
+Conclude with `mem_of_isUnit isUnit_one hu)`. Rewrite `h₁` using `[h]`. Conclude with `h₁`. Establish `h₁` using `(mem_basicOpen_rs (le_top : O false ≤ ⊤) s hw).2 (h.ge (Set.mem_univ w))`. Rewrite `h₁` using `[show rs Y (le_top : O false ≤ ⊤) s = 0 from hs false, Scheme.basicOpen_zero]`.
+
+Conclude with `h₁`.
+-/
 theorem preconnectedSpace_of_functions (Y : Scheme.{0})
     (H : ∀ s : Γ(Y, ⊤), Y.basicOpen s = ⊥ ∨ Y.basicOpen s = ⊤) : PreconnectedSpace Y := by
   refine ⟨fun U W hU hW hc ⟨u, _, hu⟩ ⟨w, _, hw⟩ => ?_⟩
@@ -47,6 +60,11 @@ theorem preconnectedSpace_of_functions (Y : Scheme.{0})
     rw [show rs Y (le_top : O false ≤ ⊤) s = 0 from hs false, Scheme.basicOpen_zero] at h₁
     exact h₁
 
+/- English proof (translation)
+Set `F` to `(Scheme.ΓSpecIso (.of k)).inv ≫ p.appTop`. Establish `hF : F.hom.IsIntegral`. Apply `RingHom.isIntegral_respectsIso.2 (e := (Scheme.ΓSpecIso _).symm.commRingCatIsoToRingEquiv)` to reduce the goal to its premises. Conclude with `isIntegral_appTop_of_universallyClosed p`. Use `algebraize [F.hom]`.
+
+Establish `h : Function.Surjective F.hom` using `(IsAlgClosed.algebraMap_bijective_of_isIntegral (k := k) (K := Γ(X, ⊤))).2`. Introduce `s`. Take `⟨c, hc⟩` from `h s`. Conclude with `⟨_, hc⟩`.
+-/
 theorem surjective_appTop {k : Type} [Field k] [IsAlgClosed k] {X : Scheme.{0}}
     (p : X ⟶ Spec (.of k)) [IsIntegral X] [UniversallyClosed p] :
     Function.Surjective p.appTop.hom := by
@@ -69,11 +87,25 @@ def fnSec (π : X' ⟶ X) (s : Γ(X', ⊤)) : LB.Sec ((Inh.trivLB X).pull π) wh
     rw [Inh.linComb_triv_g, Units.val_one, _root_.one_mul]
     exact (rs_rs _ _ s).trans (rs_rs _ _ s).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun _ => 1⟩, fun i j => by erw [Inh.linComb_triv_g, _root_.one_mul] exact (map_one _).trans (map_one _).symm⟩`.
+-/
 theorem triv_pull (π : X' ⟶ X) : Triv ((Inh.trivLB X).pull π) :=
   ⟨⟨fun _ => 1⟩, fun i j => by
     erw [Inh.linComb_triv_g, _root_.one_mul]
     exact (map_one _).trans (map_one _).symm⟩
 
+/- English proof (translation)
+Take `⟨E, hE⟩` from `P.sec F g X' π f' h`. Establish `key : ∀ s : Γ(X', ⊤), ∃ c : F, ∀ i, rs X' (le_top : π ⁻¹ᵁ P.W i ≤ ⊤) s = GlobalTheory.AbLaw.cst f' _ c * loc P π f' v i` using `fun s => by`. Take `⟨w, hw⟩` from `E.surjective (fnSec π s)`. Take `⟨c, hc⟩` from `hv w.1 w.2`. Use `⟨c, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `hE w i`. Rewrite `e` using `[hw]`. Use `((rs_rs _ _ s).symm.trans e).trans ?_` and prove the remaining obligations. Rewrite using `[← loc_smul, ← hc]`. Both sides reduce to the same expression.
+
+Take `⟨c₁, h₁⟩` from `key 1`. Establish `hu : ∀ i, IsUnit (loc P π f' v i)` using `fun i => isUnit_of_mul_isUnit_right (by rw [← h₁ i, map_one]; exact isUnit_one)`. Use `preconnectedSpace_of_functions X' fun s => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `key s`. Distinguish the cases in `h0 : c = 0`.
+
+Use `Or.inl (le_bot_iff.1 fun y hy => ?_)` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_mem P (π y)`. Use `(mem_basicOpen_rs (le_top : π ⁻¹ᵁ P.W i ≤ ⊤) s hi).2 hy` as an intermediate fact. Rewrite `this` using `[hc, h0, map_zero, zero_mul, Scheme.basicOpen_zero]`. Then use the resulting hypothesis. Use `Or.inr (top_unique fun y _ => ?_)` and prove the remaining obligations.
+
+Take `⟨i, hi⟩` from `exists_mem P (π y)`. Use `(mem_basicOpen_rs (le_top : π ⁻¹ᵁ P.W i ≤ ⊤) s hi).1 ?_` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `mem_of_isUnit (((IsUnit.mk0 c h0).map _).mul (hu i)) hi`.
+-/
 theorem preconnectedSpace_of_line {R F : Type} [CommRing R] [Field F]
     {f : X ⟶ Spec (CommRingCat.of R)} (P : Perf f (Inh.trivLB X)) {g : R →+* F} {π : X' ⟶ X}
     {f' : X' ⟶ Spec (CommRingCat.of F)} (h : IsPullback π f' f (Spec.map (CommRingCat.ofHom g)))
@@ -106,6 +138,11 @@ theorem preconnectedSpace_of_line {R F : Type} [CommRing R] [Field F]
     rw [hc]
     exact mem_of_isUnit (((IsUnit.mk0 c h0).map _).mul (hu i)) hi
 
+/- English proof (translation)
+Establish `hz : s (π z) ∈ Set.range s` using `⟨_, rfl⟩`. Take `⟨_, ⟨e, rfl⟩, he, hle⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hz hs.isOpen_range`. Use `⟨e, fun h0 => ?_, fun p hp => hle hp⟩` and prove the remaining obligations. Establish `e' : s (π z) = spMap x (q z)` using `congrArg (fun t => t z) h`. Rewrite `he` using `[e']`.
+
+Use `he ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x e ∈ (q z).asIdeal`. Rewrite using `[h0]`. Conclude with `zero_mem _`.
+-/
 theorem exists_nonempty_fibre {R K : Type} [CommRing R] [Field K] {Z Z₀ : Scheme.{0}} (s : Z ⟶ Sp R)
     (hs : IsOpenMap s) (x : R →+* K) {π : Z₀ ⟶ Z} {q : Z₀ ⟶ Sp K} (h : π ≫ s = q ≫ spMap x) (z : Z₀) :
     ∃ e : R, x e ≠ 0 ∧ ∀ p : PrimeSpectrum R, e ∉ p.asIdeal → ∃ y : Z, s y = p := by
@@ -120,6 +157,23 @@ theorem exists_nonempty_fibre {R K : Type} [CommRing R] [Field K] {Z Z₀ : Sche
   rw [h0]
   exact zero_mem _
 
+/- English proof (translation)
+Introduce `R _ Z s K _ x hp hs hc`. Establish `hp'` using `(GlobalTheory.ProjSpace.isProjBy_iff_isProjOver s).2 hp`. Take `⟨P⟩` from `GlobalTheory.T.nonempty_perfectSectionsComplex_of_smooth_proj R Z s hs hp' _ (Inh.trivLB_isLB _)`. Establish `hpr : IsProper s` using `GlobalTheory.AbLaw.isProper_of_isProjBy R Z s hp'`. Set `L` to `AlgebraicClosure K`.
+
+Set `g₀ : R →+* L` to `(algebraMap K L).comp x`. Set `q` to `pullback.snd s (spMap x)`. Set `y₀ : Sp L ⟶ Sp K` to `spMap (algebraMap K L)`. Establish `h₀ : IsPullback (pullback.fst q y₀ ≫ pullback.fst s (spMap x)) (pullback.snd q y₀) s (Spec.map (CommRingCat.ofHom g₀))`. Use `(IsPullback.of_hasPullback q y₀).paste_horiz (IsPullback.of_hasPullback s (spMap x))` as an intermediate fact.
+
+Rewrite `this` using `[← Spec.map_comp]`. Then use the resulting hypothesis. Establish `hi` using `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ q inferInstance hc`. Establish `hint : IsIntegral (pullback q y₀)` using `GeometricallyIntegral.geometrically_isIntegral _ _ _ (.of_hasPullback q y₀)`. Establish `hpr₀ : IsProper (pullback.snd q y₀)` using `MorphismProperty.of_isPullback h₀ hpr`. Take `⟨v, -, hu, hline⟩` from `loc_of_triv P h₀ (Inh.trivLB_isLB _) (triv_pull _)`.
+
+Take `⟨x₀⟩ : Nonempty ↥(pullback q y₀)` from `inferInstance`. Establish `hv0 : v ≠ 0`. Introduce and unpack `rfl`. Take `⟨i, hi⟩` from `exists_mem P ((pullback.fst q y₀ ≫ pullback.fst s (spMap x)) x₀)`. Establish `h₁` using `mem_of_isUnit (hu i) (y := x₀) hi`.
+
+Rewrite `h₁` using `[← zero_smul L (0 : Fin P.a → L), loc_smul, map_zero, zero_mul, Scheme.basicOpen_zero]`. Conclude with `h₁`. Take `⟨δ, v₀, hδ, hker⟩` from `exists_kernel_vector g₀ P.D₀ v hv0 (hline (surjective_appTop _))`. Take `⟨e, he, him⟩` from `exists_nonempty_fibre s s.isOpenMap g₀ h₀.w x₀`. Use `⟨δ * e, fun h0 => mul_ne_zero hδ he ?_, fun R' _ φ hφ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_mul]`. Conclude with `(congrArg (algebraMap K L) h0).trans (map_zero _)`. Use `⟨geometrically_iff_of_commRing.2 fun F _ _ Y fst snd h => ?_⟩` and prove the remaining obligations. Set `g : R →+* F` to `(algebraMap R' F).comp φ`. Establish `h₁ : IsPullback (fst ≫ pullback.fst s (spMap φ)) snd s (Spec.map (CommRingCat.ofHom g))`.
+
+Use `h.paste_horiz (IsPullback.of_hasPullback s (spMap φ))` as an intermediate fact. Rewrite `this` using `[← Spec.map_comp]`. Then use the resulting hypothesis. Establish `hg : IsUnit (g δ * g e)`. Rewrite using `[← map_mul]`. Conclude with `hφ.map (algebraMap R' F)`.
+
+Use `preconnectedSpace_of_line P h₁ _ (hker F g (isUnit_of_mul_isUnit_left hg))` as an intermediate fact. Take `⟨y, hy⟩` from `him (PrimeSpectrum.comap g ⊥) fun hm => (isUnit_of_mul_isUnit_right hg).ne_zero hm`. Take `⟨z, -⟩` from `Scheme.exists_preimage_of_isPullback h₁ y (⊥ : PrimeSpectrum F) hy`. Conclude with `⟨⟨z⟩⟩`.
+-/
 theorem geometricallyConnected_near : ∀ (R : Type) [CommRing R] (Z : Scheme.{0}) (s : Z ⟶ Sp R) (K : Type) [Field K] (x : R →+* K), IsProjOver s → Smooth s → GeometricallyConnected (pullback.snd s (spMap x)) → ∃ f : R, x f ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (φ : R →+* R'), IsUnit (φ f) → GeometricallyConnected (pullback.snd s (spMap φ)) := by
   intro R _ Z s K _ x hp hs hc
   have hp' := (GlobalTheory.ProjSpace.isProjBy_iff_isProjOver s).2 hp

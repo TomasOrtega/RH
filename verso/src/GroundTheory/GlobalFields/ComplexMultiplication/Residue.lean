@@ -10,16 +10,30 @@ namespace Elliptic
 def dslopeIter (p : ℂ) (k : ℕ) (g : ℂ → ℂ) : ℂ → ℂ :=
   (Function.swap dslope p)^[k] g
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma dslopeIter_zero (p : ℂ) (g : ℂ → ℂ) : dslopeIter p 0 g = g := rfl
 
+/- English proof (translation)
+The claim follows from `Function.iterate_succ_apply _ _ _`.
+-/
 lemma dslopeIter_succ (p : ℂ) (k : ℕ) (g : ℂ → ℂ) :
     dslopeIter p (k + 1) g = dslopeIter p k (Function.swap dslope p g) :=
   Function.iterate_succ_apply _ _ _
 
+/- English proof (translation)
+The claim follows from `Function.iterate_succ_apply' _ _ _`.
+-/
 lemma dslopeIter_succ' (p : ℂ) (k : ℕ) (g : ℂ → ℂ) :
     dslopeIter p (k + 1) g = Function.swap dslope p (dslopeIter p k g) :=
   Function.iterate_succ_apply' _ _ _
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [dslopeIter_zero]`. Consider the case `succ k ih`. Rewrite using `[ih, Finset.sum_range_succ, dslopeIter_succ']`. Establish `h` using `sub_smul_dslope (dslopeIter p k g) p z`.
+
+Simplify using `only [smul_eq_mul] at h`. Use `show _ = _ + _ + (z - p) ^ (k + 1) * dslope (dslopeIter p k g) p z`. Rewrite using `[pow_succ]`. Take the linear combination `-((z - p) ^ k) * h`.
+-/
 lemma eq_sum_add_dslopeIter (p : ℂ) (g : ℂ → ℂ) (k : ℕ) (z : ℂ) :
     g z = ∑ j ∈ Finset.range k, (z - p) ^ j * dslopeIter p j g p +
       (z - p) ^ k * dslopeIter p k g z := by
@@ -33,6 +47,11 @@ lemma eq_sum_add_dslopeIter (p : ℂ) (g : ℂ → ℂ) (k : ℕ) (z : ℂ) :
     rw [pow_succ]
     linear_combination -((z - p) ^ k) * h
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact hg`. Consider the case `succ k ih`. Rewrite using `[dslopeIter_succ']`. Take `⟨q, hq⟩` from `ih`.
+
+Conclude with `hq.has_fpower_series_dslope_fslope.analyticAt`.
+-/
 lemma analyticAt_dslopeIter {p : ℂ} {g : ℂ → ℂ} (hg : AnalyticAt ℂ g p) (k : ℕ) :
     AnalyticAt ℂ (dslopeIter p k g) p := by
   induction k with
@@ -42,6 +61,11 @@ lemma analyticAt_dslopeIter {p : ℂ} {g : ℂ → ℂ} (hg : AnalyticAt ℂ g p
     obtain ⟨q, hq⟩ := ih
     exact hq.has_fpower_series_dslope_fslope.analyticAt
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Use `show dslope (fun z ↦ (z - p) * g z) p z = g z`. Break down `eq_or_ne z p with rfl | hz` into its components or cases. Rewrite using `[dslope_same]`. Conclude with `(((hasDerivAt_id z).sub_const z).mul hg.hasDerivAt).deriv.trans (by simp)`.
+
+Rewrite using `[dslope_of_ne _ hz, slope_def_field]`. Establish `: z - p ≠ 0` using `sub_ne_zero.2 hz`. Simplify using `only [sub_self, zero_mul, sub_zero]`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma swap_dslope_sub_mul {p : ℂ} {g : ℂ → ℂ} (hg : DifferentiableAt ℂ g p) :
     Function.swap dslope p (fun z ↦ (z - p) * g z) = g := by
   funext z
@@ -54,6 +78,11 @@ lemma swap_dslope_sub_mul {p : ℂ} {g : ℂ → ℂ} (hg : DifferentiableAt ℂ
     simp only [sub_self, zero_mul, sub_zero]
     field_simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Use `show dslope (fun z ↦ a * g z) p z = a * dslope g p z`. Break down `eq_or_ne z p with rfl | hz` into its components or cases. Simplify using `only [dslope_same]`. Conclude with `deriv_const_mul_field a`.
+
+Simplify using `only [dslope_of_ne _ hz, slope_def_field]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma swap_dslope_const_mul (p a : ℂ) (g : ℂ → ℂ) :
     Function.swap dslope p (fun z ↦ a * g z) = fun z ↦ a * Function.swap dslope p g z := by
   funext z
@@ -64,6 +93,9 @@ lemma swap_dslope_const_mul (p a : ℂ) (g : ℂ → ℂ) :
   · simp only [dslope_of_ne _ hz, slope_def_field]
     ring
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[dslopeIter_succ', ih, swap_dslope_const_mul, dslopeIter_succ']`.
+-/
 lemma dslopeIter_const_mul (p a : ℂ) (g : ℂ → ℂ) (k : ℕ) :
     dslopeIter p k (fun z ↦ a * g z) = fun z ↦ a * dslopeIter p k g z := by
   induction k with
@@ -71,6 +103,11 @@ lemma dslopeIter_const_mul (p a : ℂ) (g : ℂ → ℂ) (k : ℕ) :
   | succ k ih =>
     rw [dslopeIter_succ', ih, swap_dslope_const_mul, dslopeIter_succ']
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact h`. Consider the case `succ k ih`. Rewrite using `[dslopeIter_succ', dslopeIter_succ']`. Establish `hp : dslopeIter p k g₁ p = dslopeIter p k g₂ p` using `ih.eq_of_nhds`.
+
+Use `filter_upwards [ih] with z hz`. Use `show dslope (dslopeIter p k g₁) p z = dslope (dslopeIter p k g₂) p z`. Break down `eq_or_ne z p with rfl | hzp` into its components or cases. Rewrite using `[dslope_same, dslope_same, ih.deriv_eq]`. Rewrite using `[dslope_of_ne _ hzp, dslope_of_ne _ hzp, slope_def_field, slope_def_field, hz, hp]`.
+-/
 lemma dslopeIter_congr {p : ℂ} {g₁ g₂ : ℂ → ℂ} (h : g₁ =ᶠ[𝓝 p] g₂) (k : ℕ) :
     dslopeIter p k g₁ =ᶠ[𝓝 p] dslopeIter p k g₂ := by
   induction k with
@@ -89,6 +126,9 @@ open Classical in
 def meromorphicShift (f : ℂ → ℂ) (p : ℂ) : ℕ :=
   if h : MeromorphicAt f p then Nat.find h else 0
 
+/- English proof (translation)
+Use `Nat.find_spec hf` as an intermediate fact. Simplify using `only [smul_eq_mul] at this`. Unfold `meromorphicShift`. Rewrite using `[dif_pos hf]`. Use `this` and compare the differences between its conclusion and the goal.
+-/
 lemma analyticAt_pow_meromorphicShift_mul {f : ℂ → ℂ} {p : ℂ} (hf : MeromorphicAt f p) :
     AnalyticAt ℂ (fun z ↦ (z - p) ^ meromorphicShift f p * f z) p := by
   classical
@@ -98,6 +138,9 @@ lemma analyticAt_pow_meromorphicShift_mul {f : ℂ → ℂ} {p : ℂ} (hf : Mero
   rw [dif_pos hf]
   convert this
 
+/- English proof (translation)
+Establish `hf : MeromorphicAt f p` using `⟨n, by simpa [smul_eq_mul] using h⟩`. Unfold `meromorphicShift`. Rewrite using `[dif_pos hf]`. Use `Nat.find_min' hf (by simpa [smul_eq_mul] using h)` and compare the differences between its conclusion and the goal.
+-/
 lemma meromorphicShift_le {f : ℂ → ℂ} {p : ℂ} {n : ℕ}
     (h : AnalyticAt ℂ (fun z ↦ (z - p) ^ n * f z) p) : meromorphicShift f p ≤ n := by
   classical
@@ -106,6 +149,11 @@ lemma meromorphicShift_le {f : ℂ → ℂ} {p : ℂ} {n : ℕ}
   rw [dif_pos hf]
   convert Nat.find_min' hf (by simpa [smul_eq_mul] using h)
 
+/- English proof (translation)
+Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base => exact analyticAt_pow_meromorphicShift_mul hf`. Consider the case `succ n _ ih`. Establish `e : (fun z ↦ (z - p) ^ (n + 1) * f z) = fun z ↦ (z - p) * ((z - p) ^ n * f z)`. Use function extensionality and compare the values at `z`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(analyticAt_id.sub analyticAt_const).mul ih`.
+-/
 lemma analyticAt_pow_mul_of_meromorphicShift_le {f : ℂ → ℂ} {p : ℂ} (hf : MeromorphicAt f p)
     {n : ℕ} (hn : meromorphicShift f p ≤ n) : AnalyticAt ℂ (fun z ↦ (z - p) ^ n * f z) p := by
   induction n, hn using Nat.le_induction with
@@ -119,6 +167,9 @@ lemma analyticAt_pow_mul_of_meromorphicShift_le {f : ℂ → ℂ} {p : ℂ} (hf 
 def laurentNumerator (f : ℂ → ℂ) (p : ℂ) : ℂ → ℂ :=
   fun z ↦ (z - p) ^ (meromorphicShift f p + 1) * f z
 
+/- English proof (translation)
+The claim follows from `analyticAt_pow_mul_of_meromorphicShift_le hf (Nat.le_succ _)`.
+-/
 lemma analyticAt_laurentNumerator {f : ℂ → ℂ} {p : ℂ} (hf : MeromorphicAt f p) :
     AnalyticAt ℂ (laurentNumerator f p) p :=
   analyticAt_pow_mul_of_meromorphicShift_le hf (Nat.le_succ _)
@@ -136,10 +187,22 @@ def principalPart (f : ℂ → ℂ) (p : ℂ) (z : ℂ) : ℂ :=
 def regularPart (f : ℂ → ℂ) (p : ℂ) : ℂ → ℂ :=
   dslopeIter p (meromorphicShift f p + 1) (laurentNumerator f p)
 
+/- English proof (translation)
+The claim follows from `analyticAt_dslopeIter (analyticAt_laurentNumerator hf) _`.
+-/
 lemma analyticAt_regularPart {f : ℂ → ℂ} {p : ℂ} (hf : MeromorphicAt f p) :
     AnalyticAt ℂ (regularPart f p) p :=
   analyticAt_dslopeIter (analyticAt_laurentNumerator hf) _
 
+/- English proof (translation)
+Use `set n := meromorphicShift f p`. Establish `h` using `eq_sum_add_dslopeIter p (laurentNumerator f p) (n + 1) z`. Establish `hzp : z - p ≠ 0` using `sub_ne_zero.2 hz`. Establish `hpow : (z - p) ^ (n + 1) ≠ 0` using `pow_ne_zero _ hzp`. Apply `mul_left_cancel₀ hpow` to reduce the goal to its premises.
+
+Establish `e1 : (z - p) ^ (n + 1) * f z = laurentNumerator f p z` using `rfl`. Rewrite using `[e1, h, mul_add, principalPart, Finset.mul_sum]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j hj`.
+
+Establish `hj' : j ≤ n + 1` using `by simp only [Finset.mem_range] at hj; omega`. Establish `e2 : (z - p) ^ (n + 1) = (z - p) ^ (n + 1 - j) * (z - p) ^ j`. Rewrite using `[← pow_add, Nat.sub_add_cancel hj']`. Establish `hpj : (z - p) ^ (n + 1 - j) ≠ 0` using `pow_ne_zero _ hzp`. Rewrite using `[laurentCoeff, e2]`.
+
+Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+-/
 theorem eq_principalPart_add_regularPart (f : ℂ → ℂ) (p : ℂ) {z : ℂ} (hz : z ≠ p) :
     f z = principalPart f p z + regularPart f p z := by
   set n := meromorphicShift f p
@@ -160,6 +223,15 @@ theorem eq_principalPart_add_regularPart (f : ℂ → ℂ) (p : ℂ) {z : ℂ} (
   field_simp
   rfl
 
+/- English proof (translation)
+Establish `hf : MeromorphicAt f p` using `⟨n + 1, by simpa [smul_eq_mul] using hn⟩`. Use `set m := meromorphicShift f p with hm`. Establish `step : ∀ j, m ≤ j + 1 → dslopeIter p (j + 1) (fun z ↦ (z - p) ^ (j + 1 + 1) * f z) p = dslopeIter p j (fun z ↦ (z - p) ^ (j + 1) * f z) p`. Introduce `j hj`. Establish `hd : DifferentiableAt ℂ (fun z ↦ (z - p) ^ (j + 1) * f z) p` using `(analyticAt_pow_mul_of_meromorphicShift_le hf hj).differentiableAt`.
+
+Rewrite using `[dslopeIter_succ]`. Establish `e : (fun z ↦ (z - p) ^ (j + 1 + 1) * f z) = fun z ↦ (z - p) * ((z - p) ^ (j + 1) * f z)`. Use function extensionality and compare the values at `z`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, swap_dslope_sub_mul hd]`.
+
+Establish `up : ∀ j, m ≤ j → dslopeIter p j (fun z ↦ (z - p) ^ (j + 1) * f z) p = residue f p`. Introduce `j hj`. Proceed by induction on `j, hj using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ j hj ih => rw [step j (by omega), ih]`.
+
+Establish `hmn : m ≤ n + 1` using `meromorphicShift_le hn`. Break down `Nat.lt_or_ge n m with h | h` into its components or cases. Rewrite using `[← step n (by omega), up (n + 1) (by omega)]`. Conclude with `(up n h).symm`.
+-/
 theorem residue_eq_dslopeIter {f : ℂ → ℂ} {p : ℂ} {n : ℕ}
     (hn : AnalyticAt ℂ (fun z ↦ (z - p) ^ (n + 1) * f z) p) :
     residue f p = dslopeIter p n (fun z ↦ (z - p) ^ (n + 1) * f z) p := by
@@ -187,6 +259,11 @@ theorem residue_eq_dslopeIter {f : ℂ → ℂ} {p : ℂ} {n : ℕ}
   · rw [← step n (by omega), up (n + 1) (by omega)]
   · exact (up n h).symm
 
+/- English proof (translation)
+Use `set n := meromorphicShift f₁ p + 1`. Establish `h₁ : AnalyticAt ℂ (fun z ↦ (z - p) ^ (n + 1) * f₁ z) p` using `analyticAt_pow_mul_of_meromorphicShift_le hf₁ (by omega)`. Establish `heq : (fun z ↦ (z - p) ^ (n + 1) * f₁ z) =ᶠ[𝓝 p] fun z ↦ (z - p) ^ (n + 1) * f₂ z`. Rewrite `h` using `[EventuallyEq, eventually_nhdsWithin_iff]`. Use `filter_upwards [h] with z hz`.
+
+Break down `eq_or_ne z p with rfl | hzp` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[hz hzp]`. Rewrite using `[residue_eq_dslopeIter h₁, residue_eq_dslopeIter (h₁.congr heq)]`. Conclude with `(dslopeIter_congr heq n).eq_of_nhds`.
+-/
 theorem residue_congr {f₁ f₂ : ℂ → ℂ} {p : ℂ} (hf₁ : MeromorphicAt f₁ p)
     (h : f₁ =ᶠ[𝓝[≠] p] f₂) : residue f₁ p = residue f₂ p := by
   set n := meromorphicShift f₁ p + 1
@@ -201,6 +278,13 @@ theorem residue_congr {f₁ f₂ : ℂ → ℂ} {p : ℂ} (hf₁ : MeromorphicAt
   rw [residue_eq_dslopeIter h₁, residue_eq_dslopeIter (h₁.congr heq)]
   exact (dslopeIter_congr heq n).eq_of_nhds
 
+/- English proof (translation)
+Establish `hG : AnalyticAt ℂ (fun z ↦ c * (z - p) + (z - p) ^ 2 * u z) p` using `by fun_prop`. Establish `heq : (fun z ↦ (z - p) ^ (1 + 1) * f z) =ᶠ[𝓝 p] fun z ↦ c * (z - p) + (z - p) ^ 2 * u z`. Rewrite `h` using `[EventuallyEq, eventually_nhdsWithin_iff]`. Use `filter_upwards [h] with z hz`. Break down `eq_or_ne z p with rfl | hzp` into its components or cases.
+
+Simplify using the standard rewrite rules. Rewrite using `[hz hzp]`. Establish `: z - p ≠ 0` using `sub_ne_zero.2 hzp`. Clear the denominators using the available nonvanishing facts. Rewrite using `[residue_eq_dslopeIter (n := 1) (hG.congr heq.symm), dslopeIter_succ, dslopeIter_zero]`.
+
+Use `show dslope _ p p = c`. Rewrite using `[dslope_same, heq.deriv_eq]`. Establish `hd` using `(((hasDerivAt_id p).sub_const p).const_mul c).add ((((hasDerivAt_id p).sub_const p).pow 2).mul hu.differentiableAt.hasDerivAt)`. Conclude with `hd.deriv.trans (by simp)`.
+-/
 theorem residue_eq_of_eventuallyEq {f u : ℂ → ℂ} {p c : ℂ} (hu : AnalyticAt ℂ u p)
     (h : f =ᶠ[𝓝[≠] p] fun z ↦ c * (z - p)⁻¹ + u z) : residue f p = c := by
   have hG : AnalyticAt ℂ (fun z ↦ c * (z - p) + (z - p) ^ 2 * u z) p := by fun_prop
@@ -220,10 +304,20 @@ theorem residue_eq_of_eventuallyEq {f u : ℂ → ℂ} {p c : ℂ} (hu : Analyti
     ((((hasDerivAt_id p).sub_const p).pow 2).mul hu.differentiableAt.hasDerivAt)
   exact hd.deriv.trans (by simp)
 
+/- English proof (translation)
+The claim follows from `residue_eq_of_eventuallyEq hf (Eventually.of_forall fun z ↦ by simp)`.
+-/
 theorem residue_eq_zero_of_analyticAt {f : ℂ → ℂ} {p : ℂ} (hf : AnalyticAt ℂ f p) :
     residue f p = 0 :=
   residue_eq_of_eventuallyEq hf (Eventually.of_forall fun z ↦ by simp)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Use `show dslope (fun w ↦ G (c * w)) w₀ w = c * dslope G (c * w₀) (c * w)`. Break down `eq_or_ne w w₀ with rfl | hw` into its components or cases. Rewrite using `[dslope_same, dslope_same]`. Use `hG.hasDerivAt.comp w ((hasDerivAt_id w).const_mul c)` as an intermediate fact.
+
+Conclude with `this.deriv.trans (by ring)`. Establish `hcw : c * w ≠ c * w₀` using `fun h ↦ hw (mul_left_cancel₀ hc h)`. Establish `h1 : w - w₀ ≠ 0` using `sub_ne_zero.2 hw`. Establish `h2 : c * w - c * w₀ ≠ 0` using `sub_ne_zero.2 hcw`. Rewrite using `[dslope_of_ne _ hw, dslope_of_ne _ hcw, slope_def_field, slope_def_field]`.
+
+Rewrite using `[show c * w - c * w₀ = c * (w - w₀) by ring]`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma swap_dslope_comp_mul {G : ℂ → ℂ} {c w₀ : ℂ} (hc : c ≠ 0)
     (hG : DifferentiableAt ℂ G (c * w₀)) :
     Function.swap dslope w₀ (fun w ↦ G (c * w)) =
@@ -241,6 +335,11 @@ lemma swap_dslope_comp_mul {G : ℂ → ℂ} {c w₀ : ℂ} (hc : c ≠ 0)
     rw [show c * w - c * w₀ = c * (w - w₀) by ring]
     field_simp
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => funext w`. Simplify using `[dslopeIter_zero]`. Consider the case `succ k ih`. Rewrite using `[dslopeIter_succ', ih]`.
+
+Rewrite using `[swap_dslope_const_mul w₀ (c ^ k) (fun w ↦ dslopeIter (c * w₀) k G (c * w))]`. Rewrite using `[swap_dslope_comp_mul hc ((analyticAt_dslopeIter hG k).differentiableAt)]`. Use function extensionality and compare the values at `w`. Rewrite using `[dslopeIter_succ']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma dslopeIter_comp_mul {G : ℂ → ℂ} {c w₀ : ℂ} (hc : c ≠ 0) (hG : AnalyticAt ℂ G (c * w₀))
     (k : ℕ) :
     dslopeIter w₀ k (fun w ↦ G (c * w)) = fun w ↦ c ^ k * dslopeIter (c * w₀) k G (c * w) := by
@@ -254,6 +353,15 @@ lemma dslopeIter_comp_mul {G : ℂ → ℂ} {c w₀ : ℂ} (hc : c ≠ 0) (hG : 
     rw [dslopeIter_succ']
     ring
 
+/- English proof (translation)
+Use `set n := meromorphicShift f (c * w₀)`. Use `set G : ℂ → ℂ := fun z ↦ (z - c * w₀) ^ (n + 1) * f z with hGdef`. Establish `hG : AnalyticAt ℂ G (c * w₀)` using `analyticAt_pow_mul_of_meromorphicShift_le hf (Nat.le_succ n)`. Establish `e : (fun w ↦ (w - w₀) ^ (n + 1) * f (c * w)) = fun w ↦ c⁻¹ ^ (n + 1) * G (c * w)`. Use function extensionality and compare the values at `w`.
+
+Simplify using `only [hGdef]`. Rewrite using `[← mul_assoc, ← mul_pow]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Establish `hcomp : AnalyticAt ℂ (fun w ↦ G (c * w)) w₀`.
+
+Establish `: AnalyticAt ℂ (fun w ↦ c * w) w₀` using `by fun_prop`. Conclude with `hG.comp_of_eq this rfl`. Establish `hana : AnalyticAt ℂ (fun w ↦ (w - w₀) ^ (n + 1) * f (c * w)) w₀`. Rewrite using `[e]`. Conclude with `analyticAt_const.mul hcomp`.
+
+Rewrite using `[residue_eq_dslopeIter hana, e, dslopeIter_const_mul, dslopeIter_comp_mul hc hG]`. Establish `: residue f (c * w₀) = dslopeIter (c * w₀) n G (c * w₀)` using `rfl`. Rewrite using `[this, inv_pow, pow_succ]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem residue_comp_mul {f : ℂ → ℂ} {c w₀ : ℂ} (hc : c ≠ 0) (hf : MeromorphicAt f (c * w₀)) :
     residue (fun w ↦ f (c * w)) w₀ = c⁻¹ * residue f (c * w₀) := by
   set n := meromorphicShift f (c * w₀)
@@ -276,6 +384,15 @@ theorem residue_comp_mul {f : ℂ → ℂ} {c w₀ : ℂ} (hc : c ≠ 0) (hf : M
   rw [this, inv_pow, pow_succ]
   field_simp
 
+/- English proof (translation)
+Take `⟨g, hg, hgp, hfg⟩` from `(meromorphicOrderAt_eq_int_iff hf).1 hn`. Simplify using `only [smul_eq_mul] at hfg`. Establish `hu : AnalyticAt ℂ (fun z ↦ deriv g z / g z) p` using `hg.deriv.div hg hgp`. Apply `residue_eq_of_eventuallyEq hu` to reduce the goal to its premises. Establish `h2 : ∀ᶠ z in 𝓝[≠] p, f =ᶠ[𝓝 z] fun w ↦ (w - p) ^ n * g w`.
+
+Use `eventually_eventually_nhdsWithin.2 hfg` as an intermediate fact. Use `filter_upwards [this, self_mem_nhdsWithin] with z hz hzp`. Rewrite `hz` using `[nhdsWithin_eq_nhds.2 (isOpen_compl_singleton.mem_nhds hzp)]`. Then use the resulting hypothesis. Establish `h3 : ∀ᶠ z in 𝓝[≠] p, g z ≠ 0` using `nhdsWithin_le_nhds (hg.continuousAt.eventually_ne hgp)`. Establish `h4 : ∀ᶠ z in 𝓝[≠] p, AnalyticAt ℂ g z` using `nhdsWithin_le_nhds hg.eventually_analyticAt`.
+
+Use `filter_upwards [h2, h3, h4, self_mem_nhdsWithin] with z hz hgz hga hzp`. Establish `hzp' : z - p ≠ 0` using `sub_ne_zero.2 hzp`. Establish `h1 : HasDerivAt (fun w ↦ (w - p) ^ n) ((n : ℂ) * (z - p) ^ (n - 1) * 1) z`. Use `(hasDerivAt_zpow n (z - p) (Or.inl hzp')).comp z ((hasDerivAt_id z).sub_const p)` as an intermediate fact. Conclude with `this`.
+
+Establish `hd : HasDerivAt (fun w ↦ (w - p) ^ n * g w) ((n : ℂ) * (z - p) ^ (n - 1) * 1 * g z + (z - p) ^ n * deriv g z) z` using `h1.mul hga.differentiableAt.hasDerivAt`. Rewrite using `[logDeriv_apply, hz.deriv_eq, hz.eq_of_nhds, hd.deriv, zpow_sub_one₀ hzp']`. Establish `hzn : (z - p) ^ n ≠ 0` using `zpow_ne_zero n hzp'`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem residue_logDeriv {f : ℂ → ℂ} {p : ℂ} (hf : MeromorphicAt f p) {n : ℤ}
     (hn : meromorphicOrderAt f p = n) : residue (logDeriv f) p = n := by
   obtain ⟨g, hg, hgp, hfg⟩ := (meromorphicOrderAt_eq_int_iff hf).1 hn
@@ -301,6 +418,13 @@ theorem residue_logDeriv {f : ℂ → ℂ} {p : ℂ} (hf : MeromorphicAt f p) {n
   have hzn : (z - p) ^ n ≠ 0 := zpow_ne_zero n hzp'
   field_simp
 
+/- English proof (translation)
+Take `⟨g, hg, hgp, hfg⟩` from `(meromorphicOrderAt_eq_int_iff hf).1 h`. Simplify using `only [smul_eq_mul] at hfg`. Take `⟨q, hq⟩` from `hg`. Establish `hu : AnalyticAt ℂ (dslope g p) p` using `hq.has_fpower_series_dslope_fslope.analyticAt`. Rewrite using `[residue_eq_of_eventuallyEq (c := g p) hu ?_]`.
+
+Conclude with `hgp`. Use `filter_upwards [hfg, self_mem_nhdsWithin] with z hz hzp`. Establish `hzp' : z - p ≠ 0` using `sub_ne_zero.2 hzp`. Establish `e` using `sub_smul_dslope g p z`. Simplify using `only [smul_eq_mul] at e`.
+
+Rewrite using `[hz, zpow_neg_one]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-e`.
+-/
 theorem residue_ne_zero_of_meromorphicOrderAt_eq_neg_one {f : ℂ → ℂ} {p : ℂ}
     (hf : MeromorphicAt f p) (h : meromorphicOrderAt f p = ((-1 : ℤ) : WithTop ℤ)) :
     residue f p ≠ 0 := by

@@ -18,6 +18,11 @@ section Gen
 variable {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E)
 variable {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
+/- English proof (translation)
+Unfold `GlobalTheory.WeilM.symp GlobalTheory.WeilM.hTens`. Use `congr 2`. Simplify using `only [Matrix.transpose_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symp_transpose (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β E) :
     GlobalTheory.WeilM.symp c ξ JB JA xᵀ yᵀ = GlobalTheory.WeilM.symp c ξ JA JB x y := by
   unfold GlobalTheory.WeilM.symp GlobalTheory.WeilM.hTens
@@ -40,10 +45,16 @@ def transD {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E} {κ : Type} [Fin
 
 variable {c}
 
+/- English proof (translation)
+Simplify using `[transD]`.
+-/
 theorem transD_e {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E} {κ : Type} [Fintype κ]
     (d : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp c ξ JA JB) κ) (x : Matrix α β E) : (transD c d).e xᵀ = d.e x := by
   simp [transD]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.WeilM.Darboux.rho, transD]`.
+-/
 theorem transD_rho {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E} {κ : Type} [Fintype κ]
     (d : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp c ξ JA JB) κ) (ψ : AddChar R ℂ) (w : Matrix β α E) :
     (transD c d).rho ψ w = d.rho ψ wᵀ := by
@@ -53,6 +64,9 @@ variable [TopologicalSpace R] [TopologicalSpace E] {C : GlobalTheory.WeilM.TestC
   {JA : Matrix α α E} {JB : Matrix β β E} {κ : Type} [Fintype κ] {d : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp c ξ JA JB) κ}
   {om : GlobalTheory.WeilM.UG c JA × GlobalTheory.WeilM.UG c JB →* Module.End ℂ ((κ → R) → ℂ)}
 
+/- English proof (translation)
+Use `⟨⟨fun g φ hφ => h.pres _ φ hφ, fun g w φ hφ => ?_, fun g l hl => h.adm _ l hl⟩, h.unit.comp _, h.cont.comp (f := MonoidHom.inr _ _) (continuous_const.prodMk continuous_id)⟩` and prove the remaining obligations. Use `h.impl (1, g) w φ hφ` as an intermediate fact. Simplify `this` using `[GlobalTheory.WeilM.actAB, GlobalTheory.WeilM.actB]`.
+-/
 theorem isUSplitting_inr (h : GlobalTheory.WeilM.IsUSplitting C ψ d (GlobalTheory.WeilM.actAB c) om) :
     GlobalTheory.WeilM.IsUSplitting C ψ d (GlobalTheory.WeilM.actB c) (om.comp (MonoidHom.inr _ _)) := by
   refine ⟨⟨fun g φ hφ => h.pres _ φ hφ, fun g w φ hφ => ?_, fun g l hl => h.adm _ l hl⟩, h.unit.comp _,
@@ -60,6 +74,9 @@ theorem isUSplitting_inr (h : GlobalTheory.WeilM.IsUSplitting C ψ d (GlobalTheo
   have := h.impl (1, g) w φ hφ
   simpa [GlobalTheory.WeilM.actAB, GlobalTheory.WeilM.actB] using this
 
+/- English proof (translation)
+Use `⟨⟨fun g φ hφ => h.pres _ φ hφ, fun g w φ hφ => ?_, fun g l hl => h.adm _ l hl⟩, h.unit.comp _, h.cont.comp (f := MonoidHom.inl _ _) (continuous_id.prodMk continuous_const)⟩` and prove the remaining obligations. Use `h.impl (g, 1) wᵀ φ hφ` as an intermediate fact. Simplify using `only [MonoidHom.comp_apply, MonoidHom.inl_apply, transD_rho]`. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `[GlobalTheory.WeilM.actAB, GlobalTheory.WeilM.actB, Matrix.transpose_mul]`.
+-/
 theorem isUSplitting_inl (h : GlobalTheory.WeilM.IsUSplitting C ψ d (GlobalTheory.WeilM.actAB c) om) :
     GlobalTheory.WeilM.IsUSplitting C ψ (transD c d) (GlobalTheory.WeilM.actB c) (om.comp (MonoidHom.inl _ _)) := by
   refine ⟨⟨fun g φ hφ => h.pres _ φ hφ, fun g w φ hφ => ?_, fun g l hl => h.adm _ l hl⟩, h.unit.comp _,

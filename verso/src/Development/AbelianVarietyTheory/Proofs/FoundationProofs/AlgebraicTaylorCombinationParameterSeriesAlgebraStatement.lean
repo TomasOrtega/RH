@@ -13,6 +13,9 @@ open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalis
 open scoped BigOperators
 open GlobalTheory.EvenTheta GlobalTheory.ThetaTransl
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TranslLin.transl_lin | exact GlobalTheory.TranslLin.transl_lin | (intros; apply GlobalTheory.TranslLin.transl_lin <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.algebraicTaylorCombination_parameterSeries_algebraic : ∀ (p : ℕ) [Fact p.Prime] (g : GL3Theta.G1 p) (ι : Type) [Fintype ι] (φ : ι → ℂ → ℂ) (c : ι → ℂ)
     (E : ℂ → ℂ), AlgEnt E → (∀ k, AlgEnt (φ k)) → (∀ z, E z = ∑ k, c k * φ k z) →
       ∃ a : ι → ℂ, (∀ k, a k ∈ Qbar) ∧ g.atU E = ∑ k, PowerSeries.C (lamC g.lam (a k)) * g.atU (φ k) := by

@@ -21,6 +21,13 @@ def toCenter : 𝓞 G.F →+* Subring.center (ℚ ⊗[ℤ] G.O) where
   map_zero' := by ext; simp
   map_add' a b := by ext; simp [TensorProduct.tmul_add]
 
+/- English proof (translation)
+Establish `hc0 : (c : 𝓞 G.F) ≠ 0` using `nonZeroDivisors.coe_ne_zero c`. Establish `hI` using `Ideal.comap_ne_bot_of_integral_mem hc0 (Ideal.mem_span_singleton_self (c : 𝓞 G.F)) (Algebra.IsIntegral.isIntegral (R := ℤ) (c : 𝓞 G.F))`. Take `⟨k, hk, hk0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Rewrite `hk` using `[Ideal.mem_comap, Ideal.mem_span_singleton']`. Take `⟨d, hd⟩` from `hk`.
+
+Establish `hk' : (k : ℚ) ≠ 0` using `by exact_mod_cast hk0`. Establish `hu : IsUnit ((k : Subring.center (ℚ ⊗[ℤ] G.O)))`. Use `isUnit_iff_exists_inv.mpr ⟨⟨algebraMap ℚ _ (k : ℚ)⁻¹, Subring.mem_center_iff.mpr fun g => (Algebra.commutes _ g).symm⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((k : Subring.center (ℚ ⊗[ℤ] G.O)) : ℚ ⊗[ℤ] G.O) * algebraMap ℚ _ (k : ℚ)⁻¹ = 1`.
+
+Rewrite using `[Subring.coe_intCast, ← map_intCast (algebraMap ℚ (ℚ ⊗[ℤ] G.O)), ← map_mul, mul_inv_cancel₀ hk', map_one]`. Establish `hm : toCenter G d * toCenter G c = (k : Subring.center (ℚ ⊗[ℤ] G.O))`. Rewrite using `[← map_mul, hd, eq_intCast (algebraMap ℤ (𝓞 G.F)) k, map_intCast]`. Conclude with `isUnit_of_mul_isUnit_right (hm ▸ hu)`.
+-/
 theorem toCenter_isUnit (c : nonZeroDivisors (𝓞 G.F)) : IsUnit (toCenter G c) := by
   have hc0 : (c : 𝓞 G.F) ≠ 0 := nonZeroDivisors.coe_ne_zero c
   have hI := Ideal.comap_ne_bot_of_integral_mem hc0 (Ideal.mem_span_singleton_self (c : 𝓞 G.F))
@@ -43,12 +50,18 @@ def fMap : G.F →+* ℚ ⊗[ℤ] G.O :=
   (Subring.center (ℚ ⊗[ℤ] G.O)).subtype.comp
     (IsLocalization.lift (M := nonZeroDivisors (𝓞 G.F)) (S := G.F) (toCenter_isUnit G))
 
+/- English proof (translation)
+The claim follows from `(IsLocalization.lift (M := nonZeroDivisors (𝓞 G.F)) (S := G.F) (toCenter_isUnit G) x).2`.
+-/
 theorem fMap_mem_center (x : G.F) : fMap G x ∈ Subring.center (ℚ ⊗[ℤ] G.O) :=
   (IsLocalization.lift (M := nonZeroDivisors (𝓞 G.F)) (S := G.F) (toCenter_isUnit G) x).2
 
 instance instAlgebraF : Algebra G.F (ℚ ⊗[ℤ] G.O) :=
   (fMap G).toAlgebra' fun x y => ((Subring.mem_center_iff.mp (fMap_mem_center G x)) y).symm
 
+/- English proof (translation)
+Use `show fMap G (algebraMap (𝓞 G.F) G.F c) = _`. Simplify using `only [fMap, RingHom.comp_apply, IsLocalization.lift_eq]`. Both sides reduce to the same expression.
+-/
 theorem algebraMap_F_coe (c : 𝓞 G.F) :
     algebraMap G.F (ℚ ⊗[ℤ] G.O) (c : G.F) = (1 : ℚ) ⊗ₜ[ℤ] algebraMap (𝓞 G.F) G.O c := by
   show fMap G (algebraMap (𝓞 G.F) G.F c) = _

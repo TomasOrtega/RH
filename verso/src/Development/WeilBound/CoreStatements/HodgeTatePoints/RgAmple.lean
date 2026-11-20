@@ -24,6 +24,15 @@ namespace PositivityTheory.HtPt.Rg
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.CM GlobalTheory.LamF GlobalTheory.CechPic GlobalTheory.TripleProd ReciprocityTheory.GeometryOfNumbersTheory Formalism.L2.LamCM in
 
+/- English proof (translation)
+Introduce `R _ A A' _ _ L L' hA hL hLa hA' hL' hLa'`. Establish `hAA` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor A A' hA hA'`. Use `⟨hAA, ?_⟩` and prove the remaining obligations. Use `haveI : IsProper (A ⊗ A').hom := hAA.proper`. Establish `hP : IsPullback (fst A A').left (snd A A').left A.hom A'.hom` using `Over.isPullback_of_binaryFan_isLimit _ (CartesianMonoidalCategory.tensorProductIsBinaryProduct A A')`.
+
+Establish `hp` using `ReciprocityTheory.ChartRestriction.G.Semi.LB.isLB_pull hL (fst A A').left`. Establish `hq` using `ReciprocityTheory.ChartRestriction.G.Semi.LB.isLB_pull hL' (snd A A').left`. Establish `hN` using `GlobalTheory.CechPic.isLB_tens hp hq`. Establish `hAmp` using `GlobalTheory.isAmpleLB_of_relAmple_of_isAffine A hL hLa`. Establish `hAmp'` using `GlobalTheory.isAmpleLB_of_relAmple_of_isAffine A' hL' hLa'`.
+
+Establish `h1` using `ReciprocityTheory.ChartRestriction.G.Semi.LB.isLB_div hN hp`. Establish `h2` using `ReciprocityTheory.ChartRestriction.G.Semi.LB.isLB_div h1 hq`. Establish `hgen : ∃ t : (((GlobalTheory.CechPic.tens (L.pull (fst A A').left) (L'.pull (snd A A').left)).div (L.pull (fst A A').left)).div (L'.pull (snd A A').left)).Gen, t.IsGen`. Rewrite using `[← GlobalTheory.CechPic.cls_eq_zero_iff h2, GlobalTheory.CechPic.cls_div h1 hq h2, GlobalTheory.CechPic.cls_div hN hp h1, GlobalTheory.CechPic.cls_tens hp hq hN]`. Normalize the expressions using the abelian group laws.
+
+Establish `hNamp` using `GlobalTheory.IsAmpleLB.box hAmp hAmp' hN hP hgen`. Conclude with `⟨_, hN, (GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine (A ⊗ A') hN).2 hNamp⟩`.
+-/
 theorem ample_prod : ∀ (R : Type) [CommRing R] (A A' : Over (Spec (CommRingCat.of R))) [GrpObj A] [GrpObj A'] (L : LB A.left) (L' : LB A'.left), IsAbelianScheme A → L.IsLB → Out.RelAmple A L → IsAbelianScheme A' → L'.IsLB → Out.RelAmple A' L' → IsAbelianScheme (A ⊗ A') ∧ ∃ M : LB (A ⊗ A').left, M.IsLB ∧ Out.RelAmple (A ⊗ A') M := by
   intro R _ A A' _ _ L L' hA hL hLa hA' hL' hLa'
   have hAA := ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor A A' hA hA'

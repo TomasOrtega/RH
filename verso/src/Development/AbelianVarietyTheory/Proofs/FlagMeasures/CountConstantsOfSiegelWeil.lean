@@ -8,6 +8,11 @@ open Formalism.MainNotions Formalism.MainNotions.S MeasureTheory
 
 namespace GlobalTheory.CountConstants
 
+/- English proof (translation)
+Introduce `hSW`. Establish `H` using `GlobalTheory.CountBridge.count_typed_of_volumeStep (GlobalTheory.GaussMean.volumeStep_of_siegelWeil hSW)`. Use `choose n₀ C₀ hC₀ HC using H`. Set `Af : List ℝ → ℝ` to `fun l => 2 * (l.getD 6 0 + 1)`. Use `⟨fun l => ⟨0, n₀ (Af l), Af l, 0, C₀ (Af l), 1 / 16, 1 / 16⟩, 1 / 16, fun Fm => ⟨hC₀ _, le_refl _⟩, by norm_num, fun Fm => le_refl _, fun P {_} Fm => ⟨by norm_num, by norm_num, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `x i`. Conclude with `CountE.count_class_of_count P (HC _ _ le_rfl _ le_rfl _)`.
+-/
 theorem count_constants_of_siegelWeil :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → ∃ (c30 : List ℝ → Formalism.MainNotions.S.CountingConstants) (cIc : ℝ),
       (∀ {eps : ℝ} (Fm : FamP eps), 0 ≤ (c30 Fm.cOut).C ∧ 2 * (Fm.CYL + 1) ≤ (c30 Fm.cOut).A) ∧ 0 < cIc ∧

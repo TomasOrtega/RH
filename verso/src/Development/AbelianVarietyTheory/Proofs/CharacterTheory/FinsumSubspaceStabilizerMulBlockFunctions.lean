@@ -4,6 +4,35 @@ open Polynomial GlobalTheory.CuspGL
 
 namespace GlobalTheory.CuspGL
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `W.mkQ.exists_rightInverse_of_surjective W.range_mkQ`. Establish `hs' : ∀ y, W.mkQ (s y) = y` using `fun y => LinearMap.congr_fun hs y`. Establish `hmem : ∀ x : V, (LinearMap.id - s ∘ₗ W.mkQ : V →ₗ[F] V) x ∈ W`. Introduce `x`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply]`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, hs', sub_self]`. Set `p : V →ₗ[F] W` to `LinearMap.codRestrict W _ hmem`. Establish `hp : ∀ x : V, (p x : V) = x - s (W.mkQ x)` using `fun x => rfl`. Establish `hπ : ∀ x : W, W.mkQ (x : V) = 0` using `fun x => by`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `x.2`. Establish `hpι : ∀ x : W, p (x : V) = x` using `fun x => Subtype.ext (by rw [hp, hπ, map_zero, sub_zero])`. Establish `hps : ∀ y, p (s y) = 0` using `fun y => Subtype.ext (by rw [hp, hs', sub_self]; rfl)`. Set `G : Module.End F W × Module.End F (V ⧸ W) × ((V ⧸ W) →ₗ[F] W) → Module.End F V` to `fun t => W.subtype ∘ₗ t.1 ∘ₗ p + s ∘ₗ t.2.1 ∘ₗ W.mkQ + W.subtype ∘ₗ t.2.2 ∘ₗ W.mkQ`. Establish `hG : ∀ t x, G t x = (t.1 (p x) : V) + s (t.2.1 (W.mkQ x)) + (t.2.2 (W.mkQ x) : V)` using `fun t x => rfl`.
+
+Establish `hGι : ∀ t (x : W), G t x = (t.1 x : V)`. Introduce `t x`. Rewrite using `[hG, hpι, hπ]`. Simplify using the standard rewrite rules. Establish `hGW : ∀ t, ∀ x ∈ W, G t x ∈ W`.
+
+Introduce `t x hx`. Rewrite using `[hGι t ⟨x, hx⟩]`. Conclude with `(t.1 _).2`. Establish `h1 : ∀ t, (G t).restrict (hGW t) = t.1`. Introduce `t`.
+
+Use extensionality with `x`. Rewrite using `[LinearMap.restrict_coe_apply, hGι]`. Establish `h2 : ∀ t, W.mapQ W (G t) (fun x hx => hGW t x hx) = t.2.1`. Introduce `t`. Apply `Submodule.linearMap_qext` to reduce the goal to its premises.
+
+Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[Submodule.mkQ_apply, Submodule.mapQ_apply, ← Submodule.mkQ_apply, hG, map_add, map_add, hπ, hπ, hs', zero_add, add_zero, Submodule.mkQ_apply]`. Establish `h3 : ∀ t, p ∘ₗ G t ∘ₗ s = t.2.2`. Introduce `t`.
+
+Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hG, hps, hs', map_add, map_add, hps, hpι, hpι, map_zero, zero_add, zero_add]`. Set `e : (Module.End F W × Module.End F (V ⧸ W) × ((V ⧸ W) →ₗ[F] W)) ≃ {g : Module.End F V // ∀ x ∈ W, g x ∈ W}` to `{ toFun := fun t => ⟨G t, hGW t⟩ invFun := fun g => (g.1.restrict g.2, W.mapQ W g.1 (fun x hx => g.2 x hx), p ∘ₗ g.1 ∘ₗ s) left_inv := fun t => Prod.ext (h1 t) (Prod.ext (h2 t) (h3 t)) right_inv := by`. Introduce `g`.
+
+Use `Subtype.ext (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Use `show G _ x = _`. Rewrite using `[hG]`. Simplify using `only [LinearMap.restrict_coe_apply, LinearMap.comp_apply]`. Establish `hq : W.mapQ W g.1 (fun x hx => g.2 x hx) (W.mkQ x) = W.mkQ (g.1 (s (W.mkQ x)))` using `by conv_lhs => rw [← hs' (W.mkQ x)]`.
+
+Both sides reduce to the same expression. Rewrite using `[hq, hp, hp, map_sub]`. Use `abel }`. Use `haveI : Finite V := Module.finite_of_finite F`. Use `haveI : Finite (Module.End F W) := Module.finite_of_finite F`.
+
+Use `haveI : Finite (Module.End F (V ⧸ W)) := Module.finite_of_finite F`. Use `haveI : Finite ((V ⧸ W) →ₗ[F] W) := Module.finite_of_finite F`. Use `haveI := Fintype.ofFinite (Module.End F W)`. Use `haveI := Fintype.ofFinite (Module.End F (V ⧸ W))`. Use `haveI := Fintype.ofFinite ((V ⧸ W) →ₗ[F] W)`.
+
+Establish `hcard : Fintype.card ((V ⧸ W) →ₗ[F] W) = Nat.card F ^ (Module.finrank F W * Module.finrank F (V ⧸ W))`. Rewrite using `[← Nat.card_eq_fintype_card, Module.natCard_eq_pow_finrank (K := F), Module.finrank_linearMap, mul_comm]`. Rewrite using `[← finsum_comp_equiv e]`. Establish `: ∀ t, Φ ((e t).1.restrict (e t).2) * Φ' (W.mapQ W (e t).1 (fun x hx => (e t).2 x hx)) = Φ t.1 * Φ' t.2.1`. Introduce `t`.
+
+Use `show Φ ((G t).restrict (hGW t)) * Φ' (W.mapQ W (G t) (fun x hx => hGW t x hx)) = _`. Rewrite using `[h1, h2]`. Rewrite using `[finsum_congr this, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Fintype.sum_prod_type, Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_const, Finset.card_univ, hcard, nsmul_eq_mul, Nat.cast_pow]`.
+-/
 theorem finsum_stabiliser_mul_blocks (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V]
     [Module F V] [FiniteDimensional F V] (W : Submodule F V) (Φ : Module.End F W → ℂ)
     (Φ' : Module.End F (V ⧸ W) → ℂ) :

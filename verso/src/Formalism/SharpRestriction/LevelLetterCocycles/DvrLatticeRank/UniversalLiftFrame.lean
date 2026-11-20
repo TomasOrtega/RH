@@ -24,6 +24,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable {W}
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, hβγ, -⟩` from `hIF.1 T hcr hjump`. Establish `hwL : w ∈ LamPS W T Eπ h' c` using `(Submodule.mem_inf.mp hw).1`. Establish `hgw : W.γD T W.gamK w ∈ LamPS W T Eπ h' c` using `ModelFPf.LamPS_γ (W := W) (T := T) (Eπ := Eπ) (h' := h') (c := c) huu hγE hwL`. Establish `hgb : γLA W T π' c b₀ ∈ LamLA W T π' Eπ h' c ⊤` using `ModelFPf.LamLA_γ (W := W) (T := T) (π' := π') (Eπ := Eπ) (h' := h') (c := c) huE'Δ huu hγE hb₀`. Establish `h1` using `hβγ w hwL b₀ hb₀ hβ hgw hgb`.
+
+Establish `hsub : W.γD T W.gamK w - w ∈ LamPS W T Eπ h' c` using `Submodule.sub_mem _ hgw hwL`. Establish `hβs : β T ⟨W.γD T W.gamK w - w, hsub⟩ = mkLA W T π' Eπ h' M c (γLA W T π' c b₀ - b₀) (Submodule.sub_mem _ hgb hb₀)`. Establish `e : (⟨W.γD T W.gamK w - w, hsub⟩ : ↥(LamPS W T Eπ h' c)) = ⟨_, hgw⟩ - ⟨w, hwL⟩` using `rfl`. Rewrite using `[e, map_sub, h1, hβ]`. Both sides reduce to the same expression.
+
+Establish `hy : W.γD T W.gamK w - w ∈ PiNS W T π' 1` using `((mem_InvS W T π' Eπ h' 1 c w).1 hw).2`. Conclude with `(hMF.2.2.1 1 le_rfl hM1).2 _ hsub _ _ hβs hy`.
+-/
 theorem gam_b {T : LocLat G Qp LL O} (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop)
     (π' Eπ : LetA O n) (h' M σ : ℕ) (c : ZMod n) (α : FrA W π' Eπ h' M c) (β : FrB W π' Eπ h' M c)
     (hIF : IsFrame W Pt π' Eπ h' M σ c α β)
@@ -49,6 +56,9 @@ theorem gam_b {T : LocLat G Qp LL O} (Pt : ZMod n → LL → (K →ₐ[Qp] LL) �
   have hy : W.γD T W.gamK w - w ∈ PiNS W T π' 1 := ((mem_InvS W T π' Eπ h' 1 c w).1 hw).2
   exact (hMF.2.2.1 1 le_rfl hM1).2 _ hsub _ _ hβs hy
 
+/- English proof (translation)
+Establish `h` using `(MQ.range_iff π' c bL _).1 hz`. Use `choose g hg e using h`. Use `⟨g, hg, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← e i, MQ.smulLA_eq, MQ.coord_smulE]`.
+-/
 theorem coords_of {T : LocLat G Qp LL O} {π' Eπ : LetA O n} {h' : ℕ} {c : ZMod n} {r : ℕ}
     (bL : Basis (Fin r) O (LcQ W T π' c)) {z : LA W T π' c} (hz : z ∈ LamLA W T π' Eπ h' c ⊤) :
     ∃ g : Fin r → LetA O n, (∀ i, g i ∈ W.AΔ) ∧ ∀ i, algebraMap (LetA O n) W.EE (Eπ ^ h') *
@@ -58,6 +68,9 @@ theorem coords_of {T : LocLat G Qp LL O} {π' Eπ : LetA O n} {h' : ℕ} {c : ZM
   refine ⟨g, hg, fun i => ?_⟩
   rw [← e i, MQ.smulLA_eq, MQ.coord_smulE]
 
+/- English proof (translation)
+Take `⟨N, hN⟩ : ∃ N : ℕ, i - m₀ < N` from `⟨(i - m₀).toNat + 1, by omega⟩`. Rewrite using `[ModelFPf.serMul_eq_sum gp _ m₀ (fun t ht => Finset.sum_eq_zero fun k _ => hF k t ht) i N hN]`. Rewrite using `[Finset.sum_congr rfl fun k _ => ModelFPf.serMul_eq_sum gp (F k) m₀ (hF k) i N hN]`. Simplify using `only [Finset.smul_sum]`. Conclude with `Finset.sum_comm`.
+-/
 theorem serMul_sum {V : Type} [AddCommGroup V] [Module LL V] (gp : PowerSeries LL) {ι : Type*}
     (s : Finset ι) (F : ι → ℤ → V) (m₀ : ℤ) (hF : ∀ k, ∀ t < m₀, F k t = 0) (i : ℤ) :
     serMul gp (fun t => ∑ k ∈ s, F k t) i = ∑ k ∈ s, serMul gp (F k) i := by
@@ -67,6 +80,13 @@ theorem serMul_sum {V : Type} [AddCommGroup V] [Module LL V] (gp : PowerSeries L
   simp only [Finset.smul_sum]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Introduce `t ht`. Apply `hM5 b₀ hb₀ hγb τ ζ hpt (fun t => Phi W T c ζ rep (fun i => ev W c ζ Eπ h' (g i) t)) _ t ht` to reduce the goal to its premises. Use `⟨⟨-(h' : ℤ), fun t ht => ?_⟩, r, fun i => ⟨g i, hg i⟩, rep, ⟨hrep, ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Phi_apply]`.
+
+Conclude with `Finset.sum_eq_zero fun k _ => by rw [ev_of_lt _ (by omega), zero_smul]`. Use `show smulLA W T π' c (Eπ ^ h') b₀ = _ conv_lhs => rw [tensor_eq_sum W T π' c bL (smulLA W T π' c (Eπ ^ h') b₀)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MQ.smulLA_eq, MQ.coord_smulE, hgeq i, hbrep i]`. Simplify using `only [Phi_apply]`.
+
+Rewrite using `[serMul_sum _ _ _ (-(h' : ℤ)) (fun k t ht => by rw [ev_of_lt _ (by omega), zero_smul])]`. Use `show _ = ∑ j, serC (W.lev c ζ (g j)) (valAt W T c ζ (rep j)) i`. Conclude with `Finset.sum_congr rfl fun k _ => serMul_ev h0 h1 (g k) (valAt W T c ζ (rep k)) i`.
+-/
 theorem pt_fil {T : LocLat G Qp LL O} (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop)
     (π' Eπ : LetA O n) (h' M : ℕ) (c : ZMod n)
     (hM5 : ∀ x ∈ LamLA W T π' Eπ h' c ⊤, γLA W T π' c x - x ∈ NL W T Pt π' Eπ h' c →
@@ -99,6 +119,139 @@ theorem pt_fil {T : LocLat G Qp LL O} (Pt : ZMod n → LL → (K →ₐ[Qp] LL) 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `haveI := hdvr`. Use `haveI := hfr`. Introduce `_hHyp`. Take `⟨uE, huEΔ, uE', huE'Δ, huu, hγE'⟩` from `hγE`. Take `⟨uπ, huπΔ, hγπ'⟩` from `hγπ`.
+
+Establish `hγEK : W.γA W.gamK Eπ = uE * Eπ` using `by rw [hgam]; exact hγE'`. Establish `hγπK : W.γA W.gamK π' = π' * uπ` using `by rw [hgam]; exact hγπ'`. Take `⟨hNLle, hNLγ, hNLA, -, -, -, hM5⟩` from `hML`. Establish `hletΔ : (letE c : LetA O n) ∈ W.AΔ` using `Formalism.MainNotions.LiftingTheory.idempotent_mem_invariants W c`. Establish `hlet2 : (letE c : LetA O n) * (letE c : LetA O n) = letE c`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[letE, Pi.single_apply]`. Use `set uO : Oˣ := Formalism.MainNotions.DeltaInvariantLattices.uU W with huO`. Use `set u : LL := algebraMap O LL (uO : O) with hu`. Establish `hu0 : u ≠ 0` using `(uO.isUnit.map (algebraMap O LL)).ne_zero`.
+
+Establish `hupow : ∀ t : ℤ, algebraMap O LL ((uO ^ t : Oˣ) : O) = u ^ t`. Introduce `t`. Establish `h` using `congrArg (fun x : LLˣ => (x : LL)) (map_zpow (Units.map (algebraMap O LL).toMonoidHom) uO t)`. Rewrite using `[hu]`. Rewrite `h` using `[Units.coe_map, Units.val_zpow_eq_zpow_val, Units.coe_map]`.
+
+Conclude with `h`. Use `set PΩ : Polynomial O := ∏ i ∈ OmF W c S h' up b, (Polynomial.X - Polynomial.C ((uO ^ i : Oˣ) : O)) with hPΩ`. Establish `hPΩ1 : Polynomial.eval 1 PΩ = piOm1 W c S h' up b`. Rewrite using `[hPΩ, Polynomial.eval_prod]`. Unfold `piOm1`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`. Establish `hPΩz : ∀ t ∈ OmF W c S h' up b, Polynomial.aeval (u ^ t) PΩ = 0`. Introduce `t ht`. Rewrite using `[hPΩ, map_prod]`.
+
+Apply `Finset.prod_eq_zero ht` to reduce the goal to its premises. Rewrite using `[map_sub, Polynomial.aeval_X, Polynomial.aeval_C, hupow, sub_self]`. Establish `hOmUP : ∀ τ ζ, Pt c ζ τ → up τ = true → ∀ t : ℤ, -((b τ : ℤ) + S) ≤ t → t < -(b τ : ℤ) → t ∈ OmF W c S h' up b`. Introduce `τ ζ hpt hup t h1 h2`. Unfold `OmF`.
+
+Rewrite using `[Finset.mem_filter, Finset.mem_Icc]`. Use `hbS τ` as an intermediate fact. Conclude with `⟨⟨by omega, by omega⟩, τ, hPo τ ζ hpt, Or.inl ⟨hup, h1, h2⟩⟩`. Establish `hOmDN : ∀ τ ζ, Pt c ζ τ → up τ = false → ∀ t : ℤ, (b τ : ℤ) ≤ t → t < (b τ : ℤ) + S → t ∈ OmF W c S h' up b`. Introduce `τ ζ hpt hup t h1 h2`.
+
+Unfold `OmF`. Rewrite using `[Finset.mem_filter, Finset.mem_Icc]`. Use `hbS τ` as an intermediate fact. Conclude with `⟨⟨by omega, by omega⟩, τ, hPo τ ζ hpt, Or.inr ⟨hup, h1, h2⟩⟩`. Establish `hPhipt : ∀ τ ζ ζ', Pt c ζ τ → Pt c ζ' τ → ∀ d, Phi W T₂ c ζ rep d = Phi W T₂ c ζ' rep d`.
+
+Introduce `τ ζ ζ' h h' d`. Simplify using `only [Phi_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hvpt τ ζ ζ' h h' k]`. Use `set UPs := τs.filter (fun τ => up τ = true ∧ ∃ ζ, Pt c ζ τ) with hUPs`. Use `set DNs := τs.filter (fun τ => up τ = false ∧ ∃ ζ, Pt c ζ τ) with hDNs`.
+
+Establish `hζU : ∀ τ : UPs, ∃ ζ, Pt c ζ τ` using `fun τ => (Finset.mem_filter.1 τ.2).2.2`. Establish `hζD : ∀ τ : DNs, ∃ ζ, Pt c ζ τ` using `fun τ => (Finset.mem_filter.1 τ.2).2.2`. Use `choose ζU hζU' using hζU`. Use `choose ζD hζD' using hζD`. Establish `hupU : ∀ τ : UPs, up τ = true` using `fun τ => (Finset.mem_filter.1 τ.2).2.1`.
+
+Establish `hupD : ∀ τ : DNs, up τ = false` using `fun τ => (Finset.mem_filter.1 τ.2).2.1`. Take `⟨k, ell, Lr, P, hrank, hCell, hrest, hPkill⟩` from `decomp_coord (LL := LL) bL (fun τ : UPs => (Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T₂ τ (b τ)).comap (Phi W T₂ c (ζU τ) rep)) (fun τ => hUPc τ (ζU τ) (hζU' τ) (hupU τ)) (fun τ : DNs => (Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T₂ τ (-(b τ …`. Use `set repE : Fin k → W.DD T₂ := fun j => ∑ i, bL.repr (ell j) i • rep i with hrepE`. Establish `hrepE_mem : ∀ j, repE j ∈ NcS W T₂ (c - 1)` using `fun j => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hrep i)`. Establish `hmkE : ∀ j, mkL W T₂ π' c (repE j) (hrepE_mem j) = ell j`.
+
+Introduce `j`. Combine the equalities or inequalities in the displayed calculation. Establish `hvalE : ∀ τ ζ, Pt c ζ τ → ∀ j, valAt W T₂ c ζ (repE j) = Phi W T₂ c ζ rep (fun i => algebraMap O LL (bL.repr (ell j) i))`. Introduce `τ ζ hpt j`. Rewrite using `[Phi_apply]`.
+
+Conclude with `valAt_sum ζ (hvadd τ ζ hpt) (hvsmul τ ζ hpt) Finset.univ _ rep hrep`. Establish `hFilE : ∀ j τ ζ, Pt c ζ τ → up τ = true → valAt W T₂ c ζ (repE j) ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T₂ τ (b τ) := by`. Introduce `j τ ζ hpt hup`. Establish `hτ : τ ∈ UPs` using `Finset.mem_filter.2 ⟨hτs τ ζ hpt, hup, ζ, hpt⟩`. Rewrite using `[hvalE τ ζ hpt j, hPhipt τ ζ (ζU ⟨τ, hτ⟩) hpt (hζU' _)]`.
+
+Conclude with `hCell j ⟨τ, hτ⟩`. Establish `hFilD : ∀ j τ ζ, Pt c ζ τ → up τ = false → valAt W T₂ c ζ (repE j) ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T₂ τ (-((b τ : ℤ) + S)) := by`. Introduce `j τ ζ hpt hup`. Rewrite using `[hvalE τ ζ hpt j]`. Conclude with `hDNall τ ζ hpt hup _`.
+
+Use `⟨Lr, k, repE, hrepE_mem, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hdis : Disjoint UPs DNs`. Rewrite using `[Finset.disjoint_left]`. Introduce `τ h1 h2`. Establish `a1` using `(Finset.mem_filter.1 h1).2.1`.
+
+Establish `a2` using `(Finset.mem_filter.1 h2).2.1`. Rewrite `a2` using `[a1]`. Conclude with `Bool.noConfusion a2`. Establish `hsub : UPs ∪ DNs ⊆ τs` using `Finset.union_subset (Finset.filter_subset _ _) (Finset.filter_subset _ _)`. Establish `hc` using `Finset.card_le_card hsub`.
+
+Rewrite `hc` using `[Finset.card_union_of_disjoint hdis]`. Combine the equalities or inequalities in the displayed calculation. Introduce `j τ _ hup ζ hpt`. Conclude with `hFilE j τ ζ hpt hup`. Rewrite using `[eq_top_iff, ← bL.span_eq, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Establish `h1 : ∑ j, P j i • ell j ∈ Submodule.span O (Set.range fun j => mkL W T₂ π' c (repE j) (hrepE_mem j))` using `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hmkE j⟩)`. Establish `e : bL i = ∑ j, P j i • ell j + (bL i - ∑ j, P j i • ell j)` using `by abel`. Rewrite using `[SetLike.mem_coe, e]`. Conclude with `Submodule.add_mem_sup h1 (hrest i)`.
+
+Introduce `w hw`. Establish `hwL : w ∈ LamPS W T₂ Eπ h' c` using `(Submodule.mem_inf.mp hw).1`. Take `⟨⟨b₀, hb₀⟩, hβ⟩` from `Submodule.Quotient.mk_surjective _ (β T₂ ⟨w, hwL⟩)`. Establish `hβ' : β T₂ ⟨w, hwL⟩ = mkLA W T₂ π' Eπ h' M c b₀ hb₀` using `hβ.symm`. Establish `hγb` using `gam_b Pt π' Eπ h' M σ c α β hIF hcr hjump hMF hM1 huE'Δ huu hγEK w hw b₀ hb₀ hβ'`.
+
+Establish `hγbN : γLA W T₂ π' c b₀ - b₀ ∈ NL W T₂ Pt π' Eπ h' c` using `piNL_le hπΔ hNLA hγb`. Take `⟨g, hg, hgeq⟩` from `coords_of bL hb₀`. Use `set X : Fin r → W.EE := fun i => TensorProduct.equivFinsuppOfBasisRight bL b₀ i with hX`. Take `⟨y, hyN, hy⟩` from `hγb`. Take `⟨hh, hhΔ, hheq⟩` from `coords_of bL (hNLle hyN)`.
+
+Establish `hXγ : ∀ i, algebraMap (LetA O n) W.EE (Eπ ^ h') * (W.γE W.gamK (X i) - X i) = algebraMap (LetA O n) W.EE (π' * ((letE c : LetA O n) * hh i))`. Introduce `i`. Establish `e1 : W.γE W.gamK (X i) - X i = algebraMap (LetA O n) W.EE π' * TensorProduct.equivFinsuppOfBasisRight bL y i`. Rewrite using `[hX]`. Simplify using `only`.
+
+Rewrite using `[← coord_γLA W T₂ π' c bL b₀ i, ← coord_sub W T₂ π' c bL, ← hy, pow_one, MQ.smulLA_eq, MQ.coord_smulE]`. Rewrite using `[e1, mul_left_comm, hheq i, ← map_mul]`. Use `set G : Fin k → LetA O n := fun j => ∑ i, algebraMap O (LetA O n) (P j i) * g i with hG`. Use `set H : Fin k → LetA O n := fun j => ∑ i, algebraMap O (LetA O n) (P j i) * hh i with hH`. Use `set fj : Fin k → W.EE := fun j => ∑ i, algebraMap O W.EE (P j i) * X i with hfj_def`.
+
+Establish `hGΔ : ∀ j, G j ∈ W.AΔ` using `fun j => Subalgebra.sum_mem _ fun i _ => Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) (hg i)`. Establish `hHΔ : ∀ j, H j ∈ W.AΔ` using `fun j => Subalgebra.sum_mem _ fun i _ => Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) (hhΔ i)`. Establish `hfj : ∀ j, algebraMap (LetA O n) W.EE (Eπ ^ h') * fj j = algebraMap (LetA O n) W.EE ((letE c : LetA O n) * G j)`. Introduce `j`. Simplify using `only [hfj_def, hG, Finset.mul_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply O (LetA O n) W.EE, mul_left_comm, hgeq i, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hfjγ : ∀ j, algebraMap (LetA O n) W.EE (Eπ ^ h') * (W.γE W.gam (fj j) - fj j) = algebraMap (LetA O n) W.EE (π' * ((letE c : LetA O n) * H j))`.
+
+Introduce `j`. Establish `hγfj : W.γE W.gam (fj j) = ∑ i, algebraMap O W.EE (P j i) * W.γE W.gam (X i)`. Simplify using `only [hfj_def, map_sum, map_mul, AlgHom.commutes]`. Rewrite using `[hγfj, hfj_def]`. Simplify using `only`.
+
+Rewrite using `[← Finset.sum_sub_distrib, Finset.mul_sum, hH]`. Simplify using `only`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hx` using `hXγ i`.
+
+Rewrite `hx` using `[hgam]`. Rewrite using `[IsScalarTower.algebraMap_apply O (LetA O n) W.EE, ← mul_sub, mul_left_comm, hx, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `set f' : Fin k → W.EE := fun j => Polynomial.aeval (W.γE W.gam).toLinearMap PΩ (fj j) with hf'_def`.
+
+Use `set a' : Fin k → LetA O n := fun j => Polynomial.aeval (twA W uE' h') PΩ ((letE c : LetA O n) * G j) with ha'_def`. Establish `ha'Δ : ∀ j, a' j ∈ W.AΔ` using `fun j => aeval_twA_mem uE' h' huE'Δ PΩ (Subalgebra.mul_mem _ hletΔ (hGΔ j))`. Establish `ha'c : ∀ j, a' j = (letE c : LetA O n) * Polynomial.aeval (twA W uE' h') PΩ (G j)` using `fun j => aeval_twA_letE uE' h' c PΩ (G j)`. Establish `hf'a : ∀ j, algebraMap (LetA O n) W.EE (Eπ ^ h') * f' j = algebraMap (LetA O n) W.EE (a' j)` using `fun j => EE_aeval Eπ h' uE uE' huu hγE' PΩ (fj j) _ (hfj j)`. Establish `hf'γ : ∀ j, algebraMap (LetA O n) W.EE (Eπ ^ h') * (W.γE W.gam (f' j) - f' j) = algebraMap (LetA O n) W.EE (Polynomial.aeval (twA W uE' h') PΩ (π' * ((letE c : LetA O n) * H j)))`.
+
+Introduce `j`. Establish `e : W.γE W.gam (f' j) - f' j = Polynomial.aeval (W.γE W.gam).toLinearMap PΩ (W.γE W.gam (fj j) - fj j)`. Rewrite using `[map_sub]`. Conclude with `congrArg (· - f' j) (aeval_comm (W.γE W.gam).toLinearMap PΩ (fj j)).symm`. Rewrite using `[e]`.
+
+Conclude with `EE_aeval Eπ h' uE uE' huu hγE' PΩ _ _ (hfjγ j)`. Use `set Sπ : Submodule O (LetA O n) := (Subalgebra.toSubmodule W.AΔ).map (LinearMap.mulLeft O (π' * (letE c : LetA O n))) with hSπ_def`. Establish `hSπ : ∀ v ∈ Sπ, twA W uE' h' v ∈ Sπ`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Establish `hz' : twA W uE' h' z ∈ W.AΔ`.
+
+Simplify using `using aeval_twA_mem uE' h' huE'Δ Polynomial.X hz`. Use `⟨uπ * twA W uE' h' z, Subalgebra.mul_mem _ huπΔ hz', ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulLeft_apply, twA_apply, map_mul, hγπ', Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzmem : ∀ j, Polynomial.aeval (twA W uE' h') PΩ (π' * ((letE c : LetA O n) * H j)) ∈ Sπ` using `fun j => aeval_mem_of_stable Sπ (twA W uE' h') hSπ PΩ ⟨H j, hHΔ j, by simp⟩`.
+
+Use `choose zj hzjΔ hzj using fun j => Submodule.mem_map.1 (hzmem j)`. Simplify using `only [LinearMap.mulLeft_apply] at hzj`. Establish `hpf : ∀ τ ζ, Pt c ζ τ → ∀ t : ℤ, t ≠ 0 → Phi W T₂ c ζ rep (fun i => ev W c ζ Eπ h' (g i) t) ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T₂ τ (-t) := fun τ ζ hpt => pt_fil Pt π' Eπ h' M c hM5 bL rep hrep hbrep b₀ hb₀ hγbN g hg hgeq τ ζ hpt (hlevE τ ζ hpt).1 (hlevE τ ζ hpt).2`. Establish `hevG : ∀ j (ζ : LL) (t : ℤ), ev W c ζ Eπ h' (G j) t = ∑ i, algebraMap O LL (P j i) * ev W c ζ Eπ h' (g i) t`. Introduce `j ζ t`.
+
+Simplify using `only [hG, ev_sum, ev_alg]`. Establish `hUPv : ∀ j τ ζ, Pt c ζ τ → up τ = true → ∀ t : ℤ, t < -((b τ : ℤ) + S) → ev W c ζ Eπ h' (G j) t = 0`. Introduce `j τ ζ hpt hup t ht`. Establish `hb1` using `hb τ`. Establish `hv` using `hUPz τ ζ hpt hup t ht _ (hpf τ ζ hpt t (by omega))`.
+
+Rewrite using `[hevG]`. Conclude with `Finset.sum_eq_zero fun i _ => by`. Rewrite using `[show ev W c ζ Eπ h' (g i) t = 0 from congrFun hv i, mul_zero]`. Establish `hDNv : ∀ j τ ζ, Pt c ζ τ → up τ = false → ∀ t : ℤ, t < (b τ : ℤ) → t ≠ 0 → ev W c ζ Eπ h' (G j) t = 0`. Introduce `j τ ζ hpt hup t ht ht0`.
+
+Establish `hτ : τ ∈ DNs` using `Finset.mem_filter.2 ⟨hτs τ ζ hpt, hup, ζ, hpt⟩`. Establish `hv' : Phi W T₂ c (ζD ⟨τ, hτ⟩) rep (fun i => ev W c ζ Eπ h' (g i) t) ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T₂ τ (-(b τ : ℤ) + 1) := by`. Rewrite using `[← hPhipt τ ζ (ζD ⟨τ, hτ⟩) hpt (hζD' _)]`. Conclude with `u3upPf_FilC_anti T₂ τ (a := -t) (a' := -(b τ : ℤ) + 1) (by omega) (hpf τ ζ hpt t ht0)`. Rewrite using `[hevG]`.
+
+Conclude with `hPkill ⟨τ, hτ⟩ _ hv' j`. Establish `heva' : ∀ j τ ζ, Pt c ζ τ → ∀ t : ℤ, ev W c ζ Eπ h' (a' j) t = Polynomial.aeval (u ^ t) PΩ * ev W c ζ Eπ h' (G j) t`. Introduce `j τ ζ hpt t`. Rewrite using `[ha'c j, ev_letE]`. Conclude with `ev_aeval_twA c ζ Eπ h' (hlevE τ ζ hpt).1 (hlevE τ ζ hpt).2 uE uE' huu hγE' u hu0 (hlevγ τ ζ hpt) PΩ (G j) t`.
+
+Establish `hUPa : ∀ j τ ζ, Pt c ζ τ → up τ = true → ∀ t : ℤ, t < -(b τ : ℤ) → ev W c ζ Eπ h' (a' j) t = 0`. Introduce `j τ ζ hpt hup t ht`. Rewrite using `[heva' j τ ζ hpt t]`. Distinguish the cases in `h : t < -((b τ : ℤ) + S)`. Rewrite using `[hUPv j τ ζ hpt hup t h, mul_zero]`.
+
+Rewrite using `[hPΩz t (hOmUP τ ζ hpt hup t (by omega) ht), zero_mul]`. Establish `hDNa : ∀ j τ ζ, Pt c ζ τ → up τ = false → ∀ t : ℤ, t < (b τ : ℤ) + S → t ≠ 0 → ev W c ζ Eπ h' (a' j) t = 0`. Introduce `j τ ζ hpt hup t ht ht0`. Rewrite using `[heva' j τ ζ hpt t]`. Distinguish the cases in `h : t < (b τ : ℤ)`.
+
+Rewrite using `[hDNv j τ ζ hpt hup t h ht0, mul_zero]`. Rewrite using `[hPΩz t (hOmDN τ ζ hpt hup t (by omega) ht), zero_mul]`. Establish `h1tw : ∀ j, algebraMap (LetA O n) W.EE (Eπ ^ h') * W.γE W.gam (f' j) = algebraMap (LetA O n) W.EE (twA W uE' h' (a' j))`. Introduce `j`. Use `EE_aeval Eπ h' uE uE' huu hγE' Polynomial.X (f' j) (a' j) (hf'a j)` as an intermediate fact.
+
+Simplify `this` using `[Polynomial.aeval_X]`. Establish `htw : ∀ j, twA W uE' h' (a' j) - a' j = π' * (letE c : LetA O n) * zj j`. Introduce `j`. Apply `W.EE_inj` to reduce the goal to its premises. Rewrite using `[map_sub, ← h1tw j, ← hf'a j, ← mul_sub, hf'γ j, hzj j]`.
+
+Establish `hevtw : ∀ j τ ζ, Pt c ζ τ → ∀ t : ℤ, ev W c ζ Eπ h' (twA W uE' h' (a' j) - a' j) t = (u ^ t - 1) * ev W c ζ Eπ h' (a' j) t`. Introduce `j τ ζ hpt t`. Establish `hsub : ∀ x y : LetA O n, ev W c ζ Eπ h' (x - y) t = ev W c ζ Eπ h' x t - ev W c ζ Eπ h' y t`. Introduce `x y`. Use `ev_add (W := W) (c := c) (ζ := ζ) (Eπ := Eπ) (h' := h') (x - y) y t` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, add_sub_cancel_right]`. Establish `htw1` using `ev_aeval_twA c ζ Eπ h' (hlevE τ ζ hpt).1 (hlevE τ ζ hpt).2 uE uE' huu hγE' u hu0 (hlevγ τ ζ hpt) Polynomial.X (a' j) t`. Rewrite `htw1` using `[Polynomial.aeval_X, Polynomial.aeval_X]`. Rewrite using `[hsub, htw1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hzlev : ∀ j τ ζ, Pt c ζ τ → ∀ t₀ : ℤ, (∀ t < t₀, (u ^ t - 1) * ev W c ζ Eπ h' (a' j) t = 0) → ∀ m₁ : ℕ, (m₁ : ℤ) < t₀ + h' → PowerSeries.coeff m₁ (W.lev c ζ (zj j)) = 0`. Introduce `j τ ζ hpt t₀ ht m₁ hm₁`. Use `ps_coeff_cancel (W.lev c ζ π') (W.lev c ζ (zj j)) (hlevπ τ ζ hpt) (m₁ + 1) (fun i hi => ?_) m₁ (Nat.lt_succ_self _)` and prove the remaining obligations. Establish `h1` using `lev_zero_of_ev (hlevE τ ζ hpt).2 (twA W uE' h' (a' j) - a' j) t₀ (fun t htt => by rw [hevtw j τ ζ hpt t]; exact ht t htt) i (by omega)`.
+
+Rewrite `h1` using `[htw j, _root_.map_mul (W.lev c ζ), _root_.map_mul (W.lev c ζ), ModelFPf.lev_letE, mul_one]`. Then use the resulting hypothesis. Establish `hzUP : ∀ j τ ζ, Pt c ζ τ → up τ = true → ∀ m₁ : ℕ, (m₁ : ℤ) < h' - b τ → PowerSeries.coeff m₁ (W.lev c ζ (zj j)) = 0`. Introduce `j τ ζ hpt hup m₁ hm₁`. Conclude with `hzlev j τ ζ hpt (-(b τ : ℤ)) (fun t ht => by rw [hUPa j τ ζ hpt hup t ht, mul_zero]) m₁ (by omega)`. Establish `hzDN : ∀ j τ ζ, Pt c ζ τ → up τ = false → ∀ m₁ : ℕ, (m₁ : ℤ) < h' + b τ + S → PowerSeries.coeff m₁ (W.lev c ζ (zj j)) = 0`.
+
+Introduce `j τ ζ hpt hup m₁ hm₁`. Use `hzlev j τ ζ hpt ((b τ : ℤ) + S) (fun t ht => ?_) m₁ (by omega)` and prove the remaining obligations. Distinguish the cases in `h0 : t = 0`. Rewrite using `[h0, zpow_zero, sub_self, zero_mul]`. Rewrite using `[hDNa j τ ζ hpt hup t ht h0, mul_zero]`.
+
+Establish `hcoord : ∀ j, IsCoord W Pt π' Eπ h' S up b c (f' j)`. Introduce `j`. Use `⟨a' j, ha'Δ j, ?_, hf'a j, ?_, ?_, letE c * zj j, Subalgebra.mul_mem _ hletΔ (hzjΔ j), ?_⟩` and prove the remaining obligations. Rewrite using `[ha'c j, ← mul_assoc, hlet2]`. Introduce `τ ζ hpt hup i hi`.
+
+Conclude with `lev_zero_of_ev (hlevE τ ζ hpt).2 (a' j) (-(b τ : ℤ)) (hUPa j τ ζ hpt hup) i (by omega)`. Introduce `τ ζ hpt hup`. Conclude with `⟨ev W c ζ Eπ h' (a' j) 0, fun i hi => lev_const_of_ev (hlevE τ ζ hpt).1 (hlevE τ ζ hpt).2 (a' j) ((b τ : ℤ) + S) (hDNa j τ ζ hpt hup) i (by omega)⟩`. Rewrite using `[hgam, hf'γ j, ← hzj j, mul_assoc]`. Establish `hΛu : IsUnit (algebraMap (LetA O n) W.EE (Eπ ^ h'))` using `by rw [map_pow]; exact hEu.pow _`.
+
+Establish `hiv : ∀ j, f' j ⊗ₜ mkL W T₂ π' c (repE j) (hrepE_mem j) ∈ InvL W T₂ Pt π' Eπ h' c ⊤`. Introduce `j`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show smulLA W T₂ π' c (Eπ ^ h') (f' j ⊗ₜ _) ∈ LinearMap.range (toLA W T₂ π' c ⊤)`. Rewrite using `[ModelFPf.smulLA_tmul, hf'a j, ha'c j]`.
+
+Use `ModelFPf.rep_mem (W := W) (T := T₂) (π' := π') (c := c) (fun _ : Fin 1 => Polynomial.aeval (twA W uE' h') PΩ (G j)) (fun _ => aeval_twA_mem uE' h' huE'Δ PΩ (hGΔ j)) (fun _ => repE j) (fun _ => hrepE_mem j)` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_one]`. Then use the resulting hypothesis. Use `set Gc : W.EE := ((hΛu.unit⁻¹ : W.EEˣ) : W.EE) * algebraMap (LetA O n) W.EE ((letE c : LetA O n) * zj j) with hGc_def`. Establish `hΛGc : algebraMap (LetA O n) W.EE (Eπ ^ h') * Gc = algebraMap (LetA O n) W.EE ((letE c : LetA O n) * zj j)`. Rewrite using `[hGc_def, ← mul_assoc, hΛu.mul_val_inv, one_mul]`.
+
+Establish `hGc : W.γE W.gamK (f' j) - f' j = algebraMap (LetA O n) W.EE π' * Gc`. Establish `e1 : algebraMap (LetA O n) W.EE (Eπ ^ h') * (W.γE W.gamK (f' j) - f' j) = algebraMap (LetA O n) W.EE (Eπ ^ h') * (algebraMap (LetA O n) W.EE π' * Gc)`. Rewrite using `[hgam, hf'γ j, ← hzj j, mul_left_comm, hΛGc, ← map_mul, mul_assoc]`. Conclude with `(hΛu.mul_right_inj).1 e1`. Rewrite using `[Submodule.mem_comap, LinearMap.sub_apply, LinearMap.id_apply, ModelFPf.γLA_tmul, ← TensorProduct.sub_tmul, hGc]`.
+
+Use `⟨Gc ⊗ₜ mkL W T₂ π' c (repE j) (hrepE_mem j), Submodule.subset_span ?_, ?_⟩` and prove the remaining obligations. Use `⟨1, fun _ => ⟨zj j, hzjΔ j⟩, fun _ => repE j, ⟨fun _ => hrepE_mem j, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one] show smulLA W T₂ π' c (Eπ ^ h') (Gc ⊗ₜ _) = _`. Rewrite using `[ModelFPf.smulLA_tmul, hΛGc]`. Introduce `τ ζ hpt i show (∑ _ : Fin 1, serC (W.lev c ζ (zj j)) (valAt W T₂ c ζ (repE j)) i) ∈ _`.
+
+Rewrite using `[Fin.sum_univ_one]`. Unfold `serC`. Use `split_ifs with hi`. Distinguish the cases in `hup : up τ = true`. Distinguish the cases in `hlow : i < (h' : ℤ) - b τ`.
+
+Rewrite using `[hzUP j τ ζ hpt hup _ (by omega), zero_smul]`. Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_mem _ _ (u3upPf_FilC_anti T₂ τ (a := b τ) (a' := h' - i) (by omega) (hFilE j τ ζ hpt hup))`. Establish `hup' : up τ = false` using `by simpa using hup`. Distinguish the cases in `hlow : i < (h' : ℤ) + b τ + S`.
+
+Rewrite using `[hzDN j τ ζ hpt hup' _ (by omega), zero_smul]`. Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_mem _ _ (u3upPf_FilC_anti T₂ τ (a := -((b τ : ℤ) + S)) (a' := h' - i) (by omega) (hFilD j τ ζ hpt hup'))`. Conclude with `Submodule.zero_mem _`. Rewrite using `[pow_one, ModelFPf.smulLA_tmul]`.
+
+Use `set ρ : Fin r → LcQ W T₂ π' c := fun i => bL i - ∑ j, P j i • ell j with hρ`. Use `set xr : LA W T₂ π' c := ∑ i, Polynomial.aeval (W.γE W.gam).toLinearMap PΩ (X i) ⊗ₜ ρ i with hxr`. Establish `hb0 : b₀ = ∑ i, X i ⊗ₜ bL i` using `tensor_eq_sum W T₂ π' c bL b₀`. Establish `hb₀dec : b₀ = ∑ i, X i ⊗ₜ ρ i + ∑ j, fj j ⊗ₜ ell j`. Establish `e : ∀ i, X i ⊗ₜ[O] bL i = X i ⊗ₜ ρ i + ∑ j, (algebraMap O W.EE (P j i) * X i) ⊗ₜ ell j`.
+
+Introduce `i`. Rewrite using `[show bL i = ρ i + ∑ j, P j i • ell j by simp [hρ], TensorProduct.tmul_add, TensorProduct.tmul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def]`.
+
+Rewrite using `[hb0, Finset.sum_congr rfl fun i _ => e i, Finset.sum_add_distrib, Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← TensorProduct.sum_tmul]`. Establish `hstar : Polynomial.aeval (γLA W T₂ π' c) PΩ b₀ = xr + ∑ j, f' j ⊗ₜ mkL W T₂ π' c (repE j) (hrepE_mem j)` using `by conv_lhs => rw [hb₀dec]`.
+
+Rewrite using `[map_add, map_sum, map_sum]`. Simplify using `only [aeval_γLA_tmul, hgam, hmkE]`. Both sides reduce to the same expression. Establish `hxrL : xr ∈ LamLA W T₂ π' Eπ h' c Lr` using `by show smulLA W T₂ π' c (Eπ ^ h') xr ∈ LinearMap.range (toLA W T₂ π' c Lr)`. Rewrite using `[hxr, map_sum]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ModelFPf.smulLA_tmul, EE_aeval Eπ h' uE uE' huu hγE' PΩ (X i) _ (hgeq i), aeval_twA_letE]`. Conclude with `⟨⟨Polynomial.aeval (twA W uE' h') PΩ (g i), aeval_twA_mem uE' h' huE'Δ PΩ (hg i)⟩ ⊗ₜ ⟨ρ i, hrest i⟩, rfl⟩`. Establish `hpiγ : ∀ v ∈ piNL W T₂ Pt π' Eπ h' c 1, γLA W T₂ π' c v ∈ piNL W T₂ Pt π' Eπ h' c 1` using `fun v hv => piNL_γ hNLγ hNLA huπΔ hγπK hv`. Establish `hγb1 : γLA W T₂ π' c b₀ - b₀ ∈ piNL W T₂ Pt π' Eπ h' c 1` using `⟨y, hyN, hy⟩`.
+
+Establish `hPb : γLA W T₂ π' c (Polynomial.aeval (γLA W T₂ π' c) PΩ b₀) - Polynomial.aeval (γLA W T₂ π' c) PΩ b₀ ∈ piNL W T₂ Pt π' Eπ h' c 1`. Rewrite using `[← aeval_comm, ← map_sub]`. Conclude with `aeval_mem_of_stable _ _ hpiγ PΩ hγb1`. Establish `hxrI : xr ∈ InvL W T₂ Pt π' Eπ h' c Lr`. Use `Submodule.mem_inf.2 ⟨hxrL, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Submodule.mem_comap]`. Establish `e : xr = Polynomial.aeval (γLA W T₂ π' c) PΩ b₀ - ∑ j, f' j ⊗ₜ mkL W T₂ π' c (repE j) (hrepE_mem j)`. Rewrite using `[hstar, add_sub_cancel_right]`. Rewrite using `[LinearMap.sub_apply, LinearMap.id_apply, e]`. Establish `e3 : γLA W T₂ π' c (Polynomial.aeval (γLA W T₂ π' c) PΩ b₀ - ∑ j, f' j ⊗ₜ mkL W T₂ π' c (repE j) (hrepE_mem j)) - (Polynomial.aeval (γLA W T₂ π' c) PΩ b₀ - ∑ j, f' j ⊗ₜ mkL W T₂ π' c (repE j) (hrepE_mem j)) = (γLA W T₂ π' c (Polynomial.aeval (γLA W T₂ π' c) PΩ b₀) - Polynomial.ae …`.
+
+Rewrite using `[map_sub, map_sum, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3]`. Use `Submodule.sub_mem _ hPb (Submodule.sum_mem _ fun j _ => ?_)` and prove the remaining obligations. Establish `h4` using `Submodule.mem_comap.1 (Submodule.mem_inf.1 (hiv j)).2`.
+
+Rewrite `h4` using `[LinearMap.sub_apply, LinearMap.id_apply]`. Then use the resulting hypothesis. Establish `hx : piOm1 W c S h' up b • b₀ ∈ LamLA W T₂ π' Eπ h' c ⊤` using `Submodule.smul_mem _ _ hb₀`. Use `⟨f', piOm1 W c S h' up b • b₀, hx, xr, hcoord, hiv, hxrI, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (⟨piOm1 W c S h' up b • w, (LamPS W T₂ Eπ h' c).smul_mem _ (Submodule.mem_inf.mp hw).1⟩ : ↥(LamPS W T₂ Eπ h' c)) = piOm1 W c S h' up b • ⟨w, hwL⟩` using `rfl`. Rewrite using `[e, map_smul, hβ']`.
+
+Both sides reduce to the same expression. Establish `hroot : (PΩ - Polynomial.C (Polynomial.eval 1 PΩ)).IsRoot 1` using `by simp`. Take `⟨R, hR⟩ : ∃ R, PΩ - Polynomial.C (Polynomial.eval 1 PΩ) = R * (Polynomial.X - Polynomial.C 1)` from `⟨_, by rw [mul_comm]; exact (Polynomial.mul_divByMonic_eq_iff_isRoot.2 hroot).symm⟩`. Establish `h3 : Polynomial.aeval (γLA W T₂ π' c) (PΩ - Polynomial.C (Polynomial.eval 1 PΩ)) b₀ = Polynomial.aeval (γLA W T₂ π' c) R (γLA W T₂ π' c b₀ - b₀)`. Rewrite using `[hR, map_mul, Module.End.mul_apply, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, map_one, LinearMap.sub_apply, Module.End.one_apply]`.
+
+Establish `e2 : piOm1 W c S h' up b • b₀ - ∑ j, f' j ⊗ₜ mkL W T₂ π' c (repE j) (hrepE_mem j) - xr = -(Polynomial.aeval (γLA W T₂ π' c) R (γLA W T₂ π' c b₀ - b₀))`. Rewrite using `[← h3, map_sub, LinearMap.sub_apply, Polynomial.aeval_C, Module.algebraMap_end_apply, hPΩ1, hstar]`. Normalize the expressions using the abelian group laws. Rewrite using `[e2]`. Conclude with `Submodule.neg_mem _ (aeval_mem_of_stable _ _ hpiγ R hγb1)`.
+-/
 theorem universal_lift_frame [IsDomain O] (hdvr : IsDiscreteValuationRing O) (hfr : IsFractionRing O LL)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop)
     (π' Eπ : LetA O n) (h' M σ : ℕ) (c : ZMod n) (S η m : ℕ) (up : (K →ₐ[Qp] LL) → Bool)

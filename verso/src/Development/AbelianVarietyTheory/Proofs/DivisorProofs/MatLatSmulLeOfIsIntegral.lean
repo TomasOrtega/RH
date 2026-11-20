@@ -5,12 +5,20 @@ open NumberField Formalism.L2.Indef Formalism.L2.Indef.Tree
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `IsIntegral.of_pow hn ?_` and prove the remaining obligations. Rewrite using `[inv_pow, hu, inv_one]`. Conclude with `isIntegral_one`.
+-/
 theorem isIntegral_inv_of_pow_eq_one {K : Type} [Field K] {u : K} {n : ℕ} (hn : 0 < n) (hu : u ^ n = 1) :
     IsIntegral ℤ u⁻¹ := by
   refine IsIntegral.of_pow hn ?_
   rw [inv_pow, hu, inv_one]
   exact isIntegral_one
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hx`. Establish `hmem : A.mulVec y ∈ Formalism.DivisionValues.matLat A M` using `Submodule.mem_map.mpr ⟨y, hy, rfl⟩`. Establish `h2` using `(Formalism.DivisionValues.matLat A M).smul_mem (⟨c, hc⟩ : 𝓞 K) hmem`. Simplify using `only [LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply, Matrix.smul_mulVec]`.
+
+Conclude with `h2`.
+-/
 theorem matLat_smul_le_of_isIntegral {K : Type} [Field K] [NumberField K] {a b : ℕ} (c : K) (hc : IsIntegral ℤ c)
     (A : Matrix (Fin a) (Fin b) K) (M : Submodule (𝓞 K) (Fin b → K)) :
     Formalism.DivisionValues.matLat (c • A) M ≤ Formalism.DivisionValues.matLat A M := by
@@ -21,6 +29,9 @@ theorem matLat_smul_le_of_isIntegral {K : Type} [Field K] [NumberField K] {a b :
   simp only [LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply, Matrix.smul_mulVec]
   exact h2
 
+/- English proof (translation)
+Take `⟨ha, hb, hc⟩` from `h`. Use `⟨fun w => ?_, hb, hc⟩` and prove the remaining obligations. Take `⟨n, hn, hu⟩` from `hze (μ w)`. Conclude with `le_trans (localization_mono _ (matLat_smul_le_of_isIntegral _ (isIntegral_inv_of_pow_eq_one hn hu) _ _)) (ha w)`.
+-/
 theorem finitePlaceBound_inv_rootOfUnity_smul {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K}
     {Df : DefSide Bs} (O : FunData K Df) (ze : Bs.Tup → K) (μ : Formalism.PairingDivisionLocalBalance.Pl K → Bs.Tup) (C b : ℝ)
     (hze : ∀ t, ∃ n : ℕ, 0 < n ∧ ze t ^ n = 1) (h : LeafFP O μ C b) :

@@ -49,6 +49,9 @@ def ConjugateLevelLeMaximalCompact : Prop :=
     ∀ w : D.what₂.Word, K2u X hb w ⊆ (Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) :
       Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))
 
+/- English proof (translation)
+Introduce `D X hb hK hM hL w`. Rewrite using `[h2 X hb hK hM hL w, h4 X hb hK hM hL w]`. Simplify using `only [h1 X hb hK hM hL w, h3 X hb hK hM hL w, Finset.prod_mul_distrib]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ratioH_of (h1 : HaarIdxLoc) (h2 : HaarIdxGlob) (h3 : LocLevi) (h4 : GlobProd) : RatioH := by
   intro D X hb hK hM hL w
   rw [h2 X hb hK hM hL w, h4 X hb hK hM hL w]

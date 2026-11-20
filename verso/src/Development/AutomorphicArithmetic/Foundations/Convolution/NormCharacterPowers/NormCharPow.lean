@@ -7,6 +7,19 @@ open UpperTheory.ConvolutionTheory.R
 
 open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.L2.Host UpperTheory.V.Published
 
+/- English proof (translation)
+Introduce `hN K M _ _ _ _ _ _ _ _ hl η hη`. Establish `hp : ∀ (n : ℕ) (v : HeightOneSpectrum (𝓞 K)), (η ^ n).val v = η.val v ^ n` using `fun n v => MonoidHom.pow_apply η.1 n _`. Use `⟨fun χ hχ => ?_, fun j hj0 hjl => ⟨fun h => ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hW : ∀ ψ : HChar K, (∀ᶠ w : HeightOneSpectrum (𝓞 M) in Filter.cofinite, ∀ f : ℕ, Formalism.ConjugateSelfDual.normV w = Formalism.ConjugateSelfDual.normV (w.under (𝓞 K)) ^ f → ψ.val (w.under (𝓞 K)) ^ f = 1) → WeakBC (CG.ofChar ψ).HasSat (sumSat (m` using `fun _ : Unit => 1) fun _ => CG.ofChar (1 : HChar M)) := by`. Introduce `ψ h`.
+
+Rewrite using `[sumSat_unit]`. Use `filter_upwards [h, (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under K M).eventually (Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified ψ))] with w h1 h2 f hf`. Use `⟨_, CG.hasSat_ofChar h2, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_singleton, h1 f hf]`. Conclude with `CG.hasSat_ofChar (χ := 1) (w := w) fun _ _ => rfl`.
+
+Establish `h1` using `hN K M hl η hη 1 (CG.ofChar 1) (CG.ofChar χ) Unit (fun _ => 1) (fun _ => CG.ofChar 1) le_rfl (fun _ => le_rfl) (hW 1 (Filter.Eventually.of_forall fun w f _ => one_pow f)) (hW χ hχ.2.2)`. Establish `h2 : 0 < ((Finset.range (Module.finrank K M)).filter fun j => CG.ofChar χ = (CG.ofChar 1).twist (η ^ j)).card`. Rewrite using `[h1]`. Conclude with `Finset.card_pos.2 ⟨((), ()), by simp⟩`. Take `⟨j, hj⟩` from `Finset.card_pos.1 h2`.
+
+Rewrite `hj` using `[Finset.mem_filter, Finset.mem_range, CG.twist_ofChar, one_mul]`. Establish `e` using `CG.ofChar_injective hj.2`. Use `⟨j, Nat.pos_of_ne_zero ?_, hj.1, e⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hχ.1 (e.trans (pow_zero _))`.
+
+Use `haveI := Fact.mk hl`. Establish `ho` using `orderOf_eq_prime hη.1.2.1 hη.1.1`. Use `Nat.le_of_dvd hj0 (orderOf_dvd_of_pow_eq_one h)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[← pow_mul, mul_comm, pow_mul, hη.1.2.1, one_pow]`.
+
+Use `hη.1.2.2.mono fun w hw f hf => ?_` and prove the remaining obligations. Rewrite using `[hp, ← pow_mul, mul_comm, pow_mul, hw f hf, one_pow]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R.normCharPow :
     Count → NormCharPow := by
   classical

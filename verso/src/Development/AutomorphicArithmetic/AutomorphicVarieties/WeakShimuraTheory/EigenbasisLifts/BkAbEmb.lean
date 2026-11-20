@@ -6,6 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.D
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
 open scoped Pointwise in
+/- English proof (translation)
+Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j : Ω →+* Formalism.BasicNotions.Loc.Om l, j.comp (algebraMap F Ω) = τ := by`. Use `letI : Algebra F (Formalism.BasicNotions.Loc.Om l) := τ.toAlgebra`. Conclude with `⟨(IsAlgClosed.lift (R := F) (S := Ω) (M := Formalism.BasicNotions.Loc.Om l)).toRingHom, (IsAlgClosed.lift (R := F) (S := Ω) (M := Formalism.BasicNotions.Loc.Om l)).comp_algebraMap⟩`. Take `⟨w, hw, hl⟩` from `((Loc.decEmb (F := F) (Ω := Ω) (v := l)).2 j₀).1`.
+
+Take `⟨g, hg⟩` from `exists_smul_eq_of_isPlaceOver (F := F) (hA w) hw`. Use `⟨j₀.comp (g : Ω →+* Ω), w, hj₀ ▸ RingHom.ext fun x => congrArg j₀ (g.commutes x), hl, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `g • x ∈ Loc.placeJ j₀ ↔ _`. Rewrite using `[← hg]`.
+
+Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff`.
+-/
 private theorem bkAb_emb {F Ω : Type} [Field F] [NumberField F] [Field Ω] [CharZero Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {l : ℕ} [Fact l.Prime] (A : HeightOneSpectrum (𝓞 F) → ValuationSubring Ω) (hA : ∀ w, IsPlaceOver (A w) w)
     (τ : F →+* Formalism.BasicNotions.Loc.Om l) :
@@ -24,6 +31,13 @@ private theorem bkAb_emb {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Cha
   rw [← hg]
   exact ValuationSubring.smul_mem_pointwise_smul_iff
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s V n R z hz h1 h2`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap L Ω).injective`. Use `⟨fun w hw => ⟨s.A w, s.hA w, h2 w hw⟩, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨j, w, hj, hl, hA⟩` from `bkAb_emb s.A s.hA τ`. Use `⟨j, hj, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∃ φ : ↥(Dec (F` using `L) (s.A w)) →* Formalism.BasicNotions.Loc.GQ l, Topology.IsOpenEmbedding φ ∧ (∀ g y, φ g (j y) = j ((g : G L Ω) y)) ∧ (∀ g, φ g ∈ Loc.Iq l ↔ (g : G L Ω) ∈ Ine (F := L) (s.A w)) ∧ (∀ g, Loc.cyc l l (φ g) = cycZ L Ω l (g : G L Ω)) := by`. Rewrite using `[← hA]`. Take `⟨φ, a, b, -, c, d, -⟩` from `((Loc.decEmb (F := L) (Ω := Ω) (v := l)).2 j).2`. Conclude with `⟨φ, a, b, c, d l⟩`. Take `⟨φ, a, b, c, d⟩` from `key`.
+
+Establish `h3` using `h1 ⟨w, hl⟩ φ a c fun g => congrArg (Units.map _) (d g)`. Conclude with `(Loc.bkAbove (F := W.Lp L) j φ ((W.resP L Ω).comp (Dec (F := L) (s.A w)).subtype) a b (R.comp (toGS Ω V.S')) (fun g => z (toGS Ω V.S' g)) ⟨hz.1.comp (continuous_toGS Ω _), fun g h => (congrArg z (map_mul _ g h)).trans (hz.2 _ _)⟩).1 h3`.
+-/
 theorem UpperTheory.V.Ws.Eb.bkAb :
     ∀ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} (V : s.Lev) {n : ℕ} (R : Representation (PadicAlgCl l) V.frame.Γ (Matrix (Fin n) (Fin n) (PadicAlgCl l))), ∀ z ∈ Z1 R,
         (∀ (v : V.frame.Vl) (φ : V.frame.Gv v →* Formalism.BasicNotions.Loc.GQ l), Topology.IsOpenEmbedding φ → (∀ g, φ g ∈ Loc.Iq l ↔ g ∈ V.frame.Iv v) → (∀ g, Loc.cycA l l (PadicAlgCl l) (φ g) = cycBar L Ω l (Subtype.val g)) →

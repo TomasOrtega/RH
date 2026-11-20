@@ -30,6 +30,9 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct in
 variable (K L : Type) [Field K] [Field L] [Algebra K L] in
 variable {K L} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.QuadSymbol.eta`. Use `split_ifs with h`. Simplify using `[h]`. Simplify using `only [h, iff_false]`. Evaluate the decidable proposition.
+-/
 theorem _root_.GlobalTheory.QuadSymbol.eta_eq_one_iff {A : Type} [CommRing A] [Algebra K A] {x : Aˣ} :
     _root_.GlobalTheory.QuadSymbol.eta K L A x = 1 ↔ x ∈ _root_.GlobalTheory.QuadSymbol.normGroup K L A := by
   unfold _root_.GlobalTheory.QuadSymbol.eta
@@ -42,6 +45,9 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct in
 variable (K L : Type) [Field K] [Field L] [Algebra K L] in
 variable {K L} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.QuadSymbol.eta`. Use `split_ifs with h`. Simplify using `only [h, not_true_eq_false, iff_false]`. Evaluate the decidable proposition. Simplify using `[h]`.
+-/
 theorem _root_.GlobalTheory.QuadSymbol.eta_eq_neg_one_iff {A : Type} [CommRing A] [Algebra K A] {x : Aˣ} :
     _root_.GlobalTheory.QuadSymbol.eta K L A x = -1 ↔ x ∉ _root_.GlobalTheory.QuadSymbol.normGroup K L A := by
   unfold _root_.GlobalTheory.QuadSymbol.eta
@@ -54,6 +60,9 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct in
 variable (K L : Type) [Field K] [Field L] [Algebra K L] in
 variable {K L} in
+/- English proof (translation)
+Rewrite `h` using `[Algebra.norm_apply, ← LinearMap.isUnit_iff_isUnit_det]`. Take `⟨u, hu⟩` from `h`. Establish `h2 : ((u * u⁻¹ : (Module.End A S)ˣ) : Module.End A S) 1 = 1` using `by simp`. Rewrite `h2` using `[Units.val_mul, Module.End.mul_apply, hu]`. Conclude with `IsUnit.of_mul_eq_one _ (by simpa using h2)`.
+-/
 private theorem isUnit_of_isUnit_norm' {A S : Type} [CommRing A] [CommRing S] [Algebra A S]
     [Module.Free A S] [Module.Finite A S] {z : S} (h : IsUnit (Algebra.norm A z)) : IsUnit z := by
   rw [Algebra.norm_apply, ← LinearMap.isUnit_iff_isUnit_det] at h
@@ -67,6 +76,11 @@ open scoped TensorProduct in
 variable (K L : Type) [Field K] [Field L] [Algebra K L] in
 variable {K L} in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`. Conclude with `⟨u, congrArg Units.val hu⟩`. Introduce and unpack `⟨z, hz⟩`. Establish `hu : IsUnit z` using `isUnit_of_isUnit_norm' (A := A) (by rw [hz]; exact x.isUnit)`.
+
+Conclude with `⟨hu.unit, Units.ext (by simp [hz])⟩`.
+-/
 theorem _root_.GlobalTheory.QuadSymbol.mem_normGroup_iff [FiniteDimensional K L] {A : Type} [CommRing A]
     [Algebra K A] {x : Aˣ} :
     x ∈ _root_.GlobalTheory.QuadSymbol.normGroup K L A ↔ ∃ z : A ⊗[K] L, Algebra.norm A z = x := by
@@ -82,6 +96,11 @@ open scoped TensorProduct in
 variable (K L : Type) [Field K] [Field L] [Algebra K L] in
 variable {K L} in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`. Conclude with `⟨u, congrArg Units.val hu⟩`. Introduce and unpack `⟨z, hz⟩`. Establish `hu : IsUnit z` using `isUnit_of_isUnit_norm' (A := K) (by rw [hz]; exact x.isUnit)`.
+
+Conclude with `⟨hu.unit, Units.ext (by simp [hz])⟩`.
+-/
 theorem _root_.GlobalTheory.QuadSymbol.mem_globalNorms_iff [FiniteDimensional K L] {x : Kˣ} :
     x ∈ _root_.GlobalTheory.QuadSymbol.globalNorms K L ↔ ∃ z : L, Algebra.norm K z = x := by
   constructor
@@ -95,6 +114,9 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct in
 variable (K L : Type) [Field K] [Field L] [Algebra K L] in
 variable {K L} in
+/- English proof (translation)
+Rewrite using `[Algebra.norm_apply, Algebra.norm_apply, ← LinearMap.det_baseChange]`. Use `congr 1`. Use extensionality with `w`. Simplify using the standard rewrite rules.
+-/
 private theorem norm_one_tmul_eq_algebraMap_norm [FiniteDimensional K L] {A : Type} [CommRing A] [Algebra K A]
     (z : L) : Algebra.norm A ((1 : A) ⊗ₜ[K] z) = algebraMap K A (Algebra.norm K z) := by
   rw [Algebra.norm_apply, Algebra.norm_apply, ← LinearMap.det_baseChange]
@@ -107,6 +129,9 @@ open scoped TensorProduct in
 variable (K L : Type) [Field K] [Field L] [Algebra K L] in
 variable {K L} in
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `_root_.GlobalTheory.QuadSymbol.mem_globalNorms_iff.mp hx`. Use `_root_.GlobalTheory.QuadSymbol.mem_normGroup_iff.mpr ⟨(1 : A) ⊗ₜ[K] z, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_one_tmul_eq_algebraMap_norm, hz]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.QuadSymbol.toUnits_mem_normGroup [FiniteDimensional K L] (A : Type) [CommRing A]
     [Algebra K A] {x : Kˣ} (hx : x ∈ _root_.GlobalTheory.QuadSymbol.globalNorms K L) :
     _root_.GlobalTheory.QuadSymbol.toUnits K A x ∈ _root_.GlobalTheory.QuadSymbol.normGroup K L A := by
@@ -119,6 +144,11 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct in
 variable (K L : Type) [Field K] [Field L] [Algebra K L] in
 variable {K L} in
+/- English proof (translation)
+Establish `hm0 : (a • f 0 + b • f 1) * f 0 = a • f 0 + b • f 1` using `by rw [h0, mul_one]`. Establish `hm1 : (a • f 0 + b • f 1) * f 1 = (b * c) • f 0 + a • f 1`. Rewrite using `[add_mul, smul_mul_assoc, smul_mul_assoc, h1, h0, one_mul, Algebra.algebraMap_eq_smul_one, smul_smul, add_comm]`. Rewrite using `[Algebra.norm_eq_matrix_det f, Matrix.det_fin_two]`. Simplify using `only [Algebra.leftMulMatrix_eq_repr_mul, hm0, hm1, map_add, map_smul, Module.Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply, Finsupp.single_apply]`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem norm_smul_add_smul_basis_eq_sq_sub_mul_sq {A S : Type} [CommRing A] [CommRing S]
     [Algebra A S] (f : Module.Basis (Fin 2) A S) (h0 : f 0 = 1) {c : A}
     (h1 : f 1 * f 1 = algebraMap A S c) (a b : A) :
@@ -138,6 +168,17 @@ open scoped TensorProduct in
 variable (K L : Type) [Field K] [Field L] [Algebra K L] in
 variable {K L} in
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional K L := Module.Finite.of_basis e`. Use `set f := Algebra.TensorProduct.basis A e`. Establish `hf0 : f 0 = 1`. Rewrite using `[Algebra.TensorProduct.basis_apply, h0]`. Both sides reduce to the same expression.
+
+Establish `hf1 : f 1 * f 1 = algebraMap A (A ⊗[K] L) (algebraMap K A δ)`. Simplify using `only [f, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, h1, Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Use `congr 1`. Simplify using `[Algebra.smul_def]`.
+
+Rewrite using `[_root_.GlobalTheory.QuadSymbol.mem_normGroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨f.repr z 0, f.repr z 1, ?_⟩` and prove the remaining obligations. Establish `hz' : z = f.repr z 0 • f 0 + f.repr z 1 • f 1` using `by conv_lhs => rw [← f.sum_repr z]`.
+
+Rewrite using `[Fin.sum_univ_two]`. Establish `hn` using `norm_smul_add_smul_basis_eq_sq_sub_mul_sq f hf0 hf1 (f.repr z 0) (f.repr z 1)`. Rewrite `hn` using `[← hz', hz]`. Conclude with `hn`. Introduce and unpack `⟨a, b, h⟩`.
+
+Conclude with `⟨a • f 0 + b • f 1, by rw [norm_smul_add_smul_basis_eq_sq_sub_mul_sq f hf0 hf1, h]⟩`.
+-/
 theorem _root_.GlobalTheory.QuadSymbol.mem_normGroup_iff_form (e : Module.Basis (Fin 2) K L)
     (h0 : e 0 = 1) {δ : K} (h1 : e 1 * e 1 = algebraMap K L δ) {A : Type} [CommRing A]
     [Algebra K A] {x : Aˣ} :
@@ -196,6 +237,9 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct in
 variable (K L : Type) [Field K] [NumberField K] [Field L] [Algebra K L] in
 
+/- English proof (translation)
+Use `h.subset fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Function.mem_mulSupport] at hv`. Conclude with `fun hmem => hv (_root_.GlobalTheory.QuadSymbol.eta_eq_one_iff.mpr hmem)`.
+-/
 theorem _root_.GlobalTheory.QuadSymbol.AlmostNorm.finite_mulSupport
     {K L : Type} [Field K] [NumberField K] [Field L] [Algebra K L]
     {x : _root_.GlobalTheory.QuadSymbol.FinFam K} (h : _root_.GlobalTheory.QuadSymbol.AlmostNorm K L x) :

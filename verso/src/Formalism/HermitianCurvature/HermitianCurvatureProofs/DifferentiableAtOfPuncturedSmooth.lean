@@ -18,22 +18,40 @@ def V1 (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] : Submodule ℂ (�
     change ContDiffOn ℝ ∞ (fun τ => c • f τ) _
     exact hf.const_smul c
 
+/- English proof (translation)
+The claim follows from `isOpen_ne`.
+-/
 theorem isOpen_ne_zero_complex : IsOpen {τ : ℂ | τ ≠ 0} := isOpen_ne
 
+/- English proof (translation)
+The claim follows from `(hf.differentiableOn (by simp)).differentiableAt (isOpen_ne_zero_complex.mem_nhds hτ)`.
+-/
 theorem differentiableAt_of_punctured_smooth {f : ℂ → E} (hf : f ∈ V1 E) {τ : ℂ} (hτ : τ ≠ 0) : DifferentiableAt ℝ f τ :=
   (hf.differentiableOn (by simp)).differentiableAt (isOpen_ne_zero_complex.mem_nhds hτ)
 
+/- English proof (translation)
+The claim follows from `(hf.fderiv_of_isOpen isOpen_ne_zero_complex (by simp)).clm_apply contDiffOn_const`.
+-/
 theorem contDiffOn_fderiv_punctured {f : ℂ → E} (hf : f ∈ V1 E) (v : ℂ) : ContDiffOn ℝ ∞ (fun τ => fderiv ℝ f τ v) {τ | τ ≠ 0} :=
   (hf.fderiv_of_isOpen isOpen_ne_zero_complex (by simp)).clm_apply contDiffOn_const
 
+/- English proof (translation)
+Unfold `PBP.dz`. Conclude with `((contDiffOn_fderiv_punctured hf 1).sub ((contDiffOn_fderiv_punctured hf Complex.I).const_smul Complex.I)).const_smul _`.
+-/
 theorem contDiffOn_wirtinger_dz {f : ℂ → E} (hf : f ∈ V1 E) : ContDiffOn ℝ ∞ (PBP.dz f) {τ | τ ≠ 0} := by
   unfold PBP.dz
   exact ((contDiffOn_fderiv_punctured hf 1).sub ((contDiffOn_fderiv_punctured hf Complex.I).const_smul Complex.I)).const_smul _
 
+/- English proof (translation)
+Unfold `PBP.dzb`. Conclude with `((contDiffOn_fderiv_punctured hf 1).add ((contDiffOn_fderiv_punctured hf Complex.I).const_smul Complex.I)).const_smul _`.
+-/
 theorem contDiffOn_wirtinger_dzbar {f : ℂ → E} (hf : f ∈ V1 E) : ContDiffOn ℝ ∞ (PBP.dzb f) {τ | τ ≠ 0} := by
   unfold PBP.dzb
   exact ((contDiffOn_fderiv_punctured hf 1).add ((contDiffOn_fderiv_punctured hf Complex.I).const_smul Complex.I)).const_smul _
 
+/- English proof (translation)
+Unfold `PBP.dz`. Rewrite using `[fderiv_add (differentiableAt_of_punctured_smooth hf hτ) (differentiableAt_of_punctured_smooth hg hτ)]`. Simplify using `only [ContinuousLinearMap.add_apply, smul_add, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem dz_add {f g : ℂ → E} (hf : f ∈ V1 E) (hg : g ∈ V1 E) {τ : ℂ} (hτ : τ ≠ 0) :
     PBP.dz (f + g) τ = PBP.dz f τ + PBP.dz g τ := by
   unfold PBP.dz
@@ -41,6 +59,9 @@ theorem dz_add {f g : ℂ → E} (hf : f ∈ V1 E) (hg : g ∈ V1 E) {τ : ℂ} 
   simp only [ContinuousLinearMap.add_apply, smul_add, smul_sub]
   abel
 
+/- English proof (translation)
+Unfold `PBP.dzb`. Rewrite using `[fderiv_add (differentiableAt_of_punctured_smooth hf hτ) (differentiableAt_of_punctured_smooth hg hτ)]`. Simplify using `only [ContinuousLinearMap.add_apply, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem dzb_add {f g : ℂ → E} (hf : f ∈ V1 E) (hg : g ∈ V1 E) {τ : ℂ} (hτ : τ ≠ 0) :
     PBP.dzb (f + g) τ = PBP.dzb f τ + PBP.dzb g τ := by
   unfold PBP.dzb
@@ -48,12 +69,18 @@ theorem dzb_add {f g : ℂ → E} (hf : f ∈ V1 E) (hg : g ∈ V1 E) {τ : ℂ}
   simp only [ContinuousLinearMap.add_apply, smul_add]
   abel
 
+/- English proof (translation)
+Unfold `PBP.dz`. Rewrite using `[fderiv_const_smul (differentiableAt_of_punctured_smooth hf hτ)]`. Simplify using `only [ContinuousLinearMap.smul_apply, smul_sub, smul_comm c Complex.I, smul_comm c (1 / 2 : ℂ)]`.
+-/
 theorem dz_smul {f : ℂ → E} (hf : f ∈ V1 E) (c : ℂ) {τ : ℂ} (hτ : τ ≠ 0) :
     PBP.dz (c • f) τ = c • PBP.dz f τ := by
   unfold PBP.dz
   rw [fderiv_const_smul (differentiableAt_of_punctured_smooth hf hτ)]
   simp only [ContinuousLinearMap.smul_apply, smul_sub, smul_comm c Complex.I, smul_comm c (1 / 2 : ℂ)]
 
+/- English proof (translation)
+Unfold `PBP.dzb`. Rewrite using `[fderiv_const_smul (differentiableAt_of_punctured_smooth hf hτ)]`. Simplify using `only [ContinuousLinearMap.smul_apply, smul_add, smul_comm c Complex.I, smul_comm c (1 / 2 : ℂ)]`.
+-/
 theorem dzb_smul {f : ℂ → E} (hf : f ∈ V1 E) (c : ℂ) {τ : ℂ} (hτ : τ ≠ 0) :
     PBP.dzb (c • f) τ = c • PBP.dzb f τ := by
   unfold PBP.dzb
@@ -62,14 +89,29 @@ theorem dzb_smul {f : ℂ → E} (hf : f ∈ V1 E) (c : ℂ) {τ : ℂ} (hτ : �
 
 def off0 (f : ℂ → E) : ℂ → E := fun τ => if τ = 0 then 0 else f τ
 
+/- English proof (translation)
+The claim follows from `hf.congr fun τ hτ => by simp [off0, show τ ≠ 0 from hτ]`.
+-/
 theorem off_zero_mem_punctured_smooth {f : ℂ → E} (hf : ContDiffOn ℝ ∞ f {τ | τ ≠ 0}) : off0 f ∈ V1 E :=
   hf.congr fun τ hτ => by simp [off0, show τ ≠ 0 from hτ]
 
+/- English proof (translation)
+The claim follows from `contDiffOn_id`.
+-/
 theorem cd_id : ContDiffOn ℝ ∞ (fun τ : ℂ => τ) {τ | τ ≠ 0} := contDiffOn_id
+/- English proof (translation)
+The claim follows from `Complex.conjCLE.contDiff.contDiffOn`.
+-/
 theorem cd_conj : ContDiffOn ℝ ∞ (fun τ : ℂ => conj τ) {τ | τ ≠ 0} := Complex.conjCLE.contDiff.contDiffOn
+/- English proof (translation)
+Introduce `τ hτ`. Conclude with `(contDiffAt_inv ℂ (show τ ≠ 0 from hτ)).restrict_scalars ℝ |>.contDiffWithinAt`.
+-/
 theorem cd_inv : ContDiffOn ℝ ∞ (fun τ : ℂ => τ⁻¹) {τ | τ ≠ 0} := by
   intro τ hτ
   exact (contDiffAt_inv ℂ (show τ ≠ 0 from hτ)).restrict_scalars ℝ |>.contDiffWithinAt
+/- English proof (translation)
+Introduce `τ hτ`. Establish `h1 : ContDiffAt ℝ ∞ (fun τ : ℂ => conj τ) τ` using `Complex.conjCLE.contDiff.contDiffAt`. Establish `h2 : conj τ ≠ 0` using `by simpa using (show τ ≠ 0 from hτ)`. Conclude with `(((contDiffAt_inv ℂ h2).restrict_scalars ℝ).comp τ h1).contDiffWithinAt`.
+-/
 theorem cd_conjinv : ContDiffOn ℝ ∞ (fun τ : ℂ => (conj τ)⁻¹) {τ | τ ≠ 0} := by
   intro τ hτ
   have h1 : ContDiffAt ℝ ∞ (fun τ : ℂ => conj τ) τ := Complex.conjCLE.contDiff.contDiffAt

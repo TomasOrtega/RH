@@ -12,12 +12,21 @@ section Leg
 variable {K : Type} [Field K] (O : ValuationSubring K) {n r : ℕ} (P : Matrix (Fin n) (Fin n) K)
   (Λ1 Λ2 : Submodule O (Fin n → K)) (a a' α α' : Fin r → Fin n → K)
 
+/- English proof (translation)
+The claim follows from `(O.valuation_le_one_iff x).1 h.le`.
+-/
 theorem memO_of_v {x : K} (h : O.valuation x = 1) : x ∈ O :=
   (O.valuation_le_one_iff x).1 h.le
 
+/- English proof (translation)
+The claim follows from `memO_of_v O (by rw [map_inv₀, h, inv_one])`.
+-/
 theorem inv_memO_of_v {x : K} (h : O.valuation x = 1) : x⁻¹ ∈ O :=
   memO_of_v O (by rw [map_inv₀, h, inv_one])
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Simplify using `at h`.
+-/
 theorem ne_zero_of_v {x : K} (h : O.valuation x = 1) : x ≠ 0 := by
   rintro rfl
   simp at h
@@ -27,6 +36,31 @@ def Pair (u φ : Fin n → K) : Prop :=
     (∀ i, pr P φ (a i) = 0 ∧ pr P φ (a' i) = 0)
 
 variable {O P Λ1 Λ2 a a' α α'} in
+/- English proof (translation)
+Unfold `Pair at hp hq`. Take `⟨hup, hφp, hupα, hφpa⟩` from `hp`. Take `⟨huq, hφq, huqα, hφqa⟩` from `hq`. Establish `hcp0 : pr P φp up ≠ 0` using `ne_zero_of_v O hcp`. Establish `hcq0 : pr P φq uq ≠ 0` using `ne_zero_of_v O hcq`.
+
+Establish `hd0 : pr P φp uq ≠ 0` using `ne_zero_of_v O hd`. Establish `hcpi : (pr P φp up)⁻¹ ∈ O` using `inv_memO_of_v O hcp`. Establish `hcqi : (pr P φq uq)⁻¹ ∈ O` using `inv_memO_of_v O hcq`. Establish `hdi : (pr P φp uq)⁻¹ ∈ O` using `inv_memO_of_v O hd`. Establish `hb : pr P φq up ∈ O` using `hP φq hφq up hup`.
+
+Establish `e1 : pr P φp uq * (pr P φp uq)⁻¹ = 1` using `mul_inv_cancel₀ hd0`. Establish `e2 : pr P φp up * (pr P φp up)⁻¹ = 1` using `mul_inv_cancel₀ hcp0`. Establish `e3 : pr P φq uq * (pr P φq uq)⁻¹ = 1` using `mul_inv_cancel₀ hcq0`. Establish `hXup : (φq ᵥ* P) ⬝ᵥ up = pr P φq up` using `(pr_eq_vecMul P φq up).symm`. Establish `hYup : (φp ᵥ* P) ⬝ᵥ up = pr P φp up` using `(pr_eq_vecMul P φp up).symm`.
+
+Establish `hD1 : (φq ᵥ* P) ⬝ᵥ (uq - up) = pr P φq uq - pr P φq up`. Rewrite using `[← pr_eq_vecMul, pr_sub_right]`. Establish `hdot : ∀ (V W : Fin n → K) (t : K), (V + t • W) ⬝ᵥ up = V ⬝ᵥ up + t * (W ⬝ᵥ up)`. Introduce `V W t`. Use `first`.
+
+Consider the case `(simp only [add_dotProduct, smul_dotProduct, smul_eq_mul]; done)`. Consider the case `(simp; done)`. Consider the case `(simp [dotProduct, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc]; done)`. Take `⟨γ2, hγ2⟩ : ∃ γ2 : Fin n → K, γ2 = φq - (pr P φq up * (pr P φp up)⁻¹) • φp` from `⟨_, rfl⟩`. Establish `hγ2u : (γ2 ᵥ* P) ⬝ᵥ up = 0`.
+
+Rewrite using `[← pr_eq_vecMul, hγ2, pr_sub_left, pr_smul_left]`. Take the linear combination `(-pr P φq up) * e2`. Establish `hγ2P : γ2 ᵥ* P = φq ᵥ* P - (pr P φq up * (pr P φp up)⁻¹) • (φp ᵥ* P)`. Substitute `hγ2` using the available equality. Use `first`.
+
+Consider the case `(simp only [sub_vecMul, vecMul_smul]; done)`. Consider the case `(simp only [sub_vecMul, smul_vecMul]; done)`. Consider the case `(simp [sub_vecMul]; done)`. Consider the case `(ext j; simp [vecMul, dotProduct, sub_mul, Finset.sum_sub_distrib, Finset.mul_sum, mul_assoc]; done)`. Establish `hγ2mem : γ2 ∈ Λ2`.
+
+Apply the tactic sequence `have hs : pr P φq up * (pr P φp up)⁻¹ ∈ O := by first | exact mul_mem hb hcpi | exact O.mul_mem _ _ hb hcpi`. Rewrite using `[hγ2]`. Conclude with `Λ2.sub_mem hφq (smem O hs hφp)`. Establish `hγ2a : ∀ i, pr P γ2 (a i) = 0 ∧ pr P γ2 (a' i) = 0` using `fun i => by`. Simplify using `only [hγ2, pr_sub_left, pr_smul_left, (hφqa i).1, (hφqa i).2, (hφpa i).1, (hφpa i).2, mul_zero, sub_zero, and_self]`.
+
+Establish `hwα1 : ∀ i, pr P (α i) (uq - up) = 0 ∧ pr P (α' i) (uq - up) = 0` using `fun i => ⟨by rw [pr_sub_right, (huqα i).1, (hupα i).1, sub_self], by rw [pr_sub_right, (huqα i).2, (hupα i).2, sub_self]⟩`. Establish `h1 : (pr P φp up)⁻¹ + -(pr P φp uq)⁻¹ + (pr P φp up)⁻¹ * -(pr P φp uq)⁻¹ * ((φp ᵥ* P) ⬝ᵥ (uq - up)) = 0`. Rewrite using `[← pr_eq_vecMul, pr_sub_right]`. Take the linear combination `(pr P φp uq)⁻¹ * e2 - (pr P φp up)⁻¹ * e1`. Establish `h2 : -(pr P φq uq)⁻¹ + (pr P φq uq)⁻¹ + -(pr P φq uq)⁻¹ * (pr P φq uq)⁻¹ * ((γ2 ᵥ* P) ⬝ᵥ up) = 0`.
+
+Rewrite using `[hγ2u]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `have hn1 : -(pr P φp uq)⁻¹ ∈ O := by first | exact neg_mem hdi | exact O.neg_mem _ hdi`. Apply the tactic sequence `have hn2 : -(pr P φq uq)⁻¹ ∈ O := by first | exact neg_mem hcqi | exact O.neg_mem _ hcqi`. Establish `hT1` using `isAdmissible_rankOneGL hP (uq - up) φp _ _ h1 hcpi hn1 (Λ1.sub_mem huq hup) hφp hwα1 hφpa`.
+
+Establish `hT2` using `isAdmissible_rankOneGL hP up γ2 _ _ h2 hn2 hcqi hup hγ2mem hupα hγ2a`. Use `⟨rankOneUnitGL (uq - up) (φp ᵥ* P) _ _ h1 * rankOneUnitGL up (γ2 ᵥ* P) _ _ h2, good_mul _ _ _ _ _ _ _ _ hT1 hT2, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, ← mulVec_mulVec, coe_rankOneGL, one_add_smul_vecMulVec_mulVec, hγ2u, mul_zero, zero_smul, add_zero, hYup, inv_mul_cancel₀ hcp0, one_smul]`. Normalize the expressions using the abelian group laws. Simplify using `only [Units.val_mul, ← vecMul_vecMul, coe_rankOneGL, vecMul_one_add_smul_vecMulVec]`.
+
+Rewrite using `[hD1, hdot, hXup, hYup, hγ2P]`. Use extensionality with `j`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `((φq ᵥ* P) j - pr P φq up * (pr P φp up)⁻¹ * (φp ᵥ* P) j) * (-(pr P φq uq)⁻¹ * (pr P φq uq - pr P φq up) * e2 - e3)`.
+-/
 theorem leg (hP : ∀ β ∈ Λ2, ∀ x ∈ Λ1, pr P β x ∈ O) {up φp uq φq : Fin n → K}
     (hp : Pair O P Λ1 Λ2 a a' α α' up φp) (hq : Pair O P Λ1 Λ2 a a' α α' uq φq)
     (hcp : O.valuation (pr P φp up) = 1) (hcq : O.valuation (pr P φq uq) = 1)

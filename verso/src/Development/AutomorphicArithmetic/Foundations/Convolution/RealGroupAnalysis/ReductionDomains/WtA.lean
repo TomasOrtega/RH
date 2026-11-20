@@ -6,6 +6,15 @@ open GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.GJMat
 open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
+/- English proof (translation)
+Introduce `F _ _ M₀ β u c hβ hc hu hinv`. Use `haveI := M₀.prob`. Establish `hm : Measurable fun p : IdeleGroup F × G1 F => mD p.1 * p.2` using `((M.continuous_mD.comp continuous_fst).mul continuous_snd).measurable`. Establish `hJ : Measurable fun p : IdeleGroup F × G1 F => M.wt p.1 * u (mD p.1 * p.2)` using `(M.measurable_wt.comp measurable_fst).mul (hu.comp hm)`. Establish `hin : ∀ (a : IdeleGroup F) (k : G1 F), ∫⁻ b, u (nU b * mD a * k) * β (nU b * mD a * k) * ENNReal.ofReal ((ab a)⁻¹ ^ 2) ∂(adeleMeasure F) = c * (M.wt a * u (mD a * k))`.
+
+Introduce `a k`. Establish `h1 : ∀ b, u (nU b * mD a * k) * β (nU b * mD a * k) * ENNReal.ofReal ((ab a)⁻¹ ^ 2) = (M.wt a * u (mD a * k)) * β (nU b * (mD a * k))` using `fun b => by`. Rewrite using `[mul_assoc (nU b), hinv, M.wt]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[h1]`.
+
+Establish `hb : Measurable fun b : A F => β (nU b * (mD a * k))` using `hβ.comp ((M.continuous_nU.mul continuous_const).measurable)`. Rewrite using `[lintegral_const_mul _ hb, hc, mul_comm]`. Establish `hk : Measurable fun k : G1 F => ∫⁻ a, M.wt a * u (mD a * k) ∂(ideleMeasure F)` using `hJ.lintegral_prod_left'`. Establish `hsec : ∀ k : G1 F, Measurable fun a : IdeleGroup F => M.wt a * u (mD a * k)` using `fun k => M.measurable_wt.mul (hu.comp ((M.continuous_mD.mul continuous_const).measurable))`. Rewrite using `[M₀.iwasawa (fun g => u g * β g) (hu.mul hβ), M.J0, Meas.ν, lintegral_prod_symm _ hJ.aemeasurable, ← lintegral_const_mul _ hk]`.
+
+Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[← lintegral_const_mul _ (hsec k)]`. Conclude with `lintegral_congr fun a => hin a k`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.M.wtA :
     ∀ (F : Type) [Field F] [NumberField F] (M₀ : Meas F) (β u : G1 F → ℝ≥0∞) (c : ℝ≥0∞), Measurable β → (∀ g, ∫⁻ b, β (nU b * g) ∂(adeleMeasure F) = c) → Measurable u → (∀ b g, u (nU b * g) = u g) → ∫⁻ g, u g * β g ∂M₀.μ = c * M.J0 M₀ u := by
   intro F _ _ M₀ β u c hβ hc hu hinv

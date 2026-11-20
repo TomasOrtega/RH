@@ -7,6 +7,15 @@ open GlobalTheory.UnitLemma Matrix MeasureTheory
 
 namespace GlobalTheory.JR
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ h y hy`. Use `haveI := h.charZero`. Use `haveI : CharZero E := charZero_of_injective_algebraMap (algebraMap F E).injective`. Take `⟨b, d, hb0, hs, -, -⟩` from `Unram.exists_basis_antifixed F E`. Establish `hsum` using `b.sum_repr y`.
+
+Rewrite `hsum` using `[Fin.sum_univ_two, hb0]`. Use `set a := b.repr y 0`. Use `set c := b.repr y 1`. Establish `hst : star y = a • (1 : E) - c • b 1`. Rewrite using `[← hsum]`.
+
+Simplify using `only [Algebra.smul_def, star_add, star_mul', h.star_fix, hs, star_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (2 : E) * (c • b 1) = 0` using `by linear_combination hsum + hst - hy`. Establish `hc : c • b 1 = 0` using `(mul_eq_zero.1 h2).resolve_left two_ne_zero`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hsum, hc, add_zero, Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem Unram.mem_range_of_star_eq : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [GlobalTheory.JR.Unram F E] (y : E), star y = y → ∃ x : F, algebraMap F E x = y := by
   intro F E _ _ _ _ h y hy

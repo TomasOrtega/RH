@@ -12,6 +12,9 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 open ValuativeRel
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LevFrame.gl_mem_lev | exact GlobalTheory.LevFrame.gl_mem_lev | (intros; apply GlobalTheory.LevFrame.gl_mem_lev <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.framedCongruenceElement_mem_principalCongruence : All fun {D} _ _ {sc} {G} _ _ => ∀ (X : Node), IsSelfDualC (G.V X) (G.Λ X) → ∀ v ∈ G.pl.S0,
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : GlobalTheory.FinPl.SplitPt D k),
   p.v = v → Formalism.L2.NTheta.IsIdemAt p.e (G.pl.w v) → ∀ (n : Type) [Fintype n] [DecidableEq n] (β : GlobalTheory.FinPl.Frame p (G.V X) n),

@@ -7,6 +7,11 @@ open UpperTheory.Gal.Int.Geo (Lv IsTrans Integ KS Mem FEt KSEx KSNice)
 open scoped TensorProduct
 universe u
 
+/- English proof (translation)
+Establish `hpos : 0 < m`. Use `Nat.pos_of_ne_zero ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `(Fact.out : p.Prime).one_lt.ne' (Nat.coprime_zero_left p |>.1 hm)`. Use `Int.natCast_dvd_natCast.1 (GlobalTheory.IntDvdAdele.dvd_of_eq_mul_int p m hpos hm (n : ℤ) (s * t') (GlobalTheory.HeckeApprox.isInt_mul hs ht') ?_)` and prove the remaining obligations.
+
+Rewrite using `[Int.cast_natCast, ← _root_.mul_assoc, ← h, _root_.mul_assoc, e, _root_.mul_one]`.
+-/
 private theorem dvd_of_mult {p : ℕ} [Fact p.Prime] {m n : ℕ} (hm : m.Coprime p) {s t t' : AfP p}
     (hs : IsIntAf s) (ht' : IsIntAf t') (e : t * t' = 1) (h : (n : AfP p) * t = (m : AfP p) * s) : m ∣ n := by
   have hpos : 0 < m := by
@@ -17,6 +22,13 @@ private theorem dvd_of_mult {p : ℕ} [Fact p.Prime] {m n : ℕ} (hm : m.Coprime
     (GlobalTheory.HeckeApprox.isInt_mul hs ht') ?_)
   rw [Int.cast_natCast, ← _root_.mul_assoc, ← h, _root_.mul_assoc, e, _root_.mul_one]
 
+/- English proof (translation)
+Introduce `hNu p _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a c c' hc hc' ⟨t, t', ht, ht', e, ha⟩ ⟨s, s', hs, hs', e', ha'⟩`. Establish `h : (c : AfP p) * t = (c' : AfP p) * s` using `ha.symm.trans ha'`. Conclude with `Nat.dvd_antisymm (dvd_of_mult hc ht hs' e' h.symm) (dvd_of_mult hc' hs ht' e h)`.
+
+Introduce and unpack `a a' c c' ⟨t, t', ht, ht', e, ha⟩ ⟨s, s', hs, hs', e', ha'⟩`. Use `⟨t * s, t' * s', GlobalTheory.HeckeApprox.isInt_mul ht hs, GlobalTheory.HeckeApprox.isInt_mul ht' hs', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_mul_mul_comm, e, e', _root_.one_mul]`. Rewrite using `[ha, ha', Nat.cast_mul, _root_.mul_mul_mul_comm]`. Introduce `D G L u hu`.
+
+Use `⟨UpperTheory.Gal.G3.mul u, UpperTheory.Gal.G3.mul u⁻¹, hNu p D G L u (UpperTheory.Gal.Int.Geo.integ_of_mem hu), hNu p D G L u⁻¹ (UpperTheory.Gal.Int.Geo.integ_of_mem (inv_mem hu)), Units.mul_inv ((u : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2), ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_one, _root_.one_mul]`.
+-/
 theorem UpperTheory.Gal.G3.pMultBasic :
     NuInt → MultBasic := by
   intro hNu p _

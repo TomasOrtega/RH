@@ -10,6 +10,9 @@ section RankOne
 
 variable {E : Type} [Field E] [NumberField E] {K : Type} [CommRing K]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r b => simp`. Consider the case `add x y hx hy => simp only [map_add, mul_add, hx, hy]`.
+-/
 theorem baseChangeAction_toModuleEnd_apply (a : 𝓞 E) (x : K ⊗[ℤ] 𝓞 E) :
     baseChangeAction K (Module.toModuleEnd ℤ (𝓞 E) : 𝓞 E →+* Module.End ℤ (𝓞 E)) a x
       = (1 ⊗ₜ a) * x := by
@@ -18,6 +21,9 @@ theorem baseChangeAction_toModuleEnd_apply (a : 𝓞 E) (x : K ⊗[ℤ] 𝓞 E) 
   | tmul r b => simp
   | add x y hx hy => simp only [map_add, mul_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r a`. Rewrite using `[tensorAction_tmul, baseChangeAction_toModuleEnd_apply, ← smul_mul_assoc, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Consider the case `add s t hs ht => simp [add_mul, hs, ht]`.
+-/
 theorem tensorAction_baseChangeAction_toModuleEnd (t x : K ⊗[ℤ] 𝓞 E) :
     tensorAction (baseChangeAction K
       (Module.toModuleEnd ℤ (𝓞 E) : 𝓞 E →+* Module.End ℤ (𝓞 E))) t x = t * x := by
@@ -30,12 +36,20 @@ theorem tensorAction_baseChangeAction_toModuleEnd (t x : K ⊗[ℤ] 𝓞 E) :
 
 variable {ι : Type} [DecidableEq ι] {τ : ι → 𝓞 E →+* K}
 
+/- English proof (translation)
+Introduce `h0`. Use `congrFun (splitMap_idem h i) i` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Simplify using `at this`.
+-/
 theorem idem_ne_zero [Nontrivial K] (h : IsSplitting τ) (i : ι) : idem h i ≠ 0 := by
   intro h0
   have := congrFun (splitMap_idem h i) i
   rw [h0, map_zero] at this
   simp at this
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `h1` using `tensorAction_of_mem (σ := τ) hx (idem h i)`. Rewrite `h1` using `[tensorAction_baseChangeAction_toModuleEnd, splitMap_idem, Pi.single_eq_same, one_smul, mul_comm, mul_idem]`. Rewrite using `[← h1]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span rfl)`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `mem_eigenSub.2 fun a => by rw [baseChangeAction_toModuleEnd_apply, one_tmul_mul_idem]`.
+-/
 theorem eigenSub_toModuleEnd_eq_span (h : IsSplitting τ) (i : ι) :
     eigenSub (baseChangeAction K (Module.toModuleEnd ℤ (𝓞 E) : 𝓞 E →+* Module.End ℤ (𝓞 E)))
       (τ i) = Submodule.span K {idem h i} := by
@@ -51,6 +65,11 @@ theorem eigenSub_toModuleEnd_eq_span (h : IsSplitting τ) (i : ι) :
 
 end RankOne
 
+/- English proof (translation)
+Establish `: FaithfulSMul V K` using `(faithfulSMul_iff_algebraMap_injective V K).2 (IsFractionRing.injective V K)`. Establish `: Module.Flat V K` using `flat_of_valuationRing V K`. Rewrite using `[← finrank_eigenSub_of_flat (R' := K) (extendTensor_equivariant V K _) (isBaseChange_extendTensor ℤ V K (𝓞 E)) (σ i₀)]`. Establish `hs` using `eigenSub_toModuleEnd_eq_span h i₀`. Use `beta_reduce at hs`.
+
+Rewrite using `[hs]`. Conclude with `finrank_span_singleton (idem_ne_zero h i₀)`.
+-/
 theorem finrank_eigenSub_toModuleEnd_eq_one_of_isSplitting {E V : Type} [Field E] [NumberField E]
     [CommRing V] [IsDomain V] [ValuationRing V] {ι : Type} [Fintype ι] [DecidableEq ι]
     (σ : ι → 𝓞 E →+* V) (K : Type) [Field K] [Algebra V K] [IsFractionRing V K]
@@ -67,6 +86,9 @@ theorem finrank_eigenSub_toModuleEnd_eq_one_of_isSplitting {E V : Type} [Field E
   rw [hs]
   exact finrank_span_singleton (idem_ne_zero h i₀)
 
+/- English proof (translation)
+Conclude with `finrank_eigenSub_toModuleEnd_eq_one_of_isSplitting σ (FractionRing V) (isSplitting_fractionRing hσ hc) i₀`.
+-/
 theorem finrank_eigenSub_toModuleEnd_eq_one {E V : Type} [Field E] [NumberField E] [CommRing V]
     [IsDomain V] [ValuationRing V] [CharZero V]
     {ι : Type} [Fintype ι] (σ : ι → 𝓞 E →+* V) (hσ : Function.Injective σ)

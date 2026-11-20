@@ -14,6 +14,11 @@ open GlobalTheory GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop Glo
 
 namespace GlobalTheory.CovHt.Link.FrameLog
 
+/- English proof (translation)
+Establish `e1 : (g0 ^ m0 * ∏ i ∈ s, E i ^ m i) ^ a * (g0 ^ q0 * ∏ i ∈ s, E i ^ q i) ^ c = g0 ^ (m0 * a + q0 * c) * ∏ i ∈ s, E i ^ (m i * a + q i * c)`. Rewrite using `[mul_pow, mul_pow, ← Finset.prod_pow, ← Finset.prod_pow]`. Simplify using `only [← zpow_natCast, ← zpow_mul, zpow_add, Finset.prod_mul_distrib]`. The two sides agree by associativity and commutativity. Rewrite using `[e1, h0, zpow_zero, one_mul, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[h i hi, mul_zpow, inv_zpow', zpow_neg, mul_left_comm, mul_inv_cancel, mul_one]`.
+-/
 theorem grp_key {G : Type} [CommGroup G] {ι : Type} (s : Finset ι) (g0 : G) (E T : ι → G) (m0 q0 : ℤ) (m q t : ι → ℤ)
     (a c : ℕ) (h0 : m0 * a + q0 * c = 0) (h : ∀ i ∈ s, m i * a + q i * c = t i) :
     (g0 ^ m0 * ∏ i ∈ s, E i ^ m i) ^ a * (g0 ^ q0 * ∏ i ∈ s, E i ^ q i) ^ c * ∏ i ∈ s, (T i * (E i)⁻¹) ^ t i =
@@ -31,6 +36,11 @@ section Val
 
 variable {K : Type} [Field K] {Z : AlgebraicGeometry.Scheme.{0}} [AlgebraicGeometry.IsIntegral Z] (y : Sp K ⟶ Z)
 
+/- English proof (translation)
+Distinguish the cases in `ha : RegAt (below y) a`. Conclude with `SmallSec.valAt_mul ha hu.regAt`. Establish `h2 : ¬ RegAt (below y) (a * u)` using `fun h => ha (by`. Use `h.mul hu.inv.regAt` as an intermediate fact. Rewrite using `[mul_assoc, mul_inv_cancel₀ hu.ne_zero, mul_one] at this)` and apply the resulting hypothesis.
+
+Simplify using `[GlobalTheory.TrueGeo.valAt, ha, h2]`.
+-/
 theorem valAt_mul_unit {a u : Z.functionField} (hu : UnitAt (below y) u) :
     valAt y (a * u) = valAt y a * valAt y u := by
   by_cases ha : RegAt (below y) a
@@ -51,12 +61,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 def frT (n : Letter Dw → ℤ) (b : Y.Y.X) : Y.Y.Fnˣ :=
   ∏ x : Letter Dw, (Y.gr_spec b).choose_spec.choose_spec.choose x.1 x.2 ^ n x
 
+/- English proof (translation)
+The claim follows from `LineTest.isEqn_divOf Y n b`.
+-/
 theorem isEqn_frT (n : Letter Dw → ℤ) (b : Y.Y.X) : (divOf Y n).IsEqn b (frT Y n b) := LineTest.isEqn_divOf Y n b
 
+/- English proof (translation)
+Rewrite using `[frT, frT, frT, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun x _ => zpow_add _ _ _`.
+-/
 theorem frT_add (n n' : Letter Dw → ℤ) (b : Y.Y.X) : frT Y (n + n') b = frT Y n b * frT Y n' b := by
   rw [frT, frT, frT, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun x _ => zpow_add _ _ _
 
+/- English proof (translation)
+Use `(Base.isEqn_eqn (divOf Y n) b).iff_unitAt.1 (isEqn_frT Y n b)` as an intermediate fact. Rewrite `this` using `[div_eq_mul_inv, ← Units.val_inv_eq_inv_val, ← Units.val_mul]`. Then use the resulting hypothesis.
+-/
 theorem unitAt_frT (n : Letter Dw → ℤ) (b : Y.Y.X) :
     UnitAt b ((frT Y n b * (eqn (divOf Y n) b)⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn) := by
   have := (Base.isEqn_eqn (divOf Y n) b).iff_unitAt.1 (isEqn_frT Y n b)
@@ -66,17 +85,30 @@ def lgLin (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v) (
   lgOf Y w v ε y - Real.log (ε.w (valAt y.1 ((frT Y (expo Dw w) (below y.1) *
     (eqn (divOf Y (expo Dw w)) (below y.1))⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn)))
 
+/- English proof (translation)
+Rewrite using `[lgLin]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lgOf_eq (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v) (y : AlgPt Y.Y) :
     lgOf Y w v ε y = Real.log (ε.w (valAt y.1 ((frT Y (expo Dw w) (below y.1) *
       (eqn (divOf Y (expo Dw w)) (below y.1))⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn))) + lgLin Y w v ε y := by
   rw [lgLin]; ring
 
+/- English proof (translation)
+Rewrite using `[SmallSec.valAt_mul ha.regAt hb.regAt, map_mul, Real.log_mul (ε.w.pos (SmallSec.valAt_ne_zero ha)).ne' (ε.w.pos (SmallSec.valAt_ne_zero hb)).ne']`.
+-/
 theorem log_valAt_mul {v : HeightOneSpectrum (𝓞 F)} (ε : Ext v) (y : AlgPt Y.Y) {a b : Y.Y.Fn}
     (ha : UnitAt (below y.1) a) (hb : UnitAt (below y.1) b) :
     Real.log (ε.w (valAt y.1 (a * b))) = Real.log (ε.w (valAt y.1 a)) + Real.log (ε.w (valAt y.1 b)) := by
   rw [SmallSec.valAt_mul ha.regAt hb.regAt, map_mul,
     Real.log_mul (ε.w.pos (SmallSec.valAt_ne_zero ha)).ne' (ε.w.pos (SmallSec.valAt_ne_zero hb)).ne']
 
+/- English proof (translation)
+Establish `hE : (divOf Y (expo Dw (w₁ + w₂))).IsEqn (below y.1) (eqn (divOf Y (expo Dw w₁)) (below y.1) * eqn (divOf Y (expo Dw w₂)) (below y.1))`. Rewrite using `[LineTest.expo_add, LineTest.divOf_add]`. Conclude with `(Base.isEqn_eqn _ _).add (Base.isEqn_eqn _ _)`. Establish `Uc : UnitAt (below y.1) ((eqn (divOf Y (expo Dw w₁)) (below y.1) * eqn (divOf Y (expo Dw w₂)) (below y.1) * (eqn (divOf Y (expo Dw (w₁ + w₂))) (below y.1))⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn)`. Use `(Base.isEqn_eqn _ _).iff_unitAt.1 hE` as an intermediate fact.
+
+Rewrite `this` using `[div_eq_mul_inv, ← Units.val_inv_eq_inv_val, ← Units.val_mul]`. Then use the resulting hypothesis. Establish `U₁` using `unitAt_frT Y (expo Dw w₁) (below y.1)`. Establish `U₂` using `unitAt_frT Y (expo Dw w₂) (below y.1)`. Establish `e : frT Y (expo Dw (w₁ + w₂)) (below y.1) * (eqn (divOf Y (expo Dw (w₁ + w₂))) (below y.1))⁻¹ = frT Y (expo Dw w₁) (below y.1) * (eqn (divOf Y (expo Dw w₁)) (below y.1))⁻¹ * (frT Y (expo Dw w₂) (below y.1) * (eqn (divOf Y (expo Dw w₂)) (below y.1))⁻¹) * (eqn (divOf Y (expo Dw w₁) …`. Rewrite using `[LineTest.expo_add Dw w₁ w₂, frT_add, ← LineTest.expo_add]`.
+
+Conclude with `GlobalTheory.CombInd.Tens.commGroup_coboundary_relation_identity _ _ _ _ _`. Establish `h` using `GlobalTheory.CombInd.Tens.lgOf_add Y w₁ w₂ v ε y`. Simplify using `only [lgLin]`. Rewrite using `[e, Units.val_mul, Units.val_mul, log_valAt_mul Y ε y (U₁.mul U₂) Uc, log_valAt_mul Y ε y U₁ U₂, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lgLin_add (w₁ w₂ : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v) (y : AlgPt Y.Y) :
     lgLin Y (w₁ + w₂) v ε y = lgLin Y w₁ v ε y + lgLin Y w₂ v ε y := by
   have hE : (divOf Y (expo Dw (w₁ + w₂))).IsEqn (below y.1)
@@ -103,6 +135,9 @@ theorem lgLin_add (w₁ w₂ : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)
 def lgLinHom (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v) (y : AlgPt Y.Y) : (Sym E →₀ ℤ) →+ ℝ :=
   AddMonoidHom.mk' (fun w => lgLin Y w v ε y) fun w₁ w₂ => lgLin_add Y w₁ w₂ v ε y
 
+/- English proof (translation)
+Use `map_sum (lgLinHom Y v ε y) (fun i => c i • w i) s` as an intermediate fact. Simplify using `only [map_zsmul, zsmul_eq_mul] at this`. Conclude with `this`.
+-/
 theorem lgLin_sum {ι : Type} (s : Finset ι) (c : ι → ℤ) (w : ι → Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v)
     (y : AlgPt Y.Y) : lgLin Y (∑ i ∈ s, c i • w i) v ε y = ∑ i ∈ s, (c i : ℝ) * lgLin Y (w i) v ε y := by
   have := map_sum (lgLinHom Y v ε y) (fun i => c i • w i) s
@@ -116,6 +151,11 @@ section Comb
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} {ι : Type} [Fintype ι] (ρ : ι → Adl (cxSt F) Y) (t : ι → ℚ)
   (g : ∀ σ, Pts Y σ → ℝ)
 
+/- English proof (translation)
+Establish `hq : UnitAt (below y.1) ((combEqn ρ t (below y.1) : Y.Fn) / eqn (comb ρ t g).D (below y.1))` using `(Base.isEqn_eqn _ _).iff_unitAt.1 (isEqn_combEqn ρ t (below y.1))`. Establish `e1 : f ^ (combDen ρ t : ℕ) * (combEqn ρ t (below y.1) : Y.Fn) ^ τ = f ^ (combDen ρ t : ℕ) * (eqn (comb ρ t g).D (below y.1) : Y.Fn) ^ τ * ((combEqn ρ t (below y.1) : Y.Fn) / eqn (comb ρ t g).D (below y.1)) ^ τ`. Use `(eqn (comb ρ t g).D (below y.1)).ne_zero` as an intermediate fact. Rewrite using `[div_pow, mul_assoc, mul_div_cancel₀ _ (pow_ne_zero _ this)]`. Establish `hB` using `e.w.pos (SmallSec.valAt_ne_zero hq)`.
+
+Rewrite using `[e1, valAt_mul_unit _ (ApproxSec.unitAt_pow hq τ), SmallSec.valAt_pow hq.regAt, map_mul, map_pow, Real.mul_rpow (e.w.nonneg _) (pow_nonneg (e.w.nonneg _) _), ← Real.rpow_natCast, ← Real.rpow_mul (e.w.nonneg _), Real.rpow_def_of_pos hB, mul_assoc, ← Real.exp_add, Adl.nrmFin]`. Use `congr 2`. Simplify using `only [GlobalTheory.ShFam.comb]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nrmFin_comb (v : HeightOneSpectrum (𝓞 F)) (τ : ℕ) (f : Y.Fn) (e : Ext v) (y : AlgPt Y) :
     (comb ρ t g).nrmFin v τ f e y =
       e.w (valAt y.1 (f ^ (combDen ρ t : ℕ) * (combEqn ρ t (below y.1) : Y.Fn) ^ τ)) ^ (1 / ((combDen ρ t : ℕ) : ℝ)) *
@@ -142,6 +182,17 @@ section Bd
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} {Φ : s.Flag}
   {hm : ∀ k, Mets (Φ.C k) (cxSt D.what₂.LL)} {h0 : RefMets Φ}
 
+/- English proof (translation)
+Establish `hn : ((((bdQ P k).n : ℕ)) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (bdQ P k).n.ne_zero`. Establish `h1 : (1 : ℚ) ⊗ₜ[ℤ] (bdQ P k).D = 1 ⊗ₜ (((bdQ P k).n : ℕ) • P.bd k)`. Use `congrArg ((((bdQ P k).n : ℕ) : ℚ) • ·) (qDiv_bdQ P k)` as an intermediate fact. Simplify using `only [qDiv, TensorProduct.smul_tmul', smul_eq_mul, mul_inv_cancel₀ hn, mul_one] at this`. Rewrite using `[this, ← natCast_zsmul, ← TensorProduct.smul_tmul, zsmul_eq_mul, Int.cast_natCast, mul_one]`.
+
+Take `⟨q, hq, e⟩` from `one_tmul_eq_iff.1 h1`. Use `CartierDiv.eff_iff.2 fun x g hg => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `(P.bd k).exists_isEqn x`. Establish `hb'` using `(hb.nsmul ((bdQ P k).n : ℕ)).nsmul q`. Rewrite `hb'` using `[← e]`.
+
+Establish `hu` using `(hg.nsmul q).iff_unitAt.1 hb'`. Establish `hr` using `CartierDiv.eff_iff.1 (P.eff_bd k) x b hb`. Establish `hreg : RegAt x ((g : (Φ.C k).Y.Fn) ^ q)`. Establish `h2` using `ApproxSec.regAt_pow (ApproxSec.regAt_pow hr ((bdQ P k).n : ℕ)) q`. Establish `h3` using `hu.inv.regAt.mul h2`.
+
+Establish `e2 : ((((b ^ ((bdQ P k).n : ℕ)) ^ q : (Φ.C k).Y.Fnˣ) : (Φ.C k).Y.Fn) / ((g ^ q : (Φ.C k).Y.Fnˣ) : (Φ.C k).Y.Fn))⁻¹ * ((b : (Φ.C k).Y.Fn) ^ ((bdQ P k).n : ℕ)) ^ q = (g : (Φ.C k).Y.Fn) ^ q`. Use `b.ne_zero` as an intermediate fact. Use `g.ne_zero` as an intermediate fact. Simplify using `only [Units.val_pow_eq_pow_val]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `h3` using `[e2]`. Then use the resulting hypothesis. Conclude with `ApproxSec.regAt_of_pow (have := (Φ.C k).Y.isNormalScheme; inferInstance) hq hreg`.
+-/
 theorem eff_bdQ (P : PolDat s Φ hm h0) (k : s.Comp) : (bdQ P k).D.Eff := by
   have hn : ((((bdQ P k).n : ℕ)) : ℚ) ≠ 0 := Nat.cast_ne_zero.2 (bdQ P k).n.ne_zero
   have h1 : (1 : ℚ) ⊗ₜ[ℤ] (bdQ P k).D = 1 ⊗ₜ (((bdQ P k).n : ℕ) • P.bd k) := by
@@ -174,6 +225,11 @@ section Roots
 
 variable {D : D7} {A : Amb D} {N j : ℕ} (S : Sig A N j)
 
+/- English proof (translation)
+Establish `e` using `RootSum.rootLetter_key S x`. Distinguish the cases in `h : (x.2 : ℕ) < S.Dw.p`. Rewrite `e` using `[if_pos h]`. Rewrite using `[rootSym, if_pos h, if_pos h, e]`. Rewrite `e` using `[if_neg h]`.
+
+Rewrite using `[rootSym, if_neg h, if_neg h, e]`.
+-/
 theorem rootSym_eq_single (a : ℕ → Bool) (R : Option ℝ) (x : DV.Rt D.what₂.Tau N) :
     rootSym S.Dw a R (DV.tauEmb D x.1) x.2 = Finsupp.single (a, R, .inl ((RootSum.rootLetter S x).1,
       ((RootSum.rootLetter S x).2 : ℕ))) (if (x.2 : ℕ) < S.Dw.p then 1 else -1) := by
@@ -184,6 +240,11 @@ theorem rootSym_eq_single (a : ℕ → Bool) (R : Option ℝ) (x : DV.Rt D.what�
   · rw [if_neg h] at e
     rw [rootSym, if_neg h, if_neg h, e]
 
+/- English proof (translation)
+Rewrite using `[drSym, ← Fintype.sum_bijective (RootSum.rootLetter S) (RootSum.rootLetter_bijective S) (fun x => Finsupp.single ((fun _ => false, none, .inl ((RootSum.rootLetter S x).1, ((RootSum.rootLetter S x).2 : ℕ))) : Sym D.host.E) (-exOf S.Dw la 0 (some (RootSum.rootLetter S x)))) _ (fun …`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[rootSym_eq_single, Finsupp.smul_single, smul_eq_mul]`. Use `congr 1`. Rewrite using `[← ApproxSec.sum_rootExp L la, Finset.sum_eq_single x]`.
+
+Apply the tactic sequence `rw [RootSum.rootExp_eq, if_pos rfl] split_ifs <;> ring`. Introduce `x' _ hx`. Rewrite using `[RootSum.rootExp_eq, if_neg fun h => hx ((RootSum.rootLetter_bijective S).1 h.symm), mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem drSym_eq (L : CmList A) (la : AllWt.Weight S.Dw) :
     drSym la = ∑ x : DV.Rt D.what₂.Tau N,
       (-(la (L.ψ x.1) (Fin.cast S.rank_eq.symm x.2))) • rootSym S.Dw (fun _ => false) none (DV.tauEmb D x.1) x.2 := by

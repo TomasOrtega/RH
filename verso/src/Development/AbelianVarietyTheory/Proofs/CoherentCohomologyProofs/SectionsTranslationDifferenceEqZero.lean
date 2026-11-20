@@ -17,6 +17,15 @@ namespace GlobalTheory.NoSec
 
 variable {X Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Use `gen_transfer (M := LB.div (tw (M.pull p) (M.pull q) 1) (M.pull m)) (M' := LB.LinComb M (K := Fin 3) ![p, q, m] ![1, 1, -1]) (fun j => ((fun _ => j 0, fun _ => j 1), fun _ => j 2)) (fun j y hy => ?_) ?_ h` and prove the remaining obligations. Conclude with `⟨⟨mem_pull.2 (Set.mem_iInter.1 hy 0), mem_pull.2 (Set.mem_iInter.1 hy 1)⟩, mem_pull.2 (Set.mem_iInter.1 hy 2)⟩`. Introduce `i j y hi hj`. Establish `i0 : (𝟙 Y : Y ⟶ Y) y ∈ (M.pull p).U (fun _ => i 0)` using `mem_pull.2 (Set.mem_iInter.1 hi 0)`. Establish `i1 : (𝟙 Y : Y ⟶ Y) y ∈ (M.pull q).U (fun _ => i 1)` using `mem_pull.2 (Set.mem_iInter.1 hi 1)`.
+
+Establish `i2 : (𝟙 Y : Y ⟶ Y) y ∈ (M.pull m).U (fun _ => i 2)` using `mem_pull.2 (Set.mem_iInter.1 hi 2)`. Establish `j0 : (𝟙 Y : Y ⟶ Y) y ∈ (M.pull p).U (fun _ => j 0)` using `mem_pull.2 (Set.mem_iInter.1 hj 0)`. Establish `j1 : (𝟙 Y : Y ⟶ Y) y ∈ (M.pull q).U (fun _ => j 1)` using `mem_pull.2 (Set.mem_iInter.1 hj 1)`. Establish `j2 : (𝟙 Y : Y ⟶ Y) y ∈ (M.pull m).U (fun _ => j 2)` using `mem_pull.2 (Set.mem_iInter.1 hj 2)`. Establish `e1` using `gm_div (M.pull m) (tw (M.pull p) (M.pull q) 1) (𝟙 Y) y ((fun _ => i 0, fun _ => i 1), fun _ => i 2) ((fun _ => j 0, fun _ => j 1), fun _ => j 2) ⟨⟨⟨i0, i1⟩, i2⟩, ⟨j0, j1⟩, j2⟩`.
+
+Establish `e2` using `gm_div (pw (M.pull q) (-1)) (M.pull p) (𝟙 Y) y (fun _ => i 0, fun _ => i 1) (fun _ => j 0, fun _ => j 1) ⟨⟨i0, i1⟩, j0, j1⟩`. Establish `e3 : gm (𝟙 Y) y _ ((pw (M.pull q) (-1)).g (fun _ => i 1) (fun _ => j 1)) = (gm (𝟙 Y ≫ q) y _ (M.g (i 1) (j 1))) ^ (-1 : ℤ)` using `(map_zpow _ _ _).trans (congrArg (· ^ (-1 : ℤ)) (gm_pull_g M q (𝟙 Y) y _ _ i1 j1))`. Use `(gm_linComb M (K := Fin 3) ![p, q, m] ![1, 1, -1] (𝟙 Y) y i j hi hj).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (e1.trans (congrArg₂ (fun a b => a * b⁻¹) (e2.trans (congrArg₂ (fun a b => a * b⁻¹) (gm_pull_g M p (𝟙 Y) y _ _ i0 j0) e3)) (gm_pull_g M m (𝟙 Y) y _ _ i2 j2))).symm` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_three]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem hasGen_of_iso_tw (M : LB X) (p q m : Y ⟶ X)
     (h : ∃ w : LB.Iso (M.pull m) (tw (M.pull p) (M.pull q) 1), w.IsGen) :
     HasGen M (K := Fin 3) ![p, q, m] ![1, 1, -1] := by
@@ -46,12 +55,20 @@ theorem hasGen_of_iso_tw (M : LB X) (p q m : Y ⟶ X)
     rw [Fin.prod_univ_three]
     simp
 
+/- English proof (translation)
+Establish `hm : r z ∈ M.U i ⊓ M.U j` using `⟨hi, hj⟩`. Conclude with `(gs_res r z _ hm _).symm.trans ((congrArg (gs r z _) (σ.compat i j)).trans ((gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit r z _ hm _) (gs_res r z _ hm _))))`.
+-/
 theorem gs_sec {M : LB X} (σ : LB.Sec M) (r : Z ⟶ X) (z : Z) {i j : M.ι} (hi : r z ∈ M.U i) (hj : r z ∈ M.U j) :
     gs r z (M.U i) (σ.f i) = (gm r z (M.U i ⊓ M.U j) (M.g i j)).val * gs r z (M.U j) (σ.f j) := by
   have hm : r z ∈ M.U i ⊓ M.U j := ⟨hi, hj⟩
   exact (gs_res r z _ hm _).symm.trans ((congrArg (gs r z _) (σ.compat i j)).trans ((gs_mul r z _ hm _ _).trans
     (congrArg₂ (· * ·) (gs_unit r z _ hm _) (gs_res r z _ hm _))))
 
+/- English proof (translation)
+Establish `hU : r z ∈ U` using `X.basicOpen_le a h`. Rewrite using `[gs_eq r z U hU]`. Establish `: z ∈ Z.basicOpen ((r.app U).hom a)`. Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `h`.
+
+Conclude with `(Z.mem_basicOpen _ z hU).1 this`.
+-/
 theorem isUnit_gs (r : Z ⟶ X) (z : Z) {U : X.Opens} (a : Γ(X, U)) (h : r z ∈ X.basicOpen a) :
     IsUnit (gs r z U a) := by
   have hU : r z ∈ U := X.basicOpen_le a h
@@ -60,6 +77,19 @@ theorem isUnit_gs (r : Z ⟶ X) (z : Z) {U : X.Opens} (a : Γ(X, U)) (h : r z �
     rw [← Scheme.preimage_basicOpen]; exact h
   exact (Z.mem_basicOpen _ z hU).1 this
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `H`. Set `W : (Fin 2 → M.ι) → X.Opens` to `LB.wchart M (K := Fin 2) ![𝟙 X, ν]`. Establish `l0 : ∀ j, W j ≤ M.U (j 0)` using `fun j y hy => Set.mem_iInter.1 hy 0`. Establish `l1 : ∀ j, W j ≤ ν ⁻¹ᵁ M.U (j 1)` using `fun j y hy => Set.mem_iInter.1 hy 1`. Establish `mem : ∀ (y : X) (i j : M.ι), y ∈ M.U i → ν y ∈ M.U j → y ∈ W ![i, j]` using `fun y i j hi hj => Set.mem_iInter.2 fun k => by fin_cases k`.
+
+Conclude with `hi`. Conclude with `hj`. Take `⟨u, hu⟩ : ∃ u : ∀ j, Γ(X, W j), ∀ j y, y ∈ W j → gs (𝟙 X) y (W j) (u j) = gs (𝟙 X) y (M.U (j 0)) (σ.f (j 0)) * gs (𝟙 X ≫ ν) y (M.U (j 1)) (σ.f (j 1)) * ((gm (𝟙 X) y (W j) (t.s j))⁻¹).val` from `⟨fun j => (X.presheaf.map (homOfLE (l0 j)).op).hom (σ.f (j 0)) * (X.presheaf.map (homOfLE (l1 j)).op).hom ((ν.app _).hom (σ.f (j 1))) * (show Γ(X, W j) from ((t.s j)⁻¹).val), fun j y hy => (gs_mul (𝟙 X) y (W j) hy _ _).trans (congrArg₂ (· * ·) ((gs_mul (𝟙 X) y (W j) hy _ _).trans …`. Take `⟨F, hF, -⟩` from `X.sheaf.existsUnique_gluing' W ⊤ (fun _ => homOfLE le_top) (fun y _ => by`. Take `⟨i, hi⟩` from `exists_chart hM y`.
+
+Take `⟨j, hj⟩` from `exists_chart hM (ν y)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨_, mem y i j hi hj⟩) u`. Use the proof step `(fun I J => fn_ext (V := W I ⊓ W J) fun y hy => by`. Use `(gs_res (𝟙 X) y inf_le_left hy _).trans (Eq.trans ?_ (gs_res (𝟙 X) y inf_le_right hy _).symm)` and prove the remaining obligations. Establish `e : gm (𝟙 X) y (W I) (t.s I) = _ * gm (𝟙 X) y (W J) (t.s J)` using `gen_trans ht (𝟙 X) y hy.1 hy.2`.
+
+Establish `e' : trF (L` using `M) (K := Fin 2) ![𝟙 X, ν] ![1, 1] (𝟙 X) y I J = gm (𝟙 X) y _ (M.g (I 0) (J 0)) * gm (𝟙 X ≫ ν) y _ (M.g (I 1) (J 1)) := by`. Rewrite using `[trF, Fin.prod_univ_two]`. Simplify using the standard rewrite rules. Rewrite using `[hu I y hy.1, hu J y hy.2, e, e', gs_sec σ (𝟙 X) y (l0 I hy.1) (l0 J hy.2), gs_sec σ (𝟙 X ≫ ν) y (l1 I hy.1) (l1 J hy.2)]`. Generalize the expression as in `gm (𝟙 X) y _ (M.g (I 0) (J 0)) = a`.
+
+Generalize the expression as in `gm (𝟙 X ≫ ν) y _ (M.g (I 1) (J 1)) = b`. Simplify using `only [mul_inv, Units.val_mul]`. Establish `ha` using `a.mul_inv`. Establish `hb` using `b.mul_inv`. Take the linear combination `(exp := 1) (gs (𝟙 X) y (M.U (J 0)) (σ.f (J 0)) * gs (𝟙 X ≫ ν) y (M.U (J 1)) (σ.f (J 1)) * ((gm (𝟙 X) y (W J) (t.s J))⁻¹).val) * ((b.val * (b⁻¹).val) * ha + hb))`.
+
+Use `⟨F, fun y i j hi hj => ?_⟩` and prove the remaining obligations. Establish `hy` using `mem y i j hi hj`. Conclude with `⟨_, (gs_res (𝟙 X) y (le_top : W ![i, j] ≤ ⊤) hy F).symm.trans ((congrArg (gs (𝟙 X) y (W ![i, j])) (hF _)).trans (hu _ y hy))⟩`.
+-/
 theorem exists_global {M : LB X} (hM : M.IsLB) (ν : X ⟶ X)
     (H : HasGen M (K := Fin 2) ![𝟙 X, ν] ![1, 1]) (σ : LB.Sec M) :
     ∃ F : Γ(X, ⊤), ∀ (y : X) (i j : M.ι), y ∈ M.U i → ν y ∈ M.U j → ∃ u : (X.presheaf.stalk y)ˣ,
@@ -107,6 +137,19 @@ theorem exists_global {M : LB X} (hM : M.IsLB) (ν : X ⟶ X)
   exact ⟨_, (gs_res (𝟙 X) y (le_top : W ![i, j] ≤ ⊤) hy F).symm.trans
     ((congrArg (gs (𝟙 X) y (W ![i, j])) (hF _)).trans (hu _ y hy))⟩
 
+/- English proof (translation)
+Take `⟨F, hF⟩` from `exists_global hM ν H σ`. Establish `hD : (X.basicOpen (σ.f i) : Set X).Nonempty`. Rewrite using `[Set.nonempty_iff_ne_empty]`. Introduce `h`. Conclude with `hi ((basicOpen_eq_bot_iff _).1 (TopologicalSpace.Opens.ext h))`.
+
+Establish `hD' : ((ν ⁻¹ᵁ X.basicOpen (σ.f i) : X.Opens) : Set X).Nonempty`. Take `⟨y, hy⟩` from `hD`. Take `⟨z, rfl⟩` from `hν y`. Conclude with `⟨z, hy⟩`. Take `⟨y, hy, hy'⟩` from `nonempty_preirreducible_inter (X.basicOpen (σ.f i)).isOpen (ν ⁻¹ᵁ X.basicOpen (σ.f i)).isOpen hD hD'`.
+
+Establish `hF0 : F ≠ 0`. Introduce and unpack `rfl`. Take `⟨u, hu⟩` from `hF y i i (X.basicOpen_le _ hy) (X.basicOpen_le _ hy')`. Establish `h1` using `((isUnit_gs (𝟙 X) y (σ.f i) hy).mul (isUnit_gs (𝟙 X ≫ ν) y (σ.f i) hy')).mul u.isUnit`. Rewrite `h1` using `[← hu, gs_eq (𝟙 X) y ⊤ trivial, map_zero, map_zero]`.
+
+Conclude with `not_isUnit_zero h1`. Establish `hFu : IsUnit F`. Take `⟨G, hG⟩` from `hX.mul_inv_cancel hF0`. Conclude with `IsUnit.of_mul_eq_one G hG`. Establish `hu : ∀ k, IsUnit (σ.f k)` using `fun k => X.toRingedSpace.isUnit_of_isUnit_germ _ _ fun z hz => by`.
+
+Take `⟨j, hj⟩` from `exists_chart hM (ν z)`. Take `⟨u, hu⟩` from `hF z k j hz hj`. Establish `h1 : IsUnit (gs (𝟙 X) z ⊤ F)`. Rewrite using `[gs_eq (𝟙 X) z ⊤ trivial]`. Conclude with `(hFu.map _).map _`.
+
+Rewrite `h1` using `[hu]`. Establish `h2` using `isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left h1)`. Conclude with `(congrArg IsUnit (gs_eq (𝟙 X) z (M.U k) hz _)).mp h2`. Conclude with `⟨⟨fun j => (hu j).unit⟩, fun i j => Units.ext (σ.compat i j)⟩`.
+-/
 theorem gen_of_sec_ne_zero [IsIntegral X] (hX : IsField Γ(X, ⊤)) {M : LB X} (hM : M.IsLB) (ν : X ⟶ X)
     (hν : Function.Surjective ν) (H : HasGen M (K := Fin 2) ![𝟙 X, ν] ![1, 1]) (σ : LB.Sec M) (i : M.ι)
     (hi : σ.f i ≠ 0) : ∃ t : LB.Gen M, t.IsGen := by
@@ -147,6 +190,19 @@ namespace GlobalTheory
 
 open NoSec
 
+/- English proof (translation)
+Introduce `K _ _ P x hx σ i`. Assume the negation of the conclusion as `hi`. Establish `hab` using `P.isAb`. Establish `hgi : GeometricallyIntegral P.A.hom` using `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hab.smooth hab.geomConnected`. Establish `hint : IsIntegral P.A.left` using `GeometricallyIntegral.isIntegral_of_subsingleton P.A.hom`.
+
+Establish `hfield : IsField Γ(P.A.left, ⊤)` using `MulEquiv.isField (Field.toIsField K) ((RingEquiv.ofBijective _ (globalFns_holds _ P.A hab)).symm.trans (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv).toMulEquiv`. Establish `H3` using `hasGen_of_iso_tw _ _ _ _ (GlobalTheory.TranslateAdditive.translate_div_additive K P x)`. Set `M` to `LB.LinComb P.L (K := Fin 2) ![(lift (toUnit P.A ≫ x) (𝟙 P.A) ≫ μ[P.A]).left, 𝟙 P.A.left] ![1, -1]`. Establish `hM : M.IsLB` using `LB.isLB_linComb P.isLB _ _`. Establish `H3'` using `H3.pull (lift (𝟙 P.A) ι[P.A]).left (φ' := ![𝟙 P.A.left, ι[P.A].left, P.A.hom ≫ η[P.A].left]) (fun k => by fin_cases k`.
+
+Conclude with `congrArg (fun q => q.left) (lift_fst (𝟙 P.A) ι[P.A])`. Conclude with `congrArg (fun q => q.left) (lift_snd (𝟙 P.A) ι[P.A])`. Conclude with `congrArg (fun q => q.left) (GrpObj.right_inv P.A))`. Establish `H0 : HasGen M (K` using `Fin 1) ![η[P.A].left] ![-1] := DVR.exists_gen_of_local (V := K) M hM _ _`. Establish `H0'` using `H0.pull P.A.hom (φ' := ![P.A.hom ≫ η[P.A].left]) (fun k => by fin_cases k; rfl)`.
+
+Establish `H2 : HasGen M (K` using `Fin 2) ![𝟙 P.A.left, ι[P.A].left] ![1, 1] := H3'.comb hM H0' fun U _ h => by`. Rewrite using `[Fin.prod_univ_three, Fin.prod_univ_two, Fin.prod_univ_one]`. Simplify using the standard rewrite rules. Establish `hsurj : Function.Surjective ι[P.A].left` using `fun y => ⟨ι[P.A].left y, congrArg (fun q : P.A ⟶ P.A => q.left y) (GrpObj.inv_comp_inv P.A)⟩`. Establish `G : HasGen P.L (K` using `Fin 2) ![(lift (toUnit P.A ≫ x) (𝟙 P.A) ≫ μ[P.A]).left, 𝟙 P.A.left] ![1, -1] := gen_of_sec_ne_zero hfield hM _ hsurj H2 σ i hi`.
+
+Establish `e` using `eq_one_of_locGen P.ktriv x fun p => ⟨⊤, trivial, G.pull (((fst (𝟙_ _) P.A).left ⁻¹ᵁ ⊤).ι ≫ (snd (𝟙_ _) P.A).left) fun k => by`. Rewrite using `[Category.assoc]`. Use `congr 1`. Use `fin_cases k`. Use `congrArg (fun q => q.left) (show snd (𝟙_ _) P.A ≫ lift (toUnit P.A ≫ x) (𝟙 P.A) ≫ μ[P.A] = translPt P.A x from ?_)` and prove the remaining obligations.
+
+Rewrite using `[translPt, comp_lift_assoc, Category.comp_id, ← Category.assoc, Subsingleton.elim (snd (𝟙_ _) P.A ≫ toUnit P.A) (fst _ _)]`. Conclude with `Category.comp_id _⟩`. Apply `hx` to reduce the goal to its premises. Rewrite using `[e, Hom.one_def, toUnit_unit, Category.id_comp]`.
+-/
 theorem sec_translDiff_eq_zero :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (x : 𝟙_ (Over (Spec (CommRingCat.of K))) ⟶ P.A), x ≠ η[P.A] → ∀ (σ : LB.Sec (LB.LinComb P.L (K := Fin 2) ![(lift (toUnit P.A ≫ x) (𝟙 P.A) ≫ μ[P.A]).left, 𝟙 P.A.left] ![1, -1])) i, σ.f i = 0 := by
   intro K _ _ P x hx σ i

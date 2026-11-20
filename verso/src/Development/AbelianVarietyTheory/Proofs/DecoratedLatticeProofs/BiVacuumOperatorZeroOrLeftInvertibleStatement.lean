@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BiVacuumOp
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
 open Formalism.BasicNotions
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinPl.biInv_main | exact GlobalTheory.FinPl.biInv_main | (intros; apply GlobalTheory.FinPl.biInv_main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.biVacuumOperator_zero_or_left_invertible : ∀ D : D7, GlobalTheory.FinPl.BiInv D := by
   first | exact @GlobalTheory.FinPl.biInv_main | exact GlobalTheory.FinPl.biInv_main | (intros; apply GlobalTheory.FinPl.biInv_main <;> assumption)

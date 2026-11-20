@@ -12,6 +12,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.TraceAddStar
 
+/- English proof (translation)
+Introduce `D x`. Conclude with `Formalism.MainNotions.BridgeLemma.tie_trace D.sp.cm x`.
+-/
 theorem trace_eq_add_star : ∀ {D : D7} (x : D.host.E), ((Algebra.trace D.host.F D.host.E x : D.host.F) : D.host.E) = x + star x := by
   intro D x
   exact Formalism.MainNotions.BridgeLemma.tie_trace D.sp.cm x

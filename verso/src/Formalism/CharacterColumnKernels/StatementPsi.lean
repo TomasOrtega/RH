@@ -12,9 +12,15 @@ variable {A T' G : Type*} [Ring A] [CommRing T'] [Algebra T' A] [Group G]
 
 def uElt (r : G →* A) (χ : G →* T'ˣ) (g : G) : A := (((χ g)⁻¹ : T'ˣ) : T') • r g
 
+/- English proof (translation)
+Simplify using `[uElt]`.
+-/
 theorem uElt_one (r : G →* A) (χ : G →* T'ˣ) : uElt r χ 1 = 1 := by
   simp [uElt]
 
+/- English proof (translation)
+Simplify using `only [uElt, map_mul, mul_inv, Units.val_mul]`. Rewrite using `[smul_mul_smul_comm]`.
+-/
 theorem uElt_mul (r : G →* A) (χ : G →* T'ˣ) (g h : G) :
     uElt r χ (g * h) = uElt r χ g * uElt r χ h := by
   simp only [uElt, map_mul, mul_inv, Units.val_mul]
@@ -30,6 +36,9 @@ def uRep (O : Type*) [CommRing O] {M : Type*} [AddCommGroup M] [Module A M] [Mod
     refine LinearMap.ext fun m => ?_
     simp [uElt_mul, mul_smul]
 
+/- English proof (translation)
+Establish `hu : ∀ x, (((χ x)⁻¹ : T'ˣ) : T') • r x = uElt r χ x` using `fun x => rfl`. Simplify using `only [ycoc, hu, uElt_mul]`. Use `noncomm_ring`.
+-/
 theorem ycoc_mul (r : G →* A) (χ : G →* T'ˣ) (E : A) (g h : G) :
     ycoc r χ E (g * h) = ycoc r χ E g + uElt r χ g * ycoc r χ E h := by
   have hu : ∀ x, (((χ x)⁻¹ : T'ˣ) : T') • r x = uElt r χ x := fun x => rfl
@@ -47,6 +56,11 @@ def yGen (r : G →* A) (χ : G →* T'ˣ) (E e₁ : A) (δ : T') {ι : Type*} [
     ColNNJ r χ E e₁ δ D j Kc k0 :=
   Submodule.Quotient.mk ((⟨ycoc r χ E g, Submodule.subset_span ⟨g, rfl⟩⟩, 0) : ColFreeJ A r χ E ι j)
 
+/- English proof (translation)
+Unfold `yGen`. Rewrite using `[← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_add]`. Use `congr 1`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[ycoc_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem yGen_mul (r : G →* A) (χ : G →* T'ˣ) (E e₁ : A) (δ : T') {ι : Type*} [DecidableEq ι]
     (D : ι → Subgroup G) (j : ι → ℕ) (Kc : ∀ l, Fin (j l) → G → A) (k0 : ι → G → A) (g h : G) :
     yGen r χ E e₁ δ D j Kc k0 (g * h) =

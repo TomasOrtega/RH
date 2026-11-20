@@ -3,6 +3,17 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsE
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemRegAtOfCodimOne
 open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Introduce `X Ω _ ξ _ hg hn L T p t hL hT ht hq`. Take `⟨U, hU, b, -, h⟩` from `hL p (hT p specializes_rfl)`. Establish `hr : Set.range b = {b 0}`. Use extensionality with `x`. Simplify using `[Fin.exists_fin_one, eq_comm]`.
+
+Establish `hgen : ∀ q : Cpt ξ, q.1 ⤳ p.1 → b 0 ≠ 0 ∧ L q = Submodule.span (regAt ξ q) {b 0}`. Introduce `q hqp`. Take `⟨h1, h2⟩` from `h q (hT q hqp) (hqp.mem_open U.2 hU)`. Conclude with `⟨h1.ne_zero 0, by rw [h2, hr]⟩`. Take `⟨he, hp⟩` from `hgen p specializes_rfl`.
+
+Establish `hu : ∀ q : Cpt ξ, q.1 ⤳ p.1 → ringKrullDim (X.presheaf.stalk q.1) = 1 → unitAt ξ q (t / b 0)`. Introduce `q hqp hd`. Take `⟨u, hu, e⟩` from `ZUnit.exists_of_span_eq ht ((hq q hqp hd).2.symm.trans (hgen q hqp).2)`. Rewrite using `[e, smul_eq_mul, mul_div_cancel_right₀ _ he]` and apply the resulting hypothesis. Establish `h1 : t / b 0 ∈ regAt ξ p` using `mem_regAt_of_codim_one X Ω ξ hg hn p _ fun q hqp hd => (hu q hqp hd).2.1`.
+
+Establish `h2 : (t / b 0)⁻¹ ∈ regAt ξ p` using `mem_regAt_of_codim_one X Ω ξ hg hn p _ fun q hqp hd => (hu q hqp hd).2.2`. Use `⟨ht, ?_⟩` and prove the remaining obligations. Rewrite using `[hp]`. Apply the tactic sequence `refine le_antisymm ?_ ?_ <;> rw [Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`. Use `⟨⟨_, h2⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(t / b 0)⁻¹ * t = b 0`. Clear the denominators using the available nonvanishing facts. Use `⟨⟨_, h1⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(t / b 0) * b 0 = t`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem PositivityTheory.Xgn.line_lattice_generator_codim_one : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) [IsLocallyNoetherian X], IsCptGen ξ → NormalCpt ξ → ∀ (L : Lat ξ Ω) (T : Set (Cpt ξ)) (p : Cpt ξ) (t : Ω), L.IsVBOn T 1 ⊤ → (∀ q : Cpt ξ, q.1 ⤳ p.1 → q ∈ T) → t ≠ 0 → (∀ q : Cpt ξ, q.1 ⤳ p.1 → ringKrullDim (X.presheaf.stalk q.1) = 1 → L.IsGenAt q t) → L.IsGenAt p t := by
   intro X Ω _ ξ _ hg hn L T p t hL hT ht hq
   obtain ⟨U, hU, b, -, h⟩ := hL p (hT p specializes_rfl)

@@ -11,6 +11,15 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.HostSplit
 
+/- English proof (translation)
+Introduce `v hv`. Establish `: IsGaloisGroup (E ≃ₐ[ℚ] E) ℤ (𝓞 E)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ E`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Establish `hPp` using `v.isPrime`. Establish `hlo : v.asIdeal.LiesOver (Ideal.span {(p : ℤ)})`.
+
+Use `⟨hmax.eq_of_le (Ideal.IsPrime.under ℤ v.asIdeal).ne_top ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show algebraMap ℤ (𝓞 E) ((p : ℕ) : ℤ) ∈ v.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hv`.
+
+Establish `hf` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn (Ideal.span {(p : ℤ)}) (𝓞 E) (E ≃ₐ[ℚ] E)`. Rewrite `hf` using `[← ncard_placesOver E hp, h, IsGalois.card_aut_eq_finrank, Ideal.inertiaDegIn_eq_inertiaDeg (Ideal.span {(p : ℤ)}) v.asIdeal (E ≃ₐ[ℚ] E)]`. Establish `hpos : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `h1` using `Nat.eq_of_mul_eq_mul_left hpos (hf.trans (mul_one _).symm)`. Establish `h2` using `Nat.eq_one_of_mul_eq_one_left h1`.
+
+Establish `h3` using `Ideal.absNorm_pow_inertiaDeg (Ideal.span {(p : ℤ)}) v.asIdeal`. Rewrite `h3` using `[h2, pow_one]`. Rewrite using `[← h3]`. Simplify using the standard rewrite rules.
+-/
 theorem absNorm_eq_of_ncard_placesOver (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] {p : ℕ}
     (hp : p.Prime) (h : (placesOver E p).ncard = Module.finrank ℚ E) :
     ∀ v ∈ placesOver E p, Ideal.absNorm v.asIdeal = p := by
@@ -37,6 +46,13 @@ theorem absNorm_eq_of_ncard_placesOver (E : Type) [Field E] [NumberField E] [IsG
   rw [← h3]
   simp
 
+/- English proof (translation)
+Introduce `R H p hp hc`. Establish `hn : 0 < H.QS` using `H.QS_pos`. Establish `hq : 0 < H.q` using `H.hyp.1.pos`. Establish `hd : 1 < H.d` using `H.hyp.2.1.one_lt`. Establish `hlt : 1 < H.QS * H.q * H.d`.
+
+Establish `: 0 < H.QS * H.q` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hm : p % (H.QS * H.q * H.d) = 1`. Rewrite `hc` using `[Nat.ModEq]`. Rewrite using `[hc, Nat.mod_eq_of_lt hlt]`.
+
+Take `⟨h1, h2⟩` from `split_of_one_mod R H p hp hm`. Establish `hG : IsGalois ℚ H.E` using `H.galois`. Conclude with `⟨h1, h2, absNorm_eq_of_ncard_placesOver H.E hp h1⟩`.
+-/
 theorem split_completely_of_modEq_one : ∀ (R : Ranks) (H : Host R) (p : ℕ), p.Prime →
     p ≡ 1 [MOD H.QS * H.q * H.d] →
     (placesOver H.E p).ncard = Module.finrank ℚ H.E ∧ H.cls p = PrimeClass.splitK ∧

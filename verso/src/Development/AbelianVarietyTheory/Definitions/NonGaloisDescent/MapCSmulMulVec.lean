@@ -73,12 +73,21 @@ def valTop (l : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRi
     WithTop ℝ :=
   if c = 0 then ⊤ else (val l c : ℝ)
 
+/- English proof (translation)
+The claim follows from `if_pos rfl`.
+-/
 theorem valTop_zero (l : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] :
     valTop l (0 : O) = ⊤ := if_pos rfl
 
+/- English proof (translation)
+The claim follows from `if_neg hc`.
+-/
 theorem valTop_of_ne (l : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {c : O} (hc : c ≠ 0) : valTop l c = (val l c : ℝ) := if_neg hc
 
+/- English proof (translation)
+Use `div_self ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_ne_zero, Ne, ENat.toNat_eq_zero, not_or, IsDiscreteValuationRing.addVal_eq_zero_iff, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `⟨h1, h0⟩`.
+-/
 theorem val_natCast_self (l : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (h0 : (l : O) ≠ 0) (h1 : ¬ IsUnit (l : O)) : val l (l : O) = 1 := by
   refine div_self ?_
@@ -117,6 +126,9 @@ def IsCyc : Prop :=
     (∀ b : O⟦X⟧, γ₀ (b.subst ((1 + X : O⟦X⟧) ^ l - 1)) = (γ₀ b).subst ((1 + X : O⟦X⟧) ^ l - 1)) ∧
     constantCoeff (γ₀ X) = 0 ∧ coeff 1 (γ₀ X) = (R.χ : O)
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_constantCoeff, R.χ_zero]`. Conclude with `R.χ.isUnit.pow _`.
+-/
 theorem isUnit_γX_div_X : IsUnit (1 + (R.κ : O⟦X⟧) * R.E) := by
   rw [isUnit_iff_constantCoeff, R.χ_zero]
   exact R.χ.isUnit.pow _
@@ -221,8 +233,14 @@ def γl (i : ZMod n) : (Fin r → R.EE) →ₗ[O] (Fin r → R.EE) :=
 def φit (c : ZMod n) (j : ℕ) : (Fin r → R.EE) →ₗ[O] (Fin r → R.EE) :=
   Nat.rec LinearMap.id (fun j f => (S.φl (c + (j : ZMod n) + 1)).comp f) j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem φit_zero (c : ZMod n) : S.φit c 0 = LinearMap.id := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem φit_succ (c : ZMod n) (j : ℕ) :
     S.φit c (j + 1) = (S.φl (c + (j : ZMod n) + 1)).comp (S.φit c j) := rfl
 
@@ -288,8 +306,14 @@ def φ0 (i : ZMod n) : Matrix (Fin r) (Fin r) (FractionRing O) :=
 def φ0it (c : ZMod n) (j : ℕ) : Matrix (Fin r) (Fin r) (FractionRing O) :=
   Nat.rec 1 (fun j f => S.φ0 (c + (j : ZMod n) + 1) * f) j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem φ0it_zero (c : ZMod n) : S.φ0it c 0 = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem φ0it_succ (c : ZMod n) (j : ℕ) :
     S.φ0it c (j + 1) = S.φ0 (c + (j : ZMod n) + 1) * S.φ0it c j := rfl
 
@@ -333,6 +357,9 @@ def comp (F' : Hom S' S'') (F : Hom S S') : Hom S S'' where
   γ_comm := fun i x => by
     rw [Matrix.map_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, F.γ_comm, F'.γ_comm]
 
+/- English proof (translation)
+Establish `hc : R.ι (C c) = algebraMap O R.EE c` using `(IsScalarTower.algebraMap_apply O O⟦X⟧ R.EE c).symm`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mulVec, dotProduct, hc, Algebra.smul_def, Finset.mul_sum, mul_assoc]`.
+-/
 theorem map_C_smul_mulVec (c : O) (B : Matrix (Fin r') (Fin r) O⟦X⟧) (x : Fin r → R.EE) :
     (((C c : O⟦X⟧) • B).map R.ι).mulVec x = c • (B.map R.ι).mulVec x := by
   have hc : R.ι (C c) = algebraMap O R.EE c := (IsScalarTower.algebraMap_apply O O⟦X⟧ R.EE c).symm

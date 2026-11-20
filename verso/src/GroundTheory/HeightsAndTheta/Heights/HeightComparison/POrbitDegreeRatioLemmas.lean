@@ -16,18 +16,29 @@ def chartHomogQ (c : (k : ι) → Fin (n k + 1)) (f : MvPolynomial (Coord n) ℚ
     [Fintype ι] : MvPolynomial (Coord n) ℚ :=
   ∑ m ∈ f.support, C (coeff m f) * ∏ p : Coord n, (X p ^ m p * X ⟨p.1, c p.1⟩ ^ (f.totalDegree - m p))
 
+/- English proof (translation)
+The claim follows from `(monomial_le_degreeOf p hm).trans (degreeOf_le_totalDegree f p)`.
+-/
 theorem le_totalDegree_of_mem_support {f : MvPolynomial (Coord n) ℚ} {m : Coord n →₀ ℕ}
     (hm : m ∈ f.support) (p : Coord n) : m p ≤ f.totalDegree :=
   (monomial_le_degreeOf p hm).trans (degreeOf_le_totalDegree f p)
 
 variable [Fintype ι]
 
+/- English proof (translation)
+Simplify using `[chartHomogQ, map_sum, map_prod]`.
+-/
 theorem aeval_chartHomogQ {S : Type*} [CommRing S] [Algebra ℚ S] (c : (k : ι) → Fin (n k + 1))
     (f : MvPolynomial (Coord n) ℚ) (y : Coord n → S) :
     aeval y (chartHomogQ c f) = ∑ m ∈ f.support, algebraMap ℚ S (coeff m f) *
       ∏ p : Coord n, (y p ^ m p * y ⟨p.1, c p.1⟩ ^ (f.totalDegree - m p)) := by
   simp [chartHomogQ, map_sum, map_prod]
 
+/- English proof (translation)
+Rewrite using `[aeval_chartHomogQ, aeval_def, eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm ↦ ?_` and prove the remaining obligations. Establish `h : ∀ p : Coord n, y p ^ m p * y ⟨p.1, c p.1⟩ ^ (f.totalDegree - m p) = y ⟨p.1, c p.1⟩ ^ f.totalDegree * (y p / y ⟨p.1, c p.1⟩) ^ m p`. Introduce `p`. Take `⟨e, he⟩` from `Nat.exists_eq_add_of_le (le_totalDegree_of_mem_support hm p)`.
+
+Establish `hyp` using `hy p.1`. Rewrite using `[he, Nat.add_sub_cancel_left, pow_add, div_pow]`. Clear the denominators using the available nonvanishing facts. Repeatedly rewrite using `[h, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_chartHomogQ_field {K : Type*} [Field K] [Algebra ℚ K] (c : (k : ι) → Fin (n k + 1))
     (f : MvPolynomial (Coord n) ℚ) (y : Coord n → K) (hy : ∀ k, y ⟨k, c k⟩ ≠ 0) :
     aeval y (chartHomogQ c f) = (∏ p : Coord n, y ⟨p.1, c p.1⟩ ^ f.totalDegree) *
@@ -44,6 +55,11 @@ theorem aeval_chartHomogQ_field {K : Type*} [Field K] [Algebra ℚ K] (c : (k : 
   simp_rw [h, Finset.prod_mul_distrib]
   ring
 
+/- English proof (translation)
+Rewrite using `[OrbitCurve.coneMapQ, aeval_chartHomogQ, aeval_chartHomogQ, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm ↦ ?_` and prove the remaining obligations. Establish `h : ∀ p : Coord n, (C (flatCone x p) * X p.1 : MvPolynomial ι (AlgebraicClosure ℚ)) ^ m p * (C (flatCone x ⟨p.1, c p.1⟩) * X p.1) ^ (f.totalDegree - m p) = C (flatCone x p ^ m p * flatCone x ⟨p.1, c p.1⟩ ^ (f.totalDegree - m p)) * X p.1 ^ f.totalDegree`. Introduce `p`. Take `⟨e, he⟩` from `Nat.exists_eq_add_of_le (le_totalDegree_of_mem_support hm p)`.
+
+Rewrite using `[he, Nat.add_sub_cancel_left]`. Simplify using `only [mul_pow, map_mul, map_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h, Finset.prod_mul_distrib, map_mul, map_prod, MvPolynomial.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coneMapQ_chartHomogQ (x : Cone n (AlgebraicClosure ℚ)) (c : (k : ι) → Fin (n k + 1))
     (f : MvPolynomial (Coord n) ℚ) :
     OrbitCurve.coneMapQ x (chartHomogQ c f) =
@@ -63,6 +79,13 @@ theorem coneMapQ_chartHomogQ (x : Cone n (AlgebraicClosure ℚ)) (c : (k : ι) �
   simp only [h, Finset.prod_mul_distrib, map_mul, map_prod, MvPolynomial.algebraMap_apply]
   ring
 
+/- English proof (translation)
+Establish `hx : aeval (flatCone x) (chartHomogQ c f) = 0`. Rewrite using `[aeval_chartHomogQ_field c f (flatCone x) hc]`. Conclude with `mul_eq_zero_of_right _ hf`. Establish `hker : chartHomogQ c f ∈ RingHom.ker (OrbitCurve.coneMapQ x)`. Rewrite using `[RingHom.mem_ker, coneMapQ_chartHomogQ, hx, map_zero, zero_mul]`.
+
+Rewrite `hker` using `[OrbitCurve.ker_coneMapQ]`. Establish `hle : ReciprocityTheory.AnForm.R.extQ (orbitIdeal x) ≤ RingHom.ker (aeval z : MvPolynomial (Coord n) ℚ →ₐ[ℚ] ℂ)`. Use `Ideal.map_le_iff_le_comap.mpr fun g hg ↦ ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← algebraMap_int_eq, aeval_map_algebraMap, aeval_def, algebraMap_int_eq, ← eval_map]`. Conclude with `hz.2 g hg`.
+
+Establish `h` using `hle hker`. Rewrite `h` using `[RingHom.mem_ker, aeval_chartHomogQ_field c f z hz0]`. Conclude with `(mul_eq_zero.mp h).resolve_left (Finset.prod_ne_zero_iff.mpr fun p _ ↦ pow_ne_zero _ (hz0 p.1))`.
+-/
 theorem aeval_ratio_eq_zero (x : Cone n (AlgebraicClosure ℚ)) (c : (k : ι) → Fin (n k + 1))
     (hc : ∀ k, x k (c k) ≠ 0) {z : Coord n → ℂ} (hz : z ∈ Geo.mcPts (ι := blockIdx n) (orbitIdeal x))
     (hz0 : ∀ k, z ⟨k, c k⟩ ≠ 0) (f : MvPolynomial (Coord n) ℚ)
@@ -88,6 +111,11 @@ theorem aeval_ratio_eq_zero (x : Cone n (AlgebraicClosure ℚ)) (c : (k : ι) �
 
 variable [DecidableEq ι]
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨i, hi⟩` from `hz.1 k`. Take `⟨g, hg0, hg⟩` from `exists_int_relation (flatCone x ⟨k, i⟩ / flatCone x ⟨k, c k⟩)`. Establish `h` using `hz.2 _ (homogForm_mem_orbitIdeal x g ⟨k, i⟩ ⟨k, c k⟩ rfl (hc k) hg)`. Rewrite `h` using `[eval_homogForm, h0, homog_sum_zero]`.
+
+Conclude with `mul_ne_zero (Int.cast_ne_zero.mpr (Polynomial.leadingCoeff_ne_zero.mpr hg0)) (pow_ne_zero _ hi) h`.
+-/
 theorem chart_ne_zero_of_mem_mcPts (x : Cone n (AlgebraicClosure ℚ)) (c : (k : ι) → Fin (n k + 1))
     (hc : ∀ k, x k (c k) ≠ 0) {z : Coord n → ℂ}
     (hz : z ∈ Geo.mcPts (ι := blockIdx n) (orbitIdeal x)) (k : ι) : z ⟨k, c k⟩ ≠ 0 := by

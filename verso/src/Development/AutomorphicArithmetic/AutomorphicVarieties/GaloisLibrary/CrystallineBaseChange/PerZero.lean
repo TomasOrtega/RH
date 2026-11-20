@@ -4,6 +4,19 @@ import GroundTheory.AutomorphicForms.GL2Classical.CuspConverse
 open Filter Topology Asymptotics Function
 open scoped Real
 
+/- English proof (translation)
+Establish `hb' : ∀ z : ℂ, 1 ≤ z.im → ‖g z‖ ≤ C * z.im ^ m`. Introduce `z hz`. Establish `h1` using `hp.sub_int_mul_eq (x := z) ⌊z.re / h⌋`. Establish `h2` using `Int.sub_floor_div_mul_nonneg z.re hh`. Establish `h3` using `Int.sub_floor_div_mul_lt z.re hh`.
+
+Establish `h4` using `hb (z - (⌊z.re / h⌋ : ℤ) * (h : ℂ)) (by simpa using hz) (by simp only [Complex.sub_re, Complex.mul_re, Complex.intCast_re, Complex.ofReal_re, Complex.intCast_im, Complex.ofReal_im, mul_zero, sub_zero]`. Rewrite using `[abs_of_nonneg h2]`. Conclude with `h3.le)`. Rewrite `h4` using `[h1]`. Simplify using `using h4`.
+
+Establish `hev : ∀ A : ℝ, ∀ᶠ z : ℂ in comap Complex.im atTop, A ≤ z.im` using `fun A => tendsto_comap.eventually (eventually_ge_atTop A)`. Establish `hD` using `Periodic.eventually_differentiableAt_cuspFunction_nhds_ne_zero hh hp ((hev 1).mono fun z hz => hd z (by linarith))`. Establish `hO : Periodic.cuspFunction h g =O[𝓝[≠] 0] fun q : ℂ => |Real.log ‖q‖| ^ (m : ℝ)`. Use `IsBigO.of_bound (|C| * (h / (2 * π)) ^ m) ?_` and prove the remaining obligations. Use `filter_upwards [(Periodic.invQParam_tendsto hh).eventually (hev 1), self_mem_nhdsWithin] with q hq hq0`.
+
+Rewrite using `[Periodic.cuspFunction_eq_of_nonzero h g hq0]`. Use `(hb' _ hq).trans ((le_abs_self _).trans (le_of_eq ?_))` and prove the remaining obligations. Establish `: 0 < h / (2 * π)` using `by positivity`. Rewrite using `[Periodic.im_invQParam, abs_mul, abs_pow, abs_mul, neg_div, abs_neg, abs_of_pos this, Real.rpow_natCast, Real.norm_eq_abs, abs_pow, abs_abs, mul_pow, mul_assoc]`. Establish `ho : (fun q : ℂ => |Real.log ‖q‖| ^ (m : ℝ)) =o[𝓝[≠] 0] fun q : ℂ => (q - 0)⁻¹`.
+
+Use `(isLittleO_abs_log_rpow_rpow_nhdsGT_zero (m : ℝ) (s := -1) (by norm_num)).comp_tendsto (tendsto_norm_nhdsNE_zero (E := ℂ))` as an intermediate fact. Use `IsLittleO.of_norm_right ?_` and prove the remaining obligations. Simplify `this` using `[Function.comp_def, Real.rpow_neg_one]`. Establish `hc : (fun _ : ℂ => Periodic.cuspFunction h g 0) =o[𝓝[≠] 0] fun q : ℂ => (q - 0)⁻¹`. Use `isLittleO_const_left.2 (Or.inr ?_)` and prove the remaining obligations.
+
+Simplify `(tendsto_inv_nhdsGT_zero.comp (tendsto_norm_nhdsNE_zero (E := ℂ)))` using `[Function.comp_def]`. Establish `hT` using `Complex.tendsto_limUnder_of_differentiable_on_punctured_nhds_of_isLittleO hD ((hO.trans_isLittleO ho).sub hc)`. Conclude with `⟨_, by`. Simplify `hT.comp (Periodic.qParam_tendsto hh)⟩` using `only [Function.comp_def, Periodic.eq_cuspFunction hh.ne' hp]`.
+-/
 private theorem UpperTheory.V.Br.per_tendsto {g : ℂ → ℂ} {h : ℝ} (hh : 0 < h) (hp : Periodic g h)
     (hd : ∀ z : ℂ, 0 < z.im → DifferentiableAt ℂ g z) (C : ℝ) (m : ℕ)
     (hb : ∀ z : ℂ, 1 ≤ z.im → |z.re| ≤ h → ‖g z‖ ≤ C * z.im ^ m) :
@@ -45,6 +58,13 @@ private theorem UpperTheory.V.Br.per_tendsto {g : ℂ → ℂ} {h : ℝ} (hh : 0
     simpa only [Function.comp_def, Periodic.eq_cuspFunction hh.ne' hp] using
       hT.comp (Periodic.qParam_tendsto hh)⟩
 
+/- English proof (translation)
+Introduce `f N hN hf hper ⟨C, m, hb⟩ hint`. Establish `hN' : (0 : ℝ) < N` using `by exact_mod_cast hN`. Use `GroundTheory.Automorphic.GL2Classical.isZeroAtImInfty_of_integral_vadd_eq_zero hN' hper hf ?_ hint` and prove the remaining obligations. Take `⟨c, hc⟩` from `UpperTheory.V.Br.per_tendsto hN' (GroundTheory.Automorphic.GL2Classical.periodic_comp_ofComplex_of_vadd hper) (fun z hz => (UpperHalfPlane.mdifferentiable_iff.1 hf).differentiableAt ((isOpen_lt continuous_const Complex.continuous_im).mem_nhds hz)) C m (fun z hz hr => by`. Establish `h0 : 0 < z.im` using `by linarith`.
+
+Use `hb ⟨z, h0⟩ hz hr` as an intermediate fact. Simplify `this)` using `[UpperHalfPlane.ofComplex_apply_of_im_pos h0]`. Establish `h2 : Tendsto f UpperHalfPlane.atImInfty (𝓝 c)`. Use `hc.comp (show Tendsto ((↑) : UpperHalfPlane → ℂ) UpperHalfPlane.atImInfty (comap Complex.im atTop) from tendsto_comap_iff.2 tendsto_comap)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+
+Conclude with `h2.isBigO_one ℝ`.
+-/
 theorem UpperTheory.V.Br.perZero :
     UpperTheory.V.Br.PerZero := by
   intro f N hN hf hper ⟨C, m, hb⟩ hint

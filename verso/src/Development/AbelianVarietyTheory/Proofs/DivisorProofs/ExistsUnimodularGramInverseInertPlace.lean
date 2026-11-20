@@ -21,33 +21,57 @@ def intAt (v : Pl F) : AddSubgroup (AE F E) :=
 def hA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (U V : Fin n → AE F E) : AE F E :=
   ∑ k, ∑ l, U k * inclR (F := F) (AF F) (J k l) * cA σ (V l)
 
+/- English proof (translation)
+Simplify using `only [hA, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hA_add_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (U U' V : Fin n → AE F E) :
     hA σ J (U + U') V = hA σ J U V + hA σ J U' V := by
   simp only [hA, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hA, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hA_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (U V V' : Fin n → AE F E) :
     hA σ J U (V + V') = hA σ J U V + hA σ J U V' := by
   simp only [hA, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hA, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]`.
+-/
 theorem hA_neg_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (U V : Fin n → AE F E) :
     hA σ J (-U) V = -hA σ J U V := by
   simp only [hA, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Simplify using `only [hA, Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib]`.
+-/
 theorem hA_neg_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (U V : Fin n → AE F E) :
     hA σ J U (-V) = -hA σ J U V := by
   simp only [hA, Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Simplify using `[hA]`.
+-/
 theorem hA_zero_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (V : Fin n → AE F E) :
     hA σ J 0 V = 0 := by simp [hA]
 
+/- English proof (translation)
+Simplify using `[hA]`.
+-/
 theorem hA_zero_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (U : Fin n → AE F E) :
     hA σ J U 0 = 0 := by simp [hA]
 
+/- English proof (translation)
+Introduce `u hu` and use `by have := ha u hu rw [smul_eq_mul] at this ⊢ rw [← mul_assoc, this, zero_mul]`.
+-/
 theorem at_mul {v : Pl F} {a b : AF F} (ha : At (evFin F v) a) : At (evFin F v) (a * b) := fun u hu => by
   have := ha u hu
   rw [smul_eq_mul] at this ⊢
   rw [← mul_assoc, this, zero_mul]
 
+/- English proof (translation)
+Simplify using `only [hA, form, dotProduct, Matrix.mulVec, Pi.smul_apply, map_sum, map_mul, Algebra.smul_def, AlgHom.commutes, GlobalTheory.InertSelfDual.cA_inclR, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hA_gen (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b : AF F) (y y' : Fin n → E) :
     hA σ J (a • fun i => inclR (F := F) (AF F) (y i)) (b • fun i => inclR (F := F) (AF F) (y' i)) =
       (a * b) • inclR (F := F) (AF F) (form σ J y y') := by
@@ -56,6 +80,17 @@ theorem hA_gen (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a 
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Proceed by induction on `hU using AddSubgroup.closure_induction with`. Consider the case `mem U hU'`. Proceed by induction on `hV using AddSubgroup.closure_induction with`. Consider the case `mem V hV'`. Take `⟨a, ha, hav, y, hy, rfl⟩` from `hU'`.
+
+Take `⟨b, hb, hbv, y', hy', rfl⟩` from `hV'`. Rewrite using `[hA_gen]`. Establish `hi : IsIntegral ℤ (form σ X.J y y')` using `(hX.dual y).1 hy y' hy'`. Use `AddSubgroup.subset_closure ⟨a * b, at_mul ha, ?_, ⟨_, hi⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `mul_mem hav hbv`. Consider the case `zero => rw [hA_zero_right]`. Conclude with `zero_mem _`. Consider the case `add V V' _ _ h1 h2 => rw [hA_add_right]`. Conclude with `add_mem h1 h2`.
+
+Consider the case `neg V _ h => rw [hA_neg_right]`. Conclude with `neg_mem h`. Consider the case `zero => rw [hA_zero_left]`. Conclude with `zero_mem _`. Consider the case `add U U' _ _ h1 h2 => rw [hA_add_left]`.
+
+Conclude with `add_mem h1 h2`. Consider the case `neg U _ h => rw [hA_neg_left]`. Conclude with `neg_mem h`.
+-/
 theorem hA_mem (σ : E →ₐ[F] E) (B : Base F E) {n r s : ℕ} (X : Spc F E n) (hX : X.IsHerm σ B r s) (v : Pl F)
     {U V : Fin n → AE F E} (hU : U ∈ GlobalTheory.InertSph.latAt X v) (hV : V ∈ GlobalTheory.InertSph.latAt X v) :
     hA σ X.J U V ∈ intAt (E := E) v := by
@@ -76,6 +111,15 @@ theorem hA_mem (σ : E →ₐ[F] E) (B : Base F E) {n r s : ℕ} (X : Spc F E n)
   | add U U' _ _ h1 h2 => rw [hA_add_left]; exact add_mem h1 h2
   | neg U _ h => rw [hA_neg_left]; exact neg_mem h
 
+/- English proof (translation)
+Proceed by induction on `hc using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hav, o, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, ha, hav, o • y, W.L.smul_mem o hy, ?_⟩` and prove the remaining obligations. Use extensionality with `k`.
+
+Simplify using `only [Pi.smul_apply, smul_mul_assoc, ← map_mul]`. Use `congr 2`. Consider the case `zero => convert (GlobalTheory.InertSph.latAt W v).zero_mem using 1`. Use extensionality with `k`. Simplify using the standard rewrite rules.
+
+Consider the case `add x z _ _ hx hz => convert add_mem hx hz using 1`. Use extensionality with `k`. Simplify using `[add_mul]`. Consider the case `neg x _ hx => convert neg_mem hx using 1`. Use extensionality with `k`.
+
+Simplify using `[neg_mul]`.
+-/
 theorem mul_lat_mem {d : ℕ} (W : Spc F E d) (v : Pl F) {c : AE F E} (hc : c ∈ intAt (E := E) v) {y : Fin d → E}
     (hy : y ∈ W.L) : (fun k => c * inclR (F := F) (AF F) (y k)) ∈ GlobalTheory.InertSph.latAt W v := by
   induction hc using AddSubgroup.closure_induction with
@@ -98,6 +142,9 @@ open GlobalTheory.InertLocFrame
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {L : Type} [Field L]
 
+/- English proof (translation)
+Introduce `u hu` and use `by rw [← smul_mul_assoc, hz u hu, zero_mul]`.
+-/
 theorem at_mul_left' {v : Pl F} {z : AE F E} (hz : At (evFin F v) z) (w : AE F E) : At (evFin F v) (z * w) :=
   fun u hu => by rw [← smul_mul_assoc, hz u hu, zero_mul]
 
@@ -107,18 +154,35 @@ variable {v : Pl F} {ι : L →+ AE F E} (himg : ∀ z : AE F E, At (evFin F v) 
   (hmul : ∀ x y, ι (x * y) = ι x * ι y)
 include himg hmul
 
+/- English proof (translation)
+The claim follows from `pre_spec ι ((himg _).1 (at_mul_left' ((himg _).2 ⟨1, rfl⟩) _))`.
+-/
 theorem tJ_spec {m p : Type} (M : Matrix m p E) (i : m) (j : p) :
     ι (tJ ι M i j) = ι 1 * inclR (F := F) (AF F) (M i j) :=
   pre_spec ι ((himg _).1 (at_mul_left' ((himg _).2 ⟨1, rfl⟩) _))
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[h, tJ_spec himg hmul]`.
+-/
 theorem tJ_eq (hinj : Function.Injective ι) {m p : Type} {M : Matrix m p E} {N : Matrix m p L}
     (h : ∀ i j, ι (N i j) = ι 1 * inclR (F := F) (AF F) (M i j)) : N = tJ ι M := by
   ext i j; apply hinj; rw [h, tJ_spec himg hmul]
 
+/- English proof (translation)
+Rewrite using `[← hmul, one_mul]`.
+-/
 theorem one_one : ι 1 * ι 1 = ι 1 := by rw [← hmul, one_mul]
 
+/- English proof (translation)
+Rewrite using `[← hmul, mul_one]`.
+-/
 theorem mul_one_right (x : L) : ι x * ι 1 = ι x := by rw [← hmul, mul_one]
 
+/- English proof (translation)
+Use `symm`. Apply `tJ_eq himg hmul hinj` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hmul, tJ_spec himg hmul, tJ_spec himg hmul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tJ_mul (hinj : Function.Injective ι) {m p q : Type} [Fintype p] (M : Matrix m p E) (N : Matrix p q E) :
     tJ ι (M * N) = tJ ι M * tJ ι N := by
   symm; apply tJ_eq himg hmul hinj; intro i j
@@ -129,14 +193,27 @@ theorem tJ_mul (hinj : Function.Injective ι) {m p q : Type} [Fintype p] (M : Ma
       = (ι 1 * ι 1) * (inclR (F := F) (AF F) (M i k) * inclR (F := F) (AF F) (N k j)) := by ring
     _ = _ := by rw [one_one himg hmul]
 
+/- English proof (translation)
+Use `symm`. Apply `tJ_eq himg hmul hinj` to reduce the goal to its premises. Introduce `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+-/
 theorem tJ_one (hinj : Function.Injective ι) {n : ℕ} : tJ ι (1 : Matrix (Fin n) (Fin n) E) = 1 := by
   symm; apply tJ_eq himg hmul hinj; intro i j
   by_cases h : i = j
   · subst h; simp
   · simp [Matrix.one_apply_ne h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tJ_transpose {m p : Type} (M : Matrix m p E) : tJ ι Mᵀ = (tJ ι M)ᵀ := rfl
 
+/- English proof (translation)
+Use `symm`. Apply `tJ_eq himg hmul hinj` to reduce the goal to its premises. Introduce `i j`. Establish `h1 : cA σ (ι 1) = ι 1` using `by rw [← hσ, map_one]`. Simplify using `only [Matrix.map_apply]`.
+
+Rewrite using `[hσ, tJ_spec himg hmul, map_mul, h1, GlobalTheory.InertSelfDual.cA_inclR]`.
+-/
 theorem tJ_map (hinj : Function.Injective ι) (σ : E →ₐ[F] E) (σL : L →+* L) (hσ : ∀ x, ι (σL x) = cA σ (ι x))
     {m p : Type} (M : Matrix m p E) : tJ ι (M.map σ) = (tJ ι M).map σL := by
   symm; apply tJ_eq himg hmul hinj; intro i j
@@ -152,6 +229,51 @@ namespace GlobalTheory.InertGram
 
 open GlobalTheory.InertLocFrame
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B _ v w _ n r s X hX L _ _ ϖ σL q ι hun hinj himg hmul hσ hint P hP`. Establish `hint' : ∀ x, x ∈ Formalism.UG.intL L ↔ ι x ∈ intAt (E` using `E) v := hint`. Establish `hPPi : (P : Matrix (Fin n) (Fin n) L) * ((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1` using `Units.mul_inv P`. Establish `hPiP : ((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (P : Matrix (Fin n) (Fin n) L) = 1` using `Units.inv_mul P`. Use `set Pm : Matrix (Fin n) (Fin n) L := (P : Matrix (Fin n) (Fin n) L) with hPm`.
+
+Use `set Pi' : Matrix (Fin n) (Fin n) L := ((P⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hPi`. Establish `hσσ : ∀ x, σL (σL x) = x` using `hun.1`. Establish `hσint : ∀ x, x ∈ Formalism.UG.intL L → σL x ∈ Formalism.UG.intL L` using `fun x hx => by`. Unfold `Formalism.UG.intL at hx ⊢`. Rewrite `hx`, the goal using `[Valuation.mem_integer_iff]`.
+
+Rewrite using `[hun.2.1]`. Conclude with `hx`. Establish `hcol : ∀ {k : ℕ} (N : Matrix (Fin n) (Fin k) L) (j : Fin k), (fun i => ι (N i j)) ∈ GlobalTheory.InertSph.latAt X v → ∀ a, (Pi' * N) a j ∈ Formalism.UG.intL L`. Introduce `k N j hN`. Use `(hP (fun a => (Pi' * N) a j)).2 ?_` and prove the remaining obligations.
+
+Use `hN using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Use `congr 1`. Establish `: (Pm * (Pi' * N)) i j = N i j` using `by rw [← Matrix.mul_assoc, hPPi, Matrix.one_mul]`. Rewrite using `[← this]`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Establish `hcolP : ∀ i, (fun k => ι (Pm k i)) ∈ GlobalTheory.InertSph.latAt X v`. Introduce `i`. Use `(hP (Pi.single i 1)).1 (fun a => by` as an intermediate fact. Distinguish the cases in `h : a = i`.
+
+Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _)`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Use `congr 1`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hdet` using `GlobalTheory.InertSelfDual.det_ne_zero_of_herm σ B hX`.
+
+Take `⟨k, S, T, hS, hT, hTS⟩` from `GlobalTheory.InertSelfDual.exists_formFrame σ X.J hdet X.L hX.lat (fun y hy => (hX.dual y).2 fun x hx => by`. Take `⟨r, hr⟩` from `hy x hx`. Rewrite using `[← hr]`. Conclude with `RingOfIntegers.isIntegral_coe r)`. Establish `hframe : tJ ι T * (tJ ι X.J * (tJ ι S).map σL)ᵀ = 1`.
+
+Rewrite using `[← tJ_map himg hmul hinj σ σL hσ, ← tJ_mul himg hmul hinj, ← tJ_transpose himg hmul, ← tJ_mul himg hmul hinj, hTS, tJ_one himg hmul hinj]`. Establish `hTA : tJ ι X.J * ((tJ ι S).map σL * (tJ ι T)ᵀ) = 1`. Use `congrArg Matrix.transpose hframe` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`. Rewrite using `[← Matrix.mul_assoc]`.
+
+Conclude with `this`. Establish `hGdef : gram σL ι P X.J = Pmᵀ * tJ ι X.J * Pm.map σL` using `rfl`. Establish `hσP : Pm.map σL * Pi'.map σL = 1`. Rewrite using `[← Matrix.map_mul, hPPi, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hGH : gram σL ι P X.J * ((Pi' * tJ ι S).map σL * (Pi' * tJ ι T)ᵀ) = 1`.
+
+Rewrite using `[hGdef]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hσP, Matrix.mul_one, hTA, Matrix.mul_one, ← Matrix.transpose_mul, hPiP, Matrix.transpose_one]`.
+
+Establish `hHG : ((Pi' * tJ ι S).map σL * (Pi' * tJ ι T)ᵀ) * gram σL ι P X.J = 1` using `mul_eq_one_comm.1 hGH`. Establish `hGint : ∀ i j, gram σL ι P X.J i j ∈ Formalism.UG.intL L`. Introduce `i j`. Rewrite using `[hint']`. Establish `: ι (gram σL ι P X.J i j) = hA σ X.J (fun k => ι (Pm k i)) (fun k => ι (Pm k j))`.
+
+Rewrite using `[hGdef]`. Simplify using `only [hA, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, hmul, tJ_spec himg hmul, hσ, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc (ι (Pm a i)), mul_one_right himg hmul]`.
+
+Rewrite using `[this]`. Conclude with `hA_mem σ B X hX v (hcolP i) (hcolP j)`. Establish `h1mem : ι 1 ∈ intAt (E` using `E) v := (hint' 1).1 (one_mem _)`. Establish `hXs : ∀ a j, (Pi' * tJ ι S) a j ∈ Formalism.UG.intL L` using `fun a j => hcol (tJ ι S) j (by`. Establish `: (fun i => ι (tJ ι S i j)) = fun i => ι 1 * inclR (F` using `F) (AF F) (S i j) :=`.
+
+Use function extensionality and compare the values at `fun i => tJ_spec himg hmul S i j`. Rewrite using `[this]`. Conclude with `mul_lat_mem X v h1mem (hS j)) a`. Establish `hXt : ∀ a j, (Pi' * tJ ι T) a j ∈ Formalism.UG.intL L` using `fun a j => hcol (tJ ι T) j (by`. Establish `: (fun i => ι (tJ ι T i j)) = fun i => ι 1 * inclR (F` using `F) (AF F) (T i j) :=`.
+
+Use function extensionality and compare the values at `fun i => tJ_spec himg hmul T i j`. Rewrite using `[this]`. Conclude with `mul_lat_mem X v h1mem (hT j)) a`. Establish `hHint : ∀ i j, ((Pi' * tJ ι S).map σL * (Pi' * tJ ι T)ᵀ) i j ∈ Formalism.UG.intL L`. Introduce `i j`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply]`. Conclude with `sum_mem fun l _ => mul_mem (hσint _ (hXs i l)) (hXt j l)`. Establish `hJσ : X.J.map σ = X.Jᵀ` using `by ext i j; exact hX.herm j i`. Establish `hTmσ : (tJ ι X.J).map σL = (tJ ι X.J)ᵀ`. Rewrite using `[← tJ_map himg hmul hinj σ σL hσ, hJσ, tJ_transpose himg hmul]`.
+
+Establish `hσσf : (⇑σL ∘ ⇑σL) = id` using `funext hσσ`. Establish `hGσ : (gram σL ι P X.J).map σL = (gram σL ι P X.J)ᵀ`. Rewrite using `[hGdef]`. Simplify using `only [Matrix.map_mul, Matrix.transpose_mul, Matrix.transpose_map, hTmσ, Matrix.map_map, hσσf, Matrix.map_id, Matrix.transpose_transpose, Matrix.mul_assoc]`. Use `set G := gram σL ι P X.J with hG`.
+
+Use `set H := (Pi' * tJ ι S).map σL * (Pi' * tJ ι T)ᵀ with hH`. Establish `hHσ : H.map σL = Hᵀ`. Establish `h1 : Gᵀ * H.map σL = 1`. Rewrite using `[← hGσ, ← Matrix.map_mul, hGH, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2 : Hᵀ * Gᵀ = 1` using `by rw [← Matrix.transpose_mul, hGH, Matrix.transpose_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Set `JS : GL (Fin n) L` to `⟨H, G, hHG, hGH⟩`. Use `⟨JS, ?_, rfl, fun i j => congrFun (congrFun hHσ i) j⟩` and prove the remaining obligations. Set `Ho : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)` to `Matrix.of fun i j => ⟨H i j, hHint i j⟩`. Set `Go : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)` to `Matrix.of fun i j => ⟨G i j, hGint i j⟩`.
+
+Establish `hinjM : Function.Injective (RingHom.mapMatrix (m` using `Fin n) (Formalism.UG.intL L).subtype) := Matrix.map_injective Subtype.val_injective`. Establish `hHo : RingHom.mapMatrix (m` using `Fin n) (Formalism.UG.intL L).subtype Ho = H := by ext i j; rfl`. Establish `hGo : RingHom.mapMatrix (m` using `Fin n) (Formalism.UG.intL L).subtype Go = G := by ext i j; rfl`. Establish `e1 : Ho * Go = 1` using `hinjM (by rw [map_mul, hHo, hGo, hHG, map_one])`. Establish `e2 : Go * Ho = 1` using `hinjM (by rw [map_mul, hHo, hGo, hGH, map_one])`.
+
+Use `⟨⟨Ho, Go, e1, e2⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Conclude with `hHo`.
+-/
 theorem exists_gram_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w →
     ∀ (n r s : ℕ) (X : Spc F E n), X.IsHerm σ B r s →

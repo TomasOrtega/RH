@@ -9,6 +9,9 @@ open Matrix GlobalTheory.KZ
 
 namespace GlobalTheory.KZ.H3
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [slP]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp, Betti.slP_X, MvPolynomial.smul_eq_C_mul]`.
+-/
 theorem polySlash_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (m : Matrix (Fin 2) (Fin 2) ℤ)
     (p : MvPolynomial (Fin 2) R) : slP m (MvPolynomial.map φ p) = MvPolynomial.map φ (slP m p) := by
   induction p using MvPolynomial.induction_on with
@@ -16,6 +19,9 @@ theorem polySlash_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (m
   | add p q hp hq => simp [hp, hq]
   | mul_X p i hp => simp [hp, Betti.slP_X, MvPolynomial.smul_eq_C_mul]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hF`. Use `⟨fun z => (h1 z).map _, fun γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `h2 γ hγ`. Use `⟨MvPolynomial.map (algebraMap ℤ_[l] E) p, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← hp z hz, map_sub, polySlash_map]`.
+-/
 theorem map_mem_pot {E : Type} [CommRing E] {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] E] {w : ℕ}
     {Γ : Subgroup SL(2, ℤ)} {F : ℂ → MvPolynomial (Fin 2) ℤ_[l]} (hF : F ∈ Pot ℤ_[l] w Γ) :
     (fun z => MvPolynomial.map (algebraMap ℤ_[l] E) (F z)) ∈ Pot E w Γ := by
@@ -25,6 +31,21 @@ theorem map_mem_pot {E : Type} [CommRing E] {l : ℕ} [Fact l.Prime] [Algebra �
   refine ⟨MvPolynomial.map (algebraMap ℤ_[l] E) p, fun z hz => ?_⟩
   rw [← hp z hz, map_sub, polySlash_map]
 
+/- English proof (translation)
+Introduce `Ω _ _ ε X N l w _ E _ _ hB`. Set `S : Submodule E (E ⊗[ℤ_[l]] X.Fn l)` to `{ carrier := {x | ∃ G ∈ Pot E w (Gam N l), (x, G) ∈ abelian₂ X l E} add_mem' := by`. Introduce and unpack `x y ⟨G, hG, hx⟩ ⟨G', hG', hy⟩`. Conclude with `⟨G + G', (Betti.potSub E w (Gam N l)).add_mem hG hG', (abelian₂ X l E).add_mem hx hy⟩`. Use the proof step `zero_mem' := ⟨0, (Betti.potSub E w (Gam N l)).zero_mem, (abelian₂ X l E).zero_mem⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce and unpack `c x ⟨G, hG, hx⟩`. Conclude with `⟨c • G, (Betti.potSub E w (Gam N l)).smul_mem c hG, (abelian₂ X l E).smul_mem c hx⟩ }`. Establish `h1 : ∀ b ∈ X.B N l w, (1 : E) ⊗ₜ[ℤ_[l]] b ∈ S`. Introduce `b hb`.
+
+Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem b hb`. Take `⟨F, hF, hR⟩` from `hB b hb`. Conclude with `⟨_, map_mem_pot hF, Submodule.subset_span ⟨b, F, hR, rfl⟩⟩`. Consider the case `zero => simpa using S.zero_mem`.
+
+Consider the case `add b b' _ _ h h' => simpa [TensorProduct.tmul_add] using S.add_mem h h'`. Consider the case `smul r b _ h`. Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul E r]`. Conclude with `S.smul_mem _ h`. Introduce `x hx`.
+
+Take `⟨y, rfl⟩` from `hx`. Use `show _ ∈ S`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simpa using S.zero_mem`. Consider the case `tmul c b`.
+
+Rewrite using `[LinearMap.baseChange_tmul, Submodule.subtype_apply]`. Establish `: c ⊗ₜ[ℤ_[l]] (b : X.Fn l) = c • ((1 : E) ⊗ₜ[ℤ_[l]] (b : X.Fn l))`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`. Conclude with `S.smul_mem c (h1 b b.2)`.
+
+Consider the case `add y y' h h' => rw [map_add]`. Conclude with `S.add_mem h h'`.
+-/
 theorem exists_pot_of_mem_VB : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (N l w : ℕ)
     [Fact l.Prime] {E : Type} [Field E] [Algebra ℤ_[l] E],
     (∀ b ∈ X.BSet N l w, ∃ F ∈ Pot ℤ_[l] w (Gam N l), H3.Rel X l b F) →

@@ -10,6 +10,11 @@ open NumberField IsDedekindDomain GlobalTheory.NT GlobalTheory.Mem.Fld GlobalThe
 
 namespace GlobalTheory.RayTopGalois
 
+/- English proof (translation)
+Establish `hI' : I.comap e.symm ≠ ⊥`. Rewrite using `[← Ideal.map_comap_of_equiv]`. Conclude with `fun h => hI ((Ideal.map_eq_bot_iff_of_injective e.injective).1 h)`. Use `eq_of_forall_le_iff fun k => ?_` and prove the remaining obligations. Rewrite using `[← Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.2 hI') (HeightOneSpectrum.associates_irreducible _), ← Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.2 hI) (HeightOneSpectrum.associates_irreducible _), ← Associates.mk_pow, ← Associates.mk_pow, Associates.mk_le_m …`.
+
+Establish `: (HeightOneSpectrum.equivOfRingEquiv e p).asIdeal = p.asIdeal.map (e : R →+* S)`. Rewrite using `[Ideal.map_comap_of_equiv]`. Both sides reduce to the same expression. Rewrite using `[this, ← Ideal.map_pow, Ideal.map_comap_of_equiv]`. Conclude with `Ideal.comap_le_comap_iff_of_surjective e.symm e.symm.surjective _ _`.
+-/
 theorem count_comap {R S : Type} [CommRing R] [IsDedekindDomain R] [CommRing S] [IsDedekindDomain S]
     [DecidableEq (Associates (Ideal R))] [∀ p : Associates (Ideal R), Decidable (Irreducible p)]
     [DecidableEq (Associates (Ideal S))] [∀ p : Associates (Ideal S), Decidable (Irreducible p)]
@@ -49,6 +54,11 @@ abbrev primeEquiv : HeightOneSpectrum (𝓞 K) ≃ HeightOneSpectrum (𝓞 K') :
 
 include hs in
 omit [NumberField K] [NumberField K'] [NumberField N] in
+/- English proof (translation)
+Establish `h : ∀ x : 𝓞 K, algebraMap (𝓞 K') (𝓞 N) (RingOfIntegers.mapRingEquiv s x) = algebraMap (𝓞 K) (𝓞 N) x` using `fun x => RingOfIntegers.ext (hs x)`. Establish `h2 : ∀ x : 𝓞 K, RingOfIntegers.mapRingEquiv s x ∈ (primeEquiv s 𝔭).asIdeal ↔ x ∈ 𝔭.asIdeal` using `fun x => by`. Express the relevant statement in the definitionally equal form `(RingOfIntegers.mapRingEquiv s).symm (RingOfIntegers.mapRingEquiv s x) ∈ 𝔭.asIdeal ↔ _`. Rewrite using `[RingEquiv.symm_apply_apply]`. Use `⟨fun ⟨H⟩ => ⟨Ideal.ext fun x => ?_⟩, fun ⟨H⟩ => ⟨Ideal.ext fun x => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← h2, H, Ideal.mem_under, Ideal.mem_under, h]`. Take `⟨y, rfl⟩` from `(RingOfIntegers.mapRingEquiv s).surjective x`. Rewrite using `[h2, H, Ideal.mem_under, Ideal.mem_under, h]`.
+-/
 theorem liesOver_iff (𝔭 : HeightOneSpectrum (𝓞 K)) (P : Ideal (𝓞 N)) :
     P.LiesOver (primeEquiv s 𝔭).asIdeal ↔ P.LiesOver 𝔭.asIdeal := by
   have h : ∀ x : 𝓞 K, algebraMap (𝓞 K') (𝓞 N) (RingOfIntegers.mapRingEquiv s x) = algebraMap (𝓞 K) (𝓞 N) x :=
@@ -61,6 +71,9 @@ theorem liesOver_iff (𝔭 : HeightOneSpectrum (𝓞 K)) (P : Ideal (𝓞 N)) :
   · obtain ⟨y, rfl⟩ := (RingOfIntegers.mapRingEquiv s).surjective x
     rw [h2, H, Ideal.mem_under, Ideal.mem_under, h]
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Use `(Nat.card_congr (Ideal.quotientEquiv _ _ (RingOfIntegers.mapRingEquiv s) ?_).toEquiv).symm` and prove the remaining obligations. Conclude with `(Ideal.map_comap_of_equiv _).symm`.
+-/
 theorem absNorm_primeEquiv (𝔭 : HeightOneSpectrum (𝓞 K)) :
     Ideal.absNorm (primeEquiv s 𝔭).asIdeal = Ideal.absNorm 𝔭.asIdeal := by
   rw [Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]
@@ -68,6 +81,9 @@ theorem absNorm_primeEquiv (𝔭 : HeightOneSpectrum (𝓞 K)) :
   exact (Ideal.map_comap_of_equiv _).symm
 
 omit [NumberField N] in
+/- English proof (translation)
+Unfold `IsFrob`. Rewrite using `[absNorm_primeEquiv]`. Conclude with `exists_congr fun P => and_congr_right' (and_congr (liesOver_iff s hs 𝔭 P) Iff.rfl)`.
+-/
 theorem isFrob_iff' (𝔭 : HeightOneSpectrum (𝓞 K)) (σ : N ≃ₐ[K] N) :
     IsFrob N (primeEquiv s 𝔭) (autEquiv s hs σ) ↔ IsFrob N 𝔭 σ := by
   unfold IsFrob
@@ -75,10 +91,18 @@ theorem isFrob_iff' (𝔭 : HeightOneSpectrum (𝓞 K)) (σ : N ≃ₐ[K] N) :
   exact exists_congr fun P => and_congr_right' (and_congr (liesOver_iff s hs 𝔭 P) Iff.rfl)
 
 omit [NumberField K] [NumberField K'] [NumberField N] in
+/- English proof (translation)
+The claim follows from `exists_congr fun P => and_congr_right' (and_congr (liesOver_iff s hs 𝔭 P) Iff.rfl)`.
+-/
 theorem inInertia_iff' (𝔭 : HeightOneSpectrum (𝓞 K)) (σ : N ≃ₐ[K] N) :
     InInertia N (primeEquiv s 𝔭) (autEquiv s hs σ) ↔ InInertia N 𝔭 σ :=
   exists_congr fun P => and_congr_right' (and_congr (liesOver_iff s hs 𝔭 P) Iff.rfl)
 
+/- English proof (translation)
+Distinguish the cases in `h : ∀ τ, InInertia N (primeEquiv s 𝔭) τ → χ τ = 1`. Take `⟨σ, hσ⟩` from `exists_isFrob N 𝔭`. Rewrite using `[heckeVal_eq N _ 𝔭 (fun τ hτ => h _ ((inInertia_iff' s hs 𝔭 τ).2 hτ)) hσ, heckeVal_eq N χ _ h ((isFrob_iff' s hs 𝔭 σ).2 hσ)]`. Both sides reduce to the same expression. Rewrite using `[heckeVal_eq_zero N χ _ h, heckeVal_eq_zero N _ 𝔭 fun h' => h fun τ hτ => ?_]`.
+
+Take `⟨σ, rfl⟩` from `(autEquiv s hs).surjective τ`. Conclude with `h' σ ((inInertia_iff' s hs 𝔭 σ).1 hτ)`.
+-/
 theorem heckeVal_transport [IsGalois K N] [IsGalois K' N] (χ : (N ≃ₐ[K'] N) →* ℂˣ) (𝔭 : HeightOneSpectrum (𝓞 K)) :
     heckeVal N χ (primeEquiv s 𝔭) = heckeVal N (χ.comp (autEquiv s hs).toMonoidHom) 𝔭 := by
   by_cases h : ∀ τ, InInertia N (primeEquiv s 𝔭) τ → χ τ = 1
@@ -90,6 +114,11 @@ theorem heckeVal_transport [IsGalois K N] [IsGalois K' N] (χ : (N ≃ₐ[K'] N)
     obtain ⟨σ, rfl⟩ := (autEquiv s hs).surjective τ
     exact h' σ ((inInertia_iff' s hs 𝔭 σ).1 hτ)
 
+/- English proof (translation)
+Establish `e : Ideal.span {RingOfIntegers.mapRingEquiv s a} = (Ideal.span {a}).comap (RingOfIntegers.mapRingEquiv s).symm`. Rewrite using `[← Ideal.map_comap_of_equiv, Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Unfold `heckeIdeal`. Rewrite using `[← finprod_comp_equiv (primeEquiv s)]`.
+
+Use `finprod_congr fun 𝔭 => ?_` and prove the remaining obligations. Rewrite using `[heckeVal_transport s hs, e, count_comap _ _ (by simpa using ha)]`.
+-/
 theorem heckeIdeal_transport [IsGalois K N] [IsGalois K' N] (χ : (N ≃ₐ[K'] N) →* ℂˣ) {a : 𝓞 K} (ha : a ≠ 0) :
     heckeIdeal N χ (Ideal.span {RingOfIntegers.mapRingEquiv s a}) =
       heckeIdeal N (χ.comp (autEquiv s hs).toMonoidHom) (Ideal.span {a}) := by
@@ -104,6 +133,15 @@ theorem heckeIdeal_transport [IsGalois K N] [IsGalois K' N] (χ : (N ≃ₐ[K'] 
 
 include hs in
 
+/- English proof (translation)
+Establish `hc : ∀ J : Ideal (𝓞 K), IsCoprime J ⊤` using `fun J => by`. Rewrite using `[← Ideal.one_eq_top]`. Conclude with `isCoprime_one_right`. Use `⟨top_ne_bot, fun 𝔭 _ => ?_, fun α β hr => ?_⟩` and prove the remaining obligations. Take `⟨𝔮, rfl⟩` from `(primeEquiv s).surjective 𝔭`.
+
+Rewrite using `[heckeVal_transport s hs]`. Conclude with `(h _).2.1 𝔮 fun h => 𝔮.isPrime.ne_top (top_le_iff.1 (Ideal.le_of_dvd h))`. Take `⟨a, rfl⟩` from `(RingOfIntegers.mapRingEquiv s).surjective α`. Take `⟨b, rfl⟩` from `(RingOfIntegers.mapRingEquiv s).surjective β`. Establish `ha : a ≠ 0` using `fun h => hr.1 (by rw [h, map_zero])`.
+
+Establish `hb : b ≠ 0` using `fun h => hr.2.1 (by rw [h, map_zero])`. Rewrite using `[heckeIdeal_transport s hs χ ha, heckeIdeal_transport s hs χ hb]`. Use `(h _).2.2 a b ⟨ha, hb, hc _, hc _, trivial, fun φ => ?_⟩` and prove the remaining obligations. Use `hr.2.2.2.2.2 (φ.comp s.symm.toRingHom)` as an intermediate fact. Express the relevant statement in the definitionally equal form `0 < φ (s.symm (s a)) * φ (s.symm (s b)) at this`.
+
+Rewrite `this` using `[s.symm_apply_apply, s.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem isModulus_top_transport [IsGalois K N] [IsGalois K' N] (h : ∀ χ : (N ≃ₐ[K] N) →* ℂˣ, IsModulus N χ ⊤)
     (χ : (N ≃ₐ[K'] N) →* ℂˣ) : IsModulus N χ ⊤ := by
   have hc : ∀ J : Ideal (𝓞 K), IsCoprime J ⊤ := fun J => by
@@ -124,6 +162,11 @@ theorem isModulus_top_transport [IsGalois K N] [IsGalois K' N] (h : ∀ χ : (N 
 
 include hs in
 omit [NumberField K] [NumberField K'] in
+/- English proof (translation)
+Establish `: IsGalois K' N` using `IsGalois.of_equiv_equiv (f := s) (g := RingEquiv.refl N) (RingHom.ext hs)`. Establish `: IsMulCommutative (N ≃ₐ[K'] N)` using `⟨⟨fun a b => by`. Take `⟨a, rfl⟩` from `(autEquiv s hs).surjective a`. Take `⟨b, rfl⟩` from `(autEquiv s hs).surjective b`. Rewrite using `[← map_mul, ← map_mul, mul_comm' a b]⟩⟩`.
+
+Conclude with `{}`.
+-/
 theorem isAbelianGalois_transport [CharZero K] [IsAbelianGalois K N] : IsAbelianGalois K' N := by
   have : IsGalois K' N := IsGalois.of_equiv_equiv (f := s) (g := RingEquiv.refl N) (RingHom.ext hs)
   have : IsMulCommutative (N ≃ₐ[K'] N) := ⟨⟨fun a b => by
@@ -134,6 +177,11 @@ theorem isAbelianGalois_transport [CharZero K] [IsAbelianGalois K N] : IsAbelian
 
 end Transport
 
+/- English proof (translation)
+Establish `hab` using `h.1`. Set `j : Algebra L N` to `((@algebraMap L N _ _ i).comp s.symm.toRingHom).toAlgebra`. Establish `hs : ∀ x, @algebraMap L N _ _ j (s x) = @algebraMap L N _ _ i x` using `fun x => congrArg (@algebraMap L N _ _ i) (s.symm_apply_apply x)`. Establish `hab'` using `@isAbelianGalois_transport L L N _ _ _ _ i j s hs _ hab`. Establish `hm` using `@GlobalTheory.RayMaximal.isModulus_of_isRay L _ _ N _ _ i hab ⊤ ⊤ h.2 dvd_rfl top_ne_bot`.
+
+Take `⟨f⟩` from `@rayClassFieldMaximalSt_holds L N N _ _ _ _ i hab _ _ j hab' ⊤ top_ne_bot h.2 (@isModulus_top_transport L L N _ _ _ _ _ _ i j s hs (@IsAbelianGalois.toIsGalois _ _ _ _ i hab) (@IsAbelianGalois.toIsGalois _ _ _ _ j hab') hm)`. Use `⟨@AlgHom.toRingHom L N N _ _ _ j i f, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Conclude with `@AlgHom.commutes L N N _ _ _ j i f (s x)`.
+-/
 theorem exists_extension {L N : Type} [Field L] [NumberField L] [Field N] [NumberField N] [i : Algebra L N]
     (h : IsRayField L N ⊤) (s : L ≃+* L) :
     ∃ f : N →+* N, ∀ x, f (algebraMap L N x) = algebraMap L N (s x) := by
@@ -150,6 +198,13 @@ theorem exists_extension {L N : Type} [Field L] [NumberField L] [Field N] [Numbe
   rw [← hs]
   exact @AlgHom.commutes L N N _ _ _ j i f (s x)
 
+/- English proof (translation)
+Introduce `K L N _ _ _ _ _ _ _ _ _ _ _ h`. Establish `hab` using `h.1`. Use `IsGalois.of_fixedField_eq_bot K N (eq_bot_iff.2 fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[IntermediateField.mem_fixedField_iff]`. Take `⟨y, rfl⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed (F := L) x).2 fun σ => hx (σ.restrictScalars K) trivial`.
+
+Take `⟨z, rfl⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed (F := K) y).2 fun s => by`. Take `⟨f, hf⟩` from `exists_extension h s.toRingEquiv`. Set `g : N →ₐ[K] N` to `{ f with commutes' := fun k => by`. Rewrite using `[IsScalarTower.algebraMap_apply K L N]`. Conclude with `(hf _).trans (congrArg _ (s.commutes k)) }`.
+
+Conclude with `(algebraMap L N).injective ((hf y).symm.trans (hx (AlgEquiv.ofBijective g (Algebra.IsAlgebraic.algHom_bijective g)) trivial))`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `IntermediateField.algebraMap_mem _ z`.
+-/
 theorem isGalois_of_isRayField_top : ∀ (K L N : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Field N]
     [NumberField N] [Algebra K L] [Algebra L N] [Algebra K N] [IsScalarTower K L N] [IsGalois K L],
     GlobalTheory.Mem.Fld.IsRayField L N ⊤ → IsGalois K N := by

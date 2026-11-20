@@ -13,6 +13,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GlobalTheory.VerticalDeriv GlobalTheory.FibreDeriv
 
+/- English proof (translation)
+Introduce `U f`. Establish `hs : {c ∈ C | ⊤ ≤ y (φ c) ⁻¹ᵁ U} = C ∩ φ ⁻¹' {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U}`. Use extensionality with `c`. Conclude with `⟨fun hc => ⟨hc.1, hm hc.1, hc.2⟩, fun hc => ⟨hc.1, hc.2.2⟩⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hs]`. Conclude with `hφ.continuousOn.isOpen_inter_preimage hC (h U f).1`. Conclude with `(h U f).2.comp (hφ.mono fun c hc => hc.1) fun c hc => ⟨hm hc.1, hc.2⟩`.
+-/
 theorem vecHolPre {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup V'] [NormedSpace ℂ V']
     {X : Scheme.{0}} {B : Set V} {C : Set V'} {y : V → (Sp ℂ ⟶ X)} {φ : V' → V} (h : IsHolTo B y)
     (hC : IsOpen C) (hφ : DifferentiableOn ℂ φ C) (hm : Set.MapsTo φ C B) : IsHolTo C (fun c => y (φ c)) := by
@@ -24,11 +29,19 @@ theorem vecHolPre {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [Norm
   · rw [hs]; exact hφ.continuousOn.isOpen_inter_preimage hC (h U f).1
   · exact (h U f).2.comp (hφ.mono fun c hc => hc.1) fun c hc => ⟨hm hc.1, hc.2⟩
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply']`. Conclude with `Finset.analyticAt_fun_sum _ fun σ _ => analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => hh _ _)`.
+-/
 theorem vecDetAn {n g : ℕ} {h : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ} {t₀ : Fin n → ℂ}
     (hh : ∀ a b, AnalyticAt ℂ (fun t => h t a b) t₀) : AnalyticAt ℂ (fun t => (h t).det) t₀ := by
   simp only [Matrix.det_apply']
   exact Finset.analyticAt_fun_sum _ fun σ _ => analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => hh _ _)
 
+/- English proof (translation)
+Establish `hi : ∀ a b, AnalyticAt ℂ (fun t => (h t)⁻¹ a b) t₀` using `fun a b => by`. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, Matrix.adjugate_apply]`. Use `((vecDetAn hh).inv h0).mul (vecDetAn fun a' b' => ?_)` and prove the remaining obligations. Distinguish the cases in `e : a' = b`. Substitute `e` using the available equality.
+
+Simplify `analyticAt_const` using `only [Matrix.updateRow_self]`. Simplify `hh a' b'` using `only [Matrix.updateRow_ne e]`. Use `analyticAt_pi_iff.2 fun a => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.analyticAt_fun_sum _ fun b _ => (hi a b).mul (analyticAt_pi_iff.1 hw b)`.
+-/
 theorem vecInvAn {n g : ℕ} {h : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ} {t₀ : Fin n → ℂ} {w : (Fin n → ℂ) → Fin g → ℂ}
     (hh : ∀ a b, AnalyticAt ℂ (fun t => h t a b) t₀) (h0 : (h t₀).det ≠ 0) (hw : AnalyticAt ℂ w t₀) :
     AnalyticAt ℂ (fun t => (h t)⁻¹ *ᵥ w t) t₀ := by
@@ -43,6 +56,11 @@ theorem vecInvAn {n g : ℕ} {h : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ
   simp only [Matrix.mulVec, dotProduct]
   exact Finset.analyticAt_fun_sum _ fun b _ => (hi a b).mul (analyticAt_pi_iff.1 hw b)
 
+/- English proof (translation)
+Establish `hv : ∀ ζ, (FU.ex i P ζ).left ≫ Xo.univ.t.G.hom = FU.u i P` using `fun ζ => Over.w _`. Use `⟨hol, hv, ?_, fun w₁ w₂ u h₁ h₂ => ?_, fun u hu h0 => ?_, fun A₀ x v hx => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun a => a.left) ((FU.ex_ker i P hP 0).2 (zero_mem _))`. Conclude with `((FU.ex_diff i P hP).2 (Over.homMk u (isDerivAt0_vertical _ _ hv h₁)) h₁.1).unique h₁ h₂`. Conclude with `((FU.ex_diff i P hP).2 (Over.homMk u hu) h0).exists`.
+
+Conclude with `FibreAtPeriod.fibreLatVec_of_period E H D l Xo σ g ty FU i R P h hP hR hd hPh A₀ x v hx`.
+-/
 theorem goodExp_univ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Tor.Level H}
     {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo σ ty) (i : Fin FU.n)
     (R : RiemLat E g (FU.Di i).La) (P : (FU.Di i).La →+ (Fin g → ℂ)) (h : Matrix (Fin g) (Fin g) ℂ)
@@ -56,6 +74,9 @@ theorem goodExp_univ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
   · exact ((FU.ex_diff i P hP).2 (Over.homMk u hu) h0).exists
   · exact FibreAtPeriod.fibreLatVec_of_period E H D l Xo σ g ty FU i R P h hP hR hd hPh A₀ x v hx
 
+/- English proof (translation)
+Establish `k` using `vecHolPre (C := Set.univ) (φ := fun ζ : Fin g → ℂ => (t, ζ)) he isOpen_univ ((differentiable_const t).prodMk differentiable_id).differentiableOn fun ζ _ => ⟨ht, trivial⟩`. Conclude with `k`.
+-/
 theorem vecSlice {n g : ℕ} {V : Set (Fin n → ℂ)} {Z : Scheme.{0}} {e : (Fin n → ℂ) → (Fin g → ℂ) → (Sp ℂ ⟶ Z)}
     (he : IsHolTo (V ×ˢ Set.univ) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => e bz.1 bz.2)) {t : Fin n → ℂ} (ht : t ∈ V) :
     IsHolTo Set.univ (e t) := by
@@ -63,11 +84,19 @@ theorem vecSlice {n g : ℕ} {V : Set (Fin n → ℂ)} {Z : Scheme.{0}} {e : (Fi
     ((differentiable_const t).prodMk differentiable_id).differentiableOn fun ζ _ => ⟨ht, trivial⟩
   exact k
 
+/- English proof (translation)
+Establish `k` using `vecHolPre (φ := id) h hC differentiableOn_id hm`. Conclude with `k`.
+-/
 theorem vecMono {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}} {B C : Set V} {y : V → (Sp ℂ ⟶ X)}
     (h : IsHolTo B y) (hC : IsOpen C) (hm : C ⊆ B) : IsHolTo C y := by
   have k := vecHolPre (φ := id) h hC differentiableOn_id hm
   exact k
 
+/- English proof (translation)
+Establish `p` using `m.cart.1`. Establish `ex : ∀ b ∈ V, ∀ ζ, ∃ e' : Sp ℂ ⟶ t'.G.left, e' ≫ m.φ = e b ζ ∧ e' ≫ t'.G.hom = z b` using `fun b hb ζ => ⟨p.lift (e b ζ) (z b) (((G b hb).vert ζ).trans (hf b hb).symm), p.lift_fst _ _ _, p.lift_snd _ _ _⟩`. Use `haveI : Nonempty (Sp ℂ ⟶ t'.G.left) := ⟨(ex t₀ ht₀ 0).choose⟩`. Use `choose! e' a₁ b₁ using ex`. Establish `base : IsHolTo (V ×ˢ Set.univ) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => z bz.1)` using `vecHolPre (φ := Prod.fst) hz (hV.prod isOpen_univ) (by fun_prop) fun b hb => hb.1`.
+
+Establish `hE : IsHolTo (V ×ˢ Set.univ) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => e' bz.1 bz.2)` using `GlobalTheory.HolTorsion.isHolTo_of_isPullback p (GlobalTheory.HolTorsion.isHolTo_congr he fun b hb => a₁ b.1 hb.1 b.2) (GlobalTheory.HolTorsion.isHolTo_congr base fun b hb => b₁ b.1 hb.1 b.2)`. Conclude with `⟨e', hE, fun b hb => (G b hb).pull m (hf b hb) (vecSlice hE hb) (a₁ b hb) (b₁ b hb)⟩`.
+-/
 theorem liftFam {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X X' : Scheme.{0}} {t : SAB H X}
     {t' : SAB H X'} {f : X' ⟶ X} {n g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ] (m : SABMap t' t f)
     {V : Set (Fin n → ℂ)} (hV : IsOpen V) {t₀ : Fin n → ℂ} (ht₀ : t₀ ∈ V) {R : (Fin n → ℂ) → RiemLat E g Λ}
@@ -91,6 +120,19 @@ theorem liftFam {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} 
       (GlobalTheory.HolTorsion.isHolTo_congr base fun b hb => b₁ b.1 hb.1 b.2)
   exact ⟨e', hE, fun b hb => (G b hb).pull m (hf b hb) (vecSlice hE hb) (a₁ b hb) (b₁ b hb)⟩
 
+/- English proof (translation)
+Introduce `m s hs`. Establish `hsm : Smooth 𝔐.t.G.hom` using `𝔐.t.semi.smooth`. Take `⟨W, hW, v, hq, -, hval⟩` from `HodgeMetric.FrameExt.exists_affine_frame 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M ⟨centre (z t₀), 𝔐.all _⟩ m s 𝔐.tie.gen fun a => ((𝔐.M.exists_valAt_iff _ _).1 (hs a)).2`. Establish `hW0 : ⊤ ≤ z t₀ ⁻¹ᵁ W` using `fun x _ => by`. Establish `: x = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim _ _`.
+
+Substitute `this` using the available equality. Conclude with `hq`. Set `B : Set (Fin n → ℂ)` to `{b ∈ V | ⊤ ≤ z b ⁻¹ᵁ W}`. Establish `hB : IsOpen B` using `(hz W 0).1`. Establish `hB₀ : t₀ ∈ B` using `⟨ht₀, hW0⟩`.
+
+Set `ψ : (Fin n → ℂ) → (Γ(𝔐.X, W) →+* ℂ)` to `fun t => if k : ⊤ ≤ z t ⁻¹ᵁ W then Flat.BdryModel.evalHom _ W k else Flat.BdryModel.evalHom _ W hW0`. Establish `hψ : ∀ a, DifferentiableOn ℂ (fun t => ψ t a) B` using `fun a => (hz W a).2.congr fun t ht => by`. Simplify using `only [ψ, valAt', dif_pos ht.2]`. Both sides reduce to the same expression. Establish `hψz : ∀ t ∈ B, spMap (ψ t) ≫ hW.fromSpec = z t` using `fun t ht => by`.
+
+Simplify using `only [ψ, dif_pos ht.2]`. Conclude with `Flat.BdryModel.spMap_evalHom _ _ _ _`. Establish `hco : ∀ a, ∀ t ∈ B, ∃ w, IsDerivAt0 (e₂ t) w (spMap (dualMap (ψ t)) ≫ (v a).left)` using `fun a t ht => by`. Take `⟨u, hu, e⟩` from `hval (ψ t) (z t) (hψz t ht) (𝔐.all _) a`. Rewrite using `[← e]`.
+
+Conclude with `(G₂ t ht.1).onto u.left (Over.w u) (hu.isTanAt.trans (G₂ t ht.1).zero.symm)`. Use `choose! w hw using hco`. Establish `hwa : ∀ a, AnalyticAt ℂ (w a) t₀` using `fun a => HC _ n g B e₂ _ (v a).left ψ (w a) hB (vecMono hE₂ (hB.prod isOpen_univ) (Set.prod_mono (fun b hb => hb.1) subset_rfl)) hψ (hw a) (fun t ht => (G₂ t ht.1).uniq) t₀ hB₀`. Use `⟨fun a t => (h t)⁻¹ *ᵥ w a t, fun a => vecInvAn (fun a b => GlobalTheory.SCV.analyticAt_of_differentiableOn (hh a b) (hV.mem_nhds ht₀)) (hd t₀ ht₀).ne_zero (hwa a), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hB.mem_nhds hB₀] with t ht`.
+
+Use `choose u hu e using hval (ψ t) (z t) (hψz t ht) (𝔐.all _)`. Use `⟨u, hu, (G₂ t ht.1).lat _ _ u fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hd t ht.1), Matrix.one_mulVec, e]`. Conclude with `hw a t ht`.
+-/
 theorem vecAt_of_goodExp (HC : HolCoord) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Tor.Level H} {Xo : Moduli D l} {c : Coeff l} {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ} {Ω : Type}
     [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} (𝔐 : HodgeCpt Y S y) {n g : ℕ} {Λ : Type}
@@ -139,6 +181,11 @@ theorem vecAt_of_goodExp (HC : HolCoord) {E : Type} [Field E] [NumberField E] [I
   rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hd t ht.1), Matrix.one_mulVec, e]
   exact hw a t ht
 
+/- English proof (translation)
+Introduce `HC E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 κ σ g ty FU i n V z xF R P h hV hz hxF hP hh hall t₀ ht₀`. Establish `hE₀` using `(FU.hol i n V P hV hP).2`. Establish `G₀ : ∀ t ∈ V, GoodExp Xo.univ.t (FU.u i (P t)) (R t) (fun x => h t *ᵥ x) fun ζ => (FU.ex i (P t) ζ).left` using `fun t ht => goodExp_univ FU i (R t) (P t) (h t) (hP.1 t ht) (hall t ht).1 (hall t ht).2.1 (hall t ht).2.2.1 (vecSlice (e := fun t ζ => (FU.ex i (P t) ζ).left) hE₀ ht)`. Take `⟨e₁, hE₁, G₁⟩` from `liftFam Y.m0.toSABMap hV ht₀ (z₀ := fun t => FU.u i (P t)) hxF (fun t ht => (hall t ht).2.2.2.2.1) (e := fun t ζ => (FU.ex i (P t) ζ).left) hE₀ G₀`. Take `⟨e₂, hE₂, G₂⟩` from `liftFam 𝔐.m hV ht₀ (z₀ := fun t => z t ≫ 𝔐.f) hz (fun _ _ => rfl) (e := fun t ζ => e₁ t ζ ≫ Y.m.φ) (GlobalTheory.HolTorsion.isHolTo_comp hE₁ Y.m.φ) (fun t ht => (G₁ t ht).push Y.m (hall t ht).2.2.2.1)`.
+
+Conclude with `vecAt_of_goodExp HC 𝔐 hV hz hh (fun t ht => (hall t ht).2.1) hE₂ G₂ ht₀`.
+-/
 theorem vecOfPeriods_of : HolCoord → VecOfPeriods := by
   intro HC E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 κ σ g ty FU i n V z xF R P h hV hz hxF hP hh hall t₀ ht₀
   have hE₀ := (FU.hol i n V P hV hP).2

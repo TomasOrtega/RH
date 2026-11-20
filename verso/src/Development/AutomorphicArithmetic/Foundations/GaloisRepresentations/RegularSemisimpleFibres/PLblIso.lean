@@ -34,17 +34,28 @@ variable (i : k ≃+* K) (hi : ∀ x : k, valuation K (i x) ≤ 1 ↔ valuation 
 
 include hi
 
+/- English proof (translation)
+Use extensionality with `a b`. Both sides reduce to the same expression.
+-/
 private theorem map_alg (u : GL (Fin n) 𝒪[k]) :
     Matrix.GeneralLinearGroup.map i.toRingHom (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) u) =
       Matrix.GeneralLinearGroup.map (algebraMap 𝒪[K] K)
         (Matrix.GeneralLinearGroup.map (intEquiv i hi).toRingHom u) := by
   ext a b; rfl
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hg`. Conclude with `⟨_, (map_alg i hi u).symm⟩`.
+-/
 private theorem map_mem_KO {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) :
     Matrix.GeneralLinearGroup.map i.toRingHom g ∈ KO K (Fin n) := by
   obtain ⟨u, rfl⟩ := hg
   exact ⟨_, (map_alg i hi u).symm⟩
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hy`. Use `⟨_, ⟨Matrix.GeneralLinearGroup.map (intEquiv i hi).symm.toRingHom u, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_alg i hi]`. Use `congr 1`. Use extensionality with `a b`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem exists_KO {y : GL (Fin n) K} (hy : y ∈ KO K (Fin n)) :
     ∃ g ∈ KO k (Fin n), Matrix.GeneralLinearGroup.map i.toRingHom g = y := by
   obtain ⟨u, rfl⟩ := hy
@@ -54,6 +65,9 @@ private theorem exists_KO {y : GL (Fin n) K} (hy : y ∈ KO K (Fin n)) :
   ext a b
   simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[redK_apply]`. Use `show _ = resEquiv (intEquiv i hi) ((redK k (Fin n) g : Matrix (Fin n) (Fin n) 𝓀[k]) a b)`. Rewrite using `[redK_apply]`. Both sides reduce to the same expression.
+-/
 private theorem red_map (g : KO k (Fin n)) :
     redK K (Fin n) ⟨Matrix.GeneralLinearGroup.map i.toRingHom g, map_mem_KO i hi g.2⟩ =
       Matrix.GeneralLinearGroup.map (resEquiv (intEquiv i hi)).toRingHom (redK k (Fin n) g) := by
@@ -63,6 +77,11 @@ private theorem red_map (g : KO k (Fin n)) :
   rw [redK_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← redK_eq_one_iff ⟨g, hg⟩, ← redK_eq_one_iff ⟨_, map_mem_KO i hi hg⟩, red_map i hi ⟨g, hg⟩]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg (glEquiv (resEquiv (intEquiv i hi)) n).symm h` as an intermediate fact. Rewrite `this` using `[show Matrix.GeneralLinearGroup.map (resEquiv (intEquiv i hi)).toRingHom (redK k (Fin n) ⟨g, hg⟩) = glEquiv (resEquiv (intEquiv i hi)) n (redK k (Fin n) ⟨g, hg⟩) from rfl, Equiv.symm_apply_apply]`.
+
+Rewrite using `[this]`. Conclude with `map_one (Matrix.GeneralLinearGroup.map (resEquiv (intEquiv i hi)).symm.toRingHom)`. Introduce `h`. Rewrite using `[h, map_one]`.
+-/
 private theorem map_mem_KOne_iff {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) :
     Matrix.GeneralLinearGroup.map i.toRingHom g ∈ KOne K (Fin n) ↔ g ∈ KOne k (Fin n) := by
   rw [← redK_eq_one_iff ⟨g, hg⟩, ← redK_eq_one_iff ⟨_, map_mem_KO i hi hg⟩, red_map i hi ⟨g, hg⟩]
@@ -81,6 +100,13 @@ variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module �
   (he : ∀ g x, e (π g x) = P (Matrix.GeneralLinearGroup.map i.toRingHom g) (e x))
 
 include he in
+/- English proof (translation)
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Use `mem_fixed.2 fun y hy => ?_` and prove the remaining obligations. Take `⟨g, hg, rfl⟩` from `exists_KO i hi (GlobalTheory.StepData.KOne_le_KO hy)`.
+
+Use `show P _ (e x) = e x`. Rewrite using `[← he, mem_fixed.1 hx g ((map_mem_KOne_iff i hi hg).1 hy)]`. Introduce `hw`. Use `⟨e.symm w, mem_fixed.2 fun g hg => ?_, by simp⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[he, e.apply_symm_apply, mem_fixed.1 hw _ ((map_mem_KOne_iff i hi (GlobalTheory.StepData.KOne_le_KO hg)).2 hg)]`.
+-/
 private theorem map_fixed :
     (fixed π (KOne k (Fin n))).map (e : V →ₗ[ℂ] W) = fixed P (KOne K (Fin n)) := by
   ext w
@@ -99,6 +125,11 @@ private theorem map_fixed :
 private def fixEquiv : fixed π (KOne k (Fin n)) ≃ₗ[ℂ] fixed P (KOne K (Fin n)) :=
   e.ofSubmodules _ _ (map_fixed i hi π P e he)
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `redK_surjective γ`. Rewrite using `[← red_map i hi g]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[levelZero_apply]`. Use `show e (levelZero π (redK k (Fin n) g) x : V) = P _ (e x)`.
+
+Rewrite using `[levelZero_apply, he]`.
+-/
 private theorem fixEquiv_level (γ : GL (Fin n) 𝓀[k]) (x : fixed π (KOne k (Fin n))) :
     fixEquiv i hi π P e he (levelZero π γ x) =
       levelZero P (Matrix.GeneralLinearGroup.map (resEquiv (intEquiv i hi)).toRingHom γ)
@@ -111,6 +142,9 @@ private theorem fixEquiv_level (γ : GL (Fin n) 𝓀[k]) (x : fixed π (KOne k (
   rw [levelZero_apply, he]
 
 include he in
+/- English proof (translation)
+Establish `h : levelZero P (Matrix.GeneralLinearGroup.map (resEquiv (intEquiv i hi)).toRingHom γ) = (fixEquiv i hi π P e he).conj (levelZero π γ)`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(fixEquiv i hi π P e he).surjective x`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply, fixEquiv_level]`. Rewrite using `[h, LinearMap.trace_conj']`.
+-/
 private theorem trace_level (γ : GL (Fin n) 𝓀[k]) :
     LinearMap.trace ℂ _ (levelZero P (Matrix.GeneralLinearGroup.map (resEquiv (intEquiv i hi)).toRingHom γ)) =
       LinearMap.trace ℂ _ (levelZero π γ) := by
@@ -123,6 +157,13 @@ private theorem trace_level (γ : GL (Fin n) 𝓀[k]) :
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `hJ k _ _ _ _ K _ _ _ _ i hi j hj θ N V W _ _ _ _ π P e he a ha`. Take `⟨hok, hq, hn, hm⟩` from `ha`. Establish `hjr : ∀ x, j (algebraMap _ _ x) = algebraMap _ _ (resEquiv (intEquiv i hi) x)`. Introduce `x`. Take `⟨y, rfl⟩` from `IsLocalRing.residue_surjective x`.
+
+Conclude with `hj y (intEquiv i hi y) rfl`. Use `⟨hok, hq.trans (Nat.card_congr (resEquiv (intEquiv i hi)).toEquiv), hn, ?_⟩` and prove the remaining obligations. Unfold `Meets at hm ⊢`. Rewrite using `[← finsum_comp_equiv (glEquiv (resEquiv (intEquiv i hi)) N)]`. Establish `key : ∀ γ : GL (Fin N) 𝓀[k], star (JD θ a.D a.L N (glEquiv (resEquiv (intEquiv i hi)) N γ)) * LinearMap.trace ℂ _ (levelZero P (glEquiv (resEquiv (intEquiv i hi)) N γ)) = star (JD (θ.comp j.toMonoidHom) a.D a.L N γ) * LinearMap.trace ℂ _ (levelZero π γ)`.
+
+Introduce `γ`. Rewrite using `[← hJ _ _ (resEquiv (intEquiv i hi)) j hjr θ a.D a.L N γ, ← trace_level i hi π P e he γ]`. Both sides reduce to the same expression. Rewrite using `[finsum_congr key]`. Conclude with `hm`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.lblIso :
     JDIso → LblIso := by
   intro hJ k _ _ _ _ K _ _ _ _ i hi j hj θ N V W _ _ _ _ π P e he a ha

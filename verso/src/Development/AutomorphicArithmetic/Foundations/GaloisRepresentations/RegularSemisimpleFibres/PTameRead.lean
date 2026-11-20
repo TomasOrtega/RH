@@ -24,12 +24,18 @@ private noncomputable def toRes (A : ValuationSubring Ω) (F : Type) [Field F] [
       map_zero' := by ext; simp
       map_add' := by intro x y; ext; simp }
 
+/- English proof (translation)
+Unfold `toRes`. Rewrite using `[RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff]`. Conclude with `A.valuation_lt_one_iff _`.
+-/
 private theorem toRes_eq_zero_iff (A : ValuationSubring Ω) {F : Type} [Field F] [NumberField F] [Algebra F Ω] (x : 𝓞 F) :
     toRes A F x = 0 ↔ A.valuation (algebraMap F Ω (x : F)) < 1 := by
   unfold toRes
   rw [RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff]
   exact A.valuation_lt_one_iff _
 
+/- English proof (translation)
+Use `⟨RingHom.liftOfSurjective red hs ⟨toRes A F, fun x hx => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[hk]`. Rewrite using `[RingHom.mem_ker, toRes_eq_zero_iff]`. Conclude with `(hv x).2 hx`. Conclude with `RingHom.liftOfRightInverse_comp_apply _ _ _ _ _`.
+-/
 private theorem exists_emb {A : ValuationSubring Ω} {F : Type} [Field F] [NumberField F] [Algebra F Ω]
     {v : HeightOneSpectrum (𝓞 F)} (hv : IsPlaceOver A v) {K : Type} [Field K] (red : 𝓞 F →+* K)
     (hs : Function.Surjective red) (hk : RingHom.ker red = v.asIdeal) :
@@ -40,6 +46,9 @@ private theorem exists_emb {A : ValuationSubring Ω} {F : Type} [Field F] [Numbe
     exact (hv x).2 hx
   · exact RingHom.liftOfRightInverse_comp_apply _ _ _ _ _
 
+/- English proof (translation)
+Unfold `toRes`. Rewrite using `[RingHom.comp_apply, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `(A.valuation_lt_one_iff _).2 h`.
+-/
 private theorem residue_eq_toRes {A : ValuationSubring Ω} {F : Type} [Field F] [NumberField F] [Algebra F Ω]
     (z : A) (x : 𝓞 F) (h : A.valuation ((z : Ω) - algebraMap F Ω (x : F)) < 1) :
     IsLocalRing.residue A z = toRes A F x := by
@@ -52,6 +61,11 @@ end Res
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Take `⟨t', ht', e⟩` from `DiscreteGroups.sglob.DzType.ine_lift g A w h D.w' D.h' n hn D.unr D.card (t : G E Ω) t.2`. Take `⟨x, hx⟩` from `DiscreteGroups.sglob.DzType.exists_int_approx_compl D.w' _ (DiscreteGroups.sglob.DzType.val_artin_ine D.ha' ⟨t', ht'⟩).le`. Establish `hne` using `DiscreteGroups.sglob.DzType.red_ne_zero_of_approx D.ha' D.ker hx`. Use `⟨⟨t', ht'⟩, x, fun z => by rw [← e]; rfl, hx, ?_⟩` and prove the remaining obligations. Use `hR t ⟨t', ht'⟩ x (Units.mk0 _ hne) e.symm rfl hx` as an intermediate fact.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 private theorem res_read {g n : ℕ} [Fact g.Prime] (hn : 0 < n) (D : UpperTheory.Zero.LLC.Ext h g n) (R : Ine (F := E) A →* D.Kˣ) (hR : D.Res R)
     (t : Ine (F := E) A) : ∃ (t' : Ine (F := D.E') A) (x : 𝓞 D.E'),
       (∀ z : Ω, (t : G E Ω) z = (t' : G D.E' Ω) z) ∧
@@ -67,6 +81,11 @@ private theorem res_read {g n : ℕ} [Fact g.Prime] (hn : 0 < n) (D : UpperTheor
 end UpperTheory.Gal.InertialTypesAlt.TameReduction
 
 open UpperTheory.Gal.InertialTypesAlt.TameReduction in
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A v h g _ m hm D R hR`. Take `⟨ι, hι⟩` from `exists_emb D.h' D.red D.surj D.ker`. Use `⟨ι, fun t ϖ hϖ z hz => ?_⟩` and prove the remaining obligations. Take `⟨t', x, ht, hx, hr⟩` from `res_read hm D R hR t`. Establish `hg` using `DiscreteGroups.sglob.DzType.natCast_mem_of_normV D.w' g m hm D.card`.
+
+Establish `h1` using `UpperTheory.Zero.LLC.tameRecAll D.E' Ω g A D.w' D.h' hg D.unr D.a' D.ha' ϖ (by rw [D.card]; exact hϖ) t' x hx`. Rewrite using `[hr, hι]`. Use `(residue_eq_toRes z x ?_).symm` and prove the remaining obligations. Rewrite using `[hz, ht]`. Conclude with `h1`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.tameRead :
     TameRead := by
   intro E Ω _ _ _ _ _ A v h g _ m hm D R hR

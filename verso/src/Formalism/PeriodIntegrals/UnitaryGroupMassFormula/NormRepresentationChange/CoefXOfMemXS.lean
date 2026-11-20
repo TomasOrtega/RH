@@ -16,6 +16,9 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
 
+/- English proof (translation)
+Establish `hv' : v ∈ Submodule.span E (Set.range F.e)` using `hv`. Establish `hw' : w ∈ Submodule.span E (Set.range F.e)` using `hw`. Establish `hvw' : v + w ∈ Submodule.span E (Set.range F.e)` using `Submodule.add_mem _ hv' hw'`. Simplify using `only [Formalism.MainNotions.S.FlagG.coefX, dif_pos hv', dif_pos hw', dif_pos hvw']`. Rewrite using `[show (⟨v + w, hvw'⟩ : Submodule.span E (Set.range F.e)) = ⟨v, hv'⟩ + ⟨w, hw'⟩ from rfl, map_add, Finsupp.add_apply]`.
+-/
 theorem coefX_add (F : FlagG S r T) {v w : S.V} (hv : v ∈ F.X) (hw : w ∈ F.X) (a : Fin r) :
     F.coefX (v + w) a = F.coefX v a + F.coefX w a := by
   have hv' : v ∈ Submodule.span E (Set.range F.e) := hv
@@ -25,6 +28,9 @@ theorem coefX_add (F : FlagG S r T) {v w : S.V} (hv : v ∈ F.X) (hw : w ∈ F.X
   rw [show (⟨v + w, hvw'⟩ : Submodule.span E (Set.range F.e)) = ⟨v, hv'⟩ + ⟨w, hw'⟩ from rfl, map_add,
     Finsupp.add_apply]
 
+/- English proof (translation)
+Establish `hv' : v ∈ Submodule.span E (Set.range F.e)` using `hv`. Establish `hcv' : c • v ∈ Submodule.span E (Set.range F.e)` using `Submodule.smul_mem _ c hv'`. Simplify using `only [Formalism.MainNotions.S.FlagG.coefX, dif_pos hv', dif_pos hcv']`. Rewrite using `[show (⟨c • v, hcv'⟩ : Submodule.span E (Set.range F.e)) = c • ⟨v, hv'⟩ from rfl, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+-/
 theorem coefX_smul (F : FlagG S r T) {v : S.V} (hv : v ∈ F.X) (c : E) (a : Fin r) :
     F.coefX (c • v) a = c * F.coefX v a := by
   have hv' : v ∈ Submodule.span E (Set.range F.e) := hv
@@ -33,6 +39,9 @@ theorem coefX_smul (F : FlagG S r T) {v : S.V} (hv : v ∈ F.X) (c : E) (a : Fin
   rw [show (⟨c • v, hcv'⟩ : Submodule.span E (Set.range F.e)) = c • ⟨v, hv'⟩ from rfl, map_smul,
     Finsupp.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Establish `he : F.e a' ∈ Submodule.span E (Set.range F.e)` using `Submodule.subset_span ⟨a', rfl⟩`. Establish `hce : c • F.e a' ∈ Submodule.span E (Set.range F.e)` using `Submodule.smul_mem _ c he`. Simplify using `only [Formalism.MainNotions.S.FlagG.coefX, dif_pos hce]`. Rewrite using `[show (⟨c • F.e a', hce⟩ : Submodule.span E (Set.range F.e)) = c • ⟨F.e a', he⟩ from rfl, map_smul, F.e_indep.repr_eq_single a' ⟨F.e a', he⟩ rfl, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem coefX_smul_e (F : FlagG S r T) (c : E) (a' a : Fin r) :
     F.coefX (c • F.e a') a = if a' = a then c else 0 := by
   have he : F.e a' ∈ Submodule.span E (Set.range F.e) := Submodule.subset_span ⟨a', rfl⟩
@@ -42,23 +51,42 @@ theorem coefX_smul_e (F : FlagG S r T) (c : E) (a' a : Fin r) :
     F.e_indep.repr_eq_single a' ⟨F.e a', he⟩ rfl, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `using coefX_smul_e F 1 a' a`.
+-/
 theorem coefX_e (F : FlagG S r T) (a' a : Fin r) : F.coefX (F.e a') a = if a' = a then 1 else 0 := by
   simpa using coefX_smul_e F 1 a' a
 
+/- English proof (translation)
+Establish `h0 : (0 : S.V) ∈ Submodule.span E (Set.range F.e)` using `Submodule.zero_mem _`. Simplify using `only [Formalism.MainNotions.S.FlagG.coefX, dif_pos h0]`. Rewrite using `[show (⟨0, h0⟩ : Submodule.span E (Set.range F.e)) = 0 from rfl, map_zero, Finsupp.zero_apply]`.
+-/
 theorem coefX_zero (F : FlagG S r T) (a : Fin r) : F.coefX 0 a = 0 := by
   have h0 : (0 : S.V) ∈ Submodule.span E (Set.range F.e) := Submodule.zero_mem _
   simp only [Formalism.MainNotions.S.FlagG.coefX, dif_pos h0]
   rw [show (⟨0, h0⟩ : Submodule.span E (Set.range F.e)) = 0 from rfl, map_zero, Finsupp.zero_apply]
 
+/- English proof (translation)
+Conclude with `Submodule.subset_span ⟨a, rfl⟩`.
+-/
 theorem e_mem_X (F : FlagG S r T) (a : Fin r) : F.e a ∈ F.X := by
   exact Submodule.subset_span ⟨a, rfl⟩
 
+/- English proof (translation)
+Take `⟨⟨-, hmap⟩, -, -⟩` from `hn`. Rewrite using `[← hmap]`. Conclude with `Submodule.mem_map_of_mem hv`.
+-/
 theorem nlam_mem {Λ : Submodule (𝓞 E) S.V} {G : LFlag S r T} {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ G)
     {v : S.V} (hv : v ∈ Λ) : n v ∈ Λ := by
   obtain ⟨⟨-, hmap⟩, -, -⟩ := hn
   rw [← hmap]
   exact Submodule.mem_map_of_mem hv
 
+/- English proof (translation)
+Take `⟨-, hflag, -⟩` from `hn`. Establish `h1 : v ∈ Xflag G (r + 1)` using `by show v ∈ G.fl.Xa (r + 1)`. Use `Submodule.span_mono ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨i, show i.1 < r + 1 by have := i.2; omega, rfl⟩`.
+
+Establish `h2` using `hflag r v h1`. Establish `h3 : n v - v ∈ G.fl.X`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨i, -, rfl⟩`. Conclude with `⟨i, rfl⟩`.
+
+Establish `h4` using `G.fl.X.add_mem h3 hv`. Rewrite `h4` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem nlam_X {Λ : Submodule (𝓞 E) S.V} {G : LFlag S r T} {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ G)
     {v : S.V} (hv : v ∈ G.fl.X) : n v ∈ G.fl.X := by
   obtain ⟨-, hflag, -⟩ := hn
@@ -79,13 +107,22 @@ end Gen
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Conclude with `(I : Submodule (𝓞 D.host.E) D.host.E).zero_mem`.
+-/
 theorem fi_zero {D : D7} (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : (0 : D.host.E) ∈ I := by
   exact (I : Submodule (𝓞 D.host.E) D.host.E).zero_mem
 
+/- English proof (translation)
+Conclude with `(I : Submodule (𝓞 D.host.E) D.host.E).add_mem hx hy`.
+-/
 theorem fi_add {D : D7} (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) {x y : D.host.E}
     (hx : x ∈ I) (hy : y ∈ I) : x + y ∈ I := by
   exact (I : Submodule (𝓞 D.host.E) D.host.E).add_mem hx hy
 
+/- English proof (translation)
+Conclude with `(I : Submodule (𝓞 D.host.E) D.host.E).smul_mem o hx`.
+-/
 theorem fi_smul {D : D7} (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) (o : 𝓞 D.host.E)
     {x : D.host.E} (hx : x ∈ I) : o • x ∈ I := by
   exact (I : Submodule (𝓞 D.host.E) D.host.E).smul_mem o hx
@@ -93,6 +130,15 @@ theorem fi_smul {D : D7} (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) 
 abbrev aaI (D : D7) (a : Fin D.R.rS) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E :=
   ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ)))
 
+/- English proof (translation)
+Unfold `XS at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, x, hx, rfl⟩` from `hy`. Use `⟨F0.X.smul_mem x (e_mem_X F0 a), fun b => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[coefX_smul_e]`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hx`. Conclude with `fi_zero _`.
+
+Consider the case `zero => exact ⟨F0.X.zero_mem, fun a => by rw [coefX_zero]; exact fi_zero _⟩`. Consider the case `add y z _ _ hy hz`. Use `⟨F0.X.add_mem hy.1 hz.1, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[coefX_add F0 hy.1 hz.1]`. Conclude with `fi_add _ (hy.2 a) (hz.2 a)`.
+
+Consider the case `smul o y _ hy`. Establish `e : o • y = (o : D.host.E) • y` using `(algebraMap_smul D.host.E o y).symm`. Use `⟨by rw [e]; exact F0.X.smul_mem _ hy.1, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[e, coefX_smul F0 hy.1]`. Conclude with `fi_smul _ o (hy.2 a)`.
+-/
 theorem coefX_of_mem_XS (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) {v : (VS D).V}
     (hv : v ∈ XS D F0) : v ∈ F0.X ∧ ∀ a, F0.coefX v a ∈ aaI D a := by
   unfold XS at hv
@@ -116,6 +162,11 @@ theorem coefX_of_mem_XS (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) {v 
     rw [e, coefX_smul F0 hy.1]
     exact fi_smul _ o (hy.2 a)
 
+/- English proof (translation)
+Unfold `ddS`. Establish `hinj : Function.Injective (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))` using `by first`. Consider the case `exact FaithfulSMul.algebraMap_injective _ _`. Consider the case `exact NoZeroSMulDivisors.algebraMap_injective _ _`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero, Ideal.map_eq_bot_iff_of_injective hinj]`.
+
+Conclude with `differentIdeal_ne_bot`.
+-/
 theorem ddS_ne_zero (D : D7) : ddS D ≠ 0 := by
   unfold ddS
   have hinj : Function.Injective (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) := by
@@ -125,6 +176,15 @@ theorem ddS_ne_zero (D : D7) : ddS D ≠ 0 := by
   rw [Ne, FractionalIdeal.coeIdeal_eq_zero, Ideal.map_eq_bot_iff_of_injective hinj]
   exact differentIdeal_ne_bot
 
+/- English proof (translation)
+Introduce `δ hδ`. Establish `hne` using `ddS_ne_zero D`. Establish `hsplit : ddS D = ddS D ^ m * ddS D ^ (1 - m)`. Rewrite using `[← zpow_add₀ hne, show m + (1 - m) = 1 by ring, zpow_one]`. Establish `h1 : ddS D ^ (m - 1) * ddS D ^ (1 - m) = 1`.
+
+Rewrite using `[← zpow_add₀ hne, show m - 1 + (1 - m) = 0 by ring, zpow_zero]`. Rewrite `hδ` using `[hsplit]`. Establish `hc : c * δ ∈ ddS D ^ (m - 1) * ddS D ^ (1 - m)`. Use `FractionalIdeal.mul_induction_on hδ ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy`.
+
+Establish `e : c * (x * y) = (x * c) * y` using `by ring`. Rewrite using `[e]`. Conclude with `FractionalIdeal.mul_mem_mul (h x hx) hy`. Introduce `x y hx hy`. Rewrite using `[mul_add]`.
+
+Conclude with `((ddS D ^ (m - 1) * ddS D ^ (1 - m) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E).add_mem hx hy`. Rewrite `hc` using `[h1]`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).mp hc`. Conclude with `⟨o, ho⟩`.
+-/
 theorem frac_lemma (D : D7) (c : D.host.E) (m : ℤ) (h : ∀ x ∈ ddS D ^ m, x * c ∈ ddS D ^ (m - 1)) :
     ∀ δ ∈ ddS D, ∃ o : 𝓞 D.host.E, (o : D.host.E) = c * δ := by
   intro δ hδ

@@ -20,6 +20,9 @@ section
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {T : Over S} {G' : Over T.left} [GrpObj G'] {φ : G'.left ⟶ G.left}
 
+/- English proof (translation)
+Set `j : T ≅ Over.mk ((𝟙_ (Over T.left)).hom ≫ T.hom)` to `Over.isoMk (Iso.refl _) (by simp)`. Set `Ψ : (Over.mk ((𝟙_ (Over T.left)).hom ≫ T.hom) ⟶ G) ≃* (T ⟶ G)` to `MulEquiv.ofBijective (preHom j.hom) ⟨fun x y e => (cancel_epi j.hom).1 e, fun y => ⟨j.inv ≫ y, j.hom_inv_id_assoc y⟩⟩`. Conclude with `⟨(ObjPull.pushEquiv h _).trans Ψ, fun σ => Category.id_comp _⟩`.
+-/
 theorem exists_secEquiv (h : IsGrpPullback G' G T.hom φ) :
     ∃ Φ : (𝟙_ (Over T.left) ⟶ G') ≃* (T ⟶ G), ∀ σ, (Φ σ).left = σ.left ≫ φ := by
   let j : T ≅ Over.mk ((𝟙_ (Over T.left)).hom ≫ T.hom) := Over.isoMk (Iso.refl _) (by simp)
@@ -33,11 +36,17 @@ end
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {S : Scheme.{0}}
   {l l₂ : Level H} {B : Type} [CommRing B] {b : Base l B} {b₂ : Base l₂ B} {s : S ⟶ Sp B}
 
+/- English proof (translation)
+Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`.
+-/
 theorem sabMap_lbIso {S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f) :
     LBIso t'.PP.L (t.PP.L.pull m.cm.F) := by
   obtain ⟨w, hw, -⟩ := m.lin
   exact ⟨w, hw⟩
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (g.left ≫ _) ≫ _ = (g.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, m.act, Category.assoc]`.
+-/
 theorem pushEquiv_act {S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f) (T : Over S')
     (c : 𝓞 E) (g : T ⟶ t'.G) :
     ObjPull.pushEquiv m.cart T (g ≫ t'.act.act c) = ObjPull.pushEquiv m.cart T g ≫ t.act.act c := by
@@ -45,6 +54,17 @@ theorem pushEquiv_act {S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' �
   show (g.left ≫ _) ≫ _ = (g.left ≫ _) ≫ _
   rw [Category.assoc, m.act, Category.assoc]
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `exists_secEquiv m.cart`. Use `⟨fun a => Φ (o'.eta a), fun a => Φ (o'.etaA a), ⟨fun a c => ?_, fun a ha => ?_, fun a c => ?_, fun a => ?_, fun a => ?_, fun a => ?_, fun k _ _ x β hx y => ?_⟩, fun a => hΦ _, fun a => hΦ _⟩` and prove the remaining obligations. Simplify using `only [o'.eta_add, map_mul]`. Simplify using `only [o'.eta_ker a ha, map_one]`. Simplify using `only [o'.etaA_add, map_mul]`.
+
+Simplify using `only [o'.etaA_ker, map_one]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← map_pow, hΦ, h1, Over.comp_left, ObjPull.toUnit_left']`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← map_pow, hΦ, h2, Over.comp_left, ObjPull.toUnit_left']`.
+
+Take `⟨x', rfl, rfl⟩ : ∃ (x' : Sp k ⟶ T.left) (h : x' ≫ T.hom = x), y = Over.homMk x' h` from `⟨y.left, Over.w y, rfl⟩`. Take `⟨-, I, hI, hA, hM⟩` from `o'.geom k x' β (by rw [← hx, Category.assoc])`. Establish `key : ∀ σ : 𝟙_ (Over T.left) ⟶ o'.t.G, (Over.homMk x' rfl : Over.mk (x' ≫ T.hom) ⟶ T) ≫ Φ σ = ObjPull.pushEquiv m.cart (Over.mk x') (toUnit _ ≫ σ)` using `fun σ => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[ObjPull.pushEquiv_left, Over.comp_left, Over.comp_left, hΦ, ObjPull.toUnit_left', Category.assoc]`.
+
+Both sides reduce to the same expression. Use `⟨ObjPull.tateMove (ObjPull.pushEquiv m.cart (Over.mk x')).symm (fun c g => ?_) (fun n g g' c hc => ?_) I, hI, fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[MulEquiv.symm_apply_eq, pushEquiv_act, MulEquiv.apply_symm_apply]`. Conclude with `(hW (Over.mk x') n _ _ g g' _ (ObjPull.pushEquiv_symm_left m.cart (Over.mk x') g).symm (ObjPull.pushEquiv_symm_left m.cart (Over.mk x') g').symm).1 hc`. Conclude with `(key _).trans (congrArg _ (hA a))`.
+
+Conclude with `(key _).trans (congrArg _ (hM a ha))`.
+-/
 theorem levStr_of_obj (o : Obj D l b s) (T : Over S) (o' : Obj D l₂ b₂ (T.hom ≫ s)) (m : SABMap o'.t o.t T.hom)
     (hW : ∀ (T' : Over T.left) (k : ℤ) (x y : T' ⟶ o'.t.G) (x₀ y₀ : Over.mk (T'.hom ≫ T.hom) ⟶ o.t.G)
       (c : Γ(T'.left, ⊤)ˣ), x₀.left = x.left ≫ m.φ → y₀.left = y.left ≫ m.φ →
@@ -80,6 +100,17 @@ theorem levStr_of_obj (o : Obj D l b s) (T : Over S) (o' : Obj D l₂ b₂ (T.ho
     · exact (key _).trans (congrArg _ (hA a))
     · exact (key _).trans (congrArg _ (hM a ha))
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `exists_secEquiv m.cart`. Establish `hpr` using `o.proper`. Use `⟨{ t := t' proper := MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 hpr ample := hamp ktriv := hk eta := fun a => Φ.symm (χ a) eta_add := fun a c => by rw [h.add, map_mul] eta_ker := fun a ha => by rw [h.ker a ha, map_one] etaA := fun a => Φ.symm (θ a) etaA_add := fun a …` and prove the remaining obligations. Establish `hx' : (x ≫ T.hom) ≫ s = spMap β` using `by rw [← hx, Category.assoc]`. Take `⟨hdet, -⟩` from `o.geom k (x ≫ T.hom) β hx'`.
+
+Take `⟨I, hI, hA, hM⟩` from `h.geom k (x ≫ T.hom) β hx' (Over.homMk x rfl)`. Rewrite `hdet` using `[hρ]`. Establish `key : ∀ σ : T ⟶ o.t.G, ObjPull.pushEquiv m.cart (Over.mk x) (toUnit _ ≫ Φ.symm σ) = (Over.homMk x rfl : Over.mk (x ≫ T.hom) ⟶ T) ≫ σ` using `fun σ => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[ObjPull.pushEquiv_left, Over.comp_left, Over.comp_left, Category.assoc, ← hΦ, ObjPull.toUnit_left', MulEquiv.apply_symm_apply]`.
+
+Both sides reduce to the same expression. Use `⟨fun τ => ?_, ObjPull.tateMove (ObjPull.pushEquiv m.cart (Over.mk x)) (fun c g => pushEquiv_act m _ c g) (fun n g g' c hc => ?_) I, hI, fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[hLie, hLie]`. Conclude with `hdet τ`. Conclude with `(hW (Over.mk x) n g g' _ _ _ rfl rfl).2 hc`.
+
+Conclude with `(MulEquiv.eq_symm_apply _).2 ((key _).trans (hA a))`. Conclude with `(MulEquiv.eq_symm_apply _).2 ((key _).trans (hM a ha))`. Use `(hΦ _).symm.trans ?_ dsimp only` and prove the remaining obligations. Rewrite using `[map_pow, MulEquiv.apply_symm_apply, h.low, Over.comp_left, ObjPull.toUnit_left']`. Use `(hΦ _).symm.trans ?_ dsimp only` and prove the remaining obligations.
+
+Rewrite using `[map_pow, MulEquiv.apply_symm_apply, h.lowA, Over.comp_left, ObjPull.toUnit_left']`. Conclude with `((hΦ _).symm.trans (by rw [MulEquiv.apply_symm_apply])).symm`. Conclude with `((hΦ _).symm.trans (by rw [MulEquiv.apply_symm_apply])).symm`.
+-/
 theorem obj_of_levStr (o : Obj D l b s) (hρ : b.ρ = b₂.ρ) (T : Over S) (t' : SAB H T.left) (m : SABMap t' o.t T.hom)
     (hW : ∀ (T' : Over T.left) (k : ℤ) (x y : T' ⟶ t'.G) (x₀ y₀ : Over.mk (T'.hom ≫ T.hom) ⟶ o.t.G)
       (c : Γ(T'.left, ⊤)ˣ), x₀.left = x.left ≫ m.φ → y₀.left = y.left ≫ m.φ →
@@ -131,6 +162,23 @@ theorem obj_of_levStr (o : Obj D l b s) (hρ : b.ρ = b₂.ρ) (T : Over S) (t' 
   · exact ((hΦ _).symm.trans (by rw [MulEquiv.apply_symm_apply])).symm
   · exact ((hΦ _).symm.trans (by rw [MulEquiv.apply_symm_apply])).symm
 
+/- English proof (translation)
+Introduce `_ hLie hAb hPol hSim hLift _ hTors hLoc hMult E _ _ _ H D l l₂ B _ b b₂ S s o hpq hl hρ hζ`. Take `⟨hab, hsm, hrig, hsym⟩` from `hPol E H D l B b S s o`. Take `⟨hfree, hfin⟩` from `datum_free D`. Set `P : Out.PolAV S` to `⟨o.t.G, hab, _, hsm, o.t.PP.L, o.t.PP.isLB, hrig, hsym, o.ample, o.ktriv⟩`. Take `⟨V, χ, θ, hV1, hV2, hV3, hV, hext, hex⟩` from `exists_levStr_rep o l₂ b₂ hl hζ (hSim E H D hpq).1 (hLift E H D) (hMult E H D) (fun n hn => hTors S o.t.G n D.La hab (by`.
+
+Use `(b.unit n hn).map (fnOn s)` as an intermediate fact. Rewrite using `[map_natCast] at this))` and apply the resulting hypothesis. Use the proof step `(fun N hN T x y c hu hx hy hc => hLoc S P N T x y c hN hu hx hy hc)`. Choose the witnesses or unpack the hypotheses as in `⟨t', ⟨m₀⟩⟩ : ∃ t' : SAB H V.left, Nonempty (SABMap t' o.t V.hom) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull V.hom o.t`.
+
+Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨-, hamp, hk⟩` from `hAb _ _ o.t.G t'.G V.hom m₀.cm.F o.t.PP.L t'.PP.L o.t.PP.isLB t'.PP.isLB hab m₀.cart (sabMap_lbIso m₀)`. Take `⟨o₂, m, hc, e1, e2⟩` from `obj_of_levStr o hρ V t' m₀ (weilIs_grpPullback_of_comm _ _ o.t.G t'.G V.hom m₀.cm.F o.t.PP.L t'.PP.L o.t.PP.isLB t'.PP.isLB m₀.cart (sabMap_lbIso m₀)) (hLie _ _ _ o.t.G t'.G V.hom m₀.cm.F o.t.act t'.act m₀.cart m₀.act) (hamp o.ample) (hk o.ktriv) hV`. Use `⟨V.left, V.hom, o₂, m, hV1, hV2, hV3, hc, fun T f o' m' ⟨h1, h2⟩ => ?_⟩` and prove the remaining obligations. Take `⟨χ', θ', hT, f1, f2⟩` from `levStr_of_obj o (Over.mk f) o' m' (weilIs_grpPullback_of_comm _ _ o.t.G o'.t.G f m'.cm.F o.t.PP.L o'.t.PP.L o.t.PP.isLB o'.t.PP.isLB m'.cart (sabMap_lbIso m')) h1 h2`.
+
+Take `⟨h, g1, g2⟩` from `hex _ χ' θ' hT`. Establish `huniq : ∀ h' : T ⟶ V.left, (h' ≫ V.hom = f ∧ ∃ u : ObjMap o' o₂ h', u.toSABMap.φ ≫ m.φ = m'.φ) → h' = h.left`. Introduce and unpack `h' ⟨hf, u, hu⟩`. Use `congrArg CommaMorphism.left (hext (Over.mk f) (Over.homMk h' hf) h (fun a => ?_) fun a => ?_)` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[g1, f1, Over.comp_left, e1, ← hu, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ m.φ) (u.eta a).symm`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[g2, f2, Over.comp_left, e2, ← hu, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ m.φ) (u.etaA a).symm`.
+
+Use `⟨h.left, ⟨Over.w h, ?_⟩, huniq⟩` and prove the remaining obligations. Take `⟨h', rfl, rfl⟩ : ∃ (h' : T ⟶ V.left) (e : h' ≫ V.hom = f), h = Over.homMk h' e` from `⟨h.left, Over.w h, rfl⟩`. Take `⟨u, hu⟩` from `sabCancel pullCubCancel E H _ _ _ o.t o₂.t o'.t V.hom h' m m'`. Establish `key : ∀ (σ' : 𝟙_ (Over T) ⟶ o'.t.G) (σ : 𝟙_ (Over V.left) ⟶ o₂.t.G), σ'.left ≫ m'.φ = h' ≫ σ.left ≫ m.φ → σ'.left ≫ u.cm.F = h' ≫ σ.left` using `fun σ' σ e => by`. Apply `m.cart.1.hom_ext` to reduce the goal to its premises.
+
+Conclude with `(Category.assoc _ _ _).trans ((congrArg (σ'.left ≫ ·) hu.symm).trans (e.trans (Category.assoc _ _ _).symm))`. Rewrite using `[Category.assoc, u.cart.1.w, ← Category.assoc, Over.w σ', Category.assoc, Over.w σ]`. Simplify using the standard rewrite rules. Use `⟨⟨u, fun a => key _ _ ?_, fun a => key _ _ ?_⟩, hu.symm⟩` and prove the remaining obligations. Rewrite using `[← f1, ← e1, ← g1]`.
+
+Both sides reduce to the same expression. Rewrite using `[← f2, ← e2, ← g2]`. Both sides reduce to the same expression.
+-/
 theorem levelCover_field : Out.Laws → (∀ (O : Type) [CommRing O] (S S' : Scheme.{0}) (G
     : Over S) (G' : Over S') [GrpObj G] [GrpObj G'] (f : S' ⟶ S) (φ : G'.left ⟶ G.left) (a
     : OAct O G) (a' : OAct O G'), IsGrpPullback G' G f φ → (∀ c, (a'.act c).left ≫ φ = φ ≫ (a.act

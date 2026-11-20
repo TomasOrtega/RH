@@ -11,9 +11,21 @@ section ThQ
 
 variable {C : Type} [NormedField C] [IsUltrametricDist C]
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`.
+-/
 theorem thq_add_le {x y : C} {r : ℝ} (hx : ‖x‖ ≤ r) (hy : ‖y‖ ≤ r) : ‖x + y‖ ≤ r :=
   (IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `succ m ih`. Take `⟨e, he, h⟩` from `ih`. Use `⟨d * ((m + 1 : ℕ) : C) * b ^ m + (b + d) * e, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `thq_add_le` to reduce the goal to its premises. Rewrite using `[norm_mul, norm_mul, norm_pow]`. Establish `h1 : ‖((m + 1 : ℕ) : C)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one C (m + 1)`. Establish `h2 : ‖b‖ ^ m ≤ 1` using `pow_le_one₀ (norm_nonneg _) hb`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : (b + d) ^ (m + 1 + 1) - b ^ (m + 1 + 1) = (b + d) * ((b + d) ^ (m + 1) - b ^ (m + 1)) + d * b ^ (m + 1)` using `by ring`. Rewrite using `[h3, h]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thq_pow_sub (b d : C) (hb : ‖b‖ ≤ 1) (hbd : ‖b + d‖ ≤ 1) (m : ℕ) :
     ∃ e : C, ‖e‖ ≤ ‖d‖ ∧ (b + d) ^ (m + 1) - b ^ (m + 1) = d * (((m + 1 : ℕ) : C) * b ^ m + e) := by
   induction m with
@@ -36,6 +48,15 @@ theorem thq_pow_sub (b d : C) (hb : ‖b‖ ≤ 1) (hbd : ‖b + d‖ ≤ 1) (m 
       push_cast
       ring
 
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m, q = m + 1` from `⟨q - 1, by omega⟩`. Establish `hr0 : 0 ≤ r` using `(norm_nonneg _).trans hab`. Take `⟨e, he, h⟩` from `thq_pow_sub b (a - b) hb (by simpa using ha) m`. Rewrite `h` using `[add_sub_cancel]`. Establish `h1 : (P * a + a ^ (m + 1)) - (P * b + b ^ (m + 1)) = P * (a - b) + (a - b) * (((m + 1 : ℕ) : C) * b ^ m + e)`.
+
+Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Apply `thq_add_le` to reduce the goal to its premises. Rewrite using `[norm_mul]`.
+
+Use `gcongr`. Establish `h2 : ‖((m + 1 : ℕ) : C) * b ^ m + e‖ ≤ ‖P‖`. Apply `thq_add_le` to reduce the goal to its premises. Rewrite using `[norm_mul, norm_pow]`. Establish `h3 : ‖b‖ ^ m ≤ 1` using `pow_le_one₀ (norm_nonneg _) hb`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `he.trans (hab.trans hr)`. Rewrite using `[norm_mul, mul_comm]`. Use `gcongr`.
+-/
 theorem thq_step {P : C} {q : ℕ} (hq : 2 ≤ q) (hqP : ‖(q : C)‖ ≤ ‖P‖) {a b : C}
     (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) {r : ℝ} (hab : ‖a - b‖ ≤ r) (hr : r ≤ ‖P‖) :
     ‖(P * a + a ^ q) - (P * b + b ^ q)‖ ≤ ‖P‖ * r := by
@@ -59,6 +80,9 @@ theorem thq_step {P : C} {q : ℕ} (hq : 2 ≤ q) (hqP : ‖(q : C)‖ ≤ ‖P�
     rw [norm_mul, mul_comm]
     gcongr
 
+/- English proof (translation)
+Apply `thq_add_le` to reduce the goal to its premises. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) ha`.
+-/
 theorem thq_ball {P : C} {q : ℕ} (hP : ‖P‖ ≤ 1) {a : C} (ha : ‖a‖ ≤ 1) : ‖P * a + a ^ q‖ ≤ 1 := by
   apply thq_add_le
   · rw [norm_mul]
@@ -66,6 +90,13 @@ theorem thq_ball {P : C} {q : ℕ} (hP : ‖P‖ ≤ 1) {a : C} (ha : ‖a‖ �
       _ = 1 := one_mul _
   · rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro a b r _ _ hab _`. Simplify `hab` using `[ltIter]`. Consider the case `succ n ih`. Introduce `a b r ha hb hab hr`.
+
+Establish `hr0 : 0 ≤ r` using `(norm_nonneg _).trans hab`. Establish `h1` using `thq_step hq hqP ha hb hab hr`. Establish `h2 : ‖P‖ * r ≤ ‖P‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `ih _ _ _ (thq_ball hP ha) (thq_ball hP hb) h1 h2`.
+
+Establish `e1 : ∀ x : C, ltIter P q (n + 1) x = ltIter P q n (P * x + x ^ q)` using `fun x => by`. Simplify using `only [ltIter, Function.iterate_succ_apply]`. Rewrite using `[e1, e1]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem thq_iter {P : C} {q : ℕ} (hq : 2 ≤ q) (hqP : ‖(q : C)‖ ≤ ‖P‖) (hP : ‖P‖ ≤ 1) (n : ℕ) :
     ∀ (a b : C) (r : ℝ), ‖a‖ ≤ 1 → ‖b‖ ≤ 1 → ‖a - b‖ ≤ r → r ≤ ‖P‖ →
       ‖ltIter P q n a - ltIter P q n b‖ ≤ ‖P‖ ^ n * r := by
@@ -86,6 +117,11 @@ theorem thq_iter {P : C} {q : ℕ} (hq : 2 ≤ q) (hqP : ‖(q : C)‖ ≤ ‖P�
     calc _ ≤ ‖P‖ ^ n * (‖P‖ * r) := h3
       _ = ‖P‖ ^ (n + 1) * r := by ring
 
+/- English proof (translation)
+Proceed by induction on `n generalizing x with`. Consider the case `zero => simp [ltIter]`. Consider the case `succ n ih`. Establish `e1 : ltIter ϖ q (n + 1) x = ltIter ϖ q n (ϖ * x + x ^ q)`. Simplify using `only [ltIter, Function.iterate_succ_apply]`.
+
+Establish `e2 : ltIter (θ ϖ) q (n + 1) (θ x) = ltIter (θ ϖ) q n (θ ϖ * θ x + θ x ^ q)`. Simplify using `only [ltIter, Function.iterate_succ_apply]`. Rewrite using `[e1, e2, ih]`. Simplify using the standard rewrite rules.
+-/
 theorem thq_map {B : Type} [CommRing B] (θ : B →+* C) (ϖ : B) (q n : ℕ) (x : B) :
     θ (ltIter ϖ q n x) = ltIter (θ ϖ) q n (θ x) := by
   induction n generalizing x with
@@ -98,6 +134,11 @@ theorem thq_map {B : Type} [CommRing B] (θ : B →+* C) (ϖ : B) (q n : ℕ) (x
     rw [e1, e2, ih]
     simp
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa [ltIter] using h0`. Consider the case `succ n ih`. Establish `e1 : ltIter P q (n + 1) (w (n + 1)) = ltIter P q n (P * w (n + 1) + w (n + 1) ^ q)`. Simplify using `only [ltIter, Function.iterate_succ_apply]`.
+
+Rewrite using `[e1, add_comm, hw, ih]`.
+-/
 theorem thq_tower {P : C} {q : ℕ} {w : ℕ → C} (h0 : w 0 = 0)
     (hw : ∀ n, w (n + 1) ^ q + P * w (n + 1) = w n) (n : ℕ) : ltIter P q n (w n) = 0 := by
   induction n with
@@ -109,6 +150,17 @@ theorem thq_tower {P : C} {q : ℕ} {w : ℕ → C} (h0 : w 0 = 0)
 
 end ThQ
 
+/- English proof (translation)
+Introduce `B _ S F ϖ C _ _ _ θ hS _ hlt q hq hqP v hv w h0 hw hvw Q hQ hQn`. Establish `hP : ‖θ ϖ‖ ≤ 1` using `hlt.le`. Establish `hwb : ∀ n, ‖w n‖ ≤ 1` using `fun n => by`. Establish `h1 : w n = θ (v n) + -(θ (v n) - w n)` using `by ring`. Rewrite using `[h1]`.
+
+Conclude with `thq_add_le (hS _ (hv n)) (by rw [norm_neg]; exact (hvw n).trans hP)`. Establish `hb : ∀ n, ‖θ Q‖ ≤ ‖θ ϖ‖ ^ (n + 1)` using `fun n => by`. Take `⟨a, ha, hQa⟩` from `hQn n`. Establish `h1 : θ Q = ltIter (θ ϖ) q n (θ (v n)) + θ ϖ ^ (n + 1) * θ a`. Establish `h2 : θ (Q - ltIter ϖ q n (v n)) = θ (ϖ ^ (n + 1) * a)` using `congrArg θ hQa`.
+
+Rewrite `h2` using `[map_sub, thq_map, map_mul, map_pow]`. Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `thq_iter hq hqP hP n (θ (v n)) (w n) _ (hS _ (hv n)) (hwb n) (hvw n) le_rfl`. Rewrite `h3` using `[thq_tower h0 hw n, sub_zero]`.
+
+Rewrite using `[h1]`. Apply `thq_add_le` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hS _ ha`. Use `_ = ‖θ ϖ‖ ^ (n + 1) := mul_one _`. Establish `hlim : Filter.Tendsto (fun n : ℕ => ‖θ ϖ‖ ^ (n + 1)) Filter.atTop (nhds 0)` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hlt).comp (Filter.tendsto_add_atTop_nat 1)`. Establish `h0' : ‖θ Q‖ ≤ 0` using `ge_of_tendsto' hlim hb`. Conclude with `norm_le_zero_iff.mp h0'`.
+-/
 theorem theta_eq_zero_of_congr_torsion : ∀ {B : Type} [CommRing B] {S : Subring B} {F : ℕ → Ideal B} {ϖ : B} {C : Type} [NormedField C] [IsUltrametricDist C], PerEnv S F ϖ →
     ∀ (θ : B →+* C), (∀ s ∈ S, ‖θ s‖ ≤ 1) → θ ϖ ≠ 0 → ‖θ ϖ‖ < 1 → ∀ (q : ℕ), 2 ≤ q → ‖(q : C)‖ ≤ ‖θ ϖ‖ →
     ∀ (v : ℕ → B), (∀ n, v n ∈ S) → ∀ (w : ℕ → C), w 0 = 0 → (∀ n, w (n + 1) ^ q + θ ϖ * w (n + 1) = w n) →

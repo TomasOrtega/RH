@@ -8,6 +8,13 @@ namespace GroundTheory.Heights₂.Heights.Model
 
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Opposite
 
+/- English proof (translation)
+Introduce `X f _ _ p E W₁ W₂ ⟨E₁, hE₁, ⟨α₁⟩⟩ ⟨E₂, hE₂, ⟨α₂⟩⟩`. Take `⟨m, -, hmp, ψ, hψ⟩` from `h₁ X f p (W₁ ⊓ W₂) _ _ (hE₁.pullback_of_isOpenImmersion _) (hE₂.pullback_of_isOpenImmersion _) (overlapIso f (ZLoc p) E α₁ α₂)`. Establish `hV : Set.range (baseChangeMap f (ZLoc p)) ⊆ Set.range (invOpen f m).ι` using `range_baseChangeMap_subset f _ m (isUnit_intCast_zLoc p m (by exact_mod_cast hmp))`. Use `⟨(W₁ ⊔ W₂) ⊓ invOpen f m, ?_, h₂ X f (ZLoc p) E W₁ W₂ E₁ E₂ hE₁ hE₂ α₁ α₂ _ hV ψ hψ⟩` and prove the remaining obligations. Introduce `y hy`.
+
+Establish `hyV : (baseChangeMap f (ZLoc p)).base y ∈ invOpen f m`. Use `hV ⟨y, rfl⟩` as an intermediate fact. Rewrite `this` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis. Use `⟨?_, hyV⟩` and prove the remaining obligations. Break down `hy with hy | hy` into its components or cases.
+
+Conclude with `Or.inl hy`. Conclude with `Or.inr hy`.
+-/
 theorem SpreadStep.proof (h₁ : SpreadIsoLoc.Statement) (h₂ : SpreadGlue.Statement) :
     SpreadStep.Statement := by
   intro X f _ _ p E W₁ W₂ ⟨E₁, hE₁, ⟨α₁⟩⟩ ⟨E₂, hE₂, ⟨α₂⟩⟩

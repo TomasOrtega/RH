@@ -13,22 +13,40 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {j : ℕ}
 
+/- English proof (translation)
+The claim follows from `continuous_snd`.
+-/
 theorem cont_ofSnd : Continuous fun q : ℂ × (Fin j → Fin j → ℂ) => (Matrix.of q.2 : MJ j) := continuous_snd
 
+/- English proof (translation)
+The claim follows from `contDiff_snd`.
+-/
 theorem contDiff_ofSnd : ContDiff ℝ ∞ fun q : ℂ × (Fin j → Fin j → ℂ) => (Matrix.of q.2 : MJ j) := contDiff_snd
 
+/- English proof (translation)
+The claim follows from `contDiff_const.prodMk contDiff_id`.
+-/
 theorem contDiff_pair (τ : ℂ) : ContDiff ℝ ∞ fun Z : MJ j => ((τ, (Z : Fin j → Fin j → ℂ)) : ℂ × (Fin j → Fin j → ℂ)) :=
   contDiff_const.prodMk contDiff_id
 
+/- English proof (translation)
+The claim follows from `isOpen_ne_fun (Continuous.matrix_det continuous_id) continuous_const`.
+-/
 theorem isOpen_inv : IsOpen {Z : MJ j | Z.det ≠ 0} :=
   isOpen_ne_fun (Continuous.matrix_det continuous_id) continuous_const
 
+/- English proof (translation)
+Establish `hd : DifferentiableAt ℝ G q` using `(hG.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hq)`. Conclude with `hd.comp q.1 ((differentiableAt_id).prodMk (differentiableAt_const _))`.
+-/
 theorem diffAt_fst {G : ℂ × (Fin j → Fin j → ℂ) → E} {U : Set (ℂ × (Fin j → Fin j → ℂ))} (hU : IsOpen U)
     (hG : ContDiffOn ℝ ∞ G U) {q : ℂ × (Fin j → Fin j → ℂ)} (hq : q ∈ U) :
     DifferentiableAt ℝ (fun τ : ℂ => G (τ, q.2)) q.1 := by
   have hd : DifferentiableAt ℝ G q := (hG.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hq)
   exact hd.comp q.1 ((differentiableAt_id).prodMk (differentiableAt_const _))
 
+/- English proof (translation)
+Unfold `PBP.dz`. Rewrite using `[show (fun s => F s + G s) = F + G from rfl, (hF.hasFDerivAt.add hG.hasFDerivAt).fderiv]`. Simplify using `only [_root_.add_apply]`. Use `module`.
+-/
 theorem dz_add {F G : ℂ → E} {τ : ℂ} (hF : DifferentiableAt ℝ F τ) (hG : DifferentiableAt ℝ G τ) :
     PBP.dz (fun s => F s + G s) τ = PBP.dz F τ + PBP.dz G τ := by
   unfold PBP.dz
@@ -36,6 +54,9 @@ theorem dz_add {F G : ℂ → E} {τ : ℂ} (hF : DifferentiableAt ℝ F τ) (hG
   simp only [_root_.add_apply]
   module
 
+/- English proof (translation)
+Unfold `PBP.dzb`. Rewrite using `[show (fun s => F s + G s) = F + G from rfl, (hF.hasFDerivAt.add hG.hasFDerivAt).fderiv]`. Simplify using `only [_root_.add_apply]`. Use `module`.
+-/
 theorem dzb_add {F G : ℂ → E} {τ : ℂ} (hF : DifferentiableAt ℝ F τ) (hG : DifferentiableAt ℝ G τ) :
     PBP.dzb (fun s => F s + G s) τ = PBP.dzb F τ + PBP.dzb G τ := by
   unfold PBP.dzb
@@ -43,6 +64,9 @@ theorem dzb_add {F G : ℂ → E} {τ : ℂ} (hF : DifferentiableAt ℝ F τ) (h
   simp only [_root_.add_apply]
   module
 
+/- English proof (translation)
+Unfold `PBP.dz`. Rewrite using `[show (fun s => c • F s) = c • F from rfl, (hF.hasFDerivAt.const_smul c).fderiv]`. Simplify using `only [_root_.smul_apply]`. Use `module`.
+-/
 theorem dz_smul {F : ℂ → E} {τ : ℂ} (hF : DifferentiableAt ℝ F τ) (c : ℂ) :
     PBP.dz (fun s => c • F s) τ = c • PBP.dz F τ := by
   unfold PBP.dz
@@ -50,6 +74,9 @@ theorem dz_smul {F : ℂ → E} {τ : ℂ} (hF : DifferentiableAt ℝ F τ) (c :
   simp only [_root_.smul_apply]
   module
 
+/- English proof (translation)
+Unfold `PBP.dzb`. Rewrite using `[show (fun s => c • F s) = c • F from rfl, (hF.hasFDerivAt.const_smul c).fderiv]`. Simplify using `only [_root_.smul_apply]`. Use `module`.
+-/
 theorem dzb_smul {F : ℂ → E} {τ : ℂ} (hF : DifferentiableAt ℝ F τ) (c : ℂ) :
     PBP.dzb (fun s => c • F s) τ = c • PBP.dzb F τ := by
   unfold PBP.dzb
@@ -57,20 +84,37 @@ theorem dzb_smul {F : ℂ → E} {τ : ℂ} (hF : DifferentiableAt ℝ F τ) (c 
   simp only [_root_.smul_apply]
   module
 
+/- English proof (translation)
+Simplify using `[PBP.dz]`.
+-/
 theorem dz_const (v : E) (τ : ℂ) : PBP.dz (fun _ : ℂ => v) τ = 0 := by simp [PBP.dz]
 
+/- English proof (translation)
+Simplify using `[PBP.dzb]`.
+-/
 theorem dzb_const (v : E) (τ : ℂ) : PBP.dzb (fun _ : ℂ => v) τ = 0 := by simp [PBP.dzb]
 
+/- English proof (translation)
+Use `⟨fun h₁ h₂ Z h => h.eq_of_nhds, fun _ _ _ _ _ _ _ _ _ => rfl, fun _ _ _ _ _ _ _ _ => rfl, ?_⟩` and prove the remaining obligations. Introduce `U κ _ _ hκ`. Conclude with `⟨hκ, fun q _ => ⟨rfl, rfl⟩⟩`.
+-/
 theorem zop_id : ZOp (E := E) (j := j) (fun h => h) := by
   refine ⟨fun h₁ h₂ Z h => h.eq_of_nhds, fun _ _ _ _ _ _ _ _ _ => rfl, fun _ _ _ _ _ _ _ _ => rfl, ?_⟩
   intro U κ _ _ hκ
   exact ⟨hκ, fun q _ => ⟨rfl, rfl⟩⟩
 
+/- English proof (translation)
+Use `⟨fun _ _ _ _ => rfl, fun _ _ _ _ _ _ _ _ _ => by simp, fun _ _ _ _ _ _ _ _ => by simp, ?_⟩` and prove the remaining obligations. Introduce `U κ _ _ _`. Conclude with `⟨contDiffOn_const, fun q _ => ⟨dz_const _ _, dzb_const _ _⟩⟩`.
+-/
 theorem zop_zero : ZOp (E := E) (j := j) (fun _ _ => 0) := by
   refine ⟨fun _ _ _ _ => rfl, fun _ _ _ _ _ _ _ _ _ => by simp, fun _ _ _ _ _ _ _ _ => by simp, ?_⟩
   intro U κ _ _ _
   exact ⟨contDiffOn_const, fun q _ => ⟨dz_const _ _, dzb_const _ _⟩⟩
 
+/- English proof (translation)
+Set `U : Set (ℂ × (Fin j → Fin j → ℂ))` to `{q | (Matrix.of q.2 : MJ j) ∈ V}`. Establish `hU : IsOpen U` using `hV.preimage cont_ofSnd`. Establish `hUi : U ⊆ {q | (Matrix.of q.2).det ≠ 0}` using `fun q hq => hVi hq`. Establish `hκ : ContDiffOn ℝ ∞ (fun q : ℂ × (Fin j → Fin j → ℂ) => (fun _ : ℂ => h) q.1 (Matrix.of q.2)) U` using `hh.comp contDiff_ofSnd.contDiffOn (fun q hq => hq)`. Establish `h1` using `(hT.par U (fun _ => h) hU hUi hκ).1`.
+
+Conclude with `h1.comp (contDiff_pair 0).contDiffOn (fun Z hZ => hZ)`.
+-/
 theorem ZOp.smooth {T : (MJ j → E) → MJ j → E} (hT : ZOp T) {V : Set (MJ j)} (hV : IsOpen V)
     (hVi : V ⊆ {Z | Z.det ≠ 0}) {h : MJ j → E} (hh : ContDiffOn ℝ ∞ h V) : ContDiffOn ℝ ∞ (T h) V := by
   let U : Set (ℂ × (Fin j → Fin j → ℂ)) := {q | (Matrix.of q.2 : MJ j) ∈ V}
@@ -81,6 +125,13 @@ theorem ZOp.smooth {T : (MJ j → E) → MJ j → E} (hT : ZOp T) {V : Set (MJ j
   have h1 := (hT.par U (fun _ => h) hU hUi hκ).1
   exact h1.comp (contDiff_pair 0).contDiffOn (fun Z hZ => hZ)
 
+/- English proof (translation)
+Use `⟨fun h₁ h₂ Z h => by rw [hT.loc _ _ Z h, hS.loc _ _ Z h], ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `V h₁ h₂ hV hVi s₁ s₂ Z hZ`. Rewrite using `[hT.add V h₁ h₂ hV hVi s₁ s₂ Z hZ, hS.add V h₁ h₂ hV hVi s₁ s₂ Z hZ]`. Normalize the expressions using the abelian group laws. Introduce `V c h hV hVi s Z hZ`.
+
+Rewrite using `[hT.smul V c h hV hVi s Z hZ, hS.smul V c h hV hVi s Z hZ, smul_add]`. Introduce `U κ hU hUi hκ`. Take `⟨t1, t2⟩` from `hT.par U κ hU hUi hκ`. Take `⟨s1, s2⟩` from `hS.par U κ hU hUi hκ`. Use `⟨t1.add s1, fun q hq => ?_⟩` and prove the remaining obligations.
+
+Establish `d1` using `diffAt_fst hU t1 hq`. Establish `d2` using `diffAt_fst hU s1 hq`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[dz_add d1 d2, (t2 q hq).1, (s2 q hq).1]`. Rewrite using `[dzb_add d1 d2, (t2 q hq).2, (s2 q hq).2]`.
+-/
 theorem ZOp.add' {T S : (MJ j → E) → MJ j → E} (hT : ZOp T) (hS : ZOp S) :
     ZOp (fun h Z => T h Z + S h Z) := by
   refine ⟨fun h₁ h₂ Z h => by rw [hT.loc _ _ Z h, hS.loc _ _ Z h], ?_, ?_, ?_⟩
@@ -98,6 +149,13 @@ theorem ZOp.add' {T S : (MJ j → E) → MJ j → E} (hT : ZOp T) (hS : ZOp S) :
     · rw [dz_add d1 d2, (t2 q hq).1, (s2 q hq).1]
     · rw [dzb_add d1 d2, (t2 q hq).2, (s2 q hq).2]
 
+/- English proof (translation)
+Use `⟨fun h₁ h₂ Z h => by rw [hT.loc _ _ Z h], ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `V h₁ h₂ hV hVi s₁ s₂ Z hZ`. Rewrite using `[hT.add V h₁ h₂ hV hVi s₁ s₂ Z hZ, smul_add]`. Introduce `V c' h hV hVi s Z hZ`. Rewrite using `[hT.smul V c' h hV hVi s Z hZ, smul_comm]`.
+
+Introduce `U κ hU hUi hκ`. Take `⟨t1, t2⟩` from `hT.par U κ hU hUi hκ`. Establish `hc' : ContDiffOn ℝ ∞ (fun q : ℂ × (Fin j → Fin j → ℂ) => c (Matrix.of q.2)) U` using `hc.comp contDiff_ofSnd.contDiffOn (fun q hq => hUi hq)`. Use `⟨hc'.smul t1, fun q hq => ?_⟩` and prove the remaining obligations. Establish `d1` using `diffAt_fst hU t1 hq`.
+
+Conclude with `⟨by rw [dz_smul d1, (t2 q hq).1], by rw [dzb_smul d1, (t2 q hq).2]⟩`.
+-/
 theorem ZOp.cmul {T : (MJ j → E) → MJ j → E} (hT : ZOp T) {c : MJ j → ℂ}
     (hc : ContDiffOn ℝ ∞ c {Z | Z.det ≠ 0}) : ZOp (fun h Z => c Z • T h Z) := by
   refine ⟨fun h₁ h₂ Z h => by rw [hT.loc _ _ Z h], ?_, ?_, ?_⟩
@@ -113,9 +171,23 @@ theorem ZOp.cmul {T : (MJ j → E) → MJ j → E} (hT : ZOp T) {c : MJ j → �
     have d1 := diffAt_fst hU t1 hq
     exact ⟨by rw [dz_smul d1, (t2 q hq).1], by rw [dzb_smul d1, (t2 q hq).2]⟩
 
+/- English proof (translation)
+The claim follows from `hT.cmul (c := fun _ => c) contDiffOn_const`.
+-/
 theorem ZOp.csmul {T : (MJ j → E) → MJ j → E} (hT : ZOp T) (c : ℂ) : ZOp (fun h Z => c • T h Z) :=
   hT.cmul (c := fun _ => c) contDiffOn_const
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h₁ h₂ Z h`. Apply `hT.loc` to reduce the goal to its premises. Use `filter_upwards [h.eventually_nhds] with Z' hZ'`. Conclude with `hS.loc _ _ Z' hZ'`.
+
+Introduce `V h₁ h₂ hV hVi s₁ s₂ Z hZ`. Establish `e : S (h₁ + h₂) =ᶠ[𝓝 Z] S h₁ + S h₂` using `by filter_upwards [hV.mem_nhds hZ] with Z' hZ'`. Conclude with `hS.add V h₁ h₂ hV hVi s₁ s₂ Z' hZ'`. Rewrite using `[hT.loc _ _ Z e]`. Conclude with `hT.add V (S h₁) (S h₂) hV hVi (hS.smooth hV hVi s₁) (hS.smooth hV hVi s₂) Z hZ`.
+
+Introduce `V c h hV hVi s Z hZ`. Establish `e : S (c • h) =ᶠ[𝓝 Z] c • S h` using `by filter_upwards [hV.mem_nhds hZ] with Z' hZ'`. Conclude with `hS.smul V c h hV hVi s Z' hZ'`. Rewrite using `[hT.loc _ _ Z e]`. Conclude with `hT.smul V c (S h) hV hVi (hS.smooth hV hVi s) Z hZ`.
+
+Introduce `U κ hU hUi hκ`. Take `⟨s1, s2⟩` from `hS.par U κ hU hUi hκ`. Take `⟨t1, t2⟩` from `hT.par U (fun τ => S (κ τ)) hU hUi s1`. Use `⟨t1, fun q hq => ?_⟩` and prove the remaining obligations. Establish `hsl : IsOpen {Z : MJ j | ((q.1, (Z : Fin j → Fin j → ℂ)) : ℂ × (Fin j → Fin j → ℂ)) ∈ U}` using `hU.preimage (contDiff_pair q.1).continuous`.
+
+Establish `e1 : (fun Z => PBP.dz (fun τ => S (κ τ) Z) q.1) =ᶠ[𝓝 (Matrix.of q.2)] S (fun Z => PBP.dz (fun τ => κ τ Z) q.1)` using `by filter_upwards [hsl.mem_nhds (show (q.1, q.2) ∈ U from hq)] with Z hZ`. Conclude with `(s2 (q.1, (Z : Fin j → Fin j → ℂ)) hZ).1`. Establish `e2 : (fun Z => PBP.dzb (fun τ => S (κ τ) Z) q.1) =ᶠ[𝓝 (Matrix.of q.2)] S (fun Z => PBP.dzb (fun τ => κ τ Z) q.1)` using `by filter_upwards [hsl.mem_nhds (show (q.1, q.2) ∈ U from hq)] with Z hZ`. Conclude with `(s2 (q.1, (Z : Fin j → Fin j → ℂ)) hZ).2`. Conclude with `⟨by rw [(t2 q hq).1, hT.loc _ _ _ e1], by rw [(t2 q hq).2, hT.loc _ _ _ e2]⟩`.
+-/
 theorem ZOp.comp {T S : (MJ j → E) → MJ j → E} (hT : ZOp T) (hS : ZOp S) : ZOp (fun h => T (S h)) := by
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro h₁ h₂ Z h
@@ -150,6 +222,9 @@ theorem ZOp.comp {T S : (MJ j → E) → MJ j → E} (hT : ZOp T) (hS : ZOp S) :
       exact (s2 (q.1, (Z : Fin j → Fin j → ℂ)) hZ).2
     exact ⟨by rw [(t2 q hq).1, hT.loc _ _ _ e1], by rw [(t2 q hq).2, hT.loc _ _ _ e2]⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (zop_zero (E := E) (j := j))`. Consider the case `insert a s ha ih`. Establish `h1` using `(hT a (by simp)).add' (ih (fun i hi => hT i (by simp [hi])))`. Simplify `h1` using `[Finset.sum_insert ha]`.
+-/
 theorem zop_sum {ι : Type*} (s : Finset ι) {T : ι → (MJ j → E) → MJ j → E} (hT : ∀ i ∈ s, ZOp (T i)) :
     ZOp (fun h Z => ∑ i ∈ s, T i h Z) := by
   classical
@@ -159,6 +234,9 @@ theorem zop_sum {ι : Type*} (s : Finset ι) {T : ι → (MJ j → E) → MJ j �
     have h1 := (hT a (by simp)).add' (ih (fun i hi => hT i (by simp [hi])))
     simpa [Finset.sum_insert ha] using h1
 
+/- English proof (translation)
+The claim follows from `| [], _ => zop_id | T :: L, h => by simp only [List.foldr_cons] exact (h T (by simp)).comp (zop_foldr L (fun T' hT' => h T' (by simp [hT'])))`.
+-/
 theorem zop_foldr : ∀ L : List ((MJ j → E) → MJ j → E), (∀ T ∈ L, ZOp T) →
     ZOp (fun f => L.foldr (fun T h => T h) f)
   | [], _ => zop_id

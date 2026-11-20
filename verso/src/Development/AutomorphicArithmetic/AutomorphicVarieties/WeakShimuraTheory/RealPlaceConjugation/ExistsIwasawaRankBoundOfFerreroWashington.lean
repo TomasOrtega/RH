@@ -10,6 +10,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Two
 open scoped Classical
 
+/- English proof (translation)
+Take `⟨hfin, hcard⟩` from `h`. Establish `hsurj : Function.Surjective (fun x : S => (⟨f x, Submodule.mem_map_of_mem x.2⟩ : S.map f))`. Introduce and unpack `⟨y, hy⟩`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+
+Conclude with `⟨Finite.of_surjective _ hsurj, (Nat.card_le_card_of_surjective _ hsurj).trans hcard⟩`.
+-/
 private theorem cardLe_map_of_cardLe {R M N : Type} [CommRing R] [AddCommGroup M] [AddCommGroup N] [Module R M] [Module R N]
     (f : M →ₗ[R] N) (S : Submodule R M) (n : ℕ) (h : CardLe S n) : CardLe (S.map f) n := by
   obtain ⟨hfin, hcard⟩ := h
@@ -20,6 +25,39 @@ private theorem cardLe_map_of_cardLe {R M N : Type} [CommRing R] [AddCommGroup M
     exact ⟨⟨x, hx⟩, rfl⟩
   exact ⟨Finite.of_surjective _ hsurj, (Nat.card_le_card_of_surjective _ hsurj).trans hcard⟩
 
+/- English proof (translation)
+Introduce `hFW Ω _ _ _ l _ U hl2 hUo hc hUcyc`. Establish `hl : l.Prime` using `Fact.out`. Establish `hUc : IsClosed (U : Set (G ℚ Ω))` using `Subgroup.isClosed_of_isOpen U hUo`. Use `set K : IntermediateField ℚ Ω := IntermediateField.fixedField U`. Establish `hUK : K.fixingSubgroup = U` using `InfiniteGalois.fixingSubgroup_fixedField ⟨U, hUc⟩`.
+
+Use `haveI : FiniteDimensional ℚ K := (InfiniteGalois.isOpen_iff_finite K).1 (by rw [hUK]; exact hUo)`. Use `haveI : NumberField K := ⟨⟩`. Establish `hgal : galOf ℚ K Ω = U`. Rewrite using `[← hUK]`. Use extensionality with `σ`.
+
+Simplify using `[UpperTheory.V.Base.galOf, IntermediateField.mem_fixingSubgroup_iff]`. Establish `hnorm : U.Normal`. Prove the components needed by the constructor for the conclusion. Introduce `h hh g`. Establish `hcm : g * h * g⁻¹ * h⁻¹ ∈ U` using `hc (Subgroup.commutator_mem_commutator (Subgroup.mem_top g) (Subgroup.mem_top h))`.
+
+Establish `: g * h * g⁻¹ = (g * h * g⁻¹ * h⁻¹) * h` using `by group`. Rewrite using `[this]`. Conclude with `U.mul_mem hcm hh`. Use `haveI : IsGalois ℚ K := (InfiniteGalois.normal_iff_isGalois K).1 (by rw [hUK]; exact hnorm)`. Use `haveI : IsMulCommutative Gal(K/ℚ) := by`.
+
+Prove the components needed by the constructor for the conclusion. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Take `⟨σ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := ℚ) (K₁ := K) Ω a`. Take `⟨τ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := ℚ) (K₁ := K) Ω b`.
+
+Establish `hmem : σ * τ * σ⁻¹ * τ⁻¹ ∈ (AlgEquiv.restrictNormalHom (F` using `ℚ) (K₁ := Ω) K).ker := by erw [IntermediateField.restrictNormalHom_ker K]`. Rewrite using `[hUK]`. Conclude with `hc (Subgroup.commutator_mem_commutator (Subgroup.mem_top σ) (Subgroup.mem_top τ))`. Rewrite `hmem` using `[MonoidHom.mem_ker]`. Simplify using `only [map_mul, map_inv] at hmem`.
+
+Establish `h1` using `congrArg (· * (AlgEquiv.restrictNormalHom K τ) * (AlgEquiv.restrictNormalHom K σ)) hmem`. Simplify using `only [one_mul, inv_mul_cancel_right] at h1`. Conclude with `h1`. Use `haveI : IsAbelianGalois ℚ K := ⟨⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`.
+
+Use `haveI : ∀ i : ℕ, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => by haveI : NeZero (l ^ i) := ⟨pow_ne_zero _ hl.ne_zero⟩ infer_instance`. Establish `hchar : ∀ σ : G ℚ Ω, cycMod ℚ Ω l 1 σ = 1 → galChar Ω (l ^ 1) σ = 1`. Introduce `σ h`. Unfold `ReciprocityTheory.Gal.cycMod ReciprocityTheory.Gal.cycZ at h`. Unfold `UpperTheory.V.Two.galChar`.
+
+Rewrite `h`, the goal using `[Units.ext_iff]`. Simplify using `only [MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe] at h`. Use `erw [cyclotomicCharacter.toZModPow] at h`. Conclude with `h`. Establish `hμ : ∃ ζ : K, IsPrimitiveRoot ζ (if l = 2 then 4 else l)`.
+
+Rewrite using `[if_neg hl2]`. Use `(muIff Ω K (l ^ 1)).2 (by` as an intermediate fact. Rewrite using `[hgal]`. Introduce `σ hσ`. Conclude with `hchar σ (hUcyc hσ))`.
+
+Simplify `this` using `only [pow_one]`. Take `⟨r, hr⟩` from `hFW l K hμ`. Use `⟨r, fun n => ?_⟩` and prove the remaining obligations. Take `⟨hcyc, -, -⟩` from `UpperTheory.V.Kum.fnCyc K Ω l n`. Use `set K' := UpperTheory.V.Kum.Fn K Ω l n`.
+
+Use `haveI : FiniteDimensional K K' := IsCyclotomicExtension.finiteDimensional {l ^ n} K K'`. Use `haveI : FiniteDimensional ℚ K' := Module.Finite.trans K K'`. Use `haveI : NumberField K' := ⟨⟩`. Establish `hcl` using `hr n K'`. Establish `hgo` using `UpperTheory.V.Kum.galOfCyc ℚ Ω l n K K'`.
+
+Rewrite `hgo` using `[hgal]`. Establish `h2 : ∀ m : ZMod l, 2 • m = 0 → m = 0`. Introduce `m hm`. Establish `h2ne : (2 : ZMod l) ≠ 0`. Introduce `h0`.
+
+Establish `: ((2 : ℕ) : ZMod l) = 0` using `by exact_mod_cast h0`. Rewrite `this` using `[ZMod.natCast_eq_zero_iff]`. Conclude with `hl2 ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).1 this)`. Rewrite `hm` using `[nsmul_eq_mul, Nat.cast_ofNat]`. Conclude with `(mul_eq_zero.1 hm).resolve_left h2ne`.
+
+Establish `hpull` using `UpperTheory.V.Kum.pullOnto ℚ Ω K' (levU l U n) hgo.ge 1 (ZMod l) (ZMod l) one_ne_zero hgo.le (Or.inr h2)`. Use `show CardLe (UpperTheory.V.Kum.XDual 1 (levU l U n) (ZMod l) (ZMod l)) (l ^ r)`. Rewrite using `[← hpull]`. Apply `cardLe_map_of_cardLe` to reduce the goal to its premises. Take `⟨hf, hle⟩` from `cardClDual K' l 1`.
+
+Conclude with `⟨hf, hle.trans hcl⟩`.
+-/
 theorem UpperTheory.V.Ws.exists_iwasawaRank_bound_of_ferreroWashington :
     UpperTheory.V.Published.FerreroWashington → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (U : Subgroup (G ℚ Ω)), l ≠ 2 → IsOpen (U : Set (G ℚ Ω)) → commutator (G ℚ Ω) ≤ U → U ≤ (cycMod ℚ Ω l 1).ker → ∃ r : ℕ, ∀ n : ℕ, XRk l 1 (levU l U n) r := by
   intro hFW Ω _ _ _ l _ U hl2 hUo hc hUcyc

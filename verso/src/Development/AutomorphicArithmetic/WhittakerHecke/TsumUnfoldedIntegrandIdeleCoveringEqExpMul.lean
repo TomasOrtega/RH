@@ -8,19 +8,41 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.RankTwoDesce
 open scoped Classical ENNReal NNReal
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
+/- English proof (translation)
+Simplify using `[ab, map_mul]`.
+-/
 private theorem ab_mul' (a b : (A ℚ)ˣ) : ab (a * b) = ab a * ab b := by simp [ab, map_mul]
 
+/- English proof (translation)
+The claim follows from `(IdeleGroup.ideleModule ℚ a).2`.
+-/
 private theorem ab_pos' (a : (A ℚ)ˣ) : 0 < ab a := (IdeleGroup.ideleModule ℚ a).2
 
+/- English proof (translation)
+Simplify using `[ab, map_inv]`.
+-/
 private theorem ab_inv' (a : (A ℚ)ˣ) : ab a⁻¹ = (ab a)⁻¹ := by simp [ab, map_inv]
 
+/- English proof (translation)
+Simplify using `[ab, IdeleGroup.ideleModule_diagonal]`.
+-/
 private theorem ab_diag' (α : ℚˣ) : ab (IdeleGroup.diagonal ℚ α) = 1 := by
   simp [ab, IdeleGroup.ideleModule_diagonal]
 
+/- English proof (translation)
+Establish `h : ((Real.exp x : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.exp_pos x).ne'`. Rewrite using `[Complex.cpow_def_of_ne_zero h, ← Complex.ofReal_log (Real.exp_pos x).le, Real.log_exp]`.
+-/
 private theorem cpow_exp (x : ℝ) (w : ℂ) : ((Real.exp x : ℝ) : ℂ) ^ w = Complex.exp ((x : ℂ) * w) := by
   have h : ((Real.exp x : ℝ) : ℂ) ≠ 0 := by exact_mod_cast (Real.exp_pos x).ne'
   rw [Complex.cpow_def_of_ne_zero h, ← Complex.ofReal_log (Real.exp_pos x).le, Real.log_exp]
 
+/- English proof (translation)
+Take `⟨L, rfl⟩ : ∃ L, r = Real.exp L` from `⟨Real.log r, (Real.exp_log hr).symm⟩`. Establish `h1 : (Real.exp t * (Real.exp L)⁻¹)⁻¹ ^ 2 = Real.exp (2 * L - 2 * t)`. Rewrite using `[← Real.exp_neg, ← Real.exp_add, ← Real.exp_neg, ← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Real.exp t * Real.exp t * ((Real.exp L)⁻¹ * (Real.exp L)⁻¹) = Real.exp (2 * t - 2 * L)`. Rewrite using `[← Real.exp_neg, ← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h1, h2, cpow_exp, cpow_exp, ← Complex.exp_add, Complex.ofReal_exp, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem modid (t r : ℝ) (hr : 0 < r) (s : ℂ) :
     Complex.exp (2 * s * t) * ((((Real.exp t * r⁻¹)⁻¹ ^ 2 : ℝ)) : ℂ) =
       ((Real.exp t * Real.exp t * (r⁻¹ * r⁻¹) : ℝ) : ℂ) ^ (s - 1) * (r : ℂ) ^ (2 * s) := by
@@ -39,36 +61,59 @@ private theorem modid (t r : ℝ) (hr : 0 < r) (s : ℂ) :
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast hr.ne')]`. Conclude with `Complex.exp_ne_zero _`.
+-/
 private theorem cpow_ne {r : ℝ} (hr : 0 < r) (w : ℂ) : (r : ℂ) ^ w ≠ 0 := by
   rw [Complex.cpow_def_of_ne_zero (by exact_mod_cast hr.ne')]
   exact Complex.exp_ne_zero _
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem cg1 {G : Type} [CommGroup G] (e u z : G) :
     e * e * u * (z * z)⁻¹ = (e * u * z⁻¹) * (e * u * z⁻¹) * u⁻¹ := by
   apply Additive.ofMul.injective
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem cg2 {G : Type} [CommGroup G] (e u z : G) :
     e * ((e * u * z⁻¹)⁻¹ * u) = z := by
   apply Additive.ofMul.injective
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem cg3 {G : Type} [CommGroup G] (a u : G) :
     a * a * u⁻¹ = u * (u * a⁻¹)⁻¹ * (u * a⁻¹)⁻¹ := by
   apply Additive.ofMul.injective
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem cg4 {G : Type} [CommGroup G] (a b u : G) :
     (u * a⁻¹) * (b * (a * a * u⁻¹)) = b * a := by
   apply Additive.ofMul.injective
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem gl_mD (a : (A ℚ)ˣ) : (gl (mD a)).val = !![(a : A ℚ), 0; 0, ((a⁻¹ : (A ℚ)ˣ) : A ℚ)] := rfl
 
+/- English proof (translation)
+Establish `h4 : ((u : A ℚ) * ((a⁻¹ : (A ℚ)ˣ) : A ℚ)) * ((b : A ℚ) * ((a : A ℚ) * (a : A ℚ) * ((u⁻¹ : (A ℚ)ˣ) : A ℚ))) = (b : A ℚ) * (a : A ℚ)`. Use `congrArg Units.val (cg4 a b u)` as an intermediate fact. Simplify `this` using `only [Units.val_mul]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+
+Simplify using `[aE, gl_mD, dM, Matrix.GeneralLinearGroup.scalar, Matrix.mul_apply, Fin.sum_univ_two, h4, mul_comm]`.
+-/
 private theorem mat_id (b a u : (A ℚ)ˣ) :
     aE b * gl (mD a) * dM u = Matrix.GeneralLinearGroup.scalar (Fin 2) (u * a⁻¹) * aE (b * (a * a * u⁻¹)) := by
   have h4 : ((u : A ℚ) * ((a⁻¹ : (A ℚ)ˣ) : A ℚ)) * ((b : A ℚ) * ((a : A ℚ) * (a : A ℚ) * ((u⁻¹ : (A ℚ)ˣ) : A ℚ))) = (b : A ℚ) * (a : A ℚ) := by
@@ -78,10 +123,46 @@ private theorem mat_id (b a u : (A ℚ)ˣ) :
   fin_cases i <;> fin_cases j <;>
     simp [aE, gl_mD, dM, Matrix.GeneralLinearGroup.scalar, Matrix.mul_apply, Fin.sum_univ_two, h4, mul_comm]
 
+/- English proof (translation)
+Simplify using `[gl_mD, dM, UpperTheory.ConvolutionTheory.R2.G.row, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 private theorem row_id (a u : (A ℚ)ˣ) (k : G1 ℚ) (j : Fin 2) :
     (gl (mD a) * dM u * gl k).val 1 j = ((a⁻¹ * u : (A ℚ)ˣ) : A ℚ) * row k j := by
   simp [gl_mD, dM, UpperTheory.ConvolutionTheory.R2.G.row, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Introduce `E _ _ D ω χ φ hA hχω Φ s t u hu p hS`. Take `⟨z, k⟩` from `p`. Take `⟨e, he⟩ : ∃ e : (A ℚ)ˣ, e = iy (Real.exp t)` from `⟨_, rfl⟩`. Take `⟨a, ha⟩ : ∃ a : (A ℚ)ˣ, a = e * u * z⁻¹` from `⟨_, rfl⟩`. Take `⟨c, hc⟩ : ∃ c : (A ℚ)ˣ, c = u * a⁻¹` from `⟨_, rfl⟩`.
+
+Take `⟨y, hy⟩ : ∃ y : (A ℚ)ˣ, y = a * a * u⁻¹` from `⟨_, rfl⟩`. Take `⟨x, hx⟩ : ∃ x : GL (Fin 2) (A E), x = em E (gl (mD a) * dM u * gl k)` from `⟨_, rfl⟩`. Take `⟨Φz, hΦz⟩ : ∃ w : ℂ, w = Φ fun j => ((z : (A ℚ)ˣ) : A ℚ) * row k j` from `⟨_, rfl⟩`. Establish `haa : Un.aa t u z = a` using `by rw [ha, he]; rfl`. Establish `hcov : ∀ α : ℚˣ, Un.cov t u α * (z * z)⁻¹ = IdeleGroup.diagonal ℚ α * y` using `fun α => by`.
+
+Establish `h` using `cg1 e u z`. Rewrite `h` using `[← ha, ← hy]`. Rewrite using `[← h, he]`. Simplify using `only [Un.cov, mul_assoc]`. Establish `hrow : (fun j => (iy (Real.exp t) : A ℚ) * (gl (mD a) * dM u * gl k).val 1 j) = fun j => ((z : (A ℚ)ˣ) : A ℚ) * row k j`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[row_id, ← he, ← mul_assoc, ← Units.val_mul, ha, cg2]`. Establish `hTt : Un.Tt φ Φ t u (z, k) = (((ab a)⁻¹ ^ 2 : ℝ) : ℂ) * Un.Fb φ x * Φz` using `by show (((ab (Un.aa t u z))⁻¹ ^ 2 : ℝ) : ℂ) * Un.Fb φ (em E (gl (mD (Un.aa t u z)) * dM u * gl k)) * (Φ fun j => (iy (Real.exp t) : A ℚ) * (gl (mD (Un.aa t u z)) * dM u * gl k).val 1 j) = _`. Rewrite using `[haa, hrow, ← hx, ← hΦz]`. Take `⟨W, hWd⟩ : ∃ W : ℚˣ → ℂ, W = fun α => Wo D φ (em E (aE (IdeleGroup.diagonal ℚ α * y) * gl k))` from `⟨_, rfl⟩`.
+
+Establish `hW : ∀ α : ℚˣ, Wo D φ (em E (aE (IdeleGroup.diagonal ℚ α)) * x) = ((ω.1 c : ℂˣ) : ℂ) ^ 2 * W α` using `fun α => by`. Establish `h : aE (IdeleGroup.diagonal ℚ α) * (gl (mD a) * dM u * gl k) = Matrix.GeneralLinearGroup.scalar (Fin 2) c * (aE (IdeleGroup.diagonal ℚ α * y) * gl k)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hx, ← map_mul, h, map_mul, UpperTheory.whittaker_scalar_mul_eq_centralChar_sq_mul E D ω φ hA, hWd]`. Take `⟨C, hC⟩ : ∃ C : ℂ, C = ((χ.1 y : ℂˣ) : ℂ) * ((ab y : ℝ) : ℂ) ^ (s - 1) * (Φz * ((ab z : ℝ) : ℂ) ^ (2 * s))` from `⟨_, rfl⟩`.
+
+Establish `habd : ∀ α : ℚˣ, ab (IdeleGroup.diagonal ℚ α * y) = ab y` using `fun α => by`. Rewrite using `[ab_mul', ab_diag', one_mul]`. Establish `hχd : ∀ α : ℚˣ, χ.1 (IdeleGroup.diagonal ℚ α * y) = χ.1 y` using `fun α => by`. Establish `h : χ.1 (IdeleGroup.diagonal ℚ α) = 1` using `χ.2.2 α`. Rewrite using `[map_mul, h, one_mul]`.
+
+Establish `hH : ∀ α : ℚˣ, Un.Hh D χ φ Φ s (Un.cov t u α * (z * z)⁻¹, (z, k)) = W α * C` using `fun α => by`. Rewrite using `[hcov α]`. Use `show Wo D φ (em E (aE (IdeleGroup.diagonal ℚ α * y) * gl k)) * ((χ.1 (IdeleGroup.diagonal ℚ α * y) : ℂˣ) : ℂ) * ((ab (IdeleGroup.diagonal ℚ α * y) : ℝ) : ℂ) ^ (s - 1) * ((Φ fun j => ((z : (A ℚ)ˣ) : A ℚ) * row k j) * ((ab z : ℝ) : ℂ) ^ (2 * s)) = _`. Rewrite using `[hχd, habd, ← hΦz, hC, hWd]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hS' : Summable fun α : ℚˣ => W α * C`. Simplify `hS` using `only [hH]`. Simplify using `only [hH]`. Rewrite using `[hTt]`. Distinguish the cases in `h0 : Φz = 0`.
+
+Establish `hC0 : C = 0` using `by rw [hC, h0]; ring`. Simplify using `[h0, hC0]`. Establish `hCne : C ≠ 0`. Rewrite using `[hC]`. Conclude with `mul_ne_zero (mul_ne_zero (Units.ne_zero _) (cpow_ne (ab_pos' y) _)) (mul_ne_zero h0 (cpow_ne (ab_pos' z) _))`.
+
+Establish `hsW : Summable W` using `(summable_mul_right_iff hCne).1 hS'`. Establish `hsum : Summable fun α : ℚˣ => Wo D φ (em E (aE (IdeleGroup.diagonal ℚ α)) * x)`. Simplify using `only [hW]`. Conclude with `hsW.mul_left _`. Establish `hFb : Un.Fb φ x = ((ω.1 c : ℂˣ) : ℂ) ^ 2 * ∑' α, W α`.
+
+Establish `h` using `(UpperTheory.hasSum_whittaker_diagTorus_rat_eq_unipotentConstantTerm E D ω φ hA x hsum).tsum_eq`. Simplify using `only [hW] at h`. Rewrite using `[← h, tsum_mul_left]`. Establish `hchar : ((χ.1 u : ℂˣ) : ℂ) * ((ω.1 c : ℂˣ) : ℂ) ^ 2 = ((χ.1 y : ℂˣ) : ℂ)`. Establish `h2 : ω.1 c ^ 2 = (χ.1 c)⁻¹ * (χ.1 c)⁻¹`.
+
+Establish `h` using `hχω c`. Rewrite `h` using `[mul_pow]`. Rewrite using `[← mul_inv, ← sq]`. Conclude with `eq_inv_of_mul_eq_one_right h`. Establish `h3 : χ.1 y = χ.1 u * ω.1 c ^ 2`.
+
+Rewrite using `[hy, cg3, ← hc, map_mul, map_mul, map_inv, h2, mul_assoc]`. Rewrite using `[h3]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hiy : ab e = Real.exp t`.
+
+Rewrite using `[he, (UpperTheory.realIdele_mul_abs_continuous_and_unit_abs_eq_one).2.1 _ (Real.exp_ne_zero t), abs_of_pos (Real.exp_pos t)]`. Establish `hau : ab u = 1` using `(UpperTheory.realIdele_mul_abs_continuous_and_unit_abs_eq_one).2.2.2 u hu`. Establish `hab : ab a = Real.exp t * (ab z)⁻¹`. Rewrite using `[ha, ab_mul', ab_mul', hiy, hau, ab_inv', mul_one]`. Establish `haby : ab y = Real.exp t * Real.exp t * ((ab z)⁻¹ * (ab z)⁻¹)`.
+
+Rewrite using `[hy, ab_mul', ab_mul', ab_inv', hab, hau]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmod` using `modid t (ab z) (ab_pos' z) s`. Rewrite `hmod` using `[← hab, ← haby]`. Rewrite using `[tsum_mul_right, hFb, hC, ← hchar]`.
+
+Take the linear combination `(((χ.1 u : ℂˣ) : ℂ) * ((ω.1 c : ℂˣ) : ℂ) ^ 2 * (∑' α, W α) * Φz) * hmod`.
+-/
 theorem UpperTheory.tsum_unfoldedIntegrand_ideleCovering_eq_exp_mul :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (ω χ : HChar ℚ) (φ : GL (Fin 2) (A E) → ℂ), admitted D ω φ → (∀ a, (χ.1 a * ω.1 a) ^ 2 = 1) → ∀ (Φ : (Fin 2 → A ℚ) → ℂ) (s : ℂ) (t : ℝ) (u : IdeleGroup ℚ), u ∈ UU →
         ∀ p : IdeleGroup ℚ × G1 ℚ, (Summable fun α : ℚˣ => Un.Hh D χ φ Φ s (Un.cov t u α * (p.1 * p.1)⁻¹, p)) →

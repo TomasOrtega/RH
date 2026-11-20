@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 
 namespace PositivityTheory.Lit1.PTN
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyTrivialClassesAddEquiv.main res pres E Ev h U T hU hT`.
+-/
 theorem addEquiv_of_resCmp {R ι H C : Type} [CommRing R] [AddCommGroup H] [Module R H]
     [AddCommGroup C] {Hv Cv : ι → Type} [∀ v, AddCommGroup (Hv v)] [∀ v, AddCommGroup (Cv v)]
     (res : ∀ v, H →+ Hv v) (pres : ∀ v, C →+ Cv v) (E : H ≃+ C) (Ev : ∀ v, Hv v ≃+ Cv v)
@@ -22,6 +25,9 @@ section FoundSide
 
 attribute [local instance 2000] Rep.hV2
 
+/- English proof (translation)
+Rewrite using `[mem_ptSha, funext_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_ptSha_iff' {G ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {Hv : ι → Type} [∀ v, Group (Hv v)] [∀ v, TopologicalSpace (Hv v)]
     [∀ v, IsTopologicalGroup (Hv v)] (φ : ∀ v, Hv v →ₜ* G) (A : Rep.{0} (ULift.{0} ℤ) G)
@@ -30,6 +36,13 @@ theorem mem_ptSha_iff' {G ι : Type} [Group G] [TopologicalSpace G] [IsTopologic
   rfl
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hT : ∀ n (y : cohomology A n), y ∈ ptSha (gsFinFamily (S : Set (HeightOneSpectrum (𝓞 K))) ιs) A n ↔ ∀ v : S, ptRes (fun v : S => gsFinFamily (S : Set (HeightOneSpectrum (𝓞 K))) ιs ⟨v.1, Finset.mem_coe.2 v.2⟩) A v n y = 0`. Introduce `n y`. Conclude with `(mem_ptSha_iff' (gsFinFamily (S : Set (HeightOneSpectrum (𝓞 K))) ιs) A n y).trans ⟨fun h v => h ⟨v.1, Finset.mem_coe.2 v.2⟩, fun h w => h ⟨w.1, Finset.mem_coe.1 w.2⟩⟩`. Take `⟨E1, Ev1, h1⟩` from `resCmp1' e (locFam S Av) (continuous_locFam S Av) (fun v : S => gsFinFamily (S : Set (HeightOneSpectrum (𝓞 K))) ιs ⟨v.1, Finset.mem_coe.2 v.2⟩) ev (fun v => (hevc v).1) (fun v => (hevc v).2) hev rho hc A eM hM`. Take `⟨E2, Ev2, h2⟩` from `resCmp2B e (locFam S Av) (continuous_locFam S Av) (fun v : S => gsFinFamily (S : Set (HeightOneSpectrum (𝓞 K))) ιs ⟨v.1, Finset.mem_coe.2 v.2⟩) ev (fun v => (hevc v).1) (fun v => (hevc v).2) hev rho hc A eM hM`.
+
+Establish `hU1 : ∀ x, x ∈ Sha1 rho (locFam S Av) (continuous_locFam S Av) ↔ ∀ v, (resH1 rho (locFam S Av v) (continuous_locFam S Av v)).toAddMonoidHom x = 0`. Introduce `x`. Simplify using `only [Sha1, Submodule.mem_iInf, LinearMap.mem_ker]`. Both sides reduce to the same expression. Establish `hU2 : ∀ x, x ∈ Sha2 rho (locFam S Av) (continuous_locFam S Av) ↔ ∀ v, (resH2 rho (locFam S Av v) (continuous_locFam S Av v)).toAddMonoidHom x = 0`.
+
+Introduce `x`. Simplify using `only [Sha2, Submodule.mem_iInf, LinearMap.mem_ker]`. Both sides reduce to the same expression. Conclude with `⟨addEquiv_of_resCmp (fun v => (resH1 rho (locFam S Av v) (continuous_locFam S Av v)).toAddMonoidHom) (fun v => ptRes (fun v : S => gsFinFamily (S : Set (HeightOneSpectrum (𝓞 K))) ιs ⟨v.1, Finset.mem_coe.2 v.2⟩) A v 1) E1 Ev1 h1 _ _ hU1 (hT 1), addEquiv_of_resCmp (fun v => (resH2 …`.
+-/
 theorem shaIso_of_rep (K : IntermediateField ℚ (AlgebraicClosure ℚ)) [NumberField K]
     (S : Finset (HeightOneSpectrum (𝓞 K))) (Av : S → ValuationSubring (AlgebraicClosure ℚ))
     (e : GS (AlgebraicClosure ℚ) (S : Set (HeightOneSpectrum (𝓞 K))) ≃ₜ*

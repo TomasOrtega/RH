@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.HeightCounting.SerMove
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Use `choose F hF using h1`. Establish `hF' : ∀ y k, (F y).1 k = ι (y.1 k)` using `fun y k => hF y k k rfl`. Set `ψ : W →+ W'` to `{ toFun := F map_zero' := Subtype.ext (funext fun k => by rw [hF']; simp) map_add' := fun a b => Subtype.ext (funext fun k => by`. Simplify using `only [Submodule.coe_add, Pi.add_apply, hF', map_add]) }`.
+
+Establish `hb : Function.Bijective ψ`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Use `Subtype.ext (funext fun k => ι.injective ?_)` and prove the remaining obligations. Rewrite using `[← hF', ← hF']`.
+
+Conclude with `congrArg (fun v : W' => v.1 k) hab`. Introduce `y'`. Take `⟨y, hy⟩` from `h2 y'`. Conclude with `⟨y, Subtype.ext (funext fun k => (hF' y k).trans (hy k k rfl).symm)⟩`. Conclude with `⟨AddEquiv.ofBijective ψ hb, fun y k k' hk => hF y k k' hk⟩`.
+-/
 theorem exists_addEquiv_of_coord {L L' R R' : Type} [Field L] [Field L'] [Semiring R] [Semiring R'] {n n' : ℕ}
     [Module R (Fin n → L)] [Module R' (Fin n' → L')] (hn : n = n') (W : Submodule R (Fin n → L))
     (W' : Submodule R' (Fin n' → L')) (ι : L →+* L')
@@ -37,6 +44,11 @@ theorem exists_addEquiv_of_coord {L L' R R' : Type} [Field L] [Field L'] [Semiri
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
+/- English proof (translation)
+Substitute `hH ha hn hj` using the available equality. Take `rfl` from `eq_of_heq hl`. Take `rfl` from `eq_of_heq hc`. Take `rfl` from `eq_of_heq hDw`. Take `rfl` from `eq_of_heq hXo`.
+
+Take `rfl` from `eq_of_heq hU`. Both sides reduce to the same expression.
+-/
 theorem cusp_type_eq_of_heq {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     {H H' : Host E} (hH : H' = H) {l : Level H} {l' : Level H'} (hl : HEq l' l)
     {c : Coeff l} {c' : Coeff l'} (hc : HEq c' c) {Dw : ℕ → Datum H} {Dw' : ℕ → Datum H'} (hDw : HEq Dw' Dw)
@@ -52,12 +64,24 @@ theorem cusp_type_eq_of_heq {E : Type} [Field E] [NumberField E] [IsCMField E] {
   obtain rfl := eq_of_heq hU
   rfl
 
+/- English proof (translation)
+Substitute `hj` using the available equality. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem extendByZero_congr_of_heq {Tau : Type} (p : ℕ → ℕ) {j j' : ℕ} (hj : j' = j) {a : Tau → Fin (p j) → ℕ}
     {a' : Tau → Fin (p j') → ℕ} (h : HEq a' a) (t : Tau) : Formalism.L2.Pj.ext0 (a' t) = Formalism.L2.Pj.ext0 (a t) := by
   subst hj; cases h; rfl
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Consider the cases of `B with | mk P => ?_`. Consider the cases of `B' with | mk P' => ?_`. Simplify using `only at hB`. Substitute `hB` using the available equality. Establish `hH : z'.core.Q.H = z.core.Q.H` using `eq_of_heq hN.H`.
+
+Establish `hκ` using `hN.κ j j' hj`. Establish `ha : Formalism.L2.Pj.wtA (z'.geo.κ j') = Formalism.L2.Pj.wtA (z.geo.κ j)`. Use function extensionality and compare the values at `x`. Unfold `Formalism.L2.Pj.wtA`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Establish `e1 : Formalism.L2.Pj.ext0 ((z'.geo.κ j').aP t) = Formalism.L2.Pj.ext0 ((z.geo.κ j).aP t)` using `extendByZero_congr_of_heq (fun i => ((w.st Z).toD7.R.sigW (i + 1)).1) hj.symm hκ.1 t`. Establish `e2 : Formalism.L2.Pj.ext0 ((z'.geo.κ j').aM t) = Formalism.L2.Pj.ext0 ((z.geo.κ j).aM t)` using `extendByZero_congr_of_heq (fun i => ((w.st Z).toD7.R.sigW (i + 1)).2) hj.symm hκ.2.1 t`. Rewrite using `[e1, e2]`. Both sides reduce to the same expression. Establish `hj1 : (j' : ℕ) + 1 = (j : ℕ) + 1` using `by rw [hj]`.
+
+Establish `M` using `cusp_type_eq_of_heq hH hN.l hN.c hN.Dw hN.Xo hN.U ha hκ.2.2 hj1`. Establish `hn : z'.R.nW j' = z.R.nW j` using `(congrFun (eq_of_heq hN.nW) j').trans (congrArg z.R.nW (Fin.ext hj.symm))`. Use `⟨hn.symm, ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (M :))`.
+-/
 theorem cusp_type_eq_dat {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T}
     {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}
     {Wt' : Set B'.places.Pl} (hB : B'.toPre = B.toPre) (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' T' Wt')
@@ -91,6 +115,11 @@ theorem cusp_type_eq_dat {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPr
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨hn, M⟩` from `cusp_type_eq_dat hB z z' hN j j' hj`. Establish `hinj : Function.Injective (w'.st Z').toD7.what₂.embLL` using `RingHom.injective _`. Use `⟨hn, fun y => ?_, fun y' => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩ : ∃ u, z.geo.fw.e j u = y` from `⟨_, LinearEquiv.apply_symm_apply _ _⟩`. Conclude with `⟨z'.geo.fw.e j' (cast M.symm u), fun k k' hk => hinj ((hN.forms j j' hj u (cast M.symm u) (cast_heq _ _) k k' hk).trans (hφ _).symm)⟩`.
+
+Take `⟨u', rfl⟩ : ∃ u', z'.geo.fw.e j' u' = y'` from `⟨_, LinearEquiv.apply_symm_apply _ _⟩`. Conclude with `⟨z.geo.fw.e j (cast M u'), fun k k' hk => hinj ((hN.forms j j' hj (cast M u') u' (cast_heq _ _).symm k k' hk).trans (hφ _).symm)⟩`.
+-/
 theorem forms_match_dat {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T}
     {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}
     {Wt' : Set B'.places.Pl} (hB : B'.toPre = B.toPre) (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' T' Wt')
@@ -112,6 +141,9 @@ theorem forms_match_dat {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre
     exact ⟨z.geo.fw.e j (cast M u'), fun k k' hk =>
       hinj ((hN.forms j j' hj (cast M u') u' (cast_heq _ _).symm k k' hk).trans (hφ _).symm)⟩
 
+/- English proof (translation)
+Introduce `K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a' j j' hj`. Take `⟨hn, h1, h2⟩` from `forms_match_dat l.enl.1 (datAt x g) (datAt x' g') l.extN ι l.cp.embLL j j' hj`. Conclude with `⟨hn, exists_addEquiv_of_coord hn _ _ ι h1 h2⟩`.
+-/
 theorem forms_corr_link : ∀ {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'} {P : Pre2 K w} {P' : Pre2 K w'} (x : St P) (x' : St P') (ι : (Dof x).what₂.LL →+* (Dof x').what₂.LL) (e : ↥(Dof x').LL0 ≃+* ↥(Dof x).LL0) (g : Geo x) (g' : Geo x'), Link x x' ι e g g' → ∀ (hg : GlobalTheory.RealGeo.InGeo g) (hg' : GlobalTheory.RealGeo.InGeo g') (a : BigHost (Dof x)) (a' : BigHost (Dof x')), ∀ (j : Fin (Dof x).R.m) (j' : Fin (Dof x').R.m), (j : ℕ) = j' → (sideAt x g hg a).R.nW j = (sideAt x' g' hg' a').R.nW j' ∧ ∃ φ : ↥((sideAt x g hg a).R.FW j).WK ≃+ ↥((sideAt x' g' hg' a').R.FW j').WK, ∀ (y : ↥((sideAt x g hg a).R.FW j).WK) (k : Fin ((sideAt x g hg a).R.nW j)) (k' : Fin ((sideAt x' g' hg' a').R.nW j')), (k : ℕ) = k' → (φ y).1 k' = ι (y.1 k) := by
   intro K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a' j j' hj
   obtain ⟨hn, h1, h2⟩ := forms_match_dat l.enl.1 (datAt x g) (datAt x' g') l.extN ι l.cp.embLL j j' hj

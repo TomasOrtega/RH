@@ -7,6 +7,11 @@ open CategoryTheory AlgebraicGeometry Polynomial DividedPowers GlobalTheory.LogC
 
 namespace GlobalTheory.CompanionTheory.LiftFlat
 
+/- English proof (translation)
+Establish `h1 : (MvPolynomial.eval₂Hom i t).Flat`. Use `letI := (MvPolynomial.eval₂Hom i t).toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin d) Λ) D := het`. Conclude with `Algebra.Smooth.flat (MvPolynomial (Fin d) Λ) D`. Establish `h2 : (MvPolynomial.C : Λ →+* MvPolynomial (Fin d) Λ).Flat`.
+
+Rewrite using `[← MvPolynomial.algebraMap_eq, RingHom.flat_algebraMap_iff]`. Use `infer_instance`. Establish `h3` using `RingHom.Flat.comp h2 h1`. Rewrite `h3` using `[MvPolynomial.eval₂Hom_comp_C]`. Then use the resulting hypothesis.
+-/
 theorem flat_of_eval₂Hom_etale {Λ D : Type} [CommRing Λ] [CommRing D] (i : Λ →+* D) {d : ℕ}
     (t : Fin d → D) (het : (MvPolynomial.eval₂Hom i t).Etale) : i.Flat := by
   have h1 : (MvPolynomial.eval₂Hom i t).Flat := by
@@ -19,6 +24,23 @@ theorem flat_of_eval₂Hom_etale {Λ D : Type} [CommRing Λ] [CommRing D] (i : �
   have h3 := RingHom.Flat.comp h2 h1
   rwa [MvPolynomial.eval₂Hom_comp_C] at h3
 
+/- English proof (translation)
+Use `letI : Algebra (MvPolynomial (Fin d) Λ) D := (MvPolynomial.eval₂Hom i t).toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin d) Λ) D := het`. Set `q : D →+* D ⧸ Ideal.span ({μ} : Set D)` to `Ideal.Quotient.mk _`. Establish `hcomm : (q.comp g).comp (MvPolynomial.eval₂Hom i t) = q.comp (MvPolynomial.eval₂Hom i t)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+
+Introduce `r`. Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C]`. Rewrite using `[← RingHom.comp_apply g i, hgi]`. Introduce `k`. Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_X']`.
+
+Conclude with `Ideal.Quotient.eq.mpr (hgt k)`. Set `φ₁ : D →ₐ[MvPolynomial (Fin d) Λ] D ⧸ Ideal.span ({μ} : Set D)` to `Ideal.Quotient.mkₐ _ _`. Set `φ₂ : D →ₐ[MvPolynomial (Fin d) Λ] D ⧸ Ideal.span ({μ} : Set D)` to `{ (q.comp g) with commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `q (g (algebraMap _ D a)) = q (algebraMap _ D a)`. Conclude with `RingHom.congr_fun hcomm a }`.
+
+Take `⟨S, hS⟩` from `(Algebra.FiniteType.out : (⊤ : Subalgebra (MvPolynomial (Fin d) Λ) D).FG)`. Set `I : Ideal (D ⧸ Ideal.span ({μ} : Set D))` to `Ideal.span ((fun s => q (g s - s)) '' (S : Set D))`. Establish `hfg : I.FG` using `Submodule.fg_span (S.finite_toSet.image _)`. Establish `hnil : IsNilpotent I`. Rewrite using `[Ideal.FG.isNilpotent_iff_le_nilradical hfg]`.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨s, -, rfl⟩`. Conclude with `mem_nilradical.mpr ((hJ _ (hgJ s)).map q)`. Establish `hψ : (Ideal.Quotient.mkₐ (MvPolynomial (Fin d) Λ) I).comp φ₁ = (Ideal.Quotient.mkₐ (MvPolynomial (Fin d) Λ) I).comp φ₂`. Apply `AlgHom.ext_of_adjoin_eq_top hS` to reduce the goal to its premises.
+
+Introduce `s hs`. Establish `hmem : q (g s - s) ∈ I` using `Ideal.subset_span ⟨s, hs, rfl⟩`. Rewrite `hmem` using `[map_sub]`. Use `show Ideal.Quotient.mk I (q s) = Ideal.Quotient.mk I (q (g s))`. Conclude with `(Ideal.Quotient.eq.mpr hmem).symm`.
+
+Establish `hφ : φ₁ = φ₂`. Apply `Algebra.FormallyUnramified.ext I hnil` to reduce the goal to its premises. Introduce `x`. Conclude with `congrArg (fun ψ : D →ₐ[MvPolynomial (Fin d) Λ] _ => ψ x) hψ`. Establish `hz : q z = q (g z)` using `congrArg (fun ψ : D →ₐ[MvPolynomial (Fin d) Λ] _ => ψ z) hφ`.
+
+Conclude with `Ideal.Quotient.eq.mp hz.symm`.
+-/
 theorem sub_mem_span_of_etale {Λ D : Type} [CommRing Λ] [CommRing D] (i : Λ →+* D) {d : ℕ}
     (t : Fin d → D) (het : (MvPolynomial.eval₂Hom i t).Etale) (J : Ideal D) (μ : D) (g : D →+* D)
     (hJ : ∀ x ∈ J, IsNilpotent x) (hgi : g.comp i = i)
@@ -66,6 +88,9 @@ theorem sub_mem_span_of_etale {Λ D : Type} [CommRing Λ] [CommRing D] (i : Λ �
   have hz : q z = q (g z) := congrArg (fun ψ : D →ₐ[MvPolynomial (Fin d) Λ] _ => ψ z) hφ
   exact Ideal.Quotient.eq.mp hz.symm
 
+/- English proof (translation)
+Introduce `Λ D _ _ i d t het`. Conclude with `⟨flat_of_eval₂Hom_etale i t het, fun J μ g hJ hgi hgt hgJ z => sub_mem_span_of_etale i t het J μ g hJ hgi hgt hgJ z⟩`.
+-/
 theorem lift_flat : ∀ {Λ D : Type} [CommRing Λ] [CommRing D] (i : Λ →+* D) {d : ℕ} (t : Fin d → D), (MvPolynomial.eval₂Hom i t).Etale → i.Flat ∧ ∀ (J : Ideal D) (μ : D) (g : D →+* D), (∀ x ∈ J, IsNilpotent x) → g.comp i = i → (∀ k, g (t k) - t k ∈ Ideal.span {μ}) → (∀ z, g z - z ∈ J) → ∀ z, g z - z ∈ Ideal.span {μ} := by
   intro Λ D _ _ i d t het
   exact ⟨flat_of_eval₂Hom_etale i t het, fun J μ g hJ hgi hgt hgJ z =>

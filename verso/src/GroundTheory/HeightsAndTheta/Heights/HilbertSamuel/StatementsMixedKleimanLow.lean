@@ -32,6 +32,9 @@ def MixedKleiman.TopAt (d : ℕ) : Prop :=
     (∀ W, IsArithVar W 1 → P ≤ W → 0 ≤ II K ι W 1 ![M]) →
     0 ≤ II K ι P d (fun _ => M)
 
+/- English proof (translation)
+Introduce `K _ ι _ P P0 M A a II _ h1`. Conclude with `absurd h1 (by norm_num)`.
+-/
 theorem MixedKleiman.atDim_zero : MixedKleiman.AtDim 0 := by
   intro K _ ι _ P P0 M A a II _ h1
   exact absurd h1 (by norm_num)

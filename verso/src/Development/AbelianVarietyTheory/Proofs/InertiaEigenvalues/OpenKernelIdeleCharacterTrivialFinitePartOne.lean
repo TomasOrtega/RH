@@ -16,6 +16,27 @@ namespace GlobalTheory.UnivCover.OpenKerChar
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D A _ χ hχ x hx`. Take `⟨hcm, -⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Establish `hfam : GlobalTheory.Mem.Vol.IsCMFam (fun w : InfinitePlace D.host.E => w.embedding)`. Unfold `GlobalTheory.Mem.Vol.IsCMFam`. Simplify using `only [InfinitePlace.mk_embedding]`.
+
+Conclude with `Function.bijective_id`. Use `choose θ hθ using fun w : InfinitePlace D.host.E => (GlobalTheory.Mem.VolEmb.existsUnique_infEmb D.host.F D.host.E D.sp.cm.sig hcm w.embedding).exists`. Take `⟨e2, -, hc2, hc2', -⟩` from `GlobalTheory.Mem.VolInfIso.exists_infAdele_equiv D.host.F D.host.E D.sp.cm.sig (InfinitePlace D.host.E) _ θ hcm hfam hθ`. Take `⟨e1, he1, hc1, hc1'⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `h2 : (e1 (x : AE D)).2 = 1` using `(he1 _).2.trans hx`.
+
+Use `set c : InfinitePlace D.host.E → ℂ := e2 (e1 (x : AE D)).1 with hcdef`. Establish `hcu : IsUnit c`. Establish `hu : IsUnit (e1 (x : AE D))` using `x.isUnit.map e1`. Conclude with `(Prod.isUnit_iff.1 hu).1.map e2`. Establish `hc0 : ∀ w, c w ≠ 0` using `fun w => (Pi.isUnit_iff.1 hcu w).ne_zero`.
+
+Set `p : ℝ → (InfinitePlace D.host.E → ℂ)` to `fun t w => Complex.exp (t * Complex.log (c w))`. Set `γ : ℝ → AE D` to `fun t => e1.symm (e2.symm (p t), 1)`. Establish `hpc : Continuous p` using `continuous_pi fun w => Complex.continuous_exp.comp (Complex.continuous_ofReal.mul continuous_const)`. Establish `hγc : Continuous γ` using `hc1'.comp ((hc2'.comp hpc).prodMk continuous_const)`. Establish `hpmul : ∀ s t, p s * p t = p (s + t)` using `fun s t => by`.
+
+Use function extensionality and compare the values at `w`. Simplify using `only [p, Pi.mul_apply, ← Complex.exp_add, Complex.ofReal_add, add_mul]`. Establish `hγmul : ∀ s t, γ s * γ t = γ (s + t)` using `fun s t => by`. Simplify using `only [γ, ← map_mul, Prod.mk_mul_mk, mul_one, hpmul]`. Establish `hp0 : p 0 = 1` using `by funext w; simp [p]`.
+
+Establish `hγ0 : γ 0 = 1` using `by simp only [γ, hp0, map_one, Prod.mk_one_one]`. Establish `hp1 : p 1 = c` using `by funext w; simp [p, Complex.exp_log (hc0 w)]`. Establish `hγ1 : γ 1 = x`. Simplify using `only [γ, hp1, hcdef, RingEquiv.symm_apply_apply]`. Rewrite using `[← h2, Prod.mk.eta, RingEquiv.symm_apply_apply]`.
+
+Establish `hr : ∀ t, γ t * γ (-t) = 1` using `fun t => (hγmul t (-t)).trans ((congrArg γ (add_neg_cancel t)).trans hγ0)`. Establish `hl : ∀ t, γ (-t) * γ t = 1` using `fun t => (hγmul (-t) t).trans ((congrArg γ (neg_add_cancel t)).trans hγ0)`. Set `f : ℝ → (AE D)ˣ` to `fun t => Units.mk (γ t) (γ (-t)) (hr t) (hl t)`. Establish `hf : Continuous f` using `Units.continuous_iff.2 ⟨hγc, hγc.comp continuous_neg⟩`. Establish `hcl : IsClosed (χ.ker : Set (AE D)ˣ)` using `Subgroup.isClosed_of_isOpen _ hχ`.
+
+Establish `hS : IsClopen (f ⁻¹' (χ.ker : Set (AE D)ˣ))` using `⟨hcl.preimage hf, hχ.preimage hf⟩`. Establish `h0 : (0 : ℝ) ∈ f ⁻¹' (χ.ker : Set (AE D)ˣ)`. Establish `: f 0 = 1` using `Units.ext hγ0`. Simplify using `[this]`. Break down `isClopen_iff.1 hS with h | h` into its components or cases.
+
+Rewrite `h0` using `[h]`. Conclude with `absurd h0 (Set.notMem_empty _)`. Establish `h1 : (1 : ℝ) ∈ f ⁻¹' (χ.ker : Set (AE D)ˣ)` using `h ▸ Set.mem_univ _`. Establish `hf1 : f 1 = x` using `Units.ext hγ1`. Rewrite `h1` using `[Set.mem_preimage, hf1]`.
+
+Conclude with `h1`.
+-/
 theorem map_eq_one_of_finPart_eq_one : ∀ (D : D7) {A : Type} [Group A] (χ : (AE D)ˣ →* A),
     IsOpen (χ.ker : Set (AE D)ˣ) → ∀ x : (AE D)ˣ, finPart D (x : AE D) = 1 → χ x = 1 := by
   intro D A _ χ hχ x hx

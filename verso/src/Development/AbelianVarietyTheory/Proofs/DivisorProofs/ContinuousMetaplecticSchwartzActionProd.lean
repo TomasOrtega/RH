@@ -8,6 +8,25 @@ noncomputable section
 
 namespace GlobalTheory.RealWeil
 
+/- English proof (translation)
+Establish `hjoint : Continuous fun x : G × L2 l => om x.1 x.2` using `continuous_prod_of_continuous_lipschitzWith' (fun x : G × L2 l => om x.1 x.2) 1 (fun g => (om g).isometry.lipschitz) hom`. Apply the tactic sequence `have hentry : ∀ a b, Continuous fun g => (pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ) a b := fun a b => by`. Establish `hv : Continuous fun g => (pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ)` using `(continuous_subtype_val (p := fun M => M ∈ Matrix.symplecticGroup l ℝ)).comp hpr`. Conclude with `(continuous_apply b).comp ((continuous_apply a).comp hv)`. Establish `key : ∀ {A : Sch l →L[ℂ] Sch l}, A ∈ weylAlg l → Continuous fun x : G × Sch l => schwartzToL2 l (A (omS x.1 x.2))`.
+
+Introduce `A hA`. Use `weylAlg_induction (P := fun A => Continuous fun x : G × Sch l => schwartzToL2 l (A (omS x.1 x.2))) ?_ ?_ ?_ ?_ ?_ hA` and prove the remaining obligations. Establish `e : (fun x : G × Sch l => schwartzToL2 l ((1 : Sch l →L[ℂ] Sch l) (omS x.1 x.2))) = fun x => om x.1 (schwartzToL2 l x.2)`. Use function extensionality and compare the values at `x`. Simplify using `only [ContinuousLinearMap.one_apply, schwartzToL2_apply, h4]`.
+
+Rewrite using `[e]`. Conclude with `hjoint.comp (continuous_fst.prodMk ((schwartzToL2 l).continuous.comp continuous_snd))`. Introduce `A w ih`. Simplify using `only [toLp_dRho_omS h3 h4]`. Use `continuous_finset_sum _ fun a _ => ?_` and prove the remaining obligations.
+
+Establish `hih : Continuous fun x : G × Sch l => schwartzToL2 l (A (omS x.1 (dRho (Pi.single a 1) x.2)))` using `ih.comp (continuous_fst.prodMk ((dRho (Pi.single a 1)).continuous.comp continuous_snd))`. Use `Continuous.smul (M := ℂ) ?_ hih` and prove the remaining obligations. Use `continuous_ofReal.comp ?_` and prove the remaining obligations. Simplify using `only [mulVec, dotProduct, Matrix.neg_apply, Matrix.mul_apply, transpose_apply]`. Apply the tactic sequence `exact continuous_finset_sum _ fun b _ => Continuous.mul (Continuous.neg (continuous_finset_sum _ fun c _ => Continuous.mul (continuous_finset_sum _ fun d _ => continuous_const.mul ((hentry _ _).comp continuous_fst)) continuous_const)) continuous_const`.
+
+Simplify using `only [ContinuousLinearMap.zero_apply, map_zero]`. Conclude with `continuous_const`. Introduce `A B hA hB`. Simplify using `only [ContinuousLinearMap.add_apply, map_add]`. Conclude with `hA.add hB`.
+
+Introduce `c A hA`. Simplify using `only [ContinuousLinearMap.smul_apply, map_smul]`. Conclude with `hA.const_smul c`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x0`.
+
+Unfold `ContinuousAt`. Rewrite using `[(schwartz_withSeminorms ℂ (EuclideanSpace ℝ l) ℂ).tendsto_nhds]`. Introduce and unpack `⟨k, n⟩ ε hε`. Take `⟨A, hA, hb⟩` from `exists_seminorm_le (l := l) k n`. Establish `ht : Filter.Tendsto (fun x : G × Sch l => ∑ r, ‖schwartzToL2 l (A r (omS x.1 x.2)) - schwartzToL2 l (A r (omS x0.1 x0.2))‖) (nhds x0) (nhds 0)`.
+
+Establish `: (0 : ℝ) = ∑ r : Fin n → l, ‖schwartzToL2 l (A r (omS x0.1 x0.2)) - schwartzToL2 l (A r (omS x0.1 x0.2))‖` using `by simp`. Rewrite using `[this]`. Conclude with `tendsto_finset_sum _ fun r _ => ((((key (hA r)).sub continuous_const).norm).tendsto x0)`. Use `filter_upwards [ht.eventually (gt_mem_nhds hε)] with x hx`. Use `lt_of_le_of_lt ?_ hx` and prove the remaining obligations.
+
+Rewrite using `[SchwartzMap.schwartzSeminormFamily_apply]`. Use `(hb _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← schwartzToL2_apply, map_sub, map_sub]`.
+-/
 theorem continuous_omS_prod (l : Type) [Fintype l] [DecidableEq l] (G : Type) [Group G] [TopologicalSpace G]
     (pr : G →* Matrix.symplecticGroup l ℝ) (om : G →* (L2 l ≃ₗᵢ[ℂ] L2 l)) (omS : G →* (Sch l →L[ℂ] Sch l))
     (hpr : Continuous pr) (hom : ∀ f : L2 l, Continuous fun g => om g f)

@@ -19,6 +19,13 @@ section Frames
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}} {L : LB X}
 
+/- English proof (translation)
+Establish `hch : ∀ z, ∃ j, ⊤ ≤ c z ⁻¹ᵁ L.U j` using `fun z => by`. Establish `: c z (default : PrimeSpectrum ℂ) ∈ ⨆ i, L.U i` using `by rw [hL.cover]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Conclude with `⟨j, (HolHom.le_preimage_iff _ _).2 hj⟩`. Use `⟨hch, ?_⟩` and prove the remaining obligations.
+
+Use `choose J hJ using hch`. Establish `key : ∀ j z, ⊤ ≤ c z ⁻¹ᵁ L.U j → fr j z = fr (J z) z / fr' (J z) z * fr' j z` using `fun j z hz => by`. Establish `h : ⊤ ≤ c z ⁻¹ᵁ (L.U j ⊓ L.U (J z))` using `le_inf hz (hJ z)`. Rewrite using `[hg j _ z h, hg' j _ z h]`. Clear denominators, using `[h0' _ z (hJ z)]` for the nonvanishing conditions.
+
+Use `⟨fun z => fr (J z) z / fr' (J z) z, fun z => ?_, fun z => div_ne_zero (h0 _ z (hJ z)) (h0' _ z (hJ z)), key⟩` and prove the remaining obligations. Establish `hn : {t | ⊤ ≤ c t ⁻¹ᵁ L.U (J z)} ∈ 𝓝 z` using `(HolHom.holAt_of_isHolTo hc (Set.mem_univ z) _ (hJ z)).1`. Use `(((hd (J z)).differentiableAt hn).mul (((hd' (J z)).differentiableAt hn).inv (h0' _ z (hJ z)))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hn] with t ht`. Rewrite using `[Pi.mul_apply, Pi.inv_apply, key _ t ht, mul_inv_cancel_right₀ (h0' _ t ht)]`.
+-/
 theorem exists_frame_ratio (hL : L.IsLB) {c : V → (Sp ℂ ⟶ X)} (hc : IsHolTo Set.univ c) {fr fr' : L.ι → V → ℂ}
     (hd : ∀ j, DifferentiableOn ℂ (fr j) {z | ⊤ ≤ c z ⁻¹ᵁ L.U j}) (h0 : ∀ j z, ⊤ ≤ c z ⁻¹ᵁ L.U j → fr j z ≠ 0)
     (hg : ∀ j j' z, ⊤ ≤ c z ⁻¹ᵁ (L.U j ⊓ L.U j') →
@@ -45,6 +52,13 @@ theorem exists_frame_ratio (hL : L.IsLB) {c : V → (Sp ℂ ⟶ X)} (hc : IsHolT
   filter_upwards [hn] with t ht
   rw [Pi.mul_apply, Pi.inv_apply, key _ t ht, mul_inv_cancel_right₀ (h0' _ t ht)]
 
+/- English proof (translation)
+Establish `hn : ∀ z, ⊤ ≤ c z ⁻¹ᵁ U → {t | ⊤ ≤ c t ⁻¹ᵁ U} ∈ 𝓝 z` using `fun z hz => (HolHom.holAt_of_isHolTo hc (Set.mem_univ z) _ hz).1`. Establish `hcont : ∀ z, ⊤ ≤ c z ⁻¹ᵁ U → ContinuousAt fr z` using `fun z hz => hd.continuousOn.continuousAt (hn z hz)`. Establish `hdense` using `ThetaSeparation.dense_ne_zero hθ (Function.ne_iff.1 h0)`. Establish `h1 : ContinuousAt (fun z => a z * fr (z + p)) z` using `ha.continuousAt.mul (ContinuousAt.comp (f := fun z => z + p) (hcont _ (by rw [hp]; exact hz)) (by fun_prop))`. Use `tendsto_nhds_unique_of_frequently_eq (hcont z hz) h1 ?_` and prove the remaining obligations.
+
+Use `((mem_closure_iff_frequently.1 (hdense z)).and_eventually (hn z hz)).mono fun y hy => ?_` and prove the remaining obligations. Establish `h3` using `hper y hy.2`. Rewrite `h3` using `[hlaw]`. Apply `mul_left_cancel₀ hy.1` to reduce the goal to its premises. Rewrite using `[← h3]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frame_law_of_periodic [FiniteDimensional ℂ V] {c : V → (Sp ℂ ⟶ X)} (hc : IsHolTo Set.univ c) {U : X.Opens}
     {fr θ a : V → ℂ} {p : V} (hd : DifferentiableOn ℂ fr {z | ⊤ ≤ c z ⁻¹ᵁ U}) (hθ : Differentiable ℂ θ) (h0 : θ ≠ 0)
     (ha : Continuous a) (hp : ∀ z, c (z + p) = c z) (hlaw : ∀ z, θ (z + p) = a z * θ z)
@@ -71,6 +85,13 @@ open ReciprocityTheory.PTheta
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Establish `hre : ∀ {a : Fin g → ℂ}, (∀ i, a i = 0 ∨ a i = 1 / 2) → ofRealVec (fun i => (a i).re) = a` using `fun {a} ha => by`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases ha i with h | h <;> simp [ofRealVec, h]`. Establish `key : ∀ a b : Fin g → ℝ, thetaChar τ (ofRealVec a) (ofRealVec b) = fun z => theta a b z τ` using `fun a b => by`. Use function extensionality and compare the values at `z`.
+
+Unfold `thetaChar theta thetaTerm eC`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Establish `e1 : ((fun i => (n i : ℂ)) + ofRealVec a) = shiftVec a n` using `rfl`. Rewrite using `[e1]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← key, hre ha, hre hb]`.
+-/
 theorem thetaChar_eq_theta_re (τ : Matrix (Fin g) (Fin g) ℂ) {a b : Fin g → ℂ} (ha : ∀ i, a i = 0 ∨ a i = 1 / 2)
     (hb : ∀ i, b i = 0 ∨ b i = 1 / 2) :
     thetaChar τ a b = fun z => theta (fun i => (a i).re) (fun i => (b i).re) z τ := by
@@ -87,6 +108,15 @@ theorem thetaChar_eq_theta_re (τ : Matrix (Fin g) (Fin g) ℂ) {a b : Fin g →
     ring
   rw [← key, hre ha, hre hb]
 
+/- English proof (translation)
+Set `Q' : (Fin g ⊕ Fin g → ℤ) →+ (Fin g → ℂ)` to `AddMonoidHom.mk' (fun u => τ *ᵥ ofIntVec (fun k => u (.inr k)) + ofIntVec (fun k => u (.inl k))) fun u v => by`. Establish `h1 : ∀ s : Fin g → Fin g ⊕ Fin g, ofIntVec (fun k => (u + v) (s k)) = ofIntVec (fun k => u (s k)) + ofIntVec (fun k => v (s k))` using `fun s => ofIntVec_add _ _`. Rewrite using `[h1, h1, mulVec_add]`. Normalize the expressions using the abelian group laws. Establish `: Q.toIntLinearMap = Q'.toIntLinearMap`.
+
+Use `(Pi.basisFun ℤ _).ext fun k => ?_` and prove the remaining obligations. Rewrite using `[Pi.basisFun_apply]`. Express the relevant statement in the definitionally equal form `Q _ = τ *ᵥ _ + _`. Break down `k with k | k` into its components or cases. Rewrite using `[(hQ k).1]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[ofIntVec, Pi.single_apply, mulVec, dotProduct]`. Rewrite using `[(hQ k).2]`. Use function extensionality and compare the values at `i`. Simplify using `[ofIntVec, Pi.single_apply, mulVec, dotProduct]`.
+
+Conclude with `LinearMap.congr_fun this u`.
+-/
 theorem apply_eq_of_period_matrix (Q : (Fin g ⊕ Fin g → ℤ) →+ (Fin g → ℂ)) (τ : Matrix (Fin g) (Fin g) ℂ)
     (hQ : ∀ k, Q (Pi.single (.inl k) 1) = Pi.single k 1 ∧ Q (Pi.single (.inr k) 1) = τ *ᵥ Pi.single k 1)
     (u : Fin g ⊕ Fin g → ℤ) : Q u = τ *ᵥ ofIntVec (fun k => u (.inr k)) + ofIntVec (fun k => u (.inl k)) := by
@@ -116,12 +146,20 @@ open ReciprocityTheory.PTheta
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `free_finite_finrank_of_lattice_embedding P hP.2.1 hP.2.2.1 hP.2.2.2.1`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[h3, ← Module.finrank_mul_finrank ℝ ℂ (Fin g → ℂ), Complex.finrank_real_complex, Module.finrank_fin_fun]`.
+-/
 theorem free_finite_finrank_of_isPeriod {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)}
     (hP : IsPeriod D ty P) : Module.Free ℤ D.La ∧ Module.Finite ℤ D.La ∧ Module.finrank ℤ D.La = 2 * g := by
   obtain ⟨h1, h2, h3⟩ := free_finite_finrank_of_lattice_embedding P hP.2.1 hP.2.2.1 hP.2.2.2.1
   refine ⟨h1, h2, ?_⟩
   rw [h3, ← Module.finrank_mul_finrank ℝ ℂ (Fin g → ℂ), Complex.finrank_real_complex, Module.finrank_fin_fun]
 
+/- English proof (translation)
+Take `⟨_, _, h3⟩` from `free_finite_finrank_of_isPeriod hP`. Establish `hB : (-D.EF).IsAlt` using `fun x => by simp [D.alt]`. Take `⟨c, hc⟩` from `exists_isSymplecticBasis_of_finrank hB (bijective_neg_bilinForm D.unimod) h3`. Use `⟨c.equivFun.symm, fun a b => ?_⟩` and prove the remaining obligations. Use `hc.apply_eq_sum hB (c.equivFun.symm a) (c.equivFun.symm b)` as an intermediate fact.
+
+Simplify using `only [← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply, LinearMap.neg_apply] at this`. Rewrite using `[omegaStd, ← this, neg_neg]`.
+-/
 theorem exists_symplectic_coordinates_of_isPeriod {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
     {P : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty P) :
     ∃ bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D.La, ∀ a b, D.EF (bas a) (bas b) = -omegaStd a b := by
@@ -136,6 +174,23 @@ theorem exists_symplectic_coordinates_of_isPeriod {D : Datum H} {g : ℕ} {ty : 
 variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
   (Fu : FamilyUnif Xo σ ty)
 
+/- English proof (translation)
+Take `⟨bas, hbas⟩` from `exists_symplectic_coordinates_of_isPeriod hP`. Take `⟨h, τ, hh, hdet, hs, hpos, -⟩` from `(RiemannRel.riemann_relations E H (Fu.Di i) g ty bas hbas).1 P hP`. Take `⟨c₁, c₂, hc₁, hc₂, fr, hd, h0, hg, -, hsec⟩` from `Fu.theta i 0 Set.univ (fun _ => P) bas (-1) (fun _ => h) (fun _ => τ) isOpen_univ isPreconnected_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩ (fun a b => by simpa using hbas a b) (fun _ _ => ⟨hpos, hh⟩)`. Take `⟨s, hsec⟩` from `hsec 0 trivial`. Set `m : (Fu.Di i).La → Fin g → ℤ` to `fun a k => bas.symm a (.inl k)`.
+
+Set `n : (Fu.Di i).La → Fin g → ℤ` to `fun a k => bas.symm a (.inr k)`. Establish `hmn : ∀ a, h *ᵥ P a = τ *ᵥ ofIntVec (n a) + ofIntVec (m a)` using `fun a => by`. Use `apply_eq_of_period_matrix ((h.mulVecLin.toAddMonoidHom.comp P).comp bas.toAddMonoidHom) τ hh (bas.symm a)` as an intermediate fact. Simplify using `using this`. Use `set a₁ : Fin g → ℝ := fun k => (c₁ k).re`.
+
+Use `set a₂ : Fin g → ℝ := fun k => (c₂ k).re`. Set `lin : (Fu.Di i).La → (Fin g → ℂ) →ₗ[ℂ] ℂ` to `fun a => { toFun := fun z => -(2 * Real.pi * I) * (ofIntVec (n a) ⬝ᵥ h *ᵥ z) map_add' := fun z w => by rw [mulVec_add, dotProduct_add, mul_add] map_smul' := fun t z => by rw [mulVec_smul, dotProduct_smul]; simp only [smul_eq_mul, RingHom.id_apply]; ring }`. Establish `hlin : ∀ a z, lin a z = -(2 * Real.pi * I) * (ofIntVec (n a) ⬝ᵥ h *ᵥ z)` using `fun _ _ => rfl`. Establish `hd' : ∀ j, DifferentiableOn ℂ (fun z => fr j (0, z)) {z | ⊤ ≤ (Fu.ex i P z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}` using `fun j => (hd j).comp (f := fun z => (0, z)) (by fun_prop) fun z hz => ⟨trivial, hz⟩`. Use `⟨fun j z => fr j (0, z), lin, fun a => 2 * Real.pi * I * (ofRealVec a₁ ⬝ᵥ ofIntVec (m a) - ofRealVec a₂ ⬝ᵥ ofIntVec (n a) - ofIntVec (n a) ⬝ᵥ (τ *ᵥ ofIntVec (n a)) / 2), hd', fun j z => h0 j 0 z trivial, fun j j' z => hg j j' 0 z trivial, fun a j => ?_, fun a b => ?_⟩` and prove the remaining obligations.
+
+Establish `hp : ∀ z, Fu.ex i P (z + P a) = Fu.ex i P z` using `fun z => by`. Rewrite using `[Fu.ex_add i P hP, (Fu.ex_ker i P hP _).2 ⟨a, rfl⟩, _root_.mul_one]`. Use `frame_law_of_periodic (θ := fun z => theta a₁ a₂ (h *ᵥ z) τ) (HolHom.isHolTo_ex Fu i hP) (hd' j) ((differentiable_theta ⟨hs, hpos⟩ a₁ a₂).comp (h.mulVecLin.toContinuousLinearMap.differentiable)) ?_ (((lin a).continuous_of_finiteDimensional.add continuous_const).cexp) (fun z => by …` and prove the remaining obligations. Introduce `h1`. Use `theta_ne_zero ⟨hs, hpos⟩ a₁ a₂ (funext fun w => ?_)` and prove the remaining obligations.
+
+Use `congrFun h1 (h⁻¹ *ᵥ w)` as an intermediate fact. Simplify `this` using `[mulVec_mulVec, mul_nonsing_inv h hdet]`. Rewrite using `[mulVec_add, hmn, ← add_assoc, thetaQuasiPeriod_holds _ _ _ _ _ _ _ hs, autFactor, eC, eC, ← Complex.exp_add, hlin]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hw : (Fu.ex i P z).left ≫ Xo.univ.t.G.hom = 𝟙 _ ≫ Fu.u i P` using `by simpa using Over.w (Fu.ex i P z)`. Establish `h1` using `hsec j z (pullback.lift _ _ hw) (pullback.lift_fst ..) (pullback.lift_snd ..) hz`. Establish `h2` using `hsec j (z + P a) (pullback.lift _ _ hw) (by beta_reduce; rw [hp]; exact pullback.lift_fst ..) (pullback.lift_snd ..) (by beta_reduce; rw [hp]; exact hz)`. Simplify using `only [thetaChar_eq_theta_re τ hc₁ hc₂] at h1 h2`. Conclude with `h2.symm.trans h1`.
+
+Establish `hE` using `hbas (bas.symm a) (bas.symm b)`. Rewrite `hE` using `[bas.apply_symm_apply, bas.apply_symm_apply]`. Establish `hsym : ofIntVec (n a) ⬝ᵥ τ *ᵥ ofIntVec (n b) = ofIntVec (n b) ⬝ᵥ τ *ᵥ ofIntVec (n a)`. Rewrite using `[dotProduct_mulVec, ← mulVec_transpose, hs.eq, dotProduct_comm]`. Establish `hω : ((omegaStd (bas.symm a) (bas.symm b) : ℤ) : ℂ) = ofIntVec (n b) ⬝ᵥ ofIntVec (m a) - ofIntVec (n a) ⬝ᵥ ofIntVec (m b)`.
+
+Simplify using `[omegaStd, dotProduct, ofIntVec, m, n, mul_comm]`. Rewrite using `[hlin, hlin, hmn, hmn, dotProduct_add, dotProduct_add, hsym, hE, Int.cast_neg, hω]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_frame_ex (i : Fin Fu.n) {P : (Fu.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (Fu.Di i) ty P) :
     ∃ (fr : Xo.univ.t.PP.L.ι → (Fin g → ℂ) → ℂ) (lin : (Fu.Di i).La → (Fin g → ℂ) →ₗ[ℂ] ℂ) (c : (Fu.Di i).La → ℂ),
       (∀ j, DifferentiableOn ℂ (fr j) {z | ⊤ ≤ (Fu.ex i P z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}) ∧
@@ -200,6 +255,13 @@ theorem exists_frame_ex (i : Fin Fu.n) {P : (Fu.Di i).La →+ (Fin g → ℂ)} (
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
 
+/- English proof (translation)
+Take `⟨fr₀, lin₀, c₀, hd₀, h0₀, hg₀, hlaw₀, halt⟩` from `exists_frame_ex Fu i hP`. Establish `hh : Differentiable ℂ h` using `h.toContinuousLinearMap.differentiable`. Establish `hol : IsHolTo Set.univ (fun v => (Fu.ex i P (h v)).left)` using `HolHom.isHolTo_of_holAt isOpen_univ fun v _ => (HolHom.holAt_of_isHolTo (HolHom.isHolTo_ex Fu i hP) (Set.mem_univ (h v))).precomp (hh v)`. Take `⟨hch, f, hf, hf0, hfr⟩` from `exists_frame_ratio Xo.univ.t.PP.isLB hol (fr' := fun j v => fr₀ j (h v)) hd h0 hg (fun j => (hd₀ j).comp hh.differentiableOn fun _ hv => hv) (fun j v => h0₀ j (h v)) (fun j j' v => hg₀ j j' (h v))`. Establish `key` using `alternating_eq_of_equivalent_factors p (fun a => (lin₀ (gam a)).comp h) lin (fun a => c₀ (gam a)) c hf.continuous hf0 (fun a v => by`.
+
+Take `⟨j, hj⟩` from `hch v`. Establish `hp : Fu.ex i P (h (v + p a)) = Fu.ex i P (h v)`. Rewrite using `[map_add, hgam, Fu.ex_add i P hP, (Fu.ex_ker i P hP _).2 ⟨gam a, rfl⟩, _root_.mul_one]`. Establish `hj' : ⊤ ≤ (Fu.ex i P (h (v + p a))).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `by rw [hp]; exact hj`. Establish `h1` using `hlaw a j v hj`.
+
+Rewrite `h1` using `[hfr j v hj, hfr j _ hj', hlaw₀ (gam a) j _ hj, ← hgam, ← map_add]`. Apply `mul_right_cancel₀ (h0₀ j _ hj')` to reduce the goal to its premises. Rewrite using `[LinearMap.comp_apply]`. Take the linear combination `h1) a b`. Rewrite using `[← key, LinearMap.comp_apply, LinearMap.comp_apply, hgam, hgam, halt]`.
+-/
 theorem alternating_eq (i : Fin Fu.n) {P : (Fu.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (Fu.Di i) ty P)
     (h : V →ₗ[ℂ] (Fin g → ℂ)) {A : Type} (p : A → V) (gam : A → (Fu.Di i).La) (hgam : ∀ a, h (p a) = P (gam a))
     {fr : Xo.univ.t.PP.L.ι → V → ℂ} (lin : A → V →ₗ[ℂ] ℂ) (c : A → ℂ)
@@ -231,6 +293,9 @@ theorem alternating_eq (i : Fin Fu.n) {P : (Fu.Di i).La →+ (Fin g → ℂ)} (h
       linear_combination h1) a b
   rw [← key, LinearMap.comp_apply, LinearMap.comp_apply, hgam, hgam, halt]
 
+/- English proof (translation)
+Establish `hh : Differentiable ℂ (h.comp φ)` using `(h.comp φ).toContinuousLinearMap.differentiable`. Establish `hol : IsHolTo Set.univ (fun v => (Fu.ex i P (h (φ v))).left)` using `HolHom.isHolTo_of_holAt isOpen_univ fun v _ => (HolHom.holAt_of_isHolTo (HolHom.isHolTo_ex Fu i hP) (Set.mem_univ (h (φ v)))).precomp (k := h.comp φ) (hh v)`. Establish `hu` using `HolHom.existsUnique_linear_ex Fu i hP (e := fun v => Fu.ex i P (h (φ v))) (fun z w => by rw [map_add, map_add, Fu.ex_add i P hP]) hol`. Use `hu.unique (y₁ := h.comp φ) (y₂ := LinearMap.pi fun k => ty k (x : E) • (LinearMap.proj k).comp h) (fun _ => rfl) (fun z => by rw [hφ, ← Fu.ex_lin i P hP]; rfl)` as an intermediate fact. Conclude with `congrFun (LinearMap.congr_fun this v) k`.
+-/
 theorem intertwines (i : Fin Fu.n) {P : (Fu.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (Fu.Di i) ty P)
     (h : V →ₗ[ℂ] (Fin g → ℂ)) (x : 𝓞 E) (φ : V →ₗ[ℂ] V)
     (hφ : ∀ v, Fu.ex i P (h (φ v)) = Fu.ex i P (h v) ≫ Xo.univ.t.act.act x) (v : V) (k : Fin g) :
@@ -254,6 +319,17 @@ namespace GlobalTheory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l}
   {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
 
+/- English proof (translation)
+Take `⟨h, hh, -⟩` from `HolHom.existsUnique_linear_ex Fu i hP hadd hol`. Take `rfl : pi = fun v => Fu.ex i P (h v)` from `funext hh`. Use `choose gam hgam using fun a => (Fu.ex_ker i P hP _).1 (hker a)`. Establish `hEq : ∀ a b, (Fu.Di i).EF (gam a) (gam b) = EF' a b` using `fun a b => by`. Use `FibreExp.alternating_eq Fu i hP h P' gam (fun a => (hgam a).symm) lin c hd h0 hg hlaw a b` as an intermediate fact.
+
+Rewrite `this` using `[halt]`. Conclude with `(mul_left_cancel₀ (neg_ne_zero.2 Complex.two_pi_I_ne_zero) this).symm` after adjusting the coercions. Take `⟨_, _, h3⟩` from `FibreExp.free_finite_finrank_of_isPeriod hP`. Set `gam₀ : La' →ₗ[ℤ] (Fu.Di i).La` to `(AddMonoidHom.mk' gam fun a b => hP.2.1 (by simp only [hgam, map_add])).toIntLinearMap`. Establish `hb : Function.Bijective gam₀` using `bijective_of_isometry_of_bijective_form (hrk.trans h3.symm) EF' (Fu.Di i).EF hEF gam₀ hEq`.
+
+Establish `hbh : Function.Bijective h` using `bijective_of_image_range_eq (hdim.trans (Module.finrank_fin_fun ℂ).symm) h hP.2.2.2.1 (by`. Introduce and unpack `_ ⟨b, rfl⟩`. Take `⟨a, rfl⟩` from `hb.2 b`. Conclude with `⟨P' a, (hgam a).symm⟩)`. Establish `hO : ∀ (x : 𝓞 E) (φ : V →ₗ[ℂ] V), (∀ v, Fu.ex i P (h (φ v)) = Fu.ex i P (h v) ≫ Xo.univ.t.act.act x) → (∀ v k, h (φ v) k = ty k (x : E) * h v k) ∧ ∀ a a', P' a' = φ (P' a) → gam a' = x • gam a` using `fun x φ hφ => by`.
+
+Establish `h1` using `FibreExp.intertwines Fu i hP h x φ hφ`. Use `⟨h1, fun a a' ha => hP.2.1 (funext fun k => ?_)⟩` and prove the remaining obligations. Rewrite using `[hP.1, hgam, hgam, ha, h1]`. Use `⟨LinearEquiv.ofBijective h hbh, LinearEquiv.ofBijective gam₀ hb, fun _ => rfl, fun a => (hgam a).symm, hEq, hO, fun ρ hρ hP' => ⟨fun x => (hO x _ (hρ x)).1, ?_⟩⟩` and prove the remaining obligations. Set `gam₁ : La' →ₗ[𝓞 E] (Fu.Di i).La` to `{ toFun := gam₀ map_add' := gam₀.map_add map_smul' := fun x a => (hO x _ (hρ x)).2 a _ (hP' x a) }`.
+
+Conclude with `⟨LinearEquiv.ofBijective gam₁ hb, fun _ => rfl⟩`.
+-/
 theorem fibre_hom_eq_exponential (Fu : FamilyUnif Xo σ ty) (i : Fin Fu.n) {P : (Fu.Di i).La →+ (Fin g → ℂ)}
     (hP : IsPeriod (Fu.Di i) ty P) {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
     (hdim : Module.finrank ℂ V = g) {La' : Type} [AddCommGroup La'] [Module.Free ℤ La'] [Module.Finite ℤ La']
@@ -306,6 +382,9 @@ theorem fibre_hom_eq_exponential (Fu : FamilyUnif Xo σ ty) (i : Fin Fu.n) {P : 
       map_smul' := fun x a => (hO x _ (hρ x)).2 a _ (hP' x a) }
   exact ⟨LinearEquiv.ofBijective gam₁ hb, fun _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨fr, lin, c, hd, h0, hg, hlaw, halt⟩` from `FibreExp.exists_frame_ex Fu i hP`. Take `⟨_, _, h3⟩` from `FibreExp.free_finite_finrank_of_isPeriod hP`. Take `⟨h, gam, h1, h2, -⟩` from `fibre_hom_eq_exponential Fu i hP (Module.finrank_fin_fun ℂ) h3 _ (Fu.Di i).unimod P (Fu.ex i P) (Fu.ex_add i P hP) (HolHom.isHolTo_ex Fu i hP) (fun a => (Fu.ex_ker i P hP _).2 ⟨a, rfl⟩) fr hd h0 hg lin c hlaw halt`. Conclude with `⟨h, gam, h1, h2⟩`.
+-/
 example (Fu : FamilyUnif Xo σ ty) (i : Fin Fu.n) {P : (Fu.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (Fu.Di i) ty P) :
     ∃ (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (gam : (Fu.Di i).La ≃ₗ[ℤ] (Fu.Di i).La),
       (∀ v, Fu.ex i P v = Fu.ex i P (h v)) ∧ ∀ a, h (P a) = P (gam a) := by

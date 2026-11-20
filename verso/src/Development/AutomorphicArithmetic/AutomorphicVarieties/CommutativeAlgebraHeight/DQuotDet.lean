@@ -10,6 +10,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Introduce `n A G _ _ _ _ D _ _ _ _ hc Z hZ`. Use `set f := D.toQuot Z`. Establish `hsurj : Function.Surjective f` using `RingCon.mkₐ_surjective _`. Establish `hmem : ∀ x, x ∈ D.chBar Z → f x = 0`. Introduce `x hx`.
+
+Establish `hr : (D.chBar Z).ringCon x 0` using `(TwoSidedIdeal.rel_iff _ _ _).2 (by rwa [sub_zero])`. Rewrite using `[← map_zero f]`. Conclude with `(RingCon.eq _).2 hr`. Establish `hker : ∀ x, f x = 0 → x ∈ D.chBar Z`. Introduce `x hx`.
+
+Rewrite `hx` using `[← map_zero f]`. Establish `hr` using `(RingCon.eq _).1 hx`. Simplify using `using (TwoSidedIdeal.rel_iff _ _ _).1 hr`. Establish `hle : TwoSidedIdeal.span (D.CH ∪ Z) ≤ D.chBar Z`. Unfold `GDet.chBar closureIdeal`.
+
+Use `le_iInf fun N => le_iInf fun H => fun y hy => ?_` and prove the remaining obligations. Conclude with `TwoSidedIdeal.mem_span_iff.1 hy _ fun z hz => TwoSidedIdeal.subset_span (R := MonoidAlgebra A G) (Or.inl (Or.inl hz))`. Establish `hsub : D.CH ∪ Z ⊆ D.chBar Z` using `fun x hx => hle (TwoSidedIdeal.subset_span (R := MonoidAlgebra A G) hx)`. Establish `hCHk : ∀ z ∈ D.CH, D.Kills z`. Introduce `z hz`.
+
+Establish `hz' : z ∈ D.toDet.CH`. Rewrite using `[d_toDet_CH]`. Conclude with `TwoSidedIdeal.subset_span (R := MonoidAlgebra A G) hz`. Conclude with `(d_toDet D z).2.2.2.1 ((d_ker _ z).1.1 (d_ch_ker _ hz'))`. Establish `hK : ∀ x, f x = 0 → x ∈ D.toDet.ker` using `fun x hx => (d_ker _ x).1.2 ((d_toDet D x).2.2.2.2 (d_closed D (maximalIdeal A) hc (D.CH ∪ Z) (by`.
+
+Introduce and unpack `z (hz | hz)`. Use `exacts [hCHk z hz, hZ z hz]) x (hker x hx)))`. Take `⟨DE, hDE, -⟩` from `d_factor D.toDet f hsurj hK`. Use `⟨DE, ?_, hDE⟩` and prove the remaining obligations. Use `show DE.CH = ⊥`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨x, hx, rfl⟩` from `((d_pull DE f).2.2.2 hsurj).2 y hy`. Rewrite `hx` using `[hDE, d_toDet_CH]`.
+
+Rewrite using `[hmem x ((TwoSidedIdeal.mem_span_iff.1 hx) _ fun z hz => hsub (Or.inl hz))]`. Conclude with `TwoSidedIdeal.zero_mem _`. Introduce `hy`. Rewrite `hy` using `[TwoSidedIdeal.mem_bot]`. Rewrite using `[hy]`.
+
+Conclude with `TwoSidedIdeal.zero_mem _`.
+-/
 theorem UpperTheory.V.CA.d_quotDet :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A] [Group G] (D : GDet n A G) [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G], D.IsCont (maximalIdeal A) → ∀ Z : Set (MonoidAlgebra A G), (∀ z ∈ Z, D.Kills z) → ∃ DE : Det n A (D.CHQuot Z), DE.IsCH ∧ DE.pull (D.toQuot Z) = D.toDet := by
   intro n A G _ _ _ _ D _ _ _ _ hc Z hZ

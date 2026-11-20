@@ -5,6 +5,29 @@ open Filter
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `e T S z0 j k hT hS hST hTS hk hvan`. Use `set A := fderiv ℂ T z0 with hA`. Use `set B := fderiv ℂ S (T z0) with hB`. Establish `hT' : HasFDerivAt T A z0` using `hT.hasFDerivAt`. Establish `hS' : HasFDerivAt S B (T z0)` using `hS.hasFDerivAt`.
+
+Establish `hT'' : HasFDerivAt T A (S (T z0))` using `by rw [hST]; exact hT'`. Establish `hcomp : HasFDerivAt (T ∘ S) (A.comp B) (T z0)` using `hT''.comp (T z0) hS'`. Establish `hid : HasFDerivAt (T ∘ S) (ContinuousLinearMap.id ℂ (Fin e → ℂ)) (T z0)` using `(hasFDerivAt_id (T z0)).congr_of_eventuallyEq (by filter_upwards [hTS] with w hw`. Simplify using `[hw])`. Establish `hAB : A.comp B = ContinuousLinearMap.id ℂ (Fin e → ℂ)` using `hcomp.unique hid`.
+
+Establish `hj : HasFDerivAt (fun z => T z j) ((ContinuousLinearMap.proj j).comp A) z0` using `(hasFDerivAt_pi'.mp hT') j`. Establish `hℓ : fderiv ℂ (fun z => T z j) z0 = (ContinuousLinearMap.proj j).comp A` using `hj.fderiv`. Rewrite using `[hℓ]`. Use `set ℓ : (Fin e → ℂ) →L[ℂ] ℂ := (ContinuousLinearMap.proj j).comp A with hℓdef`. Establish `hne : ℓ (B (Pi.single j 1)) = 1`.
+
+Use `congrArg (fun L : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ) => L (Pi.single j 1)) hAB` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.id_apply] at this`. Simplify using `[hℓdef, this]`. Establish `hother : ∀ l, l ≠ k → ℓ (Pi.single l 1) = 0`. Introduce `l hl`.
+
+Use `set v : Fin e → ℂ := Pi.single l 1`. Establish `hline : HasDerivAt (fun t : ℂ => z0 + t • v) v 0`. Simplify using `using ((hasDerivAt_id (0:ℂ)).smul_const v).const_add z0`. Establish `h0 : (fun t : ℂ => z0 + t • v) 0 = z0` using `by simp`. Establish `hj0 : HasFDerivAt (fun z => T z j) ℓ ((fun t : ℂ => z0 + t • v) 0)` using `by rw [h0]; exact hj`.
+
+Establish `hg : HasDerivAt (fun t : ℂ => T (z0 + t • v) j) (ℓ v) 0`. Use `HasFDerivAt.comp_hasDerivAt (l := fun z => T z j) (0:ℂ) hj0 hline` as an intermediate fact. Conclude with `this`. Establish `htend : Tendsto (fun t : ℂ => z0 + t • v) (𝓝 0) (𝓝 z0)`. Use `hline.continuousAt.tendsto` as an intermediate fact.
+
+Simplify using `using this`. Establish `hev : (fun t : ℂ => T (z0 + t • v) j) =ᶠ[𝓝 0] fun _ => (0:ℂ)` using `by filter_upwards [htend.eventually hvan] with t ht`. Apply `ht` to reduce the goal to its premises. Simplify using `[v, Pi.single_apply, Ne.symm hl, hk]`. Establish `hg0 : HasDerivAt (fun t : ℂ => T (z0 + t • v) j) 0 0` using `(hasDerivAt_const (0:ℂ) (0:ℂ)).congr_of_eventuallyEq hev`.
+
+Conclude with `hg.unique hg0`. Introduce `hkz`. Establish `hzero : ℓ = 0`. Establish `hlin : (ℓ : (Fin e → ℂ) →ₗ[ℂ] ℂ) = 0`. Apply `LinearMap.pi_ext` to reduce the goal to its premises.
+
+Introduce `i x`. Establish `hsx : (Pi.single i x : Fin e → ℂ) = x • Pi.single i 1`. Rewrite using `[← Pi.single_smul]`. Simplify using the standard rewrite rules. Rewrite using `[hsx, map_smul, LinearMap.zero_apply]`.
+
+Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality. Simplify using `[hkz]`. Simplify using `[hother i hik]`. Use `ext1 v`.
+
+Conclude with `congrArg (fun L : (Fin e → ℂ) →ₗ[ℂ] ℂ => L v) hlin`. Rewrite `hne` using `[hzero]`. Simplify using `at hne`.
+-/
 theorem localBiholom_partial_ne_zero_of_vanishing :
     ∀ {e : ℕ} (T S : (Fin e → ℂ) → (Fin e → ℂ)) (z0 : Fin e → ℂ) (j k : Fin e),
       DifferentiableAt ℂ T z0 → DifferentiableAt ℂ S (T z0) → S (T z0) = z0 →

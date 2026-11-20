@@ -4,6 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactGroupRe
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.HV
 
+/- English proof (translation)
+Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Introduce `n`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]`.
+
+Conclude with `PadicInt.norm_le_one _`.
+-/
 private theorem ce_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (h : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
   have h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
@@ -12,6 +17,13 @@ private theorem ce_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (h : IsInteg
   rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]
   exact PadicInt.norm_le_one _
 
+/- English proof (translation)
+Establish `hc : Continuous fun g => (ka g).val` using `Units.continuous_val.comp h`. Set `r : Γ →* GL (Fin 1) (PadicAlgCl l)` to `(Units.map (Matrix.scalar (Fin 1) : PadicAlgCl l →+* _).toMonoidHom).comp ka`. Establish `hr : ∀ (g : Γ) (i j : Fin 1), (r g).val i j = (ka g).val`. Introduce `g i j`. Take `rfl : i = j` from `Subsingleton.elim _ _`.
+
+Simplify using `[r]`. Take `⟨E, hE, hm⟩` from `GlobalTheory.CompactRepField.exists_finiteDimensional_entries_mem l Γ 1 r (fun i j => by simp only [hr]; exact hc)`. Use `⟨E, hE, fun g => ⟨hr g 0 0 ▸ hm g 0 0, ?_⟩⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `(isCompact_range hc.norm).bddAbove`. Assume the negation of the conclusion as `hg`.
+
+Take `⟨N, hN⟩` from `pow_unbounded_of_one_lt C (not_le.1 hg)`. Use `hC ⟨g ^ N, rfl⟩` as an intermediate fact. Simplify using `only [map_pow, Units.val_pow_eq_pow_val, norm_pow] at this`. Conclude with `absurd hN (not_lt.2 this)`.
+-/
 private theorem ce_char {l : ℕ} [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [CompactSpace Γ] [T2Space Γ] (ka : Γ →* (PadicAlgCl l)ˣ) (h : Continuous ka) :
     ∃ E : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] E ∧
@@ -33,11 +45,19 @@ private theorem ce_char {l : ℕ} [Fact l.Prime] (Γ : Type) [Group Γ] [Topolog
   simp only [map_pow, Units.val_pow_eq_pow_val, norm_pow] at this
   exact absurd hN (not_lt.2 this)
 
+/- English proof (translation)
+Use `haveI := hs.to_subtype`. Conclude with `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`.
+-/
 private theorem ce_fin {l : ℕ} [Fact l.Prime] (s : Set (PadicAlgCl l)) (hs : s.Finite) :
     FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] s) := by
   haveI := hs.to_subtype
   exact IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ_[l]) (M := c.O)`. Use `⟨IntermediateField.adjoin ℚ_[l] (Subtype.val '' (s : Set c.O)), ce_fin _ (s.finite_toSet.image _), fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span ℤ_[l] (s : Set c.O)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact IntermediateField.subset_adjoin _ _ ⟨y, hy, rfl⟩`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `smul a b _ hb`. Rewrite using `[SetLike.val_smul, ← algebraMap_smul ℚ_[l] a]`. Conclude with `IntermediateField.smul_mem _ hb`.
+-/
 private theorem ce_coef {l : ℕ} [Fact l.Prime] (c : Coef l) :
     ∃ E : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] E ∧ ∀ x : c.O, x.1 ∈ E := by
   obtain ⟨s, hs⟩ := Module.Finite.fg_top (R := ℤ_[l]) (M := c.O)
@@ -51,6 +71,13 @@ private theorem ce_coef {l : ℕ} [Fact l.Prime] (c : Coef l) :
     rw [SetLike.val_smul, ← algebraMap_smul ℚ_[l] a]
     exact IntermediateField.smul_mem _ hb
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℚ) (M := L)`. Use `⟨IntermediateField.adjoin ℚ_[l] (⋃ τ : L →+* PadicAlgCl l, τ '' (s : Set L)), ce_fin _ (Set.finite_iUnion fun τ => s.finite_toSet.image _), fun τ x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span ℚ (s : Set L)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact IntermediateField.subset_adjoin _ _ (Set.mem_iUnion.2 ⟨τ, y, hy, rfl⟩)`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul a b _ hb`.
+
+Rewrite using `[Rat.smul_def, map_mul, map_ratCast]`. Conclude with `mul_mem (SubfieldClass.ratCast_mem _ a) hb`.
+-/
 private theorem ce_large {l : ℕ} [Fact l.Prime] (L : Type) [Field L] [NumberField L] :
     ∃ E : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] E ∧
       ∀ (τ : L →+* PadicAlgCl l) (x : L), τ x ∈ E := by
@@ -66,6 +93,17 @@ private theorem ce_large {l : ℕ} [Fact l.Prime] (L : Type) [Field L] [NumberFi
     rw [Rat.smul_def, map_mul, map_ratCast]
     exact mul_mem (SubfieldClass.ratCast_mem _ a) hb
 
+/- English proof (translation)
+Introduce `l _ c L Ω _ _ _ _ _ ka ka' h h'`. Use `haveI : CompactSpace (G L Ω) := inferInstanceAs (CompactSpace (Ω ≃ₐ[L] Ω))`. Use `haveI : T2Space (G L Ω) := inferInstanceAs (T2Space (Ω ≃ₐ[L] Ω))`. Take `⟨E₁, f₁, m₁⟩` from `ce_char (G L Ω) ka h`. Take `⟨E₂, f₂, m₂⟩` from `ce_char (G L Ω) ka' h'`.
+
+Take `⟨E₃, f₃, m₃⟩` from `ce_coef c`. Take `⟨E₄, f₄, m₄⟩` from `ce_large (l := l) L`. Take `⟨c₁, hc⟩` from `UpperTheory.V.X.So.coefOf l ((E₁ ⊔ E₂) ⊔ (E₃ ⊔ E₄))`. Establish `l₁ : E₁ ≤ (E₁ ⊔ E₂) ⊔ (E₃ ⊔ E₄)` using `le_sup_of_le_left le_sup_left`. Establish `l₂ : E₂ ≤ (E₁ ⊔ E₂) ⊔ (E₃ ⊔ E₄)` using `le_sup_of_le_left le_sup_right`.
+
+Establish `l₃ : E₃ ≤ (E₁ ⊔ E₂) ⊔ (E₃ ⊔ E₄)` using `le_sup_of_le_right le_sup_left`. Establish `l₄ : E₄ ≤ (E₁ ⊔ E₂) ⊔ (E₃ ⊔ E₄)` using `le_sup_of_le_right le_sup_right`. Establish `hle : c.O ≤ c₁.O` using `fun x hx => (hc x).2 ⟨l₃ (m₃ ⟨x, hx⟩), ce_norm x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)⟩`. Use `⟨c₁, hle, fun τ x => (hc _).2 ⟨l₄ (m₄ τ x), ce_norm _ ?_⟩, fun g => (hc _).2 ⟨l₁ (m₁ g).1, (m₁ g).2⟩, fun g => (hc _).2 ⟨l₂ (m₂ g).1, (m₂ g).2⟩, ?_⟩` and prove the remaining obligations. Conclude with `(x.isIntegral_coe.map τ.toIntAlgHom).tower_top`.
+
+Set `φ : c.O →+* c₁.O` to `(Subalgebra.inclusion hle).toRingHom`. Establish `hint : φ.IsIntegral`. Use `RingHom.IsIntegral.tower_top (algebraMap ℤ_[l] c.O) φ ?_` and prove the remaining obligations. Establish `e : φ.comp (algebraMap ℤ_[l] c.O) = algebraMap ℤ_[l] c₁.O` using `(Subalgebra.inclusion hle).comp_algebraMap`. Rewrite using `[e]`.
+
+Conclude with `fun x => Algebra.IsIntegral.isIntegral x`. Use `haveI : IsLocalHom φ := hint.isLocalHom (Subalgebra.inclusion_injective hle)`. Use `⟨ResidueField.map φ, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[ResidueField.map_residue]`. Conclude with `congrArg _ (Subtype.ext hab)`.
+-/
 theorem UpperTheory.V.Pr.coefEx :
     UpperTheory.V.Pr.CoefEx := by
   intro l _ c L Ω _ _ _ _ _ ka ka' h h'

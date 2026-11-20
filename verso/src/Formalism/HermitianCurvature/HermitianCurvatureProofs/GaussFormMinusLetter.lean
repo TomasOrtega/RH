@@ -10,6 +10,9 @@ section Mon
 
 variable {M : Type} [Monoid M]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mon1 {z zi w wi gi : M} (hz : z * zi = 1) (hw : w * wi = 1) (c1 : Commute gi zi)
     (c2 : Commute w zi) (c3 : Commute gi wi) : z * w * gi * zi * wi = gi := by
   calc z * w * gi * zi * wi = z * (w * (gi * zi)) * wi := by simp only [mul_assoc]
@@ -17,16 +20,25 @@ theorem mon1 {z zi w wi gi : M} (hz : z * zi = 1) (hw : w * wi = 1) (c1 : Commut
     _ = z * zi * (w * (gi * wi)) := by rw [c2.eq]; simp only [mul_assoc]
     _ = gi := by rw [hz, one_mul, c3.eq, ← mul_assoc w wi gi, hw, one_mul]
 
+/- English proof (translation)
+Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc gi g, hg, one_mul, ← mul_assoc w wi, hw, one_mul, ← mul_assoc z zi, hz, one_mul]`.
+-/
 theorem mon2 {z zi w wi g gi : M} (hz : z * zi = 1) (hw : w * wi = 1) (hg : gi * g = 1) :
     z * w * gi * (g * wi) * (zi * g) = g := by
   simp only [mul_assoc]
   rw [← mul_assoc gi g, hg, one_mul, ← mul_assoc w wi, hw, one_mul, ← mul_assoc z zi, hz, one_mul]
 
+/- English proof (translation)
+Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc wi z, c.eq, mul_assoc z wi, ← mul_assoc zi z, hz, one_mul, ← mul_assoc wi w, hw, one_mul, hg]`.
+-/
 theorem mon3 {z zi w wi g gi : M} (hz : zi * z = 1) (hw : wi * w = 1) (hg : g * gi = 1)
     (c : Commute wi z) : g * zi * wi * (z * w * gi) = 1 := by
   simp only [mul_assoc]
   rw [← mul_assoc wi z, c.eq, mul_assoc z wi, ← mul_assoc zi z, hz, one_mul, ← mul_assoc wi w, hw, one_mul, hg]
 
+/- English proof (translation)
+Use `show xi * g = g * xi`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem comm_inv {x xi g : M} (h1 : x * xi = 1) (h2 : xi * x = 1) (c : Commute x g) : Commute xi g := by
   show xi * g = g * xi
   calc xi * g = xi * g * (x * xi) := by rw [h1, mul_one]
@@ -36,6 +48,9 @@ theorem comm_inv {x xi g : M} (h1 : x * xi = 1) (h2 : xi * x = 1) (c : Commute x
 
 end Mon
 
+/- English proof (translation)
+Establish `e : star b * a' = 1` using `by rw [← h, ← star_mul, h1, star_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem star_inv {R : Type} [Ring R] [StarRing R] {a b a' b' : R} (h1 : a * b = 1) (h : star a = a')
     (h2 : a' * b' = 1) : star b = b' := by
   have e : star b * a' = 1 := by rw [← h, ← star_mul, h1, star_one]
@@ -46,12 +61,23 @@ section Slots
 
 variable {A S : Type} [Ring A] [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Simplify using `only [Formalism.FourierDecayAlt.Wd.io, map_mul]`.
+-/
 theorem io_mul (x y : A) : (io (x * y) : SlopeTestRemainingChoices S A) = io x * io y := by
   simp only [Formalism.FourierDecayAlt.Wd.io, map_mul]
 
+/- English proof (translation)
+Simplify using `only [Formalism.FourierDecayAlt.Wd.io, map_one]`.
+-/
 theorem io_one : (io (1 : A) : SlopeTestRemainingChoices S A) = 1 := by
   simp only [Formalism.FourierDecayAlt.Wd.io, map_one]
 
+/- English proof (translation)
+Simplify using `only [Formalism.FourierDecayAlt.Wd.io]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.star_apply, Matrix.scalar_apply, Matrix.diagonal_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[hij, Ne.symm hij]`.
+-/
 theorem io_star [StarRing A] (x : A) : star (io x : SlopeTestRemainingChoices S A) = io (star x) := by
   simp only [Formalism.FourierDecayAlt.Wd.io]
   refine Matrix.ext fun i j => ?_
@@ -60,6 +86,11 @@ theorem io_star [StarRing A] (x : A) : star (io x : SlopeTestRemainingChoices S 
   · subst hij; simp
   · simp [hij, Ne.symm hij]
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.Wd.FreeOf`. Introduce `i j`. Use `show Formalism.FourierDecayAlt.Wd.eU c i j * Formalism.FourierDecayAlt.Wd.io x = Formalism.FourierDecayAlt.Wd.io x * Formalism.FourierDecayAlt.Wd.eU c i j`. Simplify using `only [Formalism.FourierDecayAlt.Wd.io, Matrix.scalar_apply]`. Use `Matrix.ext fun u v => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Formalism.FourierDecayAlt.Wd.eU, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem free_io (c : S) (x : A) : FreeOf c (io x : SlopeTestRemainingChoices S A) := by
   unfold Formalism.FourierDecayAlt.Wd.FreeOf
   intro i j
@@ -69,36 +100,59 @@ theorem free_io (c : S) (x : A) : FreeOf c (io x : SlopeTestRemainingChoices S A
   simp only [Matrix.mul_diagonal, Matrix.diagonal_mul, Formalism.FourierDecayAlt.Wd.eU, Matrix.of_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.Wd.FreeOf`. Introduce `i j`. Conclude with `Commute.one_right _`.
+-/
 theorem free_one (c : S) : FreeOf c (1 : SlopeTestRemainingChoices S A) := by
   unfold Formalism.FourierDecayAlt.Wd.FreeOf
   intro i j
   exact Commute.one_right _
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.Wd.FreeOf`. Introduce `i j`. Conclude with `Commute.zero_right _`.
+-/
 theorem free_zero (c : S) : FreeOf c (0 : SlopeTestRemainingChoices S A) := by
   unfold Formalism.FourierDecayAlt.Wd.FreeOf
   intro i j
   exact Commute.zero_right _
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.Wd.FreeOf at h h' ⊢`. Introduce `i j`. Conclude with `(h i j).mul_right (h' i j)`.
+-/
 theorem free_mul {c : S} {b b' : SlopeTestRemainingChoices S A} (h : FreeOf c b) (h' : FreeOf c b') : FreeOf c (b * b') := by
   unfold Formalism.FourierDecayAlt.Wd.FreeOf at h h' ⊢
   intro i j
   exact (h i j).mul_right (h' i j)
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.Wd.FreeOf at h h' ⊢`. Introduce `i j`. Conclude with `(h i j).add_right (h' i j)`.
+-/
 theorem free_add {c : S} {b b' : SlopeTestRemainingChoices S A} (h : FreeOf c b) (h' : FreeOf c b') : FreeOf c (b + b') := by
   unfold Formalism.FourierDecayAlt.Wd.FreeOf at h h' ⊢
   intro i j
   exact (h i j).add_right (h' i j)
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.Wd.FreeOf at h ⊢`. Introduce `i j`. Conclude with `(h i j).pow_right n`.
+-/
 theorem free_pow {c : S} {b : SlopeTestRemainingChoices S A} (h : FreeOf c b) (n : ℕ) : FreeOf c (b ^ n) := by
   unfold Formalism.FourierDecayAlt.Wd.FreeOf at h ⊢
   intro i j
   exact (h i j).pow_right n
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.Wd.FreeOf at h ⊢`. Introduce `i j`. Conclude with `(h i j).smul_right k`.
+-/
 theorem free_smul [Algebra ℂ A] {c : S} {b : SlopeTestRemainingChoices S A} (k : ℂ) (h : FreeOf c b) : FreeOf c (k • b) := by
   unfold Formalism.FourierDecayAlt.Wd.FreeOf at h ⊢
   intro i j
   exact (h i j).smul_right k
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.Wd.FreeOf at h ⊢`. Introduce `i j`. Establish `key : star (Formalism.FourierDecayAlt.Wd.eU c j i : SlopeTestRemainingChoices S A) = Formalism.FourierDecayAlt.Wd.eU c i j`. Use `Matrix.ext fun x y => ?_` and prove the remaining obligations. Simplify using `only [Matrix.star_apply, Formalism.FourierDecayAlt.Wd.eU, Matrix.of_apply]`.
+
+Distinguish the cases in `h1 : y c = j ∧ x c = i ∧ ∀ b, b ≠ c → y b = x b`. Rewrite using `[if_pos h1, if_pos ⟨h1.2.1, h1.1, fun b hb => (h1.2.2 b hb).symm⟩, star_one]`. Rewrite using `[if_neg h1, if_neg (fun h2 => h1 ⟨h2.2.1, h2.1, fun b hb => (h2.2.2 b hb).symm⟩), star_zero]`. Establish `hs` using `(h j i).star_star`. Rewrite `hs` using `[key]`. Then use the resulting hypothesis.
+-/
 theorem free_star [StarRing A] {c : S} {b : SlopeTestRemainingChoices S A} (h : FreeOf c b) : FreeOf c (star b) := by
   unfold Formalism.FourierDecayAlt.Wd.FreeOf at h ⊢
   intro i j
@@ -111,16 +165,27 @@ theorem free_star [StarRing A] {c : S} {b : SlopeTestRemainingChoices S A} (h : 
   have hs := (h j i).star_star
   rwa [key] at hs
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.Wd.FreeOf2`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [hp, hq, hr, hs]`.
+-/
 theorem free2 {c : S} {p q r s : SlopeTestRemainingChoices S A} (hp : FreeOf c p) (hq : FreeOf c q) (hr : FreeOf c r)
     (hs : FreeOf c s) : FreeOf2 c !![p, q; r, s] := by
   unfold Formalism.FourierDecayAlt.Wd.FreeOf2
   intro i j
   fin_cases i <;> fin_cases j <;> simp [hp, hq, hr, hs]
 
+/- English proof (translation)
+Simplify using `[Formalism.FourierDecayAlt.Wd.ins, Fin.sum_univ_two, add_assoc]`.
+-/
 theorem ins2 (a : S) (p q r s : SlopeTestRemainingChoices S A) :
     ins a !![p, q; r, s] = eU a 0 0 * p + eU a 0 1 * q + eU a 1 0 * r + eU a 1 1 * s := by
   simp [Formalism.FourierDecayAlt.Wd.ins, Fin.sum_univ_two, add_assoc]
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.Wd.FreeOf at hP`. Simplify using `only [Formalism.FourierDecayAlt.Wd.ins, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show Formalism.FourierDecayAlt.Wd.eU a i j * (P * M i j * Q) = Formalism.FourierDecayAlt.Wd.eU a i j * P * M i j * Q by`. Simplify using `only [mul_assoc], (hP i j).eq]`.
+
+Simplify using `only [mul_assoc]`.
+-/
 theorem ins_conj (a : S) (M : M2 (SlopeTestRemainingChoices S A)) (P Q : SlopeTestRemainingChoices S A) (hP : FreeOf a P) :
     ins a (M.map fun b => P * b * Q) = P * ins a M * Q := by
   unfold Formalism.FourierDecayAlt.Wd.FreeOf at hP
@@ -136,51 +201,99 @@ section Level
 
 variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S] {r : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ', mul_assoc, ← mul_assoc a b, h, one_mul, ih]`.
+-/
 theorem pow_inv {M : Type} [Monoid M] {a b : M} (h : a * b = 1) (n : ℕ) : a ^ n * b ^ n = 1 := by
   induction n with
   | zero => simp
   | succ n ih => rw [pow_succ, pow_succ', mul_assoc, ← mul_assoc a b, h, one_mul, ih]
 
+/- English proof (translation)
+Take `⟨p, pb, c, ci, cb, cbi, ζ, ζi, ζb, ζbi, GG, GGi, nab, nabs, TT, hc⟩` from `L`. Conclude with `hc x (Set.mem_union_right _ hx) y (Set.mem_union_right _ hy)`.
+-/
 theorem fcomm (L : LevelData A r) {x y : A} (hx : x ∈ zfns L) (hy : y ∈ zfns L) : Commute x y := by
   obtain ⟨p, pb, c, ci, cb, cbi, ζ, ζi, ζb, ζbi, GG, GGi, nab, nabs, TT, hc⟩ := L
   exact hc x (Set.mem_union_right _ hx) y (Set.mem_union_right _ hy)
 
+/- English proof (translation)
+Simplify using `only [Formalism.FourierDecayAlt.Wd.io]`. Conclude with `h.map _`.
+-/
 theorem io_comm {x y : A} (h : Commute x y) : Commute (io x : SlopeTestRemainingChoices S A) (io y) := by
   simp only [Formalism.FourierDecayAlt.Wd.io]
   exact h.map _
 
+/- English proof (translation)
+Simplify using `[Formalism.FourierDecayAlt.Fr.zfns]`.
+-/
 theorem mζ (L : LevelData A r) : L.ζ ∈ zfns L := by
   simp [Formalism.FourierDecayAlt.Fr.zfns]
+/- English proof (translation)
+Simplify using `[Formalism.FourierDecayAlt.Fr.zfns]`.
+-/
 theorem mζi (L : LevelData A r) : L.ζi ∈ zfns L := by
   simp [Formalism.FourierDecayAlt.Fr.zfns]
+/- English proof (translation)
+Simplify using `[Formalism.FourierDecayAlt.Fr.zfns]`.
+-/
 theorem mζb (L : LevelData A r) : L.ζb ∈ zfns L := by
   simp [Formalism.FourierDecayAlt.Fr.zfns]
+/- English proof (translation)
+Simplify using `[Formalism.FourierDecayAlt.Fr.zfns]`.
+-/
 theorem mζbi (L : LevelData A r) : L.ζbi ∈ zfns L := by
   simp [Formalism.FourierDecayAlt.Fr.zfns]
+/- English proof (translation)
+Simplify using `[Formalism.FourierDecayAlt.Fr.zfns]`.
+-/
 theorem mGG (L : LevelData A r) : L.GG ∈ zfns L := by
   simp [Formalism.FourierDecayAlt.Fr.zfns]
+/- English proof (translation)
+Simplify using `[Formalism.FourierDecayAlt.Fr.zfns]`.
+-/
 theorem mGGi (L : LevelData A r) : L.GGi ∈ zfns L := by
   simp [Formalism.FourierDecayAlt.Fr.zfns]
 
+/- English proof (translation)
+Take `⟨h1, -, -⟩` from `h`. Rewrite using `[← h1, star_star]`.
+-/
 theorem star_ζb {L : LevelData A r} (h : IsStarLevel L) : star L.ζb = L.ζ := by
   obtain ⟨h1, -, -⟩ := h
   rw [← h1, star_star]
 
+/- English proof (translation)
+Take `⟨h1, -, h3⟩` from `id h`. Rewrite using `[L.GG_def, star_sub, star_mul, star_ζb h, h1, ← algebraMap_star_comm, h3]`.
+-/
 theorem star_GG {L : LevelData A r} (h : IsStarLevel L) : star L.GG = L.GG := by
   obtain ⟨h1, -, h3⟩ := id h
   rw [L.GG_def, star_sub, star_mul, star_ζb h, h1, ← algebraMap_star_comm, h3]
 
+/- English proof (translation)
+The claim follows from `star_inv L.GG_GGi (star_GG h) L.GG_GGi`.
+-/
 theorem star_GGi {L : LevelData A r} (h : IsStarLevel L) : star L.GGi = L.GGi := star_inv L.GG_GGi (star_GG h) L.GG_GGi
 
+/- English proof (translation)
+Take `⟨h1, -, -⟩` from `h`. Conclude with `star_inv L.ζ_ζi h1 L.ζb_ζbi`.
+-/
 theorem star_ζi {L : LevelData A r} (h : IsStarLevel L) : star L.ζi = L.ζbi := by
   obtain ⟨h1, -, -⟩ := h
   exact star_inv L.ζ_ζi h1 L.ζb_ζbi
 
+/- English proof (translation)
+The claim follows from `star_inv L.ζb_ζbi (star_ζb h) L.ζ_ζi`.
+-/
 theorem star_ζbi {L : LevelData A r} (h : IsStarLevel L) : star L.ζbi = L.ζi := star_inv L.ζb_ζbi (star_ζb h) L.ζ_ζi
 
+/- English proof (translation)
+Simplify using `only [Formalism.FourierDecayAlt.Fr.wt, io_mul]`.
+-/
 theorem wt_eq (L : LevelData A r) : (wt L : SlopeTestRemainingChoices S A) = io L.ζ * io L.ζb * io L.GGi := by
   simp only [Formalism.FourierDecayAlt.Fr.wt, io_mul]
 
+/- English proof (translation)
+Take `⟨h1, -, -⟩` from `id h`. Rewrite using `[Formalism.FourierDecayAlt.Fr.wt, io_star]`. Use `congr 1`. Rewrite using `[star_mul, star_mul, star_GGi h, star_ζb h, h1]`. Conclude with `((fcomm L (mGGi L) (mζ L)).mul_right (fcomm L (mGGi L) (mζb L))).eq`.
+-/
 theorem star_wt {L : LevelData A r} (h : IsStarLevel L) : star (wt L : SlopeTestRemainingChoices S A) = wt L := by
   obtain ⟨h1, -, -⟩ := id h
   rw [Formalism.FourierDecayAlt.Fr.wt, io_star]
@@ -188,10 +301,16 @@ theorem star_wt {L : LevelData A r} (h : IsStarLevel L) : star (wt L : SlopeTest
   rw [star_mul, star_mul, star_GGi h, star_ζb h, h1]
   exact ((fcomm L (mGGi L) (mζ L)).mul_right (fcomm L (mGGi L) (mζb L))).eq
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.Fr.wt`. Conclude with `io_comm (((fcomm L (mζ L) hg).mul_left (fcomm L (mζb L) hg)).mul_left (fcomm L (mGGi L) hg))`.
+-/
 theorem wt_fn (L : LevelData A r) {g : A} (hg : g ∈ zfns L) : Commute (wt L : SlopeTestRemainingChoices S A) (io g) := by
   unfold Formalism.FourierDecayAlt.Fr.wt
   exact io_comm (((fcomm L (mζ L) hg).mul_left (fcomm L (mζb L) hg)).mul_left (fcomm L (mGGi L) hg))
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.Fr.wti, Formalism.FourierDecayAlt.Fr.wt, ← io_mul, ← io_one]`. Use `congr 1`. Conclude with `mon3 L.ζi_ζ L.ζbi_ζb L.GG_GGi (fcomm L (mζbi L) (mζ L))`.
+-/
 theorem wti_wt (L : LevelData A r) : (wti L : SlopeTestRemainingChoices S A) * wt L = 1 := by
   rw [Formalism.FourierDecayAlt.Fr.wti, Formalism.FourierDecayAlt.Fr.wt, ← io_mul, ← io_one]
   congr 1
@@ -199,18 +318,40 @@ theorem wti_wt (L : LevelData A r) : (wti L : SlopeTestRemainingChoices S A) * w
 
 variable {L : LevelData A r} {f : FrameData S A}
 
+/- English proof (translation)
+Rewrite using `[wt_eq]`. Conclude with `((h.c_fn _ (mζ L)).mul_right (h.c_fn _ (mζb L))).mul_right (h.c_fn _ (mGGi L))`.
+-/
 theorem c_wt (h : IsFrame L f) : Commute f.c (wt L) := by
   rw [wt_eq]
   exact ((h.c_fn _ (mζ L)).mul_right (h.c_fn _ (mζb L))).mul_right (h.c_fn _ (mGGi L))
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.Fr.FrameData.d, star_mul, star_pow, star_wt hS, h.c_star]`. Conclude with `(c_wt h).pow_right f.N`.
+-/
 theorem star_d (hS : IsStarLevel L) (h : IsFrame L f) : star (f.d L) = f.d L := by
   rw [Formalism.FourierDecayAlt.Fr.FrameData.d, star_mul, star_pow, star_wt hS, h.c_star]
   exact (c_wt h).pow_right f.N
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.Fr.FrameData.di, Formalism.FourierDecayAlt.Fr.FrameData.d, mul_assoc, ← mul_assoc (Formalism.FourierDecayAlt.Fr.wti L ^ f.N), pow_inv (wti_wt L) f.N, one_mul, h.c_ci.2]`.
+-/
 theorem di_d (h : IsFrame L f) : f.di L * f.d L = 1 := by
   rw [Formalism.FourierDecayAlt.Fr.FrameData.di, Formalism.FourierDecayAlt.Fr.FrameData.d, mul_assoc, ← mul_assoc (Formalism.FourierDecayAlt.Fr.wti L ^ f.N),
     pow_inv (wti_wt L) f.N, one_mul, h.c_ci.2]
 
+/- English proof (translation)
+Take `⟨H, Hl⟩` from `frame_gives_one_letter_hyps A S r L f h`. Establish `h1' : Yb - 1 + 1 ∈ f.inv` using `by rwa [sub_add_cancel]`. Establish `hr1 : star (Yb - 1) = Yb - 1` using `by rw [star_sub, hr, star_one]`. Establish `hreg` using `h.inv_reg h1`. Establish `hT : ∀ i j, f.hatT (Yb - 1) i j = f.F * f.TT (Yb - 1) i j * f.Fi`.
+
+Introduce `i j`. Simplify using `[FrameData.hatT, hreg]`. Establish `sF : star f.Fi * star f.F = 1` using `by rw [← star_mul, h.F_Fi, star_one]`. Establish `key : ∀ i j, f.d L * f.hatT (Yb - 1) i j = star f.Fi * (f.RR * f.TT (Yb - 1) i j) * f.Fi`. Introduce `i j`.
+
+Rewrite using `[hT, h.form]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sF, one_mul]`. Simplify using `only [mul_assoc]`. Use `_ = _ := by simp only [mul_assoc]`.
+
+Establish `herm` using `h.module.herm _ hreg hr1`. Establish `he : ∀ i j, star (f.RR * f.TT (Yb - 1) i j) = f.RR * f.TT (Yb - 1) j i`. Introduce `i j`. Use `congrFun (congrFun herm j) i` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_apply, d0, Matrix.diagonal_mul]`.
+
+Establish `hh : ∀ i j, star (f.d L * f.hatT (Yb - 1) i j) = f.d L * f.hatT (Yb - 1) j i`. Introduce `i j`. Rewrite using `[key, key, star_mul, star_mul, star_star, he]`. Simplify using `only [mul_assoc]`. Establish `e` using `adjoint_l_shift_relation ℂ (SlopeTestRemainingChoices S A) f.hatT _ f.hatQ f.inv (f.d L) H (star_d hS h) (Yb - 1) h1 h1' hh`.
+
+Rewrite `e` using `[sub_add_cancel, Hl (Yb - 1) h1 h1']`. Conclude with `e`.
+-/
 theorem d_m (hS : IsStarLevel L) (h : IsFrame L f) (Yb : ℂ) (hr : star Yb = Yb) (h0 : Yb ∈ f.inv)
     (h1 : Yb - 1 ∈ f.inv) :
     f.d L * mf f.hatT (fun Y => io L.GGi * f.xi Y) Yb = star (f.l L (Yb - 1)) * f.d L := by
@@ -243,11 +384,17 @@ theorem d_m (hS : IsStarLevel L) (h : IsFrame L f) (Yb : ℂ) (hr : star Yb = Yb
 
 end Level
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.conjTranspose_apply]`.
+-/
 theorem ct2 {R : Type} [Star R] (a b c d : R) :
     (!![a, b; c, d] : Matrix (Fin 2) (Fin 2) R)ᴴ = !![star a, star c; star b, star d] := by
   refine Matrix.ext fun i j => ?_
   fin_cases i <;> fin_cases j <;> simp [Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Rewrite using `[star_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = star F * (d * U) * D * Λ * F := by rw [hFFi, mul_one]; simp only [mul_assoc]`. Use `_ = star F * star Λ * (d * D) * (Λ * F) := by rw [hU]; simp only [mul_assoc]`.
+-/
 theorem asm {R : Type} [Ring R] [StarRing R] {F Fi d U D Λ : R} (hFFi : F * Fi = 1)
     (hU : d * U = star Λ * d) :
     star F * d * F * (Fi * (U * D * Λ) * F) = star (Λ * F) * (d * D) * (Λ * F) := by
@@ -257,6 +404,25 @@ theorem asm {R : Type} [Ring R] [StarRing R] {F Fi d U D Λ : R} (hFFi : F * Fi 
     _ = star F * (d * U) * D * Λ * F := by rw [hFFi, mul_one]; simp only [mul_assoc]
     _ = star F * star Λ * (d * D) * (Λ * F) := by rw [hU]; simp only [mul_assoc]
 
+/- English proof (translation)
+Introduce `A S _ _ _ _ _ _ r L f b Yb hyp`. Take `⟨hS, h, hF, hr, h0, -, h1, -⟩` from `hyp`. Take `⟨H, Hl⟩` from `frame_gives_one_letter_hyps A S r L f h`. Take `⟨-, -, -, fFi, fx, fxi, fc, fci, fee⟩` from `hF`. Establish `h1' : Yb - 1 + 1 ∈ f.inv` using `by rwa [sub_add_cancel]`.
+
+Establish `hdm` using `d_m hS h Yb hr h0 h1`. Establish `hm : mf f.hatT (fun Y => io L.GGi * f.xi Y) Yb = f.m L Yb`. Unfold `FrameData.m`. Rewrite using `[mul_assoc, ← hdm, ← mul_assoc, di_d h, one_mul]`. Establish `G` using `gauss_decomp_minus_letter ℂ (SlopeTestRemainingChoices S A) f.hatT _ f.hatQ f.inv H Yb h0 h1`.
+
+Establish `hQ : f.hatQ (Yb - 1) = f.q (Yb - 1)`. Simplify using `[FrameData.hatQ, h.inv_reg h1, h.inv_reg h0]`. Establish `hτ : f.hatT Yb 1 1 = io L.GG * f.x Yb`. Establish `: f.hatT Yb 1 1 = f.F * f.TT Yb 1 1 * f.Fi` using `by simp [FrameData.hatT, h.inv_reg h0]`. Rewrite using `[this, h.frame_τ Yb (h.inv_reg h0), mul_assoc, h.F_Fi, mul_one]`.
+
+Rewrite `G` using `[hm, Hl (Yb - 1) h1 h1', hQ, hτ]`. Rewrite `hdm` using `[hm]`. Establish `hT : (f.TT Yb)ᵀ = (f.hatT Yb)ᵀ.map (fun c => f.Fi * c * f.F)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `: f.hatT Yb j i = f.F * f.TT Yb j i * f.Fi` using `by simp [FrameData.hatT, h.inv_reg h0]`.
+
+Rewrite using `[Matrix.map_apply, Matrix.transpose_apply, Matrix.transpose_apply, this]`. Combine the equalities or inequalities in the displayed calculation. Establish `fd : FreeOf b (f.d L)` using `free_mul (free_pow (free_io b _) _) fc`. Establish `fdi : FreeOf b (f.di L)` using `free_mul fci (free_pow (free_io b _) _)`. Establish `fl : FreeOf b (f.l L (Yb - 1))` using `free_add (free_io b _) (free_mul (free_io b _) (fee _))`.
+
+Establish `fm : FreeOf b (f.m L Yb)` using `free_mul (free_mul fdi (free_star fl)) fd`. Establish `fU : FreeOf2 b !![1, f.l L (Yb - 1); 0, 1]` using `free2 (free_one b) fl (free_zero b) (free_one b)`. Establish `fD : FreeOf2 b !![f.q (Yb - 1) • (io L.GGi * f.xi (Yb - 1)), 0; 0, io L.GG * f.x Yb]` using `free2 (free_smul _ (free_mul (free_io b _) (fxi _))) (free_zero b) (free_zero b) (free_mul (free_io b _) (fx _))`. Establish `fΛ : FreeOf2 b !![1, 0; f.m L Yb, 1]` using `free2 (free_one b) (free_zero b) fm (free_one b)`. Establish `fUD : FreeOf2 b (!![1, f.l L (Yb - 1); 0, 1] * !![f.q (Yb - 1) • (io L.GGi * f.xi (Yb - 1)), 0; 0, io L.GG * f.x Yb])`.
+
+Introduce `i j k l`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Commute.sum_right _ _ _ fun m _ => (fU i m k l).mul_right (fD m j k l)`. Establish `hsm : star (f.m L Yb) * f.d L = f.d L * f.l L (Yb - 1)`. Use `congrArg star hdm` as an intermediate fact.
+
+Rewrite `this` using `[star_mul, star_mul, star_star, star_d hS h]`. Conclude with `this`. Establish `hΛH : (!![1, 0; f.m L Yb, 1] : M2 (SlopeTestRemainingChoices S A))ᴴ = !![1, star (f.m L Yb); 0, 1]`. Rewrite using `[ct2, star_one, star_zero]`. Establish `hU : f.d L * ins b !![1, f.l L (Yb - 1); 0, 1] = star (ins b !![1, 0; f.m L Yb, 1]) * f.d L`.
+
+Rewrite using `[Wd1.ins_star b _ fΛ, hΛH, ins2, ins2]`. Simplify using `only [mul_one, mul_zero, add_zero, mul_add, add_mul]`. Rewrite using `[(fd 0 0).eq, (fd 1 1).eq, mul_assoc (eU b 0 1), hsm, ← mul_assoc, ← mul_assoc, (fd 0 1).eq]`. Rewrite using `[hT, ins_conj b _ _ _ fFi, G, Wd1.ins_mul b _ _ fUD, Wd1.ins_mul b _ _ fU, h.form]`. Conclude with `asm h.F_Fi hU`.
+-/
 theorem gaussFormMinus : GaussFormMinus := by
   intro A S _ _ _ _ _ _ r L f b Yb hyp
   obtain ⟨hS, h, hF, hr, h0, -, h1, -⟩ := hyp
@@ -309,11 +475,39 @@ theorem gaussFormMinus : GaussFormMinus := by
   rw [hT, ins_conj b _ _ _ fFi, G, Wd1.ins_mul b _ _ fUD, Wd1.ins_mul b _ _ fU, h.form]
   exact asm h.F_Fi hU
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_fin_two]`. Simplify using the standard rewrite rules.
+-/
 theorem diag_mul {R : Type} [Ring R] (a b c d : R) :
     (!![a, 0; 0, b] : Matrix (Fin 2) (Fin 2) R) * !![c, 0; 0, d] = !![a * c, 0; 0, b * d] := by
   rw [Matrix.mul_fin_two]
   simp
 
+/- English proof (translation)
+Introduce `A S _ _ _ _ _ _ r L f b Yb hyp`. Establish `G` using `gaussFormMinus A S r L f b Yb hyp`. Take `⟨hS, h, hF, hr, h0, -, h1, -⟩` from `hyp`. Take `⟨-, -, -, -, fx, fxi, fc, -, -⟩` from `hF`. Use `show f.RR * ins b (f.TT Yb)ᵀ = star (ins b (!![io L.ζbi, 0; 0, io L.ζi] * !![1, 0; io L.GG * f.m L Yb, io L.GG]) * f.F) * (wt L ^ (f.N + 1) * (f.c * ins b !![f.q (Yb - 1) • f.xi (Yb - 1), 0; 0, f.x Yb])) * (ins b (!![io L.ζbi, 0; 0, io L.ζi] * !![1, 0; io L.GG * f.m L Yb, io L.GG …`.
+
+Rewrite using `[G]`. Establish `hEG : (!![io L.ζbi, 0; 0, io L.ζi] * !![1, 0; io L.GG * f.m L Yb, io L.GG] : M2 (SlopeTestRemainingChoices S A)) = !![io L.ζbi, 0; 0, io L.ζi * io L.GG] * !![1, 0; f.m L Yb, 1]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_assoc]`. Establish `fE : FreeOf2 b (!![io L.ζbi, 0; 0, io L.ζi * io L.GG] : M2 (SlopeTestRemainingChoices S A))` using `free2 (free_io b _) (free_zero b) (free_zero b) (free_mul (free_io b _) (free_io b _))`.
+
+Establish `fEH : FreeOf2 b (!![io L.ζi, 0; 0, io L.GG * io L.ζbi] : M2 (SlopeTestRemainingChoices S A))` using `free2 (free_io b _) (free_zero b) (free_zero b) (free_mul (free_io b _) (free_io b _))`. Establish `fW : FreeOf2 b (!![wt L, 0; 0, wt L] : M2 (SlopeTestRemainingChoices S A))` using `free2 (free_io b _) (free_zero b) (free_zero b) (free_io b _)`. Establish `hEH : (!![io L.ζbi, 0; 0, io L.ζi * io L.GG] : M2 (SlopeTestRemainingChoices S A))ᴴ = !![io L.ζi, 0; 0, io L.GG * io L.ζbi]`. Rewrite using `[ct2, star_zero, star_mul, io_star, io_star, io_star, star_ζbi hS, star_ζi hS, star_GG hS]`. Establish `hW : ins b (!![wt L, 0; 0, wt L] : M2 (SlopeTestRemainingChoices S A)) = wt L`.
+
+Establish `e : (!![wt L, 0; 0, wt L] : M2 (SlopeTestRemainingChoices S A)) = d0 (wt L)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [d0]`. Rewrite using `[e, Wd1.insert_diagonal_extract]`. Establish `dg : ∀ g ∈ zfns L, Commute (wt L ^ (f.N + 1) * f.c) (io g)` using `fun g hg => ((wt_fn L hg).pow_left _).mul_left (h.c_fn g hg)`.
+
+Establish `cE : Commute (wt L ^ (f.N + 1) * f.c) (ins b (!![io L.ζi, 0; 0, io L.GG * io L.ζbi] : M2 (SlopeTestRemainingChoices S A)))`. Use `Wd1.ins_comm b _ _ (free_mul (free_pow (free_io b _) _) fc) ?_` and prove the remaining obligations. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `dg _ (mζi L)`.
+
+Conclude with `Commute.zero_right _`. Conclude with `Commute.zero_right _`. Conclude with `(dg _ (mGG L)).mul_right (dg _ (mζbi L))`. Establish `iz : (io L.ζ : SlopeTestRemainingChoices S A) * io L.ζi = 1` using `by rw [← io_mul, L.ζ_ζi, io_one]`. Establish `iw : (io L.ζb : SlopeTestRemainingChoices S A) * io L.ζbi = 1` using `by rw [← io_mul, L.ζb_ζbi, io_one]`.
+
+Establish `ig : (io L.GGi : SlopeTestRemainingChoices S A) * io L.GG = 1` using `by rw [← io_mul, L.GGi_GG, io_one]`. Take `⟨x1, x2⟩` from `h.x_xi _ h1`. Establish `e00 : wt L * io L.ζi * (f.q (Yb - 1) • f.xi (Yb - 1)) * io L.ζbi = f.q (Yb - 1) • (io L.GGi * f.xi (Yb - 1))`. Rewrite using `[mul_smul_comm, smul_mul_assoc, mul_assoc, (comm_inv x1 x2 (h.x_fn _ _ (mζbi L))).eq, ← mul_assoc, wt_eq, mon1 iz iw (io_comm (fcomm L (mGGi L) (mζi L))) (io_comm (fcomm L (mζb L) (mζi L))) (io_comm (fcomm L (mGGi L) (mζbi L)))]`. Establish `e11 : wt L * (io L.GG * io L.ζbi) * f.x Yb * (io L.ζi * io L.GG) = io L.GG * f.x Yb`.
+
+Rewrite using `[mul_assoc, ((h.x_fn Yb _ (mζi L)).mul_right (h.x_fn Yb _ (mGG L))).eq, ← mul_assoc, wt_eq, mon2 iz iw ig]`. Establish `key : f.d L * ins b !![f.q (Yb - 1) • (io L.GGi * f.xi (Yb - 1)), 0; 0, io L.GG * f.x Yb] = star (ins b !![io L.ζbi, 0; 0, io L.ζi * io L.GG]) * (wt L ^ (f.N + 1) * (f.c * ins b !![f.q (Yb - 1) • f.xi (Yb - 1), 0; 0, f.x Yb])) * ins b !![io L.ζbi, 0; 0, io L.ζi * io L.GG]`. Rewrite using `[Wd1.ins_star b _ fE, hEH, ← e00, ← e11, ← diag_mul, ← diag_mul, ← diag_mul]`. Establish `f1 : FreeOf2 b (!![wt L, 0; 0, wt L] * !![io L.ζi, 0; 0, io L.GG * io L.ζbi] : M2 (SlopeTestRemainingChoices S A))`. Rewrite using `[diag_mul]`.
+
+Conclude with `free2 (free_mul (free_io b _) (free_io b _)) (free_zero b) (free_zero b) (free_mul (free_io b _) (free_mul (free_io b _) (free_io b _)))`. Establish `f2 : FreeOf2 b (!![wt L, 0; 0, wt L] * !![io L.ζi, 0; 0, io L.GG * io L.ζbi] * !![f.q (Yb - 1) • f.xi (Yb - 1), 0; 0, f.x Yb] : M2 (SlopeTestRemainingChoices S A))`. Rewrite using `[diag_mul, diag_mul]`. Conclude with `free2 (free_mul (free_mul (free_io b _) (free_io b _)) (free_smul _ (fxi _))) (free_zero b) (free_zero b) (free_mul (free_mul (free_io b _) (free_mul (free_io b _) (free_io b _))) (fx _))`. Rewrite using `[Wd1.ins_mul b _ _ f2, Wd1.ins_mul b _ _ f1, Wd1.ins_mul b _ _ fW, hW]`.
+
+Unfold `FrameData.d`. Generalize the expression as in `ins b (!![io L.ζi, 0; 0, io L.GG * io L.ζbi] : M2 (SlopeTestRemainingChoices S A)) = EH at cE ⊢`. Generalize the expression as in `ins b (!![f.q (Yb - 1) • f.xi (Yb - 1), 0; 0, f.x Yb] : M2 (SlopeTestRemainingChoices S A)) = C`. Generalize the expression as in `ins b (!![io L.ζbi, 0; 0, io L.ζi * io L.GG] : M2 (SlopeTestRemainingChoices S A)) = E`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [mul_assoc]`. Use `_ = (wt L ^ f.N * wt L * f.c) * EH * C * E := by rw [(c_wt h).eq]; simp only [mul_assoc]`. Use `_ = (wt L ^ (f.N + 1) * f.c) * EH * C * E := by rw [pow_succ]`. Use `_ = EH * (wt L ^ (f.N + 1) * f.c) * C * E := by rw [cE.eq]`. Use `_ = EH * (wt L ^ (f.N + 1) * (f.c * C)) * E := by simp only [mul_assoc]`.
+
+Rewrite using `[hEG, Wd1.ins_mul b _ _ fE, key]`. Simplify using `only [star_mul, mul_assoc]`.
+-/
 theorem minusForm : MinusForm := by
   intro A S _ _ _ _ _ _ r L f b Yb hyp
   have G := gaussFormMinus A S r L f b Yb hyp
@@ -398,8 +592,14 @@ end Formalism.FourierDecayAlt.P.Fr8
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.Fr8.gaussFormMinus`.
+-/
 theorem gauss_form_minus_letter : Formalism.FourierDecayAlt.Fr.GaussFormMinus := Formalism.FourierDecayAlt.P.Fr8.gaussFormMinus
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.Fr8.minusForm`.
+-/
 theorem minus_letter_form : Formalism.FourierDecayAlt.Fr.MinusForm := Formalism.FourierDecayAlt.P.Fr8.minusForm
 
 end Formalism.FourierDecayAlt.P

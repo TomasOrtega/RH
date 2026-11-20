@@ -9,19 +9,31 @@ namespace GlobalTheory.HypPrimVec
 section
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E}
 
+/- English proof (translation)
+The claim follows from `LinearMap.isSymm_def.mp S.herm x y`.
+-/
 theorem hconj (x y : S.V) : star (S.hT x y) = S.hT y x :=
   LinearMap.isSymm_def.mp S.herm x y
 
+/- English proof (translation)
+Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`.
+-/
 theorem mem_dual_iff (Λ : Submodule (𝓞 E) S.V) (x : S.V) :
     x ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ ↔ ∀ y ∈ Λ, ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = S.hT y x := by
   simp only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap,
     LinearMap.restrictScalars_apply, Submodule.mem_one]
 
+/- English proof (translation)
+Establish `hx : x ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ` using `(mem_dual_iff Λ x).2 h`. Rewrite `hx` using `[hU]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_dual {Λ : Submodule (𝓞 E) S.V} (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) {x : S.V}
     (h : ∀ y ∈ Λ, ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = S.hT y x) : x ∈ Λ := by
   have hx : x ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ := (mem_dual_iff Λ x).2 h
   rwa [hU] at hx
 
+/- English proof (translation)
+Establish `hx' : x ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ` using `by rw [hU]; exact hx`. Conclude with `(mem_dual_iff Λ x).1 hx' y hy`.
+-/
 theorem pair_mem {Λ : Submodule (𝓞 E) S.V} (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) {x y : S.V}
     (hx : x ∈ Λ) (hy : y ∈ Λ) : ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = S.hT y x := by
   have hx' : x ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ := by rw [hU]; exact hx
@@ -29,6 +41,47 @@ theorem pair_mem {Λ : Submodule (𝓞 E) S.V} (hU : Formalism.HermitianLattices
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hcm S Λ hU hx e f c hc hee hff hef hce hfc T hT`. Take `⟨x, hx⟩` from `hx`. Establish `hσ : ∀ r : 𝓞 E, ((RingOfIntegers.mapRingHom (starRingEnd E) r : 𝓞 E) : E) = star (r : E)` using `fun r => rfl`. Establish `hTne : (T : 𝓞 E) ≠ 0`. Introduce `h`.
+
+Apply `hT` to reduce the goal to its premises. Establish `h'` using `congrArg (fun r : 𝓞 E => (r : E)) h`. Simplify using `using h'`. Take `⟨P, hP0, hPP, ⟨t, p0, hp0, htp⟩, α, hα⟩` from `GlobalTheory.T.exists_ideal_coprime_conj_mul_eq_spanSingleton' F E hcm c hc (T : 𝓞 E) hTne`. Establish `htpE : (t : E) * (T : E) + (p0 : E) = 1`.
+
+Establish `h'` using `congrArg (fun r : 𝓞 E => (r : E)) htp`. Simplify using `using h'`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 (show (1 : 𝓞 E) ∈ P ⊔ P.comap (RingOfIntegers.mapRingHom (starRingEnd E)) by`. Rewrite using `[hPP]`. Conclude with `Submodule.mem_top)`.
+
+Establish `hq' : RingOfIntegers.mapRingHom (starRingEnd E) q ∈ P` using `Ideal.mem_comap.1 hq`. Establish `hpqE : (p : E) + (q : E) = 1`. Establish `h'` using `congrArg (fun r : 𝓞 E => (r : E)) hpq`. Simplify using `using h'`. Use `set w : 𝓞 E := p * x + RingOfIntegers.mapRingHom (starRingEnd E) q * RingOfIntegers.mapRingHom (starRingEnd E) x with hw`.
+
+Establish `hwP : w ∈ P` using `P.add_mem (P.mul_mem_right _ hp) (P.mul_mem_right _ hq')`. Establish `hwE : (w : E) + star (w : E) = 1`. Establish `e1 : (w : E) = (p : E) * x + star (q : E) * star (x : E)`. Rewrite using `[hw]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hs : star (p : E) + star (q : E) = 1` using `by rw [← star_add, hpqE, star_one]`. Rewrite using `[e1, star_add, star_mul', star_mul', star_star, star_star]`. Take the linear combination `(x : E) * hpqE + star (x : E) * hs + hx`. Establish `hPc : ∀ r ∈ P, ∀ s ∈ c, ∃ o : 𝓞 E, (o : E) * α = (r : E) * s`.
+
+Introduce `r hr s hs`. Establish `hm : (r : E) * s ∈ (P : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) * c` using `FractionalIdeal.mul_mem_mul ((FractionalIdeal.mem_coeIdeal _).2 ⟨r, hr, rfl⟩) hs`. Rewrite `hm` using `[hα, FractionalIdeal.mem_spanSingleton]`. Take `⟨o, ho⟩` from `hm`. Conclude with `⟨o, by rw [← ho, Algebra.smul_def]⟩`.
+
+Establish `hαc : α ∈ c`. Establish `h1 : α ∈ (P : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) * c`. Rewrite using `[hα]`. Conclude with `FractionalIdeal.mem_spanSingleton_self _ _`. Establish `hle : (P : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) * c ≤ c` using `FractionalIdeal.mul_le.2 fun i hi j hj => by`.
+
+Take `⟨r, -, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hi`. Rewrite using `[← Algebra.smul_def]`. Conclude with `(c : Submodule (𝓞 E) E).smul_mem r hj`. Conclude with `hle h1`. Establish `hα0 : α ≠ 0`.
+
+Take `⟨r, hr, hr0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hP0`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hs0⟩ : ∃ s ∈ c, s ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hc` to reduce the goal to its premises.
+
+Use extensionality with `y`. Simplify using `only [FractionalIdeal.mem_zero_iff]`. Conclude with `⟨h y, fun hy => hy ▸ (c : Submodule (𝓞 E) E).zero_mem⟩`. Take `⟨o, ho⟩` from `hPc r hr s hs`. Introduce `h0`.
+
+Rewrite `ho` using `[h0, mul_zero]`. Establish `hr0' : (r : E) ≠ 0` using `by exact_mod_cast hr0`. Conclude with `mul_ne_zero hr0' hs0 ho.symm`. Establish `hfe : S.hT f e = 1` using `by rw [← hconj e f, hef, star_one]`. Use `set b : E := star (-(T : E) * (w : E) / α) with hb`.
+
+Establish `h1 : star α * b = -(T : E) * star (w : E)`. Rewrite using `[hb, ← star_mul', show α * (-(T : E) * (w : E) / α) = -(T : E) * w by field_simp, star_mul', star_neg, star_natCast]`. Establish `h2 : star b * α = -(T : E) * (w : E)`. Rewrite using `[hb, star_star]`. Clear the denominators using the available nonvanishing facts.
+
+Use `⟨α • e + b • f, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span (by simp))) (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))`. Use `Λ.add_mem (hce α hαc) (mem_of_dual hU fun y hy => ?_)` and prove the remaining obligations. Take `⟨o, ho⟩` from `hPc w hwP (S.hT f y) (hfc y hy)`. Use `⟨-(T : 𝓞 E) * RingOfIntegers.mapRingHom (starRingEnd E) o, ?_⟩` and prove the remaining obligations.
+
+Establish `key : -(T : E) * w / α * S.hT f y = -(T : E) * o`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[LinearMap.map_smul, ← hconj f y, smul_eq_mul, hb, ← star_mul', key, star_mul', star_neg, star_natCast]`. Use `show ((-(T : 𝓞 E) * RingOfIntegers.mapRingHom (starRingEnd E) o : 𝓞 E) : E) = _`. Use `push_cast`.
+
+Both sides reduce to the same expression. Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, LinearMap.map_smul, smul_eq_mul, hee, hff, hef, hfe, mul_zero, mul_one, zero_add, add_zero, starRingEnd_apply]`. Take the linear combination `h1 + h2 - (T : E) * hwE`. Introduce `γ hγ`. Establish `hfz : S.hT f (γ • (α • e + b • f)) = γ * α`.
+
+Simplify using `only [map_add, LinearMap.map_smul, smul_eq_mul, hff, hfe, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hγα : γ * α ∈ c` using `hfz ▸ hfc _ hγ`. Take `⟨o1, ho1⟩` from `hPc p0 hp0 _ hγα`. Take `⟨o2, ho2⟩` from `hPc w hwP _ hγα`.
+
+Take `⟨o3, ho3⟩` from `pair_mem hU hγ (hce α hαc)`. Establish `E1 : (o1 : E) = p0 * γ` using `mul_right_cancel₀ hα0 (by rw [ho1]; ring)`. Establish `E2 : (o2 : E) = w * γ` using `mul_right_cancel₀ hα0 (by rw [ho2]; ring)`. Establish `E3 : (o3 : E) = -(T : E) * γ * star (w : E)`. Establish `hez : S.hT (α • e) (γ • (α • e + b • f)) = γ * (star α * b)`.
+
+Simplify using `only [map_add, LinearMap.map_smulₛₗ, LinearMap.smul_apply, LinearMap.map_smul, smul_eq_mul, hee, hef, starRingEnd_apply, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `ho3` using `[hez, h1]`. Express the relevant statement in the definitionally equal form `(o3 : E) = _ at ho3`. Rewrite using `[ho3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨o2 + (-t * o3 + RingOfIntegers.mapRingHom (starRingEnd E) w * o1), ?_⟩` and prove the remaining obligations. Establish `hcast : ((o2 + (-t * o3 + RingOfIntegers.mapRingHom (starRingEnd E) w * o1) : 𝓞 E) : E) = (o2 : E) + (-(t : E) * o3 + star (w : E) * o1)` using `by push_cast; rfl`. Rewrite using `[hcast]`. Take the linear combination `E2 - (t : E) * E3 + star (w : E) * E1 + γ * star (w : E) * htpE + γ * hwE`.
+-/
 theorem exists_primitive_norm_neg : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E], CMData F E → ∀ (S : HSpace E) (Λ : Submodule (𝓞 E) S.V), Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ → (∃ x : 𝓞 E, (x : E) + star (x : E) = 1) → ∀ (e f : S.V) (c : FractionalIdeal (nonZeroDivisors (𝓞 E)) E), c ≠ 0 → S.hT e e = 0 → S.hT f f = 0 → S.hT e f = 1 → (∀ x ∈ c, x • e ∈ Λ) → (∀ y ∈ Λ, S.hT f y ∈ c) → ∀ T : ℕ, T ≠ 0 → ∃ z : S.V, z ∈ Submodule.span E {e, f} ∧ z ∈ Λ ∧ S.hT z z = -((T : ℕ) : E) ∧ ∀ γ : E, γ • z ∈ Λ → ∃ o : 𝓞 E, (o : E) = γ := by
   intro F E _ _ _ _ _ _ hcm S Λ hU hx e f c hc hee hff hef hce hfc T hT
   obtain ⟨x, hx⟩ := hx

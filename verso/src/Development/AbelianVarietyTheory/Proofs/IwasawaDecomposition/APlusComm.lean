@@ -18,6 +18,23 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 noncomputable def dirPt (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) : RW T S :=
   (Pi.single τ z : D.what₂.Tau → Matrix (Fin T.rank) (Fin S.rank) ℂ)
 
+/- English proof (translation)
+Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `hE : ∀ τ z g, Datum.dRho (heisO ψ S T) θ τ z g = FockCompare.hD (iotaW σ T S) (piW θ T S) (omO S T) (dirPt τ z) g` using `fun τ z g => by`. Use `dLine_eq_hD h hψ (isRealDir_lineAt hθ τ z) g` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Ker.HeisDeriv.pi_lineAt hθ]`. Conclude with `this`.
+
+Establish `hs` using `theta_sm h hf`. Establish `hd : ∀ {g}, IsThetaFunO ψ S T g → ∀ w, DifferentiableAt ℝ (fun x : RW T S => g (w + iotaW σ T S x)) 0` using `fun hg w => ((theta_sm h hg w).differentiable (by simp)).differentiableAt`. Use `⟨fun f' hf' => ?_, fun a => ?_, fun z' => ?_, fun t => ?_, fun τ' z' => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Rewrite using `[Pi.add_apply, hE, hE, hE, hD_eq_fderiv _ _ _ _ (theta_sm h (theta_add hf hf')), hD_eq_fderiv _ _ _ _ hs, hD_eq_fderiv _ _ _ _ (theta_sm h hf')]`.
+
+Establish `e : (fun x : RW T S => (f + f') (w + iotaW σ T S x)) = fun x : RW T S => f (w + iotaW σ T S x) + f' (w + iotaW σ T S x)` using `rfl`. Rewrite using `[e, fderiv_fun_add (hd hf w) (hd hf' w), ContinuousLinearMap.add_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `w`. Rewrite using `[Pi.smul_apply, hE, hE, hD_eq_fderiv _ _ _ _ (theta_sm h (theta_smul a hf)), hD_eq_fderiv _ _ _ _ hs]`.
+
+Establish `e : (fun x : RW T S => (a • f) (w + iotaW σ T S x)) = fun x : RW T S => a • f (w + iotaW σ T S x)` using `rfl`. Rewrite using `[e, fderiv_fun_const_smul (hd hf w), ContinuousLinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : dirPt τ (z + z') = dirPt τ z + dirPt τ z'`. Unfold `dirPt`.
+
+Rewrite using `[Pi.single_add]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `w`. Rewrite using `[Pi.add_apply, hE, hE, hE, e, hD_eq_fderiv _ _ _ _ hs, hD_eq_fderiv _ _ _ _ hs, hD_eq_fderiv _ _ _ _ hs, LinearMap.map_add, ContinuousLinearMap.map_add]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e : dirPt τ ((t : ℂ) • z) = t • dirPt τ z`. Unfold `dirPt`. Rewrite using `[Pi.single_smul]`. Both sides reduce to the same expression.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[Pi.smul_apply, hE, hE, e, hD_eq_fderiv _ _ _ _ hs, hD_eq_fderiv _ _ _ _ hs, LinearMap.map_smul, ContinuousLinearMap.map_smul, smul_eq_mul, smul_eq_mul, Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `sk : ∀ u v, omO S T v u = -omO S T u v` using `fun u v => by`.
+
+Establish `h1` using `omO_self h (S := S) (T := T) (u + v)`. Simplify using `only [LinearMap.map_add, LinearMap.add_apply, omO_self h] at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hE, hE, hE, hE, heisenberg_derivative_commutator _ _ _ _ _ (h.pi_iota T S) (fun g hg u w => hD_eq_fderiv _ _ _ g hg u w) sk f hs]`.
+-/
 theorem dRho_laws (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     (∀ f', IsThetaFunO ψ S T f' → Datum.dRho (heisO ψ S T) θ τ z (f + f') =
@@ -79,6 +96,19 @@ theorem dRho_laws (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {f : WO S T �
     rw [hE, hE, hE, hE, heisenberg_derivative_commutator _ _ _ _ _ (h.pi_iota T S)
       (fun g hg u w => hD_eq_fderiv _ _ _ g hg u w) sk f hs]
 
+/- English proof (translation)
+Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `sk : ∀ u v, omO S T v u = -omO S T u v` using `fun u v => by`. Establish `h1` using `omO_self h (S := S) (T := T) (u + v)`. Simplify using `only [LinearMap.map_add, LinearMap.add_apply, omO_self h] at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `key` using `fun τ => GlobalTheory.CartanTrace.cplxO_pos T.rank S.rank (gramAt D S τ) (sS τ) (gramAt D T τ) (sT τ) (tauE D τ D.host.xi0) (GlobalTheory.OrientedRealForm.realPlace_imaginaryGenerator_re_eq_zero τ) (xi_zero_im_pos D τ) (hS τ) (hT τ)`. Establish `hom : ∀ x y : RW T S, omO S T x y = ∑ τ, formAt S T τ (x τ) (y τ)` using `fun _ _ => rfl`. Establish `hJ : ∀ τ z, dirPt τ (cplxO (sS τ) (sT τ) z) = GlobalTheory.OrientedRealForm.jO S T sS sT (dirPt τ z)`. Introduce `τ z`. Use function extensionality and compare the values at `ρ`.
+
+Use `show _ = cplxO (sS ρ) (sT ρ) (dirPt τ z ρ)`. Unfold `dirPt`. Distinguish the cases in `e : ρ = τ`. Substitute `e` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same]`.
+
+Rewrite using `[Pi.single_eq_of_ne e, Pi.single_eq_of_ne e]`. Simplify using `[cplxO]`. Establish `hJJ : ∀ v, GlobalTheory.OrientedRealForm.jO S T sS sT (GlobalTheory.OrientedRealForm.jO S T sS sT v) = -v` using `fun v => by`. Use function extensionality and compare the values at `τ`. Conclude with `(key τ).2.1 (v τ)`.
+
+Establish `hsym : ∀ x y, omO S T x (GlobalTheory.OrientedRealForm.jO S T sS sT y) = omO S T y (GlobalTheory.OrientedRealForm.jO S T sS sT x)` using `fun x y => by`. Rewrite using `[hom, hom]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `(GlobalTheory.OrientedRealForm.formAt_eq S T τ _ _).trans (Eq.trans ?_ (GlobalTheory.OrientedRealForm.formAt_eq S T τ _ _).symm)` and prove the remaining obligations. Conclude with `congrArg (2 * ·) ((key τ).2.2.1 (x τ) (y τ))`.
+
+Rewrite using `[hJ, hJ]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hsym, hJJ, map_neg, ← sk]`. Rewrite using `[sk, hsym]`.
+-/
 theorem om_cplx (hθ : IsInfFam θ) {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ}
     {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ} (hS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ))
     (hT : ∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) (τ τ' : D.what₂.Tau) (z z' : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
@@ -123,27 +153,44 @@ variable (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (τ : D.what₂.Tau)
   (J : Matrix (Fin T.rank) (Fin S.rank) ℂ → Matrix (Fin T.rank) (Fin S.rank) ℂ)
   (z : Matrix (Fin T.rank) (Fin S.rank) ℂ)
 
+/- English proof (translation)
+Rewrite using `[aPlus, crea, neg_smul, sub_eq_add_neg]`.
+-/
 theorem aPlus_eq (f : WO S T → ℂ) : aPlus (heisO ψ S T) θ τ J z f =
     ((fockScale D τ : ℂ)⁻¹) • (Datum.dRho (heisO ψ S T) θ τ z f + (-I) • Datum.dRho (heisO ψ S T) θ τ (J z) f) := by
   rw [aPlus, crea, neg_smul, sub_eq_add_neg]
 
 include hψ hθ
 
+/- English proof (translation)
+Rewrite using `[aPlus_eq]`. Conclude with `theta_smul _ (theta_add (theta_dRho hθ hψ τ z hf) (theta_smul _ (theta_dRho hθ hψ τ _ hf)))`.
+-/
 theorem aPlus_th {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     IsThetaFunO ψ S T (aPlus (heisO ψ S T) θ τ J z f) := by
   rw [aPlus_eq]
   exact theta_smul _ (theta_add (theta_dRho hθ hψ τ z hf) (theta_smul _ (theta_dRho hθ hψ τ _ hf)))
 
+/- English proof (translation)
+Simplify using `only [aPlus_eq, fun z => (dRho_laws hψ hθ hf τ z).1 f' hf']`. Use `module`.
+-/
 theorem aPlus_add {f f' : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hf' : IsThetaFunO ψ S T f') :
     aPlus (heisO ψ S T) θ τ J z (f + f') = aPlus (heisO ψ S T) θ τ J z f + aPlus (heisO ψ S T) θ τ J z f' := by
   simp only [aPlus_eq, fun z => (dRho_laws hψ hθ hf τ z).1 f' hf']
   module
 
+/- English proof (translation)
+Simplify using `only [aPlus_eq, fun z => (dRho_laws hψ hθ hf τ z).2.1 a]`. Use `module`.
+-/
 theorem aPlus_smul (a : ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     aPlus (heisO ψ S T) θ τ J z (a • f) = a • aPlus (heisO ψ S T) θ τ J z f := by
   simp only [aPlus_eq, fun z => (dRho_laws hψ hθ hf τ z).2.1 a]
   module
 
+/- English proof (translation)
+Establish `ht` using `fun τ z => theta_dRho hθ hψ τ z hf`. Establish `hc` using `fun τ z τ' z' => eq_add_of_sub_eq ((dRho_laws hψ hθ hf τ z).2.2.2.2 τ' z')`. Take `⟨h1, h2⟩` from `om_cplx hθ hS hT τ τ' z z'`. Rewrite using `[aPlus_eq τ' _ z' f, aPlus_eq τ _ z f, aPlus_smul hψ hθ _ _ _ _ (theta_add (ht _ _) (theta_smul _ (ht _ _))), aPlus_smul hψ hθ _ _ _ _ (theta_add (ht _ _) (theta_smul _ (ht _ _))), aPlus_add hψ hθ _ _ _ (ht _ _) (theta_smul _ (ht _ _)), aPlus_add hψ hθ _ _ _ (ht _ _) (theta_smul …`. Simplify using `only [aPlus_eq]`.
+
+Rewrite using `[hc τ z τ' z', hc τ z τ' (cplxO (sS τ') (sT τ') z'), hc τ (cplxO (sS τ) (sT τ) z) τ' z', hc τ (cplxO (sS τ) (sT τ) z) τ' (cplxO (sS τ') (sT τ') z'), h1, h2]`. Use `match_scalars`. Apply the tactic sequence `all_goals first | ring1 | (ring_nf; simp only [I_pow_three]; ring1)`.
+-/
 theorem aPlus_comm {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ}
     {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ} (hS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ))
     (hT : ∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) (τ' : D.what₂.Tau) (z' : Matrix (Fin T.rank) (Fin S.rank) ℂ)

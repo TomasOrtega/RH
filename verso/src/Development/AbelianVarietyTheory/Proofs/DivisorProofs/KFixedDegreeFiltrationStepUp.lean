@@ -13,6 +13,11 @@ namespace GlobalTheory.KFixIrr.EvenStepTens
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ℕ}
 
+/- English proof (translation)
+Rewrite using `[atPl, PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = w`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`.
+-/
 theorem atPl_tprod' (w : ι) (L : Module.End ℂ (Formalism.BasicNotions.TH.Pol P Q R S)) (f : ι → Formalism.BasicNotions.TH.Pol P Q R S) :
     atPl (V := fun _ : ι => Formalism.BasicNotions.TH.Pol P Q R S) w L (PiTensorProduct.tprod ℂ f) =
       PiTensorProduct.tprod ℂ (Function.update f w (L (f w))) := by
@@ -23,12 +28,18 @@ theorem atPl_tprod' (w : ι) (L : Module.End ℂ (Formalism.BasicNotions.TH.Pol 
   · subst h; simp
   · simp [Function.update_of_ne h]
 
+/- English proof (translation)
+Rewrite using `[mem_chiPart]`. Introduce `w X hX`. Rewrite using `[atPl_tprod', (mem_chiOne _ _).1 (hg w) X hX, MultilinearMap.map_update_smul, Function.update_eq_self]`.
+-/
 theorem tprod_mem_chi (c : ι → ℚ) (g : ι → Formalism.BasicNotions.TH.Pol P Q R S) (hg : ∀ w, g w ∈ chiOne P Q R S (c w)) :
     PiTensorProduct.tprod ℂ g ∈ chiPart ι P Q R S c := by
   rw [mem_chiPart]
   intro w X hX
   rw [atPl_tprod', (mem_chiOne _ _).1 (hg w) X hX, MultilinearMap.map_update_smul, Function.update_eq_self]
 
+/- English proof (translation)
+Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ w), Function.update_self]`. Establish `e1 : ∑ v ∈ Finset.univ.erase w, (Function.update h w g' v).totalDegree = ∑ v ∈ Finset.univ.erase w, (h v).totalDegree` using `Finset.sum_congr rfl fun v hv => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hv)]`. Rewrite using `[e1]`. Conclude with `Nat.add_le_add hg' (Finset.sum_le_sum fun v _ => hh v)`.
+-/
 theorem sum_update_le (h : ι → Formalism.BasicNotions.TH.Pol P Q R S) (e : ι → ℕ) (hh : ∀ v, (h v).totalDegree ≤ e v) (w : ι)
     (g' : Formalism.BasicNotions.TH.Pol P Q R S) (k : ℕ) (hg' : g'.totalDegree ≤ k) :
     ∑ v, (Function.update h w g' v).totalDegree ≤ k + ∑ v ∈ Finset.univ.erase w, e v := by
@@ -51,16 +62,25 @@ abbrev tgt (ι : Type) [Fintype ι] [DecidableEq ι] (P Q R S : ℕ) (c : ι →
                ∃ T₁ ∈ GlobalTheory.KFixIrr.chiPart ι P Q R S c ⊓ GlobalTheory.KFixIrr.degLE ι P Q R S m,
                  T' = GlobalTheory.RealLift.atPl (V := fun _ : ι => Formalism.BasicNotions.TH.Pol P Q R S) w (Formalism.BasicNotions.TH.fockAct2 P Q R S Z) T₁}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.FockDeg.fockAct2_eq, GlobalTheory.FockDeg.plusPart_omAct (GlobalTheory.FockDeg.lineMatrixKroneckerRightFactor_eq_zero_of_isPC hZ)]`. Conclude with `GlobalTheory.FockDeg.upOp_mem _ k g hg`.
+-/
 theorem plusPart_mem (Z : Mat R S) (hZ : IsPC Z) (k : ℕ) (g : Formalism.BasicNotions.TH.Pol P Q R S)
     (hg : g ∈ homog (Ln P Q R S) k) : plusPart (fockAct2 P Q R S Z) g ∈ homog (Ln P Q R S) (k + 2) := by
   rw [GlobalTheory.FockDeg.fockAct2_eq, GlobalTheory.FockDeg.plusPart_omAct (GlobalTheory.FockDeg.lineMatrixKroneckerRightFactor_eq_zero_of_isPC hZ)]
   exact GlobalTheory.FockDeg.upOp_mem _ k g hg
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.FockDeg.fockAct2_eq, GlobalTheory.FockDeg.minusPart_omAct (GlobalTheory.FockDeg.lineMatrixKroneckerRightFactor_eq_zero_of_isPC hZ)]`. Conclude with `GlobalTheory.FockDeg.downOp_mem _ k g hg`.
+-/
 theorem minusPart_mem (Z : Mat R S) (hZ : IsPC Z) (k : ℕ) (g : Formalism.BasicNotions.TH.Pol P Q R S)
     (hg : g ∈ homog (Ln P Q R S) k) : minusPart (fockAct2 P Q R S Z) g ∈ homog (Ln P Q R S) (k - 2) := by
   rw [GlobalTheory.FockDeg.fockAct2_eq, GlobalTheory.FockDeg.minusPart_omAct (GlobalTheory.FockDeg.lineMatrixKroneckerRightFactor_eq_zero_of_isPC hZ)]
   exact GlobalTheory.FockDeg.downOp_mem _ k g hg
 
+/- English proof (translation)
+Rewrite using `[eq_sub_iff_add_eq, GlobalTheory.FockDeg.fockAct2_eq]`. Conclude with `(GlobalTheory.FockDeg.omAct_eq_parts (GlobalTheory.FockDeg.lineMatrixKroneckerRightFactor_eq_zero_of_isPC hZ) g).symm`.
+-/
 theorem plusPart_eq (Z : Mat R S) (hZ : IsPC Z) (g : Formalism.BasicNotions.TH.Pol P Q R S) :
     plusPart (fockAct2 P Q R S Z) g = fockAct2 P Q R S Z g - minusPart (fockAct2 P Q R S Z) g := by
   rw [eq_sub_iff_add_eq, GlobalTheory.FockDeg.fockAct2_eq]
@@ -72,6 +92,27 @@ namespace GlobalTheory.KFixIrr.EvenStepTens
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ℕ}
 
+/- English proof (translation)
+Establish `hdeg : ∀ v, (h v).totalDegree ≤ e v` using `fun v => (hh v).1.totalDegree_le`. Distinguish the cases in `hs : ∑ w, e w ≤ m + 1`. Conclude with `Submodule.mem_sup_left (tprod_mem_degLE h ((Finset.sum_le_sum fun v _ => hdeg v).trans hs))`. Establish `hlt : ∑ w, d w < ∑ w, e w` using `by omega`. Take `⟨w, -, hw⟩` from `Finset.exists_lt_of_sum_lt hlt`.
+
+Establish `hspan` using `GlobalTheory.T.fock_action_homogeneous_eigenvector P Q R S (c w) (e w) (d w) (h w) (g₀ w) (hh w).1 ((mem_chiOne _ _).1 (hh w).2) (hg₀ w).1 (hg₀ w).2.1 ((mem_chiOne _ _).1 (hg₀ w).2.2) hw`. Distinguish the cases in `he2 : 2 ≤ e w`. Set `L` to `(PiTensorProduct.tprod ℂ (s := fun _ : ι => Formalism.BasicNotions.TH.Pol P Q R S)).toLinearMap h w`. Establish `hL : ∀ v, L v = PiTensorProduct.tprod ℂ (Function.update h w v)` using `fun v => rfl`. Establish `hsum : e w + ∑ v ∈ Finset.univ.erase w, e v = ∑ v, e v` using `Finset.add_sum_erase _ _ (Finset.mem_univ w)`.
+
+Establish `hle : Submodule.span ℂ {f' | ∃ Z : Formalism.BasicNotions.TH.Mat R S, Formalism.BasicNotions.TH.IsPC Z ∧ ∃ g' ∈ Formalism.BasicNotions.TH.homog (Formalism.BasicNotions.TH.Ln P Q R S) (e w - 2), (∀ Y : Formalism.BasicNotions.TH.Mat P Q, Formalism.BasicNotions.TH.IsKC Y → Formalism …`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Z, hZ, g', hg', hchi, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap]`. Establish `hg'd : g'.totalDegree ≤ e w - 2` using `(show g'.IsHomogeneous (e w - 2) from hg').totalDegree_le`.
+
+Rewrite using `[plusPart_eq Z hZ, map_sub]`. Use `Submodule.sub_mem _ ?_ ?_` and prove the remaining obligations. Use `Submodule.mem_sup_right (Submodule.subset_span ⟨w, Z, PiTensorProduct.tprod ℂ (Function.update h w g'), ⟨tprod_mem_chi c _ fun v => ?_, tprod_mem_degLE _ ?_⟩, ?_⟩)` and prove the remaining obligations. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality.
+
+Rewrite using `[Function.update_self]`. Conclude with `(mem_chiOne _ _).2 hchi`. Rewrite using `[Function.update_of_ne hv]`. Conclude with `(hh v).2`. Use `sum_update_le h e hdeg w g' (e w - 2) hg'd` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hL, atPl_tprod', Function.update_idem, Function.update_self]`. Use `Submodule.mem_sup_left ?_` and prove the remaining obligations. Rewrite using `[hL]`. Use `tprod_mem_degLE _ ?_` and prove the remaining obligations.
+
+Establish `hm` using `minusPart_mem Z hZ (e w - 2) g' hg'`. Establish `hmd : (minusPart (fockAct2 P Q R S Z) g').totalDegree ≤ e w - 2` using `((show (minusPart (fockAct2 P Q R S Z) g').IsHomogeneous (e w - 2 - 2) from hm).totalDegree_le).trans (Nat.sub_le _ _)`. Use `sum_update_le h e hdeg w _ (e w - 2) hmd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hle hspan` as an intermediate fact.
+
+Rewrite `this` using `[Submodule.mem_comap, hL, Function.update_eq_self]`. Conclude with `this`. Establish `hle : Submodule.span ℂ {f' | ∃ Z : Formalism.BasicNotions.TH.Mat R S, Formalism.BasicNotions.TH.IsPC Z ∧ ∃ g' ∈ Formalism.BasicNotions.TH.homog (Formalism.BasicNotions.TH.Ln P Q R S) (e w - 2), (∀ Y : Formalism.BasicNotions.TH.Mat P Q, Formalism.BasicNotions.TH.IsKC Y → Formalism …`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Z, hZ, g', hg', -, rfl⟩`.
+
+Use `plusPart_mem Z hZ (e w - 2) g' hg'` as an intermediate fact. Rewrite `this` using `[show e w - 2 + 2 = 2 by omega]`. Then use the resulting hypothesis. Establish `h0 : h w = 0`. Assume the negation of the conclusion as `hne`. Use `MvPolynomial.IsHomogeneous.inj_right (show (h w).IsHomogeneous 2 from hle hspan) (show (h w).IsHomogeneous (e w) from (hh w).1) hne` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[MultilinearMap.map_coord_zero _ w h0]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem key (c : ι → ℚ) (m : ℕ) (d : ι → ℕ) (hd : ∑ w, d w ≤ m) (g₀ : ι → Formalism.BasicNotions.TH.Pol P Q R S)
     (hg₀ : ∀ w, g₀ w ≠ 0 ∧ g₀ w ∈ homog (Ln P Q R S) (d w) ∧ g₀ w ∈ chiOne P Q R S (c w))
     (e : ι → ℕ) (he : ∑ w, e w ≤ m + 2) (h : ι → Formalism.BasicNotions.TH.Pol P Q R S)
@@ -140,6 +181,13 @@ namespace GlobalTheory.KFixIrr.EvenStepTens
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ℕ}
 
+/- English proof (translation)
+Establish `e : PiTensorProduct.tprod ℂ g = PiTensorProduct.tprod ℂ (fun w => ∑ n ∈ Finset.range ((g w).totalDegree + 1), homogeneousComponent n (g w))`. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `(sum_homogeneousComponent (g w)).symm`. Rewrite using `[e, MultilinearMap.map_sum_finset]`.
+
+Use `Submodule.sum_mem _ fun r hr => ?_` and prove the remaining obligations. Rewrite `hr` using `[Fintype.mem_piFinset]`. Use `key c m d hd g₀ hg₀ r ((Finset.sum_le_sum fun w _ => ?_).trans hgd) _ fun w => ⟨homogeneousComponent_mem _ _, TensProj.homogeneousComponent_mem_chiOne _ _ (hg w) _⟩` and prove the remaining obligations. Use `hr w` as an intermediate fact. Rewrite `this` using `[Finset.mem_range]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem pure (c : ι → ℚ) (m : ℕ) (d : ι → ℕ) (hd : ∑ w, d w ≤ m) (g₀ : ι → Formalism.BasicNotions.TH.Pol P Q R S)
     (hg₀ : ∀ w, g₀ w ≠ 0 ∧ g₀ w ∈ homog (Ln P Q R S) (d w) ∧ g₀ w ∈ chiOne P Q R S (c w))
     (g : ι → Formalism.BasicNotions.TH.Pol P Q R S) (hg : ∀ w, g w ∈ chiOne P Q R S (c w))
@@ -157,6 +205,15 @@ theorem pure (c : ι → ℚ) (m : ℕ) (d : ι → ℕ) (hd : ∑ w, d w ≤ m)
   rw [Finset.mem_range] at this
   omega
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Apply `h0` to reduce the goal to its premises. Establish `hspan` using `mem_span_tprod_chiOne ι P Q R S c m T₀ hT₀`. Establish `hle : Submodule.span ℂ {U | ∃ g : ι → Formalism.BasicNotions.TH.Pol P Q R S, (∀ w, g w ∈ GlobalTheory.KFixIrr.chiOne P Q R S (c w)) ∧ ∑ w, (g w).totalDegree ≤ m ∧ U = PiTensorProduct.tprod ℂ g} ≤ ⊥`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, hg, hgd, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_bot]`. Assume the negation of the conclusion as `hU`. Establish `hgw : ∀ w, g w ≠ 0` using `fun w hw => hU (MultilinearMap.map_coord_zero _ w hw)`. Establish `hn : ∀ w, ∃ n, n ≤ (g w).totalDegree ∧ homogeneousComponent n (g w) ≠ 0`.
+
+Introduce `w`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hgw w` to reduce the goal to its premises. Rewrite using `[← sum_homogeneousComponent (g w)]`.
+
+Conclude with `Finset.sum_eq_zero fun n hn => hc n (by rw [Finset.mem_range] at hn; omega)`. Use `choose n hnd hn0 using hn`. Conclude with `hne ⟨n, (Finset.sum_le_sum fun w _ => hnd w).trans hgd, fun w => homogeneousComponent (n w) (g w), fun w => ⟨hn0 w, homogeneousComponent_mem _ _, TensProj.homogeneousComponent_mem_chiOne _ _ (hg w) _⟩⟩`. Conclude with `(Submodule.mem_bot ℂ).1 (hle hspan)`.
+-/
 theorem witness (c : ι → ℚ) (m : ℕ) (T₀ : ⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S) (h0 : T₀ ≠ 0)
     (hT₀ : T₀ ∈ chiPart ι P Q R S c ⊓ degLE ι P Q R S m) :
     ∃ d : ι → ℕ, ∑ w, d w ≤ m ∧ ∃ g₀ : ι → Formalism.BasicNotions.TH.Pol P Q R S,
@@ -187,6 +244,11 @@ end GlobalTheory.KFixIrr.EvenStepTens
 
 namespace GlobalTheory.KFixIrr
 
+/- English proof (translation)
+Introduce `ι _ _ P Q R S c m T₀ T h0 hT₀ hT`. Take `⟨d, hd, g₀, hg₀⟩` from `EvenStepTens.witness c m T₀ h0 hT₀`. Establish `hspan` using `mem_span_tprod_chiOne ι P Q R S c (m + 2) T hT`. Use `(Submodule.span_le.2 ?_ : _ ≤ EvenStepTens.tgt ι P Q R S c m) hspan` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, hgd, rfl⟩`.
+
+Conclude with `EvenStepTens.pure c m d hd g₀ hg₀ g hg hgd`.
+-/
 theorem evenStep_tens : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P Q R S : ℕ) (c : ι → ℚ) (m : ℕ)
     (T₀ T : ⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S), T₀ ≠ 0 →
     T₀ ∈ GlobalTheory.KFixIrr.chiPart ι P Q R S c ⊓ GlobalTheory.KFixIrr.degLE ι P Q R S m →

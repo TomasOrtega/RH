@@ -268,6 +268,15 @@ def ChowHeightLowerBound.Statement : Prop :=
 
 section Inhabitants
 
+/- English proof (translation)
+Rewrite using `[X_dvd_iff_modMonomial_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0` using `congrArg (coeff 0) h`. Rewrite `h0` using `[coeff_modMonomial_of_not_le _ (by simp)]`.
+
+Simplify `h0` using `[constantCoeff_eq]`. Introduce `h`. Use extensionality with `s`. Rewrite using `[coeff_zero]`. Distinguish the cases in `hs : Finsupp.single ((0 : Fin 1), (0 : Fin 1)) 1 ≤ s`.
+
+Conclude with `coeff_modMonomial_of_le _ hs`. Rewrite using `[coeff_modMonomial_of_not_le _ hs]`. Establish `hs0 : s = 0`. Use extensionality with `ij`. Take `rfl : ij = (0, 0)` from `Subsingleton.elim _ _`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hs (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hne))`. Rewrite using `[hs0]`. Simplify `h` using `[constantCoeff_eq]`.
+-/
 theorem X_dvd_iff_constantCoeff_eq_zero {R : Type*} [CommRing R]
     (f : MvPolynomial (Fin 1 × Fin 1) R) : X (0, 0) ∣ f ↔ constantCoeff f = 0 := by
   rw [X_dvd_iff_modMonomial_eq_zero]
@@ -290,6 +299,13 @@ theorem X_dvd_iff_constantCoeff_eq_zero {R : Type*} [CommRing R]
       rw [hs0]
       simpa [constantCoeff_eq] using h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, -, hu⟩`. Establish `hx0 : x 0 ≠ 0` using `fun h => hx (funext fun j => by rw [Fin.fin_one_eq_zero j]; exact h)`. Establish `h` using `hu 0`. Simplify using `only [Fin.sum_univ_one] at h`.
+
+Establish `hu0 : u (0, 0) = 0` using `(mul_eq_zero.mp h).resolve_right hx0`. Use function extensionality and compare the values at `ij`. Take `rfl : ij = (0, 0)` from `Subsingleton.elim _ _`. Conclude with `hu0`. Introduce and unpack `rfl`.
+
+Use `⟨fun _ => 1, fun h => one_ne_zero (congrFun h 0), fun g hg => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[Ideal.mem_bot]`. Simplify using `[hg]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_incidence_point {F : Type*} [Field F] (u : Fin 1 × Fin 1 → AlgebraicClosure F) :
     u ∈ incidence (⊥ : Ideal (MvPolynomial (Fin 1) F)) 1 ↔ u = 0 := by
   constructor
@@ -307,6 +323,9 @@ theorem mem_incidence_point {F : Type*} [Field F] (u : Fin 1 × Fin 1 → Algebr
       simp [hg]
     · simp
 
+/- English proof (translation)
+The claim follows from `Ideal.isPrime_bot isHomog f hf d := by rw [Ideal.mem_bot] at hf ⊢ simp [hf] isRelevant := ⟨0, by rw [Ideal.mem_bot]; exact X_ne_zero 0⟩`.
+-/
 theorem isProjPrime_point (F : Type*) [Field F] :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) F)) where
   isPrime := Ideal.isPrime_bot
@@ -315,6 +334,9 @@ theorem isProjPrime_point (F : Type*) [Field F] :
     simp [hf]
   isRelevant := ⟨0, by rw [Ideal.mem_bot]; exact X_ne_zero 0⟩
 
+/- English proof (translation)
+Use `⟨X_ne_zero _, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[X_dvd_iff_constantCoeff_eq_zero]`. Simplify using `only [mem_incidence_point, forall_eq, aeval_zero]`. Conclude with `map_eq_zero_iff _ (algebraMap F (AlgebraicClosure F)).injective`.
+-/
 theorem isChowForm_point (F : Type*) [Field F] :
     IsChowForm (⊥ : Ideal (MvPolynomial (Fin 1) F)) 1 (X (0, 0)) := by
   refine ⟨X_ne_zero _, fun g => ?_⟩
@@ -322,6 +344,11 @@ theorem isChowForm_point (F : Type*) [Field F] :
   simp only [mem_incidence_point, forall_eq, aeval_zero]
   exact map_eq_zero_iff _ (algebraMap F (AlgebraicClosure F)).injective
 
+/- English proof (translation)
+Establish `h` using `isWeightedHomogeneous_X (R := R) (groupWeight 1 1) ((0 : Fin 1), (0 : Fin 1))`. Establish `hw : groupWeight 1 1 ((0 : Fin 1), (0 : Fin 1)) = fun _ => 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Simplify using `[groupWeight]`.
+
+Rewrite `h` using `[hw]`. Conclude with `h`.
+-/
 theorem isMultiHomog_point (R : Type*) [CommSemiring R] :
     IsMultiHomog 1 (X (0, 0) : MvPolynomial (Fin 1 × Fin 1) R) := by
   have h := isWeightedHomogeneous_X (R := R) (groupWeight 1 1) ((0 : Fin 1), (0 : Fin 1))
@@ -332,11 +359,19 @@ theorem isMultiHomog_point (R : Type*) [CommSemiring R] :
   rw [hw] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[Ideal.mem_bot]`. Simplify using `[linForm, X_ne_zero]`.
+-/
 theorem linForm_one_not_mem_point (F : Type*) [Field F] :
     linForm (fun _ => (1 : F)) ∉ (⊥ : Ideal (MvPolynomial (Fin 1) F)) := by
   rw [Ideal.mem_bot]
   simp [linForm, X_ne_zero]
 
+/- English proof (translation)
+Use `⟨1, one_ne_zero, fun _ => X (0, 0), fun W hW => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hW` using `[Finsupp.support_single _ one_ne_zero, Finset.mem_singleton]`. Substitute `hW` using the available equality. Conclude with `isChowForm_point F`. Rewrite using `[Finsupp.support_single _ one_ne_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isChowFormCycle_point (F : Type*) [Field F] :
     IsChowFormCycle (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 1) F)) 1) 1 (X (0, 0)) := by
   refine ⟨1, one_ne_zero, fun _ => X (0, 0), fun W hW => ?_, ?_⟩
@@ -346,6 +381,15 @@ theorem isChowFormCycle_point (F : Type*) [Field F] :
   · rw [Finsupp.support_single _ one_ne_zero]
     simp
 
+/- English proof (translation)
+Establish `hX` using `isChowForm_point F`. Establish `key : ∀ δ, (∃ f, IsChowForm (⊥ : Ideal (MvPolynomial (Fin 1) F)) 1 f ∧ IsMultiHomog δ f) → δ = 1`. Introduce and unpack `δ ⟨f, hf, hδ⟩`. Establish `hXf : X (0, 0) ∣ f` using `(hX.2 f).mp ((hf.2 f).mpr dvd_rfl)`. Establish `hfX : f ∣ X (0, 0)` using `(hf.2 _).mp ((hX.2 _).mpr dvd_rfl)`.
+
+Take `⟨q, rfl⟩` from `hXf`. Take `⟨r, hr⟩` from `hfX`. Establish `hqr : q * r = 1`. Establish `h' : X (0, 0) * (q * r) = X (0, 0) * 1`. Rewrite using `[mul_one, ← mul_assoc]`.
+
+Conclude with `hr.symm`. Conclude with `mul_left_cancel₀ (X_ne_zero _) h'`. Take `⟨c, -, rfl⟩` from `(isUnit_iff_eq_C_of_isReduced (P := q)).mp (IsUnit.of_mul_eq_one r hqr)`. Establish `h1 : IsWeightedHomogeneous (groupWeight 1 1) (X (0, 0) * C c : MvPolynomial (Fin 1 × Fin 1) F) ((fun _ => 1) + 0)` using `IsWeightedHomogeneous.mul (isMultiHomog_point F) (isWeightedHomogeneous_C _ c)`. Rewrite `h1` using `[add_zero]`.
+
+Conclude with `congrFun (IsWeightedHomogeneous.inj_right hf.1 hδ h1) 0`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Nat.sInf_le ⟨X (0, 0), hX, isMultiHomog_point F⟩`. Conclude with `le_csInf ⟨1, X (0, 0), hX, isMultiHomog_point F⟩ fun δ hδ => (key δ hδ).ge`.
+-/
 theorem chowDegree_point (F : Type*) [Field F] :
     chowDegree (⊥ : Ideal (MvPolynomial (Fin 1) F)) 1 = 1 := by
   have hX := isChowForm_point F
@@ -371,15 +415,24 @@ theorem chowDegree_point (F : Type*) [Field F] :
   · exact Nat.sInf_le ⟨X (0, 0), hX, isMultiHomog_point F⟩
   · exact le_csInf ⟨1, X (0, 0), hX, isMultiHomog_point F⟩ fun δ hδ => (key δ hδ).ge
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem SphereMeanLinear.hypotheses_inhabited : ∑ j : Fin 1, ‖(fun _ => (1 : ℂ)) j‖ ^ 2 = 1 := by
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isProjPrime_point ℚ, isChowForm_point ℚ, linForm_one_not_mem_point ℚ⟩`.
+-/
 theorem ChowFormSection.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) (0 + 1) (X (0, 0)) ∧
       linForm (fun _ => (1 : ℚ)) ∉ (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) :=
   ⟨isProjPrime_point ℚ, isChowForm_point ℚ, linForm_one_not_mem_point ℚ⟩
 
+/- English proof (translation)
+Use `⟨isProjPrime_point ℚ, isChowForm_point ℚ, ?_⟩` and prove the remaining obligations. Simplify using `using linForm_one_not_mem_point ℚ`.
+-/
 theorem ChowFormSectionVertical.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) (0 + 1) (X (0, 0)) ∧
@@ -388,10 +441,18 @@ theorem ChowFormSectionVertical.hypotheses_inhabited :
   refine ⟨isProjPrime_point ℚ, isChowForm_point ℚ, ?_⟩
   simpa using linForm_one_not_mem_point ℚ
 
+/- English proof (translation)
+The claim follows from `isChowForm_point ℚ`.
+-/
 theorem ChowFormSwap.hypotheses_inhabited :
     IsChowForm (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) 1 (X (0, 0)) :=
   isChowForm_point ℚ
 
+/- English proof (translation)
+Establish `hs : (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1).support = {⊥}` using `Finsupp.support_single _ one_ne_zero`. Use `⟨?_, isChowFormCycle_point ℂ, isMultiHomog_point ℂ, ?_⟩` and prove the remaining obligations. Introduce `W hW`. Rewrite `hW` using `[hs, Finset.mem_singleton]`. Substitute `hW` using the available equality.
+
+Conclude with `isProjPrime_point ℂ`. Introduce `W hW`. Rewrite `hW` using `[hs, Finset.mem_singleton]`. Substitute `hW` using the available equality. Conclude with `linForm_one_not_mem_point ℂ`.
+-/
 theorem MahlerSection.hypotheses_inhabited :
     (∀ W ∈ (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1).support, IsProjPrime W) ∧
       IsChowFormCycle (Finsupp.single (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1) (0 + 1) (X (0, 0)) ∧
@@ -410,14 +471,23 @@ theorem MahlerSection.hypotheses_inhabited :
     subst hW
     exact linForm_one_not_mem_point ℂ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X_ne_zero _, X_ne_zero _⟩`.
+-/
 theorem MahlerMul.hypotheses_inhabited :
     (X (0, 0) : MvPolynomial (Fin 1 × Fin 1) ℂ) ≠ 0 ∧ (X (0, 0) : MvPolynomial (Fin 1 × Fin 1) ℂ) ≠ 0 :=
   ⟨X_ne_zero _, X_ne_zero _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X_ne_zero _, X_ne_zero _⟩`.
+-/
 theorem ChowHeightMul.hypotheses_inhabited :
     (X (0, 0) : MvPolynomial (Fin 1 × Fin 1) ℚ) ≠ 0 ∧ (X (0, 0) : MvPolynomial (Fin 1 × Fin 1) ℚ) ≠ 0 :=
   ⟨X_ne_zero _, X_ne_zero _⟩
 
+/- English proof (translation)
+Use `⟨isProjPrime_point ℚ, isChowForm_point ℚ, isMultiHomog_point ℚ, ?_⟩` and prove the remaining obligations. Simplify using `using linForm_one_not_mem_point ℚ`.
+-/
 theorem ChowHeightRecursion.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) (0 + 1) (X (0, 0)) ∧
@@ -427,6 +497,11 @@ theorem ChowHeightRecursion.hypotheses_inhabited :
   refine ⟨isProjPrime_point ℚ, isChowForm_point ℚ, isMultiHomog_point ℚ, ?_⟩
   simpa using linForm_one_not_mem_point ℚ
 
+/- English proof (translation)
+Use `⟨isProjPrime_point ℚ, isChowForm_point ℚ, isMultiHomog_point ℚ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `v _`. Rewrite using `[Submodule.mem_span_singleton]`. Conclude with `⟨v 0, funext fun j => by rw [Fin.fin_one_eq_zero j]; simp⟩`.
+
+Introduce `s hs σ`. Rewrite `hs` using `[Set.mem_singleton_iff]`. Substitute `hs` using the available equality. Simplify using `[ArchData.std, HermNorm.std, HermNorm.norm]`.
+-/
 theorem ChowHeightLowerBound.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) (0 + 1) (X (0, 0)) ∧

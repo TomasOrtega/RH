@@ -12,6 +12,15 @@ section Abs
 
 variable {A K R : Type} [CommRing A] [CommRing K] [CommRing R] {n : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Use `⟨fun a b => ⟨(g : Matrix (Fin n) (Fin n) R) a b, rfl⟩, fun a b => ⟨((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) a b, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨h1, h2⟩ choose A0 hA using h1 choose B0 hB using h2`. Establish `eA : (Matrix.of A0).map ι = (M : Matrix (Fin n) (Fin n) K)` using `by ext a b; exact hA a b`. Establish `eB : (Matrix.of B0).map ι = ((M⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)` using `by ext a b; exact hB a b`. Establish `h12 : Matrix.of A0 * Matrix.of B0 = 1`. Apply `Matrix.map_injective hι` to reduce the goal to its premises.
+
+Use `show (Matrix.of A0 * Matrix.of B0).map ι = (1 : Matrix (Fin n) (Fin n) R).map ι`. Rewrite using `[Matrix.map_mul, eA, eB, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero ι) (map_one ι)]`. Establish `h21 : Matrix.of B0 * Matrix.of A0 = 1`. Apply `Matrix.map_injective hι` to reduce the goal to its premises. Use `show (Matrix.of B0 * Matrix.of A0).map ι = (1 : Matrix (Fin n) (Fin n) R).map ι`.
+
+Rewrite using `[Matrix.map_mul, eA, eB, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero ι) (map_one ι)]`. Conclude with `⟨⟨Matrix.of A0, Matrix.of B0, h12, h21⟩, Units.ext eA⟩`.
+-/
 theorem mem_range_bc_iff (ι : R →+* K) (hι : Function.Injective ι) (M : GL (Fin n) K) :
     M ∈ (bc (n := Fin n) ι).range ↔ (∀ a b, (M : Matrix (Fin n) (Fin n) K) a b ∈ ι.range) ∧
       (∀ a b, ((M⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b ∈ ι.range) := by
@@ -40,6 +49,15 @@ theorem mem_range_bc_iff (ι : R →+* K) (hι : Function.Injective ι) (M : GL 
 def IntIn (ι : R →+* K) (fr : GL (Fin n) K) (t : Fin n → K) : Prop :=
   ∀ b, ((fr⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).mulVec t b ∈ ι.range
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h t ht a`. Establish `e : ((fr⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ ((x1 : Matrix (Fin n) (Fin n) K) *ᵥ t) = ((fr⁻¹ * x1 * fr : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ (((fr⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ t)`. Simplify using `only [Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[Units.mul_inv, Matrix.mul_one]`.
+
+Rewrite using `[e]`. Use `show ∑ b, ((fr⁻¹ * x1 * fr : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b * (((fr⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ t) b ∈ ι.range`. Conclude with `Subring.sum_mem _ fun b _ => Subring.mul_mem _ (h a b) (ht b)`. Introduce `h a b`. Establish `h0 : IntIn ι fr ((fr : Matrix (Fin n) (Fin n) K) *ᵥ Pi.single b 1)`.
+
+Introduce `c`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Pi.single_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+
+Establish `h1` using `h _ h0 a`. Establish `e : (((fr⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ ((x1 : Matrix (Fin n) (Fin n) K) *ᵥ ((fr : Matrix (Fin n) (Fin n) K) *ᵥ Pi.single b 1))) a = ((fr⁻¹ * x1 * fr : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b`. Simplify using `only [Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem entries_iff (ι : R →+* K) (fr x1 : GL (Fin n) K) :
     (∀ a b, ((fr⁻¹ * x1 * fr : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b ∈ ι.range) ↔
       ∀ t, IntIn ι fr t → IntIn ι fr ((x1 : Matrix (Fin n) (Fin n) K) *ᵥ t) := by
@@ -71,14 +89,23 @@ theorem entries_iff (ι : R →+* K) (fr x1 : GL (Fin n) K) :
 
 variable (s : A →+* A) (Jm : Matrix (Fin n) (Fin n) A) (spl : A ≃+* K × K)
 
+/- English proof (translation)
+Simplify using `only [hform, map_sum, map_mul, Prod.fst_sum, Prod.fst_mul, hs]`.
+-/
 theorem hform_fst (hs : ∀ x, spl (s x) = ((spl x).2, (spl x).1)) (z y : Fin n → A) :
     (spl (hform s Jm z y)).1 = ∑ i, ∑ j, (spl (z i)).2 * (spl (Jm i j)).1 * (spl (y j)).1 := by
   simp only [hform, map_sum, map_mul, Prod.fst_sum, Prod.fst_mul, hs]
 
+/- English proof (translation)
+Simplify using `only [hform, map_sum, map_mul, Prod.snd_sum, Prod.snd_mul, hs]`.
+-/
 theorem hform_snd (hs : ∀ x, spl (s x) = ((spl x).2, (spl x).1)) (z y : Fin n → A) :
     (spl (hform s Jm z y)).2 = ∑ i, ∑ j, (spl (z i)).1 * (spl (Jm i j)).2 * (spl (y j)).2 := by
   simp only [hform, map_sum, map_mul, Prod.snd_sum, Prod.snd_mul, hs]
 
+/- English proof (translation)
+The claim follows from `RingHom.map_mulVec ((RingHom.fst K K).comp spl.toRingHom) (g : Matrix (Fin n) (Fin n) A) y b`.
+-/
 theorem fst_mulVec (g : GL (Fin n) A) (y : Fin n → A) (b : Fin n) :
     (spl (((g : Matrix (Fin n) (Fin n) A) *ᵥ y) b)).1 =
       ((bc ((RingHom.fst K K).comp spl.toRingHom) g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).mulVec
@@ -87,6 +114,11 @@ theorem fst_mulVec (g : GL (Fin n) A) (y : Fin n → A) (b : Fin n) :
 
 variable {S : Type} [CommRing S] [Algebra S A] (Λ : Submodule S (Fin n → A)) (ι : R →+* K) (OA : Set A) (fr : GL (Fin n) K)
 
+/- English proof (translation)
+Take `⟨y, hy, hyt⟩` from `(hfr t).2 ht`. Use `(hfr _).1 ⟨(g : Matrix (Fin n) (Fin n) A) *ᵥ y, (hg y).1 hy, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[fst_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `c`.
+
+Conclude with `hyt c`.
+-/
 theorem stab_fwd (hfr : ∀ t : Fin n → K, (∃ y ∈ Λ, ∀ b, (spl (y b)).1 = t b) ↔ IntIn ι fr t)
     (g : GL (Fin n) A) (hg : g ∈ stabGL Λ) (t : Fin n → K) (ht : IntIn ι fr t) :
     IntIn ι fr (((bc ((RingHom.fst K K).comp spl.toRingHom) g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ t) := by
@@ -97,6 +129,19 @@ theorem stab_fwd (hfr : ∀ t : Fin n → K, (∃ y ∈ Λ, ∀ b, (spl (y b)).1
   funext c
   exact hyt c
 
+/- English proof (translation)
+Rewrite using `[hdual]`. Introduce `z hz`. Rewrite using `[hOA]`. Prove the components needed by the constructor for the conclusion. Establish `ht : IntIn ι fr (fun c => (spl (y c)).1)` using `(hfr _).1 ⟨y, hy, fun _ => rfl⟩`.
+
+Take `⟨y', hy', hyy⟩` from `(hfr _).2 (h1 _ ht)`. Establish `e : (spl (hform s Jm z ((g : Matrix (Fin n) (Fin n) A) *ᵥ y))).1 = (spl (hform s Jm z y')).1`. Rewrite using `[hform_fst s Jm spl hs, hform_fst s Jm spl hs]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[fst_mulVec, hyy j]`.
+
+Rewrite using `[e]`. Conclude with `((hOA _).1 ((hdual y').1 hy' z hz)).1`. Establish `ht : IntIn ι fr (fun c => (spl (z c)).1)` using `(hfr _).1 ⟨z, hz, fun _ => rfl⟩`. Take `⟨z', hz', hzz⟩` from `(hfr _).2 (h2 _ ht)`. Establish `e0 : hform s Jm z ((g : Matrix (Fin n) (Fin n) A) *ᵥ y) = hform s Jm (((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) *ᵥ z) y`.
+
+Establish `hgJ : cT s (g : Matrix (Fin n) (Fin n) A) * Jm * (g : Matrix (Fin n) (Fin n) A) = Jm` using `hg`. Establish `hz0 : z = (g : Matrix (Fin n) (Fin n) A) *ᵥ (((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) *ᵥ z)`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Use `conv_lhs => rw [hz0]`. Rewrite using `[Formalism.UG.P.hform_mulVec, hgJ]`.
+
+Establish `e : (spl (hform s Jm z ((g : Matrix (Fin n) (Fin n) A) *ᵥ y))).2 = (spl (hform s Jm z' y)).2`. Rewrite using `[e0, hform_snd s Jm spl hs, hform_snd s Jm spl hs]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[fst_mulVec, hzz i]`. Rewrite using `[e]`.
+
+Conclude with `((hOA _).1 ((hdual y).1 hy z' hz')).2`.
+-/
 theorem stab_bwd (hs : ∀ x, spl (s x) = ((spl x).2, (spl x).1))
     (hOA : ∀ x, x ∈ OA ↔ (spl x).1 ∈ ι.range ∧ (spl x).2 ∈ ι.range)
     (hdual : ∀ y, y ∈ Λ ↔ ∀ z ∈ Λ, hform s Jm z y ∈ OA)
@@ -135,6 +180,13 @@ theorem stab_bwd (hs : ∀ x, spl (s x) = ((spl x).2, (spl x).1))
     rw [e]
     exact ((hOA _).1 ((hdual y).1 hy z' hz')).2
 
+/- English proof (translation)
+Establish `hinv : (fr⁻¹ * bc ((RingHom.fst K K).comp spl.toRingHom) x * fr)⁻¹ = fr⁻¹ * bc ((RingHom.fst K K).comp spl.toRingHom) x⁻¹ * fr`. Rewrite using `[map_inv]`. Use `group`. Rewrite using `[mem_range_bc_iff ι hι, hinv, entries_iff, entries_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `⟨stab_fwd spl Λ ι fr hfr x h, stab_fwd spl Λ ι fr hfr x⁻¹ ((stabGL Λ).inv_mem h)⟩`. Introduce and unpack `⟨h1, h2⟩ y`. Prove the components needed by the constructor for the conclusion. Conclude with `stab_bwd s Jm spl Λ ι OA fr hs hOA hdual hfr x hx h1 h2 y`.
+
+Introduce `hy`. Use `stab_bwd s Jm spl Λ ι OA fr hs hOA hdual hfr x⁻¹ ((UJ s Jm).inv_mem hx) h2 (by rwa [inv_inv]) _ hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem splitStab_abs (hι : Function.Injective ι) (hs : ∀ x, spl (s x) = ((spl x).2, (spl x).1))
     (hOA : ∀ x, x ∈ OA ↔ (spl x).1 ∈ ι.range ∧ (spl x).2 ∈ ι.range)
     (hdual : ∀ y, y ∈ Λ ↔ ∀ z ∈ Λ, hform s Jm z y ∈ OA)
@@ -161,10 +213,16 @@ section Conc
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨⟨a, h⟩, rfl⟩, by rintro ⟨b, rfl⟩; exact b.2⟩`.
+-/
 theorem mem_int_iff (v : HeightOneSpectrum (𝓞 F)) (a : v.adicCompletion F) :
     a ∈ v.adicCompletionIntegers F ↔ a ∈ (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F)).range :=
   ⟨fun h => ⟨⟨a, h⟩, rfl⟩, by rintro ⟨b, rfl⟩; exact b.2⟩
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[toFr_apply]`. Rewrite using `[← splitStab_abs (sigR σ (v.adicCompletion F)) (J.map (inclE (F := F) (v.adicCompletion F))) spl (latS (F := F) (v.adicCompletion F) (tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring) Lb) (algebraMap (v.adicCompletionIntegers F) (v.adicComple …`. Conclude with `⟨fun h => h.2, fun h => ⟨hx, h⟩⟩`.
+-/
 theorem splitStabL_of (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F))
     (spl : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F) (Lb : Submodule (𝓞 E) (Fin n → E))
     (fr : GL (Fin n) (v.adicCompletion F))

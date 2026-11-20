@@ -23,12 +23,28 @@ open GlobalTheory.LevelSeries
 
 namespace GlobalTheory.ConjNormPow
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `Nat.card_congr (Ideal.quotientEquiv (I.comap e) I e (Ideal.map_comap_of_surjective _ e.surjective I).symm).toEquiv`.
+-/
 theorem absNorm_comap_equiv {K : Type} [Field K] [NumberField K] (e : 𝓞 K ≃+* 𝓞 K)
     (I : Ideal (𝓞 K)) : Ideal.absNorm (I.comap e) = Ideal.absNorm I := by
   rw [Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]
   exact Nat.card_congr (Ideal.quotientEquiv (I.comap e) I e
     (Ideal.map_comap_of_surjective _ e.surjective I).symm).toEquiv
 
+/- English proof (translation)
+Introduce `D P N`. Set `σ : 𝓞 D.host.E ≃+* 𝓞 D.host.E` to `RingEquiv.ofRingHom Formalism.L2.DIV.starOHom Formalism.L2.DIV.starOHom (RingHom.ext fun a => Formalism.L2.DIV.starO_starO a) (RingHom.ext fun a => Formalism.L2.DIV.starO_starO a)`. Establish `hc : (Formalism.L2.DIV.conjPl P).asIdeal = P.asIdeal.comap σ` using `rfl`. Use `set J : Ideal (𝓞 D.host.E) := Ideal.span {((N : ℕ) : 𝓞 D.host.E)} with hJdef`. Establish `hJ : J.comap σ = J`.
+
+Rewrite using `[← Ideal.map_symm, hJdef, Ideal.map_span, Set.image_singleton, map_natCast]`. Establish `hpow : ∀ k : ℕ, (P.asIdeal.comap σ) ^ k = (P.asIdeal ^ k).comap σ`. Introduce `k`. Rewrite using `[← Ideal.map_symm, ← Ideal.map_symm, Ideal.map_pow]`. Establish `hiff : ∀ k : ℕ, J ≤ (P.asIdeal.comap σ) ^ k ↔ J ≤ P.asIdeal ^ k`.
+
+Introduce `k`. Rewrite using `[hpow, ← hJ, Ideal.comap_le_comap_iff_of_surjective _ σ.surjective, hJ]`. Establish `hcount : (Associates.mk (Formalism.L2.DIV.conjPl P).asIdeal).count (Associates.mk J).factors = (Associates.mk P.asIdeal).count (Associates.mk J).factors`. Distinguish the cases in `hJ0 : J = ⊥`. Rewrite using `[hJ0, ← Ideal.zero_eq_bot, Associates.mk_zero, Associates.factors_zero]`.
+
+Simplify using `only [Associates.count]`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `hm : Associates.mk J ≠ 0` using `Associates.mk_ne_zero.mpr hJ0`. Establish `key : ∀ (Q : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) (k : ℕ), k ≤ (Associates.mk Q.asIdeal).count (Associates.mk J).factors ↔ J ≤ Q.asIdeal ^ k`. Introduce `Q k`.
+
+Rewrite using `[← Associates.prime_pow_dvd_iff_le hm (Associates.irreducible_mk.mpr Q.irreducible), ← Associates.mk_pow, Associates.mk_le_mk_iff_dvd, Ideal.dvd_iff_le]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[key P, ← hiff, ← hc, ← key]`. Rewrite using `[key (Formalism.L2.DIV.conjPl P), hc, hiff, ← key]`. Simplify using `only [IsDedekindDomain.HeightOneSpectrum.maxPowDividing]`.
+
+Rewrite using `[hcount, hc, hpow, absNorm_comap_equiv]`.
+-/
 theorem absNorm_maxPowDividing_conjPl : ∀ (D : D7) (P : Formalism.L2.DIV.Pl D.host.E) (N : ℕ), Ideal.absNorm ((Formalism.L2.DIV.conjPl P).maxPowDividing (Ideal.span {((N : ℕ) : 𝓞 D.host.E)})) = Ideal.absNorm (P.maxPowDividing (Ideal.span {((N : ℕ) : 𝓞 D.host.E)})) := by
   intro D P N
   classical

@@ -97,15 +97,24 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
+/- English proof (translation)
+Unfold `Model.R`. Rewrite using `[hs]`.
+-/
 theorem R_eq_O (hs : M.split = none) : M.R = M.L.O := by
   unfold Model.R; rw [hs]
 
+/- English proof (translation)
+Unfold `HermSp.Dl`. Rewrite using `[dif_pos le_rfl]`. Use `congr 1`.
+-/
 theorem dl_full (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) :
     H.Dl f f' (r + 1) = (H.Zhat f f').det := by
   unfold HermSp.Dl
   rw [dif_pos le_rfl]
   congr 1
 
+/- English proof (translation)
+Rewrite using `[gram_eq_fromBlocks H f f' T T' hF hF', Matrix.fromBlocks_transpose]`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [gramC, cornerM, and_comm]`.
+-/
 theorem gramC_eq (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) (T T' : F)
     (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') :
     gramC (M.L.cj : E →+* E) (H.Zhat f f') (algebraMap F E T) (algebraMap F E T') =
@@ -113,6 +122,13 @@ theorem gramC_eq (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) (T T' : F
   rw [gram_eq_fromBlocks H f f' T T' hF hF', Matrix.fromBlocks_transpose]
   ext (a | a) (b | b) <;> simp [gramC, cornerM, and_comm]
 
+/- English proof (translation)
+Rewrite using `[gramC_eq H f f' T T' hF hF', Matrix.det_transpose]`. Take `⟨s, hs, hdet⟩` from `gram_det H f f' T T' hF hF' hD1`. Establish `hGd : IsUnit (H.Gdet f f' T T')`. Unfold `HermSp.Gdet HermSp.normE`. Rewrite using `[hD0, map_zero, mul_zero, mul_zero, sub_zero]`.
+
+Conclude with `hD1.mul (hD1.map M.L.cj)`. Establish `hsu : IsUnit s` using `⟨⟨s, s, hs, hs⟩, rfl⟩`. Establish `: (H.gram (Sum.elim f f')).det = H.Gdet f f' T T' * s`. Rewrite using `[← hdet, mul_assoc, hs, mul_one]`. Rewrite using `[this]`.
+
+Conclude with `hGd.mul hsu`.
+-/
 theorem unit_gramC (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) (T T' : F)
     (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T')
     (hD1 : IsUnit (H.Dl f f' (r + 1))) (hD0 : H.Dl f f' r = 0) :
@@ -129,6 +145,23 @@ theorem unit_gramC (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) (T T' :
   rw [this]
   exact hGd.mul hsu
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hOK r n hmode`. Take `⟨L, sp, mu⟩` from `M`. Consider the cases of `sp with`. Consider the case `some g => simp at hmode`. Consider the case `none`.
+
+Introduce `V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD Z₁ Z₂ e₁ e₂`. Establish `hs : (⟨L, none, mu⟩ : Model F E).split = none` using `rfl`. Establish `z₁ : Z₁.Z.map (Model.R ⟨L, none, mu⟩).subtype = H.Zhat t₁.f t₁.f'`. Rewrite using `[e₁]`. Conclude with `zzplusOf_none hs _ _ _`.
+
+Establish `z₂ : Z₂.Z.map (Model.R ⟨L, none, mu⟩).subtype = H.Zhat f₂ f₂'`. Rewrite using `[e₂]`. Conclude with `zzplusOf_none hs _ _ _`. Establish `hD2 : H.Dl f₂ f₂' r = 0` using `dl_zero_two hyp hD`. Establish `hU1 : IsUnit (H.Dl t₁.f t₁.f' (r + 1))` using `dl_succ_unit hyp`.
+
+Establish `hU2 : IsUnit (H.Dl f₂ f₂' (r + 1))` using `by rw [dl_full, ← z₂]; exact Z₂.unit`. Establish `hint : ∀ a b, H.Zhat f₂ f₂' a b ∈ L.O`. Introduce `a b`. Rewrite using `[← z₂]`. Conclude with `(Z₂.Z a b).2`.
+
+Establish `hT : t₁.T ∈ 𝒪[F]` using `hyp.1.1.2.1.2.2.2.1`. Establish `hT' : t₁.T' ∈ 𝒪[F]` using `hyp.1.1.2.2.1.2.2.2.1`. Establish `hF₁ : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f t₁.T` using `⟨hyp.1.1.2.1.2.1, hyp.1.1.2.1.2.2.1⟩`. Establish `hF₁' : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f' t₁.T'` using `⟨hyp.1.1.2.2.1.2.1, hyp.1.1.2.2.1.2.2.1⟩`. Establish `hG1` using `unit_gramC H _ _ _ _ hF₁ hF₁' hU1 hD`.
+
+Establish `hG2` using `unit_gramC H _ _ _ _ hyp.2.1 hyp.2.2.1 hU2 hD2`. Establish `hh1 : ((Z₁.Z.map (Model.R ⟨L, none, mu⟩).subtype).submatrix Fin.castSucc Fin.castSucc).det = 0`. Rewrite using `[z₁, ← dl_eq_det]`. Conclude with `hD`. Establish `hh2 : ((Z₂.Z.map (Model.R ⟨L, none, mu⟩).subtype).submatrix Fin.castSucc Fin.castSucc).det = 0`.
+
+Rewrite using `[z₂, ← dl_eq_det]`. Conclude with `hD2`. Rewrite `hG1` using `[← z₁]`. Rewrite `hG2` using `[← z₂]`. Rewrite using `[h1 F E ⟨L, none, mu⟩ hOK hs r n V H hn t₁ f₂ f₂' φ φ' hyp hD hU2 hint, ← z₁, ← z₂]`.
+
+Conclude with `h2 E L.O (L.cj : E →+* E) (fun x => L.cj_cj x) (fun x hx => cj_mem_O L hx) r _ _ (Formalism.MainNotions.LocalModelPeriodLattices.algebraMap_mem_O L ⟨t₁.T, hT⟩) (Formalism.MainNotions.LocalModelPeriodLattices.algebraMap_mem_O L ⟨t₁.T', hT'⟩) (AlgEquiv.commutes _ _) (AlgEquiv.commu …`.
+-/
 theorem thetaMbe0_L_of (h1 : CoordL) (h2 : UnramifiedIsoCountZero) :
     Formalism.MainNotions.ThinScalesBound.AllLoc (fun M => ∀ r n, ThetaMbe0 M r n false) := by
   intro F _ _ _ E _ _ _ _ M hOK r n hmode

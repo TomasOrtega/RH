@@ -22,5 +22,8 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.EvenOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EvenOnto.stepUp | exact GlobalTheory.EvenOnto.stepUp | (intros; apply GlobalTheory.EvenOnto.stepUp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.even_theta_step_adjoint_nonzero_transferred_params : ∀ D : D7, FinDim D → ParOfVal D → UpSpan D → UpAdj D → UpPar D → UpNe D → StepUp D := by
   first | exact @GlobalTheory.EvenOnto.stepUp | exact GlobalTheory.EvenOnto.stepUp | (intros; apply GlobalTheory.EvenOnto.stepUp <;> assumption)

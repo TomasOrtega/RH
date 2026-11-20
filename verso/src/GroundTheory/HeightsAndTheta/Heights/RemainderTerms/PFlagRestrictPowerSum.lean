@@ -9,6 +9,11 @@ namespace RestTerms
 
 open MvPolynomial Finset
 
+/- English proof (translation)
+Introduce `f N k τ σ hk`. Establish `hk0 : k ≠ 0` using `by omega`. Unfold `blockPowerSum restrictToBlock`. Simplify using `only [map_sum, map_pow, aeval_X]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Simplify using `[psum]`. Simplify using `[zero_pow hk0]`.
+-/
 theorem FlagRestrictPowerSum.proof : FlagRestrictPowerSum.Statement := by
   intro f N k τ σ hk
   have hk0 : k ≠ 0 := by omega

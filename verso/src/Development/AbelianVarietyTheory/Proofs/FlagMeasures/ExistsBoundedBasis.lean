@@ -11,6 +11,17 @@ open Formalism.HermitianLatticesTheory (gmap isom genus)
 
 namespace GlobalTheory.SmallRankMass
 
+/- English proof (translation)
+Establish `hT` using `transference_successive_minima M (span ℤ (Set.range D)) inferInstance (ZSpan.span_top D) 1 le_rfl hM`. Rewrite `hT` using `[show M + 1 - 1 = M by omega]`. Establish `h1 : lam ≤ PI.succMin (span ℤ (Set.range D)) 1`. Apply `le_csInf` to reduce the goal to its premises. Use `⟨‖D ⟨0, hM⟩‖, norm_nonneg _, fun _ => D ⟨0, hM⟩, fun _ => subset_span ⟨_, rfl⟩, ?_, fun _ => le_rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[linearIndependent_unique_iff]`. Conclude with `D.ne_zero _`. Introduce and unpack `t ⟨-, v, hvM, hvli, hvt⟩`. Conclude with `(hmin _ (hvM 0) (hvli.ne_zero 0)).trans (hvt 0)`. Establish `h0 : 0 ≤ PI.succMin (PI.dualZ (span ℤ (Set.range D))) M` using `Real.sInf_nonneg (fun t ht => ht.1)`.
+
+Establish `M0 : (0 : ℝ) < M` using `by exact_mod_cast hM`. Establish `hlt : PI.succMin (PI.dualZ (span ℤ (Set.range D))) M < 5 / 4 * (M / lam)`. Establish `: PI.succMin (PI.dualZ (span ℤ (Set.range D))) M ≤ M / lam`. Rewrite using `[le_div_iff₀ hlam]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `: 0 < (M : ℝ) / lam` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hzm : ∀ i, z i ∈ PI.dualZ (span ℤ (Set.range D))`. Introduce `i x hx`. Take `⟨c, rfl⟩` from `(mem_span_range_iff_exists_fun ℤ).1 hx`.
+
+Use `choose m hm using hzD i`. Use `⟨∑ j, c j * m j, ?_⟩` and prove the remaining obligations. Simplify using `[inner_sum, ← Int.cast_smul_eq_zsmul ℝ, real_inner_smul_right, hm]`. Take `⟨t, ⟨-, v, hvM, hvli, hvt⟩, htlt⟩` from `exists_lt_of_csInf_lt (s := {t : ℝ | 0 ≤ t ∧ ∃ v : Fin M → EuclideanSpace ℝ (Fin M), (∀ j, v j ∈ PI.dualZ (span ℤ (Set.range D))) ∧ LinearIndependent ℝ v ∧ ∀ j, ‖v j‖ ≤ t}) ⟨∑ j, ‖z j‖, Finset.sum_nonneg (fun _ _ => norm_nonneg _), z, hzm, hz, fun j => Finset.single_le_sum (f := …`. Conclude with `⟨v, hvli, fun i j => hvM i _ (subset_span ⟨j, rfl⟩), fun i => (hvt i).trans htlt.le⟩`.
+-/
 theorem transference_dual {M : ℕ} (hM : 1 ≤ M)
     (D : Basis (Fin M) ℝ (EuclideanSpace ℝ (Fin M))) (lam : ℝ) (hlam : 0 < lam)
     (hmin : ∀ x ∈ span ℤ (Set.range D), x ≠ 0 → lam ≤ ‖x‖)
@@ -48,6 +59,25 @@ theorem transference_dual {M : ℕ} (hM : 1 ≤ M)
       Finset.single_le_sum (f := fun j => ‖z j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)⟩ hlt
   exact ⟨v, hvli, fun i j => hvM i _ (subset_span ⟨j, rfl⟩), fun i => (hvt i).trans htlt.le⟩
 
+/- English proof (translation)
+Use `b.finiteDimensional_of_finite` as an intermediate fact. Take `⟨φ, hφ⟩` from `ShortVectors.exists_euclidean (M := M) (by simpa using finrank_eq_card_basis b) B hs hp`. Set `d` to `B.dualBasis hn b`. Establish `hd : ∀ i j, inner ℝ (φ (b i)) (φ (d j)) = if i = j then (1 : ℝ) else 0`. Introduce `i j`.
+
+Rewrite using `[hφ, LinearMap.BilinForm.apply_dualBasis_right hn hs]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hli : LinearIndependent ℝ (fun j => φ (d j))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`.
+
+Use `congrArg (inner ℝ (φ (b i))) hg` as an intermediate fact. Simplify `this` using `[inner_sum, real_inner_smul_right, hd]`. Establish `hli' : LinearIndependent ℝ (fun j => φ (b j))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`.
+
+Use `congrArg (fun x => inner ℝ x (φ (d i))) hg` as an intermediate fact. Simplify `this` using `[sum_inner, real_inner_smul_left, hd]`. Set `D : Basis (Fin M) ℝ (EuclideanSpace ℝ (Fin M))` to `basisOfLinearIndependentOfCardEqFinrank' _ hli (by simp)`. Establish `hD : ∀ j, D j = φ (d j)` using `fun j => congrFun (coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _) j`. Establish `hnorm : ∀ x, ‖φ x‖ ^ 2 = (B x x : ℝ)` using `fun x => by`.
+
+Rewrite using `[← hφ, real_inner_self_eq_norm_sq]`. Take `⟨y, hyli, hyint, hy⟩` from `transference_dual hM D lam hlam (by`. Introduce `x hx hx0`. Take `⟨c, rfl⟩` from `(mem_span_range_iff_exists_fun ℤ).1 hx`. Establish `hw : (∑ i, c i • D i) = φ (∑ i, c i • d i)` using `by simp [hD]`.
+
+Rewrite `hx0`, the goal using `[hw]`. Establish `h` using `hmin (∑ i, c i • d i) (fun h => hx0 (by rw [h, map_zero])) (fun j => ⟨c j, by`. Simplify using `[d, LinearMap.BilinForm.apply_dualBasis_left]⟩)`. Rewrite `h` using `[← hnorm]`. Conclude with `(pow_le_pow_iff_left₀ hlam.le (norm_nonneg _) two_ne_zero).1 h) _ hli'`.
+
+Apply the tactic sequence `(fun i j => ⟨if i = j then 1 else 0, by rw [hD, hd]; split_ifs <;> simp⟩)`. Use `choose m hm using hyint`. Set `v : Fin M → V` to `fun i => ∑ j, m i j • b j`. Establish `hv : ∀ i, φ (v i) = y i`. Introduce `i`.
+
+Use `InnerProductSpace.ext_inner_right_basis D fun j => ?_` and prove the remaining obligations. Rewrite using `[hm, hD]`. Simplify using `[v, sum_inner, ← Int.cast_smul_eq_zsmul ℝ, real_inner_smul_left, hd]`. Use `⟨v, fun i => sum_mem fun j _ => smul_mem _ _ (subset_span ⟨j, rfl⟩), ?_, fun i => ?_⟩` and prove the remaining obligations. Use `LinearIndependent.of_comp φ ?_` and prove the remaining obligations.
+
+Establish `: φ ∘ v = y` using `funext hv`. Rewrite using `[this]`. Conclude with `hyli.restrict_scalars' ℚ`. Rewrite using `[← hnorm, hv]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hy i) 2`.
+-/
 theorem transference_rat {V : Type} [AddCommGroup V] [Module ℚ V] {M : ℕ} (hM : 1 ≤ M) (b : Basis (Fin M) ℚ V)
     (B : LinearMap.BilinForm ℚ V) (hs : B.IsSymm) (hp : ∀ x, 0 ≤ B x x) (hn : B.Nondegenerate)
     (lam : ℝ) (hlam : 0 < lam)
@@ -105,11 +135,27 @@ theorem transference_rat {V : Type} [AddCommGroup V] [Module ℚ V] {M : ℕ} (h
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+The claim follows from `Real.rpow_pos_of_pos (abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero E)) _`.
+-/
 theorem rdE_pos : 0 < rdE E := Real.rpow_pos_of_pos
     (abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero E)) _
 
 open ShortVectors in
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `exists_basis Λ hfg (DualFamily.span_eq_top Λ hfg hdual)`. Establish `hf0 : 0 < fdeg E` using `ClassCount.fdeg_pos`. Establish `hf : (0 : ℝ) < fdeg E` using `by exact_mod_cast hf0`. Establish `hr : 0 < rdE E` using `rdE_pos`. Establish `hl : 0 < 2 * (fdeg E : ℝ) / rdE E ^ 2` using `by positivity`.
+
+Take `⟨v, hv, hli, hle⟩` from `transference_rat (Nat.mul_pos (by omega) hn) b (traceHerm n) (traceHerm_isSymm n) traceHerm_nonneg (traceHerm_nondegenerate n) _ (Real.sqrt_pos.mpr hl) (by`. Introduce `u hu hk`. Rewrite using `[Real.sq_sqrt hl.le, traceHerm_self]`. Use `trace_dual_min Λ hint hdual u hu fun y hy => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(mem_span_range_iff_exists_fun ℤ).1 ((hb y).2 hy)`.
+
+Use `choose k hk using hk`. Use `⟨∑ j, c j * k j, ?_⟩` and prove the remaining obligations. Rewrite using `[← traceHerm_apply, map_sum]`. Simplify using `only [map_zsmul, hk]`. Use the proof step `simp)`.
+
+Establish `hle' : ∀ i (τ : E →+* ℂ), ∑ k, ‖τ (v i k)‖ ^ 2 ≤ 2 * (fdeg E : ℝ) * n ^ 2 * rdE E ^ 2`. Introduce `i τ`. Establish `h` using `(two_mul_le_traceHerm (v i) τ).trans (hle i)`. Establish `h4 : (5 / 4 * (((2 * fdeg E * n : ℕ) : ℝ) / √(2 * (fdeg E : ℝ) / rdE E ^ 2))) ^ 2 = 25 / 16 * (2 * (fdeg E : ℝ) * n ^ 2 * rdE E ^ 2)`. Rewrite using `[mul_pow, div_pow, div_pow, Real.sq_sqrt hl.le]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Establish `: 0 ≤ 2 * (fdeg E : ℝ) * n ^ 2 * rdE E ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨s, hs1, hs2, -⟩` from `euclidean_basis_exists E (Fin n → E) _ v hli (by simp [ShortVectors.finrank_eq])`. Establish `hsr : s.card = n` using `by simpa using hs1`. Set `e : Fin n ≃ s` to `(s.equivFinOfCardEq hsr).symm`. Conclude with `⟨fun i => v (e i), fun i => (hb _).1 (hv _), hs2.comp e e.injective, fun σ i k => SelfDualClasses.norm_herm_le σ _ _ _ (hle' _ σ) (hle' _ σ)⟩`.
+-/
 theorem exists_bounded_basis {n : ℕ} (hn : 1 ≤ n) (Λ : Submodule (𝓞 E) (Fin n → E)) (hfg : Λ.FG)
     (hint : ∀ x ∈ Λ, ∀ y ∈ Λ, IsIntegral ℤ (herm 1 x y))
     (hdual : ∀ x, (∀ y ∈ Λ, IsIntegral ℤ (herm 1 x y)) → x ∈ Λ) :
@@ -150,6 +196,23 @@ theorem exists_bounded_basis {n : ℕ} (hn : 1 ≤ n) (Λ : Submodule (𝓞 E) (
 
 open StdMassBound RootClassCount in
 
+/- English proof (translation)
+Establish `B0 : 0 ≤ B` using `by rw [hB]; positivity`. Take `⟨R, -, H, hR⟩` from `ClassCount.exists_finset_classes (K := E) (r := n) (G := 1) {L | L.FG ∧ ∀ y, y ∈ L ↔ ∀ x ∈ L, IsIntegral ℤ (herm 1 y x)} B0 fun L hL => ⟨by simp, fun x hx => (hL.2 x).1 hx, hB ▸ exists_bounded_basis hn L hL.1 (fun x hx => (hL.2 x).1 hx) fun x hx => (hL.2 x).2 hx⟩`. Use `le_trans ?_ hR` and prove the remaining obligations. Unfold `Formalism.HermitianLatticesTheory.mass`. Use `split_ifs with hex`.
+
+Use `swap`. Check the signs of the components of the expression. Take `⟨h1, h2⟩` from `hex.choose_spec`. Generalize the expression as in `hex.choose = s at h1 h2`. Establish `key : ∀ M ∈ s, ∃ L₀ ∈ R, ∃ g ∈ isom (stdForm E n), gmap g L₀ = M`.
+
+Introduce `M hM`. Take `⟨L₀, hL₀, γ, hγ, hm⟩` from `H M ⟨(h1 M hM).1.fg, fun y => by`. Simplify using `only [isIntegral_herm_iff]`. Simplify `selfDual_of_mem_genus (h1 M hM) y⟩` using `only [hs]`. Establish `hγ' : (γ : Matrix (Fin n) (Fin n) E) * (γ : Matrix (Fin n) (Fin n) E).conjTranspose = 1`.
+
+Rewrite using `[← mul_conjTranspose_eq_one _ hγ]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, hs]`. Use `⟨L₀, hL₀, matEquiv _ hγ', matEquiv_mem _ hγ', ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Take `⟨x, rfl⟩` from `(matEquiv _ hγ').surjective x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, e⟩`. Rewrite using `[← e]`.
+
+Conclude with `(hm z).1 hz`. Introduce `hx`. Conclude with `⟨x, (hm x).2 hx, rfl⟩`. Use `choose! f hf g hg hfg using key`. Establish `hcard : s.card ≤ R.card`.
+
+Use `Finset.card_le_card_of_injOn f (fun M hM => hf M hM) fun M hM N hN e => ?_` and prove the remaining obligations. Establish `hM' : M ∈ s` using `hM`. Establish `hN' : N ∈ s` using `hN`. Use `(h2 M (h1 M hM')).unique ⟨hM', 1, one_mem _, Formalism.HermitianLatticesTheory.genusBasic_gmap_one _⟩ ⟨hN', g M * (g N)⁻¹, mul_mem (hg M hM') (inv_mem (hg N hN')), ?_⟩` and prove the remaining obligations. Establish `e1 : gmap (g N)⁻¹ N = f N`.
+
+Use `Formalism.HermitianLatticesTheory.genusBasic_gmap_inv (g N) (f N)` as an intermediate fact. Rewrite `this` using `[hfg N hN']`. Then use the resulting hypothesis. Rewrite using `[Formalism.HermitianLatticesTheory.genusBasic_gmap_mul, e1, ← e, hfg M hM']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mass_le [StarRing E] (hs : ∀ x : E, star x = IsCMField.complexConj E x) {n : ℕ} (hn : 1 ≤ n) {B : ℝ}
     (hB : B = 2 * (fdeg E : ℝ) * n ^ 2 * rdE E ^ 2) :
     Formalism.HermitianLatticesTheory.mass (stdForm E n) (stdLat E n) ≤ (1 + 2 * B) ^ (2 * fdeg E * n ^ 2) * (n * B) ^ (2 * fdeg E * n ^ 2) := by
@@ -202,6 +265,25 @@ theorem mass_le [StarRing E] (hs : ∀ x : E, star x = IsCMField.complexConj E x
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Establish `htc` using `hK.1`. Take `⟨σ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `haveI : IsCMField E := by`. Use `LeastExponentCompare.isCMField_of_conj E star hK.2.1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Use `push Not at hne`. Use `IsTotallyComplex.complexEmbedding_not_isReal σ (ComplexEmbedding.isReal_iff.2 ?_)` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hK.2.1, hne]`. Establish `hs : ∀ x : E, star x = IsCMField.complexConj E x` using `fun x => σ.injective (by`.
+
+Rewrite using `[hK.2.1, IsCMField.complexEmbedding_complexConj])`. Establish `hf : fdeg E = Formalism.HermitianLatticesTheory.fDeg E` using `ClassCount.card_infinitePlace.symm`. Establish `hr : rdE E = 2 * Formalism.HermitianLatticesTheory.vInv E`. Rewrite using `[RootClassCount.rdE_eq, Formalism.HermitianLatticesTheory.vInv, ShortVectors.finrank_eq, hf]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hm` using `mass_le hs h1 rfl`. Establish `e1 : stdForm E n = Formalism.HermitianLatticesTheory.massTelescope_form E n` using `LinearMap.ext fun x => LinearMap.ext fun y => rfl`. Establish `e2 : stdLat E n = Formalism.HermitianLatticesTheory.massTelescope_lat E n`. Unfold `stdLat Formalism.HermitianLatticesTheory.massTelescope_lat`.
+
+Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite `hm` using `[e1, e2, hr, hf]`. Use `hm.trans ?_` and prove the remaining obligations.
+
+Establish `f1 : (1 : ℝ) ≤ Formalism.HermitianLatticesTheory.fDeg E` using `by exact_mod_cast (Fintype.card_pos : 0 < Formalism.HermitianLatticesTheory.fDeg E)`. Generalize the expression as in `Formalism.HermitianLatticesTheory.fDeg E = f at *`. Generalize the expression as in `Formalism.HermitianLatticesTheory.vInv E = v at *`. Establish `hw : 4 ≤ (2 * v) ^ 2` using `by nlinarith`. Generalize the expression as in `(2 * v) ^ 2 = w at *`.
+
+Establish `hx : 4 ≤ f * w` using `by nlinarith`. Rewrite using `[← mul_pow]`. Establish `n2 : (n : ℝ) ≤ 2` using `by exact_mod_cast h2`. Establish `n0 : (0 : ℝ) ≤ n` using `by positivity`. Establish `nn : (n : ℝ) ^ 2 ≤ 4` using `by nlinarith`.
+
+Establish `b : 2 * (f : ℝ) * n ^ 2 * w ≤ 8 * (f * w)` using `by nlinarith`. Establish `b0 : 0 ≤ 2 * (f : ℝ) * n ^ 2 * w` using `by have : 0 ≤ w := by linarith`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Use `pow_le_pow_left₀ (by positivity) (mul_le_mul (by linarith) (by nlinarith) (by positivity) (by linarith)) _` and prove the remaining obligations.
+
+Use `_ ≤ ((20 * (f : ℝ) * w) * (20 * f * w)) ^ (8 * f) := by`. Use `pow_le_pow_right₀ (by nlinarith) ?_` and prove the remaining obligations. Establish `: n ^ 2 ≤ 4` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Use `_ = _ := by rw [← sq, ← pow_mul]; congr 1; ring`.
+-/
 theorem mass_small [StarRing E] (hK : Formalism.HermitianLatticesTheory.IsCMUnram E) (hv : 1 ≤ Formalism.HermitianLatticesTheory.vInv E) {n : ℕ} (h1 : 1 ≤ n)
     (h2 : n ≤ 2) :
     Formalism.HermitianLatticesTheory.mass (Formalism.HermitianLatticesTheory.massTelescope_form E n) (Formalism.HermitianLatticesTheory.massTelescope_lat E n) ≤

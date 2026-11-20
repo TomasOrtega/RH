@@ -13,6 +13,9 @@ namespace MongeAmpereIntegrability
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : Continuous fun y => fderiv ℝ H y (bas n j)` using `(hH.continuous_fderiv (by norm_num)).clm_apply continuous_const`. Establish `h2 : Continuous fun y => fderiv ℝ H y (Complex.I • bas n j)` using `(hH.continuous_fderiv (by norm_num)).clm_apply continuous_const`. Establish `hcont : Continuous (wd n j H)` using `(h1.sub (continuous_const.mul h2)).div_const 2`. Use `hcont.integrable_of_hasCompactSupport (HasCompactSupport.intro hc.isCompact fun y hy => ?_)` and prove the remaining obligations. Conclude with `(wd_zero_of_eqOn (isClosed_tsupport H).isOpen_compl (fun w hw => image_eq_zero_of_notMem_tsupport hw) j hy).1`.
+-/
 theorem integrable_wd {H : V n → ℂ} (hH : ContDiff ℝ 1 H) (hc : HasCompactSupport H)
     (j : Fin n) : Integrable (wd n j H) := by
   have h1 : Continuous fun y => fderiv ℝ H y (bas n j) :=
@@ -26,6 +29,49 @@ theorem integrable_wd {H : V n → ℂ} (hH : ContDiff ℝ 1 H) (hc : HasCompact
 
 end MongeAmpereIntegrability
 
+/- English proof (translation)
+Introduce `Ω ph v hΩ hph hv hvc hsub`. Establish `hvo : ContDiffOn ℝ ∞ v Ω` using `hv.contDiffOn`. Establish `hP : ContDiffOn ℝ ∞ (fun w => (ph w : ℂ)) Ω` using `MongeAmpereIntegrability.cdo_ofReal hph`. Establish `hQ : ContDiffOn ℝ ∞ (fun w => (v w : ℂ)) univ` using `MongeAmpereIntegrability.cdo_ofReal hv.contDiffOn`. Establish `hKc : IsOpen (tsupport v)ᶜ` using `(isClosed_tsupport v).isOpen_compl`.
+
+Establish `hv0 : ∀ w ∈ (tsupport v)ᶜ, (v w : ℂ) = 0` using `fun w hw => by`. Simplify using `[image_eq_zero_of_notMem_tsupport hw]`. Establish `hQ1 : ∀ k, ∀ w ∈ (tsupport v)ᶜ, wdb n k (fun w => (v w : ℂ)) w = 0` using `fun k w hw => (MongeAmpereIntegrability.wd_zero_of_eqOn hKc hv0 k hw).2`. Establish `hB0 : ∀ y ∉ tsupport v, cHess n (fun w => (v w : ℂ)) y = 0`. Introduce `y hy`.
+
+Use extensionality with `j k`. Simplify using `only [cHess, Matrix.of_apply, Matrix.zero_apply]`. Conclude with `(MongeAmpereIntegrability.wd_zero_of_eqOn hKc (hQ1 k) j hy).1`. Establish `hQ1c : ∀ k, ContDiffOn ℝ ∞ (wdb n k (fun w => (v w : ℂ))) univ` using `fun k => (MongeAmpereIntegrability.cdo_wd isOpen_univ hQ k).2`. Establish `hBc : ∀ j k, ContDiffOn ℝ ∞ (fun y => cHess n (fun w => (v w : ℂ)) y j k) univ`.
+
+Introduce `j k`. Simplify using `only [cHess, Matrix.of_apply]`. Conclude with `(MongeAmpereIntegrability.cdo_wd isOpen_univ (hQ1c k) j).1`. Establish `hAc : ∀ j k, ContDiffOn ℝ ∞ (fun y => cHess n (fun w => (ph w : ℂ)) y j k) Ω`. Introduce `j k`.
+
+Simplify using `only [cHess, Matrix.of_apply]`. Conclude with `(MongeAmpereIntegrability.cdo_wd hΩ (MongeAmpereIntegrability.cdo_wd hΩ hP k).2 j).1`. Use `set D : ℝ → V n → ℂ := fun t y => ∑ k, ∑ j, (cHess n (fun w => (ph w : ℂ)) y + (t : ℂ) • cHess n (fun w => (v w : ℂ)) y).adjugate k j * cHess n (fun w => (v w : ℂ)) y j k with hD`. Establish `hD0 : ∀ t, ∀ y ∉ tsupport v, D t y = 0`. Introduce `t y hy`.
+
+Simplify using `[hD, hB0 y hy]`. Establish `hm : ∀ y (t : ℝ), cHess n (fun w => (ph w : ℂ)) y + (t : ℂ) • cHess n (fun w => (v w : ℂ)) y = Matrix.of fun i j => cHess n (fun w => (ph w : ℂ)) y i j + (t : ℂ) * cHess n (fun w => (v w : ℂ)) y i j`. Introduce `y t`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Establish `hDc : ContinuousOn (fun p : V n × ℝ => D p.2 p.1) (Ω ×ˢ univ)`. Simplify using `only [hD, hm]`. Use `continuousOn_finsetSum _ fun k _ => continuousOn_finsetSum _ fun j _ => ContinuousOn.mul ?_ ?_` and prove the remaining obligations. Use `MongeAmpereIntegrability.cont_adj (fun i l (p : V n × ℝ) => cHess n (fun w => (ph w : ℂ)) p.1 i l + (p.2 : ℂ) * cHess n (fun w => (v w : ℂ)) p.1 i l) (fun i l => ?_) k j` and prove the remaining obligations. Establish `h1 : ContinuousOn (fun p : V n × ℝ => cHess n (fun w => (ph w : ℂ)) p.1 i l) (Ω ×ˢ univ)` using `(hAc i l).continuousOn.comp continuousOn_fst fun p hp => hp.1`.
+
+Establish `h2 : ContinuousOn (fun p : V n × ℝ => cHess n (fun w => (v w : ℂ)) p.1 i l) (Ω ×ˢ univ)` using `(hBc i l).continuousOn.comp continuousOn_fst fun p _ => mem_univ _`. Establish `h3 : ContinuousOn (fun p : V n × ℝ => (p.2 : ℂ)) (Ω ×ˢ univ)` using `(Complex.continuous_ofReal.comp continuous_snd).continuousOn`. Conclude with `h1.add (h3.mul h2)`. Conclude with `(hBc j k).continuousOn.comp continuousOn_fst fun p _ => mem_univ _`. Establish `hFTC : ∀ y, ∫ t in (0 : ℝ)..1, D t y = (cHess n (fun w => (ph w : ℂ)) y + cHess n (fun w => (v w : ℂ)) y).det - (cHess n (fun w => (ph w : ℂ)) y).det`.
+
+Introduce `y`. Establish `hcont : Continuous fun t : ℝ => D t y`. Rewrite using `[← continuousOn_univ]`. Simplify using `only [hD, hm]`. Use `continuousOn_finsetSum _ fun k _ => continuousOn_finsetSum _ fun j _ => ContinuousOn.mul ?_ continuousOn_const` and prove the remaining obligations.
+
+Conclude with `MongeAmpereIntegrability.cont_adj (fun i l (t : ℝ) => cHess n (fun w => (ph w : ℂ)) y i l + (t : ℂ) * cHess n (fun w => (v w : ℂ)) y i l) (fun i l => (continuous_const.add (Complex.continuous_ofReal.mul continuous_const)).continuousOn) k j`. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt (fun t _ => MongeAmpereIntegrability.hasDerivAt_det (cHess n (fun w => (ph w : ℂ)) y) (cHess n (fun w => (v w : ℂ)) y) t) (hcont.intervalIntegrable 0 1)]`. Simplify using the standard rewrite rules. Establish `hDint : ∀ t : ℝ, ∫ y in Ω, D t y = 0`. Introduce `t`.
+
+Use `set f : V n → ℝ := fun w => ph w + t * v w with hf_def`. Establish `hf : ContDiffOn ℝ ∞ f Ω` using `hph.add (contDiffOn_const.mul hvo)`. Establish `hF : ContDiffOn ℝ ∞ (fun w => (f w : ℂ)) Ω` using `MongeAmpereIntegrability.cdo_ofReal hf`. Establish `hHc : ∀ k j, ContDiffOn ℝ ∞ (fun w => (cHess n (fun w' => (f w' : ℂ)) w).adjugate k j) Ω` using `fun k j => MongeAmpereIntegrability.cdo_adj (fun i l w => wd n i (wdb n l (fun w' => (f w' : ℂ))) w) (fun i l => (MongeAmpereIntegrability.cdo_wd hΩ (MongeAmpereIntegrability.cdo_wd hΩ hF l).2 i).1) k j`. Use `set G : Fin n → Fin n → V n → ℂ := fun k j w => (cHess n (fun w' => (f w' : ℂ)) w).adjugate k j * wdb n k (fun w => (v w : ℂ)) w with hG`.
+
+Establish `hG0 : ∀ k j, ∀ w ∉ tsupport v, G k j w = 0` using `fun k j w hw => by`. Simplify using `[hG, hQ1 k w hw]`. Establish `hGc : ∀ k j, ContDiff ℝ 1 (G k j)`. Introduce `k j`. Rewrite using `[contDiff_iff_contDiffAt]`.
+
+Introduce `w`. Distinguish the cases in `hw : w ∈ Ω`. Conclude with `(((hHc k j).mul ((hQ1c k).mono (subset_univ _))).contDiffAt (hΩ.mem_nhds hw)).of_le (by simp)`. Establish `hwK : w ∉ tsupport v` using `fun h => hw (hsub h)`. Establish `he : G k j =ᶠ[𝓝 w] fun _ => (0 : ℂ)` using `Filter.eventually_of_mem (hKc.mem_nhds hwK) fun x hx => hG0 k j x hx`.
+
+Conclude with `contDiffAt_const.congr_of_eventuallyEq he`. Establish `hGs : ∀ k j, HasCompactSupport (G k j)` using `fun k j => HasCompactSupport.intro hvc.isCompact (hG0 k j)`. Establish `hpt : ∀ y, D t y = ∑ k, ∑ j, wd n j (G k j) y`. Introduce `y`. Distinguish the cases in `hy : y ∈ Ω`.
+
+Establish `hHy : cHess n (fun w' => (f w' : ℂ)) y = cHess n (fun w => (ph w : ℂ)) y + (t : ℂ) • cHess n (fun w => (v w : ℂ)) y` using `MongeAmpereIntegrability.cHess_add_smul hΩ hph hvo t hy`. Simplify using `only [hD]`. Rewrite using `[← hHy]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hc` using `hCof Ω f hΩ hf y hy k`.
+
+Establish `d1 : ∀ j, DifferentiableAt ℝ (fun w => (cHess n (fun w' => (f w' : ℂ)) w).adjugate k j) y` using `fun j => ((hHc k j).differentiableOn (by simp)).differentiableAt (hΩ.mem_nhds hy)`. Establish `d2 : DifferentiableAt ℝ (wdb n k (fun w => (v w : ℂ))) y` using `((hQ1c k).differentiableOn (by simp)).differentiableAt Filter.univ_mem`. Establish `e : ∀ j, wd n j (G k j) y = wd n j (fun w => (cHess n (fun w' => (f w' : ℂ)) w).adjugate k j) y * wdb n k (fun w => (v w : ℂ)) y + (cHess n (fun w' => (f w' : ℂ)) y).adjugate k j * wd n j (wdb n k (fun w => (v w : ℂ))) y` using `fun j => ChartWirtingerDerivatives.wd_mul' n j _ _ y (d1 j) d2`. Simplify using `only [e, Finset.sum_add_distrib, ← Finset.sum_mul, hc, zero_mul, zero_add]`. Both sides reduce to the same expression.
+
+Establish `hyK : y ∉ tsupport v` using `fun h => hy (hsub h)`. Rewrite using `[hD0 t y hyK]`. Use `symm`. Use `Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Conclude with `(MongeAmpereIntegrability.wd_zero_of_eqOn hKc (hG0 k j) j hyK).1`.
+
+Rewrite using `[setIntegral_eq_integral_of_forall_compl_eq_zero (fun y hy => hD0 t y (fun h => hy (hsub h)))]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_finsetSum _ (fun k _ => integrable_finsetSum _ fun j _ => MongeAmpereIntegrability.integrable_wd (hGc k j) (hGs k j) j)]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ (fun j _ => MongeAmpereIntegrability.integrable_wd (hGc k j) (hGs k j) j)]`.
+
+Conclude with `Finset.sum_eq_zero fun j _ => integral_wd_eq_zero n j (G k j) (hGc k j) (hGs k j)`. Establish `hInt : Integrable (Function.uncurry fun (y : V n) (t : ℝ) => D t y) ((volume.restrict Ω).prod (volume.restrict (Ioc (0 : ℝ) 1)))`. Rewrite using `[Measure.prod_restrict]`. Use `IntegrableOn.of_forall_sdiff_eq_zero (s := tsupport v ×ˢ Icc (0 : ℝ) 1) ?_ (hΩ.measurableSet.prod measurableSet_Ioc) ?_` and prove the remaining obligations. Conclude with `ContinuousOn.integrableOn_compact (hvc.isCompact.prod isCompact_Icc) (hDc.mono fun p hp => ⟨hsub hp.1, mem_univ _⟩)`.
+
+Introduce and unpack `⟨y, t⟩ ⟨⟨_, ht⟩, hn⟩`. Establish `hyK : y ∉ tsupport v` using `fun h => hn ⟨h, Ioc_subset_Icc_self ht⟩`. Conclude with `hD0 t y hyK`. Combine the equalities or inequalities in the displayed calculation. Use `setIntegral_congr_fun hΩ.measurableSet fun y hy => ?_` and prove the remaining obligations.
+
+Establish `h1` using `MongeAmpereIntegrability.cHess_add_smul hΩ hph hvo 1 hy`. Simplify using `only [one_mul, Complex.ofReal_one, one_smul] at h1`. Rewrite using `[h1, ← intervalIntegral.integral_of_le zero_le_one, hFTC y]`. Use `_ = ∫ t in Ioc (0 : ℝ) 1, ∫ y in Ω, D t y := integral_integral_swap hInt`. Use `_ = 0 := by simp [hDint]`.
+-/
 theorem ma (n : ℕ) (hCof : MACofStatement n) : MAStatement n := by
   intro Ω ph v hΩ hph hv hvc hsub
   have hvo : ContDiffOn ℝ ∞ v Ω := hv.contDiffOn

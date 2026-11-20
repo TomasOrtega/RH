@@ -7,12 +7,24 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAFFStable
 
 namespace Formalism.FourierDecayAlt.P.CutMP.JA
 
+/- English proof (translation)
+The claim follows from `jALocAdj_of_adjComm FFS.adjoint_commutation_holds`.
+-/
 theorem local_adjoint_transfer_holds : JALocAdj := jALocAdj_of_adjComm FFS.adjoint_commutation_holds
 
+/- English proof (translation)
+The claim follows from `jALocCC_of_op local_operator_transfer_holds local_adjoint_transfer_holds`.
+-/
 theorem local_class_transfer_holds : JALocCC := jALocCC_of_op local_operator_transfer_holds local_adjoint_transfer_holds
 
+/- English proof (translation)
+The claim follows from `GA.gAJComm_of_adjComm FFS.adjoint_commutation_holds`.
+-/
 theorem group_action_commutation_holds : GA.GAJComm := GA.gAJComm_of_adjComm FFS.adjoint_commutation_holds
 
+/- English proof (translation)
+The claim follows from `jAGroupAdj_of_jComm group_action_commutation_holds`.
+-/
 theorem group_adjoint_transfer_holds : JAGroupAdj := jAGroupAdj_of_jComm group_action_commutation_holds
 
 end Formalism.FourierDecayAlt.P.CutMP.JA

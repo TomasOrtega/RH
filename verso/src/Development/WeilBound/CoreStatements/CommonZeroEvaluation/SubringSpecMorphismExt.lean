@@ -18,6 +18,13 @@ noncomputable section
 
 namespace ModelDimension
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y Ω _ A g₁ g₂ h`. Establish `hpr : IsProper Y.s` using `GlobalTheory.SchemeWords.isProper_of_isProjOver Y.proj`. Establish `hsep : Y.X.IsSeparated`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← Limits.terminal.comp_from Y.s]`.
+
+Use `infer_instance`. Establish `hdom : IsDominant (Spec.map (CommRingCat.ofHom (algebraMap A Ω)))`. Prove the components needed by the constructor for the conclusion. Conclude with `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap A Ω)).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (Subtype.val_injective)]`.
+
+Conclude with `bot_le)`. Conclude with `ext_of_isDominant _ h`.
+-/
 theorem subring_spec_morphism_ext : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (Ω : Type) [Field Ω] (A : Subring Ω) (g₁ g₂ : Spec (CommRingCat.of A) ⟶ Y.X), Spec.map (CommRingCat.ofHom (algebraMap A Ω)) ≫ g₁ = Spec.map (CommRingCat.ofHom (algebraMap A Ω)) ≫ g₂ → g₁ = g₂ := by
   intro E _ _ _ H Dw l Xo c O _ β Y Ω _ A g₁ g₂ h
   have hpr : IsProper Y.s := GlobalTheory.SchemeWords.isProper_of_isProjOver Y.proj

@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PrimitiveFrobenius
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.Stick UpperTheory.V.ML
 open scoped nonZeroDivisors Pointwise
 
+/- English proof (translation)
+Introduce `Ω _ _ _ F r a _ hr A₀ u k hk`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `hv0 : A₀.valuation (r : Ω) ≠ 0` using `(Valuation.ne_zero_iff _).mpr (Nat.cast_ne_zero.mpr hr)`. Establish `hk' : ∀ (t : (ZMod F)ˣ) (σ : G ℚ Ω), Lifts F t σ → A₀.valuation (σ u) = A₀.valuation (r : Ω) ^ k t` using `hk`. Use `⟨fun d δ hδ t σ hσ => ?_, fun n t σ hσ => ?_⟩` and prove the remaining obligations.
+
+Establish `hδ' : ∀ x : Ω, x ^ F = 1 → δ x = x ^ (d : ZMod F).val` using `hδ`. Establish `hσ' : ∀ x : Ω, x ^ F = 1 → σ x = x ^ (t : ZMod F).val` using `hσ`. Establish `hσδ : Lifts F (t * d) (σ * δ)` using `by show ∀ x : Ω, x ^ F = 1 → (σ * δ) x = x ^ ((t * d : (ZMod F)ˣ) : ZMod F).val`. Introduce `x hx`. Rewrite using `[AlgEquiv.mul_apply, hδ' x hx, map_pow, hσ' x hx, ← pow_mul, Units.val_mul, ZMod.val_mul]`.
+
+Use `conv_lhs => rw [← Nat.mod_add_div ((t : ZMod F).val * (d : ZMod F).val) F]`. Rewrite using `[pow_add, pow_mul, hx, one_pow, mul_one]`. Establish `h1` using `hk' (t * d) (σ * δ) hσδ`. Establish `h2` using `hk' t σ hσ`. Rewrite `h1` using `[AlgEquiv.mul_apply]`.
+
+Use `show A₀.valuation (σ (δ u / u ^ a)) = _`. Rewrite using `[map_div₀, map_pow, map_div₀, map_pow, h1, h2, ← zpow_natCast, ← zpow_mul, zpow_sub₀ hv0, mul_comm (k t)]`. Use `show A₀.valuation (σ (u ^ n)) = _`. Rewrite using `[map_pow, map_pow, hk' t σ hσ, ← zpow_natCast, ← zpow_mul, mul_comm (k t)]`.
+-/
 theorem UpperTheory.V.ML.hasOrdP :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (F r a : ℕ) [NeZero F], r ≠ 0 → ∀ (A₀ : ValuationSubring Ω) (u : Ω) (k : (ZMod F)ˣ → ℤ), HasOrd F r A₀ u k →
     (∀ (d : (ZMod F)ˣ) (δ : G ℚ Ω), Lifts F d δ → HasOrd F r A₀ (opP δ a u) fun t => k (t * d) - a * k t) ∧ ∀ n : ℕ, HasOrd F r A₀ (u ^ n) fun t => n * k t := by

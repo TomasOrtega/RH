@@ -7,6 +7,15 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.BKGal
 
+/- English proof (translation)
+Set `u` to `Module.finBasis K D`. Set `u'` to `fun i => (u i : W)`. Establish `hle : (D : Set W) ⊆ Submodule.span U (Set.range u')`. Introduce `x hx`. Establish `h4` using `congrArg Subtype.val (u.sum_repr ⟨x, hx⟩)`.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h4`. Rewrite using `[← h4]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hKU (u.repr ⟨x, hx⟩ i)`. Rewrite using `[hc]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `h6` using `linearIndependent_le_span_aux' _ he (Set.range u') (by`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.span_le.2 hle (hsp i))`. Establish `h7` using `Fintype.card_range_le u'`.
+
+Simplify using `only [Fintype.card_fin] at h6 h7`. Conclude with `h6.trans h7`.
+-/
 theorem card_le_finrank_of_mem_span {K U W : Type} [Field K] [Field U] [AddCommGroup W] [Module K W]
     [Module U W] (hKU : ∀ c : K, ∃ c' : U, ∀ w : W, c • w = c' • w) (D : Submodule K W) [Module.Finite K D]
     {d : ℕ} (e : Fin d → W) (he : LinearIndependent U e) (hsp : ∀ i, e i ∈ Submodule.span U (D : Set W)) :
@@ -30,6 +39,11 @@ theorem card_le_finrank_of_mem_span {K U W : Type} [Field K] [Field U] [AddCommG
   simp only [Fintype.card_fin] at h6 h7
   exact h6.trans h7
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional Qp V := Module.Finite.trans LL V`. Take `⟨h1, h2⟩` from `finite_le₀ PD hf ρ`. Take `⟨h3, -⟩` from `finite_le₀ PD' hf' ρ'`. Rewrite `hc`, the goal using `[isCrys_iff_finrank]`. Use `le_antisymm h2 ?_` and prove the remaining obligations.
+
+Set `e` to `Module.finBasisOfFinrankEq K₀' _ hc`. Establish `hB` using `(indepB PD' hf' ρ' e e.linearIndependent).restrict_scalars' U`. Use `card_le_finrank_of_mem_span (U := U) (fun c => ?_) _ _ hB fun i => hsp _ (e i).2` and prove the remaining obligations. Take `⟨c', h⟩` from `hU c`. Conclude with `⟨c', fun w => by rw [← algebraMap_smul B c w, h, algebraMap_smul]⟩`.
+-/
 theorem isCrys_of_span_generic {G G' : Type} [Group G] [Group G'] {Qp K₀ K K₀' K' U : Type} [Field Qp] [Field K₀]
     [Field K] [Field K₀'] [Field K'] [Field U]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
@@ -57,6 +71,9 @@ theorem isCrys_of_span_generic {G G' : Type} [Group G] [Group G'] {Qp K₀ K K�
   obtain ⟨c', h⟩ := hU c
   exact ⟨c', fun w => by rw [← algebraMap_smul B c w, h, algebraMap_smul]⟩
 
+/- English proof (translation)
+Introduce `l _ P AI hs LL T F K'' hc hsp`. Take `⟨Ti⟩` from `hs`. Use `haveI := LL.2`. Use `haveI : IsDomain P.R.B := isDomain_of_tied Ti F`. Conclude with `isCrys_of_span_generic (U := ↥(MaximalUnramifiedExtension l)) (P.PD F) (P.PD K'') (GlobalTheory.Per.TiedRestrict.fracInv_of_tied Ti F) (GlobalTheory.Per.TiedRestrict.fracInv_of_tied Ti K'') (fun c => ⟨⟨c.1, c.2.2⟩, rfl⟩) _ _ hc hsp`.
+-/
 theorem isCrys_of_dcris_le_span : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), IsStd P AI → ∀ (LL : FinExt l) (T : QLat LL) (F K'' : FinExt l), IsCrys (P.PD K'') (T.ρ.comp (inclG K'')) → (∀ m ∈ DcrisK₀ (P.PD K'') (T.ρ.comp (inclG K'')), m ∈ Submodule.span ↥(MaximalUnramifiedExtension l) (↑(DcrisK₀ (P.PD F) (T.ρ.comp (inclG F))) : Set (P.R.B ⊗[ℚ_[l]] T.V))) → IsCrys (P.PD F) (T.ρ.comp (inclG F)) := by
   intro l _ P AI hs LL T F K'' hc hsp
   obtain ⟨Ti⟩ := hs

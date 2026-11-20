@@ -15,12 +15,36 @@ open private sat_part from Development.AutomorphicArithmetic.AutomorphicVarietie
 open private conj_eq from Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.GL1SpectralBounds.CsdSat
 open private isDiscrete_of_norm' from Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.GlobalTraceComparison.CuspidalContribution.CuspFin
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `: Q = π` using `CuspSub.ext h`. Rewrite using `[this]`.
+-/
 private theorem sigma_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {a n : ℕ} (e : a = n) (Q : CuspSub E a)
     (π : CuspSub E n) (h : e ▸ Q.V = π.V) : (⟨a, CG.mk Q⟩ : Σ k, CG E k) = ⟨n, CG.mk π⟩ := by
   subst e
   have : Q = π := CuspSub.ext h
   rw [this]
 
+/- English proof (translation)
+Introduce `hN hC hPl E _ _ _ n hn π hd D hHas hReg hIn hSp`. Establish `hcc` using `fun w : Pl E => ((hPl E).2.1 w).1`. Establish `hsp` using `fun w : Pl E => ((hPl E).2.1 w).2`. Use `choose P hP hnorm hunit using hN E n hn π hd D hReg hSp`. Establish `hl : ∀ i w, ∃ σ, IsLocCompGL (P i).V w σ` using `fun i w => (GlobalTheory.CuspRep.LocEx.exists_isLocComp UpperTheory.V.Af.formsFiniteGL E (D.N i) (P i) w).imp fun σ h => ((cuspSub_iff (P i)).2.1 w σ).2 h.1`.
+
+Use `choose σ hσ using hl`. Set `D' : PositivityTheory.Rg.BcB.F.Pre E n` to `⟨D.c, D.N, D.sum, fun i => (P i).V, σ, fun i τ => (CG.mk (P i)).infChar τ, D.pos, fun i => isDiscrete_of_norm' (hnorm i), hσ, fun i τ => ((cuspSub_iff (P i)).2.2 τ _).2 (GlobalTheory.CuspRep.ParLaws.hasInfChar_infChar (CG.mk (P i)) τ)⟩`. Establish `hsat : ∀ w B, D.Sat w B → D'.Sat w B`. Introduce and unpack `w B ⟨b, hb, rfl⟩`. Use `⟨b, fun i => ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `h` using `(sat_part rfl (P i).V (P i) rfl w (σ i w) (hσ i w) (b i)).1 (by rw [hP i]; exact hb i)`. Conclude with `⟨h.1, h⟩`. Establish `hcof : Tendsto (cPl : Pl E → Pl E) cofinite cofinite` using `Function.Injective.tendsto_cofinite fun x y e => by rw [← hcc x, ← hcc y, e]`. Use `⟨D', fun τ => ?_, ?_, hSp.mono fun w hw hs => (hw hs).imp fun B hB => ⟨hsat w B hB.1, hB.2⟩, ?_⟩` and prove the remaining obligations. Take `⟨lam, hlam⟩` from `hReg τ`.
+
+Use `⟨lam, ?_⟩` and prove the remaining obligations. Rewrite using `[← hlam]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp only [D', hP i]`. Use `filter_upwards [hIn, hSp, hcof.eventually hSp, hC E n hn π hd] with w h1 h2 h3 h4`. Distinguish the cases in `hw : IsSplitAt w`.
+
+Take `⟨B, hB, hπ⟩` from `h2 hw`. Take `⟨B', hπ', hu⟩` from `h4`. Take `rfl` from `CG.HasSat.unique hπ hπ'`. Use `⟨B, hsat w B hB, fun u hu' => ?_⟩` and prove the remaining obligations. Establish `e : u = cPl w` using `by rw [← conj_eq hu', hcc]`.
+
+Establish `hs : IsSplitAt u`. Rewrite using `[e]`. Use `(hsp _).2 ?_` and prove the remaining obligations. Rewrite using `[hcc]`. Conclude with `((hsp w).1 hw).symm`.
+
+Take `⟨B₂, hB₂, hπ₂⟩` from `e ▸ h3 (e ▸ hs)`. Take `rfl` from `CG.HasSat.unique hπ₂ (hu u hu')`. Conclude with `hsat _ _ hB₂`. Take `⟨B, hB, hinv⟩` from `h1 hw`. Use `⟨B, hsat w B hB, fun u hu' => ?_⟩` and prove the remaining obligations.
+
+Establish `e : u = w`. Rewrite using `[← hcc u, conj_eq hu']`. Assume the negation of the conclusion as `h`. Conclude with `hw ((hsp w).2 h)`. Substitute `e` using the available equality.
+
+Establish `: B.map (·⁻¹) = B` using `hinv`. Rewrite using `[this]`. Conclude with `hsat _ _ hB`. Introduce and unpack `⟨hc, h⟩`. Establish `i : Fin D.c` using `⟨0, by have : D.c = 1 := hc; omega⟩`.
+
+Take `⟨e, he⟩` from `h i`. Use `hHas ⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[← hP i]`. Conclude with `sigma_eq e (P i) π he`.
+-/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.preOf :
     PartNorm → GOne.CsdSat → Places → PreOf := by
   intro hN hC hPl E _ _ _ n hn π hd D hHas hReg hIn hSp

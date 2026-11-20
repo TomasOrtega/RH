@@ -17,6 +17,17 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `U X j _ R _ ξ K' _ χ yy h q _ hq`. Establish `hopen : IsOpen (Set.range j)` using `j.isOpenEmbedding.isOpen_range`. Set `pt : Sp K'` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K')`. Establish `hpt : (spMap χ pt : PrimeSpectrum R) = (⟨q, inferInstance⟩ : PrimeSpectrum R)`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `Ideal.comap χ ⊥ = q`. Rewrite using `[← hq]`. Both sides reduce to the same expression. Establish `hmem : ξ (⟨q, inferInstance⟩ : PrimeSpectrum R) ∈ Set.range j`. Use `⟨yy pt, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← h, Scheme.Hom.comp_apply]`. Conclude with `congrArg ξ hpt`. Use `⟨IsOpenImmersion.lift j (spMap (algebraMap R (Localization.AtPrime q)) ≫ ξ) ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`.
+
+Establish `hle : (spMap (algebraMap R (Localization.AtPrime q)) x : PrimeSpectrum R) ⤳ (⟨q, inferInstance⟩ : PrimeSpectrum R)`. Establish `hle' : Ideal.comap (algebraMap R (Localization.AtPrime q)) (x : PrimeSpectrum _).asIdeal ≤ q`. Introduce `r hr`. Assume the negation of the conclusion as `hrq`. Establish `hu : IsUnit (algebraMap R (Localization.AtPrime q) r)` using `IsLocalization.map_units (Localization.AtPrime q) (⟨r, hrq⟩ : q.primeCompl)`.
+
+Conclude with `(x : PrimeSpectrum _).isPrime.ne_top ((Ideal.eq_top_of_isUnit_mem _ hr hu))`. Conclude with `(PrimeSpectrum.le_iff_specializes (spMap (algebraMap R (Localization.AtPrime q)) x : PrimeSpectrum R) ⟨q, inferInstance⟩).1 hle'`. Conclude with `(hle.map ξ.continuous).mem_open hopen hmem`. Conclude with `(IsOpenImmersion.lift_fac _ _ _).symm`.
+-/
 theorem spec_factor_localization_of_field_point : ∀ (U X : Scheme.{0}) (j : U ⟶ X) [IsOpenImmersion j] (R : Type) [CommRing R] (ξ : Sp R ⟶ X)
     (K' : Type) [Field K'] (χ : R →+* K') (yy : Sp K' ⟶ U), spMap χ ≫ ξ = yy ≫ j →
     ∀ (q : Ideal R) [q.IsPrime], RingHom.ker χ = q →

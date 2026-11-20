@@ -50,6 +50,9 @@ instance pcChains : PreservesColimitsOfShape WalkingSpan (chains R) := by
 
 end
 
+/- English proof (translation)
+Introduce `q P`. Establish `h : IsPushout P.hom P.hom (dbl.inl P) (dbl.inr P)` using `IsPushout.of_hasPushout _ _`. Conclude with `(chains (ZMod q)).map_isPushout h`.
+-/
 theorem LeafChPush_of : LeafChPush := by
   intro q P
   have h : IsPushout P.hom P.hom (dbl.inl P) (dbl.inr P) := IsPushout.of_hasPushout _ _

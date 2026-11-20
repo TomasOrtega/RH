@@ -8,6 +8,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `x hx`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z`. Rewrite `hx` using `[LinearMap.mem_ker, resH1, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨m, hm⟩` from `hx`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Take `⟨h, rfl⟩` from `hs g`.
+
+Use `congrFun hm h` as an intermediate fact. Simplify `this` using `[d0, restrictCocycles1]`.
+-/
 private theorem resH1_injective_of_surjective {R G H M : Type} [CommRing R] [Group G] [TopologicalSpace G] [Group H]
     [TopologicalSpace H] [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M]
     [ContinuousConstSMul R M] (ρ : Representation R G M) (π : H →* G) (hπ : Continuous π)
@@ -25,6 +32,13 @@ private theorem resH1_injective_of_surjective {R G H M : Type} [CommRing R] [Gro
     have := congrFun hm h
     simpa [d0, restrictCocycles1] using this
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z`. Simplify using `only [resH1, Submodule.mapQ_apply]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `u`. Take `⟨u, hu⟩` from `u`. Rewrite `hu` using `[Subgroup.mem_bot]`. Substitute `hu` using the available equality. Establish `h1` using `z.2.2 1 1`.
+
+Simplify using `at h1`. Simplify using `[d0, restrictCocycles1, h1]`.
+-/
 private theorem resH1_bot_eq_zero {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M]
     [ContinuousConstSMul R M] (ρ : Representation R G M) (x : H1 ρ) :
@@ -42,6 +56,11 @@ private theorem resH1_bot_eq_zero {R G M : Type} [CommRing R] [Group G] [Topolog
     simp at h1
     simp [d0, restrictCocycles1, h1]
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z`. Simplify using `only [resH1, Submodule.mapQ_apply] at hx ⊢`. Rewrite `hx`, the goal using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨m, hm⟩` from `hx`.
+
+Use `⟨m, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Use `congrFun hm ⟨u.1, h u.2⟩` as an intermediate fact. Simplify `this` using `[d0, restrictCocycles1]`.
+-/
 private theorem resH1_eq_zero_of_le {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M]
     [ContinuousConstSMul R M] (ρ : Representation R G M) {K L : Subgroup G} (h : K ≤ L) (x : H1 ρ)
@@ -57,6 +76,11 @@ private theorem resH1_eq_zero_of_le {R G M : Type} [CommRing R] [Group G] [Topol
     have := congrFun hm ⟨u.1, h u.2⟩
     simpa [d0, restrictCocycles1] using this
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z`. Take `⟨z', hz', hz'u⟩` from `resU_mk ρ h (restrictCocycles1 ρ U.subtype continuous_subtype_val z)`. Simplify using `only [resH1, Submodule.mapQ_apply] at hz' ⊢`. Rewrite using `[hz']`.
+
+Use `congr 1`. Use extensionality with `u`. Simplify using `[hz'u, restrictCocycles1]`.
+-/
 private theorem resU_resH1_subtype_eq {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M]
     [ContinuousConstSMul R M] (ρ : Representation R G M) {U' U : Subgroup G} (h : U' ≤ U) (x : H1 ρ) :
@@ -69,6 +93,11 @@ private theorem resU_resH1_subtype_eq {R G M : Type} [CommRing R] [Group G] [Top
     congr 1
     ext u
     simp [hz'u, restrictCocycles1]
+/- English proof (translation)
+Use `⟨resH1_injective_of_surjective ρ _ _ (fun g => ⟨⟨g, Subgroup.mem_top g⟩, rfl⟩), ?_⟩` and prove the remaining obligations. Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H z'`. Establish `hz : (fun g : G => (z' : (⊤ : Subgroup G) → M) ⟨g, Subgroup.mem_top g⟩) ∈ Z1 ρ`.
+
+Use `⟨z'.2.1.comp (continuous_id.subtype_mk _), fun g h => ?_⟩` and prove the remaining obligations. Conclude with `z'.2.2 ⟨g, Subgroup.mem_top g⟩ ⟨h, Subgroup.mem_top h⟩`. Use `⟨Submodule.Quotient.mk ⟨_, hz⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [resH1, Submodule.mapQ_apply]`. Use `congr 1`.
+-/
 private theorem resH1_subtype_whole_bijective_sha {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M]
     [ContinuousConstSMul R M] (ρ : Representation R G M) :
@@ -84,6 +113,17 @@ private theorem resH1_subtype_whole_bijective_sha {R G M : Type} [CommRing R] [G
     simp only [resH1, Submodule.mapQ_apply]
     congr 1
 
+/- English proof (translation)
+Substitute `hS` using the available equality. Establish `key : ∀ D : Subgroup (G E Ω), resU ρ (LocSel._proof_1 ⊤ D) (resH1 ρ (⊤ : Subgroup (G E Ω)).subtype continuous_subtype_val x) = 0 ↔ resH1 ρ D.subtype continuous_subtype_val x = 0`. Introduce `D`. Rewrite using `[resU_resH1_subtype_eq]`. Conclude with `⟨resH1_eq_zero_of_le ρ (le_inf le_top le_rfl) x, resH1_eq_zero_of_le ρ inf_le_right x⟩`.
+
+Simplify using `only [LDataCardLeFinrank.ShaAbs, LocSel, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, key]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ D hD`. Break down `hD with ⟨A, hA, rfl⟩ | ⟨A, rfl⟩` into its components or cases. Establish `hA' : A ≠ ⊤` using `fun h => ((places E Ω l A).2.1 h).2 hA`.
+
+Take `⟨v, hv⟩` from `(places E Ω l A).1 hA'`. Conclude with `h1 v (((places E Ω l A).2.2.1 v hv).1 hA) A hv`. Distinguish the cases in `hT : A = ⊤`. Rewrite using `[((places E Ω l A).2.1 hT).1]`. Conclude with `resH1_bot_eq_zero ρ x`.
+
+Take `⟨v, hv⟩` from `(places E Ω l A).1 hT`. Distinguish the cases in `hvS : v ∈ Above E l`. Conclude with `resH1_eq_zero_of_le ρ (Ine_le_Dec A) x (h1 v hvS A hv)`. Conclude with `h2 v hvS A hv`. Introduce `h`.
+
+Use `⟨fun v hv A hA => h _ (Or.inl ⟨A, ((places E Ω l A).2.2.1 v hA).2 hv, rfl⟩), fun v _ A _ => h _ (Or.inr ⟨A, rfl⟩)⟩` and prove the remaining obligations.
+-/
 private theorem mem_shaAbs_iff_resH1_whole_mem_locSel {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (l : ℕ) [Fact l.Prime] {M : Type} [AddCommGroup M] [Module ℤ_[l] M] [TopologicalSpace M]
     [IsTopologicalAddGroup M] [ContinuousConstSMul ℤ_[l] M] (ρ : Representation ℤ_[l] (G E Ω) M)
@@ -114,6 +154,11 @@ private theorem mem_shaAbs_iff_resH1_whole_mem_locSel {E Ω : Type} [Field E] [N
   · intro h
     refine ⟨fun v hv A hA => h _ (Or.inl ⟨A, ((places E Ω l A).2.2.1 v hA).2 hv, rfl⟩),
       fun v _ A _ => h _ (Or.inr ⟨A, rfl⟩)⟩
+/- English proof (translation)
+Establish `h1 : (D.chi ^ (-e)).comp (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E)))) = cycZ E Ω l ^ (-e)`. Rewrite using `[← D.hchi]`. Use extensionality with `σ`. Simplify using the standard rewrite rules. Unfold `qzTw LDataCardLeFinrank.qzG`.
+
+Rewrite using `[← h1]`. Both sides reduce to the same expression.
+-/
 private theorem qzTw_comp_toGS_eq_qzG {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {l : ℕ} [Fact l.Prime] (D : LData E Ω l) (e : ℤ) :
     MonoidHom.comp (qzTw D e) (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E)))) = LDataCardLeFinrank.qzG E Ω l e := by
@@ -125,6 +170,11 @@ private theorem qzTw_comp_toGS_eq_qzG {E Ω : Type} [Field E] [NumberField E] [F
   rw [← h1]
   rfl
 
+/- English proof (translation)
+Establish `hq : Topology.IsQuotientMap (Prod.map (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E)))) (id : QZ l → QZ l))` using `(IsOpenQuotientMap.prodMap ⟨QuotientGroup.mk_surjective, continuous_toGS Ω _, QuotientGroup.isOpenMap_coe⟩ IsOpenQuotientMap.id).isQuotientMap`. Unfold `ReciprocityTheory.Gal.ContAction`. Rewrite using `[hq.continuous_iff]`. Use `LDataCardLeFinrank.contAction_qzG (F := E) (Ω := Ω) (l := l) e` as an intermediate fact. Rewrite `this` using `[← qzTw_comp_toGS_eq_qzG D e]`.
+
+Conclude with `this`.
+-/
 private theorem qzTw_contAction {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {l : ℕ} [Fact l.Prime] (D : LData E Ω l) (e : ℤ) : ReciprocityTheory.Gal.ContAction (qzTw D e) := by
   have hq : Topology.IsQuotientMap
@@ -137,6 +187,17 @@ private theorem qzTw_contAction {E Ω : Type} [Field E] [NumberField E] [Field �
   rw [← qzTw_comp_toGS_eq_qzG D e] at this
   exact this
 
+/- English proof (translation)
+Substitute `hρ' h𝒟` using the available equality. Establish `hsurj : Function.Surjective (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))))`. Introduce `y`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective y`. Conclude with `⟨g, rfl⟩`.
+
+Establish `hinj` using `resH1_injective_of_surjective (qzTw D e) _ (continuous_toGS Ω _) hsurj`. Establish `hmapS` using `LDataCardLeFinrank.shaInfl E Ω D.S D.A D.hA ℤ_[l] (QZ l) (qzTw D e) (qzTw_contAction D e)`. Establish `hbij` using `resH1_subtype_whole_bijective_sha (MonoidHom.comp (qzTw D e) (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E)))))`. Establish `hEq : Submodule.map (resH1 _ (⊤ : Subgroup (G E Ω)).subtype continuous_subtype_val) (LDataCardLeFinrank.ShaAbs (MonoidHom.comp (qzTw D e) (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))))) (D.S : Set _)) = LocSel (MonoidHom.comp (qzTw D e) (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E) …`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(mem_shaAbs_iff_resH1_whole_mem_locSel l _ _ D.hS x).1 hx`. Introduce `hy`. Take `⟨x, rfl⟩` from `hbij.2 y`.
+
+Conclude with `⟨x, (mem_shaAbs_iff_resH1_whole_mem_locSel l _ _ D.hS x).2 hy, rfl⟩`. Use `⟨((Submodule.equivMapOfInjective _ hinj (Sha D e)).trans (LinearEquiv.ofEq _ _ hmapS)).trans (((LinearEquiv.ofBijective _ hbij).submoduleMap _).trans (LinearEquiv.ofEq _ _ hEq)), ?_⟩` and prove the remaining obligations. Introduce `x z hz`. Use `⟨restrictCocycles1 _ _ continuous_subtype_val (restrictCocycles1 _ _ (continuous_toGS Ω _) z), ?_, fun σ => rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(resH1 (MonoidHom.comp (qzTw D e) (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))))) (⊤ : Subgroup (G E Ω)).subtype continuous_subtype_val) ((resH1 (qzTw D e) (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E)))) (continuous_toGS Ω _)) x.1) = _`.
+
+Rewrite using `[hz]`. Both sides reduce to the same expression.
+-/
 private theorem sha_exists_cocycle_lift_whole {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {l : ℕ} [Fact l.Prime] (D : LData E Ω l) (e : ℤ) (ρ' : Representation ℤ_[l] (G E Ω) (QZ l))
     (hρ' : MonoidHom.comp (qzTw D e) (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E)))) = ρ')
@@ -172,6 +233,25 @@ private theorem sha_exists_cocycle_lift_whole {E Ω : Type} [Field E] [NumberFie
   rw [hz]
   rfl
 
+/- English proof (translation)
+Introduce `k E Ω _ _ _ _ _ _ _ _ _ _ _ l _ D e`. Take `⟨_, hfam, _, hrep⟩` from `galEmbFam k E Ω l`. Take `⟨hemb, _, _⟩` from `galEmbTop k E Ω`. Establish `hmap : Subgroup.map (galEmb k E Ω) ⊤ = galOf k E Ω`. Rewrite using `[← MonoidHom.range_eq_map, range_galEmb]`.
+
+Take `⟨Φ, hΦ⟩` from `selTransport ℤ_[l] (G k Ω) (QZ l) (LDataCardLeFinrank.qzG k Ω l e) (G E Ω) (galEmb k E Ω) hemb ⊤ (galOf k E Ω) hmap (shaFam k Ω l)`. Take `⟨Ψ, hΨ⟩` from `sha_exists_cocycle_lift_whole D e (MonoidHom.comp (LDataCardLeFinrank.qzG k Ω l e) (galEmb k E Ω)) ((qzTw_comp_toGS_eq_qzG D e).trans (hrep e).symm) _ hfam.symm`. Establish `hr : ∀ u : galOf k E Ω, (u : G k Ω) ∈ Set.range (galEmb k E Ω)` using `fun u => by`. Establish `hu : (u : G k Ω) ∈ (galEmb k E Ω).range`. Rewrite using `[range_galEmb]`.
+
+Conclude with `u.2`. Conclude with `hu`. Set `ψ : galOf k E Ω → G E Ω` to `fun u => hemb.toHomeomorph.symm ⟨u.1, hr u⟩`. Establish `hψc : Continuous ψ` using `hemb.toHomeomorph.symm.continuous.comp (continuous_subtype_val.subtype_mk _)`. Establish `hψ : ∀ u, galEmb k E Ω (ψ u) = u` using `fun u => congrArg Subtype.val (hemb.toHomeomorph.apply_symm_apply ⟨u.1, hr u⟩)`.
+
+Establish `hψm : ∀ u v, ψ (u * v) = ψ u * ψ v` using `fun u v => hemb.injective (by rw [map_mul, hψ, hψ, hψ]; rfl)`. Use `⟨Ψ.trans Φ, fun x => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ x.1`. Take `⟨w, hw1, hw2⟩` from `hΨ x z hz.symm`. Establish `hz'' : (fun u : galOf k E Ω => (w : (⊤ : Subgroup (G E Ω)) → QZ l) ⟨ψ u, Subgroup.mem_top _⟩) ∈ Z1U (LDataCardLeFinrank.qzG k Ω l e) (galOf k E Ω)`.
+
+Use `⟨w.2.1.comp (hψc.subtype_mk _), fun u v => ?_⟩` and prove the remaining obligations. Establish `hw` using `w.2.2 ⟨ψ u, Subgroup.mem_top _⟩ ⟨ψ v, Subgroup.mem_top _⟩`. Establish `e1 : (⟨ψ (u * v), Subgroup.mem_top _⟩ : (⊤ : Subgroup (G E Ω))) = ⟨ψ u, Subgroup.mem_top _⟩ * ⟨ψ v, Subgroup.mem_top _⟩` using `Subtype.ext (hψm u v)`. Simplify using `only [MonoidHom.comp_apply, Subgroup.coe_subtype] at hw ⊢`. Rewrite using `[e1, hw, hψ]`.
+
+Establish `hmem : Submodule.Quotient.mk w ∈ LocSel (MonoidHom.comp (LDataCardLeFinrank.qzG k Ω l e) (galEmb k E Ω)) ⊤ (Subgroup.comap (galEmb k E Ω) '' shaFam k Ω l)` using `hw1 ▸ (Ψ x).2`. Establish `hx : Ψ x = ⟨Submodule.Quotient.mk w, hmem⟩` using `Subtype.ext hw1`. Establish `hcomp` using `hΦ w ⟨_, hz''⟩ hmem (fun u' u hu => by`. Take `⟨u', hu'⟩` from `u'`. Take `⟨u, hu2⟩` from `u`.
+
+Express the relevant statement in the definitionally equal form `(w : (⊤ : Subgroup (G E Ω)) → QZ l) ⟨ψ ⟨u, hu2⟩, Subgroup.mem_top _⟩ = (w : (⊤ : Subgroup (G E Ω)) → QZ l) ⟨u', hu'⟩`. Establish `h5 : ψ ⟨u, hu2⟩ = u'`. Apply `hemb.injective` to reduce the goal to its premises. Rewrite using `[hψ]`. Conclude with `hu.symm`.
+
+Conclude with `congrArg (fun s => (w : (⊤ : Subgroup (G E Ω)) → QZ l) ⟨s, Subgroup.mem_top s⟩) h5)`. Use `⟨z, ⟨_, hz''⟩, hz.symm, ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.trans_apply, hx, hcomp]`. Express the relevant statement in the definitionally equal form `(w : (⊤ : Subgroup (G E Ω)) → QZ l) ⟨ψ ⟨galEmb k E Ω σ, _⟩, Subgroup.mem_top _⟩ = _`. Rewrite using `[← hw2 σ]`.
+
+Establish `h5 : ψ ⟨galEmb k E Ω σ, galEmb_mem k E Ω σ⟩ = σ` using `hemb.injective (hψ _)`. Conclude with `congrArg (fun s => (w : (⊤ : Subgroup (G E Ω)) → QZ l) ⟨s, Subgroup.mem_top s⟩) h5`.
+-/
 theorem UpperTheory.V.Base.shaModel :
     ∀ (k E Ω : Type) [Field k] [NumberField k] [Field E] [NumberField E] [Field Ω] [Algebra k E] [Algebra k Ω] [Algebra E Ω]
       [IsScalarTower k E Ω] [IsAlgClosure k Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (D : LData E Ω l) (e : ℤ),

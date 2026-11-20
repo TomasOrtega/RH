@@ -10,6 +10,11 @@ namespace GlobalTheory.CompanionTheory.QuoK
 section Abstract
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R}
 
+/- English proof (translation)
+Use `CrystallineSemistableComparison.P.mapH_bij (toSq a₀ b h0).hom (fun n => ⟨fun f f' h => ?_, fun y => ?_⟩) j` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Establish `h1` using `congrArg Subtype.val (congrFun h s)`. Establish `h2` using `Ideal.Quotient.eq.1 h1`. Rewrite `h2` using `[hb]`.
+
+Conclude with `sub_eq_zero.1 h2`. Establish `hm : ∀ s : ComposableArrows C n, ∃ t : A.obj (s.obj (Fin.last n)), Ideal.Quotient.mk _ t = (show sqM a₀ b _ from y s).1` using `fun s => Ideal.Quotient.mk_surjective _ choose t ht using hm`. Conclude with `⟨t, funext fun s => Subtype.ext (ht s)⟩`.
+-/
 theorem toSq_bijective_of_bot (a₀ b : IdF A) (h0 : ∀ T, a₀.S T = ⊤) (hb : ∀ T, b.S T = ⊥) (j : ℕ) :
     Function.Bijective ((toSq a₀ b h0).pull j) := by
   refine CrystallineSemistableComparison.P.mapH_bij (toSq a₀ b h0).hom (fun n => ⟨fun f f' h => ?_, fun y => ?_⟩) j
@@ -29,10 +34,16 @@ end Abstract
 section Concrete
 variable {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
 
+/- English proof (translation)
+Introduce and unpack `T ⟨⟨h1, h2⟩, hV⟩`. Conclude with `⟨⟨le_bot_iff.1 (h1 ▸ T.pdPow_anti hus), h2⟩, hV⟩`.
+-/
 theorem ks_le_of_le {u s : ℕ} (hus : u ≤ s) (𝒱 : Set X.Opens) : KS q u 𝒱 ≤ KS q s 𝒱 := by
   rintro T ⟨⟨h1, h2⟩, hV⟩
   exact ⟨⟨le_bot_iff.1 (h1 ▸ T.pdPow_anti hus), h2⟩, hV⟩
 
+/- English proof (translation)
+Take `⟨z, hz, hx⟩` from `(CrystallineSemistableComparison.P.cls_surj (CH.cx (CH.modF (thA (smFun X q)))) j).1 x`. Substitute `hx` using the available equality. Both sides reduce to the same expression.
+-/
 theorem quoK_comm {u s : ℕ} (hus : u ≤ s) (𝒱 : Set X.Opens) (r : ℤ) (j : ℕ) (x : HdR q j) :
     ((incl (ks_le_of_le q hus 𝒱)).sq (incl_fil _ 0) (incl_fil _ r)).pull j (quoK q (KS q s 𝒱) r j x) =
       quoK q (KS q u 𝒱) r j x := by
@@ -40,6 +51,11 @@ theorem quoK_comm {u s : ℕ} (hus : u ≤ s) (𝒱 : Set X.Opens) (r : ℤ) (j 
   subst hx
   rfl
 
+/- English proof (translation)
+Establish `hB` using `toSq_bijective_of_bot (sFil (KS q u 𝒱) 0) (sFil (KS q u 𝒱) (u : ℤ)) (fun T => T.obj.pdPow_zero) (fun T => by`. Establish `h` using `T.property.1.1`. Express the relevant statement in the definitionally equal form `T.obj.pdPow ((u : ℤ).toNat) = ⊥`. Rewrite using `[Int.toNat_natCast]`. Conclude with `h) j`.
+
+Conclude with `hB.comp h`.
+-/
 theorem quoK_bij_self {u : ℕ} (𝒱 : Set X.Opens) (j : ℕ) (h : Function.Bijective (resK q (KS q u 𝒱) j)) :
     Function.Bijective (quoK q (KS q u 𝒱) (u : ℤ) j) := by
   have hB := toSq_bijective_of_bot (sFil (KS q u 𝒱) 0) (sFil (KS q u 𝒱) (u : ℤ)) (fun T => T.obj.pdPow_zero)
@@ -52,6 +68,11 @@ theorem quoK_bij_self {u : ℕ} (𝒱 : Set X.Opens) (j : ℕ) (h : Function.Bij
 
 end Concrete
 
+/- English proof (translation)
+Introduce `hK K _ _ X q U s u hd hus 𝒱 h𝒱 j`. Establish `h1` using `quoK_bij_self q 𝒱 j (hK q U u hd 𝒱 h𝒱 j).1`. Establish `h2` using `GlobalTheory.T.filtered_cohomology_restriction_bijective (TF 1 s) 1 u (Or.inr ⟨s, hus, rfl⟩) 𝒱 (ks_le_of_le q hus 𝒱) 0 (u : ℤ) le_rfl j`. Use `(Function.Bijective.of_comp_iff' h2 _).1 ?_` and prove the remaining obligations. Establish `e : (((incl (ks_le_of_le q hus 𝒱)).sq (incl_fil _ 0) (incl_fil _ (u : ℤ))).pull j) ∘ (quoK q (KS q s 𝒱) (u : ℤ) j) = quoK q (KS q u 𝒱) (u : ℤ) j` using `funext (quoK_comm q hus 𝒱 (u : ℤ) j)`.
+
+Conclude with `(congrArg Function.Bijective e).mpr h1`.
+-/
 theorem quoK_bijective : KH.KIso → ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     (U : Cov q) (s u : ℕ), (∀ α, U.d α < u) → u ≤ s → ∀ (𝒱 : Set X.Opens), sSup 𝒱 = ⊤ → ∀ (j : ℕ),
     Function.Bijective (quoK q (KS q s 𝒱) (u : ℤ) j) := by

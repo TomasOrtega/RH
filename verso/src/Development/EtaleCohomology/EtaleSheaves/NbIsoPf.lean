@@ -20,6 +20,9 @@ def SysFM : Prop := ∀ {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSpace P
       ∃ m : (Spec.map (CommRingCat.ofHom (algebraMap W (Localization.AtPrime q.asIdeal))) ≫ w).normalization ⟶ w.normalization,
         Mono m ∧ Flat m ∧ QuasiCompact m ∧ Set.range m = ⋂ j, Set.range (ι j)
 
+/- English proof (translation)
+Introduce `P _ _ W _ w hW y`. Take `⟨q, J, _, _, D, ι, h1, h2, m, hm, hf, hq, hr⟩` from `hS W w hW y`. Use `⟨q, J, inferInstance, inferInstance, D, ι, h1, h2, fun c hc => ?_⟩` and prove the remaining obligations. Conclude with `hL D ι (fun j => ⟨(h1 j).1, (h1 j).2.1⟩) (fun f => (h2 f).1) m hm hf hq hr c hc`.
+-/
 theorem NbIso_of (hS : SysFM) (hL : FlatMonoLim) : LateralTheory.E.SysPf.NbIso := by
   intro P _ _ W _ w hW y
   obtain ⟨q, J, _, _, D, ι, h1, h2, m, hm, hf, hq, hr⟩ := hS W w hW y

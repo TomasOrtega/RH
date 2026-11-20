@@ -13,6 +13,9 @@ variable {B : Type} (𝒰 : Ultrafilter B)
 
 abbrev K : Type := Germ (𝒰 : Filter B) ℂ
 
+/- English proof (translation)
+Take `⟨a, -, ha⟩` from `(isCompact_closedBall (0 : ℂ) 1).ultrafilter_le_nhds (𝒰.map f) (le_principal_iff.2 (by show ∀ᶠ b in (𝒰 : Filter B), f b ∈ Metric.closedBall (0 : ℂ) 1`. Simplify using `using h))`. Conclude with `⟨a, ha⟩`.
+-/
 theorem exists_tendsto_of_bdd (f : B → ℂ) (h : ∀ᶠ b in (𝒰 : Filter B), ‖f b‖ ≤ 1) :
     ∃ a, Tendsto f 𝒰 (𝓝 a) := by
   obtain ⟨a, -, ha⟩ := (isCompact_closedBall (0 : ℂ) 1).ultrafilter_le_nhds (𝒰.map f)
@@ -48,10 +51,16 @@ def V : ValuationSubring (K 𝒰) where
       rw [Pi.inv_apply, norm_inv]
       exact inv_le_one_of_one_le₀ (not_le.1 hb).le
 
+/- English proof (translation)
+Proceed by induction on `g using Germ.inductionOn`. Conclude with `tendsto_nhds_unique (l := (𝒰 : Filter B)) ha hb`.
+-/
 theorem tendsto_unique {g : K 𝒰} {a b : ℂ} (ha : g.Tendsto (𝓝 a)) (hb : g.Tendsto (𝓝 b)) : a = b := by
   induction g using Germ.inductionOn
   exact tendsto_nhds_unique (l := (𝒰 : Filter B)) ha hb
 
+/- English proof (translation)
+The claim follows from `Exists.choose_spec g.2`.
+-/
 theorem tendsto_choose (g : V 𝒰) : (g : K 𝒰).Tendsto (𝓝 (Exists.choose g.2)) := Exists.choose_spec g.2
 
 def st : V 𝒰 →+* ℂ where
@@ -81,6 +90,9 @@ def st : V 𝒰 →+* ℂ where
     induction h using Germ.inductionOn
     exact Tendsto.add ha hb)
 
+/- English proof (translation)
+The claim follows from `tendsto_choose 𝒰 g`.
+-/
 theorem tendsto_st (g : V 𝒰) : (g : K 𝒰).Tendsto (𝓝 (st 𝒰 g)) := tendsto_choose 𝒰 g
 
 def cst : ℂ →+* V 𝒰 where
@@ -90,6 +102,9 @@ def cst : ℂ →+* V 𝒰 where
   map_mul' _ _ := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+The claim follows from `tendsto_unique 𝒰 (tendsto_st 𝒰 _) tendsto_const_nhds`.
+-/
 theorem st_cst (a : ℂ) : st 𝒰 (cst 𝒰 a) = a := tendsto_unique 𝒰 (tendsto_st 𝒰 _) tendsto_const_nhds
 
 instance : IsLocalHom (st 𝒰) := IsLocalHom.of_surjective _ fun a => ⟨_, st_cst 𝒰 a⟩
@@ -105,10 +120,22 @@ def gmHom (W : X.Opens) (h : ∀ᶠ b in (𝒰 : Filter B), ⊤ ≤ e b ⁻¹ᵁ
   map_mul' f g := Germ.coe_eq.2 (h.mono fun _ hb => valR_mul _ _ hb f g)
   map_add' f g := Germ.coe_eq.2 (h.mono fun _ hb => valR_add _ _ hb f g)
 
+/- English proof (translation)
+The claim follows from `Germ.coe_eq.2 (h.mono fun _ hb => valR_res _ i hb f)`.
+-/
 theorem gm_res {W W' : X.Opens} (i : W' ≤ W) (h : ∀ᶠ b in (𝒰 : Filter B), ⊤ ≤ e b ⁻¹ᵁ W') (f : Γ(X, W)) :
     gm 𝒰 e W' ((X.presheaf.map (homOfLE i).op).hom f) = gm 𝒰 e W f :=
   Germ.coe_eq.2 (h.mono fun _ hb => valR_res _ i hb f)
 
+/- English proof (translation)
+Take `⟨g, hgW, hg⟩` from `hU.exists_basicOpen_le (V := W) ⟨_, (le_preimage_iff z W).1 hW⟩ ((le_preimage_iff z U).1 hz)`. Establish `hzg : ⊤ ≤ z ⁻¹ᵁ X.basicOpen g` using `(le_preimage_iff z _).2 hg`. Establish `hu : gm 𝒰 e U g ≠ 0` using `H g ▸ ((le_preimage_basicOpen_iff z hz g).1 hzg).ne_zero`. Establish `hne : ∀ᶠ b in (𝒰 : Filter B), ¬ valR (e b) U g = 0` using `Ultrafilter.eventually_not.2 fun h0 => hu (Germ.coe_eq.2 h0)`. Establish `hb : ∀ᶠ b in (𝒰 : Filter B), ⊤ ≤ e b ⁻¹ᵁ X.basicOpen g` using `by filter_upwards [h, hne] with b h1 h2 using (le_preimage_basicOpen_iff _ h1 g).2 (IsUnit.mk0 _ h2)`.
+
+Use `⟨hb.mono fun b => le_preimage_mono _ hgW, fun f => ?_⟩` and prove the remaining obligations. Use `hU.isLocalization_basicOpen g` as an intermediate fact. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj g ((X.presheaf.map (homOfLE hgW).op).hom f)`. Establish `ha' : (X.presheaf.map (homOfLE hgW).op).hom f * (X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom g ^ n = (X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom a` using `ha`. Establish `e₁` using `congrArg (valR z _) ha'`.
+
+Rewrite `e₁` using `[valR_mul _ _ hzg, valR_pow _ _ hzg, valR_res _ _ hzg, valR_res _ _ hzg, valR_res _ _ hzg, H, H]`. Establish `e₂` using `congrArg (gmHom 𝒰 e _ hb) ha'`. Rewrite `e₂` using `[map_mul, map_pow]`. Express the relevant statement in the definitionally equal form `gm 𝒰 e _ _ * gm 𝒰 e _ _ ^ n = gm 𝒰 e _ _ at e₂`. Rewrite `e₂` using `[gm_res 𝒰 e _ hb, gm_res 𝒰 e _ hb, gm_res 𝒰 e _ hb]`.
+
+Conclude with `mul_right_cancel₀ (pow_ne_zero n hu) (e₁.trans e₂.symm)`.
+-/
 theorem valR_eq_gm {U : X.Opens} (hU : IsAffineOpen U) (h : ∀ᶠ b in (𝒰 : Filter B), ⊤ ≤ e b ⁻¹ᵁ U)
     (z : Sp (K 𝒰) ⟶ X) (hz : ⊤ ≤ z ⁻¹ᵁ U) (H : ∀ f, valR z U f = gm 𝒰 e U f) (W : X.Opens) (hW : ⊤ ≤ z ⁻¹ᵁ W) :
     (∀ᶠ b in (𝒰 : Filter B), ⊤ ≤ e b ⁻¹ᵁ W) ∧ ∀ f, valR z W f = gm 𝒰 e W f := by
@@ -134,6 +161,25 @@ theorem valR_eq_gm {U : X.Opens} (hU : IsAffineOpen U) (h : ∀ᶠ b in (𝒰 : 
   rw [gm_res 𝒰 e _ hb, gm_res 𝒰 e _ hb, gm_res 𝒰 e _ hb] at e₂
   exact mul_right_cancel₀ (pow_ne_zero n hu) (e₁.trans e₂.symm)
 
+/- English proof (translation)
+Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace p`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun U : X.affineOpens => ((U : X.Opens) : Set X)) (fun U => U.1.isOpen) fun x _ => by`. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := x) (U := ⊤) trivial`. Conclude with `Set.mem_iUnion.2 ⟨⟨U, hU⟩, hx⟩`. Take `⟨⟨U, hU⟩, -, h⟩` from `(Ultrafilter.eventually_exists_mem_iff (f := 𝒰) (is := (t : Set X.affineOpens)) (P := fun U b => ⊤ ≤ e b ⁻¹ᵁ U.1) t.finite_toSet).1 (Eventually.of_forall fun b => by`.
+
+Take `⟨U, hU, hx⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ (e b (IsLocalRing.closedPoint ℂ))))`. Conclude with `⟨U, hU, (le_preimage_iff _ _).2 hx⟩)`. Set `φ : Γ(X, U) ⟶ CommRingCat.of (K 𝒰)` to `CommRingCat.ofHom (gmHom 𝒰 e U h)`. Set `z : Sp (K 𝒰) ⟶ X` to `Spec.map φ ≫ IsAffineOpen.fromSpec hU`. Establish `hz : ⊤ ≤ z ⁻¹ᵁ U` using `le_preimage_specMap_fromSpec hU φ`.
+
+Establish `H : ∀ f, valR z U f = gm 𝒰 e U f` using `fun f => by`. Rewrite using `[valR_eq z U hz, valMap_specMap_fromSpec hU φ hz]`. Both sides reduce to the same expression. Establish `hw : z ≫ p = spMap (algebraMap (V 𝒰) (K 𝒰)) ≫ spMap ((cst 𝒰).comp σ)`. Rewrite using `[← Spec.map_comp, ← Spec.map_preimage (z ≫ p)]`.
+
+Use `congr 1`. Use extensionality with `a`. Use `(valR_constFn p z U hz a).symm.trans ((H _).trans ?_)` and prove the remaining obligations. Conclude with `Germ.coe_eq.2 (h.mono fun b hb => valR_constFn_of_over p σ _ (he b) U hb a)`. Establish `hex : ValuativeCriterion.Existence p` using `(UniversallyClosed.eq_valuativeCriterion.le _ _ p inferInstance).1`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨l, hl₁, hl₂⟩ : ∃ l : Sp (V 𝒰) ⟶ X, spMap (algebraMap (V 𝒰) (K 𝒰)) ≫ l = z ∧ l ≫ p = spMap ((cst 𝒰).comp σ) := by`. Take `⟨⟨l, hl₁, hl₂⟩⟩` from `(hex { R := V 𝒰, K := K 𝒰, i₁ := z, i₂ := spMap ((cst 𝒰).comp σ), commSq := ⟨hw⟩ }).exists_lift`. Conclude with `⟨l, hl₁, hl₂⟩`. Use `⟨spMap (st 𝒰) ≫ l, ?_, tendsto_iff.2 fun W hW => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hl₂, ← Spec.map_comp]`.
+
+Use `congr 1`. Use extensionality with `a`. Conclude with `st_cst 𝒰 _`. Establish `hl : ⊤ ≤ l ⁻¹ᵁ W`. Establish `h₁ : l (spMap (st 𝒰) (IsLocalRing.closedPoint ℂ)) ∈ W` using `(le_preimage_iff _ W).1 hW`.
+
+Establish `h₂ : spMap (st 𝒰) (IsLocalRing.closedPoint ℂ) = IsLocalRing.closedPoint (V 𝒰)` using `IsLocalRing.comap_closedPoint (st 𝒰)`. Conclude with `(le_preimage_iff l W).2 (h₂ ▸ h₁)`. Establish `hzW : ⊤ ≤ z ⁻¹ᵁ W` using `hl₁ ▸ fun s _ => hl (Set.mem_univ _)`. Take `⟨h₁, h₂⟩` from `valR_eq_gm 𝒰 e hU h z hz H W hzW`. Use `⟨h₁, fun f => ?_⟩` and prove the remaining obligations.
+
+Establish `h₃` using `tendsto_st 𝒰 (valR l W f)`. Rewrite `h₃` using `[← valR_spMap_comp (st 𝒰) l W hl]`. Establish `h₄` using `valR_spMap_comp (algebraMap (V 𝒰) (K 𝒰)) l W hl f`. Rewrite `h₄` using `[hl₁, h₂]`. Establish `h₅ : ((valR l W f : V 𝒰) : K 𝒰) = gm 𝒰 e W f` using `h₄.symm`.
+
+Rewrite `h₃` using `[h₅]`. Conclude with `h₃`.
+-/
 theorem exists_tendsto {R : Type} [CommRing R] (p : X ⟶ Sp R) [IsProper p] (σ : R →+* ℂ)
     (he : ∀ b, e b ≫ p = spMap σ) : ∃ y : Sp ℂ ⟶ X, y ≫ p = spMap σ ∧ Tendsto e 𝒰 (𝓝 y) := by
   have : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace p
@@ -184,6 +230,9 @@ theorem exists_tendsto {R : Type} [CommRing R] (p : X ⟶ Sp R) [IsProper p] (σ
     rw [h₅] at h₃
     exact h₃
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isCompact_iff_ultrafilter_le_nhds.2 fun 𝒰 _ => by obtain ⟨y, hy, h⟩ := exists_tendsto 𝒰 (fun b : PtsOver p (spMap σ) => b.1) p σ fun b => b.2 exact ⟨⟨y, hy⟩, trivial, (tendsto_subtype_rng (f := id) (x := ⟨y, hy⟩)).2 h⟩⟩`.
+-/
 theorem compactSpace_of_isProper {R : Type} [CommRing R] (p : X ⟶ Sp R) [IsProper p] (σ : R →+* ℂ) :
     CompactSpace (PtsOver p (spMap σ)) :=
   ⟨isCompact_iff_ultrafilter_le_nhds.2 fun 𝒰 _ => by

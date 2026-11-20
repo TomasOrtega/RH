@@ -14,6 +14,9 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.Indefinite
 
 variable {D : ℕ} {Y : Type} [TopologicalSpace Y]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Apply the tactic sequence `exact Finset.sup'_le _ _ fun b _ => by cases b <;> simp`. Conclude with `max_le (by simpa using Finset.le_sup' (fun b : Bool => if b then a else c) (Finset.mem_univ true)) (by simpa using Finset.le_sup' (fun b : Bool => if b then a else c) (Finset.mem_univ false))`.
+-/
 theorem sup'_bool (a c : ℝ) :
     Finset.univ.sup' Finset.univ_nonempty (fun b : Bool => if b then a else c) = max a c := by
   apply le_antisymm
@@ -21,6 +24,17 @@ theorem sup'_bool (a c : ℝ) :
   · exact max_le (by simpa using Finset.le_sup' (fun b : Bool => if b then a else c) (Finset.mem_univ true))
       (by simpa using Finset.le_sup' (fun b : Bool => if b then a else c) (Finset.mem_univ false))
 
+/- English proof (translation)
+Establish `hyΦ : Φ.symm w₀ ∈ Φ.source` using `Φ.map_target hw.1`. Take `⟨j, hj⟩` from `A.cover (Φ.symm w₀)`. Set `F : (Fin D → ℂ) → ℝ` to `fun z => 2 * Θ.φ x ((A.chart j).symm z) + u ((A.chart j).symm z)`. Set `τ : (Fin D → ℂ) → (Fin D → ℂ)` to `A.chart j ∘ Φ.symm`. Establish `hτa : AnalyticAt ℂ τ w₀` using `(hΦ j).2 w₀ ⟨hw.1, hj⟩`.
+
+Establish `hP : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (Θ.U x ∩ S))` using `(A.chart j).isOpen_inter_preimage_symm ((Θ.isOpen_U x).inter hS)`. Establish `hFs : ContDiffOn ℝ ∞ F ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (Θ.U x ∩ S))`. Establish `h1` using `(hΘ.1 x j).mono (fun z hz => ⟨hz.1, hz.2.1⟩ : (A.chart j).target ∩ (A.chart j).symm ⁻¹' (Θ.U x ∩ S) ⊆ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Θ.U x)`. Establish `h2` using `(hu j).mono (fun z hz => ⟨hz.1, hz.2.2⟩ : (A.chart j).target ∩ (A.chart j).symm ⁻¹' (Θ.U x ∩ S) ⊆ (A.chart j).target ∩ (A.chart j).symm ⁻¹' S)`. Conclude with `(contDiffOn_const.mul h1).add h2`.
+
+Establish `hτw : τ w₀ ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (Θ.U x ∩ S)`. Use `⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm (A.chart j (Φ.symm w₀)) ∈ Θ.U x ∩ S`. Rewrite using `[(A.chart j).left_inv hj]`. Conclude with `hw.2`.
+
+Establish `hFa : ContDiffAt ℝ 2 F (τ w₀)` using `(hFs.contDiffAt (hP.mem_nhds hτw)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hev : (fun w => 2 * Θ.φ x (Φ.symm w) + u (Φ.symm w)) =ᶠ[𝓝 w₀] F ∘ τ`. Establish `h` using `(Φ.continuousAt_symm hw.1).preimage_mem_nhds ((A.chart j).open_source.mem_nhds hj)`. Use `filter_upwards [h] with w hw'`. Simplify using `only [F, τ, Function.comp_apply, (A.chart j).left_inv hw']`.
+
+Use `⟨(hFa.comp w₀ hτa.restrictScalars.contDiffAt).congr_of_eventuallyEq hev, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[levi_congr hev, levi_comp v hτa hFa]`. Conclude with `hN x j (τ w₀) hτw _`.
+-/
 theorem local_form (A : FinHolAtlas D Y) (Θ : LocPot Y) (u : Y → ℝ) (S : Set Y) (x : Y)
     (Φ : OpenPartialHomeomorph Y (Fin D → ℂ)) (hS : IsOpen S) (hΘ : IsPotential A Θ)
     (hu : A.SmoothOn S u) (hN : SumNonnegOn A Θ u S) (hΦ : IsCompatChart A Φ)
@@ -57,6 +71,13 @@ theorem local_form (A : FinHolAtlas D Y) (Θ : LocPot Y) (u : Y → ℝ) (S : Se
   rw [levi_congr hev, levi_comp v hτa hFa]
   exact hN x j (τ w₀) hτw _
 
+/- English proof (translation)
+Introduce `D Y _ A Θ u S x Φ hS hΘ hu hN hΦ`. Establish `hT : IsOpen (Φ.target ∩ Φ.symm ⁻¹' (Θ.U x ∩ S))` using `Φ.isOpen_inter_preimage_symm ((Θ.isOpen_U x).inter hS)`. Establish `hL` using `fun w (hw : w ∈ Φ.target ∩ Φ.symm ⁻¹' (Θ.U x ∩ S)) => local_form A Θ u S x Φ hS hΘ hu hN hΦ hw`. Establish `hC : ContDiffOn ℝ 2 (fun w => 2 * Θ.φ x (Φ.symm w) + u (Φ.symm w)) (Φ.target ∩ Φ.symm ⁻¹' (Θ.U x ∩ S))` using `fun w hw => (hL w hw).1.contDiffWithinAt`. Establish `hG : ReciprocityTheory.AnForm.A.IsPsh (Φ.target ∩ Φ.symm ⁻¹' (Θ.U x ∩ S)) (fun w => 2 * Θ.φ x (Φ.symm w) + u (Φ.symm w))` using `(ReciprocityTheory.AnForm.A.isPsh_iff_isLeviPsh_thm D _ _ hT hC).2 ⟨hC, fun w hw v => (hL w hw).2 v⟩`.
+
+Use `⟨hT, hC.continuousOn, hG, fun κ => ?_⟩` and prove the remaining obligations. Establish `hc : ReciprocityTheory.AnForm.A.IsPsh (Φ.target ∩ Φ.symm ⁻¹' (Θ.U x ∩ S)) fun _ => -κ` using `⟨upperSemicontinuousOn_const, fun z w _ => ⟨circleIntegrable_const _ _ _, by rw [Real.circleAverage_const]⟩⟩`. Apply the tactic sequence `have h := ReciprocityTheory.AnForm.A.isPsh_sup_thm D Bool _ (fun b => if b then (fun w => 2 * Θ.φ x (Φ.symm w) + u (Φ.symm w)) else fun _ => -κ) hT (by rintro (_ | _) <;> simpa)`. Use `h using 2 with w` and compare the differences between its conclusion and the goal. Rewrite using `[← sup'_bool]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `b`. Apply the tactic sequence `cases b <;> rfl`.
+-/
 theorem isPsh_chart_sum : ∀ (D : ℕ) (Y : Type) [TopologicalSpace Y] (A : ReciprocityTheory.AnForm.M.FinHolAtlas D Y)
     (Θ : ReciprocityTheory.AnForm.M.LocPot Y) (u : Y → ℝ) (S : Set Y) (x : Y)
     (Φ : OpenPartialHomeomorph Y (Fin D → ℂ)), IsOpen S → ReciprocityTheory.AnForm.M.IsPotential A Θ →

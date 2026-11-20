@@ -24,9 +24,15 @@ open GlobalTheory.Vert.Model
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime]
   [CharZero O] [CharP (ResidueField O) p]
 
+/- English proof (translation)
+Consider the cases of `a`. Consider the cases of `b`. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem hom_eq {Z₁ Z : Vert.Model O} (a b : Hom Z₁ Z) (h : a.f = b.f) : a = b := by
   cases a; cases b; cases h; rfl
 
+/- English proof (translation)
+Establish `: (picSymPull (g ≫ f)).toLinearMap = (picSymPull g).toLinearMap ∘ₗ (picSymPull f).toLinearMap` using `picSym_linearMap_ext fun n c => by`. Simplify using `only [AlgHom.toLinearMap_apply, LinearMap.comp_apply, map_prod, picSymPull_c1Pic, pull_comp]`. Conclude with `LinearMap.congr_fun this y`.
+-/
 theorem picSymPull_comp {X Y W : Scheme.{0}} (g : W ⟶ Y) (f : Y ⟶ X) (y : PicSym X) :
     picSymPull (g ≫ f) y = picSymPull g (picSymPull f y) := by
   have : (picSymPull (g ≫ f)).toLinearMap = (picSymPull g).toLinearMap ∘ₗ (picSymPull f).toLinearMap :=
@@ -37,9 +43,17 @@ theorem picSymPull_comp {X Y W : Scheme.{0}} (g : W ⟶ Y) (f : Y ⟶ X) (y : Pi
 def ckLin {Z : ITh} {r : ℕ} (P : FPair Z r) (k : ℕ) : Z.Ch →ₗ[ℚ] ℚ :=
   ∑ i, (Z.capDeg (P.Dv i)) ∘ₗ LinearMap.mulLeft ℚ (Gk Z k (Z.c1 (P.x i)) (Z.c1 (P.x' i)))
 
+/- English proof (translation)
+Simplify using `[ckLin, ck, LinearMap.sum_apply]`.
+-/
 theorem ckLin_apply {Z : ITh} {r : ℕ} (P : FPair Z r) (k : ℕ) (Q : Z.Ch) : ckLin P k Q = ck P k Q := by
   simp [ckLin, ck, LinearMap.sum_apply]
 
+/- English proof (translation)
+Establish `hp` using `(GlobalTheory.T.cap_degree_finite_pullback O p B hB B₁ h h0).2`. Establish `hc : ∀ a : SmallPic B.X, (symOf (smallPull h.f a) : PicSym B₁.X) = picSymPull h.f (symOf a)` using `fun a => (symMap_symOf _ a).symm`. Establish `hG : ∀ (a b : PicSym B.X), Gk (B₁.toITh p) k (picSymPull h.f a) (picSymPull h.f b) = picSymPull h.f (Gk (B.toITh p) k a b)` using `fun a b => by`. Simplify using `[Gk, map_sum, map_mul, map_pow]`. Simplify using `only [ck, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hx, hx', hD, hc, hc, hG, ← map_mul]`. Conclude with `hp _ _`.
+-/
 theorem ck_pull {B B₁ : Vert.Model O} (hB : IsNormalScheme B.X) (h : Hom B₁ B) (h0 : h.relDim = 0)
     {E E' : B.X.Modules} {φ : B.GenIso E E'} {F F' : B₁.X.Modules} {ψ : B₁.GenIso F F'} {r : ℕ}
     (P : FlagPair φ r) (P₁ : FlagPair ψ r)
@@ -58,6 +72,9 @@ theorem ck_pull {B B₁ : Vert.Model O} (hB : IsNormalScheme B.X) (h : Hom B₁ 
   rw [hx, hx', hD, hc, hc, hG, ← map_mul]
   exact hp _ _
 
+/- English proof (translation)
+Take `⟨P₁, h₁⟩` from `GlobalTheory.T.flag_pair_pullback O p B₁ B₂ h.f h.comp_str _ _ (φ.pull hf) r P`. Take `⟨P₂, h₂⟩` from `GlobalTheory.T.flag_pair_pullback_composite O p B B₁ B₂ f hf h.f h.comp_str c hc e E E' φ r P₁`. Conclude with `⟨P₂, fun i => ⟨(h₂ i).1.trans (h₁ i).1, (h₂ i).2.1.trans (h₁ i).2.1, (h₂ i).2.2.trans (h₁ i).2.2⟩⟩`.
+-/
 theorem exists_pull_comp {B B₁ B₂ : Vert.Model O} {f : B₁.X ⟶ B.X} (hf : f ≫ B.str = B₁.str) (h : Hom B₂ B₁)
     {c : B₂.X ⟶ B.X} (hc : c ≫ B.str = B₂.str) (e : h.f ≫ f = c) {E E' : B.X.Modules} {φ : B.GenIso E E'} {r : ℕ}
     (P : FlagPair (φ.pull hf) r) : ∃ P₂ : FlagPair (φ.pull hc) r, ∀ i,
@@ -68,6 +85,25 @@ theorem exists_pull_comp {B B₁ B₂ : Vert.Model O} {f : B₁.X ⟶ B.X} (hf :
   obtain ⟨P₂, h₂⟩ := GlobalTheory.T.flag_pair_pullback_composite O p B B₁ B₂ f hf h.f h.comp_str c hc e E E' φ r P₁
   exact ⟨P₂, fun i => ⟨(h₂ i).1.trans (h₁ i).1, (h₂ i).2.1.trans (h₁ i).2.1, (h₂ i).2.2.trans (h₁ i).2.2⟩⟩
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ B hB E E' φ r k hE hE'`. Take `⟨B', π', hB', hπ', hP'⟩` from `GlobalTheory.T.normal_model_trivializing_blowup O p B hB 1 (fun _ => r) (fun _ => E) (fun _ => E') (fun _ => φ) (fun _ => ⟨hE, hE'⟩)`. Take `⟨P'⟩` from `hP' 0`. Establish `hdeg'` using `(GlobalTheory.T.cap_degree_finite_pullback O p B hB B' π' hπ').1`. Set `f₀ : PicSym B.X →ₗ[ℚ] ℚ` to `(π'.fibreDeg 1)⁻¹ • ((ckLin (P'.toFPair p) k) ∘ₗ (picSymPull π'.f).toLinearMap)`.
+
+Establish `hf₀ : ∀ Q, f₀ Q = (π'.fibreDeg 1)⁻¹ * ck (P'.toFPair p) k (picSymPull π'.f Q)` using `fun Q => by`. Rewrite using `[← ckLin_apply]`. Both sides reduce to the same expression. Establish `hex : IsCk p φ r k f₀`. Introduce `M hM hM0 Q`.
+
+Take `⟨B₃, h₁, h₂, hB₃, h₁0, h₂0, e⟩` from `GlobalTheory.T.normal_common_refinement_models O p B M.B B' M.π π' hM0 hπ'`. Establish `hc : (h₁.f ≫ M.π.f) ≫ B.str = B₃.str` using `(h₁.comp M.π).comp_str`. Take `⟨Pa, ha⟩` from `exists_pull_comp p M.π.comp_str h₁ hc rfl M.pair`. Take `⟨Pb, hb⟩` from `exists_pull_comp p π'.comp_str h₂ hc e.symm P'`. Establish `hab` using `GlobalTheory.T.ck_flag_pair_independent O p B₃ hB₃ _ _ (φ.pull hc) r k Pa Pb (picSymPull (h₁.f ≫ M.π.f) Q)`.
+
+Establish `ea` using `ck_pull p hM h₁ h₁0 M.pair Pa (fun i => (ha i).1) (fun i => (ha i).2.1) (fun i => (ha i).2.2) k (picSymPull M.π.f Q)`. Establish `eb` using `ck_pull p hB' h₂ h₂0 P' Pb (fun i => (hb i).1) (fun i => (hb i).2.1) (fun i => (hb i).2.2) k (picSymPull π'.f Q)`. Rewrite `ea`, `eb` using `[← picSymPull_comp]`. Rewrite `eb` using `[← e]`. Establish `d₁` using `GlobalTheory.T.fibre_degree_multiplicative O B M.B B₃ h₁ M.π h₁0 hM0`.
+
+Establish `d₂` using `GlobalTheory.T.fibre_degree_multiplicative O B B' B₃ h₂ π' h₂0 hπ'`. Rewrite `d₁` using `[hom_eq (h₁.comp M.π) (h₂.comp π') e]`. Establish `hpos` using `(GlobalTheory.T.cap_degree_finite_pullback O p M.B hM B₃ h₁ h₁0).1`. Rewrite using `[hf₀]`. Express the relevant statement in the definitionally equal form `ck (M.pair.toFPair p) k _ = _`.
+
+Establish `hh : h₁.fibreDeg 1 * M.π.fibreDeg 1 = h₂.fibreDeg 1 * π'.fibreDeg 1` using `d₁.symm.trans d₂`. Establish `key` using `ea.symm.trans (hab.trans eb)`. Use `mul_left_cancel₀ hpos.ne' (key.trans ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, hh, mul_assoc, mul_inv_cancel_left₀ hdeg'.ne']`. Establish `hck : IsCk p φ r k (ckP p φ r k)` using `Classical.epsilon_spec ⟨f₀, hex⟩`.
+
+Set `M' : FlagModel φ r` to `⟨B', π', P'⟩`. Use `⟨hck, fun f hf => ?_, fun P Q => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun Q => ?_` and prove the remaining obligations. Establish `h1` using `hf M' hB' hπ' Q`. Establish `h2` using `hck M' hB' hπ' Q`.
+
+Conclude with `mul_left_cancel₀ hdeg'.ne' (h1.symm.trans h2)`. Take `⟨P₀, h₀⟩` from `GlobalTheory.T.flag_pair_pullback O p B B (𝟙 B.X) (Hom.id B).comp_str E E' φ r P`. Set `M₀ : FlagModel φ r` to `⟨B, Hom.id B, P₀⟩`. Establish `hM₀ : (Hom.id B).relDim = 0` using `by simp [Hom.relDim]`. Establish `h1` using `hck M₀ hB hM₀ Q`.
+
+Establish `h2` using `ck_pull p hB (Hom.id B) hM₀ P P₀ (fun i => (h₀ i).1) (fun i => (h₀ i).2.1) (fun i => (h₀ i).2.2) k Q`. Establish `hpos` using `(GlobalTheory.T.cap_degree_finite_pullback O p B hB B (Hom.id B) hM₀).1`. Conclude with `mul_left_cancel₀ hpos.ne' (h1.symm.trans h2)`.
+-/
 theorem ckP_spec : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime]
     [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X →
     ∀ (E E' : B.X.Modules) (φ : B.GenIso E E') (r k : ℕ), GlobalTheory.VB.IsVB E r → GlobalTheory.VB.IsVB E' r →

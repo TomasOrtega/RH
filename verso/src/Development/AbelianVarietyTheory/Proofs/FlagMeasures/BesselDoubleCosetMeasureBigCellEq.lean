@@ -26,6 +26,11 @@ variable {k r : ℕ}
 
 attribute [local fun_prop] In.mulM_meas R1.invM_meas In.sgF_meas
 
+/- English proof (translation)
+Establish `iW` using `haar_measure_inversion k r _ μW (weyl_subgroup_closed k r z) hW`. Establish `iN` using `haar_measure_inversion k r _ μN (unipotent_radical_closed k r) hN`. Establish `e : (B2.invM ∘ B2.mulM : Mt k r × Mt k r → Mt k r) = In.m1 ∘ Prod.map B2.invM B2.invM`. Use function extensionality and compare the values at `p`. Conclude with `Matrix.mul_inv_rev (Matrix.of p.1 : Mat k r) (Matrix.of p.2)`.
+
+Rewrite using `[Measure.map_map R1.invM_meas In.mulM_meas, e, ← Measure.map_map In.first_coordinate_map_measurable (R1.invM_meas.prodMap R1.invM_meas), ← Measure.map_prod_map _ _ R1.invM_meas R1.invM_meas, iW, iN, In.swap_meas hW hc]`.
+-/
 theorem map_inv_prod {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Mt k r)} [SFinite μW] [SFinite μN]
     (hW : B.IsHaarOn (UWset k r z) μW) (hN : B.IsHaarOn (Nset k r) μN)
     (hc : ∀ h ∈ UWset k r z, μN.map (conjM h) = μN) :
@@ -39,6 +44,11 @@ theorem map_inv_prod {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Mt k 
     ← Measure.map_map In.first_coordinate_map_measurable (R1.invM_meas.prodMap R1.invM_meas),
     ← Measure.map_prod_map _ _ R1.invM_meas R1.invM_meas, iW, iN, In.swap_meas hW hc]
 
+/- English proof (translation)
+Set `Δ : Mt k r × Mt k r → ℝ≥0∞` to `fun ab => f (B2.mulM (B2.mulM (ab.1, g), ab.2))`. Establish `hΔ : Measurable Δ` using `by show Measurable fun ab : Mt k r × Mt k r => f (B2.mulM (B2.mulM (ab.1, g), ab.2)) fun_prop`. Establish `hi` using `(R1.invM_meas (k := k) (r := r))`. Establish `hm` using `(In.first_coordinate_map_measurable (k := k) (r := r))`. Establish `r1 : ∫⁻ p : B.SS k r, f (In.sgF (p, g)) ∂((μW.prod μN).prod (μW'.prod μN)) = ∫⁻ p : B.SS k r, Δ (Prod.map B2.invM id (Prod.map In.m1 In.m1 p)) ∂((μW.prod μN).prod (μW'.prod μN))`.
+
+Use `lintegral_congr fun p => congrArg f ?_` and prove the remaining obligations. Use `show (Matrix.of p.1.1 : Mat k r)⁻¹ * (Matrix.of p.1.2 : Mat k r)⁻¹ * (Matrix.of g : Mat k r) * Matrix.of p.2.2 * Matrix.of p.2.1 = ((Matrix.of p.1.2 : Mat k r) * Matrix.of p.1.1)⁻¹ * (Matrix.of g : Mat k r) * ((Matrix.of p.2.2 : Mat k r) * Matrix.of p.2.1)`. Rewrite using `[Matrix.mul_inv_rev, ← Matrix.mul_assoc _ (Matrix.of p.2.2 : Mat k r)]`. Establish `r2 : ∫⁻ p, f (act2 (Matrix.of g) p) ∂((muProd μW μN).prod (muProd μW' μN)) = ∫⁻ p, Δ (Prod.map id B2.invM p) ∂(((μW.prod μN).map B2.mulM).prod ((μW'.prod μN).map B2.mulM))` using `rfl`. Rewrite using `[r1, r2, ← lintegral_map (f := fun p => Δ (Prod.map B2.invM id p)) (hΔ.comp (hi.prodMap measurable_id)) (hm.prodMap hm), ← Measure.map_prod_map _ _ hm hm, In.swap_meas hW hc, In.swap_meas hW' hc', ← lintegral_map hΔ (hi.prodMap measurable_id), ← lintegral_map hΔ (measurable_id.pr …`.
+-/
 theorem orbital_eq {z z' : Fin (2 * r + k + 1) → ℂ} {μW μN μW' : Measure (Mt k r)}
     [SFinite μW] [SFinite μN] [SFinite μW']
     (hW : B.IsHaarOn (UWset k r z) μW) (hW' : B.IsHaarOn (UWset k r z') μW') (hN : B.IsHaarOn (Nset k r) μN)
@@ -68,6 +78,9 @@ theorem orbital_eq {z z' : Fin (2 * r + k + 1) → ℂ} {μW μN μW' : Measure 
     ← Measure.map_prod_map _ _ hi measurable_id, ← Measure.map_prod_map _ _ measurable_id hi,
     map_inv_prod hW hN hc, map_inv_prod hW' hN hc', Measure.map_id, Measure.map_id]
 
+/- English proof (translation)
+Unfold `Dmin`. Use `Continuous.matrix_det (Continuous.matrix_submatrix (continuous_matrix fun a b => ?_) _ _)` and prove the remaining obligations. Unfold `Formalism.QuantumDeterminants.Zhat herm`. Conclude with `Continuous.dotProduct continuous_const (Continuous.matrix_mulVec continuous_const (Continuous.matrix_mulVec continuous_id continuous_const))`.
+-/
 theorem continuous_dmin (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
     Continuous fun g : Mat k r => Dmin k r z z' g l := by
   unfold Dmin
@@ -76,6 +89,13 @@ theorem continuous_dmin (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
   exact Continuous.dotProduct continuous_const
     (Continuous.matrix_mulVec continuous_const (Continuous.matrix_mulVec continuous_id continuous_const))
 
+/- English proof (translation)
+Establish `h1 : IsClosed {x : Mt k r | Matrix.of x ∈ GG k r}` using `(unitary_group_closed k r).closed`. Establish `hD : ∀ l, Continuous fun x : Mt k r => Dmin k r z z' (Matrix.of x) l` using `fun l => continuous_dmin z z' l`. Establish `hG : Continuous fun x : Mt k r => Gf k r z z' (Matrix.of x)`. Unfold `Gf`. Conclude with `(Complex.continuous_normSq.comp (hD _)).sub (continuous_const.mul (Complex.continuous_normSq.comp (hD _)))`.
+
+Establish `h2 : MeasurableSet {x : Mt k r | ∀ l : Fin (r + 2), l.val ≤ r → Dmin k r z z' (Matrix.of x) l ≠ 0}`. Rewrite using `[Set.setOf_forall]`. Use `MeasurableSet.iInter fun l => ?_` and prove the remaining obligations. Rewrite using `[Set.setOf_forall]`. Conclude with `MeasurableSet.iInter fun _ => (isOpen_ne_fun (hD l) continuous_const).measurableSet`.
+
+Conclude with `h1.measurableSet.inter (h2.inter (isOpen_ne_fun hG continuous_const).measurableSet)`.
+-/
 theorem measurableSet_greg (z z' : Fin (2 * r + k + 1) → ℂ) :
     MeasurableSet {x : Mt k r | Matrix.of x ∈ Greg k r z z'} := by
   have h1 : IsClosed {x : Mt k r | Matrix.of x ∈ GG k r} := (unitary_group_closed k r).closed
@@ -90,6 +110,15 @@ theorem measurableSet_greg (z z' : Fin (2 * r + k + 1) → ℂ) :
     exact MeasurableSet.iInter fun _ => (isOpen_ne_fun (hD l) continuous_const).measurableSet
   exact h1.measurableSet.inter (h2.inter (isOpen_ne_fun hG continuous_const).measurableSet)
 
+/- English proof (translation)
+Establish `hsec` using `hs.2 ζ hζ`. Establish `hmin` using `bigCellMinors k r z z' c (μsec ζ) hz hz'`. Establish `hD : ∀ l : Fin (r + 2), l.val ≤ r → Dmin k r z z' (bigCell k r c (μsec ζ)) l ≠ 0`. Introduce `l hl`. Establish `h` using `hmin.1 ⟨l.val, by omega⟩`.
+
+Establish `hl' : (⟨(⟨l.val, by omega⟩ : Fin (r + 1)).val, by omega⟩ : Fin (r + 2)) = l` using `Fin.ext rfl`. Rewrite using `[← hl', h]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => hc a`. Use `⟨bigCellMem k r c _ hc hsec.1, hD, ?_⟩` and prove the remaining obligations. Establish `h0` using `hD ⟨r, by omega⟩ le_rfl`.
+
+Establish `h1` using `hmin.2.2 hc`. Rewrite `h1` using `[BigCellHermitian.herm_bigCell _ _ hz hz', hsec.2]`. Rewrite using `[gFactor k r z z' _ h0]`. Unfold `GGf`. Rewrite using `[h1]`.
+
+Establish `h2 : Tz k r z * Tz k r z' < Complex.normSq ζ` using `hζ`. Conclude with `mul_ne_zero (Complex.normSq_pos.2 h0).ne' (sub_pos.2 h2).ne'`.
+-/
 theorem bigCell_mem_regular {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     (hz : inWb k r z) (hz' : inWb k r z') (hs : IsSection k r z z' μsec) {c : Fin r → ℂ} {ζ : ℂ}
     (hc : ∀ a, c a ≠ 0) (hζ : ζ ∈ R1.Om k r z z') : bigCell k r c (μsec ζ) ∈ Greg k r z z' := by
@@ -111,11 +140,23 @@ theorem bigCell_mem_regular {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ �
   have h2 : Tz k r z * Tz k r z' < Complex.normSq ζ := hζ
   exact mul_ne_zero (Complex.normSq_pos.2 h0).ne' (sub_pos.2 h2).ne'
 
+/- English proof (translation)
+Simplify using `only [weight_factorization k r T T']`. Conclude with `((In.cW_cont.measurable.comp measurable_fst).mul ((R1.zW_meas k T T').comp measurable_snd)).ennreal_ofReal`.
+-/
 theorem measurable_weight (T T' : ℝ) :
     Measurable fun q : (Fin r → ℂ) × ℂ => ENNReal.ofReal (bcWeight k r T T' q) := by
   simp only [weight_factorization k r T T']
   exact ((In.cW_cont.measurable.comp measurable_fst).mul ((R1.zW_meas k T T').comp measurable_snd)).ennreal_ofReal
 
+/- English proof (translation)
+Rewrite using `[ae_withDensity_iff (measurable_weight _ _)]`. Establish `hae : ∀ᵐ q : (Fin r → ℂ) × ℂ, q.2 ∈ R1.Om k r z z' ∨ B2.zWeight k (Tz k r z) (Tz k r z') q.2 = 0`. Rewrite using `[Measure.volume_eq_prod]`. Conclude with `(Measure.quasiMeasurePreserving_snd (μ := (volume : Measure (Fin r → ℂ))) (ν := (volume : Measure ℂ))).ae (R1.ae_Om z z')`. Use `filter_upwards [hae] with q hq h0`.
+
+Rewrite `h0` using `[weight_factorization k r]`. Use `⟨fun a ha => h0 ?_, hq.resolve_right fun h => h0 (by rw [h]; simp)⟩` and prove the remaining obligations. Establish `: B2.cWeight k r q.1 = 0`. Unfold `B2.cWeight`. Use `Finset.prod_eq_zero (Finset.mem_univ a) ?_` and prove the remaining obligations.
+
+Rewrite using `[ha, norm_zero]`. Use `zero_pow ?_` and prove the remaining obligations. Use `a.isLt` as an intermediate fact. Unfold `Mdim`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem ae_dom (z z' : Fin (2 * r + k + 1) → ℂ) :
     ∀ᵐ q ∂(volume.withDensity fun q : (Fin r → ℂ) × ℂ => ENNReal.ofReal (bcWeight k r (Tz k r z) (Tz k r z') q)),
       (∀ a, q.1 a ≠ 0) ∧ q.2 ∈ R1.Om k r z z' := by
@@ -137,6 +178,45 @@ theorem ae_dom (z z' : Fin (2 * r + k + 1) → ℂ) :
     omega
   rw [this]; simp
 
+/- English proof (translation)
+Introduce `k r z z' μsec μG μW μW' c κ hk hz hz' hT hT' hsec hc hκ hG hd hW hW1 hW' hW1'`. Establish `hWb : B.IsHaarOn (UWset k r z) μW` using `((GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μW).2.2 z hz hT hk).1 hW`. Establish `hWb' : B.IsHaarOn (UWset k r z') μW'` using `((GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μW').2.2 z' hz' hT' hk).1 hW'`. Establish `hN` using `GlobalTheory.T.haarLie_isHaarOn_unipotentRadical k r (ENNReal.ofReal κ) (ENNReal.ofReal_pos.2 hκ) ENNReal.ofReal_lt_top`. Establish `hN1` using `GlobalTheory.T.haarLie_isHaarOn_unipotentRadical k r 1 one_pos ENNReal.one_lt_top`.
+
+Establish `hsm : haarLie (Nset k r) (ENNReal.ofReal κ) = ENNReal.ofReal κ • haarLie (Nset k r) 1`. Unfold `haarLie`. Rewrite using `[one_smul]`. Use `set μN := haarLie (Nset k r) (ENNReal.ofReal κ) with hμN`. Establish `hNb : B.IsHaarOn (Nset k r) μN` using `(GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μN).2.1.1 hN`.
+
+Take `⟨μb, hbb⟩` from `opposite_weyl_haar_exists k r`. Establish `hcl` using `opposite_weyl_subgroup_closed k r`. Use `R1.haar_sigmaFinite hbb` as an intermediate fact. Use `hW.1` as an intermediate fact. Use `hW'.1` as an intermediate fact.
+
+Use `hN.1` as an intermediate fact. Use `hN1.1` as an intermediate fact. Establish `hb : IsHaarOn (B2.UWb k r) μb` using `⟨inferInstance, hbb.ne_zero, hbb.conc, hbb.left⟩`. Take `⟨cb, hcb, hdb, -⟩` from `GlobalTheory.T.exists_unique_haarDensity_at_identity _ (B2.UWb k r) μb ⟨hcl.closed, hcl.one_mem, hcl.mul_mem, fun a ha => ⟨hcl.inv_mem a ha, Matrix.mul_nonsing_inv a (hcl.unit a ha)⟩⟩ hb`. Establish `hsec'` using `R1.secF_section hsec`.
+
+Establish `hsmm` using `R1.secF_meas hsec`. Establish `h1` using `GlobalTheory.T.lintegral_bigCell_haar_density_constant k r μG μb c cb hc hcb hG hd hb hdb`. Establish `h2` using `GlobalTheory.T.rank_one_unitary_integration_formula_exact_constant k r z z' (R1.secF k r z z' μsec) μb μW μW' cb hk hz hz' hT hT' hsec' hcb hb hdb hW hW1 hW' hW1'`. Establish `hconj` using `b2_conjInvRaw_proof k r z μN hz hT hNb`. Establish `hconj'` using `b2_conjInvRaw_proof k r z' μN hz' hT' hNb`.
+
+Establish `UF` using `unipotent_weyl_properties`. Establish `h1' : ∀ f : Mt k r → ℝ≥0∞, Measurable f → ∫⁻ g, f g ∂μG = ((c / cb * 2 ^ r / κ ^ 2).toNNReal : ℝ≥0∞) * ∫⁻ x : Fin r → ℂ, ENNReal.ofReal (B2.cWeight k r x) * ∫⁻ p : (Mt k r × Mt k r) × Mt k r, f (B2.mulM (B2.mulM (B2.mulM (B2.invM p.1.1, In.bc1 k r x), p.2), p.1.2)) ∂((μN.prod μN) …`. Introduce `f hf`. Rewrite using `[h1 f hf, hsm]`. Simplify using `only [Measure.prod_smul_left, Measure.prod_smul_right, lintegral_smul_measure, smul_eq_mul]`.
+
+Establish `e : ∀ (x : Fin r → ℂ) (I : ℝ≥0∞), ENNReal.ofReal (B2.cWeight k r x) * (ENNReal.ofReal κ * (ENNReal.ofReal κ * I)) = ENNReal.ofReal (κ ^ 2) * (ENNReal.ofReal (B2.cWeight k r x) * I)`. Introduce `x I`. Rewrite using `[pow_two, ENNReal.ofReal_mul hκ.le]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`.
+
+Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← mul_assoc]`. Use `congr 1`. Use `show _ = ENNReal.ofReal _ * _`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h2' : ∀ f : Mt k r → ℝ≥0∞, Measurable f → ∫⁻ m, f m ∂μb = ((cb * 2 * volUn k ^ 2 / volUn (k - 1) / (Tz k r z * Tz k r z') ^ k).toNNReal : ℝ≥0∞) * ∫⁻ ζ : ℂ, ENNReal.ofReal (B2.zWeight k (Tz k r z) (Tz k r z') ζ) * ∫⁻ p : Mt k r × Mt k r, f (B2.mulM (B2.mulM (B2.invM p.1, R1.embF k …` using `h2`. Set `ψ : (Fin r → ℂ) × ℂ → Mt k r` to `fun q => B2.mulM (In.bc1 k r q.1, R1.embF k r (R1.secF k r z z' μsec q.2))`. Establish `hψ : Measurable ψ` using `In.mulM_meas.comp ((In.big_cell_coordinate_measurable.comp measurable_fst).prodMk ((R1.embS_meas hsmm).comp measurable_snd))`. Establish `hdom` using `ae_dom (k := k) (r := r) z z'`.
+
+Establish `hwm` using `measurable_weight (k := k) (r := r) (Tz k r z) (Tz k r z')`. Use `set ρ := (volume.withDensity fun q : (Fin r → ℂ) × ℂ => ENNReal.ofReal (bcWeight k r (Tz k r z) (Tz k r z') q)) with hρ`. Establish `hψe : (fun q : (Fin r → ℂ) × ℂ => (Matrix.of.symm (bigCell k r q.1 (μsec q.2)) : Mt k r)) =ᵐ[ρ] ψ` using `by filter_upwards [hdom] with q hq show _ = B2.mulM (In.bc1 k r q.1, R1.embF k r (R1.secF k r z z' μsec q.2))`. Rewrite using `[R1.secF_on hq.2]`. Conclude with `(bruhat_big_cell_factorization k r q.1 (μsec q.2)).1`.
+
+Establish `hae : AEMeasurable (fun q : (Fin r → ℂ) × ℂ => (Matrix.of.symm (bigCell k r q.1 (μsec q.2)) : Mt k r)) ρ` using `hψ.aemeasurable.congr hψe.symm`. Use `⟨hae, ?_, ?_, ?_⟩` and prove the remaining obligations. Set `φ : Mt k r → (Fin r → ℂ) × ℂ` to `fun x => (fun a => x (esI k r a) (eI k r a), herm (Hpk k r) (Matrix.of x *ᵥ z') z)`. Establish `hφ : Measurable φ`. Use `Continuous.measurable (Continuous.prodMk (continuous_pi fun a => continuous_apply_apply _ _) ?_)` and prove the remaining obligations.
+
+Unfold `herm`. Conclude with `Continuous.dotProduct continuous_const (Continuous.matrix_mulVec continuous_const (Continuous.matrix_mulVec (continuous_id (X := Mat k r)) continuous_const))`. Establish `hid : (φ ∘ fun q : (Fin r → ℂ) × ℂ => (Matrix.of.symm (bigCell k r q.1 (μsec q.2)) : Mt k r)) =ᵐ[ρ] id` using `by filter_upwards [hdom] with q hq`. Use `Prod.ext (funext fun a => ?_) ?_` and prove the remaining obligations. Use `show bigCell k r q.1 (μsec q.2) (esI k r a) (eI k r a) = q.1 a`.
+
+Unfold `bigCell`. Rewrite using `[dif_pos (show (eI k r a).val < r from a.isLt)]`. Conclude with `if_pos rfl`. Use `show herm (Hpk k r) (bigCell k r q.1 (μsec q.2) *ᵥ z') z = q.2`. Rewrite using `[BigCellHermitian.herm_bigCell _ _ hz hz', (hsec.2 q.2 hq.2).2]`.
+
+Establish `hσ : SigmaFinite (ρ.map fun q : (Fin r → ℂ) × ℂ => (Matrix.of.symm (bigCell k r q.1 (μsec q.2)) : Mt k r))`. Use `SigmaFinite.of_map _ hφ.aemeasurable ?_` and prove the remaining obligations. Rewrite using `[hφ.aemeasurable.map_map_of_aemeasurable hae, Measure.map_congr hid, Measure.map_id, hρ]`. Use `infer_instance`. Conclude with `inferInstanceAs (SigmaFinite (Real.toNNReal _ • _))`.
+
+Establish `hms : MeasurableSet {x : Mt k r | Matrix.of x ∉ Greg k r z z'}` using `(measurableSet_greg z z').compl`. Rewrite using `[Measure.smul_apply, Measure.map_apply_of_aemeasurable hae hms]`. Establish `: ρ ((fun q : (Fin r → ℂ) × ℂ => (Matrix.of.symm (bigCell k r q.1 (μsec q.2)) : Mt k r)) ⁻¹' {x : Mt k r | Matrix.of x ∉ Greg k r z z'}) = 0`. Use `measure_mono_null ?_ (ae_iff.1 hdom)` and prove the remaining obligations. Introduce `q hq h`.
+
+Conclude with `hq (bigCell_mem_regular hz hz' hsec h.1 h.2)`. Rewrite using `[this, smul_zero]`. Introduce `f hf`. Establish `e` using `In.engine (μG := μG) (μN := μN) (μb := μb) (μW := μW) (μW' := μW') (Tz k r z) (Tz k r z') (In.bc1 k r) In.big_cell_coordinate_measurable (fun ζ => R1.embF k r (R1.secF k r z z' μsec ζ)) (R1.embS_meas hsmm) _ _ h1' h2' (fun x ζ f hf => In.key UF hWb hWb' hconj hconj' (In.bc1 k r x …`. Establish `hF : Measurable fun g : Mt k r => ∫⁻ p : B.SS k r, f (In.sgF (p, g)) ∂((μW.prod μN).prod (μW'.prod μN))`.
+
+Establish `hm : Measurable fun x : Mt k r × B.SS k r => f (In.sgF (x.2, x.1))` using `by fun_prop`. Conclude with `hm.lintegral_prod_right'`. Simplify using `only [← orbital_eq hWb hWb' hNb hconj hconj' _ f hf]`. Rewrite using `[e, lintegral_smul_measure, Measure.map_congr hψe, lintegral_map hF hψ, hρ, lintegral_withDensity_eq_lintegral_mul _ hwm (g := fun a => ∫⁻ p : B.SS k r, f (In.sgF (p, ψ a)) ∂((μW.prod μN).prod (μW'.prod μN))) (hF.comp hψ), smul_eq_mul]`. Establish `v1 : ∀ j, 0 < volUn j` using `fun j => Finset.prod_pos fun i _ => by have := Real.pi_pos; positivity`.
+
+Establish `v2` using `v1 k`. Establish `v3` using `v1 (k - 1)`. Use `congr 1`. Rewrite using `[← Real.toNNReal_mul (by positivity)] show ENNReal.ofReal _ = _`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[← weight_factorization k r]`. Both sides reduce to the same expression.
+-/
 theorem isDis_bigCell : ∀ (k r : ℕ) (z z' : (Fin (2 * r + k + 1) → ℂ)) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (μG μW μW' : Measure (Mt k r)) (c κ : ℝ), 1 ≤ k → inWb k r z → inWb k r z' → 0 < Tz k r z → 0 < Tz k r z' → IsSection k r z z' μsec → 0 < c → 0 < κ → IsHaarOn (GG k r) μG → HasDens (GG k r) μG (ENNReal.ofReal c) → IsHaarOn (UWset k r z) μW → μW Set.univ = 1 → IsHaarOn (UWset k r z') μW' → μW' Set.univ = 1 → AEMeasurable (fun q : (Fin r → ℂ) × ℂ => (Matrix.of.symm (bigCell k r q.1 (μsec q.2)) : Mt k r)) (volume.withDensity fun q => ENNReal.ofReal (bcWeight k r (Tz k r z) (Tz k r z') q)) ∧ IsDis (Greg k r z z') μG (muProd μW (haarLie (Nset k r) (ENNReal.ofReal κ))) (muProd μW' (haarLie (Nset k r) (ENNReal.ofReal κ))) (ENNReal.ofReal (c * 2 ^ (r + 1) * volUn k ^ 2 / volUn (k - 1) / (Tz k r z * Tz k r z') ^ k / κ ^ 2) • (volume.withDensity fun q : (Fin r → ℂ) × ℂ => ENNReal.ofReal (bcWeight k r (Tz k r z) (Tz k r z') q)).map fun q => (Matrix.of.symm (bigCell k r q.1 (μsec q.2)) : Mt k r)) := by
   intro k r z z' μsec μG μW μW' c κ hk hz hz' hT hT' hsec hc hκ hG hd hW hW1 hW' hW1'
   have hWb : B.IsHaarOn (UWset k r z) μW := ((GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μW).2.2 z hz hT hk).1 hW

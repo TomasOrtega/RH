@@ -16,6 +16,9 @@ instance charP_residueField : CharP 𝓀[K] p :=
   (CharP.charP_iff_prime_eq_zero hp.out).mpr (by
     rw [← map_natCast (residue 𝒪[K]), CharP.cast_eq_zero, map_zero])
 
+/- English proof (translation)
+Set `` to `Fintype.ofFinite 𝓀[K]`. Take `⟨n, -, h⟩` from `FiniteField.card 𝓀[K] p`. Conclude with `⟨n, n.pos, by rw [Nat.card_eq_fintype_card, h]⟩`.
+-/
 theorem exists_card_residueField_eq : ∃ n : ℕ, 0 < n ∧ Nat.card 𝓀[K] = p ^ n := by
   let := Fintype.ofFinite 𝓀[K]
   obtain ⟨n, -, h⟩ := FiniteField.card 𝓀[K] p
@@ -23,15 +26,27 @@ theorem exists_card_residueField_eq : ∃ n : ℕ, 0 < n ∧ Nat.card 𝓀[K] = 
 
 noncomputable def residueExponent : ℕ := (exists_card_residueField_eq K p).choose
 
+/- English proof (translation)
+The claim follows from `(exists_card_residueField_eq K p).choose_spec.1`.
+-/
 theorem residueExponent_pos : 0 < residueExponent K p :=
   (exists_card_residueField_eq K p).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(exists_card_residueField_eq K p).choose_spec.2`.
+-/
 theorem card_residueField : Nat.card 𝓀[K] = p ^ residueExponent K p :=
   (exists_card_residueField_eq K p).choose_spec.2
 
+/- English proof (translation)
+The claim follows from `Nat.one_lt_pow (residueExponent_pos K p).ne' hp.out.one_lt`.
+-/
 theorem one_lt_card_residueField : 1 < p ^ residueExponent K p :=
   Nat.one_lt_pow (residueExponent_pos K p).ne' hp.out.one_lt
 
+/- English proof (translation)
+Set `` to `Fintype.ofFinite 𝓀[K]`. Rewrite using `[← card_residueField, Nat.card_eq_fintype_card]`. Conclude with `FiniteField.pow_card a`.
+-/
 theorem pow_card_residueField (a : 𝓀[K]) : a ^ p ^ residueExponent K p = a := by
   let := Fintype.ofFinite 𝓀[K]
   rw [← card_residueField, Nat.card_eq_fintype_card]
@@ -40,9 +55,17 @@ theorem pow_card_residueField (a : 𝓀[K]) : a ^ p ^ residueExponent K p = a :=
 noncomputable def teichmullerSubring : Subring 𝒪[K] :=
   (iterateFrobenius 𝒪[K] p (residueExponent K p)).eqLocus (RingHom.id _)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_teichmullerSubring {x : 𝒪[K]} :
     x ∈ teichmullerSubring K p ↔ x ^ p ^ residueExponent K p = x := Iff.rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hv0 : 0 < valuation K (x : K)`. Rewrite using `[zero_lt_iff, ne_eq, map_eq_zero]`. Conclude with `fun h => hne (Subtype.ext h)`. Establish `hv1 : valuation K (x : K) < 1`.
+
+Rewrite `h0` using `[residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `(Valuation.Integer.not_isUnit_iff_valuation_lt_one).mp h0`. Establish `h` using `pow_lt_self_of_lt_one₀ hv0 hv1 (one_lt_card_residueField K p)`. Rewrite `h` using `[← map_pow, ← Subring.coe_pow, (mem_teichmullerSubring K p).mp hx]`. Conclude with `lt_irrefl _ h`.
+-/
 theorem eq_zero_of_mem_teichmullerSubring {x : 𝒪[K]} (hx : x ∈ teichmullerSubring K p)
     (h0 : residue 𝒪[K] x = 0) : x = 0 := by
   by_contra hne
@@ -56,6 +79,17 @@ theorem eq_zero_of_mem_teichmullerSubring {x : 𝒪[K]} (hx : x ∈ teichmullerS
   rw [← map_pow, ← Subring.coe_pow, (mem_teichmullerSubring K p).mp hx] at h
   exact lt_irrefl _ h
 
+/- English proof (translation)
+Set `` to `IsTopologicalAddGroup.rightUniformSpace K`. Use `isUniformAddGroup_of_addCommGroup (G := K)` as an intermediate fact. Use `set q := p ^ residueExponent K p with hqdef`. Establish `hq : 1 < q` using `one_lt_card_residueField K p`. Establish `hq0 : ((q : ℕ) : 𝒪[K]) = 0` using `(CharP.cast_eq_zero_iff 𝒪[K] p q).mpr (dvd_pow_self p (residueExponent_pos K p).ne')`.
+
+Take `⟨a₀, rfl⟩` from `residue_surjective a`. Use `set f : 𝒪[K][X] := X ^ q - X with hf`. Establish `hmonic : f.Monic` using `monic_X_pow_sub (by rw [degree_X]; exact_mod_cast hq)`. Establish `hroot : f.eval a₀ ∈ maximalIdeal 𝒪[K]`. Rewrite using `[← residue_eq_zero_iff]`.
+
+Simplify using `[f, hqdef, pow_card_residueField]`. Establish `hder : IsUnit (Ideal.Quotient.mk (maximalIdeal 𝒪[K]) (f.derivative.eval a₀))`. Establish `: f.derivative.eval a₀ = -1`. Simplify using `[f, derivative_X_pow, hq0]`. Rewrite using `[this, map_neg, map_one]`.
+
+Conclude with `isUnit_one.neg`. Take `⟨x, hx, hxa⟩` from `HenselianRing.is_henselian f hmonic a₀ hroot hder`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_teichmullerSubring]`. Simplify `hx` using `[f, IsRoot, sub_eq_zero]`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Conclude with `hxa`.
+-/
 theorem exists_mem_teichmullerSubring_residue_eq (a : 𝓀[K]) :
     ∃ x ∈ teichmullerSubring K p, residue 𝒪[K] x = a := by
   let := IsTopologicalAddGroup.rightUniformSpace K
@@ -93,6 +127,9 @@ noncomputable def teichmullerEquiv : teichmullerSubring K p ≃+* 𝓀[K] :=
 noncomputable def teichmullerHom : 𝓀[K] →+* 𝒪[K] :=
   (teichmullerSubring K p).subtype.comp (teichmullerEquiv K p).symm.toRingHom
 
+/- English proof (translation)
+The claim follows from `(teichmullerEquiv K p).apply_symm_apply a`.
+-/
 theorem residue_teichmullerHom (a : 𝓀[K]) : residue 𝒪[K] (teichmullerHom K p a) = a :=
   (teichmullerEquiv K p).apply_symm_apply a
 

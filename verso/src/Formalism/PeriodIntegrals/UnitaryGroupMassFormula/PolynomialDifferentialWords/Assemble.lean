@@ -6,6 +6,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialDifferentialW
 
 namespace PI.OpWords
 
+/- English proof (translation)
+The claim follows from `opWords_of symbolMapInjective symbolMapMulLeft symbolMapMulRight symbolMapBihomogeneous weightOfEigenvector polarizationBihomogeneous rttRelation pairingWeightCancel pairingDivisibility hV pairingPowMemSymbolRange`.
+-/
 theorem opBound_of_vanish (hV : Vanish) : Formalism.MainNotions.TestSideCounting.OpBound :=
   opWords_of symbolMapInjective symbolMapMulLeft symbolMapMulRight symbolMapBihomogeneous weightOfEigenvector
     polarizationBihomogeneous rttRelation pairingWeightCancel pairingDivisibility hV pairingPowMemSymbolRange

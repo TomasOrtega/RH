@@ -24,6 +24,9 @@ def bcAct (S : Type) {R A G : Type} [CommRing R] [CommRing S] [CommRing A] [Alge
     | add x y hx hy => rw [map_add, hx, hy, map_add]
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bcAct_tmul (S : Type) {R A G : Type} [CommRing R] [CommRing S] [CommRing A] [Algebra R S]
     [Algebra R A] [Monoid G] (act : G →* (A ≃ₐ[R] A)) (g : G) (s : S) (a : A) :
     bcAct S act g (s ⊗ₜ[R] a) = s ⊗ₜ[R] act g a := rfl
@@ -36,11 +39,21 @@ def prodMapOf (B D : Type) [CommRing B] [CommRing D] [Algebra B D] (q : ℕ)
     (Pi.algHom B (fun _ : Multiplicative (ZMod q) => D) (fun g => (act g).toAlgHom))
 
 @[simp]
+/- English proof (translation)
+Simplify using `[prodMapOf]`.
+-/
 theorem prodMapOf_tmul (B D : Type) [CommRing B] [CommRing D] [Algebra B D] (q : ℕ)
     (act : Multiplicative (ZMod q) →* (D ≃ₐ[B] D)) (x y : D) (g : Multiplicative (ZMod q)) :
     prodMapOf B D q act (x ⊗ₜ[B] y) g = x * act g y := by
   simp [prodMapOf]
 
+/- English proof (translation)
+Take `⟨k₁, f₁, h₁⟩` from `hP`. Take `⟨k₂, f₂, h₂⟩` from `hQ`. Set `a` to `IsFiltered.leftToMax k₁ k₂`. Set `b` to `IsFiltered.rightToMax k₁ k₂`. Set `e` to `IsFiltered.coeqHom (f₁ ≫ a) (f₂ ≫ b)`.
+
+Establish `he : (f₁ ≫ a) ≫ e = (f₂ ≫ b) ≫ e` using `IsFiltered.coeq_condition _ _`. Use `⟨IsFiltered.coeq (f₁ ≫ a) (f₂ ≫ b), (f₁ ≫ a) ≫ e, fun k f => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `h₁ k (a ≫ e ≫ f)` as an intermediate fact. Simplify `this` using `only [Category.assoc]`. Use `h₂ k (b ≫ e ≫ f)` as an intermediate fact.
+
+Rewrite using `[he]`. Simplify `this` using `only [Category.assoc]`.
+-/
 theorem eventually_and {J : Type} [Category J] [IsFiltered J] {j : J}
     (P Q : ∀ k : J, (j ⟶ k) → Prop)
     (hP : ∃ (k₀ : J) (f₀ : j ⟶ k₀), ∀ (k : J) (f : k₀ ⟶ k), P k (f₀ ≫ f))

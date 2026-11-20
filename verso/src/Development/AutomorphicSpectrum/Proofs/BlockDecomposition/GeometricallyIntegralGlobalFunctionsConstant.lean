@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.TrivLoc
 
+/- English proof (translation)
+Establish `hs : ∀ U : Y.Opens, Subsingleton Γ(Y, U)` using `fun U => by`. Establish `hU : U = ⊥`. Use extensionality with `y`. Conclude with `(IsEmpty.false y).elim`. Substitute `hU` using the available equality.
+
+Use `infer_instance`. Use `⟨⟨fun _ => 1⟩, fun i j => ?_⟩` and prove the remaining obligations. Use `hs (L.U i ⊓ L.U j)` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem triv_of_isEmpty {Y : Scheme.{0}} [IsEmpty Y] (L : LB Y) : Triv L := by
   have hs : ∀ U : Y.Opens, Subsingleton Γ(Y, U) := fun U => by
     have hU : U = ⊥ := by
@@ -23,6 +28,21 @@ theorem triv_of_isEmpty {Y : Scheme.{0}} [IsEmpty Y] (L : LB Y) : Triv L := by
   have := hs (L.U i ⊓ L.U j)
   exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Introduce `R _ X f M hM hP hQ hprop hgi hsurj hbij p`. Establish `hW` using `GlobalTheory.TrivLocus.isClosed_trivLocus R X f M hM hP hQ hprop hgi`. Distinguish the cases in `hp : p ∈ {p : PrimeSpectrum R | ∃ (K : Type) (_ : Field K) (g : R →+* K) (X' : Scheme.{0}) (π : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of K)), RingHom.ker g = p.asIdeal ∧ IsPullback π f' f (Spec.map (CommRingCat.ofHom g)) ∧ Triv (M.pull π)}`. Take `⟨K, _, g₀, X₀, π₀, f₀, hk, hpb, ht⟩` from `hp`. Take `⟨r, I, hr, -, H⟩` from `GlobalTheory.AbLaw.Seesaw.seesaw R X f M hM hP inferInstance hsurj K g₀ X₀ π₀ f₀ hpb (hbij K g₀ X₀ π₀ f₀ hpb) ht`.
+
+Use `⟨r, I, fun hrp => hr ?_, H⟩` and prove the remaining obligations. Rewrite `hrp` using `[← hk]`. Conclude with `hrp`. Take `⟨_, ⟨r, rfl⟩, hpr, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (show p ∈ _ from hp) hW.isOpen_compl`. Use `⟨r, ⊤, hpr, fun R' _ g X' π f' h hu => ?_⟩` and prove the remaining obligations.
+
+Break down `subsingleton_or_nontrivial R' with hR' | hR'` into its components or cases. Establish `hE : IsEmpty (Spec (CommRingCat.of R'))` using `inferInstanceAs (IsEmpty (PrimeSpectrum R'))`. Establish `hX' : IsEmpty X'` using `⟨fun x => hE.false (f' x)⟩`. Conclude with `⟨fun _ x _ => Subsingleton.elim _ _, fun _ => triv_of_isEmpty _⟩`. Use `⟨fun ht => ?_, fun hle => ?_⟩` and prove the remaining obligations.
+
+It suffices to derive a contradiction. Take `⟨m, hm⟩` from `Ideal.exists_maximal R'`. Set `_ : Field (R' ⧸ m)` to `Ideal.Quotient.field m`. Set `q : R' →+* R' ⧸ m` to `Ideal.Quotient.mk m`. Establish `hpb : IsPullback (pullback.fst f' (Spec.map (CommRingCat.ofHom q)) ≫ π) (pullback.snd f' (Spec.map (CommRingCat.ofHom q))) f (Spec.map (CommRingCat.ofHom (q.comp g)))`.
+
+Establish `e : Spec.map (CommRingCat.ofHom (q.comp g)) = Spec.map (CommRingCat.ofHom q) ≫ Spec.map (CommRingCat.ofHom g)`. Rewrite using `[← Spec.map_comp, CommRingCat.ofHom_comp]`. Rewrite using `[e]`. Conclude with `(IsPullback.of_hasPullback f' (Spec.map (CommRingCat.ofHom q))).paste_horiz h`. Establish `hprime : (RingHom.ker (q.comp g)).IsPrime` using `RingHom.ker_isPrime _`.
+
+Use `hsub (show (⟨RingHom.ker (q.comp g), hprime⟩ : PrimeSpectrum R) ∈ _ from ?_) ⟨R' ⧸ m, inferInstance, q.comp g, _, _, _, rfl, hpb, GlobalTheory.Biadditive.triv_pull_comp ht _⟩` and prove the remaining obligations. Introduce `hr`. Conclude with `(hu.map q).ne_zero hr`. Establish `h1 : g 1 = 0` using `hle (Submodule.mem_top (x := (1 : R)))`. Rewrite `h1` using `[map_one]`.
+
+Conclude with `absurd h1 one_ne_zero`.
+-/
 theorem exists_ideal_near : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) (M : LB X), M.IsLB →
     Nonempty (Perf f M) → Nonempty (Perf f (pw M (-1))) → IsProper f → GeometricallyIntegral f → Surjective f →
     (∀ (K : Type) [Field K] (g₀ : R →+* K) (X₀ : Scheme.{0}) (π₀ : X₀ ⟶ X) (f₀ : X₀ ⟶ Spec (CommRingCat.of K)),

@@ -21,6 +21,21 @@ noncomputable section
 
 namespace GlobalTheory.FlagBundleCover
 
+/- English proof (translation)
+Introduce `k _ B Y _ _ q p D hq hp π hπ ι _ E r hE fl hfl C`. Establish `hreg` using `C.reg`. Use `haveI : IsLocallyNoetherian B := hq.isLocallyNoetherian`. Use `haveI : IsLocallyNoetherian C.Y := hreg.toIsArithVar.isLocallyNoetherian`. Use `haveI : IsNoetherianRing k := hq.isNoetherianRing`.
+
+Establish `hs : Function.Surjective π` using `GlobalTheory.T.flag_bundle_projection_surjective B Y π ι E r fl hE hfl`. Use `haveI hsm : SmoothOfRelativeDimension (∑ a, r a * (r a - 1) / 2) π := GlobalTheory.T.flag_bundle_smooth_relative_dimension B Y π ι E r fl hE hfl`. Establish `hE' : ∀ a, VB.IsVB ((Scheme.Modules.pullback C.ρ).obj (E a)) (r a)` using `fun a => (hE a).pullback C.ρ`. Establish `hfl'` using `GlobalTheory.T.flag_bundle_base_change B Y C.Y π ι E r fl hfl C.ρ`. Use `haveI hsm' : SmoothOfRelativeDimension (∑ a, r a * (r a - 1) / 2) (Limits.pullback.snd π C.ρ) := GlobalTheory.T.flag_bundle_smooth_relative_dimension _ _ _ ι _ r _ hE' hfl'`.
+
+Establish `hs' : Function.Surjective (Limits.pullback.snd π C.ρ)` using `GlobalTheory.T.flag_bundle_projection_surjective _ _ _ ι _ r _ hE' hfl'`. Use `haveI : IrreducibleSpace (Limits.pullback π C.ρ : Scheme.{0}) := GlobalTheory.T.flag_bundle_total_space_irreducible _ _ _ ι _ r _ hE' hfl'`. Use `haveI : Smooth (Limits.pullback.snd π C.ρ) := SmoothOfRelativeDimension.smooth (∑ a, r a * (r a - 1) / 2) _`. Use `haveI : IsReduced (Limits.pullback π C.ρ) := GlobalTheory.isReduced_of_smooth_of_isReduced (Limits.pullback.snd π C.ρ)`. Use `haveI hint : IsIntegral (Limits.pullback π C.ρ) := isIntegral_of_irreducibleSpace_of_isReduced _`.
+
+Establish `e : Limits.pullback.fst π C.ρ ≫ p = Limits.pullback.snd π C.ρ ≫ C.ρ ≫ q`. Rewrite using `[← hπ, ← Category.assoc, Limits.pullback.condition, Category.assoc]`. Use `⟨hint, ⟨hp.isDomain, hp.finite, hint, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `GlobalTheory.T.flag_bundle_projective_over_base k C.Y _ (C.ρ ≫ q) _ ι _ r _ hreg.isProjOver hE' hfl'`.
+
+Rewrite using `[e, Category.assoc] haveI := hreg.flat infer_instance`. Establish `h1` using `GlobalTheory.T.krull_dim_smooth_surjective_total B Y π (∑ a, r a * (r a - 1) / 2) 1 hs hq.dim_eq`. Establish `h2` using `GlobalTheory.T.krull_dim_smooth_surjective_total C.Y _ (Limits.pullback.snd π C.ρ) (∑ a, r a * (r a - 1) / 2) 1 hs' hreg.dim_eq`. Rewrite using `[h2, ← h1]`. Conclude with `hp.dim_eq`.
+
+Establish `hg : IsGenericPoint (π (genericPoint Y)) (⊤ : Set B)`. Establish `h1` using `genericPoint_spec Y`. Use `show closure {π (genericPoint Y)} = ⊤`. Use `eq_top_iff.2 fun b _ => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hs b`.
+
+Establish `hy : y ∈ closure {genericPoint Y}` using `by rw [h1.def]; trivial`. Conclude with `map_mem_closure π.continuous hy (by intro z hz; rw [Set.mem_singleton_iff.1 hz]; rfl)`. Conclude with `hg.eq (genericPoint_spec B)`.
+-/
 theorem pullback_regCover_isArithVar : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (D : ℕ), IsArithVar q 1 → IsArithVar p D → ∀ (π : Y ⟶ B), π ≫ q = p → ∀ (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ), (∀ a, VB.IsVB (E a) (r a)) → ∀ (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → ∀ C : RegCover q, IsIntegral (Limits.pullback π C.ρ) ∧ IsArithVar (Limits.pullback.fst π C.ρ ≫ p) D ∧ π (genericPoint Y) = genericPoint B := by
   intro k _ B Y _ _ q p D hq hp π hπ ι _ E r hE fl hfl C
   have hreg := C.reg

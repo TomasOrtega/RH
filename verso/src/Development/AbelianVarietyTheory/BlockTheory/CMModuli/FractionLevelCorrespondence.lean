@@ -34,6 +34,9 @@ def CorrVia {L' : LB X'} {L : LB X} {φ : X' ⟶ X} (w : LB.Iso L' (L.pull φ))
       (∏ k, res (hw k) (pullU (a k) _ (w.s (fun _ => j k, j' k))) ^ ε k) * res h' (t'.s j') =
         res le_top z * res h (t.s j)
 
+/- English proof (translation)
+Introduce `p hp`. Establish `h1 : p ∈ b k ⁻¹ᵁ L.U (j k)` using `LB.wchart_le L b j k (h hp)`. Establish `h2 : p ∈ a k ⁻¹ᵁ L'.U (j' k)` using `LB.wchart_le L' a j' k (h' hp)`. Rewrite `h1` using `[hb k]`. Conclude with `⟨Set.mem_iInter.2 fun _ => h1, h2⟩`.
+-/
 lemma le_chart {L' : LB X'} {L : LB X} {φ : X' ⟶ X} {a : K → (T ⟶ X')} {b : K → (T ⟶ X)}
     {ε : K → ℤ} (hb : ∀ k, b k = a k ≫ φ) {j' : K → L'.ι} {j : K → L.ι} {V : T.Opens}
     (h' : V ≤ (LB.LinComb L' a ε).U j') (h : V ≤ (LB.LinComb L b ε).U j) (k : K) :
@@ -54,6 +57,9 @@ def fracMap (f : O' →+* R) (hf : Function.Injective f) : FractionRing O' →+*
   IsFractionRing.lift (g := (algebraMap R (FractionRing R)).comp f)
     ((IsFractionRing.injective R (FractionRing R)).comp hf)
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.lift_algebraMap _ a`.
+-/
 lemma fracMap_algebraMap (f : O' →+* R) (hf : Function.Injective f) (a : O') :
     fracMap f hf (algebraMap O' _ a) = algebraMap R _ (f a) :=
   IsFractionRing.lift_algebraMap _ a
@@ -62,6 +68,9 @@ def fracUnit (u : R) (hu : u ≠ 0) : (FractionRing R)ˣ :=
   Units.mk0 (algebraMap R (FractionRing R) u)
     ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hu)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : algebraMap (FractionRing R) (FractionRing R) = RingHom.id _ := rfl
 
 end Frac
@@ -73,6 +82,11 @@ variable {O' : Type} [CommRing O']
 def IsSubst (π : O') (ev : PowerSeries O' →+* O') : Prop :=
   (∀ a, ev (PowerSeries.C a) = a) ∧ ev PowerSeries.X = π
 
+/- English proof (translation)
+Use `letI : WithIdeal O' := ⟨J⟩`. Establish `hA : IsAdic J` using `rfl`. Take `⟨h1, h2⟩` from `hA.isAdicComplete_iff.1 hJ`. Establish `ha : PowerSeries.HasEval π` using `WithIdeal.isTopologicallyNilpotent_of_mem hπ`. Use `⟨PowerSeries.eval₂Hom (φ := RingHom.id O') continuous_id ha, fun a => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[PowerSeries.coe_eval₂Hom]`. Simplify using the standard rewrite rules. Rewrite using `[PowerSeries.coe_eval₂Hom]`. Simplify using the standard rewrite rules.
+-/
 lemma exists_isSubst (J : Ideal O') [hJ : IsAdicComplete J O'] {π : O'} (hπ : π ∈ J) :
     ∃ ev, IsSubst π ev := by
   letI : WithIdeal O' := ⟨J⟩
@@ -83,6 +97,15 @@ lemma exists_isSubst (J : Ideal O') [hJ : IsAdicComplete J O'] {π : O'} (hπ : 
   · rw [PowerSeries.coe_eval₂Hom]; simp
   · rw [PowerSeries.coe_eval₂Hom]; simp
 
+/- English proof (translation)
+Establish `key : ∀ (n : ℕ) (F : PowerSeries O'), ev F - ev' F ∈ J ^ n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro F`. Simplify using the standard rewrite rules.
+
+Consider the case `succ n ih`. Introduce `F`. Establish `hF` using `PowerSeries.eq_X_mul_shift_add_const F`. Establish `: ev F - ev' F = π * (ev (PowerSeries.mk fun p => PowerSeries.coeff (p + 1) F) - ev' (PowerSeries.mk fun p => PowerSeries.coeff (p + 1) F))` using `by conv_lhs => rw [hF]`. Simplify using `only [map_add, map_mul, h.1, h.2, h'.1, h'.2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, pow_succ']`. Conclude with `Ideal.mul_mem_mul hπ (ih _)`. Use `RingHom.ext fun F => sub_eq_zero.1 (IsHausdorff.haus (I := J) inferInstance _ fun n => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`.
+
+Conclude with `key n F`.
+-/
 lemma IsSubst.unique (J : Ideal O') [IsHausdorff J O'] {π : O'} (hπ : π ∈ J)
     {ev ev' : PowerSeries O' →+* O'} (h : IsSubst π ev) (h' : IsSubst π ev') : ev = ev' := by
   have key : ∀ (n : ℕ) (F : PowerSeries O'), ev F - ev' F ∈ J ^ n := by
@@ -109,14 +132,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 variable {D : Datum H} {l : Level H} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 variable {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'}
 
+/- English proof (translation)
+The claim follows from `Int.mul_ediv_cancel' ((Dvd.intro _ rfl).trans (x.be_dvd y y))`.
+-/
 lemma two_mul_half (x : ArcInput D c β O' b) (y : x.P.X) : 2 * (x.be y y / 2) = x.be y y :=
   Int.mul_ediv_cancel' ((Dvd.intro _ rfl).trans (x.be_dvd y y))
 
+/- English proof (translation)
+The claim follows from `Int.mul_ediv_cancel' (((Int.natCast_dvd_natCast.2 (Nat.dvd_lcm_left l.M l.A)).mul_left 2).trans (x.be_dvd y z))`.
+-/
 lemma levelM_mul_div (x : ArcInput D c β O' b) (y z : x.P.X) :
     (l.M : ℤ) * (x.be y z / (l.M : ℤ)) = x.be y z :=
   Int.mul_ediv_cancel' (((Int.natCast_dvd_natCast.2 (Nat.dvd_lcm_left l.M l.A)).mul_left 2).trans
     (x.be_dvd y z))
 
+/- English proof (translation)
+The claim follows from `Int.mul_ediv_cancel' (((Int.natCast_dvd_natCast.2 (Nat.dvd_lcm_right l.M l.A)).mul_left 2).trans (x.be_dvd y z))`.
+-/
 lemma levelA_mul_div (x : ArcInput D c β O' b) (y z : x.P.X) :
     (l.A : ℤ) * (x.be y z / (l.A : ℤ)) = x.be y z :=
   Int.mul_ediv_cancel' (((Int.natCast_dvd_natCast.2 (Nat.dvd_lcm_right l.M l.A)).mul_left 2).trans
@@ -196,6 +228,9 @@ def ArcClause (Y : Model Xo c β) : Prop :=
   ∀ (O' : Type) [Field O'] (b : O →+* O') (x : ArcInput D c β O' b),
     ∃ χ : Sp (PowerSeries O') ⟶ Y.X, ∀ χ', IsArc Y x 1 χ' ↔ χ' = χ
 
+/- English proof (translation)
+Establish `h : π ∈ IsLocalRing.maximalIdeal V` using `hπ.not_isUnit`. Take `⟨ev, hev⟩` from `exists_isSubst _ h`. Conclude with `⟨ev, hev, fun ev' h' => IsSubst.unique _ h h' hev⟩`.
+-/
 example (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [IsAdicComplete (IsLocalRing.maximalIdeal V) V] (π : V) (hπ : Irreducible π) :
     ∃! ev, IsSubst π ev := by
@@ -203,6 +238,9 @@ example (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   obtain ⟨ev, hev⟩ := exists_isSubst _ h
   exact ⟨ev, hev, fun ev' h' => IsSubst.unique _ h h' hev⟩
 
+/- English proof (translation)
+Take `⟨χ, hχ⟩` from `h.2 F b x`. Conclude with `⟨χ, (hχ χ).2 rfl, fun χ' h' => (hχ χ').1 h'⟩`.
+-/
 example (Y : Model Xo c β) (h : ArcClause Y) (F : Type) [Field F] (b : O →+* F)
     (x : ArcInput D c β F b) : ∃! χ, IsArc Y x 1 χ := by
   obtain ⟨χ, hχ⟩ := h.2 F b x

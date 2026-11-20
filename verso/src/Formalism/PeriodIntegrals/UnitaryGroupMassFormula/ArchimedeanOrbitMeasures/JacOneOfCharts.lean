@@ -22,6 +22,17 @@ def WittNear : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (�
 def GoodChartEx : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ) hT μinf νinf fibInf,
     PushHyp X u' ψ hT μinf νinf fibInf → ∃ Ω' a₂, IsChart X u' hT Ω' a₂ ∧ GoodP X u' hT μinf νinf a₂
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP Ω a hC J hJ1 hJc Ω₂ hΩ₂ hΩ₂n c₀ hid`. Take `⟨Ω', a₂, hC₂, hgood⟩` from `hG X u' ψ hT μinf νinf fibInf hP`. Establish `hev : ∀ᶠ T in 𝓝 (TI X u' hT), ∃ h : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J, rmulT X (a T) (Y0 X u') = h • rmulT X (a₂ T) (Y0 X u')`. Take `⟨ι, _, κ, -, η, _, eT, eH, cμ, cν, Ψ', U, -, -, -, -, -, -, -, -, hev0, -⟩` from `hgood`. Use `filter_upwards [hev0, hC.1, hC₂.1] with T h1 h2 h3`.
+
+Conclude with `hW X u' ψ hT μinf νinf fibInf hP Ω a Ω' a₂ hC hC₂ T ⟨h2, h3⟩ h1.1`. Use `set Ω₃ := Ω₂ ∩ Ω' ∩ {T | ∃ h : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J, rmulT X (a T) (Y0 X u') = h • rmulT X (a₂ T) (Y0 X u')} with hΩ₃`. Establish `hΩ₃n : Ω₃ ∈ 𝓝 (TI X u' hT)` using `inter_mem (inter_mem hΩ₂n hC₂.1) hev`. Establish `hid₂ : PolId X u' μinf νinf a₂ Ω₃ (fun T => c₀ * ENNReal.ofReal (J T))`. Introduce `φ hφ S hS hSm`.
+
+Rewrite using `[hid φ hφ S (hS.trans (Set.inter_subset_left.trans Set.inter_subset_left)) hSm]`. Use `setLIntegral_congr_fun hSm (fun T hT' => ?_)` and prove the remaining obligations. Take `⟨h, eh⟩` from `(hS hT').2`. Rewrite using `[eh]`. Use `congr 1`.
+
+Establish `e : ∀ g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J, φ (g • h • rmulT X (a₂ T) (Y0 X u')) = (fun g' => φ (g' • rmulT X (a₂ T) (Y0 X u'))) (g * h)`. Introduce `g`. Simplify using `only [mul_smul]`. Repeatedly rewrite using `[e]`. Conclude with `hU X u' ψ hT μinf νinf fibInf hP (fun g' => φ (g' • rmulT X (a₂ T) (Y0 X u'))) h`.
+
+Conclude with `jacOneGood hK X u' ψ hT μinf νinf fibInf hP Ω' a₂ hC₂ hgood J hJ1 hJc Ω₃ (Set.inter_subset_left.trans Set.inter_subset_right) hΩ₃n c₀ hid₂`.
+-/
 theorem jacOne_of_charts (hK : KPos) (hU : UnimodInf) (hW : WittNear) (hG : GoodChartEx) : JacOne := by
   intro D X u' ψ hT μinf νinf fibInf hP Ω a hC J hJ1 hJc Ω₂ hΩ₂ hΩ₂n c₀ hid
   obtain ⟨Ω', a₂, hC₂, hgood⟩ := hG X u' ψ hT μinf νinf fibInf hP

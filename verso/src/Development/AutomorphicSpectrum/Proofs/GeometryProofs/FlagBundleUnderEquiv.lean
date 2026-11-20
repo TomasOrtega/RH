@@ -12,6 +12,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.FlagStep
 
+/- English proof (translation)
+Unfold `flagStep`. Rewrite using `[Submodule.map_span, ← Set.image_comp]`. Both sides reduce to the same expression.
+-/
 theorem flagStep_linearEquiv_image {Ω F F' : Type} [Field Ω] [AddCommGroup F] [Module Ω F] [AddCommGroup F']
     [Module Ω F'] (Φ : F ≃ₗ[Ω] F') {r : ℕ} (d : Fin r → F) (i : ℕ) :
     flagStep Ω (fun k => Φ (d k)) i = (flagStep Ω d i).map Φ.toLinearMap := by
@@ -19,6 +22,17 @@ theorem flagStep_linearEquiv_image {Ω F F' : Type} [Field Ω] [AddCommGroup F] 
   rw [Submodule.map_span, ← Set.image_comp]
   rfl
 
+/- English proof (translation)
+Introduce `X X' Ω₀ Ω _ _ ξ ξ' f E F F' _ _ _ _ _ _ L j Φ T r b h`. Unfold `Lat.IsFlagVBOn at h ⊢`. Introduce `p hp`. Take `⟨U, hpU, c, hc, hframe⟩` from `h p hp`. Use `⟨U, hpU, fun k => Φ (c k), fun i => ?_, fun q hq hqU => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[flagStep_linearEquiv_image, flagStep_linearEquiv_image, hc i]`. Establish `hq'` using `hframe q hq hqU`. Unfold `Lat.IsFrameAt at hq' ⊢`. Take `⟨hli, hsp⟩` from `hq'`. Use `⟨hli.map' Φ.toLinearMap Φ.ker, ?_⟩` and prove the remaining obligations.
+
+Set `φ : F →ₗ[regAt ξ' q] F'` to `Φ.toLinearMap.restrictScalars (regAt ξ' q)`. Unfold `Lat.pull at hsp ⊢`. Rewrite using `[show Set.range (fun k => Φ (c k)) = φ '' Set.range c from Set.range_comp φ c]`. Rewrite using `[← Submodule.map_span φ, ← hsp, Submodule.map_span]`. Use `congr 1`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, e, he, rfl⟩`. Conclude with `⟨j e, ⟨h, e, he, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨h, e, he, rfl⟩, rfl⟩`.
+
+Conclude with `⟨h, e, he, rfl⟩`.
+-/
 theorem isFlagVBOn_pull_map : ∀ (X X' : Scheme.{0}) (Ω₀ Ω : Type) [Field Ω₀] [Field Ω]
     (ξ : Spec (CommRingCat.of Ω₀) ⟶ X) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (f : X' ⟶ X) (E F F' : Type)
     [AddCommGroup E] [Module Ω₀ E] [AddCommGroup F] [Module Ω F] [AddCommGroup F'] [Module Ω F']

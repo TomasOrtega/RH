@@ -18,10 +18,16 @@ variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module �
 def Pres (R : Submodule ℂ (V × W)) (S : Module.End ℂ V) (T : Module.End ℂ W) : Prop :=
   ∀ x y, (x, y) ∈ R → (S x, T y) ∈ R
 
+/- English proof (translation)
+Introduce `x y hxy` and use `h _ _ (h' x y hxy)`.
+-/
 theorem pres_mul {R : Submodule ℂ (V × W)} {S S' : Module.End ℂ V} {T T' : Module.End ℂ W}
     (h : Pres R S T) (h' : Pres R S' T') : Pres R (S * S') (T * T') :=
   fun x y hxy => h _ _ (h' x y hxy)
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _ => by intro x y hxy simpa using hxy | t + 1, S, T, h => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons] exact pres_mul (h 0) (pres_ofFn _ _ fun k => h k.succ)`.
+-/
 theorem pres_ofFn {R : Submodule ℂ (V × W)} : ∀ {t : ℕ} (S : Fin t → Module.End ℂ V)
     (T : Fin t → Module.End ℂ W), (∀ k, Pres R (S k) (T k)) →
     Pres R (List.ofFn S).prod (List.ofFn T).prod
@@ -32,6 +38,15 @@ theorem pres_ofFn {R : Submodule ℂ (V × W)} : ∀ {t : ℕ} (S : Fin t → Mo
     rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons]
     exact pres_mul (h 0) (pres_ofFn _ _ fun k => h k.succ)
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `key : ∀ σ : Equiv.Perm (Fin t), Pres R (((Equiv.Perm.sign σ : ℤ) : Module.End ℂ V) * (List.ofFn fun k : Fin t => Tm E (u - (k : ℂ)) (a (σ k)) (b k)).prod) (((Equiv.Perm.sign σ : ℤ) : Module.End ℂ W) * (List.ofFn fun k : Fin t => Tm F (u - (k : ℂ)) (a (σ k)) (b k)).prod)`. Introduce `σ`. Use `pres_mul ?_ (pres_ofFn _ _ fun k => ?_)` and prove the remaining obligations. Introduce `x y hxy`.
+
+Use `R.smul_mem (((Equiv.Perm.sign σ : ℤ) : ℂ)) hxy` as an intermediate fact. Simplify `this` using `[Module.End.intCast_apply, Int.cast_smul_eq_zsmul]`. Introduce `x y hxy`. Establish `h1` using `h (σ k) k x y hxy`. Unfold `Tm`.
+
+Use `split_ifs with hc`. Establish `h2` using `R.smul_mem (u - (k : ℂ)) hxy`. Use `R.add_mem h2 h1` as an intermediate fact. Conclude with `this`. Simplify using `using h1`.
+
+Use `R.sum_mem (t := univ) (fun σ _ => key σ x y hxy)` as an intermediate fact. Unfold `qminor`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, prod_mk_sum]`. Conclude with `this`.
+-/
 theorem pres_qminor {n t : ℕ} {R : Submodule ℂ (V × W)} (E : Fin n → Fin n → Module.End ℂ V)
     (F : Fin n → Fin n → Module.End ℂ W) (a b : Fin t → Fin n)
     (h : ∀ i j, Pres R (E (a i) (b j)) (F (a i) (b j))) (u : ℂ) :
@@ -60,10 +75,16 @@ theorem pres_qminor {n t : ℕ} {R : Submodule ℂ (V × W)} (E : Fin n → Fin 
   rw [LinearMap.sum_apply, LinearMap.sum_apply, prod_mk_sum]
   exact this
 
+/- English proof (translation)
+Use `Finset.orderEmbOfFin_mem (univ.filter fun a => ε a = s) rfl i` as an intermediate fact. Conclude with `(Finset.mem_filter.1 this).2`.
+-/
 theorem blk_eq {n : ℕ} (ε : Fin n → Bool) (s : Bool) (i : Fin (nb ε s)) : ε (blk ε s i) = s := by
   have := Finset.orderEmbOfFin_mem (univ.filter fun a => ε a = s) rfl i
   exact (Finset.mem_filter.1 this).2
 
+/- English proof (translation)
+The claim follows from `pres_mul (pres_qminor E F _ _ (fun _ _ => h _ _ ((blk_eq ε _ _).trans (blk_eq ε _ _).symm)) _) (pres_qminor E F _ _ (fun _ _ => h _ _ ((blk_eq ε _ _).trans (blk_eq ε _ _).symm)) _)`.
+-/
 theorem pres_zeta {n : ℕ} {R : Submodule ℂ (V × W)} (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V)
     (F : Fin n → Fin n → Module.End ℂ W)
     (h : ∀ c d, ε c = ε d → Pres R (E c d) (F c d)) (u : ℂ) :
@@ -71,6 +92,11 @@ theorem pres_zeta {n : ℕ} {R : Submodule ℂ (V × W)} (ε : Fin n → Bool) (
   pres_mul (pres_qminor E F _ _ (fun _ _ => h _ _ ((blk_eq ε _ _).trans (blk_eq ε _ _).symm)) _)
     (pres_qminor E F _ _ (fun _ _ => h _ _ ((blk_eq ε _ _).trans (blk_eq ε _ _).symm)) _)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h x`. Use `h x (φ x) (by simp)` as an intermediate fact. Simplify using `using this.symm`. Introduce `h x y hxy`.
+
+Establish `: y = φ x` using `by simpa using hxy`. Simplify using `[this, h]`.
+-/
 theorem pres_graph (φ : V →ₗ[ℂ] W) (S : Module.End ℂ V) (T : Module.End ℂ W) :
     Pres φ.graph S T ↔ ∀ x, φ (S x) = T (φ x) := by
   constructor
@@ -93,13 +119,24 @@ def degSub (ε : Fin n → Bool) (V : Type) [AddCommGroup V] [Module ℂ V] (j :
   zero_mem' := fun A _ => rfl
   smul_mem' := fun c x hx A hA => by simp [hx A hA]
 
+/- English proof (translation)
+Introduce `A hA` and use `by simp [hx A hA]`.
+-/
 theorem deg_lift {j : ℕ} (φ : V →ₗ[ℂ] W) {x : Ch ε V} (hx : Deg j x) : Deg j (lift ε φ x) :=
   fun A hA => by simp [hx A hA]
 
+/- English proof (translation)
+Simplify using `[bd, bdA, LinearMap.sum_apply, Finset.sum_apply, ann]`.
+-/
 theorem bd_apply (E : Fin n → Fin n → Module.End ℂ V) (x : Ch ε V) (A : Finset (NC ε)) :
     bd ε E x A = ∑ i : NC ε, E i.1.1 i.1.2 (if i ∈ A then 0 else sg i A • x (insert i A)) := by
   simp [bd, bdA, LinearMap.sum_apply, Finset.sum_apply, ann]
 
+/- English proof (translation)
+Introduce `A hA`. Rewrite using `[bd_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hx _ (by rw [Finset.card_insert_of_notMem h]; omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem deg_bd {j : ℕ} (E : Fin n → Fin n → Module.End ℂ V) {x : Ch ε V} (hx : Deg (j + 1) x) :
     Deg j (bd ε E x) := by
   intro A hA
@@ -110,6 +147,9 @@ theorem deg_bd {j : ℕ} (E : Fin n → Fin n → Module.End ℂ V) {x : Ch ε V
   · rw [hx _ (by rw [Finset.card_insert_of_notMem h]; omega)]
     simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `A`. Rewrite using `[lift_apply, bd_apply, bd_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem lift_bd (φ : V →ₗ[ℂ] W) (E : Fin n → Fin n → Module.End ℂ V) (F : Fin n → Fin n → Module.End ℂ W)
     (h : ∀ a b x, φ (E a b x) = F a b (φ x)) (x : Ch ε V) : lift ε φ (bd ε E x) = bd ε F (lift ε φ x) := by
   funext A
@@ -118,6 +158,9 @@ theorem lift_bd (φ : V →ₗ[ℂ] W) (E : Fin n → Fin n → Module.End ℂ V
   rw [h]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `A`. Simplify using `only [lift_apply]`. Conclude with `(pres_graph φ _ _).1 (pres_qminor E F id id (fun i j => (pres_graph φ _ _).2 (h i j)) u) _`.
+-/
 theorem lift_qdet (φ : V →ₗ[ℂ] W) (E : Fin n → Fin n → Module.End ℂ V) (F : Fin n → Fin n → Module.End ℂ W)
     (h : ∀ a b x, φ (E a b x) = F a b (φ x)) (u : ℂ) (x : Ch ε V) :
     lift ε φ (lift ε (qdet E u) x) = lift ε (qdet F u) (lift ε φ x) := by
@@ -125,6 +168,9 @@ theorem lift_qdet (φ : V →ₗ[ℂ] W) (E : Fin n → Fin n → Module.End ℂ
   simp only [lift_apply]
   exact (pres_graph φ _ _).1 (pres_qminor E F id id (fun i j => (pres_graph φ _ _).2 (h i j)) u) _
 
+/- English proof (translation)
+Take `⟨g, hg, -⟩` from `hG n ε`. Use `(pres_graph (lift ε φ) _ _).1 (pres_zeta ε _ _ (fun c d _ => (pres_graph _ _ _).2 fun x => ?_) u) x` and prove the remaining obligations. Use function extensionality and compare the values at `A`. Simplify using `[Fop, hg, h, map_sum]`.
+-/
 theorem lift_zeta (hG : GFacts) (φ : V →ₗ[ℂ] W) (E : Fin n → Fin n → Module.End ℂ V)
     (F : Fin n → Fin n → Module.End ℂ W)
     (h : ∀ a b x, φ (E a b x) = F a b (φ x)) (u : ℂ) (x : Ch ε V) :
@@ -134,6 +180,11 @@ theorem lift_zeta (hG : GFacts) (φ : V →ₗ[ℂ] W) (E : Fin n → Fin n → 
   funext A
   simp [Fop, hg, h, map_sum]
 
+/- English proof (translation)
+Take `⟨g, hg, -, hc, -⟩` from `hG n ε`. Introduce `A hA`. Simplify using `only [Fop, LinearMap.add_apply, Pi.add_apply, lift_apply, hx A hA, map_zero, zero_add, hg]`. Use `Finset.sum_eq_zero fun B _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : g c d A B = 0`.
+
+Simplify using `[h0]`. Rewrite using `[hx B (by rw [← (hc c d A B h0).1]; exact hA), smul_zero]`.
+-/
 theorem deg_Fop (hG : GFacts) {j : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (c d : Fin n) {x : Ch ε V}
     (hx : Deg j x) : Deg j (Fop ε E c d x) := by
   obtain ⟨g, hg, -, hc, -⟩ := hG n ε
@@ -144,12 +195,20 @@ theorem deg_Fop (hG : GFacts) {j : ℕ} (E : Fin n → Fin n → Module.End ℂ 
   · simp [h0]
   · rw [hx B (by rw [← (hc c d A B h0).1]; exact hA), smul_zero]
 
+/- English proof (translation)
+Use `pres_zeta (R := (degSub ε V j).prod ⊤) ε (Fop ε E) (Fop ε E) (fun c d _ x y hxy => ⟨deg_Fop hG E c d hxy.1, trivial⟩) u x x ⟨hx, trivial⟩` as an intermediate fact. Conclude with `this.1`.
+-/
 theorem deg_zeta (hG : GFacts) {j : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (u : ℂ) {x : Ch ε V}
     (hx : Deg j x) : Deg j (zeta ε (Fop ε E) u x) := by
   have := pres_zeta (R := (degSub ε V j).prod ⊤) ε (Fop ε E) (Fop ε E)
     (fun c d _ x y hxy => ⟨deg_Fop hG E c d hxy.1, trivial⟩) u x x ⟨hx, trivial⟩
   exact this.1
 
+/- English proof (translation)
+Establish `: ∀ j : NC ε, ann j x = 0`. Introduce `j`. Use function extensionality and compare the values at `A`. Distinguish the cases in `h : j ∈ A`. Simplify using `[ann, h]`.
+
+Simplify using `[ann, h, hx (insert j A) (by rw [Finset.card_insert_of_notMem h]; omega)]`. Simplify using `[Gop, LinearMap.sum_apply, this]`.
+-/
 theorem Gop_deg_zero (c d : Fin n) {x : Ch ε V} (hx : Deg 0 x) : Gop ε c d x = 0 := by
   have : ∀ j : NC ε, ann j x = 0 := by
     intro j
@@ -159,6 +218,11 @@ theorem Gop_deg_zero (c d : Fin n) {x : Ch ε V} (hx : Deg 0 x) : Gop ε c d x =
     · simp [ann, h, hx (insert j A) (by rw [Finset.card_insert_of_notMem h]; omega)]
   simp [Gop, LinearMap.sum_apply, this]
 
+/- English proof (translation)
+Use `pres_zeta (R := (degSub ε V 0).prod ⊤ ⊓ (LinearMap.proj (R := ℂ) (φ := fun _ => V) ∅).graph) ε (Fop ε E) E (fun c d _ x y hxy => by` as an intermediate fact. Establish `h1 : Deg 0 x` using `hxy.1.1`. Establish `h2 : y = x ∅` using `by simpa using hxy.2`. Establish `h3 : Fop ε E c d x = lift ε (E c d) x` using `by simp [Fop, Gop_deg_zero c d h1]`. Use `⟨⟨?_, trivial⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h3]`. Conclude with `deg_lift _ h1`. Simplify using `[h3, h2]) u x (x ∅) ⟨⟨hx, trivial⟩, by simp⟩`. Establish `h` using `this.2`. Simplify using `using Eq.symm h`.
+-/
 theorem zeta_deg_zero (E : Fin n → Fin n → Module.End ℂ V) (u : ℂ) {x : Ch ε V}
     (hx : Deg 0 x) : zeta ε (Fop ε E) u x ∅ = zeta ε E u (x ∅) := by
   have := pres_zeta (R := (degSub ε V 0).prod ⊤ ⊓ (LinearMap.proj (R := ℂ) (φ := fun _ => V) ∅).graph)
@@ -172,17 +236,50 @@ theorem zeta_deg_zero (E : Fin n → Fin n → Module.End ℂ V) (u : ℂ) {x : 
   have h := this.2
   simpa using Eq.symm h
 
+/- English proof (translation)
+The claim follows from `(pres_graph (bd ε E) _ _).1 (pres_zeta ε _ _ (fun c d hcd => (pres_graph _ _ _).2 fun x => (LinearMap.congr_fun ((hB n ε V E hE).2 c d hcd).1.eq x).symm) u) x`.
+-/
 theorem bd_zeta (hB : BdFacts) (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (u : ℂ) (x : Ch ε V) :
     bd ε E (zeta ε (Fop ε E) u x) = zeta ε (Fop ε E) u (bd ε E x) :=
   (pres_graph (bd ε E) _ _).1 (pres_zeta ε _ _ (fun c d hcd => (pres_graph _ _ _).2 fun x =>
     (LinearMap.congr_fun ((hB n ε V E hE).2 c d hcd).1.eq x).symm) u) x
 
+/- English proof (translation)
+The claim follows from `(lift_bd (qdet E u) E E (fun a b v => LinearMap.congr_fun (Formalism.REAL.qDetCentral _ n E hE u a b) v) x).symm`.
+-/
 theorem bd_qdet (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (u : ℂ) (x : Ch ε V) :
     bd ε E (lift ε (qdet E u) x) = lift ε (qdet E u) (bd ε E x) :=
   (lift_bd (qdet E u) E E (fun a b v => LinearMap.congr_fun (Formalism.REAL.qDetCentral _ n E hE u a b) v) x).symm
 
 end Chains
 
+/- English proof (translation)
+Introduce `n ε V _ _ E hE u j`. Proceed by induction on `j generalizing V with`. Consider the case `zero`. Introduce `x hx _`. Take `⟨w, hw⟩` from `h0 n ε V E hE u (x ∅)`.
+
+Set `w' : Ch ε V` to `fun A => ∑ i : NC ε, if A = {i} then w i else 0`. Establish `hw' : Deg (0 + 1) w'`. Introduce `A hA`. Use `Finset.sum_eq_zero fun i _ => if_neg ?_` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Simplify using `at hA`. Use `⟨w', hw', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `A`. Distinguish the cases in `hA : A = ∅`. Substitute `hA` using the available equality.
+
+Rewrite using `[Pi.sub_apply, lift_apply, zeta_deg_zero E u hx, hw, bd_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[sg, w']`. Establish `hc : A.card ≠ 0` using `by simpa using hA`. Rewrite using `[Pi.sub_apply, deg_lift _ hx A hc, deg_zeta hG E u hx A hc, deg_bd E hw' A hc, sub_zero]`.
+
+Consider the case `succ j ih`. Introduce `x hx hbx`. Take `⟨Y, _, _, EY, π, hY, hs, hπ, hac⟩` from `hC n ε V E hE`. Establish `hK : ∀ a b, ∀ y ∈ LinearMap.ker π, EY a b y ∈ LinearMap.ker π`. Introduce `a b y hy`.
+
+Rewrite `hy`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hπ, hy, map_zero]`. Set `EK : Fin n → Fin n → Module.End ℂ (LinearMap.ker π)` to `fun a b => (EY a b).restrict (hK a b)`. Establish `hι : ∀ a b y, (LinearMap.ker π).subtype (EK a b y) = EY a b ((LinearMap.ker π).subtype y)` using `fun _ _ _ => rfl`. Establish `hEK : GlRel EK`.
+
+Introduce `a b c d`. Use extensionality with `y`. Use `LinearMap.congr_fun (hY a b c d) (y : Y)` as an intermediate fact. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa [EK] using this`. Set `x' : Ch ε Y` to `fun A => if A.card = j + 1 then (hs (x A)).choose else 0`.
+
+Establish `hx' : Deg (j + 1) x'` using `fun A hA => if_neg hA`. Establish `hπx : lift ε π x' = x`. Use function extensionality and compare the values at `A`. Distinguish the cases in `hA : A.card = j + 1`. Simplify using `only [lift_apply, x', if_pos hA]`.
+
+Conclude with `(hs (x A)).choose_spec`. Simplify using `[x', hA, hx A hA]`. Establish `hy : ∀ A, bd ε EY x' A ∈ LinearMap.ker π`. Introduce `A`. Use `congrFun (lift_bd π EY E hπ x') A` as an intermediate fact.
+
+Rewrite `this` using `[hπx, hbx]`. Conclude with `this`. Set `y : Ch ε (LinearMap.ker π)` to `fun A => ⟨_, hy A⟩`. Establish `hιy : lift ε (LinearMap.ker π).subtype y = bd ε EY x'` using `rfl`. Establish `hyd : Deg j y` using `fun A hA => Subtype.ext (deg_bd EY hx' A hA)`.
+
+Establish `hyb : bd ε EK y = 0`. Use `lift_bd _ EK EY hι y` as an intermediate fact. Rewrite `this` using `[hιy, show bd ε EY (bd ε EY x') = 0 from LinearMap.congr_fun (hB n ε Y EY hY).1 x']`. Use function extensionality and compare the values at `A`. Conclude with `Subtype.ext (congrFun this A)`.
+
+Take `⟨w, hw, hDw⟩` from `ih _ EK hEK y hyd hyb`. Establish `hpush` using `congrArg (lift ε (LinearMap.ker π).subtype) hDw`. Rewrite `hpush` using `[map_sub, lift_qdet _ EK EY hι, lift_zeta hG _ EK EY hι, lift_bd _ EK EY hι, hιy]`. Take `⟨t, ht, hbt⟩` from `hac j (lift ε (qdet EY u) x' - zeta ε (Fop ε EY) u x' - lift ε (LinearMap.ker π).subtype w) ((degSub ε Y (j + 1)).sub_mem ((degSub ε Y (j + 1)).sub_mem (deg_lift _ hx') (deg_zeta hG EY u hx')) (deg_lift _ hw)) (by rw [map_sub, map_sub, bd_qdet EY hY, bd_zeta hB EY hY, hpush, sub_ …`. Use `⟨lift ε π t, deg_lift _ ht, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : lift ε π (lift ε (LinearMap.ker π).subtype w) = 0`. Use function extensionality and compare the values at `A`. Conclude with `(w A).2`. Rewrite using `[← lift_bd π EY E hπ, hbt, map_sub, map_sub, h2, lift_qdet π EY E hπ, lift_zeta hG π EY E hπ, hπx, sub_zero]`.
+-/
 theorem co_of (hB : BdFacts) (hG : GFacts) (hC : Cover) (h0 : CapelliDeterminantBlockProduct) : CO := by
   intro n ε V _ _ E hE u j
   induction j generalizing V with

@@ -15,6 +15,19 @@ namespace GlobalTheory.Mem.R3.LiftInertChi
 
 open GlobalTheory.FinZeta.LevelOff in
 
+/- English proof (translation)
+Use `set M : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) := (x : GL (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)).val with hM`. Use `set Sb : Finset (HeightOneSpectrum (𝓞 D.host.F)) := {PP.under (𝓞 D.host.F)} with hSb`. Use `set b : FiniteAdeleRing (𝓞 D.host.F) D.host.F := 1 - GlobalTheory.AdeleIdem.ind Sb with hbdef`. Establish `hb : b ∈ Formalism.UG.intAd D.host.F` using `sub_mem (one_mem _) (GlobalTheory.AdeleIdem.ind_mem Sb)`. Establish `hz : ∀ (i j : Fin V.rank), ∀ w ∈ Sb, Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F w) (AlgHom.id D.host.F D.host.E) ((M - 1) i j) = 0`.
+
+Introduce `i j w hw`. Rewrite `hw` using `[Finset.mem_singleton]`. Substitute `hw` using the available equality. Establish `h1` using `congrFun (congrFun (hx (PP.under (𝓞 D.host.F)) hPP) i) j`. Rewrite `h1` using `[Matrix.map_apply]`.
+
+Rewrite using `[Matrix.sub_apply, map_sub, h1, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `GlobalTheory.LevSplit.redFn_eq_one β PP _ hS ⟨_, GlobalTheory.AdeleIdem.one_tmul_mem hb⟩ ?_ ?_` and prove the remaining obligations. Use `GlobalTheory.AdeleIdem.resS_eq_zero PP (PP.under (𝓞 D.host.F)) rfl hb ?_` and prove the remaining obligations. Simplify using `[hbdef, GlobalTheory.AdeleIdem.ind_apply, hSb]`.
+
+Use extensionality with `i j`. Establish `h2` using `one_sub_ind_tmul_mul Sb _ (hz i j)`. Establish `e1 : ((Formalism.UG.bc (swapAE D) (x : GL (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E))).val - 1) i j = swapAE D ((M - 1) i j)`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, RingHom.map_sub]`. Use `congr 1`.
+
+Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Conclude with `(RingHom.map_one _).symm`. Conclude with `(RingHom.map_zero _).symm`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, e1]`.
+
+Use `show swapAE D (b ⊗ₜ[D.host.F] (1 : D.host.E)) * _ = _`. Rewrite using `[← RingHom.map_mul, h2]`.
+-/
 theorem redFn_eq_one_of_locAt {D : D7} {V : HSp D} (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (x : Bridge.Gf V)
     (hS : Formalism.UG.bc (swapAE D) (x : GL (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) ∈ Formalism.L2.DIV.St β)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (hx : GlobalTheory.IndefiniteRowSideFullHecke.HeckeIntertwinersInert.LocAt V v x) (PP : Formalism.L2.DIV.Pl D.host.E)
@@ -52,6 +65,11 @@ theorem redFn_eq_one_of_locAt {D : D7} {V : HSp D} (β : GL (Fin V.rank) (Formal
     show swapAE D (b ⊗ₜ[D.host.F] (1 : D.host.E)) * _ = _
     rw [← RingHom.map_mul, h2]
 
+/- English proof (translation)
+Take `⟨e, f, g, hpi, hg, hx, hs⟩` from `h`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨-, ε, hε, rfl⟩` from `GlobalTheory.IdemSupport.of_isPrimeIdem hΦ hpi`. Establish `h1` using `(GlobalTheory.HeckeRowsCompare.suppF_iff V hε hg).1 hs`. Rewrite `h1` using `[GlobalTheory.HeckeRowsCompare.mem_locGrp]`.
+
+Establish `h2 : GlobalTheory.HeckeRowsCompare.fin V g = x` using `Subtype.ext hx.symm`. Rewrite `h1` using `[h2]`. Conclude with `(GlobalTheory.HeckeRowsCompare.locAt_iff V _ x).2 h1`.
+-/
 theorem locAt_of_isLocElt {D : D7} (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.E) (x : Bridge.Gf V)
     (h : Formalism.IndefR.Links.IsLocElt V P x) : GlobalTheory.IndefiniteRowSideFullHecke.HeckeIntertwinersInert.LocAt V (P.under (𝓞 D.host.F)) x := by
   obtain ⟨e, f, g, hpi, hg, hx, hs⟩ := h
@@ -63,6 +81,25 @@ theorem locAt_of_isLocElt {D : D7} (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.E
   rw [h2] at h1
   exact (GlobalTheory.HeckeRowsCompare.locAt_iff V _ x).2 h1
 
+/- English proof (translation)
+Introduce `X px I hX U Xg tr L eG hI hV hL hG cV i t q j hj`. Use `set Q0 : Formalism.L2.DIV.Pl X.toD7.host.E := (q.1.1 : PlI X.B px).1 with hQ0`. Establish `e : (LiftBrg.envL X I hX U Xg tr L cV i t).lev.χ j = Formalism.L2.DIV.levFn (L.βV i) (flag1L (L.datVt i t)) (Formalism.UG.bc (swapAE X.toD7) (j : Bridge.Gf (Vc X.toD7 i)).1)` using `rfl`. Establish `hm : Formalism.UG.bc (swapAE X.toD7) (j : Bridge.Gf (Vc X.toD7 i)).1 ∈ Formalism.L2.DIV.lev X.toD7.sp.cm (Vc X.toD7 i).gram (L.βV i) (flag1L (L.datVt i t))` using `j.2`. Establish `hSt` using `Formalism.L2.DIV.parLev_St (Formalism.L2.DIV.lev_le_parLev hm)`.
+
+Establish `hloc` using `locAt_of_isLocElt (Vc X.toD7 i) _ _ hj`. Establish `hoff : Q0 ∉ Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1`. Establish `h` using `q.1.2`. Conclude with `fun hm => h (Or.inr hm)`. Establish `hconj : Formalism.DivisionValues.conjPl Q0 = Q0`.
+
+Rewrite using `[← GlobalTheory.PlaceDict.conjP_eq_conjPl X.toD7]`. Conclude with `(q.1.1 : PlI X.B px).2.1`. Establish `hunder : ∀ PP : Formalism.L2.DIV.Pl X.toD7.host.E, PP ∈ Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1 → PP.under (𝓞 X.toD7.host.F) ≠ Q0.under (𝓞 X.toD7.host.F)`. Introduce `PP hPP hu`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq hu with h | h` into its components or cases.
+
+Conclude with `hoff (h ▸ hPP)`. Conclude with `hoff ((h.trans hconj) ▸ hPP)`. Establish `hred : ∀ PP ∈ Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1, Formalism.L2.DIV.redFn (L.βV i) PP (Formalism.UG.bc (swapAE X.toD7) (j : Bridge.Gf (Vc X.toD7 i)).1) = 1` using `fun PP hPP => redFn_eq_one_of_locAt _ _ hSt _ hloc PP (hunder PP hPP)`. Establish `hPg : ∀ PP ∈ (flag1L (L.datVt i t)).Pg, PP ∈ Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1`. Introduce `PP hPP`.
+
+Rewrite `hPP` using `[show (flag1L (L.datVt i t)).Pg = L.Pg from rfl, hL.Pg]`. Conclude with `Finset.mem_union.2 (Or.inl hPP)`. Establish `hQ : ∀ PP ∈ (flag1L (L.datVt i t)).Q, PP ∈ Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1`. Introduce `PP hPP`. Rewrite `hPP` using `[show (flag1L (L.datVt i t)).Q = L.Q t from rfl, hL.Q t]`.
+
+Establish `e4 : I.Q (ixOf I U t) = Formalism.L2.Col.QE I.sel t.1`. Simplify using `only [ColIn.Q, tup_ixOf]`. Rewrite `hPP` using `[e4]`. Conclude with `Finset.mem_union.2 (Or.inr hPP)`. Establish `hr1 : Formalism.L2.DIV.rTup (L.βV i) (flag1L (L.datVt i t)) (Formalism.UG.bc (swapAE X.toD7) (j : Bridge.Gf (Vc X.toD7 i)).1) = 1`.
+
+Use function extensionality and compare the values at `PP`. Use `show Formalism.L2.DIV.upperLeftBlock _ (Formalism.L2.DIV.redFn _ PP.1 _) = 1`. Rewrite using `[hred PP.1 (hPg PP.1 PP.2)]`. Conclude with `Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one _ _`. Rewrite using `[e]`.
+
+Unfold `Formalism.L2.DIV.levFn`. Rewrite using `[hr1, Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one, one_mul, Finset.prod_eq_one, Finset.prod_eq_one, one_mul]`. Introduce `PP hPP`. Rewrite using `[hred PP (hQ PP hPP), Formalism.L2.DIV.dBlk, Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one, map_one]`. Introduce `PP hPP`.
+
+Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hred PP (hPg PP hPP), Formalism.L2.DIV.dBlk, Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one, map_one]`.
+-/
 theorem levChi_eq_one_of_isLocElt : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r), I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → ∀ (cV : ∀ i, CoefA (Vc X.toD7 i)) (i : Fin X.toD7.R.m) (t : TupU I U) (q : ↑((famR X I hX U Xg tr).okI t) × List ℕ) (j : (LiftBrg.envL X I hX U Xg tr L cV i t).lev.J),
     IsLocElt (Vc X.toD7 i) (q.1.1 : PlI X.B px).1 (j : Bridge.Gf (Vc X.toD7 i)) → (LiftBrg.envL X I hX U Xg tr L cV i t).lev.χ j = 1 := by
   intro X px I hX U Xg tr L eG hI hV hL hG cV i t q j hj

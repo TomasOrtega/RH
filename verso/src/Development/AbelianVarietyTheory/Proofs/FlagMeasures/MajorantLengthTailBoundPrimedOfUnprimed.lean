@@ -38,16 +38,25 @@ def swapS {k r : ℕ} {W : LocW k r} (A : LocS W) : LocS (swapW W) where
   cN := A.cN
   deg := A.deg
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14⟩` from `h`. Conclude with `⟨h2, h1, h4, h3, h6, h5, h7, h10, h11, h8, h9, h12, h14, h13⟩`.
+-/
 theorem goodW_swap {D : D7} {τ : D.what₂.Tau} {w w' : D.what₂.Word} {θ : ℝ} {W : LocW D.R.k D.R.rS}
     (h : GoodW D τ w w' θ W) : GoodW D τ w' w θ (swapW W) := by
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14⟩ := h
   exact ⟨h2, h1, h4, h3, h6, h5, h7, h10, h11, h8, h9, h12, h14, h13⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩` from `h`. Conclude with `⟨h1, h2, h4, h3, h5, h6, h7, h8, h10, h9, h11⟩`.
+-/
 theorem goodS_swap {D : D7} {W : LocW D.R.k D.R.rS} {lam : Fin (2 * D.R.rS + D.R.k + 1) → ℝ} {A : LocS W}
     (h : GoodS D lam A) : GoodS D lam (swapS A) := by
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩ := h
   exact ⟨h1, h2, h4, h3, h5, h6, h7, h8, h10, h9, h11⟩
 
+/- English proof (translation)
+Introduce `D τ w θ lam q H₁ h W hW A hA`. Conclude with `h (swapW W) (goodW_swap hW) (swapS A) (goodS_swap hA)`.
+-/
 theorem tailBd_primed_of_unprimed : ∀ (D : D7) (τ : D.what₂.Tau) (w : D.what₂.Word) (θ : ℝ) (lam : Fin (2 * D.R.rS + D.R.k + 1) → ℝ) (q : ℕ) (H₁ : ℝ), (∀ (W : LocW D.R.k D.R.rS), GoodW D τ w w θ W → ∀ A : LocS W, GoodS D lam A → TailBd W.z W.νS A.Φ q H₁) → ∀ (W : LocW D.R.k D.R.rS), GoodW D τ w w θ W → ∀ A : LocS W, GoodS D lam A → TailBd W.z' W.νS' A.Φ' q H₁ := by
   intro D τ w θ lam q H₁ h W hW A hA
   exact h (swapW W) (goodW_swap hW) (swapS A) (goodS_swap hA)

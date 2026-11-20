@@ -8,6 +8,13 @@ open CategoryTheory TensorProduct
 namespace UpperTheory.PicD.Data
 variable (P : Data)
 
+/- English proof (translation)
+Take `⟨C, i1, i2, hff, het, w, g, t, ht⟩` from `h`. Use `⟨C, i1, i2, hff, het, w, g, t ∘ₗ e.symm.toLinearMap, ?_⟩` and prove the remaining obligations. Establish `hfun : ⇑(LinearMap.liftBaseChange C (t ∘ₗ e.symm.toLinearMap)) = ⇑(LinearMap.liftBaseChange C t) ∘ ⇑(LinearEquiv.baseChange A C M' M e.symm)`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul c m => simp [LinearMap.liftBaseChange_tmul]`. Consider the case `add x y hx hy`. Simplify using `only [Function.comp_apply, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+
+Use `Triv.mk ht.dw ht.hg (fun m => ht.ht (e.symm m)) ?_` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `ht.bij.comp (LinearEquiv.bijective _)`.
+-/
 theorem Rel.congr {A : Type} [CommRing A] {z : P.S1.obj (CommRingCat.of A)} {M M' : Type} [AddCommGroup M] [Module A M]
     [AddCommGroup M'] [Module A M'] (h : P.Rel z M) (e : M ≃ₗ[A] M') : P.Rel z M' := by
   obtain ⟨C, i1, i2, hff, het, w, g, t, ht⟩ := h
@@ -25,6 +32,17 @@ theorem Rel.congr {A : Type} [CommRing A] {z : P.S1.obj (CommRingCat.of A)} {M M
   rw [hfun]
   exact ht.bij.comp (LinearEquiv.bijective _)
 
+/- English proof (translation)
+Establish `hex : ∀ z : Z, ∃ N : CommRing.Pic A, P.Rel z.1 N`. Introduce `z`. Take `⟨M, i1, i2, hinv, hrel⟩` from `UpperTheory.exists_invertibleModule_of_locallyTrivial_cocycle P A z.1 (hZ z.1 z.2)`. Conclude with `⟨CommRing.Pic.mk A M, Rel.congr P hrel (CommRing.Pic.mk.linearEquiv A M).symm⟩`. Use `choose f hf using hex`.
+
+Establish `hone : ∀ z : Z, f z = 1 ↔ P.Rel z.1 A`. Introduce `z`. Rewrite using `[← CommRing.Pic.mk_eq_self (M := f z), CommRing.Pic.mk_eq_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e⟩`.
+
+Conclude with `Rel.congr P (hf z) e`. Introduce `hA`. Conclude with `UpperTheory.invertibleModule_equiv_of_same_cocycle P A z.1 _ _ (hf z) hA`. Establish `hmul : ∀ x y : Z, f (x + y) = f x * f y`. Introduce `x y`.
+
+Rewrite using `[CommRing.Pic.mul_eq_tensor]`. Conclude with `((CommRing.Pic.mk_eq_iff).mpr (UpperTheory.invertibleModule_equiv_of_same_cocycle P A (x + y).1 _ _ (UpperTheory.rel_add_tensorProduct_of_rel P A x.1 y.1 _ _ (hf x) (hf y)) (hf (x + y)))).symm`. Use `⟨{ toFun := fun z => Additive.ofMul (f z), map_zero' := ?_, map_add' := ?_ }, ?_⟩` and prove the remaining obligations. Use `show Additive.ofMul (f 0) = Additive.ofMul 1`. Use `congr 1`.
+
+Conclude with `(hone 0).mpr ((UpperTheory.torsorRel_self_iff_exists_coboundary P A _).mpr ⟨0, by simp⟩)`. Introduce `x y show Additive.ofMul (f (x + y)) = Additive.ofMul (f x * f y)`. Rewrite using `[hmul]`. Introduce `z show Additive.ofMul (f z) = 0 ↔ _`. Rewrite using `[ofMul_eq_zero, hone, UpperTheory.torsorRel_self_iff_exists_coboundary]`.
+-/
 theorem main (A : Type) [CommRing A] (Z : AddSubgroup (P.S1.obj (CommRingCat.of A))) (hZ : ∀ z ∈ Z, P.LocEx z) :
     ∃ φ : Z →+ Additive (CommRing.Pic A), ∀ z : Z, φ z = 0 ↔ ∃ y, P.dd A y = z.1 := by
   classical

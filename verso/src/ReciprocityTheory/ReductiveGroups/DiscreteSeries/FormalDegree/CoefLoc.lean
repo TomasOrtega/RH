@@ -20,6 +20,9 @@ def CoefWeightedLoc : Prop :=
               (4 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 * Real.sqrt (2 * ((r + 1 : ℕ) : ℝ))))
           ∂(Formalism.REAL.muG (Formalism.MainNotions.CayleySignature.eps48 k r)) < ⊤
 
+/- English proof (translation)
+Introduce `k r v b hlam hgap H _ _ σ hDS w hw`. Take `⟨h, hg, hthr⟩` from `cayley_weight_gap k r v b hlam hgap`. Conclude with `coefWeightedN (Formalism.MainNotions.CayleySignature.eps48 k r) (Formalism.MainNotions.CayleySignature.lam48 k r v b) σ hlam hDS w hw h hg _ (by positivity) hthr _`.
+-/
 theorem coefWeightedLoc : CoefWeightedLoc := by
   intro k r v b hlam hgap H _ _ σ hDS w hw
   obtain ⟨h, hg, hthr⟩ := cayley_weight_gap k r v b hlam hgap

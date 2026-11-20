@@ -22,6 +22,13 @@ namespace GlobalTheory.WatType
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hk`. Apply `hx` to reduce the goal to its premises. Establish `h0 : R.gW i σ g x = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hg i σ g x, map_zero]`.
+
+Use extensionality with `v h`. Use `show actG0 _ _ _ _ _ h = 0`. Unfold `actG0`. Rewrite using `[dif_neg hk]`. Both sides reduce to the same expression.
+
+Establish `: R.gW i σ g⁻¹ (R.gW i σ g x) = x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← this, h0, map_zero]`.
+-/
 theorem exists_lift (R : RealDat D A Ks) (hg : R.models_gW) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ)
     (hinj : Function.Injective (R.HW i σ).e) {x : (R.HW i σ).H} (hx : x ≠ 0) (g : G) :
     ∃ κ, IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) κ := by
@@ -39,6 +46,21 @@ theorem exists_lift (R : RealDat D A Ks) (hg : R.models_gW) (i : Fin D.R.m) (σ 
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
   rw [← this, h0, map_zero]
 
+/- English proof (translation)
+Establish `hx : (R.HW i σ).e x ∈ R.Wall i σ` using `(hW i σ).2.1 ▸ LinearMap.mem_range_self _ x`. Unfold `RealDat.Wall at hx`. Unfold `RealDat.Wat`. Rewrite using `[mem_goodPart]`. Rewrite `hx`, the goal using `[GlobalTheory.MultMem.mem_mult_iff]`.
+
+Use `and_congr ?_ ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h1 g`. Distinguish the cases in `h0 : x = 0`. Simplify using `[h0]`.
+
+Use extensionality with `v h`. Establish `hmem : R.eG g ∈ (R.levL F b σ).H` using `by show R.eG.symm (R.eG g) ∈ (F.lvl b).P`. Rewrite using `[MulEquiv.symm_apply_apply]`. Conclude with `g.2`. Establish `h2` using `GlobalTheory.LevelRows.levelType_eigenfunction_of_liftable_element (V := Wc D i) (β := R.βW i) (L := R.datWp i R.triv) (P := R.levL F b σ) (F := (R.HW i σ).e x v) (fun κ hκ h => h1.lev v κ hκ h) ⟨R.eG g, hmem⟩ (exists_lift R hg i σ (hW i σ).1 h0 g)`.
+
+Establish `h3 : (R.eG.symm.toMonoidHom.subgroupComap (F.lvl b).P) ⟨R.eG g, hmem⟩ = g` using `Subtype.ext (R.eG.symm_apply_apply g)`. Use `(congrFun h2 h).trans ?_` and prove the remaining obligations. Use `show σ (((F.lvl b).ψ⁻¹ ((R.eG.symm.toMonoidHom.subgroupComap (F.lvl b).P) ⟨R.eG g, hmem⟩) : D.what₂.LLˣ) : D.what₂.LL) * _ = _`. Rewrite using `[h3]`. Both sides reduce to the same expression.
+
+Introduce `h`. Use `⟨hx.aut, hx.cusp, fun v => ?_, hx.equiv, hx.cont⟩` and prove the remaining obligations. Establish `hP : IsPLevel (Wc D i) (R.βW i) (R.datWp i R.triv) (R.levL F b σ) ((R.HW i σ).e x v)`. Use `⟨fun κ hκ y => hx.lev v κ hκ y, fun p => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun z : MMap (R.MW i σ) => z v) (h ⟨R.eG.symm p.1, p.2⟩)`.
+
+Establish `h2 : R.eG (R.eG.symm p.1) = p.1` using `R.eG.apply_symm_apply p.1`. Simplify using `only [h2] at h1`. Conclude with `h1`. Conclude with `fun κ hκ y => hP.hasType κ hκ y`. Establish `h3 : ∀ v, R.eWf i σ ((R.HW i σ).e x v) = (∑ g, σ ((idemOf A.X).coeff g) • postOn _ (actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g)) ((R.HW i σ).e x)) v`.
+
+Introduce `v`. Simplify using `only [RealDat.eWf, gaL, RealDat.eC, LinearMap.sum_apply, LinearMap.smul_apply, MultilinearMap.sum_apply, MultilinearMap.smul_apply, postOn_apply]`. Both sides reduce to the same expression. Simplify using `only [h3]`. Conclude with `⟨fun h => MultilinearMap.ext h, fun h v => by rw [h]⟩`.
+-/
 theorem mem_wat_iff (R : RealDat D A Ks) (F : Face D A) (hg : R.models_gW) (hW : R.models_HW) (b : Bool) (i : Fin D.R.m)
     (σ : D.what₂.LL →+* ℂ) (x : (R.HW i σ).H) :
     (R.HW i σ).e x ∈ R.Wat i σ (R.levL F b σ) ↔
@@ -86,6 +108,11 @@ theorem mem_wat_iff (R : RealDat D A Ks) (F : Face D A) (hg : R.models_gW) (hW :
     simp only [h3]
     exact ⟨fun h => MultilinearMap.ext h, fun h v => by rw [h]⟩
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F s _ hC b i x`. Establish `hW` using `hC.models.HW`. Establish `hg` using `hC.models.gW`. Establish `hinj` using `(hW i (sg0 D A)).1`. Rewrite using `[mem_wat_iff R F hg hW, and_comm]`.
+
+Use `and_congr ?_ (forall_congr' fun p => ?_)` and prove the remaining obligations. Rewrite using `[← hinj.eq_iff]`. Simplify using `only [eH, RealDat.eC, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, hg i _ _ x]`. Rewrite using `[← hinj.eq_iff, hg, map_smul]`.
+-/
 theorem wat_iff_type : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) {s : ℕ}, A.fam.Ok s → Core R F → ∀ (b : Bool) i (x : (R.HW i (sg0 D A)).H), (R.HW i _).e x ∈ R.Wat i (sg0 D A) (R.levL F b (sg0 D A)) ↔ (eH R i x = x ∧ ∀ p : (F.lvl b).P, R.gW i (sg0 D A) p x = sg0 D A ((((F.lvl b).ψ⁻¹ p : D.what₂.LLˣ)) : D.what₂.LL) • x) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F s _ hC b i x
   have hW := hC.models.HW

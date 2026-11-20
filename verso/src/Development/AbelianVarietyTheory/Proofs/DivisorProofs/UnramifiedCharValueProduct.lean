@@ -17,6 +17,11 @@ namespace GlobalTheory.TateUnr
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hl : l.1 = GlobalTheory.Doubling.ideleAt F E v (GlobalTheory.Doubling.unitFin F E v l.1)` using `(ideleAt_unitFin l.2).symm`. Establish `key : ∀ z : Circle, (z : ℂ) = ((Circle.toUnits z : ℂˣ) : ℂ)` using `fun _ => rfl`. Rewrite using `[hl, GlobalTheory.LFun.ideleAt_eq_prod_locIdele, map_prod, key, map_prod, Units.coe_prod]`. Rewrite using `[← Finset.univ_eq_attach]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Establish `hw : w.1.under (𝓞 F) = v` using `mem_aboveF.1 w.2`. Establish `hb` using `valued_compW hw l`. Establish `h` using `locChar_eq_val_zpow (hν w.1 w.2) hb`. Establish `h2 : ((ν (locIdele F w.1 (Units.map (toCompl hw).toMonoidHom (GlobalTheory.Doubling.unitFin F E v l.1))) : Circle) : ℂ) = ((locChar ν w.1 (compW hw l) : ℂˣ) : ℂ)` using `rfl`. Conclude with `h2.trans (congrArg Units.val h)`.
+-/
 theorem chr_eq_prod_val_zpow (ν : Chr F E) (v : Pl F)
     (hν : ∀ w ∈ aboveF (L := E) F v, UnrAt ν w) (l : idelesAt E (evFin F v)) :
     ((ν l.1 : Circle) : ℂ) = ∏ w : aboveF (L := E) F v, ((val ν w.1 ^ ordV v l w : ℂˣ) : ℂ) := by

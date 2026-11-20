@@ -10,5 +10,8 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChernDegree.chernDegreeComplex | exact GlobalTheory.ChernDegree.chernDegreeComplex | (intros; apply GlobalTheory.ChernDegree.chernDegreeComplex <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.degree_eq_integral_topChernForm_complex : GlobalTheory.Published.ChernDegreeComplex := by
   first | exact @GlobalTheory.ChernDegree.chernDegreeComplex | exact GlobalTheory.ChernDegree.chernDegreeComplex | (intros; apply GlobalTheory.ChernDegree.chernDegreeComplex <;> assumption)

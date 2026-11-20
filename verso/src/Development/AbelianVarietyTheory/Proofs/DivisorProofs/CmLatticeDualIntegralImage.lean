@@ -13,9 +13,19 @@ noncomputable def imForm (n : ℕ) (ρ : ℝ) : (Fin n → ℂ) →ₗ[ℝ] (Fin
     (by intro v u u'; simp [add_mul, mul_add, Finset.sum_add_distrib])
     (by intro c v u; simp [Finset.mul_sum, Complex.mul_im, Complex.mul_re]; exact Finset.sum_congr rfl (fun i _ => by ring))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem imForm_apply (n : ℕ) (ρ : ℝ) (v u : Fin n → ℂ) :
     imForm n ρ v u = (∑ j, (ρ : ℂ) * v j * starRingEnd ℂ (u j)).im := rfl
 
+/- English proof (translation)
+Establish `h1` using `h (Complex.I • v)`. Rewrite `h1` using `[imForm_apply, Complex.im_sum]`. Establish `hterm : ∀ j, ((ρ : ℂ) * v j * starRingEnd ℂ ((Complex.I • v) j)).im = -ρ * Complex.normSq (v j)`. Introduce `j`. Simplify using `[Complex.mul_im, Complex.mul_re, Complex.normSq_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[hterm, ← Finset.mul_sum]`. Establish `hs : ∑ j, Complex.normSq (v j) = 0`. Break down `mul_eq_zero.mp h1 with h2 | h2` into its components or cases. Conclude with `absurd (neg_eq_zero.mp h2) hρ`.
+
+Conclude with `h2`. Use function extensionality and compare the values at `j`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => Complex.normSq_nonneg (v i))).mp hs j (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem imForm_nondeg (n : ℕ) (ρ : ℝ) (hρ : ρ ≠ 0) (v : Fin n → ℂ)
     (h : ∀ u, imForm n ρ v u = 0) : v = 0 := by
   have h1 := h (Complex.I • v)
@@ -32,6 +42,29 @@ theorem imForm_nondeg (n : ℕ) (ρ : ℝ) (hρ : ρ ≠ 0) (v : Fin n → ℂ)
   have := (Finset.sum_eq_zero_iff_of_nonneg (fun i _ => Complex.normSq_nonneg (v i))).mp hs j (Finset.mem_univ _)
   simpa using this
 
+/- English proof (translation)
+Use `set B := imForm n ρ with hB`. Take `⟨t, htsub, htspan, htli⟩` from `exists_linearIndependent ℝ (Φ '' L)`. Establish `htfin : t.Finite` using `htli.setFinite`. Use `haveI : Fintype t := htfin.fintype`. Establish `hts : Submodule.span ℝ t = ⊤` using `htspan.trans hspan`.
+
+Establish `hvan : ∀ v, (∀ k : t, B v k = 0) → v = 0`. Introduce `v hv`. Apply `imForm_nondeg n ρ hρ v` to reduce the goal to its premises. Introduce `u`. Establish `hle : Submodule.span ℝ t ≤ LinearMap.ker (B v)` using `Submodule.span_le.mpr (fun k hk => by simpa using hv ⟨k, hk⟩)`.
+
+Establish `hu : u ∈ LinearMap.ker (B v)` using `hle (hts ▸ Submodule.mem_top)`. Simplify using `using hu`. Establish `hpre : ∀ k : t, ∃ x ∈ L, Φ x = k` using `fun k => htsub k.2`. Use `choose xk hxkL hxk using hpre`. Use `choose q hq using hrat`.
+
+Set `Q : Matrix t t ℚ` to `fun k j => q (xk k) (xk j)`. Establish `hBQ : ∀ k j : t, B k j = (Q k j : ℝ)`. Introduce `k j`. Rewrite using `[hB, imForm_apply, ← hxk k, ← hxk j]`. Conclude with `hq _ _`.
+
+Use `choose m hm using fun j : t => hw (xk j) (hxkL j)`. Establish `hBm : ∀ j : t, B w j = (m j : ℝ)`. Introduce `j`. Rewrite using `[hB, imForm_apply, ← hxk j]`. Conclude with `hm j`.
+
+Establish `hinj : Function.Injective (Matrix.vecMulLinear Q)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `c hc`. Establish `hz : ∑ k, (c k : ℝ) • (k : Fin n → ℂ) = 0`. Apply `hvan` to reduce the goal to its premises.
+
+Introduce `j`. Establish `hj` using `congrFun hc j`. Simplify using `only [Matrix.vecMulLinear_apply, Matrix.vecMul, dotProduct, Pi.zero_apply] at hj`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul, hBQ]`.
+
+Conclude with `hj` after adjusting the coercions. Use `(Fintype.linearIndependent_iff.mp htli) (fun k => (c k : ℝ)) hz` as an intermediate fact. Use function extensionality and compare the values at `k`. Conclude with `this k` after adjusting the coercions. Establish `hsurj` using `(LinearMap.injective_iff_surjective.mp hinj)`.
+
+Take `⟨c, hc⟩` from `hsurj (fun j => (m j : ℚ))`. Use `⟨∑ k, c k • xk k, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Apply `hvan` to reduce the goal to its premises. Introduce `j`.
+
+Establish `hj` using `congrFun hc j`. Simplify using `only [Matrix.vecMulLinear_apply, Matrix.vecMul, dotProduct] at hj`. Rewrite using `[map_sub, LinearMap.sub_apply, hBm, map_sum, map_sum, LinearMap.sum_apply]`. Simplify using `only [map_smul, ← Rat.cast_smul_eq_qsmul ℝ, hxk, map_smul, LinearMap.smul_apply, smul_eq_mul, hBQ]`. Rewrite using `[sub_eq_zero]`.
+
+Conclude with `hj.symm` after adjusting the coercions.
+-/
 theorem mem_range_of_int_pairing (E : Type) [Field E] [NumberField E] (n : ℕ)
     (Φ : E →ₗ[ℚ] (Fin n → ℂ)) (L : Set E) (ρ : ℝ) (hρ : ρ ≠ 0)
     (hspan : Submodule.span ℝ (Φ '' L) = ⊤)

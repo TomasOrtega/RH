@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory.CompanionTheory.GroupIndex.RelProd
 
+/- English proof (translation)
+Establish `hmap : ((I₁.prod I₂).subgroupOf (K₁.prod K₂)) = ((I₁.subgroupOf K₁).prod (I₂.subgroupOf K₂)).comap (Subgroup.prodEquiv K₁ K₂).toMonoidHom`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_prod, Subgroup.mem_comap]`. Conclude with `Iff.rfl`. Unfold `Subgroup.relIndex`.
+
+Rewrite using `[hmap, Subgroup.index_comap_of_surjective _ (Subgroup.prodEquiv K₁ K₂).surjective, Subgroup.index_prod]`.
+-/
 theorem relIndex_prod_eq_mul {G₁ G₂ : Type} [Group G₁] [Group G₂]
     (I₁ K₁ : Subgroup G₁) (I₂ K₂ : Subgroup G₂) :
     (I₁.prod I₂).relIndex (K₁.prod K₂) = I₁.relIndex K₁ * I₂.relIndex K₂ := by
@@ -15,6 +20,9 @@ theorem relIndex_prod_eq_mul {G₁ G₂ : Type} [Group G₁] [Group G₂]
   rw [hmap, Subgroup.index_comap_of_surjective _ (Subgroup.prodEquiv K₁ K₂).surjective,
     Subgroup.index_prod]
 
+/- English proof (translation)
+Introduce `G₁ G₂ _ _ I₁ K₁ I₂ K₂ h₁ h₂`. Rewrite using `[relIndex_prod_eq_mul]`. Conclude with `mul_ne_zero h₁ h₂`.
+-/
 theorem relIndex_prod_ne_zero_of_ne_zero :
     ∀ (G₁ G₂ : Type) [Group G₁] [Group G₂] (I₁ K₁ : Subgroup G₁) (I₂ K₂ : Subgroup G₂),
       I₁.relIndex K₁ ≠ 0 → I₂.relIndex K₂ ≠ 0 → (I₁.prod I₂).relIndex (K₁.prod K₂) ≠ 0 := by

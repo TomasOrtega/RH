@@ -14,6 +14,9 @@ open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.
 
 namespace UpperTheory.V.Z.Desc.V0
 
+/- English proof (translation)
+The claim follows from `(inferInstance : IsDiscreteValuationRing 𝒪[k]).toIsLocalRing`.
+-/
 private theorem locO {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] : IsLocalRing 𝒪[k] :=
   (inferInstance : IsDiscreteValuationRing 𝒪[k]).toIsLocalRing
 attribute [local instance] locO
@@ -25,6 +28,11 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 private def iA : unipB 𝒪[k] (Fin n) →* GL (Fin n) k :=
   (GeneralLinearGroup.map (n := Fin n) (algebraMap 𝒪[k] k)).comp (unipB 𝒪[k] (Fin n)).subtype
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_unipB _).1 a.2`. Use `(mem_unipB _).2 ⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsLocalRing.residue 𝒪[k] _ = 0`. Rewrite using `[h1 i j h, map_zero]`. Express the relevant statement in the definitionally equal form `IsLocalRing.residue 𝒪[k] _ = 1`.
+
+Rewrite using `[h2 i, map_one]`.
+-/
 private theorem pA_mem (a : unipB 𝒪[k] (Fin n)) :
     GeneralLinearGroup.map (n := Fin n) (IsLocalRing.residue 𝒪[k]) (a : GL (Fin n) 𝒪[k]) ∈ unipB 𝓀[k] (Fin n) := by
   obtain ⟨h1, h2⟩ := (mem_unipB _).1 a.2
@@ -38,13 +46,24 @@ private def pA : unipB 𝒪[k] (Fin n) →* unipB 𝓀[k] (Fin n) :=
   ((GeneralLinearGroup.map (n := Fin n) (IsLocalRing.residue 𝒪[k])).comp (unipB 𝒪[k] (Fin n)).subtype).codRestrict _
     (pA_mem k n)
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨y, hy, e⟩ := UpperTheory.unipotent_upper_map_surjective (IsLocalRing.residue 𝒪[k]) IsLocalRing.residue_surjective n x.1 x.2 exact ⟨⟨y, hy⟩, Subtype.ext e⟩`.
+-/
 private theorem pA_surj : Function.Surjective (pA k n) := fun x => by
   obtain ⟨y, hy, e⟩ := UpperTheory.unipotent_upper_map_surjective (IsLocalRing.residue 𝒪[k]) IsLocalRing.residue_surjective n x.1 x.2
   exact ⟨⟨y, hy⟩, Subtype.ext e⟩
 
+/- English proof (translation)
+Introduce `A B h` and use `Units.ext (Matrix.ext fun i j => Subtype.ext (congrArg (fun g : GL (Fin n) k => g.val i j) h))`.
+-/
 private theorem map_inj : Function.Injective (GeneralLinearGroup.map (n := Fin n) (algebraMap 𝒪[k] k)) := fun A B h =>
   Units.ext (Matrix.ext fun i j => Subtype.ext (congrArg (fun g : GL (Fin n) k => g.val i j) h))
 
+/- English proof (translation)
+Rewrite using `[Units.ext_iff, Units.ext_iff, ← Matrix.ext_iff, ← Matrix.ext_iff]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `e1 : ((1 : GL (Fin n) (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ 1)).val) i j = Ideal.Quotient.mk _ ((1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j)`. Apply the tactic sequence `simp only [Units.val_one, Matrix.one_apply]; split_ifs <;> simp`. Establish `e2 : ((1 : GL (Fin n) 𝓀[k]).val) i j = IsLocalRing.residue 𝒪[k] ((1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j)`.
+
+Apply the tactic sequence `simp only [Units.val_one, Matrix.one_apply]; split_ifs <;> simp`. Rewrite using `[e1, e2]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (y.val i j) = _ ↔ Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k]) (y.val i j) = Ideal.Quotient.mk _ _`. Rewrite using `[Ideal.Quotient.eq, Ideal.Quotient.eq, pow_one]`.
+-/
 private theorem red_iff (y : GL (Fin n) 𝒪[k]) :
     GeneralLinearGroup.map (n := Fin n) (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ 1)) y = 1 ↔
       GeneralLinearGroup.map (n := Fin n) (IsLocalRing.residue 𝒪[k]) y = 1 := by
@@ -59,6 +78,11 @@ private theorem red_iff (y : GL (Fin n) 𝒪[k]) :
   change Ideal.Quotient.mk _ (y.val i j) = _ ↔ Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k]) (y.val i j) = Ideal.Quotient.mk _ _
   rw [Ideal.Quotient.eq, Ideal.Quotient.eq, pow_one]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨a.1, (red_iff k n a.1).2 (congrArg Subtype.val h), rfl⟩`. Introduce and unpack `⟨y, hy, e⟩`. Take `rfl : y = a.1` from `map_inj k n e`.
+
+Conclude with `Subtype.ext ((red_iff k n a.1).1 hy)`.
+-/
 private theorem pA_ker (a : unipB 𝒪[k] (Fin n)) : pA k n a = 1 ↔ iA k n a ∈ Kc k n 1 := by
   constructor
   · intro h
@@ -67,6 +91,11 @@ private theorem pA_ker (a : unipB 𝒪[k] (Fin n)) : pA k n a = 1 ↔ iA k n a �
     obtain rfl : y = a.1 := map_inj k n e
     exact Subtype.ext ((red_iff k n a.1).1 hy)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_unipB _).1 a.2`. Use `⟨(mem_unipB _).2 ⟨fun i j h => ?_, fun i => ?_⟩, ⟨a.1, rfl⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((a.1.val i j : 𝒪[k]) : k) = 0`. Rewrite using `[h1 i j h]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `((a.1.val i i : 𝒪[k]) : k) = 1`. Rewrite using `[h2 i]`. Both sides reduce to the same expression.
+-/
 private theorem iA_mem (a : unipB 𝒪[k] (Fin n)) : iA k n a ∈ unipB k (Fin n) ∧ iA k n a ∈ KO k (Fin n) := by
   obtain ⟨h1, h2⟩ := (mem_unipB _).1 a.2
   refine ⟨(mem_unipB _).2 ⟨fun i j h => ?_, fun i => ?_⟩, ⟨a.1, rfl⟩⟩
@@ -75,6 +104,9 @@ private theorem iA_mem (a : unipB 𝒪[k] (Fin n)) : iA k n a ∈ unipB k (Fin n
   · change ((a.1.val i i : 𝒪[k]) : k) = 1
     rw [h2 i]; rfl
 
+/- English proof (translation)
+Take `⟨h, hk⟩` from `hu`. Take `⟨y, rfl⟩` from `hk`. Take `⟨h1, h2⟩` from `(mem_unipB _).1 h`. Conclude with `⟨⟨y, (mem_unipB _).2 ⟨fun i j hij => Subtype.ext (h1 i j hij), fun i => Subtype.ext (h2 i)⟩⟩, rfl⟩`.
+-/
 private theorem iA_onto {u : GL (Fin n) k} (hu : u ∈ unipB k (Fin n) ∧ u ∈ KO k (Fin n)) : ∃ a, iA k n a = u := by
   obtain ⟨h, hk⟩ := hu
   obtain ⟨y, rfl⟩ := hk
@@ -83,6 +115,37 @@ private theorem iA_onto {u : GL (Fin n) k} (hu : u ∈ unipB k (Fin n) ∧ u ∈
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n`. Take `⟨ψ, φ, hψ, hφ, hres⟩` from `UpperTheory.exists_level_one_addChar_lifting_residue k`. Use `letI : Fintype 𝓀[k] := Fintype.ofFinite _`. Take `⟨χ, hχi, hχv, c, hc⟩` from `UpperTheory.exists_injective_generic_unipotent_characters 𝓀[k] n φ hφ`. Use `haveI : Finite (Matrix (Fin n) (Fin n) 𝓀[k]) := inferInstanceAs (Finite (Fin n → Fin n → _))`.
+
+Use `haveI : Finite (GL (Fin n) 𝓀[k]) := Finite.of_injective _ Units.val_injective`. Use `letI : Fintype (unipB 𝓀[k] (Fin n)) := Fintype.ofFinite _`. Take `⟨j, hj⟩` from `UpperTheory.card_unipotent_upper_eq_pow 𝓀[k] n`. Establish `hcard : Fintype.card (unipB 𝓀[k] (Fin n)) = Nat.card 𝓀[k] ^ j`. Rewrite using `[← Nat.card_eq_fintype_card, hj]`.
+
+Set `s : unipB 𝓀[k] (Fin n) → unipB 𝒪[k] (Fin n)` to `Function.surjInv (pA_surj k n)`. Establish `hs : ∀ x, pA k n (s x) = x` using `Function.surjInv_eq (pA_surj k n)`. Establish `hn : ∀ a, ∀ u ∈ Kc k n 1, (iA k n a)⁻¹ * u * iA k n a ∈ Kc k n 1` using `fun a u hu => by`. Simplify using `using UpperTheory.V.Z.Sym.Sig.Kc_conj (inv_mem (iA_mem k n a).2) hu`. Establish `hrs : Function.Surjective (IsLocalRing.residue 𝒪[k])` using `IsLocalRing.residue_surjective`.
+
+Set `l : 𝓀[k] → 𝒪[k]` to `Function.surjInv hrs`. Establish `hl : ∀ x, IsLocalRing.residue 𝒪[k] (l x) = x` using `Function.surjInv_eq hrs`. Set `lift : ({p : Fin n × Fin n // (p.2 : ℕ) = p.1 + 1} → 𝓀[k]ˣ) → Fin n → k` to `fun f i => if h : (i : ℕ) + 1 < n then ((l (f ⟨(i, ⟨(i : ℕ) + 1, h⟩), rfl⟩ : 𝓀[k]) : 𝒪[k]) : k) else 1`. Establish `hlp : ∀ f (p : {p : Fin n × Fin n // (p.2 : ℕ) = p.1 + 1}), lift f p.1.1 = ((l (f p : 𝓀[k]) : 𝒪[k]) : k)`. Introduce and unpack `f ⟨⟨i, i'⟩, hp⟩`.
+
+Establish `h : (i : ℕ) + 1 < n` using `by have := i'.2; simp only at hp; omega`. Establish `e : (⟨(i, ⟨(i : ℕ) + 1, h⟩), rfl⟩ : {p : Fin n × Fin n // (p.2 : ℕ) = p.1 + 1}) = ⟨(i, i'), hp⟩` using `Subtype.ext (Prod.ext rfl (Fin.ext hp.symm))`. Simplify using `only [lift, dif_pos h, e]`. Establish `hinj : Function.Injective lift` using `fun f g h => by`. Use function extensionality and compare the values at `p`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Establish `h1 : l (f p : 𝓀[k]) = l (g p : 𝓀[k])` using `Subtype.ext (by`. Rewrite using `[← hlp, ← hlp, h])`. Rewrite using `[← hl (f p : 𝓀[k]), ← hl (g p : 𝓀[k]), h1]`. Establish `hunit : ∀ x : 𝓀[k]ˣ, valuation k ((l (x : 𝓀[k]) : 𝒪[k]) : k) = 1` using `fun x => by`.
+
+Establish `h1 : IsUnit (l (x : 𝓀[k]))`. Rewrite using `[← isUnit_map_iff (IsLocalRing.residue 𝒪[k]), hl]`. Conclude with `x.isUnit`. Conclude with `(Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.integer.integers (valuation k))).1 h1`. Establish `key : ∀ f (y : unipB 𝒪[k] (Fin n)), ((χ f (pA k n y) : ℂˣ) : ℂ) = chr ψ (lift f) (iA k n y)` using `fun f y => by`.
+
+Rewrite using `[hχv, chr, Finset.sum_subtype (p := fun p : Fin n × Fin n => (p.2 : ℕ) = p.1 + 1) _ (by simp)]`. Establish `e : ∑ p : {p : Fin n × Fin n // (p.2 : ℕ) = p.1 + 1}, lift f p.1.1 * (iA k n y : Matrix (Fin n) (Fin n) k) p.1.1 p.1.2 = ((∑ p : {p : Fin n × Fin n // (p.2 : ℕ) = p.1 + 1}, l (f p : 𝓀[k]) * (y.1.val p.1.1 p.1.2) : 𝒪[k]) : k)`. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => by rw [hlp]; rfl`. Rewrite using `[e, hres, map_sum (IsLocalRing.residue 𝒪[k])]`.
+
+Use `congr 2`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hl]`. Both sides reduce to the same expression. Use `⟨ψ, ∑ x, Finsupp.single (iA k n (s x)) (c x), j, Finset.univ.map ⟨lift, hinj⟩, hψ, ⟨?_, ?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g hg`. Take `⟨x, -, hx⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum hg)`. Establish `: g = iA k n (s x)`. Use `Finsupp.support_single_subset hx` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `this ▸ (iA_mem k n _).2`. Introduce `g hg u hu`. Simplify using `using UpperTheory.V.Z.Sym.Sig.Kc_conj (inv_mem hg) hu`. Introduce `R W _ _ _ ρ v hv`. Rewrite using `[← hcard]`.
+
+Conclude with `UpperTheory.mem_fixed_of_character_sum_projection (Kc k n 1) (iA k n) (pA k n) s hs (pA_ker k n) hn χ hχi c hc R W ρ v hv`. Conclude with `⟨_, Finset.mem_map_of_mem _ (Finset.mem_univ fun _ => 1)⟩`. Introduce `t ht i`. Take `⟨f, -, rfl⟩` from `Finset.mem_map.1 ht`. Express the relevant statement in the definitionally equal form `valuation k (lift f i) = 1`.
+
+Distinguish the cases in `h : (i : ℕ) + 1 < n`. Simplify using `only [lift, dif_pos h]`. Conclude with `hunit _`. Simplify using `only [lift, dif_neg h, map_one]`. Introduce `W _ _ τ`.
+
+Rewrite using `[← hcard, UpperTheory.rank_fixed_inf_character_eigenspace (Kc k n 1) (iA k n) (pA k n) s hs (pA_ker k n) hn χ hχi c hc W τ, Finset.sum_map]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Establish `e : (⨅ y : unipB 𝒪[k] (Fin n), Module.End.eigenspace (τ (iA k n y)) ((χ f (pA k n y) : ℂˣ) : ℂ)) = ⨅ (u : GL (Fin n) k) (_ : u ∈ unipB k (Fin n) ∧ u ∈ KO k (Fin n)), Module.End.eigenspace (τ u) (chr ψ (lift f) u)`. Use `le_antisymm (le_iInf₂ fun u hu => ?_) (le_iInf fun y => ?_)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `iA_onto k n hu`.
+
+Conclude with `(iInf_le _ y).trans_eq (by rw [key])`. Conclude with `(iInf₂_le (iA k n y) (iA_mem k n y)).trans_eq (by rw [key])`. Express the relevant statement in the definitionally equal form `_ = Module.rank ℂ ↥(isoPart τ ψ (lift f))`. Rewrite using `[e, isoPart]`.
+-/
 theorem eOp : EOp := by
   intro k _ _ _ _ n
   classical

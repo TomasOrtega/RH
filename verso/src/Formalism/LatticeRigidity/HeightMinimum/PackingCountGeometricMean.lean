@@ -4,6 +4,23 @@ open MeasureTheory Metric Module
 
 namespace Formalism.SA.P
 
+/- English proof (translation)
+Use `letI : MeasurableSpace E := borel E`. Use `haveI : BorelSpace E := ⟨rfl⟩`. Use `set μ : Measure E := Measure.addHaar with hμ`. Establish `hr : 0 < lam / 2` using `by positivity`. Establish `hR2 : 0 < R + lam / 2` using `by positivity`.
+
+Establish `hdisj : Set.PairwiseDisjoint (↑S : Set α) (fun x => ball (g x) (lam / 2))`. Introduce `x hx y hy hxy`. Use `Set.disjoint_left.mpr ?_` and prove the remaining obligations. Introduce `z hz1 hz2`. Simplify using `only [mem_ball, dist_eq_norm] at hz1 hz2`.
+
+Establish `h1` using `hsep x hx y hy hxy`. Establish `h2 : ‖g x - g y‖ < lam`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub : (⋃ x ∈ S, ball (g x) (lam / 2)) ⊆ ball (0 : E) (R + lam / 2)`.
+
+Introduce `z hz`. Simplify using `only [Set.mem_iUnion] at hz`. Take `⟨x, hx, hz⟩` from `hz`. Simplify using `only [mem_ball, dist_eq_norm, sub_zero] at hz ⊢`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hball : ∀ c : E, ∀ r : ℝ, 0 < r → μ (ball c r) = ENNReal.ofReal (r ^ finrank ℝ E) * μ (ball 0 1)` using `fun c r hr' => Measure.addHaar_ball_of_pos μ c hr'`. Establish `hb1 : ∀ x, μ (ball (g x) (lam / 2)) = ENNReal.ofReal ((lam / 2) ^ finrank ℝ E) * μ (ball 0 1)` using `fun x => hball _ _ hr`. Establish `hV0 : μ (ball (0 : E) 1) ≠ 0` using `(measure_ball_pos μ (0 : E) one_pos).ne'`. Establish `hVtop : μ (ball (0 : E) 1) ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `key : (S.card : ENNReal) * ENNReal.ofReal ((lam / 2) ^ finrank ℝ E) * μ (ball 0 1) ≤ ENNReal.ofReal ((R + lam / 2) ^ finrank ℝ E) * μ (ball 0 1)`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hb1, Finset.sum_const, nsmul_eq_mul, mul_assoc]`. Use `_ = μ (⋃ x ∈ S, ball (g x) (lam / 2)) := (measure_biUnion_finset hdisj (fun x _ => measurableSet_ball)).symm`. Use `_ ≤ μ (ball 0 (R + lam / 2)) := measure_mono hsub`. Use `_ = _ := hball 0 _ hR2`.
+
+Establish `key2 : (S.card : ENNReal) * ENNReal.ofReal ((lam / 2) ^ finrank ℝ E) ≤ ENNReal.ofReal ((R + lam / 2) ^ finrank ℝ E)`. Conclude with `(ENNReal.mul_le_mul_iff_left hV0 hVtop).mp key`. Rewrite `key2` using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (Nat.cast_nonneg _)]`. Establish `key3` using `(ENNReal.ofReal_le_ofReal_iff (by positivity)).mp key2`. Establish `hpos : 0 < (lam / 2) ^ finrank ℝ E` using `pow_pos hr _`.
+
+Establish `hq : 1 + 2 * R / lam = (R + lam / 2) / (lam / 2)` using `by first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`. Rewrite using `[hq, div_pow, le_div_iff₀ hpos]`. Conclude with `key3`.
+-/
 theorem card_le_of_separated {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] {α : Type*} (S : Finset α) (g : α → E) (lam R : ℝ)
     (hlam : 0 < lam) (hR : 0 ≤ R)
@@ -66,6 +83,29 @@ theorem card_le_of_separated {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ
   rw [hq, div_pow, le_div_iff₀ hpos]
   exact key3
 
+/- English proof (translation)
+Unfold `Formalism.SA.P7.PackCount`. Introduce `ι _ _ V _ _ _ N hN S lam X hlam hX hsep hbd`. Establish `hnpos : 0 < Fintype.card ι` using `Fintype.card_pos`. Establish `hnR : (0 : ℝ) < (Fintype.card ι : ℝ)` using `by exact_mod_cast hnpos`. Establish `hQpos : 0 < ∏ v, X v` using `Finset.prod_pos (fun v _ => hX v)`.
+
+Take `⟨P, hP⟩ : ∃ P : ℝ, P = (∏ v, X v) ^ (1 / (Fintype.card ι : ℝ))` from `⟨_, rfl⟩`. Establish `hPpos : 0 < P` using `by rw [hP]; exact Real.rpow_pos_of_pos hQpos _`. Establish `hPn : P ^ Fintype.card ι = ∏ v, X v`. Rewrite using `[hP, ← Real.rpow_natCast, ← Real.rpow_mul hQpos.le, one_div_mul_cancel hnR.ne', Real.rpow_one]`. Take `⟨c, hcdef⟩ : ∃ c : ι → ℝ, c = fun v => P / X v` from `⟨_, rfl⟩`.
+
+Establish `hc : ∀ v, 0 < c v`. Introduce `v`. Rewrite using `[hcdef]`. Conclude with `div_pos hPpos (hX v)`. Establish `hcX : ∀ v, c v * X v = P`.
+
+Introduce `v`. Rewrite using `[hcdef]`. Conclude with `div_mul_cancel₀ P (hX v).ne'`. Establish `hprodc : ∏ v, c v = 1`. Rewrite using `[hcdef]`.
+
+Simplify using `only [Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ]`. Rewrite using `[hPn, div_self hQpos.ne']`. Take `⟨g, hg⟩ : ∃ g : ((v : ι) → V v) → ((v : ι) → V v), ∀ x, g x = fun v => c v • x v` from `⟨_, fun _ => rfl⟩`. Establish `hbdg : ∀ x ∈ S, ‖g x‖ ≤ P`. Introduce `x hx`.
+
+Use `(pi_norm_le_iff_of_nonneg hPpos.le).mpr fun v => ?_` and prove the remaining obligations. Establish `hgv : g x v = c v • x v` using `by rw [hg]`. Rewrite using `[hgv, norm_smul, Real.norm_eq_abs, abs_of_pos (hc v)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsepg : ∀ x ∈ S, ∀ y ∈ S, x ≠ y → lam ≤ ‖g x - g y‖`.
+
+Introduce `x hx y hy hxy`. Establish `h1` using `hsep x hx y hy hxy`. Establish `hM0 : 0 ≤ ‖g x - g y‖` using `norm_nonneg _`. Establish `hcoord : ∀ v, c v * ‖x v - y v‖ ≤ ‖g x - g y‖`. Introduce `v`.
+
+Establish `hd : (g x - g y) v = c v • (x v - y v)`. Simplify using `only [Pi.sub_apply, hg, smul_sub]`. Establish `h2` using `norm_le_pi_norm (g x - g y) v`. Rewrite `h2` using `[hd, norm_smul, Real.norm_eq_abs, abs_of_pos (hc v)]`. Conclude with `h2`.
+
+Establish `hprod : ∏ v, ‖x v - y v‖ ≤ ‖g x - g y‖ ^ Fintype.card ι`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hM0, mul_one_div_cancel hnR.ne', Real.rpow_one]`. Establish `main` using `Formalism.SA.P.card_le_of_separated S g lam P hlam hPpos.le hsepg hbdg`.
+
+Establish `hdim : finrank ℝ ((v : ι) → V v) = N * Fintype.card ι`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `only [hN, Finset.sum_const, Finset.card_univ, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `main` using `[hdim]`.
+
+Rewrite using `[← hP]`. Conclude with `main`.
+-/
 theorem packing_count_geometric_mean : Formalism.SA.P7.PackCount := by
   unfold Formalism.SA.P7.PackCount
   intro ι _ _ V _ _ _ N hN S lam X hlam hX hsep hbd

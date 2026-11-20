@@ -7,6 +7,29 @@ open scoped NNReal
 
 namespace GlobalTheory.AlmostEt
 
+/- English proof (translation)
+Introduce `L _ p hp G _ _ _ _ _ hG ζ hζ hfix`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : Fact (1 < p) := ⟨hp.one_lt⟩`. Use `letI : Fintype G := Fintype.ofFinite G`. Take `⟨χ, hχ⟩` from `GlobalTheory.T.exists_surjective_hom_zmod_of_isPGroup p G hG`.
+
+Use `set ψ : G → L := fun g => ζ ^ (Multiplicative.toAdd (χ g)).val with hψdef`. Establish `hζp : ζ ^ p = 1` using `hζ.pow_eq_one`. Establish `hmod : ∀ n : ℕ, ζ ^ n = ζ ^ (n % p)` using `fun n => by conv_lhs => rw [← Nat.div_add_mod n p, pow_add, pow_mul, hζp, one_pow, one_mul]`. Establish `hψmul : ∀ a b, ψ (a * b) = ψ a * ψ b`. Introduce `a b`.
+
+Simplify using `only [hψdef, map_mul, toAdd_mul, ZMod.val_add, ← pow_add]`. Conclude with `(hmod _).symm`. Establish `hψp : ∀ g, ψ g ^ p = 1`. Introduce `g`. Simplify using `only [hψdef]`.
+
+Rewrite using `[← pow_mul, mul_comm, pow_mul, hζp, one_pow]`. Establish `hψne : ∀ g, ψ g ≠ 0` using `fun g h => by`. Use `hψp g` as an intermediate fact. Rewrite `this` using `[h, zero_pow hp.ne_zero]`. Conclude with `zero_ne_one this`.
+
+Establish `hψfix : ∀ g h : G, g • ψ h = ψ h` using `fun g h => by simp only [hψdef, smul_pow', hfix]`. Set `f : G → (L →* L)` to `fun g => (MulSemiringAction.toRingHom G L g : L →* L)`. Establish `hf : Function.Injective f`. Introduce `g h hgh`. Apply `FaithfulSMul.eq_of_smul_eq_smul (α := L)` to reduce the goal to its premises.
+
+Introduce `x`. Conclude with `DFunLike.congr_fun hgh x`. Establish `hli : LinearIndependent L (fun g : G => ((f g : L →* L) : L → L))` using `(linearIndependent_monoidHom L L).comp f hf`. Establish `hex : ∃ x : L, ∑ g : G, ψ g⁻¹ * (g • x) ≠ 0`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Establish `h0 : ∑ g : G, ψ g⁻¹ • ((f g : L →* L) : L → L) = 0`. Use function extensionality and compare the values at `x`. Simplify `hcon x` using `[f, Finset.sum_apply]`. Conclude with `hψne _ ((Fintype.linearIndependent_iff.mp hli) (fun g => ψ g⁻¹) h0 1)`.
+
+Take `⟨x, hx⟩` from `hex`. Use `set α := ∑ g : G, ψ g⁻¹ * (g • x) with hα`. Establish `hact : ∀ h : G, h • α = ψ h * α`. Introduce `h`. Rewrite using `[hα, Finset.smul_sum, Finset.mul_sum]`.
+
+Simplify using `only [smul_mul', hψfix, smul_smul]`. Use `Fintype.sum_equiv (Equiv.mulLeft h) _ _ (fun g => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft]`. Establish `e : ψ h * ψ h⁻¹ = 1`. Rewrite using `[← hψmul, mul_inv_cancel]`.
+
+Simplify using `[hψdef]`. Rewrite using `[mul_inv_rev, hψmul g⁻¹ h⁻¹]`. Take the linear combination `(-(ψ g⁻¹ * ((h * g) • x))) * e`. Take `⟨σ, hσ⟩` from `hχ (Multiplicative.ofAdd 1)`. Use `⟨σ, α, hx, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hact σ]`. Use `congr 1`. Simplify using `[hψdef, hσ, ZMod.val_one]`. Introduce `g`. Rewrite using `[smul_pow', hact g, mul_pow, hψp, one_mul]`.
+-/
 theorem exists_lagrange_resolvent : ∀ (L : Type) [Field L] (p : ℕ), p.Prime → ∀ (G : Type) [Group G]
     [MulSemiringAction G L] [Finite G] [Nontrivial G] [FaithfulSMul G L], IsPGroup p G →
     ∀ ζ : L, IsPrimitiveRoot ζ p → (∀ g : G, g • ζ = ζ) →

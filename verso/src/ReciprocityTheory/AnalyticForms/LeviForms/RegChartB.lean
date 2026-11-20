@@ -9,12 +9,18 @@ noncomputable section
 
 variable {D : ℕ}
 
+/- English proof (translation)
+Break down `eq_or_lt_of_le (norm_nonneg x) with h | h` into its components or cases. Rewrite using `[← h]`. Simplify using the standard rewrite rules. Apply `Real.log_nonneg` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ (by positivity)]; nlinarith`.
+-/
 lemma log_term_nonneg {x : ℂ} (hx : ‖x‖ ≤ 2) : 0 ≤ Real.log (4 / ‖x‖ ^ 2) := by
   rcases eq_or_lt_of_le (norm_nonneg x) with h | h
   · rw [← h]; simp
   · apply Real.log_nonneg
     rw [le_div_iff₀ (by positivity)]; nlinarith
 
+/- English proof (translation)
+Unfold `rLoc`. Establish `: 0 ≤ ∑ i ∈ S, (m i : ℝ) * Real.log (4 / ‖x i‖ ^ 2)` using `Finset.sum_nonneg fun i _ => mul_nonneg (Nat.cast_nonneg _) (log_term_nonneg (hx i))`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma rLoc_ge (S : Finset (Fin D)) (m : Fin D → ℕ) {x : Fin D → ℂ} (hx : ∀ i, ‖x i‖ ≤ 2) :
     Real.exp 1 ≤ rLoc S m x := by
   unfold rLoc
@@ -22,18 +28,30 @@ lemma rLoc_ge (S : Finset (Fin D)) (m : Fin D → ℕ) {x : Fin D → ℂ} (hx :
     Finset.sum_nonneg fun i _ => mul_nonneg (Nat.cast_nonneg _) (log_term_nonneg (hx i))
   linarith
 
+/- English proof (translation)
+The claim follows from `(Real.exp_pos 1).trans_le (rLoc_ge S m hx)`.
+-/
 lemma rLoc_pos (S : Finset (Fin D)) (m : Fin D → ℕ) {x : Fin D → ℂ} (hx : ∀ i, ‖x i‖ ≤ 2) :
     0 < rLoc S m x := (Real.exp_pos 1).trans_le (rLoc_ge S m hx)
 
+/- English proof (translation)
+The claim follows from `(norm_le_pi_norm x i).trans ((mem_ball_zero_iff.1 hx).le.trans hR)`.
+-/
 lemma norm_coord_le_of_ball {R : ℝ} (hR : R ≤ 2) {x : Fin D → ℂ} (hx : x ∈ ball (0 : Fin D → ℂ) R)
     (i : Fin D) : ‖x i‖ ≤ 2 :=
   (norm_le_pi_norm x i).trans ((mem_ball_zero_iff.1 hx).le.trans hR)
 
 def mTot (S : Finset (Fin D)) (m : Fin D → ℕ) : ℝ := ∑ i ∈ S, (m i : ℝ)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _`.
+-/
 lemma mTot_nonneg (S : Finset (Fin D)) (m : Fin D → ℕ) : 0 ≤ mTot S m :=
   Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _
 
+/- English proof (translation)
+Unfold `rLoc mTot`. Rewrite using `[Finset.sum_mul]`. Establish `: ∑ i ∈ S, (m i : ℝ) * Real.log (4 / ‖x i‖ ^ 2) ≤ ∑ i ∈ S, (m i : ℝ) * Real.log (4 / s ^ 2)` using `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (Real.log_le_log (div_pos (by norm_num) (pow_pos (hs.trans_le (hx i)) 2)) (div_le_div_of_nonneg_left (by norm_num) (pow_pos hs 2) (pow_le_pow_left₀ hs.le (hx i) 2))) (Nat.cast_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma rLoc_le_far (S : Finset (Fin D)) (m : Fin D → ℕ) {x : Fin D → ℂ} {s : ℝ} (hs : 0 < s)
     (hx : ∀ i, s ≤ ‖x i‖) : rLoc S m x ≤ Real.exp 1 + mTot S m * Real.log (4 / s ^ 2) := by
   unfold rLoc mTot
@@ -52,30 +70,50 @@ section Osc
 
 variable {S : Finset (Fin D)} {u : (Fin D → ℂ) → ℝ} {R C₅ : ℝ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨C₅, by rintro _ ⟨x, hx, rfl⟩; exact hub x ⟨hs hx.1, hx.2⟩⟩`.
+-/
 lemma pmo_bdd (hub : ∀ x ∈ ball (0 : Fin D → ℂ) R \ coordDiv S, u x ≤ C₅) {z : Fin D → ℂ} {s : ℝ}
     (hs : closedBall z s ⊆ ball 0 R) : BddAbove (u '' (closedBall z s \ coordDiv S)) :=
   ⟨C₅, by rintro _ ⟨x, hx, rfl⟩; exact hub x ⟨hs hx.1, hx.2⟩⟩
 
+/- English proof (translation)
+Take `⟨x, hx, hf, -⟩` from `exists_far_point z hs`. Conclude with `⟨u x, x, ⟨hx, not_mem_coordDiv_of hs hf⟩, rfl⟩`.
+-/
 lemma pmo_nonempty (z : Fin D → ℂ) {s : ℝ} (hs : 0 < s) :
     (u '' (closedBall z s \ coordDiv S)).Nonempty := by
   obtain ⟨x, hx, hf, -⟩ := exists_far_point z hs
   exact ⟨u x, x, ⟨hx, not_mem_coordDiv_of hs hf⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `le_csSup (pmo_bdd hub hs) (mem_image_of_mem u hx)`.
+-/
 lemma le_pmo (hub : ∀ x ∈ ball (0 : Fin D → ℂ) R \ coordDiv S, u x ≤ C₅) {z : Fin D → ℂ} {s : ℝ}
     (hs : closedBall z s ⊆ ball 0 R) {x : Fin D → ℂ} (hx : x ∈ closedBall z s \ coordDiv S) :
     u x ≤ pmoff S u z s :=
   le_csSup (pmo_bdd hub hs) (mem_image_of_mem u hx)
 
+/- English proof (translation)
+The claim follows from `csSup_le (pmo_nonempty z hs) (by rintro _ ⟨x, hx, rfl⟩; exact h x hx)`.
+-/
 lemma pmo_le (z : Fin D → ℂ) {s c : ℝ} (hs : 0 < s) (h : ∀ x ∈ closedBall z s \ coordDiv S, u x ≤ c) :
     pmoff S u z s ≤ c :=
   csSup_le (pmo_nonempty z hs) (by rintro _ ⟨x, hx, rfl⟩; exact h x hx)
 
+/- English proof (translation)
+The claim follows from `csSup_le_csSup (pmo_bdd hub hs') (pmo_nonempty z hs) (image_mono (sdiff_subset_sdiff_left (closedBall_subset_closedBall hss)))`.
+-/
 lemma pmo_mono (hub : ∀ x ∈ ball (0 : Fin D → ℂ) R \ coordDiv S, u x ≤ C₅) {z : Fin D → ℂ}
     {s s' : ℝ} (hs : 0 < s) (hss : s ≤ s') (hs' : closedBall z s' ⊆ ball 0 R) :
     pmoff S u z s ≤ pmoff S u z s' :=
   csSup_le_csSup (pmo_bdd hub hs') (pmo_nonempty z hs)
     (image_mono (sdiff_subset_sdiff_left (closedBall_subset_closedBall hss)))
 
+/- English proof (translation)
+Take `⟨x, hx, hf, -⟩` from `exists_far_point z hs`. Establish `hxA : x ∉ coordDiv S` using `not_mem_coordDiv_of hs hf`. Establish `hxB : x ∈ ball (0 : Fin D → ℂ) R` using `hsR hx`. Use `le_trans ?_ (le_pmo (fun y hy => (hb y hy).2) hsR ⟨hx, hxA⟩)` and prove the remaining obligations. Use `le_trans ?_ (hb x ⟨hxB, hxA⟩).1` and prove the remaining obligations.
+
+Establish `h1` using `rLoc_pos S m (norm_coord_le_of_ball hR hxB)`. Establish `h2` using `rLoc_le_far S m hs hf`. Establish `: Real.log (rLoc S m x) ≤ Real.log (Real.exp 1 + mTot S m * Real.log (4 / s ^ 2))` using `Real.log_le_log h1 h2`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma pmo_lower (hR : R ≤ 2) (hC₅ : 0 ≤ C₅) (m : Fin D → ℕ)
     (hb : ∀ z ∈ ball (0 : Fin D → ℂ) R \ coordDiv S, -C₅ * Real.log (rLoc S m z) ≤ u z ∧ u z ≤ C₅)
     {z : Fin D → ℂ} {s : ℝ} (hs : 0 < s) (hsR : closedBall z s ⊆ ball 0 R) :
@@ -91,12 +129,22 @@ lemma pmo_lower (hR : R ≤ 2) (hC₅ : 0 ≤ C₅) (m : Fin D → ℕ)
     Real.log_le_log h1 h2
   nlinarith
 
+/- English proof (translation)
+The claim follows from `pmo_le z hs fun x hx => (hwu x ⟨hsR hx.1, hx.2⟩).trans (le_polyMax hw hsR hx.1)`.
+-/
 lemma pmo_le_polyMax {w : (Fin D → ℂ) → ℝ} (hw : UpperSemicontinuousOn w (ball 0 R))
     (hwu : ∀ x ∈ ball (0 : Fin D → ℂ) R \ coordDiv S, u x ≤ w x) {z : Fin D → ℂ} {s : ℝ}
     (hs : 0 < s) (hsR : closedBall z s ⊆ ball 0 R) :
     pmoff S u z s ≤ polyMax w z s :=
   pmo_le z hs fun x hx => (hwu x ⟨hsR hx.1, hx.2⟩).trans (le_polyMax hw hsR hx.1)
 
+/- English proof (translation)
+Use `polyMax_le' hs fun x hx => ?_` and prove the remaining obligations. Establish `hxB : x ∈ ball (0 : Fin D → ℂ) R` using `hsR (closedBall_subset_closedBall hss.le hx)`. Use `le_of_forall_pos_le_add fun δ hδ => ?_` and prove the remaining obligations. Take `⟨y, hy, hyd, hwy⟩` from `hW3 x hxB (min δ (s' - s)) (lt_min hδ (by linarith))`. Establish `hyz : y ∈ closedBall z s'`.
+
+Rewrite `hx`, the goal using `[mem_closedBall]`. Use `dist_triangle y x z` as an intermediate fact. Combine the linear relations using `[min_le_right δ (s' - s)]`. Establish `: u y ≤ pmoff S u z s'` using `le_pmo hub hsR ⟨hyz, hy.2⟩`. Establish `: max (u y) (-κ) ≤ max (pmoff S u z s') (-κ)` using `max_le_max this le_rfl`.
+
+Combine the linear relations using `[min_le_left δ (s' - s)]`.
+-/
 lemma polyMax_le_pmo (hub : ∀ x ∈ ball (0 : Fin D → ℂ) R \ coordDiv S, u x ≤ C₅)
     {w : (Fin D → ℂ) → ℝ} {κ : ℝ}
     (hW3 : ∀ x ∈ ball (0 : Fin D → ℂ) R, ∀ δ > 0, ∃ y ∈ ball (0 : Fin D → ℂ) R \ coordDiv S,

@@ -13,6 +13,13 @@ open scoped Classical
 
 namespace GlobalTheory.SwapBundle
 
+/- English proof (translation)
+Introduce `k _ B Y _ _ q p d D hq hp π w ι _ E r h H fl hfl a i i' hi`. Take `⟨Y₁, σ, ρ, wσ, S, P, E₁, s, j, t, wst, fl₁, A₀, A₁, u, v, hY₁, hproj, hsurj, hdim, hfb, hS, hs, hj, hSv, hPv, hEv, hPj, hSj, hx, hz⟩` from `GlobalTheory.T.flag_bundle_successive_quotient_line k B Y q p d D hq hp π w ι E r (fun a => (h a).isVB) fl hfl a i i' hi`. Establish `wρ : ρ ≫ (σ ≫ q) = p` using `by rw [← Category.assoc, wσ, w]`. Take `⟨d₁, hD, had⟩` from `GlobalTheory.T.arith_variety_relative_dim_drop k Y Y₁ p (σ ≫ q) ρ D wρ hp hY₁ hproj hsurj hdim`. Take `⟨h₁, H₁, i1, i2⟩` from `GlobalTheory.T.metric_flag_successive_quotient_exact k B Y Y₁ q p (σ ≫ q) π σ ρ w wσ wρ rfl (E a) (r a) (h a) (H a) (fl a) i i' hi S P E₁ s j t wst fl₁ hS hs hj hSv hPv hEv hPj hSj hx`.
+
+Establish `key : ∀ z : Σ a, Fin (r a), z ≠ ⟨a, i⟩ ∧ z ≠ ⟨a, i'⟩ → ∃ M : HermLB (σ ≫ q), (M.pull ρ wρ).Isometric (VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w))` using `fun z hz' => by`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hz z hz'.1 hz'.2`. Conclude with `GlobalTheory.T.metric_flag_quotient_connecting_map k B Y Y₁ q p (σ ≫ q) π σ ρ w wσ wρ rfl (E z.1) (r z.1) (h z.1) (H z.1) (fl z.1) z.2 (A₀ z) (A₁ z) (u z) (v z) h1 h2 h3 h4 h5 h6`. Use `⟨Y₁, σ ≫ q, d₁, ρ, wρ, E₁, h₁, H₁, fl₁, fun z => if hz' : z ≠ ⟨a, i⟩ ∧ z ≠ ⟨a, i'⟩ then (key z hz').choose else HermLB.triv _, hD, had, hfb, i1, i2, fun z h1 h2 => ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos (show z ≠ ⟨a, i⟩ ∧ z ≠ ⟨a, i'⟩ from ⟨h1, h2⟩)]`.
+
+Conclude with `(key z ⟨h1, h2⟩).choose_spec`.
+-/
 theorem swapFl_bundle : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d D : ℕ),
     IsArithVar q d → IsArithVar p D → ∀ (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ)
     (h : ∀ a, VMetric q (E a) (r a)) (H : ∀ a, (h a).IsCInf)

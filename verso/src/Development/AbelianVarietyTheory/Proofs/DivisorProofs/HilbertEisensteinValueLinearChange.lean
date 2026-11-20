@@ -14,6 +14,9 @@ namespace GlobalTheory.HilbFam
 set_option autoImplicit false in
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+Establish `h : _root_.GlobalTheory.HilbFam.transfQuot T q = Quotient.mk _ (T q.out)` using `by conv_lhs => rw [← Quotient.out_eq q]`. Both sides reduce to the same expression. Rewrite using `[h]`. Take `⟨ε, hε⟩` from `MulAction.mem_orbit_iff.mp (MulAction.orbitRel_apply.mp (Quotient.mk_out (s := MulAction.orbitRel (𝓞 F)ˣ (Fin 2 → F)) (T q.out)))`. Conclude with `⟨ε, hε.symm⟩`.
+-/
 private theorem exists_unit_transfQuot_out_eq_smul {F : Type} [Field F] [NumberField F]
     (T : (Fin 2 → F) ≃ₗ[F] (Fin 2 → F)) (q : Quotient (MulAction.orbitRel (𝓞 F)ˣ (Fin 2 → F))) :
     ∃ ε : (𝓞 F)ˣ, (_root_.GlobalTheory.HilbFam.transfQuot T q).out = ε • T q.out := by
@@ -28,6 +31,9 @@ private theorem exists_unit_transfQuot_out_eq_smul {F : Type} [Field F] [NumberF
 set_option autoImplicit false in
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HilbFam.gTerm`. Simplify using `only [hc, Finset.prod_mul_distrib, norm_mul, Complex.ofReal_mul]`. Rewrite using `[Complex.mul_cpow_ofReal_nonneg (norm_nonneg _) (norm_nonneg _), mul_inv, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem gTerm_eq_of_linear_change {F : Type} [Field F] [NumberField F]
     {k : ℕ} (σ : ℂ) {b a b' a' lam : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ}
     (T : (Fin 2 → F) ≃ₗ[F] (Fin 2 → F))
@@ -44,6 +50,23 @@ private theorem gTerm_eq_of_linear_change {F : Type} [Field F] [NumberField F]
 set_option autoImplicit false in
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+Establish `hmem : ∀ q, q ∈ _root_.GlobalTheory.HilbFam.cls L ↔ _root_.GlobalTheory.HilbFam.transfQuot T q ∈ _root_.GlobalTheory.HilbFam.cls L'`. Introduce `q`. Take `⟨ε, hε⟩` from `exists_unit_transfQuot_out_eq_smul T q`. Simplify using `only [_root_.GlobalTheory.HilbFam.cls, Set.mem_setOf_eq, hε]`. Establish `hz : ε • T q.out ≠ 0 ↔ q.out ≠ 0`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h h0`. Conclude with `h (by rw [h0, map_zero, smul_zero])`. Introduce `h h0`. Apply `h` to reduce the goal to its premises.
+
+Apply `T.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Simplify using `using congrArg (fun y => ε⁻¹ • y) h0`. Rewrite using `[Submodule.smul_mem_iff', hz, ← hL]`. Set `e : _root_.GlobalTheory.HilbFam.cls L ≃ _root_.GlobalTheory.HilbFam.cls L'` to `(_root_.GlobalTheory.HilbFam.transfQuot T).subtypeEquiv hmem`.
+
+Establish `hterm : ∀ (σ : ℂ) (q : _root_.GlobalTheory.HilbFam.cls L), _root_.GlobalTheory.HilbFam.gTerm k σ b' a' (e q).1.out = _root_.GlobalTheory.HilbFam.gTerm k σ b' a' (T q.1.out)`. Introduce `σ q`. Take `⟨ε, hε⟩` from `exists_unit_transfQuot_out_eq_smul T q`. Simplify using `only [e, Equiv.subtypeEquiv_apply]`. Rewrite using `[hε, _root_.GlobalTheory.HilbFam.gTerm_unit_smul F k σ b' a' ε _ hk]`.
+
+Establish `hsum : ∀ (σ G' : ℂ), HasSum (fun q : _root_.GlobalTheory.HilbFam.cls L' ↦ _root_.GlobalTheory.HilbFam.gTerm k σ b' a' q.1.out) G' → HasSum (fun q : _root_.GlobalTheory.HilbFam.cls L ↦ _root_.GlobalTheory.HilbFam.gTerm k σ b a q.1.out) ((∏ i, lam i)⁻¹ ^ k * ((‖∏ i, lam i‖ : ℝ) : ℂ …`. Introduce `σ G' h`. Establish `h'` using `(e.hasSum_iff.mpr h).mul_left ((∏ i, lam i)⁻¹ ^ k * ((‖∏ i, lam i‖ : ℝ) : ℂ) ^ (-2 * σ))`. Establish `hfun : (fun q : _root_.GlobalTheory.HilbFam.cls L ↦ _root_.GlobalTheory.HilbFam.gTerm k σ b a q.1.out) = fun q ↦ (∏ i, lam i)⁻¹ ^ k * ((‖∏ i, lam i‖ : ℝ) : ℂ) ^ (-2 * σ) * ((fun q : _root_.GlobalTheory.HilbFam.cls L' ↦ _root_.GlobalTheory.HilbFam.gTerm k σ b' a' q.1.out) ∘ e) q`. Use function extensionality and compare the values at `q`.
+
+Simplify using `only [Function.comp_apply, hterm]`. Conclude with `gTerm_eq_of_linear_change σ T hc _`. Rewrite using `[hfun]`. Conclude with `h'`. Take `⟨h₁, h₂⟩` from `hG`.
+
+Use `⟨fun hk2 => ?_, fun hk2 => ?_⟩` and prove the remaining obligations. Simplify using `using hsum 0 G (h₁ hk2)`. Substitute `hk2` using the available equality. Take `⟨H, hH, hs, rfl⟩` from `h₂ rfl`. Establish `hne : ((‖∏ i, lam i‖ : ℝ) : ℂ) ≠ 0`.
+
+Simplify using `[Finset.prod_ne_zero_iff, hlam]`. Use `⟨fun σ => (∏ i, lam i)⁻¹ ^ 2 * ((‖∏ i, lam i‖ : ℝ) : ℂ) ^ (-2 * σ) * H σ, ?_, fun σ hσ => hsum σ _ (hs σ hσ), by simp⟩` and prove the remaining obligations. Conclude with `(((differentiable_const _).mul ((differentiable_id.const_mul (-2 : ℂ)).const_cpow (Or.inl hne))).differentiableOn).mul hH`.
+-/
 private theorem isGVal_of_linear_change {F : Type} [Field F] [NumberField F]
     [IsTotallyReal F] {k : ℕ} (hk : Even k) {L L' : _root_.GlobalTheory.HilbFam.Lat F}
     (T : (Fin 2 → F) ≃ₗ[F] (Fin 2 → F)) {b a b' a' lam : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ}
@@ -110,6 +133,13 @@ set_option autoImplicit false in
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `F _ _ _ k L L' T b a b' a' lam hk hL hlam hc`. Distinguish the cases in `h : ∃ G, _root_.GlobalTheory.HilbFam.IsGVal k L' b' a' G`. Take `⟨G, hG⟩` from `h`. Rewrite using `[_root_.GlobalTheory.HilbFam.gval_eq_of_isGVal F k L' b' a' G hG, _root_.GlobalTheory.HilbFam.gval_eq_of_isGVal F k L b a _ (isGVal_of_linear_change hk T hL hlam hc hG)]`. Establish `h' : ¬ ∃ G, _root_.GlobalTheory.HilbFam.IsGVal k L b a G`.
+
+Introduce and unpack `⟨G, hG⟩`. Use `h ⟨_, isGVal_of_linear_change hk T.symm (lam := fun i => (lam i)⁻¹) ?_ (fun i => inv_ne_zero (hlam i)) ?_ hG⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[hL (T.symm x), T.apply_symm_apply]`. Introduce `x i`.
+
+Rewrite using `[hc (T.symm x) i, T.apply_symm_apply, inv_mul_cancel_left₀ (hlam i)]`. Rewrite using `[_root_.GlobalTheory.HilbFam.gval, dif_neg h', _root_.GlobalTheory.HilbFam.gval, dif_neg h, mul_zero]`.
+-/
 theorem _root_.GlobalTheory.HilbFam.gval_linear_change : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (L L' : _root_.GlobalTheory.HilbFam.Lat F) (T : (Fin 2 → F) ≃ₗ[F] (Fin 2 → F)) (b a b' a' lam : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ), Even k → (∀ x, x ∈ L ↔ T x ∈ L') → (∀ i, lam i ≠ 0) → (∀ x i, _root_.GlobalTheory.HilbFam.coord b a x i = lam i * _root_.GlobalTheory.HilbFam.coord b' a' (T x) i) → _root_.GlobalTheory.HilbFam.gval k L b a = (∏ i, lam i)⁻¹ ^ k * _root_.GlobalTheory.HilbFam.gval k L' b' a' := by
   intro F _ _ _ k L L' T b a b' a' lam hk hL hlam hc
   by_cases h : ∃ G, _root_.GlobalTheory.HilbFam.IsGVal k L' b' a' G

@@ -10,6 +10,9 @@ namespace GlobalTheory.BSP.DiscSer
 
 variable (l : ℕ) {W : Type} [CommRing W] (ρ : ℝ≥0)
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (C : PreDisc l (0 : W) 1 →+* (PreDisc l (0 : W) 1)⟦X⟧)]`. Use `IsUnit.map _ ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap W (PreDisc l (0 : W) 1))]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`.
+-/
 theorem isUnit_l : IsUnit (l : (PreDisc l (0 : W) 1)⟦X⟧) := by
   rw [← map_natCast (C : PreDisc l (0 : W) 1 →+* (PreDisc l (0 : W) 1)⟦X⟧)]
   refine IsUnit.map _ ?_
@@ -20,10 +23,16 @@ def phi : PreDisc l (X : W⟦X⟧) ρ →+* (PreDisc l (0 : W) 1)⟦X⟧ :=
   IsLocalization.Away.lift (l : W⟦X⟧) (g := PowerSeries.map (algebraMap W (PreDisc l (0 : W) 1))) (by
     rw [map_natCast]; exact isUnit_l l)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.lift_eq _ _ s`.
+-/
 theorem phi_alg (s : W⟦X⟧) :
     phi l ρ (algebraMap W⟦X⟧ (PreDisc l (X : W⟦X⟧) ρ) s) = PowerSeries.map (algebraMap W (PreDisc l (0 : W) 1)) s :=
   IsLocalization.Away.lift_eq _ _ s
 
+/- English proof (translation)
+Establish `h` using `congrArg (phi l ρ) (IsLocalization.Away.mul_invSelf (S := PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧))`. Rewrite `h` using `[map_mul, phi_alg, map_natCast, map_one]`. Establish `h2 : (l : (PreDisc l (0 : W) 1)⟦X⟧) * C (IsLocalization.Away.invSelf (S` using `PreDisc l (0 : W) 1) (l : W)) = 1 := by`. Rewrite using `[← map_natCast (C : PreDisc l (0 : W) 1 →+* (PreDisc l (0 : W) 1)⟦X⟧), ← map_mul, ← map_natCast (algebraMap W (PreDisc l (0 : W) 1)), IsLocalization.Away.mul_invSelf, map_one]`. Conclude with `(isUnit_l l).mul_left_cancel (h.trans h2.symm)`.
+-/
 theorem phi_inv :
     phi l ρ (IsLocalization.Away.invSelf (l : W⟦X⟧)) = C (IsLocalization.Away.invSelf (S := PreDisc l (0 : W) 1) (l : W)) := by
   have h := congrArg (phi l ρ) (IsLocalization.Away.mul_invSelf (S := PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧))
@@ -37,8 +46,14 @@ def aPre (n : ℕ) : PreDisc l (X : W⟦X⟧) ρ →+ PreDisc l (0 : W) 1 :=
   (coeff n : (PreDisc l (0 : W) 1)⟦X⟧ →ₗ[PreDisc l (0 : W) 1] PreDisc l (0 : W) 1).toAddMonoidHom.comp
     (phi l ρ).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem aPre_apply (n : ℕ) (y : PreDisc l (X : W⟦X⟧) ρ) : aPre l ρ n y = coeff n (phi l ρ y) := rfl
 
+/- English proof (translation)
+Rewrite using `[aPre_apply, map_mul, phi_alg, map_pow, phi_inv]`. Establish `e : PowerSeries.map (algebraMap W (PreDisc l (0 : W) 1)) ((l : W⟦X⟧) ^ a * X ^ b) * C (IsLocalization.Away.invSelf (S` using `PreDisc l (0 : W) 1) (l : W)) ^ c = C (algebraMap W (PreDisc l (0 : W) 1) ((l : W) ^ a) * IsLocalization.Away.invSelf (S := PreDisc l (0 : W) 1) (l : W) ^ c) * X ^ b := by`. Simplify using `only [map_mul, map_pow, map_natCast, map_X]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, coeff_C_mul_X_pow]`.
+-/
 theorem aPre_mono (n a b c : ℕ) :
     aPre l ρ n (algebraMap W⟦X⟧ (PreDisc l (X : W⟦X⟧) ρ) ((l : W⟦X⟧) ^ a * X ^ b) *
       IsLocalization.Away.invSelf (l : W⟦X⟧) ^ c) =
@@ -52,12 +67,28 @@ theorem aPre_mono (n a b c : ℕ) :
     simp only [map_mul, map_pow, map_natCast, map_X]; ring
   rw [e, coeff_C_mul_X_pow]
 
+/- English proof (translation)
+Establish `hl' : (0 : ℝ) < l` using `Nat.cast_pos.2 hl`. Conclude with `gauge_le l (0 : W) 1 (by positivity) (Submodule.subset_span ⟨a, 0, c, by field_simp; simp, by simp⟩)`.
+-/
 theorem norm_W_mono (hl : 0 < l) (a c : ℕ) :
     ‖algebraMap W (PreDisc l (0 : W) 1) ((l : W) ^ a) *
       IsLocalization.Away.invSelf (S := PreDisc l (0 : W) 1) (l : W) ^ c‖ ≤ (l : ℝ) ^ c / (l : ℝ) ^ a := by
   have hl' : (0 : ℝ) < l := Nat.cast_pos.2 hl
   exact gauge_le l (0 : W) 1 (by positivity) (Submodule.subset_span ⟨a, 0, c, by field_simp; simp, by simp⟩)
 
+/- English proof (translation)
+It suffices to establish `h : ∀ r : ℝ, 0 < r → y ∈ ball l (X : W⟦X⟧) ρ r → ∀ n, ‖aPre l ρ n y‖ * (ρ : ℝ) ^ n ≤ r from le_of_forall_gt_imp_ge_of_dense fun r hr => h r ((norm_nonneg y).trans_lt hr) (mem_ball_of_gauge_lt l _ ρ hr) n`. Establish `hρ' : (ρ : ℝ) ≤ 1` using `by exact_mod_cast hρ`. Establish `hl' : (0 : ℝ) < l` using `Nat.cast_pos.2 hl`. Establish `hadd : ∀ (r : ℝ) (n : ℕ) (z w : PreDisc l (0 : W) 1), ‖z‖ * (ρ : ℝ) ^ n ≤ r → ‖w‖ * (ρ : ℝ) ^ n ≤ r → ‖z + w‖ * (ρ : ℝ) ^ n ≤ r` using `fun r n z w hz hw => (mul_le_mul_of_nonneg_right (gauge_add_le_max l (0 : W) 1 z w) (by positivity)).trans (by rw [max_mul_of_nonneg _ _ (by positivity)]; exact max_le hz hw)`. Introduce `r hr hy`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, b, c, h1, rfl⟩` from `hx`. Introduce `n`. Rewrite using `[aPre_mono]`.
+
+Use `split_ifs with hn`. Substitute `hn` using the available equality. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_zero, zero_mul]`. Conclude with `hr.le`.
+
+Consider the case `zero => intro n`. Rewrite using `[map_zero, norm_zero, zero_mul]`. Conclude with `hr.le`. Consider the case `add x y _ _ hx hy => intro n`. Rewrite using `[map_add]`.
+
+Conclude with `hadd r n _ _ (hx n) (hy n)`. Consider the case `smul s x _ hx`. Introduce `n`. Rewrite using `[aPre_apply, Algebra.smul_def, map_mul, phi_alg, coeff_mul]`. Use `Finset.sum_induction _ (fun z => ‖z‖ * (ρ : ℝ) ^ n ≤ r) (fun z w hz hw => hadd r n z w hz hw) (by rw [norm_zero, zero_mul]; exact hr.le) (fun p hp => ?_)` and prove the remaining obligations.
+
+Establish `hp2 : p.2 ≤ n` using `by have := _root_.Finset.HasAntidiagonal.mem_antidiagonal.1 hp; omega`. Rewrite using `[coeff_map]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_aPre_le (hl : 0 < l) (hρ : ρ ≤ 1) (y : PreDisc l (X : W⟦X⟧) ρ) (n : ℕ) :
     ‖aPre l ρ n y‖ * (ρ : ℝ) ^ n ≤ ‖y‖ := by
   suffices h : ∀ r : ℝ, 0 < r → y ∈ ball l (X : W⟦X⟧) ρ r → ∀ n, ‖aPre l ρ n y‖ * (ρ : ℝ) ^ n ≤ r from
@@ -97,11 +128,29 @@ theorem norm_aPre_le (hl : 0 < l) (hρ : ρ ≤ 1) (y : PreDisc l (X : W⟦X⟧)
             (pow_le_pow_of_le_one (by positivity) hρ' hp2) (by positivity) (by positivity)
       _ ≤ r := by rw [one_mul]; exact hx p.2
 
+/- English proof (translation)
+Use `norm_toDisc_pow_le (l := l) (u := (X : W⟦X⟧)) (ρ := ρ) m hρ0` as an intermediate fact. Rewrite `this` using `[toDisc, RingHom.comp_apply, norm_ofPre]`. Then use the resulting hypothesis.
+-/
 theorem norm_X_pow_le (hρ0 : 0 < ρ) (m : ℕ) :
     ‖algebraMap W⟦X⟧ (PreDisc l (X : W⟦X⟧) ρ) (X ^ m)‖ ≤ (ρ : ℝ) ^ m := by
   have := norm_toDisc_pow_le (l := l) (u := (X : W⟦X⟧)) (ρ := ρ) m hρ0
   rwa [toDisc, RingHom.comp_apply, norm_ofPre] at this
 
+/- English proof (translation)
+Establish `hl : (0 : ℝ) < l` using `Nat.cast_pos.2 (Fact.out : l.Prime).pos`. Take `⟨c, s, hs⟩` from `IsLocalization.Away.surj (l : W⟦X⟧) y`. Establish `hy : y = algebraMap _ _ s * IsLocalization.Away.invSelf (S` using `PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧) ^ c := by`. Rewrite using `[← hs, mul_assoc, ← mul_pow, IsLocalization.Away.mul_invSelf, one_pow, mul_one]`. Establish `hco : ∀ n, aPre l ρ n y = algebraMap W (PreDisc l (0 : W) 1) (coeff n s) * IsLocalization.Away.invSelf (S` using `PreDisc l (0 : W) 1) (l : W) ^ c := by`.
+
+Introduce `n`. Rewrite using `[hy, aPre_apply, map_mul, phi_alg, map_pow, phi_inv, ← map_pow, coeff_mul_C, coeff_map]`. Use `le_of_forall_gt_imp_ge_of_dense fun t ht => ?_` and prove the remaining obligations. Establish `ht0 : 0 < t` using `hr.trans_lt ht`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one (div_pos ht0 (pow_pos hl c)) (show (ρ : ℝ) < 1 by exact_mod_cast hρ)`.
+
+Use `set hd : W⟦X⟧ := ∑ m ∈ Finset.range N, C (coeff m s) * X ^ m with hhd`. Take `⟨s', hs'⟩ : (X : W⟦X⟧) ^ N ∣ s - hd` from `X_pow_dvd_iff.2 fun m hm => by`. Simplify using `[hhd, map_sub, coeff_C_mul_X_pow, map_sum, Finset.mem_range, hm]`. Establish `hsplit : y = ∑ m ∈ Finset.range N, algebraMap _ (PreDisc l (X : W⟦X⟧) ρ) (C (coeff m s) * X ^ m) * IsLocalization.Away.invSelf (S` using `PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧) ^ c + algebraMap _ (PreDisc l (X : W⟦X⟧) ρ) (X ^ N * s') * IsLocalization.Away.invSelf (S := PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧) ^ c := by`. Rewrite using `[hy, ← Finset.sum_mul, ← map_sum, ← add_mul, ← map_add, ← hs', ← hhd, add_sub_cancel]`.
+
+Rewrite using `[hsplit]`. Use `(gauge_add_le_max l _ ρ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `Finset.sum_induction _ (fun z => ‖z‖ ≤ t) (fun a b ha hb => (gauge_add_le_max l _ ρ a b).trans (max_le ha hb)) (by rw [norm_zero]; exact ht0.le) fun m _ => ?_` and prove the remaining obligations. Establish `e : algebraMap _ (PreDisc l (X : W⟦X⟧) ρ) (C (coeff m s) * X ^ m) * IsLocalization.Away.invSelf (S` using `PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧) ^ c = preMap l (0 : W) 1 (X : W⟦X⟧) ρ C (algebraMap W _ (coeff m s) * IsLocalization.Away.invSelf (S := PreDisc l (0 : W) 1) (l : W) ^ c) * algebraMap W⟦X⟧ (PreDisc l (X : W⟦X⟧) ρ) (X ^ m) := by`. Rewrite using `[map_mul (preMap l (0 : W) 1 (X : W⟦X⟧) ρ C), map_pow (preMap l (0 : W) 1 (X : W⟦X⟧) ρ C), preMap_alg, preMap_inv, map_mul (algebraMap W⟦X⟧ (PreDisc l (X : W⟦X⟧) ρ))]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hpm` using `norm_preMap_le (l := l) (u := (0 : W)) (ρ := 1) (u' := (X : W⟦X⟧)) (ρ' := ρ) C (by simp) (algebraMap W _ (coeff m s) * IsLocalization.Away.invSelf (S := PreDisc l (0 : W) 1) (l : W) ^ c)`. Use `(norm_mul_le _ _).trans ((mul_le_mul hpm (norm_X_pow_le l ρ hρ0 m) (norm_nonneg _) (norm_nonneg _)).trans ?_)` and prove the remaining obligations. Rewrite using `[← hco]`.
+
+Conclude with `(h m).trans ht.le`. Establish `e : algebraMap _ (PreDisc l (X : W⟦X⟧) ρ) (X ^ N * s') * IsLocalization.Away.invSelf (S` using `PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧) ^ c = s' • (algebraMap _ (PreDisc l (X : W⟦X⟧) ρ) ((l : W⟦X⟧) ^ 0 * X ^ N) * IsLocalization.Away.invSelf (S := PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧) ^ c) := by`. Rewrite using `[Algebra.smul_def, pow_zero, one_mul, mul_comm ((X : W⟦X⟧) ^ N) s', map_mul, mul_assoc]`. Rewrite using `[e]`. Use `gauge_le l _ ρ ht0 (Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, N, c, ?_, rfl⟩))` and prove the remaining obligations.
+
+Rewrite `hN` using `[lt_div_iff₀ (by positivity)]`. Rewrite using `[pow_zero, mul_one, mul_comm]`. Conclude with `hN.le`.
+-/
 theorem norm_le_of_aPre [Fact l.Prime] (hρ0 : 0 < ρ) (hρ : ρ < 1) (y : PreDisc l (X : W⟦X⟧) ρ) (r : ℝ)
     (hr : 0 ≤ r) (h : ∀ n, ‖aPre l ρ n y‖ * (ρ : ℝ) ^ n ≤ r) : ‖y‖ ≤ r := by
   have hl : (0 : ℝ) < l := Nat.cast_pos.2 (Fact.out : l.Prime).pos
@@ -151,10 +200,18 @@ theorem norm_le_of_aPre [Fact l.Prime] (hρ0 : 0 < ρ) (hρ : ρ < 1) (y : PreDi
     rw [lt_div_iff₀ (by positivity)] at hN
     rw [pow_zero, mul_one, mul_comm]; exact hN.le
 
+/- English proof (translation)
+The claim follows from `AddMonoidHomClass.continuous_of_bound _ ((ρ : ℝ) ^ n)⁻¹ fun y => by rw [inv_mul_eq_div, le_div_iff₀ (by positivity)]; exact norm_aPre_le l ρ hl hρ y n`.
+-/
 theorem continuous_aPre (hl : 0 < l) (hρ0 : 0 < ρ) (hρ : ρ ≤ 1) (n : ℕ) : Continuous (aPre l ρ n (W := W)) :=
   AddMonoidHomClass.continuous_of_bound _ ((ρ : ℝ) ^ n)⁻¹ fun y => by
     rw [inv_mul_eq_div, le_div_iff₀ (by positivity)]; exact norm_aPre_le l ρ hl hρ y n
 
+/- English proof (translation)
+Take `⟨c, s, hs⟩` from `IsLocalization.Away.surj (l : W⟦X⟧) y`. Establish `hy : y = algebraMap _ _ s * IsLocalization.Away.invSelf (S` using `PreDisc l (X : W⟦X⟧) ρ) (l : W⟦X⟧) ^ c := by`. Rewrite using `[← hs, mul_assoc, ← mul_pow, IsLocalization.Away.mul_invSelf, one_pow, mul_one]`. Use `⟨(l : ℝ) ^ c / (l : ℝ) ^ 0, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[hy, aPre_apply, map_mul, phi_alg, map_pow, phi_inv, ← map_pow, coeff_mul_C, coeff_map]`.
+
+Use `(norm_mul_le _ _).trans ((mul_le_mul (norm_algebraMap_le (l := l) (u := (0 : W)) (ρ := 1) _) le_rfl (norm_nonneg _) zero_le_one).trans ?_)` and prove the remaining obligations. Rewrite using `[one_mul]`. Use `norm_W_mono (W := W) l hl 0 c` as an intermediate fact. Rewrite `this` using `[pow_zero, map_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem norm_aPre_le_const (hl : 0 < l) (y : PreDisc l (X : W⟦X⟧) ρ) :
     ∃ C : ℝ, ∀ n, ‖aPre l ρ n y‖ ≤ C := by
   obtain ⟨c, s, hs⟩ := IsLocalization.Away.surj (l : W⟦X⟧) y
@@ -168,6 +225,27 @@ theorem norm_aPre_le_const (hl : 0 < l) (y : PreDisc l (X : W⟦X⟧) ρ) :
   have := norm_W_mono (W := W) l hl 0 c
   rwa [pow_zero, map_one, one_mul] at this
 
+/- English proof (translation)
+Introduce `l _ K bk ρ hρ0 hρ1`. Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Establish `hl' : (0 : ℝ) < l` using `Nat.cast_pos.2 hl`. Establish `hc` using `fun n => continuous_aPre l (W := Wq l bk.a) ρ hl hρ0 hρ1.le n`. Set `A : ℕ → (bk.DS ρ →+ Disc l (0 : Wq l bk.a) 1)` to `fun n => (aPre l ρ n).completion (hc n)`.
+
+Establish `hA : ∀ n y, A n (ofPre l (X : bk.S) ρ y) = ofPre l (0 : Wq l bk.a) 1 (aPre l ρ n y)` using `fun n y => AddMonoidHom.completion_coe _ _ y`. Establish `hAc : ∀ n, Continuous (A n)` using `fun n => AddMonoidHom.continuous_completion _ _`. Establish `h2 : ∀ n y, ‖A n y‖ * (ρ : ℝ) ^ n ≤ ‖y‖`. Introduce `n y`. Use `(denseRange_ofPre l (X : bk.S) ρ).induction_on y (isClosed_le (((hAc n).norm).mul continuous_const) continuous_norm) fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[hA, norm_ofPre, norm_ofPre]`. Conclude with `norm_aPre_le l ρ hl hρ1.le y n`. Use `⟨A, fun n x => ?_, h2, fun y r hr h => ?_, fun y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A n (ofPre l (X : bk.S) ρ (algebraMap _ _ x)) = ofPre l (0 : Wq l bk.a) 1 (algebraMap _ _ (coeff n x))`. Rewrite using `[hA, aPre_apply, phi_alg, coeff_map]`.
+
+Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `(denseRange_ofPre l (X : bk.S) ρ).exists_dist_lt y (half_pos hε)`. Rewrite `hz` using `[dist_eq_norm]`. Establish `hz' : ‖z‖ ≤ r + ε / 2`. Use `norm_le_of_aPre l ρ hρ0 hρ1 z _ (by positivity) fun n => ?_` and prove the remaining obligations.
+
+Rewrite using `[show ‖aPre l ρ n z‖ = ‖ofPre l (0 : Wq l bk.a) 1 (aPre l ρ n z)‖ from (norm_ofPre l (0 : Wq l bk.a) 1 _).symm, show ofPre l (0 : Wq l bk.a) 1 (aPre l ρ n z) = A n y - A n (y - ofPre l (X : bk.S) ρ z) by rw [map_sub, sub_sub_cancel, hA]]`. Use `(mul_le_mul_of_nonneg_right (norm_sub_le _ _) (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[add_mul]`. Conclude with `add_le_add (h n) ((h2 n _).trans hz.le)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`. Take `⟨z, hz⟩` from `(denseRange_ofPre l (X : bk.S) ρ).exists_dist_lt y (half_pos hε)`. Rewrite `hz` using `[dist_eq_norm]`. Take `⟨C, hC⟩` from `norm_aPre_le_const l ρ hl z`.
+
+Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 0)`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one (div_pos (half_pos hε) (show (0 : ℝ) < C + 1 by linarith)) (show (ρ : ℝ) < 1 by exact_mod_cast hρ1)`. Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[Real.dist_eq, sub_zero, abs_of_nonneg (by positivity)]`. Establish `hρn : (ρ : ℝ) ^ n ≤ (ρ : ℝ) ^ N` using `pow_le_pow_of_le_one (by positivity) (by exact_mod_cast hρ1.le) hn`.
+
+Rewrite `hN` using `[lt_div_iff₀ (by linarith)]`. Establish `e : A n y = A n (y - ofPre l (X : bk.S) ρ z) + ofPre l (0 : Wq l bk.a) 1 (aPre l ρ n z)`. Rewrite using `[← hA, ← map_add, sub_add_cancel]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[show ‖aPre l ρ n z‖ = ‖ofPre l (0 : Wq l bk.a) 1 (aPre l ρ n z)‖ from (norm_ofPre l (0 : Wq l bk.a) 1 _).symm]`. Conclude with `norm_add_le _ _`. Use `_ = ‖A n (y - ofPre l (X : bk.S) ρ z)‖ * (ρ : ℝ) ^ n + ‖aPre l ρ n z‖ * (ρ : ℝ) ^ n := add_mul _ _ _`. Use `_ ≤ ‖y - ofPre l (X : bk.S) ρ z‖ + C * (ρ : ℝ) ^ N := add_le_add (h2 n _) (mul_le_mul (hC n) hρn (by positivity) hC0)`.
+
+Use `_ < ε / 2 + ε / 2 := by`. Use `add_lt_add_of_lt_of_le hz ?_` and prove the remaining obligations. Use polynomial arithmetic with `[pow_nonneg (show (0 : ℝ) ≤ ρ by positivity) N]`. Use `_ = ε := add_halves ε`.
+-/
 theorem exists_coeff_disc : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (ρ : ℝ≥0), 0 < ρ → ρ < 1 →
     ∃ a : ℕ → (bk.DS ρ →+ Disc l (0 : Wq l bk.a) 1),
       (∀ n x, a n (toDisc l (X : bk.S) ρ x) = toDisc l (0 : Wq l bk.a) 1 (coeff n x)) ∧

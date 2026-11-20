@@ -10,6 +10,13 @@ noncomputable section
 
 variable {n : ℕ} {MS : Type} [TopologicalSpace MS]
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hq : e.symm x ∈ e.source` using `e.map_target hx`. Take `⟨e', hq', hz', han⟩` from `hu (e.symm x)`. Establish `hex : e' (e.symm x) = x` using `by rw [← hz' _ hq', hz _ hq, e.right_inv hx]`. Establish `hx' : x ∈ e'.target` using `hex ▸ e'.map_source hq'`.
+
+Use `(han x hx').congr ?_` and prove the remaining obligations. Establish `h1 : ∀ᶠ x' in 𝓝 x, x' ∈ e.target` using `e.open_target.mem_nhds hx`. Establish `h2 : ∀ᶠ x' in 𝓝 x, e.symm x' ∈ e'.source` using `(e.continuousAt_symm hx).preimage_mem_nhds (e'.open_source.mem_nhds hq')`. Use `filter_upwards [h1, h2] with x' h1 h2`. Establish `h3 : e' (e.symm x') = x'` using `by rw [← hz' _ h2, hz _ (e.map_target h1), e.right_inv h1]`.
+
+Establish `h4 : e'.symm x' = e.symm x'`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Function.comp_apply, h4]`.
+-/
 theorem HolomorphicAlong.analyticOnNhd {z : MS → (Fin n → ℂ)} {u : MS → ℂ}
     (hu : HolomorphicAlong z u) (e : OpenPartialHomeomorph MS (Fin n → ℂ))
     (hz : ∀ q ∈ e.source, z q = e q) : AnalyticOnNhd ℂ (u ∘ e.symm) e.target := by
@@ -29,6 +36,11 @@ theorem HolomorphicAlong.analyticOnNhd {z : MS → (Fin n → ℂ)} {u : MS → 
       _ = e.symm x' := e'.left_inv h2
   simp only [Function.comp_apply, h4]
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun p => ?_` and prove the remaining obligations. Take `⟨e, hp, -, han⟩` from `hu p`. Establish `hc : ContinuousAt ((u ∘ e.symm) ∘ e) p` using `(han (e p) (e.map_source hp)).continuousAt.comp (e.continuousAt hp)`. Use `hc.congr ?_` and prove the remaining obligations. Use `filter_upwards [e.open_source.mem_nhds hp] with q hq`.
+
+Simplify using `[e.left_inv hq]`.
+-/
 theorem HolomorphicAlong.continuous {z : MS → (Fin n → ℂ)} {u : MS → ℂ}
     (hu : HolomorphicAlong z u) : Continuous u := by
   refine continuous_iff_continuousAt.2 fun p => ?_
@@ -39,6 +51,9 @@ theorem HolomorphicAlong.continuous {z : MS → (Fin n → ℂ)} {u : MS → ℂ
   filter_upwards [e.open_source.mem_nhds hp] with q hq
   simp [e.left_inv hq]
 
+/- English proof (translation)
+Introduce `p`. Take `⟨e, hp, hz, -⟩` from `hu p`. Conclude with `⟨e, hp, hz, (hu.analyticOnNhd e hz).mul (hv.analyticOnNhd e hz)⟩`.
+-/
 theorem HolomorphicAlong.mul {z : MS → (Fin n → ℂ)} {u v : MS → ℂ}
     (hu : HolomorphicAlong z u) (hv : HolomorphicAlong z v) :
     HolomorphicAlong z (fun p => u p * v p) := by
@@ -46,12 +61,26 @@ theorem HolomorphicAlong.mul {z : MS → (Fin n → ℂ)} {u v : MS → ℂ}
   obtain ⟨e, hp, hz, -⟩ := hu p
   exact ⟨e, hp, hz, (hu.analyticOnNhd e hz).mul (hv.analyticOnNhd e hz)⟩
 
+/- English proof (translation)
+Introduce `p`. Take `⟨e, hp, hz, -⟩` from `hu p`. Conclude with `⟨e, hp, hz, (hu.analyticOnNhd e hz).pow k⟩`.
+-/
 theorem HolomorphicAlong.pow {z : MS → (Fin n → ℂ)} {u : MS → ℂ}
     (hu : HolomorphicAlong z u) (k : ℕ) : HolomorphicAlong z (fun p => u p ^ k) := by
   intro p
   obtain ⟨e, hp, hz, -⟩ := hu p
   exact ⟨e, hp, hz, (hu.analyticOnNhd e hz).pow k⟩
 
+/- English proof (translation)
+Use `set A : Set MS := {p | u =ᶠ[𝓝 p] 0} with hA`. Establish `hAo : IsOpen A` using `isOpen_setOfPred_eventually_nhds`. Establish `hAc : IsClosed A`. Use `isClosed_of_closure_subset fun p hp => ?_` and prove the remaining obligations. Take `⟨e, hpe, hz, -⟩` from `hu p`.
+
+Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 e.open_target (e p) (e.map_source hpe)`. Establish `hV : e.source ∩ e ⁻¹' Metric.ball (e p) ε ∈ 𝓝 p` using `inter_mem (e.open_source.mem_nhds hpe) ((e.continuousAt hpe).preimage_mem_nhds (Metric.ball_mem_nhds _ hε))`. Take `⟨q, ⟨hqs, hqb⟩, hqA⟩` from `mem_closure_iff_nhds.1 hp _ hV`. Establish `han : AnalyticOnNhd ℂ (u ∘ e.symm) (Metric.ball (e p) ε)` using `(hu.analyticOnNhd e hz).mono hball`. Establish `hev : (u ∘ e.symm) =ᶠ[𝓝 (e q)] 0`.
+
+Establish `ht : Tendsto e.symm (𝓝 (e q)) (𝓝 q)`. Use `(e.continuousAt_symm (e.map_source hqs)).tendsto` as an intermediate fact. Rewrite `this` using `[e.left_inv hqs]`. Then use the resulting hypothesis. Conclude with `ht.eventually hqA`. Establish `hzero` using `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball (e p) ε).isPreconnected hqb hev`.
+
+Use `show u =ᶠ[𝓝 p] 0`. Use `filter_upwards [hV] with q' ⟨hq's, hq'b⟩`. Use `hzero hq'b` as an intermediate fact. Simplify `this` using `[e.left_inv hq's]`. Establish `huniv : A = Set.univ` using `IsClopen.eq_univ ⟨hAc, hAo⟩ ⟨p₀, h₀⟩`.
+
+Use function extensionality and compare the values at `p`. Establish `hp : p ∈ A` using `huniv ▸ Set.mem_univ p`. Conclude with `hp.self_of_nhds`.
+-/
 theorem HolomorphicAlong.eq_zero_of_eventually [ConnectedSpace MS] {z : MS → (Fin n → ℂ)}
     {u : MS → ℂ} (hu : HolomorphicAlong z u) {p₀ : MS} (h₀ : u =ᶠ[𝓝 p₀] 0) : u = 0 := by
   set A : Set MS := {p | u =ᶠ[𝓝 p] 0} with hA
@@ -82,6 +111,11 @@ theorem HolomorphicAlong.eq_zero_of_eventually [ConnectedSpace MS] {z : MS → (
   have hp : p ∈ A := huniv ▸ Set.mem_univ p
   exact hp.self_of_nhds
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p, g p ≠ 0 := by`. Assume the negation of the conclusion as `H`. Conclude with `hg0 (funext fun p => by_contra fun hp => H ⟨p, hp⟩)`. Establish `hne : ∀ᶠ q in 𝓝 p, g q ≠ 0` using `hg.continuous.continuousAt.eventually_ne hp`. Use `hh.eq_zero_of_eventually (p₀ := p) ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hne] with q hq`. Conclude with `(mul_eq_zero.1 (hgh q)).resolve_left hq`.
+-/
 theorem HolomorphicAlong.eq_zero_of_mul_eq_zero [ConnectedSpace MS] {z : MS → (Fin n → ℂ)}
     {g h : MS → ℂ} (hg : HolomorphicAlong z g) (hh : HolomorphicAlong z h)
     (hgh : ∀ p, g p * h p = 0) (hg0 : g ≠ 0) : h = 0 := by
@@ -93,12 +127,26 @@ theorem HolomorphicAlong.eq_zero_of_mul_eq_zero [ConnectedSpace MS] {z : MS → 
   filter_upwards [hne] with q hq
   exact (mul_eq_zero.1 (hgh q)).resolve_left hq
 
+/- English proof (translation)
+Establish `: ∀ᶠ q in 𝓝 p, ‖u q‖ < ‖u p‖ + 1` using `hu.norm.continuousAt.preimage_mem_nhds (Iio_mem_nhds (lt_add_one _))`. Use `filter_upwards [this] with q hq using hq.le`.
+-/
 theorem eventually_norm_le_of_continuous {u : MS → ℂ} (hu : Continuous u) (p : MS) :
     ∀ᶠ q in 𝓝 p, ‖u q‖ ≤ ‖u p‖ + 1 := by
   have : ∀ᶠ q in 𝓝 p, ‖u q‖ < ‖u p‖ + 1 :=
     hu.norm.continuousAt.preimage_mem_nhds (Iio_mem_nhds (lt_add_one _))
   filter_upwards [this] with q hq using hq.le
 
+/- English proof (translation)
+Introduce `n MS _ _ _ _ De z δ f θ τ C e a hDe hcov hf hθ hτ hθ0 hτ0 hbound hord`. Establish `hτa : HolomorphicAlong z (fun p => τ p ^ a)` using `hτ.pow a`. Establish `hg : HolomorphicAlong z (fun p => θ p * τ p ^ a)` using `hθ.mul hτa`. Establish `hg0 : (fun p => θ p * τ p ^ a) ≠ 0`. Introduce `H`.
+
+Establish `h0 : (fun p => τ p ^ a) = 0` using `hθ.eq_zero_of_mul_eq_zero hτa (fun p => congrFun H p) hθ0`. Conclude with `hτ0 (funext fun p => eq_zero_of_pow_eq_zero (congrFun h0 p))`. Establish `hu : HolomorphicAlong z (fun p => f p * θ p * τ p ^ a)` using `(hf.mul hθ).mul hτa`. Establish `horder : ∀ p, z p = 0 → OrderGT z (fun p => f p * θ p * τ p ^ a) p e`. Introduce `p hp`.
+
+Take `⟨Cf, hCf⟩` from `hord p hp`. Use `⟨Cf * ((‖θ p‖ + 1) * (‖τ p‖ + 1) ^ a), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hCf, eventually_norm_le_of_continuous hθ.continuous p, eventually_norm_le_of_continuous hτ.continuous p] with q hq1 hq2 hq3`. Rewrite using `[norm_mul, norm_mul, norm_pow]`. Establish `hr : 0 ≤ Cf * Real.sqrt (normSq (z q - z p)) ^ (e + 1)` using `(norm_nonneg _).trans hq1`.
+
+Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Establish `hu0` using `hNorm n MS De z δ _ C e hDe hcov hu hbound horder`. Conclude with `hg.eq_zero_of_mul_eq_zero hf (fun p => by`. Use `congrFun hu0 p` as an intermediate fact.
+
+Simplify using `only [Pi.zero_apply] at this`. Take the linear combination `this) hg0`.
+-/
 theorem ShareCore.proof (hNorm : NormLemma.Statement) : ShareCore.Statement := by
   intro n MS _ _ _ _ De z δ f θ τ C e a hDe hcov hf hθ hτ hθ0 hτ0 hbound hord
   have hτa : HolomorphicAlong z (fun p => τ p ^ a) := hτ.pow a
@@ -128,6 +176,9 @@ theorem ShareCore.proof (hNorm : NormLemma.Statement) : ShareCore.Statement := b
     simp only [Pi.zero_apply] at this
     linear_combination this) hg0
 
+/- English proof (translation)
+Introduce `D N T hD hN hT`. Establish `h11 : 11 * D ≤ T` using `by nlinarith`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> omega`.
+-/
 theorem ShareNumbers.proof : ShareNumbers.Statement := by
   intro D N T hD hN hT
   have h11 : 11 * D ≤ T := by nlinarith

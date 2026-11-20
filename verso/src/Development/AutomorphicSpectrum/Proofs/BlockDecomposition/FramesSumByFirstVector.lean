@@ -13,6 +13,13 @@ open GlobalTheory.CompanionTheory.SW.ThetaStage
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [hE, hform, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ]`. Establish `e00 : hypOne J 0 0 = 0` using `rfl`. Establish `e01 : hypOne J 0 (Fin.succ 0) = 1` using `rfl`. Establish `e10 : hypOne J (Fin.succ 0) 0 = 1` using `rfl`. Establish `e11 : hypOne J (Fin.succ 0) (Fin.succ 0) = 0` using `rfl`.
+
+Establish `e0r : ∀ j : Fin M, hypOne J 0 j.succ.succ = 0` using `fun _ => rfl`. Establish `e1r : ∀ j : Fin M, hypOne J (Fin.succ 0) j.succ.succ = 0` using `fun _ => rfl`. Establish `er0 : ∀ i : Fin M, hypOne J i.succ.succ 0 = 0` using `fun _ => rfl`. Establish `er1 : ∀ i : Fin M, hypOne J i.succ.succ (Fin.succ 0) = 0` using `fun _ => rfl`. Establish `err : ∀ i j : Fin M, hypOne J i.succ.succ j.succ.succ = J i j` using `fun _ _ => rfl`.
+
+Simplify using `only [e00, e01, e10, e11, e0r, e1r, er0, er1, err]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hE_cons (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (a b c d : E)
     (x y : Fin M → E) :
     hE σ (hypOne J) (Fin.cons a (Fin.cons b x) : Fin (M + 2) → E)
@@ -31,17 +38,37 @@ theorem hE_cons (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (a
   simp
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Fin.cases rfl (fun i => Fin.cases rfl (fun k => rfl) i) i` and prove the remaining obligations.
+-/
 theorem e0_cons (M : ℕ) : e0 E M 0 = Fin.cons 1 (Fin.cons 0 (fun _ => 0)) := by
   funext i
   refine Fin.cases rfl (fun i => Fin.cases rfl (fun k => rfl) i) i
 
+/- English proof (translation)
+Rewrite using `[← e0_cons]`. Both sides reduce to the same expression.
+-/
 theorem consA_zero {M n : ℕ} (a : Fin 1 → Fin n → E) (Y : Fin n → Fin M → E) :
     consA a Y 0 = Fin.cons 1 (Fin.cons 0 (fun _ => 0)) := by
   rw [← e0_cons]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem consA_succ {M n : ℕ} (a : Fin 1 → Fin n → E) (Y : Fin n → Fin M → E) (j : Fin n) :
     consA a Y j.succ = Fin.cons (a 0 j) (Fin.cons 0 (Y j)) := rfl
 
+/- English proof (translation)
+Establish `hz : (fun _ : Fin M => (0 : E)) = 0` using `rfl`. Establish `hg : ∀ i j, hE σ J (Y i) (Y j) = 0` using `fun i j => congrFun (congrFun hY.2 i) j`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Fintype.linearIndependent_iff.2 fun c hc => ?_` and prove the remaining obligations. Rewrite `hc` using `[Fin.sum_univ_succ]`.
+
+Establish `htail : ∀ k : Fin n, c k.succ = 0`. Use `Fintype.linearIndependent_iff.1 hY.1 (fun k => c k.succ) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `congrFun hc i.succ.succ` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, consA_zero, consA_succ]`.
+
+Establish `h0 : c 0 = 0`. Use `congrFun hc 0` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, consA_zero, consA_succ, htail]`. Introduce `k`. Conclude with `Fin.cases h0 htail k`.
+
+Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Simplify using `[gramE, consA_zero, hE_cons, hz, BlockAlg.hE_zero_left]`. Simplify using `[gramE, consA_zero, consA_succ, hE_cons, hz, BlockAlg.hE_zero_left]`. Simplify using `[gramE, consA_zero, consA_succ, hE_cons, hz, BlockAlg.hE_zero_right]`.
+
+Simplify using `[gramE, consA_succ, hE_cons, hg]`. Both sides reduce to the same expression.
+-/
 theorem consA_mem (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (a : Fin 1 → Fin n → E) (Y : Fin n → Fin M → E) (hY : Y ∈ framesE σ J (0 : Matrix (Fin n) (Fin n) E)) :
     consA a Y ∈ framesOne σ J n := by
@@ -68,6 +95,11 @@ theorem consA_mem (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E
     · simp [gramE, consA_succ, hE_cons, hg]
   · rfl
 
+/- English proof (translation)
+Establish `hz : (fun _ : Fin M => (0 : E)) = 0` using `rfl`. Establish `hc : X a.succ = Fin.cons (X a.succ 0) (Fin.cons (X a.succ (Fin.succ 0)) (fun i => X a.succ i.succ.succ))`. Use function extensionality and compare the values at `i`. Use `Fin.cases rfl (fun i => Fin.cases rfl (fun k => rfl) i) i` and prove the remaining obligations. Establish `h : hE σ (hypOne J) (X 0) (X a.succ) = 0` using `congrFun (congrFun hX.1.2 0) a.succ`.
+
+Rewrite `h` using `[hX.2, e0_cons, hc, hE_cons, hz, BlockAlg.hE_zero_left]`. Simplify using `using h`.
+-/
 theorem sec_zero (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (X : Fin (n + 1) → Fin (M + 2) → E) (hX : X ∈ framesOne σ J n) (a : Fin n) :
     X a.succ (Fin.succ 0) = 0 := by
@@ -79,6 +111,17 @@ theorem sec_zero (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
   rw [hX.2, e0_cons, hc, hE_cons, hz, BlockAlg.hE_zero_left] at h
   simpa using h
 
+/- English proof (translation)
+Establish `hgr : ∀ a b, hE σ (hypOne J) (X a) (X b) = 0` using `fun a b => congrFun (congrFun hX.1.2 a) b`. Establish `hc : ∀ a, X a = Fin.cons (X a 0) (Fin.cons (X a (Fin.succ 0)) (fun i => X a i.succ.succ))` using `fun a => by`. Use function extensionality and compare the values at `i`. Use `Fin.cases rfl (fun i => Fin.cases rfl (fun k => rfl) i) i` and prove the remaining obligations. Establish `hsec` using `sec_zero σ J X hX`.
+
+Establish `h0` using `hX.2.trans (e0_cons M)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Fintype.linearIndependent_iff.2 fun c hc' a => ?_` and prove the remaining obligations. Establish `h1` using `Fintype.linearIndependent_iff.1 hX.1.1 (Fin.cons (-∑ k, c k * X k.succ 0) c) (by`. Rewrite using `[Fin.sum_univ_succ, h0]`.
+
+Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => Fin.cases ?_ (fun k => ?_) i) i` and prove the remaining obligations. Simplify using `[Finset.sum_apply]`. Establish `hsec' : ∀ a : Fin n, X a.succ 1 = 0` using `hsec`. Simplify using `[Finset.sum_apply, hsec']`.
+
+Use `congrFun hc' k` as an intermediate fact. Simplify `this) a.succ` using `[Finset.sum_apply]`. Simplify using `using h1`. Use extensionality with `a b`. Establish `h` using `hgr a.succ b.succ`.
+
+Rewrite `h` using `[hc a.succ, hc b.succ, hE_cons, hsec, hsec]`. Simplify `h` using `[gramE]`.
+-/
 theorem tail_mem (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (X : Fin (n + 1) → Fin (M + 2) → E) (hX : X ∈ framesOne σ J n) :
     (fun (a : Fin n) (i : Fin M) => X a.succ i.succ.succ) ∈ framesE σ J (0 : Matrix (Fin n) (Fin n) E) := by
@@ -130,6 +173,9 @@ def framesOneEquiv (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
       refine Fin.cases rfl (fun i => Fin.cases ?_ (fun l => rfl) i) i
       exact (sec_zero σ J X hX k).symm
 
+/- English proof (translation)
+Introduce `F E _ _ _ σ M J n f`. Rewrite using `[← (framesOneEquiv σ J n).tsum_eq (fun X : framesOne σ J n => f X.1), ENNReal.tsum_prod']`. Both sides reduce to the same expression.
+-/
 theorem tsum_framesOne : ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (n : ℕ) (f : (Fin (n + 1) → Fin (M + 2) → E) → ℝ≥0∞), ∑' X : framesOne σ J n, f X.1 = ∑' Y : framesE σ J (0 : Matrix (Fin n) (Fin n) E), ∑' a : Fin 1 → Fin n → E, f (consA a Y.1) := by
   intro F E _ _ _ σ M J n f
   rw [← (framesOneEquiv σ J n).tsum_eq (fun X : framesOne σ J n => f X.1), ENNReal.tsum_prod']

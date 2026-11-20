@@ -12,6 +12,13 @@ namespace GlobalTheory.HL.UniCount
 section
 variable {E : Type} [CommRing E] {N : ℕ}
 
+/- English proof (translation)
+Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge l i with h1 | h1` into its components or cases. Rewrite using `[hs.1 i l h1, zero_mul]`.
+
+Rewrite using `[ht.1 l j (lt_of_lt_of_le h h1), mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hs.2, ht.2, one_mul]`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with h1 | h1` into its components or cases.
+
+Rewrite using `[hs.1 i l h1, zero_mul]`. Rewrite using `[ht.1 l i h1, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem isUni_mul {s t : Matrix (Fin N) (Fin N) E} (hs : IsUni s) (ht : IsUni t) :
     IsUni (s * t) := by
   refine ⟨fun i j h => ?_, fun i => ?_⟩
@@ -31,11 +38,19 @@ theorem isUni_mul {s t : Matrix (Fin N) (Fin N) E} (hs : IsUni s) (ht : IsUni t)
 def rowM (k : Fin N) (c : Fin N → E) : Matrix (Fin N) (Fin N) E :=
   1 + Matrix.of fun a b => if a = k then c b else 0
 
+/- English proof (translation)
+Rewrite using `[rowM, Matrix.mul_add, Matrix.mul_one, Matrix.add_apply, Matrix.mul_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_rowM (w : Matrix (Fin N) (Fin N) E) (k : Fin N) (c : Fin N → E) (i j : Fin N) :
     (w * rowM k c) i j = w i j + w i k * c j := by
   rw [rowM, Matrix.mul_add, Matrix.mul_one, Matrix.add_apply, Matrix.mul_apply]
   simp
 
+/- English proof (translation)
+Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [rowM, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply_ne h.ne'] split_ifs with h1`. Rewrite using `[hc j (h1 ▸ h.le), add_zero]`. Simplify using the standard rewrite rules. Simplify using `only [rowM, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply_eq] split_ifs with h1`.
+
+Rewrite using `[hc i h1.le, add_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem isUni_rowM (k : Fin N) (c : Fin N → E) (hc : ∀ j, j ≤ k → c j = 0) :
     IsUni (rowM k c) := by
   refine ⟨fun i j h => ?_, fun i => ?_⟩
@@ -52,11 +67,17 @@ end
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] {N : ℕ}
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact sum_mem fun l _ => mul_mem (hs i l) (ht l j)`.
+-/
 theorem isIntM_mul (L : LocE F E) {s t : Matrix (Fin N) (Fin N) E} (hs : IsIntM L s)
     (ht : IsIntM L t) : IsIntM L (s * t) := fun i j => by
   rw [Matrix.mul_apply]
   exact sum_mem fun l _ => mul_mem (hs i l) (ht l j)
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [rowM, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply] refine add_mem ?_ ?_ · split_ifs exacts [one_mem _, zero_mem _] · split_ifs exacts [hc j, zero_mem _]`.
+-/
 theorem isIntM_rowM (L : LocE F E) (k : Fin N) (c : Fin N → E) (hc : ∀ j, c j ∈ L.O) :
     IsIntM L (rowM k c) := fun i j => by
   simp only [rowM, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply]
@@ -69,11 +90,19 @@ theorem isIntM_rowM (L : LocE F E) (k : Fin N) (c : Fin N → E) (hc : ∀ j, c 
 def cos (L : LocE F E) (u : Matrix (Fin N) (Fin N) E) : Set (Matrix (Fin N) (Fin N) E) :=
   {v | ∃ A, IsUni A ∧ IsIntM L A ∧ v = u * A}
 
+/- English proof (translation)
+Introduce and unpack `v ⟨A, hA, hA', rfl⟩`. Conclude with `⟨B * A, isUni_mul h1 hA, isIntM_mul L h2 hA', Matrix.mul_assoc _ _ _⟩`.
+-/
 theorem cos_mul_subset (L : LocE F E) (u B : Matrix (Fin N) (Fin N) E) (h1 : IsUni B)
     (h2 : IsIntM L B) : cos L (u * B) ⊆ cos L u := by
   rintro v ⟨A, hA, hA', rfl⟩
   exact ⟨B * A, isUni_mul h1 hA, isIntM_mul L h2 hA', Matrix.mul_assoc _ _ _⟩
 
+/- English proof (translation)
+Use `(cos_mul_subset L u _ (isUni_rowM k c hc) (isIntM_rowM L k c hc')).antisymm ?_` and prove the remaining obligations. Establish `: u = u * rowM k c * rowM k (-c)`. Use extensionality with `i j`. Rewrite using `[mul_rowM, mul_rowM, mul_rowM, hc k le_rfl]`. Simplify using the standard rewrite rules.
+
+Use `conv_lhs => rw [this]`. Conclude with `cos_mul_subset L _ _ (isUni_rowM k _ fun j hj => by simp [hc j hj]) (isIntM_rowM L k _ fun j => neg_mem (hc' j))`.
+-/
 theorem cos_rowM (L : LocE F E) (u : Matrix (Fin N) (Fin N) E) (k : Fin N) (c : Fin N → E)
     (hc : ∀ j, j ≤ k → c j = 0) (hc' : ∀ j, c j ∈ L.O) : cos L (u * rowM k c) = cos L u := by
   refine (cos_mul_subset L u _ (isUni_rowM k c hc) (isIntM_rowM L k c hc')).antisymm ?_
@@ -85,6 +114,19 @@ theorem cos_rowM (L : LocE F E) (u : Matrix (Fin N) (Fin N) E) (k : Fin N) (c : 
   exact cos_mul_subset L _ _ (isUni_rowM k _ fun j hj => by simp [hc j hj])
     (isIntM_rowM L k _ fun j => neg_mem (hc' j))
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact ⟨u, hu, hδ, rfl, fun i j h _ => absurd i.2 (by omega)⟩`. Consider the case `succ m ih`. Take `⟨w, hw, hwδ, hc, hg⟩` from `ih`. Distinguish the cases in `hm : N ≤ m`.
+
+Conclude with `⟨w, hw, hwδ, hc, fun i j _ h => hg i j (by omega) h⟩`. Set `k : Fin N` to `⟨N - 1 - m, by omega⟩`. Use `choose r hrR hr using fun j => hR (w k j) (hwδ k j)`. Set `c : Fin N → E` to `fun j => if k < j then r j - w k j else 0`. Establish `hc0 : ∀ j, j ≤ k → c j = 0` using `fun j hj => if_neg (not_lt.2 hj)`.
+
+Establish `hc1 : ∀ j, c j ∈ L.O` using `fun j => by`. Simplify using `only [c]`. Use `split_ifs`. Use `exacts [hr j, zero_mem _]`. Use `⟨w * rowM k c, isUni_mul hw (isUni_rowM k c hc0), fun i j => ?_, (cos_rowM L w k c hc0 hc1).trans hc, fun i j h hij => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_rowM, mul_add, ← mul_assoc]`. Conclude with `add_mem (hwδ i j) (mul_mem (hwδ i k) (hc1 j))`. Rewrite using `[mul_rowM]`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+
+Rewrite using `[hw.2, one_mul]`. Simplify using `only [c, if_pos hij]`. Simplify using `using hrR j`. Establish `h2 : i.val ≠ N - 1 - m` using `fun h => hik (Fin.ext h)`. Establish `h3 : k < i` using `by show N - 1 - m < i.val`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hw.1 i k h3, zero_mul, add_zero]`. Conclude with `hg i j (by omega) hij`.
+-/
 theorem exists_rep (L : LocE F E) (δ : E) (R : Set E)
     (hR : ∀ x : E, δ * x ∈ L.O → ∃ r ∈ R, r - x ∈ L.O)
     (u : Matrix (Fin N) (Fin N) E) (hu : IsUni u) (hδ : ∀ i j, δ * u i j ∈ L.O) (m : ℕ) :
@@ -121,6 +163,23 @@ theorem exists_rep (L : LocE F E) (δ : E) (R : Set E)
         rw [hw.1 i k h3, zero_mul, add_zero]
         exact hg i j (by omega) hij
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `hδ`. Set `ρ : (L.O ⧸ Ideal.span {δ}) → E` to `fun q => (d⁻¹ : Eˣ) * (Quotient.out q : L.O)`. Establish `hR : ∀ x : E, (δ : E) * x ∈ L.O → ∃ r ∈ Set.range ρ, r - x ∈ L.O`. Introduce `x hx`. Set `y : L.O` to `⟨_, hx⟩`.
+
+Use `⟨_, ⟨Ideal.Quotient.mk _ y, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : Quotient.out (Ideal.Quotient.mk (Ideal.span {δ}) y) - y ∈ Ideal.span {δ}` using `Ideal.Quotient.eq.1 (Ideal.Quotient.mk_out _)`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 h1`. Establish `h2 : ((Quotient.out (Ideal.Quotient.mk (Ideal.span {δ}) y) : L.O) : E) = (a : E) * d + d * x`. Use `congrArg (Subtype.val) ha` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Rewrite using `[hd, this]`. Simplify using `[y]`. Establish `h3 : ρ (Ideal.Quotient.mk _ y) - x = a`. Simplify using `only [ρ]`.
+
+Rewrite using `[h2]`. Use `d.inv_mul` as an intermediate fact. Take the linear combination `((a : E) + x) * this`. Rewrite using `[h3]`. Conclude with `a.2`.
+
+Set `P` to `{p : Fin N × Fin N // p.1 < p.2}`. Set `mk : (P → L.O ⧸ Ideal.span {δ}) → Matrix (Fin N) (Fin N) E` to `fun f => Matrix.of fun i j => if h : i < j then ρ (f ⟨(i, j), h⟩) else if i = j then 1 else 0`. Establish `hsub : {C : Set (Matrix (Fin N) (Fin N) E) | ∃ u, IsUni u ∧ (∀ i j, (δ : E) * u i j ∈ L.O) ∧ C = cos L u} ⊆ (fun f => cos L (mk f)) '' Set.univ`. Introduce and unpack `C ⟨u, hu, huδ, rfl⟩`. Take `⟨w, hw, -, hc, hg⟩` from `exists_rep L δ _ hR u hu huδ N`.
+
+Use `choose f hf using fun p : P => hg p.1.1 p.1.2 (by omega) p.2`. Use `⟨f, trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Use `show cos L (mk f) = _`. Use `congr 1`.
+
+Use extensionality with `i j`. Simplify using `only [mk, Matrix.of_apply]`. Use `split_ifs with h1 h2`. Conclude with `hf ⟨(i, j), h1⟩`. Rewrite using `[h2, hw.2]`.
+
+Conclude with `(hw.1 i j (lt_of_le_of_ne (not_lt.1 h1) (Ne.symm h2))).symm`. Use `(Set.encard_le_encard hsub).trans ((Set.encard_image_le _ _).trans (le_of_eq ?_))` and prove the remaining obligations. Establish `hP : Nat.card P = N * (N - 1) / 2`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype, Fintype.card_product_filter_lt, Fintype.card_fin, Nat.choose_two_right]`. Rewrite using `[Set.encard_univ, ENat.card_eq_coe_natCard, Nat.card_fun, hP]`.
+-/
 theorem encard_le (L : LocE F E) (δ : L.O) (hδ : IsUnit (δ : E))
     [Finite (L.O ⧸ Ideal.span {δ})] (N : ℕ) :
     {C : Set (Matrix (Fin N) (Fin N) E) | ∃ u, IsUni u ∧ (∀ i j, (δ : E) * u i j ∈ L.O) ∧
@@ -172,6 +231,9 @@ theorem encard_le (L : LocE F E) (δ : L.O) (hδ : IsUnit (δ : E))
       Fintype.card_fin, Nat.choose_two_right]
   rw [Set.encard_univ, ENat.card_eq_coe_natCard, Nat.card_fun, hP]
 
+/- English proof (translation)
+Establish `: Finite (𝒪[F] ⧸ Ideal.span {ϖ})`. Rewrite using `[← h.maximalIdeal_eq]`. Conclude with `inferInstanceAs (Finite 𝓀[F])`. Conclude with `Nat.card_pos.ne'`.
+-/
 theorem resQ_ne_zero [IsNonarchimedeanLocalField F] (ϖ : 𝒪[F]) (h : Irreducible ϖ) :
     resQ ϖ ≠ 0 := by
   have : Finite (𝒪[F] ⧸ Ideal.span {ϖ}) := by
@@ -181,6 +243,11 @@ theorem resQ_ne_zero [IsNonarchimedeanLocalField F] (ϖ : 𝒪[F]) (h : Irreduci
 
 end GlobalTheory.HL.UniCount
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L ϖ hϖ δ hδ hu N`. Establish `hc` using `(GlobalTheory.UnramCard.card_quot_eq_pow L ϖ hϖ ⟨δ, hδ⟩ hu).2`. Establish `hfin : Finite (L.O ⧸ Ideal.span {(⟨δ, hδ⟩ : L.O)})` using `Nat.finite_of_card_ne_zero (by rw [hc]; exact pow_ne_zero _ (UniCount.resQ_ne_zero ϖ hϖ))`. Establish `h` using `UniCount.encard_le L ⟨δ, hδ⟩ hu N`. Rewrite `h` using `[hc, ← pow_mul]`.
+
+Establish `h2` using `ENat.toENNReal_le.2 h`. Rewrite `h2` using `[ENat.toENNReal_coe, Nat.cast_pow]`. Conclude with `h2`.
+-/
 theorem GlobalTheory.HL.encard_uniCosets_le : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (ϖ : 𝒪[F]), Irreducible ϖ → ∀ (δ : E), δ ∈ L.O → IsUnit δ → ∀ N : ℕ, ({C : Set (Matrix (Fin N) (Fin N) E) | ∃ u, IsUni u ∧ (∀ i j, δ * u i j ∈ L.O) ∧ C = {v | ∃ A, IsUni A ∧ IsIntM L A ∧ v = u * A}}.encard : ℝ≥0∞) ≤ (resQ ϖ : ℝ≥0∞) ^ ((vE L ϖ (δ * L.cj δ)).toNat * (N * (N - 1) / 2)) := by
   intro F _ _ _ _ _ E _ _ _ L ϖ hϖ δ hδ hu N
   have hc := (GlobalTheory.UnramCard.card_quot_eq_pow L ϖ hϖ ⟨δ, hδ⟩ hu).2

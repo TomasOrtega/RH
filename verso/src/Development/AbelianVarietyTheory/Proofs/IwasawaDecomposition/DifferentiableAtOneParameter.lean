@@ -6,6 +6,27 @@ open Filter Topology MeasureTheory
 
 namespace GlobalTheory.LocWeil.DerComm
 
+/- English proof (translation)
+Establish `hφ` using `hc`. Establish `hadd` using `hm`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hball⟩ : ∃ δ > (0 : ℝ), ∀ s : ℝ, |s| ≤ δ → ‖1 - φ s‖ ≤ 1 / 2 := by`. Take `⟨ε, hε, h⟩` from `Metric.continuousAt_iff.mp hφ.continuousAt (1 / 2) (by norm_num)`. Use `⟨ε / 2, by positivity, fun s hs => ?_⟩` and prove the remaining obligations.
+
+Establish `hs' : dist s 0 < ε`. Rewrite using `[Real.dist_eq, sub_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `h hs'` as an intermediate fact. Rewrite `this` using `[dist_eq_norm, h0, norm_sub_rev]`.
+
+Conclude with `this.le`. Use `set E : A := δ⁻¹ • ∫ s in (0 : ℝ)..δ, (1 - φ s) with hE`. Establish `hEn : ‖E‖ < 1`. Establish `hI : ‖∫ s in (0 : ℝ)..δ, (1 - φ s)‖ ≤ 1 / 2 * |δ - 0|`. Apply `intervalIntegral.norm_integral_le_of_norm_le_const` to reduce the goal to its premises.
+
+Introduce `s hs`. Rewrite `hs` using `[Set.uIoc_of_le hδ.le]`. Apply `hball` to reduce the goal to its premises. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith [hs.1, hs.2]`. Rewrite `hI` using `[sub_zero, abs_of_pos hδ]`.
+
+Rewrite using `[hE, norm_smul, Real.norm_eq_abs, abs_inv, abs_of_pos hδ]`. Combine the equalities or inequalities in the displayed calculation. Use `set G : ℝ → A := fun x => ∫ s in (0 : ℝ)..x, φ s with hG`. Establish `hint : ∀ t : ℝ, φ t * (1 - E) = δ⁻¹ • (G (t + δ) - G t)`. Introduce `t`.
+
+Establish `hC : 1 - E = δ⁻¹ • ∫ s in (0 : ℝ)..δ, φ s`. Rewrite using `[hE, intervalIntegral.integral_sub intervalIntegrable_const (hφ.intervalIntegrable _ _), intervalIntegral.integral_const, smul_sub, sub_zero, smul_smul, inv_mul_cancel₀ hδ.ne', one_smul, sub_sub_cancel]`. Rewrite using `[hC, mul_smul_comm, hG, intervalIntegral.integral_interval_sub_left (hφ.intervalIntegrable _ _) (hφ.intervalIntegrable _ _)]`. Use `congr 1`. Establish `key` using `(ContinuousLinearMap.mul ℝ A (φ t)).intervalIntegral_comp_comm (hφ.intervalIntegrable (μ := MeasureTheory.volume) 0 δ)`.
+
+Simplify using `only [ContinuousLinearMap.mul_apply'] at key`. Rewrite using `[← key]`. Repeatedly rewrite using `[← hadd]`. Rewrite using `[intervalIntegral.integral_comp_add_left (fun s => φ s) t]`. Simplify using `[add_comm]`.
+
+Use `set u : Aˣ := Units.oneSub E hEn with hu`. Establish `hrep : φ = fun t => (δ⁻¹ • (G (t + δ) - G t)) * ↑u⁻¹`. Use function extensionality and compare the values at `t`. Rewrite using `[← hint t]`. Establish `: (1 - E : A) = ↑u` using `by rw [hu, Units.val_oneSub]`.
+
+Rewrite using `[this, Units.mul_inv_cancel_right]`. Establish `hGd : ∀ x : ℝ, DifferentiableAt ℝ G x` using `fun x => (hφ.integral_hasStrictDerivAt 0 x).hasDerivAt.differentiableAt`. Rewrite using `[hrep]`. Establish `h1 : DifferentiableAt ℝ (fun t => G (t + δ)) 0` using `(hGd (0 + δ)).comp (0 : ℝ) (differentiableAt_id.add_const δ)`. Establish `h2 : DifferentiableAt ℝ (fun t => δ⁻¹ • (G (t + δ) - G t)) 0`.
+
+Establish `h3` using `(h1.sub (hGd 0)).const_smul δ⁻¹`. Conclude with `h3`. Conclude with `h2.mul_const _`.
+-/
 theorem _root_.GlobalTheory.LocWeil.DerComm.differentiableAt_oneParameter {A : Type} [NormedRing A]
     [NormedAlgebra ℝ A] [CompleteSpace A] (φ : ℝ → A) (hc : Continuous φ) (h0 : φ 0 = 1)
     (hm : ∀ s t : ℝ, φ (s + t) = φ s * φ t) : DifferentiableAt ℝ φ 0 := by
@@ -66,6 +87,15 @@ theorem _root_.GlobalTheory.LocWeil.DerComm.differentiableAt_oneParameter {A : T
       exact h3
   exact h2.mul_const _
 
+/- English proof (translation)
+Establish `hden` using `dense_iUnion_interior_of_closed (f := fun k : ℕ => {s : ℝ | ∀ n, ‖h n s‖ ≤ k}) (fun k => by`. Rewrite using `[Set.setOf_forall]`. Conclude with `isClosed_iInter fun n => isClosed_le (hc n).norm continuous_const)`. Use the proof step `(Set.eq_univ_of_forall fun s => by`. Take `⟨C, hC⟩` from `(hh s).norm.bddAbove_range`.
+
+Take `⟨k, hk⟩` from `exists_nat_ge C`. Conclude with `Set.mem_iUnion.2 ⟨k, fun n => (hC ⟨n, rfl⟩).trans hk⟩)`. Use `hm.ext_on hden continuous_const fun x hx => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `Set.mem_iUnion.1 hx`. Take `⟨r, hr, hb⟩` from `Metric.mem_nhds_iff.1 (mem_interior_iff_mem_nhds.1 hk)`.
+
+Establish `h1 : (fun b => ∫ s in x..b, m s) =ᶠ[𝓝 x] fun _ => 0` using `by filter_upwards [Metric.ball_mem_nhds x hr] with b hb'`. Establish `h2 : Tendsto (fun n => ∫ s in x..b, h n s) atTop (𝓝 (∫ s in x..b, m s))`. Use `intervalIntegral.tendsto_integral_filter_of_dominated_convergence (fun _ => (k : ℝ)) (Eventually.of_forall fun n => (hc n).aestronglyMeasurable) (Eventually.of_forall fun n => Eventually.of_forall fun s hs => hb ?_ n) intervalIntegrable_const (Eventually.of_forall fun s _ => hh s …` and prove the remaining obligations. Conclude with `(convex_ball x r).ordConnected.uIcc_subset (Metric.mem_ball_self hr) hb' (Set.uIoc_subset_uIcc hs)`. Establish `h3` using `(hg b).sub (hg x)`.
+
+Rewrite `h3` using `[sub_zero]`. Use `tendsto_nhds_unique h2 (h3.congr fun n => ?_)` and prove the remaining obligations. Conclude with `(intervalIntegral.integral_eq_sub_of_hasDerivAt (fun s _ => hd n s) ((hc n).intervalIntegrable _ _)).symm`. Conclude with `(hm.integral_hasStrictDerivAt x x).hasDerivAt.unique ((hasDerivAt_const x (0 : ℂ)).congr_of_eventuallyEq h1)`.
+-/
 theorem eq_zero_of_tendsto_deriv {g h : ℕ → ℝ → ℂ} {m : ℝ → ℂ} (hd : ∀ n s, HasDerivAt (g n) (h n s) s)
     (hc : ∀ n, Continuous (h n)) (hm : Continuous m) (hg : ∀ s, Tendsto (fun n => g n s) atTop (𝓝 0))
     (hh : ∀ s, Tendsto (fun n => h n s) atTop (𝓝 (m s))) : m = 0 := by
@@ -94,6 +124,9 @@ theorem eq_zero_of_tendsto_deriv {g h : ℕ → ℝ → ℂ} {m : ℝ → ℂ} (
     exact (intervalIntegral.integral_eq_sub_of_hasDerivAt (fun s _ => hd n s) ((hc n).intervalIntegrable _ _)).symm
   exact (hm.integral_hasStrictDerivAt x x).hasDerivAt.unique ((hasDerivAt_const x (0 : ℂ)).congr_of_eventuallyEq h1)
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun n : ℕ => 1 / ((n : ℝ) + 1)) atTop (𝓝[≠] 0)` using `tendsto_nhdsWithin_iff.2 ⟨tendsto_one_div_add_atTop_nhds_zero_nat, Eventually.of_forall fun n => (Nat.one_div_pos_of_nat (n := n)).ne'⟩`. Use `((hasDerivAt_iff_tendsto_slope.1 h).comp h1).congr fun n => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, slope_def_module, sub_zero, Complex.real_smul]`.
+-/
 theorem tendsto_quot {φ : ℝ → ℂ} {a : ℂ} (h : HasDerivAt φ a 0) :
     Tendsto (fun n : ℕ => (((1 / ((n : ℝ) + 1))⁻¹ : ℝ) : ℂ) * (φ (1 / ((n : ℝ) + 1)) - φ 0)) atTop (𝓝 a) := by
   have h1 : Tendsto (fun n : ℕ => 1 / ((n : ℝ) + 1)) atTop (𝓝[≠] 0) :=
@@ -106,6 +139,13 @@ section Alg
 
 variable {S U : Type} [AddCommGroup S] [Module ℂ S]
 
+/- English proof (translation)
+Establish `hc : ∀ Ψ, Continuous fun s => ℓ s Ψ` using `fun Ψ => continuous_iff_continuousAt.2 fun s => (hℓ Ψ s).continuousAt`. Set `q : ℕ → S` to `fun n => (((1 / ((n : ℝ) + 1))⁻¹ : ℝ) : ℂ) • (p (1 / ((n : ℝ) + 1)) - p 0) - a`. Use `eq_zero_of_tendsto_deriv (g := fun n s => ℓ s (q n)) (h := fun n s => ℓ s (E (q n))) (m := fun s => ℓ s (b - E a)) (fun n s => hℓ _ s) (fun n => hc _) (hc _) (fun s => by` as an intermediate fact. Establish `h1` using `(tendsto_quot (ha s)).sub_const (ℓ s a)`. Rewrite `h1` using `[sub_self]`.
+
+Use `h1.congr fun n => ?_` and prove the remaining obligations. Simplify using `only [q, map_sub, map_smul, smul_eq_mul])`. Use the proof step `(fun s => by`. Rewrite using `[map_sub]`. Use `((tendsto_quot (hb s)).sub_const (ℓ s (E a))).congr fun n => ?_` and prove the remaining obligations.
+
+Simplify using `only [q, map_sub, map_smul, smul_eq_mul])`. Establish `h2` using `congrFun this 0`. Simplify using `only [map_sub, Pi.zero_apply] at h2`. Conclude with `sub_eq_zero.1 h2`.
+-/
 theorem deriv_swap (ℓ : ℝ → S →ₗ[ℂ] ℂ) (E : Module.End ℂ S) (hℓ : ∀ Ψ s, HasDerivAt (fun s => ℓ s Ψ) (ℓ s (E Ψ)) s)
     (p : ℝ → S) (a b : S) (ha : ∀ s, HasDerivAt (fun t => ℓ s (p t)) (ℓ s a) 0)
     (hb : ∀ s, HasDerivAt (fun t => ℓ s (E (p t))) (ℓ s b) 0) : ℓ 0 b = ℓ 0 (E a) := by
@@ -128,6 +168,13 @@ theorem deriv_swap (ℓ : ℝ → S →ₗ[ℂ] ℂ) (E : Module.End ℂ S) (h�
 
 variable [NormedAddCommGroup U] [NormedSpace ℝ U] [FiniteDimensional ℝ U]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℝ U`. Establish `e : ∀ (Q : Module.End ℂ S) (u : U), ℓ (Q (d u Φ)) = ∑ i, b.coord i u • ℓ (Q (d (b i) Φ))` using `fun Q u => by conv_lhs => rw [← b.sum_repr u]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, LinearMap.map_smul_of_tower, Module.Basis.coord_apply]`. Establish `e1` using `e 1 c'`. Rewrite `e1` using `[Module.End.one_apply]`.
+
+Rewrite using `[map_add, e1, e A, add_comm, ← Finset.sum_add_distrib]`. Simplify using `only [e (P _) (c _)]`. Use `HasDerivAt.fun_sum fun i _ => ?_` and prove the remaining obligations. Use `((LinearMap.toContinuousLinearMap (b.coord i)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hc).smul (hA (b i))` as an intermediate fact. Rewrite `this` using `[hP]`.
+
+Conclude with `this`.
+-/
 theorem hasDerivAt_move (ℓ : S →ₗ[ℂ] ℂ) (d : U →ₗ[ℝ] Module.End ℂ S) (P : ℝ → Module.End ℂ S) (hP : P 0 = 1)
     (A : Module.End ℂ S) (Φ : S) (hA : ∀ u, HasDerivAt (fun t => ℓ (P t (d u Φ))) (ℓ (A (d u Φ))) 0)
     {c : ℝ → U} {c' : U} (hc : HasDerivAt c c' 0) :
@@ -150,6 +197,13 @@ variable (β : U →ₗ[ℝ] U →ₗ[ℝ] ℝ) {ι : Type} [Fintype ι] (b b' :
 
 def DualBases : Prop := (∀ x, ∑ i, β (b' i) x • b i = x) ∧ ∀ x, ∑ i, β x (b i) • b' i = x
 
+/- English proof (translation)
+Establish `hn : LinearMap.BilinForm.Nondegenerate β` using `⟨hβ, fun y hy => hβ y fun x => by rw [hs, hy, neg_zero]⟩`. Set `b` to `Module.finBasis ℝ U`. Set `b'` to `LinearMap.BilinForm.dualBasis β hn b`. Use `⟨_, b, b', fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← b.sum_repr x]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `conv_lhs => rw [← b.sum_repr x]`. Simplify using `only [b', map_sum, map_smul, LinearMap.BilinForm.apply_dualBasis_left]`. Simplify using the standard rewrite rules.
+
+Use `conv_rhs => rw [← b'.sum_repr x]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply]`.
+-/
 theorem exists_dualBases (hβ : ∀ x, (∀ y, β x y = 0) → x = 0) (hs : ∀ x y, β y x = -β x y) :
     ∃ (n : ℕ) (b b' : Fin n → U), DualBases β b b' := by
   have hn : LinearMap.BilinForm.Nondegenerate β := ⟨hβ, fun y hy => hβ y fun x => by rw [hs, hy, neg_zero]⟩
@@ -168,6 +222,11 @@ theorem exists_dualBases (hβ : ∀ x, (∀ y, β x y = 0) → x = 0) (hs : ∀ 
 
 variable {β b b'}
 
+/- English proof (translation)
+Establish `e1 : ∀ i, B (g (b i)) (b' i) = ∑ j, β (b' j) (g (b i)) • B (b j) (b' i)` using `fun i => by conv_lhs => rw [← h.1 (g (b i))]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`. Establish `e2 : ∀ j, B (b j) (g' (b' j)) = ∑ i, β (b' j) (g (b i)) • B (b j) (b' i)` using `fun j => by conv_lhs => rw [← h.2 (g' (b' j))]`. Simplify using `only [map_sum, map_smul, hg]`. Simplify using `only [e1, e2]`.
+
+Conclude with `Finset.sum_comm`.
+-/
 theorem DualBases.sum_adjoint (h : DualBases β b b') {M : Type} [AddCommGroup M] [Module ℝ M] (B : U →ₗ[ℝ] U →ₗ[ℝ] M)
     (g g' : U → U) (hg : ∀ x y, β (g' x) y = β x (g y)) : ∑ i, B (g (b i)) (b' i) = ∑ i, B (b i) (g' (b' i)) := by
   have e1 : ∀ i, B (g (b i)) (b' i) = ∑ j, β (b' j) (g (b i)) • B (b j) (b' i) := fun i => by
@@ -183,9 +242,17 @@ def quad (d : U →ₗ[ℝ] Module.End ℂ S) (b b' : ι → U) (Y : U →ₗ[�
 
 variable {d : U →ₗ[ℝ] Module.End ℂ S} {κ : ℂ} {Y : U →ₗ[ℝ] U}
 
+/- English proof (translation)
+The claim follows from `sum_mem fun _ _ => mul_mem (Algebra.subset_adjoin ⟨_, rfl⟩) (Algebra.subset_adjoin ⟨_, rfl⟩)`.
+-/
 theorem quad_mem (b b' : ι → U) (Y : U →ₗ[ℝ] U) : quad d b b' Y ∈ Algebra.adjoin ℂ (Set.range d) :=
   sum_mem fun _ _ => mul_mem (Algebra.subset_adjoin ⟨_, rfl⟩) (Algebra.subset_adjoin ⟨_, rfl⟩)
 
+/- English proof (translation)
+Establish `e : ∀ i, d (Y (b i)) * d (b' i) * d u - d u * (d (Y (b i)) * d (b' i)) = κ • d (Y (β (b' i) u • b i)) + κ • d (β (Y u) (b i) • b' i)` using `fun i => by`. Establish `: d (Y (b i)) * d (b' i) * d u - d u * (d (Y (b i)) * d (b' i)) = d (Y (b i)) * (d (b' i) * d u - d u * d (b' i)) + (d (Y (b i)) * d u - d u * d (Y (b i))) * d (b' i)` using `by noncomm_ring`. Rewrite using `[this, hd, hd, hY (b i), ← hs, mul_smul_comm, smul_mul_assoc, mul_one, one_mul, map_smul, map_smul, map_smul, mul_smul, mul_smul, Complex.coe_smul, Complex.coe_smul]`. Rewrite using `[quad, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Simplify using `only [e]`.
+
+Rewrite using `[Finset.sum_add_distrib, ← Finset.smul_sum, ← Finset.smul_sum, ← map_sum, ← map_sum, ← map_sum, h.1, h.2, two_mul, add_smul]`.
+-/
 theorem DualBases.quad_comm (h : DualBases β b b') (hs : ∀ x y, β y x = -β x y)
     (hd : ∀ u v, d u * d v - d v * d u = (κ * (β u v : ℝ)) • (1 : Module.End ℂ S))
     (hY : ∀ x y, β (Y x) y = -β x (Y y)) (u : U) : quad d b b' Y * d u - d u * quad d b b' Y = (2 * κ) • d (Y u) := by
@@ -201,6 +268,11 @@ theorem DualBases.quad_comm (h : DualBases β b b') (hs : ∀ x y, β y x = -β 
   rw [Finset.sum_add_distrib, ← Finset.smul_sum, ← Finset.smul_sum, ← map_sum, ← map_sum, ← map_sum, h.1, h.2, two_mul,
     add_smul]
 
+/- English proof (translation)
+Use `h.sum_adjoint ((LinearMap.mul ℝ (Module.End ℂ S)).compl₁₂ (d ∘ₗ Y) (d ∘ₗ g)) g g' (fun x y => by rw [← hg, hg'])` as an intermediate fact. Simplify using `only [LinearMap.compl₁₂_apply, LinearMap.comp_apply, LinearMap.mul_apply', hg'] at this`. Rewrite using `[quad, Finset.mul_sum]`. Use `conv_rhs => rw [← this, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_assoc, hP, mul_assoc, hP, hc, mul_assoc]`.
+-/
 theorem DualBases.quad_group (h : DualBases β b b') (P : Module.End ℂ S) (g g' : U →ₗ[ℝ] U)
     (hP : ∀ u, P * d u = d (g u) * P) (hg : ∀ x y, β (g x) (g y) = β x y) (hg' : ∀ x, g (g' x) = x)
     (hc : ∀ x, g (Y x) = Y (g x)) : P * quad d b b' Y = quad d b b' Y * P := by
@@ -212,6 +284,11 @@ theorem DualBases.quad_group (h : DualBases β b b') (P : Module.End ℂ S) (g g
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [← mul_assoc, hP, mul_assoc, hP, hc, mul_assoc]
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Use `h.sum_adjoint ((LinearMap.mul ℝ (Module.End ℂ S)).compl₁₂ (d ∘ₗ Y) d) Z (fun x => -Z x) (fun x y => by rw [map_neg, LinearMap.neg_apply, hZ, neg_neg])` as an intermediate fact. Simplify using `only [LinearMap.compl₁₂_apply, LinearMap.comp_apply, LinearMap.mul_apply', map_neg, Finset.sum_neg_distrib] at this`. Establish `h2` using `LinearMap.congr_fun this Φ`. Simplify using `only [LinearMap.sum_apply, LinearMap.neg_apply, Module.End.mul_apply] at h2`.
+
+Simplify using `only [quad, LinearMap.sum_apply, Module.End.mul_apply, map_sum, hA _ _ (hN _ _ hΦ), hA _ _ hΦ, map_add, hc, Finset.sum_add_distrib, h2]`. Normalize the expressions using the abelian group laws.
+-/
 theorem DualBases.quad_lie (h : DualBases β b b') {N : Submodule ℂ S} (hN : ∀ u, ∀ Φ ∈ N, d u Φ ∈ N)
     (A : Module.End ℂ S) (Z : U →ₗ[ℝ] U) (hA : ∀ u, ∀ Φ ∈ N, A (d u Φ) = d (Z u) Φ + d u (A Φ))
     (hZ : ∀ x y, β (Z x) y = -β x (Z y)) (hc : ∀ x, Z (Y x) = Y (Z x)) :
@@ -227,6 +304,9 @@ theorem DualBases.quad_lie (h : DualBases β b b') {N : Submodule ℂ S} (hN : �
   abel
 
 omit [FiniteDimensional ℝ U] in
+/- English proof (translation)
+The claim follows from `(h.const_mul Z).unique ((h.mul_const Z).congr_of_eventuallyEq (Eventually.of_forall fun t => hc t))`.
+-/
 theorem commute_deriv {φ : ℝ → U →L[ℝ] U} {Y Z : U →L[ℝ] U} (h : HasDerivAt φ Y 0) (hc : ∀ t, Commute Z (φ t)) :
     Commute Z Y :=
   (h.const_mul Z).unique ((h.mul_const Z).congr_of_eventuallyEq (Eventually.of_forall fun t => hc t))
@@ -245,12 +325,22 @@ variable {Γ I : Type} [Group Γ] (ω : Γ →* Module.End ℂ S) (G : Γ →* (
     ∀ s, ∃ (c : ℂ) (w' : I), ∀ Ψ, ℓ s Ψ = c * ev w' Ψ)
 
 include hN in
+/- English proof (translation)
+Introduce `Φ hΦ` and use `by obtain ⟨a', ha', rfl⟩ := (hN Φ).1 hΦ exact (hN _).2 ⟨a * a', mul_mem ha ha', rfl⟩`.
+-/
 theorem apply_mem {a : Module.End ℂ S} (ha : a ∈ Algebra.adjoin ℂ (Set.range d)) : ∀ Φ ∈ N, a Φ ∈ N := fun Φ hΦ => by
   obtain ⟨a', ha', rfl⟩ := (hN Φ).1 hΦ
   exact (hN _).2 ⟨a * a', mul_mem ha ha', rfl⟩
 
 include hN hvac in
 
+/- English proof (translation)
+Establish `hf : f ∈ N` using `(hN f).2 ⟨1, one_mem _, rfl⟩`. Take `⟨c, h⟩` from `hvac B hB fun u => hc u f hf`. Establish `key : ∀ a ∈ Algebra.adjoin ℂ (Set.range d), ∀ Φ ∈ N, B (a Φ) = a (B Φ)` using `fun a ha => by`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+
+Take `⟨u, rfl⟩` from `hx`. Conclude with `hc u`. Consider the case `algebraMap r => exact fun Φ _ => map_smul B r Φ`. Consider the case `add x y _ _ hx hy => exact fun Φ hΦ => by rw [LinearMap.add_apply, map_add, hx Φ hΦ, hy Φ hΦ, LinearMap.add_apply]`. Consider the case `mul x y _ hy' hx hy`.
+
+Conclude with `fun Φ hΦ => by rw [Module.End.mul_apply, hx _ (apply_mem hN hy' Φ hΦ), hy Φ hΦ, Module.End.mul_apply]`. Use `⟨c, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `(hN Φ).1 hΦ`. Rewrite using `[key a ha f hf, h, map_smul]`.
+-/
 theorem scalar_of_comm {B : Module.End ℂ S} (hB : B ∈ Algebra.adjoin ℂ (Set.range d))
     (hc : ∀ u, ∀ Φ ∈ N, B (d u Φ) = d u (B Φ)) : ∃ c : ℂ, ∀ Φ ∈ N, B Φ = c • Φ := by
   have hf : f ∈ N := (hN f).2 ⟨1, one_mem _, rfl⟩
@@ -270,6 +360,23 @@ theorem scalar_of_comm {B : Module.End ℂ S} (hB : B ∈ Algebra.adjoin ℂ (Se
 
 include hs hκ hd hω hG hN hvac hev hline in
 
+/- English proof (translation)
+Use `haveI : CompleteSpace U := FiniteDimensional.complete ℝ U`. Establish `hY` using `(differentiableAt_oneParameter (fun t => G (p t)) hc (by rw [h0, map_one]) (fun s t => by rw [hm, map_mul])).hasDerivAt`. Use `set Y := deriv (fun t => G (p t)) 0`. Establish `hYu : ∀ u, HasDerivAt (fun t => G (p t) u) (Y u) 0` using `fun u => by`. Simplify using `using hY.clm_apply (hasDerivAt_const (0 : ℝ) u)`.
+
+Establish `hdN : ∀ u, ∀ Φ ∈ N, d u Φ ∈ N` using `fun u => apply_mem hN (Algebra.subset_adjoin ⟨u, rfl⟩)`. Establish `h1 : ∀ x y, β (Y x) y = -β x (Y y)` using `fun x y => by`. Set `β' : U →L[ℝ] U →L[ℝ] ℝ` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : (U →ₗ[ℝ] ℝ) ≃ₗ[ℝ] U →L[ℝ] ℝ).toLinearMap ∘ₗ β)`. Establish `h2` using `(β'.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hYu x)).clm_apply (hYu y)`. Establish `h3` using `h2.unique ((hasDerivAt_const (0 : ℝ) (β x y)).congr_of_eventuallyEq (Eventually.of_forall fun t => hG (p t) x y))`.
+
+Simplify using `only [Function.comp_apply, h0, map_one, ContinuousLinearMap.one_apply] at h3`. Conclude with `eq_neg_of_add_eq_zero_left h3`. Establish `h2 : ∀ u, ∀ Φ ∈ N, A (d u Φ) = d (Y u) Φ + d u (A Φ)` using `fun u Φ hΦ => by`. Establish `h3 : HasDerivAt (fun t => G (p (-t)) u) (-Y u) 0`. Use `HasDerivAt.scomp (0 : ℝ) (by rw [neg_zero]; exact hYu u) (hasDerivAt_neg (0 : ℝ))` as an intermediate fact.
+
+Rewrite `this` using `[neg_one_smul]`. Conclude with `this`. Establish `h4 : ∀ t, ω (p t) (d (G (p (-t)) u) Φ) = d u (ω (p t) Φ)` using `fun t => by`. Rewrite using `[← Module.End.mul_apply, hω, ← ContinuousLinearMap.mul_apply, ← map_mul, ← hm, add_neg_cancel, h0, map_one]`. Both sides reduce to the same expression.
+
+Establish `h5 : d (-Y u) Φ + A (d u Φ) = d u (A Φ)` using `hev _ _ fun w => by`. Take `⟨ℓ, hl0, hl1, hl2⟩` from `hline w u`. Establish `h6 : ∀ s, ∀ Ψ ∈ N, HasDerivAt (fun t => ℓ s (ω (p t) Ψ)) (ℓ s (A Ψ)) 0` using `fun s Ψ hΨ => by`. Take `⟨c, w', e⟩` from `hl2 s`. Simplify using `only [e]`.
+
+Conclude with `(hder Ψ hΨ w').const_mul c`. Rewrite using `[← hl0]`. Use `deriv_swap ℓ (d u) hl1 (fun t => ω (p t) Φ) _ _ (fun s => h6 s Φ hΦ) fun s => ?_` and prove the remaining obligations. Use `hasDerivAt_move (ℓ s) d (fun t => ω (p t)) (by rw [h0, map_one]) A Φ (fun v => h6 s _ (hdN v Φ hΦ)) h3` as an intermediate fact. Simplify using `only [h4, neg_zero, h0, map_one, ContinuousLinearMap.one_apply] at this`.
+
+Conclude with `this`. Rewrite using `[← h5, map_neg, LinearMap.neg_apply, add_neg_cancel_left]`. Use `⟨Y, hY, h1, h2, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `scalar_of_comm hN hvac (sub_mem hA (Subalgebra.smul_mem _ (quad_mem b b' Y.toLinearMap) (2 * κ)⁻¹)) (fun u Φ hΦ => by`. Use `LinearMap.congr_fun (hb.quad_comm hs hd (Y := Y.toLinearMap) h1 u) Φ` as an intermediate fact.
+
+Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.smul_apply, sub_eq_iff_eq_add] at this`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, map_sub, map_smul, h2 u Φ hΦ, this, smul_add, smul_smul, inv_mul_cancel₀ (mul_ne_zero two_ne_zero hκ), one_smul, ContinuousLinearMap.coe_coe]`. Use the proof step `abel)`. Conclude with `⟨c, fun Φ hΦ => by rw [← hc Φ hΦ, LinearMap.sub_apply, LinearMap.smul_apply, add_sub_cancel]⟩`.
+-/
 theorem exists_generator (hb : DualBases β b b') (p : ℝ → Γ) (h0 : p 0 = 1) (hm : ∀ s t, p (s + t) = p s * p t)
     (hc : Continuous fun t => G (p t)) {A : Module.End ℂ S} (hA : A ∈ Algebra.adjoin ℂ (Set.range d))
     (hder : ∀ Φ ∈ N, ∀ w, HasDerivAt (fun t => ev w (ω (p t) Φ)) (ev w (A Φ)) 0) :
@@ -324,6 +431,13 @@ theorem exists_generator (hb : DualBases β b b') (p : ℝ → Γ) (h0 : p 0 = 1
 
 include hβ hs hκ hd hω hG hN hvac hev hline in
 
+/- English proof (translation)
+Take `⟨n, b, b', hb⟩` from `exists_dualBases β hβ hs`. Take `⟨Y, hY, -, -, c, hc⟩` from `exists_generator ω G ev hs hκ hd hω hG hN hvac hev hline hb p h0 hm hc hA hder`. Use `⟨fun k hk hkN Φ hΦ => ?_, fun p' h0' hm' hc' A' hA' hder' hcc Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `h1` using `commute_deriv hY fun t => (hk t).map G`. Establish `h2` using `hb.quad_group (Y := Y.toLinearMap) (ω k) (G k).toLinearMap (G k⁻¹).toLinearMap (hω k) (hG k) (fun x => by`.
+
+Express the relevant statement in the definitionally equal form `(G k * G k⁻¹) x = x`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Use the proof step `rfl) fun x => ContinuousLinearMap.ext_iff.1 h1 x`. Rewrite using `[hc _ (hkN Φ hΦ), hc Φ hΦ, map_add, map_smul, map_smul, ← Module.End.mul_apply, ← h2, Module.End.mul_apply]`. Take `⟨Z, hZ, h1, h2, -⟩` from `exists_generator ω G ev hs hκ hd hω hG hN hvac hev hline hb p' h0' hm' hc' hA' hder'`.
+
+Establish `h3` using `commute_deriv hY fun s => (commute_deriv hZ fun t => (hcc s t).map G).symm`. Establish `h4` using `hb.quad_lie (Y := Y.toLinearMap) (fun u => apply_mem hN (Algebra.subset_adjoin ⟨u, rfl⟩)) A' Z.toLinearMap h2 h1 (fun x => ContinuousLinearMap.ext_iff.1 h3 x) Φ hΦ`. Rewrite using `[hc _ (apply_mem hN hA' Φ hΦ), hc Φ hΦ, map_add, map_smul, map_smul, h4]`.
+-/
 theorem der_comm (p : ℝ → Γ) (h0 : p 0 = 1) (hm : ∀ s t, p (s + t) = p s * p t)
     (hc : Continuous fun t => G (p t)) {A : Module.End ℂ S} (hA : A ∈ Algebra.adjoin ℂ (Set.range d))
     (hder : ∀ Φ ∈ N, ∀ w, HasDerivAt (fun t => ev w (ω (p t) Φ)) (ev w (A Φ)) 0) :

@@ -13,6 +13,23 @@ noncomputable section
 
 namespace PositivityTheory.ThKCT.Unf
 
+/- English proof (translation)
+Set `S : V → ℝ≥0∞` to `fun y => ∑' l, C.indicator 1 (y + j l)`. Establish `hi : Measurable (C.indicator (1 : V → ℝ≥0∞))` using `measurable_one.indicator hC`. Establish `hS : Measurable S` using `Measurable.tsum fun l => hi.comp (measurable_add_const _)`. Establish `S1 : ∀ y, 1 ≤ S y` using `fun y => by`. Take `⟨l, hl⟩` from `cov y`.
+
+Conclude with `le_trans (by simp [hl]) (ENNReal.le_tsum l)`. Establish `S2 : ∀ y, S y ≠ ⊤` using `fun y => by`. Simplify using `only [S]`. Rewrite using `[tsum_eq_sum (s := (fin y).toFinset) fun l hl => Set.indicator_of_notMem (by simpa using hl) _]`. Apply the tactic sequence `exact ENNReal.sum_ne_top.2 fun l _ => by by_cases h : y + j l ∈ C <;> simp [h]`.
+
+Establish `S3 : ∀ y l, S (y + j l) = S y` using `fun y l => by`. Simplify using `only [S, add_assoc, ← map_add]`. Conclude with `(Equiv.addLeft l).tsum_eq fun m => C.indicator 1 (y + j m)`. Set `β : V → ℝ≥0∞` to `fun y => C.indicator 1 y * (S y)⁻¹`. Establish `hβ : Measurable β` using `hi.mul hS.inv`.
+
+Establish `b1 : ∀ y, ∑' l, β (y + j l) = 1` using `fun y => by`. Simplify using `only [β, S3]`. Rewrite using `[ENNReal.tsum_mul_right]`. Conclude with `ENNReal.mul_inv_cancel (zero_lt_one.trans_le (S1 y)).ne' (S2 y)`. Establish `b2 : ∀ y, ∑' l, β (T (y + j l)) = 1` using `fun y => by`.
+
+Simplify using `only [map_add, ht]`. Conclude with `(t.tsum_eq fun l => β (T y + j l)).trans (b1 _)`. Establish `half : ∀ f g : V → ℝ≥0∞, Measurable f → Measurable g → (∀ y, ∑' l, g (y + j l) = 1) → ∫⁻ y, f y ∂μ = ∑' l, ∫⁻ y, f y * g (y + j l) ∂μ` using `fun f g h1 h2 h3 => by`. Rewrite using `[← lintegral_tsum (f := fun l y => f y * g (y + j l)) fun l => (h1.mul (h2.comp (measurable_add_const _))).aemeasurable]`. Simplify using `only [ENNReal.tsum_mul_left, h3, mul_one]`.
+
+Establish `e : ∫⁻ y, β (T y) ∂μ = ∫⁻ y, β y ∂μ`. Rewrite using `[half (fun y => β (T y)) β (hβ.comp hT) hβ b1, half β (fun y => β (T y)) hβ (hβ.comp hT) b2, ← (Equiv.neg Λ).tsum_eq]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Rewrite using `[← lintegral_add_right_eq_self _ (j l)]`. Simplify using `[mul_comm]`.
+
+Rewrite `e` using `[← lintegral_map hβ hT, hc, ENNReal.smul_def, lintegral_smul_measure, smul_eq_mul]`. Establish `n0 : ∫⁻ y, β y ∂μ ≠ 0` using `fun h => h0 (by`. Rewrite using `[← Measure.measure_univ_eq_zero, ← lintegral_one, half _ β measurable_const hβ b1]`. Simplify using `[lintegral_add_right_eq_self β, h])`. Establish `n1 : ∫⁻ y, β y ∂μ ≠ ⊤` using `ne_top_of_le_ne_top hf (by`.
+
+Rewrite using `[← lintegral_indicator_one hC]`. Conclude with `lintegral_mono fun y => mul_le_of_le_one_right' (ENNReal.inv_le_one.2 (S1 y)))`. Conclude with `(ENNReal.mul_left_inj n0 n1).1 (e.trans (one_mul _).symm)` after adjusting the coercions.
+-/
 theorem lattice_one {V Λ : Type} [AddCommGroup V] [MeasurableSpace V] [MeasurableAdd V] (μ : Measure V) [μ.IsAddRightInvariant]
     (h0 : μ ≠ 0) [AddCommGroup Λ] [Countable Λ] (j : Λ →+ V) {C : Set V} (hC : MeasurableSet C) (hf : μ C ≠ ⊤)
     (cov : ∀ y, ∃ l, y + j l ∈ C) (fin : ∀ y, {l | y + j l ∈ C}.Finite) (T : V →+ V) (hT : Measurable T) (t : Λ ≃ Λ)
@@ -57,6 +74,9 @@ theorem lattice_one {V Λ : Type} [AddCommGroup V] [MeasurableSpace V] [Measurab
     exact lintegral_mono fun y => mul_le_of_le_one_right' (ENNReal.inv_le_one.2 (S1 y)))
   exact_mod_cast (ENNReal.mul_left_inj n0 n1).1 (e.trans (one_mul _).symm)
 
+/- English proof (translation)
+Establish `k : ∀ t, φ t ≤ 1` using `fun t => not_lt.1 fun h1 => by`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt b h1`. Conclude with `absurd (h (t ^ n)) (by rw [map_pow]; exact not_le.2 hn)`. Use `le_antisymm (k t) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_one_of_bdd {T : Type} [Group T] (φ : T →* ℝ≥0) {b : ℝ≥0} (h : ∀ t, φ t ≤ b) (t : T) : φ t = 1 := by
   have k : ∀ t, φ t ≤ 1 := fun t => not_lt.1 fun h1 => by
     obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt b h1
@@ -67,6 +87,15 @@ theorem eq_one_of_bdd {T : Type} [Group T] (φ : T →* ℝ≥0) {b : ℝ≥0} (
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨-, θ, hθ, hv⟩` from `hτ`. Use `haveI : Nontrivial (AF F) := (AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`. Establish `e` using `GlobalTheory.CompanionTheory.SW.FChi.norm_tmul_one h.2.2.1 (AF F) (pairA F (θ (Real.exp x)) 1)`. Rewrite `e` using `[← hv]`. Simplify using `only [GlobalTheory.Doubling.absE_apply, GlobalTheory.Doubling.absEv_unitFin, GlobalTheory.Doubling.absEw_unitInf, e, map_pow]`.
+
+Establish `e1 : ∀ v : HeightOneSpectrum (𝓞 F), GlobalTheory.AdelicU.evFin F v (pairA F (θ (Real.exp x)) 1) = 1` using `fun v => map_one (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v)`. Establish `e2 : ∀ w : InfinitePlace F, ‖GlobalTheory.AdelicU.evInf F w (pairA F (θ (Real.exp x)) 1)‖ = Real.exp x` using `fun w => by`. Use `Complex.ringHom_eq_ofReal_of_continuous (f := (InfinitePlace.Completion.extensionEmbedding w).comp ((Pi.evalRingHom (fun u : InfinitePlace F => u.Completion) w).comp θ)) ((InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp ((continuous_apply w).comp hθ))` as an intermediate fact. Establish `h2` using `congrArg (fun f : ℝ →+* ℂ => ‖f (Real.exp x)‖) this`. Rewrite using `[← (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _)]`.
+
+Use `Eq.trans h2 ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [e1, one_pow, nnnorm_one, finprod_one, mul_one, NNReal.coe_prod, NNReal.coe_pow, nnnorm_pow, coe_nnnorm, e2, Finset.prod_pow_eq_pow_sum, InfinitePlace.sum_mult_eq]`. Rewrite using `[← pow_mul, ← Real.exp_nat_mul]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form.
+-/
 theorem absE_flow (h : IsCMExt F E σ) {τ : Multiplicative ℝ →* (AF F ⊗[F] E)ˣ} (hτ : IsFlow τ) (x : ℝ) :
     (absE F E (τ (Multiplicative.ofAdd x)) : ℝ) = Real.exp (2 * Module.finrank ℚ F * x) := by
   obtain ⟨-, θ, hθ, hv⟩ := hτ
@@ -90,6 +119,25 @@ theorem absE_flow (h : IsCMExt F E σ) {τ : Multiplicative ℝ →* (AF F ⊗[F
   push_cast
   ring_nf
 
+/- English proof (translation)
+Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Take `⟨_, _, _, _, hsc, -, -, hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ h (AF F)`. Use `hB 1 M` as an intermediate fact. Establish `: BorelSpace (AF F)` using `⟨rfl⟩`. Use `haveI : Countable E := Function.Injective.countable (Module.finBasis ℚ E).equivFun.injective`.
+
+Use `haveI : Countable F := Function.Injective.countable (Module.finBasis ℚ F).equivFun.injective`. Take `⟨τ, hτ⟩` from `GlobalTheory.T.exists_real_flow_adelic_units F E σ h`. Take `⟨χ, χc, χ1, χ2⟩` from `GlobalTheory.T.modulus_character_unit_action_product F E σ h τ hτ M μW μA hW hA`. Take `⟨ω, hω, hid⟩` from `GlobalTheory.T.adelic_units_decomposition_flow_compact F E σ h τ hτ`. Take `⟨⟨CW, hCW, cW⟩, fW, -⟩` from `GlobalTheory.T.rational_tuples_discrete_cocompact_adelic F E σ h 1 M`.
+
+Take `⟨⟨CA, hCA, cA⟩, fA, -⟩` from `GlobalTheory.T.adele_ring_cocompact_discrete_number_field F`. Establish `rt : ∀ X Y : Fin 1 → Fin M → E, ratTup (F` using `F) (AF F) (X + Y) = ratTup (AF F) X + ratTup (AF F) Y := fun X Y => funext fun a => funext fun i => map_add _ _ _`. Establish `rat : ∀ (l : Eˣ) (a : (AF F ⊗[F] E)ˣ), (a : AF F ⊗[F] E) = inclR (AF F) (l : E) → χ a = 1` using `fun l a hl => by`. Establish `hs : σ l ≠ 0` using `(map_ne_zero σ).2 l.ne_zero`. Establish `hn : Algebra.norm F (l : E) ≠ 0` using `Algebra.norm_ne_zero_iff.2 l.ne_zero`.
+
+Set `j : (Fin 1 → Fin M → E) × F →+ (Fin 1 → Fin M → AF F ⊗[F] E) × AF F` to `(AddMonoidHom.mk' _ rt).prodMap (algebraMap F (AF F)).toAddMonoidHom`. Use `lattice_one (μW.prod μA) (NeZero.ne _) j (hCW.prod hCA).measurableSet (hCW.prod hCA).measure_lt_top.ne (fun y => ?_) (fun y => ?_) ((DistribSMul.toAddMonoidHom _ (sigR (AF F) σ (a : AF F ⊗[F] E))).prodMap (AddMonoidHom.mulLeft (Algebra.norm (AF F) (a : AF F ⊗[F] E)))) ?_ ((MulAct …` and prove the remaining obligations. Take `⟨X, hX⟩` from `cW y.1`. Take `⟨r, hr⟩` from `cA y.2`. Conclude with `⟨-(X, r), by rw [map_neg, ← sub_eq_add_neg]; exact ⟨hX, hr⟩⟩`.
+
+Use `((fW _ (hCW.image (continuous_add_left (-y.1)))).prod (fA _ (hCA.image (continuous_add_left (-y.2))))).subset ?_` and prove the remaining obligations. Conclude with `fun l' hl' => ⟨⟨_, hl'.1, neg_add_cancel_left _ _⟩, ⟨_, hl'.2, neg_add_cancel_left _ _⟩⟩`. Conclude with `((continuous_const_smul _ : Continuous fun x : Fin 1 → Fin M → AF F ⊗[F] E => (_ : AF F ⊗[F] E) • x).prodMap (continuous_const.mul continuous_id : Continuous fun x : AF F => _ * x)).measurable`. Use function extensionality and compare the values at `b i show sigR (AF F) σ (a : AF F ⊗[F] E) * inclR (AF F) (l'.1 b i) = inclR (AF F) (σ l * l'.1 b i)`. Rewrite using `[hl, map_mul]`.
+
+Both sides reduce to the same expression. Use `show Algebra.norm (AF F) (a : AF F ⊗[F] E) * algebraMap F (AF F) l'.2 = algebraMap F (AF F) (Algebra.norm F (l : E) * l'.2)`. Rewrite using `[hl, map_mul]`. Conclude with `congrArg (· * _) (GlobalTheory.Doubling.norm_inclR _)`. Establish `hc : Continuous fun a => χ a * absE F E a ^ (M + 1)` using `χc.mul (GlobalTheory.Doubling.continuous_absE.pow _)`.
+
+Take `⟨b, hb⟩` from `(hω.image hc).bddAbove`. Use `⟨χ, χc, χ1, eq_one_of_bdd (χ * (powMonoidHom (M + 1)).comp (absE F E)) (b := b) fun a => ?_⟩` and prove the remaining obligations. Take `⟨l, a', x, j, hl, hx, rfl⟩` from `hid a`. Establish `e1 : absE F E a' = 1`. Rewrite using `[← GlobalTheory.Doubling.absE_inclR (F := F) l]`.
+
+Conclude with `congrArg _ (Units.ext hl)`. Establish `e2 : χ (τ (Multiplicative.ofAdd (j : ℝ))) * absE F E (τ (Multiplicative.ofAdd (j : ℝ))) ^ (M + 1) = 1`. Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[NNReal.coe_mul, NNReal.coe_pow, χ2, absE_flow h hτ, ← Real.exp_nat_mul, ← Real.exp_add, NNReal.coe_one, Real.exp_eq_one_iff]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul]`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.comp_apply, powMonoidHom_apply, rat l a' hl, e1, e2, one_pow, one_mul]`. Conclude with `hb ⟨x, hx, rfl⟩`.
+-/
 theorem modulus (h : IsCMExt F E σ) (M : ℕ) (μW : Measure (Fin 1 → Fin M → AF F ⊗[F] E)) (μA : Measure (AF F))
     (hW : μW.IsAddHaarMeasure) (hA : μA.IsAddHaarMeasure) : ∃ χ : (AF F ⊗[F] E)ˣ →* ℝ≥0, Continuous χ ∧
       (∀ a : (AF F ⊗[F] E)ˣ, (μW.prod μA).map (fun p => (sigR (AF F) σ (a : AF F ⊗[F] E) • p.1,

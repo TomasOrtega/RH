@@ -11,6 +11,13 @@ namespace Formalism.MainNotions.BridgeLemma
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.FourierDecayAlt Finset
 open scoped nonZeroDivisors NumberField
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e1 : C * (κ * rd / g) * N / I = (C * κ * N / (g * I)) * rd` using `by field_simp`. Rewrite using `[e1, mul_pow]`. Generalize the expression as in `(C * κ * N / (g * I)) ^ a = X`. Establish `e2 : ((κ * rd / g) ^ (a + e))⁻¹ = g ^ (a + e) * (κ ^ (a + e))⁻¹ * (rd ^ a)⁻¹ * (rd ^ e)⁻¹`.
+
+Rewrite using `[div_pow, mul_pow, pow_add rd]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2]`. Establish `h1 : rd ^ a ≠ 0` using `(pow_pos hrd a).ne'`. Establish `h2 : rd ^ e ≠ 0` using `(pow_pos hrd e).ne'`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem szf_alg (κ rd g C A N I : ℝ) (a e n : ℕ) (hκ : 0 < κ) (hrd : 0 < rd) (hg : 0 < g) (hI : 0 < I)
     (h : a + e = n) :
     C * (((κ * rd / g) ^ n)⁻¹ * A) * (C * (κ * rd / g) * N / I) ^ a * (rd ^ e * g) =
@@ -28,6 +35,17 @@ theorem szf_alg (κ rd g C A N I : ℝ) (a e n : ℕ) (hκ : 0 < κ) (hrd : 0 < 
   field_simp
   ring
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e1 : C * κ * N / I = (C * N / I) * κ` using `by ring`. Rewrite using `[e1, mul_pow (C * N / I)]`. Generalize the expression as in `(C * N / I) ^ (2 * j) = X`. Establish `hk0 : 0 < κ * rd / g` using `by positivity`.
+
+Establish `e2 : ((κ * rd / g) ^ (2 * j + 1 + 2 * e))⁻¹ * (κ * rd / g) ^ (2 * j + 1) = ((κ * rd / g) ^ (2 * e))⁻¹`. Rewrite using `[pow_add]`. Use `(pow_pos hk0 (2 * j + 1)).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `e3 : C * (((κ * rd / g) ^ (2 * j + 1 + 2 * e))⁻¹ * A) * (κ * rd / g) ^ (2 * j + 1) = C * A * ((κ * rd / g) ^ (2 * e))⁻¹` using `by rw [← e2]; ring`.
+
+Rewrite using `[e3]`. Establish `e4 : κ ^ (2 * j + 1 + 2 * e) = κ ^ (2 * j) * κ * κ ^ (2 * e)` using `by rw [pow_add, pow_succ]`. Establish `e5 : g ^ (2 * j + 1 + 2 * e + 1) = g ^ (2 * j) * g ^ (2 * e) * g ^ 2` using `by ring`. Establish `e6 : (rd ^ e * g) ^ 2 = rd ^ (2 * e) * g ^ 2` using `by ring`. Rewrite using `[e6, div_pow, mul_pow κ rd, e4, e5]`.
+
+Establish `h1` using `(pow_pos hrd (2 * e)).ne'`. Establish `h2` using `(pow_pos hκ (2 * e)).ne'`. Establish `h3` using `(pow_pos hκ (2 * j)).ne'`. Establish `h4` using `(pow_pos hg (2 * j)).ne'`. Establish `h5` using `(pow_pos hg (2 * e)).ne'`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem szf_algP (κ rd g C A N I S : ℝ) (j e n : ℕ) (hκ : 0 < κ) (hrd : 0 < rd) (hg : 0 < g) (hI : 0 < I)
     (h : 2 * j + 1 + 2 * e = n) :
     (rd ^ e * g) ^ 2 * (C * (((κ * rd / g) ^ n)⁻¹ * A) * (κ * rd / g) ^ (2 * j + 1) * S * (C * N / I) ^ (2 * j)) =
@@ -55,9 +73,15 @@ theorem szf_algP (κ rd g C A N I S : ℝ) (j e n : ℕ) (hκ : 0 < κ) (hrd : 0
   have h5 := (pow_pos hg (2 * e)).ne'
   field_simp
 
+/- English proof (translation)
+Rewrite using `[zpow_neg, show (1 + 2 * (r : ℤ)) = ((2 * r + 1 : ℕ) : ℤ) by push_cast; ring, zpow_natCast]`.
+-/
 theorem szf_zpow (κ : ℝ) (r : ℕ) : κ ^ (-(1 + 2 * (r : ℤ))) = (κ ^ (2 * r + 1))⁻¹ := by
   rw [zpow_neg, show (1 + 2 * (r : ℤ)) = ((2 * r + 1 : ℕ) : ℤ) by push_cast; ring, zpow_natCast]
 
+/- English proof (translation)
+Unfold `supBe`. Establish `hfun : beS κ D.R.rS x.lam T T' x.u x.u' = fun Y => (κ ^ (2 * D.R.rS + 1))⁻¹ • beS 1 D.R.rS x.lam T T' x.u x.u' Y`. Use function extensionality and compare the values at `Y`. Simplify using `only [beS, szf_zpow, one_pow, inv_one, one_mul, smul_eq_mul]`. Rewrite using `[hfun, ← Set.image_image (fun y => (κ ^ (2 * D.R.rS + 1))⁻¹ • y), Set.image_smul, Real.sSup_smul_of_nonneg (by positivity), smul_eq_mul]`.
+-/
 theorem szf_supBe (D : D7) (κ T T' : ℝ) (x : LocalDataRealPlace D) (J : Set ℝ) (hκ : 0 < κ) :
     supBe D κ T T' x J = (κ ^ (2 * D.R.rS + 1))⁻¹ * supBe D 1 T T' x J := by
   unfold supBe
@@ -68,6 +92,11 @@ theorem szf_supBe (D : D7) (κ T T' : ℝ) (x : LocalDataRealPlace D) (J : Set �
   rw [hfun, ← Set.image_image (fun y => (κ ^ (2 * D.R.rS + 1))⁻¹ • y), Set.image_smul,
     Real.sSup_smul_of_nonneg (by positivity), smul_eq_mul]
 
+/- English proof (translation)
+Establish `hc : ∀ Z : ℂ, Formalism.QuantumDeterminants.capP (fun s => (lamSH R P s : ℂ)) Z = Formalism.QuantumDeterminants.capP (fun s => (lamS R P s : ℂ)) Z`. Introduce `Z`. Unfold `Formalism.QuantumDeterminants.capP lamSH`. Conclude with `Fintype.prod_equiv (finCongr (dimS_eq R)) _ _ (fun s => rfl)`. Unfold `beS`.
+
+Rewrite using `[hc, hc]`.
+-/
 theorem szf_beS_cast (R : Ranks) (P : HCParam R) {k : ℕ} (κ T T' : ℝ) (u u' : Fin k → ℝ) (Y : ℝ) :
     beS κ R.rS (lamSH R P) T T' u u' Y = beS κ R.rS (lamS R P) T T' u u' Y := by
   have hc : ∀ Z : ℂ, Formalism.QuantumDeterminants.capP (fun s => (lamSH R P s : ℂ)) Z = Formalism.QuantumDeterminants.capP (fun s => (lamS R P s : ℂ)) Z := by
@@ -83,12 +112,22 @@ def SzfNormDD (D : D7) : Prop :=
 def SzfNormG (D : D7) : Prop :=
   ((FractionalIdeal.absNorm (FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ (gE D)) : ℚ) : ℝ) = (gg D ^ D.R.f) ^ 2
 
+/- English proof (translation)
+Unfold `gg`. Establish `h0 : (0 : ℝ) < D.host.g 0` using `by exact_mod_cast (D.host.g_prime 0).pos`. Establish `h1 : (0 : ℝ) < D.host.g 1` using `by exact_mod_cast (D.host.g_prime 1).pos`. Check the signs of the components of the expression.
+-/
 theorem szf_gg_pos (D : D7) : 0 < gg D := by
   unfold gg
   have h0 : (0 : ℝ) < D.host.g 0 := by exact_mod_cast (D.host.g_prime 0).pos
   have h1 : (0 : ℝ) < D.host.g 1 := by exact_mod_cast (D.host.g_prime 1).pos
   positivity
 
+/- English proof (translation)
+Establish `hrd` using `rdE_pos D`. Establish `hg` using `szf_gg_pos D`. Unfold `nrmHalf`. Rewrite using `[map_mul, map_zpow₀, map_inv₀]`. Use `push_cast`.
+
+Rewrite using `[hdd, hgn]`. Establish `: ((D.host.rdE ^ D.R.f) ^ 2) ^ (-(e : ℤ)) * ((gg D ^ D.R.f) ^ 2)⁻¹ = (((D.host.rdE ^ e * gg D) ^ D.R.f)⁻¹) ^ 2`. Rewrite using `[zpow_neg, zpow_natCast, ← mul_inv, inv_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, Real.sqrt_sq (by positivity)]`.
+-/
 theorem szf_nrm (D : D7) (hdd : SzfNormDD D) (hgn : SzfNormG D) (e : ℕ) :
     nrmHalf D (ddE D ^ (-(e : ℤ)) * (FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ (gE D))⁻¹) =
       ((D.host.rdE ^ e * gg D) ^ D.R.f)⁻¹ := by
@@ -105,10 +144,16 @@ theorem szf_nrm (D : D7) (hdd : SzfNormDD D) (hgn : SzfNormG D) (e : ℕ) :
     ring
   rw [this, Real.sqrt_sq (by positivity)]
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr D.eTau]`. Conclude with `(factCardPsi D.R D.host).1`.
+-/
 theorem szf_card_Tau (D : D7) : Fintype.card D.what₂.Tau = D.R.f := by
   rw [← Nat.card_eq_fintype_card, Nat.card_congr D.eTau]
   exact (factCardPsi D.R D.host).1
 
+/- English proof (translation)
+Establish `hrd` using `rdE_pos D`. Unfold `kaV gE gg`. Rewrite using `[map_natCast, Complex.norm_natCast, ka_eq]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem szf_kaV (D : D7) (v : D.what₂.Tau) : kaV D (gE D) v = D.host.ka * D.host.rdE / gg D := by
   have hrd := rdE_pos D
   unfold kaV gE gg
@@ -116,6 +161,21 @@ theorem szf_kaV (D : D7) (v : D.what₂.Tau) : kaV D (gE D) v = D.host.ka * D.ho
   push_cast
   field_simp
 
+/- English proof (translation)
+Establish `hk1 : 1 ≤ D.R.k` using `le_trans (by norm_num) (five_le_k D)`. Establish `hC0` using `F.hC0`. Assume the negation of the conclusion as `hlt`. Establish `hlt` using `not_le.1 hlt`. Establish `hpos : 0 ≤ C0 * Real.exp 9` using `by positivity`.
+
+Establish `h1 : (C0 * Real.exp 9) ^ D.R.k < (∏ τ, |Tcrit D u τ / Tr D u|) ^ D.R.k` using `pow_lt_pow_left₀ hlt hpos (by omega)`. Establish `h2 : (∏ τ, |Tcrit D u τ / Tr D u|) ^ D.R.k = ∏ τ, (Tcrit D u τ / Tr D u) ^ D.R.k`. Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl (fun τ _ => D.R.k_even.pow_abs _)`. Establish `h3` using `(hA u).1`.
+
+Establish `h4` using `F.ratio_le u`. Establish `h5` using `F.Gam_le u`. Establish `h6` using `F.E_le`. Use `set E := (D.R.f : ℝ) * (2 : ℝ) ^ ((3 : ℝ) - D.R.k) with hE`. Use `set Pk := ∏ τ, (Tcrit D u τ / Tr D u) ^ D.R.k with hPk`.
+
+Establish `h7 : Pk ≤ Real.exp E * (C0 * Real.exp ((D.R.k : ℝ) / 4))`. Establish `: Real.exp (-E) * Pk ≤ C0 * Real.exp ((D.R.k : ℝ) / 4)`. Use `le_trans h3 (le_trans h4 ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left h5 (by linarith)`. Establish `h8 : Pk = Real.exp E * (Real.exp (-E) * Pk)`.
+
+Rewrite using `[← mul_assoc, ← Real.exp_add]`. Simplify using the standard rewrite rules. Rewrite using `[h8]`. Conclude with `mul_le_mul_of_nonneg_left this (Real.exp_pos _).le`. Establish `h9 : Real.exp E * (C0 * Real.exp ((D.R.k : ℝ) / 4)) ≤ (C0 * Real.exp 9) ^ D.R.k`.
+
+Rewrite using `[mul_pow, ← Real.exp_nat_mul]`. Establish `a1 : C0 ≤ C0 ^ D.R.k` using `le_self_pow₀ hC0 (by omega)`. Establish `a2 : Real.exp E * Real.exp ((D.R.k : ℝ) / 4) ≤ Real.exp ((D.R.k : ℝ) * 9)`. Rewrite using `[← Real.exp_add, Real.exp_le_exp]`. Establish `: (1 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem szf_prodAbs {D : D7} {large₂ : SizeData₂ D} {C' Cl Cu C0 : ℝ} (F : TfFacts D large₂ C' Cl Cu C0)
     (hA : UnitaryVolumeMass.cTvA D) (u : D.what₂.Word) : ∏ τ, |Tcrit D u τ / Tr D u| ≤ C0 * Real.exp 9 := by
   have hk1 : 1 ≤ D.R.k := le_trans (by norm_num) (five_le_k D)
@@ -155,6 +215,15 @@ theorem szf_prodAbs {D : D7} {large₂ : SizeData₂ D} {C' Cl Cu C0 : ℝ} (F :
   rw [h2] at h1
   linarith
 
+/- English proof (translation)
+Establish `h1` using `szf_prodAbs F hA u`. Establish `h2` using `szf_prodAbs F hA u'`. Establish `hle : ∀ τ, tV D u u' τ ≤ Real.sqrt |Tcrit D u τ / Tr D u| * Real.sqrt |Tcrit D u' τ / Tr D u'|`. Introduce `τ`. Unfold `tV`.
+
+Rewrite using `[← Real.sqrt_mul (abs_nonneg _), ← abs_mul]`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations. Establish `: Tcrit D u τ * Tcrit D u' τ / (Tr D u * Tr D u') = Tcrit D u τ / Tr D u * (Tcrit D u' τ / Tr D u')`. Rewrite using `[div_mul_div_comm]`. Rewrite using `[this]`.
+
+Conclude with `le_abs_self _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib]`. Apply the tactic sequence `congr 1 <;>`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.finsetProd_rpow _ _ (fun τ _ => abs_nonneg _)]`.
+
+Conclude with `Finset.prod_congr rfl (fun τ _ => by rw [Real.sqrt_eq_rpow])`. Use `_ ≤ Real.sqrt (C0 * Real.exp 9) * Real.sqrt (C0 * Real.exp 9) := mul_le_mul (Real.sqrt_le_sqrt h1) (Real.sqrt_le_sqrt h2) (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)`. Use `_ = C0 * Real.exp 9 := Real.mul_self_sqrt (by have := F.hC0; positivity)`.
+-/
 theorem product_local_ratios_le {D : D7} {large₂ : SizeData₂ D} {C' Cl Cu C0 : ℝ} (F : TfFacts D large₂ C' Cl Cu C0)
     (hA : UnitaryVolumeMass.cTvA D) (u u' : D.what₂.Word) : ∏ τ, tV D u u' τ ≤ C0 * Real.exp 9 := by
   have h1 := szf_prodAbs F hA u
@@ -179,6 +248,9 @@ theorem product_local_ratios_le {D : D7} {large₂ : SizeData₂ D} {C' Cl Cu C0
         mul_le_mul (Real.sqrt_le_sqrt h1) (Real.sqrt_le_sqrt h2) (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)
     _ = C0 * Real.exp 9 := Real.mul_self_sqrt (by have := F.hC0; positivity)
 
+/- English proof (translation)
+Establish `hrd` using `rdE_pos D`. Establish `hg` using `szf_gg_pos D`. Rewrite using `[szf_supBe D _ T T' x J (by positivity), szf_supBe D _ T T' x J hka, m_eq D]`. Conclude with `szf_alg _ _ _ CA _ N I a e _ hka hrd hg hI hae`.
+-/
 theorem szf_elem (D : D7) (hka : 0 < D.host.ka) (CA N T T' I : ℝ) (hI : 0 < I) (x : LocalDataRealPlace D) (J : Set ℝ) (a e : ℕ)
     (hae : a + e = 2 * D.R.rS + 1) :
     CA * supBe D (D.host.ka * D.host.rdE / gg D) T T' x J * (CA * (D.host.ka * D.host.rdE / gg D) * N / I) ^ a *
@@ -189,22 +261,36 @@ theorem szf_elem (D : D7) (hka : 0 < D.host.ka) (CA N T T' I : ℝ) (hI : 0 < I)
   rw [szf_supBe D _ T T' x J (by positivity), szf_supBe D _ T T' x J hka, m_eq D]
   exact szf_alg _ _ _ CA _ N I a e _ hka hrd hg hI hae
 
+/- English proof (translation)
+Rewrite using `[(hL i s).1]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem szf_aaV (D : D7) (L : LatticeDataWithDual D) (hL : IsLatGLOB D L) (i s e : ℕ) (he : e + 2 * i + s = 2 * D.R.rS + 4) :
     L.aaV i s = ddE D ^ (-((e : ℕ) : ℤ)) * (FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ (gE D))⁻¹ := by
   rw [(hL i s).1]
   congr 2
   omega
 
+/- English proof (translation)
+Rewrite using `[(hL i s).2.1]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem szf_aaP (D : D7) (L : LatticeDataWithDual D) (hL : IsLatGLOB D L) (i s e : ℕ) (he : e + 2 * i + s = 2 * D.R.rS + 3) :
     L.aaP i s = ddE D ^ (-((e : ℕ) : ℤ)) * (FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ (gE D))⁻¹ := by
   rw [(hL i s).2.1]
   congr 2
   omega
 
+/- English proof (translation)
+Rewrite using `[div_inv_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, szf_card_Tau]`.
+-/
 theorem szf_div_prod (D : D7) (F : D.what₂.Tau → ℝ) (c : ℝ) :
     (∏ v, F v) / (c ^ D.R.f)⁻¹ = ∏ v, F v * c := by
   rw [div_inv_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, szf_card_Tau]
 
+/- English proof (translation)
+Take `⟨e, he⟩ : ∃ e, e + 2 * i + 1 = 2 * D.R.rS + 4` from `⟨2 * D.R.rS + 3 - 2 * i, by omega⟩`. Rewrite using `[szf_aaV D L hL i 1 e he, szf_nrm D hdd hgn e, szf_div_prod]`. Use `Finset.prod_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Unfold `xSz Sz.xHat`. Rewrite using `[szf_kaV, hba v]`.
+
+Conclude with `szf_elem D hka CA N T T' I hI (x v) _ (2 * i - 2) e (by omega)`.
+-/
 theorem product_formula_first (D : D7) (hdd : SzfNormDD D) (hgn : SzfNormG D) (hka : 0 < D.host.ka) (CA N T T' I : ℝ) (hI : 0 < I)
     (x : D.what₂.Tau → LocalDataRealPlace D) (L : LatticeDataWithDual D) (hL : IsLatGLOB D L) (hba : ∀ v, (x v).b - (x v).a = I)
     (i : ℕ) (hi1 : 1 ≤ i) (hi2 : i ≤ D.R.rS + 1) :
@@ -218,6 +304,11 @@ theorem product_formula_first (D : D7) (hdd : SzfNormDD D) (hgn : SzfNormG D) (h
   rw [szf_kaV, hba v]
   exact szf_elem D hka CA N T T' I hI (x v) _ (2 * i - 2) e (by omega)
 
+/- English proof (translation)
+Take `⟨e, he⟩ : ∃ e, e + 2 * i + s = 2 * D.R.rS + 4` from `⟨2 * D.R.rS + 4 - 2 * i - s, by omega⟩`. Rewrite using `[szf_aaV D L hL i s e he, szf_aaP D L hL i (s - 1) e (by omega), min_self, szf_nrm D hdd hgn e, szf_div_prod]`. Use `Finset.prod_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Unfold `LamSz Sz.lamHat`. Rewrite using `[szf_kaV, hba v]`.
+
+Conclude with `szf_elem D hka CA N T T' I hI (x v) _ (2 * (i - 1) + s - 1) e (by omega)`.
+-/
 theorem product_formula_second (D : D7) (hdd : SzfNormDD D) (hgn : SzfNormG D) (hka : 0 < D.host.ka) (CA N T T' I : ℝ) (hI : 0 < I)
     (x : D.what₂.Tau → LocalDataRealPlace D) (L : LatticeDataWithDual D) (hL : IsLatGLOB D L) (hba : ∀ v, (x v).b - (x v).a = I)
     (i s : ℕ) (hi1 : 1 ≤ i) (hs : 2 ≤ s) (his : i - 1 + s ≤ D.R.rS + 1) :
@@ -232,6 +323,13 @@ theorem product_formula_second (D : D7) (hdd : SzfNormDD D) (hgn : SzfNormG D) (
   rw [szf_kaV, hba v]
   exact szf_elem D hka CA N T T' I hI (x v) _ (2 * (i - 1) + s - 1) e (by omega)
 
+/- English proof (translation)
+Establish `hrd` using `rdE_pos D`. Establish `hg` using `szf_gg_pos D`. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Take `⟨e, he⟩ : ∃ e, e + j + 1 = D.R.rS + 1` from `⟨D.R.rS - j, by omega⟩`. Rewrite using `[szf_aaP D L hL (j + 1) (D.R.rS + 2 - (j + 1)) e (by omega), szf_nrm D hdd hgn e, szf_div_prod]`.
+
+Use `Finset.prod_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Unfold `LamPSz Sz.lamPrimeHat`. Rewrite using `[szf_kaV, hba v, show 2 * (j + 1) - 1 = 2 * j + 1 by omega, show 2 * (j + 1 - 1) = 2 * j by omega, show 2 * (j + 1) - 2 = 2 * j by omega, mul_comm (Real.sqrt _), ← Real.sqrt_sq (show 0 ≤ D.host.rdE ^ e * gg D by positivity), ← Real.sqrt_mul (by positivity)]`. Use `congr 1`. Rewrite using `[szf_supBe D _ T T' (x v) _ (show 0 < D.host.ka * D.host.rdE / gg D by positivity), szf_supBe D _ T T' (x v) _ hka, m_eq D, show (Real.sqrt (T * T'))⁻¹ = (T * T') ^ (-(1 / 2 : ℝ)) by rw [Real.sqrt_eq_rpow, Real.rpow_neg hTT.le]]`.
+
+Conclude with `szf_algP _ _ _ CA _ N I _ j e _ hka hrd hg hI (by omega)`.
+-/
 theorem product_formula_third (D : D7) (hdd : SzfNormDD D) (hgn : SzfNormG D) (hka : 0 < D.host.ka) (CA N T T' I : ℝ) (hI : 0 < I)
     (hTT : 0 < T * T')
     (x : D.what₂.Tau → LocalDataRealPlace D) (L : LatticeDataWithDual D) (hL : IsLatGLOB D L) (hba : ∀ v, (x v).b - (x v).a = I)
@@ -255,6 +353,23 @@ theorem product_formula_third (D : D7) (hdd : SzfNormDD D) (hgn : SzfNormG D) (h
     show (Real.sqrt (T * T'))⁻¹ = (T * T') ^ (-(1 / 2 : ℝ)) by rw [Real.sqrt_eq_rpow, Real.rpow_neg hTT.le]]
   exact szf_algP _ _ _ CA _ N I _ j e _ hka hrd hg hI (by omega)
 
+/- English proof (translation)
+Take `⟨h5, hv, hg25⟩` from `sze_facts hh`. Establish `hg` using `szf_gg_pos D`. Establish `hgm : 0 < gg D ^ D.R.m` using `pow_pos hg _`. Establish `hka` using `ka_pos_of hv`. Establish `hk5` using `five_le_k D`.
+
+Establish `hDel : (0 : ℝ) < D.s.Del` using `by exact_mod_cast D.s.Del_pos`. Establish `hfun : ∀ Y, beS D.host.ka D.R.rS x.lam (Tr D u) (Tr D u') x.u x.u' Y = beUU D D.host.ka u u' τ Y`. Introduce `Y`. Rewrite using `[hlam, hu, hu', szf_beS_cast]`. Both sides reduce to the same expression.
+
+Use `set Bd := tV D u u' τ * (D.R.k : ℝ) ^ C4 * Real.sqrt (dmax / D.s.Del) with hBd`. Establish `hval : ∀ Y ∈ Set.Icc (5 / 2 - vOne D τ l) (dmax - vOne D τ l), gg D ^ D.R.m * beUU D D.host.ka u u' τ Y ≤ Bd`. Introduce `Y hY`. Establish `e : Y = (Y + vOne D τ l) - vOne D τ l` using `by ring`. Establish `h` using `h2e u u' τ l hl1 hl2 hne (Y + vOne D τ l) (by linarith [hY.1]) (by linarith [hY.2])`.
+
+Rewrite `h` using `[← e]`. Use `le_trans h ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt ?_) (mul_nonneg (Real.sqrt_nonneg _) (by positivity))` and prove the remaining obligations. Conclude with `div_le_div_of_nonneg_right (by linarith [hY.2]) hDel.le`. Establish `hbdd : BddAbove (beS D.host.ka D.R.rS x.lam (Tr D u) (Tr D u') x.u x.u' '' Set.Icc (5 / 2 - vOne D τ l) (dmax - vOne D τ l))`.
+
+Use `⟨Bd / gg D ^ D.R.m, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨Y, hY, rfl⟩`. Rewrite using `[hfun, le_div_iff₀ hgm, mul_comm]`. Conclude with `hval Y hY`. Establish `hY0 : (5 / 2 - vOne D τ l) ∈ Set.Icc (5 / 2 - vOne D τ l) (dmax - vOne D τ l)` using `⟨le_rfl, by linarith⟩`.
+
+Prove the components needed by the constructor for the conclusion. Use `mul_pos hgm (lt_of_lt_of_le ?_ (le_csSup hbdd ⟨_, hY0, rfl⟩))` and prove the remaining obligations. Rewrite using `[hfun, beUU_eq D u u' τ (fun w => h5 τ w)]`. Establish `hm` using `mem_cutI D τ l hl1 hl2 (5 / 2) le_rfl (by linarith)`. Take `⟨q0, p0, p1, -⟩` from `Formalism.FourierDecayAlt.P.betaFactorisation (cfgOf D τ) (deOf D u) (deOf D u') D.host.ka (Tr D u) (Tr D u') (5 / 2 - vOne D τ l) l (cfg_ok hh.1 hh.2.1 τ) (isWord_deOf D u) (isWord_deOf D u') (Tr_pos D u) (Tr_pos D u') hl1 (by show l + 2 ≤ D.R.k; omega) (deOf_ne D u u' τ (fun w …`.
+
+Unfold `Sz.Cfg.be Sz.Cfg.core`. Use `mul_pos (inv_pos.2 (pow_pos hka _)) (Real.sqrt_pos.2 (abs_pos.2 ?_))` and prove the remaining obligations. Conclude with `div_ne_zero (mul_ne_zero p0 p1) q0`. Unfold `supBe`. Rewrite using `[← le_div_iff₀' hgm]`.
+
+Use `csSup_le ⟨_, _, hY0, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Y, hY, rfl⟩`. Rewrite using `[hfun, le_div_iff₀' hgm]`. Conclude with `hval Y hY`.
+-/
 theorem szf_sup {D : D7} {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT C4 : ℝ}
     (hh : LocalBesselAndTopKernel.hyp D large₂ C0 C' Cl Cg cb Cu cT CT) (h2e : LocalBesselAndTopKernel.BesselBoundOneSlotDifference D C4)
     (u u' : D.what₂.Word) (l : ℕ) (hl1 : 1 ≤ l) (hl2 : l ≤ D.R.k - 2) (τ : D.what₂.Tau)
@@ -307,6 +422,33 @@ theorem szf_sup {D : D7} {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT C4 
     rw [hfun, le_div_iff₀' hgm]
     exact hval Y hY
 
+/- English proof (translation)
+Establish `hpi` using `Real.pi_pos`. Establish `hpi4` using `Real.pi_le_four`. Establish `hCt2 : Ct ≤ Ct ^ 2` using `le_self_pow₀ hCt (by norm_num)`. Establish `hC2 : C ≤ C ^ 2` using `le_self_pow₀ hC (by norm_num)`. Establish `h1C2 : 1 ≤ C ^ 2` using `one_le_pow₀ hC`.
+
+Establish `h1Ct2 : 1 ≤ Ct ^ 2` using `one_le_pow₀ hCt`. Use `set Q := Ct ^ 2 * C ^ 2 with hQ`. Establish `hQ1 : 1 ≤ Q` using `one_le_mul_of_one_le_of_one_le h1Ct2 h1C2`. Establish `hQk : Q ≤ k / 4000`. Rewrite using `[le_div_iff₀ (by norm_num)]`.
+
+Establish `: 4000 * Ct ^ 2 * C ^ 2 = Q * 4000` using `by rw [hQ]; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk4000 : 4000 ≤ k`. Use `le_trans hQ1 hQk` as an intermediate fact. Rewrite `this` using `[le_div_iff₀ (by norm_num)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set W := X4 ^ 2 * LinearSubstitution ^ 2 with hW`. Establish `hW1 : 1 ≤ W` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ hX4) (one_le_pow₀ hX5)`. Establish `hk0 : 0 < k` using `by linarith`. Establish `hk24 : k ^ 2 ≤ k ^ 4` using `pow_le_pow_right₀ hk (by norm_num)`.
+
+Establish `hk14 : k ≤ k ^ 4` using `le_self_pow₀ hk (by norm_num)`. Establish `hk4 : k ^ 4 ≤ W * k ^ 4` using `le_mul_of_one_le_left (by positivity) hW1`. Establish `hWk2 : W * k ^ 2 ≤ W * k ^ 4` using `mul_le_mul_of_nonneg_left hk24 (by linarith)`. Establish `hI4 : W * k ^ 4 / 4 ≤ Δ / 2 - 5 / 2` using `by linarith`. Establish `hI : 0 < Δ / 2 - 5 / 2` using `by linarith`.
+
+Establish `hN3 : N ^ 3 ≤ 1000 * k ^ 3`. Use `pow_le_pow_left₀ hN0.le hN 3` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hk34 : 4000 * k ^ 3 ≤ k ^ 4`. Establish `: k ^ 4 = k * k ^ 3` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_right hk4000 (by positivity)`. Establish `q2 : LinearSubstitution * (Real.pi * Ct * C ^ 2 * 1 * X4 * N) ≤ Δ / 2 - 5 / 2`. Establish `hXX : X4 * LinearSubstitution ≤ W` using `mul_le_mul (le_self_pow₀ hX4 (by norm_num)) (le_self_pow₀ hX5 (by norm_num)) (by linarith) (by positivity)`. Establish `hCC : Ct * C ^ 2 ≤ k / 4000` using `le_trans (mul_le_mul_of_nonneg_right hCt2 (by positivity)) hQk`.
+
+Establish `hin : Real.pi * (Ct * C ^ 2) * N ≤ 4 * (k / 4000) * (10 * k)` using `mul_le_mul (mul_le_mul hpi4 hCC (by positivity) (by norm_num)) hN hN0.le (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ W * k ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hI, by linarith, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[div_le_one hI]`. Use `le_trans ?_ q2` and prove the remaining obligations. Establish `h1 : C * Real.pi * N = 1 * (Real.pi * 1 * C * 1 * 1 * N)` using `by ring`. Rewrite using `[h1]`. Establish `: Real.pi * 1 * C * 1 * 1 * N ≤ Real.pi * Ct * C ^ 2 * 1 * X4 * N` using `by gcongr`.
+
+Conclude with `mul_le_mul hX5 this (by positivity) (by linarith)`. Rewrite using `[le_div_iff₀ (by positivity)]`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `: 0 ≤ W * k ^ 4` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[le_div_iff₀ (by positivity)]`. Conclude with `q2`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises.
+
+Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `hCC : Ct * C ≤ k / 4000` using `le_trans (mul_le_mul hCt2 hC2 (by linarith) (by positivity)) hQk`. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ X4 * LinearSubstitution ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `_ ≤ TTs := hT`.
+-/
 theorem szf_num (k Δ TTs Ct C N X4 LinearSubstitution : ℝ) (hk : 1 ≤ k) (hC : 1 ≤ C) (hCt : 1 ≤ Ct) (hN0 : 0 < N) (hN : N ≤ 10 * k)
     (hX4 : 1 ≤ X4) (hX5 : 1 ≤ LinearSubstitution) (hK : 4000 * Ct ^ 2 * C ^ 2 ≤ k)
     (hΔ : X4 ^ 2 * LinearSubstitution ^ 2 * k ^ 4 ≤ Δ) (hT : X4 * LinearSubstitution ^ 2 * k ≤ TTs) :
@@ -389,6 +531,27 @@ theorem szf_num (k Δ TTs Ct C N X4 LinearSubstitution : ℝ) (hk : 1 ≤ k) (hC
         nlinarith
       _ ≤ TTs := hT
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, a16, -, -, -, a20, -, -, a23, -, a25⟩` from `hH`. Establish `hk5 : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast five_le_k D`. Establish `hk1 : (1 : ℝ) ≤ D.R.k` using `by linarith`. Establish `hk0 : (0 : ℝ) ≤ D.R.k` using `by linarith`. Establish `hT` using `Tr_pos D u`.
+
+Establish `hL1` using `one_le_L large₂`. Establish `hf1` using `one_le_f D`. Establish `hb1` using `one_lt_b large₂`. Establish `hb0 : (0 : ℝ) ≤ large₂.sc.b` using `by linarith`. Establish `hm2 : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`.
+
+Prove the components needed by the constructor for the conclusion. Establish `e1 : (D.R.k : ℝ) ≤ (D.R.k : ℝ) * D.R.f * large₂.sc.L`. Establish `: (D.R.k : ℝ) ≤ (D.R.k : ℝ) * D.R.f` using `le_mul_of_one_le_right hk0 hf1`. Conclude with `le_trans this (le_mul_of_one_le_right (by positivity) hL1)`. Establish `e2 : (D.R.k : ℝ) ^ Cl ≤ ((D.R.k : ℝ) * D.R.f * large₂.sc.L) ^ Cl` using `Real.rpow_le_rpow hk0 e1 a25.le`.
+
+Establish `e3 : (D.R.k : ℝ) ^ (((2 * n4 + 2 * n5 + 4 : ℕ) : ℝ)) ≤ (D.R.k : ℝ) ^ Cl` using `Real.rpow_le_rpow_of_exponent_le hk1 (by push_cast; exact hCl1)`. Rewrite `e3` using `[Real.rpow_natCast]`. Combine the equalities or inequalities in the displayed calculation. Establish `hne0 : Nonempty D.what₂.Tau`. Rewrite using `[← Fintype.card_pos_iff, szf_card_Tau]`.
+
+Conclude with `(lt_of_lt_of_le one_pos hf1 : (0 : ℝ) < D.R.f)` after adjusting the coercions. Take `⟨τ0⟩` from `hne0`. Establish `hm1 : 1 ≤ D.R.m` using `le_trans (by norm_num) D.R.two_le_m`. Establish `hbk : (D.R.k : ℝ) ^ (Cl / 2) ≤ large₂.sc.b`. Establish `e1 : (D.R.k : ℝ) ^ Cl ≤ large₂.sc.b ^ (2 : ℝ)` using `le_trans (le_trans (le_max_left _ _) (a16 τ0 1 le_rfl hm1).1) (a16 τ0 1 le_rfl hm1).2`.
+
+Establish `e2` using `Real.rpow_le_rpow (by positivity) e1 (show (0 : ℝ) ≤ 1 / 2 by norm_num)`. Rewrite `e2` using `[← Real.rpow_mul hk0, ← Real.rpow_mul hb0]`. Establish `e3 : (2 : ℝ) * (1 / 2) = 1` using `by norm_num`. Rewrite `e2` using `[e3, Real.rpow_one, show Cl * (1 / 2) = Cl / 2 by ring]`. Conclude with `e2`.
+
+Establish `hbT : (D.R.k : ℝ) ^ n4 * ((D.R.k : ℝ) ^ n5) ^ 2 * (D.R.k : ℝ) ≤ large₂.sc.b ^ (cT * (D.R.m : ℝ))`. Establish `e1 : ((D.R.k : ℝ) ^ (Cl / 2)) ^ (cT * (D.R.m : ℝ)) ≤ large₂.sc.b ^ (cT * (D.R.m : ℝ))` using `Real.rpow_le_rpow (by positivity) hbk (by positivity)`. Rewrite `e1` using `[← Real.rpow_mul hk0]`. Establish `e2 : (D.R.k : ℝ) ^ (((n4 + 2 * n5 + 1 : ℕ) : ℝ)) ≤ (D.R.k : ℝ) ^ (Cl / 2 * (cT * (D.R.m : ℝ)))`. Use `Real.rpow_le_rpow_of_exponent_le hk1 ?_` and prove the remaining obligations.
+
+Use `push_cast`. Establish `hp : 0 ≤ Cl * cT` using `by positivity`. Establish `h1 : Cl * cT * 1 ≤ Cl * cT * ((D.R.m : ℝ) / 2)` using `mul_le_mul_of_nonneg_left (by linarith) hp`. Establish `h2 : Cl / 2 * (cT * (D.R.m : ℝ)) = Cl * cT * ((D.R.m : ℝ) / 2)` using `by ring`. Rewrite using `[h2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `e2` using `[Real.rpow_natCast]`. Combine the equalities or inequalities in the displayed calculation. Use `le_trans hbT (Real.le_sqrt_of_sq_le ?_)` and prove the remaining obligations. Rewrite using `[sq]`.
+
+Conclude with `mul_le_mul (a23 u).1 (a23 u').1 (by positivity) hT.le`.
+-/
 theorem szf_sizes {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (n4 n5 : ℕ) (hcT : 0 < cT) (hCl1 : (2 * n4 + 2 * n5 + 4 : ℝ) ≤ Cl) (hCl2 : (n4 + 2 * n5 + 1 : ℝ) ≤ Cl * cT)
     (u u' : D.what₂.Word) :
@@ -446,6 +609,19 @@ theorem szf_sizes {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : �
     rw [sq]
     exact mul_le_mul (a23 u).1 (a23 u').1 (by positivity) hT.le
 
+/- English proof (translation)
+Establish `hk5 : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast five_le_k D`. Establish `hk1 : (1 : ℝ) ≤ D.R.k` using `by linarith`. Establish `hDel0 : (0 : ℝ) < D.s.Del` using `by exact_mod_cast D.s.Del_pos`. Establish `hX4 : (0 : ℝ) ≤ (D.R.k : ℝ) ^ n4` using `by positivity`. Establish `hcast : ((D.R.k ^ (2 * n4) : ℕ) : ℝ) = ((D.R.k : ℝ) ^ n4) ^ 2` using `by push_cast; ring`.
+
+Establish `hsq : Real.sqrt ((D.R.k ^ (2 * n4) : ℕ) : ℝ) = (D.R.k : ℝ) ^ n4`. Rewrite using `[hcast, Real.sqrt_sq hX4]`. Establish `hkC4 : (D.R.k : ℝ) ^ C4 ≤ (D.R.k : ℝ) ^ n4`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hk1 hn4`.
+
+Establish `ht0 : ∀ τ, 0 ≤ tV D u u' τ` using `fun τ => Real.sqrt_nonneg _`. Prove the components needed by the constructor for the conclusion. Introduce `τ`. Establish `h` using `szf_sup hh h2e u u' l hl1 hl2 τ (hne τ) (x τ) (hx.1 τ).1 (hx.1 τ).2.1 (hx.1 τ).2.2 ((D.s.Del : ℝ) / 2) hI le_rfl`. Rewrite `h` using `[← (hx.2 τ).1, ← (hx.2 τ).2.1]`.
+
+Use `⟨h.1, le_trans h.2 ?_⟩` and prove the remaining obligations. Rewrite using `[hsq, one_mul]`. Establish `e1 : Real.sqrt ((D.s.Del : ℝ) / 2 / D.s.Del) ≤ 1`. Rewrite using `[Real.sqrt_le_one, div_le_one hDel0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `τ`. Establish `h` using `szf_sup hh h2e u u' l hl1 hl2 τ (hne τ) (x τ) (hx.1 τ).1 (hx.1 τ).2.1 (hx.1 τ).2.2 (NA D ^ 3) hN3' hN3`. Rewrite `h` using `[← (hx.2 τ).2.2.1, ← (hx.2 τ).2.2.2]`. Use `⟨h.1, le_trans h.2 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsq, one_mul]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hkC4 (ht0 τ)) (Real.sqrt_nonneg _)`.
+-/
 theorem szf_BB {D : D7} {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT C4 : ℝ}
     (hh : LocalBesselAndTopKernel.hyp D large₂ C0 C' Cl Cg cb Cu cT CT) (h2e : LocalBesselAndTopKernel.BesselBoundOneSlotDifference D C4)
     (u u' : D.what₂.Word) (l : ℕ) (hl1 : 1 ≤ l) (hl2 : l ≤ D.R.k - 2)
@@ -489,6 +665,27 @@ theorem szf_BB {D : D7} {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT C4 :
     rw [hsq, one_mul]
     exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hkC4 (ht0 τ)) (Real.sqrt_nonneg _)
 
+/- English proof (translation)
+Establish `hTT : 0 < Tr D u * Tr D u'` using `mul_pos (Tr_pos D u) (Tr_pos D u')`. Establish `hDel0 : (0 : ℝ) < D.s.Del` using `by exact_mod_cast D.s.Del_pos`. Establish `ht0 : ∀ τ, 0 ≤ tV D u u' τ` using `fun τ => Real.sqrt_nonneg _`. Establish `TP` using `fun (i s : ℕ) (hi : 1 ≤ i) => Formalism.FourierDecayAlt.P.threshold_products D.what₂.Tau (tV D u u') (fun τ => gg D ^ D.R.m * supBe D D.host.ka (Tr D u) (Tr D u') (x τ) (Set.Icc (x τ).a1 (x τ).b1)) (fun τ => gg D ^ D.R.m * supBe D D.host.ka (Tr D u) (Tr D u') (x τ) (Set.Icc (x τ) …`. Simplify using `only [szf_card_Tau] at TP`.
+
+Generalize the expression as in `hM1 : Ct * (CA * 1) ^ D.R.f * (Real.sqrt ((K : ℝ) * NA D ^ 3 / (D.s.Del : ℝ))) ^ D.R.f = M1 at TP ⊢`. Generalize the expression as in `hM2 : Ct * (CA * 1 * Real.sqrt (K : ℝ)) ^ D.R.f * (CA * Real.pi * NA D / I) ^ (2 * D.R.f) = M2 at TP ⊢`. Generalize the expression as in `hM3 : Ct * (CA * 1 * Real.sqrt (K : ℝ)) ^ D.R.f * (CA * Real.pi * NA D / I) ^ D.R.f = M3 at TP ⊢`. Generalize the expression as in `hM4 : Real.sqrt Ct * (Real.sqrt (Real.pi * CA * 1 * Real.sqrt (K : ℝ) / Real.sqrt (Tr D u * Tr D u'))) ^ D.R.f = M4 at TP ⊢`. Establish `hE1` using `product_formula_first D hdd hgn hka CA (NA D) (Tr D u) (Tr D u') I hI x L hL hba`.
+
+Establish `hE2` using `product_formula_second D hdd hgn hka CA (NA D) (Tr D u) (Tr D u') I hI x L hL hba`. Establish `hE3` using `product_formula_third D hdd hgn hka CA (NA D) (Tr D u) (Tr D u') I hI hTT x L hL hba`. Establish `hy1` using `hE1 1 le_rfl (by omega)`. Simplify using `only [↓reduceIte] at hy1`. Unfold `ThInvF`.
+
+Generalize the expression as in `hS : ({y | ∃ i, 1 ≤ i ∧ i ≤ D.R.rS + 1 ∧ y = (∏ v, xSz D CA CA (NA D) (kaV D (gE D) v) (Tr D u) (Tr D u') (x v) i) / nrmHalf D (L.aaV i 1)} ∪ {y | ∃ i s, 1 ≤ i ∧ 2 ≤ s ∧ i - 1 + s ≤ D.R.rS + 1 ∧ y = (∏ v, LamSz D CA CA (NA D) (kaV D (gE D) v) (Tr D u) (Tr D u') (x v) i s) / min ( …`. Establish `hall : ∀ y ∈ S, y ≤ max (max M1 M2) (max M3 M4)`. Rewrite using `[← hS]`. Introduce and unpack `y ((⟨i, hi1, hi2, rfl⟩ | ⟨i, s, hi1, hs2, his, rfl⟩) | ⟨i, hi1, hi2, rfl⟩)`. Distinguish the cases in `h1 : i = 1`.
+
+Substitute `h1` using the available equality. Rewrite using `[hy1]`. Conclude with `le_trans (TP 1 2 le_rfl).1 (le_trans (le_max_left _ _) (le_max_left _ _))`. Establish `e` using `hE1 i hi1 hi2`. Simplify using `only [if_neg h1] at e`.
+
+Rewrite using `[e]`. Conclude with `le_trans ((TP i 2 hi1).2.1 (by omega)) (le_trans (le_max_right _ _) (le_max_left _ _))`. Rewrite using `[hE2 i s hi1 hs2 his]`. Conclude with `le_trans ((TP i s hi1).2.2.1 hs2) (le_trans (le_max_left _ _) (le_max_right _ _))`. Rewrite using `[hE3 i hi1 hi2]`.
+
+Conclude with `le_trans (TP i 2 hi1).2.2.2 (le_trans (le_max_right _ _) (le_max_right _ _))`. Establish `hmem : (∏ v, xSz D CA CA (NA D) (kaV D (gE D) v) (Tr D u) (Tr D u') (x v) 1) / nrmHalf D (L.aaV 1 1) ∈ S`. Rewrite using `[← hS]`. Conclude with `Or.inl (Or.inl ⟨1, le_rfl, by omega, rfl⟩)`. Prove the components needed by the constructor for the conclusion.
+
+Use `lt_of_lt_of_le ?_ (le_csSup ⟨_, hall⟩ hmem)` and prove the remaining obligations. Rewrite using `[hy1]`. Use `Finset.prod_pos (fun v _ => ?_)` and prove the remaining obligations. Simplify using `only [Sz.xHat, show 2 * 1 - 2 = 0 from rfl, pow_zero, mul_one]`. Conclude with `mul_pos (lt_of_lt_of_le one_pos hCA) (hB1 v).1`.
+
+Establish `hVle : sSup S ≤ max (max M1 M2) (max M3 M4)` using `csSup_le ⟨_, hmem⟩ hall`. Break down `le_max_iff.1 hVle with h | h` into its components or cases. Break down `le_max_iff.1 h with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl h)`.
+
+Break down `le_max_iff.1 h with h | h` into its components or cases. Conclude with `Or.inr (Or.inr (Or.inl h))`. Conclude with `Or.inr (Or.inr (Or.inr h))`.
+-/
 theorem szf_Vbound (D : D7) (hdd : SzfNormDD D) (hgn : SzfNormG D) (u u' : D.what₂.Word) (CA Ct I : ℝ) (K : ℕ)
     (x : D.what₂.Tau → LocalDataRealPlace D) (L : LatticeDataWithDual D) (hL : IsLatGLOB D L) (hI : 0 < I)
     (hba : ∀ v, (x v).b - (x v).a = I) (hCA : 1 ≤ CA) (hCt : 0 < Ct) (hka : 0 < D.host.ka)
@@ -571,6 +768,37 @@ theorem szf_Vbound (D : D7) (hdd : SzfNormDD D) (hgn : SzfNormG D) (u u' : D.wha
       · exact Or.inr (Or.inr (Or.inl h))
       · exact Or.inr (Or.inr (Or.inr h))
 
+/- English proof (translation)
+Take `⟨n4, hn4⟩ : ∃ n4 : ℕ, C4 ≤ n4` from `⟨⌈C4⌉₊, Nat.le_ceil C4⟩`. Take `⟨n5, hn5, hn51⟩ : ∃ n5 : ℕ, c5 ≤ n5 ∧ 1 ≤ n5` from `⟨⌈c5⌉₊ + 1, by push_cast; linarith [Nat.le_ceil c5], by omega⟩`. Establish `hn5R : (1 : ℝ) ≤ n5` using `by exact_mod_cast hn51`. Take `⟨k0, hk0⟩` from `Formalism.FourierDecayAlt.P.final_smallness CA (n5 : ℝ) hCA (by linarith)`. Use `⟨max k0 (4000 * (C0 * Real.exp 9) ^ 2 * CA ^ 2), max (max (2 * n4 + 2 * n5 + 4) ((n4 + 2 * n5 + 1) / cT)) 16, ?_⟩` and prove the remaining obligations.
+
+Introduce `D large₂ C' Cl Cg cb Cu CT hdd hgn hK hCl hh h2a h2e u u' l hl1 hl2 hne x L hx hL`. Establish `hKa : k0 ≤ D.R.k` using `by exact_mod_cast le_trans (le_max_left _ _) hK`. Establish `hKb` using `le_trans (le_max_right _ _) hK`. Establish `hCl1 : (2 * n4 + 2 * n5 + 4 : ℝ) ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hCl`. Establish `hCl2 : (n4 + 2 * n5 + 1 : ℝ) ≤ Cl * cT`.
+
+Use `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hCl` as an intermediate fact. Rewrite `this` using `[div_le_iff₀ hcT]`. Then use the resulting hypothesis. Establish `hCl3 : (16 : ℝ) ≤ Cl` using `le_trans (le_max_right _ _) hCl`. Take `⟨-, hv, hg25⟩` from `sze_facts hh`. Establish `F` using `tfFacts_of (⟨hh.2.1, hh.1, hh.2.2⟩ : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0)`.
+
+Establish `a6 : Cl * large₂.sc.L ≤ (D.R.f : ℝ) * Real.log D.R.k` using `hh.2.1.2.2.2.2.2.1`. Establish `hC0` using `hh.2.2`. Take `⟨hka, hkapi⟩` from `tf_ka D hv`. Establish `hk5 : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast five_le_k D`. Establish `hk1 : (1 : ℝ) ≤ D.R.k` using `by linarith`.
+
+Establish `hCt : 1 ≤ C0 * Real.exp 9` using `one_le_mul_of_one_le_of_one_le hC0 (Real.one_le_exp (by norm_num))`. Establish `hTT : 0 < Tr D u * Tr D u'` using `mul_pos (Tr_pos D u) (Tr_pos D u')`. Establish `hDel0 : (0 : ℝ) < D.s.Del` using `by exact_mod_cast D.s.Del_pos`. Establish `hf1` using `one_le_f D`. Establish `hb1` using `one_lt_b large₂`.
+
+Establish `hmR : (D.R.m : ℝ) = 2 * D.R.rS + 2` using `by exact_mod_cast m_eq D`. Establish `hm2 : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `hX4 : (1 : ℝ) ≤ (D.R.k : ℝ) ^ n4` using `one_le_pow₀ hk1`. Establish `hX5 : (1 : ℝ) ≤ (D.R.k : ℝ) ^ n5` using `one_le_pow₀ hk1`. Take `⟨hΔ, hsT⟩` from `szf_sizes hh.2.1 n4 n5 hcT hCl1 hCl2 u u'`.
+
+Establish `hNeq : NA D = 10 * (D.R.m : ℝ)` using `by unfold NA; rw [hmR]; ring`. Establish `hN0 : 0 < NA D` using `by rw [hNeq]; linarith`. Establish `hN20 : 20 ≤ NA D` using `by rw [hNeq]; linarith`. Establish `hN : NA D ≤ 10 * (D.R.k : ℝ)` using `by rw [hNeq]; linarith [m_le_k D]`. Take `⟨hI, hN3, hCpi, q1, q2, q3⟩` from `szf_num (D.R.k : ℝ) (D.s.Del : ℝ) (Real.sqrt (Tr D u * Tr D u')) (C0 * Real.exp 9) CA (NA D) ((D.R.k : ℝ) ^ n4) ((D.R.k : ℝ) ^ n5) hk1 hCA hCt hN0 hN hX4 hX5 hKb hΔ hsT`.
+
+Establish `hcast : ((D.R.k ^ (2 * n4) : ℕ) : ℝ) = ((D.R.k : ℝ) ^ n4) ^ 2` using `by push_cast; ring`. Establish `hsq : Real.sqrt ((D.R.k ^ (2 * n4) : ℕ) : ℝ) = (D.R.k : ℝ) ^ n4`. Rewrite using `[hcast, Real.sqrt_sq (by linarith)]`. Establish `hba : ∀ v, (x v).b - (x v).a = (D.s.Del : ℝ) / 2 - 5 / 2`. Introduce `v`.
+
+Rewrite using `[(hx.2 v).1, (hx.2 v).2.1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN3' : 5 / 2 ≤ NA D ^ 3`. Establish `: NA D ≤ NA D ^ 3` using `le_self_pow₀ (by linarith) (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨hB, hB1⟩` from `szf_BB hh h2e u u' l hl1 hl2 hne x hx n4 hn4 (by linarith) hN3' hN3`. Take `⟨hV0, hor⟩` from `szf_Vbound D hdd hgn u u' CA (C0 * Real.exp 9) ((D.s.Del : ℝ) / 2 - 5 / 2) (D.R.k ^ (2 * n4)) x L hL hI hba hCA (by linarith) hka hkapi (by linarith) hN0 hCpi (product_local_ratios_le F h2a u u') hB hB1`. Establish `hThdef : ThA D CA u u' x L = ThInvF D CA CA (NA D) (Tr D u) (Tr D u') (gE D) x L ^ (-(1 / (D.R.f : ℝ)))` using `rfl`. Rewrite using `[hThdef]`. Generalize the expression as in `ThInvF D CA CA (NA D) (Tr D u) (Tr D u') (gE D) x L = V at hV0 hor ⊢`.
+
+Establish `hTh0 : 0 < V ^ (-(1 / (D.R.f : ℝ)))` using `Real.rpow_pos_of_pos hV0 _`. Establish `hThf : ((V ^ (-(1 / (D.R.f : ℝ)))) ^ D.R.f)⁻¹ = V`. Establish `hf0 : (D.R.f : ℝ) ≠ 0` using `by linarith`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hV0.le, show -(1 / (D.R.f : ℝ)) * (D.R.f : ℝ) = -1 by field_simp, Real.rpow_neg_one, inv_inv]`. Generalize the expression as in `V ^ (-(1 / (D.R.f : ℝ))) = Th at hTh0 hThf ⊢`.
+
+Rewrite `hor` using `[← hThf]`. Establish `hf1' : 1 ≤ D.R.f` using `by exact_mod_cast hf1`. Establish `TL` using `Formalism.FourierDecayAlt.P.theta_lower_bound D.R.f (D.R.k ^ (2 * n4)) CA 1 (C0 * Real.exp 9) (NA D) ((D.s.Del : ℝ) / 2 - 5 / 2) (D.s.Del : ℝ) (Tr D u * Tr D u') Th hf1' (Nat.one_le_pow _ _ (by have := five_le_k D; omega)) hCA one_pos hCt hN0 hI hDel0 hTT hTh0 hCpi hor`. Rewrite `TL` using `[hsq, hcast]`. Establish `hkTh : (D.R.k : ℝ) ^ n5 ≤ Th` using `le_trans (le_min (le_min q1 q2) q3) TL`.
+
+Use `⟨le_trans ?_ hkTh, ?_⟩` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hk1 hn5`. Establish `hmf : 2 * D.R.rS + 2 ≤ D.R.f`. Rewrite using `[← m_eq D]`.
+
+Use `D.R.m_le_f` as an intermediate fact. Simplify `this` using `[Ranks.f, Ranks.n]`. Establish `h16 : (16 : ℝ) ≤ (n5 : ℝ) * Cl`. Establish `: (1 : ℝ) * Cl ≤ (n5 : ℝ) * Cl` using `mul_le_mul_of_nonneg_right hn5R (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `FS` using `(hk0 D.R.k D.R.rS D.R.f large₂.sc.b Cl Th hKa hmf hb1.le h16 (by rw [log_b]; exact a6) (by rw [Real.rpow_natCast]; exact hkTh)).2`. Rewrite using `[Real.rpow_natCast, Real.rpow_neg (by linarith), show (7 : ℝ) = ((7 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Use `le_trans ?_ FS` and prove the remaining obligations. Establish `hp : 0 ≤ ((D.R.rS : ℝ) + 1) * (CA / Th) ^ D.R.f` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem separation_bound_of_norms (CA c5 C4 C0 cT : ℝ) (hCA : 1 ≤ CA) (hcT : 0 < cT) :
     ∃ K0 Cl0 : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu CT : ℝ), SzfNormDD D → SzfNormG D →
       K0 ≤ D.R.k → Cl0 ≤ Cl → LocalBesselAndTopKernel.MassRatioTheoremTwo D large₂ C0 C' Cl Cg cb Cu cT CT C4 c5 CA := by
@@ -661,6 +889,13 @@ theorem separation_bound_of_norms (CA c5 C4 C0 cT : ℝ) (hCA : 1 ≤ CA) (hcT :
       _ ≤ CA * (((D.R.rS : ℝ) + 1) * (CA / Th) ^ D.R.f) := mul_le_mul_of_nonneg_right hCA hp
       _ = _ := by ring
 
+/- English proof (translation)
+Take `⟨K0, Cl0, H⟩` from `separation_bound_of_norms CA c5 C4 C0 cT hCA hcT`. Use `⟨Cl0, ?_⟩` and prove the remaining obligations. Introduce `eps Fm Cg cb Cu CT hCl hn h2a h2e`. Take `⟨x1, H1⟩` from `h2a`. Take `⟨x2, H2⟩` from `h2e`.
+
+Take `⟨x3, -, H3⟩` from `ev_k Fm K0`. Use `⟨max x1 (max x2 x3), fun x hx i hh => ?_⟩` and prove the remaining obligations. Establish `hx1 : x1 ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hx2 : x2 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hx3 : x3 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`.
+
+Conclude with `H _ _ _ _ _ _ _ _ (hn x i).1 (hn x i).2 (H3 x hx3 i) hCl hh (H1 x hx1 i hh) (H2 x hx2 i hh)`.
+-/
 theorem family_separation_bound_of_norms (CA c5 C4 C0 cT : ℝ) (hCA : 1 ≤ CA) (hcT : 0 < cT) :
     ∃ Cl0 : ℝ, ∀ {eps : ℝ} (Fm : FamP eps) (Cg cb Cu CT : ℝ), Cl0 ≤ sCl Fm →
       (∀ x (i : Fm.Ix x), SzfNormDD (Fm.D x i) ∧ SzfNormG (Fm.D x i)) →

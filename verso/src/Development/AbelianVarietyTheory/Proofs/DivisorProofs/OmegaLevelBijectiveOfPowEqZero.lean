@@ -13,6 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PDivGroup
 
+/- English proof (translation)
+Introduce `p R _ N hN G n hn`. Use `⟨fun w w' h => ?_, G.omegaLevel_surjective n⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Establish `h0 : (w - w').1 n = 0`. Simplify using `only [omegaLevel_apply] at h`.
+
+Express the relevant statement in the definitionally equal form `w.1 n - w'.1 n = 0`. Rewrite using `[h, sub_self]`. Take `⟨v, hv⟩` from `(G.omega_val_eq_zero_iff n (w - w')).1 h0`. Rewrite using `[hv, ← Nat.add_sub_cancel' hn, pow_add, hN, zero_mul, zero_smul]`.
+-/
 theorem omegaLevel_bijective_of_pow_eq_zero : ∀ (p : ℕ)  (R : Type) [CommRing R] (N : ℕ), (p : R) ^ N = 0 → ∀ (G : PDivGroup p R) (n : ℕ), N ≤ n → Function.Bijective (G.omegaLevel n) := by
   intro p R _ N hN G n hn
   refine ⟨fun w w' h => ?_, G.omegaLevel_surjective n⟩

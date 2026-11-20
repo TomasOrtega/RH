@@ -17,6 +17,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.LN.SecRank
 
+/- English proof (translation)
+Use `choose a' ha' _ using fun i => PolFrames.exists_pullSec G L N h₁ (a i)`. Use `choose b' hb' _ using fun i => PolFrames.exists_pullSec G L N h₂ (b i)`. Take `⟨l₁, s₁⟩` from `(PolFrames.basisAlong_iff G L N h₁ hL ha').1 ha`. Take `⟨l₂, s₂⟩` from `(PolFrames.basisAlong_iff G L N h₂ hL hb').1 hb`. Establish `e₁` using `Module.finrank_eq_card_basis (Module.Basis.mk l₁ s₁.ge)`.
+
+Establish `e₂` using `Module.finrank_eq_card_basis (Module.Basis.mk l₂ s₂.ge)`. Simplify using `using e₁.symm.trans e₂`.
+-/
 theorem card_eq_of_basisAlong {S : Scheme.{0}} (G : Over S) [GrpObj G] (L : LB G.left) (hL : L.IsLB) (N : ℕ)
     {T₁ T₂ T' : Over S} [Nontrivial Γ(T'.left, ⊤)] (h₁ : T' ⟶ T₁) (h₂ : T' ⟶ T₂) {n m : ℕ}
     {a : Fin n → LB.Sec (Out.LPow G L (N : ℤ) T₁)} {b : Fin m → LB.Sec (Out.LPow G L (N : ℤ) T₂)}
@@ -29,6 +34,13 @@ theorem card_eq_of_basisAlong {S : Scheme.{0}} (G : Over S) [GrpObj G] (L : LB G
   have e₂ := Module.finrank_eq_card_basis (Module.Basis.mk l₂ s₂.ge)
   simpa using e₁.symm.trans e₂
 
+/- English proof (translation)
+Introduce `_ hL R _ _ P N n b hN hb`. Take `⟨V, hV, c, hc⟩` from `hL.secBaseChangeAny (Sp R) P N hN (IsLocalRing.closedPoint R)`. Establish `hV' : V = ⊤`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Conclude with `(IsLocalRing.specializes_closedPoint x).mem_open V.isOpen hV`.
+
+Substitute `hV'` using the available equality. Set `χ : Sp R ⟶ (⊤ : (Sp R).Opens).toScheme` to `(Sp R).topIso.inv`. Use `choose c' hc' _ using fun i => PolFrames.exists_pullSec P.A P.L N (Out.homAt χ) (c i)`. Establish `H` using `(PolFrames.basisAlong_iff P.A P.L N (Out.homAt χ) P.isLB hc').2 (hc R χ c' hc')`. Establish `: Nontrivial Γ((Over.mk (𝟙 (Sp R)) : Over (Sp R)).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.toEquiv.nontrivial`.
+
+Establish `key : ∀ (f : Sp R ⟶ Sp R) (hf : f = 𝟙 _) (T : Over (Sp R)) (h : Over.mk f ⟶ T) (d : Fin (N ^ P.g) → LB.Sec (Out.LPow P.A P.L (N : ℤ) T)), BasisAlong P.A P.L N h d → n = N ^ P.g`. Introduce and unpack `_ rfl T h d hd`. Conclude with `card_eq_of_basisAlong P.A P.L P.isLB N _ h hb hd`. Use `key (Out.baseAt χ).hom ?_ _ (Out.homAt χ) c H` and prove the remaining obligations. Conclude with `(congrArg (χ ≫ ·) (Category.comp_id (⊤ : (Sp R).Opens).ι)).trans (Sp R).toIso_inv_ι`.
+-/
 theorem card_basis_eq_pow : Out.Laws → Out.Laws2 → ∀ (R : Type) [CommRing R] [IsLocalRing R] (P : Out.PolAV (Sp R)) (N n : ℕ) (b : Fin n → LB.Sec (Out.LPow P.A P.L (N : ℤ) (Over.mk (𝟙 (Sp R))))), 1 ≤ N → GlobalTheory.LN.BasisAlong P.A P.L N (𝟙 _) b → n = N ^ P.g := by
   intro _ hL R _ _ P N n b hN hb
   obtain ⟨V, hV, c, hc⟩ := hL.secBaseChangeAny (Sp R) P N hN (IsLocalRing.closedPoint R)

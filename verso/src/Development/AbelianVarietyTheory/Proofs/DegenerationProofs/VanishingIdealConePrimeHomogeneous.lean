@@ -18,6 +18,9 @@ variable {k J A B : Type} [CommRing k] [CommRing A] [CommRing B]
 def coneHom (c : k →+* A) (r : J → A) : MvPolynomial J k →+* Polynomial A :=
   MvPolynomial.eval₂Hom (Polynomial.C.comp c) fun j => Polynomial.C (r j) * Polynomial.X
 
+/- English proof (translation)
+Establish `: (Polynomial.eval₂RingHom e t).comp (coneHom c r) = MvPolynomial.eval₂Hom (e.comp c) (fun j => e (r j) * t)`. Apply the tactic sequence `ext <;> simp [coneHom]`. Conclude with `RingHom.congr_fun this f`.
+-/
 theorem eval₂_coneHom (c : k →+* A) (r : J → A) (e : A →+* B) (t : B) (f : MvPolynomial J k) :
     Polynomial.eval₂ e t (coneHom c r f) = MvPolynomial.eval₂Hom (e.comp c) (fun j => e (r j) * t) f := by
   have : (Polynomial.eval₂RingHom e t).comp (coneHom c r) =
@@ -25,12 +28,18 @@ theorem eval₂_coneHom (c : k →+* A) (r : J → A) (e : A →+* B) (t : B) (f
     ext <;> simp [coneHom]
   exact RingHom.congr_fun this f
 
+/- English proof (translation)
+Establish `: (Polynomial.mapRingHom e).comp (coneHom c r) = coneHom (e.comp c) (fun j => e (r j))`. Apply the tactic sequence `apply MvPolynomial.ringHom_ext <;> simp [coneHom]`. Conclude with `RingHom.congr_fun this f`.
+-/
 theorem map_coneHom (c : k →+* A) (r : J → A) (e : A →+* B) (f : MvPolynomial J k) :
     Polynomial.map e (coneHom c r f) = coneHom (e.comp c) (fun j => e (r j)) f := by
   have : (Polynomial.mapRingHom e).comp (coneHom c r) = coneHom (e.comp c) (fun j => e (r j)) := by
     apply MvPolynomial.ringHom_ext <;> simp [coneHom]
   exact RingHom.congr_fun this f
 
+/- English proof (translation)
+Establish `: coneHom c (fun j => r j * u) = (Polynomial.compRingHom (Polynomial.C u * Polynomial.X)).comp (coneHom c r)`. Apply the tactic sequence `apply MvPolynomial.ringHom_ext <;> simp [coneHom, _root_.mul_assoc]`. Conclude with `RingHom.congr_fun this f`.
+-/
 theorem coneHom_mul (c : k →+* A) (r : J → A) (u : A) (f : MvPolynomial J k) :
     coneHom c (fun j => r j * u) f = (coneHom c r f).comp (Polynomial.C u * Polynomial.X) := by
   have : coneHom c (fun j => r j * u) =
@@ -38,6 +47,11 @@ theorem coneHom_mul (c : k →+* A) (r : J → A) (u : A) (f : MvPolynomial J k)
     apply MvPolynomial.ringHom_ext <;> simp [coneHom, _root_.mul_assoc]
   exact RingHom.congr_fun this f
 
+/- English proof (translation)
+Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hn : d.sum (fun _ e => e) = n`.
+
+Use `hf (MvPolynomial.mem_support_iff.1 hd)` as an intermediate fact. Rewrite using `[← this, Finsupp.weight_apply]`. Simplify using the standard rewrite rules. Rewrite using `[← hn, ← Polynomial.C_mul_X_pow_eq_monomial]`. Simplify using `only [coneHom, MvPolynomial.eval₂Hom_monomial, Finsupp.prod, Finsupp.sum, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, map_mul, map_prod, map_pow, RingHom.comp_apply, _root_.mul_assoc]`.
+-/
 theorem coneHom_of_isHomogeneous (c : k →+* A) (r : J → A) {f : MvPolynomial J k} {n : ℕ}
     (hf : f.IsHomogeneous n) :
     coneHom c r f = Polynomial.monomial n (MvPolynomial.eval₂Hom c r f) := by
@@ -53,6 +67,11 @@ theorem coneHom_of_isHomogeneous (c : k →+* A) (r : J → A) {f : MvPolynomial
   simp only [coneHom, MvPolynomial.eval₂Hom_monomial, Finsupp.prod, Finsupp.sum, mul_pow, Finset.prod_mul_distrib,
     Finset.prod_pow_eq_pow_sum, map_mul, map_prod, map_pow, RingHom.comp_apply, _root_.mul_assoc]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← f.sum_homogeneousComponent]`. Rewrite using `[map_sum, Polynomial.finset_sum_coeff]`. Simplify using `only [coneHom_of_isHomogeneous c r (MvPolynomial.homogeneousComponent_isHomogeneous _ f), Polynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`.
+
+Both sides reduce to the same expression. Rewrite using `[MvPolynomial.homogeneousComponent_eq_zero _ _ (by simpa using h), map_zero]`.
+-/
 theorem coeff_coneHom (c : k →+* A) (r : J → A) (f : MvPolynomial J k) (n : ℕ) :
     (coneHom c r f).coeff n = MvPolynomial.eval₂Hom c r (MvPolynomial.homogeneousComponent n f) := by
   conv_lhs => rw [← f.sum_homogeneousComponent]
@@ -64,6 +83,11 @@ theorem coeff_coneHom (c : k →+* A) (r : J → A) (f : MvPolynomial J k) (n : 
   · rfl
   · rw [MvPolynomial.homogeneousComponent_eq_zero _ _ (by simpa using h), map_zero]
 
+/- English proof (translation)
+Introduce `n f hf`. Rewrite `hf` using `[RingHom.mem_ker]`. Establish `e : ((DirectSum.decompose (MvPolynomial.homogeneousSubmodule J k) f n : MvPolynomial.homogeneousSubmodule J k n) : MvPolynomial J k) = MvPolynomial.homogeneousComponent n f` using `MvPolynomial.decomposition.decompose'_apply f n`. Rewrite using `[e]`. Rewrite using `[RingHom.mem_ker, coneHom_of_isHomogeneous c r (MvPolynomial.homogeneousComponent_isHomogeneous _ f), ← coeff_coneHom, hf]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isHomogeneous_ker_coneHom (c : k →+* A) (r : J → A) :
     (RingHom.ker (coneHom c r)).IsHomogeneous (MvPolynomial.homogeneousSubmodule J k) := by
   intro n f hf
@@ -77,6 +101,15 @@ theorem isHomogeneous_ker_coneHom (c : k →+* A) (r : J → A) :
 
 end Alg
 
+/- English proof (translation)
+Use `haveI : IsJacobsonRing A := isJacobsonRing_of_finiteType (A := k)`. Establish `hrad : (⊥ : Ideal A).IsRadical`. Rewrite using `[Ideal.isRadical_bot_iff]`. Use `infer_instance`. Establish `hj : (⊥ : Ideal A).jacobson = ⊥` using `IsJacobsonRing.out inferInstance hrad`.
+
+Rewrite using `[← Ideal.mem_bot, ← hj, Ideal.jacobson, Ideal.mem_sInf]`. Introduce and unpack `m ⟨-, hm⟩`. Use `letI : Field (A ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite k (A ⧸ m) := finite_of_finite_type_of_isJacobsonRing k (A ⧸ m)`. Establish `hb : Function.Bijective (algebraMap k (A ⧸ m))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`.
+
+Set `i : k ≃ₐ[k] (A ⧸ m)` to `AlgEquiv.ofBijective (Algebra.ofId k (A ⧸ m)) hb`. Use `h ((i.symm : (A ⧸ m) →ₐ[k] k).comp (Ideal.Quotient.mkₐ k m))` as an intermediate fact. Rewrite `this` using `[AlgHom.comp_apply]`. Establish `h2 : Ideal.Quotient.mkₐ k m a = 0`. Apply `i.symm.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Conclude with `this`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h2`.
+-/
 theorem eq_zero_of_forall_algHom {k A : Type} [Field k] [IsAlgClosed k] [CommRing A] [Algebra k A]
     [_root_.IsReduced A] [Algebra.FiniteType k A] (a : A) (h : ∀ e : A →ₐ[k] k, e a = 0) : a = 0 := by
   haveI : IsJacobsonRing A := isJacobsonRing_of_finiteType (A := k)
@@ -97,6 +130,9 @@ theorem eq_zero_of_forall_algHom {k A : Type} [Field k] [IsAlgClosed k] [CommRin
     rw [map_zero]; exact this
   exact Ideal.Quotient.eq_zero_iff_mem.mp h2
 
+/- English proof (translation)
+Use `⟨Subalgebra.fg_def.2 ⟨Set.range r, Set.finite_range r, ?_⟩⟩` and prove the remaining obligations. Apply `Subalgebra.toSubring_injective` to reduce the goal to its premises. Rewrite using `[Algebra.adjoin_eq_ring_closure, h]`. Both sides reduce to the same expression.
+-/
 theorem finiteType_of_closure {k J A : Type} [Field k] [Fintype J] [CommRing A] [Algebra k A] (r : J → A)
     (h : Subring.closure (Set.range (algebraMap k A) ∪ Set.range r) = ⊤) : Algebra.FiniteType k A := by
   refine ⟨Subalgebra.fg_def.2 ⟨Set.range r, Set.finite_range r, ?_⟩⟩
@@ -104,6 +140,21 @@ theorem finiteType_of_closure {k J A : Type} [Field k] [Fintype J] [CommRing A] 
   rw [Algebra.adjoin_eq_ring_closure, h]
   rfl
 
+/- English proof (translation)
+Use `haveI := finiteType_of_closure r h`. Use `haveI : IsNoetherianRing A := Algebra.FiniteType.isNoetherianRing k A`. Set `φ : MvPolynomial J k →ₐ[k] Polynomial A` to `{ coneHom (algebraMap k A) r with commutes' := fun a => by simp [coneHom] }`. Set `T` to `φ.range`. Establish `e : (MvPolynomial J k ⧸ RingHom.ker (coneHom (algebraMap k A) r)) ≃+* T` using `(Ideal.quotientKerEquivRange φ).toRingEquiv`.
+
+Rewrite using `[ringKrullDim_eq_of_ringEquiv e]`. Use `haveI : Algebra.FiniteType k T := Algebra.FiniteType.of_surjective φ.rangeRestrict φ.rangeRestrict_surjective`. Establish `hX : ∀ j, Polynomial.C (r j) * Polynomial.X ∈ T` using `fun j => ⟨MvPolynomial.X j, by simp [φ, coneHom]⟩`. Establish `hX1 : (Polynomial.X : Polynomial A) ∈ T` using `by simpa [hi] using hX i`. Use `haveI : Algebra.IsAlgebraic T (Polynomial A) := by`.
+
+Establish `hT : ∀ q ∈ T, IsAlgebraic T q` using `fun q hq => isAlgebraic_algebraMap (⟨q, hq⟩ : T)`. Establish `hC : ∀ a : A, IsAlgebraic T (Polynomial.C a)`. Introduce `a`. Establish `ha : a ∈ Subring.closure (Set.range (algebraMap k A) ∪ Set.range r)` using `by rw [h]; trivial`. Establish `: Subring.closure (Set.range (algebraMap k A) ∪ Set.range r) ≤ (Subalgebra.algebraicClosure T (Polynomial A)).toSubring.comap Polynomial.C`.
+
+Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨b, rfl⟩ | ⟨j, rfl⟩)`. Conclude with `hT _ (T.algebraMap_mem b)`. Conclude with `IsAlgebraic.of_mul (y := Polynomial.X) (mem_nonZeroDivisors_of_ne_zero Polynomial.X_ne_zero) (hT _ hX1) (by rw [mul_comm]; exact hT _ (hX j))`. Conclude with `this ha`.
+
+Use `⟨fun q => ?_⟩` and prove the remaining obligations. Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => exact hp.add hq`. Consider the case `monomial n a`. Rewrite using `[← Polynomial.C_mul_X_pow_eq_monomial]`.
+
+Conclude with `(hC a).mul ((hT _ hX1).pow n)`. Take `⟨n, h1, h2⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := k) (A := Polynomial A)`. Rewrite `h1` using `[Polynomial.ringKrullDim_of_isNoetherianRing, hg]`. Rewrite `h2` using `[← trdeg_add_eq k T, trdeg_eq_zero (R := T) (A := Polynomial A), add_zero]`. Rewrite using `[ReciprocityTheory.CA.ringKrullDim_eq_of_trdeg_eq_field n h2, ← h1]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ringKrullDim_quotient_ker {k J A : Type} [Field k] [Fintype J] [CommRing A] [IsDomain A] [Algebra k A]
     (r : J → A) (i : J) (hi : r i = 1)
     (h : Subring.closure (Set.range (algebraMap k A) ∪ Set.range r) = ⊤) (g : ℕ) (hg : ringKrullDim A = g) :
@@ -150,11 +201,17 @@ variable {k : Type} [Field k] {X : Scheme.{0}}
 def constHom (p : X ⟶ Sp k) (U : X.Opens) : k →+* Γ(X, U) :=
   (p.appLE ⊤ U (fun _ _ => trivial)).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom
 
+/- English proof (translation)
+The claim follows from `evalPt_constFn p x U h a`.
+-/
 theorem valHom_constHom {R : Type} [CommRing R] (p : X ⟶ Sp k) (x : Sp R ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (a : k) : valHom x U h (constHom p U a) =
       evalPt (x ≫ p) ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom a) :=
   evalPt_constFn p x U h a
 
+/- English proof (translation)
+Use extensionality with `a`. Establish `e : 𝟙 (Sp k) = spMap (RingHom.id k)` using `(Spec.map_id _).symm`. Rewrite using `[RingHom.comp_apply, valHom_constHom]`. Simplify using `only [hx, e]`. Conclude with `evalPt_spMap _ a`.
+-/
 theorem valHom_comp_constHom (p : X ⟶ Sp k) (x : Sp k ⟶ X) (hx : x ≫ p = 𝟙 _) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) : (valHom x U h).comp (constHom p U) = RingHom.id k := by
   ext a
@@ -163,6 +220,11 @@ theorem valHom_comp_constHom (p : X ⟶ Sp k) (x : Sp k ⟶ X) (hx : x ≫ p = �
   simp only [hx, e]
   exact evalPt_spMap _ a
 
+/- English proof (translation)
+Take `⟨x, h, hx⟩` from `exists_evalPt_eq hU e`. Use `⟨x, h, ?_, hx⟩` and prove the remaining obligations. Establish `e' : 𝟙 (Sp k) = spMap (RingHom.id k)` using `(Spec.map_id _).symm`. Rewrite using `[e']`. Use `eq_spMap_of_evalPt _ _ fun a => ?_` and prove the remaining obligations.
+
+Rewrite using `[← valHom_constHom p x U h]`. Conclude with `(RingHom.congr_fun hx _).trans (he a)`.
+-/
 theorem exists_point (p : X ⟶ Sp k) {U : X.Opens} (hU : IsAffineOpen U) (e : Γ(X, U) →+* k)
     (he : ∀ a, e (constHom p U a) = a) :
     ∃ (x : Sp k ⟶ X) (h : ⊤ ≤ x ⁻¹ᵁ U), x ≫ p = 𝟙 _ ∧ valHom x U h = e := by
@@ -174,6 +236,9 @@ theorem exists_point (p : X ⟶ Sp k) {U : X.Opens} (hU : IsAffineOpen U) (e : �
   rw [← valHom_constHom p x U h]
   exact (RingHom.congr_fun hx _).trans (he a)
 
+/- English proof (translation)
+Use `⟨X.residueField (genericPoint X), inferInstance, X.fromSpecResidueField (genericPoint X), fun U hU z _ => ?_⟩` and prove the remaining obligations. Establish `: (X.fromSpecResidueField (genericPoint X)) z = genericPoint X` using `Scheme.fromSpecResidueField_apply _ z`. Express the relevant statement in the definitionally equal form `(X.fromSpecResidueField (genericPoint X)) z ∈ U`. Rewrite using `[this]`. Conclude with `((genericPoint_spec X).mem_open_set_iff U.isOpen).2 (by simpa using hU)`.
+-/
 theorem exists_generic [IsIntegral X] : ∃ (K : Type) (_ : Field K) (y : Sp K ⟶ X),
     ∀ U : X.Opens, (U : Set X).Nonempty → ⊤ ≤ y ⁻¹ᵁ U := by
   refine ⟨X.residueField (genericPoint X), inferInstance, X.fromSpecResidueField (genericPoint X),
@@ -184,6 +249,11 @@ theorem exists_generic [IsIntegral X] : ∃ (K : Type) (_ : Field K) (y : Sp K �
   rw [this]
   exact ((genericPoint_spec X).mem_open_set_iff U.isOpen).2 (by simpa using hU)
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`. Assume the negation of the conclusion as `h0`. Establish `hne : ((X.basicOpen f : X.Opens) : Set X).Nonempty`. Rewrite using `[Set.nonempty_iff_ne_empty]`.
+
+Introduce `hb`. Conclude with `h0 ((basicOpen_eq_bot_iff f).1 (TopologicalSpace.Opens.ext hb))`. Use `(isUnit_valR_iff y U h f).2 (hy _ hne)` as an intermediate fact. Rewrite `this` using `[valR_eq y U h, hf]`. Conclude with `not_isUnit_zero this`.
+-/
 theorem valHom_injective [IsIntegral X] {K : Type} [Field K] (y : Sp K ⟶ X)
     (hy : ∀ U : X.Opens, (U : Set X).Nonempty → ⊤ ≤ y ⁻¹ᵁ U) (U : X.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U) :
     Function.Injective (valHom y U h) := by
@@ -200,6 +270,9 @@ theorem valHom_injective [IsIntegral X] {K : Type} [Field K] (y : Sp K ⟶ X)
 
 variable {H : LB X} {J : Type} {s : J → H.Sec}
 
+/- English proof (translation)
+Establish `hu : v i ≠ 0` using `((crd_isUnit_iff i hv).2 hi).ne_zero`. Establish `e1 : (valHom y _ hi).comp (constHom p _) = (evalPt (y ≫ p) ⊤ le_rfl).comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom` using `RingHom.ext fun a => valHom_constHom p y _ hi a`. Establish `e2 : v = fun j => valHom y _ hi (r j) * v i`. Use function extensionality and compare the values at `fun j => by rw [← valR_eq]; exact crd_ratio hv (hr j) hi`. Rewrite using `[← e1, e2, coneHom_mul, ← map_coneHom, Polynomial.comp_C_mul_X_eq_zero_iff (mem_nonZeroDivisors_of_ne_zero hu), Polynomial.map_eq_zero_iff (valHom_injective y hy _ hi)]`.
+-/
 theorem coneHom_eq_zero_iff [IsIntegral X] (p : X ⟶ Sp k) {K : Type} [Field K] (y : Sp K ⟶ X)
     (hy : ∀ U : X.Opens, (U : Set X).Nonempty → ⊤ ≤ y ⁻¹ᵁ U) {v : J → K} (hv : Crd H s y v) (i : J)
     (hi : ⊤ ≤ y ⁻¹ᵁ Out.nonzeroLocus (s i)) (r : J → Γ(X, Out.nonzeroLocus (s i)))
@@ -215,6 +288,23 @@ theorem coneHom_eq_zero_iff [IsIntegral X] (p : X ⟶ Sp k) {K : Type} [Field K]
   rw [← e1, e2, coneHom_mul, ← map_coneHom, Polynomial.comp_C_mul_X_eq_zero_iff (mem_nonZeroDivisors_of_ne_zero hu),
     Polynomial.map_eq_zero_iff (valHom_injective y hy _ hi)]
 
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[MvPolynomial.mem_vanishingIdeal_iff, RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Use `letI : Algebra k Γ(X, Out.nonzeroLocus (s i)) := (constHom p _).toAlgebra`.
+
+Use `haveI := finiteType_of_closure (k := k) r hc`. Use extensionality with `n`. Use `eq_zero_of_forall_algHom (k := k) _ fun e => ?_` and prove the remaining obligations. Take `⟨x, h, hx, hxe⟩` from `exists_point p haff e.toRingHom e.commutes`. Take `⟨v, hv⟩` from `crd_exists hH s x`.
+
+Take `⟨u, hu⟩` from `(crd_isUnit_iff i hv).2 h`. Establish `: Polynomial.map e.toRingHom (coneHom (constHom p _) r f) = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `((Set.finite_singleton (0 : k)).infinite_compl).mono fun t ht' => ?_` and prove the remaining obligations. Establish `ht : t ≠ 0` using `ht'`.
+
+Establish `h1` using `hf _ ⟨x, hx, crd_smul (Units.mk0 t ht * u⁻¹) hv⟩`. Rewrite using `[Set.mem_setOf_eq, Polynomial.IsRoot.def, Polynomial.eval_map, eval₂_coneHom, ← hxe, valHom_comp_constHom p x hx, ← h1]`. Establish `: (fun j => valHom x _ h (r j) * t) = fun j => ((Units.mk0 t ht * u⁻¹ : kˣ) : k) * v j`. Use function extensionality and compare the values at `j`. Rewrite using `[crd_ratio hv (hr j) h, valR_eq x _ h, ← hu, Units.val_mul, Units.val_mk0]`.
+
+Take the linear combination `(-(valHom x _ h (r j) * t)) * u.inv_mul`. Rewrite using `[this]`. Both sides reduce to the same expression. Conclude with `(Polynomial.coeff_map e.toRingHom n).symm.trans (by rw [this]; rfl)`. Introduce and unpack `hf v ⟨x, hx, hv⟩`.
+
+Take `⟨K, _, y, hy⟩` from `exists_generic (X := X)`. Take `⟨w, hw⟩` from `crd_exists hH s y`. Establish `: x (IsLocalRing.closedPoint k) ∈ ⨆ i ∈ J₀, Out.nonzeroLocus (s i)` using `by rw [him.1]; trivial`. Simplify using `only [TopologicalSpace.Opens.mem_iSup] at this`. Take `⟨i', hi', hm⟩` from `this`.
+
+Take `⟨-, r', hr', -⟩` from `him.2 i' hi'`. Establish `h0` using `(coneHom_eq_zero_iff p y hy hw i' (hy _ ⟨_, hm⟩) r' hr' f).2 ((coneHom_eq_zero_iff p y hy hw i (hy _ hne) r hr f).1 hf)`. Establish `h` using `(top_le_iff x _).2 hm`. Establish `h1` using `eval₂_coneHom (constHom p _) r' (valHom x _ h) (v i') f`. Rewrite `h1` using `[h0, Polynomial.eval₂_zero, valHom_comp_constHom p x hx]`.
+
+Establish `e2 : v = fun j => valHom x _ h (r' j) * v i'`. Use function extensionality and compare the values at `fun j => by rw [← valR_eq]; exact crd_ratio hv (hr' j) h`. Rewrite `h1` using `[← e2]`. Conclude with `h1.symm`.
+-/
 theorem vanishingIdeal_eq_ker [IsAlgClosed k] [Fintype J] [IsIntegral X] (p : X ⟶ Sp k) (hH : H.IsLB) {J₀ : Set J}
     (him : ImmBy p H s J₀) (i : J) (haff : IsAffineOpen (Out.nonzeroLocus (s i)))
     (hne : ((Out.nonzeroLocus (s i) : X.Opens) : Set X).Nonempty)
@@ -265,6 +355,17 @@ theorem vanishingIdeal_eq_ker [IsAlgClosed k] [Fintype J] [IsIntegral X] (p : X 
 
 end Geo
 
+/- English proof (translation)
+Introduce `k _ _ X p H J _ s J₀ hH him hX g hg`. Establish `: genericPoint X ∈ ⨆ i ∈ J₀, Out.nonzeroLocus (s i)` using `by rw [him.1]; trivial`. Simplify using `only [TopologicalSpace.Opens.mem_iSup] at this`. Take `⟨i, hi, hm⟩` from `this`. Take `⟨haff, r, hr, hc⟩` from `him.2 i hi`.
+
+Use `haveI : Nonempty (Out.nonzeroLocus (s i)) := ⟨⟨_, hm⟩⟩`. Rewrite using `[vanishingIdeal_eq_ker p hH him i haff ⟨_, hm⟩ r hr hc]`. Establish `hri : r i = 1`. Take `⟨K, _, y, hy⟩` from `exists_generic (X := X)`. Take `⟨w, hw⟩` from `crd_exists hH s y`.
+
+Establish `h` using `hy _ ⟨_, hm⟩`. Establish `hu : w i ≠ 0` using `((crd_isUnit_iff i hw).2 h).ne_zero`. Apply `valHom_injective y hy _ h` to reduce the goal to its premises. Use `crd_ratio hw (hr i) h` as an intermediate fact. Rewrite `this` using `[valR_eq y _ h]`.
+
+Rewrite using `[map_one]`. Conclude with `mul_right_cancel₀ hu (by rw [← this, _root_.one_mul])`. Use `⟨RingHom.ker_isPrime _, isHomogeneous_ker_coneHom _ _, ⟨i, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[RingHom.mem_ker, coneHom, hri]`. Use `letI : Algebra k Γ(X, Out.nonzeroLocus (s i)) := (constHom p _).toAlgebra`.
+
+Conclude with `ringKrullDim_quotient_ker (k := k) r i hri hc g (GlobalTheory.SmoothDim.ringKrullDim_affineOpen k X p g hg _ haff ⟨_, hm⟩)`.
+-/
 theorem isPrime_vanishingIdeal_cone : (∀ (k : Type) [Field k] [IsAlgClosed k] (X : Scheme.{0}) (p : X ⟶ Sp k) (H : LB X) (J : Type) [Fintype J] (s : J → H.Sec) (J₀ : Set J), H.IsLB → ImmBy p H s J₀ → IsIntegral X → ∀ g : ℕ, SmoothOfRelativeDimension g p → (MvPolynomial.vanishingIdeal k (cone p H s)).IsPrime ∧ (MvPolynomial.vanishingIdeal k (cone p H s)).IsHomogeneous (MvPolynomial.homogeneousSubmodule J k) ∧ (∃ i, MvPolynomial.X i ∉ MvPolynomial.vanishingIdeal k (cone p H s)) ∧ ringKrullDim (MvPolynomial J k ⧸ MvPolynomial.vanishingIdeal k (cone p H s)) = (g + 1 : ℕ)) := by
   intro k _ _ X p H J _ s J₀ hH him hX g hg
   have : genericPoint X ∈ ⨆ i ∈ J₀, Out.nonzeroLocus (s i) := by rw [him.1]; trivial

@@ -6,6 +6,9 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Gl
 
 namespace GlobalTheory.LamF
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨inferInstance, _, isKroneckerChar_quadraticChar hd, by`. Rewrite using `[GlobalTheory.CM.logOm, Complex.sub_re, Complex.ofReal_re]⟩`.
+-/
 theorem exists_kronecker_logOm_re (E : Type) [Field E] [NumberField E] {d d' : ℕ} (h : d' = d) [Fact d.Prime]
     [NeZero d] (hd : d % 4 = 3) :
     ∃ (_ : NeZero d') (χ : DirichletCharacter ℂ d'), IsKroneckerChar χ ∧ (GlobalTheory.CM.logOm E χ).re =
@@ -16,6 +19,13 @@ theorem exists_kronecker_logOm_re (E : Type) [Field E] [NumberField E] {d d' : �
   exact ⟨inferInstance, _, isKroneckerChar_quadraticChar hd, by
     rw [GlobalTheory.CM.logOm, Complex.sub_re, Complex.ofReal_re]⟩
 
+/- English proof (translation)
+Introduce `D Q hp large₂`. Use `haveI : Fact D.host.d.Prime := ⟨D.host.hyp.2.1⟩`. Use `haveI : NeZero D.host.d := ⟨D.host.hyp.2.1.ne_zero⟩`. Establish `hd : D.host.d % 4 = 3`. Use `Q.H.d_mod` as an intermediate fact.
+
+Rewrite `this` using `[hp.1]`. Use linear arithmetic over natural numbers and integers. Take `⟨i, χ, hχ, e⟩` from `exists_kronecker_logOm_re D.host.E hp.1 hd`. Use `⟨i, χ, hχ, e.trans ?_⟩` and prove the remaining obligations. Establish `hv : 2 * Real.pi / rootDiscr D.host.E = Real.pi / D.host.v`.
+
+Rewrite using `[Formalism.BasicNotions.Host.v, Formalism.BasicNotions.Host.rdE, rootDiscr_def, Int.cast_abs, one_div, div_div_eq_mul_div, mul_comm]`. Rewrite using `[hv, SizeData₂.logOm, large₂.logDerivative_at_one_eq]`. Both sides reduce to the same expression.
+-/
 theorem exists_kronecker_logOm_eq : ∀ (D : D7) (Q : Par D), Q.PinHost → ∀ large₂ : SizeData₂ D,
     ∃ (_ : NeZero Q.H.d) (χ : DirichletCharacter ℂ Q.H.d),
       IsKroneckerChar χ ∧ (GlobalTheory.CM.logOm D.host.E χ).re = large₂.logOm := by

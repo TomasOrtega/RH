@@ -11,6 +11,19 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {g : SplitG M.L} {r : ℕ}
 
+/- English proof (translation)
+Establish `hne : ∀ i : Fin r, (Fin.castSucc i = Fin.last r) = False` using `fun i => eq_false (Fin.castSucc_ne_last i)`. Establish `h1 : ((HermSp.ZZplusOf M Zh T T').submatrix Fin.castSucc Fin.castSucc).map (ph1 g) = ((g.q : F)⁻¹) • (Zh.submatrix Fin.castSucc Fin.castSucc).map (ph1 g)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.submatrix_apply, Matrix.smul_apply, smul_eq_mul, firstProj_apply, zz_comp hs, hne, false_and, if_false, sub_zero]`. Rewrite using `[div_eq_inv_mul]`.
+
+Establish `h2 : ((HermSp.ZZplusOf M Zh T T').submatrix Fin.castSucc Fin.castSucc).map (ph2 g) = (-(g.q : F)⁻¹) • ((Zh.submatrix Fin.castSucc Fin.castSucc).map (ph2 g)).transpose`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.submatrix_apply, Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul, secondProj_apply, zz_comp hs, hne, false_and, if_false, sub_zero]`. Rewrite using `[div_eq_inv_mul, neg_mul]`. Establish `hS1 : ph1 g ((HermSp.ZZplusOf M Zh T T').submatrix Fin.castSucc Fin.castSucc).det = 0`.
+
+Rewrite using `[det_ph, h1, Matrix.det_smul, ← det_ph, h0, map_zero, mul_zero]`. Establish `hS2 : ph2 g ((HermSp.ZZplusOf M Zh T T').submatrix Fin.castSucc Fin.castSucc).det = 0`. Rewrite using `[det_ph, h2, Matrix.det_smul, Matrix.det_transpose, ← det_ph, h0, map_zero, mul_zero]`. Establish `hS : ((HermSp.ZZplusOf M Zh T T').submatrix Fin.castSucc Fin.castSucc).det = 0`. Apply `g.e.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Prod.fst_zero, ← firstProj_apply]`. Conclude with `hS1`. Rewrite using `[Prod.snd_zero, ← secondProj_apply]`.
+
+Conclude with `hS2`. Establish `hm : (ZZm g Zh T T').submatrix Fin.castSucc Fin.castSucc = (HermSp.ZZplusOf M Zh T T').submatrix Fin.castSucc Fin.castSucc`. Use extensionality with `i j`. Simplify using `only [ZZm, Matrix.submatrix_apply, Matrix.add_apply, Matrix.of_apply, cor, hne, false_and, if_false, add_zero]`. Establish `key : HermSp.ZZplusOf M Zh T T' = ZZm g Zh T T' + Matrix.of fun a b => cor r a b (-(g.e.symm (-T / (g.q : F), T' / (g.q : F))))`.
+
+Use extensionality with `a b`. Simplify using `only [ZZm, Matrix.add_apply, Matrix.of_apply, cor]`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[key, det_add_cor, hm, hS, mul_zero, add_zero]`. Conclude with `unit_zzm hs Zh T T' hu`.
+-/
 theorem zzplus_det_unit (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (hu : IsUnit Zh.det) (h0 : (Zh.submatrix Fin.castSucc Fin.castSucc).det = 0) :
     IsUnit (HermSp.ZZplusOf M Zh T T').det := by

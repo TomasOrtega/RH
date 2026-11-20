@@ -7,6 +7,13 @@ open scoped ENNReal
 
 namespace GlobalTheory.PshPull
 
+/- English proof (translation)
+Introduce `d X _ A n Y _ B μ hμ P hP hp y j t ht w`. Take `⟨k, hk⟩` from `A.cover (μ ((B.chart j).symm t))`. Establish `hO : IsOpen ((B.chart j).target ∩ (B.chart j).symm ⁻¹' (μ ⁻¹' (A.chart k).source))` using `(B.chart j).isOpen_inter_preimage_symm ((A.chart k).open_source.preimage hμ.1)`. Establish `htO : t ∈ (B.chart j).target ∩ (B.chart j).symm ⁻¹' (μ ⁻¹' (A.chart k).source)` using `⟨ht.1, hk⟩`. Establish `han` using `hμ.2 j k t htO`.
+
+Establish `hin : (A.chart k ∘ μ ∘ (B.chart j).symm) t ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' P.U (μ y)`. Use `⟨(A.chart k).map_source hk, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp, Set.mem_preimage, (A.chart k).left_inv hk]`. Conclude with `ht.2`. Establish `h1 : ContDiffAt ℝ 2 (P.φ (μ y) ∘ (A.chart k).symm) ((A.chart k ∘ μ ∘ (B.chart j).symm) t)` using `(contDiffAt_of_isPotential A P hP (μ y) k hin).of_le (by norm_cast)`.
+
+Establish `heq : (P.pullback μ hμ.1).φ y ∘ (B.chart j).symm =ᶠ[𝓝 t] (P.φ (μ y) ∘ (A.chart k).symm) ∘ (A.chart k ∘ μ ∘ (B.chart j).symm)` using `by filter_upwards [hO.mem_nhds htO] with t' ht' show P.φ (μ y) (μ ((B.chart j).symm t')) = P.φ (μ y) ((A.chart k).symm ((A.chart k) (μ ((B.chart j).symm t'))))`. Rewrite using `[(A.chart k).left_inv ht'.2]`. Rewrite using `[levi_congr heq, levi_comp w han h1]`. Conclude with `hp _ k _ hin _`.
+-/
 theorem isPsh_pullback : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas d X) (n : ℕ) (Y : Type)
     [TopologicalSpace Y] (B : FinHolAtlas n Y) (μ : Y → X) (hμ : HoloMap B A μ) (P : LocPot X),
     IsPotential A P → IsPsh A P → IsPsh B (P.pullback μ hμ.1) := by

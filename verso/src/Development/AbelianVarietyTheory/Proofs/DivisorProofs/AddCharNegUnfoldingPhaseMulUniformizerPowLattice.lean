@@ -32,19 +32,33 @@ def Quad (f : V → k) : Prop := ∀ v, ∀ l ∈ S, ∀ l' ∈ S, f (v + l + l'
 
 variable {O S}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 0, by simp, fun _ _ => zero_mem _⟩`.
+-/
 theorem Aff.const (c : k) : Aff O S fun _ => c := ⟨fun _ => 0, by simp, fun _ _ => zero_mem _⟩
 
+/- English proof (translation)
+Use `choose a ha hO using h`. Conclude with `⟨fun l => ∑ i ∈ s, a i l, fun v l => by simp only [ha, Finset.sum_add_distrib], fun l hl => sum_mem fun i _ => hO i l hl⟩`.
+-/
 theorem Aff.sum {ι : Type*} (s : Finset ι) {f : ι → V → k} (h : ∀ i, Aff O S (f i)) :
     Aff O S fun v => ∑ i ∈ s, f i v := by
   choose a ha hO using h
   exact ⟨fun l => ∑ i ∈ s, a i l, fun v l => by simp only [ha, Finset.sum_add_distrib],
     fun l hl => sum_mem fun i _ => hO i l hl⟩
 
+/- English proof (translation)
+Distinguish the cases in `hp : p`. Simplify `h` using `only [if_pos hp]`. Simplify `Aff.const 0` using `only [if_neg hp]`.
+-/
 theorem Aff.ite (p : Prop) [Decidable p] {f : V → k} (h : Aff O S f) : Aff O S fun v => if p then f v else 0 := by
   by_cases hp : p
   · simpa only [if_pos hp] using h
   · simpa only [if_neg hp] using Aff.const 0
 
+/- English proof (translation)
+Take `⟨a, ha, -⟩` from `h`. Introduce `v l _ l' _`. Establish `: f (v + l + l') + f v - (f (v + l) + f (v + l')) = 0`. Rewrite using `[ha (v + l), ha v l']`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `zero_mem _`.
+-/
 theorem Aff.quad {f : V → k} (h : Aff O S f) : Quad O S f := by
   obtain ⟨a, ha, -⟩ := h
   intro v l _ l' _
@@ -52,6 +66,11 @@ theorem Aff.quad {f : V → k} (h : Aff O S f) : Quad O S f := by
     rw [ha (v + l), ha v l']; ring
   rw [this]; exact zero_mem _
 
+/- English proof (translation)
+Take `⟨a, ha, haO⟩` from `hf`. Take `⟨b, hb, hbO⟩` from `hg`. Introduce `v l hl l' hl'`. Establish `: f (v + l + l') * g (v + l + l') + f v * g v - (f (v + l) * g (v + l) + f (v + l') * g (v + l')) = a l * b l' + a l' * b l`. Rewrite using `[ha (v + l), ha v l', ha v l, hb (v + l), hb v l', hb v l]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show f (v + l + l') * g (v + l + l') + f v * g v - (f (v + l) * g (v + l) + f (v + l') * g (v + l')) ∈ O`. Rewrite using `[this]`. Conclude with `add_mem (mul_mem (haO l hl) (hbO l' hl')) (mul_mem (haO l' hl') (hbO l hl))`.
+-/
 theorem Aff.mul {f g : V → k} (hf : Aff O S f) (hg : Aff O S g) : Quad O S fun v => f v * g v := by
   obtain ⟨a, ha, haO⟩ := hf
   obtain ⟨b, hb, hbO⟩ := hg
@@ -63,17 +82,26 @@ theorem Aff.mul {f g : V → k} (hf : Aff O S f) (hg : Aff O S g) : Quad O S fun
   rw [this]
   exact add_mem (mul_mem (haO l hl) (hbO l' hl')) (mul_mem (haO l' hl') (hbO l hl))
 
+/- English proof (translation)
+Introduce `v l hl l' hl'`. Use `add_mem (hf v l hl l' hl') (hg v l hl l' hl') using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Quad.add {f g : V → k} (hf : Quad O S f) (hg : Quad O S g) : Quad O S fun v => f v + g v := by
   intro v l hl l' hl'
   convert add_mem (hf v l hl l' hl') (hg v l hl l' hl') using 1
   ring
 
+/- English proof (translation)
+Introduce `v l hl l' hl'`. Use `sum_mem (t := s) fun i _ => h i v l hl l' hl' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib]`.
+-/
 theorem Quad.sum {ι : Type*} (s : Finset ι) {f : ι → V → k} (h : ∀ i, Quad O S (f i)) :
     Quad O S fun v => ∑ i ∈ s, f i v := by
   intro v l hl l' hl'
   convert sum_mem (t := s) fun i _ => h i v l hl l' hl' using 1
   simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Distinguish the cases in `hp : p`. Simplify `h` using `only [if_pos hp]`. Simplify `(Aff.const 0).quad` using `only [if_neg hp]`.
+-/
 theorem Quad.ite (p : Prop) [Decidable p] {f : V → k} (h : Quad O S f) : Quad O S fun v => if p then f v else 0 := by
   by_cases hp : p
   · simpa only [if_pos hp] using h
@@ -86,6 +114,9 @@ variable {k : Type*} [Field k] {G : Grid k} (O : Subring k)
 
 def intVars (G : Grid k) : Set (Vars G) := {e | ∀ j r, e j r ∈ O}
 
+/- English proof (translation)
+Distinguish the cases in `h : Free ((G.m - 2 - j) / 2 + 1) (r, s) ∨ Kept (r, s)`. Use `⟨fun l => l j ⟨(r, s), h⟩, fun v l => ?_, fun l hl => hl j _⟩` and prove the remaining obligations. Simplify using `only [stepPt, Matrix.add_apply, Matrix.of_apply, dif_pos h, Pi.add_apply, add_assoc]`. Use `⟨fun _ => 0, fun v l => ?_, fun _ _ => zero_mem _⟩` and prove the remaining obligations. Simplify using `only [stepPt, Matrix.add_apply, Matrix.of_apply, dif_neg h, add_zero]`.
+-/
 theorem aff_stepPt (j : Fin (G.m - 1)) (x₀ : Matrix (Fin (topRank G (j + 1))) (Fin (topRank G j)) k) (r s) :
     Aff O (intVars O G) fun e : Vars G => stepPt x₀ (e j) r s := by
   by_cases h : Free ((G.m - 2 - j) / 2 + 1) (r, s) ∨ Kept (r, s)
@@ -94,6 +125,9 @@ theorem aff_stepPt (j : Fin (G.m - 1)) (x₀ : Matrix (Fin (topRank G (j + 1))) 
   · refine ⟨fun _ => 0, fun v l => ?_, fun _ _ => zero_mem _⟩
     simp only [stepPt, Matrix.add_apply, Matrix.of_apply, dif_neg h, add_zero]
 
+/- English proof (translation)
+Distinguish the cases in `h : j < G.m - 1`. Simplify using `only [rowVar, dif_pos h]`. Conclude with `Aff.sum _ fun l => Aff.ite _ (aff_stepPt O ⟨j, h⟩ (x j) _ _)`. Simplify using `only [rowVar, dif_neg h]`. Conclude with `Aff.const _`.
+-/
 theorem aff_rowVar (x : ColArgs G) (j : ℕ) (s) : Aff O (intVars O G) fun e : Vars G => rowVar x e j s := by
   by_cases h : j < G.m - 1
   · simp only [rowVar, dif_pos h]
@@ -101,6 +135,9 @@ theorem aff_rowVar (x : ColArgs G) (j : ℕ) (s) : Aff O (intVars O G) fun e : V
   · simp only [rowVar, dif_neg h]
     exact Aff.const _
 
+/- English proof (translation)
+Unfold `phase`. Use `Quad.sum _ fun j => Quad.add ?_ (Quad.ite _ (Quad.sum _ fun r => ?_))` and prove the remaining obligations. Conclude with `(Aff.sum _ fun i => aff_stepPt O j (x j) _ _).quad`. Conclude with `(aff_rowVar O x _ r).mul (aff_stepPt O j (x j) _ _)`.
+-/
 theorem quad_phase (x : ColArgs G) : Quad O (intVars O G) fun e : Vars G => phase x e := by
   unfold phase
   refine Quad.sum _ fun j => Quad.add ?_ (Quad.ite _ (Quad.sum _ fun r => ?_))
@@ -109,6 +146,13 @@ theorem quad_phase (x : ColArgs G) : Quad O (intVars O G) fun e : Vars G => phas
 
 end Phase
 
+/- English proof (translation)
+Introduce `k _ _ _ _ G ψ hψ ϖ hϖ n x v l l' hl hl'`. Establish `hint : ∀ e ∈ varLat G ϖ n, e ∈ intVars 𝒪[k] G` using `fun e he j r => by`. Establish `h1 : valuation k ((ϖ ^ n : kˣ) : k) ≤ 1`. Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `pow_mem hϖ.mem n`.
+
+Conclude with `(he j r).trans h1`. Establish `hq` using `quad_phase 𝒪[k] x v l (hint l hl) l' (hint l' hl')`. Establish `h1 : ψ (-(phase x (v + l + l') + phase x v - (phase x (v + l) + phase x (v + l')))) = 1` using `(hψ 1).2 le_rfl _ (by rw [Valuation.map_neg, map_one]; exact hq)`. Rewrite using `[← Circle.coe_mul, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 1`.
+
+Rewrite using `[← one_mul (ψ (-phase x (v + l) + -phase x (v + l'))), ← h1, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_phase_mul : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (G : Grid k)
     (ψ : AddChar k Circle), HasConductor ψ 1 → ∀ (ϖ : kˣ), IsUnif ϖ → ∀ (n : ℕ) (x : ColArgs G) (v l l' : Vars G),
     l ∈ varLat G ϖ n → l' ∈ varLat G ϖ n →

@@ -16,18 +16,33 @@ section Lin
 
 variable {n r : ℕ} (ε : Fin n → Bool)
 
+/- English proof (translation)
+Simplify using `[hJ, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem hJ_add_r (x y y' : Fin n → ℂ) : hJ ε x (y + y') = hJ ε x y + hJ ε x y' := by
   simp [hJ, Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `[hJ, Matrix.mulVec_sub, dotProduct_sub]`.
+-/
 theorem hJ_sub_r (x y y' : Fin n → ℂ) : hJ ε x (y - y') = hJ ε x y - hJ ε x y' := by
   simp [hJ, Matrix.mulVec_sub, dotProduct_sub]
 
+/- English proof (translation)
+Simplify using `[hJ, Matrix.mulVec_smul, dotProduct_smul]`.
+-/
 theorem hJ_smul_r (x : Fin n → ℂ) (c : ℂ) (y : Fin n → ℂ) : hJ ε x (c • y) = c * hJ ε x y := by
   simp [hJ, Matrix.mulVec_smul, dotProduct_smul]
 
+/- English proof (translation)
+Simplify using `[hJ]`.
+-/
 theorem hJ_zero_r (x : Fin n → ℂ) : hJ ε x 0 = 0 := by
   simp [hJ]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hJ_zero_r]`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hJ_add_r, ih]`.
+-/
 theorem hJ_sum_r {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (f : ι → Fin n → ℂ) :
     hJ ε x (∑ i ∈ s, f i) = ∑ i ∈ s, hJ ε x (f i) := by
   classical
@@ -35,14 +50,27 @@ theorem hJ_sum_r {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (f : ι → Fi
   | empty => simp [hJ_zero_r]
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hJ_add_r, ih]
 
+/- English proof (translation)
+Unfold `hJ`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hM]`.
+-/
 theorem hJ_unit (M : Matrix (Fin n) (Fin n) ℂ) (hM : Mᴴ * Formalism.REAL.Jm ε * M = Formalism.REAL.Jm ε) (x y : Fin n → ℂ) :
     hJ ε (M *ᵥ x) (M *ᵥ y) = hJ ε x y := by
   unfold hJ
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hM]
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries.hJ_conj ε x y`.
+-/
 theorem hJ_conj_swap (x y : Fin n → ℂ) : hJ ε x y = conj (hJ ε y x) :=
   Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries.hJ_conj ε x y
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Rewrite using `[Finset.sum_eq_single b]`. Rewrite using `[hue, if_pos rfl, div_self (hκ b), one_smul]`.
+
+Introduce `c _ hcb`. Rewrite using `[hue, if_neg hcb, zero_div, zero_smul]`. Introduce `h`. Conclude with `absurd hb h`. Consider the case `zero => simp [hJ_zero_r]`.
+
+Consider the case `add x y _ _ hx hy => conv_lhs => rw [hx, hy]`. Simplify using `only [hJ_add_r, add_div, add_smul, Finset.sum_add_distrib]`. Consider the case `smul t x _ hx => conv_lhs => rw [hx]`. Simplify using `only [hJ_smul_r, Finset.smul_sum, smul_smul, mul_div_assoc]`.
+-/
 theorem recon (e u : Fin r → Fin n → ℂ) (κ : Fin r → ℂ) (hκ : ∀ d, κ d ≠ 0)
     (hue : ∀ d c, hJ ε (u d) (e c) = if d = c then κ d else 0) (s : Finset (Fin r)) (w : Fin n → ℂ)
     (hw : w ∈ Submodule.span ℂ (e '' ↑s)) : w = ∑ c ∈ s, (hJ ε (u c) w / κ c) • e c := by
@@ -61,12 +89,20 @@ theorem recon (e u : Fin r → Fin n → ℂ) (κ : Fin r → ℂ) (hκ : ∀ d,
     conv_lhs => rw [hx]
     simp only [hJ_smul_r, Finset.smul_sum, smul_smul, mul_div_assoc]
 
+/- English proof (translation)
+Rewrite using `[recon ε e u κ hκ hue s w hw]`. Conclude with `Finset.sum_eq_zero fun c hc => by rw [h0 c hc, zero_div, zero_smul]`.
+-/
 theorem zero_of_pair (e u : Fin r → Fin n → ℂ) (κ : Fin r → ℂ) (hκ : ∀ d, κ d ≠ 0)
     (hue : ∀ d c, hJ ε (u d) (e c) = if d = c then κ d else 0) (s : Finset (Fin r)) (w : Fin n → ℂ)
     (hw : w ∈ Submodule.span ℂ (e '' ↑s)) (h0 : ∀ c ∈ s, hJ ε (u c) w = 0) : w = 0 := by
   rw [recon ε e u κ hκ hue s w hw]
   exact Finset.sum_eq_zero fun c hc => by rw [h0 c hc, zero_div, zero_smul]
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨b, hb, rfl⟩ := hy`. Conclude with `hx b hb`. Consider the case `zero => exact hJ_zero_r ε x`. Consider the case `add y y' _ _ hy hy' => rw [hJ_add_r, hy, hy', add_zero]`.
+
+Consider the case `smul t y _ hy => rw [hJ_smul_r, hy, mul_zero]`.
+-/
 theorem orth_span (e : Fin r → Fin n → ℂ) (x : Fin n → ℂ) (s : Set (Fin r)) (hx : ∀ c ∈ s, hJ ε x (e c) = 0)
     (w : Fin n → ℂ) (hw : w ∈ Submodule.span ℂ (e '' s)) : hJ ε x w = 0 := by
   induction hw using Submodule.span_induction with
@@ -75,6 +111,9 @@ theorem orth_span (e : Fin r → Fin n → ℂ) (x : Fin n → ℂ) (s : Set (Fi
   | add y y' _ _ hy hy' => rw [hJ_add_r, hy, hy', add_zero]
   | smul t y _ hy => rw [hJ_smul_r, hy, mul_zero]
 
+/- English proof (translation)
+Unfold `spanLt`. Use `congr 2`. Use extensionality with `b`. Simplify using the standard rewrite rules.
+-/
 theorem spanLt_eq (e : Fin r → Fin n → ℂ) (a : ℕ) :
     spanLt e a = Submodule.span ℂ (e '' ↑(Finset.univ.filter fun b : Fin r => b.1 < a)) := by
   unfold spanLt
@@ -82,6 +121,37 @@ theorem spanLt_eq (e : Fin r → Fin n → ℂ) (a : ℕ) :
   ext b
   simp
 
+/- English proof (translation)
+Establish `hGGi : ∀ x, G *ᵥ (Gi *ᵥ x) = x` using `fun x => by rw [Matrix.mulVec_mulVec, hGi, Matrix.one_mulVec]`. Establish `hMG : ∀ x, G *ᵥ ((Gi * M * G) *ᵥ x) = M *ᵥ (G *ᵥ x)` using `fun x => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hGi, Matrix.one_mul]`. Establish `hu1 : ∀ d c, hJ ε (G *ᵥ e d) (e c) = if d = c then conj (cv d) else 0`. Introduce `d c`.
+
+Rewrite using `[hJ_conj_swap, hZ]`. Distinguish the cases in `h : c = d`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (Ne.symm h), map_zero]`.
+
+Establish `hu2 : ∀ d c, hJ ε (Gi *ᵥ e d) (e c) = if d = c then cv d else 0`. Introduce `d c`. Rewrite using `[← hJ_unit ε G hG, hGGi, hZ]`. Establish `hk1 : ∀ d, conj (cv d) ≠ 0` using `fun d => by simpa using hcv d`. Establish `hfx : ∀ x y, M *ᵥ x = x → hJ ε x (M *ᵥ y) = hJ ε x y` using `fun x y hx => by conv_lhs => rw [← hx]`.
+
+Conclude with `hJ_unit ε M hM x y`. Establish `key : ∀ m : ℕ, ∀ c : Fin r, c.1 = m → M *ᵥ e c = e c ∧ M *ᵥ (G *ᵥ e c) = G *ᵥ e c`. Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`.
+
+Introduce `c hc`. Establish `ih' : ∀ d : Fin r, d.1 < c.1 → M *ᵥ e d = e d ∧ M *ᵥ (G *ᵥ e d) = G *ᵥ e d` using `fun d hd => ih d.1 (hc ▸ hd) d rfl`. Establish `h1 : M *ᵥ e c = e c`. Establish `hw` using `hN.1.1 c`. Rewrite `hw` using `[spanLt_eq]`.
+
+Establish `h0` using `zero_of_pair ε e (fun d => G *ᵥ e d) (fun d => conj (cv d)) hk1 hu1 _ _ hw (by`. Introduce `d hd`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hd`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, hJ_sub_r, hfx _ _ (ih' d hd).2, sub_self])`. Rewrite `h0` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`.
+
+Conclude with `h0`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hw` using `hN'.1.1 c`. Rewrite `hw` using `[spanLt_eq]`. Establish `h0` using `zero_of_pair ε e (fun d => Gi *ᵥ e d) cv hcv hu2 _ _ hw (by`.
+
+Introduce `d hd`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hd`. Rewrite using `[← hJ_unit ε G hG, hGGi, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, hMG, hJ_sub_r, hfx _ _ (ih' d hd).1, sub_self])`. Rewrite `h0` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Rewrite using `[← hMG, h0]`.
+
+Establish `hfix1 : ∀ c, M *ᵥ e c = e c` using `fun c => (key c.1 c rfl).1`. Establish `hfix2 : ∀ c, M *ᵥ (G *ᵥ e c) = G *ᵥ e c` using `fun c => (key c.1 c rfl).2`. Establish `hall : ∀ v, M *ᵥ v = v`. Introduce `v`. Use `set S1 : Fin n → ℂ := ∑ c, (hJ ε (G *ᵥ e c) v / conj (cv c)) • e c with hS1`.
+
+Use `set S2 : Fin n → ℂ := ∑ c, (hJ ε (e c) v / cv c) • (G *ᵥ e c) with hS2`. Use `set v1 := v - S1 - S2 with hv1`. Establish `hGe : ∀ d c, hJ ε (G *ᵥ e d) (G *ᵥ e c) = 0` using `fun d c => by rw [hJ_unit ε G hG, hee]`. Establish `ho1 : ∀ d, hJ ε (e d) v1 = 0`. Introduce `d`.
+
+Rewrite using `[hv1, hJ_sub_r, hJ_sub_r, hS1, hS2, hJ_sum_r, hJ_sum_r]`. Simplify using `only [hJ_smul_r, hee, mul_zero, Finset.sum_const_zero, sub_zero, hZ]`. Rewrite using `[Finset.sum_eq_single d (fun c _ hc => by rw [if_neg (Ne.symm hc), mul_zero]) (by simp), if_pos rfl, div_mul_cancel₀ _ (hcv d), sub_self]`. Establish `ho2 : ∀ d, hJ ε (G *ᵥ e d) v1 = 0`. Introduce `d`.
+
+Rewrite using `[hv1, hJ_sub_r, hJ_sub_r, hS1, hS2, hJ_sum_r, hJ_sum_r]`. Simplify using `only [hJ_smul_r, hGe, mul_zero, Finset.sum_const_zero, sub_zero, hu1]`. Rewrite using `[Finset.sum_eq_single d (fun c _ hc => by rw [if_neg (Ne.symm hc), mul_zero]) (by simp), if_pos rfl, div_mul_cancel₀ _ (hk1 d), sub_self]`. Establish `hv : v = v1 + S1 + S2` using `by rw [hv1]; abel`. Use `clear_value v1 S1 S2`.
+
+Establish `hX : (M - 1) *ᵥ v1 ∈ spanLt e r` using `hN.2 v1 ho1`. Establish `hGX : (Gi * M * G - 1) *ᵥ (Gi *ᵥ v1) ∈ spanLt e r` using `hN'.2 _ (fun a => by rw [← hJ_unit ε G hG, hGGi]; exact ho2 a)`. Establish `hw : (M - 1) *ᵥ v1 = G *ᵥ ((Gi * M * G - 1) *ᵥ (Gi *ᵥ v1))`. Rewrite using `[Matrix.sub_mulVec (Gi * M * G), Matrix.mulVec_sub, hMG, hGGi, Matrix.one_mulVec, hGGi, Matrix.sub_mulVec, Matrix.one_mulVec]`. Rewrite `hX` using `[spanLt_eq]`.
+
+Establish `h0` using `zero_of_pair ε e (fun d => G *ᵥ e d) (fun d => conj (cv d)) hk1 hu1 _ _ hX (by`. Introduce `d _`. Rewrite using `[hw, hJ_unit ε G hG]`. Conclude with `orth_span ε e (e d) _ (fun c _ => hee d c) _ hGX)`. Rewrite `h0` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`.
+
+Rewrite using `[hv, Matrix.mulVec_add, Matrix.mulVec_add, h0, hS1, hS2, Matrix.mulVec_sum, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, hfix1, hfix2]`. Conclude with `Matrix.ext_of_mulVec_single fun i => by rw [hall, Matrix.one_mulVec]`.
+-/
 theorem st_one_lin (e : Fin r → Fin n → ℂ) (z z' : Fin n → ℂ) (G Gi M : Matrix (Fin n) (Fin n) ℂ)
     (hGi : G * Gi = 1) (hG : Gᴴ * Formalism.REAL.Jm ε * G = Formalism.REAL.Jm ε)
     (hM : Mᴴ * Formalism.REAL.Jm ε * M = Formalism.REAL.Jm ε) (hee : ∀ a b, hJ ε (e a) (e b) = 0) (cv : Fin r → ℂ)
@@ -176,6 +246,23 @@ end Lin
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `v g cv hcv hZ`. Establish `hee : ∀ a b, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (X.eR b)) = 0` using `fun a b => by`. Rewrite using `[show X.eR a = X.crd (X.eX a) from rfl, show X.eR b = X.crd (X.eX b) from rfl, Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries.hJ_rvX, X.ee, map_zero]`. Establish `hfrm : ∀ (w : D.what₂.Word) (c : Fin D.R.rS), frm X w 1 v (Fin.castSucc c) = rv X.B.I v (X.eR c)`. Introduce `w c`.
+
+Simplify using `[frm, famSc, fam, Fin.snoc_castSucc]`. Establish `hZ' : ∀ a b : Fin D.R.rS, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (uMat g *ᵥ rv X.B.I v (X.eR b)) = if a = b then cv (Fin.castSucc a) else 0`. Introduce `a b`. Use `congrFun (congrFun hZ (Fin.castSucc a)) (Fin.castSucc b)` as an intermediate fact. Unfold `Formalism.L2.SG.RealObj.Zhat at this`.
+
+Simplify using `only [hfrm, Matrix.diagonal_apply, Fin.castSucc_inj] at this`. Conclude with `this`. Establish `hmemUJ : ∀ y : Formalism.REAL.UJ (X.B.I.ε v), (uMat y)ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * uMat y = Formalism.REAL.Jm (X.B.I.ε v)` using `fun y => y.2`. Establish `hone : (1 : Formalism.REAL.UJ (X.B.I.ε v)) ∈ StSet (NV X u v) (NV X u' v) g`. Establish `h1 : ∀ w : D.what₂.Word, (1 : Formalism.REAL.UJ (X.B.I.ε v)) ∈ NV X w v`.
+
+Introduce `w`. Use `show InN _ _ _ (uMat (1 : Formalism.REAL.UJ (X.B.I.ε v)))`. Establish `: uMat (1 : Formalism.REAL.UJ (X.B.I.ε v)) = 1` using `rfl`. Rewrite using `[this]`. Apply the tactic sequence `refine ⟨⟨fun a => ?_, ?_⟩, fun y _ => ?_⟩ <;> simp [Submodule.zero_mem]`.
+
+Use `⟨h1 u, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_one, inv_mul_cancel]`. Conclude with `h1 u'`. Use extensionality with `y`. Use `⟨fun hy => ?_, fun hy => by rw [Set.mem_singleton_iff.1 hy]; exact hone⟩` and prove the remaining obligations.
+
+Take `⟨hy1, hy2⟩` from `hy`. Establish `hcoe : uMat (g⁻¹ * y * g) = uMat g⁻¹ * uMat y * uMat g`. Simplify using `[uMat]`. Establish `hGi : uMat g * uMat g⁻¹ = 1`. Simplify using `[uMat]`.
+
+Establish `hN' : InN (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u')) (uMat g⁻¹ * uMat y * uMat g)`. Rewrite using `[← hcoe]`. Conclude with `hy2`. Establish `hM` using `st_one_lin (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) (rv X.B.I v (X.zR u')) (uMat g) (uMat g⁻¹) (uMat y) hGi (hmemUJ g) (hmemUJ y) hee (fun a => cv (Fin.castSucc a)) (fun a => hcv.1 _) hZ' hy1 hN'`. Rewrite using `[Set.mem_singleton_iff]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `hM`.
+-/
 theorem stOne_holds (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) : StOne X u u' := by
   intro v g cv hcv hZ
   have hee : ∀ a b, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (X.eR b)) = 0 := fun a b => by
@@ -220,6 +307,9 @@ theorem stOne_holds (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.wh
   apply Units.ext
   exact hM
 
+/- English proof (translation)
+The claim follows from `normBridge_of_two P hr (stOne_holds X u u') hZ`.
+-/
 theorem normBridge_of_zhat {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u u' : D.what₂.Word} (P : Parts X u u')
     (hr : P.S.G.r = D.R.rS) (hZ : ZhatTr P hr) : NormBridge P hr :=
   normBridge_of_two P hr (stOne_holds X u u') hZ

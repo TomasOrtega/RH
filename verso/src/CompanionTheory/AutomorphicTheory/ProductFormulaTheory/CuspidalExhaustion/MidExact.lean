@@ -15,12 +15,18 @@ variable {G H V₁ V₂ V₃ W : Type} [Group G] [Group H] [AddCommGroup V₁] [
   [Module ℂ V₂] [AddCommGroup V₃] [Module ℂ V₃] [AddCommGroup W] [Module ℂ W]
   {τ₁ : Representation ℂ G V₁} {τ₂ : Representation ℂ G V₂} {τ₃ : Representation ℂ G V₃}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Module.Flat.rTensor_preserves_injective_linearMap (M := W) f.toLinearMap hf, Module.Flat.rTensor_exact W (f := f.toLinearMap) (g := g.toLinearMap) hfg⟩`.
+-/
 theorem extL_exact (f : τ₁.IntertwiningMap τ₂) (g : τ₂.IntertwiningMap τ₃) (σ : Representation ℂ H W)
     (hf : Function.Injective f) (hfg : Function.Exact f g) :
     Function.Injective (extL f σ) ∧ Function.Exact (extL f σ) (extL g σ) :=
   ⟨Module.Flat.rTensor_preserves_injective_linearMap (M := W) f.toLinearMap hf,
     Module.Flat.rTensor_exact W (f := f.toLinearMap) (g := g.toLinearMap) hfg⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Module.Flat.lTensor_preserves_injective_linearMap (M := W) f.toLinearMap hf, Module.Flat.lTensor_exact W (f := f.toLinearMap) (g := g.toLinearMap) hfg⟩`.
+-/
 theorem extR_exact (σ : Representation ℂ H W) (f : τ₁.IntertwiningMap τ₂) (g : τ₂.IntertwiningMap τ₃)
     (hf : Function.Injective f) (hfg : Function.Exact f g) :
     Function.Injective (extR σ f) ∧ Function.Exact (extR σ f) (extR σ g) :=
@@ -38,6 +44,11 @@ variable {a b n : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] 
   {ρ₁ : Representation ℂ (GL a k × GL b k) V₁} {ρ₂ : Representation ℂ (GL a k × GL b k) V₂}
   {ρ₃ : Representation ℂ (GL a k × GL b k) V₃}
 
+/- English proof (translation)
+Use `⟨GlobalTheory.ParIndExact.parIndMap_injective _ _ hf, fun y => ⟨fun hy => ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ParIndExact.parIndMap_exact _ (compMap f _) (compMap g _) hf (fun v hv => by obtain ⟨u, hu⟩ := (hfg v).1 hv; exact ⟨u, hu⟩) y hy`. Introduce and unpack `⟨u, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `x`. Conclude with `hfg.apply_apply_eq_zero (u.1.1 x)`.
+-/
 theorem ind₂Map_exact (e : a ⊕ b ≃ n) (f : ρ₁.IntertwiningMap ρ₂) (g : ρ₂.IntertwiningMap ρ₃)
     (hf : Function.Injective f) (hfg : Function.Exact f g) :
     Function.Injective (ind₂Map (k := k) e f) ∧ Function.Exact (ind₂Map (k := k) e f) (ind₂Map (k := k) e g) := by
@@ -57,6 +68,9 @@ variable {nA nB m m' N : ℕ} {VA VB V₁ V₂ V₃ : Type} [AddCommGroup VA] [M
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `s1` using `extL_exact (G := GL (Fin m) k) (H := GL (Fin nB) k) f g PB hf hfg`. Establish `s2` using `ind₂Map_exact (k := k) (stdSum h2) (extL f PB) (extL g PB) s1.1 s1.2`. Establish `s3` using `extR_exact (G := GL (Fin m') k) (H := GL (Fin nA) k) PA (ind₂Map (k := k) (stdSum h2) (extL f PB)) (ind₂Map (k := k) (stdSum h2) (extL g PB)) s2.1 s2.2`. Conclude with `ind₂Map_exact (k := k) (stdSum h1) (extR PA (ind₂Map (k := k) (stdSum h2) (extL f PB))) (extR PA (ind₂Map (k := k) (stdSum h2) (extL g PB))) s3.1 s3.2`.
+-/
 theorem tripleProductMap_injective (h2 : m + nB = m') (h1 : nA + m' = N) (PA : Representation ℂ (GL (Fin nA) k) VA)
     (PB : Representation ℂ (GL (Fin nB) k) VB) {τ₁ : Representation ℂ (GL (Fin m) k) V₁}
     {τ₂ : Representation ℂ (GL (Fin m) k) V₂} {τ₃ : Representation ℂ (GL (Fin m) k) V₃}

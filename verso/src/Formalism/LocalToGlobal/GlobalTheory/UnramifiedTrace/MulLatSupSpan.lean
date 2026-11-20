@@ -8,6 +8,13 @@ namespace Formalism.L2.GlobalTheoryTheory.UnramifiedTrace
 open Formalism.BasicNotions Formalism.MainNotions.product_first_zeroth_parts Formalism.L2.Forms Formalism.L2.GlobalTheoryTheory Formalism.L2.GlobalTheoryTheory.LocalLatticeBases Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0 NumberField IsDedekindDomain Matrix Formalism.UG
 open scoped TensorProduct Classical
 
+/- English proof (translation)
+Establish `key : ∀ {X Y : Submodule R W}, Formalism.HermitianLatticesTheory.localization₂ P X = Formalism.HermitianLatticesTheory.localization₂ P Y → Formalism.HermitianLatticesTheory.localization₂ P (X ⊔ S) ≤ Formalism.HermitianLatticesTheory.localization₂ P (Y ⊔ S)`. Introduce `X Y h x hx`. Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 hsx`. Establish `ha0 : a ∈ Formalism.HermitianLatticesTheory.localization₂ P X` using `⟨1, P.primeCompl.one_mem, by simpa using ha⟩`.
+
+Rewrite `ha0` using `[h]`. Take `⟨t, ht, hta⟩` from `ha0`. Use `⟨t * s, P.primeCompl.mul_mem ht hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← hab, smul_add]`. Conclude with `Submodule.add_mem_sup hta (S.smul_mem t hb)`.
+
+Conclude with `le_antisymm (key h) (key h.symm)`.
+-/
 theorem localization_sup_congr {R W : Type} [CommRing R] [AddCommGroup W] [Module R W] (P : Ideal R) [P.IsPrime]
     {X Y : Submodule R W} (S : Submodule R W) (h : Formalism.HermitianLatticesTheory.localization₂ P X = Formalism.HermitianLatticesTheory.localization₂ P Y) :
     Formalism.HermitianLatticesTheory.localization₂ P (X ⊔ S) = Formalism.HermitianLatticesTheory.localization₂ P (Y ⊔ S) := by
@@ -24,6 +31,9 @@ theorem localization_sup_congr {R W : Type} [CommRing R] [AddCommGroup W] [Modul
     exact Submodule.add_mem_sup hta (S.smul_mem t hb)
   exact le_antisymm (key h) (key h.symm)
 
+/- English proof (translation)
+Unfold `mulLat`. Rewrite using `[Submodule.map_sup, Submodule.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+-/
 theorem mulLat_sup_span {E : Type} [Field E] [NumberField E] {n : ℕ} (g : Matrix (Fin n) (Fin n) E)
     (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E) :
     mulLat g (L ⊔ Submodule.span (𝓞 E) {y}) = mulLat g L ⊔ Submodule.span (𝓞 E) {g *ᵥ y} := by
@@ -51,6 +61,27 @@ def IsCompMv (T : Forms0 D u) (v : (D.mem u).A.vT) (c c1 : (D.mem u).C.cls 0) (w
 set_option maxHeartbeats 8000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `eM : ((γ * γ').1.1 : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) = γ.1.1 * γ'.1.1`. Simplify using `only [Subgroup.coe_mul, Units.val_mul]`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v' hv'`. Simplify using `only [hcomp, kU, Subgroup.coe_mul, InvMemClass.coe_inv, map_mul, map_inv, d1 v' hv', u1 v' hv', one_mul, mul_one, mul_inv_cancel]`.
+
+Simplify using `only [hcomp, kU, Subgroup.coe_mul, InvMemClass.coe_inv, map_mul]`. Rewrite using `[mul_assoc, u2, ← mul_assoc, ← mul_assoc, d2]`. Use `group`. Rewrite using `[eM]`. Conclude with `rlv_chainP (T.atT.Pv v) _ _ d3 u3`.
+
+Rewrite using `[eM]`. Use `rlv_chainP (T.atT.Pv v) _ _ ?_ u4` and prove the remaining obligations. Rewrite using `[mulLat_sup_span, Matrix.mulVec_smul]`. Conclude with `localization_sup_congr _ _ d3`. Introduce `x hx`.
+
+Establish `hmem : γ'.1.1 *ᵥ x.1 ∈ Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (Ld D u 0 (Nat.zero_le _) ((D.fm u).dn 0 v c g) ⊔ Submodule.span (𝓞 D.host.E) {(((D.mem u).A.T : ℕ) : D.host.E)⁻¹ • z.1})`. Rewrite using `[← u4]`. Conclude with `mem_localization_of_mem₂ _ ⟨x.1, x.2, rfl⟩`. Take `⟨t, ht, htx⟩` from `(rlv_mem_locP _ _ _).1 hmem`. Take `⟨a, ha, b, hb, e⟩` from `Submodule.mem_sup.1 htx`.
+
+Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hb`. Establish `hTE : ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) : D.host.E) = (((D.mem u).A.T : ℕ) : D.host.E)` using `by simp`. Establish `hTne : (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0`. Conclude with `(D.mem u).A.T_prime.ne_zero` after adjusting the coercions. Establish `e1 : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (γ'.1.1 *ᵥ (t • x).1) = (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • a + r • z.1`.
+
+Establish `: (t • x).1 = t • x.1` using `rfl`. Rewrite using `[this, Matrix.mulVec_smul, ← e, smul_add]`. Use `congr 1`. Rewrite using `[smul_comm, ← algebraMap_smul D.host.E (((D.mem u).A.T : ℕ) : 𝓞 D.host.E), ← algebraMap_smul D.host.E r, ← algebraMap_smul D.host.E r, smul_smul, smul_smul]`. Use `congr 1`.
+
+Simplify using `only [map_natCast]`. Clear the denominators using the available nonvanishing facts. Establish `hin : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (γ'.1.1 *ᵥ (t • x).1) ∈ Ld D u 0 (Nat.zero_le _) ((D.fm u).dn 0 v c g)`. Rewrite using `[e1]`. Conclude with `add_mem (Submodule.smul_mem _ _ ha) (Submodule.smul_mem _ _ z.2)`.
+
+Establish `e2 : γ.1.1 *ᵥ ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (γ'.1.1 *ᵥ (t • x).1)) = t • ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • ((γ * γ').1.1 *ᵥ x.1))`. Establish `: (t • x).1 = t • x.1` using `rfl`. Rewrite using `[this, eM, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, smul_comm]`. Establish `hin2 : γ.1.1 *ᵥ ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (γ'.1.1 *ᵥ (t • x).1)) ∈ Lk T.atT 0 (Nat.zero_le _) v c`. Rewrite using `[e2]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`. Establish `f1` using `u5 (t • x) hin`. Establish `f2` using `d4 ⟨_, hin⟩ hin2`. Establish `p1 : T.lv0.prk v c ⟨_, hin2⟩ = T.atT.res v t • T.lv0.prk v c ⟨_, hx⟩`. Rewrite using `[← T.lv0.prk_smul]`.
+
+Conclude with `congrArg _ (Subtype.ext e2)`. Rewrite `f1` using `[T.lv0.pr_smul, map_smul, f2, p1, map_smul]`. Establish `hres : T.atT.res v t ≠ 0` using `fun h0 => ht (RingHom.mem_ker.2 h0)`. Conclude with `smul_right_injective _ hres f1`.
+-/
 theorem comp_of_moves (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0)
     (g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c))
     (γ : UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)))

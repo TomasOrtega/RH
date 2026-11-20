@@ -11,6 +11,11 @@ namespace GlobalTheory.CompanionTheory.SatakeBridge
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E _ _ w n V _ _ ρ hs hi α`. Prove the components needed by the constructor for the conclusion. Conclude with `GlobalTheory.LFun.SatBridge.hasSatGL_of_hasSatake E w n V ρ α`. Introduce `h`. Take `⟨x, hx⟩` from `h.exists_vec`.
+
+Conclude with `GlobalTheory.CompanionTheory.SatComp.hasSatake_of_isSatVecGL ⟨hs, hi⟩ α hx`.
+-/
 theorem satBridge : PositivityTheory.SphericalProduct.SatBridge := by
   intro E _ _ w n V _ _ ρ hs hi α
   constructor

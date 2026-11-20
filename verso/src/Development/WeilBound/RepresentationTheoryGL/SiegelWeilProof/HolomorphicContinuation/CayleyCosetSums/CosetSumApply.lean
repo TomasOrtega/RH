@@ -19,6 +19,11 @@ variable {m n : ℕ} {e : ℤ} {G : Type} [Group G] [TopologicalSpace G]
 
 def trm (Ht : G → ℝ≥0) (f : G → ℂ) (s₀ z : ℂ) (x : G) : ℂ := ((Ht x : ℝ) : ℂ) ^ (z - s₀) * f x
 
+/- English proof (translation)
+Unfold `lift`. Establish `h : IsUnit (mR y) ∧ InG (mR y)` using `⟨y.1.isUnit, y.2⟩`. Rewrite using `[dif_pos h]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `[mR]`.
+-/
 theorem lift_mR (φ : GR n → ℂ) (y : GR n) : lift φ (mR y) = φ y := by
   unfold lift
   have h : IsUnit (mR y) ∧ InG (mR y) := ⟨y.1.isUnit, y.2⟩
@@ -28,8 +33,16 @@ theorem lift_mR (φ : GR n → ℂ) (y : GR n) : lift φ (mR y) = φ y := by
   apply Units.ext
   simp [mR]
 
+/- English proof (translation)
+The claim follows from `lift_mR _ _`.
+-/
 theorem resG_mR (F : G → ℂ) (g : G) (y : GR n) : resG ι F g (mR y) = F (g * ι y) := lift_mR _ _
 
+/- English proof (translation)
+Take `⟨x₀, y₀, S, r, hr, hx, hh⟩` from `h.split x`. Use `⟨y₀, ((r : ℝ) : ℂ) ^ (z - s₀) * S, fun y => ?_⟩` and prove the remaining obligations. Establish `hxy : x * ι y = x₀ * ι (y₀ * y)` using `by rw [hx, mul_assoc, ← map_mul]`. Unfold `trm`. Rewrite using `[hxy, (hh _).1, (hh _).2, hS n m e (z - s₀) (y₀ * y), Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hr.le (Vac.hLoc_nonneg _)]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem termSplit (hS : SecFz) (h : HD m n e G Pp Γ ι s₀ Ht f U d Ê t) (z : ℂ) (x : G) :
     ∃ (y₀ : GR n) (C : ℂ), ∀ y : GR n, trm Ht f s₀ z (x * ι y) = C * fz m e (z - s₀) (mR (y₀ * y)) := by
   obtain ⟨x₀, y₀, S, r, hr, hx, hh⟩ := h.split x
@@ -40,15 +53,32 @@ theorem termSplit (hS : SecFz) (h : HD m n e G Pp Γ ι s₀ Ht f U d Ê t) (z :
     Complex.mul_cpow_ofReal_nonneg hr.le (Vac.hLoc_nonneg _)]
   ring
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mult n m 0 e).1 y k hk`. Rewrite using `[hS n m e w (y * k), hS n m e w y, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fz_mul_k (hS : SecFz) (w : ℂ) (y k : GR n) (hk : k ∈ KR n) :
     fz m e w (mR (y * k)) = fz m e w (mR y) * F0 m 0 e k := by
   obtain ⟨h1, h2⟩ := (mult n m 0 e).1 y k hk
   rw [hS n m e w (y * k), hS n m e w y, h1, h2]
   ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cosetSum_apply (Φ : G → ℂ) (x : G) :
     GlobalTheory.Eis.cosetSum Pp Γ Φ x = ∑' q : GlobalTheory.Eis.Cosets Pp Γ, Φ (((q.out : Γ) : G) * x) := rfl
 
+/- English proof (translation)
+Introduce `z hz g y k hk`. Establish `hfar : ∀ z' : ℂ, t < z'.re → Ê z' (g * ι (y * k)) = Ê z' (g * ι y) * F0 m 0 e k`. Introduce `z' hz'`. Rewrite using `[(h.far z' hz').2, (h.far z' hz').2, cosetSum_apply, cosetSum_apply, mul_assoc, ← tsum_mul_right]`. Use `congr 1`.
+
+Use `tsum_congr fun q => ?_` and prove the remaining obligations. Take `⟨y₀, C, hC⟩` from `termSplit hS h z' (((q.out : Γ) : G) * g)`. Establish `e1 : ((q.out : Γ) : G) * (g * ι (y * k)) = ((q.out : Γ) : G) * g * ι (y * k)` using `by rw [mul_assoc]`. Establish `e2 : ((q.out : Γ) : G) * (g * ι y) = ((q.out : Γ) : G) * g * ι y` using `by rw [mul_assoc]`. Express the relevant statement in the definitionally equal form `trm Ht f s₀ z' _ = trm Ht f s₀ z' _ * _`.
+
+Rewrite using `[e1, e2, hC, hC, ← mul_assoc y₀ y k, fz_mul_k hS _ _ _ hk]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨σ, hσ⟩` from `h.hR.1`. Establish `hpre : IsPreconnected U` using `rightConn U h.hU h.hR`. Establish `hA1 : AnalyticOnNhd ℂ (fun z => Ê z (g * ι (y * k))) U` using `(h.hol _).analyticOnNhd h.hU`.
+
+Establish `hA2 : AnalyticOnNhd ℂ (fun z => Ê z (g * ι y) * F0 m 0 e k) U` using `((h.hol _).mul_const _).analyticOnNhd h.hU`. Use `set z₀ : ℂ := ((max σ t + 1 : ℝ) : ℂ)`. Establish `hz₀ : z₀ ∈ U` using `hσ (by simp [z₀, GlobalTheory.Cont.rightOf]; linarith [le_max_left σ t])`. Establish `hev : (fun z => Ê z (g * ι (y * k))) =ᶠ[𝓝 z₀] fun z => Ê z (g * ι y) * F0 m 0 e k`. Establish `ho : IsOpen {z : ℂ | t < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`.
+
+Establish `hm : z₀ ∈ {z : ℂ | t < z.re}` using `by simp [z₀]; linarith [le_max_right σ t]`. Use `filter_upwards [ho.mem_nhds hm] with z hz using hfar z hz`. Conclude with `hA1.eqOn_of_preconnected_of_eventuallyEq hA2 hpre hz₀ hev hz`.
+-/
 theorem klaw (hS : SecFz) (h : HD m n e G Pp Γ ι s₀ Ht f U d Ê t) :
     ∀ z ∈ U, ∀ (g : G) (y k : GR n), k ∈ KR n → Ê z (g * ι (y * k)) = Ê z (g * ι y) * F0 m 0 e k := by
   intro z hz g y k hk

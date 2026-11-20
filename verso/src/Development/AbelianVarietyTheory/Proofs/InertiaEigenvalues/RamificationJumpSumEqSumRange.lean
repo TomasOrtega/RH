@@ -5,6 +5,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 
 namespace GlobalTheory.PMon.Ram
 
+/- English proof (translation)
+Introduce `G _ R A B n _ h`. Unfold `jumpSum`. Rewrite using `[finsum_eq_sum_of_support_subset (s := Finset.range n)]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[if_neg ((h t).1 (Finset.mem_range.1 ht))]`.
+
+Introduce `t ht`. Rewrite `ht` using `[Function.mem_support]`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hn`. Conclude with `ht (if_pos (not_not.1 (mt (h t).2 hn)))`.
+-/
 theorem jumpSum_eq_sum_range : ∀ (G : Type) [Group G] (R : ℕ → Subgroup G) (A B : Subgroup G) (n : ℕ), Antitone R →
     (∀ t, t < n ↔ ¬ A ⊓ R t ≤ B) → jumpSum R A B = ∑ t ∈ Finset.range n, Nat.card ↥(A ⊓ R t) := by
   intro G _ R A B n _ h

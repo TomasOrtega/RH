@@ -11,6 +11,9 @@ noncomputable def resInv {O : Type} [CommRing O] [IsLocalRing O] (c : O →+* O)
     IsLocalRing.ResidueField O →+* IsLocalRing.ResidueField O :=
   (IsLocalRing.ResidueField.mapEquiv (invEquiv c hc)).toRingHom
 
+/- English proof (translation)
+Simplify using `only [resInv, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, IsLocalRing.ResidueField.mapEquiv_apply, IsLocalRing.ResidueField.map_residue]`. Both sides reduce to the same expression.
+-/
 theorem resInv_residue {O : Type} [CommRing O] [IsLocalRing O] (c : O →+* O)
     (hc : ∀ x, c (c x) = x) (x : O) :
     resInv c hc (IsLocalRing.residue O x) = IsLocalRing.residue O (c x) := by
@@ -18,6 +21,47 @@ theorem resInv_residue {O : Type} [CommRing O] [IsLocalRing O] (c : O →+* O)
     IsLocalRing.ResidueField.mapEquiv_apply, IsLocalRing.ResidueField.map_residue]
   rfl
 
+/- English proof (translation)
+Introduce `O _ _ c hc h2 n S hS hSc A B C D hdet hU`. Use `set π := IsLocalRing.residue O with hπ`. Use `set cb := resInv c hc with hcbdef`. Establish `hcb : ∀ x, cb (π x) = π (c x)` using `resInv_residue c hc`. Establish `hcbM : ∀ M : Matrix (Fin n) (Fin n) O, (M.map c).map π = (M.map π).map cb`.
+
+Introduce `M`. Use extensionality with `i j`. Simplify using `[hcb]`. Establish `hcbb : ∀ x, cb (cb x) = x`. Introduce `x`.
+
+Take `⟨y, rfl⟩` from `IsLocalRing.residue_surjective x`. Use `show cb (cb (π y)) = π y`. Rewrite using `[hcb, hcb, hc]`. Establish `h2k : (2 : IsLocalRing.ResidueField O) ≠ 0`. Use `(h2.map π).ne_zero` as an intermediate fact.
+
+Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `hSk : IsUnit (S.map π).det`. Use `hS.map π` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Establish `hSck : (S.map π)ᵀ = -(S.map π).map cb`.
+
+Rewrite using `[← hcbM, ← Matrix.transpose_map, hSc]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `h11 : Aᵀ * S * C.map c + Cᵀ * S * A.map c = 0`. Rewrite `hU` using `[fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply]`.
+
+Use `(Matrix.fromBlocks_inj.1 hU).1` as an intermediate fact. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, zero_add, add_zero] at this`. Rewrite using `[add_comm]`. Simplify `this` using `[Matrix.mul_assoc]`. Establish `hinj : ∀ u, (A.map π) *ᵥ u = 0 → (C.map π) *ᵥ u = 0 → u = 0`.
+
+Introduce `u hA hC`. Establish `hd : ((fromBlocks A B C D).map π).det ≠ 0`. Use `(hdet.map π).ne_zero` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Use `Matrix.eq_zero_of_mulVec_eq_zero hd (v := Sum.elim u 0) (by` as an intermediate fact.
+
+Apply the tactic sequence `rw [fromBlocks_map, fromBlocks_mulVec]; ext (i | i) <;> simp [hA, hC])`. Use function extensionality and compare the values at `i`. Simplify using `using congrFun this (Sum.inl i)`. Establish `hiso : (A.map π)ᵀ * S.map π * (C.map π).map cb + (C.map π)ᵀ * S.map π * (A.map π).map cb = 0`. Establish `: (Aᵀ * S * C.map c + Cᵀ * S * A.map c).map π = 0` using `by rw [h11]; ext; simp`.
+
+Rewrite `this` using `[Matrix.map_add _ (map_add π), Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Matrix.transpose_map, hcbM, hcbM]`. Conclude with `this`. Take `⟨Xb, hXadm, hXunit⟩` from `hF cb hcbb h2k (S.map π) hSk hSck (A.map π) (C.map π) hinj hiso`. Take `⟨X0, hX0⟩ : ∃ X0 : Matrix (Fin n) (Fin n) O, X0.map π = Xb` from `⟨Xb.map (fun x => (IsLocalRing.residue_surjective x).choose), by`. Use extensionality with `i j`.
+
+Conclude with `(IsLocalRing.residue_surjective (Xb i j)).choose_spec⟩`. Take `⟨h, hh⟩` from `h2.exists_right_inv`. Establish `hch : c h = h`. Establish `h' : c 2 * c h = 1` using `by rw [← map_mul, hh, map_one]`. Rewrite `h'` using `[map_ofNat]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `set Z0 := X0ᵀ * S with hZ0`. Use `set Z := h • (Z0 + (Z0.map c)ᵀ) with hZ`. Establish `hZh : (Z.map c)ᵀ = Z`. Use extensionality with `i j`.
+
+Simplify using `only [hZ, Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, map_mul, map_add, hch, hc]`. Expand and normalize the polynomial expressions, which then agree. Use `set X := (Z * S⁻¹)ᵀ with hX`. Establish `hSt : (S.map c)ᵀ = -S`. Establish `: S.map c = -Sᵀ` using `by rw [hSc, neg_neg]`.
+
+Rewrite using `[this, Matrix.transpose_neg, Matrix.transpose_transpose]`. Establish `hSinv : S * (S⁻¹.map c)ᵀ = -1`. Establish `h1 : (S⁻¹.map c) * (S.map c) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul S hS]`. Conclude with `Matrix.map_one _ (map_zero c) (map_one c)`.
+
+Establish `h2'` using `congrArg Matrix.transpose h1`. Rewrite `h2'` using `[Matrix.transpose_mul, Matrix.transpose_one, hSt, Matrix.neg_mul]`. Rewrite using `[← neg_neg (S * _), h2']`. Establish `hXS : Xᵀ * S = Z`. Rewrite using `[hX, Matrix.transpose_transpose, Matrix.mul_assoc, Matrix.nonsing_inv_mul S hS, Matrix.mul_one]`.
+
+Establish `hXc : X.map c = (S⁻¹.map c)ᵀ * Z`. Rewrite using `[hX, Matrix.transpose_map, Matrix.map_mul, Matrix.transpose_mul, hZh]`. Use `⟨X, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hXS, hXc, ← Matrix.mul_assoc, hSinv, Matrix.neg_mul, Matrix.one_mul, add_neg_cancel]`. Establish `hSbt : ((S.map π).map cb)ᵀ = -S.map π`.
+
+Establish `: (S.map π).map cb = -(S.map π)ᵀ` using `by rw [hSck, neg_neg]`. Rewrite using `[this, Matrix.transpose_neg, Matrix.transpose_transpose]`. Establish `hZb : ((Xbᵀ * S.map π).map cb)ᵀ = Xbᵀ * S.map π`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul, hSbt, ← Matrix.transpose_map, Matrix.transpose_transpose, Matrix.neg_mul]`. Conclude with `(eq_neg_of_add_eq_zero_left hXadm).symm`.
+
+Establish `hZ0b : Z0.map π = Xbᵀ * S.map π`. Rewrite using `[hZ0, Matrix.map_mul, Matrix.transpose_map, hX0]`. Establish `hZm : Z.map π = π h • (Z0.map π + ((Z0.map c).map π)ᵀ)`. Use extensionality with `i j`. Simplify using `only [hZ, Matrix.map_apply, Matrix.smul_apply, Matrix.add_apply, Matrix.transpose_apply, smul_eq_mul, map_mul, map_add]`.
+
+Establish `hZπ : Z.map π = Xbᵀ * S.map π`. Establish `h2h : π h * 2 = 1` using `by rw [← map_ofNat π 2, ← map_mul, mul_comm, hh, map_one]`. Rewrite using `[hZm, hcbM, hZ0b, hZb, ← two_smul (IsLocalRing.ResidueField O) (Xbᵀ * S.map π), smul_smul, h2h, one_smul]`. Establish `hXπ : X.map π = Xb`. Establish `hmm : (X.map π)ᵀ * S.map π = (Xᵀ * S).map π`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, map_sum, map_mul]`. Establish `e : (X.map π)ᵀ * S.map π = Xbᵀ * S.map π`. Combine the equalities or inequalities in the displayed calculation. Establish `e'` using `congrArg (· * (S.map π)⁻¹) e`.
+
+Simplify using `only [Matrix.mul_nonsing_inv_cancel_right _ _ hSk] at e'`. Conclude with `Matrix.transpose_inj.1 e'`. Apply `isUnit_of_map_unit π` to reduce the goal to its premises. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_add _ (map_add π), Matrix.map_mul, hXπ]`. Conclude with `hXunit`.
+-/
 theorem lift_of_field
     (hF : ∀ {k : Type} [Field k] (c : k →+* k), (∀ x, c (c x) = x) → (2 : k) ≠ 0 →
       ∀ {n : ℕ} (S : Matrix (Fin n) (Fin n) k), IsUnit S.det → Sᵀ = -S.map c →
@@ -128,6 +172,9 @@ theorem lift_of_field
     rw [RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_add _ (map_add π), Matrix.map_mul, hXπ]
     exact hXunit
 
+/- English proof (translation)
+The claim follows from `lift_of_field GlobalTheory.T.exists_admissible_lagrangian_transverse_field`.
+-/
 theorem exists_admissible_isUnit_det :
     ∀ {O : Type} [CommRing O] [IsLocalRing O] (c : O →+* O), (∀ x, c (c x) = x) → IsUnit (2 : O) →
     ∀ {n : ℕ} (S : Matrix (Fin n) (Fin n) O), IsUnit S.det → Sᵀ = -S.map c →

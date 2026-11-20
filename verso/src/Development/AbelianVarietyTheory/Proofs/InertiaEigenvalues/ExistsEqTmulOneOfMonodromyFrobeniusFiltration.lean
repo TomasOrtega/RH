@@ -10,6 +10,13 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PMon
 
+/- English proof (translation)
+Introduce `l _ P AI T ι hι K V _ _ z hN hφ hF`. Take `⟨w, rfl⟩` from `(GlobalTheory.T.monV_eq_zero_iff_mem_range_crisIncl' l P V z).mp hN`. Rewrite `hφ` using `[GlobalTheory.T.frobeniusTensor_crisToSemistable_comm l P K V w]`. Establish `hw` using `crisIncl_injective P hφ`. Establish `key : ∀ x : V ⊗[ℚ_[l]] P.R.B, LinearMap.lTensor V ι.toLinearMap (crisIncl P ℚ_[l] V x) = ιV (P.PD K) (LL` using `ℚ_[l]) (V := V) x := by`.
+
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [ιV, hι, P.PD_ι]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Rewrite `hF` using `[key]`. Take `⟨v, rfl⟩` from `(GlobalTheory.FundSeq.tensor_fundamental_sequence l P AI T K ℚ_[l] V).2 w hw hF`. Conclude with `⟨v, by rw [crisIncl_tmul, Polynomial.C_1]⟩`.
+-/
 theorem exists_eq_tmul_one_of_mon_phi_fil : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (ι : Bst P →ₐ[ℚ_[l]] P.R.BdR), (∀ b, ι (Polynomial.C b) = P.ιB b) → ∀ (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] (z : V ⊗[ℚ_[l]] Bst P), monV P ℚ_[l] V z = 0 → phiV P ℚ_[l] V z = z → LinearMap.lTensor V ι.toLinearMap z ∈ FilV (P.PD K) (LL := ℚ_[l]) (V := V) 0 → ∃ v : V, z = v ⊗ₜ[ℚ_[l]] (1 : Bst P) := by
   intro l _ P AI T ι hι K V _ _ z hN hφ hF
   obtain ⟨w, rfl⟩ := (GlobalTheory.T.monV_eq_zero_iff_mem_range_crisIncl' l P V z).mp hN

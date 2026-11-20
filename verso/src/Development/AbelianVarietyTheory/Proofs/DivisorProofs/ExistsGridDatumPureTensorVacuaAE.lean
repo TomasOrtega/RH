@@ -21,6 +21,9 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 namespace GlobalTheory.SmallDatumVac
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ X om om' h hTr hv`. Take `⟨ΦB, hD, m, f, φ, φ₀, hsum, hSB, hvac, hv1, h0SB, h0ne, L₁, L₂, θ, hL1, hL2, hSD, hθ, hfix⟩` from `GlobalTheory.T.exists_pureTensorSum_datum_routeThroughSmallVertex hL W B ρ t i j M hM Θ Θ' hΘ e Bs Γ X om om' h hTr hv`. Establish `hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PsiUnr Bs.ψ Bs.v₁` using `h.ψ ▸ GlobalTheory.T.localAddCharUnramified_of_splitsCompletelyAbovePlace W Bs.v₁ hTr.chars.good.2`. Conclude with `⟨ΦB, hD, m, f, φ, φ₀, hsum, hSB, hvac, hv1, h0SB, h0ne, L₁, L₂, θ, hθ, hfix, fun ψ₀ hψ₀ hfix' => GlobalTheory.T.heisenbergLatticeVacuum_unique_up_to_scalar Bs Γ Bs.v₁ L₁ L₂ θ hψ hL1 hL2 hSD hθ φ₀ ψ₀ h0SB h0ne hfix hψ₀ hfix'⟩`.
+-/
 theorem exists_datum_pure_vac : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (M : Vol G) (hM : M.Is t) (Θ : TotT G (routeBig t i j))
     (Θ' : TotT G (routeSmall t i j)) (hΘ : IsMatched B t ρ i j Θ Θ') (g₁ : GA D (G.V (.grid (i + 1) j)))

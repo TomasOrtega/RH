@@ -48,6 +48,9 @@ def extA {K : Type} [Field K] [NumberField K] [StarRing K] {m : ℕ} (A : FamIn 
   leftGroupActionLift j τ := Sum.rec (A.leftGroupActionLift j) (X.actL j) τ
   heckeL j τ := Sum.rec (A.heckeL j) (X.opL j) τ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extA_comap {K : Type} [Field K] [NumberField K] [StarRing K] {m : ℕ} (A : FamIn K G Pl0 T m) {s : N → T}
     (X : NewFam A s) : (extA A X).comap Sum.inl A.μ0 = A := rfl
 
@@ -154,6 +157,9 @@ def extR (R : RealDat D A Ks) {s : N → T} {a : N → ℕ} {X : NewFam A s} (Y 
   err0 := R.err0
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extR_comap (R : RealDat D A Ks) {s : N → T} {a : N → ℕ} {X : NewFam A s} (Y : NewReal R a X) :
     (extR R Y).comap Sum.inl A.μ0 R.mu R.twPl R.FW R.kap R.lam R.err0 = R := rfl
 

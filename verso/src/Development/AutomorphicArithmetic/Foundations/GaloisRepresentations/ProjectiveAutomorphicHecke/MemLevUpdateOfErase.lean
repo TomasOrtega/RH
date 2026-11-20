@@ -14,6 +14,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 end UpperTheory.Gal.CertificateRingHomMap
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Grk2.pVecU_of`.
+-/
 theorem UpperTheory.Gal.CertificateRingHomMap.pVecU_of :
     UpperTheory.Gal.CertificateRingHomMap.NbhdU → UpperTheory.Gal.CertificateRingHomMap.StepAt → UpperTheory.Gal.CertificateRingHomMap.SphType → UpperTheory.Gal.CertificateRingHomMap.LocComm → UpperTheory.Gal.CertificateRingHomMap.VecU :=
   _root_.UpperTheory.Reformulated.B.Grk2.pVecU_of

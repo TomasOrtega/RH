@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RigDesc.lift_fst_snd_comp_flat_lfp_surjective | exact GlobalTheory.CompanionTheory.RigDesc.lift_fst_snd_comp_flat_lfp_surjective | (intros; apply GlobalTheory.CompanionTheory.RigDesc.lift_fst_snd_comp_flat_lfp_surjective <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flat_cover_base_change_product : ∀ (S : Scheme.{0}) (A X Y : Over S) [GrpObj A], IsAbelianScheme A → ∀ q : X ⟶ Y, Flat q.left →
     LocallyOfFinitePresentation q.left → Surjective q.left →
     Flat (lift (fst A X) (snd A X ≫ q)).left ∧ LocallyOfFinitePresentation (lift (fst A X) (snd A X ≫ q)).left ∧

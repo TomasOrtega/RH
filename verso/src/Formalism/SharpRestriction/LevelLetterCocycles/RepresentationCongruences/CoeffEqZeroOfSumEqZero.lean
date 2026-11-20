@@ -9,6 +9,9 @@ variable {O : Type*} [CommRing O] [IsLocalRing O] [IsAdicComplete (IsLocalRing.m
 
 noncomputable def wd (g : O⟦X⟧) : ℕ := (g.map (IsLocalRing.residue O)).order.toNat
 
+/- English proof (translation)
+Establish `h0 : coeff 0 (g.map (IsLocalRing.residue O)) = 0` using `coeff_of_lt_order_toNat 0 (by unfold wd at hD; omega)`. Rewrite `h0` using `[coeff_map, coeff_zero_eq_constantCoeff_apply, IsLocalRing.residue_eq_zero_iff]`. Then use the resulting hypothesis.
+-/
 theorem constantCoeff_mem {g : O⟦X⟧} (hD : 1 ≤ wd g) :
     constantCoeff g ∈ IsLocalRing.maximalIdeal O := by
   have h0 : coeff 0 (g.map (IsLocalRing.residue O)) = 0 :=
@@ -18,6 +21,9 @@ theorem constantCoeff_mem {g : O⟦X⟧} (hD : 1 ≤ wd g) :
 noncomputable def poly {D : ℕ} (a : Fin D → O) : Polynomial O :=
   ∑ i : Fin D, Polynomial.C (a i) * Polynomial.X ^ (i : ℕ)
 
+/- English proof (translation)
+Simplify using `only [poly, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨n, h⟩ (fun j _ hj => if_neg (fun e => hj (Fin.ext e.symm))) (by simp)]`. Simplify using the standard rewrite rules. Conclude with `Finset.sum_eq_zero fun j _ => if_neg (by have := j.2; omega)`.
+-/
 theorem coeff_poly {D : ℕ} (a : Fin D → O) (n : ℕ) :
     (poly a).coeff n = if h : n < D then a ⟨n, h⟩ else 0 := by
   simp only [poly, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow]
@@ -27,15 +33,24 @@ theorem coeff_poly {D : ℕ} (a : Fin D → O) (n : ℕ) :
     simp
   · exact Finset.sum_eq_zero fun j _ => if_neg (by have := j.2; omega)
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [Polynomial.coeff_coe, poly, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow, map_sum, PowerSeries.coeff_C_mul_X_pow]`.
+-/
 theorem coe_poly {D : ℕ} (a : Fin D → O) :
     ((poly a : Polynomial O) : O⟦X⟧) = ∑ i : Fin D, C (a i) * X ^ (i : ℕ) := by
   ext n
   simp only [Polynomial.coeff_coe, poly, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow,
     map_sum, PowerSeries.coeff_C_mul_X_pow]
 
+/- English proof (translation)
+The claim follows from `Polynomial.degree_sum_fin_lt a`.
+-/
 theorem degree_poly_lt {D : ℕ} (a : Fin D → O) : (poly a).degree < D :=
   Polynomial.degree_sum_fin_lt a
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_poly]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(Polynomial.coeff_eq_zero_of_degree_lt (lt_of_lt_of_le hp (by exact_mod_cast (not_lt.mp h)))).symm`.
+-/
 theorem poly_of_degree {D : ℕ} {p : Polynomial O} (hp : p.degree < D) :
     poly (fun i : Fin D => p.coeff i) = p := by
   ext n
@@ -45,9 +60,15 @@ theorem poly_of_degree {D : ℕ} {p : Polynomial O} (hp : p.degree < D) :
   · exact (Polynomial.coeff_eq_zero_of_degree_lt
       (lt_of_lt_of_le hp (by exact_mod_cast (not_lt.mp h)))).symm
 
+/- English proof (translation)
+Simplify `h.commutes a` using `[PowerSeries.algebraMap_apply]`.
+-/
 theorem h_C (h : O⟦X⟧ →ₐ[O] O⟦X⟧) (a : O) : h (C a) = C a := by
   simpa [PowerSeries.algebraMap_apply] using h.commutes a
 
+/- English proof (translation)
+Rewrite using `[coe_poly, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [eq_X_mul_shift_add_const (c i)]`. Rewrite using `[map_add, map_mul, hX, h_C]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_split {D : ℕ} (h : O⟦X⟧ →ₐ[O] O⟦X⟧) {g : O⟦X⟧} (hX : h X = g)
     (c : Fin D → O⟦X⟧) :
     ∑ i : Fin D, X ^ (i : ℕ) * h (c i) =
@@ -62,6 +83,17 @@ theorem sum_split {D : ℕ} (h : O⟦X⟧ →ₐ[O] O⟦X⟧) {g : O⟦X⟧} (hX
 variable {g : O⟦X⟧} (hg : g.map (IsLocalRing.residue O) ≠ 0)
 include hg
 
+/- English proof (translation)
+Establish `HW` using `IsWeierstrassDivisor.of_map_ne_zero hg`. Establish `step : ∀ c : Fin (wd g) → O⟦X⟧, ∑ i : Fin (wd g), X ^ (i : ℕ) * h (c i) = 0 → (∀ i, constantCoeff (c i) = 0) ∧ ∑ i : Fin (wd g), X ^ (i : ℕ) * h (mk fun p => coeff (p + 1) (c i)) = 0`. Introduce `c hc`. Rewrite `hc` using `[sum_split h hX]`. Establish `h2 : g * (∑ i : Fin (wd g), X ^ (i : ℕ) * h (mk fun p => coeff (p + 1) (c i))) = ((-poly fun i => constantCoeff (c i) : Polynomial O) : O⟦X⟧)`.
+
+Rewrite using `[Polynomial.coe_neg]`. Conclude with `eq_neg_of_add_eq_zero_right hc`. Take `⟨hq, hr⟩` from `HW.eq_zero_of_mul_eq (by rw [Polynomial.degree_neg]; exact degree_poly_lt (D := wd g) _) h2`. Use `⟨fun i => ?_, hq⟩` and prove the remaining obligations. Use `congrArg (fun p => Polynomial.coeff p i) (neg_eq_zero.mp hr)` as an intermediate fact.
+
+Simplify `this` using `[coeff_poly]`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `c hc i`.
+
+Rewrite using `[coeff_zero_eq_constantCoeff_apply]`. Conclude with `(step c hc).1 i`. Consider the case `succ n ih`. Introduce `c hc i`. Use `ih _ (step c hc).2 i` as an intermediate fact.
+
+Rewrite `this` using `[coeff_mk]`. Then use the resulting hypothesis.
+-/
 theorem coeff_eq_zero_of_sum_eq_zero (h : O⟦X⟧ →ₐ[O] O⟦X⟧) (hX : h X = g) :
     ∀ n, ∀ c : Fin (wd g) → O⟦X⟧, ∑ i : Fin (wd g), X ^ (i : ℕ) * h (c i) = 0 → ∀ i, coeff n (c i) = 0 := by
   have HW := IsWeierstrassDivisor.of_map_ne_zero hg
@@ -90,17 +122,28 @@ theorem coeff_eq_zero_of_sum_eq_zero (h : O⟦X⟧ →ₐ[O] O⟦X⟧) (hX : h X
     have := ih _ (step c hc).2 i
     rwa [coeff_mk] at this
 
+/- English proof (translation)
+The claim follows from `funext fun i => PowerSeries.ext fun n => by simpa using coeff_eq_zero_of_sum_eq_zero hg h hX n c hc i`.
+-/
 theorem eq_zero_of_sum_eq_zero (h : O⟦X⟧ →ₐ[O] O⟦X⟧) (hX : h X = g) (c : Fin (wd g) → O⟦X⟧)
     (hc : ∑ i : Fin (wd g), X ^ (i : ℕ) * h (c i) = 0) : c = 0 :=
   funext fun i => PowerSeries.ext fun n => by
     simpa using coeff_eq_zero_of_sum_eq_zero hg h hX n c hc i
 
+/- English proof (translation)
+Use `eq_zero_of_sum_eq_zero hg h hX (c - c') (by` as an intermediate fact. Simplify using `only [Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib, hc, sub_self])`. Conclude with `sub_eq_zero.mp this`.
+-/
 theorem decomp_unique (h : O⟦X⟧ →ₐ[O] O⟦X⟧) (hX : h X = g) (c c' : Fin (wd g) → O⟦X⟧)
     (hc : ∑ i : Fin (wd g), X ^ (i : ℕ) * h (c i) = ∑ i : Fin (wd g), X ^ (i : ℕ) * h (c' i)) : c = c' := by
   have := eq_zero_of_sum_eq_zero hg h hX (c - c') (by
     simp only [Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib, hc, sub_self])
   exact sub_eq_zero.mp this
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Use `eq_zero_of_sum_eq_zero hg h hX (fun i => if (i : ℕ) = 0 then a else 0) (by` as an intermediate fact. Rewrite using `[Finset.sum_eq_single ⟨0, hD⟩ (fun j _ hj => by`. Rewrite using `[if_neg (fun e => hj (Fin.ext e)), map_zero, mul_zero]) (by simp)]`.
+
+Simplify using `[ha])`. Simplify using `using congrFun this ⟨0, hD⟩`.
+-/
 theorem injective (hD : 1 ≤ wd g) (h : O⟦X⟧ →ₐ[O] O⟦X⟧) (hX : h X = g) :
     Function.Injective h := by
   rw [injective_iff_map_eq_zero]
@@ -117,15 +160,32 @@ noncomputable def cf (g : O⟦X⟧) (f : O⟦X⟧) (i : ℕ) : O⟦X⟧ :=
   mk fun n => ((fun q => q /ʷ g)^[n] f %ʷ g).coeff i
 
 omit hg in
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, cf, coeff_mk, Function.iterate_zero_apply]`.
+-/
 theorem constantCoeff_cf (f : O⟦X⟧) (i : ℕ) : constantCoeff (cf g f i) = (f %ʷ g).coeff i := by
   rw [← coeff_zero_eq_constantCoeff_apply, cf, coeff_mk, Function.iterate_zero_apply]
 
 omit hg in
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [cf, coeff_mk, Function.iterate_succ_apply]`.
+-/
 theorem shift_cf (f : O⟦X⟧) (i : ℕ) :
     (mk fun p => coeff (p + 1) (cf g f i)) = cf g (f /ʷ g) i := by
   ext n
   simp only [cf, coeff_mk, Function.iterate_succ_apply]
 
+/- English proof (translation)
+Establish `hg0` using `constantCoeff_mem hD`. Set `E : O⟦X⟧ → O⟦X⟧` to `fun f => f - ∑ i : Fin (wd g), X ^ (i : ℕ) * h (cf g f i)`. Establish `hE : ∀ f, E f = g * E (f /ʷ g)`. Introduce `f`. Establish `hs` using `sum_split h hX (fun i : Fin (wd g) => cf g f i)`.
+
+Simplify using `only [constantCoeff_cf, shift_cf] at hs`. Rewrite `hs` using `[poly_of_degree (D := wd g) (degree_weierstrassMod_lt f g)]`. Establish `hf` using `eq_mul_weierstrassDiv_add_weierstrassMod f hg`. Simplify using `only [E]`. Rewrite using `[hs]`.
+
+Take the linear combination `hf`. Establish `hmem : ∀ N f, E f ∈ Ideal.span {g ^ N}`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => intro f`.
+
+Simplify using the standard rewrite rules. Consider the case `succ N ih`. Introduce `f`. Rewrite using `[hE, Ideal.mem_span_singleton, pow_succ']`. Conclude with `mul_dvd_mul_left g (Ideal.mem_span_singleton.mp (ih _))`.
+
+Establish `h0 : E f = 0` using `eq_zero_of_forall_mem_coeffFiltration fun N => (Ideal.span_singleton_le_iff_mem _).mpr (pow_mem_coeffFiltration hg0 N) (hmem N f)`. Conclude with `⟨fun i => cf g f i, sub_eq_zero.mp h0⟩`.
+-/
 theorem exists_decomp (hD : 1 ≤ wd g) (h : O⟦X⟧ →ₐ[O] O⟦X⟧) (hX : h X = g) (f : O⟦X⟧) :
     ∃ c : Fin (wd g) → O⟦X⟧, f = ∑ i : Fin (wd g), X ^ (i : ℕ) * h (c i) := by
   have hg0 := constantCoeff_mem hD

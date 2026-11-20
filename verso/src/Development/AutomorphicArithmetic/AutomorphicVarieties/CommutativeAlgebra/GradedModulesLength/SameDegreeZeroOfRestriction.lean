@@ -8,10 +8,22 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
+/- English proof (translation)
+Introduce `b hb` and use `DFunLike.congr_fun h ⟨b, hb⟩`.
+-/
 private theorem same_degree_zero_of_restriction {O A K : Type} [CommRing O] [CommRing A] [Algebra O A] (𝒜 : ℤ → Submodule O A)
     [GradedAlgebra 𝒜] [Field K] [Algebra O K] {ξ ξ' : A →ₐ[O] K} (h : res0 𝒜 ξ = res0 𝒜 ξ') : Same0 𝒜 ξ ξ' :=
   fun b hb => DFunLike.congr_fun h ⟨b, hb⟩
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ K _ _ _ _ A _ _ 𝒜 _ _ x hW r s r' s' m Q hF hG h2 h3 p hp hirr hsec hZ hD`. Establish `hi` using `(zi_holds O A 𝒜 x hW r s r' s' m Q p hp hirr hsec hZ).1`. Establish `hP : (p.comap (algebraMap (𝒜 0) (mR Q))).IsPrime` using `Ideal.comap_isPrime _ _`. Break down `emb_holds O K A 𝒜 x Q.ideal h2 _ hP (fun b hb => hi b hb) with h | ⟨-, σ, hσ⟩` into its components or cases. Rewrite using `[Ideal.map_le_iff_le_comap, h]`.
+
+It suffices to derive a contradiction. Take `⟨ξm, hmS, hmP, hmN, hm0⟩` from `zm_holds O K A 𝒜 x hW r s r' s' m Q p hp hirr hsec hZ hD σ hσ`. Take `⟨ξp, hpS, hpN, hpP, hp0⟩` from `zp_holds O K A 𝒜 x hW r s r' s' m Q p hp hirr hsec hZ hD σ hσ`. Take `⟨ξ, hS, hN, hPz, h0⟩` from `fix_holds O K A 𝒜 x hW r s r' s' m Q σ (by rw [hσ]; exact Ideal.map_le_iff_le_comap.1 hD) (fun b hb => by`. Establish `: b ∈ RingHom.ker σ` using `by rw [hσ]; exact hi b hb`.
+
+Conclude with `this)`. Establish `sm : Same0 𝒜 ξm ξ` using `same_degree_zero_of_restriction 𝒜 (hm0.trans h0.symm)`. Establish `sp : Same0 𝒜 ξp ξ` using `same_degree_zero_of_restriction 𝒜 (hp0.trans h0.symm)`. Distinguish the cases in `hx : ξ = (Algebra.ofId O K).comp x`. Conclude with `hmN (ct_holds O K A 𝒜 x hW r s r' s' m Q hF hG ξm hmS hmP (hx ▸ sm))`.
+
+Break down `h3 ξ hS hN hPz hx with h | h` into its components or cases. Conclude with `h ⟨ξp, hpS, hpN, hpP, sp⟩`. Conclude with `h ⟨ξm, hmS, hmP, hmN, sm⟩`.
+-/
 theorem UpperTheory.V.Alg.M.zii_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]
       (K : Type) [Field K] [Algebra O K] [IsAlgClosed K] [FaithfulSMul O K]

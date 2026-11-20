@@ -21,11 +21,17 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Sep
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_two {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Substitute `hφ` using the available equality. Conclude with `gen_unique hM p e he hp hu hu' h Z r z J hJ`.
+-/
 theorem gen_unique_of_eq {X Y S₀ : Scheme.{0}} {M : LB X} (hM : M.IsLB) {Ix : Type} [Fintype Ix]
     {φ φ' : Ix → (Y ⟶ X)} {ε : Ix → ℤ} (p : Y ⟶ S₀) (e : S₀ ⟶ Y) (he : e ≫ p = 𝟙 _)
     (hp : Function.Surjective p.appTop.hom) (hφ : φ' = φ) {u : LB.Gen (LB.LinComb M φ' ε)}
@@ -35,6 +41,29 @@ theorem gen_unique_of_eq {X Y S₀ : Scheme.{0}} {M : LB X} (hM : M.IsLB) {Ix : 
   subst hφ
   exact gen_unique hM p e he hp hu hu' h Z r z J hJ
 
+/- English proof (translation)
+Introduce `V₁ W₀ _ _ ib A _ hA B₀ β hβ M₀ hM₀ Ix _ φ ψ hφ ε t ht K _ _ ev k₀ hk₀ hk x₁ hx₁ hd₁ h1 x hx hd z J hJ`. Establish `hf : ∀ a, (ev.comp ib) a ∈ k₀` using `hk`. Set `v : (Sp K ⟶ A.left) → ((Sp K ⟶ B₀.left) → M₀.ι) → K` to `fun x J => valF x (LB.wchart M₀ φ (fun k => J (x ≫ φ k))) ((genSec t ht).f (fun k => J (x ≫ φ k)))`. Establish `hv : ∀ x z J, Good M₀ z J → (val t x z J).val = toStk z (v x J)` using `fun x z J hJ => (sval_genSec t ht x z hJ).symm.trans (toStk_valF_gs x _ z (hJ.mem φ x) _).symm`. Establish `hfix : ∀ x : Sp K ⟶ A.left, DefOver k₀ (x ≫ β) → ∀ σ : K ≃+* K, (∀ a ∈ k₀, σ a = a) → ∀ k, spMap σ.toRingHom ≫ x ≫ φ k = x ≫ φ k`.
+
+Introduce `x hd σ hσ k`. Take `⟨P₀, hP₀⟩` from `hd`. Rewrite using `[hφ k, ← Category.assoc x, ← hP₀, Category.assoc, ← Category.assoc (spMap σ.toRingHom), spMap_conj k₀ k₀.subtype (fun a => a.2) σ hσ]`. Establish `hvσ : ∀ x : Sp K ⟶ A.left, DefOver k₀ (x ≫ β) → ∀ σ : K ≃+* K, (∀ a ∈ k₀, σ a = a) → ∀ z J, Good M₀ z J → (val t (spMap σ.toRingHom ≫ x) z J).val = toStk z (σ (v x J))` using `fun x hd σ hσ z J hJ => (sval_genSec t ht _ z hJ).symm.trans (sval_spMap _ σ.toRingHom x z hJ (hfix x hd σ hσ))`. Establish `hsurj : Function.Surjective (pullback.snd A.hom (spMap ev)).appTop.hom` using `fun w => TLinPf.const_pullback GlobalTheory.SemiRigid.globalFns (spMap ev) A hA w`.
+
+Establish `key : ∀ σ : K ≃+* K, (∀ a ∈ k₀, σ a = a) → σ (v x J) = v x J`. Introduce `σ hσ`. Establish `hc : (pullback.fst A.hom (spMap ev) ≫ β) ≫ B₀.hom = (pullback.snd A.hom (spMap ev) ≫ spMap σ.toRingHom ≫ spMap ev) ≫ spMap ib`. Simplify using `only [Category.assoc]`. Rewrite using `[hβ.w, pullback.condition_assoc, spMap_two, spMap_conj k₀ _ hf σ hσ]`.
+
+Take `⟨l, hl1, hl2⟩ : ∃ l : pullback A.hom (spMap ev) ⟶ A.left, l ≫ β = pullback.fst A.hom (spMap ev) ≫ β ∧ l ≫ A.hom = pullback.snd A.hom (spMap ev) ≫ spMap σ.toRingHom ≫ spMap ev` from `⟨hβ.lift _ _ hc, hβ.lift_fst _ _ hc, hβ.lift_snd _ _ hc⟩`. Take `⟨σt, hs1, hs2⟩ : ∃ σt : pullback A.hom (spMap ev) ⟶ pullback A.hom (spMap ev), σt ≫ pullback.fst A.hom (spMap ev) = l ∧ σt ≫ pullback.snd A.hom (spMap ev) = pullback.snd A.hom (spMap ev) ≫ spMap σ.toRingHom` from `⟨pullback.lift l _ (by rw [hl2, Category.assoc]), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `hσβ : σt ≫ pullback.fst A.hom (spMap ev) ≫ β = pullback.fst A.hom (spMap ev) ≫ β`. Rewrite using `[reassoc_of% hs1, hl1]`. Establish `hpt : ∀ (y : Sp K ⟶ A.left) (hy : y ≫ A.hom = spMap ev), DefOver k₀ (y ≫ β) → pullback.lift y (𝟙 _) (by rw [hy, Category.id_comp]) ≫ σt = spMap σ.toRingHom ≫ pullback.lift y (𝟙 _) (by rw [hy, Category.id_comp])`.
+
+Introduce `y hy hd`. Take `⟨P₀, hP₀⟩` from `hd`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, hs1, pullback.lift_fst]`. Apply `hβ.hom_ext` to reduce the goal to its premises.
+
+Simplify using `only [Category.assoc, hl1, pullback.lift_fst_assoc]`. Rewrite using `[← hP₀, ← Category.assoc, spMap_conj k₀ k₀.subtype (fun a => a.2) σ hσ]`. Simplify using `only [Category.assoc, hl2, pullback.lift_snd_assoc, Category.id_comp, hy]`. Simplify using `only [Category.assoc, hs2, pullback.lift_snd_assoc, Category.id_comp, pullback.lift_snd, Category.comp_id]`. Set `tK` to `LB.pullGen M₀ φ ε t (pullback.fst A.hom (spMap ev))`.
+
+Establish `htK : tK.IsGen` using `DVR.pullGen_isGen _ _ _ _ ht _`. Establish `hu : (LB.pullGen M₀ _ ε tK σt).IsGen` using `DVR.pullGen_isGen _ _ _ _ htK _`. Establish `hval : ∀ (y : Sp K ⟶ A.left) (hy : y ≫ A.hom = spMap ev), DefOver k₀ (y ≫ β) → ∀ z J, Good M₀ z J → val (LB.pullGen M₀ _ ε tK σt) (pullback.lift y (𝟙 _) (by rw [hy, Category.id_comp])) z J = val t (spMap σ.toRingHom ≫ y) z J`. Introduce `y hy hd z J hJ`. Rewrite using `[val_pull hJ, hpt y hy hd, val_pull hJ, Category.assoc, pullback.lift_fst]`.
+
+Establish `hvalK : ∀ (y : Sp K ⟶ A.left) (hy : y ≫ A.hom = spMap ev) z J, Good M₀ z J → val tK (pullback.lift y (𝟙 _) (by rw [hy, Category.id_comp])) z J = val t y z J`. Introduce `y hy z J hJ`. Rewrite using `[val_pull hJ, pullback.lift_fst]`. Establish `huniq` using `gen_unique_of_eq hM₀ (pullback.snd A.hom (spMap ev)) (pullback.lift x₁ (𝟙 _) (by rw [hx₁, Category.id_comp])) (pullback.lift_snd _ _ _) hsurj (funext fun k => by rw [hφ k]; exact (reassoc_of% hσβ) (ψ k)) hu htK (fun y J hJ => by`. Rewrite using `[hval x₁ hx₁ hd₁ y J hJ, hvalK x₁ hx₁ y J hJ, h1 y J hJ]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Establish `e1` using `hv x₁ y J hJ`. Rewrite `e1` using `[h1 y J hJ, Units.val_one, ← map_one (toStk y)]`. Rewrite using `[hvσ x₁ hd₁ σ hσ y J hJ, ← (toStk y).injective e1, map_one, map_one, Units.val_one])`. Use the proof step `(Sp K) (pullback.lift x (𝟙 _) (by rw [hx, Category.id_comp])) z J hJ`.
+
+Rewrite `huniq` using `[hval x hx hd z J hJ, hvalK x hx z J hJ]`. Establish `e2` using `congrArg Units.val huniq`. Rewrite `e2` using `[hvσ x hd σ hσ z J hJ, hv x z J hJ]`. Conclude with `(toStk z).injective e2`. Use `⟨v x J, ?_, hv x z J hJ⟩` and prove the remaining obligations.
+
+Apply `mem_of_finite_conj k₀ hk₀` to reduce the goal to its premises. Apply `(Set.finite_singleton (v x J)).subset` to reduce the goal to its premises. Introduce and unpack `b ⟨σ, hσ, rfl⟩`. Conclude with `key σ hσ`.
+-/
 theorem gen_values_mem : ∀ (V₁ W₀ : Type) [CommRing V₁] [CommRing W₀] (ib : W₀ →+* V₁) (A : Over (Sp V₁)) [GrpObj A],
     IsAbelianScheme A → ∀ (B₀ : Over (Sp W₀)) (β : A.left ⟶ B₀.left), IsPullback β A.hom B₀.hom (spMap ib) →
     ∀ (M₀ : LB B₀.left), M₀.IsLB → ∀ (Ix : Type) [Fintype Ix] (φ : Ix → (A.left ⟶ B₀.left))

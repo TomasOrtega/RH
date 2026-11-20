@@ -41,18 +41,27 @@ def linW {σ : Type} (w : (σ →₀ ℕ) → ℂ) : MvPolynomial σ ℂ →ₗ[
     · refine Finset.sum_congr rfl (fun α _ => ?_)
       rw [coeff_smul, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem linW_apply {σ : Type} (w : (σ →₀ ℕ) → ℂ) (P : MvPolynomial σ ℂ) :
     linW w P = ∑ α ∈ P.support, coeff α P * w α := rfl
 
 def wTh {T : Type} [Fintype T] {N N' : ℕ} (Θ : VC T N N' → ℂ) (α : Mono T N N') : ℂ :=
   (α.prod fun _ n => (n.factorial : ℂ)) * taylor Θ α
 
+/- English proof (translation)
+Rewrite using `[linW_apply, applyAt0]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[wTh, mul_assoc]`.
+-/
 theorem applyAt0_eq {T : Type} [Fintype T] {N N' : ℕ} (P : MvPolynomial (Idx T N N') ℂ)
     (Θ : VC T N N' → ℂ) : applyAt0 P Θ = linW (wTh Θ) P := by
   rw [linW_apply, applyAt0]
   refine Finset.sum_congr rfl (fun α _ => ?_)
   rw [wTh, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [minY, map_prod, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem minY_map {Lt k k' : Type} [Fintype Lt] [CommRing k] [CommRing k'] (f : k →+* k')
     (N : ℕ) (nu : Lt → YoungDiagram) (J : ColChoice N nu) (y : Lt → Fin N → ℕ → k) :
     f (minY N nu J y) = minY N nu J (fun z a j => f (y z a j)) := by
@@ -63,6 +72,9 @@ def yfr {Lt T : Type} (tp : Lt → T) {N N' : ℕ} (s : T → ℂ) (x : Lt → F
     Lt → Fin N' → ℕ → MvPolynomial (Idx T N N') ℂ :=
   fun z a j => ∑ b : Fin N, C (s (tp z)) * X ((tp z, a, b) : Idx T N N') * C (x z b j)
 
+/- English proof (translation)
+Simplify using `only [Finset.prod_univ_sum, Fintype.piFinset_univ]`. Conclude with `Fintype.sum_equiv (Equiv.refl _) _ _ (fun _ => rfl)`.
+-/
 theorem prod_sum_cc {Lt : Type} [Fintype Lt] [DecidableEq Lt] {R : Type} [CommRing R] (N : ℕ)
     (nu : Lt → YoungDiagram)
     (F : ∀ (z : Lt) (c : Fin ((nu z).rowLen 0)), (Fin ((nu z).colLen c) ↪o Fin N) → R) :
@@ -70,6 +82,13 @@ theorem prod_sum_cc {Lt : Type} [Fintype Lt] [DecidableEq Lt] {R : Type} [CommRi
   simp only [Finset.prod_univ_sum, Fintype.piFinset_univ]
   exact Fintype.sum_equiv (Equiv.refl _) _ _ (fun _ => rfl)
 
+/- English proof (translation)
+Establish `hR : ∀ J : ColChoice N nu, PIJ tp nu s I J * C (minY N nu J x) = ∏ z, ∏ c : Fin ((nu z).rowLen 0), (Matrix.of fun i k : Fin ((nu z).colLen c) => C (s (tp z)) * X ((tp z, I z c i, J z c k) : Idx T N N')).det * (Matrix.of fun i j : Fin ((nu z).colLen c) => (C (x z (J z c i) (j : ℕ) …`. Introduce `J`. Rewrite using `[minY_map]`. Simplify using `only [PIJ, minY, ← Finset.prod_mul_distrib]`. Establish `hL : minY N' nu I (yfr tp s x) = ∏ z, ∏ c : Fin ((nu z).rowLen 0), ∑ Jc : Fin ((nu z).colLen c) ↪o Fin N, (Matrix.of fun i k : Fin ((nu z).colLen c) => C (s (tp z)) * X ((tp z, I z c i, Jc k) : Idx T N N')).det * (Matrix.of fun i j : Fin ((nu z).colLen c) => (C (x z (Jc i) (j : ℕ …`.
+
+Simplify using `only [minY]`. Use `Finset.prod_congr rfl (fun z _ => Finset.prod_congr rfl (fun c _ => ?_))` and prove the remaining obligations. Establish `hcb` using `det_mul_eq_sum_oe (Matrix.of fun (i : Fin ((nu z).colLen c)) (b : Fin N) => C (s (tp z)) * X ((tp z, I z c i, b) : Idx T N N')) (Matrix.of fun (b : Fin N) (j : Fin ((nu z).colLen c)) => (C (x z b (j : ℕ)) : MvPolynomial (Idx T N N') ℂ))`. Establish `hm : (Matrix.of fun i j : Fin ((nu z).colLen c) => yfr tp s x z (I z c i) (j : ℕ)) = (Matrix.of fun (i : Fin ((nu z).colLen c)) (b : Fin N) => C (s (tp z)) * X ((tp z, I z c i, b) : Idx T N N')) * (Matrix.of fun (b : Fin N) (j : Fin ((nu z).colLen c)) => (C (x z b (j : ℕ)) : MvPo …`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply, yfr]`. Rewrite using `[hm, hcb]`. Both sides reduce to the same expression. Rewrite using `[hL, prod_sum_cc]`. Conclude with `Finset.sum_congr rfl (fun J _ => hR J)`.
+-/
 theorem key_id {Lt T : Type} [Fintype Lt] [DecidableEq Lt] (tp : Lt → T) {N N' : ℕ}
     (nu : Lt → YoungDiagram) (s : T → ℂ) (x : Lt → Fin N → ℕ → ℂ) (I : ColChoice N' nu) :
     ∑ J : ColChoice N nu, PIJ tp nu s I J * C (minY N nu J x) = minY N' nu I (yfr tp s x) := by
@@ -107,11 +126,17 @@ theorem key_id {Lt T : Type} [Fintype Lt] [DecidableEq Lt] (tp : Lt → T) {N N'
   rw [hL, prod_sum_cc]
   exact Finset.sum_congr rfl (fun J _ => hR J)
 
+/- English proof (translation)
+Rewrite using `[AOp, finsum_eq_sum_of_fintype]`.
+-/
 theorem AOp_eq {Lt T : Type} [Fintype Lt] [DecidableEq Lt] [Fintype T] (tp : Lt → T) {N N' : ℕ}
     (nu : Lt → YoungDiagram) (s : T → ℂ) (Θ : VC T N N' → ℂ) (φ : LaC N nu) (I : ColChoice N' nu) :
     AOp tp nu s Θ φ I = ∑ J : ColChoice N nu, applyAt0 (PIJ tp nu s I J) Θ * φ J := by
   rw [AOp, finsum_eq_sum_of_fintype]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `I`. Rewrite using `[AOp_eq, ← key_id, map_sum]`. Use `Finset.sum_congr rfl (fun J _ => ?_)` and prove the remaining obligations. Rewrite using `[applyAt0_eq, mul_comm (PIJ tp nu s I J), ← MvPolynomial.smul_eq_C_mul, map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem AOp_hv {Lt T : Type} [Fintype Lt] [DecidableEq Lt] [Fintype T] (tp : Lt → T) {N N' : ℕ}
     (nu : Lt → YoungDiagram) (s : T → ℂ) (Θ : VC T N N' → ℂ) (x : Lt → Fin N → ℕ → ℂ) :
     AOp tp nu s Θ (hvC N nu x) = fun I => linW (wTh Θ) (minY N' nu I (yfr tp s x)) := by
@@ -122,6 +147,17 @@ theorem AOp_hv {Lt T : Type} [Fintype Lt] [DecidableEq Lt] [Fintype T] (tp : Lt 
     smul_eq_mul, mul_comm]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Subspace.dualAnnihilator_dualCoannihilator_eq (W := Vnu N nu), Submodule.mem_dualCoannihilator]`. Introduce `f hf`. Rewrite `hf` using `[Submodule.mem_dualAnnihilator]`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f]`. Use `set e : ColChoice N nu → ℂ := fun I => f (fun J => if I = J then 1 else 0) with he`.
+
+Establish `hQ : (∑ I : ColChoice N nu, e I • minY N nu I y) = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `p`. Establish `hv : hvC N nu (fun z a j => eval p (y z a j)) ∈ Vnu N nu` using `Submodule.subset_span ⟨_, rfl⟩`. Establish `h0` using `hf _ hv`.
+
+Rewrite `h0` using `[LinearMap.pi_apply_eq_sum_univ f]`. Rewrite using `[map_sum, map_zero, ← h0]`. Use `Finset.sum_congr rfl (fun I _ => ?_)` and prove the remaining obligations. Simplify using `only [MvPolynomial.smul_eval, smul_eq_mul]`. Rewrite using `[mul_comm]`.
+
+Use `congr 1`. Conclude with `minY_map (eval p) N nu I y`. Use `congrArg L hQ` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Use `Eq.trans (Finset.sum_congr rfl (fun I _ => ?_)) this` and prove the remaining obligations.
+
+Simplify using `only [map_smul, smul_eq_mul, he]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_Vnu_poly {Lt σ : Type} [Fintype Lt] [DecidableEq Lt] (N : ℕ) (nu : Lt → YoungDiagram)
     (L : MvPolynomial σ ℂ →ₗ[ℂ] ℂ) (y : Lt → Fin N → ℕ → MvPolynomial σ ℂ) :
     (fun I => L (minY N nu I y)) ∈ Vnu N nu := by
@@ -163,6 +199,11 @@ def AOpLin {Lt T : Type} [Fintype Lt] [DecidableEq Lt] [Fintype T] (tp : Lt → 
     refine Finset.sum_congr rfl (fun J _ => ?_)
     ring
 
+/- English proof (translation)
+Introduce `Lt T _ _ _ tp N N' nu s Θ φ hφ`. Establish `hle : Vnu N nu ≤ (Vnu N' nu).comap (AOpLin tp nu s Θ)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `show AOp tp nu s Θ (hvC N nu x) ∈ Vnu N' nu`.
+
+Rewrite using `[AOp_hv]`. Conclude with `mem_Vnu_poly N' nu _ _`. Conclude with `hle hφ`.
+-/
 theorem isoFunV_main : IsoFunV := by
   intro Lt T _ _ _ tp N N' nu s Θ φ hφ
   have hle : Vnu N nu ≤ (Vnu N' nu).comap (AOpLin tp nu s Θ) := by

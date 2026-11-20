@@ -8,12 +8,22 @@ open UpperTheory.Gal.CertificateRingHomMap (wop wmul wmap)
 open Matrix NumberField Polynomial GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCx GlobalTheory.LKDef GlobalTheory.RootSumWeights GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen
 open scoped TensorProduct Classical
 
+/- English proof (translation)
+Distinguish the cases in `h : x ∈ (Kp G : Set (Gr G 1))`. Simplify using `[oneP, Set.indicator_of_mem h]`. Simplify using `[oneP, Set.indicator_of_notMem h]`.
+-/
 private theorem map_oneP {p : ℕ} [Fact p.Prime] (σ : ℂ ≃+* ℂ) (G : HTGroup p) (x : Gr G 1) :
     σ (oneP G x) = oneP G x := by
   by_cases h : x ∈ (Kp G : Set (Gr G 1))
   · simp [oneP, Set.indicator_of_mem h]
   · simp [oneP, Set.indicator_of_notMem h]
 
+/- English proof (translation)
+Establish `hterm : ∀ B : DForm G, B.trace ξ' K (fun g => σ (f g)) (Kp G) (oneP G) = σ (B.trace ξ K f (Kp G) (oneP G))`. Introduce `B`. Establish `h` using `hH σ (grp G B.β) (G.GAf × Gr G 1) V V' (ξ.comp (grp G B.β).subtype) (ξ'.comp (grp G B.β).subtype) e hs (fun g x => hi g.1 x) B.emb (K.prod (Kp G)) (fun h => f h.1 * oneP G h.2)`. Establish `hF : (fun h : G.GAf × Gr G 1 => σ (f h.1 * oneP G h.2)) = fun h => σ (f h.1) * oneP G h.2`. Use function extensionality and compare the values at `h`.
+
+Rewrite using `[map_mul, map_oneP]`. Rewrite `h` using `[hF]`. Conclude with `h`. Unfold `dTrace`. Establish `hm` using `σ.toAddEquiv.map_finsum (fun q : DFCls G => (Quot.out q).trace ξ K f (Kp G) (oneP G))`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem dTrace_conj {p : ℕ} [Fact p.Prime] (hH : HeckeTraceSemi) (σ : ℂ ≃+* ℂ) (G : HTGroup p)
     {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
     (ξ : Representation ℂ (G.Cˣ × ℚˣ) V) (ξ' : Representation ℂ (G.Cˣ × ℚˣ) V') (e : V ≃+ V') (hs : IsSemi σ e)
@@ -33,6 +43,19 @@ private theorem dTrace_conj {p : ℕ} [Fact p.Prime] (hH : HeckeTraceSemi) (σ :
   calc _ = ∑ᶠ q : DFCls G, σ ((Quot.out q).trace ξ K f (Kp G) (oneP G)) := finsum_congr fun q => hterm _
     _ = _ := hm.symm
 
+/- English proof (translation)
+Introduce `hT hCR hH hG hSW hP σ p _ D G L lam K J ψ θ f hS`. Take `⟨hcomm, V, i1, i2, i3, ξ, hwt, hsp⟩` from `hS`. Take `⟨V', j1, j2, j3, ξ', e, hse, hint⟩` from `hCR σ (G.Cˣ × ℚˣ) V ξ`. Establish `hPf` using `hP σ G.GAf J K ψ f`. Use `⟨fun j j' w => ?_, V', j1, j2, j3, ξ', ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hPf.1, hPf.1, hcomm]`. Introduce `B y h1 h2`. Rewrite using `[hSW, ← hwt B y h1 h2]`. Conclude with `hT σ V V' e hse (ξ y.1) (ξ' y.1) (fun x => hint y.1 x)`. Introduce `s' hs'`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨s, rfl⟩ : ∃ s : List J →₀ ℂ, wmap σ.toRingHom s = s' := by`. Use `⟨wmap σ.symm.toRingHom s', ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Simplify using `[wmap]`. Establish `hw : σ (wop θ s) = wop (fun j => σ (θ j)) (wmap σ.toRingHom s)` using `UpperTheory.Gal.CertificateRingHomMap.map_wop_wmap σ.toRingHom σ.toRingHom (fun _ => rfl) θ s`.
+
+Establish `hne : wop θ s ≠ 0`. Introduce `h0`. Apply `hs'` to reduce the goal to its premises. Rewrite using `[← hw, h0, map_zero]`. Take `⟨a, hgood, htr⟩` from `hsp s hne`.
+
+Use `⟨wmap σ.toRingHom a, ?_⟩` and prove the remaining obligations. Establish `hc : polyFn K (fun j g => σ (ψ j g)) (wmul (wmap σ.toRingHom a) (wmap σ.toRingHom s)) (fun g => σ (f g)) = fun g => σ (polyFn K ψ (wmul a s) f g)`. Rewrite using `[← hPf.2.2, hPf.2.1]`. Rewrite using `[hc]`. Use `⟨hG σ p G K _ hgood, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[dTrace_conj hH σ G ξ ξ' e hse hint]`. Conclude with `fun h0 => htr ((map_eq_zero σ).1 h0)`.
+-/
 theorem UpperTheory.Gal.LocalSmoothExtension.specConj_of :
     TraceSemi → ConjRep → HeckeTraceSemi → GoodConj → SchWConj → PolyFnConj → SpecConj := by
   intro hT hCR hH hG hSW hP σ p _ D G L lam K J ψ θ f hS

@@ -10,6 +10,11 @@ noncomputable section
 
 namespace Formalism.HN
 
+/- English proof (translation)
+Establish `h2 : (0 : ℝ) < 2 ^ (f * J)` using `Real.rpow_pos_of_pos two_pos _`. Establish `hd' : 0 < d ^ (-J / 2)` using `Real.rpow_pos_of_pos hd _`. Rewrite using `[Real.rpow_def_of_pos (mul_pos (mul_pos h2 hd') hC), Real.log_mul (mul_pos h2 hd').ne' hC.ne', Real.log_mul h2.ne' hd'.ne', Real.log_rpow two_pos, Real.log_rpow hd]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sizeMu_rpow_eq (f J C d : ℝ) (hf : 0 < f) (hJ : 0 < J) (hC : 0 < C) (hd : 0 < d) :
     ((2 : ℝ) ^ (f * J) * d ^ (-J / 2) * C) ^ ((1 : ℝ) / (2 * f * J)) =
       Real.exp (Real.log 2 / 2 - Real.log d / (2 * (2 * f)) - (-Real.log C) / ((2 * f) * J)) := by
@@ -21,6 +26,13 @@ theorem sizeMu_rpow_eq (f J C d : ℝ) (hf : 0 < f) (hJ : 0 < J) (hC : 0 < C) (h
   field_simp
   ring
 
+/- English proof (translation)
+Establish `h1` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank K`. Use `haveI : IsEmpty {w : InfinitePlace K // w.IsReal} := by`. Use `⟨fun w => ?_⟩` and prove the remaining obligations. Establish `hc : w.1.IsComplex` using `IsTotallyComplex.isComplex w.1`. Use `first`.
+
+Consider the case `exact (NumberField.InfinitePlace.not_isReal_iff_isComplex.mpr hc) w.2`. Consider the case `exact (NumberField.InfinitePlace.not_isComplex_iff_isReal.mpr w.2) hc`. Establish `h3 : Nat.card {w : InfinitePlace K // w.IsComplex} = Nat.card (InfinitePlace K)` using `Nat.card_congr (Equiv.subtypeUnivEquiv (fun w => IsTotallyComplex.isComplex w))`. Simplify using `only [Fintype.card_eq_nat_card, Nat.card_of_isEmpty, h3] at h1`. Simplify using `only [nPl, Fintype.card_eq_nat_card]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem sizeMu_finrank_eq (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] :
     Module.finrank ℚ K = 2 * nPl K := by
   have h1 := NumberField.InfinitePlace.card_add_two_mul_card_eq_rank K
@@ -36,6 +48,57 @@ theorem sizeMu_finrank_eq (K : Type) [Field K] [NumberField K] [IsTotallyComplex
   simp only [nPl, Fintype.card_eq_nat_card]
   omega
 
+/- English proof (translation)
+Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX L hLfg hL0 c`. Use `set ρ := Formalism.HermitianLatticesTheory.realize b X with hρ`. Establish `hnf` using `sizeMu_finrank_eq K`. Establish `hd : 0 < |(NumberField.discr K : ℝ)|` using `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero K)`. Take `⟨hlat, hrkL, hhtL⟩` from `h1 K V ι b X hX L hLfg`.
+
+Establish `hSB` using `saturation_basic_properties (𝓞 K) V _ ρ L hlat`. Establish `hrk_pos : ∀ N : Submodule (𝓞 K) V, N.FG → N ≠ ⊥ → 0 < (nPl K : ℝ) ∧ 0 < (rkK N : ℝ)`. Introduce `N hN hN0`. Take `⟨hlN, hrkN, -⟩` from `h1 K V ι b X hX N hN`. Establish `h0 : rk ρ N ≠ 0` using `fun h => hN0 (((saturation_basic_properties (𝓞 K) V _ ρ N hlN).2.2.2.1 N le_rfl).1 h)`.
+
+Rewrite `h0` using `[hrkN, hnf]`. Prove the components needed by the constructor for the conclusion. Establish `: nPl K ≠ 0` using `fun h => h0 (by simp [h])`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Establish `: rkK N ≠ 0` using `fun h => h0 (by simp [h])`.
+
+Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Establish `hsize : ∀ N : Submodule (𝓞 K) V, N.FG → N ≠ ⊥ → size b X N = Real.exp (c - slope ρ N)`. Introduce `N hN hN0`. Take `⟨hf, hj⟩` from `hrk_pos N hN hN0`. Take `⟨hlN, hrkN, -⟩` from `h1 K V ι b X hX N hN`.
+
+Establish `hC : 0 < Formalism.F.covol (zl ρ N)`. Use `hlN.2` as an intermediate fact. Conclude with `Formalism.F.covol_pos _`. Unfold `size ht`. Rewrite using `[show (2 : ℝ) ^ (nPl K * rkK N) = (2 : ℝ) ^ ((nPl K : ℝ) * (rkK N : ℝ)) by`.
+
+Rewrite using `[← Real.rpow_natCast]`. Use `push_cast`. Use the proof step `rfl]`. Rewrite using `[sizeMu_rpow_eq _ _ _ _ hf hj hC hd]`. Use `congr 1`.
+
+Establish `hr : (Formalism.F.rk (zl ρ N) : ℝ) = 2 * (nPl K : ℝ) * rkK N`. Establish `: Formalism.F.rk (zl ρ N) = 2 * nPl K * rkK N`. Rewrite using `[← hnf]`. Conclude with `hrkN`. Rewrite using `[this]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [c, slope, Formalism.F.slope, Formalism.F.deg, logDisc, hr, hnf]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hlt_of : ∀ S : Submodule (𝓞 K) V, IsSat ρ L S → S ≠ L → rk ρ S < rk ρ L`. Introduce `S hS hSL`. Take `⟨-, hSle, -⟩` from `hSB.2.2.2.2.2.2.2 S hS`. Break down `lt_or_eq_of_le hSle with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd (hSB.2.2.1 S L hS hS.1 le_rfl h.symm).symm hSL`. Establish `hsizeQ : ∀ S : Submodule (𝓞 K) V, IsSat ρ L S → S ≠ L → sizeQ b X L S = Real.exp (c - Formalism.F.slope (Formalism.F.quot (zl ρ L) (zl ρ S)))`. Introduce `S hS hSL`. Establish `hSfg : S.FG` using `Submodule.FG.of_le hLfg hS.1`. Take `⟨-, hrkS, -⟩` from `h1 K V ι b X hX S hSfg`.
+
+Take `⟨hqrk, hSle, -⟩` from `hSB.2.2.2.2.2.2.2 S hS`. Establish `hlt` using `hlt_of S hS hSL`. Establish `hf` using `(hrk_pos L hLfg hL0).1`. Establish `hjlt : (rkK S : ℝ) < rkK L`. Rewrite `hlt` using `[hrkS, hrkL, hnf]`.
+
+Establish `: rkK S < rkK L` using `Nat.lt_of_mul_lt_mul_left hlt`. Conclude with `this` after adjusting the coercions. Establish `hJ : 0 < (rkK L : ℝ) - rkK S` using `by linarith`. Establish `hCq : 0 < Formalism.F.covol (Formalism.F.quot (zl ρ L) (zl ρ S))`. Use `(Formalism.F.degQuot _ (zl ρ L) (zl ρ S) hlat.2 hS.2).1` as an intermediate fact.
+
+Conclude with `Formalism.F.covol_pos _`. Unfold `sizeQ htQ`. Rewrite using `[sizeMu_rpow_eq _ _ _ _ hf hJ hCq hd]`. Use `congr 1`. Establish `hr : (Formalism.F.rk (Formalism.F.quot (zl ρ L) (zl ρ S)) : ℝ) = 2 * (nPl K : ℝ) * ((rkK L : ℝ) - rkK S)`.
+
+Rewrite using `[hqrk, Nat.cast_sub hSle, hrkS, hrkL, hnf]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [c, Formalism.F.slope, Formalism.F.deg, logDisc, hr, hnf]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hMC` using `slope_characterization (𝓞 K) V _ ρ L hlat hL0`. Use `⟨hsize L hLfg hL0, ?_, hsizeQ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsize L hLfg hL0, Real.log_exp]`. Simplify using `only [muDef, c]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨N, hNs, hN0, hNslope⟩` from `hMC.2.2.1`. Establish `hbound : ∀ R : Submodule (𝓞 K) V, R ≤ L → R ≠ ⊥ → slope ρ R ≤ muMax ρ L`. Introduce `R hRL hR0`. Establish `h` using `(hMC.1 (muMax ρ L)).1 le_rfl R hRL`.
+
+Establish `hRfg : R.FG` using `Submodule.FG.of_le hLfg hRL`. Take `⟨hf, hj⟩` from `hrk_pos R hRfg hR0`. Take `⟨-, hrkR, -⟩` from `h1 K V ι b X hX R hRfg`. Establish `hpos : (0 : ℝ) < rk ρ R` using `by rw [hrkR, hnf]; push_cast; positivity`. Use `show deg ρ R / (rk ρ R : ℝ) ≤ _`.
+
+Rewrite using `[div_le_iff₀ hpos]`. Conclude with `h`. Unfold `leastSize`. Apply `IsLeast.csInf_eq` to reduce the goal to its premises. Use `⟨⟨N, hNs.1, hN0, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsize N (Submodule.FG.of_le hLfg hNs.1) hN0, hNslope]`. Introduce and unpack `t ⟨R, hRL, hR0, rfl⟩`. Rewrite using `[hsize R (Submodule.FG.of_le hLfg hRL) hR0]`. Conclude with `Real.exp_le_exp.2 (by linarith [hbound R hRL hR0])`. Unfold `largestSize`.
+
+Establish `hset : {t | ∃ S : Submodule (𝓞 K) V, IsSat ρ L S ∧ S ≠ L ∧ sizeQ b X L S = t} = (fun s => Real.exp (c - s)) '' {t | ∃ N : Submodule (𝓞 K) V, IsSat ρ L N ∧ N ≠ L ∧ Formalism.F.slope (Formalism.F.quot (zl ρ L) (zl ρ N)) = t}`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, hS, hSL, rfl⟩`. Conclude with `⟨_, ⟨S, hS, hSL, rfl⟩, (hsizeQ S hS hSL).symm⟩`.
+
+Introduce and unpack `⟨s, ⟨S, hS, hSL, rfl⟩, rfl⟩`. Conclude with `⟨S, hS, hSL, hsizeQ S hS hSL⟩`. Rewrite using `[hset]`. Use `(Antitone.map_csInf_of_continuousAt (f := fun s => Real.exp (c - s)) ?_ ?_ ?_ ?_).symm` and prove the remaining obligations. Conclude with `(Real.continuous_exp.comp (continuous_const.sub continuous_id)).continuousAt`.
+
+Introduce `a a' haa`. Conclude with `Real.exp_le_exp.2 (by linarith)`. Conclude with `⟨_, ⊥, hSB.2.2.2.2.2.1, fun h => hL0 h.symm, rfl⟩`. Use `⟨muMin ρ L, ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨S, hS, hSL, rfl⟩`.
+
+Establish `h` using `(hMC.2.1 (muMin ρ L)).1 le_rfl S hS.1`. Take `⟨hqrk, hSle, hqdeg⟩` from `hSB.2.2.2.2.2.2.2 S hS`. Establish `hlt : (rk ρ S : ℝ) < rk ρ L` using `by exact_mod_cast hlt_of S hS hSL`. Use `show _ ≤ Formalism.F.deg _ / (Formalism.F.rk _ : ℝ)`. Rewrite using `[hqrk, hqdeg, Nat.cast_sub hSle, le_div_iff₀ (by linarith)]`.
+
+Conclude with `h`. Introduce `L' hLL' hL'fg hrk'`. Take `⟨hlat', hrkL', -⟩` from `h1 K V ι b X hX L' hL'fg`. Unfold `ht`. Rewrite using `[hrk']`.
+
+Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Conclude with `Formalism.F.covolAntiSameRank _ (zl ρ L) (zl ρ L') hlat'.2 (muChar_zl_mono ρ hLL') (by show rk ρ L = rk ρ L'; rw [hrkL, hrkL', hrk'])`.
+-/
 theorem sizeMu_of (h1 : PlLat) : SizeMu := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX L hLfg hL0 c
   set ρ := Formalism.HermitianLatticesTheory.realize b X with hρ
@@ -171,6 +234,9 @@ theorem sizeMu_of (h1 : PlLat) : SizeMu := by
     exact Formalism.F.covolAntiSameRank _ (zl ρ L) (zl ρ L') hlat'.2 (muChar_zl_mono ρ hLL')
       (by show rk ρ L = rk ρ L'; rw [hrkL, hrkL', hrk'])
 
+/- English proof (translation)
+Conclude with `sizeMu_of place_lattice_structure`.
+-/
 theorem size_maximal_slope : SizeMu := by
   exact sizeMu_of place_lattice_structure
 

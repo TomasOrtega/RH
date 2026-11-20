@@ -16,6 +16,13 @@ open Matrix GlobalTheory.LeviElem
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨hx, hy, hι⟩` from `hL`. Rewrite using `[mul_fromCols, blk, fromCols_mul_fromBlocks]`. Simplify using `only [Matrix.mul_zero, add_zero, zero_add]`. Use `congrArg₂ fromCols hι ?_` and prove the remaining obligations. Use extensionality with `i k`.
+
+Rewrite using `[mul_diagonal]`. Use `fin_cases k`. Use `congrFun hx i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `[cols2, Matrix.mul_apply]`.
+
+Apply the tactic sequence `first | (rw [this]; ring) | (rw [mul_comm (incV F H.x i), ← this]; exact Finset.sum_congr rfl fun _ _ => mul_comm _ _)`. Use `congrFun hy i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `[cols2, Matrix.mul_apply]`. Apply the tactic sequence `first | (rw [this]; ring) | (rw [mul_comm (incV F H.y i), ← this]; done) | (rw [mul_comm (incV F H.y i), ← this]; exact Finset.sum_congr rfl fun _ _ => mul_comm _ _)`.
+-/
 theorem levi_mul_cols {σ : E →ₐ[F] E} {b : ℕ} {W : Spc F E (b + 2)} {W₁ : Spc F E b}
     (H : Plane E (b + 2) b) (l : (AE F E)ˣ) (g₀ : UA σ W₁.J) (h : UA σ W.J) (hL : IsLevi H l g₀ h) :
     mat h * fromCols (incM F H.ι) (cols2 (incV F H.x) (incV F H.y)) =
@@ -36,6 +43,11 @@ theorem levi_mul_cols {σ : E →ₐ[F] E} {b : ℕ} {W : Spc F E (b + 2)} {W₁
     simp [cols2, Matrix.mul_apply]
     first | (rw [this]; ring) | (rw [mul_comm (incV F H.y i), ← this]; done) | (rw [mul_comm (incV F H.y i), ← this]; exact Finset.sum_congr rfl fun _ _ => mul_comm _ _)
 
+/- English proof (translation)
+Take `⟨hx, hy, hι⟩` from `hL`. Take `⟨hx', hy', hι'⟩` from `hL'`. Establish `hm : ∀ (A B : UA σ W.J), mat (A * B) = mat A * mat B` using `fun _ _ => rfl`. Establish `hm₁ : ∀ (A B : UA σ W₁.J), mat (A * B) = mat A * mat B` using `fun _ _ => rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hm, ← mulVec_mulVec, hx', mulVec_smul, hx, smul_smul, Units.val_mul, mul_comm]`. Rewrite using `[hm, ← mulVec_mulVec, hy', mulVec_smul, hy, smul_smul, _root_.mul_inv_rev, Units.val_mul, map_mul]`. Rewrite using `[hm, hm₁, Matrix.mul_assoc, hι', ← Matrix.mul_assoc, hι, Matrix.mul_assoc]`.
+-/
 theorem isLevi_mul {σ : E →ₐ[F] E} {b : ℕ} {W : Spc F E (b + 2)} {W₁ : Spc F E b} (H : Plane E (b + 2) b)
     {l l' : (AE F E)ˣ} {g₀ g₀' : UA σ W₁.J} {h h' : UA σ W.J} (hL : IsLevi H l g₀ h) (hL' : IsLevi H l' g₀' h') :
     IsLevi H (l * l') (g₀ * g₀') (h * h') := by
@@ -48,6 +60,35 @@ theorem isLevi_mul {σ : E →ₐ[F] E} {b : ℕ} {W : Spc F E (b + 2)} {W₁ : 
   · rw [hm, ← mulVec_mulVec, hy', mulVec_smul, hy, smul_smul, _root_.mul_inv_rev, Units.val_mul, map_mul]
   · rw [hm, hm₁, Matrix.mul_assoc, hι', ← Matrix.mul_assoc, hι, Matrix.mul_assoc]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC hB hG hG₁ m hm`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hσ : ∀ z, σ (σ z) = z` using `fun z => (B.emb w).1.injective (by rw [hB.cm.2.2.2, hB.cm.2.2.2, star_star])`. Establish `hdet : G₁.V.J.det ≠ 0`. Establish `h` using `det_ne_of_sig _ (hG₁.hV.sig w)`.
+
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `: (G₁.V.J.map (B.emb w).1).det = (B.emb w).1 G₁.V.J.det` using `(RingHom.map_det (B.emb w).1 _).symm`. Rewrite using `[this, h0, map_zero]`. Use `set P := fromCols H.ι (cols2 H.x H.y) with hP`.
+
+Establish `hK : Pᵀ * G.V.J * P.map σ = fromBlocks G₁.V.J 0 0 swap2` using `gram_block σ hσ B hG.hV.herm hC.hH`. Use `set K : Matrix (Fin b ⊕ Fin 2) (Fin b ⊕ Fin 2) E := fromBlocks G₁.V.J 0 0 swap2 with hKdef`. Establish `hKdet : IsUnit Kᵀ.det`. Rewrite using `[det_transpose, hKdef, det_fromBlocks_zero₂₁]`. Simplify using `[swap2, det_fin_two, hdet]`.
+
+Use `set Q := (Kᵀ)⁻¹ * ((P.map σ)ᵀ * G.V.Jᵀ) with hQ`. Establish `hQP : Q * P = 1`. Establish `: (P.map σ)ᵀ * G.V.Jᵀ * P = Kᵀ`. Rewrite using `[← hK]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+
+Rewrite using `[hQ, Matrix.mul_assoc, this, nonsing_inv_mul _ hKdet]`. Use `set f : E →+* AE F E := inclR (F := F) (E := E) (AF F) with hf`. Use `set PA := fromCols (incM F H.ι) (cols2 (incV F H.x) (incV F H.y)) with hPA`. Establish `hPf : P.map f = PA`. Use extensionality with `i (j | j)`.
+
+Both sides reduce to the same expression. Apply the tactic sequence `fin_cases j <;> rfl`. Establish `hQP' : Q.map f * PA = 1`. Rewrite using `[← hPf, ← Matrix.map_mul, hQP, Matrix.map_one _ (map_zero f) (map_one f)]`. Establish `hPQ' : PA * Q.map f = 1` using `(Matrix.mul_eq_one_comm_of_equiv finSumFinEquiv).1 hQP'`.
+
+Use `set QA := Q.map f`. Establish `hform : ∀ (l : (AE F E)ˣ) (g₀ : UA σ G₁.V.J) (h : UA σ G.V.J), IsLevi H l g₀ h → mat h = PA * blk (mat g₀) l.1 (cA σ (l⁻¹).1) * QA`. Introduce `l g₀ h hL`. Rewrite using `[← levi_mul_cols H l g₀ h hL, Matrix.mul_assoc, hPQ', Matrix.mul_one]`. Establish `huniq : ∀ (l : (AE F E)ˣ) (g₀ : UA σ G₁.V.J) (h h' : UA σ G.V.J), IsLevi H l g₀ h → IsLevi H l g₀ h' → h = h'`.
+
+Introduce `l g₀ h h' hL hL'`. Establish `e : mat h = mat h'` using `by rw [hform l g₀ h hL, hform l g₀ h' hL']`. Conclude with `Subtype.ext (Units.ext e)`. Establish `hmul : ∀ l l' g₀ g₀', m (l * l') (g₀ * g₀') = m l g₀ * m l' g₀'` using `fun l l' g₀ g₀' => huniq _ _ _ _ (hm _ _) (isLevi_mul H (hm l g₀) (hm l' g₀'))`. Use `⟨hmul, ?_⟩` and prove the remaining obligations.
+
+Establish `m11 : m 1 1 = 1`. Use `hmul 1 1 1 1` as an intermediate fact. Simplify using `only [mul_one] at this`. Conclude with `(mul_eq_left.1 this.symm)`. Establish `hinv : ∀ l g₀, (m l g₀)⁻¹ = m l⁻¹ g₀⁻¹` using `fun l g₀ => inv_eq_of_mul_eq_one_right (by rw [← hmul, mul_inv_cancel, mul_inv_cancel, m11])`.
+
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hcA : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `hmat : ∀ {n : ℕ} {J : Matrix (Fin n) (Fin n) E}, Continuous fun g : UA σ J => mat g` using `Units.continuous_val.comp continuous_subtype_val`.
+
+Establish `hvec : Continuous fun x : (AE F E)ˣ × UA σ G₁.V.J => ![x.1.1, cA σ (x.1⁻¹).1]`. Use `continuous_pi fun k => ?_` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Units.continuous_val.comp continuous_fst`. Conclude with `hcA.comp (Units.continuous_coe_inv.comp continuous_fst)`.
+
+Establish `hval : Continuous fun x : (AE F E)ˣ × UA σ G₁.V.J => mat (m x.1 x.2)`. Establish `: (fun x : (AE F E)ˣ × UA σ G₁.V.J => mat (m x.1 x.2)) = fun x => PA * blk (mat x.2) x.1.1 (cA σ (x.1⁻¹).1) * QA` using `funext fun x => hform _ _ _ (hm _ _)`. Rewrite using `[this]`. Use `(continuous_const.matrix_mul ?_).matrix_mul continuous_const` and prove the remaining obligations. Conclude with `Continuous.matrix_fromBlocks (hmat.comp continuous_snd) continuous_const continuous_const (Continuous.matrix_diagonal hvec)`.
+
+Establish `hGL : Continuous fun x : (AE F E)ˣ × UA σ G₁.V.J => ((m x.1 x.2 : UA σ G.V.J) : GL (Fin (b + 2)) (AE F E))`. Use `Units.continuous_iff.2 ⟨hval, ?_⟩` and prove the remaining obligations. Establish `: (fun x : (AE F E)ˣ × UA σ G₁.V.J => ((((m x.1 x.2 : UA σ G.V.J) : GL (Fin (b + 2)) (AE F E))⁻¹ : GL (Fin (b + 2)) (AE F E)) : Matrix (Fin (b + 2)) (Fin (b + 2)) (AE F E))) = (fun x : (AE F E)ˣ × UA σ G₁.V.J => mat (m x.1 x.2)) ∘ fun x => (x.1⁻¹, x.2⁻¹)`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, ← hinv]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hval.comp ((continuous_inv.comp continuous_fst).prodMk (continuous_inv.comp continuous_snd))`. Conclude with `continuous_induced_rng.2 hGL`.
+-/
 theorem levi_hom : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →
     ∀ m : (AE F E)ˣ → UA σ G₁.V.J → UA σ G.V.J, (∀ l g₀, IsLevi H l g₀ (m l g₀)) →

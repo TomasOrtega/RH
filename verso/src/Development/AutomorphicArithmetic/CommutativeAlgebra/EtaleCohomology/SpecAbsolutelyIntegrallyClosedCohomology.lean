@@ -147,348 +147,861 @@ import Development.EtaleCohomology.EtaleSheaves.LineHigh
 
 namespace UpperTheory.Et.E2
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.SimplicialPieceDiscrete.Piece_of`.
+-/
 theorem n3 : LateralTheory.E.TruncationPieces.Piece := @LateralTheory.E.SimplicialPieceDiscrete.Piece_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FiltPf.TowerFin_of`.
+-/
 theorem n6 : LateralTheory.E.FiltPf.TowerFin := @LateralTheory.E.FiltPf.TowerFin_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.TruncPf.TruncBij_of`.
+-/
 theorem n8 : LateralTheory.E.TruncPf.TruncBij := @LateralTheory.E.TruncPf.TruncBij_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.TruncationInclusionIso.Trunc_of @n8`.
+-/
 theorem n7 : LateralTheory.E.FiltPf.Trunc := @LateralTheory.E.TruncationInclusionIso.Trunc_of @n8
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FiltPf.tower_of @n6 @n7`.
+-/
 theorem n5 : LateralTheory.E.FiltPf.Tower := @LateralTheory.E.FiltPf.tower_of @n6 @n7
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.TruncationPieces.Filt_of_tower @n5`.
+-/
 theorem n4 : LateralTheory.E.TruncationPieces.Filt := @LateralTheory.E.TruncationPieces.Filt_of_tower @n5
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.TruncationPieces.etale_relK_single_degree_pieces_of_piece_and_filtration @n3 @n4`.
+-/
 theorem n2 : LateralTheory.E.DescIntPf.EtaleRelativeIsoTruncationFromLevels := @LateralTheory.E.TruncationPieces.etale_relK_single_degree_pieces_of_piece_and_filtration @n3 @n4
 
+/- English proof (translation)
+The claim follows from `@UpperTheory.descent_of_integral_descent_truncation @n2`.
+-/
 theorem n1 : LateralTheory.E.t_E2Cut.Desc := @UpperTheory.descent_of_integral_descent_truncation @n2
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.PtsPf.Pts_of`.
+-/
 theorem n11 : LateralTheory.E.BuildCut.Pts := @LateralTheory.E.PtsPf.Pts_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LimIntPf.LimInt_of`.
+-/
 theorem n12 : LateralTheory.E.BuildCut.LimInt := @LateralTheory.E.LimIntPf.LimInt_of
 
+/- English proof (translation)
+The claim follows from `@UpperTheory.Cb.etale_mayer_vietoris_short_exact`.
+-/
 theorem n20 : LateralTheory.E.MayerVietorisSequence.SES := @UpperTheory.Cb.etale_mayer_vietoris_short_exact
 
+/- English proof (translation)
+The claim follows from `@UpperTheory.Cb.etale_mayer_vietoris_long_exact`.
+-/
 theorem n21 : LateralTheory.E.MayerVietorisSequence.LES := @UpperTheory.Cb.etale_mayer_vietoris_long_exact
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.MayerVietorisSequence.mvSpc_of @n20 @n21`.
+-/
 theorem n19 : LateralTheory.E.MayerVietorisSequence.MVSpc := @LateralTheory.E.MayerVietorisSequence.mvSpc_of @n20 @n21
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.OpenCov_ptaPf.openCov`.
+-/
 theorem n22 : LateralTheory.E.MayerVietorisSequence.OpenCov := @LateralTheory.E.OpenCov_ptaPf.openCov
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.MayerVietorisSequence.schPB`.
+-/
 theorem n23 : LateralTheory.E.MayerVietorisSequence.SchPB := @LateralTheory.E.MayerVietorisSequence.schPB
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.t_E2Cut.MV_of_three n19 n22 n23`.
+-/
 theorem n18 : LateralTheory.E.t_E2Cut.MV := LateralTheory.E.t_E2Cut.MV_of_three n19 n22 n23
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ContAffPf.ContAff_of`.
+-/
 theorem n24 : LateralTheory.E.ContPf.ContAff := @LateralTheory.E.ContAffPf.ContAff_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ChasePf.Chase_of`.
+-/
 theorem n27 : LateralTheory.E.StepSPf.DiagramChase₂ := @LateralTheory.E.ChasePf.Chase_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.StepSPf.StepS_of_chase @n27`.
+-/
 theorem n26 : LateralTheory.E.ContStepPf.StepS := @LateralTheory.E.StepSPf.StepS_of_chase @n27
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.RestrPf.Restr_of`.
+-/
 theorem n29 : LateralTheory.E.StepKPf.Restr := @LateralTheory.E.RestrPf.Restr_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ChaseBPf.ChaseB_of`.
+-/
 theorem n30 : LateralTheory.E.StepKPf.ChasePf.ChaseB := @LateralTheory.E.ChaseBPf.ChaseB_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.StepKPf.ChasePf.StepK_of' @n29 @n30`.
+-/
 theorem n28 : LateralTheory.E.ContStepPf.StepK := @LateralTheory.E.StepKPf.ChasePf.StepK_of' @n29 @n30
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ContStepPf.ContStep_of @n26 @n28`.
+-/
 theorem n25 : LateralTheory.E.ContPf.ContStep := @LateralTheory.E.ContStepPf.ContStep_of @n26 @n28
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ContIndPf.ContInd_of`.
+-/
 theorem n31 : LateralTheory.E.ContPf.ContInd := @LateralTheory.E.ContIndPf.ContInd_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ContPf.Cont_of @n18 @n24 @n25 @n31`.
+-/
 theorem n17 : LateralTheory.E.t_E2Cut.Cont := @LateralTheory.E.ContPf.Cont_of @n18 @n24 @n25 @n31
 
+/- English proof (translation)
+The claim follows from `UpperTheory.Cb.cofiltered_scheme_limit_exists_locally n12 n17 n18`.
+-/
 theorem n16 : LateralTheory.E.HasLimPf.Loc := UpperTheory.Cb.cofiltered_scheme_limit_exists_locally n12 n17 n18
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.HasLimPf.HasLim_of n16`.
+-/
 theorem n15 : LateralTheory.E.SysPf.HasLim := LateralTheory.E.HasLimPf.HasLim_of n16
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.IdemSecPf.IdemSec_of`.
+-/
 theorem n34 : LateralTheory.E.SysFMPfSys.IdemSec := @LateralTheory.E.IdemSecPf.IdemSec_of
 
+/- English proof (translation)
+The claim follows from `UpperTheory.Cb.etale_finite_presentation_model_exists n12 n17 n18`.
+-/
 theorem n35 : LateralTheory.E.SysFMPf.FMex := UpperTheory.Cb.etale_finite_presentation_model_exists n12 n17 n18
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.IdempotentLifting.IdemLift_of`.
+-/
 theorem n37 : LateralTheory.E.FMrangePf.IdemLift := @LateralTheory.E.IdempotentLifting.IdemLift_of
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.FMrangePfQc.FMrange_of n37`.
+-/
 theorem n36 : LateralTheory.E.SysFMPf.FMrange := LateralTheory.E.FMrangePfQc.FMrange_of n37
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.SysFMPfSys.SysFM_of n34 n35 n36`.
+-/
 theorem n33 : LateralTheory.E.NbIsoPf.SysFM := LateralTheory.E.SysFMPfSys.SysFM_of n34 n35 n36
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FlatMonoLimPf.FlatMonoLim_of`.
+-/
 theorem n38 : LateralTheory.E.NbIsoPf.FlatMonoLim := @LateralTheory.E.FlatMonoLimPf.FlatMonoLim_of
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.NbIsoPf.NbIso_of n33 n38`.
+-/
 theorem n32 : LateralTheory.E.SysPf.NbIso := LateralTheory.E.NbIsoPf.NbIso_of n33 n38
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.SysPf.Sys_of n15 n32`.
+-/
 theorem n14 : LateralTheory.E.CompCut.Sys := LateralTheory.E.SysPf.Sys_of n15 n32
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LocACPf.LocAC_of`.
+-/
 theorem n39 : LateralTheory.E.CompCut.LocAC := @LateralTheory.E.LocACPf.LocAC_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LocPf.loc`.
+-/
 theorem n41 : LateralTheory.E.NormACPf.Loc := @LateralTheory.E.LocPf.loc
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.NormACPf.NormAC_of @n41`.
+-/
 theorem n40 : LateralTheory.E.CompCut.NormAC := @LateralTheory.E.NormACPf.NormAC_of @n41
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.CompCut.goal_of n14 n39 n40`.
+-/
 theorem n13 : LateralTheory.E.BuildCut.Comp := LateralTheory.E.CompCut.goal_of n14 n39 n40
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.BuildCut.goal_of n11 n12 n13`.
+-/
 theorem n10 : LateralTheory.E.CoverCut.Build := LateralTheory.E.BuildCut.goal_of n11 n12 n13
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.StageBPf.StageB_of`.
+-/
 theorem n43 : LateralTheory.E.ProEqvPf.StageB := @LateralTheory.E.StageBPf.StageB_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.GluePf.glue_of`.
+-/
 theorem n44 : LateralTheory.E.ProEqvPf.Glue := @LateralTheory.E.GluePf.glue_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ProEqvPf.etale_pro_equivalence_of_continuity_mayer_vietoris_lifting_stage_glue @n17 @n18 @n43 @n44`.
+-/
 theorem n42 : LateralTheory.E.CoverCut.ProEqv := @LateralTheory.E.ProEqvPf.etale_pro_equivalence_of_continuity_mayer_vietoris_lifting_stage_glue @n17 @n18 @n43 @n44
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.CoverCut.goal_of n10 n42`.
+-/
 theorem n9 : LateralTheory.E.t_E2Cut.Cover := LateralTheory.E.CoverCut.goal_of n10 n42
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.RootAICPf.RootAIC_of`.
+-/
 theorem n46 : LateralTheory.E.HZeroPf.RootAIC := @LateralTheory.E.RootAICPf.RootAIC_of
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.T.tateTwist_sections_locally_generated`.
+-/
 theorem n48 : LateralTheory.E.ResBijPf.TwSec := @GlobalTheory.T.tateTwist_sections_locally_generated
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ResBijPf.ResBij_of @n48`.
+-/
 theorem n47 : LateralTheory.E.HZeroPf.ResBij := @LateralTheory.E.ResBijPf.ResBij_of @n48
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.HZeroPf.HZero_of @n46 @n47`.
+-/
 theorem n45 : LateralTheory.E.t_E2Cut.HZero := @LateralTheory.E.HZeroPf.HZero_of @n46 @n47
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.StepPf.Step_of`.
+-/
 theorem n50 : LateralTheory.E.AICAcycPf.Step := @LateralTheory.E.StepPf.Step_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.CovPf.Cov_of`.
+-/
 theorem n51 : LateralTheory.E.AICAcycPf.Cov := @LateralTheory.E.CovPf.Cov_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.AICAcycPf.AICAcyc_of @n45 @n18 @n50 @n51`.
+-/
 theorem n49 : LateralTheory.E.t_E2Cut.AICAcyc := @LateralTheory.E.AICAcycPf.AICAcyc_of @n45 @n18 @n50 @n51
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.GeometricData.topInt`.
+-/
 theorem n56 : LateralTheory.E.GeometricData.TopInt := @LateralTheory.E.GeometricData.topInt
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LZHensFinitePf.hensIdemLift`.
+-/
 theorem n60 : LateralTheory.E.LZHensFinitePf.HensIdemLift := @LateralTheory.E.LZHensFinitePf.hensIdemLift
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LZHensFinitePf.LZHensFinite_of_lift @n60`.
+-/
 theorem n59 : LateralTheory.E.LZProperCut.LZHensFinite := @LateralTheory.E.LZHensFinitePf.LZHensFinite_of_lift @n60
 
+/- English proof (translation)
+The claim follows from `@UpperTheory.Cb.projectiveLineCharts_of_henselianFinite @n59`.
+-/
 theorem n58 : LateralTheory.E.ProjectiveLineCharts₂.ProjectiveLineTwoAffineChartsPolynomialGenerated := @UpperTheory.Cb.projectiveLineCharts_of_henselianFinite @n59
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ChartBC_nnmPf.ChartBC_of`.
+-/
 theorem n61 : LateralTheory.E.ProjectiveLineCharts₂.ChartBC := @LateralTheory.E.ChartBC_nnmPf.ChartBC_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ProjectiveLineCharts₂.LineOpens_of @n58 @n61`.
+-/
 theorem n57 : LateralTheory.E.GeometricData.LineOpens := @LateralTheory.E.ProjectiveLineCharts₂.LineOpens_of @n58 @n61
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.EmbedNonDeg₂.EmbedNonDeg_of`.
+-/
 theorem n62 : LateralTheory.E.GeometricData.EmbedNonDeg := @LateralTheory.E.EmbedNonDeg₂.EmbedNonDeg_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.GeometricData.embedAffine`.
+-/
 theorem n63 : LateralTheory.E.GeometricData.EmbedAffine := @LateralTheory.E.GeometricData.embedAffine
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.GeometricData.GeoData_of @n56 @n57 @n62 @n63`.
+-/
 theorem n55 : LateralTheory.E.ChartsGeom_vpaPf.GeoData := @LateralTheory.E.GeometricData.GeoData_of @n56 @n57 @n62 @n63
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ChartOverlap₂.Overlap_of`.
+-/
 theorem n65 : LateralTheory.E.ChartsGeom_vpaPf.Overlap := @LateralTheory.E.ChartOverlap₂.Overlap_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ChartsGeom_vpaPf.coverOfData_of @n65`.
+-/
 theorem n64 : LateralTheory.E.ChartsGeom_vpaPf.CoverOfData := @LateralTheory.E.ChartsGeom_vpaPf.coverOfData_of @n65
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ChartsGeom_vpaPf.ChartsGeom_of' @n55 @n64`.
+-/
 theorem n54 : LateralTheory.E.StdChartsProof.ChartsGeom := @LateralTheory.E.ChartsGeom_vpaPf.ChartsGeom_of' @n55 @n64
 
+/- English proof (translation)
+The claim follows from `@UpperTheory.Cb.finite_over_henselian_fibre_idempotents_lift @n59`.
+-/
 theorem n66 : LateralTheory.E.StdChartsProof.FibreIdem := @UpperTheory.Cb.finite_over_henselian_fibre_idempotents_lift @n59
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.StdChartsProof.StdCharts_of @n54 @n66`.
+-/
 theorem n53 : LateralTheory.E.StandardEtaleChartsIdempotentGluing.StdCharts := @LateralTheory.E.StdChartsProof.StdCharts_of @n54 @n66
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.NoetherianChartOverlapFiniteComplement.noetherian_local_chart_overlap_finite_complement`.
+-/
 theorem n70 : LateralTheory.E.LZIdemSumNoetherian.NoetherianLocalChartOverlapFiniteComplement := @LateralTheory.E.NoetherianChartOverlapFiniteComplement.noetherian_local_chart_overlap_finite_complement
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LZIdemPowProof.LZIdemPow_of`.
+-/
 theorem n71 : LateralTheory.E.LZIdemSumNoetherian.LZIdemPow := @LateralTheory.E.LZIdemPowProof.LZIdemPow_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LZARFacts.LZARStep_of`.
+-/
 theorem n72 : LateralTheory.E.LZIdemSumNoetherian.LZARStep := @LateralTheory.E.LZARFacts.LZARStep_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LZIdemSumNoetherian.goal_of @n70 @n71 @n72`.
+-/
 theorem n69 : LateralTheory.E.IdempotentLiftingAlt.LZIdemSumNoeth := @LateralTheory.E.LZIdemSumNoetherian.goal_of @n70 @n71 @n72
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LZIdemSumApproxYDDUPf.LZIdemSumApprox_of`.
+-/
 theorem n73 : LateralTheory.E.IdempotentLiftingAlt.LZIdemSumApprox := @LateralTheory.E.LZIdemSumApproxYDDUPf.LZIdemSumApprox_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.IdempotentLiftingAlt.IdemLift_of @n69 @n73`.
+-/
 theorem n68 : LateralTheory.E.StandardEtaleChartsIdempotentGluing.IdemLift := @LateralTheory.E.IdempotentLiftingAlt.IdemLift_of @n69 @n73
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.AlgGlue₂.AlgGlue_of @n68 @n59`.
+-/
 theorem n67 : LateralTheory.E.StandardEtaleChartsIdempotentGluing.AlgGlue := @LateralTheory.E.AlgGlue₂.AlgGlue_of @n68 @n59
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.StandardEtaleChartsIdempotentGluing.goal_of @n53 @n67`.
+-/
 theorem n52 : LateralTheory.E.t_E2Cut.LineZero := @LateralTheory.E.StandardEtaleChartsIdempotentGluing.goal_of @n53 @n67
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.StdChartsProof₂.StdCharts_of`.
+-/
 theorem n75 : LateralTheory.E.StandardEtaleChartsMultivariableHensel.StdCharts := @LateralTheory.E.StdChartsProof₂.StdCharts_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FiberCover.FibCover_of`.
+-/
 theorem n76 : LateralTheory.E.LineOneCut.FibCover := @LateralTheory.E.FiberCover.FibCover_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.BinPf.DescEqv_of`.
+-/
 theorem n81 : LateralTheory.E.BinPf.DescEqv := @LateralTheory.E.BinPf.DescEqv_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.BinPfChains.bin_of @n81`.
+-/
 theorem n80 : LateralTheory.E.ProdAcycPf.Bin := @LateralTheory.E.BinPfChains.bin_of @n81
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ProdAcycPf.prod_of @n80`.
+-/
 theorem n79 : LateralTheory.E.QuotAcycCut.ProdAcyc := @LateralTheory.E.ProdAcycPf.prod_of @n80
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LocalizationIntegralClosure.LocAIC_of`.
+-/
 theorem n83 : LateralTheory.E.HensCut.LocAIC := @LateralTheory.E.LocalizationIntegralClosure.LocAIC_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.MonicSplitsPf.MonicSplits_of`.
+-/
 theorem n84 : LateralTheory.E.HensCut.MonicSplits := @LateralTheory.E.MonicSplitsPf.MonicSplits_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.IdemPartPf.IdemPart_of`.
+-/
 theorem n85 : LateralTheory.E.HensCut.IdemPart := @LateralTheory.E.IdemPartPf.IdemPart_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ColimHensPf.ColimHens_of`.
+-/
 theorem n86 : LateralTheory.E.HensCut.ColimHens := @LateralTheory.E.ColimHensPf.ColimHens_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.PartDirectedPf.PartDirected_of`.
+-/
 theorem n88 : LateralTheory.E.PartDiagCut.PartDirected := @LateralTheory.E.PartDirectedPf.PartDirected_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.DiagIdPf.DiagId_of`.
+-/
 theorem n89 : LateralTheory.E.PartDiagCut.DiagId := @LateralTheory.E.DiagIdPf.DiagId_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.DiagCompPf.DiagComp_of`.
+-/
 theorem n90 : LateralTheory.E.PartDiagCut.DiagComp := @LateralTheory.E.DiagCompPf.DiagComp_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.DiagNatPf.DiagNat_of`.
+-/
 theorem n91 : LateralTheory.E.PartDiagCut.DiagNat := @LateralTheory.E.DiagNatPf.DiagNat_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.StageProdPf.StageProd_of @n83`.
+-/
 theorem n92 : LateralTheory.E.PartDiagCut.StageProd := @LateralTheory.E.StageProdPf.StageProd_of @n83
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.PartAPf.PartA_of`.
+-/
 theorem n93 : LateralTheory.E.PartDiagCut.PartA := @LateralTheory.E.PartAPf.PartA_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.PartBPf.PartB_of`.
+-/
 theorem n94 : LateralTheory.E.PartDiagCut.PartB := @LateralTheory.E.PartBPf.PartB_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LiftPf.Lift_of`.
+-/
 theorem n96 : LateralTheory.E.PartCPf.Lift := @LateralTheory.E.LiftPf.Lift_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.PartCPfSplit.PartC_of @n83 @n84 @n85 @n93 @n96`.
+-/
 theorem n95 : LateralTheory.E.PartDiagCut.PartC := @LateralTheory.E.PartCPfSplit.PartC_of @n83 @n84 @n85 @n93 @n96
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.PartDiagCut.goal_of @n88 @n89 @n90 @n91 @n92 @n93 @n94 @n95`.
+-/
 theorem n87 : LateralTheory.E.HensCut.PartDiag := @LateralTheory.E.PartDiagCut.goal_of @n88 @n89 @n90 @n91 @n92 @n93 @n94 @n95
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.HensCut.goal_of @n83 @n84 @n85 @n86 @n87`.
+-/
 theorem n82 : LateralTheory.E.QuotAcycCut.Hens := @LateralTheory.E.HensCut.goal_of @n83 @n84 @n85 @n86 @n87
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.QuotAcycCut.goal_of @n79 @n82`.
+-/
 theorem n78 : LateralTheory.E.t_E2Cut.QuotAcyc := @LateralTheory.E.QuotAcycCut.goal_of @n79 @n82
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ChartAcycPf.ChartAcyc_of @n78`.
+-/
 theorem n77 : LateralTheory.E.LineOneCut.ChartAcyc := @LateralTheory.E.ChartAcycPf.ChartAcyc_of @n78
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.RootPf.Root_of`.
+-/
 theorem n97 : LateralTheory.E.ChartSurjCut.Root := @LateralTheory.E.RootPf.Root_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.RootPowPf.RootPow_of`.
+-/
 theorem multiplicative_root_pow_etale : LateralTheory.E.MulPf.RootPow := @LateralTheory.E.RootPowPf.RootPow_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.GenPf.Gen_of @multiplicative_root_pow_etale`.
+-/
 theorem multiplicative_generator_etale : LateralTheory.E.MulPf.Gen := @LateralTheory.E.GenPf.Gen_of @multiplicative_root_pow_etale
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.MulPf.LocGen_of @multiplicative_root_pow_etale`.
+-/
 theorem multiplicative_local_generator_etale : LateralTheory.E.MulPf.LocGen := @LateralTheory.E.MulPf.LocGen_of @multiplicative_root_pow_etale
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.MulPf.Mul_of @multiplicative_generator_etale @multiplicative_local_generator_etale`.
+-/
 theorem twist_trivial_multiplicative : LateralTheory.E.TwistTrivial.Mul := @LateralTheory.E.MulPf.Mul_of @multiplicative_generator_etale @multiplicative_local_generator_etale
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.TwistTrivial.TwTriv_of @twist_trivial_multiplicative`.
+-/
 theorem locally_constant_iso_twist_trivial : LateralTheory.E.LCIsoPf.TwTriv := @LateralTheory.E.TwistTrivial.TwTriv_of @twist_trivial_multiplicative
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.AugBijPf.Sep_holds`.
+-/
 theorem augmentation_bijective_separable : LateralTheory.E.AugBijPf.Sep := @LateralTheory.E.AugBijPf.Sep_holds
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.AugBijPf.Glue_holds`.
+-/
 theorem augmentation_bijective_of_local_pieces : LateralTheory.E.AugBijPf.Glue := @LateralTheory.E.AugBijPf.Glue_holds
 
+/- English proof (translation)
+The claim follows from `@UpperTheory.Cb.augmentation_map_bijective`.
+-/
 theorem augmentation_bijective_at_strictly_henselian_root : LateralTheory.E.AugBijPf.Root := @UpperTheory.Cb.augmentation_map_bijective
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.AugBijPf.LocSurj_of @augmentation_bijective_at_strictly_henselian_root`.
+-/
 theorem augmentation_surjective_on_local_sections : LateralTheory.E.AugBijPf.LocSurj := @LateralTheory.E.AugBijPf.LocSurj_of @augmentation_bijective_at_strictly_henselian_root
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.AugBijPf.secLoc'`.
+-/
 theorem sections_localization_augmentation_compat : LateralTheory.E.AugBijPf.SecLoc := @LateralTheory.E.AugBijPf.secLoc'
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LocPowPf.LocPow_of`.
+-/
 theorem augmentation_localization_pow_compat : LateralTheory.E.AugBijPf.LocPow := @LateralTheory.E.LocPowPf.LocPow_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.AugBijPf.ZarPow_of @augmentation_localization_pow_compat`.
+-/
 theorem augmentation_zariski_localization_pow_compat : LateralTheory.E.AugBijPf.ZarPow := @LateralTheory.E.AugBijPf.ZarPow_of @augmentation_localization_pow_compat
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.AugBijPf.GenEq_of @augmentation_zariski_localization_pow_compat`.
+-/
 theorem augmentation_generic_point_eq : LateralTheory.E.AugBijPf.GenEq := @LateralTheory.E.AugBijPf.GenEq_of @augmentation_zariski_localization_pow_compat
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.AugBijPf.LocInj_of @augmentation_bijective_at_strictly_henselian_root @sections_localization_augmentation_compat @augmentation_generic_point_eq`.
+-/
 theorem augmentation_injective_on_local_sections : LateralTheory.E.AugBijPf.LocInj := @LateralTheory.E.AugBijPf.LocInj_of @augmentation_bijective_at_strictly_henselian_root @sections_localization_augmentation_compat @augmentation_generic_point_eq
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.AugBijPf.AugBij_of_loc @augmentation_bijective_separable @augmentation_bijective_of_local_pieces @augmentation_surjective_on_local_sections @augmentation_injective_on_local_sections`.
+-/
 theorem untwisted_pushforward_of_augmentation_bijective : LateralTheory.E.TateTwistZeroAugmentationBijective.AugBij := @LateralTheory.E.AugBijPf.AugBij_of_loc @augmentation_bijective_separable @augmentation_bijective_of_local_pieces @augmentation_surjective_on_local_sections @augmentation_injective_on_local_sections
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.TateTwistZeroAugmentationSheaf.Tw0_of @untwisted_pushforward_of_augmentation_bijective`.
+-/
 theorem untwisted_pushforward_of_localized_cohomology_iso : LateralTheory.E.LCIsoPf.Tw0 := @LateralTheory.E.TateTwistZeroAugmentationSheaf.Tw0_of @untwisted_pushforward_of_augmentation_bijective
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LCIsoPf.SecIso_of @locally_constant_iso_twist_trivial @untwisted_pushforward_of_localized_cohomology_iso`.
+-/
 theorem secIso : LateralTheory.E.LCIsoPf.SecIso := @LateralTheory.E.LCIsoPf.SecIso_of @locally_constant_iso_twist_trivial @untwisted_pushforward_of_localized_cohomology_iso
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LCIsoPf.SecIso_LCIso @secIso`.
+-/
 theorem n98 : LateralTheory.E.ChartSurjCut.LCIso := @LateralTheory.E.LCIsoPf.SecIso_LCIso @secIso
 
+/- English proof (translation)
+The claim follows from `@UpperTheory.cohomology_punctured_affine_line`.
+-/
 theorem proper_base_change_affine_line_of_stalk_iso : LateralTheory.E.StandardEtaleChartsMultivariableHensel.Heart := @UpperTheory.cohomology_punctured_affine_line
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.StandardEtaleChartsMultivariableHensel.goal_of @n18 @n75 @n76 @n77 @n97 @n98 @proper_base_change_affine_line_of_stalk_iso`.
+-/
 theorem n74 : LateralTheory.E.t_E2Cut.LineOne := @LateralTheory.E.StandardEtaleChartsMultivariableHensel.goal_of @n18 @n75 @n76 @n77 @n97 @n98 @proper_base_change_affine_line_of_stalk_iso
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ZCovPf.projectiveLine_integers_affine_cover_absolutely_integrally_closed`.
+-/
 theorem higher_affine_space_zariski_cover : LateralTheory.E.LineHighPf.ZCov := @LateralTheory.E.ZCovPf.projectiveLine_integers_affine_cover_absolutely_integrally_closed
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FibCovPf.FibCov_of`.
+-/
 theorem higher_affine_space_fibrewise_cover : LateralTheory.E.LineHighPf.FibCov := @LateralTheory.E.FibCovPf.FibCov_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LineHighPf.Cover2_of @higher_affine_space_zariski_cover @higher_affine_space_fibrewise_cover`.
+-/
 theorem higher_affine_space_cover_by_lines : LateralTheory.E.LineHighPf.Cover2 := @LateralTheory.E.LineHighPf.Cover2_of @higher_affine_space_zariski_cover @higher_affine_space_fibrewise_cover
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LineHighPf.LineHigh_of @n78 @n18 @higher_affine_space_cover_by_lines`.
+-/
 theorem proper_base_change_affine_space : LateralTheory.E.t_E2Cut.LineHigh := @LateralTheory.E.LineHighPf.LineHigh_of @n78 @n18 @higher_affine_space_cover_by_lines
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.IntHensPf.IntHens_of`.
+-/
 theorem integral_pullback_henselian_lift : LateralTheory.E.IntPBPf.IntHens := @LateralTheory.E.IntHensPf.IntHens_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.IntFibPf.IntFib_of`.
+-/
 theorem integral_pullback_fibre_iso : LateralTheory.E.IntPBPf.IntFib := @LateralTheory.E.IntFibPf.IntFib_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.IntPBPf.IntPB_of @integral_pullback_henselian_lift @integral_pullback_fibre_iso`.
+-/
 theorem proper_base_change_integral_pullback : LateralTheory.E.t_E2Cut.IntPB := @LateralTheory.E.IntPBPf.IntPB_of @integral_pullback_henselian_lift @integral_pullback_fibre_iso
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.RelNormPf.RelNorm_of`.
+-/
 theorem stein_factorization_relative_normalization : LateralTheory.E.SteinPf.RelNorm := @LateralTheory.E.RelNormPf.RelNorm_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.AICOpenPf.AICOpen_of`.
+-/
 theorem stein_factorization_integral_closure_open : LateralTheory.E.SteinPf.AICOpen := @LateralTheory.E.AICOpenPf.AICOpen_of
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.SteinPf.Stein_of stein_factorization_relative_normalization stein_factorization_integral_closure_open`.
+-/
 theorem proper_base_change_stein_factorization : LateralTheory.E.t_E2Cut.Stein := LateralTheory.E.SteinPf.Stein_of stein_factorization_relative_normalization stein_factorization_integral_closure_open
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.StalkContPf.StalkCont_of`.
+-/
 theorem stalk_pushforward_continuous_limit : LateralTheory.E.StalkGermPf.StalkCont := @LateralTheory.E.StalkContPf.StalkCont_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.StalkGermPf.StalkGerm_of @stalk_pushforward_continuous_limit`.
+-/
 theorem stalk_eq_germ_of_zariski_local : LateralTheory.E.ZLGPf.StalkGerm := @LateralTheory.E.StalkGermPf.StalkGerm_of @stalk_pushforward_continuous_limit
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.OverMVPf.OverMV_of`.
+-/
 theorem zariski_induction_injective_mayer_vietoris : LateralTheory.E.InjStepPf.OverMV := @LateralTheory.E.OverMVPf.OverMV_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.InjStepPf.TwoStep_of @zariski_induction_injective_mayer_vietoris`.
+-/
 theorem zariski_induction_injective_two_open_cover : LateralTheory.E.InjStepPf.TwoStep := @LateralTheory.E.InjStepPf.TwoStep_of @zariski_induction_injective_mayer_vietoris
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.EmptyH₂.EmptyH_of`.
+-/
 theorem zariski_induction_empty_cohomology : LateralTheory.E.InjStepPf.EmptyH := @LateralTheory.E.EmptyH₂.EmptyH_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.InjStepPf.InjStep_of @zariski_induction_injective_two_open_cover @zariski_induction_empty_cohomology`.
+-/
 theorem zariski_induction_injectivity_of_etale_comparison : LateralTheory.E.ZarIndPf.InjStep := @LateralTheory.E.InjStepPf.InjStep_of @zariski_induction_injective_two_open_cover @zariski_induction_empty_cohomology
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.SurjStepPf.SurjStep_of`.
+-/
 theorem zariski_induction_surjectivity_of_etale_comparison : LateralTheory.E.ZarIndPf.SurjStep := @LateralTheory.E.SurjStepPf.SurjStep_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ZarIndPf.Step_of @zariski_induction_injectivity_of_etale_comparison @zariski_induction_surjectivity_of_etale_comparison`.
+-/
 theorem zariski_induction_step_bijective : LateralTheory.E.ZarIndPf.Step := @LateralTheory.E.ZarIndPf.Step_of @zariski_induction_injectivity_of_etale_comparison @zariski_induction_surjectivity_of_etale_comparison
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ZarIndPf.ZarInd_of_step @zariski_induction_step_bijective`.
+-/
 theorem zariski_local_to_global_induction : LateralTheory.E.ZLGPf.ZarInd := @LateralTheory.E.ZarIndPf.ZarInd_of_step @zariski_induction_step_bijective
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ZLGPf.ZLG_of @n17 @n18 @stalk_eq_germ_of_zariski_local @zariski_local_to_global_induction`.
+-/
 theorem proper_base_change_zariski_local_to_global : LateralTheory.E.t_E2Cut.ZLG := @LateralTheory.E.ZLGPf.ZLG_of @n17 @n18 @stalk_eq_germ_of_zariski_local @zariski_local_to_global_induction
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FibClosedPf.fibQCQS`.
+-/
 theorem fibre_closed_quasi_compact_quasi_separated : LateralTheory.E.FibClosedPf.FibQCQS := @LateralTheory.E.FibClosedPf.fibQCQS
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.StalkSHSPf.stalkAIC`.
+-/
 theorem fibre_stalk_absolutely_integrally_closed : LateralTheory.E.FibStalkPf.StalkAIC := @LateralTheory.E.StalkSHSPf.stalkAIC
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FibStalkPf.stalkSHS_of @fibre_stalk_absolutely_integrally_closed`.
+-/
 theorem fibre_stalk_strictly_henselian_sep_closed : LateralTheory.E.FibStalkPf.StalkSHS := @LateralTheory.E.FibStalkPf.stalkSHS_of @fibre_stalk_absolutely_integrally_closed
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FibStalkPf.quotSH`.
+-/
 theorem strictly_henselian_quotient : LateralTheory.E.FibStalkPf.QuotSH := @LateralTheory.E.FibStalkPf.quotSH
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FibStalkPf.StalkSH_of @fibre_stalk_strictly_henselian_sep_closed @strictly_henselian_quotient`.
+-/
 theorem fibre_stalk_strictly_henselian : LateralTheory.E.FibStalkPf.StalkSH := @LateralTheory.E.FibStalkPf.StalkSH_of @fibre_stalk_strictly_henselian_sep_closed @strictly_henselian_quotient
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.BaseIntPf.BaseInt_of`.
+-/
 theorem base_absolutely_integrally_closed_integral : LateralTheory.E.BaseAICPf.BaseInt := @LateralTheory.E.BaseIntPf.BaseInt_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.BaseLocLocPf.BaseLocLoc_of`.
+-/
 theorem base_absolutely_integrally_closed_localization_localization : LateralTheory.E.BaseAICPf.BaseLocLoc := @LateralTheory.E.BaseLocLocPf.BaseLocLoc_of
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.BaseAICPf.BaseLoc_of base_absolutely_integrally_closed_localization_localization`.
+-/
 theorem base_absolutely_integrally_closed_localization : LateralTheory.E.BaseAICPf.BaseLoc := LateralTheory.E.BaseAICPf.BaseLoc_of base_absolutely_integrally_closed_localization_localization
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.BaseAICPf.BaseAIC_of base_absolutely_integrally_closed_integral base_absolutely_integrally_closed_localization`.
+-/
 theorem fibre_equivalence_base_absolutely_integrally_closed : LateralTheory.E.FibreEqvPf.BaseAIC := LateralTheory.E.BaseAICPf.BaseAIC_of base_absolutely_integrally_closed_integral base_absolutely_integrally_closed_localization
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.StalkAICRingPf.StalkAICRing_of`.
+-/
 theorem stalk_ring_absolutely_integrally_closed : LateralTheory.E.FibreEqvPf.StalkAICRing := @LateralTheory.E.StalkAICRingPf.StalkAICRing_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.SpecAICPf.SpecAIC_of`.
+-/
 theorem spec_absolutely_integrally_closed_cohomology : LateralTheory.E.FibreEqvPf.SpecAIC := @LateralTheory.E.SpecAICPf.SpecAIC_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FibreEqvPf.StalkAIC_of @stalk_ring_absolutely_integrally_closed @spec_absolutely_integrally_closed_cohomology`.
+-/
 theorem fibre_equivalence_stalk_absolutely_integrally_closed : LateralTheory.E.FibreEqvPf.StalkAIC := @LateralTheory.E.FibreEqvPf.StalkAIC_of @stalk_ring_absolutely_integrally_closed @spec_absolutely_integrally_closed_cohomology
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.FibreEqvPf.StalkFib_of fibre_equivalence_base_absolutely_integrally_closed fibre_equivalence_stalk_absolutely_integrally_closed`.
+-/
 theorem fibre_equivalence_stalk_fibre : LateralTheory.E.FibreEqvPf.StalkFib := LateralTheory.E.FibreEqvPf.StalkFib_of fibre_equivalence_base_absolutely_integrally_closed fibre_equivalence_stalk_absolutely_integrally_closed
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FibreEqvPf.FibreEqv_of @fibre_stalk_strictly_henselian_sep_closed @fibre_equivalence_stalk_fibre`.
+-/
 theorem fibre_stalk_equivalence : LateralTheory.E.FibStalkPf.FibreEqv := @LateralTheory.E.FibreEqvPf.FibreEqv_of @fibre_stalk_strictly_henselian_sep_closed @fibre_equivalence_stalk_fibre
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FibStalkPf.FibStalk_of @fibre_stalk_strictly_henselian @fibre_stalk_equivalence`.
+-/
 theorem closed_fibre_stalk_cohomology : LateralTheory.E.FibClosedPf.FibStalk := @LateralTheory.E.FibStalkPf.FibStalk_of @fibre_stalk_strictly_henselian @fibre_stalk_equivalence
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FibClosedPf.FibClosed_of @proper_base_change_zariski_local_to_global @n45 @n49 @fibre_closed_quasi_compact_quasi_separated @closed_fibre_stalk_cohomology`.
+-/
 theorem proper_base_change_closed_fibre : LateralTheory.E.FibPf.FibClosed := @LateralTheory.E.FibClosedPf.FibClosed_of @proper_base_change_zariski_local_to_global @n45 @n49 @fibre_closed_quasi_compact_quasi_separated @closed_fibre_stalk_cohomology
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.FibPf.Fib_of @proper_base_change_closed_fibre @n45 @n49`.
+-/
 theorem proper_base_change_fibre : LateralTheory.E.t_E2Cut.Fib := @LateralTheory.E.FibPf.Fib_of @proper_base_change_closed_fibre @n45 @n49
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ImgPf.Img_of`.
+-/
 theorem chow_lemma_image : LateralTheory.E.ChowCut.Img := @LateralTheory.E.ImgPf.Img_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.IterBCPf.IterBC_of`.
+-/
 theorem chow_lemma_iterated_base_change : LateralTheory.E.ChowLCut.IterBC := @LateralTheory.E.IterBCPf.IterBC_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.CoverExistence.Cover_of`.
+-/
 theorem chow_graph_open_cover : LateralTheory.E.ChowGraphCut.Cover := @LateralTheory.E.CoverExistence.Cover_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.EmbedPf.affClosed`.
+-/
 theorem embedding_affine_closed_immersion : LateralTheory.E.EmbedPf.AffClosed := @LateralTheory.E.EmbedPf.affClosed
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LineExPf.LineEx_of`.
+-/
 theorem chow_lemma_projective_line_extension : LateralTheory.E.ChowLCut.LineEx := @LateralTheory.E.LineExPf.LineEx_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LineChartPf.LineChart_of`.
+-/
 theorem embedding_projective_line_chart : LateralTheory.E.EmbedPf.LineChart := @LateralTheory.E.LineChartPf.LineChart_of
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.EmbedPf.chart_of chow_lemma_projective_line_extension embedding_projective_line_chart`.
+-/
 theorem embedding_affine_chart : LateralTheory.E.EmbedPf.Chart := LateralTheory.E.EmbedPf.chart_of chow_lemma_projective_line_extension embedding_projective_line_chart
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.EmbedPf.Embed_of @embedding_affine_closed_immersion @embedding_affine_chart`.
+-/
 theorem chow_graph_projective_embedding : LateralTheory.E.ChowGraphCut.Embed := @LateralTheory.E.EmbedPf.Embed_of @embedding_affine_closed_immersion @embedding_affine_chart
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.IterCompPf.IterComp_of`.
+-/
 theorem chow_graph_iterated_composition : LateralTheory.E.ChowGraphCut.IterComp := @LateralTheory.E.IterCompPf.IterComp_of
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.ProdPf.Prod_of chow_graph_iterated_composition`.
+-/
 theorem chow_graph_fibre_product : LateralTheory.E.ChowGraphCut.Prod := LateralTheory.E.ProdPf.Prod_of chow_graph_iterated_composition
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.ImageInPf.Core_of`.
+-/
 theorem chow_graph_projective_reduction : LateralTheory.E.ChowGraphCut.Core := @LateralTheory.E.ImageInPf.Core_of
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.ChowGraphCut.goal_of chow_graph_open_cover chow_graph_projective_embedding chow_graph_fibre_product chow_graph_projective_reduction`.
+-/
 theorem chow_lemma_graph_construction : LateralTheory.E.ChowLCut.ChowGraph := LateralTheory.E.ChowGraphCut.goal_of chow_graph_open_cover chow_graph_projective_embedding chow_graph_fibre_product chow_graph_projective_reduction
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.ChowLCut.goal_of chow_lemma_iterated_base_change chow_lemma_graph_construction`.
+-/
 theorem chow_lemma_projective_cover : LateralTheory.E.ChowCut.ChowL := LateralTheory.E.ChowLCut.goal_of chow_lemma_iterated_base_change chow_lemma_graph_construction
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.NormPf.AffPf.affAIC`.
+-/
 theorem normalization_affine_absolutely_integrally_closed : LateralTheory.E.NormPf.AICPf.AffAIC := @LateralTheory.E.NormPf.AffPf.affAIC
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.LocalIntegralClosureRoots.LocAIC_of`.
+-/
 theorem normalization_local_absolutely_integrally_closed : LateralTheory.E.NormPf.AICPf.LocAIC := @LateralTheory.E.LocalIntegralClosureRoots.LocAIC_of
 
+/- English proof (translation)
+The claim follows from `@LateralTheory.E.NormPf.AICPf.norm_full @normalization_affine_absolutely_integrally_closed @normalization_local_absolutely_integrally_closed`.
+-/
 theorem chow_lemma_normalization : LateralTheory.E.ChowCut.Norm := @LateralTheory.E.NormPf.AICPf.norm_full @normalization_affine_absolutely_integrally_closed @normalization_local_absolutely_integrally_closed
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.ChowCut.goal_of chow_lemma_image chow_lemma_projective_cover chow_lemma_normalization`.
+-/
 theorem e2Cut_chow : LateralTheory.E.t_E2Cut.Chow := LateralTheory.E.ChowCut.goal_of chow_lemma_image chow_lemma_projective_cover chow_lemma_normalization
 
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_E2Cut in
 
+/- English proof (translation)
+Establish `h` using `tower H n1 n9 n45 n49 n52 n74 proper_base_change_affine_space proper_base_change_integral_pullback proper_base_change_stein_factorization proper_base_change_fibre q i B hB hq r hr (𝟙 Y) inferInstance`. Simplify using `using h`.
+-/
 theorem towers (H : Hyp) (q : ℕ) (i : ℤ) (B : Type) [CommRing B] [IsLocalRing B] (hB : SH B) (hq : IsUnit (q : B))
     {Y : Scheme.{0}} (r : Y ⟶ Spec (CommRingCat.of B)) (hr : IT r) : PB q i r := by
   have h := tower H n1 n9 n45 n49 n52 n74 proper_base_change_affine_space proper_base_change_integral_pullback proper_base_change_stein_factorization proper_base_change_fibre q i B hB hq r hr (𝟙 Y) inferInstance
@@ -496,6 +1009,11 @@ theorem towers (H : Hyp) (q : ℕ) (i : ℤ) (B : Type) [CommRing B] [IsLocalRin
 
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_E2Cut in
 
+/- English proof (translation)
+Introduce `q A _ _ hA hq X p _ i`. Use `show PB q i p`. Use `reduce H n1 n9 q i A hq p ?_` and prove the remaining obligations. Introduce `Z h hh hZ`. Take `⟨Z', c, hZ', hdom, hc, hcomp⟩` from `e2Cut_chow A h p hh hZ`.
+
+Take `⟨hcqc, hcqs⟩` from `IT.qc hc`. Establish `hT : PB q i (c ≫ h ≫ p)` using `towers H q i A hA hq (c ≫ h ≫ p) hcomp`. Use `(proper_base_change_fibre H q i A hq c (h ≫ p) hZ' hZ ?_).1 hT` and prove the remaining obligations. Introduce `B _ _ hB hqB t`. Conclude with `towers H q i B hB hqB (pullback.snd c t) (IT.bc hc t (IsPullback.of_hasPullback c t))`.
+-/
 theorem main (H : Hyp) : E2 := by
   intro q A _ _ hA hq X p _ i
   show PB q i p

@@ -12,6 +12,11 @@ variable {S : Type} [CommRing S] (s : S →+* S) {n : ℕ} (J : Matrix (Fin n) (
 def r1 (c : S) (u v : Fin n → S) : Matrix (Fin n) (Fin n) S :=
   1 - c • vecMulVec v (vecMul (fun i => s (u i)) J)
 
+/- English proof (translation)
+Establish `hf : hform s J u z = (fun i => s (u i)) ⬝ᵥ (J *ᵥ z)`. Simplify using `only [hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Rewrite using `[r1, Matrix.sub_mulVec, Matrix.one_mulVec, hf, Matrix.dotProduct_mulVec]`. Use extensionality with `i`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Matrix.smul_apply, Matrix.vecMulVec_apply]`.
+
+Use `congr 1`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem reflection_mulVec (c : S) (u v z : Fin n → S) :
     r1 s J c u v *ᵥ z = z - (c * hform s J u z) • v := by
   have hf : hform s J u z = (fun i => s (u i)) ⬝ᵥ (J *ᵥ z) := by
@@ -24,6 +29,11 @@ theorem reflection_mulVec (c : S) (u v z : Fin n → S) :
   rw [Finset.mul_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Establish `hf : ∀ (M : Matrix (Fin n) (Fin n) S) (x y : Fin n → S), hform s M x y = (fun i => s (x i)) ⬝ᵥ (M *ᵥ y)`. Introduce `M x y`. Simplify using `only [hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `hσ : (fun i => s ((T *ᵥ z) i)) = (T.map s) *ᵥ (fun i => s (z i))`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec s T z i`.
+
+Rewrite using `[hf, hf, hσ, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Simplify using `only [cT, Matrix.mul_assoc]`.
+-/
 theorem hform_mulVec (T : Matrix (Fin n) (Fin n) S) (z w : Fin n → S) :
     hform s J (T *ᵥ z) (T *ᵥ w) = hform s (cT s T * J * T) z w := by
   have hf : ∀ (M : Matrix (Fin n) (Fin n) S) (x y : Fin n → S),
@@ -36,12 +46,22 @@ theorem hform_mulVec (T : Matrix (Fin n) (Fin n) S) (z w : Fin n → S) :
     Matrix.mulVec_mulVec]
   simp only [cT, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[hform_mulVec]`. Rewrite using `[show cT s (g : Matrix (Fin n) (Fin n) S) * J * (g : Matrix (Fin n) (Fin n) S) = J from hg]`.
+-/
 theorem hform_mem (g : GL (Fin n) S) (hg : g ∈ UJ s J) (z w : Fin n → S) :
     hform s J ((g : Matrix (Fin n) (Fin n) S) *ᵥ z) ((g : Matrix (Fin n) (Fin n) S) *ᵥ w) =
       hform s J z w := by
   rw [hform_mulVec]
   rw [show cT s (g : Matrix (Fin n) (Fin n) S) * J * (g : Matrix (Fin n) (Fin n) S) = J from hg]
 
+/- English proof (translation)
+Establish `hsingle : ∀ (M : Matrix (Fin n) (Fin n) S) (i j : Fin n), hform s M (Pi.single i 1) (Pi.single j 1) = M i j`. Introduce `M i j`. Simplify using `[hform, Pi.single_apply, apply_ite s]`. Establish `hM : cT s T * J * T = J`. Use extensionality with `i j`.
+
+Establish `h1` using `key (Pi.single i 1) (Pi.single j 1)`. Rewrite `h1` using `[hform_mulVec, hsingle, hsingle]`. Then use the resulting hypothesis. Establish `h2` using `congrArg Matrix.det hM`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `h3 : (cT s T).det * T.det = 1` using `hdet.mul_left_cancel (by linear_combination h2)`.
+
+Establish `hT : IsUnit T` using `(Matrix.isUnit_iff_isUnit_det T).2 (IsUnit.of_mul_eq_one_right _ h3)`. Use `⟨hT.unit, ?_, hT.unit_spec⟩` and prove the remaining obligations. Use `show cT s (hT.unit : Matrix (Fin n) (Fin n) S) * J * (hT.unit : Matrix (Fin n) (Fin n) S) = J`. Rewrite using `[hT.unit_spec]`. Conclude with `hM`.
+-/
 theorem mem_UJ_of (hdet : IsUnit J.det) (T : Matrix (Fin n) (Fin n) S)
     (key : ∀ z w, hform s J (T *ᵥ z) (T *ᵥ w) = hform s J z w) :
     ∃ g : GL (Fin n) S, g ∈ UJ s J ∧ (g : Matrix (Fin n) (Fin n) S) = T := by
@@ -63,6 +83,35 @@ theorem mem_UJ_of (hdet : IsUnit J.det) (T : Matrix (Fin n) (Fin n) S)
   rw [hT.unit_spec]
   exact hM
 
+/- English proof (translation)
+Establish `hJ' : ∀ i j, s (J i j) = J j i`. Introduce `i j`. Establish `h1` using `congrFun (congrFun hJ j) i`. Simplify `h1` using `[cT]`. Establish `hsub1 : ∀ x y z : Fin n → S, hform s J (x - y) z = hform s J x z - hform s J y z`.
+
+Introduce `x y z`. Simplify using `only [hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`. Establish `hsub2 : ∀ x y z : Fin n → S, hform s J x (y - z) = hform s J x y - hform s J x z`. Introduce `x y z`. Simplify using `only [hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+
+Establish `hsmul1 : ∀ (c : S) (x z : Fin n → S), hform s J (c • x) z = s c * hform s J x z`. Introduce `c x z`. Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `hsmul2 : ∀ (c : S) (x z : Fin n → S), hform s J x (c • z) = c * hform s J x z`.
+
+Introduce `c x z`. Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `hherm : ∀ x y : Fin n → S, hform s J y x = s (hform s J x y)`. Introduce `x y`.
+
+Simplify using `only [hform, map_sum, map_mul, hs, hJ']`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `hRu : ∀ (k : S) (w : Fin n → S), k + s k = s k * k * hform s J w w → ∀ z y, hform s J (r1 s J k w w *ᵥ z) (r1 s J k w w *ᵥ y) = hform s J z y`. Introduce `k w hk z y`.
+
+Rewrite using `[reflection_mulVec, reflection_mulVec]`. Simplify using `only [hsub1, hsub2, hsmul1, hsmul2, map_mul]`. Rewrite using `[hherm w z]`. Take the linear combination `(-(hform s J w y * s (hform s J w z))) * hk`. Establish `hq : s (hform s J a a) = hform s J a a` using `(hherm a a).symm`.
+
+Establish `hba : hform s J a b = s (hform s J b a)` using `hherm b a`. Establish `hwa : hform s J (a - lam • b) a = hform s J a a - s lam * hform s J b a`. Rewrite using `[hsub1, hsmul1]`. Establish `e1 : s (hform s J a a - s lam * hform s J b a) = hform s J a a - lam * s (hform s J b a)`. Rewrite using `[map_sub, map_mul, hs, hq]`.
+
+Establish `hww : hform s J (a - lam • b) (a - lam • b) = (hform s J a a - s lam * hform s J b a) + s (hform s J a a - s lam * hform s J b a)`. Simplify using `only [hsub1, hsub2, hsmul1, hsmul2]`. Take the linear combination `(-lam) * hba + (s lam * lam) * hab + hform s J a a * hlam - e1`. Take `⟨ci, hci⟩ : ∃ ci : S, ci * (hform s J a a - s lam * hform s J b a) = 1` from `⟨_, hc.val_inv_mul⟩`. Establish `hci' : s ci * s (hform s J a a - s lam * hform s J b a) = 1`.
+
+Rewrite using `[← map_mul, hci, map_one]`. Establish `hk1 : ci + s ci = s ci * ci * hform s J (a - lam • b) (a - lam • b)`. Take the linear combination `(-s ci) * hci + (-ci) * hci' + (-(s ci * ci)) * hww`. Take `⟨qi, hqi⟩ : ∃ qi : S, qi * hform s J a a = 1` from `⟨_, hu.val_inv_mul⟩`. Establish `hsqi : s qi = qi`.
+
+Establish `h1 : s qi * hform s J a a = 1`. Establish `h2` using `congrArg s hqi`. Rewrite `h2` using `[map_mul, hq, map_one]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm (hform s J a a), hqi, mul_one]`.
+
+Use `_ = qi := by rw [← mul_assoc, h1, one_mul]`. Establish `hk2 : (1 - s lam) * qi + s ((1 - s lam) * qi) = s ((1 - s lam) * qi) * ((1 - s lam) * qi) * hform s J b b`. Simplify using `only [map_mul, map_sub, map_one, hs, hsqi]`. Take the linear combination `(-qi) * hlam - (1 - lam - s lam + lam * s lam) * qi ^ 2 * hab - (1 - lam - s lam + lam * s lam) * qi * hqi`. Establish `hM : ∀ z y, hform s J ((r1 s J ((1 - s lam) * qi) b b * r1 s J ci (a - lam • b) (a - lam • b)) *ᵥ z) ((r1 s J ((1 - s lam) * qi) b b * r1 s J ci (a - lam • b) (a - lam • b)) *ᵥ y) = hform s J z y`.
+
+Introduce `z y`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hRu _ _ hk2, hRu _ _ hk1]`. Take `⟨g, hg, hgM⟩` from `mem_UJ_of s J hdet _ hM`. Use `⟨g, hg, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hgM, ← Matrix.mulVec_mulVec, reflection_mulVec s J ci (a - lam • b) (a - lam • b) a, hwa, hci, one_smul, sub_sub_cancel, reflection_mulVec, hsmul2, ← sub_smul]`.
+
+Use `one_smul S b using 2` and compare the differences between its conclusion and the goal. Take the linear combination `hlam - (1 - s lam) * lam * qi * hab - (1 - s lam) * lam * hqi`. Introduce `z hz1 hz2`. Rewrite using `[hgM, ← Matrix.mulVec_mulVec, reflection_mulVec s J ci (a - lam • b) (a - lam • b) z, hsub1, hsmul1, hz1, hz2]`. Simplify using `only [mul_zero, sub_zero, zero_smul]`.
+
+Rewrite using `[reflection_mulVec, hz2]`. Simplify using the standard rewrite rules.
+-/
 theorem step (hs : ∀ z, s (s z) = z) (hJ : IsHerm s J) (hdet : IsUnit J.det)
     (a b : Fin n → S) (hab : hform s J b b = hform s J a a) (hu : IsUnit (hform s J a a))
     (lam : S) (hlam : lam * s lam = 1) (hc : IsUnit (hform s J a a - s lam * hform s J b a)) :
@@ -147,6 +196,21 @@ theorem step (hs : ∀ z, s (s z) = z) (hJ : IsHerm s J) (hdet : IsUnit J.det)
     rw [reflection_mulVec, hz2]
     simp
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `x y _ _ _ _`. Conclude with `⟨1, one_mem _, fun i => i.elim0⟩`.
+
+Consider the case `succ k ih`. Introduce `x y horth hgram hunit hlam`. Take `⟨g, hg, hgx⟩` from `ih (fun i => x i.castSucc) (fun i => y i.castSucc) (fun i j hij => horth _ _ (fun h => hij (Fin.castSucc_injective _ h))) (fun i j => hgram _ _) (fun i => hunit _) (fun i t => hlam _ t)`. Establish `hpres` using `hform_mem s J g hg`. Establish `hab : hform s J (y (Fin.last k)) (y (Fin.last k)) = hform s J ((g : Matrix (Fin n) (Fin n) S) *ᵥ x (Fin.last k)) ((g : Matrix (Fin n) (Fin n) S) *ᵥ x (Fin.last k))`.
+
+Rewrite using `[hpres, hgram]`. Establish `hu : IsUnit (hform s J ((g : Matrix (Fin n) (Fin n) S) *ᵥ x (Fin.last k)) ((g : Matrix (Fin n) (Fin n) S) *ᵥ x (Fin.last k)))`. Rewrite using `[hpres]`. Conclude with `hunit _`. Take `⟨lam, hl1, hl2⟩` from `hlam (Fin.last k) (hform s J (y (Fin.last k)) ((g : Matrix (Fin n) (Fin n) S) *ᵥ x (Fin.last k)))`.
+
+Establish `hc : IsUnit (hform s J ((g : Matrix (Fin n) (Fin n) S) *ᵥ x (Fin.last k)) ((g : Matrix (Fin n) (Fin n) S) *ᵥ x (Fin.last k)) - s lam * hform s J (y (Fin.last k)) ((g : Matrix (Fin n) (Fin n) S) *ᵥ x (Fin.last k)))`. Rewrite using `[hpres]`. Conclude with `hl2`. Take `⟨g', hg', hg'a, hg'fix⟩` from `step s J hs hJ hdet _ _ hab hu lam hl1 hc`. Use `⟨g' * g, mul_mem hg' hg, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact hg'a`. Consider the case `cast j`. Establish `hj` using `hgx j`.
+
+Rewrite using `[hj]`. Apply `hg'fix` to reduce the goal to its premises. Rewrite using `[← hj, hpres]`. Conclude with `horth _ _ (Fin.castSucc_lt_last j).ne'`. Rewrite using `[hgram]`.
+
+Conclude with `horth _ _ (Fin.castSucc_lt_last j).ne'`.
+-/
 theorem orb_orth (hs : ∀ z, s (s z) = z) (hJ : IsHerm s J) (hdet : IsUnit J.det) :
     ∀ (k : ℕ) (x y : Fin k → Fin n → S), (∀ i j, i ≠ j → hform s J (x i) (x j) = 0) →
       (∀ i j, hform s J (y i) (y j) = hform s J (x i) (x j)) →
@@ -194,12 +258,18 @@ theorem orb_orth (hs : ∀ z, s (s z) = z) (hJ : IsHerm s J) (hdet : IsUnit J.de
 
 def tM {m : ℕ} (X : Fin m → Fin n → S) : Matrix (Fin n) (Fin m) S := Matrix.of fun r i => X i r
 
+/- English proof (translation)
+Simplify using `only [hform, cT, tM, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem gram_tM {m : ℕ} (X : Fin m → Fin n → S) (i j : Fin m) :
     hform s J (X i) (X j) = (cT s (tM X) * J * tM X) i j := by
   simp only [hform, cT, tM, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply,
     Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Simplify using `only [cT, Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc]`.
+-/
 theorem gram_mul {m k : ℕ} (N : Matrix (Fin n) (Fin m) S) (Q : Matrix (Fin m) (Fin k) S) :
     cT s (N * Q) * J * (N * Q) = cT s Q * (cT s N * J * N) * Q := by
   simp only [cT, Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc]

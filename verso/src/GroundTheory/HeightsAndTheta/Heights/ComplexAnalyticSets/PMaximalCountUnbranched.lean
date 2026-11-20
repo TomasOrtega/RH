@@ -10,6 +10,11 @@ open Topology Filter Metric
 
 namespace MaximalCountUnbranched
 
+/- English proof (translation)
+Introduce `y hy`. Use `AnalyticAt.pi fun s => ?_` and prove the remaining obligations. Establish `hs : DifferentiableOn ℂ (fun x => G x s) U` using `differentiableOn_pi.1 hG s`. Use `analyticOnNhd_of_continuousOn_of_separately hU hs.continuousOn (fun z hz i => ?_) y hy` and prove the remaining obligations. Establish `h1 : DifferentiableAt ℂ (fun x => G x s) (Function.update z i (z i))`.
+
+Rewrite using `[Function.update_eq_self]`. Conclude with `hs.differentiableAt (hU.mem_nhds hz)`. Conclude with `h1.comp (z i) (hasFDerivAt_update (𝕜 := ℂ) z (z i)).differentiableAt`.
+-/
 theorem analyticOnNhd_of_differentiableOn_pi {d : ℕ} {σ : Type} [Fintype σ] {U : Set (Fin d → ℂ)}
     {G : (Fin d → ℂ) → σ → ℂ} (hU : IsOpen U) (hG : DifferentiableOn ℂ G U) : AnalyticOnNhd ℂ G U := by
   intro y hy
@@ -21,6 +26,29 @@ theorem analyticOnNhd_of_differentiableOn_pi {d : ℕ} {σ : Type} [Fintype σ] 
     exact hs.differentiableAt (hU.mem_nhds hz)
   exact h1.comp (z i) (hasFDerivAt_update (𝕜 := ℂ) z (z i)).differentiableAt
 
+/- English proof (translation)
+Establish `hSfin : {x' | x' ∈ Y ∧ A x' = A z}.Finite` using `Set.finite_of_encard_eq_coe hzN`. Establish `hzS : z ∈ {x' | x' ∈ Y ∧ A x' = A z}` using `⟨hz, rfl⟩`. Establish `hsep : ∀ᶠ ε in 𝓝[>] (0 : ℝ), ∀ p ∈ {x' | x' ∈ Y ∧ A x' = A z} ×ˢ {x' | x' ∈ Y ∧ A x' = A z}, p.1 ≠ p.2 → 2 * ε < dist p.1 p.2`. Use `(eventually_all_finite (hSfin.prod hSfin)).2 fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `hp : p.1 = p.2`.
+
+Conclude with `Eventually.of_forall fun _ h => absurd hp h`. Establish `hpos : 0 < dist p.1 p.2 / 2` using `half_pos (dist_pos.2 hp) filter_upwards [eventually_nhdsWithin_of_eventually_nhds (eventually_lt_nhds hpos)] with ε hε _`. Combine the linear equalities and inequalities to obtain the conclusion. Use `filter_upwards [hsep, self_mem_nhdsWithin] with ε hε hε0`. Establish `hε0 : (0 : ℝ) < ε` using `hε0`.
+
+Use `⟨⋂ s ∈ {x' | x' ∈ Y ∧ A x' = A z}, A '' (Y ∩ ball s ε), (biInter_mem hSfin).2 fun s hs => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `hopen s hs.1 (ball s ε) (ball_mem_nhds s hε0)` as an intermediate fact. Rewrite `this` using `[hs.2]`. Then use the resulting hypothesis. Establish `hch : ∀ s ∈ {x' | x' ∈ Y ∧ A x' = A z}, ∃ p, p ∈ Y ∧ dist p s < ε ∧ A p = y`. Introduce `s hs`.
+
+Take `⟨p, ⟨hpY, hpb⟩, hpA⟩` from `Set.mem_iInter₂.1 hy s hs`. Conclude with `⟨p, hpY, mem_ball.1 hpb, hpA⟩`. Use `choose! f hfY hfd hfA using hch`. Establish `hinj : Set.InjOn f {x' | x' ∈ Y ∧ A x' = A z}`. Introduce `s hs s' hs' he`.
+
+Assume the negation of the conclusion as `hne`. Establish `h1 : 2 * ε < dist s s'` using `hε (s, s') ⟨hs, hs'⟩ hne`. Establish `h2 : dist s s' ≤ dist (f s) s + dist (f s') s'`. Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[hfd s hs, hfd s' hs']`.
+
+Establish `hyD : y ∈ D` using `hfA z hzS ▸ hmaps (hfY z hzS)`. Establish `hsub : f '' {x' | x' ∈ Y ∧ A x' = A z} ⊆ {x' | x' ∈ Y ∧ A x' = y}`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `⟨hfY s hs, hfA s hs⟩`. Establish `himg : (f '' {x' | x' ∈ Y ∧ A x' = A z}).encard = N` using `by rw [hinj.encard_image, hzN]`.
+
+Establish `hFle` using `hle y hyD`. Establish `hFeq : {x' | x' ∈ Y ∧ A x' = y}.encard = N` using `le_antisymm hFle (himg ▸ Set.encard_le_encard hsub)`. Establish `huniq : ∀ x₁ ∈ Y, A x₁ = y → dist x₁ z < ε → x₁ = f z`. Introduce `x₁ hx₁ hA₁ hd₁`. Assume the negation of the conclusion as `hne`.
+
+Establish `hnot : x₁ ∉ f '' {x' | x' ∈ Y ∧ A x' = A z}`. Introduce and unpack `⟨s, hs, rfl⟩`. Distinguish the cases in `hsz : s = z`. Conclude with `hne (hsz ▸ rfl)`. Establish `h1 : 2 * ε < dist s z` using `hε (s, z) ⟨hs, hzS⟩ hsz`.
+
+Establish `h2 : dist s z ≤ dist (f s) s + dist (f s) z`. Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[hfd s hs]`. Establish `hins : insert x₁ (f '' {x' | x' ∈ Y ∧ A x' = A z}) ⊆ {x' | x' ∈ Y ∧ A x' = y}` using `Set.insert_subset ⟨hx₁, hA₁⟩ hsub`. Establish `hc` using `Set.encard_le_encard hins`.
+
+Rewrite `hc` using `[Set.encard_insert_of_notMem hnot, himg]`. Establish `hc' : ((N + 1 : ℕ) : ℕ∞) ≤ (N : ℕ∞)` using `by exact_mod_cast hc.trans hFle`. Establish `: N + 1 ≤ N` using `by exact_mod_cast hc'`. Use linear arithmetic over natural numbers and integers. Use `⟨hFeq, ⟨f z, hfY z hzS, hfA z hzS, hfd z hzS⟩, fun x₁ hx₁ x₂ hx₂ hA₁ hA₂ hd₁ hd₂ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[huniq x₁ hx₁ hA₁ hd₁, huniq x₂ hx₂ hA₂ hd₂]`.
+-/
 theorem fibre_unique_near {σ : Type} [Fintype σ] {Y : Set (σ → ℂ)} {d : ℕ}
     {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)} {D : Set (Fin d → ℂ)} {N : ℕ} (hmaps : Set.MapsTo A Y D)
     (hopen : ∀ x ∈ Y, ∀ V ∈ 𝓝 x, A '' (Y ∩ V) ∈ 𝓝 (A x))
@@ -88,6 +116,39 @@ theorem fibre_unique_near {σ : Type} [Fintype σ] {Y : Set (σ → ℂ)} {d : �
   refine ⟨hFeq, ⟨f z, hfY z hzS, hfA z hzS, hfd z hzS⟩, fun x₁ hx₁ x₂ hx₂ hA₁ hA₂ hd₁ hd₂ => ?_⟩
   rw [huniq x₁ hx₁ hA₁ hd₁, huniq x₂ hx₂ hA₂ hd₂]
 
+/- English proof (translation)
+Introduce `σ _ Y d A D N _hD hmaps _hprop hopen hgen x hx hxN`. Establish `key` using `fun (z : σ → ℂ) (hz : z ∈ Y) (hzN : {x' | x' ∈ Y ∧ A x' = A z}.encard = N) => fibre_unique_near hmaps hopen hgen.1 hz hzN`. Take `⟨ε, ⟨W₀, hW₀, hW₀p⟩, hε0⟩` from `((key x hx hxN).and self_mem_nhdsWithin).exists`. Establish `hε0 : (0 : ℝ) < ε` using `hε0`. Take `⟨U, g, hUo, hxU, _hUD, hg, hgnz, hgsec⟩` from `hgen.2 (A x) (hmaps hx)`.
+
+Establish `hOo : IsOpen (interior W₀ ∩ U)` using `isOpen_interior.inter hUo`. Establish `hOW : ∀ y ∈ interior W₀ ∩ U, y ∈ W₀` using `fun y hy => interior_subset hy.1`. Establish `hex : ∀ y ∈ interior W₀ ∩ U, ∃ x' ∈ Y, A x' = y ∧ dist x' x < ε` using `fun y hy => (hW₀p y (hOW y hy)).2.1`. Use `choose! h hhY hhA hhd using hex`. Establish `hu : ∀ y ∈ interior W₀ ∩ U, ∀ x' ∈ Y, A x' = y → dist x' x < ε → x' = h y` using `fun y hy x' hx' hA hd => (hW₀p y (hOW y hy)).2.2 x' hx' (h y) (hhY y hy) hA (hhA y hy) hd (hhd y hy)`.
+
+Establish `hcont : ContinuousOn h (interior W₀ ∩ U)`. Introduce `y₀ hy₀`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `η hη`.
+
+Establish `hzN : {x' | x' ∈ Y ∧ A x' = A (h y₀)}.encard = N`. Rewrite using `[hhA y₀ hy₀]`. Conclude with `(hW₀p y₀ (hOW y₀ hy₀)).1`. Establish `hgap : 0 < ε - dist (h y₀) x` using `by linarith [hhd y₀ hy₀]`. Establish `hsmall : ∀ᶠ e in 𝓝[>] (0 : ℝ), e < min η (ε - dist (h y₀) x)` using `eventually_nhdsWithin_of_eventually_nhds (eventually_lt_nhds (lt_min hη hgap))`.
+
+Take `⟨e, ⟨W₁, hW₁, hW₁p⟩, he⟩` from `((key (h y₀) (hhY y₀ hy₀) hzN).and hsmall).exists`. Rewrite `hW₁` using `[hhA y₀ hy₀]`. Use `filter_upwards [hW₁, hOo.mem_nhds hy₀] with y hy1 hyO`. Take `⟨x'', hx''Y, hx''A, hx''d⟩` from `(hW₁p y hy1).2.1`. Establish `hm1` using `min_le_left η (ε - dist (h y₀) x)`.
+
+Establish `hm2` using `min_le_right η (ε - dist (h y₀) x)`. Establish `hx''x : dist x'' x < ε`. Use `dist_triangle x'' (h y₀) x` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← hu y hyO x'' hx''Y hx''A hx''x]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdiff : ∀ y₀ ∈ interior W₀ ∩ U, g y₀ ≠ 0 → DifferentiableAt ℂ h y₀`. Introduce `y₀ hy₀ hg₀`. Take `⟨_, hsec⟩` from `hgsec y₀ hy₀.2 hg₀`. Take `⟨O₁, V₁, h₁, hO₁, _hV₁, hzV₁, han₁, hA₁, hYV₁⟩` from `hsec (h y₀) (hhY y₀ hy₀) (hhA y₀ hy₀)`.
+
+Establish `hz : h y₀ ∈ h₁ '' O₁` using `hYV₁ ▸ ⟨hhY y₀ hy₀, hzV₁⟩`. Take `⟨y₁, hy₁, hy₁e⟩` from `hz`. Establish `hy₁₀ : y₁ = y₀` using `by rw [← hA₁ y₁ hy₁, hy₁e, hhA y₀ hy₀]`. Rewrite `hy₁`, `hy₁e` using `[hy₁₀]`. Establish `hc₁ : ContinuousAt h₁ y₀` using `(han₁ y₀ hy₁).continuousAt`.
+
+Establish `hball : ball x ε ∈ 𝓝 (h₁ y₀)`. Rewrite using `[hy₁e]`. Conclude with `isOpen_ball.mem_nhds (mem_ball.2 (hhd y₀ hy₀))`. Establish `heq : h₁ =ᶠ[𝓝 y₀] h` using `by filter_upwards [hc₁.preimage_mem_nhds hball, hO₁.mem_nhds hy₁, hOo.mem_nhds hy₀] with y hyb hyO₁ hyO`. Establish `hyY : h₁ y ∈ Y`.
+
+Establish `hmem : h₁ y ∈ h₁ '' O₁` using `⟨y, hyO₁, rfl⟩`. Rewrite `hmem` using `[← hYV₁]`. Conclude with `hmem.1`. Conclude with `hu y hyO (h₁ y) hyY (hA₁ y hyO₁) (mem_ball.1 hyb)`. Conclude with `(han₁ y₀ hy₁).differentiableAt.congr_of_eventuallyEq heq.symm`.
+
+Establish `hgd : DifferentiableOn ℂ g (interior W₀ ∩ U)` using `hg.differentiableOn.mono fun y hy => hy.2`. Establish `hgnz' : ∀ V : Set (Fin d → ℂ), IsOpen V → V ⊆ interior W₀ ∩ U → V.Nonempty → ∃ t ∈ V, g t ≠ 0` using `fun V hV hVO hVn => hgnz V hV (hVO.trans Set.inter_subset_right) hVn`. Establish `hdense : interior W₀ ∩ U ⊆ closure ((interior W₀ ∩ U) ∩ {t | g t ≠ 0})`. Introduce `y hy`. Rewrite using `[_root_.mem_closure_iff]`.
+
+Introduce `o ho hyo`. Take `⟨t, ht, hgt⟩` from `hgnz' (o ∩ (interior W₀ ∩ U)) (ho.inter hOo) Set.inter_subset_right ⟨y, hyo, hy⟩`. Conclude with `⟨t, ht.1, ht.2, hgt⟩`. Establish `hcoord : ∀ j : σ, DifferentiableOn ℂ (fun y => h y j) (interior W₀ ∩ U)`. Introduce `j`.
+
+Establish `hdj : DifferentiableOn ℂ (fun y => h y j) ((interior W₀ ∩ U) ∩ {t | g t ≠ 0})` using `fun y hy => (differentiableAt_pi.1 (hdiff y hy.1 hy.2) j).differentiableWithinAt`. Establish `hbj : ∀ τ ∈ interior W₀ ∩ U, ∃ M ∈ 𝓝 τ, Bornology.IsBounded ((fun y => h y j) '' (M ∩ (interior W₀ ∩ U) ∩ {t | g t ≠ 0}))`. Introduce `τ _`. Use `⟨Set.univ, univ_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[isBounded_iff_forall_norm_le]`.
+
+Use `⟨‖x‖ + ε, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, ⟨⟨_, hyO⟩, _⟩, rfl⟩`. Combine the equalities or inequalities in the displayed calculation. Take `⟨F, hF, hFe⟩` from `hRE d (interior W₀ ∩ U) g (fun y => h y j) hOo hgd hgnz' hdj hbj`. Establish `hEq : Set.EqOn F (fun y => h y j) (interior W₀ ∩ U)` using `hFe.of_subset_closure hF.continuousOn (continuousOn_pi.1 hcont j) Set.inter_subset_left hdense`.
+
+Conclude with `hF.congr fun y hy => (hEq hy).symm`. Establish `han : AnalyticOnNhd ℂ h (interior W₀ ∩ U)` using `analyticOnNhd_of_differentiableOn_pi hOo (differentiableOn_pi.2 hcoord)`. Use `⟨interior W₀ ∩ U, ball x ε ∩ A ⁻¹' (interior W₀ ∩ U), h, hOo, isOpen_ball.inter (hOo.preimage A.continuous), ⟨mem_ball_self hε0, mem_interior_iff_mem_nhds.2 hW₀, hxU⟩, han, hhA, ?_⟩` and prove the remaining obligations. Use extensionality with `x'`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hx'Y, hx'b, hx'O⟩`. Conclude with `⟨A x', hx'O, (hu (A x') hx'O x' hx'Y rfl (mem_ball.1 hx'b)).symm⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨hhY y hy, mem_ball.2 (hhd y hy), show A (h y) ∈ interior W₀ ∩ U from (hhA y hy).symm ▸ hy⟩`.
+-/
 theorem proof (hRE : RiemannExtensionAnalytic.Statement) : MaximalCountUnbranched.Statement := by
   intro σ _ Y d A D N _hD hmaps _hprop hopen hgen x hx hxN
   have key := fun (z : σ → ℂ) (hz : z ∈ Y) (hzN : {x' | x' ∈ Y ∧ A x' = A z}.encard = N) =>

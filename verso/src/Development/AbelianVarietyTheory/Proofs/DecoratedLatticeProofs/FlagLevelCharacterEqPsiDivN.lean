@@ -46,6 +46,9 @@ def IsRefFrame (I : AutInst) (g : ℕ) {ρ k : ℕ} (e0 f0 : Fin ρ → VA I) (z
   (∀ i j, ZMod' I g (hA I (bwd i) (bw j) - if i = j then ew else 0)) ∧
   ∀ y ∈ I.Lf, InMod I g (Set.range e0 ∪ Set.range f0 ∪ {z0} ∪ Set.range bw ∪ Set.range bwd) y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.vectorsInLattice, X.gramIntegral, X.formsAtZero, X.weightVectorsIntegral, ⟨X.ew_idem, X.ew_orth, X.ew_int, X.ew_full⟩, ⟨X.bw_w, X.bwd_w⟩, fun i j => by convert X.bw_dual i j, X.latticeSpan⟩`.
+-/
 theorem isRefFrame_setting {D : Formalism.BasicNotions.D7} (X : HidaSetting D) :
     IsRefFrame X.B.I X.B.g X.e0 X.f0 X.z0 X.bw X.bwd X.ew :=
   ⟨X.vectorsInLattice, X.gramIntegral, X.formsAtZero, X.weightVectorsIntegral, ⟨X.ew_idem, X.ew_orth, X.ew_int, X.ew_full⟩, ⟨X.bw_w, X.bwd_w⟩,
@@ -66,6 +69,9 @@ def gramIn (I : AutInst) (β : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix (Fin
 def sigInt (I : AutInst) : Formalism.L2.Herm.intAf I.F I.E →+* Formalism.L2.Herm.intAf I.F I.E :=
   ((sigA I).comp (Formalism.L2.Herm.intAf I.F I.E).subtype).codRestrict _ fun s => Formalism.L2.SG.Pf.unitaryCongruence.sigA_mem I s.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sigInt_coe (I : AutInst) (s : Formalism.L2.Herm.intAf I.F I.E) :
     ((sigInt I s : Formalism.L2.Herm.intAf I.F I.E) : I.E ⊗[I.F] Af I.F) = sigA I s := rfl
 
@@ -74,6 +80,9 @@ def chiArg (I : AutInst) {ρ k : ℕ} (e0 f0 : Fin ρ → VA I) (z0 : VA I) (bw 
   (∑ a, hA I (f0 a) (I.fmat x *ᵥ nxt e0 z0 a)) +
     ∑ i : Fin k, if h : i.1 + 1 < k then hA I (bwd i) (I.fmat x *ᵥ bw ⟨i.1 + 1, h⟩) else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem flagLevelCharacter_eq_psi_divN (I : AutInst) (psiEf : I.E ⊗[I.F] Af I.F → ℂ) (g : ℕ) {ρ k : ℕ} (e0 f0 : Fin ρ → VA I) (z0 : VA I)
     (bw bwd : Fin k → VA I) (x : I.Gf) :
     chi2f I psiEf g e0 f0 z0 bw bwd x = psiEf (divN I g (chiArg I e0 f0 z0 bw bwd x)) := rfl

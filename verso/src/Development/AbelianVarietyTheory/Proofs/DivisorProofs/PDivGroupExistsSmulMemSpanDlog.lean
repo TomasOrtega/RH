@@ -9,6 +9,13 @@ open CategoryTheory Opposite Matrix GlobalTheory GlobalTheory.PDivGroup GlobalTh
 
 namespace GlobalTheory.PDivLat
 
+/- English proof (translation)
+Use `haveI : IsIntegrallyClosedIn O C := isIntegrallyClosedIn_iff.2 ⟨hv.hom_inj, fun h => hv.exists_of_le_one (hv.isIntegral_iff_v_le_one.1 h)⟩`. Take `⟨D, e, fil, lie, -, hb⟩` from `hD`. Establish `hG : Function.Surjective (G.pairing O).flip` using `(G.pairing_flip_bijective C).2`. Establish `h0 : bQuot D (lie.symm x) = 0` using `GlobalTheory.DetInv.HTKer.pairingO_inj (hε := hε) hG e _ _ fun χ => by`. Rewrite using `[hb, hx]`.
+
+Simplify using `[pairingO]`. Take `⟨m, hm⟩` from `D.Fil.mkQ_surjective (lie.symm x)`. Establish `h1 : D.bb m = 0`. Rewrite `h0` using `[← hm]`. Conclude with `h0`.
+
+Establish `h2 : lie.symm x = 0`. Rewrite using `[← hm, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h1`. Simplify using `using congrArg lie h2`.
+-/
 theorem lie_eq_zero_of_dlog {p : ℕ} [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     {v : Valuation C NNReal} {O : Type} [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O] (hv : v.Integers O)
@@ -28,6 +35,21 @@ theorem lie_eq_zero_of_dlog {p : ℕ} [Fact p.Prime] (C : Type) [Field C] [IsAlg
     rw [← hm, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]; exact h1
   simpa using congrArg lie h2
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε G hD`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Use `haveI : Module.Finite O G.omega := (GlobalTheory.PDiv.omega_finite_projective p C v O hv G).1`. Use `set S := Submodule.span O (Set.range (dlog G)) with hS`. Set `T` to `Submodule.torsion O (G.omega ⧸ S)`.
+
+Set `π : G.omega →ₗ[O] (G.omega ⧸ S) ⧸ T` to `T.mkQ ∘ₗ S.mkQ`. Establish `hπ : Function.Surjective π` using `T.mkQ_surjective.comp S.mkQ_surjective`. Use `haveI : Module.Flat O ((G.omega ⧸ S) ⧸ T) := by`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout]`. Conclude with `Submodule.QuotientTorsion.torsion_eq_bot`.
+
+Use `haveI : Module.Free O ((G.omega ⧸ S) ⧸ T) := Module.free_of_flat_of_isLocalRing`. Set `b` to `Module.Free.chooseBasis O ((G.omega ⧸ S) ⧸ T)`. Establish `hcoord : ∀ i, b.coord i ∘ₗ π = 0` using `fun i => lie_eq_zero_of_dlog C hv hD _ fun χ => by`. Express the relevant statement in the definitionally equal form `b.coord i (T.mkQ (S.mkQ (dlog G χ))) = 0`. Establish `hs : S.mkQ (dlog G χ) = 0`.
+
+Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.subset_span ⟨χ, rfl⟩`. Rewrite using `[hs, map_zero, map_zero]`. Establish `hzero : ∀ q : (G.omega ⧸ S) ⧸ T, q = 0` using `fun q => by`. Take `⟨w, rfl⟩` from `hπ q`.
+
+Use `b.ext_elem fun i => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun (hcoord i) w` as an intermediate fact. Simplify using `using this`. Establish `htor : Module.IsTorsion O (G.omega ⧸ S)` using `fun q => by`. Use `hzero (T.mkQ q)` as an intermediate fact.
+
+Rewrite `this` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_torsion_iff]`. Conclude with `this`. Take `⟨c, hc, hc0⟩` from `Submodule.annihilator_top_inter_nonZeroDivisors htor`. Use `⟨c, nonZeroDivisors.ne_zero hc0, fun w => ?_⟩` and prove the remaining obligations. Use `Submodule.mem_annihilator.1 hc (S.mkQ w) Submodule.mem_top` as an intermediate fact.
+
+Rewrite `this` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem exists_smul_mem_span_dlog : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ G : PDivGroup p O, HasDatum hε G → ∃ c : O, c ≠ 0 ∧ ∀ w : G.omega, c • w ∈ Submodule.span O (Set.range (dlog G)) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε G hD
   haveI : ValuationRing O := ValuationRing.of_integers v hv

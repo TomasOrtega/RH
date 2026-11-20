@@ -21,13 +21,22 @@ def symForms : Submodule S (Bil Y A) where
 
 variable {S Y A}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_symForms {b : Bil Y A} : b ∈ symForms S Y A ↔ ∀ y y', b y y' = b y' y := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by ext y y'; exact h y' y, fun h y y' => by conv_lhs => rw [← h] rfl⟩`.
+-/
 theorem mem_symForms_iff_flip {b : Bil Y A} : b ∈ symForms S Y A ↔ b.flip = b :=
   ⟨fun h => by ext y y'; exact h y' y, fun h y y' => by
     conv_lhs => rw [← h]
     rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h⟩, fun h => h.eq⟩`.
+-/
 theorem mem_symForms_iff_isSymm {b : Bil Y ℤ} :
     b ∈ symForms ℤ Y ℤ ↔ LinearMap.BilinForm.IsSymm b :=
   ⟨fun h => ⟨h⟩, fun h => h.eq⟩
@@ -56,14 +65,26 @@ def pullback (f : Y →ₗ[ℤ] Y') : Bil Y' A →ₗ[S] Bil Y A where
 
 variable {S A}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullback_apply (f : Y →ₗ[ℤ] Y') (b : Bil Y' A) (y y' : Y) :
     pullback S A f b y y' = b (f y) (f y') := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullback_id : pullback S A (LinearMap.id : Y →ₗ[ℤ] Y) = LinearMap.id := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullback_comp (f : Y →ₗ[ℤ] Y') (g : Y' →ₗ[ℤ] Y'') :
     pullback S A (g ∘ₗ f) = pullback S A f ∘ₗ pullback S A g := rfl
 
+/- English proof (translation)
+Introduce `b c h`. Use extensionality with `y y'`. Take `⟨y, rfl⟩` from `hf y`. Take `⟨y', rfl⟩` from `hf y'`. Conclude with `congr($h y y')`.
+-/
 theorem pullback_injective {f : Y →ₗ[ℤ] Y'} (hf : Function.Surjective f) :
     Function.Injective (pullback S A f) := by
   intro b c h
@@ -72,9 +93,15 @@ theorem pullback_injective {f : Y →ₗ[ℤ] Y'} (hf : Function.Surjective f) :
   obtain ⟨y', rfl⟩ := hf y'
   exact congr($h y y')
 
+/- English proof (translation)
+Introduce `_ _` and use `hb _ _`.
+-/
 theorem pullback_mem_symForms (f : Y →ₗ[ℤ] Y') {b : Bil Y' A} (hb : b ∈ symForms S Y' A) :
     pullback S A f b ∈ symForms S Y A := fun _ _ => hb _ _
 
+/- English proof (translation)
+Use `⟨fun h y y' => ?_, pullback_mem_symForms f⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hf y`. Take `⟨y', rfl⟩` from `hf y'`. Conclude with `h y y'`.
+-/
 theorem pullback_mem_symForms_iff {f : Y →ₗ[ℤ] Y'} (hf : Function.Surjective f) {b : Bil Y' A} :
     pullback S A f b ∈ symForms S Y A ↔ b ∈ symForms S Y' A := by
   refine ⟨fun h y y' => ?_, pullback_mem_symForms f⟩
@@ -82,6 +109,17 @@ theorem pullback_mem_symForms_iff {f : Y →ₗ[ℤ] Y'} (hf : Function.Surjecti
   obtain ⟨y', rfl⟩ := hf y'
   exact h y y'
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ y hy`. Rewrite `hy`, the goal using `[LinearMap.mem_ker]`. Use extensionality with `y'`. Simplify using `[hy]`.
+
+Introduce `h`. Take `⟨c, hc⟩ : ∃ c : Y' →ₗ[ℤ] Y →ₗ[ℤ] A, c ∘ₗ f = b` from `⟨(LinearMap.ker f).liftQ b h ∘ₗ (f.quotKerEquivOfSurjective hf).symm.toLinearMap, by`. Use extensionality with `y y'`. Use the proof step `simp⟩`. Establish `h' : LinearMap.ker f ≤ LinearMap.ker c.flip`.
+
+Introduce `y hy`. Rewrite using `[LinearMap.mem_ker]`. Use extensionality with `z`. Take `⟨z, rfl⟩` from `hf z`. Establish `h1 : c (f z) y = b z y` using `congr($hc z y)`.
+
+Establish `h2 : b y = 0` using `h hy`. Simplify using `[h1, hb z y, h2]`. Take `⟨d, hd⟩ : ∃ d : Y' →ₗ[ℤ] Y' →ₗ[ℤ] A, d ∘ₗ f = c.flip` from `⟨(LinearMap.ker f).liftQ c.flip h' ∘ₗ (f.quotKerEquivOfSurjective hf).symm.toLinearMap, by`. Use extensionality with `y y'`. Use the proof step `simp⟩`.
+
+Use `⟨d.flip, ?_⟩` and prove the remaining obligations. Use extensionality with `y y'`. Establish `h1 : d (f y') (f y) = c (f y) y'` using `congr($hd y' (f y))`. Establish `h2 : c (f y) y' = b y y'` using `congr($hc y y')`. Simplify using `[h1, h2]`.
+-/
 theorem mem_range_pullback_iff {f : Y →ₗ[ℤ] Y'} (hf : Function.Surjective f) {b : Bil Y A}
     (hb : b ∈ symForms S Y A) :
     b ∈ LinearMap.range (pullback S A f) ↔ LinearMap.ker f ≤ LinearMap.ker b := by
@@ -118,9 +156,15 @@ variable (S A) in
 def symPullback (f : Y →ₗ[ℤ] Y') : symForms S Y' A →ₗ[S] symForms S Y A :=
   (pullback S A f).restrict fun _ hb => pullback_mem_symForms f hb
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_symPullback (f : Y →ₗ[ℤ] Y') (b : symForms S Y' A) :
     (symPullback S A f b : Bil Y A) = pullback S A f b := rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext (pullback_injective (S := S) hf (congrArg Subtype.val h))`.
+-/
 theorem symPullback_injective {f : Y →ₗ[ℤ] Y'} (hf : Function.Surjective f) :
     Function.Injective (symPullback S A f) := fun _ _ h =>
   Subtype.ext (pullback_injective (S := S) hf (congrArg Subtype.val h))
@@ -136,9 +180,15 @@ def glAction : (Y ≃ₗ[ℤ] Y) →* (Bil Y A ≃ₗ[S] Bil Y A) where
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem glAction_apply (g : Y ≃ₗ[ℤ] Y) (b : Bil Y A) (y y' : Y) :
     glAction S Y A g b y y' = b (g.symm y) (g.symm y') := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glAction_eq_pullback (g : Y ≃ₗ[ℤ] Y) (b : Bil Y A) :
     glAction S Y A g b = pullback S A g.symm.toLinearMap b := rfl
 
@@ -162,10 +212,16 @@ def restrictAction {Γ : Type*} [Group Γ] (ρ : Γ →* (Y ≃ₗ[ℤ] Y)) (L :
     change glAction S Y A (ρ (γ * δ)) b.1 = (glAction S Y A (ρ γ) * glAction S Y A (ρ δ)) b.1
     rw [map_mul, map_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_restrictAction {Γ : Type*} [Group Γ] (ρ : Γ →* (Y ≃ₗ[ℤ] Y))
     (L : Submodule S (Bil Y A)) (hL : ∀ γ, ∀ b ∈ L, glAction S Y A (ρ γ) b ∈ L) (γ : Γ) (b : L) :
     (restrictAction ρ L hL γ b : Bil Y A) = glAction S Y A (ρ γ) b := rfl
 
+/- English proof (translation)
+Introduce `_ _` and use `hb _ _`.
+-/
 theorem glAction_mem_symForms (g : Y ≃ₗ[ℤ] Y) {b : Bil Y A} (hb : b ∈ symForms S Y A) :
     glAction S Y A g b ∈ symForms S Y A := fun _ _ => hb _ _
 
@@ -174,6 +230,9 @@ variable (S Y A) in
 def symAction : (Y ≃ₗ[ℤ] Y) →* (symForms S Y A ≃ₗ[S] symForms S Y A) :=
   restrictAction (MonoidHom.id _) _ fun g _ hb => glAction_mem_symForms g hb
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem symAction_apply (g : Y ≃ₗ[ℤ] Y) (b : symForms S Y A) (y y' : Y) :
     (symAction S Y A g b : Bil Y A) y y' = (b : Bil Y A) (g.symm y) (g.symm y') := rfl
 
@@ -194,9 +253,15 @@ namespace SymSq
 
 def ofTensor : Y ⊗[ℤ] Y →+ SymSq Y := QuotientAddGroup.mk' (symRel Y)
 
+/- English proof (translation)
+The claim follows from `QuotientAddGroup.mk'_surjective _`.
+-/
 theorem ofTensor_surjective : Function.Surjective (ofTensor Y) :=
   QuotientAddGroup.mk'_surjective _
 
+/- English proof (translation)
+The claim follows from `QuotientAddGroup.ker_mk' _`.
+-/
 theorem ker_ofTensor : (ofTensor Y).ker = symRel Y := QuotientAddGroup.ker_mk' _
 
 variable {Y}
@@ -208,12 +273,23 @@ def mk : Bil Y (SymSq Y) :=
     (fun _ _ _ => by rw [tmul_add, map_add])
     (fun n y y' => by rw [← map_zsmul, ← smul_tmul]; rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mk_apply (y y' : Y) : mk y y' = ofTensor Y (y ⊗ₜ y') := rfl
 
+/- English proof (translation)
+Rewrite using `[mk_apply, mk_apply, ← sub_eq_zero, ← map_sub, ← AddMonoidHom.mem_ker, ker_ofTensor]`. Conclude with `AddSubgroup.subset_closure ⟨y, y', rfl⟩`.
+-/
 theorem mk_comm (y y' : Y) : mk y y' = mk y' y := by
   rw [mk_apply, mk_apply, ← sub_eq_zero, ← map_sub, ← AddMonoidHom.mem_ker, ker_ofTensor]
   exact AddSubgroup.subset_closure ⟨y, y', rfl⟩
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `ofTensor_surjective Y x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul y y' => exact h y y'`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 @[ext high] theorem hom_ext {A : Type*} [AddCommGroup A] {f g : SymSq Y →ₗ[ℤ] A}
     (h : ∀ y y', f (mk y y') = g (mk y y')) : f = g := by
   refine LinearMap.ext fun x => ?_
@@ -223,6 +299,9 @@ theorem mk_comm (y y' : Y) : mk y y' = mk y' y := by
   | tmul y y' => exact h y y'
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[← Submodule.ker_mkQ (Submodule.span ℤ _), LinearMap.ker_eq_top]`. Use extensionality with `y y'`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.subset_span ⟨y, y', rfl⟩)`.
+-/
 theorem span_mk : Submodule.span ℤ {x : SymSq Y | ∃ y y', x = mk y y'} = ⊤ := by
   rw [← Submodule.ker_mkQ (Submodule.span ℤ _), LinearMap.ker_eq_top]
   ext y y'
@@ -245,18 +324,30 @@ def lift : symForms S Y A ≃ₗ[S] (SymSq Y →ₗ[ℤ] A) where
   left_inv b := by ext; rfl
   right_inv l := by ext; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lift_mk (b : symForms S Y A) (y y' : Y) :
     lift S Y A b (mk y y') = (b : Bil Y A) y y' := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lift_symm_apply (l : SymSq Y →ₗ[ℤ] A) (y y' : Y) :
     ((lift S Y A).symm l : Bil Y A) y y' = l (mk y y') := rfl
 
 def map {Y' : Type*} [AddCommGroup Y'] (f : Y →ₗ[ℤ] Y') : SymSq Y →ₗ[ℤ] SymSq Y' :=
   lift ℤ Y (SymSq Y') ⟨pullback ℤ _ f mk, fun _ _ => mk_comm _ _⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem map_mk {Y' : Type*} [AddCommGroup Y'] (f : Y →ₗ[ℤ] Y') (y y' : Y) :
     map f (mk y y') = mk (f y) (f y') := rfl
 
+/- English proof (translation)
+Use `ext`. Both sides reduce to the same expression.
+-/
 theorem lift_symPullback {Y' : Type*} [AddCommGroup Y'] (f : Y →ₗ[ℤ] Y') (b : symForms S Y' A) :
     lift S Y A (symPullback S A f b) = lift S Y' A b ∘ₗ map f := by
   ext; rfl
@@ -278,6 +369,9 @@ noncomputable def basis {ι : Type*} (e : Module.Basis ι ℤ Y) : Module.Basis 
       refine e.ext fun i => e.ext fun j => ?_
       simp)
 
+/- English proof (translation)
+Simplify using `[basis, Module.Basis.coe_ofRepr]`.
+-/
 @[simp] theorem basis_apply {ι : Type*} (e : Module.Basis ι ℤ Y) (i j : ι) :
     basis e s(i, j) = mk (e i) (e j) := by
   simp [basis, Module.Basis.coe_ofRepr]
@@ -292,6 +386,9 @@ by
     congr!
   exact Module.Finite.of_surjective (ofTensor Y).toIntLinearMap (ofTensor_surjective Y)
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_eq_card_basis (basis (Module.Free.chooseBasis ℤ Y)), Sym2.card, Module.finrank_eq_card_chooseBasisIndex]`.
+-/
 theorem finrank_eq [Module.Finite ℤ Y] [Module.Free ℤ Y] :
     Module.finrank ℤ (SymSq Y) = (Module.finrank ℤ Y + 1).choose 2 := by
   classical
@@ -304,9 +401,15 @@ noncomputable def dualEquiv [Module.Finite ℤ Y] [Module.Free ℤ Y] :
     SymSq Y ≃ₗ[ℤ] Module.Dual ℤ (SymLattice Y) :=
   Module.evalEquiv ℤ (SymSq Y) ≪≫ₗ (lift ℤ Y ℤ).dualMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dualEquiv_apply [Module.Finite ℤ Y] [Module.Free ℤ Y] (x : SymSq Y)
     (b : SymLattice Y) : dualEquiv Y x b = lift ℤ Y ℤ b x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualEquiv_mk [Module.Finite ℤ Y] [Module.Free ℤ Y] (y y' : Y) (b : SymLattice Y) :
     dualEquiv Y (mk y y') b = (b : Bil Y ℤ) y y' := rfl
 
@@ -372,11 +475,17 @@ noncomputable def equivSymmetricPower : SymSq Y ≃+ Sym[ℤ]^2 Y :=
         exact congrArg _ h1
       | add x y hx hy => rw [map_add, map_add, map_add, hx, hy])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem equivSymmetricPower_mk (y y' : Y) :
     equivSymmetricPower Y (mk y y') = SymmetricPower.tprod ℤ ![y, y'] := rfl
 
 end SymSq
 
+/- English proof (translation)
+Rewrite using `[(SymSq.lift ℤ Y ℤ).finrank_eq, ← SymSq.finrank_eq]`. Conclude with `Module.finrank_linearMap_self ℤ ℤ _`.
+-/
 theorem finrank_symLattice [Module.Finite ℤ Y] [Module.Free ℤ Y] :
     Module.finrank ℤ (SymLattice Y) = (Module.finrank ℤ Y + 1).choose 2 := by
   rw [(SymSq.lift ℤ Y ℤ).finrank_eq, ← SymSq.finrank_eq]
@@ -393,22 +502,37 @@ def IsBalanced (b : Bil Y A) : Prop := ∀ (a : O) (y y' : Y), b (a • y) y' = 
 
 variable {O}
 
+/- English proof (translation)
+Rewrite using `[hb, star_star]`.
+-/
 theorem IsBalanced.right {b : Bil Y A} (hb : IsBalanced O b) (a : O) (y y' : Y) :
     b y (a • y') = b (star a • y) y' := by
   rw [hb, star_star]
 
+/- English proof (translation)
+Rewrite using `[hb, _root_.smul_smul, mul_comm]`.
+-/
 theorem IsBalanced.smul_smul {b : Bil Y A} (hb : IsBalanced O b) (w : O) (y y' : Y) :
     b (w • y) (w • y') = b y ((w * star w) • y') := by
   rw [hb, _root_.smul_smul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[hb.smul_smul, ← hn, Int.cast_smul_eq_zsmul, map_zsmul]`.
+-/
 theorem IsBalanced.smul_smul_of_norm {b : Bil Y A} (hb : IsBalanced O b) {w : O} {n : ℤ}
     (hn : (n : O) = w * star w) (y y' : Y) : b (w • y) (w • y') = n • b y y' := by
   rw [hb.smul_smul, ← hn, Int.cast_smul_eq_zsmul, map_zsmul]
 
+/- English proof (translation)
+Rewrite using `[hb, ← map_add, ← add_smul, hw, one_smul]`.
+-/
 theorem IsBalanced.add_of_add_star {b : Bil Y A} (hb : IsBalanced O b) {w : O}
     (hw : w + star w = 1) (y y' : Y) : b y (w • y') + b (w • y) y' = b y y' := by
   rw [hb, ← map_add, ← add_smul, hw, one_smul]
 
+/- English proof (translation)
+Rewrite `hy`, the goal using `[LinearMap.mem_ker]`. Use extensionality with `y'`. Rewrite using `[hb, hy]`. Both sides reduce to the same expression.
+-/
 theorem IsBalanced.smul_mem_ker {b : Bil Y A} (hb : IsBalanced O b) (a : O) {y : Y}
     (hy : y ∈ LinearMap.ker b) : a • y ∈ LinearMap.ker b := by
   rw [LinearMap.mem_ker] at hy ⊢
@@ -420,6 +544,9 @@ def IsBalanced.radical {b : Bil Y A} (hb : IsBalanced O b) : Submodule O Y where
   __ := (LinearMap.ker b).toAddSubmonoid
   smul_mem' a _ hy := hb.smul_mem_ker a hy
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem IsBalanced.mem_radical {b : Bil Y A} (hb : IsBalanced O b) {y : Y} :
     y ∈ hb.radical ↔ b y = 0 := Iff.rfl
 
@@ -439,24 +566,42 @@ variable (O Y) in
 
 abbrev BalLattice : Type _ := balForms ℤ O Y ℤ
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_balForms {b : Bil Y A} :
     b ∈ balForms S O Y A ↔ b ∈ symForms S Y A ∧ IsBalanced O b := Iff.rfl
 
 variable (S O Y A) in
+/- English proof (translation)
+Introduce `_ hb` and use `hb.1`.
+-/
 theorem balForms_le_symForms : balForms S O Y A ≤ symForms S Y A := fun _ hb => hb.1
 
+/- English proof (translation)
+Rewrite using `[← hb.2.add_of_add_star hw y y, hb.1 (w • y) y]`.
+-/
 theorem add_self_of_add_star {b : Bil Y A} (hb : b ∈ balForms S O Y A) {w : O}
     (hw : w + star w = 1) (y : Y) : b y (w • y) + b y (w • y) = b y y := by
   rw [← hb.2.add_of_add_star hw y y, hb.1 (w • y) y]
 
+/- English proof (translation)
+The claim follows from `hb.2.smul_smul_of_norm hn y y`.
+-/
 theorem smul_smul_self_of_norm {b : Bil Y A} (hb : b ∈ balForms S O Y A) {w : O} {n : ℤ}
     (hn : (n : O) = w * star w) (y : Y) : b (w • y) (w • y) = n • b y y :=
   hb.2.smul_smul_of_norm hn y y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, (add_self_of_add_star hb hw y).symm⟩`.
+-/
 theorem even_apply_self_of_add_star {b : Bil Y ℤ} (hb : b ∈ balForms ℤ O Y ℤ) {w : O}
     (hw : w + star w = 1) (y : Y) : Even (b y y) :=
   ⟨_, (add_self_of_add_star hb hw y).symm⟩
 
+/- English proof (translation)
+The claim follows from `le_antisymm (balForms_le_symForms S ℤ Y A) fun b hb => ⟨hb, fun a y y' => by simp⟩`.
+-/
 theorem balForms_int {Y : Type*} [AddCommGroup Y] : balForms S ℤ Y A = symForms S Y A :=
   le_antisymm (balForms_le_symForms S ℤ Y A) fun b hb => ⟨hb, fun a y y' => by simp⟩
 
@@ -467,8 +612,14 @@ def traceForm (t : O →ₗ[ℤ] A) : Bil O A :=
     (fun _ _ _ => by rw [star_add, mul_add, map_add])
     (fun _ _ _ => by rw [star_zsmul, mul_smul_comm, map_smul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem traceForm_apply (t : O →ₗ[ℤ] A) (x y : O) : traceForm t x y = t (x * star y) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x y => by rw [traceForm_apply, traceForm_apply, ← ht, star_mul, star_star], fun a x y => by rw [traceForm_apply, traceForm_apply, smul_eq_mul, smul_eq_mul, star_mul, star_star] congr 1 ring⟩`.
+-/
 theorem traceForm_mem_balForms {t : O →ₗ[ℤ] A} (ht : ∀ x, t (star x) = t x) :
     traceForm t ∈ balForms S O O A :=
   ⟨fun x y => by rw [traceForm_apply, traceForm_apply, ← ht, star_mul, star_star],
@@ -477,10 +628,16 @@ theorem traceForm_mem_balForms {t : O →ₗ[ℤ] A} (ht : ∀ x, t (star x) = t
       congr 1
       ring⟩
 
+/- English proof (translation)
+Introduce `y y'` and use `smul_right_injective A hn (hb y y')`.
+-/
 theorem mem_symForms_of_zsmul_mem [Module.IsTorsionFree ℤ A] {Y : Type*} [AddCommGroup Y]
     {b : Bil Y A} {n : ℤ} (hn : n ≠ 0) (hb : n • b ∈ symForms S Y A) : b ∈ symForms S Y A :=
   fun y y' => smul_right_injective A hn (hb y y')
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mem_symForms_of_zsmul_mem hn hb.1, fun a y y' => smul_right_injective A hn (hb.2 a y y')⟩`.
+-/
 theorem mem_balForms_of_zsmul_mem [Module.IsTorsionFree ℤ A] {b : Bil Y A} {n : ℤ} (hn : n ≠ 0)
     (hb : n • b ∈ balForms S O Y A) : b ∈ balForms S O Y A :=
   ⟨mem_symForms_of_zsmul_mem hn hb.1, fun a y y' => smul_right_injective A hn (hb.2 a y y')⟩
@@ -490,28 +647,46 @@ variable (O Y) in
 def balInclusion : BalLattice O Y →ₗ[ℤ] SymLattice Y :=
   Submodule.inclusion (balForms_le_symForms ℤ O Y ℤ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_balInclusion (b : BalLattice O Y) :
     (balInclusion O Y b : Bil Y ℤ) = b := rfl
 
 variable (O Y) in
+/- English proof (translation)
+The claim follows from `Submodule.inclusion_injective _`.
+-/
 theorem balInclusion_injective : Function.Injective (balInclusion O Y) :=
   Submodule.inclusion_injective _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rintro ⟨c, rfl⟩; exact c.2.2, fun h => ⟨⟨b, b.2, h⟩, rfl⟩⟩`.
+-/
 theorem mem_range_balInclusion {b : SymLattice Y} :
     b ∈ LinearMap.range (balInclusion O Y) ↔ IsBalanced O (b : Bil Y ℤ) :=
   ⟨by rintro ⟨c, rfl⟩; exact c.2.2, fun h => ⟨⟨b, b.2, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+The claim follows from `isSaturatedSubmodule_iff.2 fun _ hn _ hb => mem_symForms_of_zsmul_mem hn hb`.
+-/
 theorem isSaturated_symForms (Y : Type*) [AddCommGroup Y] :
     IsSaturatedSubmodule (symForms ℤ Y ℤ) :=
   isSaturatedSubmodule_iff.2 fun _ hn _ hb => mem_symForms_of_zsmul_mem hn hb
 
 variable (O Y) in
 
+/- English proof (translation)
+The claim follows from `isSaturatedSubmodule_iff.2 fun _ hn _ hb => mem_balForms_of_zsmul_mem hn hb`.
+-/
 theorem isSaturated_balForms : IsSaturatedSubmodule (balForms ℤ O Y ℤ) :=
   isSaturatedSubmodule_iff.2 fun _ hn _ hb => mem_balForms_of_zsmul_mem hn hb
 
 variable (O Y) in
 
+/- English proof (translation)
+The claim follows from `isSaturatedSubmodule_iff.2 fun n hn b hb => mem_range_balInclusion.2 (mem_balForms_of_zsmul_mem (S := ℤ) hn ⟨(n • b).2, mem_range_balInclusion.1 hb⟩).2`.
+-/
 theorem isSaturated_range_balInclusion :
     IsSaturatedSubmodule (LinearMap.range (balInclusion O Y)) :=
   isSaturatedSubmodule_iff.2 fun n hn b hb => mem_range_balInclusion.2
@@ -522,6 +697,13 @@ instance : Module.IsTorsionFree ℤ (SymLattice Y ⧸ LinearMap.range (balInclus
 
 variable (O Y) in
 
+/- English proof (translation)
+Establish `: Module.Free ℤ (SymLattice Y ⧸ LinearMap.range (balInclusion O Y))` using `Module.free_of_finite_type_torsion_free'`. Take `⟨s, hs⟩` from `Module.projective_lifting_property (LinearMap.range (balInclusion O Y)).mkQ LinearMap.id (Submodule.mkQ_surjective _)`. Use `⟨LinearMap.range s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `x hx ⟨q, rfl⟩`.
+
+Establish `h1 : q = 0`. Rewrite using `[← (Submodule.Quotient.mk_eq_zero _).2 hx]`. Conclude with `(congr($hs q)).symm`. Rewrite using `[h1, map_zero]`. Rewrite using `[codisjoint_iff, eq_top_iff]`.
+
+Introduce `x _`. Use `Submodule.mem_sup.2 ⟨x - s (Submodule.Quotient.mk x), ?_, _, ⟨_, rfl⟩, sub_add_cancel _ _⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.eq]`. Conclude with `(congr($hs (Submodule.Quotient.mk x))).symm`.
+-/
 theorem exists_isCompl_range_balInclusion [Module.Finite ℤ Y] [Module.Free ℤ Y] :
     ∃ Q : Submodule ℤ (SymLattice Y), IsCompl (LinearMap.range (balInclusion O Y)) Q := by
   have : Module.Free ℤ (SymLattice Y ⧸ LinearMap.range (balInclusion O Y)) :=
@@ -542,17 +724,26 @@ theorem exists_isCompl_range_balInclusion [Module.Finite ℤ Y] [Module.Free ℤ
     rw [← Submodule.Quotient.eq]
     exact (congr($hs (Submodule.Quotient.mk x))).symm
 
+/- English proof (translation)
+Introduce `a y y'` and use `by rw [pullback_apply, pullback_apply, hf, hf, hσ, hb]`.
+-/
 theorem IsBalanced.pullback_of_semilinear {O' Z : Type*} [CommRing O'] [StarRing O']
     [AddCommGroup Z] [Module O' Z] (σ : O → O') (hσ : ∀ a, σ (star a) = star (σ a))
     (f : Y →ₗ[ℤ] Z) (hf : ∀ (a : O) y, f (a • y) = σ a • f y) {b : Bil Z A}
     (hb : IsBalanced O' b) : IsBalanced O (pullback S A f b) := fun a y y' => by
   rw [pullback_apply, pullback_apply, hf, hf, hσ, hb]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pullback_mem_symForms _ hb.1, hb.2.pullback_of_semilinear id (fun _ => rfl) _ fun a y => f.map_smul a y⟩`.
+-/
 theorem pullback_mem_balForms (f : Y →ₗ[O] Y') {b : Bil Y' A} (hb : b ∈ balForms S O Y' A) :
     pullback S A (f.restrictScalars ℤ) b ∈ balForms S O Y A :=
   ⟨pullback_mem_symForms _ hb.1,
     hb.2.pullback_of_semilinear id (fun _ => rfl) _ fun a y => f.map_smul a y⟩
 
+/- English proof (translation)
+Use `⟨fun h => ⟨(pullback_mem_symForms_iff (f := f.restrictScalars ℤ) hf).1 h.1, fun a y y' => ?_⟩, pullback_mem_balForms f⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hf y`. Take `⟨y', rfl⟩` from `hf y'`. Rewrite using `[← f.map_smul, ← f.map_smul]`. Conclude with `h.2 a y y'`.
+-/
 theorem pullback_mem_balForms_iff {f : Y →ₗ[O] Y'} (hf : Function.Surjective f) {b : Bil Y' A} :
     pullback S A (f.restrictScalars ℤ) b ∈ balForms S O Y A ↔ b ∈ balForms S O Y' A := by
   refine ⟨fun h => ⟨(pullback_mem_symForms_iff (f := f.restrictScalars ℤ) hf).1 h.1,
@@ -567,9 +758,15 @@ variable (S A) in
 def balPullback (f : Y →ₗ[O] Y') : balForms S O Y' A →ₗ[S] balForms S O Y A :=
   (pullback S A (f.restrictScalars ℤ)).restrict fun _ hb => pullback_mem_balForms f hb
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem balPullback_apply (f : Y →ₗ[O] Y') (b : balForms S O Y' A) (y y' : Y) :
     (balPullback S A f b : Bil Y A) y y' = (b : Bil Y' A) (f y) (f y') := rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext (pullback_injective (S := S) (f := f.restrictScalars ℤ) hf (congrArg Subtype.val h))`.
+-/
 theorem balPullback_injective {f : Y →ₗ[O] Y'} (hf : Function.Surjective f) :
     Function.Injective (balPullback S A f) := fun _ _ h =>
   Subtype.ext (pullback_injective (S := S) (f := f.restrictScalars ℤ) hf (congrArg Subtype.val h))
@@ -583,16 +780,28 @@ def autToGL : (Y ≃ₗ[O] Y) →* (Y ≃ₗ[ℤ] Y) where
   map_mul' _ _ := rfl
 
 omit [StarRing O] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem autToGL_apply (g : Y ≃ₗ[O] Y) (y : Y) : autToGL O Y g y = g y := rfl
 
 omit [StarRing O] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem autToGL_symm_apply (g : Y ≃ₗ[O] Y) (y : Y) :
     (autToGL O Y g).symm y = g.symm y := rfl
 
+/- English proof (translation)
+The claim follows from `pullback_mem_balForms g.symm.toLinearMap hb`.
+-/
 theorem glAction_mem_balForms (g : Y ≃ₗ[O] Y) {b : Bil Y A} (hb : b ∈ balForms S O Y A) :
     glAction S Y A (autToGL O Y g) b ∈ balForms S O Y A :=
   pullback_mem_balForms g.symm.toLinearMap hb
 
+/- English proof (translation)
+Use `⟨glAction_mem_symForms g hb.1, hb.2.pullback_of_semilinear (S := S) σ.symm (fun a => ?_) g.symm.toLinearMap fun a y => ?_⟩` and prove the remaining obligations. Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[hσ, σ.apply_symm_apply, σ.apply_symm_apply]`. Apply `g.injective` to reduce the goal to its premises. Simplify using `[hg]`.
+-/
 theorem glAction_mem_balForms_of_semilinear (σ : O ≃+* O) (hσ : ∀ a, σ (star a) = star (σ a))
     (g : Y ≃ₗ[ℤ] Y) (hg : ∀ (a : O) y, g (a • y) = σ a • g y) {b : Bil Y A}
     (hb : b ∈ balForms S O Y A) : glAction S Y A g b ∈ balForms S O Y A := by
@@ -608,9 +817,15 @@ variable (S O Y A) in
 def autAction : (Y ≃ₗ[O] Y) →* (balForms S O Y A ≃ₗ[S] balForms S O Y A) :=
   restrictAction (autToGL O Y) _ fun g _ hb => glAction_mem_balForms g hb
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem autAction_apply (g : Y ≃ₗ[O] Y) (b : balForms S O Y A) (y y' : Y) :
     (autAction S O Y A g b : Bil Y A) y y' = (b : Bil Y A) (g.symm y) (g.symm y') := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem balInclusion_autAction (g : Y ≃ₗ[O] Y) (b : BalLattice O Y) :
     balInclusion O Y (autAction ℤ O Y ℤ g b) =
       symAction ℤ Y ℤ (autToGL O Y g) (balInclusion O Y b) := rfl
@@ -621,6 +836,9 @@ def balRel : Submodule ℤ (SymSq Y) :=
   saturation (Submodule.span ℤ
     {x : SymSq Y | ∃ (a : O) (y y' : Y), x = SymSq.mk (a • y) y' - SymSq.mk y (star a • y')})
 
+/- English proof (translation)
+The claim follows from `mem_saturation_iff`.
+-/
 theorem mem_balRel {x : SymSq Y} : x ∈ balRel O Y ↔ ∃ n : ℤ, n ≠ 0 ∧ n • x ∈ Submodule.span ℤ
     {x : SymSq Y | ∃ (a : O) (y y' : Y), x = SymSq.mk (a • y) y' - SymSq.mk y (star a • y')} :=
   mem_saturation_iff
@@ -635,14 +853,23 @@ variable (O) in
 
 def mk : Bil Y (BalSq O Y) := SymSq.mk.compr₂ (balRel O Y).mkQ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mk_apply (y y' : Y) : mk O y y' = (balRel O Y).mkQ (SymSq.mk y y') := rfl
 
 variable (O Y) in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun y y' => congrArg (balRel O Y).mkQ (SymSq.mk_comm y y'), fun a y y' => (Submodule.Quotient.eq _).2 <| mem_balRel.2 ⟨1, one_ne_zero, by rw [one_smul]; exact Submodule.subset_span ⟨a, y, y', rfl⟩⟩⟩`.
+-/
 theorem mk_mem_balForms : mk O ∈ balForms ℤ O Y (BalSq O Y) :=
   ⟨fun y y' => congrArg (balRel O Y).mkQ (SymSq.mk_comm y y'), fun a y y' =>
     (Submodule.Quotient.eq _).2 <| mem_balRel.2
       ⟨1, one_ne_zero, by rw [one_smul]; exact Submodule.subset_span ⟨a, y, y', rfl⟩⟩⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.linearMap_qext _ (SymSq.hom_ext h)`.
+-/
 @[ext high] theorem hom_ext {f g : BalSq O Y →ₗ[ℤ] A}
     (h : ∀ y y', f (mk O y y') = g (mk O y y')) : f = g :=
   Submodule.linearMap_qext _ (SymSq.hom_ext h)
@@ -672,9 +899,15 @@ def lift [Module.IsTorsionFree ℤ A] : balForms S O Y A ≃ₗ[S] (BalSq O Y �
   left_inv b := by ext; rfl
   right_inv l := by ext; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lift_mk [Module.IsTorsionFree ℤ A] (b : balForms S O Y A) (y y' : Y) :
     lift S O Y A b (mk O y y') = (b : Bil Y A) y y' := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lift_symm_apply [Module.IsTorsionFree ℤ A] (l : BalSq O Y →ₗ[ℤ] A) (y y' : Y) :
     ((lift S O Y A).symm l : Bil Y A) y y' = l (mk O y y') := rfl
 
@@ -684,12 +917,21 @@ noncomputable def dualEquiv [Module.Finite ℤ Y] :
     BalSq O Y ≃ₗ[ℤ] Module.Dual ℤ (BalLattice O Y) :=
   Module.evalEquiv ℤ (BalSq O Y) ≪≫ₗ (lift ℤ O Y ℤ).dualMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dualEquiv_apply [Module.Finite ℤ Y] (x : BalSq O Y) (b : BalLattice O Y) :
     dualEquiv O Y x b = lift ℤ O Y ℤ b x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualEquiv_mk [Module.Finite ℤ Y] (y y' : Y) (b : BalLattice O Y) :
     dualEquiv O Y (mk O y y') b = (b : Bil Y ℤ) y y' := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualEquiv_mkQ [Module.Finite ℤ Y] [Module.Free ℤ Y] (x : SymSq Y) :
     dualEquiv O Y ((balRel O Y).mkQ x) = (balInclusion O Y).dualMap (SymSq.dualEquiv Y x) := rfl
 
@@ -697,6 +939,9 @@ end BalSq
 
 variable (O Y) in
 
+/- English proof (translation)
+Introduce `l`. Take `⟨x, rfl⟩` from `(BalSq.dualEquiv O Y).surjective l`. Take `⟨x, rfl⟩` from `(balRel O Y).mkQ_surjective x`. Conclude with `⟨_, (BalSq.dualEquiv_mkQ x).symm⟩`.
+-/
 theorem dualMap_balInclusion_surjective [Module.Finite ℤ Y] [Module.Free ℤ Y] :
     Function.Surjective (balInclusion O Y).dualMap := by
   intro l
@@ -713,22 +958,42 @@ variable {Y Y' : Type*} [AddCommGroup Y] [AddCommGroup Y']
 def level (M : ℤ) (L : Submodule ℤ (Bil Y ℤ)) : Submodule ℤ (Bil Y ℤ) :=
   L.map (LinearMap.lsmul ℤ _ M)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_level {M : ℤ} {L : Submodule ℤ (Bil Y ℤ)} {b : Bil Y ℤ} :
     b ∈ level M L ↔ ∃ c ∈ L, M • c = b := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨b, hb, rfl⟩`.
+-/
 theorem smul_mem_level (M : ℤ) {L : Submodule ℤ (Bil Y ℤ)} {b : Bil Y ℤ} (hb : b ∈ L) :
     M • b ∈ level M L := ⟨b, hb, rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `L.smul_mem M hc`.
+-/
 theorem level_le (M : ℤ) (L : Submodule ℤ (Bil Y ℤ)) : level M L ≤ L := by
   rintro _ ⟨c, hc, rfl⟩
   exact L.smul_mem M hc
 
+/- English proof (translation)
+The claim follows from `Submodule.map_mono h`.
+-/
 theorem level_mono (M : ℤ) {L L' : Submodule ℤ (Bil Y ℤ)} (h : L ≤ L') :
     level M L ≤ level M L' := Submodule.map_mono h
 
+/- English proof (translation)
+The claim follows from `le_antisymm (level_le 1 L) fun b hb => ⟨b, hb, one_smul ℤ b⟩`.
+-/
 @[simp] theorem level_one (L : Submodule ℤ (Bil Y ℤ)) : level 1 L = L :=
   le_antisymm (level_le 1 L) fun b hb => ⟨b, hb, one_smul ℤ b⟩
 
+/- English proof (translation)
+Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨N • c, smul_mem_level N hc, (mul_smul M N c).symm⟩`. Introduce and unpack `⟨_, ⟨c, hc, rfl⟩, rfl⟩`.
+
+Conclude with `⟨c, hc, mul_smul M N c⟩`.
+-/
 theorem level_mul (M N : ℤ) (L : Submodule ℤ (Bil Y ℤ)) :
     level (M * N) L = level M (level N L) := by
   ext b
@@ -738,12 +1003,22 @@ theorem level_mul (M N : ℤ) (L : Submodule ℤ (Bil Y ℤ)) :
   · rintro ⟨_, ⟨c, hc, rfl⟩, rfl⟩
     exact ⟨c, hc, mul_smul M N c⟩
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `h`. Rewrite using `[level_mul]`. Conclude with `level_mono M (level_le k L)`.
+-/
 theorem level_le_level_of_dvd {M N : ℤ} (h : M ∣ N) (L : Submodule ℤ (Bil Y ℤ)) :
     level N L ≤ level M L := by
   obtain ⟨k, rfl⟩ := h
   rw [level_mul]
   exact level_mono M (level_le k L)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, -, rfl⟩ y y'`. Conclude with `⟨c y y', rfl⟩`. Introduce `h`. Break down `eq_or_ne M 0 with rfl | hM` into its components or cases.
+
+Conclude with `⟨0, trivial, by ext y y'; exact (zero_dvd_iff.1 (h y y')).symm⟩`. Use `⟨LinearMap.mk₂ ℤ (fun y y' => b y y' / M) (fun y z y' => ?_) (fun n y y' => ?_) (fun y y' z => ?_) (fun n y y' => ?_), trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply, Int.add_ediv_of_dvd_left (h y y')]`. Rewrite using `[map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, Int.mul_ediv_assoc _ (h y y')]`. Rewrite using `[map_add, Int.add_ediv_of_dvd_left (h y y')]`.
+
+Rewrite using `[map_smul, smul_eq_mul, smul_eq_mul, Int.mul_ediv_assoc _ (h y y')]`. Use extensionality with `y y'`. Conclude with `Int.mul_ediv_cancel' (h y y')`.
+-/
 theorem mem_level_top {M : ℤ} {b : Bil Y ℤ} : b ∈ level M ⊤ ↔ ∀ y y', M ∣ b y y' := by
   constructor
   · rintro ⟨c, -, rfl⟩ y y'
@@ -760,6 +1035,11 @@ theorem mem_level_top {M : ℤ} {b : Bil Y ℤ} : b ∈ level M ⊤ ↔ ∀ y y'
       · ext y y'
         exact Int.mul_ediv_cancel' (h y y')
 
+/- English proof (translation)
+Rewrite using `[← mem_level_top]`. Use `⟨fun h => ⟨level_le M L h, level_mono M le_top h⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨hb, c, -, rfl⟩`. Break down `eq_or_ne M 0 with rfl | hM` into its components or cases. Conclude with `⟨0, L.zero_mem, by simp⟩`.
+
+Conclude with `smul_mem_level M (hL.mem_of_smul_mem hM hb)`.
+-/
 theorem mem_level_of_saturated {M : ℤ} {L : Submodule ℤ (Bil Y ℤ)}
     (hL : IsSaturatedSubmodule L) {b : Bil Y ℤ} :
     b ∈ level M L ↔ b ∈ L ∧ ∀ y y', M ∣ b y y' := by
@@ -770,15 +1050,24 @@ theorem mem_level_of_saturated {M : ℤ} {L : Submodule ℤ (Bil Y ℤ)}
   · exact ⟨0, L.zero_mem, by simp⟩
   · exact smul_mem_level M (hL.mem_of_smul_mem hM hb)
 
+/- English proof (translation)
+The claim follows from `mem_level_of_saturated (isSaturated_symForms Y)`.
+-/
 theorem mem_level_symForms {M : ℤ} {b : Bil Y ℤ} :
     b ∈ level M (symForms ℤ Y ℤ) ↔ b ∈ symForms ℤ Y ℤ ∧ ∀ y y', M ∣ b y y' :=
   mem_level_of_saturated (isSaturated_symForms Y)
 
+/- English proof (translation)
+The claim follows from `mem_level_of_saturated (isSaturated_balForms O Y)`.
+-/
 theorem mem_level_balForms {O : Type*} [CommRing O] [StarRing O] [Module O Y] {M : ℤ}
     {b : Bil Y ℤ} :
     b ∈ level M (balForms ℤ O Y ℤ) ↔ b ∈ balForms ℤ O Y ℤ ∧ ∀ y y', M ∣ b y y' :=
   mem_level_of_saturated (isSaturated_balForms O Y)
 
+/- English proof (translation)
+Use extensionality with `b`. Rewrite using `[Submodule.mem_inf, mem_level_balForms, mem_level_symForms]`. Conclude with `⟨fun h => ⟨⟨h.1.1, h.2⟩, h.1⟩, fun h => ⟨h.2, h.1.2⟩⟩`.
+-/
 theorem level_balForms (O : Type*) [CommRing O] [StarRing O] [Module O Y] (M : ℤ) :
     level M (balForms ℤ O Y ℤ) = level M (symForms ℤ Y ℤ) ⊓ balForms ℤ O Y ℤ := by
   ext b
@@ -791,9 +1080,17 @@ noncomputable def levelEquiv {M : ℤ} (hM : M ≠ 0) (L : Submodule ℤ (Bil Y 
     ext y y'
     exact mul_left_cancel₀ hM congr($h y y')) L
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_levelEquiv {M : ℤ} (hM : M ≠ 0) (L : Submodule ℤ (Bil Y ℤ)) (b : L) :
     (levelEquiv hM L b : Bil Y ℤ) = M • (b : Bil Y ℤ) := rfl
 
+/- English proof (translation)
+Establish `: Module.Free ℤ L.toAddSubgroup.toIntSubmodule` using `inferInstance`. Establish `: Module.Finite ℤ L.toAddSubgroup.toIntSubmodule` using `inferInstance`. Establish `h` using `AddSubgroup.relIndex_map_nsmul M L.toAddSubgroup`. Use `h using 2` and compare the differences between its conclusion and the goal. Use extensionality with `b`.
+
+Simplify using `[mem_level]`. Both sides reduce to the same expression.
+-/
 theorem relIndex_level [Module.Finite ℤ Y] [Module.Free ℤ Y] (M : ℕ)
     (L : Submodule ℤ (Bil Y ℤ)) :
     (level M L).toAddSubgroup.relIndex L.toAddSubgroup = M ^ Module.finrank ℤ L := by
@@ -805,6 +1102,9 @@ theorem relIndex_level [Module.Finite ℤ Y] [Module.Free ℤ Y] (M : ℕ)
     simp [mem_level]
   · rfl
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `hb`. Conclude with `⟨_, h c hc, rfl⟩`.
+-/
 theorem pullback_mem_level (f : Y →ₗ[ℤ] Y') {L : Submodule ℤ (Bil Y ℤ)}
     {L' : Submodule ℤ (Bil Y' ℤ)} (h : ∀ b ∈ L', pullback ℤ ℤ f b ∈ L) (M : ℤ) {b : Bil Y' ℤ}
     (hb : b ∈ level M L') : pullback ℤ ℤ f b ∈ level M L := by

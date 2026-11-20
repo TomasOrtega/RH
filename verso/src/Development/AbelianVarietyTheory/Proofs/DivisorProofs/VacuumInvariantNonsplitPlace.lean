@@ -13,6 +13,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.IndLine
 open GlobalTheory.Doubling (absE)
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hT v hv hvT k hk` and use `GlobalTheory.T.compact_fixes_vacuum_nonsplit F E σ B a a' G X om om' hT v hv hvT k hk`.
+-/
 theorem fixesVac : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ (v : Pl F), IsEmpty (E →ₐ[F] Fv F v) → v ∉ X.T →

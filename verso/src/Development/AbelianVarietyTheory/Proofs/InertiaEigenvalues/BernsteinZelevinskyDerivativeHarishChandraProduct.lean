@@ -12,33 +12,53 @@ namespace GlobalTheory.GLq.Leibniz
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Unfold `wh tr`. Repeatedly rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+-/
 theorem wh_sum (ψ : AddChar (ZMod g) ℂ) {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → Gn g n → ℂ) :
     wh ψ (fun x => ∑ j ∈ s, f j x) = ∑ j ∈ s, wh ψ (f j) := by
   unfold wh tr
   simp_rw [Finset.mul_sum]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Unfold `wh tr`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`.
+-/
 theorem wh_const_mul (ψ : AddChar (ZMod g) ℂ) {n : ℕ} (c : ℂ) (f : Gn g n → ℂ) :
     wh ψ (fun x => c * f x) = c * wh ψ f := by
   unfold wh tr
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl fun x _ => by ring
 
+/- English proof (translation)
+Unfold `wh tr`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`.
+-/
 theorem wh_mul_const (ψ : AddChar (ZMod g) ℂ) {n : ℕ} (c : ℂ) (f : Gn g n → ℂ) :
     wh ψ (fun x => f x * c) = wh ψ f * c := by
   unfold wh tr
   rw [Finset.sum_mul]
   exact Finset.sum_congr rfl fun x _ => by ring
 
+/- English proof (translation)
+Take `⟨V, hV⟩` from `h`. Introduce `x y`. Rewrite using `[← hV, ← hV, FDRep.char_conj]`.
+-/
 theorem isClass_of_isChar {G : Type} [Group G] {χ : G → ℂ} (h : IsChar χ) : IsClass χ := by
   obtain ⟨V, hV⟩ := h
   intro x y
   rw [← hV, ← hV, FDRep.char_conj]
 
+/- English proof (translation)
+Take `⟨V, -, hV⟩` from `h`. Conclude with `⟨V, hV⟩`.
+-/
 theorem isChar_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := by
   obtain ⟨V, -, hV⟩ := h
   exact ⟨V, hV⟩
 
+/- English proof (translation)
+Establish `hsub : ∀ x : Gn g 0, x = 1` using `fun x => Units.ext (Subsingleton.elim _ _)`. Establish `huniv : (Finset.univ : Finset (Gn g 0)) = {1}`. Use extensionality with `x`. Simplify using `only [Finset.mem_univ, Finset.mem_singleton, true_iff]`. Conclude with `hsub x`.
+
+Establish `hP : IsUniUp ((1 : Gn g 0) : Mt g 0)` using `fun a _ => a.elim0`. Unfold `wh tr eU eDat`. Rewrite using `[huniv, Finset.sum_singleton]`. Rewrite using `[Finset.filter_singleton, if_pos hP, Finset.sum_singleton, Finset.card_singleton]`. Simplify using the standard rewrite rules.
+-/
 theorem wh_gl_zero (ψ : AddChar (ZMod g) ℂ) : wh ψ (fun _ : Gn g 0 => (1 : ℂ)) = 1 := by
   have hsub : ∀ x : Gn g 0, x = 1 := fun x => Units.ext (Subsingleton.elim _ _)
   have huniv : (Finset.univ : Finset (Gn g 0)) = {1} := by
@@ -51,6 +71,9 @@ theorem wh_gl_zero (ψ : AddChar (ZMod g) ℂ) : wh ψ (fun _ : Gn g 0 => (1 : �
   rw [Finset.filter_singleton, if_pos hP, Finset.sum_singleton, Finset.card_singleton]
   simp
 
+/- English proof (translation)
+Unfold `degL`. Rewrite using `[List.map_map]`. Use `Finset.sort_eq I (· ≤ ·)` as an intermediate fact. Rewrite using `[Finset.sum_eq_multiset_sum, ← this, Multiset.map_coe, Multiset.sum_coe]`. Both sides reduce to the same expression.
+-/
 theorem degL_sort_map (L : List (Pc g)) (I : Finset (Fin L.length)) :
     degL ((I.sort (· ≤ ·)).map L.get) = ∑ j ∈ I, (L.get j).1 := by
   unfold degL
@@ -59,16 +82,33 @@ theorem degL_sort_map (L : List (Pc g)) (I : Finset (Fin L.length)) :
   rw [Finset.sum_eq_multiset_sum, ← this, Multiset.map_coe, Multiset.sum_coe]
   rfl
 
+/- English proof (translation)
+Establish `h` using `degL_sort_map L Finset.univ`. Rewrite `h` using `[Fin.sort_univ, List.map_get_finRange]`. Conclude with `h`.
+-/
 theorem degL_eq_sum (L : List (Pc g)) : degL L = ∑ j : Fin L.length, (L.get j).1 := by
   have h := degL_sort_map L Finset.univ
   rw [Fin.sort_univ, List.map_get_finRange] at h
   exact h
 
+/- English proof (translation)
+Take `⟨j, -, rfl⟩` from `List.mem_map.1 hp`. Conclude with `List.get_mem L j`.
+-/
 theorem mem_of_sort_map (L : List (Pc g)) (I : Finset (Fin L.length)) {p : Pc g}
     (hp : p ∈ (I.sort (· ≤ ·)).map L.get) : p ∈ L := by
   obtain ⟨j, -, rfl⟩ := List.mem_map.1 hp
   exact List.get_mem L j
 
+/- English proof (translation)
+Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _`. Conclude with `wh_gl_zero ψ`. Consider the case `cons p L ih`.
+
+Introduce `hL`. Establish `hp` using `hL p List.mem_cons_self`. Establish `hL' : ∀ q ∈ L, IsCusp q.2 ∧ wh ψ q.2 = 1` using `fun q hq => hL q (List.mem_cons_of_mem p hq)`. Establish `hβ : IsClass (hcL L (degL L))` using `isClass_of_isChar (GlobalTheory.gl_list_product_perm_char g L L (degL L) rfl (fun q hq => isChar_of_isIrr (hL' q hq).1.2.1)).1`. Establish `hα : IsClass p.2` using `isClass_of_isChar (isChar_of_isIrr hp.1.2.1)`.
+
+Establish `hdeg : degL (p :: L) = p.1 + degL L` using `by simp [degL]`. Rewrite using `[hcL_cons]`. Unfold `hc`. Rewrite using `[GlobalTheory.GLq.WhMul.wh_hcT g ψ hψ p.1 (degL L) (degL (p :: L)) hdeg]`. Repeatedly rewrite using `[wh_const_mul]`.
+
+Rewrite using `[wh_mul_const, ih hL', hp.2, one_mul]`. Introduce `y x z`. Simplify using `only`. Rewrite using `[hα]`. Introduce `x y z`.
+
+Simplify using `only`. Rewrite using `[hβ]`.
+-/
 theorem wh_hcL (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) :
     ∀ L : List (Pc g), (∀ p ∈ L, IsCusp p.2 ∧ wh ψ p.2 = 1) → wh ψ (hcL L (degL L)) = 1 := by
   intro L
@@ -94,11 +134,27 @@ theorem wh_hcL (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) :
       simp only
       rw [hβ]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Conclude with `wh_hcL ψ hψ L hL`.
+-/
 theorem wh_hcL_of_deg (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (L : List (Pc g)) (n : ℕ) (hn : degL L = n)
     (hL : ∀ p ∈ L, IsCusp p.2 ∧ wh ψ p.2 = 1) : wh ψ (hcL L n) = 1 := by
   subst hn
   exact wh_hcL ψ hψ L hL
 
+/- English proof (translation)
+Introduce `g _ ψ hψ L n i hn hi hL`. Use `⟨?_, wh_hcL_of_deg ψ hψ L n hn hL⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hi`. Establish `hcusp : ∀ p ∈ L, IsCusp p.2` using `fun p hp => (hL p hp).1`. Establish `htot : ∑ j : Fin L.length, (L.get j).1 = i + k` using `by rw [← degL_eq_sum]; exact hn`.
+
+Establish `hsub : ∀ (I : Finset (Fin L.length)), ∀ p ∈ (I.sort (· ≤ ·)).map L.get, IsCusp p.2 ∧ wh ψ p.2 = 1` using `fun I p hp => hL p (mem_of_sort_map L I hp)`. Establish `hB : ∀ I ∈ (Finset.univ : Finset (Finset (Fin L.length))).filter (fun I => ∑ j ∈ I, (L.get j).1 = i), wh ψ (hcL ((Iᶜ.sort (· ≤ ·)).map L.get) k) = 1`. Introduce `I hI`. Rewrite `hI` using `[Finset.mem_filter]`. Use `wh_hcL_of_deg ψ hψ _ k ?_ (hsub Iᶜ)` and prove the remaining obligations.
+
+Rewrite using `[degL_sort_map]`. Use `Finset.sum_compl_add_sum I (fun j => (L.get j).1)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hA : ∀ I ∈ (Finset.univ : Finset (Finset (Fin L.length))).filter (fun I => ∑ j ∈ I, (L.get j).1 = i), wh ψ (hcL ((I.sort (· ≤ ·)).map L.get) i) = 1`. Introduce `I hI`.
+
+Rewrite `hI` using `[Finset.mem_filter]`. Conclude with `wh_hcL_of_deg ψ hψ _ i (by rw [degL_sort_map]; exact hI.2) (hsub I)`. Establish `key : ∀ b, b = k → ∀ h : Gn g i, wh ψ (res i b (hcL L (i + k)) h) = ∑ I ∈ (Finset.univ : Finset (Finset (Fin L.length))).filter (fun I => ∑ j ∈ I, (L.get j).1 = i), hcL ((I.sort (· ≤ ·)).map L.get) i h * wh ψ (hcL ((Iᶜ.sort (· ≤ ·)).map L.get) k)`. Introduce `b hb h`. Substitute `hb` using the available equality.
+
+Establish `hr : res i b (hcL L (i + b)) h = fun y => ∑ I ∈ (Finset.univ : Finset (Finset (Fin L.length))).filter (fun I => ∑ j ∈ I, (L.get j).1 = i), hcL ((I.sort (· ≤ ·)).map L.get) i h * hcL ((Iᶜ.sort (· ≤ ·)).map L.get) b y`. Use function extensionality and compare the values at `fun y => GlobalTheory.GLq.ResCuspProd.main g L i b hn hcusp h y`. Rewrite using `[hr, wh_sum]`. Conclude with `Finset.sum_congr rfl fun I _ => wh_const_mul ψ _ _`. Establish `hder : der ψ i (hcL L (i + k)) = fun h => ∑ I ∈ (Finset.univ : Finset (Finset (Fin L.length))).filter (fun I => ∑ j ∈ I, (L.get j).1 = i), hcL ((I.sort (· ≤ ·)).map L.get) i h * wh ψ (hcL ((Iᶜ.sort (· ≤ ·)).map L.get) k)`.
+
+Use function extensionality and compare the values at `fun h => key (i + k - i) (by omega) h`. Rewrite using `[hder, wh_sum, Finset.sum_congr rfl fun I hI => by rw [wh_mul_const, hA I hI, hB I hI, one_mul]]`. Simplify using the standard rewrite rules.
+-/
 theorem main : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ), ψ ≠ 1 → ∀ (L : List (Pc g)) (n i : ℕ),
     degL L = n → i ≤ n → (∀ p ∈ L, IsCusp p.2 ∧ wh ψ p.2 = 1) →
       wh ψ (der ψ i (hcL L n)) = (((Finset.univ : Finset (Finset (Fin L.length))).filter

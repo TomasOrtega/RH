@@ -28,6 +28,19 @@ section Bundle
 
 variable {K : Type} [Field K] [NumberField K] {L : Type} [Field L] [NumberField L] [Algebra K L]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_linearIndependent_fin (K := K) (E := M.carrier)`. Establish `ht : LinearIndependent (𝓞 L) (fun i => (1 : 𝓞 L) ⊗ₜ[𝓞 K] s i)` using `Module.Flat.linearIndependent_one_tmul (S := 𝓞 L) hs`. Establish `hrank : Module.finrank (𝓞 L) (𝓞 L ⊗[𝓞 K] M.carrier) = Module.finrank (𝓞 K) M.carrier` using `(TensorProduct.isBaseChange (𝓞 K) M.carrier (𝓞 L)).finrank_eq`. Establish `hcomp : (Φ.toLinearMap ∘ fun i => (1 : 𝓞 L) ⊗ₜ[𝓞 K] s i) = fun i => j (s i)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[hΦ]`. Establish `hs' : LinearIndependent (𝓞 L) (fun i => j (s i))`. Rewrite using `[← hcomp]`. Conclude with `ht.map' Φ.toLinearMap (LinearEquiv.ker Φ)`. Establish `e1 : arithDegree M'.metric = arithDegree (M.metric.baseChange L)`.
+
+Rewrite using `[arithDegree_eq M'.metric hs' (by rw [Fintype.card_fin, ← Φ.finrank_eq, hrank]), arithDegree_eq (M.metric.baseChange L) ht (by rw [Fintype.card_fin]; exact hrank.symm)]`. Establish `hmap : (Submodule.span (𝓞 L) (Set.range fun i => (1 : 𝓞 L) ⊗ₜ[𝓞 K] s i)).map Φ.toLinearMap = Submodule.span (𝓞 L) (Set.range fun i => j (s i))`. Rewrite using `[Submodule.map_span, ← Set.range_comp, hcomp]`. Establish `hg : ∀ τ : L →+* ℂ, gramDet M'.metric τ (fun i => j (s i)) = gramDet (M.metric.baseChange L) τ (fun i => (1 : 𝓞 L) ⊗ₜ[𝓞 K] s i)`. Introduce `τ`.
+
+Rewrite using `[LatticeLemmas.gramDet_baseChange]`. Simplify using `only [gramDet]`. Use `congr 2`. Use extensionality with `a b`. Simplify using `only [Matrix.gram_apply]`.
+
+Rewrite using `[fibreVec, fibreVec, fibreVec, fibreVec, FibreSpace.inner_equiv, FibreSpace.inner_equiv]`. Conclude with `hm τ _ _`. Simplify using `only [degreeWith, hg]`. Rewrite using `[Nat.card_congr (Submodule.Quotient.equiv _ _ Φ hmap).toEquiv]`. Establish `e2` using `LatticeLemmas.BaseChange.proof K L M`.
+
+Establish `e3 : M'.normDegree ⊤ = (M.baseChange L).deg`. Rewrite using `[HermitianBundle.normDegree, HermitianBundle.degree_top_eq_arithDegree, HermitianBundle.deg]`. Conclude with `congrArg (· / (Module.finrank ℚ L : ℝ)) e1`. Rewrite using `[e3, e2, HermitianBundle.normDegree, HermitianBundle.degree_top_eq_arithDegree, HermitianBundle.deg]`.
+-/
 theorem normDegree_top_eq (M : HermitianBundle.{0} K) (M' : HermitianBundle.{0} L)
     (j : M.carrier → M'.carrier) (Φ : 𝓞 L ⊗[𝓞 K] M.carrier ≃ₗ[𝓞 L] M'.carrier)
     (hΦ : ∀ x, Φ ((1 : 𝓞 L) ⊗ₜ[𝓞 K] x) = j x)
@@ -76,12 +89,18 @@ def lf {S : Scheme.{0}} {G : Over S} {R : Type} [CommRing R] {x : Sp R ⟶ S} (v
     Sp (DualNumber R) ⟶ G.left :=
   v.left
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨M, fun _ => rfl⟩`.
+-/
 theorem exists_transport {S : Scheme.{0}} {G : Over S} [GrpObj G] {R : Type} [CommRing R] {x x' : Sp R ⟶ S}
     (h : x = x') {V : Type} [AddCommGroup V] [Module R V] (M : LieModel G x V) :
     ∃ M' : LieModel G x' V, ∀ e, lf (M'.pt e) = lf (M.pt e) := by
   subst h
   exact ⟨M, fun _ => rfl⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl : v = v'` from `Over.OverMorphism.ext hv`. Take `rfl : w = w'` from `Over.OverMorphism.ext hw`. Conclude with `hc`.
+-/
 theorem hodge_congr {S : Scheme.{0}} {G : Over S} [GrpObj G] (Lb : LB G.left) {z z' : Sp ℂ ⟶ S} (h : z = z')
     {v w : epsAt z ⟶ G} {v' w' : epsAt z' ⟶ G} (hv : lf v = lf v') (hw : lf w = lf w') {c : ℂ}
     (hc : HodgeIP G Lb z v w c) : HodgeIP G Lb z' v' w' c := by
@@ -90,17 +109,26 @@ theorem hodge_congr {S : Scheme.{0}} {G : Over S} [GrpObj G] (Lb : LB G.left) {z
   obtain rfl : w = w' := Over.OverMorphism.ext hw
   exact hc
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (d : A →+* B) (c : B →+* C) :
     spMap c ≫ spMap d = spMap (c.comp d) := by
   simp only [spMap, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Apply the tactic sequence `ext x <;> simp [dualMap]`.
+-/
 theorem dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (d : A →+* B) (c : B →+* C) :
     (dualMap c).comp (dualMap d) = dualMap (c.comp d) := by
   ext x <;> simp [dualMap]
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨P, h⟩` from `GlobalTheory.SabBaseChange.exists_prescribed f t`. Take `⟨c, s, a, p, m, -⟩` from `GlobalTheory.SabBaseChange.exists_pullback_prescribed f t P h`. Conclude with `⟨_, ⟨m⟩⟩`.
+-/
 theorem exists_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) : ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by
   obtain ⟨P, h⟩ := GlobalTheory.SabBaseChange.exists_prescribed f t
   obtain ⟨c, s, a, p, m, -⟩ := GlobalTheory.SabBaseChange.exists_pullback_prescribed f t P h
@@ -108,11 +136,19 @@ theorem exists_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) : ∃ t' : 
 
 variable {L : Type} [Field L] [NumberField L] {L' : Type} [Field L'] [NumberField L'] [Algebra L L']
 
+/- English proof (translation)
+Use extensionality with `x`. Both sides reduce to the same expression.
+-/
 theorem algebraMap_square :
     (algebraMap (𝓞 L') L').comp (algebraMap (𝓞 L) (𝓞 L')) = (algebraMap L L').comp (algebraMap (𝓞 L) L) := by
   ext x
   rfl
 
+/- English proof (translation)
+Take `⟨t', ⟨m₁⟩⟩` from `exists_pull (spMap (algebraMap (𝓞 L) (𝓞 L'))) D.t`. Take `⟨tK', ⟨m₂⟩⟩` from `exists_pull (spMap (algebraMap (𝓞 L') L')) t'`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ D.t t' tK' _ _ m₁ m₂`. Establish `hsq : spMap (algebraMap (𝓞 L') L') ≫ spMap (algebraMap (𝓞 L) (𝓞 L')) = spMap (algebraMap L L') ≫ spMap (algebraMap (𝓞 L) L)`. Rewrite using `[spMap_comp, spMap_comp, algebraMap_square]`.
+
+Take `⟨m₃, -⟩` from `sabCancel pullCubCancel E H _ _ _ D.t D.tK tK' _ (spMap (algebraMap L L')) D.m (hsq ▸ n)`. Establish `pr : IsPrincipal tK'` using `(GlobalTheory.T.isPrincipal_base_change_iff E H L L' (algebraMap L L') D.tK tK' m₃).2 D.princ`. Take `⟨B, MB, fib⟩` from `GlobalTheory.T.principal_hermitian_fibre E H L' t' tK' m₂ pr`. Conclude with `⟨⟨⟨t', tK', m₂, pr, B, MB, fib⟩, m₁⟩⟩`.
+-/
 theorem exists_ext (D : PPData H L) (L' : Type) [Field L'] [NumberField L'] [Algebra L L'] :
     Nonempty (Σ D' : PPData H L', D.Ext D') := by
   obtain ⟨t', ⟨m₁⟩⟩ := exists_pull (spMap (algebraMap (𝓞 L) (𝓞 L'))) D.t
@@ -126,6 +162,31 @@ theorem exists_ext (D : PPData H L) (L' : Type) [Field L'] [NumberField L'] [Alg
   obtain ⟨B, MB, fib⟩ := GlobalTheory.T.principal_hermitian_fibre E H L' t' tK' m₂ pr
   exact ⟨⟨⟨t', tK', m₂, pr, B, MB, fib⟩, m₁⟩⟩
 
+/- English proof (translation)
+Use `haveI : Smooth D.t.G.hom := D.t.semi.smooth`. Use `haveI : Smooth D'.t.G.hom := D'.t.semi.smooth`. Take `⟨Mp, hMp⟩` from `(LiePull.lieModel_pullback _ _ D.t.G D'.t.G (spMap (algebraMap (𝓞 L) (𝓞 L'))) m.φ m.cart (𝓞 L') (𝟙 _) D'.B.carrier).2 D'.MB`. Take `⟨Mq, hMq⟩` from `exists_transport (show 𝟙 _ ≫ spMap (algebraMap (𝓞 L) (𝓞 L')) = spMap (algebraMap (𝓞 L) (𝓞 L')) ≫ 𝟙 _ by simp) Mp`. Take `⟨j, hj, -⟩` from `LieBaseChange.existsUnique_semilinear_lifts _ D.t.G _ _ (algebraMap (𝓞 L) (𝓞 L')) (𝟙 _) _ _ D.MB Mq`.
+
+Establish `hj' : ∀ e, (D'.MB.pt (j e)).left ≫ m.φ = spMap (dualMap (algebraMap (𝓞 L) (𝓞 L'))) ≫ (D.MB.pt e).left`. Introduce `e`. Establish `h1 : lf (Mq.pt (j e)) = spMap (dualMap (algebraMap (𝓞 L) (𝓞 L'))) ≫ (D.MB.pt e).left` using `(Category.comp_id _).symm.trans (hj e)`. Rewrite using `[hMp, ← h1]`. Conclude with `(hMq _).symm`.
+
+Use `letI : Module (𝓞 L) D'.B.carrier := Module.compHom _ (algebraMap (𝓞 L) (𝓞 L'))`. Use `haveI : IsScalarTower (𝓞 L) (𝓞 L') D'.B.carrier := ⟨fun a b x => by`. Express the relevant statement in the definitionally equal form `(a • b) • x = algebraMap (𝓞 L) (𝓞 L') a • (b • x)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Set `jl : D.B.carrier →ₗ[𝓞 L] D'.B.carrier` to `{ toFun := j, map_add' := j.map_add, map_smul' := fun r x => j.map_smulₛₗ r x }`.
+
+Establish `hb : IsBaseChange (𝓞 L') jl` using `GlobalTheory.T.lie_model_isBaseChange _ D.t.G _ _ (𝟙 _) _ _ D.MB Mq jl hj`. Establish `hΦ : ∀ x, hb.equiv ((1 : 𝓞 L') ⊗ₜ[𝓞 L] x) = j x` using `fun x => by`. Rewrite using `[hb.equiv_tmul, one_smul]`. Both sides reduce to the same expression. Establish `hmet : ∀ (σ' : L' →+* ℂ) (x y : D.B.carrier), ((D'.B.metric.form σ').inner ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] j x) ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] j y) : ℂ) = ((D.B.metric.form (σ'.comp (algebraMap L L'))).inner ((1 : ComplexAt _) ⊗ₜ[𝓞 L] x) ((1 : ComplexAt _) ⊗ₜ[𝓞 L] y) : ℂ)`.
+
+Introduce `σ' x y`. Take `⟨M₁, h₁⟩` from `GlobalTheory.T.lie_model_complex_base_change _ D.t.G L (𝟙 _) D.B.carrier D.MB (σ'.comp (algebraMap L L'))`. Take `⟨M₂, h₂⟩` from `GlobalTheory.T.lie_model_complex_base_change _ D'.t.G L' (𝟙 _) D'.B.carrier D'.MB σ'`. Establish `a` using `D.fib (σ'.comp (algebraMap L L')) x y _ _ (h₁ x) (h₁ y)`. Establish `b` using `D'.fib σ' (j x) (j y) _ _ (h₂ (j x)) (h₂ (j y))`.
+
+Establish `hring : (σ'.comp (algebraMap (𝓞 L') L')).comp (algebraMap (𝓞 L) (𝓞 L')) = (σ'.comp (algebraMap L L')).comp (algebraMap (𝓞 L) L)`. Rewrite using `[RingHom.comp_assoc, algebraMap_square, RingHom.comp_assoc]`. Establish `hz : spMap ((σ'.comp (algebraMap L L')).comp (algebraMap (𝓞 L) L)) ≫ 𝟙 _ = (spMap (σ'.comp (algebraMap (𝓞 L') L')) ≫ 𝟙 _) ≫ spMap (algebraMap (𝓞 L) (𝓞 L'))`. Rewrite using `[Category.comp_id, Category.comp_id, spMap_comp, hring]`. Take `⟨M₃, h₃⟩` from `exists_transport hz M₁`.
+
+Establish `hv : ∀ e, (M₂.pt ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] j e)).left ≫ m.φ = (M₃.pt ((1 : ComplexAt _) ⊗ₜ[𝓞 L] e)).left`. Introduce `e`. Establish `c₁ : lf (M₂.pt ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] j e)) = spMap (dualMap (σ'.comp (algebraMap (𝓞 L') L'))) ≫ (D'.MB.pt (j e)).left` using `(Category.comp_id _).symm.trans (h₂ (j e))`. Establish `c₂ : lf (M₁.pt ((1 : ComplexAt _) ⊗ₜ[𝓞 L] e)) = spMap (dualMap ((σ'.comp (algebraMap L L')).comp (algebraMap (𝓞 L) L))) ≫ (D.MB.pt e).left` using `(Category.comp_id _).symm.trans (h₁ e)`. Express the relevant statement in the definitionally equal form `lf _ ≫ m.φ = lf _`.
+
+Rewrite using `[h₃, c₁, c₂, Category.assoc, hj', ← Category.assoc, spMap_comp, dualMap_comp, hring]`. Establish `T` using `GlobalTheory.T.hodge_inner_product_pullback_unique E H _ _ D'.t D.t _ m (spMap (σ'.comp (algebraMap (𝓞 L') L')) ≫ 𝟙 _) _ _ _ _ (hv x) (hv y)`. Conclude with `T.2 _ _ ((T.1 _).1 b) (hodge_congr _ hz (h₃ _).symm (h₃ _).symm a)`. Use `⟨hb.finrank_eq, ?_, j, ?_, ?_, hmet⟩` and prove the remaining obligations. Use `normDegree_top_eq D.B D'.B j hb.equiv hΦ hmet` as an intermediate fact.
+
+Simplify using `only [PPData.hp, this]`. Introduce `x y hxy`. Establish `h1 : (1 : 𝓞 L') ⊗ₜ[𝓞 L] x = (1 : 𝓞 L') ⊗ₜ[𝓞 L] y` using `hb.equiv.injective (by rw [hΦ, hΦ, hxy])`. Establish `hinj : Function.Injective ((Algebra.linearMap (𝓞 L) (𝓞 L')).rTensor D.B.carrier)` using `Module.Flat.rTensor_preserves_injective_linearMap _ (FaithfulSMul.algebraMap_injective _ _)`. Establish `h2 : (1 : 𝓞 L) ⊗ₜ[𝓞 L] x = (1 : 𝓞 L) ⊗ₜ[𝓞 L] y` using `hinj (by simpa using h1)`.
+
+Simplify using `using congrArg (TensorProduct.lid (𝓞 L) D.B.carrier) h2`. Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨t, rfl⟩` from `hb.equiv.surjective y`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[hb.equiv_tmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, rfl⟩)`. Consider the case `add a b ha hb'`.
+
+Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ ha hb'`.
+-/
 theorem ext_props (D : PPData H L) (D' : PPData H L') (m : D.Ext D') :
     D'.g = D.g ∧ D'.hp = D.hp ∧ ∃ io : D.B.carrier →ₛₗ[algebraMap (𝓞 L) (𝓞 L')] D'.B.carrier,
       Function.Injective io ∧ Submodule.span (𝓞 L') (Set.range io) = ⊤ ∧
@@ -211,6 +272,9 @@ end GlobalTheory.CompanionTheory.Ar.Sl.BaseExt
 
 open GlobalTheory.CompanionTheory.Ar.Sl.BaseExt in
 
+/- English proof (translation)
+Introduce `E _ _ _ H L _ _ D L' _ _ _`. Conclude with `⟨exists_ext D L', fun D' m => ext_props D D' m⟩`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Sl.ext_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (L' : Type) [Field L'] [NumberField L'] [Algebra L L'], Nonempty (Σ D' : PPData H L', D.Ext D') ∧ ∀ (D' : PPData H L') (_ : D.Ext D'), D'.g = D.g ∧ D'.hp = D.hp ∧ ∃ io : D.B.carrier →ₛₗ[algebraMap (𝓞 L) (𝓞 L')] D'.B.carrier, Function.Injective io ∧ Submodule.span (𝓞 L') (Set.range io) = ⊤ ∧ ∀ (σ' : L' →+* ℂ) (x y : D.B.carrier), ((D'.B.metric.form σ').inner ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] io x) ((1 : ComplexAt σ') ⊗ₜ[𝓞 L'] io y) : ℂ) = ((D.B.metric.form (σ'.comp (algebraMap L L'))).inner ((1 : ComplexAt _) ⊗ₜ[𝓞 L] x) ((1 : ComplexAt _) ⊗ₜ[𝓞 L] y) : ℂ) := by
   intro E _ _ _ H L _ _ D L' _ _ _
   exact ⟨exists_ext D L', fun D' m => ext_props D D' m⟩

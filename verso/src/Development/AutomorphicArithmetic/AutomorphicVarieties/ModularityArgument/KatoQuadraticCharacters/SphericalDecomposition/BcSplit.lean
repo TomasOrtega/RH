@@ -23,6 +23,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.V.Z.Kato.WeilSphericalRecords
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hr.1, fun _ _ _ => trivial, fun W hW hi => hr.2.2 W hW fun g v hv => by obtain ⟨g', e⟩ := h g rw [e] exact hi g' v hv⟩`.
+-/
 private theorem isIrr_comp {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] {n : ℕ} {r : Γ →* GL (Fin n) k} {φ : Γ' →* Γ}
     (h : ∀ g, ∃ g', r g = r (φ g')) (hr : IsIrr r) : IsIrr (r.comp φ) :=
   ⟨hr.1, fun _ _ _ => trivial, fun W hW hi => hr.2.2 W hW fun g v hv => by
@@ -30,6 +33,11 @@ private theorem isIrr_comp {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] {n
     rw [e]
     exact hi g' v hv⟩
 
+/- English proof (translation)
+Take `⟨δ, -, -, ⟨ha, hb⟩, -⟩` from `UpperTheory.exists_quadratic_sign_character ℚ K Ω l hK`. Distinguish the cases in `hg : δ g = 1`. Take `⟨g', rfl⟩` from `(ha g).1 hg`. Conclude with `⟨g', rfl⟩`. Establish `e : δ (g * s) = 1`.
+
+Rewrite using `[map_mul, (hb g).resolve_left hg, (hb s).resolve_left (mt (ha s).1 hs)]`. Simplify using the standard rewrite rules. Take `⟨g', e'⟩` from `(ha _).1 e`. Conclude with `⟨g', by rw [e', map_mul, h1, mul_one]⟩`.
+-/
 private theorem range_of_sign {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra ℚ Ω] [Algebra K Ω] [IsScalarTower ℚ K Ω]
     [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (hK : Module.finrank ℚ K = 2) {H : Type} [Group H] {r : G ℚ Ω →* H} {s : G ℚ Ω}
     (hs : s ∉ (Bc.res ℚ Ω K).range) (h1 : r s = 1) (g : G ℚ Ω) : ∃ g', r g = r (Bc.res ℚ Ω K g') := by
@@ -43,6 +51,11 @@ private theorem range_of_sign {K Ω : Type} [Field K] [NumberField K] [Field Ω]
     obtain ⟨g', e'⟩ := (ha _).1 e
     exact ⟨g', by rw [e', map_mul, h1, mul_one]⟩
 
+/- English proof (translation)
+Use `⟨⟨!![0, 1; -1, 0], !![0, -1; 1, 0], ?_, ?_⟩, fun s => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_fin_two]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_fin_two]`. Establish `e : (r s : Matrix (Fin 2) (Fin 2) k) = !![(r s : Matrix (Fin 2) (Fin 2) k) 0 0, (r s : Matrix (Fin 2) (Fin 2) k) 0 1; (r s : Matrix (Fin 2) (Fin 2) k) 1 0, (r s : Matrix (Fin 2) (Fin 2) k) 1 1]` using `Matrix.eta_fin_two _`. Simplify using `only [MonoidHom.comp_apply, Matrix.GeneralLinearGroup.val_det_apply, Matrix.coe_units_inv]`.
+
+Rewrite using `[e, Matrix.det_fin_two_of]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+-/
 private theorem dualTw_det {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (Fin 2) k) :
     DualTw r (Matrix.GeneralLinearGroup.det.comp r) := by
   refine ⟨⟨!![0, 1; -1, 0], !![0, -1; 1, 0], ?_, ?_⟩, fun s => ?_⟩
@@ -54,6 +67,17 @@ private theorem dualTw_det {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (F
     rw [e, Matrix.det_fin_two_of]
     ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
+/- English proof (translation)
+Use `haveI : IsScalarTower ℚ (maximalRealSubfield K) Ω := IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Use `haveI : IsAlgClosure (maximalRealSubfield K) Ω := ⟨IsAlgClosure.isAlgClosed K, Algebra.IsAlgebraic.trans (maximalRealSubfield K) K Ω⟩`. Establish `hθ' : IsCycWt l (wt + (((2 : ℕ) : ℤ) - 1)) (θ.comp (Bc.res ℚ Ω (maximalRealSubfield K)) * cycBar (maximalRealSubfield K) Ω l ^ (((2 : ℕ) : ℤ) - 1))`. Take `⟨M, χ, hM, hχ, rfl⟩` from `hθ`. Use `⟨M, χ.comp (Bc.res ℚ Ω (maximalRealSubfield K)), hM, fun s hs => hχ _ hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[zpow_add, mul_right_comm]`. Both sides reduce to the same expression. Take `⟨hc, χ, art, a, ha⟩` from `UpperTheory.exists_algebraic_heckeChar_cyclotomic hP.litN.aut.art _ Ω l ι _ _ hθ'`. Establish `hL : IsLAdicCharOf ι χ _` using `⟨hc, art, a, ha⟩`. Take `⟨χ', μ', hL', hN, hres, hs⟩` from `UpperTheory.heckeChar_sign_fixed K Ω hK l ι χ _ hL 2`.
+
+Establish `hres' : μ'.comp (Bc.res (maximalRealSubfield K) Ω K) = θ.comp (Bc.res ℚ Ω K) * cycBar K Ω l ^ (((2 : ℕ) : ℤ) - 1)` using `hres.trans rfl`. Use `⟨χ', hs, UpperTheory.polOfSat_of_thetaSat UpperTheory.theta_satake_parameters_inverse hP.litN.aut.js.1 hP.litN.aut.gk K 2 one_le_two Q _ ?_⟩` and prove the remaining obligations. Establish `hd' : DualTw (r.comp (Bc.res ℚ Ω K)) (θ.comp (Bc.res ℚ Ω K))` using `let ⟨Q, hQ⟩ := hd`. Use the proof step `⟨Q, fun s => hQ _⟩`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 K)} ≠ 0`.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Establish `hl : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, ((l : ℕ) : 𝓞 K) ∉ v.asIdeal` using `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`. Use `filter_upwards [Bc.normGal K Ω l ι χ' μ' hL', Br.bcConj0 ℚ K 2 π Q hBC, hC.2, hl] with w ⟨hu, he⟩ ⟨B, hB, hB'⟩ ⟨B₁, hB₁, hF⟩ hw`. Take `rfl` from `hB.unique hB₁`.
+
+Rewrite `he` using `[hres']`. Conclude with `⟨hu, B, B, hB, hB', UpperTheory.frobenius_eigenvalues_dual K Ω l ι 2 _ _ hd' w hw B _ hF he⟩`.
+-/
 private theorem polar_of_lift (hP : Hypotheses₂) {K Ω : Type} [Field K] [NumberField K] [IsCMField K] (hK : Module.finrank ℚ K = 2)
     {l : ℕ} [Fact l.Prime] [Field Ω] [Algebra ℚ Ω] [Algebra K Ω] [IsScalarTower ℚ K Ω] [IsAlgClosure K Ω]
     (ι : Qbar l ≃+* ℂ) (r : G ℚ Ω →* GL (Fin 2) (Qbar l)) (wt : ℤ) (θ : G ℚ Ω →* (Qbar l)ˣ) (π : TR.CuspSub ℚ 2)
@@ -85,9 +109,17 @@ private theorem polar_of_lift (hP : Hypotheses₂) {K Ω : Type} [Field K] [Numb
   rw [hres'] at he
   exact ⟨hu, B, B, hB, hB', UpperTheory.frobenius_eigenvalues_dual K Ω l ι 2 _ _ hd' w hw B _ hF he⟩
 
+/- English proof (translation)
+Rewrite using `[Formalism.UG.qV]`.
+-/
 private theorem qV_eq {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) : Formalism.UG.qV E w = Ideal.absNorm w.asIdeal := by
   rw [Formalism.UG.qV]
 
+/- English proof (translation)
+Establish `hN : Ideal.absNorm (Ideal.span {((l : ℕ) : 𝓞 ℚ)}) = l`. Rewrite using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank, Module.finrank_self, pow_one]`. Establish `hd : Ideal.absNorm v.asIdeal ∣ l` using `hN ▸ Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 hv)`. Use `((Nat.dvd_prime hp).1 hd).resolve_left ?_` and prove the remaining obligations. Rewrite using `[Ideal.absNorm_eq_one_iff]`.
+
+Conclude with `v.isPrime.ne_top`.
+-/
 private theorem absNorm_rat {l : ℕ} (hp : l.Prime) (v : HeightOneSpectrum (𝓞 ℚ)) (hv : ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal) :
     Ideal.absNorm v.asIdeal = l := by
   have hN : Ideal.absNorm (Ideal.span {((l : ℕ) : 𝓞 ℚ)}) = l := by
@@ -98,6 +130,15 @@ private theorem absNorm_rat {l : ℕ} (hp : l.Prime) (v : HeightOneSpectrum (�
   rw [Ideal.absNorm_eq_one_iff]
   exact v.isPrime.ne_top
 
+/- English proof (translation)
+Take `⟨⟨σ, hσ⟩, hiso⟩` from `locCompR hP ℚ 2 π v`. Take `⟨⟨σ', hσ'⟩, hiso'⟩` from `locCompC hP K 2 Q w`. Establish `hc` using `hi.1`. Take `⟨e, he⟩` from `hBC.split v w i hi.1 hi.2 σ σ' hσ hσ'`. Establish `c1` using `(satLoc hP ℚ 2 v σ).2 _ π.finPart (hiso σ hσ) B`.
+
+Establish `c2` using `(satLoc hP K 2 w σ').2 _ Q.finPart (hiso' σ' hσ') B`. Establish `hq : Formalism.UG.qV K w = Formalism.UG.qV ℚ v`. Rewrite using `[qV_eq, qV_eq, GlobalTheory.LiftAbsPow.absNorm_eq i hc]`. Use `⟨fun hB => (CG.hasSat_mk _ _ _).2 (c2.2 (GlobalTheory.IsoPull.hasSatGL_of_ringEquiv i (GlobalTheory.LiftAbsPow.v_map_eq i hc) hq e (fun g x => (he g x).symm) (c1.1 hB))), fun hB => c1.2 ?_⟩` and prove the remaining obligations. Use `GlobalTheory.IsoPull.hasSatGL_of_ringEquiv i.symm (fun y => ?_) hq.symm e.symm (fun g x => ?_) (c2.1 ((CG.hasSat_mk _ _ _).1 hB))` and prove the remaining obligations.
+
+Use `GlobalTheory.LiftAbsPow.v_map_eq i hc (i.symm y)` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `this.symm`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, he, LinearEquiv.apply_symm_apply]`.
+
+Use `congr 2`. Conclude with `(Units.ext (Matrix.ext fun _ _ => (i.apply_symm_apply _)) : Matrix.GeneralLinearGroup.map i.toRingHom (Matrix.GeneralLinearGroup.map i.symm.toRingHom g) = g)`.
+-/
 private theorem sat_iff (hP : Hypotheses₂) {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] [Algebra ℚ K]
     (π : TR.CuspSub ℚ 2) (Q : CuspSub K 2) (hBC : IsBC π Q) (v : HeightOneSpectrum (𝓞 ℚ)) (w : HeightOneSpectrum (𝓞 K))
     (i : v.adicCompletion ℚ ≃+* w.adicCompletion K) (hi : IsCompl i) (B : Multiset ℂˣ) :

@@ -19,6 +19,9 @@ namespace GlobalTheory.CoordSep
 
 open GlobalTheory.ThetaCoord GlobalTheory.CommPairing GlobalTheory.GlobalLift GlobalTheory.VVRank
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `SymLiftOdd.exists_const hL p e he hp (fun U _ h => (Fintype.prod_sum_type _).trans (by`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel]))`. Use the proof step `(DVR.mulGen_isGen L _ _ _ _ u (LB.invGen L _ _ u') hu (DVR.invGen_isGen _ _ _ _ hu'))`. Use `⟨c, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc Z r z J hJ, val_mul hJ, val_inv, mul_comm, inv_mul_cancel_right]`.
+-/
 theorem exists_ratio_base {X Y S₀ : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} (p : Y ⟶ S₀) (e : S₀ ⟶ Y) (he : e ≫ p = 𝟙 _) (hp : Function.Surjective p.appTop.hom)
     {u u' : LB.Gen (LB.LinComb L φ ε)} (hu : u.IsGen) (hu' : u'.IsGen) :
@@ -37,17 +40,26 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : Over S} {
 abbrev Frame (L : LB A.left) (k : ℤ) (z : T ⟶ A) :=
   LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => z.left) (fun _ => k))
 
+/- English proof (translation)
+Use `sv_of_isValueAt H (𝟙 T) hJ` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem sv_value {s : LB.Sec (LPow A L k T)} {z : T ⟶ A} {τ : Frame L k z} {v : Γ(T.left, ⊤)}
     (H : IsValueAt A L k s z τ v) {y : T.left} {J} (hJ : Good L y J) :
     sv A s (lift (𝟙 T) z).left y J = gs (𝟙 T.left) y ⊤ v * (val τ (𝟙 T.left) y J).val := by
   have := sv_of_isValueAt H (𝟙 T) hJ
   rwa [Category.id_comp] at this
 
+/- English proof (translation)
+The claim follows from `fn_ext fun y _ => by choose J hJ using fun χ : T.left ⟶ A.left => exists_chart hL (χ y) exact (Units.mul_left_inj _).1 ((sv_value H hJ).symm.trans (sv_value H' hJ))`.
+-/
 theorem value_unique (hL : L.IsLB) {s : LB.Sec (LPow A L k T)} {z : T ⟶ A} {τ : Frame L k z} {v v' : Γ(T.left, ⊤)}
     (H : IsValueAt A L k s z τ v) (H' : IsValueAt A L k s z τ v') : v = v' := fn_ext fun y _ => by
   choose J hJ using fun χ : T.left ⟶ A.left => exists_chart hL (χ y)
   exact (Units.mul_left_inj _).1 ((sv_value H hJ).symm.trans (sv_value H' hJ))
 
+/- English proof (translation)
+The claim follows from `isValueAt_of_sv hL hτ fun y J hJ => by have := ThetaAct.sv_smul c (SecM.ofSec A s) (lift (𝟙 T) z).left y hJ rw [← e, lift_fst_left] at this refine this.trans ?_ rw [gs_mul _ _ ⊤ trivial, _root_.mul_assoc, ← sv_value H hJ] rfl`.
+-/
 theorem value_smul (hL : L.IsLB) {s s' : LB.Sec (LPow A L k T)} {c : Γ(T.left, ⊤)}
     (e : SecM.ofSec A s' = c • SecM.ofSec A s) {z : T ⟶ A} {τ : Frame L k z} (hτ : τ.IsGen) {v : Γ(T.left, ⊤)}
     (H : IsValueAt A L k s z τ v) : IsValueAt A L k s' z τ (c * v) :=
@@ -58,6 +70,11 @@ theorem value_smul (hL : L.IsLB) {s s' : LB.Sec (LPow A L k T)} {c : Γ(T.left, 
     rw [gs_mul _ _ ⊤ trivial, _root_.mul_assoc, ← sv_value H hJ]
     rfl
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `exists_ratio_base hL (𝟙 T.left) (𝟙 T.left) (Category.comp_id _) (fun a => ⟨a, rfl⟩) hτ hτ'`. Use `⟨d, fun s v H => isValueAt_of_sv hL hτ' fun y J hJ => ?_⟩` and prove the remaining obligations. Use `hd _ (𝟙 _) y J hJ` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Rewrite using `[sv_value H hJ, this, gs_mul _ _ ⊤ trivial, gs_unit _ _ ⊤ trivial, Units.val_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_unit_frame (hL : L.IsLB) {z : T ⟶ A} {τ τ' : Frame L k z} (hτ : τ.IsGen) (hτ' : τ'.IsGen) :
     ∃ d : Γ(T.left, ⊤)ˣ, ∀ s v, IsValueAt A L k s z τ v → IsValueAt A L k s z τ' (d * v) := by
   obtain ⟨d, hd⟩ := exists_ratio_base hL (𝟙 T.left) (𝟙 T.left) (Category.comp_id _) (fun a => ⟨a, rfl⟩) hτ hτ'
@@ -67,6 +84,11 @@ theorem exists_unit_frame (hL : L.IsLB) {z : T ⟶ A} {τ τ' : Frame L k z} (h�
   rw [sv_value H hJ, this, gs_mul _ _ ⊤ trivial, gs_unit _ _ ⊤ trivial, Units.val_mul]
   ring
 
+/- English proof (translation)
+Use `⟨⟨fun j => τ.s j * res le_top u⁻¹⟩, fun i j => ?_, fun s v H j => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hτ i j, _root_.mul_assoc]`. Use `congrArg (fun q => _ * (_ * q)) (unit_ext fun y hy => ?_)` and prove the remaining obligations. Conclude with `((gm_res _ y _ hy _).trans (gm_res _ y le_top hy.1 _)).trans ((gm_res _ y _ hy _).trans (gm_res _ y le_top hy.2 _)).symm`. Rewrite using `[H j, map_mul]`.
+
+Establish `e : (T.left.presheaf.map (homOfLE (le_top : LB.wchart L (fun _ : Fin 1 => z.left) j ≤ ⊤)).op).hom u.val * (T.left.presheaf.map (homOfLE (le_top : LB.wchart L (fun _ : Fin 1 => z.left) j ≤ ⊤)).op).hom (u⁻¹).val = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Establish `key : ∀ {R : Type} [CommRing R] (a b c d : R), a * b = 1 → c * d = a * c * (d * b)` using `fun a b c d h => by`. Take the linear combination `(-(c * d)) * h`. Conclude with `key _ _ _ _ e`.
+-/
 theorem exists_rescale {z : T ⟶ A} {τ : Frame L k z} (hτ : τ.IsGen) (u : Γ(T.left, ⊤)ˣ) :
     ∃ τ' : Frame L k z, τ'.IsGen ∧ ∀ s v, IsValueAt A L k s z τ v → IsValueAt A L k s z τ' (u * v) := by
   refine ⟨⟨fun j => τ.s j * res le_top u⁻¹⟩, fun i j => ?_, fun s v H j => ?_⟩
@@ -84,12 +106,20 @@ theorem exists_rescale {z : T ⟶ A} {τ : Frame L k z} (hτ : τ.IsGen) (u : Γ
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Take `⟨p⟩` from `‹Nonempty T.left›`. Take `⟨i, hi⟩` from `exists_chart hL (z.left p)`. Conclude with `AbSquare.exists_gen_of_mem_chart hL _ _ (fun _ => i) fun _ y => by rwa [Subsingleton.elim y p]`.
+-/
 theorem exists_frame (hL : L.IsLB) [Subsingleton T.left] [Nonempty T.left] (z : T ⟶ A) :
     ∃ τ : Frame L k z, τ.IsGen := by
   obtain ⟨p⟩ := ‹Nonempty T.left›
   obtain ⟨i, hi⟩ := exists_chart hL (z.left p)
   exact AbSquare.exists_gen_of_mem_chart hL _ _ (fun _ => i) fun _ y => by rwa [Subsingleton.elim y p]
 
+/- English proof (translation)
+Establish `sm : ∀ (c : Γ(T.left, ⊤)) (w : SecM A L k T), ThetaAct.sv w (lift (𝟙 T) z).left y J * a = ThetaAct.sv w (lift (𝟙 T) z').left y J * b → ThetaAct.sv (c • w) (lift (𝟙 T) z).left y J * a = ThetaAct.sv (c • w) (lift (𝟙 T) z').left y J * b` using `fun c w h => by`. Rewrite using `[ThetaAct.sv_smul _ _ _ _ hJ, ThetaAct.sv_smul _ _ _ _ hJ, lift_fst_left, lift_fst_left, _root_.mul_assoc, h, _root_.mul_assoc]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => obtain ⟨i, rfl⟩ := hw`. Conclude with `h i`.
+
+Consider the case `zero`. Rewrite using `[← zero_smul Γ(T.left, ⊤) (0 : SecM A L k T), ThetaAct.sv_smul _ _ _ _ hJ, ThetaAct.sv_smul _ _ _ _ hJ, gs_eq _ _ ⊤ trivial, gs_eq _ _ ⊤ trivial]`. Simplify using `only [map_zero, zero_mul]`. Consider the case `add w w' _ _ h h' => rw [ThetaAct.sv_add _ _ _ _ hJ, ThetaAct.sv_add _ _ _ _ hJ, add_mul, add_mul, h, h']`. Consider the case `smul c w _ h => exact sm c w h`.
+-/
 theorem rel_of_mem_span {I : Type} {t : I → SecM A L k T} {z z' : T ⟶ A} {y : T.left} {J} (hJ : Good L y J)
     {a b : T.left.presheaf.stalk y}
     (h : ∀ i, ThetaAct.sv (t i) (lift (𝟙 T) z).left y J * a = ThetaAct.sv (t i) (lift (𝟙 T) z').left y J * b)
@@ -110,6 +140,9 @@ theorem rel_of_mem_span {I : Type} {t : I → SecM A L k T} {z z' : T ⟶ A} {y 
   | add w w' _ _ h h' => rw [ThetaAct.sv_add _ _ _ _ hJ, ThetaAct.sv_add _ _ _ _ hJ, add_mul, add_mul, h, h']
   | smul c w _ h => exact sm c w h
 
+/- English proof (translation)
+The claim follows from `fn_ext fun y _ => by choose J hJ using fun χ : T'.left ⟶ A.left => exists_chart hL (χ y) replace hJ : Good L y J := hJ have e : ∀ (i) {z : T ⟶ A} {τ : Frame L k z}, IsValueAt A L k (t i) z τ (v i) → ThetaAct.sv (pullM A L k h (SecM.ofSec A (t i))) (lift (𝟙 T') (h ≫ z)).left y J = …`.
+-/
 theorem value_eq_of_span (hL : L.IsLB) {I : Type} {t : I → LB.Sec (LPow A L k T)} {z z' : T ⟶ A} {τ : Frame L k z}
     {τ' : Frame L k z'} {v : I → Γ(T.left, ⊤)} (hv : ∀ i, IsValueAt A L k (t i) z τ (v i))
     (hv' : ∀ i, IsValueAt A L k (t i) z' τ' (v i)) {T' : Over S} (h : T' ⟶ T)
@@ -145,6 +178,9 @@ def IsThetaFam (k : ℕ) (a : ℤ) {I : Type} (x : I → (T ⟶ P.A)) (t : I →
     IsTwistPull P.A P.L (mulT P.A T k) (snd T P.A ^ k) (lift_snd _ _) a 1 α th s1 ∧
     (∀ i, SymLift P.A P.L a (k ^ 2) (x i) (U i)) ∧ ∀ i, IsActOf P.A P.L a (U i) s1 (t i)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, _, th, s1, α, τ, U, t, h1, h2, h3, h4, h5, h6, h7⟩ => ⟨t, τ, ⟨th, s1, α, U, h1, h2, h4, h5, h6⟩, h3, h7⟩, fun ⟨t, τ, ⟨th, s1, α, U, h1, h2, h4, h5, h6⟩, h3, h7⟩ => ⟨hk, hu, th, s1, α, τ, U, t, h1, h2, h3, h4, h5, h6, h7⟩⟩`.
+-/
 theorem isCoordPt_iff {k : ℕ} (hk : Odd k) (hu : IsUnit (k : Γ(T.left, ⊤))) {I : Type} (x : I → (T ⟶ P.A))
     (z : T ⟶ P.A) (v : I → Γ(T.left, ⊤)) :
     IsCoordPt P k x z v ↔ ∃ (t : I → LB.Sec (LPow P.A P.L ((k : ℤ) ^ 2) T)) (τ : Frame P.L ((k : ℤ) ^ 2) z),
@@ -155,6 +191,15 @@ theorem isCoordPt_iff {k : ℕ} (hk : Odd k) (hu : IsUnit (k : Γ(T.left, ⊤)))
 
 variable {P}
 
+/- English proof (translation)
+Establish `hL` using `P.isLB`. Take `⟨th, s₁, α, U, hth, hα, hs₁, hU, ht⟩` from `H`. Take `⟨th', s₁', α', U', hth', hα', hs₁', hU', ht'⟩` from `H'`. Take `⟨ρ, hρ⟩` from `exists_unit_of_isGenSec hth' hth`. Take `⟨c, hc⟩` from `exists_ratio_base hL (fst T P.A).left (lift (𝟙 T) (1 : T ⟶ P.A)).left (by rw [← Over.comp_left, lift_fst]; rfl) (SymLiftOdd.surj_fst hG P.isAb T) hα' hα`.
+
+Use `⟨ρ * c, fun i => ThetaAct.sv_ext hL fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[ThetaAct.sv_smul _ _ _ _ hJ, gs_unit _ _ ⊤ trivial, map_mul, Category.id_comp, SymLiftOdd.id_eq_lift]`. Express the relevant statement in the definitionally equal form `sv P.A (t' i) _ y J = _ * sv P.A (t i) _ y J`. Establish `a₀ : tval (U' i) (lift (fst T P.A) (snd T P.A)).left y J = tval (U i) (lift (fst T P.A) (snd T P.A)).left y J` using `val_corr hJ (SymLiftOdd.symLift_unique hG P.isAb hL hk.pow _ _ (hU' i) (hU i)) _`. Establish `a₁ : ∀ p : T ⊗ P.A ⟶ P.A, bval (b` using `1) α' (lift (fst T P.A) p).left y J = bval (b := 1) α (lift (fst T P.A) p).left y J * gm (fst T P.A).left y ⊤ c := fun p => by`.
+
+Use `hc _ (lift (fst T P.A) p).left y J hJ` as an intermediate fact. Rewrite `this` using `[lift_fst_left]`. Conclude with `this`. Establish `a₃ : ∀ p : T ⊗ P.A ⟶ P.A, sv P.A th' (lift (fst T P.A) p).left y J = (gm (fst T P.A).left y ⊤ ρ).val * sv P.A th (lift (fst T P.A) p).left y J` using `fun p => by`. Use `ThetaAct.sv_smul (ρ : Γ(T.left, ⊤)) (SecM.ofSec P.A th) (lift (fst T P.A) p).left y hJ` as an intermediate fact.
+
+Rewrite `this` using `[← hρ, lift_fst_left, gs_unit _ _ ⊤ trivial]`. Conclude with `this`. Rewrite using `[sv_act (hU' i).pt_eq (ht' i) _ hJ, sv_act (hU i).pt_eq (ht i) _ hJ, sv_mulPull hs₁ _ hJ, sv_mulPull hs₁' _ hJ, a₀, a₁, a₃, Units.val_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsThetaFam.exists_unit (hG : GlobalFnsSt) [Subsingleton T.left] {k : ℕ} (hk : Odd k) {a : ℤ} {I : Type}
     {x : I → (T ⟶ P.A)} {t t' : I → LB.Sec (LPow P.A P.L a T)} (H : IsThetaFam P k a x t)
     (H' : IsThetaFam P k a x t') :
@@ -184,6 +229,13 @@ theorem IsThetaFam.exists_unit (hG : GlobalFnsSt) [Subsingleton T.left] {k : ℕ
     a₀, a₁, a₃, Units.val_mul, Units.val_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[isCoordPt_iff P hk hu]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Take `⟨th, s1, α, τ, U, t, w, u, h1, h2, h3, h4, h5, h6, h7, h8⟩` from `isThetaPtOver_of_subsingleton P H`. Take `⟨τ', hτ', h⟩` from `exists_rescale h3 u`.
+
+Conclude with `⟨t, τ', ⟨th, s1, α, U, h1, h2, h4, h5, h6⟩, hτ', fun i => h8 i ▸ h _ _ (h7 i)⟩`. Introduce and unpack `⟨t, τ, ⟨th, s1, α, U, h1, h2, h4, h5, h6⟩, h3, h7⟩`. Use `⟨hk, hu, fun p => ⟨⊤, trivial, ?_⟩⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `exists_section (T := T) (V := ⊤) (p := p) trivial`. Establish `hi : overResι (T` using `T) ⊤ ≫ h = 𝟙 _ := by haveI : Mono (overResι (T := T) ⊤) := Over.mono_of_mono_left _ (hk := inferInstanceAs (Mono (⊤ : T.left.Opens).ι))`.
+
+Rewrite using `[← cancel_mono (overResι (T := T) ⊤), Category.assoc, hh, Category.comp_id, Category.id_comp]`. Conclude with `isThetaPtOver_pull P ⟨th, s1, α, τ, U, t, v, 1, h1, h2, h3, h4, h5, h6, h7, fun i => (_root_.one_mul _).symm⟩ (overResι ⊤) h hi`.
+-/
 theorem isThetaPt_iff [Subsingleton T.left] [Nonempty T.left] {k : ℕ} (hk : Odd k) (hu : IsUnit (k : Γ(T.left, ⊤)))
     {I : Type} (x : I → (T ⟶ P.A)) (v : I → Γ(T.left, ⊤)) : IsThetaPt P k x v ↔ IsCoordPt P k x 1 v := by
   rw [isCoordPt_iff P hk hu]
@@ -202,6 +254,13 @@ theorem isThetaPt_iff [Subsingleton T.left] [Nonempty T.left] {k : ℕ} (hk : Od
     exact isThetaPtOver_pull P ⟨th, s1, α, τ, U, t, v, 1, h1, h2, h3, h4, h5, h6, h7,
       fun i => (_root_.one_mul _).symm⟩ (overResι ⊤) h hi
 
+/- English proof (translation)
+Establish `hk` using `H.1`. Establish `hu` using `H.2.1`. Rewrite `H`, the goal using `[isCoordPt_iff P hk hu]`. Take `⟨t, τ, ht, hτ, hv⟩` from `H`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨t', τ', ht', hτ', hv'⟩`. Take `⟨e, he⟩` from `ht.exists_unit hG hk ht'`. Take `⟨d, hd⟩` from `exists_unit_frame P.isLB hτ hτ'`. Conclude with `⟨d * e, fun i => by`. Rewrite using `[Units.val_mul, _root_.mul_assoc]`.
+
+Conclude with `value_unique P.isLB (hv' i) (hd _ _ (value_smul P.isLB (he i) hτ (hv i)))⟩`. Introduce and unpack `⟨u, hu⟩`. Take `⟨τ', hτ', h⟩` from `exists_rescale hτ u`. Conclude with `⟨t, τ', ht, hτ', fun i => hu i ▸ h _ _ (hv i)⟩`.
+-/
 theorem isCoordPt_iff_unit (hG : GlobalFnsSt) [Subsingleton T.left] {k : ℕ} {I : Type} {x : I → (T ⟶ P.A)}
     {z : T ⟶ P.A} {v : I → Γ(T.left, ⊤)} (H : IsCoordPt P k x z v) (v' : I → Γ(T.left, ⊤)) :
     IsCoordPt P k x z v' ↔ ∃ u : Γ(T.left, ⊤)ˣ, ∀ i, v' i = u * v i := by
@@ -225,6 +284,17 @@ section Field
 variable (hLaw : Laws) {K : Type} [Field K] [IsAlgClosed K] [IsLocallyNoetherian S] (s : Sp K ⟶ S)
 include hLaw
 
+/- English proof (translation)
+Establish `hL` using `P.isLB`. Set `T : Over S` to `Over.mk s`. Set `e` to `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.symm`. Use `haveI : Subsingleton T.left := inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Take `⟨p⟩ : Nonempty T.left` from `inferInstanceAs (Nonempty (PrimeSpectrum K))`.
+
+Take `⟨t, -, ht⟩ : ∃ t : SecM P.A P.L 1 T, t ≠ 0 ∧ ∀ s, ∃ r : Γ(T.left, ⊤), r • t = s` from `ThetaPtExist.exists_generator_of_isField (MulEquiv.isField (Field.toIsField K) e.symm.toMulEquiv) (((secM_invariant_eq_bot_or_univ_at_geometric_point hLaw.polBaseChange).1 hLaw.globalSectionsRank S P K s 1 le_rfl).trans (one_pow _))`. Take `⟨th, hth⟩` from `ThetaPtExist.exists_isGenSec_of_retract hL (𝟙 T) (𝟙 T) (Category.comp_id _) t ht`. Take `⟨α₀, hα₀⟩` from `hLaw.mulPull _ P k`. Take `⟨α, hα, -⟩` from `exists_gen_pullTo (φ' := ![(snd T P.A).left, (snd T P.A ^ k).left]) α₀ hα₀ (snd T P.A).left (fun i => by fin_cases i`. Conclude with `Category.comp_id _`.
+
+Express the relevant statement in the definitionally equal form `(snd T P.A).left ≫ (mulA P.A k).left = (snd T P.A ^ k).left`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id])`. Take `⟨s₁, hs₁⟩` from `ThetaPtExist.exists_isTwistPull hL (mulT P.A T k) (snd T P.A ^ k) (lift_snd _ _) ((k : ℤ) ^ 2) 1 α hα th`. Establish `sym` using `(symLift_odd hLaw.globalFns (kerPow_of_square (AbSquare.square_of_cube AbLaw.CubeAssembly.cube_gen).1).2.2 (exists_gen_negLB hLaw.globalFns)).1`. Establish `hU : ∀ i, ∃ θ : ThetaGrp P.A P.L ((k : ℤ) ^ 2) T, SymLift P.A P.L ((k : ℤ) ^ 2) (k ^ 2) (x i) θ` using `fun i => by`.
+
+Take `⟨V, hV, θ, hθ⟩` from `(sym S P (k ^ 2) hk.pow T (x i) (hx i)).1 p`. Take `⟨h, hh⟩` from `exists_section hV`. Take `⟨θ', hθ'⟩` from `exists_symLift_pull hL h hθ`. Rewrite `hθ'` using `[← Category.assoc, hh, Category.id_comp]`. Rewrite using `[← Nat.cast_pow]`.
+
+Conclude with `⟨θ', hθ'⟩`. Use `choose U hU using hU`. Use `choose s₂ hs₂ using fun i => ThetaPtExist.exists_isTwistPull hL (translT P.A (U i).pt) (translPt P.A (U i).pt) (lift_snd _ _) ((k : ℤ) ^ 2) ((k : ℤ) ^ 2) (U i).φ (U i).isGen s₁`. Conclude with `⟨s₂, th, s₁, α, U, hth, hα, hs₁, hU, hs₂⟩`.
+-/
 theorem exists_isThetaFam {k : ℕ} (hk : Odd k) {I : Type} (x : I → (Over.mk s ⟶ P.A)) (hx : ∀ i, x i ^ k ^ 2 = 1) :
     ∃ t, IsThetaFam P k ((k : ℤ) ^ 2) x t := by
   have hL := P.isLB
@@ -259,6 +329,15 @@ theorem exists_isThetaFam {k : ℕ} (hk : Odd k) {I : Type} (x : I → (Over.mk 
     (lift_snd _ _) ((k : ℤ) ^ 2) ((k : ℤ) ^ 2) (U i).φ (U i).isGen s₁
   exact ⟨s₂, th, s₁, α, U, hth, hα, hs₁, hU, hs₂⟩
 
+/- English proof (translation)
+Take `⟨th, s₁, α, U, hth, -, hs₁, hU, ht⟩` from `H`. Take `⟨ρ, k₁, -, k₃, k₄⟩` from `thetaGrp_acts_linearly hLaw.globalFns S P N (Over.mk s)`. Take `⟨h0, irr⟩` from `secM_invariant_eq_bot_or_univ_at_geometric_point hLaw.polBaseChange`. Use `haveI : Nonempty I := let ⟨i, _⟩ := hx 1 (one_pow _)`. Use the proof step `⟨i⟩`.
+
+Establish `e : ∀ i, SecM.ofSec P.A (t i) = ρ (U i) (SecM.ofSec P.A s₁)` using `fun i => ((k₁ _ _ _).1 (ht i)).symm`. Simplify using `only [e]`. Use `span_translates_eq_top P.A (irr hLaw.irred S P K s N (Or.inr hN) hK) ρ k₁ k₃ k₄ U (fun θ => ?_) _ fun hz => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hx θ.pt ((hLaw.kerPow S P N (by omega) (Over.mk s) θ.pt).1 fun _ => ⟨⊤, trivial, _, LB.isGen_genPull _ θ.φ θ.isGen _⟩)`. Conclude with `⟨i, (hU i).pt_eq.trans hi⟩`.
+
+Establish `hint : IsIntegral (Over.mk s ⊗ P.A).left` using `(forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ P.A.hom P.isAb.smooth P.isAb.geomConnected).geometrically_isIntegral s _ _ (IsPullback.of_hasPullback s P.A.hom).flip`. Establish `hz'` using `ofSec_eq_zero_of_twist P.A P.isLB (surjective_mulT P.A k (hLaw.mulN S P k hk).2.2.1 _) hs₁ hz`. Establish `hr : Module.finrank Γ((Over.mk s).left, ⊤) (SecM P.A P.L 1 (Over.mk s)) = 1` using `(h0 hLaw.globalSectionsRank S P K s 1 le_rfl).trans (one_pow _)`. Take `⟨w, hw, -⟩` from `ThetaPtExist.exists_generator_of_isField (MulEquiv.isField (Field.toIsField K) (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toMulEquiv) hr`. Take `⟨r, hr'⟩` from `hth (SecM.toSec P.A w)`.
+
+Establish `: w = r • SecM.ofSec P.A th` using `Subtype.ext (funext hr')`. Conclude with `hw (by rw [this, hz', smul_zero])`.
+-/
 theorem IsThetaFam.span_eq_top {k N : ℕ} (hk : 1 ≤ k) (hN : 4 ≤ N) (hK : (N : K) ≠ 0) {I : Type}
     {x : I → (Over.mk s ⟶ P.A)} (hx : ∀ y : Over.mk s ⟶ P.A, y ^ N = 1 → ∃ i, x i = y)
     {t : I → LB.Sec (LPow P.A P.L N (Over.mk s))} (H : IsThetaFam P k N x t) :
@@ -287,6 +366,13 @@ theorem IsThetaFam.span_eq_top {k N : ℕ} (hk : 1 ≤ k) (hN : 4 ≤ N) (hK : (
 
 omit [IsAlgClosed K] in
 
+/- English proof (translation)
+Take `⟨V, hV, b, hb⟩` from `hLaw.secBaseChange S P N hN (s (IsLocalRing.closedPoint K))`. Set `h₀ : Over.mk s ⟶ overRes (T` to `baseOver S) V := Over.homMk (IsOpenImmersion.lift V.ι s (by`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι, Subsingleton.elim (α := PrimeSpectrum K) q (IsLocalRing.closedPoint K)]`. Conclude with `hV))`.
+
+Use the proof step `((congrArg (_ ≫ ·) (Category.comp_id V.ι)).trans (IsOpenImmersion.lift_fac _ _ _))`. Take `⟨c, hc⟩` from `exists_basis P N b hb T' (h ≫ h₀)`. Establish `key : ∀ w ∈ Submodule.span Γ((Over.mk s).left, ⊤) (Set.range t), pullM P.A P.L N h w ∈ Submodule.span Γ(T'.left, ⊤) (Set.range fun i => pullM P.A P.L N h (t i))` using `fun w hw => (Submodule.span_le (p := Submodule.comap (pullM P.A P.L N h) (Submodule.span Γ(T'.left, ⊤) (Set.range fun i => pullM P.A P.L N h (t i))))).2 (by`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨i, rfl⟩) hw`.
+
+Rewrite using `[eq_top_iff, ← c.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[hc, ← pullM_comp P.A P.isLB]`. Conclude with `key _ (H.ge trivial)`.
+-/
 theorem span_pull_eq_top {N : ℕ} (hN : 1 ≤ N) {I : Type} {t : I → SecM P.A P.L N (Over.mk s)}
     (H : Submodule.span Γ((Over.mk s).left, ⊤) (Set.range t) = ⊤) (T' : Over S) [IsAffine T'.left]
     (h : T' ⟶ Over.mk s) :
@@ -311,6 +397,9 @@ theorem span_pull_eq_top {N : ℕ} (hN : 1 ≤ N) {I : Type} {t : I → SecM P.A
 
 omit [IsAlgClosed K] in
 
+/- English proof (translation)
+Use `haveI : IsLocallyNoetherian (Over.mk s).left := inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of K)))`. Use `SepPoints.eq_of_forall_value_eq forall_geometricallyIntegral_of_smooth_of_geometricallyConnected AbLaw.CubeAssembly.cube_gen hLaw.secBaseChange (fun S _ P n hn => let h := hLaw.mulN S P n hn; ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1⟩) S P N hN _ z z' τ τ' hτ hτ' fun T' _ h w a a' ha ha' = …` and prove the remaining obligations. Conclude with `value_eq_of_span P.isLB hv hv' h (span_pull_eq_top hLaw s (by omega) H T' h) (fun y J hJ => (val_pull hJ τ h.left (𝟙 _)).trans (by rw [Category.id_comp])) (fun y J hJ => (val_pull hJ τ' h.left (𝟙 _)).trans (by rw [Category.id_comp])) ha ha'`.
+-/
 theorem eq_of_span {N : ℕ} (hN : 3 ≤ N) {I : Type} {t : I → LB.Sec (LPow P.A P.L N (Over.mk s))}
     (H : Submodule.span Γ((Over.mk s).left, ⊤) (Set.range fun i => SecM.ofSec P.A (t i)) = ⊤)
     {z z' : Over.mk s ⟶ P.A} {τ : Frame P.L N z} {τ' : Frame P.L N z'} (hτ : τ.IsGen) (hτ' : τ'.IsGen)
@@ -324,6 +413,9 @@ theorem eq_of_span {N : ℕ} (hN : 3 ≤ N) {I : Type} {t : I → LB.Sec (LPow P
     (fun y J hJ => (val_pull hJ τ h.left (𝟙 _)).trans (by rw [Category.id_comp]))
     (fun y J hJ => (val_pull hJ τ' h.left (𝟙 _)).trans (by rw [Category.id_comp])) ha ha'
 
+/- English proof (translation)
+Introduce `h0` and use `by obtain ⟨w, τ', a, -, ha, hu⟩ := NoBasePoint.exists_sec_value_isUnit forall_geometricallyIntegral_of_smooth_of_geometricallyConnected (AbSquare.square_of_cube AbLaw.CubeAssembly.cube_gen).1 ((secM_invariant_eq_bot_or_univ_at_geometric_point hLaw.polBaseChange).1 hLaw.globalSect …`.
+-/
 theorem ne_zero_of_span {N : ℕ} (hN : 2 ≤ N) {I : Type} {t : I → LB.Sec (LPow P.A P.L N (Over.mk s))}
     (H : Submodule.span Γ((Over.mk s).left, ⊤) (Set.range fun i => SecM.ofSec P.A (t i)) = ⊤)
     {z : Over.mk s ⟶ P.A} {τ : Frame P.L N z} {v : I → Γ((Over.mk s).left, ⊤)}
@@ -347,6 +439,9 @@ theorem ne_zero_of_span {N : ℕ} (hN : 2 ≤ N) {I : Type} {t : I → LB.Sec (L
   rw [gs_unit _ _ ⊤ trivial, ← Units.val_mul] at this
   exact Units.ne_zero _ this
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Establish `h4 : 4 ≤ k ^ 2` using `by nlinarith`. Establish `hs` using `H.span_eq_top hLaw s (by omega) h4 (by rw [Nat.cast_pow]; exact pow_ne_zero _ hK) hx`. Conclude with `⟨eq_of_span hLaw s (by omega) hs hτ hτ' hv hv', ne_zero_of_span hLaw s (by omega) hs hv⟩`.
+-/
 theorem eq_and_ne_zero {k : ℕ} (hk : 3 ≤ k) (hK : (k : K) ≠ 0) {a : ℤ} (ha : a = (k ^ 2 : ℕ)) {I : Type}
     {x : I → (Over.mk s ⟶ P.A)} (hx : ∀ y : Over.mk s ⟶ P.A, y ^ k ^ 2 = 1 → ∃ i, x i = y)
     {t : I → LB.Sec (LPow P.A P.L a (Over.mk s))} (H : IsThetaFam P k a x t)
@@ -360,6 +455,19 @@ theorem eq_and_ne_zero {k : ℕ} (hk : 3 ≤ k) (hK : (k : K) ≠ 0) {a : ℤ} (
 
 end Field
 
+/- English proof (translation)
+Introduce `hLaw K _ _ S _ P s m hm hK Ix x hx`. Set `e : Γ((Over.mk s).left, ⊤) ≃+* K` to `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv`. Establish `he : ∀ a : K, fnOf a = e.symm a` using `fun _ => rfl`. Use `haveI : Subsingleton (Over.mk s).left := inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Use `haveI : Nonempty (Over.mk s).left := inferInstanceAs (Nonempty (PrimeSpectrum K))`.
+
+Establish `hu : IsUnit (m : Γ((Over.mk s).left, ⊤))`. Rewrite using `[← map_natCast e.symm]`. Conclude with `(IsUnit.mk0 _ hK).map e.symm`. Use `⟨fun z => ?_, fun z v v' H => ?_, fun v => isThetaPt_iff hm hu x _, fun h3 hall z z' v H H' => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_isThetaFam hLaw s hm x hx`.
+
+Take `⟨τ, hτ⟩` from `exists_frame (k := (m : ℤ) ^ 2) P.isLB z`. Use `choose w hw using fun i => ThetaPtExist.exists_isValueAt P.isLB (t i) z τ hτ`. Use `⟨fun i => e (w i), (isCoordPt_iff P hm hu x z _).2 ⟨t, τ, ht, hτ, fun i => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[he, e.symm_apply_apply]`. Conclude with `hw i`.
+
+Use `(isCoordPt_iff_unit hLaw.globalFns H _).trans ⟨fun ⟨u, h⟩ => ⟨Units.map e.toMonoidHom u, funext fun i => ?_⟩, fun ⟨c, h⟩ => ⟨Units.map e.symm.toMonoidHom c, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `q` using `(congrArg e (h i)).trans (map_mul e _ _)`. Conclude with `(e.apply_symm_apply (v' i)).symm.trans (q.trans (congrArg (_ * ·) (e.apply_symm_apply (v i))))`. Substitute `h` using the available equality. Conclude with `map_mul e.symm (c : K) (v i)`.
+
+Take `⟨t, τ, ht, hτ, hv⟩` from `(isCoordPt_iff P hm hu x z _).1 H`. Take `⟨t', τ', ht', hτ', hv'⟩` from `(isCoordPt_iff P hm hu x z' _).1 H'`. Take `⟨u, hu'⟩` from `ht'.exists_unit hLaw.globalFns hm ht`. Take `⟨τ'', hτ'', h⟩` from `exists_rescale hτ' u⁻¹`. Take `⟨h₁, h₂⟩` from `eq_and_ne_zero hLaw s h3 hK (Nat.cast_pow m 2).symm hall ht hτ hτ'' hv fun i => by`.
+
+Use `h _ _ (value_smul P.isLB (hu' i) hτ' (hv' i))` as an intermediate fact. Rewrite `this` using `[Units.inv_mul_cancel_left]`. Then use the resulting hypothesis. Conclude with `⟨h₁, fun h0 => h₂ fun i => by rw [h0]; exact map_zero e.symm⟩`.
+-/
 theorem coord_exists_unique_separate : Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (S : Scheme.{0}) [IsLocallyNoetherian S] (P : PolAV S) (s : Sp K ⟶ S) (m : ℕ), Odd m → (m : K) ≠ 0 → ∀ (Ix : Type) (x : Ix → (Over.mk s ⟶ P.A)), (∀ i, x i ^ m ^ 2 = 1) → (∀ z, ∃ v : Ix → K, IsCoordPt P m x z fun i => fnOf (v i)) ∧ (∀ z (v v' : Ix → K), (IsCoordPt P m x z fun i => fnOf (v i)) → ((IsCoordPt P m x z fun i => fnOf (v' i)) ↔ ∃ c : Kˣ, v' = (c : K) • v)) ∧ (∀ v : Ix → K, (IsThetaPt P m x fun i => fnOf (v i)) ↔ IsCoordPt P m x 1 fun i => fnOf (v i)) ∧ (3 ≤ m → (∀ y : Over.mk s ⟶ P.A, y ^ m ^ 2 = 1 → ∃ i, x i = y) → ∀ z z' (v : Ix → K), (IsCoordPt P m x z fun i => fnOf (v i)) → (IsCoordPt P m x z' fun i => fnOf (v i)) → z = z' ∧ v ≠ 0) := by
   intro hLaw K _ _ S _ P s m hm hK Ix x hx
   let e : Γ((Over.mk s).left, ⊤) ≃+* K := (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv

@@ -10,6 +10,11 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers GlobalT
 
 namespace GlobalTheory.CompanionTheory.SitePD
 
+/- English proof (translation)
+Introduce `A B _ _ i hi`. Establish `hfree : Module.Free B (pq B).P` using `Module.Free.of_basis (pq B).e`. Establish `h2 : (algebraMap B (pq B).P).Flat`. Rewrite using `[RingHom.flat_algebraMap_iff]`. Use `infer_instance`.
+
+Conclude with `RingHom.Flat.comp hi h2`.
+-/
 theorem pdPoly_flat_comp : ∀ {A B : Type} [CommRing A] [CommRing B] (i : A →+* B), i.Flat →
     ((algebraMap B (pq B).P).comp i).Flat := by
   intro A B _ _ i hi

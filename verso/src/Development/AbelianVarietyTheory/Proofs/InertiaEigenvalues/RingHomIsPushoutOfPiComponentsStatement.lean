@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RingHomIsPusho
 import Mathlib
 open TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.isPushout_of_pi_components | exact GlobalTheory.isPushout_of_pi_components | (intros; apply GlobalTheory.isPushout_of_pi_components <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.ringHom_isPushout_of_pi_components : ∀ {A P A' P' : Type} [CommRing A] [CommRing P] [CommRing A'] [CommRing P'] {n : ℕ}
     {Pi P'i : Fin n → Type} [∀ i, CommRing (Pi i)] [∀ i, CommRing (P'i i)]
     (f : A →+* P) (k : A →+* A') (k' : P →+* P') (h' : A' →+* P')

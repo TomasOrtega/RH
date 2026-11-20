@@ -7,27 +7,45 @@ open scoped ENNReal
 namespace ReciprocityTheory.ChartRestriction.DS.Xi
 namespace J2
 
+/- English proof (translation)
+Simplify using `[Lsq]`.
+-/
 lemma lsq_zero {p m : ℕ} (x : Xp p m) : Lsq x 0 = 1 := by simp [Lsq]
 
+/- English proof (translation)
+Simplify using `[Lsq]`.
+-/
 lemma lsq_one {p m : ℕ} (x : Xp (p + 1) m) : Lsq x 1 = 1 + ‖x.1 0‖ ^ 2 := by
   simp [Lsq]
 
+/- English proof (translation)
+Simplify using `only [rhoSq, Fin.sum_univ_succ]`. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
+-/
 lemma rhoSq_zero {p m : ℕ} (x : Xp (p + 1) m) : rhoSq x 0 = rhoSq x 1 + ‖x.2.1 0‖ ^ 2 := by
   simp only [rhoSq, Fin.sum_univ_succ]
   simp
   ring_nf
 
+/- English proof (translation)
+Simplify using `only [bco, Fin.sum_univ_succ]`. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
+-/
 lemma bco_zero {p m : ℕ} (x : Xp (p + 1) m) : bco x 0 = bco x 1 - x.2.1 0 * star (x.1 0) := by
   simp only [bco, Fin.sum_univ_succ]
   simp
   ring_nf
 
+/- English proof (translation)
+Unfold `Lsq`. Apply the tactic sequence `have : 0 ≤ ∑ j : Fin p, (if j.val < l.val then ‖x.1 j‖ ^ 2 else 0) := Finset.sum_nonneg fun j _ => by split_ifs <;> positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma one_le_lsq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 1 ≤ Lsq x l := by
   unfold Lsq
   have : 0 ≤ ∑ j : Fin p, (if j.val < l.val then ‖x.1 j‖ ^ 2 else 0) :=
     Finset.sum_nonneg fun j _ => by split_ifs <;> positivity
   linarith
 
+/- English proof (translation)
+Unfold `rhoSq`. Establish `h1` using `one_le_lsq x (Fin.last p)`. Apply the tactic sequence `have : 0 ≤ ∑ j : Fin p, (if l.val ≤ j.val then ‖x.2.1 j‖ ^ 2 else 0) := Finset.sum_nonneg fun j _ => by split_ifs <;> positivity`. Establish `: 0 ≤ ∑ i, ‖x.2.2.1 i‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma rhoSq_nonneg {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 0 ≤ rhoSq x l := by
   unfold rhoSq
   have h1 := one_le_lsq x (Fin.last p)
@@ -36,6 +54,9 @@ lemma rhoSq_nonneg {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 0 ≤ rhoSq x l 
   have : 0 ≤ ∑ i, ‖x.2.2.1 i‖ ^ 2 := Finset.sum_nonneg fun _ _ => by positivity
   linarith
 
+/- English proof (translation)
+Unfold `de`. Rewrite using `[Real.sq_sqrt]`. Use `one_le_lsq x l` as an intermediate fact. Use `rhoSq_nonneg x l` as an intermediate fact. Check the signs of the components of the expression.
+-/
 lemma de_sq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) :
     de x l ^ 2 = Lsq x l * rhoSq x l + ‖bco x l‖ ^ 2 := by
   unfold de
@@ -43,8 +64,14 @@ lemma de_sq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) :
   have := one_le_lsq x l; have := rhoSq_nonneg x l
   positivity
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 lemma de_nonneg {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 0 ≤ de x l := Real.sqrt_nonneg _
 
+/- English proof (translation)
+Unfold `rhoSq`. Establish `h1` using `one_le_lsq x (Fin.last p)`. Apply the tactic sequence `have : 0 ≤ ∑ j : Fin p, (if l.val ≤ j.val then ‖x.2.1 j‖ ^ 2 else 0) := Finset.sum_nonneg fun j _ => by split_ifs <;> positivity`. Establish `: 0 ≤ ∑ i, ‖x.2.2.1 i‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma one_le_rhoSq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 1 ≤ rhoSq x l := by
   unfold rhoSq
   have h1 := one_le_lsq x (Fin.last p)
@@ -53,6 +80,11 @@ lemma one_le_rhoSq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 1 ≤ rhoSq x l 
   have : 0 ≤ ∑ i, ‖x.2.2.1 i‖ ^ 2 := Finset.sum_nonneg fun _ _ => by positivity
   linarith
 
+/- English proof (translation)
+Unfold `de`. Apply `Real.sqrt_pos.2` to reduce the goal to its premises. Establish `h1` using `one_le_lsq x l`. Establish `h2` using `one_le_rhoSq x l`. Establish `: 0 ≤ ‖bco x l‖ ^ 2` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma de_pos {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 0 < de x l := by
   unfold de
   apply Real.sqrt_pos.2
@@ -60,16 +92,25 @@ lemma de_pos {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 0 < de x l := by
   have : 0 ≤ ‖bco x l‖ ^ 2 := by positivity
   nlinarith
 
+/- English proof (translation)
+Simplify using `[rhoSq, Lsq, Fin.sum_univ_succ]`.
+-/
 lemma rhoSq_cons {p m : ℕ} (a : Fin (p + 1) → ℂ) (w : ℂ) (b : Fin p → ℂ) (r : (Fin m → ℂ) × ℝ)
     (i : Fin (p + 1)) :
     rhoSq ((a, Fin.cons w b, r) : Xp (p + 1) m) i.succ = rhoSq ((a, Fin.cons 0 b, r) : Xp (p + 1) m) i.succ := by
   simp [rhoSq, Lsq, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Simplify using `[bco, Fin.sum_univ_succ]`.
+-/
 lemma bco_cons {p m : ℕ} (a : Fin (p + 1) → ℂ) (w : ℂ) (b : Fin p → ℂ) (r : (Fin m → ℂ) × ℝ)
     (i : Fin (p + 1)) :
     bco ((a, Fin.cons w b, r) : Xp (p + 1) m) i.succ = bco ((a, Fin.cons 0 b, r) : Xp (p + 1) m) i.succ := by
   simp [bco, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Simplify using `only [de, rhoSq_cons, bco_cons]`. Both sides reduce to the same expression.
+-/
 lemma de_cons {p m : ℕ} (a : Fin (p + 1) → ℂ) (w : ℂ) (b : Fin p → ℂ) (r : (Fin m → ℂ) × ℝ)
     (i : Fin (p + 1)) :
     de ((a, Fin.cons w b, r) : Xp (p + 1) m) i.succ = de ((a, Fin.cons 0 b, r) : Xp (p + 1) m) i.succ := by
@@ -80,10 +121,16 @@ def sclPt {p m : ℕ} (a0 : ℂ) (r : ℝ) (x : Xp p m) :
     (Fin (p + 1) → ℂ) × (Fin p → ℂ) × (Fin m → ℂ) × ℝ :=
   (Fin.cons a0 (r • x.1), r • x.2.1, r • x.2.2.1, r ^ 2 * x.2.2.2)
 
+/- English proof (translation)
+Simplify using `[Lsq, tailPt, sclPt]`.
+-/
 lemma lsq_scl_one {p m : ℕ} (a0 : ℂ) (r : ℝ) (x : Xp p m) :
     Lsq (tailPt (sclPt a0 r x)) 1 = 1 + ‖a0‖ ^ 2 := by
   simp [Lsq, tailPt, sclPt]
 
+/- English proof (translation)
+Simplify using `only [Lsq, tailPt, sclPt, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, Fin.val_zero, Fin.val_succ, Pi.smul_apply, norm_smul, Real.norm_eq_abs, mul_pow, sq_abs]`. Simplify using `only [Nat.zero_lt_succ, if_true, add_lt_add_iff_right, mul_add, Finset.mul_sum, mul_ite, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma lsq_scl {p m : ℕ} (a0 : ℂ) (r : ℝ) (hr : 1 + ‖a0‖ ^ 2 = r ^ 2) (x : Xp p m) (i : Fin (p + 1)) :
     Lsq (tailPt (sclPt a0 r x)) i.succ = r ^ 2 * Lsq x i := by
   simp only [Lsq, tailPt, sclPt, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, Fin.val_zero,
@@ -91,6 +138,11 @@ lemma lsq_scl {p m : ℕ} (a0 : ℂ) (r : ℝ) (hr : 1 + ‖a0‖ ^ 2 = r ^ 2) (
   simp only [Nat.zero_lt_succ, if_true, add_lt_add_iff_right, mul_add, Finset.mul_sum, mul_ite, mul_zero]
   linarith
 
+/- English proof (translation)
+Establish `hl` using `lsq_scl a0 r hr x (Fin.last p)`. Rewrite `hl` using `[Fin.succ_last]`. Unfold `rhoSq`. Rewrite using `[hl]`. Simplify using `only [tailPt, sclPt, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, Fin.val_zero, Fin.val_succ, Pi.smul_apply, norm_smul, Real.norm_eq_abs, mul_pow, sq_abs]`.
+
+Simplify using `only [add_le_add_iff_right, mul_add, Finset.mul_sum, mul_ite, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 lemma rhoSq_scl {p m : ℕ} (a0 : ℂ) (r : ℝ) (hr : 1 + ‖a0‖ ^ 2 = r ^ 2) (x : Xp p m) (i : Fin (p + 1)) :
     rhoSq (tailPt (sclPt a0 r x)) i.succ = r ^ 2 * rhoSq x i := by
   have hl := lsq_scl a0 r hr x (Fin.last p)
@@ -102,6 +154,11 @@ lemma rhoSq_scl {p m : ℕ} (a0 : ℂ) (r : ℝ) (hr : 1 + ‖a0‖ ^ 2 = r ^ 2)
   simp only [add_le_add_iff_right, mul_add, Finset.mul_sum, mul_ite, mul_zero]
   simp
 
+/- English proof (translation)
+Simplify using `only [bco, tailPt, sclPt, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, Fin.val_zero, Fin.val_succ, Pi.smul_apply, norm_smul, Real.norm_eq_abs, mul_pow, sq_abs]`. Simplify using `only [add_le_add_iff_right, Complex.real_smul, star_mul', Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`. Simplify using the standard rewrite rules. Establish `s1 : ∑ j, (r : ℂ) ^ 2 * ((‖x.2.2.1 j‖ : ℂ)) ^ 2 = (r : ℂ) ^ 2 * ∑ j, ((‖x.2.2.1 j‖ : ℂ)) ^ 2`.
+
+Rewrite using `[Finset.mul_sum]`. Establish `s2 : (∑ j : Fin p, if (i : ℕ) ≤ (j : ℕ) then (r : ℂ) * x.2.1 j * ((r : ℂ) * (starRingEnd ℂ) (x.1 j)) else 0) = (r : ℂ) ^ 2 * ∑ j : Fin p, if (i : ℕ) ≤ (j : ℕ) then x.2.1 j * (starRingEnd ℂ) (x.1 j) else 0`. Apply the tactic sequence `rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun j _ => ?_; split_ifs <;> ring`. Rewrite using `[s1, s2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma bco_scl {p m : ℕ} (a0 : ℂ) (r : ℝ) (x : Xp p m) (i : Fin (p + 1)) :
     bco (tailPt (sclPt a0 r x)) i.succ = ((r ^ 2 : ℝ) : ℂ) * bco x i := by
   simp only [bco, tailPt, sclPt, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, Fin.val_zero,
@@ -117,6 +174,11 @@ lemma bco_scl {p m : ℕ} (a0 : ℂ) (r : ℝ) (x : Xp p m) (i : Fin (p + 1)) :
     rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun j _ => ?_; split_ifs <;> ring
   rw [s1, s2]; ring
 
+/- English proof (translation)
+Establish `h` using `de_sq (tailPt (sclPt a0 r x)) i.succ`. Rewrite `h` using `[lsq_scl a0 r hr, rhoSq_scl a0 r hr, bco_scl, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (sq_nonneg r)]`. Establish `h2` using `de_sq x i`. Establish `: de (tailPt (sclPt a0 r x)) i.succ ^ 2 = (r ^ 2 * de x i) ^ 2` using `by rw [h, mul_pow (r ^ 2) (de x i), h2]; ring`. Establish `p1` using `de_nonneg (tailPt (sclPt a0 r x)) i.succ`.
+
+Establish `p2` using `de_nonneg x i`. Conclude with `(pow_left_inj₀ p1 (by positivity) two_ne_zero).1 this`.
+-/
 lemma de_scl {p m : ℕ} (a0 : ℂ) (r : ℝ) (hr : 1 + ‖a0‖ ^ 2 = r ^ 2) (x : Xp p m) (i : Fin (p + 1)) :
     de (tailPt (sclPt a0 r x)) i.succ = r ^ 2 * de x i := by
   have h := de_sq (tailPt (sclPt a0 r x)) i.succ
@@ -128,23 +190,38 @@ lemma de_scl {p m : ℕ} (a0 : ℂ) (r : ℝ) (hr : 1 + ‖a0‖ ^ 2 = r ^ 2) (x
   have p2 := de_nonneg x i
   exact (pow_left_inj₀ p1 (by positivity) two_ne_zero).1 this
 
+/- English proof (translation)
+Unfold `Lsq`. Apply the tactic sequence `exact continuous_const.add (continuous_finsetSum _ fun j _ => by split_ifs <;> fun_prop)`.
+-/
 lemma cont_lsq {p m : ℕ} (l : Fin (p + 1)) : Continuous fun x : Xp p m => Lsq x l := by
   unfold Lsq
   exact continuous_const.add (continuous_finsetSum _ fun j _ => by split_ifs <;> fun_prop)
 
+/- English proof (translation)
+Unfold `rhoSq`. Apply the tactic sequence `refine ((cont_lsq _).add (continuous_finsetSum _ fun j _ => by fun_prop)).add (continuous_finsetSum _ fun j _ => by split_ifs <;> fun_prop)`.
+-/
 lemma cont_rhoSq {p m : ℕ} (l : Fin (p + 1)) : Continuous fun x : Xp p m => rhoSq x l := by
   unfold rhoSq
   refine ((cont_lsq _).add (continuous_finsetSum _ fun j _ => by fun_prop)).add
     (continuous_finsetSum _ fun j _ => by split_ifs <;> fun_prop)
 
+/- English proof (translation)
+Unfold `bco`. Apply the tactic sequence `refine Continuous.sub ?_ (continuous_finsetSum _ fun j _ => by split_ifs <;> fun_prop)`. Use `fun_prop`.
+-/
 lemma cont_bco {p m : ℕ} (l : Fin (p + 1)) : Continuous fun x : Xp p m => bco x l := by
   unfold bco
   refine Continuous.sub ?_ (continuous_finsetSum _ fun j _ => by split_ifs <;> fun_prop)
   fun_prop
 
+/- English proof (translation)
+The claim follows from `Real.continuous_sqrt.comp (((cont_lsq l).mul (cont_rhoSq l)).add ((cont_bco l).norm.pow 2))`.
+-/
 lemma cont_de {p m : ℕ} (l : Fin (p + 1)) : Continuous fun x : Xp p m => de x l :=
   Real.continuous_sqrt.comp (((cont_lsq l).mul (cont_rhoSq l)).add ((cont_bco l).norm.pow 2))
 
+/- English proof (translation)
+Use `continuous_pi fun j => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `using continuous_fst`. Simplify using `only [Fin.cons_succ]`. Conclude with `(continuous_apply i).comp continuous_snd`.
+-/
 lemma cont_cons {p : ℕ} : Continuous fun q : ℂ × (Fin p → ℂ) => (Fin.cons q.1 q.2 : Fin (p + 1) → ℂ) := by
   refine continuous_pi fun j => ?_
   refine Fin.cases ?_ (fun i => ?_) j
@@ -152,6 +229,9 @@ lemma cont_cons {p : ℕ} : Continuous fun q : ℂ × (Fin p → ℂ) => (Fin.co
   · simp only [Fin.cons_succ]
     exact (continuous_apply i).comp continuous_snd
 
+/- English proof (translation)
+Unfold `tailPt`. Conclude with `continuous_fst.prodMk ((cont_cons.comp (continuous_const.prodMk (continuous_fst.comp continuous_snd))).prodMk (continuous_snd.comp continuous_snd))`.
+-/
 lemma cont_tailPt {p m : ℕ} :
     Continuous (tailPt : (Fin (p + 1) → ℂ) × (Fin p → ℂ) × (Fin m → ℂ) × ℝ → Xp (p + 1) m) := by
   unfold tailPt

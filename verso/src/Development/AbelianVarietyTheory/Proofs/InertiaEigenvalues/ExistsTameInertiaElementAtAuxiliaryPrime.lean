@@ -7,6 +7,13 @@ namespace GlobalTheory.TwSys.InertiaElt
 
 open Filter Topology
 
+/- English proof (translation)
+Proceed by induction on `o using Nat.recOnMul with`. Consider the case `zero => exact absurd rfl ho`. Consider the case `one => exact ⟨1, 0, Nat.coprime_one_left m, one_dvd _⟩`. Consider the case `prime p hp`. Distinguish the cases in `h : p ∣ m`.
+
+Conclude with `⟨1, 1, Nat.coprime_one_left m, by simpa using h⟩`. Conclude with `⟨p, 0, (Nat.Prime.coprime_iff_not_dvd hp).2 h, by simp⟩`. Consider the case `mul a b iha ihb`. Take `⟨t, K, ht, hK⟩` from `iha (left_ne_zero_of_mul ho)`. Take `⟨t', K', ht', hK'⟩` from `ihb (right_ne_zero_of_mul ho)`.
+
+Use `⟨t * t', K + K', Nat.Coprime.mul_left ht ht', ?_⟩` and prove the remaining obligations. Establish `: t * t' * m ^ (K + K') = (t * m ^ K) * (t' * m ^ K')` using `by ring`. Rewrite using `[this]`. Conclude with `mul_dvd_mul hK hK'`.
+-/
 theorem exists_coprime_dvd_mul_pow (m : ℕ) (o : ℕ) (ho : o ≠ 0) : ∃ t K : ℕ, Nat.Coprime t m ∧ o ∣ t * m ^ K := by
   induction o using Nat.recOnMul with
   | zero => exact absurd rfl ho
@@ -23,6 +30,15 @@ theorem exists_coprime_dvd_mul_pow (m : ℕ) (o : ℕ) (ho : o ≠ 0) : ∃ t K 
     rw [this]
     exact mul_dvd_mul hK hK'
 
+/- English proof (translation)
+Take `⟨z, hz⟩ : ∃ z : Γ, MapClusterPt z atTop (fun k : ℕ => σ ^ (m ^ k))` from `exists_clusterPt_of_compactSpace (map (fun k : ℕ => σ ^ (m ^ k)) atTop)`. Establish `key : ∀ U : Subgroup Γ, IsOpen (U : Set Γ) → ∃ᶠ k : ℕ in atTop, z⁻¹ * σ ^ (m ^ k) ∈ U`. Introduce `U hU`. Establish `ho : IsOpen ((fun x : Γ => z⁻¹ * x) ⁻¹' (U : Set Γ))` using `hU.preimage (by fun_prop)`. Conclude with `hz.frequently (p := fun x => z⁻¹ * x ∈ U) (ho.mem_nhds (by simp))`.
+
+Use `⟨z, fun I hI hσ => ?_, fun U hU => (key U hU).exists, fun U hU hN => ?_⟩` and prove the remaining obligations. Conclude with `hI.mem_of_mapClusterPt hz (Eventually.of_forall fun k => I.pow_mem hσ _)`. Establish `: Finite (Γ ⧸ U)` using `U.quotient_finite_of_isOpen hU`. Take `⟨t, K, ht, hK⟩` from `exists_coprime_dvd_mul_pow m (orderOf (QuotientGroup.mk' U σ)) (orderOf_pos _).ne'`. Take `⟨k, hk, hmem⟩` from `frequently_atTop.1 (key U hU) K`.
+
+Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Establish `e : QuotientGroup.mk' U z = QuotientGroup.mk' U σ ^ (m ^ k)`. Rewrite using `[← map_pow]`. Conclude with `QuotientGroup.eq.2 hmem`. Rewrite using `[← QuotientGroup.eq_one_iff]`.
+
+Express the relevant statement in the definitionally equal form `QuotientGroup.mk' U (z ^ t) = 1`. Rewrite using `[map_pow, e, ← pow_mul, ← orderOf_dvd_iff_pow_eq_one]`. Use `hK.trans ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `Nat.mul_dvd_mul_right (pow_dvd_pow m hk) t`.
+-/
 theorem exists_limit_pow {Γ : Type*} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ]
     (σ : Γ) (m : ℕ) : ∃ z : Γ, (∀ I : Subgroup Γ, IsClosed (I : Set Γ) → σ ∈ I → z ∈ I) ∧
       (∀ U : Subgroup Γ, IsOpen (U : Set Γ) → ∃ k : ℕ, z⁻¹ * σ ^ (m ^ k) ∈ U) ∧
@@ -49,6 +65,11 @@ theorem exists_limit_pow {Γ : Type*} [Group Γ] [TopologicalSpace Γ] [IsTopolo
     rw [mul_comm]
     exact Nat.mul_dvd_mul_right (pow_dvd_pow m hk) t
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, n = k + 1 + 1` from `⟨n - 2, by omega⟩`. Establish `e` using `h.prod_one_sub_pow_eq_order`. Rewrite `e` using `[Finset.prod_range_succ']`. Establish `hu : IsUnit (1 - ζ ^ (0 + 1))`. Use `isUnit_of_mul_isUnit_right (x := ∏ j ∈ Finset.range k, (1 - ζ ^ (j + 1 + 1))) ?_` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `hn` after adjusting the coercions. Rewrite using `[← neg_sub]`. Simplify using `using hu.neg`.
+-/
 theorem isUnit_sub_one {O : Type*} [CommRing O] [IsDomain O] {n : ℕ} {ζ : O} (hn : IsUnit (n : O))
     (h : IsPrimitiveRoot ζ n) (h1 : 1 < n) : IsUnit (ζ - 1) := by
   obtain ⟨k, rfl⟩ : ∃ k, n = k + 1 + 1 := ⟨n - 2, by omega⟩
@@ -61,6 +82,13 @@ theorem isUnit_sub_one {O : Type*} [CommRing O] [IsDomain O] {n : ℕ} {ζ : O} 
   rw [← neg_sub]
   simpa using hu.neg
 
+/- English proof (translation)
+Establish `hnu : ¬ IsUnit ((p : ℕ) : 𝓞 E)`. Introduce `h`. Establish `h2 : IsUnit (Algebra.norm ℤ ((p : ℕ) : 𝓞 E))` using `h.map _`. Establish `e : Algebra.norm ℤ ((p : ℕ) : 𝓞 E) = (p : ℤ) ^ Module.finrank ℤ (𝓞 E)`. Rewrite using `[← Algebra.norm_algebraMap]`.
+
+Simplify using the standard rewrite rules. Rewrite `h2` using `[e, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast]`. Conclude with `hp.one_lt.ne' h2`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {((p : ℕ) : 𝓞 E)}) (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_top])` and apply the resulting hypothesis.
+
+Establish `hmem : ((p : ℕ) : 𝓞 E) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Use `⟨⟨M, hM.isPrime, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hp.ne_zero (by exact_mod_cast (Ideal.mem_bot.1 hmem))`.
+-/
 theorem exists_place_mem (E : Type) [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) :
     ∃ v : HeightOneSpectrum (𝓞 E), ((p : ℕ) : 𝓞 E) ∈ v.asIdeal := by
   have hnu : ¬ IsUnit ((p : ℕ) : 𝓞 E) := by
@@ -82,6 +110,29 @@ end GlobalTheory.TwSys.InertiaElt
 
 open GlobalTheory.TwSys.InertiaElt in
 
+/- English proof (translation)
+Introduce `D N X i`. Establish `hl : (X.l i).Prime` using `(X.lPrime i).out`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, v ∈ X.pD i := by`. Establish `hp : (if X.l i = D.host.pde then D.host.pde' else D.host.pde).Prime` using `by split_ifs`. Conclude with `D.host.pde'_prime`.
+
+Conclude with `D.host.pde_prime`. Take `⟨v, hv⟩` from `exists_place_mem D.host.E hp`. Use `⟨v, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mem_coe, X.pD_eq i]`. Conclude with `hv`.
+
+Take `⟨A, hA⟩` from `exists_isPlaceOver N.Om v`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp, hp15, hp2, hpl⟩ : ∃ p : ℕ, p.Prime ∧ p ∣ 15 ∧ p ≠ 2 ∧ p ≠ X.l i := by`. Distinguish the cases in `h : X.l i = 3`. Conclude with `⟨5, by norm_num, by norm_num, by norm_num, by omega⟩`. Conclude with `⟨3, by norm_num, by norm_num, by norm_num, fun h' => h h'.symm⟩`.
+
+Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hcard` using `X.delta_15 i v hv A hA`. Establish `: Finite ((Ine (F` using `D.host.E) A).map (X.delta i)) := Nat.finite_of_card_ne_zero (by rw [hcard]; norm_num)`. Take `⟨⟨y, hy⟩, hyo⟩` from `exists_prime_orderOf_dvd_card' (G := (Ine (F := D.host.E) A).map (X.delta i)) p (by rw [hcard]; exact hp15)`. Take `⟨σ, hσ, rfl⟩` from `Subgroup.mem_map.1 hy`.
+
+Establish `hord : orderOf (X.delta i σ) = p`. Rewrite using `[← hyo, ← Subgroup.orderOf_coe]`. Take `⟨z, hz1, hz2, hz3⟩` from `exists_limit_pow σ (X.l i * Ideal.absNorm v.asIdeal)`. Use `⟨z, v, hv, A, hA, hz1 _ (isClosed_Ine A) hσ, ?_, hz3⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hz2 _ (X.delta_open i)`.
+
+Establish `hz : X.delta i z = X.delta i σ ^ ((X.l i * Ideal.absNorm v.asIdeal) ^ k)`. Rewrite `hk` using `[MonoidHom.mem_ker, map_mul, map_inv, map_pow, inv_mul_eq_one]`. Conclude with `hk`. Establish `hpl' : Nat.Coprime p (X.l i)` using `(Nat.coprime_primes hp hl).2 hpl`. Establish `hpq : Nat.Coprime p (Ideal.absNorm v.asIdeal)`.
+
+Use `Nat.Coprime.coprime_dvd_left hp15 ?_` and prove the remaining obligations. Use `X.delta_tame i v hv` as an intermediate fact. Rewrite using `[Nat.Coprime, Nat.gcd_rec, this]`. Evaluate the numerical expressions. Establish `hprim : IsPrimitiveRoot (X.delta i σ) p` using `hord ▸ IsPrimitiveRoot.orderOf _`.
+
+Establish `hcop : Nat.Coprime ((X.l i * Ideal.absNorm v.asIdeal) ^ k * 2) p` using `Nat.Coprime.symm (Nat.Coprime.mul_right (Nat.Coprime.pow_right _ (Nat.Coprime.mul_right hpl' hpq)) ((Nat.coprime_primes hp Nat.prime_two).2 hp2))`. Establish `hprim2 : IsPrimitiveRoot (((X.delta i z : (X.O0 i)ˣ) : X.O0 i) ^ 2) p`. Use `hprim.pow_of_coprime _ hcop` as an intermediate fact. Rewrite `this` using `[pow_mul, ← hz]`. Rewrite using `[← Units.val_pow_eq_pow_val]`.
+
+Conclude with `IsPrimitiveRoot.coe_units_iff.2 this`. Use `isUnit_sub_one ?_ hprim2 hp.one_lt` and prove the remaining obligations. Establish `hlnu : ¬ IsUnit ((X.l i : ℕ) : X.O0 i)`. Introduce `h`. Establish `h2` using `h.map (algebraMap (X.O0 i) (X.O i))`.
+
+Rewrite `h2` using `[map_natCast]`. Conclude with `X.O_l i h2`. Establish `hc : IsCoprime ((p : ℕ) : X.O0 i) ((X.l i : ℕ) : X.O0 i)` using `hpl'.cast`. Take `⟨a, b, hab⟩` from `hc`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add (hab ▸ isUnit_one) with h | h` into its components or cases.
+
+Conclude with `isUnit_of_mul_isUnit_right h`. Conclude with `absurd (isUnit_of_mul_isUnit_right h) hlnu`.
+-/
 theorem GlobalTheory.TwSys.exists_tameInertiaElementAtAuxiliaryPrime : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N)
     (i : X.Tw), ∃ z, IsTameInertiaElementAtTwistPrime X i z := by
   intro D N X i

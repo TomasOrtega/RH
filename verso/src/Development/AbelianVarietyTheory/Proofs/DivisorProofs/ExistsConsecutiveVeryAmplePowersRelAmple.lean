@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.FormalAlg.ConsecPowers
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_inv]`. Use `module`.
+-/
 theorem units_identity {G : Type*} [CommGroup G] (u P Q R β γ ε : G) (d t : ℤ) :
     (u * P * β⁻¹) * (u * Q * γ⁻¹) ^ (d * t) * (u * R * ε⁻¹) ^ d =
       u ^ (d * (t + 1) + 1) * (β * (γ ^ d) ^ t * (ε ^ d) ^ (1 : ℤ))⁻¹ * (P * Q ^ (d * t) * R ^ d) := by
@@ -22,12 +25,26 @@ theorem units_identity {G : Type*} [CommGroup G] (u P Q R β γ ε : G) (d t : �
   simp only [ofMul_mul, ofMul_zpow, ofMul_inv]
   module
 
+/- English proof (translation)
+Use `show (⟨L.ι, L.U, fun i j => (L.g i j ^ a) ^ b⟩ : LB X) = ⟨L.ι, L.U, fun i j => L.g i j ^ (a * b)⟩`. Use `congr 1`. Use function extensionality and compare the values at `i j`. Conclude with `(zpow_mul _ _ _).symm`.
+-/
 theorem pw_pw {X : Scheme.{0}} (L : LB X) (a b : ℤ) : pw (pw L a) b = pw L (a * b) := by
   show (⟨L.ι, L.U, fun i j => (L.g i j ^ a) ^ b⟩ : LB X) = ⟨L.ι, L.U, fun i j => L.g i j ^ (a * b)⟩
   congr 1
   funext i j
   exact (zpow_mul _ _ _).symm
 
+/- English proof (translation)
+Use `GlobalTheory.LBAlg.lbIso_of_germs (A := tw (tw L (pw L d) t) (pw L d) 1) (B := pw L (d * (t + 1) + 1)) (fun p => res (show (pw L (d * (t + 1) + 1)).U p.1 ⊓ (tw (tw L (pw L d) t) (pw L d) 1).U p.2 ≤ L.U p.1 ⊓ L.U p.2.1.1 from fun _ hx => ⟨hx.1, hx.2.1.1⟩) (L.g p.1 p.2.1.1) * res ( …` and prove the remaining obligations. Introduce and unpack `x ⟨a, ⟨b, c⟩, e⟩ ⟨a', ⟨b', c'⟩, e'⟩ ha hp ha' hq`. Establish `hb : x ∈ L.U b` using `hp.1.1`. Establish `hc : x ∈ L.U c` using `hp.1.2`. Establish `he : x ∈ L.U e` using `hp.2`.
+
+Establish `hb' : x ∈ L.U b'` using `hq.1.1`. Establish `hc' : x ∈ L.U c'` using `hq.1.2`. Establish `he' : x ∈ L.U e'` using `hq.2`. Establish `inv : ∀ {j j' : L.ι}, x ∈ L.U j → x ∈ L.U j' → gm (𝟙 X) x (L.U j' ⊓ L.U j) (L.g j' j) = (gm (𝟙 X) x (L.U j ⊓ L.U j') (L.g j j'))⁻¹` using `fun hj hj' => eq_inv_of_mul_eq_one_right ((gm_cocycle hL (𝟙 X) x hj hj' hj).trans (gm_self hL (𝟙 X) x hj))`. Establish `rel : ∀ {i i' j j' : L.ι}, x ∈ L.U i → x ∈ L.U i' → x ∈ L.U j → x ∈ L.U j' → gm (𝟙 X) x (L.U i ⊓ L.U j) (L.g i j) = gm (𝟙 X) x (L.U i ⊓ L.U i') (L.g i i') * gm (𝟙 X) x (L.U i' ⊓ L.U j') (L.g i' j') * (gm (𝟙 X) x (L.U j ⊓ L.U j') (L.g j j'))⁻¹`.
+
+Introduce `i i' j j' hi hi' hj hj'`. Rewrite using `[← gm_cocycle hL (𝟙 X) x hi hi' hj, ← gm_cocycle hL (𝟙 X) x hi' hj' hj, inv hj hj', mul_assoc]`. Establish `sec : ∀ (a₀ b₀ c₀ e₀ : L.ι) (h : (𝟙 X : X ⟶ X) x ∈ (pw L (d * (t + 1) + 1)).U a₀ ⊓ (tw (tw L (pw L d) t) (pw L d) 1).U ((b₀, c₀), e₀)), gm (𝟙 X) x ((pw L (d * (t + 1) + 1)).U a₀ ⊓ (tw (tw L (pw L d) t) (pw L d) 1).U ((b₀, c₀), e₀)) (res (show (pw L (d * (t + 1) + 1)).U a₀ ⊓ (tw ( …`. Introduce `a₀ b₀ c₀ e₀ h`. Rewrite using `[map_mul, map_mul, map_zpow, map_zpow, gm_res _ x _ h, gm_res _ x _ h, gm_res _ x _ h]`.
+
+Establish `eB : gm (𝟙 X) x ((pw L (d * (t + 1) + 1)).U a ⊓ (pw L (d * (t + 1) + 1)).U a') ((pw L (d * (t + 1) + 1)).g a a') = gm (𝟙 X) x (L.U a ⊓ L.U a') (L.g a a') ^ (d * (t + 1) + 1)` using `map_zpow (gm (𝟙 X) x (L.U a ⊓ L.U a')) (L.g a a') _`. Establish `eA : gm (𝟙 X) x ((tw (tw L (pw L d) t) (pw L d) 1).U ((b, c), e) ⊓ (tw (tw L (pw L d) t) (pw L d) 1).U ((b', c'), e')) ((tw (tw L (pw L d) t) (pw L d) 1).g ((b, c), e) ((b', c'), e')) = gm (𝟙 X) x (L.U b ⊓ L.U b') (L.g b b') * (gm (𝟙 X) x (L.U c ⊓ L.U c') (L.g c c') ^ d) ^ t * (g …`. Establish `g1 : gm (𝟙 X) x ((pw L d).U c ⊓ (pw L d).U c') ((pw L d).g c c') = gm (𝟙 X) x (L.U c ⊓ L.U c') (L.g c c') ^ d` using `map_zpow _ _ _`. Establish `g2 : gm (𝟙 X) x ((pw L d).U e ⊓ (pw L d).U e') ((pw L d).g e e') = gm (𝟙 X) x (L.U e ⊓ L.U e') (L.g e e') ^ d` using `map_zpow _ _ _`. Use `(GlobalTheory.LBAlg.gm_tw (tw L (pw L d) t) (pw L d) 1 (𝟙 X) x ((b, c), e) ((b', c'), e') ⟨hp, hq⟩).trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg₂ (· * ·) ((GlobalTheory.LBAlg.gm_tw L (pw L d) t (𝟙 X) x (b, c) (b', c') ⟨hp.1, hq.1⟩).trans (congrArg₂ (· * ·) rfl (congrArg (· ^ t) g1))) (congrArg (· ^ (1 : ℤ)) g2)`. Use `(sec a b c e ⟨ha, hp⟩).trans (Eq.trans ?_ (congrArg₂ (· * ·) (congrArg₂ (· * ·) eB.symm (congrArg (·⁻¹) eA.symm)) (sec a' b' c' e' ⟨ha', hq⟩).symm))` and prove the remaining obligations. Rewrite using `[rel ha ha' hb hb', rel ha ha' hc hc', rel ha ha' he he']`. Conclude with `units_identity _ _ _ _ _ _ _ d t`.
+-/
 theorem lbIso_tw_tw {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (d t : ℤ) :
     LBIso (tw (tw L (pw L d) t) (pw L d) 1) (pw L (d * (t + 1) + 1)) := by
   refine GlobalTheory.LBAlg.lbIso_of_germs
@@ -91,6 +108,15 @@ end GlobalTheory.FormalAlg.ConsecPowers
 
 namespace GlobalTheory.FormalAlg.ConsecPowers
 
+/- English proof (translation)
+Introduce `R _ X L hL hA`. Take `⟨d₁, hd₁, n, s, hs⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy R X L hL).1 hA`. Establish `hH` using `isLB_pw hL (d₁ : ℤ)`. Take `⟨t₀, ht₀⟩` from `GlobalTheory.TwistGen.twist_generated R X.left X.hom _ n s hH hs L hL`. Take `⟨t, ht⟩ : ∃ t : ℕ, t₀ ≤ (t : ℤ)` from `⟨t₀.toNat, Int.self_le_toNat t₀⟩`.
+
+Take `⟨m, u, hu⟩` from `ht₀ (t : ℤ) ht`. Use `⟨d₁ * (t + 1), Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega)), fun c hc => ?_⟩` and prove the remaining obligations. Break down `hc with rfl | rfl` into its components or cases. Take `⟨n', s', hs'⟩` from `GlobalTheory.AbLaw.veryAmpleBy_pw R X.left X.hom _ n s hH hs (t + 1) (by omega)`. Establish `e : GlobalTheory.AbLaw.pw L ((d₁ * (t + 1) : ℕ) : ℤ) = GlobalTheory.AbLaw.pw (GlobalTheory.AbLaw.pw L (d₁ : ℤ)) ((t + 1 : ℕ) : ℤ)`.
+
+Rewrite using `[pw_pw]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `⟨n', s', hs'⟩`.
+
+Take `⟨n', s', hs'⟩` from `GlobalTheory.T.veryAmple_twist_of_generated_and_veryAmple R X.left X.hom (GlobalTheory.AbLaw.pw L (d₁ : ℤ)) (tw L (GlobalTheory.AbLaw.pw L (d₁ : ℤ)) (t : ℤ)) n m s u hH (isLB_tw hL hH _) hs hu`. Take `⟨s'', hs''⟩` from `GlobalTheory.exists_veryAmpleBy_of_lbIso (isLB_tw (isLB_tw hL hH _) hH 1) (isLB_pw hL _) (lbIso_tw_tw hL (d₁ : ℤ) (t : ℤ)) hs'`. Establish `e : ((d₁ * (t + 1) + 1 : ℕ) : ℤ) = (d₁ : ℤ) * ((t : ℤ) + 1) + 1` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `⟨n', s'', hs''⟩`.
+-/
 theorem exists_veryAmpleBy_pw_and_succ : ∀ (R : Type) [CommRing R] (X : Over (Spec (CommRingCat.of R))) (L : LB X.left), L.IsLB → RelAmple X L → ∃ d : ℕ, 1 ≤ d ∧ ∀ c : ℕ, c = d ∨ c = d + 1 → ∃ (n : ℕ) (s : Fin (n + 1) → LB.Sec (GlobalTheory.AbLaw.pw L c)), VeryAmpleBy X.hom (GlobalTheory.AbLaw.pw L c) s := by
   intro R _ X L hL hA
   obtain ⟨d₁, hd₁, n, s, hs⟩ := (GlobalTheory.Unif.relAmple_iff_veryAmpleBy R X L hL).1 hA

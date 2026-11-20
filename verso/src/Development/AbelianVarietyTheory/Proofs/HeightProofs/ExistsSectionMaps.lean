@@ -6,6 +6,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.SecEval
 
+/- English proof (translation)
+Establish `hH : ∀ z ∈ J • (⊤ : Submodule A H), Λ (z : L) = 0`. Introduce `z hz`. Use `Submodule.smul_induction_on (p := fun z : H => Λ (z : L) = 0) hz ?_ ?_` and prove the remaining obligations. Introduce `r hr m _`. Rewrite using `[Submodule.coe_smul, Algebra.smul_def, map_mul]`.
+
+Establish `: Λ (algebraMap A L r) = 0` using `hJ r hr`. Rewrite using `[this, zero_mul]`. Introduce `x y hx hy`. Rewrite using `[Submodule.coe_add, map_add, hx, hy, add_zero]`. Set `l : H →ₗ[K] C` to `Λ.toLinearMap ∘ₗ (H.subtype.restrictScalars K)`.
+
+Use `⟨Ideal.Quotient.liftₐ J (Λ.comp A.val) hJ, (((J • (⊤ : Submodule A H)).restrictScalars K).liftQ l (fun z hz => hH z hz)) ∘ₗ (Submodule.Quotient.restrictScalarsEquiv K (J • (⊤ : Submodule A H))).symm.toLinearMap, fun x => rfl, fun y => rfl⟩` and prove the remaining obligations.
+-/
 theorem exists_quot_maps {K L C : Type*} [CommRing K] [CommRing L] [CommRing C] [Algebra K L] [Algebra K C]
     (A : Subalgebra K L) (J : Ideal A) (H : Submodule A L) (Λ : L →ₐ[K] C) (hJ : ∀ r ∈ J, Λ (r : L) = 0) :
     ∃ (ψ : (A ⧸ J) →ₐ[K] C) (Ψ : (H ⧸ J • (⊤ : Submodule A H)) →ₗ[K] C),
@@ -27,6 +34,13 @@ theorem exists_quot_maps {K L C : Type*} [CommRing K] [CommRing L] [CommRing C] 
 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
+/- English proof (translation)
+Use `letI : Algebra (X.Kl la) C := ((algebraMap (Kp X la N) C).comp (algebraMap (X.Kl la) (Kp X la N))).toAlgebra`. Use `letI : Algebra B.KO C := ((algebraMap (Kp X la N) C).comp ((algebraMap (X.Kl la) (Kp X la N)).comp (algebraMap B.KO (X.Kl la)))).toAlgebra`. Use `haveI : IsScalarTower B.KO (X.Kl la) C := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower (X.Kl la) (Kp X la N) C := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `g : X.Forms →ₐ[B.KO] C` to `{ χ with commutes' := fun a => by show χ (algebraMap B.KO X.Forms a) = _`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one, hχ, map_one, mul_one]`. Use `rfl }`. Set `vl : X.Vl la →ₐ[X.Kl la] C` to `Algebra.TensorProduct.lift (Algebra.ofId (X.Kl la) C) g (fun _ _ => Commute.all _ _)`. Use `⟨Algebra.TensorProduct.lift (Algebra.ofId (Kp X la N) C) vl (fun _ _ => Commute.all _ _), fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[emb_apply]`.
+
+Use `erw [Algebra.TensorProduct.lift_tmul, Algebra.TensorProduct.lift_tmul]`. Use `erw [map_one, map_one, one_mul, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem exists_evalRp (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ)
     (C : Type) [CommRing C] [Algebra (Kp X la N) C] (χ : X.Forms →+* C)
     (hχ : ∀ (a : B.KO) (f : X.Forms), χ (a • f) =
@@ -51,6 +65,27 @@ theorem exists_evalRp (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N :
   erw [map_one, map_one, one_mul, one_mul]
   rfl
 
+/- English proof (translation)
+Introduce `D B P j X la N wL u w C _ _ χ hχ h0 h1`. Take `⟨Θ, hΘ⟩` from `exists_evalRp X la N C χ hχ`. Establish `hsec : ∀ i, Θ (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w i) = ∑ k, algebraMap (Kp X la N) C (algebraMap (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) (Kp X la N) (Tv X la N (i, k))) * χ (X.inc wL (w k))`. Introduce `i`. Unfold `Formalism.MainNotions.Gaps.EtaleWeightGaps.sec`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hΘ, Algebra.smul_def]`. Establish `hu : IsUnit (Θ (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0))` using `by rw [hsec]; exact h1`. Establish `hu' : IsUnit ((Θ : Rp X la N →+* C) (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0))` using `hu`.
+
+Set `Λ₀ : Lw X la w →+* C` to `IsLocalization.Away.lift (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0) hu'`. Establish `hΛ₀ : ∀ r, Λ₀ (algebraMap (Rp X la N) (Lw X la w) r) = Θ r` using `fun r => IsLocalization.lift_eq _ r`. Set `Λ : Lw X la w →ₐ[Kp X la N] C` to `{ Λ₀ with commutes' := fun c => by show Λ₀ (algebraMap (Kp X la N) (Lw X la w) c) = _`. Rewrite using `[IsScalarTower.algebraMap_apply (Kp X la N) (Rp X la N) (Lw X la w), hΛ₀, AlgHom.commutes] }`. Establish `hΛ : ∀ r, Λ (algebraMap (Rp X la N) (Lw X la w) r) = Θ r` using `hΛ₀`.
+
+Establish `hinv : Θ (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0) * Λ (w0inv X la w) = 1`. Rewrite using `[← hΛ, ← map_mul, section_mul_inverse_eq_one, map_one]`. Establish `hfr : ∀ (k : ℕ) (g : Rp X la N), Λ (frac X la w k g) * Θ (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0) ^ k = Θ g`. Introduce `k g`. Rewrite using `[frac_apply, map_mul, map_pow, hΛ, mul_assoc, ← mul_pow, mul_comm (Λ _), hinv, one_pow, mul_one]`.
+
+Establish `hJ : ∀ r ∈ Jid X la w, Λ (r : Lw X la w) = 0`. Introduce `r hr`. Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+
+Rewrite using `[coe_sfr, frac_apply, map_mul, hΛ, hsec, h0 i, zero_mul]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Subalgebra.coe_add, map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [smul_eq_mul, Subalgebra.coe_mul, map_mul, hx, mul_zero]`. Take `⟨ψ₀, Ψ₀, hψ₀, hΨ₀⟩` from `exists_quot_maps (Frac0 X la w) (Jid X la w) (HK X la w u) Λ hJ`.
+
+Set `ψ : OsK X la w →ₐ[Kp X la N] C` to `ψ₀`. Set `Ψ : SectionSheafQuotient X la w u →ₗ[Kp X la N] C` to `Ψ₀`. Establish `hψ : ∀ x, ψ (toOsK X la w x) = Λ x` using `hψ₀`. Establish `hΨ : ∀ y, Ψ (toA0K X la w u y) = Λ y` using `hΨ₀`. Use `⟨Θ, ψ, Ψ, hΘ, hu, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x a`. Take `⟨x, rfl⟩` from `toOsK_surjective X la w x`. Take `⟨y, rfl⟩` from `reductionMap_surjective X la w u a`. Establish `e : toOsK X la w x • toA0K X la w u y = toA0K X la w u (x • y)`. Rewrite using `[map_smul]`.
+
+Conclude with `algebraMap_smul (OsK X la w) x _`. Rewrite using `[e, hΨ, hΨ, hψ, Submodule.coe_smul, Algebra.smul_def, map_mul]`. Both sides reduce to the same expression. Introduce `k g`. Rewrite using `[hψ, coe_weightZeroFraction, hfr]`.
+
+Introduce `f`. Rewrite using `[restriction_apply_eq_reduction, hΨ, coe_toHK0, hΛ]`.
+-/
 theorem exists_section_maps : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) (wL u : WeightFamilies.Wt D j) (w : Fin N → B.Cusp j wL) (C : Type) [CommRing C] [Algebra (Kp X la N) C] (χ : X.Forms →+* C), (∀ (a : B.KO) (f : X.Forms), χ (a • f) = algebraMap (Kp X la N) C (algebraMap (X.Kl la) (Kp X la N) (algebraMap B.KO (X.Kl la) a)) * χ f) → (∀ i : Fin (WeightFamilies.dimY D j), ∑ k, algebraMap (Kp X la N) C (algebraMap (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) (Kp X la N) (Tv X la N (i.succ, k))) * χ (X.inc wL (w k)) = 0) → IsUnit (∑ k, algebraMap (Kp X la N) C (algebraMap (Formalism.MainNotions.Gaps.EtaleWeightGaps.Op X la N) (Kp X la N) (Tv X la N (0, k))) * χ (X.inc wL (w k))) → ∃ (Θ : Rp X la N →ₐ[Kp X la N] C) (ψ : OsK X la w →ₐ[Kp X la N] C) (Ψ : SectionSheafQuotient X la w u →ₗ[Kp X la N] C), (∀ F, Θ (Formalism.MainNotions.Gaps.EtaleWeightGaps.emb X la N F) = χ F) ∧ IsUnit (Θ (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0)) ∧ (∀ (x : OsK X la w) (a : SectionSheafQuotient X la w u), Ψ (x • a) = ψ x * Ψ a) ∧ (∀ (k : ℕ) (g : ↥(Vw X la N (addL (wt0 D j) wL k))), ψ (toOsK X la w (fr0 X la w k g)) * Θ (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0) ^ k = Θ g) ∧ ∀ f : ↥(Vw X la N u), Ψ (rho0 X la w u f) = Θ f := by
   intro D B P j X la N wL u w C _ _ χ hχ h0 h1
   obtain ⟨Θ, hΘ⟩ := exists_evalRp X la N C χ hχ

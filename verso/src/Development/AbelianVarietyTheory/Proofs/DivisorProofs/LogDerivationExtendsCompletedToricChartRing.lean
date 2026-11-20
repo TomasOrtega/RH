@@ -18,6 +18,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChartDer
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y U D k _ m d ξ hx hE hI`. Establish `hiso : IsIso (genι Y)` using `isIso_fst Y`. Use `set x := ξ (closedPoint _) with hxdef`. Take `⟨δ, hδ⟩` from `GlobalTheory.T.exists_derivation_stalk_extend_of_app _ _ (genι Y) U D.1 x hx`. Use `set g := ((gen Y).presheaf.germ (genι Y ⁻¹ᵁ U.1) x hx).hom.comp ((genι Y).app U.1).hom with hg`.
+
+Establish `hZ : ((genBd Y : TopologicalSpace.Closeds (gen Y)) : Set (gen Y)) = (genι Y) ⁻¹' ((interior Y).compl : Set Y.X)`. Use extensionality with `z`. Simplify using `only [TopologicalSpace.Opens.coe_compl, Set.mem_preimage, Set.mem_compl_iff, SetLike.mem_coe]`. Rewrite using `[mem_genBd]`. Unfold `GlobalTheory.LogKS.interior Model.j`.
+
+Establish `hc : ∀ w, (Y.jQ ≫ pullback.fst Y.s (spMap (RingHom.id c.F))) w = genι Y (Y.jQ w)` using `fun w => rfl`. Simplify using `only [Scheme.Hom.coe_opensRange, Set.mem_range, hc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨w, hw⟩`. Conclude with `h ⟨w, (genι Y).isOpenEmbedding.injective hw⟩`.
+
+Introduce and unpack `h ⟨w, hw⟩`. Conclude with `h ⟨w, by rw [← hw]; rfl⟩`. Establish `hJ` using `GlobalTheory.T.stalkIdeal_vanishingIdeal_preimage_iso _ _ (genι Y) _ (genBd Y) hZ U x hx`. Establish `hstab : ∀ a ∈ ((Scheme.IdealSheafData.vanishingIdeal (interior Y).compl).ideal U).map g, δ a ∈ ((Scheme.IdealSheafData.vanishingIdeal (interior Y).compl).ideal U).map g`. Introduce `a ha`.
+
+Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨r, hr, rfl⟩` from `hy`. Use `hδ r` as an intermediate fact. Simplify using `only [hg, RingHom.comp_apply] at this ⊢`.
+
+Rewrite using `[this]`. Conclude with `Ideal.mem_map_of_mem _ (D.2.2 r hr)`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Ideal.add_mem _ hy hz`.
+
+Consider the case `smul c y hy' hy`. Rewrite using `[smul_eq_mul, Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hy) (Ideal.mul_mem_right _ _ hy')`. Establish `hC : CharZero (ChartRing k m d)` using `(Spec.preimage (ξ ≫ genStr Y)).hom.charZero_iff (RingHom.injective _) |>.1 inferInstance`. Establish `hk : CharZero k` using `(RingHom.charZero_iff (MvPowerSeries.C_injective (σ := Fin m ⊕ Fin d) (R := k))).2 hC`.
+
+Take `⟨D', hD'⟩` from `GlobalTheory.T.exists_derivation_extension_completedEtaleChart _ k m d (Scheme.stalkClosedPointTo ξ).hom hE δ`. Use `⟨D', fun r => ?_, GlobalTheory.T.toricChart_derivation_boundaryParam_mem_span _ k m d _ δ D' _ hstab hD' (by rw [← hJ]; exact hI)⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hD']`. Conclude with `congrArg _ (hδ r)`.
+-/
 theorem logDer_extend_chartRing : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), ∀ (U : Y.X.affineOpens) (D : logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U) (k : Type) [Field k] (m d : ℕ) (ξ : Sp (ChartRing k m d) ⟶ gen Y) (hx : ξ (closedPoint _) ∈ genι Y ⁻¹ᵁ U.1), IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → (ReciprocityTheory.AnForm.R.FinalTheorems.stalkId (genBdIdeal Y) (ξ (closedPoint _))).map (Scheme.stalkClosedPointTo ξ).hom = Ideal.span {∏ i, bdParam k m d i} → ∃ D' : Derivation ℤ (ChartRing k m d) (ChartRing k m d), (∀ r, D' (((Scheme.stalkClosedPointTo ξ).hom.comp (((gen Y).presheaf.germ (genι Y ⁻¹ᵁ U.1) (ξ (closedPoint _)) hx).hom.comp ((genι Y).app U.1).hom)) r) = ((Scheme.stalkClosedPointTo ξ).hom.comp (((gen Y).presheaf.germ (genι Y ⁻¹ᵁ U.1) (ξ (closedPoint _)) hx).hom.comp ((genι Y).app U.1).hom)) (D.1 r)) ∧ ∀ i, D' (bdParam k m d i) ∈ Ideal.span {bdParam k m d i} := by
   intro E _ _ _ H Dw l Xo c Y U D k _ m d ξ hx hE hI
   have hiso : IsIso (genι Y) := isIso_fst Y

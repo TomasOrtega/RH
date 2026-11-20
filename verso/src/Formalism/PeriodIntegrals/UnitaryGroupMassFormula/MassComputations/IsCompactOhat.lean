@@ -15,6 +15,9 @@ variable (F : Type) [Field F] [NumberField F]
 
 def Ohat : Set (Af F) := {a | ∀ v : HeightOneSpectrum (𝓞 F), evalV F v a ∈ v.adicCompletionIntegers F}
 
+/- English proof (translation)
+Establish `h` using `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun v => Valued.isOpen_valuationSubring _)`. Conclude with `h`.
+-/
 theorem isOpen_Ohat : IsOpen (Ohat F) := by
   have h := RestrictedProduct.isOpen_forall_mem
     (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F)
@@ -22,6 +25,9 @@ theorem isOpen_Ohat : IsOpen (Ohat F) := by
     (fun v => Valued.isOpen_valuationSubring _)
   exact h
 
+/- English proof (translation)
+Establish `hc : ∀ v : HeightOneSpectrum (𝓞 F), CompactSpace (v.adicCompletionIntegers F : Set (v.adicCompletion F))` using `fun v => isCompact_iff_compactSpace.mp (PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v)`. Establish `h` using `isCompact_range (RestrictedProduct.isEmbedding_structureMap (𝓕 := Filter.cofinite) (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F)))).continuous`. Rewrite `h` using `[RestrictedProduct.range_structureMap]`. Conclude with `h`.
+-/
 theorem isCompact_Ohat : IsCompact (Ohat F) := by
   have hc : ∀ v : HeightOneSpectrum (𝓞 F), CompactSpace (v.adicCompletionIntegers F : Set (v.adicCompletion F)) :=
     fun v => isCompact_iff_compactSpace.mp (PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v)

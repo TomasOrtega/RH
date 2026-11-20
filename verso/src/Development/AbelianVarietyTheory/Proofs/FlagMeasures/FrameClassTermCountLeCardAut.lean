@@ -15,6 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Main
 variable {D : D7} {X : HidaSetting D}
 
+/- English proof (translation)
+Use `⟨hi, fun j => ?_, ?_⟩` and prove the remaining obligations. Unfold `FlagG.Xa`. Rewrite using `[Submodule.map_span, Set.image_image]`. Use `congr 1`. Apply `Set.image_congr` to reduce the goal to its premises.
+
+Introduce `i _`. Establish `h' : (F0 X u).e i.castSucc = (X.Fu u).e i` using `fv_cast (lf D (X.Fu u)).fl i`. Use `hfix i.castSucc` as an intermediate fact. Rewrite `this` using `[h']`. Conclude with `this`.
+
+Establish `h' : (F0 X u).e (Fin.last _) = (X.Fu u).z` using `fv_last (lf D (X.Fu u)).fl`. Use `hfix (Fin.last _)` as an intermediate fact. Rewrite `this` using `[h']`. Conclude with `this`.
+-/
 theorem stab_of_fix' (u : D.what₂.Word) {a : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hi : a ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (hfix : ∀ c, a ((F0 X u).e c) = (F0 X u).e c) : a ∈ stabF D (X.Fu u) := by
   refine ⟨hi, fun j => ?_, ?_⟩
@@ -32,6 +39,11 @@ theorem stab_of_fix' (u : D.what₂.Word) {a : (VS D).V ≃ₗ[D.host.E] (VS D).
     rw [h'] at this
     exact this
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h : Set.EqOn (⇑(a : (VS D).V →ₗ[D.host.E] (VS D).V)) (⇑(LinearMap.id : (VS D).V →ₗ[D.host.E] (VS D).V)) (Set.range (X.Fu u).e)`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `h' : (F0 X u).e i.castSucc = (X.Fu u).e i` using `fv_cast (lf D (X.Fu u)).fl i`. Use `hfix i.castSucc` as an intermediate fact.
+
+Rewrite `this` using `[h']`. Conclude with `this`. Simplify using `using LinearMap.eqOn_span h hx`.
+-/
 theorem fix_X (u : D.what₂.Word) {a : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hfix : ∀ c, a ((F0 X u).e c) = (F0 X u).e c) : ∀ x ∈ (X.Fu u).X, a x = x := by
   intro x hx
@@ -44,6 +56,9 @@ theorem fix_X (u : D.what₂.Word) {a : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     exact this
   simpa using LinearMap.eqOn_span h hx
 
+/- English proof (translation)
+Introduce `y hy x hx`. Rewrite using `[← fix_X u hfix x hx, hi x y]`. Conclude with `hy x hx`.
+-/
 theorem perp_pres (u : D.what₂.Word) {a : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hi : a ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (hfix : ∀ c, a ((F0 X u).e c) = (F0 X u).e c) :
     ∀ y ∈ perpS (VS D) (X.Fu u).X, a y ∈ perpS (VS D) (X.Fu u).X := by
@@ -51,6 +66,13 @@ theorem perp_pres (u : D.what₂.Word) {a : (VS D).V ≃ₗ[D.host.E] (VS D).V} 
   rw [← fix_X u hfix x hx, hi x y]
   exact hy x hx
 
+/- English proof (translation)
+Set `f : perpS (VS D) (X.Fu u).X →ₗ[D.host.E] perpS (VS D) (X.Fu u).X` to `(a : (VS D).V →ₗ[D.host.E] (VS D).V).restrict (perp_pres u hi hfix)`. Set `q` to `(X.Fu u).X.comap (perpS (VS D) (X.Fu u).X).subtype`. Establish `hq : q ≤ q.comap f`. Introduce `x hx`. Simplify using `only [q, Submodule.mem_comap, Submodule.subtype_apply] at hx ⊢`.
+
+Use `show a x.1 ∈ (X.Fu u).X`. Rewrite using `[fix_X u hfix x.1 hx]`. Conclude with `hx`. Use `⟨Submodule.mapQ q q f hq, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mapQ_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ind_exists (u : D.what₂.Word) {a : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hi : a ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (hfix : ∀ c, a ((F0 X u).e c) = (F0 X u).e c) :
     ∃ φ : WbQ D (X.Fu u) → WbQ D (X.Fu u), ∀ (x : perpS (VS D) (X.Fu u).X) (hx : a x.1 ∈ perpS (VS D) (X.Fu u).X),
@@ -75,14 +97,31 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Main2
 variable {D : D7} {X : HidaSetting D}
 
+/- English proof (translation)
+Introduce `x hx` and use `a.symm_apply_eq.2 (fix_X u hfix x hx).symm`.
+-/
 theorem symm_fix (u : D.what₂.Word) {a : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hfix : ∀ c, a ((F0 X u).e c) = (F0 X u).e c) : ∀ x ∈ (X.Fu u).X, a.symm x = x :=
   fun x hx => a.symm_apply_eq.2 (fix_X u hfix x hx).symm
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.LoopC.FrEqv.mem_gmap (Λ := Λ) a y, hga]`.
+-/
 theorem aut_iff {Λ : Submodule (𝓞 D.host.E) (VS D).V} {a : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hga : Formalism.HermitianLatticesTheory.gmap a Λ = Λ) (y : (VS D).V) : a.symm y ∈ Λ ↔ y ∈ Λ := by
   rw [← GlobalTheory.LoopC.FrEqv.mem_gmap (Λ := Λ) a y, hga]
 
+/- English proof (translation)
+Establish `happ : ∀ x, (a⁻¹ * b) x = a.symm (b x)` using `fun x => rfl`. Use `⟨⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem ((Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hia) hib, ?_⟩, fun j x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[GlobalTheory.LoopC.FrEqv.mem_gmap]`. Establish `: (a⁻¹ * b).symm y = b.symm (a y)`.
+
+Apply `(a⁻¹ * b).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, happ, LinearEquiv.apply_symm_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[this, aut_iff hgb]`. Establish `h2` using `aut_iff hga (a y)`. Rewrite `h2` using `[LinearEquiv.symm_apply_apply]`.
+
+Conclude with `h2.symm`. Establish `hX : x ∈ (X.Fu u).X`. Establish `hle : Xflag (lf D (X.Fu u)) (j + 1) ≤ (X.Fu u).X` using `Submodule.span_mono (by rintro _ ⟨i, -, rfl⟩; exact ⟨i, rfl⟩)`. Conclude with `hle hx`. Rewrite using `[happ, fix_X u hfb x hX, symm_fix u hfa x hX, sub_self]`.
+
+Conclude with `zero_mem _`. Establish `hp : x ∈ perpS (VS D) (X.Fu u).X`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hx`. Conclude with `fun y hy => hx y hy`. Establish `e : (a⁻¹ * b) x - x = a.symm (b x - a x)`.
+
+Rewrite using `[happ, map_sub, LinearEquiv.symm_apply_apply]`. Rewrite using `[e, symm_fix u hfa _ (hsame x hp)]`. Conclude with `hsame x hp`.
+-/
 theorem nlam_of_same (u : D.what₂.Word) {Λ : Submodule (𝓞 D.host.E) (VS D).V} {a b : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hia : a ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) (hib : b ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (hga : Formalism.HermitianLatticesTheory.gmap a Λ = Λ) (hgb : Formalism.HermitianLatticesTheory.gmap b Λ = Λ)
@@ -121,6 +160,29 @@ end GlobalTheory.TypeAsm.FibCard
 namespace GlobalTheory.TypeAsm.FibCard
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D large₂ X Y u hStd t₀ s hs`. Use `show (s.card : ℝ) * ((Nat.card (autLz D (X.Fu u) t₀.lam') : ℝ))⁻¹ ≤ 1`. Distinguish the cases in `hfin : Finite (autLz D (X.Fu u) t₀.lam')`. Use `swap`. Establish `: Infinite (autLz D (X.Fu u) t₀.lam')` using `not_finite_iff_infinite.1 hfin`.
+
+Rewrite using `[Nat.card_eq_zero_of_infinite]`. Simplify using the standard rewrite rules. Establish `H : ∀ t : s, ∃ a : (VS D).V ≃ₗ[D.host.E] (VS D).V, a ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT ∧ Formalism.HermitianLatticesTheory.gmap a t₀.lam' = t₀.lam' ∧ (∀ c, a ((F0 X u).e c) = (F0 X u).e c) ∧ t₀.lam' = t.1.lam' ∧ ∃ n ∈ NLam t₀.lam (lf D (X.Fu u)), ∃ n' ∈ NLam t₀.l …`. Introduce `t`. Take `⟨hl, n, a, hn, ha, hga, hfa, n', hn', he⟩` from `GlobalTheory.T.equivFramesSameSecondLatticeFiber_proof D large₂ X Y u hStd t₀ t.1 (hs t.1 t.2).1 (hs t.1 t.2).2`.
+
+Conclude with `⟨a, ha, hga, hfa, hl, n, hn, n', hn', he⟩`. Use `choose A hA using H`. Establish `Hφ : ∀ t : s, ∃ φ : WbQ D (X.Fu u) → WbQ D (X.Fu u), ∀ (x : perpS (VS D) (X.Fu u).X) (hx : A t x.1 ∈ perpS (VS D) (X.Fu u).X), φ (Submodule.Quotient.mk x) = Submodule.Quotient.mk ⟨A t x.1, hx⟩` using `fun t => ind_exists u (hA t).1 (hA t).2.2.1`. Use `choose Φ hΦ using Hφ`. Establish `hmem : ∀ t, Φ t ∈ autLz D (X.Fu u) t₀.lam'` using `fun t => ⟨A t, stab_of_fix' u (hA t).1 (hA t).2.2.1, (hA t).2.1, hΦ t⟩`.
+
+Set `f : s → autLz D (X.Fu u) t₀.lam'` to `fun t => ⟨Φ t, hmem t⟩`. Establish `hinj : Function.Injective f`. Introduce `t₁ t₂ h12`. Establish `hΦe : Φ t₁ = Φ t₂` using `congrArg Subtype.val h12`. Take `⟨hi1, hg1, hf1, hl1, n₁, hn₁, n₁', hn₁', he1⟩` from `hA t₁`.
+
+Take `⟨hi2, hg2, hf2, hl2, n₂, hn₂, n₂', hn₂', he2⟩` from `hA t₂`. Establish `hsame : ∀ x ∈ perpS (VS D) (X.Fu u).X, A t₂ x - A t₁ x ∈ (X.Fu u).X`. Introduce `x hx`. Establish `p1` using `perp_pres u hi1 hf1 x hx`. Establish `p2` using `perp_pres u hi2 hf2 x hx`.
+
+Establish `k1` using `hΦ t₁ ⟨x, hx⟩ p1`. Establish `k2` using `hΦ t₂ ⟨x, hx⟩ p2`. Rewrite `k1` using `[hΦe, k2]`. Use `(Submodule.Quotient.eq _).1 k1` as an intermediate fact. Rewrite `this` using `[Submodule.mem_comap]`.
+
+Simplify using `using this`. Establish `hm` using `nlam_of_same u hi1 hi2 hg1 hg2 hf1 hf2 hsame`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `GlobalTheory.TypeAsm.eqC_holds D X Y u t₁.1 t₂.1` to reduce the goal to its premises. Rewrite using `[← (hs t₁.1 t₁.2).1, ← (hs t₂.1 t₂.2).1]`.
+
+Rewrite using `[← hl1, ← hl2]`. Use `⟨n₂ * n₁⁻¹, ?_, n₁'⁻¹ * ((A t₁)⁻¹ * A t₂) * n₂', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← (hs t₁.1 t₁.2).1]`. Conclude with `Formalism.L2.SG.Pf.nlam_mul hn₂ (Formalism.L2.SG.Pf.nlam_inv hn₁)`. Rewrite using `[← hl1]`.
+
+Conclude with `Formalism.L2.SG.Pf.nlam_mul (Formalism.L2.SG.Pf.nlam_mul (Formalism.L2.SG.Pf.nlam_inv hn₁') hm) hn₂'`. Rewrite using `[he1, he2]`. Use `group`. Establish `hcard : Nat.card s ≤ Nat.card (autLz D (X.Fu u) t₀.lam')` using `Nat.card_le_card_of_injective f hinj`. Establish `hs' : Nat.card s = s.card` using `by simp`.
+
+Rewrite `hcard` using `[hs']`. Break down `Nat.eq_zero_or_pos (Nat.card (autLz D (X.Fu u) t₀.lam')) with h0 | hpos` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hp : (0 : ℝ) < Nat.card (autLz D (X.Fu u) t₀.lam')` using `by exact_mod_cast hpos`.
+
+Rewrite using `[← div_eq_mul_inv, div_le_one hp]`. Conclude with `hcard` after adjusting the coercions.
+-/
 theorem fibCardC : FibCardC := by
   intro D large₂ X Y u hStd t₀ s hs
   show (s.card : ℝ) * ((Nat.card (autLz D (X.Fu u) t₀.lam') : ℝ))⁻¹ ≤ 1

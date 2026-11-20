@@ -47,6 +47,11 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
+/- English proof (translation)
+Introduce `hE p _ C _ _ _ v O _ _ _ hv hp hc G`. Use `⟨fun κ hκ w => HT.hodge_tate_cokernel_sharp p C v O hv hp hc G κ ?_ w, hE p C v O hv hp hc G⟩` and prove the remaining obligations. Use `split_ifs at hκ with h2`. Substitute `h2` using the available equality. Establish `h4 : (4 : C) = ((2 : ℕ) : C) * ((2 : ℕ) : C)` using `by norm_num`.
+
+Rewrite `hκ` using `[h4, map_mul]`. Establish `h1 : (2 - 1 : ℕ) = 1` using `rfl`. Rewrite using `[h1, pow_one]`. Conclude with `hκ.trans (mul_le_of_le_one_left' hp.le)`. Conclude with `hκ`.
+-/
 theorem PositivityTheory.Xgn.farguesHodgeTate_of_farguesExact : HT.FarguesExact → HT.FarguesHodgeTate := by
   intro hE p _ C _ _ _ v O _ _ _ hv hp hc G
   refine ⟨fun κ hκ w => HT.hodge_tate_cokernel_sharp p C v O hv hp hc G κ ?_ w, hE p C v O hv hp hc G⟩

@@ -16,6 +16,15 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Introduce `E _ _ _ a U Ξ q ω hω h0 hl`. Establish `hc` using `(coneConvex E a).1`. Establish `hn : (cone E a).Nonempty` using `⟨_, hOne_mem_cone⟩`. Establish `ho : IsOpen (cone E a)` using `isOpen_iff_mem_nhds.2 fun p hp => by`. Take `⟨τ, -, hτ⟩` from `locSec E a p hp`.
+
+Conclude with `hτ.mono fun x hx => ⟨τ x, hx⟩`. Establish `key : ∀ k, ∃ w : (geo ho U Ξ).Om q, Corr U Ξ (ω k) w.1 ∧ (∀ γ, (geo ho U Ξ).act q γ w = w) ∧ (geo ho U Ξ).dOm q w = 0` using `fun k => by`. Establish `hv : ∀ X, LeftInv (ω k X) ∧ RightInv U (ω k X)` using `fun X => (levelVal E a U Ξ _).1 ((hω k).val X)`. Take `⟨w, hw, hw0⟩` from `corrFwd E a U Ξ q (ω k) (hω k).equiv fun X => (hv X).2`. Set `w' : (geo ho U Ξ).Om q` to `⟨w, fun s => ⟨corrSmooth E a U Ξ q _ w hw s, hw0 s⟩⟩`.
+
+Establish `hw' : Corr U Ξ (ω k) w'.1` using `hw`. Establish `h` using `corrD E a ho U Ξ q _ _ hw'`. Rewrite `h` using `[h0 k]`. Conclude with `⟨w', hw', fun γ => (corrInv E a ho U Ξ q _ _ hw').1 (fun X => (hv X).1) γ, (corrUniq E a ho U Ξ (q + 1)).2 0 _ 0 h (corr_zero U Ξ)⟩`. Use `choose w hw hi hd0 using key`.
+
+Take `⟨c, hz, hlim⟩` from `zigLim _ _ _ _ (geo ho U Ξ) hc hn q 0 (fun k _ => w k) (fun k => ⟨fun γ _ _ => (hi k γ).symm, fun x hx => by simp [hd, hx, Finset.sum_range_succ]⟩) (fun k _ _ => hd0 k) (fun _ _ => corrLim E a ho U Ξ q ω w hw hl)`. Conclude with `⟨c, fun k => ⟨ho, w k, hw k, hz k⟩, fun x hx => hlim x (by omega)⟩`.
+-/
 theorem UpperTheory.V.Cj.H.perLim :
     UpperTheory.V.Cj.H.PerLim := by
   intro E _ _ _ a U Ξ q ω hω h0 hl

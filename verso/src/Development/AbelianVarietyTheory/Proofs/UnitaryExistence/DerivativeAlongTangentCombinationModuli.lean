@@ -23,10 +23,18 @@ def evAt {R : Type} [CommRing R] {Y : Scheme.{0}} (W : Sp R ⟶ Y) (U : Y.Opens)
     (f : Γ(Y, U)) : R :=
   (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom ((W.appLE U ⊤ h).hom f)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem evAt_congr {R : Type} [CommRing R] {Y : Scheme.{0}} {W W' : Sp R ⟶ Y} (e : W = W') (U : Y.Opens)
     (h : ⊤ ≤ W ⁻¹ᵁ U) (h' : ⊤ ≤ W' ⁻¹ᵁ U) (f : Γ(Y, U)) : evAt W U h f = evAt W' U h' f := by
   subst e; rfl
 
+/- English proof (translation)
+Establish `h1 : (spMap φ ≫ W).appLE U ⊤ h' = W.appLE U ⊤ h ≫ (spMap φ).appTop`. Establish `: (spMap φ).appTop = (spMap φ).appLE ⊤ ⊤ le_top` using `(Scheme.Hom.app_eq_appLE (spMap φ))`. Rewrite using `[this]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap φ) W U ⊤ ⊤ h le_top).symm`. Establish `h2` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ)`.
+
+Establish `h3` using `congrArg (fun ψ => ψ.hom ((W.appLE U ⊤ h).hom f)) h2`. Unfold `evAt`. Rewrite using `[h1]`. Conclude with `h3`.
+-/
 theorem evAt_comp {R A : Type} [CommRing R] [CommRing A] (φ : R →+* A) {Y : Scheme.{0}} (W : Sp R ⟶ Y)
     (U : Y.Opens) (h : ⊤ ≤ W ⁻¹ᵁ U) (h' : ⊤ ≤ (spMap φ ≫ W) ⁻¹ᵁ U) (f : Γ(Y, U)) :
     evAt (spMap φ ≫ W) U h' f = φ (evAt W U h f) := by
@@ -40,6 +48,13 @@ theorem evAt_comp {R A : Type} [CommRing R] [CommRing A] (φ : R →+* A) {Y : S
   rw [h1]
   exact h3
 
+/- English proof (translation)
+Introduce `x _`. Establish `hx : (show PrimeSpectrum R from x) ∈ Set.range (PrimeSpectrum.comap p)`. Rewrite using `[range_comap_of_surjective _ _ hs]`. Introduce `a ha`. Establish `h3 : a * a ∈ (show PrimeSpectrum R from x).asIdeal`.
+
+Rewrite using `[hn a ha]`. Conclude with `Ideal.zero_mem _`. Conclude with `((show PrimeSpectrum R from x).isPrime.mem_or_mem h3).elim id id`. Take `⟨y, hy⟩` from `hx`. Establish `h4 : (show Sp A from y) ∈ (spMap p ≫ W) ⁻¹ᵁ U` using `h trivial`.
+
+Establish `h5 : spMap p (show Sp A from y) = x` using `hy`. Rewrite using `[← h5]`. Conclude with `h4`.
+-/
 theorem top_le_of_comp {R A : Type} [CommRing R] [CommRing A] (p : R →+* A)
     (hs : Function.Surjective p) (hn : ∀ x, p x = 0 → x * x = 0) {Y : Scheme.{0}} (W : Sp R ⟶ Y)
     (U : Y.Opens) (h : ⊤ ≤ (spMap p ≫ W) ⁻¹ᵁ U) : ⊤ ≤ W ⁻¹ᵁ U := by
@@ -56,12 +71,28 @@ theorem top_le_of_comp {R A : Type} [CommRing R] [CommRing A] (p : R →+* A)
   rw [← h5]
   exact h4
 
+/- English proof (translation)
+Introduce `y _` and use `h (show spMap p y ∈ (⊤ : (Sp R).Opens) from trivial)`.
+-/
 theorem comp_top_le {R A : Type} [CommRing R] [CommRing A] (p : R →+* A) {Y : Scheme.{0}} (W : Sp R ⟶ Y)
     (U : Y.Opens) (h : ⊤ ≤ W ⁻¹ᵁ U) : ⊤ ≤ (spMap p ≫ W) ⁻¹ᵁ U :=
   fun y _ => h (show spMap p y ∈ (⊤ : (Sp R).Opens) from trivial)
 
 variable {X0 : Scheme.{0}} {S : Type} [CommRing S] {x0 : Sp S ⟶ X0} {G : Over X0} [GrpObj G]
 
+/- English proof (translation)
+Establish `hz : (0 : S →ₗ[S] S) = (0 : S) • (LinearMap.id : S →ₗ[S] S)` using `by simp`. Set `P : overAt x0 (TrivSqZeroExt S (S × S)) ⟶ G` to `(homAt x0 (tm (LinearMap.inl S S S)) ≫ u) * (homAt x0 (tm (LinearMap.inr S S S)) ≫ v)`. Establish `e1 : homAt x0 (tm (LinearMap.fst S S S)) ≫ P = u`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, LinearMap.fst_comp_inl, LinearMap.fst_comp_inr, hz, TrivSqZeroExt.map_id, homAt_id, Category.id_comp]`. Express the relevant statement in the definitionally equal form `_ * smT x0 0 v = _`.
+
+Rewrite using `[hv0, _root_.mul_one]`. Establish `e2 : homAt x0 (tm (LinearMap.snd S S S)) ≫ P = v`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, LinearMap.snd_comp_inl, LinearMap.snd_comp_inr, hz, TrivSqZeroExt.map_id, homAt_id, Category.id_comp]`. Express the relevant statement in the definitionally equal form `smT x0 0 u * _ = _`. Rewrite using `[hu0, _root_.one_mul]`.
+
+Establish `e3 : homAt x0 (tm (LinearMap.coprod LinearMap.id LinearMap.id : S × S →ₗ[S] S)) ≫ P = u * v`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, LinearMap.coprod_inl, LinearMap.coprod_inr, TrivSqZeroExt.map_id, homAt_id, Category.id_comp, Category.id_comp]`. Establish `f1 : spMap (tm (LinearMap.fst S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S) ≫ P.left = u.left` using `congrArg (fun φ => φ.left) e1`. Establish `f2 : spMap (tm (LinearMap.snd S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S) ≫ P.left = v.left` using `congrArg (fun φ => φ.left) e2`. Establish `f3 : spMap (tm (LinearMap.coprod LinearMap.id LinearMap.id : S × S →ₗ[S] S) : TrivSqZeroExt S (S × S) →+* DualNumber S) ≫ P.left = (u * v).left` using `congrArg (fun φ => φ.left) e3`.
+
+Establish `hP : ⊤ ≤ (show Sp (TrivSqZeroExt S (S × S)) ⟶ G.left from P.left) ⁻¹ᵁ U`. Use `top_le_of_comp (tm (LinearMap.fst S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S) ?_ ?_ _ U ?_` and prove the remaining obligations. Introduce `y`. Use `⟨tm (LinearMap.inl S S S) y, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`.
+
+Introduce `x hx`. Establish `h1 : x.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst hx`. Apply the tactic sequence `ext <;> simp [h1]`. Conclude with `f1 ▸ hu`. Rewrite using `[← evAt_congr f1 U (comp_top_le _ _ U hP) hu, ← evAt_congr f2 U (comp_top_le _ _ U hP) hv, ← evAt_congr f3 U (comp_top_le _ _ U hP) huv, evAt_comp _ _ U hP, evAt_comp _ _ U hP, evAt_comp _ _ U hP]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem snd_evAt_mul (u v : overAt x0 (DualNumber S) ⟶ G) (hu0 : smT x0 0 u = 1) (hv0 : smT x0 0 v = 1)
     (U : G.left.Opens) (hu : ⊤ ≤ (show Sp (DualNumber S) ⟶ G.left from u.left) ⁻¹ᵁ U)
     (hv : ⊤ ≤ (show Sp (DualNumber S) ⟶ G.left from v.left) ⁻¹ᵁ U)
@@ -110,6 +141,11 @@ theorem snd_evAt_mul (u v : overAt x0 (DualNumber S) ⟶ G) (hu0 : smT x0 0 u = 
 
 variable [IsCommMonObj G]
 
+/- English proof (translation)
+Use `top_le_of_comp (TrivSqZeroExt.fstHom S S S).toRingHom ?_ ?_ _ U ?_` and prove the remaining obligations. Introduce `y`. Conclude with `⟨TrivSqZeroExt.inl y, rfl⟩`. Introduce `x hx`. Establish `h1 : x.fst = 0` using `hx`.
+
+Apply the tactic sequence `ext <;> simp [h1]`. Conclude with `(unit_of_smT_zero x0 _ m.tan).symm ▸ h1`.
+-/
 theorem tan_top_le (U : G.left.Opens)
     (h1 : ⊤ ≤ (show Sp S ⟶ G.left from (1 : Over.mk x0 ⟶ G).left) ⁻¹ᵁ U) (m : TanSp x0 G) :
     ⊤ ≤ (show Sp (DualNumber S) ⟶ G.left from m.pt.left) ⁻¹ᵁ U := by
@@ -131,6 +167,9 @@ def derivAt (U : G.left.Opens) (h1 : ⊤ ≤ (show Sp S ⟶ G.left from (1 : Ove
     refine (congrArg TrivSqZeroExt.snd this).trans ?_
     simp [epsMul]
 
+/- English proof (translation)
+Substitute `hw` using the available equality. Establish `h1 : ⊤ ≤ (show Sp S ⟶ G.left from (1 : Over.mk x0 ⟶ G).left) ⁻¹ᵁ U` using `(unit_of_smT_zero x0 _ (∑ i, a i • b i).tan) ▸ comp_top_le _ _ U h`. Establish `key` using `map_sum (derivAt U h1 f) (fun i => a i • b i) Finset.univ`. Simplify using `only [map_smul, smul_eq_mul] at key`. Conclude with `key`.
+-/
 theorem derivAt_sum {m : ℕ} (b : Fin m → TanSp x0 G) (a : Fin m → S) (w : Sp (DualNumber S) ⟶ G.left)
     (hw : w = (∑ i, a i • b i).pt.left) (U : G.left.Opens) (h : ⊤ ≤ w ⁻¹ᵁ U)
     (hv : ∀ i, ⊤ ≤ (show Sp (DualNumber S) ⟶ G.left from (b i).pt.left) ⁻¹ᵁ U) (f : Γ(G.left, U)) :
@@ -142,6 +181,11 @@ theorem derivAt_sum {m : ℕ} (b : Fin m → TanSp x0 G) (a : Fin m → S) (w : 
   simp only [map_smul, smul_eq_mul] at key
   exact key
 
+/- English proof (translation)
+Set `b : Fin m → TanSp x Xo.univ.t.G` to `fun i => TanSp.mk (Over.homMk (v i) (hv0 i).1) (smT_zero_of x _ (hv0 i).2)`. Use `derivAt_sum b a w ?_ U h hv f` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `hw`. Establish `hub : u = fun i => (a i • b i).pt` using `funext fun i => Over.OverMorphism.ext (hu i)`. Substitute `hub` using the available equality.
+
+Rewrite using `[List.prod_ofFn, ← TanSp.pt_sum]`.
+-/
 theorem derivative_tangent_combination_universal_group_eval {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} (Xo : Moduli Dw l) {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) {m : ℕ}
     (v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)) (a : Fin m → S)
@@ -162,6 +206,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Frames GlobalTheory.FrameUnif
 open scoped Matrix nonZeroDivisors
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo S _ x m v a w hv0 hw U h hv f`. Conclude with `derivative_tangent_combination_universal_group_eval Xo x v a w hv0 hw U h hv f`.
+-/
 theorem deriv_comb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (m : ℕ) (v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)) (a : Fin m → S) (w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left), (∀ i, IsTanAt x (v i)) → IsCombAt x v a w → ∀ (U : Xo.univ.t.G.left.Opens) (h : ⊤ ≤ w ⁻¹ᵁ U) (hv : ∀ i, ⊤ ≤ v i ⁻¹ᵁ U) (f : Γ(Xo.univ.t.G.left, U)), TrivSqZeroExt.snd (show DualNumber S from (Scheme.ΓSpecIso (CommRingCat.of (DualNumber S))).hom.hom ((w.appLE U ⊤ h).hom f)) = ∑ i, a i * TrivSqZeroExt.snd (show DualNumber S from (Scheme.ΓSpecIso (CommRingCat.of (DualNumber S))).hom.hom (((v i).appLE U ⊤ (hv i)).hom f)) := by
   intro E _ _ _ H Dw l Xo S _ x m v a w hv0 hw U h hv f
   exact derivative_tangent_combination_universal_group_eval Xo x v a w hv0 hw U h hv f

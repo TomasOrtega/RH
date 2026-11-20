@@ -12,21 +12,43 @@ namespace UpperTheory.V.Loc.R0
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Simplify using `only [Dcr, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_Dcr {G A V : Type} [Group G] [CommRing A] [Algebra ℚ_[l] A] [AddCommGroup V] [Module A V]
     [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] (φ : G →* GQ l) (ρ : Representation A G V) (x : V ⊗[ℚ_[l]] Bcr l) :
     x ∈ Dcr φ ρ ↔ ∀ g, actC φ ρ g x = x := by
   simp only [Dcr, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]
 
+/- English proof (translation)
+Simplify using `only [Ddr, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_Ddr {G A V : Type} [Group G] [CommRing A] [Algebra ℚ_[l] A] [AddCommGroup V] [Module A V]
     [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] (φ : G →* GQ l) (ρ : Representation A G V) (x : V ⊗[ℚ_[l]] Bdr l) :
     x ∈ Ddr φ ρ ↔ ∀ g, actD φ ρ g x = x := by
   simp only [Ddr, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]
 
+/- English proof (translation)
+Simplify using `[GK, botExt]`.
+-/
 theorem mem_GK_bot (g : GQ l) : g ∈ GK (botExt l) := by simp [GK, botExt]
 
 variable {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [TopologicalSpace E]
   [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E]
 
+/- English proof (translation)
+Take `⟨T⟩` from `tiedP l`. Establish `hdom : IsDomain (PP l).R.B` using `GlobalTheory.RegularRing.isDomain_of_tied T (botExt l)`. Establish `hc` using `(isCrField (botExt l) _).1.1 ((isCrIff (botExt l) _).1.1 h)`. Establish `hf : GlobalTheory.RegularRing.FracInv ((PP l).PD (botExt l))`. Introduce `x y hx h`.
+
+Use `GlobalTheory.Per.FracInv.tied_frac_invariant l _ _ T _ y x hx fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `h ⟨g, hg⟩`. Rewrite `h1` using `[(PP l).PD_actB, (PP l).PD_actB]`. Rewrite using `[mul_comm, h1, mul_comm]`. Establish `hu : GlobalTheory.RegularRing.LineUnit ((PP l).PD (botExt l))`.
+
+Introduce `b hb h`. Use `(GlobalTheory.T.periodRings_regular_phi_surjective_fil l _ _ T).1 (botExt l) b hb fun g hg => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `h ⟨g, hg⟩`. Conclude with `⟨x, by rw [← (PP l).PD_actB (botExt l) ⟨g, hg⟩, hx, Algebra.smul_def]⟩`. Take `⟨m, b, d, hd, h1⟩` from `GlobalTheory.Per.TiedSpan.exists_sum_of_isCrys _ hf hu _ hc 1`.
+
+Establish `h0 : finrank ℚ_[l] ↥(K0 (botExt l)) = 1`. Rewrite using `[show K0 (botExt l) = ⊥ from bot_inf_eq _, IntermediateField.finrank_bot]`. Rewrite `hc` using `[IsCrys, h0, finrank_self]`. Take `⟨x, hx, hxu⟩` from `unit_of_span _ hc b d hd h1`. Establish `hx' : ∀ g, actC (MonoidHom.id _) (chRep κ) g x = x`.
+
+Introduce `g`. Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx`. Use `Eq.trans ?_ (hx ⟨g, mem_GK_bot g⟩)` and prove the remaining obligations. Unfold `actC actVB`. Use `congr 2`.
+
+Use extensionality with `b`. Conclude with `((PP l).PD_actB (botExt l) ⟨g, mem_GK_bot g⟩ b).symm`. Use `⟨x, hx', fun L y hy => ?_⟩` and prove the remaining obligations. Conclude with `basis_of_unit (H := ↥(GK L)) (fun g => (PP l).actQ g) (fun b hb => ((PP l).PD L).invB b fun g => by rw [(PP l).PD_actB]; exact hb g) (fun g => (κ g : E)) (actC (GK L).subtype (chRep (κ.comp (GK L).subtype))) (fun g v b => rfl) (smulC E L) (fun e f v b => rfl) x hxu (fun g => hx' …`.
+-/
 theorem char_cr (κ : GQ l →* Eˣ) (h : IsCr (GK (botExt l)).subtype (chRep (κ.comp (GK (botExt l)).subtype))) :
     ∃ x : E ⊗[ℚ_[l]] Bcr l, (∀ g, actC (MonoidHom.id _) (chRep κ) g x = x) ∧ ∀ (L : FinExt l),
       ∀ y ∈ Dcr (GK L).subtype (chRep (κ.comp (GK L).subtype)), ∃! c : E ⊗[ℚ_[l]] ↥(K0 L), y = smulC E L c x := by
@@ -64,6 +86,15 @@ theorem char_cr (κ : GQ l →* Eˣ) (h : IsCr (GK (botExt l)).subtype (chRep (�
     (actC (GK L).subtype (chRep (κ.comp (GK L).subtype))) (fun g v b => rfl) (smulC E L) (fun e f v b => rfl)
     x hxu (fun g => hx' g) y ((mem_Dcr _ _ _).1 hy)
 
+/- English proof (translation)
+Take `⟨T⟩` from `tiedP l`. Establish `hF` using `GlobalTheory.RegularRing.isField_of_tied T`. Use `hF.nontrivial` as an intermediate fact. Establish `hc` using `(isCrField (botExt l) _).2.1.1 ((isCrIff (botExt l) _).2.1 h)`. Take `⟨m, b, d, hd, h1⟩` from `GlobalTheory.Per.DeRhamSpan.span_of_isField _ _ hF hc 1`.
+
+Establish `h0 : finrank ℚ_[l] ↥(botExt l).1 = 1` using `IntermediateField.finrank_bot`. Rewrite `hc` using `[IsDR, h0, finrank_self]`. Take `⟨x, hx, hxu⟩` from `unit_of_span _ hc b d hd h1`. Establish `hx' : ∀ g, actD (MonoidHom.id _) (chRep κ) g x = x`. Introduce `g`.
+
+Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx`. Use `Eq.trans ?_ (hx ⟨g, mem_GK_bot g⟩)` and prove the remaining obligations. Unfold `actD actVdR`. Use `congr 2`. Use extensionality with `b`.
+
+Conclude with `((PP l).PD_actdR (botExt l) ⟨g, mem_GK_bot g⟩ b).symm`. Use `⟨x, hx', fun L y hy => ?_⟩` and prove the remaining obligations. Conclude with `basis_of_unit (H := ↥(GK L)) (fun g => (PP l).actQdR g) (fun b hb => ((PP l).PD L).invdR b fun g => by rw [(PP l).PD_actdR]; exact hb g) (fun g => (κ g : E)) (actD (GK L).subtype (chRep (κ.comp (GK L).subtype))) (fun g v b => rfl) (smulD E L) (fun e f v b => rfl) x hxu (fun g => …`.
+-/
 theorem char_dr (κ : GQ l →* Eˣ) (h : IsDr (GK (botExt l)).subtype (chRep (κ.comp (GK (botExt l)).subtype))) :
     ∃ x : E ⊗[ℚ_[l]] Bdr l, (∀ g, actD (MonoidHom.id _) (chRep κ) g x = x) ∧ ∀ (L : FinExt l),
       ∀ y ∈ Ddr (GK L).subtype (chRep (κ.comp (GK L).subtype)), ∃! c : E ⊗[ℚ_[l]] ↥L.1, y = smulD E L c x := by

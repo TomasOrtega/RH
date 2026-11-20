@@ -3,10 +3,16 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselDecayBounds.H
 
 namespace PI.WBL.NIS
 
+/- English proof (translation)
+Introduce `k r z u Wp _ _ _ π μW μN hz hT hπ hW hN`. Conclude with `Formalism.MainNotions.MeasFS.measF_side hz hT hπ hW hN`.
+-/
 theorem measSideP : MeasSideP := by
   intro k r z u Wp _ _ _ π μW μN hz hT hπ hW hN
   exact Formalism.MainNotions.MeasFS.measF_side hz hT hπ hW hN
 
+/- English proof (translation)
+The claim follows from `normIdSm_of hGS hGG measSideP`.
+-/
 theorem normIdSm_of_growth (hGS : Formalism.FourierDecayAlt.ThreeDimData.GrowthS) (hGG : Formalism.FourierDecayAlt.ThreeDimData.GrowthG) : Formalism.FourierDecayAlt.ThreeDimData.NormIdSm :=
   normIdSm_of hGS hGG measSideP
 

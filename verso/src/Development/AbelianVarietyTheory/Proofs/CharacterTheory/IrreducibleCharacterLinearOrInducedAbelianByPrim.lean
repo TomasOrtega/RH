@@ -26,6 +26,9 @@ def weightStabiliser {L G : Type} [Field L] [Group G] (B : Subgroup G) (hB : B.N
     intro g hg b b' e
     exact (hg b' b (by rw [e]; simp [mul_assoc])).symm
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hV`. Establish `: Subsingleton V` using `not_nontrivial_iff_subsingleton.mp hV`. Take `⟨x, y, hxy⟩` from `h.toNontrivial.exists_pair_ne`. Conclude with `hxy (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`.
+-/
 theorem nontrivial_of_isIrreducible {L G V : Type} [Field L] [Group G] [AddCommGroup V]
     [Module L V] (ρ : Representation L G V) (h : ρ.IsIrreducible) : Nontrivial V := by
   by_contra hV
@@ -33,6 +36,17 @@ theorem nontrivial_of_isIrreducible {L G V : Type} [Field L] [Group G] [AddCommG
   obtain ⟨x, y, hxy⟩ := h.toNontrivial.exists_pair_ne
   exact hxy (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))
 
+/- English proof (translation)
+Introduce `L _ _ _ G _ _ χ hG ⟨n, ρ, hρ, hχ⟩`. Establish `hχ' : ∀ g, χ g = ρ.character g` using `fun g => by simpa using hχ g`. Use `haveI := nontrivial_of_isIrreducible ρ hρ`. Distinguish the cases in `hR : ∃ T : Subgroup G, T ≠ ⊤ ∧ ∃ ψ : T → L, IsChar L L ψ ∧ χ = ind T ψ`. Conclude with `Or.inr hR`.
+
+Use `left`. Take `⟨hs1, hs2⟩` from `GlobalTheory.T.idempotent_eq_one_and_character_eq_of_isIrreducible L G (Fin n → L) ρ hρ`. Establish `hcomm : ∀ a b : G, ρ a * ρ b = ρ b * ρ a`. Use `GlobalTheory.T.commute_image_abelianByPrimePower_of_normal_central G (Module.End L (Fin n → L)) ρ hG ?_` and prove the remaining obligations. Introduce `B hB hBc`.
+
+Take `⟨lam, v, hv, hlam⟩` from `GlobalTheory.T.exists_character_eigenvector_of_commuting_representation L B (Fin n → L) (ρ.comp B.subtype) (fun a b => hBc a a.2 b b.2)`. Take `⟨e, he0, hee, heB, heT, heN⟩` from `GlobalTheory.T.exists_weight_idempotent_of_eigenvector L G (Fin n → L) ρ B (weightStabiliser B hB lam) lam v hB hv hlam (fun _ => Iff.rfl)`. Take `⟨ψ, hψ, hind⟩` from `GlobalTheory.T.character_eq_induced_of_imprimitivity_system L G (Fin n → L) ρ _ e hρ he0 hee heT heN`. Establish `hT : weightStabiliser B hB lam = ⊤`. Assume the negation of the conclusion as `hT`.
+
+Conclude with `hR ⟨_, hT, ψ, hψ, funext fun g => (hχ' g).trans (hind g)⟩`. Establish `he1 : e = 1` using `hs1 e he0 hee (fun g => heT g (hT ▸ Subgroup.mem_top g))`. Introduce `b hb g`. Use `heB ⟨b, hb⟩` as an intermediate fact. Rewrite `this` using `[he1, mul_one]`.
+
+Express the relevant statement in the definitionally equal form `ρ b = _ at this`. Rewrite using `[this, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`. Take `⟨lam, v, hv, hlam⟩` from `GlobalTheory.T.exists_character_eigenvector_of_commuting_representation L G (Fin n → L) ρ hcomm`. Conclude with `⟨lam, fun g => (hχ' g).trans (hs2 lam v hv hlam g)⟩`.
+-/
 theorem irrChar_linear_or_induced : ∀ (L : Type) [Field L] [CharZero L] [IsAlgClosed L] (G : Type) [Group G] [Finite G] (χ : G → L), AbByP G → IsIrrChar L L χ → (∃ lam : G →* Lˣ, ∀ g, χ g = (lam g : L)) ∨ ∃ T : Subgroup G, T ≠ ⊤ ∧ ∃ ψ : T → L, IsChar L L ψ ∧ χ = ind T ψ := by
   intro L _ _ _ G _ _ χ hG ⟨n, ρ, hρ, hχ⟩
   have hχ' : ∀ g, χ g = ρ.character g := fun g => by simpa using hχ g

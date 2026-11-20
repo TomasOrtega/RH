@@ -14,6 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Set `e` to `ObjPull.pushEquiv (isGrpPullback_pullback G f) (Over.mk t)`. Use `Finite.of_injective (β := {x : Over.mk t ⟶ (Over.pullback f).obj G // x ^ N = 1}) (fun x => ⟨e.symm x.1, ?_⟩) ?_` and prove the remaining obligations. Establish `hx : (show Over.mk ((Over.mk t).hom ≫ f) ⟶ G from x.1) ^ N = 1` using `x.2`. Rewrite using `[← map_pow, hx, map_one]`.
+
+Introduce `x y hxy`. Conclude with `Subtype.ext (e.symm.injective (congrArg Subtype.val hxy))`.
+-/
 theorem finite_torsion_of_pullback {S S' Z : Scheme.{0}} (G : Over S) [GrpObj G] (f : S' ⟶ S) (t : Z ⟶ S')
     (r : Z ⟶ S) (hr : t ≫ f = r) (N : ℕ)
     (h : Finite {x : Over.mk t ⟶ (Over.pullback f).obj G // x ^ N = 1}) :
@@ -27,6 +32,11 @@ theorem finite_torsion_of_pullback {S S' Z : Scheme.{0}} (G : Over S) [GrpObj G]
   · intro x y hxy
     exact Subtype.ext (e.symm.injective (congrArg Subtype.val hxy))
 
+/- English proof (translation)
+Introduce `T _ _ _ G _ _ D A U Ω _ _ β hβ N hN`. Set `β' : T ⧸ (maximalIdeal T) ^ (0 + 1) →+* Ω` to `Ideal.Quotient.lift _ β (fun a ha => hβ a (by simpa using ha))`. Establish `g` using `U.gt 0`. Establish `: IsCommMonObj (Out.thickObj T (maximalIdeal T) 0 G)` using `Functor.isCommMonObj_obj`. Establish `h` using `GlobalTheory.TorusExtTorsion.finite_torsion_geomPoint _ (Out.thickObj T (maximalIdeal T) 0 G) (Out.thickObj T (maximalIdeal T) 0 D.toPre.P.A) D.toPre.X g.q g.i g.q_hom g.i_hom g.isKernel (Out.TLinPf.isAb_pullback _ _ D.toPre.P.isAb) Ω (Geo.Tor.spMap β') N hN`.
+
+Use `finite_torsion_of_pullback G (Out.thick T (maximalIdeal T) 0) (Geo.Tor.spMap β') _ ?_ N h` and prove the remaining obligations. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+-/
 theorem finite_torsion_special_fibre_of_unif : ∀ (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T] (G : Over (Sp T)) [GrpObj G] [IsCommMonObj G] (D : Out.DegData T (maximalIdeal T)) (A : Out.PolAV (Spec (CommRingCat.of (FractionRing T)))) (_ : Out.UnifPre (maximalIdeal T) D A G) (Ω : Type) [Field Ω] [IsAlgClosed Ω] (β : T →+* Ω), (∀ a ∈ maximalIdeal T, β a = 0) → ∀ N : ℕ, 1 ≤ N → Finite {x : Over.mk (spMap β) ⟶ G // x ^ N = 1} := by
   intro T _ _ _ G _ _ D A U Ω _ _ β hβ N hN
   let β' : T ⧸ (maximalIdeal T) ^ (0 + 1) →+* Ω :=

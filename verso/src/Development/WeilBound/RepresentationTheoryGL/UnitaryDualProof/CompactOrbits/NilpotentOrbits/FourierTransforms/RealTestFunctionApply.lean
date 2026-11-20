@@ -18,14 +18,23 @@ def Dl : Matrix (Fin n) (Fin n) k →ₗ[k] (Fin (d Z) → k) where
 
 abbrev TT : Type := ↥(LinearMap.ker (Dl Z)) × (Fin n → k)
 
+/- English proof (translation)
+Establish `e : E Z = fun u => ∑ j, u j • ee Z j` using `funext (E_apply Z)`. Rewrite using `[e]`. Conclude with `continuous_finset_sum _ fun j _ => (continuous_apply j).smul continuous_const`.
+-/
 theorem continuous_E : Continuous (E Z) := by
   have e : E Z = fun u => ∑ j, u j • ee Z j := funext (E_apply Z)
   rw [e]
   exact continuous_finset_sum _ fun j _ => (continuous_apply j).smul continuous_const
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun j => (continuous_const.matrix_mul continuous_id).matrix_trace`.
+-/
 theorem continuous_D : Continuous (D Z) :=
   continuous_pi fun j => (continuous_const.matrix_mul continuous_id).matrix_trace
 
+/- English proof (translation)
+The claim follows from `(continuous_E Z).comp (continuous_const.matrix_mulVec (continuous_D Z))`.
+-/
 theorem continuous_Pr : Continuous (Pr Z) :=
   (continuous_E Z).comp (continuous_const.matrix_mulVec (continuous_D Z))
 
@@ -73,6 +82,9 @@ def Gm : (Fin (d Z) → k) ≃ₜ (Fin (d Z) → k) where
 
 def F1 : TT Z × (Fin (d Z) → k) ≃ₜ Sp k n := ((Homeomorph.refl (TT Z)).prodCongr (Gm hZ h)).trans (Hb hZ h).symm
 
+/- English proof (translation)
+Use `show (q.1.1.1 + E Z ((G Z)⁻¹ *ᵥ (G Z *ᵥ q.2)), q.1.2) = _`. Rewrite using `[mulVec_mulVec, nonsing_inv_mul _ (Ne.isUnit (G_det hZ h)), one_mulVec]`.
+-/
 theorem real_test_function_apply (q : TT Z × (Fin (d Z) → k)) : F1 hZ h q = (q.1.1.1 + E Z q.2, q.1.2) := by
   show (q.1.1.1 + E Z ((G Z)⁻¹ *ᵥ (G Z *ᵥ q.2)), q.1.2) = _
   rw [mulVec_mulVec, nonsing_inv_mul _ (Ne.isUnit (G_det hZ h)), one_mulVec]

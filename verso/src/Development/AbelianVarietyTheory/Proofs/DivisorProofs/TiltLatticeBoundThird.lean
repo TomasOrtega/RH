@@ -9,6 +9,11 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 
 namespace GlobalTheory.DetLattice
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ N h hh D τ ι hι`. Take `⟨⟨hTi, hTs, hTd⟩, ⟨hHi, hHs, hHd⟩⟩` from `GlobalTheory.T.sandwich_datum_eigen_multiplicity p C v O hv ε hε Λ N h hh D`. Take `⟨-, x, hx0, hxL⟩` from `GlobalTheory.T.determinant_lattice_principal C v O Λ h N hv (actT D) τ hTi hTs (hTd τ)`. Take `⟨hW, y, hy0, hyL⟩` from `GlobalTheory.T.determinant_lattice_principal C v O Λ h N hv (actH D) τ hHi hHs (hHd τ)`. Establish `hbij` using `(GlobalTheory.T.tilt_lattice_bound_second p C v O hv ε hε Λ N h hh D τ).2 ι hι`.
+
+Take `⟨lam, hlam, -, himg⟩` from `GlobalTheory.injective_into_line_span_eq_smul_span C O _ _ ι x y hbij.1 hW hx0 hy0`. Conclude with `⟨lam, hlam, by rw [hxL, hyL]; exact himg⟩`.
+-/
 theorem iota_image_detLattice : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O →

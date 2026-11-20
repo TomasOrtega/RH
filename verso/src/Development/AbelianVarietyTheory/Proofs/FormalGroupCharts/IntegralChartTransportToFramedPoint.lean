@@ -20,6 +20,15 @@ open MvPolynomial (X)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _`. Establish `hJ : ChartJetTrSt Xo c` using `chartJetTr_of Xo c (chartJetTan_holds Xo c) (chartJetBasis_holds Xo c (fun S _ _ y w hw => FrameTangent.frame_tangent_basis E H Dw l Xo c S y w hw))`. Establish `hF : ChartFrameTrSt Xo c` using `GlobalTheory.T.integral_frames_transport_to_framed_point E H Dw l Xo c`. Establish `hM : FBMapSt` using `fbMap_holds`. Introduce `hstar T io y I d B tgT uvecT xT eT wPT hbas hch hdir hfr hpr htr hrig`.
+
+Take `⟨B', hF1, hA1, hp1, hp2, hsy, had⟩` from `hM T.V T.Fr (algebraMap T.V T.Fr) d (𝓞 E) B`. Take `⟨x, x', hchx, hj2, hj1⟩` from `hJ T io y I d B.G.F B.A.act tgT uvecT xT hbas hch hdir`. Take `⟨e, wP, hfrx, hprx, hrx, hfe, hwp⟩` from `hF hstar T io y I d B B' tgT xT eT wPT hF1 hA1 hp1 hp2 hsy had hch hfr hpr htr hrig x x' hj2 hj1`. Take `⟨h, hh⟩` from `canonGauge_exists T.Fr d (𝓞 E) T.Fr B'`. Use `letI := io.toAlgebra`.
+
+Establish `hchx' : IsChart y.1 d B'.G.F B'.A.act (fun ℓ i => algebraMap T.V T.Fr (uvecT ℓ i)) x`. Establish `eF : B'.G.F = fun j => MvPowerSeries.map (algebraMap T.V T.Fr) (B.G.F j)` using `funext hF1`. Establish `eA : B'.A.act = fun a j => MvPowerSeries.map (algebraMap T.V T.Fr) (B.A.act a j)`. Use function extensionality and compare the values at `fun a => funext (hA1 a)`. Rewrite using `[eF, eA]`.
+
+Conclude with `hchx`. Conclude with `⟨B', fun ℓ i => algebraMap T.V T.Fr (uvecT ℓ i), x, e, wP, h, hchx', hfrx, hprx, hh, hrx, ⟨hF1, hA1, hp1, hp2, hsy, had, fun ℓ i => rfl⟩, x', hj2, hj1, hfe, hwp⟩`.
+-/
 theorem chartTransport_holds : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], ChartTransportSt Xo c := by
   intro E _ _ _ H Dw l Xo c _
   have hJ : ChartJetTrSt Xo c := chartJetTr_of Xo c (chartJetTan_holds Xo c)

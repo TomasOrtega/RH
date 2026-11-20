@@ -22,6 +22,13 @@ section Det
 
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Rewrite using `[Matrix.det_succ_row _ (Fin.last n), Finset.sum_eq_single (Fin.last n)]`. Rewrite using `[diagMat_of_not_left _ _ (by simp), Matrix.one_apply_eq, Fin.succAbove_last]`. Establish `: (diagMat n (n + 1) A).submatrix Fin.castSucc Fin.castSucc = A`. Use extensionality with `i j`.
+
+Conclude with `diagMat_of_lt (n := n + 1) A (i := i.castSucc) (j := j.castSucc) i.2 j.2`. Rewrite using `[this, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[diagMat_of_not_left _ _ (by simp), Matrix.one_apply_ne hj.symm, mul_zero, zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem det_diagMat {κ : Type} [CommRing κ] {n N : ℕ} (hN : N = n + 1) (A : Matrix (Fin n) (Fin n) κ) :
     (diagMat n N A).det = A.det := by
   subst hN
@@ -37,12 +44,20 @@ theorem det_diagMat {κ : Type} [CommRing κ] {n N : ℕ} (hN : N = n + 1) (A : 
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Use `unitV_congr χ ?_` and prove the remaining obligations. Rewrite using `[(det_glint k).2, (det_glint j).2, ← redGL_val, h, redGL_extI, diagEmb_val, det_diagMat hN, redGL_val]`.
+-/
 theorem unitV_det_ext (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {n N : ℕ} (hN : N = n + 1) (j : GLint E n P) (k : GLint E N P)
     (h : redGL N P k = redGL N P (extI hN P j)) :
     LocE.unitV χ ((LinearEquiv.det k.1 : Eˣ) : E) = LocE.unitV χ ((LinearEquiv.det j.1 : Eˣ) : E) := by
   refine unitV_congr χ ?_
   rw [(det_glint k).2, (det_glint j).2, ← redGL_val, h, redGL_extI, diagEmb_val, det_diagMat hN, redGL_val]
 
+/- English proof (translation)
+Rewrite using `[DatumLaw.unitV_eq, DatumLaw.unitV_eq, DatumLaw.extendByZeroOffSubset_mul_left_of_mem_lattice, (det_glint k).2, (det_glint k⁻¹).2]`. Use `inv_eq_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← DatumLaw.matrixExtendByZero_mul, ← Matrix.det_mul, ← redGL_val, ← redGL_val, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.det_one]`. Unfold `DatumLaw.ext0`. Rewrite using `[dif_pos isUnit_one]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem unitV_inv_det (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {n : ℕ} (k : GLint E n P) :
     LocE.unitV χ⁻¹ ((LinearEquiv.det (k⁻¹).1 : Eˣ) : E) = LocE.unitV χ ((LinearEquiv.det k.1 : Eˣ) : E) := by
   rw [DatumLaw.unitV_eq, DatumLaw.unitV_eq, DatumLaw.extendByZeroOffSubset_mul_left_of_mem_lattice, (det_glint k).2, (det_glint k⁻¹).2]
@@ -53,6 +68,11 @@ theorem unitV_inv_det (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {n : ℕ} (k : GL
   rw [dif_pos isUnit_one]
   simp
 
+/- English proof (translation)
+Unfold `phiT`. Use `@if_congr _ _ _ (_) (_) _ _ _ _ (forall_congr' fun Q => ?_) rfl rfl` and prove the remaining obligations. Establish `key : ∀ y, (y ∈ (d.act γ h).at Q.1 → (γ'.toLinearMap ∘ₗ x ∘ₗ γ.symm.toLinearMap) y ∈ (d'.act γ' h').at Q.1 ∧ (d'.act γ' h').f Q ((γ'.toLinearMap ∘ₗ x ∘ₗ γ.symm.toLinearMap) y) = (d.act γ h).f Q y) ↔ (γ.symm y ∈ d.at Q.1 → x (γ.symm y) ∈ d'.at Q.1 ∧ d'.f Q (x (γ.symm y)) = d.f Q ( …` using `fun y => by show (y ∈ localization₂ _ (gmap γ d.N) → γ' (x (γ.symm y)) ∈ localization₂ _ (gmap γ' d'.N) ∧ d'.f Q (γ'.symm (γ' (x (γ.symm y)))) = d.f Q (γ.symm y)) ↔ _`. Rewrite using `[mem_localization_gmap, mem_localization_gmap, LinearEquiv.symm_apply_apply]`. Use `⟨fun H y => ?_, fun H y => (key y).2 (H _)⟩` and prove the remaining obligations.
+
+Use `(key (γ y)).1 (H _)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem phiT_act {a b : ℕ} {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (d : Deco E a ST SG) (d' : Deco E b ST SG')
     (γ : Sp E a ≃ₗ[E] Sp E a) (γ' : Sp E b ≃ₗ[E] Sp E b) (h : GLG E a SG) (h' : GLG E b SG') (x : HomE E a b) :
     phiT K (d.act γ h) (d'.act γ' h') (γ'.toLinearMap ∘ₗ x ∘ₗ γ.symm.toLinearMap) = phiT K d d' x := by
@@ -82,6 +102,11 @@ def LevAt (P : rowSG Pr sel mu) (κ : GLint X.E n P.1) (c : X.Kˣ) : Prop :=
 
 variable {Λ Θ}
 
+/- English proof (translation)
+Use `⟨fun hP => ?_, fun hQ hP => ?_⟩` and prove the remaining obligations. Take `⟨h1, e⟩` from `h.1 hP`. Use `⟨by rw [map_inv]; exact inv_mem h1, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← map_inv]`. Conclude with `congrArg _ (Subtype.ext (map_inv _ _).symm)`.
+
+Take `⟨h1, e⟩` from `h.2 hQ hP`. Conclude with `⟨inv_mem h1, by rw [e, ← map_inv]; rfl⟩`.
+-/
 theorem LevAt.inv {P : rowSG Pr sel mu} {κ : GLint X.E n P.1} {c : X.Kˣ} (h : LevAt Λ Θ P κ c) : LevAt Λ Θ P κ⁻¹ c⁻¹ := by
   refine ⟨fun hP => ?_, fun hQ hP => ?_⟩
   · obtain ⟨h1, e⟩ := h.1 hP
@@ -102,9 +127,21 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks}
 def passG (g : FrmG Λ Θ) (p : ChPt (R := R) sel mu u j) (w : Pr.vGs) : GLint X.E (R.N j) w.1 :=
   passFr (d := p.deco.1) g.1.1 g.2.1.1 (liftFr_spec p.deco.2 w) (liftFr_spec (g • p).deco.2 w)
 
+/- English proof (translation)
+The claim follows from `redGL_passFr _ _ _ _`.
+-/
 theorem redGL_passG (g : FrmG Λ Θ) (p : ChPt (R := R) sel mu u j) (w : Pr.vGs) : redGL _ w.1 (passG g p w) = g.2.1.1 w :=
   redGL_passFr _ _ _ _
 
+/- English proof (translation)
+Use `⟨fun P => if h : P.1 ∈ Pr.vGs then passG g p ⟨P.1, h⟩ else g.2.2.1 ⟨P.1, (Finset.mem_union.mp P.2).resolve_left h⟩, fun P => if h : P.1 ∈ Pr.vGs then (Λ ⟨P.1, h⟩).lam ⟨g.2.1.1 ⟨P.1, h⟩, g.2.1.2 _ (Set.mem_univ _)⟩ else (Θ ⟨P.1, (Finset.mem_union.mp P.2).resolve_left h⟩).lam ⟨g.2. …` and prove the remaining obligations. Unfold `frsF split_ifs with h`. Simplify using `only [dif_pos h] show _ = g.1.1 * (p.deco.1.liftFr ⟨P.1, h⟩ * (((g • p).deco.1.liftFr ⟨P.1, h⟩)⁻¹ * g.1.1 * p.deco.1.liftFr ⟨P.1, h⟩)⁻¹) group`. Simplify using `only [dif_neg h]`. Conclude with `mul_assoc _ _ _`.
+
+Simplify using `only [dif_pos hP]`. Establish `e` using `redGL_passG g p ⟨P.1, hP⟩`. Conclude with `⟨e ▸ g.2.1.2 _ (Set.mem_univ _), congrArg _ (Subtype.ext e.symm)⟩`. Simplify using `only [dif_neg hP]`. Conclude with `⟨g.2.2.2 _ (Set.mem_univ _), trivial⟩`.
+
+Establish `e2 : Θ.chr g.2.2 = _` using `piChar_apply (fun w => (Θ w).H) (fun w => (Θ w).lam) g.2.2`. Rewrite using `[LevFam.chr_apply, e2]`. Use `((Equiv.Finset.union _ _ hd).prod_comp _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type]`. Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun w _ => ?_) (Finset.prod_congr rfl fun w _ => ?_)` and prove the remaining obligations.
+
+Conclude with `dif_pos w.2`. Conclude with `dif_neg (Finset.disjoint_right.1 hd w.2)`.
+-/
 theorem exists_pass (hd : Disjoint Pr.vGs (QE sel (mu : Chr X.F X.E X.K))) (g : FrmG Λ Θ) (p : ChPt (R := R) sel mu u j) :
     ∃ (κ : GLQ X.E (R.N j) (rowSG Pr sel mu)) (c : rowSG Pr sel mu → X.Kˣ),
       (∀ P, frsF sel mu (g • p) P = g.1.1 * (frsF sel mu p P * ((κ P)⁻¹).1)) ∧ (∀ P, LevAt Λ Θ P (κ P) (c P)) ∧
@@ -144,6 +181,11 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}
   {cst : LocCst X (rowSG Pr sel mu)} {m2 : ℕ}
 
+/- English proof (translation)
+Unfold `locTop`. Use `congr 2`. Conclude with `LinearMap.ext fun v => prH_sumE (N_m_succ R) _ _ _`. Use `LinearMap.ext fun v => (atNL_last _).trans ((sumE_last (N_m_succ R) _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[Units.val_one, one_mul]`.
+
+Conclude with `(atNL_last (y v)).symm`.
+-/
 theorem locTop_extI (P : rowSG Pr sel mu) (j : GLint X.E (R.N R.m - 1) P.1) (y : HomE X.E (R.N (m2 + 1)) (R.N R.m))
     (y' : Sp X.E (R.N (m2 + 1))) :
     locTop Ch sel mu cst m2 P ((extI (N_m_succ R) P.1 j).1.toLinearMap ∘ₗ y) y' =
@@ -157,6 +199,19 @@ theorem locTop_extI (P : rowSG Pr sel mu) (j : GLint X.E (R.N R.m - 1) P.1) (y :
     rw [Units.val_one, one_mul]
     exact (atNL_last (y v)).symm
 
+/- English proof (translation)
+Unfold `rhoS`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Take `⟨h1, e⟩` from `hk.1 hP`. Take `⟨jb, hjb, e1⟩` from `(mem_levExt _ _).1 h1`. Take `⟨j, rfl⟩` from `Mem.Col2.redGL_surjective P.1 jb`.
+
+Establish `e2 : redGL _ P.1 k = redGL _ P.1 (extI (N_m_succ R) P.1 j)` using `by rw [redGL_extI]; exact e1.symm`. Establish `e3 : k.1.toLinearMap ∘ₗ y = (k * (extI (N_m_succ R) P.1 j)⁻¹).1.toLinearMap ∘ₗ ((extI (N_m_succ R) P.1 j).1.toLinearMap ∘ₗ y)` using `LinearMap.ext fun v => congrArg k.1 (LinearEquiv.symm_apply_apply (extI (N_m_succ R) P.1 j).1 (y v)).symm`. Rewrite using `[e3, locTop_inv hm hc hP hq _ (by rw [map_mul, map_inv, e2, mul_inv_cancel]) _ (hG hP), if_pos hP, unitV_det_ext _ (N_m_succ R) j k e2, locTop_extI, mul_right_comm, e.trans (levExt_lam _ _ h1 hjb e1.symm)]`. Unfold `locTop`. Rewrite using `[← mul_assoc]`.
+
+Use `congr 1`. Break down `hlev with ⟨hs, rfl⟩ | ⟨hs, rfl⟩` into its components or cases. Rewrite using `[hs]`. Conclude with `GlobalTheory.TopTargetGen.phiTop_target_gen Ch mu m2 P.1 hm hq hP j hjb _`. Rewrite using `[hs]`.
+
+Conclude with `GlobalTheory.TopLawSym.phiTop_target_sym Ch mu m2 P.1 hm hq hP j hjb _`. Establish `hPQ` using `(Finset.mem_union.mp P.2).resolve_left hP`. Take `⟨h1, e⟩` from `hk.2 hPQ hP`. Take `⟨j, hj, κ, hκ, e1⟩` from `(mem_parahoricTimesPrincipalCongruence_iff (N_m_succ R) _ _).1 h1`. Establish `e2 : redGL _ P.1 k = redGL _ P.1 (extI (N_m_succ R) P.1 j)`.
+
+Rewrite using `[e1, map_mul, redGL_of_prinCong c.pos hκ, mul_one]`. Establish `e3 : k.1.toLinearMap ∘ₗ y = (extI (N_m_succ R) P.1 j).1.toLinearMap ∘ₗ (κ.1.toLinearMap ∘ₗ y)`. Rewrite using `[e1]`. Both sides reduce to the same expression. Rewrite using `[← Model.locTop_invQ hm hc hP (hD hP) c hκ y (hQ hP), e3, if_neg hP, unitV_det_ext _ (N_m_succ R) j k e2, locTop_extI, mul_right_comm, e.trans (parahoricTimesPrincipalCongruence_character_eq _ _ c.pos hj hκ h1 e1)]`.
+
+Unfold `locTop`. Rewrite using `[← mul_assoc]`. Use `congr 1`. Conclude with `GlobalTheory.TopLaw.phiTop_target_twist Ch mu m2 P.1 hm hq hP _ _ hPQ j hj _`.
+-/
 theorem locTop_target (hm : R.m = m2 + 2) (hc : cst.Ok) {P : rowSG Pr sel mu} (hq : ((qOf P.1 : ℕ) : 𝓞 X.E) ∉ P.1.asIdeal ^ 2)
     (hD : P.1 ∉ Pr.vGs → 2 * cst.M ≤ cst.D P) {Pl : LevFam X.E X.K R.r Pr.vGs}
     (hlev : (cst.sharp = false ∧ Pl = rP0 Ch) ∨ (cst.sharp = true ∧ Pl = rPsymF Ch)) (c : TopDepth R cst.M)
@@ -201,6 +256,9 @@ theorem locTop_target (hm : R.m = m2 + 2) (hc : cst.Ok) {P : rowSG Pr sel mu} (h
     congr 1
     exact GlobalTheory.TopLaw.phiTop_target_twist Ch mu m2 P.1 hm hq hP _ _ hPQ j hj _
 
+/- English proof (translation)
+Unfold `rhoT rhoS`. Rewrite using `[← unitV_inv_det]`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[inv_inv]`.
+-/
 theorem rhoT_inv (i : ℕ) (P : rowSG Pr sel mu) {n : ℕ} (k : GLint X.E n P.1) :
     rhoT Ch sel mu i P ((LinearEquiv.det (k⁻¹).1 : X.Eˣ) : X.E) = rhoS Ch sel mu i P ((LinearEquiv.det k.1 : X.Eˣ) : X.E) := by
   unfold rhoT rhoS
@@ -209,6 +267,11 @@ theorem rhoT_inv (i : ℕ) (P : rowSG Pr sel mu) {n : ℕ} (k : GLint X.E n P.1)
   · rfl
   · rw [inv_inv]
 
+/- English proof (translation)
+Take `⟨y, -, rfl⟩` from `hY`. Establish `h` using `(mem_locLat _ _ _ _).1 (sub_mem hv hw) P`. Rewrite `h` using `[sub_sub_sub_cancel_right]`. Rewrite using `[← map_sub]`. Use `⟨fun hP => ?_, fun hP => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [if_pos hP, zpow_zero, inv_one, one_smul] at h`. Conclude with `(frsF_mem p P _).1 (by rwa [LinearEquiv.apply_symm_apply])`. Simplify using `only [if_neg hP, zpow_natCast] at h`. Rewrite using `[← map_smul]`. Conclude with `(frsF_mem p P _).1 (by rwa [LinearEquiv.apply_symm_apply])`.
+-/
 theorem coset_sub {u : Pr.Word} {j : ℕ} (p : ChPt (R := R) sel mu u j) {Y : Set (Sp X.E (R.N j))}
     (hY : Y ∈ ybSet sel mu cst p.deco.1.N) {v w : Sp X.E (R.N j)} (hv : v ∈ Y) (hw : w ∈ Y) (P : rowSG Pr sel mu) :
     (P.1 ∈ Pr.vGs → (frsF sel mu p P).symm v - (frsF sel mu p P).symm w ∈ stdAt X.E _ P.1) ∧
@@ -224,6 +287,9 @@ theorem coset_sub {u : Pr.Word} {j : ℕ} (p : ChPt (R := R) sel mu u j) {Y : Se
     rw [← map_smul]
     exact (frsF_mem p P _).1 (by rwa [LinearEquiv.apply_symm_apply])
 
+/- English proof (translation)
+Take `⟨y, -, hY⟩` from `hY`. Conclude with `Classical.epsilon_spec (p := fun z => z ∈ Y) ⟨y, by rw [hY, Set.mem_ofPred_eq, sub_self]; exact zero_mem _⟩`.
+-/
 theorem repY_mem {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} {Y : Set (Sp X.E n)} (hY : Y ∈ ybSet sel mu cst N) : repY Y ∈ Y := by
   obtain ⟨y, -, hY⟩ := hY
   exact Classical.epsilon_spec (p := fun z => z ∈ Y) ⟨y, by rw [hY, Set.mem_ofPred_eq, sub_self]; exact zero_mem _⟩
@@ -236,6 +302,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {Ch : Ch
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}
   {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.TopLaw.ftY_comp_glint sel mu cst hL.cst_ok P (hL.depthQ P) k (atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ y) y' y'' hG hQ hG' hQ'`. Establish `h2` using `GlobalTheory.TopSrc.phiTop_level Ch sel mu cst L G m2 hX hPr hL b P k a hk.1 hk.2 (prXp X.E R ∘ₗ y)`. Unfold `locTop`. Rewrite using `[mul_right_comm, ← mul_assoc]`. Conclude with `congrArg₂ (· * ·) h2 h1`.
+-/
 theorem locTop_source (hX : X.Ok) (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) {b : L.β (m2 + 1)} {P : rowSG Pr sel mu}
     {k : GLint X.E (R.N (m2 + 1)) P.1} {a : X.Kˣ} (hk : LevAt (L.levG (m2 + 1) b) (L.levQ (m2 + 1) b) P k a)
     (y : HomE X.E (R.N (m2 + 1)) (R.N R.m)) {y' y'' : Sp X.E (R.N (m2 + 1))}
@@ -251,6 +320,15 @@ theorem locTop_source (hX : X.Ok) (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) {
   rw [mul_right_comm, ← mul_assoc]
   exact congrArg₂ (· * ·) h2 h1
 
+/- English proof (translation)
+Unfold `XiTop`. Rewrite using `[e0, mul_assoc, mul_left_comm _ (phiT _ _ _ _), ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, Units.coe_prod, ← Finset.prod_mul_distrib]`. Use `congrArg _ (Finset.prod_congr rfl fun P _ => ?_)` and prove the remaining obligations. Take `⟨v, hv, ev⟩` from `repY_mem hp2`. Establish `e1 : inFr (frsF sel mu q P) (frsF sel mu q' P) (γ'.1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap) = (κ' P).1.toLinearMap ∘ₗ (inFr (frsF sel mu p P) (frsF sel mu p' P) x ∘ₗ ((κ P)⁻¹).1.toLinearMap)`.
+
+Rewrite using `[hκ, hκ']`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Use `show (κ' P).1 ((frsF sel mu p' P).symm (γ'.1.symm (γ'.1 (x (γ.1.symm (γ.1 (frsF sel mu p P (((κ P)⁻¹).1 w)))))))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+
+Establish `e2 : ((κ P)⁻¹).1 ((frsF sel mu q P).symm (repY ((fun v => γ.1 v) '' Y))) = (frsF sel mu p P).symm v`. Rewrite using `[hκ, ← ev]`. Use `show (κ P).1.symm ((κ P).1 ((frsF sel mu p P).symm (γ.1.symm (γ.1 v)))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Establish `hs` using `coset_sub p hp1 hv (repY_mem hp1) P`.
+
+Rewrite `hs` using `[← e2]`. Establish `h1` using `locTop_source hX hPr hL (ha P).inv (inFr (frsF sel mu p P) (frsF sel mu p' P) x) (repY_int p hp1) (Model.repY_intQ p hp1) hs.1 hs.2`. Establish `h2` using `locTop_target (Ch := Ch) hL.hm hL.cst_ok (GlobalTheory.ColPeriod.levelPrimes X Pr sel S mu hX hPr hsel P).1.2 (hL.depthQ P) hlev c (ha' P) (inFr (frsF sel mu p P) (frsF sel mu p' P) x ∘ₗ ((κ P)⁻¹).1.toLinearMap) (repY_int q hp2) (Model.repY_intQ q hp2)`. Rewrite using `[e1, Pi.inv_apply, Pi.inv_apply, rhoT_inv, mul_comm (rhoS _ _ _ _ _ _), ← mul_assoc, h2, mul_assoc, h1, Units.val_mul, mul_assoc]`.
+-/
 theorem xiTop_law {u : Pr.Word} {b : L.β (m2 + 1)} {Pl : LevFam X.E X.K R.r Pr.vGs} (c : TopDepth R cst.M) (hX : X.Ok) (hPr : Pr.Ok)
     (hsel : IsSel X sel) (hL : L.Ok Ch sel mu cst G m2)
     (hlev : (cst.sharp = false ∧ Pl = rP0 Ch) ∨ (cst.sharp = true ∧ Pl = rPsymF Ch))
@@ -291,11 +369,21 @@ theorem xiTop_law {u : Pr.Word} {b : L.β (m2 + 1)} {Pl : LevFam X.E X.K R.r Pr.
     (repY_int q hp2) (Model.repY_intQ q hp2)
   rw [e1, Pi.inv_apply, Pi.inv_apply, rhoT_inv, mul_comm (rhoS _ _ _ _ _ _), ← mul_assoc, h2, mul_assoc, h1, Units.val_mul, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[LinearMap.comp_smul, LinearMap.comp_smul, LinearMap.smul_comp, smul_smul, Units.val_mul, mul_comm]`.
+-/
 theorem smul_comp_smul {K V V' : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V'] (s t : Kˣ)
     (f : V' →ₗ[K] V') (k : V →ₗ[K] V') (h : V →ₗ[K] V) :
     ((s * t : Kˣ) : K) • (f ∘ₗ k ∘ₗ h) = ((s : K) • f) ∘ₗ k ∘ₗ ((t : K) • h) := by
   rw [LinearMap.comp_smul, LinearMap.comp_smul, LinearMap.smul_comp, smul_smul, Units.val_mul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[topEquiv_iff_on]`. Introduce `g g₁ p Y p' hp`. Establish `hd` using `(tilOk_of_avoid (mu := mu) hPr hsel u hS).2.2`. Establish `hp1 : Y ∈ ybSet sel mu cst p.deco.1.N` using `hp`. Establish `hp2 : (fun v => g.1.1 v) '' Y ∈ ybSet sel mu cst (g • p).deco.1.N` using `(ybSet_gmap sel mu cst _ g.1.1 Y).2 hp1`.
+
+Take `⟨κ, a, hκ, ha, ea⟩` from `exists_pass hd g p`. Take `⟨κ', a', hκ', ha', ea'⟩` from `exists_pass hd g₁ p'`. Establish `key` using `GlobalTheory.kerOf_gmap_frames T.top (Sall sel mu u) _ (cAof sel mu cst) (cBof sel mu cst u) _ _ _ _ hT.top g.1 g₁.1 p.deco.1.N (frsF sel mu p) p'.deco.1.N (frsF sel mu p') κ⁻¹ κ'⁻¹ (XiTop Ch sel mu cst m2 p Y p') (XiTop Ch sel mu cst m2 (g • p) ((fun v => g.1.1 v) '' Y) (g₁ • p' …`. Establish `e1 : topDegreeKTwo W Ch sel mu cst T p Y p' = _` using `if_pos hp1`. Establish `e2 : topDegreeKTwo W Ch sel mu cst T (g • p) ((fun v => g.1.1 v) '' Y) (g₁ • p') = _` using `if_pos hp2`.
+
+Use `e2.trans ?_` and prove the remaining obligations. Rewrite using `[e1, funext hκ, funext hκ']`. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[ea, ea', mul_inv, ← map_inv (L.levG (m2 + 1) b).chr, ← map_inv (L.levQ (m2 + 1) b).chr]`. Conclude with `smul_comp_smul _ _ _ _ _`.
+-/
 theorem topEquiv {u : Pr.Word} {T : ChTh W sel mu u m2} (b : L.β (m2 + 1)) (hY : YbHyp (R := R) sel mu cst L u m2 b)
     {Pl : LevFam X.E X.K R.r Pr.vGs} (c : TopDepth R cst.M) (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel)
     (hS : Pr.T u ∈ S ∧ ∀ i, Pr.g i ∈ S) (hL : L.Ok Ch sel mu cst G m2)

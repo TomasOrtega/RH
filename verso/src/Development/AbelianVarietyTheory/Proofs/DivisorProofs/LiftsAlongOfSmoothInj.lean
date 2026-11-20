@@ -17,6 +17,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DualOpen
 
+/- English proof (translation)
+Introduce `R _ A _ g hA hg U M hU hM hI B _ _ t ht hsq`. Establish `: Smooth U.hom` using `hU.smooth`. Establish `: LocallyOfFiniteType U.hom` using `inferInstance`. Establish `hF : FieldChart A M` using `fieldChart_of_inj _ A hA g hg U M hU hM hI`. Establish `hT : TanLift A M` using `tanLift_of_fieldChart _ A hA U M hM hI hF`.
+
+Establish `hS : SmallLift A M` using `GlobalTheory.T.liftsAlong_smallExtension_of_dualNumber_lifting _ A hA U M hM hI hT`. Conclude with `GlobalTheory.T.liftsAlong_principal_small_extension R A U M hM hS B t ht hsq`.
+-/
 theorem liftsAlong_of_smooth_inj : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (U : Over (Sp R)) (M : LB (A ⊗ U).left), SmoothOfRelativeDimension g U.hom → Fam A M → Inj A M → ∀ (B : Type) [CommRing B] [IsLocalRing B] (t : B), t ∈ IsLocalRing.maximalIdeal B → IsLocalRing.maximalIdeal B * Ideal.span {t} = ⊥ → LiftsAlong A M B (Ideal.span {t}) := by
   intro R _ A _ g hA hg U M hU hM hI B _ _ t ht hsq
   have : Smooth U.hom := hU.smooth

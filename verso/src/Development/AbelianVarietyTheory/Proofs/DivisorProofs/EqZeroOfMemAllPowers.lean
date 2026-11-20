@@ -11,6 +11,11 @@ namespace GlobalTheory.NormEq
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Establish `hv : Valued.v c ≠ 0` using `(_root_.map_ne_zero _).2 h0`. Take `⟨g, hg⟩` from `WithZero.ne_zero_iff_exists.1 hv`. Use `hc (1 - Multiplicative.toAdd g).toNat` as an intermediate fact. Rewrite `this` using `[← hg, WithZero.coe_le_coe]`.
+
+Establish `h2 : Multiplicative.toAdd g ≤ -(((1 - Multiplicative.toAdd g).toNat : ℕ) : ℤ)`. Use `Multiplicative.toAdd_le.2 this` as an intermediate fact. Simplify using `using this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_zero_of_forall_v_le {c : L}
     (hc : ∀ m : ℕ, Valued.v c ≤ ((Multiplicative.ofAdd (-(m : ℤ)) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))) :
     c = 0 := by
@@ -24,6 +29,13 @@ theorem eq_zero_of_forall_v_le {c : L}
     simpa using this
   omega
 
+/- English proof (translation)
+Use `Subtype.ext (eq_zero_of_forall_v_le fun m => ?_)` and prove the remaining obligations. Take `⟨d, hd⟩` from `hc m`. Establish `hd' : (c : L) = ϖ ^ m * (d : L)`. Rewrite using `[hd]`. Simplify using the standard rewrite rules.
+
+Establish `hdv : Valued.v (d : L) ≤ 1` using `d.2`. Rewrite using `[hd', map_mul, map_pow, h.2.2.2.1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, ← WithZero.coe_pow, ← ofAdd_nsmul]`. Use `congr 2`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem int_eq_zero_of_forall_dvd {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) {c : intL L}
     (hc : ∀ m : ℕ, piO h ^ m ∣ c) : c = 0 := by
   refine Subtype.ext (eq_zero_of_forall_v_le fun m => ?_)
@@ -39,6 +51,11 @@ theorem int_eq_zero_of_forall_dvd {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnr
       congr 2
       simp
 
+/- English proof (translation)
+Use `(GlobalTheory.UTr.powBasis P).ext_elem fun i => ?_` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.zero_apply]`. Use `int_eq_zero_of_forall_dvd h fun m => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (ha m)`. Use `⟨(GlobalTheory.UTr.powBasis P).repr b i, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hb, mul_comm, ← map_pow, ← Algebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+-/
 theorem eq_zero_of_forall_mem_piPow {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q)
     (P : GlobalTheory.UTr.Csr (sigO σ h.2.1)) (a : GlobalTheory.UTr.Alg P) (ha : ∀ m, a ∈ piPow h P m) : a = 0 := by
   refine (GlobalTheory.UTr.powBasis P).ext_elem fun i => ?_
@@ -48,6 +65,9 @@ theorem eq_zero_of_forall_mem_piPow {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsU
   refine ⟨(GlobalTheory.UTr.powBasis P).repr b i, ?_⟩
   rw [← hb, mul_comm, ← map_pow, ← Algebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ h P a ha` and use `eq_zero_of_forall_mem_piPow h P a ha`.
+-/
 theorem sep : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (ϖ : L) (q : ℕ)
     (h : IsUnramInv ϖ σ q) (P : GlobalTheory.UTr.Csr (GlobalTheory.NormEq.sigO σ h.2.1)) (a : GlobalTheory.UTr.Alg P),
     (∀ m, a ∈ GlobalTheory.NormEq.piPow h P m) → a = 0 :=

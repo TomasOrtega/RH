@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenFibMapAlgebraMap
 open CategoryTheory Limits
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LocAcyc.exists_isZModTorsor_tensorBase | exact GlobalTheory.LocAcyc.exists_isZModTorsor_tensorBase | (intros; apply GlobalTheory.LocAcyc.exists_isZModTorsor_tensorBase <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.torsor_base_change_zmod : ∀ (U B : Type) [CommRing U] [CommRing B] [Algebra U B] (q : ℕ) (D : Type) [CommRing D]
     [Algebra U D] (act : Multiplicative (ZMod q) →* (D ≃ₐ[U] D)), 0 < q →
     GlobalTheory.LocAcyc.IsZModTorsor U D q act →

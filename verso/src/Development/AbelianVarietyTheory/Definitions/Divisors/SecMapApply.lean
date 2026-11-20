@@ -49,6 +49,9 @@ def IsCoinvQuot {G' Y' : Type} [Group G'] [TopologicalSpace Y] [TopologicalSpace
   ∃ p : (Y → ℂ) →ₗ[ℂ] ((Y' → ℂ) ⧸ locAug om'), (SB Y).map p = (SB Y').map (locAug om').mkQ ∧ locAug om ≤ LinearMap.ker p ∧
     ∀ h : H, ∀ φ ∈ SB Y, ∀ φ' ∈ SB Y', p φ = (locAug om').mkQ φ' → p (om (1, h) φ) = (locAug om').mkQ (om' (1, h) φ')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem secMap_apply (om : G × H →* Module.End ℂ (Y → ℂ)) (l : (Y → ℂ) →ₗ[ℂ] ℂ) (φ : Y → ℂ) (h : H) :
     secMap om l φ h = l (om (1, h) φ) := rfl
 

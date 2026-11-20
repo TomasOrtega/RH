@@ -11,6 +11,11 @@ section
 
 variable {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Establish `h` using `(GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := EuclideanSpace ℝ ι) (b := (c : ℂ)) (by simpa using hc) (a : ℂ) ξ).norm`. Use `h.congr (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [Complex.norm_exp]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Use `left`. Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_re]`.
+-/
 theorem integrable_rexp_lin (c : ℝ) (hc : 0 < c) (a : ℝ) (ξ : EuclideanSpace ℝ ι) :
     Integrable (fun u : EuclideanSpace ℝ ι => Real.exp (-(c * ‖u‖ ^ 2) + a * ⟪ξ, u⟫_ℝ)) := by
   have h := (GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := EuclideanSpace ℝ ι)
@@ -22,10 +27,16 @@ theorem integrable_rexp_lin (c : ℝ) (hc : 0 < c) (a : ℝ) (ξ : EuclideanSpac
   left
   rw [← Complex.ofReal_pow, Complex.ofReal_re]
 
+/- English proof (translation)
+Use `Real.add_one_le_exp |x|` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem abs_le_exp_abs (x : ℝ) : |x| ≤ Real.exp |x| := by
   have := Real.add_one_le_exp |x|
   linarith
 
+/- English proof (translation)
+Break down `abs_cases s with ⟨h, -⟩ | ⟨h, -⟩` into its components or cases. Rewrite using `[h]`. Use `Real.exp_pos (-(a * s))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h]; have := Real.exp_pos (a * s); rw [show a * -s = -(a * s) by ring]; linarith`.
+-/
 theorem exp_abs_le (a s : ℝ) : Real.exp (a * |s|) ≤ Real.exp (a * s) + Real.exp (-(a * s)) := by
   rcases abs_cases s with ⟨h, -⟩ | ⟨h, -⟩
   · rw [h]; have := Real.exp_pos (-(a * s)); linarith
@@ -33,6 +44,33 @@ theorem exp_abs_le (a s : ℝ) : Real.exp (a * |s|) ≤ Real.exp (a * s) + Real.
 
 end
 
+/- English proof (translation)
+Introduce `z₀`. Use `set C : ℝ := SchwartzMap.seminorm ℝ 0 0 h with hC`. Establish `hCb : ∀ u, ‖h u‖ ≤ C` using `fun u => SchwartzMap.norm_le_seminorm ℝ h u`. Use `set a : ℝ := ‖z₀‖ + 2 with ha`. Set `bound : EuclideanSpace ℝ ι → ℝ` to `fun u => C * (Real.exp (-(c * ‖u‖ ^ 2) + a * ⟪ξ, u⟫_ℝ) + Real.exp (-(c * ‖u‖ ^ 2) + (-a) * ⟪ξ, u⟫_ℝ))`.
+
+Establish `hbound : Integrable bound` using `((integrable_rexp_lin c hc a ξ).add (integrable_rexp_lin c hc (-a) ξ)).const_mul C`. Establish `hest : ∀ u (z : ℂ), ‖z‖ ≤ ‖z₀‖ + 1 → ‖h u‖ * Real.exp (-(c * ‖u‖ ^ 2)) * (|⟪ξ, u⟫_ℝ| * Real.exp (‖z‖ * |⟪ξ, u⟫_ℝ|)) ≤ bound u`. Introduce `u z hz`. Use `set s := ⟪ξ, u⟫_ℝ`. Establish `h1 : |s| * Real.exp (‖z‖ * |s|) ≤ Real.exp (a * |s|)`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `abs_le_exp_abs s`. Use `_ = Real.exp (a * |s|) := by rw [← Real.exp_add, ha]; ring_nf`. Establish `h2` using `exp_abs_le a s`. Establish `hE : 0 ≤ Real.exp (-(c * ‖u‖ ^ 2))` using `(Real.exp_pos _).le`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `hCb u`. Conclude with `h1.trans h2`. Use `_ = bound u := by`. Simplify using `only [bound, Real.exp_add]`.
+
+Rewrite using `[show (-a) * s = -(a * s) by ring]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnormF' : ∀ u (z : ℂ), ‖h u * (Real.exp (-(c * ‖u‖ ^ 2)) : ℂ) * (((⟪ξ, u⟫_ℝ : ℝ) : ℂ) * Complex.exp (z * ⟪ξ, u⟫_ℝ))‖ ≤ ‖h u‖ * Real.exp (-(c * ‖u‖ ^ 2)) * (|⟪ξ, u⟫_ℝ| * Real.exp (‖z‖ * |⟪ξ, u⟫_ℝ|))`. Introduce `u z`. Rewrite using `[norm_mul, norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), Complex.norm_exp]`.
+
+Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Establish `hnormF : ∀ u, ‖h u * (Real.exp (-(c * ‖u‖ ^ 2)) : ℂ) * Complex.exp (z₀ * ⟪ξ, u⟫_ℝ)‖ ≤ bound u`. Introduce `u`. Use `set s := ⟪ξ, u⟫_ℝ`.
+
+Establish `e1 : ‖h u * (Real.exp (-(c * ‖u‖ ^ 2)) : ℂ) * Complex.exp (z₀ * s)‖ ≤ ‖h u‖ * Real.exp (-(c * ‖u‖ ^ 2)) * Real.exp (‖z₀‖ * |s|)`. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), Complex.norm_exp]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Use `e1.trans ?_` and prove the remaining obligations.
+
+Establish `hE : 0 ≤ Real.exp (-(c * ‖u‖ ^ 2))` using `(Real.exp_pos _).le`. Establish `h3 : Real.exp (‖z₀‖ * |s|) ≤ Real.exp (a * s) + Real.exp (-(a * s))` using `(Real.exp_le_exp.2 (by gcongr; rw [ha]; linarith)).trans (exp_abs_le a s)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hCb u`. Use `_ = bound u := by`.
+
+Simplify using `only [bound, Real.exp_add]`. Rewrite using `[show (-a) * s = -(a * s) by ring]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcont : ∀ z : ℂ, Continuous (fun u : EuclideanSpace ℝ ι => h u * (Real.exp (-(c * ‖u‖ ^ 2)) : ℂ) * Complex.exp (z * ⟪ξ, u⟫_ℝ))`. Introduce `z`.
+
+Establish `: Continuous (fun u : EuclideanSpace ℝ ι => ⟪ξ, u⟫_ℝ)` using `continuous_const.inner continuous_id`. Use `fun_prop`. Establish `hcont' : Continuous (fun u : EuclideanSpace ℝ ι => h u * (Real.exp (-(c * ‖u‖ ^ 2)) : ℂ) * (((⟪ξ, u⟫_ℝ : ℝ) : ℂ) * Complex.exp (z₀ * ⟪ξ, u⟫_ℝ)))`. Establish `: Continuous (fun u : EuclideanSpace ℝ ι => ⟪ξ, u⟫_ℝ)` using `continuous_const.inner continuous_id`. Use `fun_prop`.
+
+Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := volume) (F := fun (z : ℂ) (u : EuclideanSpace ℝ ι) => h u * (Real.exp (-(c * ‖u‖ ^ 2)) : ℂ) * Complex.exp (z * ⟪ξ, u⟫_ℝ)) (F' := fun (z : ℂ) (u : EuclideanSpace ℝ ι) => h u * (Real.exp (-(c * ‖u‖ ^ 2)) : ℂ) * (((⟪ξ, u⟫_ℝ : ℝ) …`. Use `Metric.mem_ball.1 hz` as an intermediate fact. Establish `h1 : ‖z‖ ≤ ‖z - z₀‖ + ‖z₀‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[dist_eq_norm]`.
+
+Use the proof step `linarith)))`. Use `hbound`. Use the proof step `(Filter.Eventually.of_forall fun u z _ => by`. Establish `hd : HasDerivAt (fun z : ℂ => Complex.exp (z * ⟪ξ, u⟫_ℝ)) (Complex.exp (z * ⟪ξ, u⟫_ℝ) * (1 * ((⟪ξ, u⟫_ℝ : ℝ) : ℂ))) z` using `((hasDerivAt_id z).mul_const _).cexp`. Use `(hd.const_mul (h u * (Real.exp (-(c * ‖u‖ ^ 2)) : ℂ))).congr_deriv ?_` and prove the remaining obligations.
+
+Use the proof step `ring)`. Conclude with `key.2.differentiableAt`.
+-/
 theorem entire_laplace {ι : Type} [Fintype ι] (c : ℝ) (hc : 0 < c) (h : 𝓢(EuclideanSpace ℝ ι, ℂ))
     (ξ : EuclideanSpace ℝ ι) :
     Differentiable ℂ (fun z : ℂ => ∫ u, h u * Real.exp (-(c * ‖u‖ ^ 2)) * Complex.exp (z * ⟪ξ, u⟫_ℝ)) := by

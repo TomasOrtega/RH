@@ -11,6 +11,13 @@ namespace GlobalTheory.CharDepth
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ in
 
+/- English proof (translation)
+Establish `hK : ∀ {n : ℕ} (f : PS R n d), FB.toK k (MvPowerSeries.map φ f) = FB.toK k f`. Introduce `n f`. Use extensionality with `mo`. Simplify using `only [MvPowerSeries.coeff_map, hφ]`. Establish `hF : (FBMap.mapFB φ B).FK k = B.FK k` using `funext fun _ => hK _`.
+
+Establish `hA : (FBMap.mapFB φ B).actK k = B.actK k` using `funext fun _ => funext fun _ => hK _`. Use `⟨hh.ax0, hh.ax1, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hF]`. Conclude with `(hK _).trans hh.ph1`. Rewrite using `[hF]`.
+
+Conclude with `(hK _).trans hh.ph2`. Conclude with `(hK _).trans hh.sy`. Rewrite using `[hA]`. Conclude with `(hK _).trans (hh.ad a)`.
+-/
 theorem isCanonGauge_mapFB_tower {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O] {k : Type}
     [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) {h : PS k 2 d} {R' : Type} [CommRing R'] [Algebra R' k]
     (φ : R →+* R') (hφ : ∀ x, algebraMap R' k (φ x) = algebraMap R k x) (hh : B.IsCanonGauge k h) :
@@ -33,6 +40,13 @@ open ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF ReciprocityTheory.ChartRes
 open TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io y Ch p _ X`. Use `letI := io.toAlgebra`. Take `⟨BT, e1, e2, -, -, -, -, e7⟩` from `integralChart_formalBiext E H Dw l Xo c T io y Ch`.
+
+Use `letI : Algebra T.Fr X.C := X.ιF.toAlgebra`. Use `letI : Algebra T.V X.C := (X.ιF.comp (algebraMap T.V T.Fr)).toAlgebra`. Use `haveI : IsScalarTower T.V T.Fr X.C := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Take `⟨-, -, h3, h4⟩` from `e7 X.C`. Use `⟨FBMap.mapFB X.ι BT, ?_, fun a => ?_, isCanonGauge_mapFB_tower BT X.ι (fun x => (X.comp x).symm) ((h3 _).2 h4)⟩` and prove the remaining obligations.
+
+Rewrite using `[← e1]`. Both sides reduce to the same expression. Rewrite using `[← e2]`. Both sides reduce to the same expression.
+-/
 theorem exists_formalBiext_valExt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing;
     ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y) (p : ℕ) [Fact p.Prime]

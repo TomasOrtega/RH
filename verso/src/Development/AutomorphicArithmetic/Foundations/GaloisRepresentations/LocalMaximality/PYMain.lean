@@ -10,6 +10,21 @@ namespace UpperTheory.Gal.productCup_of_system
 section
 variable {F L : Type} [Field F] [Field L] [Algebra ℂ F] [Algebra ℂ L] [Algebra F L] [IsScalarTower ℂ F L] {d : ℕ}
 
+/- English proof (translation)
+Establish `ht : ∀ j : Fin d, algebraMap F L ((x j.succ : F) / x 0) ∈ rB ℂ L (xv x) Finset.univ` using `fun j => (integralClosure (rA ℂ (xv x) Finset.univ) L).algebraMap_mem ⟨(x j.succ : F) / x 0, Algebra.subset_adjoin ⟨0, Finset.mem_univ _, j.succ, rfl⟩⟩`. Establish `hti : ∀ j : Fin d, (algebraMap F L ((x j.succ : F) / x 0))⁻¹ ∈ rB ℂ L (xv x) Finset.univ` using `fun j => by`. Use `(integralClosure (rA ℂ (xv x) Finset.univ) L).algebraMap_mem ⟨(x 0 : F) / x j.succ, Algebra.subset_adjoin ⟨j.succ, Finset.mem_univ _, 0, rfl⟩⟩` as an intermediate fact. Rewrite using `[← map_inv₀, inv_div]`. Conclude with `this`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show _ ∈ cechC _ _`. Rewrite using `[cechC, Submodule.mem_pi]`. Introduce `s _`. Distinguish the cases in `hs : s = Finset.univ`.
+
+Substitute `hs` using the available equality. Rewrite using `[if_pos ⟨Finset.univ_nonempty, by simp⟩]`. Establish `hv : locCoch ℂ L (xv x) h Finset.univ = (h * ∏ j : Fin d, (algebraMap F L ((x j.succ : F) / x 0))⁻¹) • ExteriorAlgebra.ιMulti L d fun j => D ℂ L (algebraMap F L ((x j.succ : F) / x 0))`. Rewrite using `[locCoch, if_pos rfl, vol0, mul_smul]`. Use `congr 1`.
+
+Conclude with `(ExteriorAlgebra.ιMulti L d).toMultilinearMap.map_smul_univ _ _`. Rewrite using `[hv]`. Conclude with `Submodule.subset_span ⟨_, mul_mem hh (prod_mem fun j _ => hti j), _, ht, rfl⟩`. Establish `: locCoch ℂ L (xv x) h s = 0` using `if_neg hs`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Use `LinearMap.mem_ker.2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Use `show GlobalTheory.DI.delta _ t = 0`. Unfold `GlobalTheory.DI.delta`.
+
+Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `: locCoch ℂ L (xv x) h (t.erase i) = 0` using `if_neg fun h' => by`. Use `Finset.mem_univ i` as an intermediate fact. Rewrite `this` using `[← h']`. Conclude with `Finset.notMem_erase i t this`.
+
+Simplify using `[this]`.
+-/
 private theorem locCoch_mem_Z (x : Fin (d + 1) → Fˣ) (h : L) (hh : h ∈ rB ℂ L (xv x) Finset.univ) :
     locCoch ℂ L (xv x) h ∈ (omCx (rB ℂ L (xv x)) d).Z d := by
   have ht : ∀ j : Fin d, algebraMap F L ((x j.succ : F) / x 0) ∈ rB ℂ L (xv x) Finset.univ := fun j =>
@@ -48,6 +63,9 @@ private theorem locCoch_mem_Z (x : Fin (d + 1) → Fˣ) (h : L) (hh : h ∈ rB �
       exact Finset.notMem_erase i t this
     simp [this]
 
+/- English proof (translation)
+Simplify using `[pk]`.
+-/
 private theorem pk_single (i : Fin (d + 1)) : pk ({i} : Finset (Fin (d + 1))) = i := by
   simp [pk]
 
@@ -56,11 +74,17 @@ end
 section
 variable {β κ₁ κ₂ : Type} [LinearOrder β] [LinearOrder κ₁] [LinearOrder κ₂]
 
+/- English proof (translation)
+Use extensionality with `t`. Simplify using `only [uni, inlE, Finset.mem_map, Finset.mem_disjSum, Finset.notMem_empty]`. Simplify using the standard rewrite rules.
+-/
 private theorem map_inlE (L : Finset κ₁) : L.map (inlE : κ₁ ↪o κ₁ ⊕ₗ κ₂).toEmbedding = uni L ∅ := by
   ext t
   simp only [uni, inlE, Finset.mem_map, Finset.mem_disjSum, Finset.notMem_empty]
   simp
 
+/- English proof (translation)
+Rewrite using `[← map_inlE, Finset.prod_map]`. Establish `: ∀ l : κ₁, T.u (app n11 n) i j ((inlE : κ₁ ↪o κ₁ ⊕ₗ κ₂).toEmbedding l) = T.X i * T.Y j` using `fun l => by`. Simplify using `[Sys.u, app, n11, inlE]`. Rewrite using `[Finset.prod_congr rfl fun l _ => this l, Finset.prod_const]`.
+-/
 private theorem prod_u {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E] (T : Sys d S E)
     (n : κ₂ → ℕ × ℕ) (L : Finset κ₁) (i j : Fin (d + 1)) :
     ∏ l ∈ uni L (∅ : Finset κ₂), T.u (app n11 n) i j l = (T.X i * T.Y j) ^ L.card := by
@@ -75,6 +99,9 @@ section
 variable {F K : Type} [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ K] [Algebra F K] [IsScalarTower ℂ F K] {d : ℕ}
   (x : Fin (d + 1) → Fˣ)
 
+/- English proof (translation)
+Establish `h1 : X ^ d ≠ 0` using `pow_ne_zero _ hX`. Rewrite using `[mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[he, one_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem valuation_power_identity {K : Type} [Field K] (e P X : K) (d : ℕ) (hX : X ≠ 0) (he : e * (-1) ^ d = 1) :
     e * ((X * X) ^ d)⁻¹ * ((-1) ^ d * (P * X ^ d)) = P / X ^ d := by
   have h1 : X ^ d ≠ 0 := pow_ne_zero _ hX
@@ -84,20 +111,32 @@ private theorem valuation_power_identity {K : Type} [Field K] (e P X : K) (d : �
       rw [he, one_mul]
       field_simp
 
+/- English proof (translation)
+Simplify using `[sysZ]`.
+-/
 private theorem lmul_X (a : ℕ) (i : Fin (d + 1)) :
     Algebra.TensorProduct.lmul' ℂ (((sysZ K x a).X i : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) = algebraMap F K (x i) := by
   simp [sysZ]
 
+/- English proof (translation)
+Simplify using `[sysZ]`.
+-/
 private theorem lmul_Y (a : ℕ) (i : Fin (d + 1)) :
     Algebra.TensorProduct.lmul' ℂ (((sysZ K x a).Y i : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) = algebraMap F K (x i) := by
   simp [sysZ]
 
+/- English proof (translation)
+Unfold `kap`. Rewrite using `[(hTh d (K ⊗[ℂ] K) (DR ℂ K ⊗[ℂ] DR ℂ K) (sysZ K x 0)).2.2.2]`. Simplify using `only [map_mul, map_prod, map_pow, lmul_X, lmul_Y]`.
+-/
 private theorem kap_dj (hTh : ThMu) :
     kap K x (img (dj (0 : Fin (d + 1)))) = (∏ l : Fin d, algebraMap F K (x l.succ)) * algebraMap F K (x 0) ^ d := by
   unfold kap
   rw [(hTh d (K ⊗[ℂ] K) (DR ℂ K ⊗[ℂ] DR ℂ K) (sysZ K x 0)).2.2.2]
   simp only [map_mul, map_prod, map_pow, lmul_X, lmul_Y]
 
+/- English proof (translation)
+Establish `h0 : algebraMap F K (x 0) ≠ 0` using `by simp`. Rewrite using `[omG, Fin.prod_univ_succ, div_self (x 0).ne_zero, one_mul, map_prod]`. Simplify using `only [map_div₀]`. Rewrite using `[Finset.prod_div_distrib]`. Simplify using the standard rewrite rules.
+-/
 private theorem omG_zero : algebraMap F K (omG x 0) =
     (∏ l : Fin d, algebraMap F K (x l.succ)) / algebraMap F K (x 0) ^ d := by
   have h0 : algebraMap F K (x 0) ≠ 0 := by simp
@@ -108,6 +147,55 @@ private theorem omG_zero : algebraMap F K (omG x 0) =
 
 end
 
+/- English proof (translation)
+Introduce `hVal hBig hCT hCG hG hCRT hTh _ hAL _ hSB hRY _ hWU F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 Fx A hY τ hτ a ha κ _ _ n z hz c hc hD`. Take `⟨-, hcrt⟩` from `hCRT F K' d x hY.covY`. Take `⟨h, hh⟩` from `hcrt fun e => if e ∈ Fx then locTerm (A e) a else 0`. Establish `hoff : ∀ e : fib ℂ K' (xv x), e ∉ Fx → e.1 h = 0` using `fun e he => by rw [hh, if_neg he]`. Establish `hon : ∀ e ∈ Fx, e.1 h = locTerm (A e) a` using `fun e he => by rw [hh, if_pos he]`.
+
+Establish `hsum : ∑ᶠ e : fib ℂ K' (xv x), e.1 h = ∑ e ∈ Fx, locTerm (A e) a`. Rewrite using `[finsum_eq_sum_of_support_subset (s := Fx) _ fun e he => ?_]`. Conclude with `Finset.sum_congr rfl hon`. Assume the negation of the conclusion as `hn`. Conclude with `he (hoff e hn)`.
+
+Establish `hloc : locCoch ℂ K' (xv x) h ∈ (omCx (rB ℂ K' (xv x)) d).Z d`. Take `⟨h1, -, h3, -⟩` from `hRY F K K' d x j2 hY.toY0`. Use `locCoch_mem_Z x _ ?_` and prove the remaining obligations. Use `h3 {0} Finset.univ ∅ ∅ (Finset.subset_univ _) subset_rfl` as an intermediate fact. Rewrite `this` using `[h1, h1]`.
+
+Conclude with `this h.2`. Use `⟨h, ?_, hloc, hsum⟩` and prove the remaining obligations. Establish `hlr : ∀ {β γ : Type} [LinearOrder β] [LinearOrder γ] (b : Finset β) (L : Finset γ), lft (uni b L) = b ∧ rgt (uni b L) = L ∧ (uni b L).card = b.card + L.card` using `fun b L => ⟨(hWU _ _ ℂ 0 0 b L).2.1, (hWU _ _ ℂ 0 0 b L).2.2.1, (hWU _ _ ℂ 0 0 b L).2.2.2.1⟩`. Establish `hcardI : (img (dj (0 : Fin (d + 1)))).card = d` using `by simp [img]`. Establish `hcard0 : (uni (img (dj (0 : Fin (d + 1)))) (∅ : Finset κ)).card = d`.
+
+Rewrite using `[(hlr _ _).2.2, hcardI]`. Simplify using the standard rewrite rules. Use `set L0 : Finset (Mi d ⊕ₗ κ) := uni (img (dj (0 : Fin (d + 1)))) ∅ with hL0`. Use `set c0 := c (uni (uni {0} {0}) L0) with hc0`. Establish `hcol` using `((hSB d _ _ (sysZ K x a) (Mi d ⊕ₗ κ) (app n11 n) (app (sysZ K x a).mu z) ((d : ℤ) + 2)).2.1 c).1 hc.1 {0} {0}`.
+
+Rewrite `hcol` using `[if_pos ⟨Finset.singleton_nonempty _, Finset.singleton_nonempty _⟩]`. Establish `h3 : c0 ∈ ((sysZ K x a).M {0} {0}).map ((sysZ K x a).act ((∏ l ∈ L0, (sysZ K x a).u (app n11 n) (pk {0}) (pk {0}) l : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K))`. Use `hcol L0 (Set.mem_univ _)` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[SetLike.mem_coe, if_pos (by rw [hcard0]; simp; ring)]`.
+
+Conclude with `this`. Rewrite `h3` using `[pk_single, hL0, prod_u, hcardI]`. Take `⟨m', hm', hm'eq⟩` from `h3`. Use `set U : (K ⊗[ℂ] K)ˣ := ((sysZ K x a).X 0 * (sysZ K x a).Y 0) ^ d with hU`. Establish `hm'eq' : actZ K (U : K ⊗[ℂ] K) m' = c0` using `hm'eq`.
+
+Use `set ε : ℂ := (-1) ^ d with hε`. Establish `hεε : ε * ε = 1` using `by rw [hε, ← mul_pow]; simp`. Use `set s0 : K ⊗[ℂ] K := algebraMap ℂ _ ε * ((U⁻¹ : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) with hs0`. Establish `hm_eq : actZ K s0 c0 = ε • m'`. Rewrite using `[← hm'eq', ← Module.End.mul_apply, ← map_mul, hs0, mul_assoc, Units.inv_mul, mul_one, AlgHom.commutes, Module.algebraMap_end_apply]`.
+
+Establish `hmM : actZ K s0 c0 ∈ (sysZ K x a).M {0} {0}`. Rewrite using `[hm_eq]`. Conclude with `Submodule.smul_mem _ _ hm'`. Establish `hdiag : Acts (F` using `F) K τ a c0 ((-1) ^ d * kap K x (img (dj (0 : Fin (d + 1))))) := by`. Use `hD 0 0 (img (dj 0)) hcardI` as an intermediate fact.
+
+Establish `he : resK inlE c (uni (uni {0} {0}) (img (dj (0 : Fin (d + 1))))) = c0` using `by show c (uni (lft _) ((rgt _).map _)) = _`. Rewrite using `[(hlr _ _).1, (hlr _ _).2.1, map_inlE]`. Rewrite `this` using `[he]`. Then use the resulting hypothesis. Establish `hact` using `(hAL F K d x hY.covZ τ hτ a).2.1 _ _ s0 hdiag`. Establish `hX0 : algebraMap F K (x 0) ≠ 0` using `by simp`.
+
+Establish `hlU : Algebra.TensorProduct.lmul' ℂ ((U⁻¹ : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) * (algebraMap F K (x 0) * algebraMap F K (x 0)) ^ d = 1`. Establish `h1 : Algebra.TensorProduct.lmul' ℂ (U : K ⊗[ℂ] K) = (algebraMap F K (x 0) * algebraMap F K (x 0)) ^ d`. Rewrite using `[hU, Units.val_pow_eq_pow_val, map_pow, Units.val_mul, map_mul, lmul_X, lmul_Y]`. Rewrite using `[← h1, ← map_mul, Units.inv_mul, map_one]`. Establish `hval : Algebra.TensorProduct.lmul' ℂ s0 * ((-1) ^ d * kap K x (img (dj (0 : Fin (d + 1))))) = algebraMap F K (omG x 0)`.
+
+Establish `hε' : algebraMap ℂ K ε * (-1) ^ d = 1`. Rewrite using `[hε, map_pow, map_neg, map_one, ← mul_pow]`. Simplify using the standard rewrite rules. Rewrite using `[hs0, map_mul, AlgHom.commutes, kap_dj x hTh, omG_zero]`. Establish `hi : Algebra.TensorProduct.lmul' ℂ ((U⁻¹ : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) = ((algebraMap F K (x 0) * algebraMap F K (x 0)) ^ d)⁻¹` using `eq_inv_of_mul_eq_one_left hlU`.
+
+Rewrite using `[hi]`. Conclude with `valuation_power_identity _ _ _ d hX0 hε'`. Rewrite `hact` using `[hval]`. Take `⟨s, hs1, hs2⟩` from `hVal F K K' d x j2 Fx A hY τ hτ a ha _ hmM hact`. Take `⟨gmu, gact, -, -, gZ⟩` from `hG F K K' d x j2 hY.toY0 a ha`.
+
+Establish `hgG : (fun l => gS j2 (app (sysZ K x a).mu z l)) = gG x j2 z`. Use function extensionality and compare the values at `t`. Use `show gS j2 (Sum.elim _ _ (ofLex t)) = Sum.elim _ _ (ofLex t)`. Consider the cases of `ofLex t with`. Consider the case `inl l => exact gmu l`.
+
+Consider the case `inr l => rfl`. Establish `hc' : (fun t => gY j2 (c t)) ∈ ((sysY x j2 d).cx (app n11 n) (gG x j2 z)).Z ((d : ℤ) + 2)`. Rewrite using `[← hgG]`. Conclude with `gZ (Mi d ⊕ₗ κ) (app n11 n) (app (sysZ K x a).mu z) ((d : ℤ) + 2) c hc`. Establish `hgX : gS j2 (((sysZ K x a).X 0 : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) = algebraMap F K' (x 0)`.
+
+Simplify using `[sysZ, gS, ← IsScalarTower.algebraMap_apply]`. Establish `hgY : gS j2 (((sysZ K x a).Y 0 : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) = j2 (algebraMap F K (x 0))`. Simplify using `[sysZ, gS]`. Establish `hc'v : gY j2 c0 = ((-1) ^ d * (algebraMap F K' (x 0) * j2 (algebraMap F K (x 0))) ^ d * s) • dtS K' x Finset.univ`. Establish `ht : actZ K (algebraMap ℂ _ ε * (U : K ⊗[ℂ] K)) (actZ K s0 c0) = c0`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, hs0]`. Establish `: algebraMap ℂ (K ⊗[ℂ] K) ε * (U : K ⊗[ℂ] K) * (algebraMap ℂ (K ⊗[ℂ] K) ε * ((U⁻¹ : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K)) = 1`. Rewrite using `[mul_mul_mul_comm, ← map_mul, hεε, map_one, one_mul, Units.mul_inv]`. Rewrite using `[this, map_one, Module.End.one_apply]`. Establish `hgU : gS j2 (algebraMap ℂ _ ε * (U : K ⊗[ℂ] K)) = (-1) ^ d * (algebraMap F K' (x 0) * j2 (algebraMap F K (x 0))) ^ d`.
+
+Rewrite using `[map_mul, AlgHom.commutes, hU, Units.val_pow_eq_pow_val, Units.val_mul, map_pow (gS j2), map_mul (gS j2), hgX, hgY, hε]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Establish `hsv : ∀ e ∈ Fx, Val (rB ℂ K' (xv x) {0}) e.1 s (e.1 h * (1 - A e).det)` using `fun e he => by`. Rewrite using `[hon e he, locTerm, div_mul_cancel₀ _ (hY.det e he)]`.
+
+Conclude with `hs2 e he`. Take `⟨c1, hc1, hc1v, hc1z⟩` from `hBig F K K' d x j2 Fx A hY κ n z hz h hoff`. Establish `hCmp` using `hCG F K K' d x j2 Fx A hY κ n z hz h s hsv c1 hc1 hc1v _ hc' hc'v`. Establish `hres` using `(hSB d _ _ (sysY x j2 d) ((Mi d ⊕ₗ κ) ⊕ₗ Fin d) (app (app n11 n) n10) (app (gG x j2 z) (gT x j2)) ((d : ℤ) + 2)).2.2.2.2.2 (Fin d) inrE c1 hc1`. Establish `e1 : (fun l : Fin d => app (app n11 n) n10 ((inrE : Fin d ↪o (Mi d ⊕ₗ κ) ⊕ₗ Fin d) l)) = n10` using `funext fun l => rfl`.
+
+Establish `e2 : (fun l : Fin d => app (gG x j2 z) (gT x j2) ((inrE : Fin d ↪o (Mi d ⊕ₗ κ) ⊕ₗ Fin d) l)) = gT x j2` using `funext fun l => rfl`. Rewrite `hres` using `[e1, e2]`. Establish `hres1 : resK (inrE : Fin d ↪o (Mi d ⊕ₗ κ) ⊕ₗ Fin d) c1 (uni (uni {0} {0}) Finset.univ) = ((-1) ^ d * algebraMap F K' (x 0) ^ d * (h : K')) • dtS K' x Finset.univ` using `by show c1 (uni (lft _) ((rgt _).map _)) = _`. Rewrite using `[(hlr _ _).1, (hlr _ _).2.1]`. Conclude with `hc1v`.
+
+Establish `hres2 : ∀ i j, (i ≠ 0 ∨ j ≠ 0) → col (resK (inrE : Fin d ↪o (Mi d ⊕ₗ κ) ⊕ₗ Fin d) c1) (uni {i} {j}) = 0` using `fun i j hij => by`. Use function extensionality and compare the values at `L`. Use `show c1 (uni (lft _) ((rgt _).map _)) = 0`. Rewrite using `[(hlr _ _).1, (hlr _ _).2.1]`. Conclude with `congrFun (hc1z i j hij) _`.
+
+Establish `hT` using `hCT F K K' d x j2 Fx A hY h hoff (resK (inrE : Fin d ↪o (Mi d ⊕ₗ κ) ⊕ₗ Fin d) c1) hres hres1 hres2`. Establish `htop : top (resK (inrE : Fin d ↪o (Mi d ⊕ₗ κ) ⊕ₗ Fin d) c1) = top c1`. Use function extensionality and compare the values at `b`. Use `show c1 (uni (lft _) ((rgt _).map _)) = c1 _`. Rewrite using `[(hlr _ _).1, (hlr _ _).2.1, Finset.map_empty]`.
+
+Rewrite `hT` using `[htop]`. Use `add_mem hCmp hT` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Establish `hfin : top (fun t => gY j2 (c t)) = fun s => gY j2 (top c s)` using `rfl`. Rewrite `this` using `[hfin]`.
+
+Conclude with `this`.
+-/
 theorem yMain_of :
     ValG → YBig → YCmpT → YCmpG → GMap → CRT → ThMu → KapInd → ActsLin → DtBasic → SysBasic → RYBasic → OmLoc → WdUni → YMain := by
   intro hVal hBig hCT hCG hG hCRT hTh _ hAL _ hSB hRY _ hWU F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 Fx A hY τ hτ a ha κ _ _ n z hz c hc hD

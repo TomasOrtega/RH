@@ -10,6 +10,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 
 open IsLocalRing Matrix UpperTheory.V.Hi
 
+/- English proof (translation)
+Establish `key : a = ∑ i, a i • (Pi.single i (1 : A) : ι → A)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[key, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul (ha i) Submodule.mem_top`.
+-/
 private theorem ordFree_smul {A N ι : Type} [CommRing A] [AddCommGroup N] [Module A N] [Fintype ι]
     (σ : (ι → A) →ₗ[A] N) (J : Ideal A) (a : ι → A) (ha : ∀ i, a i ∈ J) : σ a ∈ (J • ⊤ : Submodule A N) := by
   classical
@@ -21,6 +26,11 @@ private theorem ordFree_smul {A N ι : Type} [CommRing A] [AddCommGroup N] [Modu
   rw [map_smul]
   exact Submodule.smul_mem_smul (ha i) Submodule.mem_top
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective φ`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff]`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := maximalIdeal A) Module.Finite.fg_top (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge ?_` and prove the remaining obligations. Introduce `f _`. Take `⟨g, hg⟩` from `h f`.
+
+Establish `: f = φ g + (f - φ g)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (LinearMap.mem_range_self φ g) hg`. Conclude with `⟨OrzechProperty.injective_of_surjective_endomorphism φ hsurj, hsurj⟩`.
+-/
 private theorem ordFree_bij {A N : Type} [CommRing A] [IsLocalRing A] [AddCommGroup N] [Module A N] [Module.Finite A N]
     (φ : N →ₗ[A] N) (h : ∀ f, ∃ g, f - φ g ∈ (maximalIdeal A • ⊤ : Submodule A N)) : Function.Bijective φ := by
   have hsurj : Function.Surjective φ := by
@@ -34,6 +44,15 @@ private theorem ordFree_bij {A N : Type} [CommRing A] [IsLocalRing A] [AddCommGr
     exact Submodule.add_mem_sup (LinearMap.mem_range_self φ g) hg
   exact ⟨OrzechProperty.injective_of_surjective_endomorphism φ hsurj, hsurj⟩
 
+/- English proof (translation)
+Establish `hTk : ∀ k : ℕ, ∀ w ∈ V, (T ^ k) w ∈ V`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro w hw`. Simplify using `using hw`.
+
+Consider the case `succ k ih`. Introduce `w hw`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hT _ (ih w hw)`. Proceed by induction on `j with`.
+
+Consider the case `zero => simp`. Consider the case `succ j ih`. Establish `e : (T ^ (n * (j + 1))) v - v = (T ^ (n * j)) ((T ^ n) v - v) + ((T ^ (n * j)) v - v)`. Rewrite using `[map_sub, ← Module.End.mul_apply, ← pow_add, mul_add, mul_one]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `V.add_mem (hTk _ _ hv) ih`.
+-/
 private theorem ordFree_pow {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (V : Submodule A M)
     (T : Module.End A M) (hT : ∀ v ∈ V, T v ∈ V) (n j : ℕ) (v : M) (hv : (T ^ n) v - v ∈ V) :
     (T ^ (n * j)) v - v ∈ V := by
@@ -54,6 +73,9 @@ private theorem ordFree_pow {A M : Type} [CommRing A] [AddCommGroup M] [Module A
     rw [e]
     exact V.add_mem (hTk _ _ hv) ih
 
+/- English proof (translation)
+Establish `hb : b = ∑ i, b i • (Pi.single i (1 : A) : ι → A)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hb]`. Simplify using `only [map_sum, map_smul]`.
+-/
 private theorem linearMap_pi_eq_sum_single {A N ι : Type} [CommRing A] [AddCommGroup N] [Module A N] [Fintype ι]
     [DecidableEq ι] (σ : (ι → A) →ₗ[A] N) (b : ι → A) :
     σ b = ∑ i, b i • σ (Pi.single i (1 : A) : ι → A) := by
@@ -63,6 +85,19 @@ private theorem linearMap_pi_eq_sum_single {A N ι : Type} [CommRing A] [AddComm
   conv_lhs => rw [hb]
   simp only [map_sum, map_smul]
 
+/- English proof (translation)
+Take `⟨ι, hι, s, ev, -, hs⟩` from `hlev k`. Take `⟨n₀, hn₀⟩` from `hs f`. Use `haveI : Finite (A ⧸ maximalIdeal A) := (IsCNL.finite : Finite (ResidueField A))`. Use `haveI : Finite (A ⧸ maximalIdeal A ^ k) := Ideal.finite_quotient_pow (IsNoetherian.noetherian _) k`. Set `F : ℕ → (ι → A ⧸ maximalIdeal A ^ k)` to `fun n i => Ideal.Quotient.mk _ (ev ((T ^ (n₀ + n)) f) i)`.
+
+Establish `key : ∀ x y : ℕ, x < y → F x = F y → ∃ a p : ℕ, (T ^ (a + (p + 1))) f - (T ^ a) f ∈ V k`. Introduce `x y hxy hF`. Use `⟨n₀ + x, y - x - 1, ?_⟩` and prove the remaining obligations. Establish `hy : n₀ + x + (y - x - 1 + 1) = n₀ + y` using `by omega`. Rewrite using `[hy]`.
+
+Establish `hd : ∀ i, ev ((T ^ (n₀ + y)) f - (T ^ (n₀ + x)) f) i ∈ maximalIdeal A ^ k`. Introduce `i`. Use `congrFun hF i` as an intermediate fact. Simplify using `only [F] at this`. Rewrite using `[map_sub, Pi.sub_apply]`.
+
+Conclude with `Ideal.Quotient.eq.1 this.symm`. Establish `h3` using `hm k (ordFree_smul s _ _ hd)`. Establish `h1` using `hn₀ (n₀ + y) (by omega)`. Establish `h2` using `hn₀ (n₀ + x) (by omega)`. Establish `eq : (T ^ (n₀ + y)) f - (T ^ (n₀ + x)) f = ((T ^ (n₀ + y)) f - s (ev ((T ^ (n₀ + y)) f))) - ((T ^ (n₀ + x)) f - s (ev ((T ^ (n₀ + x)) f))) + s (ev ((T ^ (n₀ + y)) f - (T ^ (n₀ + x)) f))`.
+
+Simplify using `only [map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[eq]`. Conclude with `add_mem (sub_mem h1 h2) h3`. Take `⟨x, y, hne, hxy⟩` from `Finite.exists_ne_map_eq_of_infinite F`.
+
+Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `key x y h hxy`. Conclude with `key y x h hxy.symm`.
+-/
 private theorem exists_eventually_periodic_mod_V {A M : Type} [CommRing A] [IsCNL A] [AddCommGroup M] [Module A M]
     (V : ℕ → Submodule A M) (T : Module.End A M)
     (hm : ∀ k, (maximalIdeal A ^ k • ⊤ : Submodule A M) ≤ V k)
@@ -103,6 +138,55 @@ private theorem exists_eventually_periodic_mod_V {A M : Type} [CommRing A] [IsCN
   · exact key x y h hxy
   · exact key y x h hxy.symm
 
+/- English proof (translation)
+Use `haveI : IsAdicComplete (maximalIdeal A) A := IsCNL.complete`. Take `⟨e, he⟩` from `UpperTheory.exists_ordinaryProjector_of_eventually_periodic A M V T hanti hT hsep hcomp (fun f k => exists_eventually_periodic_mod_V V T hm hlev f k)`. Establish `heO : ∀ f, e f ∈ O` using `fun f => (hO _).2 fun k => (he f k).2.1`. Establish `heV : ∀ k f, f ∈ V k → e f ∈ V k` using `fun k f hf => (he f k).2.2.1 hf`. Establish `heid : ∀ f ∈ O, e f = f`.
+
+Introduce `f hf`. Conclude with `sub_eq_zero.1 (hsep _ fun k => (he f k).2.2.2 ((hO f).1 hf k))`. Establish `happ : ∀ k, ∃ (ι : Type) (_ : Fintype ι) (s : (ι → A) →ₗ[A] M) (ev : M →ₗ[A] (ι → A)), (∀ j, ∀ f ∈ V j, ∀ i, ev f i ∈ maximalIdeal A ^ j) ∧ ∀ f ∈ O, f - e (s (ev f)) ∈ V k`. Introduce `k`. Take `⟨ι, hι, s, ev, hev, hs⟩` from `hlev k`.
+
+Use `⟨ι, hι, s, ev, hev, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨n₀, hn₀⟩` from `hs f`. Take `⟨J, hJ⟩` from `(he f k).1`. Establish `h1 : (T ^ (max J n₀).factorial) f - f ∈ V k`. Use `hJ (max J n₀) (le_max_left _ _)` as an intermediate fact.
+
+Rewrite `this` using `[heid f hf]`. Then use the resulting hypothesis. Establish `h2` using `hn₀ (max J n₀).factorial ((le_max_right _ _).trans (Nat.self_le_factorial _))`. Establish `h3` using `hm k (ordFree_smul s _ _ (hev k _ h1))`. Establish `h4 : f - s (ev f) ∈ V k`. Establish `eq : f - s (ev f) = ((T ^ (max J n₀).factorial) f - s (ev ((T ^ (max J n₀).factorial) f))) - ((T ^ (max J n₀).factorial) f - f) + s (ev ((T ^ (max J n₀).factorial) f - f))`.
+
+Simplify using `only [map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[eq]`. Conclude with `add_mem (sub_mem h2 h1) h3`. Establish `h5` using `heV k _ h4`.
+
+Rewrite `h5` using `[map_sub, heid f hf]`. Then use the resulting hypothesis. Take `⟨ι₁, hι₁, s₁, ev₁, hev₁, h₁⟩` from `happ 1`. Establish `hstep : ∀ j, ∀ f ∈ O, f ∈ V j → ∃ a : ι₁ → A, (∀ i, a i ∈ maximalIdeal A ^ j) ∧ f - e (s₁ a) ∈ V (j + 1)`. Introduce `j f hf hfj`. Take `⟨ι', hι', s', ev', hev', h'⟩` from `happ (j + 1)`.
+
+Establish `hb : ∀ i, ev' f i ∈ maximalIdeal A ^ j` using `hev' j f hfj`. Use `⟨∑ i, ev' f i • ev₁ (e (s' (Pi.single i (1 : A) : ι' → A))), fun i' => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (hb i)`. Establish `e1 : e (s' (ev' f)) = ∑ i, ev' f i • e (s' (Pi.single i (1 : A) : ι' → A))`. Rewrite using `[linearMap_pi_eq_sum_single s' (ev' f), map_sum]`. Simplify using `only [map_smul]`. Establish `e2 : f - e (s₁ (∑ i, ev' f i • ev₁ (e (s' (Pi.single i (1 : A) : ι' → A))))) = (f - e (s' (ev' f))) + ∑ i, ev' f i • (e (s' (Pi.single i (1 : A) : ι' → A)) - e (s₁ (ev₁ (e (s' (Pi.single i (1 : A) : ι' → A))))))`.
+
+Rewrite using `[e1]`. Simplify using `only [map_sum, map_smul, smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[e2]`. Conclude with `add_mem (h' f hf) (Submodule.sum_mem _ fun i _ => hm1 j _ (hb i) _ (h₁ _ (heO _)))`.
+
+Set `σ : (ι₁ → A) →ₗ[A] O` to `(e ∘ₗ s₁).codRestrict O (fun x => heO _)`. Establish `hσ : ∀ a, (σ a : M) = e (s₁ a)` using `fun a => rfl`. Establish `hlift` using `UpperTheory.exists_linear_preimage_of_successive_approximation A O ι₁ (maximalIdeal A) (fun j => (V j).comap O.subtype) σ (fun i j h => Submodule.comap_mono (hanti h)) (by`. Introduce `k x hx`. Establish `h` using `Submodule.mem_map_of_mem (f := O.subtype) hx`.
+
+Rewrite `h` using `[Submodule.map_smul'']`. Conclude with `hm k (Submodule.smul_mono le_rfl le_top h))`. Use the proof step `(fun f hf => Subtype.ext (hsep _ hf))`. Use the proof step `(by`. Introduce `j f hf`.
+
+Take `⟨a, ha, hfa⟩` from `hstep j f f.2 hf`. Conclude with `⟨a, ha, by simpa [hσ] using hfa⟩)`. Establish `hV0 : ∀ f : M, f ∈ V 0` using `fun f => hm 0 (by simp)`. Establish `hsurj : Function.Surjective σ`. Introduce `f`.
+
+Take `⟨a, -, ha⟩` from `hlift 0 f (hV0 _)`. Conclude with `⟨a, ha⟩`. Use `haveI hfin : Module.Finite A O := Module.Finite.of_surjective σ hsurj`. Establish `hfilt : ∀ j, ∀ f : O, (f : M) ∈ V j → f ∈ (maximalIdeal A ^ j • ⊤ : Submodule A O)`. Introduce `j f hf`.
+
+Take `⟨a, ha, rfl⟩` from `hlift j f hf`. Conclude with `ordFree_smul σ _ a ha`. Set `ι : O →ₗ[A] (ι₁ → A)` to `ev₁ ∘ₗ O.subtype`. Establish `hφ : Function.Bijective (σ ∘ₗ ι)`. Use `ordFree_bij (σ ∘ₗ ι) fun f => ⟨f, ?_⟩` and prove the remaining obligations.
+
+Use `hfilt 1 (f - (σ ∘ₗ ι) f) (by simpa [ι, hσ] using h₁ f f.2)` as an intermediate fact. Simplify using `using this`. Set `φe` to `LinearEquiv.ofBijective (σ ∘ₗ ι) hφ`. Use `haveI : Module.Projective A O := by`. Use `Module.Projective.of_split ι (φe.symm.toLinearMap ∘ₗ σ) ?_` and prove the remaining obligations.
+
+Use extensionality with `f`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply]`. Conclude with `congrArg Subtype.val (φe.symm_apply_apply f)`. Establish `hmaps : ∀ f ∈ O, T f ∈ O`. Introduce `f hf`.
+
+Use `(hO _).2 fun k => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `(hO f).1 hf k`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `: (T ^ (n + 1)) (T f) - T f = T ((T ^ (n + 1)) f - f)`. Rewrite using `[map_sub, ← Module.End.mul_apply, ← pow_succ, pow_succ', Module.End.mul_apply]`.
+
+Rewrite using `[this]`. Conclude with `hT k _ hn`. Establish `hmapsn : ∀ n : ℕ, ∀ f ∈ O, (T ^ n) f ∈ O`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => intro f hf`. Simplify using `using hf`. Consider the case `succ n ih`. Introduce `f hf`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+
+Conclude with `hmaps _ (ih f hf)`. Set `TO : O →ₗ[A] O` to `T.restrict hmaps`. Establish `hTO : Function.Bijective TO`. Use `ordFree_bij TO fun f => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `(hO f).1 f.2 1`.
+
+Use `⟨⟨(T ^ n) f, hmapsn n f f.2⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `hfilt 1 (f - TO ⟨(T ^ n) f, hmapsn n f f.2⟩) (by`. Establish `: ((f - TO ⟨(T ^ n) f, hmapsn n f f.2⟩ : O) : M) = -((T ^ (n + 1)) f - f)`. Simplify using `only [TO, Submodule.coe_sub, LinearMap.restrict_coe_apply]`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `neg_mem hn)`. Simplify using `using h`. Use `⟨hfin, Module.free_of_flat_of_isLocalRing, ⟨hmaps, ?_, ?_⟩, hfilt, e, heO, heid, fun f k => (he f k).1⟩` and prove the remaining obligations.
+
+Introduce `x hx y hy hxy`. Use `hTO.1 (a₁ := ⟨x, hx⟩) (a₂ := ⟨y, hy⟩) (Subtype.ext hxy)` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Introduce `y hy`. Take `⟨x, hx⟩` from `hTO.2 ⟨y, hy⟩`.
+
+Conclude with `⟨x, x.2, congrArg Subtype.val hx⟩`.
+-/
 theorem UpperTheory.V.Hi.ordAbs {A M : Type} [CommRing A] [IsCNL A] [AddCommGroup M] [Module A M] (V : ℕ → Submodule A M)
     (T : Module.End A M) (O : Submodule A M) (hanti : Antitone V)
     (hm : ∀ k, (maximalIdeal A ^ k • ⊤ : Submodule A M) ≤ V k)
@@ -245,9 +329,17 @@ section
 
 variable {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {A : Type} [CommRing A] [IsCNL A] {m : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Frame.valIn, Submodule.mem_pi, Set.mem_univ, true_implies]`.
+-/
 private theorem ordFree_val (k : ℕ) (f : X.Fn A m) : f ∈ X.valIn A m k ↔ ∀ g i, f g i ∈ maximalIdeal A ^ k := by
   simp only [Frame.valIn, Submodule.mem_pi, Set.mem_univ, true_implies]
 
+/- English proof (translation)
+Establish `hterm : ∀ y : Gp, X.rp A m y f ∈ X.valIn A m k`. Introduce `y`. Rewrite `hf`, the goal using `[ordFree_val]`. Introduce `g i`. Conclude with `hf _ i`.
+
+Use `show X.I.uOp (X.rp A m) a f ∈ X.valIn A m k`. Unfold `Iwa.uOp`. Conclude with `finsum_induction (fun φ : Module.End A (X.Fn A m) => φ f ∈ X.valIn A m k) (by simp) (fun φ ψ hφ hψ => by simpa using Submodule.add_mem _ hφ hψ) (fun q => hterm _)`.
+-/
 private theorem ordFree_valU (k : ℕ) {a : Gp} (ha : a ∈ X.I.P) (f : X.Fn A m) (hf : f ∈ X.valIn A m k) :
     X.U A m a f ∈ X.valIn A m k := by
   have hterm : ∀ y : Gp, X.rp A m y f ∈ X.valIn A m k := by
@@ -260,6 +352,19 @@ private theorem ordFree_valU (k : ℕ) {a : Gp} (ha : a ∈ X.I.P) (f : X.Fn A m
   exact finsum_induction (fun φ : Module.End A (X.Fn A m) => φ f ∈ X.valIn A m k)
     (by simp) (fun φ ψ hφ hψ => by simpa using Submodule.add_mem _ hφ hψ) (fun q => hterm _)
 
+/- English proof (translation)
+Establish `hT : ∀ k, ∀ v ∈ X.valIn A m k, X.U A m X.I.z v ∈ X.valIn A m k` using `fun k v hv => ordFree_valU X k X.I.z_mem v hv`. Establish `hmem : ∀ k n, f ∈ Submodule.comap (X.U A m X.I.z ^ (n + 1) - 1) (X.valIn A m k) ↔ (X.U A m X.I.z ^ (n + 1)) f - f ∈ X.valIn A m k`. Introduce `k n`. Simplify using `[Submodule.mem_comap]`. Establish `hdir : ∀ k, Directed (· ≤ ·) (fun n : ℕ => Submodule.comap (X.U A m X.I.z ^ (n + 1) - 1) (X.valIn A m k))`.
+
+Introduce `k n n'`. Use `⟨(n + 1) * (n' + 1) - 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [Submodule.mem_comap, LinearMap.sub_apply, Module.End.one_apply] at hv ⊢`. Establish `e : (n + 1) * (n' + 1) - 1 + 1 = (n + 1) * (n' + 1)`.
+
+Establish `: 1 ≤ (n + 1) * (n' + 1)` using `Nat.one_le_iff_ne_zero.mpr (by positivity)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Conclude with `ordFree_pow _ _ (hT k) (n + 1) (n' + 1) v hv`. Introduce `v hv`.
+
+Simplify using `only [Submodule.mem_comap, LinearMap.sub_apply, Module.End.one_apply] at hv ⊢`. Establish `e : (n + 1) * (n' + 1) - 1 + 1 = (n' + 1) * (n + 1)`. Establish `: 1 ≤ (n + 1) * (n' + 1)` using `Nat.one_le_iff_ne_zero.mpr (by positivity)`. Rewrite using `[Nat.mul_comm (n' + 1)]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[e]`. Conclude with `ordFree_pow _ _ (hT k) (n' + 1) (n + 1) v hv`. Simplify using `only [Frame.Ord, Submodule.mem_inf, Submodule.mem_iInf]`. Use `and_congr_right fun _ => forall_congr' fun k => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_iSup_of_directed _ (hdir k)]`.
+
+Conclude with `exists_congr fun n => hmem k n`.
+-/
 theorem UpperTheory.V.Hi.mem_ord_iff (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ) (U : Subgroup X.Ub) (f : X.Fn A m) :
     f ∈ X.Ord τ θ U ↔ f ∈ X.Sp τ θ U ∧ ∀ k, ∃ n : ℕ, (X.U A m X.I.z ^ (n + 1)) f - f ∈ X.valIn A m k := by
   have hT : ∀ k, ∀ v ∈ X.valIn A m k, X.U A m X.I.z v ∈ X.valIn A m k :=
@@ -292,6 +397,55 @@ theorem UpperTheory.V.Hi.mem_ord_iff (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T �
   rw [Submodule.mem_iSup_of_directed _ (hdir k)]
   exact exists_congr fun n => hmem k n
 
+/- English proof (translation)
+Establish `hSp : ∀ f ∈ X.Sp τ θ U, X.U A m X.I.z f ∈ X.Sp τ θ U` using `((spStab Γ Ga Gp X A m τ θ hθ).2.2.2.1 U X.I.z X.I.z_mem).1`. Set `S` to `X.Sp τ θ U`. Set `T : Module.End A S` to `(X.U A m X.I.z).restrict hSp`. Establish `hTpow : ∀ (n : ℕ) (f : S), ((T ^ n) f : X.Fn A m) = (X.U A m X.I.z ^ n) f`. Introduce `n f`.
+
+Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[pow_succ', Module.End.mul_apply, pow_succ', Module.End.mul_apply, ← ih]`. Both sides reduce to the same expression.
+
+Set `V : ℕ → Submodule A S` to `fun k => (X.valIn A m k).comap S.subtype`. Establish `hV : ∀ k (f : S), f ∈ V k ↔ ∀ g i, (f : X.Fn A m) g i ∈ maximalIdeal A ^ k` using `fun k f => Submodule.mem_comap.trans (ordFree_val X k _)`. Set `O : Submodule A S` to `(X.Ord τ θ U).comap S.subtype`. Establish `hOS : X.Ord τ θ U ≤ S` using `fun f hf => ((mem_ord_iff X τ θ U f).1 hf).1`. Establish `hanti : Antitone V`.
+
+Introduce `a b hab f hf`. Rewrite `hf`, the goal using `[hV]`. Introduce `g i`. Conclude with `Ideal.pow_le_pow_right hab (hf g i)`. Establish `hm : ∀ k, (maximalIdeal A ^ k • ⊤ : Submodule A S) ≤ V k`.
+
+Introduce `k`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr f _`. Rewrite using `[hV]`. Introduce `g i`.
+
+Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ hr`. Establish `hm1 : ∀ k, ∀ r ∈ maximalIdeal A ^ k, ∀ f ∈ V 1, r • f ∈ V (k + 1)`. Introduce `k r hr f hf`. Rewrite `hf`, the goal using `[hV]`.
+
+Introduce `g i`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul hr (by simpa using hf g i)`. Establish `hTV : ∀ k, ∀ f ∈ V k, T f ∈ V k`.
+
+Introduce `k f hf`. Conclude with `ordFree_valU X k X.I.z_mem _ hf`. Establish `hsep : ∀ f, (∀ k, f ∈ V k) → f = 0`. Introduce `f hf`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `g i`. Establish `hmem : (f : X.Fn A m) g i ∈ ⨅ k, maximalIdeal A ^ k` using `Submodule.mem_iInf _ |>.2 fun k => (hV k f).1 (hf k) g i`. Rewrite `hmem` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (IsLocalRing.maximalIdeal.isMaximal A).ne_top]`. Simplify using `using hmem`. Establish `hcomp : ∀ a : ℕ → S, (∀ k, a (k + 1) - a k ∈ V k) → ∃ L, ∀ k, L - a k ∈ V k`.
+
+Introduce `a ha`. Take `⟨L, hL, hLk⟩` from `exists_adic_limit_mem_automorphicSpace Γ Ga Gp X A m τ θ U (fun k => (a k : X.Fn A m)) (fun k => (a k).2) (fun k => ha k)`. Conclude with `⟨⟨L, hL⟩, hLk⟩`. Establish `hlev : ∀ k, ∃ (ι : Type) (_ : Fintype ι) (s : (ι → A) →ₗ[A] S) (ev : S →ₗ[A] (ι → A)), (∀ j, ∀ f ∈ V j, ∀ i, ev f i ∈ maximalIdeal A ^ j) ∧ ∀ f, ∃ n₀ : ℕ, ∀ n, n₀ ≤ n → (T ^ n) f - s (ev ((T ^ n) f)) ∈ V k`. Introduce `k`.
+
+Take `⟨c, hc⟩` from `hθ k`. Take `⟨N, x, hcov, huniq⟩` from `exists_finite_iwahori_doubleCoset_representatives Γ Ga Gp X U hU c`. Take `⟨s, hs⟩` from `exists_section_automorphicSpace_with_prescribed_values Γ Ga Gp X A m τ θ hθ U hF c N x hcov huniq`. Set `ev : S →ₗ[A] (Fin N × Fin m → A)` to `{ toFun := fun f p => (f : X.Fn A m) (x p.1) p.2 map_add' := by intros; rfl map_smul' := by intros; rfl }`. Use `⟨Fin N × Fin m, inferInstance, LinearMap.codRestrict S s (fun v => (hs v).1), ev, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `j f hf p`. Conclude with `(hV j f).1 hf _ _`. Introduce `f`. Take `⟨n₀, hn₀⟩` from `uOperator_pow_eventually_invariant_mod_pow Γ Ga Gp X A m θ hθ f.1 (Submodule.mem_inf.1 f.2).1 k c hc`. Use `⟨n₀, fun n hn => ?_⟩` and prove the remaining obligations.
+
+Use `show ((T ^ n) f - LinearMap.codRestrict S s (fun v => (hs v).1) (ev ((T ^ n) f)) : S).1 ∈ X.valIn A m k`. Use `mem_valIn_of_invariant_and_values_mem_pow Γ Ga Gp X A m τ θ U k c N x hcov _ (Subtype.prop _) ?_ ?_` and prove the remaining obligations. Introduce `y hy`. Establish `e1 : ((T ^ n) f - LinearMap.codRestrict S s (fun v => (hs v).1) (ev ((T ^ n) f)) : S).1 = (X.U A m X.I.z ^ n) f - s (ev ((T ^ n) f))`. Rewrite using `[Submodule.coe_sub, hTpow]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, map_sub]`. Establish `e2 : X.rp A m y ((X.U A m X.I.z ^ n) f) - X.rp A m y (s (ev ((T ^ n) f))) - ((X.U A m X.I.z ^ n) f - s (ev ((T ^ n) f))) = (X.rp A m y ((X.U A m X.I.z ^ n) f) - (X.U A m X.I.z ^ n) f) - (X.rp A m y (s (ev ((T ^ n) f))) - s (ev ((T ^ n) f)))` using `by abel`. Rewrite using `[e2]`. Conclude with `Submodule.sub_mem _ (hn₀ n hn y hy) ((hs _).2.2 k hc y hy)`.
+
+Introduce `i j`. Establish `e3 : (((T ^ n) f - LinearMap.codRestrict S s (fun v => (hs v).1) (ev ((T ^ n) f)) : S) : X.Fn A m) (x i) j = 0`. Simplify using `only [Submodule.coe_sub, LinearMap.codRestrict_apply, Pi.sub_apply, (hs _).2.1]`. Simplify using `[ev]`. Rewrite using `[e3]`.
+
+Conclude with `Submodule.zero_mem _`. Establish `hO : ∀ f, f ∈ O ↔ ∀ k, ∃ n : ℕ, (T ^ (n + 1)) f - f ∈ V k`. Introduce `f`. Use `show (f : X.Fn A m) ∈ X.Ord τ θ U ↔ _`. Rewrite using `[mem_ord_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩ k`. Take `⟨n, hn⟩` from `h k`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `show (((T ^ (n + 1)) f - f : S) : X.Fn A m) ∈ X.valIn A m k`.
+
+Rewrite using `[Submodule.coe_sub, hTpow]`. Conclude with `hn`. Introduce `h`. Use `⟨f.2, fun k => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `h k`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h' : (((T ^ (n + 1)) f - f : S) : X.Fn A m) ∈ X.valIn A m k` using `hn`. Rewrite `h'` using `[Submodule.coe_sub, hTpow]`. Then use the resulting hypothesis. Take `⟨hfin, hfree, hbij, hfilt, e, heO, heid, hconv⟩` from `ordAbs V T O hanti hm hm1 hTV hsep hcomp hlev hO`. Set `E` to `Submodule.comapSubtypeEquivOfLe hOS`.
+
+Use `⟨Module.Finite.equiv E, Module.Free.of_equiv E, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun f hf => ?_, fun f hf g hg hfg => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Conclude with `hbij.mapsTo (show (⟨f, hOS hf⟩ : S) ∈ O from hf)`. Use `hbij.injOn (show (⟨f, hOS hf⟩ : S) ∈ O from hf) (show (⟨g, hOS hg⟩ : S) ∈ O from hg) (Subtype.ext hfg)` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+
+Take `⟨y, hy, hTy⟩` from `hbij.surjOn (show (⟨f, hOS hf⟩ : S) ∈ O from hf)`. Conclude with `⟨y.1, hy, congrArg Subtype.val hTy⟩`. Introduce `j f hf`. Establish `h1` using `hfilt j (E.symm f) hf`. Establish `h2 : E (E.symm f) ∈ Submodule.map E.toLinearMap (maximalIdeal A ^ j • ⊤)` using `Submodule.mem_map_of_mem h1`.
+
+Rewrite `h2` using `[Submodule.map_smul'', Submodule.map_top, LinearEquiv.range]`. Simplify using `using h2`. Use `⟨E.toLinearMap ∘ₗ LinearMap.codRestrict O e heO, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf`. Conclude with `congrArg Subtype.val (heid f hf)`.
+
+Introduce `f k`. Take `⟨J, hJ⟩` from `hconv f k`. Use `⟨J, fun j hj => ?_⟩` and prove the remaining obligations. Establish `h' : (((T ^ j.factorial) f - e f : S) : X.Fn A m) ∈ X.valIn A m k` using `hJ j hj`. Rewrite `h'` using `[Submodule.coe_sub, hTpow]`.
+
+Conclude with `h'`.
+-/
 theorem UpperTheory.V.Hi.ordStruct (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ) (hθ : X.I.ContChar θ) (U : Subgroup X.Ub)
     (hU : X.FinLevel U) (hF : X.Free τ θ U) :
     Module.Finite A (X.Ord τ θ U) ∧ Module.Free A (X.Ord τ θ U) ∧
@@ -438,6 +592,21 @@ theorem UpperTheory.V.Hi.ordStruct (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →
 
 end
 
+/- English proof (translation)
+Introduce `Γ Ga Gp _ _ _ X A _ _ m τ θ hθ U hU hF`. Take `⟨hfin, hfree, hbij, -, -⟩` from `ordStruct X τ θ hθ U hU hF`. Use `⟨hfin, hfree, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hmaps : ∀ b ∈ X.I.P, ∀ f ∈ X.Ord τ θ U, X.U A m b f ∈ X.Ord τ θ U` using `fun b hb f hf => ((spStab Γ Ga Gp X A m τ θ hθ).2.2.2.1 U b hb).2 f hf`. Establish `hfixN : ∀ f ∈ X.Ord τ θ U, f ∈ fixd (X.rp A m) X.I.N`.
+
+Introduce `f hf`. Establish `hSp : f ∈ X.Sp τ θ U` using `(Submodule.mem_inf.mp hf).1`. Establish `hAmb : f ∈ X.Amb m θ` using `(Submodule.mem_inf.mp hSp).1`. Conclude with `hAmb.2.1`. Establish `hmul : ∀ b ∈ X.I.P, ∀ c ∈ X.I.P, ∀ f ∈ X.Ord τ θ U, X.U A m b (X.U A m c f) = X.U A m (b * c) f` using `fun b hb c hc f hf => (uOpMul Gp X.I A _ (X.rp A m) b c hb hc f (hfixN f hf)).2.1`.
+
+Establish `hone : ∀ f ∈ X.Ord τ θ U, X.U A m 1 f = f` using `fun f hf => (uOpMul Gp X.I A _ (X.rp A m) 1 1 X.I.P.one_mem X.I.P.one_mem f (hfixN f hf)).2.2.1`. Establish `hpow : ∀ k : ℕ, ∀ f ∈ X.Ord τ θ U, (X.U A m X.I.z ^ k) f = X.U A m (X.I.z ^ k) f`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro f hf`.
+
+Simplify using `[hone f hf]`. Consider the case `succ k ih`. Introduce `f hf`. Rewrite using `[pow_succ', Module.End.mul_apply, ih f hf, hmul _ X.I.z_mem _ (X.I.P.pow_mem X.I.z_mem k) f hf, ← pow_succ']`. Take `⟨k, hk⟩` from `X.I.exists_pow_mul_inv_mem a ha`.
+
+Use `set b := X.I.z ^ k * a⁻¹ with hbdef`. Establish `hzk : X.I.z ^ k = b * a` using `by rw [hbdef]; group`. Establish `hab : a * b = b * a` using `X.I.comm a (X.I.P_le a ha) b (X.I.P_le b hk)`. Establish `hbijk : Set.BijOn (X.U A m X.I.z ^ k) (X.Ord τ θ U) (X.Ord τ θ U)`. Rewrite using `[Module.End.coe_pow]`.
+
+Conclude with `hbij.iterate k`. Use `⟨fun f hf => hmaps a ha f hf, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf g hg hfg`. Apply `hbijk.injOn hf hg` to reduce the goal to its premises. Rewrite using `[hpow k f hf, hpow k g hg, hzk, ← hmul b hk a ha f hf, ← hmul b hk a ha g hg]`.
+
+Conclude with `congrArg (X.U A m b) hfg`. Introduce `g hg`. Take `⟨h, hh, rfl⟩` from `hbijk.surjOn hg`. Use `⟨X.U A m b h, hmaps b hk h hh, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul a ha b hk h hh, hab, ← hzk, hpow k h hh]`.
+-/
 theorem UpperTheory.V.Hi.ordFree :
     ∀ (Γ Ga Gp : Type) [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) (A : Type) [CommRing A] [IsCNL A] (m : ℕ) (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ), X.I.ContChar θ → ∀ U, X.FinLevel U → X.Free τ θ U → Module.Finite A (X.Ord τ θ U) ∧ Module.Free A (X.Ord τ θ U) ∧ ∀ a ∈ X.I.P, Set.BijOn (X.U A m a) (X.Ord τ θ U) (X.Ord τ θ U) := by
   intro Γ Ga Gp _ _ _ X A _ _ m τ θ hθ U hU hF

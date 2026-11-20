@@ -14,6 +14,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallUnf
 
+/- English proof (translation)
+Use `⟨GlobalTheory.T.weil_action_restricted_product M ψ hψ u f φ hφ hstd, ?_⟩` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.T.local_operator_fixes_integral_indicator M ψ hψ u, hstd] with v h1 h2`. Rewrite using `[h2, h1]`.
+-/
 private theorem UpperTheory.rho_pure_tensor_adelic {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
     (u : Matrix (Fin n) (Fin d) (AE F E)) (f : SInf F (Fin n × Fin d)) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ)
@@ -25,6 +28,15 @@ private theorem UpperTheory.rho_pure_tensor_adelic {F E : Type} [Field F] [Numbe
   filter_upwards [GlobalTheory.T.local_operator_fixes_integral_indicator M ψ hψ u, hstd] with v h1 h2
   rw [h2, h1]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he' X om om' om₁ om₁' hT hT₁ Ψ hS l`. Take `⟨ei, ev, hei, hev, hloc⟩` from `he'.loc`. Take `⟨ι₁, hι₁, hrank⟩` from `GlobalTheory.T.config_b_evaluation_intertwines_theta B G G₁ H H' hC e' he' X om om' om₁ om₁' hT hT₁ ei ev hei hev hloc`. Set `R : Fn F (b + 2) (a + (b + 2)) →ₗ[ℂ] Fn F (b + 2) (a + (b + 2))` to `{ toFun := G.M'.co.rho B.ψ (shiftB σ H H' l) map_add' := fun f g => funext fun x => mul_add _ _ _ map_smul' := fun c f => funext fun x => mul_left_comm _ _ _ }`. It suffices to establish `hle : G.M'.So B.ψ B.τ₁ ≤ (G₁.M'.So B.ψ B.τ₁).comap (e'.comp R) from hle hS`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, hφ, hvac, hso, rfl⟩`. Establish `hstd` using `hT.geo.hM'.std`. Take `⟨hpure, hae⟩` from `UpperTheory.rho_pure_tensor_adelic G.M' B.ψ hT.base.std (shiftB σ H H' l) f φ hφ ((hvac.and hstd).mono fun v hv => hv.1.trans hv.2)`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`.
+
+Express the relevant statement in the definitionally equal form `e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (pure f φ)) ∈ G₁.M'.So B.ψ B.τ₁`. Rewrite using `[hpure, hloc _ _ (fun v => locOp_mem _ _ _) (by filter_upwards [hae, hvac] with v h1 h2; rw [h1, h2])]`. Use `Submodule.subset_span ⟨_, fun v => ev v (locOp v (G.M'.co.rho B.ψ (partFin v (shiftB σ H H' l))) (φ v)), fun v => ?_, ?_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← (hev v).2]`. Conclude with `Submodule.mem_map_of_mem (locOp_mem _ _ _)`.
+
+Use `filter_upwards [hae, hvac] with v h1 h2`. Rewrite using `[h1, h2, (hev v).1]`. Use `⟨?_, ι₁, hι₁, fun Y hY => hrank _ hso l Y hY⟩` and prove the remaining obligations. Rewrite using `[← (hev B.v₁).2]`. Conclude with `Submodule.mem_map_of_mem (locOp_mem _ _ _)`.
+-/
 theorem UpperTheory.theta_geometry_triple_schwartz :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
         (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

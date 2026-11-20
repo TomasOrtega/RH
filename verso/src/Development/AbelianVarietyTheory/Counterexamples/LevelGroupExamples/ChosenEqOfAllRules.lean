@@ -15,6 +15,9 @@ variable (mapR : ∀ {S T : Type} [CommRing S] [Algebra K S] [CommRing T] [Algeb
 def conjAt (σ : K →+* ℂ) : CAt σ →ₐ[K] CAt ((starRingEnd ℂ).comp σ) :=
   { (starRingEnd ℂ : ℂ →+* ℂ) with commutes' := fun _ => rfl }
 
+/- English proof (translation)
+Unfold `ptNorm`. Rewrite using `[hv]`. Simplify using `only [hn]`. Use `congr 1`. Conclude with `RCLike.norm_conj (K := ℂ) _`.
+-/
 theorem ptNorm_conj (σ : K →+* ℂ) (fn : pts (CAt σ) → ι → ℝ)
     (fn' : pts (CAt ((starRingEnd ℂ).comp σ)) → ι → ℝ) (e : ι → ℕ) (f : Rules pts)
     (y : pts (CAt σ)) (z : pts (CAt ((starRingEnd ℂ).comp σ)))
@@ -26,6 +29,11 @@ theorem ptNorm_conj (σ : K →+* ℂ) (fn : pts (CAt σ) → ι → ℝ)
   congr 1
   exact RCLike.norm_conj (K := ℂ) _
 
+/- English proof (translation)
+Establish `h : ∀ y, ptNorm pts mapR σ (fun _ _ => 0) e f y = 0` using `fun y => by`. Unfold `ptNorm`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hi]), mul_zero]`. Use `⟨⟨0, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Conclude with `(h y).le`. Unfold `supAt`. Simplify using `[h]`.
+-/
 theorem bddAt_of_fnorm_zero (σ : K →+* ℂ) (e : ι → ℕ) (i : ι) (hi : e i ≠ 0) (f : Rules pts) :
     BddAt pts mapR σ (fun _ _ => 0) e f ∧ supAt pts mapR σ (fun _ _ => 0) e f = 0 := by
   have h : ∀ y, ptNorm pts mapR σ (fun _ _ => 0) e f y = 0 := fun y => by
@@ -35,6 +43,15 @@ theorem bddAt_of_fnorm_zero (σ : K →+* ℂ) (e : ι → ℕ) (i : ι) (hi : e
   · rintro _ ⟨y, rfl⟩; exact (h y).le
   · unfold supAt; simp [h]
 
+/- English proof (translation)
+Set `c : pts (CAt σ) → ℝ` to `fun y => cabs (evalAt pts mapR f y)`. Establish `hc : ∀ y, 0 ≤ c y` using `fun y => norm_nonneg _`. Establish `h : ∀ y, ptNorm pts mapR σ (fun y _ => 1 + c y) e f y ≤ 1` using `fun y => by`. Establish `hp : 0 < 1 + c y` using `by linarith [hc y]`. Establish `h1 : (1 + c y)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by linarith [hc y])`.
+
+Establish `h0 : 0 ≤ (1 + c y)⁻¹` using `inv_nonneg.2 hp.le`. Use `show c y * ∏ j, |1 + c y|⁻¹ ^ e j ≤ 1`. Rewrite using `[abs_of_pos hp, Finset.prod_pow_eq_pow_sum]`. Establish `hs : 1 ≤ ∑ j, e j` using `(Nat.one_le_iff_ne_zero.2 hi).trans (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))`. Establish `h2 : (1 + c y)⁻¹ ^ ∑ j, e j ≤ (1 + c y)⁻¹`.
+
+Simplify using `using pow_le_pow_of_le_one h0 h1 hs`. Use `(mul_le_mul_of_nonneg_left h2 (hc y)).trans ?_` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv, div_le_one hp]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun y _ => 1 + c y, fun y _ => by linarith [hc y], ⟨1, ?_⟩, Real.iSup_le h zero_le_one⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `h y`.
+-/
 theorem exists_fnorm_small (σ : K →+* ℂ) (e : ι → ℕ) (i : ι) (hi : e i ≠ 0) (f : Rules pts) :
     ∃ fnorm : pts (CAt σ) → ι → ℝ, (∀ y j, 0 < fnorm y j) ∧ BddAt pts mapR σ fnorm e f ∧
       supAt pts mapR σ fnorm e f ≤ 1 := by

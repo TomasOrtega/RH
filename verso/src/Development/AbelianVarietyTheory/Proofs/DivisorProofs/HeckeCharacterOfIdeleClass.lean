@@ -15,6 +15,9 @@ namespace GlobalTheory.HeckeBridge
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`.
+-/
 theorem compInf_eq_infTens (w : InfinitePlace F) (z : AF F ⊗[F] E) :
     compInf F E w z = Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E) (infTens F E z) := by
   induction z using TensorProduct.induction_on with
@@ -22,6 +25,13 @@ theorem compInf_eq_infTens (w : InfinitePlace F) (z : AF F ⊗[F] E) :
   | tmul a x => rfl
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.Host.infDiag, MonoidHom.finsetProd_apply, Units.coe_prod]`. Set `p1 : AdeleRing (𝓞 E) E →+* InfiniteAdeleRing E` to `RingHom.fst _ _`. Set `p2 : AdeleRing (𝓞 E) E →+* FiniteAdeleRing (𝓞 E) E` to `RingHom.snd _ _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p1 _ = _`.
+
+Rewrite using `[map_prod]`. Express the relevant statement in the definitionally equal form `∏ w : InfinitePlace E, Pi.mulSingle w (algebraMap E w.Completion (k : E)) = _`. Conclude with `Finset.univ_prod_mulSingle _`. Express the relevant statement in the definitionally equal form `p2 _ = _`. Rewrite using `[map_prod]`.
+
+Conclude with `Finset.prod_eq_one fun _ _ => rfl`.
+-/
 theorem coe_infDiag (k : Eˣ) :
     (Formalism.L2.Host.infDiag k : AdeleRing (𝓞 E) E) = (algebraMap E (InfiniteAdeleRing E) k, 1) := by
   classical
@@ -37,6 +47,9 @@ theorem coe_infDiag (k : Eˣ) :
     rw [map_prod]
     exact Finset.prod_eq_one fun _ _ => rfl
 
+/- English proof (translation)
+Take `⟨j, hjc, hjc', hj⟩` from `GlobalTheory.HeckeTensorRead.exists_infinite_equiv F E σ hcm`. Take `⟨s, hs, hsc, hsc'⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Use `⟨s.trans (j.prodCongr (finAdEquiv F E)), j, (hjc.prodMap GlobalTheory.DefU.ClassFin.continuous_finAdEquiv).comp hsc, hsc'.comp (hjc'.prodMap continuous_finAdEquiv_symm), hj, fun z => Prod.ext (congrArg j (hs z).1) (congrArg (finAdEquiv F E) (hs z).2)⟩` and prove the remaining obligations.
+-/
 theorem exists_tensor_adele_equiv (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) :
     ∃ (Φ : AF F ⊗[F] E ≃+* AdeleRing (𝓞 E) E) (j : Ainf F ⊗[F] E ≃+* InfiniteAdeleRing E),
@@ -47,6 +60,25 @@ theorem exists_tensor_adele_equiv (F E : Type) [Field F] [NumberField F] [Field 
   refine ⟨s.trans (j.prodCongr (finAdEquiv F E)), j, (hjc.prodMap GlobalTheory.DefU.ClassFin.continuous_finAdEquiv).comp hsc, hsc'.comp (hjc'.prodMap continuous_finAdEquiv_symm), hj,
     fun z => Prod.ext (congrArg j (hs z).1) (congrArg (finAdEquiv F E) (hs z).2)⟩
 
+/- English proof (translation)
+Introduce `hcm χ hχ`. Take `⟨Φ, j, -, hΦc, hj, hΦ⟩` from `exists_tensor_adele_equiv F E σ hcm`. Establish `hfin : ∀ x : E, finAdEquiv F E ((1 : Af F) ⊗ₜ[F] x) = algebraMap E (FiniteAdeleRing (𝓞 E) E) x` using `fun x => by`. Rewrite using `[show finAdEquiv F E ((1 : Af F) ⊗ₜ[F] x) = _ from toFinAd_tmul 1 x, map_one, one_mul]`. Set `u : Neutral.B1.Ideles E →* (AF F ⊗[F] E)ˣ` to `Units.map Φ.symm.toRingHom.toMonoidHom`.
+
+Establish `hu : Continuous u` using `Continuous.units_map _ hΦc`. Establish `ht : Continuous (Circle.toUnits : Circle →* ℂˣ)` using `Units.continuous_iff.2 ⟨continuous_subtype_val, by`. Establish `h : Continuous fun z : Circle => ((z⁻¹ : Circle) : ℂ)` using `continuous_subtype_val.comp continuous_inv`. Use `h.congr fun z => ?_` and prove the remaining obligations. Use the proof step `simp⟩`.
+
+Establish `hdiag : ∀ k : Eˣ, u (Neutral.B1.diagUnits E k) = Units.map (inclR (F` using `F) (AF F)).toMonoidHom k := fun k => Units.ext (Φ.symm_apply_eq.2 (by`. Rewrite using `[hΦ]`. Express the relevant statement in the definitionally equal form `(algebraMap E (InfiniteAdeleRing E) k, algebraMap E (FiniteAdeleRing (𝓞 E) E) k) = _`. Use `Prod.ext (hj k).symm (hfin k).symm))` and prove the remaining obligations. Establish `hloc : ∀ (W : HeightOneSpectrum (𝓞 E)) (x : (W.adicCompletion E)ˣ), u (Neutral.B1.localIdele E W x) = locIdele F W x` using `fun W x => Units.ext (Φ.symm_apply_eq.2 (by`.
+
+Rewrite using `[hΦ, infTens_locIdele, map_one, finTens_locIdele]`. Use the proof step `rfl))`. Set `H : Formalism.L2.Host.HChar E` to `⟨Circle.toUnits.comp (χ.comp u), ht.comp (hχ.1.comp hu), fun k => by`. Express the relevant statement in the definitionally equal form `Circle.toUnits (χ (u _)) = 1`. Rewrite using `[hdiag, hχ.2, map_one]⟩`.
+
+Use `⟨H, fun W x => ?_, fun τ m hm k => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Circle.toUnits (χ (u _)) = Circle.toUnits (χ (locIdele F W x))`. Rewrite using `[hloc]`. Use `set z := u (Formalism.L2.Host.infDiag k) with hz`. Establish `hz1 : Φ (z : AF F ⊗[F] E) = (Formalism.L2.Host.infDiag k : AdeleRing (𝓞 E) E)` using `Φ.apply_symm_apply _`.
+
+Rewrite `hz1` using `[coe_infDiag, hΦ]`. Establish `hinf : infTens F E z = (1 : Ainf F) ⊗ₜ[F] (k : E)` using `j.injective ((congrArg Prod.fst hz1).trans (hj k).symm)`. Establish `hfin1 : finTens F E z = 1` using `(finAdEquiv F E).injective ((congrArg Prod.snd hz1).trans (map_one _).symm)`. Establish `hAt : At (evI F) ((z : AF F ⊗[F] E) - 1)`. Introduce `a ha`.
+
+Establish `ha1 : a.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (ha.trans (map_zero _).symm)`. Use `tens_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_zero]`. Express the relevant statement in the definitionally equal form `(a.1 ⊗ₜ[F] (1 : E)) * _ = 0`. Rewrite using `[ha1, TensorProduct.zero_tmul, zero_mul]`.
+
+Rewrite using `[Algebra.smul_def, map_mul, map_zero, map_sub, map_one, hfin1, sub_self, mul_zero]`. Establish `hpi : ∀ w, piInf (τ w) z = (τ w).1 k` using `fun w => by`. Express the relevant statement in the definitionally equal form `infEmb (τ w) (compInf F E w z) = _`. Rewrite using `[compInf_eq_infTens, hinf, Algebra.TensorProduct.map_tmul, map_one, infEmb_tmul, map_one, one_mul]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `((χ z : Circle) : ℂ) = _`. Rewrite using `[hm z hAt]`. Conclude with `Finset.prod_congr rfl fun w _ => by rw [hpi w]`.
+-/
 theorem exists_hchar (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) : IsCMExt F E σ → ∀ χ : Chr F E, IsHecke F E χ → ∃ H : Formalism.L2.Host.HChar E,
       (∀ (W : HeightOneSpectrum (𝓞 E)) (x : (W.adicCompletion E)ˣ), H.loc W x = locChar χ W x) ∧

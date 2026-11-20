@@ -23,10 +23,30 @@ namespace GlobalTheory.Core.Mi.LevRow
 
 open GlobalTheory.FinPl.OrbitCoset in
 
+/- English proof (translation)
+The claim follows from `wittCoreEmbedding_mem_supportedSubgroup d P (emb_mem_grpAt' o ha)`.
+-/
 theorem embA_mem_grpAt {D : D7} {S S₀ A B : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : OrthDec S₀ A B) (P : GlobalTheory.FinPl.Pl D → Prop)
     {a : GA D A} (ha : a ∈ grpAt A P) : embA d o a ∈ grpAt S P :=
   wittCoreEmbedding_mem_supportedSubgroup d P (emb_mem_grpAt' o ha)
 
+/- English proof (translation)
+Introduce `D X h u ψ F tr hK B a₀ hE hLev hAd hH v hv a ha`. Take `⟨y, hy⟩` from `GlobalTheory.AdForm.RdVal.finM_mem (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) rfl a`. Use `⟨y, hy.symm, ?_⟩` and prove the remaining obligations. Establish `hRep` using `GlobalTheory.Core.Mi.FinFrame.repM_toH D X h u ψ B F tr hE hAd (a₀ * a * a₀⁻¹)`. Establish `e0 : GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a₀ = (tr.h0.1.1 : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) (GlobalTheory.AdForm.EF D))` using `hH.2`.
+
+Establish `hh0 : ((tr.h0⁻¹).1.1 : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) (GlobalTheory.AdForm.EF D)) * (tr.h0.1.1 : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) (GlobalTheory.AdForm.EF D)) = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, Units.val_one]`. Establish `hfa : GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a₀⁻¹ = ((tr.h0⁻¹).1.1 : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) (GlobalTheory.AdForm.EF D))`. Establish `h1 : GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a₀ * GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a₀⁻¹ = 1`. Rewrite using `[← unitaryAdelicPointFiniteMatrix_base_space_mul, mul_inv_cancel, unitaryAdelicPointFiniteMatrix_base_space_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hfg : GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) (a₀ * a * a₀⁻¹) = ((tr.h0 * y * tr.h0⁻¹).1.1 : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) (GlobalTheory.AdForm.EF D))`. Use `(unitaryAdelicPointFiniteMatrix_base_space_mul _ _).trans ((congrArg₂ (· * ·) ((unitaryAdelicPointFiniteMatrix_base_space_mul _ _).trans (congrArg₂ (· * ·) e0 hy.symm)) hfa).trans ?_)` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Units.val_mul]`. Establish `hRF : Formalism.L2.SG.ColDict.RepF X tr.wt tr.ιA ((B.toH (a₀ * a * a₀⁻¹)).2 : X.B.I.Gf) (tr.h0 * y * tr.h0⁻¹)`.
+
+Establish `h'` using `hRep`. Rewrite `h'` using `[hfg]`. Conclude with `h'`. Take `⟨hmemIff, -⟩` from `hLev.2 (B.toH (a₀ * a * a₀⁻¹)).2 _ hRF`. Establish `hconj : tr.h0⁻¹ * (tr.h0 * y * tr.h0⁻¹) * tr.h0 = y` using `by group`.
+
+Rewrite `hmemIff` using `[hconj]`. Rewrite using `[← hmemIff]`. Establish `hk : a₀ * a * a₀⁻¹ ∈ grpAt (D.sp.X 0) (· = v)`. Establish `hN : (grpAt (D.sp.X 0) (· = v)).Normal` using `by unfold grpAt GlobalTheory.FinPl.congGrp; infer_instance`. Conclude with `hN.conj_mem a ha a₀`.
+
+Establish `hκ : embA B.d B.o (a₀ * a * a₀⁻¹) ∈ grpAt (D.sp.Y 0) (· = v)` using `embA_mem_grpAt B.d B.o _ hk`. Establish `hKs` using `GlobalTheory.T.mem_secondModelStabilizer_iff_carriesRowLattice X h v _ hκ`. Express the relevant statement in the definitionally equal form `(X.xu u)⁻¹ * (iotaX X h (embA B.d B.o (a₀ * a * a₀⁻¹))).2 * X.xu u ∈ X.K2 ↔ _`. Rewrite using `[← hKs]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h2`. Establish `h3 : (X.xu u)⁻¹ * (iotaX X h (embA B.d B.o (a₀ * a * a₀⁻¹))).2 * X.xu u ∈ X.B.I.Kset` using `h2.1`. Establish `h4` using `Formalism.L2.SG.Pf.unitaryCongruence.K_mul X.B.I (Formalism.L2.SG.Pf.unitaryCongruence.K_mul X.B.I (X.xu_K u) h3) (Formalism.L2.SG.Pf.unitaryCongruence.K_inv X.B.I (X.xu_K u))`. Establish `e : X.xu u * ((X.xu u)⁻¹ * (iotaX X h (embA B.d B.o (a₀ * a * a₀⁻¹))).2 * X.xu u) * (X.xu u)⁻¹ = (iotaX X h (embA B.d B.o (a₀ * a * a₀⁻¹))).2` using `by group`. Rewrite `h4` using `[e]`.
+
+Conclude with `h4`. Introduce `h2`. Use `⟨?_, GlobalTheory.T.supportedStabilizer_conj_satisfies_deepCongruence X h u v hv _ hκ h2⟩` and prove the remaining obligations. Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.K_mul X.B.I (Formalism.L2.SG.Pf.unitaryCongruence.K_mul X.B.I (Formalism.L2.SG.Pf.unitaryCongruence.K_inv X.B.I (X.xu_K u)) h2) (X.xu_K u)`.
+-/
 theorem levrow : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (F : Formalism.L2.Forms.Forms0 D u) (tr : Formalism.L2.SG.ColDict.Transport X u F) (hK : X.LevelSubgroupCharacter) (B : SBes X h u ψ (D.sp.X 0)) (a₀ : GA D (D.sp.X 0)), GlobalTheory.Core.Mi.IdE X → Formalism.L2.SG.ColDict.LevelMatch X tr hK → B.Adapted tr.wt → IsTransportAdelicCorrection tr a₀ → ∀ v : GlobalTheory.FinPl.Pl D, ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal → ∀ a ∈ grpAt (D.sp.X 0) (· = v), ∃ y : Formalism.UG.UPts (Formalism.L2.Forms.sigD D) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F), GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a = y.1.1 ∧ ((y : GL _ _) ∈ F.cls0.lev.U ↔ Moves (D.sp.Y 0) (embA B.d B.o (a₀ * a * a₀⁻¹)) (latS D) (latS D) (· = v)) := by
   intro D X h u ψ F tr hK B a₀ hE hLev hAd hH v hv a ha
   obtain ⟨y, hy⟩ := GlobalTheory.AdForm.RdVal.finM_mem (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _))

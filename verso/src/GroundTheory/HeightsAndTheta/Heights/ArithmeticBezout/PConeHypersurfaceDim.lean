@@ -13,6 +13,35 @@ open ReciprocityTheory.ChartRestriction.G.Geo (MRing PBlk IsArithVar IsGoodProj 
 
 namespace ConeHypersurfaceDim
 
+/- English proof (translation)
+Set `φ : MvPolynomial (Fin m) ℂ →+* (MvPolynomial (Fin n) ℂ ⧸ I)` to `(Ideal.Quotient.mk I).comp (aeval L).toRingHom`. Set `instA : Algebra (MvPolynomial (Fin m) ℂ) (MvPolynomial (Fin n) ℂ ⧸ I)` to `φ.toAlgebra`. Set `instM : Module (MvPolynomial (Fin m) ℂ) (MvPolynomial (Fin n) ℂ ⧸ I)` to `instA.toModule`. Establish `hsmul : ∀ (s : MvPolynomial (Fin m) ℂ) (p : MvPolynomial (Fin n) ℂ), s • Ideal.Quotient.mk I p = Ideal.Quotient.mk I (aeval L s * p)`. Introduce `s p`.
+
+Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Use `set M := Submodule.span (MvPolynomial (Fin m) ℂ) (((Fintype.piFinset fun i => Finset.range (r i)).image (fun α => Ideal.Quotient.mk I (monomial (Finsupp.equivFunOnFinite.symm α) 1))) : Set (MvPolynomial (Fin n) ℂ ⧸ I)) with hM`. Establish `hdeg : ∀ N, ∀ β : Fin n →₀ ℕ, (β.sum fun _ e => e) = N → Ideal.Quotient.mk I (monomial β 1) ∈ M`. Introduce `N`.
+
+Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `β hβ`. Establish `hpoly : ∀ q : MvPolynomial (Fin n) ℂ, q.totalDegree < N → Ideal.Quotient.mk I q ∈ M`. Introduce `q hq`.
+
+Rewrite using `[q.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hd' : (d.sum fun _ e => e) < N` using `lt_of_le_of_lt (le_totalDegree hd) hq`. Establish `h1` using `ih _ hd' d rfl`. Establish `: Ideal.Quotient.mk I (monomial d (coeff d q)) = (C (coeff d q) : MvPolynomial (Fin m) ℂ) • Ideal.Quotient.mk I (monomial d 1)`.
+
+Rewrite using `[hsmul, aeval_C, algebraMap_eq, C_mul_monomial, mul_one]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ h1`. Distinguish the cases in `hsmall : ∀ i, β i < r i`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨Finsupp.equivFunOnFinite β, ?_, ?_⟩)` and prove the remaining obligations. Conclude with `Fintype.mem_piFinset.mpr fun i => Finset.mem_range.mpr (hsmall i)`. Simplify using the standard rewrite rules. Use `push Not at hsmall`. Take `⟨i, hi⟩` from `hsmall`.
+
+Use `set β' := β - Finsupp.single i (r i) with hβ'`. Establish `hβeq : β = β' + Finsupp.single i (r i)`. Use extensionality with `i'`. Simplify using `only [hβ', Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply]`. Distinguish the cases in `h : i' = i`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[Ne.symm h]`. Establish `hmk : Ideal.Quotient.mk I (monomial β 1) = ∑ j, (X j : MvPolynomial (Fin m) ℂ) • Ideal.Quotient.mk I (monomial β' 1 * H i j)`.
+
+Establish `h1 : monomial β (1 : ℂ) = monomial β' 1 * X i ^ r i`. Rewrite using `[hβeq, X_pow_eq_monomial, monomial_mul, one_mul]`. Establish `h2 : Ideal.Quotient.mk I (X i ^ r i) = Ideal.Quotient.mk I (∑ j, L j * H i j)` using `Ideal.Quotient.eq.mpr (hrel i)`. Rewrite using `[h1, map_mul, h2, ← map_mul, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hsmul, aeval_X]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hmk]`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hpoly _ ?_)` and prove the remaining obligations.
+
+Establish `hβsum : (β.sum fun _ e => e) = (β'.sum fun _ e => e) + r i`. Rewrite using `[hβeq, Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[totalDegree_monomial _ one_ne_zero]`. Conclude with `Nat.add_le_add_left (hH i j) _`.
+
+Use `_ < N := by have := hr i; omega`. Establish `hfin : Module.Finite (MvPolynomial (Fin m) ℂ) (MvPolynomial (Fin n) ℂ ⧸ I)`. Use `⟨⟨(Fintype.piFinset fun i => Finset.range (r i)).image (fun α => Ideal.Quotient.mk I (monomial (Finsupp.equivFunOnFinite.symm α) 1)), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hM, eq_top_iff]`. Introduce and unpack `x -`.
+
+Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[p.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Establish `: Ideal.Quotient.mk I (monomial d (coeff d p)) = (C (coeff d p) : MvPolynomial (Fin m) ℂ) • Ideal.Quotient.mk I (monomial d 1)`. Rewrite using `[hsmul, aeval_C, algebraMap_eq, C_mul_monomial, mul_one]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (hdeg _ d rfl)`. Conclude with `hfin`.
+-/
 theorem finite_of_rel {n m : ℕ} (I : Ideal (MvPolynomial (Fin n) ℂ))
     (L : Fin m → MvPolynomial (Fin n) ℂ) (r : Fin n → ℕ) (hr : ∀ i, 0 < r i)
     (H : Fin n → Fin m → MvPolynomial (Fin n) ℂ) (hH : ∀ i j, (H i j).totalDegree ≤ r i - 1)
@@ -103,6 +132,11 @@ theorem finite_of_rel {n m : ℕ} (I : Ideal (MvPolynomial (Fin n) ℂ))
     exact Submodule.smul_mem _ _ (hdeg _ d rfl)
   exact hfin
 
+/- English proof (translation)
+Proceed by induction on `x with`. Consider the case `bot => exact bot_le`. Consider the case `coe x`. Establish `h' : x + 1 ≤ ((d : ℕ∞) + 1)` using `by exact_mod_cast h`. Establish `: x ≤ (d : ℕ∞)` using `(ENat.add_le_add_iff_right ENat.one_ne_top).mp h'`.
+
+Conclude with `this` after adjusting the coercions.
+-/
 theorem le_of_add_one_le {x : WithBot ℕ∞} {d : ℕ} (h : x + 1 ≤ ((d + 1 : ℕ) : WithBot ℕ∞)) :
     x ≤ ((d : ℕ) : WithBot ℕ∞) := by
   induction x with
@@ -112,6 +146,19 @@ theorem le_of_add_one_le {x : WithBot ℕ∞} {d : ℕ} (h : x + 1 ≤ ((d + 1 :
     have : x ≤ (d : ℕ∞) := (ENat.add_le_add_iff_right ENat.one_ne_top).mp h'
     exact_mod_cast this
 
+/- English proof (translation)
+Introduce `n e P Ψ c hP hΨ hc`. Use `set J := complexFibreIdeal P ⊔ Ideal.span {conePullback Ψ c}`. Establish `hrad : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J.radical)`. Rewrite using `[ringKrullDim_quotient, ringKrullDim_quotient, PrimeSpectrum.zeroLocus_radical]`. Rewrite using `[hrad]`.
+
+Use `choose r hr H hH hrelP using fun i => ConeProjHyperplaneDim.cone_rel hP hΨ i`. Establish `hfin` using `finite_of_rel J.radical (ConeProjHyperplaneDim.coneForm Ψ) r hr H hH (fun i => Ideal.radical_mono le_sup_left (hrelP i))`. Use `set φ : MvPolynomial (Fin (e + 1)) ℂ →+* (MvPolynomial (Fin n) ℂ ⧸ J.radical) := (Ideal.Quotient.mk J.radical).comp (aeval (ConeProjHyperplaneDim.coneForm Ψ)).toRingHom with hφ`. Establish `hφc : φ c = 0` using `by show Ideal.Quotient.mk J.radical (conePullback Ψ c) = 0`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.le_radical (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))`.
+
+Establish `hker : ∀ a ∈ Ideal.span {c}, φ a = 0`. Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Rewrite using `[map_mul, hφc, mul_zero]`. Set `ψ` to `Ideal.Quotient.lift (Ideal.span {c}) φ hker`.
+
+Establish `hcomp : ψ.comp (Ideal.Quotient.mk (Ideal.span {c})) = φ` using `RingHom.ext fun a => by`. Rewrite using `[RingHom.comp_apply]`. Conclude with `Ideal.Quotient.lift_mk _ _ _`. Establish `hψ : ψ.Finite` using `RingHom.Finite.of_comp_finite (f := Ideal.Quotient.mk (Ideal.span {c})) (hcomp ▸ hfin)`. Set `` to `ψ.toAlgebra`.
+
+Establish `: Module.Finite (MvPolynomial (Fin (e + 1)) ℂ ⧸ Ideal.span {c}) (MvPolynomial (Fin n) ℂ ⧸ J.radical)` using `hψ`. Establish `: Algebra.IsIntegral (MvPolynomial (Fin (e + 1)) ℂ ⧸ Ideal.span {c}) (MvPolynomial (Fin n) ℂ ⧸ J.radical)` using `Algebra.IsIntegral.of_finite _ _`. Establish `hS : ringKrullDim (MvPolynomial (Fin (e + 1)) ℂ) = ((e + 1 : ℕ) : WithBot ℕ∞)`. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]`. Establish `hquot` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hc)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem proof : ConeHypersurfaceDim.Statement := by
   intro n e P Ψ c hP hΨ hc
   classical

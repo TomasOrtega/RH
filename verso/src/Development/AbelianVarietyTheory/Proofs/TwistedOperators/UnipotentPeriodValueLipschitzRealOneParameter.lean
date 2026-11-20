@@ -16,6 +16,35 @@ noncomputable section
 
 namespace GlobalTheory.SepPer.LipValue
 
+/- English proof (translation)
+Introduce `hCusp D θ hθ Y V d S S' M₀ M p Q hp J χ t ht b hb`. Take `⟨hLC, hSC, hT2, hB, hTG, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D Y`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+
+Use `haveI := hB`. Use `haveI := hTG`. Use `haveI : LocallyCompactSpace (GinfC Y) := (GlobalTheory.AdelicSplit.isClosed_GinfC' Y).locallyCompactSpace`. Take `⟨c, hc⟩` from `hp.2 (Measure.haar : Measure (GinfC Y)) inferInstance`. Use `set m : Measure (GinfC Y) := Measure.haar with hm`.
+
+Use `set φ : GA D Y → ℂ := t (PiTensorProduct.tprod ℂ p.w) with hφ`. Use `set α : GinfC Y → ℂ := fun h => coefR θ M (p.v θ) (p.v θ) (stabilizerEmbedding d (h : GA D Y)) with hα`. Establish `hαi : Integrable α m` using `by simpa only [one_mul] using (hc.far 1).1`. Establish `hrep` using `GlobalTheory.T.integrable_scalar_action_multiplicityMap_values hCusp D θ hθ Y S' M₀ J χ t ht p.w m inferInstance α c hαi hc.act`. Establish `hT` using `(mem_multT θ M₀ J χ t).1 ht`.
+
+Establish `hcont : Continuous φ`. Establish `key : ∀ T ∈ Mult θ M₀ J χ, Continuous (T p.w)`. Introduce `T hT'`. Proceed by induction on `hT' using Submodule.span_induction with`. Consider the case `mem T h => exact (h.aut p.w).cont`.
+
+Consider the case `zero => exact continuous_const`. Consider the case `add T T' _ _ h h' => exact h.add h'`. Consider the case `smul a T _ h => exact h.const_smul a`. Use `key _ hT` as an intermediate fact. Simplify `this` using `[PiTensorProduct.lift_symm]`.
+
+Establish `hb0 : 0 ≤ b` using `(norm_nonneg _).trans (hb 1)`. Introduce `x τ X hX s`. Set `k : GinfC Y` to `⟨oneP θ Y τ X s, GlobalTheory.PointAtPlaceHom.atTau_mem Y τ _⟩`. Establish `hkinv : ((k⁻¹ : GinfC Y) : GA D Y) = oneP θ Y τ X (-s)` using `by show (oneP θ Y τ X s)⁻¹ = _`. Conclude with `inv_eq_of_mul_eq_one_right (by`.
+
+Rewrite using `[← GlobalTheory.Mem.Lift.oneP_add hθ hX, add_neg_cancel, GlobalTheory.Mem.Lift.oneP_zero hθ])`. Establish `hmeas : ∀ y : GA D Y, AEStronglyMeasurable (fun h : GinfC Y => φ (y * h)) m` using `fun y => (hcont.comp (continuous_const.mul continuous_subtype_val)).aestronglyMeasurable`. Establish `hbd : ∀ y : GA D Y, ∀ᵐ (h : GinfC Y) ∂m, ‖φ (y * h)‖ ≤ b` using `fun y => Filter.Eventually.of_forall fun h => hb _`. Establish `hαk : Integrable (fun h => α (k⁻¹ * h)) m` using `hαi.comp_mul_left k⁻¹`. Establish `hI1 : Integrable (fun h => α (k⁻¹ * h) * φ (x * h)) m` using `hαk.mul_bdd (hmeas x) (hbd x)`.
+
+Establish `hI0 : Integrable (fun h => α h * φ (x * h)) m` using `hαi.mul_bdd (hmeas x) (hbd x)`. Establish `h1 : c * φ (x * k) = ∫ h, α (k⁻¹ * h) * φ (x * h) ∂m`. Rewrite using `[← hrep (x * k)]`. Use `integral_mul_left_eq_self (μ := m) (fun h => α (k⁻¹ * h) * φ (x * h)) k` as an intermediate fact. Rewrite using `[← this]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `show α h * φ (x * ↑k * ↑h) = α (k⁻¹ * (k * h)) * φ (x * ↑(k * h))`. Rewrite using `[inv_mul_cancel_left, Subgroup.coe_mul, mul_assoc]`. Establish `hdiff : c * (φ (x * k) - φ x) = ∫ h, (α (k⁻¹ * h) - α h) * φ (x * h) ∂m`. Rewrite using `[mul_sub, h1, ← hrep x, ← integral_sub hI1 hI0]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `h`. Expand and normalize the polynomial expressions, which then agree. Establish `hlip` using `hc.lip τ X hX (-s)`. Establish `hlip' : ∫ h, ‖α (k⁻¹ * h) - α h‖ ∂m ≤ Real.exp Q * ‖c‖ * |s| * hsn (p.A.fr τ * X * (p.A.fr τ)⁻¹)`.
+
+Establish `e : (fun h : GinfC Y => ‖α (k⁻¹ * h) - α h‖) = fun h : GinfC Y => ‖coefR θ M (p.v θ) (p.v θ) (stabilizerEmbedding d (oneP θ Y τ X (-s) * h)) - coefR θ M (p.v θ) (p.v θ) (stabilizerEmbedding d h)‖`. Use function extensionality and compare the values at `h`. Simplify using `only [hα, Subgroup.coe_mul, hkinv]`. Rewrite using `[e]`. Simplify `hlip` using `only [abs_neg]`.
+
+Establish `hint : Integrable (fun h => ‖α (k⁻¹ * h) - α h‖) m` using `(hαk.sub hαi).norm`. Establish `hnorm : ‖c‖ * ‖φ (x * k) - φ x‖ ≤ (∫ h, ‖α (k⁻¹ * h) - α h‖ ∂m) * b`. Rewrite using `[← norm_mul, hdiff, ← integral_mul_const]`. Use `(norm_integral_le_integral_norm _).trans (integral_mono_of_nonneg (Filter.Eventually.of_forall fun h => norm_nonneg _) (hint.mul_const b) (Filter.Eventually.of_forall fun h => ?_))` and prove the remaining obligations. Simplify using `only [norm_mul]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hb _) (norm_nonneg _)`. Establish `hc0 : 0 < ‖c‖` using `norm_pos_iff.2 hc.ne`. Establish `hH : 0 ≤ hsn (p.A.fr τ * X * (p.A.fr τ)⁻¹)` using `Real.sqrt_nonneg _`. Establish `key : ‖c‖ * ‖φ (x * k) - φ x‖ ≤ ‖c‖ * (Real.exp Q * b * |s| * hsn (p.A.fr τ * X * (p.A.fr τ)⁻¹))`. Use `hnorm.trans ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_left key hc0`.
+-/
 theorem lip_value : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (S S' : D.what₂.Tau → SPar) (M₀ : DSModel Y S') (M : DSModel V S) (p : Pack M₀ M) (Q : ℝ), p.Is θ d Q → ∀ (J : Set (GA D Y)) (χ : GA D Y → ℂ), ∀ t ∈ MultT θ M₀ J χ, ∀ b : ℝ, (∀ x, ‖t (PiTensorProduct.tprod ℂ p.w) x‖ ≤ b) → Lip θ p.A (t (PiTensorProduct.tprod ℂ p.w)) (Real.exp Q * b) := by
   intro hCusp D θ hθ Y V d S S' M₀ M p Q hp J χ t ht b hb
   obtain ⟨hLC, hSC, hT2, hB, hTG, -⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D Y

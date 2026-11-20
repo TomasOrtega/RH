@@ -13,18 +13,27 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 variable {S : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R']
 
+/- English proof (translation)
+Use `RingHom.ext fun r => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMap_comp_algebraMap (c : R →+* R') :
     (dualMap c).comp (algebraMap R (DualNumber R)) = (algebraMap R' (DualNumber R')).comp c := by
   refine RingHom.ext fun r => TrivSqZeroExt.ext ?_ ?_
   · simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
   · simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `[dualMap]`.
+-/
 theorem fst_comp_dualMap (c : R →+* R') :
     (TrivSqZeroExt.fstHom R' R' R').toRingHom.comp (dualMap c) =
       c.comp (TrivSqZeroExt.fstHom R R R).toRingHom := by
   refine RingHom.ext fun a => ?_
   simp [dualMap]
 
+/- English proof (translation)
+Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[dualMap, epsMul]`. Simplify using `[dualMap, epsMul, mul_comm]`.
+-/
 theorem dualMap_comp_epsMul (c : R →+* R') (r : R) :
     (dualMap c).comp (epsMul r) = (epsMul (c r)).comp (dualMap c) := by
   refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_
@@ -41,6 +50,11 @@ def epsBase (c : R →+* R') (x : Sp R ⟶ S) : epsAt (spMap c ≫ x) ⟶ epsAt 
 def ptBase (c : R →+* R') (x : Sp R ⟶ S) : Over.mk (spMap c ≫ x) ⟶ Over.mk x :=
   Over.homMk (spMap c) rfl
 
+/- English proof (translation)
+Establish `h1 : (ptBase c x ≫ (1 : Over.mk x ⟶ G)) = 1` using `MonObj.comp_one _`. Establish `h2 : spMap c ≫ (1 : Over.mk x ⟶ G).left = (1 : Over.mk (spMap c ≫ x) ⟶ G).left`. Rewrite using `[← h1]`. Both sides reduce to the same expression. Unfold `IsTanAt at hv ⊢`.
+
+Rewrite using `[← h2, ← hv]`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ spMap (dualMap c) ≫ v.left = spMap c ≫ Spec.map _ ≫ v.left`. Simplify using `only [spMap]`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, fst_comp_dualMap]`.
+-/
 theorem isTanAt_base (G : Over S) [GrpObj G] (c : R →+* R') (x : Sp R ⟶ S) (v : epsAt x ⟶ G)
     (hv : IsTanAt G x v) : IsTanAt G (spMap c ≫ x) (epsBase c x ≫ v) := by
   have h1 : (ptBase c x ≫ (1 : Over.mk x ⟶ G)) = 1 := MonObj.comp_one _
@@ -53,6 +67,13 @@ theorem isTanAt_base (G : Over S) [GrpObj G] (c : R →+* R') (x : Sp R ⟶ S) (
   rw [← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp,
       ← CommRingCat.ofHom_comp, fst_comp_dualMap]
 
+/- English proof (translation)
+Take `⟨E, iA, iM, ⟨M⟩⟩` from `lieModel_exists S G R x`. Establish `hex : ∀ e, ∃ e', M'.pt e' = epsBase (algebraMap R R') x ≫ M.pt e` using `fun e => M'.onto _ (isTanAt_base G _ x _ (M.tan e))`. Use `choose f hf using hex`. Establish `hleft : ∀ e, (M'.pt (f e)).left = spMap (dualMap (algebraMap R R')) ≫ (M.pt e).left` using `fun e => by`. Rewrite using `[hf e]`.
+
+Both sides reduce to the same expression. Set `j : E →ₗ[R] E'` to `{ toFun := f map_add' := fun a b => M'.inj (by`. Rewrite using `[M'.add, hf, hf, hf, M.add, MonObj.comp_mul])`. Use the proof step `map_smul' := fun r a => M'.inj (Over.OverMorphism.ext (by`. Rewrite using `[RingHom.id_apply, ← algebraMap_smul R' r (f a), M'.smul, hleft, hleft, M.smul]`.
+
+Simplify using `only [spMap]`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, dualMap_comp_epsMul])) }`. Use `⟨E, iA, iM, M, j, GlobalTheory.T.lie_model_isBaseChange S G R R' x E E' M M' j fun e => ?_, hleft⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(M'.pt (f e)).left ≫ 𝟙 G.left = _`. Rewrite using `[Category.comp_id, hleft]`.
+-/
 theorem exists_isBaseChange (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (R R' : Type)
     [CommRing R] [CommRing R'] [Algebra R R'] (x : Sp R ⟶ S) (E' : Type) [AddCommGroup E'] [Module R' E']
     [Module R E'] [IsScalarTower R R' E'] (M' : LieModel G (spMap (algebraMap R R') ≫ x) E') :

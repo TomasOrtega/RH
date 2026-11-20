@@ -12,10 +12,19 @@ set_option linter.unusedSimpArgs false
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem logMv_eq {σ : Type} (F : MvPowerSeries σ ℂ_[p]) : logMv F = logS F := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem expMv_eq {σ : Type} (F : MvPowerSeries σ ℂ_[p]) : expMv F = PI.FglPhSplit.expMv F := rfl
 
+/- English proof (translation)
+Conclude with `PI.FglShared.expMv_add' hf hg`.
+-/
 theorem expMv_addC {σ : Type} {f g : MvPowerSeries σ ℂ_[p]} (hf : constantCoeff f = 0)
     (hg : constantCoeff g = 0) : expMv (f + g) = expMv f * expMv g := by
   exact PI.FglShared.expMv_add' hf hg
@@ -23,6 +32,83 @@ theorem expMv_addC {σ : Type} {f g : MvPowerSeries σ ℂ_[p]} (hf : constantCo
 def uS (E : PowerSeries ℂ_[p]) (x : MvPowerSeries (Fin 3) ℂ_[p]) : MvPowerSeries (Fin 3) ℂ_[p] :=
   PowerSeries.subst x (logMv E)
 
+/- English proof (translation)
+Introduce `p _ W wq l ex E T ha1 ha2 ha3 ha4 ha6 hW hex0 hinv hE0 hT ⟨n, hnI, hn1, hTn⟩`. Use `set x0 : MvPowerSeries (Fin 3) ℂ_[p] := Xv 0 with hx0`. Use `set x1 : MvPowerSeries (Fin 3) ℂ_[p] := Xv 1 with hx1`. Use `set x2 : MvPowerSeries (Fin 3) ℂ_[p] := Xv 2 with hx2`. Establish `hl0 : PowerSeries.constantCoeff l = 0` using `PI.FglShared.l_constantCoeff hex0 hinv`.
+
+Establish `hL0 : MvPowerSeries.constantCoeff (logS E) = 0` using `PI.FglShared.constantCoeff_logS E`. Establish `hXc : ∀ i : Fin 3, constantCoeff (Xv i : MvPowerSeries (Fin 3) ℂ_[p]) = 0`. Introduce `i`. Simplify using `[Xv]`. Establish `hlg0 : ∀ a : MvPowerSeries (Fin 3) ℂ_[p], constantCoeff a = 0 → constantCoeff (lg l a) = 0` using `fun a ha => PowerSeries.constantCoeff_subst_eq_zero ha _ hl0`.
+
+Establish `hpt0 : ∀ a : MvPowerSeries (Fin 3) ℂ_[p], constantCoeff a = 0 → constantCoeff (pt ex a) = 0` using `fun a ha => PowerSeries.constantCoeff_subst_eq_zero ha _ hex0`. Establish `hadd0 : ∀ a b : MvPowerSeries (Fin 3) ℂ_[p], constantCoeff a = 0 → constantCoeff b = 0 → constantCoeff (add l ex a b) = 0`. Introduce `a b ha hb`. Unfold `add`. Conclude with `hpt0 _ (by rw [map_add, hlg0 a ha, hlg0 b hb, add_zero])`.
+
+Establish `hsub0 : ∀ a b : MvPowerSeries (Fin 3) ℂ_[p], constantCoeff a = 0 → constantCoeff b = 0 → constantCoeff (sub l ex a b) = 0`. Introduce `a b ha hb`. Unfold `sub`. Conclude with `hpt0 _ (by rw [map_sub, hlg0 a ha, hlg0 b hb, sub_zero])`. Establish `c0 : constantCoeff x0 = 0` using `hXc 0`.
+
+Establish `c1 : constantCoeff x1 = 0` using `hXc 1`. Establish `c2 : constantCoeff x2 = 0` using `hXc 2`. Use `set s := add l ex (add l ex x0 x1) x2 with hs`. Use `set d1 := sub l ex x0 x1 with hd1`. Use `set d2 := sub l ex x1 x2 with hd2`.
+
+Use `set d3 := sub l ex x2 x0 with hd3`. Establish `cs : constantCoeff s = 0` using `hadd0 _ _ (hadd0 _ _ c0 c1) c2`. Establish `cd1 : constantCoeff d1 = 0` using `hsub0 _ _ c0 c1`. Establish `cd2 : constantCoeff d2 = 0` using `hsub0 _ _ c1 c2`. Establish `cd3 : constantCoeff d3 = 0` using `hsub0 _ _ c2 c0`.
+
+Use `set ψ : MvPowerSeries (Fin 3) ℂ_[p] → MvPowerSeries (Fin 3) ℂ_[p] := fun a => PowerSeries.subst a (logS E) with hψdef`. Establish `hψ0 : ∀ a, constantCoeff a = 0 → constantCoeff (ψ a) = 0` using `fun a ha => PowerSeries.constantCoeff_subst_eq_zero ha _ hL0`. Establish `hexpψ : ∀ a, constantCoeff a = 0 → expMv (ψ a) = eAt E a`. Introduce `a ha`. Rewrite using `[expMv_eq, PI.FglShared.expMv_subst' ha hL0, PI.FglShared.expMv_logS hE0]`.
+
+Both sides reduce to the same expression. Establish `hφ : ∀ a, constantCoeff a = 0 → phAt E a = -ψ a`. Introduce `a ha`. Establish `hsa : PowerSeries.HasSubst a` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Unfold `phAt`.
+
+Rewrite using `[logMv_eq, ← PowerSeries.coe_substAlgHom hsa, map_neg, PowerSeries.coe_substAlgHom hsa]`. Use `set A := ψ s + ψ d1 + ψ d2 + ψ d3 with hA`. Use `set B := ψ x0 + ψ x1 + ψ x2 with hB`. Establish `cA : constantCoeff A = 0`. Simplify using `only [hA, map_add, hψ0 _ cs, hψ0 _ cd1, hψ0 _ cd2, hψ0 _ cd3, add_zero]`.
+
+Establish `cB : constantCoeff B = 0`. Simplify using `only [hB, map_add, hψ0 _ c0, hψ0 _ c1, hψ0 _ c2, add_zero]`. Establish `hFG : (phAt E s + phAt E d1 + phAt E d2 + phAt E d3) - 3 * (phAt E x0 + phAt E x1 + phAt E x2) = -A + (B + B + B)`. Rewrite using `[hφ _ cs, hφ _ cd1, hφ _ cd2, hφ _ cd3, hφ _ c0, hφ _ c1, hφ _ c2]`. Simplify using `only [hA, hB]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `cFG : constantCoeff (-A + (B + B + B)) = 0`. Simplify using `only [map_add, map_neg, cA, cB, neg_zero, add_zero]`. Use `set Z := expMv (-A + (B + B + B)) with hZdef`. Establish `hexpA : expMv A = eAt E s * eAt E d1 * eAt E d2 * eAt E d3`.
+
+Establish `h1 : constantCoeff (ψ s + ψ d1) = 0` using `by rw [map_add, hψ0 _ cs, hψ0 _ cd1, add_zero]`. Establish `h2 : constantCoeff (ψ s + ψ d1 + ψ d2) = 0` using `by rw [map_add, h1, hψ0 _ cd2, add_zero]`. Rewrite using `[hA, expMv_addC h2 (hψ0 _ cd3), expMv_addC h1 (hψ0 _ cd2), expMv_addC (hψ0 _ cs) (hψ0 _ cd1), hexpψ _ cs, hexpψ _ cd1, hexpψ _ cd2, hexpψ _ cd3]`. Establish `hexpB : expMv B = eAt E x0 * eAt E x1 * eAt E x2`. Establish `h1 : constantCoeff (ψ x0 + ψ x1) = 0` using `by rw [map_add, hψ0 _ c0, hψ0 _ c1, add_zero]`.
+
+Rewrite using `[hB, expMv_addC h1 (hψ0 _ c2), expMv_addC (hψ0 _ c0) (hψ0 _ c1), hexpψ _ c0, hexpψ _ c1, hexpψ _ c2]`. Establish `hexp3B : expMv (B + B + B) = (eAt E x0 * eAt E x1 * eAt E x2) ^ 3`. Establish `h1 : constantCoeff (B + B) = 0` using `by rw [map_add, cB, add_zero]`. Rewrite using `[expMv_addC h1 cB, expMv_addC cB cB, hexpB]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hZA : Z * (eAt E s * eAt E d1 * eAt E d2 * eAt E d3) = (eAt E x0 * eAt E x1 * eAt E x2) ^ 3`. Rewrite using `[← hexpA, ← hexp3B, hZdef, ← expMv_addC cFG cA]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, hk0, hkl⟩` from `PI.FglShared.exists_coeff_ne hex0 hinv`.
+
+Establish `hcoef : ∀ i j : Fin 3, MvPowerSeries.coeff (Finsupp.single i k) (lg l (MvPowerSeries.X j : MvPowerSeries (Fin 3) ℂ_[p])) = if i = j then PowerSeries.coeff k l else 0`. Introduce `i j`. Unfold `lg`. Rewrite using `[PowerSeries.coeff_subst_single]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Establish `hji : j ≠ i` using `Ne.symm hij`. Simplify using `[hij, hji, Finsupp.single_apply, hk0]`. Establish `hne : ∀ (y : MvPowerSeries (Fin 3) ℂ_[p]) (i : Fin 3), MvPowerSeries.coeff (Finsupp.single i k) y = PowerSeries.coeff k l → y ≠ 0`.
+
+Introduce `y i hy h0`. Rewrite `hy` using `[h0, map_zero]`. Conclude with `hkl hy.symm`. Establish `hlgadd : ∀ a b : MvPowerSeries (Fin 3) ℂ_[p], constantCoeff a = 0 → constantCoeff b = 0 → lg l (add l ex a b) = lg l a + lg l b`. Introduce `a b ha hb`.
+
+Establish `hy : constantCoeff (lg l a + lg l b) = 0` using `by rw [map_add, hlg0 a ha, hlg0 b hb, add_zero]`. Unfold `add pt lg`. Conclude with `PI.FglShared.subst_subst_eq hex0 hinv hy`. Establish `hptne : ∀ y : MvPowerSeries (Fin 3) ℂ_[p], constantCoeff y = 0 → y ≠ 0 → pt ex y ≠ 0`. Introduce `y hy0 hy`.
+
+Unfold `pt`. Conclude with `PI.FglShared.subst_ne_zero hex0 hinv hy0 hy`. Establish `e0 : MvPowerSeries.coeff (Finsupp.single (0 : Fin 3) k) (lg l x0) = PowerSeries.coeff k l`. Establish `h` using `hcoef 0 0`. Rewrite `h` using `[if_pos rfl]`.
+
+Conclude with `h`. Establish `e1 : MvPowerSeries.coeff (Finsupp.single (0 : Fin 3) k) (lg l x1) = 0`. Establish `h` using `hcoef 0 1`. Rewrite `h` using `[if_neg (by decide)]`. Conclude with `h`.
+
+Establish `e2 : MvPowerSeries.coeff (Finsupp.single (0 : Fin 3) k) (lg l x2) = 0`. Establish `h` using `hcoef 0 2`. Rewrite `h` using `[if_neg (by decide)]`. Conclude with `h`. Establish `f1 : MvPowerSeries.coeff (Finsupp.single (1 : Fin 3) k) (lg l x1) = PowerSeries.coeff k l`.
+
+Establish `h` using `hcoef 1 1`. Rewrite `h` using `[if_pos rfl]`. Conclude with `h`. Establish `f2 : MvPowerSeries.coeff (Finsupp.single (1 : Fin 3) k) (lg l x2) = 0`. Establish `h` using `hcoef 1 2`.
+
+Rewrite `h` using `[if_neg (by decide)]`. Conclude with `h`. Establish `g2 : MvPowerSeries.coeff (Finsupp.single (2 : Fin 3) k) (lg l x2) = PowerSeries.coeff k l`. Establish `h` using `hcoef 2 2`. Rewrite `h` using `[if_pos rfl]`.
+
+Conclude with `h`. Establish `g0 : MvPowerSeries.coeff (Finsupp.single (2 : Fin 3) k) (lg l x0) = 0`. Establish `h` using `hcoef 2 0`. Rewrite `h` using `[if_neg (by decide)]`. Conclude with `h`.
+
+Establish `hs0 : s ≠ 0`. Establish `hs' : s = pt ex (lg l x0 + lg l x1 + lg l x2)` using `by show pt ex (lg l (add l ex x0 x1) + lg l x2) = _`. Rewrite using `[hlgadd x0 x1 c0 c1]`. Rewrite using `[hs']`. Use `hptne _ (by rw [map_add, map_add, hlg0 _ c0, hlg0 _ c1, hlg0 _ c2]; simp) (hne _ 0 ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_add, e0, e1, e2]`. Simplify using the standard rewrite rules. Establish `hd10 : d1 ≠ 0`. Use `hptne _ (by rw [map_sub, hlg0 _ c0, hlg0 _ c1, sub_zero]) (hne _ 0 ?_)` and prove the remaining obligations. Rewrite using `[map_sub, e0, e1, sub_zero]`.
+
+Establish `hd20 : d2 ≠ 0`. Use `hptne _ (by rw [map_sub, hlg0 _ c1, hlg0 _ c2, sub_zero]) (hne _ 1 ?_)` and prove the remaining obligations. Rewrite using `[map_sub, f1, f2, sub_zero]`. Establish `hd30 : d3 ≠ 0`. Use `hptne _ (by rw [map_sub, hlg0 _ c2, hlg0 _ c0, sub_zero]) (hne _ 2 ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_sub, g2, g0, sub_zero]`. Establish `hE1 : ∀ a : MvPowerSeries (Fin 3) ℂ_[p], constantCoeff a = 0 → constantCoeff (eAt E a) = 1`. Introduce `a ha`. Establish `hsa` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Establish `h1 : constantCoeff (PowerSeries.subst a (E - 1)) = 0` using `PowerSeries.constantCoeff_subst_eq_zero ha _ (by rw [map_sub, hE0, map_one, sub_self])`.
+
+Rewrite `h1` using `[← PowerSeries.coe_substAlgHom hsa, map_sub, map_one, map_sub, map_one, sub_eq_zero]`. Unfold `eAt`. Rewrite using `[← PowerSeries.coe_substAlgHom hsa]`. Conclude with `h1`. Establish `hR : (eAt E x0 * eAt E x1 * eAt E x2) ^ 3 ≠ 0`.
+
+Introduce `h`. Use `congrArg MvPowerSeries.constantCoeff h` as an intermediate fact. Rewrite `this` using `[map_pow, map_mul, map_mul, hE1 _ c0, hE1 _ c1, hE1 _ c2, map_zero]`. Evaluate the numerical expressions using `at this`. Establish `hT' : s * d1 * d2 * d3 * n * (eAt E x0 * eAt E x1 * eAt E x2) ^ 3 = (eAt wq x0 * eAt wq x1 * eAt wq x2) * (s * d1 * d2 * d3) * (eAt E s * eAt E d1 * eAt E d2 * eAt E d3)`.
+
+Rewrite `hT` using `[hTn]`. Take the linear combination `hT`. Establish `hkey : (s * d1 * d2 * d3 * (eAt E x0 * eAt E x1 * eAt E x2) ^ 3) * (n * Z) = (s * d1 * d2 * d3 * (eAt E x0 * eAt E x1 * eAt E x2) ^ 3) * (eAt wq x0 * eAt wq x1 * eAt wq x2)`. Take the linear combination `Z * hT' + ((eAt wq x0 * eAt wq x1 * eAt wq x2) * (s * d1 * d2 * d3)) * hZA`. Establish `hQR : s * d1 * d2 * d3 * (eAt E x0 * eAt E x1 * eAt E x2) ^ 3 ≠ 0` using `mul_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero hs0 hd10) hd20) hd30) hR`.
+
+Establish `hnZ : n * Z = eAt wq x0 * eAt wq x1 * eAt wq x2` using `mul_left_cancel₀ hQR hkey`. Set `Wr : Subring ℂ_[p]` to `{ carrier := {x | ‖x‖ ≤ 1} mul_mem' := fun {a b} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) => show ‖a * b‖ ≤ 1 by rw [norm_mul]; exact mul_le_one₀ ha (norm_nonneg b) hb one_mem' := show ‖(1 : ℂ_[p])‖ ≤ 1 by rw [norm_one] add_mem' := fun {a b} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) => show ‖a + b‖ ≤ 1 …`. Set `n' : MvPowerSeries (Fin 3) Wr` to `fun α => ⟨MvPowerSeries.coeff α n, hnI α⟩`. Establish `hmap : MvPowerSeries.map Wr.subtype n' = n`. Use extensionality with `α`.
+
+Both sides reduce to the same expression. Establish `hcn' : constantCoeff n' = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `: Wr.subtype (constantCoeff n') = 1`. Rewrite using `[← MvPowerSeries.constantCoeff_map, hmap, hn1]`.
+
+Conclude with `this`. Take `⟨u, hu⟩ : IsUnit n'` from `MvPowerSeries.isUnit_iff_constantCoeff.mpr (by rw [hcn']; exact isUnit_one)`. Use `set v := MvPowerSeries.map Wr.subtype (↑u⁻¹ : MvPowerSeries (Fin 3) Wr) with hv`. Establish `hnv : n * v = 1`. Rewrite using `[hv, ← hmap, ← hu, ← map_mul, Units.mul_inv, map_one]`.
+
+Establish `hZP : Z = (eAt wq x0 * eAt wq x1 * eAt wq x2) * v`. Combine the equalities or inequalities in the displayed calculation. Establish `hwqW : ∀ i : Fin 3, PI.FglPhSplit.Wk.AllIn Wr (eAt wq (MvPowerSeries.X i : MvPowerSeries (Fin 3) ℂ_[p]))`. Introduce `i α`. Unfold `eAt`.
+
+Rewrite using `[PowerSeries.coeff_subst_single]`. Use `split_ifs`. Conclude with `PI.CubicExponentialFactor.Wk.wq_int ha1 ha2 ha3 ha4 ha6 hW _`. Conclude with `Wr.zero_mem`. Establish `hvW : PI.FglPhSplit.Wk.AllIn Wr v`.
+
+Introduce `α`. Rewrite using `[hv, MvPowerSeries.coeff_map]`. Conclude with `(MvPowerSeries.coeff α (↑u⁻¹ : MvPowerSeries (Fin 3) Wr)).2`. Establish `hZW : PI.FglPhSplit.Wk.AllIn Wr Z`. Rewrite using `[hZP]`.
+
+Conclude with `PI.FglPhSplit.Wk.allIn_mul (PI.FglPhSplit.Wk.allIn_mul (PI.FglPhSplit.Wk.allIn_mul (hwqW 0) (hwqW 1)) (hwqW 2)) hvW`. Unfold `Simeq`. Rewrite using `[hFG]`. Conclude with `⟨cFG, fun α => hZW α⟩`.
+-/
 theorem main : Lemma := by
   intro p _ W wq l ex E T ha1 ha2 ha3 ha4 ha6 hW hex0 hinv hE0 hT ⟨n, hnI, hn1, hTn⟩
   classical

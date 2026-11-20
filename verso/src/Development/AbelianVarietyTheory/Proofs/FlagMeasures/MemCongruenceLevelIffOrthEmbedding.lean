@@ -8,6 +8,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.StabUnfold
 
+/- English proof (translation)
+Establish `h : (vecMulVec x u + A * A') *ᵥ z = z` using `by rw [h5, Matrix.one_mulVec]`. Rewrite `h` using `[Matrix.add_mulVec, ← Matrix.mulVec_mulVec]`. Use `conv_lhs => rw [← h]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Matrix.mulVec, Matrix.vecMulVec, dotProduct, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 private theorem exists_intertwiner_decomp_of_kernel_intertwines {R : Type} [CommRing R] {n m : ℕ} (x u : Fin n → R)
     (A : Matrix (Fin n) (Fin m) R) (A' : Matrix (Fin m) (Fin n) R)
     (h5 : vecMulVec x u + A * A' = 1) (z : Fin n → R) :
@@ -21,6 +26,9 @@ private theorem exists_intertwiner_decomp_of_kernel_intertwines {R : Type} [Comm
     Finset.sum_mul]
   exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[dotProduct_add, dotProduct_smul, h4, Matrix.dotProduct_mulVec, h3, zero_dotProduct, smul_eq_mul, mul_one, add_zero]`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, h2, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, smul_zero, zero_add]`.
+-/
 private theorem coords_smul_add_mulVec {R : Type} [CommRing R] {n m : ℕ} (x u : Fin n → R)
     (A : Matrix (Fin n) (Fin m) R) (A' : Matrix (Fin m) (Fin n) R)
     (h1 : A' * A = 1) (h2 : A' *ᵥ x = 0) (h3 : u ᵥ* A = 0) (h4 : u ⬝ᵥ x = 1) (a : R) (w : Fin m → R) :
@@ -31,6 +39,31 @@ private theorem coords_smul_add_mulVec {R : Type} [CommRing R] {n m : ℕ} (x u 
   · rw [Matrix.mulVec_add, Matrix.mulVec_smul, h2, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, smul_zero,
       zero_add]
 
+/- English proof (translation)
+Establish `hu0 : ∀ w, u ⬝ᵥ (A *ᵥ w) = 0` using `fun w => by`. Rewrite using `[Matrix.dotProduct_mulVec, h3, zero_dotProduct]`. Establish `hA0 : ∀ w, A' *ᵥ (A *ᵥ w) = w` using `fun w => by`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Establish `hM : ∀ z, Xi *ᵥ z ∈ L ↔ u ⬝ᵥ z ∈ S ∧ A' *ᵥ z ∈ L'`.
+
+Introduce `z`. Rewrite using `[hL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, w, hw, rfl⟩`. Take `⟨e1, e2⟩` from `coords_smul_add_mulVec x u A A' h1 h2 h3 h4 a w`.
+
+Rewrite using `[e1, e2]`. Conclude with `⟨ha, hw⟩`. Introduce and unpack `⟨ha, hw⟩`. Conclude with `⟨_, ha, _, hw, exists_intertwiner_decomp_of_kernel_intertwines x u A A' h5 z⟩`. Establish `hG : ∀ z, G *ᵥ z = (u ⬝ᵥ z) • x + A *ᵥ (g *ᵥ (A' *ᵥ z))`.
+
+Introduce `z`. Use `conv_lhs => rw [exists_intertwiner_decomp_of_kernel_intertwines x u A A' h5 z]`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, hGx, Matrix.mulVec_mulVec, hGA, ← Matrix.mulVec_mulVec]`. Establish `hXiX : ∀ y, Xi *ᵥ (X *ᵥ y) = y` using `fun y => by rw [Matrix.mulVec_mulVec, hXi, Matrix.one_mulVec]`. Establish `hXXi : ∀ y, X *ᵥ (Xi *ᵥ y) = y` using `fun y => by rw [Matrix.mulVec_mulVec, hX, Matrix.one_mulVec]`.
+
+Establish `hconj : ∀ y, (Xi * G * X) *ᵥ y = Xi *ᵥ (G *ᵥ (X *ᵥ y))` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Establish `hGm : ∀ p, (G - 1) *ᵥ p = A *ᵥ ((g - 1) *ᵥ (A' *ᵥ p))`. Introduce `p`. Establish `hp` using `exists_intertwiner_decomp_of_kernel_intertwines x u A A' h5 p`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hp, hG]`. Use `_ = A *ᵥ ((g - 1) *ᵥ (A' *ᵥ p)) := by`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub]`. Normalize the expressions using the abelian group laws.
+
+Establish `hsub : ∀ y, (Xi * G * X - 1) *ᵥ y = Xi *ᵥ (A *ᵥ ((g - 1) *ᵥ (A' *ᵥ (X *ᵥ y))))`. Introduce `y`. Rewrite using `[← hGm]`. Simplify using `only [Matrix.sub_mulVec, Matrix.mulVec_sub, hconj, Matrix.one_mulVec, hXiX]`. Use `⟨⟨fun hg y => ?_, fun h w => ?_⟩, fun c => ⟨fun hc y hy => ?_, fun h w hw => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hconj y] conv_lhs => rw [← hXiX y]`. Rewrite using `[hM, hM, hG, (coords_smul_add_mulVec x u A A' h1 h2 h3 h4 _ _).1, (coords_smul_add_mulVec x u A A' h1 h2 h3 h4 _ _).2]`. Conclude with `Iff.and Iff.rfl (hg _)`. Establish `hw` using `h (Xi *ᵥ (A *ᵥ w))`. Rewrite `hw` using `[hconj, hXXi, hM, hM, hG, (coords_smul_add_mulVec x u A A' h1 h2 h3 h4 _ _).1, (coords_smul_add_mulVec x u A A' h1 h2 h3 h4 _ _).2, hu0, hA0]`.
+
+Simplify `hw` using `[S.zero_mem]`. Rewrite `hy` using `[← hXiX y, hM]`. Take `⟨w', hw', hgw⟩` from `hc _ hy.2`. Use `⟨Xi *ᵥ (A *ᵥ w'), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hM, hu0, hA0]`.
+
+Conclude with `⟨S.zero_mem, hw'⟩`. Rewrite using `[hsub, hgw, Matrix.mulVec_smul, Matrix.mulVec_smul]`. Establish `hy : Xi *ᵥ (A *ᵥ w) ∈ L`. Rewrite using `[hM, hu0, hA0]`. Conclude with `⟨S.zero_mem, hw⟩`.
+
+Take `⟨z, hz, hcz⟩` from `h _ hy`. Rewrite `hcz` using `[hsub, hXXi, hA0]`. Establish `e` using `congrArg (fun v => A' *ᵥ (X *ᵥ v)) hcz`. Simplify using `only [hXXi, hA0, Matrix.mulVec_smul] at e`. Use `⟨A' *ᵥ (X *ᵥ z), ?_, e⟩` and prove the remaining obligations.
+
+Establish `hz' : Xi *ᵥ (X *ᵥ z) ∈ L` using `by rw [hXiX]; exact hz`. Conclude with `((hM _).1 hz').2`.
+-/
 theorem conj_stab_and_cong_of_split {R : Type} [CommRing R] (S : Subring R) {n m : ℕ}
     (L : Submodule S (Fin n → R)) (L' : Submodule S (Fin m → R))
     (X Xi G : Matrix (Fin n) (Fin n) R) (g : Matrix (Fin m) (Fin m) R)
@@ -104,6 +137,27 @@ theorem conj_stab_and_cong_of_split {R : Type} [CommRing R] (S : Subring R) {n m
     have hz' : Xi *ᵥ (X *ᵥ z) ∈ L := by rw [hXiX]; exact hz
     exact ((hM _).1 hz').2
 
+/- English proof (translation)
+Take `⟨hn, hβ, hxJA, hAJA, hp5, hp6⟩` from `hp`. Establish `hJ : I.Jᴴ = I.J`. Establish `h` using `I.J_herm`. Unfold `Formalism.UG.IsHerm at h`. Use `conv_rhs => rw [← h]`.
+
+Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply, starRingEnd_apply]`. Establish `hβ' : star x ⬝ᵥ (I.J *ᵥ x) ≠ 0`. Rewrite using `[hβ]`. Apply the tactic sequence `cases s <;> simp [sgn]`.
+
+Take `⟨u, A', e1, e2, e3, e4, e5, -⟩` from `exists_dual_of_anisotropic_orthogonal I.E I.n D.n I.J D.J x A hn hJ D.J_det hβ' hxJA hAJA`. Establish `h1 : afMat I A' * afMat I A = 1`. Simplify using `only [afMat]`. Rewrite using `[← Matrix.map_mul, e1, Matrix.map_one _ (Formalism.UG.inclE (F := I.F) (Af I.F)).map_zero (Formalism.UG.inclE (F := I.F) (Af I.F)).map_one]`. Establish `h2 : afMat I A' *ᵥ afVec I x = 0`.
+
+Use function extensionality and compare the values at `i`. Use `RingHom.map_mulVec (Formalism.UG.inclE (F := I.F) (Af I.F)) A' x i` as an intermediate fact. Rewrite `this` using `[e2, Pi.zero_apply, map_zero]`. Conclude with `this.symm`. Establish `h3 : afVec I u ᵥ* afMat I A = 0`.
+
+Use function extensionality and compare the values at `i`. Use `RingHom.map_vecMul (Formalism.UG.inclE (F := I.F) (Af I.F)) A u i` as an intermediate fact. Rewrite `this` using `[e3, Pi.zero_apply, map_zero]`. Conclude with `this.symm`. Establish `h4 : afVec I u ⬝ᵥ afVec I x = 1`.
+
+Use `RingHom.map_dotProduct (Formalism.UG.inclE (F := I.F) (Af I.F)) u x` as an intermediate fact. Rewrite `this` using `[e4, map_one]`. Conclude with `this.symm`. Establish `h5 : vecMulVec (afVec I x) (afVec I u) + afMat I A * afMat I A' = 1`. Establish `hv : vecMulVec (afVec I x) (afVec I u) = (vecMulVec x u).map (Formalism.UG.inclE (F` using `I.F) (Af I.F)) := by`.
+
+Use extensionality with `i j`. Simplify using `[afVec, vecMulVec]`. Rewrite using `[hv]`. Simplify using `only [afMat]`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_add _ (map_add (Formalism.UG.inclE (F := I.F) (Af I.F))), e5, Matrix.map_one _ (Formalism.UG.inclE (F := I.F) (Af I.F)).map_zero (Formalism.UG.inclE (F := I.F) (Af I.F)).map_one]`.
+
+Establish `hX : I.fmat xf * I.fmat xf⁻¹ = 1` using `by simp [AutInst.fmat]`. Establish `hXi : I.fmat xf⁻¹ * I.fmat xf = 1` using `by simp [AutInst.fmat]`. Establish `hprod : ∀ g, I.fmat (xf⁻¹ * jf g * xf) = I.fmat xf⁻¹ * I.fmat (jf g) * I.fmat xf`. Introduce `g`. Simplify using `[AutInst.fmat]`.
+
+Establish `key` using `fun g => conj_stab_and_cong_of_split (IntAf I.F I.E) I.Lf D.inst.Lf (I.fmat xf) (I.fmat xf⁻¹) (I.fmat (jf g)) (D.inst.fmat g) (afVec I x) (afVec I u) (afMat I A) (afMat I A') hX hXi h1 h2 h3 h4 h5 (adelicLattice_split I D s x A xf ⟨hn, hβ, hxJA, hAJA, hp5, hp6⟩) (hj g).1 (hj g).2`. Establish `hK : ∀ g, g ∈ D.inst.Kset ↔ xf⁻¹ * jf g * xf ∈ I.Kset`. Introduce `g`. Use `show (∀ w, w ∈ D.inst.Lf ↔ D.inst.fmat g *ᵥ w ∈ D.inst.Lf) ↔ ∀ y, y ∈ I.Lf ↔ I.fmat (xf⁻¹ * jf g * xf) *ᵥ y ∈ I.Lf`. Rewrite using `[hprod]`.
+
+Conclude with `(key g).1`. Use `⟨hK, fun N g => ?_⟩` and prove the remaining obligations. Use `show (g ∈ D.inst.Kset ∧ ∀ y ∈ D.inst.Lf, ∃ z ∈ D.inst.Lf, (D.inst.fmat g - 1) *ᵥ y = (N : I.E ⊗[I.F] Af I.F) • z) ↔ (xf⁻¹ * jf g * xf ∈ I.Kset ∧ ∀ y ∈ I.Lf, ∃ z ∈ I.Lf, (I.fmat (xf⁻¹ * jf g * xf) - 1) *ᵥ y = (N : I.E ⊗[I.F] Af I.F) • z)`. Rewrite using `[hprod]`. Conclude with `Iff.and (hK g) ((key g).2 _)`.
+-/
 theorem mem_level_iff_of_isFinEmb (I : AutInst) (D : Sib I) (s : Bool) (x : Fin I.n → I.E)
     (A : Matrix (Fin I.n) (Fin D.n) I.E) (xf : I.Gf) (hp : IsPerp D s x A xf)
     (jf : D.inst.Gf →* I.Gf) (hj : IsFinEmb D x A jf) :

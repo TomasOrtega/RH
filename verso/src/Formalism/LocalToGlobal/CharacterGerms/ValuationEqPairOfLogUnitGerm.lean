@@ -14,10 +14,20 @@ namespace VP
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ} [NeZero d]
   {Orb : Type} [Fintype Orb] {I : Orb → Fin 2 → Type} [∀ o g, Fintype (I o g)]
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, hF, mul_zero]`.
+-/
 theorem cc_smul {σ : Type} (c : C) {F : MvPowerSeries σ C} (hF : MvPowerSeries.constantCoeff F = 0) :
     MvPowerSeries.constantCoeff (c • F) = 0 := by
   rw [MvPowerSeries.smul_eq_C_mul, map_mul, hF, mul_zero]
 
+/- English proof (translation)
+Establish `ha : ∀ b : Fin n, ∀ s : Fin 1 × Fin dd, MvPowerSeries.constantCoeff (![pt C dd b] s.1 s.2) = 0`. Introduce `b s`. Simplify using `[pt]`. Establish `hc : ∀ b : Fin n, MvPowerSeries.constantCoeff (ev (n` using `n) ![pt C dd b] (Y.B.hL C Y.h Y.w0)) = 0 := fun b => (ordGE_one_iff _).1 (ordGE_subst (VP.og (a := fun s : Fin 1 × Fin dd => ![pt C dd b] s.1 s.2) (ha b)) ((ordGE_one_iff _).2 (VP.cc_hL Y)))`. Establish `hs : ∀ b : Fin n, ev (n` using `n) ![pt C dd b] ((Y.k : C) • Y.B.hL C Y.h Y.w0) = (Y.k : C) • ev (n := n) ![pt C dd b] (Y.B.hL C Y.h Y.w0) := fun b => MvPowerSeries.subst_smul (hasSubst_of_ordGE (VP.og (a := fun s : Fin 1 × Fin dd => ![pt C dd b] s.1 s.2) (ha b))) _ _`.
+
+Rewrite using `[VP.expS_eq _ (cc_smul _ (by rw [map_sum]; exact Finset.sum_eq_zero fun b _ => hc b)), Finset.smul_sum, Formalism.UnitaryBoundIntegral.ubint_mvExp_sum _ _ (fun b _ => cc_smul _ (hc b))]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[VP.expS_eq _ (cc_smul _ (VP.cc_hL Y))]`. Use `show _ = MvPowerSeries.subst (fun s : Fin 1 × Fin dd => ![pt C dd b] s.1 s.2) (mvExp _)`. Rewrite using `[VP.subst_exp (ha b) (cc_smul _ (VP.cc_hL Y))]`.
+
+Conclude with `congrArg mvExp (hs b).symm`.
+-/
 theorem expS_copies (Y : FBChart C V O dd) (n : ℕ) :
     FB.expS C ((Y.k : C) • ∑ b : Fin n, ev (n := n) ![pt C dd b] (Y.B.hL C Y.h Y.w0)) =
       ∏ b : Fin n, ev (n := n) ![pt C dd b] (FB.expS C ((Y.k : C) • Y.B.hL C Y.h Y.w0)) := by
@@ -38,6 +48,13 @@ theorem expS_copies (Y : FBChart C V O dd) (n : ℕ) :
   rw [VP.subst_exp (ha b) (cc_smul _ (VP.cc_hL Y))]
   exact congrArg mvExp (hs b).symm
 
+/- English proof (translation)
+Rewrite using `[rtj_rowCopy_eq, rtj_rowCopy_eq, rtj_rowCopy_eq, map_mul]`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[MvPowerSeries.coeff_rename]`. Use `show _ = ∑ k ∈ Finset.range (x.degree + 1), MvPowerSeries.coeff x ((MvPowerSeries.rename (rtjR b) L) ^ k) / (k.factorial : C)`.
+
+Repeatedly rewrite using `[← map_pow, MvPowerSeries.coeff_rename, Finset.sum_div]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Establish `hdeg : y.degree = x.degree`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Set.mem_preimage] at hy`.
+
+Rewrite using `[← hy, Finsupp.degree_mapDomain]`. Use `show ∑ k ∈ Finset.range (y.degree + 1), _ = _`. Rewrite using `[hdeg]`.
+-/
 theorem rowCopy_mul_exp {J : Fin 2 → Type} {n : ℕ} (b : Fin n) (F L : MvPowerSeries (WV J) C) :
     rowCopy b (F * mvExp L) = rowCopy b F * mvExp (rowCopy b L) := by
   rw [rtj_rowCopy_eq, rtj_rowCopy_eq, rtj_rowCopy_eq, map_mul]
@@ -57,6 +74,19 @@ theorem rowCopy_mul_exp {J : Fin 2 → Type} {n : ℕ} (b : Fin n) (F L : MvPowe
 
 end VP
 
+/- English proof (translation)
+Introduce `C _ _ V O _ _ dd d _ Orb _ I _ Y p H Ls n h1 h2 h3 h4 hs P hP Po hQ kind hk S t ht gr hg`. Take `⟨U, hUi, hU0, hUeq⟩` from `h2 hs`. Take `⟨U', hU'i, hU'U⟩` from `VP.intInv hUi hU0`. Use `choose G hGi hGe using fun o ρ => h3 hs o (S o) (t o) (ht o) (gr o ρ) (hg o ρ)`. Establish `hpt : ∀ b : Fin n, ∀ s : Fin 1 × Fin dd, MvPowerSeries.constantCoeff (![pt C dd b] s.1 s.2) = 0`.
+
+Introduce `b s`. Simplify using `[pt]`. Establish `hpti : ∀ b : Fin n, ∀ s : Fin 1 × Fin dd, IntS V (![pt C dd b] s.1 s.2)`. Introduce `b s`. Simplify using `only [Matrix.cons_val_fin_one, pt]`.
+
+Conclude with `VP.IntS_X _`. Establish `hb : ∀ b : Fin n, pull1 Y p (U' * ∏ o, G o b) * pull1 Y p (FB.expS C ((Y.k : C) • Y.B.hL C Y.h Y.w0)) = ∏ o, toAllS o (gr o b * mvExp (Y.raw (p o)).hRow)`. Introduce `b`. Establish `e1 : pull1 Y p U' * pull1 Y p U = 1` using `by rw [← VP.pullback_one_var_mul, hU'U, VP.pullback_one_var_one]`. Rewrite using `[hUeq, VP.pullback_one_var_mul, VP.pullback_one_var_prod]`.
+
+Simplify using `only [hGe, VP.toAllS_mul]`. Rewrite using `[Finset.prod_mul_distrib]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [e1, one_mul]`.
+
+Establish `hpull : pullN Y p ((∏ b : Fin n, ev (n` using `n) ![pt C dd b] (U' * ∏ o, G o b)) * ∏ b : Fin n, ev (n := n) ![pt C dd b] (FB.expS C ((Y.k : C) • Y.B.hL C Y.h Y.w0))) = ∏ o, MvPowerSeries.rename (VP.eAll n o) (∏ ρ : Fin n, (rowCopy ρ (gr o ρ) * mvExp (rowCopy ρ (Y.raw (p o)).hRow))) := by`. Rewrite using `[VP.pullN_mul, VP.pullN_prod, VP.pullN_prod, ← Finset.prod_mul_distrib]`. Simplify using `only [VP.pullN_ev, ← VP.rowOf_mul, hb, VP.rowOf_prod, VP.rowOf_toAllS, VP.rowCopy_mul_exp, map_prod]`. Conclude with `Finset.prod_comm`. Use `⟨∏ b : Fin n, ev (n := n) ![pt C dd b] (U' * ∏ o, G o b), ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `VP.IntS_prod _ fun b _ => IntS.subst (hpt b) (hpti b) (IntS.mul hU'i (VP.IntS_prod _ fun o _ => hGi o b))`. Unfold `FBChart.nab nabValN`. Rewrite using `[h1 n (Ls.ι n) (Ls.cp n) (Ls.uv n) P _ hQ, VP.expS_copies Y n, hpull, VP.jet_orb]`. Conclude with `Finset.prod_congr rfl fun o _ => h4 C V d (I o) (Fin dd) (Y.raw (p o)) (H o) n (Po o) (kind o) (hk o) (gr o)`.
+-/
 theorem valuation_eq_pair_of_cuts : ValEqPFromCutsSt := by
   intro C _ _ V O _ _ dd d _ Orb _ I _ Y p H Ls n h1 h2 h3 h4 hs P hP Po hQ kind hk S t ht gr hg
   obtain ⟨U, hUi, hU0, hUeq⟩ := h2 hs
@@ -95,6 +125,9 @@ theorem valuation_eq_pair_of_cuts : ValEqPFromCutsSt := by
     exact Finset.prod_congr rfl fun o _ =>
       h4 C V d (I o) (Fin dd) (Y.raw (p o)) (H o) n (Po o) (kind o) (hk o) (gr o)
 
+/- English proof (translation)
+The claim follows from `valuation_eq_pair_of_cuts C V O dd d Orb I Y p H Ls n h1 h2 h3 leaf_holds`.
+-/
 theorem valuation_eq_pair_of_log_unit_germ {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ}
     [NeZero d] {Orb : Type} [Fintype Orb] {I : Orb → Fin 2 → Type} [∀ o g, Fintype (I o g)]
     (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (H : ∀ o, (Y.raw (p o)).Hyps V) (Ls : LetSys C dd) (n : ℕ)

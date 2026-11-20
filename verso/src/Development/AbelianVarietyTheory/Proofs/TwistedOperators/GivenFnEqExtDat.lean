@@ -15,6 +15,45 @@ namespace GlobalTheory.ChainColRead
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T L sc G B μ₀ hL hPg t j hj1 Φ e e' he he' hAA x`. Establish `hj : j < D.R.m` using `by omega`. Establish `hsub : L.Pg ∪ L.Q t ⊆ locPl G t`. Introduce `w hw`. Break down `Finset.mem_union.1 hw with h | h` into its components or cases.
+
+Conclude with `Finset.mem_union_left _ (hPg h)`. Conclude with `Finset.mem_union_right _ h`. Take `⟨he₁, -⟩` from `GlobalTheory.T.isIdemSum_sub_of_subset_and_orthogonal he he' hsub`. Establish `h1` using `GlobalTheory.PlaceDatum.idemSum_mul_self he'`. Establish `h2` using `GlobalTheory.PlaceDatum.idemSum_mul_self he₁`.
+
+Take `⟨-, c1, c0⟩` from `GlobalTheory.FunObj.Comparison₂.cpt_idemSum he'`. Take `⟨-, d1, -⟩` from `GlobalTheory.FunObj.Comparison₂.cpt_idemSum he₁`. Establish `ha` using `GlobalTheory.FlipTop.rank_col G hj.le`. Establish `hb` using `GlobalTheory.FlipTop.rank_col G hj`. Unfold `GlobalTheory.FlipStart.givenFn extDat`.
+
+Distinguish the cases in `hx : IsHalf e x`. Use `swap`. Rewrite using `[if_neg hx, if_neg fun h => hx h.1]`. Rewrite using `[if_pos hx]`. Use `set N := GlobalTheory.FunObj.Comparison₂.fr (B.β 0 (j + 1)) (B.β 0 j) (x.map (toEAf D)) with hN`.
+
+Establish `hfr : ∀ a : AE D, GlobalTheory.FunObj.Comparison₂.fr (B.β 0 (j + 1)) (B.β 0 j) ((x.map (a * ·)).map (toEAf D)) = toEAf D a • N`. Introduce `a`. Rewrite using `[hN, ← GlobalTheory.FunObj.Comparison₂.fr_smul]`. Use `congr 1`. Use extensionality with `p q`.
+
+Simplify using `[Matrix.map_apply, Matrix.smul_apply, RingHom.map_mul]`. Establish `hcomp : ∀ (a : AE D) (w : Pl D.host.E), cpt (D` using `D) w (toEAf D a) = 1 → (GlobalTheory.FunObj.Comparison₂.fr (B.β 0 (j + 1)) (B.β 0 j) ((x.map (a * ·)).map (toEAf D))).map (cpt (D := D) w) = N.map (cpt (D := D) w) := by`. Introduce `a w hw`. Rewrite using `[hfr]`. Use extensionality with `p q`.
+
+Simplify using `[Matrix.map_apply, Matrix.smul_apply, RingHom.map_mul, hw]`. Establish `hsubm : ∀ w : Pl D.host.E, GlobalTheory.StepData.IntM ((N.map (cpt (D` using `D) w)).submatrix (GlobalTheory.FunObj.Comparison₂.ixOf G t w hb) (GlobalTheory.FunObj.Comparison₂.ixOf G t w ha)) ↔ GlobalTheory.StepData.IntM (N.map (cpt (D := D) w)) := fun w => ⟨fun h i l => by simpa using h ((GlobalTheory.FunObj.Comparison₂.ixOf G t w hb).symm i) ((GlobalTheo …`. Establish `hR : ∀ w, givenDatum t w B Φ (edgeOf (.down t 0 j)) (locArg B t w (.down t 0 j) x) = stepFn L t w j ((N.map (cpt (D` using `D) w)).submatrix (GlobalTheory.FunObj.Comparison₂.ixOf G t w hb) (GlobalTheory.FunObj.Comparison₂.ixOf G t w ha)) := by`. Introduce `w`. Establish `hla : locArg B t w (.down t 0 j) x = B.coord t w (X` using `(0, j + 1)) (Y := (0, j)) ⟨Nat.zero_le _, hj⟩ ⟨Nat.zero_le _, hj.le⟩ ((x.map (toEAf D)).map (cpt (D := D) w)) := by`.
+
+Rewrite using `[Matrix.map_map]`. Conclude with `dif_pos ⟨Nat.zero_le _, hj⟩`. Rewrite using `[hla]`. Conclude with `GlobalTheory.FunObj.Comparison₂.givenDatum_theta_coord B t w Φ hj ha hb (x.map (toEAf D))`. Rewrite using `[Finset.prod_congr rfl fun w _ => hR w, ← Finset.prod_sdiff hsub]`.
+
+Establish `hout : ∀ w ∈ locPl G t \ (L.Pg ∪ L.Q t), stepFn L t w j ((N.map (cpt (D` using `D) w)).submatrix (GlobalTheory.FunObj.Comparison₂.ixOf G t w hb) (GlobalTheory.FunObj.Comparison₂.ixOf G t w ha)) = if GlobalTheory.StepData.IntM (N.map (cpt (D := D) w)) then 1 else 0 := by`. Introduce `w hw`. Take `⟨-, hw2⟩` from `Finset.mem_sdiff.1 hw`. Establish `hP : w ∉ L.Pg` using `fun h => hw2 (Finset.mem_union_left _ h)`. Establish `hQ : w ∉ L.Q t` using `fun h => hw2 (Finset.mem_union_right _ h)`.
+
+Unfold `stepFn`. Rewrite using `[if_neg hP, if_neg hQ, Set.indicator_apply]`. Conclude with `if_congr (hsubm w) rfl rfl`. Rewrite using `[Finset.prod_congr rfl hout, Finset.prod_boole]`. Establish `hx1 : IsHalf (e - e') (x.map ((e - e') * ·))` using `fun p q => by`.
+
+Simplify using `only [Matrix.map_apply, ← mul_assoc, h2]`. Establish `hS : IsSelfDualC (G.pS (.mu t 0 j)) (G.latS (.mu t 0 j))` using `(colY_isV D T L μ₀ hL j hj.le).sd`. Establish `hT : IsSelfDualC (G.pT (.mu t 0 j)) (G.latT (.mu t 0 j))` using `(colY_isV D T L μ₀ hL (j + 1) hj).sd`. Establish `hAA' : ∀ w ∈ locPl G t \ (L.Pg ∪ L.Q t), ((∀ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) ≤ 1) ∧ ∃ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) = 1)` using `fun w hw => hAA w (Finset.mem_sdiff.1 hw).1 (Finset.mem_sdiff.1 hw).2`. Establish `hlat` using `GlobalTheory.T.mem_completedHomLattice_iff_integral_on_unit_half hS hT (B.isFrame_β hL (Nat.zero_le _) hj.le) (B.isFrame_β hL (Nat.zero_le _) hj) he₁ hAA' (x.map ((e - e') * ·)) hx1`.
+
+Establish `k1 : x.map ((e - e') * ·) ∈ latO (G.pS (.mu t 0 j)) (G.pT (.mu t 0 j)) (G.latS (.mu t 0 j) : Set _) (G.latT (.mu t 0 j) : Set _) (fun _ => True) ↔ ∀ w ∈ locPl G t \ (L.Pg ∪ L.Q t), GlobalTheory.StepData.IntM (N.map (cpt (D` using `D) w)) := by`. Rewrite using `[hlat]`. Conclude with `forall₂_congr fun w hw => by rw [hcomp _ w (d1 w hw)]`. Establish `hint : IsIntM (toEAf D e' • N) ↔ ∀ w ∈ L.Pg ∪ L.Q t, GlobalTheory.StepData.IntM (N.map (cpt (D` using `D) w)) := by`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h w hw i l`. Use `(mem_OA_iff _).1 (h i l) w` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul, RingHom.map_mul, c1 w hw, one_mul]`. Conclude with `(GlobalTheory.FunObj.Comparison₂.vEq w).le_one_iff_le_one.2 this`. Introduce `h i l`.
+
+Use `(mem_OA_iff _).2 fun w => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, RingHom.map_mul]`. Distinguish the cases in `hw : w ∈ L.Pg ∪ L.Q t`. Rewrite using `[c1 w hw, one_mul]`. Conclude with `(GlobalTheory.FunObj.Comparison₂.vEq w).le_one_iff_le_one.1 (h w hw i l)`.
+
+Rewrite using `[c0 w hw, zero_mul]`. Conclude with `zero_mem _`. Establish `hx0 : IsHalf e' (x.map (e' * ·))` using `fun p q => by`. Simplify using `only [Matrix.map_apply, ← mul_assoc, h1]`. Establish `hfrO : frMapO (G.pS (.mu t 0 j)) (G.pT (.mu t 0 j)) (colFrame L j) (colFrame L (j + 1)) (x.map (e' * ·)) = toEAf D e' • N` using `hfr e'`.
+
+Establish `k0 : stepDat (G.pS (.mu t 0 j)) (G.pT (.mu t 0 j)) (colFrame L j) (colFrame L (j + 1)) (colDat L t j) (L.chi (j + 1)) (L.xiR t) (L.Q t) e' (x.map (e' * ·)) = ∏ w ∈ L.Pg ∪ L.Q t, stepFn L t w j ((N.map (cpt (D` using `D) w)).submatrix (GlobalTheory.FunObj.Comparison₂.ixOf G t w hb) (GlobalTheory.FunObj.Comparison₂.ixOf G t w ha)) := by`. Unfold `stepDat`. Rewrite using `[hfrO]`. Distinguish the cases in `H : ∀ w ∈ L.Pg ∪ L.Q t, GlobalTheory.StepData.IntM (N.map (cpt (D := D) w))`. Rewrite using `[if_pos ⟨hx0, hint.2 H⟩]`.
+
+Establish `key` using `GlobalTheory.FunObj.Comparison₂.omega_eq_prod_stepFn G t hL hj ha hb (r_le_colY L j) (toEAf D e' • N) (hint.2 H)`. Use `key.trans (Finset.prod_congr rfl fun w hw => ?_)` and prove the remaining obligations. Establish `e1 : (toEAf D e' • N).map (cpt (D` using `D) w) = N.map (cpt (D := D) w) := by`. Rewrite using `[← hfr e']`. Conclude with `hcomp e' w (c1 w hw)`.
+
+Rewrite using `[e1]`. Rewrite `H` using `[if_neg fun h => H (hint.1 h.2)] push_neg`. Take `⟨w, hw, hn⟩` from `H`. Use `(Finset.prod_eq_zero hw ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+
+Conclude with `hn ((hsubm w).1 (GlobalTheory.FunObj.LocTest.intM_of_stepFn t w j h0))`. Rewrite using `[k0]`. Distinguish the cases in `hl : ∀ w ∈ locPl G t \ (L.Pg ∪ L.Q t), GlobalTheory.StepData.IntM (N.map (cpt (D := D) w))`. Rewrite using `[if_pos hl, one_mul, if_pos ⟨hx, k1.2 hl⟩]`. Rewrite using `[if_neg hl, zero_mul, if_neg fun h => hl (k1.1 h.2)]`.
+-/
 theorem givenFn_eq_extDat : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (B : Frames G) {μ₀ : T}, L.Is μ₀ → L.Pg ⊆ G.pl.W0 → ∀ (t : T) (j : ℕ), j + 1 < D.R.m → ∀ (Φ : G.Datum) (e e' : AE D), IsIdemSum e (locPl G t) → IsIdemSum e' (L.Pg ∪ L.Q t) → (∀ w ∈ locPl G t, w ∉ L.Pg ∪ L.Q t → ((∀ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) ≤ 1) ∧ ∃ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) = 1)) → ∀ x : WO (G.pS (.mu t 0 j)) (G.pT (.mu t 0 j)), GlobalTheory.FlipStart.givenFn B t Φ e (.down t 0 j) x = extDat e e' (latO (G.pS (.mu t 0 j)) (G.pT (.mu t 0 j)) (G.latS (.mu t 0 j) : Set _) (G.latT (.mu t 0 j) : Set _) fun _ => True) (stepDat (G.pS (.mu t 0 j)) (G.pT (.mu t 0 j)) (colFrame L j) (colFrame L (j + 1)) (colDat L t j) (L.chi (j + 1)) (L.xiR t) (L.Q t) e') x := by
   intro D T L sc G B μ₀ hL hPg t j hj1 Φ e e' he he' hAA x
   have hj : j < D.R.m := by omega

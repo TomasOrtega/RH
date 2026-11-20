@@ -93,6 +93,9 @@ def GaloisRepOfPolarizedCuspidal : Prop :=
     ∀ (π : CuspSub E a) (χ : HChar (maximalRealSubfield E)), (CG.mk π).IsRegAlg → IsPolarized π χ →
       ∃ (r : G E Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (E →+* Qbar l) → Multiset ℤ), IsGalRepOf π χ ι r wt HT
 
+/- English proof (translation)
+The claim follows from `H E Ω l ι a ha π _ hr (isPolarized_of_isCsd hc)`.
+-/
 theorem GaloisRepOfPolarizedCuspidal.of_isCsd (H : GaloisRepOfPolarizedCuspidal) {E : Type} (Ω : Type) [Field E]
     [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
     {a : ℕ} (ha : 1 ≤ a) {π : CuspSub E a} (hr : (CG.mk π).IsRegAlg) (hc : π.IsCsd) :
@@ -106,6 +109,9 @@ namespace GlobalTheory.GalOfCusp
 
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] {a : ℕ}
 
+/- English proof (translation)
+Take `⟨_, _, _, -, H⟩` from `H`. Conclude with `H.nu_eq _ _`.
+-/
 theorem rec_algNorm {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
     {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) (σ : SmIrr (GL (Fin a) (w.adicCompletion E))) :
     rc (algNorm σ) = (rc (IrrGL.of σ.ρ σ.smooth σ.irred)).lpTw ((1 - (a : ℝ)) / 2) := by
@@ -115,6 +121,9 @@ theorem rec_algNorm {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {
 variable [IsCMField E] {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ}
   {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ} {HT : (E →+* Qbar l) → Multiset ℤ}
 
+/- English proof (translation)
+The claim follows from `((H.away w hl A h rc hrc σ hσ).wdOf_eq hl).trans (rec_algNorm hrc σ)`.
+-/
 theorem IsGalRepOf.wdOf_eq (H : IsGalRepOf π χ ι r wt HT) {w : HeightOneSpectrum (𝓞 E)}
     (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {A : ValuationSubring Ω} {h : IsPlaceOver A w}
     {rc : IrrGL (w.adicCompletion E) → WD h} (hrc : IsRec h rc) {σ : SmIrr (GL (Fin a) (w.adicCompletion E))}
@@ -122,6 +131,9 @@ theorem IsGalRepOf.wdOf_eq (H : IsGalRepOf π χ ι r wt HT) {w : HeightOneSpect
     wdOf h hl ι r = (rc (IrrGL.of σ.ρ σ.smooth σ.irred)).lpTw ((1 - (a : ℝ)) / 2) :=
   ((H.away w hl A h rc hrc σ hσ).wdOf_eq hl).trans (rec_algNorm hrc σ)
 
+/- English proof (translation)
+Take `⟨x, h1, h2⟩` from `H.pure w hl A h`. Rewrite using `[h1.wdOf_eq hl]` and apply the resulting hypothesis.
+-/
 theorem IsGalRepOf.tempered_wdOf (H : IsGalRepOf π χ ι r wt HT) {w : HeightOneSpectrum (𝓞 E)}
     (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {A : ValuationSubring Ω} (h : IsPlaceOver A w) :
     ((wdOf h hl ι r).lpTw ((wt : ℝ) / 2)).tempered := by

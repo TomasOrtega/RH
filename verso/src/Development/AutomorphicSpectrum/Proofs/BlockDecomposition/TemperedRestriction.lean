@@ -12,11 +12,17 @@ section Lin
 
 variable {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
 
+/- English proof (translation)
+Establish `h` using `Module.End.iSup_maxGenEigenspace_eq_top f`. Rewrite `h` using `[hf.isFinitelySemisimple.maxGenEigenspace_eq_eigenspace]`. Conclude with `h`.
+-/
 theorem iSup_eigenspace_eq_top {f : End ℂ V} (hf : f.IsSemisimple) : ⨆ α, f.eigenspace α = ⊤ := by
   have h := Module.End.iSup_maxGenEigenspace_eq_top f
   simp_rw [hf.isFinitelySemisimple.maxGenEigenspace_eq_eigenspace] at h
   exact h
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[End.mem_eigenspace_iff]`. Proceed by induction on `M with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, End.mul_apply, hv, map_smul, ih, smul_smul, pow_succ, mul_comm]`.
+-/
 theorem mem_eigenspace_pow {f : End ℂ V} {α : ℂ} {v : V} (hv : v ∈ f.eigenspace α) (M : ℕ) :
     v ∈ (f ^ M).eigenspace (α ^ M) := by
   rw [End.mem_eigenspace_iff] at hv ⊢
@@ -24,11 +30,25 @@ theorem mem_eigenspace_pow {f : End ℂ V} {α : ℂ} {v : V} (hv : v ∈ f.eige
   | zero => simp
   | succ n ih => rw [pow_succ, End.mul_apply, hv, map_smul, ih, smul_smul, pow_succ, mul_comm]
 
+/- English proof (translation)
+Use `iSup₂_le fun α hα v hv => ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem (α ^ M) (Submodule.mem_iSup_of_mem (by rw [norm_pow, hα]) (mem_eigenspace_pow hv M))`.
+-/
 theorem absSpace_le_pow (f : End ℂ V) (t : ℝ) (M : ℕ) : absSpace f t ≤ absSpace (f ^ M) (t ^ M) := by
   refine iSup₂_le fun α hα v hv => ?_
   exact Submodule.mem_iSup_of_mem (α ^ M) (Submodule.mem_iSup_of_mem (by rw [norm_pow, hα])
     (mem_eigenspace_pow hv M))
 
+/- English proof (translation)
+Use `set S : Set ℂ := {β | ‖β‖ = t ^ M} with hS`. Use `set b : Submodule ℂ V := ⨆ (α : ℂ) (_ : ‖α‖ ≠ t), f.eigenspace α with hb`. Establish `hbW : b ≤ ⨆ β ∈ Sᶜ, (f ^ M).eigenspace β`. Use `iSup₂_le fun α hα v hv => ?_` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem (α ^ M) (Submodule.mem_iSup_of_mem ?_ (mem_eigenspace_pow hv M))` and prove the remaining obligations.
+
+Introduce `h`. Establish `h' : ‖α‖ ^ M = t ^ M` using `by simpa [hS, norm_pow] using h`. Conclude with `hα ((pow_left_inj₀ (norm_nonneg _) ht hM).mp h')`. Establish `hab : absSpace f t ⊔ b = ⊤`. Rewrite using `[eq_top_iff, ← iSup_eigenspace_eq_top hf]`.
+
+Use `iSup_le fun α => ?_` and prove the remaining obligations. Distinguish the cases in `hα : ‖α‖ = t`. Conclude with `le_sup_of_le_left (le_iSup₂_of_le α hα le_rfl)`. Conclude with `le_sup_of_le_right (le_iSup₂_of_le α hα le_rfl)`. Establish `hd : Disjoint (absSpace (f ^ M) (t ^ M)) (⨆ β ∈ Sᶜ, (f ^ M).eigenspace β)` using `(End.eigenspaces_iSupIndep (f ^ M)).disjoint_biSup_biSup (s := S) (t := Sᶜ) disjoint_compl_right`.
+
+Use `le_antisymm ?_ (absSpace_le_pow f t M)` and prove the remaining obligations. Establish `e : absSpace (f ^ M) (t ^ M) = absSpace f t ⊔ (b ⊓ absSpace (f ^ M) (t ^ M))`. Rewrite using `[← sup_inf_assoc_of_le _ (absSpace_le_pow f t M), hab, top_inf_eq]`. Establish `e0 : b ⊓ absSpace (f ^ M) (t ^ M) = ⊥` using `eq_bot_iff.mpr ((inf_le_inf_right _ hbW).trans (by rw [inf_comm]; exact hd.le_bot))`. Rewrite `e` using `[e0, sup_bot_eq]`.
+
+Conclude with `e.le`.
+-/
 theorem absSpace_pow_eq {f : End ℂ V} (hf : f.IsSemisimple) {t : ℝ} (ht : 0 ≤ t) {M : ℕ} (hM : M ≠ 0) :
     absSpace (f ^ M) (t ^ M) = absSpace f t := by
   set S : Set ℂ := {β | ‖β‖ = t ^ M} with hS
@@ -63,6 +83,17 @@ variable {E Ω : Type*} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsA
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
 
+/- English proof (translation)
+Establish `key : ∀ n k : ℕ, 0 < k → a.ρ (ψ ^ (n + k) * (φ ^ (d * (n + k)))⁻¹) = a.ρ (ψ ^ n * (φ ^ (d * n))⁻¹) → ∃ M : ℕ, 0 < M ∧ a.ρ ψ ^ M = a.ρ φ ^ (d * M)`. Introduce `n k hk e`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Establish `e1 : ψ ^ k = (ψ ^ n)⁻¹ * (ψ ^ (n + k) * (φ ^ (d * (n + k)))⁻¹) * φ ^ (d * (n + k))`. Rewrite using `[pow_add]`.
+
+Use `group`. Establish `e2 : φ ^ (d * k) = (ψ ^ n)⁻¹ * (ψ ^ n * (φ ^ (d * n))⁻¹) * φ ^ (d * (n + k))`. Rewrite using `[mul_add, pow_add]`. Use `group`. Rewrite using `[← map_pow, ← map_pow, e1, e2, map_mul, map_mul, e, ← map_mul, ← map_mul]`.
+
+Establish `hdeg : ∀ n : ℕ, deg (ψ ^ n * (φ ^ (d * n))⁻¹) = 0` using `fun n => by`. Simplify using `[hφ, hψ, mul_comm]`. Set `u : ℕ → Ine (F` to `E) A := fun n => ⟨((ψ ^ n * (φ ^ (d * n))⁻¹ : Weil h) : G E Ω), deg_eq_zero_iff.mp (hdeg n)⟩`. Establish `hu : ∀ n, ineIncl h (u n) = ψ ^ n * (φ ^ (d * n))⁻¹` using `fun n => Subtype.ext rfl`. Establish `hfin : Finite (Set.range fun σ : Ine (F` using `E) A => a.ρ (ineIncl h σ)) := a.smooth.finite_range`.
+
+Take `⟨m, n, hne, hmn⟩` from `Finite.exists_ne_map_eq_of_infinite (fun k : ℕ => (⟨a.ρ (ineIncl h (u k)), u k, rfl⟩ : Set.range fun σ : Ine (F := E) A => a.ρ (ineIncl h σ)))`. Establish `hmn' : a.ρ (ψ ^ m * (φ ^ (d * m))⁻¹) = a.ρ (ψ ^ n * (φ ^ (d * n))⁻¹)`. Use `congrArg Subtype.val hmn` as an intermediate fact. Simplify `this` using `only [hu]`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hlt`. Conclude with `key m (k + 1) (by omega) (by rw [← add_assoc]; exact hmn'.symm)`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hlt`. Conclude with `key n (k + 1) (by omega) (by rw [← add_assoc]; exact hmn')`.
+-/
 theorem exists_pow_eq (a : WDRep h V) {φ ψ : Weil h} {d : ℕ} (hφ : deg φ = 1) (hψ : deg ψ = d) :
     ∃ M : ℕ, 0 < M ∧ a.ρ ψ ^ M = a.ρ φ ^ (d * M) := by
   have key : ∀ n k : ℕ, 0 < k → a.ρ (ψ ^ (n + k) * (φ ^ (d * (n + k)))⁻¹) = a.ρ (ψ ^ n * (φ ^ (d * n))⁻¹) →
@@ -91,6 +122,11 @@ theorem exists_pow_eq (a : WDRep h V) {φ ψ : Weil h} {d : ℕ} (hφ : deg φ =
   · obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_lt hlt
     exact key n (k + 1) (by omega) (by rw [← add_assoc]; exact hmn')
 
+/- English proof (translation)
+Establish `hq : (0 : ℝ) ≤ ((normV w : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hs : ∀ r : ℝ, 0 ≤ r → absSpace (a.ρ ψ) (r ^ f) = absSpace (a.ρ φ) r`. Introduce `r hr`. Take `⟨M, hM, e⟩` from `exists_pow_eq a hφ hψ`. Rewrite using `[← absSpace_pow_eq (a.semisimple ψ) (pow_nonneg hr f) hM.ne', e, ← pow_mul, absSpace_pow_eq (a.semisimple φ) hr (mul_ne_zero hf hM.ne')]`.
+
+Establish `hs' : ∀ x : ℝ, absSpace (a.ρ ψ) ((((normV w : ℕ) : ℝ) ^ f) ^ x) = absSpace (a.ρ φ) (((normV w : ℕ) : ℝ) ^ x)`. Introduce `x`. Rewrite using `[← hs _ (Real.rpow_nonneg hq x), ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hq, ← Real.rpow_mul hq, mul_comm]`. Unfold `IsPurePair`. Simplify using `only [hs']`.
+-/
 theorem isPurePair_iff (a : WDRep h V) {φ ψ : Weil h} {f : ℕ} (hf : f ≠ 0) (hφ : deg φ = 1) (hψ : deg ψ = f) :
     IsPurePair (((normV w : ℕ) : ℝ) ^ f) (a.ρ ψ) a.N ↔ IsPurePair ((normV w : ℕ) : ℝ) (a.ρ φ) a.N := by
   have hq : (0 : ℝ) ≤ ((normV w : ℕ) : ℝ) := Nat.cast_nonneg _
@@ -116,12 +152,22 @@ variable {E E' Ω : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] 
   (h : IsPlaceOver A w) (h' : IsPlaceOver A w')
   {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
 
+/- English proof (translation)
+Introduce `h0`. Establish `e` using `normV_eq_pow_resF h h'`. Rewrite `e` using `[h0, pow_zero]`. Conclude with `(one_lt_normV w').ne' e`.
+-/
 theorem resF_ne_zero : resF h h' ≠ 0 := by
   intro h0
   have e := normV_eq_pow_resF h h'
   rw [h0, pow_zero] at e
   exact (one_lt_normV w').ne' e
 
+/- English proof (translation)
+Establish `hq : ((normV w' : ℕ) : ℝ) = ((normV w : ℕ) : ℝ) ^ resF h h'`. Rewrite using `[normV_eq_pow_resF h h']`. Use `push_cast`. Both sides reduce to the same expression. Establish `hd : deg (resW h h' (frob h')) = (resF h h' : ℕ)`.
+
+Rewrite using `[deg_resW, deg_frob, mul_one]`. Prove the components needed by the constructor for the conclusion. Introduce `ht φ hφ`. Establish `h1` using `ht (frob h') deg_frob`. Rewrite `h1` using `[hq]`.
+
+Conclude with `(isPurePair_iff a (resF_ne_zero h h') hφ hd).mp h1`. Introduce `ht φ' hφ'`. Rewrite using `[hq]`. Establish `hd' : deg (resW h h' φ') = (resF h h' : ℕ)` using `by rw [deg_resW, hφ', mul_one]`. Conclude with `(isPurePair_iff a (resF_ne_zero h h') deg_frob hd').mpr (ht _ deg_frob)`.
+-/
 theorem tempered_resRep (a : WDRep h V) : (resRep h h' a).Tempered ↔ a.Tempered := by
   have hq : ((normV w' : ℕ) : ℝ) = ((normV w : ℕ) : ℝ) ^ resF h h' := by
     rw [normV_eq_pow_resF h h']; push_cast; rfl
@@ -137,6 +183,9 @@ theorem tempered_resRep (a : WDRep h V) : (resRep h h' a).Tempered ↔ a.Tempere
     have hd' : deg (resW h h' φ') = (resF h h' : ℕ) := by rw [deg_resW, hφ', mul_one]
     exact (isPurePair_iff a (resF_ne_zero h h') deg_frob hd').mpr (ht _ deg_frob)
 
+/- English proof (translation)
+Establish `hq : (0 : ℝ) ≤ ((normV w : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[normV_eq_pow_resF h h', Nat.cast_pow, ← Complex.ofReal_natCast, ← Complex.ofReal_pow, ← Complex.ofReal_cpow (pow_nonneg hq _), ← Complex.ofReal_cpow hq, ← Complex.ofReal_pow]`. Use `congr 1`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hq, ← Real.rpow_mul hq, mul_comm]`.
+-/
 theorem normV_cpow (s : ℝ) :
     ((normV w' : ℕ) : ℂ) ^ ((s : ℝ) : ℂ) = (((normV w : ℕ) : ℂ) ^ ((s : ℝ) : ℂ)) ^ resF h h' := by
   have hq : (0 : ℝ) ≤ ((normV w : ℕ) : ℝ) := Nat.cast_nonneg _
@@ -145,6 +194,9 @@ theorem normV_cpow (s : ℝ) :
   congr 1
   rw [← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hq, ← Real.rpow_mul hq, mul_comm]
 
+/- English proof (translation)
+Use `⟨.refl _ _, fun σ v => ?_, fun v => rfl⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.refl_apply, WDRep.tw_ρ, resRep_ρ, deg_resW, LinearMap.smul_apply]`. Rewrite using `[zpow_mul, zpow_natCast, normV_cpow h h']`.
+-/
 theorem iso_res_tw (a : WDRep h V) (s : ℝ) : ((resRep h h' a).tw s).Iso (resRep h h' (a.tw s)) := by
   refine ⟨.refl _ _, fun σ v => ?_, fun v => rfl⟩
   simp only [LinearEquiv.refl_apply, WDRep.tw_ρ, resRep_ρ, deg_resW, LinearMap.smul_apply]
@@ -152,6 +204,9 @@ theorem iso_res_tw (a : WDRep h V) (s : ℝ) : ((resRep h h' a).tw s).Iso (resRe
 
 end Res
 
+/- English proof (translation)
+Introduce `E E' Ω _ _ _ _ _ _ _ _ _ _ _ A w w' h h' x s`. Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Rewrite using `[WD.res_mk, WD.lpTw_mk, WD.lpTw_mk, WD.tempered_mk, WD.tempered_mk]`. Conclude with `⟨fun ht => (tempered_resRep h h' (a.tw s)).mp ((iso_res_tw h h' a s).tempered ht), fun ht => (iso_res_tw h h' a s).symm.tempered ((tempered_resRep h h' (a.tw s)).mpr ht)⟩`.
+-/
 theorem tempRes : TempRes := by
   intro E E' Ω _ _ _ _ _ _ _ _ _ _ _ A w w' h h' x s
   induction x using WD.ind with

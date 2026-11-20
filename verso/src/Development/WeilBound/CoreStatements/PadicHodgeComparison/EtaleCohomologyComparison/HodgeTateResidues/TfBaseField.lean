@@ -21,6 +21,15 @@ open Pb CH CrystallineSemistableComparison.Auxff
 section Gen
 variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C]
 
+/- English proof (translation)
+Take `⟨f, hf, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx F₁) p).1 x`. Take `⟨g, hg, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx F₂) q).1 y`. Take `⟨k, hk, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx F₃) r).1 z`. Take `⟨c1, e1⟩` from `CrystallineSemistableComparison.P.cup_cls P₁ h₁ f g hf hg`. Take `⟨c3, e3⟩` from `CrystallineSemistableComparison.P.cup_cls P₃ h₃ g k hg hk`.
+
+Rewrite using `[e1, e3]`. Take `⟨c2, e2⟩` from `CrystallineSemistableComparison.P.cup_cls P₂ h₂ _ k c1 hk`. Take `⟨c4, e4⟩` from `CrystallineSemistableComparison.P.cup_cls P₄ h₄ f _ hf c3`. Rewrite using `[e2, e4]`. Use `cls_congr _ (funext fun s => ?_) _ _` and prove the remaining obligations.
+
+Rewrite using `[cupC_apply, cupC_apply, term_cupC, term_cupC, hμ]`. Apply the tactic sequence `refine congrArg₂ (fun u v => P₄.μ _ u v) (term_congr _ _ _ _ _ ?_) (congrArg₂ (fun u v => P₃.μ _ u v) (term_congr _ _ _ _ _ ?_) (term_congr _ _ _ _ _ ?_)) <;>`. Use function extensionality and compare the values at `t`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [front, back, Function.comp]`.
+
+Apply the tactic sequence `try omega`.
+-/
 theorem gen_assoc {F₁ F₂ F₃ F₁₂ F₂₃ F : C ⥤ ModuleCat.{w} R} (P₁ : Pairing F₁ F₂ F₁₂) (P₂ : Pairing F₁₂ F₃ F)
     (P₃ : Pairing F₂ F₃ F₂₃) (P₄ : Pairing F₁ F₂₃ F)
     (hμ : ∀ T x y z, P₂.μ T (P₁.μ T x y) z = P₄.μ T x (P₃.μ T y z)) {p q r a b n : ℕ} (h₁ : p + q = a) (h₂ : a + r = n)
@@ -44,6 +53,9 @@ theorem gen_assoc {F₁ F₂ F₃ F₁₂ F₂₃ F : C ⥤ ModuleCat.{w} R} (P�
     simp only [front, back, Function.comp]
     try omega
 
+/- English proof (translation)
+Take `⟨f, hf, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx F) n).1 x`. Take `⟨hc, e⟩` from `CrystallineSemistableComparison.P.cup_cls P (Nat.zero_add n) (fun s => o _) f h0 hf`. Use `e.trans (cls_congr _ (funext fun s => ?_) _ _)` and prove the remaining obligations. Rewrite using `[cupC_apply, term_id _ s f _ _ (fun t => by simp [back])]`. Conclude with `(congrArg (fun u => P.μ _ u (f s)) (ho _)).trans (hμ _ _)`.
+-/
 theorem gen_left {F₀ F : C ⥤ ModuleCat.{w} R} (P : Pairing F₀ F F) (o : ∀ T, F₀.obj T)
     (ho : ∀ {T T' : C} (φ : T ⟶ T'), (F₀.map φ).hom (o T) = o T') (hμ : ∀ T x, P.μ T (o T) x = x) (h0) (n : ℕ) (x : H F n) :
     P.cup (Nat.zero_add n) ((cx F₀).cls (n := 0) (fun s => o _) h0) x = x := by
@@ -53,6 +65,9 @@ theorem gen_left {F₀ F : C ⥤ ModuleCat.{w} R} (P : Pairing F₀ F F) (o : �
   rw [cupC_apply, term_id _ s f _ _ (fun t => by simp [back])]
   exact (congrArg (fun u => P.μ _ u (f s)) (ho _)).trans (hμ _ _)
 
+/- English proof (translation)
+Take `⟨f, hf, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx F) n).1 x`. Take `⟨hc, e⟩` from `CrystallineSemistableComparison.P.cup_cls P (Nat.add_zero n) f (fun s => o _) hf h0`. Use `e.trans (cls_congr _ (funext fun s => ?_) _ _)` and prove the remaining obligations. Rewrite using `[cupC_apply, term_id _ s f _ _ (fun t => by simp [front])]`. Conclude with `(congrArg (fun u => P.μ _ (f s) u) (ho _)).trans (hμ _ _)`.
+-/
 theorem gen_right {F₀ F : C ⥤ ModuleCat.{w} R} (P : Pairing F F₀ F) (o : ∀ T, F₀.obj T)
     (ho : ∀ {T T' : C} (φ : T ⟶ T'), (F₀.map φ).hom (o T) = o T') (hμ : ∀ T x, P.μ T x (o T) = x) (h0) (n : ℕ) (x : H F n) :
     P.cup (Nat.add_zero n) x ((cx F₀).cls (n := 0) (fun s => o _) h0) = x := by
@@ -64,14 +79,27 @@ theorem gen_right {F₀ F : C ⥤ ModuleCat.{w} R} (P : Pairing F F₀ F) (o : �
 
 variable {A : C ⥤ CommAlgCat.{0} R}
 
+/- English proof (translation)
+The claim follows from `h.mul_mk x y hx hy`.
+-/
 theorem pair_mk {a b a' b' a'' b'' : IdF A} (h : MulOk a b a' b' a'' b'') {T : C} (x y : A.obj T) (hx : x ∈ a.S T)
     (hy : y ∈ a'.S T) : h.pair.μ T (sqMk a b x hx) (sqMk a' b' y hy) = sqMk a'' b'' (x * y) (h.aa T hx hy) := h.mul_mk x y hx hy
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem mk_congr (a b : IdF A) {T : C} {x y : A.obj T} (e : x = y) (hx : x ∈ a.S T) (hy : y ∈ a.S T) :
     sqMk a b x hx = sqMk a b y hy := by subst e; rfl
 
 end Gen
 
+/- English proof (translation)
+Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, h, rfl⟩`. Establish `key : ∀ l : List (ℕ × B), (∀ q ∈ l, q.2 ∈ J) → 1 ≤ (l.map Prod.fst).sum → (l.map fun q => δ.dpow q.1 q.2).prod ∈ J`. Introduce `l`. Proceed by induction on `l with`.
+
+Consider the case `nil => intro _ h`. Simplify using `at h`. Consider the case `cons q l ih`. Introduce `hl h`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons] at h ⊢`.
+
+Distinguish the cases in `h0 : q.1 = 0`. Conclude with `Ideal.mul_mem_left _ _ (ih (fun q hq => hl q (List.mem_cons_of_mem _ hq)) (by omega))`. Conclude with `Ideal.mul_mem_right _ _ (δ.dpow_mem h0 (hl q List.mem_cons_self))`. Conclude with `key l hl (hr.trans h)`.
+-/
 theorem dividedPowerFiltration_le {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {r : ℕ} (hr : 1 ≤ r) : pdP δ r ≤ J := by
   refine Ideal.span_le.2 ?_
   rintro _ ⟨l, hl, h, rfl⟩
@@ -87,11 +115,19 @@ theorem dividedPowerFiltration_le {B : Type} [CommRing B] {J : Ideal B} (δ : Di
       · exact Ideal.mul_mem_right _ _ (δ.dpow_mem h0 (hl q List.mem_cons_self))
   exact key l hl (hr.trans h)
 
+/- English proof (translation)
+The claim follows from `le_bot_iff.1 (dividedPowerFiltration_le _ hs) tf r x hx := by simpa using hx dv n hn := ⟨0, (n : K)⁻¹, by rw [pow_zero, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hn)]⟩`.
+-/
 theorem tfBase_field (K : Type) [Field K] [CharZero K] {s : ℕ} (hs : 1 ≤ s) : TFBase (dividedPowersBot K) 1 s where
   nil := le_bot_iff.1 (dividedPowerFiltration_le _ hs)
   tf r x hx := by simpa using hx
   dv n hn := ⟨0, (n : K)⁻¹, by rw [pow_zero, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hn)]⟩
 
+/- English proof (translation)
+Introduce `K _ _ X q _ _ a n`. Take `⟨U⟩` from `(cov_ex q).1 inferInstance`. Establish `hU : sSup (Set.range U.U) = ⊤` using `U.cover`. Establish `hb` using `hdg_res q (a + 1) _ hU a (Nat.lt_succ_self a) n`. Use `⟨?_, fun hn => ?_⟩` and prove the remaining obligations.
+
+Use `hF 1 (a + 1) (tfBase_field K (by omega)) q U _ hU (a : ℤ) ((a : ℤ) + 1) (by omega) (by push_cast; omega) n` as an intermediate fact. Conclude with `Module.Finite.equiv (LinearEquiv.ofBijective _ hb).symm`. Use `(glob_van_st (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (grT (smFun X q) a) (TF 1 (a + 1)) U.U a).1 (fun S hS j hj => gr_aff_pf q _ (U.inter S hS) (a + 1) a j (Nat.lt_succ_self a) hj.ne) n hn` as an intermediate fact. Establish `h2 : Subsingleton (HQ (TO q 1 (a + 1) (Set.range U.U)) (a : ℤ) ((a : ℤ) + 1) n)` using `this`. Conclude with `hb.1.subsingleton`.
+-/
 theorem kFin_of (hF : FinO) : KFin := by
   intro K _ _ X q _ _ a n
   obtain ⟨U⟩ := (cov_ex q).1 inferInstance
@@ -108,12 +144,18 @@ theorem kFin_of (hF : FinO) : KFin := by
 section Form
 variable {K : Type} [CommRing K] {X Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Establish `e : Ideal.quotientMap J (RingHom.id B₀) h = RingHom.id _` using `by ext; rfl`. Rewrite using `[e, CommRingCat.ofHom_id, (smFun X q).Pt.map_id]`. Both sides reduce to the same expression.
+-/
 theorem pt_id' {q : X ⟶ Spec (CommRingCat.of K)} {B₀ : Type} [CommRing B₀] (J : Ideal B₀) (h)
     (y : (smFun X q).Pt.obj (CommRingCat.of (B₀ ⧸ J))) :
     (smFun X q).Pt.map (CommRingCat.ofHom (Ideal.quotientMap J (RingHom.id B₀) h)) y = y := by
   have e : Ideal.quotientMap J (RingHom.id B₀) h = RingHom.id _ := by ext; rfl
   rw [e, CommRingCat.ofHom_id, (smFun X q).Pt.map_id]; rfl
 
+/- English proof (translation)
+The claim follows from `CrystallineSemistableComparison.P.prism m m' ⟨η, fun _ _ f => Thick.Hom.ext (RingHom.ext (nat f)) (funext fun j => j.elim)⟩ (fun T x => by obtain ⟨y, hy, rfl⟩ := sq_surj _ _ x exact hτ T y hy) n x`.
+-/
 theorem gr_prism {q : X ⟶ Spec (CommRingCat.of K)} {C' : Type 1} [Category.{0} C'] {F' : C' ⥤ ModuleCat.{0} K} {a : ℕ}
     (m m' : CH.Mor (grT (smFun X q) a) F' (RingHom.id K)) (η : ∀ T, m.G.obj T ⟶ m'.G.obj T)
     (nat : ∀ {T T' : C'} (f : T ⟶ T') (x : (m.G.obj T).B), (η T').φ ((m.G.map f).φ x) = (m'.G.map f).φ ((η T).φ x))
@@ -128,12 +170,18 @@ abbrev pM {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec (CommRingCat.of K)
   (smS u hu).sq (a := thFil _ (a : ℤ)) (b := thFil _ ((a : ℤ) + 1)) (a' := thFil _ (a : ℤ)) (b' := thFil _ ((a : ℤ) + 1))
     (fun _ _ hx => hx) fun _ _ hx => hx
 
+/- English proof (translation)
+The claim follows from `(gr_prism (pM (𝟙 X) hu a) (CH.Mor.id _) (fun T => mkH (γ := dividedPowersBot K) (p := 0) (T := (smMor (𝟙 X) hu).obj T) (T' := T) (RingHom.id T.B) (fun _ => rfl) (DPMorphism.id T.δ).isDPMorphism le_rfl ((pt_id' _ _ _).trans (Subtype.ext (Prod.ext rfl (Category.comp_id _))))) (fun …`.
+-/
 theorem pull_id' (q : X ⟶ Spec (CommRingCat.of K)) (hu : 𝟙 X ≫ q = q) (a n : ℕ) (x : Hdg q a n) : pullH (𝟙 X) hu a n x = x :=
   (gr_prism (pM (𝟙 X) hu a) (CH.Mor.id _)
     (fun T => mkH (γ := dividedPowersBot K) (p := 0) (T := (smMor (𝟙 X) hu).obj T) (T' := T) (RingHom.id T.B) (fun _ => rfl)
       (DPMorphism.id T.δ).isDPMorphism le_rfl ((pt_id' _ _ _).trans (Subtype.ext (Prod.ext rfl (Category.comp_id _)))))
     (fun _ _ => rfl) (fun _ _ _ => rfl) n x).trans (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id K) (CH.Mor.id _) (CH.Mor.id _) n x).2
 
+/- English proof (translation)
+The claim follows from `(gr_prism (pM (u ≫ v) h a) ((pM v hv a).comp (σ'' := RingHom.id K) (pM u hu a)) (fun T => mkH (γ := dividedPowersBot K) (p := 0) (T := (smMor (u ≫ v) h).obj T) (T' := (smMor v hv).obj ((smMor u hu).obj T)) (RingHom.id T.B) (fun _ => rfl) (DPMorphism.id T.δ).isDPMorphism le_rfl (( …`.
+-/
 theorem pull_comp' {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec (CommRingCat.of K)} {o : Z ⟶ Spec (CommRingCat.of K)}
     (u : X ⟶ Y) (hu : u ≫ p = q) (v : Y ⟶ Z) (hv : v ≫ o = p) (h : (u ≫ v) ≫ o = q) (a n : ℕ) (x : Hdg o a n) :
     pullH (u ≫ v) h a n x = pullH u hu a n (pullH v hv a n x) :=
@@ -143,6 +191,9 @@ theorem pull_comp' {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec (CommRing
       ((pt_id' _ _ _).trans (Subtype.ext (Prod.ext rfl (Category.assoc _ _ _).symm))))
     (fun _ _ => rfl) (fun _ _ _ => rfl) n x).trans (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id K) (pM v hv a) (pM u hu a) n x).1
 
+/- English proof (translation)
+The claim follows from `CrystallineSemistableComparison.P.cup_pull (grOk (smFun Y p) ha).pair (grOk (smFun X q) ha).pair (smMor u hu).functor (pM u hu a).τ (pM u hu a').τ (pM u hu c).τ (pM u hu a).nat (pM u hu a').nat (pM u hu c).nat (fun T x y => by obtain ⟨x, hx, rfl⟩ := sq_surj _ _ x obtain ⟨y, hy, r …`.
+-/
 theorem pull_cup' {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec (CommRingCat.of K)} (u : X ⟶ Y) (hu : u ≫ p = q)
     {a a' c i j n : ℕ} (ha : a + a' = c) (h : i + j = n) (x : Hdg p a i) (y : Hdg p a' j) :
     pullH u hu c n (cupH p ha h x y) = cupH q ha h (pullH u hu a i x) (pullH u hu a' j y) :=
@@ -156,15 +207,24 @@ theorem pull_cup' {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec (CommRingC
 def oneSec (q : X ⟶ Spec (CommRingCat.of K)) (T : Thick (smFun X q)) : (grT (smFun X q) 0).obj T :=
   sqMk _ _ (1 : T.B) (show (1 : T.B) ∈ T.pdPow 0 from T.pdPow_zero ▸ trivial)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (congrArg (Ideal.Quotient.mk _) (map_one φ.φ))`.
+-/
 theorem oneSec_map (q : X ⟶ Spec (CommRingCat.of K)) {T T' : Thick (smFun X q)} (φ : T ⟶ T') :
     ((grT (smFun X q) 0).map φ).hom (oneSec q T) = oneSec q T' :=
   Subtype.ext (congrArg (Ideal.Quotient.mk _) (map_one φ.φ))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, rfl⟩`.
+-/
 theorem oneH_eq (q : X ⟶ Spec (CommRingCat.of K)) :
     ∃ h0, oneH q = (cx (grT (smFun X q) 0)).cls (n := 0) (fun s => oneSec q _) h0 := ⟨_, rfl⟩
 
 end Form
 
+/- English proof (translation)
+The claim follows from `CrystallineSemistableComparison.P.cup_bilin (grOk (smFun _ q) ha).pair h pull_id q u hu e a n x := by subst e; exact pull_id' q hu a n x pull_comp u hu v hv h a n x := pull_comp' u hu v hv h a n x pull_cup u hu _ _ _ _ _ _ ha h x y := pull_cup' u hu ha h x y pull_one u hu := rfl …`.
+-/
 theorem kForm : KForm where
   bilin q _ _ _ _ _ _ ha h := CrystallineSemistableComparison.P.cup_bilin (grOk (smFun _ q) ha).pair h
   pull_id q u hu e a n x := by subst e; exact pull_id' q hu a n x

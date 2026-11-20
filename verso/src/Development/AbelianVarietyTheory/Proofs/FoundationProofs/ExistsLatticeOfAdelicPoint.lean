@@ -25,23 +25,38 @@ local notation "ι" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 def lat (g : GL n 𝒜) : Submodule (𝓞 E) (n → E) :=
   Formalism.UG.CS.globLat g (stdLat (n := n) (A := E) (𝓞 E))
 
+/- English proof (translation)
+Rewrite using `[easyc_latS_std, adelstab_mem_stdLat]`.
+-/
 theorem mem_latS_std (v : n → 𝒜) :
     v ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) 𝒮 (stdLat (n := n) (A := E) (𝓞 E)) ↔ ∀ i, v i ∈ 𝒮 := by
   rw [easyc_latS_std, adelstab_mem_stdLat]
 
+/- English proof (translation)
+The claim follows from `mem_latS_std _`.
+-/
 theorem mem_lat (g : GL n 𝒜) (x : n → E) :
     x ∈ lat g ↔ ∀ i, (((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ (fun j => ι (x j))) i ∈ 𝒮 :=
   mem_latS_std _
 
+/- English proof (translation)
+The claim follows from `global_lattice_isLattice_holds F E n _ (standard_lattice_full_holds E n).1 (standard_lattice_full_holds E n).2 g`.
+-/
 theorem lat_isLattice (g : GL n 𝒜) : Submodule.IsLattice E (lat g) :=
   global_lattice_isLattice_holds F E n _ (standard_lattice_full_holds E n).1 (standard_lattice_full_holds E n).2 g
 
+/- English proof (translation)
+The claim follows from `(span_recovery_of_integral_adelic_approx csGlob_intAdApprox F E n _ (standard_lattice_full_holds E n).1 (standard_lattice_full_holds E n).2 g u).trans (mem_latS_std _)`.
+-/
 theorem lat_span (g : GL n 𝒜) (u : n → 𝒜) :
     u ∈ Submodule.span 𝒮 ((fun x : n → E => fun i => ι (x i)) '' (lat g : Set (n → E))) ↔
       ∀ i, (((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ u) i ∈ 𝒮 :=
   (span_recovery_of_integral_adelic_approx csGlob_intAdApprox F E n _ (standard_lattice_full_holds E n).1 (standard_lattice_full_holds E n).2
     g u).trans (mem_latS_std _)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨⟨e, csGlob_int (F := F) e h⟩, rfl⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `adelstab_incl_int b`.
+-/
 theorem incl_mem_iff (e : E) : ι e ∈ 𝒮 ↔ e ∈ (algebraMap (𝓞 E) E).range := by
   constructor
   · intro h
@@ -49,11 +64,17 @@ theorem incl_mem_iff (e : E) : ι e ∈ 𝒮 ↔ e ∈ (algebraMap (𝓞 E) E).r
   · rintro ⟨b, rfl⟩
     exact adelstab_incl_int b
 
+/- English proof (translation)
+Simplify using `only [mulVec, dotProduct]`. Conclude with `sum_mem fun j _ => mul_mem (hM i j) (hv j)`.
+-/
 theorem mulVec_int {M : Matrix n n 𝒜} (hM : ∀ i j, M i j ∈ 𝒮) {v : n → 𝒜} (hv : ∀ i, v i ∈ 𝒮) (i : n) :
     (M *ᵥ v) i ∈ 𝒮 := by
   simp only [mulVec, dotProduct]
   exact sum_mem fun j _ => mul_mem (hM i j) (hv j)
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx`, the goal using `[mem_lat]`. Introduce `i`. Use `mulVec_int h hx i` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem lat_le_of_int {g g' : GL n 𝒜} (h : ∀ i j, ((g'⁻¹ * g : GL n 𝒜) : Matrix n n 𝒜) i j ∈ 𝒮) :
     lat g ≤ lat g' := by
   intro x hx
@@ -62,6 +83,11 @@ theorem lat_le_of_int {g g' : GL n 𝒜} (h : ∀ i j, ((g'⁻¹ * g : GL n 𝒜
   have := mulVec_int h hx i
   rwa [mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_right] at this
 
+/- English proof (translation)
+Establish `h1` using `(lat_span g ((g : Matrix n n 𝒜) *ᵥ Pi.single j 1)).2 (by`. Introduce `k`. Rewrite using `[mulVec_mulVec, Units.inv_mul, one_mulVec, Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `zero_mem _)`. Establish `h2` using `(lat_span g' _).1 (Submodule.span_mono (Set.image_mono h) h1) i`. Rewrite `h2` using `[mulVec_mulVec, ← Units.val_mul, mulVec_single_one]`. Then use the resulting hypothesis.
+-/
 theorem int_of_lat_le {g g' : GL n 𝒜} (h : lat g ≤ lat g') (i j : n) :
     ((g'⁻¹ * g : GL n 𝒜) : Matrix n n 𝒜) i j ∈ 𝒮 := by
   have h1 := (lat_span g ((g : Matrix n n 𝒜) *ᵥ Pi.single j 1)).2 (by
@@ -73,12 +99,29 @@ theorem int_of_lat_le {g g' : GL n 𝒜} (h : lat g ≤ lat g') (i j : n) :
   have h2 := (lat_span g' _).1 (Submodule.span_mono (Set.image_mono h) h1) i
   rwa [mulVec_mulVec, ← Units.val_mul, mulVec_single_one] at h2
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem map_one_incl : (1 : Matrix n n E).map ι = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Rewrite using `[hform_eq_dot, one_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem hform_one {A : Type} [CommRing A] (σ : A →+* A) (x y : n → A) :
     hform σ (1 : Matrix n n A) x y = ∑ i, σ (x i) * y i := by
   rw [hform_eq_dot, one_mulVec]; rfl
 
+/- English proof (translation)
+Establish `hU : cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (g : Matrix n n 𝒜) * (1 : Matrix n n E).map ι * (g : Matrix n n 𝒜) = (1 : Matrix n n E).map ι` using `hg`. Establish `hback : ∀ v : n → 𝒜, (g : Matrix n n 𝒜) *ᵥ (((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ v) = v`. Introduce `v`. Rewrite using `[mulVec_mulVec, Units.mul_inv, one_mulVec]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy x hx`. Rewrite `hx`, `hy` using `[mem_lat]`. Establish `h1` using `csDual_hform_incl σ (1 : Matrix n n E) x y`. Rewrite `h1` using `[← hback (fun i => ι (x i)), ← hback (fun i => ι (y i)), hform_mulVec, hU, map_one_incl, hform_one, hform_one]`. Rewrite using `[← incl_mem_iff (F := F)]`.
+
+Establish `h2 : ι (∑ i, σ (x i) * y i) = _` using `h1.symm`. Rewrite using `[h2]`. Conclude with `sum_mem fun i _ => mul_mem (csDual_sig_mem σ (hx i)) (hy i)`. Introduce `hy`. Rewrite using `[mem_lat]`.
+
+Introduce `j`. Establish `h1` using `(lat_span g ((g : Matrix n n 𝒜) *ᵥ Pi.single j 1)).2 (by`. Introduce `k`. Rewrite using `[mulVec_mulVec, Units.inv_mul, one_mulVec, Pi.single_apply]`. Use `split_ifs`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _)`. Establish `h2` using `csDual_span σ (1 : Matrix n n E) (lat g) y (fun x hx => by rw [hform_one]; exact hy x hx) _ h1`. Rewrite `h2` using `[← hback (fun i => ι (y i)), hform_mulVec, hU, map_one_incl, sf_single, one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem lat_selfDual (σ : E →ₐ[F] E) (g : GL n 𝒜)
     (hg : g ∈ UPts σ (1 : Matrix n n E) (FiniteAdeleRing (𝓞 F) F)) (y : n → E) :
     y ∈ lat g ↔ ∀ x ∈ lat g, ∑ i, σ (x i) * y i ∈ (algebraMap (𝓞 E) E).range := by
@@ -109,17 +152,26 @@ theorem lat_selfDual (σ : E →ₐ[F] E) (g : GL n 𝒜)
       (fun x hx => by rw [hform_one]; exact hy x hx) _ h1
     rwa [← hback (fun i => ι (y i)), hform_mulVec, hU, map_one_incl, sf_single, one_mulVec] at h2
 
+/- English proof (translation)
+Rewrite using `[mem_lat, inv_one, Units.val_one, one_mulVec]`. Conclude with `forall_congr' fun i => incl_mem_iff _`.
+-/
 theorem mem_lat_one (x : n → E) :
     x ∈ lat (1 : GL n 𝒜) ↔ ∀ i, x i ∈ (algebraMap (𝓞 E) E).range := by
   rw [mem_lat, inv_one, Units.val_one, one_mulVec]
   exact forall_congr' fun i => incl_mem_iff _
 
+/- English proof (translation)
+Establish `key : (fun i => ι ((γ *ᵥ x) i)) = (γA : Matrix n n 𝒜) *ᵥ (fun i => ι (x i))`. Use extensionality with `i`. Rewrite using `[RingHom.map_mulVec, h]`. Both sides reduce to the same expression. Rewrite using `[mem_lat, mem_lat, key, mulVec_mulVec, ← Units.val_mul, _root_.mul_inv_rev, inv_mul_cancel_right]`.
+-/
 theorem mem_lat_rat (γA g : GL n 𝒜) (γ : Matrix n n E) (h : (γA : Matrix n n 𝒜) = γ.map ι)
     (x : n → E) : x ∈ lat g ↔ γ *ᵥ x ∈ lat (γA * g) := by
   have key : (fun i => ι ((γ *ᵥ x) i)) = (γA : Matrix n n 𝒜) *ᵥ (fun i => ι (x i)) := by
     ext i; rw [RingHom.map_mulVec, h]; rfl
   rw [mem_lat, mem_lat, key, mulVec_mulVec, ← Units.val_mul, _root_.mul_inv_rev, inv_mul_cancel_right]
 
+/- English proof (translation)
+Establish `hU : cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (g : Matrix n n 𝒜) * (1 : Matrix n n E).map ι * (g : Matrix n n 𝒜) = (1 : Matrix n n E).map ι` using `hg`. Rewrite `hU` using `[map_one_incl, Matrix.mul_one]`. Establish `: ((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) = cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (g : Matrix n n 𝒜)` using `Units.inv_eq_of_mul_eq_one_left hU`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem inv_entry (σ : E →ₐ[F] E) (g : GL n 𝒜)
     (hg : g ∈ UPts σ (1 : Matrix n n E) (FiniteAdeleRing (𝓞 F) F)) (i j : n) :
     ((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) i j =
@@ -131,6 +183,11 @@ theorem inv_entry (σ : E →ₐ[F] E) (g : GL n 𝒜)
     Units.inv_eq_of_mul_eq_one_left hU
   rw [this]; rfl
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_lat]`. Introduce `i`. Use `mulVec_int (M := (s : 𝒜) • ((g'⁻¹ * g : GL n 𝒜) : Matrix n n 𝒜)) h hx i` as an intermediate fact. Rewrite `this` using `[smul_mulVec, mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_right, ← mulVec_smul]`. Establish `e : (fun j => ι (((s : E) • x) j)) = (s : 𝒜) • fun j => ι (x j)`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, map_natCast]`. Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem smul_mem_lat {g g' : GL n 𝒜} (s : ℕ)
     (h : ∀ i j, (s : 𝒜) * ((g'⁻¹ * g : GL n 𝒜) : Matrix n n 𝒜) i j ∈ 𝒮) {x : n → E} (hx : x ∈ lat g) :
     (s : E) • x ∈ lat g' := by
@@ -144,6 +201,17 @@ theorem smul_mem_lat {g g' : GL n 𝒜} (s : ℕ)
   rw [e]
   exact this
 
+/- English proof (translation)
+Use `choose m hm hmS using h`. Use `set s : ℕ := ∏ q : n × n, m q.1 q.2 with hs`. Establish `hint : ∀ i j, (s : 𝒜) * (g : Matrix n n 𝒜) i j ∈ 𝒮`. Introduce `i j`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem (fun q : n × n => m q.1 q.2) (Finset.mem_univ (i, j))`.
+
+Establish `h1 : (1 : Matrix n n 𝒜) i j ∈ 𝒮`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+
+Establish `: (s : 𝒜) * (g : Matrix n n 𝒜) i j = (k : 𝒜) * ((m i j : 𝒜) * ((g : Matrix n n 𝒜) i j - (1 : Matrix n n 𝒜) i j)) + (s : 𝒜) * (1 : Matrix n n 𝒜) i j`. Rewrite using `[hs, hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `add_mem (mul_mem (natCast_mem _ k) (hmS i j)) (mul_mem (natCast_mem _ s) h1)`. Use `⟨s, Nat.Coprime.prod_left fun q _ => hm q.1 q.2, fun x hx => smul_mem_lat s ?_ hx, fun x hx => smul_mem_lat s ?_ hx⟩` and prove the remaining obligations. Introduce `i j`. Apply the tactic sequence `rw [mul_one, inv_entry σ g hg]`. Use `csDual_sig_mem σ (hint j i)` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_natCast]`. Then use the resulting hypothesis. Introduce `i j`. Rewrite using `[inv_one, one_mul]`. Conclude with `hint i j`.
+-/
 theorem eq_up_to (σ : E →ₐ[F] E) (g : GL n 𝒜)
     (hg : g ∈ UPts σ (1 : Matrix n n E) (FiniteAdeleRing (𝓞 F) F)) (p : ℕ)
     (h : ∀ i j, ∃ m : ℕ, Nat.Coprime m p ∧
@@ -184,12 +252,26 @@ open scoped BigOperators
 
 namespace GlobalTheory.NormSum.AdLattice
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `letI := D.host.isCMField_hostE`. Use `show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, D.host.toHostAx.conjE_apply]`.
+-/
 theorem star_eq_conj (D : D7) (x : D.host.E) : (letI := D.host.cmStar; star x) = D.host.conj x := by
   apply D.host.φ₀.injective
   letI := D.host.isCMField_hostE
   show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _
   rw [NumberField.IsCMField.complexEmbedding_complexConj, D.host.toHostAx.conjE_apply]
 
+/- English proof (translation)
+Establish `hmul : ∀ M M' : Matrix (Fin N) (Fin N) (AE D), (∀ i j, M i j ∈ OhE D) → (∀ i j, M' i j ∈ OhE D) → ∀ i j, (M * M') i j ∈ OhE D`. Introduce `M M' h h' i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun l _ => mul_mem (h i l) (h' l j)`. Proceed by induction on `hk using Subgroup.closure_induction with`.
+
+Consider the case `mem k hk => exact hk`. Consider the case `one`. Introduce `i j`. Establish `h1 : (1 : Matrix (Fin N) (Fin N) (AE D)) i j ∈ OhE D`. Rewrite using `[Matrix.one_apply]`.
+
+Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Rewrite using `[OneMemClass.coe_one, inv_one]`. Conclude with `⟨h1, h1⟩`.
+
+Consider the case `mul a b _ _ ha hb`. Introduce `i j`. Rewrite using `[Subgroup.coe_mul, mul_inv_rev, Units.val_mul, Units.val_mul]`. Conclude with `⟨hmul _ _ (fun i j => (ha i j).1) (fun i j => (hb i j).1) i j, hmul _ _ (fun i j => (hb i j).2) (fun i j => (ha i j).2) i j⟩`. Consider the case `inv a _ ha`.
+
+Introduce `i j`. Rewrite using `[Subgroup.coe_inv, inv_inv]`. Conclude with `⟨(ha i j).2, (ha i j).1⟩`.
+-/
 theorem intG_of_mem (D : D7) (N : ℕ) (k : GA D N) (hk : k ∈ intG D N) :
     IntG D (k : GL (Fin N) (AE D)) := by
   have hmul : ∀ M M' : Matrix (Fin N) (Fin N) (AE D), (∀ i j, M i j ∈ OhE D) → (∀ i j, M' i j ∈ OhE D) →
@@ -218,6 +300,9 @@ theorem intG_of_mem (D : D7) (N : ℕ) (k : GA D N) (hk : k ∈ intG D N) :
     rw [Subgroup.coe_inv, inv_inv]
     exact ⟨(ha i j).2, (ha i j).1⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_lat_one, stdL, Submodule.mem_pi]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_univ, true_implies, Submodule.mem_one, RingHom.mem_range]`.
+-/
 theorem lat_one_eq (D : D7) (N : ℕ) : lat (1 : GL (Fin N) (AE D)) = stdL D N := by
   ext x
   rw [mem_lat_one, stdL, Submodule.mem_pi]
@@ -228,6 +313,15 @@ end GlobalTheory.NormSum.AdLattice
 
 open GlobalTheory.NormSum.AdLattice in
 
+/- English proof (translation)
+Introduce `D N`. Use `⟨fun g => lat (g : GL (Fin N) (AE D)), fun g => ⟨fun x => mem_lat _ x, ?_⟩, lat_one_eq D N, fun g g' => ⟨fun h => ?_, fun h => ?_⟩, fun γA g γ h x => mem_lat_rat _ _ γ h x, fun p g _ h => ?_⟩` and prove the remaining obligations. Use `⟨(lat_isLattice _).fg, (lat_isLattice _).span_eq_top, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[lat_selfDual (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) _ g.2 y]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [stdH, star_eq_conj]`. Both sides reduce to the same expression. Use `Subgroup.subset_closure fun i j => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, mul_inv_rev, inv_inv]`. Conclude with `⟨int_of_lat_le h.ge i j, int_of_lat_le h.le i j⟩`.
+
+Establish `hk` using `intG_of_mem D N _ h`. Rewrite `hk` using `[IntG, Subgroup.coe_mul, Subgroup.coe_inv, mul_inv_rev, inv_inv]`. Conclude with `le_antisymm (lat_le_of_int fun i j => (hk i j).2) (lat_le_of_int fun i j => (hk i j).1)`. Rewrite using `[← lat_one_eq]`. Use `eq_up_to (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) _ g.2 p fun i j => ?_` and prove the remaining obligations.
+
+Take `⟨m, -, hm, s, hs, he⟩` from `h i j 0`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[pow_zero, one_mul]`. Rewrite using `[he]`. Conclude with `hs`.
+-/
 theorem GlobalTheory.NormSum.exists_lattice_of_adelic_point : ∀ (D : D7) (N : ℕ), ∃ Lt : GA D N → Submodule (𝓞 D.host.E) (Fin N → D.host.E), (∀ g : GA D N, Moves D (g : GL (Fin N) (AE D)) (Lt g) ∧ SD D (Lt g)) ∧ Lt 1 = stdL D N ∧ (∀ g g' : GA D N, Lt g = Lt g' ↔ g⁻¹ * g' ∈ intG D N) ∧ (∀ (γA g : GA D N) γ, IsRat D (γA : GL (Fin N) (AE D)) γ → ∀ x, x ∈ Lt g ↔ γ.mulVec x ∈ Lt (γA * g)) ∧ (∀ (p : ℕ) (g : GA D N), p.Prime → TrivAt D p (g : GL (Fin N) (AE D)) → EqAt D p (stdL D N) (Lt g)) := by
   intro D N
   refine ⟨fun g => lat (g : GL (Fin N) (AE D)), fun g => ⟨fun x => mem_lat _ x, ?_⟩, lat_one_eq D N,

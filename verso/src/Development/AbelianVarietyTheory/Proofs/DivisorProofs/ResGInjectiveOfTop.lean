@@ -13,18 +13,27 @@ open Classical
 noncomputable section
 namespace GlobalTheory.TupleBundle
 
+/- English proof (translation)
+Take `rfl : V = ⊤` from `top_unique h`. Establish `e : (homOfLE h : (⊤ : X.Opens) ⟶ ⊤) = 𝟙 _` using `Subsingleton.elim _ _`. Introduce `a b hab`. Simplify `hab` using `[resG, e]`.
+-/
 theorem resG_injective_of_top {X : Scheme.{0}} {V : X.Opens} (h : ⊤ ≤ V) : Function.Injective (resG X h) := by
   obtain rfl : V = ⊤ := top_unique h
   have e : (homOfLE h : (⊤ : X.Opens) ⟶ ⊤) = 𝟙 _ := Subsingleton.elim _ _
   intro a b hab
   simpa [resG, e] using hab
 
+/- English proof (translation)
+Use `show (X.presheaf.map _ ≫ X.presheaf.map _).hom a = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resG_resG {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (a : Γ(X, U)) :
     resG X h2 (resG X h1 a) = resG X (h2.trans h1) a := by
   show (X.presheaf.map _ ≫ X.presheaf.map _).hom a = _
   rw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Use `show (f.appLE U V h ≫ Y.presheaf.map _).hom a = _`. Rewrite using `[Scheme.Hom.appLE_map]`.
+-/
 theorem resG_appLE {X Y : Scheme.{0}} (f : Y ⟶ X) {U : X.Opens} {V W : Y.Opens} (h : V ≤ f ⁻¹ᵁ U) (h2 : W ≤ V)
     (a : Γ(X, U)) : resG Y h2 ((f.appLE U V h).hom a) = (f.appLE U W (h2.trans h)).hom a := by
   show (f.appLE U V h ≫ Y.presheaf.map _).hom a = _
@@ -35,19 +44,31 @@ variable {Ω : Type} [Field Ω]
 def ev (V : (Sp Ω).Opens) (hV : ⊤ ≤ V) : Γ(Sp Ω, V) →+* Ω :=
   (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom.comp (resG (Sp Ω) hV)
 
+/- English proof (translation)
+The claim follows from `(Scheme.ΓSpecIso (CommRingCat.of Ω)).commRingCatIsoToRingEquiv.injective.comp (resG_injective_of_top hV)`.
+-/
 theorem ev_injective (V : (Sp Ω).Opens) (hV : ⊤ ≤ V) : Function.Injective (ev V hV) :=
   (Scheme.ΓSpecIso (CommRingCat.of Ω)).commRingCatIsoToRingEquiv.injective.comp (resG_injective_of_top hV)
 
+/- English proof (translation)
+Simplify using `only [ev, RingHom.comp_apply, resG_resG]`.
+-/
 theorem ev_resG {V W : (Sp Ω).Opens} (hV : ⊤ ≤ V) (hW : ⊤ ≤ W) (h : W ≤ V) (a : Γ(Sp Ω, V)) :
     ev W hW (resG (Sp Ω) h a) = ev V hV a := by
   simp only [ev, RingHom.comp_apply, resG_resG]
 
+/- English proof (translation)
+Establish `e : (homOfLE (hV.trans le_top) : (⊤ : (Sp Ω).Opens) ⟶ ⊤) = 𝟙 _` using `Subsingleton.elim _ _`. Simplify using `only [ev, RingHom.comp_apply, resG_resG]`. Simplify using `[resG, e]`.
+-/
 theorem ev_resG_top {V : (Sp Ω).Opens} (hV : ⊤ ≤ V) (x : Ω) :
     ev V hV (resG (Sp Ω) le_top ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom x)) = x := by
   have e : (homOfLE (hV.trans le_top) : (⊤ : (Sp Ω).Opens) ⟶ ⊤) = 𝟙 _ := Subsingleton.elim _ _
   simp only [ev, RingHom.comp_apply, resG_resG]
   simp [resG, e]
 
+/- English proof (translation)
+Simplify using `only [ev, RingHom.comp_apply, resG_appLE, valF, dif_pos (hV.trans h)]`.
+-/
 theorem ev_appLE {X : Scheme.{0}} (x : Sp Ω ⟶ X) {U : X.Opens} {V : (Sp Ω).Opens} (hV : ⊤ ≤ V) (h : V ≤ x ⁻¹ᵁ U)
     (f : Γ(X, U)) : ev V hV ((x.appLE U V h).hom f) = valF x U f := by
   simp only [ev, RingHom.comp_apply, resG_appLE, valF, dif_pos (hV.trans h)]
@@ -56,6 +77,35 @@ end GlobalTheory.TupleBundle
 
 namespace GlobalTheory.TupleBundle
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ M J _ v hv`. Set `U : {a // v a ≠ 0} → M.Z.Opens` to `fun k => ⟨{z | M.Div v k.1 z}, M.isOpen_setOf_div v k.1⟩`. Establish `hU : ⨆ k, U k = ⊤`. Use `top_unique fun z _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hv z`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨i, hi.1⟩, hi⟩`. Take `⟨g, hLB, hGT⟩` from `ZH.RatModel.exists_isLB_genTriv_of_ratios o Ω M {a // v a ≠ 0} U (fun k => v k.1) hU (fun k => k.2) (fun k k' z hz => hz.1.2 k'.1)`. Set `δ : LB M.Z` to `⟨{a // v a ≠ 0}, U, g⟩`. Establish `hsec : ∀ a, ∃ σ : δ.Sec, M.HasVal (H` using `δ) (fun k => v k.1) σ (v a) := fun a => hGT.exists_sec_hasVal (v a) fun k z hz => hz.2 a`. Use `choose t ht using hsec`.
+
+Establish `hnz : ∀ a z, z ∈ nonzeroLocus (t a) ↔ M.Div v a z`. Introduce `a z`. Simplify using `only [nonzeroLocus, TopologicalSpace.Opens.mem_iSup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`.
+
+Establish `hzk : z ∈ U k` using `M.Z.basicOpen_le _ hk`. Establish `hval : valF M.pt (U k) ((t a).f k) = v a / v k.1` using `ht a k ⟨z, hzk⟩`. Establish `hu` using `(ZH.RatModel.isUnit_valF_iff (M := M) hzk ((t a).f k)).2 hk`. Rewrite `hu` using `[ZH.RatModel.isUnit_O_iff]`. Simplify using `only [hval] at hu`.
+
+Take `⟨h1, h2⟩` from `hu`. Establish `hk0` using `k.2`. Establish `ha0 : v a ≠ 0` using `(div_ne_zero_iff.1 h1).1`. Use `⟨ha0, fun j => ?_⟩` and prove the remaining obligations. Establish `e : v j / v a = (v j / v k.1) * (v a / v k.1)⁻¹` using `by field_simp`.
+
+Rewrite using `[e]`. Conclude with `mul_mem (hzk.2 j) h2`. Introduce `h`. Use `⟨⟨a, h.1⟩, ?_⟩` and prove the remaining obligations. Establish `hzk : z ∈ U ⟨a, h.1⟩` using `h`.
+
+Rewrite using `[← ZH.RatModel.isUnit_valF_iff (M := M) hzk, ZH.RatModel.isUnit_O_iff]`. Establish `hv1 : valF M.pt (U ⟨a, h.1⟩) ((t a).f ⟨a, h.1⟩) = 1` using `(ht a ⟨a, h.1⟩ ⟨z, hzk⟩).trans (div_self h.1)`. Simplify using `only [hv1, inv_one]`. Conclude with `⟨one_ne_zero, one_mem _⟩`. Use `⟨δ, t, hLB, ?_, hnz, ?_⟩` and prove the remaining obligations.
+
+Use `top_unique fun z _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hv z`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, (hnz i z).2 hi⟩`. Establish `hgen : ∀ k : {a // v a ≠ 0}, ⊤ ≤ M.pt ⁻¹ᵁ U k` using `fun k w _ => by show M.pt w ∈ U k`. Rewrite using `[M.pt_apply w]`.
+
+Conclude with `ZH.RatModel.div_genericPoint (M := M) k.2`. Establish `hW : ∀ j, ⊤ ≤ (δ.pull M.pt).U j` using `fun j w _ => Set.mem_iInter.2 fun _ => hgen (j PUnit.unit) (x := w) trivial`. Set `τ : (δ.pull M.pt).Gen` to `⟨fun j => Units.map (resG (Sp Ω) (le_top : (δ.pull M.pt).U j ≤ ⊤)).toMonoidHom (Units.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom.toMonoidHom (Units.mk0 (v (j PUnit.unit).1)⁻¹ (inv_ne_zero (j PUnit.unit).2)))⟩`. Establish `hτ : ∀ j, ((τ.s j : Γ(Sp Ω, (δ.pull M.pt).U j)ˣ) : Γ(Sp Ω, (δ.pull M.pt).U j)) = resG (Sp Ω) le_top ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (v (j PUnit.unit).1)⁻¹)` using `fun j => rfl`. Use `⟨τ, fun j j' => ?_, fun i j h => ?_⟩` and prove the remaining obligations.
+
+Establish `hle : (δ.pull M.pt).U j ⊓ (δ.pull M.pt).U j' ≤ M.pt ⁻¹ᵁ (U (j PUnit.unit) ⊓ U (j' PUnit.unit))` using `le_inf (inf_le_left.trans (LB.wchart_le δ (fun _ => M.pt) j PUnit.unit)) (inf_le_right.trans (LB.wchart_le δ (fun _ => M.pt) j' PUnit.unit))`. Establish `e0 : (δ.pull M.pt).g j j' = Semi.res hle (pullU M.pt _ (δ.g (j PUnit.unit) (j' PUnit.unit)))` using `(Fintype.prod_unique fun _ : PUnit.{1} => Semi.res hle (pullU M.pt _ (δ.g (j PUnit.unit) (j' PUnit.unit))) ^ (1 : ℤ)).trans (zpow_one _)`. Establish `hne : ((U (j PUnit.unit) ⊓ U (j' PUnit.unit) : M.Z.Opens) : Set M.Z).Nonempty` using `⟨genericPoint M.Z, ZH.RatModel.div_genericPoint (M := M) (j PUnit.unit).2, ZH.RatModel.div_genericPoint (M := M) (j' PUnit.unit).2⟩`. Establish `hg` using `hGT.g_eq (j PUnit.unit) (j' PUnit.unit) hne`. Establish `hV : ⊤ ≤ (δ.pull M.pt).U j ⊓ (δ.pull M.pt).U j'` using `le_inf (hW j) (hW j')`.
+
+Use `Units.ext (ev_injective _ hV ?_)` and prove the remaining obligations. Rewrite using `[e0]`. Use `show ev _ hV (resG (Sp Ω) inf_le_left (τ.s j : Γ(Sp Ω, _))) = ev _ hV ((M.pt.appLE _ _ hle).hom (δ.g (j PUnit.unit) (j' PUnit.unit) : Γ(M.Z, _)) * resG (Sp Ω) inf_le_right (τ.s j' : Γ(Sp Ω, _)))`. Rewrite using `[map_mul, ev_resG (hW j), ev_resG (hW j'), ev_appLE, hτ, hτ, ev_resG_top, ev_resG_top]`. Establish `h1` using `(j PUnit.unit).2`.
+
+Establish `h2` using `(j' PUnit.unit).2`. Establish `hg' : valF M.pt (U (j PUnit.unit) ⊓ U (j' PUnit.unit)) (δ.g (j PUnit.unit) (j' PUnit.unit) : Γ(M.Z, _)) = v (j' PUnit.unit).1 / v (j PUnit.unit).1` using `hg`. Rewrite using `[hg']`. Clear the denominators using the available nonvanishing facts. Establish `hne : (U (j PUnit.unit) : Set M.Z).Nonempty` using `⟨genericPoint M.Z, ZH.RatModel.div_genericPoint (M := M) (j PUnit.unit).2⟩`.
+
+Establish `hv' : valF M.pt (U (j PUnit.unit)) ((t i).f (j PUnit.unit)) = v i / v (j PUnit.unit).1` using `ht i (j PUnit.unit) hne`. Use `ev_injective _ (hW j) ?_` and prove the remaining obligations. Simplify using `only [map_mul, hτ]`. Rewrite using `[ev_appLE, ev_resG_top]`. Express the relevant statement in the definitionally equal form `_ = v i * ev _ (hW j) (resG (Sp Ω) le_top ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (v (j PUnit.unit).1)⁻¹))`.
+
+Rewrite using `[ev_resG_top, hv', div_eq_mul_inv]`.
+-/
 theorem exists_lb_of_hasDiv : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : ZH.RatModel o Ω) (J : Type)
     [Finite J] (v : J → Ω), M.HasDiv v → ∃ (δ : LB M.Z) (t : J → δ.Sec), δ.IsLB ∧ (⨆ a, nonzeroLocus (t a)) = ⊤ ∧
     (∀ a z, z ∈ nonzeroLocus (t a) ↔ M.Div v a z) ∧ ZM.SecCoord δ t M.pt v := by

@@ -12,21 +12,36 @@ namespace ReciprocityTheory.ChartRestriction.G.TB.SCPf
 variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 variable {k : Type} [CommRing k] [Algebra ℚ k] [Algebra R k]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact hasSubst_of_constantCoeff_zero (fun p => by simp)`. Consider the case `exact ⟨fun p => by simp, fun e => Set.toFinite _⟩`.
+-/
 theorem liftX_hasSubst :
     HasSubst (fun p : Fin 1 × Fin d => (X (Sum.inl p.2) : AA k d)) := by
   first
   | exact hasSubst_of_constantCoeff_zero (fun p => by simp)
   | exact ⟨fun p => by simp, fun e => Set.toFinite _⟩
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.subst_add liftX_hasSubst f g`.
+-/
 theorem liftX_add (f g : PS k 1 d) : liftX k (f + g) = liftX k f + liftX k g := MvPowerSeries.subst_add liftX_hasSubst f g
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.subst_mul liftX_hasSubst f g`.
+-/
 theorem liftX_mul (f g : PS k 1 d) : liftX k (f * g) = liftX k f * liftX k g := MvPowerSeries.subst_mul liftX_hasSubst f g
 
+/- English proof (translation)
+Unfold `Dof`. Simplify using `only [Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem Dof_add (F : Fin d → PS k 2 d) (u u' : Fin d → k) (f : PS k 1 d) :
     Dof F (u + u') f = Dof F u f + Dof F u' f := by
   unfold Dof
   simp only [Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use `first`. Consider the case `(unfold nabla Dx`. Simplify using `only [Pi.add_apply, Prod.fst_add, Prod.snd_add, map_add, add_mul, mul_add, Finset.sum_add_distrib, Dof_add, liftX_add, smul_add, add_smul]`. Use the proof step `ring)`. Consider the case `(unfold nabla revert G u u' φ φ' m h B done)`.
+-/
 theorem nabla_add (B : FB R d O) (h : PS k 2 d) (m : ℕ) (u u' φ φ' : Fin d → k) (G : AA k d) :
     nabla k B h m (u + u') (φ + φ') G = nabla k B h m u φ G + nabla k B h m u' φ' G := by
   first
@@ -48,14 +63,27 @@ def nablaL (B : FB R d O) (h : PS k 2 d) (m : ℕ) (u φ : Fin d → k) : Module
     unfold nabla Dx
     simp only [Derivation.map_smul, mul_smul_comm, RingHom.id_apply, smul_add, smul_sub, Finset.smul_sum]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nablaL_apply (B : FB R d O) (h : PS k 2 d) (m : ℕ) (u φ : Fin d → k) (G : AA k d) :
     nablaL B h m u φ G = nabla k B h m u φ G := rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun G => by simp only [LinearMap.add_apply, nablaL_apply] exact nabla_add B h m u u' φ φ' G`.
+-/
 theorem nablaL_add (B : FB R d O) (h : PS k 2 d) (m : ℕ) (u u' φ φ' : Fin d → k) :
     nablaL B h m (u + u') (φ + φ') = nablaL B h m u φ + nablaL B h m u' φ' := LinearMap.ext fun G => by
     simp only [LinearMap.add_apply, nablaL_apply]
     exact nabla_add B h m u u' φ φ' G
 
+/- English proof (translation)
+Unfold `ConnectionCommutator at hN2`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `G`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, nablaL_apply, Module.algebraMap_end_apply]`. Use `first`.
+
+Consider the case `exact hN2 B h m ξ η G`. Consider the case `exact hN2 B h m ξ.1 ξ.2 η.1 η.2 G`. Consider the case `exact hN2 B h m G ξ η`. Consider the case `simpa using hN2 B h m ξ η G`. Consider the case `simpa using hN2 B h m ξ.1 ξ.2 η.1 η.2 G`.
+
+Consider the case `(apply hN2; done)`. Consider the case `(simp only [Algebra.smul_def] at *; apply hN2; done)`.
+-/
 theorem nablaL_bracket (hN2 : ConnectionCommutator) (B : FB R d O) (h : PS k 2 d) (m : ℕ) (ξ η : (Fin d → k) × (Fin d → k)) :
     nablaL B h m ξ.1 ξ.2 * nablaL B h m η.1 η.2 - nablaL B h m η.1 η.2 * nablaL B h m ξ.1 ξ.2 =
       algebraMap k (Module.End k (AA k d)) ((m : k) * betaH k ξ η) := by
@@ -72,6 +100,9 @@ theorem nablaL_bracket (hN2 : ConnectionCommutator) (B : FB R d O) (h : PS k 2 d
   | (apply hN2; done)
   | (simp only [Algebra.smul_def] at *; apply hN2; done)
 
+/- English proof (translation)
+Establish `hbr` using `nablaL_bracket hN2 B h m ξ η`. Rewrite `hbr` using `[hb, mul_zero, map_zero, sub_eq_zero]`. Conclude with `hbr`.
+-/
 theorem nablaL_comm (hN2 : ConnectionCommutator) (B : FB R d O) (h : PS k 2 d) (m : ℕ) (ξ η : (Fin d → k) × (Fin d → k))
     (hb : betaH k ξ η = 0) : Commute (nablaL B h m ξ.1 ξ.2) (nablaL B h m η.1 η.2) := by
   have hbr := nablaL_bracket hN2 B h m ξ η
@@ -82,17 +113,29 @@ def sideE {ι : Type} [Fintype ι] (s : ι → Bool) :
     ι ≃ Fin (Fintype.card {l // s l = true}) ⊕ Fin (Fintype.card {l // ¬ s l = true}) :=
   (Equiv.sumCompl (fun l => s l = true)).symm.trans (Equiv.sumCongr (Fintype.equivFin _) (Fintype.equivFin _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sideE_symm_inl {ι : Type} [Fintype ι] (s : ι → Bool) (i : Fin (Fintype.card {l // s l = true})) :
     (sideE s).symm (Sum.inl i) = ((Fintype.equivFin {l // s l = true}).symm i).1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sideE_symm_inr {ι : Type} [Fintype ι] (s : ι → Bool) (j : Fin (Fintype.card {l // ¬ s l = true})) :
     (sideE s).symm (Sum.inr j) = ((Fintype.equivFin {l // ¬ s l = true}).symm j).1 := rfl
 
+/- English proof (translation)
+Rewrite using `[sideE_symm_inl]`. Conclude with `((Fintype.equivFin {l // s l = true}).symm i).2`.
+-/
 theorem side_inl {ι : Type} [Fintype ι] (s : ι → Bool) (i : Fin (Fintype.card {l // s l = true})) :
     s ((sideE s).symm (Sum.inl i)) = true := by
   rw [sideE_symm_inl]
   exact ((Fintype.equivFin {l // s l = true}).symm i).2
 
+/- English proof (translation)
+Rewrite using `[sideE_symm_inr]`. Simplify using `using ((Fintype.equivFin {l // ¬ s l = true}).symm j).2`.
+-/
 theorem side_inr {ι : Type} [Fintype ι] (s : ι → Bool) (j : Fin (Fintype.card {l // ¬ s l = true})) :
     s ((sideE s).symm (Sum.inr j)) = false := by
   rw [sideE_symm_inr]
@@ -102,6 +145,9 @@ section Bridge
 
 variable {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih => first`. Consider the case `simp only [List.foldr_cons, List.map_cons, List.prod_cons, Module.End.mul_apply, Module.End.pow_apply, hF, ih]`. Consider the case `simp only [List.foldr_cons, List.map_cons, List.prod_cons, LinearMap.mul_apply, LinearMap.pow_apply, hF, ih]`.
+-/
 theorem foldr_eq_prod (f : ι → AA k d → AA k d) (F : ι → Module.End k (AA k d)) (hF : ∀ l, ⇑(F l) = f l)
     (n : ι →₀ ℕ) (L : List ι) (G : AA k d) :
     L.foldr (fun l g => (f l)^[n l] g) G = (L.map fun l => F l ^ n l).prod G := by
@@ -112,6 +158,13 @@ theorem foldr_eq_prod (f : ι → AA k d → AA k d) (F : ι → Module.End k (A
     | simp only [List.foldr_cons, List.map_cons, List.prod_cons, Module.End.mul_apply, Module.End.pow_apply, hF, ih]
     | simp only [List.foldr_cons, List.map_cons, List.prod_cons, LinearMap.mul_apply, LinearMap.pow_apply, hF, ih]
 
+/- English proof (translation)
+Rewrite using `[List.perm_ext_iff_of_nodup ((Finset.nodup_toList _).filter _) ?_]`. Introduce `x`. Simplify using `only [List.mem_filter, Finset.mem_toList, Finset.mem_univ, true_and, List.mem_ofFn, Set.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨Fintype.equivFin _ ⟨x, hx⟩, by rw [sideE_symm_inl]; simp⟩`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `side_inl s i`. Rewrite using `[List.nodup_ofFn]`. Introduce `i j hij`.
+
+Simplify using `using congrArg (sideE s) hij`.
+-/
 theorem perm_inl (s : ι → Bool) :
     ((Finset.univ : Finset ι).toList.filter (fun l => s l)).Perm
       (List.ofFn fun i => (sideE s).symm (Sum.inl i)) := by
@@ -127,6 +180,13 @@ theorem perm_inl (s : ι → Bool) :
     intro i j hij
     simpa using congrArg (sideE s) hij
 
+/- English proof (translation)
+Rewrite using `[List.perm_ext_iff_of_nodup ((Finset.nodup_toList _).filter _) ?_]`. Introduce `x`. Simplify using `only [List.mem_filter, Finset.mem_toList, Finset.mem_univ, true_and, List.mem_ofFn, Set.mem_range, Bool.not_eq_true']`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨Fintype.equivFin _ ⟨x, by simp [hx]⟩, by rw [sideE_symm_inr]; simp⟩`. Introduce and unpack `⟨j, rfl⟩`. Conclude with `side_inr s j`. Rewrite using `[List.nodup_ofFn]`. Introduce `i j hij`.
+
+Simplify using `using congrArg (sideE s) hij`.
+-/
 theorem perm_inr (s : ι → Bool) :
     ((Finset.univ : Finset ι).toList.filter (fun l => !s l)).Perm
       (List.ofFn fun j => (sideE s).symm (Sum.inr j)) := by
@@ -143,6 +203,9 @@ theorem perm_inr (s : ι → Bool) :
     intro i j hij
     simpa using congrArg (sideE s) hij
 
+/- English proof (translation)
+The claim follows from `hp.prod_eq' (List.pairwise_of_forall_mem_list hc)`.
+-/
 theorem prod_perm_comm {A : Type} [Monoid A] {L L' : List A} (hp : L.Perm L')
     (hc : ∀ x ∈ L, ∀ y ∈ L, Commute x y) : L.prod = L'.prod := hp.prod_eq' (List.pairwise_of_forall_mem_list hc)
 
@@ -154,6 +217,19 @@ abbrev opR (B : FB R d O) (h : PS k 2 d) (m : ℕ) (s : ι → Bool) (ξ : ι �
     (j : Fin (Fintype.card {l // ¬ s l = true})) : Module.End k (AA k d) :=
   nablaL B h m (ξ ((sideE s).symm (Sum.inr j))).1 (ξ ((sideE s).symm (Sum.inr j))).2
 
+/- English proof (translation)
+Use `set F : ι → Module.End k (AA k d) := fun l => nablaL B h m (ξ l).1 (ξ l).2 with hFdef`. Unfold `ordNabla PI.WickFormula.ordEval`. Rewrite using `[LinearMap.sum_apply, MvPolynomial.support_rename_of_injective (sideE s).injective, Finset.sum_image (fun x _ y _ hxy => Finsupp.mapDomain_injective (sideE s).injective hxy)]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_rename_mapDomain _ (sideE s).injective, LinearMap.smul_apply, smul_eq_C_mul, Module.End.mul_apply]`.
+
+Use `congr 1`. Rewrite using `[foldr_eq_prod (fun l => nabla k B h m (ξ l).1 (ξ l).2) F (fun _ => rfl) n, foldr_eq_prod (fun l => nabla k B h m (ξ l).1 (ξ l).2) F (fun _ => rfl) n]`. Simplify using `only [Finsupp.mapDomain_equiv_apply]`. Establish `hS : (((Finset.univ : Finset ι).toList.filter (fun l => s l)).map fun l => F l ^ n l).prod = (List.ofFn fun i => opL B h m s ξ i ^ n ((sideE s).symm (Sum.inl i))).prod`. Rewrite using `[show (fun i => opL B h m s ξ i ^ n ((sideE s).symm (Sum.inl i))) = (fun l => F l ^ n l) ∘ (fun i => (sideE s).symm (Sum.inl i)) from rfl, ← List.map_ofFn]`.
+
+Use `prod_perm_comm ((perm_inl s).map _) ?_` and prove the remaining obligations. Introduce `x hx y hy`. Take `⟨l, hl, rfl⟩` from `List.mem_map.mp hx`. Take `⟨l', hl', rfl⟩` from `List.mem_map.mp hy`. Establish `e : s l = s l'`.
+
+Rewrite using `[(List.mem_filter.mp hl).2, (List.mem_filter.mp hl').2]`. Conclude with `(hc l l' e).pow_pow _ _`. Establish `hC : (((Finset.univ : Finset ι).toList.filter (fun l => !s l)).map fun l => F l ^ n l).prod = (List.ofFn fun j => opR B h m s ξ j ^ n ((sideE s).symm (Sum.inr j))).prod`. Rewrite using `[show (fun j => opR B h m s ξ j ^ n ((sideE s).symm (Sum.inr j))) = (fun l => F l ^ n l) ∘ (fun j => (sideE s).symm (Sum.inr j)) from rfl, ← List.map_ofFn]`. Use `prod_perm_comm ((perm_inr s).map _) ?_` and prove the remaining obligations.
+
+Introduce `x hx y hy`. Take `⟨l, hl, rfl⟩` from `List.mem_map.mp hx`. Take `⟨l', hl', rfl⟩` from `List.mem_map.mp hy`. Establish `e : s l = s l'`. Establish `a` using `(List.mem_filter.mp hl).2`.
+
+Establish `b` using `(List.mem_filter.mp hl').2`. Simplify using `only [Bool.not_eq_eq_eq_not, Bool.not_true] at a b`. Rewrite using `[a, b]`. Conclude with `(hc l l' e).pow_pow _ _`. Rewrite using `[hS, hC]`.
+-/
 theorem ordNabla_eq (B : FB R d O) (h : PS k 2 d) (m : ℕ) (s : ι → Bool) (ξ : ι → (Fin d → k) × (Fin d → k))
     (hc : ∀ l l', s l = s l' → Commute (nablaL B h m (ξ l).1 (ξ l).2) (nablaL B h m (ξ l').1 (ξ l').2))
     (P : MvPolynomial ι k) (G : AA k d) :

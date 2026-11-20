@@ -17,23 +17,38 @@ open OriginCoordinatesAdd
 def mu (L : PeriodPair) (z : ℂ) : ℂ :=
   (6 * L.weierstrassP z ^ 2 - L.g₂ / 2) / L.derivWeierstrassP z
 
+/- English proof (translation)
+Simplify using `using (hasDerivAt_id z).const_mul (2 : ℂ)`.
+-/
 lemma hasDerivAt_two_mul (z : ℂ) : HasDerivAt (fun y : ℂ => 2 * y) 2 z := by
   simpa using (hasDerivAt_id z).const_mul (2 : ℂ)
 
+/- English proof (translation)
+Establish `ho : IsOpen ((fun y : ℂ => 2 * y) ⁻¹' (L.lattice : Set ℂ)ᶜ)` using `L.isClosed_lattice.isOpen_compl.preimage (continuous_const.mul continuous_id)`. Conclude with `ho.mem_nhds h2`.
+-/
 lemma ev_two (L : PeriodPair) {z : ℂ} (h2 : 2 * z ∉ L.lattice) :
     ∀ᶠ z' in 𝓝 z, 2 * z' ∉ L.lattice := by
   have ho : IsOpen ((fun y : ℂ => 2 * y) ⁻¹' (L.lattice : Set ℂ)ᶜ) :=
     L.isClosed_lattice.isOpen_compl.preimage (continuous_const.mul continuous_id)
   exact ho.mem_nhds h2
 
+/- English proof (translation)
+The claim follows from `L.isClosed_lattice.isOpen_compl.mem_nhds hz`.
+-/
 lemma ev_self (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) : ∀ᶠ z' in 𝓝 z, z' ∉ L.lattice :=
   L.isClosed_lattice.isOpen_compl.mem_nhds hz
 
+/- English proof (translation)
+Introduce `h`. Conclude with `h2 ((pDerivZero L z hz).1 h)`.
+-/
 lemma derivWeierstrassP_ne_zero (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) (h2 : 2 * z ∉ L.lattice) :
     L.derivWeierstrassP z ≠ 0 := by
   intro h
   exact h2 ((pDerivZero L z hz).1 h)
 
+/- English proof (translation)
+Establish `hN` using `(((hasDerivAt_wp L hz).pow 2).const_mul (6 : ℂ)).sub_const (L.g₂ / 2)`. Establish `hQ` using `hN.div (pSecond L z hz) hy`. Use `(hQ.congr_of_eventuallyEq (f₁ := mu L) (Filter.Eventually.of_forall (fun y => rfl))).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Pi.pow_apply, Nat.cast_ofNat, show (2 : ℕ) - 1 = 1 from rfl, pow_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma hasDerivAt_mu (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) (hy : L.derivWeierstrassP z ≠ 0) :
     HasDerivAt (mu L)
       ((12 * L.weierstrassP z * L.derivWeierstrassP z * L.derivWeierstrassP z
@@ -46,6 +61,15 @@ lemma hasDerivAt_mu (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) (hy : L.de
   simp only [Pi.pow_apply, Nat.cast_ofNat, show (2 : ℕ) - 1 = 1 from rfl, pow_one]
   ring
 
+/- English proof (translation)
+Establish `hy` using `derivWeierstrassP_ne_zero L hz h2`. Establish `hs : wSigma L z ≠ 0` using `fun h => hz ((sigmaZero L z).1 h)`. Establish `hF` using `(sigmaLogDeriv L (2 * z) h2).comp z (hasDerivAt_two_mul z)`. Establish `hG` using `(pSecond L z hz).neg.mul ((sigmaLogDeriv L z hz).pow 4)`. Establish `heq : (fun y => -L.derivWeierstrassP y * wSigma L y ^ 4) =ᶠ[𝓝 z] (wSigma L ∘ fun y : ℂ => 2 * y)` using `by filter_upwards [ev_self L hz] with y hy'`.
+
+Conclude with `(sigmaDouble L y hy').symm`. Establish `e` using `(hF.congr_of_eventuallyEq heq).unique hG`. Rewrite `e` using `[sigmaDouble L z hz]`. Simplify using `only [Pi.pow_apply, Pi.neg_apply, Nat.cast_ofNat, show (4 : ℕ) - 1 = 3 from rfl] at e`. Establish `e2 : wZeta L (2 * z) * (-L.derivWeierstrassP z) * 2 = -(6 * L.weierstrassP z ^ 2 - L.g₂ / 2) + -L.derivWeierstrassP z * (4 * wZeta L z)`.
+
+Apply `mul_right_cancel₀ (pow_ne_zero 4 hs)` to reduce the goal to its premises. Take the linear combination `e`. Establish `hy2 : (2 : ℂ) * L.derivWeierstrassP z ≠ 0` using `mul_ne_zero two_ne_zero hy`. Establish `e3 : wZeta L (2 * z) = (6 * L.weierstrassP z ^ 2 - L.g₂ / 2 + 4 * L.derivWeierstrassP z * wZeta L z) / (2 * L.derivWeierstrassP z)`. Rewrite using `[eq_div_iff hy2]`.
+
+Take the linear combination `-e2`. Rewrite using `[e3]`. Unfold `mu`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma zetaDbl (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) (h2 : 2 * z ∉ L.lattice) :
     wZeta L (2 * z) = 2 * wZeta L z + mu L z / 2 := by
   have hy := derivWeierstrassP_ne_zero L hz h2
@@ -73,6 +97,11 @@ lemma zetaDbl (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) (h2 : 2 * z ∉ 
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hy` using `derivWeierstrassP_ne_zero L hz h2`. Establish `hL` using `(zetaHasDeriv L (2 * z) h2).comp z (hasDerivAt_two_mul z)`. Establish `hR` using `((zetaHasDeriv L z hz).const_mul (2 : ℂ)).add ((hasDerivAt_mu L hz hy).div_const 2)`. Establish `heq : (fun y => 2 * wZeta L y + mu L y / 2) =ᶠ[𝓝 z] (wZeta L ∘ fun y : ℂ => 2 * y)` using `by filter_upwards [ev_self L hz, ev_two L h2] with y h1 h3`. Conclude with `(zetaDbl L h1 h3).symm`.
+
+Establish `e` using `(hL.congr_of_eventuallyEq heq).unique hR`. Take the linear combination `(-1 / 2 : ℂ) * e`.
+-/
 lemma dblA (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) (h2 : 2 * z ∉ L.lattice) :
     L.weierstrassP (2 * z) = L.weierstrassP z -
       (12 * L.weierstrassP z * L.derivWeierstrassP z * L.derivWeierstrassP z
@@ -87,12 +116,18 @@ lemma dblA (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) (h2 : 2 * z ∉ L.l
   have e := (hL.congr_of_eventuallyEq heq).unique hR
   linear_combination (-1 / 2 : ℂ) * e
 
+/- English proof (translation)
+Unfold `dblX`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma dbl_alg (x y g : ℂ) (hy : y ≠ 0) :
     x - (12 * x * y * y - (6 * x ^ 2 - g / 2) * (6 * x ^ 2 - g / 2)) / y ^ 2 / 4 = dblX x y g := by
   unfold dblX
   field_simp
   ring
 
+/- English proof (translation)
+Rewrite using `[dblA L hz h2]`. Conclude with `dbl_alg _ _ _ (derivWeierstrassP_ne_zero L hz h2)`.
+-/
 lemma dblB (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) (h2 : 2 * z ∉ L.lattice) :
     L.weierstrassP (2 * z) = dblX (L.weierstrassP z) (L.derivWeierstrassP z) L.g₂ := by
   rw [dblA L hz h2]
@@ -102,6 +137,13 @@ end ZetaDoubling
 
 open OriginCoordinatesAdd ZetaDoubling in
 
+/- English proof (translation)
+Introduce `L z hz h2`. Use `⟨dblB L hz h2, ?_⟩` and prove the remaining obligations. Establish `hy` using `derivWeierstrassP_ne_zero L hz h2`. Establish `hL` using `(hasDerivAt_wp L h2).comp z (hasDerivAt_two_mul z)`. Establish `hR` using `(((hasDerivAt_mu L hz hy).pow 2).div_const (4 : ℂ)).sub ((hasDerivAt_wp L hz).const_mul (2 : ℂ))`.
+
+Establish `heq : (fun y => mu L y ^ 2 / 4 - 2 * L.weierstrassP y) =ᶠ[𝓝 z] (L.weierstrassP ∘ fun y : ℂ => 2 * y)` using `by filter_upwards [ev_self L hz, ev_two L h2] with y h1 h3 show mu L y ^ 2 / 4 - 2 * L.weierstrassP y = L.weierstrassP (2 * y)`. Rewrite using `[dblB L h1 h3]`. Both sides reduce to the same expression. Establish `e` using `(hL.congr_of_eventuallyEq heq).unique hR`. Simplify using `only [Nat.cast_ofNat, show (2 : ℕ) - 1 = 1 from rfl, pow_one] at e`.
+
+Unfold `mu at e`. Unfold `dblY`. Rewrite using `[← dbl_alg _ _ _ hy]`. Take the linear combination `(1 / 2 : ℂ) * e`.
+-/
 theorem dblLaw : DblLaw := by
   intro L z hz h2
   refine ⟨dblB L hz h2, ?_⟩

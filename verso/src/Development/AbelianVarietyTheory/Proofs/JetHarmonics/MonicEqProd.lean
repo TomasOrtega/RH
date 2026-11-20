@@ -4,6 +4,19 @@ namespace GlobalTheory.MonicSeparableProduct
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `f hf h0`. Conclude with `⟨0, by simpa using (hf.natDegree_eq_zero).1 h0⟩`.
+
+Consider the case `succ n ih`. Introduce `f hf hn`. Establish `hinj : Function.Injective (algebraMap W F)` using `Subtype.val_injective`. Establish `hdeg : f.degree ≠ 0`. Rewrite using `[degree_eq_natDegree hf.ne_zero, hn]`.
+
+Conclude with `Nat.succ_ne_zero n` after adjusting the coercions. Take `⟨x, hx⟩` from `IsAlgClosed.exists_eval₂_eq_zero_of_injective (algebraMap W F) hinj f hdeg`. Establish `hint : IsIntegral W x` using `⟨f, hf, hx⟩`. Take `⟨r, hr⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint`. Establish `hroot : f.IsRoot r`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, ← hx, ← hr, eval₂_at_apply]`. Establish `hfac` using `mul_divByMonic_eq_iff_isRoot.2 hroot`. Establish `hq : (f /ₘ (X - C r)).Monic`. Apply `Monic.of_mul_monic_left (monic_X_sub_C r)` to reduce the goal to its premises.
+
+Rewrite using `[hfac]`. Conclude with `hf`. Establish `hqd : (f /ₘ (X - C r)).natDegree = n`. Rewrite using `[natDegree_divByMonic f (monic_X_sub_C r), hn, natDegree_X_sub_C]`. Simplify using the standard rewrite rules.
+
+Take `⟨M, hM⟩` from `ih _ hq hqd`. Use `⟨r ::ₘ M, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, ← hM, hfac]`.
+-/
 theorem monic_eq_prod {F : Type} [Field F] [IsAlgClosed F] (W : ValuationSubring F) :
     ∀ (n : ℕ) (f : W[X]), f.Monic → f.natDegree = n →
       ∃ M : Multiset W, f = (M.map (fun r => X - C r)).prod := by
@@ -35,6 +48,33 @@ theorem monic_eq_prod {F : Type} [Field F] [IsAlgClosed F] (W : ValuationSubring
     refine ⟨r ::ₘ M, ?_⟩
     rw [Multiset.map_cons, Multiset.prod_cons, ← hM, hfac]
 
+/- English proof (translation)
+Take `⟨f, hf, hft⟩ : IsIntegral W t` from `Algebra.IsIntegral.isIntegral t`. Take `⟨M, hM⟩` from `monic_eq_prod W _ f hf rfl`. Establish `h0 : (M.map (fun r => t - algebraMap W A r)).prod = 0`. Establish `: aeval t f = 0` using `hft`. Rewrite `this` using `[hM, map_multiset_prod, Multiset.map_map]`.
+
+Simplify using `using this`. Use `set s : A := ((M.filter (fun r => IsUnit r)).map (fun r => t - algebraMap W A r)).prod with hs`. Use `set g : A := ((M.filter (fun r => ¬ IsUnit r)).map (fun r => t - algebraMap W A r)).prod with hg`. Establish `hsg : s * g = 0`. Rewrite using `[hs, hg, ← Multiset.prod_add, ← Multiset.map_add, Multiset.filter_add_not, h0]`.
+
+Establish `hcop : IsCoprime s g`. Rewrite using `[hs]`. Use `Multiset.prod_induction (fun x => IsCoprime x g) _ (fun a b ha hb => ha.mul_left hb) isCoprime_one_left ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨r, hr, rfl⟩` from `Multiset.mem_map.1 hx`.
+
+Establish `hru : IsUnit r` using `(Multiset.mem_filter.1 hr).2`. Rewrite using `[hg]`. Use `Multiset.prod_induction (fun y => IsCoprime (t - algebraMap W A r) y) _ (fun a b ha hb => ha.mul_right hb) isCoprime_one_right ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨r', hr', rfl⟩` from `Multiset.mem_map.1 hy`.
+
+Establish `hru' : ¬ IsUnit r'` using `(Multiset.mem_filter.1 hr').2`. Establish `hd : IsUnit (r - r')`. Assume the negation of the conclusion as `hnu`. Establish `h1 : r - r' ∈ IsLocalRing.maximalIdeal W` using `hnu`. Establish `h2 : r' ∈ IsLocalRing.maximalIdeal W` using `hru'`.
+
+Establish `h3 : r ∈ IsLocalRing.maximalIdeal W`. Simplify using `using add_mem h1 h2`. Conclude with `h3 hru`. Take `⟨u, hu⟩` from `hd.exists_left_inv`. Use `⟨-algebraMap W A u, algebraMap W A u, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (algebraMap W A) hu` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, map_one]`. Take the linear combination `this`. Take `⟨b, a, hab⟩` from `hcop`. Use `⟨s, b, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hs, map_multiset_prod]`. Use `Multiset.prod_induction IsUnit _ (fun a b ha hb => ha.mul hb) isUnit_one ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Multiset.map_map]`. Take `⟨r, hr, rfl⟩` from `Multiset.mem_map.1 hx`.
+
+Establish `hru : IsUnit r` using `(Multiset.mem_filter.1 hr).2`. Establish `: aug (t - algebraMap W A r) = -r`. Rewrite using `[map_sub, ht, AlgHom.commutes]`. Simplify using the standard rewrite rules. Use `show IsUnit (aug (t - algebraMap W A r))`.
+
+Rewrite using `[this]`. Conclude with `hru.neg`. Take the linear combination `(-s) * hab + a * hsg`. Introduce `P hP hpP hsP`. Establish `hgP : g ∈ P`.
+
+Establish `: s * g ∈ P` using `by rw [hsg]; exact P.zero_mem`. Conclude with `(hP.mem_or_mem this).resolve_left hsP`. Rewrite `hgP` using `[hg]`. Take `⟨y, hy, hyP⟩` from `(hP.multiset_prod_mem_iff_exists_mem _).1 hgP`. Take `⟨r, hr, rfl⟩` from `Multiset.mem_map.1 hy`.
+
+Take `⟨n, hn⟩` from `hp r (Multiset.mem_filter.1 hr).2`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hn`. Establish `: algebraMap W A r ^ n ∈ P`. Rewrite using `[← map_pow, ← hc, map_mul]`. Conclude with `P.mul_mem_left _ hpP`.
+
+Establish `h2` using `hP.mem_of_pow_mem n this`. Simplify using `using add_mem hyP h2`.
+-/
 theorem exists_sep {F : Type} [Field F] [IsAlgClosed F] (W : ValuationSubring F) (p : W)
     (hp : ∀ a : W, ¬IsUnit a → ∃ n : ℕ, a ^ n ∈ Ideal.span {p})
     (A : Type) [CommRing A] [Algebra W A] [Module.Finite W A] (aug : A →ₐ[W] W)
@@ -105,6 +145,41 @@ theorem exists_sep {F : Type} [Field F] [IsAlgClosed F] (W : ValuationSubring F)
     have h2 := hP.mem_of_pow_mem n this
     simpa using add_mem hyP h2
 
+/- English proof (translation)
+Introduce `F _ _ W p hp A _ _ _ aug`. Take `⟨S, hS⟩ : (⊤ : Submodule W A).FG` from `Module.Finite.fg_top`. Set `τ : A → A` to `fun a => a - algebraMap W A (aug a)`. Establish `hτ : ∀ a, aug (τ a) = 0`. Introduce `a`.
+
+Simplify using `only [τ]`. Rewrite using `[map_sub, AlgHom.commutes]`. Simplify using the standard rewrite rules. Use `choose σ β h1 h2 h3 using fun a => exists_sep W p hp A aug (τ a) (hτ a)`. Establish `hker : RingHom.ker aug = Ideal.span ((S.image τ : Finset A) : Set A)`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `key : ∀ y ∈ Submodule.span W (S : Set A), τ y ∈ Ideal.span ((S.image τ : Finset A) : Set A)`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Apply `Ideal.subset_span` to reduce the goal to its premises. Simplify using `only [Finset.coe_image]`. Conclude with `⟨y, hy, rfl⟩`. Consider the case `zero => simp [τ]`.
+
+Consider the case `add y z _ _ hy hz`. Establish `: τ (y + z) = τ y + τ z` using `by simp only [τ, map_add]; ring`. Rewrite using `[this]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`.
+
+Establish `: τ (c • y) = algebraMap W A c * τ y`. Simplify using `only [τ]`. Rewrite using `[map_smul, smul_eq_mul, map_mul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `Ideal.mul_mem_left _ _ hy`. Use `key x (by rw [hS]; trivial)` as an intermediate fact. Establish `hx0 : aug x = 0` using `hx`. Simplify `this` using `[τ, hx0]`. Rewrite using `[Ideal.span_le]`.
+
+Introduce `x hx`. Simplify using `only [Finset.coe_image] at hx`. Take `⟨y, -, rfl⟩` from `hx`. Conclude with `hτ y`. Use `set s : A := ∏ a ∈ S, σ a with hs`.
+
+Establish `hsu : IsUnit (aug s)`. Rewrite using `[hs, map_prod]`. Conclude with `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one (fun a _ => h1 a)`. Establish `hsb : s = (∏ a ∈ S, β a) * s ^ 2`. Rewrite using `[hs, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_congr rfl (fun a _ => h2 a)`. Use `set b : A := ∏ a ∈ S, β a with hb`. Establish `hLu : IsUnit (algebraMap A (Localization.Away s) s)` using `IsLocalization.Away.algebraMap_isUnit s`. Use `⟨s, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hinv : algebraMap A (Localization.Away s) s * algebraMap A (Localization.Away s) b = 1`.
+
+Apply `hLu.mul_left_cancel` to reduce the goal to its premises. Use `congrArg (algebraMap A (Localization.Away s)) hsb` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow]`. Take the linear combination `-this`. Introduce `z`.
+
+Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj s z`. Use `⟨a * b ^ n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, ← ha, mul_assoc, ← mul_pow, hinv, one_pow, mul_one]`. Apply `Ideal.exists_pow_le_of_le_radical_of_fg` to reduce the goal to its premises. Rewrite using `[hker, Ideal.map_span, Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify using `only [Finset.coe_image] at hx`. Take `⟨y, hy, rfl⟩` from `hx`. Rewrite using `[Ideal.radical_eq_sInf]`. Use `Ideal.mem_sInf.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `P ⟨hle, hP⟩`. Use `h3 y (P.comap (algebraMap A (Localization.Away s))) inferInstance ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, ← IsScalarTower.algebraMap_apply]`. Conclude with `hle (Ideal.mem_span_singleton_self _)`. Introduce `hmem`.
+
+Establish `hsm : s ∈ P.comap (algebraMap A (Localization.Away s))` using `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem σ hy) hmem`. Conclude with `hP.ne_top (Ideal.eq_top_of_isUnit_mem _ hsm hLu)`. Apply `Ideal.FG.map` to reduce the goal to its premises. Rewrite using `[hker]`. Conclude with `⟨_, rfl⟩`.
+
+Introduce `R _ _ w hw`. Establish `hn` using `hw (τ s) (hτ s)`. Establish `hu : IsUnit (algebraMap W R (aug s))` using `hsu.map _`. Establish `: w s = algebraMap W R (aug s) + w (τ s)`. Simplify using `only [τ]`.
+
+Rewrite using `[map_sub, AlgHom.commutes]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hn.isUnit_add_left_of_commute hu (Commute.all _ _)`.
+-/
 theorem main : ∀ (F : Type) [inst : Field F] [IsAlgClosed F] (W : ValuationSubring F) (p : ↥W), (∀ (a : ↥W), ¬IsUnit a → ∃ (n : ℕ), a ^ n ∈ Ideal.span {p}) → ∀ (A : Type) [inst_2 : CommRing A] [inst_3 : Algebra (↥W) A] [Module.Finite (↥W) A] (aug : A →ₐ[↥W] ↥W), ∃ (s : A), Function.Surjective (⇑(Algebra.algebraMap A (Localization.Away s)) : A → Localization.Away s) ∧ (∃ (m : ℕ), Ideal.map (Algebra.algebraMap A (Localization.Away s)) (RingHom.ker aug) ^ m ≤ Ideal.span {(Algebra.algebraMap (↥W) (Localization.Away s) : ↥W → Localization.Away s) p}) ∧ ∀ (R : Type) [inst_5 : CommRing R] [inst_6 : Algebra (↥W) R] (w : A →ₐ[↥W] R), (∀ t ∈ RingHom.ker aug, IsNilpotent ((w : A → R) t)) → IsUnit ((w : A → R) s) := by
   intro F _ _ W p hp A _ _ _ aug
   classical

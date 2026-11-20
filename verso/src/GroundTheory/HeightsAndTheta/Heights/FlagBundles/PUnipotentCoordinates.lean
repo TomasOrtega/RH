@@ -11,6 +11,11 @@ noncomputable section
 private def leadCols {N : ℕ} (m l : Fin N) (j : Fin (l.val + 1)) : Fin N :=
   if hj : j.val < l.val then ⟨j.val, lt_trans hj l.isLt⟩ else m
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `hij' : i.val < j.val` using `hij`. Establish `hlm : l.val < m.val` using `h`. Unfold `leadCols`. Apply the tactic sequence `by_cases hi : i.val < l.val <;> by_cases hj : j.val < l.val <;>`.
+
+Apply the tactic sequence `simp only [hi, hj, dite_true, dite_false, Fin.lt_def] <;> omega`.
+-/
 private lemma leadCols_strictMono {N : ℕ} (m l : Fin N) (h : l < m) :
     StrictMono (leadCols m l) := by
   intro i j hij
@@ -20,6 +25,9 @@ private lemma leadCols_strictMono {N : ℕ} (m l : Fin N) (h : l < m) :
   by_cases hi : i.val < l.val <;> by_cases hj : j.val < l.val <;>
     simp only [hi, hj, dite_true, dite_false, Fin.lt_def] <;> omega
 
+/- English proof (translation)
+Unfold `leadCols`. Use `split_ifs with hj`. Conclude with `Finset.mem_insert_of_mem (Finset.mem_Iio.2 (Fin.lt_def.2 hj))`. Conclude with `Finset.mem_insert_self _ _`.
+-/
 private lemma leadCols_mem {N : ℕ} (m l : Fin N) (j : Fin (l.val + 1)) :
     leadCols m l j ∈ insert m (Finset.Iio l) := by
   unfold leadCols
@@ -27,10 +35,32 @@ private lemma leadCols_mem {N : ℕ} (m l : Fin N) (j : Fin (l.val + 1)) :
   · exact Finset.mem_insert_of_mem (Finset.mem_Iio.2 (Fin.lt_def.2 hj))
   · exact Finset.mem_insert_self _ _
 
+/- English proof (translation)
+Rewrite using `[Finset.card_insert_of_notMem (by simp [not_lt.2 h.le]), Fin.card_Iio]`.
+-/
 private lemma card_leadCols {N : ℕ} (m l : Fin N) (h : l < m) :
     (insert m (Finset.Iio l)).card = l.val + 1 := by
   rw [Finset.card_insert_of_notMem (by simp [not_lt.2 h.le]), Fin.card_Iio]
 
+/- English proof (translation)
+Establish `hc` using `card_leadCols m l h`. Establish `hemb : ((insert m (Finset.Iio l)).orderEmbOfFin hc : Fin (l.val + 1) → Fin N) = leadCols m l` using `(Finset.orderEmbOfFin_unique hc (leadCols_mem m l) (leadCols_strictMono m l h)).symm`. Establish `hlm : l.val < m.val` using `h`. Unfold `pluckerCoord`. Rewrite using `[dif_pos hc]`.
+
+Use `set M := (firstRows (unipotentMatrix a) (l.val + 1) l.isLt).submatrix id ((insert m (Finset.Iio l)).orderEmbOfFin hc) with hM`. Apply the tactic sequence `have hentry : ∀ i j : Fin (l.val + 1), M i j = unipotentMatrix a (Fin.castLE l.isLt i) (leadCols m l j) := by`. Introduce `i j`. Simplify using `only [hM, Matrix.submatrix_apply, id, firstRows, hemb]`. Establish `htri : M.IsUpperTriangular`.
+
+Introduce `i j hji`. Establish `hji' : j.val < i.val` using `hji`. Rewrite using `[hentry]`. Establish `hj : j.val < l.val` using `by have := i.isLt; omega`. Simplify using `only [unipotentMatrix, leadCols, hj, dite_true, Matrix.of_apply]`.
+
+Rewrite using `[dif_neg, if_neg]`. Introduce `he`. Use `congrArg Fin.val he` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `hlt`. Use `Fin.lt_def.1 hlt` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.det_of_isUpperTriangular htri, Fin.prod_univ_castSucc]`.
+
+Establish `hone : ∀ i : Fin l.val, M i.castSucc i.castSucc = 1`. Introduce `i`. Rewrite using `[hentry]`. Establish `hi : (i.castSucc : Fin (l.val + 1)).val < l.val` using `by simp`. Simplify using `only [unipotentMatrix, leadCols, hi, dite_true, Matrix.of_apply]`.
+
+Rewrite using `[dif_neg, if_pos]`. Use `ext`. Simplify using the standard rewrite rules. Introduce `hlt`. Use `Fin.lt_def.1 hlt` as an intermediate fact.
+
+Simplify using `at this`. Establish `hlast : M (Fin.last l.val) (Fin.last l.val) = a ⟨(m, l), h⟩`. Rewrite using `[hentry]`. Establish `hl : ¬ (Fin.last l.val).val < l.val` using `by simp`. Establish `hcast : (Fin.castLE l.isLt (Fin.last l.val) : Fin N) = l` using `by ext; simp`.
+
+Simplify using `only [unipotentMatrix, leadCols, hl, dite_false, Matrix.of_apply, hcast]`. Rewrite using `[dif_pos h]`. Rewrite using `[Finset.prod_eq_one (fun i _ => hone i), hlast, one_mul]`.
+-/
 theorem unipotent_pluckerCoord_eq {R : Type} [CommRing R] {N : ℕ} (a : LowerPairs N → R)
     (m l : Fin N) (h : l < m) :
     pluckerCoord (firstRows (unipotentMatrix a) (l.val + 1) l.isLt) (insert m (Finset.Iio l)) =
@@ -74,6 +104,9 @@ theorem unipotent_pluckerCoord_eq {R : Type} [CommRing R] {N : ℕ} (a : LowerPa
     rw [dif_pos h]
   rw [Finset.prod_eq_one (fun i _ => hone i), hlast, one_mul]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← MvPolynomial.adjoin_range_X, Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨p, rfl⟩`. Apply `Algebra.subset_adjoin` to reduce the goal to its premises. Use `⟨(⟨p.1.2.val + 1, Nat.succ_lt_succ p.1.2.isLt⟩, insert p.1.1 (Finset.Iio p.1.2)), ?_⟩` and prove the remaining obligations. Conclude with `unipotent_pluckerCoord_eq (fun q => (X q : MvPolynomial (LowerPairs N) R)) p.1.1 p.1.2 p.2`.
+-/
 theorem unipotent_pluckerCoord_adjoin (R : Type) [CommRing R] (N : ℕ) :
     Algebra.adjoin R (Set.range fun x : Fin (N + 1) × Finset (Fin N) =>
         pluckerCoord (firstRows (genericUnipotent R N) x.1.val (Nat.le_of_lt_succ x.1.isLt)) x.2) =
@@ -84,10 +117,16 @@ theorem unipotent_pluckerCoord_adjoin (R : Type) [CommRing R] (N : ℕ) :
   refine ⟨(⟨p.1.2.val + 1, Nat.succ_lt_succ p.1.2.isLt⟩, insert p.1.1 (Finset.Iio p.1.2)), ?_⟩
   exact unipotent_pluckerCoord_eq (fun q => (X q : MvPolynomial (LowerPairs N) R)) p.1.1 p.1.2 p.2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ a m l h => unipotent_pluckerCoord_eq a m l h, fun R _ N => unipotent_pluckerCoord_adjoin R N⟩`.
+-/
 theorem UnipotentCoordinates.full : UnipotentCoordinates.Statement :=
   ⟨fun _ _ _ a m l h => unipotent_pluckerCoord_eq a m l h,
     fun R _ N => unipotent_pluckerCoord_adjoin R N⟩
 
+/- English proof (translation)
+The claim follows from `UnipotentCoordinates.full`.
+-/
 theorem UnipotentCoordinates.proof (_h0 : UnipotentLeadingMinor.Statement) :
     UnipotentCoordinates.Statement :=
   UnipotentCoordinates.full

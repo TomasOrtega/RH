@@ -19,6 +19,11 @@ abbrev Lines (P Q R S : ι → ℕ) := Σ o : (Σ w : ι, Ix (P w) (Q w)), Ix (R
 def lineSgn (n : Lines P Q R S) : Bool :=
   linePos (p := P n.1.1) (q := Q n.1.1) (r := R n.1.1) (s := S n.1.1) (n.1.2, n.2)
 
+/- English proof (translation)
+Simplify using `only [mulVec, dotProduct]`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single o]`. Simplify using `[blockDiagonal'_apply']`. Introduce `o' _ h`. Simplify using `[blockDiagonal'_apply_ne M b _ (Ne.symm h)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem blockDiagonal'_mulVec_apply {m : (Σ w : ι, Ix (P w) (Q w)) → Type} [∀ o, Fintype (m o)]
     [∀ o, DecidableEq (m o)] (M : ∀ o, Matrix (m o) (m o) ℂ) (v : (Σ o, m o) → ℂ) (o : Σ w : ι, Ix (P w) (Q w))
     (b : m o) : (blockDiagonal' M *ᵥ v) ⟨o, b⟩ = ∑ b', M o b b' * v ⟨o, b'⟩ := by
@@ -29,6 +34,11 @@ theorem blockDiagonal'_mulVec_apply {m : (Σ w : ι, Ix (P w) (Q w)) → Type} [
     simp [blockDiagonal'_apply_ne M b _ (Ne.symm h)]
   · simp
 
+/- English proof (translation)
+Use extensionality with `⟨o, b⟩ ⟨o', b'⟩`. Distinguish the cases in `h : o = o'`. Substitute `h` using the available equality. Break down `o with ⟨w, a⟩` into its components or cases. Rewrite using `[blockDiagonal'_apply']`.
+
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rcases b' with b' | b' <;>`. Apply the tactic sequence `simp [diagonal_apply, Jm, Formalism.UG.Jpq, lineSgn, linePos, one_apply] <;> split_ifs <;> simp_all`. Rewrite using `[blockDiagonal'_apply_ne _ _ _ h, diagonal_apply_ne]`. Introduce `e`. Conclude with `h (congrArg Sigma.fst e)`.
+-/
 theorem diagonal_lineSgn : (diagonal fun n : Lines P Q R S => if lineSgn n then (1 : ℂ) else -1) =
     blockDiagonal' fun o : (Σ w : ι, Ix (P w) (Q w)) => Jm (P o.1) (Q o.1) o.2 o.2 • Jm (R o.1) (S o.1) := by
   ext ⟨o, b⟩ ⟨o', b'⟩
@@ -42,6 +52,11 @@ theorem diagonal_lineSgn : (diagonal fun n : Lines P Q R S => if lineSgn n then 
     intro e
     exact h (congrArg Sigma.fst e)
 
+/- English proof (translation)
+Rewrite using `[diagonal_lineSgn, blockDiagonal'_transpose, blockDiagonal'_map _ _ (star_zero ℂ), ← blockDiagonal'_mul, ← blockDiagonal'_mul]`. Use `congr 1`. Use function extensionality and compare the values at `o`. Establish `h` using `congrArg transpose (hM o.1)`. Rewrite `h` using `[transpose_mul, transpose_mul, GlobalTheory.SchrodOsc.Jm_transpose]`.
+
+Establish `e : (M o.1)ᴴᵀ = (M o.1).map star` using `by ext; simp`. Rewrite `h` using `[e]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc, h]`.
+-/
 theorem blockDiagonal'_mem (M : ∀ w, Mat (R w) (S w)) (hM : ∀ w, (M w)ᴴ * Jm (R w) (S w) * M w = Jm (R w) (S w)) :
     (blockDiagonal' fun o : (Σ w : ι, Ix (P w) (Q w)) => M o.1)ᵀ *
         (diagonal fun n : Lines P Q R S => if lineSgn n then (1 : ℂ) else -1) *
@@ -79,11 +94,17 @@ def blockHom (P Q : ι → ℕ) (k : G →* (∀ w, Mat (R w) (S w))) : G →* M
 def numHom (P Q : ι → ℕ) (k : G →* (∀ w, Mat (R w) (S w))) : G →* Matrix (NumIx P Q R S) (NumIx P Q R S) ℂ :=
   (reindexAlgEquiv ℂ ℂ (lineNum P Q R S)).toAlgHom.toRingHom.toMonoidHom.comp (blockHom P Q k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem numHom_apply (k : G →* (∀ w, Mat (R w) (S w))) (g : G) :
     numHom P Q k g = reindex (lineNum P Q R S) (lineNum P Q R S)
       (blockDiagonal' fun o : (Σ w : ι, Ix (P w) (Q w)) => k g o.1) :=
   rfl
 
+/- English proof (translation)
+Establish `hc : ⇑(Complex.conjAe : ℂ →ₐ[ℝ] ℂ) = star` using `funext fun x => by simp`. Use `show (numHom P Q k g)ᵀ * fromBlocks 1 0 0 (-1) * (numHom P Q k g).map (Complex.conjAe : ℂ →ₐ[ℝ] ℂ) = fromBlocks 1 0 0 (-1)`. Rewrite using `[hc, numHom_apply, GlobalTheory.SchrodOsc.fromBlocks_eq_reindex, transpose_reindex]`. Establish `hm : (reindex (lineNum P Q R S) (lineNum P Q R S) (blockDiagonal' fun o : (Σ w : ι, Ix (P w) (Q w)) => k g o.1)).map star = reindex (lineNum P Q R S) (lineNum P Q R S) ((blockDiagonal' fun o : (Σ w : ι, Ix (P w) (Q w)) => k g o.1).map star)` using `rfl`. Rewrite using `[hm, ← reindexAlgEquiv_apply ℂ ℂ, ← reindexAlgEquiv_apply ℂ ℂ, ← reindexAlgEquiv_apply ℂ ℂ, ← map_mul, ← map_mul, blockDiagonal'_mem _ (hk g)]`.
+-/
 theorem numHom_mem (k : G →* (∀ w, Mat (R w) (S w))) (hk : ∀ g w, (k g w)ᴴ * Jm (R w) (S w) * k g w = Jm (R w) (S w))
     (g : G) :
     (numHom P Q k).toHomUnits g ∈ GlobalTheory.WeilM.UG (Complex.conjAe : ℂ →ₐ[ℝ] ℂ) (fromBlocks 1 0 0 (-1)) := by
@@ -102,6 +123,11 @@ def unitHom (P Q : ι → ℕ) (k : G →* (∀ w, Mat (R w) (S w)))
     (hk : ∀ g w, (k g w)ᴴ * Jm (R w) (S w) * k g w = Jm (R w) (S w)) :=
   (numHom P Q k).toHomUnits.codRestrict _ (numHom_mem k hk)
 
+/- English proof (translation)
+Establish `hn : Continuous (numHom P Q k)` using `by show Continuous fun g => reindex (lineNum P Q R S) (lineNum P Q R S) (blockDiagonal' fun o : (Σ w : ι, Ix (P w) (Q w)) => k g o.1)`. Conclude with `(Continuous.matrix_blockDiagonal' (continuous_pi fun (o : Σ w : ι, Ix (P w) (Q w)) => (continuous_apply o.1).comp hc)).matrix_reindex _ _`. Use `continuous_induced_rng.2 (Units.continuous_iff.2 ⟨hn, ?_⟩)` and prove the remaining obligations. Establish `: (fun g => (((Subtype.val ∘ unitHom P Q k hk) g)⁻¹ : GL _ ℂ).val) = fun g => numHom P Q k g⁻¹`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[← Subgroup.coe_inv, ← map_inv]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hn.comp continuous_inv`.
+-/
 theorem continuous_unitHom [TopologicalSpace G] [IsTopologicalGroup G] (k : G →* (∀ w, Mat (R w) (S w)))
     (hc : Continuous k) (hk : ∀ g w, (k g w)ᴴ * Jm (R w) (S w) * k g w = Jm (R w) (S w)) :
     Continuous (unitHom P Q k hk) := by
@@ -122,13 +148,28 @@ theorem continuous_unitHom [TopologicalSpace G] [IsTopologicalGroup G] (k : G �
 def coordOf (z : NumIx P Q R S → ℂ) : ∀ w, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ :=
   fun w a b => ((Real.sqrt 2 : ℝ) : ℂ)⁻¹ * z (lineNum P Q R S ⟨⟨w, a⟩, b⟩)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w a b`. Simplify using `[coordOf, mul_add]`.
+-/
 theorem coordOf_add (z z' : NumIx P Q R S → ℂ) : coordOf (z + z') = coordOf z + coordOf z' := by
   funext w a b
   simp [coordOf, mul_add]
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun _ => continuous_pi fun _ => continuous_pi fun _ => continuous_const.mul (continuous_apply _)`.
+-/
 theorem continuous_coordOf : Continuous (coordOf (P := P) (Q := Q) (R := R) (S := S)) :=
   continuous_pi fun _ => continuous_pi fun _ => continuous_pi fun _ => continuous_const.mul (continuous_apply _)
 
+/- English proof (translation)
+Use `set e := lineNum P Q R S with he`. Establish `hs : ((Real.sqrt 2 : ℝ) : ℂ)⁻¹ * star (((Real.sqrt 2 : ℝ) : ℂ)⁻¹) = 2⁻¹`. Rewrite using `[star_inv₀, Complex.star_def, Complex.conj_ofReal, ← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Set `F : Lines P Q R S → ℂ` to `fun n => (if lineSgn n then 1 else -1) * z (e n) * star (z' (e n))`. Establish `h1 : ∀ w a b, lineSign a b * coordOf z w a b * star (coordOf z' w a b) = 2⁻¹ * F ⟨⟨w, a⟩, b⟩`. Introduce `w a b`. Simplify using `only [coordOf, F, star_mul, lineSgn, GlobalTheory.SchrodOsc.lineSign_eq]`. Rewrite using `[← hs, he]`.
+
+Apply the tactic sequence `by_cases h : linePos (a, b) = true <;> simp only [h, ↓reduceIte, Bool.false_eq_true] <;> ring`. Establish `h2 : ∑ n, F n = ∑ w, ∑ a, ∑ b, F ⟨⟨w, a⟩, b⟩`. Rewrite using `[Fintype.sum_sigma, Fintype.sum_sigma]`. Establish `h3 : ∑ n, F n = ∑ i, F (e.symm i)` using `(e.symm.sum_comp F).symm`. Repeatedly rewrite using `[h1, ← Finset.mul_sum, ← h2, h3, Fintype.sum_sum_type]`.
+
+Simplify using `only [F, he, GlobalTheory.SchrodOsc.pos_signEquiv_symm_inl, GlobalTheory.SchrodOsc.pos_signEquiv_symm_inr, Equiv.apply_symm_apply]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem two_mul_sum_coordOf (z z' : NumIx P Q R S → ℂ) :
     2 * ∑ w, ∑ a, ∑ b, lineSign a b * coordOf z w a b * star (coordOf z' w a b) =
       (∑ i, z (Sum.inl i) * star (z' (Sum.inl i))) - ∑ j, z (Sum.inr j) * star (z' (Sum.inr j)) := by
@@ -153,6 +194,11 @@ theorem two_mul_sum_coordOf (z z' : NumIx P Q R S → ℂ) :
   simp
   ring
 
+/- English proof (translation)
+Use `show coordOf (numHom P Q k g *ᵥ z) = _`. Rewrite using `[numHom_apply, reindex_apply, submatrix_mulVec_equiv]`. Use function extensionality and compare the values at `w`. Use extensionality with `a b`. Simplify using `only [coordOf, Function.comp_apply, Equiv.symm_symm, Equiv.symm_apply_apply]`.
+
+Rewrite using `[blockDiagonal'_mulVec_apply]`. Simplify using `only [mul_apply, transpose_apply, Finset.mul_sum, Function.comp_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => by simp only [coordOf]; ring`.
+-/
 theorem coordOf_mulVec (k : G →* (∀ w, Mat (R w) (S w)))
     (hk : ∀ g w, (k g w)ᴴ * Jm (R w) (S w) * k g w = Jm (R w) (S w)) (g : G) (z : NumIx P Q R S → ℂ) :
     coordOf (((unitHom P Q k hk g).1 : Matrix _ _ ℂ) *ᵥ z) = fun w => coordOf z w * (k g w)ᵀ := by
@@ -169,6 +215,15 @@ end GlobalTheory.HoweD.Osc
 
 open GlobalTheory.HoweD
 
+/- English proof (translation)
+Introduce `ι l _ _ _ _ P Q R S φ hφ hcont G _ _ _ k hkc hk`. Take `⟨ω₀, hω₀c, hω₀, -⟩` from `GlobalTheory.FockRep.exists_unitary_osc _ _ (L2 l) (fun z => rho (φ (GlobalTheory.HoweD.Osc.coordOf z))) (fun v => (hcont v).comp ((LinearMap.continuous_of_finiteDimensional φ.toLinearMap).comp GlobalTheory.HoweD.Osc.continuous_coordOf)) (fun z z' v => by`. Rewrite using `[rho_rho, ← map_add, ← GlobalTheory.HoweD.Osc.coordOf_add, hφ, ← GlobalTheory.HoweD.Osc.two_mul_sum_coordOf]`. Use `congr 2`. Simplify using `[Complex.mul_im]`.
+
+Use the proof step `ring)`. Use `⟨ω₀.comp (GlobalTheory.HoweD.Osc.unitHom P Q k hk), fun v => (hω₀c v).comp (GlobalTheory.HoweD.Osc.continuous_unitHom k hkc hk), fun g c v => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩ : ∃ z, GlobalTheory.HoweD.Osc.coordOf (P` from `P) (Q := Q) (R := R) (S := S) z = c := by`. Use `⟨fun i => ((Real.sqrt 2 : ℝ) : ℂ) * (fun n : GlobalTheory.HoweD.Osc.Lines P Q R S => c n.1.1 n.1.2 n.2) ((GlobalTheory.HoweD.Osc.lineNum P Q R S).symm i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w a b`.
+
+Establish `h2 : ((Real.sqrt 2 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.sqrt_pos.2 two_pos).ne'`. Simplify using `only [GlobalTheory.HoweD.Osc.coordOf]`. Rewrite using `[Equiv.symm_apply_apply, ← mul_assoc, inv_mul_cancel₀ h2, one_mul]`. Establish `h` using `hω₀ (GlobalTheory.HoweD.Osc.unitHom P Q k hk g) z v`. Rewrite `h` using `[hz, GlobalTheory.HoweD.Osc.coordOf_mulVec, hz]`.
+
+Conclude with `h`.
+-/
 theorem GlobalTheory.HoweD.exists_osc : ∀ (ι l : Type) [Fintype ι] [DecidableEq ι] [Fintype l] [DecidableEq l] (P Q R S : ι → ℕ)
     (φ : (∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) ≃ₗ[ℝ] (l ⊕ l → ℝ)),
     (∀ c c', sympl (φ c) (φ c') = 2 * (∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (c' w a b)).im) →

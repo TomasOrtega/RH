@@ -11,6 +11,9 @@ namespace FubiniStudyChowHeightFormula₂.Adr
 
 variable {B : Type} [CommRing B]
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span ⟨n, rfl⟩`.
+-/
 theorem e_succ_mem_aug (Q : PDPoly B) (n : ℕ) : Q.e (n + 1) ∈ Q.aug := Ideal.subset_span ⟨n, rfl⟩
 
 def liftAlg (Q : PDPoly B) {C : Type} [CommRing C] [Algebra B C] (c : ℕ → C) (h0 : c 0 = 1)
@@ -25,11 +28,33 @@ def liftAlg (Q : PDPoly B) {C : Type} [CommRing C] [Algebra B C] (c : ℕ → C)
       rw [← nsmul_eq_mul, LinearMap.map_smul_of_tower, Module.Basis.constr_basis, nsmul_eq_mul, hm]
     exact congrArg (fun g ↦ g x y) key)
 
+/- English proof (translation)
+The claim follows from `Q.e.constr_basis B c n`.
+-/
 theorem liftAlg_e (Q : PDPoly B) {C : Type} [CommRing C] [Algebra B C] (c : ℕ → C) (h0 : c 0 = 1)
     (hm : ∀ m n, c m * c n = ((m + n).choose m : C) * c (m + n)) (n : ℕ) :
     liftAlg Q c h0 hm (Q.e n) = c n :=
   Q.e.constr_basis B c n
 
+/- English proof (translation)
+Introduce `B _ Q`. Use `⟨fun C _ f c h0 hm ↦ ?_, ?_⟩` and prove the remaining obligations. Use `letI := f.toAlgebra`. Conclude with `⟨(liftAlg Q c h0 hm).toRingHom, fun b ↦ (liftAlg Q c h0 hm).commutes b, fun n ↦ liftAlg_e Q c h0 hm n⟩`. Set `d : ℕ → B` to `fun n ↦ if n = 0 then 1 else 0`.
+
+Establish `h0 : d 0 = 1` using `by simp [d]`. Establish `hm : ∀ m n, d m * d n = ((m + n).choose m : B) * d (m + n)`. Introduce `m n`. Apply the tactic sequence `by_cases hm : m = 0 <;> by_cases hn : n = 0 <;> simp [d, hm, hn]`. Set `ε` to `liftAlg Q d h0 hm`.
+
+Establish `hε : ∀ n, ε (Q.e n) = d n` using `liftAlg_e Q d h0 hm`. Establish `hmem : ∀ p, p - algebraMap B Q.P (ε p) ∈ Q.aug`. Introduce `p`. Establish `hp : p ∈ Submodule.span B (Set.range Q.e)` using `by rw [Q.e.span_eq]; trivial`. Proceed by induction on `hp using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨n, rfl⟩` from `hx`. Rewrite using `[hε]`. Break down `n with _ | n` into its components or cases. Simplify using `[d, Q.e_zero]`.
+
+Simplify `e_succ_mem_aug Q n` using `[d]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Establish `: x + y - algebraMap B Q.P (ε (x + y)) = (x - algebraMap B Q.P (ε x)) + (y - algebraMap B Q.P (ε y))`. Rewrite using `[map_add, map_add]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `smul b x _ hx`. Establish `: b • x - algebraMap B Q.P (ε (b • x)) = algebraMap B Q.P b * (x - algebraMap B Q.P (ε x))`.
+
+Rewrite using `[map_smul, smul_eq_mul, map_mul, Algebra.smul_def, mul_sub]`. Rewrite using `[this]`. Conclude with `Q.aug.mul_mem_left _ hx`. Use `⟨ε, fun p ↦ ⟨fun hp ↦ ?_, fun hp ↦ ?_⟩⟩` and prove the remaining obligations. Establish `hle : Q.aug ≤ RingHom.ker ε`.
+
+Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Simplify using `[RingHom.mem_ker, hε, d]`. Conclude with `RingHom.mem_ker.1 (hle hp)`. Use `hmem p` as an intermediate fact.
+
+Rewrite `this` using `[hp, map_zero, sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem exists_lift_and_aug : ∀ (B : Type) [CommRing B] (Q : PDPoly B),
     (∀ (C : Type) [CommRing C] (f : B →+* C) (c : ℕ → C), c 0 = 1 →
       (∀ m n, c m * c n = ((m + n).choose m : C) * c (m + n)) →

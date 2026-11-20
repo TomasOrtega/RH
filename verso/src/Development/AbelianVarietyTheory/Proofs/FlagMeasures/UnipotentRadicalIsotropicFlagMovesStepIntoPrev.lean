@@ -5,6 +5,9 @@ open Formalism.MainNotions.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M V _ _ H r Fr n hn j hj v hv`. Establish `hs` using `Formalism.MainNotions.BridgeLemma.mem_NSet_of_mem_N Fr hn`. Conclude with `⟨hs.2.1 j hj v hv, Formalism.MainNotions.BridgeLemma.NSet_inv_Fj Fr hs j hj v hv⟩`.
+-/
 theorem unipRadical_moves_step_into_prev :
     ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E]
       [TopologicalSpace E] [MeasurableSpace E] {M : Formalism.MainNotions.S.Loc.Model F E} {V : Type} [AddCommGroup V]

@@ -4,12 +4,37 @@ noncomputable section
 
 namespace UpperTheory.Gal.Wt
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨m, h, rfl⟩`.
+-/
 private theorem pow_mem_le {s m : ℤ} (h : m ≤ s) : (fun z : Circle => (z : ℂ) ^ m) ∈ ExpLe s :=
   Submodule.subset_span ⟨m, h, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨m, h, rfl⟩`.
+-/
 private theorem pow_mem_ge {s m : ℤ} (h : s ≤ m) : (fun z : Circle => (z : ℂ) ^ m) ∈ ExpGe s :=
   Submodule.subset_span ⟨m, h, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hfS`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hgT => exact h f hfS g hgT`. Consider the case `zero`.
+
+Establish `e : (fun z => f z * (0 : Circle → ℂ) z) = 0`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `P.zero_mem`.
+
+Consider the case `add g₁ g₂ _ _ h₁ h₂`. Establish `e : (fun z => f z * (g₁ + g₂) z) = (fun z => f z * g₁ z) + (fun z => f z * g₂ z)`. Use function extensionality and compare the values at `z`. Simplify using `[mul_add]`. Rewrite using `[e]`.
+
+Conclude with `P.add_mem h₁ h₂`. Consider the case `smul c g _ h₁`. Establish `e : (fun z => f z * (c • g) z) = c • (fun z => f z * g z)`. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `P.smul_mem c h₁`. Consider the case `zero`. Establish `e : (fun z => (0 : Circle → ℂ) z * g z) = 0`.
+
+Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `P.zero_mem`. Consider the case `add f₁ f₂ _ _ h₁ h₂`.
+
+Establish `e : (fun z => (f₁ + f₂) z * g z) = (fun z => f₁ z * g z) + (fun z => f₂ z * g z)`. Use function extensionality and compare the values at `z`. Simplify using `[add_mul]`. Rewrite using `[e]`. Conclude with `P.add_mem h₁ h₂`.
+
+Consider the case `smul c f _ h₁`. Establish `e : (fun z => (c • f) z * g z) = c • (fun z => f z * g z)`. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `P.smul_mem c h₁`.
+-/
 private theorem circle_mul_mem_of_mem_span_of_mem_span {S T : Set (Circle → ℂ)} {P : Submodule ℂ (Circle → ℂ)}
     (h : ∀ f ∈ S, ∀ g ∈ T, (fun z => f z * g z) ∈ P) {f g : Circle → ℂ}
     (hf : f ∈ Submodule.span ℂ S) (hg : g ∈ Submodule.span ℂ T) :
@@ -57,6 +82,15 @@ private theorem circle_mul_mem_of_mem_span_of_mem_span {S T : Set (Circle → �
     rw [e]
     exact P.smul_mem c h₁
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hfS => exact h f hfS`. Consider the case `zero`. Establish `e : (fun z : Circle => (0 : Circle → ℂ) z⁻¹) = 0`. Use function extensionality and compare the values at `z`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `P.zero_mem`. Consider the case `add f₁ f₂ _ _ h₁ h₂`. Establish `e : (fun z : Circle => (f₁ + f₂) z⁻¹) = (fun z => f₁ z⁻¹) + (fun z => f₂ z⁻¹)`.
+
+Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `P.add_mem h₁ h₂`. Consider the case `smul c f _ h₁`.
+
+Establish `e : (fun z : Circle => (c • f) z⁻¹) = c • (fun z => f z⁻¹)`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `P.smul_mem c h₁`.
+-/
 private theorem circle_comp_inv_mem_of_mem_span {S : Set (Circle → ℂ)} {P : Submodule ℂ (Circle → ℂ)}
     (h : ∀ f ∈ S, (fun z : Circle => f z⁻¹) ∈ P) {f : Circle → ℂ}
     (hf : f ∈ Submodule.span ℂ S) : (fun z : Circle => f z⁻¹) ∈ P := by
@@ -81,16 +115,41 @@ private theorem circle_comp_inv_mem_of_mem_span {S : Set (Circle → ℂ)} {P : 
     rw [e]
     exact P.smul_mem c h₁
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Rewrite using `[zpow_add₀ (Circle.coe_ne_zero z)]`.
+-/
 private theorem circle_zpow_mul_zpow_eq_zpow_add (m n : ℤ) :
     (fun z : Circle => (z : ℂ) ^ m * (z : ℂ) ^ n) = fun z : Circle => (z : ℂ) ^ (m + n) := by
   funext z
   rw [zpow_add₀ (Circle.coe_ne_zero z)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Rewrite using `[Circle.coe_inv, inv_zpow, zpow_neg]`.
+-/
 private theorem circle_inv_zpow_eq_zpow_neg (m : ℤ) :
     (fun z : Circle => ((z⁻¹ : Circle) : ℂ) ^ m) = fun z : Circle => (z : ℂ) ^ (-m) := by
   funext z
   rw [Circle.coe_inv, inv_zpow, zpow_neg]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s t f g hf hg`. Use `circle_mul_mem_of_mem_span_of_mem_span ?_ hf hg` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩ _ ⟨n, hn, rfl⟩`. Use `show (fun z : Circle => (z : ℂ) ^ m * (z : ℂ) ^ n) ∈ _`.
+
+Rewrite using `[circle_zpow_mul_zpow_eq_zpow_add]`. Conclude with `pow_mem_le (by omega)`. Introduce `s t f g hf hg`. Use `circle_mul_mem_of_mem_span_of_mem_span ?_ hf hg` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩ _ ⟨n, hn, rfl⟩`.
+
+Use `show (fun z : Circle => (z : ℂ) ^ m * (z : ℂ) ^ n) ∈ _`. Rewrite using `[circle_zpow_mul_zpow_eq_zpow_add]`. Conclude with `pow_mem_ge (by omega)`. Introduce `s t hst`. Prove the components needed by the constructor for the conclusion.
+
+Use `show Submodule.span ℂ _ ≤ Submodule.span ℂ _`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `⟨m, hm.trans hst, rfl⟩`. Use `show Submodule.span ℂ _ ≤ Submodule.span ℂ _`.
+
+Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `⟨m, hst.trans hm, rfl⟩`. Introduce `c m`. Conclude with `⟨(ExpLe m).smul_mem c (pow_mem_le le_rfl), (ExpGe m).smul_mem c (pow_mem_ge le_rfl)⟩`.
+
+Introduce `c`. Establish `e : (fun _ : Circle => c) = c • (fun z : Circle => (z : ℂ) ^ (0 : ℤ))`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Conclude with `⟨(ExpLe 0).smul_mem c (pow_mem_le le_rfl), (ExpGe 0).smul_mem c (pow_mem_ge le_rfl)⟩`. Introduce `s f`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Use `circle_comp_inv_mem_of_mem_span ?_ hf` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨m, hm, rfl⟩`. Use `show (fun z : Circle => ((z⁻¹ : Circle) : ℂ) ^ m) ∈ _`. Rewrite using `[circle_inv_zpow_eq_zpow_neg]`. Conclude with `pow_mem_ge (by omega)`. Introduce `hf`.
+
+Use `circle_comp_inv_mem_of_mem_span ?_ hf` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Use `show (fun z : Circle => ((z⁻¹ : Circle) : ℂ) ^ m) ∈ _`. Rewrite using `[circle_inv_zpow_eq_zpow_neg]`. Conclude with `pow_mem_le (by omega)`.
+-/
 theorem expBasic_of : ExpBasic := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
   · intro s t f g hf hg

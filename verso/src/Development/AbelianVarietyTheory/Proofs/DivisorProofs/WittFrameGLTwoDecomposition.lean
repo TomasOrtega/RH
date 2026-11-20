@@ -23,10 +23,16 @@ def IsHypPlane {n n₁ : ℕ} (H : Plane E n n₁) (Y : Spc F E n) (Y₁ : Spc F
   n = n₁ + 2 ∧ form σ Y.J H.x H.x = 0 ∧ form σ Y.J H.y H.y = 0 ∧ form σ Y.J H.x H.y = 1 ∧
     (∀ u, form σ Y.J (H.ι *ᵥ u) H.x = 0 ∧ form σ Y.J (H.ι *ᵥ u) H.y = 0) ∧ H.ιᵀ * Y.J * H.ι.map σ = Y₁.J
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.rank, h.xx, h.yy, h.xy, h.orth, h.gram⟩`.
+-/
 theorem IsAdapted.isHypPlane {σ : E →ₐ[F] E} {B : Base F E} {n n₁ : ℕ} {H : Plane E n n₁} {Y : Spc F E n}
     {Y₁ : Spc F E n₁} {i₀ i₁ : ℕ} (h : H.IsAdapted σ B Y Y₁ i₀ i₁) : IsHypPlane σ H Y Y₁ :=
   ⟨h.rank, h.xx, h.yy, h.xy, h.orth, h.gram⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1, h.2.2.2.2.2.1⟩`.
+-/
 theorem IsIsoPlane.isHypPlane {σ : E →ₐ[F] E} {B : Base F E} {n n₁ : ℕ} {H : Plane E n n₁} {Y : Spc F E n}
     {Y₁ : Spc F E n₁} (h : GlobalTheory.ThK.DescB.IsIsoPlane σ B H Y Y₁) : IsHypPlane σ H Y Y₁ :=
   ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1, h.2.2.2.2.2.1⟩

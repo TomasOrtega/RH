@@ -32,23 +32,38 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
   {A A' D A₂ A₂' D₂ : Type} [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] [Fintype D] [DecidableEq D]
   [Fintype A₂] [DecidableEq A₂] [Fintype A₂'] [DecidableEq A₂'] [Fintype D₂] [DecidableEq D₂]
 
+/- English proof (translation)
+The claim follows from `latCorr_smul hj cD h c c₂ hc`.
+-/
 theorem corr_smul_of (hj : IsLocIso j) (cD : D₂ ≃ D) {Λ : Submodule 𝒪[k] (D → k)} {Λ₂ : Submodule 𝒪[k'] (D₂ → k')}
     (h : LatCorr j cD Λ Λ₂) (c : kˣ) (c₂ : k'ˣ) (hc : valuation k' (j c) = valuation k' (c₂ : k')) :
     LatCorr j cD (c • Λ) (c₂ • Λ₂) := latCorr_smul hj cD h c c₂ hc
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.dualLattice_correspondingLattices hj cD h`.
+-/
 theorem corr_dual_of (hj : IsLocIso j) (cD : D₂ ≃ D) {Λ : Submodule 𝒪[k] (D → k)} {Λ₂ : Submodule 𝒪[k'] (D₂ → k')}
     (h : LatCorr j cD Λ Λ₂) : LatCorr j cD (dualLat Λ) (dualLat Λ₂) := GlobalTheory.T.dualLattice_correspondingLattices hj cD h
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isPrimitiveFrame_matrixTransport_iff hj rA cD h Z`.
+-/
 theorem primFrame_corr (hj : IsLocIso j) (rA : A₂ ≃ A) (cD : D₂ ≃ D) {Λ : Submodule 𝒪[k] (D → k)}
     {Λ₂ : Submodule 𝒪[k'] (D₂ → k')} (h : LatCorr j cD Λ Λ₂) (Z : Matrix A D k) :
     IsPrimFrame Λ₂ (trM j rA cD Z) ↔ IsPrimFrame Λ Z := GlobalTheory.T.isPrimitiveFrame_matrixTransport_iff hj rA cD h Z
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.correspondingLattices_blockLattice hj cD hϖ hϖ₂ e P P₂ hP`.
+-/
 theorem corr_blockLat_of (hj : IsLocIso j) (cD : D₂ ≃ D) {ϖ : kˣ} {ϖ₂ : k'ˣ} (hϖ : IsUnif ϖ) (hϖ₂ : IsUnif ϖ₂)
     (e : ℕ) (P : Finset D) (P₂ : Finset D₂) (hP : ∀ c, c ∈ P₂ ↔ cD c ∈ P) :
     LatCorr j cD (blockLat ϖ e P) (blockLat ϖ₂ e P₂) := GlobalTheory.T.correspondingLattices_blockLattice hj cD hϖ hϖ₂ e P P₂ hP
 
 variable [MeasurableSpace k] [BorelSpace k] [MeasurableSpace k'] [BorelSpace k']
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.zetaFunction_transport_localFieldIso hj rA rA' cD μ₂ σ₂ σ hσ ν₂ ν hν Ψ Z`.
+-/
 theorem fFun_corr (hj : IsLocIso j) (rA : A₂ ≃ A) (rA' : A₂' ≃ A') (cD : D₂ ≃ D)
     (μ₂ : MeasureTheory.Measure (GL A₂' k')) [μ₂.IsHaarMeasure] (σ₂ : A₂ ⊕ A₂' ≃ D₂) (σ : A ⊕ A' ≃ D)
     (hσ : ∀ s, cD (σ₂ s) = σ (Sum.map rA rA' s)) (ν₂ : k'ˣ →* ℂˣ) (ν : kˣ →* ℂˣ)
@@ -69,6 +84,9 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
   {A A' D A₂ A₂' D₂ : Type} [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] [Fintype D] [DecidableEq D]
   [Fintype A₂] [DecidableEq A₂] [Fintype A₂'] [DecidableEq A₂'] [Fintype D₂] [DecidableEq D₂]
 
+/- English proof (translation)
+Use `corr_smul_of hj cD (corr_dual_of hj cD h) _ _ ?_` and prove the remaining obligations. Establish `h1 : valuation k' (j ϖ) = valuation k' (ϖ₂ : k')` using `(isUnif_map hj hϖ).trans hϖ₂.symm`. Simplify using `only [Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, map_inv₀, map_pow, h1]`.
+-/
 theorem latCorr_latA (hj : IsLocIso j) (cD : D₂ ≃ D) {Λ : Submodule 𝒪[k] (D → k)} {Λ₂ : Submodule 𝒪[k'] (D₂ → k')}
     (h : LatCorr j cD Λ Λ₂) {ϖ : kˣ} {ϖ₂ : k'ˣ} (hϖ : IsUnif ϖ) (hϖ₂ : IsUnif ϖ₂) (e : ℕ) :
     LatCorr j cD (latA ϖ e Λ) (latA ϖ₂ e Λ₂) := by
@@ -76,6 +94,9 @@ theorem latCorr_latA (hj : IsLocIso j) (cD : D₂ ≃ D) {Λ : Submodule 𝒪[k]
   have h1 : valuation k' (j ϖ) = valuation k' (ϖ₂ : k') := (isUnif_map hj hϖ).trans hϖ₂.symm
   simp only [Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, map_inv₀, map_pow, h1]
 
+/- English proof (translation)
+Rewrite using `[mem_matLat, mem_matLat]`. Use `⟨fun H a => ?_, fun H r => (h (Z.row (rA r))).2 (H _)⟩` and prove the remaining obligations. Take `⟨r, rfl⟩` from `rA.surjective a`. Conclude with `(h (Z.row (rA r))).1 (H r)`.
+-/
 theorem trM_mem_matLat (rA : A₂ ≃ A) (cD : D₂ ≃ D) {Λ : Submodule 𝒪[k] (D → k)} {Λ₂ : Submodule 𝒪[k'] (D₂ → k')}
     (h : LatCorr j cD Λ Λ₂) (Z : Matrix A D k) : trM j rA cD Z ∈ matLat A₂ Λ₂ ↔ Z ∈ matLat A Λ := by
   rw [mem_matLat, mem_matLat]
@@ -83,6 +104,13 @@ theorem trM_mem_matLat (rA : A₂ ≃ A) (cD : D₂ ≃ D) {Λ : Submodule 𝒪[
   obtain ⟨r, rfl⟩ := rA.surjective a
   exact (h (Z.row (rA r))).1 (H r)
 
+/- English proof (translation)
+Establish `h1 : valuation k' (j ϖ) = valuation k' (ϖ₂ : k')` using `(isUnif_map hj hϖ).trans hϖ₂.symm`. Establish `hs : LatCorr j cD (ϖ ^ e • Λ) (ϖ₂ ^ e • Λ₂)` using `corr_smul_of hj cD h _ _ (by`. Simplify using `only [Units.val_pow_eq_pow_val, map_pow]`. Rewrite using `[h1])`. Use `⟨fun Y hY => hΞ.1 _ fun hZ => hY ?_, fun Y W hW => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← trM_trM_symm j rA cD Y]`. Conclude with `(trM_mem_matLat rA cD h _).2 hZ`. Establish `hW' : trM j.symm rA.symm cD.symm W ∈ matLat A (ϖ ^ e • Λ)`. Rewrite using `[← trM_mem_matLat rA cD hs, trM_trM_symm]`. Conclude with `hW`.
+
+Use `show Ξ (trM j.symm rA.symm cD.symm (Y + W)) = Ξ (trM j.symm rA.symm cD.symm Y)`. Rewrite using `[show trM j.symm rA.symm cD.symm (Y + W) = trM j.symm rA.symm cD.symm Y + trM j.symm rA.symm cD.symm W by`. Use extensionality with `r c`. Use the proof step `simp]`. Conclude with `hΞ.2 _ _ hW'`.
+-/
 theorem hasDepth_trM (hj : IsLocIso j) (rA : A₂ ≃ A) (cD : D₂ ≃ D) {Λ : Submodule 𝒪[k] (D → k)}
     {Λ₂ : Submodule 𝒪[k'] (D₂ → k')} (h : LatCorr j cD Λ Λ₂) {ϖ : kˣ} {ϖ₂ : k'ˣ} (hϖ : IsUnif ϖ)
     (hϖ₂ : IsUnif ϖ₂) (e : ℕ) (Ξ : Matrix A D k → ℂ) (hΞ : HasDepth ϖ e Λ Ξ) :
@@ -101,6 +129,9 @@ theorem hasDepth_trM (hj : IsLocIso j) (rA : A₂ ≃ A) (cD : D₂ ≃ D) {Λ :
 
 variable [MeasurableSpace k] [BorelSpace k] [MeasurableSpace k'] [BorelSpace k']
 
+/- English proof (translation)
+Unfold `phiA`. Rewrite using `[primFrame_corr hj rA cD (latCorr_latA hj cD h hϖ hϖ₂ e), fFun_corr hj rA rA' cD μ₂ σ₂ σ hσ ν₂ ν hν]`.
+-/
 theorem phiA_trM (hj : IsLocIso j) (rA : A₂ ≃ A) (rA' : A₂' ≃ A') (cD : D₂ ≃ D)
     (μ₂ : MeasureTheory.Measure (GL A₂' k')) [μ₂.IsHaarMeasure] (σ₂ : A₂ ⊕ A₂' ≃ D₂) (σ : A ⊕ A' ≃ D)
     (hσ : ∀ s, cD (σ₂ s) = σ (Sum.map rA rA' s)) (ν₂ : k'ˣ →* ℂˣ) (ν : kˣ →* ℂˣ)
@@ -119,6 +150,9 @@ end GlobalTheory.PureMatch.Transport
 namespace GlobalTheory.PureMatch
 open GlobalTheory.PureMatch.Transport GlobalTheory.FlipMatch
 
+/- English proof (translation)
+Break down `c with c | c` into its components or cases. Simplify using `[Assignment.block, blockV, GlobalTheory.SquareFlipReach.colE]`. Simplify using `[Assignment.block, blockV, GlobalTheory.SquareFlipReach.colE]`.
+-/
 theorem mem_one_block_iff {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (t : T)
     (w : Pl D.host.E) {i j : Fin D.R.m} (e : Num G i j) (c : (locGrid G t w).Cols i j) :
     c ∈ Assignment.one.block _ _ ↔ GlobalTheory.SquareFlipReach.colE t w e c ∈ blockV e := by
@@ -126,6 +160,13 @@ theorem mem_one_block_iff {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G :
   · simp [Assignment.block, blockV, GlobalTheory.SquareFlipReach.colE]
   · simp [Assignment.block, blockV, GlobalTheory.SquareFlipReach.colE]
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL t i j e w hw v hv τ hτ n`. Substitute `hτ` using the available equality. Establish `hjj` using `isLocIso_complEquiv τ hv`. Establish `hO` using `GivenAdm.givenLevel_open (G := G) hL hw ((i : ℕ), (j : ℕ))`. Establish `hO'` using `isOpen_map_invT hO.1 hO.2`.
+
+Use `haveI := isHaarMeasure_haarVol hO'.1 hO'.2`. Establish `hϖv : IsUnif (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt v)` using `(GlobalTheory.SplitFlip.exists_isUnif (k := Fv D.host.F v)).choose_spec`. Establish `hc` using `corr_blockLat_of hjj (GlobalTheory.SquareFlipReach.colE t (splitPrime τ) e) hϖv (isUnif_unifAt _) n (blockV e) (Assignment.one.block _ _) (mem_one_block_iff t _ e)`. Use `⟨pullMeas hjj (rowB t (splitPrime τ) i j) (haarVol ((givenLevel G t (splitPrime τ) ((i : ℕ), (j : ℕ))).map invT)), inferInstance, (Equiv.sumCongr (GlobalTheory.SquareFlipReach.rowE t (splitPrime τ) i j).symm (rowB t (splitPrime τ) i j).symm).trans ((stdSplit ((locGrid G t (splitP …` and prove the remaining obligations. Conclude with `phiA_trM hjj (GlobalTheory.SquareFlipReach.rowE t (splitPrime τ) i j) (rowB t (splitPrime τ) i j) (GlobalTheory.SquareFlipReach.colE t (splitPrime τ) e) _ _ _ (fun s => by simp) _ _ (fun x => rfl) hϖv (isUnif_unifAt _) n hc Ψ Z`.
+
+Conclude with `⟨_, hasDepth_trM hjj (rowB t (splitPrime τ) i j) (GlobalTheory.SquareFlipReach.colE t (splitPrime τ) e) hc hϖv (isUnif_unifAt _) n Ξ hΞ, fun Y => by show Ξ (trM _ _ _ (trM (GlobalTheory.LFun.SplitTie.complEquiv τ hv) (rowB t (splitPrime τ) i j) (GlobalTheory.SquareFlipReach.colE …`. Rewrite using `[trM_symm_trM]⟩`.
+-/
 theorem phiA_transport_split_place : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m) (e : Num G i j) (w : Pl D.host.E) (hw : w ∈ locPl G t) (v : Pl D.host.F) (hv : w.under (𝓞 D.host.F) = v)
     (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v), splitPrime τ = w → ∀ n : ℕ,

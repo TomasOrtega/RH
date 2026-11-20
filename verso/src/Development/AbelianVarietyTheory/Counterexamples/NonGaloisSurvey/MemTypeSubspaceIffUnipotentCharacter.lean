@@ -17,10 +17,18 @@ def act (i : X.Tw) (j : ℕ) (b : Bool) :=
   MonoidAlgebra.lift (FractionRing (X.O i)) (Module.End (FractionRing (X.O i)) (Y.Fm i j b)) (G0g N)
     (LinearEquiv.automorphismGroup.toLinearMapMonoidHom.comp (Y.actG i j b))
 
+/- English proof (translation)
+Simplify using `[act]`.
+-/
 theorem act_single (i : X.Tw) (j : ℕ) (b : Bool) (g : G0g N) (x : Y.Fm i j b) :
     act Y i j b (MonoidAlgebra.single g 1) x = Y.actG i j b g x := by
   simp [act]
 
+/- English proof (translation)
+Proceed by induction on `z using MonoidAlgebra.induction_on with`. Consider the case `of g => simpa [act] using hW g x hx`. Consider the case `add f g hf hg => rw [map_add]`. Conclude with `W.add_mem hf hg`. Consider the case `smul r f hf => rw [map_smul]`.
+
+Conclude with `W.smul_mem r hf`.
+-/
 theorem act_mem (i : X.Tw) (j : ℕ) (b : Bool) (W : Submodule (FractionRing (X.O i)) (Y.Fm i j b))
     (hW : GStable Y i j b W) (z : MonoidAlgebra (FractionRing (X.O i)) (G0g N)) (x : Y.Fm i j b) (hx : x ∈ W) :
     act Y i j b z x ∈ W := by
@@ -29,6 +37,17 @@ theorem act_mem (i : X.Tw) (j : ℕ) (b : Bool) (W : Submodule (FractionRing (X.
   | add f g hf hg => rw [map_add]; exact W.add_mem hf hg
   | smul r f hf => rw [map_smul]; exact W.smul_mem r hf
 
+/- English proof (translation)
+Establish `he : eG Y i j b = act Y i j b (Y.eAlg i b)` using `rfl`. Establish `hcomm : ∀ g x, eG Y i j b (Y.actG i j b g x) = Y.actG i j b g (eG Y i j b x)`. Introduce `g x`. Rewrite using `[he, ← act_single, ← act_single, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Y.eAlg_central]`. Establish `hid : ∀ x, eG Y i j b (eG Y i j b x) = eG Y i j b x`.
+
+Introduce `x`. Rewrite using `[he, ← Module.End.mul_apply, ← map_mul, Y.eAlg_idem]`. Take `⟨-, hst, hmin⟩` from `hW`. Break down `hmin (W ⊓ LinearMap.ker (eG Y i j b)) inf_le_left (fun g x hx => ⟨hst g x hx.1, by` into its components or cases. Establish `h2 : eG Y i j b x = 0` using `hx.2`.
+
+Use `show eG Y i j b _ = 0`. Rewrite using `[hcomm, h2, map_zero]⟩) with h | h`. Use `left`. Introduce `x hx`. Establish `: x - eG Y i j b x ∈ W ⊓ LinearMap.ker (eG Y i j b)` using `⟨W.sub_mem hx (act_mem Y i j b W hst _ x hx), by show eG Y i j b _ = 0`.
+
+Rewrite using `[map_sub, hid, sub_self]⟩`. Rewrite `this` using `[h, Submodule.mem_bot, sub_eq_zero]`. Conclude with `this.symm`. Use `right`. Introduce `x hx`.
+
+Rewrite `hx` using `[← h]`. Conclude with `hx.2`.
+-/
 theorem eG_on_irred (i : X.Tw) (j : ℕ) (b : Bool) (W : Submodule (FractionRing (X.O i)) (Y.Fm i j b))
     (hW : GIrred Y i j b W) : (∀ x ∈ W, eG Y i j b x = x) ∨ (∀ x ∈ W, eG Y i j b x = 0) := by
   have he : eG Y i j b = act Y i j b (Y.eAlg i b) := rfl
@@ -58,6 +77,9 @@ theorem eG_on_irred (i : X.Tw) (j : ℕ) (b : Bool) (W : Submodule (FractionRing
     rw [← h] at hx
     exact hx.2
 
+/- English proof (translation)
+Proceed by induction on `z using MonoidAlgebra.induction_on with`. Consider the case `of g => simpa [act] using hT g x`. Consider the case `add f g hf hg => simp only [map_add, LinearMap.add_apply, hf, hg]`. Consider the case `smul r f hf => simp only [map_smul, LinearMap.smul_apply, hf]`.
+-/
 theorem act_comm (i : X.Tw) (j : ℕ) (b : Bool) (T : Module.End (FractionRing (X.O i)) (Y.Fm i j b))
     (hT : ∀ g x, Y.actG i j b g (T x) = T (Y.actG i j b g x))
     (z : MonoidAlgebra (FractionRing (X.O i)) (G0g N)) (x : Y.Fm i j b) :
@@ -67,22 +89,44 @@ theorem act_comm (i : X.Tw) (j : ℕ) (b : Bool) (T : Module.End (FractionRing (
   | add f g hf hg => simp only [map_add, LinearMap.add_apply, hf, hg]
   | smul r f hf => simp only [map_smul, LinearMap.smul_apply, hf]
 
+/- English proof (translation)
+Establish `he : eG Y i j b = act Y i j b (Y.eAlg i b)` using `rfl`. Rewrite using `[he, ← act_single, ← act_single, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Y.eAlg_central]`.
+-/
 theorem eG_actG (i : X.Tw) (j : ℕ) (b : Bool) (g : G0g N) (x : Y.Fm i j b) :
     eG Y i j b (Y.actG i j b g x) = Y.actG i j b g (eG Y i j b x) := by
   have he : eG Y i j b = act Y i j b (Y.eAlg i b) := rfl
   rw [he, ← act_single, ← act_single, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul,
     Y.eAlg_central]
 
+/- English proof (translation)
+Simplify using `[Fm0, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_typeSubspace_iff_unipotent_character (i : X.Tw) (j : ℕ) (b : Bool) (x : Y.Fm i j b) : x ∈ Fm0 Y i j b ↔ ∀ u : Y.U,
     Y.actG i j b u x = ((Y.psiU i b u : (FractionRing (X.O i))ˣ) : FractionRing (X.O i)) • x := by
   simp [Fm0, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[mem_typeSubspace_iff_unipotent_character]`. Introduce `u`. Rewrite using `[← eG_actG, (mem_typeSubspace_iff_unipotent_character Y i j b x).1 hx u, map_smul]`.
+-/
 theorem goodPart_le_typeSubspace (i : X.Tw) (j : ℕ) (b : Bool) : V0 Y i j b ≤ Fm0 Y i j b := by
   rintro _ ⟨x, hx, rfl⟩
   rw [mem_typeSubspace_iff_unipotent_character]
   intro u
   rw [← eG_actG, (mem_typeSubspace_iff_unipotent_character Y i j b x).1 hx u, map_smul]
 
+/- English proof (translation)
+Take `⟨h1, h2, -, h4, h5, h6, h7, h8⟩` from `h`. Rewrite `h2` using `[Finset.disjoint_union_right]`. Use `set ψ := ψ'.comp (X.art i Q)`. Establish `hu : UnrG ψ`. Introduce `k v hv A' hA σ hσ`.
+
+Assume the negation of the conclusion as `hne`. Establish `hQ : v ∈ (Q : Set (PlE D.host))` using `(h7 v A' hA).1 ⟨σ, hσ, hne⟩`. Conclude with `Finset.disjoint_left.1 h2.1 hQ (X.placesOver_subset_exceptional i k hv)`. Consider the cases of `b`. Establish `hk : (ψ⁻¹).ker = ψ.ker` using `by ext g; simp [MonoidHom.mem_ker]`.
+
+Use `⟨⟨fun P hP => (h1 P hP).1, h2.1, ?_, ?_, ?_, ?_, ?_⟩, ?_, h2.2⟩` and prove the remaining obligations. Use `show IsOpen (((ψ⁻¹).ker : Subgroup (G D.host.E N.Om)) : Set (G D.host.E N.Om))`. Rewrite using `[hk]`. Conclude with `h4`. Introduce `g g' hg`.
+
+Use `show (ψ g')⁻¹ = ((ψ g)⁻¹)⁻¹`. Rewrite using `[h5 g g' hg]`. Introduce `g`. Conclude with `Subgroup.inv_mem _ (h6 g)`. Introduce `v A' hA`.
+
+Rewrite using `[← h7 v A' hA]`. Conclude with `exists_congr fun σ => and_congr_right fun _ => inv_ne_one`. Introduce `v hv A' hA σ hσ`. Conclude with `inv_eq_one.2 (h8 v hv A' hA σ hσ)`. Introduce `k v hv A' hA σ hσ`.
+
+Conclude with `inv_eq_one.2 (hu k v hv A' hA σ hσ)`. Conclude with `⟨⟨fun P hP => (h1 P hP).1, h2.1, h4, h5, h6, h7, h8⟩, hu, h2.2⟩`.
+-/
 theorem twOK_of_psiOk (i : X.Tw) (A Q : Finset (PlE D.host)) (k' : ℕ) (ψ' : X.RCG i Q →* (X.Ok i k')ˣ)
     (h : Formalism.MainNotions.BlochKatoReduction.Gen.PsiOk i A Q k' ψ') (b : Bool) :
     TwOK i k' Q (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (ψ'.comp (X.art i Q))) ∧
@@ -109,6 +153,9 @@ theorem twOK_of_psiOk (i : X.Tw) (A Q : Finset (PlE D.host)) (k' : ℕ) (ψ' : X
     · intro k v hv A' hA σ hσ; exact inv_eq_one.2 (hu k v hv A' hA σ hσ)
   · exact ⟨⟨fun P hP => (h1 P hP).1, h2.1, h4, h5, h6, h7, h8⟩, hu, h2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h i hi b => ⟨(h i hi b).1, fun j hj => ((h i hi b).2 j hj).1⟩, fun h i hi b => ⟨(h i hi b).1, fun j hj => ⟨(h i hi b).2 j hj, fun _ W _ hW => eG_on_irred Y i j b W hW⟩⟩⟩`.
+-/
 theorem admissibleGoodIdempotent_iff_reduced : GroupAlgebraIntegrality Y ↔ ∀ (i : X.Tw), X.NonzeroIndexPlace i → ∀ (b : Bool),
     (∃ c : MonoidAlgebra (X.O i) (G0g N),
       MonoidAlgebra.map (algebraMap (X.O i) (FractionRing (X.O i))).toAddMonoidHom c =

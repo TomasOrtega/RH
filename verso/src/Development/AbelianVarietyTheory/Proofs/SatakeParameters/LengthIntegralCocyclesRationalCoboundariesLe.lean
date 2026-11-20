@@ -4,6 +4,25 @@ open Formalism Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Mod
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `G _ LL _ O _ _ V _ _ _ _ ρ L Z hZ`. Use `set M := Z ⊓ (B1 ρ).restrictScalars O with hM`. Use `set K := (latticeCoboundaries L).comap M.subtype with hK`. Set `χ : V →ₗ[O] (G → V) ⧸ latticeCoboundaries L` to `(latticeCoboundaries L).mkQ ∘ₗ (cob ρ).restrictScalars O`. Establish `hχ : L.T ≤ LinearMap.ker χ`.
+
+Introduce `t ht`. Simplify using `only [LinearMap.mem_ker, χ, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨t, ht, rfl⟩`. Set `ψ : ↥(Representation.invariants (repD L)) →ₗ[O] (G → V) ⧸ latticeCoboundaries L` to `(L.T.liftQ χ hχ) ∘ₗ (Representation.invariants (repD L)).subtype`. Set `ι : M →ₗ[O] (G → V) ⧸ latticeCoboundaries L` to `(latticeCoboundaries L).mkQ ∘ₗ M.subtype`.
+
+Establish `hKι : K ≤ LinearMap.ker ι`. Introduce `x hx`. Simplify `hx` using `[ι, K, Submodule.Quotient.mk_eq_zero]`. Set `f : (M ⧸ K) →ₗ[O] (G → V) ⧸ latticeCoboundaries L` to `K.liftQ ι hKι`. Establish `hfinj : Function.Injective f`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective K x`. Simplify using `only [LinearMap.mem_ker, f, Submodule.liftQ_apply, ι, LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at hx`. Simplify using `only [Submodule.mem_bot, Submodule.Quotient.mk_eq_zero, K, Submodule.mem_comap, Submodule.coe_subtype]`.
+
+Conclude with `hx`. Establish `hrange : LinearMap.range f ≤ LinearMap.range ψ`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨⟨c, hcM⟩, rfl⟩` from `Submodule.Quotient.mk_surjective K x`. Take `⟨hcZ, hcB⟩` from `hcM`.
+
+Take `⟨v, hv⟩` from `hcB`. Establish `hinv : L.T.mkQ v ∈ Representation.invariants (repD L)`. Introduce `g`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk ((ρ g) v) : V ⧸ L.T) = Submodule.Quotient.mk v`. Rewrite using `[Submodule.Quotient.eq]`.
+
+Use `hZ c hcZ g` as an intermediate fact. Rewrite `this` using `[← hv]`. Simplify `this` using `[cob]`. Use `⟨⟨_, hinv⟩, ?_⟩` and prove the remaining obligations. Simplify using `[ψ, f, ι, χ, hv]`.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `a b hab`. Apply `hfinj` to reduce the goal to its premises. Use `congrArg Subtype.val hab` as an intermediate fact. Simplify using `using this)`.
+
+Use `_ ≤ _ := Module.length_le_of_surjective ψ.rangeRestrict ψ.surjective_rangeRestrict`.
+-/
 theorem cocycle_bound_length_le : ∀ {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRing O] [Algebra O LL] {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V] {ρ : Representation LL G V} (L : Lattice (O := O) ρ) (Z : Submodule O (G → V)), (∀ c ∈ Z, ∀ g, c g ∈ L.T) → Module.length O (↥(Z ⊓ (B1 ρ).restrictScalars O) ⧸ (latticeCoboundaries L).comap (Z ⊓ (B1 ρ).restrictScalars O).subtype) ≤ Module.length O ↥(Representation.invariants (repD L)) := by
   intro G _ LL _ O _ _ V _ _ _ _ ρ L Z hZ
   set M := Z ⊓ (B1 ρ).restrictScalars O with hM

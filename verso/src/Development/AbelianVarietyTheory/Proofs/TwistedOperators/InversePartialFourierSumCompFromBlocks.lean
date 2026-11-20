@@ -7,6 +7,53 @@ open GlobalTheory.TopLevelInv
 noncomputable section
 namespace GlobalTheory.BlockSubstFourier
 
+/- English proof (translation)
+Establish `triv : ∀ y ∈ 𝒪[k], ψ y = 1` using `fun y hy => (hψ 1).2 le_rfl y (by simpa using (show valuation k y ≤ 1 from hy))`. Establish `h0 : 0 < valuation k ((ϖ ^ e : kˣ) : k)` using `zero_lt_iff.2 (by simp)`. Rewrite `hΦ`, the goal using `[compl_block_one]`. Use `set P := Assignment.two.block D₁ D₂ with hP`. Establish `inr_mem : ∀ j : D₂, (Sum.inr j : D₁ ⊕ D₂) ∈ P` using `fun j => by simp [hP, Assignment.block]`.
+
+Establish `inl_nmem : ∀ j : D₁, (Sum.inl j : D₁ ⊕ D₂) ∉ P` using `fun j => by simp [hP, Assignment.block]`. Set `eP : D₂ ≃ P` to `Equiv.ofBijective (fun j => ⟨Sum.inr j, inr_mem j⟩) ⟨fun a b h => by simpa using h, by`. Introduce and unpack `⟨(j | j), h⟩`. Conclude with `absurd h (inl_nmem j)`. Conclude with `⟨j, rfl⟩⟩`.
+
+Establish `eP_apply : ∀ j, (eP j : D₁ ⊕ D₂) = Sum.inr j` using `fun j => rfl`. Use `set M := fromBlocks M₁.val 0 0 M₂.val with hM`. Use `set M' := fromBlocks M₁.val 0 0 (invT M₂).val with hM'`. Use `set Nk : Matrix P P k := (invT M₂).val.submatrix eP.symm eP.symm with hNk`. Establish `hNk_apply : ∀ a b, Nk (eP a) (eP b) = (invT M₂).val a b` using `fun a b => by simp [hNk]`.
+
+Take `⟨u, hu⟩` from `invT_mem_KO hM₂`. Set `N : Matrix P P 𝒪[k]` to `u.val.submatrix eP.symm eP.symm`. Set `N' : Matrix P P 𝒪[k]` to `(u⁻¹).val.submatrix eP.symm eP.symm`. Establish `hNN : N * N' = 1`. Simplify using `only [N, N', Matrix.submatrix_mul_equiv, Units.mul_inv, Matrix.submatrix_one_equiv]`.
+
+Establish `hNmap : N.map (fun x => (x : k)) = Nk`. Rewrite using `[hNk, ← hu]`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hM₂i` using `(mem_KO_iff M₂).1 hM₂`.
+
+Use `set X₂ : Matrix A D₂ k := X.submatrix id Sum.inr with hX₂`. Establish `hXM₂ : (X * M).submatrix id Sum.inr = X₂ * M₂.val`. Use extensionality with `i j`. Simplify using `[hM, hX₂, Matrix.mul_apply, Fintype.sum_sum_type, fromBlocks]`. Establish `condP : ∀ Z : Matrix A (D₁ ⊕ D₂) k, (∀ i, ∀ j ∈ P, Z i j ∈ 𝒪[k]) ↔ ∀ i (j : D₂), Z i (Sum.inr j) ∈ 𝒪[k]`.
+
+Introduce `Z`. Use `forall_congr' fun i => ⟨fun h j => h _ (inr_mem j), fun h j hj => ?_⟩` and prove the remaining obligations. Break down `j with j | j` into its components or cases. Conclude with `absurd hj (inl_nmem j)`. Conclude with `h j`.
+
+Establish `hsum : ∀ (T : Matrix A P k) (Y : Matrix A (D₁ ⊕ D₂) k), pairCols P Y T = trace (T.submatrix id eP * (Y.submatrix id Sum.inr)ᵀ)`. Introduce `T Y`. Simplify using `only [pairCols, trace, Matrix.mul_apply, diag_apply, transpose_apply, submatrix_apply, id]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(Equiv.sum_comp eP (fun j => T i j * Y i j)).symm`.
+
+Establish `hTN : ∀ T : Matrix A P k, (T * Nk).submatrix id eP = T.submatrix id eP * (invT M₂).val`. Introduce `T`. Use extensionality with `i j`. Simplify using `only [submatrix_apply, id, Matrix.mul_apply]`. Rewrite using `[← Equiv.sum_comp eP]`.
+
+Simplify using `[hNk_apply]`. Establish `hset : ∀ T : Matrix A P k, setCols P X T * M' = setCols P (X * M) (T * Nk)`. Introduce `T`. Use extensionality with `i (j | j)`. Simplify using `[hM, hM', Matrix.mul_apply, Fintype.sum_sum_type, fromBlocks, setCols, inl_nmem, inr_mem]`.
+
+Establish `h1 : setCols P (X * M) (T * Nk) i (Sum.inr j) = (T.submatrix id eP * (invT M₂).val) i j`. Rewrite using `[← hTN]`. Simplify using `only [setCols, Matrix.of_apply, dif_pos (inr_mem j), submatrix_apply, id]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+
+Simplify using `[hM', Matrix.mul_apply, Fintype.sum_sum_type, fromBlocks, setCols, inl_nmem, inr_mem]`. Both sides reduce to the same expression. Establish `hpair : ∀ T : Matrix A P k, pairCols P (X * M) (T * Nk) = pairCols P X T`. Introduce `T`. Rewrite using `[hsum, hsum, hTN, hXM₂, transpose_mul, invT_val]`.
+
+Use `congr 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc _ M₂.valᵀ, ← transpose_mul, Units.mul_inv, transpose_one, Matrix.one_mul]`. Establish `setCols_add' : ∀ (Y : Matrix A (D₁ ⊕ D₂) k) (T T' : Matrix A P k), setCols P Y (T + T') = setCols P Y T + setCols P 0 T'`. Introduce `Y T T'`. Use extensionality with `i j`.
+
+Apply the tactic sequence `by_cases h : j ∈ P <;> simp [setCols, h]`. Establish `pairCols_add' : ∀ (Y : Matrix A (D₁ ⊕ D₂) k) (T T' : Matrix A P k), pairCols P Y (T + T') = pairCols P Y T + pairCols P Y T'`. Introduce `Y T T'`. Simplify using `[pairCols, add_mul, Finset.sum_add_distrib]`. Establish `hcZ : ∀ z : k, valuation k z ≤ valuation k ((ϖ ^ e : kˣ) : k) → (((ϖ ^ e)⁻¹ : kˣ) : k) * z ∈ 𝒪[k]`.
+
+Introduce `z hz`. Rewrite using `[Valuation.mem_integer_iff, map_mul, Units.val_inv_eq_inv_val, map_inv₀, inv_mul_le_iff₀ h0, mul_one]`. Conclude with `hz`. Rewrite using `[invFourierSum_apply, invFourierSum_apply]`. Distinguish the cases in `hX : ∀ i, ∀ j ∈ P, X i j ∈ 𝒪[k]`.
+
+Establish `hXM : ∀ i, ∀ j ∈ P, (X * M) i j ∈ 𝒪[k]`. Rewrite `hX`, the goal using `[condP]`. Introduce `i j`. Use `congrFun (congrFun hXM₂ i) j` as an intermediate fact. Simplify using `only [submatrix_apply, id] at this`.
+
+Rewrite using `[this, Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun l _ => mul_mem (hX i l) (hM₂i.1 l j)`. Rewrite using `[if_pos hX, if_pos hXM]`. Set `F : Matrix A P k → ℂ` to `fun T => Φ (setCols P (X * M) ((ϖ ^ e)⁻¹ • T)) * (ψ (-pairCols P (X * M) ((ϖ ^ e)⁻¹ • T)) : ℂ)`. Establish `step : ∀ S : A → P → Res k e, Φ (setCols P X ((ϖ ^ e)⁻¹ • liftRes S) * M') * (ψ (-pairCols P X ((ϖ ^ e)⁻¹ • liftRes S)) : ℂ) = F (liftRes S * N.map (fun x => (x : k)))`.
+
+Introduce `S`. Rewrite using `[hNmap]`. Simplify using `only [F]`. Rewrite using `[← Matrix.smul_mul, ← hset, hpair]`. Establish `hF : ∀ T Z : Matrix A P k, (∀ i j, valuation k (Z i j) ≤ valuation k ((ϖ ^ e : kˣ) : k)) → F (T + Z) = F T`.
+
+Introduce `T Z hZ`. Simplify using `only [F, smul_add, setCols_add', pairCols_add', neg_add, AddChar.map_add_eq_mul]`. Establish `hcZ' : ∀ i j, ((ϖ ^ e)⁻¹ • Z) i j ∈ 𝒪[k]` using `fun i j => by`. Simplify `hcZ _ (hZ i j)` using `[Units.smul_def]`. Rewrite using `[hΦ.2, triv (-pairCols P (X * M) ((ϖ ^ e)⁻¹ • Z)), mul_one]`.
+
+Use `neg_mem (Subring.sum_mem _ fun i _ => Subring.sum_mem _ fun j _ => ?_)` and prove the remaining obligations. Conclude with `mul_mem (hcZ' i j) (hXM i j j.2)`. Use `FourierDepth.mem_matLat_smul_blockLat.2 ⟨fun i j hj => ?_, fun i j hj => ?_⟩` and prove the remaining obligations. Simplify `hcZ' i ⟨j, hj⟩` using `[setCols, hj]`. Simplify using `[setCols, hj]`.
+
+Simplify using `only [step]`. Conclude with `GlobalTheory.ColSubst.sum_liftRes_mul hϖ e N N' hNN F hF`. Establish `hXM : ¬ ∀ i, ∀ j ∈ P, (X * M) i j ∈ 𝒪[k]`. Introduce `h'`. Apply `hX` to reduce the goal to its premises.
+
+Rewrite `h'`, the goal using `[condP]`. Introduce `i j`. Establish `hX₂ : X₂ = (X * M).submatrix id Sum.inr * (M₂⁻¹).val`. Rewrite using `[hXM₂, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Establish `: X i (Sum.inr j) = ((X * M).submatrix id Sum.inr * (M₂⁻¹).val) i j` using `congrFun (congrFun hX₂ i) j`.
+
+Rewrite using `[this, Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun l _ => mul_mem (h' i l) (hM₂i.2 l j)`. Rewrite using `[if_neg hX, if_neg hXM]`.
+-/
 theorem invFourierSum_comp_fromBlocks {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k]
     {A D₁ D₂ : Type} [Fintype A] [DecidableEq A] [Fintype D₁] [DecidableEq D₁] [Fintype D₂] [DecidableEq D₂]

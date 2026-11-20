@@ -20,6 +20,9 @@ def omegaL {P : V → V → ℝ} (h : IsPairing P) : (V × V) →ₗ[ℝ] (V × 
     (fun w w' w'' => by simp only [omega, Prod.fst_add, Prod.snd_add, h.addL, h.addR]; ring)
     (fun c w w' => by simp only [omega, Prod.smul_fst, Prod.smul_snd, h.smulL, h.smulR, smul_eq_mul]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem omegaL_apply {P : V → V → ℝ} (h : IsPairing P) (w w' : V × V) :
     omegaL h w w' = omega P w w' := rfl
 

@@ -7,6 +7,35 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwistedDua
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GlobalTheory.CompanionTheory.Ar.Num (dotDual)
 
+/- English proof (translation)
+Introduce `O _ Ω _ _ ι x r B c hc`. Take `⟨k, f, cc, hf, hcc, hsum, hb⟩` from `B.frame c hc`. Use `choose b _ _ hiff using hb`. Establish `hgen : ∀ l q, ∃ n : ℕ, f l ^ n • b l q ∈ B.lat c`. Introduce `l q`.
+
+Use `(hiff l (b l q)).2 ⟨Pi.single q 1, fun q' => ⟨0, ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : q' = q`. Substitute `h` using the available equality. Simplify using `[Subalgebra.one_mem]`. Simplify using `[Pi.single_apply, h, Subalgebra.zero_mem]`.
+
+Simplify using `[Pi.single_apply, ite_smul]`. Use `choose nn hnn using hgen`. Take `⟨g, hg⟩ : ∃ g : Fin k × Fin r → Fin r → Ω, g = fun p => f p.1 ^ nn p.1 p.2 • b p.1 p.2` from `⟨_, rfl⟩`. Establish `hgmem : ∀ p, g p ∈ B.lat c`. Introduce `p`.
+
+Rewrite using `[hg]`. Conclude with `hnn _ _`. Use `⟨k * r, fun idx => g (finProdFinEquiv.symm idx), fun idx => hgmem _, ?_⟩` and prove the remaining obligations. Introduce `e he`. Establish `hloc : ∀ l, ∃ M : ℕ, ∃ a : Fin r → Ω, (∀ q, a q ∈ chartRing O x c) ∧ f l ^ M • e = ∑ q, a q • g (l, q)`.
+
+Introduce `l`. Take `⟨a, ha, hea⟩` from `(hiff l e).1 ⟨0, by simpa using he⟩`. Use `choose N hN using ha`. Establish `hle : ∀ q, N q + nn l q ≤ ∑ q', (N q' + nn l q')` using `fun q => Finset.single_le_sum (f := fun q' => N q' + nn l q') (fun _ _ => Nat.zero_le _) (Finset.mem_univ q)`. Use `⟨∑ q', (N q' + nn l q'), fun q => f l ^ (∑ q', (N q' + nn l q') - nn l q) * a q, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `q`. Establish `h1 : ∑ q', (N q' + nn l q') - nn l q = (∑ q', (N q' + nn l q') - nn l q - N q) + N q`. Use `hle q` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `beta_reduce`.
+
+Rewrite using `[h1, pow_add, mul_assoc]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (hf l) _) (hN q)`. Rewrite using `[hea, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun q _ => ?_)` and prove the remaining obligations. Simplify using `only [hg]`.
+
+Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[mul_right_comm, ← pow_add, Nat.sub_add_cancel (by have := hle q; omega)]`. Use `choose M a ha hMa using hloc`. Establish `hP : ∀ l, M l ≤ ∑ l', M l'` using `fun l => Finset.single_le_sum (f := M) (fun _ _ => Nat.zero_le _) (Finset.mem_univ l)`.
+
+Establish `hunit : ∃ d : Fin k → Ω, (∀ l, d l ∈ chartRing O x c) ∧ ∑ l, d l * f l ^ (∑ l', M l') = 1`. Set `F : Fin k → chartRing O x c` to `fun l => ⟨f l, hf l⟩`. Establish `h1 : Ideal.span (Set.range F) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, Ideal.mem_span_range_iff_exists_fun]`. Use `⟨fun l => ⟨cc l, hcc l⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hsum` using `[F]`. Establish `h2` using `Ideal.span_pow_eq_top _ h1 (∑ l', M l')`. Rewrite `h2` using `[← Set.range_comp, Ideal.eq_top_iff_one, Ideal.mem_span_range_iff_exists_fun]`. Take `⟨d, hd⟩` from `h2`.
+
+Use `⟨fun l => d l, fun l => (d l).2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hd` as an intermediate fact. Simplify `this` using `[F]`. Take `⟨d, hd, hdsum⟩` from `hunit`. Establish `key : e = ∑ p : Fin k × Fin r, (d p.1 * f p.1 ^ (∑ l', M l' - M p.1) * a p.1 p.2) • g p`.
+
+Rewrite using `[Fintype.sum_prod_type]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, mul_assoc, ← pow_add, Nat.sub_add_cancel (hP l)]`.
+
+Use `_ = _ := by`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[hMa l, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun q _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul]`.
+
+Use `⟨fun idx => d (finProdFinEquiv.symm idx).1 * f (finProdFinEquiv.symm idx).1 ^ (∑ l', M l' - M (finProdFinEquiv.symm idx).1) * a (finProdFinEquiv.symm idx).1 (finProdFinEquiv.symm idx).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `idx`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (hd _) (Subalgebra.pow_mem _ (hf _) _)) (ha _ _)`. Conclude with `key.trans (Equiv.sum_comp finProdFinEquiv.symm (fun p => (d p.1 * f p.1 ^ (∑ l', M l' - M p.1) * a p.1 p.2) • g p)).symm`.
+-/
 theorem PositivityTheory.Xgn.chart_lattice_finitely_generated : ∀ (O : Type) [CommRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (ι : Type) (x : ι → Ω) (r : ℕ)
     (B : ChartBundle O x r (Fin r → Ω)) (c : ι), x c ≠ 0 → ∃ (n : ℕ) (s : Fin n → Fin r → Ω), (∀ k, s k ∈ B.lat c) ∧
       ∀ e ∈ B.lat c, ∃ a : Fin n → Ω, (∀ k, a k ∈ chartRing O x c) ∧ e = ∑ k, a k • s k := by

@@ -26,6 +26,11 @@ private def fixG_pk {R : Type} [Ring R] (σ : E →ₐ[F] E) (X : Spc F E n) (f 
       exact Matrix.map_one f (map_zero _) (map_one _)
     rw [show (mat a).map f = 1 from ha, mul_one] at e
     exact e
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `w`. Establish `: gOff σ X S ≤ fixG_pk σ X (compInf F E w : AE F E →+* _)` using `(Subgroup.closure_le _).2 fun g hg => hg.1 w`. Conclude with `this h`. Introduce `v hv`.
+
+Establish `: gOff σ X S ≤ fixG_pk σ X (compFin F E v : AE F E →+* _)` using `(Subgroup.closure_le _).2 fun g hg => hg.2 v hv`. Conclude with `this h`.
+-/
 private theorem gOff_parts_pk {S : Finset (Pl F)} {c : UA σ X.J} (h : c ∈ gOff σ X S) :
     (∀ w : InfinitePlace F, (mat c).map (compInf F E w) = 1) ∧ ∀ v ∈ S, OffAt v c := by
   constructor
@@ -37,6 +42,13 @@ private theorem gOff_parts_pk {S : Finset (Pl F)} {c : UA σ X.J} (h : c ∈ gOf
     have : gOff σ X S ≤ fixG_pk σ X (compFin F E v : AE F E →+* _) :=
       (Subgroup.closure_le _).2 fun g hg => hg.2 v hv
     exact this h
+/- English proof (translation)
+Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `show mat c = 1`. Use extensionality with `i j`. Use `sub_eq_zero.1 (GlobalTheory.SWOpFin.tens_eq_zero_of_comp (fun v => ?_) (fun w => ?_))` and prove the remaining obligations. Establish `e : (mat c).map (compFin F E v) = (1 : Matrix (Fin n) (Fin n) (AE F E)).map (compFin F E v)`.
+
+Rewrite using `[Matrix.map_one (compFin F E v) (map_zero _) (map_one _)]`. Conclude with `h2 v`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 (congrFun (congrFun e i) j)`. Establish `e : (mat c).map (compInf F E w) = (1 : Matrix (Fin n) (Fin n) (AE F E)).map (compInf F E w)`.
+
+Rewrite using `[Matrix.map_one (compInf F E w) (map_zero _) (map_one _)]`. Conclude with `h1 w`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 (congrFun (congrFun e i) j)`.
+-/
 private theorem eq_one_of_parts_pk {c : UA σ X.J} (h1 : ∀ w : InfinitePlace F, (mat c).map (compInf F E w) = 1)
     (h2 : ∀ v, OffAt v c) : c = 1 := by
   refine Subtype.ext (Units.ext ?_)
@@ -54,6 +66,13 @@ private theorem eq_one_of_parts_pk {c : UA σ X.J} (h1 : ∀ w : InfinitePlace F
     rw [map_sub]
     exact sub_eq_zero.2 (congrFun (congrFun e i) j)
 end SlopeTestRemainingChoices
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n X _ _ hK hC N hN`. Establish `hs : IsCompact ({g : UA σ X.J | IntAll g} ∩ (interior N)ᶜ)` using `hK.inter_right isOpen_interior.isClosed_compl`. Establish `anti : ∀ {S T : Finset (Pl F)}, S ⊆ T → (gOff σ X T : Set (UA σ X.J)) ⊆ gOff σ X S` using `fun {S T} h => Subgroup.closure_mono fun g hg => ⟨hg.1, fun v hv => hg.2 v (h hv)⟩`. Establish `hd : Directed (· ⊇ ·) (fun S : Finset (Pl F) => (gOff σ X S : Set (UA σ X.J)))` using `fun S T => ⟨S ∪ T, anti Finset.subset_union_left, anti Finset.subset_union_right⟩`. Establish `hi : ({g : UA σ X.J | IntAll g} ∩ (interior N)ᶜ) ∩ ⋂ S : Finset (Pl F), (gOff σ X S : Set (UA σ X.J)) = ∅`.
+
+Use `Set.eq_empty_of_forall_notMem fun c hc => ?_` and prove the remaining obligations. Establish `h` using `Set.mem_iInter.1 hc.2`. Establish `e : c = 1` using `eq_one_of_parts_pk (gOff_parts_pk (h ∅)).1 fun v => (gOff_parts_pk (h {v})).2 v (Finset.mem_singleton_self v)`. Conclude with `hc.1.2 (e ▸ mem_interior_iff_mem_nhds.2 hN)`. Take `⟨S, hS⟩` from `hs.elim_directed_family_closed _ hC hi hd`.
+
+Use `⟨S, fun c hc hI => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `hm : c ∈ ({g : UA σ X.J | IntAll g} ∩ (interior N)ᶜ) ∩ (gOff σ X S : Set (UA σ X.J))` using `⟨⟨hI, fun h => hn (interior_subset h)⟩, hc⟩`. Rewrite `hm` using `[hS]`. Conclude with `hm`.
+-/
 theorem UpperTheory.exists_finite_places_integral_mem_nhds_one :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E} {n : ℕ} {X : Spc F E n}, _root_.UpperTheory.TP.W.GoodK σ B → X.IsHerm σ B n 0 → IsCompact {g : UA σ X.J | IntAll g} → (∀ S, IsClosed (gOff σ X S : Set (UA σ X.J))) → ∀ {N : Set (UA σ X.J)}, N ∈ 𝓝 (1 : UA σ X.J) → ∃ S₀ : Finset (Pl F), ∀ c ∈ gOff σ X S₀, IntAll c → c ∈ N := by
   intro F E _ _ _ _ _ σ B n X _ _ hK hC N hN

@@ -8,5 +8,8 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Asc
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Asc.VanJac.vanFB | exact GlobalTheory.Asc.VanJac.vanFB | (intros; apply GlobalTheory.Asc.VanJac.vanFB <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.vanishing_descends_fourierJacobi_to_bessel : ∀ D : D7, VanFB D := by
   first | exact @GlobalTheory.Asc.VanJac.vanFB | exact GlobalTheory.Asc.VanJac.vanFB | (intros; apply GlobalTheory.Asc.VanJac.vanFB <;> assumption)

@@ -18,8 +18,14 @@ def DeepBound : Prop :=
       ∫⁻ x in deepSet B q b, ENNReal.ofReal (kern B.I (phe B d) x x).re ∂(B.I.muA B.μf) ≤
         ENNReal.ofReal ((B.D : ℝ) * Real.exp (-((B.I.n : ℝ) ^ 2 * (B.I.f : ℝ))))
 
+/- English proof (translation)
+Introduce `_ h` and use `h.1`.
+-/
 example (B : RowsAut) (q : ℕ) (b : ℝ) : deepSet B q b ⊆ B.fund := fun _ h => h.1
 
+/- English proof (translation)
+Simplify using `[tauStar]`.
+-/
 example (B : RowsAut) (q : ℕ) (b : ℝ) : tauStar B q b = (bigX B b ^ (11 * q))⁻¹ := by
   simp [tauStar]
 

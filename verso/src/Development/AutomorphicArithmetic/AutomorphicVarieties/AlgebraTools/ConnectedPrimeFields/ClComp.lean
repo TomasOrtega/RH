@@ -8,6 +8,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_quotient]`. Establish `h : PrimeSpectrum.zeroLocus (nilradical R : Set R) = Set.univ`. Use extensionality with `p`. Simplify using `only [Set.mem_univ, iff_true, PrimeSpectrum.mem_zeroLocus, SetLike.coe_subset_coe]`. Conclude with `nilradical_le_prime p.asIdeal`.
+
+Rewrite using `[h]`. Conclude with `le_of_eq (Order.krullDim_eq_of_orderIso OrderIso.Set.univ).symm`.
+-/
 private theorem dim_le_nil {R : Type} [CommRing R] :
     ringKrullDim R ≤ ringKrullDim (R ⧸ nilradical R) := by
   rw [ringKrullDim_quotient]
@@ -18,6 +23,13 @@ private theorem dim_le_nil {R : Type} [CommRing R] :
   rw [h]
   exact le_of_eq (Order.krullDim_eq_of_orderIso OrderIso.Set.univ).symm
 
+/- English proof (translation)
+Introduce `O R _ _ _ _ _ _ _ _ hR a q h ha hq`. Use `haveI := hR.noeth`. Take `⟨s, hs, hrad⟩` from `ha`. Establish `hnil : (nilradical R).IsPrime`. Establish `hirr : IsIrreducible (PrimeSpectrum.zeroLocus ((⊥ : Ideal R) : Set R))`.
+
+Rewrite using `[Submodule.bot_coe, PrimeSpectrum.zeroLocus_singleton_zero]`. Conclude with `IrreducibleSpace.isIrreducible_univ _`. Conclude with `(PrimeSpectrum.isIrreducible_zeroLocus_iff ⊥).mp hirr`. Establish `hsup : (nilradical R ⊔ Ideal.span (s : Set R)).radical = a.radical`. Rewrite using `[Ideal.radical_sup, nilradical, Ideal.radical_idem, ← Ideal.radical_sup, Submodule.zero_eq_bot, bot_sup_eq, hrad]`.
+
+Establish `hq' : q ∈ (nilradical R ⊔ Ideal.span (s : Set R)).minimalPrimes`. Rewrite using `[← Ideal.radical_minimalPrimes, hsup, Ideal.radical_minimalPrimes]`. Conclude with `hq`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.AlgebraTools.Conn.clComp :
     ∀ {O R : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O]
       [CommRing R] [IsLocalRing R] [Algebra O R] [IrreducibleSpace (PrimeSpectrum R)], UpperTheory.V.CA.IsCL O R → ∀ (a q : Ideal R) (h : ℕ),

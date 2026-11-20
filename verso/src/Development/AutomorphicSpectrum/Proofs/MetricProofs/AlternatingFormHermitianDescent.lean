@@ -11,6 +11,37 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatBil
 
+/- English proof (translation)
+Use `choose k x hk hx using hs`. Establish `hkq : ∀ u, (k u : ℚ) ≠ 0` using `fun u => Nat.cast_ne_zero.mpr (hk u)`. Set `B0 : V → V → ℚ` to `fun u v => ((form (x u) (x v) : ℤ) : ℚ) / ((k u : ℚ) * (k v : ℚ))`. Establish `key : ∀ (u v : V) (m n : ℕ) (p q : Λ), m ≠ 0 → n ≠ 0 → e p = m • u → e q = n • v → B0 u v = ((form p q : ℤ) : ℚ) / ((m : ℚ) * (n : ℚ))`. Introduce `u v m n p q hm hn hp hq`.
+
+Establish `h1 : (k u) • p = m • x u` using `he (by`. Rewrite using `[map_nsmul, map_nsmul, hp, hx, smul_comm])`. Establish `h2 : (k v) • q = n • x v` using `he (by`. Rewrite using `[map_nsmul, map_nsmul, hq, hx, smul_comm])`. Establish `h3 : form ((k u) • p) ((k v) • q) = form (m • x u) (n • x v)` using `by rw [h1, h2]`.
+
+Simplify using `only [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul] at h3`. Establish `h4 : (k v : ℚ) * ((k u : ℚ) * ((form p q : ℤ) : ℚ)) = (n : ℚ) * ((m : ℚ) * ((form (x u) (x v) : ℤ) : ℚ))`. Conclude with `h3` after adjusting the coercions. Establish `hm' : (m : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr hm`. Establish `hn' : (n : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr hn`.
+
+Establish `hu` using `hkq u`. Establish `hv` using `hkq v`. Simplify using `only [B0]`. Rewrite using `[div_eq_div_iff (mul_ne_zero hu hv) (mul_ne_zero hm' hn')]`. Take the linear combination `(-1 : ℚ) * h4`.
+
+Establish `hsm : ∀ (c : ℚ) (u : V), e (c.num • x u) = (c.den * k u) • (c • u)`. Introduce `c u`. Rewrite using `[map_zsmul, hx, ← Nat.cast_smul_eq_nsmul ℚ (k u) u, ← Nat.cast_smul_eq_nsmul ℚ (c.den * k u), ← Int.cast_smul_eq_zsmul ℚ, smul_smul, smul_smul]`. Use `congr 1`. Use `Rat.mul_den_eq_num c` as an intermediate fact.
+
+Use `push_cast`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Set `B : LinearMap.BilinForm ℚ V` to `LinearMap.mk₂ ℚ B0 (by`. Introduce `u u' v`.
+
+Use `key (u + u') v (k u * k u') (k v) ((k u') • x u + (k u) • x u') (x v) (mul_ne_zero (hk u) (hk u')) (hk v) (by rw [map_add, map_nsmul, map_nsmul, hx, hx, smul_add, smul_smul, smul_smul, mul_comm (k u') (k u)]) (hx v)` as an intermediate fact. Rewrite using `[this]`. Simplify using `only [map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, B0, nsmul_eq_mul]`. Establish `hu` using `hkq u`. Establish `hu'` using `hkq u'`.
+
+Establish `hv` using `hkq v`. Use `push_cast`. Use the proof step `field_simp)`. Use the proof step `(by`. Introduce `c u v`.
+
+Use `key (c • u) v (c.den * k u) (k v) (c.num • x u) (x v) (mul_ne_zero c.den_nz (hk u)) (hk v) (hsm c u) (hx v)` as an intermediate fact. Rewrite using `[this]`. Simplify using `only [map_zsmul, LinearMap.smul_apply, B0, zsmul_eq_mul, smul_eq_mul]`. Establish `hu` using `hkq u`. Establish `hv` using `hkq v`.
+
+Establish `hd : (c.den : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr c.den_nz`. Establish `hc : c = (c.num : ℚ) / (c.den : ℚ)` using `(Rat.num_div_den c).symm`. Use `push_cast`. Use `conv_rhs => rw [hc]`. Use the proof step `field_simp)`.
+
+Use the proof step `(by`. Introduce `u v v'`. Use `key u (v + v') (k u) (k v * k v') (x u) ((k v') • x v + (k v) • x v') (hk u) (mul_ne_zero (hk v) (hk v')) (hx u) (by rw [map_add, map_nsmul, map_nsmul, hx, hx, smul_add, smul_smul, smul_smul, mul_comm (k v') (k v)])` as an intermediate fact. Rewrite using `[this]`. Simplify using `only [map_add, map_nsmul, B0, nsmul_eq_mul]`.
+
+Establish `hu` using `hkq u`. Establish `hv` using `hkq v`. Establish `hv'` using `hkq v'`. Use `push_cast`. Use the proof step `field_simp)`.
+
+Use the proof step `(by`. Introduce `c u v`. Use `key u (c • v) (k u) (c.den * k v) (x u) (c.num • x v) (hk u) (mul_ne_zero c.den_nz (hk v)) (hx u) (hsm c v)` as an intermediate fact. Rewrite using `[this]`. Simplify using `only [map_zsmul, B0, zsmul_eq_mul, smul_eq_mul]`.
+
+Establish `hu` using `hkq u`. Establish `hv` using `hkq v`. Establish `hd : (c.den : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr c.den_nz`. Establish `hc : c = (c.num : ℚ) / (c.den : ℚ)` using `(Rat.num_div_den c).symm`. Use `push_cast`.
+
+Use `conv_rhs => rw [hc]`. Use the proof step `field_simp)`. Use `⟨B, fun p q => ?_⟩` and prove the remaining obligations. Use `key (e p) (e q) 1 1 p q one_ne_zero one_ne_zero (one_smul _ _).symm (one_smul _ _).symm` as an intermediate fact. Simplify `this` using `[B, LinearMap.mk₂_apply]`.
+-/
 theorem exists_bilin_ext {Λ V : Type*} [AddCommGroup Λ] [AddCommGroup V] [Module ℚ V]
     (e : Λ →+ V) (he : Function.Injective e)
     (hs : ∀ v : V, ∃ (k : ℕ) (x : Λ), k ≠ 0 ∧ e x = k • v)
@@ -105,6 +136,31 @@ theorem exists_bilin_ext {Λ V : Type*} [AddCommGroup Λ] [AddCommGroup V] [Modu
   have := key (e p) (e q) 1 1 p q one_ne_zero one_ne_zero (one_smul _ _).symm (one_smul _ _).symm
   simpa [B, LinearMap.mk₂_apply] using this
 
+/- English proof (translation)
+Introduce `E _ _ _ Λ _ _ _ _ N e he hlin hs form alt hbij adj`. Take `⟨B, hB⟩` from `exists_bilin_ext e he hs form`. Establish `hskew : ∀ x y, form x y = - form y x`. Introduce `x y`. Use `alt (x + y)` as an intermediate fact.
+
+Simplify using `only [map_add, LinearMap.add_apply, alt] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `halt : ∀ u, B u u = 0`. Introduce `u`. Take `⟨k, x, hk, hx⟩` from `hs u`.
+
+Establish `h` using `hB x x`. Rewrite `h` using `[alt, hx, ← Nat.cast_smul_eq_nsmul ℚ k u]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul] at h`. Establish `hk' : (k : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr hk`. Simplify `h` using `[hk']`.
+
+Use `⟨B, hB, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a u v`. Establish `halg : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic a)`. Take `⟨n, hn, hint⟩` from `halg.exists_integral_multiple`. Take `⟨a₀, ha₀⟩ : ∃ a₀ : 𝓞 E, (a₀ : E) = n • a` from `⟨⟨n • a, hint⟩, rfl⟩`.
+
+Take `⟨a₀', ha₀'⟩ : ∃ a₀' : 𝓞 E, (a₀' : E) = IsCMField.complexConj E (a₀ : E)` from `⟨RingOfIntegers.mapRingEquiv (IsCMField.complexConj E : E ≃+* E) a₀, rfl⟩`. Take `⟨k, x, hk, hx⟩` from `hs u`. Take `⟨l, y, hl, hy⟩` from `hs v`. Establish `h2 : B (e (a₀ • x)) (e y) = B (e x) (e (a₀' • y))`. Rewrite using `[hB, hB, adj a₀ a₀' ha₀' x y]`.
+
+Rewrite `h2` using `[hlin, hlin, hx, hy]`. Establish `h3 : (a₀ : E) • (k • u) = ((n : ℚ) * (k : ℚ)) • (a • u)`. Use extensionality with `i`. Simplify using `[ha₀, Rat.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h4 : (a₀' : E) • (l • v) = ((n : ℚ) * (l : ℚ)) • (IsCMField.complexConj E a • v)`. Use extensionality with `i`. Simplify using `[ha₀', ha₀, Rat.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : k • u = (k : ℚ) • u` using `(Nat.cast_smul_eq_nsmul ℚ k u).symm`.
+
+Establish `h6 : l • v = (l : ℚ) • v` using `(Nat.cast_smul_eq_nsmul ℚ l v).symm`. Rewrite `h2` using `[h3, h4, h5, h6]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul] at h2`. Establish `hn' : (n : ℚ) ≠ 0` using `Int.cast_ne_zero.mpr hn`. Establish `hk' : (k : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr hk`.
+
+Establish `hl' : (l : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr hl`. Conclude with `mul_left_cancel₀ (mul_ne_zero (mul_ne_zero hn' hk') hl') (by linear_combination h2)`. Introduce `u v`. Conclude with `(LinearMap.IsAlt.neg (B := B) halt v u).symm`. Introduce `u hu`.
+
+Take `⟨k, y, hk, hy⟩` from `hs u`. Establish `hf : ∀ x, form x y = 0`. Introduce `x`. Establish `h : B (e x) (e y) = 0` using `by rw [hy, map_nsmul, hu (e x), smul_zero]`. Rewrite `h` using `[hB]`.
+
+Conclude with `h` after adjusting the coercions. Establish `h0 : form y = 0` using `LinearMap.ext fun x => by`. Rewrite using `[hskew, hf]`. Simplify using the standard rewrite rules. Establish `y0 : y = 0` using `hbij.1 (by rw [h0, map_zero])`.
+
+Rewrite `hy` using `[y0, map_zero, ← Nat.cast_smul_eq_nsmul ℚ]`. Conclude with `(smul_eq_zero.mp hy.symm).resolve_left (Nat.cast_ne_zero.mpr hk)`.
+-/
 theorem exists_rat_bilin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] [Module.Free ℤ Λ] [Module.Finite ℤ Λ] (N : ℕ) (e : Λ →+ (Fin N → E)), Function.Injective e → (∀ (a : 𝓞 E) x, e (a • x) = (a : E) • e x) → (∀ v : Fin N → E, ∃ (k : ℕ) (x : Λ), k ≠ 0 ∧ e x = k • v) → ∀ form : Λ →ₗ[ℤ] Λ →ₗ[ℤ] ℤ, (∀ x, form x x = 0) → Function.Bijective form → (∀ a a' : 𝓞 E, (a' : E) = IsCMField.complexConj E (a : E) → ∀ x y, form (a • x) y = form x (a' • y)) → ∃ B : LinearMap.BilinForm ℚ (Fin N → E), (∀ x y, B (e x) (e y) = ((form x y : ℤ) : ℚ)) ∧ (∀ (a : E) u v, B (a • u) v = B u (IsCMField.complexConj E a • v)) ∧ (∀ u v, B u v = - B v u) ∧ ∀ u, (∀ v, B v u = 0) → u = 0 := by
   intro E _ _ _ Λ _ _ _ _ N e he hlin hs form alt hbij adj
   obtain ⟨B, hB⟩ := exists_bilin_ext e he hs form

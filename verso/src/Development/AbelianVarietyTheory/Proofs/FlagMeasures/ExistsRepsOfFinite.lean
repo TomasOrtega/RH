@@ -68,12 +68,18 @@ section Gmap
 variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[← Submodule.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem gmap_mul' (a b : V ≃ₗ[K] V) (M : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap (a * b) M = Formalism.HermitianLatticesTheory.gmap a (Formalism.HermitianLatticesTheory.gmap b M) := by
   unfold Formalism.HermitianLatticesTheory.gmap
   rw [← Submodule.map_comp]
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+-/
 theorem gmap_one' (M : Submodule (𝓞 K) V) : Formalism.HermitianLatticesTheory.gmap (1 : V ≃ₗ[K] V) M = M := by
   ext x; simp [Formalism.HermitianLatticesTheory.gmap]
 
@@ -83,9 +89,15 @@ section Stab
 
 variable (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Formalism.HermitianLatticesTheory.isom _).one_mem, fun j => Submodule.map_id _, rfl⟩`.
+-/
 theorem one_mem_stabF : (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) ∈ stabF D F0 :=
   ⟨(Formalism.HermitianLatticesTheory.isom _).one_mem, fun j => Submodule.map_id _, rfl⟩
 
+/- English proof (translation)
+Use `⟨(Formalism.HermitianLatticesTheory.isom _).mul_mem ha.1 hb.1, fun j => ?_, ?_⟩` and prove the remaining obligations. Establish `: ((a * b : (VS D).V ≃ₗ[D.host.E] (VS D).V) : (VS D).V →ₗ[D.host.E] (VS D).V) = (a : (VS D).V →ₗ[D.host.E] (VS D).V) ∘ₗ (b : (VS D).V →ₗ[D.host.E] (VS D).V)` using `rfl`. Rewrite using `[this, Submodule.map_comp, hb.2.1 j, ha.2.1 j]`. Use `show a (b F0.z) = F0.z`. Rewrite using `[hb.2.2, ha.2.2]`.
+-/
 theorem mul_mem_stabF {a b : (VS D).V ≃ₗ[D.host.E] (VS D).V} (ha : a ∈ stabF D F0) (hb : b ∈ stabF D F0) :
     a * b ∈ stabF D F0 := by
   refine ⟨(Formalism.HermitianLatticesTheory.isom _).mul_mem ha.1 hb.1, fun j => ?_, ?_⟩
@@ -95,6 +107,11 @@ theorem mul_mem_stabF {a b : (VS D).V ≃ₗ[D.host.E] (VS D).V} (ha : a ∈ sta
   · show a (b F0.z) = F0.z
     rw [hb.2.2, ha.2.2]
 
+/- English proof (translation)
+Use `⟨(Formalism.HermitianLatticesTheory.isom _).inv_mem ha.1, fun j => ?_, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← ha.2.1 j]`. Rewrite using `[← Submodule.map_comp]`. Establish `: ((a⁻¹ : (VS D).V ≃ₗ[D.host.E] (VS D).V) : (VS D).V →ₗ[D.host.E] (VS D).V) ∘ₗ (a : (VS D).V →ₗ[D.host.E] (VS D).V) = LinearMap.id`. Use extensionality with `x`.
+
+Conclude with `a.symm_apply_apply x`. Rewrite using `[this, Submodule.map_id]`. Use `show a.symm F0.z = F0.z`. Rewrite using `[LinearEquiv.symm_apply_eq, ha.2.2]`.
+-/
 theorem inv_mem_stabF {a : (VS D).V ≃ₗ[D.host.E] (VS D).V} (ha : a ∈ stabF D F0) : a⁻¹ ∈ stabF D F0 := by
   refine ⟨(Formalism.HermitianLatticesTheory.isom _).inv_mem ha.1, fun j => ?_, ?_⟩
   · conv_lhs => rw [← ha.2.1 j]

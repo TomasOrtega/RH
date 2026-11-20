@@ -8,6 +8,17 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrow
 
 namespace GlobalTheory.CuspRapid
 
+/- English proof (translation)
+Establish `h0 : u 0 = 1` using `Units.ext (by rw [hu]; simp)`. Establish `hadd : ∀ τ s : ℝ, u (τ + s) = u τ * u s`. Introduce `τ s`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, hu, hu, hu]`.
+
+Simplify using `only [add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, hn, smul_zero, add_zero, add_smul]`. Normalize the expressions using the abelian group laws. Establish `hc : HasDerivAt (fun t => toL (u t).val) (toL n) 0`. Establish `e : (fun t : ℝ => toL (u t).val) = fun t : ℝ => oneL E a + t • toL n`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[hu]`. Both sides reduce to the same expression. Rewrite using `[e]`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const (toL n)).const_add (oneL E a)`. Establish `hd : ∀ τ : ℝ, HasDerivAt (fun t => ψ.1 (g * infGL E a (u t))) (lieD (toL n) ψ.1 (g * infGL E a (u τ))) τ`.
+
+Introduce `τ`. Establish `h1` using `hasDerivAt_curve ψ (g * infGL E a (u τ)) u (toL n) h0 hc`. Establish `h2 : HasDerivAt (fun s => ψ.1 (g * infGL E a (u τ) * infGL E a (u s))) (lieD (toL n) ψ.1 (g * infGL E a (u τ))) (τ - τ)` using `by rwa [sub_self]`. Establish `h3` using `h2.comp_sub_const τ τ`. Establish `e : (fun t => ψ.1 (g * infGL E a (u τ) * infGL E a (u (t - τ)))) = fun t => ψ.1 (g * infGL E a (u t))`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, ← map_mul, ← hadd, add_sub_cancel]`. Rewrite `h3` using `[e]`. Then use the resulting hypothesis. Establish `h` using `norm_image_sub_le_of_norm_deriv_le_segment_01' (f := fun t => ψ.1 (g * infGL E a (u t))) (fun τ _ => (hd τ).hasDerivWithinAt) (fun τ hτ => hM τ (Set.Ico_subset_Icc_self hτ))`. Simplify `h` using `[h0]`.
+-/
 theorem norm_sub_le_of_lieD_unipotent_segment (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (ψ : Sm E a) (g : GA E a) (n : Matrix (Fin a) (Fin a) (Cinf E)) (u : ℝ → GL (Fin a) (Cinf E)) (M : ℝ)
     (hn : n * n = 0) (hu : ∀ τ : ℝ, (u τ).val = 1 + τ • n)

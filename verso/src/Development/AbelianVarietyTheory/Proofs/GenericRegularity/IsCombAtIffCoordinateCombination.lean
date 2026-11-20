@@ -17,6 +17,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {M : MChart Y}
   {R : Type} [CommRing R]
 
+/- English proof (translation)
+Take `⟨u, hu1, hu2⟩` from `h`. Take `⟨u', hu1', hu2'⟩` from `h'`. Establish `e : u = u'` using `funext fun i => Over.OverMorphism.ext ((hu1 i).trans (hu1' i).symm)`. Rewrite using `[← hu2, ← hu2', e]`.
+-/
 theorem comb_unique {x : Sp R ⟶ Xo.X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber R) ⟶ Xo.univ.t.G.left)} {a : Fin m → R}
     {w w' : Sp (DualNumber R) ⟶ Xo.univ.t.G.left} (h : IsCombAt x v a w) (h' : IsCombAt x v a w') : w = w' := by
@@ -25,6 +28,9 @@ theorem comb_unique {x : Sp R ⟶ Xo.X} {m : ℕ}
   have e : u = u' := funext fun i => Over.OverMorphism.ext ((hu1 i).trans (hu1' i).symm)
   rw [← hu2, ← hu2', e]
 
+/- English proof (translation)
+Use `⟨_, fun i => Over.homMk (spMap (epsMul (a i)) ≫ v i) ?_, fun i => rfl, rfl⟩` and prove the remaining obligations. Use `show (spMap (epsMul (a i)) ≫ v i) ≫ Xo.univ.t.G.hom = spMap (algebraMap R (DualNumber R)) ≫ x`. Establish `e : (epsMul (a i)).comp (algebraMap R (DualNumber R)) = algebraMap R (DualNumber R)` using `RingHom.ext fun r => by simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[Category.assoc, hv i, ← Category.assoc, ← spMap_comp, e]`.
+-/
 theorem comb_exists {x : Sp R ⟶ Xo.X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber R) ⟶ Xo.univ.t.G.left)}
     (hv : ∀ j, v j ≫ Xo.univ.t.G.hom = spMap (algebraMap R (DualNumber R)) ≫ x) (a : Fin m → R) :
@@ -37,6 +43,17 @@ theorem comb_exists {x : Sp R ⟶ Xo.X} {m : ℕ}
 
 variable [Algebra c.F R] {f : Γ(Y.X, M.U) →+* R} {x : Sp R ⟶ Xo.X}
 
+/- English proof (translation)
+Take `⟨v', hv1, ⟨htan, -⟩, -⟩` from `M.lie R f Λ.t' Λ.m2`. Establish `p1 : IsGrpPullback Λ.t'.G Xo.univ.t.G x Λ.m1.φ` using `Λ.m1.2`. Establish `p2 : IsGrpPullback Λ.t'.G Y.t.G (spMap f ≫ M.hU.fromSpec) Λ.m2.φ` using `Λ.m2.2`. Use `⟨fun j => (v' j).left ≫ Λ.m1.φ, fun j => ?_, fun cv w => ?_⟩` and prove the remaining obligations. Unfold `IsTanAt`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Category.assoc, p1.1.w, ← Category.assoc, Over.w (v' j)]`. Both sides reduce to the same expression. Conclude with `(Chart.tan_push p1 (v' j)).1 (htan j)`. Unfold `MChart.Lift.Vec IsCombAt`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v'', u', hv'', hc, hw⟩`. Establish `e : v'' = v'` using `funext fun j => Chart.inj_over p2 ((hv'' j).trans (hv1 j).symm)`. Rewrite `hc` using `[e]`. Take `⟨u, hu1, hu2⟩` from `(Chart.comb_push p1 cv v' u').1 hc`.
+
+Conclude with `⟨u, fun i => hu1 i, hu2.trans hw⟩`. Introduce and unpack `⟨u, hu1, hu2⟩`. Establish `hw : w ≫ Xo.univ.t.G.hom = spMap (algebraMap R (DualNumber R)) ≫ x`. Rewrite using `[← hu2]`. Conclude with `Over.w (List.ofFn u).prod`.
+
+Set `u' : epsR R ⟶ Λ.t'.G` to `Over.homMk (p1.1.lift w (spMap (algebraMap R (DualNumber R))) hw) (p1.1.lift_snd _ _ _)`. Establish `hl : u'.left ≫ Λ.m1.φ = w` using `p1.1.lift_fst _ _ _`. Conclude with `⟨v', u', hv1, (Chart.comb_push p1 cv v' u').2 ⟨u, fun i => hu1 i, hu2.trans hl.symm⟩, hl⟩`.
+-/
 theorem exists_frame (Λ : M.Lift f x) : ∃ V : Fin M.n → (Sp (DualNumber R) ⟶ Xo.univ.t.G.left),
     (∀ j, IsTanAt x (V j)) ∧ ∀ cv w, Λ.Vec cv w ↔ IsCombAt x V cv w := by
   obtain ⟨v', hv1, ⟨htan, -⟩, -⟩ := M.lie R f Λ.t' Λ.m2
@@ -64,6 +81,15 @@ theorem exists_frame (Λ : M.Lift f x) : ∃ V : Fin M.n → (Sp (DualNumber R) 
       have hl : u'.left ≫ Λ.m1.φ = w := p1.1.lift_fst _ _ _
       exact ⟨v', u', hv1, (Chart.comb_push p1 cv v' u').2 ⟨u, fun i => hu1 i, hu2.trans hl.symm⟩, hl⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y M R _ _ f x Λ m cv w a w' hw`. Take `⟨V, hV, hVec⟩` from `exists_frame Λ`. Establish `hwc : ∀ i, IsCombAt x V (cv i) (w i)` using `fun i => (hVec _ _).1 (hw i)`. Establish `e : (∑ i, a i • cv i) = (Matrix.of fun j i => cv i j).mulVec a`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `key : ∀ w'', IsCombAt x w a w'' → IsCombAt x V (∑ i, a i • cv i) w''`. Introduce `w'' h`. Rewrite using `[e]`. Conclude with `GlobalTheory.TangentLinear.isCombAt_mulVec E H Dw l Xo R x V hV w _ a w'' (fun i => hwc i) h`.
+
+Establish `hov : ∀ {k : Fin M.n → R} {w0}, IsCombAt x V k w0 → w0 ≫ Xo.univ.t.G.hom = spMap (algebraMap R (DualNumber R)) ≫ x`. Introduce and unpack `k w0 ⟨u, -, hu⟩`. Rewrite using `[← hu]`. Conclude with `Over.w (List.ofFn u).prod`. Rewrite using `[hVec]`.
+
+Prove the components needed by the constructor for the conclusion. Conclude with `key w'`. Introduce `h`. Take `⟨w'', h''⟩` from `comb_exists (fun i => hov (hwc i)) a`. Conclude with `comb_unique (key w'' h'') h ▸ h''`.
+-/
 theorem isCombAt_iff_vec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (M : MChart Y), ∀ (R : Type) [CommRing R] [Algebra c.F R] (f : Γ(Y.X, M.U) →+* R) (x : Sp R ⟶ Xo.X) (Λ : M.Lift f x), ∀ (m : ℕ) (cv : Fin m → Fin M.n → R) (w : Fin m → (Sp (DualNumber R) ⟶ Xo.univ.t.G.left)) (a : Fin m → R) (w' : Sp (DualNumber R) ⟶ Xo.univ.t.G.left), (∀ i, Λ.Vec (cv i) (w i)) → (IsCombAt x w a w' ↔ Λ.Vec (∑ i, a i • cv i) w') := by
   intro E _ _ _ H Dw l Xo c O _ β Y M R _ _ f x Λ m cv w a w' hw
   obtain ⟨V, hV, hVec⟩ := exists_frame Λ

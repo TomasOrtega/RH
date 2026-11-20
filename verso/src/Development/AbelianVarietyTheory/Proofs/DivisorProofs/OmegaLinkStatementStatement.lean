@@ -10,5 +10,8 @@ open Formalism.MainNotions.DIV.Cons (intO SCF)
 open GlobalTheory.OmegaHT
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.OmegaHT.Link.linkSt | exact GlobalTheory.OmegaHT.Link.linkSt | (intros; apply GlobalTheory.OmegaHT.Link.linkSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.OmegaLink : GlobalTheory.OmegaHT.LinkSt := by
   first | exact @GlobalTheory.OmegaHT.Link.linkSt | exact GlobalTheory.OmegaHT.Link.linkSt | (intros; apply GlobalTheory.OmegaHT.Link.linkSt <;> assumption)

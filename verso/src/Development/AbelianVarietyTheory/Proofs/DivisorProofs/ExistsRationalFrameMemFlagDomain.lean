@@ -11,6 +11,13 @@ namespace GlobalTheory.OrthoFrame
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `hε2 : 0 < ε / 2` using `half_pos hε`. Use `choose z hz using fun τ : Ψ => Metric.denseRange_iff.1 (GlobalTheory.ShortVec.denseRange_emb τ.1 (IsTotallyComplex.complexEmbedding_not_isReal τ.1)) (w τ) _ hε2`. Take `⟨x, hx⟩` from `GlobalTheory.LocalQuad.Approx.exists_forall_abv_sub_lt (v := fun τ : Ψ => (InfinitePlace.mk τ.1).1) (fun τ => InfinitePlace.isNontrivial _) (by`. Introduce `σ τ hne h`. Break down `InfinitePlace.mk_eq_iff.1 (InfinitePlace.eq_iff_isEquiv.2 h) with h1 | h1` into its components or cases.
+
+Conclude with `hne (Subtype.ext h1)`. Conclude with `(hΨ σ.1).1 σ.2 (h1 ▸ τ.2)) z hε2`. Use `⟨x, fun τ => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖τ.1 (z τ - x)‖ < ε / 2`. Rewrite using `[← InfinitePlace.apply]`.
+
+Conclude with `hx τ`. Rewrite `h1` using `[map_sub, ← dist_eq_norm]`. Establish `h2` using `dist_triangle (w τ) (τ.1 (z τ)) (τ.1 x)`. Establish `h3` using `hz τ`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_approx_cmType (Ψ : Finset (E →+* ℂ))
     (hΨ : ∀ τ : E →+* ℂ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ) (w : Ψ → ℂ) {ε : ℝ}
     (hε : 0 < ε) : ∃ x : E, ∀ τ : Ψ, dist (w τ) (τ.1 x) < ε := by
@@ -32,6 +39,11 @@ theorem exists_approx_cmType (Ψ : Finset (E →+* ℂ))
   have h3 := hz τ
   linarith
 
+/- English proof (translation)
+Use `choose P hP using X.signature`. Use `⟨fun τ k a => P τ k a, fun τ => ⟨(hP τ).1, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `h : dmin X.Gm (fun τ k a => P τ k a) τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Express the relevant statement in the definitionally equal form `lminor (gram τ.1 X.Gm (P τ)) i = _`. Rewrite using `[(hP τ).2, lminor, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal, psgn, ← Fin.prod_univ_eq_prod_range, Complex.ofReal_prod]`.
+
+Both sides reduce to the same expression. Rewrite using `[h, Complex.ofReal_re]`. Use `mul_self_pos.2 (Finset.prod_ne_zero_iff.2 fun a _ => ?_)` and prove the remaining obligations. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem dom_nonempty {r : ℕ} (X : Data E r) : X.dom.Nonempty := by
   choose P hP using X.signature
   refine ⟨fun τ k a => P τ k a, fun τ => ⟨(hP τ).1, fun i => ?_⟩⟩
@@ -45,6 +57,13 @@ theorem dom_nonempty {r : ℕ} (X : Data E r) : X.dom.Nonempty := by
   unfold sgn
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Introduce `E _ _ _ r X`. Take `⟨P, hP⟩` from `dom_nonempty X`. Take `⟨ε, hε, hb⟩` from `Metric.isOpen_iff.1 (FourierCoefficientDomain.isOpen_dom X) P hP`. Use `choose u hu using fun a k : Fin r => exists_approx_cmType X.Ψ X.cmType (fun τ => P τ k a) hε`. Use `⟨u, hb ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Metric.mem_ball, dist_comm, dist_pi_lt_iff hε]`. Introduce `τ`. Rewrite using `[dist_pi_lt_iff hε]`. Introduce `k`. Rewrite using `[dist_pi_lt_iff hε]`.
+
+Introduce `a`. Conclude with `hu a k τ`.
+-/
 theorem exists_frm_mem_dom : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r),
     ∃ u : Fin r → Fin r → E, GlobalTheory.OrthoFrame.frm X.Ψ u ∈ X.dom := by

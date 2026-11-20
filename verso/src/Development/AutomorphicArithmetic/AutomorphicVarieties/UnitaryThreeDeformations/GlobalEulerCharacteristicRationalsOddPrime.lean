@@ -12,6 +12,17 @@ private noncomputable def subquotEquiv {R R' X : Type*} [CommRing R] [CommRing R
     rw [Submodule.quotientRel_def, Submodule.quotientRel_def]
     exact hB _
 
+/- English proof (translation)
+Introduce `hF hE Ω _ _ _ l _ hl k M _ _ _ _ _ _ _ _ S ρ hS hρ σ hσ`. Use `haveI : CharP k (l ^ 1) := by rw [pow_one]; infer_instance`. Use `letI : Module (ZMod (l ^ 1)) M := Module.compHom _ (ZMod.castHom (dvd_refl _) k)`. Set `ρ' : Representation (ZMod (l ^ 1)) (Gam Ω S) M` to `{ toFun := fun g => { toFun := ρ g map_add' := map_add (ρ g) map_smul' := fun c m => map_smul (ρ g) (ZMod.castHom (dvd_refl _) k c) m } map_one' := LinearMap.ext fun m => show ρ 1 m = m by rw [map_one]; rfl map_mul' := fun g h => LinearMap.ext fun m => show ρ (g * h) m = ρ g (ρ h …`. Rewrite using `[map_mul]`.
+
+Use `rfl }`. Establish `e0 : H0 ρ ≃ H0 ρ'` using `Equiv.subtypeEquivRight fun _ => Iff.rfl`. Establish `e1 : H1 ρ ≃ H1 ρ'` using `subquotEquiv _ _ _ _ (fun _ => Iff.rfl) (fun _ => Iff.rfl)`. Establish `e2 : H2 ρ ≃ H2 ρ'` using `subquotEquiv _ _ _ _ (fun _ => Iff.rfl) (fun _ => Iff.rfl)`. Establish `ec : LinearMap.ker (ρ (toGS Ω _ σ) - LinearMap.id) ≃ {m : M // ρ' (toGS Ω _ σ) m = m}` using `Equiv.subtypeEquivRight fun m => by`.
+
+Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `Iff.rfl`. Take `⟨-, f1, f2, -⟩` from `hF ℚ Ω l 1 M S ρ' one_pos hS hρ`. Establish `h` using `UpperTheory.card_global_euler_characteristic_rationals hE Ω l hl M S ρ' hS hρ σ hσ`. Use `haveI : Finite (H1 ρ) := Finite.of_equiv _ e1.symm`.
+
+Use `haveI : Finite (H2 ρ) := Finite.of_equiv _ e2.symm`. Use `haveI : Module.Finite k M := Module.Finite.of_finite`. Use `haveI : Module.Finite k (H1 ρ) := Module.Finite.of_finite`. Use `haveI : Module.Finite k (H2 ρ) := Module.Finite.of_finite`. Establish `hk : 1 < Nat.card k` using `Finite.one_lt_card`.
+
+Use `⟨inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Apply `Nat.pow_right_injective hk` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[pow_add, pow_add, pow_add, ← Module.natCard_eq_pow_finrank, ← Module.natCard_eq_pow_finrank, ← Module.natCard_eq_pow_finrank, ← Module.natCard_eq_pow_finrank, ← Module.natCard_eq_pow_finrank, Nat.card_congr e0, Nat.card_congr e1, Nat.card_congr e2, Nat.card_congr ec]`. Conclude with `h`.
+-/
 theorem UpperTheory.global_euler_characteristic_rationals_odd_prime :
     GlobalFiniteness → GlobalEulerChar → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (k M : Type) [Field k] [Finite k] [CharP k l] [AddCommGroup M] [Module k M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (S : Finset Pl) (ρ : Representation k (Gam Ω S) M),
         ContainsAbove S l → ContAction ρ → ∀ σ : Formalism.ConjugateSelfDual.G ℚ Ω, IsCC σ →

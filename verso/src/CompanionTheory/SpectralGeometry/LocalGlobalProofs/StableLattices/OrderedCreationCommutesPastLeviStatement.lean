@@ -8,6 +8,9 @@ open Formalism.REAL (GlRel KHighest IsWeight)
 open CompanionTheory.D.DSIC (KUnit)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FarReg.BdProd.bd_prod | exact GlobalTheory.CompanionTheory.FarReg.BdProd.bd_prod | (intros; apply GlobalTheory.CompanionTheory.FarReg.BdProd.bd_prod <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.ordered_creation_commutes_past_levi : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V),
     (∀ e : Pos n, (bd (allT n) E * cre e + cre e * bd (allT n) E : Module.End ℂ (Cn n V)) = lF E e.1.1 e.1.2) →
     ∀ (l : List (Pos n)) (x : Cn n V),

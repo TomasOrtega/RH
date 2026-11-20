@@ -7,6 +7,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing Topological
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GenFrame.detOm_frame_gen | exact GlobalTheory.GenFrame.detOm_frame_gen | (intros; apply GlobalTheory.GenFrame.detOm_frame_gen <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.det_bundle_invertible_sections_local : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (ρ : gen Y ⟶ gen X), Y.jQ ≫ ρ = X.jQ →
     (GlobalTheory.FlagMod.detOm Y).IsLB → ∀ y : gen Y, ∃ U : (gen X).affineOpens, ρ y ∈ U.1 ∧

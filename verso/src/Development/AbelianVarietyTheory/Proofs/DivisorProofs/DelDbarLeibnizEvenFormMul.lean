@@ -10,6 +10,17 @@ open scoped ContDiff ComplexConjugate Topology
 
 namespace GlobalTheory.CxForm.HolAtlas
 
+/- English proof (translation)
+Establish `hloc : ∀ i, A.loc (GlobalTheory.LineForm.fld A w * β) i = fun v => A.loc (GlobalTheory.LineForm.fld A w) i v * A.loc β i v`. Introduce `i`. Use function extensionality and compare the values at `v`. Unfold `HolAtlas.loc`. Use `split_ifs`.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish `hd : ∀ α : A.Fld, A.IsForm α → ∀ (x : A.Pt) (S), DifferentiableAt ℝ (fun v => (bas n).repr (A.loc α x.1.1 v) S) x.crd` using `fun α hα x S => ((hα.smooth x.1.1 S).contDiffAt ((A.e x.1.1).open_target.mem_nhds (x.ch.map_source x.2))).differentiableAt (by simp)`. Establish `key` using `fun x : A.Pt => GlobalTheory.T.delOperatorAt_dbarOperatorAt_leibniz_of_commute n (A.loc (GlobalTheory.LineForm.fld A w) x.1.1) (A.loc β x.1.1) x.crd (GlobalTheory.LineForm.fld A w x) (hd _ hw x) (hd _ hβ x)`. Establish `hc : ∀ (x : A.Pt) (b : Alt n), b * A.loc (GlobalTheory.LineForm.fld A w) x.1.1 x.crd = GlobalTheory.LineForm.fld A w x * b`.
+
+Introduce `x b`. Rewrite using `[A.loc_crd]`. Conclude with `Subalgebra.mem_center_iff.1 (w x).2 b`. Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `x`.
+
+Use `(key x).1 fun a => hc x _` as an intermediate fact. Rewrite `this` using `[A.loc_crd β x]`. Simplify using `only [HolAtlas.del, Pi.add_apply, Pi.mul_apply, hloc]`. Conclude with `this`. Use function extensionality and compare the values at `x`.
+
+Use `(key x).2 fun a => hc x _` as an intermediate fact. Rewrite `this` using `[A.loc_crd β x]`. Simplify using `only [HolAtlas.dbar, Pi.add_apply, Pi.mul_apply, hloc]`. Conclude with `this`.
+-/
 theorem del_dbar_even_mul (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n) (w : A.Pt → Ev n) (β : A.Fld)
     (hw : A.IsForm (GlobalTheory.LineForm.fld A w)) (hβ : A.IsForm β) :
     A.del (GlobalTheory.LineForm.fld A w * β) = A.del (GlobalTheory.LineForm.fld A w) * β + GlobalTheory.LineForm.fld A w * A.del β ∧

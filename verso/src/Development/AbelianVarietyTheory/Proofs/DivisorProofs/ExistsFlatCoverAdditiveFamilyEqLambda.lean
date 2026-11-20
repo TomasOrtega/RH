@@ -10,6 +10,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DualCover
 
+/- English proof (translation)
+Introduce `R _ _ A _ g hA _ L hL hamp T N hN`. Establish `hP : (abelian₂ A L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `eP : ∀ (Y : Over (Sp R)) (a b : Y ⟶ A), evc hP a b = lam (cls L hL) a b` using `fun Y a b ↦ by`. Rewrite using `[evc, show cls _ hP = lam (cls L hL) (fst A A) (snd A A) from cls_cube_two hL _ _ hP, pull_lam, lift_fst, lift_snd]`. Establish `loc : ∀ V : T.left.affineOpens, ∃ (H : Over (Sp R)) (h : H ⟶ A ⊗ Over.mk (V.1.ι ≫ T.hom)), IsClosedImmersion h.left ∧ IsFinite (h ≫ snd A (Over.mk (V.1.ι ≫ T.hom))).left ∧ Flat (h ≫ snd A (Over.mk (V.1.ι ≫ T.hom))).left ∧ Surjective (h ≫ snd A (Over.mk (V.1.ι ≫ T.hom))).left ∧ ∀ …`.
+
+Introduce `V`. Use `haveI : IsAffine (Over.mk (V.1.ι ≫ T.hom)).left := V.2`. Use `set j : Over.mk (V.1.ι ≫ T.hom) ⟶ T := Over.homMk V.1.ι rfl`. Establish `hNV : (ev N (fst A (Over.mk (V.1.ι ≫ T.hom))) (snd A _ ≫ j)).IsLB` using `pull_isLB hN.isLB _`. Establish `eV : ∀ (Y : Over (Sp R)) (a : Y ⟶ A) (t : Y ⟶ Over.mk (V.1.ι ≫ T.hom)), evc hNV a t = evc hN.isLB a (t ≫ j)` using `fun Y a t ↦ by`.
+
+Rewrite using `[evc_ev hN.isLB, lift_fst, lift_snd_assoc]`. Establish `fV : Fam A (ev N (fst A (Over.mk (V.1.ι ≫ T.hom))) (snd A _ ≫ j))` using `⟨hNV, (isAdditive_iff hNV).2 fun Y a a' t ↦ by`. Rewrite using `[eV, eV, eV]`. Conclude with `(isAdditive_iff hN.isLB).1 hN.add Y a a' (t ≫ j)⟩`. Take `⟨H, h, h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.exists_twistedKernel_closed_finiteFlat_affineBase R A hA L hL hamp _ _ fV`.
+
+Use `⟨H, h, h1, h2, h3, h4, fun Y u t ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← h5, same_iff hP hN.isLB, same_iff hP hNV, eV, Category.assoc]`. Take `⟨H, h, -, hfin, hfl, hsu, hrep⟩` from `GlobalTheory.T.exists_lineBundleFamily_agreementLocus_of_affineOpens R A hA A T (abelian₂ A L) N hP hN.isLB (fun Y u ↦ by rw [eP, lam_one_left]) (fun Y t ↦ hN.add.evc_one hN.isLB t) loc`. Use `⟨H, h ≫ snd A T, h ≫ fst A T, hfl, hsu, inferInstance, fun Y a y ↦ ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have hs : Same A (abelian₂ A L) N (y ≫ h ≫ fst A T) (y ≫ h ≫ snd A T) := (hrep Y _ _).2 ⟨y, by ext <;> simp⟩`.
+
+Establish `e` using `congrArg (CechPic.pull (lift a (𝟙 Y)).left) ((same_iff hP hN.isLB _ _).1 hs)`. Rewrite `e` using `[pull_evc, pull_evc, lift_fst, lift_snd_assoc, Category.id_comp, lift_snd_assoc, Category.id_comp, eP]`. Rewrite using `[← e, lam]`.
+-/
 theorem exists_cover : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (L : LB A.left) (hL : L.IsLB), Out.RelAmple A L → ∀ (T : Over (Sp R)) (N : LB (A ⊗ T).left) (hN : Fam A N), ∃ (H : Over (Sp R)) (h : H ⟶ T) (x : H ⟶ A), Flat h.left ∧ Surjective h.left ∧ QuasiCompact h.left ∧ (∀ (Y : Over (Sp R)) (a : Y ⟶ A) (y : Y ⟶ H), evc hN.isLB a (y ≫ h) = GlobalTheory.CechPic.pull (a * (y ≫ x)).left (cls L hL) - GlobalTheory.CechPic.pull a.left (cls L hL) - GlobalTheory.CechPic.pull (y ≫ x).left (cls L hL) + GlobalTheory.CechPic.pull (1 : Y ⟶ A).left (cls L hL)) := by
   intro R _ _ A _ g hA _ L hL hamp T N hN
   have hP : (abelian₂ A L).IsLB := LB.isLB_linComb hL _ _

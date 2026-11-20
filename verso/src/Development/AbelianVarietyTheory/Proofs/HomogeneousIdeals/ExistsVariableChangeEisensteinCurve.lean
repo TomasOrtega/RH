@@ -17,11 +17,17 @@ variable (R) in
 
 def gaussianCurve : WeierstrassCurve R := ⟨0, 0, 0, -1, 0⟩
 
+/- English proof (translation)
+Simplify using `[gaussianCurve, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Evaluate the numerical expressions.
+-/
 theorem gaussianCurve_Δ : (gaussianCurve R).Δ = 2 ^ 6 := by
   simp [gaussianCurve, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄,
     WeierstrassCurve.b₆, WeierstrassCurve.b₈]
   norm_num
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gaussianCurve_Δ (R := R) ▸ h2.pow 6⟩`.
+-/
 theorem isElliptic_gaussianCurve (h2 : IsUnit (2 : R)) : (gaussianCurve R).IsElliptic :=
   ⟨gaussianCurve_Δ (R := R) ▸ h2.pow 6⟩
 
@@ -30,8 +36,14 @@ section Gaussian
 variable {i : R} (hi : i ^ 2 = -1)
 include hi
 
+/- English proof (translation)
+Take the linear combination `-hi`.
+-/
 theorem neg_mul_self_eq_one : -i * i = 1 := by linear_combination -hi
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp only [curve, gaussianCurve, mul_zero]`. Take the linear combination `(1 - i ^ 2) * hi`.
+-/
 theorem curve_gaussianCurve : curve (-i) (gaussianCurve R) = gaussianCurve R := by
   ext <;> simp only [curve, gaussianCurve, mul_zero]
   linear_combination (1 - i ^ 2) * hi
@@ -43,6 +55,11 @@ variable [(gaussianCurve R).IsElliptic]
 
 instance isMonHom_gaussianAut : IsMonHom (gaussianAut hi) := isMonHom_scaleOver ..
 
+/- English proof (translation)
+Use `over_hom_ext_ptOver _ fun A _ _ P hP => ?_` and prove the remaining obligations. Rewrite using `[← Hom.inv_def, ptOver_inv, gaussianAut, ← Category.assoc, ptOver_scaleOver]`. Use `(ptOver_scaleOver _ _ _ _ _).trans (ptOver_congr _ ?_)` and prove the remaining obligations. Rewrite using `[triple_triple, ← map_mul, show -i * -i = -1 by linear_combination hi]`. Use extensionality with `j`.
+
+Apply the tactic sequence `fin_cases j <;> simp [triple, WeierstrassCurve.Projective.neg, WeierstrassCurve.Projective.negY, gaussianCurve, WeierstrassCurve.baseChange]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaussianAut_sq : gaussianAut hi ≫ gaussianAut hi = ι[schemeOver (gaussianCurve R)] := by
   refine over_hom_ext_ptOver _ fun A _ _ P hP => ?_
   rw [← Hom.inv_def, ptOver_inv, gaussianAut, ← Category.assoc, ptOver_scaleOver]
@@ -66,11 +83,17 @@ variable (R) in
 
 def eisensteinCurve : WeierstrassCurve R := ⟨0, 0, 1, 0, 0⟩
 
+/- English proof (translation)
+Simplify using `[eisensteinCurve, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Evaluate the numerical expressions.
+-/
 theorem eisensteinCurve_Δ : (eisensteinCurve R).Δ = -3 ^ 3 := by
   simp [eisensteinCurve, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄,
     WeierstrassCurve.b₆, WeierstrassCurve.b₈]
   norm_num
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨eisensteinCurve_Δ (R := R) ▸ (h3.pow 3).neg⟩`.
+-/
 theorem isElliptic_eisensteinCurve (h3 : IsUnit (3 : R)) : (eisensteinCurve R).IsElliptic :=
   ⟨eisensteinCurve_Δ (R := R) ▸ (h3.pow 3).neg⟩
 
@@ -79,12 +102,23 @@ section Eisenstein
 variable {w : R} (hw : w ^ 2 + w + 1 = 0)
 include hw
 
+/- English proof (translation)
+Take the linear combination `(w - 1) * hw`.
+-/
 theorem sq_mul_self_eq_one : w ^ 2 * w = 1 := by linear_combination (w - 1) * hw
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp only [curve, eisensteinCurve, mul_zero]`. Take the linear combination `(w ^ 3 + 1) * sq_mul_self_eq_one hw`.
+-/
 theorem curve_eisensteinCurve : curve (w ^ 2) (eisensteinCurve R) = eisensteinCurve R := by
   ext <;> simp only [curve, eisensteinCurve, mul_zero]
   linear_combination (w ^ 3 + 1) * sq_mul_self_eq_one hw
 
+/- English proof (translation)
+Establish `h : ρ w ^ 2 * ρ w = 1` using `by rw [← map_pow, ← map_mul, sq_mul_self_eq_one hw, map_one]`. Rewrite using `[triple, map_pow]`. Use `congr 1`. Take the linear combination `(ρ w * P 0) * h`. Use `congr 1`.
+
+Take the linear combination `((ρ w ^ 3 + 1) * P 1) * h`.
+-/
 theorem triple_sq {A : Type} [CommRing A] (ρ : R →+* A) (P : Fin 3 → A) :
     triple (ρ (w ^ 2)) P = ![ρ w * P 0, P 1, P 2] := by
   have h : ρ w ^ 2 * ρ w = 1 := by rw [← map_pow, ← map_mul, sq_mul_self_eq_one hw, map_one]
@@ -101,6 +135,15 @@ variable [(eisensteinCurve R).IsElliptic]
 
 instance isMonHom_eisensteinAut : IsMonHom (eisensteinAut hw) := isMonHom_scaleOver ..
 
+/- English proof (translation)
+Rewrite using `[_root_.mul_assoc, mul_eq_one_iff_inv_eq, _root_.mul_comm]`. Use `over_hom_ext_ptOver _ fun A _ _ P hP => ?_` and prove the remaining obligations. Rewrite using `[GrpObj.comp_inv, MonObj.comp_mul, Category.comp_id, eisensteinAut, ← Category.assoc, ptOver_scaleOver]`. Use `((congrArg (·⁻¹) (ptOver_scaleOver _ _ _ _ _)).trans (ptOver_inv _ _)).trans (ptOver_mul_ptOver _ _ _ _ ?_).symm` and prove the remaining obligations. Establish `e : (eisensteinCurve R).baseChange A = ⟨0, 0, 1, 0, 0⟩`.
+
+Apply the tactic sequence `ext <;> simp [eisensteinCurve, WeierstrassCurve.baseChange]`. Establish `hA : algebraMap R A w ^ 2 + algebraMap R A w + 1 = 0`. Simplify using `using congrArg (algebraMap R A) hw`. Establish `hE` using `hP.equation`. Rewrite `hE` using `[e, ← WeierstrassCurve.Projective.fin3_def P]`.
+
+Use `isSumTriple_cubeRoot hA hE` as an intermediate fact. Rewrite `this` using `[WeierstrassCurve.Projective.fin3_def]`. Rewrite using `[e, triple_sq hw, triple_sq hw]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`.
+
+Apply the tactic sequence `fin_cases j <;> simp [WeierstrassCurve.Projective.neg, WeierstrassCurve.Projective.negY]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eisensteinAut_sq :
     (eisensteinAut hw ≫ eisensteinAut hw) * eisensteinAut hw * 𝟙 _ = 1 := by
   rw [_root_.mul_assoc, mul_eq_one_iff_inv_eq, _root_.mul_comm]
@@ -130,6 +173,9 @@ def eisensteinAct : OAct EisensteinInt (schemeOver (eisensteinCurve R)) :=
 
 end Eisenstein
 
+/- English proof (translation)
+Use `⟨algebraMap GaussianInt _ ⟨0, 1⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, show (⟨0, 1⟩ : GaussianInt) ^ 2 = -1 by decide, map_neg, map_one]`. Simplify `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (2 : GaussianInt)) (2 : GaussianInt)` using `only [map_ofNat]`. Conclude with `charZero_of_injective_algebraMap (R := GaussianInt) (IsLocalization.injective _ (powers_le_nonZeroDivisors_of_noZeroDivisors (two_ne_zero (α := GaussianInt))))`.
+-/
 example : ∃ i : Localization.Away (2 : GaussianInt), i ^ 2 = -1 ∧
     IsUnit (2 : Localization.Away (2 : GaussianInt)) ∧
     CharZero (Localization.Away (2 : GaussianInt)) := by

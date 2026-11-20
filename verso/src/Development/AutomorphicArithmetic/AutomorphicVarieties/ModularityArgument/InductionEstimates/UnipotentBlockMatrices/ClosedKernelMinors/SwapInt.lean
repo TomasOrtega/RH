@@ -14,6 +14,9 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Fin.sum_univ_add]`. Simplify using `only [wGL, Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_symm_apply_natAdd, finSumFinEquiv_symm_apply_castAdd, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, add_zero, Matrix.one_apply, ite_mul, one_mul, Fi …`.
+-/
 private theorem w_mul {R : Type} [CommRing R] (M : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R) (i : Fin 2) (k : Fin (2 + 2)) :
     ((wGL R).val * M) (Fin.natAdd 2 i) k = M (Fin.castAdd 2 i) k := by
   rw [Matrix.mul_apply, Fin.sum_univ_add]
@@ -21,6 +24,9 @@ private theorem w_mul {R : Type} [CommRing R] (M : Matrix (Fin (2 + 2)) (Fin (2 
     finSumFinEquiv_symm_apply_castAdd, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul,
     Finset.sum_const_zero, add_zero, Matrix.one_apply, ite_mul, one_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Fin.sum_univ_add]`. Express the relevant statement in the definitionally equal form `(∑ i, _ * (wGL R).inv _ _) + (∑ i, _ * (wGL R).inv _ _) = _`. Simplify using `only [wGL, Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_symm_apply_natAdd, finSumFinEquiv_symm_apply_castAdd, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₁₁, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, zero_add, Matrix.one_apply, mul_ite, mul_one, Fi …`.
+-/
 private theorem mul_w {R : Type} [CommRing R] (M : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R) (j : Fin 2) (k : Fin (2 + 2)) :
     (M * ((wGL R)⁻¹).val) k (Fin.castAdd 2 j) = M k (Fin.natAdd 2 j) := by
   rw [Matrix.mul_apply, Fin.sum_univ_add]
@@ -29,6 +35,15 @@ private theorem mul_w {R : Type} [CommRing R] (M : Matrix (Fin (2 + 2)) (Fin (2 
     finSumFinEquiv_symm_apply_castAdd, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₁₁, Matrix.zero_apply, mul_zero,
     Finset.sum_const_zero, zero_add, Matrix.one_apply, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Take `⟨C, hC, hD⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := 2 + 2) (r := 2)`. Establish `hc : Continuous fun X : UPos (2 + 2) 2 → 𝔸[K] => nn X * g` using `(continuous_unipOne 2).mul continuous_const`. Establish `hQ` using `hfin _ (hC.image hc)`. Establish `hz : ∀ q : Cos K, q ∉ hQ.toFinset → ∀ X ∈ unipFundamentalDomain K (2 + 2) 2, F ((q.out : G1 K (2 + 2)) * (nn X * g)) = 0` using `fun q hq X hX => by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hq (hQ.mem_toFinset.2 ⟨_, ⟨X, hD hX, rfl⟩, h⟩)`. Establish `hz' : ∀ q : Cos K, q ∉ hQ.toFinset → ∫ X in unipFundamentalDomain K (2 + 2) 2, F ((q.out : G1 K (2 + 2)) * (nn X * g)) ∂unipMeasure K (2 + 2) 2 = 0` using `fun q hq => setIntegral_eq_zero_of_forall_eq_zero (hz q hq)`. Use `⟨hQ.toFinset.finite_toSet.subset fun q hq => by_contra fun h => hq (hz' q h), fun S => ?_⟩` and prove the remaining obligations. Establish `e : ∀ f : Cos K → ℂ, (∀ q, q ∉ hQ.toFinset → f q = 0) → ∑ᶠ q ∈ S, f q = ∑ q ∈ hQ.toFinset.filter (· ∈ S), f q`. Introduce `f hf`.
+
+Use `finsum_mem_eq_sum_of_inter_support_eq _ ?_` and prove the remaining obligations. Use extensionality with `q`. Simplify using `only [mem_inter_iff, Function.mem_support, Finset.coe_filter, mem_setOf_eq]`. Conclude with `⟨fun h => ⟨⟨by_contra fun h' => h.2 (hf q h'), h.1⟩, h.2⟩, fun h => ⟨h.1.2, h.2⟩⟩`. Establish `hI : ∀ q : Cos K, Integrable (fun X => F ((q.out : G1 K (2 + 2)) * (nn X * g))) ((unipMeasure K (2 + 2) 2).restrict (unipFundamentalDomain K (2 + 2) 2))` using `fun q => ((hF.comp (continuous_const.mul hc)).continuousOn.integrableOn_compact hC).mono_set hD`.
+
+Rewrite using `[e _ hz', ← integral_finset_sum _ fun q _ => hI q]`. Conclude with `setIntegral_congr_fun measurableSet_unipFundamentalDomain fun X hX => e _ fun q hq => hz q hq X hX`.
+-/
 private theorem swap_int {K : Type} [Field K] [NumberField K] (F : G1 K (2 + 2) → ℂ) (hF : Continuous F)
     (hfin : ∀ C : Set (G1 K (2 + 2)), IsCompact C → {q : Cos K | ∃ g ∈ C, F ((q.out : G1 K (2 + 2)) * g) ≠ 0}.Finite)
     (g : G1 K (2 + 2)) :
@@ -61,6 +76,47 @@ private theorem swap_int {K : Type} [Field K] [NumberField K] (F : G1 K (2 + 2) 
   rw [e _ hz', ← integral_finset_sum _ fun q _ => hI q]
   exact setIntegral_congr_fun measurableSet_unipFundamentalDomain fun X hX => e _ fun q hq => hz q hq X hX
 
+/- English proof (translation)
+Introduce `K _ _ F hF hB g`. Take `⟨hfin, -⟩` from `thBasic (Measure.haar : Measure (G1 K (2 + 2))) F hF.cont hF.rat hB`. Take `⟨-, -, -, -, -, -, hw, hwΓ, -⟩` from `blkLaws (K := K)`. Take `⟨hpar, hPK, -, hout⟩` from `pkLaws (K := K)`. Establish `hodd : ∀ r, r = 1 ∨ r = 3 → ∫ X in unipFundamentalDomain K (2 + 2) r, th F (unipOne K (2 + 2) r X * g) ∂unipMeasure K (2 + 2) r = 0` using `fun r hr => by`.
+
+Use `killAvg F hF.cont hF.rat hB r univ (fun _ _ _ _ _ => mem_univ _) (fun q _ => dies F hF q.out r (hr.imp_right Or.inl)) g` as an intermediate fact. Simplify using `only [finsum_mem_univ] at this`. Conclude with `this`. Establish `hcs : HasCompactSupport fun X : UPos (2 + 2) 2 → 𝔸[K] => F (w0 K * nn X * g)`. Take `⟨R, hR⟩` from `hB`.
+
+Take `⟨R', hR'⟩` from `(hpSpec (K := K)).2.2.2.2 {g} isCompact_singleton`. Take `⟨C, hC, hX⟩` from `(longCell (K := K)).2 (R + R')`. Use `HasCompactSupport.intro hC fun X hX' => by_contra fun h => hX' (hX X 1 (one_mem _) ?_)` and prove the remaining obligations. Establish `h1` using `abs_le.1 (hR _ h)`. Establish `h2` using `abs_le.1 (hR' (w0 K * nn X) g rfl)`.
+
+Rewrite using `[mul_one]`. Combine the linear relations using `[h1.1, h2.2]`. Use `⟨hodd 1 (Or.inl rfl), hodd 3 (Or.inr rfl), hcs, ?_⟩` and prove the remaining obligations. Set `n : unipLattice K (2 + 2) 2 → Gam K (2 + 2)` to `fun ξ => ⟨nn ξ.1, unipOne_mem_rationalGLOne 2 ξ⟩`. Set `w : Gam K (2 + 2)` to `⟨w0 K, hwΓ⟩`.
+
+Set `c : unipLattice K (2 + 2) 2 → Cos K` to `fun ξ => Quotient.mk _ (w * n ξ)`. Establish `hmk : ∀ a b : Gam K (2 + 2), (Quotient.mk _ a : Cos K) = Quotient.mk _ b ↔ b * a⁻¹ ∈ ParΓ K 2 2` using `fun a b => Quotient.eq.trans QuotientGroup.rightRel_apply`. Establish `hadd : ∀ ξ η, n (ξ + η) = n ξ * n η` using `fun ξ η => Subtype.ext (unipOne_add 2 ξ.1 η.1)`. Establish `hn0 : n 0 = 1` using `Subtype.ext (unipOne_zero 2)`. Establish `hneg : ∀ ξ, n (-ξ) = (n ξ)⁻¹` using `fun ξ => eq_inv_of_mul_eq_one_left (by rw [← hadd, neg_add_cancel, hn0])`.
+
+Establish `hnP : ∀ ξ, n ξ ∈ ParΓ K 2 2` using `fun ξ => (hpar _).2 fun i j hi hj => by`. Express the relevant statement in the definitionally equal form `unipMatrix ξ.1 i j = 0`. Rewrite using `[unipMatrix, Matrix.add_apply, blockEntry_apply, dif_neg (by omega), Matrix.one_apply_ne (by`. Introduce and unpack `rfl`. Use the proof step `omega), add_zero]`.
+
+Establish `hinj : Function.Injective c` using `fun ξ η h => by`. Establish `h1` using `(hmk _ _).1 h`. Establish `e : w * n η * (w * n ξ)⁻¹ = w * n (η - ξ) * w⁻¹`. Rewrite using `[sub_eq_add_neg, hadd, hneg]`. Use `group`.
+
+Rewrite `h1` using `[e, hpar]`. Use `(sub_eq_zero.1 (Subtype.ext (funext fun p => ?_))).symm` and prove the remaining obligations. Take `⟨⟨i, j⟩, hi, hj⟩` from `p`. Establish `h2` using `h1 (Fin.natAdd 2 ⟨i, hi⟩) (Fin.castAdd 2 ⟨j - 2, by have := j.2; omega⟩) (Nat.le_add_right _ _) (by have := j.2; show (j : ℕ) - 2 < 2; omega)`. Simplify using `only [w, n, Subgroup.coe_mul, Subgroup.coe_inv, hw, Units.val_mul, coe_unipOne, coe_unipGL] at h2`.
+
+Rewrite `h2` using `[mul_w, w_mul]`. Establish `e1 : Fin.castAdd 2 (⟨i, hi⟩ : Fin 2) = i` using `Fin.ext rfl`. Establish `e2 : Fin.natAdd 2 (⟨j - 2, by have` using `j.2; omega⟩ : Fin 2) = j := Fin.ext (by show 2 + ((j : ℕ) - 2) = j`. Establish `: 2 ≤ (j : ℕ)` using `hj`. Use the proof step `omega)`.
+
+Rewrite using `[e1, e2, unipMatrix, Matrix.add_apply, blockEntry_apply, dif_pos ⟨hi, hj⟩, Matrix.one_apply_ne (by`. Introduce and unpack `rfl`. Conclude with `absurd hi (not_lt.2 hj)), zero_add] at h2`. Conclude with `h2`. Establish `hne : (Quotient.mk _ 1 : Cos K) ∉ range c`.
+
+Introduce and unpack `⟨ξ, h⟩`. Establish `h1` using `(hmk _ _).1 h.symm`. Rewrite `h1` using `[inv_one, mul_one]`. Establish `h2` using `(hpar _).1 (mul_mem h1 (inv_mem (hnP ξ))) (Fin.natAdd 2 0) (Fin.castAdd 2 0) (Nat.le_add_right _ _) two_pos`. Rewrite `h2` using `[mul_inv_cancel_right]`.
+
+Simplify using `only [w, hw] at h2`. Rewrite `h2` using `[← mul_one (wGL 𝔸[K]).val, w_mul, Matrix.one_apply_eq]`. Conclude with `one_ne_zero (α := K) (NumberField.AdeleRing.algebraMap_injective (𝓞 K) K (by rw [map_one, map_zero, h2]))`. Establish `hval : ∀ (γ : Gam K (2 + 2)) x, F ((((Quotient.mk _ γ : Cos K).out : Gam K (2 + 2)) : G1 K (2 + 2)) * x) = F (γ * x)` using `fun γ x => by`. Take `⟨δ, hδ, e⟩` from `hout γ`.
+
+Rewrite using `[e, mul_assoc, hF.rat δ hδ]`. Take `⟨hs, hsw⟩` from `swap_int F hF.cont hfin g`. Establish `hk` using `killAvg F hF.cont hF.rat hB 2 (insert (Quotient.mk _ 1 : Cos K) (range c))ᶜ (fun γ γ' ξ e h h' => h (by`. Establish `e' : γ' = γ * n ξ` using `Subtype.ext e`. Substitute `e'` using the available equality.
+
+Break down `h' with h' | ⟨η, h'⟩` into its components or cases. Use `Or.inl ((hmk _ _).2 ?_)` and prove the remaining obligations. Use `mul_mem (hnP ξ) ((hmk _ _).1 h')` as an intermediate fact. Simplify using `using this`. Use `Or.inr ⟨η - ξ, (hmk _ _).2 ?_⟩` and prove the remaining obligations.
+
+Use `(hmk _ _).1 h'` as an intermediate fact. Rewrite using `[sub_eq_add_neg, hadd, hneg]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use the proof step `group)) (fun q hq => dies F hF q.out 2 (Or.inr (Or.inr ⟨rfl, fun h => hq (Or.inl (by`. Rewrite using `[← Quotient.out_eq q]`.
+
+Conclude with `(hmk _ _).2 (by simpa using h))), fun ⟨δ, ⟨δ', hδ', e'⟩, ξ, e⟩ => hq (Or.inr ⟨ξ, by`. Rewrite using `[← Quotient.out_eq q]`. Use `(hmk _ _).2 ?_` and prove the remaining obligations. Establish `: q.out = δ' * (w * n ξ)` using `Subtype.ext (by rw [e, ← e', mul_assoc]; rfl)`. Rewrite using `[this, mul_inv_cancel_right]`.
+
+Conclude with `hδ'⟩)⟩))) g`. Rewrite `hk` using `[hsw]`. Establish `h1` using `hsw univ`. Simplify using `only [finsum_mem_univ] at h1`. Unfold `th`.
+
+Rewrite using `[h1, ← finsum_mem_univ, ← union_compl_self (insert (Quotient.mk _ 1 : Cos K) (range c)), finsum_mem_union' disjoint_compl_right (hs.inter_of_right _) (hs.inter_of_right _), hk, add_zero, finsum_mem_insert' _ hne (hs.inter_of_right _), finsum_mem_range hinj]`. Use `congr 1`. Simplify using `only [hval, OneMemClass.coe_one, one_mul, hF.unip, integral_const, MeasurableSet.univ, measureReal_restrict_apply, univ_inter, Complex.real_smul, volN]`. Establish `hi : Integrable (fun X => F (w0 K * nn X * g)) (unipMeasure K (2 + 2) 2)` using `(hF.cont.comp ((continuous_const.mul (continuous_unipOne 2)).mul continuous_const)).integrable_of_hasCompactSupport hcs`. Rewrite using `[isAddFundamentalDomain_unipFundamentalDomain.integral_eq_tsum'' _ hi]`.
+
+Use `(tsum_eq_finsum (L := SummationFilter.unconditional _) (hs.preimage hinj.injOn)).symm.trans ?_` and prove the remaining obligations. Use `tsum_congr fun ξ => integral_congr_ae (Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Use `Eq.trans (hval (w * n ξ) (nn X * g)) (congrArg F ?_)` and prove the remaining obligations. Establish `e : (nn (ξ.1 + X) : G1 K (2 + 2)) = nn ξ.1 * nn X` using `unipOne_add 2 _ _`. Establish `e' : ((w * n ξ : Gam K (2 + 2)) : G1 K (2 + 2)) = w0 K * nn ξ.1` using `rfl`.
+
+Establish `e'' : ξ +ᵥ X = ξ.1 + X` using `rfl`. Rewrite using `[e', e'', e]`. Simplify using `only [mul_assoc]`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.thCt :
     ∀ {K : Type} [Field K] [NumberField K] (F : G1 K (2 + 2) → ℂ), PFun F → InBand F → ∀ g,
       ∫ X in unipFundamentalDomain K (2 + 2) 1, th F (unipOne K (2 + 2) 1 X * g) ∂unipMeasure K (2 + 2) 1 = 0 ∧

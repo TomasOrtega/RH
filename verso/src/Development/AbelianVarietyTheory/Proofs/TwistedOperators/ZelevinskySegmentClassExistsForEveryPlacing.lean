@@ -28,9 +28,15 @@ def rangeEquiv {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (f : 
 def subIncl {ρ : Representation ℂ G V} (S : Subrepresentation ρ) : S.toRepresentation.IntertwiningMap ρ :=
   ⟨S.toSubmodule.subtype, fun _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.val_injective`.
+-/
 theorem subIncl_injective {ρ : Representation ℂ G V} (S : Subrepresentation ρ) :
     Function.Injective (subIncl S) := Subtype.val_injective
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨.refl _⟩`.
+-/
 theorem nonempty_equiv_of_eq {ρ : Representation ℂ G V} {S T : Subrepresentation ρ} (h : S = T) :
     Nonempty (S.toRepresentation.Equiv T.toRepresentation) := by
   subst h; exact ⟨.refl _⟩
@@ -41,10 +47,19 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 def cuspRep (Δ : Segment k) : IrrRep (GL (Fin Δ.d) k) := Δ.cusp.choose
 
+/- English proof (translation)
+The claim follows from `Δ.cusp.choose_spec.1`.
+-/
 theorem cuspRep_cl (Δ : Segment k) : (cuspRep Δ).cl = Δ.start := Δ.cusp.choose_spec.1
 
+/- English proof (translation)
+The claim follows from `Δ.cusp.choose_spec.2`.
+-/
 theorem cuspRep_isCuspidal (Δ : Segment k) : IsCuspidal (cuspRep Δ).ρ := Δ.cusp.choose_spec.2
 
+/- English proof (translation)
+Take `⟨φ⟩` from `IrrRep.cl_eq_iff.1 (hσ.trans (cuspRep_cl Δ).symm)`. Take `⟨ψ⟩` from `(Placing.parInd_jac_placing k (Fin Δ.len) (Fin (Δ.len * Δ.d)) (fun _ => Fin Δ.d) e (GlobalTheory.Published.consecBlocks Δ.len Δ.d) _).1 (piTensor (segTerm (cuspRep Δ).ρ Δ.len))`. Conclude with `⟨(GlobalTheory.LocGL.multiProdEquiv e (π := segTerm σ.ρ Δ.len) (σ := segTerm (cuspRep Δ).ρ Δ.len) fun a => GlobalTheory.LocGL.twistEquiv φ _).trans ψ⟩`.
+-/
 theorem nonempty_prod_equiv (Δ : Segment k) (σ : IrrRep (GL (Fin Δ.d) k)) (hσ : σ.cl = Δ.start)
     (e : (Σ _ : Fin Δ.len, Fin Δ.d) ≃ Fin (Δ.len * Δ.d)) :
     Nonempty ((multiProd e (segTerm σ.ρ Δ.len)).Equiv
@@ -55,6 +70,9 @@ theorem nonempty_prod_equiv (Δ : Segment k) (σ : IrrRep (GL (Fin Δ.d) k)) (h�
   exact ⟨(GlobalTheory.LocGL.multiProdEquiv e (π := segTerm σ.ρ Δ.len) (σ := segTerm (cuspRep Δ).ρ Δ.len)
     fun a => GlobalTheory.LocGL.twistEquiv φ _).trans ψ⟩
 
+/- English proof (translation)
+Take `⟨φ⟩` from `IrrRep.cl_eq_iff.1 ((cuspRep_cl Δ).trans hσ.symm)`. Conclude with `⟨GlobalTheory.LocGL.piTensorEquiv (ρ := segTerm (cuspRep Δ).ρ Δ.len) (σ := segTerm σ.ρ Δ.len) fun a => GlobalTheory.LocGL.twistEquiv φ _⟩`.
+-/
 theorem nonempty_piTensor_equiv (Δ : Segment k) (σ : IrrRep (GL (Fin Δ.d) k)) (hσ : σ.cl = Δ.start) :
     Nonempty ((piTensor (segTerm (cuspRep Δ).ρ Δ.len)).Equiv (piTensor (segTerm σ.ρ Δ.len))) := by
   obtain ⟨φ⟩ := IrrRep.cl_eq_iff.1 ((cuspRep_cl Δ).trans hσ.symm)
@@ -70,6 +88,9 @@ def segSub (Δ : Segment k) :
     Subrepresentation (multiProd (GlobalTheory.Published.consecBlocks Δ.len Δ.d) (segTerm (cuspRep Δ).ρ Δ.len)) :=
   (h k Δ.d Δ.len Δ.d_pos Δ.len_pos (cuspRep Δ) (cuspRep_isCuspidal Δ)).choose
 
+/- English proof (translation)
+The claim follows from `(h k Δ.d Δ.len Δ.d_pos Δ.len_pos (cuspRep Δ) (cuspRep_isCuspidal Δ)).choose_spec`.
+-/
 theorem segSub_spec (Δ : Segment k) :
     (segSub h Δ).toRepresentation.IsIrreducible ∧
       (∀ S' : Subrepresentation (multiProd (GlobalTheory.Published.consecBlocks Δ.len Δ.d) (segTerm (cuspRep Δ).ρ Δ.len)),
@@ -84,6 +105,11 @@ def segIrr (Δ : Segment k) : IrrRep (GL (Fin (Δ.len * Δ.d)) k) where
   smooth := IsSubquotient.isSmooth ⟨segSub h Δ, .id _, Function.surjective_id⟩ (isSmooth_parInd _ _)
   irr := (segSub_spec h Δ).1
 
+/- English proof (translation)
+Take `⟨Φ⟩` from `nonempty_prod_equiv Δ σ hσ e`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, hφ⟩`. Set `f` to `Φ.toIntertwiningMap.comp φ`. Establish `hf : Function.Injective f` using `Φ.toLinearEquiv.injective.comp hφ`.
+
+Establish `hR : f.range.toRepresentation.IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv (rangeEquiv f hf) π.irr`. Take `⟨ψ⟩` from `nonempty_equiv_of_eq ((segSub_spec h Δ).2.1 _ hR)`. Conclude with `⟨(rangeEquiv f hf).trans ψ⟩`. Introduce and unpack `⟨ψ⟩`. Conclude with `⟨Φ.symm.toIntertwiningMap.comp ((subIncl (segSub h Δ)).comp ψ.toIntertwiningMap), Φ.symm.toLinearEquiv.injective.comp ((subIncl_injective _).comp ψ.toLinearEquiv.injective)⟩`.
+-/
 theorem embeds_iff (Δ : Segment k) (σ : IrrRep (GL (Fin Δ.d) k)) (hσ : σ.cl = Δ.start)
     (e : (Σ _ : Fin Δ.len, Fin Δ.d) ≃ Fin (Δ.len * Δ.d)) (π : IrrRep (GL (Fin (Δ.len * Δ.d)) k)) :
     (∃ φ : π.ρ.IntertwiningMap (multiProd e (segTerm σ.ρ Δ.len)), Function.Injective φ) ↔
@@ -101,6 +127,15 @@ theorem embeds_iff (Δ : Segment k) (σ : IrrRep (GL (Fin Δ.d) k)) (hσ : σ.cl
     exact ⟨Φ.symm.toIntertwiningMap.comp ((subIncl (segSub h Δ)).comp ψ.toIntertwiningMap),
       Φ.symm.toLinearEquiv.injective.comp ((subIncl_injective _).comp ψ.toLinearEquiv.injective)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ψ⟩`. Take `⟨f, hf⟩` from `(Model.evalOne_bijective e π.smooth (piTensor (segTerm σ.ρ Δ.len))).2 ψ.toIntertwiningMap`. Use `(embeds_iff h Δ σ hσ e π).1 ⟨f, ?_⟩` and prove the remaining obligations. Use `haveI := π.irr`.
+
+Use `(Representation.IsIrreducible.injective_or_eq_zero f).resolve_right fun h0 => ?_` and prove the remaining obligations. Use `haveI : Nontrivial (⨂[ℂ] _ : Fin Δ.len, σ.V) := GlobalTheory.ProdSupport.nontrivial_piTensor _ fun _ => Model.nontrivial_of_isIrreducible σ.irr`. Take `⟨y, hy⟩` from `exists_ne (0 : ⨂[ℂ] _ : Fin Δ.len, σ.V)`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (ψ.symm y)`. Establish `h1 : ψ (Submodule.Quotient.mk v) = (f v).1.1 1` using `(congrArg (fun F => F (Submodule.Quotient.mk v)) hf).symm`.
+
+Rewrite `h1` using `[h0, hv]`. Conclude with `hy ((ψ.apply_symm_apply y).symm.trans h1)`. Introduce and unpack `⟨ψ⟩`. Take `⟨A⟩` from `(Placing.parInd_jac_placing k (Fin Δ.len) (Fin (Δ.len * Δ.d)) (fun _ => Fin Δ.d) e (GlobalTheory.Published.consecBlocks Δ.len Δ.d) _).2 (segSub h Δ).toRepresentation`. Take `⟨B⟩` from `(segSub_spec h Δ).2.2`.
+
+Take `⟨C⟩` from `nonempty_piTensor_equiv Δ σ hσ`. Conclude with `⟨(Exponents.jacEquiv e ψ).trans (A.trans (B.trans C))⟩`.
+-/
 theorem jac_iff (Δ : Segment k) (σ : IrrRep (GL (Fin Δ.d) k)) (hσ : σ.cl = Δ.start)
     (e : (Σ _ : Fin Δ.len, Fin Δ.d) ≃ Fin (Δ.len * Δ.d)) (π : IrrRep (GL (Fin (Δ.len * Δ.d)) k)) :
     Nonempty ((jac e π.ρ).Equiv (piTensor (segTerm σ.ρ Δ.len))) ↔ Nonempty (π.ρ.Equiv (segIrr h Δ).ρ) := by
@@ -126,6 +161,11 @@ theorem jac_iff (Δ : Segment k) (σ : IrrRep (GL (Fin Δ.d) k)) (hσ : σ.cl = 
     obtain ⟨C⟩ := nonempty_piTensor_equiv Δ σ hσ
     exact ⟨(Exponents.jacEquiv e ψ).trans (A.trans (B.trans C))⟩
 
+/- English proof (translation)
+Introduce `k _ _ _ _`. Use `⟨fun Δ => (segIrr h Δ).cl, fun Δ σ hσ e π => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[IrrRep.cl_eq_iff]`. Conclude with `(embeds_iff h Δ σ hσ e π).symm`. Rewrite using `[IrrRep.cl_eq_iff]`.
+
+Conclude with `(jac_iff h Δ σ hσ e π).symm`.
+-/
 theorem exists_isSegmentClass : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], ∃ Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k), IsSegmentClass k Z := by
   intro k _ _ _ _
@@ -137,6 +177,9 @@ end Published
 
 end GlobalTheory.SegmentClass
 
+/- English proof (translation)
+Introduce `h` and use `GlobalTheory.SegmentClass.exists_isSegmentClass h`.
+-/
 theorem GlobalTheory.segmentClass_exists : GlobalTheory.Published.SegmentRepresentation → ∀ (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     ∃ Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k), IsSegmentClass k Z :=

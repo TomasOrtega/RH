@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DiffDecay
 
+/- English proof (translation)
+Establish `hu : 0 < u` using `lt_of_lt_of_le hE h1`. Take `⟨n, rfl | rfl⟩` from `z.eq_nat_or_neg`. Simplify using `only [Int.natAbs_natCast, zpow_natCast]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Int.natAbs_neg, Int.natAbs_natCast, zpow_neg, zpow_natCast]`.
+
+Establish `hEn : 0 < E ^ n` using `pow_pos hE n`. Establish `a1 : (u ^ n)⁻¹ ≤ (E ^ n)⁻¹` using `inv_anti₀ hEn (pow_le_pow_left₀ hE.le h1 n)`. Establish `a2 : (1 : ℝ) ≤ 2 ^ n` using `one_le_pow₀ (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem zpow_le_two_pow_mul {E u : ℝ} (hE : 0 < E) (h1 : E ≤ u) (h2 : u ≤ 2 * E) (z : ℤ) :
     u ^ z ≤ 2 ^ z.natAbs * E ^ z := by
   have hu : 0 < u := lt_of_lt_of_le hE h1
@@ -27,15 +32,26 @@ theorem zpow_le_two_pow_mul {E u : ℝ} (hE : 0 < E) (h1 : E ≤ u) (h2 : u ≤ 
       _ = 1 * (E ^ n)⁻¹ := (one_mul _).symm
       _ ≤ 2 ^ n * (E ^ n)⁻¹ := mul_le_mul_of_nonneg_right a2 (inv_nonneg.2 hEn.le)
 
+/- English proof (translation)
+Establish `: 0 ≤ ∑ i, x i` using `Finset.sum_nonneg fun i _ => hx i`. Unfold `sizeE`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_sizeE {r : ℕ} {x : Fin r → ℝ} (hx : ∀ i, 0 ≤ x i) : 1 ≤ sizeE x := by
   have : 0 ≤ ∑ i, x i := Finset.sum_nonneg fun i _ => hx i
   unfold sizeE; linarith
 
+/- English proof (translation)
+Simplify using `[sizeE, Finset.sum_add_distrib, Pi.single_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sizeE_add_smul {r : ℕ} (x : Fin r → ℝ) (c : Fin r) (τ : ℝ) :
     sizeE (x + τ • (Pi.single c 1 : Fin r → ℝ)) = sizeE x + τ := by
   simp [sizeE, Finset.sum_add_distrib, Pi.single_apply]
   ring
 
+/- English proof (translation)
+Establish `: 0 ≤ τ * (Pi.single c 1 : Fin r → ℝ) k`. Use `mul_nonneg hτ ?_` and prove the remaining obligations. Distinguish the cases in `h : k = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_apply, h]`. Simplify using `using add_nonneg (hx k) this`.
+-/
 theorem nonneg_add_smul {r : ℕ} {x : Fin r → ℝ} (hx : ∀ i, 0 ≤ x i) (c : Fin r) {τ : ℝ} (hτ : 0 ≤ τ) (k : Fin r) :
     0 ≤ (x + τ • (Pi.single c 1 : Fin r → ℝ)) k := by
   have : 0 ≤ τ * (Pi.single c 1 : Fin r → ℝ) k := by
@@ -45,10 +61,32 @@ theorem nonneg_add_smul {r : ℕ} {x : Fin r → ℝ} (hx : ∀ i, 0 ≤ x i) (c
     · simp [Pi.single_apply, h]
   simpa using add_nonneg (hx k) this
 
+/- English proof (translation)
+Simplify using `[Finset.sum_add_distrib, Pi.single_apply]`.
+-/
 theorem sum_add_single {ι : Type} [Fintype ι] [DecidableEq ι] (β : ι → ℕ) (j : ι) :
     ∑ i, (((β + Pi.single j 1 : ι → ℕ) i : ℕ) : ℤ) = ∑ i, (β i : ℤ) + 1 := by
   simp [Finset.sum_add_distrib, Pi.single_apply]
 
+/- English proof (translation)
+Proceed by induction on `cs generalizing β with`. Consider the case `nil`. Take `⟨C, hC, h⟩` from `GlobalTheory.T.cone_series_derivative_growth_bound ι r a b ha hb B R β`. Use `⟨C, hC, fun s hs hB x hx => ?_⟩` and prove the remaining obligations. Simplify `h s hs hB x hx` using `[DLR]`.
+
+Consider the case `cons c cs ih => choose C hC0 hC using fun j => ih (β + Pi.single j 1)`. Take `⟨z, hz⟩ : ∃ z : ℤ, z = (Fintype.card ι : ℤ) * (B : ℤ) - ∑ j, (β j : ℤ) - ((c :: cs).length : ℤ)` from `⟨_, rfl⟩`. Rewrite using `[← hz]`. Establish `hzj : ∀ j, (Fintype.card ι : ℤ) * (B : ℤ) - ∑ i, (((β + Pi.single j 1 : ι → ℕ) i : ℕ) : ℤ) - (cs.length : ℤ) = z`. Introduce `j`.
+
+Rewrite using `[sum_add_single, hz, List.length_cons]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hterm : ∀ j, 0 ≤ ((R : ℝ) + β j) * a j c * C j` using `fun j => mul_nonneg (mul_nonneg (by positivity) (ha j c).le) (hC0 j)`. Use `⟨(∑ j, ((R : ℝ) + β j) * a j c * C j) * 2 ^ z.natAbs, mul_nonneg (Finset.sum_nonneg fun j _ => hterm j) (by positivity), fun s hs hB x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hE1 : 1 ≤ sizeE x` using `one_le_sizeE hx`. Establish `hE0 : 0 < sizeE x` using `by linarith`. Establish `hmv` using `norm_image_sub_le_of_norm_deriv_le_segment_01' (f := fun t : ℝ => DLR cs (Fr a b s β) (x + t • (Pi.single c 1 : Fin r → ℝ))) (f' := fun τ => ∑ j, (-s - (β j : ℂ)) * (a j c : ℂ) * DLR cs (Fr a b s (β + Pi.single j 1)) (x + τ • (Pi.single c 1 : Fin r → ℝ))) (C := (∑ j, ((R : ℝ) + β …`. Simplify `hmv` using `[DLR, fdR]`. Establish `hu1 : sizeE x ≤ sizeE (x + τ • (Pi.single c 1 : Fin r → ℝ))`.
+
+Rewrite using `[sizeE_add_smul]`. Combine the linear relations using `[hτ.1]`. Establish `hu2 : sizeE (x + τ • (Pi.single c 1 : Fin r → ℝ)) ≤ 2 * sizeE x`. Rewrite using `[sizeE_add_smul]`. Combine the linear relations using `[hτ.2.le]`.
+
+Establish `hpow` using `zpow_le_two_pow_mul hE0 hu1 hu2 z`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `hD` using `hC j s hs hB _ (nonneg_add_smul hx c hτ.1)`.
+
+Rewrite `hD` using `[hzj j]`. Establish `hs1 : ‖-s - (β j : ℂ)‖ ≤ (R : ℝ) + β j`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Simplify using `using hs`. Establish `ha1 : ‖(a j c : ℂ)‖ = a j c`.
+
+Simplify using `[abs_of_pos (ha j c)]`. Rewrite using `[norm_mul, norm_mul, ha1]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul (mul_le_mul_of_nonneg_right hs1 (ha j c).le) (hD.trans ?_) (norm_nonneg _) (mul_nonneg (by positivity) (ha j c).le)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left hpow (hC0 j)`.
+
+Use `_ = ((R : ℝ) + β j) * a j c * C j * 2 ^ z.natAbs * sizeE x ^ z := by ring`.
+-/
 theorem diff_bound (ι : Type) [Fintype ι] [DecidableEq ι] (r : ℕ) (a : ι → Fin r → ℝ) (b : ι → ℝ) (ha : ∀ j i, 0 < a j i) (hb : ∀ j, 0 < b j) (B R : ℕ) (cs : List (Fin r)) (β : ι → ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ s : ℂ, ‖s‖ ≤ R → -(B : ℝ) ≤ s.re → ∀ x : Fin r → ℝ, (∀ i, 0 ≤ x i) →
       ‖DLR cs (Fr a b s β) x‖ ≤ C * sizeE x ^ ((Fintype.card ι : ℤ) * (B : ℤ) - ∑ j, (β j : ℤ) - (cs.length : ℤ)) := by

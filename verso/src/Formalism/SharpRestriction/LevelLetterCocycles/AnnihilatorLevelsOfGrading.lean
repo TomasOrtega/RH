@@ -13,6 +13,11 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 def KillLevFacts (D : D7) (HW : HWOf D.loc) : Prop :=
   AtCaseA fun l _ K LL hG => LevGrad ((HW l).W K 1 LL hG)
 
+/- English proof (translation)
+Introduce and unpack `⟨-, h9⟩`. Introduce `l _ K LL hG hC h5`. Establish `hfd : FiniteDimensional (Padic l) ↥(K0 K)` using `by first`. Consider the case `exact inferInstance`. Consider the case `exact ((D.loc l).PD K).finK₀`.
+
+Use `haveI : NeZero (Module.finrank (Padic l) ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Establish `hR` using `ring_condition_uniformizer_polynomial D HW F h9 l K LL hC`. Establish `hT` using `tool_algebra_of_ring_condition D HW F h9 l K LL hC h5`. Conclude with `KL.killerLevCore_of _ (KF.psUnitE_of _ hR hT) (KF.psCoprime_of _ hR) (hK l K LL hG hC h5) (KF.psStable_of _ hR) hR.1`.
+-/
 theorem annihilator_levels_of_grading (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (hK : KillLevFacts D HW) : KillerLevelsTheorem D HW F Cm := by
   rintro ⟨-, h9⟩

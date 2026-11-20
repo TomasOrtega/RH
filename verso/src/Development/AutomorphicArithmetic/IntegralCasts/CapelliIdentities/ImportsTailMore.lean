@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `R ι _ s e g c hd hc`. Establish `hp : ∀ i, (g i ^ e i).natDegree ≤ e i ∧ (g i ^ e i).coeff (e i) = c i ^ e i`. Introduce `i`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Polynomial.coeff_pow_of_natDegree_le (m := e i) (hd i)` as an intermediate fact. Simplify `this` using `[hc i]`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, Finset.prod_insert ha]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Polynomial.natDegree_mul_le).trans (Nat.add_le_add (hp a).1 ih.1)`. Rewrite using `[Polynomial.coeff_mul_add_eq_of_natDegree_le (hp a).1 ih.1, (hp a).2, ih.2]`.
+-/
 theorem UpperTheory.Reformulated.B.Yra8.main.{u_1, u_2} :
     ∀ {R : Type u_1} {ι : Type u_2} [inst : CommRing R] (s : Finset ι) (e : ι → ℕ) (g : ι → Polynomial R) (c : ι → R),
       (∀ (i : ι), (g i).natDegree ≤ (1 : ℕ)) →

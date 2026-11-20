@@ -22,6 +22,9 @@ abbrev PC (X : Type) [MulAction Γ X] : Rep.{0} ℂ Γ := Rep.of (permC Γ X)
 
 variable {Γ}
 
+/- English proof (translation)
+Simplify using `[permC]`.
+-/
 @[simp] theorem permC_single {X : Type} [MulAction Γ X] (g : Γ) (x : X) (c : ℂ) :
     permC Γ X g (Finsupp.single x c) = Finsupp.single (g • x) c := by
   simp [permC]
@@ -30,6 +33,9 @@ def pmap {X Y : Type} [MulAction Γ X] [MulAction Γ Y] (f : X → Y) (hf : ∀ 
     PC Γ X ⟶ PC Γ Y :=
   Rep.ofHom ⟨Finsupp.lmapDomain ℂ ℂ f, fun g => by ext x; simp [hf]⟩
 
+/- English proof (translation)
+The claim follows from `Finsupp.mapDomain_single`.
+-/
 @[simp] theorem pmap_single {X Y : Type} [MulAction Γ X] [MulAction Γ Y] (f : X → Y)
     (hf : ∀ (g : Γ) x, f (g • x) = g • f x) (x : X) (c : ℂ) :
     (pmap f hf).hom (Finsupp.single x c) = Finsupp.single (f x) c :=
@@ -40,11 +46,17 @@ variable (Γ) in
 def augC (X : Type) [MulAction Γ X] : PC Γ X ⟶ Rep.trivial ℂ Γ ℂ :=
   Rep.ofHom ⟨Finsupp.linearCombination ℂ (fun _ : X => (1 : ℂ)), fun g => by ext x; simp⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Finsupp.linearCombination ℂ (fun _ : X => (1 : ℂ)) (Finsupp.single x c) = c`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem augC_single {X : Type} [MulAction Γ X] (x : X) (c : ℂ) :
     (augC Γ X).hom (Finsupp.single x c) = c := by
   change Finsupp.linearCombination ℂ (fun _ : X => (1 : ℂ)) (Finsupp.single x c) = c
   simp
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `h x`.
+-/
 theorem PC_ext {X : Type} [MulAction Γ X] {A : Rep.{0} ℂ Γ} {φ ψ : PC Γ X ⟶ A}
     (h : ∀ x, φ.hom (Finsupp.single x 1) = ψ.hom (Finsupp.single x 1)) : φ = ψ := by
   ext x
@@ -75,19 +87,31 @@ instance (p : ℕ) : MulAction Γ (K.Tup p) where
   one_smul t := Subtype.ext (funext fun j => one_smul _ (t.1 j))
   mul_smul g k t := Subtype.ext (funext fun j => mul_smul g k (t.1 j))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_val {p : ℕ} (g : Γ) (t : K.Tup p) (j : Fin (p + 1)) : (g • t).1 j = g • t.1 j := rfl
 
 def re {p q : ℕ} (f : Fin (p + 1) → Fin (q + 1)) (t : K.Tup q) : K.Tup p := ⟨t.1 ∘ f, K.comp f t.1 t.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem re_re {p q r : ℕ} (f : Fin (p + 1) → Fin (q + 1)) (f' : Fin (q + 1) → Fin (r + 1)) (t : K.Tup r) :
     K.re f (K.re f' t) = K.re (f' ∘ f) t := rfl
 
 def reC {p q : ℕ} (f : Fin (p + 1) → Fin (q + 1)) : PC Γ (K.Tup q) ⟶ PC Γ (K.Tup p) :=
   pmap (K.re f) (fun _ _ => rfl)
 
+/- English proof (translation)
+The claim follows from `pmap_single _ _ _ _`.
+-/
 @[simp] theorem reC_single {p q : ℕ} (f : Fin (p + 1) → Fin (q + 1)) (t : K.Tup q) (c : ℂ) :
     (K.reC f).hom (Finsupp.single t c) = Finsupp.single (K.re f t) c := pmap_single _ _ _ _
 
+/- English proof (translation)
+The claim follows from `PC_ext fun t => by change (K.reC f).hom ((K.reC f').hom _) = _ rw [reC_single, reC_single, reC_single, re_re]`.
+-/
 theorem reC_comp {p q r : ℕ} (f : Fin (p + 1) → Fin (q + 1)) (f' : Fin (q + 1) → Fin (r + 1)) :
     K.reC f' ≫ K.reC f = K.reC (f' ∘ f) :=
   PC_ext fun t => by
@@ -210,6 +234,9 @@ def Tr : Set ↥(HR L N) := {h | h.1 ∈ Psd L N}
 
 variable {L N}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem qr_apply (y : NZ L N) (h : ↥(HR L N)) : qr L N y h = q h.1 y.1 := rfl
 
 def sLat (σ : 𝓞 L →+* 𝓞 L) (y : Lat L N) : Lat L N := fun a => σ (y a)
@@ -222,8 +249,14 @@ variable (N) in
 
 def Fix (σ : 𝓞 L →+* 𝓞 L) : Subgroup (Gm L N) := (sGm N σ).eqLocus (MonoidHom.id _)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Fix {σ : 𝓞 L →+* 𝓞 L} {g : Gm L N} : g ∈ Fix N σ ↔ sGm N σ g = g := Iff.rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `[sLat, sGm, smul_lat, Matrix.mulVec, dotProduct]`.
+-/
 theorem sLat_smul (σ : 𝓞 L →+* 𝓞 L) (g : Gm L N) (y : Lat L N) : sLat σ (g • y) = sGm N σ g • sLat σ y := by
   funext a
   simp [sLat, sGm, smul_lat, Matrix.mulVec, dotProduct]

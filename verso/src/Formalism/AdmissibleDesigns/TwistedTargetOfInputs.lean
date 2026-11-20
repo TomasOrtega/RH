@@ -31,6 +31,9 @@ abbrev aVG : Representation LL G (TrV e (MK (O := O) A)) :=
 
 def j1 : (↥(Ymod r χ E) × O) →ₗ[O] A := LinearMap.fst O A O ∘ₗ ytEmb O r χ E
 
+/- English proof (translation)
+Break down `m with ⟨y, c⟩` into its components or cases. Establish `hu : ((↑(χ g)⁻¹ : T') • r g : A) = uElt r χ g` using `by simp [uElt]`. Simplify using `only [j1, ytEmb, ytRep, lRep, LinearMap.comp_apply, LinearMap.fst_apply, LinearMap.coe_mk, AddHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.mulLeft_apply, Submodule.coe_add, Submodule.coe_smul_of_tower]`. Simplify using `[yY, ycoc, hu, sub_mul, smul_sub, mul_add, mul_smul_comm, smul_eq_mul]`. Apply the tactic sequence `all_goals first | abel1 | exact trivial`.
+-/
 theorem projection_equivariant (g : GG) (m : ↥(Ymod r χ E) × O) : j1 r χ E (ytRep O r χ E g m) = lRep O r χ g (j1 r χ E m) := by
   rcases m with ⟨y, c⟩
   have hu : ((↑(χ g)⁻¹ : T') • r g : A) = uElt r χ g := by simp [uElt]
@@ -41,9 +44,17 @@ theorem projection_equivariant (g : GG) (m : ↥(Ymod r χ E) × O) : j1 r χ E 
 
 def jK : MK (O := O) (↥(Ymod r χ E) × O) →ₗ[O] MK (O := O) A := liftK (mkK ∘ₗ j1 r χ E)
 
+/- English proof (translation)
+Conclude with `liftK_mkK _ m`.
+-/
 theorem jK_mk (m : ↥(Ymod r χ E) × O) : jK r χ E (mkK m) = mkK (j1 r χ E m) := by
   exact liftK_mkK _ m
 
+/- English proof (translation)
+Establish `key : (jK r χ E).comp (locRep (ytRep O r χ E) g) = (locRep (lRep O r χ) g).comp (jK r χ E)`. Use `IsLocalizedModule.ext (S := nonZeroDivisors O) (f := mkK (O := O) (M := ↥(Ymod r χ E) × O)) ?_ ?_` and prove the remaining obligations. Conclude with `fun s => isUnit_end s`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `m`.
+
+Simplify using `only [LinearMap.comp_apply, locRep_mkK, jK_mk, projection_equivariant]`. Conclude with `LinearMap.congr_fun key v`.
+-/
 theorem jK_equiv (g : GG) (v : MK (O := O) (↥(Ymod r χ E) × O)) :
     jK r χ E (locRep (ytRep O r χ E) g v) = locRep (lRep O r χ) g (jK r χ E v) := by
   have key : (jK r χ E).comp (locRep (ytRep O r χ E) g) = (locRep (lRep O r χ) g).comp (jK r χ E) := by
@@ -61,6 +72,9 @@ def embY {k mA : ℕ} (v₀ : Fin k → LL) (φA : TrV e (MK (O := O) A) →ₗ[
   consV (W := Fin k → LL) mA ∘ₗ (LinearMap.smulRight (pY e ↥(Ymod r χ E)) v₀) +
     consZ (W := Fin k → LL) mA ∘ₗ (φA ∘ₗ trL e (jK r χ E))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Use `Fin.cases ?_ (fun j => ?_) a` and prove the remaining obligations. Simplify using `[embY, consV, consZ]`. Simplify using `[embY, consV, consZ]`.
+-/
 theorem embY_apply {k mA : ℕ} (v₀ : Fin k → LL) (φA : TrV e (MK (O := O) A) →ₗ[LL] (Fin mA → Fin k → LL))
     (v : TrV e (MK (O := O) (↥(Ymod r χ E) × O))) :
     embY r χ E v₀ φA v = Fin.cons (pY e ↥(Ymod r χ E) v • v₀) (φA (trL e (jK r χ E) v)) := by
@@ -69,6 +83,33 @@ theorem embY_apply {k mA : ℕ} (v₀ : Fin k → LL) (φA : TrV e (MK (O := O) 
   · simp [embY, consV, consZ]
   · simp [embY, consV, consZ]
 
+/- English proof (translation)
+Establish `hsnd : ∀ h : GG, (liftK (V` using `FractionRing O) (Algebra.linearMap O (FractionRing O) ∘ₗ LinearMap.snd O ↥(Ymod r χ E) O)).comp (locRep (ytRep O r χ E) h) = liftK (V := FractionRing O) (Algebra.linearMap O (FractionRing O) ∘ₗ LinearMap.snd O ↥(Ymod r χ E) O) := by`. Introduce `h`. Use `IsLocalizedModule.ext (S := nonZeroDivisors O) (f := mkK (O := O) (M := ↥(Ymod r χ E) × O)) ?_ ?_` and prove the remaining obligations. Conclude with `fun s => isUnit_end s`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `m`. Simplify using `only [LinearMap.comp_apply, locRep_mkK, liftK_mkK]`. Apply the tactic sequence `all_goals rfl`. Establish `hpY : ∀ g v, pY e ↥(Ymod r χ E) (ytVG (e` using `e) r χ E Dw eG g v) = pY e ↥(Ymod r χ E) v := by`. Introduce `g v`.
+
+Conclude with `congrArg (eLin e) (LinearMap.congr_fun (hsnd ((eG.symm g : Dw) : GG)) v)`. Establish `hjK : ∀ g v, trL e (jK r χ E) (ytVG (e` using `e) r χ E Dw eG g v) = aVG (e := e) r χ Dw eG g (trL e (jK r χ E) v) := by`. Introduce `g v`. Conclude with `jK_equiv r χ E ((eG.symm g : Dw) : GG) v`. Establish `hker : ∀ v : MK (O` using `O) (↥(Ymod r χ E) × O), jK r χ E v = 0 → liftK (V := FractionRing O) (Algebra.linearMap O (FractionRing O) ∘ₗ LinearMap.snd O ↥(Ymod r χ E) O) v = 0 → v = 0 := by`.
+
+Introduce `v h1 h2`. Take `⟨⟨m, s⟩, hs⟩` from `IsLocalizedModule.surj (S := nonZeroDivisors O) (f := mkK (O := O) (M := ↥(Ymod r χ E) × O)) v`. Simplify using `only at hs`. Rewrite `hs` using `[Submonoid.smul_def]`. Establish `hm2 : m.2 = 0`.
+
+Establish `h3` using `congrArg (liftK (V := FractionRing O) (Algebra.linearMap O (FractionRing O) ∘ₗ LinearMap.snd O ↥(Ymod r χ E) O)) hs`. Rewrite `h3` using `[map_smul, h2, smul_zero, liftK_mkK]`. Establish `h' : algebraMap O (FractionRing O) m.2 = 0` using `by simpa using h3.symm`. Conclude with `(IsFractionRing.injective O (FractionRing O)) (h'.trans (map_zero _).symm)`. Establish `hm1 : j1 r χ E m = 0`.
+
+Establish `h3` using `congrArg (jK r χ E) hs`. Rewrite `h3` using `[map_smul, h1, smul_zero, jK_mk]`. Take `⟨t, ht⟩` from `(IsLocalizedModule.eq_zero_iff (S := nonZeroDivisors O) (f := mkK (O := O) (M := A))).1 h3.symm`. Rewrite `ht` using `[Submonoid.smul_def]`. Conclude with `(smul_eq_zero.1 ht).resolve_left (nonZeroDivisors.coe_ne_zero t)`.
+
+Establish `hm : m = 0`. Break down `m with ⟨y, c⟩` into its components or cases. Simplify using `only at hm2`. Substitute `hm2` using the available equality. Establish `hy : (y : A) = 0` using `by simpa [j1, ytEmb] using hm1`.
+
+Conclude with `Prod.ext (Submodule.coe_eq_zero.1 hy) rfl`. Rewrite `hs` using `[hm, map_zero]`. Establish `hu` using `(Module.End.isUnit_iff _).1 (isUnit_end (V := MK (O := O) (↥(Ymod r χ E) × O)) s)`. Apply `hu.1` to reduce the goal to its premises. Rewrite using `[Module.algebraMap_end_apply, map_zero]`.
+
+Conclude with `hs`. Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero _).2 fun v hv => ?_` and prove the remaining obligations. Rewrite `hv` using `[embY_apply]`. Establish `hp : pY e ↥(Ymod r χ E) v = 0`.
+
+Establish `h0` using `congrFun hv 0`. Simplify using `only [Fin.cons_zero, Pi.zero_apply] at h0`. Conclude with `(smul_eq_zero.1 h0).resolve_right hv₀`. Establish `hj : trL e (jK r χ E) v = 0`. Apply `hφA` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Use function extensionality and compare the values at `a`. Establish `h0` using `congrFun hv a.succ`. Simplify `h0` using `only [Fin.cons_succ, Pi.zero_apply]`. Establish `hp' : e (liftK (V` using `FractionRing O) (Algebra.linearMap O (FractionRing O) ∘ₗ LinearMap.snd O ↥(Ymod r χ E) O) v) = 0 := hp`.
+
+Conclude with `hker v hj ((map_eq_zero_iff e e.injective).1 hp')`. Introduce `g v`. Use function extensionality and compare the values at `a`. Rewrite using `[embY_apply, embY_apply]`. Use `Fin.cases ?_ (fun j => ?_) a` and prove the remaining obligations.
+
+Simplify using `only [Fin.cons_zero]`. Rewrite using `[hpY, Matrix.mulVec_smul, hfix]`. Simplify using `only [Fin.cons_succ]`. Rewrite using `[hjK, heqA]`.
+-/
 theorem embY_of [NoZeroSMulDivisors O A] {ιx : Type} {k mA : ℕ} (Ms : ιx → G →* Matrix (Fin k) (Fin k) LL)
     (xsA : Fin mA → ιx) (φA : TrV e (MK (O := O) A) →ₗ[LL] (Fin mA → Fin k → LL)) (hφA : Function.Injective φA)
     (heqA : ∀ g v, φA (aVG (e := e) r χ Dw eG g v) = fun a => (Ms (xsA a) g).mulVec (φA v a))
@@ -172,6 +213,13 @@ def LineW {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.
   ∃ (x₀ : D.nd.X i) (v₀ : Fin D.R.nV → ↥(TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL.1), v₀ ≠ 0 ∧
     ∀ g, (MsW i r hw x₀ g).mulVec v₀ = v₀
 
+/- English proof (translation)
+Take `⟨mA, xs, φ, hφ, heq⟩` from `hE`. Take `⟨x₀, v₀, hv₀, hfix⟩` from `hL`. Use `haveI hK : NoZeroSMulDivisors (D.nd.O i) (FractionRing (D.nd.O i)) := by first`. Consider the case `exact inferInstance`. Consider the case `exact ⟨fun {c x} h => by`.
+
+Rewrite `h` using `[Algebra.smul_def, mul_eq_zero]`. Conclude with `h.imp_left (fun h' => (map_eq_zero_iff _ (IsFractionRing.injective _ _)).1 h')⟩`. Use `haveI hM : NoZeroSMulDivisors (D.nd.O i) (Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) := inferInstanceAs (NoZeroSMulDivisors (D.nd.O i) (Dd.X' → Fin D.R.nV → Fin D.R.nV → FractionRing (D.nd.O i)))`. Use `haveI : NoZeroSMulDivisors (D.nd.O i) ↥Dd.R' := Function.Injective.noZeroSMulDivisors Subtype.val Subtype.val_injective rfl (fun _ _ => rfl)`. Establish `h` using `embY_of (r := Dd.r) (χ := Dd.χ) (E := Dd.E) (Dw := Dw i dc (idx i dc w)) (eG := eW i dc hw) (Ms := MsW i r hw) (xsA := xs) (φA := φ) (hφA := hφ) (heqA := heq) (x₀ := x₀) (v₀ := v₀) (hv₀ := hv₀) (hfix := hfix)`.
+
+Conclude with `⟨mA + 1, Fin.cons x₀ xs, _, h.1, h.2⟩`.
+-/
 theorem ytEmbW_of {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (hE : EmbRW i dc r Dd hw) (hL : LineW i r hw) : YtEmbW i dc r Dd hw := by
   obtain ⟨mA, xs, φ, hφ, heq⟩ := hE
@@ -199,6 +247,11 @@ section RecL
 variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply]`. Use `first`. Consider the case `rfl`. Consider the case `(simp [MsW, TruncatedSeriesCountingIdentities.locC, Br.loc, mapM, Br.locM, decS, eS, Br.locO, eK, Br.iota, Br.toLLK, toK]; done)`.
+
+Consider the case `(simp [MsW, TruncatedSeriesCountingIdentities.locC, Br.loc, mapM, Br.locM, decS, eS, Br.locO, eK, Br.iota, Br.toLLK] erw [RingEquiv.ofBijective_apply, IsFractionRing.lift_algebraMap] rfl)`.
+-/
 theorem msW_entry {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) (x : D.nd.X i)
     (g : Br.G D.nbr i w hw) :
     MsW i r hw x g = (mapM (toK D.nd i) (rTwO D.nd i r x) ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd)).map (eS i hw) := by
@@ -211,6 +264,19 @@ theorem msW_entry {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver
      erw [RingEquiv.ofBijective_apply, IsFractionRing.lift_algebraMap]
      rfl)
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `hD`. Establish `ht : 0 < D.R.t` using `D.R.t_odd.pos`. Use `⟨e.symm (0, Pi.single (⟨0, ht⟩ : Fin D.R.t) 1), ?_, fun h => ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `congrArg e h0`.
+
+Rewrite `h1` using `[LinearEquiv.apply_symm_apply, map_zero]`. Establish `h2` using `congrArg (fun p => p.2 ⟨0, ht⟩) h1`. Simplify using `at h2`. Apply `e.injective` to reduce the goal to its premises. Establish `hM : mapM (toK D.nd i) (rTwO D.nd i r π) h = toK D.nd i (((chiU D.nd i 1 h)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) • mapM (toK D.nd i) (rO D.nd i r π) h`.
+
+Use extensionality with `a b`. Simplify using `[mapM, rTwO, twistM]`. Establish `hsm : ∀ (s : KK D.nd i) (M : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)) (u : Fin D.R.nV → KK D.nd i), (s • M).mulVec u = s • M.mulVec u`. Introduce `s M u`. Use `first`.
+
+Consider the case `exact Matrix.smul_mulVec s M u`. Consider the case `exact Matrix.smul_mulVec_assoc s M u`. Consider the case `(funext j; simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc])`. Rewrite using `[hM, hsm, map_smul, he, LinearEquiv.apply_symm_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c = ⟨0, ht⟩`. Substitute `hc` using the available equality. Simplify using `[← map_mul]`.
+
+Simplify using `[Pi.single_apply, hc]`.
+-/
 theorem fixK (hD : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) :
     ∃ u₀ : Fin D.R.nV → KK D.nd i, u₀ ≠ 0 ∧ ∀ h : GE D.nd, (mapM (toK D.nd i) (rTwO D.nd i r π) h).mulVec u₀ = u₀ := by
   obtain ⟨e, he⟩ := hD
@@ -242,6 +308,13 @@ theorem fixK (hD : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r
         simp [← map_mul]
       · simp [Pi.single_apply, hc]
 
+/- English proof (translation)
+Take `⟨u₀, hu₀, hfix⟩` from `fixK i r ρ π hD`. Use `⟨π, fun j => eS i hw (u₀ j), ?_, fun g => ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hu₀` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+
+Establish `h1` using `congrFun h0 j`. Simplify using `using h1`. Apply the tactic sequence `rw [msW_entry i r hw π g]`. Use function extensionality and compare the values at `j`. Establish `h2` using `RingHom.map_mulVec (eS i hw).toRingHom (mapM (toK D.nd i) (rTwO D.nd i r π) ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd)) u₀ j`.
+
+Rewrite `h2` using `[hfix]`. Conclude with `h2.symm`.
+-/
 theorem lineW_of (hD : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) {w : HeightOneSpectrum (𝓞 D.host.E)}
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) : LineW i r hw := by
   obtain ⟨u₀, hu₀, hfix⟩ := fixK i r ρ π hD
@@ -267,6 +340,9 @@ variable {D : D7} {i : D.nd.Loc} {dc : TruncatedSeriesCountingIdentities.Decl D 
   {Dd : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (Formalism.MainNotions.N.RepresentationBoundsCohomology.blk D.R)}
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i)))
 
+/- English proof (translation)
+Conclude with `ytTarget_of (hfin := hfin) (hF := hF) (hG2 := hG2) (hemb := ytEmbW_of i dc r Dd hw hE (lineW_of i r ρ π hD hw)) (hc := hc) (c := c)`.
+-/
 theorem twisted_target_of_inputs (hfin : Module.Finite (D.nd.O i) Dd.R') (hF : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π)
     (hD : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (hE : EmbRW i dc r Dd hw) (hc : MsContW i r hw)

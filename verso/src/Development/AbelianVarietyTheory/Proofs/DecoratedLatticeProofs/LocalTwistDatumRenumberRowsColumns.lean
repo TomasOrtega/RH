@@ -26,32 +26,55 @@ namespace GlobalTheory.Reidx
 section Val
 variable {F : Type} [Field F] [NumberField F] (p : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Rewrite using `[← Valuation.Compatible.vle_iff_le]`. Conclude with `Iff.rfl`.
+-/
 theorem val_le_iff (x y : p.adicCompletion F) :
     valuation (p.adicCompletion F) x ≤ valuation (p.adicCompletion F) y ↔ Valued.v x ≤ Valued.v y := by
   rw [← Valuation.Compatible.vle_iff_le]
   exact Iff.rfl
 
+/- English proof (translation)
+Use `show valuation _ x ≤ 1 ↔ _`. Simplify using `using val_le_iff p x 1`.
+-/
 theorem mem_O_iff (x : p.adicCompletion F) : x ∈ 𝒪[p.adicCompletion F] ↔ Valued.v x ≤ 1 := by
   show valuation _ x ≤ 1 ↔ _
   simpa using val_le_iff p x 1
 
+/- English proof (translation)
+Use `val_le_iff p 1 x` as an intermediate fact. Simplify using `only [map_one] at this`. Rewrite using `[← not_le, ← not_le, this]`.
+-/
 theorem val_lt_one_iff (x : p.adicCompletion F) : valuation (p.adicCompletion F) x < 1 ↔ Valued.v x < 1 := by
   have := val_le_iff p 1 x
   simp only [map_one] at this
   rw [← not_le, ← not_le, this]
 
+/- English proof (translation)
+Establish `h1` using `val_le_iff p 1 x`. Establish `h2` using `val_le_iff p x 1`. Simplify using `only [map_one] at h1 h2`. Rewrite using `[le_antisymm_iff, le_antisymm_iff, h1, h2]`.
+-/
 theorem val_eq_one_iff (x : p.adicCompletion F) : valuation (p.adicCompletion F) x = 1 ↔ Valued.v x = 1 := by
   have h1 := val_le_iff p 1 x
   have h2 := val_le_iff p x 1
   simp only [map_one] at h1 h2
   rw [le_antisymm_iff, le_antisymm_iff, h1, h2]
 
+/- English proof (translation)
+Rewrite using `[mem_O_iff, HeightOneSpectrum.mem_adicCompletionIntegers]`.
+-/
 theorem mem_O_iff' (x : p.adicCompletion F) : x ∈ 𝒪[p.adicCompletion F] ↔ x ∈ p.adicCompletionIntegers F := by
   rw [mem_O_iff, HeightOneSpectrum.mem_adicCompletionIntegers]
 
+/- English proof (translation)
+Simplify using `using Valued.isOpen_ball (p.adicCompletion F) 1`.
+-/
 theorem isOpen_lt_one : IsOpen {x : p.adicCompletion F | Valued.v x < 1} := by
   simpa using Valued.isOpen_ball (p.adicCompletion F) 1
 
+/- English proof (translation)
+Establish `h` using `IsNonarchimedeanLocalField.isCompact_closedBall (p.adicCompletion F) 1`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Use `val_le_iff p x 1` as an intermediate fact. Simplify using `only [map_one] at this`.
+
+Conclude with `this.symm`.
+-/
 theorem isCompact_le_one : IsCompact {x : p.adicCompletion F | Valued.v x ≤ 1} := by
   have h := IsNonarchimedeanLocalField.isCompact_closedBall (p.adicCompletion F) 1
   convert h using 1
@@ -65,11 +88,23 @@ end Val
 section Alg
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Conclude with `⟨fun h => lt_of_le_of_ne x.2 h, fun h => h.ne⟩`.
+-/
 theorem residue_eq_zero_iff (x : 𝒪[k]) : IsLocalRing.residue 𝒪[k] x = 0 ↔ valuation k (x : k) < 1 := by
   rw [IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff,
     (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]
   exact ⟨fun h => lt_of_le_of_ne x.2 h, fun h => h.ne⟩
 
+/- English proof (translation)
+Set `M' : Matrix n n 𝒪[k]` to `fun i j => ⟨M i j, hM i j⟩`. Set `N' : Matrix n n 𝒪[k]` to `fun i j => ⟨N i j, hN i j⟩`. Establish `eM : M.det = ((M'.det : 𝒪[k]) : k)`. Use `RingHom.map_det (algebraMap 𝒪[k] k) M'` as an intermediate fact. Rewrite `this` using `[show (algebraMap 𝒪[k] k).mapMatrix M' = M from by ext i j; rfl]`.
+
+Conclude with `this.symm`. Establish `eN : N.det = ((N'.det : 𝒪[k]) : k)`. Use `RingHom.map_det (algebraMap 𝒪[k] k) N'` as an intermediate fact. Rewrite `this` using `[show (algebraMap 𝒪[k] k).mapMatrix N' = N from by ext i j; rfl]`. Conclude with `this.symm`.
+
+Establish `hz : IsLocalRing.residue 𝒪[k] (M'.det - N'.det) = 0`. Rewrite using `[map_sub, RingHom.map_det, RingHom.map_det, sub_eq_zero]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Conclude with `h i j`. Rewrite `hz` using `[residue_eq_zero_iff]`. Rewrite using `[eM, eN]`. Simplify using `using hz`.
+-/
 theorem det_sub_lt {n : Type} [Fintype n] [DecidableEq n] (M N : Matrix n n k)
     (hM : ∀ i j, M i j ∈ 𝒪[k]) (hN : ∀ i j, N i j ∈ 𝒪[k]) (h : ∀ i j, valuation k (M i j - N i j) < 1) :
     valuation k (M.det - N.det) < 1 := by
@@ -104,6 +139,13 @@ section Datum
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {A D D' : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] [Fintype D'] [DecidableEq D']
 
+/- English proof (translation)
+Establish `hent : ∀ i j, y i j ∈ 𝒪[k]` using `fun i j => by`. Establish `e : y i j = (y i j - x i j) + x i j` using `by ring`. Rewrite using `[Valuation.mem_integer_iff, e]`. Conclude with `Valuation.map_add_le _ (h i j).le ((Valuation.mem_integer_iff _ _).1 (hx.1 i j))`. Establish `hd : valuation k (y.toBlocks₁₁.det - x.toBlocks₁₁.det) < 1` using `det_sub_lt _ _ (fun i j => hent _ _) (fun i j => hx.1 _ _) (fun i j => h _ _)`.
+
+Use `⟨⟨hent, ?_, fun i j => ?_⟩, hd⟩` and prove the remaining obligations. Establish `e : y.toBlocks₁₁.det = x.toBlocks₁₁.det + (y.toBlocks₁₁.det - x.toBlocks₁₁.det)` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_left _ (by rw [hx.2.1]; exact hd), hx.2.1]`. Establish `e : y (.inr i) (.inl j) = (y (.inr i) (.inl j) - x (.inr i) (.inl j)) + x (.inr i) (.inl j)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `Valuation.map_add_lt _ (h _ _) (hx.2.2 i j)`.
+-/
 theorem inSupp_of_near {x y : Matrix (A ⊕ D) (A ⊕ D') k} (hx : InSupp x)
     (h : ∀ i j, valuation k (y i j - x i j) < 1) : InSupp y ∧
       valuation k (y.toBlocks₁₁.det - x.toBlocks₁₁.det) < 1 := by
@@ -120,6 +162,13 @@ theorem inSupp_of_near {x y : Matrix (A ⊕ D) (A ⊕ D') k} (hx : InSupp x)
     rw [e]
     exact Valuation.map_add_lt _ (h _ _) (hx.2.2 i j)
 
+/- English proof (translation)
+Take `⟨hy, hd⟩` from `inSupp_of_near hx h`. Unfold `datum`. Rewrite using `[dif_pos hy, dif_pos hx]`. Establish `hq : Units.mk0 _ hy.det_ne = Units.mk0 _ hx.det_ne * Units.mk0 (y.toBlocks₁₁.det / x.toBlocks₁₁.det) (div_ne_zero hy.det_ne hx.det_ne)`. Use `ext`.
+
+Simplify using `[mul_div_cancel₀ _ hx.det_ne]`. Establish `h1 : ξ (Units.mk0 (y.toBlocks₁₁.det / x.toBlocks₁₁.det) (div_ne_zero hy.det_ne hx.det_ne)) = 1`. Apply `hξ` to reduce the goal to its premises. Simplify using `only [Units.val_mk0]`. Rewrite using `[div_sub_one hx.det_ne, map_div₀, hx.2.1, div_one]`.
+
+Conclude with `hd`. Rewrite using `[hq, map_mul, h1, mul_one]`.
+-/
 theorem datum_eq_of_near (ξ : kˣ →* ℂˣ) (hξ : GlobalTheory.SplitWeil.IsTame ξ) {x y : Matrix (A ⊕ D) (A ⊕ D') k}
     (hx : InSupp x) (h : ∀ i j, valuation k (y i j - x i j) < 1) : datum ξ y = datum ξ x := by
   obtain ⟨hy, hd⟩ := inSupp_of_near hx h
@@ -142,6 +191,13 @@ section Fv
 variable {F : Type} [Field F] [NumberField F] (p : HeightOneSpectrum (𝓞 F))
   {A D D' : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] [Fintype D'] [DecidableEq D']
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨{y | ∀ i j, Valued.v (y i j - x i j) < 1}, ?_, fun i j => by simp, fun y hy => ?_⟩` and prove the remaining obligations. Establish `e : {y : Matrix (A ⊕ D) (A ⊕ D') (p.adicCompletion F) | ∀ i j, Valued.v (y i j - x i j) < 1} = ⋂ i, ⋂ j, (fun y : Matrix (A ⊕ D) (A ⊕ D') (p.adicCompletion F) => y i j - x i j) ⁻¹' {t | Valued.v t < 1}` using `by ext; simp`. Rewrite using `[e]`.
+
+Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (isOpen_lt_one p).preimage ((continuous_id.matrix_elem i j).sub continuous_const)`. Establish `hy' : ∀ i j, valuation _ (y i j - x i j) < 1` using `fun i j => (val_lt_one_iff p _).2 (hy i j)`. Distinguish the cases in `hx : InSupp x`. Conclude with `datum_eq_of_near ξ hξ hx hy'`. Establish `hyn : ¬ InSupp y` using `fun hy0 => hx (inSupp_of_near hy0 (fun i j => by`.
+
+Rewrite using `[← neg_sub, Valuation.map_neg]`. Conclude with `hy' i j)).1`. Unfold `datum`. Rewrite using `[dif_neg hx, dif_neg hyn]`.
+-/
 theorem datum_isLocallyConstant (ξ : (p.adicCompletion F)ˣ →* ℂˣ) (hξ : GlobalTheory.SplitWeil.IsTame ξ) :
     IsLocallyConstant (datum (k := p.adicCompletion F) (A := A) (D := D) (D' := D') ξ) := by
   rw [IsLocallyConstant.iff_exists_open]
@@ -162,6 +218,11 @@ theorem datum_isLocallyConstant (ξ : (p.adicCompletion F)ˣ →* ℂˣ) (hξ : 
       unfold datum
       rw [dif_neg hx, dif_neg hyn]
 
+/- English proof (translation)
+Apply `HasCompactSupport.intro (K := (Set.univ.pi fun _ => Set.univ.pi fun _ => {t : p.adicCompletion F | Valued.v t ≤ 1} : Set (Matrix (A ⊕ D) (A ⊕ D') (p.adicCompletion F))))` to reduce the goal to its premises. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_le_one p`. Introduce `x hx`. Unfold `datum`. Rewrite using `[dif_neg]`.
+
+Introduce `hs`. Apply `hx` to reduce the goal to its premises. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, Set.mem_ofPred_eq]`. Introduce `i j`. Conclude with `(mem_O_iff p _).1 (hs.1 i j)`.
+-/
 theorem datum_hasCompactSupport (ξ : (p.adicCompletion F)ˣ →* ℂˣ) :
     HasCompactSupport (datum (k := p.adicCompletion F) (A := A) (D := D) (D' := D') ξ) := by
   apply HasCompactSupport.intro (K := (Set.univ.pi fun _ => Set.univ.pi fun _ =>
@@ -186,14 +247,25 @@ section Index
 variable {r a : ℕ} {A : Type} (ε : Fin r ⊕ A ≃ Fin a) (hε : ∀ i, (ε (.inl i) : ℕ) = i)
 include hε
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `e : ε (.inr j) = ε (.inl ⟨_, hlt⟩)` using `Fin.ext (by rw [hε])`. Conclude with `Sum.inr_ne_inl (ε.injective e)`.
+-/
 theorem le_inr (j : A) : r ≤ (ε (.inr j) : ℕ) := by
   by_contra hlt
   rw [not_le] at hlt
   have e : ε (.inr j) = ε (.inl ⟨_, hlt⟩) := Fin.ext (by rw [hε])
   exact Sum.inr_ne_inl (ε.injective e)
 
+/- English proof (translation)
+The claim follows from `Fin.ext (by rw [hε])`.
+-/
 theorem eq_inl (j : Fin a) (hj : j.val < r) : ε (.inl ⟨j, hj⟩) = j := Fin.ext (by rw [hε])
 
+/- English proof (translation)
+Break down `h : ε.symm j with i | j'` into its components or cases. Establish `e : ε (.inl i) = j` using `by rw [← h]; simp`. Use `hε i` as an intermediate fact. Rewrite `this` using `[e]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `⟨j', by rw [← h]; simp⟩`.
+-/
 theorem exists_inr (j : Fin a) (hj : r ≤ j.val) : ∃ j', ε (.inr j') = j := by
   rcases h : ε.symm j with i | j'
   · have e : ε (.inl i) = j := by rw [← h]; simp
@@ -209,6 +281,11 @@ variable {κ : Type} [Zero κ] {r a b : ℕ} {A B : Type} (ε : Fin r ⊕ A ≃ 
   (hε : ∀ i, (ε (.inl i) : ℕ) = i) (hε' : ∀ i, (ε' (.inl i) : ℕ) = i)
 include hε hε'
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi` using `hε' i`. Establish `hj` using `hε j`. Establish `hbi` using `(ε' (.inl i)).isLt`. Establish `haj` using `(ε (.inl j)).isLt`.
+
+Simplify using `only [Formalism.IndefR.Datum.topL, toBlocks₁₁, submatrix_apply, Matrix.of_apply]`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Apply the tactic sequence `congr 1 <;> exact Fin.ext (by simp [hi, hj])`.
+-/
 theorem topL_eq (z : Matrix (Fin b) (Fin a) κ) : Formalism.IndefR.Datum.topL r z = (z.submatrix ε' ε).toBlocks₁₁ := by
   ext i j
   have hi := hε' i
@@ -226,6 +303,19 @@ end GlobalTheory.Reidx
 namespace GlobalTheory.Reidx
 open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `hT` using `topL_eq ε ε' hε hε' z`. Establish `hiff : (IsUnit (Formalism.IndefR.Datum.topL r z).det ∧ Valued.v (Formalism.IndefR.Datum.topL r z).det = 1 ∧ (∀ i j, z i j ∈ v.adicCompletionIntegers D.host.F) ∧ ∀ i j, r ≤ (i : Fin b).val → (j : Fin a).val < r → Valued.v (z i j) < 1) ↔ InSupp (z.submatrix ε' ε)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hdet, hint, hlow⟩`.
+
+Use `⟨fun i j => (mem_O_iff' v _).2 (hint _ _), ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hT]`. Conclude with `(val_eq_one_iff v _).2 hdet`. Conclude with `(val_lt_one_iff v _).2 (hlow _ _ (le_inr ε' hε' i) (by rw [hε]; exact j.isLt))`. Introduce and unpack `⟨hint, hdet, hlow⟩`.
+
+Establish `hdet' : Valued.v (Formalism.IndefR.Datum.topL r z).det = 1`. Rewrite using `[hT]`. Conclude with `(val_eq_one_iff v _).1 hdet`. Use `⟨isUnit_iff_ne_zero.2 fun h0 => ?_, hdet', fun i j => ?_, fun i j hi hj => ?_⟩` and prove the remaining obligations. Rewrite `hdet'` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hdet'`. Use `hint (ε'.symm i) (ε.symm j)` as an intermediate fact. Simplify using `only [submatrix_apply, Equiv.apply_symm_apply] at this`. Conclude with `(mem_O_iff' v _).1 this`. Take `⟨i', hi'⟩` from `exists_inr ε' hε' i hi`.
+
+Use `(val_lt_one_iff v _).1 (hlow i' ⟨j, hj⟩)` as an intermediate fact. Simplify `this` using `only [submatrix_apply, hi', eq_inl ε hε j hj]`. Unfold `phiQ datum`. Distinguish the cases in `hs : InSupp (z.submatrix ε' ε)`. Establish `hc` using `hiff.2 hs`.
+
+Rewrite using `[dif_pos hc, dif_pos hs]`. Establish `hu : hc.1.unit = Units.mk0 _ hs.det_ne` using `Units.ext (by simp [hT])`. Rewrite using `[hu, Units.val_inv_eq_inv_val]`. Rewrite using `[dif_neg (fun hc => hs (hiff.1 hc)), dif_neg hs]`.
+-/
 theorem phiQ_eq (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) {r a b : ℕ} {A B : Type} [Fintype A] [DecidableEq A]
     [Fintype B] [DecidableEq B] (ε : Fin r ⊕ A ≃ Fin a) (ε' : Fin r ⊕ B ≃ Fin b)
     (hε : ∀ i, (ε (.inl i) : ℕ) = i) (hε' : ∀ i, (ε' (.inl i) : ℕ) = i) (ξ : (Fv D.host.F v)ˣ →* ℂˣ) :
@@ -270,9 +360,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection
 section SBsec
 variable {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hu.1.comp_continuous e.continuous, hu.2.comp_homeomorph e⟩`.
+-/
 theorem mem_SB_comp (e : X ≃ₜ Y) {u : Y → ℂ} (hu : u ∈ GlobalTheory.SplitWeil.SB Y) : (u ∘ e) ∈ GlobalTheory.SplitWeil.SB X :=
   ⟨hu.1.comp_continuous e.continuous, hu.2.comp_homeomorph e⟩
 
+/- English proof (translation)
+Use `⟨fun h => ?_, mem_SB_comp e⟩` and prove the remaining obligations. Use `mem_SB_comp e.symm h` as an intermediate fact. Establish `e2 : (u ∘ e) ∘ e.symm = u` using `by funext y; simp`. Rewrite `this` using `[e2]`. Then use the resulting hypothesis.
+-/
 theorem mem_SB_comp_iff (e : X ≃ₜ Y) (u : Y → ℂ) : (u ∘ e) ∈ GlobalTheory.SplitWeil.SB X ↔ u ∈ GlobalTheory.SplitWeil.SB Y := by
   refine ⟨fun h => ?_, mem_SB_comp e⟩
   have := mem_SB_comp e.symm h
@@ -316,6 +412,11 @@ section Main
 variable (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) {r a b : ℕ} {A B : Type} [Fintype A] [DecidableEq A]
   [Fintype B] [DecidableEq B] (ε : Fin r ⊕ A ≃ Fin a) (ε' : Fin r ⊕ B ≃ Fin b)
 
+/- English proof (translation)
+Unfold `GlobalTheory.ParHecke.omTwo`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Establish `e : GlobalTheory.SplitWeil.om μT⁻¹ g h u = (GlobalTheory.SplitWeil.om μT⁻¹ g h (fun _ => 1) 0) • (u ∘ mulHomeo g h)`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.SplitWeil.om, mulHomeo]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (mem_SB_comp _ hu)`.
+-/
 theorem omTwo_mem_SB (μS μT : (Fv D.host.F v)ˣ →* ℂˣ) (g : GL (Fin r ⊕ A) (Fv D.host.F v))
     (h : GL (Fin r ⊕ B) (Fv D.host.F v)) (u : Matrix (Fin r ⊕ B) (Fin r ⊕ A) (Fv D.host.F v) → ℂ)
     (hu : u ∈ GlobalTheory.SplitWeil.SB _) : GlobalTheory.ParHecke.omTwo μS μT g h u ∈ GlobalTheory.SplitWeil.SB _ := by
@@ -327,6 +428,15 @@ theorem omTwo_mem_SB (μS μT : (Fv D.host.F v)ˣ →* ℂˣ) (g : GL (Fin r ⊕
   rw [e]
   exact Submodule.smul_mem _ _ (mem_SB_comp _ hu)
 
+/- English proof (translation)
+Establish `dG : GeneralLinearGroup.det G = GeneralLinearGroup.det g`. Use `ext`. Simplify using `only [GeneralLinearGroup.val_det_apply, ← hG, det_submatrix_equiv_self]`. Establish `dH : GeneralLinearGroup.det H = GeneralLinearGroup.det h`. Use `ext`.
+
+Simplify using `only [GeneralLinearGroup.val_det_apply, ← hH, det_submatrix_equiv_self]`. Establish `cA : (Fintype.card (Fin r ⊕ A) : ℝ) = (Fintype.card (Fin a) : ℝ)` using `by rw [Fintype.card_congr ε]`. Establish `cB : (Fintype.card (Fin r ⊕ B) : ℝ) = (Fintype.card (Fin b) : ℝ)` using `by rw [Fintype.card_congr ε']`. Establish `hHi : (H⁻¹ : GL (Fin b) (Fv D.host.F v)).val.submatrix ε' ε' = (h⁻¹ : GL (Fin r ⊕ B) (Fv D.host.F v)).val`. Rewrite using `[Matrix.coe_units_inv, Matrix.coe_units_inv, ← hH, inv_submatrix_equiv]`.
+
+Establish `harg : ∀ z : Matrix (Fin b) (Fin a) (Fv D.host.F v), ((H⁻¹ : GL (Fin b) (Fv D.host.F v)).val * z * G.val).submatrix ε' ε = (h⁻¹ : GL (Fin r ⊕ B) (Fv D.host.F v)).val * z.submatrix ε' ε * g.val`. Introduce `z`. Rewrite using `[← hHi, ← hG, submatrix_mul_equiv, submatrix_mul_equiv]`. Use function extensionality and compare the values at `z`. Simplify using `only [GlobalTheory.ParHecke.omTwo, linOm, GlobalTheory.SplitWeil.om, Pi.smul_apply, smul_eq_mul, harg, dG, dH, cA, cB, MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.one_apply, Units.val_mul, Units.val_inv_eq_inv_val, inv_inv, Units.val_one, inv_one, mul_one]`.
+
+Establish `h1 : ((μT (GeneralLinearGroup.det h) : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `h2 : ((μT (GeneralLinearGroup.det g) : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem omTwo_reidx (hε : ∀ i, (ε (.inl i) : ℕ) = i) (hε' : ∀ i, (ε' (.inl i) : ℕ) = i)
     (μS μT : (Fv D.host.F v)ˣ →* ℂˣ) (g : GL (Fin r ⊕ A) (Fv D.host.F v))
     (h : GL (Fin r ⊕ B) (Fv D.host.F v)) (u : Matrix (Fin r ⊕ B) (Fin r ⊕ A) (Fv D.host.F v) → ℂ)
@@ -358,6 +468,11 @@ theorem omTwo_reidx (hε : ∀ i, (ε (.inl i) : ℕ) = i) (hε' : ∀ i, (ε' (
   have h2 : ((μT (GeneralLinearGroup.det g) : ℂˣ) : ℂ) ≠ 0 := Units.ne_zero _
   field_simp
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion D.host.F v`. Use `haveI : SigmaFinite ν := inferInstance`. Establish `h1` using `measurePreserving_arrowCongr' (fun _ : Fin a => ν) (fun _ : Fin r ⊕ A => ν) ε.symm (MeasurableEquiv.refl (Fv D.host.F v)) (fun _ => MeasurePreserving.id ν)`. Establish `h2` using `measurePreserving_arrowCongr' (fun _ : Fin b => Measure.pi fun _ : Fin a => ν) (fun _ : Fin r ⊕ B => Measure.pi fun _ : Fin r ⊕ A => ν) ε'.symm (MeasurableEquiv.arrowCongr' ε.symm (MeasurableEquiv.refl (Fv D.host.F v))) (fun _ => h1)`. Use `h2.integral_comp' (fun y : Matrix (Fin r ⊕ B) (Fin r ⊕ A) (Fv D.host.F v) => u y * (starRingEnd ℂ) (u' y))` as an intermediate fact.
+
+Unfold `GlobalTheory.SplitWeil.ip GlobalTheory.SplitWeil.volM`. Use `this using 3 with z` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals congr 1`.
+-/
 theorem ip_reidx [MeasurableSpace (Fv D.host.F v)] [BorelSpace (Fv D.host.F v)] (ν : Measure (Fv D.host.F v))
     (hν : ν.IsAddHaarMeasure) (u u' : Matrix (Fin r ⊕ B) (Fin r ⊕ A) (Fv D.host.F v) → ℂ) :
     GlobalTheory.SplitWeil.ip ν (fun z : Matrix (Fin b) (Fin a) (Fv D.host.F v) => u (z.submatrix ε' ε))
@@ -379,6 +494,9 @@ end Main
 
 end GlobalTheory.Reidx
 
+/- English proof (translation)
+Introduce `D v r a b A B _ _ _ _ ε ε' hε hε'`. Use `⟨fun ξ => ⟨GlobalTheory.Reidx.phiQ_eq D v ε ε' hε hε' ξ, fun hξ => ⟨GlobalTheory.Reidx.datum_isLocallyConstant v ξ hξ, GlobalTheory.Reidx.datum_hasCompactSupport v ξ⟩⟩, fun u => (GlobalTheory.Reidx.mem_SB_comp_iff (GlobalTheory.Reidx.reidxHomeo (K := Fv D.host.F v) ε ε') u).symm, …` and prove the remaining obligations.
+-/
 theorem GlobalTheory.Reidx.renumber : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (r a b : ℕ) (A B : Type) [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B] (ε : Fin r ⊕ A ≃ Fin a) (ε' : Fin r ⊕ B ≃ Fin b), (∀ i, (ε (.inl i) : ℕ) = i) → (∀ i, (ε' (.inl i) : ℕ) = i) → (∀ ξ : (Fv D.host.F v)ˣ →* ℂˣ, (phiQ v r ξ = fun z : Matrix (Fin b) (Fin a) (Fv D.host.F v) => datum ξ (z.submatrix ε' ε)) ∧ (GlobalTheory.SplitWeil.IsTame ξ → datum ξ ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin r ⊕ B) (Fin r ⊕ A) (Fv D.host.F v)))) ∧ (∀ u : Matrix (Fin r ⊕ B) (Fin r ⊕ A) (Fv D.host.F v) → ℂ, u ∈ GlobalTheory.SplitWeil.SB _ ↔ (fun z : Matrix (Fin b) (Fin a) (Fv D.host.F v) => u (z.submatrix ε' ε)) ∈ GlobalTheory.SplitWeil.SB _) ∧ (∀ (μS μT : (Fv D.host.F v)ˣ →* ℂˣ) (g : GL (Fin r ⊕ A) (Fv D.host.F v)) (h : GL (Fin r ⊕ B) (Fv D.host.F v)) (u : Matrix (Fin r ⊕ B) (Fin r ⊕ A) (Fv D.host.F v) → ℂ), (u ∈ GlobalTheory.SplitWeil.SB _ → GlobalTheory.ParHecke.omTwo μS μT g h u ∈ GlobalTheory.SplitWeil.SB _) ∧ ∀ (G : GL (Fin a) (Fv D.host.F v)) (H : GL (Fin b) (Fv D.host.F v)), G.1.submatrix ε ε = g.1 → H.1.submatrix ε' ε' = h.1 → (fun z : Matrix (Fin b) (Fin a) (Fv D.host.F v) => GlobalTheory.ParHecke.omTwo μS μT g h u (z.submatrix ε' ε)) = (((μT (GeneralLinearGroup.det G))⁻¹ * μS (GeneralLinearGroup.det H) : ℂˣ) : ℂ) • linOm v G H fun z => u (z.submatrix ε' ε)) ∧ ∀ [MeasurableSpace (Fv D.host.F v)] [BorelSpace (Fv D.host.F v)] (ν : Measure (Fv D.host.F v)), ν.IsAddHaarMeasure → ∀ u u' : Matrix (Fin r ⊕ B) (Fin r ⊕ A) (Fv D.host.F v) → ℂ, GlobalTheory.SplitWeil.ip ν (fun z : Matrix (Fin b) (Fin a) (Fv D.host.F v) => u (z.submatrix ε' ε)) (fun z => u' (z.submatrix ε' ε)) = GlobalTheory.SplitWeil.ip ν u u' := by
   intro D v r a b A B _ _ _ _ ε ε' hε hε'
   refine ⟨fun ξ => ⟨GlobalTheory.Reidx.phiQ_eq D v ε ε' hε hε' ξ, fun hξ =>

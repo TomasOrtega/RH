@@ -24,6 +24,13 @@ namespace GlobalTheory.CosetOrbital
 
 open Formalism.L2.SG.TermOp.Vanish Formalism.L2.SG.Pf.FormTranspose
 
+/- English proof (translation)
+Use `haveI := FiniteDimensional.complete ℂ Wq`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `set c := stdOrthonormalBasis ℂ Wp`. Establish `key : ∀ f : OrthonormalBasis ι ℂ Wq, ∑ i, ‖T (f i)‖ ^ 2 = ∑ k, ‖ContinuousLinearMap.adjoint T (c k)‖ ^ 2`. Introduce `f`.
+
+Establish `h1 : ∀ i, ‖T (f i)‖ ^ 2 = ∑ k, ‖⟪ContinuousLinearMap.adjoint T (c k), f i⟫_ℂ‖ ^ 2`. Introduce `i`. Rewrite using `[← c.sum_sq_norm_inner_right (T (f i))]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.adjoint_inner_left]`.
+
+Repeatedly rewrite using `[h1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `f.sum_sq_norm_inner_left _`. Rewrite using `[key b, key e]`.
+-/
 theorem sum_norm_sq_basis_indep {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
     [FiniteDimensional ℂ Wq] [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     {ι : Type} [Fintype ι] (T : Wq →L[ℂ] Wp) (b e : OrthonormalBasis ι ℂ Wq) :
@@ -45,6 +52,13 @@ theorem sum_norm_sq_basis_indep {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerPro
     exact f.sum_sq_norm_inner_left _
   rw [key b, key e]
 
+/- English proof (translation)
+Establish `hsq : ∀ T : Wq →L[ℂ] Wp, ‖Formalism.L2.SG.PackageTie.hsEmb T‖ ^ 2 = ∑ i, ‖T (stdOrthonormalBasis ℂ Wq i)‖ ^ 2`. Introduce `T`. Rewrite using `[PiLp.norm_sq_eq_of_L2]`. Simplify using `[Formalism.L2.SG.PackageTie.hsEmb]`. Establish `h2 : ‖Formalism.L2.SG.PackageTie.hsEmb (c • ((A.toContinuousLinearEquiv : Wp →L[ℂ] Wp).comp (O.comp (B.symm.toContinuousLinearEquiv : Wq →L[ℂ] Wq))))‖ ^ 2 = ‖Formalism.L2.SG.PackageTie.hsEmb O‖ ^ 2`.
+
+Rewrite using `[hsq, hsq]`. Establish `e1 : ∀ i, ‖(c • ((A.toContinuousLinearEquiv : Wp →L[ℂ] Wp).comp (O.comp (B.symm.toContinuousLinearEquiv : Wq →L[ℂ] Wq)))) (stdOrthonormalBasis ℂ Wq i)‖ ^ 2 = ‖O (((stdOrthonormalBasis ℂ Wq).map B.symm) i)‖ ^ 2`. Introduce `i`. Simplify using `[norm_smul, hc]`. Repeatedly rewrite using `[e1]`.
+
+Conclude with `sum_norm_sq_basis_indep O _ _`. Establish `h0 : 0 ≤ ‖Formalism.L2.SG.PackageTie.hsEmb O‖` using `norm_nonneg _`. Establish `h0'` using `norm_nonneg (Formalism.L2.SG.PackageTie.hsEmb (c • ((A.toContinuousLinearEquiv : Wp →L[ℂ] Wp).comp (O.comp (B.symm.toContinuousLinearEquiv : Wq →L[ℂ] Wq)))))`. Use polynomial arithmetic with `[sq_nonneg (‖Formalism.L2.SG.PackageTie.hsEmb O‖ - ‖Formalism.L2.SG.PackageTie.hsEmb (c • ((A.toContinuousLinearEquiv : Wp →L[ℂ] Wp).comp (O.comp (B.symm.toContinuousLinearEquiv : Wq →L[ℂ] Wq))))‖)]`.
+-/
 theorem norm_hsEmb_unitary {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
     [FiniteDimensional ℂ Wq] [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     (c : ℂ) (hc : ‖c‖ = 1) (A : Wp ≃ₗᵢ[ℂ] Wp) (B : Wq ≃ₗᵢ[ℂ] Wq) (O : Wq →L[ℂ] Wp) :
@@ -75,6 +89,15 @@ theorem norm_hsEmb_unitary {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductS
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Establish `hC` using `Formalism.L2.SG.Pf.psiInfChar_holds D X u`. Establish `hne : ∀ s, X.psiInfU u s ≠ 0`. Introduce `s h0`. Use `psiInfU_norm X u s` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+
+Conclude with `zero_ne_one this`. Establish `h1 : X.psiInfU u 1 = 1`. Establish `e` using `(hC.2.1 1 hC.1 1 hC.1).2`. Rewrite `e` using `[one_mul]`. Establish `e2 : X.psiInfU u 1 * (X.psiInfU u 1 - 1) = 0` using `by rw [mul_sub, ← e]; ring`.
+
+Break down `mul_eq_zero.1 e2 with h | h` into its components or cases. Conclude with `absurd h (hne 1)`. Conclude with `sub_eq_zero.1 h`. Establish `e` using `(hC.2.1 n hn n⁻¹ (hC.2.2 n hn)).2`. Rewrite `e` using `[mul_inv_cancel, h1]`.
+
+Conclude with `eq_inv_of_mul_eq_one_right e.symm`.
+-/
 theorem psi_inv (u : D.what₂.Word) {n : X.B.I.Ginf} (hn : n ∈ X.NinfU u) :
     X.psiInfU u n⁻¹ = (X.psiInfU u n)⁻¹ := by
   have hC := Formalism.L2.SG.Pf.psiInfChar_holds D X u
@@ -96,6 +119,9 @@ end GlobalTheory.CosetOrbital
 namespace GlobalTheory.CosetOrbital
 open Formalism.L2.SG.Pf.FormTranspose
 
+/- English proof (translation)
+Establish `hNS : ∀ {s : X.B.I.Ginf}, s ∈ X.NinfU v → s ∈ X.SinfU v` using `fun hs p => (hs p).1`. Establish `hsi : s⁻¹ ∈ X.NinfU v` using `ninf_inv X v hs`. Rewrite using `[mul_assoc, (X.Wu_spec v).1 s⁻¹ (hNS hsi) (h * x), (X.piU_rep v).2.2.2.1 s⁻¹ hsi, ContinuousLinearMap.one_apply, (X.Wu_spec v).1 h hh x, Formalism.L2.SG.RealObj.InfCut.piIso_apply, smul_smul]`. Both sides reduce to the same expression.
+-/
 theorem wu_move {D : D7} (X : HidaSetting D) (v : D.what₂.Word) (s : X.B.I.Ginf) (hs : s ∈ X.NinfU v) (h : X.B.I.Ginf)
     (hh : h ∈ X.SinfU v) (x : X.B.I.Ginf) :
     X.Wu v ((s⁻¹ * h) * x) = (X.psiInfU v s⁻¹ * X.psiInfU v h) •
@@ -114,6 +140,37 @@ open Formalism.L2.SG.TermOp.Vanish Formalism.L2.SG.Pf.FormTranspose Set
 
 variable {D : D7} (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word)
 
+/- English proof (translation)
+Use `haveI := FiniteDimensional.complete ℂ (X.Vpi u)`. Use `set γw := Formalism.L2.SG.RealObj.gamW X u u' w with hγw`. Establish `hγwP : Formalism.L2.SG.RealObj.IsPtRep X u u' w γw`. Simplify using `only [hγw, Formalism.L2.SG.RealObj.gamW, dif_pos hreal]`. Conclude with `hreal.choose_spec`.
+
+Take `⟨μw, hμwH, hμwQ, hμwS⟩` from `hP.2 w hreal`. Use `set cj : X.B.I.Ginf → X.B.I.Ginf := fun y => g * y * g⁻¹ with hcj`. Establish `hcjm : Measurable cj` using `(measurable_const_mul g).mul_const g⁻¹`. Use `set μR := μw.map cj with hμR`. Use `set ν := (νq γw).map (fun x => g * x) with hν`.
+
+Establish `hRset : ∀ z, cj z ∈ Rset t ↔ z ∈ Formalism.L2.SG.RealObj.StInf X u u' γw`. Introduce `z`. Establish `e2 : t.pt.1⁻¹ * (g * z * g⁻¹) * t.pt.1 = g' * (γw⁻¹ * z * γw) * g'⁻¹`. Rewrite using `[show t.pt.1 = g * γw * g'⁻¹ from hdec]`. Use `group`.
+
+Use `show (g * z * g⁻¹ ∈ X.NinfU u ∧ t.pt.1⁻¹ * (g * z * g⁻¹) * t.pt.1 ∈ X.NinfU u') ↔ (z ∈ X.NinfU u ∧ γw⁻¹ * z * γw ∈ X.NinfU u')`. Rewrite using `[e2, sinf_conj_iff X u hg, sinf_conj_iff X u' hg']`. Establish `hHaar : IsHaarOnSet X.B.I (Rset t) μR`. Take `⟨h1, h2, h3, h4⟩` from `hμwH`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: SigmaFinite μw` using `h1`. Conclude with `((MeasurableEquiv.mulLeft g).trans (MeasurableEquiv.mulRight g⁻¹)).sigmaFinite_map`. Introduce `h0`. Apply `h2` to reduce the goal to its premises. Use `congrArg (fun m : Measure X.B.I.Ginf => m univ) h0` as an intermediate fact.
+
+Simplify using `only [hμR, Measure.map_apply hcjm MeasurableSet.univ, preimage_univ, Measure.coe_zero, Pi.zero_apply] at this`. Conclude with `Measure.measure_univ_eq_zero.1 this`. Establish `hcje : ⇑((MeasurableEquiv.mulLeft g).trans (MeasurableEquiv.mulRight g⁻¹)) = cj` using `rfl`. Rewrite using `[hμR, ← hcje, MeasurableEquiv.map_apply]`. Use `measure_mono_null (fun z hz => ?_) h3` and prove the remaining obligations.
+
+Introduce `hzS`. Conclude with `hz ((hRset z).2 hzS)`. Introduce `r hr set z := g⁻¹ * r * g with hz`. Establish `hcz : cj z = r` using `by simp only [hcj, hz]; group`. Establish `hzS : z ∈ Formalism.L2.SG.RealObj.StInf X u u' γw` using `(hRset z).1 (hcz ▸ hr)`.
+
+Establish `hcomp : (fun y => r * y) ∘ cj = cj ∘ (fun y => z * y)`. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp, hcj, hz]`. Use `group`. Rewrite using `[hμR, Measure.map_map (measurable_const_mul r) hcjm, hcomp, ← Measure.map_map hcjm (measurable_const_mul z), h4 z hzS]`.
+
+Establish `hmulm : Measurable (fun p : X.B.I.Ginf × X.B.I.Ginf => p.1 * p.2)` using `measurable_mul`. Establish `hQ' : IsQuotMeasS X.B.I μR ν`. Introduce `f hf`. Establish `hσ : SigmaFinite μw` using `hμwH.1`. Establish `hσR : SigmaFinite μR` using `hHaar.1`.
+
+Establish `hF : Measurable fun x => ∫⁻ s, f (s * x) ∂μR` using `(hf.comp hmulm).lintegral_prod_left'`. Rewrite using `[hν, lintegral_map hF (measurable_const_mul g)]`. Establish `e1 : ∀ x0, ∫⁻ s, f (s * (g * x0)) ∂μR = ∫⁻ z, (fun y => f (g * y)) (z * x0) ∂μw`. Introduce `x0`. Rewrite using `[hμR, lintegral_map (f := fun s => f (s * (g * x0))) (hf.comp (measurable_mul_const _)) hcjm]`.
+
+Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Simplify using `only [hcj]`. Use `congr 1`. Use `group`. Simplify using `only [e1]`.
+
+Rewrite using `[← hμwQ (fun y => f (g * y)) (hf.comp (measurable_const_mul g))]`. Conclude with `(lintegral_mul_left_eq_self f g).symm`. Establish `hFE : ∃ Ω, IsSFund X.B.I (ROinf t) Ω` using `Formalism.L2.SG.Pf.fundExistsC_holds D X Y u u' t`. Establish `hFO : IsSFund X.B.I (ROinf t) (FundOf t)`. Unfold `FundOf`.
+
+Rewrite using `[dif_pos hFE]`. Conclude with `hFE.choose_spec`. Use `set Γ0 := ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin with hΓ0`. Establish `hKu : ∀ r ∈ Rset t, ∃! s, s ∈ ROinf t ∧ s * r ∈ FundOf t`. Introduce `r _`.
+
+Take `⟨s0, hs0, hs0F⟩` from `hFO.2.1 r`. Use `⟨s0, ⟨hs0, hs0F⟩, fun s' ⟨hs', hs'F⟩ => ?_⟩` and prove the remaining obligations. Establish `h2 : (s0 * s'⁻¹) * (s' * r) ∈ FundOf t` using `by simpa [mul_assoc] using hs0F`. Use `hFO.2.2 _ hs'F _ (Γ0.mul_mem hs0 (Γ0.inv_mem hs')) h2` as an intermediate fact. Conclude with `(mul_inv_eq_one.1 this).symm`.
+
+Establish `hFA` using `Formalism.L2.SG.Pf.formAllC_holds D X Y u u' t μR ν (FundOf t) (Formalism.L2.SG.Pf.RelChar.relCharC_holds D X Y u u' t hrel) hHaar hQ' hFO.1 hKu`. Conclude with `⟨μR, ⟨γw, g, g', μw, hγwP, hg, hg', hdec, hμwH, hμwS, rfl⟩, ⟨hFO.1, hKu⟩, hFA⟩`.
+-/
 theorem pinned_form (νq : X.B.I.Ginf → Measure X.B.I.Ginf) (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq)
     (t : TauC Y u u') (hrel : t.relevant) (w : Point D.host.E (D.R.rS + 1))
     (hreal : ∃ γ, Formalism.L2.SG.RealObj.IsPtRep X u u' w γ)
@@ -201,6 +258,11 @@ namespace GlobalTheory.CosetOrbital
 
 open Formalism.L2.SG.TermOp.Vanish Formalism.L2.SG.Pf.FormTranspose
 
+/- English proof (translation)
+Establish `hz0 : z ≠ 0` using `by intro h; rw [h, norm_zero] at hz; exact zero_ne_one hz`. Establish `h1 : conj z * z = 1`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hz]`. Evaluate the numerical expressions. Rewrite using `[map_inv₀]`.
+
+Conclude with `inv_eq_of_mul_eq_one_right h1`.
+-/
 theorem conj_inv_of_norm_one (z : ℂ) (hz : ‖z‖ = 1) : conj (z⁻¹) = z := by
   have hz0 : z ≠ 0 := by intro h; rw [h, norm_zero] at hz; exact zero_ne_one hz
   have h1 : conj z * z = 1 := by
@@ -208,6 +270,23 @@ theorem conj_inv_of_norm_one (z : ℂ) (hz : ‖z‖ = 1) : conj (z⁻¹) = z :=
   rw [map_inv₀]
   exact inv_eq_of_mul_eq_one_right h1
 
+/- English proof (translation)
+Introduce `D X Y u u' hSt ν hν t₀ hrel₀ hG₀ w hw`. Use `haveI := FiniteDimensional.complete ℂ (X.Vpi u)`. Establish `hRD` using `Formalism.L2.SG.Pf.RowForm.RealDecompL.realDecompC_of X Y u u' (Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u')`. Take `⟨hpt, g, hg, g', hg', hdec⟩` from `Formalism.L2.SG.Pf.RowForm.realDecompC_gamW X Y u u' hRD t₀ hrel₀ hG₀`. Substitute `hw` using the available equality.
+
+Use `set O := OO (ν (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf t₀.toTerm))) Set.univ (X.Wu u) (X.Wu u') (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf t₀.toTerm)) with hO`. Use `set A := Formalism.L2.SG.RealObj.InfCut.piIso X u g hg with hA`. Use `set B := Formalism.L2.SG.RealObj.InfCut.piIso X u' g' hg' with hB`. Use `set c0 := X.psiInfU u g * conj (X.psiInfU u' g') with hc0`. Establish `hc0n : ‖c0‖ = 1`.
+
+Rewrite using `[hc0, norm_mul, Complex.norm_conj, psiInfU_norm, psiInfU_norm, one_mul]`. Use `⟨hpt, c0 • ((A.toContinuousLinearEquiv : X.Vpi u →L[ℂ] X.Vpi u).comp (O.comp (B.symm.toContinuousLinearEquiv : X.Vpi u' →L[ℂ] X.Vpi u'))), norm_hsEmb_unitary c0 hc0n A B O, ?_⟩` and prove the remaining obligations. Introduce and unpack `t n m xn xm ⟨hn, hm, hlin⟩ hxn hxm`. Take `⟨hrel, -, hptt, -⟩` from `GlobalTheory.T.flagTerm_invariants_const_on_rationalDoubleCoset D X Y u u' hSt t₀ t n m hrel₀ hG₀ ⟨hn, hm, hlin⟩`. Establish `hL` using `GlobalTheory.RatIsomPoint.ratLink_points D X`.
+
+Establish `hxnN : xn.1 ∈ X.NinfU u` using `((hL.2.2 u xn n hxn).1).1 hn`. Establish `hxmN : xm.1 ∈ X.NinfU u'` using `((hL.2.2 u' xm m hxm).1).1 hm`. Establish `hlink : RatLink X (xn⁻¹ * t₀.pt * xm) t.lin`. Rewrite using `[hlin]`. Establish `h1` using `(hL.2.1 _ _ _ _ hxn t₀.rep.2.1).2.1`.
+
+Conclude with `(hL.2.1 _ _ _ _ (hL.2.1 _ _ _ _ h1 t₀.rep.2.1).1 hxm).1`. Establish `hpt_eq : t.pt = xn⁻¹ * t₀.pt * xm` using `(hL.1 t.lin t.rep.2.2.1).unique t.rep.2.1 hlink`. Establish `hpt1 : t.pt.1 = xn.1⁻¹ * t₀.pt.1 * xm.1` using `by rw [hpt_eq]; rfl`. Establish `hNS : ∀ (v : D.what₂.Word) {s : X.B.I.Ginf}, s ∈ X.NinfU v → s ∈ X.SinfU v` using `fun v s hs => fun p => (hs p).1`. Establish `hgt : xn.1⁻¹ * g ∈ X.SinfU u` using `(Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u)).mul_mem (hNS u (ninf_inv X u hxnN)) hg`.
+
+Establish `hgt' : xm.1⁻¹ * g' ∈ X.SinfU u'` using `(Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u')).mul_mem (hNS u' (ninf_inv X u' hxmN)) hg'`. Establish `hdect : t.pt.1 = (xn.1⁻¹ * g) * Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf t₀.toTerm) * (xm.1⁻¹ * g')⁻¹`. Rewrite using `[hpt1, hdec]`. Use `group`. Take `⟨μR, hPin, hK, hFA⟩` from `pinned_form X Y u u' ν hν t hrel _ hpt _ hgt _ hgt' hdect`.
+
+Use `⟨μR, FundOf t, hPin, hK, ?_⟩` and prove the remaining obligations. Establish `hmove` using `Formalism.L2.SG.Pf.RowForm.ClassFrameNormal.oo_map_mulLeft (ν (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf t₀.toTerm))) (X.Wu u) (X.Wu u') (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf t₀.toTerm)) (xn.1⁻¹ * g) (xm.1⁻¹ * g') (X.psiInfU u …`. Rewrite using `[hFA, hdect, hmove]`. Rewrite using `[psi_inv X u hxnN, psi_inv X u' hxmN, map_mul, conj_inv_of_norm_one _ (psiInfU_norm X u' xm.1), ← Complex.coe_smul, smul_smul, smul_smul, hc0]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coset_orbital_form : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → ∀ ν, Formalism.L2.SG.RealObj.NuQPin X u u' ν → ∀ t₀ : TauC Y u u', t₀.relevant → t₀.G ≠ 0 → ∀ w, w = Formalism.L2.SG.PairVal.ptOf t₀.toTerm → (∃ g, Formalism.L2.SG.RealObj.IsPtRep X u u' w g) ∧ ∃ T : X.Vpi u' →L[ℂ] X.Vpi u, ‖Formalism.L2.SG.PackageTie.hsEmb T‖ = ‖Formalism.L2.SG.PackageTie.hsEmb (haveI := FiniteDimensional.complete ℂ (X.Vpi u); OO (ν (Formalism.L2.SG.RealObj.gamW X u u' w)) Set.univ (X.Wu u) (X.Wu u') (Formalism.L2.SG.RealObj.gamW X u u' w))‖ ∧ ∀ (t : TauC Y u u') (n m : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (xn xm : X.B.I.GA), n ∈ NRat (lf D (X.Fu u)) ∧ m ∈ NRat (lf D (X.Fu u')) ∧ t.lin = n⁻¹ * t₀.lin * m → RatLink X xn n → RatLink X xm m → ∃ (μR : Measure X.B.I.Ginf) (K : Set X.B.I.Ginf), Formalism.L2.SG.VolPin.IsPinnedR t w μR ∧ (MeasurableSet K ∧ ∀ y ∈ Formalism.L2.SG.TermOp.Vanish.Rset t, ∃! s, s ∈ ROinf t ∧ s * y ∈ K) ∧ OOt t = (((μR K).toReal : ℂ) * ((X.psiInfU u xn.1)⁻¹ * X.psiInfU u' xm.1)) • T := by
   intro D X Y u u' hSt ν hν t₀ hrel₀ hG₀ w hw
   haveI := FiniteDimensional.complete ℂ (X.Vpi u)

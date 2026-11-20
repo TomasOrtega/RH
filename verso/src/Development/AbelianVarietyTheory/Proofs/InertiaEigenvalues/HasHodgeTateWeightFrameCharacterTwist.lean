@@ -15,10 +15,18 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l)
 
 def actM (g : GQ l) : P.R.BdR →* P.R.BdR := (P.actQdR g).toRingEquiv.toRingHom.toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actM_apply (g : GQ l) (b : P.R.BdR) : actM P g b = P.actQdR g b := rfl
 
 variable {P}
 
+/- English proof (translation)
+Proceed by induction on `k using Int.induction_on with`. Consider the case `zero => rw [zpow_zero, Units.val_one]`. Conclude with `one_mem_Fil`. Consider the case `succ k ih => rw [zpow_add_one, Units.val_mul]`. Conclude with `Fil_mul_left ih h0`.
+
+Consider the case `pred k ih => rw [zpow_sub_one, Units.val_mul]`. Conclude with `Fil_mul_left ih h1`.
+-/
 theorem unit_zpow_mem {u : P.R.BdRˣ} (h0 : (u : P.R.BdR) ∈ Fil P 0)
     (h1 : ((u⁻¹ : P.R.BdRˣ) : P.R.BdR) ∈ Fil P 0) (k : ℤ) : ((u ^ k : P.R.BdRˣ) : P.R.BdR) ∈ Fil P 0 := by
   induction k using Int.induction_on with
@@ -26,6 +34,11 @@ theorem unit_zpow_mem {u : P.R.BdRˣ} (h0 : (u : P.R.BdR) ∈ Fil P 0)
   | succ k ih => rw [zpow_add_one, Units.val_mul]; exact Fil_mul_left ih h0
   | pred k ih => rw [zpow_sub_one, Units.val_mul]; exact Fil_mul_left ih h1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `i j`. Rewrite using `[scalGL_mul_val, Matrix.smul_apply, smul_eq_mul]`. Conclude with `Fil_mul_left h0 (hU.1 i j)`. Introduce `i j`.
+
+Rewrite using `[mul_inv_rev, ← map_inv, ← (scalGL_commute n v⁻¹ U⁻¹).eq, scalGL_mul_val, Matrix.smul_apply, smul_eq_mul]`. Conclude with `Fil_mul_left h1 (hU.2 i j)`.
+-/
 theorem unitM_scal {n : Type} [Fintype n] [DecidableEq n] {U : GL n P.R.BdR} (hU : UnitM P U) {v : P.R.BdRˣ}
     (h0 : (v : P.R.BdR) ∈ Fil P 0) (h1 : ((v⁻¹ : P.R.BdRˣ) : P.R.BdR) ∈ Fil P 0) :
     UnitM P (scalGL n v * U) := by
@@ -43,6 +56,23 @@ namespace GlobalTheory.PMon.Twist
 
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l}
 
+/- English proof (translation)
+Use `set F : P.R.BdRˣ := Units.map (kd P).toMonoidHom (Units.map (fr l m).toMonoidHom (χ g)) with hFdef`. Use `set Q : P.R.BdRˣ := Units.map (algebraMap ℚ_[l] P.R.BdR).toMonoidHom (P.χQ (g : GQ l)) with hQdef`. Establish `hF : ∀ k : ℤ, ((F ^ k : P.R.BdRˣ) : P.R.BdR) = kd P (fr l m ((χ g ^ k : (↥(MaximalUnramifiedExtension l))ˣ) : ↥(MaximalUnramifiedExtension l)))`. Introduce `k`. Establish `: F ^ k = Units.map (kd P).toMonoidHom (Units.map (fr l m).toMonoidHom (χ g ^ k))`.
+
+Simplify using `only [hFdef, map_zpow]`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hQ : ∀ k : ℤ, ((Q ^ k : P.R.BdRˣ) : P.R.BdR) = algebraMap ℚ_[l] P.R.BdR ((P.χQ (g : GQ l) ^ k : ℚ_[l]ˣ) : ℚ_[l])`. Introduce `k`.
+
+Establish `: Q ^ k = Units.map (algebraMap ℚ_[l] P.R.BdR).toMonoidHom (P.χQ (g : GQ l) ^ k)`. Simplify using `only [hQdef, map_zpow]`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hu' : Units.map (actM P (g : GQ l)) u = F * Q ^ (-d) * u`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map, actM_apply, hu g, Units.val_mul, Units.val_mul, hQ]`. Use `hF 1` as an intermediate fact. Rewrite `this` using `[zpow_one, zpow_one]`. Rewrite using `[this]`.
+
+Establish `hs : P.actQdR (g : GQ l) ((u ^ (-a) : P.R.BdRˣ) : P.R.BdR) = (((F * Q ^ (-d) * u) ^ (-a) : P.R.BdRˣ) : P.R.BdR)`. Rewrite using `[← hu', ← map_zpow, Units.coe_map, actM_apply]`. Establish `hmat : matD P (twist hK ρ χ a) m g = ((F ^ a : P.R.BdRˣ) : P.R.BdR) • matD P ρ m ⟨g, GK_le hK g.2⟩`. Use extensionality with `i j`. Simplify using `only [matD, twist_val, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, hF]`.
+
+Establish `hmap : ∀ (s : P.R.BdR) (M : Matrix n n P.R.BdR), (s • M).map (P.actQdR (g : GQ l)) = P.actQdR (g : GQ l) s • M.map (P.actQdR (g : GQ l))`. Introduce `s M`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Establish `hdiag : (Matrix.diagonal fun j => algebraMap ℚ_[l] P.R.BdR ((P.χQ (g : GQ l) ^ (v j + d * a) : ℚ_[l]ˣ) : ℚ_[l])) = ((Q ^ (d * a) : P.R.BdRˣ) : P.R.BdR) • Matrix.diagonal fun j => algebraMap ℚ_[l] P.R.BdR ((P.χQ (g : GQ l) ^ v j : ℚ_[l]ˣ) : ℚ_[l])`.
+
+Rewrite using `[hQ, ← Matrix.diagonal_smul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.smul_apply, smul_eq_mul, zpow_add, Units.val_mul, map_mul, mul_comm]`. Rewrite using `[hmat, scalGL_mul_val, hmap, hs, hdiag, smul_mul_smul_comm, smul_mul_smul_comm]`.
+
+Establish `hUg` using `hU ⟨g, GK_le hK g.2⟩`. Rewrite using `[hUg, ← Units.val_mul, ← Units.val_mul]`. Use `congr 2`. Rewrite using `[mul_zpow, mul_zpow, ← zpow_mul, neg_mul_neg, ← mul_assoc, ← mul_assoc, ← zpow_add, add_neg_cancel, zpow_zero, one_mul, mul_comm]`.
+-/
 theorem frame_scal {n : Type} [Fintype n] [DecidableEq n] {K K' : FinExt l} (hK : K.1 ≤ K'.1)
     (ρ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)) (χ : ↥(GK K') →* (↥(MaximalUnramifiedExtension l))ˣ) (a : ℤ) (m : ℕ) (v : n → ℤ) (d : ℤ)
     (U : GL n P.R.BdR) (hU : ∀ g : ↥(GK K), matD P ρ m g * (U : Matrix n n P.R.BdR).map (P.actQdR (g : GQ l)) =
@@ -106,6 +136,23 @@ namespace GlobalTheory.PMon.Twist
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `l _ P AI T n _ _ K K' hK r N hr ρ w χ x a hρ hf hx hx1 hx2 hev m`. Take `⟨-, -, hshift, hunit, -⟩` from `GlobalTheory.T.deRhamPeriodRing_field_tPow_filtration_units l P AI T`. Establish `hgal : ∀ g : ↥(GK K'), P.actQdR (g : GQ l) (ev P m x) = kd P (fr l m (χ g : ↥(MaximalUnramifiedExtension l))) * ev P m x`. Introduce `g`. Rewrite using `[← ev_act, hx g, ← evHom_apply, map_mul, evHom_apply, evHom_apply, ev_kur]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨e, he0, he1, hegal⟩ : ∃ e : P.R.BdR, e ∈ Fil P 0 ∧ e ∉ Fil P 1 ∧ ∀ g : ↥(GK K'), P.actQdR (g : GQ l) e = kd P (fr l m (χ g : ↥(MaximalUnramifiedExtension l))) * algebraMap ℚ_[l] P.R.BdR ((P.χQ (g : GQ l) ^ (-(if (m : ℕ) = 0 then 1 else 0 : ℤ)) : ℚ_[l]ˣ) : ℚ_[l]) * e := by`. Distinguish the cases in `hm : (m : ℕ) = 0`. Establish `e0 : ev P (m : ℕ) x = P.ιB x` using `by rw [hm]; rfl`. Use `⟨tz P (-1) * ev P m x, ?_, ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `h` using `(hshift 1 (-1) (P.ιB x)).1 hx1`.
+
+Rewrite `h` using `[show (1 : ℤ) + -1 = 0 by norm_num]`. Rewrite using `[e0]` and apply the resulting hypothesis. Introduce `h`. Rewrite `h` using `[e0]`. Apply `hx2` to reduce the goal to its premises.
+
+Use `(hshift 2 (-1) (P.ιB x)).2 ?_` and prove the remaining obligations. Rewrite using `[show (2 : ℤ) + -1 = 1 by norm_num]` and apply the resulting hypothesis. Rewrite using `[if_pos hm, map_mul, GlobalTheory.PMon.Model.act_tz, hgal g]`. Expand and normalize the polynomial expressions, which then agree. Establish `hj` using `hev m (Nat.pos_of_ne_zero hm) m.2`.
+
+Use `⟨ev P m x, hj.1, hj.2, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg hm, hgal g, neg_zero, zpow_zero, Units.val_one, map_one, mul_one]`. Take `⟨y, hy0, hey⟩` from `hunit e he0 he1`. Set `u : P.R.BdRˣ` to `⟨e, y, hey, by rw [mul_comm]; exact hey⟩`. Establish `hu0 : (u : P.R.BdR) ∈ Fil P 0` using `he0`.
+
+Establish `hu1 : ((u⁻¹ : P.R.BdRˣ) : P.R.BdR) ∈ Fil P 0` using `hy0`. Take `⟨U, hUm, hU⟩` from `hf ⟨(m : ℕ) % r, Nat.mod_lt _ hr⟩`. Establish `hper : ∀ g, matD P ρ m g = matD P ρ ((m : ℕ) % r) g` using `fun g => by`. Use extensionality with `i j`. Simplify using `only [matD, Matrix.map_apply]`.
+
+Rewrite using `[fr_mod (hρ.rat g i j)]`. Use `⟨scalGL n (u ^ (-a)) * U, unitM_scal hUm (unit_zpow_mem hu0 hu1 _) (by rw [← zpow_neg]; exact unit_zpow_mem hu0 hu1 _), fun g => ?_⟩` and prove the remaining obligations. Establish `key` using `frame_scal hK ρ χ a m (w ⟨(m : ℕ) % r, Nat.mod_lt _ hr⟩) (if (m : ℕ) = 0 then 1 else 0) U (fun g' => by rw [hper]; exact hU g') u hegal g`. Apply the tactic sequence `have hda : (if (m : ℕ) = 0 then (1 : ℤ) else 0) * a = if (m : ℕ) = 0 then a else 0 := by split_ifs <;> simp`. Simplify using `only [hda] at key`.
+
+Conclude with `key`.
+-/
 theorem framed_twist : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (_ : LocTied l P AI) (n : Type)
     [Fintype n] [DecidableEq n] (K K' : FinExt l) (hK : K.1 ≤ K'.1) (r N : ℕ) (hr : 0 < r)
     (ρ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)) (w : Fin r → n → ℤ) (χ : ↥(GK K') →* (↥(MaximalUnramifiedExtension l))ˣ) (x : P.R.Bˣ) (a : ℤ),

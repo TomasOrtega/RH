@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.BernsteinUnitaryProductIrreducible
 open GlobalTheory.PRep GlobalTheory.SmGL Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CellDetFirst.main | exact GlobalTheory.CellDetFirst.main | (intros; apply GlobalTheory.CellDetFirst.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cell_functor_two_block_equiv : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₁ → IsSmoothChar χ₂ → ∀ (u v : ℕ)
     (b : SizeMatrix (Two (Fin u) (Fin (v + 1))) (Two (Fin (u + v)) (Fin 1))), b.1 false true = 0 →

@@ -12,12 +12,20 @@ open GlobalTheory.Proof.IdempotentLatticeSequence (primeOf mem_primeOf primeOf_i
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (norm_int_le φ y) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `norm_int_le ψ y`.
+-/
 theorem norm_sub_int_le {E : Type} [Field E] (φ ψ : E →+* ℂ_[p]) (y : 𝓞 E) : ‖φ (y : E) - ψ (y : E)‖ ≤ 1 :=
   by
   rw [sub_eq_add_neg]
   refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (norm_int_le φ y) ?_)
   rw [norm_neg]; exact norm_int_le ψ y
 
+/- English proof (translation)
+Set `_ : Algebra E ℂ_[p]` to `ψ₂.toAlgebra`. Establish `_` using `IsScalarTower.of_algebraMap_eq (R := ℚ) (S := E) (A := ℂ_[p]) fun x => by show algebraMap ℚ ℂ_[p] x = ψ₂ (algebraMap ℚ E x)`. Rewrite using `[eq_ratCast (algebraMap ℚ ℂ_[p]), eq_ratCast (algebraMap ℚ E), map_ratCast]`. Set `τ : E ≃ₐ[ℚ] E` to `(ψ₁.toRatAlgHom).restrictNormal' E`. Establish `hτ : ∀ x, ψ₂ (τ x) = ψ₁ x` using `fun x => (ψ₁.toRatAlgHom).restrictNormal_commutes E x`.
+
+Set `σ : E ≃ₐ[K] E` to `AlgEquiv.ofRingEquiv (f := τ.toRingEquiv) fun x => ψ₂.injective (by`. Express the relevant statement in the definitionally equal form `ψ₂ (τ _) = _`. Rewrite using `[hτ]`. Conclude with `h x)`. Conclude with `⟨σ, fun x => (hτ x).symm⟩`.
+-/
 theorem exists_algEquiv {K E : Type} [Field K] [Field E] [NumberField E] [Algebra K E] [IsGalois ℚ E]
     (ψ₁ ψ₂ : E →+* ℂ_[p]) (h : ∀ x : K, ψ₁ (algebraMap K E x) = ψ₂ (algebraMap K E x)) :
     ∃ σ : E ≃ₐ[K] E, ∀ x, ψ₁ x = ψ₂ (σ x) := by
@@ -32,6 +40,11 @@ theorem exists_algEquiv {K E : Type} [Field K] [Field E] [NumberField E] [Algebr
     rw [hτ]; exact h x)
   exact ⟨σ, fun x => (hτ x).symm⟩
 
+/- English proof (translation)
+Rewrite `hz` using `[pow_two]`. Use `Submodule.mul_induction_on hz (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖φ (algebraMap (𝓞 E) E (a * b))‖ ≤ r * r`. Rewrite using `[map_mul, map_mul, norm_mul]`. Conclude with `mul_le_mul (h a ha) (h b hb) (norm_nonneg _) hr`.
+
+Express the relevant statement in the definitionally equal form `‖φ (algebraMap (𝓞 E) E (a + b))‖ ≤ r * r`. Rewrite using `[map_add, map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`.
+-/
 theorem norm_le_of_mem_sq {E : Type} [Field E] [NumberField E] (φ : E →+* ℂ_[p]) {r : ℝ} (hr : 0 ≤ r)
     (h : ∀ y : 𝓞 E, ‖φ (y : E)‖ < 1 → ‖φ (y : E)‖ ≤ r) {z : 𝓞 E} (hz : z ∈ primeOf φ ^ 2) :
     ‖φ (z : E)‖ ≤ r * r := by
@@ -44,6 +57,25 @@ theorem norm_le_of_mem_sq {E : Type} [Field E] [NumberField E] (φ : E →+* ℂ
     rw [map_add, map_add]
     exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)
 
+/- English proof (translation)
+Introduce `p _ K E _ _ _ _ _ _ φ ψ₁ ψ₂ ⟨π, hπ1, hπ⟩ hK hφ hne`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `h1 : ∀ y : 𝓞 E, ‖ψ₂ (y : E) - ψ₁ (y : E)‖ < 1` using `fun y => by`. Establish `a` using `lt_of_le_of_ne (norm_sub_int_le φ ψ₁ y) (hc y)`.
+
+Establish `e : ψ₂ (y : E) - ψ₁ (y : E) = (φ (y : E) - ψ₁ (y : E)) + -(φ (y : E) - ψ₂ (y : E))` using `by ring`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt a ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `hφ y`.
+
+Establish `hP : ∀ z : 𝓞 E, ‖ψ₂ (z : E)‖ < 1 → z ∈ primeOf φ` using `fun z hz => by`. Express the relevant statement in the definitionally equal form `‖φ (z : E)‖ < 1`. Rewrite using `[← sub_add_cancel (φ (z : E)) (ψ₂ (z : E))]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (hφ z) hz)`. Take `⟨σ, hσ⟩` from `exists_algEquiv ψ₁ ψ₂ hK`.
+
+Establish `: IsGalois K E` using `IsGalois.tower_top_of_isGalois ℚ K E`. Use `primeOf_isMaximal φ` as an intermediate fact. Establish `hP0 : primeOf φ ≠ ⊥` using `fun h => by`. Use `natCast_mem_primeOf φ` as an intermediate fact. Rewrite `this` using `[h, Ideal.mem_bot]`.
+
+Conclude with `(Fact.out : p.Prime).ne_zero (by exact_mod_cast this)`. Establish `: IsGaloisGroup (E ≃ₐ[K] E) (𝓞 K) (𝓞 E)` using `IsGaloisGroup.of_isFractionRing (E ≃ₐ[K] E) (𝓞 K) (𝓞 E) K E`. Establish `hp0 : (primeOf φ).under (𝓞 K) ≠ ⊥` using `mt Ideal.eq_bot_of_comap_eq_bot hP0`. Use `set r := ‖φ (algebraMap K E (π : K))‖ with hr`. Establish `hr0 : 0 < r`.
+
+Use `lt_of_lt_of_le ?_ (hπ (p : 𝓞 E) (natCast_mem_primeOf φ))` and prove the remaining obligations. Rewrite using `[norm_pos_iff]`. Establish `: ((p : 𝓞 E) : E) = (p : E)` using `rfl`. Rewrite using `[this, map_natCast]`. Conclude with `(Fact.out : p.Prime).ne_zero` after adjusting the coercions.
+
+Establish `hsq : ¬ Ideal.map (algebraMap (𝓞 K) (𝓞 E)) ((primeOf φ).under (𝓞 K)) ≤ primeOf φ ^ 2` using `fun hle => by`. Establish `hπP : algebraMap (𝓞 K) (𝓞 E) π ∈ primeOf φ ^ 2` using `hle (Ideal.mem_map_of_mem _ (show algebraMap (𝓞 K) (𝓞 E) π ∈ primeOf φ from hπ1))`. Use `norm_le_of_mem_sq φ hr0.le hπ hπP` as an intermediate fact. Express the relevant statement in the definitionally equal form `r ≤ r * r at this`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hcard` using `Ideal.card_inertia_eq_ramificationIdxIn (G := E ≃ₐ[K] E) ((primeOf φ).under (𝓞 K)) (primeOf φ)`. Rewrite `hcard` using `[Ideal.ramificationIdxIn_eq_ramificationIdx ((primeOf φ).under (𝓞 K)) (primeOf φ) (E ≃ₐ[K] E), ← Ideal.ramificationIdx'_eq_ramificationIdx ((primeOf φ).under (𝓞 K)) (primeOf φ) hp0, not_ne_iff.1 (mt (Ideal.ramificationIdx'_ne_one_iff Ideal.map_comap_le).1 hsq)]`. Establish `hs : σ ∈ (primeOf φ).inertia (E ≃ₐ[K] E)` using `AddSubgroup.mem_inertia.2 fun x => hP _ (by`. Express the relevant statement in the definitionally equal form `‖ψ₂ (σ (x : E) - (x : E))‖ < 1`. Rewrite using `[map_sub, ← hσ]`.
+
+Conclude with `h1 x |> fun h => by rwa [norm_sub_rev] at h)`. Rewrite `hs` using `[Subgroup.eq_bot_of_card_eq _ hcard, Subgroup.mem_bot]`. Conclude with `hne (RingHom.ext fun x => by rw [hσ, hs]; rfl)`.
+-/
 theorem embSep : Formalism.L2.Th1.GD.EmbSep := by
   intro p _ K E _ _ _ _ _ _ φ ψ₁ ψ₂ ⟨π, hπ1, hπ⟩ hK hφ hne
   by_contra hc

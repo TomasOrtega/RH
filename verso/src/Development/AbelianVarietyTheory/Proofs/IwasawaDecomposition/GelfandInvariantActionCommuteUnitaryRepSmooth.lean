@@ -16,17 +16,31 @@ def RealLin (G : Matrix (Fin n) (Fin n) ℂ) (π : Matrix (Fin n) (Fin n) ℂ �
   (∀ X ∈ lieG G, ∀ Y ∈ lieG G, dRep π (X + Y) w = dRep π X w + dRep π Y w) ∧
     ∀ (a : ℝ), ∀ X ∈ lieG G, dRep π (a • X) w = (a : ℂ) • dRep π X w
 
+/- English proof (translation)
+Establish `h : Xᴴ * G + G * X = 0` using `hX`. Use `show _ + _ = 0`. Rewrite using `[conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, star_trivial, ← smul_add, h, smul_zero]`.
+-/
 theorem lie_smul (a : ℝ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieG G) : a • X ∈ lieG G := by
   have h : Xᴴ * G + G * X = 0 := hX
   show _ + _ = 0
   rw [conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, star_trivial, ← smul_add, h, smul_zero]
 
+/- English proof (translation)
+Simplify using `only [conjG, conjTranspose_add, Matrix.mul_add, Matrix.add_mul, neg_add]`.
+-/
 theorem conjG_add (Z W : Matrix (Fin n) (Fin n) ℂ) : conjG G (Z + W) = conjG G Z + conjG G W := by
   simp only [conjG, conjTranspose_add, Matrix.mul_add, Matrix.add_mul, neg_add]
 
+/- English proof (translation)
+Simplify using `only [conjG, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]`.
+-/
 theorem conjG_smul (c : ℂ) (Z : Matrix (Fin n) (Fin n) ℂ) : conjG G (c • Z) = star c • conjG G Z := by
   simp only [conjG, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]
 
+/- English proof (translation)
+Establish `e1 : (1 / 2 : ℂ) • (Z + W + conjG G (Z + W)) = (1 / 2 : ℂ) • (Z + conjG G Z) + (1 / 2 : ℂ) • (W + conjG G W)` using `by rw [conjG_add]; module`. Establish `e2 : (1 / (2 * Complex.I)) • (Z + W - conjG G (Z + W)) = (1 / (2 * Complex.I)) • (Z - conjG G Z) + (1 / (2 * Complex.I)) • (W - conjG G W)`. Rewrite using `[conjG_add]`. Use `module`. Unfold `dRepC`.
+
+Rewrite using `[e1, e2, hl.1 _ (parts_mem hG hh Z).1 _ (parts_mem hG hh W).1, hl.1 _ (parts_mem hG hh Z).2 _ (parts_mem hG hh W).2]`. Use `module`.
+-/
 theorem dRepC_add_left (hG : IsUnit G) (hh : Gᴴ = G) {w : H} (hl : RealLin G π w) (Z W : Matrix (Fin n) (Fin n) ℂ) :
     dRepC G π (Z + W) w = dRepC G π Z w + dRepC G π W w := by
   have e1 : (1 / 2 : ℂ) • (Z + W + conjG G (Z + W)) =
@@ -39,6 +53,17 @@ theorem dRepC_add_left (hG : IsUnit G) (hh : Gᴴ = G) {w : H} (hl : RealLin G �
     hl.1 _ (parts_mem hG hh Z).2 _ (parts_mem hG hh W).2]
   module
 
+/- English proof (translation)
+Take `⟨a, b, rfl⟩ : ∃ a b : ℝ, c = a + b * Complex.I` from `⟨c.re, c.im, (Complex.re_add_im c).symm⟩`. Establish `hs : star ((a : ℂ) + b * Complex.I) = a - b * Complex.I` using `by simp [sub_eq_add_neg]`. Establish `hi : (1 / (2 * Complex.I) : ℂ) = -Complex.I / 2`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+
+Establish `hI` using `Complex.I_mul_I`. Take `⟨h1, h2⟩` from `parts_mem hG hh Z`. Establish `e1 : (1 / 2 : ℂ) • (((a : ℂ) + b * Complex.I) • Z + conjG G (((a : ℂ) + b * Complex.I) • Z)) = a • (1 / 2 : ℂ) • (Z + conjG G Z) + (-b) • (1 / (2 * Complex.I)) • (Z - conjG G Z)`. Rewrite using `[conjG_smul, hs, hi, ← Complex.coe_smul, ← Complex.coe_smul]`. Use `push_cast`.
+
+Use `module`. Establish `e2 : (1 / (2 * Complex.I)) • (((a : ℂ) + b * Complex.I) • Z - conjG G (((a : ℂ) + b * Complex.I) • Z)) = b • (1 / 2 : ℂ) • (Z + conjG G Z) + a • (1 / (2 * Complex.I)) • (Z - conjG G Z)`. Rewrite using `[conjG_smul, hs, hi, ← Complex.coe_smul, ← Complex.coe_smul]`. Use `match_scalars`. Take the linear combination `(-(b : ℂ) / 2) * hI`.
+
+Take the linear combination `(-(b : ℂ) / 2) * hI`. Unfold `dRepC`. Rewrite using `[e1, e2, hl.1 _ (lie_smul _ h1) _ (lie_smul _ h2), hl.1 _ (lie_smul _ h1) _ (lie_smul _ h2), hl.2 _ _ h1, hl.2 _ _ h1, hl.2 _ _ h2, hl.2 _ _ h2]`. Use `push_cast`. Use `match_scalars`.
+
+Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(-(b : ℂ)) * hI`.
+-/
 theorem dRepC_smul_left (hG : IsUnit G) (hh : Gᴴ = G) {w : H} (hl : RealLin G π w) (c : ℂ)
     (Z : Matrix (Fin n) (Fin n) ℂ) : dRepC G π (c • Z) w = c • dRepC G π Z w := by
   obtain ⟨a, b, rfl⟩ : ∃ a b : ℝ, c = a + b * Complex.I := ⟨c.re, c.im, (Complex.re_add_im c).symm⟩
@@ -72,6 +97,11 @@ def dLin (hG : IsUnit G) (hh : Gᴴ = G) {w : H} (hl : RealLin G π w) : Matrix 
   map_add' := dRepC_add_left hG hh hl
   map_smul' := dRepC_smul_left hG hh hl
 
+/- English proof (translation)
+Establish `e : Z = ∑ c, ∑ d, Z c d • Matrix.single c d (1 : ℂ)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single Z]`. Simplify using the standard rewrite rules. Use `show dLin hG hh hl Z = _`. Use `conv_lhs => rw [e]`. Simplify using `only [map_sum, map_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem dRepC_eq_sum (hG : IsUnit G) (hh : Gᴴ = G) {w : H} (hl : RealLin G π w) (Z : Matrix (Fin n) (Fin n) ℂ) :
     dRepC G π Z w = ∑ c, ∑ d, Z c d • dRepC G π (Matrix.single c d 1) w := by
   have e : Z = ∑ c, ∑ d, Z c d • Matrix.single c d (1 : ℂ) := by
@@ -82,6 +112,13 @@ theorem dRepC_eq_sum (hG : IsUnit G) (hh : Gᴴ = G) {w : H} (hl : RealLin G π 
   simp only [map_sum, map_smul]
   rfl
 
+/- English proof (translation)
+Establish `h : gᴴ * G * g = G` using `hg`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det g).1 (isUnit_of_mem_UH hG hg)`. Establish `hD` using `(Matrix.isUnit_iff_isUnit_det G).1 hG`. Establish `h1 : G * g⁻¹ = gᴴ * G` using `by conv_lhs => rw [← h]`. Rewrite using `[Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.mul_one]`.
+
+Establish `h2 : (g⁻¹)ᴴ * G = G * g` using `by conv_lhs => rw [← h]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← conjTranspose_mul, mul_nonsing_inv _ hd]`. Simplify using the standard rewrite rules. Establish `h3 : G⁻¹ * gᴴ = g⁻¹ * G⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ hD, Matrix.mul_one]`. Use `_ = _ := by rw [← h1, ← Matrix.mul_assoc, nonsing_inv_mul _ hD, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjG, conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h3, h2]; simp only [conjG, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem conjG_conj (hG : IsUnit G) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH G)
     (Z : Matrix (Fin n) (Fin n) ℂ) : conjG G (g⁻¹ * Z * g) = g⁻¹ * conjG G Z * g := by
   have h : gᴴ * G * g = G := hg
@@ -101,6 +138,9 @@ theorem conjG_conj (hG : IsUnit G) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ 
         simp only [conjG, conjTranspose_mul, Matrix.mul_assoc]
     _ = _ := by rw [h3, h2]; simp only [conjG, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Unfold `dRepC`. Rewrite using `[dRep_rep hG hπ hw hg (parts_mem hG hh Z).1, dRep_rep hG hπ hw hg (parts_mem hG hh Z).2, conjG_conj hG hg, map_add, map_smul]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul]`.
+-/
 theorem dRepC_rep (hG : IsUnit G) (hh : Gᴴ = G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) π) {w : H} (hw : w ∈ smSub G π)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH G) (Z : Matrix (Fin n) (Fin n) ℂ) :
     dRepC G π Z (π g w) = π g (dRepC G π (g⁻¹ * Z * g) w) := by
@@ -127,9 +167,15 @@ def gEnd (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) π
     (hg : g ∈ Formalism.QuantumDeterminants.UH G) : Module.End ℂ (smSub G π) :=
   (π g : H →ₗ[ℂ] H).restrict fun _ hw => rep_mem hG hπ hw hg
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gEnd_coe (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) π) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH G) (w : smSub G π) : ((gEnd hG hπ hg w : smSub G π) : H) = π g w := rfl
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, List.map_cons, List.foldr_cons, ← ih]`. Both sides reduce to the same expression.
+-/
 theorem foldr_dEnd (hG : IsUnit G) (hh : Gᴴ = G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) π)
     (l : List (Matrix (Fin n) (Fin n) ℂ)) (w : smSub G π) :
     (((l.map (dEnd hG hh hπ)).prod w : smSub G π) : H) = (l.map (dRepC G π)).foldr (fun f acc => f acc) (w : H) := by
@@ -139,6 +185,9 @@ theorem foldr_dEnd (hG : IsUnit G) (hh : Gᴴ = G) (hπ : IsURepOn (Formalism.Qu
     rw [List.map_cons, List.prod_cons, Module.End.mul_apply, List.map_cons, List.foldr_cons, ← ih]
     rfl
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.SmoothForms.gelfA_eq_sum_pow, GlobalTheory.SmoothForms.gelfA, LinearMap.sum_apply, Submodule.coe_sum, gelfH]`. Use `Finset.sum_congr rfl fun idx _ => ?_` and prove the remaining obligations. Use `foldr_dEnd hG hh hπ (List.ofFn fun a : Fin (k + 1) => Matrix.single (idx a) (idx (a + 1)) (1 : ℂ)) w` as an intermediate fact. Rewrite `this` using `[List.map_ofFn, List.map_ofFn]`. Conclude with `this.symm`.
+-/
 theorem gelfH_eq (hG : IsUnit G) (hh : Gᴴ = G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) π) (k : ℕ) (w : smSub G π) :
     gelfH G π k w =
       ((∑ c, (Matrix.of (fun a b => dEnd hG hh hπ (Matrix.single a b 1)) ^ (k + 1)) c c) w : smSub G π) := by
@@ -148,6 +197,15 @@ theorem gelfH_eq (hG : IsUnit G) (hh : Gᴴ = G) (hπ : IsURepOn (Formalism.Quan
   rw [List.map_ofFn, List.map_ofFn] at this
   exact this.symm
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det g).1 (isUnit_of_mem_UH hG hg)`. Establish `hQP : gᵀ * (g⁻¹)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, nonsing_inv_mul _ hd, Matrix.transpose_one]`. Establish `h` using `GlobalTheory.Dec.GelfAd.trace_pow_comm (fun a b => dEnd hG hh hπ (Matrix.single a b 1)) (gEnd hG hπ hg) _ _ hQP (fun a b => by`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[Module.End.mul_apply, Module.End.mul_apply]`. Use `(dRepC_rep hG hh hπ v.2 hg _).trans ?_` and prove the remaining obligations. Rewrite using `[gEnd_coe]`. Use `congr 1`. Rewrite using `[dRepC_eq_sum hG hh (hl v v.2)]`.
+
+Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[Matrix.mul_apply, Matrix.single, ite_and]) (k + 1)`. Establish `h2` using `congrArg (fun T : Module.End ℂ (smSub G π) => ((T ⟨w, hw⟩ : smSub G π) : H)) h`.
+
+Simplify using `only [Module.End.mul_apply] at h2`. Rewrite `h2` using `[← gelfH_eq]`. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[gEnd_coe, ← gelfH_eq]`.
+-/
 theorem gelfH_rep_of (hG : IsUnit G) (hh : Gᴴ = G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) π)
     (hl : ∀ w ∈ smSub G π, RealLin G π w) (k : ℕ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH G)
     {w : H} (hw : w ∈ smSub G π) : gelfH G π k (π g w) = π g (gelfH G π k w) := by
@@ -172,6 +230,9 @@ theorem gelfH_rep_of (hG : IsUnit G) (hh : Gᴴ = G) (hπ : IsURepOn (Formalism.
   refine h2.trans ?_
   rw [gEnd_coe, ← gelfH_eq]
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ P G hP h hσ k _ hg _ hw` and use `gelfH_rep_of (gram_unit hP h) (gram_herm h) (isURepOn_trRep hP h hσ) (GlobalTheory.T.derived_action_smooth_vector_real_linear n ε H σ P G hP h hσ) k hg hw`.
+-/
 theorem gelfH_rep : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (P G : Matrix (Fin n) (Fin n) ℂ), IsUnit P →
     Pᴴ * Formalism.REAL.Jm ε * P = G → IsURepOn (UJset ε) σ → ∀ (k : ℕ), ∀ g ∈ Formalism.QuantumDeterminants.UH G,

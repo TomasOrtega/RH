@@ -17,6 +17,9 @@ namespace GlobalTheory.Twist.OrthSum
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[gram_hsum]`. Simplify using `only [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, Doubling.blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero, zero_mul, Finset.sum_co …`.
+-/
 theorem pair_hsum (V W : HSp D) (x y : Fin (hsum V W).rank → D.host.E) :
     ∑ i, ∑ j, star (x i) * (hsum V W).gram i j * y j =
       (∑ i, ∑ j, star (x (finSumFinEquiv (Sum.inl i))) * V.gram i j * y (finSumFinEquiv (Sum.inl j))) +
@@ -27,6 +30,15 @@ theorem pair_hsum (V W : HSp D) (x y : Fin (hsum V W).rank → D.host.E) :
     Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero, zero_mul, Finset.sum_const_zero,
     add_zero, zero_add]
 
+/- English proof (translation)
+Use `haveI := hL.1`. Use `haveI := hL'.1`. Use `⟨isLattice_sumLat L L', fun y => ⟨fun hy x hx => ?_, fun H => ?_⟩⟩` and prove the remaining obligations. Take `⟨b₁, hb₁⟩` from `(hL.2 (fun i => y (finSumFinEquiv (Sum.inl i)))).1 hy.1 (fun i => x (finSumFinEquiv (Sum.inl i))) hx.1`. Take `⟨b₂, hb₂⟩` from `(hL'.2 (fun i => y (finSumFinEquiv (Sum.inr i)))).1 hy.2 (fun i => x (finSumFinEquiv (Sum.inr i))) hx.2`.
+
+Use `⟨b₁ + b₂, ?_⟩` and prove the remaining obligations. Rewrite using `[pair_hsum]`. Use `push_cast`. Take the linear combination `hb₁ + hb₂`. Use `⟨(hL.2 _).2 fun x hx => ?_, (hL'.2 _).2 fun x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨b, hb⟩` from `H (pairVec finSumFinEquiv x 0) ((pairVec_mem_sumLat _).2 ⟨hx, zero_mem _⟩)`. Rewrite `hb` using `[pair_hsum]`. Simplify using `only [pairVec_inl, pairVec_inr, Pi.zero_apply, star_zero, zero_mul, Finset.sum_const_zero, add_zero] at hb`. Conclude with `⟨b, hb⟩`. Take `⟨b, hb⟩` from `H (pairVec finSumFinEquiv 0 x) ((pairVec_mem_sumLat _).2 ⟨zero_mem _, hx⟩)`.
+
+Rewrite `hb` using `[pair_hsum]`. Simplify using `only [pairVec_inl, pairVec_inr, Pi.zero_apply, star_zero, zero_mul, Finset.sum_const_zero, zero_add] at hb`. Conclude with `⟨b, hb⟩`.
+-/
 theorem selfDual_hsum {V W : HSp D} {L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)} (hL : IsSelfDualC V L) (hL' : IsSelfDualC W L') :
     IsSelfDualC (hsum V W) (sumLat finSumFinEquiv L L') := by

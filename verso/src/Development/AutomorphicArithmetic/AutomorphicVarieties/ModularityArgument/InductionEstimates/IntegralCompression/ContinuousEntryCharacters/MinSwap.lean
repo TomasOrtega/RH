@@ -8,6 +8,17 @@ open GroundTheory.Automorphic.CuspidalSpectrum GroundTheory.Automorphic.ArchWhit
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA
 open scoped ComplexConjugate Classical InnerProductSpace
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ σ D CF CE hC μ _ θ hθ τ₁ τ₂ hτ s u n q hmin`. Take `⟨hnorm, -, hint⟩` from `UpperTheory.ConvolutionTheory.Dp.twUnitary E 2 μ θ`. Establish `htw` using `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coTw F E σ D CF CE hC μ θ hθ`. Set `L : LL μ →ₗᵢ[ℂ] LL μ` to `⟨(θ.U : LL μ →ₗ[ℂ] LL μ), hnorm⟩`. Establish `hL : ∀ v, L v = θ.U v` using `fun _ => rfl`.
+
+Establish `key : ∀ n' q' v, θ.U (CE.Pi μ (s, u) n' q' v) = CE.Pi μ (s + 1, u) n' q' (θ.U v)`. Introduce `n' q' v`. Unfold `Co.Pi`. Rewrite using `[← hL, ← L.integral_comp_comm]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `m`. Rewrite using `[map_smul, hL, hint, htw]`. Substitute `hτ` using the available equality. Take `⟨⟨v, hv, hne⟩, hz⟩` from `hmin`. Use `⟨⟨θ.U v, Submodule.mem_map_of_mem hv, fun h => hne ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite `h` using `[← key]`. Rewrite using `[← norm_eq_zero, ← hnorm, h, norm_zero]`. Introduce and unpack `n' q' hn _ ⟨w, hw, rfl⟩`. Use `key n' q' w` as an intermediate fact. Rewrite `this` using `[hz n' q' hn w hw, map_zero]`.
+
+Conclude with `this.symm`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.minSwap :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyComplex F] [IsTotallyComplex E] (σ : E ≃ₐ[F] E) (D : InfD σ 1) (CF : Co F (InfinitePlace F)) (CE : Co E (Fin 2 × InfinitePlace F)),
       (∀ n (g : archGroup E n) s u, CE.Ψ n g (s, u) = CF.Ψ n (compA D n s g) u) →

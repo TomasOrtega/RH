@@ -8,6 +8,9 @@ open CategoryTheory Opposite Matrix GlobalTheory GlobalTheory.PDivGroup GlobalTh
 
 namespace GlobalTheory.PDivLat.ConstMu
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[WittVector.coeff_frobenius_charP]`. Simplify using `only [ofPadic, RingHom.comp_apply, WittVector.map_coeff]`. Rewrite using `[← map_pow, ZMod.pow_card]`.
+-/
 theorem frobenius_ofPadic {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (c : ℤ_[p]) :
     WittVector.frobenius (ofPadic p O c) = ofPadic p O c := by
@@ -16,6 +19,9 @@ theorem frobenius_ofPadic {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact
   simp only [ofPadic, RingHom.comp_apply, WittVector.map_coeff]
   rw [← map_pow, ZMod.pow_card]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[WittVector.coeff_frobenius_charP, phiInv, WittVector.map_coeff]`. Conclude with `frobeniusEquiv_symm_pow_p _ p _`.
+-/
 theorem frobenius_phiInv' {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (a : Ainf p O) :
     WittVector.frobenius (phiInv p O a) = a := by
@@ -23,11 +29,35 @@ theorem frobenius_phiInv' {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact
   rw [WittVector.coeff_frobenius_charP, phiInv, WittVector.map_coeff]
   exact frobeniusEquiv_symm_pow_p _ p _
 
+/- English proof (translation)
+Use `conv_lhs => rw [← xi_mul_nu, map_mul, ← phiInv_mu, frobenius_phiInv']`.
+-/
 theorem frobenius_mu' {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (ε : PreTilt O p) :
     WittVector.frobenius (Sandwich.mu ε) = WittVector.frobenius (xi ε) * Sandwich.mu ε := by
   conv_lhs => rw [← xi_mul_nu, map_mul, ← phiInv_mu, frobenius_phiInv']
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε g hg`. Take `⟨ec, hec⟩` from `GlobalTheory.T.ainfHodgeTateLattice_constQpModZp_equiv p C v O hv ε hε`. Take `⟨em, hem⟩` from `GlobalTheory.T.hodgeTateLattice_muPInfinity_free_rank_one p C v O hv ε hε`. Establish `eig` using `GlobalTheory.T.existsUnique_padic_of_frobenius_eigen_ainf p C v O hv ε hε`. Use `set l : latt (PDivGroup.mu p O) := em.symm 1 with hl_def`.
+
+Establish `hl : l.1 (epsTate hε) = Sandwich.mu ε`. Rewrite using `[← hem l, hl_def, LinearEquiv.apply_symm_apply, mul_one]`. Establish `htate : ∀ t : (PDivGroup.mu p O).Tate, ∃ a : ℤ_[p], t = a • epsTate hε`. Introduce `t`. Take `⟨a, rfl⟩` from `(epsEquiv hε).surjective t`.
+
+Conclude with `⟨a, rfl⟩`. Establish `hlval : ∀ a : ℤ_[p], l.1 (a • epsTate hε) = ofPadic p O a * Sandwich.mu ε`. Introduce `a`. Rewrite using `[map_smulₛₗ, hl, smul_eq_mul]`. Establish `hgen : ∀ y : latt (PDivGroup.mu p O), y = em y • l`.
+
+Introduce `y`. Apply `em.injective` to reduce the goal to its premises. Rewrite using `[map_smul, hl_def, LinearEquiv.apply_symm_apply, smul_eq_mul, mul_one]`. Establish `hpull : ∀ (f : const p O ⟶ PDivGroup.mu p O) (y : latt (PDivGroup.mu p O)), ec (lattMap f y) = y.1 (tateMap _ _ O f (constGen p O))`. Introduce `f y`.
+
+Rewrite using `[hec]`. Both sides reduce to the same expression. Use `set b : Ainf p O := ((g l).1 (constGen p O)) with hb_def`. Establish `hbeig : WittVector.frobenius b = WittVector.frobenius (xi ε) * b`. Establish `h1` using `hg l (WittVector.frobenius (xi ε) • l) (by`.
+
+Introduce `t`. Take `⟨a, rfl⟩` from `htate t`. Rewrite using `[Submodule.coe_smul, LinearMap.smul_apply, hlval, smul_eq_mul, map_mul, frobenius_ofPadic, frobenius_mu']`. Use the proof step `ring) (constGen p O)`. Rewrite `h1` using `[map_smul, Submodule.coe_smul, LinearMap.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[hb_def, ← h1]`. Take `⟨c, hc, hcu⟩` from `eig b hbeig`. Establish `hfix : ∀ f : const p O ⟶ PDivGroup.mu p O, lattMap f = g ↔ ec (lattMap f l) = ec (g l)`. Introduce `f`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Rewrite using `[h]`. Introduce `h`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`.
+
+Rewrite using `[hgen y, map_smul, map_smul, ec.injective h]`. Use `⟨constHom (PDivGroup.mu p O) (c • epsTate hε), ?_, ?_⟩` and prove the remaining obligations. Use `show lattMap _ = g`. Rewrite using `[hfix, hpull, tateMap_constHom, hlval, hec, hc]`. Introduce `f hf`.
+
+Rewrite `hf` using `[hfix, hpull, hec]`. Take `⟨a, ha⟩` from `htate (tateMap _ _ O f (constGen p O))`. Rewrite `hf` using `[ha, hlval]`. Establish `hac : a = c` using `hcu a hf`. Rewrite using `[← (constHom (PDivGroup.mu p O)).apply_symm_apply f, constHom_symm_apply, ha, hac]`.
+-/
 theorem existsUnique_lattMap : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ g : latt (PDivGroup.mu p O) →ₗ[Ainf p O] latt (const p O), (∀ m m' : latt (PDivGroup.mu p O), (∀ t, m'.1 t = WittVector.frobenius (m.1 t)) → ∀ t, (g m').1 t = WittVector.frobenius ((g m).1 t)) → ∃! f : const p O ⟶ PDivGroup.mu p O, lattMap f = g := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε g hg
   obtain ⟨ec, hec⟩ := GlobalTheory.T.ainfHodgeTateLattice_constQpModZp_equiv p C v O hv ε hε

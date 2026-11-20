@@ -9,6 +9,17 @@ namespace UpperTheory.V.Ws.Bl
 
 end UpperTheory.V.Ws.Bl
 
+/- English proof (translation)
+Establish `h1 : (!![0,0,0,0; 1,0,0,0; 0,0,0,0; 0,0,-1,0] : M4 A) ∈ uM A`. Use `⟨fun i j h => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | rfl | (exfalso; revert h; decide)`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [adj, sgn]`. Establish `h2 : (!![0,0,0,0; 0,0,1,0; 0,0,0,0; 0,0,0,0] : M4 A) ∈ uM A`.
+
+Use `⟨fun i j h => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | rfl | (exfalso; revert h; decide)`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [adj, sgn]`. Establish `h3 : (!![0,0,0,0; 0,0,0,0; 0,0,0,0; 1,0,0,0] : M4 A) ∈ uM A`. Use `⟨fun i j h => ?_, ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | rfl | (exfalso; revert h; decide)`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [adj, sgn]`. Take `⟨hz, ha⟩` from `Y.2`. Establish `h32 : (Y : M4 A) 3 2 = -(Y : M4 A) 1 0`. Establish `h` using `congrFun (congrFun ha 3) 2`.
+
+Simplify using `[adj, sgn] at h`. Rewrite using `[h, neg_neg]`. Establish `hd : Y = (Y : M4 A) 1 0 • (⟨_, h1⟩ : uM A) + (Y : M4 A) 1 2 • (⟨_, h2⟩ : uM A) + (Y : M4 A) 3 0 • (⟨_, h3⟩ : uM A)`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [h32] <;> exact hz _ _ (by decide)`. Rewrite using `[hd]`. Conclude with `add_mem (add_mem (Submodule.smul_mem_smul (hY 1 0) trivial) (Submodule.smul_mem_smul (hY 1 2) trivial)) (Submodule.smul_mem_smul (hY 3 0) trivial)`.
+-/
 private theorem mem_ideal_smul_module_of_entries_mem {A : Type} [CommRing A] (I : Ideal A) (Y : uM A)
     (hY : ∀ i j, (Y : M4 A) i j ∈ I) : Y ∈ I • (⊤ : Submodule A (uM A)) := by
   have h1 : (!![0,0,0,0; 1,0,0,0; 0,0,0,0; 0,0,-1,0] : M4 A) ∈ uM A := by
@@ -40,6 +51,25 @@ private theorem mem_ideal_smul_module_of_entries_mem {A : Type} [CommRing A] (I 
   exact add_mem (add_mem (Submodule.smul_mem_smul (hY 1 0) trivial)
     (Submodule.smul_mem_smul (hY 1 2) trivial)) (Submodule.smul_mem_smul (hY 3 0) trivial)
 
+/- English proof (translation)
+Set `φ` to `(Ideal.Quotient.mk (maximalIdeal A ^ n)).mapMatrix (m := Fin 4)`. Establish `hq : ∀ (f : Γ → M4 A), (∀ i j, AdicCont (maximalIdeal A) fun g => f g i j) → IsLocallyConstant fun g => φ (f g)`. Introduce `f hf`. Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`. Introduce `M`.
+
+Establish `hM : (fun g => φ (f g)) ⁻¹' {M} = ⋂ i, ⋂ j, (fun g => Ideal.Quotient.mk (maximalIdeal A ^ n) (f g i j)) ⁻¹' {M i j}`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_iInter]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`.
+
+Rewrite using `[← h]`. Both sides reduce to the same expression. Introduce `h`. Use extensionality with `i j`. Conclude with `h i j`.
+
+Rewrite using `[hM]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (hf i j n).isOpen_fiber _`. Establish `hP : IsLocallyConstant fun g => (φ (r g), φ (r g⁻¹))` using `(hq _ hc).prodMk (hq (fun g => r g⁻¹) fun i j N => (hc i j N).comp_continuous continuous_inv)`. Establish `key : ∀ g' g : Γ, (φ (r g'), φ (r g'⁻¹)) = (φ (r g), φ (r g⁻¹)) → (lev A (uM A) n).mkQ ((adU hb g') x) = (lev A (uM A) n).mkQ ((adU hb g) x)`. Introduce `g' g hgg`.
+
+Take `⟨e1, e2⟩` from `Prod.mk.inj hgg`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Apply `mem_ideal_smul_module_of_entries_mem` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Establish `h0 : φ ((↑((adU hb g') x - (adU hb g) x) : M4 A)) = 0`. Rewrite using `[Submodule.coe_sub]`. Express the relevant statement in the definitionally equal form `φ (r g' * (x : M4 A) * r g'⁻¹ - r g * (x : M4 A) * r g⁻¹) = 0`. Simplify using `only [map_sub, map_mul, e1, e2, sub_self]`. Simplify `congrFun (congrFun h0 i) j` using `[φ]`.
+
+Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`. Introduce `y`. Establish `hy : (fun g => (lev A (uM A) n).mkQ ((adU hb g) x)) ⁻¹' {y} = ⋃ g ∈ (fun g => (lev A (uM A) n).mkQ ((adU hb g) x)) ⁻¹' {y}, (fun g => (φ (r g), φ (r g⁻¹))) ⁻¹' {(φ (r g), φ (r g⁻¹))}`. Use extensionality with `g'`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `Set.mem_biUnion h rfl`. Introduce `h`. Take `⟨g, hg, hgg⟩` from `Set.mem_iUnion₂.1 h`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hg hgg ⊢`.
+
+Rewrite using `[← hg]`. Conclude with `key g' g hgg`. Rewrite using `[hy]`. Conclude with `isOpen_biUnion fun g _ => hP.isOpen_fiber _`.
+-/
 private theorem isLocallyConstant_mkQ_adU_of_adicCont {A : Type} [CommRing A] [IsLocalRing A] {Γ : Type} [Group Γ]
     [TopologicalSpace Γ] [ContinuousInv Γ] (r : Γ →* M4 A) (hb : BG r)
     (hc : ∀ i j, AdicCont (maximalIdeal A) fun g => r g i j) (n : ℕ) (x : uM A) :
@@ -95,6 +125,13 @@ private theorem isLocallyConstant_mkQ_adU_of_adicCont {A : Type} [CommRing A] [I
   rw [hy]
   exact isOpen_biUnion fun g _ => hP.isOpen_fiber _
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Distinguish the cases in `hli : l < i`. Rewrite using `[hP i l hli, zero_mul, zero_mul]`. Distinguish the cases in `hkl : k ≤ l`.
+
+Rewrite using `[hN l k hkl, mul_zero, zero_mul]`. Rewrite using `[hQ k j (by omega), mul_zero]`.
+-/
 private theorem isSUp_mul_mul_of_isUp_isSUp_isUp {A : Type} [CommRing A] (P N Q : M4 A) (hP : IsUp P) (hN : IsSUp N)
     (hQ : IsUp Q) : IsSUp (P * N * Q) := by
   intro i j hij
@@ -110,6 +147,27 @@ private theorem isSUp_mul_mul_of_isUp_isSUp_isUp {A : Type} [CommRing A] (P N Q 
   · rw [hN l k hkl, mul_zero, zero_mul]
   rw [hQ k j (by omega), mul_zero]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ S c s B hp A _ _ _ r u h`. Establish `hinv : ∀ g, r g = 1 → r g⁻¹ = 1`. Introduce `g hg`. Combine the equalities or inequalities in the displayed calculation. Establish `huu : u * adj u = 1`.
+
+Establish `h1 : adj u * u = 1`. Use `h.sp` as an intermediate fact. Simplify `this` using `[IsGSp]`. Conclude with `mul_eq_one_comm.1 h1`. Use `⟨⟨fun n x => isLocallyConstant_mkQ_adU_of_adicCont r h.bg h.cont n x, ?_, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g hg Y hY`. Establish `hg' : g⁻¹ ∈ Dec (F` using `ℚ) B := (Dec (F := ℚ) B).inv_mem hg`. Express the relevant statement in the definitionally equal form `IsSUp (adj u * (r g * (Y : M4 A) * r g⁻¹) * u)`. Establish `he : adj u * (r g * (Y : M4 A) * r g⁻¹) * u = (adj u * r g * u) * (adj u * (Y : M4 A) * u) * (adj u * r g⁻¹ * u)`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc u (adj u), huu, Matrix.one_mul, ← Matrix.mul_assoc u (adj u), huu, Matrix.one_mul]`. Rewrite using `[he]`. Conclude with `isSUp_mul_mul_of_isUp_isSUp_isUp _ _ _ (h.flag g hg) hY (h.flag _ hg')`. Introduce `a Y ha hY`. Express the relevant statement in the definitionally equal form `IsSUp (adj u * ((a • Y : uM A) : M4 A) * u) at hY`.
+
+Express the relevant statement in the definitionally equal form `IsSUp (adj u * (Y : M4 A) * u)`. Introduce `i j hij`. Establish `h0` using `hY i j hij`. Rewrite `h0` using `[Submodule.coe_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h0).resolve_left ha`.
+
+Conclude with `flagVec A (r s) u (h.bg.blk s) h.sep h.sp (h.flag s hp.dec) h.char`. Conclude with `⟨s, hp.dec, adBij A (G ℚ Ω) r h.bg s h.sep⟩`. Introduce `Y`. Establish `hc2 : r c * r c = 1`. Rewrite using `[h.cc]`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [eAB]`. Establish `hci : r c⁻¹ = r c`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hz, _⟩` from `Y.2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `r c * (Y : M4 A) * r c⁻¹ = -(Y : M4 A)`. Rewrite using `[hci, h.cc]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+
+Simplify using `[eAB, hz 0 0 (by decide), hz 0 1 (by decide), hz 0 2 (by decide), hz 0 3 (by decide), hz 1 1 (by decide), hz 1 3 (by decide), hz 2 0 (by decide), hz 2 1 (by decide), hz 2 2 (by decide), hz 2 3 (by decide), hz 3 1 (by decide), hz 3 3 (by decide)]`. Introduce `g hg`. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `Y`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `r g * (Y : M4 A) * r g⁻¹ = (Y : M4 A)`. Rewrite using `[hg, hinv g hg, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem UpperTheory.V.Ws.Bl.latU :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (S : Finset ℕ) (c s : G ℚ Ω) (B : ValuationSubring Ω), Pos l S c s B → ∀ (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] (r : G ℚ Ω →* M4 A) (u : M4 A) (h : BlockDiagonalOrdinaryGSpRep S c s B r u),
           Lat (adU h.bg) (Dec (F := ℚ) B) (uPlus u) ∧ (∀ Y, adU h.bg c Y = -Y) ∧ r.ker ≤ (adU h.bg).ker := by

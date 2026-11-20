@@ -6,5 +6,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.BdDim GlobalTheory.SiegelTor GlobalTheory.ZM GlobalTheory.CM GlobalTheory.Models
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BdDim.PolDescent.exists_polAV_sameFibre | exact GlobalTheory.BdDim.PolDescent.exists_polAV_sameFibre | (intros; apply GlobalTheory.BdDim.PolDescent.exists_polAV_sameFibre <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.abelian_fibre_descends_alg_closed : ∀ (k₀ k : Type) [Field k₀] [IsAlgClosed k₀] [Field k] [IsAlgClosed k] (ι : k₀ →+* k) (B : Over (Sp k₀)) [GrpObj B] (S : Scheme.{0}) (P : Out.PolAV S) (x : Sp k ⟶ S), IsAbelianScheme B → SameFibre P.A x B (spMap ι) → ∃ P₀ : Out.PolAV (Sp k₀), SameFibre P.A x P₀.A (spMap ι) := by
   first | exact @GlobalTheory.BdDim.PolDescent.exists_polAV_sameFibre | exact GlobalTheory.BdDim.PolDescent.exists_polAV_sameFibre | (intros; apply GlobalTheory.BdDim.PolDescent.exists_polAV_sameFibre <;> assumption)

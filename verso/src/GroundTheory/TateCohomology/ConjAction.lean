@@ -15,6 +15,9 @@ def conjHom (g : G) : S →* S where
   map_mul' s t := by ext; simp only [Subgroup.coe_mul]; group
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma coe_conjHom_apply (g : G) (s : S) : (conjHom S g s : G) = g⁻¹ * s * g := rfl
 
 noncomputable def conjMor (g : G) : res (conjHom S g) (res S.subtype A) ⟶ res S.subtype A :=
@@ -27,16 +30,25 @@ noncomputable def conjMor (g : G) : res (conjHom S g) (res S.subtype A) ⟶ res 
     group⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma conjMor_hom_apply (g : G) (a : A) : (conjMor A S g).hom a = A.ρ g a := rfl
 
 noncomputable abbrev conjAct (n : ℕ) (g : G) :
     groupCohomology (res S.subtype A) n ⟶ groupCohomology (res S.subtype A) n :=
   map (conjHom S g) (conjMor A S g) n
 
+/- English proof (translation)
+Rewrite using `[← map_id]`. Conclude with `map_congr (by ext; simp) (by ext x; show A.ρ 1 x = x; rw [map_one]; rfl) n`.
+-/
 lemma conjAct_one (n : ℕ) : conjAct A S n 1 = 𝟙 _ := by
   rw [← map_id]
   exact map_congr (by ext; simp) (by ext x; show A.ρ 1 x = x; rw [map_one]; rfl) n
 
+/- English proof (translation)
+Rewrite using `[← map_comp]`. Conclude with `map_congr (by ext; simp; group) (by ext x; show A.ρ (g * h) x = A.ρ g (A.ρ h x); rw [map_mul]; rfl) n`.
+-/
 lemma conjAct_mul (n : ℕ) (g h : G) :
     conjAct A S n (g * h) = conjAct A S n h ≫ conjAct A S n g := by
   rw [← map_comp]
@@ -49,19 +61,35 @@ noncomputable def conjRep (n : ℕ) :
   map_one' := by rw [conjAct_one]; rfl
   map_mul' g h := by rw [conjAct_mul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma conjRep_apply (n : ℕ) (g : G) (x : groupCohomology (res S.subtype A) n) :
     conjRep A S n g x = (conjAct A S n g).hom x := rfl
 
+/- English proof (translation)
+Rewrite using `[conjRep_apply, H1π_comp_map_apply]`.
+-/
 lemma conjRep_H1π (g : G) (f : cocycles₁ (res S.subtype A)) :
     conjRep A S 1 g (H1π _ f) = H1π _ (mapCocycles₁ (conjHom S g) (conjMor A S g) f) := by
   rw [conjRep_apply, H1π_comp_map_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma coe_mapCocycles₁_conj (g : G) (f : cocycles₁ (res S.subtype A)) (s : S) :
     mapCocycles₁ (conjHom S g) (conjMor A S g) f s = A.ρ g (f (conjHom S g s)) := rfl
 
 omit [S.Normal] in
 variable {A S} in
 
+/- English proof (translation)
+Establish `h` using `(mem_cocycles₁_iff (A := res S.subtype A) f).1 f.2`. Establish `hinv : A.ρ t (f t⁻¹) = -f t` using `cocycles₁_map_inv (A := res S.subtype A) f t`. Establish `e1 : A.ρ t ((res S.subtype A).ρ (t⁻¹ * u) (f t)) = A.ρ u (f t)`. Rewrite using `[res_obj_ρ]`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, Subgroup.coe_subtype, Subgroup.coe_mul, Subgroup.coe_inv]`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Establish `e2 : A.ρ t ((res S.subtype A).ρ t⁻¹ (f u)) = f u`. Rewrite using `[res_obj_ρ]`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, Subgroup.coe_subtype, Subgroup.coe_inv]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+
+Rewrite using `[h, h, map_add, map_add, hinv, e1, e2]`. Normalize the expressions using the abelian group laws.
+-/
 lemma cocycle_conj (f : cocycles₁ (res S.subtype A)) (t u : S) :
     A.ρ t (f (t⁻¹ * u * t)) = f u + A.ρ u (f t) - f t := by
   have h := (mem_cocycles₁_iff (A := res S.subtype A) f).1 f.2
@@ -94,10 +122,16 @@ noncomputable abbrev h1QuotAction :
     Representation k (G ⧸ S) (groupCohomology (res S.subtype A) 1) :=
   (conjRep A S 1).ofQuotient S
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h g => h (g : G ⧸ S), fun h q => QuotientGroup.induction_on q fun g => h g⟩`.
+-/
 lemma mem_h1QuotAction_invariants (x : groupCohomology (res S.subtype A) 1) :
     x ∈ (h1QuotAction A S).invariants ↔ ∀ g : G, conjRep A S 1 g x = x :=
   ⟨fun h g => h (g : G ⧸ S), fun h q => QuotientGroup.induction_on q fun g => h g⟩
 
+/- English proof (translation)
+Establish `h` using `(mem_cocycles₁_iff φ).1 φ.2`. Establish `hinv : A.ρ g (φ g⁻¹) = -φ g` using `cocycles₁_map_inv φ g`. Rewrite using `[h, h, map_add, map_add, hinv, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left, mul_inv_cancel, map_one, Module.End.one_apply]`. Normalize the expressions using the abelian group laws.
+-/
 lemma cocycle_conj_sub (φ : cocycles₁ A) (g : G) (s : G) :
     A.ρ g (φ (g⁻¹ * s * g)) - φ s = A.ρ s (φ g) - φ g := by
   have h := (mem_cocycles₁_iff φ).1 φ.2
@@ -106,6 +140,11 @@ lemma cocycle_conj_sub (φ : cocycles₁ A) (g : G) (s : G) :
     ← map_mul, mul_inv_cancel_left, mul_inv_cancel, map_one, Module.End.one_apply]
   abel
 
+/- English proof (translation)
+Rewrite using `[mem_h1QuotAction_invariants]`. Introduce `g`. Proceed by induction on `x using H1_induction_on with | h φ =>`. Rewrite using `[H1π_comp_map_apply, conjRep_H1π, H1π_eq_iff]`. Use `⟨φ g, funext fun s => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `A.ρ s (φ g) - φ g = A.ρ g (φ (g⁻¹ * s * g)) - φ s`. Rewrite using `[cocycle_conj_sub]`.
+-/
 lemma restriction_mem_invariants (x : groupCohomology A 1) :
     (map S.subtype (𝟙 (res S.subtype A)) 1).hom x ∈ (h1QuotAction A S).invariants := by
   rw [mem_h1QuotAction_invariants]
@@ -121,6 +160,9 @@ noncomputable def restrictionInv :
   (map S.subtype (𝟙 (res S.subtype A)) 1).hom.codRestrict _ (restriction_mem_invariants A S)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma coe_restrictionInv_apply (x : groupCohomology A 1) :
     (restrictionInv A S x : groupCohomology (res S.subtype A) 1) =
       (map S.subtype (𝟙 (res S.subtype A)) 1).hom x := rfl

@@ -14,6 +14,11 @@ namespace GlobalTheory.HomFixLocal
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Introduce `H A B _ _ _ _ L M Φ hΦ hA _ hL hM rL rM loc`. Use `haveI := hΦ`. Use `GlobalTheory.ThetaAffineGlue.lbIso_of_local GlobalTheory.SemiRigid.globalFns A hA hL (pull_isLB hM Φ.left) rL ?_ loc` and prove the remaining obligations. Use `(GlobalTheory.PolProd.rigidified_iff A (pull_isLB hM Φ.left)).2 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hM, ← pull_comp, GlobalTheory.PolProd.eSec_comp Φ]`.
+
+Conclude with `(GlobalTheory.PolProd.rigidified_iff B hM).1 rM`.
+-/
 theorem lbIso_pull_of_local : ∀ (H : Scheme.{0}) (A B : Over H) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (L : LB A.left) (M : LB B.left) (Φ : A ⟶ B), IsMonHom Φ → IsAbelianScheme A → IsAbelianScheme B → L.IsLB → M.IsLB → Out.Rigidified A L → Out.Rigidified B M → (∀ h : H, ∃ W : H.Opens, h ∈ W ∧ LBIso (L.pull (A.hom ⁻¹ᵁ W).ι) ((M.pull Φ.left).pull (A.hom ⁻¹ᵁ W).ι)) → LBIso L (M.pull Φ.left) := by
   intro H A B _ _ _ _ L M Φ hΦ hA _ hL hM rL rM loc
   haveI := hΦ

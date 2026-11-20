@@ -37,6 +37,21 @@ def FreeLetters : Prop :=
     (∀ i : ZMod n, ∃ b : Fin (Module.finrank O ↥T.L.T) → W.DD T, IsLetterBasis W T i b) ∧
     ∃ M₀ h₀ : ℕ, FrobBounds W T M₀ h₀
 
+/- English proof (translation)
+Take `⟨hli, hsp, -, -⟩` from `hb`. Establish `hmul : ∀ a : PowerSeries O, (Pi.single i a : LetA O n) * letE i = Pi.single i a`. Introduce `a`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`.
+
+Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, h]`. Establish `hmul' : ∀ a : LetA O n, (letE i : LetA O n) * a = Pi.single i (a i)`. Introduce `a`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, h]`.
+
+Use `⟨fun k => ⟨b k, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsp]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Introduce and unpack `x ⟨y, hy, rfl⟩`. Establish `hy' : y ∈ Submodule.span (LetA O n) (Set.range b)` using `by rw [hsp]; exact hy`.
+
+Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hy'`. Establish `key : (letE i : LetA O n) • (∑ k, a k • b k) = ∑ k, (Pi.single i (a k i) : LetA O n) • b k`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [smul_smul, hmul']`. Use `⟨fun k => a k i, ?_, fun c hc => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(letE i : LetA O n) • (∑ k, a k • b k) = _`. Rewrite using `[key]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [smul_smul, hmul]`. Express the relevant statement in the definitionally equal form `(letE i : LetA O n) • (∑ k, a k • b k) = _ at hc`. Rewrite `hc` using `[key]`.
+
+Simplify using `only [smul_smul, hmul] at hc`. Use function extensionality and compare the values at `k`. Establish `h0` using `Fintype.linearIndependent_iff.1 hli (fun k => (Pi.single i (c k) : LetA O n) - Pi.single i (a k i)) (by simp only [sub_smul, Finset.sum_sub_distrib, hc, sub_self]) k`. Establish `h1` using `congrFun h0 i`. Simplify `h1` using `[sub_eq_zero]`.
+-/
 theorem IsWachBasis.letter {r : ℕ} {b : Fin r → W.DD T} (hb : IsWachBasis W T b) (i : ZMod n) :
     IsLetterBasis W T i (fun k => (letE i : LetA O n) • b k) := by
   obtain ⟨hli, hsp, -, -⟩ := hb
@@ -76,6 +91,11 @@ theorem IsWachBasis.letter {r : ℕ} {b : Fin r → W.DD T} (hb : IsWachBasis W 
       have h1 := congrFun h0 i
       simpa [sub_eq_zero] using h1
 
+/- English proof (translation)
+Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨z, hz, rfl⟩ := hx`. Conclude with `hF.1 z hz`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `(W.N T).add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `(W.N T).smul_mem a hx`.
+-/
 theorem FrobBounds.pull {M₀ h₀ : ℕ} (hF : FrobBounds W T M₀ h₀) :
     ∀ y ∈ W.φpull T, W.Q ^ M₀ • y ∈ W.N T := by
   intro y hy

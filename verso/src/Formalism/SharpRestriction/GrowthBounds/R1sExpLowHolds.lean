@@ -9,6 +9,17 @@ namespace Formalism.L2.FormalSeriesBounds
 
 open Formalism.IncomingBounds SelfConjCharts MvPowerSeries
 
+/- English proof (translation)
+Introduce `C _ _ F m hm hK i j hj`. Establish `h2 : ∀ k, coeff (ee i j) (F ^ (k + 1 + 1)) = 0`. Introduce `k`. Establish `e : F ^ (k + 1 + 1) = (F * F) * F ^ k` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `kmul (a := 2 * m) (b := 0) (fun i j h => kmul hK hK i j (by omega)) (fun _ _ h => absurd h (Nat.not_lt_zero _)) i j (by omega)`. Use `show ∑ k ∈ Finset.range ((ee i j).degree + 1), coeff (ee i j) (F ^ k) / (k.factorial : C) = _`. Rewrite using `[Finset.sum_range_succ']`. Simplify using `only [pow_zero, Nat.factorial_zero, Nat.cast_one, div_one]`. Rewrite using `[add_comm]`.
+
+Use `congr 1`. Consider the cases of `hd : (ee i j).degree with`. Consider the case `zero`. Rewrite using `[Finset.sum_range_zero]`. Establish `h0 : ee i j = 0` using `(Finsupp.degree_eq_zero_iff _).1 hd`.
+
+Establish `hj0 : j = 0`. Use `DFunLike.congr_fun h0 1` as an intermediate fact. Simplify `this` using `[ee_one]`. Conclude with `(hK i j (by omega)).symm`. Consider the case `succ n`.
+
+Rewrite using `[Finset.sum_range_succ', Finset.sum_eq_zero (fun k _ => by rw [h2 k, zero_div])]`. Simplify using the standard rewrite rules.
+-/
 theorem r1sExpLow_holds : ExpLowOrderTruncation := by
   intro C _ _ F m hm hK i j hj
   have h2 : ∀ k, coeff (ee i j) (F ^ (k + 1 + 1)) = 0 := by

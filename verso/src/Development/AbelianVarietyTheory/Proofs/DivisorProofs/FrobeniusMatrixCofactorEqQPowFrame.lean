@@ -24,11 +24,19 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {f : ℕ}
     (W : LocWach PD LL O v f)
 
+/- English proof (translation)
+Use `W.φD_smul T (algebraMap (LetA O f) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.φE_ext, algebraMap_smul]`. Then use the resulting hypothesis.
+-/
 theorem φD_smul_A (T : LocLat G Qp LL O) (a : LetA O f) (x : W.DD T) :
     W.φD T (a • x) = W.φA a • W.φD T x := by
   have := W.φD_smul T (algebraMap (LetA O f) W.EE a) x
   rwa [algebraMap_smul, W.φE_ext, algebraMap_smul] at this
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `e` using `congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul] at e`. Rewrite using `[← e, map_sum]`.
+
+Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[φD_smul_A]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem φpull_le_span {n : ℕ} (T : LocLat G Qp LL O) (b : Module.Basis (Fin n) (LetA O f) ↥(W.N T)) :
     W.φpull T ≤ Submodule.span (LetA O f) (Set.range fun j => W.φD T (b j : W.DD T)) := by
   refine Submodule.span_le.2 ?_
@@ -40,6 +48,19 @@ theorem φpull_le_span {n : ℕ} (T : LocLat G Qp LL O) (b : Module.Basis (Fin n
   rw [φD_smul_A]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+Establish `hsp : ∀ k, ∃ c : Fin n → LetA O f, ∑ j, c j • W.φD T (b j : W.DD T) = W.Q ^ h • (letE i : LetA O f) • (b k : W.DD T)`. Introduce `k`. Establish `hy : (letE i : LetA O f) • (b k : W.DD T) ∈ W.Nl T i` using `Submodule.mem_map_of_mem (b k).2`. Establish `h1` using `h5 _ hy`. Establish `hle : Formalism.MainNotions.DeltaInvariantLattices.φspan W T (W.Nl T (i - 1)) ≤ W.φpull T` using `Submodule.span_mono (Set.image_mono (by`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(W.N T).smul_mem _ hx))`. Conclude with `(Submodule.mem_span_range_iff_exists_fun (LetA O f)).1 (φpull_le_span W T b (hle h1))`. Use `choose c hc using hsp`. Establish `hli : LinearIndependent (LetA O f) fun m => (b m : W.DD T)` using `b.linearIndependent.map' (W.N T).subtype (Submodule.ker_subtype _)`.
+
+Establish `key : ∀ k m, ∑ j, c k j * PA m j = if m = k then W.Q ^ h * (letE i : LetA O f) else 0`. Introduce `k`. Establish `e1 : ∑ m, (∑ j, c k j * PA m j - if m = k then W.Q ^ h * (letE i : LetA O f) else 0) • (b m : W.DD T) = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_smul, mul_smul]`. Rewrite using `[← hc k, sub_eq_zero, Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hφ, Finset.smul_sum]`. Introduce `m`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hli _ e1 m)`. Use `⟨Matrix.of fun j k => c k j i, ?_⟩` and prove the remaining obligations.
+
+Use `Matrix.ext fun m k => ?_` and prove the remaining obligations. Establish `e2` using `congrFun (key k m) i`. Simplify using `only [Finset.sum_apply, Pi.mul_apply] at e2`. Rewrite using `[Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Simplify using `only [Matrix.map_apply, Matrix.of_apply]`.
+
+Rewrite using `[show (∑ j, PA m j i * c k j i) = ∑ j, c k j i * PA m j i from Finset.sum_congr rfl fun j _ => mul_comm _ _, e2]`. Distinguish the cases in `hmk : m = k`. Simplify using `[hmk, letE]`. Simplify using `[hmk]`.
+-/
 theorem exists_inv {n : ℕ} (T : LocLat G Qp LL O) (b : Module.Basis (Fin n) (LetA O f) ↥(W.N T))
     (PA : Matrix (Fin n) (Fin n) (LetA O f))
     (hφ : ∀ k, W.φD T (b k : W.DD T) = ∑ m, PA m k • (b m : W.DD T)) (h : ℕ) (i : ZMod f)
@@ -89,6 +110,17 @@ end GlobalTheory.WachPlace.FrameHeight
 
 namespace GlobalTheory.WachPlace.FrameHeight
 
+/- English proof (translation)
+Introduce `D HW F Cm l _ K LL hA T U n h γ b N hU hb hfr i`. Establish `hJ : Formalism.MainNotions.DeltaInvariantLattices.JumpsLet ((HW l).W K 1 LL hA.2.2) T (fun _ => 0) (fun _ => h)`. Introduce `τ i' hτ a ha`. Use `haveI := (GlobalTheory.Per.TiedDdR.ddR_finrank_le l (D.loc l) (D.locA l) (D.locT l) K LL T.V T.ρ).1`. Establish `h1` using `(GlobalTheory.Per.JumpMult.jump_iff_of_finite ((D.loc l).PD K) T.ρ τ a).2.2.1 ha`.
+
+Rewrite `h1` using `[hU.2 i' τ (fun x => DFunLike.congr_fun hτ x) a]`. Establish `h2` using `hb i' a (Multiset.count_ne_zero.1 (by exact_mod_cast h1))`. Conclude with `⟨by simpa using h2.1, h2.2⟩`. Establish `h5` using `(GlobalTheory.NL.Heights.heights_from_jumps D HW F Cm l K 1 LL hA.2.2 T (fun _ => 0) (fun _ => h) hU.1 hJ).2.1 i`. Take `⟨Qm, hQm⟩` from `exists_inv ((HW l).W K 1 LL hA.2.2) T b (fun m k => fun i => inc l ↥(OL LL) (N.P i m k)) hfr.2.1 h i h5`.
+
+Establish `hq : ((HW l).W K 1 LL hA.2.2).Q i = q l ↥(OL LL)`. Establish `e1 : ((HW l).W K 1 LL hA.2.2).Q = ((HW l).W K 1 LL hA.2.2).q`. Unfold `LocWach.Q`. Rewrite using `[(HW l).W_s K 1 LL hA.2.2]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1]`. Express the relevant statement in the definitionally equal form `((HW l).W K 1 LL hA.2.2).q₀ = q l ↥(OL LL)`. Establish `e2` using `((HW l).W K 1 LL hA.2.2).q₀_def`. Rewrite `e2` using `[(D.loc l).PD_p K, ← (q_multiplicative_holds l ↥(OL LL)).1]`. Use `PowerSeries.ext fun j => ?_` and prove the remaining obligations.
+
+Establish `e3` using `congrArg (PowerSeries.coeff (j + 1)) e2`. Simplify `e3` using `only [PowerSeries.coeff_succ_X_mul]`. Use `⟨Qm, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq]`. Conclude with `hQm`.
+-/
 theorem frame_height : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hA : CaseA K LL) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (U : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → Multiset ℤ) (n h : ℕ) (γ : ((HW l).W K 1 LL hA.2.2).Gam) (b : Module.Basis (Fin n) (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) ↥(((HW l).W K 1 LL hA.2.2).N T)) (N : Lat (ZMod (Module.finrank ℚ_[l] ↥(K0 K))) n ↥(OL LL)), GlobalTheory.AdmLoc.CrysWith ((D.loc l).PD K) ((HW l).W K 1 LL hA.2.2).emb T.ρ U → (∀ i, ∀ u ∈ U i, 0 ≤ u ∧ u ≤ (h : ℤ)) → IsFrame ((HW l).W K 1 LL hA.2.2) T γ b N → ∀ i, ∃ Q : Mx (PowerSeries ↥(OL LL)) n n, (N.P i).map (inc l ↥(OL LL)) * Q = (q l ↥(OL LL) ^ h) • (1 : Mx (PowerSeries ↥(OL LL)) n n) := by
   intro D HW F Cm l _ K LL hA T U n h γ b N hU hb hfr i
   have hJ : Formalism.MainNotions.DeltaInvariantLattices.JumpsLet ((HW l).W K 1 LL hA.2.2) T (fun _ => 0) (fun _ => h) := by

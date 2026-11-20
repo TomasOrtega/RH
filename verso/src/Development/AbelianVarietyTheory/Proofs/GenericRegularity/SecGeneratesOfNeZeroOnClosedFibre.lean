@@ -10,6 +10,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 namespace SecLineGen
 
+/- English proof (translation)
+Use `first`. Consider the case `exact map_mul _ a b`. Consider the case `(unfold constFn; exact map_mul _ a b)`. Consider the case `(simp only [constFn, map_mul])`. Consider the case `(unfold constFn; simp)`.
+
+Consider the case `(unfold constFn Sp; done)`.
+-/
 theorem constFn_mul' {V : Type} [CommRing V] {X : Scheme.{0}} (π : X ⟶ Sp V) (U : X.Opens)
     (a b : V) : constFn π U (a * b) = constFn π U a * constFn π U b := by
   first
@@ -19,6 +24,13 @@ theorem constFn_mul' {V : Type} [CommRing V] {X : Scheme.{0}} (π : X ⟶ Sp V) 
   | (unfold constFn; simp)
   | (unfold constFn Sp; done)
 
+/- English proof (translation)
+Unfold `constFn at hg`. Establish `h0` using `Scheme.basicOpen_appLE π U ⊤ (fun _ _ => trivial) ((Scheme.ΓSpecIso (CommRingCat.of V)).inv a)`. Establish `hg' : g ∈ U ⊓ π ⁻¹ᵁ ((Sp V).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of V)).inv a))`. Rewrite using `[← h0]`. Conclude with `hg`.
+
+Establish `h2 : π g ∈ (Sp V).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of V)).inv a)` using `hg'.2`. Establish `h3` using `AlgebraicGeometry.basicOpen_eq_of_affine (R := CommRingCat.of V) a`. Use `first`. Consider the case `(rw [h3] at h2; exact h2)`. Consider the case `(unfold Sp at h2; rw [h3] at h2; exact h2)`.
+
+Consider the case `exact h3 ▸ h2`. Consider the case `(unfold Sp at h2; done)`.
+-/
 theorem apply_mem_basicOpen_of_mem {V : Type} [CommRing V] {X : Scheme.{0}} (π : X ⟶ Sp V)
     (U : X.Opens) (a : V) (g : X) (hg : g ∈ X.basicOpen (constFn π U a)) :
     π g ∈ PrimeSpectrum.basicOpen a := by
@@ -40,6 +52,17 @@ end SecLineGen
 
 open SecLineGen in
 
+/- English proof (translation)
+Introduce `V _ _ X π L θ θ' hθ hpt`. Take `⟨g, i, hgc, hgi⟩` from `hpt`. Take `⟨a, ha, -⟩` from `hθ θ'`. Establish `hmem : g ∈ X.basicOpen (constFn π (L.U i) a)`. Establish `h` using `hgi`.
+
+Rewrite `h` using `[ha i, Scheme.basicOpen_mul]`. Conclude with `h.1`. Establish `hu : IsUnit a`. Assume the negation of the conclusion as `hna`. Establish `h1` using `SecLineGen.apply_mem_basicOpen_of_mem π _ a g hmem`.
+
+Rewrite `h1` using `[hgc]`. Establish `h2 : a ∉ (IsLocalRing.closedPoint V).asIdeal` using `(PrimeSpectrum.mem_basicOpen _ _).1 h1`. Establish `hmax : a ∈ IsLocalRing.maximalIdeal V` using `(IsLocalRing.mem_maximalIdeal a).2 hna`. Apply the tactic sequence `first | exact h2 hmax | exact h2 (by simpa using hmax)`. Take `⟨u, rfl⟩` from `hu`.
+
+Use `⟨⟨u, fun j => ha j⟩, ?_⟩` and prove the remaining obligations. Introduce `σ`. Take `⟨b, hb, hbu⟩` from `hθ σ`. Use `⟨b * ↑u⁻¹, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`.
+
+Rewrite using `[hb j, ha j, ← _root_.mul_assoc, ← SecLineGen.constFn_mul', _root_.mul_assoc b, Units.inv_mul, _root_.mul_one]`. Introduce `c hc`. Establish `key : c * ↑u = b` using `hbu (c * ↑u) (fun j => by`. Rewrite using `[hc j, ha j, ← _root_.mul_assoc, ← SecLineGen.constFn_mul'])`. Rewrite using `[← key, _root_.mul_assoc, Units.mul_inv, _root_.mul_one]`.
+-/
 theorem sec_generates_of_ne_zero_on_closed_fibre :
     ∀ (V : Type) [CommRing V] [IsLocalRing V] (X : Scheme.{0}) (π : X ⟶ Sp V) (L : LB X) (θ θ' : LB.Sec L), (∀ σ : LB.Sec L, ∃! a : V, ∀ i, σ.f i = constFn π _ a * θ.f i) → (∃ (g : X) (i : L.ι), π g = IsLocalRing.closedPoint V ∧ g ∈ X.basicOpen (θ'.f i)) → (∃ u : Vˣ, ∀ i, θ'.f i = constFn π _ (u : V) * θ.f i) ∧ ∀ σ : LB.Sec L, ∃! a : V, ∀ i, σ.f i = constFn π _ a * θ'.f i := by
   intro V _ _ X π L θ θ' hθ hpt

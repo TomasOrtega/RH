@@ -18,6 +18,15 @@ namespace GlobalTheory.InertCoh
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hc : ∀ c : ℤ_[l], ‖algebraMap ℤ_[l] (PadicAlgCl l) c‖ ≤ 1`. Introduce `c`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), norm_algebraMap']`. Conclude with `c.2`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Take `⟨p, hm, hp⟩` from `hx`. Rewrite `hp` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hm.coeff_natDegree, map_one, one_mul]`. Establish `h1 : x ^ p.natDegree = - ∑ i ∈ Finset.range p.natDegree, algebraMap ℤ_[l] (PadicAlgCl l) (p.coeff i) * x ^ i` using `eq_neg_of_add_eq_zero_right hp`. Break down `Nat.eq_zero_or_pos p.natDegree with hz | hz` into its components or cases.
+
+Rewrite `h1` using `[hz]`. Simplify using `at h1`. Establish `h2 : ‖∑ i ∈ Finset.range p.natDegree, algebraMap ℤ_[l] (PadicAlgCl l) (p.coeff i) * x ^ i‖ ≤ ‖x‖ ^ (p.natDegree - 1)`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun i hi => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`.
+
+Establish `hi'` using `Finset.mem_range.1 hi`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[← norm_neg, ← h1, norm_pow]`. Conclude with `absurd h2 (not_le.2 (pow_lt_pow_right₀ h (by omega)))`.
+-/
 theorem norm_le_one_of_isIntegral (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
   have hc : ∀ c : ℤ_[l], ‖algebraMap ℤ_[l] (PadicAlgCl l) c‖ ≤ 1 := by
     intro c
@@ -41,9 +50,15 @@ theorem norm_le_one_of_isIntegral (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x)
   rw [← norm_neg, ← h1, norm_pow] at h2
   exact absurd h2 (not_le.2 (pow_lt_pow_right₀ h (by omega)))
 
+/- English proof (translation)
+The claim follows from `norm_le_one_of_isIntegral x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)`.
+-/
 theorem norm_le_one_of_mem_O (c : Coef l) {x : Qbar l} (hx : x ∈ c.O) : ‖x‖ ≤ 1 :=
   norm_le_one_of_isIntegral x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)
 
+/- English proof (translation)
+Simplify using `[mat, map_mul, Units.val_mul]`.
+-/
 theorem mat_mul (W : R2 Ω l) (s t : G ℚ Ω) : mat W (s * t) = mat W s * mat W t := by
   simp [mat, map_mul, Units.val_mul]
 
@@ -53,14 +68,23 @@ def frobOp (W : R2 Ω l) (c : Coef l) (φ : G ℚ Ω) :
   map_add' a b := by funext s; simp [Matrix.mulVec_add]
   map_smul' k a := by funext s; simp [Matrix.mulVec_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frobOp_apply (W : R2 Ω l) (c : Coef l) (φ : G ℚ Ω) (z : G ℚ Ω → Fin 2 → Qbar l) (s : G ℚ Ω) :
     frobOp W c φ z s = mat W φ *ᵥ z (φ⁻¹ * s * φ) := rfl
 
+/- English proof (translation)
+Use `conj_mem_Ine ((Dec (F := ℚ) B).inv_mem hφ) hs` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem conj_mem_Ine' {B : ValuationSubring Ω} {φ s : G ℚ Ω} (hφ : φ ∈ Dec (F := ℚ) B)
     (hs : s ∈ Ine (F := ℚ) B) : φ⁻¹ * s * φ ∈ Ine (F := ℚ) B := by
   have := conj_mem_Ine ((Dec (F := ℚ) B).inv_mem hφ) hs
   rwa [inv_inv] at this
 
+/- English proof (translation)
+Introduce and unpack `z ⟨v, hv⟩`. Use `⟨mat W φ *ᵥ v, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[frobOp_apply, hv _ (conj_mem_Ine' hφ hs), Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← mat_mul, ← mat_mul]`. Use `congr 2`. Use `group`.
+-/
 theorem frobOp_cob (W : R2 Ω l) (c : Coef l) (B : ValuationSubring Ω) {φ : G ℚ Ω} (hφ : φ ∈ Dec (F := ℚ) B) :
     cob W c (Ine (F := ℚ) B) ≤ (cob W c (Ine (F := ℚ) B)).comap (frobOp W c φ) := by
   rintro z ⟨v, hv⟩
@@ -70,6 +94,13 @@ theorem frobOp_cob (W : R2 Ω l) (c : Coef l) (B : ValuationSubring Ω) {φ : G 
   congr 2
   group
 
+/- English proof (translation)
+Introduce and unpack `z ⟨h1, h2, h3⟩`. Establish `hconj : Continuous fun s : G ℚ Ω => φ⁻¹ * s * φ` using `(continuous_const.mul continuous_id).mul continuous_const`. Use `⟨fun i => ?_, fun s i => ?_, fun s hs t ht => ?_⟩` and prove the remaining obligations. Simplify using `only [frobOp_apply, Matrix.mulVec, dotProduct]`. Conclude with `continuous_finset_sum _ fun j _ => continuous_const.mul ((h1 j).comp hconj)`.
+
+Simplify using `only [frobOp_apply, Matrix.mulVec, dotProduct]`. Conclude with `Subalgebra.sum_mem _ fun j _ => Subalgebra.mul_mem _ (hWO _ _ _) (h2 _ _)`. Simplify using `only [frobOp_apply]`. Establish `e : φ⁻¹ * (s * t) * φ = (φ⁻¹ * s * φ) * (φ⁻¹ * t * φ)` using `by group`. Rewrite using `[e, h3 _ (conj_mem_Ine' hφ hs) _ (conj_mem_Ine' hφ ht), Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← mat_mul, ← mat_mul]`.
+
+Use `congr 3`. Use `group`.
+-/
 theorem frobOp_coc (W : R2 Ω l) (c : Coef l) (B : ValuationSubring Ω) (hWO : ∀ s i j, mat W s i j ∈ c.O)
     {φ : G ℚ Ω} (hφ : φ ∈ Dec (F := ℚ) B) :
     ∀ z ∈ coc W c (Ine (F := ℚ) B), frobOp W c φ z ∈ coc W c (Ine (F := ℚ) B) := by
@@ -89,6 +120,9 @@ theorem frobOp_coc (W : R2 Ω l) (c : Coef l) (B : ValuationSubring Ω) (hWO : �
 
 variable [IsAlgClosure ℚ Ω]
 
+/- English proof (translation)
+Establish `h` using `cycZ_toZModPow_eq hl hB (q := 1) (fun x hx => by simpa using hs.2 x hx) r`. Use `ext`. Simplify using `only [cycMod, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, Units.val_one]`. Rewrite using `[RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, h]`. Simplify using the standard rewrite rules.
+-/
 theorem cycMod_eq_one_of_mem_Ine {B : ValuationSubring Ω} {q : Pl} (hB : IsPlaceOver B q)
     (hl : ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal) (r : ℕ) {s : G ℚ Ω} (hs : s ∈ Ine (F := ℚ) B) :
     cycMod ℚ Ω l r s = 1 := by
@@ -98,12 +132,18 @@ theorem cycMod_eq_one_of_mem_Ine {B : ValuationSubring Ω} {q : Pl} (hB : IsPlac
   rw [RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, h]
   simp
 
+/- English proof (translation)
+Establish `hp` using `GlobalTheory.TameConjInv.prime_normV q`. Use `(Nat.coprime_primes hp (Fact.out : l.Prime)).2 fun h => hl ?_` and prove the remaining obligations. Establish `hmem : ((normV q : ℕ) : 𝓞 ℚ) ∈ q.asIdeal` using `Ideal.absNorm_mem q.asIdeal`. Rewrite `hmem` using `[h]`. Then use the resulting hypothesis.
+-/
 theorem coprime_normV {q : Pl} (hl : ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal) : Nat.Coprime (normV q) l := by
   have hp := GlobalTheory.TameConjInv.prime_normV q
   refine (Nat.coprime_primes hp (Fact.out : l.Prime)).2 fun h => hl ?_
   have hmem : ((normV q : ℕ) : 𝓞 ℚ) ∈ q.asIdeal := Ideal.absNorm_mem q.asIdeal
   rwa [h] at hmem
 
+/- English proof (translation)
+Establish `h` using `cycZ_of_isFrob hl hB hφ`. Use `ext`. Simplify using `only [cycMod, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, ZMod.coe_unitOfCoprime]`. Rewrite using `[RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, h]`. Simplify using the standard rewrite rules.
+-/
 theorem cycMod_frob {B : ValuationSubring Ω} {q : Pl} (hB : IsPlaceOver B q) (hl : ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal)
     {φ : G ℚ Ω} (hφ : IsFrob B (normV q) φ) (r : ℕ) :
     cycMod ℚ Ω l r φ = ZMod.unitOfCoprime (normV q) (Nat.Coprime.pow_right r (coprime_normV hl)) := by
@@ -117,6 +157,13 @@ end GlobalTheory.InertCoh
 
 namespace GlobalTheory.InertCoh
 
+/- English proof (translation)
+Introduce and unpack `⟨u, hu⟩`. Establish `h1 : ((u : c.O) : Qbar l) * ((u⁻¹ : c.Oˣ) : c.O) = 1`. Rewrite using `[← Subalgebra.coe_mul, Units.mul_inv, Subalgebra.coe_one]`. Establish `h2 : ((u : c.O) : Qbar l) = ((l : ℕ) : Qbar l)` using `by rw [hu]; simp`. Establish `hl : ‖((l : ℕ) : Qbar l)‖ < 1`.
+
+Establish `e : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by rw [map_natCast]`. Rewrite using `[e, PadicAlgCl.norm_extends l (l : ℚ_[l]), Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Establish `h3` using `norm_le_one_of_mem_O c (((u⁻¹ : c.Oˣ) : c.O)).2`. Establish `h4` using `congrArg norm h1`.
+
+Rewrite `h4` using `[norm_mul, norm_one, h2]`. Establish `: ‖((l : ℕ) : Qbar l)‖ * ‖(((u⁻¹ : c.Oˣ) : c.O) : Qbar l)‖ < 1` using `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) h3) hl`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem not_isUnit_natCast_O {l : ℕ} [Fact l.Prime] (c : Coef l) : ¬ IsUnit ((l : ℕ) : c.O) := by
   rintro ⟨u, hu⟩
   have h1 : ((u : c.O) : Qbar l) * ((u⁻¹ : c.Oˣ) : c.O) = 1 := by
@@ -133,6 +180,31 @@ theorem not_isUnit_natCast_O {l : ℕ} [Fact l.Prime] (c : Coef l) : ¬ IsUnit (
     lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) h3) hl
   linarith
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ W c Y η y hW hWO hYc hYO hsh hnorm hη hy q hl`. Take `⟨B, hB⟩` from `exists_isPlaceOver Ω q`. Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `exists_isFrob hB`. Take `⟨γ, hγ⟩` from `GlobalTheory.TameInertiaGen.exists_tameGenAt ℚ Ω q B hB`.
+
+Establish `hq` using `coprime_normV hl`. Set `u : ∀ r : ℕ, (ZMod (l ^ r))ˣ` to `fun r => ZMod.unitOfCoprime (normV q) (Nat.Coprime.pow_right r hq)`. Set `z : ∀ r : ℕ, (ZMod (l ^ r))ˣ → G ℚ Ω → Fin 2 → Qbar l` to `fun r x s => Y r s x`. Establish `hzZ : ∀ r x, z r x ∈ coc W c (Ine (F` using `ℚ) B) := by`. Introduce `r x`.
+
+Use `⟨fun i => hYc r x i, fun s i => hYO r s x i, fun s hs t _ => ?_⟩` and prove the remaining obligations. Establish `h` using `hsh r s t x`. Simplify using `only [MonoidHom.inv_apply, cycMod_eq_one_of_mem_Ine hB hl r hs, inv_one, mul_one] at h`. Conclude with `h`. Establish `hFB` using `frobOp_cob W c B hφ.1`.
+
+Set `FH` to `(cob W c (Ine (F := ℚ) B)).mapQ (cob W c (Ine (F := ℚ) B)) (frobOp W c φ) hFB`. Establish `hFM : ∀ x ∈ (coc W c (Ine (F` using `ℚ) B)).map (cob W c (Ine (F := ℚ) B)).mkQ, FH x ∈ (coc W c (Ine (F := ℚ) B)).map (cob W c (Ine (F := ℚ) B)).mkQ := by`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `⟨frobOp W c φ w, frobOp_coc W c B hWO hφ.1 w hw, rfl⟩`. Establish `hfrob : ∀ r x, FH ((cob W c (Ine (F` using `ℚ) B)).mkQ (z r x)) = (cob W c (Ine (F := ℚ) B)).mkQ (z r (x * u r)) := by`.
+
+Introduce `r x`. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk _`. Rewrite using `[← sub_eq_zero, ← Submodule.Quotient.mk_sub, Submodule.Quotient.mk_eq_zero]`. Use `⟨Y r φ (x * u r), fun s hs => ?_⟩` and prove the remaining obligations. Establish `h1` using `hsh r φ (φ⁻¹ * s * φ) (x * u r)`.
+
+Establish `h2` using `hsh r s φ (x * u r)`. Rewrite `h1` using `[MonoidHom.inv_apply, cycMod_frob hB hl hφ r]`. Rewrite `h2` using `[MonoidHom.inv_apply, cycMod_eq_one_of_mem_Ine hB hl r hs, inv_one, mul_one]`. Establish `e : φ * (φ⁻¹ * s * φ) = s * φ` using `by group`. Rewrite `h1` using `[e, h2, mul_inv_cancel_right]`.
+
+Use `show mat W φ *ᵥ Y r (φ⁻¹ * s * φ) x - Y r s (x * u r) = mat W s *ᵥ Y r φ (x * u r) - Y r φ (x * u r)`. Combine the equalities or inequalities in the displayed calculation. Establish `hN : ∀ r x, (cob W c (Ine (F` using `ℚ) B)).mkQ (z r x) = ∑ x' ∈ Finset.univ.filter (fun x' : (ZMod (l ^ (r + 1)))ˣ => Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom x' = x), (cob W c (Ine (F := ℚ) B)).mkQ (z (r + 1) x') := by`. Introduce `r x`. Rewrite using `[← map_sum]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[Finset.sum_apply]`. Use `show Y r s x = _`. Rewrite using `[hnorm r s]`.
+
+Both sides reduce to the same expression. Establish `hFG : ((coc W c (Ine (F` using `ℚ) B)).map (cob W c (Ine (F := ℚ) B)).mkQ).FG := GlobalTheory.T.fg_inertiaCocycles_mod_coboundaries_coefRing l Ω W c (Ine (F := ℚ) B) {σ | ∀ y : Ω, y ≠ 0 → B.valuation (σ y / y - 1) < 1} γ hW hWO (fun w hw => GlobalTheory.T.exists_integral_coboundary_wildInertia_away_from_l l Ω W …`. Establish `hlO : ¬ IsUnit ((l : ℕ) : c.O)` using `not_isUnit_natCast_O c`. Use `haveI : IsLocalRing c.O := IsDiscreteValuationRing.toIsLocalRing`. Use `haveI : IsNoetherianRing c.O := inferInstance`.
+
+Establish `hzero` using `GlobalTheory.T.normCompatible_system_frobenius_eq_zero c.O _ l hlO (normV q) hq (GlobalTheory.TameConjInv.prime_normV q).two_le ((coc W c (Ine (F := ℚ) B)).map (cob W c (Ine (F := ℚ) B)).mkQ) hFG FH hFM (fun r x => (cob W c (Ine (F := ℚ) B)).mkQ (z r x)) (fun r x => Submodule.mem …`. Establish `hspec : ∀ r, spec (η r) (Y r) ∈ cob W c (Ine (F` using `ℚ) B) := by`. Introduce `r`. Establish `e : spec (η r) (Y r) = ∑ x, (⟨η r x, hη r x⟩ : c.O) • z r x`. Use function extensionality and compare the values at `s`.
+
+Simplify using `only [spec, Finset.sum_apply, Pi.smul_apply, Subalgebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun x _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `h` using `hzero r x`.
+
+Rewrite `h` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Conclude with `GlobalTheory.T.coboundary_of_padicAlgCl_uniform_approx l (G ℚ Ω) (Ine (F := ℚ) B : Set (G ℚ Ω)) (mat W) (fun r => spec (η r) (Y r)) y (fun s i j => norm_le_one_of_mem_O c (hWO s i j)) (fun r => hspec r) hy`.
+-/
 theorem unr_of_limit_spec : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (W : R2 Ω l) (c : Coef l) (Y : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l) (η : ∀ r : ℕ, (ZMod (l ^ r))ˣ → Qbar l) (y : G ℚ Ω → Fin 2 → Qbar l), Continuous W → (∀ s i j, mat W s i j ∈ c.O) → (∀ r x i, Continuous fun s => Y r s x i) → (∀ r s x i, Y r s x i ∈ c.O) → (∀ r, ShCoc (mat W) (cycMod ℚ Ω l r)⁻¹ (Y r)) → (∀ r s, Y r s = push (Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom) (Y (r + 1)) s) → (∀ r x, η r x ∈ c.O) → (∀ r s i, ‖y s i - spec (η r) (Y r) s i‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖) → ∀ q : Pl, ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal → ∃ B : ValuationSubring Ω, IsPlaceOver B q ∧ ∃ v : Fin 2 → Qbar l, ∀ s ∈ Ine (F := ℚ) B, y s = mat W s *ᵥ v - v := by
   intro l _ Ω _ _ _ W c Y η y hW hWO hYc hYO hsh hnorm hη hy q hl
   obtain ⟨B, hB⟩ := exists_isPlaceOver Ω q

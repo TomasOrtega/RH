@@ -5,6 +5,29 @@ open Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ W M _ _ _ _ _ _ _ f hf a`. Use `set R := LinearMap.range (a • (LinearMap.id : M →ₗ[O] M)) with hR`. Use `GlobalTheory.T.length_le_of_forall_fg_submodule_length_le O (M ⧸ R) _ ?_` and prove the remaining obligations. Introduce `N hN`. Take `⟨s, hs⟩` from `hN`.
+
+Use `set g := Function.surjInv (Submodule.mkQ_surjective R) with hg`. Establish `hgs : ∀ q, R.mkQ (g q) = q` using `Function.surjInv_eq (Submodule.mkQ_surjective R)`. Set `N' : Submodule O M` to `Submodule.span O (g '' (s : Set (M ⧸ R)))`. Establish `hmap : N'.map R.mkQ = N`. Rewrite using `[Submodule.map_span, ← hs, ← Set.image_comp]`.
+
+Use `congr 1`. Use extensionality with `q`. Simplify using `[hgs]`. Use `haveI : Module.Finite O N' := Module.Finite.iff_fg.mpr (Submodule.fg_span (s.finite_toSet.image g))`. Set `e : N' →ₗ[O] W` to `f ∘ₗ N'.subtype`.
+
+Establish `he : Function.Injective e` using `hf.comp N'.injective_subtype`. Use `haveI : Module.IsTorsionFree K W := inferInstance`. Use `haveI : Module.IsTorsionFree O W := Module.IsTorsionFree.comap (S := K) (algebraMap O K) (fun r hr => IsRegular.of_ne_zero (by`. Introduce `h0`. Establish `hinj` using `IsFractionRing.injective O K`.
+
+Establish `: r = 0` using `hinj (by simpa using h0)`. Substitute `this` using the available equality. Conclude with `(not_isRegular_zero (R := O)) hr))`. Use the proof step `(fun r m => algebraMap_smul K r m)`. Use `haveI : Module.IsTorsionFree O N' := Function.Injective.moduleIsTorsionFree e he e.map_smul`.
+
+Use `haveI : Module.Free O N' := Module.free_of_finite_type_torsion_free'`. Establish `hrank : Module.finrank O N' ≤ Module.finrank K W`. Set `b` to `Module.finBasis O N'`. Establish `h1 : LinearIndependent O (e ∘ b)` using `b.linearIndependent.map' e (LinearMap.ker_eq_bot.mpr he)`. Establish `h2 : LinearIndependent K (e ∘ b)` using `(LinearIndependent.iff_fractionRing O K).mp h1`.
+
+Simplify using `using h2.fintype_card_le_finrank`. Set `p : N' →ₗ[O] N` to `(R.mkQ ∘ₗ N'.subtype).codRestrict N (by`. Introduce `x`. Rewrite using `[← hmap]`. Conclude with `⟨x, x.2, rfl⟩)`.
+
+Establish `hp : Function.Surjective p`. Introduce and unpack `⟨y, hy⟩`. Rewrite `hy` using `[← hmap]`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+
+Set `R'` to `LinearMap.range (a • (LinearMap.id : N' →ₗ[O] N'))`. Establish `hker : R' ≤ LinearMap.ker p`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `: R.mkQ (a • (x : M)) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨x, by simp⟩`. Simplify `this` using `[p]`. Set `q : (N' ⧸ R') →ₗ[O] N` to `R'.liftQ p hker`.
+
+Establish `hq : Function.Surjective q`. Introduce `y`. Take `⟨x, rfl⟩` from `hp y`. Conclude with `⟨R'.mkQ x, by simp [q]⟩`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem length_quotient_smul_range_le_finrank_mul : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [Field K] [Algebra O K] [IsFractionRing O K] (W M : Type) [AddCommGroup W] [Module K W] [Module O W] [IsScalarTower O K W] [FiniteDimensional K W] [AddCommGroup M] [Module O M] (f : M →ₗ[O] W), Function.Injective f → ∀ a : O, Module.length O (M ⧸ LinearMap.range (a • (LinearMap.id : M →ₗ[O] M))) ≤ (Module.finrank K W : ℕ∞) * Module.length O (O ⧸ Ideal.span {a}) := by
   intro O K _ _ _ _ _ _ W M _ _ _ _ _ _ _ f hf a
   set R := LinearMap.range (a • (LinearMap.id : M →ₗ[O] M)) with hR

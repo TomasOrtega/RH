@@ -15,10 +15,22 @@ noncomputable section
 
 namespace GlobalTheory.RowVacScalar
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.Theta.mt, map_one, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 private theorem map_mt_one_eq_one {D : D7} (V : HSp D) : (Formalism.L2.Theta.mt V 1).map (finPart D) = 1 := by
   rw [Formalism.L2.Theta.mt, map_one, Units.val_one]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Introduce `D T L sc G W U S μ₀ hL t ht j hj k hk c₁ c₂ h₁ h₂`. Take `⟨hA, hB, hC, hD⟩` from `GlobalTheory.RowMovedLat.moved_pair_stab S ht j hj k hk`. Establish `e₁` using `GlobalTheory.RowVacScalar.vacScalar_eq_prod S hL t j hj.le _ hA ?g₁ hB ?l₁ c₁ h₁`. Establish `e₂` using `GlobalTheory.RowVacScalar.vacScalar_eq_prod S hL t (j + 1) hj _ ?g₂ hC ?l₂ hD c₂ h₂`. Rewrite using `[e₁, e₂, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.splitPlaceScalars_mul_eq_oppositePath_edgeFactors S ht j hj k hk w.1 w.2 ⟨_, GlobalTheory.RowVacScalar.isIdemAt_idemAt hL G t w.2⟩`. Use `case g₁ => dsimp only [GridData.toPair]`. Conclude with `one_mem _`. Use `case l₁ =>`.
+
+Introduce `y`. Simplify using `only [GridData.toPair]`. Rewrite using `[map_mt_one_eq_one, Matrix.one_mulVec]`. Use `case g₂ => dsimp only [GridData.toPair]`. Rewrite using `[map_one]`.
+
+Conclude with `one_mem _`. Use `case l₂ =>`. Introduce `y`. Simplify using `only [GridData.toPair]`. Rewrite using `[map_one, map_mt_one_eq_one, Matrix.one_mulVec]`.
+-/
 theorem scalars_eq_edgeFactors : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {μ₀ : T}, L.Is μ₀ → ∀ {t : T}, t ∈ U → ∀ (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m)),
     finG (G.V (.grid (j + 1) D.R.m)) k ∈ S.levRow t (j + 1) hj.le → ∀ (c₁ c₂ : ℂ),
     W.om (.chi j D.R.m) (G.toPair (.chi j D.R.m) 1 (moved S j k)) (S.Z.vac (.chi j D.R.m)) = c₁ • S.Z.vac (.chi j D.R.m) →

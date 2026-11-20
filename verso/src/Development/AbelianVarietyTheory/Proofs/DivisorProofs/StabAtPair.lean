@@ -16,6 +16,9 @@ variable {R : Type} [Zero R]
 def hAd (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (z y : Fin n → AE F E) : AE F E :=
   z ⬝ᵥ (incM F J *ᵥ fun i => cA σ (y i))
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => exact congrArg (a ⊗ₜ[F] ·) (hσ e)`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem cA_cA {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -75,6 +78,9 @@ def nMat {n m : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) (ι : Matr
   1 + Matrix.vecMulVec (incM F ι *ᵥ w + c • incV F x) (incM F J *ᵥ fun i => cA σ (incV F x i)) -
     Matrix.vecMulVec (incV F x) (incM F J *ᵥ fun i => cA σ ((incM F ι *ᵥ w) i))
 
+/- English proof (translation)
+Establish `key : ∀ (p r : Fin n → AE F E), Matrix.vecMulVec p r *ᵥ z = (z ⬝ᵥ r) • p` using `fun p r => by`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, Matrix.vecMulVec_apply, dotProduct, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Simplify using `only [nMat, Matrix.sub_mulVec, Matrix.add_mulVec, Matrix.one_mulVec, key, hAd]`.
+-/
 theorem nMat_mulVec (σ : E →ₐ[F] E) {n m : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E)
     (ι : Matrix (Fin n) (Fin m) E) (w : Fin m → AE F E) (c : AE F E) (z : Fin n → AE F E) :
     nMat σ J x ι w c *ᵥ z = z + hAd σ J z (incV F x) • (incM F ι *ᵥ w + c • incV F x) -

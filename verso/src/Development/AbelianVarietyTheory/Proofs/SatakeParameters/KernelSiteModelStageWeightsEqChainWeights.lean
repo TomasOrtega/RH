@@ -9,10 +9,16 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.DelA
 
+/- English proof (translation)
+Simplify using `[liftWt, h]`.
+-/
 theorem liftWt_of_lt (t m : ℕ) (lam : Fin (m + 1) → ℤ) (w : ℕ → ℤ) (j : ℕ) (r : ℕ) (hr : r < m + j * (t + 1) + 1) (h : r < m + 1) :
     liftWt t m lam w j ⟨r, hr⟩ = lam ⟨r, h⟩ := by
   simp [liftWt, h]
 
+/- English proof (translation)
+Establish `hd : b * (t + 1) / (t + 1) = b` using `Nat.mul_div_cancel _ (Nat.succ_pos _)`. Simplify using `only [liftWt]`. Rewrite using `[dif_neg (show ¬ (m + 1 + b * (t + 1) < m + 1) by omega)]`. Simplify using `only [Nat.add_sub_cancel_left, hd]`.
+-/
 theorem liftWt_blk (t m : ℕ) (lam : Fin (m + 1) → ℤ) (w : ℕ → ℤ) (j b : ℕ) (hr : m + 1 + b * (t + 1) < m + j * (t + 1) + 1) :
     liftWt t m lam w j ⟨m + 1 + b * (t + 1), hr⟩ = -w (b + 1) := by
   have hd : b * (t + 1) / (t + 1) = b := Nat.mul_div_cancel _ (Nat.succ_pos _)
@@ -22,6 +28,59 @@ theorem liftWt_blk (t m : ℕ) (lam : Fin (m + 1) → ℤ) (w : ℕ → ℤ) (j 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S j hj ⟨a⟩`. Establish `hj1 : j + 1 ≤ D.R.m` using `hj`. Establish `hw0` using `((H.core j hj1) (((I.at' j hj1).st.eC.symm a).1)).wt`. Establish `hrk` using `((I.at' j hj1).st.loc (((I.at' j hj1).st.eC.symm a).1)).rk`. Unfold `WtTie at hw0`.
+
+Rewrite `hw0` using `[J.pos j hj1]`. Establish `ht : (sysS H X std).t = D.R.t` using `X.fl_t`. Establish `hk : (sysS H X std).G.P.m + 1 = D.R.k`. Use `(lev0At J.Gd u w hg).A.rk` as an intermediate fact. Simplify `this` using `[Ranks.N]`.
+
+Use `set pos := hT.gat_pos u w hg with hpos`. Establish `hA : ∀ (v : (sysS H X std).Pl) (s : Fin ((sysS H X std).G.P.n' v)) (r : ℕ) (hr : r < (sysS H X std).G.P.m + 1), (((sysS H X std).G.P.lam0 v s ⟨r, hr⟩ : ℤ) : ℚ) = hcToWeightQ (D.hcW u (pos ⟨v, s⟩)).u ⟨r, by omega⟩`. Introduce `v s r hr`. Establish `hr' : r < (sysS H X std).G.P.m + (j + 1) * ((sysS H X std).t + 1) + 1` using `by omega`. Establish `h1` using `hw0 v s ⟨r, hr'⟩`.
+
+Establish `h3 : (gatJ Lv (j + 1)).P.lam0 v s ⟨r, hr'⟩ = (sysS H X std).G.P.lam0 v s ⟨r, hr⟩` using `liftWt_of_lt (sysS H X std).t (sysS H X std).G.P.m ((sysS H X std).G.P.lam0 v s) (fun i => (sysS H X std).w v i s) (j + 1) r hr' hr`. Rewrite `h1` using `[h3]`. Rewrite using `[h1]`. Establish `h2` using `(I.at' j hj1).M.lam_eq (j + 1) hj1 (pos ⟨v, s⟩) ((finCongr hrk) ⟨r, hr'⟩)`. Rewrite `h2` using `[dif_pos (show ((finCongr hrk) ⟨r, hr'⟩ : ℕ) < D.R.k from (by simp; omega))]`.
+
+Conclude with `h2`. Establish `hB : ∀ (v : (sysS H X std).Pl) (s : Fin ((sysS H X std).G.P.n' v)) (b : ℕ) (hb : b ≤ j), (((sysS H X std).w v (b + 1) s : ℤ) : ℚ) = wG D.R ((D.hcW u (pos ⟨v, s⟩)).e ⟨b, by omega⟩) (b + 1)`. Introduce `v s b hb`. Establish `hlt : b * ((sysS H X std).t + 1) < (j + 1) * ((sysS H X std).t + 1)` using `Nat.mul_lt_mul_of_pos_right (by omega) (Nat.succ_pos _)`. Establish `hr' : (sysS H X std).G.P.m + 1 + b * ((sysS H X std).t + 1) < (sysS H X std).G.P.m + (j + 1) * ((sysS H X std).t + 1) + 1`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h1` using `hw0 v s ⟨_, hr'⟩`. Establish `h3 : (gatJ Lv (j + 1)).P.lam0 v s ⟨_, hr'⟩ = -((sysS H X std).w v (b + 1) s)` using `liftWt_blk (sysS H X std).t (sysS H X std).G.P.m ((sysS H X std).G.P.lam0 v s) (fun i => (sysS H X std).w v i s) (j + 1) b hr'`. Rewrite `h1` using `[h3]`. Establish `h2` using `(I.at' j hj1).M.lam_eq (j + 1) hj1 (pos ⟨v, s⟩) ((finCongr hrk) ⟨_, hr'⟩)`.
+
+Establish `hv : ((finCongr hrk) ⟨_, hr'⟩ : ℕ) = D.R.k + b * (D.R.t + 1)`. Simplify using `only [finCongr_apply, Fin.coe_cast]`. Rewrite using `[← hk, ← ht]`. Establish `hd : (D.R.k + b * (D.R.t + 1) - D.R.k) / (D.R.t + 1) = b`. Rewrite using `[Nat.add_sub_cancel_left]`.
+
+Conclude with `Nat.mul_div_cancel _ (Nat.succ_pos _)`. Establish `he : ∀ (b' : ℕ) (hb' : b' < D.R.m), b' = b → (D.hcW u (pos ⟨v, s⟩)).e ⟨b', hb'⟩ = (D.hcW u (pos ⟨v, s⟩)).e ⟨b, by omega⟩`. Introduce and unpack `b' hb' rfl`. Both sides reduce to the same expression. Rewrite `h2` using `[dif_neg (show ¬ (((finCongr hrk) ⟨_, hr'⟩ : Fin _) : ℕ) < D.R.k by rw [hv]; omega)]`.
+
+Rewrite `h2` using `[he _ _ (by rw [hv, hd]), hv, hd]`. Establish `h4 : ((-((sysS H X std).w v (b + 1) s) : ℤ) : ℚ) = -wG D.R ((D.hcW u (pos ⟨v, s⟩)).e ⟨b, by omega⟩) (b + 1)`. Rewrite using `[h1]`. Conclude with `h2`. Move the coercions through the operations in `at h4`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcT : ∀ i, ((CmpJ.cTw D i : ℤ) : ℚ) = (i : ℚ) * ((D.R.t : ℚ) + 1) / 2`. Introduce `i`. Take `⟨c, hc⟩` from `D.R.t_odd`. Establish `h2 : i * (D.R.t + 1) / 2 = i * (c + 1)`.
+
+Rewrite using `[hc, show 2 * c + 1 + 1 = 2 * (c + 1) by ring, ← mul_assoc, mul_comm i 2, mul_assoc, Nat.mul_div_cancel_left _ (by norm_num)]`. Simplify using `only [CmpJ.cTw, h2]`. Use `push_cast`. Rewrite using `[hc]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨(GlobalTheory.TwV.DelB.sysS_ranks S).2.2.2 j, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ i`. Generalize the expression as in `hvs : pos.symm τ = vs`. Take `⟨v, s⟩` from `vs`.
+
+Establish `hτ : τ = pos ⟨v, s⟩` using `by rw [← hvs]; simp`. Substitute `hτ` using the available equality. Establish `hS` using `Formalism.L2.KerInert.SecondKernelSharpWeights.sharp_weight_formula D ex.tw u μ j hj (pos ⟨v, s⟩) i`. Establish `hL` using `(ex.tw.fm u μ).lam_eq j hj.le (pos ⟨v, s⟩) i`. Establish `hSs` using `(D.chTw u μ).sSharp_eq j hj (pos ⟨v, s⟩)`.
+
+Establish `hwj` using `hB v s j le_rfl`. Establish `hk' : (D.gat u w hg).P.m + 1 = D.R.k` using `hk`. Establish `hcomm` using `Nat.mul_comm j (D.R.t + 1)`. Establish `hiN : i.1 < D.R.k + j * (D.R.t + 1)` using `by have := i.2; simp only [Ranks.N] at this; exact this`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises.
+
+Simplify using `only [hvs, Sys.nuv, nu]`. Distinguish the cases in `hr : i.1 < D.R.k`. Rewrite using `[if_pos (show 1 ≤ i.1 + 1 ∧ i.1 + 1 ≤ (sysS H X std).G.P.m + 1 by omega)]`. Simplify using `only [lamI]`. Rewrite using `[dif_pos (show 1 ≤ i.1 + 1 ∧ i.1 + 1 ≤ (sysS H X std).G.P.m + 1 by omega)]`.
+
+Establish `hl0` using `hA v s i.1 (by omega)`. Rewrite `hL` using `[dif_pos hr]`. Simplify using `only [Nat.add_sub_cancel]`. Use `push_cast`. Simplify using `only [Formalism.BasicNotions.wG, sExp', Ranks.N] at hwj hSs`.
+
+Move the coercions through the operations in `at hS hSs hwj`. Rewrite using `[hl0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hjt : (j + 1) * (D.R.t + 1) = j * (D.R.t + 1) + (D.R.t + 1)` using `by ring`. Rewrite using `[if_neg (show ¬ (1 ≤ i.1 + 1 ∧ i.1 + 1 ≤ (sysS H X std).G.P.m + 1) by omega)]`.
+
+Rewrite using `[if_pos (show (sysS H X std).G.P.m + 1 < i.1 + 1 ∧ i.1 + 1 ≤ NN (sysS H X std).G.P.m (sysS H X std).t (j + 1) by`. Simplify using `only [NN]`. Rewrite using `[ht]`. Use the proof step `omega)]`. Establish `hidx : (i.1 + 1 - ((sysS H X std).G.P.m + 2)) / ((sysS H X std).t + 1) = (i.1 - D.R.k) / (D.R.t + 1)`.
+
+Rewrite using `[ht]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hb : (i.1 - D.R.k) / (D.R.t + 1) < j`. Apply `Nat.div_lt_of_lt_mul` to reduce the goal to its premises.
+
+Use linear arithmetic over natural numbers and integers. Establish `hwb` using `hB v s ((i.1 - D.R.k) / (D.R.t + 1)) hb.le`. Rewrite `hL` using `[dif_neg hr]`. Rewrite using `[hidx]`. Use `push_cast`.
+
+Simplify using `only [Formalism.BasicNotions.wG, sExp', Ranks.N] at hwj hSs hwb hL`. Move the coercions through the operations in `at hS hSs hwj hwb hL`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `τ`. Establish `hwj` using `hB (pos.symm τ).1 (pos.symm τ).2 j le_rfl`.
+
+Establish `hp : pos ⟨(pos.symm τ).1, (pos.symm τ).2⟩ = τ` using `by simp`. Rewrite `hwj` using `[hp]`. Simplify using `only [wT]`. Establish `hSs` using `(D.chTw u μ).sSharp_eq j hj τ`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises.
+
+Use `push_cast`. Rewrite using `[hwj, hSs, hcT]`. Simplify using `only [Formalism.BasicNotions.wG, sExp', Ranks.N]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `τ`. Establish `hwj` using `hB (pos.symm τ).1 (pos.symm τ).2 j le_rfl`. Establish `hp : pos ⟨(pos.symm τ).1, (pos.symm τ).2⟩ = τ` using `by simp`. Rewrite `hwj` using `[hp]`. Simplify using `only [wT]`.
+
+Establish `hSd` using `(D.chTw u μ).sDiv_eq j hj τ`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[hwj, hSd, hcT]`. Simplify using `only [Formalism.BasicNotions.wG, sExp, Ranks.N]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wtOK_sites : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ j < D.R.m, Nonempty (Lv.comp (j + 1)) → WtOK (sysS H X std) D (hT.gat_pos u w hg) u μ j) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S j hj ⟨a⟩
   have hj1 : j + 1 ≤ D.R.m := hj

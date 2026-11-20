@@ -14,6 +14,21 @@ namespace GlobalTheory.LatSelfDualAll
 section Scalar
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `set α : Af F := singleFin v c with hα`. Establish `hmem : α ∈ adelicIdeal (codiff F)`. Rewrite using `[GlobalTheory.SplitUnram.mem_adelicIdeal_codiff_iff hψ.1 (GlobalTheory.LatVacArith.psi_fin_rat hψ)]`. Introduce `β hβ`. Establish `e : β * α = singleFin v (c * β v)`.
+
+Apply `af_ext` to reduce the goal to its premises. Introduce `u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[map_mul, hα, evalV_singleFin_self, evalV_singleFin_self]`.
+
+Express the relevant statement in the definitionally equal form `β u * c = c * β u`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, hα, evalV_singleFin_ne hu, evalV_singleFin_ne hu, mul_zero]`. Rewrite using `[e]`. Conclude with `h _ (hβ v)`.
+
+Take `⟨x, hx⟩` from `exists_sub_mem_adelicIdeal (one_ne_zero (α := FractionalIdeal (𝓞 F)⁰ F)) α`. Establish `hx1` using `mem_adelicIdeal_one_iff.1 hx`. Establish `hle : α - algebraMap F (Af F) x ∈ adelicIdeal (codiff F)`. Use `(mem_adelicIdeal_iff codiff_ne_zero).2 fun w => (hx1 w).trans ?_` and prove the remaining obligations. Use `FractionalIdeal.count_mono F w (one_ne_zero (α := FractionalIdeal (𝓞 F)⁰ F)) (one_le_codiff (F := F))` as an intermediate fact.
+
+Rewrite `this` using `[FractionalIdeal.count_one]`. Rewrite using `[← exp_zero, exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hxc : algebraMap F (Af F) x ∈ adelicIdeal (codiff F)`. Use `sub_mem hmem hle` as an intermediate fact.
+
+Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Use `⟨x, (algebraMap_mem_adelicIdeal codiff_ne_zero x).1 hxc, ?_⟩` and prove the remaining obligations. Establish `h2` using `hx1 v`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `h2 using 2` and compare the differences between its conclusion and the goal.
+
+Express the relevant statement in the definitionally equal form `c - _ = evalV F v (α - algebraMap F (Af F) x)`. Rewrite using `[map_sub, hα, evalV_singleFin_self]`. Both sides reduce to the same expression.
+-/
 theorem exists_codiff_sub {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (v : Pl F) (c : Fv F v)
     (h : ∀ y ∈ v.adicCompletionIntegers F, psiLoc ψ v (c * y) = 1) :
     ∃ f : F, f ∈ codiff F ∧ c - algebraMap F (Fv F v) f ∈ v.adicCompletionIntegers F := by
@@ -57,6 +72,15 @@ end Scalar
 section Lat
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `(hW.dual _).2 fun x hx o => ?_` and prove the remaining obligations. Establish `hform : form σ W.J (f • y) x = algebraMap F E f * form σ W.J y x`. Rewrite using `[form, form, smul_dotProduct, Algebra.smul_def]`. Take `⟨q, hq⟩` from `hy x hx`. Use `set e : E := (o : E) * form σ W.J y x with he`.
+
+Establish `hei : IsIntegral ℤ e` using `(RingOfIntegers.isIntegral_coe o).mul (by rw [← hq]; exact RingOfIntegers.isIntegral_coe q)`. Establish `h1 : Algebra.trace ℚ E ((o : E) * form σ W.J (f • y) x) = Algebra.trace ℚ F (f * Algebra.trace F E e)`. Rewrite using `[hform, ← Algebra.trace_trace (S := F)]`. Use `congr 1`. Rewrite using `[he, mul_left_comm, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul]`.
+
+Establish `ht : IsIntegral ℤ (Algebra.trace F E e)` using `Algebra.isIntegral_trace hei`. Establish `hm` using `(FractionalIdeal.mem_dual (one_ne_zero (α := FractionalIdeal (𝓞 F)⁰ F))).1 hf ((⟨_, ht⟩ : 𝓞 F) : F) ((FractionalIdeal.mem_one_iff _).2 ⟨⟨_, ht⟩, rfl⟩)`. Rewrite `hm` using `[Algebra.traceForm_apply]`. Take `⟨k, hk⟩` from `hm`. Rewrite using `[h1]`.
+
+Express the relevant statement in the definitionally equal form `IsIntegral ℤ (Algebra.trace ℚ F (f * ((⟨_, ht⟩ : 𝓞 F) : F)))`. Rewrite using `[← hk]`. Conclude with `isIntegral_algebraMap`.
+-/
 theorem smul_mem_of_codiff (σ : E →ₐ[F] E) (B : Base F E) {d r s : ℕ} {W : Spc F E d} (hW : W.IsSkew σ B r s)
     {f : F} (hf : f ∈ codiff F) {y : Fin d → E} (hy : ∀ x ∈ W.L, form σ W.J y x ∈ (algebraMap (𝓞 E) E).range) :
     f • y ∈ W.L := by
@@ -89,6 +113,15 @@ namespace GlobalTheory.LatSelfDualAll
 section Frame
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨k, S, Φ, h1, hS, hΦ⟩` from `GlobalTheory.AdelicU.SelfDual.exists_frame L hL`. Establish `hJu : IsUnit J.det` using `Ne.isUnit hJ`. Establish `hJtu : IsUnit Jᵀ.det` using `by rwa [Matrix.det_transpose]`. Establish `hT : ∀ j, ∀ x ∈ L, form σ J (fun i => ((Jᵀ)⁻¹ * (Φ.map σ)ᵀ) i j) x ∈ (algebraMap (𝓞 E) E).range`. Introduce `j x hx`.
+
+Establish `h2 : ((Jᵀ)⁻¹ * (Φ.map σ)ᵀ)ᵀ * J = Φ.map σ`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_nonsing_inv, Matrix.transpose_transpose, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hJu, Matrix.mul_one]`. Establish `e : form σ J (fun i => ((Jᵀ)⁻¹ * (Φ.map σ)ᵀ) i j) x = σ ((Φ *ᵥ x) j)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [form, Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_mul, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Use `_ = σ ((Φ *ᵥ x) j) := by`. Rewrite using `[h2]`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+
+Rewrite using `[e]`. Conclude with `GlobalTheory.AdelicU.SelfDual.sig_mem_range σ (hΦ x hx j)`. Use `⟨k, S, (Jᵀ)⁻¹ * (Φ.map σ)ᵀ, hS, fun j => hdual _ (hT j), hT, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.transpose_mul, ← Matrix.mul_assoc, Matrix.mul_assoc _ (Φ.map σ)ᵀ, ← Matrix.transpose_mul, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.mul_one, Matrix.nonsing_inv_mul _ hJtu]`.
+-/
 theorem exists_formFrame' (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hJ : J.det ≠ 0)
     (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.IsLattice E)
     (hdual : ∀ y, (∀ x ∈ L, form σ J y x ∈ (algebraMap (𝓞 E) E).range) → y ∈ L) :
@@ -122,6 +155,13 @@ end Frame
 section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨f, hf, hfc⟩` from `exists_codiff_sub hstd v (evFin F v t) hψ`. Establish `ht' : t = GlobalTheory.LatVac.liftV v (evFin F v t)`. Rewrite using `[← GlobalTheory.LatVacArith.liftV_one_mul]`. Conclude with `GlobalTheory.LatVacArith.eq_liftV_of_at ht`. Establish `hsplit : t = f • GlobalTheory.LatVac.liftV v 1 + GlobalTheory.LatVac.liftV v (evFin F v t - algebraMap F (Fv F v) f)`.
+
+Rewrite using `[map_sub, Algebra.algebraMap_eq_smul_one, LinearMap.map_smul, ← ht']`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, add_smul]`. Use `add_mem (AddSubgroup.subset_closure ⟨GlobalTheory.LatVac.liftV v 1, GlobalTheory.LatVac.at_liftV v 1, by rw [GlobalTheory.LatVac.evFin_liftV]; exact one_mem _, x, hx, f • y, smul_mem_of_codiff σ B hW hf hyd, ?_⟩) (AddSubgroup.subset_closure ⟨_, GlobalTheory.LatVac.at_liftV _ _, b …` and prove the remaining obligations. Use extensionality with `p q`.
+
+Simplify using `only [incM, Matrix.map_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, Pi.smul_apply, mul_smul_comm, GlobalTheory.InertSelfDual.inclR_smul, smul_assoc]`. Rewrite using `[← algebraMap_smul (AF F) f, smul_smul, smul_smul, mul_comm]`.
+-/
 theorem smul_mem_latAtV (σ : E →ₐ[F] E) (B : Base F E) {n d r s r' s' : ℕ} {X : Spc F E n} {W : Spc F E d}
     (hstd : IsStd B.ψ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s') (v : Pl F) {t : AF F} (ht : At (evFin F v) t)
     (hψ : ∀ y ∈ v.adicCompletionIntegers F, psiLoc B.ψ v (evFin F v t * y) = 1) {x : Fin n → E} (hx : x ∈ X.L)
@@ -151,6 +191,43 @@ namespace GlobalTheory.LatSelfDualAll
 
 open GlobalTheory.InertSelfDual (exists_traceFamily det_ne_zero_of_herm det_ne_zero_of_skew decomp hTens_frame trace_expand)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W r₁ s₁ r₂ s₂ hB hX hW v z hz`. Prove the components needed by the constructor for the conclusion. Introduce `hzm γ hγ`. Establish `h` using `GlobalTheory.LatVacArith.psi_symp_latAtV σ B X W _ _ _ _ hB hX hW v (-1) 1 (by rw [map_one]; exact one_mem _) z hzm γ hγ`. Simplify using `using h`.
+
+Introduce `hψ haveI := hB.unram`. Take `⟨m, s, c, hsc⟩` from `exists_traceFamily (F := F) (E := E)`. Take `⟨k, S, T, hS, hTm, -, hTS⟩` from `exists_formFrame' σ X.J (det_ne_zero_of_herm σ B hX) X.L hX.lat (fun y hy => (hX.dual y).2 fun x hx => by`. Take `⟨r, hr⟩` from `hy x hx`. Rewrite using `[← hr]`.
+
+Conclude with `RingOfIntegers.isIntegral_coe r)`. Take `⟨k', S', T', hS', hTm', hTd', hTS'⟩` from `exists_formFrame' σ W.J (det_ne_zero_of_skew σ B hW) W.L hW.lat (fun y hy => (hW.dual y).2 fun x hx o => by`. Take `⟨r, hr⟩` from `hy x hx`. Rewrite using `[← hr]`. Conclude with `Algebra.isIntegral_trace ((RingOfIntegers.isIntegral_coe o).mul (RingOfIntegers.isIntegral_coe r)))`.
+
+Use `set C := incM F (X.J * S.map σ)ᵀ * z * (incM F (W.J * S'.map σ)ᵀ)ᵀ with hC`. Establish `hCat : ∀ j l, At (evFin F v) (C j l)` using `fun j l u hu => by`. Establish `hz' : u • z = 0` using `hz u hu`. Establish `h1 : u • C = incM F (X.J * S.map σ)ᵀ * (u • z) * (incM F (W.J * S'.map σ)ᵀ)ᵀ`. Rewrite using `[hC, Matrix.mul_smul, Matrix.smul_mul]`.
+
+Rewrite `h1` using `[hz', Matrix.mul_zero, Matrix.zero_mul]`. Use `congrFun (congrFun h1 j) l` as an intermediate fact. Simplify using `using this`. Establish `hint : ∀ (e : E), IsIntegral ℤ e → ∀ j l, ∀ y ∈ v.adicCompletionIntegers F, psiLoc B.ψ v (evFin F v (Algebra.trace (AF F) (AE F E) (inclR (F` using `F) (AF F) (σ e) * C j l)) * y) = 1 := by`. Introduce `e hei j l`.
+
+Use `set M := incM F (Matrix.vecMulVec (fun i => e * S i j) (fun i => S' i l)) with hM`. Use `set t := symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) z M with ht`. Establish `hx : (fun i => e * S i j) ∈ X.L`. Use `X.L.smul_mem (⟨e, hei⟩ : 𝓞 E) (hS j)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `i`. Apply the tactic sequence `first | rfl | simp [Algebra.smul_def]`. Establish `htat : At (evFin F v) t` using `fun u hu => by`. Use `GlobalTheory.LatVac.symp_smul_smul σ (incM F X.J) (incM F W.J) (-1) u 1 z M` as an intermediate fact. Rewrite `this` using `[hz u hu, one_smul, mul_one, GlobalTheory.LatVacArith.symp_zero_left]`.
+
+Conclude with `this.symm`. Establish `htC : t = -Algebra.trace (AF F) (AE F E) (inclR (F` using `F) (AF F) (σ e) * C j l) := by`. Rewrite using `[ht, symp, hM, hTens_frame, neg_one_mul, map_neg]`. Establish `key : ∀ y ∈ v.adicCompletionIntegers F, psiLoc B.ψ v (evFin F v t * y) = 1`. Introduce `y hy`.
+
+Establish `hmem : GlobalTheory.LatVac.liftV v y • M ∈ latAtV X W v` using `AddSubgroup.subset_closure ⟨_, GlobalTheory.LatVac.at_liftV v y, by rw [GlobalTheory.LatVac.evFin_liftV]; exact hy, _, hx, _, hS' l, rfl⟩`. Establish `h1` using `hψ _ hmem`. Establish `h2` using `GlobalTheory.LatVac.symp_smul_smul σ (incM F X.J) (incM F W.J) (-1) 1 (GlobalTheory.LatVac.liftV v y) z M`. Rewrite `h2` using `[one_smul, one_mul]`. Rewrite `h1` using `[h2]`.
+
+Establish `hat2 : At (evFin F v) (GlobalTheory.LatVac.liftV v y * t)` using `fun u hu => by`. Use `htat u hu` as an intermediate fact. Rewrite `this`, the goal using `[smul_eq_mul]`. Rewrite using `[mul_left_comm, this, mul_zero]`. Rewrite `h1` using `[GlobalTheory.VacIndic.psi_of_at _ hat2, map_mul, GlobalTheory.LatVac.evFin_liftV, mul_comm]`.
+
+Conclude with `h1`. Introduce `y hy`. Use `key (-y) (neg_mem hy)` as an intermediate fact. Rewrite `this` using `[htC, map_neg, neg_mul_neg]`. Then use the resulting hypothesis. Establish `hσ : Function.Bijective σ` using `AlgHom.bijective σ`.
+
+Establish `hint' : ∀ i j l, ∀ y ∈ v.adicCompletionIntegers F, psiLoc B.ψ v (evFin F v (Algebra.trace (AF F) (AE F E) (inclR (F` using `F) (AF F) (c i : E) * C j l)) * y) = 1 := by`. Introduce `i j l`. Take `⟨e, he⟩` from `hσ.2 (c i : E)`. Establish `hei : IsIntegral ℤ e`. Rewrite using `[← isIntegral_algHom_iff ((σ : E →+* E).toIntAlgHom) hσ.1]`.
+
+Use `show IsIntegral ℤ (σ e)`. Rewrite using `[he]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Use `hint e hei j l` as an intermediate fact. Rewrite `this` using `[he]`. Then use the resulting hypothesis.
+
+Rewrite using `[decomp T (X.J * S.map σ)ᵀ T' (W.J * S'.map σ)ᵀ hTS hTS' z, ← hC]`. Use `AddSubgroup.sum_mem _ fun j _ => AddSubgroup.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[trace_expand s c hsc (C j l), Finset.sum_smul]`. Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hxi : (fun r => (s i : E) * T r j) ∈ X.L`.
+
+Use `X.L.smul_mem (s i) (hTm j)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `r`. Simplify using `[Algebra.smul_def]`. Establish `hat : At (evFin F v) (Algebra.trace (AF F) (AE F E) (inclR (F` using `F) (AF F) (c i : E) * C j l)) := by`.
+
+Introduce `u hu`. Rewrite using `[smul_eq_mul, ← smul_eq_mul, ← map_smul, ← mul_smul_comm]`. Use `hCat j l u hu` as an intermediate fact. Rewrite using `[this, mul_zero, map_zero]`. Establish `hmem` using `smul_mem_latAtV σ B hB.std hX hW v hat (hint' i j l) hxi (hTm' l) (hTd' l)`.
+
+Use `hmem using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_assoc]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `only [incM, Matrix.map_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, map_mul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem latAtV_selfDual : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ), B.IsGood σ →
     X.IsHerm σ B r s → W.IsSkew σ B r' s' →

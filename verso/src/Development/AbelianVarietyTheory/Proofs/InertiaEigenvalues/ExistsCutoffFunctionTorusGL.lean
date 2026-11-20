@@ -10,6 +10,9 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.JR.LinDesc
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI : LocallyCompactSpace (Matrix (Fin r) (Fin r) F) := inferInstanceAs (LocallyCompactSpace (Fin r → Fin r → F))`. Conclude with `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin r) (Fin r) F)).locallyCompactSpace`. Use `haveI : TotallyDisconnectedSpace (Matrix (Fin r) (Fin r) F) := inferInstanceAs (TotallyDisconnectedSpace (Fin r → Fin r → F))`. Conclude with `⟨isTotallyDisconnected_of_image Units.continuous_val.continuousOn Units.val_injective (isTotallyDisconnected_of_totallyDisconnectedSpace _)⟩`.
+-/
 theorem gl_lc_td (F : Type) [NontriviallyNormedField F] [LocallyCompactSpace F] [IsUltrametricDist F] (r : ℕ) :
     LocallyCompactSpace (GL (Fin r) F) ∧ TotallyDisconnectedSpace (GL (Fin r) F) := by
   refine ⟨?_, ?_⟩
@@ -21,6 +24,13 @@ theorem gl_lc_td (F : Type) [NontriviallyNormedField F] [LocallyCompactSpace F] 
     exact ⟨isTotallyDisconnected_of_image Units.continuous_val.continuousOn Units.val_injective
       (isTotallyDisconnected_of_totallyDisconnectedSpace _)⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ A r τ p hG lam μK hμ f' hf'`. Use `haveI := (Unram.lcF (F := F) (E := E))`. Use `haveI := (Unram.ultraF (F := F) (E := E))`. Take `⟨hlc, htd⟩` from `gl_lc_td F r`. Take `⟨hB, hH, -⟩` from `GlobalTheory.T.etaleUnitsHaarMeasureDivAbs_isHaarMeasure F E A μK hμ`.
+
+Establish `hZ : IsCompact (Prod.fst '' tsupport f')` using `hf'.2.isCompact.image continuous_fst`. Take `⟨C, hC, hCg⟩` from `(GlobalTheory.T.conjugates_separable_matrix_compact_mod_centralizer F E r).1 (companion p) (GlobalTheory.T.charpoly_companionMatrix_etaleGenerator_separable F E A r τ p hG) _ hZ`. Take `⟨α, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_locallyConstant_cutoff_closedEmbedding (GL (Fin r) F) A.Kˣ (LinDesc.tm A hG) (GlobalTheory.T.isClosedEmbedding_leftMulMatrixPowerBasisUnitsHom F E A r τ p hG) (LinDesc.unitsMeas A μK) C hC`. Use `⟨α, h1, h2, h3, ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨v, w, hne⟩ s₀`.
+
+Establish `hmem : (g : Matrix (Fin r) (Fin r) F) * companion p * ((g⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) ∈ Prod.fst '' tsupport f'` using `⟨(_, v, w, lam), subset_tsupport _ (Function.mem_support.2 hne), rfl⟩`. Take `⟨c, hc, t, ht, rfl⟩` from `hCg g hmem`. Take `⟨t₁, rfl⟩` from `GlobalTheory.T.exists_unit_leftMulMatrix_of_commute_companion F E A r τ p hG t ht`. Use `h4 c hc (t₁ * s₀)` as an intermediate fact. Simplify `this` using `[map_mul, mul_assoc]`.
+-/
 theorem exists_cutoff_torus : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (r : ℕ) (τ : A.K) (p : Fin r → F) (hG : A.IsGen τ p) (lam : F), ∀ (μK : Measure A.K), μK.IsAddHaarMeasure → ∀ f' : Gl r F → ℂ, IsTest f' → ∃ α : GL (Fin r) F → ℝ, IsLocallyConstant α ∧ HasCompactSupport α ∧ (∀ g, 0 ≤ α g) ∧ ∀ g : GL (Fin r) F, (∃ v w : Fin r → F, f' ((g : Matrix (Fin r) (Fin r) F) * companion p * ((g⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F), v, w, lam) ≠ 0) → ∀ s₀ : A.Kˣ, ∫ s, α (g * LinDesc.tm A hG s₀ * LinDesc.tm A hG s) ∂(LinDesc.unitsMeas A μK) = 1 := by
   intro F E _ _ _ _ _ A r τ p hG lam μK hμ f' hf'
   haveI := (Unram.lcF (F := F) (E := E))

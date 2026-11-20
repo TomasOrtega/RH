@@ -29,6 +29,9 @@ def infIdeal : Ideal (AE F E) where
     show u • (c • z) = 0
     rw [smul_eq_mul, ← mul_smul_comm, hz u hu, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[show inclR (F := F) (AF F) e = (1 : AF F) ⊗ₜ[F] e from rfl, GlobalTheory.RealLift.KLineProof.piInf_tmul, map_one, map_one, one_mul]`.
+-/
 theorem piInf_inclR {w : InfinitePlace F} (τ : EmbOver E w) (e : E) : piInf τ (inclR (F := F) (AF F) e) = τ.1 e := by
   rw [show inclR (F := F) (AF F) e = (1 : AF F) ⊗ₜ[F] e from rfl, GlobalTheory.RealLift.KLineProof.piInf_tmul, map_one, map_one, one_mul]
 
@@ -38,6 +41,9 @@ namespace GlobalTheory.IwaAdelicIso
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[form, dotProduct, Matrix.mulVec, map_sum, map_mul, ← hcm.2.2.2]`.
+-/
 theorem form_map {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (τ : E →+* ℂ) {d : ℕ} (J : Matrix (Fin d) (Fin d) E) (a b : Fin d → E) :
     (fun i => τ (a i)) ⬝ᵥ J.map τ *ᵥ star (fun i => τ (b i)) = τ (form σ J a b) := by
   simp [form, dotProduct, Matrix.mulVec, map_sum, map_mul, ← hcm.2.2.2]

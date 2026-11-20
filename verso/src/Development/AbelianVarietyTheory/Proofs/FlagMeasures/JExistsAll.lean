@@ -7,6 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D F X u wt hw`. Take `⟨J, hJ, -⟩` from `GlobalTheory.T.exists_equivariant_unitary_coefficientMap_onto D X u (F u) wt hw`. Conclude with `⟨J, hJ⟩`.
+-/
 theorem jExists_all : ∀ (D : D7) (F : ∀ u, Formalism.L2.Forms.Forms0 D u), JExists D F := by
   intro D F X u wt hw
   obtain ⟨J, hJ, -⟩ := GlobalTheory.T.exists_equivariant_unitary_coefficientMap_onto D X u (F u) wt hw

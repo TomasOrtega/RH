@@ -11,6 +11,9 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hP X _ _ p n hp hdim η m G Z hη hm hZ`. Take `⟨Y, hYi, hYn, s, hs, K, B, F, N, hres, hB, hF, hvan⟩` from `GlobalTheory.T.exists_logResolution_localVanishing hP X p n hp hdim η m G Z hη hm hZ`. Use `⟨Y, hYi, hYn, s, hs, K, B, hres, hB, ?_⟩` and prove the remaining obligations. Introduce `y σ hy hdisc hσ hσy hloc`. Conclude with `GlobalTheory.T.logResolution_mult_lt_of_connectedness X p n hp hdim η m G N Y s K B F hη hm hres hF hvan y σ hy hdisc hσ hσy hloc`.
+-/
 theorem connectedness_at_normal_point :
     GlobalTheory.Published.Principalisation → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (η : RatForms p n) (m : ℕ) (G : CartierDiv X) (Z : Closeds X), η ≠ 0 → 0 < m → Z ≠ ⊤ → ∃ (Y : Scheme.{0}) (_ : IsIntegral Y) (_ : IsLocallyNoetherian Y) (s : Y ⟶ X) (_ : IsDominant s) (K : CartierDiv Y) (B : Closeds Y), IsLogRes p n η m G s K B ∧ (∀ y, s y ∈ Z → y ∈ B) ∧ ∀ (y : X) (σ : Y), IsIntegrallyClosed (X.presheaf.stalk y) → (∀ z, z ⤳ y → ∀ E : DivOver p, E.IsAt z → ∀ g, G.IsEqn z g → discrep E η m g ≤ 0) → (pullCart s G - m • K).mult σ = m → s σ ⤳ y → (∀ v w : Y, v ≠ σ → v ⤳ w → σ ⤳ w → s w ⤳ y → (pullCart s G - m • K).mult v < m) → ∀ v : Y, v ≠ σ → s v ⤳ y → (pullCart s G - m • K).mult v < m := by
   intro hP X _ _ p n hp hdim η m G Z hη hm hZ

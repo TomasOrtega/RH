@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Use `first`. Consider the case `exact spMap_id R`. Consider the case `exact spMap_id`. Consider the case `simp [spMap]`. Consider the case `unfold spMap`.
+-/
 theorem spMap_id' (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 (Sp R) := by
   first
   | exact spMap_id R
@@ -18,11 +21,17 @@ theorem spMap_id' (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 (Sp R) :
   | simp [spMap]
   | unfold spMap
 
+/- English proof (translation)
+Use `first`. Consider the case `exact spMap_id' R`. Consider the case `(rw [Algebra.algebraMap_self]; exact spMap_id' R)`.
+-/
 theorem spMap_alg_self (R : Type) [CommRing R] : spMap (algebraMap R R) = 𝟙 (Sp R) := by
   first
   | exact spMap_id' R
   | (rw [Algebra.algebraMap_self]; exact spMap_id' R)
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [← spMap_comp]; congr 1; exact φ.comp_algebraMap)`. Consider the case `(rw [spMap_comp]; congr 1; exact φ.comp_algebraMap)`. Consider the case `(simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, AlgHom.comp_algebraMap])`. Consider the case `unfold spMap`.
+-/
 theorem spMap_algHom_alg {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [Algebra R A] [Algebra R B]
     (φ : A →ₐ[R] B) : spMap (φ : A →+* B) ≫ spMap (algebraMap R A) = spMap (algebraMap R B) := by
   first
@@ -31,6 +40,15 @@ theorem spMap_algHom_alg {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [
   | (simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, AlgHom.comp_algebraMap])
   | unfold spMap
 
+/- English proof (translation)
+Establish `keyV : ∀ (ψ : κ → MvPolynomial κ' V) (j : κ), (jetSubstP m ψ : Jet V κ m →ₐ[V] Jet V κ' m) (Ideal.Quotient.mk _ (MvPolynomial.X j)) = Ideal.Quotient.mk _ (ψ j - MvPolynomial.C (MvPolynomial.constantCoeff (ψ j)))` using `fun ψ j => congrArg (Ideal.Quotient.mk _) (MvPolynomial.bind₁_X_right _ j)`. Establish `keyK : ∀ (ψ : κ → MvPolynomial κ' K) (j : κ), (jetSubstP m ψ : Jet K κ m →ₐ[K] Jet K κ' m) (Ideal.Quotient.mk _ (MvPolynomial.X j)) = Ideal.Quotient.mk _ (ψ j - MvPolynomial.C (MvPolynomial.constantCoeff (ψ j)))` using `fun ψ j => congrArg (Ideal.Quotient.mk _) (MvPolynomial.bind₁_X_right _ j)`. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `v`.
+
+Establish `e2 : ∀ (κ'' : Type), jetCoef f κ'' m (algebraMap V (Jet V κ'' m) v) = algebraMap K (Jet K κ'' m) (f v)`. Introduce `κ''`. Use `show jetCoef f κ'' m (Ideal.Quotient.mk _ (MvPolynomial.C v)) = Ideal.Quotient.mk _ (MvPolynomial.C (f v))`. Simplify using `[jetCoef]`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.coe_toRingHom]`.
+
+Rewrite using `[show (Ideal.Quotient.mk (orig V κ ^ (m + 1))) (MvPolynomial.C v) = algebraMap V (Jet V κ m) v from rfl]`. Rewrite using `[AlgHom.commutes, e2, e2, AlgHom.commutes]`. Introduce `i`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.coe_toRingHom]`. Rewrite using `[keyV φ i]`.
+
+Establish `eX : jetCoef f κ m (Ideal.Quotient.mk _ (MvPolynomial.X i)) = Ideal.Quotient.mk _ (MvPolynomial.X i)`. Simplify using `[jetCoef]`. Rewrite using `[eX, keyK]`. Simplify using `[jetCoef, MvPolynomial.constantCoeff_map]`.
+-/
 theorem jetCoef_substP {V K : Type} [CommRing V] [CommRing K] (f : V →+* K) {κ κ' : Type} (m : ℕ)
     (φ : κ → MvPolynomial κ' V) :
     (jetCoef f κ' m).comp ((jetSubstP m φ : Jet V κ m →ₐ[V] Jet V κ' m) : Jet V κ m →+* Jet V κ' m) =
@@ -63,6 +81,17 @@ theorem jetCoef_substP {V K : Type} [CommRing V] [CommRing K] (f : V →+* K) {�
     rw [eX, keyK]
     simp [jetCoef, MvPolynomial.constantCoeff_map]
 
+/- English proof (translation)
+Take `⟨hpb, hmul⟩` from `h`. Set `x₀ : Over.mk ((𝟙_ (Over S')).hom ≫ f) ⟶ G` to `Over.homMk (η[G'].left ≫ φ) (by show (η[G'].left ≫ φ) ≫ G.hom = (𝟙_ (Over S')).hom ≫ f`. Rewrite using `[Category.assoc, hpb.w, ← Category.assoc, Over.w η[G']])`. Establish `hη : (1 : 𝟙_ (Over S') ⟶ G') = η[G']` using `by show toUnit (𝟙_ (Over S')) ≫ η[G'] = η[G'] first`. Consider the case `rw [toUnit_unit, Category.id_comp]`.
+
+Consider the case `rw [Subsingleton.elim (toUnit (𝟙_ (Over S'))) (𝟙 _), Category.id_comp]`. Establish `h2` using `hmul (𝟙_ (Over S')) η[G'] η[G'] x₀ x₀ rfl rfl`. Establish `hidem : x₀ * x₀ = x₀`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[h2, ← hη, _root_.one_mul]`.
+
+Both sides reduce to the same expression. Establish `h1 : x₀ = 1` using `by first`. Consider the case `exact mul_eq_left.1 hidem`. Consider the case `exact mul_right_eq_self.1 hidem`. Establish `h3 : x₀.left = (toUnit (Over.mk ((𝟙_ (Over S')).hom ≫ f)) ≫ η[G]).left` using `congrArg (fun g => g.left) h1`.
+
+Rewrite `h3` using `[Over.comp_left]`. Establish `h4 : (toUnit (Over.mk ((𝟙_ (Over S')).hom ≫ f))).left = f` using `by first`. Consider the case `simp`. Consider the case `simpa using Over.w (toUnit (Over.mk ((𝟙_ (Over S')).hom ≫ f)))`. Rewrite `h3` using `[h4]`.
+
+Conclude with `h3`.
+-/
 theorem unit_push {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) : η[G'].left ≫ φ = f ≫ η[G].left := by
   obtain ⟨hpb, hmul⟩ := h
@@ -99,6 +128,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l} {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io}
 variable (I : IntData Xo c T io y.1) {d : ℕ} (xT : ∀ m, jOG (𝟙 (Sp T.V)) d m 1 ⟶ I.G.G)
 
+/- English proof (translation)
+Apply `ext2 I` to reduce the goal to its premises. Rewrite using `[Category.assoc, xL_fst, ← Category.assoc, spMap_comp', jetCoef_aug, ← spMap_comp', Category.assoc, unit_push I.m2.cart]`. Establish `e` using `congrArg CommaMorphism.left (hz m)`. Express the relevant statement in the definitionally equal form `spMap _ ≫ (xT m).left = (spMap (algebraMap T.V T.V) ≫ 𝟙 _) ≫ η[I.G.G].left at e`. Rewrite using `[e, spMap_alg_self, Category.id_comp, Category.id_comp]`.
+
+Rewrite using `[Category.assoc, xL_snd, spMap_algHom_alg, spMap_alg_self, Over.w η[I.t'.G]]`. Both sides reduce to the same expression.
+-/
 theorem xL_zero (hz : ∀ m, Formalism.L2.Pj.homAt (𝟙 (Sp T.V)) (jetAug : Jet T.V (Fin 1 × Fin d) m →ₐ[T.V] T.V) ≫ xT m = 1)
     (m : ℕ) : spMap ((jetAug : Jet T.Fr (Fin 1 × Fin d) m →ₐ[T.Fr] T.Fr) : Jet T.Fr (Fin 1 × Fin d) m →+* T.Fr) ≫
       xL I xT m = η[I.t'.G].left := by
@@ -111,6 +145,9 @@ theorem xL_zero (hz : ∀ m, Formalism.L2.Pj.homAt (𝟙 (Sp T.V)) (jetAug : Jet
   · rw [Category.assoc, xL_snd, spMap_algHom_alg, spMap_alg_self, Over.w η[I.t'.G]]
     rfl
 
+/- English proof (translation)
+Apply `ext2 I` to reduce the goal to its premises. Rewrite using `[Category.assoc, xL_fst, xL_fst, ← Category.assoc, spMap_comp', jetCoef_trunc, ← spMap_comp', Category.assoc]`. Conclude with `congrArg (spMap (jc (d := d) 1 m) ≫ ·) (congrArg CommaMorphism.left (ht m))`. Rewrite using `[Category.assoc, xL_snd, xL_snd, spMap_algHom_alg]`.
+-/
 theorem xL_trunc (ht : ∀ m, Formalism.L2.Pj.homAt (𝟙 (Sp T.V))
       (jetTrunc : Jet T.V (Fin 1 × Fin d) (m + 1) →ₐ[T.V] Jet T.V (Fin 1 × Fin d) m) ≫ xT (m + 1) = xT m)
     (m : ℕ) : spMap ((jetTrunc : Jet T.Fr (Fin 1 × Fin d) (m + 1) →ₐ[T.Fr] Jet T.Fr (Fin 1 × Fin d) m) :
@@ -121,6 +158,9 @@ theorem xL_trunc (ht : ∀ m, Formalism.L2.Pj.homAt (𝟙 (Sp T.V))
     exact congrArg (spMap (jc (d := d) 1 m) ≫ ·) (congrArg CommaMorphism.left (ht m))
   · rw [Category.assoc, xL_snd, xL_snd, spMap_algHom_alg]
 
+/- English proof (translation)
+Apply `ext2 I` to reduce the goal to its premises. Rewrite using `[Category.assoc, I.m2.act a, ← Category.assoc, xL_fst, Category.assoc, Category.assoc, xL_fst, ← Category.assoc (spMap _) (spMap _), spMap_comp', ← jetCoef_substP, ← spMap_comp', Category.assoc]`. Conclude with `congrArg (spMap (jc (d := d) 1 m) ≫ ·) (congrArg CommaMorphism.left ha)`. Rewrite using `[Category.assoc, Over.w (I.t'.act.act a), Category.assoc, xL_snd, spMap_algHom_alg]`.
+-/
 theorem xL_act (actT : Fin d → MvPowerSeries (Fin 1 × Fin d) T.V) (a : 𝓞 E) (m : ℕ) (ha : xT m ≫ I.G.act.act a =
       Formalism.L2.Pj.homAt (𝟙 (Sp T.V)) (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (actT p.2)) ≫ xT m) :
     xL I xT m ≫ (I.t'.act.act a).left =

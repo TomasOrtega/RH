@@ -11,6 +11,13 @@ namespace GlobalTheory.ThK.LeviChar
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Introduce `u hu`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hx`. Establish `h0 : u • (mat k - 1) = 0` using `hk u hu`. Establish `h1 : (u • (mat k - 1)) *ᵥ incV F x = u • ((t - 1) • incV F x)`. Rewrite using `[Matrix.smul_mulVec, Matrix.sub_mulVec, hkt, Matrix.one_mulVec, sub_smul, one_smul]`.
+
+Rewrite `h1` using `[h0, Matrix.zero_mulVec]`. Establish `h2 : (u • (t - 1)) * inclR (F` using `F) (AF F) (x i) = 0 := by`. Use `congrFun h1 i` as an intermediate fact. Simplify using `only [Pi.zero_apply, Pi.smul_apply, incV, smul_eq_mul] at this`. Rewrite using `[smul_mul_assoc]`.
+
+Conclude with `this.symm`. Establish `hi' : x i ≠ 0` using `hi`. Establish `h3` using `congrArg (· * inclR (F := F) (AF F) (x i)⁻¹) h2`. Simplify `h3` using `[mul_assoc, ← map_mul, mul_inv_cancel₀ hi', -map_inv₀]`.
+-/
 theorem at_eigen {d : ℕ} {W : Spc F E d} {k : UA σ W.J} (hk : k ∈ UAt σ W (evI F)) {x : Fin d → E} (hx : x ≠ 0)
     {t : AE F E} (hkt : mat k *ᵥ incV F x = t • incV F x) : At (evI F) (t - 1) := by
   intro u hu
@@ -27,6 +34,19 @@ theorem at_eigen {d : ℕ} {W : Spc F E d} {k : UA σ W.J} (hk : k ∈ UAt σ W 
   have h3 := congrArg (· * inclR (F := F) (AF F) (x i)⁻¹) h2
   simpa [mul_assoc, ← map_mul, mul_inv_cancel₀ hi', -map_inv₀] using h3
 
+/- English proof (translation)
+Establish `hinc : ∀ e : E, piInf (B.emb w) (inclR (F` using `F) (AF F) e) = (B.emb w).1 e := fun e => by`. Simplify using `[piInf, inclR, compInf, infEmb_tmul]`. Establish `hu : ((mat k).map (piInf (B.emb w)))ᵀ * W.J.map (B.emb w).1 * ((mat k).map (piInf (B.emb w))).map star = W.J.map (B.emb w).1`. Establish `h0 : (mat k)ᵀ * incM F W.J * (mat k).map (cA σ) = incM F W.J` using `k.2`. Establish `h1` using `congrArg (fun A => A.map (piInf (B.emb w))) h0`.
+
+Simplify using `only [Matrix.map_mul, Matrix.transpose_map, Matrix.map_map] at h1`. Establish `e1 : (incM F W.J).map (piInf (B.emb w)) = W.J.map (B.emb w).1`. Use extensionality with `i j`. Conclude with `hinc _`. Establish `e2 : (piInf (B.emb w)) ∘ (cA σ) = star ∘ (piInf (B.emb w))` using `funext fun z => GlobalTheory.StabBounded.cA_piInf hcm _ z`.
+
+Rewrite `h1` using `[e1, e2]`. Simplify `h1` using `[Matrix.map_map]`. Establish `hu' : ((mat k).map (piInf (B.emb w)))ᵀ * (Complex.I • W.J.map (B.emb w).1) * ((mat k).map (piInf (B.emb w))).map star = Complex.I • W.J.map (B.emb w).1`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, hu]`. Establish `he : (mat k).map (piInf (B.emb w)) *ᵥ (fun i => (B.emb w).1 (x i)) = piInf (B.emb w) t • (fun i => (B.emb w).1 (x i))`.
+
+Use function extensionality and compare the values at `i`. Establish `h1` using `congrArg (fun v => piInf (B.emb w) (v i)) hkt`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, RingHom.map_mulVec] at h1`. Establish `e3 : (piInf (B.emb w)) ∘ incV F x = fun i => (B.emb w).1 (x i)` using `funext fun j => hinc _`. Rewrite `h1` using `[e3]`.
+
+Simplify `h1` using `[incV, hinc]`. Establish `hxw : (fun i => (B.emb w).1 (x i)) ≠ 0` using `fun h => hx0 (funext fun i => (B.emb w).1.injective (by simpa using congrFun h i))`. Establish `hcs` using `CartanUnit.mul_star_eq_one_of_cartan (hW.cartan w) hu' (hk.2 w) hxw he`. Establish `hn : ‖piInf (B.emb w) t‖ ^ 2 = 1`. Use `Complex.mul_conj' (piInf (B.emb w) t)` as an intermediate fact.
+
+Rewrite `this` using `[show (starRingEnd ℂ) (piInf (B.emb w) t) = star (piInf (B.emb w) t) from rfl, hcs]`. Conclude with `this.symm` after adjusting the coercions. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 hn`.
+-/
 theorem norm_eigen (hcm : IsCMExt F E σ) {B : Base F E} {d r s : ℕ} {W : Spc F E d} (hW : W.IsSkew σ B r s)
     {k : UA σ W.J} (hk : k ∈ KInf σ W B.emb) {x : Fin d → E} (hx0 : x ≠ 0)
     {t : AE F E} (hkt : mat k *ᵥ incV F x = t • incV F x) (w : InfinitePlace F) : ‖piInf (B.emb w) t‖ = 1 := by
@@ -62,6 +82,15 @@ theorem norm_eigen (hcm : IsCMExt F E σ) {B : Base F E} {d r s : ℕ} {W : Spc 
     exact_mod_cast this.symm
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 hn
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d d₁ r s i₀ i₁ W W₁ H' hcm hW hA χ m hχ z t h₁ k hk hL`. Establish `hx0 : H'.x ≠ 0` using `fun h => by`. Use `hA.xy` as an intermediate fact. Simplify using `[form, h] at this`. Establish `ht : At (evI F) (t.1 - 1)` using `at_eigen hk.1 hx0 hL.1`.
+
+Establish `hw : ∀ w, ‖piInf (B.emb w) t.1‖ = 1` using `norm_eigen hcm hW hk hx0 hL.1`. Establish `habs : absE F E t = 1`. Rewrite using `[GlobalTheory.Doubling.absE_apply]`. Establish `hf : ∀ v, GlobalTheory.Doubling.unitFin F E v t = 1` using `fun v => Units.ext (by`. Use `(at_evI_iff.1 ht) v` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `this)`. Simplify using `only [hf, map_one, finprod_one, mul_one]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Doubling.absEw_eq_sq hcm (B.emb w)]`.
+
+Express the relevant statement in the definitionally equal form `‖piInf (B.emb w) t.1‖₊ ^ 2 = 1`. Rewrite using `[show ‖piInf (B.emb w) t.1‖₊ = 1 from NNReal.eq (by simpa using hw w), one_pow]`. Rewrite using `[habs, hχ t ht]`. Simplify using `[hw]`.
+-/
 theorem char_levi_KInf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d d₁ r s i₀ i₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁), IsCMExt F E σ →
     W.IsSkew σ B r s → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ (χ : Chr F E) (m : InfinitePlace F → ℤ), HasExp B.emb χ m →

@@ -15,16 +15,25 @@ def P (k : ℕ) (x : ℝ) : ℝ :=
 
 def K0 : ℝ := Real.log 4 + 7
 
+/- English proof (translation)
+Unfold `K0`. Use `Real.log_nonneg (by norm_num : (1:ℝ) ≤ 4)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma lipschitzConst_nonneg : 0 ≤ K0 := by
   unfold K0
   have := Real.log_nonneg (by norm_num : (1:ℝ) ≤ 4)
   linarith
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [Finset.mem_Icc, Finset.mem_Ioc]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma Icc_one_eq_Ioc (k : ℕ) : Finset.Icc 1 k = Finset.Ioc 0 k := by
   ext n
   simp only [Finset.mem_Icc, Finset.mem_Ioc]
   omega
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Finset.sum_Ioc_succ_top (Nat.zero_le k), ih, Nat.factorial_succ, Nat.cast_mul, Real.log_mul (by positivity) (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero k))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma sum_log_eq_log_factorial (k : ℕ) :
     ∑ n ∈ Finset.Ioc 0 k, Real.log n = Real.log (k.factorial : ℝ) := by
   induction k with
@@ -34,6 +43,13 @@ lemma sum_log_eq_log_factorial (k : ℕ) :
       Real.log_mul (by positivity) (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero k))]
     ring
 
+/- English proof (translation)
+Establish `h1 : ∀ n ∈ Finset.Ioc 0 k, Real.log n = ∑ d ∈ n.divisors, Λ d` using `fun n _ => ArithmeticFunction.vonMangoldt_sum.symm`. Rewrite using `[Finset.sum_congr rfl h1]`. Rewrite using `[Finset.sum_comm' (t' := Finset.Ioc 0 k) (s' := fun d => (Finset.Ioc 0 k).filter (d ∣ ·))]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Nat.Ioc_filter_dvd_card_eq_div, nsmul_eq_mul, mul_comm]`.
+
+Introduce `n d`. Simplify using `only [Finset.mem_Ioc, Nat.mem_divisors, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h0, hk⟩, hd, -⟩`. Establish `hle` using `Nat.le_of_dvd h0 hd`.
+
+Establish `hpos` using `Nat.pos_of_dvd_of_pos hd h0`. Conclude with `⟨⟨⟨h0, hk⟩, hd⟩, hpos, by omega⟩`. Introduce and unpack `⟨⟨⟨h0, hk⟩, hd⟩, -, -⟩`. Conclude with `⟨⟨h0, hk⟩, hd, by omega⟩`.
+-/
 lemma sum_log_eq (k : ℕ) :
     ∑ n ∈ Finset.Ioc 0 k, Real.log n = ∑ n ∈ Finset.Ioc 0 k, Λ n * ((k / n : ℕ) : ℝ) := by
   have h1 : ∀ n ∈ Finset.Ioc 0 k, Real.log n = ∑ d ∈ n.divisors, Λ d :=
@@ -52,6 +68,19 @@ lemma sum_log_eq (k : ℕ) :
     · rintro ⟨⟨⟨h0, hk⟩, hd⟩, -, -⟩
       exact ⟨⟨h0, hk⟩, hd, by omega⟩
 
+/- English proof (translation)
+Establish `hk0 : (0:ℝ) < k` using `by exact_mod_cast hk`. Establish `hpsi : ∑ n ∈ Finset.Ioc 0 k, Λ n ≤ (Real.log 4 + 4) * k`. Establish `h` using `Chebyshev.psi_le_const_mul_self (x := (k:ℝ)) hk0.le`. Simplify `h` using `[Chebyshev.psi]`. Establish `hfact : Real.log (k.factorial : ℝ) ≤ k * Real.log k`.
+
+Rewrite using `[← Real.log_pow]`. Conclude with `Real.log_le_log (by positivity) (by exact_mod_cast Nat.factorial_le_pow k)`. Establish `hmain : (k:ℝ) * A k ≤ ∑ n ∈ Finset.Ioc 0 k, Λ n * ((k / n : ℕ) : ℝ) + ∑ n ∈ Finset.Ioc 0 k, Λ n`. Rewrite using `[A, Finset.mul_sum, ← Finset.sum_add_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+
+Introduce `n hn`. Rewrite `hn` using `[Finset.mem_Ioc]`. Establish `hnpos : 0 < n` using `hn.1`. Establish `hnR : (0:ℝ) < n` using `by exact_mod_cast hnpos`. Establish `h1N : k < (k / n + 1) * n`.
+
+Rewrite using `[Nat.add_mul, one_mul]`. Conclude with `Nat.lt_div_mul_add hnpos`. Establish `h1R : (k:ℝ) ≤ (((k / n : ℕ) : ℝ) + 1) * n` using `by exact_mod_cast h1N.le`. Establish `hΛ : 0 ≤ Λ n` using `ArithmeticFunction.vonMangoldt_nonneg`. Establish `h2 : (k:ℝ) / n ≤ ((k / n : ℕ) : ℝ) + 1`.
+
+Rewrite using `[div_le_iff₀ hnR]`. Conclude with `h1R`. Establish `h3 : (k:ℝ) * (Λ n / n) = Λ n * ((k:ℝ) / n)` using `by ring`. Rewrite using `[h3]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 hΛ]`.
+
+Rewrite `hmain` using `[← sum_log_eq, sum_log_eq_log_factorial]`. Establish `h4 : (k:ℝ) * A k ≤ k * (Real.log k + (Real.log 4 + 4))` using `by nlinarith`. Conclude with `le_of_mul_le_mul_left h4 hk0`.
+-/
 lemma mertens_upper (k : ℕ) (hk : 1 ≤ k) : A k ≤ Real.log k + (Real.log 4 + 4) := by
   have hk0 : (0:ℝ) < k := by exact_mod_cast hk
   have hpsi : ∑ n ∈ Finset.Ioc 0 k, Λ n ≤ (Real.log 4 + 4) * k := by
@@ -83,6 +112,15 @@ lemma mertens_upper (k : ℕ) (hk : 1 ≤ k) : A k ≤ Real.log k + (Real.log 4 
   have h4 : (k:ℝ) * A k ≤ k * (Real.log k + (Real.log 4 + 4)) := by nlinarith
   exact le_of_mul_le_mul_left h4 hk0
 
+/- English proof (translation)
+Establish `hk0 : (0:ℝ) < k` using `by exact_mod_cast hk`. Establish `hfl : Real.log (k.factorial : ℝ) ≤ k * A k`. Rewrite using `[← sum_log_eq_log_factorial, sum_log_eq, A, Finset.mul_sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `n _`.
+
+Establish `hΛ : 0 ≤ Λ n` using `ArithmeticFunction.vonMangoldt_nonneg`. Establish `hd : ((k / n : ℕ) : ℝ) ≤ (k:ℝ) / n` using `Nat.cast_div_le`. Establish `h3 : (k:ℝ) * (Λ n / n) = Λ n * ((k:ℝ) / n)` using `by ring`. Rewrite using `[h3]`. Conclude with `mul_le_mul_of_nonneg_left hd hΛ`.
+
+Establish `hst : k * Real.log k - k ≤ Real.log (k.factorial : ℝ)`. Establish `h` using `Real.pow_div_factorial_le_exp (k:ℝ) hk0.le k`. Establish `hpos : (0:ℝ) < (k:ℝ) ^ k / k.factorial` using `by positivity`. Establish `h2` using `Real.log_le_log hpos h`. Rewrite `h2` using `[Real.log_exp, Real.log_div (by positivity) (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero k)), Real.log_pow]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : (k:ℝ) * (Real.log k - 1) ≤ k * A k` using `by nlinarith`. Conclude with `le_of_mul_le_mul_left h5 hk0`.
+-/
 lemma mertens_lower (k : ℕ) (hk : 1 ≤ k) : Real.log k - 1 ≤ A k := by
   have hk0 : (0:ℝ) < k := by exact_mod_cast hk
   have hfl : Real.log (k.factorial : ℝ) ≤ k * A k := by
@@ -104,6 +142,15 @@ lemma mertens_lower (k : ℕ) (hk : 1 ≤ k) : Real.log k - 1 ≤ A k := by
   have h5 : (k:ℝ) * (Real.log k - 1) ≤ k * A k := by nlinarith
   exact le_of_mul_le_mul_left h5 hk0
 
+/- English proof (translation)
+Establish `hx0 : 0 ≤ x` using `le_trans (Nat.cast_nonneg k) hx1`. Establish `key : ∀ k' : ℕ, ∑ n ∈ Finset.Icc 1 k', Λ n * (x / n - 1) = x * A k' - ∑ n ∈ Finset.Ioc 0 k', Λ n`. Introduce `k'`. Rewrite using `[Icc_one_eq_Ioc, A, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun n _ => by ring`.
+
+Unfold `Sz`. Break down `lt_or_eq_of_le hx2 with h | h` into its components or cases. Rewrite using `[show ⌊x⌋₊ = k from (Nat.floor_eq_iff hx0).2 ⟨hx1, h⟩, key]`. Substitute `h` using the available equality. Establish `hf : ⌊(k:ℝ) + 1⌋₊ = k + 1`.
+
+Rewrite using `[← Nat.cast_add_one, Nat.floor_natCast]`. Establish `hone : ((k:ℝ) + 1) / (((k + 1 : ℕ)) : ℝ) = 1`. Use `push_cast`. Conclude with `div_self (by positivity)`. Rewrite using `[hf, Finset.sum_Icc_succ_top (by omega : 1 ≤ k + 1), key, hone]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma Sz_eq (k : ℕ) (x : ℝ) (hx1 : (k:ℝ) ≤ x) (hx2 : x ≤ k + 1) :
     Sz x = x * A k - ∑ n ∈ Finset.Ioc 0 k, Λ n := by
   have hx0 : 0 ≤ x := le_trans (Nat.cast_nonneg k) hx1
@@ -124,10 +171,16 @@ lemma Sz_eq (k : ℕ) (x : ℝ) (hx1 : (k:ℝ) ≤ x) (hx2 : x ≤ k + 1) :
     rw [hf, Finset.sum_Icc_succ_top (by omega : 1 ≤ k + 1), key, hone]
     ring
 
+/- English proof (translation)
+Unfold `Gz P`. Rewrite using `[Sz_eq k x hx1 hx2]`.
+-/
 lemma Gz_eq_P (k : ℕ) (x : ℝ) (hx1 : (k:ℝ) ≤ x) (hx2 : x ≤ k + 1) : Gz x = P k x := by
   unfold Gz P
   rw [Sz_eq k x hx1 hx2]
 
+/- English proof (translation)
+Establish `h1` using `((((hasDerivAt_id' (x := x)).mul_const (A k)).sub_const (∑ n ∈ Finset.Ioc 0 k, Λ n)).sub (Real.hasDerivAt_mul_log hx.ne')).add ((hasDerivAt_id' (x := x)).const_mul (1 + Real.eulerMascheroniConstant))`. Use `(h1.congr_deriv (by ring)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [P, Pi.add_apply, Pi.sub_apply]`.
+-/
 lemma hasDerivAt_P (k : ℕ) {x : ℝ} (hx : 0 < x) :
     HasDerivAt (P k) (A k - Real.log x + Real.eulerMascheroniConstant) x := by
   have h1 := ((((hasDerivAt_id' (x := x)).mul_const (A k)).sub_const
@@ -136,6 +189,9 @@ lemma hasDerivAt_P (k : ℕ) {x : ℝ} (hx : 0 < x) :
   refine (h1.congr_deriv (by ring)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun y => ?_)
   simp only [P, Pi.add_apply, Pi.sub_apply]
 
+/- English proof (translation)
+The claim follows from `|A k - Real.log x + Real.eulerMascheroniConstant| ≤ K0 := by have hγ1 := Real.one_half_lt_eulerMascheroniConstant have hγ2 := Real.eulerMascheroniConstant_lt_two_thirds have hl4 := Real.log_nonneg (by norm_num : (1:ℝ) ≤ 4) have hl2 := Real.log_two_lt_d9 have hl2' := Real.log_nonn …`.
+-/
 lemma deriv_bound (k : ℕ) (x : ℝ) (hx1 : (k:ℝ) ≤ x) (hx1' : 1 / 2 ≤ x) (hx2 : x ≤ k + 1) :
     |A k - Real.log x + Real.eulerMascheroniConstant| ≤ K0 := by
   have hγ1 := Real.one_half_lt_eulerMascheroniConstant
@@ -162,6 +218,9 @@ lemma deriv_bound (k : ℕ) (x : ℝ) (hx1 : (k:ℝ) ≤ x) (hx1' : 1 / 2 ≤ x)
     rw [Real.log_mul two_ne_zero (by positivity)] at h2
     constructor <;> linarith
 
+/- English proof (translation)
+The claim follows from `|Gz y - Gz x| ≤ K0 * |y - x| := by have hs : Convex ℝ (Set.Icc (max (k:ℝ) (1 / 2)) (k + 1)) := convex_Icc _ _ have hder : ∀ t ∈ Set.Icc (max (k:ℝ) (1 / 2)) (k + 1), HasDerivWithinAt (P k) (A k - Real.log t + Real.eulerMascheroniConstant) (Set.Icc (max (k:ℝ) (1 / 2)) (k + 1)) t := …`.
+-/
 lemma lip_piece (k : ℕ) (x y : ℝ) (hx1 : (k:ℝ) ≤ x) (hx1' : 1 / 2 ≤ x) (hx2 : x ≤ k + 1)
     (hy1 : (k:ℝ) ≤ y) (hy1' : 1 / 2 ≤ y) (hy2 : y ≤ k + 1) :
     |Gz y - Gz x| ≤ K0 * |y - x| := by
@@ -182,6 +241,9 @@ lemma lip_piece (k : ℕ) (x y : ℝ) (hx1 : (k:ℝ) ≤ x) (hx1' : 1 / 2 ≤ x)
   rw [Gz_eq_P k x hx1 hx2, Gz_eq_P k y hy1 hy2]
   simpa [Real.norm_eq_abs] using h
 
+/- English proof (translation)
+The claim follows from `|Gz y - Gz x| ≤ K0 * |y - x| := by have hK := lipschitzConst_nonneg induction k with | zero => intro x y hx1 hx2 hy1 hy2 exact lip_piece 0 x y (by rw [Nat.cast_zero]; linarith) hx1 hx2 (by rw [Nat.cast_zero]; linarith) hy1 hy2 | succ k ih => intro x y hx1 hx2 hy1 hy2 push_cast at …`.
+-/
 lemma lip_upto (k : ℕ) : ∀ x y : ℝ, 1 / 2 ≤ x → x ≤ k + 1 → 1 / 2 ≤ y → y ≤ k + 1 →
     |Gz y - Gz x| ≤ K0 * |y - x| := by
   have hK := lipschitzConst_nonneg
@@ -217,6 +279,13 @@ lemma lip_upto (k : ℕ) : ∀ x y : ℝ, 1 / 2 ≤ x → x ≤ k + 1 → 1 / 2 
 end LogFactorialMertensBounds
 
 open LogFactorialMertensBounds in
+/- English proof (translation)
+Establish `hK` using `lipschitzConst_nonneg`. Establish `hlip : ∀ a b : ℝ, 1 / 2 ≤ a → 1 / 2 ≤ b → |Gz a - Gz b| ≤ K0 * |a - b|`. Introduce `a b ha hb`. Conclude with `lip_upto (⌊a⌋₊ + ⌊b⌋₊) b a hb (by push_cast; linarith [Nat.lt_floor_add_one b, Nat.cast_nonneg (α := ℝ) ⌊a⌋₊]) ha (by push_cast; linarith [Nat.lt_floor_add_one a, Nat.cast_nonneg (α := ℝ) ⌊b⌋₊])`. Use `⟨K0 + 2 * |Gz (1 / 2)|, fun t t' ht ht' => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h` using `hlip t (1 / 2) ht le_rfl`. Establish `h2 : |Gz t| ≤ |Gz t - Gz (1 / 2)| + |Gz (1 / 2)|`. Use `abs_sub_abs_le_abs_sub (Gz t) (Gz (1 / 2))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h` using `[abs_of_nonneg (by linarith : (0:ℝ) ≤ t - 1 / 2)]`.
+
+Use polynomial arithmetic with `[abs_nonneg (Gz (1 / 2)), mul_nonneg (abs_nonneg (Gz (1 / 2))) (by linarith : (0:ℝ) ≤ t - 1 / 2)]`. Conclude with `le_trans (hlip t t' ht ht') (mul_le_mul_of_nonneg_right (by linarith [abs_nonneg (Gz (1 / 2))]) (abs_nonneg _))`.
+-/
 theorem zetaPrimeSumErrorLipschitz : GzLipschitz := by
   have hK := lipschitzConst_nonneg
   have hlip : ∀ a b : ℝ, 1 / 2 ≤ a → 1 / 2 ≤ b → |Gz a - Gz b| ≤ K0 * |a - b| := by

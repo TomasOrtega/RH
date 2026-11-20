@@ -16,6 +16,9 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
+/- English proof (translation)
+Establish `hle : D'.subschemeι.ker ≤ (Limits.pullback.fst h D.subschemeι).ker`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι, hD]`. Conclude with `le_rfl`. Conclude with `⟨AlgebraicGeometry.IsClosedImmersion.lift D'.subschemeι (Limits.pullback.fst h D.subschemeι) hle, by simp⟩`.
+-/
 private theorem exists_lift_pullback_subschemeι_comap {X Y : Scheme.{u}} (h : Y ⟶ X) (D : X.IdealSheafData)
     (D' : Y.IdealSheafData) (hD : D' = D.comap h) :
     ∃ ψ : Limits.pullback h D.subschemeι ⟶ D'.subscheme,
@@ -26,6 +29,13 @@ private theorem exists_lift_pullback_subschemeι_comap {X Y : Scheme.{u}} (h : Y
   exact ⟨AlgebraicGeometry.IsClosedImmersion.lift D'.subschemeι
       (Limits.pullback.fst h D.subschemeι) hle, by simp⟩
 
+/- English proof (translation)
+Establish `hcomm : subschemeMapOfComap h D D' hD ≫ D.subschemeι = D'.subschemeι ≫ h` using `subschemeMapOfComap_comp h D D' hD`. Take `⟨ψ, hψ⟩` from `exists_lift_pullback_subschemeι_comap h D D' hD`. Establish `h1 : Limits.pullback.lift D'.subschemeι (subschemeMapOfComap h D D' hD) hcomm.symm ≫ ψ = 𝟙 _`. Rewrite using `[← cancel_mono D'.subschemeι, Category.assoc, hψ, Category.id_comp]`. Conclude with `Limits.pullback.lift_fst _ _ _`.
+
+Establish `h2 : ψ ≫ Limits.pullback.lift D'.subschemeι (subschemeMapOfComap h D D' hD) hcomm.symm = 𝟙 _`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Limits.pullback.lift_fst, Category.id_comp]`. Conclude with `hψ`. Rewrite using `[Category.assoc, Limits.pullback.lift_snd, Category.id_comp, ← cancel_mono D.subschemeι, Category.assoc, hcomm, ← Category.assoc, hψ]`.
+
+Conclude with `Limits.pullback.condition`. Use `(IsPullback.of_iso_pullback ⟨hcomm.symm⟩ { hom := Limits.pullback.lift D'.subschemeι (subschemeMapOfComap h D D' hD) hcomm.symm inv := ψ hom_inv_id := h1 inv_hom_id := h2 } ?_ ?_).flip` and prove the remaining obligations. Conclude with `Limits.pullback.lift_fst _ _ _`. Conclude with `Limits.pullback.lift_snd _ _ _`.
+-/
 theorem isPullback_subschemeMapOfComap (X Y : Scheme.{u}) (h : Y ⟶ X) (D : X.IdealSheafData)
     (D' : Y.IdealSheafData) (hD : D' = D.comap h) :
     IsPullback (subschemeMapOfComap h D D' hD) D'.subschemeι D.subschemeι h := by

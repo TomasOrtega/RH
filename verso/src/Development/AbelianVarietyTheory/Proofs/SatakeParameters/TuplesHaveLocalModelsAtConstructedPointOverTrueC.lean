@@ -7,6 +7,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 namespace GlobalTheory.Svd
 
+/- English proof (translation)
+Introduce `h1 h2 K β hβ`. Establish `key : ∀ O : Obj β.X.toD7, ofObj O = β.c.O → ModelsAt β.X.toD7 O`. Use `positionOf_ind (P := HasPart) (R := fun K X f T c => ∀ O : Obj X.toD7, ofObj O = c.O → ModelsAt X.toD7 O) ?_ hβ` and prove the remaining obligations. Introduce `K B f T w Z c hc O hO`. Take `⟨b⟩` from `hc`.
+
+Establish `b' : Part w Z (ofObj O)` using `hO ▸ b`. Conclude with `GlobalTheory.T.tuplesHaveLocalModels_of_standardColumnObjects h1 h2 B f T w Z O b'`. Establish `hm` using `key (β.Y.obj β.p) (by rw [ofObj_obj]; exact β.hY)`. Conclude with `GlobalTheory.T.tuplesLocalModels_of_otherDivisionLatticesHeights β.X.toD7 (β.Y.obj β.p) (nPrime β.p.L) β.p.ht hm`.
+-/
 theorem modelsAt_bpt : GlobalTheory.TwV.Lt.AdmAtEnt2 → GlobalTheory.TwV.Lt.CurveEx → ∀ (K : Ctx) (β : BPt K), β.Is (positionOf HasPart) → ModelsAt β.D β.O := by
   intro h1 h2 K β hβ
   have key : ∀ O : Obj β.X.toD7, ofObj O = β.c.O → ModelsAt β.X.toD7 O := by

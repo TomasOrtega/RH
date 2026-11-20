@@ -5,6 +5,15 @@ noncomputable section
 
 namespace GroundTheory.Heights₂.Heights
 
+/- English proof (translation)
+Use `set c : Fin (e + 1) → K := fun i => if i = 0 then 0 else -(M i 0 / M 0 0) with hc`. Use `set B : Matrix (Fin (e + 1)) (Fin (e + 1)) K := Matrix.of fun i j => M i j + c i * M 0 j with hB`. Establish `hdet : B.det = M.det` using `Matrix.det_eq_of_forall_row_eq_smul_add_const c 0 (by simp [hc]) (fun i j => by simp [hB])`. Rewrite using `[← hdet, Matrix.det_succ_column_zero, Fin.sum_univ_succ]`. Establish `hz : ∀ i : Fin e, B i.succ 0 = 0`.
+
+Introduce `i`. Simplify using `only [hB, hc, Matrix.of_apply, Fin.succ_ne_zero, if_false]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hz, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, Fin.val_zero, pow_zero, one_mul, Fin.succAbove_zero]`.
+
+Use `congr 1`. Simplify using `[hB, hc]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [hB, hc, Matrix.submatrix_apply, Matrix.of_apply, Fin.succ_ne_zero, if_false]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ChartGram.det_eq_corner_mul_schur {K : Type*} [Field K] {e : ℕ}
     (M : Matrix (Fin (e + 1)) (Fin (e + 1)) K) (h : M 0 0 ≠ 0) :
     M.det = M 0 0 *

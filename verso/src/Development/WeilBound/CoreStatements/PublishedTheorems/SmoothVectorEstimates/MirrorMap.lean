@@ -9,6 +9,9 @@ namespace PositivityTheory.jumpWindows
 
 namespace MirrorMap
 
+/- English proof (translation)
+Introduce `i k hik`. Express the relevant statement in the definitionally equal form `p (γ.val i k) = _`. Rewrite using `[h i k hik, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem mir_map {R S : Type} [CommRing R] [CommRing S] {a m : ℕ} (p : R →+* S) {γ : GL (Fin a) R}
     (h : Mir m γ) : Mir m (GeneralLinearGroup.map p γ) := by
   intro i k hik
@@ -18,6 +21,9 @@ theorem mir_map {R S : Type} [CommRing R] [CommRing S] {a m : ℕ} (p : R →+* 
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Use `⟨?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(h10 _ a (a - 1)).2.2.2.2.1 _ _ (mir_map (pInf E) hx) hg.1`. Rewrite using `[map_mul]`. Conclude with `(h10 _ a (a - 1)).2.2.2.2.1 _ _ (mir_map ((pLoc E w).comp (pFin E)) hx) (hg.2 w hw)`.
+-/
 theorem mirS_mul (h10 : MirabolicColumnBlock) {S : Finset (Pl E)} {x g : GA E a} (hx : Mir (a - 1) x) (hg : MirS S g) :
     MirS S (x * g) := by
   refine ⟨?_, fun w hw => ?_⟩
@@ -28,6 +34,21 @@ theorem mirS_mul (h10 : MirabolicColumnBlock) {S : Finset (Pl E)} {x g : GA E a}
 
 end MirrorMap
 
+/- English proof (translation)
+Introduce `h10 h0 h5 h9 h9b h11 h12 E _ _ _ a ψ hψ S hcond φ hgood hleft hsat hvan`. Take `⟨-, -, -, -, -, -, -, -, -, -, hproj, -⟩` from `h0 E a`. Establish `hcont : Continuous (Wh ψ φ)` using `((h5 E a ψ hψ).2.2.2 φ hgood).1`. Establish `step1 : ∀ g, MirS S g → Wh ψ φ g = 0`. Introduce `g hg`.
+
+Take `⟨g₀, e1, e2, e3⟩` from `hproj S g`. Use `h9b E a S (Wh ψ φ) hcont ?_ g g₀ e1 e2 e3 ?_` and prove the remaining obligations. Introduce `w hw h hh hz u`. Take `⟨B, hB⟩` from `hsat w hw`. Conclude with `h9 E a ψ hψ w (hcond w hw) B φ hgood hB h hh hz u`.
+
+Use `hvan g₀ ⟨?_, fun w hw => ?_⟩ e3` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `hg.1`. Rewrite using `[e2 w hw]`. Conclude with `hg.2 w hw`.
+
+Establish `step2 : ∀ g, MirS S g → φ g = 0`. Introduce `g hg`. Use `h11 E a ψ hψ (a - 1) φ (by omega) hgood {g | MirS S g} ?_ ?_ step1 g hg` and prove the remaining obligations. Introduce `γ hγ g hg`. Conclude with `MirrorMap.mirS_mul h10 (MirrorMap.mir_map (algebraMap E (Ad E)) hγ) hg`.
+
+Introduce `k hk y g hg`. Conclude with `MirrorMap.mirS_mul h10 ((h10 (Ad E) a (a - 1)).2.2.2.2.2.1 k y hk) hg`. Establish `hEq : (⇑φ) = fun _ => (0 : ℂ)`. Use `Continuous.ext_on (h12 E a S) φ.continuous continuous_const ?_` and prove the remaining obligations. Introduce and unpack `x ⟨γ, g, rfl, hg1, hg2⟩`.
+
+Use `show φ (ratGL E a γ * g) = 0`. Rewrite using `[hleft]`. Use `step2 g ⟨?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hg1]`. Conclude with `(h10 _ a (a - 1)).2.2.1`.
+
+Rewrite using `[hg2 w hw]`. Conclude with `(h10 _ a (a - 1)).2.2.1`. Use extensionality with `x`. Simplify using `using congrFun hEq x`.
+-/
 theorem mirror_global_of : MirabolicColumnBlock → G0 → G5 → G9 → PlacewiseToOutsideS → FourierUniquenessMirabolic → WeakApproximationGL → WhittakerVanishingImpliesZero := by
   intro h10 h0 h5 h9 h9b h11 h12 E _ _ _ a ψ hψ S hcond φ hgood hleft hsat hvan
   obtain ⟨-, -, -, -, -, -, -, -, -, -, hproj, -⟩ := h0 E a

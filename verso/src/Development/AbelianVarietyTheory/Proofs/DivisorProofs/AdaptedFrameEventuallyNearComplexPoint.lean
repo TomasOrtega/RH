@@ -9,6 +9,13 @@ set_option autoImplicit false
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Take `⟨U, B, hU, hB, hS⟩` from `E.loc (under y)`. Establish `hP` using `(hS _ hU A).1 hA`. Establish `hreg : ∀ g : X.Fn, RegAt (under y) g → ∀ᶠ z in 𝓝 y, RegAt (under z) g`. Introduce `g hg`. Take `⟨W, hW, a, rfl⟩` from `hg.exists_fnOf`.
+
+Use `filter_upwards [(isOpen_ptsIn W).mem_nhds (mem_ptsIn.2 hW)] with z hz`. Conclude with `regAt_fnOf (mem_ptsIn.1 hz) _ a`. Establish `hU' : ∀ᶠ z in 𝓝 y, under z ∈ U` using `by filter_upwards [(isOpen_ptsIn U).mem_nhds (mem_ptsIn.2 hU)] with z hz`. Conclude with `mem_ptsIn.1 hz`. Establish `h1 : ∀ᶠ z in 𝓝 y, ∀ τ, (∀ i j, RegAt (under z) ((A * B⁻¹) τ i j)) ∧ RegAt (under z) ((A * B⁻¹) τ).det⁻¹` using `Filter.eventually_all.2 fun τ => (Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => hreg _ (mem_O_ratOf.1 ((hP τ).1 i j))).and (hreg _ (mem_O_ratOf.1 (hP τ).2.2.1))`.
+
+Use `filter_upwards [hU', h1] with z hz hz1`. Conclude with `(hS _ hz A).2 fun τ => ⟨fun i j => mem_O_ratOf.2 ((hz1 τ).1 i j), (hP τ).2.1, mem_O_ratOf.2 (hz1 τ).2, fun i j hi => absurd hi (by simp)⟩`.
+-/
 theorem frame_eventually {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {m : ℕ}
     (E : Fr (ratOf X) (fun _ : Unit => m) 0) {y : CxPts X.str σ} {A : Mat (fun _ : Unit => m) X.Fn}
     (hA : A ∈ E.S (under y)) : ∀ᶠ z in 𝓝 y, A ∈ E.S (under z) := by

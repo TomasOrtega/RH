@@ -8,10 +8,20 @@ open UpperTheory.ConvolutionTheory.R2
 open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v a`.
+-/
 private theorem val_coe {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (a : F) :
     Valued.v ((algebraMap F (FiniteAdeleRing (𝓞 F) F) a) v) = v.valuation F a :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v a
 
+/- English proof (translation)
+Establish `key : ∀ v : HeightOneSpectrum (𝓞 F), (Valued.v ((algebraMap F (FiniteAdeleRing (𝓞 F) F) m⁻¹ * x.2) v) ≤ 1 ↔ Valued.v (x.2 v) ≤ v.valuation F m)`. Introduce `v`. Establish `h0 : v.valuation F m ≠ 0` using `(Valuation.ne_zero_iff _).2 hm`. Establish `e : (algebraMap F (FiniteAdeleRing (𝓞 F) F) m⁻¹ * x.2) v = (algebraMap F (FiniteAdeleRing (𝓞 F) F) m⁻¹) v * x.2 v` using `rfl`. Rewrite using `[e, Valuation.map_mul, val_coe, map_inv₀, mul_comm, ← div_eq_mul_inv]`.
+
+Conclude with `div_le_one₀ (zero_lt_iff.2 h0)`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 ((key v).2 (h v))`. Introduce `h v`.
+
+Conclude with `(key v).1 ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (h v))`.
+-/
 private theorem dv_iff {F : Type} [Field F] [NumberField F] (m : F) (hm : m ≠ 0) (x : A F) :
     Dv m x ↔ algebraMap F (FiniteAdeleRing (𝓞 F) F) m⁻¹ * x.2 ∈ integralFiniteAdeles (𝓞 F) F := by
   have key : ∀ v : HeightOneSpectrum (𝓞 F),
@@ -29,6 +39,19 @@ private theorem dv_iff {F : Type} [Field F] [NumberField F] (m : F) (hm : m ≠ 
   · intro h v
     exact (key v).1 ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (h v))
 
+/- English proof (translation)
+Introduce `F _ _`. Prove the components needed by the constructor for the conclusion. Introduce `U hU`. Establish `hc : Continuous (fun y : FiniteAdeleRing (𝓞 F) F => ((0, y) : A F))` using `continuous_const.prodMk continuous_id`. Establish `hW : (fun y : FiniteAdeleRing (𝓞 F) F => ((0, y) : A F)) ⁻¹' U ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 F) F)` using `hc.continuousAt.preimage_mem_nhds hU`.
+
+Take `⟨d, hd0, hd⟩` from `exists_forall_mul_mem_of_mem_nhds hW`. Establish `hm : algebraMap (𝓞 F) F d ≠ 0`. Simplify using `using hd0`. Use `⟨algebraMap (𝓞 F) F d, hm, ?_, ?_⟩` and prove the remaining obligations. Introduce `v`.
+
+Establish `: Valued.v ((rt (algebraMap (𝓞 F) F d) : A F).2 v) = v.valuation F (algebraMap (𝓞 F) F d)` using `val_coe v _`. Rewrite using `[this, map_one]`. Conclude with `v.valuation_le_one d`. Introduce `x hx1 hx`. Establish `hy` using `hd _ ((dv_iff _ hm x).1 hx)`.
+
+Establish `e : algebraMap F (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 F) F d) * (algebraMap F (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 F) F d)⁻¹ * x.2) = x.2`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hm, map_one, one_mul]`. Rewrite `hy` using `[e]`. Establish `h3 : ((0, x.2) : A F) ∈ U` using `hy`. Rewrite `h3` using `[show ((0, x.2) : A F) = x from Prod.ext hx1.symm rfl]`. Then use the resulting hypothesis.
+
+Introduce `m hm`. Establish `hc : Continuous (fun x : A F => algebraMap F (FiniteAdeleRing (𝓞 F) F) m⁻¹ * x.2)` using `continuous_const.mul continuous_snd`. Establish `hO : IsOpen ((fun x : A F => algebraMap F (FiniteAdeleRing (𝓞 F) F) m⁻¹ * x.2) ⁻¹' (integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F)))` using `isOpen_integralFiniteAdeles.preimage hc`. Establish `h0 : (0 : A F) ∈ ((fun x : A F => algebraMap F (FiniteAdeleRing (𝓞 F) F) m⁻¹ * x.2) ⁻¹' (integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F)))` using `by show algebraMap F (FiniteAdeleRing (𝓞 F) F) m⁻¹ * (0 : FiniteAdeleRing (𝓞 F) F) ∈ (integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F))`. Rewrite using `[mul_zero]`.
+
+Conclude with `(integralFiniteAdeles (𝓞 F) F).zero_mem`. Use `filter_upwards [hO.mem_nhds h0] with x hx`. Conclude with `(dv_iff m hm x).2 hx`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.C.nbBasis :
     ∀ (F : Type) [Field F] [NumberField F], (∀ U ∈ 𝓝 (0 : A F), ∃ m : F, m ≠ 0 ∧ Dv 1 (rt m) ∧ ∀ x : A F, x.1 = 0 → Dv m x → x ∈ U) ∧
     ∀ m : F, m ≠ 0 → ∀ᶠ x in 𝓝 (0 : A F), Dv m x := by

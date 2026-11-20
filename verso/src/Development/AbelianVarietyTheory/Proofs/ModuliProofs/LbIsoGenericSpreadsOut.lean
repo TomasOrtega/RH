@@ -21,6 +21,11 @@ namespace GenericLB
 
 open Spread
 
+/- English proof (translation)
+Establish `hM'` using `pull_isLB hM a'`. Establish `hN'` using `pull_isLB hN a'`. Establish `hMj` using `pull_isLB (pull_isLB hM a) j`. Establish `hNj` using `pull_isLB (pull_isLB hN a) j`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `LBIso.trans hMj hM' hNj (LBIso.symm (lbIso_pull_pull hM j ha)) (LBIso.trans hM' hN' hNj h (lbIso_pull_pull hN j ha))`. Introduce `h`. Conclude with `LBIso.trans hM' hMj hN' (lbIso_pull_pull hM j ha) (LBIso.trans hMj hNj hN' h (LBIso.symm (lbIso_pull_pull hN j ha)))`.
+-/
 private theorem lbIso_pull_iff_lbIso_pull_pull_of_eq_comp {W X Y : Scheme.{0}} {M N : LB X} (hM : M.IsLB) (hN : N.IsLB) {a : Y ⟶ X}
     (j : W ⟶ Y) {a' : W ⟶ X} (ha : a' = j ≫ a) :
     LBIso (M.pull a') (N.pull a') ↔ LBIso ((M.pull a).pull j) ((N.pull a).pull j) := by
@@ -36,6 +41,9 @@ private theorem lbIso_pull_iff_lbIso_pull_pull_of_eq_comp {W X Y : Scheme.{0}} {
     exact LBIso.trans hM' hMj hN' (lbIso_pull_pull hM j ha)
       (LBIso.trans hMj hNj hN' h (LBIso.symm (lbIso_pull_pull hN j ha)))
 
+/- English proof (translation)
+Take `⟨j, g, hg⟩` from `exists_lbIso_of_isLimit (D := bcDiagram pB A) (π := fun s => bcMap pB (Algebra.adjoin k (s.unop : Set A)).val) (w := fun {s t} f => bcMap_comp_of_eq pB _ _ _ fun _ => rfl) (hc := isLimitBcCone pB A) (i := Opposite.op ∅) (M := M.pull (pullback.fst _ _)) (N := N.pull (pullback.fst …`. Conclude with `⟨j.unop, (lbIso_pull_iff_lbIso_pull_pull_of_eq_comp hM hN ((bcDiagram pB A).map g) (bcMap_fst pB _).symm).mpr hg⟩`.
+-/
 theorem exists_finset_lbIso {k A : Type} [CommRing k] [CommRing A] [Algebra k A] {B : Scheme.{0}} (pB : B ⟶ Sp k)
     [QuasiCompact pB] [QuasiSeparated pB] {M N : LB B} (hM : M.IsLB) (hN : N.IsLB)
     (H : LBIso (M.pull (pullback.fst pB (spMap (algebraMap k A)))) (N.pull (pullback.fst pB (spMap (algebraMap k A))))) :
@@ -51,6 +59,17 @@ theorem exists_finset_lbIso {k A : Type} [CommRing k] [CommRing A] [Algebra k A]
     (h := (lbIso_pull_iff_lbIso_pull_pull_of_eq_comp hM hN _ (bcMap_fst pB _).symm).mp H)
   exact ⟨j.unop, (lbIso_pull_iff_lbIso_pull_pull_of_eq_comp hM hN ((bcDiagram pB A).map g) (bcMap_fst pB _).symm).mpr hg⟩
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors R) s`. Use `⟨b, nonZeroDivisors.ne_zero b.2, ?_⟩` and prove the remaining obligations. Introduce `R' _ φ hφ`. Establish `hb0 : (b : R) ≠ 0` using `nonZeroDivisors.ne_zero b.2`. Establish `hunit : IsUnit (algebraMap R K (b : R))` using `IsLocalization.map_units K b`.
+
+Set `g0 : Localization.Away (b : R) →+* K` to `IsLocalization.Away.lift (b : R) hunit`. Establish `hg0 : ∀ r : R, g0 (algebraMap R _ r) = algebraMap R K r` using `fun r => IsLocalization.lift_eq _ r`. Set `g : Localization.Away (b : R) →ₐ[R] K` to `{ g0 with commutes' := hg0 }`. Establish `hinj : Function.Injective g`. Express the relevant statement in the definitionally equal form `Function.Injective g0`.
+
+Use `(IsLocalization.lift_injective_iff _).mpr fun x y => ?_` and prove the remaining obligations. Conclude with `((IsLocalization.injective (Localization.Away (b : R)) (powers_le_nonZeroDivisors_of_noZeroDivisors hb0)).eq_iff).trans (IsFractionRing.injective R K).eq_iff.symm`. Establish `hle : Algebra.adjoin R (s : Set K) ≤ g.range`. Use `Algebra.adjoin_le fun x hx => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hb x hx`.
+
+Use `⟨IsLocalization.mk' (Localization.Away (b : R)) a ⟨(b : R), Submonoid.mem_powers _⟩, ?_⟩` and prove the remaining obligations. Use `show IsLocalization.Away.lift (b : R) hunit _ = x`. Unfold `IsLocalization.Away.lift`. Rewrite using `[IsLocalization.lift_mk'_spec]`. Rewrite using `[ha, Algebra.smul_def]`.
+
+Use `⟨((IsLocalization.Away.lift (b : R) hφ).comp ((AlgEquiv.ofInjective g hinj).symm : g.range →ₐ[R] Localization.Away (b : R)).toRingHom).comp (Subalgebra.inclusion hle).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, AlgHom.commutes]`. Conclude with `IsLocalization.lift_eq _ r`.
+-/
 theorem exists_denom {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
     (s : Finset K) : ∃ f : R, f ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (φ : R →+* R'), IsUnit (φ f) →
       ∃ ψ : Algebra.adjoin R (s : Set K) →+* R', ψ.comp (algebraMap R _) = φ := by
@@ -86,6 +105,11 @@ theorem exists_denom {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R
 
 end GenericLB
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ B pB M N hqc hqs hM hN H`. Use `hqc` as an intermediate fact. Use `hqs` as an intermediate fact. Take `⟨s, hs⟩` from `GenericLB.exists_finset_lbIso pB hM hN H`. Take `⟨f, hf0, hf⟩` from `GenericLB.exists_denom (R := R) s`.
+
+Use `⟨f, hf0, fun R' _ φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `hf R' φ hφ`. Establish `key : spMap φ = spMap ψ ≫ spMap (algebraMap R (Algebra.adjoin R (s : Set K)))`. Rewrite using `[spMap_comp_ring, hψ]`. Conclude with `Spread.lbIso_pull_comp (pullback.lift (pullback.fst pB (spMap φ)) (pullback.snd _ _ ≫ spMap ψ) (by rw [pullback.condition, key, Category.assoc])) (pullback.lift_fst _ _ _).symm (pullback.lift_fst _ _ _).symm hs`.
+-/
 theorem lbIso_generic_spreads_out : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] (B : Scheme.{0}) (pB : B ⟶ Sp R) (M N : LB B), QuasiCompact pB → QuasiSeparated pB → M.IsLB → N.IsLB → LBIso (M.pull (pullback.fst pB (spMap (algebraMap R K)))) (N.pull (pullback.fst pB (spMap (algebraMap R K)))) → ∃ f : R, f ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (φ : R →+* R'), IsUnit (φ f) → LBIso (M.pull (pullback.fst pB (spMap φ))) (N.pull (pullback.fst pB (spMap φ))) := by
   intro R K _ _ _ _ _ _ B pB M N hqc hqs hM hN H
   have := hqc

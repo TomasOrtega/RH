@@ -8,9 +8,15 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Globa
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h₁.1.div' h₂.1, fun x => by rw [MonoidHom.div_apply, h₁.2 x, h₂.2 x, div_one]⟩`.
+-/
 theorem hecke_div {χ₁ χ₂ : Chr F E} (h₁ : IsHecke F E χ₁) (h₂ : IsHecke F E χ₂) : IsHecke F E (χ₁ / χ₂) :=
   ⟨h₁.1.div' h₂.1, fun x => by rw [MonoidHom.div_apply, h₁.2 x, h₂.2 x, div_one]⟩
 
+/- English proof (translation)
+Introduce `x`. Establish `e : (-1 : ℂ) ^ a = (-1) ^ b` using `neg_one_pow_congr (Nat.even_add.1 he)`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, h₁ x, h₂ x, hn.neg_one_pow, e, ite_self, div_self]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem res_div {K : Subgroup (AF F)ˣ} {χ₁ χ₂ : Chr F E} {a b n : ℕ} (h₁ : ResEtaPow K χ₁ a) (h₂ : ResEtaPow K χ₂ b)
     (he : Even (a + b)) (hn : Even n) : ResEtaPow K (χ₁ / χ₂) n := by
   intro x
@@ -18,6 +24,9 @@ theorem res_div {K : Subgroup (AF F)ˣ} {χ₁ χ₂ : Chr F E} {a b n : ℕ} (h
   rw [MonoidHom.div_apply, Circle.coe_div, h₁ x, h₂ x, hn.neg_one_pow, e, ite_self, div_self]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' h`. Establish `g` using `h.geo.eBig`. Conclude with `⟨⟨h.base, h.geo.hV, h.geo.hW, h.geo.hM, h.chars.heckeβ, hecke_div h.chars.heckeβ h.chars.heckeα, h.chars.resβ, res_div h.chars.resβ h.chars.resα h.geo.even h.geo.even, h.weil⟩, ⟨h.base, h.geo.hV', h.geo.hW, h.geo.hM', h.chars.heckeα, hecke_div h.chars.heckeα h.chars.heckeβ, h.cha …`.
+-/
 theorem triplePair_holds : TriplePair := by
   intro F E _ _ _ _ _ σ B a a' G X om om' h
   have g := h.geo.eBig
@@ -26,6 +35,9 @@ theorem triplePair_holds : TriplePair := by
     ⟨h.base, h.geo.hV', h.geo.hW, h.geo.hM', h.chars.heckeα, hecke_div h.chars.heckeα h.chars.heckeβ, h.chars.resα,
       res_div h.chars.resα h.chars.resβ (add_comm a a' ▸ h.geo.even) h.geo.even, h.weil'⟩, by omega⟩
 
+/- English proof (translation)
+The claim follows from `sqInt_of triplePair_holds (square_integrable_of_lattice_torus hG hE hS hTh hA hF hC hT) (square_integrable_orthogonal_case hG hE hS hTh hO hF hC hL)`.
+-/
 theorem sqInt_of_leaves (hTh : ThetaBasic) (hG : GrpTop) (hE : EpsOf) (hS : SiegelAll) (hA : SqAll) (hO : SqSo) (hF : SoFin)
     (hC : LatCpt) (hT : LatTor) (hL : LatFull) : SqInt :=
   sqInt_of triplePair_holds (square_integrable_of_lattice_torus hG hE hS hTh hA hF hC hT) (square_integrable_orthogonal_case hG hE hS hTh hO hF hC hL)

@@ -19,6 +19,17 @@ noncomputable section
 
 namespace GlobalTheory.SchACosets
 
+/- English proof (translation)
+Establish `hN : ∀ x, {y | g (x + y) = g x} ∈ 𝓝 (0 : X)` using `fun x => ((hg.1.isOpen_fiber (g x)).preimage (continuous_const_add x)).mem_nhds (by simp)`. Use `choose V hV hVN using fun x => exists_nhds_zero_half (hN x)`. Take `⟨t, -, hcov⟩` from `hg.2.isCompact.elim_nhds_subcover (fun x => {y | y - x ∈ V x}) fun x _ => by`. Establish `hc : Continuous fun y : X => y - x` using `continuous_id.sub continuous_const`. Conclude with `hc.continuousAt.preimage_mem_nhds (by simpa using hV x)`.
+
+Use `⟨⋂ x ∈ t, V x, (Filter.biInter_finset_mem t).2 fun x _ => hV x, fun U hU => ?_⟩` and prove the remaining obligations. Establish `hA : ∀ y ∈ tsupport g, ∀ u ∈ U, g (y + u) = g y`. Introduce `y hy u hu`. Take `⟨x, hxt, hyx⟩` from `Set.mem_iUnion₂.mp (hcov hy)`. Establish `hu' : u ∈ V x` using `Set.mem_iInter₂.mp (hU hu) x hxt`.
+
+Establish `h1 : g (x + (y - x + 0)) = g x` using `hVN x _ hyx _ (mem_of_mem_nhds (hV x))`. Establish `h2 : g (x + (y - x + u)) = g x` using `hVN x _ hyx _ hu'`. Rewrite `h1` using `[add_zero, add_sub_cancel]`. Rewrite `h2` using `[← add_assoc, add_sub_cancel]`. Rewrite using `[h1, h2]`.
+
+Introduce `y u hu`. Distinguish the cases in `hy : y ∈ tsupport g`. Conclude with `hA y hy u hu`. Distinguish the cases in `hyu : y + u ∈ tsupport g`. Use `hA _ hyu (-u) (U.neg_mem hu)` as an intermediate fact.
+
+Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hyu]`.
+-/
 theorem exists_nhds_periodic {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
     {g : X → ℂ} (hg : g ∈ SB X) :
     ∃ W ∈ 𝓝 (0 : X), ∀ U : AddSubgroup X, (U : Set X) ⊆ W → ∀ x, ∀ u ∈ U, g (x + u) = g x := by
@@ -47,12 +58,32 @@ theorem exists_nhds_periodic {X : Type} [AddCommGroup X] [TopologicalSpace X] [I
     exact this.symm
   rw [image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hyu]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, SchwartzMap.add_apply, ih]`.
+-/
 theorem schwartz_sum_apply {E ι : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (s : Finset ι)
     (f : ι → SchwartzMap E ℂ) (x : E) : (∑ j ∈ s, f j) x = ∑ j ∈ s, f j x := by
   induction s using Finset.induction_on with
   | empty => simp
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, SchwartzMap.add_apply, ih]
 
+/- English proof (translation)
+Introduce `F _ _ κ _ Φ hΦ`. Take `⟨n, a, v, hv⟩` from `Submodule.mem_span_set'.mp hΦ`. Use `choose f g hg hfg using fun j => (v j).2`. Use `choose W hW hWp using fun j => exists_nhds_periodic (hg j)`. Use `⟨⋂ j, W j, Filter.iInter_mem.mpr hW, fun U hUo _ hU => ?_⟩` and prove the remaining obligations.
+
+Use `haveI : DiscreteTopology ((κ → Af F) ⧸ U) := QuotientAddGroup.discreteTopology hUo`. Establish `hout : ∀ j (x : κ → Af F), g j ((x : (κ → Af F) ⧸ U).out) = g j x` using `fun j x => by`. Take `⟨h, hh⟩` from `QuotientAddGroup.mk_out_eq_add U x`. Rewrite using `[hh]`. Conclude with `hWp j U (hU.trans (Set.iInter_subset W j)) x h h.2`.
+
+Establish `hfin : ∀ j, (QuotientAddGroup.mk '' tsupport (g j) : Set ((κ → Af F) ⧸ U)).Finite` using `fun j => ((hg j).2.isCompact.image QuotientAddGroup.continuous_mk).finite_of_discrete`. Establish `hΦx : ∀ x : κ → AdeleRing (𝓞 F) F, Φ x = ∑ j, a j * (f j (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) * g j (fun i => (x i).2))`. Introduce `x`. Rewrite using `[← hv, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.smul_apply, hfg j]`. Both sides reduce to the same expression. Establish `hG : ∀ (c : κ → Af F) (X : κ → mixedEmbedding.mixedSpace F), (∑ j, (g j ((c : (κ → Af F) ⧸ U).out) * a j) • f j : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) X = ∑ j, a j * (f j X * g j c)`. Introduce `c X`. Rewrite using `[schwartz_sum_apply]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[SchwartzMap.smul_apply, hout, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨Finset.univ.biUnion fun j => (hfin j).toFinset, fun q => ∑ j, (g j q.out * a j) • f j, ?_, ?_⟩` and prove the remaining obligations. Introduce `c X`.
+
+Rewrite using `[hG, hΦx]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [pairA, RingEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, pureA, GlobalTheory.CharForm.cosetInd, mul_ite, mul_one, mul_zero]`.
+
+Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hx`. Rewrite using `[hG, hΦx]`. Rewrite using `[hΦx]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Establish `h0 : g j (fun i => (x i).2) = 0`. Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `hxs`. Conclude with `hx (Finset.mem_biUnion.mpr ⟨j, Finset.mem_univ _, (hfin j).mem_toFinset.mpr ⟨_, hxs, rfl⟩⟩)`. Rewrite using `[h0, mul_zero, mul_zero]`.
+-/
 theorem exists_eq_sum_pureA_cosetInd : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∀ Φ ∈ schA F κ,
     ∃ W ∈ 𝓝 (0 : κ → Af F), ∀ U : AddSubgroup (κ → Af F), IsOpen (U : Set (κ → Af F)) → IsCompact (U : Set (κ → Af F)) →
       (U : Set (κ → Af F)) ⊆ W →

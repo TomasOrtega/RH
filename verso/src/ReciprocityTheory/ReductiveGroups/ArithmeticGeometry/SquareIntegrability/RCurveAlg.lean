@@ -2,6 +2,9 @@ import Mathlib
 
 namespace ReciprocityTheory.ChartRestriction.G.I2
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq]`. Establish `h1 : Ideal.Quotient.mk K h = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk K)]`. Conclude with `Ideal.Quotient.eq.mpr hK`. Simplify using `[map_pow, h1]`.
+-/
 theorem one_sub_pow_mem {A : Type*} [CommRing A] (h : A) (K : Ideal A) (hK : h - 1 ∈ K) (m : ℕ) :
     1 - h ^ m ∈ K := by
   rw [← Ideal.Quotient.eq]
@@ -9,6 +12,25 @@ theorem one_sub_pow_mem {A : Type*} [CommRing A] (h : A) (K : Ideal A) (hK : h -
     rw [← map_one (Ideal.Quotient.mk K)]; exact Ideal.Quotient.eq.mpr hK
   simp [map_pow, h1]
 
+/- English proof (translation)
+Establish `key : ∀ x ∈ K.map (algebraMap A B), ∃ M : ℕ, ∃ k ∈ K, algebraMap A B (h ^ M) * x = algebraMap A B k`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, hk, rfl⟩` from `hx`.
+
+Conclude with `⟨0, k, hk, by simp⟩`. Consider the case `zero => exact ⟨0, 0, K.zero_mem, by simp⟩`. Consider the case `add x y _ _ ihx ihy`. Take `⟨M₁, k₁, hk₁, e₁⟩` from `ihx`. Take `⟨M₂, k₂, hk₂, e₂⟩` from `ihy`.
+
+Use `⟨M₁ + M₂, h ^ M₂ * k₁ + h ^ M₁ * k₂, K.add_mem (K.mul_mem_left _ hk₁) (K.mul_mem_left _ hk₂), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, ← e₁, ← e₂, pow_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul b x _ ih`. Take `⟨M, k, hk, e⟩` from `ih`.
+
+Take `⟨m, a, hb⟩` from `hB b`. Use `⟨M + m, a * k, K.mul_mem_left _ hk, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, map_mul, ← hb, ← e, pow_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Rewrite `hz` using `[Ideal.quotientMap_mk, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`.
+
+Take `⟨M, k, hk, e⟩` from `key _ hz`. Rewrite `e` using `[← map_mul]`. Establish `hM : h ^ M * a ∈ K` using `hinj e ▸ hk`. Establish `h1 : (1 - h ^ M) * a ∈ K` using `K.mul_mem_right _ (one_sub_pow_mem h K hK M)`. Establish `: a = h ^ M * a + (1 - h ^ M) * a` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `K.add_mem hM h1`. Introduce `z`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨m, a, hb⟩` from `hB b`.
+
+Use `⟨Ideal.Quotient.mk K a, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.quotientMap_mk, ← hb, Ideal.Quotient.eq]`. Establish `hmem : algebraMap A B (1 - h ^ m) ∈ K.map (algebraMap A B)` using `Ideal.mem_map_of_mem _ (one_sub_pow_mem h K hK m)`. Establish `: algebraMap A B (h ^ m) * b - b = -(algebraMap A B (1 - h ^ m) * b)`. Rewrite using `[map_sub, map_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.neg_mem _ (Ideal.mul_mem_right _ _ hmem)`.
+-/
 theorem quotientMap_bijective_of_loc {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     (h : A) (K : Ideal A) (hK : h - 1 ∈ K)
     (hB : ∀ b : B, ∃ m : ℕ, ∃ a : A, algebraMap A B (h ^ m) * b = algebraMap A B a)

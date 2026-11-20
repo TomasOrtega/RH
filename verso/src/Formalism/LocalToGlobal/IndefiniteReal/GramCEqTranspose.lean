@@ -103,21 +103,36 @@ def nrmAt (σ : LL →+* ℂ) (x : WL) : ℝ := ‖A.j σ x‖
 def gram (σ : LL →+* ℂ) {n : ℕ} (b : Fin n → WL) : Matrix (Fin n) (Fin n) ℂ :=
   Matrix.of fun i k => A.pet σ (b i) (b k)
 
+/- English proof (translation)
+Simplify using `[pet, nrmAt, inner_self_eq_norm_sq_to_K]`.
+-/
 theorem pet_self (σ : LL →+* ℂ) (x : WL) : A.pet σ x x = ((A.nrmAt σ x : ℝ) : ℂ) ^ 2 := by
   simp [pet, nrmAt, inner_self_eq_norm_sq_to_K]
 
+/- English proof (translation)
+Simplify using `[pet, map_add, inner_add_right]`.
+-/
 theorem pet_add_left (σ : LL →+* ℂ) (x x' y : WL) : A.pet σ (x + x') y = A.pet σ x y + A.pet σ x' y := by
   simp [pet, map_add, inner_add_right]
 
+/- English proof (translation)
+Simplify using `[pet, map_smulₛₗ, inner_smul_right]`.
+-/
 theorem pet_smul_left (σ : LL →+* ℂ) (a : LL) (x y : WL) : A.pet σ (a • x) y = σ a * A.pet σ x y := by
   simp [pet, map_smulₛₗ, inner_smul_right]
 
+/- English proof (translation)
+Simplify using `[pet, inner_conj_symm]`.
+-/
 theorem pet_conj_symm (σ : LL →+* ℂ) (x y : WL) : A.pet σ y x = starRingEnd ℂ (A.pet σ x y) := by
   simp [pet, inner_conj_symm]
 
 def gramC (σ : LL →+* ℂ) {n : ℕ} (b : Fin n → WL) : Matrix (Fin n) (Fin n) ℂ :=
   Matrix.of fun i k => ⟪A.j σ (b i), A.j σ (b k)⟫_ℂ
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[gramC, gram, pet]`.
+-/
 theorem gramC_eq_transpose (σ : LL →+* ℂ) {n : ℕ} (b : Fin n → WL) : A.gramC σ b = (A.gram σ b)ᵀ := by
   ext i k; simp [gramC, gram, pet]
 
@@ -134,28 +149,52 @@ def Mcoord (J0 : Subgroup G0) (lam0 : J0 →* LLˣ) (eC : G0 → LL) {d : ℕ} (
     Submodule (𝓞 LL) (Fin d → LL) :=
   (A.Mj J0 lam0 eC).comap ((Fintype.linearCombination LL b).restrictScalars (𝓞 LL))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_MK {f : WL} : f ∈ A.MK ↔ ∃ h : f ∈ A.WK, ∀ lp (y : A.Pt lp), A.nrm lp y ⟨f, h⟩ ≤ 1 := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `hf.1`.
+-/
 theorem MK_le_WK {f : WL} (hf : f ∈ A.MK) : f ∈ A.WK := hf.1
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_typeP (J0 : Subgroup G0) (lam0 : J0 →* LLˣ) {F : WL} :
     F ∈ A.typeP J0 lam0 ↔ ∀ p : J0, A.ρ p F = ((A.chi p * lam0 p : LLˣ) : LL) • F := Iff.rfl
 
+/- English proof (translation)
+Simplify using `[eOp, LinearMap.sum_apply]`.
+-/
 theorem eOp_apply (eC : G0 → LL) (x : WL) :
     A.eOp eC x = ∑ g, (eC g * ((A.chi g)⁻¹ : LLˣ)) • A.ρ g x := by
   simp [eOp, LinearMap.sum_apply]
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem Mj_le_Mall (J0 : Subgroup G0) (lam0 : J0 →* LLˣ) (eC : G0 → LL) :
     A.Mj J0 lam0 eC ≤ A.Mall J0 lam0 := inf_le_left
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hx.1.2, hx.2⟩`.
+-/
 theorem Mj_sub_Wgood (J0 : Subgroup G0) (lam0 : J0 →* LLˣ) (eC : G0 → LL) {x : WL}
     (hx : x ∈ A.Mj J0 lam0 eC) : x ∈ A.Wgood J0 lam0 eC :=
   ⟨hx.1.2, hx.2⟩
 
+/- English proof (translation)
+Simplify using `[Mcoord, Fintype.linearCombination_apply]`.
+-/
 theorem mem_Mcoord (J0 : Subgroup G0) (lam0 : J0 →* LLˣ) (eC : G0 → LL) {d : ℕ} (b : Fin d → WL)
     (c : Fin d → LL) : c ∈ A.Mcoord J0 lam0 eC b ↔ ∑ i, c i • b i ∈ A.Mj J0 lam0 eC := by
   simp [Mcoord, Fintype.linearCombination_apply]
 
+/- English proof (translation)
+Simplify using `[gramV, h]`.
+-/
 theorem gramV_pos (pos : (LL →+* ℂ) → Prop) {σ : LL →+* ℂ} (h : pos σ) {n : ℕ} (b : Fin n → WL) :
     A.gramV pos σ b = A.gramC σ b := by
   simp [gramV, h]

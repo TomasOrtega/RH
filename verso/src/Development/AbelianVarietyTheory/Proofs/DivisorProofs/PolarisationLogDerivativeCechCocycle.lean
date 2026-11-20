@@ -7,11 +7,27 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.KappaCoc
 
+/- English proof (translation)
+Simplify using `only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resG_resG' (Z : Scheme.{0}) {U V O : Z.Opens} (h : V ≤ U) (h' : O ≤ V) (f : Γ(Z, U)) :
     resG Z h' (resG Z h f) = resG Z (h'.trans h) f := by
   simp only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Establish `l₁ : W₁ ⊓ W₂ ⊓ W₃ ≤ W₁ ⊓ W₂` using `inf_le_left`. Establish `l₂ : W₁ ⊓ W₂ ⊓ W₃ ≤ W₂ ⊓ W₃` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Establish `l₃ : W₁ ⊓ W₂ ⊓ W₃ ≤ W₁ ⊓ W₃` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`. Establish `hV : W₁ ⊓ W₂ ⊓ W₃ ≤ W₀` using `inf_le_left.trans (inf_le_left.trans hW₁)`. Establish `lU : W₁ ⊓ W₂ ⊓ W₃ ≤ L.U a ⊓ L.U b ⊓ L.U c` using `inf_le_inf (inf_le_inf h₁ h₂) h₃`.
+
+Establish `comm : ∀ {O : Z.Opens} (h : W₁ ⊓ W₂ ⊓ W₃ ≤ O), O ≤ W₀ → ∀ x : Γ(Z, O), resG Z h (d O x) = d _ (resG Z h x)` using `fun h hO x => (hd.2.2 _ _ h hO x).symm`. Rewrite using `[map_mul, map_mul, map_mul, comm l₁ (inf_le_left.trans hW₁), comm l₂ (inf_le_left.trans hW₂), comm l₃ (inf_le_left.trans hW₁), resG_resG', resG_resG', resG_resG', resG_resG', resG_resG', resG_resG']`. Establish `uv : ∀ {p q : L.ι} (h : W₁ ⊓ W₂ ⊓ W₃ ≤ L.U p ⊓ L.U q), resG Z h (L.g p q).val * resG Z h (L.g p q)⁻¹.val = 1` using `fun h => by`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `co` using `congrArg (fun u : Γ(Z, L.U a ⊓ L.U b ⊓ L.U c)ˣ => resG Z lU u.val) (hL.cocycle a b c)`.
+
+Simplify using `only [Units.val_mul, map_mul] at co`. Express the relevant statement in the definitionally equal form `resG Z lU (resG Z _ (L.g a b).val) * resG Z lU (resG Z _ (L.g b c).val) = resG Z lU (resG Z _ (L.g a c).val) at co`. Rewrite `co` using `[resG_resG', resG_resG', resG_resG']`. Establish `e` using `hd.2.1 _ hV (resG Z (l₁.trans (inf_le_inf h₁ h₂)) (L.g a b).val) (resG Z (l₂.trans (inf_le_inf h₂ h₃)) (L.g b c).val)`. Rewrite `e` using `[co]`.
+
+Establish `ua` using `uv (l₁.trans (inf_le_inf h₁ h₂))`. Establish `ub` using `uv (l₂.trans (inf_le_inf h₂ h₃))`. Establish `uc` using `uv (l₃.trans (inf_le_inf h₁ h₃))`. Use `set A := resG Z (l₁.trans (inf_le_inf h₁ h₂)) (L.g a b).val`. Use `set B := resG Z (l₂.trans (inf_le_inf h₂ h₃)) (L.g b c).val`.
+
+Use `set C := resG Z (l₃.trans (inf_le_inf h₁ h₃)) (L.g a c).val`. Use `set A' := resG Z (l₁.trans (inf_le_inf h₁ h₂)) (L.g a b)⁻¹.val`. Use `set B' := resG Z (l₂.trans (inf_le_inf h₂ h₃)) (L.g b c)⁻¹.val`. Use `set C' := resG Z (l₃.trans (inf_le_inf h₁ h₃)) (L.g a c)⁻¹.val`. Use `set dA := d _ A`.
+
+Use `set dB := d _ B`. Use `set dC := d _ C`. Take the linear combination `(-C') * e - (dA * A' * C' + dB * B' * C') * co + dA * B * C' * ua + dB * A * C' * ub - (dA * A' + dB * B') * uc`.
+-/
 theorem dlog_cocycle {Z : Scheme.{0}} {W₀ : Z.Opens} {d : ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O)} (hd : IsField W₀ d)
     (L : LB Z) (hL : L.IsLB) {a b c : L.ι} {W₁ W₂ W₃ : Z.Opens} (h₁ : W₁ ≤ L.U a) (h₂ : W₂ ≤ L.U b)
     (h₃ : W₃ ≤ L.U c) (hW₁ : W₁ ≤ W₀) (hW₂ : W₂ ≤ W₀) :
@@ -58,6 +74,9 @@ theorem dlog_cocycle {Z : Scheme.{0}} {W₀ : Z.Opens} {d : ∀ O : Z.Opens, Γ(
 
 end GlobalTheory.KappaCoc
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t U n δ hδ J W j _ _ hWU hj b i i' i''`. Conclude with `GlobalTheory.KappaCoc.dlog_cocycle (hδ b) t.PP.L t.PP.isLB (hj i) (hj i') (hj i'') (hWU i) (hWU i')`.
+-/
 theorem GlobalTheory.KappaCoc.kappa_cocycle : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (U : X.affineOpens) (n : ℕ) (δ : Fin n → ∀ O : t.G.left.Opens, Γ(t.G.left, O) → Γ(t.G.left, O)), (∀ a, IsField (t.G.hom ⁻¹ᵁ U.1) (δ a)) → ∀ (J : Type) (W : J → t.G.left.Opens) (j : J → t.PP.L.ι), (∀ i, IsAffineOpen (W i)) → ⨆ i, W i = t.G.hom ⁻¹ᵁ U.1 → ∀ (hWU : ∀ i, W i ≤ t.G.hom ⁻¹ᵁ U.1) (hj : ∀ i, W i ≤ t.PP.L.U (j i)), ∀ (b : Fin n) (i i' i'' : J), resG t.G.left (inf_le_left : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i') (δ b (W i ⊓ W i') (resG t.G.left (inf_le_inf (hj i) (hj i')) (t.PP.L.g (j i) (j i')).val) * resG t.G.left (inf_le_inf (hj i) (hj i')) (t.PP.L.g (j i) (j i'))⁻¹.val) + resG t.G.left (le_inf (inf_le_left.trans inf_le_right) inf_le_right : W i ⊓ W i' ⊓ W i'' ≤ W i' ⊓ W i'') (δ b (W i' ⊓ W i'') (resG t.G.left (inf_le_inf (hj i') (hj i'')) (t.PP.L.g (j i') (j i'')).val) * resG t.G.left (inf_le_inf (hj i') (hj i'')) (t.PP.L.g (j i') (j i''))⁻¹.val) = resG t.G.left (le_inf (inf_le_left.trans inf_le_left) inf_le_right : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i'') (δ b (W i ⊓ W i'') (resG t.G.left (inf_le_inf (hj i) (hj i'')) (t.PP.L.g (j i) (j i'')).val) * resG t.G.left (inf_le_inf (hj i) (hj i'')) (t.PP.L.g (j i) (j i''))⁻¹.val) := by
   intro E _ _ _ H X t U n δ hδ J W j _ _ hWU hj b i i' i''
   exact GlobalTheory.KappaCoc.dlog_cocycle (hδ b) t.PP.L t.PP.isLB (hj i) (hj i') (hj i'') (hWU i) (hWU i')

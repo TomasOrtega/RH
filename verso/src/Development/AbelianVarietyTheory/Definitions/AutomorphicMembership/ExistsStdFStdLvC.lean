@@ -42,23 +42,39 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 
 namespace GlobalTheory.Mem.Col2.StdModel
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨C.eV, fun u v a => by rw [C.res u]; exact (C.herm.atT u).res_F v a, C.car0, C.carC, C.carM, C.sp, C.fr0⟩, ⟨C.piU, C.res, C.carP, C.lattice₂, C.pr, C.prk, C.prC, C.z0, C.ga⟩⟩`.
+-/
 theorem car_of_cols {D : D7} (C : ColsTiedSym D) : CarH C.herm.base C.forms ∧ CarT C.herm.base C.forms C.herm.atT :=
   ⟨⟨C.eV, fun u v a => by rw [C.res u]; exact (C.herm.atT u).res_F v a, C.car0, C.carC, C.carM, C.sp, C.fr0⟩,
     ⟨C.piU, C.res, C.carP, C.lattice₂, C.pr, C.prk, C.prC, C.z0, C.ga⟩⟩
 
 variable {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : Later B (I.cols l))
 
+/- English proof (translation)
+Use `⟨FullDt.u1Dt B.host I.SQ, fun x a ha => FullDt.normOneFiniteAdeleDetClass_of_isDetLift B.host I.SQ x a ha, fun dt h => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Take `⟨a, ha⟩` from `FullDt.exists_lift B.host x`. Conclude with `(h x a ha).trans (FullDt.normOneFiniteAdeleDetClass_of_isDetLift B.host I.SQ x a ha).symm`.
+-/
 theorem existsUnique_stdDt : ∃! dt, I.StdDt l Z dt := by
   refine ⟨FullDt.u1Dt B.host I.SQ, fun x a ha => FullDt.normOneFiniteAdeleDetClass_of_isDetLift B.host I.SQ x a ha, fun dt h => ?_⟩
   ext x
   obtain ⟨a, ha⟩ := FullDt.exists_lift B.host x
   exact (h x a ha).trans (FullDt.normOneFiniteAdeleDetClass_of_isDetLift B.host I.SQ x a ha).symm
 
+/- English proof (translation)
+Introduce `t` and use `by obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective (s := KDq B.host I.SQ) t obtain ⟨x, hx⟩ := FullDt.exists_of_idele B.host a exact ⟨x, h x a hx⟩`.
+-/
 theorem stdDt_surjective {dt} (h : I.StdDt l Z dt) : Function.Surjective dt := fun t => by
   obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective (s := KDq B.host I.SQ) t
   obtain ⟨x, hx⟩ := FullDt.exists_of_idele B.host a
   exact ⟨x, h x a hx⟩
 
+/- English proof (translation)
+Establish `hf : ∀ a, {p : ℕ | p.Prime ∧ ∃ P ∈ I.Q a, (p : 𝓞 B.fields.E) ∈ P.asIdeal}.Finite` using `fun a => by`. Use `((I.Q a).finite_toSet.biUnion (t := fun P => {p : ℕ | p.Prime ∧ (p : 𝓞 B.fields.E) ∈ P.asIdeal}) fun P _ => ?_).subset ?_` and prove the remaining obligations. Use `Set.Subsingleton.finite fun p hp q hq => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp.1 hq.1).2 hne)`.
+
+Establish `e : (a : 𝓞 B.fields.E) * p + b * q = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 B.fields.E) hab`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ add_mem (P.asIdeal.mul_mem_left _ hp.2) (P.asIdeal.mul_mem_left _ hq.2)))`. Introduce and unpack `p ⟨hp, P, hP, h⟩`. Conclude with `Set.mem_biUnion hP ⟨hp, h⟩`. Use `⟨fun a => (hf a).toFinset, fun a p => by simp, fun Qp h => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a`. Use extensionality with `p`. Rewrite using `[h a p]`. Simplify using the standard rewrite rules.
+-/
 theorem existsUnique_qpIs : ∃! Qp, I.QpIs Qp := by
   have hf : ∀ a, {p : ℕ | p.Prime ∧ ∃ P ∈ I.Q a, (p : 𝓞 B.fields.E) ∈ P.asIdeal}.Finite := fun a => by
     refine ((I.Q a).finite_toSet.biUnion (t := fun P => {p : ℕ | p.Prime ∧ (p : 𝓞 B.fields.E) ∈ P.asIdeal}) fun P _ => ?_).subset ?_
@@ -75,6 +91,9 @@ theorem existsUnique_qpIs : ∃! Qp, I.QpIs Qp := by
   rw [h a p]
   simp
 
+/- English proof (translation)
+Take `⟨Qp, hQ, -⟩` from `existsUnique_qpIs I`. Take `⟨O, hO, -⟩` from `lift_objects I hI hP l Z Qp`. Conclude with `⟨Qp, O, hQ, hO⟩`.
+-/
 theorem exists_stdO (hI : I.Ok) (hP : Pins B X) : ∃ Qp O, I.QpIs Qp ∧ I.StdO l Z Qp O := by
   obtain ⟨Qp, hQ, -⟩ := existsUnique_qpIs I
   obtain ⟨O, hO, -⟩ := lift_objects I hI hP l Z Qp
@@ -85,16 +104,27 @@ section Ker
 variable {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : G.Inst (I.rec7 l Z) L} {Gl : G.LatInst (I.rec7 l Z)}
     {K : G.Consts} {Y : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨a, b, c, d, e, f, g, h, i, j, k, m, n, o, p⟩ => ⟨a, b, c, d, e, f, g, h, i, j, k, m, n, o, p⟩, fun ⟨a, b, c, d, e, f, g, h, i, j, k, m, n, o, p⟩ => ⟨a, b, c, d, e, f, g, h, i, j, k, m, n, o, p⟩⟩`.
+-/
 theorem stdKer_iff (t : KerEntTied ex) : I.StdKer l Z t ↔ I.StdKerTie l Z t :=
   ⟨fun ⟨a, b, c, d, e, f, g, h, i, j, k, m, n, o, p⟩ => ⟨a, b, c, d, e, f, g, h, i, j, k, m, n, o, p⟩,
     fun ⟨a, b, c, d, e, f, g, h, i, j, k, m, n, o, p⟩ => ⟨a, b, c, d, e, f, g, h, i, j, k, m, n, o, p⟩⟩
 
+/- English proof (translation)
+Take `⟨t, h1, h2, -⟩` from `kerEntTied_true I hI hP l Z L hT Gi Gl K Y cX ex O E hQ hO hU hE hS`. Conclude with `⟨t, (stdKer_iff I l Z t).2 h1, h2⟩`.
+-/
 theorem exists_stdKer (hI : I.Ok) (hP : Pins B X) (O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a))
     (E : KerEnt (I.rec7 l Z) Y ex.tw) (hQ : I.QpIs Y.Qp) (hO : I.StdO l Z Y.Qp O) (hU : ∀ u a i, i < B.R.m → UnfIsAll (O u a) i)
     (hE : EntOk E O) (hS : ∀ u w h, ThAtServed (ex.ker u w h) E) : ∃ t : KerEntTied ex, I.StdKer l Z t ∧ t.O = O := by
   obtain ⟨t, h1, h2, -⟩ := kerEntTied_true I hI hP l Z L hT Gi Gl K Y cX ex O E hQ hO hU hE hS
   exact ⟨t, (stdKer_iff I l Z t).2 h1, h2⟩
 
+/- English proof (translation)
+Take `⟨cc, _, _, δ, _, Bs, χ, _, idl, _, _, cD, X', seam, _, Pr, _, _, Ch, sel, S, word, _, tup, hQ, _⟩` from `t`. Take `⟨h1, -, -, -, h5, h6, -, h8, -⟩` from `h`. Simplify using `only at h1 h5 h6 h8`. Substitute `h1 h6` using the available equality. Consider the cases of `h5`.
+
+Consider the cases of `h8`. Conclude with `hQ`.
+-/
 theorem qpIs_of_stdKer (t : KerEntTied ex) (h : I.StdKer l Z t) : I.QpIs Y.Qp := by
   obtain ⟨cc, _, _, δ, _, Bs, χ, _, idl, _, _, cD, X', seam, _, Pr, _, _, Ch, sel, S, word, _, tup, hQ, _⟩ := t
   obtain ⟨h1, -, -, -, h5, h6, -, h8, -⟩ := h
@@ -112,6 +142,9 @@ variable (l0 : I.Law0 l) {inQ : (I.rec7 l Z).what₂.Tup → HeightOneSpectrum (
   {T : Formalism.L2.Herm.TwChTied (I.rec7 l Z) inQ} {H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)} {J : Formalism.L2.Herm.TwChJointS T H}
   {F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)}
 
+/- English proof (translation)
+Use `ReadsTop.topBase I l Z (h u a ha h1) β fun c => ?_` and prove the remaining obligations. Establish `e : T.chOf u a B.R.m c = β` using `@Subsingleton.elim _ (@Unique.instSubsingleton _ (T.Ch_m u a).some) _ _`. Rewrite using `[e]`.
+-/
 theorem top_of_topK (W : TwFormsTiedS (I.rec7 l Z) (I.tw l l0 Z) T J F) (h : I.TopK l Z l0 W) (u a ha h1 β) :
     I.TopBase l Z u a (W.ch u a ha B.R.m h1 le_rfl β).lev.U
       fun c => ((W.ch u a ha B.R.m h1 le_rfl (T.chOf u a B.R.m c)).y ⟨c, rfl⟩).1 := by
@@ -119,12 +152,24 @@ theorem top_of_topK (W : TwFormsTiedS (I.rec7 l Z) (I.tw l l0 Z) T J F) (h : I.T
   have e : T.chOf u a B.R.m c = β := @Subsingleton.elim _ (@Unique.instSubsingleton _ (T.Ch_m u a).some) _ _
   rw [e]
 
+/- English proof (translation)
+The claim follows from `h.topk`.
+-/
 theorem topK_of_stdW (W : TwFormsTiedS (I.rec7 l Z) (I.tw l l0 Z) T J F) (h : I.StdW l Z l0 W) : I.TopK l Z l0 W := h.topk
 
 end Tw
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨-, hf'⟩` from `TwistPrimes.twist_primes_away I hI`. Establish `hf` using `hf' u a`. Take `⟨k, h1, h2, h3⟩` from `GlobalTheory.Mem.Col2.BasePoint.exists_kStd X l.pr u (B.R.N B.R.m)`. Take `⟨t, ht, htP, htw⟩` from `TwUnit.exists_tw B.host.F B.host.E B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q a) (fun P hP => (hf P hP).1) (X.piT u) (fun P hP => (hf P hP).2.1)`. Use `⟨k * t, TopCh.KStd.exists_ptOf_mul_K1 _ _ _ k t ht h1, fun P r j hr => ?_, fun d g' g hd he => TilQ.pt_tilF_gen I hI hP l Z u a k t h1 h2 h3 ht htP d g' g hd he⟩` and prove the remaining obligations.
+
+Establish `hP1 : P.1 ∉ I.Q a` using `fun h => (hf _ h).1.1 P.2`. Establish `hP2 : conjPrime₂ P.1 ∉ I.Q a` using `fun h => (hf _ h).1.2.2.1 (by rw [CharValCompare.conjP_conjP]; exact P.2)`. Establish `ht1 : rhoP B.host.F P.1 t = 1`. Use `Units.ext (Matrix.ext fun i j => (htw _ hP1 hP2 i j).trans ?_)` and prove the remaining obligations. Use `show _ = (1 : Matrix _ _ _) i j`.
+
+Rewrite using `[Matrix.one_apply]`. Establish `e : rhoP B.host.F P.1 (k * t)⁻¹ = rhoP B.host.F P.1 k⁻¹`. Rewrite using `[_root_.mul_inv_rev, map_mul, map_inv (rhoP B.host.F P.1) t, ht1, inv_one, one_mul]`. Establish `e' : adAt B.host.F P.1 (((k * t)⁻¹ : GA B (B.R.N B.R.m)).1 r j) = adAt B.host.F P.1 ((k⁻¹ : GA B (B.R.N B.R.m)).1 r j)` using `congrArg (fun g : GL (Fin (B.R.N B.R.m)) (P.1.adicCompletion B.host.E) => g.1 r j) e`. Rewrite using `[e']`.
+
+Conclude with `h3 P r j hr`.
+-/
 theorem exists_topPt (hI : I.Ok) (hP : Pins B X) (u : B.Word) (a : I.ι) : ∃ k : GA B (B.R.N B.R.m),
     (∃ p : DecoF B.fields.E (B.R.N B.R.m) ∅ ∅ ∅, PtOf k p ∧ p.deco.1.N = stdLat B.fields.E (B.R.N B.R.m)) ∧
     (∀ (P : (B.primes X).vT u) (r j : Fin (B.R.N B.R.m)), r.1 + 1 = B.R.N B.R.m →
@@ -151,6 +196,9 @@ theorem exists_topPt (hI : I.Ok) (hP : Pins B X) (u : B.Word) (a : I.ι) : ∃ k
   rw [e']
   exact h3 P r j hr
 
+/- English proof (translation)
+Take `⟨j, -, -, hm, hp, -⟩` from `PerConj.period_conj I hI hP l Z u a`. Establish `h` using `(IpMt.ipMt_tie I hI hP l Z u a j hm hp).1`. Rewrite using `[h, h]`. Simplify using `[LinearMap.map_smulₛₗ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ipMt_smul (hI : I.Ok) (hP : Pins B X) (Z : Later B (I.cols l)) (u : B.Word) (a : I.ι) (s t : ℂ) (G G' : (I.per l u a).Mt) :
     I.ipMt l u a (s • G) (t • G') = starRingEnd ℂ s * t * I.ipMt l u a G G' := by
   obtain ⟨j, -, -, hm, hp, -⟩ := PerConj.period_conj I hI hP l Z u a
@@ -161,6 +209,13 @@ theorem ipMt_smul (hI : I.Ok) (hP : Pins B X) (Z : Later B (I.cols l)) (u : B.Wo
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `hv`. Establish `hm : ∀ r : 𝓞 E, inclE (F` using `F) (v.adicCompletion F) (r : E) ∈ intV E v := fun r => Subring.subset_closure (Or.inl ⟨⟨r, r, rfl⟩, rfl⟩)`. Take `⟨a, b, hab⟩` from `hpq`. Use `S.fT_ne v hv (LinearMap.ext fun t => ?_)` and prove the remaining obligations. Set `c : 𝓞 E → intV E v` to `fun r => ⟨_, hm r⟩`.
+
+Establish `h1 : S.fT v hv (c p • c a • t) = 0` using `hp v hv (c a • t) _ rfl`. Establish `h2 : S.fT v hv (c q • c b • t) = 0` using `hq v hv (c b • t) _ rfl`. Establish `e : c p * c a + c q * c b = 1` using `Subtype.ext (by show inclE (F := F) (v.adicCompletion F) (p : E) * inclE (F := F) (v.adicCompletion F) (a : E) + inclE (F := F) (v.adicCompletion F) (q : E) * inclE (F := F) (v.adicCompletion F) (b : E) = 1`. Use `congrArg (fun r : 𝓞 E => inclE (F := F) (v.adicCompletion F) (algebraMap (𝓞 E) E r)) hab` as an intermediate fact. Simplify using `only [map_add, map_mul, map_one] at this`.
+
+Rewrite using `[← this, mul_comm _ (inclE (F := F) (v.adicCompletion F) (a : E)), mul_comm _ (inclE (F := F) (v.adicCompletion F) (b : E))])`. Establish `: t = c p • c a • t + c q • c b • t` using `by rw [smul_smul, smul_smul, ← add_smul, e, one_smul]`. Establish `h3` using `congrArg (S.fT v hv) this`. Rewrite `h3` using `[map_add, h1, h2, add_zero]`. Conclude with `h3`.
+-/
 theorem not_funKilled_both {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
     (S : Formalism.L2.Forms.StepLevel F E σ J T f bad) {p q : 𝓞 E} (hpq : IsCoprime p q) (hp : FunKilled S p) (hq : FunKilled S q)
@@ -186,6 +241,17 @@ theorem not_funKilled_both {F E : Type} [Field F] [NumberField F] [Field E] [Num
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨K', -, hK⟩` from `charts_funKilled I hI hP l Z u a B.R.m le_rfl bad Ch chOf K (ReadsKTop.readsK I l Z h)`. Take `⟨k, hR, hk⟩` from `h`. Use `⟨K', ⟨k, ?_, hk⟩, fun β => (hK β).1⟩` and prove the remaining obligations. Establish `hy : ∀ c, ((K' (chOf c)).y ⟨c, rfl⟩).1 = ((K (chOf c)).y ⟨c, rfl⟩).1` using `fun c => by rw [(hK _).2.2.2.2.2.1]`. Use `⟨hR.key, hR.onto, fun β x => ?_, hR.k_std, hR.k_off, hR.k_T, fun c => ?_, fun c x q hq => ?_, fun c x κ h1 h2 => ?_, fun c s => ?_⟩` and prove the remaining obligations.
+
+Use `hR.lb β x` as an intermediate fact. Rewrite `this` using `[← (hK β).2.1]`. Conclude with `this`. Use `hR.pt c` as an intermediate fact. Rewrite `this` using `[← hy]`.
+
+Conclude with `this`. Rewrite `hq` using `[hy]`. Use `hR.lev c x q hq` as an intermediate fact. Rewrite `this` using `[← (hK _).2.2.2.1]`. Conclude with `this`.
+
+Rewrite `h2` using `[hy]`. Establish `hx : x.1 ∈ (K (chOf c)).lev.U` using `(hK _).2.2.2.1 ▸ x.2`. Conclude with `(congrArg Units.val ((hK _).2.2.2.2.1 x ⟨x.1, hx⟩ rfl)).trans (hR.chr c ⟨x.1, hx⟩ κ h1 h2)`. Use `hR.stab c s` as an intermediate fact. Rewrite `this` using `[← (hK _).2.2.2.2.2.2]`.
+
+Conclude with `this`.
+-/
 theorem readsKTop_killed (hI : I.Ok) (hP : Pins B X) (u : B.Word) (a : I.ι) {bad : Set (HeightOneSpectrum (𝓞 B.host.F))} {Ch : Type}
     (chOf : (I.stp u a B.R.m).Cl → Ch)
     (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) bad B.R.m le_rfl (fun c : {c // chOf c = β} => (I.chain l u a).stab B.R.m c.1)
@@ -219,6 +285,11 @@ section Frames
 
 open GlobalTheory.Mem.FormSym
 
+/- English proof (translation)
+Take `rfl : z = fun j => if j.1 + 1 = N then p else 0` from `funext hz`. Substitute `hJ` using the available equality. Unfold `hform`. Simplify using `only [Matrix.one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_eq_single ⟨N - 1, by omega⟩]`.
+
+Simplify using `[show N - 1 + 1 = N by omega]`. Introduce `b _ hb`. Establish `: ¬ (b.1 + 1 = N)` using `fun h => hb (Fin.ext (by simp; omega))`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem hform_last {E : Type} [CommRing E] (σ : E →+* E) {N : ℕ} (hN : 0 < N) {J : Matrix (Fin N) (Fin N) E} (hJ : J = 1) {p : E}
     {z : Fin N → E} (hz : ∀ j, z j = if j.1 + 1 = N then p else 0) (x : Fin N → E) :
     hform σ J z x = σ p * x ⟨N - 1, by omega⟩ := by
@@ -233,11 +304,49 @@ theorem hform_last {E : Type} [CommRing E] (σ : E →+* E) {N : ℕ} (hN : 0 < 
     simp [this]
   · simp
 
+/- English proof (translation)
+Apply the tactic sequence `first | rfl | exact Formalism.BasicNotions.Examples₂.star_eq_conj _ _`.
+-/
 theorem sigD_conj (D : D7) (x : D.host.E) : (sigD D : D.host.E →+* D.host.E) x = D.host.conj x := by
   first | rfl | exact Formalism.BasicNotions.Examples₂.star_eq_conj _ _
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z`. Take `⟨G, hG, hChi⟩` from `GlobalTheory.Mem.TypePrimes.exists_gLoc_idG_chiTied I hOk hPins l Z`. Take `⟨-, -, -, hN⟩` from `GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hOk hPins l Z`. Establish `hch : ∀ (u : B.Word) (i : ℕ), ∃ (Ch : Type) (_ : Finite Ch) (chOf : (I.stp u I.mu0 i).Cl → Ch) (K : ∀ (hi : i ≤ B.R.m) (β : Ch), LevelChart (I.rec7 l Z) (B.T u) (badG (I.rec7 l Z)) i hi (fun c : {c // chOf c = β} => (I.chain l u I.mu0).stab i c.1) (fun c => latCrd (I.rec7 l Z) i …`. Introduce `u i`.
+
+Distinguish the cases in `hi : i ≤ B.R.m`. Take `⟨Ch, hF, chOf, K, h1, h2, h3⟩` from `GlobalTheory.Mem.Col2.MemChart.exists_charts I hOk hPins l Z u i hi`. Take `⟨K', h4, h5⟩` from `GlobalTheory.Mem.Col2.TC.charts_funKilled I hOk hPins l Z u I.mu0 i hi _ Ch chOf K h1`. Use `⟨Ch, hF, chOf, fun _ => K', fun _ => h4, fun _ c => ?_, h3, fun _ β => (h5 β).1⟩` and prove the remaining obligations. Rewrite using `[(h5 (chOf c)).2.2.2.2.2.1]`.
+
+Conclude with `h2 c`. Use `⟨Unit, inferInstance, fun _ => (), fun h => absurd h hi, fun h => absurd h hi, fun h => absurd h hi, fun h => ?_, fun h => absurd h hi⟩` and prove the remaining obligations. It suffices to derive a contradiction. Apply the tactic sequence `rcases h with h | h <;> omega`. Use `choose Ch hChF chOf K hRK hYs hU hFK using hch`.
+
+Establish `hYs' : ∀ u i hi β c (e : chOf u i c = β), ((K u i hi β).y ⟨c, e⟩).1 = I.yStd u i c`. Introduce `u i hi β c e`. Substitute `e` using the available equality. Conclude with `hYs u i hi c`. Set `A : ∀ u, AtTTied (D` to `I.rec7 l Z) u := fun u => GlobalTheory.Mem.AtLevel.atTTied I l Z u`.
+
+Establish `hIdV : ∀ u, I.IdV l u I.mu0 (A u).eV` using `fun _ _ => rfl`. Use `choose eY hIdY hde using fun u i (hi : i ≤ B.R.m) => ((hN i hi).2.2 u I.mu0).2`. Use `choose Lv hLv using fun u i (hi : i ≤ B.R.m) => GlobalTheory.Mem.Col2.TC.exists_level_projections I hOk hPins l Z u I.mu0 i hi`. Establish `hde1 : ∀ u i (hi : i ≤ B.R.m), ∃ C : GL (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E, cT (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) C.1 * C.1 = gramN (I.rec7 l Z) i hi ∧ (∀ x : Fin ((I.rec7 l Z).R.N i) → (I.rec7 l Z).host.E, x ∈ selfDualLatticeCoords (I.r …`. Introduce `u i hi`.
+
+Use `⟨1, ?_, fun x => ?_, fun τ z => ?_⟩` and prove the remaining obligations. Rewrite using `[(hN i hi).1]`. Simplify using `[cT]`. Rewrite using `[Units.val_one]`. Simplify using `only [Matrix.one_mulVec]`.
+
+Conclude with `(hN i hi).2.1 x`. Use `(hde u i hi τ z).trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_one, Matrix.det_one, map_one, one_mul]`. Establish `hVG` using `fun u i (hi : i ≤ B.R.m) => GlobalTheory.T.hermitianChart_complex_rational_integral_forms I hOk hPins l Z u I.mu0 i hi _ (Ch u i) (chOf u i) (K u i hi) (eY u i hi) (hRK u i hi) (hIdY u i hi)`. Establish `hIN` using `fun u i (hi : i ≤ B.R.m) => GlobalTheory.Mem.Col2.MetricTie.ipV_norm_tie I hOk hPins l Z u I.mu0 i hi (eY u i hi) (hIdY u i hi)`.
+
+Establish `hNm : ∀ u i hi, NormTieG (D` using `I.rec7 l Z) ((I.rec7 l Z).fm u) (eY u i hi) := fun u i hi => (hIN u i hi).2`. Establish `hDil` using `fun u i (hi : i ≤ B.R.m) => GlobalTheory.Mem.Col2.DiaChart.dilTied I hOk hPins l Z u I.mu0 i hi _ (Ch u i) (chOf u i) (K u i hi) (eY u i hi) (A u).eV (hRK u i hi) (hFK u i hi) (hIdY u i hi) (hIdV u)`. Use `first`. Consider the case `choose fMe hFv hFvT using fun u i (hi : i ≤ B.R.m) => GlobalTheory.T.chart_tied_level_chain I hOk hPins l Z u I.mu0 i hi _ (Ch u i) (chOf u i) (K u i hi) (A u).eV (Lv u i hi) (hRK u i hi) (hFK u i hi) (hIdV u) (hLv u i hi)`. Consider the case `choose fMe hFv hFvT using fun u i (hi : i ≤ B.R.m) => GlobalTheory.T.chart_tied_level_chain I hOk hPins l Z u I.mu0 i hi _ (Ch u i) (chOf u i) (K u i hi) (A u).eV (Lv u i hi) (hRK u i hi) (hIdV u) (hLv u i hi) (hFK u i hi)`.
+
+Consider the case `choose fMe hFv hFvT using fun u i (hi : i ≤ B.R.m) => GlobalTheory.T.chart_tied_level_chain I hOk hPins l Z u I.mu0 i hi _ (Ch u i) (chOf u i) (K u i hi) (A u).eV (Lv u i hi) (hRK u i hi) (hIdV u) (hFK u i hi) (hLv u i hi)`. Consider the case `choose fMe hFv hFvT using fun u i (hi : i ≤ B.R.m) => GlobalTheory.T.chart_tied_level_chain I hOk hPins l Z u I.mu0 i hi _ (Ch u i) (chOf u i) (K u i hi) (A u).eV (Lv u i hi) (hRK u i hi) (hIdV u) (hLv u i hi)`. Establish `hUp` using `fun u i (hi : i ≤ B.R.m) => GlobalTheory.Mem.Col2.UpChart.upNatTie I hOk hPins l Z u I.mu0 i hi _ (Ch u i) (chOf u i) (K u i hi) (eY u i hi) (A u).eV (Lv u i hi) (hRK u i hi) (hIdY u i hi) (hIdV u) (hLv u i hi)`. Establish `hDn` using `fun u i (hi : i ≤ B.R.m) => GlobalTheory.T.chart_tied_level_chain_host I hOk hPins l Z u I.mu0 i hi _ (Ch u i) (chOf u i) (K u i hi) (eY u i hi) (A u).eV (Lv u i hi) (hRK u i hi) (hIdY u i hi) (hIdV u) (hLv u i hi)`. Establish `hBw` using `fun u i (hi : i ≤ B.R.m) => GlobalTheory.Mem.Col2.TC.bw_tie I hOk hPins l Z u I.mu0 i hi (eY u i hi) (hIdY u i hi)`.
+
+Establish `hHex : ∀ u i (β : Ch u i), ∃ (H : ∀ (j : Fin 2) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal → Subgroup (GL (Fin (B.R.N i)) (kv (I.rec7 l Z).host.F v))) (lam : ∀ j v h, H j v h →* ℂˣ), ∀ hi : i ≤ B.R.m, Nonempty (GLe …`. Introduce `u i β`. Distinguish the cases in `hi : i ≤ B.R.m`. Take `⟨H, lam, h⟩` from `GlobalTheory.Mem.Col2.ChartLevel.chart_gLevH I hOk hPins l Z u G i hi (Ch u i) (chOf u i) (K u i hi) hG (hRK u i hi) β`. Conclude with `⟨H, lam, fun _ => h⟩`.
+
+Conclude with `⟨fun _ _ _ => ⊤, fun _ _ _ => 1, fun h => absurd h hi⟩`. Use `choose Hc lamC hGH using hHex`. Use `choose J lamJ VJ Yb hYbF hYbA yb hJ using fun u => GlobalTheory.T.chart_tied_top_level_chain I hOk hPins l Z u G (Ch u (B.R.m - 1)) (chOf u (B.R.m - 1)) (K u (B.R.m - 1) (Nat.sub_le _ _)) hG (hRK u _ _)`. Use `choose KP WP hKP using fun u => GlobalTheory.Mem.Col2.TC.clsP_tie I hOk hPins l Z u`. Use `choose jM hjM using fun u => GlobalTheory.Mem.Col2.PerConj.period_conj I hOk hPins l Z u I.mu0`.
+
+Set `β0 : ∀ u i, (i = 0 ∨ i = B.R.m) → Ch u i` to `fun u i h => (hU u i h).some.default`. Establish `hβ0 : ∀ u i h c, chOf u i c = β0 u i h` using `fun u i h c => (hU u i h).some.uniq _`. Establish `hSub : ∀ u i, (i = 0 ∨ i = B.R.m) → Subsingleton (Ch u i)` using `fun u i h => @Unique.instSubsingleton _ (hU u i h).some`. Set `clsF : ∀ u i hi (h : i = 0 ∨ i = B.R.m), ClsTied (D` to `I.rec7 l Z) u i hi := fun u i hi h => clsOfChart (β0 u i h) (hβ0 u i h) (K u i hi (β0 u i h))`. Set `valF : ∀ u i hi (h : i = 0 ∨ i = B.R.m), ValTied (D` to `I.rec7 l Z) u (A u).eV i hi (clsF u i hi h) := fun u i hi h => @valOfG _ u i hi (Ch u i) (chOf u i) (hSub u i h) (A u).eV (K u i hi) (β0 u i h) (hβ0 u i h) (eY u i hi) (hde1 u i hi) (hVG u i hi) (hIN u i hi).1 (hDil u i hi)`.
+
+Establish `hR : ∀ u i hi (h : i = 0 ∨ i = B.R.m), ∃ k, I.Reads u I.mu0 i (fun _ => ()) (fun _ => (clsF u i hi h).lev.Lb) (fun _ => (clsF u i hi h).lev.U) (fun _ => (clsF u i hi h).lev.chi) (fun c => ((clsF u i hi h).y c).1) (fun c s => ((clsF u i hi h).stabI c s).1) k` using `fun u i hi h => readsK_one I l Z (hRK u i hi) (β0 u i h) (hβ0 u i h)`. Use `choose V0 hV0 using fun u => GlobalTheory.Mem.Col2.TC.GLev0.glev_zero I hOk hPins l Z u G (clsF u 0 (Nat.zero_le _) (Or.inl rfl)) hG (hR u 0 _ (Or.inl rfl))`. Use `choose lamM lamP VM VP hVM using fun u => GlobalTheory.Mem.Col2.TC.levels_top_row_sym I hOk hPins l Z u G (clsF u B.R.m le_rfl (Or.inr rfl)) (KP u) hG (hR u _ le_rfl (Or.inr rfl)) (hKP u).1`. Use `choose Tl Ta hTl using fun u => GlobalTheory.Mem.Col2.TC.til_ties I hOk hPins l Z u (A u) (clsF u B.R.m le_rfl (Or.inr rfl)) (KP u) (lvOfG (A u) (Lv u B.R.m le_rfl)) (valF u B.R.m le_rfl (Or.inr rfl)) rfl (hR u _ le_rfl (Or.inr rfl)) (hKP u).1 (fun v c z h => (hLv u B.R.m le_rfl) …`. Use `choose eW heW hEvz using fun u => (hTl u).2.2`.
+
+Establish `hNpos : 0 < B.R.N B.R.m`. Use `k_le_N B.R B.R.m` as an intermediate fact. Use `B.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hTilFv : ∀ u, TilBaseFv (Tl u) (clsF u B.R.m le_rfl (Or.inr rfl)) (fun v => fMe u B.R.m le_rfl (β0 u B.R.m (Or.inr rfl)) v)`.
+
+Introduce `u v t x r ht hr`. Use `hFvT u B.R.m le_rfl (β0 u B.R.m (Or.inr rfl)) v x ⟨B.R.N B.R.m - 1, by omega⟩ r t (by show B.R.N B.R.m - 1 + 1 = _; omega) ht ?_` and prove the remaining obligations. Use `hr.trans ((hform_last _ hNpos (hN B.R.m le_rfl).1 (hTl u).1 x).trans ?_)` and prove the remaining obligations. Conclude with `congrArg (fun s : B.host.E => s * (show B.host.E from x ⟨B.R.N B.R.m - 1, Nat.sub_lt hNpos Nat.one_pos⟩)) (sigD_conj (I.rec7 l Z) _)`. Establish `hFrExt : ∀ u, FrExtFr (D` using `I.rec7 l Z) (Tl u).z0 G (VM u).fr (VP u).fr := by`.
+
+Introduce `u`. Rewrite using `[funext (hTl u).1]`. Conclude with `(hVM u).2.2.2`. Set `F : ∀ u, FormsTiedSym (I.rec7 l Z) u (Ch u) (chOf u)` to `fun u => { atT := A u gl := G gl_K := fun i => by rw [hG.piG]; exact X.piG_K i cls := clsF u val := valF u glev0 := V0 u lamM := lamM u lamM_eq := (hVM u).1 glevM := VM u lv := fun i hi => lvOfG (A u) (Lv u i hi) fMe := fun i hi h v => fMe u i hi (β0 u i h) v fv := fun i hi h => …`. Use `⟨Ch, chOf, F, fun u => ⟨?_, ?_⟩, hChF, fun u => hU u B.R.m (Or.inr rfl), fun _ _ => rfl, hChi⟩` and prove the remaining obligations.
+
+Conclude with `{ eV := fun _ => rfl piU := rfl res := rfl gl := hG ends := fun i hi h => hR u i hi h yE := fun i hi h c => hYs' u i hi _ c (hβ0 u i h c) mid := fun i _ h2 => hRK u i (le_of_succ_m h2) eY := fun i hi _ => hIdY u i hi eYC := fun i _ h2 => hIdY u i (le_of_succ_m h2) pr := fun i hi …`. Conclude with `⟨fun i _ h2 => hLv u i (le_of_succ_m h2), (hJ u).1⟩`.
+-/
 theorem exists_stdF_stdLvC : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∃ (Ch : B.Word → ℕ → Type) (chOf : ∀ u i, ((I.rec7 l Z).mem u).C.cls i → Ch u i) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (Ch u) (chOf u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) ∧ (∀ u i, Finite (Ch u i)) ∧ (∀ u, Nonempty (Unique (Ch u B.R.m))) ∧ (∀ u u', (F u).gl = (F u').gl) ∧ CharacterCompatible (F B.u₀).gl B.R.m := by
   intro B X I hOk hPins l Z
   obtain ⟨G, hG, hChi⟩ := GlobalTheory.Mem.TypePrimes.exists_gLoc_idG_chiTied I hOk hPins l Z
@@ -438,6 +547,9 @@ theorem exists_stdF_stdLvC : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.O
         eWz := heW u }
   · exact ⟨fun i _ h2 => hLv u i (le_of_succ_m h2), (hJ u).1⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Distinguish the cases in `hx : x ∈ levelVL (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) ((I.rec7 l Z).R.m - 1) (Nat.sub_le _ _)) v F.levJ.Lb`. Rewrite using `[F.glevJ.mem j v hv x hx, F'.glevJ.mem j v hv x (hL ▸ hx), h.2, h'.2, hg]`. Conclude with `⟨fun e => absurd (F.levJ.Uloc_lev v e) hx, fun e => absurd (hL ▸ F'.levJ.Uloc_lev v e) hx⟩`.
+-/
 theorem levJ_Uloc_eq (u : B.Word) {Ch Ch' : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i}
     {chOf' : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch' i} (F : FormsTiedSym (I.rec7 l Z) u Ch chOf) (F' : FormsTiedSym (I.rec7 l Z) u Ch' chOf')
     (h : I.StdLvC l Z u F) (h' : I.StdLvC l Z u F') (hg : F.gl = F'.gl) (hL : F.levJ.Lb = F'.levJ.Lb) (j : Fin 2) (v)

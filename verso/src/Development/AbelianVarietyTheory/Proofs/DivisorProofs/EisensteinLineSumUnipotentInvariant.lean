@@ -17,6 +17,11 @@ namespace GlobalTheory.EisCT
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `hg`. Use `⟨l⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv]`. Use `conv_lhs => rw [show adMat F x = (↑l⁻¹ : AF F ⊗[F] E) • ((matHom _ σ J g).1 * adMat F x) by`. Rewrite using `[hl, smul_smul, Units.inv_mul, one_smul]]`.
+
+Rewrite using `[Matrix.mul_smul, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+-/
 theorem stabL_inv {x : Matrix (Fin n) (Fin 1) E} {g : GAd σ J} (hg : StabL σ J x g) : StabL σ J x g⁻¹ := by
   obtain ⟨l, hl⟩ := hg
   refine ⟨l⁻¹, ?_⟩
@@ -25,6 +30,11 @@ theorem stabL_inv {x : Matrix (Fin n) (Fin 1) E} {g : GAd σ J} (hg : StabL σ J
     rw [hl, smul_smul, Units.inv_mul, one_smul]]
   rw [Matrix.mul_smul, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Proceed by induction on `hu using Subgroup.closure_induction with`. Consider the case `mem g hg`. Take `⟨h1, -, -⟩` from `hg`. Rewrite `h1` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Conclude with `h1`.
+
+Consider the case `one => rw [map_one, Units.val_one, Matrix.one_mul]`. Consider the case `mul a b _ _ ha hb => rw [map_mul, Units.val_mul, Matrix.mul_assoc, hb, ha]`. Consider the case `inv a _ ha => conv_lhs => rw [← ha]`. Rewrite using `[map_inv, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+-/
 theorem unipRad_fix {r : ℕ} {C : Matrix (Fin n) (Fin r) E} {u : GAd σ J} (hu : u ∈ unipRad σ J C) :
     (matHom _ σ J u).1 * adMat F C = adMat F C := by
   induction hu using Subgroup.closure_induction with
@@ -38,6 +48,17 @@ theorem unipRad_fix {r : ℕ} {C : Matrix (Fin n) (Fin r) E} {u : GAd σ J} (hu 
     conv_lhs => rw [← ha]
     rw [map_inv, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Use `haveI : Nontrivial (AF F) := (NumberField.AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`. Use `haveI : Nontrivial (AF F ⊗[F] E) := inferInstance`. Take `⟨i, hi⟩` from `hx`. Establish `ht : matHom (AF F) σ J t.1 ∈ HFin (AF F) σ J` using `Subgroup.mem_subgroupOf.1 t.2`. Take `⟨γ, -, hγ⟩` from `Subgroup.mem_map.1 ht`.
+
+Establish `hM : (matHom _ σ J t.1).1 = (γ.1).map (inclR (F` using `F) (AF F)) := by`. Conclude with `(congrArg Units.val hγ).symm`. Rewrite `hl` using `[hM]`. Establish `he` using `congrFun (congrFun hl i) 0`. Rewrite `he` using `[← Matrix.map_mul, Matrix.map_apply, Matrix.smul_apply]`.
+
+Simplify using `only [adMat, Matrix.map_apply, smul_eq_mul] at he`. Establish `hl' : l.1 = inclR (F` using `F) (AF F) ((γ.1 * x) i 0 * (x i 0)⁻¹) := by`. Rewrite using `[map_mul, he, mul_assoc, ← map_mul, mul_inv_cancel₀ hi, map_one, mul_one]`. Establish `hne : (γ.1 * x) i 0 * (x i 0)⁻¹ ≠ 0`. Introduce `h0`.
+
+Rewrite `hl'` using `[h0, map_zero]`. Conclude with `l.ne_zero hl'`. Establish `: l = Units.map (inclR (F` using `F) (AF F)).toMonoidHom (Units.mk0 _ hne) := Units.ext (by`. Rewrite using `[Units.coe_map, hl']`. Use the proof step `rfl)`.
+
+Rewrite using `[this, GlobalTheory.Doubling.absE_inclR]`.
+-/
 theorem absE_eq_one_of_rat {x : Matrix (Fin n) (Fin 1) E} (hx : ∃ i, x i 0 ≠ 0) (t : ratPts σ J)
     (l : (AF F ⊗[F] E)ˣ) (hl : (matHom _ σ J t.1).1 * adMat F x = l.1 • adMat F x) : absE F E l = 1 := by
   haveI : Nontrivial (AF F) := (NumberField.AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial
@@ -65,6 +86,17 @@ end GlobalTheory.EisCT
 
 namespace GlobalTheory.EisCT
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y L a h hS T hT u hu s g`. Take `⟨-, -, -, -, hW, -, hI⟩` from `hS`. Establish `hx : ∃ i, col0 X i 0 ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Establish `e` using `congrFun (congrFun hW.xy 0) 0`. Establish `hc : ∀ i, X i 0 = 0` using `fun i => hcon i`. Simplify using `[Matrix.mul_apply, cT, hc] at e`. Take `⟨t₁, ⟨ht₁T, ht₁S⟩, huniq⟩` from `hT 1`. Establish `hst : StabL σ J (col0 X) t₁.1`.
+
+Use `stabL_inv σ J ht₁S` as an intermediate fact. Simplify using `using this`. Establish `hmem : ∀ t : ratPts σ J, t ∈ lineSet σ J (col0 X) T → t = t₁` using `fun t ht => huniq t ⟨ht.1, by simpa using stabL_inv σ J ht.2⟩`. Unfold `lineSum`. Rewrite using `[tsum_eq_single (⟨t₁, ht₁T, hst⟩ : lineSet σ J (col0 X) T) (fun b hb => absurd (Subtype.ext (hmem b.1 b.2)) hb)]`.
+
+Unfold `fs`. Use `congr 2`. Take `⟨p, l, hpl, k, hk, rfl⟩` from `hI.1 g`. Take `⟨c₁, hc₁⟩` from `hst`. Establish `h1` using `absE_eq_one_of_rat σ J hx t₁ c₁ hc₁`.
+
+Establish `hux` using `unipRad_fix σ J hu`. Establish `key : (matHom _ σ J (t₁.1 * u * p)).1 * adMat F (col0 X) = (l * c₁).1 • adMat F (col0 X)`. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul, Matrix.mul_assoc, Matrix.mul_assoc, hpl, Matrix.mul_smul, hux, Matrix.mul_smul, hc₁, smul_smul, Units.val_mul]`. Use `show h (t₁.1 * (u * (p * k))) = h (p * k)`. Rewrite using `[show t₁.1 * (u * (p * k)) = t₁.1 * u * p * k by simp only [mul_assoc], hI.2 _ _ key k hk, hI.2 p l hpl k hk, map_mul, h1, mul_one]`.
+-/
 theorem lineSum_eq_fs : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))
     (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ), HidaSetting σ J X Y L a h →

@@ -21,6 +21,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.VacFamily
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `h.1 g`. Take `⟨x', hx'⟩` from `h.1 g'`. Establish `hxx : IsDetRoot V (g * g') (x * x')`. Unfold `IsDetRoot at *`. Rewrite using `[map_mul, Units.val_mul, Units.val_mul, Matrix.det_mul, map_mul]`.
+
+Rewrite using `[mul_mul_mul_comm, ← hx, ← hx']`. Rewrite using `[h.2 _ _ hxx, h.2 _ _ hx, h.2 _ _ hx', map_mul, Circle.coe_mul]`.
+-/
 theorem muVal_mul {D : D7} {V : HSp D} {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ} (h : Formalism.L2.Pj.MuVal V χ mu)
     (g g' : GA D V) : mu (g * g') = mu g * mu g' := by
   obtain ⟨x, hx⟩ := h.1 g
@@ -31,6 +36,9 @@ theorem muVal_mul {D : D7} {V : HSp D} {χ : (AE D)ˣ →* Circle} {mu : GA D V 
     rw [mul_mul_mul_comm, ← hx, ← hx']
   rw [h.2 _ _ hxx, h.2 _ _ hx, h.2 _ _ hx', map_mul, Circle.coe_mul]
 
+/- English proof (translation)
+Establish `h1 : infHom V k = 1` using `hk`. Establish `h2 : compAt θ τ (Formalism.L2.Theta.mt V k) = ((infHom V k).val).map (θ τ)` using `rfl`. Rewrite using `[h2, h1, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem compAt_fin {D : D7} (θ : InfFam D) (V : HSp D) {k : GA D V} (hk : k ∈ GfC V) (τ : D.what₂.Tau) :
     compAt θ τ (Formalism.L2.Theta.mt V k) = 1 := by
   have h1 : infHom V k = 1 := hk
@@ -38,6 +46,11 @@ theorem compAt_fin {D : D7} (θ : InfFam D) (V : HSp D) {k : GA D V} (hk : k ∈
   rw [h2, h1, Units.val_one]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `e : realM θ (Formalism.L2.Theta.mt W (u * k)) τ.1 = realM θ (Formalism.L2.Theta.mt W u) τ.1`. Unfold `realM`. Use `split_ifs with h`. Rewrite using `[GlobalTheory.UnitaryChar.compAt_mt_mul, compAt_fin θ W hk, Matrix.mul_one]`.
+
+Both sides reduce to the same expression. Unfold `frMove`. Rewrite using `[e]`.
+-/
 theorem frMove_mul_fin {D : D7} (θ : InfFam D) (W : HSp D) (X : Data D.host.E W.rank)
     (u : GA D W) {k : GA D W} (hk : k ∈ GfC W) (x : Frame X.Ψ W.rank) :
     frMove θ W rfl X (u * k) x = frMove θ W rfl X u x := by
@@ -50,6 +63,13 @@ theorem frMove_mul_fin {D : D7} (θ : InfFam D) (W : HSp D) (X : Data D.host.E W
   unfold frMove
   rw [e]
 
+/- English proof (translation)
+Introduce `τ`. Establish `hτ : ∃ ρ, τ.1 = tauE D ρ` using `(hX.psi τ.1).1 τ.2`. Establish `hG : X.Gm = -(W.gram)ᵀ` using `by rw [hX.model.1]; simp`. Establish `e : mat (frMove θ W rfl X u x) τ = compAt θ hτ.choose (Formalism.L2.Theta.mt W u) * mat x τ` using `by show (Matrix.reindex (finCongr rfl) (finCongr rfl) (realM θ (Formalism.L2.Theta.mt W u) τ.1) * mat x τ : Matrix (Fin W.rank) (Fin W.rank) ℂ) = _`. Unfold `realM`.
+
+Rewrite using `[dif_pos hτ]`. Simplify using the standard rewrite rules. Establish `hu : (compAt θ hτ.choose (Formalism.L2.Theta.mt W u))ᴴ * gramAt D W hτ.choose * compAt θ hτ.choose (Formalism.L2.Theta.mt W u) = gramAt D W hτ.choose` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ W u _`. Establish `hg : gramAt D W hτ.choose = W.gram.map τ.1` using `by conv_rhs => rw [hτ.choose_spec]`. Both sides reduce to the same expression.
+
+Rewrite `hu` using `[hg]`. Rewrite using `[← hx τ, e, hG, GlobalTheory.FrameCplx.gram_eq, GlobalTheory.FrameCplx.gram_eq, Matrix.conjTranspose_mul]`. Use `congr 2`. Use `conv_rhs => rw [← hu]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem isONFr_frMove {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (W : HSp D) (X : Data D.host.E W.rank)
     (hX : IsMod W rfl X) (u : GA D W) {x : Frame X.Ψ W.rank} (hx : IsONFr X x) :
     IsONFr X (frMove θ W rfl X u x) := by
@@ -78,6 +98,19 @@ abbrev twist {D : D7} {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host
     Submodule (𝓞 D.host.E) (Fin n → D.host.E) :=
   Submodule.span (𝓞 D.host.E) {w | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ v ∈ L, w = a • v}
 
+/- English proof (translation)
+Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩`. Establish `key : ∀ w ∈ twist L', ∀ b : 𝓞 D.host.E, (Matrix.of fun i j => (pairA D.host.F 0 α) ⊗ₜ[D.host.F] ((b • w) i * ∑ k, star (s k) * V.gram k j) : WO V W) ∈ latO V W LV (L' : Set (Fin W.rank → D.host.E)) fun _ => True`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`.
+
+Consider the case `mem w hw`. Take `⟨a', ha', t', ht', rfl⟩` from `hw`. Introduce `b`. Use `AddSubgroup.subset_closure ⟨α, hα, hP, b • a', (D.host.AA.coeToSubmodule).smul_mem b ha', s, hs, t', ht', ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.of_apply, Pi.smul_apply, smul_eq_mul, smul_mul_assoc]`. Consider the case `zero`. Introduce `b`. Use `(latO V W LV (L' : Set (Fin W.rank → D.host.E)) fun _ => True).zero_mem` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Consider the case `add w w' _ _ h1 h2`. Introduce `b`. Use `add_mem (h1 b) (h2 b)` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.of_apply, smul_add, Pi.add_apply, add_mul, TensorProduct.tmul_add, Matrix.add_apply]`. Consider the case `smul c w _ h1`. Introduce `b`. Rewrite using `[smul_smul]`. Conclude with `h1 _`.
+
+Use `key (a • t) (h (Submodule.subset_span ⟨a, ha, t, ht, rfl⟩)) 1` as an intermediate fact. Rewrite `this` using `[one_smul]`. Conclude with `this`.
+-/
 theorem latO_le {D : D7} (V W : HSp D) (LV : Set (Fin V.rank → D.host.E))
     {L L' : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)} (h : twist L ≤ twist L') :
     latO V W LV (L : Set (Fin W.rank → D.host.E)) (fun _ => True) ≤
@@ -114,6 +147,9 @@ theorem latO_le {D : D7} (V W : HSp D) (LV : Set (Fin V.rank → D.host.E))
   rw [one_smul] at this
   exact this
 
+/- English proof (translation)
+Establish `e1 : Formalism.L2.Theta.mt V 1⁻¹ = 1` using `by rw [inv_one]; rfl`. Establish `e2 : Formalism.L2.Theta.mt W (h * h') = Formalism.L2.Theta.mt W h * Formalism.L2.Theta.mt W h'` using `rfl`. Unfold `actO`. Rewrite using `[e1, e2]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`.
+-/
 theorem actO_mul {D : D7} (V W : HSp D) (h h' : GA D W) (u : WO V W) :
     actO V W 1 (h * h') u = actO V W 1 h (actO V W 1 h' u) := by
   have e1 : Formalism.L2.Theta.mt V 1⁻¹ = 1 := by rw [inv_one]; rfl
@@ -122,6 +158,9 @@ theorem actO_mul {D : D7} (V W : HSp D) (h h' : GA D W) (u : WO V W) :
   rw [e1, e2]
   simp only [Matrix.mul_one, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `e1 : Formalism.L2.Theta.mt V 1⁻¹ = 1` using `by rw [inv_one]; rfl`. Establish `e2 : Formalism.L2.Theta.mt W 1 = 1` using `rfl`. Unfold `actO`. Rewrite using `[e1, e2]`. Simplify using `only [Matrix.mul_one, Matrix.one_mul]`.
+-/
 theorem actO_one {D : D7} (V W : HSp D) (u : WO V W) : actO V W 1 1 u = u := by
   have e1 : Formalism.L2.Theta.mt V 1⁻¹ = 1 := by rw [inv_one]; rfl
   have e2 : Formalism.L2.Theta.mt W 1 = 1 := rfl
@@ -129,17 +168,36 @@ theorem actO_one {D : D7} (V W : HSp D) (u : WO V W) : actO V W 1 1 u = u := by
   rw [e1, e2]
   simp only [Matrix.mul_one, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `: LinearMap.funLeft (𝓞 E) E (Fin.cast (rfl : m = m).symm) = LinearMap.id` using `rfl`. Unfold `latR`. Rewrite using `[this, Submodule.map_id]`.
+-/
 theorem latR_rfl {E : Type} [Field E] [NumberField E] {m : ℕ} (L : Submodule (𝓞 E) (Fin m → E)) : latR rfl L = L := by
   have : LinearMap.funLeft (𝓞 E) E (Fin.cast (rfl : m = m).symm) = LinearMap.id := rfl
   unfold latR
   rw [this, Submodule.map_id]
 
+/- English proof (translation)
+Establish `h : finHom W u = 1` using `hu`. Unfold `Formalism.L2.Pj.latG Formalism.L2.Pj.gLat`. Rewrite using `[map_mul, h, one_mul]`.
+-/
 theorem latG_mul {D : D7} (W : HSp D) {u : GA D W} (hu : u ∈ GinfC W) (k : GA D W) :
     Formalism.L2.Pj.latG W (u * k) = Formalism.L2.Pj.latG W k := by
   have h : finHom W u = 1 := hu
   unfold Formalism.L2.Pj.latG Formalism.L2.Pj.gLat
   rw [map_mul, h, one_mul]
 
+/- English proof (translation)
+Establish `h2 : (2 : E) * (H.w0 : E) = 1 + (H.rt : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.two_weight_eq_one_add_root` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat]`. Conclude with `this`. Establish `hs : (H.rt : E) ^ 2 = -(H.d : E)`.
+
+Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact. Rewrite `this` using `[map_pow, map_neg, map_natCast]`. Conclude with `this`. Establish `hc : cc (H.rt : E) = -(H.rt : E)`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+
+Apply `τ.injective` to reduce the goal to its premises. Establish `h1 : τ (H.rt : E) ^ 2 = -(H.d : ℂ)` using `by rw [← map_pow, hs, map_neg, map_natCast]`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `hre` using `congrArg Complex.re h1`. Establish `him` using `congrArg Complex.im h1`.
+
+Simplify using `only [pow_two, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, neg_zero] at hre him`. Establish `h0 : (τ (H.rt : E)).re = 0`. Assume the negation of the conclusion as `h`. Establish `h5 : (τ (H.rt : E)).im = 0` using `mul_left_cancel₀ h (by linarith)`. Rewrite `hre` using `[h5]`.
+
+Use polynomial arithmetic with `[mul_self_nonneg (τ (H.rt : E)).re]`. Rewrite using `[cc, IsCMField.complexEmbedding_complexConj, map_neg]`. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`. Establish `h3 : (2 : E) * cc (H.w0 : E) = 1 - (H.rt : E)`. Use `congrArg (IsCMField.complexConj E) h2` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat]`. Rewrite using `[sub_eq_add_neg, ← hc]`. Conclude with `this`. Take the linear combination `(h2 + h3) / 2`.
+-/
 theorem hostHalfRoot_add_conj_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) :
     (H.w0 : E) + cc (H.w0 : E) = 1 := by
   have h2 : (2 : E) * (H.w0 : E) = 1 + (H.rt : E) := by
@@ -173,6 +231,11 @@ theorem hostHalfRoot_add_conj_eq_one {E : Type} [Field E] [NumberField E] [IsCMF
     exact this
   linear_combination (h2 + h3) / 2
 
+/- English proof (translation)
+Rewrite using `[stdL, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ j`. Use `⟨c j, ?_⟩` and prove the remaining obligations. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`.
+
+Introduce `h choose c hc using h`. Use `⟨c, funext fun j => ?_⟩` and prove the remaining obligations. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def, ← hc]`.
+-/
 theorem mem_stdL {E : Type} [Field E] [NumberField E] {n : ℕ} (w : Fin n → E) :
     w ∈ stdL E n ↔ ∀ j, ∃ b : 𝓞 E, (b : E) = w j := by
   rw [stdL, Submodule.mem_span_range_iff_exists_fun]
@@ -185,6 +248,37 @@ theorem mem_stdL {E : Type} [Field E] [NumberField E] {n : ℕ} (w : Fin n → E
     refine ⟨c, funext fun j => ?_⟩
     simp [Finset.sum_apply, Pi.single_apply, Algebra.smul_def, ← hc]
 
+/- English proof (translation)
+Introduce `D ψ θ V W χV χW om hP mu hmu r g hr X bas idx hX hS H hH ΛV ΛW hV0 hΛV hΛW hsV hsW hstdV hsd x₀ s hx hinv f hf v hv`. Substitute `hr` using the available equality. Establish `hstd` using `hP.weil.std`. Distinguish the cases in `hex : ∃ k : GA D W, latR rfl (Formalism.L2.Pj.latG W k) = X.Λ`. Use `swap`.
+
+Take `⟨ρ, hρ, h⟩` from `GlobalTheory.Dict.VacNorm.norm_factor_eq D.host.E W.rank X g bas idx V.rank hS hP.even _ H.w0.isIntegral_coe (hostHalfRoot_add_conj_eq_one H) X.Λ hsd v hv`. Use `⟨ρ, by exact_mod_cast hρ.ne', fun x' hx' hu ϑ κ' h1 h2 h3 => ?_, fun k hk => absurd ⟨k, hk⟩ hex⟩` and prove the remaining obligations. Rewrite using `[h x' hx' hu ϑ κ' h1 h2 h3, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hρ]`. Establish `hsplit` using `(GlobalTheory.UnitarySplit.real_finite_split D W).1`. Establish `hfin1 : Formalism.IndefR.FWT.fin V 1 = 1` using `map_one _`.
+
+Establish `hmv` using `fun k => GlobalTheory.MovedLat.moved_lattices D V W ΛV ΛW hΛV hΛW hsV hsW 1 k`. Establish `hV1 : Formalism.IndefR.Bridge.hLat V (Formalism.IndefR.FWT.fin V 1) = ΛV` using `by rw [hfin1]; exact (hmv 1).2.2.2.2.1`. Simplify using `only [hV1] at hmv`. Take `⟨k₁, hk₁⟩` from `hex`. Take `⟨u₁, hu₁, k₀, hk₀, rfl⟩` from `hsplit k₁`.
+
+Rewrite `hk₁` using `[latR_rfl, latG_mul W hu₁]`. Take `⟨-, hs₀, hl₀, ht₀, -, -⟩` from `hmv k₀`. Use `set L₀ := Formalism.IndefR.Bridge.hLat W (Formalism.IndefR.FWT.fin W k₀) with hL₀`. Establish `hf₀ : IsVacO ψ θ V W (fun _ => 1) s (ΛV : Set (Fin V.rank → D.host.E)) (L₀ : Set (Fin W.rank → D.host.E)) (om (1, k₀) f)` using `GlobalTheory.WeilVacMove.isVacO_om D ψ θ V W χV χW om hP.weil hP.inf _ _ s s _ _ _ _ 1 k₀ (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) (fun τ => by rw [compAt_fin θ W hk₀, Matrix.one_mul, Matrix.mul_one]) hl₀ f hf`. Establish `hL : ∀ L : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E), L = twist L₀ → X.Λ = latR rfl L` using `fun L h => by`.
+
+Rewrite using `[latR_rfl, h, ← hk₁, ht₀]`. Establish `hconj : ∀ w : Fin V.rank → D.host.E, w ∈ stdL D.host.E V.rank ↔ (fun j => star (w j)) ∈ ΛV`. Introduce `w`. Establish `hb : ∀ b : 𝓞 D.host.E, ((H.bar b : 𝓞 D.host.E) : D.host.E) = star (b : D.host.E)` using `fun b => H.bar_eq b`. Rewrite using `[mem_stdL, ← SetLike.mem_coe, hstdV, SetLike.mem_coe, Formalism.L2.Pj.stdLat, Submodule.mem_pi]`.
+
+Use `forall_congr' fun j => ⟨?_, fun h => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, e⟩ -`. Conclude with `Submodule.mem_one.2 ⟨H.bar b, by rw [← e]; exact hb b⟩`. Take `⟨b, e⟩` from `Submodule.mem_one.1 (h (Set.mem_univ _))`. Use `⟨H.bar b, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hb, show (b : D.host.E) = star (w j) from e, star_star]`. Take `⟨κ₀, hκ₀, hR₀⟩` from `GlobalTheory.T.adelicVacuum_reads_multiple_classicalVacuum D ψ θ V W W.rank g rfl X bas idx hstd hP.inf hP.std hP.even hX hS H hH ΛV L₀ _ X.Λ hP.sigV hP.sigW hsV hs₀ hconj hL x₀ s hx hinv _ hf₀ v hv`. Establish `hN` using `GlobalTheory.T.norm_adelicClassicalVacuumFactor_eq D ψ θ V W W.rank g rfl X bas idx hstd hP.inf hP.std hP.even hX hS H hH ΛV L₀ hsV hs₀ hstdV hL x₀ s hx _ hf₀ v hv κ₀ hR₀`. Establish `hmu0 : mu k₀ ≠ 0` using `fun h => by`. Use `hmu.norm k₀` as an intermediate fact.
+
+Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Establish `hcart` using `(GlobalTheory.FrameCplx.cplx_of_frame D ψ θ V W W.rank g rfl X bas idx hstd hP.inf hP.std hP.even hX hS x₀ s hx hinv).1`. Use `⟨κ₀ / mu k₀, div_ne_zero hκ₀ hmu0, fun x' hx' hu ϑ κ' h1 h2 h3 => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[hN x' hx' hu ϑ κ' h1 h2 h3, norm_div, hmu.norm, div_one]`.
+
+Use `⟨isONFr_frMove hP.inf W X hX k hx, ?_⟩` and prove the remaining obligations. Take `⟨u, hu, c, hc, rfl⟩` from `hsplit k`. Rewrite `hk` using `[latR_rfl, latG_mul W hu]`. Take `⟨-, -, hl, ht, -, -⟩` from `hmv c`. Establish `htw : twist (Formalism.IndefR.Bridge.hLat W (Formalism.IndefR.FWT.fin W c)) = twist L₀` using `ht.symm.trans (hk.trans (hk₁.symm.trans ht₀))`.
+
+Establish `hlat` using `le_antisymm (latO_le V W ΛV htw.le) (latO_le V W ΛV htw.ge)`. Rewrite `hl` using `[hlat]`. Establish `hk' : c * k₀⁻¹ ∈ GfC W` using `mul_mem hc (inv_mem hk₀)`. Establish `hfix` using `GlobalTheory.T.weilRep_lattice_stabilizer_vacuum_eq_det_char_smul D ψ θ V W χV χW om hP mu hmu H ΛV L₀ hV0 hsV hs₀ s hcart _ hf₀ _ hk' (fun w => by`. Rewrite using `[hl₀ w, hl]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w₀, hw₀, rfl⟩`. Conclude with `⟨w₀, hw₀, by rw [← actO_mul, inv_mul_cancel_right]⟩`. Introduce and unpack `⟨w₀, hw₀, e⟩`. Use `⟨w₀, hw₀, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (actO V W 1 (k₀ * c⁻¹)) e` as an intermediate fact. Rewrite `this` using `[← actO_mul, ← actO_mul, inv_mul_cancel_right]`. Rewrite using `[← this, show k₀ * c⁻¹ * (c * k₀⁻¹) = 1 by group, actO_one])`. Establish `hth : IsThetaFunO ψ V W (om (1, c * k₀⁻¹) (om (1, k₀) f))` using `hP.weil.om_pres _ _ hf₀.2.theta`. Establish `hR` using `(GlobalTheory.AdTh.reads_linear_injective D ψ θ V W W.rank g rfl X bas idx hstd hP.inf hP.std hP.even hX hS x₀ hx _ _ _ _ hR₀ hR₀).1 (mu (c * k₀⁻¹)) 0`.
+
+Rewrite `hR` using `[zero_smul, zero_smul, add_zero, add_zero, ← hfix]`. Establish `hR'` using `GlobalTheory.T.weilRepresentation_real_moves_frame_detChar D ψ θ V W χV χW om hP mu hmu W.rank g rfl X bas idx hX hS x₀ hx _ _ hth hR u hu`. Establish `e1 : om (1, u) (om (1, c * k₀⁻¹) (om (1, k₀) f)) = om (1, u * c) f`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Prod.mk_mul_mk, Prod.mk_mul_mk]`. Simplify using `only [mul_one, mul_assoc, inv_mul_cancel]`.
+
+Establish `e2 : κ₀ / mu k₀ * mu (u * c) = mu u * (mu (c * k₀⁻¹) * κ₀)`. Establish `: mu c = mu (c * k₀⁻¹) * mu k₀` using `by rw [← muVal_mul hmu, inv_mul_cancel_right]`. Rewrite using `[muVal_mul hmu, this]`. Clear the denominators using the available nonvanishing facts. Rewrite `hR'` using `[e1, smul_smul, smul_smul, mul_assoc, ← e2]`.
+
+Rewrite using `[frMove_mul_fin θ W X u hc]`. Conclude with `hR'`.
+-/
 theorem exists_vacuum_multiplier : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsPair ψ θ V W χV χW om → ∀ mu : GA D W → ℂ, Formalism.L2.Pj.MuVal W χV mu → ∀ (r g : ℕ) (hr : W.rank = r) (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsMod W hr X → IsSympl X bas → ∀ (H : Geo.Tor.Host D.host.E), (H.rt : D.host.E) = D.host.sqrtMinusD → ∀ (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)), V.rank ≠ 0 → (ΛV : Set (Fin V.rank → D.host.E)) = L0c D V → (ΛW : Set (Fin W.rank → D.host.E)) = L0c D W → IsSelfDualC V ΛV → IsSelfDualC W ΛW → (ΛV : Set (Fin V.rank → D.host.E)) = (Formalism.L2.Pj.stdLat D.host.E V.rank : Set (Fin V.rank → D.host.E)) → SelfD X X.Λ → ∀ (x₀ : Frame X.Ψ r) (s : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ), IsONFr X x₀ → IsInvOf W hr X x₀ s → ∀ f, IsVacO ψ θ V W (fun _ => 1) s (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) f → ∀ v : TF V.rank g, IsVac X bas (H.w0 : D.host.E) (tens (stdL D.host.E V.rank) X.Λ) v → ∃ κ : ℂ, κ ≠ 0 ∧ (∀ x' ∈ X.dom, IsUnitFr X x' → ∀ (ϑ : (Fin g → ℂ) → ℂ) (κ' : ℂ), IsTheta1 X bas idx (H.w0 : D.host.E) x' X.Λ ϑ → MeanOne X bas idx x' X.Λ ϑ → (∀ z : Fin V.rank → Fin g → ℂ, ∏ b, ϑ (z b) = κ' * thA X bas idx v x' z) → ‖κ'‖ = ‖κ‖) ∧ ∀ k : GA D W, latR hr (Formalism.L2.Pj.latG W k) = X.Λ → IsONFr X (frMove θ W hr X k x₀) ∧ Reads θ V W hr X bas idx (om (1, k) f) ((κ * mu k) • v) (frMove θ W hr X k x₀) := by
   intro D ψ θ V W χV χW om hP mu hmu r g hr X bas idx hX hS H hH ΛV ΛW hV0 hΛV hΛW hsV hsW hstdV hsd x₀ s hx hinv f hf v hv
   subst hr

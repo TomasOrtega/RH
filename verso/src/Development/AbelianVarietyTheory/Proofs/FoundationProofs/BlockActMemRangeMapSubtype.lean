@@ -57,6 +57,11 @@ section
 
 variable {K : Type} [Field K] (R : Subring K)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, rfl⟩ m`. Rewrite using `[coeff_map]`. Conclude with `(coeff m Q).2`. Introduce `h`.
+
+Rewrite using `[P.as_sum]`. Conclude with `sum_mem fun m _ => ⟨monomial m ⟨_, h m⟩, by rw [map_monomial]; rfl⟩`.
+-/
 theorem mem_range_map_subtype_iff {σ : Type} (P : MvPolynomial σ K) :
     P ∈ (MvPolynomial.map (σ := σ) R.subtype).range ↔ ∀ m, coeff m P ∈ R := by
   constructor
@@ -67,6 +72,13 @@ theorem mem_range_map_subtype_iff {σ : Type} (P : MvPolynomial σ K) :
     rw [P.as_sum]
     exact sum_mem fun m _ => ⟨monomial m ⟨_, h m⟩, by rw [map_monomial]; rfl⟩
 
+/- English proof (translation)
+Establish `hC : ∀ {a : K}, a ∈ R → (C a : MvPolynomial (ι × Fin n × Fin n) K) ∈ (MvPolynomial.map (σ` using `ι × Fin n × Fin n) R.subtype).range := fun {a} ha => ⟨C ⟨a, ha⟩, by simp⟩`. Establish `hX : ∀ v, (X v : MvPolynomial (ι × Fin n × Fin n) K) ∈ (MvPolynomial.map (σ` using `ι × Fin n × Fin n) R.subtype).range := fun v => ⟨X v, by simp⟩`. Take `⟨Q, rfl⟩` from `hP`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`.
+
+Rewrite using `[map_C, algHom_C]`. Conclude with `hC a.2`. Consider the case `add p q hp hq`. Rewrite using `[map_add (MvPolynomial.map R.subtype), map_add]`. Conclude with `add_mem hp hq`.
+
+Consider the case `mul_X p v hp`. Rewrite using `[map_mul (MvPolynomial.map R.subtype), map_X, map_mul, blockAct_X]`. Conclude with `mul_mem hp (sum_mem fun b _ => mul_mem (hC (hU _ _ _)) (hX _))`.
+-/
 theorem blockAct_mem_range_map_subtype {ι : Type} [Fintype ι] {n : ℕ}
     (U : ι → Matrix (Fin n) (Fin n) K) (hU : ∀ τ a b, U τ a b ∈ R)
     {P : MvPolynomial (ι × Fin n × Fin n) K}
@@ -92,6 +104,11 @@ theorem blockAct_mem_range_map_subtype {ι : Type} [Fintype ι] {n : ℕ}
 
 end
 
+/- English proof (translation)
+Introduce `K _ _ _ ι _ n w F F' U hF hF' hU`. Establish `h` using `(mem_range_map_subtype_iff (nonnegRing_vw w) _).1 (blockAct_mem_range_map_subtype (nonnegRing_vw w) U hU ((mem_range_map_subtype_iff (nonnegRing_vw w) F').2 hF'))`. Express the relevant statement in the definitionally equal form `fockS F (Formalism.GradedWeylDivisibility.blockAct K U F') ∈ nonnegRing_vw w`. Unfold `fockS`. Use `sum_mem fun m _ => mul_mem (mul_mem ?_ (h m)) (natCast_mem _ _)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `0 ≤ vw w (star (coeff m F))`. Rewrite using `[ValuationRepresentative.vw_star]`. Conclude with `hF m`.
+-/
 theorem vw_fockS_blockAct_nonneg : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (ι : Type) [Fintype ι] (n : ℕ) (w : HeightOneSpectrum (𝓞 K)) (F F' : Pol K ι n) (U : ι → Matrix (Fin n) (Fin n) K), (∀ mo, 0 ≤ vw (conjPl w) (coeff mo F)) → (∀ mo, 0 ≤ vw w (coeff mo F')) → (∀ τ a b, 0 ≤ vw w (U τ a b)) → 0 ≤ vw w (fockS F (Formalism.GradedWeylDivisibility.blockAct K U F')) := by
   intro K _ _ _ ι _ n w F F' U hF hF' hU
   have h := (mem_range_map_subtype_iff (nonnegRing_vw w) _).1

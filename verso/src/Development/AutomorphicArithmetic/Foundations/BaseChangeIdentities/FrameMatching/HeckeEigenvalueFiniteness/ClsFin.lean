@@ -17,17 +17,28 @@ open PositivityTheory.Rg.BcB.F.FX PositivityTheory.Rg.BcB.F.FX.Bo
 
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.RS PositivityTheory.Rg.BcB.CG
 
+/- English proof (translation)
+The claim follows from `(hR E).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.2.1 a b Ma Mb K₁ K₂ h1 h2`.
+-/
 theorem rl_levels (hR : Rd.ReadLimit) (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (Ma : Mods E a)
     (Mb : Mods E b) (K₁ : Subgroup (GL (Fin a) (Af E))) (K₂ : Subgroup (GL (Fin b) (Af E)))
     (h1 : IsOpen (K₁ : Set (GL (Fin a) (Af E)))) (h2 : IsOpen (K₂ : Set (GL (Fin b) (Af E)))) :
     Levels E (rlΘ₁ hR E a b Ma Mb K₁ K₂) ∧ Levels E (rlΘ₂ hR E a b Ma Mb K₁ K₂) :=
   (hR E).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.2.1 a b Ma Mb K₁ K₂ h1 h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨((hR E).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.1 a b Ma Mb).2.2.1, ((hR E).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.1 a b Ma Mb).2.2.2.1⟩`.
+-/
 theorem rl_ktypes (hR : Rd.ReadLimit) (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (Ma : Mods E a)
     (Mb : Mods E b) : KTypes E (rlΩ₁ hR E a b Ma Mb) ∧ KTypes E (rlΩ₂ hR E a b Ma Mb) :=
   ⟨((hR E).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.1 a b Ma Mb).2.2.1,
     ((hR E).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.1 a b Ma Mb).2.2.2.1⟩
 
+/- English proof (translation)
+Establish `hL` using `rl_levels hR E _ _ (F₀.A i).Ma (F₀.A i).Mb _ _ h1 h2`. Establish `hK` using `rl_ktypes hR E _ _ (F₀.A i).Ma (F₀.A i).Mb`. Take `⟨kA, PA, hPA⟩` from `hFS E _ _ _ hL.1 hK.1 (mOf (F₀.A i).χa)`. Take `⟨kB, PB, hPB⟩` from `hFS E _ _ _ hL.2 hK.2 (mOf (F₀.A i).χb)`. Use `⟨kA, kB, PA, PB, fun s₁ s₂ Pa Pb D hc => ?_⟩` and prove the remaining obligations.
+
+Establish `hp` using `hCP hR E n π S F₀ d i s₁ s₂ Pa Pb D hc`. Establish `hm` using `LemDd.cand_sum hc`. Conclude with `⟨hPA Pa hp.1 hm.1, hPB Pb hp.2 hm.2⟩`.
+-/
 theorem cls_fin (hFS : FinStrict) (hCP : CandParts)
     {hR : Rd.ReadLimit} {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {π : Submodule ℂ (UA E n → ℂ)}
     {S : Finset (Pl E)} (F₀ : Frame0 hR π S) (d : LocData E n) (i : F₀.C.ι)

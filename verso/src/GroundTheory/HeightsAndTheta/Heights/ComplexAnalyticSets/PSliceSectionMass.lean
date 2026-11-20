@@ -10,6 +10,13 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial Filter Topology Matrix ComplexSets
 open scoped ContDiff
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hM : (h.matᵀ)⁻¹ *ᵥ x ≠ 0`. Introduce `h0`. Establish `: h.matᵀ *ᵥ ((h.matᵀ)⁻¹ *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (by rw [Matrix.det_transpose]; exact h.isUnit_det), Matrix.one_mulVec]`.
+
+Conclude with `hx (by rw [← this, h0, Matrix.mulVec_zero]; rfl)`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hM`. Establish `hpos : 0 < ∑ i, ‖((h.matᵀ)⁻¹ *ᵥ x) i‖ ^ 2` using `Finset.sum_pos' (fun _ _ => by positivity) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hi) 2⟩`. Establish `hQ : ContDiff ℝ ∞ fun y : Fin n → ℂ => ∑ i, ‖((h.matᵀ)⁻¹ *ᵥ y) i‖ ^ 2`. Use `ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `ContDiff.sum fun j _ => contDiff_const.mul (contDiff_apply ℝ ℂ j)`. Conclude with `((hQ.contDiffAt.sqrt hpos.ne').log (Real.sqrt_pos.mpr hpos).ne').contDiffWithinAt`.
+-/
 theorem contDiffOn_log_dualNorm {n : ℕ} (h : HermNorm n) :
     ContDiffOn ℝ ∞ (fun x : Fin n → ℂ => Real.log (h.dualNorm x)) {0}ᶜ := by
   intro x hx
@@ -28,6 +35,9 @@ theorem contDiffOn_log_dualNorm {n : ℕ} (h : HermNorm n) :
     exact ContDiff.sum fun j _ => contDiff_const.mul (contDiff_apply ℝ ℂ j)
   exact ((hQ.contDiffAt.sqrt hpos.ne').log (Real.sqrt_pos.mpr hpos).ne').contDiffWithinAt
 
+/- English proof (translation)
+Use `⟨{0}ᶜ, isOpen_compl_singleton, fun x hx hx0 => ?_, contDiffOn_log_dualNorm h⟩` and prove the remaining obligations. Use `hx _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))` as an intermediate fact. Rewrite `hx0` using `[Set.mem_singleton_iff]`. Substitute `hx0` using the available equality. Simplify using `[linForm] at this`.
+-/
 theorem smoothNear_log_dualNorm_slice {n : ℕ} (h : HermNorm n) (J : Ideal (MvPolynomial (Fin n) ℂ))
     (ℓ : Fin n → ℂ) :
     SmoothNear (zeroSet (J ⊔ Ideal.span {linForm ℓ - 1})) fun x => Real.log (h.dualNorm x) := by
@@ -37,6 +47,15 @@ theorem smoothNear_log_dualNorm_slice {n : ℕ} (h : HermNorm n) (J : Ideal (MvP
   subst hx0
   simp [linForm] at this
 
+/- English proof (translation)
+Introduce `n e h J F u ℓ hJ hF hu hℓ hℓW`. Take `⟨hprime, hdim, huJ⟩` from `hI n (e + 1) J F ℓ hJ hF hℓ`. Take `⟨hinj, himg, hmult⟩` from `hC n J u ℓ hJ hℓW`. Take `⟨f, hfs, hfc, -, -, hlimJ, hlimW, herr⟩` from `hE n e h J F u ℓ hJ hF hu hℓ hℓW`. Establish `hsm` using `smoothNear_log_dualNorm_slice h J ℓ`.
+
+Establish `hk : ∀ k, ∑ W ∈ (divCycle J u).support, ((divCycle J u W : ℕ) : ℝ) * varInt (W ⊔ Ideal.span {linForm ℓ - 1}) e (f k) (fun _ x => Real.log (h.dualNorm x)) + (varInt (J ⊔ Ideal.span {linForm ℓ - 1}) (e + 1) (fun x => Real.log (h.dualNorm x)) (vecCons (f k) fun _ x => Real.log (h.du …`. Introduce `k`. Establish `hS` using `hSt n e _ (f k) (fun x => Real.log (h.dualNorm x)) (fun _ x => Real.log (h.dualNorm x)) hprime hdim (smoothNear_of_contDiff (hfs k)) hsm (fun _ => hsm) (Or.inl (hfc k))`. Establish `hP` using `hPL n e _ u (f k) (fun _ x => Real.log (h.dualNorm x)) hprime hdim (huJ u hu) (hfs k) (hfc k) (fun _ => hsm)`. Establish `hcons : (vecCons (fun x => Real.log (h.dualNorm x)) fun (_ : Fin e) x => Real.log (h.dualNorm x)) = fun _ x => Real.log (h.dualNorm x)`.
+
+Use function extensionality and compare the values at `fun i => Fin.cases rfl (fun _ => rfl) i`. Rewrite `hS` using `[hcons]`. Rewrite using `[hS, hP, ← himg, finsum_mem_image hinj, finsum_mem_coe_finset]`. Establish `hsum : ∑ W ∈ (divCycle J u).support, (localMult (J ⊔ Ideal.span {linForm ℓ - 1} ⊔ Ideal.span {linForm u}) (W ⊔ Ideal.span {linForm ℓ - 1}) : ℝ) * varInt (W ⊔ Ideal.span {linForm ℓ - 1}) e (f k) (fun _ x => Real.log (h.dualNorm x)) = ∑ W ∈ (divCycle J u).support, ((divCycle J u W …` using `Finset.sum_congr rfl fun W hW => by rw [hmult W hW]`. Rewrite using `[hsum]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hlim` using `(tendsto_finsetSum _ fun W hW => (hlimW W hW).const_mul ((divCycle J u W : ℕ) : ℝ)).add herr`. Rewrite `hlim` using `[add_zero]`. Conclude with `tendsto_nhds_unique hlimJ (hlim.congr hk)`.
+-/
 theorem SliceSectionMass.proof (hSt : StokesOnVariety.Statement) (hPL : PoincareLelong.Statement)
     (hI : SliceIdeal.Statement) (hC : SliceComponents.Statement) (hE : SliceExhaustion.Statement) :
     SliceSectionMass.Statement := by

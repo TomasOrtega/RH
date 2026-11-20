@@ -15,11 +15,22 @@ def fac (d : ℕ) (y z : ℂ) : ℂ :=
   Complex.exp ((Real.pi : ℂ) * Complex.I * ((Complex.normSq y : ℝ) : ℂ) +
     (-(Real.pi : ℂ) * h1 d z y - (Real.pi : ℂ) / 2 * h1 d y y))
 
+/- English proof (translation)
+The claim follows from `Complex.exp_ne_zero _`.
+-/
 lemma fac_ne (d : ℕ) (y z : ℂ) : fac d y z ≠ 0 := Complex.exp_ne_zero _
 
+/- English proof (translation)
+Simplify using `only [W1, U1, fac, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma nonzeroIndexPlaces_adelicDataResized_eq (d : ℕ) (y : ℂ) (F : ℂ → ℂ) (z : ℂ) : W1 d y F z = fac d y z * F (z + y) := by
   simp only [W1, U1, fac, Complex.exp_add]; ring
 
+/- English proof (translation)
+Simplify using `only [fac]`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Rewrite using `[hm, ← Complex.mul_conj, ← Complex.mul_conj]`. Simplify using `only [h1, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma fac_mul (d : ℕ) (α : ℂ) (m : ℕ) (hm : (m : ℂ) = α * conj α) (y z : ℂ) :
     fac d (α * y) (α * z) = fac d y z ^ m := by
   simp only [fac]
@@ -29,6 +40,15 @@ lemma fac_mul (d : ℕ) (α : ℂ) (m : ℕ) (hm : (m : ℂ) = α * conj α) (y 
   simp only [h1, map_mul]
   ring
 
+/- English proof (translation)
+Introduce and unpack `⟨u, v, h⟩`. Establish `hs : 0 < Real.sqrt d` using `Real.sqrt_pos.mpr (by exact_mod_cast hd)`. Establish `h2 : (-1 : ℂ) = 2 * u + v * (1 + Complex.I * ((Real.sqrt d : ℝ) : ℂ))`. Simplify using `only [wK] at h`. Take the linear combination `2 * h`.
+
+Establish `him` using `congrArg Complex.im h2`. Establish `hre` using `congrArg Complex.re h2`. Simplify using `at him hre`. Establish `hv : v = 0`. Break down `him with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `absurd h hd.ne'`. Substitute `hv` using the available equality. Establish `: (-1 : ℤ) = 2 * u`. Establish `: (-1 : ℝ) = 2 * u` using `by simpa using hre`.
+
+Conclude with `this` after adjusting the coercions. Use linear arithmetic over natural numbers and integers.
+-/
 lemma not_half (d : ℕ) (hd : 0 < d) : ¬ InOK d (0 - 1 / 2) := by
   rintro ⟨u, v, h⟩
   have hs : 0 < Real.sqrt d := Real.sqrt_pos.mpr (by exact_mod_cast hd)
@@ -48,6 +68,13 @@ lemma not_half (d : ℕ) (hd : 0 < d) : ¬ InOK d (0 - 1 / 2) := by
     exact_mod_cast this
   omega
 
+/- English proof (translation)
+Take `⟨u, v, rfl⟩` from `ha`. Take `⟨u', v', rfl⟩` from `hb`. Take `⟨k, hk⟩ : ∃ k : ℕ, d + 1 = 4 * k` from `⟨(d + 1) / 4, by omega⟩`. Establish `hs : ((Real.sqrt d : ℝ) : ℂ) ^ 2 = d`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg d)]`.
+
+Simplify using the standard rewrite rules. Establish `hk' : (d : ℂ) + 1 = 4 * k` using `by exact_mod_cast hk`. Establish `hw : wK d ^ 2 = wK d - k`. Simplify using `only [wK]`. Take the linear combination `(((Real.sqrt d : ℝ) : ℂ) ^ 2 / 4) * Complex.I_sq - (1 / 4) * hs - (1 / 4) * hk'`.
+
+Use `⟨u * u' - k * v * v', u * v' + v * u' + v * v', ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(v * v' : ℂ) * hw`.
+-/
 lemma inOK_mul (d : ℕ) (hd : d % 4 = 3) {α β : ℂ} (ha : InOK d α) (hb : InOK d β) : InOK d (α * β) := by
   obtain ⟨u, v, rfl⟩ := ha
   obtain ⟨u', v', rfl⟩ := hb
@@ -62,12 +89,42 @@ lemma inOK_mul (d : ℕ) (hd : d % 4 = 3) {α β : ℂ} (ha : InOK d α) (hb : I
   push_cast
   linear_combination (v * v' : ℂ) * hw
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hp`. Establish `ha : AnalyticAt ℂ (fun z => F z / G z) p` using `(hF.analyticAt p).div (hG.analyticAt p) hp`. Conclude with `absurd ha.meromorphicOrderAt_nonneg (not_le.mpr h)`.
+-/
 lemma zero_of_pole {F G : ℂ → ℂ} (hF : Differentiable ℂ F) (hG : Differentiable ℂ G) (p : ℂ)
     (h : meromorphicOrderAt (fun z => F z / G z) p < 0) : G p = 0 := by
   by_contra hp
   have ha : AnalyticAt ℂ (fun z => F z / G z) p := (hF.analyticAt p).div (hG.analyticAt p) hp
   exact absurd ha.meromorphicOrderAt_nonneg (not_le.mpr h)
 
+/- English proof (translation)
+Introduce `d q _ M ω θ hd hd16 hsp hL hch hθ α m hα hα0 hm`. Take `⟨hdiff, h0, -, hW, hz⟩` from `hθ`. Establish `hd4 : d % 4 = 3` using `by omega`. Establish `hA : Differentiable ℂ (fun z => θ (α * z))` using `hdiff.comp (differentiable_id.const_mul α)`. Establish `hB : Differentiable ℂ (fun z => θ z ^ m)` using `hdiff.pow m`.
+
+Establish `hper : ∀ l ∈ M.L.lattice, ∀ z, θ (α * z) = fac d l z ^ m * θ (α * (z + l)) ∧ θ z ^ m = fac d l z ^ m * θ (z + l) ^ m`. Introduce `l hl z`. Establish `hl'` using `(hL l).1 hl`. Prove the components needed by the constructor for the conclusion. Use `congrFun (hW _ (inOK_mul d hd4 hα hl')) (α * z)` as an intermediate fact.
+
+Rewrite `this` using `[nonzeroIndexPlaces_adelicDataResized_eq, fac_mul d α m hm]`. Rewrite using `[← this, mul_add]`. Use `congrFun (hW _ hl') z` as an intermediate fact. Rewrite `this` using `[nonzeroIndexPlaces_adelicDataResized_eq]`. Rewrite using `[← mul_pow, this]`.
+
+Establish `hEε : Ell M.L (fun z => θ (α * z) / θ z ^ m)`. Use `⟨fun p => (hA.analyticAt p).meromorphicAt.div (hB.analyticAt p).meromorphicAt, ?_⟩` and prove the remaining obligations. Introduce `l hl z`. Take `⟨h1', h2'⟩` from `hper l hl z`. Use `show θ (α * (z + l)) / θ (z + l) ^ m = θ (α * z) / θ z ^ m`.
+
+Rewrite using `[h1', h2', mul_div_mul_left _ _ (pow_ne_zero m (fac_ne d l z))]`. Establish `hEη : Ell M.L (fun z => θ z ^ m / θ (α * z))`. Use `⟨fun p => (hB.analyticAt p).meromorphicAt.div (hA.analyticAt p).meromorphicAt, ?_⟩` and prove the remaining obligations. Introduce `l hl z`. Take `⟨h1', h2'⟩` from `hper l hl z`.
+
+Use `show θ (z + l) ^ m / θ (α * (z + l)) = θ z ^ m / θ (α * z)`. Rewrite using `[h1', h2', mul_div_mul_left _ _ (pow_ne_zero m (fac_ne d l z))]`. Establish `hA0 : θ (α * 0) ≠ 0` using `by simp [h0]`. Establish `hB0 : θ 0 ^ m ≠ 0` using `by simp [h0]`. Establish `haε : AnalyticAt ℂ (fun z => θ (α * z) / θ z ^ m) 0` using `(hA.analyticAt 0).div (hB.analyticAt 0) hB0`.
+
+Establish `haη : AnalyticAt ℂ (fun z => θ z ^ m / θ (α * z)) 0` using `(hB.analyticAt 0).div (hA.analyticAt 0) hA0`. Establish `hns : ∀ β p : ℂ, InOK d β → β ≠ 0 → θ (β * p) = 0 → ¬ M.Small p`. Introduce `β p hβ hβ0 hp hs`. Establish `hp0 : PrimeTo d q 0` using `⟨1, one_pos, Nat.coprime_one_left q, 0, 0, by simp⟩`. Use `(GlobalTheory.T.smallTorsion_killed_by_prime_powers d q M ω hd hd16 hsp hL hch).2.2.2 p β 0 hβ hβ0 hp0 (by simpa using hz _ hp) hs` as an intermediate fact.
+
+Conclude with `not_half d hd.pos this.2`. Establish `hbε : Bdd (hat M.ι (C ω * logS) (fun z => θ (α * z) / θ z ^ m))`. Use `GlobalTheory.T.cpSeriesCoeffBounded_taylor_elliptic_of_poles q M _ _ hch hEε haε fun p hp => ?_` and prove the remaining obligations. Use `zero_of_pole hA hB p hp` as an intermediate fact. Conclude with `hns 1 p ⟨1, 0, by simp⟩ one_ne_zero (by simpa using (pow_eq_zero_iff'.1 this).1)`.
+
+Establish `hbη : Bdd (hat M.ι (C ω * logS) (fun z => θ z ^ m / θ (α * z)))`. Use `GlobalTheory.T.cpSeriesCoeffBounded_taylor_elliptic_of_poles q M _ _ hch hEη haη fun p hp => ?_` and prove the remaining obligations. Conclude with `hns α p hα hα0 (zero_of_pole hB hA p hp)`. Take `⟨hh1, hh2, -, hh4, -⟩` from `GlobalTheory.T.cpTransportedTaylorSeriesInChart_ringHom_laws q M.ι (C ω * logS) hch.2.1`. Establish `hprod : hat M.ι (C ω * logS) (fun z => θ (α * z) / θ z ^ m) * hat M.ι (C ω * logS) (fun z => θ z ^ m / θ (α * z)) = 1`.
+
+Rewrite using `[← (hh1 _ _ haε haη).2.1]`. Establish `e1 : ∀ᶠ z in 𝓝 (0 : ℂ), θ (α * z) ≠ 0` using `hA.continuous.continuousAt.eventually_ne hA0`. Establish `e2 : ∀ᶠ z in 𝓝 (0 : ℂ), θ z ^ m ≠ 0` using `hB.continuous.continuousAt.eventually_ne hB0`. Use `(hh1 _ (fun _ => (1 : ℂ)) (haε.mul haη) analyticAt_const).2.2.1 (by filter_upwards [nhdsWithin_le_nhds e1, nhdsWithin_le_nhds e2] with z h1' h2' show θ (α * z) / θ z ^ m * (θ z ^ m / θ (α * z)) = 1 field_simp)` as an intermediate fact. Use `Eq.trans this ?_` and prove the remaining obligations.
+
+Rewrite using `[hh2]`. Simplify using the standard rewrite rules. Establish `hε0 : θ (α * 0) / θ 0 ^ m = 1` using `by simp [h0]`. Establish `hmain : ∀ z, θ z ≠ 0 → θ (α * z) = θ z ^ m * (θ (α * z) / θ z ^ m)`. Introduce `z hz'`.
+
+Clear the denominators using the available nonvanishing facts. Use `⟨fun z => θ (α * z) / θ z ^ m, hEε, haε, hε0, ?_, hmain, ?_⟩` and prove the remaining obligations. Use `((GlobalTheory.T.cpSeriesCoeffNormBounded_ring_laws q).2.2.2.2.1 _ _ hbε hbη hprod ?_).1` and prove the remaining obligations. Rewrite using `[hh4]`. Simplify using `[h0]`.
+
+Introduce `y z hyz`. Rewrite using `[nonzeroIndexPlaces_adelicDataResized_eq, nonzeroIndexPlaces_adelicDataResized_eq, fac_mul d α m hm, ← mul_add, mul_pow, mul_assoc]`. Conclude with `congrArg _ (hmain _ hyz)`.
+-/
 theorem theta_quot : ∀ (d q : ℕ) [Fact q.Prime] (M : Mdl q) (ω : ℂ_[q]) (θ : ℂ → ℂ), d.Prime → d % 16 = 7 → Split d q → IsOK d M.L → M.MChart ω → IsTh d θ → ∀ (α : ℂ) (m : ℕ), InOK d α → α ≠ 0 → (m : ℂ) = α * conj α → ∃ ε : ℂ → ℂ, Ell M.L ε ∧ AnalyticAt ℂ ε 0 ∧ ε 0 = 1 ∧ Bd 1 (hat M.ι (C ω * logS) ε) ∧ (∀ z, θ z ≠ 0 → θ (α * z) = θ z ^ m * ε z) ∧ ∀ y z, θ (z + y) ≠ 0 → W1 d (α * y) θ (α * z) = W1 d y θ z ^ m * ε (z + y) := by
   intro d q _ M ω θ hd hd16 hsp hL hch hθ α m hα hα0 hm
   obtain ⟨hdiff, h0, -, hW, hz⟩ := hθ

@@ -20,6 +20,15 @@ namespace GlobalTheory.DepthBig
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Establish `hne : ¬ G.pl.modul sc ≤ (GlobalTheory.IdemSupport.cP (G.pl.w v)).asIdeal`. Introduce `h`. Unfold `Places.modul at h`. Take `⟨v', hv', hle⟩` from `(Ideal.IsPrime.prod_le (GlobalTheory.IdemSupport.cP (G.pl.w v)).isPrime).1 h`. Establish `h1` using `Ideal.IsPrime.le_of_pow_le (hP := (GlobalTheory.IdemSupport.cP (G.pl.w v)).isPrime) hle`.
+
+Establish `h2 : G.pl.w v' = GlobalTheory.IdemSupport.cP (G.pl.w v)` using `HeightOneSpectrum.ext ((G.pl.w v').isMaximal.eq_of_le (GlobalTheory.IdemSupport.cP (G.pl.w v)).isPrime.ne_top h1)`. Establish `h3 : v' = v`. Rewrite using `[← G.pl.under_w hv', h2, GlobalTheory.IdemSupport.under_cP, G.pl.under_w hv]`. Substitute `h3` using the available equality. Take `⟨e, he⟩` from `G.pl.w_split v' hv`.
+
+Conclude with `conjPrime_ne_of_isIdempotentAt he h2.symm`. Take `⟨c₀, hc₀, hc₀'⟩` from `Set.not_subset.1 hne`. Use `⟨D.host.conj • c₀, ?_, ?_⟩` and prove the remaining obligations. Unfold `Places.modulBar`. Conclude with `Ideal.smul_mem_pointwise_smul _ _ _ hc₀`.
+
+Establish `e : D.host.conj • c₀ = GlobalTheory.IdemSupport.cO D c₀`. Apply `FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Rewrite using `[Formalism.L2.Pj.algebraMap_conj_smul, ← RingOfIntegers.coe_eq_algebraMap, ← RingOfIntegers.coe_eq_algebraMap, GlobalTheory.IdemSupport.cO_coe, bridge_star_holds D.R D.host]`. Rewrite using `[e]`. Conclude with `hc₀'`.
+-/
 theorem exists_modulBar_notMem (G : GridData L sc) {v : GlobalTheory.FinPl.Pl D} (hv : v ∈ G.pl.S0) :
     ∃ c : 𝓞 D.host.E, c ∈ G.pl.modulBar sc ∧ c ∉ (G.pl.w v).asIdeal := by
   classical
@@ -46,6 +55,15 @@ theorem exists_modulBar_notMem (G : GridData L sc) {v : GlobalTheory.FinPl.Pl D}
     rw [e]
     exact hc₀'
 
+/- English proof (translation)
+Take `⟨c, hc, hcw⟩` from `exists_modulBar_notMem G hv`. Establish `h0 : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `GlobalTheory.AscFin.PrimStd.modulBar_ne_bot G.pl sc`. Establish `hm : algebraMap (𝓞 D.host.E) D.host.E c * a ∈ ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`.
+
+Use `FractionalIdeal.mul_mem_mul ((FractionalIdeal.mem_coeIdeal (𝓞 D.host.E)⁰).2 ⟨c, hc, rfl⟩) ha` as an intermediate fact. Rewrite `this` using `[shiftId, mul_left_comm, mul_inv_cancel₀ h0, mul_one]`. Then use the resulting hypothesis. Take `⟨o, ho, hoe⟩` from `(FractionalIdeal.mem_coeIdeal (𝓞 D.host.E)⁰).1 hm`. Establish `hle : G.pl.modul sc ≤ (G.pl.w v).asIdeal ^ G.pl.depth sc v`. Unfold `Places.modul`.
+
+Conclude with `Ideal.prod_le_inf.trans (Finset.inf_le hv)`. Establish `h1 : (G.pl.w v).valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E o) ≤ WithZero.exp (-(G.pl.depth sc v : ℤ))`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_le_pow_iff_mem _ _ _).2 (hle ho)`. Establish `h2 : (G.pl.w v).valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E c) = 1`.
+
+Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `le_antisymm ((G.pl.w v).intValuation_le_one c) (not_lt.1 fun h => hcw (((G.pl.w v).intValuation_lt_one_iff_mem c).1 h))`. Rewrite `h1` using `[hoe, map_mul, h2, one_mul]`. Rewrite using `[(depthAt_w G hv).1, Good.valued_alg]`. Conclude with `h1`.
+-/
 theorem v_le_of_mem_shiftId (G : GridData L sc) {v : GlobalTheory.FinPl.Pl D} (hv : v ∈ G.pl.S0) {a : D.host.E}
     (ha : a ∈ shiftId G) :
     Valued.v (algebraMap D.host.E (Kw (G.pl.w v)) a) ≤ WithZero.exp (-(cosExp G (G.pl.w v) : ℤ)) := by
@@ -79,18 +97,27 @@ open GlobalTheory.FunObj.Comparison₂ GlobalTheory.StdFrames Formalism.L2.DIV
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [GlobalTheory.LatVac.genMap, Matrix.of_apply, Matrix.add_apply, Pi.add_apply]`. Put the polynomial expressions in normal form.
+-/
 theorem genMap_add (s : Fin S.rank → D.host.E) (t t' : Fin T.rank → D.host.E) :
     GlobalTheory.LatVac.genMap S T 1 s (t + t') = GlobalTheory.LatVac.genMap S T 1 s t + GlobalTheory.LatVac.genMap S T 1 s t' := by
   ext i j
   simp only [GlobalTheory.LatVac.genMap, Matrix.of_apply, Matrix.add_apply, Pi.add_apply]
   ring_nf
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [GlobalTheory.LatVac.genMap, Matrix.of_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul]`. Put the polynomial expressions in normal form.
+-/
 theorem genMap_smul (s : Fin S.rank → D.host.E) (r : D.host.E) (t : Fin T.rank → D.host.E) :
     GlobalTheory.LatVac.genMap S T 1 s (r • t) = r • GlobalTheory.LatVac.genMap S T 1 s t := by
   ext i j
   simp only [GlobalTheory.LatVac.genMap, Matrix.of_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul]
   ring_nf
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[GlobalTheory.LatVac.genMap]`.
+-/
 theorem genMap_zero (s : Fin S.rank → D.host.E) : GlobalTheory.LatVac.genMap S T 1 s 0 = 0 := by
   ext i j
   simp [GlobalTheory.LatVac.genMap]
@@ -105,6 +132,31 @@ variable {D : D7} {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank →
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `set B : WithZero (Multiplicative ℤ) := WithZero.exp (-(k : ℤ)) with hB`. Set `p : WO S T → Prop` to `fun u => ∀ a b, Valued.v (cpt (D := D) w (Comparison₂.fr βT βS (u.map (toEAf D)) a b)) ≤ B`. Establish `hadd : ∀ x y, p x → p y → p (x + y)` using `fun x y hx hy a b => by`. Rewrite using `[Matrix.map_add _ (toEAf D).map_add, Comparison₂.fr_add, Matrix.add_apply, RingHom.map_add]`. Conclude with `Valuation.map_add_le _ (hx a b) (hy a b)`.
+
+Establish `hneg : ∀ x, p x → p (-x)` using `fun x hx a b => by`. Rewrite using `[Matrix.map_neg _ (toEAf D).map_neg, fr_neg, Matrix.neg_apply, RingHom.map_neg, Valuation.map_neg]`. Conclude with `hx a b`. Establish `hzero : p 0` using `fun a b => by`. Rewrite using `[Matrix.map_zero _ (toEAf D).map_zero, show Comparison₂.fr βT βS (0 : Matrix (Fin T.rank) (Fin S.rank) (EAf D)) = 0 by`.
+
+Rewrite using `[Comparison₂.fr, Matrix.mul_zero, Matrix.zero_mul]]`. Simplify using the standard rewrite rules. Establish `hY : ∀ s ∈ ΛS, ∀ t ∈ idLat I ΛT, ∀ a b, Valued.v (cpt (D` using `D) w (Comparison₂.fr βT βS ((GlobalTheory.LatVac.genMap S T 1 s t).map (eToEAf D)) a b)) ≤ B := by`. Introduce `s hs t ht`. Use `Submodule.span_induction (p := fun t _ => ∀ a b, Valued.v (cpt (D := D) w (Comparison₂.fr βT βS ((GlobalTheory.LatVac.genMap S T 1 s t).map (eToEAf D)) a b)) ≤ B) ?_ ?_ ?_ ?_ ht` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨r, hr, y, hy, rfl⟩ a b`. Establish `hY0` using `genMap_one_mem_homLat hS hs hy`. Take `⟨s', -, hs'⟩` from `Comparison₂.fr_mem_idS hβS hβT (𝔪 := ⊤) (by rw [Submodule.top_smul]; exact hY0) a b`. Establish `h4` using `(mem_OA_iff _).1 s'.2 w`. Rewrite `h4` using `[hs']`.
+
+Rewrite using `[genMap_smul, show (r • GlobalTheory.LatVac.genMap S T 1 s y).map (eToEAf D) = eToEAf D r • (GlobalTheory.LatVac.genMap S T 1 s y).map (eToEAf D) from Matrix.ext fun i j => by simp only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, RingHom.map_mul], Comparison₂.fr_smul, Matr …`. Conclude with `mul_le_of_le_of_le_one (hI r hr) h4`. Introduce `a b`. Rewrite using `[genMap_zero, Matrix.map_zero _ (eToEAf D).map_zero, show Comparison₂.fr βT βS (0 : Matrix (Fin T.rank) (Fin S.rank) (EAf D)) = 0 by`. Rewrite using `[Comparison₂.fr, Matrix.mul_zero, Matrix.zero_mul]]`.
+
+Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy a b`. Rewrite using `[genMap_add, Matrix.map_add _ (eToEAf D).map_add, Comparison₂.fr_add, Matrix.add_apply, RingHom.map_add]`. Conclude with `Valuation.map_add_le _ (hx a b) (hy a b)`. Introduce `o x _ hx a b`.
+
+Rewrite using `[show o • x = (algebraMap (𝓞 D.host.E) D.host.E o) • x from (algebraMap_smul _ _ _).symm, genMap_smul, show (algebraMap (𝓞 D.host.E) D.host.E o • GlobalTheory.LatVac.genMap S T 1 s x).map (eToEAf D) = eToEAf D (algebraMap (𝓞 D.host.E) D.host.E o) • (GlobalTheory.LatVac.genMap S T …`. Conclude with `mul_le_of_le_one_of_le (w.intValuation_le_one o) (hx a b)`. Use `GlobalTheory.LatVac.latO_induction (p := p) (fun α hα M hM => ?_) hzero hadd hneg hu a b` and prove the remaining obligations. Proceed by induction on `hM using AddSubgroup.closure_induction with`. Consider the case `mem M hM`.
+
+Take `⟨c, hc, s, hs, t, ht, rfl⟩` from `hM`. Use `set Y := GlobalTheory.LatVac.genMap S T 1 s t`. Establish `e1 : (GlobalTheory.LatVac.finTens α (GlobalTheory.LatVac.genMap S T c s t) : WO S T).map (toEAf D) = toEAf D ((pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)) * incA D c) • Y.map (eToEAf D)`. Use extensionality with `i j`. Simplify using `only [GlobalTheory.LatVac.finTens, Y, GlobalTheory.LatVac.genMap, Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[show c * t i * ∑ k, star (s k) * HSpace.gram S k j = c * (1 * t i * ∑ k, star (s k) * HSpace.gram S k j) by ring, tmul_eq, RingHom.map_mul]`. Both sides reduce to the same expression. Introduce `a b`. Rewrite using `[e1, Comparison₂.fr_smul, Matrix.smul_apply, smul_eq_mul, RingHom.map_mul, RingHom.map_mul, Valuation.map_mul, RingHom.map_mul, Valuation.map_mul]`. Establish `h1 : Valued.v (cpt (D` using `D) w (toEAf D (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)))) ≤ 1 := by`.
+
+Establish `hi : finPart D (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)) ∈ intAE D` using `AddSubgroup.subset_closure ⟨α, hα, 1, rfl⟩`. Conclude with `((comp_toAd D).int (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E))).1 hi w`. Establish `h2 : Valued.v (cpt (D` using `D) w (toEAf D (incA D c))) ≤ 1 := by`. Rewrite using `[show cpt (D := D) w (toEAf D (incA D c)) = algebraMap D.host.E (Kw w) c from Comparison₂.cpt_tmul w c]`. Conclude with `hw c hc`.
+
+Conclude with `mul_le_of_le_one_of_le (mul_le_one' h1 h2) (hY s hs t ht a b)`. Consider the case `zero => rw [GlobalTheory.LatVac.finTens_zero]`. Conclude with `hzero`. Consider the case `add x y _ _ hx hy => rw [GlobalTheory.LatVac.finTens_add]`. Conclude with `hadd _ _ hx hy`.
+
+Consider the case `neg x _ hx => rw [GlobalTheory.LatVac.finTens_neg]`. Conclude with `hneg _ hx`.
+-/
 theorem v_le_of_mem_latO_idLat (hS : IsSelfDualC S ΛS) {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
     (hβS : IsFrame βS ΛS) (hβT : IsFrame βT ΛT) (w : Pl D.host.E)
     (hw : ∀ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) ≤ 1)
@@ -190,6 +242,23 @@ end GlobalTheory.DepthBig
 
 open GlobalTheory.FunObj.Comparison₂ GlobalTheory.StdFrames Formalism.L2.DIV GlobalTheory.DepthBig in
 
+/- English proof (translation)
+Introduce `D hQ T L μ0 hL sc G W M _ i hi u _ hB e he`. Establish `hV : ∀ X : Node, X.InRange D.R.m → IsSelfDualC (G.V X) (G.Λ X)` using `fun X hX => by`. Distinguish the cases in `h0 : ∀ j, X ≠ .grid 0 j`. Conclude with `(G.isV hX h0).sd`. Use `push_neg at h0`.
+
+Take `⟨j, rfl⟩` from `h0`. Conclude with `(GlobalTheory.ChiGrid.colY_isV D T L μ0 hL j hX.2).sd`. Establish `hS` using `hV (.grid (i + 1) 0) ⟨hi, Nat.zero_le _⟩`. Establish `hT` using `hV (.grid i 0) ⟨hi.le, Nat.zero_le _⟩`. Take `⟨βS, hβS⟩` from `GlobalTheory.latticeFrame.exists_frame D.host.F D.host.E _ _ hS.1`.
+
+Take `⟨βT, hβT⟩` from `GlobalTheory.latticeFrame.exists_frame D.host.F D.host.E _ _ hT.1`. Take `⟨e0, e1, e2⟩` from `Comparison₂.cpt_idemSum he`. Rewrite using `[Comparison₂.mem_hatMx_iff hβS hβT]`. Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, e0, zero_mul]`.
+
+Establish `hfr : Comparison₂.fr βT βS ((e • u).map (toEAf D)) a b = toEAf D e * Comparison₂.fr βT βS (u.map (toEAf D)) a b`. Establish `hm : (e • u).map (toEAf D) = toEAf D e • u.map (toEAf D)` using `Matrix.ext fun i j => by`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, RingHom.map_mul]`. Rewrite using `[hm, Comparison₂.fr_smul]`. Both sides reduce to the same expression.
+
+Establish `hloc : ∀ w ∈ G.pl.W0, Valued.v (cpt (D` using `D) w (Comparison₂.fr βT βS (u.map (toEAf D)) a b)) ≤ WithZero.exp (-(cosExp G w : ℤ)) := by`. Introduce `w hw`. Take `⟨v, hv, rfl⟩` from `(GlobalTheory.DepthFix.mem_orthogonal_frame_iff G).1 hw`. Conclude with `v_le_of_mem_latO_idLat hS hβS hβT _ (GlobalTheory.DepthFix.aa_int hL hQ G hw) (fun x hx => v_le_of_mem_shiftId G hv hx) hB a b`. Establish `hint : Comparison₂.fr βT βS ((e • u).map (toEAf D)) a b ∈ OA D`.
+
+Use `(mem_OA_iff _).2 fun Q => ?_` and prove the remaining obligations. Rewrite using `[hfr, RingHom.map_mul]`. Distinguish the cases in `hQ : Q ∈ G.pl.W0`. Rewrite using `[e1 Q hQ, one_mul]`. Conclude with `(hloc Q hQ).trans (by rw [← WithZero.exp_zero, WithZero.exp_le_exp]; omega)`.
+
+Rewrite using `[e2 Q hQ, zero_mul]`. Conclude with `zero_mem _`. Use `⟨⟨_, hint⟩, (Comparison₂.mem_idS_modul G _).2 fun w hw => ?_, rfl⟩` and prove the remaining obligations. Use `show Valued.v (cpt (D := D) w (Comparison₂.fr βT βS ((e • u).map (toEAf D)) a b)) ≤ _`. Rewrite using `[hfr, RingHom.map_mul, e1 w hw, one_mul]`.
+
+Conclude with `hloc w hw`.
+-/
 theorem GlobalTheory.DepthBig.smul_mem_hatMx_of_mem_latBig : All fun {D} _ _ _ {G} _ _ => ∀ i, i < D.R.m →
     ∀ v : WO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)),
       v ∈ latO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)) (G.Λ (.grid (i + 1) 0) : Set _) (G.Λ (.grid i 0) : Set _)

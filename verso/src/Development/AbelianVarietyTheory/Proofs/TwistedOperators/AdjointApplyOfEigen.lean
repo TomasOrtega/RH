@@ -17,6 +17,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.LiftRows
 namespace GlobalTheory.SplitEigen
 
+/- English proof (translation)
+Use `set B : Module.End ℂ H := A - μ • 1 with hBdef`. Establish `hBadj : LinearMap.adjoint B = LinearMap.adjoint A - starRingEnd ℂ μ • 1`. Rewrite using `[hBdef, map_sub, map_smulₛₗ]`. Use `congr 2`. Conclude with `LinearMap.adjoint_id`.
+
+Establish `hBv : B v = 0`. Rewrite using `[hBdef, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, hv, sub_self]`. Establish `hc : Commute B (LinearMap.adjoint B)`. Rewrite using `[hBadj, hBdef]`. Conclude with `(hA.sub_right ((Commute.one_right A).smul_right _)).sub_left ((Commute.one_left _).smul_left _)`.
+
+Establish `h0 : LinearMap.adjoint B v = 0`. Establish `e : inner ℂ (LinearMap.adjoint B v) (LinearMap.adjoint B v) = (0 : ℂ)`. Rewrite using `[LinearMap.adjoint_inner_left]`. Establish `: B (LinearMap.adjoint B v) = LinearMap.adjoint B (B v)`. Rewrite using `[← Module.End.mul_apply, hc.eq, Module.End.mul_apply]`.
+
+Rewrite using `[this, hBv, map_zero, inner_zero_right]`. Conclude with `inner_self_eq_zero.1 e`. Rewrite `h0` using `[hBadj, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `h0`.
+-/
 theorem adjoint_apply_of_eigen {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     (A : Module.End ℂ H) (hA : Commute A (LinearMap.adjoint A)) (v : H) (μ : ℂ) (hv : A v = μ • v) :
     LinearMap.adjoint A v = starRingEnd ℂ μ • v := by
@@ -40,6 +49,13 @@ theorem adjoint_apply_of_eigen {H : Type} [NormedAddCommGroup H] [InnerProductSp
   rw [hBadj, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero] at h0
   exact h0
 
+/- English proof (translation)
+Introduce `b hb`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem b hb => exact hS b hb`. Consider the case `algebraMap r => exact ⟨r, fun u _ => Module.algebraMap_end_apply ℂ ℂ M r u⟩`. Consider the case `add b b' _ _ ihb ihb'`.
+
+Take `⟨μ, hμ⟩` from `ihb`. Take `⟨μ', hμ'⟩` from `ihb'`. Conclude with `⟨μ + μ', fun u hu => by rw [LinearMap.add_apply, hμ u hu, hμ' u hu, add_smul]⟩`. Consider the case `mul b b' _ _ ihb ihb'`. Take `⟨μ, hμ⟩` from `ihb`.
+
+Take `⟨μ', hμ'⟩` from `ihb'`. Conclude with `⟨μ * μ', fun u hu => by rw [Module.End.mul_apply, hμ' u hu, map_smul, hμ u hu, smul_smul, mul_comm]⟩`.
+-/
 theorem adjoin_scalar {M : Type} [AddCommGroup M] [Module ℂ M] (S : Set (Module.End ℂ M)) (X : Set M)
     (hS : ∀ b ∈ S, ∃ μ : ℂ, ∀ u ∈ X, b u = μ • u) : ∀ b ∈ Algebra.adjoin ℂ S, ∃ μ : ℂ, ∀ u ∈ X, b u = μ • u := by
   intro b hb
@@ -61,6 +77,27 @@ namespace GlobalTheory.SplitEigen
 
 set_option maxHeartbeats 40000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s _hOk hC hEx _hH _hGE j c h hh hN P hP hconj d _hd`. Take `⟨hCoreF, -, -, hOnto, -, -, -⟩` from `GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hC`. Establish `hCore` using `hCoreF hEx`. Establish `hM` using `hCore.models`. Take `⟨P0, hP0, rfl⟩` from `(hOnto _ hP).2 hconj`.
+
+Establish `hsplit` using `(GlobalTheory.SplitHeckeLabel.split_ops R.toRealDat F.lv2 hCore.lev hCore.fam hM).2 j A3.A.fam.μ0 h hh ⟨P0, hP0⟩`. Establish `hK` using `RealDat3.kFormL_of (R := R) (F := F) hM`. Establish `hop : ∀ k, k ≤ (Vc D j).rank → (R.toCx3 F).opLC j A3.A.fam.μ0 (Sum.inl (Sum.inl (⟨P0, hP0⟩, k))) = Tw.map (twAt D.what₂.embLL A3.A.v0) (h (R.pl P0) (Finsupp.single (splitLab (Vc D j).rank k) 1))`. Introduce `k hk`. Use `LinearMap.ext_on_range (hK j A3.A.fam.μ0).2 fun b => ?_` and prove the remaining obligations.
+
+Rewrite using `[← CxData.jL_opL _ hK]`. Conclude with `congrArg (Tw.mk (twAt D.what₂.embLL A3.A.v0)) (hsplit k hk _)`. Establish `hT : ∀ k, k ≤ (Vc D j).rank → ∀ x ∈ U2.eigPart (U2.liftHeckeOperators A3 (R.toCx3 F) j) c, h (R.pl P0) (Finsupp.single (splitLab (Vc D j).rank k) 1) (Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) x) = cj (twAt D.what₂.embLL A3.A.v0) (c (Sum.inl (⟨P0, hP0⟩, k))) • (Tw.out (s := twAt D.what₂.embLL A3.A.v0) x : (R.HV j A3.A.fam.μ0).H) := by`. Introduce `k hk x hx`. Establish `e1` using `(U2.mem_eigPart.1 hx) (Sum.inl (⟨P0, hP0⟩, k))`.
+
+Establish `e2 : Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) (U2.liftHeckeOperators A3 (R.toCx3 F) j (Sum.inl (⟨P0, hP0⟩, k)) x) = h (R.pl P0) (Finsupp.single (splitLab (Vc D j).rank k) 1) (Tw.out (s := twAt D.what₂.embLL A3.A.v0) x) := by`. Conclude with `(congrArg (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HV j A3.A.fam.μ0).H)) (LinearMap.congr_fun (hop k hk) x)).trans rfl`. Rewrite using `[← e2, e1]`. Conclude with `Tw.out_smul (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HV j A3.A.fam.μ0).H) _ _`. Establish `hD : ∀ k, k ≤ (Vc D j).rank → ∀ x ∈ U2.eigPart (U2.liftHeckeOperators A3 (R.toCx3 F) j) c, h (R.pl P0) (Finsupp.single (dualLab (splitLab (Vc D j).rank k)) 1) (Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) x) = starRingEnd ℂ (cj (twAt D.what₂.embLL A3.A.v0) (c (Sum.inl (⟨P0, hP0⟩, k)))) • (Tw.out (s := twAt D.what₂.embLL A3.A.v0) x : (R.HV j A3.A.fam.μ0).H) := by`.
+
+Introduce `k hk x hx`. Establish `ha : LinearMap.adjoint (h (R.pl P0) (Finsupp.single (splitLab (Vc D j).rank k) 1)) = h (R.pl P0) (Finsupp.single (dualLab (splitLab (Vc D j).rank k)) 1)`. Rewrite using `[hN.2 _ hP]`. Use `congr 1`. Rewrite using `[Finsupp.mapRange_single, star_one, GlobalTheory.Hk3.dualC, Finsupp.mapDomain_single]`.
+
+Establish `hc : Commute (h (R.pl P0) (Finsupp.single (splitLab (Vc D j).rank k) 1)) (LinearMap.adjoint (h (R.pl P0) (Finsupp.single (splitLab (Vc D j).rank k) 1)))` using `ha.symm ▸ hN.1 _ _ hP hP _ _`. Conclude with `(LinearMap.congr_fun ha _).symm.trans (adjoint_apply_of_eigen _ hc _ _ (hT k hk x hx))`. Take `⟨a, ha, hae⟩` from `GlobalTheory.SplitGen.gen_split (Vc D j) (R.pl P0) hconj _ (GlobalTheory.DefiniteOps.rtr (GlobalTheory.SplitHeckeAdj.fin (Vc D j)) (R.cV j).W) d`. Establish `key` using `adjoin_scalar _ {u | ∃ x ∈ U2.eigPart (U2.liftHeckeOperators A3 (R.toCx3 F) j) c, u = (R.HV j A3.A.fam.μ0).e (Tw.out (s := twAt D.what₂.embLL A3.A.v0) x)} (by`. Introduce and unpack `b ⟨k, hk, rfl | rfl⟩`.
+
+Use `⟨cj (twAt D.what₂.embLL A3.A.v0) (c (Sum.inl (⟨P0, hP0⟩, k))), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(GlobalTheory.DefiniteOps.hkF_eq (Vc D j) (R.pl P0) _ _).symm.trans ((hh _ hP _ _).symm.trans ((congrArg (R.HV j A3.A.fam.μ0).e (hT k hk x hx)).trans (map_smul _ _ _)))`. Use `⟨starRingEnd ℂ (cj (twAt D.what₂.embLL A3.A.v0) (c (Sum.inl (⟨P0, hP0⟩, k)))), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `(GlobalTheory.DefiniteOps.hkF_eq (Vc D j) (R.pl P0) _ _).symm.trans ((hh _ hP _ _).symm.trans ((congrArg (R.HV j A3.A.fam.μ0).e (hD k hk x hx)).trans (map_smul _ _ _)))) a ha`. Take `⟨μ, hμ⟩` from `key`. Use `⟨μ, fun x hx => (hM.HV j A3.A.fam.μ0).1 ?_⟩` and prove the remaining obligations. Establish `hfix : ∀ k ∈ GlobalTheory.Hk3.hyp (Vc D j) (R.pl P0), GlobalTheory.DefiniteOps.rtr (GlobalTheory.SplitHeckeAdj.fin (Vc D j)) (R.cV j).W k ((R.HV j A3.A.fam.μ0).e (Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) x)) = (R.HV j A3.A.fam.μ0).e (Tw.out (s := twAt D.what₂.embLL A3.A.v0) x) := by`. Take `⟨n, hn⟩` from `hCore.lev.βV j`.
+
+Establish `hn' : IsBaseFrame (Vc D j) (R.βV j) (R.ΛV j) 1` using `(one_pow n : (1 : ℕ) ^ n = 1) ▸ hn`. Use `GlobalTheory.DefiniteOps.fixed_of_mem (Vc D j) (R.βV j) (R.ΛV j) (R.datVt j A3.A.fam.μ0) hn' (R.pl P0) hP (R.cV j).coef.ρ _ ?_` and prove the remaining obligations. Establish `hm` using `LinearMap.mem_range_self (R.HV j A3.A.fam.μ0).e (Tw.out (s := twAt D.what₂.embLL A3.A.v0) x)`. Rewrite `hm` using `[(hM.HV j A3.A.fam.μ0).2.1]`. Conclude with `hm`.
+
+Conclude with `(hh _ hP _ _).trans ((GlobalTheory.DefiniteOps.hkF_eq _ _ _ _).trans ((hae _ hfix).symm.trans ((hμ _ ⟨x, hx, rfl⟩).trans (map_smul _ _ _).symm)))`.
+-/
 theorem label_scalar_split : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → (∀ j t, (A3.A.fam.L j t).OkH ∧ (A3.liftI j t).InertRationalAdjoint) → R.PGEquiv F → ∀ (j : Fin D.R.m) (c : (A3.liftI j A3.A.fam.μ0).OpIx → ℂ) (h : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ (R.HV j A3.A.fam.μ0).H), GlobalTheory.Hk3.IsOpsV R.toRealDat j A3.A.fam.μ0 h → GlobalTheory.Hk3.NormalFam (GlobalTheory.Hk3.Good R.toRealDat A3.A.fam.μ0) h → ∀ (P : Pl D.host.E), GlobalTheory.Hk3.Good R.toRealDat A3.A.fam.μ0 P → conjPl P ≠ P → ∀ d, GlobalTheory.Hk3.IsLab (Vc D j) P d → ∃ a : ℂ, ∀ x ∈ U2.eigPart (U2.liftHeckeOperators A3 (R.toCx3 F) j) c, h P (Finsupp.single d 1) (Tw.out (s := twAt D.what₂.embLL A3.A.v0) x) = a • (Tw.out (s := twAt D.what₂.embLL A3.A.v0) x : (R.HV j A3.A.fam.μ0).H) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s _hOk hC hEx _hH _hGE j c h hh hN P hP hconj d _hd
   obtain ⟨hCoreF, -, -, hOnto, -, -, -⟩ := GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hC

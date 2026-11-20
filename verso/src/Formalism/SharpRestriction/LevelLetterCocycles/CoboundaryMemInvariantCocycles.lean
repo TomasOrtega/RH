@@ -21,6 +21,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Use `(RL.mem_Z1DΔ_iff W T _).2 ⟨?_, fun δ hδ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [map_sub, W.φγ_comm]`. Normalize the expressions using the abelian group laws. Simplify using `only [map_sub, gammaD_frobenius_comm, hm δ hδ]`. Simplify using `only [map_sub]`.
+
+Rewrite using `[← W.γD_mul, mul_comm, W.γD_mul, hm δ hδ]`.
+-/
 theorem coboundary_mem_invariant_cocycles {m : W.DD T} (hm : ∀ δ ∈ W.DelF, W.γD T δ m = m) :
     ((W.φD T m - m, W.γD T W.gamK m - m) : W.DD T × W.DD T) ∈ W.wachCocyclesDelta T := by
   refine (RL.mem_Z1DΔ_iff W T _).2 ⟨?_, fun δ hδ => ⟨?_, ?_⟩⟩
@@ -30,6 +35,31 @@ theorem coboundary_mem_invariant_cocycles {m : W.DD T} (hm : ∀ δ ∈ W.DelF, 
   · simp only [map_sub]
     rw [← W.γD_mul, mul_comm, W.γD_mul, hm δ hδ]
 
+/- English proof (translation)
+Establish `hγ : W.γ T = W.γD T W.gamK` using `by rw [hgam]; rfl`. Establish `hZex : ∀ c, ∃ z, c ∈ ev → InPN W T M z ∧ W.φD T z - z = W.γ T (Y c) - Y c`. Introduce `c`. Distinguish the cases in `hc : c ∈ ev`. Take `⟨z, hz⟩` from `(hF2 _ (hYg c hc)).exists`.
+
+Conclude with `⟨z, fun _ => hz⟩`. Conclude with `⟨0, fun h => (hc h).elim⟩`. Use `choose Z hZ using hZex`. Establish `hCmem : ∀ c (hc : c ∈ ev), ((Y c, Z c) : W.DD T × W.DD T) ∈ W.wachCocyclesDelta T`. Introduce `c hc`.
+
+Use `(RL.mem_Z1DΔ_iff W T _).2 ⟨?_, fun δ hδ => ⟨hYΔ c hc δ hδ, ?_⟩⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← hγ, (hZ c hc).2]`. Conclude with `uniformizerLattice_delta_fixed W T hπ (hZ c hc).1 δ hδ`. Take `⟨C, hC⟩ : ∃ C : ZMod n → ↥(W.wachCocyclesDelta T), ∀ c (hc : c ∈ ev), (C c : W.DD T × W.DD T) = (Y c, Z c)` from `⟨fun c => if hc : c ∈ ev then ⟨(Y c, Z c), hCmem c hc⟩ else 0, fun c hc => by simp [hc]⟩`.
+
+Establish `hxc : ∀ c ∈ ev, W.clK T (x c) = ((PD.p : ℕ) : O) ^ σ • W.clK T (C c)`. Introduce `c hc`. Establish `h0` using `hF3 (c + 1) (x c - ((PD.p : ℕ) : O) ^ σ • C c) (by simpa [hC c hc] using (hx1 c hc).1) (by simpa [hC c hc] using (uniformizerLattice_sub W T (hx2 c hc) (Formalism.MainNotions.RamifiedCoefficientChains.S9.inPN_smul W T (((PD.p : ℕ) : O) ^ σ) (hZ c hc).1))) (by simpa [hC c hc] usin …`. Establish `e` using `(W.clK T).map_sub (x c) (((PD.p : ℕ) : O) ^ σ • C c)`. Establish `e'` using `(W.clK T).map_smul (((PD.p : ℕ) : O) ^ σ) (C c)`.
+
+Establish `h1` using `e.symm.trans h0`. Rewrite `h1` using `[sub_eq_zero]`. Conclude with `h1.trans e'`. Set `cb : ↥(W.wachCocyclesDelta T)` to `⟨_, coboundary_mem_invariant_cocycles W T hmE⟩`. Establish `hsum : ∑ c ∈ ev, C c = ((PD.p : ℕ) : O) ^ s • yz + cb`.
+
+Establish `hyz` using `((RL.mem_Z1DΔ_iff W T _).1 yz.2).1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Prod.fst_sum, Finset.sum_congr rfl (fun c hc => congrArg Prod.fst (hC c hc))]`.
+
+Simplify using `only [Submodule.coe_add, Submodule.coe_smul, Prod.fst_add, Prod.smul_fst, cb]`. Conclude with `hY1.symm`. Rewrite using `[Prod.snd_sum, Finset.sum_congr rfl (fun c hc => congrArg Prod.snd (hC c hc))]`. Simplify using `only [Submodule.coe_add, Submodule.coe_smul, Prod.snd_add, Prod.smul_snd, cb]`. Rewrite using `[← hγ]`.
+
+Establish `hw : InPN W T M (W.γ T (∑ c ∈ ev, Y c) - ∑ c ∈ ev, Y c)`. Rewrite using `[map_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_induction _ _ (fun a b ha hb => Formalism.MainNotions.RamifiedCoefficientChains.S9.inPN_add W T ha hb) (uniformizerLattice_zero W T M) (fun c hc => hYg c hc)`. Use `(hF2 _ hw).unique ⟨?_, ?_⟩ ⟨hY2, ?_⟩` and prove the remaining obligations. Conclude with `Finset.sum_induction _ _ (fun a b ha hb => Formalism.MainNotions.RamifiedCoefficientChains.S9.inPN_add W T ha hb) (uniformizerLattice_zero W T M) (fun c hc => (hZ c hc).1)`.
+
+Rewrite using `[map_sum, ← Finset.sum_sub_distrib, map_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun c hc => (hZ c hc).2`. Rewrite using `[← hY1]`. Establish `hyz' : W.γ T (yz : W.DD T × W.DD T).1 - (yz : W.DD T × W.DD T).1 = W.φD T (yz : W.DD T × W.DD T).2 - (yz : W.DD T × W.DD T).2` using `by rw [hγ]; exact hyz`. Simplify using `only [map_add, map_sub, map_smul, gamma_frobenius_comm]`.
+
+Establish `e : ((PD.p : ℕ) : O) ^ s • W.γ T (yz : W.DD T × W.DD T).1 = ((PD.p : ℕ) : O) ^ s • (yz : W.DD T × W.DD T).1 + ((PD.p : ℕ) : O) ^ s • (W.φD T (yz : W.DD T × W.DD T).2 - (yz : W.DD T × W.DD T).2)`. Rewrite using `[← hyz', smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_sub]`. Normalize the expressions using the abelian group laws.
+
+Establish `hcb : W.clK T cb = 0` using `hcob cb ⟨mE, hmE, rfl⟩`. Establish `e1 : W.clK T (∑ c ∈ ev, C c) = ∑ c ∈ ev, W.clK T (C c)` using `map_sum (W.clK T) _ _`. Establish `e3` using `congrArg (W.clK T) hsum`. Establish `e2 : W.clK T (((PD.p : ℕ) : O) ^ s • yz + cb) = ((PD.p : ℕ) : O) ^ s • W.clK T yz`. Establish `h1` using `(W.clK T).map_add (((PD.p : ℕ) : O) ^ s • yz) cb`.
+
+Establish `h2` using `(W.clK T).map_smul (((PD.p : ℕ) : O) ^ s) yz`. Rewrite `h1` using `[hcb, add_zero]`. Conclude with `h1.trans h2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_clK_eq_pow_smul_clK_of_level_decomposition [NeZero n] (M s σ : ℕ) (ev : Finset (ZMod n)) (hgam : W.gamK = W.gam)
     (hπ : W.π₀ ∈ W.AΔ)
     (hF2 : ∀ w, InPN W T M w → ∃! z, InPN W T M z ∧ W.φD T z - z = w)

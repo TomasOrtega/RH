@@ -14,22 +14,36 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 def sc (ε x : ℝ) : ℝ := Real.smoothTransition ((x - ε / 4) / (ε / 4))
 
+/- English proof (translation)
+Unfold `sc`. Conclude with `Real.smoothTransition.zero_of_nonpos (div_nonpos_iff.2 (Or.inr ⟨by linarith, by linarith⟩))`.
+-/
 lemma sc_zero {ε x : ℝ} (hε : 0 < ε) (hx : x ≤ ε / 4) : sc ε x = 0 := by
   unfold sc
   exact Real.smoothTransition.zero_of_nonpos (div_nonpos_iff.2 (Or.inr ⟨by linarith, by linarith⟩))
 
+/- English proof (translation)
+Unfold `sc`. Apply `Real.smoothTransition.one_of_one_le` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma sc_one {ε x : ℝ} (hε : 0 < ε) (hx : ε / 2 ≤ x) : sc ε x = 1 := by
   unfold sc
   apply Real.smoothTransition.one_of_one_le
   rw [le_div_iff₀ (by linarith)]
   linarith
 
+/- English proof (translation)
+Use `show ContDiff ℝ ∞ (fun x => Real.smoothTransition ((x - ε / 4) / (ε / 4)))`. Conclude with `Real.smoothTransition.contDiff.comp ((contDiff_id.sub contDiff_const).div_const _)`.
+-/
 lemma sc_cd (ε : ℝ) : ContDiff ℝ ∞ (sc ε) := by
   show ContDiff ℝ ∞ (fun x => Real.smoothTransition ((x - ε / 4) / (ε / 4)))
   exact Real.smoothTransition.contDiff.comp ((contDiff_id.sub contDiff_const).div_const _)
 
 def hh (ε x : ℝ) : ℝ := sc ε x * x ^ (-(1 / 2 : ℝ))
 
+/- English proof (translation)
+Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`. Distinguish the cases in `hx : ε / 8 < x`. Establish `hx0 : 0 < x` using `by linarith show ContDiffAt ℝ ∞ (fun y => sc ε y * y ^ (-(1 / 2 : ℝ))) x`. Conclude with `((sc_cd ε).contDiffAt).mul (Real.contDiffAt_rpow_const_of_ne hx0.ne')`.
+
+Establish `h0 : hh ε =ᶠ[nhds x] fun _ => 0` using `by filter_upwards [Iio_mem_nhds (show x < ε / 4 by linarith)] with y hy`. Simplify using `[hh, sc_zero hε (le_of_lt hy)]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq h0`.
+-/
 lemma hh_cd {ε : ℝ} (hε : 0 < ε) : ContDiff ℝ ∞ (hh ε) := by
   rw [contDiff_iff_contDiffAt]
   intro x
@@ -42,11 +56,21 @@ lemma hh_cd {ε : ℝ} (hε : 0 < ε) : ContDiff ℝ ∞ (hh ε) := by
       simp [hh, sc_zero hε (le_of_lt hy)]
     exact contDiffAt_const.congr_of_eventuallyEq h0
 
+/- English proof (translation)
+Use `filter_upwards [Ioi_mem_nhds hx] with y hy`. Simplify using `only [hh, sc_one hε (le_of_lt hy), one_mul]`.
+-/
 lemma hh_ev {ε x : ℝ} (hε : 0 < ε) (hx : ε / 2 < x) :
     hh ε =ᶠ[nhds x] fun y => y ^ (-(1 / 2 : ℝ)) := by
   filter_upwards [Ioi_mem_nhds hx] with y hy
   simp only [hh, sc_one hε (le_of_lt hy), one_mul]
 
+/- English proof (translation)
+Establish `hx0 : 0 < x` using `lt_of_lt_of_le hε hx`. Establish `h2 : ε / 2 < x` using `by linarith`. Establish `heq : iteratedFDeriv ℝ j (hh ε) x = iteratedFDeriv ℝ j (fun y : ℝ => y ^ (-(1 / 2 : ℝ))) x` using `by first`. Consider the case `exact ((hh_ev hε h2).iteratedFDeriv ℝ j).eq_of_nhds`. Consider the case `exact (hh_ev hε h2).iteratedFDeriv_eq j`.
+
+Rewrite using `[heq, norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_eq_iterate]`. Simplify using `only [Real.iter_deriv_rpow_const]`. Rewrite using `[norm_mul, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos (Real.rpow_pos_of_pos hx0 _)]`. Establish `hj : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Establish `hexp : -(1 / 2 : ℝ) - j ≤ 0` using `by linarith`.
+
+Apply `mul_le_mul_of_nonneg_left _ (abs_nonneg _)` to reduce the goal to its premises. Use `first`. Consider the case `exact Real.rpow_le_rpow_of_exponent_nonpos hε hx hexp`. Consider the case `exact Real.rpow_le_rpow_of_nonpos hε hx hexp`.
+-/
 lemma hh_bound {ε : ℝ} (hε : 0 < ε) (j : ℕ) {x : ℝ} (hx : ε ≤ x) :
     ‖iteratedFDeriv ℝ j (hh ε) x‖ ≤ |(descPochhammer ℝ j).eval (-(1 / 2 : ℝ))| * ε ^ (-(1 / 2 : ℝ) - j) := by
   have hx0 : 0 < x := lt_of_lt_of_le hε hx
@@ -67,10 +91,22 @@ lemma hh_bound {ε : ℝ} (hε : 0 < ε) (j : ℕ) {x : ℝ} (hx : ε ≤ x) :
 
 def Phh (ε : ℝ) (z : ℂ) : ℂ := ((hh ε z.re : ℝ) : ℂ)
 
+/- English proof (translation)
+Use `show ContDiff ℝ ∞ (fun z : ℂ => ((hh ε z.re : ℝ) : ℂ))`. Conclude with `Complex.ofRealCLM.contDiff.comp ((hh_cd hε).comp Complex.reCLM.contDiff)`.
+-/
 lemma Phh_cd {ε : ℝ} (hε : 0 < ε) : ContDiff ℝ ∞ (Phh ε) := by
   show ContDiff ℝ ∞ (fun z : ℂ => ((hh ε z.re : ℝ) : ℂ))
   exact Complex.ofRealCLM.contDiff.comp ((hh_cd hε).comp Complex.reCLM.contDiff)
 
+/- English proof (translation)
+Use `⟨‖Complex.ofRealCLM‖ * (|(descPochhammer ℝ j).eval (-(1 / 2 : ℝ))| * ε ^ (-(1 / 2 : ℝ) - j) * ‖Complex.reCLM‖ ^ j), fun z hz => ?_⟩` and prove the remaining obligations. Establish `hh' : ContDiff ℝ ∞ (hh ε ∘ Complex.reCLM)` using `(hh_cd hε).comp Complex.reCLM.contDiff`. Establish `e : Phh ε = Complex.ofRealCLM ∘ (hh ε ∘ Complex.reCLM)` using `rfl`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+
+Consider the case `exact Complex.ofRealCLM.norm_iteratedFDeriv_comp_left hh'.contDiffAt (by exact_mod_cast le_top)`. Consider the case `exact Complex.ofRealCLM.norm_iteratedFDeriv_comp_left hh' z (by exact_mod_cast le_top)`. Consider the case `exact Complex.ofRealCLM.norm_iteratedFDeriv_comp_left hh'.contDiffAt z (by exact_mod_cast le_top)`. Use `_ ≤ _ := by gcongr`. Combine the equalities or inequalities in the displayed calculation.
+
+Consider the case `rw [Complex.reCLM.iteratedFDeriv_comp_right (hh_cd hε) z (by exact_mod_cast le_top)]`. Consider the case `rw [Complex.reCLM.iteratedFDeriv_comp_right (hh_cd hε).contDiffAt (by exact_mod_cast le_top)]`. Consider the case `rw [Complex.reCLM.iteratedFDeriv_comp_right (hh_cd hε) (by exact_mod_cast le_top)]`. Use `_ ≤ ‖iteratedFDeriv ℝ j (hh ε) (Complex.reCLM z)‖ * ∏ _i : Fin j, ‖Complex.reCLM‖ := ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _`. Use `_ = ‖iteratedFDeriv ℝ j (hh ε) (Complex.reCLM z)‖ * ‖Complex.reCLM‖ ^ j := by`.
+
+Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `_ ≤ _ := by gcongr`. Conclude with `hh_bound hε j hz`.
+-/
 lemma Phh_bound {ε : ℝ} (hε : 0 < ε) (j : ℕ) :
     ∃ B : ℝ, ∀ z ∈ {z : ℂ | ε ≤ z.re}, ‖iteratedFDeriv ℝ j (Phh ε) z‖ ≤ B := by
   refine ⟨‖Complex.ofRealCLM‖ * (|(descPochhammer ℝ j).eval (-(1 / 2 : ℝ))| * ε ^ (-(1 / 2 : ℝ) - j) *
@@ -102,6 +138,9 @@ lemma Phh_bound {ε : ℝ} (hε : 0 < ε) (j : ℕ) :
               gcongr
               exact hh_bound hε j hz
 
+/- English proof (translation)
+Rewrite using `[Real.sqrt_div hT.le x, Real.rpow_neg hx.le, ← Real.sqrt_eq_rpow, div_eq_mul_inv]`.
+-/
 lemma sqrt_div_eq {T x : ℝ} (hT : 0 < T) (hx : 0 < x) : Real.sqrt (T / x) = Real.sqrt T * x ^ (-(1 / 2 : ℝ)) := by
   rw [Real.sqrt_div hT.le x, Real.rpow_neg hx.le, ← Real.sqrt_eq_rpow, div_eq_mul_inv]
 
@@ -113,10 +152,18 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Conclude with `⟨u, v, h1, h2, h3.le, rfl⟩`.
+-/
 lemma admissible_of_unit_words {k r i : ℕ} {u v : List (Mat k r)} (h : C6.UnitWords k r u v i) : admitted i (wL u ++ wR v) := by
   obtain ⟨h1, h2, h3⟩ := h
   exact ⟨u, v, h1, h2, h3.le, rfl⟩
 
+/- English proof (translation)
+Take `⟨hc, hb⟩` from `PI.UnitaryCorollaryDerivatives.polynomial_bound k r d P hP`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hb n`. Use `⟨max C 0, le_max_right _ _, fun w hw g hg => ?_⟩` and prove the remaining obligations. Take `⟨u, v, hu, hv, hl, rfl⟩` from `hw`.
+
+Use `hC u v hu hv hl g hg` as an intermediate fact. Simplify using `only [List.map_const', List.sum_replicate, smul_zero, Nat.cast_zero, add_zero, Real.rpow_natCast] at this`. Rewrite using `[← dLR_eq]`. Conclude with `this.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by have := gN_pos hg; positivity))`.
+-/
 lemma poly_adm {k r d n : ℕ} {P : Mat k r → ℂ} (hP : U.IsPolyDeg d P) :
     ContDiff ℝ ∞ P ∧ ∃ C : ℝ, 0 ≤ C ∧ ∀ w, admitted n w → ∀ g ∈ GV k r, ‖Dw w P g‖ ≤ C * gN g ^ d := by
   obtain ⟨hc, hb⟩ := PI.UnitaryCorollaryDerivatives.polynomial_bound k r d P hP
@@ -129,6 +176,33 @@ lemma poly_adm {k r d n : ℕ} {P : Mat k r → ℂ} (hP : U.IsPolyDeg d P) :
   rw [← dLR_eq]
   exact this.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by have := gN_pos hg; positivity))
 
+/- English proof (translation)
+Introduce `k r m om Gp T hom hGp hT _ ε hε i`. Use `set ψ : Mat k r → ℂ := fun g => ((Gp g : ℝ) : ℂ) with hψdef`. Take `⟨hψc, CG, hCG0, hCG⟩` from `poly_adm (n := i) hGp`. Establish `hGpc : Continuous Gp`. Establish `: Gp = fun g => (ψ g).re` using `by funext g; simp [hψdef]`.
+
+Rewrite using `[this]`. Conclude with `Complex.continuous_re.comp hψc.continuous`. Take `⟨C₁, hC₁0, hC₁⟩` from `fdb ψ hψc {g | g ∈ GV k r ∧ ε ≤ Gp g} {z : ℂ | ε ≤ z.re} (fun g hg => by simpa [hψdef] using hg.2) gN (fun g hg => gN_ge_one hg.1) (2 * r + 2) 0 CG i (by`. Introduce `w hw hne g hg`. Establish `h1` using `hCG w hw g hg.1`.
+
+Establish `hl : 1 ≤ w.length` using `List.length_pos_iff.mpr hne`. Use `h1.trans (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ (gN_ge_one hg.1) ?_) hCG0)` and prove the remaining obligations. Use the proof step `nlinarith)`. Use `i ℂ (Phh ε) (Phh_cd hε) (Phh_bound hε)`. Establish `hoa : ∀ a, ContDiff ℝ ∞ (fun g => om g a) ∧ ∃ C : ℝ, 0 ≤ C ∧ ∀ w, admitted i w → ∀ g ∈ GV k r, ‖Dw w (fun g => om g a) g‖ ≤ C * gN g ^ (r + 1)` using `fun a => poly_adm (hom a)`.
+
+Use `choose hoc Co hCo0 hCo using hoa`. Use `set C₂ : ℝ := ∑ a, Co a with hC₂`. Establish `hC₂0 : 0 ≤ C₂` using `Finset.sum_nonneg fun a _ => hCo0 a`. Establish `hCoa : ∀ a, Co a ≤ C₂` using `fun a => Finset.single_le_sum (fun b _ => hCo0 b) (Finset.mem_univ a)`. Use `⟨Real.sqrt T * (2 ^ i * (C₁ * C₂)), fun u v huv g hg hεg => ?_⟩` and prove the remaining obligations.
+
+Use `set w := wL u ++ wR v with hw`. Establish `hwA : admitted i w` using `admissible_of_unit_words huv`. Establish `hwl : w.length = i` using `by rw [hw, len_LR]; exact huv.2.2`. Establish `hlie : ∀ x ∈ w, inLie k r x.2` using `lie_LR (unit_lie huv.1) (unit_lie huv.2.1)`. Use `set Ut : Mat k r → (Fin m → ℂ) := fun g a => (Real.sqrt T : ℂ) * (Phh ε (ψ g) * om g a) with hUt`.
+
+Establish `hUtc : ContDiff ℝ ∞ Ut` using `contDiff_pi.2 fun a => contDiff_const.mul (((Phh_cd hε).comp hψc).mul (hoc a))`. Establish `hO : IsOpen {g : Mat k r | ε / 2 < Gp g}` using `isOpen_lt continuous_const hGpc`. Establish `heq : ∀ g' ∈ GV k r, g' ∈ {g : Mat k r | ε / 2 < Gp g} → (fun g' => C6.unitOf T (Gp g') (om g')) g' = Ut g'`. Introduce `g' _ hg'`. Establish `hp : 0 < Gp g'` using `by simp only [Set.mem_setOf_eq] at hg'; linarith`.
+
+Use function extensionality and compare the values at `a`. Simplify using `only [C6.unitOf, hUt, Phh, hψdef, Complex.ofReal_re, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[AdmissibleLieWords.hh, sc_one hε (le_of_lt hg'), one_mul, sqrt_div_eq hT hp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[dLR_eq, Dw_congr_loc hlie hO heq g hg (by show ε / 2 < Gp g; linarith)]`. Apply `(pi_norm_le_iff_of_nonneg (mul_nonneg (mul_nonneg (Real.sqrt_nonneg _) (mul_nonneg (by positivity) (mul_nonneg hC₁0 hC₂0))) (pow_nonneg (gN_pos hg).le _))).2` to reduce the goal to its premises. Introduce `a`. Establish `e1 : Dw w Ut g a = Dw w (fun g => Ut g a) g`. Use `dw_clm (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => ℂ) a) w hUtc` as an intermediate fact.
+
+Conclude with `(congrFun this g).symm`. Rewrite using `[e1]`. Establish `e2 : (fun g => Ut g a) = fun g => (Real.sqrt T : ℂ) • (Phh ε (ψ g) * om g a)`. Use function extensionality and compare the values at `g`. Simplify using `[hUt, smul_eq_mul]`.
+
+Rewrite using `[e2, Dw_smul, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _)]`. Rewrite using `[mul_assoc]`. Apply `mul_le_mul_of_nonneg_left _ (Real.sqrt_nonneg _)` to reduce the goal to its premises. Establish `hL` using `leibB g (C₁ * C₂ * gN g ^ ((r + 1) * (2 * i + 1))) w (fun g => Phh ε (ψ g)) (fun g => om g a) ((Phh_cd hε).comp hψc) (hoc a) (by`. Introduce `w₁ w₂ hs`.
+
+Establish `hlen` using `spl_len hs`. Take `⟨h₁, h₂, _⟩` from `hs`. Establish `b1` using `hC₁ w₁ (Adm_sub h₁ hwA) (by have := h₁.length_le; omega) g ⟨hg, hεg⟩`. Establish `b2` using `(hCo a w₂ (Adm_sub h₂ hwA) g hg).trans (mul_le_mul_of_nonneg_right (hCoa a) (pow_nonneg (gN_pos hg).le _))`. Establish `hexp : (2 * r + 2 + 0) * w₁.length + (r + 1) ≤ (r + 1) * (2 * i + 1)`.
+
+Use `h₁.length_le` as an intermediate fact. Rewrite `this` using `[hwl]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Rewrite `hL` using `[hwl]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fibre_unit_normalization : C6.FibUnit := by
   intro k r m om Gp T hom hGp hT _ ε hε i
   set ψ : Mat k r → ℂ := fun g => ((Gp g : ℝ) : ℂ) with hψdef

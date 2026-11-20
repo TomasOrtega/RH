@@ -8,6 +8,13 @@ open GlobalTheory.MumFam GlobalTheory.MumProd
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S B B₁ B₂ _ _ _ p₁ p₂ i₁ h₁ h₂ hiso hi₁ hi₂`. Establish `key : ∀ {X : Over S} (f g : X ⟶ B), f ≫ p₁ = g ≫ p₁ → f ≫ p₂ = g ≫ p₂ → f = g`. Introduce `X f g e₁ e₂`. Rewrite using `[← cancel_mono (lift p₁ p₂)]`. Apply the tactic sequence `ext <;> simp [e₁, e₂]`.
+
+Prove the components needed by the constructor for the conclusion. Apply `key` to reduce the goal to its premises. Simplify using `[hi₁]`. Simplify using `only [Category.assoc, hi₂, IsMonHom.one_hom]`. Apply `key` to reduce the goal to its premises.
+
+Simplify using `only [Category.assoc, hi₁, IsMonHom.mul_hom, Category.comp_id]`. Rewrite using `[tensorHom_comp_tensorHom_assoc, hi₁, tensorHom_id, id_whiskerRight, Category.id_comp]`. Simplify using `only [Category.assoc, hi₂, IsMonHom.mul_hom]`. Rewrite using `[tensorHom_comp_tensorHom_assoc, hi₂]`.
+-/
 theorem isMonHom_section_of_prod_trivial :
     ∀ (S : Scheme.{0}) (B B₁ B₂ : Over S) [GrpObj B] [GrpObj B₁] [GrpObj B₂] (p₁ : B ⟶ B₁) (p₂ : B ⟶ B₂) (i₁ : B₁ ⟶ B), IsMonHom p₁ → IsMonHom p₂ → IsIso (lift p₁ p₂) → i₁ ≫ p₁ = 𝟙 _ → i₁ ≫ p₂ = toUnit _ ≫ η[B₂] → IsMonHom i₁ := by
   intro S B B₁ B₂ _ _ _ p₁ p₂ i₁ h₁ h₂ hiso hi₁ hi₂

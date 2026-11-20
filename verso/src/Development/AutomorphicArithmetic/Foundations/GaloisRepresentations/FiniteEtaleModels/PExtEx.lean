@@ -9,6 +9,17 @@ open UpperTheory.Gal.Int.Geo
 open UpperTheory.Gal.G3 (sp)
 open UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Introduce `hM hPP p _ D G hSc E _ _ gb w q _ r 𝔴 𝔫 S N₁ 𝔟 hL`. Take `⟨h3, hcq, hcp, hsup, hpow⟩` from `hL`. Take `⟨M⟩` from `hM.ex q _ (Ow w) S.b N₁ h3 hcq`. Establish `het : IsEtIdeal S.b 𝔟` using `(hM.placeOf q _ (Ow w) S.b r 𝔴 S.atq.max S.std.pmem S.std.a1 S.std.ule S.std.tw 𝔟 hsup).2 hpow`. Take `⟨Y, π, ρ, hov, ⟨m⟩, hG⟩` from `hM.finModel q _ (Ow w) S.b N₁ h3 hcq 𝔟 1 het M`.
+
+Establish `hfin : IsFinite π` using `hG.fin`. Establish `het' : Etale π` using `hG.etale`. Establish `hMp : IsProjOver M.s` using `hM.proj q _ (Ow w) S.b N₁ h3 hcq hSc.cpt M`. Establish `hYp : IsProjOver Y.s`. Rewrite using `[← hov]`.
+
+Conclude with `GlobalTheory.isProjOver_comp_of_finite (Ow w) M.X Y.X π M.s hfin hMp`. Establish `hYs : ∃ d, SmoothOfRelativeDimension d Y.s`. Establish `h0` using `het'`. Rewrite `h0` using `[Etale.iff_smoothOfRelativeDimension_zero]`. Establish `key : ∀ n, SmoothOfRelativeDimension n M.s → SmoothOfRelativeDimension (0 + n) (π ≫ M.s)` using `fun n hn => inferInstance`.
+
+Rewrite using `[← hov]`. Conclude with `⟨_, key _ M.smooth⟩`. Use `⟨⟨⟨h3, hcq, hcp, hsup, hpow⟩, M, Y, π, hov, m, hfin, het', fun k => ?_, fun k => ?_⟩⟩` and prove the remaining obligations. Conclude with `(hPP q _ (Ow w) S.b N₁ h3 hcq Y.X Y.s Y.univ k).1 hYp`. Take `⟨d, hd⟩` from `hYs`.
+
+Conclude with `(hPP q _ (Ow w) S.b N₁ h3 hcq Y.X Y.s Y.univ k).2 d hd`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.extEx_holds :
     MIn → PowProj → ExtEx := by
   intro hM hPP p _ D G hSc E _ _ gb w q _ r 𝔴 𝔫 S N₁ 𝔟 hL

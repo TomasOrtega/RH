@@ -19,6 +19,21 @@ section Covol
 
 variable [StarRing E] {n : ℕ}
 
+/- English proof (translation)
+Use `set e : ℤ := NumberField.discr E with he`. Establish `he0 : e ≠ 0` using `NumberField.discr_ne_zero E`. Establish `ecast : ((e.natAbs ^ 2 : ℕ) : E) = ((e : E)) * (e : E)`. Establish `h0 : ((e.natAbs ^ 2 : ℕ) : ℤ) = e * e` using `by rw [Nat.cast_pow, Int.natAbs_sq, sq]`. Rewrite using `[← Int.cast_natCast, h0, Int.cast_mul]`.
+
+Establish `hstar : ∀ r : 𝓞 E, star (algebraMap (𝓞 E) E r) ∈ Set.range (algebraMap (𝓞 E) E)` using `fun r => ⟨⟨star (algebraMap (𝓞 E) E r), r.isIntegral_coe.map (starRingEnd E).toIntAlgHom⟩, rfl⟩`. Establish `hdual : ∀ y, (∀ x ∈ M, ∃ z : ℤ, Algebra.trace ℚ E (hform J x y) = z) → ∀ x ∈ M, IsIntegral ℤ (herm σ J x ((e : E) • y))`. Introduce `y hy x hx`. Establish `hm : ((e : ℤ) : E) * hform J x y ∈ (1 : Submodule (𝓞 E) E)`. Apply `Formalism.HermitianLatticesTheory.genusCovolBound_discr` to reduce the goal to its premises.
+
+Introduce `r`. Take `⟨s, hs'⟩` from `hstar r`. Take `⟨z, hz⟩` from `hy (s • x) (M.smul_mem s hx)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`.
+
+Use `congr 1`. Rewrite using `[← algebraMap_smul E s x, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, hs', star_star, mul_comm]`. Take `⟨r, hr⟩` from `Submodule.mem_one.mp hm`. Rewrite using `[← hform_eq_herm σ hst, LinearMap.map_smul, smul_eq_mul, ← hr]`. Conclude with `RingOfIntegers.isIntegral_coe r`.
+
+Apply `Formalism.HermitianLatticesTheory.genusCovolBound_covol_le (hform J) N ι hι M (T * e.natAbs ^ 2) (Nat.mul_pos hT (pow_pos (Int.natAbs_pos.mpr he0) 2))` to reduce the goal to its premises. Introduce `y y' hy hy'`. Establish `h1 : (T : E) • ((e : E) • y) ∈ M` using `hM.2.2 _ (hdual y hy)`. Establish `h2` using `hdual y' hy' _ h1`. Rewrite `h2` using `[← hform_eq_herm σ hst]`.
+
+Establish `key : hform J ((T : E) • ((e : E) • y)) ((e : E) • y') = algebraMap ℚ E ((T * e.natAbs ^ 2 : ℕ) : ℚ) * hform J y y'`. Rewrite using `[map_natCast, Nat.cast_mul, ecast]`. Simplify using `only [LinearMap.map_smulₛₗ₂, LinearMap.map_smul, starRingEnd_apply, star_intCast, star_natCast, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[key]`.
+
+Take `⟨z, hz⟩` from `Formalism.HermitianLatticesTheory.genusCovolBound_trace_int (K := E) ⟨_, h2⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`. Use `show _ = Algebra.trace ℚ E (algebraMap ℚ E _ * hform J y y')`. Rewrite using `[← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul]`.
+-/
 theorem covol_le (σ : E →+* E) (hst : ∀ a : E, star a = σ a)
     (J : Matrix (Fin n) (Fin n) E) (T : ℕ) (N : ℕ)
     (ι : (Fin n → E) →+ EuclideanSpace ℝ (Fin N))
@@ -72,6 +87,15 @@ theorem covol_le (σ : E →+* E) (hst : ∀ a : E, star a = σ a)
 
 end Covol
 
+/- English proof (translation)
+Introduce `E _ _ n σ J T hσ hJ hT`. Use `letI : StarRing E := starOf σ (sigma_invol σ hσ)`. Establish `hst : ∀ a : E, star a = σ a` using `fun _ => rfl`. Establish `hJs : ∀ i j, star (J i j) = J j i` using `fun i j => herm_hermitian σ hσ J hJ i j`. Establish `hs` using `hform_isSymm J hJs`.
+
+Establish `hpos : ∀ x : Fin n → E, x ≠ 0 → 0 < Algebra.trace ℚ E (hform J x x)` using `hform_trace_pos σ hst hσ J hJ`. Take `⟨N, ι, hι, hmul, hlat⟩` from `Formalism.HermitianLatticesTheory.traceReal E (Fin n → E) (hform J) hs hpos`. Take `⟨s, -, hsall⟩` from `Formalism.HermitianLatticesTheory.classSetFinite_core Formalism.HermitianLatticesTheory.shortVectors Formalism.HermitianLatticesTheory.finIntermediate Formalism.HermitianLatticesTheory.isomOfTrace (hform J) hpos N ι hι hmul 1 one_pos _ {L | admitted σ J T L} (fun M hM x hx y hy = …`. Rewrite using `[Nat.cast_one, one_mul, hform_eq_herm σ hst]`. Conclude with `Submodule.mem_one.mpr ⟨⟨_, hM.2.1 x hx y hy⟩, rfl⟩)`.
+
+Use the proof step `(fun M hM => hlat M ⟨hM.1.1, hM.1.2⟩)`. Use the proof step `(fun M hM _ _ => covol_le σ hst J T N ι hι M hM hT)`. Use `⟨(s : Set _), s.finite_toSet, fun L hL => ?_⟩` and prove the remaining obligations. Take `⟨N', hN', g, hg, hgN⟩` from `hsall L hL`. Use `⟨N', hN', LinearMap.toMatrix' (g : (Fin n → E) →ₗ[E] (Fin n → E)), isUJ_of_isom σ hst J _ (fun x y => hg x y), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hgN, Formalism.HermitianLatticesTheory.gmap, Submodule.map_coe]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `LinearMap.toMatrix'_mulVec _ x`.
+-/
 theorem hermLatFin_main : HermLatFin := by
   intro E _ _ n σ J T hσ hJ hT
   classical

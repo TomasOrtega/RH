@@ -32,6 +32,11 @@ def LatAt {n : ℕ} {O L : Type} [CommRing O] [Field L] (l : ℕ) [Fact l.Prime]
           (rescale (em (algebraMap ℤ_[l] O (u : ℤ_[l])))) =
       (G : Mx L⟦X⟧ n n) * Matrix.diagonal (fun a => (X : L⟦X⟧) ^ (U a).toNat))
 
+/- English proof (translation)
+Unfold `LatN LatAt`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩ i`. Conclude with `⟨h1 i, h2 i, h3 i⟩`. Introduce `h`.
+
+Conclude with `⟨fun i => (h i).1, fun i => (h i).2.1, fun i => (h i).2.2⟩`.
+-/
 theorem latN_iff {ι : Type} {n : ℕ} {O L : Type} [CommRing O] [Field L] (l : ℕ) [Fact l.Prime]
     [Algebra ℤ_[l] O] (N : Lat ι n O) (h : ℕ) (u : ℤ_[l]ˣ) (U' : ι → Fin n → ℤ) (em : O →+* L)
     (jj : ℕ → O⟦X⟧ →+* L⟦X⟧) :
@@ -43,10 +48,16 @@ theorem latN_iff {ι : Type} {n : ℕ} {O L : Type} [CommRing O] [Field L] (l : 
   · intro h
     exact ⟨fun i => (h i).1, fun i => (h i).2.1, fun i => (h i).2.2⟩
 
+/- English proof (translation)
+Rewrite using `[show (0 : R⟦X⟧) = C (0 : R) by simp, subst_C]`. Simplify using the standard rewrite rules.
+-/
 private lemma powerSeries_zero_subst {R : Type} [CommRing R] (p : R⟦X⟧) : (0 : R⟦X⟧).subst p = 0 := by
   rw [show (0 : R⟦X⟧) = C (0 : R) by simp, subst_C]
   simp
 
+/- English proof (translation)
+Rewrite using `[show (1 : R⟦X⟧) = C (1 : R) by simp, subst_C]`. Simplify using the standard rewrite rules.
+-/
 private lemma subst_one_lemma_2 {R : Type} [CommRing R] (p : R⟦X⟧) : (1 : R⟦X⟧).subst p = 1 := by
   rw [show (1 : R⟦X⟧) = C (1 : R) by simp, subst_C]
   simp
@@ -62,6 +73,9 @@ def RedHom (l : ℕ) (un : F⟦X⟧) {a b : ℕ} (P D : Mx F⟦X⟧ b b) (P' D' 
   P' * A'.map (frob0 l) = A * P ∧
     (1 + (X : F⟦X⟧) • D') * A.map (gam0 0 un) = A * (1 + (X : F⟦X⟧) • D)
 
+/- English proof (translation)
+Unfold `RedHom`. Establish `hf : (1 : Mx F⟦X⟧ a a).map (frob0 l) = 1` using `Matrix.map_one _ (powerSeries_zero_subst _) (subst_one_lemma_2 _)`. Establish `hg : (1 : Mx F⟦X⟧ a a).map (gam0 0 un) = 1` using `Matrix.map_one _ (powerSeries_zero_subst _) (subst_one_lemma_2 _)`. Rewrite using `[hf, hg, Matrix.mul_one, Matrix.one_mul, Matrix.mul_one, Matrix.one_mul]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem redHom_one {l : ℕ} (hl : 0 < l) (un : F⟦X⟧) {a : ℕ} (P D : Mx F⟦X⟧ a a) : RedHom l un P D P D 1 1 := by
   unfold RedHom
   have hf : (1 : Mx F⟦X⟧ a a).map (frob0 l) = 1 :=
@@ -111,6 +125,9 @@ def GalMats.res {Γ Γ' O : Type} [Group Γ] [Group Γ'] [CommRing O] {n t R : �
     GalMats Γ' O n t R :=
   { x with rk := fun k => (x.rk k).comp ι, r2 := fun s => (x.r2 s).comp ι }
 
+/- English proof (translation)
+Unfold `GalMats.Chain Tw at *`. Take `⟨h1, h2, h3⟩` from `h`. Use `⟨fun k => ⟨fun g => (h1 k).1 (ι g), (h1 k).2⟩, fun k => ⟨fun g => (h2 k).1 (ι g), (h2 k).2⟩, fun s => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2, e3, e4, e5⟩` from `h3 s`. Conclude with `⟨fun g => e1 (ι g), fun g => e2 (ι g), fun g => e3 (ι g), fun g => e4 (ι g), e5⟩`.
+-/
 theorem GalMats.Chain.res {Γ Γ' O F : Type} [Group Γ] [Group Γ'] [CommRing O] [Field F] {n t R : ℕ}
     {x : GalMats Γ O n t R} {red : O →+* F} {r : Γ →* GL (Fin n) O} {ψ : Fin t → Γ →* GL (Fin 1) O}
     {rs : Fin t → Fin R} {dim : Fin (R + 1) → ℕ} (h : x.Chain red r ψ rs dim) (ι : Γ' →* Γ) :
@@ -152,6 +169,11 @@ def Slot.Chain {F : Type} [Field F] {n t R : ℕ} (x x' : Slot F n t R) (l : ℕ
     x.B s * x.E s = x.A (rs s).castSucc ∧ x.C s * x.E s = 0 ∧ x.B s = x.A (rs s).succ * x.B' s ∧
     lrank (x.E s) = n ∧ lrank (x.C s) = 1 ∧ lrank (x.B' s) = n
 
+/- English proof (translation)
+Establish `h1 : (A * B).rank = a` using `by rw [h, Matrix.rank_one, Fintype.card_fin]`. Use `⟨le_antisymm ?_ ?_, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Simplify using `using A.rank_le_card_height`. Combine the equalities or inequalities in the displayed calculation. Simplify using `using B.rank_le_card_width`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rank_of_mul_eq_one {k : Type} [Field k] {a b : ℕ} (A : Mx k a b) (B : Mx k b a) (h : A * B = 1) :
     A.rank = a ∧ B.rank = a := by
   have h1 : (A * B).rank = a := by rw [h, Matrix.rank_one, Fintype.card_fin]
@@ -173,6 +195,45 @@ def charMats {Γ O : Type} [Group Γ] [CommRing O] (χ : Γ →* Oˣ) (ϖ : O) :
   C := fun _ => !![1, 0]
   E := fun _ => !![0; 1]
 
+/- English proof (translation)
+Establish `key : ∀ g, ((GlobalTheory.TripleGal.rk1 χ g : GL (Fin 1) O) : Mx O 1 1) = !![(χ g : O)]`. Introduce `g`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using `[GlobalTheory.TripleGal.rk1]`. Establish `key2 : ∀ g, (((Units.map (Matrix.scalar (Fin 2) : O →+* Mx O 2 2).toMonoidHom).comp χ g : GL (Fin 2) O) : Mx O 2 2) = !![(χ g : O), 0; 0, (χ g : O)]`. Introduce `g`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+
+Establish `tw11 : ∀ A : Mx O 1 1, Tw (GlobalTheory.TripleGal.rk1 χ) (GlobalTheory.TripleGal.rk1 χ) A`. Introduce `A g`. Rewrite using `[key]`. Use extensionality with `i j`. Use `fin_cases i`.
+
+Use `fin_cases j`. Simplify using `[Matrix.mul_apply, mul_comm]`. Establish `hm0 : (!![ϖ] : Mx O 1 1).map red = 0`. Use extensionality with `i j`. Use `fin_cases i`.
+
+Use `fin_cases j`. Simplify using `[h0]`. Unfold `GalMats.Chain`. Use `⟨fun k => ?_, fun k => ⟨tw11 _, ?_⟩, fun s => ?_⟩` and prove the remaining obligations. Use `fin_cases k`.
+
+Use `⟨tw11 _, ?_, ?_⟩` and prove the remaining obligations. Simplify `hϖ` using `[charMats]`. Simplify using `only [charMats]`. Simplify using `[hm0]`. Use `⟨tw11 _, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[charMats]`. Simplify using `[charMats]`. Use `fin_cases k`. Simplify using `[charMats]`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g`. Simplify using `only [charMats, key, key2]`. Use extensionality with `i j`. Use `fin_cases i`. Apply the tactic sequence `fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+
+Introduce `g`. Simplify using `only [charMats, key, key2]`. Use extensionality with `i j`. Use `fin_cases i`. Apply the tactic sequence `fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+
+Introduce `g`. Simplify using `only [charMats, key, key2]`. Use extensionality with `i j`. Use `fin_cases i`. Apply the tactic sequence `fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+
+Introduce `g`. Simplify using `only [charMats, key, key2]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`. Simplify using `only [charMats]`.
+
+Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `only [charMats]`.
+
+Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `[charMats]`.
+
+Use `(rank_of_mul_eq_one (!![0, 1] : Mx F 1 2) _ ?_).2` and prove the remaining obligations. Simplify using `only [charMats]`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Use `(rank_of_mul_eq_one _ (!![1; 0] : Mx F 2 1) ?_).1` and prove the remaining obligations. Simplify using `only [charMats]`. Use extensionality with `i j`. Use `fin_cases i`.
+
+Use `fin_cases j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Use `(rank_of_mul_eq_one _ (!![1; 0] : Mx F 2 1) ?_).1` and prove the remaining obligations. Simplify using `only [charMats]`. Use extensionality with `i j`.
+
+Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Introduce `v h1 h2`. Establish `e1` using `congrFun h1 0`.
+
+Establish `e2` using `congrFun h2 0`. Simplify using `[charMats, Matrix.mulVec, dotProduct, Fin.sum_univ_two] at e1 e2`. Rewrite `e1` using `[e2, zero_add]`. Establish `e3 : v 1 = 0` using `(mul_eq_zero.mp e1).resolve_left hϖ`. Use function extensionality and compare the values at `i`.
+
+Use `fin_cases i`. Simplify using `using e2`. Simplify using `using e3`.
+-/
 theorem charMats_chain {Γ O F : Type} [Group Γ] [CommRing O] [IsDomain O] [Field F] (χ : Γ →* Oˣ) (ϖ : O) (hϖ : ϖ ≠ 0)
     (red : O →+* F) (h0 : red ϖ = 0) :
     (charMats χ ϖ).Chain red (GlobalTheory.TripleGal.rk1 χ) (fun _ => GlobalTheory.TripleGal.rk1 χ) (fun _ => 0) ![0, 1] := by
@@ -271,13 +332,25 @@ theorem charMats_chain {Γ O F : Type} [Group Γ] [CommRing O] [IsDomain O] [Fie
       · simpa using e2
       · simpa using e3
 
+/- English proof (translation)
+The claim follows from `powerSeries_zero_subst _`.
+-/
 private lemma frob0_zero {R : Type} [CommRing R] (l : ℕ) : frob0 l (0 : R⟦X⟧) = 0 := powerSeries_zero_subst _
 
+/- English proof (translation)
+The claim follows from `subst_one_lemma_2 _`.
+-/
 private lemma frob0_one {R : Type} [CommRing R] (l : ℕ) : frob0 l (1 : R⟦X⟧) = 1 := subst_one_lemma_2 _
 
+/- English proof (translation)
+The claim follows from `powerSeries_zero_subst _`.
+-/
 private lemma gam0_zero {R : Type} [CommRing R] (lam : R) (un : R⟦X⟧) : gam0 lam un (0 : R⟦X⟧) = 0 :=
   powerSeries_zero_subst _
 
+/- English proof (translation)
+The claim follows from `subst_one_lemma_2 _`.
+-/
 private lemma gam0_one {R : Type} [CommRing R] (lam : R) (un : R⟦X⟧) : gam0 lam un (1 : R⟦X⟧) = 1 :=
   subst_one_lemma_2 _
 
@@ -293,6 +366,33 @@ def unitPosition (F : Type) [Field F] : Slot F 1 1 1 where
   C := fun _ => !![1, 0]
   E := fun _ => !![0; 1]
 
+/- English proof (translation)
+Establish `r0 : ∀ {a b : ℕ} (A : Mx F⟦X⟧ a b), (∀ i j, A i j = 0 ∨ A i j = 1) → RedHom l un 1 0 1 0 A A`. Introduce `a b A hA`. Unfold `RedHom`. Establish `e1 : A.map (frob0 l) = A`. Use extensionality with `i j`.
+
+Apply the tactic sequence `rcases hA i j with h | h <;> simp [h, frob0_zero, frob0_one]`. Establish `e2 : A.map (gam0 0 un) = A`. Use extensionality with `i j`. Apply the tactic sequence `rcases hA i j with h | h <;> simp [h, gam0_zero, gam0_one]`. Rewrite using `[e1, e2]`.
+
+Simplify using the standard rewrite rules. Unfold `Slot.Chain`. Use `⟨fun k => ?_, fun k => ?_, fun s => ?_⟩` and prove the remaining obligations. Use `fin_cases k`. Use `⟨r0 _ ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i j`. Simplify using `[unitPosition]`. Unfold `lrank`. Simplify using `[unitPosition]`. Use `⟨r0 _ ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i j fin_cases i fin_cases j`. Simplify using `[unitPosition]`. Unfold `lrank`. Simplify using `[unitPosition]`. Use `fin_cases k`.
+
+Simplify using `[unitPosition]`. Use `⟨r0 _ ?_, r0 _ ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro i j fin_cases i fin_cases j <;> simp [unitPosition]`. Apply the tactic sequence `intro i j fin_cases i fin_cases j <;> simp [unitPosition]`. Simplify using `only [unitPosition]`.
+
+Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `only [unitPosition]`.
+
+Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `[unitPosition]`.
+
+Unfold `lrank`. Use `(rank_of_mul_eq_one (!![0, 1] : Mx (LaurentSeries F) 1 2) _ ?_).2` and prove the remaining obligations. Simplify using `only [unitPosition]`. Use extensionality with `i j`. Use `fin_cases i`.
+
+Use `fin_cases j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Unfold `lrank`. Use `(rank_of_mul_eq_one _ (!![1; 0] : Mx (LaurentSeries F) 2 1) ?_).1` and prove the remaining obligations. Simplify using `only [unitPosition]`.
+
+Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Unfold `lrank`.
+
+Use `(rank_of_mul_eq_one _ (!![1; 0] : Mx (LaurentSeries F) 2 1) ?_).1` and prove the remaining obligations. Simplify using `only [unitPosition]`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem unitPosition_chain (F : Type) [Field F] {l : ℕ} (hl : 0 < l) (un : F⟦X⟧) :
     (unitPosition F).Chain (unitPosition F) l un 1 0 (fun _ => 1) (fun _ => 0) (fun _ => 0) ![0, 1] := by
   have r0 : ∀ {a b : ℕ} (A : Mx F⟦X⟧ a b), (∀ i j, A i j = 0 ∨ A i j = 1) →
@@ -378,6 +478,9 @@ def repOf {Γ : Type} [Group Γ] (r : Γ →* GL (Fin n) ↥(OL LL)) : Represent
   ((Matrix.toLinAlgEquiv' : Matrix (Fin n) (Fin n) ↥LL.1 ≃ₐ[↥LL.1] _) : _ →* _).comp
     ((Units.coeHom _).comp ((Matrix.GeneralLinearGroup.map (algebraMap ↥(OL LL) ↥LL.1)).comp r))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem repOf_apply {Γ : Type} [Group Γ] (r : Γ →* GL (Fin n) ↥(OL LL)) (g : Γ) (v : Fin n → ↥LL.1) :
     repOf r g v = ((r g : Mx ↥(OL LL) n n).map (algebraMap ↥(OL LL) ↥LL.1)).mulVec v := rfl
 
@@ -387,8 +490,14 @@ def Cont (r : ↥(GK K) →* GL (Fin n) ↥(OL LL)) : Prop :=
 def stdMap (LL : FinExt l) (n : ℕ) : (Fin n → ↥(OL LL)) →ₗ[↥(OL LL)] (Fin n → ↥LL.1) :=
   (Algebra.linearMap ↥(OL LL) ↥LL.1).compLeft (Fin n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stdMap_apply (x : Fin n → ↥(OL LL)) (j : Fin n) : stdMap LL n x j = (x j : ↥LL.1) := rfl
 
+/- English proof (translation)
+Introduce `x y hxy`. Use function extensionality and compare the values at `j`. Establish `hj` using `congrFun hxy j`. Rewrite `hj` using `[stdMap_apply, stdMap_apply]`. Conclude with `Subtype.ext hj`.
+-/
 theorem stdMap_injective : Function.Injective (stdMap LL n) := by
   intro x y hxy
   funext j
@@ -396,6 +505,9 @@ theorem stdMap_injective : Function.Injective (stdMap LL n) := by
   rw [stdMap_apply, stdMap_apply] at hj
   exact Subtype.ext hj
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[stdMap_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, stdMap_apply]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem stdMap_mulVec (A : Mx ↥(OL LL) n' n) (x : Fin n → ↥(OL LL)) :
     (A.map (algebraMap ↥(OL LL) ↥LL.1)).mulVec (stdMap LL n x) = stdMap LL n' (A.mulVec x) := by
   funext j

@@ -24,12 +24,24 @@ section
 open Formalism.GaloisCohomology UpperTheory.Top GlobalTheory.Mem.LiteralAutomorphy
 namespace UpperTheory.V.HV.DescentVanishingReductions
 open UpperTheory.V.Lit UpperTheory.V.W
+/- English proof (translation)
+The claim follows from `have hN := hH.litN ⟨⟨_root_.UpperTheory.V.W.locPrints_of_litN hN, hN.coh.pt, hN.coh.gf, hN.coh.ge, hN.coh.uo, hN.coh.gw⟩, hH, _root_.UpperTheory.V.HV.Core.modU_of_printsH hH, levEx, lamEx (_root_.UpperTheory.V.W.local_class_field_theory_all_of_literal_automorphy hN), b0Ex (phiAll …`.
+-/
 theorem adjoint_lift_of_prints (hH : _root_.UpperTheory.V.Af.HypothesesH') : _root_.UpperTheory.V.Ws.UnramifiedInputs :=
   have hN := hH.litN
   ⟨⟨_root_.UpperTheory.V.W.locPrints_of_litN hN, hN.coh.pt, hN.coh.gf, hN.coh.ge, hN.coh.uo, hN.coh.gw⟩, hH, _root_.UpperTheory.V.HV.Core.modU_of_printsH hH, levEx, lamEx (_root_.UpperTheory.V.W.local_class_field_theory_all_of_literal_automorphy hN),
     b0Ex (phiAll (_root_.UpperTheory.V.W.cohP_alt hN))⟩
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.V.Th.adjoint_lifting_of_cohomology hH (_root_.UpperTheory.V.W.cohP_alt hH.litN)`.
+-/
 theorem adjoint_lifting_of_cohomology (hH : _root_.UpperTheory.V.Af.HypothesesH') : _root_.UpperTheory.V.Th.AdjointLiftingTheorem := _root_.UpperTheory.V.Th.adjoint_lifting_of_cohomology hH (_root_.UpperTheory.V.W.cohP_alt hH.litN)
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Gal.projectedFormsSystemPart.pm_exists_of_unramified_adjoint_lifting (_root_.UpperTheory.V.HV.DescentVanishingReductions.adjoint_lift_of_prints hH) (_root_.UpperTheory.V.HV.DescentVanishingReductions.adjoint_lifting_of_cohomology hH)`.
+-/
 theorem pmEx_of_printsH (hH : _root_.UpperTheory.V.Af.HypothesesH') : _root_.UpperTheory.V.Ws.PMExAlt := _root_.UpperTheory.Gal.projectedFormsSystemPart.pm_exists_of_unramified_adjoint_lifting (_root_.UpperTheory.V.HV.DescentVanishingReductions.adjoint_lift_of_prints hH) (_root_.UpperTheory.V.HV.DescentVanishingReductions.adjoint_lifting_of_cohomology hH)
+/- English proof (translation)
+Establish `hN` using `hH.litN`. Take `⟨CK, hL⟩` from `hK`. Use `_root_.UpperTheory.V.Th.sp4Main_alt hS (_root_.UpperTheory.V.HV.DescentVanishingReductions.adjoint_lift_of_prints hH).coh Alg.M.main_holds Alg.M.mprime_holds Alg.lemmaP (_root_.UpperTheory.GalN.V.numberSp4_n_alt hH.toClassicalTheorems) (_root_.UpperTheory.V.Th.rigSp4_alt (_root_. …` and prove the remaining obligations. Conclude with `X.soBar CK hL (_root_.UpperTheory.V.HV.U.pt_s hN) hN.coh.lfK hN.coh.ltK ℚ Ω l`. Conclude with `X.soFin CK hL (_root_.UpperTheory.V.HV.U.pt_s hN) hN.coh.lfK hN.coh.ltK ℚ Ω l c.O`.
+-/
 theorem countII_and_countIII_of_printsH_of_sp4In (hH : _root_.UpperTheory.V.Af.HypothesesH') (hK : ∃ CK : ℝ, LemmaK CK) (hS : _root_.UpperTheory.V.Aut.SymplecticFourImageDense) : CountII ∧ CountIII := by
   have hN := hH.litN
   obtain ⟨CK, hL⟩ := hK

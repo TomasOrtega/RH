@@ -10,6 +10,17 @@ namespace MassDataMassesW.NRatW
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hN`. Establish `hlin : ∀ x : Fin X.B.I.n → X.B.I.E, lin (AF X.B.I.F) X.B.I.cm.sig X.B.I.J h (ratV (F` using `X.B.I.F) (AF X.B.I.F) x) - ratV (F := X.B.I.F) (AF X.B.I.F) x = fun i => inclR (AF X.B.I.F) (((γ - 1) *ᵥ x) i) := by`. Introduce `x`. Rewrite using `[← map_sub_one_mulVec (inclR (AF X.B.I.F)) γ x]`. Simplify using `only [lin, Matrix.mulVecLin_apply, hM, Matrix.sub_mulVec, Matrix.one_mulVec]`.
+
+Both sides reduce to the same expression. Use `⟨fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `h1 a` as an intermediate fact. Rewrite `this` using `[hlin]`. Conclude with `down_span (inclR (AF X.B.I.F)) (inclR_injective X) X.eR (Kf X X.fR) (hK_e X u) _ _ this`.
+
+Establish `hperp : InXperp (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u) (ratV (F` using `X.B.I.F) (AF X.B.I.F) y) := by`. Introduce `a`. Rewrite using `[hR_ratV_left]`. Establish `h'` using `congrArg (inclR (F := X.B.I.F) (E := X.B.I.E) (AF X.B.I.F)) (hy a)`. Simplify using `only [Kf, map_sum, map_mul, map_zero] at h'`.
+
+Simplify using `only [ratV, map_sum, map_mul]`. Conclude with `h'`. Use `h2 _ hperp` as an intermediate fact. Rewrite `this` using `[hlin]`. Establish `h3` using `down_span (inclR (AF X.B.I.F)) (inclR_injective X) X.eR (Kf X X.fR) (hK_e X u) Set.univ _ this`.
+
+Rewrite `h3` using `[Set.image_univ]`. Then use the resulting hypothesis.
+-/
 theorem ratN_of_AF (γ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (h : HAd X.B.I)
     (hM : ((HA.mat (AF X.B.I.F) X.B.I.cm.sig X.B.I.J h : GL (Fin X.B.I.n) (AF X.B.I.F ⊗[X.B.I.F] X.B.I.E)) :
       Matrix (Fin X.B.I.n) (Fin X.B.I.n) (AF X.B.I.F ⊗[X.B.I.F] X.B.I.E)) =
@@ -40,6 +51,15 @@ theorem ratN_of_AF (γ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (h : HAd X.
     have h3 := down_span (inclR (AF X.B.I.F)) (inclR_injective X) X.eR (Kf X X.fR) (hK_e X u) Set.univ _ this
     rwa [Set.image_univ] at h3
 
+/- English proof (translation)
+Simplify using `only [HidaSetting.NfinU, Nfin, Set.mem_ofPred_eq] at hN`. Take `⟨h1, -, h3⟩` from `hN`. Establish `hlin : ∀ y : Fin X.B.I.n → X.B.I.E, (X.B.I.fmat x - 1) *ᵥ incl X.B.I y = fun i => Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (((γ - 1) *ᵥ y) i) := by`. Introduce `y`. Rewrite using `[hx]`.
+
+Conclude with `map_sub_one_mulVec _ γ y`. Use `⟨fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `h1 a` as an intermediate fact. Rewrite `this` using `[hlin]`. Conclude with `down_span (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) (inclE_injective X) X.eR (Kf X X.fR) (hK_e X u) {b | b < a} _ this`.
+
+Establish `hperp : ∀ a, hA X.B.I (incl X.B.I (X.eR a)) (incl X.B.I y) = 0`. Introduce `a`. Rewrite using `[hA_incl_left]`. Establish `h'` using `congrArg (Formalism.UG.inclE (F := X.B.I.F) (E := X.B.I.E) (Af X.B.I.F)) (hy a)`. Simplify using `only [Kf, map_sum, map_mul, map_zero] at h'`.
+
+Simplify `h'` using `only [incl, map_sum, map_mul]`. Use `h3 _ hperp` as an intermediate fact. Rewrite `this` using `[hlin, ← Set.image_univ]`. Establish `h4` using `down_span (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) (inclE_injective X) X.eR (Kf X X.fR) (hK_e X u) Set.univ _ this`. Rewrite `h4` using `[Set.image_univ]`. Then use the resulting hypothesis.
+-/
 theorem ratN_of_fin (γ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (x : X.B.I.Gf)
     (hx : X.B.I.fmat x = γ.map (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F))) (hN : x ∈ X.NfinU u) :
     RatN X.eR (Kf X X.eR) γ := by
@@ -67,6 +87,13 @@ theorem ratN_of_fin (γ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (x : X.B.I
       (hK_e X u) Set.univ _ this
     rwa [Set.image_univ] at h4
 
+/- English proof (translation)
+Simplify using `only [HidaSetting.NfinU, Nfin, Set.mem_ofPred_eq]`. Establish `hlin : ∀ y : Fin X.B.I.n → X.B.I.E, (X.B.I.fmat x - 1) *ᵥ incl X.B.I y = fun i => Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (((γ - 1) *ᵥ y) i) := by`. Introduce `y`. Rewrite using `[hx]`. Conclude with `map_sub_one_mulVec _ γ y`.
+
+Use `⟨fun a => ?_, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hlin]`. Conclude with `up_span (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) X.eR {b | b < a} (hR.1 a)`. Rewrite using `[hlin]`. Use `up_span (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) X.eR Set.univ (w := (γ - 1) *ᵥ X.zR u) (by rw [Set.image_univ]; exact hR.2 _ (sum_Kf_mul_zR_eq_zero X u))` as an intermediate fact.
+
+Rewrite `this` using `[Set.image_univ]`. Then use the resulting hypothesis. Rewrite using `[hx]`. Conclude with `perp_up (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) γ X.eR X.fR (Kf X X.eR) (hKf_f X u) hR.2 y (fun a => by have := hy a; rw [hA_incl_left] at this; exact this)`.
+-/
 theorem nfin_of_ratN (γ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (x : X.B.I.Gf)
     (hx : X.B.I.fmat x = γ.map (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F))) (hR : RatN X.eR (Kf X X.eR) γ) :
     x ∈ X.NfinU u := by
@@ -87,6 +114,13 @@ theorem nfin_of_ratN (γ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (x : X.B.
     exact perp_up (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) γ X.eR X.fR (Kf X X.eR) (hKf_f X u) hR.2 y
       (fun a => by have := hy a; rw [hA_incl_left] at this; exact this)
 
+/- English proof (translation)
+Establish `hdet : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `hPP : X.B.I.P v * (X.B.I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `hst : ∀ a : X.B.I.E, star (X.B.I.φ v a) = X.B.I.φ v (star a)`. Introduce `a`. Rewrite using `[X.B.I.cm.cmUnram.2.1]`.
+
+Both sides reduce to the same expression. Unfold `hJ rv`. Rewrite using `[← X.B.I.P_spec v, Matrix.star_mulVec, Matrix.mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.conjTranspose_mul, hPP, Matrix.conjTranspose_one, Matrix.vecMul_one]`. Use `set w := X.B.I.P v *ᵥ y`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.map_apply, Pi.star_apply, hst, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+-/
 theorem hJ_rv (v : InfinitePlace X.B.I.F) (x : Fin X.B.I.n → X.B.I.E) (y : Fin X.B.I.n → ℂ) :
     hJ (X.B.I.ε v) (rv X.B.I v x) y =
       ∑ j, X.B.I.φ v (∑ i, star (x i) * X.B.I.J i j) * (X.B.I.P v *ᵥ y) j := by
@@ -106,6 +140,23 @@ theorem hJ_rv (v : InfinitePlace X.B.I.F) (x : Fin X.B.I.n → X.B.I.E) (y : Fin
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Simplify using `only [HidaSetting.NinfU, Ninf, Set.mem_ofPred_eq]`. Introduce `v`. Rewrite using `[hs v]`. Establish `hdet : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `hPP : X.B.I.P v * (X.B.I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`.
+
+Establish `hPP' : (X.B.I.P v)⁻¹ * X.B.I.P v = 1` using `Matrix.nonsing_inv_mul _ hdet`. Establish `key1 : ∀ y : Fin X.B.I.n → ℂ, ((X.B.I.P v)⁻¹ * γ.map (X.B.I.φ v) * X.B.I.P v - 1) *ᵥ y = (X.B.I.P v)⁻¹ *ᵥ ((γ.map (X.B.I.φ v) - 1) *ᵥ (X.B.I.P v *ᵥ y))`. Introduce `y`. Establish `hmat : (X.B.I.P v)⁻¹ * (γ.map (X.B.I.φ v) - 1) * X.B.I.P v = (X.B.I.P v)⁻¹ * γ.map (X.B.I.φ v) * X.B.I.P v - 1`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, Matrix.sub_mul, hPP']`.
+
+Use `conv_rhs => rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hmat]`. Establish `key2 : ∀ x : Fin X.B.I.n → ℂ, ((X.B.I.P v)⁻¹ * γ.map (X.B.I.φ v) * X.B.I.P v - 1) *ᵥ ((X.B.I.P v)⁻¹ *ᵥ x) = (X.B.I.P v)⁻¹ *ᵥ ((γ.map (X.B.I.φ v) - 1) *ᵥ x)`. Introduce `x`. Establish `hx : X.B.I.P v *ᵥ ((X.B.I.P v)⁻¹ *ᵥ x) = x` using `by rw [Matrix.mulVec_mulVec, hPP, Matrix.one_mulVec]`. Rewrite using `[key1, hx]`.
+
+Establish `spanP : ∀ (t : Set (Fin D.R.rS)) (w : Fin X.B.I.n → ℂ), w ∈ Submodule.span ℂ ((fun b i => X.B.I.φ v (X.eR b i)) '' t) → (X.B.I.P v)⁻¹ *ᵥ w ∈ Submodule.span ℂ ((fun b => rv X.B.I v (X.eR b)) '' t)`. Introduce `t w hw`. Use `Submodule.apply_mem_span_image_of_mem_span (Matrix.mulVecLin (X.B.I.P v)⁻¹) hw` as an intermediate fact. Rewrite `this` using `[Set.image_image]`. Conclude with `this`.
+
+Establish `hu : {b : Fin D.R.rS | b.1 < D.R.rS} = Set.univ` using `Set.eq_univ_of_forall fun b => b.2`. Use `⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Use `show _ *ᵥ ((X.B.I.P v)⁻¹ *ᵥ fun i => X.B.I.φ v (X.eR a i)) ∈ _`. Rewrite using `[key2, map_sub_one_mulVec]`. Conclude with `spanP _ _ (up_span (X.B.I.φ v) X.eR _ (hR.1 a))`.
+
+Use `show _ *ᵥ ((X.B.I.P v)⁻¹ *ᵥ fun i => X.B.I.φ v (X.zR u i)) ∈ _`. Rewrite using `[key2, map_sub_one_mulVec]`. Establish `h` using `up_span (X.B.I.φ v) X.eR Set.univ (w := (γ - 1) *ᵥ X.zR u) (by rw [Set.image_univ]; exact hR.2 _ (sum_Kf_mul_zR_eq_zero X u))`. Unfold `spanLt`. Rewrite using `[hu]`.
+
+Conclude with `spanP _ _ h`. Rewrite using `[key1]`. Establish `h` using `perp_up (X.B.I.φ v) γ X.eR X.fR (Kf X X.eR) (hKf_f X u) hR.2 (X.B.I.P v *ᵥ y) (fun a => by have := hy a; rw [hJ_rv] at this; exact this)`. Rewrite `h` using `[← Set.image_univ]`. Unfold `spanLt`.
+
+Rewrite using `[hu]`. Conclude with `spanP _ _ h`.
+-/
 theorem ninf_of_ratN (γ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (s : X.B.I.Ginf)
     (hs : ∀ v, Formalism.MainNotions.S.uMat (s v) = (X.B.I.P v)⁻¹ * γ.map (X.B.I.φ v) * X.B.I.P v) (hR : RatN X.eR (Kf X X.eR) γ) :
     s ∈ X.NinfU u := by
@@ -154,6 +205,13 @@ theorem ninf_of_ratN (γ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (s : X.B.
     rw [hu]
     exact spanP _ _ h
 
+/- English proof (translation)
+Establish `hlin : ∀ y, lin (AF X.B.I.F) X.B.I.cm.sig X.B.I.J h y - y = (γ.map (inclR (AF X.B.I.F)) - 1) *ᵥ y`. Introduce `y`. Simplify using `only [lin, Matrix.mulVecLin_apply, hM, Matrix.sub_mulVec, Matrix.one_mulVec]`. Use `show _ ∧ _`. Use `⟨fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hlin]`. Use `up_span (inclR (F := X.B.I.F) (E := X.B.I.E) (AF X.B.I.F)) X.eR {b | b < a} (hR.1 a)` as an intermediate fact. Establish `e : (γ.map (inclR (F` using `X.B.I.F) (E := X.B.I.E) (AF X.B.I.F)) - 1) *ᵥ ratV (F := X.B.I.F) (AF X.B.I.F) ((frameOf X u).e a) = fun i => inclR (F := X.B.I.F) (E := X.B.I.E) (AF X.B.I.F) (((γ - 1) *ᵥ X.eR a) i) := map_sub_one_mulVec _ γ (X.eR a)`. Rewrite using `[e]`. Conclude with `this`.
+
+Rewrite using `[hlin]`. Use `perp_up (inclR (F := X.B.I.F) (E := X.B.I.E) (AF X.B.I.F)) γ X.eR X.fR (Kf X X.eR) (hKf_f X u) hR.2 y (fun a => by have := hy a; rw [hR_ratV_left] at this; exact this)` as an intermediate fact. Rewrite `this` using `[← Set.image_univ]`. Conclude with `this`.
+-/
 theorem nsub_of_ratN (γ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (h : HAd X.B.I)
     (hM : ((HA.mat (AF X.B.I.F) X.B.I.cm.sig X.B.I.J h : GL (Fin X.B.I.n) (AF X.B.I.F ⊗[X.B.I.F] X.B.I.E)) :
       Matrix (Fin X.B.I.n) (Fin X.B.I.n) (AF X.B.I.F ⊗[X.B.I.F] X.B.I.E)) =

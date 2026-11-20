@@ -21,6 +21,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Ker
 
+/- English proof (translation)
+Establish `hR : IsRealPt (0 : WO S T)` using `by simp [IsRealPt]`. Take `⟨a, -, b, -, hab⟩` from `GlobalTheory.SW.dbl_zero_and_norm D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even`. Establish `hip` using `(ScalarProduct.ip_basic D S T C).2 μ 𝓕 hμ`. Establish `key : ∀ φ : TF S.rank C.g, SW.IsSB φ → ipO μ 𝓕 (C.Th x φ) (C.Th x φ) = a * SW.ip φ φ * (gaussR C.X C.bas C.idx x (C.zOf x 0) * conj (gaussR C.X C.bas C.idx x (C.zOf x 0)) * kZero C.X C.idx x x (C.zOf x 0) (fun k i => conj (C.zOf x 0 k i)))`. Introduce `φ hφ`.
+
+Establish `hT : C.IsTh (C.Th x φ)` using `(GlobalTheory.T.adelicZakTheta_exists_unique D S T C x hx φ hφ).1.1`. Rewrite using `[← ((hip _ hT).2.2.2 _ hT).2.2.2.2.1 0, GlobalTheory.T.innerProduct_translated_vacua_eq_gaussianKernel D S T C μ 𝓕 hμ x hx x hx φ φ hφ hφ 0 0 hR hR, (hab φ φ hφ hφ).1]`. Rewrite using `[key v hv, key v' hv', h]`.
+-/
 theorem ipO_Th_self_eq (D : D7) (S T : HSp D) (C : Ctx S T) (μ : Measure (WO S T)) (𝓕 : Set (WO S T))
     (hμ : IsCovolOne (ratL T S) μ 𝓕) (x : Frame C.X.Ψ T.rank) (hx : x ∈ C.X.dom)
     (v v' : TF S.rank C.g) (hv : SW.IsSB v) (hv' : SW.IsSB v') (h : SW.ip v v = SW.ip v' v') :
@@ -39,6 +44,23 @@ theorem ipO_Th_self_eq (D : D7) (S T : HSp D) (C : Ctx S T) (μ : Measure (WO S 
       GlobalTheory.T.innerProduct_translated_vacua_eq_gaussianKernel D S T C μ 𝓕 hμ x hx x hx φ φ hφ hφ 0 0 hR hR, (hab φ φ hφ hφ).1]
   rw [key v hv, key v' hv', h]
 
+/- English proof (translation)
+Introduce `D S T C om hom w hwi hw1 hw2 M Λ hΛ Λ' hΛ' L L' hL hL' h hh g hg hmS hmT v v' hv hv' B hB`. Establish `hBB` using `(GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB`. Establish `hx : C.xB B ∈ C.X.dom` using `hBB.2.1`. Establish `hfix : C.mvB g B = B` using `(hBB.2.2.2.2.2 g).2.2.1 hg`. Use `set f := C.Th (C.xB B) v with hf`.
+
+Use `set f' := C.Th (C.xB B) v' with hf'`. Establish `hfT : C.IsTh f` using `(GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ hx v hv.1).1.1`. Establish `hfT' : C.IsTh f'` using `(GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ hx v' hv'.1).1.1`. Establish `hLat : IsLatVac (heisO C.ψ S T) (hatA S T (tens Λ L)) f` using `((GlobalTheory.T.latticeVacua_tensor_correspond_line D S T C w hwi hw1 hw2 M Λ hΛ L hL).1 _ hx v hv.1).2 hv.2.2`. Establish `hLat' : IsLatVac (heisO C.ψ S T) (hatA S T (tens Λ' L')) (om (h, g) f)` using `(GlobalTheory.T.completedTensorLattice_lattice_vacuum_transport D S T C h g Λ Λ' L L' hmS hmT).2 om hom f hfT hLat`.
+
+Establish `hTh : C.IsTh (om (h, g) f)` using `hom.om_pres (h, g) f hfT`. Establish `hFock : C.IsFock B (om (h, g) f)`. Establish `h1` using `((GlobalTheory.T.weakWeilRep_carries_derivatives_vacua_fockVectors D S T C om hom h g f hfT).2 B hB).1 ((GlobalTheory.T.fockPolynomialVector_testTheta_zero_eq_thetaSeries D S T C).2 B hB v hv.1).1`. Rewrite `h1` using `[hfix]`. Then use the resulting hypothesis. Take `⟨t, ht⟩` from `(GlobalTheory.T.latticeVacua_tensor_correspond_line D S T C w hwi hw1 hw2 M Λ' hΛ' L' hL').2 B hB v' hv' _ hTh hFock hLat'`.
+
+Take `⟨⟨μ, 𝓕, hμ⟩, hip⟩` from `ScalarProduct.ip_basic D S T C`. Establish `hsame : ipO μ 𝓕 f f = ipO μ 𝓕 f' f'` using `ipO_Th_self_eq D S T C μ 𝓕 hμ _ hx v v' hv.1 hv'.1 (by rw [hv.2.1, hv'.2.1])`. Establish `hom_eq : ipO μ 𝓕 (om (h, g) f) (om (h, g) f) = ipO μ 𝓕 f f` using `((hip μ 𝓕 hμ f hfT).2.2.2 f hfT).2.2.2.2.2 om hom (h, g)`. Establish `hsc : ipO μ 𝓕 (t • f') (t • f') = t * conj t * ipO μ 𝓕 f' f'`. Simplify using `only [ipO, Pi.smul_apply, smul_eq_mul, map_mul]`.
+
+Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use extensionality with `y`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h0 : ipO μ 𝓕 f' f' = 0`.
+
+Establish `hz' : f' = 0` using `(hip μ 𝓕 hμ f' hfT').2.1 h0`. Establish `hz : f = 0` using `(hip μ 𝓕 hμ f hfT).2.1 (hsame.trans h0)`. Use `⟨1, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, hz', map_zero, smul_zero]`. Use `⟨t, ?_, ht⟩` and prove the remaining obligations.
+
+Establish `h2 : t * conj t = 1`. Use `hom_eq` as an intermediate fact. Rewrite `this` using `[ht, hsc, hsame]`. Conclude with `(mul_left_eq_self₀.mp this).resolve_right h0`. Rewrite `h2` using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Establish `h3 : ‖t‖ ^ 2 = 1` using `by exact_mod_cast h2`. Establish `h4 : 0 ≤ ‖t‖` using `norm_nonneg t`. Use polynomial arithmetic with `[sq_nonneg (‖t‖ - 1), sq_nonneg (‖t‖ + 1)]`.
+-/
 theorem om_Th_vac : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ), IsWeak C.ψ S T om → ∀ w : D.host.E, IsIntegral ℤ w → w + cc w = 1 → IdemTwo w → ∀ (M : ℕ), ∀ Λ ∈ Vset D.host.E S.rank M, ∀ Λ' ∈ Vset D.host.E S.rank M, ∀ L L' : Lt D.host.E T.rank, SelfD C.X L → SelfD C.X L' → ∀ h ∈ GfC S, ∀ g ∈ GfC T, IsMov (fmtC S h) Λ Λ' → IsMov (fmt T g) L L' → ∀ v v', IsVac C.X C.bas w (tens Λ L) v → IsVac C.X C.bas w (tens Λ' L') v' → ∀ B, C.IsB B → ∃ c : ℂ, ‖c‖ = 1 ∧ om (h, g) (C.Th (C.xB B) v) = c • (C.Th (C.xB B) v') := by
   intro D S T C om hom w hwi hw1 hw2 M Λ hΛ Λ' hΛ' L L' hL hL' h hh g hg hmS hmT v v' hv hv' B hB
   have hBB := (GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB

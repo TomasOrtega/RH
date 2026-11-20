@@ -20,26 +20,46 @@ noncomputable section
 
 namespace GlobalTheory.KSZeroDer
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isInvariantField_dualNumber_of_isInvariant_tangentVector K A v u dd hu ht hd`.
+-/
 theorem isInvDer_of_isInv {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A]
     {v : TanM (𝟙 (Sp K)) A} {u : epsR K ⟶ A} (hu : u.left = (tv v).left) (ht : IsTangent u)
     {dd : Fld A.left} (hd : IsInv A v dd) : GlobalTheory.KS.IsInvDer u dd :=
   GlobalTheory.T.isInvariantField_dualNumber_of_isInvariant_tangentVector K A v u dd hu ht hd
 
+/- English proof (translation)
+Rewrite using `[pbT, rsT, dif_pos (show O ≤ (𝟙 X : X ⟶ X) ⁻¹ᵁ O₀ from h), dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem pbT_id_le {X : Scheme.{0}} {O₀ O : X.Opens} (h : O ≤ O₀) (s : Γ(X, O₀)) : pbT (𝟙 X) s O = rsT s O := by
   rw [pbT, rsT, dif_pos (show O ≤ (𝟙 X : X ⟶ X) ⁻¹ᵁ O₀ from h), dif_pos h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[constFn, map_zero, map_zero]`.
+-/
 theorem constFn_zero_fn {R : Type} [CommRing R] {X : Scheme.{0}} (q : X ⟶ Sp R) (O : X.Opens) :
     constFn q O 0 = 0 := by
   rw [constFn, map_zero, map_zero]
 
+/- English proof (translation)
+Simplify using `only [Scheme.Hom.id_app]`. Both sides reduce to the same expression.
+-/
 theorem id_app_apply {X : Scheme.{0}} (O : X.Opens) (s : Γ(X, O)) : ((𝟙 X : X ⟶ X).app O).hom s = s := by
   simp only [Scheme.Hom.id_app]
   rfl
 
+/- English proof (translation)
+Rewrite using `[rsT, rsT, rsT, dif_pos h, dif_pos h, dif_pos h, map_mul]`.
+-/
 theorem rsT_mul_le {X : Scheme.{0}} {O₀ O : X.Opens} (h : O ≤ O₀) (s t : Γ(X, O₀)) : rsT (s * t) O = rsT s O * rsT t O := by
   rw [rsT, rsT, rsT, dif_pos h, dif_pos h, dif_pos h, map_mul]
 
+/- English proof (translation)
+Rewrite using `[dlg, pbT_id_le hO, pbT_id_le hO]`. Establish `e2` using `congrArg (fun s => rsT s O) hψ`. Establish `e3 : rsT (δ (L.U i ⊓ L.U i') (L.g i i').val) O = δ O (rsT (L.g i i').val O)`. Rewrite using `[rsT, rsT, dif_pos hO, dif_pos hO]`. Conclude with `(hf.2.2 _ O hO le_top _).symm`.
+
+Rewrite `e2` using `[rsT_mul_le hO, e3]`. Rewrite using `[← e2, mul_comm (rsT (L.g i i').val O), _root_.mul_assoc, ← rsT_mul_le hO, Units.mul_inv]`. Establish `e4 : rsT (1 : Γ(A.left, L.U i ⊓ L.U i')) O = 1` using `by rw [rsT, dif_pos hO, map_one]`. Rewrite using `[e4, _root_.mul_one]`.
+-/
 theorem dlg_eq {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] (L : LB A.left)
     (δ : Fld A.left) (hf : IsField ⊤ δ) (i i' : L.ι) (ψ : Γ(A.left, L.U i ⊓ L.U i'))
     (hψ : (L.g i i').val * ψ = δ (L.U i ⊓ L.U i') (L.g i i').val) (O : A.left.Opens) (hO : O ≤ L.U i ⊓ L.U i') :
@@ -54,6 +74,21 @@ theorem dlg_eq {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] (L : LB A.left)
   have e4 : rsT (1 : Γ(A.left, L.U i ⊓ L.U i')) O = 1 := by rw [rsT, dif_pos hO, map_one]
   rw [e4, _root_.mul_one]
 
+/- English proof (translation)
+Introduce `K _ _ P₀ n v dd hdd M hM`. Use `haveI : IsCommMonObj P₀.A := P₀.isAb.comm`. Take `⟨u, hu, hul⟩` from `GlobalTheory.Heat.DlogIndep.exists_isLieBasis v`. Establish `hinv : ∀ a, GlobalTheory.KS.IsInvDer (u a) (dd a)` using `fun a => isInvDer_of_isInv (hul a) (hu.1 a) (hdd a)`. Establish `hiso` using `GlobalTheory.SiegLower.lbIso_pull_id P₀.isLB`.
+
+Take `⟨⟨φ, hφ⟩, -⟩` from `GlobalTheory.KS.DlogPol.dlog_independent K P₀ n u dd hu hinv _ (𝟙 _) P₀.L P₀.isLB hiso`. Take `⟨J, W, j, d, hcov, hWj, hl, hdiff⟩` from `hM`. Establish `hcv : ∀ z : P₀.A.left, ∃ i, (𝟙 P₀.A.left : P₀.A.left ⟶ P₀.A.left) z ∈ W i` using `fun z => by`. Establish `h2 : z ∈ ⨆ i, W i` using `by rw [hcov]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 h2`.
+
+Establish `hpb : IsPullback (𝟙 P₀.A.left) P₀.A.hom P₀.A.hom (𝟙 (Sp K))` using `IsPullback.of_horiz_isIso ⟨by simp⟩`. Use `GlobalTheory.KSUniq.theta_eq_fibre P₀ u hu dd hinv P₀.A.hom (𝟙 _) (𝟙 _) hpb (U := ⊤) (isAffineOpen_top _) P₀.L P₀.isLB hiso (fun _ => 0) M 0 W W j j d (fun _ _ _ => 0) (fun _ => le_top) (fun _ => le_top) hWj hWj hcv hcv (fun i => (hl i).1) (fun _ => isField_zero _) ?_ ?_ φ hφ ?_ …` and prove the remaining obligations. Introduce `i h r`. Establish `e : r = (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom r)`. Simplify using the standard rewrite rules.
+
+Use `(hl i).2 (W i) le_rfl ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom r)` as an intermediate fact. Use `show _ = (P₀.A.hom.appLE ⊤ (W i) h).hom 0`. Rewrite using `[map_zero]`. Use `conv_lhs => rw [e]`. Conclude with `this.trans (by simp [constFn])`.
+
+Introduce `k h r show (0 : Γ(P₀.A.left, W k)) = (P₀.A.hom.appLE ⊤ (W k) h).hom 0`. Rewrite using `[map_zero]`. Introduce `i i' O hO f`. Rewrite using `[id_app_apply, id_app_apply, hdiff i i' O hO f]`. Simplify using `only [Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `p : pbT (𝟙 P₀.A.left) (P₀.L.g (j i) (j i')).val ((𝟙 P₀.A.left) ⁻¹ᵁ P₀.L.U (j i) ⊓ (𝟙 P₀.A.left) ⁻¹ᵁ P₀.L.U (j i')) = (P₀.L.g (j i) (j i')).val` using `GlobalTheory.Heat.DlogIndep.pbT_id (X := P₀.A.left) (P₀.L.U (j i) ⊓ P₀.L.U (j i')) _`. Establish `hψ` using `hφ b (j i) (j i')`. Rewrite `hψ` using `[p]`. Rewrite using `[dlg_eq P₀.L (dd b) (hdd b).1 (j i) (j i') (φ b (j i) (j i')) hψ O (fun z hz => ⟨hWj i (hO hz).1, hWj i' (hO hz).2⟩)]`.
+
+Both sides reduce to the same expression. Introduce `k k' O hO f`. Rewrite using `[id_app_apply]`. Simplify using `only [Matrix.zero_apply, constFn_zero_fn, zero_mul, Finset.sum_const_zero, sub_self]`. Both sides reduce to the same expression.
+-/
 theorem main : ∀ (K : Type) [Field K] [CharZero K] (P₀ : Out.PolAV (Sp K)) (n : ℕ) (v : Module.Basis (Fin n) K (TanM (𝟙 (Sp K)) P₀.A)) (dd : Fin n → Fld P₀.A.left), (∀ a, IsInv P₀.A (v a) (dd a)) → ∀ M : Matrix (Fin n) (Fin n) K, KSRel P₀.A (𝟙 P₀.A.left) P₀.L dd (fun _ => 0) M → M = 0 := by
   intro K _ _ P₀ n v dd hdd M hM
   haveI : IsCommMonObj P₀.A := P₀.isAb.comm

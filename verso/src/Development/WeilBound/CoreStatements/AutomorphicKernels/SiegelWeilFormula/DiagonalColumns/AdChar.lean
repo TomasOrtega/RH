@@ -12,10 +12,16 @@ namespace PositivityTheory.SiegelWeilFormula.Ald.Ldx
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[crdB]`.
+-/
 theorem crdB_zero {m n : ℕ} (bs : Module.Basis (Fin 2) F E) : crdB bs (0 : Mx F E m n) = 0 := by
   funext k
   simp [crdB]
 
+/- English proof (translation)
+Take `⟨tb, htb⟩` from `frame_fromRows hb`. Use `⟨tb, ?_⟩` and prove the remaining obligations. Establish `e : (incM F b.1).toCols₁ = incM F b.1.toCols₁` using `rfl`. Rewrite `htb` using `[mul_fromRows_one_zero, e]`. Rewrite using `[htb, cancel_r']`.
+-/
 theorem diagCols_eq {n : ℕ} {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) :
     ∃ tb : GL (Fin n) E, (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) =
       incM F b.1.toCols₁ * incM F (tb⁻¹).1 := by
@@ -25,6 +31,15 @@ theorem diagCols_eq {n : ℕ} {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} (hb :
   rw [mul_fromRows_one_zero, e] at htb
   rw [htb, cancel_r']
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ m n bs A Y b dd had hb`. Take `⟨tb, htb⟩` from `diagCols_eq (F := F) hb`. Establish `key : ∀ z : Matrix (Fin m) (Fin n) (AE F E), z * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E))ᵀ = (z * (incM F (tb⁻¹).1)ᵀ) * (incM F b.1.toCols₁)ᵀ + (0 : Mx F E m n) * (incM F b.1.toCols₂)ᵀ`. Introduce `z`. Rewrite using `[htb, Matrix.transpose_mul, Matrix.zero_mul, add_zero, Matrix.mul_assoc]`.
+
+Use `⟨fun z => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[key, had, crdB_zero]`. Use `set w := dd.e.symm (0, y) with hw`. Establish `hd` using `frame_decomp (F := F) b w`. Establish `hew : dd.e w = (0, y)` using `by rw [hw, LinearEquiv.apply_symm_apply]`.
+
+Rewrite `hew` using `[hd, had]`. Establish `hy : (fun k => Bf σ A.J (frQ b w).toCols₁ (Ek bs k)) = y` using `(Prod.mk.inj hew).2`. Use `⟨(frQ b w).toCols₁ * (incM F tb.1)ᵀ, ?_⟩` and prove the remaining obligations. Rewrite using `[key, had, crdB_zero, ← hy]`. Use `congr 3`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, incM_inv_mul, Matrix.transpose_one, Matrix.mul_one]`.
+-/
 theorem adaptedChar : AdaptedChar := by
   intro F E _ _ _ _ _ σ m n bs A Y b dd had hb
   obtain ⟨tb, htb⟩ := diagCols_eq (F := F) hb

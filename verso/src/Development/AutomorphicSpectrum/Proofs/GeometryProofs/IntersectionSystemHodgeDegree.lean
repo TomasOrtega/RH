@@ -24,6 +24,11 @@ section General
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+Establish `h : ∀ q, ∃ t : Fin r → X.presheaf.stalk p.1, b' q = ∑ i, genMap ξ p (t i) • b i` using `fun q => by`. Establish `hm : b' q ∈ L p` using `by rw [hb'.2]; exact Submodule.subset_span ⟨q, rfl⟩`. Rewrite `hm` using `[hb.2]`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hm`. Establish `h' : ∀ i, ∃ g, genMap ξ p g = (c i : Ω)` using `fun i => (c i).2`.
+
+Use `choose t ht using h'`. Conclude with `⟨t, by rw [← hc]; exact Finset.sum_congr rfl fun i _ => by rw [ht]; rfl⟩`. Use `choose T hT using h`. Conclude with `⟨Matrix.of fun i q => T q i, hT⟩`.
+-/
 theorem exists_change {E : Type} [AddCommGroup E] [Module Ω E] (L : Lat ξ E) {r : ℕ} {b b' : Fin r → E}
     {p : Cpt ξ} (hb : L.IsFrameAt b p) (hb' : L.IsFrameAt b' p) :
     ∃ T : Matrix (Fin r) (Fin r) (X.presheaf.stalk p.1), ∀ q, b' q = ∑ i, genMap ξ p (T i q) • b i := by
@@ -37,6 +42,9 @@ theorem exists_change {E : Type} [AddCommGroup E] [Module Ω E] (L : Lat ξ E) {
   choose T hT using h
   exact ⟨Matrix.of fun i q => T q i, hT⟩
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using CxVal.one hz`. Consider the case `insert i S hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`. Conclude with `CxVal.mul (h i) ih`.
+-/
 theorem valAt_prod {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : genPt ξ ⤳ centre z) {A₀ : Type} (S : Finset A₀)
     {a : A₀ → Ω} {r : A₀ → ℂ} (h : ∀ i, ValAt ξ z (a i) (r i)) :
     ValAt ξ z (∏ i ∈ S, a i) (∏ i ∈ S, r i) := by
@@ -47,6 +55,9 @@ theorem valAt_prod {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : genPt ξ ⤳ cent
     rw [Finset.prod_insert hi, Finset.prod_insert hi]
     exact CxVal.mul (h i) ih
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hz, T.det, RingHom.map_det _ _, RingHom.map_det _ _⟩`.
+-/
 theorem valAt_det {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : genPt ξ ⤳ centre z) {r : ℕ}
     (T : Matrix (Fin r) (Fin r) (X.presheaf.stalk (centre z))) :
     ValAt ξ z (T.map (genMap ξ ⟨centre z, hz⟩)).det (T.map (Scheme.stalkClosedPointTo z).hom).det :=
@@ -58,6 +69,23 @@ section Quot
 
 variable {Ω : Type} [Field Ω] {E : Type} [AddCommGroup E] [Module Ω E]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (tailIdx hj)` using `fun a a' h => by`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [tailIdx] at this`. Conclude with `Fin.ext (by omega)`. Prove the components needed by the constructor for the conclusion.
+
+Establish `hd : Disjoint (Submodule.span Ω (Set.range (b ∘ tailIdx hj))) (LinearMap.ker F.mkQ)`. Rewrite using `[Submodule.ker_mkQ, ← hF, Set.range_comp, Set.range_comp]`. Use `hli.disjoint_span_image ?_` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨a, rfl⟩ ⟨a', h⟩`.
+
+Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [tailIdx, headIdx, Fin.val_castLE] at this`. Use `a'.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `(hli.comp _ hinj).map hd`.
+
+Rewrite using `[eq_top_iff]`. Establish `hall : ∀ i, F.mkQ (b i) ∈ Submodule.span Ω (Set.range fun a => F.mkQ (b (tailIdx hj a)))` using `fun i => by`. Distinguish the cases in `hi : i.val < j`. Establish `: b i ∈ F`. Rewrite using `[← hF]`.
+
+Conclude with `Submodule.subset_span ⟨⟨i.val, hi⟩, by simp [headIdx]⟩`. Rewrite using `[(Submodule.Quotient.mk_eq_zero F).2 this |> fun h => (show F.mkQ (b i) = 0 from h)]`. Conclude with `zero_mem _`. Conclude with `Submodule.subset_span ⟨⟨i.val - j, by have := i.isLt; omega⟩, by`. Establish `: tailIdx hj ⟨i.val - j, by have` using `i.isLt; omega⟩ = i := Fin.ext (by simp [tailIdx]; omega)`.
+
+Simplify using `only [this]⟩`. Introduce and unpack `x -`. Take `⟨e, rfl⟩` from `F.mkQ_surjective x`. Establish `he : e ∈ Submodule.span Ω (Set.range b)` using `by rw [hsp]; trivial`. Proceed by induction on `he using Submodule.span_induction with`.
+
+Consider the case `mem x h => obtain ⟨i, rfl⟩ := h`. Conclude with `hall i`. Consider the case `zero => simp`. Consider the case `add _ _ _ _ h h' => rw [map_add]`. Conclude with `add_mem h h'`.
+
+Consider the case `smul a x _ h => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a h`.
+-/
 theorem quot_basis {N j : ℕ} (hj : j ≤ N) {b : Fin N → E} {F : Submodule Ω E} (hli : LinearIndependent Ω b)
     (hsp : Submodule.span Ω (Set.range b) = ⊤) (hF : Submodule.span Ω (Set.range (b ∘ headIdx hj)) = F) :
     LinearIndependent Ω (fun a => F.mkQ (b (tailIdx hj a))) ∧
@@ -99,6 +127,11 @@ theorem quot_basis {N j : ℕ} (hj : j ≤ N) {b : Fin N → E} {F : Submodule �
 
 end Quot
 
+/- English proof (translation)
+Take `⟨h0, h1⟩` from `Complex.pos_iff.1 hΓ.det_pos`. Establish `hg : Γ.det = ((Γ.det.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simpa using h1.symm)`. Establish `e : Γ'.det = (((‖Tz.det‖ ^ 2 * Γ.det.re : ℝ)) : ℂ)`. Rewrite using `[h, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, hg]`. Establish `: star Tz.det * Tz.det = ((‖Tz.det‖ ^ 2 : ℝ) : ℂ)`.
+
+Simplify using `using Complex.conj_mul' Tz.det`. Move the coercions through the operations in `at this ⊢`. Simplify using `only [Complex.ofReal_re]`. Take the linear combination `((Γ.det.re : ℂ)) * this`. Rewrite using `[e, Complex.ofReal_re, Real.sqrt_mul (by positivity), Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem sqrt_det_change {n : ℕ} {Γ Γ' Tz : Matrix (Fin n) (Fin n) ℂ} (hΓ : Γ.PosDef)
     (h : Γ' = Tz.conjTranspose * Γ * Tz) :
     Real.sqrt Γ'.det.re = ‖Tz.det‖ * Real.sqrt Γ.det.re := by
@@ -121,6 +154,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {W : CMType H → Type} [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)]
   {Dc : ComponentData II (CMType H) K J Ω W} {Hd : HodgeData Dc} {S₀ : Finset ℕ}
 
+/- English proof (translation)
+Take `⟨U, hU, b, hs, hf⟩` from `𝔐.vb t p trivial`. Establish `e : 𝔐.V t p = Submodule.span (regAt 𝔐.ξ p) (Set.range b)` using `(hf p trivial hU).2`. Establish `hx' : x ∈ Submodule.span (regAt 𝔐.ξ p) (Set.range b)` using `e ▸ hx`. Use `clear hx`. Use `show x ∈ 𝔐.Vgen t`.
+
+Establish `hs' : Submodule.span Ω (Set.range b) = 𝔐.Vgen t` using `hs`. Rewrite using `[← hs']`. Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem x h => exact Submodule.subset_span h`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add _ _ _ _ h h' => exact add_mem h h'`. Consider the case `smul a x _ h => exact Submodule.smul_mem _ (a : Ω) h`.
+-/
 theorem stalk_le_gen (𝔐 : HodgeCpt Y S₀ Dc.y) (t : CMType H ⊕ CMType H) (p : Cpt 𝔐.ξ) {x : 𝔐.Li}
     (hx : x ∈ 𝔐.V t p) : x ∈ 𝔐.Vgen t := by
   obtain ⟨U, hU, b, hs, hf⟩ := 𝔐.vb t p trivial
@@ -136,12 +176,18 @@ theorem stalk_le_gen (𝔐 : HodgeCpt Y S₀ Dc.y) (t : CMType H ⊕ CMType H) (
   | add _ _ _ _ h h' => exact add_mem h h'
   | smul a x _ h => exact Submodule.smul_mem _ (a : Ω) h
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, hind, -⟩` from `GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c _ _ Y S₀ Ω K J Dc.y Or.𝔐 (FaithfulSMul.algebraMap_injective _ _)`. Conclude with `hind.pairwiseDisjoint (Or.bg_ne_sm τ τ)`.
+-/
 theorem blocks_disjoint (Or : CptOrigin Y S₀ Dc Hd) (τ : CMType H) :
     Disjoint (Or.𝔐.Vgen (Or.bg τ)) (Or.𝔐.Vgen (Or.sm τ)) := by
   obtain ⟨-, -, -, -, -, -, hind, -⟩ := GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c _ _ Y S₀ Ω K J Dc.y Or.𝔐
     (FaithfulSMul.algebraMap_injective _ _)
   exact hind.pairwiseDisjoint (Or.bg_ne_sm τ τ)
 
+/- English proof (translation)
+Establish `hfr` using `GlobalTheory.T.component_data_hodge_second E H D l Xo c Y II K J Ω W Dc Hd S₀ Or z w τ d.c d.f (d.b τ) h hw (d.adapted τ).1 d.inDom`. Conclude with `(GlobalTheory.T.is_frame_at_tail_of_is_frame_at_comap_sup_lattice Or.𝔐.X Ω Or.𝔐.ξ Or.𝔐.Li (W τ) (Or.i τ) (Or.𝔐.V (Or.bg τ)) (Or.𝔐.V (Or.sm τ)) (Or.𝔐.Vgen (Or.bg τ)) (Or.𝔐.Vgen (Or.sm τ)) Dc.N Dc.j Dc.j_le_N (d.b τ) (s τ) ⟨centre z, h⟩ (Or.i_inj τ) (Or.i_range τ) (blocks_disjoint …`.
+-/
 theorem small_frame (Or : CptOrigin Y S₀ Dc Hd) {z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X} {w : (Σ k, J k) → ℂ}
     (hw : CoordsAt Or.𝔐.ξ Dc.y z w) (d : MuFrameAt Hd w) {s : CMType H → Fin (Dc.N - Dc.j) → Or.𝔐.Li}
     (hs : Or.IsSmallPart d s) (τ : CMType H) (h : genPt Or.𝔐.ξ ⤳ centre z) :
@@ -152,6 +198,11 @@ theorem small_frame (Or : CptOrigin Y S₀ Dc Hd) {z : Spec (CommRingCat.of ℂ)
     (Or.i_range τ) (blocks_disjoint Or τ) (fun _ hx => stalk_le_gen _ _ _ hx) (fun _ hx => stalk_le_gen _ _ _ hx) hfr
     (by rw [(d.adapted τ).2.2, Or.F_eq τ]) (hs τ)).1
 
+/- English proof (translation)
+Repeatedly rewrite using `[← map_smul]`. Rewrite using `[← map_sum]`. Use `(Submodule.Quotient.eq (Hd.F τ)).2 ?_` and prove the remaining obligations. Rewrite using `[Or.F_eq τ, Submodule.mem_comap, map_sub, map_sum]`. Establish `e : Or.i τ (d'.b τ (tailIdx Dc.j_le_N q)) - ∑ p, Or.i τ (T p q • d.b τ (tailIdx Dc.j_le_N p)) = (Or.i τ (d'.b τ (tailIdx Dc.j_le_N q)) - s' τ q) - ∑ p, T p q • (Or.i τ (d.b τ (tailIdx Dc.j_le_N p)) - s τ p)`.
+
+Rewrite using `[hT q]`. Simplify using `only [map_smul, smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem (hs' τ q).2 (sum_mem fun p _ => Submodule.smul_mem _ _ (hs τ p).2)`.
+-/
 theorem class_change (Or : CptOrigin Y S₀ Dc Hd) {w : (Σ k, J k) → ℂ} (d d' : MuFrameAt Hd w)
     {s s' : CMType H → Fin (Dc.N - Dc.j) → Or.𝔐.Li} (hs : Or.IsSmallPart d s) (hs' : Or.IsSmallPart d' s')
     (τ : CMType H) (T : Matrix (Fin (Dc.N - Dc.j)) (Fin (Dc.N - Dc.j)) Ω)
@@ -173,6 +224,23 @@ theorem class_change (Or : CptOrigin Y S₀ Dc Hd) {w : (Σ k, J k) → ℂ} (d 
 
 end Main
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or z w d d' s s' Γ Γ' hw hi hs hs' hg hg' hpd`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Establish `h : genPt Or.𝔐.ξ ⤳ centre z` using `Or.𝔐.all _`. Establish `htie : CoordTie ℤ Or.𝔐.ξ (segreCoord Dc.y)` using `Or.𝔐.tie`. Establish `hpol` using `GlobalTheory.T.interior_point_polarised E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 z hi`.
+
+Establish `hch : ∀ τ, ∃ T : Matrix (Fin (Dc.N - Dc.j)) (Fin (Dc.N - Dc.j)) (Or.𝔐.X.presheaf.stalk (centre z)), ∀ q, s' τ q = ∑ i, genMap Or.𝔐.ξ ⟨centre z, h⟩ (T i q) • s τ i` using `fun τ => exists_change (Or.𝔐.V (Or.sm τ)) (small_frame Or hw d hs τ h) (small_frame Or hw d' hs' τ h)`. Use `choose Ts hTs using hch`. Set `T : ∀ τ, Matrix (Fin (Dc.N - Dc.j)) (Fin (Dc.N - Dc.j)) Ω` to `fun τ => (Ts τ).map (genMap Or.𝔐.ξ ⟨centre z, h⟩)`. Set `Tz : ∀ τ, Matrix (Fin (Dc.N - Dc.j)) (Fin (Dc.N - Dc.j)) ℂ` to `fun τ => (Ts τ).map (Scheme.stalkClosedPointTo z).hom`. Establish `hT : ∀ τ q, s' τ q = ∑ p, T τ p q • s τ p` using `hTs`.
+
+Establish `hΓ : ∀ τ, Γ' τ = (Tz τ).conjTranspose * Γ τ * Tz τ` using `fun τ => GlobalTheory.T.gram_matrix_two_frames E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 z _ (s τ) (s' τ) (Γ τ) (Γ' τ) (T τ) (Tz τ) hpol (hg τ) (hg' τ) (hT τ) fun p q => ⟨h, Ts τ p q, rfl, rfl⟩`. Establish `hsq : ∀ τ, Real.sqrt (Γ' τ).det.re = ‖(Tz τ).det‖ * Real.sqrt (Γ τ).det.re` using `fun τ => sqrt_det_change (hpd τ) (hΓ τ)`. Establish `hΩ : d.u * chartMono Dc.y d.c Hd.aMu = d'.u * chartMono Dc.y d'.c Hd.aMu * ∏ τ, (T τ).det` using `GlobalTheory.T.tensor_wedge_det_change (CMType H) Ω (fun τ => W τ ⧸ Hd.F τ) (Dc.N - Dc.j) (fun τ a => (Hd.F τ).mkQ (d.b τ (tailIdx Dc.j_le_N a))) (fun τ a => (Hd.F τ).mkQ (d'.b τ (tailIdx Dc.j_le_N a))) T _ _ (fun τ => (quot_basis Dc.j_le_N (b := d.b τ) (F := Hd.F τ) (d.adapted τ …`. Establish `hc' : ∀ k, IsUnit (w ⟨k, d'.c k⟩)` using `fun k => IsUnit.mk0 _ (d'.inDom.1 k)`. Establish `hy' : ∀ k, Dc.y ⟨k, d'.c k⟩ ≠ 0` using `fun k => (hw.2 k _ (hc' k)).1`.
+
+Establish `hr : ∀ k, ∃ r : ℂ, ValAt Or.𝔐.ξ z (Dc.y ⟨k, d.c k⟩ / Dc.y ⟨k, d'.c k⟩) r ∧ w ⟨k, d.c k⟩ = r * w ⟨k, d'.c k⟩` using `fun k => (hw.2 k _ (hc' k)).2 (d.c k)`. Use `choose r hrv hrw using hr`. Establish `hr0 : ∀ k, r k ≠ 0` using `fun k h0 => d.inDom.1 k (by rw [hrw k, h0, zero_mul])`. Establish `hmono : chartMono Dc.y d'.c Hd.aMu ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy' k)`. Establish `hratio : d.u * ∏ k, (Dc.y ⟨k, d.c k⟩ / Dc.y ⟨k, d'.c k⟩) ^ Hd.aMu k = d'.u * ∏ τ, (T τ).det`.
+
+Establish `e : ∏ k, (Dc.y ⟨k, d.c k⟩ / Dc.y ⟨k, d'.c k⟩) ^ Hd.aMu k = chartMono Dc.y d.c Hd.aMu / chartMono Dc.y d'.c Hd.aMu`. Simplify using `only [chartMono, div_zpow, Finset.prod_div_distrib]`. Rewrite using `[e, ← mul_div_assoc, hΩ]`. Clear the denominators using the available nonvanishing facts. Establish `hu` using `GlobalTheory.T.unit_value_frame_domain Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y z w d.c d.f d.u htie h hw d.inDom d.unit`.
+
+Establish `hu'` using `GlobalTheory.T.unit_value_frame_domain Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y z w d'.c d'.f d'.u htie h hw d'.inDom d'.unit`. Establish `hL : ValAt Or.𝔐.ξ z (d.u * ∏ k, (Dc.y ⟨k, d.c k⟩ / Dc.y ⟨k, d'.c k⟩) ^ Hd.aMu k) (valAt Dc.y d.u w * ∏ k, r k ^ Hd.aMu k)` using `CxVal.mul hu.2 (valAt_prod h _ fun k => CxVal.zpow (hrv k) (hr0 k) _)`. Establish `hR : ValAt Or.𝔐.ξ z (d'.u * ∏ τ, (T τ).det) (valAt Dc.y d'.u w * ∏ τ, (Tz τ).det)` using `CxVal.mul hu'.2 (valAt_prod h _ fun τ => valAt_det h (Ts τ))`. Rewrite `hL` using `[hratio]`. Establish `hv` using `CxVal.unique hL hR`.
+
+Establish `hn : ‖valAt Dc.y d.u w‖ * ∏ k, ‖r k‖ ^ Hd.aMu k = ‖valAt Dc.y d'.u w‖ * ∏ τ, ‖(Tz τ).det‖`. Use `congrArg norm hv` as an intermediate fact. Simplify `this` using `[norm_mul, norm_prod, norm_zpow]`. Establish `hw' : ∏ k, ‖w ⟨k, d.c k⟩‖ ^ Hd.aMu k = (∏ k, ‖r k‖ ^ Hd.aMu k) * ∏ k, ‖w ⟨k, d'.c k⟩‖ ^ Hd.aMu k`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, ← norm_mul, ← hrw k]`. Repeatedly rewrite using `[hsq]`. Rewrite using `[Finset.prod_mul_distrib, hw']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_indep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X) (w : (Σ k, J k) → ℂ) (d d' : MuFrameAt Hd w) (s s' : CMType H → Fin (Dc.N - Dc.j) → Or.𝔐.Li) (Γ Γ' : CMType H → Matrix (Fin (Dc.N - Dc.j)) (Fin (Dc.N - Dc.j)) ℂ), CoordsAt Or.𝔐.ξ Dc.y z w → Or.𝔐.Interior z → Or.IsSmallPart d s → Or.IsSmallPart d' s' → (∀ τ, Or.𝔐.M.GramAt Or.𝔐.t.PP.L z (s τ) (Γ τ)) → (∀ τ, Or.𝔐.M.GramAt Or.𝔐.t.PP.L z (s' τ) (Γ' τ)) → (∀ τ, (Γ τ).PosDef) → ‖valAt Dc.y d.u w‖ * (∏ k, ‖w ⟨k, d.c k⟩‖ ^ Hd.aMu k) * ∏ τ, Real.sqrt (Γ τ).det.re = ‖valAt Dc.y d'.u w‖ * (∏ k, ‖w ⟨k, d'.c k⟩‖ ^ Hd.aMu k) * ∏ τ, Real.sqrt (Γ' τ).det.re := by
   intro E _ _ _ H D l Xo c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or z w d d' s s' Γ Γ' hw hi hs hs' hg hg' hpd
   haveI : CharZero Ω := algebraRat.charZero Ω

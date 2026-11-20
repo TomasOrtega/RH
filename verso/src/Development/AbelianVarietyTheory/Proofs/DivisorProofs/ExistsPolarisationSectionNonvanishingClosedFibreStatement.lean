@@ -9,5 +9,8 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UMin.ExtNZ.exists_sec_nz | exact GlobalTheory.UMin.ExtNZ.exists_sec_nz | (intros; apply GlobalTheory.UMin.ExtNZ.exists_sec_nz <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_polarisation_section_nonvanishing_closed_fibre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ t : SAB H (Sp R), Nonempty (PELUnif (IsLocalRing.maximalIdeal R) t) → ∃ σ : SecAt t.G t.PP.L (𝟙 (Sp R)), NZ t.G t.PP.L (𝟙 (Sp R)) σ := by
   first | exact @GlobalTheory.UMin.ExtNZ.exists_sec_nz | exact GlobalTheory.UMin.ExtNZ.exists_sec_nz | (intros; apply GlobalTheory.UMin.ExtNZ.exists_sec_nz <;> assumption)

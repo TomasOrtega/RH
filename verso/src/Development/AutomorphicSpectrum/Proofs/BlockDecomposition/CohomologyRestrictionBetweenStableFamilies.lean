@@ -14,6 +14,13 @@ namespace GlobalTheory.CompanionTheory.ZarCosieve
 variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}}
   {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
+/- English proof (translation)
+Distinguish the cases in `hp : p = 0`. Take `⟨n, hn⟩` from `T.adm.2 hp`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h : x ^ n ∈ T.J ^ n` using `Ideal.pow_mem_pow hx n`. Rewrite `h` using `[hn]`.
+
+Conclude with `h`. Take `⟨n, hn⟩ : IsNilpotent ((p : ℕ) : T.B)` from `T.adm.1 hp`. Use `⟨p * n, ?_⟩` and prove the remaining obligations. Establish `h1 : x ^ p = (p.factorial : T.B) * T.δ.dpow p x` using `(T.δ.factorial_mul_dpow_eq_pow hx).symm`. Establish `h2 : (p.factorial : T.B) = (p : T.B) * ((p - 1).factorial : T.B)`.
+
+Rewrite using `[← Nat.cast_mul, Nat.mul_factorial_pred hp]`. Rewrite using `[pow_mul, h1, h2, mul_assoc, mul_pow, hn, zero_mul]`.
+-/
 theorem nil_of_mem (T : Thick (nlFun γ p X q κ)) {x : T.B} (hx : x ∈ T.J) : IsNilpotent x := by
   by_cases hp : p = 0
   · obtain ⟨n, hn⟩ := T.adm.2 hp
@@ -28,6 +35,13 @@ theorem nil_of_mem (T : Thick (nlFun γ p X q κ)) {x : T.B} (hx : x ∈ T.J) : 
       rw [← Nat.cast_mul, Nat.mul_factorial_pred hp]
     rw [pow_mul, h1, h2, mul_assoc, mul_pow, hn, zero_mul]
 
+/- English proof (translation)
+Establish `h1 : Ideal.map (Ideal.Quotient.mk T.J) (Ideal.span (Set.range f)) = ⊤`. Rewrite using `[Ideal.map_span, ← Set.range_comp, ← hs]`. Use `congr 2`. Conclude with `funext hf`. Establish `h2 : (1 : T.B ⧸ T.J) ∈ Ideal.map (Ideal.Quotient.mk T.J) (Ideal.span (Set.range f))`.
+
+Rewrite using `[h1]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨a, ha, ha1⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 h2`. Establish `hj : a - 1 ∈ T.J` using `Ideal.Quotient.eq.1 (by rw [ha1, map_one])`. Establish `hu : IsUnit a`.
+
+Use `(nil_of_mem T hj).isUnit_add_one` as an intermediate fact. Simplify using `using this`. Conclude with `Ideal.eq_top_of_isUnit_mem _ ha hu`.
+-/
 theorem span_lift (T : Thick (nlFun γ p X q κ)) {m : ℕ} (f : Fin m → T.B) (s : Fin m → T.B ⧸ T.J)
     (hf : ∀ k, Ideal.Quotient.mk T.J (f k) = s k) (hs : Ideal.span (Set.range s) = ⊤) :
     Ideal.span (Set.range f) = ⊤ := by
@@ -44,11 +58,22 @@ theorem span_lift (T : Thick (nlFun γ p X q κ)) {m : ℕ} (f : Fin m → T.B) 
     simpa using this
   exact Ideal.eq_top_of_isUnit_mem _ ha hu
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locH_φ (T : Thick (nlFun γ p X q κ)) (a : T.B) :
     (locH T a).φ = algebraMap T.B (Localization.Away a) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_φ {T T' T'' : Thick (nlFun γ p X q κ)} (f : T ⟶ T') (g : T' ⟶ T'') : (f ≫ g).φ = g.φ.comp f.φ := rfl
 
+/- English proof (translation)
+Set `l : Localization.Away a →+* T''.B` to `IsLocalization.Away.lift a hu`. Establish `hl : l.comp (algebraMap T.B (Localization.Away a)) = ψ.φ` using `IsLocalization.Away.lift_comp a hu`. Establish `hdp : IsDPMorphism (locD T a) T''.δ l` using `(GlobalTheory.CompanionTheory.PDMap.extended_dividedPowers T.δ _ (locD T a) (locD_dp T a)).2 T''.δ l (hl ▸ ψ.dp)`. Establish `hle : T.J.map (algebraMap T.B (Localization.Away a)) ≤ T''.J.comap l` using `Ideal.map_le_iff_le_comap.1 hdp.1`. Use `⟨descOf ψ l hl hdp hle, hom_ext hl, fun χ hχ => hom_ext ?_⟩` and prove the remaining obligations.
+
+Set `χ' : Localization.Away a →+* T''.B` to `χ.φ`. Establish `h1 : χ'.comp (algebraMap T.B (Localization.Away a)) = ψ.φ` using `congrArg Thick.Hom.φ hχ`. Establish `h2 : χ' = l` using `IsLocalization.ringHom_ext (Submonoid.powers a) (h1.trans hl.symm)`. Conclude with `h2`.
+-/
 theorem locT_univ (T : Thick (nlFun γ p X q κ)) (a : T.B) {T'' : Thick (nlFun γ p X q κ)} (ψ : T ⟶ T'')
     (hu : IsUnit (ψ.φ a)) : ∃! χ : locT T a ⟶ T'', locH T a ≫ χ = ψ := by
   let l : Localization.Away a →+* T''.B := IsLocalization.Away.lift a hu
@@ -63,10 +88,28 @@ theorem locT_univ (T : Thick (nlFun γ p X q κ)) (a : T.B) {T'' : Thick (nlFun 
   have h2 : χ' = l := IsLocalization.ringHom_ext (Submonoid.powers a) (h1.trans hl.symm)
   exact h2
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CompanionTheory.PDMap.extended_dividedPowers T.δ (algebraMap T.B (Localization.Away a)) _ (locD_dp T a)).1 r`.
+-/
 theorem pdPow_locT (T : Thick (nlFun γ p X q κ)) (a : T.B) (r : ℕ) :
     (locT T a).pdPow r = (T.pdPow r).map (algebraMap T.B (Localization.Away a)) :=
   (GlobalTheory.CompanionTheory.PDMap.extended_dividedPowers T.δ (algebraMap T.B (Localization.Away a)) _ (locD_dp T a)).1 r
 
+/- English proof (translation)
+Establish `hcov : ∀ x : PrimeSpectrum (T.B ⧸ T.J), ∃ V ∈ 𝒱, ∃ g : T.B ⧸ T.J, x ∈ PrimeSpectrum.basicOpen g ∧ ∀ z : PrimeSpectrum (T.B ⧸ T.J), z ∈ PrimeSpectrum.basicOpen g → z ∈ (pt T ⁻¹ᵁ V : (Spec (CommRingCat.of (T.B ⧸ T.J))).Opens)`. Introduce `x`. Establish `hx : x ∈ (pt T ⁻¹ᵁ (sSup 𝒱) : (Spec (CommRingCat.of (T.B ⧸ T.J))).Opens)` using `h (show x ∈ (⊤ : (Spec (CommRingCat.of (T.B ⧸ T.J))).Opens) from trivial)`. Establish `hx' : (pt T) x ∈ sSup 𝒱` using `hx`. Take `⟨V, hV, hxV⟩` from `TopologicalSpace.Opens.mem_sSup.1 hx'`.
+
+Set `U : TopologicalSpace.Opens (PrimeSpectrum (T.B ⧸ T.J))` to `pt T ⁻¹ᵁ V`. Take `⟨v, ⟨g, rfl⟩, hxv, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (show x ∈ (U : Set (PrimeSpectrum (T.B ⧸ T.J))) from hxV) U.isOpen`. Conclude with `⟨V, hV, g, hxv, fun z hz => hsub hz⟩`. Use `choose V hV g hxg hsub using hcov`. Establish `htop : Ideal.span (Set.range g) = ⊤`.
+
+Rewrite using `[← PrimeSpectrum.iSup_basicOpen_eq_top_iff]`. Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨x, hxg x⟩`. Take `⟨s', hs', hspan⟩` from `(Ideal.span_eq_top_iff_finite _).1 htop`. Use `⟨s'.card, fun k => (s'.equivFin.symm k : T.B ⧸ T.J), ?_, fun k => ?_⟩` and prove the remaining obligations.
+
+Establish `: Set.range (fun k => (s'.equivFin.symm k : T.B ⧸ T.J)) = (s' : Set (T.B ⧸ T.J))`. Use extensionality with `e`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Conclude with `(s'.equivFin.symm k).2`.
+
+Introduce `he`. Conclude with `⟨s'.equivFin ⟨e, he⟩, by simp⟩`. Rewrite using `[this, hspan]`. Take `⟨x, hx⟩` from `hs' (s'.equivFin.symm k).2`. Use `⟨V x, hV x, fun T' ψ hu z _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pt_hom ψ]`. Use `hsub x (Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J ψ.φ ψ.hle)) z) ?_` and prove the remaining obligations. Rewrite using `[hx]`. Express the relevant statement in the definitionally equal form `_ ∉ _`. Introduce `hmem`.
+
+Establish `: Ideal.quotientMap T'.J ψ.φ ψ.hle (s'.equivFin.symm k : T.B ⧸ T.J) ∈ z.asIdeal` using `hmem`. Conclude with `z.2.ne_top (Ideal.eq_top_of_isUnit_mem _ this hu)`.
+-/
 theorem exists_cover (𝒱 : Set X.Opens) (T : Thick (nlFun γ p X q κ)) (h : InU (sSup 𝒱) T) :
     ∃ (m : ℕ) (s : Fin m → T.B ⧸ T.J), Ideal.span (Set.range s) = ⊤ ∧
       ∀ k, ∃ V ∈ 𝒱, ∀ (T' : Thick (nlFun γ p X q κ)) (ψ : T ⟶ T'),
@@ -108,6 +151,15 @@ theorem exists_cover (𝒱 : Set X.Opens) (T : Thick (nlFun γ p X q κ)) (h : I
   have : Ideal.quotientMap T'.J ψ.φ ψ.hle (s'.equivFin.symm k : T.B ⧸ T.J) ∈ z.asIdeal := hmem
   exact z.2.ne_top (Ideal.eq_top_of_isUnit_mem _ this hu)
 
+/- English proof (translation)
+Break down `hQ with ⟨hp, l, s, rfl⟩ | ⟨hp, rfl | rfl⟩` into its components or cases. Establish `key : ∀ (r : ℕ) (x : Localization.Away a), (l : Localization.Away a) * x ∈ (T.pdPow r).map (algebraMap T.B (Localization.Away a)) → x ∈ (T.pdPow r).map (algebraMap T.B (Localization.Away a))`. Introduce `r x hx`. Take `⟨⟨y, s'⟩, hy⟩` from `IsLocalization.surj (Submonoid.powers a) x`. Establish `h1 : algebraMap T.B (Localization.Away a) ((l : T.B) * y) ∈ (T.pdPow r).map (algebraMap T.B (Localization.Away a))`.
+
+Rewrite using `[map_mul, map_natCast, ← hy, ← mul_assoc]`. Conclude with `Ideal.mul_mem_right _ _ hx`. Take `⟨m, hm, hm'⟩` from `(IsLocalization.algebraMap_mem_map_algebraMap_iff (Submonoid.powers a) _ _ _).1 h1`. Establish `h2 : m * y ∈ T.pdPow r` using `hT.2 r _ (by rw [mul_left_comm]; exact hm')`. Establish `h3` using `Ideal.mem_map_of_mem (algebraMap T.B (Localization.Away a)) h2`.
+
+Rewrite `h3` using `[map_mul, ← hy, ← mul_assoc, mul_comm _ x, mul_assoc]`. Establish `hu : IsUnit (algebraMap T.B (Localization.Away a) m * algebraMap T.B (Localization.Away a) s')` using `(IsLocalization.map_units _ ⟨m, hm⟩).mul (IsLocalization.map_units _ s')`. Conclude with `(Ideal.mul_unit_mem_iff_mem _ hu).1 h3`. Use `⟨by rw [pdPow_locT, hT.1, Ideal.map_bot], fun r x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[pdPow_locT]`.
+
+Conclude with `key r x hx`. Discharge the goal by the elementary cases of `trivial`. Express the relevant statement in the definitionally equal form `((algebraMap T.B (Localization.Away a)).comp T.i).Flat`. Establish `h1 : (algebraMap T.B (Localization.Away a)).Flat` using `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat _ (Submonoid.powers a))`. Conclude with `RingHom.Flat.comp hT h1`.
+-/
 theorem Q_locT {Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))} (hQ : Used Q₀) (T : Thick (nlFun γ p X q κ))
     (hT : Q₀ T) (a : T.B) : Q₀ (locT T a) := by
   rcases hQ with ⟨hp, l, s, rfl⟩ | ⟨hp, rfl | rfl⟩
@@ -188,6 +240,9 @@ def mulQ (a b : IdF (sP Q').A) (T : Q'.FullSubcategory) : T.obj.B →+* Module.E
   map_zero' := LinearMap.ext fun x => Subtype.ext (by simp)
   map_add' c c' := LinearMap.ext fun x => Subtype.ext (by simp [add_mul])
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (b.S T') (show T'.obj.B from t.hom.φ (c * (show T.obj.B from y))) = Ideal.Quotient.mk (b.S T') (show T'.obj.B from t.hom.φ c * t.hom.φ (show T.obj.B from y))`. Rewrite using `[map_mul]`.
+-/
 theorem mulQ_map (a b : IdF (sP Q').A) {T T' : Q'.FullSubcategory} (t : T ⟶ T') (c : T.obj.B) (x : sqM a b T) :
     ((sq a b).map t).hom (mulQ a b T c x) = mulQ a b T' (t.hom.φ c) (((sq a b).map t).hom x) := by
   obtain ⟨x, hx⟩ := x
@@ -252,8 +307,18 @@ def locO (T : Q'.FullSubcategory) {m : ℕ} (f : Fin m → T.obj.B)
     obtain ⟨⟨_, n, rfl⟩, hn⟩ := (IsLocalization.map_eq_zero_iff (Submonoid.powers g) _ _).1 h0
     exact ⟨n, hn⟩) T f hf hq
 
+/- English proof (translation)
+Introduce `T g _` and use `pdPow_locT T.obj g r.toNat`.
+-/
 theorem locI_fil (r : ℤ) : LocI (sFil Q' r) := fun T g _ => pdPow_locT T.obj g r.toNat
 
+/- English proof (translation)
+Introduce `T g hq`. Establish `e : Ideal.map (algebraMap T.obj.B (Localization.Away g)) (Ideal.span {T.obj.i c}) = Ideal.span {(locT T.obj g).i c}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Consider the cases of `r with`.
+
+Consider the case `none`. Express the relevant statement in the definitionally equal form `(⊥ : Ideal (Localization.Away g)) ⊔ Ideal.span {(locT T.obj g).i c} = Ideal.map (algebraMap T.obj.B (Localization.Away g)) ((⊥ : Ideal T.obj.B) ⊔ Ideal.span {T.obj.i c})`. Rewrite using `[Ideal.map_sup, Ideal.map_bot, e]`. Both sides reduce to the same expression. Consider the case `some r`.
+
+Express the relevant statement in the definitionally equal form `(locT T.obj g).pdPow r.toNat ⊔ Ideal.span {(locT T.obj g).i c} = Ideal.map (algebraMap T.obj.B (Localization.Away g)) (T.obj.pdPow r.toNat ⊔ Ideal.span {T.obj.i c})`. Rewrite using `[Ideal.map_sup, e, pdPow_locT]`.
+-/
 theorem locI_std (r : Option ℤ) (c : R) : LocI (stdI Q' r c) := by
   intro T g hq
   have e : Ideal.map (algebraMap T.obj.B (Localization.Away g)) (Ideal.span {T.obj.i c}) =
@@ -271,6 +336,19 @@ theorem locI_std (r : Option ℤ) (c : R) : LocI (stdI Q' r c) := by
       Ideal.map (algebraMap T.obj.B (Localization.Away g)) (T.obj.pdPow r.toNat ⊔ Ideal.span {T.obj.i c})
     rw [Ideal.map_sup, e, pdPow_locT]
 
+/- English proof (translation)
+Use `⟨fun T T' t ⟨_, V, hV, hT⟩ => ⟨(h' _ T'.property).1, V, hV, inU_hom t.hom hT⟩, fun T => ?_⟩` and prove the remaining obligations. Take `⟨-, W, hW, hin⟩` from `h' _ T.property`. Take `rfl : W = sSup 𝒱` from `hW`. Take `⟨m, s, hs, hcov⟩` from `exists_cover 𝒱 T.obj hin`. Use `choose f hf using fun k => Ideal.Quotient.mk_surjective (s k)`.
+
+Establish `hspan : Ideal.span (Set.range f) = ⊤` using `span_lift T.obj f s hf hs`. Use `⟨m, fun k _ ψ => IsUnit (ψ.hom.φ (f k)), fun k T₁ T₂ ψ χ h => h.map χ.hom.φ, fun k T₁ ψ hu => ?_, fun T' φ => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, hVin⟩` from `hcov k`. Use `⟨(h' _ T₁.property).1, V, hV, hVin _ ψ.hom ?_⟩` and prove the remaining obligations. Rewrite using `[← hf k]`.
+
+Conclude with `hu.map (Ideal.Quotient.mk T₁.obj.J)`. Establish `hq : ∀ S : Finset (Fin m), Q' (locT T'.obj (∏ k ∈ S, φ.hom.φ (f k)))` using `fun S => hc _ _ (locH _ _) T'.property (Q_locT hQ _ (h' _ T'.property).1 _)`. Establish `hspan' : Ideal.span (Set.range fun k => φ.hom.φ (f k)) = ⊤`. Establish `h` using `congrArg (Ideal.map φ.hom.φ) hspan`. Rewrite `h` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`.
+
+Conclude with `h`. Use `⟨fun S => lc T' _ (hq S), fun S => lch T' _ (hq S), fun S k hk => ?_, fun S T'' ψ h => ?_, hF T' _ hspan' hq⟩` and prove the remaining obligations. Establish `h : IsUnit (algebraMap T'.obj.B (Localization.Away (∏ k ∈ S, φ.hom.φ (f k))) (∏ k ∈ S, φ.hom.φ (f k)))` using `IsLocalization.Away.algebraMap_isUnit _`. Establish `h2 : IsUnit (algebraMap T'.obj.B (Localization.Away (∏ k ∈ S, φ.hom.φ (f k))) (φ.hom.φ (f k)))` using `isUnit_of_dvd_unit (map_dvd _ (Finset.dvd_prod_of_mem (fun k => φ.hom.φ (f k)) hk)) h`. Conclude with `h2`.
+
+Establish `hu : IsUnit (ψ.hom.φ (∏ k ∈ S, φ.hom.φ (f k)))`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one h`. Take `⟨χ, hχ, hχu⟩` from `locT_univ T'.obj _ ψ.hom hu`. Use `⟨ObjectProperty.homMk χ, ObjectProperty.hom_ext _ hχ, fun χ' h' => ObjectProperty.hom_ext _ (hχu _ ?_)⟩` and prove the remaining obligations.
+
+Conclude with `congrArg (fun u => u.hom) h'`.
+-/
 theorem zarCov (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (hQ : Used Q₀) (𝒱 : Set X.Opens)
     (h' : Q' ≤ St Q₀ {sSup 𝒱})
     (hc : ∀ T T' : Thick (nlFun γ p X q κ), (T ⟶ T') → Q' T → Q₀ T' → Q' T')
@@ -309,12 +387,18 @@ theorem zarCov (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (hQ : Used Q�
   refine ⟨ObjectProperty.homMk χ, ObjectProperty.hom_ext _ hχ, fun χ' h' => ObjectProperty.hom_ext _ (hχu _ ?_)⟩
   exact congrArg (fun u => u.hom) h'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(injective_iff_map_eq_zero f).2 fun x hx => by simpa using h.1 x hx, fun y => by obtain ⟨x, hx⟩ := h.2 y exact ⟨x, by simpa using hx⟩⟩`.
+-/
 theorem bij_of_upTo {M N : Type*} [AddCommGroup M] [AddCommGroup N] [Module R M] [Module R N] (f : M →ₗ[R] N)
     (h : UpTo (1 : R) f) : Function.Bijective f :=
   ⟨(injective_iff_map_eq_zero f).2 fun x hx => by simpa using h.1 x hx, fun y => by
     obtain ⟨x, hx⟩ := h.2 y
     exact ⟨x, by simpa using hx⟩⟩
 
+/- English proof (translation)
+The claim follows from `inferInstance faithful := inferInstance mem T := T.property ess T hT := ⟨⟨T.obj, hT⟩, ⟨Iso.refl _⟩⟩`.
+-/
 theorem onto {Q₁ : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q₁ ≤ Q') :
     B.Onto (ObjectProperty.ιOfLE h) fun T : Q'.FullSubcategory => Q₁ T.obj where
   full := inferInstance
@@ -322,6 +406,11 @@ theorem onto {Q₁ : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q₁ ≤ Q
   mem T := T.property
   ess T hT := ⟨⟨T.obj, hT⟩, ⟨Iso.refl _⟩⟩
 
+/- English proof (translation)
+Take `⟨G₁, τ, n⟩` from `m`. Take `⟨G₂, τ', n'⟩` from `m'`. Take `rfl : G₁ = G` from `h1`. Take `rfl : G₂ = G₁` from `h2`. Take `rfl : τ = τ'` from `funext fun T => LinearMap.ext (h T)`.
+
+Both sides reduce to the same expression.
+-/
 theorem mor_eq {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {F : C ⥤ ModuleCat.{0} R} {F' : C' ⥤ ModuleCat.{0} R}
     (G : C' ⥤ C) (m m' : CH.Mor F F' (RingHom.id R)) (h1 : m.G = G) (h2 : m'.G = G)
     (h : ∀ T (x : F.obj (G.obj T)), m.τ T (h1.symm ▸ x) = m'.τ T (h2.symm ▸ x)) : m = m' := by
@@ -332,26 +421,41 @@ theorem mor_eq {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {F : C ⥤ Mod
   obtain rfl : τ = τ' := funext fun T => LinearMap.ext (h T)
   rfl
 
+/- English proof (translation)
+The claim follows from `bij_of_upTo _ (B.P.zar F _ (ObjectProperty.ιOfLE h) (onto h) hZ j j le_rfl)`.
+-/
 theorem bij_restrict {Q₁ : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q₁ ≤ Q') (F : Q'.FullSubcategory ⥤ ModuleCat.{0} R)
     (hZ : B.ZarCov F fun T => Q₁ T.obj) (j : ℕ) :
     Function.Bijective ((CH.Mor.restrict F (ObjectProperty.ιOfLE h)).pull j) :=
   bij_of_upTo _ (B.P.zar F _ (ObjectProperty.ιOfLE h) (onto h) hZ j j le_rfl)
 
+/- English proof (translation)
+The claim follows from `e ▸ h`.
+-/
 theorem bij_of_eq {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {F : C ⥤ ModuleCat.{0} R} {F' : C' ⥤ ModuleCat.{0} R}
     (m m' : CH.Mor F F' (RingHom.id R)) (e : m = m') (j : ℕ) (h : Function.Bijective (m'.pull j)) :
     Function.Bijective (m.pull j) := e ▸ h
 
+/- English proof (translation)
+The claim follows from `bij_restrict h _ (zarCov Q₀ hQ 𝒱 h' hc _ fun T _ f hf hq => ⟨locSq a b ha hb T f hf hq⟩) j`.
+-/
 theorem bijSq (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (hQ : Used Q₀) (𝒱 : Set X.Opens) (h : St Q₀ 𝒱 ≤ Q')
     (h' : Q' ≤ St Q₀ {sSup 𝒱}) (hc : ∀ T T' : Thick (nlFun γ p X q κ), (T ⟶ T') → Q' T → Q₀ T' → Q' T')
     (a b : IdF (sP Q').A) (ha : LocI a) (hb : LocI b) (j : ℕ) :
     Function.Bijective ((CH.Mor.restrict (sq a b) (ObjectProperty.ιOfLE h)).pull j) :=
   bij_restrict h _ (zarCov Q₀ hQ 𝒱 h' hc _ fun T _ f hf hq => ⟨locSq a b ha hb T f hf hq⟩) j
 
+/- English proof (translation)
+The claim follows from `bij_restrict h _ (zarCov Q₀ hQ 𝒱 h' hc _ fun T _ f hf hq => ⟨locO T f hf hq⟩) j`.
+-/
 theorem bijO (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (hQ : Used Q₀) (𝒱 : Set X.Opens) (h : St Q₀ 𝒱 ≤ Q')
     (h' : Q' ≤ St Q₀ {sSup 𝒱}) (hc : ∀ T T' : Thick (nlFun γ p X q κ), (T ⟶ T') → Q' T → Q₀ T' → Q' T') (j : ℕ) :
     Function.Bijective ((CH.Mor.restrict (CH.modF (sP Q').A) (ObjectProperty.ιOfLE h)).pull j) :=
   bij_restrict h _ (zarCov Q₀ hQ 𝒱 h' hc _ fun T _ f hf hq => ⟨locO T f hf hq⟩) j
 
+/- English proof (translation)
+Use `mor_eq (ObjectProperty.ιOfLE h) _ _ rfl rfl fun T x => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Both sides reduce to the same expression.
+-/
 theorem eq_fil {Q₁ : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q₁ ≤ Q') (r r' : ℤ) :
     (incl h).sq (incl_fil h r) (incl_fil h r') =
       CH.Mor.restrict (sq (sFil Q' r) (sFil Q' r')) (ObjectProperty.ιOfLE h) := by
@@ -360,10 +464,18 @@ theorem eq_fil {Q₁ : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q₁ ≤
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
   rfl
 
+/- English proof (translation)
+The claim follows from `mor_eq (ObjectProperty.ιOfLE h) _ _ rfl rfl fun T x => rfl`.
+-/
 theorem eq_o {Q₁ : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q₁ ≤ Q') :
     (incl h).o = CH.Mor.restrict (CH.modF (sP Q').A) (ObjectProperty.ιOfLE h) :=
   mor_eq (ObjectProperty.ιOfLE h) _ _ rfl rfl fun T x => rfl
 
+/- English proof (translation)
+Establish `hb` using `bijSq Q₀ hQ 𝒱 h h' hc (stdI Q' r c) (stdI Q' r' c') (locI_std r c) (locI_std r' c') j`. Apply the tactic sequence `cases r <;> cases r' <;>`. Use `bij_of_eq _ _ (mor_eq (ObjectProperty.ιOfLE h) _ _ rfl rfl fun T x => ?_) j hb` and prove the remaining obligations. Take `⟨x, hx⟩` from `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+
+Both sides reduce to the same expression.
+-/
 theorem bij_std (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (hQ : Used Q₀) (𝒱 : Set X.Opens) (h : St Q₀ 𝒱 ≤ Q')
     (h' : Q' ≤ St Q₀ {sSup 𝒱}) (hc : ∀ T T' : Thick (nlFun γ p X q κ), (T ⟶ T') → Q' T → Q₀ T' → Q' T')
     (r r' : Option ℤ) (c c' : R) (j : ℕ) :
@@ -379,6 +491,9 @@ end GlobalTheory.CompanionTheory.ZarCosieve
 
 open GlobalTheory.CompanionTheory.ZarCosieve in
 
+/- English proof (translation)
+Introduce `O R _ _ I γ p X q κ Q₀ hQ 𝒱 Q' h h' hc j`. Use `⟨fun r r' => ?_, fun r r' c c' => ?_, ?_⟩` and prove the remaining obligations. Conclude with `bij_of_eq _ _ (eq_fil h r r') j (bijSq Q₀ hQ 𝒱 h h' hc _ _ (locI_fil r) (locI_fil r') j)`. Conclude with `bij_std Q₀ hQ 𝒱 h h' hc r r' c c' j`. Conclude with `bij_of_eq _ _ (eq_o h) j (bijO Q₀ hQ 𝒱 h h' hc j)`.
+-/
 theorem GlobalTheory.CompanionTheory.ZarCosieve.main : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}}
     {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (hQ : Used Q₀)
     (𝒱 : Set X.Opens) (Q' : ObjectProperty (Thick (nlFun γ p X q κ))) (h : St Q₀ 𝒱 ≤ Q') (h' : Q' ≤ St Q₀ {sSup 𝒱})

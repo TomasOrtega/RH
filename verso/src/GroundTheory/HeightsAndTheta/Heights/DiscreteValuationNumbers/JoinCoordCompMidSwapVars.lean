@@ -28,11 +28,17 @@ def midSwapVars (ι : K → Type) (ι' : K' → Type) (ι₂ : K₂ → Type) :
   right_inv := by
     rintro ⟨k | k | k, i⟩ <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨k | k | k, i⟩ := v <;> rfl`.
+-/
 theorem midSwapVars_fst {ι : K → Type} {ι' : K' → Type} {ι₂ : K₂ → Type}
     (v : Σ k : K ⊕ (K₂ ⊕ K'), Sum.elim ι (Sum.elim ι₂ ι') k) :
     (midSwapVars ι ι' ι₂ v).1 = midSwapBlocks v.1 := by
   obtain ⟨k | k | k, i⟩ := v <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Apply the tactic sequence `obtain ⟨k | k | k, i⟩ := v <;> rfl`.
+-/
 theorem joinCoord_comp_midSwapVars {ι : K → Type} {ι' : K' → Type} {ι₂ : K₂ → Type} {Ω : Type*}
     (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (w : (Σ k, ι₂ k) → Ω) :
     joinCoord x (joinCoord z w) ∘ midSwapVars ι ι' ι₂ = joinCoord x (joinCoord w z) := by

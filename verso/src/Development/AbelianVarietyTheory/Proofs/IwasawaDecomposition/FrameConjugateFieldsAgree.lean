@@ -14,6 +14,19 @@ namespace GlobalTheory.FlagField
 
 open Matrix
 
+/- English proof (translation)
+Establish `det₂ : (A * C₂).det = 1`. Rewrite using `[Matrix.det_of_isLowerTriangular _ h₂]`. Conclude with `Finset.prod_eq_one fun i _ => d₂ i`. Establish `uA : IsUnit A.det` using `isUnit_iff_ne_zero.2 (left_ne_zero_of_mul_eq_one (by rw [← Matrix.det_mul, det₂]))`. Establish `uC₂ : IsUnit C₂.det` using `isUnit_iff_ne_zero.2 (right_ne_zero_of_mul_eq_one (by rw [← Matrix.det_mul, det₂]))`.
+
+Establish `uG₂ : IsUnit (A * C₂).det` using `by rw [det₂]; exact isUnit_one`. Use `haveI := Matrix.invertibleOfIsUnitDet (A * C₂) uG₂`. Use `haveI := Matrix.invertibleOfIsUnitDet C₂ uC₂`. Use `set N := (A * C₂)⁻¹ * (A * C₁) with hN`. Establish `hNl : N.IsLowerTriangular` using `(Matrix.blockTriangular_inv_of_blockTriangular h₂).mul h₁`.
+
+Establish `hN' : N = C₂⁻¹ * C₁`. Rewrite using `[hN, Matrix.mul_inv_rev, Matrix.mul_assoc, ← Matrix.mul_assoc A⁻¹, Matrix.nonsing_inv_mul A uA, Matrix.one_mul]`. Establish `hNu : N.IsUpperTriangular`. Rewrite using `[hN']`. Conclude with `(Matrix.blockTriangular_inv_of_blockTriangular hC₂).mul hC₁`.
+
+Establish `hoff : ∀ l i, l ≠ i → N l i = 0` using `fun l i hli => by`. Break down `lt_or_gt_of_ne hli with h | h` into its components or cases. Conclude with `hNl (show OrderDual.toDual i < OrderDual.toDual l from h)`. Conclude with `hNu h`. Establish `hG : A * C₁ = (A * C₂) * N` using `by rw [hN, Matrix.mul_nonsing_inv_cancel_left _ _ uG₂]`.
+
+Apply the tactic sequence `have entry : ∀ j i, (A * C₁) j i = (A * C₂) j i * N i i := fun j i => by`. Rewrite using `[hG, Matrix.mul_apply, Finset.sum_eq_single i (fun l _ hl => by rw [hoff l i hl, mul_zero]) (fun h => absurd (Finset.mem_univ i) h)]`. Establish `hdiag : ∀ i, N i i = 1` using `fun i => by`. Apply the tactic sequence `have := entry i i`. Rewrite `this` using `[d₁, d₂, one_mul]`.
+
+Conclude with `this.symm`. Use extensionality with `j i`. Rewrite using `[entry, hdiag, mul_one]`.
+-/
 theorem lowerUni_eq {Ω : Type} [Field Ω] {n : ℕ} (A C₁ C₂ : Matrix (Fin n) (Fin n) Ω)
     (h₁ : (A * C₁).IsLowerTriangular) (h₂ : (A * C₂).IsLowerTriangular)
     (d₁ : ∀ i, (A * C₁) i i = 1) (d₂ : ∀ i, (A * C₂) i i = 1)
@@ -47,6 +60,17 @@ theorem lowerUni_eq {Ω : Type} [Field Ω] {n : ℕ} (A C₁ C₂ : Matrix (Fin 
   ext j i
   rw [entry, hdiag, mul_one]
 
+/- English proof (translation)
+Take `⟨π, hπ⟩ : ∃ π : Ω →ₗ[F] F, π ∘ₗ Algebra.linearMap F Ω = LinearMap.id` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap F Ω) (LinearMap.ker_eq_bot.2 (algebraMap F Ω).injective)`. Establish `hπa : ∀ a : F, π (algebraMap F Ω a) = a` using `fun a => LinearMap.congr_fun hπ a`. Use `set A := M.map (algebraMap F Ω)`. Use `set C' : Matrix (Fin n) (Fin n) Ω := fun a b => algebraMap F Ω (π (C a b))`. Establish `key : A * C' = fun a b => algebraMap F Ω (π ((A * C) a b))`.
+
+Use extensionality with `a b`. Use `show ∑ l, algebraMap F Ω (M a l) * algebraMap F Ω (π (C l b)) = algebraMap F Ω (π (∑ l, algebraMap F Ω (M a l) * C l b))`. Rewrite using `[map_sum π, map_sum (algebraMap F Ω)]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def (M a l) (C l b), map_smul, smul_eq_mul, map_mul]`.
+
+Establish `hC' : C'.IsUpperTriangular` using `fun a b hab => by show algebraMap F Ω (π (C a b)) = 0`. Rewrite using `[hC hab, map_zero, map_zero]`. Establish `h' : (A * C').IsLowerTriangular` using `fun a b hab => by`. Rewrite using `[key]`. Use `show algebraMap F Ω (π ((A * C) a b)) = 0`.
+
+Rewrite using `[h hab, map_zero, map_zero]`. Establish `d' : ∀ i, (A * C') i i = 1` using `fun i => by`. Rewrite using `[key]`. Use `show algebraMap F Ω (π ((A * C) i i)) = 1`. Rewrite using `[d i, ← map_one (algebraMap F Ω), hπa, map_one]`.
+
+Establish `e` using `lowerUni_eq A C C' h h' d d' hC hC'`. Rewrite using `[e, key]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem lowerUni_mem_range {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] {n : ℕ} (M : Matrix (Fin n) (Fin n) F)
     (C : Matrix (Fin n) (Fin n) Ω) (h : (M.map (algebraMap F Ω) * C).IsLowerTriangular)
     (d : ∀ i, (M.map (algebraMap F Ω) * C) i i = 1) (hC : C.IsUpperTriangular) (j i : Fin n) :
@@ -85,6 +109,9 @@ namespace GlobalTheory.FlagField
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {X : Scheme.{0}} {t : SAB H X}
 
+/- English proof (translation)
+Establish `hw : IsTanAtG t x w` using `GlobalTheory.FlagEmb.comb_tan t (fun i => (h.1 τ i).1) ha`. Establish `he : ∀ a' : 𝓞 E, w ≫ (t.act.act a').left = spMap (epsMul (f (embK c τ a'))) ≫ w` using `fun a' => GlobalTheory.FlagEmb.eig_of_comb t (u τ) a w a' _ (fun j => ⟨(h.1 τ j).1, (h.1 τ j).2 a'⟩) ha`. Conclude with `(h.2 τ w hw he).unique ha hb`.
+-/
 theorem coef_unique {l : Level H} {c : Coeff l} {R : Type} [CommRing R] {f : c.F →+* R} {x : Sp R ⟶ X}
     {u : Vecs Dw t R} (h : GlobalTheory.LocM.IsFrame t f x u) (τ : E →+* ℂ) {a b : Fin (Dw.mult τ) → R}
     {w : Sp (DualNumber R) ⟶ t.G.left} (ha : IsCombAtG t x (u τ) a w) (hb : IsCombAtG t x (u τ) b w) : a = b := by
@@ -97,6 +124,31 @@ end GlobalTheory.FlagField
 
 open GlobalTheory.FlagField in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l c X t ty hty k K Ω _ _ _ r yk cu u hu σ ι hr hc s v hv hsf τ q`. Use `set L₀ := Subfield.closure (Set.range ι ∪ Set.range σ) with hL₀`. Set `σ₀ : K →+* L₀` to `σ.codRestrict L₀ (fun z => Subfield.subset_closure (Or.inr ⟨z, rfl⟩))`. Set `ι₀ : K →+* L₀` to `ι.codRestrict L₀ (fun z => Subfield.subset_closure (Or.inl ⟨z, rfl⟩))`. Establish `hσ : L₀.subtype.comp σ₀ = σ` using `rfl`.
+
+Establish `hι : L₀.subtype.comp ι₀ = ι` using `rfl`. Establish `hr₀ : σ₀.comp r = ι₀.comp r` using `RingHom.ext fun z => Subtype.ext (RingHom.congr_fun hr z)`. Establish `hc₀ : σ₀.comp cu = ι₀.comp cu` using `RingHom.ext fun z => Subtype.ext (RingHom.congr_fun hc z)`. Establish `F₀ : GlobalTheory.LocM.IsFrame t (ι₀.comp cu) (spMap (ι₀.comp r) ≫ yk) (u.bc σ₀)`. Use `isFrame_bc E H Dw l c X t K L₀ cu σ₀ (spMap r ≫ yk) u hu` as an intermediate fact.
+
+Rewrite `this` using `[← Category.assoc, spMap_comp', hr₀, hc₀]`. Then use the resulting hypothesis. Establish `G₀ : GlobalTheory.LocM.IsFrame t (ι₀.comp cu) (spMap (ι₀.comp r) ≫ yk) (u.bc ι₀)`. Use `isFrame_bc E H Dw l c X t K L₀ cu ι₀ (spMap r ≫ yk) u hu` as an intermediate fact. Rewrite `this` using `[← Category.assoc, spMap_comp']`. Then use the resulting hypothesis. Establish `U : GlobalTheory.LocM.IsFrame t (ι.comp cu) (spMap (ι.comp r) ≫ yk) (u.bc ι)`.
+
+Use `isFrame_bc E H Dw l c X t K Ω cu ι (spMap r ≫ yk) u hu` as an intermediate fact. Rewrite `this` using `[← Category.assoc, spMap_comp']`. Then use the resulting hypothesis. Use `choose M₀ hM₀ using fun j => (GlobalTheory.LocM.IsFrame.exists_comb G₀ F₀ τ j).exists`. Establish `hMΩ : ∀ j, IsCombAtG t (spMap (ι.comp r) ≫ yk) ((u.bc ι) τ) (fun l => L₀.subtype (M₀ j l)) ((u.bc σ) τ j)`. Introduce `j`.
+
+Establish `h1` using `GlobalTheory.LocM.comb_bc L₀.subtype (hM₀ j)`. Establish `e1 : spMap L₀.subtype ≫ spMap (ι₀.comp r) ≫ yk = spMap (ι.comp r) ≫ yk`. Rewrite using `[← Category.assoc, spMap_comp']`. Both sides reduce to the same expression. Establish `e2 : (fun i => spMap (dualMap L₀.subtype) ≫ (u.bc ι₀) τ i) = (u.bc ι) τ`.
+
+Use `GlobalTheory.LocM.Vecs.bc_bc ι₀ L₀.subtype u` as an intermediate fact. Rewrite `this` using `[hι]`. Conclude with `funext fun i => congrFun (congrFun this τ) i`. Establish `e3 : spMap (dualMap L₀.subtype) ≫ (u.bc σ₀) τ j = (u.bc σ) τ j`. Use `GlobalTheory.LocM.Vecs.bc_bc σ₀ L₀.subtype u` as an intermediate fact.
+
+Rewrite `this` using `[hσ]`. Conclude with `congrFun (congrFun this τ) j`. Rewrite `h1` using `[e1, e2, e3]`. Conclude with `h1`. Establish `hC : ∀ i : Fin (Dw.mult τ), ∃ cf : Fin (Dw.mult τ) → Ω, (∀ j : Fin (Dw.mult τ), i.1 + 1 ≤ j.1 → cf j = 0) ∧ IsCombAtG t (spMap (ι.comp r) ≫ yk) ((u.bc σ) τ) cf (v τ i)` using `fun i => hsf τ (i.1 + 1) (hty τ _ i.2) i (Nat.lt_succ_self _)`.
+
+Use `choose C hC0 hCc using hC`. Set `M : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) L₀` to `Matrix.of fun a j => M₀ j a`. Set `Cm : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Ω` to `Matrix.of fun j i => C i j`. Establish `comb : ∀ i, IsCombAtG t (spMap (ι.comp r) ≫ yk) ((u.bc ι) τ) ((M.map (algebraMap L₀ Ω)).mulVec (C i)) (v τ i)` using `fun i => tanLinG _ (fun j => (U.1 τ j).1) _ (M.map (algebraMap L₀ Ω)) (C i) (v τ i) hMΩ (hCc i)`. Establish `hG : M.map (algebraMap L₀ Ω) * Cm = Matrix.of fun j i => uni (s τ) j i`.
+
+Use extensionality with `j i`. Establish `e` using `congrFun (coef_unique U τ (hv τ i) (comb i)) j`. Rewrite using `[Matrix.of_apply, e]`. Both sides reduce to the same expression. Establish `hlow : (M.map (algebraMap L₀ Ω) * Cm).IsLowerTriangular`.
+
+Rewrite using `[hG]`. Introduce `a b hab`. Establish `hab' : a < b` using `hab`. Simplify using `only [Matrix.of_apply, uni, dif_neg (not_lt.2 hab'.le), if_neg hab'.ne]`. Establish `hdiag : ∀ i, (M.map (algebraMap L₀ Ω) * Cm) i i = 1` using `fun i => by`.
+
+Rewrite using `[hG]`. Simplify using `[uni]`. Establish `hup : Cm.IsUpperTriangular` using `fun a b hab => hC0 b a (Nat.succ_le_of_lt hab)`. Take `⟨y, hy⟩` from `lowerUni_mem_range M Cm hlow hdiag hup q.1.2 q.1.1`. Establish `e : s τ q = uni (s τ) q.1.2 q.1.1` using `by simp [uni, dif_pos q.2]`.
+
+Rewrite `hy` using `[hG, Matrix.of_apply, ← e]`. Rewrite using `[← hy]`. Conclude with `y.2`.
+-/
 theorem GlobalTheory.FlagField.mem_closure : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {c : Coeff l} {X : Scheme.{0}} (t : SAB H X) (ty : (E →+* ℂ) → Finset ℕ), (∀ τ k, k ≤ Dw.mult τ → k ∈ ty τ) →
     ∀ {k K Ω : Type} [Field k] [Field K] [Field Ω] (r : k →+* K) (yk : Sp k ⟶ X) (cu : c.F →+* K) (u : Vecs Dw t K),

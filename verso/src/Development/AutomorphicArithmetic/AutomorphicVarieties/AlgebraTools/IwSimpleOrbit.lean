@@ -9,6 +9,9 @@ private noncomputable def elem {R : Type} [CommRing R] {n : ℕ} {i j : Fin n} (
     by simp [add_mul, mul_sub, single_mul_single_of_ne _ _ _ _ h.symm],
     by simp [sub_mul, mul_add, single_mul_single_of_ne _ _ _ _ h.symm]⟩
 
+/- English proof (translation)
+Rewrite using `[← map_inv]`. Simplify using `only [Units.val_mul, Matrix.mul_apply, pm_apply, Equiv.Perm.eq_inv_iff_eq]`. Simplify using the standard rewrite rules.
+-/
 private theorem conj_apply {R : Type} [CommRing R] {n : ℕ} (w : Equiv.Perm (Fin n)) (g : GL (Fin n) R) (a b : Fin n) :
     (((pm R n w)⁻¹ * g * pm R n w : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) a b
       = (g : Matrix (Fin n) (Fin n) R) (w a) (w b) := by
@@ -18,11 +21,17 @@ private theorem conj_apply {R : Type} [CommRing R] {n : ℕ} (w : Equiv.Perm (Fi
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Conclude with `⟨fun h => lt_of_le_of_ne x.2 h, fun h => h.ne⟩`.
+-/
 private theorem res_zero (x : 𝒪[k]) : IsLocalRing.residue 𝒪[k] x = 0 ↔ valuation k (algebraMap 𝒪[k] k x) < 1 := by
   rw [IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff,
     (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]
   exact ⟨fun h => lt_of_le_of_ne x.2 h, fun h => h.ne⟩
 
+/- English proof (translation)
+Use `⟨pm 𝒪[k] n w, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Use `show algebraMap 𝒪[k] k ((pm 𝒪[k] n w : Matrix (Fin n) (Fin n) 𝒪[k]) a b) = _`. Rewrite using `[pm_apply, pm_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem pm_KO (w : Equiv.Perm (Fin n)) : pm k n w ∈ KO k (Fin n) := by
   refine ⟨pm 𝒪[k] n w, ?_⟩
   ext a b
@@ -30,6 +39,15 @@ private theorem pm_KO (w : Equiv.Perm (Fin n)) : pm k n w ∈ KO k (Fin n) := by
   rw [pm_apply, pm_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hm` using `(memIwC k n C).1`. Take `⟨h1, h2⟩` from `(hm g).1 hg`. Take `⟨h3, h4⟩` from `mem_iwahori.1 h1`. Establish `hlt : i < j` using `by rw [Fin.lt_def]; omega`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `(mem_iwahori.1 ((hm _).1 h).1).2 j i hlt` as an intermediate fact. Rewrite `this` using `[conj_apply, Equiv.swap_apply_left, Equiv.swap_apply_right]`. Then use the resulting hypothesis. Introduce `h`. Use `(hm _).2 ⟨mem_iwahori.2 ⟨mul_mem (mul_mem (inv_mem (pm_KO _)) h3) (pm_KO _), fun a b hab => ?_⟩, fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[conj_apply]`. Distinguish the cases in `hc : a = j ∧ b = i`. Rewrite using `[hc.1, hc.2, Equiv.swap_apply_left, Equiv.swap_apply_right]` and apply the resulting hypothesis. Apply `h4` to reduce the goal to its premises. Simplify using `only [Equiv.swap_apply_def]`.
+
+Simplify using `only [Fin.ext_iff, Fin.lt_def] at *`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[conj_apply]`. Conclude with `h2 _`.
+-/
 private theorem conj_mem {C : Subgroup 𝓀[k]ˣ} {i j : Fin n} (hij : (j : ℕ) = i + 1) {g : GL (Fin n) k}
     (hg : g ∈ iwC k n C) :
     (pm k n (Equiv.swap i j))⁻¹ * g * pm k n (Equiv.swap i j) ∈ iwC k n C ↔
@@ -55,6 +73,11 @@ private theorem conj_mem {C : Subgroup 𝓀[k]ˣ} {i j : Fin n} (hij : (j : ℕ)
     · rw [conj_apply]
       exact h2 _
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `((memIwC k n C).1 g).1 hg`. Take `⟨_, ⟨u, -, rfl⟩, hu⟩` from `h2 a`. Take `⟨h, rfl⟩` from `(mem_iwahori.1 h1).1`. Use `⟨IsLocalRing.residue 𝒪[k] ((h : Matrix (Fin n) (Fin n) 𝒪[k]) i j * (u⁻¹ : 𝒪[k]ˣ)), ?_⟩` and prove the remaining obligations. Rewrite using `[← hu]`.
+
+Use `(res_zero ((h : Matrix (Fin n) (Fin n) 𝒪[k]) i j - r (IsLocalRing.residue 𝒪[k] ((h : Matrix (Fin n) (Fin n) 𝒪[k]) i j * (u⁻¹ : 𝒪[k]ˣ))) * (u : 𝒪[k]))).1 (by` as an intermediate fact. Rewrite using `[map_sub, map_mul, hr, ← map_mul, Units.inv_mul_cancel_right, sub_self])`. Rewrite `this` using `[map_sub, map_mul]`. Conclude with `this`.
+-/
 private theorem pick {C : Subgroup 𝓀[k]ˣ} {g : GL (Fin n) k} (hg : g ∈ iwC k n C)
     {r : 𝓀[k] → 𝒪[k]} (hr : ∀ c, IsLocalRing.residue 𝒪[k] (r c) = c) (a i j : Fin n) :
     ∃ c, valuation k ((g : Matrix (Fin n) (Fin n) k) i j
@@ -70,6 +93,13 @@ private theorem pick {C : Subgroup 𝓀[k]ˣ} {g : GL (Fin n) k} (hg : g ∈ iwC
   rw [map_sub, map_mul] at this
   exact this
 
+/- English proof (translation)
+Use `⟨mem_unipRad.2 ⟨mem_parab_iff.2 fun a b _ _ hab => ?_, fun a _ _ => ?_⟩, elem h.ne a, ?_⟩` and prove the remaining obligations. Use `show (1 + single i j _ : Matrix (Fin n) (Fin n) k) a b = 0`. Establish `: ¬ (i = a ∧ j = b)`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd hab h.asymm`.
+
+Simplify using `[one_apply_ne hab.ne', single_apply, this]`. Use `show (1 + single i j _ : Matrix (Fin n) (Fin n) k) a a = _`. Establish `: ¬ (i = a ∧ j = a)`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h.ne rfl`.
+
+Simplify using `[single_apply, this]`. Use extensionality with `p q show algebraMap 𝒪[k] k ((1 + single i j a : Matrix (Fin n) (Fin n) 𝒪[k]) p q) = (1 + single i j _ : Matrix (Fin n) (Fin n) k) p q`. Simplify using `only [Matrix.add_apply, one_apply, single_apply, map_add]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem elem_mem {i j : Fin n} (h : i < j) (a : 𝒪[k]) :
     elem h.ne (algebraMap 𝒪[k] k a) ∈ unipO k n := by
   refine ⟨mem_unipRad.2 ⟨mem_parab_iff.2 fun a b _ _ hab => ?_, fun a _ _ => ?_⟩, elem h.ne a, ?_⟩
@@ -91,6 +121,21 @@ private theorem elem_mem {i j : Fin n} (h : i < j) (a : 𝒪[k]) :
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n C i j hij r hr`. Establish `hlt : i < j` using `by rw [Fin.lt_def]; omega`. Establish `hle : unipO k n ≤ iwC k n C` using `le_sup_of_le_left le_sup_right`. Establish `hx : ∀ c, elem hlt.ne (algebraMap 𝒪[k] k (r c)) ∈ iwC k n C` using `fun c => hle (elem_mem hlt _)`. Establish `hL : ∀ (a : k) (g : GL (Fin n) k), (((elem hlt.ne a)⁻¹ * g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = (g : Matrix (Fin n) (Fin n) k) i j - a * (g : Matrix (Fin n) (Fin n) k) j j`.
+
+Introduce `a g`. Use `show ((1 - single i j a) * (g : Matrix (Fin n) (Fin n) k)) i j = _`. Simplify using `[sub_mul]`. Establish `hR : ∀ (a : k) (g : GL (Fin n) k), ((g * (elem hlt.ne a)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = (g : Matrix (Fin n) (Fin n) k) i j - a * (g : Matrix (Fin n) (Fin n) k) i i`. Introduce `a g`.
+
+Use `show ((g : Matrix (Fin n) (Fin n) k) * (1 - single i j a)) i j = _`. Simplify using `[mul_sub, mul_comm]`. Establish `hs : (pm k n (Equiv.swap i j))⁻¹ = pm k n (Equiv.swap i j)` using `by rw [← map_inv, Equiv.swap_inv]`. Use `⟨fun c => elem hlt.ne (algebraMap 𝒪[k] k (r c)), fun c => rfl, fun c => elem_mem hlt _, fun q => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨g, hg⟩, rfl⟩`. Take `⟨c, hc⟩` from `pick hg hr j i j`. Establish `h1 : ((elem hlt.ne (algebraMap 𝒪[k] k (r c)) * pm k n (Equiv.swap i j) : GL (Fin n) k) : GL (Fin n) k ⧸ iwC k n C) = ((g * pm k n (Equiv.swap i j) : GL (Fin n) k) : GL (Fin n) k ⧸ iwC k n C)`. Rewrite using `[QuotientGroup.eq, _root_.mul_inv_rev, mul_assoc, ← mul_assoc _ g, ← mul_assoc]`. Conclude with `(conj_mem hij (mul_mem (inv_mem (hx c)) hg)).2 (by rwa [hL])`.
+
+Use `⟨c, h1, fun d hd => ?_⟩` and prove the remaining obligations. Establish `h2` using `h1.trans (Eq.symm hd)`. Rewrite `h2` using `[QuotientGroup.eq, _root_.mul_inv_rev, mul_assoc, ← mul_assoc _ (elem _ _), ← mul_assoc, conj_mem hij (mul_mem (inv_mem (hx c)) (hx d)), hL]`. Establish `h3 : valuation k (algebraMap 𝒪[k] k (r d - r c)) < 1`. Use `h2 using 2` and compare the differences between its conclusion and the goal.
+
+Simplify using `[elem, one_apply_ne hlt.ne, single_apply, hlt.ne]`. Establish `h4` using `(res_zero _).2 h3`. Rewrite `h4` using `[map_sub, hr, hr, sub_eq_zero]`. Then use the resulting hypothesis. Introduce and unpack `⟨c, rfl, -⟩`. Conclude with `⟨⟨_, hx c⟩, rfl⟩`.
+
+Take `⟨c, hc⟩` from `pick hg hr i i j`. Use `⟨c, _, (conj_mem hij (mul_mem hg (inv_mem (hx c)))).2 (by rwa [hR]), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_assoc (pm k n _) (pm k n _), ← map_mul, Equiv.swap_mul_self, map_one, one_mul, hs, mul_assoc, inv_mul_cancel_right]`.
+-/
 theorem UpperTheory.V.AlgebraTools.simpleOrbit :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (C : Subgroup 𝓀[k]ˣ) (i j : Fin n), (j : ℕ) = i + 1 → ∀ (r : 𝓀[k] → 𝒪[k]), (∀ c, IsLocalRing.residue 𝒪[k] (r c) = c) → ∃ x : 𝓀[k] → GL (Fin n) k, (∀ c, (x c : Matrix (Fin n) (Fin n) k) = 1 + Matrix.single i j (algebraMap 𝒪[k] k (r c))) ∧ (∀ c, x c ∈ unipO k n) ∧ (∀ q : GL (Fin n) k ⧸ iwC k n C, q ∈ MulAction.orbit (iwC k n C) ((pm k n (Equiv.swap i j) : GL (Fin n) k) : GL (Fin n) k ⧸ iwC k n C) ↔ ∃! c, ((x c * pm k n (Equiv.swap i j) : GL (Fin n) k) : GL (Fin n) k ⧸ iwC k n C) = q) ∧ ∀ g ∈ iwC k n C, ∃ c, ∃ b ∈ iwC k n C, pm k n (Equiv.swap i j) * g = b * (pm k n (Equiv.swap i j) * x c) := by
   intro k _ _ _ _ n C i j hij r hr

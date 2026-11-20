@@ -38,8 +38,14 @@ variable {K} (ht : TFil l) (hs : CrisSurj l) {M : Model l K}
 
 def toY {r j : ℕ} (x : Fam M r j) : (cb K ht hs).Fam M r j := x
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem toY_comp {r j : ℕ} (x : Fam M r j) : CB.Comp (toY ht hs x) ↔ Comp x := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem toY_isFirstChern_iff (D : E.LineData M.X) (x : Fam M 1 2) : CB.IsFirstChernClassInFamily D (toY ht hs x) ↔ IsFirstChernClassInFamily D x := Iff.rfl
 
 variable (l K)

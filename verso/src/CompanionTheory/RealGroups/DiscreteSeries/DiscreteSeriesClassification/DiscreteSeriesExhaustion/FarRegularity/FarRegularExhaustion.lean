@@ -12,6 +12,9 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FarRegO
 
 namespace CompanionTheory.RgExh.U
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.FarRegularityLevels.farReg_of_lkt_unitIneq_farNum GlobalTheory.CompanionTheory.RgExhFarReg.lktExists GlobalTheory.CompanionTheory.RgFarRen.renumber GlobalTheory.CompanionTheory.RgExhUnit.unitIneq (GlobalTheory.CompanionTheory.RgCOBlock.coBlock (Global …`.
+-/
 theorem far_regular_exhaustion : CompanionTheory.RgExh.FarReg :=
   GlobalTheory.CompanionTheory.FarRegularityLevels.farReg_of_lkt_unitIneq_farNum GlobalTheory.CompanionTheory.RgExhFarReg.lktExists GlobalTheory.CompanionTheory.RgFarRen.renumber GlobalTheory.CompanionTheory.RgExhUnit.unitIneq
     (GlobalTheory.CompanionTheory.RgCOBlock.coBlock (GlobalTheory.CompanionTheory.RgExh.injU_of_injR (GlobalTheory.CompanionTheory.RgExhInjR.injR_of_vanKG

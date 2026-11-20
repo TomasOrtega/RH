@@ -32,6 +32,9 @@ def blockSum {r t : ℕ} (ρ : Γ →* Matrix (Fin r) (Fin r) k) (χ : Fin t →
   map_mul' g h := by
     refine LinearMap.ext fun u => Prod.ext ?_ (funext fun c => ?_) <;> simp [mul_assoc]
 
+/- English proof (translation)
+Use `Prod.ext ?_ (funext fun c => ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem blockSum_apply {r t : ℕ} (ρ : Γ →* Matrix (Fin r) (Fin r) k) (χ : Fin t → (Γ →* kˣ)) (g : Γ)
     (u : (Fin r → k) × (Fin t → k)) :
     blockSum ρ χ g u = ((ρ g).mulVec u.1, fun c => ((χ c g : kˣ) : k) * u.2 c) := by
@@ -39,6 +42,9 @@ theorem blockSum_apply {r t : ℕ} (ρ : Γ →* Matrix (Fin r) (Fin r) k) (χ :
   · rfl
   · rfl
 
+/- English proof (translation)
+Use `⟨h, 1, fun _ => ⊤, LinearEquiv.refl k V, fun _ _ _ _ => trivial, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Conclude with `⟨iSupIndep_subsingleton _, by simp⟩`. Introduce `j g v _`. Simplify using the standard rewrite rules.
+-/
 theorem isSemisimplificationOf_self {V : Type} [AddCommGroup V] [Module k V] (ρ : Representation k Γ V)
     (h : IsSS ρ) : IsSemisimplificationOf ρ ρ := by
   refine ⟨h, 1, fun _ => ⊤, LinearEquiv.refl k V, fun _ _ _ _ => trivial, ?_, ?_⟩
@@ -66,6 +72,9 @@ def redK {a : ℕ} (ρ : GE D.nd →* GL (Fin a) (D.nd.O i)) :
     Representation (kk D.nd i) (GE D.nd) (Fin a → kk D.nd i) :=
   matRep (matAlong D i (IsLocalRing.residue (D.nd.O i)) ρ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem repK_eq (r : RepFam D i) (x : D.nd.X i) :
     repK D.nd i r x = matRep (matAlong D i (toK D.nd i) (r x)) := rfl
 

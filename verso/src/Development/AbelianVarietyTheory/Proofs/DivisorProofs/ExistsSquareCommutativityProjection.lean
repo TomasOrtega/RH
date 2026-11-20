@@ -35,20 +35,34 @@ open MeasureTheory GlobalTheory.SquareComm
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `show ω (g, h) (ω (1, h') Φ) 0 = ω (g, h * h') Φ 0`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+-/
 private theorem thetaKO_one {M X : HSp D} (ω : GlobalTheory.Grid.WRep M X) (g : GA D M) (h h' : GA D X) (Φ : WO M X → ℂ) :
     thetaKO ω g h (ω (1, h') Φ) = thetaKO ω g (h * h') Φ := by
   show ω (g, h) (ω (1, h') Φ) 0 = ω (g, h * h') Φ 0
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
+/- English proof (translation)
+Simplify using `only [thetaInt, thetaKO_one]`.
+-/
 private theorem thetaInt_one {M X : HSp D} (ω : GlobalTheory.Grid.WRep M X) (ν : Measure (GA D M)) (𝓕 : Set (GA D M)) (h' : GA D X)
     (Φ : WO M X → ℂ) (h : GA D X) : thetaInt ω ν 𝓕 (ω (1, h') Φ) h = thetaInt ω ν 𝓕 Φ (h * h') := by
   simp only [thetaInt, thetaKO_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Simplify using `[thetaInt, thetaKO]`.
+-/
 private theorem thetaInt_zero {M X : HSp D} (ω : GlobalTheory.Grid.WRep M X) (ν : Measure (GA D M)) (𝓕 : Set (GA D M)) :
     thetaInt ω ν 𝓕 0 = 0 := by
   funext h
   simp [thetaInt, thetaKO]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Establish `e : (fun g => thetaKO ω g h (Φ + Ψ)) = fun g => thetaKO ω g h Φ + thetaKO ω g h Ψ`. Use function extensionality and compare the values at `g`. Simplify using `[thetaKO]`. Simplify using `only [thetaInt, Pi.add_apply]`.
+
+Rewrite using `[show (fun g => thetaKO ω g h (Φ + Ψ)) = _ from e, integral_add (hΦ h) (hΨ h)]`.
+-/
 private theorem thetaInt_add {M X : HSp D} (ω : GlobalTheory.Grid.WRep M X) (ν : Measure (GA D M)) (𝓕 : Set (GA D M)) (Φ Ψ : WO M X → ℂ)
     (hΦ : ∀ h, IntegrableOn (fun g => thetaKO ω g h Φ) 𝓕 ν) (hΨ : ∀ h, IntegrableOn (fun g => thetaKO ω g h Ψ) 𝓕 ν) :
     thetaInt ω ν 𝓕 (Φ + Ψ) = thetaInt ω ν 𝓕 Φ + thetaInt ω ν 𝓕 Ψ := by
@@ -58,11 +72,19 @@ private theorem thetaInt_add {M X : HSp D} (ω : GlobalTheory.Grid.WRep M X) (ν
   simp only [thetaInt, Pi.add_apply]
   rw [show (fun g => thetaKO ω g h (Φ + Ψ)) = _ from e, integral_add (hΦ h) (hΨ h)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Simplify using `[thetaInt, thetaKO, integral_const_mul]`.
+-/
 private theorem thetaInt_smul {M X : HSp D} (ω : GlobalTheory.Grid.WRep M X) (ν : Measure (GA D M)) (𝓕 : Set (GA D M)) (c : ℂ)
     (Φ : WO M X → ℂ) : thetaInt ω ν 𝓕 (c • Φ) = c • thetaInt ω ν 𝓕 Φ := by
   funext h
   simp [thetaInt, thetaKO, integral_const_mul]
 
+/- English proof (translation)
+Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1` as an intermediate fact. Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).2.1` as an intermediate fact. Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).2.2` as an intermediate fact. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`.
+
+Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Establish `: IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`. Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_fundDom D V (Measure.haar) inferInstance`. Conclude with `⟨_, 𝓕, inferInstance, h𝓕⟩`.
+-/
 private theorem exists_isHaarFD (V : HSp D) : ∃ (ν : Measure (GA D V)) (𝓕 : Set (GA D V)), IsHaarFD V ν 𝓕 := by
   have := (GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1
   have := (GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).2.1
@@ -85,6 +107,9 @@ open MeasureTheory GlobalTheory.SquareComm
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨p, q, hsig, hbig, -⟩` from `hT.sig`. Establish `hlt : X.rank < 2 * (W.rank - p)` using `by have := hT.rank; omega`. Take `⟨N, C, hC⟩` from `GlobalTheory.WeilConv.weilConvergence hP.siegelSetUnitary hP D ψ θ hθ true W X β (β / α) ωA hω p ⟨D.eTau.symm 1, (hsig _).1⟩ hlt ν 𝓕 hν Φ (GlobalTheory.TripleWeilTransfer.isThetaFunO_of_mem_algF hψ hθ true A B hΦ)`. Conclude with `(hC h).1`.
+-/
 private theorem integrable_of_mem_algF (hP : GlobalTheory.FunPr.Hypotheses₂) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {W W₁ X : HSp D} (A : GlobalTheory.ChainFr.Fr W) (B : GlobalTheory.ChainFr.Fr X)
     {α β : (AE D)ˣ →* Circle} (hT : IsTriple W W₁ X α β) {ν : Measure (GA D W)} {𝓕 : Set (GA D W)}
@@ -97,6 +122,19 @@ private theorem integrable_of_mem_algF (hP : GlobalTheory.FunPr.Hypotheses₂) {
     ⟨D.eTau.symm 1, (hsig _).1⟩ hlt ν 𝓕 hν Φ (GlobalTheory.TripleWeilTransfer.isThetaFunO_of_mem_algF hψ hθ true A B hΦ)
   exact (hC h).1
 
+/- English proof (translation)
+Take `⟨ν₁, 𝓕₁, hν₁⟩` from `exists_isHaarFD W₁`. Take `⟨c, -, hc⟩` from `GlobalTheory.T.theta_integrals_of_minguez hP.minguezThetaGL hP hK hL D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pi rf rl p p' hM`. Take `⟨Φ₀, -, hrel, -, hI⟩` from `hc 0 (Submodule.zero_mem _)`. Establish `hrelker : finRel ωB (algF ψ θ false A₁ B) ≤ LinearMap.ker p'`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨u, hu, Ψ, hΨ, rfl⟩`. Simplify using `[LinearMap.mem_ker, hM.mapB.invf u hu Ψ hΨ]`. Establish `hp0 : p' Φ₀ = 0`. Use `hrelker hrel` as an intermediate fact. Simplify using `using this`.
+
+Establish `hker : ∀ Φ ∈ algF ψ θ true A B, p Φ = 0 → thetaInt ωA ν 𝓕 Φ = 0`. Introduce `Φ hΦ hpΦ`. Rewrite using `[hI Φ hΦ (by rw [hpΦ, hp0]), ← hI 0 (Submodule.zero_mem _) (by rw [map_zero, hp0]), thetaInt_zero]`. Set `S` to `algF ψ θ true A B`. Set `L : S →ₗ[ℂ] (GA D X → ℂ)` to `{ toFun := fun Φ => thetaInt ωA ν 𝓕 Φ.1 map_add' := fun Φ Ψ => thetaInt_add ωA ν 𝓕 Φ.1 Ψ.1 (integrable_of_mem_algF hP hψ hθ A B hT hν hM.weilA Φ.2) (integrable_of_mem_algF hP hψ hθ A B hT hν hM.weilA Ψ.2) map_smul' := fun c Φ => thetaInt_smul ωA ν 𝓕 c Φ.1 }`.
+
+Set `pS : S →ₗ[ℂ] Pi` to `p ∘ₗ S.subtype`. Establish `hsurj : Function.Surjective pS`. Introduce `x`. Establish `hx : x ∈ S.map p` using `by rw [hM.mapA.onto]; trivial`. Take `⟨Φ, hΦ, rfl⟩` from `Submodule.mem_map.1 hx`.
+
+Conclude with `⟨⟨Φ, hΦ⟩, rfl⟩`. Establish `hle : LinearMap.ker pS ≤ LinearMap.ker L`. Introduce `Φ hΦ`. Conclude with `hker Φ.1 Φ.2 hΦ`. Use `⟨(LinearMap.ker pS).liftQ L hle ∘ₗ (pS.quotKerEquivOfSurjective hsurj).symm.toLinearMap, fun Φ hΦ => ?_⟩` and prove the remaining obligations.
+
+Establish `e : (pS.quotKerEquivOfSurjective hsurj).symm (p Φ) = Submodule.Quotient.mk ⟨Φ, hΦ⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, e, Submodule.liftQ_apply]`. Both sides reduce to the same expression.
+-/
 private theorem exists_factor (hP : GlobalTheory.FunPr.Hypotheses₂) (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree)
     (hL : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {W W₁ X : HSp D} (A : GlobalTheory.ChainFr.Fr W) (A₁ : GlobalTheory.ChainFr.Fr W₁)
@@ -144,6 +182,15 @@ private theorem exists_factor (hP : GlobalTheory.FunPr.Hypotheses₂) (hK : Glob
   simp only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, e, Submodule.liftQ_apply]
   rfl
 
+/- English proof (translation)
+Use `set ν : Measure ℝ := volume.restrict (Set.Icc (-1 : ℝ) 1) with hν`. Establish `hsm : AEStronglyMeasurable (fun p : G × ℝ => F'' p.2 p.1) (μ.prod ν)` using `hm.aestronglyMeasurable`. Establish `hI : Integrable (fun p : G × ℝ => F'' p.2 p.1) (μ.prod ν)`. Use `(integrable_prod_iff' hsm).2 ⟨.of_forall fun t => hi'' t, ?_⟩` and prove the remaining obligations. Use `Integrable.mono' (integrable_const C) (hm.norm.stronglyMeasurable.integral_prod_left').aestronglyMeasurable ?_` and prove the remaining obligations.
+
+Use `(ae_restrict_iff' measurableSet_Icc).2 (.of_forall fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun g => norm_nonneg _)]`. Conclude with `hC t ht`. Establish `hB : Integrable (fun g => ‖F' 0 g‖ + ∫ u, ‖F'' u g‖ ∂ν) μ` using `hi'.norm.add hI.integral_norm_prod_left`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (x₀ := (0 : ℝ)) (F := F) (F' := F') (bound := fun g => ‖F' 0 g‖ + ∫ u, ‖F'' u g‖ ∂ν) (Icc_mem_nhds (by norm_num : (-1 : ℝ) < 0) one_pos) (.of_forall fun t => (hi t).aestronglyMeasurable) (hi 0) hi'.aestronglyMeasurable (. …` and prove the remaining obligations.
+
+Establish `e : ∫ u in (0 : ℝ)..t, F'' u g = F' t g - F' 0 g` using `intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun s => F' s g) (fun u _ => hd' g u) ((hc g).intervalIntegrable _ _)`. Establish `h1 : ‖∫ u in (0 : ℝ)..t, F'' u g‖ ≤ ∫ u, ‖F'' u g‖ ∂ν`. Use `intervalIntegral.norm_integral_le_integral_norm_uIoc.trans ?_` and prove the remaining obligations. Use `setIntegral_mono_set ((hc g).norm.integrableOn_Icc) (.of_forall fun u => norm_nonneg _) ?_` and prove the remaining obligations. Use `HasSubset.Subset.eventuallyLE (Set.uIoc_subset_uIcc.trans ?_)` and prove the remaining obligations.
+
+Conclude with `Set.uIcc_subset_Icc ⟨by norm_num, by norm_num⟩ ht`. Establish `e2 : F' t g = F' 0 g + ∫ u in (0 : ℝ)..t, F'' u g` using `by rw [e]; ring`. Rewrite using `[e2]`. Conclude with `(norm_add_le _ _).trans (by gcongr)`.
+-/
 private theorem hasDerivAt_integral_of_second {G : Type} [MeasurableSpace G] (μ : Measure G) [SFinite μ] (F F' F'' : ℝ → G → ℂ)
     (hd : ∀ g t, HasDerivAt (fun s => F s g) (F' t g) t) (hd' : ∀ g t, HasDerivAt (fun s => F' s g) (F'' t g) t)
     (hc : ∀ g, Continuous fun t => F'' t g) (hm : Measurable fun p : G × ℝ => F'' p.2 p.1)
@@ -175,6 +222,21 @@ private theorem hasDerivAt_integral_of_second {G : Type} [MeasurableSpace G] (μ
   rw [e2]
   exact (norm_add_le _ _).trans (by gcongr)
 
+/- English proof (translation)
+Establish `hω' : IsWeilDatumO ψ (GlobalTheory.Grid.sgn ε M) X χ χ' (ω.toSgn ε)` using `hω`. Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D M`. Take `⟨j1, j2, j3, j4, j5, j6, j7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D X`. Establish `hν1` using `hν.1`. Take `⟨ht, hd⟩` from `GlobalTheory.Chain.LiftReg.tame_dOmT hθ hω' hY`.
+
+Establish `hth : ∀ f, IsThetaFunO ψ (GlobalTheory.Grid.sgn ε M) X f → IsThetaFunO ψ (GlobalTheory.Grid.sgn ε M) X (GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.dOmT (V` using `GlobalTheory.Grid.sgn ε M) θ (ω.toSgn ε) τ Y f) := fun f hf => ht.theta (x := f) hf`. Establish `hco : Continuous fun t : ℝ => h * oneP θ X τ Y t` using `continuous_const.mul (GlobalTheory.Mem.Lift.continuous_oneP hθ hY)`. Establish `hder : ∀ f, IsThetaFunO ψ (GlobalTheory.Grid.sgn ε M) X f → ∀ (g : GA D M) (t : ℝ), HasDerivAt (fun s : ℝ => thetaKO ω g (h * oneP θ X τ Y s) f) (thetaKO ω g (h * oneP θ X τ Y t) (GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.dOmT (V` using `GlobalTheory.Grid.sgn ε M) θ (ω.toSgn ε) τ Y f)) t := by`. Introduce `f hf g t`. Establish `h1` using `hd f hf ((GlobalTheory.Grid.ofSgn ε M).symm g, h * oneP θ X τ Y t) 0`.
+
+Rewrite `h1` using `[← sub_self t]`. Establish `h2` using `HasDerivAt.comp_sub_const t t h1`. Use `h2.congr_of_eventuallyEq (.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [Prod.mk_mul_mk, mul_one, mul_assoc, ← GlobalTheory.Mem.Lift.oneP_add hθ hY, add_sub_cancel]`. Both sides reduce to the same expression.
+
+Establish `hcont : ∀ f, IsThetaFunO ψ (GlobalTheory.Grid.sgn ε M) X f → Continuous fun p : GA D M × ℝ => thetaKO ω p.1 (h * oneP θ X τ Y p.2) f` using `fun f hf => (hω'.om_cont f hf 0).comp (((GlobalTheory.Grid.continuous_ofSgn_symm ε M).comp continuous_fst).prodMk (hco.comp continuous_snd))`. Use `set Φ₁ := GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.dOmT (V := GlobalTheory.Grid.sgn ε M) θ (ω.toSgn ε) τ Y Φ with e₁`. Establish `hΦ₁` using `hth Φ hΦ`. Use `set Φ₂ := GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.dOmT (V := GlobalTheory.Grid.sgn ε M) θ (ω.toSgn ε) τ Y Φ₁ with e₂`. Establish `hΦ₂` using `hth Φ₁ hΦ₁`.
+
+Take `⟨N₀, C₀, h₀⟩` from `hmod Φ hΦ`. Take `⟨N₁, C₁, h₁⟩` from `hmod Φ₁ hΦ₁`. Take `⟨N, C, h₂⟩` from `hmod Φ₂ hΦ₂`. Take `⟨c, hc0, hc⟩` from `GlobalTheory.Grow.height_comparison (V := X) hθ`. Take `⟨K, hK⟩` from `(isCompact_Icc (a := (-1 : ℝ)) (b := 1)).bddAbove_image ((GlobalTheory.Grow.continuous_height X).comp hco).continuousOn`.
+
+Establish `key` using `hasDerivAt_integral_of_second (ν.restrict 𝓕) (fun t g => thetaKO ω g (h * oneP θ X τ Y t) Φ) (fun t g => thetaKO ω g (h * oneP θ X τ Y t) Φ₁) (fun t g => thetaKO ω g (h * oneP θ X τ Y t) Φ₂) (hder Φ hΦ) (hder Φ₁ hΦ₁) (fun g => (hcont Φ₂ hΦ₂).comp (Continuous.prodMk_right g)) (hco …`. Use `(h₂ _).2.trans ?_` and prove the remaining obligations. Establish `a1 : (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ X (h * oneP θ X τ Y t) : ℝ) ≤ c * K` using `(hc _).1.trans (mul_le_mul_of_nonneg_left (hK ⟨t, htt, rfl⟩) hc0.le)`. Establish `a2 : (0 : ℝ) ≤ GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ X (h * oneP θ X τ Y t)` using `NNReal.coe_nonneg _`. Conclude with `mul_le_mul (le_max_left _ _) (pow_le_pow_left₀ a2 a1 N) (pow_nonneg a2 N) (le_max_right _ _)`.
+
+Simplify `key` using `only [thetaInt, GlobalTheory.Mem.Lift.oneP_zero hθ, mul_one]`.
+-/
 private theorem hasDerivAt_thetaInt {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) {ε : Bool} {M X : HSp D}
     {χ χ' : (AE D)ˣ →* Circle} {ω : GlobalTheory.Grid.WRep M X} (hω : GlobalTheory.Grid.IsWeil ψ ε M X χ χ' ω) {ν : Measure (GA D M)}
     {𝓕 : Set (GA D M)} (hν : IsHaarFD M ν 𝓕) (hmod : ∀ Φ, IsThetaFunO ψ (GlobalTheory.Grid.sgn ε M) X Φ → ModInt θ ω ν 𝓕 Φ)
@@ -225,6 +287,15 @@ private theorem hasDerivAt_thetaInt {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFa
       exact mul_le_mul (le_max_left _ _) (pow_le_pow_left₀ a2 a1 N) (pow_nonneg a2 N) (le_max_right _ _)
   simpa only [thetaInt, GlobalTheory.Mem.Lift.oneP_zero hθ, mul_one] using key
 
+/- English proof (translation)
+Establish `hx' : x ∈ (algF ψ θ true A B).map p` using `by rw [hM.mapA.onto]; trivial`. Take `⟨Φ, hΦ, rfl⟩` from `Submodule.mem_map.1 hx'`. Take `⟨Φ', hΦ', hD⟩` from `hM.mapA.stabX.2 τ Y hY Φ hΦ`. Rewrite using `[← hM.mapA.eql τ Y hY Φ hΦ Φ' hΦ' hD, ← hJ Φ' hΦ']`. Establish `hth` using `GlobalTheory.TripleWeilTransfer.isThetaFunO_of_mem_algF hψ hθ true A B hΦ`.
+
+Establish `hω' : IsWeilDatumO ψ (GlobalTheory.Grid.sgn true W) X β (β / α) (ωA.toSgn true)` using `hM.weilA`. Establish `e : Φ' = GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.dOmT (V` using `GlobalTheory.Grid.sgn true W) θ (ωA.toSgn true) τ Y Φ := by`. Use function extensionality and compare the values at `z`. Establish `h1` using `(GlobalTheory.Chain.LiftReg.tame_dOmT hθ hω' hY).2 Φ hth 1 z`. Simplify using `only [one_mul, map_one, Module.End.one_apply] at h1`.
+
+Conclude with `(hD z).unique h1`. Take `⟨a, b, hsig, hbig, -⟩` from `hT.sig`. Establish `hlt : X.rank < 2 * (W.rank - a)` using `by have := hT.rank; omega`. Use function extensionality and compare the values at `h`. Establish `h2` using `hasDerivAt_thetaInt hθ hM.weilA hν (GlobalTheory.WeilConv.weilConvergence hP.siegelSetUnitary hP D ψ θ hθ true W X β (β / α) ωA hM.weilA a ⟨D.eTau.symm 1, (hsig _).1⟩ hlt ν 𝓕 hν) hY hth h`.
+
+Rewrite `h2` using `[hJ Φ hΦ, hx]`. Rewrite using `[e]`. Conclude with `h2.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))`.
+-/
 private theorem lie_stable (hP : GlobalTheory.FunPr.Hypotheses₂) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {W W₁ X : HSp D} (A : GlobalTheory.ChainFr.Fr W) (A₁ : GlobalTheory.ChainFr.Fr W₁)
     (B : GlobalTheory.ChainFr.Fr X) {α β : (AE D)ˣ →* Circle} (hT : IsTriple W W₁ X α β) {ν : Measure (GA D W)}
@@ -253,6 +324,13 @@ private theorem lie_stable (hP : GlobalTheory.FunPr.Hypotheses₂) {ψ : AddChar
   rw [e]
   exact h2.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))
 
+/- English proof (translation)
+Establish `hf : ∀ g ∈ GfC X, ∀ x ∈ LinearMap.ker J₀, rf g x ∈ LinearMap.ker J₀`. Introduce `g hg x hx`. Establish `hx' : x ∈ (algF ψ θ true A B).map p` using `by rw [hM.mapA.onto]; trivial`. Take `⟨Φ, hΦ, rfl⟩` from `Submodule.mem_map.1 hx'`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`.
+
+Rewrite using `[← hM.mapA.eqf g hg Φ hΦ, ← hJ _ (hM.mapA.stabX.1 g hg Φ hΦ)]`. Use function extensionality and compare the values at `h`. Rewrite using `[thetaInt_one, hJ Φ hΦ, hx]`. Both sides reduce to the same expression. Establish `hl : ∀ τ, ∀ Y ∈ lieAt X τ, ∀ x ∈ LinearMap.ker J₀, rl τ Y x ∈ LinearMap.ker J₀` using `fun τ Y hY x hx => lie_stable hP hψ hθ A A₁ B hT hν hM J₀ hJ τ Y hY x hx`.
+
+Break down `hM.irred.2 (LinearMap.ker J₀) hf hl with h | h` into its components or cases. Conclude with `Or.inr (LinearMap.ker_eq_bot.1 h)`. Conclude with `Or.inl (LinearMap.ker_eq_top.1 h)`.
+-/
 private theorem zero_or_injective (hP : GlobalTheory.FunPr.Hypotheses₂) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {W W₁ X : HSp D} (A : GlobalTheory.ChainFr.Fr W) (A₁ : GlobalTheory.ChainFr.Fr W₁)
     (B : GlobalTheory.ChainFr.Fr X) {α β : (AE D)ˣ →* Circle} (hT : IsTriple W W₁ X α β) {ν : Measure (GA D W)}
@@ -278,6 +356,13 @@ end GlobalTheory.ThetaKFactor
 
 end
 
+/- English proof (translation)
+Introduce `hP hK hL D ψ θ hψ hθ W W₁ X A A₁ B a b`. Take `⟨Pr, q, q', -, -, hq⟩` from `GlobalTheory.T.local_matching_of_howe_duality hP.howeDualityReal hP hK hL D ψ θ hψ hθ W W₁ X A A₁ B a b`. Use `⟨Pr, q, fun α β hT hab ν 𝓕 hν ωA hωA f hf => ?_⟩` and prove the remaining obligations. Take `⟨hex, hsplit⟩` from `hq α β hT hab`. Take `⟨ωA₀, ωB, Pi₀, rf₀, rl₀, p₀, p₀', hM₀⟩` from `id hex`.
+
+Take `⟨Pi, rf, rl, p, p', hM⟩` from `GlobalTheory.TripleWeilTransfer.exists_isMatch hP.howeDualityReal hP hK hL D ψ θ hψ hθ W W₁ X A A₁ B α β hT hex ωA ωB hωA hM₀.weilB`. Take `⟨Pf, r, r', e, -, -, he, -⟩` from `hsplit ωA ωB Pi rf rl p p' hM`. Take `⟨J₀, hJ⟩` from `GlobalTheory.ThetaKFactor.exists_factor hP hK hL hψ hθ A A₁ B hT hν hM`. Use `⟨Pf, r f, J₀ ∘ₗ e.toLinearMap, ?_, fun P => ?_⟩` and prove the remaining obligations. Break down `GlobalTheory.ThetaKFactor.zero_or_injective hP hψ hθ A A₁ B hT hν hM J₀ hJ with h | h` into its components or cases.
+
+Conclude with `Or.inl (by rw [h, LinearMap.zero_comp])`. Conclude with `Or.inr (h.comp e.injective)`. Rewrite using `[hJ _ (Submodule.subset_span ⟨f, P, hf, rfl⟩), he f hf P]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.T.exists_square_commutativity_projection : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : GlobalTheory.ChainFr.Fr W) (A₁ : GlobalTheory.ChainFr.Fr W₁) (B : GlobalTheory.ChainFr.Fr X) (a b : D.what₂.Tau → ℚ),

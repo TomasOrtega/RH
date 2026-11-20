@@ -23,9 +23,15 @@ noncomputable def comp (l : ℕ) (hl : 0 < l) (i : ℕ) : k⸨X⸩ →ₗ[k] k�
   map_add' x y := by ext m; simp
   map_smul' c x := by ext m; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_coeff (l : ℕ) (hl : 0 < l) (i : ℕ) (y : k⸨X⸩) (m : ℤ) :
     (comp l hl i y).coeff m = y.coeff (l * m + i) := rfl
 
+/- English proof (translation)
+Consider the cases of `s with`. Consider the case `ofNat n => simp [HahnSeries.single_pow]`. Consider the case `negSucc n`. Rewrite using `[zpow_negSucc, HahnSeries.single_pow, HahnSeries.inv_single]`. Simplify using `[Int.negSucc_eq]`.
+-/
 theorem p_zpow (s : ℤ) :
     (HahnSeries.single (1 : ℤ) (1 : k) : k⸨X⸩) ^ s = HahnSeries.single s 1 := by
   cases s with
@@ -34,10 +40,20 @@ theorem p_zpow (s : ℤ) :
     rw [zpow_negSucc, HahnSeries.single_pow, HahnSeries.inv_single]
     simp [Int.negSucc_eq]
 
+/- English proof (translation)
+Simplify using `[HahnSeries.single_pow]`.
+-/
 theorem p_pow (s : ℕ) :
     (HahnSeries.single (1 : ℤ) (1 : k) : k⸨X⸩) ^ s = HahnSeries.single (s : ℤ) 1 := by
   simp [HahnSeries.single_pow]
 
+/- English proof (translation)
+Rewrite using `[p_zpow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩ m hm`. Rewrite using `[HahnSeries.coeff_single_mul, PowerSeries.coeff_coe, if_pos (by omega), mul_zero]`. Introduce `h`.
+
+Use `⟨PowerSeries.mk fun n => x.coeff (s + n), ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Rewrite using `[HahnSeries.coeff_single_mul, PowerSeries.coeff_coe, one_mul]`. Use `split_ifs with hm`. Conclude with `h m (by omega)`.
+
+Rewrite using `[PowerSeries.coeff_mk]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mem_iff (s : ℤ) (x : k⸨X⸩) :
     (∃ b : k⟦X⟧, x = (HahnSeries.single (1 : ℤ) (1 : k) : k⸨X⸩) ^ s * (b : k⸨X⸩)) ↔
       ∀ m < s, x.coeff m = 0 := by
@@ -58,6 +74,13 @@ variable (l : ℕ) (hl : 0 < l) (φ : k⸨X⸩ →+* k⸨X⸩)
   (hφ : ∀ (x : k⸨X⸩) (m : ℤ), (φ x).coeff m = if (l : ℤ) ∣ m then x.coeff (m / l) else 0)
 include hl hφ
 
+/- English proof (translation)
+Use extensionality with `m`. Establish `hl' : (l : ℤ) ≠ 0` using `by exact_mod_cast hl.ne'`. Rewrite using `[comp_coeff, p_pow, HahnSeries.coeff_single_mul, one_mul, hφ]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Simplify using `[Int.mul_ediv_cancel_left _ hl']`. Rewrite using `[if_neg h, if_neg]`. Simplify using the standard rewrite rules. Introduce `hd`. Establish `: (l : ℤ) ∣ (i : ℤ) - j`.
+
+Establish `h2` using `dvd_sub hd (dvd_mul_right (l : ℤ) m)`. Establish `e : (l : ℤ) * m + i - j - l * m = i - j` using `by ring`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Apply the tactic sequence `have := Int.eq_zero_of_abs_lt_dvd this (by rw [abs_lt]; constructor <;> omega)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem comp_pow_mul {i j : ℕ} (hi : i < l) (hj : j < l) (a : k⸨X⸩) :
     comp l hl i ((HahnSeries.single (1 : ℤ) (1 : k) : k⸨X⸩) ^ j * φ a)
       = if j = i then a else 0 := by
@@ -77,6 +100,11 @@ theorem comp_pow_mul {i j : ℕ} (hi : i < l) (hj : j < l) (a : k⸨X⸩) :
       have := Int.eq_zero_of_abs_lt_dvd this (by rw [abs_lt]; constructor <;> omega)
       omega
 
+/- English proof (translation)
+Use extensionality with `m`. Establish `hl' : (0 : ℤ) < l` using `by exact_mod_cast hl`. Establish `h0` using `Int.emod_nonneg m hl'.ne'`. Establish `h1` using `Int.emod_lt_of_pos m hl'`. Use `congrArg (fun w => w.coeff (m / l)) (h (m % l).toNat (by omega))` as an intermediate fact.
+
+Simplify using `only [comp_coeff] at this`. Rewrite `this` using `[Int.toNat_of_nonneg h0, Int.mul_ediv_add_emod]`. Conclude with `this`.
+-/
 theorem eq_of_comp_eq {y z : k⸨X⸩} (h : ∀ i < l, comp l hl i y = comp l hl i z) : y = z := by
   ext m
   have hl' : (0 : ℤ) < l := by exact_mod_cast hl
@@ -87,6 +115,13 @@ theorem eq_of_comp_eq {y z : k⸨X⸩} (h : ∀ i < l, comp l hl i y = comp l hl
   rw [Int.toNat_of_nonneg h0, Int.mul_ediv_add_emod] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[add_comm, add_pow, Finset.sum_mul, map_sum]`. Establish `: ∀ m ∈ Finset.range (j + 1), comp l hl i ((HahnSeries.single (1 : ℤ) (1 : k) : k⸨X⸩) ^ m * 1 ^ (j - m) * (j.choose m : k⸨X⸩) * φ a) = if m = i then (j.choose i) • a else 0`. Introduce `m hm`. Establish `hm' : m < l` using `by have := Finset.mem_range.1 hm; omega`. Rewrite using `[one_pow, mul_one, mul_assoc, ← map_natCast φ, ← map_mul, comp_pow_mul l hl φ hφ hi hm']`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[nsmul_eq_mul]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq']`.
+
+Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[Nat.choose_eq_zero_of_lt (by simpa using h), zero_smul]`.
+-/
 theorem comp_one_add_pow_mul {i j : ℕ} (hi : i < l) (hj : j < l) (a : k⸨X⸩) :
     comp l hl i ((1 + (HahnSeries.single (1 : ℤ) (1 : k) : k⸨X⸩)) ^ j * φ a)
       = (j.choose i) • a := by
@@ -106,6 +141,17 @@ theorem comp_one_add_pow_mul {i j : ℕ} (hi : i < l) (hj : j < l) (a : k⸨X⸩
   · rfl
   · rw [Nat.choose_eq_zero_of_lt (by simpa using h), zero_smul]
 
+/- English proof (translation)
+Set `M : Matrix (Fin l) (Fin l) k⸨X⸩` to `fun i j => (j.val.choose i.val : k⸨X⸩)`. Establish `hM : IsUnit M`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_of_upperTriangular]`. Simplify using `[M]`. Introduce `i j hij`.
+
+Establish `: j.val < i.val` using `hij`. Simplify using `[M, Nat.choose_eq_zero_of_lt this]`. Establish `hb : Function.Bijective M.mulVec` using `⟨Matrix.mulVec_injective_iff_isUnit.2 hM, Matrix.mulVec_surjective_iff_isUnit.2 hM⟩`. Establish `key : ∀ (x : Fin l → k⸨X⸩) (i : Fin l), comp l hl i (∑ j : Fin l, (1 + (HahnSeries.single (1 : ℤ) (1 : k) : k⸨X⸩)) ^ j.val * φ (x j)) = M.mulVec x i`. Introduce `x i`.
+
+Rewrite using `[map_sum, Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[comp_one_add_pow_mul l hl φ hφ i.2 j.2, nsmul_eq_mul]`. Use `hb.existsUnique (fun i : Fin l => comp l hl i y)` as an intermediate fact. Use `(existsUnique_congr fun x => ?_).1 this` and prove the remaining obligations.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `eq_of_comp_eq l hl φ hφ fun i hi => ?_` and prove the remaining obligations. Rewrite using `[key x ⟨i, hi⟩, h]`. Introduce `h`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[← key, ← h]`.
+-/
 theorem existsUnique_decomp (y : k⸨X⸩) :
     ∃! x : Fin l → k⸨X⸩, y = ∑ j : Fin l,
       (1 + (HahnSeries.single (1 : ℤ) (1 : k) : k⸨X⸩)) ^ j.val * φ (x j) := by
@@ -139,10 +185,34 @@ end
 noncomputable def psi (l : ℕ) (hl : 0 < l) : k⸨X⸩ →ₗ[k] k⸨X⸩ :=
   ∑ i ∈ Finset.range l, ((-1 : ℤ) ^ i) • comp l hl i
 
+/- English proof (translation)
+Simplify using `only [psi, LinearMap.sum_apply, LinearMap.smul_apply]`.
+-/
 theorem psi_apply (l : ℕ) (hl : 0 < l) (y : k⸨X⸩) :
     psi l hl y = ∑ i ∈ Finset.range l, ((-1 : ℤ) ^ i) • comp l hl i y := by
   simp only [psi, LinearMap.sum_apply, LinearMap.smul_apply]
 
+/- English proof (translation)
+Introduce `k _ l hl φ hφ p`. Establish `hl' : (0 : ℤ) < l` using `by exact_mod_cast hl`. Establish `hpow : ∀ j < l, ∀ a, psi l hl (p ^ j * φ a) = ((-1 : ℤ) ^ j) • a`. Introduce `j hj a`. Rewrite using `[psi_apply, Finset.sum_eq_single j]`.
+
+Use `congr 1`. Conclude with `(comp_pow_mul l hl φ hφ hj hj a).trans (if_pos rfl)`. Introduce `i hi hij`. Use `(comp_pow_mul l hl φ hφ (Finset.mem_range.1 hi) hj a).trans (if_neg hij.symm)` as an intermediate fact. Rewrite using `[this, smul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_range.2 hj) h`. Use `⟨existsUnique_decomp l hl φ hφ, psi l hl, fun a => ?_, fun a j hj0 hj => ?_, fun s => ?_⟩` and prove the remaining obligations. Simplify using `using hpow 0 hl a`. Rewrite using `[psi_apply]`.
+
+Establish `: ∀ i ∈ Finset.range l, ((-1 : ℤ) ^ i) • comp l hl i ((1 + p) ^ j * φ a) = ((-1 : ℤ) ^ i * (j.choose i : ℤ)) • a`. Introduce `i hi`. Use `comp_one_add_pow_mul l hl φ hφ (Finset.mem_range.1 hi) hj a` as an intermediate fact. Rewrite using `[this]`. Rewrite using `[mul_smul, natCast_zsmul]`.
+
+Rewrite using `[Finset.sum_congr rfl this, ← Finset.sum_smul, ← Finset.sum_subset (Finset.range_subset_range.2 (show j + 1 ≤ l from hj)), Int.alternating_sum_range_choose_of_ne hj0.ne', zero_smul]`. Introduce `i _ hi`. Rewrite using `[Nat.choose_eq_zero_of_lt (by simpa using hi)]`. Simplify using the standard rewrite rules. Establish `h0` using `Int.emod_nonneg s hl'.ne'`.
+
+Establish `h1` using `Int.emod_lt_of_pos s hl'`. Establish `h2` using `Int.mul_ediv_add_emod s l`. Use extensionality with `z`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, p, mem_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩ m hm`. Rewrite using `[psi_apply, HahnSeries.coeff_sum]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `hi' : (i : ℤ) < l` using `by exact_mod_cast Finset.mem_range.1 hi`. Establish `: (comp l hl i y).coeff m = 0`.
+
+Rewrite using `[comp_coeff]`. Apply `hy` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[HahnSeries.coeff_smul, this, smul_zero]`. Introduce `hz`.
+
+Use `⟨p ^ (l - 1) * φ (((-1 : ℤ) ^ (l - 1)) • z), fun m hm => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[p_pow, HahnSeries.coeff_single_mul, one_mul, hφ] split_ifs with hd`. Take `⟨c, hc⟩` from `hd`. Rewrite using `[hc, Int.mul_ediv_cancel_left _ hl'.ne', HahnSeries.coeff_smul, hz, smul_zero]`. Establish `: ((l - 1 : ℕ) : ℤ) = l - 1` using `by omega`.
+
+Rewrite `hc` using `[this]`. Use the polynomial consequences of the given equalities and inequalities. Both sides reduce to the same expression. Rewrite using `[hpow _ (by omega), smul_smul, ← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem finiteRing_sq_sub_mul_sq_eq_of_card : ∀ {k : Type} [Field k] (l : ℕ) (_ : 0 < l) (φ : k⸨X⸩ →+* k⸨X⸩), (∀ (x : k⸨X⸩) (m : ℤ), (φ x).coeff m = if (l : ℤ) ∣ m then x.coeff (m / l) else 0) → let p : k⸨X⸩ := HahnSeries.single 1 1; (∀ y : k⸨X⸩, ∃! x : Fin l → k⸨X⸩, y = ∑ j : Fin l, (1 + p) ^ j.val * φ (x j)) ∧ ∃ ψ : k⸨X⸩ →ₗ[k] k⸨X⸩, (∀ a, ψ (φ a) = a) ∧ (∀ (a) (j : ℕ), 0 < j → j < l → ψ ((1 + p) ^ j * φ a) = 0) ∧ ∀ s : ℤ, ψ '' {x | ∃ b : k⟦X⟧, x = p ^ s * (b : k⸨X⸩)} = {x | ∃ b : k⟦X⟧, x = p ^ (s / l) * (b : k⸨X⸩)} := by
   intro k _ l hl φ hφ p
   have hl' : (0 : ℤ) < l := by exact_mod_cast hl
@@ -198,6 +268,9 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card : ∀ {k : Type} [Field k] (l : ℕ)
       · rw [hpow _ (by omega), smul_smul, ← mul_pow]
         simp
 
+/- English proof (translation)
+Introduce `l hp _ φ hφ` and use `finiteRing_sq_sub_mul_sq_eq_of_card l hp.out.pos φ.toRingHom hφ`.
+-/
 theorem main : ∀ {k : Type} [Field k] (l : ℕ) [Fact l.Prime] [CharP k l] (φ : k⸨X⸩ →ₐ[k] k⸨X⸩), (∀ (x : k⸨X⸩) (m : ℤ), (φ x).coeff m = if (l : ℤ) ∣ m then x.coeff (m / l) else 0) → let p : k⸨X⸩ := HahnSeries.single 1 1; (∀ y : k⸨X⸩, ∃! x : Fin l → k⸨X⸩, y = ∑ j : Fin l, (1 + p) ^ j.val * φ (x j)) ∧ ∃ ψ : k⸨X⸩ →ₗ[k] k⸨X⸩, (∀ a, ψ (φ a) = a) ∧ (∀ (a) (j : ℕ), 0 < j → j < l → ψ ((1 + p) ^ j * φ a) = 0) ∧ ∀ s : ℤ, ψ '' {x | ∃ b : k⟦X⟧, x = p ^ s * (b : k⸨X⸩)} = {x | ∃ b : k⟦X⟧, x = p ^ (s / l) * (b : k⸨X⸩)} :=
   fun l hp _ φ hφ => finiteRing_sq_sub_mul_sq_eq_of_card l hp.out.pos φ.toRingHom hφ
 

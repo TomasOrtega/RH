@@ -6,6 +6,33 @@ namespace Formalism.MainNotions.N.Ln17
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.N.Ln17 in
+/- English proof (translation)
+Introduce `D HW F Cm CR CA CB CK hU l _ K LL hG hK _ _ T₁ T₂ f b w S η m up size Mi hi hB hAlt hth hbig`. Take `⟨hp11, hSet, hwb, hηb, hSb, ⟨j, hj⟩⟩` from `hB`. Take `⟨hCA, hSur, hηs, hJA, _hlow, hnt, _hJL⟩` from `hSet`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hl : 11 ≤ l` using `hp ▸ hp11`.
+
+Establish `hLift : Formalism.MainNotions.LiftingTheory.coreLiftA ((HW l).W K 1 LL hG)` using `hU.a2.2.2.2.2.2.2.2.1 l K 1 LL hG`. Establish `hsz : ∀ i, size i ≤ b + η`. Introduce `i`. Distinguish the cases in `ht : TruncatedSeriesCountingBounds.Thick b η size i`. Conclude with `ht.2`.
+
+Use `hnt i ht` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hb1 : 1 ≤ b`. Establish `h1` using `hnt j hj`. Establish `h2` using `hηs j`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hhB : TruncatedSeriesCountingBounds.hB b w S η size = b + η + S` using `if_pos hth`. Set `Mi' : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ℕ` to `fun i => if up i then η else size i + S`. Set `hi' : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ℕ` to `fun i => if up i then size i + S else η`. Establish `hJL' : Formalism.MainNotions.LiftingTheory.JumpsLet ((HW l).W K 1 LL hG) T₁ Mi' hi'`.
+
+Introduce `i τ hτ a ha`. Establish `h1` using `hJA i τ hτ a ha`. Establish `h2` using `hηs i`. Consider the cases of `hu : up i`. Simplify using `only [hu, Mi', hi', Bool.false_eq_true, if_false, Set.mem_union, Set.mem_Icc] at h1 ⊢`.
+
+Use `push_cast`. Use linear arithmetic over natural numbers and integers. Simplify using `only [hu, Mi', hi', if_true, Set.mem_union, Set.mem_Icc] at h1 ⊢`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hM : Formalism.MainNotions.LiftingTheory.Mmax (Module.finrank ℚ_[l] ↥(K0 K)) Mi' ≤ b + η + S`. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `k _`. Establish `h1` using `hsz (k : ZMod (Module.finrank ℚ_[l] ↥(K0 K)))`. Apply the tactic sequence `cases hu : up (k : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) <;>`.
+
+Apply the tactic sequence `simp only [hu, Mi', Bool.false_eq_true, if_false, if_true] <;> omega`. Establish `hm : Formalism.MainNotions.LiftingTheory.Mmax (Module.finrank ℚ_[l] ↥(K0 K)) hi' ≤ b + η + S`. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `k _`. Establish `h1` using `hsz (k : ZMod (Module.finrank ℚ_[l] ↥(K0 K)))`.
+
+Apply the tactic sequence `cases hu : up (k : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) <;>`. Apply the tactic sequence `simp only [hu, hi', Bool.false_eq_true, if_false, if_true] <;> omega`. Establish `hH : Formalism.MainNotions.LiftingTheory.Hmax (Module.finrank ℚ_[l] ↥(K0 K)) Mi' hi' ≤ b + η + S + η`. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `k _`.
+
+Establish `h1` using `hsz (k : ZMod (Module.finrank ℚ_[l] ↥(K0 K)))`. Apply the tactic sequence `cases hu : up (k : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) <;>`. Apply the tactic sequence `simp only [hu, Mi', hi', Bool.false_eq_true, if_false, if_true] <;> omega`. Establish `hjumps : ∀ u ∈ Formalism.MainNotions.LiftingTheory.jumpSet ((HW l).W K 1 LL hG) T₁ (Formalism.MainNotions.LiftingTheory.Mmax (Module.finrank ℚ_[l] ↥(K0 K)) Mi') (Formalism.MainNotions.LiftingTheory.Mmax (Module.finrank ℚ_[l] ↥(K0 K)) hi'), -((Formalism.MainNotions.LiftingTheory.M …`. Introduce `u hu`.
+
+Simplify using `only [Formalism.MainNotions.LiftingTheory.jumpSet, Finset.mem_filter, Finset.mem_Icc] at hu`. Use `⟨hu.1.1, ?_⟩` and prove the remaining obligations. Use `hu.1.2` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hL` using `Formalism.MainNotions.N.FrobeniusPowerSeries.lift_le_ePA l hl (b + η + S) η (Formalism.MainNotions.LiftingTheory.Hmax (Module.finrank ℚ_[l] ↥(K0 K)) Mi' hi') (Formalism.MainNotions.LiftingTheory.Mmax (Module.finrank ℚ_[l] ↥(K0 K)) Mi') (by omega) (by omega) hH hM _ hjumps`. Establish `hSg : Sg l b w S η size = Formalism.MainNotions.N.FrobeniusPowerSeries.Sg l (b + η + S) w S η`. Unfold `Sg Formalism.MainNotions.N.FrobeniusPowerSeries.Sg`. Rewrite using `[hhB]`. Establish `h0` using `Formalism.MainNotions.N.FrobeniusPowerSeries.step0 l hl b w S η hb1 hηb hSb hwb (by rw [← hSg]; exact hbig)`.
+
+Establish `hLA` using `hLift hCA T₁ T₂ f Mi' hi' hSur hJL'`. Use `⟨_, ?_, hLA⟩` and prove the remaining obligations. Rewrite using `[hp, hSg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_liftF_le_sg_of_thick : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) {CR CA CB CK : ℝ} (hU : AdmBoundsB D HW F Cm CR CA CB CK)
     (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL) (hK : CaseA K LL)
     [NeZero (Module.finrank ℚ_[l] ↥(K0 K))] [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)]

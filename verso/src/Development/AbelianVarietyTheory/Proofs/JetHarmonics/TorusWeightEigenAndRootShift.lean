@@ -18,6 +18,11 @@ section alg
 
 variable {n : Type} [Fintype n] [DecidableEq n] {G : Matrix n n ℂ}
 
+/- English proof (translation)
+Establish `e1 : (G * Yᴴ * G)ᴴ * G = G * Y`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, h1, Matrix.mul_assoc, h2, Matrix.mul_one]`. Establish `e2 : G * (G * Yᴴ * G) = Yᴴ * G`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `e3 : star (1 / 2 : ℂ) = 1 / 2` using `by simp`.
+
+Rewrite using `[conjTranspose_smul, e3, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, conjTranspose_add, conjTranspose_neg, Matrix.add_mul, Matrix.mul_add, Matrix.neg_mul, Matrix.mul_neg, e1, e2]`. Simplify using the standard rewrite rules.
+-/
 theorem part_one_lie (h1 : Gᴴ = G) (h2 : G * G = 1) (Y : Matrix n n ℂ) :
     ((1 / 2 : ℂ) • (Y + -(G * Yᴴ * G)))ᴴ * G + G * ((1 / 2 : ℂ) • (Y + -(G * Yᴴ * G))) = 0 := by
   have e1 : (G * Yᴴ * G)ᴴ * G = G * Y := by
@@ -29,6 +34,11 @@ theorem part_one_lie (h1 : Gᴴ = G) (h2 : G * G = 1) (Y : Matrix n n ℂ) :
     conjTranspose_neg, Matrix.add_mul, Matrix.mul_add, Matrix.neg_mul, Matrix.mul_neg, e1, e2]
   simp
 
+/- English proof (translation)
+Establish `e1 : (G * Yᴴ * G)ᴴ * G = G * Y`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, h1, Matrix.mul_assoc, h2, Matrix.mul_one]`. Establish `e2 : G * (G * Yᴴ * G) = Yᴴ * G`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `e3 : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))` using `by simp`.
+
+Rewrite using `[conjTranspose_smul, e3, Matrix.smul_mul, Matrix.mul_smul, neg_smul, ← smul_neg, ← smul_add, conjTranspose_sub, conjTranspose_neg, Matrix.sub_mul, Matrix.mul_sub, Matrix.neg_mul, Matrix.mul_neg, e1, e2]`. Establish `: -(Yᴴ * G - -(G * Y)) + (G * Y - -(Yᴴ * G)) = 0` using `by abel`. Rewrite using `[this, smul_zero]`.
+-/
 theorem part_two_lie (h1 : Gᴴ = G) (h2 : G * G = 1) (Y : Matrix n n ℂ) :
     ((1 / (2 * Complex.I)) • (Y - -(G * Yᴴ * G)))ᴴ * G +
       G * ((1 / (2 * Complex.I)) • (Y - -(G * Yᴴ * G))) = 0 := by
@@ -43,6 +53,13 @@ theorem part_two_lie (h1 : Gᴴ = G) (h2 : G * G = 1) (Y : Matrix n n ℂ) :
   have : -(Yᴴ * G - -(G * Y)) + (G * Y - -(Yᴴ * G)) = 0 := by abel
   rw [this, smul_zero]
 
+/- English proof (translation)
+Establish `hi1 : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `A : (g⁻¹)ᴴ * G = G * g`. Combine the equalities or inequalities in the displayed calculation. Establish `A' : G * (g⁻¹)ᴴ = g * G`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc, h2, Matrix.mul_one]`. Use `_ = (G * G) * g * G := by rw [A]; simp only [Matrix.mul_assoc]`. Use `_ = g * G := by rw [h2, Matrix.one_mul]`. Establish `B : G * g⁻¹ = gᴴ * G`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem theta_conj (h2 : G * G = 1) {g : Matrix n n ℂ} (hu : IsUnit g.det) (hU : gᴴ * G * g = G)
     (Y : Matrix n n ℂ) : g * (G * Yᴴ * G) * g⁻¹ = G * (g * Y * g⁻¹)ᴴ * G := by
   have hi1 : g * g⁻¹ = 1 := Matrix.mul_nonsing_inv _ hu
@@ -63,6 +80,11 @@ theorem theta_conj (h2 : G * G = 1) {g : Matrix n n ℂ} (hu : IsUnit g.det) (hU
     _ = _ := by simp only [conjTranspose_mul, Matrix.mul_assoc]
 
 omit [DecidableEq n] in
+/- English proof (translation)
+Rewrite using `[conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]`. Generalize the expression as in `G * Yᴴ * G = Z`. Establish `e : (1 / (2 * Complex.I)) = -Complex.I / 2` using `by field_simp; simp`. Rewrite using `[e]`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem part_one_smul (x y : ℝ) (Y : Matrix n n ℂ) :
     (1 / 2 : ℂ) • (((x : ℂ) + y * Complex.I) • Y + -(G * (((x : ℂ) + y * Complex.I) • Y)ᴴ * G)) =
       x • ((1 / 2 : ℂ) • (Y + -(G * Yᴴ * G))) - y • ((1 / (2 * Complex.I)) • (Y - -(G * Yᴴ * G))) := by
@@ -76,6 +98,11 @@ theorem part_one_smul (x y : ℝ) (Y : Matrix n n ℂ) :
   ring
 
 omit [DecidableEq n] in
+/- English proof (translation)
+Rewrite using `[conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]`. Generalize the expression as in `G * Yᴴ * G = Z`. Establish `e : (1 / (2 * Complex.I)) = -Complex.I / 2` using `by field_simp; simp`. Rewrite using `[e]`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Take the linear combination `(-(y : ℂ) / 2 * Y i j + (y : ℂ) / 2 * Z i j) * Complex.I_mul_I`.
+-/
 theorem part_two_smul (x y : ℝ) (Y : Matrix n n ℂ) :
     (1 / (2 * Complex.I)) • (((x : ℂ) + y * Complex.I) • Y - -(G * (((x : ℂ) + y * Complex.I) • Y)ᴴ * G)) =
       x • ((1 / (2 * Complex.I)) • (Y - -(G * Yᴴ * G))) + y • ((1 / 2 : ℂ) • (Y + -(G * Yᴴ * G))) := by
@@ -92,6 +119,13 @@ end alg
 
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ}
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `exists_lin hv`. Establish `hE : Formalism.QuantumDeterminants.Hpk k r = Hpk k r` using `rfl`. Unfold `Rep.dC`. Rewrite using `[hE, (hL _ (part_one_lie h1 h2 _)).1, (hL _ (part_one_lie h1 h2 _)).1, (hL _ (part_two_lie h1 h2 _)).1, (hL _ (part_two_lie h1 h2 _)).1]`. Rewrite using `[← Complex.re_add_im c, part_one_smul, part_two_smul]`.
+
+Generalize the expression as in `(1 / 2 : ℂ) • (Y + -(Hpk k r * Yᴴ * Hpk k r)) = X₁`. Generalize the expression as in `(1 / (2 * Complex.I)) • (Y - -(Hpk k r * Yᴴ * Hpk k r)) = X₂`. Rewrite using `[map_sub, map_add, map_smul, map_smul, map_smul, map_smul]`. Generalize the expression as in `L X₁ = A`. Generalize the expression as in `L X₂ = B`.
+
+Simplify using `only [← Complex.coe_smul]`. Use `match_scalars`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(-(c.im : ℂ)) * Complex.I_mul_I`.
+-/
 theorem dC_smul_left (h1 : (Hpk k r)ᴴ = Hpk k r) (h2 : Hpk k r * Hpk k r = 1) (R : Rep k r) (c : ℂ)
     (Y : Mx k r) {v : R.H} (hv : v ∈ R.sm) : R.dC (c • Y) v = c • R.dC Y v := by
   obtain ⟨L, hL⟩ := exists_lin hv
@@ -110,6 +144,9 @@ theorem dC_smul_left (h1 : (Hpk k r)ᴴ = Hpk k r) (h2 : Hpk k r * Hpk k r = 1) 
   · ring
   · linear_combination (-(c.im : ℂ)) * Complex.I_mul_I
 
+/- English proof (translation)
+Establish `hE : Formalism.QuantumDeterminants.Hpk k r = Hpk k r` using `rfl`. Unfold `Rep.dC`. Rewrite using `[hE, dsig_smul (part_one_lie h1 h2 _) c hv, dsig_smul (part_two_lie h1 h2 _) c hv, smul_comm Complex.I c, ← smul_add]`.
+-/
 theorem dC_smul_right (h1 : (Hpk k r)ᴴ = Hpk k r) (h2 : Hpk k r * Hpk k r = 1) (R : Rep k r) (c : ℂ)
     (Y : Mx k r) {v : R.H} (hv : v ∈ R.sm) : R.dC Y (c • v) = c • R.dC Y v := by
   have hE : Formalism.QuantumDeterminants.Hpk k r = Hpk k r := rfl
@@ -117,6 +154,9 @@ theorem dC_smul_right (h1 : (Hpk k r)ᴴ = Hpk k r) (h2 : Hpk k r * Hpk k r = 1)
   rw [hE, dsig_smul (part_one_lie h1 h2 _) c hv, dsig_smul (part_two_lie h1 h2 _) c hv,
     smul_comm Complex.I c, ← smul_add]
 
+/- English proof (translation)
+Establish `hE : Formalism.QuantumDeterminants.Hpk k r = Hpk k r` using `rfl`. Establish `hU : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Unfold `Rep.dC`. Rewrite using `[hE, map_add, map_smul, (derived_action hK k r ε mu R hR _ (part_one_lie h1 h2 Y)).2.1 v hv g hg, (derived_action hK k r ε mu R hR _ (part_two_lie h1 h2 Y)).2.1 v hv g hg, ← theta_conj h2 hu hU]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem dC_conj (hK : PI.KFinSmooth) (R : Rep k r) (hR : R.IsDS ε mu)
     (h1 : (Hpk k r)ᴴ = Hpk k r) (h2 : Hpk k r * Hpk k r = 1) {g : Mx k r} (hg : g ∈ GG k r)
     (hu : IsUnit g.det) (Y : Mx k r) {v : R.H} (hv : v ∈ R.sm) :
@@ -131,6 +171,11 @@ theorem dC_conj (hK : PI.KFinSmooth) (R : Rep k r) (hR : R.IsDS ε mu)
   simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub,
     Matrix.sub_mul, Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `[← Complex.exp_conj, ← Complex.exp_add]`.
+
+Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem torus_mem_K {n : ℕ} (ε : Fin n → Bool) (θ : Fin n → ℝ) :
     Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) ∈ Kset ε := by
   refine ⟨?_, ?_⟩
@@ -145,6 +190,11 @@ theorem torus_mem_K {n : ℕ} (ε : Fin n → Bool) (θ : Fin n → ℝ) :
     funext a
     ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[mul_one, one_mul, ← Complex.exp_add]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem torus_single {n : ℕ} (θ : Fin n → ℝ) (a b : Fin n) :
     Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) * Matrix.single a b (1 : ℂ) =
       Complex.exp (((θ a - θ b : ℝ) : ℂ) * Complex.I) • (Matrix.single a b (1 : ℂ) *
@@ -160,6 +210,47 @@ theorem torus_single {n : ℕ} (θ : Fin n → ℝ) (a b : Fin n) :
     ring
   · simp
 
+/- English proof (translation)
+Introduce `hK k r ε mu R hR Q E hQ hE ν v hv`. Take `⟨⟨hQu, hQJ⟩, hQU⟩` from `hQ`. Establish `hQd` using `(Matrix.isUnit_iff_isUnit_det _).1 hQu`. Establish `q1 : Q * Qᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hQU`. Establish `q2 : Qᴴ * Q = 1` using `Matrix.mem_unitaryGroup_iff'.1 hQU`.
+
+Establish `qi : Q⁻¹ = Qᴴ` using `Matrix.inv_eq_right_inv q1`. Establish `q1' : ∀ M : Mx k r, Q * (Qᴴ * M) = M` using `fun M => by rw [← Matrix.mul_assoc, q1, Matrix.one_mul]`. Establish `jj : ∀ M : Mx k r, Jm ε * (Jm ε * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, Jm_mul_self, Matrix.one_mul]`. Establish `h1 : (Hpk k r)ᴴ = Hpk k r`.
+
+Rewrite using `[← hQJ]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Jm_conjTranspose, Matrix.mul_assoc]`. Establish `h2 : Hpk k r * Hpk k r = 1`. Rewrite using `[← hQJ]`. Simplify using `only [Matrix.mul_assoc, q1', jj, q2]`.
+
+Establish `hvs : (v : R.H) ∈ R.sm` using `v.2`. Use `⟨fun a => ?_, fun a b θ hθ => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hE, Submodule.coe_smul]`. Establish `hH : Formalism.QuantumDeterminants.Hpk k r = Hpk k r` using `rfl`.
+
+Establish `hJ : Jm ε * (Matrix.single a a (1 : ℂ) * Jm ε) = Matrix.single a a 1`. Unfold `Jm`. Use extensionality with `i j`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.single_apply]`. Distinguish the cases in `h : a = i ∧ a = j`.
+
+Apply the tactic sequence `obtain ⟨rfl, rfl⟩ := h split_ifs <;> simp_all`. Simplify using `[h]`. Establish `hθ : Hpk k r * (Q⁻¹ * Matrix.single a a (1 : ℂ) * Q)ᴴ * Hpk k r = Q⁻¹ * Matrix.single a a (1 : ℂ) * Q`. Rewrite using `[← hQJ, qi]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc, q1', Matrix.conjTranspose_single, star_one]`.
+
+Rewrite using `[← Matrix.mul_assoc (Matrix.single a a (1 : ℂ)), ← Matrix.mul_assoc (Jm ε), hJ]`. Establish `e0 : dsig (k` using `k) (r := r) R.σ 0 (v : R.H) = 0 := by simp [dsig]`. Establish `e1 : (1 / (2 * Complex.I)) • (Q⁻¹ * Matrix.single a a (1 : ℂ) * Q - -(Q⁻¹ * Matrix.single a a (1 : ℂ) * Q)) = (-Complex.I) • (Q⁻¹ * Matrix.single a a (1 : ℂ) * Q)`. Rewrite using `[sub_neg_eq_add, ← two_smul ℂ, smul_smul]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish `e2 : ∀ t : ℝ, R.σ (NormedSpace.exp ((t : ℂ) • (-Complex.I) • (Q⁻¹ * Matrix.single a a (1 : ℂ) * Q))) v = Complex.exp ((t : ℂ) * (-(ν a) * Complex.I)) • (v : R.H)`. Introduce `t`. Establish `h` using `hv (Pi.single a (-t)) (torus_mem_K ε _)`.
+
+Establish `f1 : (t : ℂ) • (-Complex.I) • (Q⁻¹ * Matrix.single a a (1 : ℂ) * Q) = Q⁻¹ * Matrix.diagonal (fun c => (((Pi.single a (-t) : Fin (2 * r + k + 1) → ℝ) c : ℝ) : ℂ) * Complex.I) * Q`. Rewrite using `[smul_smul, ← Matrix.smul_mul, ← Matrix.mul_smul]`. Use `congr 2`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi, Ne.symm hi]`.
+
+Rewrite using `[Matrix.diagonal_apply_ne _ hij, Matrix.smul_apply, Matrix.single_apply, if_neg, smul_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hij rfl`. Rewrite using `[f1, Matrix.exp_conj' _ _ hQu, Matrix.exp_diagonal, Pi.exp_def, ← Complex.exp_eq_exp_ℂ]`. Use `h.trans ?_` and prove the remaining obligations.
+
+Use `congr 2`. Rewrite using `[Finset.sum_eq_single a (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : dsig (k` using `k) (r := r) R.σ ((-Complex.I) • (Q⁻¹ * Matrix.single a a (1 : ℂ) * Q)) (v : R.H) = (-(ν a) * Complex.I) • (v : R.H) := by`.
+
+Unfold `dsig`. Simplify using `only [e2]`. Establish `d1 : HasDerivAt (fun t : ℝ => (t : ℂ) * (-(ν a) * Complex.I)) (-(ν a) * Complex.I) 0`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).mul_const (-(ν a : ℂ) * Complex.I)`. Establish `d2` using `(d1.cexp.smul_const (v : R.H)).deriv`.
+
+Simplify using `using d2`. Unfold `Rep.dC`. Rewrite using `[hH, hθ, add_neg_cancel, smul_zero, e0, zero_add, e1, e3, smul_smul]`. Use `congr 1`. Take the linear combination `(-(ν a : ℂ)) * Complex.I_mul_I`.
+
+Establish `h` using `hv θ hθ`. Establish `ht` using `torus_single θ a b`. Simplify using `only at h ⊢`. Use `set t : Mx k r := Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) with htdef`. Establish `t1 : tᴴ * t = 1` using `Matrix.mem_unitaryGroup_iff'.1 hθ.1`.
+
+Establish `tJ : t * Jm ε = Jm ε * t` using `hθ.2`. Establish `hg : Q⁻¹ * t * Q ∈ GG k r` using `by show (Q⁻¹ * t * Q)ᴴ * Hpk k r * (Q⁻¹ * t * Q) = Hpk k r`. Rewrite using `[← hQJ, qi]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc, q1']`. Rewrite using `[← Matrix.mul_assoc (Jm ε), ← tJ, Matrix.mul_assoc t, ← Matrix.mul_assoc tᴴ, t1, Matrix.one_mul]`.
+
+Establish `hu : IsUnit (Q⁻¹ * t * Q).det`. Establish `htd : IsUnit t.det` using `Matrix.isUnit_det_of_left_inverse t1`. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Conclude with `((Matrix.isUnit_nonsing_inv_det _ hQd).mul htd).mul hQd`. Establish `hc : (Q⁻¹ * t * Q) * (Q⁻¹ * Matrix.single a b (1 : ℂ) * Q) * (Q⁻¹ * t * Q)⁻¹ = Complex.exp (((θ a - θ b : ℝ) : ℂ) * Complex.I) • (Q⁻¹ * Matrix.single a b (1 : ℂ) * Q)`.
+
+Establish `: (Q⁻¹ * t * Q) * (Q⁻¹ * Matrix.single a b (1 : ℂ) * Q) = (Complex.exp (((θ a - θ b : ℝ) : ℂ) * Complex.I) • (Q⁻¹ * Matrix.single a b (1 : ℂ) * Q)) * (Q⁻¹ * t * Q)`. Rewrite using `[qi]`. Simplify using `only [Matrix.mul_assoc, q1', Matrix.smul_mul]`. Rewrite using `[← Matrix.mul_assoc t, ht]`. Simplify using `only [Matrix.mul_assoc, Matrix.smul_mul, Matrix.mul_smul]`.
+
+Rewrite using `[this, Matrix.mul_assoc _ (Q⁻¹ * t * Q), Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`. Rewrite using `[hE, dC_conj hK R hR h1 h2 hg hu _ hvs, hc, h, dC_smul_left h1 h2 R _ _ (R.smSub.smul_mem _ v.2), dC_smul_right h1 h2 R _ _ hvs, smul_smul, ← Complex.exp_add]`. Use `congr 2`. Establish `: ∑ c, (ν + root a b) c * θ c = (θ a - θ b) + ∑ c, ν c * θ c`. Simplify using `only [root, Pi.add_apply, Pi.sub_apply, add_mul, sub_mul, Finset.sum_add_distrib, Finset.sum_sub_distrib, Pi.single_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem torus_weight_action : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDS ε mu → ∀ (Q : Mx k r) (E : (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ R.smSub)), PI.UpqRep.IsCayleyU k r ε Q → R.IsE Q E → ∀ (ν : Fin (2 * r + k + 1) → ℝ) (v : R.smSub), PI.UpqRep.IsWtOn (PI.UpqRep.Kset ε) (fun g => R.σ (Q⁻¹ * g * Q)) ν (v : R.H) → Formalism.REAL.IsWeight E ν v ∧ ∀ a b, PI.UpqRep.IsWtOn (PI.UpqRep.Kset ε) (fun g => R.σ (Q⁻¹ * g * Q)) (ν + PI.UpqRep.root a b) ((E a b v : R.smSub) : R.H) := by
   intro hK k r ε mu R hR Q E hQ hE ν v hv
   obtain ⟨⟨hQu, hQJ⟩, hQU⟩ := hQ

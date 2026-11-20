@@ -16,6 +16,21 @@ open scoped ContDiff
 
 namespace GlobalTheory.CompanionTheory.MixZ
 
+/- English proof (translation)
+Introduce `k _ X q σ D T _ A F hF hol B φ hφ`. Use `⟨fun x j v hv => ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations. Establish `hv1 : v ∈ (A.chart j).target` using `hv.1`. Establish `hv2 : F ((A.chart j).symm v) ∈ ptsIn q σ (B.U (pick φ.isLB (F x)))` using `hv.2`. Take `⟨W, ι, _, g, Fn, O, h₁, h₂, h₃, h₄, h₅⟩` from `hφ _ _ hv2`.
+
+Establish `hcs : ContinuousAt (fun w => F ((A.chart j).symm w)) v` using `hF.continuousAt.comp ((A.chart j).continuousAt_symm hv1)`. Establish `hop : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (F ⁻¹' ptsIn q σ W))` using `(A.chart j).isOpen_inter_preimage_symm ((isOpen_ptsIn W).preimage hF)`. Establish `hg : ContDiffAt ℝ ∞ (fun w a => ev q σ W (g a) (F ((A.chart j).symm w))) v` using `contDiffAt_pi.2 fun a => ((hol W (g a) j v ⟨hv1, h₁⟩).restrictScalars (𝕜 := ℝ)).contDiffAt.of_le le_top`. Establish `hc : ContDiffAt ℝ ∞ (fun w => Fn fun a => ev q σ W (g a) (F ((A.chart j).symm w))) v` using `(h₄.contDiffAt (h₂.mem_nhds h₃)).comp v hg`. Establish `hc' : ContDiffAt ℝ ∞ (fun w => φ.φ (pick φ.isLB (F x)) (F ((A.chart j).symm w))) v` using `hc.congr_of_eventuallyEq (hcs.eventually h₅)`.
+
+Conclude with `(hc'.div_const 2).contDiffWithinAt`. Use `set i := pick φ.isLB (F x) with hi set i' := pick φ.isLB (F x') with hi'`. Establish `hyi : F y ∈ ptsIn q σ (B.U i)` using `hy.1`. Establish `hyi' : F y ∈ ptsIn q σ (B.U i')` using `hy.2`. Use `set S : Set T := F ⁻¹' ptsIn q σ (B.U i ⊓ B.U i') with hS`.
+
+Establish `hSo : IsOpen S` using `(isOpen_ptsIn _).preimage hF`. Establish `hyS : y ∈ S` using `mem_ptsIn_inf.2 ⟨hyi, hyi'⟩`. Use `set g : T → ℂ := ev q σ (B.U i ⊓ B.U i') (B.g i i').val ∘ F with hg`. Establish `hgh : A.HoloOn S g` using `hol _ _`. Establish `hgc : ContinuousOn g S` using `(continuousOn_ev (B.g i i').val).comp hF.continuousOn fun _ h => h`.
+
+Establish `h0 : g y ≠ 0` using `gv_ne_zero hyi hyi'`. Use `⟨S ∩ (fun z => g z * (g y)⁻¹) ⁻¹' Complex.slitPlane, (hgc.mul continuousOn_const).isOpen_inter_preimage hSo Complex.isOpen_slitPlane, ⟨hyS, ?_⟩, fun z => Complex.log (g z * (g y)⁻¹) + (Real.log ‖g y‖ : ℂ), fun j v hv => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Simplify using `[mul_inv_cancel₀ h0]`. Establish `ha : AnalyticAt ℂ (g ∘ (A.chart j).symm) v` using `hgh j v ⟨hv.1, hv.2.1⟩`. Conclude with `((ha.mul analyticAt_const).clog hv.2.2).add analyticAt_const`.
+
+Establish `hzS : F z ∈ ptsIn q σ (B.U i ⊓ B.U i')` using `hz.1.1.1`. Establish `hz0 : g z ≠ 0` using `left_ne_zero_of_mul (Complex.slitPlane_ne_zero hz.1.1.2)`. Establish `e` using `φ.half_eq (mem_ptsIn_inf.1 hzS).1 (mem_ptsIn_inf.1 hzS).2`. Establish `e' : Real.log ‖gv q σ B i i' (F z)‖ = Real.log ‖g z‖` using `rfl`. Express the relevant statement in the definitionally equal form `φ.φ i (F z) / 2 - φ.φ i' (F z) / 2 = _`.
+
+Rewrite using `[e, e', Complex.add_re, Complex.log_re, Complex.ofReal_re, ← div_eq_mul_inv, norm_div, Real.log_div (norm_ne_zero_iff.2 hz0) (norm_ne_zero_iff.2 h0), sub_add_cancel, add_sub_cancel_left]`.
+-/
 theorem isPotential_pullback_locPot : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} {q : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ} {T : Type}
     [TopologicalSpace T] (A : FinHolAtlas D T) (F : T → GlobalTheory.CxPts q σ) (hF : Continuous F),
     (∀ (W : X.Opens) (f : Γ(X, W)), A.HoloOn (F ⁻¹' ptsIn q σ W) (ev q σ W f ∘ F)) →

@@ -19,6 +19,21 @@ section Copied
 open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.WeilJacquetShalikaLaw Formalism.L2.Forms Matrix NumberField
 open scoped BigOperators
 
+/- English proof (translation)
+Set `_` to `D.host.cmStar`. Establish `hY : ∀ τ, ∃ Y : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ, IsUnit Y.det ∧ Yᴴ * (gramP D).map (embT D τ) * Y = 1`. Introduce `τ`. Establish `hs` using `D.sp.X'_sig (embT D τ)`. Rewrite `hs` using `[D.X'_posDef (embT D τ)]`.
+
+Simplify using `only at hs`. Take `⟨e, P, hP⟩` from `hs`. Establish `hJ : Formalism.UG.Jpq D.sp.X'.rank 0 = 1`. Use extensionality with `i j`. Break down `i with i | i` into its components or cases.
+
+Break down `j with j | j` into its components or cases. Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`. Conclude with `j.elim0`. Conclude with `i.elim0`. Establish `hcT : Formalism.UG.cT (starRingEnd ℂ) P.1 = P.1ᴴ`.
+
+Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply]`. Rewrite `hP` using `[hcT, hJ]`. Set `f : Fin D.sp.X'.rank ≃ Fin (D.R.N D.R.m - 1)` to `finCongr (rankP D)`. Set `g : Fin (D.R.N D.R.m - 1) ≃ Fin D.sp.X'.rank ⊕ Fin 0` to `f.symm.trans e`.
+
+Establish `hG : ((gramP D).map (embT D τ)).submatrix g.symm g.symm = (D.sp.X'.gram.map (embT D τ)).reindex e e`. Use extensionality with `i j`. Simplify using `[g, f, gramP, Matrix.reindex_apply, Matrix.submatrix_apply]`. Use `⟨P.1.submatrix g g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_submatrix_equiv_self]`.
+
+Conclude with `Matrix.isUnits_det_units P`. Establish `h1 : (gramP D).map (embT D τ) = (((gramP D).map (embT D τ)).submatrix g.symm g.symm).submatrix g g`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.conjTranspose_submatrix, h1, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, hG, hP]`.
+
+Conclude with `Matrix.submatrix_one_equiv g`. Use `choose Y hYu hY using hY`. Conclude with `⟨⟨Y, hYu⟩, fun τ => Or.inl (hY τ)⟩`.
+-/
 theorem exists_orthonormal_frame_twisted (D : D7) : ∃ o : FrP D, o.IsON := by
   classical
   let _ := D.host.cmStar
@@ -53,6 +68,9 @@ theorem exists_orthonormal_frame_twisted (D : D7) : ∃ o : FrP D, o.IsON := by
   choose Y hYu hY using hY
   exact ⟨⟨Y, hYu⟩, fun τ => Or.inl (hY τ)⟩
 
+/- English proof (translation)
+Simplify using `[nfAll, Formalism.REAL.fockF]`.
+-/
 theorem nfAll_zero_tw {D : D7} (n : ℕ) (lam : D.what₂.Tau → DomWeight n) : nfAll lam 0 0 = 0 := by
   simp [nfAll, Formalism.REAL.fockF]
 
@@ -65,6 +83,15 @@ attribute [local instance] MemberForms.clsPFin
 variable {D : D7} {cf : Formalism.L2.Host.CharFrame D} {nch : NChoice D} {tp : Formalism.L2.Host.TupTied D cf nch} {C : ColsTiedSym D}
   {Tw : TwForms D} {Y : DivX D}
 
+/- English proof (translation)
+Establish `hF` using `((t.pt.val u μ hμ).ptC z).1 hz`. Take `⟨g, hg, hres⟩` from `Submodule.mem_map.1 hF`. Establish `hval` using `(Submodule.mem_pi.1 (Submodule.mem_inf.1 hg).2) ((t.pt.cls u μ hμ).y c) (Set.mem_univ _)`. Take `⟨Q0, hQ0, hfn⟩` from `Submodule.mem_map.1 hval`. Establish `hQ0' : Q0 ∈ CSpan (Tw.fm u μ).sg`.
+
+Use `CSpan_shW (Tw.fm u μ).sg (fun _ => ((D.R.m * (D.R.t + 1) / 2 : ℕ) : ℤ))` as an intermediate fact. Unfold `sgTG at hQ0`. Rewrite `hQ0` using `[this]`. Conclude with `hQ0`. Establish `he : (t.pt.val u μ hμ).eW z c = fnOf _ (shiftOf (sgTG (Tw.fm u μ))) 1 Q0`.
+
+Rewrite using `[hfn, ← hres]`. Both sides reduce to the same expression. Establish `hM : ∀ τ, IsUnit ((o.1 τ)⁻¹).det` using `fun τ => by`. Rewrite using `[Matrix.det_nonsing_inv]`. Conclude with `(o.2 τ).ringInverse`.
+
+Use `⟨_, ?_, he.trans (fnOf_change _ _ _ _ hM Q0)⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ (blkRow_mem _ _ hQ0')`.
+-/
 theorem eW_rep_o_tw (t : SymmetricTwistedColumnsAtPrimes tp C Tw) (u : D.what₂.Word) (μ : D.what₂.Tup) (hμ : μ ≠ D.what₂.mu0) (o : FrP D)
     (z : (D.PTw u μ).Wrow) (hz : z ∈ (Tw.fm u μ).ptC) (c : (Tw.fm u μ).clsP) :
     ∃ Q ∈ CSpan (Tw.fm u μ).sg,
@@ -86,6 +113,9 @@ theorem eW_rep_o_tw (t : SymmetricTwistedColumnsAtPrimes tp C Tw) (u : D.what₂
   exact Submodule.smul_mem _ _ (blkRow_mem _ _ hQ0')
 
 open Classical in
+/- English proof (translation)
+Unfold `resCTw`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+-/
 theorem eW_resCTw (t : SymmetricTwistedColumnsAtPrimes tp C Tw) (u : D.what₂.Word) (μ : D.what₂.Tup) (hμ : μ ≠ D.what₂.mu0)
     (c : (Tw.fm u μ).clsP) (z : (D.PTw u μ).Wrow) :
     (t.pt.val u μ hμ).eW (resCTw t u μ hμ c z) = fun c' => if c' = c then (t.pt.val u μ hμ).eW z c' else 0 := by
@@ -93,6 +123,19 @@ theorem eW_resCTw (t : SymmetricTwistedColumnsAtPrimes tp C Tw) (u : D.what₂.W
   unfold resCTw
   rw [LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Take `⟨o, ho⟩` from `exists_orthonormal_frame_twisted D`. Use `choose P hP hPe using eW_rep_o_tw t u μ hμ o a ha`. Use `choose Q hQ hQe using eW_rep_o_tw t u μ hμ o b hb`. Rewrite using `[(t.pt.val u μ hμ).ipP o ho a b P Q hP hQ hPe hQe]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Establish `hP' : ∀ c', (if c' = c then P c' else 0) ∈ CSpan (Tw.fm u μ).sg` using `fun c' => by split_ifs`. Conclude with `hP c'`. Conclude with `Submodule.zero_mem _`. Establish `hQ' : ∀ c', (if c' = c then Q c' else 0) ∈ CSpan (Tw.fm u μ).sg` using `fun c' => by split_ifs`. Conclude with `hQ c'`.
+
+Conclude with `Submodule.zero_mem _`. Establish `hPe' : ∀ c', (t.pt.val u μ hμ).eW (resCTw t u μ hμ c a) c' = fnOf _ (shiftOf (sgTG (Tw.fm u μ))) (fun τ => (o.1 τ)⁻¹) (if c' = c then P c' else 0)` using `fun c' => by`. Rewrite using `[eW_resCTw]`. Simplify using `only`. Use `split_ifs`.
+
+Conclude with `hPe c'`. Conclude with `(map_zero _).symm`. Establish `hQe' : ∀ c', (t.pt.val u μ hμ).eW (resCTw t u μ hμ c b) c' = fnOf _ (shiftOf (sgTG (Tw.fm u μ))) (fun τ => (o.1 τ)⁻¹) (if c' = c then Q c' else 0)` using `fun c' => by`. Rewrite using `[eW_resCTw]`. Simplify using `only`.
+
+Use `split_ifs`. Conclude with `hQe c'`. Conclude with `(map_zero _).symm`. Rewrite using `[(t.pt.val u μ hμ).ipP o ho _ _ _ _ hP' hQ' hPe' hQe', Finset.sum_eq_single c]`. Simplify using the standard rewrite rules.
+
+Introduce `c' _ hc'`. Simplify using `[hc', nfAll_zero_tw]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ c) h`.
+-/
 theorem petersson_eq_sum_restrict_twist (t : SymmetricTwistedColumnsAtPrimes tp C Tw) (u : D.what₂.Word) (μ : D.what₂.Tup) (hμ : μ ≠ D.what₂.mu0)
     (a b : (D.PTw u μ).Wrow) (ha : a ∈ (Tw.fm u μ).ptC) (hb : b ∈ (Tw.fm u μ).ptC) :
     (Tw.fm u μ).ipP a b = ∑ c, (Tw.fm u μ).ipP (resCTw t u μ hμ c a) (resCTw t u μ hμ c b) := by
@@ -138,6 +181,17 @@ def pcTw (t : SymmetricTwistedColumnsAtPrimes tp C Tw) (u : D.what₂.Word) (μ 
     (if c = Classical.choice h then ((Nat.card ((Tw.fm u μ).stabilizer₂ c) : ℕ) : ℂ) * (D.PTw u μ).period z G else 0)
   else 0
 
+/- English proof (translation)
+Establish `hcard : ∀ c, ((Nat.card ((Tw.fm u μ).stabilizer₂ c) : ℕ) : ℂ) ≠ 0` using `fun c => Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Use `⟨pcTw t u μ hμ, fun z G => ?_, fun x hx F hF c => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ (Tw.fm u μ).ptC`. Establish `hG : t.ptE.jM u μ G ∈ (Tw.fm u μ).ptC` using `((t.ptE.per u μ hμ).2.1) G`. Rewrite using `[((t.ptE.per u μ hμ).2.2) z G, petersson_eq_sum_restrict_twist t u μ hμ _ _ hG hz]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [pcTw, if_pos hz, pcLTw]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (hcard c), one_mul]`. Distinguish the cases in `hne : Nonempty (Tw.fm u μ).clsP`. Rewrite using `[Finset.sum_eq_single (Classical.choice hne)]`.
+
+Simplify using `only [pcTw, if_neg hz, dif_pos hne, ↓reduceIte]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (hcard _), one_mul]`. Introduce `c _ hc`. Simplify using `only [pcTw, if_neg hz, dif_pos hne, if_neg hc, mul_zero]`. Introduce `h0`.
+
+Conclude with `absurd (Finset.mem_univ _) h0`. Establish `hE : IsEmpty (Tw.fm u μ).clsP` using `not_nonempty_iff.mp hne`. Establish `hz0 : z = 0` using `(t.pt.val u μ hμ).eW.injective (funext fun c => hE.elim c)`. Substitute `hz0` using the available equality. Simplify using the standard rewrite rules.
+
+Take `⟨y, hy, hv⟩` from `h x hx F hF c`. Establish `hz : (Tw.fm u μ).ptEmb x ∈ (Tw.fm u μ).ptC` using `(((t.pt.val u μ hμ).rat _).1 ⟨x, rfl⟩).1`. Use `⟨y, ?_, hv⟩` and prove the remaining obligations. Simplify using `only [pcTw, if_pos hz]`. Conclude with `hy`.
+-/
 theorem perDecTw_of_at (t : SymmetricTwistedColumnsAtPrimes tp C Tw) (u : D.what₂.Word) (μ : D.what₂.Tup) (hμ : μ ≠ D.what₂.mu0)
     (h : PerDecTwT Y t u μ hμ) : Formalism.MainNotions.RT.PeriodPointConditions.PerDecTw D Y Tw u μ := by
   classical
@@ -167,6 +221,9 @@ theorem perDecTw_of_at (t : SymmetricTwistedColumnsAtPrimes tp C Tw) (u : D.what
     simp only [pcTw, if_pos hz]
     exact hy
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ t _ u μ hμ h` and use `perDecTw_of_at t u μ hμ h`.
+-/
 theorem reduction_perDecTw : ∀ (D : D7) (cf : Formalism.L2.Host.CharFrame D) (nch : NChoice D) (tp : Formalism.L2.Host.TupTied D cf nch) (C : ColsTiedSym D) (Tw : TwForms D) (t : SymmetricTwistedColumnsAtPrimes tp C Tw) (Y : DivX D) (u : D.what₂.Word) (μ : D.what₂.Tup) (hμ : μ ≠ D.what₂.mu0), GlobalTheory.PerQ.PerDecTwT Y t u μ hμ → Formalism.MainNotions.RT.PeriodPointConditions.PerDecTw D Y Tw u μ :=
   fun _ _ _ _ _ _ t _ u μ hμ h => perDecTw_of_at t u μ hμ h
 

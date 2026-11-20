@@ -36,6 +36,9 @@ def scalRep {R : Type*} [CommRing R] {Γ : Type*} [Group Γ] (M : Type*) [AddCom
       Module.End.mul_apply, map_smul]
     first | rfl | exact smul_comm _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem scalRep_apply {R : Type*} [CommRing R] {Γ : Type*} [Group Γ] (M : Type*)
     [AddCommGroup M] [Module R M] (ψ : Γ →* Rˣ) (g : Γ) (m : M) :
     scalRep M ψ g m = ((ψ g : Rˣ) : R) • m := rfl

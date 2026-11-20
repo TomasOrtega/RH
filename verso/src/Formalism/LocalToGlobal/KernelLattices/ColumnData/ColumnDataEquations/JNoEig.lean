@@ -21,6 +21,11 @@ def GaussRow (B : Cd.Base D cc δ) : Prop :=
 
 def Lat0IsLat (B : Cd.Base D cc δ) (N N' : ℕ) : Prop := IsLat (La0 B N N')
 
+/- English proof (translation)
+Set `f : V →ₗ[ℂ] V` to `LinearMap.id - (φ.symm : V →ₗ[ℂ] V)`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Apply `h` to reduce the goal to its premises.
+
+Establish `: x - φ.symm x = 0` using `hx`. Conclude with `(sub_eq_zero.mp this).symm`. Conclude with `⟨LinearEquiv.ofInjectiveEndo f hf, fun x => rfl⟩`.
+-/
 theorem exists_cay {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (φ : V ≃ₗ[ℂ] V)
     (h : ∀ x, φ.symm x = x → x = 0) : ∃ Ae : V ≃ₗ[ℂ] V, ∀ x, Ae x = x - φ.symm x := by
   let f : V →ₗ[ℂ] V := LinearMap.id - (φ.symm : V →ₗ[ℂ] V)
@@ -34,6 +39,11 @@ theorem exists_cay {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional
 
 variable {B : Cd.Base D cc δ}
 
+/- English proof (translation)
+Introduce `θ hθ hθ0 F hF`. Take `⟨a, ha⟩` from `hSp θ hθ`. Take `⟨b, hb⟩` from `hSp F hF`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hθ0 (by rw [ha, zero_smul])`. Use `⟨b / a, ?_⟩` and prove the remaining obligations. Rewrite using `[hb, ha, smul_smul, div_mul_cancel₀ b ha0]`.
+-/
 theorem line_of_spans {N N' : ℕ} (hSp : B.ThZeroSpans N N') :
     AtMostLine (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N N') (TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ)) (La0 B N N') := by
   intro θ hθ hθ0 F hF
@@ -45,6 +55,9 @@ theorem line_of_spans {N N' : ℕ} (hSp : B.ThZeroSpans N N') :
   refine ⟨b / a, ?_⟩
   rw [hb, ha, smul_smul, div_mul_cancel₀ b ha0]
 
+/- English proof (translation)
+Establish `a0 : TaylorLogMetric.admitted D N N' (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')` using `admissible_of_integral_conj_le hN hN' (sd0 N) (sd0 N')`. Establish `a1 : TaylorLogMetric.admitted D N N' (SDLat.smulLat (γ : Matrix (Fin N) (Fin N) D.host.E) (StandardLatticesGL3.stdL D N)) (SDLat.smulLat (γ' : Matrix (Fin N') (Fin N') D.host.E) (StandardLatticesGL3.stdL D N'))` using `admissible_of_integral_conj_le hN hN' (smulSD D N _ γ (sd0 N)) (smulSD D N' _ γ' (sd0 N'))`. Establish `hi : imgLat ((phiU γ γ' : TaylorLogMetric.VC D N N' ≃ₗ[ℂ] TaylorLogMetric.VC D N N') : TaylorLogMetric.VC D N N' →ₗ[ℂ] TaylorLogMetric.VC D N N') (La0 B N N') = TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (SDLat.smulLat (γ : Matrix (Fin N) (Fin N) D.host.E) (StandardLattic …` using `la_img _ _ _ _ _ _ _ _`. Conclude with `{ herm := formV_herm' _ _ _ _ pos := formV_pos (area_pos' B) _ _ _ selfDual := (hL.1 N N' _ _ a0).1 semi := (hL.1 N N' _ _ a0).2 isom := phiL_isom _ _ _ _ _ _ _ semi' := by rw [hi]; exact (hL.1 N N' _ _ a1).2 inv := fun x _ => al_phi _ _ _ _ _ _ x idx₁ := by rw [hi]; exact (hL.2 …`.
+-/
 theorem unitaryData (hL : B.LatAll) {N N' : ℕ} (hN : Even N) (hN' : Even N')
     (γ : Matrix.unitaryGroup (Fin N) D.host.E) (γ' : Matrix.unitaryGroup (Fin N') D.host.E)
     (Ae : TaylorLogMetric.VC D N N' ≃ₗ[ℂ] TaylorLogMetric.VC D N N') (hA : ∀ x, Ae x = x - (phiU γ γ').symm x) :
@@ -69,6 +82,15 @@ theorem unitaryData (hL : B.LatAll) {N N' : ℕ} (hN : Even N) (hN' : Even N')
       idx₂ := by rw [hi]; exact (hL.2 N N' _ _ _ _ a0 a1).1
       cay := hA }
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `h` using `congrFun hx τ`. Express the relevant statement in the definitionally equal form `(((1 : Matrix.unitaryGroup (Fin N') D.host.E) : Matrix (Fin N') (Fin N') D.host.E).map (TaylorLogMetric.embT D τ))ᴴ * of (x τ) * (γ : Matrix (Fin N) (Fin N) D.host.E).map (TaylorLogMetric.embT D τ) = x τ at h`. Simplify using `only [OneMemClass.coe_one, Matrix.map_one _ (map_zero _) (map_one _), conjTranspose_one, Matrix.one_mul] at h`. Use `set Γ := (γ : Matrix (Fin N) (Fin N) D.host.E).map (TaylorLogMetric.embT D τ) with hΓ`.
+
+Establish `hdet : IsUnit (Γ - 1).det`. Rewrite using `[isUnit_iff_ne_zero]`. Establish `e1 : Γ - 1 = ((γ : Matrix (Fin N) (Fin N) D.host.E) - 1).map (TaylorLogMetric.embT D τ)`. Rewrite using `[hΓ, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e2 : (((γ : Matrix (Fin N) (Fin N) D.host.E) - 1).map (TaylorLogMetric.embT D τ)).det = TaylorLogMetric.embT D τ ((γ : Matrix (Fin N) (Fin N) D.host.E) - 1).det` using `(RingHom.map_det (TaylorLogMetric.embT D τ) _).symm`.
+
+Rewrite using `[e1, e2, map_ne_zero, ← neg_sub, Matrix.det_neg]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)) hγ`. Establish `hX : of (x τ) * (Γ - 1) = 0`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one]`. Conclude with `sub_eq_zero.mpr h`.
+
+Establish `h2` using `congrArg (· * (Γ - 1)⁻¹) hX`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.mul_one, Matrix.zero_mul] at h2`. Conclude with `h2`.
+-/
 private theorem eq_zero_of_phiU_symm_fixed {N N' : ℕ} (γ : Matrix.unitaryGroup (Fin N) D.host.E)
     (hγ : (1 - (γ : Matrix (Fin N) (Fin N) D.host.E)).det ≠ 0) (x : TaylorLogMetric.VC D N N')
     (hx : (phiU γ (1 : Matrix.unitaryGroup (Fin N') D.host.E)).symm x = x) : x = 0 := by
@@ -95,6 +117,11 @@ private theorem eq_zero_of_phiU_symm_fixed {N N' : ℕ} (γ : Matrix.unitaryGrou
   simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.mul_one, Matrix.zero_mul] at h2
   exact h2
 
+/- English proof (translation)
+Establish `hA : A = (e.symm : (ι → V₁) →ₗ[ℂ] V) ∘ₗ (LinearMap.pi fun i => A₁ ∘ₗ LinearMap.proj i) ∘ₗ (e.symm.symm : V →ₗ[ℂ] ι → V₁)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `e.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Simplify using `[h]`. Rewrite using `[hA, LinearMap.det_conj, LinearMap.det_pi, Finset.prod_const, Finset.card_univ]`.
+-/
 private theorem det_eq_det_pow_card_of_diagonal_copies {ι V V₁ : Type} [Fintype ι] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V₁] [Module ℂ V₁] [FiniteDimensional ℂ V₁] (e : V ≃ₗ[ℂ] ι → V₁)
     (A : V →ₗ[ℂ] V) (A₁ : V₁ →ₗ[ℂ] V₁) (h : ∀ x i, e (A x) i = A₁ (e x i)) :
@@ -108,6 +135,13 @@ private theorem det_eq_det_pow_card_of_diagonal_copies {ι V V₁ : Type} [Finty
     simp [h]
   rw [hA, LinearMap.det_conj, LinearMap.det_pi, Finset.prod_const, Finset.card_univ]
 
+/- English proof (translation)
+Unfold `relIdx AddSubgroup.relIndex`. Establish `hfin : Finite (Λ₁ ⧸ (latA Λ₁ δ₁ Ae₁).addSubgroupOf Λ₁)`. Set `f : S → Λ₁ ⧸ (latA Λ₁ δ₁ Ae₁).addSubgroupOf Λ₁` to `fun x => QuotientAddGroup.mk ⟨e x.1 i₀, (hc.lat x.1).mp (hS.1 x.1 x.2) i₀⟩`. Use `Finite.of_surjective f ?_` and prove the remaining obligations. Introduce `q`.
+
+Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H y₁`. Establish `hy : e.symm (fun _ => (y₁ : V₁)) ∈ Λ` using `(hc.lat _).mpr (fun i => by simp)`. Take `⟨x, hx, hxy⟩` from `hS.2.2 _ hy`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Establish `h3` using `(hc.mem_latA _).mp hxy i₀`. Simplify using `only [map_sub, LinearEquiv.apply_symm_apply, Pi.sub_apply] at h3`. Simplify `h3` using `[f, neg_add_eq_sub]`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+-/
 private theorem relIdx_latA_ne_zero_of_copies {ι V V₁ : Type} [Fintype ι] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V₁] [Module ℂ V₁] {e : V ≃ₗ[ℂ] ι → V₁} {H : Sesq V} {H₁ : Sesq V₁} {α : V → ℂ}
     {α₁ : V₁ → ℂ} {Λ : AddSubgroup V} {Λ₁ : AddSubgroup V₁} {δ Ae : V ≃ₗ[ℂ] V} {δ₁ Ae₁ : V₁ ≃ₗ[ℂ] V₁}
@@ -131,6 +165,33 @@ private theorem relIdx_latA_ne_zero_of_copies {ι V V₁ : Type} [Fintype ι] [A
       simpa [f, neg_add_eq_sub] using h3
   exact AddSubgroup.index_ne_zero_of_finite
 
+/- English proof (translation)
+Establish `h0` using `B.thZeroMem hS N N'`. Unfold `J1at Base.thHalf`. Break down `Nat.eq_zero_or_pos N' with rfl | hpos` into its components or cases. Establish `hsub : ∀ a b : AddSubgroup (TaylorLogMetric.VC D N 0), a = b` using `fun a b => Subsingleton.elim a b`. Rewrite using `[hsub (TaylorLogMetric.La D B.tor (SDLat.smulLat _ _) _) (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D 0)), iopSelf D B.tor N 0 _ _ (mem_ThSp_of' D B.tor _ _ h0), Nat.zero_div, pow_zero, one_smul]`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [TaylorLogMetric.pull]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`. Establish `hpull : TaylorLogMetric.pull D B.tor (γ : Matrix (Fin N) (Fin N) D.host.E) 1 (B.thZero N N') = pullInv (phiU γ (1 : Matrix.unitaryGroup (Fin N') D.host.E)) (B.thZero N N')`.
+
+Unfold `phiU`. Conclude with `pull_eq _ _ _ _ _ _ _`. Rewrite using `[hpull]`. Use `set δφ := phiU γ (1 : Matrix.unitaryGroup (Fin N') D.host.E) with hδφ`. Use `set δ₁ := phiU γ (1 : Matrix.unitaryGroup (Fin 1) D.host.E) with hδ₁`.
+
+Take `⟨Ae, hAe⟩` from `exists_cay δφ (eq_zero_of_phiU_symm_fixed γ hγ)`. Take `⟨Ae₁, hAe₁⟩` from `exists_cay δ₁ (eq_zero_of_phiU_symm_fixed γ hγ)`. Establish `hU` using `unitaryData hL hN hN' γ 1 Ae hAe`. Establish `hc : Copies (rowE D N N') (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N N') (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N 1) (TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ)) (TaylorLogMetric.al …`. Use `⟨form_row _ N N', al_row B hS N N', lat_row B N N', map_row γ, ?_⟩` and prove the remaining obligations.
+
+Introduce `x i`. Rewrite using `[hAe, hAe₁, map_sub, Pi.sub_apply]`. Use `congr 1`. Establish `h5` using `map_row γ (δφ.symm x) i`. Rewrite `h5` using `[LinearEquiv.apply_symm_apply]`.
+
+Rewrite using `[h5, LinearEquiv.symm_apply_apply]`. Take `⟨-, hidx⟩` from `unitary_index _ _ _ _ _ _ hLat hU`. Establish `hdetA0 : LinearMap.det (Ae : TaylorLogMetric.VC D N N' →ₗ[ℂ] TaylorLogMetric.VC D N N') ≠ 0` using `(LinearEquiv.isUnit_det' Ae).ne_zero`. Establish `hV : relIdx (latA (La0 B N N') δφ Ae) (La0 B N N') ≠ 0`. Introduce `h6`.
+
+Rewrite `hidx` using `[h6]`. Establish `h7 : (relIdx (imgLat (δφ : TaylorLogMetric.VC D N N' →ₗ[ℂ] TaylorLogMetric.VC D N N') (La0 B N N')) (La0 B N N') : ℝ) ≠ 0`. Conclude with `hU.idx₁` after adjusting the coercions. Establish `h8 : ‖LinearMap.det (Ae : TaylorLogMetric.VC D N N' →ₗ[ℂ] TaylorLogMetric.VC D N N')‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.mpr hdetA0)`. Move the coercions through the operations in `at hidx`.
+
+Conclude with `(mul_ne_zero h7 h8) hidx.symm`. Take `⟨⟨SV, hSV⟩, -⟩` from `repsExist _ _ _ hV`. Establish `hidx₁` using `relIdx_latA_ne_zero_of_copies hc ⟨0, hpos⟩ hSV`. Take `⟨⟨S₁, hS₁⟩, -⟩` from `repsExist _ _ _ hidx₁`. Establish `hK` using `unitaryConstant _ _ _ _ δφ Ae hLat hU (line_of_spans hSp) (prodReps (rowE D N N') S₁) (hc.reps hS₁) _ h0`.
+
+Establish `himg : imgLat (δφ : TaylorLogMetric.VC D N N' →ₗ[ℂ] TaylorLogMetric.VC D N N') (La0 B N N') = TaylorLogMetric.La D B.tor (SDLat.smulLat (γ : Matrix (Fin N) (Fin N) D.host.E) (StandardLatticesGL3.stdL D N)) (StandardLatticesGL3.stdL D N')`. Rewrite using `[hδφ]`. Unfold `phiU`. Rewrite using `[la_img]`. Simplify using `only [OneMemClass.coe_one, Examples₂.smulLat_one]`.
+
+Rewrite using `[hK, Iop_eq, ← himg, hc.gauss hS₁.1, det_eq_det_pow_card_of_diagonal_copies (rowE D N N') _ _ hc.cay, Fintype.card_fin]`. Use `congr 1`. Establish `hconj` using `detCayley _ _ (formV_herm' _ _ N 1) (formV_pos (area_pos' B) _ N 1) δ₁ Ae₁ (by rw [hδ₁]; unfold phiU; exact phiL_isom _ _ _ _ _ _ _) hAe₁`. Rewrite `hconj` using `[finrank_row, hδ₁, det_row, (hN.mul_left _).neg_one_pow, one_mul]`. Establish `hg` using `hG N γ Ae₁ hN hAe₁ S₁ hS₁`.
+
+Establish `ha0 : LinearMap.det (Ae₁ : TaylorLogMetric.VC D N 1 →ₗ[ℂ] TaylorLogMetric.VC D N 1) ≠ 0` using `(LinearEquiv.isUnit_det' Ae₁).ne_zero`. Use `set a := LinearMap.det (Ae₁ : TaylorLogMetric.VC D N 1 →ₗ[ℂ] TaylorLogMetric.VC D N 1) with ha`. Use `set g := gaussC (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N 1) (TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ)) Ae₁ S₁ with hgdef`. Establish `key : ((‖a‖ : ℂ) / a * g) ^ 2 = ∏ τ : D.what₂.Tau, (TaylorLogMetric.embT D τ) (star (γ : Matrix (Fin N) (Fin N) D.host.E).det)`. Rewrite using `[mul_pow, div_pow, hg, mul_one]`.
+
+Establish `hn : ((‖a‖ : ℂ)) ^ 2 = a * (starRingEnd ℂ) a`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hn, hconj]`.
+
+Clear the denominators using the available nonvanishing facts. Take `⟨m, hm⟩` from `hN'`. Substitute `hm` using the available equality. Rewrite using `[show (m + m) / 2 = m by omega, ← key, ← pow_mul, norm_pow, Complex.ofReal_pow, mul_pow, div_pow]`. Put the polynomial expressions in normal form.
+-/
 theorem J1at_of_ne (hS : B.StdOK) (hL : B.LatAll) (hG : GaussRow B) {N N' : ℕ} (hN : Even N) (hN' : Even N')
     (hLat : Lat0IsLat B N N') (hSp : B.ThZeroSpans N N') (γ : Matrix.unitaryGroup (Fin N) D.host.E)
     (hγ : (1 - (γ : Matrix (Fin N) (Fin N) D.host.E)).det ≠ 0) : J1at B N N' γ := by
@@ -211,6 +272,37 @@ theorem J1at_of_ne (hS : B.StdOK) (hL : B.LatAll) (hG : GaussRow B) {N N' : ℕ}
     rw [show (m + m) / 2 = m by omega, ← key, ← pow_mul, norm_pow, Complex.ofReal_pow, mul_pow, div_pow]
     ring_nf
 
+/- English proof (translation)
+Establish `h0` using `B.thZeroMem hS N N'`. Unfold `J2at`. Break down `Nat.eq_zero_or_pos N with rfl | hpos` into its components or cases. Establish `hsub : ∀ a b : AddSubgroup (TaylorLogMetric.VC D 0 N'), a = b` using `fun a b => Subsingleton.elim a b`. Rewrite using `[hsub (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D 0) (SDLat.smulLat _ _)) (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D 0) (StandardLatticesGL3.stdL D N')), iopSelf D B.tor 0 N' _ _ (mem_ThSp_of' D B.tor _ _ h0), Nat.zero_div, pow_zero, one_smul]`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [TaylorLogMetric.pull]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`. Establish `hpull : TaylorLogMetric.pull D B.tor 1 (γ' : Matrix (Fin N') (Fin N') D.host.E) (B.thZero N N') = pullInv (phiU (1 : Matrix.unitaryGroup (Fin N) D.host.E) γ') (B.thZero N N')`.
+
+Unfold `phiU`. Conclude with `pull_eq _ _ _ _ _ _ _`. Rewrite using `[hpull]`. Use `set δφ := phiU (1 : Matrix.unitaryGroup (Fin N) D.host.E) γ' with hδφ`. Use `set δ₁ := phiU (cjU γ') (1 : Matrix.unitaryGroup (Fin 1) D.host.E) with hδ₁`.
+
+Establish `hsymm : ∀ x j, colE D N N' (δφ.symm x) j = δ₁.symm (colE D N N' x j)`. Introduce `x j`. Establish `h5` using `map_col γ' (δφ.symm x) j`. Rewrite `h5` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[h5, LinearEquiv.symm_apply_apply]`.
+
+Establish `hfix : ∀ x, δφ.symm x = x → x = 0`. Introduce `x hx`. Apply `(colE D N N').injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `j`.
+
+Apply `eq_zero_of_phiU_symm_fixed (cjU γ') (ne_cjU γ' hγ)` to reduce the goal to its premises. Rewrite using `[← hsymm, hx]`. Take `⟨Ae, hAe⟩` from `exists_cay δφ hfix`. Take `⟨Ae₁, hAe₁⟩` from `exists_cay δ₁ (eq_zero_of_phiU_symm_fixed (cjU γ') (ne_cjU γ' hγ))`. Establish `hU` using `unitaryData hL hN hN' 1 γ' Ae hAe`.
+
+Establish `hc : Copies (colE D N N') (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N N') (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N' 1) (TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ)) (TaylorLogMetric.al …`. Use `⟨form_col _ N N', al_col B hS N N', lat_col B N N', map_col γ', ?_⟩` and prove the remaining obligations. Introduce `x j`. Rewrite using `[hAe, hAe₁, map_sub, Pi.sub_apply, hsymm]`. Take `⟨-, hidx⟩` from `unitary_index _ _ _ _ _ _ hLat hU`.
+
+Establish `hdetA0 : LinearMap.det (Ae : TaylorLogMetric.VC D N N' →ₗ[ℂ] TaylorLogMetric.VC D N N') ≠ 0` using `(LinearEquiv.isUnit_det' Ae).ne_zero`. Establish `hV : relIdx (latA (La0 B N N') δφ Ae) (La0 B N N') ≠ 0`. Introduce `h6`. Rewrite `hidx` using `[h6]`. Establish `h7 : (relIdx (imgLat (δφ : TaylorLogMetric.VC D N N' →ₗ[ℂ] TaylorLogMetric.VC D N N') (La0 B N N')) (La0 B N N') : ℝ) ≠ 0`.
+
+Conclude with `hU.idx₁` after adjusting the coercions. Establish `h8 : ‖LinearMap.det (Ae : TaylorLogMetric.VC D N N' →ₗ[ℂ] TaylorLogMetric.VC D N N')‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.mpr hdetA0)`. Move the coercions through the operations in `at hidx`. Conclude with `(mul_ne_zero h7 h8) hidx.symm`. Take `⟨⟨SV, hSV⟩, -⟩` from `repsExist _ _ _ hV`.
+
+Establish `hidx₁` using `relIdx_latA_ne_zero_of_copies hc ⟨0, hpos⟩ hSV`. Take `⟨⟨S₁, hS₁⟩, -⟩` from `repsExist _ _ _ hidx₁`. Establish `hK` using `unitaryConstant _ _ _ _ δφ Ae hLat hU (line_of_spans hSp) (prodReps (colE D N N') S₁) (hc.reps hS₁) _ h0`. Establish `himg : imgLat (δφ : TaylorLogMetric.VC D N N' →ₗ[ℂ] TaylorLogMetric.VC D N N') (La0 B N N') = TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (SDLat.smulLat (γ' : Matrix (Fin N') (Fin N') D.host.E) (StandardLatticesGL3.stdL D N'))`. Rewrite using `[hδφ]`.
+
+Unfold `phiU`. Rewrite using `[la_img]`. Simplify using `only [OneMemClass.coe_one, Examples₂.smulLat_one]`. Rewrite using `[hK, Iop_eq, ← himg, hc.gauss hS₁.1, det_eq_det_pow_card_of_diagonal_copies (colE D N N') _ _ hc.cay, Fintype.card_fin]`. Use `congr 1`.
+
+Establish `hconj` using `detCayley _ _ (formV_herm' _ _ N' 1) (formV_pos (area_pos' B) _ N' 1) δ₁ Ae₁ (by rw [hδ₁]; unfold phiU; exact phiL_isom _ _ _ _ _ _ _) hAe₁`. Rewrite `hconj` using `[finrank_row, hδ₁, det_row, (hN'.mul_left _).neg_one_pow, one_mul, det_cjU]`. Simplify using `only [star_star] at hconj`. Establish `hg` using `hG N' (cjU γ') Ae₁ hN' hAe₁ S₁ hS₁`. Establish `ha0 : LinearMap.det (Ae₁ : TaylorLogMetric.VC D N' 1 →ₗ[ℂ] TaylorLogMetric.VC D N' 1) ≠ 0` using `(LinearEquiv.isUnit_det' Ae₁).ne_zero`.
+
+Use `set a := LinearMap.det (Ae₁ : TaylorLogMetric.VC D N' 1 →ₗ[ℂ] TaylorLogMetric.VC D N' 1) with ha`. Use `set g := gaussC (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N' 1) (TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ)) Ae₁ S₁ with hgdef`. Establish `key : ((‖a‖ : ℂ) / a * g) ^ 2 = ∏ τ : D.what₂.Tau, (TaylorLogMetric.embT D τ) (γ' : Matrix (Fin N') (Fin N') D.host.E).det`. Rewrite using `[mul_pow, div_pow, hg, mul_one]`. Establish `hn : ((‖a‖ : ℂ)) ^ 2 = a * (starRingEnd ℂ) a`.
+
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hn, hconj]`. Clear the denominators using the available nonvanishing facts.
+
+Take `⟨m, hm⟩` from `hN`. Substitute `hm` using the available equality. Rewrite using `[show (m + m) / 2 = m by omega, ← key, ← pow_mul, norm_pow, Complex.ofReal_pow, mul_pow, div_pow]`. Put the polynomial expressions in normal form.
+-/
 theorem J2at_of_ne (hS : B.StdOK) (hL : B.LatAll) (hG : GaussRow B) {N N' : ℕ} (hN : Even N) (hN' : Even N')
     (hLat : Lat0IsLat B N N') (hSp : B.ThZeroSpans N N') (γ' : Matrix.unitaryGroup (Fin N') D.host.E)
     (hγ : (1 - (γ' : Matrix (Fin N') (Fin N') D.host.E)).det ≠ 0) : J2at B N N' γ' := by

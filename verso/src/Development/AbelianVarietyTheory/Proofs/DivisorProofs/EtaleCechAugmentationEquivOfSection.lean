@@ -9,6 +9,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ F Y X f s hs`. Establish `hsec : yoneda.map s ≫ yoneda.map f = 𝟙 (yoneda.obj X)`. Rewrite using `[← yoneda.map_comp, hs, yoneda.map_id]`. Establish `hls : Presheaf.IsLocallySurjective Scheme.etaleTopology.{0} (yoneda.map f)` using `(GlobalTheory.T.isLocallySurjective_etale_baseChange).2.1 _ _ (yoneda.map f) (yoneda.map s) hsec`. Establish `hq` using `GlobalTheory.T.quasiIso_chains_cech_of_isLocallySurjective' R (yoneda.obj Y) (yoneda.obj X) (yoneda.map f) hls`.
+
+Conclude with `((GlobalTheory.T.etaleCohomologyEquivalence_basic_properties R F).2.2.1 _ _ (cechAug f)) hq`.
+-/
 theorem cechAug_eqv_of_section : ∀ (R : Type) [CommRing R] (F : Shv R) (Y X : Scheme.{0}) (f : Y ⟶ X) (s : X ⟶ Y),
     s ≫ f = 𝟙 X → Eqv R (cechAug f) F := by
   intro R _ F Y X f s hs

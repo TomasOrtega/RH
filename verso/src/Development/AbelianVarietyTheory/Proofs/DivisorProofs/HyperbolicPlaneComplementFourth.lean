@@ -15,6 +15,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThK.DescGenCusp
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hH₁ hH M hMc hML hMr r Xf Yf hW₁ X' Y' hW' hx0 hy0 hsucc S' A a hAa hA μ₁ 𝓕₁ hμ₁ h𝓕₁`. Take `⟨T, φ, hTc, hTl, hφ, hrat⟩` from `GlobalTheory.T.skew_plane_modular_character F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hH₁ hH M hMc hML hMr r Xf Yf hW₁ X' Y' hW' hx0 hy0 hsucc S'`. Use `haveI : LocallyCompactSpace T := hTc.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (GlobalTheory.StdPar.leviOne σ (c₀ • W₁.J.map σ) Xf Yf S') := (GlobalTheory.StdPar.isClosed_levi (S := S') (h := hCM) (hJ := hH₁) (hW := hW₁)).2.locallyCompactSpace`. Use `GlobalTheory.T.unimodular_quotient_integral_formula _ T _ φ ((ratPts σ (c₀ • W.J.map σ)).subgroupOf _) ((ratPts σ (c₀ • W.J.map σ)).subgroupOf T) ((ratPts σ (c₀ • W₁.J.map σ)).subgroupOf _) (fun p => by simp only [Subgroup.mem_subgroupOf]; exact hrat p) (fun m => A m) (fun m => a …` and prove the remaining obligations.
+
+Take `⟨t, ht, hl⟩` from `hTl p.1`. Use `show A (φ p : GAd σ (c₀ • W.J.map σ)) = a p.2`. Rewrite using `[hφ p, ← (GlobalTheory.ThK.SquareIntegrability.toGAd hσ W.J hc₀).apply_symm_apply (p.1 : GAd σ (c₀ • W.J.map σ)), ← map_mul]`. Conclude with `hAa t _ _ hl ht`.
+-/
 theorem integral_leviOne_eq_zero_of_factor : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
       form σ W.J H.x H.x = 0 → form σ W.J H.y H.y = 0 → form σ W.J H.x H.y = 1 →

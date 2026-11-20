@@ -9,6 +9,11 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW.HInv
 
+/- English proof (translation)
+Establish `hc : (cT τ g).det = τ g.det`. Rewrite using `[cT, Matrix.det_transpose, RingHom.map_det, RingHom.mapMatrix_apply]`. Establish `h` using `congrArg Matrix.det hg`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, hc]`. Apply `hJ.mul_left_cancel` to reduce the goal to its premises.
+
+Take the linear combination `h`.
+-/
 theorem det_mul_conj_eq_one {A : Type} [CommRing A] {m : Type} [Fintype m] [DecidableEq m]
     (τ : A →+* A) (g J : Matrix m m A) (hg : cT τ g * J * g = J) (hJ : IsUnit J.det) :
     g.det * τ g.det = 1 := by
@@ -19,6 +24,15 @@ theorem det_mul_conj_eq_one {A : Type} [CommRing A] {m : Type} [Fintype m] [Deci
   apply hJ.mul_left_cancel
   linear_combination h
 
+/- English proof (translation)
+Set `lam : Measure K` to `Measure.addHaar`. Establish `hl : lam.map (fun y => A.det * y) = lam` using `NormOneHaar.map_mul_eq_of_norm_one K τ hc hi lam _ hA`. Set `μ0 : Measure (Fin M → K)` to `Measure.pi fun _ => lam`. Establish `hdet : IsUnit A.det` using `IsUnit.of_mul_eq_one _ hA`. Establish `h0 : μ0.map (fun x => A *ᵥ x) = μ0`.
+
+Use `ModDet.map_mulVec_eq_smul K (Fin M) μ0 lam A hdet 1 (by simpa using hl)` as an intermediate fact. Simplify using `using this`. Set `P : Measure (Fin n → Fin M → K)` to `Measure.pi fun _ => μ0`. Establish `hmeas : Measurable (fun x : Fin M → K => A *ᵥ x)` using `(continuous_const.matrix_mulVec continuous_id).measurable`. Use `haveI hs : SigmaFinite (μ0.map (fun x => A *ᵥ x)) := by`.
+
+Rewrite using `[h0]`. Use `infer_instance`. Establish `hP : P.map (fun X a => A *ᵥ X a) = P`. Use `Measure.pi_map_pi (μ := fun _ : Fin n => μ0) (f := fun _ x => A *ᵥ x) (fun _ => hmeas.aemeasurable)` as an intermediate fact. Simplify `this` using `only [h0]`.
+
+Establish `e` using `Measure.isAddLeftInvariant_eq_smul μ P`. Rewrite using `[e, Measure.map_smul, hP]`.
+-/
 theorem map_tuple_eq {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
     [LocallyCompactSpace K] [SecondCountableTopology K] [T2Space K] [MeasurableSpace K]
     [BorelSpace K] [IsArtinianRing K] [IsReduced K] (τ : K →+* K) (hc : Continuous τ)
@@ -45,6 +59,17 @@ theorem map_tuple_eq {K : Type} [CommRing K] [TopologicalSpace K] [IsTopological
   have e := Measure.isAddLeftInvariant_eq_smul μ P
   rw [e, Measure.map_smul, hP]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hR n μ hμ h`. Take `⟨r1, r2, r3, r4, r5, r6, -, -⟩` from `hR`. Use `haveI := r1`. Use `haveI := r2`. Use `haveI := r3`.
+
+Use `haveI := r4`. Use `haveI := r5`. Use `haveI := r6`. Take `⟨t1, t2, t3, t4, tc, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R`. Take `⟨a1, a2, -, ai, -⟩` from `KAlg.algebra_tensor_invol F E σ hCM R`.
+
+Use `haveI := t1`. Use `haveI := t2`. Use `haveI := t3`. Use `haveI := t4`. Use `haveI := a1`.
+
+Use `haveI := a2`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Establish `hJu : IsUnit (JR (F` using `F) R J).det := by`. Establish `e : (JR (F` using `F) R J).det = inclR (F := F) R J.det := by`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, JR]`.
+
+Rewrite using `[e]`. Conclude with `(IsUnit.mk0 _ hJ.2).map (inclR (F := F) R)`. Establish `hg : cT (sigR R σ) ((HA.mat R σ J h : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR (F` using `F) R J * ((HA.mat R σ J h : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = JR (F := F) R J := (show (h : HR R σ J).1 ∈ HR R σ J from (h : HR R σ J).2)`. Conclude with `map_tuple_eq (sigR R σ) tc ai _ (det_mul_conj_eq_one _ _ _ hg hJu) μ`.
+-/
 theorem map_actW_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
     ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R],

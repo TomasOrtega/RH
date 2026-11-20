@@ -19,18 +19,34 @@ variable {V W U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module
 def avg (ρ : Representation ℂ Γ V) (σ : Representation ℂ Γ W) (f : V →ₗ[ℂ] W) : V →ₗ[ℂ] W :=
   (Fintype.card Γ : ℂ)⁻¹ • ∑ g : Γ, σ g ∘ₗ f ∘ₗ ρ g⁻¹
 
+/- English proof (translation)
+Simplify using `[avg, LinearMap.sum_apply]`.
+-/
 theorem avg_apply (ρ : Representation ℂ Γ V) (σ : Representation ℂ Γ W) (f : V →ₗ[ℂ] W) (v : V) :
     avg ρ σ f v = (Fintype.card Γ : ℂ)⁻¹ • ∑ g : Γ, σ g (f (ρ g⁻¹ v)) := by
   simp [avg, LinearMap.sum_apply]
 
+/- English proof (translation)
+The claim follows from `LinearMap.congr_fun (h g) v`.
+-/
 theorem mem_intw_apply {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} {φ : V →ₗ[ℂ] W}
     (h : φ ∈ Intw ρ σ) (g : Γ) (v : V) : φ (ρ g v) = σ g (φ v) :=
   LinearMap.congr_fun (h g) v
 
+/- English proof (translation)
+Establish `h : ρ (g * g⁻¹) v = v` using `by simp`. Rewrite `h` using `[map_mul]`. Then use the resulting hypothesis.
+-/
 theorem rep_inv_apply (ρ : Representation ℂ Γ V) (g : Γ) (v : V) : ρ g (ρ g⁻¹ v) = v := by
   have h : ρ (g * g⁻¹) v = v := by simp
   rwa [map_mul] at h
 
+/- English proof (translation)
+Introduce `h`. Use extensionality with `v`. Simplify using `only [LinearMap.comp_apply, avg_apply, map_smul, map_sum]`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.mulLeft h⁻¹) _ _ fun g => ?_` and prove the remaining obligations.
+
+Establish `e1 : ρ (h⁻¹ * g)⁻¹ v = ρ g⁻¹ (ρ h v)`. Rewrite using `[mul_inv_rev, inv_inv, map_mul]`. Both sides reduce to the same expression. Establish `e2 : ∀ w, σ h (σ (h⁻¹ * g) w) = σ g w` using `fun w => by`. Establish `h2 : σ (h * (h⁻¹ * g)) w = σ g w` using `by simp`.
+
+Rewrite `h2` using `[map_mul σ h (h⁻¹ * g)]`. Conclude with `h2`. Simplify using `only [Equiv.coe_mulLeft]`. Rewrite using `[e1, e2]`.
+-/
 theorem avg_mem (ρ : Representation ℂ Γ V) (σ : Representation ℂ Γ W) (f : V →ₗ[ℂ] W) :
     avg ρ σ f ∈ Intw ρ σ := by
   intro h
@@ -47,6 +63,11 @@ theorem avg_mem (ρ : Representation ℂ Γ V) (σ : Representation ℂ Γ W) (f
   simp only [Equiv.coe_mulLeft]
   rw [e1, e2]
 
+/- English proof (translation)
+Use extensionality with `v`. Establish `hc : (Fintype.card Γ : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `h : ∀ g : Γ, σ g (f (ρ g⁻¹ v)) = f v` using `fun g => by`. Rewrite using `[← mem_intw_apply hf, rep_inv_apply]`. Simplify using `only [avg_apply, h, Finset.sum_const, Finset.card_univ]`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+-/
 theorem avg_of_mem {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} {f : V →ₗ[ℂ] W}
     (hf : f ∈ Intw ρ σ) : avg ρ σ f = f := by
   ext v
@@ -56,10 +77,16 @@ theorem avg_of_mem {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W}
   simp only [avg_apply, h, Finset.sum_const, Finset.card_univ]
   rw [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]
 
+/- English proof (translation)
+Introduce `g`. Simplify using the standard rewrite rules.
+-/
 theorem id_mem (ρ : Representation ℂ Γ V) : (LinearMap.id : V →ₗ[ℂ] V) ∈ Intw ρ ρ := by
   intro g
   simp
 
+/- English proof (translation)
+Introduce `g`. Use extensionality with `v`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[mem_intw_apply hφ, mem_intw_apply hψ]`.
+-/
 theorem comp_mem {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} {τ : Representation ℂ Γ U}
     {φ : V →ₗ[ℂ] W} {ψ : W →ₗ[ℂ] U} (hφ : φ ∈ Intw ρ σ) (hψ : ψ ∈ Intw σ τ) :
     ψ ∘ₗ φ ∈ Intw ρ τ := by
@@ -68,6 +95,9 @@ theorem comp_mem {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} {
   simp only [LinearMap.comp_apply]
   rw [mem_intw_apply hφ, mem_intw_apply hψ]
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [LinearMap.comp_apply, avg_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[mem_intw_apply hφ]`.
+-/
 theorem avg_comp {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} (τ : Representation ℂ Γ U)
     {φ : V →ₗ[ℂ] W} (hφ : φ ∈ Intw ρ σ) (f : W →ₗ[ℂ] U) :
     avg σ τ f ∘ₗ φ = avg ρ τ (f ∘ₗ φ) := by
@@ -77,6 +107,9 @@ theorem avg_comp {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} (
   refine Finset.sum_congr rfl fun g _ => ?_
   rw [mem_intw_apply hφ]
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [LinearMap.comp_apply, avg_apply, map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[mem_intw_apply hφ]`.
+-/
 theorem comp_avg {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} (τ : Representation ℂ Γ U)
     {φ : V →ₗ[ℂ] W} (hφ : φ ∈ Intw ρ σ) (f : U →ₗ[ℂ] V) :
     φ ∘ₗ avg τ ρ f = avg τ σ (φ ∘ₗ f) := by
@@ -86,6 +119,9 @@ theorem comp_avg {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} (
   refine Finset.sum_congr rfl fun g _ => ?_
   rw [mem_intw_apply hφ]
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `φ.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.mpr hinj)`. Use `⟨avg σ ρ q, avg_mem σ ρ q, ?_⟩` and prove the remaining obligations. Rewrite using `[avg_comp ρ hφ, hq, avg_of_mem (id_mem ρ)]`.
+-/
 theorem exists_left_inverse {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} {φ : V →ₗ[ℂ] W}
     (hφ : φ ∈ Intw ρ σ) (hinj : Function.Injective φ) :
     ∃ ψ ∈ Intw σ ρ, ψ ∘ₗ φ = LinearMap.id := by
@@ -93,6 +129,9 @@ theorem exists_left_inverse {ρ : Representation ℂ Γ V} {σ : Representation 
   refine ⟨avg σ ρ q, avg_mem σ ρ q, ?_⟩
   rw [avg_comp ρ hφ, hq, avg_of_mem (id_mem ρ)]
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `φ.exists_rightInverse_of_surjective (LinearMap.range_eq_top.mpr hsurj)`. Use `⟨avg σ ρ q, avg_mem σ ρ q, ?_⟩` and prove the remaining obligations. Rewrite using `[comp_avg σ hφ, hq, avg_of_mem (id_mem σ)]`.
+-/
 theorem exists_right_inverse {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} {φ : V →ₗ[ℂ] W}
     (hφ : φ ∈ Intw ρ σ) (hsurj : Function.Surjective φ) :
     ∃ ψ ∈ Intw σ ρ, φ ∘ₗ ψ = LinearMap.id := by
@@ -107,6 +146,11 @@ section Schur
 variable {Γ : Type} [Group Γ]
 variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Establish `hinv : ∀ g, ∀ v ∈ LinearMap.ker φ, ρ g v ∈ LinearMap.ker φ` using `fun g v hv => by`. Establish `h1 : φ (ρ g v) = σ g (φ v)` using `LinearMap.congr_fun (hφ g) v`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[h1, hv, map_zero]`. Break down `hρ.2 _ hinv with h | h` into its components or cases.
+
+Conclude with `LinearMap.ker_eq_bot.mp h`. Conclude with `absurd (LinearMap.ker_eq_top.mp h) h0`.
+-/
 theorem injective_of_irr {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} {φ : V →ₗ[ℂ] W}
     (hρ : IsIrr ρ) (hφ : φ ∈ Intw ρ σ) (h0 : φ ≠ 0) : Function.Injective φ := by
   have hinv : ∀ g, ∀ v ∈ LinearMap.ker φ, ρ g v ∈ LinearMap.ker φ := fun g v hv => by
@@ -117,6 +161,11 @@ theorem injective_of_irr {ρ : Representation ℂ Γ V} {σ : Representation ℂ
   · exact LinearMap.ker_eq_bot.mp h
   · exact absurd (LinearMap.ker_eq_top.mp h) h0
 
+/- English proof (translation)
+Establish `hinv : ∀ g, ∀ w ∈ LinearMap.range φ, σ g w ∈ LinearMap.range φ` using `fun g w hw => by`. Take `⟨v, rfl⟩` from `hw`. Conclude with `⟨ρ g v, LinearMap.congr_fun (hφ g) v⟩`. Break down `hσ.2 _ hinv with h | h` into its components or cases. Conclude with `absurd (LinearMap.range_eq_bot.mp h) h0`.
+
+Conclude with `LinearMap.range_eq_top.mp h`.
+-/
 theorem surjective_of_irr {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} {φ : V →ₗ[ℂ] W}
     (hσ : IsIrr σ) (hφ : φ ∈ Intw ρ σ) (h0 : φ ≠ 0) : Function.Surjective φ := by
   have hinv : ∀ g, ∀ w ∈ LinearMap.range φ, σ g w ∈ LinearMap.range φ := fun g w hw => by
@@ -133,6 +182,25 @@ section Main
 variable {Γ : Type} [Group Γ] [Fintype Γ]
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `hV : Nontrivial V`. Assume the negation of the conclusion as `hn`. Establish `: Subsingleton V` using `not_nontrivial_iff_subsingleton.mp hn`. Establish `: Subsingleton (Intw ρ ρ)` using `inferInstance`. Rewrite `h` using `[Module.finrank_zero_of_subsingleton]`.
+
+Conclude with `zero_ne_one h`. Use `⟨hV, fun S hS => ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `S.subtype.exists_leftInverse_of_injective S.ker_subtype`. Use `set p := avg ρ ρ (S.subtype ∘ₗ q) with hp`. Establish `hpS : ∀ v, p v ∈ S` using `fun v => by`.
+
+Rewrite using `[hp, avg_apply]`. Use `S.smul_mem _ (S.sum_mem fun g _ => hS g _ ?_)` and prove the remaining obligations. Conclude with `(q (ρ g⁻¹ v)).2`. Establish `hq' : ∀ w (hw : w ∈ S), ((q w : S) : V) = w` using `fun w hw => by`. Use `LinearMap.congr_fun hq ⟨w, hw⟩` as an intermediate fact.
+
+Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.id_apply] at this`. Rewrite using `[this]`. Establish `hc : (Fintype.card Γ : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `hfix : ∀ w ∈ S, p w = w` using `fun w hw => by`. Establish `h1 : ∀ g : Γ, ρ g ((S.subtype ∘ₗ q) (ρ g⁻¹ w)) = w` using `fun g => by`.
+
+Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply]`. Rewrite using `[hq' _ (hS _ _ hw), rep_inv_apply]`. Rewrite using `[hp, avg_apply]`. Simplify using `only [h1, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+
+Establish `hne : (⟨LinearMap.id, id_mem ρ⟩ : Intw ρ ρ) ≠ 0` using `fun h0 => by`. Establish `h1 : (LinearMap.id : V →ₗ[ℂ] V) = 0` using `congrArg Subtype.val h0`. Take `⟨x, hx⟩` from `exists_ne (0 : V)`. Conclude with `hx (LinearMap.congr_fun h1 x)`. Take `⟨c, hcp⟩` from `(finrank_eq_one_iff_of_nonzero' _ hne).mp h ⟨p, avg_mem ρ ρ _⟩`.
+
+Establish `hpc : ∀ v, p v = c • v` using `fun v => by`. Establish `h1 : c • (LinearMap.id : V →ₗ[ℂ] V) = p` using `congrArg Subtype.val hcp`. Rewrite using `[← h1]`. Both sides reduce to the same expression. Distinguish the cases in `hc0 : c = 0`.
+
+Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `w hw`. Rewrite using `[Submodule.mem_bot, ← hfix w hw, hpc, hc0, zero_smul]`. Use `right`.
+
+Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `h1 : v = c⁻¹ • p v` using `by rw [hpc, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Rewrite using `[h1]`. Conclude with `S.smul_mem _ (hpS v)`.
+-/
 theorem irr_of_finrank_one [FiniteDimensional ℂ V] (ρ : Representation ℂ Γ V)
     (h : Module.finrank ℂ (Intw ρ ρ) = 1) : IsIrr ρ := by
   have hV : Nontrivial V := by
@@ -180,6 +248,21 @@ theorem irr_of_finrank_one [FiniteDimensional ℂ V] (ρ : Representation ℂ Γ
     rw [h1]
     exact S.smul_mem _ (hpS v)
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Γ _ _ τ V _ _ _ ρ hτ`. Establish `hirr : IsIrr τ.ρ` using `(hs.1 Γ τ).1 hτ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, hφ, h0⟩`.
+
+Take `⟨ψ, hψ, hl⟩` from `exists_left_inverse hφ (injective_of_irr hirr hφ h0)`. Use `⟨ψ, hψ, fun hz => ?_⟩` and prove the remaining obligations. Use `hirr.1` as an intermediate fact. Take `⟨x, hx⟩` from `exists_ne (0 : τ)`. Establish `h1` using `LinearMap.congr_fun hl x`.
+
+Simplify using `[hz] at h1`. Conclude with `hx h1.symm`. Introduce and unpack `⟨ψ, hψ, h0⟩`. Take `⟨φ, hφ, hr⟩` from `exists_right_inverse hψ (surjective_of_irr hirr hψ h0)`. Use `⟨φ, hφ, fun hz => ?_⟩` and prove the remaining obligations.
+
+Use `hirr.1` as an intermediate fact. Take `⟨x, hx⟩` from `exists_ne (0 : τ)`. Establish `h1` using `LinearMap.congr_fun hr x`. Simplify using `[hz] at h1`. Conclude with `hx h1.symm`.
+
+Introduce and unpack `Γ _ _ τ V _ _ _ W _ _ _ ρ σ hτ ⟨φ, hφ, h0⟩ ⟨φ', hφ', h0'⟩ hfin`. Establish `hirr : IsIrr τ.ρ` using `(hs.1 Γ τ).1 hτ`. Take `⟨ψ, hψ, hl⟩` from `exists_left_inverse hφ (injective_of_irr hirr hφ h0)`. Rewrite `hfin` using `[Submodule.finrank_eq_zero]`. Establish `hmem : φ' ∘ₗ ψ ∈ Intw ρ σ` using `comp_mem hψ hφ'`.
+
+Rewrite `hmem` using `[hfin, Submodule.mem_bot]`. Apply `h0'` to reduce the goal to its premises. Establish `h1 : (φ' ∘ₗ ψ) ∘ₗ φ = φ'` using `by rw [LinearMap.comp_assoc, hl, LinearMap.comp_id]`. Rewrite using `[← h1, hmem, LinearMap.zero_comp]`. Introduce `Γ _ _ V _ _ _ ρ h`.
+
+Conclude with `irr_of_finrank_one ρ h`. Introduce `Γ _ _ V _ _ _ W _ _ _ ρ σ hρ hσ hfin`. Establish `hne : Intw ρ σ ≠ ⊥` using `fun hb => hfin (by rw [hb]; exact finrank_bot ℂ _)`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).mp hne`. Conclude with `⟨LinearEquiv.ofBijective φ ⟨injective_of_irr hρ hφ h0, surjective_of_irr hσ hφ h0⟩, fun γ v => LinearMap.congr_fun (hφ γ) v⟩`.
+-/
 theorem maschkeFacts_of_simpleIffIrr (hs : ReciprocityTheory.Ty.Fin.St.SimpleIffIrr) :
     ReciprocityTheory.Ty.Fin.St.MaschkeFacts := by
   refine ⟨?_, ?_, ?_, ?_⟩
@@ -220,6 +303,9 @@ theorem maschkeFacts_of_simpleIffIrr (hs : ReciprocityTheory.Ty.Fin.St.SimpleIff
         ⟨injective_of_irr hρ hφ h0, surjective_of_irr hσ hφ h0⟩,
       fun γ v => LinearMap.congr_fun (hφ γ) v⟩
 
+/- English proof (translation)
+The claim follows from `maschkeFacts_of_simpleIffIrr GlobalTheory.T.simple_iff_irreducible`.
+-/
 theorem maschkeFacts : ReciprocityTheory.Ty.Fin.St.MaschkeFacts :=
   maschkeFacts_of_simpleIffIrr GlobalTheory.T.simple_iff_irreducible
 

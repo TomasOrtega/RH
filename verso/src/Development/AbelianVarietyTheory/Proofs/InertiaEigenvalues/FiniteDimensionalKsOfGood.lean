@@ -14,6 +14,9 @@ namespace GlobalTheory.Cyc.CrysDeRham
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hle : Ks K s ≤ LL.1` using `fun x hx => h.2.2.2 (Ks K s).val ⟨x, hx⟩`. Use `LL.2` as an intermediate fact. Conclude with `FiniteDimensional.of_injective (IntermediateField.inclusion hle).toLinearMap (IntermediateField.inclusion_injective hle)`.
+-/
 theorem finiteDimensional_Ks_of_good {K LL : FinExt l} {s : ℕ} (h : Good K s LL) :
     FiniteDimensional ℚ_[l] ↥(Ks K s) := by
   have hle : Ks K s ≤ LL.1 := fun x hx => h.2.2.2 (Ks K s).val ⟨x, hx⟩
@@ -21,6 +24,15 @@ theorem finiteDimensional_Ks_of_good {K LL : FinExt l} {s : ℕ} (h : Good K s L
   exact FiniteDimensional.of_injective (IntermediateField.inclusion hle).toLinearMap
     (IntermediateField.inclusion_injective hle)
 
+/- English proof (translation)
+Introduce `g hg`. Establish `key : Ks K s ≤ (Ks K s).comap (g : Om l →ₐ[ℚ_[l]] Om l)`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Establish `h1 : g x = x` using `hg ⟨x, hx.1⟩`.
+
+Express the relevant statement in the definitionally equal form `g x ∈ Ks K s`. Rewrite using `[h1]`. Conclude with `(le_sup_left : K0 K ≤ Ks K s) hx`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `x hx`.
+
+Express the relevant statement in the definitionally equal form `g x ∈ Ks K s`. Apply `(le_sup_right : _ ≤ Ks K s)` to reduce the goal to its premises. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises. Establish `hx' : x ^ (l ^ s) = 1` using `hx`. Express the relevant statement in the definitionally equal form `(g x) ^ (l ^ s) = 1`.
+
+Rewrite using `[← map_pow, hx', map_one]`. Introduce `x hx`. Conclude with `key hx`.
+-/
 theorem apply_mem_Ks (K : FinExt l) (s : ℕ) :
     ∀ g ∈ GK K, ∀ x ∈ Ks K s, g x ∈ Ks K s := by
   intro g hg
@@ -50,6 +62,9 @@ noncomputable def restrictRep {K E LL : FinExt l} (hle : K.1 ≤ E.1)
   ρ := T.ρ.comp (Subgroup.inclusion (GK_le hle))
   cont x := (T.cont x).comp (continuous_inclusion (GK_le hle))
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isDeRham_of_restrict_galois_descent l P K E LL (GK_le hle) hle hs T.V T.ρ h`.
+-/
 theorem isDR_of_restrict (P : LocPrime l) {K E LL : FinExt l} (hle : K.1 ≤ E.1)
     (hs : ∀ g ∈ GK K, ∀ x ∈ E.1, g x ∈ E.1) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL))
     (h : IsDR (P.PD E) (restrictRep hle T).ρ) : IsDR (P.PD K) T.ρ :=
@@ -57,6 +72,11 @@ theorem isDR_of_restrict (P : LocPrime l) {K E LL : FinExt l} (hle : K.1 ≤ E.1
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D HW hF l _ K s LL h S T hT`. Set `E : FinExt l` to `⟨Ks K s, finiteDimensional_Ks_of_good h⟩`. Establish `hle : K.1 ≤ E.1` using `h.2.2.1`. Establish `h1` using `isCrys_Ks_of_finrank l (D.loc l) K s LL _ ((HW l).W K s LL h) ((HW l).W_s K s LL h) E rfl hle T hT`. Establish `h2` using `(hF l E ↥LL.1 ↥(OL LL) (GlobalTheory.LocalIntegers.goodO_integers l LL) (restrictRep hle T)).2.2 h1`.
+
+Conclude with `isDR_of_restrict (D.loc l) hle (apply_mem_Ks K s) T h2`.
+-/
 theorem isDR_of_isCrysOn : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc), adm7 D → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let S := sit D.loc HW l (D.locA l) K s LL h; ∀ (T : LocLat S.G S.Qp S.LL S.O), IsCrysOn S S.W.GKs T → IsDR S.PD T.ρ := by
   intro D HW hF l _ K s LL h S T hT
   let E : FinExt l := ⟨Ks K s, finiteDimensional_Ks_of_good h⟩

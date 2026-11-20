@@ -11,6 +11,43 @@ namespace GlobalTheory.AdaptedBasis
 
 variable {k M : Type} [Field k] [AddCommGroup M] [Module k M]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `D _ hn hex hsep`. Distinguish the cases in `hD : D = ⊥`.
+
+Substitute `hD` using the available equality. Use `⟨Empty, inferInstance, Empty.elim, Empty.elim, linearIndependent_empty_type, ?_, fun j => j.elim, fun a => by simp⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hne : ∃ a, D ≤ F a`. Set `b` to `Module.finBasis k D`.
+
+Establish `hb : ∀ i, ∃ a, (b i : M) ∈ F a` using `fun i => hex _ (b i).2`. Use `choose c hc using hb`. Take `⟨m, hm⟩` from `Finite.exists_le (fun i => OrderDual.toDual (c i))`. Use `⟨OrderDual.ofDual m, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `hx' : (⟨x, hx⟩ : D) ∈ Submodule.span k (Set.range b)`. Rewrite using `[b.span_eq]`. Discharge the goal by the elementary cases of `trivial`. Establish `: (Submodule.span k (Set.range b)).map D.subtype ≤ F (OrderDual.ofDual m)`. Rewrite using `[Submodule.map_span, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Conclude with `hF (hm i) (hc i)`. Conclude with `this ⟨_, hx', rfl⟩`. Establish `hbdd : ∃ b, ∀ z, D ≤ F z → z ≤ b`. Take `⟨x, hxD, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hD`.
+
+Establish `: ¬ ∀ a, x ∈ F a` using `fun h => hx0 (hsep x hxD h)`. Use `push_neg at this`. Take `⟨a, ha⟩` from `this`. Use `⟨a, fun z hz => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+
+Conclude with `ha (hF (le_of_not_ge hlt) (hz hxD))`. Take `⟨a₀, ha₀, hmax⟩` from `Int.exists_greatest_of_bdd hbdd hne`. Use `set D' := D ⊓ F (a₀ + 1) with hD'`. Establish `hD'D : D' ≤ D` using `inf_le_left`. Establish `hlt : D' < D`.
+
+Use `lt_of_le_of_ne hD'D fun heq => ?_` and prove the remaining obligations. Establish `: D ≤ F (a₀ + 1)` using `heq ▸ inf_le_right`. Use `hmax _ this` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `haveI : FiniteDimensional k D' := Submodule.finiteDimensional_of_le hD'D`.
+
+Take `⟨ι, _, v, h, hli, hspan, hdeg, hfil⟩` from `ih _ (hn ▸ Submodule.finrank_lt_finrank_of_lt hlt) D' rfl (fun x hx => hex x (hD'D hx)) (fun x hx => hsep x (hD'D hx))`. Take `⟨C', hC'⟩` from `Submodule.exists_isCompl D'`. Use `set C := C' ⊓ D with hC`. Establish `hCD : C ≤ D` using `inf_le_right`. Establish `hdisj : Disjoint D' C` using `hC'.disjoint.mono_right inf_le_left`.
+
+Establish `hsup : D' ⊔ C = D`. Rewrite using `[hC, ← sup_inf_assoc_of_le _ hD'D, hC'.sup_eq_top, top_inf_eq]`. Use `haveI : FiniteDimensional k C := Submodule.finiteDimensional_of_le hCD`. Set `bC` to `Module.finBasis k C`. Set `c : Fin (Module.finrank k C) → M` to `fun i => (bC i : M)`.
+
+Establish `hcli : LinearIndependent k c` using `bC.linearIndependent.map' C.subtype C.ker_subtype`. Establish `hcspan : Submodule.span k (Set.range c) = C`. Establish `: Set.range c = C.subtype '' Set.range bC`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, ← Submodule.map_span, bC.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hdeg' : ∀ j, a₀ + 1 ≤ h j`. Introduce `j`. Assume the negation of the conclusion as `hj`. Use `push_neg at hj`.
+
+Establish `hvj : v j ∈ D'` using `hspan ▸ Submodule.subset_span ⟨j, rfl⟩`. Conclude with `(hdeg j).2 (hF (show h j + 1 ≤ a₀ + 1 by omega) (Submodule.mem_inf.mp hvj).2)`. Use `⟨ι ⊕ Fin (Module.finrank k C), inferInstance, Sum.elim v c, Sum.elim h (fun _ => a₀), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hli.sum_type hcli (by rw [hspan, hcspan]; exact hdisj)`. Rewrite using `[Set.Sum.elim_range, Submodule.span_union, hspan, hcspan, hsup]`.
+
+Introduce and unpack `(j | i)`. Conclude with `hdeg j`. Use `⟨ha₀ (hCD (bC i).2), fun hmem => ?_⟩` and prove the remaining obligations. Establish `h1 : c i ∈ D'` using `⟨hCD (bC i).2, hmem⟩`. Establish `h2 : c i = 0` using `(Submodule.disjoint_def.mp hdisj) _ h1 (bC i).2`.
+
+Conclude with `hcli.ne_zero i h2`. Introduce `a x hx`. Distinguish the cases in `ha : a ≤ a₀`. Establish `hall : {j : ι ⊕ Fin (Module.finrank k C) | a ≤ Sum.elim h (fun _ => a₀) j} = Set.univ`. Use extensionality with `j`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_univ, iff_true]`. Break down `j with j | i` into its components or cases. Use `hdeg' j` as an intermediate fact. Simplify using `only [Sum.elim_inl]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `using ha`. Rewrite using `[hall, Set.image_univ, Set.Sum.elim_range, Submodule.span_union, hspan, hcspan, hsup]`. Conclude with `hx.1`. Use `push_neg at ha`. Establish `hx' : x ∈ D' ⊓ F a` using `⟨⟨hx.1, hF (by omega) hx.2⟩, hx.2⟩`.
+
+Use `Submodule.span_mono ?_ (hfil a hx')` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `⟨Sum.inl j, hj, rfl⟩`.
+-/
 theorem exists_adapted_family (F : ℤ → Submodule k M) (hF : Antitone F) :
     ∀ (n : ℕ) (D : Submodule k M) [FiniteDimensional k D], Module.finrank k D = n →
     (∀ x ∈ D, ∃ a, x ∈ F a) → (∀ x ∈ D, (∀ a, x ∈ F a) → x = 0) →
@@ -110,6 +147,17 @@ end GlobalTheory.AdaptedBasis
 
 namespace GlobalTheory.AdaptedBasis
 
+/- English proof (translation)
+Take `⟨ι, _, v, h, hli, hspan, hdeg, hfil⟩` from `exists_adapted_family F hF _ D rfl hex hsep`. Set `b0 : Module.Basis ι k D` to `(Module.Basis.span hli).map (LinearEquiv.ofEq _ _ hspan)`. Establish `hb0 : ∀ i, (b0 i : M) = v i` using `fun i => by`. Simplify using `[b0, Module.Basis.span_apply]`. Set `e : ι ≃ Fin (Module.finrank k D)` to `Fintype.equivFinOfCardEq (Module.finrank_eq_card_basis b0).symm`.
+
+Use `⟨b0.reindex e, fun j => h (e.symm j), fun j => ?_, fun a x hx j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply, hb0]`. Conclude with `hdeg _`. Rewrite `hj` using `[Module.Basis.repr_reindex_apply]`. Establish `hxs : (x : M) ∈ Submodule.span k (v '' {i | a ≤ h i})` using `hfil a ⟨x.2, hx⟩`.
+
+Take `⟨l, hl, hlx⟩` from `(Finsupp.mem_span_image_iff_linearCombination k).mp hxs`. Establish `hrepr : b0.repr x = l`. Establish `: x = Finsupp.linearCombination k b0 l`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `Finsupp.apply_linearCombination k D.subtype b0 l`.
+
+Simplify using `only [Submodule.subtype_apply] at h1`. Establish `hv : (⇑D.subtype ∘ ⇑b0) = v` using `funext hb0`. Rewrite using `[h1, hv, hlx]`. Rewrite using `[this, b0.repr_linearCombination]`. Rewrite `hj` using `[hrepr]`.
+
+Conclude with `hl (Finsupp.mem_support_iff.mpr hj)`.
+-/
 theorem exists_adapted_basis {k M : Type} [Field k] [AddCommGroup M] [Module k M]
     (D : Submodule k M) [FiniteDimensional k D] (F : ℤ → Submodule k M) (hF : Antitone F)
     (hex : ∀ x ∈ D, ∃ a, x ∈ F a) (hsep : ∀ x ∈ D, (∀ a, x ∈ F a) → x = 0) :

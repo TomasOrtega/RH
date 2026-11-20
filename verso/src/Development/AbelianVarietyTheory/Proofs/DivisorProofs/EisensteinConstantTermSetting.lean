@@ -22,6 +22,25 @@ open GlobalTheory.Doubling (absE)
 
 open GlobalTheory.EisCT in
 
+/- English proof (translation)
+Introduce `hpr F E _ _ _ _ _ σ n J r X Y L a h Eis c hS hP`. Take `⟨T, hT⟩` from `GlobalTheory.T.exists_transversal_for_isotropic_column F E σ n J (col0 X)`. Establish `hpos : ∀ g, 0 < h g`. Introduce `g`. Take `⟨p, l, hp, k, hk, rfl⟩` from `hS.2.2.2.2.2.2.1 g`.
+
+Rewrite using `[hS.2.2.2.2.2.2.2 p l hp k hk]`. Establish `h1 : absE F E l * absE F E l⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `pos_iff_ne_zero.2 (left_ne_zero_of_mul_eq_one h1)` after adjusting the coercions. Establish `hcont` using `GlobalTheory.T.eisenstein_setting_height_continuous F E σ n J r X Y L a h hS`. Establish `hmeas : ∀ (g : GAd σ J) (t : midSet σ J (col0 X) T), Measurable (fun u : unipRad σ J (col0 X) => h (t.1.1 * (u.1 * g)))` using `fun g t => (hcont.comp (continuous_const.mul (continuous_subtype_val.mul continuous_const))).measurable`.
+
+Establish `hG : ∀ (μ : Measure (unipRad σ J (col0 X))) (𝓕 : Set (unipRad σ J (col0 X))), μ.IsHaarMeasure → IsFundamentalDomain ((ratPts σ J).subgroupOf (unipRad σ J (col0 X))) 𝓕 μ → μ 𝓕 = 1 → ∀ g, (∀ z : ℂ, (n : ℝ) - 2 < z.re → Integrable (fun u : unipRad σ J (col0 X) => ∑' t : midSet σ J ( …` using `fun μ 𝓕 hμ h𝓕 h1 g => GlobalTheory.T.dirichlet_series_integral_holomorphic (μ.restrict 𝓕) (fun (t : midSet σ J (col0 X) T) (u : unipRad σ J (col0 X)) => h (t.1.1 * (u.1 * g))) ((n : ℝ) - 2) (hmeas g) (fun _ _ => hpos _) (fun s hs => GlobalTheory.T.unipotent_radical_haar_integral_ …`. Establish `hre : ∀ s : ℂ, ((n : ℝ) - 1) / 2 - 1 < s.re → (n : ℝ) - 2 < (s + ((n : ℂ) - 1) / 2).re`. Introduce `s hs`. Establish `e : ((n : ℂ) - 1) / 2 = ((((n : ℝ) - 1) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e, Complex.add_re, Complex.ofReal_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hex : ∃ (μ : Measure (unipRad σ J (col0 X))) (𝓕 : Set (unipRad σ J (col0 X))), μ.IsHaarMeasure ∧ IsFundamentalDomain ((ratPts σ J).subgroupOf (unipRad σ J (col0 X))) 𝓕 μ ∧ μ 𝓕 = 1`. Use `swap`. Conclude with `⟨fun _ _ => 0, fun g => differentiableOn_const 0, fun μ 𝓕 hμ h𝓕 h1 => (hex ⟨μ, 𝓕, hμ, h𝓕, h1⟩).elim⟩`. Take `⟨μ₀, 𝓕₀, hμ₀, h𝓕₀, h1₀⟩` from `hex`.
+
+Use `⟨fun s g => ∫ u in 𝓕₀, midSum σ J (col0 X) T h s (u.1 * g) ∂μ₀, fun g => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hG μ₀ 𝓕₀ hμ₀ h𝓕₀ h1₀ g).2.comp (differentiable_id.add_const _).differentiableOn fun s hs => hre s hs`. Introduce `μ 𝓕 hμ h𝓕 h1 s hs g`. Establish `hsplit : ∀ u : unipRad σ J (col0 X), Eis s (u.1 * g) = lineSum σ J (col0 X) T h s (u.1 * g) + midSum σ J (col0 X) T h s (u.1 * g) + bigSum σ J (col0 X) T h s (u.1 * g)` using `fun u => GlobalTheory.T.eisenstein_eq_lineSum_add_midSum_add_bigSum F E σ n J r X Y L a h Eis hS hP.1 T hT s hs (u.1 * g)`. Establish `hline : ∀ u : unipRad σ J (col0 X), lineSum σ J (col0 X) T h s (u.1 * g) = fs σ J h s g` using `fun u => GlobalTheory.T.eisenstein_line_sum_unipotent_invariant F E σ n J r X Y L a h hS T hT u.1 u.2 s g`.
+
+Establish `hmidI : IntegrableOn (fun u : unipRad σ J (col0 X) => midSum σ J (col0 X) T h s (u.1 * g)) 𝓕 μ` using `(hG μ 𝓕 hμ h𝓕 h1 g).1 _ (hre s (by linarith))`. Take `⟨hbigI, hbig⟩` from `GlobalTheory.T.eisenstein_constant_term_formula F E σ n J r X Y L a h Eis c hS hP T hT μ 𝓕 hμ h𝓕 h1 s hs g`. Establish `hfin : μ 𝓕 ≠ ⊤` using `by rw [h1]; exact ENNReal.one_ne_top`. Establish `hlineI : IntegrableOn (fun u : unipRad σ J (col0 X) => lineSum σ J (col0 X) T h s (u.1 * g)) 𝓕 μ`. Establish `: (fun u : unipRad σ J (col0 X) => lineSum σ J (col0 X) T h s (u.1 * g)) = fun _ => fs σ J h s g`.
+
+Use function extensionality and compare the values at `hline`. Rewrite using `[this]`. Conclude with `integrableOn_const hfin`. Establish `hmideq : ∫ u in 𝓕, midSum σ J (col0 X) T h s (u.1 * g) ∂μ = ∫ u in 𝓕₀, midSum σ J (col0 X) T h s (u.1 * g) ∂μ₀` using `GlobalTheory.T.unipotent_invariant_function_expansion F E σ n J r X Y L a h hS (fun u => midSum σ J (col0 X) T h s (u.1 * g)) (fun ν u => by show midSum σ J (col0 X) T h s (((ν : unipRad σ J (col0 X)) * u).1 * g) = _`. Rewrite using `[Subgroup.coe_mul, mul_assoc]`.
+
+Conclude with `GlobalTheory.T.eisenstein_constant_term_rational_unipotent F E σ n J r X Y L a h hS T hT _ (Subgroup.mem_subgroupOf.1 ν.2) ν.1.2 s _)`. Use `μ 𝓕 hμ h𝓕 h1 μ₀ 𝓕₀ hμ₀ h𝓕₀ h1₀`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_add _ hbigI, integral_add hlineI hmidI]`. Conclude with `hlineI.add hmidI`.
+
+Use `_ = _ := by`. Rewrite using `[hmideq, hbig, integral_congr_ae (ae_of_all _ hline), setIntegral_const]`. Simplify using `[fs, Measure.real, h1]`.
+-/
 theorem GlobalTheory.EisCT.constTerm : GlobalTheory.Published.EisensteinIsotropicLine → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))
     (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ) (Eis : ℂ → GAd σ J → ℂ) (c : ℂ → ℂ),

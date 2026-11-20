@@ -15,6 +15,9 @@ namespace GlobalTheory.Ord2.GwIneq.CardOrd
 
 variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Ideal.mem_span_singleton, mem_Ik]`. Conclude with `(GlobalTheory.Coef.norm_le_norm_pow_iff_dvd l c n x).symm`.
+-/
 theorem span_eq_Ik (c : Coef l) (n : ℕ) : Ideal.span {((l : ℕ) : c.O) ^ n} = Ik c n := by
   ext x
   rw [Ideal.mem_span_singleton, mem_Ik]
@@ -23,13 +26,22 @@ theorem span_eq_Ik (c : Coef l) (n : ℕ) : Ideal.span {((l : ℕ) : c.O) ^ n} =
 def levEquiv (c : Coef l) (n : ℕ) : UpperTheory.V.X.Lev (((l : ℕ) : c.O) ^ n) ≃+ Qn c n :=
   (Ideal.quotEquivOfEq (span_eq_Ik c n)).toAddEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levEquiv_mk (c : Coef l) (n : ℕ) (x : c.O) :
     levEquiv c n (UpperTheory.V.X.Lev.mk (((l : ℕ) : c.O) ^ n) x) = red c n x := rfl
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr (levEquiv c n).toEquiv`.
+-/
 theorem card_lev (c : Coef l) (n : ℕ) :
     Nat.card (UpperTheory.V.X.Lev (((l : ℕ) : c.O) ^ n)) = Nat.card (Qn c n) :=
   Nat.card_congr (levEquiv c n).toEquiv
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `UpperTheory.V.X.Lev.mk_surjective _ x`. Rewrite using `[← map_smul, smul_eq_mul, levEquiv_mk, levEquiv_mk, map_mul]`.
+-/
 theorem levEquiv_smul (c : Coef l) (n : ℕ) (a : c.O) (x : UpperTheory.V.X.Lev (((l : ℕ) : c.O) ^ n)) :
     levEquiv c n (a • x) = red c n a * levEquiv c n x := by
   obtain ⟨y, rfl⟩ := UpperTheory.V.X.Lev.mk_surjective _ x
@@ -38,9 +50,15 @@ theorem levEquiv_smul (c : Coef l) (n : ℕ) (a : c.O) (x : UpperTheory.V.X.Lev 
 def lineInc (c : Coef l) (n : ℕ) : UpperTheory.V.X.Lev (((l : ℕ) : c.O) ^ n) →+ Mn c n :=
   (AddMonoidHom.single (fun _ : Fin 2 => Qn c n) 0).comp (levEquiv c n).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lineInc_apply (c : Coef l) (n : ℕ) (x : UpperTheory.V.X.Lev (((l : ℕ) : c.O) ^ n)) :
     lineInc c n x = Pi.single 0 (levEquiv c n x) := rfl
 
+/- English proof (translation)
+Introduce `x y h` and use `(levEquiv c n).injective (by have h0 := congrFun h 0 simpa [lineInc_apply] using h0)`.
+-/
 theorem lineInc_injective (c : Coef l) (n : ℕ) : Function.Injective (lineInc c n) :=
   fun x y h => (levEquiv c n).injective (by
     have h0 := congrFun h 0
@@ -48,6 +66,13 @@ theorem lineInc_injective (c : Coef l) (n : ℕ) : Function.Injective (lineInc c
 
 variable [IsAlgClosure ℚ Ω]
 
+/- English proof (translation)
+Establish `h1 : (θ g : c.O) = ⟨mat W g 0 0, hint g 0 0⟩` using `Subtype.ext (hθ g)`. Establish `h2 : matQ c n W hint g 1 0 = 0`. Rewrite using `[matQ_apply]`. Establish `: (⟨mat W g 1 0, hint g 1 0⟩ : c.O) = 0` using `Subtype.ext (hup g g.2)`. Rewrite using `[this, map_zero]`.
+
+Use `show lineInc c n (((θ g : c.Oˣ) : c.O) • x) = matQ c n W hint g *ᵥ lineInc c n x`. Rewrite using `[lineInc_apply, lineInc_apply, levEquiv_smul, h1]`. Use extensionality with `i`. Use `fin_cases i`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two, matQ_apply]`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two, h2]`.
+-/
 theorem lineInc_equiv (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) (S : Finset Pl)
     (hN : ∀ a ∈ NS Ω (S : Set Pl), W a = 1) (B : ValuationSubring Ω)
     (hup : ∀ s ∈ Dec (F := ℚ) B, mat W s 1 0 = 0) (θ : Dec (F := ℚ) B →* c.Oˣ)
@@ -67,6 +92,27 @@ theorem lineInc_equiv (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, ma
   · simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two, matQ_apply]
   · simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two, h2]
 
+/- English proof (translation)
+Use `set τ := Formalism.GaloisCohomology.scalRep (UpperTheory.V.X.Lev (((l : ℕ) : c.O) ^ n)) θ with hτ`. Use `set σ := (rhoS c n W hint S hN).comp (locHom (S : Set Pl) B) with hσ`. Establish `hσa : ∀ (g : Dec (F` using `ℚ) B) (y : Mn c n), σ g y = matQ c n W hint g *ᵥ y := fun _ _ => rfl`. Establish `heq` using `lineInc_equiv c n W hint S hN B hup θ hθ`. Use `set Φ := UpperTheory.V.X.h1MapOfAdditive τ σ (lineInc c n) heq with hΦ`.
+
+Establish `hsub : (ordCond c n W hint S hN B : Set (H1 σ)) ⊆ Set.range Φ`. Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.1 hy`. Take `⟨x, hx⟩` from `(mem_ordZ _).1 (Submodule.mem_comap.1 hz)`. Use `set m : Mn c n := Pi.single 1 x with hm`.
+
+Establish `hbc : Continuous fun g : Dec (F` using `ℚ) B => σ g m - m := by`. Establish `hc : ∀ i j, Continuous fun g : Dec (F` using `ℚ) B => matQ c n W hint g i j := fun i j => (continuous_matQ_apply c n W hint hcont i j).comp continuous_subtype_val`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [hσa, Pi.sub_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Conclude with `(((hc i 0).mul continuous_const).add ((hc i 1).mul continuous_const)).sub continuous_const`.
+
+Set `bZ : Z1 σ` to `⟨fun g => σ g m - m, hbc, fun g h => by`. Simplify using `only [map_mul, Module.End.mul_apply, map_sub]`. Use the proof step `abel⟩`. Establish `hbB : bZ ∈ (B1 σ).comap (Z1 σ).subtype` using `(mem_coboundaries1 σ _).2 ⟨m, fun g => rfl⟩`. Use `set zb : Z1 σ := z - bZ with hzb`.
+
+Establish `hzb1 : ∀ g, zb.1 g 1 = 0`. Introduce `g`. Use `show z.1 g 1 - (σ g m - m) 1 = 0`. Establish `hx' : z.1 g 1 = matQ c n W hint g 1 1 * x - x` using `hx g`. Rewrite using `[hσa, hx']`.
+
+Establish `hm0 : m 0 = 0` using `rfl`. Establish `hm1 : m 1 = x` using `rfl`. Simplify using `only [Pi.sub_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_two, hm0, hm1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzbι : ∀ g, zb.1 g = lineInc c n ((levEquiv c n).symm (zb.1 g 0))`.
+
+Introduce `g`. Rewrite using `[lineInc_apply, AddEquiv.apply_symm_apply]`. Use extensionality with `i`. Use `fin_cases i`. Simplify using the standard rewrite rules.
+
+Simplify using `[hzb1 g]`. Set `w : Dec (F` to `ℚ) B → UpperTheory.V.X.Lev (((l : ℕ) : c.O) ^ n) := fun g => (levEquiv c n).symm (zb.1 g 0)`. Establish `hw : w ∈ Z1 τ`. Use `⟨(continuous_of_discreteTopology (f := fun y : Mn c n => (levEquiv c n).symm (y 0))).comp zb.2.1, fun g h => lineInc_injective c n ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, heq, ← hzbι, ← hzbι, ← hzbι]`.
+
+Conclude with `zb.2.2 g h`. Use `⟨Submodule.Quotient.mk ⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, UpperTheory.V.X.h1MapOfAdditive_mk]`. Establish `e1 : UpperTheory.V.X.cocycleMapOfEquivariant τ σ (lineInc c n) heq ⟨w, hw⟩ = zb` using `Subtype.ext (funext fun g => (hzbι g).symm)`. Rewrite using `[e1, hzb, Submodule.Quotient.mk_sub, (Submodule.Quotient.mk_eq_zero _).2 hbB, sub_zero]`.
+
+Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_ordCond_le (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) (S : Finset Pl)
     (hN : ∀ a ∈ NS Ω (S : Set Pl), W a = 1) (hcont : Continuous W) (B : ValuationSubring Ω)
     (hup : ∀ s ∈ Dec (F := ℚ) B, mat W s 1 0 = 0) (θ : Dec (F := ℚ) B →* c.Oˣ)
@@ -134,6 +180,15 @@ namespace GlobalTheory.Ord2.GwIneq.CardOrd
 
 variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
+/- English proof (translation)
+Establish `hm : Continuous fun s => mat W s` using `Units.continuous_val.comp hcont`. Use `GlobalTheory.LocChar.unit_of_integral l Ω c B (fun s => mat W s 0 0) (fun s => eps l s * (mat W s 1 1 * (mat W s).det)) ((hm.matrix_elem 0 0).continuousOn) ?_ ?_` and prove the remaining obligations. Introduce `s hs`. Establish `hdetO : (mat W s).det ∈ c.O`. Rewrite using `[Matrix.det_fin_two]`.
+
+Conclude with `c.O.sub_mem (c.O.mul_mem (hint s 0 0) (hint s 1 1)) (c.O.mul_mem (hint s 0 1) (hint s 1 0))`. Use `⟨hint s 0 0, c.O.mul_mem (CupCob.eps_mem c s) (c.O.mul_mem (hint s 1 1) hdetO), ?_⟩` and prove the remaining obligations. Establish `hd : (mat W s).det = mat W s 0 0 * mat W s 1 1`. Rewrite using `[Matrix.det_fin_two, hup s hs, mul_zero, sub_zero]`. Establish `h2` using `CupCob.det_sq W hdet s`.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `s _ t ht show mat W (s * t) 0 0 = mat W s 0 0 * mat W t 0 0`. Simplify using `only [mat, map_mul, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Use `hup t ht` as an intermediate fact. Simplify using `only [mat] at this`.
+
+Rewrite using `[this, mul_zero, add_zero]`.
+-/
 theorem exists_theta (c : Coef l) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) (hcont : Continuous W)
     (hdet : dt W ^ 2 = 1) (B : ValuationSubring Ω) (hup : ∀ s ∈ Dec (F := ℚ) B, mat W s 1 0 = 0) :
     ∃ θ : Dec (F := ℚ) B →* c.Oˣ, Continuous (fun g => ((θ g : c.Oˣ) : c.O)) ∧
@@ -162,6 +217,21 @@ theorem exists_theta (c : Coef l) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j �
 
 variable [IsAlgClosure ℚ Ω]
 
+/- English proof (translation)
+Use `set D := Dec (F := ℚ) A with hDdef`. Establish `hup : ∀ s ∈ D, mat W s 1 0 = 0` using `hW.upper`. Establish `h00 : ∀ s t, t ∈ D → mat W (s * t) 0 0 = mat W s 0 0 * mat W t 0 0`. Introduce `s t ht`. Simplify using `only [mat, map_mul, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`.
+
+Use `hup t ht` as an intermediate fact. Simplify using `only [mat] at this`. Rewrite using `[this, mul_zero, add_zero]`. Establish `hv : A.valuation (l : Ω) < 1`. Take `⟨v, hA, hlv⟩` from `hW.atL`.
+
+Simplify using `using (hA _).2 hlv`. Take `⟨u0, hu0⟩` from `GrOfKill.exists_unit_one_add l`. Take `⟨t, htI, htu⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l A hv u0`. Establish `heps : eps l t = ((1 + l : ℕ) : Qbar l)`. Simplify using `[eps, cycBar, htu, hu0]`.
+
+Take `⟨m, hm1, hm⟩` from `hW.wt`. Establish `htD : t ∈ D` using `Ine_le_Dec A htI`. Establish `hpow00 : ∀ s ∈ D, ∀ k : ℕ, mat W (s ^ k) 0 0 = mat W s 0 0 ^ k`. Introduce `s hs k`. Proceed by induction on `k with`.
+
+Consider the case `zero => simp [mat]`. Consider the case `succ k ih => rw [pow_succ, h00 _ _ hs, ih, pow_succ]`. Use `⟨t ^ m, D.pow_mem htD m, fun h => ?_⟩` and prove the remaining obligations. Establish `hT : mat W (t ^ m) 0 0 = (((1 + l) ^ (e * m) : ℕ) : Qbar l)`. Rewrite using `[hpow00 t htD, hm t htI, heps]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hT]`. Establish `h1 : (1 + l) ^ (e * m) = 1` using `by exact_mod_cast h`. Establish `hl1 : 1 < 1 + l` using `by have := (Fact.out : l.Prime).two_le; omega`.
+
+Establish `: 1 < (1 + l) ^ (e * m)` using `Nat.one_lt_pow (Nat.mul_ne_zero (by have := hW.e_pos; omega) (by omega)) hl1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_ne_one (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l) (hW : Nf e S A W) :
     ∃ s ∈ Dec (F := ℚ) A, mat W s 0 0 ≠ 1 := by
   set D := Dec (F := ℚ) A with hDdef
@@ -196,6 +266,17 @@ theorem exists_ne_one (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R
     Nat.one_lt_pow (Nat.mul_ne_zero (by have := hW.e_pos; omega) (by omega)) hl1
   omega
 
+/- English proof (translation)
+Introduce `hL l _ Ω _ _ _ e S A W hW c hint hN`. Take `⟨θ, hθc, hθ⟩` from `exists_theta c W hint hW.cont hW.det2 A hW.upper`. Establish `h1 : ∃ g, θ g ≠ 1`. Take `⟨s, hs, hne⟩` from `exists_ne_one e S A W hW`. Use `⟨⟨s, hs⟩, fun h => hne ?_⟩` and prove the remaining obligations.
+
+Use `hθ ⟨s, hs⟩` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this.symm`. Establish `h2 : ∃ g, θ g ≠ (UpperTheory.V.Base.chiO ℚ Ω l c.O).comp (Dec (F` using `ℚ) A).subtype g := by`. Take `⟨s, hs, hne⟩` from `hW.ne`.
+
+Use `⟨⟨s, hs⟩, fun h => hne ?_⟩` and prove the remaining obligations. Use `hθ ⟨s, hs⟩` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this.symm`. Take `⟨C, hC⟩` from `GlobalTheory.LocChar.local_character_h1_bound hL.lf hL.lt hL.le l Ω c A hW.atL θ hθc h1 h2`.
+
+Use `⟨C, fun n hn v hv => ?_⟩` and prove the remaining obligations. Take `⟨hfin, hcard⟩` from `hC n hn`. Establish `hAv : Av A S v = A` using `if_pos hv`. Establish `hLc : Nat.card (Lc c n W hint S hN A v) = Nat.card (ordCond c n W hint S hN (Av A S v))` using `congrArg (fun p : Submodule _ _ => Nat.card p) (if_pos hv : Lc c n W hint S hN A v = ordCond c n W hint S hN (Av A S v))`. Rewrite using `[hLc, hAv, ← card_lev]`.
+
+Conclude with `(card_ordCond_le c n W hint S hN hW.cont A hW.upper θ hθ).trans hcard`.
+-/
 theorem card_ord : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W →
     ∀ (c : Coef l) (hint : ∀ s i j, mat W s i j ∈ c.O) (hN : ∀ a ∈ NS Ω (S : Set Pl), W a = 1),

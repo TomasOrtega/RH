@@ -20,22 +20,34 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SphOpsModel
 
+/- English proof (translation)
+Use `⟨(LinearEquiv.ofInjective e he).symm.toLinearMap ∘ₗ (L ∘ₗ e).codRestrict _ hL, fun x => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val ((LinearEquiv.ofInjective e he).apply_symm_apply ⟨L (e x), hL x⟩)`.
+-/
 theorem exists_lift {H X : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup X] [Module ℂ X] (e : H →ₗ[ℂ] X)
     (he : Function.Injective e) (L : X →ₗ[ℂ] X) (hL : ∀ x, L (e x) ∈ LinearMap.range e) :
     ∃ h : Module.End ℂ H, ∀ x, e (h x) = L (e x) := by
   refine ⟨(LinearEquiv.ofInjective e he).symm.toLinearMap ∘ₗ (L ∘ₗ e).codRestrict _ hL, fun x => ?_⟩
   exact congrArg Subtype.val ((LinearEquiv.ofInjective e he).apply_symm_apply ⟨L (e x), hL x⟩)
 
+/- English proof (translation)
+Simplify using `[dualLab, List.map_reverse, List.map_map]`.
+-/
 theorem dualLab_dualLab (d : List ℤ) : dualLab (dualLab d) = d := by
   simp [dualLab, List.map_reverse, List.map_map]
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+Unfold `GlobalTheory.Hk3.rep`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem sphOp_rep {P : Pl D.host.E} {d : List ℤ} (h : IsLab V P d) : SphOp V P d (GlobalTheory.Hk3.rep V P d) := by
   unfold GlobalTheory.Hk3.rep
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Use extensionality with `v g`. Unfold `GlobalTheory.Hk3.rep`. Rewrite using `[dif_neg h, heckeOn, postOn_apply, heckeLin_apply, Finset.sum_empty]`. Both sides reduce to the same expression.
+-/
 theorem heckeOn_rep_of_not (M : DSModel V S) {P : Pl D.host.E} {d : List ℤ} (h : ¬ IsLab V P d) (U : MMap M) :
     heckeOn M (GlobalTheory.Hk3.rep V P d) U = 0 := by
   ext v g
@@ -43,6 +55,9 @@ theorem heckeOn_rep_of_not (M : DSModel V S) {P : Pl D.host.E} {d : List ℤ} (h
   rw [dif_neg h, heckeOn, postOn_apply, heckeLin_apply, Finset.sum_empty]
   rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.LevOp.postOn_hk, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`.
+-/
 theorem postOn_single (M : DSModel V S) (P : Pl D.host.E) (d : List ℤ) (U : MMap M) :
     postOn M (hk V P (Finsupp.single d 1)) U = heckeOn M (GlobalTheory.Hk3.rep V P d) U := by
   rw [GlobalTheory.LevOp.postOn_hk, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same,
@@ -52,6 +67,9 @@ section Model
 
 variable {M : DSModel V S} {HM : HMod (MMap M)} {P : Pl D.host.E} {h : (List ℤ →₀ ℂ) → Module.End ℂ HM.H}
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => inj ?_` and prove the remaining obligations. Rewrite using `[hh, GlobalTheory.LevOp.postOn_hk, Finsupp.sum, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, hh, postOn_single]`.
+-/
 theorem op_eq_sum (inj : Function.Injective HM.e) (hh : ∀ c x, HM.e (h c x) = postOn M (hk V P c) (HM.e x))
     (c : List ℤ →₀ ℂ) : h c = c.sum fun d z => z • h (Finsupp.single d 1) := by
   refine LinearMap.ext fun x => inj ?_
@@ -59,11 +77,19 @@ theorem op_eq_sum (inj : Function.Injective HM.e) (hh : ∀ c x, HM.e (h c x) = 
   refine Finset.sum_congr rfl fun d _ => ?_
   rw [LinearMap.smul_apply, map_smul, hh, postOn_single]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => inj ?_` and prove the remaining obligations. Rewrite using `[hh, postOn_single, heckeOn_rep_of_not M hd, LinearMap.zero_apply, map_zero]`.
+-/
 theorem op_single_of_not (inj : Function.Injective HM.e) (hh : ∀ c x, HM.e (h c x) = postOn M (hk V P c) (HM.e x))
     {d : List ℤ} (hd : ¬ IsLab V P d) : h (Finsupp.single d 1) = 0 := by
   refine LinearMap.ext fun x => inj ?_
   rw [hh, postOn_single, heckeOn_rep_of_not M hd, LinearMap.zero_apply, map_zero]
 
+/- English proof (translation)
+Rewrite using `[op_eq_sum inj hh, evC, Finsupp.sum, Finsupp.sum, LinearMap.sum_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`. Use `split_ifs with hd`. Rewrite using `[hx d hd, mul_smul]`.
+
+Rewrite using `[op_single_of_not inj hh hd, LinearMap.zero_apply, smul_zero, zero_smul]`.
+-/
 theorem op_eigen (inj : Function.Injective HM.e) (hh : ∀ c x, HM.e (h c x) = postOn M (hk V P c) (HM.e x))
     {a : List ℤ → ℂ} {x : HM.H} (hx : ∀ d, IsLab V P d → h (Finsupp.single d 1) x = a d • x) (c : List ℤ →₀ ℂ) :
     h c x = evC V P a c • x := by
@@ -76,6 +102,25 @@ theorem op_eigen (inj : Function.Injective HM.e) (hh : ∀ c x, HM.e (h c x) = p
 
 end Model
 
+/- English proof (translation)
+Take `⟨inj, hr, hip⟩` from `hM`. Establish `hmem : ∀ x, HM.e x ∈ Mult θ M (J : Set (GA D V)) χ` using `fun x => hr ▸ LinearMap.mem_range_self _ x`. Establish `hex : ∀ P c, ∃ h : Module.End ℂ HM.H, ok P → ∀ x, HM.e (h x) = postOn M (hk V P c) (HM.e x)` using `fun P c => by`. Distinguish the cases in `hP : ok P`. Take `⟨h, hh⟩` from `exists_lift HM.e inj (postOn M (hk V P c)) fun x => hr ▸ hkeep P hP c _ (hmem x)`.
+
+Conclude with `⟨h, fun _ => hh⟩`. Conclude with `⟨0, fun h => absurd h hP⟩`. Use `choose h hh using hex`. Establish `hh' : ∀ P, ok P → ∀ c x, HM.e (h P c x) = postOn M (hk V P c) (HM.e x)` using `fun P hP c => hh P c hP`. Establish `hdual : ∀ P, ok P → ∀ d, IsLab V P d → IsLab V P (dualLab d)` using `fun P hP d ⟨B, hB⟩ => by`.
+
+Take `⟨B', hB', -⟩` from `GlobalTheory.SphericalOps.exists_dual (GlobalTheory.HeckeAdjoint.realUnif D P) ((hfull P hP d B).2 hB)`. Conclude with `⟨B', (hfull P hP _ B').1 hB'⟩`. Use `⟨h, hh', fun P P' hP hP' c c' => ?_, fun P hP c => ?_⟩` and prove the remaining obligations. Rewrite using `[op_eq_sum inj (hh' P hP) c, op_eq_sum inj (hh' P' hP') c']`. Use `Commute.sum_left _ _ _ fun d _ => Commute.sum_right _ _ _ fun d' _ => ?_` and prove the remaining obligations.
+
+Use `Commute.smul_left (Commute.smul_right ?_ _) _` and prove the remaining obligations. Distinguish the cases in `hd : IsLab V P d`. Distinguish the cases in `hd' : IsLab V P' d'`. Use `LinearMap.ext fun x => inj ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hh' P hP, hh' P' hP', hh' P' hP', hh' P hP]`.
+
+Simplify using `only [postOn_single]`. Conclude with `MultilinearMap.ext fun v => GlobalTheory.SphericalOps.comm_heckeLin (GlobalTheory.HeckeAdjoint.realUnif D P) ((hfull P hP d _).2 (sphOp_rep hd)) ((hfull P' hP' d' _).2 (sphOp_rep hd')) (((GlobalTheory.MultMem.mem_mult_iff ..).1 (hmem x)).lev v)`. Rewrite using `[op_single_of_not inj (hh' P' hP') hd']`. Conclude with `Commute.zero_right _`. Rewrite using `[op_single_of_not inj (hh' P hP) hd]`.
+
+Conclude with `Commute.zero_left _`. Establish `key : ∀ d, LinearMap.adjoint (h P (Finsupp.single d 1)) = h P (Finsupp.single (dualLab d) 1)` using `fun d => by`. Distinguish the cases in `hd : IsLab V P d`. Use `symm`. Rewrite using `[LinearMap.eq_adjoint_iff]`.
+
+Introduce `x y`. Rewrite using `[hip, hip, hh' P hP, hh' P hP, postOn_single, postOn_single]`. Use `congrArg (a * ·) (GlobalTheory.T.petersson_adjoint_heckeOperator_eq_dualLabel D V S θ M J χ ∅ μ 𝓕 hθ hμ h𝓕 hS P (dualLab d) _ _ ((hfull P hP _ _).2 (sphOp_rep (hdual P hP d hd))) ?_ _ (hmem x) _ (hmem y) ?_ ?_)` and prove the remaining obligations. Rewrite using `[dualLab_dualLab]`. Conclude with `(hfull P hP _ _).2 (sphOp_rep hd)`.
+
+Rewrite using `[← postOn_single]`. Conclude with `hkeep P hP _ _ (hmem x)`. Rewrite using `[← postOn_single]`. Conclude with `hkeep P hP _ _ (hmem y)`. Establish `hd' : ¬ IsLab V P (dualLab d)` using `fun h' => hd (dualLab_dualLab d ▸ hdual P hP _ h')`.
+
+Rewrite using `[op_single_of_not inj (hh' P hP) hd, op_single_of_not inj (hh' P hP) hd', map_zero]`. Rewrite using `[op_eq_sum inj (hh' P hP) c, op_eq_sum inj (hh' P hP) (dualC _), dualC, Finsupp.sum_mapDomain_index (h := fun d (z : ℂ) => z • h P (Finsupp.single d 1)) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _), Finsupp.sum_mapRange_index (h := fun d (z : ℂ) => z • h P (Finsupp.sing …`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.map_smulₛₗ, key]`. Both sides reduce to the same expression.
+-/
 theorem exists_ops (θ : InfFam D) (M : DSModel V S) (J : Subgroup (GA D V)) (χ : GA D V → ℂ) (μ : Measure (GA D V))
     (𝓕 : Set (GA D V)) (HM : HMod (MMap M)) (a : ℂ) (ok : Pl D.host.E → Prop)
     (hM : HM.Is (Mult θ M (J : Set (GA D V)) χ) fun T T' => a * ipM M μ 𝓕 T T') (hθ : IsInfFam θ) (hμ : μ.IsHaarMeasure)
@@ -136,6 +181,15 @@ theorem exists_ops (θ : InfFam D) (M : DSModel V S) (J : Subgroup (GA D V)) (χ
     rw [LinearEquiv.map_smulₛₗ, key]
     rfl
 
+/- English proof (translation)
+Use `⟨le_antisymm (iSup_le fun c x hx => ⟨x, ((hW c x).1 hx).1⟩) ?_, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, -⟩` from `GlobalTheory.normalFamily_orthogonal_decomposition (fun j : {j : Pl D.host.E × List ℤ // ok j.1} => h j.1.1 (Finsupp.single j.1.2 1)) (fun j k => hN.1 _ _ j.2 k.2 _ _) (fun j => ⟨⟨(j.1.1, dualLab j.1.2), j.2⟩, by`. Rewrite using `[hN.2 _ j.2, dualC, Finsupp.mapRange_single, Finsupp.mapDomain_single, star_one]⟩)`. Rewrite using `[LinearMap.range_eq_map, ← h2, Submodule.map_iSup]`. Use `iSup_le fun y => ?_` and prove the remaining obligations.
+
+Use `le_iSup_of_le (fun P d => if hP : ok P then y ⟨(P, d), hP⟩ else 0) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite `hx` using `[h1, SetLike.mem_coe, Submodule.mem_iInf]`. Use `(hW _ _).2 ⟨LinearMap.congr_fun hp x, fun P d hP _ => ?_⟩` and prove the remaining obligations. Establish `h3` using `Module.End.mem_eigenspace_iff.1 (hx ⟨(P, d), hP⟩)`.
+
+Establish `h4 : h P (Finsupp.single d 1) (p x) = p (h P (Finsupp.single d 1) x)` using `LinearMap.congr_fun (he P hP _).eq x`. Rewrite using `[dif_pos hP, h4, ← map_smul]`. Conclude with `congrArg _ h3`. Introduce and unpack `c g hg hg' _ ⟨x, hx, rfl⟩`. Take `⟨h1, h2⟩` from `(hW c x).1 hx`.
+
+Use `(hW _ _).2 ⟨?_, fun P d hP hd => ?_⟩` and prove the remaining obligations. Establish `h4 : p (g x) = g (p x)` using `LinearMap.congr_fun hg.eq x`. Rewrite using `[h4, h1]`. Establish `h4 : h P (Finsupp.single d 1) (g x) = g (h P (Finsupp.single d 1) x)` using `LinearMap.congr_fun (hg' P hP _).eq x`. Rewrite using `[h4, h2 P d hP hd, map_smul]`.
+-/
 theorem parts_of_projector {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     (ok : Pl D.host.E → Prop) (lab : Pl D.host.E → List ℤ → Prop) (h : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ H)
     (hN : NormalFam ok h) (p : Module.End ℂ H) (hp : p * p = p) (he : ∀ P, ok P → ∀ cc, Commute (h P cc) p)
@@ -167,6 +221,21 @@ theorem parts_of_projector {H : Type} [NormedAddCommGroup H] [InnerProductSpace 
     · have h4 : h P (Finsupp.single d 1) (g x) = g (h P (Finsupp.single d 1) x) := LinearMap.congr_fun (hg' P hP _).eq x
       rw [h4, h2 P d hP hd, map_smul]
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC hS hX SF hSF i`. Take `⟨hQ, hgood, hoff, -⟩` from `GlobalTheory.GoodPrimes.good_primes R F hC.lev`. Take `⟨n, hβ⟩` from `hC.lev.βW i`. Establish `hlev` using `fun (P : Pl D.host.E) (hP : Good R A.μ0 P) => GlobalTheory.LevOp.level_operators (Wc D i) (R.βW i) (R.ΛW i) (1 ^ n) (R.datWp i R.triv) hβ P (by rw [one_pow, Nat.cast_one]; exact (Ideal.ne_top_iff_one _).1 P.isPrime.ne_top) (fun PP hPP => hP PP (hPP.imp id fun h => absurd h (Finse …`. Establish `hM` using `hC.models.HW i (sg0 D A)`.
+
+Establish `inj : Function.Injective (R.HW i (sg0 D A)).e` using `hM.1`. Establish `hmem : ∀ x, (R.HW i (sg0 D A)).e x ∈ R.Wall i (sg0 D A)` using `fun x => hM.2.1 ▸ LinearMap.mem_range_self _ x`. Establish `hlv` using `fun x v => ((GlobalTheory.MultMem.mem_mult_iff ..).1 (hmem x)).lev v`. Take `⟨e1, e2, e3, -⟩` from `GlobalTheory.T.goodProjector_unitaryFormsModel_laws R F hC hX i`. Take `⟨h, hh, hN⟩` from `exists_ops R.θ (R.MW i (sg0 D A)) (levG _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) (R.νW i) (R.fdW i) (R.HW i (sg0 D A)) _ (Good R A.μ0) hM hC.models.inf (hC.models.νW i).1.1 (hC.models.νW i).2 (hS.2.2 i) (fun P hP d B => ((hlev P hP).2.1 ∅ d B).trans ( …`.
+
+Establish `hg : ∀ P, Good R A.μ0 P → ∀ cc g, Commute (h P cc) (R.gW i (sg0 D A) g)` using `fun P hP cc g => by`. Use `LinearMap.ext fun x => inj ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hh P hP, hC.models.gW, hC.models.gW, hh P hP]`. Use `MultilinearMap.ext fun v => ((hlev P hP).2.2.2.1 cc (R.eG g) _ fun k hk y => ?_).symm` and prove the remaining obligations. Rewrite using `[hlv x v k ((hlev P hP).1 k hk).1, ((hlev P hP).1 k hk).2, one_mul]`.
+
+Establish `he : ∀ P, Good R A.μ0 P → ∀ cc, Commute (h P cc) (eH R i)` using `fun P hP cc => Commute.sum_right _ _ _ fun g _ => (hg P hP cc g).smul_right _`. Establish `hW : ∀ (c : Pl D.host.E → List ℤ → ℂ) x, x ∈ Wcc R SF i c ↔ eH R i x = x ∧ ∀ P d, Good R A.μ0 P → IsLab (Wc D i) P d → h P (Finsupp.single d 1) x = c P d • x` using `fun c x => by`. Unfold `Wcc`. Rewrite using `[Submodule.mem_comap, Submodule.mem_inf, e3, mem_partFull]`. Use `and_congr_right fun _ => ⟨fun hx P d hP hd => inj ?_, fun hx => ⟨hmem x, fun P d B hB v => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hh P hP, postOn_single, map_smul]`. Conclude with `MultilinearMap.ext fun v => hx.2 P d _ (((hlev P hP).2.1 SF d _).2 ⟨(hoff SF hSF P).2 hP, sphOp_rep hd⟩) v`. Establish `hP : Good R A.μ0 P`. Take `⟨_, _, _, _, ho, _⟩` from `hB`. Conclude with `(hoff SF hSF P).1 ho`.
+
+Establish `hd : IsLab (Wc D i) P d` using `⟨B, (((hlev P hP).2.1 SF d B).1 hB).2⟩`. Establish `h1` using `congrArg (R.HW i (sg0 D A)).e (hx P d hP hd)`. Rewrite `h1` using `[hh P hP, postOn_single, map_smul]`. Rewrite using `[GlobalTheory.SphericalOps.labelUnique (J := levG _ (R.βW i) (R.datWp i R.triv)) (GlobalTheory.HeckeAdjoint.realUnif D) P d B _ hB (((hlev P hP).2.1 SF d _).2 ⟨(hoff SF hSF P).2 hP, sphOp_rep hd⟩) _ (hlv x v)]`. Conclude with `congrArg (fun U => U v) h1`.
+
+Take `⟨h1, h2⟩` from `parts_of_projector (Good R A.μ0) (IsLab (Wc D i)) h hN (eH R i) e1 he (Wcc R SF i) hW`. Use `⟨h, hh, hN, hg, h1, fun c g => h2 c _ (e2 g) fun P hP cc => hg P hP cc g, ?_, fun c x h1 h2 => (hW c x).2 ⟨h1, h2⟩⟩` and prove the remaining obligations. Introduce `c P hP cc x hx`. Conclude with `op_eigen inj (hh P hP) (fun d hd => ((hW c x).1 hx).2 P d hP hd) cc`.
+-/
 theorem sphericalOperators_forms_on_rank_space_normal_alt : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Core R F → SchurAll R → (∀ χ ∈ A.X, IsAbsIrrChar χ) → ∀ SF, IsSF R SF → ∀ i, ∃ h, IsOpsW R i h ∧ NormalFam (Good R A.μ0) h ∧ (∀ P, Good R A.μ0 P → ∀ cc g, Commute (h P cc) (R.gW i (sg0 D A) g)) ∧ (⨆ c, Wcc R SF i c) = LinearMap.range (eH R i) ∧ (∀ c g, (Wcc R SF i c).map (R.gW i (sg0 D A) g) ≤ Wcc R SF i c) ∧ (∀ c P, Good R A.μ0 P → ∀ cc, ∀ x ∈ Wcc R SF i c, h P cc x = evC (Wc D i) P (c P) cc • x) ∧ ∀ (c : Pl D.host.E → List ℤ → ℂ) x, eH R i x = x → (∀ P d, Good R A.μ0 P → IsLab (Wc D i) P d → h P (Finsupp.single d 1) x = c P d • x) → x ∈ Wcc R SF i c := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC hS hX SF hSF i
   obtain ⟨hQ, hgood, hoff, -⟩ := GlobalTheory.GoodPrimes.good_primes R F hC.lev

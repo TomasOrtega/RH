@@ -28,24 +28,47 @@ namespace GlobalTheory.Ker.Red
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.Theta.mt, map_one]`. Both sides reduce to the same expression.
+-/
 theorem mt_one' (V : HSp D) : mt V 1 = 1 := by rw [Formalism.L2.Theta.mt, map_one]; rfl
 
+/- English proof (translation)
+Rewrite using `[fmt, mt_one']`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem fmt_one (V : HSp D) : fmt V 1 = 1 := by rw [fmt, mt_one']; exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Rewrite using `[fmtC, mt_one', cM, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem fmtC_one (V : HSp D) : fmtC V 1 = 1 := by rw [fmtC, mt_one', cM, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Introduce `v _ ε _ i j`. Simplify using `[mt_one']`.
+-/
 theorem trivAt_one (V : HSp D) (I : Ideal (𝓞 D.host.F)) : TrivAt V I 1 := by
   intro v _ ε _ i j
   simp [mt_one']
 
+/- English proof (translation)
+Introduce `u`. Conclude with `⟨fun h => ⟨u, h, (Matrix.one_mulVec u).symm⟩, by rintro ⟨u₀, h, rfl⟩; rwa [Matrix.one_mulVec]⟩`.
+-/
 theorem isMov_one {k : ℕ} (L : Lt D.host.E k) : IsMov 1 L L := by
   intro u
   exact ⟨fun h => ⟨u, h, (Matrix.one_mulVec u).symm⟩, by rintro ⟨u₀, h, rfl⟩; rwa [Matrix.one_mulVec]⟩
 
+/- English proof (translation)
+Unfold `stdL`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+-/
 theorem stdL_fg (n : ℕ) : (stdL D.host.E n).FG := by
   unfold stdL
   exact Submodule.fg_span (Set.finite_range _)
 
+/- English proof (translation)
+Unfold `GfC infHom at hh`. Unfold `compAt`. Rewrite `hh` using `[MonoidHom.mem_ker]`. Establish `h1 : (Formalism.L2.Theta.mt V h).map (infPart D) = 1`. Use `congrArg Units.val hh` as an intermediate fact.
+
+Conclude with `this`. Establish `h2 : ((Formalism.L2.Theta.mt V h).map fun a => θ τ (infPart D a)) = ((Formalism.L2.Theta.mt V h).map (infPart D)).map (θ τ)`. Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression. Rewrite using `[h2, h1, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem compAt_of_fin (θ : InfFam D) (τ : D.what₂.Tau) (V : HSp D) (h : GA D V) (hh : h ∈ GfC V) :
     compAt θ τ (mt V h) = 1 := by
   unfold GfC infHom at hh
@@ -61,6 +84,9 @@ theorem compAt_of_fin (θ : InfFam D) (τ : D.what₂.Tau) (V : HSp D) (h : GA D
 
 variable {S T : HSp D}
 
+/- English proof (translation)
+Establish `hc : (fun τ => compAt C.θ τ (Formalism.L2.Theta.mt S h)) = fun _ => (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ)`. Use function extensionality and compare the values at `fun τ => compAt_of_fin C.θ τ S h hh`. Rewrite using `[((GlobalTheory.T.weakWeilRep_carries_derivatives_vacua_fockVectors D S T C om hW h g f hf).2 B hB).2 Q, hc]`. Both sides reduce to the same expression.
+-/
 theorem om_fvec (C : Ctx S T) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (hW : IsWeak C.ψ S T om)
     (h : GA D S) (hh : h ∈ GfC S) (g : GA D T) (f : WO S T → ℂ) (hf : C.IsTh f) (B : C.Bas) (hB : C.IsB B)
     (Q : MvPolynomial (FVar D T.rank S.rank) ℂ) :
@@ -70,6 +96,11 @@ theorem om_fvec (C : Ctx S T) (om : GA D S × GA D T →* Module.End ℂ (WO S T
   rw [((GlobalTheory.T.weakWeilRep_carries_derivatives_vacua_fockVectors D S T C om hW h g f hf).2 B hB).2 Q, hc]
   rfl
 
+/- English proof (translation)
+Use `⟨hk, hm, 1, by simp, fun i => ?_⟩` and prove the remaining obligations. Establish `hβ : toAf (Lv.β i) ∈ hatV C.X.Λ` using `((GlobalTheory.T.finiteAdelicLatticeTransport_laws D T.rank C.X.Λ ⟨C.X.Λ_fg, C.X.Λ_span⟩).1 (Lv.β i)).2 (Lv.β_mem i)`. Establish `hsum : (∑ j, (1 : Matrix (Fin T.rank) (Fin T.rank) (𝓞 D.host.E)) j i • Lv.β j) = Lv.β i`. Simplify using `[Matrix.one_apply]`. Rewrite using `[hsum]`.
+
+Conclude with `hc _ hβ`.
+-/
 theorem levK_one (C : Ctx S T) (Lv : SW.Level C.X) (k : GA D T) (hk : k ∈ GfC T)
     (hm : IsMov (fmt T k) C.X.Λ C.X.Λ)
     (hc : ∀ u ∈ hatV C.X.Λ, fmt T k *ᵥ u - u ∈ hatV (Lv.𝔪 • C.X.Λ)) : C.LevK Lv k 1 := by

@@ -11,6 +11,11 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ w _ _ mw _ ψ T h`. Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Rewrite using `[UnitaryRep.inner_integrated, h u v]`. Use `integral_congr_ae ((RightCosetSpace.coeFn_compactSupportToL1 mw ψ).mono fun g hg => ?_)` and prove the remaining obligations. Establish `hr : (((rightRegularRep (rationalGLOne K n) μ).compHom (MultiplicityOne.finProj K n) MultiplicityOne.continuous_finProj).compHom (AdelicGLn.localEmbedding w) (UpperTheory.ConvolutionTheory.Tf.locEmb K n w).1) g = rhoL μ w g`.
+
+Simplify using `only [UnitaryRep.compHom_apply]`. Both sides reduce to the same expression. Simplify using `only [hr]`. Conclude with `congrArg (· * ⟪u, rhoL μ w g v⟫_ℂ) hg`.
+-/
 theorem UpperTheory.integrated_rightRegular_eq_localOperator :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K)
           [MeasurableSpace (Gw n w)] [BorelSpace (Gw n w)] (mw : Measure (Gw n w)) [mw.IsHaarMeasure]

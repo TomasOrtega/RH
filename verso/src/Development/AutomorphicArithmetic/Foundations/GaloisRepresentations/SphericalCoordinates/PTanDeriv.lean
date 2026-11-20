@@ -10,6 +10,29 @@ open GlobalTheory.HodgeCoh GlobalTheory.CechDR
 
 namespace UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `V _ _ Y s' B s v₀ hB hv₀ hs hss y hy W hyW`. Establish `hv₀S : v₀ ∈ {v | v ∈ B ∧ ⊤ ≤ s v ⁻¹ᵁ W}` using `⟨hv₀, by rw [← hy]; exact hyW⟩`. Establish `hnhds : {v | v ∈ B ∧ ⊤ ≤ s v ⁻¹ᵁ W} ∈ 𝓝 v₀` using `(hs W 0).1.mem_nhds hv₀S`. Establish `hval : ∀ v (hv : v ∈ {v | v ∈ B ∧ ⊤ ≤ s v ⁻¹ᵁ W}) (b : Sec s' W), valAt' (s v) W b = CxPts.ev s' (RingHom.id ℂ) W b ⟨s v, hss v hv.1⟩`. Introduce `v hv b`.
+
+Simplify using `only [valAt', CxPts.ev, valR, dif_pos hv.2]`. Both sides reduce to the same expression. Set `g : Sec s' W → V → ℂ` to `fun b v => valAt' (s v) W b`. Establish `hd : ∀ b, DifferentiableAt ℂ (g b) v₀` using `fun b => ((hs W b).2 v₀ hv₀S).differentiableAt ((hs W b).1.mem_nhds hv₀S)`. Establish `hadd : ∀ b c, g (b + c) =ᶠ[𝓝 v₀] g b + g c` using `fun b c => Filter.eventually_of_mem hnhds (fun v hv => by`.
+
+Express the relevant statement in the definitionally equal form `valAt' (s v) W (b + c) = valAt' (s v) W b + valAt' (s v) W c`. Rewrite using `[hval v hv, hval v hv, hval v hv]`. Conclude with `CxPts.ev_add _ _ _)`. Establish `hmul : ∀ b c, g (b * c) =ᶠ[𝓝 v₀] g b * g c` using `fun b c => Filter.eventually_of_mem hnhds (fun v hv => by`. Express the relevant statement in the definitionally equal form `valAt' (s v) W (b * c) = valAt' (s v) W b * valAt' (s v) W c`.
+
+Rewrite using `[hval v hv, hval v hv, hval v hv]`. Conclude with `CxPts.ev_mul _ _ _)`. Establish `hconst : ∀ a : ℂ, ∀ᶠ v in 𝓝 v₀, g (algebraMap ℂ (Sec s' W) a) v = a` using `fun a => Filter.eventually_of_mem hnhds (fun v hv => by`. Express the relevant statement in the definitionally equal form `valAt' (s v) W (algebraMap ℂ (Sec s' W) a) = a`. Rewrite using `[hval v hv]`.
+
+Conclude with `CxPts.ev_algX (show (⟨s v, hss v hv.1⟩ : CxPts s' (RingHom.id ℂ)) ∈ CxPts.ptsIn s' (RingHom.id ℂ) W from hv.2) a)`. Establish `hyeq : (⟨s v₀, hss v₀ hv₀S.1⟩ : CxPts s' (RingHom.id ℂ)) = y` using `Subtype.ext hy.symm`. Establish `hv0 : ∀ b, g b v₀ = CxPts.evHom hyW b` using `fun b => by`. Express the relevant statement in the definitionally equal form `valAt' (s v₀) W b = _`. Rewrite using `[hval v₀ hv₀S b, hyeq]`.
+
+Conclude with `CxPts.ev_eq hyW b`. Establish `hφa : ∀ a : ℂ, CxPts.evHom hyW (algebraMap ℂ (Sec s' W) a) = a` using `fun a => (CxPts.ev_eq hyW _).symm.trans (CxPts.ev_algX hyW a)`. Use `letI : Module (Sec s' W) (V →L[ℂ] ℂ) := Module.compHom _ (CxPts.evHom hyW)`. Use `haveI : IsScalarTower ℂ (Sec s' W) (V →L[ℂ] ℂ) := ⟨fun a b m => by`. Express the relevant statement in the definitionally equal form `(CxPts.evHom hyW (a • b)) • m = a • ((CxPts.evHom hyW b) • m)`.
+
+Establish `h1 : CxPts.evHom hyW (a • b) = a * CxPts.evHom hyW b` using `(congrArg (CxPts.evHom hyW) (Algebra.smul_def a b)).trans ((map_mul (CxPts.evHom hyW) _ _).trans (congrArg (· * CxPts.evHom hyW b) (hφa a)))`. Conclude with `(congrArg (· • m) h1).trans (mul_smul _ _ _)⟩`. Set `L : Sec s' W →ₗ[ℂ] (V →L[ℂ] ℂ)` to `{ toFun := fun b => fderiv ℂ (g b) v₀ map_add' := fun b c => by`. Express the relevant statement in the definitionally equal form `fderiv ℂ (g (b + c)) v₀ = fderiv ℂ (g b) v₀ + fderiv ℂ (g c) v₀`. Rewrite using `[(hadd b c).fderiv_eq, fderiv_add (hd b) (hd c)]`.
+
+Use the proof step `map_smul' := fun a b => by`. Express the relevant statement in the definitionally equal form `fderiv ℂ (g (a • b)) v₀ = a • fderiv ℂ (g b) v₀`. Establish `h' : g (a • b) =ᶠ[𝓝 v₀] fun v => a * g b v`. Rewrite using `[Algebra.smul_def]`. Use `filter_upwards [hmul (algebraMap ℂ _ a) b, hconst a] with v h1 h2`.
+
+Rewrite using `[h1, Pi.mul_apply, h2]`. Rewrite using `[h'.fderiv_eq, fderiv_const_mul (hd b)] }`. Set `D : Derivation ℂ (Sec s' W) (V →L[ℂ] ℂ)` to `Derivation.mk' L (fun b c => by`. Express the relevant statement in the definitionally equal form `fderiv ℂ (g (b * c)) v₀ = (CxPts.evHom hyW b) • fderiv ℂ (g c) v₀ + (CxPts.evHom hyW c) • fderiv ℂ (g b) v₀`. Rewrite using `[(hmul b c).fderiv_eq, fderiv_mul (hd b) (hd c), hv0 b, hv0 c])`.
+
+Use `⟨D.liftKaehlerDifferential.restrictScalars ℂ, fun b ω => ?_, fun b => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `D.liftKaehlerDifferential (b • ω) = _`. Rewrite using `[LinearMap.map_smul]`. Conclude with `congrArg (· • D.liftKaehlerDifferential ω) (CxPts.ev_eq hyW b).symm`. Express the relevant statement in the definitionally equal form `D.liftKaehlerDifferential (KaehlerDifferential.D ℂ _ b) = _`.
+
+Rewrite using `[Derivation.liftKaehlerDifferential_comp_D]`. Both sides reduce to the same expression.
+-/
 theorem tanDeriv_of : TanDeriv := by
   intro V _ _ Y s' B s v₀ hB hv₀ hs hss y hy W hyW
   have hv₀S : v₀ ∈ {v | v ∈ B ∧ ⊤ ≤ s v ⁻¹ᵁ W} := ⟨hv₀, by rw [← hy]; exact hyW⟩

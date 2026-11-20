@@ -24,6 +24,27 @@ attribute [-instance] GlobalTheory.CompHt.fintypePsi
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Plug.TraceRuleSec
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Establish `hx0 : x ≠ 0` using `fun e => hx (e ▸ isIntegral_zero)`. Set `B : Subalgebra A L` to `Algebra.adjoin A {x⁻¹}`. Establish `hyB : x⁻¹ ∈ B` using `Algebra.subset_adjoin rfl`. Set `y : B.toSubring` to `⟨x⁻¹, hyB⟩`.
+
+Establish `hnu : ¬ IsUnit y`. Introduce `hu`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `hwx : (w : L) = x`. Establish `: x⁻¹ * (w : L) = 1` using `congrArg Subtype.val hw`.
+
+Clear denominators, using `at this` for the nonvanishing conditions. Conclude with `this`. Establish `hxB : x ∈ Algebra.adjoin A ({x⁻¹} : Set L)`. Use `w.2` as an intermediate fact. Rewrite `this` using `[hwx]`.
+
+Conclude with `this`. Rewrite `hxB` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, hp⟩` from `hxB`. Apply `hx` to reduce the goal to its premises. Use `letI : Invertible x⁻¹ := invertibleOfNonzero (inv_ne_zero hx0)`.
+
+Establish `e1` using `Polynomial.eval₂_reverse_mul_pow (algebraMap A L) x⁻¹ p`. Establish `e2 : ⅟(x⁻¹) = x` using `by simp`. Rewrite `e1` using `[e2]`. Establish `e3 : Polynomial.eval₂ (algebraMap A L) x⁻¹ p = x`. Use `hp` as an intermediate fact.
+
+Simplify `this` using `[Polynomial.aeval_def]`. Rewrite `e1` using `[e3]`. Establish `hle : p.reverse.natDegree ≤ p.natDegree` using `Polynomial.reverse_natDegree_le p`. Use `⟨Polynomial.X ^ (p.natDegree + 1) - p.reverse, ?_, ?_⟩` and prove the remaining obligations. Apply `Polynomial.monic_X_pow_sub` to reduce the goal to its premises.
+
+Conclude with `lt_of_le_of_lt Polynomial.degree_le_natDegree (by exact_mod_cast Nat.lt_succ_of_le hle)`. Rewrite using `[Polynomial.eval₂_sub, Polynomial.eval₂_pow, Polynomial.eval₂_X, sub_eq_zero]`. Establish `h5 : (x⁻¹) ^ p.natDegree * x ^ p.natDegree = 1`. Rewrite using `[← mul_pow, inv_mul_cancel₀ hx0, one_pow]`. Generalize the expression as in `Polynomial.eval₂ (algebraMap A L) x p.reverse = Q at e1`.
+
+Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ = Q := by rw [h5, mul_one]`. Set `I : Ideal B.toSubring` to `Ideal.span {y}`. Establish `hI : I ≠ ⊤` using `fun e => hnu (Ideal.span_singleton_eq_top.1 e)`.
+
+Take `⟨V, hBV, hIV⟩` from `Ideal.image_subset_nonunits_valuationSubring I hI`. Establish `hAV : A ≤ V.toSubring` using `fun a ha => hBV (by`. Conclude with `B.algebraMap_mem ⟨a, ha⟩)`. Establish `hxV` using `h V hAV`. Establish `hy : x⁻¹ ∈ V.nonunits` using `hIV ⟨y, Ideal.mem_span_singleton_self y, rfl⟩`.
+
+Use `(ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal).1 hy` as an intermediate fact. Take `⟨hyV, hm⟩` from `this`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hm (IsUnit.of_mul_eq_one (⟨x, hxV⟩ : V) (Subtype.ext (by simp [hx0])))`.
+-/
 theorem isIntegral_of_forall_valuationSubring {L : Type} [Field L] (A : Subring L) (x : L)
     (h : ∀ V : ValuationSubring L, A ≤ V.toSubring → x ∈ V) : IsIntegral A x := by
   by_contra hx
@@ -77,6 +98,15 @@ theorem isIntegral_of_forall_valuationSubring {L : Type} [Field L] (A : Subring 
   obtain ⟨hyV, hm⟩ := this
   exact (IsLocalRing.mem_maximalIdeal _).1 hm (IsUnit.of_mul_eq_one (⟨x, hxV⟩ : V) (Subtype.ext (by simp [hx0])))
 
+/- English proof (translation)
+Use `letI := φ.toAlgebra`. Distinguish the cases in `hf : FiniteDimensional K L`. Establish `h1 : IsIntegral (R.map φ) x` using `isIntegral_of_forall_valuationSubring _ x fun V hV => hx V fun a => hV ⟨a, a.2, rfl⟩`. Use `letI : Algebra R L := (φ.comp R.subtype).toAlgebra`. Use `haveI : IsScalarTower R K L := IsScalarTower.of_algebraMap_eq fun a => rfl`.
+
+Establish `h2 : IsIntegral R x`. Take `⟨p, hp, hp0⟩` from `h1`. Set `f : R →+* R.map φ` to `(φ.comp R.subtype).codRestrict (R.map φ) fun a => ⟨a, a.2, rfl⟩`. Establish `hs : Function.Surjective f` using `fun b => by`. Take `⟨a, ha, hab⟩` from `b.2`.
+
+Conclude with `⟨⟨a, ha⟩, Subtype.ext hab⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic ((Polynomial.mem_lifts p).2 (Polynomial.map_surjective f hs p)) hp`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite `hp0` using `[← hq, Polynomial.eval₂_map]`. Conclude with `hp0`.
+
+Conclude with `hR _ (Algebra.isIntegral_trace h2)`. Rewrite using `[Algebra.trace_eq_zero_of_not_exists_basis]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨s, ⟨b⟩⟩`. Conclude with `hf (Module.Basis.finiteDimensional_of_finite b)`.
+-/
 theorem trace_mem {K L : Type} [Field K] [Field L] (R : Subring K) (φ : K →+* L)
     (hR : ∀ a : K, IsIntegral R a → a ∈ R) (x : L)
     (hx : ∀ V : ValuationSubring L, (∀ a : R, φ a ∈ V) → x ∈ V) :
@@ -104,6 +134,13 @@ theorem trace_mem {K L : Type} [Field K] [Field L] (R : Subring K) (φ : K →+*
     · rintro ⟨s, ⟨b⟩⟩
       exact hf (Module.Basis.finiteDimensional_of_finite b)
 
+/- English proof (translation)
+Establish `key : ∀ k, ∃ c : ι k, y ⟨k, c⟩ ≠ 0 ∧ ∀ i, y ⟨k, i⟩ / y ⟨k, c⟩ ∈ V` using `fun k => by`. Take `⟨i₀, hi₀⟩` from `hy k`. Use `haveI : Nonempty (ι k) := ⟨i₀⟩`. Take `⟨c, hc⟩` from `Finite.exists_max fun i => V.valuation (y ⟨k, i⟩)`. Establish `hc0 : y ⟨k, c⟩ ≠ 0` using `fun e => by`.
+
+Use `hc i₀` as an intermediate fact. Rewrite `this` using `[e, map_zero]`. Conclude with `hi₀ ((V.valuation).zero_iff.1 (le_zero_iff.1 this))`. Use `⟨c, hc0, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← V.valuation_le_one_iff, map_div₀]`.
+
+Conclude with `div_le_one_of_le₀ (hc i) zero_le'`. Use `choose cc h1 h2 using key`. Conclude with `⟨cc, h1, h2⟩`.
+-/
 theorem exists_chart {K : Type} {ι : K → Type} [∀ k, Finite (ι k)] {Ω : Type} [Field Ω]
     (y : (Σ k, ι k) → Ω) (V : ValuationSubring Ω) (hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) :
     ∃ cc : (k : K) → ι k, (∀ k, y ⟨k, cc k⟩ ≠ 0) ∧ ∀ k i, y ⟨k, i⟩ / y ⟨k, cc k⟩ ∈ V := by
@@ -128,6 +165,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Plug.TraceRuleSec
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
+/- English proof (translation)
+Set `f : RootIx Dw ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)` to `Equiv.ofBijective _ ((GlobalTheory.CompanionTheory.Ar.Rec.FinRd.labelSig_bijective Dw).comp (GlobalTheory.CompanionTheory.Ar.Rec.FinRd.rootIdx_bijective Dw))`. Rewrite using `[← Fintype.prod_equiv (Equiv.optionCongr f) (fun o => g (Option.map f o)) g (fun _ => rfl), Fintype.prod_option]`. Simplify using `only [Option.map_none, Option.map_some]`. Rewrite using `[h0, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem prod_ix {M : Type} [CommMonoid M] (g : Ix Dw → M) (h0 : g none = 1) :
     ∏ i, g i = ∏ r : RootIx Dw, g (Small.rootFrameIx Dw r) := by
   let f : RootIx Dw ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ) :=
@@ -137,6 +177,11 @@ theorem prod_ix {M : Type} [CommMonoid M] (g : Ix Dw → M) (h0 : g none = 1) :
   rw [h0, one_mul]
   rfl
 
+/- English proof (translation)
+Take `⟨τ, n⟩` from `r`. Distinguish the cases in `h : (n : ℕ) < Dw.p`. Establish `e1 : GlobalTheory.AllWt.exOf Dw u 0 (Small.rootFrameIx Dw (τ, n)) = (GlobalTheory.AllWt.wtOf Dw u 0).1 (τ.1, n)` using `congrArg (fun x : Σ s, Fin (labelRk Dw s) => (GlobalTheory.AllWt.wtOf Dw u 0).1 (Small.labelC x.1, (x.2 : ℕ))) (GlobalTheory.CompanionTheory.Ar.Rec.FinRd.rootIdx_lt Dw (τ := τ) h)`. Rewrite using `[e1, GlobalTheory.AllWt.wtOf_big _ _ τ _ h]`. Simplify using `[HodgeCpt.rootSgn, h]`.
+
+Establish `e1 : GlobalTheory.AllWt.exOf Dw u 0 (Small.rootFrameIx Dw (τ, n)) = (GlobalTheory.AllWt.wtOf Dw u 0).1 (conjEmb τ.1, Dw.p + Dw.q - 1 - n)` using `congrArg (fun x : Σ s, Fin (labelRk Dw s) => (GlobalTheory.AllWt.wtOf Dw u 0).1 (Small.labelC x.1, (x.2 : ℕ))) (GlobalTheory.CompanionTheory.Ar.Rec.FinRd.rootIdx_ge Dw (τ := τ) h)`. Establish `hn` using `n.2`. Rewrite using `[e1, GlobalTheory.AllWt.wtOf_small _ _ τ _ (by omega)]`. Establish `: (⟨Dw.p + (Dw.q - 1 - (Dw.p + Dw.q - 1 - (n : ℕ))), by omega⟩ : Fin (Dw.p + Dw.q)) = n` using `Fin.ext (by show Dw.p + (Dw.q - 1 - (Dw.p + Dw.q - 1 - (n : ℕ))) = n omega)`. Simplify using `[HodgeCpt.rootSgn, h, this]`.
+-/
 theorem exOf_root (u : GlobalTheory.AllWt.Weight Dw) (r : RootIx Dw) :
     GlobalTheory.AllWt.exOf Dw u 0 (Small.rootFrameIx Dw r) = HodgeCpt.rootSgn Dw r * u r.1 r.2 := by
   obtain ⟨τ, n⟩ := r
@@ -157,6 +202,9 @@ theorem exOf_root (u : GlobalTheory.AllWt.Weight Dw) (r : RootIx Dw) :
       omega)
     simp [HodgeCpt.rootSgn, h, this]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add, ih]`.
+-/
 theorem zpow_sum_exp {G I : Type} [CommGroup G] (g : G) (s : Finset I) (f : I → ℤ) :
     g ^ (∑ i ∈ s, f i) = ∏ i ∈ s, g ^ f i := by
   classical
@@ -164,6 +212,17 @@ theorem zpow_sum_exp {G I : Type} [CommGroup G] (g : G) (s : Finset I) (f : I �
   | empty => simp
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add, ih]
 
+/- English proof (translation)
+Establish `h1 : (∏ i, ph i ^ GlobalTheory.AllWt.exOf Dw u 0 i) * (∏ i, tt i ^ GlobalTheory.AllWt.exOf Dw u 0 i)⁻¹ = ∏ i, ((tt⁻¹ * ph) i) ^ GlobalTheory.AllWt.exOf Dw u 0 i`. Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Pi.inv_apply, mul_zpow, inv_zpow]`. Rewrite using `[mul_comm]`.
+
+Establish `h2 : ∏ i, ((tt⁻¹ * ph) i) ^ GlobalTheory.AllWt.exOf Dw u 0 i = ∏ r : RootIx Dw, (v r * ((∏ k, yy k ^ xd r k) * ee r)) ^ u r.1 r.2`. Rewrite using `[prod_ix _ (by rw [hw, zpow_zero])]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[exOf_root, zpow_mul, hd r]`. Establish `h3 : ∏ r : RootIx Dw, (∏ k, yy k ^ xd r k) ^ u r.1 r.2 = ∏ k, yy k ^ (-a k)`.
+
+Simplify using `only [ha, ← Finset.prod_zpow]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib, zpow_sum_exp]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← zpow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_inv, ← mul_assoc, h1, h2]`. Simplify using `only [mul_zpow, Finset.prod_mul_distrib]`.
+
+Rewrite using `[h3]`. Use `group`.
+-/
 theorem unit_calc {G K : Type} [CommGroup G] [Fintype K] (tt ph : Ix Dw → G) (u : GlobalTheory.AllWt.Weight Dw)
     (v ee : RootIx Dw → G) (yy : K → G) (xd : RootIx Dw → K → ℤ) (a : K → ℤ)
     (hw : GlobalTheory.AllWt.exOf Dw u 0 none = 0)
@@ -201,6 +260,49 @@ end GlobalTheory.CompanionTheory.Ar.Plug.TraceRuleSec
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Plug.TraceRuleSec
 
+/- English proof (translation)
+Introduce `hG E _ _ _ H Dw l Xo c r U h e hC Y _ T o B b Fr C Rd hg u s hs`. Use `letI := Small.cstAlg (o.toTowerOrigin.Or B b)`. Take `⟨φ, P, t, hφ, hP, hbor, ht⟩` from `GlobalTheory.CompanionTheory.Ar.Plug.RdGeo.frame_of_geoRead hG E H Dw l Xo c r U h e hC Y T o B b Fr C.Z Rd hg`. Take `⟨hL, -, -, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Establish `hGr` using `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (T.M B b).Ω`.
+
+Take `⟨z, hz⟩` from `hL.bc _ _ φ C.yg`. Establish `hψ : FrMap (φ.comp C.R.val) C.y z` using `frMap_trans _ _ _ C.R.val φ C.y C.yg z C.gen hz`. Establish `hb` using `frBorBC _ _ φ C.t (genFr h C.Z) C.yg P z C.bor hP hz`. Establish `hd` using `hGr.2.1 _ _ _ _ _ (hGr.2.2.1 _ _ _ hbor) hb`. Use `set a0 : Om C.Z := ((∏ i, C.t i ^ GlobalTheory.AllWt.exOf Dw u 0 i : (Om C.Z)ˣ) : Om C.Z) with ha0`.
+
+Establish `htr : a0 * trOf Rd u s = (letI` using `Rd.φ.toAlgebra; Algebra.trace (Om C.Z) (T.M B b).Ω (Rd.φ a0 * (s / gauge Rd u))) := by`. Use `letI := Rd.φ.toAlgebra`. Establish `: Rd.φ a0 * (s / gauge Rd u) = a0 • (s / gauge Rd u)`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, map_smul, smul_eq_mul]`. Both sides reduce to the same expression. Establish `hR : ∀ a : Om C.Z, IsIntegral C.R.toSubring a → a ∈ C.R.toSubring` using `fun a ha => by haveI := C.sm haveI : IsIntegrallyClosed C.R := isIntegrallyClosed_of_smooth c.F C.R haveI : IsFractionRing C.R (Om C.Z) := IsFractionRing.of_field _ _ fun x => by`. Take `⟨p, hp, q, hq, hq0, e'⟩` from `C.frac x`. Conclude with `⟨⟨p, hp⟩, ⟨q, hq⟩, by show x = p / q`.
+
+Rewrite using `[eq_div_iff hq0, e']⟩`. Establish `ha' : IsIntegral C.R a` using `ha`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 ha'`. Conclude with `y.2`. Establish `hx : ∀ V : ValuationSubring (T.M B b).Ω, (∀ a : C.R.toSubring, Rd.φ a ∈ V) → Rd.φ a0 * (s / gauge Rd u) ∈ V`.
+
+Introduce `V hV`. Establish `hy : ∀ k, ∃ i, (T.M B b).y ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨c', hc'⟩` from `(o.toTowerOrigin.Or B b).𝔐.tie.cover ⟨GlobalTheory.CompanionTheory.Ar.genPt (o.toTowerOrigin.Or B b).𝔐.ξ, specializes_rfl⟩`. Conclude with `⟨c' k, (Finset.prod_ne_zero_iff.1 hc'.1) k (Finset.mem_univ k)⟩`. Take `⟨cc, h1, h2⟩` from `exists_chart (T.M B b).y V hy`.
+
+Establish `hVψ : ∀ x, (φ.comp C.R.val) x ∈ V` using `fun x => by`. Use `hV x` as an intermediate fact. Rewrite `this` using `[← hφ]`. Conclude with `this`. Use `choose v hv using GlobalTheory.T.root_origin_generic_frame_relay E H Dw l Xo c Y (o.S B) (T.M B b) (o.Sys b) (o.Fx b) (o.toTowerOrigin.Or B b) Fr h C V (φ.comp C.R.val) z _ hψ hd hVψ cc h1 h2`.
+
+Set `yy : (T.M B b).K → ((T.M B b).Ω)ˣ` to `fun k => Units.mk0 _ (h1 k)`. Set `ee : RootIx Dw → ((T.M B b).Ω)ˣ` to `fun r => Units.mk0 _ ((o.toTowerOrigin.Or B b).lines r).1`. Set `ph : Ix Dw → ((T.M B b).Ω)ˣ` to `fun i => Units.map (φ : Om C.Z →* (T.M B b).Ω) (C.t i)`. Set `vv : RootIx Dw → ((T.M B b).Ω)ˣ` to `fun r => Units.map (V.subtype : V →* (T.M B b).Ω) (v r)`. Establish `hw0 : GlobalTheory.AllWt.exOf Dw u 0 none = 0` using `by show (2 : ℤ) * 0 = 0`.
+
+Simplify using the standard rewrite rules. Establish `hdeg : ∀ k, degOf (T.M B b) u k = ∑ r : RootIx Dw, - u r.1 r.2 * (T.M B b).xdeg r k` using `fun k => by show (∑ j, nOf u j • ((T.M B b).line 1 j).a) k = _`. Rewrite using `[Fintype.sum_option]`. Simplify using `only [nOf, zero_smul, zero_add, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+
+Use `show _ * ((T.M B b).x 1 r).a k = _`. Rewrite using `[(T.M B b).x_deg]`. Establish `hcalc` using `unit_calc t ph u vv ee yy (T.M B b).xdeg (degOf (T.M B b) u) hw0 (fun r => Units.ext (by`. Use `hv r` as an intermediate fact. Simplify `this)) hdeg` using `[yy, ee, vv, ph]`.
+
+Establish `hs'` using `hs cc h1`. Establish `e1 : Rd.φ a0 = ((∏ i, ph i ^ GlobalTheory.AllWt.exOf Dw u 0 i : ((T.M B b).Ω)ˣ) : (T.M B b).Ω)`. Rewrite using `[← hφ, ha0]`. Establish `: (∏ i, ph i ^ GlobalTheory.AllWt.exOf Dw u 0 i) = Units.map (φ : Om C.Z →* (T.M B b).Ω) (∏ i, C.t i ^ GlobalTheory.AllWt.exOf Dw u 0 i)`. Simplify using `only [map_prod, map_zpow, ph]`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Establish `e2 : gauge Rd u = (((∏ i, t i ^ GlobalTheory.AllWt.exOf Dw u 0 i) * ∏ r : RootIx Dw, ee r ^ u r.1 r.2 : ((T.M B b).Ω)ˣ) : (T.M B b).Ω)`. Establish `e3 : (∏ i, Rd.t i ^ Rec.exZ Dw (GlobalTheory.AllWt.wtOf Dw u 0).1 i : ((T.M B b).Ω)ˣ) = ∏ i, t i ^ GlobalTheory.AllWt.exOf Dw u 0 i`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Break down `i with _ | x` into its components or cases. Rewrite using `[hw0] show _ ^ (0 : ℤ) = _`. Simplify using the standard rewrite rules. Rewrite using `[ht _ (by simp)]`. Both sides reduce to the same expression.
+
+Establish `e3b : (∏ r : RootIx Dw, (o.toTowerOrigin.Or B b).e r ^ (-nOf u (some r))) = ((∏ r : RootIx Dw, ee r ^ u r.1 r.2 : ((T.M B b).Ω)ˣ) : (T.M B b).Ω)`. Rewrite using `[Units.coe_prod]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `[nOf, ee]`. Rewrite using `[gauge, e3, e3b, Units.val_mul]`.
+
+Establish `e4 : Rd.φ a0 * (s / gauge Rd u) = ((∏ r : RootIx Dw, vv r ^ u r.1 r.2 : ((T.M B b).Ω)ˣ) : (T.M B b).Ω) * (s * ∏ k, (T.M B b).y ⟨k, cc k⟩ ^ (-(((1 : ℕ) : ℤ) * degOf (T.M B b) u k)))`. Establish `e5` using `congrArg (Units.val) hcalc`. Rewrite `e5` using `[Units.val_mul, Units.val_mul]`. Establish `e6 : ((∏ k, yy k ^ (-degOf (T.M B b) u k) : ((T.M B b).Ω)ˣ) : (T.M B b).Ω) = ∏ k, (T.M B b).y ⟨k, cc k⟩ ^ (-(((1 : ℕ) : ℤ) * degOf (T.M B b) u k))`. Rewrite using `[Units.coe_prod]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[yy]`. Rewrite `e5` using `[e6]`. Rewrite using `[e1, e2, div_eq_mul_inv, ← Units.val_inv_eq_inv_val]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e4]`. Establish `hinc : ∀ x ∈ chartRingZ (T.M B b).y cc, x ∈ V` using `fun x hx => by`. Establish `hle : chartRingZ (T.M B b).y cc ≤ subalgebraOfSubring V.toSubring` using `Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `h2 p.1 p.2)`.
+
+Conclude with `hle hx`. Establish `hσ : s * ∏ k, (T.M B b).y ⟨k, cc k⟩ ^ (-(((1 : ℕ) : ℤ) * degOf (T.M B b) u k)) ∈ V`. Establish `hi : IsIntegral V (s * ∏ k, (T.M B b).y ⟨k, cc k⟩ ^ (-(((1 : ℕ) : ℤ) * degOf (T.M B b) u k)))`. Take `⟨p, hp, hp0⟩` from `hs'`. Set `f : chartRingZ (T.M B b).y cc →+* V` to `{ toFun := fun x => ⟨x, hinc x x.2⟩, map_one' := rfl, map_zero' := rfl, map_add' := fun _ _ => rfl, map_mul' := fun _ _ => rfl }`.
+
+Use `⟨p.map f, hp.map f, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hp0`. Take `⟨y', hy'⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Rewrite using `[← hy']`.
+
+Conclude with `y'.2`. Use `mul_mem ?_ hσ` and prove the remaining obligations. Establish `: (∏ r : RootIx Dw, vv r ^ u r.1 r.2) = Units.map (V.subtype : V →* (T.M B b).Ω) (∏ r : RootIx Dw, v r ^ u r.1 r.2)`. Simplify using `only [map_prod, map_zpow, vv]`. Rewrite using `[this]`.
+
+Conclude with `((∏ r : RootIx Dw, v r ^ u r.1 r.2 : Vˣ) : V).2`. Rewrite using `[htr]`. Conclude with `trace_mem C.R.toSubring Rd.φ hR _ hx`.
+-/
 theorem chart_reg : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : Top.GoodOrigin Y T) (B : ℕ) (b : T.Comp) (Fr : Small.GenFrame (o.toTowerOrigin.Or B b)) (C : GlobalTheory.Reg.FChart h) (Rd : Reading Fr h C.Z) (_ : GeoRead Rd) (u : GlobalTheory.AllWt.Weight Dw), ∀ s ∈ chartLatNm (T.M B b).y (degOf (T.M B b) u) 1, ((∏ i, C.t i ^ GlobalTheory.AllWt.exOf Dw u 0 i : (Om C.Z)ˣ) : Om C.Z) * trOf Rd u s ∈ C.R := by
   intro hG E _ _ _ H Dw l Xo c r U h e hC Y _ T o B b Fr C Rd hg u s hs
   letI := Small.cstAlg (o.toTowerOrigin.Or B b)
@@ -326,6 +428,15 @@ end GlobalTheory.CompanionTheory.Ar.Plug.TraceRuleSec
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
+/- English proof (translation)
+Introduce `hG E _ _ _ H Dw l Xo c r U h e hC Y _ T o B b Fr Z Rd hgeo u s hs`. Take `⟨hL, -, -, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Set `bb : ∀ Z' : Comp Xo c, Om Z'` to `fun Z' => if hZ : Z' = Z then hZ ▸ trOf Rd u s else 0`. Establish `hbb : bb Z = trOf Rd u s` using `dif_pos rfl`. Take `⟨g, hg, hgv⟩` from `GlobalTheory.SecGlueInt.exists_secZ_of_regular E H Dw l Xo c h (GlobalTheory.AllWt.exOf Dw u 0) bb (fun C => by`.
+
+Distinguish the cases in `hZ : C.Z = Z`. Substitute `hZ` using the available equality. Rewrite using `[hbb]`. Conclude with `TraceRuleSec.chart_reg hG E H Dw l Xo c r U h e hC Y T o B b Fr C Rd hgeo u s hs`. Establish `: bb C.Z = 0` using `dif_neg hZ`.
+
+Rewrite using `[this, mul_zero]`. Conclude with `zero_mem _)`. Establish `hm` using `GlobalTheory.FlatLine.idem_mul_mem Z hg`. Use `⟨GlobalTheory.FlatLine.idem Z * g, hm.1, hm.2, ?_⟩` and prove the remaining obligations. Establish `h3 : evC h Z (GlobalTheory.FlatLine.idem Z) = 1` using `GlobalTheory.FlatLine.evR_idem (GlobalTheory.AllWt.liesOn_genFr h Z) (hL.test _ _)`.
+
+Use `show evR Xo c (GlobalTheory.FlatLine.idem Z * g) (genFr h Z) = _`. Establish `h4 : evR Xo c (GlobalTheory.FlatLine.idem Z * g) (genFr h Z) = evC h Z (GlobalTheory.FlatLine.idem Z) * evC h Z g` using `Formalism.L2.Pj.evalAt_mul _ _ _ _ _`. Rewrite using `[h4, h3, one_mul, hgv Z, hbb]`.
+-/
 theorem exists_section_of_trace : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : Top.GoodOrigin Y T) (B : ℕ) (b : T.Comp) (Fr : Small.GenFrame (o.toTowerOrigin.Or B b)) (Z : Comp Xo c) (Rd : Reading Fr h Z) (_ : GeoRead Rd) (u : GlobalTheory.AllWt.Weight Dw), ∀ s ∈ chartLatNm (T.M B b).y (degOf (T.M B b) u) 1, ∃ f ∈ GlobalTheory.AllWt.secZ Xo c (GlobalTheory.AllWt.exOf Dw u 0), f ∈ GlobalTheory.AllWt.suppOn Z ∧ evC h Z f = trOf Rd u s := by
   intro hG E _ _ _ H Dw l Xo c r U h e hC Y _ T o B b Fr Z Rd hgeo u s hs
   classical
@@ -348,6 +459,9 @@ theorem exists_section_of_trace : Top.Given → ∀ (E : Type) [Field E] [Number
     Formalism.L2.Pj.evalAt_mul _ _ _ _ _
   rw [h4, h3, one_mul, hgv Z, hbb]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.Ar.Plug.exists_section_of_trace`.
+-/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.comp_laws_tower_bound : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : Top.GoodOrigin Y T) (B : ℕ) (b : T.Comp) (Fr : Small.GenFrame (o.toTowerOrigin.Or B b)) (Z : Comp Xo c) (Rd : Reading Fr h Z) (_ : GeoRead Rd) (u : GlobalTheory.AllWt.Weight Dw), ∀ s ∈ chartLatNm (T.M B b).y (degOf (T.M B b) u) 1, ∃ f ∈ GlobalTheory.AllWt.secZ Xo c (GlobalTheory.AllWt.exOf Dw u 0), f ∈ GlobalTheory.AllWt.suppOn Z ∧ evC h Z f = trOf Rd u s :=
   GlobalTheory.CompanionTheory.Ar.Plug.exists_section_of_trace
 

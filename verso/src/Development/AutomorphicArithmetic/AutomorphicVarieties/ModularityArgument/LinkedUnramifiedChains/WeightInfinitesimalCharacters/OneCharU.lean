@@ -9,6 +9,23 @@ open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTh
 
 attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
 
+/- English proof (translation)
+Take `⟨D⟩` from `exists_dat hG`. Take `⟨g₁, hM, hFin, hB, hW⟩` from `hA Ω K l c N e ψ D he ι`. Take `⟨U⟩` from `exists_uLoc hC D`. Take `⟨S⟩` from `exists_ring hC D U g₁ hM`. Take `⟨M⟩` from `exists_model hC hLP D hM S`.
+
+Establish `hmult : ∀ f : S.R →ₐ[c.O] PadicAlgCl l, HasMult D.η (push f S.r.hom)` using `fun f g => S.r.hasMult g`. Set `ρ : (S.R →ₐ[c.O] PadicAlgCl l) → (G K Ω →* GL (Fin 3) (Qbar l))` to `fun f => D.rhoK (push f S.r.hom) (hmult f)`. Establish `hσ : D.η (galEmb ℚ K Ω σ) = 1`. Rewrite using `[← MonoidHom.mem_ker, D.η_ker]`. Conclude with `galEmb_mem ℚ K Ω σ`.
+
+Establish `htr : ∀ f, trDiff D.η D.Ψ S.r.hom (galEmb ℚ K Ω σ) f = (ρ f σ : Matrix (Fin 3) (Fin 3) (Qbar l)).trace - t`. Introduce `f`. Rewrite using `[trDiff, trace_reducible_three_dim, ht]`. Use `congr 1`. Conclude with `AddMonoidHom.map_trace (f : S.R →+* PadicAlgCl l) _`.
+
+Establish `hadm : ∀ f, TwoPt D.η S.r.hom f → Adm3U ι e N (ρ f) ∨ Af.Adm2 ι e (N * (discr K).natAbs) (ρ f)`. Introduce `f hf`. Establish `hp` using `isPt_push D hM S f hf.1`. Break down `(twoPt_shape S hG.l_odd hM f hf).1 with h | h` into its components or cases. Conclude with `Or.inl (hAd D hM S f hf.1 (hmult f) ι h (hB U S _ _ _ (isPush_push f _) h))`.
+
+Conclude with `Or.inr (admissible_of_typeII hC D hM hp ι h (hW U S _ _ (isPush_push f _) h (typeII_facts hC D hM hp h).1))`. Take `⟨hlen, T, hT, hTo, hle⟩` from `model_upper S M hG.l_odd hM hLM (hFin U S) (Z.J.ptHyp_ofU hC hK hRI hRII D hM S ι hB hW M.x₀ M.base) (galEmb ℚ K Ω σ) hσ fun f hf => by rw [htr]; exact sub_ne_zero.2 (hne _ (hadm f hf))`. Establish `hV` using `vlen_le hC hLM' D hM S M`. Establish `hinj : ∀ f ∈ T, ∀ f' ∈ T, Af.RepIso (ρ f) (ρ f') → f = f'`. Introduce and unpack `f hf f' hf' ⟨g, hg⟩`.
+
+Take `⟨s, hs⟩` from `(twoPt_shape S hG.l_odd hM f (hT.1 f hf)).2 f' (hT.1 f' hf').1 ⟨g, fun x hx => by`. Rewrite `hx` using `[D.η_ker, ← range_galEmb]`. Take `⟨y, rfl⟩` from `hx`. Conclude with `(congrArg Units.val (eq_mul_inv_iff_mul_eq.1 (hg y))).symm⟩`. Conclude with `hTo f hf f' hf' s hs`.
+
+Use `⟨ne_top_of_le_ne_top hlen hV, T.image ρ, fun x hx => ?_, fun x hx x' hx' h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hadm f (hT.1 f hf)`. Take `⟨f, hf, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨f', hf', rfl⟩` from `Finset.mem_image.1 hx'`.
+
+Rewrite using `[hinj f hf f' hf' h]`. Rewrite using `[Finset.sum_image fun f hf f' hf' h => hinj f hf f' hf' ⟨1, fun s => by rw [h, one_mul, inv_one, mul_one]⟩]`. Simplify using `only [← htr]`. Conclude with `(Chr.nrm_mono l hV hlen).trans hle`.
+-/
 private theorem oneChar_unramU (hC : U3.CohInp) (hLM : LemmaM) (hLM' : LemmaM') (hLP : LemmaP) (hK : Z.Kato.KatoTwo)
     (hRI : Th.RigI) (hRII : Th.RigII) (hAd : AdmI) (hA : Aut.AutomorphyUnramifiedCoefficients)
     (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra K Ω]
@@ -66,6 +83,15 @@ private theorem oneChar_unramU (hC : U3.CohInp) (hLM : LemmaM) (hLM' : LemmaM') 
     simp only [← htr]
     exact (Chr.nrm_mono l hV hlen).trans hle
 
+/- English proof (translation)
+Introduce `hC hLM hLM' hLP hK hRI hRII hAd hA Ω _ _ _ K _ _ _ _ _ l _ c N _ e ψ hG ι σ t ht hne`. Take `⟨c', ψ', he, hψ⟩` from `exists_unram c ψ hG.ord`. Establish `h1 : chHom c.O.val.toRingHom ψ = chHom c'.O.val.toRingHom ψ'` using `MulChar.ext fun a => hψ a`. Establish `hG' : GD Ω K l e ψ'` using `(gd_chHom c'.O.val.toRingHom Subtype.val_injective ψ').1 (h1 ▸ (gd_chHom c.O.val.toRingHom Subtype.val_injective ψ).2 hG)`. Take `⟨h2, h3⟩` from `coefIndep Ω l c c' N e ψ ψ' hψ`.
+
+Establish `h4 : ∀ g, Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (Chr.Psi l e (Chr.dirG ℚ Ω ψ) g) = Units.map (algebraMap c'.O (PadicAlgCl l)).toMonoidHom (Chr.Psi l e (Chr.dirG ℚ Ω ψ') g)`. Introduce `g`. Simplify using `only [Chr.Psi, MonoidHom.mul_apply, MonoidHom.zpow_apply, map_mul, map_zpow]`. Use `congr 1`. Conclude with `Units.ext (hψ _)`.
+
+Establish `h5` using `congrArg Units.val (h4 (galEmb ℚ K Ω σ))`. Establish `h6` using `congrArg (fun u : (PadicAlgCl l)ˣ => (u⁻¹).val) (h4 (galEmb ℚ K Ω σ))`. Rewrite using `[Ne, h2, h3]`. Use `oneChar_unramU hC hLM hLM' hLP hK hRI hRII hAd hA Ω K l c' N e ψ' he hG' ι σ t ?_ hne` and prove the remaining obligations. Rewrite using `[ht, map_add, map_add, map_add, map_add, map_one, map_one]`.
+
+Conclude with `congrArg₂ (· + ·) (congrArg (· + 1) h5) h6`.
+-/
 theorem UpperTheory.V.Z.J.oneCharU :
     U3.CohInp → LemmaM → LemmaM' → LemmaP → Z.Kato.KatoTwo → Th.RigI → Th.RigII → AdmI → Aut.AutomorphyUnramifiedCoefficients → OneCharU := by
   intro hC hLM hLM' hLP hK hRI hRII hAd hA Ω _ _ _ K _ _ _ _ _ l _ c N _ e ψ hG ι σ t ht hne

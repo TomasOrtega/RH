@@ -16,16 +16,25 @@ section Series
 
 variable {S : Type} [CommRing S] [Algebra ℚ S] {d : ℕ}
 
+/- English proof (translation)
+Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]`.
+-/
 private lemma cc_pt_lemma {n : ℕ} (j : Fin n) (i : Fin d) :
     MvPowerSeries.constantCoeff (pt S d j i) = 0 := by
   simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `show ReciprocityTheory.ChartRestriction.G.TB.LogPf.prim _ 0 = 0`. Simplify using `[ReciprocityTheory.ChartRestriction.G.TB.LogPf.prim]`.
+-/
 private lemma cc_logOf_lemma_2 (G : FGLaw S d) (i : Fin d) :
     MvPowerSeries.constantCoeff (ReciprocityTheory.ChartRestriction.G.TB.LogPf.logOf G i) = 0 := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
   show ReciprocityTheory.ChartRestriction.G.TB.LogPf.prim _ 0 = 0
   simp [ReciprocityTheory.ChartRestriction.G.TB.LogPf.prim]
 
+/- English proof (translation)
+Rewrite using `[ev_ev _ _ (fun j' i => by fin_cases j'; exact cc_pt_lemma j i) hb]`. Use `congr 1`. Use function extensionality and compare the values at `j' i`. Use `fin_cases j'`. Conclude with `ev_X b hb j i`.
+-/
 private lemma germEval_oneStandardPoint_self_lemma_3 {n : ℕ} (b : Fin 2 → Pt S n d)
     (hb : ∀ j i, MvPowerSeries.constantCoeff (b j i) = 0) (j : Fin 2) (f : PS S 1 d) :
     ev b (ev (n := 2) ![pt S d j] f) = ev ![b j] f := by
@@ -35,31 +44,51 @@ private lemma germEval_oneStandardPoint_self_lemma_3 {n : ℕ} (b : Fin 2 → Pt
   fin_cases j'
   exact ev_X b hb j i
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coe_substAlgHom]`. Both sides reduce to the same expression.
+-/
 private lemma ev_hom_lemma_4 {m n : ℕ} (a : Fin m → Pt S n d)
     (ha : ∀ j i, MvPowerSeries.constantCoeff (a j i) = 0) (f : PS S m d) :
     ev a f = MvPowerSeries.substAlgHom (hasSubst_pts a ha) f := by
   rw [MvPowerSeries.coe_substAlgHom]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ev_hom_lemma_4 a ha, ev_hom_lemma_4 a ha, map_neg]`.
+-/
 private lemma ev_neg_lemma_5 {m n : ℕ} (a : Fin m → Pt S n d)
     (ha : ∀ j i, MvPowerSeries.constantCoeff (a j i) = 0) (f : PS S m d) :
     ev a (-f) = -ev a f := by
   rw [ev_hom_lemma_4 a ha, ev_hom_lemma_4 a ha, map_neg]
 
+/- English proof (translation)
+The claim follows from `subst_exp (fun p : Fin m × Fin d => a p.1 p.2) (fun s => ha s.1 s.2) hf`.
+-/
 private lemma eval_expSeries {m n : ℕ} (a : Fin m → Pt S n d)
     (ha : ∀ j i, MvPowerSeries.constantCoeff (a j i) = 0) (f : PS S m d)
     (hf : MvPowerSeries.constantCoeff f = 0) : ev a (expP f) = expP (ev a f) :=
   subst_exp (fun p : Fin m × Fin d => a p.1 p.2) (fun s => ha s.1 s.2) hf
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.cc_ev (a := ![pt S d j]) (fun j' i' => by fin_cases j'; exact cc_pt_lemma j i') (cc_logOf_lemma_2 G i)`.
+-/
 private lemma cc_lg_lemma_7 {n : ℕ} (G : FGLaw S d) (j : Fin n) (i : Fin d) :
     MvPowerSeries.constantCoeff (Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrFix.lg G j i) = 0 :=
   ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.cc_ev (a := ![pt S d j])
     (fun j' i' => by fin_cases j'; exact cc_pt_lemma j i') (cc_logOf_lemma_2 G i)
 
+/- English proof (translation)
+Simplify using `[Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrFix.bilL, MvPowerSeries.smul_eq_C_mul, cc_lg_lemma_7]`.
+-/
 private lemma cc_bilL_lemma_8 (G : FGLaw S d) (c : Fin d → Fin d → S) :
     MvPowerSeries.constantCoeff (bilL G c) = 0 := by
   simp [Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrFix.bilL, MvPowerSeries.smul_eq_C_mul, cc_lg_lemma_7]
 
+/- English proof (translation)
+Establish `key : ∀ f, ev ![x, y] f = MvPowerSeries.substAlgHom (hasSubst_pts _ ha) f` using `fun f => ev_hom_lemma_4 _ ha f`. Establish `hl : ∀ (j : Fin 2) i, ev ![x, y] (Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrFix.lg G j i) = ev ![(![x, y] : Fin 2 → Pt S n d) j] (ReciprocityTheory.ChartRestriction.G.TB.LogPf.logOf G i)` using `fun j i => germEval_oneStandardPoint_self_lemma_3 _ ha j _`. Rewrite using `[key]`. Unfold `Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrFix.bilL`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_mul, ← key, ← key, hl, hl]`. Apply the tactic sequence `all_goals rfl`.
+-/
 private lemma ev_bilL_lemma_9 {n : ℕ} (G : FGLaw S d) (c : Fin d → Fin d → S) (x y : Pt S n d)
     (ha : ∀ j i, MvPowerSeries.constantCoeff ((![x, y] : Fin 2 → Pt S n d) j i) = 0) :
     ev ![x, y] (bilL G c) = ∑ i, ∑ l, c i l •
@@ -78,6 +107,15 @@ private lemma ev_bilL_lemma_9 {n : ℕ} (G : FGLaw S d) (c : Fin d → Fin d →
   rw [map_smul, map_mul, ← key, ← key, hl, hl]
   all_goals rfl
 
+/- English proof (translation)
+Establish `hb : ∀ j i, MvPowerSeries.constantCoeff ((![pt S d 0, pt S d 1] : Fin 2 → Pt S 3 d) j i) = 0`. Introduce `j i`. Use `fin_cases j`. Conclude with `cc_pt_lemma _ i`. Conclude with `cc_pt_lemma _ i`.
+
+Establish `hF : ∀ j i, MvPowerSeries.constantCoeff ((![G.F] : Fin 1 → Pt S 2 d) j i) = 0`. Introduce `j i`. Use `fin_cases j`. Conclude with `G.const i`. Establish `e1 : ev (n` using `3) ![G.add (pt S d 0) (pt S d 1)] (LogPf.logOf G l) = ev ![pt S d 0, pt S d 1] (ev (n := 2) ![G.F] (LogPf.logOf G l)) := by`.
+
+Rewrite using `[ev_ev _ _ hF hb]`. Use `congr 1`. Use function extensionality and compare the values at `j i`. Use `fin_cases j`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, ReciprocityTheory.ChartRestriction.G.TB.LogPf.logOf_add (G := G), ev_hom_lemma_4 _ hb, map_add, ← ev_hom_lemma_4 _ hb, ← ev_hom_lemma_4 _ hb, germEval_oneStandardPoint_self_lemma_3 _ hb, germEval_oneStandardPoint_self_lemma_3 _ hb]`. Apply the tactic sequence `all_goals rfl`.
+-/
 theorem formal_log_add_first_two (G : FGLaw S d) (l : Fin d) :
     ev (n := 3) ![G.add (pt S d 0) (pt S d 1)] (LogPf.logOf G l) =
       ev (n := 3) ![pt S d 0] (LogPf.logOf G l) + ev (n := 3) ![pt S d 1] (LogPf.logOf G l) := by
@@ -101,11 +139,27 @@ theorem formal_log_add_first_two (G : FGLaw S d) (l : Fin d) :
     ← ev_hom_lemma_4 _ hb, ← ev_hom_lemma_4 _ hb, germEval_oneStandardPoint_self_lemma_3 _ hb, germEval_oneStandardPoint_self_lemma_3 _ hb]
   all_goals rfl
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.cc_ev (a := ![pt S d 0, pt S d 1]) (f := G.F i) (fun j i' => by fin_cases j <;> exact cc_pt_lemma _ i') (G.const i)`.
+-/
 theorem constantCoeff_add_first_second (G : FGLaw S d) (i : Fin d) :
     MvPowerSeries.constantCoeff (G.add (pt S (n := 3) d 0) (pt S d 1) i) = 0 :=
   ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.cc_ev (a := ![pt S d 0, pt S d 1]) (f := G.F i)
     (fun j i' => by fin_cases j <;> exact cc_pt_lemma _ i') (G.const i)
 
+/- English proof (translation)
+Establish `ha : ∀ j i, MvPowerSeries.constantCoeff ((![G.add (pt S d 0) (pt S d 1), pt S d 2] : Fin 2 → Pt S 3 d) j i) = 0`. Introduce `j i`. Use `fin_cases j`. Conclude with `constantCoeff_add_first_second G i`. Conclude with `cc_pt_lemma _ i`.
+
+Establish `h0 : ∀ j i, MvPowerSeries.constantCoeff ((![pt S d 0, pt S d 2] : Fin 2 → Pt S 3 d) j i) = 0`. Introduce `j i`. Use `fin_cases j`. Conclude with `cc_pt_lemma _ i`. Conclude with `cc_pt_lemma _ i`.
+
+Establish `h1 : ∀ j i, MvPowerSeries.constantCoeff ((![pt S d 1, pt S d 2] : Fin 2 → Pt S 3 d) j i) = 0`. Introduce `j i`. Use `fin_cases j`. Conclude with `cc_pt_lemma _ i`. Conclude with `cc_pt_lemma _ i`.
+
+Establish `hB` using `cc_bilL_lemma_8 G cc`. Establish `hneg : MvPowerSeries.constantCoeff (-bilL G cc) = 0` using `by rw [map_neg, hB, neg_zero]`. Establish `hsplit : ev (n` using `3) ![G.add (pt S d 0) (pt S d 1), pt S d 2] (bilL G cc) = ev (n := 3) ![pt S d 0, pt S d 2] (bilL G cc) + ev (n := 3) ![pt S d 1, pt S d 2] (bilL G cc) := by`. Rewrite using `[ev_bilL_lemma_9 G cc _ _ ha, ev_bilL_lemma_9 G cc _ _ h0, ev_bilL_lemma_9 G cc _ _ h1, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[formal_log_add_first_two G i, add_mul, smul_add]`. Establish `c0 : MvPowerSeries.constantCoeff (-ev (n` using `3) ![pt S d 0, pt S d 2] (bilL G cc)) = 0 := by`. Rewrite using `[map_neg, ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.cc_ev _ h0 hB, neg_zero]`.
+
+Establish `c1 : MvPowerSeries.constantCoeff (-ev (n` using `3) ![pt S d 1, pt S d 2] (bilL G cc)) = 0 := by`. Rewrite using `[map_neg, ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.cc_ev _ h1 hB, neg_zero]`. Rewrite using `[eval_expSeries _ ha _ hneg, eval_expSeries _ h0 _ hneg, eval_expSeries _ h1 _ hneg, ev_neg_lemma_5 _ ha, ev_neg_lemma_5 _ h0, ev_neg_lemma_5 _ h1, hsplit, neg_add]`. Conclude with `exp_add c0 c1`.
+-/
 theorem twist_mul_first_argument (G : FGLaw S d) (cc : Fin d → Fin d → S) :
     ev (n := 3) ![G.add (pt S d 0) (pt S d 1), pt S d 2] (expP (-bilL G cc)) =
       ev (n := 3) ![pt S d 0, pt S d 2] (expP (-bilL G cc)) * ev (n := 3) ![pt S d 1, pt S d 2] (expP (-bilL G cc)) := by
@@ -143,6 +197,13 @@ theorem twist_mul_first_argument (G : FGLaw S d) (cc : Fin d → Fin d → S) :
     ev_neg_lemma_5 _ ha, ev_neg_lemma_5 _ h0, ev_neg_lemma_5 _ h1, hsplit, neg_add]
   exact exp_add c0 c1
 
+/- English proof (translation)
+Establish `ha : ∀ j i, MvPowerSeries.constantCoeff ((![pt S d 1, pt S d 0] : Fin 2 → Pt S 2 d) j i) = 0`. Introduce `j i`. Use `fin_cases j`. Conclude with `cc_pt_lemma _ i`. Conclude with `cc_pt_lemma _ i`.
+
+Establish `hneg : MvPowerSeries.constantCoeff (-bilL G cc) = 0`. Rewrite using `[map_neg, cc_bilL_lemma_8 G cc, neg_zero]`. Establish `hsw : ev (n` using `2) ![pt S d 1, pt S d 0] (bilL G cc) = bilL G cc := by`. Rewrite using `[ev_bilL_lemma_9 G cc _ _ ha]`. Use `conv_rhs => rw [Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrFix.bilL]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [hs l i, mul_comm] <;> rfl`. Rewrite using `[eval_expSeries _ ha _ hneg, ev_neg_lemma_5 _ ha, hsw]`.
+-/
 theorem twist_sym (G : FGLaw S d) (cc : Fin d → Fin d → S) (hs : ∀ i l, cc i l = cc l i) :
     ev (n := 2) ![pt S d 1, pt S d 0] (expP (-bilL G cc)) = expP (-bilL G cc) := by
   have ha : ∀ j i, MvPowerSeries.constantCoeff ((![pt S d 1, pt S d 0] : Fin 2 → Pt S 2 d) j i) = 0 := by
@@ -160,17 +221,29 @@ theorem twist_sym (G : FGLaw S d) (cc : Fin d → Fin d → S) (hs : ∀ i l, cc
     rw [hs l i, mul_comm] <;> rfl
   rw [eval_expSeries _ ha _ hneg, ev_neg_lemma_5 _ ha, hsw]
 
+/- English proof (translation)
+Simplify using `only [Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrFix.bilL, Pi.add_apply, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem bilL_add (G : FGLaw S d) (c c' : Fin d → Fin d → S) : bilL G (c + c') = bilL G c + bilL G c' := by
   simp only [Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrFix.bilL, Pi.add_apply, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrFix.bilL]`.
+-/
 theorem bilL_zero (G : FGLaw S d) : bilL G 0 = 0 := by
   simp [Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrFix.bilL]
 
+/- English proof (translation)
+Rewrite using `[bilL_add, neg_add]`. Conclude with `exp_add (by rw [map_neg, cc_bilL_lemma_8, neg_zero]) (by rw [map_neg, cc_bilL_lemma_8, neg_zero])`.
+-/
 theorem twist_add (G : FGLaw S d) (c c' : Fin d → Fin d → S) :
     expP (-bilL G (c + c')) = expP (-bilL G c) * expP (-bilL G c') := by
   rw [bilL_add, neg_add]
   exact exp_add (by rw [map_neg, cc_bilL_lemma_8, neg_zero]) (by rw [map_neg, cc_bilL_lemma_8, neg_zero])
 
+/- English proof (translation)
+Rewrite using `[bilL_zero, neg_zero]`. Conclude with `exp_zero`.
+-/
 theorem twist_zero (G : FGLaw S d) : expP (-bilL G 0) = 1 := by
   rw [bilL_zero, neg_zero]
   exact exp_zero
@@ -181,6 +254,17 @@ section Jet
 
 variable {S : Type} [CommRing S] [Algebra ℚ S] {d : ℕ}
 
+/- English proof (translation)
+Unfold `Formalism.L2.Pj.psJet`. Rewrite using `[Ideal.Quotient.eq]`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Rewrite using `[zero_add, pow_one]`. Use `Ideal.sub_mem _ (Ideal.subset_span ⟨s, rfl⟩) ?_` and prove the remaining obligations.
+
+Conclude with `Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet.psTrunc_mem_orig 0 _ (MvPowerSeries.constantCoeff_X s)`. Establish `hmem : (Finsupp.single s 1 : ι →₀ ℕ) ∈ Formalism.L2.Pj.degLE m`. Unfold `Formalism.L2.Pj.degLE`. Rewrite using `[Finset.mem_filter, Finset.mem_image]`. Apply the tactic sequence `refine ⟨⟨fun i => ⟨if i = s then 1 else 0, by split_ifs <;> omega⟩, Finset.mem_univ _, ?_⟩, ?_⟩`.
+
+Use extensionality with `i`. Distinguish the cases in `h : i = s`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h, Finsupp.single_apply]`.
+
+Rewrite using `[Finsupp.sum_single_index rfl]`. Conclude with `hm`. Establish `htr : Formalism.L2.Pj.psTrunc m (MvPowerSeries.X s : MvPowerSeries ι S) = MvPolynomial.X s`. Unfold `Formalism.L2.Pj.psTrunc`. Rewrite using `[Finset.sum_eq_single_of_mem _ hmem (fun b _ hb => by rw [MvPowerSeries.coeff_X, if_neg hb, map_zero])]`.
+
+Rewrite using `[MvPowerSeries.coeff_X, if_pos rfl]`. Both sides reduce to the same expression. Rewrite using `[htr, sub_self]`. Conclude with `Ideal.zero_mem _`.
+-/
 private lemma mkX_lemma_10 {ι : Type} [Fintype ι] [DecidableEq ι] (m : ℕ) (s : ι) :
     Ideal.Quotient.mk (Formalism.L2.Pj.orig S ι ^ (m + 1)) (MvPolynomial.X s) =
       psJet m (MvPowerSeries.X s : MvPowerSeries ι S) := by
@@ -210,12 +294,20 @@ private lemma mkX_lemma_10 {ι : Type} [Fintype ι] [DecidableEq ι] (m : ℕ) (
     rw [htr, sub_self]
     exact Ideal.zero_mem _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma jetSubstP_mk_eq_mk_aeval {κ κ' : Type} (m : ℕ) (φ : κ → MvPolynomial κ' S) (P : MvPolynomial κ S) :
     jetSubstP m φ (Ideal.Quotient.mk (Formalism.L2.Pj.orig S κ ^ (m + 1)) P) =
       Ideal.Quotient.mk (Formalism.L2.Pj.orig S κ' ^ (m + 1))
         (MvPolynomial.aeval (fun i => φ i - MvPolynomial.C (MvPolynomial.constantCoeff (φ i))) P) :=
   rfl
 
+/- English proof (translation)
+Establish `hle : Formalism.L2.Pj.orig S κ ≤ RingHom.ker (MvPolynomial.constantCoeff (σ` using `κ) (R := S)) := by`. Unfold `Formalism.L2.Pj.orig`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using the standard rewrite rules.
+
+Conclude with `hle hP`.
+-/
 private lemma ccOrig_lemma_12 {κ : Type} (P : MvPolynomial κ S) (hP : P ∈ Formalism.L2.Pj.orig S κ) :
     MvPolynomial.constantCoeff P = 0 := by
   have hle : Formalism.L2.Pj.orig S κ ≤ RingHom.ker (MvPolynomial.constantCoeff (σ := κ) (R := S)) := by
@@ -225,6 +317,15 @@ private lemma ccOrig_lemma_12 {κ : Type} (P : MvPolynomial κ S) (hP : P ∈ Fo
     simp
   exact hle hP
 
+/- English proof (translation)
+Establish `hcc : ∀ p : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![pt S d 0, pt S d 1] : Fin 2 → Pt S 3 d) p.1 p.2) = 0`. Introduce and unpack `⟨j', i'⟩`. Use `fin_cases j'`. Conclude with `cc_pt_lemma _ i'`. Conclude with `cc_pt_lemma _ i'`.
+
+Establish `hX : ∀ p : Fin 2 × Fin d, Ideal.Quotient.mk (Formalism.L2.Pj.orig S (Fin 3 × Fin d) ^ (m + 1)) (MvPolynomial.X ((![0, 1] : Fin 2 → Fin 3) p.1, p.2) : MvPolynomial (Fin 3 × Fin d) S) = psJet m ((![pt S d 0, pt S d 1] : Fin 2 → Pt S 3 d) p.1 p.2)`. Introduce and unpack `⟨j', i'⟩`. Use `fin_cases j'`. Conclude with `mkX_lemma_10 m _`. Conclude with `mkX_lemma_10 m _`.
+
+Establish `e` using `jetSubstP_psJet (d := d) m (fun p : Fin 2 × Fin d => (MvPolynomial.X ((![0, 1] : Fin 2 → Fin 3) p.1, p.2) : MvPolynomial (Fin 3 × Fin d) S)) (![pt S d 0, pt S d 1] : Fin 2 → Pt S 3 d) hcc (fun p => MvPolynomial.constantCoeff_X S _) hX (G.F j)`. Use `show _ = psJet m (ev (n := 3) ![pt S d 0, pt S d 1] (G.F j))`. Rewrite using `[← e]`. Unfold `Formalism.L2.Pj.psJet Formalism.L2.Pj.psIn`. Rewrite using `[jetSubstP_mk_eq_mk_aeval]`.
+
+Use `congr 1`. Simplify using `only [MvPolynomial.constantCoeff_X, map_zero, sub_zero]`. Establish `hr : (MvPolynomial.rename fun p : Fin 2 × Fin d => ((![0, 1] : Fin 2 → Fin 3) p.1, p.2) : MvPolynomial (Fin 2 × Fin d) S →ₐ[S] MvPolynomial (Fin 3 × Fin d) S) = MvPolynomial.aeval fun i : Fin 2 × Fin d => MvPolynomial.X ((![0, 1] : Fin 2 → Fin 3) i.1, i.2)` using `MvPolynomial.algHom_ext fun i => by rw [MvPolynomial.rename_X, MvPolynomial.aeval_X]`. Rewrite using `[hr]`.
+-/
 private lemma mkIn_lemma_13 (G : FGLaw S d) (m : ℕ) (j : Fin d) :
     Ideal.Quotient.mk (Formalism.L2.Pj.orig S (Fin 3 × Fin d) ^ (m + 1)) (psIn d m ![0, 1] (G.F j)) =
       psJet m (G.add (pt S (n := 3) d 0) (pt S d 1) j) := by
@@ -256,6 +357,21 @@ private lemma mkIn_lemma_13 (G : FGLaw S d) (m : ℕ) (j : Fin d) :
     MvPolynomial.algHom_ext fun i => by rw [MvPolynomial.rename_X, MvPolynomial.aeval_X]
   rw [hr]
 
+/- English proof (translation)
+Establish `hcc : ∀ (x y : Pt S 3 d), (∀ i, MvPowerSeries.constantCoeff (x i) = 0) → (∀ i, MvPowerSeries.constantCoeff (y i) = 0) → ∀ p : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![x, y] : Fin 2 → Pt S 3 d) p.1 p.2) = 0`. Introduce `x y hx hy`. Introduce and unpack `⟨j', i'⟩`. Use `fin_cases j'`. Conclude with `hx i'`.
+
+Conclude with `hy i'`. Establish `hpt : ∀ k : Fin 3, ∀ i, MvPowerSeries.constantCoeff ((pt S d k : Pt S 3 d) i) = 0` using `fun k i => cc_pt_lemma k i`. Establish `hXc : ∀ (k k' : Fin 3), ∀ p : Fin 2 × Fin d, MvPolynomial.constantCoeff ((![fun j => X (k, j), fun j => X (k', j)] : Fin 2 → Fin d → MvPolynomial (Fin 3 × Fin d) S) p.1 p.2) = 0`. Introduce `k k'`. Introduce and unpack `⟨j', i'⟩`.
+
+Use `fin_cases j'`. Conclude with `MvPolynomial.constantCoeff_X S _`. Conclude with `MvPolynomial.constantCoeff_X S _`. Establish `hXm : ∀ (k k' : Fin 3), ∀ p : Fin 2 × Fin d, Ideal.Quotient.mk (Formalism.L2.Pj.orig S (Fin 3 × Fin d) ^ (m + 1)) ((![fun j => X (k, j), fun j => X (k', j)] : Fin 2 → Fin d → MvPolynomial (Fin 3 × Fin d) S) p.1 p.2) = psJet m ((![pt S d k, pt S d k'] : Fin 2 → Pt S 3 d) p.1 p.2)`. Introduce `k k'`.
+
+Introduce and unpack `⟨j', i'⟩`. Use `fin_cases j'`. Conclude with `mkX_lemma_10 m _`. Conclude with `mkX_lemma_10 m _`. Establish `hφ : ∀ p : Fin 2 × Fin d, MvPolynomial.constantCoeff ((![fun j => psIn d m ![0, 1] (G.F j), fun j => X ((2 : Fin 3), j)] : Fin 2 → Fin d → MvPolynomial (Fin 3 × Fin d) S) p.1 p.2) = 0`.
+
+Introduce and unpack `⟨j', i'⟩`. Use `fin_cases j'`. Use `show MvPolynomial.constantCoeff (MvPolynomial.rename _ _) = 0`. Rewrite using `[MvPolynomial.constantCoeff_rename]`. Conclude with `ccOrig_lemma_12 _ (Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet.psTrunc_mem_orig m _ (G.const i'))`.
+
+Conclude with `MvPolynomial.constantCoeff_X S _`. Establish `hmk : ∀ p : Fin 2 × Fin d, Ideal.Quotient.mk (Formalism.L2.Pj.orig S (Fin 3 × Fin d) ^ (m + 1)) ((![fun j => psIn d m ![0, 1] (G.F j), fun j => X ((2 : Fin 3), j)] : Fin 2 → Fin d → MvPolynomial (Fin 3 × Fin d) S) p.1 p.2) = psJet m ((![G.add (pt S d 0) (pt S d 1), pt S d 2] : Fi …`. Introduce and unpack `⟨j', i'⟩`. Use `fin_cases j'`. Conclude with `mkIn_lemma_13 G m i'`.
+
+Conclude with `mkX_lemma_10 m _`. Establish `hA` using `hcc (G.add (pt S d 0) (pt S d 1)) (pt S d 2) (fun i => constantCoeff_add_first_second G i) (hpt 2)`. Rewrite using `[jetSubstP_psJet m _ _ hA hφ hmk, jetSubstP_psJet m _ _ (hcc _ _ (hpt 0) (hpt 2)) (hXc 0 2) (hXm 0 2), jetSubstP_psJet m _ _ (hcc _ _ (hpt 1) (hpt 2)) (hXc 1 2) (hXm 1 2), twist_mul_first_argument G cc, Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet.psJet_mul]`.
+-/
 theorem twist_mul_first_argument_jet (G : FGLaw S d) (cc : Fin d → Fin d → S) (m : ℕ) :
     jetSubstP m (fun p : Fin 2 × Fin d => (![fun j => psIn d m ![0, 1] (G.F j), fun j => X ((2 : Fin 3), j)] :
         Fin 2 → Fin d → MvPolynomial (Fin 3 × Fin d) S) p.1 p.2) (psJet m (expP (-bilL G cc))) =
@@ -310,6 +426,15 @@ theorem twist_mul_first_argument_jet (G : FGLaw S d) (cc : Fin d → Fin d → S
     jetSubstP_psJet m _ _ (hcc _ _ (hpt 1) (hpt 2)) (hXc 1 2) (hXm 1 2), twist_mul_first_argument G cc,
     Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet.psJet_mul]
 
+/- English proof (translation)
+Establish `hcc : ∀ p : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![pt S d 1, pt S d 0] : Fin 2 → Pt S 2 d) p.1 p.2) = 0`. Introduce and unpack `⟨j', i'⟩`. Use `fin_cases j'`. Conclude with `cc_pt_lemma _ i'`. Conclude with `cc_pt_lemma _ i'`.
+
+Establish `hXc : ∀ p : Fin 2 × Fin d, MvPolynomial.constantCoeff ((![fun j => X ((1 : Fin 2), j), fun j => X ((0 : Fin 2), j)] : Fin 2 → Fin d → MvPolynomial (Fin 2 × Fin d) S) p.1 p.2) = 0`. Introduce and unpack `⟨j', i'⟩`. Use `fin_cases j'`. Conclude with `MvPolynomial.constantCoeff_X S _`. Conclude with `MvPolynomial.constantCoeff_X S _`.
+
+Establish `hXm : ∀ p : Fin 2 × Fin d, Ideal.Quotient.mk (Formalism.L2.Pj.orig S (Fin 2 × Fin d) ^ (m + 1)) ((![fun j => X ((1 : Fin 2), j), fun j => X ((0 : Fin 2), j)] : Fin 2 → Fin d → MvPolynomial (Fin 2 × Fin d) S) p.1 p.2) = psJet m ((![pt S d 1, pt S d 0] : Fin 2 → Pt S 2 d) p.1 p.2)`. Introduce and unpack `⟨j', i'⟩`. Use `fin_cases j'`. Conclude with `mkX_lemma_10 m _`. Conclude with `mkX_lemma_10 m _`.
+
+Rewrite using `[jetSubstP_psJet m _ _ hcc hXc hXm, twist_sym G cc hs]`.
+-/
 theorem twist_sym_jet (G : FGLaw S d) (cc : Fin d → Fin d → S) (hs : ∀ i l, cc i l = cc l i) (m : ℕ) :
     jetSubstP m (fun p : Fin 2 × Fin d => (![fun j => X ((1 : Fin 2), j), fun j => X ((0 : Fin 2), j)] :
         Fin 2 → Fin d → MvPolynomial (Fin 2 × Fin d) S) p.1 p.2) (psJet m (expP (-bilL G cc))) =
@@ -343,6 +468,9 @@ def twU (G : FGLaw S d) (c : Fin d → Fin d → S) (m : ℕ) : (Jet S (Fin 2 ×
   val_inv := by rw [← FBIdJet.psJet_mul, ← twist_add, add_neg_cancel, twist_zero, FBIdJet.psJet_one]
   inv_val := by rw [← FBIdJet.psJet_mul, ← twist_add, neg_add_cancel, twist_zero, FBIdJet.psJet_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twU_val (G : FGLaw S d) (c : Fin d → Fin d → S) (m : ℕ) :
     (twU G c m : Jet S (Fin 2 × Fin d) m) = psJet m (expP (-bilL G c)) := rfl
 
@@ -356,6 +484,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S] (y : FrPt Xo c S)
 
+/- English proof (translation)
+Use `choose U hU hc using hstep`. Set `T : ∀ m, (Jet S (Fin 2 × Fin C.d) m)ˣ` to `fun m => twU C.B.G (cc m) m`. Establish `hm1 : ∀ m, sub C.d m ![fun j => psIn C.d m ![0, 1] (C.B.G.F j), fun j => X ((2 : Fin 3), j)] (T m) = sub C.d m ![fun j => X ((0 : Fin 3), j), fun j => X ((2 : Fin 3), j)] (T m) * sub C.d m ![fun j => X ((1 : Fin 3), j), fun j => X ((2 : Fin 3), j)] (T m)` using `fun m => Units.ext (by rw [Units.val_mul]; exact twist_mul_first_argument_jet C.B.G (cc m) m)`. Establish `hm2 : ∀ m, sub C.d m ![fun j => X ((0 : Fin 3), j), fun j => psIn C.d m ![1, 2] (C.B.G.F j)] (T m) = sub C.d m ![fun j => X ((0 : Fin 3), j), fun j => X ((1 : Fin 3), j)] (T m) * sub C.d m ![fun j => X ((0 : Fin 3), j), fun j => X ((2 : Fin 3), j)] (T m)` using `fun m => Units.ext (by rw [Units.val_mul]; exact twist_mul_second_argument_jet C.B.G (cc m) m)`. Establish `hs : ∀ m, sub C.d m ![fun j => X ((1 : Fin 2), j), fun j => X ((0 : Fin 2), j)] (T m) = T m` using `fun m => Units.ext (twist_sym_jet C.B.G (cc m) (hsym m) m)`.
+
+Establish `hb : ∀ m a, sub C.d m ![fun j => psIn C.d m ![0] (C.B.A.act a j), fun j => X ((1 : Fin 2), j)] (T m) = sub C.d m ![fun j => X ((0 : Fin 2), j), fun j => psIn C.d m ![1] (C.B.A.act (H.bar a) j)] (T m)` using `fun m a => Units.ext (twist_bal_jet C.B (cc m) a (H.bar a) (hbal m a) m)`. Establish `hT : ∀ m, Units.map (jetTrunc : Jet S (Fin 2 × Fin C.d) (m + 1) →ₐ[S] Jet S (Fin 2 × Fin C.d) m).toMonoidHom (T (m + 1)) * U m = T m` using `fun m => Units.ext (by`. Rewrite using `[Units.val_mul, Units.coe_map, hU m]`. Use `show (jetTrunc : Jet S (Fin 2 × Fin C.d) (m + 1) →ₐ[S] Jet S (Fin 2 × Fin C.d) m) (psJet (m + 1) (expP (-bilL C.B.G (cc (m + 1))))) * _ = psJet m (expP (-bilL C.B.G (cc m)))`. Rewrite using `[ExpGB.jetTrunc_psJet, ← FBIdJet.psJet_mul, ← twist_add, add_sub_cancel])`.
+
+Establish `hT0 : T 0 = 1` using `Units.ext (by show psJet 0 (expP (-bilL C.B.G (cc 0))) = 1`. Rewrite using `[h0, twist_zero, FBIdJet.psJet_one])`. Take `⟨e', hfr, hrig, htr, hcorr⟩` from `fixTw_of y C T U hm1 hm2 hs hb hc hT hT0`. Conclude with `⟨e', hfr, hrig, htr, fun m => ⟨T m, twU_val _ _ _, hcorr m⟩⟩`.
+-/
 theorem fixTw [StarRing (𝓞 E)] (C : ChartAt Xo c y) (cc : ℕ → Fin C.d → Fin C.d → S) (h0 : cc 0 = 0)
     (hsym : ∀ m i j, cc m i j = cc m j i)
     (hbal : ∀ m (a : 𝓞 E), Matrix.transpose (dLin (C.B.A.act a)) * Matrix.of (cc m) =

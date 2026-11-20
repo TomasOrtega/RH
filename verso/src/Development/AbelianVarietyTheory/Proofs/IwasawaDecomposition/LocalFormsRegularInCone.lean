@@ -13,6 +13,33 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.DivDescent
 
+/- English proof (translation)
+Establish `loc` using `GlobalTheory.T.flat_principal_height_one φ hφ hloc h hh h1 h2`. Distinguish the cases in `hu : IsUnit h`. Conclude with `⟨1, by rw [map_one]; exact (associated_one_iff_isUnit.mpr hu).symm⟩`. Establish `hhm : Ideal.span {h} ≤ maximalIdeal R`. Rewrite using `[Ideal.span_singleton_le_iff_mem, mem_maximalIdeal, mem_nonunits_iff]`.
+
+Conclude with `hu`. Take `⟨Q, hQmin, -⟩` from `Ideal.exists_minimalPrimes_le hhm`. Use `haveI hQp : Q.IsPrime := hQmin.1.1`. Establish `hhQ : h ∈ Q` using `(Ideal.span_singleton_le_iff_mem Q).mp hQmin.1.2`. Establish `hQ1 : Q.height = 1`.
+
+Use `le_antisymm (Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ Q hQmin) ?_` and prove the remaining obligations. Rewrite using `[ENat.one_le_iff_ne_zero, Ne, Ideal.height_eq_zero_iff_eq_bot]`. Introduce and unpack `rfl`. Conclude with `hh ((Ideal.mem_bot).mp hhQ)`. Take `⟨d, hdJ, s0, hs0, hds⟩` from `loc Q hQ1`.
+
+Establish `hd0 : φ d ≠ 0`. Introduce `hd`. Rewrite `hds` using `[hd, zero_dvd_iff]`. Conclude with `(mul_ne_zero (fun hs : s0 = 0 => hs0 (by rw [hs]; exact Q.zero_mem)) hh) hds`. Take `⟨c, hc⟩` from `hdJ`.
+
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[mul_zero]`. Conclude with `hd0 hc`. Use `set J : Ideal A := (Ideal.span {h}).comap φ with hJ`.
+
+Use `set K : Ideal A := (Ideal.span {d}).colon J with hK`. Use `set J' : Ideal A := (Ideal.span {d}).colon K with hJ'`. Establish `hKm : K.map φ = Ideal.span {c}`. Rewrite using `[hK, GlobalTheory.T.flat_map_colon_ideal φ hφ, Ideal.map_span, Set.image_singleton]`. Use extensionality with `y`.
+
+Rewrite using `[Submodule.mem_colon, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Apply `GlobalTheory.dvd_of_forall_height_eq_one hc0` to reduce the goal to its premises. Introduce `P _ hP1 _`.
+
+Take `⟨a, ⟨v, hv⟩, s, hsP, t, ht⟩` from `loc P hP1`. Establish `haJ : a ∈ J` using `by rw [hJ, Ideal.mem_comap, Ideal.mem_span_singleton]; exact ⟨v, hv⟩`. Establish `hy'` using `hy (φ a) (Ideal.mem_map_of_mem φ haJ)`. Rewrite `hy'` using `[smul_eq_mul, Ideal.mem_span_singleton]`. Take `⟨u, hu'⟩` from `hy'`.
+
+Use `⟨s, hsP, u * t, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hh` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨w, rfl⟩ z hz`. Establish `hz' : z ∈ Ideal.span {h}` using `Ideal.map_comap_le hz`.
+
+Take `⟨v, rfl⟩` from `Ideal.mem_span_singleton.mp hz'`. Rewrite using `[smul_eq_mul, Ideal.mem_span_singleton, hc]`. Conclude with `⟨w * v, by ring⟩`. Establish `hJ'm : J'.map φ = Ideal.span {h}`. Rewrite using `[hJ', GlobalTheory.T.flat_map_colon_ideal φ hφ, Ideal.map_span, Set.image_singleton, hKm]`.
+
+Use extensionality with `y`. Rewrite using `[Submodule.mem_colon, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hyc` using `hy c (Ideal.mem_span_singleton_self c)`.
+
+Rewrite `hyc` using `[smul_eq_mul, Ideal.mem_span_singleton, hc]`. Take `⟨k, hk⟩` from `hyc`. Conclude with `⟨k, mul_right_cancel₀ hc0 (by rw [hk]; ring)⟩`. Introduce and unpack `⟨k, rfl⟩ z hz`. Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton.mp hz`.
+
+Rewrite using `[smul_eq_mul, Ideal.mem_span_singleton, hc]`. Conclude with `⟨k * w, by ring⟩`. Take `⟨a, -, ha⟩` from `exists_mem_associated_of_map_eq φ J' hh hJ'm`. Conclude with `⟨a, ha⟩`.
+-/
 theorem exists_associated_of_divisor {A R : Type} [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A]
     [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R] (φ : A →+* R)
     (hφ : φ.Flat) (hloc : IsLocalHom φ) (h : R) (hh : h ≠ 0)
@@ -92,6 +119,11 @@ end GlobalTheory.DivDescent
 
 namespace GlobalTheory.DivDescent
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Z Cn φf hC hL R _ _ _ ξ t hm P m γ ℓ hCN hEt hFU hTor hCn hIn hℓ h hh hord`. Use `haveI : IsNoetherianRing R := hCN.1`. Use `haveI : IsIntegrallyClosed R := hCN.2.1`. Use `haveI : IsNoetherianRing (Z.X.presheaf.stalk (ξ (closedPoint R))) := isNoetherianRing_stalk Z _`. Establish `hloc : IsLocalHom (Scheme.stalkClosedPointTo ξ).hom` using `GlobalTheory.CdvrExt.isLocalHom_of_map_maximalIdeal _ hEt.2.1`.
+
+Establish `hinj` using `GlobalTheory.CdvrExt.injective_of_flat_local (Scheme.stalkClosedPointTo ξ).hom hEt.1`. Use `haveI : IsDomain (Z.X.presheaf.stalk (ξ (closedPoint R))) := Function.Injective.isDomain _ hinj`. Conclude with `exists_associated_of_divisor _ hEt.1 hloc h hh (GlobalTheory.T.local_cone_form_regular Z Cn φf hC hL ξ t hm P γ ℓ hCN hEt hFU hTor hCn hIn hℓ h hh hord) (GlobalTheory.T.local_cone_form_order Z Cn φf hC hL ξ t hm P γ ℓ hCN hEt hFU hTor hCn hIn hℓ h hh hord)`.
+-/
 theorem exists_stalk_associated_chartFn : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) (Cn : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] (m : ℕ), (Fin m → LinearMap.BilinForm ℤ X) → Prop) (φ : InvFun (𝓞 E)), HasCones Cn Z → HasLinForms Cn φ → ∀ {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ Z.X) (t : SAB H (Sp R)) (_ : SABMap t Z.t ξ) (P : PELUnif (maximalIdeal R) t) {m : ℕ} (γ : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X) (ℓ : LinearMap.BilinForm ℤ P.D.toPre.X →ₗ[ℤ] ℤ), IsCN R → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified → P.TorsionIso → Cn P.D.toPre.X m γ → InCone P.D.toPre γ → (∀ be : LinearMap.BilinForm ℤ P.D.toPre.X, (∀ y z, be y z = be z y) → ∀ c : Fin m → ℝ, (∀ i, 0 ≤ c i) → toReal be = ∑ i, c i • toReal (γ i) → 0 ≤ ℓ be ∧ (ℓ be : ℝ) = φ.evalZ be) → ∀ h : R, h ≠ 0 → (∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ ϖ : W, Irreducible ϖ → ∀ (g : R →+* W) (be : LinearMap.BilinForm ℤ P.D.toPre.X), (∀ y z, be y z = be z y) → FormAt P.D.toPre g ϖ be → ∃ n : ℕ, (n : ℤ) = ℓ be ∧ Associated (g h) (ϖ ^ n)) → ∃ a : Z.X.presheaf.stalk (ξ (closedPoint R)), Associated ((Scheme.stalkClosedPointTo ξ).hom a) h := by
   intro E _ _ _ H D l Xo c Z Cn φf hC hL R _ _ _ ξ t hm P m γ ℓ hCN hEt hFU hTor hCn hIn hℓ h hh hord
   haveI : IsNoetherianRing R := hCN.1

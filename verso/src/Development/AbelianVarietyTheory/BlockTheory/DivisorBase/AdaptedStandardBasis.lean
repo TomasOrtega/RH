@@ -32,6 +32,9 @@ def degree (a : (E →+* ℂ) × ℕ → ℕ) : ℕ := ∑ τ : E →+* ℂ, ∑
 
 def width (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : ℕ := n + 2 * Finset.univ.sup fun τ : E →+* ℂ => a (τ, 0)
 
+/- English proof (translation)
+Use `⟨h, fun τ i k hik => ?_, fun τ i hi => ?_, fun τ i hi => ?_, fun τ i k hi hk => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have : (i : ℕ) ≤ k := hik dsimp only split_ifs <;> omega`. Simplify using `[hi]`. Simplify using `[not_lt.2 hi]`. Apply the tactic sequence `dsimp only split_ifs <;> omega`.
+-/
 example (n : ℕ) (h : 8 ∣ n) :
     IsThetaWt Dw (fun _ i => if (i : ℕ) < Dw.p then ((n / 2 : ℕ) : ℤ) + 1 else -((n / 2 : ℕ) : ℤ) - 2) n := by
   refine ⟨h, fun τ i k hik => ?_, fun τ i hi => ?_, fun τ i hi => ?_, fun τ i k hi hk => ?_⟩
@@ -110,6 +113,9 @@ def ShortSpan (x : ℝ) (G : WTZ E) (S : Set (Rul Xo c)) (A A' : ℝ) : Prop :=
       ∀ f ∈ S, ∀ h : f ∈ cuspW Xo c U G, (Na • ⟨f, h⟩ : cuspW Xo c U G) ∈ latW U G) ∧
     ∀ Z : Comp Xo c, Submodule.span c.F ((fun f => GlobalTheory.FlatLine.idem Z * f) '' S) = cuspOn U Z G
 
+/- English proof (translation)
+Take `⟨h1, h2, ⟨Na, h3, h4, h5⟩, h6⟩` from `h`. Conclude with `⟨h1, fun f hf Z σ z hz => (h2 f hf Z σ z hz).trans (Real.exp_le_exp.2 hA), ⟨Na, h3, h4.trans hA', h5⟩, h6⟩`.
+-/
 theorem ShortSpan.mono {x : ℝ} {G : WTZ E} {S : Set (Rul Xo c)} {A A' B B' : ℝ} (h : ShortSpan U x G S A A')
     (hA : A ≤ B) (hA' : A' ≤ B') : ShortSpan U x G S B B' := by
   obtain ⟨h1, h2, ⟨Na, h3, h4, h5⟩, h6⟩ := h
@@ -184,6 +190,9 @@ def Gmin : Prop :=
 def GminWithDefinite : Prop :=
   ∀ (D : D7) (large₂ : SizeData₂ D), Page D large₂ → ∀ j, 1 ≤ j → j ≤ D.R.m → GminAt D large₂ j
 
+/- English proof (translation)
+Introduce `D large₂ hP j h1 h2` and use `h D large₂ hP j h1 h2.le`.
+-/
 theorem GminWithDefinite.gmin (h : GminWithDefinite) : Gmin := fun D large₂ hP j h1 h2 => h D large₂ hP j h1 h2.le
 
 end GlobalTheory.IndefiniteRowSideFullHecke.ThetaWeightData

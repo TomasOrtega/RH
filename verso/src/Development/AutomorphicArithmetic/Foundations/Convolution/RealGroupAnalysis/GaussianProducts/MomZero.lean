@@ -9,6 +9,17 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π f hf h0 φ hφ p hp T hc ho`. Take `⟨φ', hφ', he⟩` from `hatSurj F D.δ D.neg _ ((fockMul F D.δ).1 _ (hatFock F D.δ _ (mem_fock.1 hφ)) p hp T hc ho)`. Establish `hrow` using `rowMul F E D W (fun r => p r * T.indicator 1 (finPartPi r)) φ φ' (fun v => by rw [he])`. Establish `hw : ∀ g : G1 F, w1 W f.1 φ' 1 g = p (row g) * T.indicator 1 (finPartPi (row g)) * w1 W f.1 φ 1 g`. Introduce `g`.
+
+Establish `hr : (![(0 : A F), 1] ᵥ* g.1) = row g`. Use extensionality with `i`. Simplify using `[row, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Establish `h1` using `hrow g ![0, 1, 1, 0]`. Establish `h2 : (![(![0, 1, 1, 0] : V4 F) 0, (![0, 1, 1, 0] : V4 F) 1] : Fin 2 → A F) = ![0, 1]`.
+
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite `h1` using `[h2, hr]`. Simplify using `only [w1, map_one, Module.End.one_apply]`. Rewrite using `[h1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hz` using `h0 φ' hφ'`. Rewrite using `[← hz]`. Simplify using `only [W1, Meas.I0]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `only [iw, hw]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.G.momZero :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ∀ f ∈ π.V, (∀ φ ∈ Fock D.δ, W1 W M f.1 φ 1 = 0) → ∀ φ ∈ Fock D.δ, ∀ p ∈ polyOn F (Fin 2), ∀ T : Set (Fin 2 → FiniteAdeleRing (𝓞 F) F), IsCompact T → IsOpen T →
     ∫ x : IdeleGroup F × G1 F, p (row (mD x.1 * x.2)) * T.indicator 1 (finPartPi (row (mD x.1 * x.2))) * iw (w1 W f.1 φ 1) x ∂M.ν = 0 := by

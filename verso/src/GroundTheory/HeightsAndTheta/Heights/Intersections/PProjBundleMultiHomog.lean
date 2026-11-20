@@ -24,6 +24,9 @@ def zDegInl : (K → ℕ) →+ (K ⊕ Unit → ℤ) :=
 def zDeg : (K ⊕ Unit → ℕ) →+ (K ⊕ Unit → ℤ) := AddMonoidHom.compLeft (Nat.castAddMonoidHom ℤ) _
 
 omit [Fintype K] [DecidableEq K] in
+/- English proof (translation)
+Introduce `a b h` and use `funext fun x => by have := congrFun h x simpa [zDeg] using this`.
+-/
 theorem zDeg_injective : Function.Injective (zDeg (K := K)) := fun a b h =>
   funext fun x => by
     have := congrFun h x
@@ -43,6 +46,15 @@ def genericSubstitution (V : S → Fin N1 → MRing ι) : (Σ x, PBlk ι N1 x) �
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Break down `v with ⟨k | u, i⟩` into its components or cases. Use `isWeightedHomogeneous_X ℤ (genericWeight ι γ) (Sum.inr ⟨k, i⟩) using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Use function extensionality and compare the values at `x`. Apply the tactic sequence `cases x <;> simp [genericWeight, zDegInl, zDeg, NumbersDVR.blockWeight, Pi.single_apply]`.
+
+Establish `hdeg : zDeg (NumbersDVR.blockWeight (PBlk ι N1) ⟨Sum.inr u, i⟩) = Pi.single (Sum.inr ()) 1`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `cases x <;> simp [zDeg, NumbersDVR.blockWeight]`. Rewrite using `[hdeg]`. Express the relevant statement in the definitionally equal form `Fin N1 at i`.
+
+Use `IsWeightedHomogeneous.sum _ _ _ fun s _ => ?_` and prove the remaining obligations. Establish `hren : IsWeightedHomogeneous (genericWeight ι γ) (rename Sum.inr (V s i) : MvPolynomial (S ⊕ _) ℤ) (zDegInl (γ s))`. Rewrite using `[rename_eq_aeval]`. Use `isWeightedHomogeneous_aeval_of_weights (w := fun p => zDegInl (NumbersDVR.blockWeight ι p)) (e := X ∘ Sum.inr) (fun p => isWeightedHomogeneous_X ℤ (genericWeight ι γ) (Sum.inr p)) ?_` and prove the remaining obligations. Introduce `d hd`.
+
+Rewrite using `[NumbersDVR.weight_comp_addMonoidHom, hV s i hd]`. Use `hren.mul (isWeightedHomogeneous_X ℤ (genericWeight ι γ) (Sum.inl s)) using 1` and compare the differences between its conclusion and the goal. Use `show _ = zDegInl (γ s) + (Pi.single (Sum.inr ()) 1 - zDegInl (γ s))`. Normalize the expressions using the abelian group laws.
+-/
 theorem genericSubstitution_isWeightedHomogeneous (V : S → Fin N1 → MRing ι)
     (hV : ∀ s j, IsWeightedHomogeneous (NumbersDVR.blockWeight ι) (V s j) (γ s))
     (v : Σ x, PBlk ι N1 x) :
@@ -80,18 +92,29 @@ def genericEvaluation (P : Ideal (MRing ι)) : MvPolynomial (S ⊕ (Σ k, ι k))
   (map (toFn P)).comp (sumAlgEquiv ℤ S (Σ k, ι k)).toAlgHom.toRingHom
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype S] in
+/- English proof (translation)
+Use `AlgHom.congr_fun (sumAlgEquiv_comp_rename_inr ℤ S (Σ k, ι k)) f` as an intermediate fact. Simplify `this` using `[algebraMap_eq]`.
+-/
 theorem sumAlgEquiv_rename_inr (f : MRing ι) :
     sumAlgEquiv ℤ S (Σ k, ι k) (rename Sum.inr f) = C f := by
   have := AlgHom.congr_fun (sumAlgEquiv_comp_rename_inr ℤ S (Σ k, ι k)) f
   simpa [algebraMap_eq] using this
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype S] in
+/- English proof (translation)
+Simplify using `[genericEvaluation, sumAlgEquiv_rename_inr]`.
+-/
 theorem genericEvaluation_rename_inr (P : Ideal (MRing ι)) (f : MRing ι) :
     genericEvaluation (S := S) P (rename Sum.inr f) = C (toFn P f) := by
   simp [genericEvaluation, sumAlgEquiv_rename_inr]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Use `MvPolynomial.ringHom_ext (fun z => by simp) ?_` and prove the remaining obligations. Introduce and unpack `⟨k | u, i⟩`. Simplify using `[genMap, genericSubstitution, genericEvaluation, genPt, toFn]`. Express the relevant statement in the definitionally equal form `Fin N1 at i`. Simplify using `only [genMap, genericSubstitution, RingHom.coe_comp, Function.comp_apply, eval₂Hom_X', AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X, map_sum, map_mul, genericEvaluation_rename_inr]`.
+
+Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[genericEvaluation]`.
+-/
 theorem genMap_eq_comp [DecidableEq K] (P : Ideal (MRing ι)) {N1 : ℕ} (V : S → Fin N1 → MRing ι) :
     genMap P (fun s j => toFn P (V s j)) = (genericEvaluation P).comp (aeval (genericSubstitution V)).toRingHom := by
   refine MvPolynomial.ringHom_ext (fun z => by simp) ?_
@@ -105,6 +128,13 @@ theorem genMap_eq_comp [DecidableEq K] (P : Ideal (MRing ι)) {N1 : ℕ} (V : S 
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype S] in
 
+/- English proof (translation)
+Introduce `f hf`. Use `set e := sumAlgEquiv ℤ S (Σ k, ι k)`. Establish `hg : e f ∈ Ideal.map (C : MRing ι →+* MvPolynomial S (MRing ι)) P`. Rewrite using `[← ker_toFn P, ← MvPolynomial.ker_map]`. Conclude with `hf`.
+
+Establish `hre : ∀ x : MRing ι, e.symm (C x) = rename Sum.inr x`. Introduce `x`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Conclude with `(sumAlgEquiv_rename_inr x).symm`. Establish `h1 : Ideal.map e.symm (Ideal.map (C : MRing ι →+* MvPolynomial S (MRing ι)) P) ≤ Ideal.map (rename Sum.inr) P`.
+
+Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hre]`. Conclude with `Ideal.mem_map_of_mem _ hx`. Simplify using `using h1 (Ideal.mem_map_of_mem e.symm hg)`.
+-/
 theorem ker_genericEvaluation_le (P : Ideal (MRing ι)) :
     RingHom.ker (genericEvaluation (S := S) P) ≤ Ideal.map (rename Sum.inr) P := by
   intro f hf
@@ -126,6 +156,9 @@ theorem ker_genericEvaluation_le (P : Ideal (MRing ι)) :
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype S] in
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, genericEvaluation_rename_inr]`. Establish `h0 : toFn P x = 0` using `by rw [← RingHom.mem_ker, ker_toFn]; exact hx`. Rewrite using `[h0, map_zero]`.
+-/
 theorem map_le_ker_genericEvaluation (P : Ideal (MRing ι)) :
     Ideal.map (rename Sum.inr) P ≤ RingHom.ker (genericEvaluation (S := S) P) := by
   rw [Ideal.map_le_iff_le_comap]
@@ -134,6 +167,13 @@ theorem map_le_ker_genericEvaluation (P : Ideal (MRing ι)) :
   have h0 : toFn P x = 0 := by rw [← RingHom.mem_ker, ker_toFn]; exact hx
   rw [h0, map_zero]
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[genMap_eq_comp]`. Rewrite `hf`, the goal using `[RingHom.mem_ker, RingHom.comp_apply, ← RingHom.mem_ker]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at hf ⊢`. Establish `hJ` using `ker_genericEvaluation_le P hf`. Establish `hGw : ∀ g ∈ G, ∃ a, IsWeightedHomogeneous (fun p => zDegInl (NumbersDVR.blockWeight ι p)) g a`.
+
+Introduce `g hg`. Take `⟨a, ha⟩` from `hG g hg`. Use `⟨zDegInl a, fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[NumbersDVR.weight_comp_addMonoidHom, ((Bridge.isMultiHomog_iff g a).mpr ha) hd]`. Rewrite `hJ` using `[hPG, rename_eq_aeval]`.
+
+Establish `hc` using `weightedHomogeneousComponent_mem_map_aeval (ω := genericWeight ι γ) (e := X ∘ Sum.inr) (fun p => isWeightedHomogeneous_X ℤ (genericWeight ι γ) (Sum.inr p)) G hGw hJ (zDeg b)`. Rewrite `hc` using `[← rename_eq_aeval, ← hPG]`. Rewrite `hc` using `[← aeval_weightedHomogeneousComponent_of_weights (fun v => zDeg (NumbersDVR.blockWeight (PBlk ι N1) v)) (genericWeight ι γ) (genericSubstitution V) (genericSubstitution_isWeightedHomogeneous γ V hV), NumbersDVR.weightedHomogeneousComponent_comp_addMonoidHom zDeg zDeg_injective]`. Conclude with `map_le_ker_genericEvaluation P hc`.
+-/
 theorem component_mem_ker_genMap [DecidableEq K] (P : Ideal (MRing ι)) (G : Set (MRing ι))
     (hG : ∀ f ∈ G, ∃ a, IsMultiHomog f a) (hPG : P = Ideal.span G) {N1 : ℕ}
     (V : S → Fin N1 → MRing ι) (γ : S → K → ℕ)
@@ -164,6 +204,11 @@ theorem component_mem_ker_genMap [DecidableEq K] (P : Ideal (MRing ι)) (G : Set
 
 end Kernel
 
+/- English proof (translation)
+Introduce `K _ ι _ N1 t n P d c m B hP hQ hB`. Take `⟨-, ⟨hPp, hPh, -⟩, -, -⟩` from `hP`. Use `hPp` as an intermediate fact. Establish `hPc` using `(Bridge.isMultiHomogIdeal_iff P).mpr hPh`. Take `⟨S, _, V, γ, hV, hVker, hBspan⟩` from `exists_homog_span P hPc c m (fun r j => (Bridge.isMultiHomog_iff _ _).mpr (hQ.1 r j)) B (fun a => by rw [← hB.2]; exact Submodule.subset_span ⟨a, rfl⟩)`.
+
+Establish `hker : projBundleIdeal P B = RingHom.ker (genMap P fun s j => toFn P (V s j))` using `le_antisymm (ker_genMap_le P B _ fun s => by rw [hB.2]; exact hVker s) (ker_genMap_le P _ B hBspan)`. Rewrite using `[hker]`. Take `⟨G, hG, hPG⟩` from `hPh`. Conclude with `(Bridge.isMultiHomogIdeal_iff _).mp fun f hf b => component_mem_ker_genMap P G hG hPG V γ hV hf b`.
+-/
 theorem ProjBundleMultiHomog.proof : ProjBundleMultiHomog.Statement := by
   intro K _ ι _ N1 t n P d c m B hP hQ hB
   classical

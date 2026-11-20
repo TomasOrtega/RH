@@ -35,6 +35,9 @@ def jPS (S : StepG I N) :
   (secAll F E sp.cm.sig S.J I.plc I.plc_inj).comp
     (MonoidHom.pi fun v => (S.uGL v).symm.toMonoidHom.comp (Pi.evalMonoidHom _ v))
 
+/- English proof (translation)
+Use `show bc _ (bc (prV (E := E) (I.plc v)) (secAll F E sp.cm.sig S.J I.plc I.plc_inj _ : GL (Fin N) _)) = g v`. Rewrite using `[bc_secAll_same]`. Use `locGL_apply sp.cm.sig S.J S.hJ S.hdet _ (I.spl (I.plc v) (I.pl v).2) (I.spl_sig (I.plc v) (I.pl v).2) ((S.uGL v).symm (g v))` as an intermediate fact. Conclude with `this.symm.trans ((S.uGL v).apply_symm_apply (g v))`.
+-/
 theorem jPS_at (S : StepG I N) (g : ∀ v : Fin nV, GL (Fin N) ((I.plc v).adicCompletion F)) (v : Fin nV) :
     bc ((RingHom.fst _ _).comp (I.spl (I.plc v) (I.pl v).2).toRingHom)
       (bc (prV (E := E) (I.plc v)) (jPS S g : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))) = g v := by
@@ -44,11 +47,17 @@ theorem jPS_at (S : StepG I N) (g : ∀ v : Fin nV, GL (Fin N) ((I.plc v).adicCo
     (I.spl_sig (I.plc v) (I.pl v).2) ((S.uGL v).symm (g v))
   exact this.symm.trans ((S.uGL v).apply_symm_apply (g v))
 
+/- English proof (translation)
+The claim follows from `bc_secAll_off F E sp.cm.sig S.J I.plc I.plc_inj w' (fun v h => hw (h ▸ (I.pl v).2)) _`.
+-/
 theorem jPS_off (S : StepG I N) (g : ∀ v : Fin nV, GL (Fin N) ((I.plc v).adicCompletion F))
     (w' : HeightOneSpectrum (𝓞 F)) (hw : ((p : ℕ) : 𝓞 F) ∉ w'.asIdeal) :
     bc (prV (E := E) w') (jPS S g : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) = 1 :=
   bc_secAll_off F E sp.cm.sig S.J I.plc I.plc_inj w' (fun v h => hw (h ▸ (I.pl v).2)) _
 
+/- English proof (translation)
+Use `(mem_awayG sp.cm.sig S.J S.Uloc p _).2 ⟨(jPS S g).2, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[jPS_off S g v hv]`. Conclude with `Subgroup.one_mem _`.
+-/
 theorem jPS_mem_awayG (S : StepG I N) (g : ∀ v : Fin nV, GL (Fin N) ((I.plc v).adicCompletion F)) :
     (jPS S g : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) ∈ awayG sp.cm.sig S.J S.Uloc p := by
   refine (mem_awayG sp.cm.sig S.J S.Uloc p _).2 ⟨(jPS S g).2, ?_⟩
@@ -62,6 +71,9 @@ def toFS (S : StepG I N) {m : ℕ} (hk : m + 1 = N) (v : Fin nV) :
     GL (Fin (m + 1)) Qq ≃* GL (Fin N) ((I.plc v).adicCompletion F) :=
   ((castGL hk Qq).trans (bcE (I.eQ v))).trans (MulAut.conj (frVS S v))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toFS_symm (S : StepG I N) {m : ℕ} (hk : m + 1 = N) (v : Fin nV)
     (X : GL (Fin N) ((I.plc v).adicCompletion F)) :
     (toFS S hk v).symm X = (castGL hk Qq).symm ((bcE (I.eQ v)).symm ((frVS S v)⁻¹ * X * frVS S v)) := rfl
@@ -72,12 +84,18 @@ def prPS (S : StepG I N) {m : ℕ} (hk : m + 1 = N) : GAS S →* (Fin nV → GL 
   MonoidHom.pi fun v => (toFS S hk v).symm.toMonoidHom.comp
     ((bc (fstV I v)).comp ((bc (prV (E := E) (I.plc v))).comp (UPts sp.cm.sig S.J (FiniteAdeleRing (𝓞 F) F)).subtype))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prPS_apply (S : StepG I N) {m : ℕ} (hk : m + 1 = N) (x : GAS S) (v : Fin nV) :
     prPS S hk x v = (toFS S hk v).symm (bc (fstV I v) (bc (prV (E := E) (I.plc v)) (x : GL (Fin N) _))) := rfl
 
 def jQS (S : StepG I N) {m : ℕ} (hk : m + 1 = N) : (Fin nV → GL (Fin (m + 1)) Qq) →* GAS S :=
   (jPS S).comp (MonoidHom.pi fun v => (toFS S hk v).toMonoidHom.comp (Pi.evalMonoidHom _ v))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Rewrite using `[prPS_apply]`. Use `jPS_at S (fun v => toFS S hk v (g v)) v` as an intermediate fact. Use `show (toFS S hk v).symm (bc (fstV I v) (bc (prV (E := E) (I.plc v)) (jPS S (fun v => toFS S hk v (g v)) : GL (Fin N) _))) = g v`. Rewrite using `[this, MulEquiv.symm_apply_apply]`.
+-/
 theorem prPS_jQS (S : StepG I N) {m : ℕ} (hk : m + 1 = N) (g : Fin nV → GL (Fin (m + 1)) Qq) :
     prPS S hk (jQS S hk g) = g := by
   funext v
@@ -95,6 +113,15 @@ def HypAtPS (S : StepG I N) : Prop :=
       ∀ a b, ((((frVS S v)⁻¹ * bc (fstV I v) x * frVS S v)⁻¹ : GL (Fin N) _) : Matrix (Fin N) (Fin N) _) a b ∈
         (I.plc v).adicCompletionIntegers F)
 
+/- English proof (translation)
+Rewrite using `[stabStd_iff, ← map_inv, toFS_symm, toFS_symm]`. Establish `key : ∀ M : GL (Fin N) ((I.plc v).adicCompletion F), (∀ a b, ((castGL hk Qq).symm ((bcE (I.eQ v)).symm M) : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) a b ∈ (algebraMap W Qq).range) ↔ ∀ a b, (M : Matrix (Fin N) (Fin N) _) a b ∈ (I.plc v).adicCompletionIntegers F`. Introduce `M`. Establish `h1 : ∀ a b, ((castGL hk Qq).symm ((bcE (I.eQ v)).symm M) : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) a b ∈ (algebraMap W Qq).range ↔ (M : Matrix (Fin N) (Fin N) _) (Fin.cast hk a) (Fin.cast hk b) ∈ (I.plc v).adicCompletionIntegers F`. Introduce `a b`.
+
+Rewrite using `[castGL_symm_apply, bcE_symm_apply]`. Use `I.completion_integers_iff v ((I.eQ v).symm ((M : Matrix (Fin N) (Fin N) _) (Fin.cast hk a) (Fin.cast hk b)))` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `this`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h a b`. Use `(h1 (Fin.cast hk.symm a) (Fin.cast hk.symm b)).1 (h _ _)` as an intermediate fact. Simplify using `using this`. Introduce `h a b`. Conclude with `(h1 a b).2 (h _ _)`.
+
+Establish `e : (frVS S v)⁻¹ * X⁻¹ * frVS S v = ((frVS S v)⁻¹ * X * frVS S v)⁻¹` using `by group`. Rewrite using `[key, e, key]`.
+-/
 theorem toFS_symm_stab (S : StepG I N) {m : ℕ} (hk : m + 1 = N) (v : Fin nV)
     (X : GL (Fin N) ((I.plc v).adicCompletion F)) :
     (toFS S hk v).symm X ∈ stabStd (k := m + 1) (Qq := Qq) W ↔

@@ -18,6 +18,15 @@ open MvPowerSeries
 variable {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ]
   {S : Type} [CommRing S] [Algebra R₀ S]
 
+/- English proof (translation)
+Take `⟨N, -, hN⟩` from `evBasic_exists_pow a ha`. Establish `ht : ∀ e : σ → ℕ, evalTerm f a (Finsupp.equivFunOnFinite.symm e) = algebraMap R₀ S (coeff (Finsupp.equivFunOnFinite.symm e) f) * ∏ i, a i ^ e i` using `fun e => by`. Unfold `evalTerm`. Rewrite using `[Finsupp.prod_fintype _ _ (by simp), Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Rewrite using `[evBasic_nEval_eq_tEval f a N hN, evBasic_tEval_eq_sum, evalNil_eq_finsum, ← finsum_comp_equiv (Finsupp.equivFunOnFinite (α := σ) (M := ℕ)).symm, finsum_eq_sum_of_support_subset (s := Fintype.piFinset fun _ : σ => Finset.range N)]`. Conclude with `Finset.sum_congr rfl fun e _ => (ht e).symm`. Introduce `e he`. Assume the negation of the conclusion as `hc`. Apply `he` to reduce the goal to its premises.
+
+Rewrite `hc` using `[Finset.mem_coe, Fintype.mem_piFinset]`. Use `push Not at hc`. Take `⟨i, hi⟩` from `hc`. Establish `hi' : N ≤ e i` using `by simpa using hi`. Use `show evalTerm f a _ = 0`.
+
+Rewrite using `[ht, Finset.prod_eq_zero (f := fun i => a i ^ e i) (Finset.mem_univ i) (pow_eq_zero_of_le hi' (hN i)), mul_zero]`.
+-/
 theorem nEval_eq_evalNil (f : MvPowerSeries σ R₀) (a : σ → S) (ha : ∀ i, IsNilpotent (a i)) :
     nEval f a = evalNil f a ha := by
   obtain ⟨N, -, hN⟩ := evBasic_exists_pow a ha
@@ -46,6 +55,9 @@ variable {R₀ : Type} [CommRing R₀] in
 open MvPowerSeries in
 variable {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ]
   {S : Type} [CommRing S] [Algebra R₀ S] in
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_nilpotent fun i => by simpa using ha i`.
+-/
 theorem _root_.GlobalTheory.ChartCompare.hasSubst_C (a : σ → S) (ha : ∀ i, IsNilpotent (a i)) :
     HasSubst (fun i => (C (a i) : MvPowerSeries Empty S)) :=
   hasSubst_of_constantCoeff_nilpotent fun i => by simpa using ha i
@@ -55,6 +67,13 @@ variable {R₀ : Type} [CommRing R₀] in
 open MvPowerSeries in
 variable {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ]
   {S : Type} [CommRing S] [Algebra R₀ S] in
+/- English proof (translation)
+Take `⟨N, -, hN⟩` from `_root_.GlobalTheory.evBasic_exists_pow a ha`. Rewrite using `[_root_.GlobalTheory.evBasic_nEval_eq_tEval f a N hN, _root_.GlobalTheory.evBasic_tEval_eq_sum]`. Establish `hsupp : Function.support (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts.evalTerm f a) ⊆ (((Fintype.piFinset fun _ : σ => Finset.range N).map Finsupp.equivFunOnFinite.symm.toEmbedding : Finset (σ →₀ ℕ)) : Set (σ →₀ ℕ))`. Introduce `d hd`. Rewrite using `[Finset.mem_coe, Finset.mem_map_equiv, Fintype.mem_piFinset]`.
+
+Introduce `i`. Simplify using `only [Equiv.symm_symm, Finsupp.equivFunOnFinite_apply, Finset.mem_range]`. Assume the negation of the conclusion as `hi`. Apply `hd` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts.evalTerm, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finset.prod_eq_zero (f := fun k => a k ^ d k) (Finset.mem_univ i) (pow_eq_zero_of_le (not_lt.mp hi) (hN i)), smul_zero]`.
+
+Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Finset.sum_map]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts.evalTerm, Algebra.smul_def, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using the standard rewrite rules.
+-/
 private theorem nilpotent_eval_eq_finsum (f : MvPowerSeries σ R₀) (a : σ → S)
     (ha : ∀ i, IsNilpotent (a i)) : _root_.ReciprocityTheory.PGsh.Be2.nEval f a = ∑ᶠ d, _root_.GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts.evalTerm f a d := by
   obtain ⟨N, -, hN⟩ := _root_.GlobalTheory.evBasic_exists_pow a ha
@@ -82,6 +101,11 @@ variable {R₀ : Type} [CommRing R₀] in
 open MvPowerSeries in
 variable {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ]
   {S : Type} [CommRing S] [Algebra R₀ S] in
+/- English proof (translation)
+Use extensionality with `e`. Take `rfl : e = 0` from `Subsingleton.elim _ _`. Rewrite using `[coeff_subst (_root_.GlobalTheory.ChartCompare.hasSubst_C a ha), nilpotent_eval_eq_finsum f a ha, coeff_zero_C]`. Use `finsum_congr fun d => ?_` and prove the remaining obligations. Establish `hC : (d.prod fun s n => (C (a s) : MvPowerSeries Empty S) ^ n) = C (d.prod fun s n => a s ^ n)`.
+
+Simplify using `[map_finsuppProd]`. Rewrite using `[hC, coeff_zero_C, _root_.GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts.evalTerm]`.
+-/
 theorem _root_.GlobalTheory.ChartCompare.subst_C_eq (f : MvPowerSeries σ R₀) (a : σ → S)
     (ha : ∀ i, IsNilpotent (a i)) :
     subst (fun i => (C (a i) : MvPowerSeries Empty S)) f = C (_root_.ReciprocityTheory.PGsh.Be2.nEval f a) := by
@@ -100,6 +124,9 @@ variable {R₀ : Type} [CommRing R₀] in
 open MvPowerSeries in
 variable {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ]
   {S : Type} [CommRing S] [Algebra R₀ S] in
+/- English proof (translation)
+Establish `h` using `congrArg (coeff 0) (_root_.GlobalTheory.ChartCompare.subst_C_eq (X s : MvPowerSeries σ R₀) a ha)`. Rewrite `h` using `[subst_X (_root_.GlobalTheory.ChartCompare.hasSubst_C a ha), coeff_zero_C, coeff_zero_C]`. Conclude with `h.symm`.
+-/
 theorem _root_.GlobalTheory.ChartCompare.nEval_X (a : σ → S) (ha : ∀ i, IsNilpotent (a i)) (s : σ) :
     _root_.ReciprocityTheory.PGsh.Be2.nEval (X s : MvPowerSeries σ R₀) a = a s := by
   have h := congrArg (coeff 0) (_root_.GlobalTheory.ChartCompare.subst_C_eq (X s : MvPowerSeries σ R₀) a ha)
@@ -111,6 +138,9 @@ variable {R₀ : Type} [CommRing R₀] in
 open MvPowerSeries in
 variable {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ]
   {S : Type} [CommRing S] [Algebra R₀ S] in
+/- English proof (translation)
+Rewrite using `[nilpotent_eval_eq_finsum _ a ha]`. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts.evalTerm]`.
+-/
 theorem _root_.GlobalTheory.ChartCompare.nEval_zero (a : σ → S) (ha : ∀ i, IsNilpotent (a i)) :
     _root_.ReciprocityTheory.PGsh.Be2.nEval (0 : MvPowerSeries σ R₀) a = 0 := by
   rw [nilpotent_eval_eq_finsum _ a ha]
@@ -121,6 +151,9 @@ variable {R₀ : Type} [CommRing R₀] in
 open MvPowerSeries in
 variable {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ]
   {S : Type} [CommRing S] [Algebra R₀ S] in
+/- English proof (translation)
+Establish `h` using `_root_.GlobalTheory.evBasic_nEval_sub_coeff_mem f a ha`. Rewrite `h` using `[coeff_zero_eq_constantCoeff_apply, hf, map_zero, sub_zero]`. Establish `hle : Ideal.span (Set.range a) ≤ nilradical S` using `Ideal.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact mem_nilradical.mpr (ha i))`. Conclude with `mem_nilradical.mp (hle h)`.
+-/
 theorem _root_.GlobalTheory.ChartCompare.isNilpotent_nEval (f : MvPowerSeries σ R₀)
     (hf : constantCoeff f = 0) (a : σ → S)
     (ha : ∀ i, IsNilpotent (a i)) : IsNilpotent (_root_.ReciprocityTheory.PGsh.Be2.nEval f a) := by
@@ -136,6 +169,11 @@ open MvPowerSeries in
 variable {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ]
   {S : Type} [CommRing S] [Algebra R₀ S] in
 
+/- English proof (translation)
+Establish `hbS : HasSubst b` using `hasSubst_of_constantCoeff_nilpotent fun s => by simp [hb s]`. Establish `hab : ∀ s, IsNilpotent (_root_.ReciprocityTheory.PGsh.Be2.nEval (b s) a)` using `fun s => _root_.GlobalTheory.ChartCompare.isNilpotent_nEval (b s) (hb s) a ha`. Establish `h` using `_root_.GlobalTheory.ChartCompare.subst_C_eq (subst b f) a ha`. Rewrite `h` using `[subst_comp_subst_apply hbS (_root_.GlobalTheory.ChartCompare.hasSubst_C a ha)]`. Rewrite `h` using `[_root_.GlobalTheory.ChartCompare.subst_C_eq _ a ha]`.
+
+Rewrite `h` using `[_root_.GlobalTheory.ChartCompare.subst_C_eq f _ hab]`. Simplify using `using (congrArg (coeff 0) h).symm`.
+-/
 theorem _root_.GlobalTheory.ChartCompare.nEval_subst (b : σ → MvPowerSeries τ R₀)
     (hb : ∀ s, constantCoeff (b s) = 0)
     (f : MvPowerSeries σ R₀) (a : τ → S) (ha : ∀ i, IsNilpotent (a i)) :
@@ -150,6 +188,11 @@ theorem _root_.GlobalTheory.ChartCompare.nEval_subst (b : σ → MvPowerSeries �
   simpa using (congrArg (coeff 0) h).symm
 
 omit [Fintype σ] in
+/- English proof (translation)
+Rewrite `hf` using `[Ideal.span, Finsupp.mem_span_range_iff_exists_finsupp]`. Take `⟨c, rfl⟩` from `hf`. Rewrite using `[Finsupp.sum, MvPolynomial.coeff_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, MvPolynomial.X_pow_eq_monomial, MvPolynomial.coeff_mul_monomial', if_neg]`.
+
+Introduce `h`. Use `h j` as an intermediate fact. Simplify using `only [Finsupp.single_eq_same] at this`. Conclude with `absurd (hm j) (not_lt.mpr this)`.
+-/
 theorem coeff_eq_zero_of_mem_span {N : ℕ} (f : MvPolynomial σ R₀)
     (hf : f ∈ Ideal.span (Set.range fun j : σ => (MvPolynomial.X j : MvPolynomial σ R₀) ^ N))
     (m : σ →₀ ℕ) (hm : ∀ i, m i < N) : MvPolynomial.coeff m f = 0 := by
@@ -163,6 +206,13 @@ theorem coeff_eq_zero_of_mem_span {N : ℕ} (f : MvPolynomial σ R₀)
   simp only [Finsupp.single_eq_same] at this
   exact absurd (hm j) (not_lt.mpr this)
 
+/- English proof (translation)
+Establish `h : ∀ (e : σ → ℕ) (r : R₀), algebraMap R₀ (MvPolynomial σ R₀) r * ∏ i, MvPolynomial.X i ^ e i = MvPolynomial.monomial (Finsupp.equivFunOnFinite.symm e) r` using `fun e r => by`. Rewrite using `[MvPolynomial.monomial_eq, Finsupp.prod_fintype _ _ (by simp)]`. Both sides reduce to the same expression. Rewrite using `[evBasic_tEval_eq_sum, MvPolynomial.coeff_sum, Finset.sum_eq_single (⇑m)]`. Rewrite using `[h, MvPolynomial.coeff_monomial]`.
+
+Simplify using the standard rewrite rules. Introduce `e _ he`. Rewrite using `[h, MvPolynomial.coeff_monomial, if_neg]`. Introduce and unpack `rfl`. Conclude with `he rfl`.
+
+Introduce `hc`. Conclude with `absurd (by simpa [Fintype.mem_piFinset] using hm) hc`.
+-/
 theorem coeff_tEval_X {N : ℕ} (f : MvPowerSeries σ R₀) (m : σ →₀ ℕ) (hm : ∀ i, m i < N) :
     MvPolynomial.coeff m (tEval N f (MvPolynomial.X : σ → MvPolynomial σ R₀)) = coeff m f := by
   have h : ∀ (e : σ → ℕ) (r : R₀), algebraMap R₀ (MvPolynomial σ R₀) r *
@@ -179,6 +229,13 @@ theorem coeff_tEval_X {N : ℕ} (f : MvPowerSeries σ R₀) (m : σ →₀ ℕ) 
   · intro hc
     exact absurd (by simpa [Fintype.mem_piFinset] using hm) hc
 
+/- English proof (translation)
+Use extensionality with `m`. Use `set N := (∑ i, m i) + 1`. Establish `hm : ∀ i, m i < N` using `fun i => Nat.lt_succ_of_le (Finset.single_le_sum (f := fun i => m i) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))`. Set `J` to `Ideal.span (Set.range fun j : σ => (MvPolynomial.X j : MvPolynomial σ R₀) ^ N)`. Set `π` to `Ideal.Quotient.mkₐ R₀ J`.
+
+Establish `hx : ∀ j, π (MvPolynomial.X j) ^ N = 0` using `fun j => by`. Rewrite using `[← map_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨j, rfl⟩)`. Establish `h1` using `h _ (fun j => π (MvPolynomial.X j)) fun j => ⟨N, hx j⟩`. Rewrite `h1` using `[evBasic_nEval_eq_tEval _ _ N hx, evBasic_nEval_eq_tEval _ _ N hx, ← evBasic_map_tEval, ← evBasic_map_tEval]`.
+
+Establish `h2` using `coeff_eq_zero_of_mem_span _ (Ideal.Quotient.eq.1 h1) m hm`. Rewrite `h2` using `[MvPolynomial.coeff_sub, coeff_tEval_X _ _ hm, coeff_tEval_X _ _ hm, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem eq_of_nEval_eq (f f' : MvPowerSeries σ R₀)
     (h : ∀ (S : Type) [CommRing S] [Algebra R₀ S] (a : σ → S), (∀ i, IsNilpotent (a i)) →
       nEval f a = nEval f' a) : f = f' := by
@@ -202,6 +259,9 @@ variable {R₀ : Type} [CommRing R₀] in
 open MvPowerSeries in
 variable {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ]
   {S : Type} [CommRing S] [Algebra R₀ S] in
+/- English proof (translation)
+Rewrite using `[Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]`.
+-/
 private theorem finsupp_prod_pow_eq_toMultiset_map_prod (a : σ → S) (d : σ →₀ ℕ) :
     (d.prod fun i n => a i ^ n) = ((Finsupp.toMultiset d).map a).prod := by
   rw [Finsupp.toMultiset_map, Finsupp.prod_toMultiset,
@@ -212,6 +272,11 @@ variable {R₀ : Type} [CommRing R₀] in
 open MvPowerSeries in
 variable {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ]
   {S : Type} [CommRing S] [Algebra R₀ S] in
+/- English proof (translation)
+Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons i m ih`. Rewrite using `[Multiset.map_cons, Multiset.map_cons, Multiset.prod_cons, Multiset.prod_cons]`. Establish `e : a i * (m.map a).prod - b i * (m.map b).prod = a i * ((m.map a).prod - (m.map b).prod) + (a i - b i) * (m.map b).prod` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `J.add_mem (J.mul_mem_left _ ih) (J.mul_mem_right _ (hJ i))`.
+-/
 private theorem multiset_map_prod_sub_mem_of_sub_mem (a b : σ → S) (J : Ideal S) (hJ : ∀ i, a i - b i ∈ J)
     (m : Multiset σ) : (m.map a).prod - (m.map b).prod ∈ J := by
   induction m using Multiset.induction_on with
@@ -228,6 +293,13 @@ variable {R₀ : Type} [CommRing R₀] in
 open MvPowerSeries in
 variable {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ]
   {S : Type} [CommRing S] [Algebra R₀ S] in
+/- English proof (translation)
+Take `⟨i, hi⟩` from `Multiset.card_pos_iff_exists_mem.mp (by omega : 0 < Multiset.card m)`. Take `⟨m', rfl⟩` from `Multiset.exists_cons_of_mem hi`. Rewrite `hm` using `[Multiset.card_cons]`. Establish `hB : (m'.map b).prod ∈ I`. Take `⟨j, hj⟩` from `Multiset.card_pos_iff_exists_mem.mp (by omega : 0 < Multiset.card m')`.
+
+Take `⟨m'', rfl⟩` from `Multiset.exists_cons_of_mem hj`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons]`. Conclude with `I.mul_mem_right _ (hb j)`. Establish `e : ((i ::ₘ m').map a).prod - ((i ::ₘ m').map b).prod = a i * ((m'.map a).prod - (m'.map b).prod) + (m'.map b).prod * (a i - b i)`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (Ideal.mul_mem_mul (ha i) (multiset_map_prod_sub_mem_of_sub_mem a b J hJ _)) (Ideal.mul_mem_mul hB (hJ i))`.
+-/
 private theorem multiset_map_prod_sub_mem_mul_of_two_le_card (a b : σ → S) (I J : Ideal S) (ha : ∀ i, a i ∈ I)
     (hb : ∀ i, b i ∈ I) (hJ : ∀ i, a i - b i ∈ J) (m : Multiset σ)
     (hm : 2 ≤ Multiset.card m) : (m.map a).prod - (m.map b).prod ∈ I * J := by
@@ -253,6 +325,19 @@ open MvPowerSeries in
 variable {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ]
   {S : Type} [CommRing S] [Algebra R₀ S] in
 
+/- English proof (translation)
+Use `set t : (σ →₀ ℕ) → S := fun d => _root_.GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts.evalTerm f a d - _root_.GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts.evalTerm f b d with ht`. Establish `hfa` using `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts.evalTerm_finite f a hna`. Establish `hfb` using `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts.evalTerm_finite f b hnb`. Establish `key : _root_.ReciprocityTheory.PGsh.Be2.nEval f a - _root_.ReciprocityTheory.PGsh.Be2.nEval f b = ∑ᶠ d, t d`. Rewrite using `[nilpotent_eval_eq_finsum f a hna, nilpotent_eval_eq_finsum f b hnb, finsum_sub_distrib hfa hfb]`.
+
+Establish `lin : ∑ j, coeff (Finsupp.single j 1) f • (a j - b j) = ∑ᶠ d, (Set.range fun j => Finsupp.single j 1).indicator t d`. Rewrite using `[← finsum_mem_def, finsum_mem_range (Finsupp.single_left_injective one_ne_zero), finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [t, _root_.GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts.evalTerm]`. Rewrite using `[Finsupp.prod_single_index (h := fun i n => a i ^ n) (pow_zero _), Finsupp.prod_single_index (h := fun i n => b i ^ n) (pow_zero _), pow_one, pow_one, smul_sub]`.
+
+Establish `hft : (Function.support t).Finite` using `(hfa.union hfb).subset (Function.support_sub _ _)`. Establish `hfi : (Function.support ((Set.range fun j => Finsupp.single j 1).indicator t)).Finite` using `(Set.finite_range _).subset Set.support_indicator_subset`. Rewrite using `[key, lin, ← finsum_sub_distrib hft hfi]`. Use `finsum_induction (fun x => x ∈ I * J) (zero_mem _) (fun _ _ => add_mem) fun d => ?_` and prove the remaining obligations. Distinguish the cases in `hd : d ∈ Set.range fun j : σ => Finsupp.single j 1`.
+
+Rewrite using `[Set.indicator_of_mem hd, sub_self]`. Conclude with `zero_mem _`. Rewrite using `[Set.indicator_of_notMem hd, sub_zero, ht]`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts.evalTerm, ← smul_sub, finsupp_prod_pow_eq_toMultiset_map_prod]`. Rewrite using `[Algebra.smul_def]`.
+
+Apply `Ideal.mul_mem_left` to reduce the goal to its premises. Break down `Nat.lt_or_ge (Multiset.card (Finsupp.toMultiset d)) 2 with h | h` into its components or cases. Take `h0 | h1 : Multiset.card (Finsupp.toMultiset d) = 0 ∨ Multiset.card (Finsupp.toMultiset d) = 1` from `by omega`. Rewrite using `[Multiset.card_eq_zero.mp h0]`. Simplify using the standard rewrite rules.
+
+Take `⟨j, hj⟩` from `Multiset.card_eq_one.mp h1`. Establish `hdj : Finsupp.single j 1 = d`. Rewrite using `[← Finsupp.toMultiset_toFinsupp d, hj, Multiset.toFinsupp_singleton]`. Conclude with `absurd ⟨j, hdj⟩ hd`. Conclude with `multiset_map_prod_sub_mem_mul_of_two_le_card a b I J ha hb hJ _ h`.
+-/
 theorem _root_.GlobalTheory.ChartCompare.nEval_sub_mem (f : MvPowerSeries σ R₀) (a b : σ → S)
     (hna : ∀ i, IsNilpotent (a i))
     (hnb : ∀ i, IsNilpotent (b i)) (I J : Ideal S) (ha : ∀ i, a i ∈ I) (hb : ∀ i, b i ∈ I)
@@ -313,10 +398,16 @@ structure PointLaws (F : Fin g → MvPowerSeries (Fin g ⊕ Fin g) R₀) : Prop 
     (∀ i, IsNilpotent (a i)) → (∀ i, IsNilpotent (b i)) → (∀ i, IsNilpotent (c i)) →
     fAdd F (fAdd F a b) c = fAdd F a (fAdd F b c)
 
+/- English proof (translation)
+Introduce and unpack `(i | i)`. Use `exacts [ha i, hb i]`.
+-/
 theorem nil_elim {S : Type} [CommRing S] {a b : Fin g → S} (ha : ∀ i, IsNilpotent (a i))
     (hb : ∀ i, IsNilpotent (b i)) : ∀ s, IsNilpotent (Sum.elim a b s) := by
   rintro (i | i); exacts [ha i, hb i]
 
+/- English proof (translation)
+Rewrite using `[nEval_subst _ (by rintro (s | s); exacts [hu s, hv s]) _ _ hx, fAdd]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> rfl`.
+-/
 theorem nEval_subst_elim {τ S : Type} [Fintype τ] [DecidableEq τ] [CommRing S] [Algebra R₀ S]
     (F : Fin g → MvPowerSeries (Fin g ⊕ Fin g) R₀) (u v : Fin g → MvPowerSeries τ R₀)
     (hu : ∀ s, constantCoeff (u s) = 0) (hv : ∀ s, constantCoeff (v s) = 0) (x : τ → S)
@@ -328,6 +419,9 @@ theorem nEval_subst_elim {τ S : Type} [Fintype τ] [DecidableEq τ] [CommRing S
   funext s
   cases s <;> rfl
 
+/- English proof (translation)
+Rewrite using `[nEval_subst _ (by simp) _ _ (nil_elim ha hb), fAdd]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[nEval_X _ (nil_elim ha hb)]`. Apply the tactic sequence `cases s <;> rfl`.
+-/
 theorem nEval_swap {S : Type} [CommRing S] [Algebra R₀ S]
     (F : Fin g → MvPowerSeries (Fin g ⊕ Fin g) R₀) (a b : Fin g → S) (ha : ∀ i, IsNilpotent (a i))
     (hb : ∀ i, IsNilpotent (b i)) (k : Fin g) :
@@ -339,6 +433,9 @@ theorem nEval_swap {S : Type} [CommRing S] [Algebra R₀ S]
   rw [nEval_X _ (nil_elim ha hb)]
   cases s <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Rewrite using `[nEval_subst_elim F _ _ (by simp) (by simp) x hx]`. Simplify using `only [nEval_X x hx]`.
+-/
 theorem nEval_pair {S : Type} [CommRing S] [Algebra R₀ S]
     (F : Fin g → MvPowerSeries (Fin g ⊕ Fin g) R₀) (x : Fin 3 × Fin g → S)
     (hx : ∀ i, IsNilpotent (x i)) (i j : Fin 3) :
@@ -349,6 +446,9 @@ theorem nEval_pair {S : Type} [CommRing S] [Algebra R₀ S]
   rw [nEval_subst_elim F _ _ (by simp) (by simp) x hx]
   simp only [nEval_X x hx]
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (by rintro (s | s) <;> simp)) (by rintro (s | s) <;> simp) (hF b)`.
+-/
 theorem const_pair (F : Fin g → MvPowerSeries (Fin g ⊕ Fin g) R₀)
     (hF : ∀ a, constantCoeff (F a) = 0) (i j : Fin 3) (b : Fin g) :
     constantCoeff ((F b).subst
@@ -356,6 +456,27 @@ theorem const_pair (F : Fin g → MvPowerSeries (Fin g ⊕ Fin g) R₀)
   constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (by rintro (s | s) <;> simp))
     (by rintro (s | s) <;> simp) (hF b)
 
+/- English proof (translation)
+Establish `hassoc : ∀ (S : Type) [CommRing S] [Algebra R₀ S] (a b c : Fin g → S), (∀ i, IsNilpotent (a i)) → (∀ i, IsNilpotent (b i)) → (∀ i, IsNilpotent (c i)) → fAdd L.F (fAdd L.F a b) c = fAdd L.F a (fAdd L.F b c)`. Introduce `S _ _ a b c ha hb hc`. Use function extensionality and compare the values at `k`. Set `x : Fin 3 × Fin g → S` to `fun q => ![a, b, c] q.1 q.2`. Establish `hx : ∀ i, IsNilpotent (x i)`.
+
+Introduce and unpack `⟨i, j⟩`. Use `fin_cases i`. Use `exacts [ha j, hb j, hc j]`. Establish `h` using `congrArg (fun f => nEval f x) (L.assoc k)`. Use `beta_reduce at h`.
+
+Rewrite `h` using `[nEval_subst_elim _ _ _ (const_pair _ L.const _ _) (by simp) x hx, nEval_subst_elim _ _ _ (by simp) (const_pair _ L.const _ _) x hx, nEval_pair _ x hx, nEval_pair _ x hx]`. Simplify using `only [nEval_X x hx] at h`. Conclude with `h`. Use `⟨?_, ?_, hassoc⟩` and prove the remaining obligations. Introduce `S _ _ a ha`.
+
+Establish `h0 : ∀ i, IsNilpotent ((0 : Fin g → S) i)` using `fun _ => IsNilpotent.zero`. Establish `h00 : fAdd L.F (0 : Fin g → S) 0 = 0`. Use function extensionality and compare the values at `k`. Use `evBasic_nEval_sub_coeff_mem (L.F k) (Sum.elim (0 : Fin g → S) 0) (nil_elim h0 h0)` as an intermediate fact. Rewrite `this` using `[coeff_zero_eq_constantCoeff_apply, L.const, map_zero, sub_zero]`.
+
+Apply the tactic sequence `exact (Ideal.span_le.2 (by rintro _ ⟨i | i, rfl⟩ <;> simp) : Ideal.span _ ≤ (⊥ : Ideal S)) this`. Establish `h1` using `hassoc S a 0 0 ha h0 h0`. Rewrite `h1` using `[h00]`. Establish `hb : ∀ i, IsNilpotent (fAdd L.F a 0 i)` using `fun i => isNilpotent_nEval _ (L.const i) _ (nil_elim ha h0)`. Generalize the expression as in `hbdef : fAdd L.F a 0 = b at h1 hb`.
+
+Set `I` to `Ideal.span (Set.range (Sum.elim a b))`. Set `J` to `Ideal.span (Set.range (b - a))`. Establish `hJ : J ≤ I * J`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Establish `h2` using `nEval_sub_mem (L.F k) (Sum.elim b 0) (Sum.elim a 0) (nil_elim hb h0) (nil_elim ha h0) I J (by rintro (i | i); exacts [Ideal.subset_span ⟨Sum.inr i, rfl⟩, I.zero_mem]) (by rintro (i | i); exacts [Ideal.subset_span ⟨Sum.inl i, rfl⟩, I.zero_mem]) (by rintro (i | i); exacts [Ideal.su …`. Establish `e1 : nEval (L.F k) (Sum.elim b 0) = b k` using `congrFun h1 k`. Establish `e2 : nEval (L.F k) (Sum.elim a 0) = b k` using `congrFun hbdef k`. Rewrite `h2` using `[e1, e2, sub_self, zero_sub, neg_mem_iff, Fintype.sum_sum_type]`. Simplify `h2` using `[L.lin_left]`.
+
+Take `⟨n, hn⟩ : IsNilpotent I` from `(Ideal.FG.isNilpotent_iff_le_nilradical (Submodule.fg_span (Set.finite_range _))).2 (Ideal.span_le.2 (by rintro _ ⟨i, rfl⟩; exact nil_elim ha hb i))`. Establish `hpow : ∀ m : ℕ, J ≤ I ^ m * J`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+
+Consider the case `succ m ih => rw [pow_succ, mul_assoc]`. Conclude with `ih.trans (Ideal.mul_mono_right hJ)`. Establish `h3` using `hpow n`. Rewrite `h3` using `[hn, zero_mul]`. Use function extensionality and compare the values at `k`.
+
+Conclude with `sub_eq_zero.1 (h3 (Ideal.subset_span ⟨k, rfl⟩ : (b - a) k ∈ J))`. Introduce `S _ _ a b ha hb`. Use function extensionality and compare the values at `k`. Rewrite using `[← nEval_swap L.F a b ha hb, L.comm]`. Both sides reduce to the same expression.
+-/
 theorem pointLaws_of_law (L : FormalGroupLaw R₀ g) : PointLaws L.F := by
   have hassoc : ∀ (S : Type) [CommRing S] [Algebra R₀ S] (a b c : Fin g → S),
       (∀ i, IsNilpotent (a i)) → (∀ i, IsNilpotent (b i)) → (∀ i, IsNilpotent (c i)) →
@@ -503,6 +624,13 @@ section Nil
 
 variable {K : LAlg R₀}
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, mem_maximalIdeal, mem_nonunits_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h hu`. Use `hu.map ρ.1` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Conclude with `not_isUnit_zero this`. Introduce `h`. Assume the negation of the conclusion as `hne`. Take `⟨b, hb⟩` from `hK.mul_inv_cancel hne`.
+
+Conclude with `h (ρ.2.map_nonunit a (IsUnit.of_mul_eq_one b hb))`.
+-/
 theorem ker_eq_maximalIdeal (hK : IsField (K : Type)) {R : LAlg R₀} (ρ : LHom R K) :
     RingHom.ker ρ.1 = maximalIdeal (R : Type) := by
   ext a
@@ -517,6 +645,11 @@ theorem ker_eq_maximalIdeal (hK : IsField (K : Type)) {R : LAlg R₀} (ρ : LHom
     obtain ⟨b, hb⟩ := hK.mul_inv_cancel hne
     exact h (ρ.2.map_nonunit a (IsUnit.of_mul_eq_one b hb))
 
+/- English proof (translation)
+Rewrite using `[isField_iff_maximalIdeal_eq, eq_bot_iff]`. Introduce `x hx`. Take `⟨a, rfl⟩` from `R.res_surj x`. Establish `ha : a ∈ maximalIdeal (R.alg : Type)` using `fun hu => hx (hu.map R.res.1)`. Rewrite `ha` using `[← R.res_ker]`.
+
+Conclude with `ha`.
+-/
 theorem isField_of_resAlg (R : ResAlg K) : IsField (K : Type) := by
   rw [isField_iff_maximalIdeal_eq, eq_bot_iff]
   intro x hx
@@ -525,6 +658,9 @@ theorem isField_of_resAlg (R : ResAlg K) : IsField (K : Type) := by
   rw [← R.res_ker] at ha
   exact ha
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨R.res_surj, fun a ha => R.nil a (R.res_ker ▸ ha)⟩`.
+-/
 theorem isNilOver_res (R : NilAlg K) : IsNilOver R.res :=
   ⟨R.res_surj, fun a ha => R.nil a (R.res_ker ▸ ha)⟩
 
@@ -543,9 +679,17 @@ def nilEquiv (hK : IsField (K : Type)) :
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.onto, fun h => ⟨isNilOver_res W, h⟩⟩`.
+-/
 theorem sm_iff (B : BX R₀) (W : NilAlg K) : SM B K W.alg W.res ↔ LiftsFromResidue B W :=
   ⟨fun h => h.onto, fun h => ⟨isNilOver_res W, h⟩⟩
 
+/- English proof (translation)
+Establish `hle : RingHom.ker π.1 ≤ RingHom.ker R.res.1`. Rewrite using `[R.res_ker]`. Conclude with `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top _)`. Set `r : (S : Type) →ₐ[R₀] (K : Type)` to `AlgHom.liftOfSurjective π.1 hπ.1 R.res.1 hle`. Establish `hr : ∀ a, r (π.1 a) = R.res.1 a` using `fun a => AlgHom.liftOfSurjective_apply _ _ _ _ a`.
+
+Conclude with `⟨⟨r, ⟨fun s hs => by`. Take `⟨a, rfl⟩` from `hπ.1 s`. Establish `h1 : IsUnit (R.res.1 a)` using `by rw [← hr]; exact hs`. Conclude with `(R.res.2.map_nonunit a h1).map π.1⟩⟩, Subtype.ext (AlgHom.ext hr)⟩`.
+-/
 theorem exists_factor (R : ResAlg K) {S : LAlg R₀} (π : LHom R.alg S) (hπ : π.SqZero) :
     ∃ r : LHom S K, r.comp π = R.res := by
   have hle : RingHom.ker π.1 ≤ RingHom.ker R.res.1 := by
@@ -564,6 +708,9 @@ section Chart
 
 variable {B : BX R₀} {K : LAlg R₀} {g : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `funext s; cases s <;> rfl`.
+-/
 theorem elim_val {R : Type} [CommRing R] {I : Ideal R} (x y : Fin g → I) :
     (fun s => (Sum.elim x y s).1) = Sum.elim (fun k => (x k : R)) (fun k => (y k : R)) := by
   funext s; cases s <;> rfl
@@ -610,27 +757,46 @@ universe v
 
 variable {B : BX R₀} {k : LAlg R₀} {p g : ℕ} {O : ResAlg k}
 
+/- English proof (translation)
+Rewrite using `[← natCast_zsmul]`. Conclude with `Iff.rfl`.
+-/
 theorem mem_tors {R : LAlg R₀} {z : B.G R} : z ∈ Tors B p R ↔ p • z = 0 := by
   rw [← natCast_zsmul]
   exact Iff.rfl
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr (Equiv.subtypeEquivRight fun _ => mem_tors.symm)`.
+-/
 theorem card_tors (R : LAlg R₀) : Nat.card {t : B.G R // p • t = 0} = Nat.card (Tors B p R) :=
   Nat.card_congr (Equiv.subtypeEquivRight fun _ => mem_tors.symm)
 
 variable {C : Type v} [Field C] [Algebra (O.alg : Type) C] [IsFractionRing (O.alg : Type) C]
 
 omit [IsFractionRing (O.alg : Type) C] in
+/- English proof (translation)
+Unfold `TorsionRep.toFun`. Rewrite using `[Algebra.TensorProduct.lift_tmul, map_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem toFun_one_tmul (D : TorsionRep B p O) (f : D.total) (t : Tors B p O.alg) :
     D.toFun C (1 ⊗ₜ f) t = algebraMap (O.alg : Type) C ((D.classify t).2.1 (f (D.classify t).1)) := by
   unfold TorsionRep.toFun
   rw [Algebra.TensorProduct.lift_tmul, map_one, one_mul]
   rfl
 
+/- English proof (translation)
+The claim follows from `(D.universal O.alg (LHom.id _) t).unique (D.classify_spec t) ⟨hφ, ht⟩`.
+-/
 theorem classify_eq (D : TorsionRep B p O) (x : Tors B p k) (φ : LHom (D.A x).alg O.alg)
     (hφ : φ.comp (D.str x) = LHom.id _) (t : Tors B p O.alg)
     (ht : B.map φ (D.y x : B.G _) = (t : B.G O.alg)) : D.classify t = ⟨x, φ⟩ :=
   (D.universal O.alg (LHom.id _) t).unique (D.classify_spec t) ⟨hφ, ht⟩
 
+/- English proof (translation)
+Use `haveI := D.free`. Establish `h1 : D.rep.toFun C (1 ⊗ₜ (Pi.single x f : D.rep.total)) = 0`. Use function extensionality and compare the values at `t`. Rewrite using `[toFun_one_tmul]`. Use `hf t` as an intermediate fact.
+
+Generalize the expression as in `D.rep.classify t = c at this`. Take `⟨x', φ⟩` from `c`. Distinguish the cases in `h : x' = x`. Substitute `h` using the available equality. Simplify using `[this φ rfl]`.
+
+Simplify using `[Pi.single_eq_of_ne h]`. Establish `h2 : (1 : C) ⊗ₜ[(O.alg : Type)] (Pi.single x f : D.rep.total) = 0` using `D.generic.1 (h1.trans (map_zero _).symm)`. Establish `h3 : (Pi.single x f : D.rep.total) = 0` using `Algebra.TensorProduct.includeRight_injective (A := C) (B := D.rep.total) (IsFractionRing.injective (O.alg : Type) C) (h2.trans (map_zero _).symm)`. Simplify using `using congrFun h3 x`.
+-/
 theorem sep_of_finiteTorsion (D : FiniteTorsion B p g O C) (x : Tors B p k)
     (f : ((D.rep.A x).alg : Type))
     (hf : ∀ t, ∀ φ : LHom (D.rep.A x).alg O.alg, D.rep.classify t = ⟨x, φ⟩ → φ.1 f = 0) :
@@ -654,16 +820,25 @@ theorem sep_of_finiteTorsion (D : FiniteTorsion B p g O C) (x : Tors B p k)
       (IsFractionRing.injective (O.alg : Type) C) (h2.trans (map_zero _).symm)
   simpa using congrFun h3 x
 
+/- English proof (translation)
+The claim follows from `Nat.finite_of_card_ne_zero (D.card ▸ pow_ne_zero _ (Fact.out : p.Prime).ne_zero)`.
+-/
 theorem finite_tors_of_finiteTorsion [Fact p.Prime] (D : FiniteTorsion B p g O C) :
     Finite (Tors B p O.alg) :=
   Nat.finite_of_card_ne_zero (D.card ▸ pow_ne_zero _ (Fact.out : p.Prime).ne_zero)
 
+/- English proof (translation)
+Use `haveI := finite_tors_of_finiteTorsion D`. Use `Finite.of_surjective (fun t => (D.rep.classify t).1) fun x => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `one_ne_zero (sep_of_finiteTorsion D x 1 fun t φ ht => (h ⟨t, congrArg Sigma.fst ht⟩).elim)`.
+-/
 theorem finite_index [Fact p.Prime] (D : FiniteTorsion B p g O C) : Finite (Tors B p k) := by
   haveI := finite_tors_of_finiteTorsion D
   refine Finite.of_surjective (fun t => (D.rep.classify t).1) fun x => ?_
   by_contra h
   exact one_ne_zero (sep_of_finiteTorsion D x 1 fun t φ ht => (h ⟨t, congrArg Sigma.fst ht⟩).elim)
 
+/- English proof (translation)
+Use `haveI := D.free`. Use `haveI := D.finite`. Use `haveI : Module.Finite (O.alg : Type) ((D.rep.A x).alg : Type) := Module.Finite.of_surjective (LinearMap.proj (R := (O.alg : Type)) (φ := fun x => ((D.rep.A x).alg : Type)) x) (Function.surjective_eval x)`. Use `haveI : Module.Flat (O.alg : Type) ((D.rep.A x).alg : Type) := Module.Flat.of_retract (LinearMap.single (O.alg : Type) (fun x => ((D.rep.A x).alg : Type)) x) (LinearMap.proj x) (by ext; simp)`. Conclude with `⟨Module.free_of_flat_of_isLocalRing, inferInstance⟩`.
+-/
 theorem free_factor (D : FiniteTorsion B p g O C) (x : Tors B p k) :
     Module.Free (O.alg : Type) ((D.rep.A x).alg : Type) ∧
       Module.Finite (O.alg : Type) ((D.rep.A x).alg : Type) := by
@@ -712,16 +887,27 @@ namespace OfFin
 
 variable (F : FIN B O.alg p)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Conclude with `one_ne_zero (F.sep i 1 fun φ hφ => (h ⟨φ, hφ⟩).elim)`.
+-/
 theorem exists_point (i : F.ι) : ∃ φ : LHom (F.AAx i) O.alg, φ.comp (F.sO i) = LHom.id O.alg := by
   by_contra h
   exact one_ne_zero (F.sep i 1 fun φ hφ => (h ⟨φ, hφ⟩).elim)
 
 def res (i : F.ι) : LHom (F.AAx i) k := O.res.comp (exists_point F i).choose
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (AlgHom.ext fun a => congrArg O.res.1 (congrArg (fun f : LHom O.alg O.alg => f.1 a) (exists_point F i).choose_spec))`.
+-/
 theorem res_comp (i : F.ι) : (res F i).comp (F.sO i) = O.res :=
   Subtype.ext (AlgHom.ext fun a => congrArg O.res.1
     (congrArg (fun f : LHom O.alg O.alg => f.1 a) (exists_point F i).choose_spec))
 
+/- English proof (translation)
+Establish `hk` using `isField_of_resAlg O`. Use `Subtype.ext (AlgHom.ext fun a => ?_)` and prove the remaining obligations. Take `⟨o, ho⟩` from `O.res_surj ((res F i).1 a)`. Establish `e1 : (res F i).1 ((F.sO i).1 o) = O.res.1 o` using `congrArg (fun f : LHom O.alg k => f.1 o) (res_comp F i)`. Establish `e2 : φ.1 ((F.sO i).1 o) = O.res.1 o` using `congrArg (fun f : LHom O.alg k => f.1 o) hφ`.
+
+Establish `h1 : a - (F.sO i).1 o ∈ RingHom.ker (res F i).1`. Rewrite using `[RingHom.mem_ker, map_sub, e1, ho, sub_self]`. Rewrite `h1` using `[ker_eq_maximalIdeal hk, ← ker_eq_maximalIdeal hk φ, RingHom.mem_ker, map_sub, e2, ho]`. Conclude with `sub_eq_zero.1 h1`.
+-/
 theorem res_unique (i : F.ι) (φ : LHom (F.AAx i) k) (hφ : φ.comp (F.sO i) = O.res) :
     φ = res F i := by
   have hk := isField_of_resAlg O
@@ -746,6 +932,11 @@ def factor (i : F.ι) : ResAlg k where
 def red (i : F.ι) : Tors B p k :=
   ⟨B.map (res F i) (F.y i), mem_tors.2 (by rw [← map_nsmul, F.y_p, map_zero])⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `i j h`. Take `⟨l, φ, -, -, hu⟩` from `F.univ k O.res (red F j) (mem_tors.1 (red F j).2)`. Conclude with `(hu i _ (res_comp F i) (congrArg Subtype.val h)).1.trans (hu j _ (res_comp F j) rfl).1.symm`. Introduce `x`.
+
+Take `⟨l, φ, h1, h2, -⟩` from `F.univ k O.res x (mem_tors.1 x.2)`. Rewrite `h2` using `[res_unique F l φ h1]`. Conclude with `⟨l, Subtype.ext h2⟩`.
+-/
 theorem red_bijective : Function.Bijective (red F) := by
   constructor
   · intro i j h
@@ -775,23 +966,40 @@ def rep : TorsionRep B p O where
     obtain rfl := eq_of_heq e2
     rfl
 
+/- English proof (translation)
+The claim follows from `F.free (index F x)`.
+-/
 theorem free_factor (x : Tors B p k) :
     Module.Free (O.alg : Type) (((rep F).A x).alg : Type) ∧
       Module.Finite (O.alg : Type) (((rep F).A x).alg : Type) := F.free (index F x)
 
 include F in
+/- English proof (translation)
+The claim follows from `Finite.of_equiv _ (index F).symm`.
+-/
 theorem finite_index : Finite (Tors B p k) := Finite.of_equiv _ (index F).symm
 
+/- English proof (translation)
+The claim follows from `haveI := finite_index F haveI := fun x => (free_factor F x).1 Module.Free.pi _ _`.
+-/
 theorem free_total : Module.Free (O.alg : Type) (rep F).total :=
   haveI := finite_index F
   haveI := fun x => (free_factor F x).1
   Module.Free.pi _ _
 
+/- English proof (translation)
+The claim follows from `haveI := finite_index F haveI := fun x => (free_factor F x).2 Module.Finite.pi`.
+-/
 theorem finite_total : Module.Finite (O.alg : Type) (rep F).total :=
   haveI := finite_index F
   haveI := fun x => (free_factor F x).2
   Module.Finite.pi
 
+/- English proof (translation)
+Use `haveI := finite_index F`. Use `letI := Fintype.ofFinite (Tors B p k)`. Use `haveI := fun x => (free_factor F x).1`. Use `haveI := fun x => (free_factor F x).2`. Rewrite using `[← card_tors, ← F.rank, ← (index F).sum_comp]`.
+
+Conclude with `Module.finrank_pi_fintype (O.alg : Type) (M := fun x => (((rep F).A x).alg : Type))`.
+-/
 theorem finrank_total :
     Module.finrank (O.alg : Type) (rep F).total = Nat.card (Tors B p O.alg) := by
   haveI := finite_index F
@@ -802,6 +1010,9 @@ theorem finrank_total :
   exact Module.finrank_pi_fintype (O.alg : Type) (M := fun x => (((rep F).A x).alg : Type))
 
 include F in
+/- English proof (translation)
+Use `haveI := free_total F`. Use `haveI := finite_total F`. Use `haveI : Nontrivial (rep F).total := Pi.nontrivial_at 0`. Conclude with `Nat.finite_of_card_ne_zero (finrank_total F ▸ ((Module.finrank_pos_iff_of_free (O.alg : Type) (rep F).total).2 inferInstance).ne')`.
+-/
 theorem finite_tors : Finite (Tors B p O.alg) := by
   haveI := free_total F
   haveI := finite_total F
@@ -810,6 +1021,17 @@ theorem finite_tors : Finite (Tors B p O.alg) := by
     ((Module.finrank_pos_iff_of_free (O.alg : Type) (rep F).total).2 inferInstance).ne')
 
 variable (C) in
+/- English proof (translation)
+Use `haveI := free_total F`. Use `haveI := finite_total F`. Use `haveI := finite_tors F`. Use `letI := Fintype.ofFinite (Tors B p O.alg)`. Establish `hinj : Function.Injective ((rep F).toFun C)`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨⟨f, s⟩, hs⟩` from `IsLocalizedModule.surj (nonZeroDivisors (O.alg : Type)) (TensorProduct.mk (O.alg : Type) C (rep F).total 1) z`. Establish `hs' : algebraMap (O.alg : Type) C s • z = (1 : C) ⊗ₜ f`. Rewrite using `[algebraMap_smul]`.
+
+Conclude with `hs`. Establish `h1 : (rep F).toFun C (1 ⊗ₜ f) = 0` using `by rw [← hs', map_smul, hz, smul_zero]`. Establish `h2 : f = 0`. Use function extensionality and compare the values at `x`. Use `F.sep (index F x) (f x) fun φ hφ => ?_` and prove the remaining obligations.
+
+Establish `ht` using `classify_eq (rep F) x φ hφ ⟨B.map φ (F.y _), mem_tors.2 (by rw [← map_nsmul, F.y_p, map_zero])⟩ rfl`. Establish `h3` using `congrFun h1 ⟨B.map φ (F.y _), mem_tors.2 (by rw [← map_nsmul, F.y_p, map_zero])⟩`. Rewrite `h3` using `[toFun_one_tmul, ht]`. Conclude with `IsFractionRing.injective (O.alg : Type) C (h3.trans (map_zero _).symm)`. Rewrite `hs'` using `[h2, TensorProduct.tmul_zero]`.
+
+Conclude with `(smul_eq_zero.1 hs').resolve_left (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2)`. Use `⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := ((rep F).toFun C).toLinearMap) ?_).1 hinj⟩` and prove the remaining obligations. Rewrite using `[Module.finrank_baseChange, Module.finrank_fintype_fun_eq_card, finrank_total, Nat.card_eq_fintype_card]`.
+-/
 theorem generic : Function.Bijective ((rep F).toFun C) := by
   haveI := free_total F
   haveI := finite_total F

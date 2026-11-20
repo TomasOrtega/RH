@@ -12,6 +12,13 @@ namespace Formalism.InvariantFactorPaths.G7
 
 open Formalism.DworkPowerSeriesWeights (Integral mvExp)
 
+/- English proof (translation)
+Introduce `K0 _ _ _ _ p σ hU hζ F hF be hbe`. Take `⟨c, hc, hcc, hsim⟩` from `hB K0 p σ hU hζ F hF be hbe`. Use `⟨c, hc, hcc, hsim, ?_⟩` and prove the remaining obligations. Introduce `K _ _ _ j ν r0 r1 _ hj om oms ϖ μ U0 Φ hϖ hom hμ0 hμ hU0 hΦ0 hΦ`. Take `⟨hmap, hGs⟩` from `hM K0 K (Fin 2) j hj`.
+
+Establish `hp : ‖(p : K)‖ = (p : ℝ)⁻¹`. Rewrite using `[← hU.2.2.1, ← hj (p : K0), map_natCast]`. Establish `hsim' : Simeq (MvPowerSeries.map j be) (Gser p (j c) (j (σ c)))`. Rewrite using `[← hGs p c (σ c)]`. Conclude with `hmap _ _ hsim`.
+
+Establish `hjc : ‖j c‖ ≤ 1` using `by rw [hj]; exact hc`. Establish `hjc' : ‖j (σ c)‖ ≤ 1` using `by rw [hj]; exact norm_lift_le_one hU hc`. Conclude with `hK K p ν r0 r1 om oms (j c) (j (σ c)) ϖ μ U0 Φ (MvPowerSeries.map j be) hU.1 hp hϖ hom hjc hjc' hμ0 hμ hU0 hΦ0 hΦ hsim'`.
+-/
 theorem ThmSUniform_of (hB : BetaIsG) (hK : CyclicPowerClassOfExpEquiv) (hM : MapSimeq) : ThmSUniform := by
   intro K0 _ _ _ _ p σ hU hζ F hF be hbe
   obtain ⟨c, hc, hcc, hsim⟩ := hB K0 p σ hU hζ F hF be hbe
@@ -28,9 +35,19 @@ theorem ThmSUniform_of (hB : BetaIsG) (hK : CyclicPowerClassOfExpEquiv) (hM : Ma
   exact hK K p ν r0 r1 om oms (j c) (j (σ c)) ϖ μ U0 Φ (MvPowerSeries.map j be) hU.1 hp hϖ hom
     hjc hjc' hμ0 hμ hU0 hΦ0 hΦ hsim'
 
+/- English proof (translation)
+The claim follows from `ThmSUniform_of Top.betaIsG Top.theorem_s_from_k_one Top.mapSimeq`.
+-/
 theorem theorem_s_uniform : ThmSUniform :=
   ThmSUniform_of Top.betaIsG Top.theorem_s_from_k_one Top.mapSimeq
 
+/- English proof (translation)
+Introduce `K _ p ϖ μ _ _ h0 h1`. Establish `e1` using `LogarithmEquivalence.subst_lgF_scale p ϖ`. Establish `hμ : PowerSeries.HasSubst μ` using `PowerSeries.HasSubst.of_constantCoeff_zero' h0`. Establish `hX : PowerSeries.HasSubst (PowerSeries.C ϖ * PowerSeries.X : PowerSeries K)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp)`. Establish `e2` using `congrArg (fun f => (PowerSeries.subst μ f : PowerSeries K)) e1`.
+
+Rewrite `e2` using `[PowerSeries.subst_comp_subst_apply hX hμ]`. Rewrite `e2` using `[← PowerSeries.coe_substAlgHom hμ, map_mul, map_mul, PowerSeries.coe_substAlgHom hμ, h1, PowerSeries.subst_X hμ]`. Establish `e3 : (PowerSeries.substAlgHom hμ) (PowerSeries.C ϖ : PowerSeries K) = PowerSeries.C ϖ`. Establish `: (PowerSeries.C ϖ : PowerSeries K) = algebraMap K _ ϖ` using `rfl`. Rewrite using `[this, AlgHom.commutes]`.
+
+Rewrite `e3` using `[PowerSeries.coe_substAlgHom hμ]`. Rewrite `e2` using `[e3]`. Conclude with `e2`.
+-/
 theorem log_coordinates : LogCoord := by
   intro K _ p ϖ μ _ _ h0 h1
   have e1 := LogarithmEquivalence.subst_lgF_scale p ϖ
@@ -48,6 +65,21 @@ theorem log_coordinates : LogCoord := by
   rw [e3] at e2
   exact e2
 
+/- English proof (translation)
+Introduce `K _ _ _ p σ hU c d hc hd hsim`. Take `⟨hp, -, hnp, -, hσ⟩` from `hU`. Establish `hp2 : 2 ≤ p` using `hp.two_le`. Establish `hpK : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hlin : Gser p c (σ c) - Gser p d (σ d) = Gser p (c - d) (σ (c - d))`.
+
+Simplify using `only [Gser, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `hee : σ (σ (c - d)) = c - d` using `by rw [map_sub, map_sub, hc, hd]`. Take `⟨h0, hI⟩` from `hsim`. Rewrite `h0`, `hI` using `[hlin]`.
+
+Establish `hDw` using `(hD K (Fin 2) p σ hp hnp hσ _ h0).1 hI`. Rewrite `hDw` using `[CoboundarySeries.map_Gser, hee, hFr K p (c - d) (σ (c - d)) hp2 hpK]`. Establish `hl1 : PowerSeries.coeff 1 (lgF K p) = 1`. Establish `h` using `coeff_lgF_pow K hp2 0`. Simplify using `using h`.
+
+Establish `hg1 : PowerSeries.coeff 1 (g0F K p) = 0`. Assume the negation of the conclusion as `h`. Take `⟨j, hj⟩` from `coeff_g0F_ne_zero h`. Establish `h1 : p ∣ 1` using `⟨_, hj⟩`. Use `Nat.le_of_dvd one_pos h1` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hz : c - d = 0`. Apply `CoboundarySeries.eq_zero_of_div hp2 hnp` to reduce the goal to its premises. Introduce `i`. Establish `h` using `hDw (Finsupp.single 0 1 + Finsupp.single 1 (p * (p ^ 2) ^ i))`.
+
+Establish `hn0 : (Finsupp.single 0 1 + Finsupp.single 1 (p * (p ^ 2) ^ i) : Fin 2 →₀ ℕ) 0 = 1`. Simplify using the standard rewrite rules. Establish `hn1 : (Finsupp.single 0 1 + Finsupp.single 1 (p * (p ^ 2) ^ i) : Fin 2 →₀ ℕ) 1 = p * (p ^ 2) ^ i`. Simplify using the standard rewrite rules. Rewrite `h` using `[MvPowerSeries.coeff_C_mul, map_sub, MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_C_mul, coeff_product_single_variables (by decide) (by decide), coeff_product_single_variables (by decide) (by decide), hn0, hn1, hl1, hg1, coeff_g0F_of K hp2 i, zero_mul, mul_zero, zero_sub, one_m …`.
+
+Establish `hpos : (0 : ℝ) < (p : ℝ)⁻¹`. Establish `: (0 : ℝ) < (p : ℝ)` using `by exact_mod_cast hp.pos`. Check the signs of the components of the expression. Conclude with `le_of_mul_le_mul_left (by simpa using h) hpos`. Conclude with `sub_eq_zero.mp hz`.
+-/
 theorem GcUnique_of (hD : DworkMv) (hFr : FrobExprG) : GcUnique := by
   intro K _ _ _ p σ hU c d hc hd hsim
   obtain ⟨hp, -, hnp, -, hσ⟩ := hU
@@ -89,6 +121,9 @@ theorem GcUnique_of (hD : DworkMv) (hFr : FrobExprG) : GcUnique := by
     exact le_of_mul_le_mul_left (by simpa using h) hpos
   exact sub_eq_zero.mp hz
 
+/- English proof (translation)
+The claim follows from `GcUnique_of Top.dworkMv Top.frobExprG`.
+-/
 theorem g_c_unique : GcUnique := GcUnique_of Top.dworkMv Top.frobExprG
 
 end Formalism.InvariantFactorPaths.G7

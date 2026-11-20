@@ -52,6 +52,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SmoothRepresentationsGL.TwistRed
 
 open UpperTheory.V.Af.Smo in
+/- English proof (translation)
+Establish `hTwistRed : TwistRed` using `twistRed`. Establish `hCentLoc : CentLoc` using `centLoc`. Establish `hAwayInd : AwayInd` using `awayInd`. Establish `hDenseAway : DenseAway` using `denseAway`. Establish `hCentEq : CentEq` using `centEq hCentLoc hAwayInd hDenseAway`.
+
+Establish `hPsiLoc : PsiLoc` using `psiLoc`. Establish `hLevelS : LevelS` using `levelS`. Establish `hSetUp : SetUp` using `setUp hPsiLoc hLevelS`. Establish `hEigOfSat : EigOfSat` using `eigOfSat`. Establish `hCenSame : CenSame` using `cenSame hCentEq hSetUp hEigOfSat`.
+
+Establish `hWhBasic : WhBasic` using `whBasic`. Establish `hChartCont : ChartCont` using `chartCont`. Establish `hSeedConv : SeedConv` using `seedConv hChartCont`. Establish `hSeed : Seed` using `seed hWhBasic hSeedConv`. Establish `hColConj : ColConj` using `colConj`.
+
+Establish `hRowStep : RowStep` using `rowStep`. Establish `hSchOfClosed : SchOfClosed` using `schOfClosed`. Establish `hSchTensor : SchTensor` using `schTensor hSchOfClosed`. Establish `hSchTw : SchTw` using `schTw hSchTensor`. Establish `hPftDeriv : PftDeriv` using `pftDeriv`.
+
+Establish `hPftMul : PftMul` using `pftMul`. Establish `hPftSch : PftSch` using `pftSch_of hSchOfClosed hPftDeriv hPftMul`. Establish `hBetaSch : BetaSch` using `betaSch hPftSch`. Establish `hBetaInt : BetaInt` using `betaInt`. Establish `hArchStep : ArchStep` using `archStep hSchTw hPftSch hBetaSch hBetaInt`.
+
+Establish `hLinChange : LinChange` using `linChange`. Establish `hArchKir : ArchKir` using `archKir hColConj hRowStep hArchStep hLinChange`. Establish `hAvgChar : AvgChar` using `avgChar`. Establish `hLocDual : LocDual` using `locDual`. Establish `hLocStep : LocStep` using `locStep hAvgChar hLocDual`.
+
+Establish `hLocKir : LocKir` using `locKir hColConj hRowStep hLocStep`. Establish `hEmbY : EmbY` using `embY`. Establish `hFinKir : FinKir` using `finKir hLocKir hPsiLoc hEmbY`. Establish `hPsiInf : PsiInf` using `psiInf`. Establish `hKillP : KillP` using `killP hArchKir hFinKir hEmbY hPsiInf hChartCont`.
+
+Establish `hSphDict : SphDict` using `sphDict`. Establish `hTjSet : TjSet` using `tjSet hSphDict`. Establish `hSphZero : SphZero` using `sphZero hSphDict hTjSet hCentLoc`. Establish `hSphAll : SphAll` using `sphAll hAwayInd hSphZero hEmbY`. Establish `hInjP : InjP` using `injP`.
+
+Establish `hEigMap : EigMap` using `eigMap hChartCont`. Establish `hVanish : Vanish` using `vanish hSphAll hInjP hDenseAway hWhBasic hEigMap`. Establish `hWhLin : WhLin` using `whLin`. Establish `hConvCont : ConvCont` using `convCont hChartCont`. Establish `hConvFub : ConvFub` using `convFub hChartCont`.
+
+Establish `hConvNice : ConvNice` using `convNice hConvCont hConvFub`. Establish `hPair : Pair` using `pair hSeed hSetUp hKillP hVanish hWhBasic hWhLin hConvNice hEigOfSat hEigMap`. Establish `hInnerZero : InnerZero` using `innerZero`. Establish `hOrthTr : OrthTr` using `orthTr`. Establish `hOrthStep : OrthStep` using `orthStep hChartCont`.
+
+Establish `hOrthConv : OrthConv` using `orthConv hOrthStep hConvCont`. Conclude with `smo_of UpperTheory.V.Af.Gk.unitTwist hTwistRed hCenSame hPair hInnerZero hOrthTr hOrthConv`.
+-/
 theorem UpperTheory.V.Af.strongMultOneReal :
     UpperTheory.V.Published.StrongMultOneReal := by
   have hTwistRed : TwistRed := twistRed

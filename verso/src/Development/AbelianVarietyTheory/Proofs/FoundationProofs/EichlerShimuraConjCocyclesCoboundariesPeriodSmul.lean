@@ -6,6 +6,9 @@ open scoped Manifold
 
 namespace GlobalTheory.HeckeFamilyMatrices
 
+/- English proof (translation)
+Simplify using `only [slP, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.toSpanSingleton_apply, lcoeff_apply, Polynomial.map_sum, Polynomial.map_smul, Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_add, Polynomial.map_X, Polynomial.map_C, map_intCast, coeff_map, Polynomial.map_int …`.
+-/
 theorem polySlash_map_conj (w : ℕ) (g : Matrix (Fin 2) (Fin 2) ℤ) (p : ℂ[X]) :
     (slP w g p).map (starRingEnd ℂ) = slP w g (p.map (starRingEnd ℂ)) := by
   simp only [slP, LinearMap.sum_apply, LinearMap.comp_apply,
@@ -13,6 +16,11 @@ theorem polySlash_map_conj (w : ℕ) (g : Matrix (Fin 2) (Fin 2) ℤ) (p : ℂ[X
     Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_add, Polynomial.map_X, Polynomial.map_C,
     map_intCast, coeff_map, Polynomial.map_intCast, Polynomial.map_natCast]
 
+/- English proof (translation)
+Simplify using `only [eichler, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, ← mul_assoc, ← C_mul]`. Use `congr 2`. Establish `: ∀ t : ℝ, ((c • f) ∘ UpperHalfPlane.ofComplex) (Complex.I + t * ((τ : ℂ) - Complex.I)) * (-(Complex.I + t * ((τ : ℂ) - Complex.I))) ^ (w - j) * ((τ : ℂ) - Complex.I) = c * ((f ∘ UpperHalfPlane.ofComplex) (Complex.I + t * ((τ : ℂ) - Complex.I)) * (-(Complex.I + t * ((τ : ℂ) - Com …`.
+
+Introduce `t`. Simplify using `only [Function.comp_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[this, intervalIntegral.integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eichler_smul (w : ℕ) (c : ℂ) (f : UpperHalfPlane → ℂ) (τ : UpperHalfPlane) :
     eichler w (c • f) τ = c • eichler w f τ := by
   simp only [eichler, Finset.smul_sum]
@@ -31,6 +39,11 @@ end GlobalTheory.HeckeFamilyMatrices
 
 namespace GlobalTheory.HeckeFamilyMatrices
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hz`. Use `⟨fun γ => ?_, fun γ δ => ?_⟩` and prove the remaining obligations. Use `h1 γ` as an intermediate fact. Rewrite `this`, the goal using `[mem_degreeLT]`. Conclude with `lt_of_le_of_lt (degree_map_le) this`.
+
+Simplify using `only [cj, h2, Polynomial.map_add, polySlash_map_conj]`.
+-/
 theorem polynomialMapCoeffConj_mem_eichlerShimuraCocycles (Γ : Subgroup SL(2, ℤ)) (w : ℕ) (z : Γ → ℂ[X]) (hz : z ∈ Z1 Γ w) : cj z ∈ Z1 Γ w := by
   obtain ⟨h1, h2⟩ := hz
   refine ⟨fun γ => ?_, fun γ δ => ?_⟩
@@ -39,6 +52,11 @@ theorem polynomialMapCoeffConj_mem_eichlerShimuraCocycles (Γ : Subgroup SL(2, �
     exact lt_of_le_of_lt (degree_map_le) this
   · simp only [cj, h2, Polynomial.map_add, polySlash_map_conj]
 
+/- English proof (translation)
+Take `⟨⟨p, hp⟩, rfl⟩` from `hz`. Establish `hp' : p.map (starRingEnd ℂ) ∈ degreeLT ℂ (w + 1)`. Rewrite `hp`, the goal using `[mem_degreeLT]`. Conclude with `lt_of_le_of_lt (degree_map_le) hp`. Use `⟨⟨p.map (starRingEnd ℂ), hp'⟩, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `γ`. Simplify using `only [cj, LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, Polynomial.map_sub, polySlash_map_conj]`.
+-/
 theorem polynomialMapCoeffConj_mem_eichlerShimuraCoboundaries (Γ : Subgroup SL(2, ℤ)) (w : ℕ) (z : Γ → ℂ[X]) (hz : z ∈ B1 Γ w) : cj z ∈ B1 Γ w := by
   obtain ⟨⟨p, hp⟩, rfl⟩ := hz
   have hp' : p.map (starRingEnd ℂ) ∈ degreeLT ℂ (w + 1) := by
@@ -49,11 +67,17 @@ theorem polynomialMapCoeffConj_mem_eichlerShimuraCoboundaries (Γ : Subgroup SL(
   simp only [cj, LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.pi_apply,
     LinearMap.sub_apply, LinearMap.id_apply, Polynomial.map_sub, polySlash_map_conj]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `γ`. Simplify using `only [per, Pi.smul_apply, eichler_smul, map_smul]`.
+-/
 theorem per_smul (Γ : Subgroup SL(2, ℤ)) (w : ℕ) (f : ℍ → ℂ) (c : ℂ) :
     per Γ w (c • f) = c • per Γ w f := by
   funext γ
   simp only [per, Pi.smul_apply, eichler_smul, map_smul]
 
+/- English proof (translation)
+Introduce `Γ w` and use `⟨polynomialMapCoeffConj_mem_eichlerShimuraCocycles Γ w, polynomialMapCoeffConj_mem_eichlerShimuraCoboundaries Γ w, per_smul Γ w⟩`.
+-/
 theorem cj_mem_Z1_cj_mem_B1_per_smul : ∀ (Γ : Subgroup SL(2, ℤ)) (w : ℕ), (∀ z ∈ Z1 Γ w, cj z ∈ Z1 Γ w) ∧
     (∀ z ∈ B1 Γ w, cj z ∈ B1 Γ w) ∧ ∀ (f : ℍ → ℂ) (c : ℂ), per Γ w (c • f) = c • per Γ w f :=
   fun Γ w => ⟨polynomialMapCoeffConj_mem_eichlerShimuraCocycles Γ w, polynomialMapCoeffConj_mem_eichlerShimuraCoboundaries Γ w, per_smul Γ w⟩

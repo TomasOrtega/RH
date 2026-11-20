@@ -6,6 +6,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LayeredIsomorphism
 
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
+/- English proof (translation)
+Introduce `CK hCK hK l R c _ L₀ _ hmu hSec Z Exc hF L₂ _ _ _ hL₂ eps Ct c0 x n0 heps hc0 hx hgood hn hdisc e he1 heZ hex m L₁ _ _ _ hL₁`. Establish `hexp : 0 ≤ 2 * Real.exp ((2 * (n0 : ℝ)) ^ CK * c0 * x ^ (3 * eps / 4))` using `by positivity`. Distinguish the cases in `he : e ∈ Exc`. Establish `hg : (e : ℝ) ≤ x ^ (eps / (2 * CK))` using `hgood e he hex`. Take `⟨D⟩` from `ldata_nonempty (F := L₂) (Ω := AlgebraicClosure L₂) l`.
+
+Establish `hmu2 : HasMuQ l L₂`. Take `⟨ζ, hζ⟩` from `hmu`. Conclude with `⟨algebraMap L₀ L₂ ζ, hζ.map_of_injective (algebraMap L₀ L₂).injective⟩`. Take `⟨hvt, hvb⟩` from `klen CK hK l L₂ (AlgebraicClosure L₂) D hmu2 e he1`. Establish `hkb` using `kexp CK eps c0 x e (Module.finrank ℚ L₂) n0 (discr L₂).natAbs hCK heps hc0 hx hg hn hdisc`.
+
+Establish `hs` using `hSec e he1 m L₁ hL₁ L₂ hL₂ (AlgebraicClosure L₂) D`. Generalize the expression as in `VLen D ↑e = v at hvt hvb hs`. Generalize the expression as in `shaInv L₁ l ↑e = s at hs ⊢`. Use `lift v to ℕ using hvt`. Establish `hst : s ≠ ⊤`.
+
+Use `ne_top_of_le_ne_top ?_ hs` and prove the remaining obligations. Rewrite using `[← Nat.cast_add]`. Conclude with `ENat.coe_ne_top _`. Use `lift s to ℕ using hst`. Establish `hs' : s ≤ v + R * (m - jZero l R)` using `by exact_mod_cast hs`.
+
+Use `⟨ENat.coe_ne_top s, ?_⟩` and prove the remaining obligations. Rewrite using `[ENat.toNat_coe]`. Simplify using `only [ENat.toNat_coe] at hvb`. Establish `hN : s ≤ v + R * (m + jZero l R + c + Nat.log l Z)`. Use `le_trans hs' (Nat.add_le_add_left (Nat.mul_le_mul_left _ ?_) _)` and prove the remaining obligations.
+
+Use linear arithmetic over natural numbers and integers. Establish `hR : (s : ℝ) ≤ (v : ℝ) + (R : ℝ) * ((m : ℝ) + jZero l R + c + Nat.log l Z)`. Conclude with `hN` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb` using `hF.2 e he1 heZ he m L₁ hL₁`.
+
+Generalize the expression as in `shaInv L₁ l ↑e = s at hb ⊢`. Establish `hst : s ≠ ⊤` using `ne_top_of_le_ne_top (ENat.coe_ne_top _) hb`. Use `lift s to ℕ using hst`. Establish `hs' : s ≤ R * (max m (jZero l R) + c + Nat.log l Z)` using `by exact_mod_cast hb`. Use `⟨ENat.coe_ne_top s, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ENat.toNat_coe]`. Establish `hN : s ≤ R * (m + jZero l R + c + Nat.log l Z)`. Use `le_trans hs' (Nat.mul_le_mul_left _ ?_)` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Establish `hR : (s : ℝ) ≤ (R : ℝ) * ((m : ℝ) + jZero l R + c + Nat.log l Z)`.
+
+Conclude with `hN` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.V.Win.point :
     ∀ CK : ℝ, 0 < CK → LemmaK CK → ∀ (l R c : ℕ) [Fact l.Prime] (L₀ : Type) [Field L₀], HasMuQ l L₀ → SecondBound l R L₀ →
       ∀ (Z : ℕ) (Exc : Finset ℕ), FirstBound l R c L₀ Z Exc →

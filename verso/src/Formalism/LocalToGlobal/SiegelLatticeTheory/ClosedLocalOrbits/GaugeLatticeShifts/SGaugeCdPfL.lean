@@ -10,6 +10,41 @@ namespace Formalism.MainNotions.S.Gauge
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hN` using `chartNhd ε`. Take `⟨s₀, hs₀, hL⟩` from `locInvOf ε (transC ε) (jacInv ε)`. Take `⟨ρ₀, hρ₀, hinj⟩` from `injOn_thetaExp ε`. Establish `hs : 0 < min s₀ ρ₀` using `lt_min hs₀ hρ₀`. Use `set s := min s₀ ρ₀ with hsdef`.
+
+Establish `hLs : LocInv ε s` using `hL s hs (min_le_left _ _)`. Establish `hinjs : Set.InjOn (expC ε) (Metric.ball 0 s)`. Introduce `a ha b hb e`. Apply `hinj (Metric.ball_subset_ball (min_le_right _ _) ha) (Metric.ball_subset_ball (min_le_right _ _) hb)` to reduce the goal to its premises. Use `congrArg uMat e` as an intermediate fact.
+
+Rewrite `this` using `[uMat_expC, uMat_expC]`. Conclude with `Matrix.of.injective this`. Establish `hVo : IsOpen (interior (expC ε '' Metric.ball (0 : EL ε) s))` using `isOpen_interior`. Establish `hVW : interior (expC ε '' Metric.ball (0 : EL ε) s) ⊆ expC ε '' Metric.ball (0 : EL ε) s` using `interior_subset`. Establish `hV1 : (1 : Formalism.REAL.UJ ε) ∈ interior (expC ε '' Metric.ball (0 : EL ε) s)` using `mem_interior_iff_mem_nhds.2 (hN s hs)`.
+
+Use `set V := interior (expC ε '' Metric.ball (0 : EL ε) s) with hVdef`. Establish `hcovN : ∀ x : Formalism.REAL.UJ ε, (fun h => x * h) '' V ∈ 𝓝 x` using `fun x => ((isOpenMap_mul_left x) V hVo).mem_nhds ⟨1, hV1, mul_one x⟩`. Establish `hOm' : ∀ y : Formalism.REAL.UJ ε, MeasurableSet ((fun h => y * h) '' V)` using `fun y => ((isOpenMap_mul_left y) V hVo).measurableSet`. Take `⟨S, hSc, hSU⟩` from `TopologicalSpace.countable_cover_nhds hcovN`. Establish `hSne : S.Nonempty`.
+
+Assume the negation of the conclusion as `h`. Rewrite `h` using `[Set.not_nonempty_iff_eq_empty]`. Establish `: (1 : Formalism.REAL.UJ ε) ∈ ⋃ x ∈ S, (fun h => x * h) '' V` using `by rw [hSU]; trivial`. Rewrite `this` using `[h]`. Simplify using `at this`.
+
+Take `⟨xs, hxs⟩` from `hSc.exists_eq_range hSne`. Set `O : ℕ → Set (Formalism.REAL.UJ ε)` to `fun i => (fun h => xs i * h) '' V`. Establish `hOU : ⋃ i, O i = univ` using `by rw [← hSU, hxs, Set.biUnion_range]`. Establish `hD : ∀ i, MeasurableSet (disjointed O i)` using `MeasurableSet.disjointed fun i => hOm' (xs i)`. Establish `hdisj : Pairwise (Disjoint on disjointed O)` using `disjoint_disjointed O`.
+
+Establish `hcov : ⋃ i, disjointed O i = univ` using `by rw [iUnion_disjointed, hOU]`. Establish `hDV : ∀ i, disjointed O i ⊆ (fun h => xs i * h) '' V` using `fun i => disjointed_subset O i`. Use `haveI : Measure.IsMulLeftInvariant (nuG ε s xs (disjointed O)) := ⟨fun g => nuG_leftInv hLs hVW hD hdisj hcov hDV g⟩`. Use `haveI : IsLocallyFiniteMeasure (nuG ε s xs (disjointed O)) := ⟨fun y => ⟨(fun h => y * h) '' V, hcovN y, by`. Rewrite using `[nuG_eq hLs hVW hD hdisj hcov hDV y (hOm' y) (image_mono hVW)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `haveI : Measure.IsHaarMeasure (Formalism.REAL.muG ε) := by unfold Formalism.REAL.muG; infer_instance`. Establish `hνμ` using `Measure.isMulLeftInvariant_eq_smul (nuG ε s xs (disjointed O)) (Formalism.REAL.muG ε)`. Use `set κ := Measure.haarScalarFactor (nuG ε s xs (disjointed O)) (Formalism.REAL.muG ε) with hκdef`. Establish `hformT : ∀ T : Set (EL ε), T ⊆ Metric.ball 0 s → MeasurableSet T → nuG ε s xs (disjointed O) (expC ε '' T) = ∫⁻ t in T, jd ε t`.
+
+Introduce `T hsub hT`. Establish `hm : MeasurableSet (expC ε '' T)` using `hT.image_of_continuousOn_injOn (continuous_expCG ε).continuousOn (hinjs.mono hsub)`. Establish `hsubW : expC ε '' T ⊆ (fun h => (1 : Formalism.REAL.UJ ε) * h) '' (expC ε '' Metric.ball 0 s)`. Simplify using `only [one_mul, image_id']`. Conclude with `image_mono hsub`.
+
+Rewrite using `[nuG_eq hLs hVW hD hdisj hcov hDV 1 hm hsubW]`. Establish `hmap : (lamM ε s).map (fun h => (1 : Formalism.REAL.UJ ε) * h) = lamM ε s`. Simplify using `only [one_mul]`. Conclude with `Measure.map_id`. Rewrite using `[hmap, lamM_applyG ε s hm]`.
+
+Rewrite using `[show expC ε ⁻¹' (expC ε '' T) ∩ Metric.ball 0 s = T from ?_]`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨t', ht', e⟩, ht⟩`. Rewrite using `[← hinjs (hsub ht') ht e]`.
+
+Conclude with `ht'`. Introduce `ht`. Conclude with `⟨⟨t, ht, rfl⟩, hsub ht⟩`. Take `⟨η, hη, hcont⟩` from `Metric.continuousAt_iff.1 ((continuous_chartJac_thetaExp ε).continuousAt (x := 0)) (1 / 2) (by norm_num)`. Establish `hρ1 : 0 < min s η` using `lt_min hs hη`.
+
+Establish `hpos : ∫⁻ t in Metric.ball (0 : EL ε) (min s η), jd ε t ≠ 0`. Establish `hle : ENNReal.ofReal (1 / 2) * volume (Metric.ball (0 : EL ε) (min s η)) ≤ ∫⁻ t in Metric.ball (0 : EL ε) (min s η), jd ε t`. Rewrite using `[← setLIntegral_const]`. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem measurableSet_ball] with t ht`.
+
+Use `hcont (lt_of_lt_of_le ht (min_le_right _ _))` as an intermediate fact. Rewrite `this` using `[chartJac_thetaExp_zero, Real.dist_eq]`. Conclude with `ENNReal.ofReal_le_ofReal (by linarith [(abs_lt.1 this).1])`. Use `(lt_of_lt_of_le ?_ hle).ne'` and prove the remaining obligations. Conclude with `ENNReal.mul_pos (by simp) (Metric.measure_ball_pos _ _ hρ1).ne'`.
+
+Establish `hκ : κ ≠ 0`. Introduce `h0`. Apply `hpos` to reduce the goal to its premises. Rewrite using `[← hformT _ (Metric.ball_subset_ball (min_le_left _ _)) measurableSet_ball, hνμ, h0, zero_smul]`. Both sides reduce to the same expression.
+
+Establish `hκpos : (0 : ℝ) < (κ : ℝ)` using `NNReal.coe_pos.2 (pos_iff_ne_zero.2 hκ)`. Use `⟨((κ : ℝ))⁻¹, inv_pos.2 hκpos, s, hs, hinjs, fun T hsub hT => ?_⟩` and prove the remaining obligations. Establish `h1` using `hformT T hsub hT`. Rewrite `h1` using `[hνμ]`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h1`.
+
+Rewrite using `[← h1, ← mul_assoc, ENNReal.ofReal_inv_of_pos hκpos, ENNReal.ofReal_coe_nnreal, ENNReal.inv_mul_cancel (ENNReal.coe_ne_zero.2 hκ) ENNReal.coe_ne_top, one_mul]`.
+-/
 theorem setForm0 (ε : Fin n → Bool) : ∃ c : ℝ, 0 < c ∧ ∃ s : ℝ, 0 < s ∧ Set.InjOn (expC ε) (Metric.ball 0 s) ∧
     ∀ T : Set (EL ε), T ⊆ Metric.ball 0 s → MeasurableSet T →
       Formalism.REAL.muG ε (expC ε '' T) = ENNReal.ofReal c * ∫⁻ t in T, jd ε t := by
@@ -101,6 +136,11 @@ theorem setForm0 (ε : Fin n → Bool) : ∃ c : ℝ, 0 < c ∧ ∃ s : ℝ, 0 <
   rw [← h1, ← mul_assoc, ENNReal.ofReal_inv_of_pos hκpos, ENNReal.ofReal_coe_nnreal,
     ENNReal.inv_mul_cancel (ENNReal.coe_ne_zero.2 hκ) ENNReal.coe_ne_top, one_mul]
 
+/- English proof (translation)
+Take `⟨c, hc, s, hs, hinj, hT⟩` from `setForm0 ε`. Establish `hb : ∀ ρ : ℝ, 0 < ρ → ρ ≤ s → Formalism.REAL.muG ε (expSet ε (Metric.ball (0 : gLie ε) ρ)) = ENNReal.ofReal c * ∫⁻ t in Metric.ball (0 : EL ε) ρ, jd ε t`. Introduce `ρ _ hρs`. Rewrite using `[expSet_ball_eq_image]`. Conclude with `hT _ (Metric.ball_subset_ball hρs) measurableSet_ball`.
+
+Establish `he` using `gaugeU_eq (tendsto_ratioAt_of_ball hc hs hb)`. Rewrite using `[he]`. Conclude with `⟨s, hs, hinj, hT⟩`.
+-/
 theorem setForm (ε : Fin n → Bool) : ∃ s : ℝ, 0 < s ∧ Set.InjOn (expC ε) (Metric.ball 0 s) ∧
     ∀ T : Set (EL ε), T ⊆ Metric.ball 0 s → MeasurableSet T →
       Formalism.REAL.muG ε (expC ε '' T) = ENNReal.ofReal (gaugeU ε) * ∫⁻ t in T, jd ε t := by
@@ -114,6 +154,15 @@ theorem setForm (ε : Fin n → Bool) : ∃ s : ℝ, 0 < s ∧ Set.InjOn (expC �
   rw [he]
   exact ⟨s, hs, hinj, hT⟩
 
+/- English proof (translation)
+Use `set x : EuclideanSpace ℝ (Fin n × Fin n × Bool) := ((obG ε).repr.symm t).1 with hx`. Establish `h1 : ‖t‖ = ‖x‖` using `by rw [hx]; exact ((obG ε).repr.symm.norm_map t).symm`. Establish `h2 : ‖x‖ ≤ ∑ p, ‖x p‖`. Rewrite using `[EuclideanSpace.norm_eq]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : ∑ p, ‖x p‖ ≤ 2 * ∑ i, ∑ j, ‖linT ε t i j‖`. Rewrite using `[Fintype.sum_prod_type, Finset.mul_sum]`. Use `Finset.sum_le_sum (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, Finset.mul_sum]`. Use `Finset.sum_le_sum (fun j _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Fintype.sum_bool, linT_apply]`. Establish `hre : ‖x (i, j, false)‖ ≤ ‖unrealify x i j‖`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `Complex.abs_re_le_norm (unrealify x i j)`. Establish `him : ‖x (i, j, true)‖ ≤ ‖unrealify x i j‖`.
+
+Rewrite using `[Real.norm_eq_abs]`. Conclude with `Complex.abs_im_le_norm (unrealify x i j)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_le_two_l1_norm (ε : Fin n → Bool) (t : EL ε) : ‖t‖ ≤ 2 * ∑ i, ∑ j, ‖linT ε t i j‖ := by
   set x : EuclideanSpace ℝ (Fin n × Fin n × Bool) := ((obG ε).repr.symm t).1 with hx
   have h1 : ‖t‖ = ‖x‖ := by rw [hx]; exact ((obG ε).repr.symm.norm_map t).symm
@@ -135,22 +184,53 @@ theorem norm_le_two_l1_norm (ε : Fin n → Bool) (t : EL ε) : ‖t‖ ≤ 2 * 
     linarith
   linarith
 
+/- English proof (translation)
+Introduce `t ht` and use `by rw [mem_ball_zero_iff] have h := norm_le_two_l1_norm ε t have ht' : ∑ i, ∑ j, ‖linT ε t i j‖ < r := ht linarith`.
+-/
 theorem l1B_subset_ball_two_mul (ε : Fin n → Bool) (r : ℝ) : l1B ε r ⊆ Metric.ball 0 (2 * r) := fun t ht => by
   rw [mem_ball_zero_iff]
   have h := norm_le_two_l1_norm ε t
   have ht' : ∑ i, ∑ j, ‖linT ε t i j‖ < r := ht
   linarith
 
+/- English proof (translation)
+Use `continuous_finsetSum _ (fun i _ => continuous_finsetSum _ (fun j _ => ?_))` and prove the remaining obligations. Conclude with `((continuous_apply j).comp ((continuous_apply i).comp (linT ε).continuous)).norm`.
+-/
 theorem continuous_matrixEntryAbsSum (ε : Fin n → Bool) : Continuous (fun t : EL ε => ∑ i, ∑ j, ‖linT ε t i j‖) := by
   refine continuous_finsetSum _ (fun i _ => continuous_finsetSum _ (fun j _ => ?_))
   exact ((continuous_apply j).comp ((continuous_apply i).comp (linT ε).continuous)).norm
 
+/- English proof (translation)
+The claim follows from `isOpen_lt (continuous_matrixEntryAbsSum ε) continuous_const`.
+-/
 theorem isOpen_l1B (ε : Fin n → Bool) (r : ℝ) : IsOpen (l1B ε r) := isOpen_lt (continuous_matrixEntryAbsSum ε) continuous_const
 
+/- English proof (translation)
+Use `show ∑ i, ∑ j, ‖linT ε 0 i j‖ < r`. Simplify using `[map_zero, hr]`.
+-/
 theorem zero_mem_l1B (ε : Fin n → Bool) {r : ℝ} (hr : 0 < r) : (0 : EL ε) ∈ l1B ε r := by
   show ∑ i, ∑ j, ‖linT ε 0 i j‖ < r
   simp [map_zero, hr]
 
+/- English proof (translation)
+Take `⟨s, hs, _, hT⟩` from `setForm ε`. Establish `hJ : Tendsto (fun r : ℝ => (∫⁻ t in l1B ε r, jd ε t) / volume (l1B ε r)) (𝓝[>] (0 : ℝ)) (𝓝 1)`. Rewrite using `[ENNReal.tendsto_nhds ENNReal.one_ne_top]`. Introduce `e he`. Take `⟨δ0, _, h0δ, hδe⟩` from `ENNReal.lt_iff_exists_real_btwn.1 he`.
+
+Establish `hδ0p : 0 < δ0` using `ENNReal.ofReal_pos.1 h0δ`. Establish `hδp : 0 < min δ0 (1 / 2)` using `lt_min hδ0p (by norm_num)`. Establish `hδ1 : min δ0 (1 / 2) ≤ 1 / 2` using `min_le_right _ _`. Establish `hδe' : ENNReal.ofReal (min δ0 (1 / 2)) ≤ e` using `(ENNReal.ofReal_le_ofReal (min_le_left _ _)).trans hδe.le`. Take `⟨η, hη, hcont⟩` from `Metric.continuousAt_iff.1 ((continuous_chartJac_thetaExp ε).continuousAt (x := 0)) (min δ0 (1 / 2)) hδp`.
+
+Use `filter_upwards [Ioo_mem_nhdsGT (show (0 : ℝ) < η / 2 by linarith)] with r hr`. Establish `hsub : l1B ε r ⊆ Metric.ball 0 η` using `(l1B_subset_ball_two_mul ε r).trans (Metric.ball_subset_ball (by linarith [hr.2]))`. Establish `hbd : ∀ t ∈ l1B ε r, |chartJac (thetaExp ε) t - 1| < min δ0 (1 / 2)`. Introduce `t ht`. Establish `h` using `hcont (show dist t 0 < η from hsub ht)`.
+
+Rewrite `h` using `[chartJac_thetaExp_zero, Real.dist_eq]`. Then use the resulting hypothesis. Establish `hm : MeasurableSet (l1B ε r)` using `(isOpen_l1B ε r).measurableSet`. Establish `hV0 : volume (l1B ε r) ≠ 0` using `((isOpen_l1B ε r).measure_pos volume ⟨0, zero_mem_l1B ε hr.1⟩).ne'`. Establish `hVt : volume (l1B ε r) ≠ ∞` using `((measure_mono (l1B_subset_ball_two_mul ε r)).trans_lt measure_ball_lt_top).ne`. Establish `hup : ∫⁻ t in l1B ε r, jd ε t ≤ ENNReal.ofReal (1 + min δ0 (1 / 2)) * volume (l1B ε r)`.
+
+Rewrite using `[← setLIntegral_const]`. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem hm] with t ht`. Conclude with `ENNReal.ofReal_le_ofReal (by linarith [(abs_lt.1 (hbd t ht)).2])`. Establish `hlo : ENNReal.ofReal (1 - min δ0 (1 / 2)) * volume (l1B ε r) ≤ ∫⁻ t in l1B ε r, jd ε t`.
+
+Rewrite using `[← setLIntegral_const]`. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem hm] with t ht`. Conclude with `ENNReal.ofReal_le_ofReal (by linarith [(abs_lt.1 (hbd t ht)).1])`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[ENNReal.le_div_iff_mul_le (Or.inl hV0) (Or.inl hVt)]`. Use `le_trans ?_ hlo` and prove the remaining obligations. Use `gcongr`. Rewrite using `[ENNReal.ofReal_sub 1 hδp.le, ENNReal.ofReal_one]`. Conclude with `tsub_le_tsub_left hδe' 1`.
+
+Rewrite using `[ENNReal.div_le_iff hV0 hVt]`. Use `hup.trans ?_` and prove the remaining obligations. Use `gcongr`. Rewrite using `[ENNReal.ofReal_add zero_le_one hδp.le, ENNReal.ofReal_one]`. Use `gcongr`.
+
+Establish `hlim : Tendsto (fun r : ℝ => ENNReal.ofReal (gaugeU ε) * ((∫⁻ t in l1B ε r, jd ε t) / volume (l1B ε r))) (𝓝[>] (0 : ℝ)) (𝓝 (ENNReal.ofReal (gaugeU ε) * 1))` using `ENNReal.Tendsto.const_mul hJ (Or.inr ENNReal.ofReal_ne_top)`. Rewrite `hlim` using `[mul_one]`. Use `hlim.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT (show (0 : ℝ) < s / 2 by linarith)] with r hr`. Rewrite using `[hT _ ((l1B_subset_ball_two_mul ε r).trans (Metric.ball_subset_ball (by linarith [hr.2]))) (isOpen_l1B ε r).measurableSet, mul_div_assoc]`.
+-/
 theorem l1BallDensity_signs (ε : Fin n → Bool) : L1BallDensity ε := by
   obtain ⟨s, hs, _, hT⟩ := setForm ε
   have hJ : Tendsto (fun r : ℝ => (∫⁻ t in l1B ε r, jd ε t) / volume (l1B ε r)) (𝓝[>] (0 : ℝ)) (𝓝 1) := by
@@ -203,6 +283,9 @@ theorem l1BallDensity_signs (ε : Fin n → Bool) : L1BallDensity ε := by
   rw [hT _ ((l1B_subset_ball_two_mul ε r).trans (Metric.ball_subset_ball (by linarith [hr.2]))) (isOpen_l1B ε r).measurableSet,
     mul_div_assoc]
 
+/- English proof (translation)
+Take `⟨s, hs, hinj, -⟩` from `setForm ε`. Use `⟨s / 2, by linarith, fun r hr => ?_⟩` and prove the remaining obligations. Establish `hsub : l1B ε r ⊆ Metric.ball 0 s` using `(l1B_subset_ball_two_mul ε r).trans (Metric.ball_subset_ball (by linarith))`. Conclude with `(isOpen_l1B ε r).measurableSet.image_of_continuousOn_injOn (continuous_expCG ε).continuousOn (hinj.mono hsub)`.
+-/
 theorem l1BallMeasurable_signs (ε : Fin n → Bool) : L1BallMeasurable ε := by
   obtain ⟨s, hs, hinj, -⟩ := setForm ε
   refine ⟨s / 2, by linarith, fun r hr => ?_⟩

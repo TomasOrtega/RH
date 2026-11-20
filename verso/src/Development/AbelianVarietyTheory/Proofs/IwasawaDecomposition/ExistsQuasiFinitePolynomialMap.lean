@@ -4,6 +4,17 @@ namespace GlobalTheory.NoetherInt
 
 open Polynomial
 
+/- English proof (translation)
+Use `⟨fun P _ => ?_⟩` and prove the remaining obligations. Set `f : R[X] →ₐ[R] (R[X] ⧸ Ideal.span {G})` to `Ideal.Quotient.mkₐ R _`. Establish `hf : Function.Surjective f` using `Ideal.Quotient.mkₐ_surjective R _`. Set `e` to `Polynomial.fiberEquivQuotient f hf P`. Set `I : Ideal (P.ResidueField[X])` to `(RingHom.ker (f : R[X] →+* (R[X] ⧸ Ideal.span {G}))).map (mapRingHom (algebraMap R P.ResidueField))`.
+
+Set `Gb : P.ResidueField[X]` to `G.map (algebraMap R P.ResidueField)`. Establish `hG : Gb ≠ 0`. Introduce `h`. Establish `h2 : (Gb).coeff k = 0` using `by rw [h]; simp`. Rewrite `h2` using `[coeff_map]`.
+
+Conclude with `(hc.map (algebraMap R P.ResidueField)).ne_zero h2`. Establish `hmem : Gb ∈ I`. Use `Ideal.mem_map_of_mem (mapRingHom (algebraMap R P.ResidueField)) (x := G) ?_` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self G)`.
+
+Establish `hM : (Gb * C Gb.leadingCoeff⁻¹).Monic` using `monic_mul_leadingCoeff_inv hG`. Establish `hMI : Gb * C Gb.leadingCoeff⁻¹ ∈ I` using `I.mul_mem_right _ hmem`. Establish `h1 : Module.Finite P.ResidueField (P.ResidueField[X] ⧸ Ideal.span {Gb * C Gb.leadingCoeff⁻¹})` using `hM.finite_quotient`. Establish `hle : Ideal.span {Gb * C Gb.leadingCoeff⁻¹} ≤ I`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`.
+
+Conclude with `hMI`. Establish `h2 : Module.Finite P.ResidueField (P.ResidueField[X] ⧸ I)` using `Module.Finite.of_surjective (Ideal.Quotient.factorₐ P.ResidueField hle).toLinearMap (Ideal.Quotient.factor_surjective hle)`. Conclude with `Module.Finite.of_surjective e.symm.toLinearMap e.symm.surjective`.
+-/
 theorem quasiFinite_quotient_of_isUnit_coeff {R : Type*} [CommRing R] (G : R[X]) (k : ℕ)
     (hc : IsUnit (G.coeff k)) : Algebra.QuasiFinite R (R[X] ⧸ Ideal.span {G}) := by
   refine ⟨fun P _ => ?_⟩
@@ -33,6 +44,13 @@ theorem quasiFinite_quotient_of_isUnit_coeff {R : Type*} [CommRing R] (G : R[X])
       (Ideal.Quotient.factor_surjective hle)
   exact Module.Finite.of_surjective e.symm.toLinearMap e.symm.surjective
 
+/- English proof (translation)
+Establish `hker : ∀ a ∈ Ideal.span {G}, eval₂RingHom φ t a = 0`. Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Simplify using `[hG]`. Set `ψ : (R[X] ⧸ Ideal.span {G}) →+* T` to `Ideal.Quotient.lift _ (eval₂RingHom φ t) hker`.
+
+Establish `h1 : ψ.comp (Ideal.Quotient.mk (Ideal.span {G})) = eval₂RingHom φ t`. Apply the tactic sequence `ext <;> simp [ψ]`. Establish `h2 : ψ.QuasiFinite` using `RingHom.QuasiFinite.of_comp (g := Ideal.Quotient.mk (Ideal.span {G})) (h1 ▸ h)`. Establish `h3 : (algebraMap R (R[X] ⧸ Ideal.span {G})).QuasiFinite` using `RingHom.quasiFinite_algebraMap.2 (quasiFinite_quotient_of_isUnit_coeff G k hc)`. Establish `h4 : ψ.comp (algebraMap R (R[X] ⧸ Ideal.span {G})) = φ`.
+
+Use extensionality with `a`. Simplify using `[ψ, IsScalarTower.algebraMap_apply R R[X] (R[X] ⧸ Ideal.span {G})]`. Conclude with `h4 ▸ h2.comp h3`.
+-/
 theorem quasiFinite_of_eval₂_eq_zero {R T : Type*} [CommRing R] [CommRing T] (φ : R →+* T) (t : T)
     (h : (eval₂RingHom φ t).QuasiFinite) (G : R[X]) (hG : eval₂ φ t G = 0) (k : ℕ)
     (hc : IsUnit (G.coeff k)) : φ.QuasiFinite := by
@@ -52,6 +70,15 @@ theorem quasiFinite_of_eval₂_eq_zero {R T : Type*} [CommRing R] [CommRing T] (
     simp [ψ, IsScalarTower.algebraMap_apply R R[X] (R[X] ⧸ Ideal.span {G})]
   exact h4 ▸ h2.comp h3
 
+/- English proof (translation)
+Set `c` to `G.coeff k`. Set `φ' : Localization.Away c →+* T` to `IsLocalization.Away.lift c hc`. Establish `hφ : φ'.comp (algebraMap R (Localization.Away c)) = φ` using `IsLocalization.Away.lift_comp c hc`. Establish `hφx : ∀ a, φ' (algebraMap R (Localization.Away c) a) = φ a` using `fun a => by`. Rewrite using `[← RingHom.comp_apply, hφ]`.
+
+Establish `hι : (eval₂RingHom φ' t).comp (mapRingHom (algebraMap R (Localization.Away c))) = eval₂RingHom φ t`. Apply the tactic sequence `ext <;> simp [hφx]`. Establish `h1 : (eval₂RingHom φ' t).QuasiFinite` using `RingHom.QuasiFinite.of_comp (g := mapRingHom (algebraMap R (Localization.Away c))) (hι ▸ h)`. Establish `hG' : eval₂ φ' t (G.map (algebraMap R (Localization.Away c))) = 0`. Establish `h5` using `DFunLike.congr_fun hι G`.
+
+Simplify `h5` using `[hG]`. Establish `h2 : φ'.QuasiFinite` using `quasiFinite_of_eval₂_eq_zero φ' t h1 _ hG' k (by`. Rewrite using `[coeff_map]`. Conclude with `IsLocalization.Away.algebraMap_isUnit c)`. Establish `h3 : (algebraMap R (Localization.Away c)).QuasiFinite` using `RingHom.quasiFinite_algebraMap.2 (.of_isLocalization (.powers c))`.
+
+Conclude with `hφ ▸ h2.comp h3`.
+-/
 theorem quasiFinite_of_isUnit_coeff {R T : Type*} [CommRing R] [CommRing T] (φ : R →+* T) (t : T)
     (h : (eval₂RingHom φ t).QuasiFinite) (G : R[X]) (hG : eval₂ φ t G = 0) (k : ℕ)
     (hc : IsUnit (φ (G.coeff k))) : φ.QuasiFinite := by
@@ -88,6 +115,9 @@ noncomputable def shearHom (A : Type*) [CommRing A] (n u : ℕ) (c : A) :
     MvPolynomial (Fin (n + 1)) A →ₐ[A] MvPolynomial (Fin (n + 1)) A :=
   aeval fun i ↦ if i = 0 then X 0 else X i + c • X 0 ^ (u ^ i.1)
 
+/- English proof (translation)
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Apply the tactic sequence `cases i using Fin.cases <;> simp [shearHom]`.
+-/
 lemma shearHom_comp_neg (u : ℕ) (c : A) :
     (shearHom A n u c).comp (shearHom A n u (-c)) = AlgHom.id _ _ := by
   apply MvPolynomial.algHom_ext
@@ -100,6 +130,11 @@ noncomputable def shear (A : Type*) [CommRing A] (n u : ℕ) :
     (shearHom_comp_neg u 1)
     (by have := shearHom_comp_neg (A := A) (n := n) u (-1); rwa [neg_neg] at this)
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [shear, shearHom]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, hp]`.
+
+Use `congr 1`. Apply the tactic sequence `cases i using Fin.cases <;> simp [shear, shearHom]`.
+-/
 lemma map_shear {B : Type*} [CommRing B] (φ : A →+* B) (u : ℕ)
     (g : MvPolynomial (Fin (n + 1)) A) :
     MvPolynomial.map φ (shear A n u g) = shear B n u (MvPolynomial.map φ g) := by
@@ -111,6 +146,11 @@ lemma map_shear {B : Type*} [CommRing B] (φ : A →+* B) (u : ℕ)
     congr 1
     cases i using Fin.cases <;> simp [shear, shearHom]
 
+/- English proof (translation)
+Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C a => simp [finSuccEquiv_apply]`. Consider the case `add p q hp hq => simp [hp, hq, Polynomial.map_add]`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, Polynomial.map_mul, hp]`.
+
+Use `congr 1`. Apply the tactic sequence `cases i using Fin.cases <;> simp [finSuccEquiv_X_zero, finSuccEquiv_X_succ]`.
+-/
 lemma map_finSuccEquiv {B : Type*} [CommRing B] (φ : A →+* B)
     (h : MvPolynomial (Fin (n + 1)) A) :
     Polynomial.map (MvPolynomial.map φ) (finSuccEquiv A n h) =
@@ -135,9 +175,15 @@ local notation3 "r" => fun (i : Fin (n + 1)) ↦ up ^ i.1
 local notation3 "T" => shear k n (2 + f.totalDegree)
 
 variable {f v} in
+/- English proof (translation)
+Use `grind`.
+-/
 private lemma lt_up (vlt : ∀ i, v i < up) : ∀ l ∈ List.ofFn v, l < up := by
   grind
 
+/- English proof (translation)
+Introduce `h`. Use `ne <| Finsupp.ext <| congrFun <| List.ofFn_inj.mp ?_` and prove the remaining obligations. Apply `Nat.ofDigits_inj_of_len_eq (Nat.lt_add_right f.totalDegree one_lt_two) (by simp) (lt_up vlt) (lt_up wlt)` to reduce the goal to its premises. Simplify using `only [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, List.get_ofFn, List.length_ofFn, Fin.val_cast, mul_comm, List.sum_ofFn] using! h`.
+-/
 private lemma sum_r_mul_ne (vlt : ∀ i, v i < up) (wlt : ∀ i, w i < up) (ne : v ≠ w) :
     ∑ x : Fin (n + 1), r x * v x ≠ ∑ x : Fin (n + 1), r x * w x := by
   intro h
@@ -147,11 +193,22 @@ private lemma sum_r_mul_ne (vlt : ∀ i, v i < up) (wlt : ∀ i, w i < up) (ne :
   simpa only [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, List.get_ofFn, List.length_ofFn,
     Fin.val_cast, mul_comm, List.sum_ofFn] using! h
 
+/- English proof (translation)
+Simplify using `[shear, shearHom]`.
+-/
 private lemma shear_X_zero (u : ℕ) : shear k n u (X 0) = X 0 := by simp [shear, shearHom]
 
+/- English proof (translation)
+Simplify using `[shear, shearHom]`.
+-/
 private lemma shear_X_succ (u : ℕ) (i : Fin n) :
     shear k n u (X i.succ) = X i.succ + X 0 ^ (u ^ i.succ.1) := by simp [shear, shearHom]
 
+/- English proof (translation)
+Establish `hT : T (MvPolynomial.C a) = MvPolynomial.C a` using `(shear k n _).commutes a`. Rewrite using `[← natDegree_finSuccEquiv, monomial_eq, Finsupp.prod_pow v fun a ↦ X a]`. Simplify using `only [hT, Fin.prod_univ_succ, Fin.sum_univ_succ, map_mul, map_prod, map_pow, shear_X_zero, shear_X_succ, AlgEquiv.commutes, algebraMap_eq, map_add, finSuccEquiv_X_zero, finSuccEquiv_X_succ]`. Establish `h (i : Fin n) : (Polynomial.C (X (R` using `k) i) + Polynomial.X ^ r i.succ) ^ v i.succ ≠ 0 := pow_ne_zero (v i.succ) (Polynomial.leadingCoeff_ne_zero.mp <| by`. Simplify using `[add_comm, Polynomial.leadingCoeff_X_pow_add_C])`.
+
+Rewrite using `[Polynomial.natDegree_mul (by simp [ha]) (mul_ne_zero (by simp) (Finset.prod_ne_zero_iff.mpr (fun i _ ↦ h i))), Polynomial.natDegree_mul (by simp) (Finset.prod_ne_zero_iff.mpr (fun i _ ↦ h i)), Polynomial.natDegree_prod _ _ (fun i _ ↦ h i), natDegree_finSuccEquiv, degreeOf_C]`. Simplify `Finset.sum_congr rfl (fun i _ ↦ by` using `only [Polynomial.natDegree_pow, zero_add, Polynomial.natDegree_X, mul_one, Fin.val_zero, pow_zero, one_mul, add_right_inj]`. Rewrite using `[add_comm (Polynomial.C _), Polynomial.natDegree_X_pow_add_C, mul_comm])`.
+-/
 private lemma degreeOf_zero_t {a : k} (ha : a ≠ 0) : (T (monomial v a)).degreeOf 0 =
     ∑ i : Fin (n + 1), (r i) * v i := by
   have hT : T (MvPolynomial.C a) = MvPolynomial.C a := (shear k n _).commutes a
@@ -170,6 +227,9 @@ private lemma degreeOf_zero_t {a : k} (ha : a ≠ 0) : (T (monomial v a)).degree
     pow_zero, one_mul, add_right_inj] using Finset.sum_congr rfl (fun i _ ↦ by
     rw [add_comm (Polynomial.C _), Polynomial.natDegree_X_pow_add_C, mul_comm])
 
+/- English proof (translation)
+Rewrite using `[degreeOf_zero_t _ _ <| mem_support_iff.mp hv, degreeOf_zero_t _ _ <| mem_support_iff.mp hw]`. Apply the tactic sequence `refine sum_r_mul_ne f v w (fun i ↦ ?_) (fun i ↦ ?_) ne <;>`. Conclude with `lt_of_le_of_lt ((monomial_le_degreeOf i ‹_›).trans (degreeOf_le_totalDegree f i)) (by lia)`.
+-/
 private lemma degreeOf_t_ne_of_ne (hv : v ∈ f.support) (hw : w ∈ f.support) (ne : v ≠ w) :
     (T <| monomial v <| coeff v f).degreeOf 0 ≠
     (T <| monomial w <| coeff w f).degreeOf 0 := by
@@ -178,6 +238,13 @@ private lemma degreeOf_t_ne_of_ne (hv : v ∈ f.support) (hw : w ∈ f.support) 
   exact lt_of_le_of_lt ((monomial_le_degreeOf i ‹_›).trans (degreeOf_le_totalDegree f i))
     (by lia)
 
+/- English proof (translation)
+Rewrite using `[monomial_eq, Finsupp.prod_fintype]`. Simplify using `only [map_mul, map_prod, Polynomial.leadingCoeff_mul, Polynomial.leadingCoeff_prod]`. Establish `h0 : (finSuccEquiv k n (T (MvPolynomial.C (coeff v f)))).leadingCoeff = algebraMap k _ (coeff v f)`. Establish `: T (MvPolynomial.C (coeff v f)) = MvPolynomial.C (coeff v f)` using `(shear k n _).commutes (coeff v f)`. Rewrite using `[this]`.
+
+Simplify using `[finSuccEquiv_apply]`. Establish `: ∀ j, ((finSuccEquiv k n) (T (X j))).leadingCoeff = 1` using `fun j ↦ by`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => simp [shear_X_zero, finSuccEquiv_X_zero]`. Consider the case `succ i`.
+
+Simplify using `only [shear_X_succ, map_add, map_pow, finSuccEquiv_X_succ, finSuccEquiv_X_zero]`. Simplify using `[add_comm, Polynomial.leadingCoeff_X_pow_add_C]`. Simplify using `only [h0, map_pow, Polynomial.leadingCoeff_pow, this, one_pow, Finset.prod_const_one, mul_one]`. Conclude with `fun i ↦ pow_zero _`.
+-/
 private lemma leadingCoeff_finSuccEquiv_t :
     (finSuccEquiv k n (T ((monomial v) (coeff v f)))).leadingCoeff =
     algebraMap k _ (coeff v f) := by
@@ -195,6 +262,15 @@ private lemma leadingCoeff_finSuccEquiv_t :
     simp only [h0, map_pow, Polynomial.leadingCoeff_pow, this, one_pow, Finset.prod_const_one, mul_one]
   exact fun i ↦ pow_zero _
 
+/- English proof (translation)
+Take `⟨v, vin, vs⟩` from `Finset.exists_max_image f.support (fun v ↦ (T ((monomial v) (coeff v f))).degreeOf 0) (support_nonempty.mpr fne)`. Use `set h := fun w ↦ (MvPolynomial.monomial w) (coeff w f)`. Simplify using `only [← natDegree_finSuccEquiv] at vs`. Use `replace vs : ∀ x ∈ f.support \ {v}, (finSuccEquiv k n (T (h x))).degree < (finSuccEquiv k n (T (h v))).degree := by`. Introduce `x hx`.
+
+Take `⟨h1, h2⟩` from `Finset.mem_sdiff.mp hx`. Apply `Polynomial.degree_lt_degree <| lt_of_le_of_ne (vs x h1) ?_` to reduce the goal to its premises. Simplify `degreeOf_t_ne_of_ne f _ _ h1 vin <| List.ne_of_not_mem_cons h2` using `only [natDegree_finSuccEquiv]`. Establish `coeff : (finSuccEquiv k n (T (h v + ∑ x ∈ f.support \ {v}, h x))).leadingCoeff = (finSuccEquiv k n (T (h v))).leadingCoeff`. Simplify using `only [map_add, map_sum]`.
+
+Rewrite using `[add_comm]`. Apply `Polynomial.leadingCoeff_add_of_degree_lt <| (lt_of_le_of_lt <| Polynomial.degree_sum_le _ _) ?_` to reduce the goal to its premises. Establish `h2 : h v ≠ 0` using `by simpa [h] using mem_support_iff.mp vin`. Use `replace h2 : (finSuccEquiv k n (T (h v))) ≠ 0 := fun eq ↦ h2 <| by simpa only [map_eq_zero_iff _ (AlgEquiv.injective _)] using eq`. Conclude with `(Finset.sup_lt_iff <| Ne.bot_lt (fun x ↦ h2 <| Polynomial.degree_eq_bot.mp x)).mpr vs`.
+
+Use `nth_rw 2 [← f.support_sum_monomial_coeff]`. Rewrite using `[Finset.sum_eq_add_sum_sdiff_singleton_of_mem vin h]`. Rewrite `coeff` using `[leadingCoeff_finSuccEquiv_t]`. Simplify `(mem_support_iff.mp vin).isUnit.map MvPolynomial.C` using `only [coeff, algebraMap_eq]`.
+-/
 theorem shear_leadingCoeff_isUnit (fne : f ≠ 0) :
     IsUnit (finSuccEquiv k n (T f)).leadingCoeff := by
   obtain ⟨v, vin, vs⟩ := Finset.exists_max_image f.support
@@ -230,6 +306,11 @@ namespace GlobalTheory.NoetherInt
 
 open MvPolynomial
 
+/- English proof (translation)
+Use `set f := MvPolynomial.map φ g with hf`. Establish `hU` using `shear_leadingCoeff_isUnit f hg`. Take `⟨a, ha, hE⟩` from `MvPolynomial.isUnit_iff_eq_C_of_isReduced.mp hU`. Use `⟨2 + f.totalDegree, (finSuccEquiv K n (shear K n (2 + f.totalDegree) f)).natDegree, a, ha.ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.coeff_map, map_finSuccEquiv, map_shear, ← hf]`.
+
+Conclude with `hE`.
+-/
 theorem exists_coeff_map_eq_C {K : Type*} [Field K] {n : ℕ} (φ : ℤ →+* K)
     (g : MvPolynomial (Fin (n + 1)) ℤ) (hg : MvPolynomial.map φ g ≠ 0) :
     ∃ (u k : ℕ) (a : K), a ≠ 0 ∧
@@ -242,6 +323,23 @@ theorem exists_coeff_map_eq_C {K : Type*} [Field K] {n : ℕ} (φ : ℤ →+* K)
   rw [← Polynomial.coeff_map, map_finSuccEquiv, map_shear, ← hf]
   exact hE
 
+/- English proof (translation)
+Establish `hs : g.support.Nonempty` using `support_nonempty.mpr hg0`. Take `⟨b, hb, hgcd⟩` from `Finset.extract_gcd (fun v => g.coeff v) hs`. Use `set d := g.support.gcd (fun v => g.coeff v) with hd`. Establish `hd0 : d ≠ 0`. Introduce `h`.
+
+Take `⟨v, hv⟩` from `hs`. Use `(Finset.gcd_eq_zero_iff.mp h) v hv` as an intermediate fact. Conclude with `(mem_support_iff.mp hv) this`. Set `g₀ : MvPolynomial (Fin n) ℤ` to `∑ v ∈ g.support, monomial v (b v)`. Establish `hc : ∀ v, v ∈ g.support → g₀.coeff v = b v`.
+
+Introduce `v hv`. Simplify using `[g₀, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, hv]`. Establish `hc' : ∀ v, v ∉ g.support → g₀.coeff v = 0`. Introduce `v hv`. Simplify using `only [g₀, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial]`.
+
+Conclude with `Finset.sum_eq_zero fun w hw => if_neg (fun h : w = v => hv (h ▸ hw))`. Establish `hgd : g = MvPolynomial.C d * g₀`. Use extensionality with `v`. Rewrite using `[MvPolynomial.coeff_C_mul]`. Distinguish the cases in `hv : v ∈ g.support`.
+
+Rewrite using `[hc v hv]`. Conclude with `hb v hv`. Rewrite using `[hc' v hv, mul_zero]`. Conclude with `notMem_support_iff.mp hv`. Use `⟨g₀, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ((d : ℤ) : S) * aeval y g₀ = 0`. Rewrite `hg` using `[hgd, map_mul]`. Simplify using `using hg`. Conclude with `(mul_eq_zero.mp h1).resolve_left (by exact_mod_cast hd0)`. Assume the negation of the conclusion as `hall push_neg at hall`.
+
+Take `⟨l, hl⟩` from `(IsPrincipalIdealRing.principal I).principal`. Establish `hdvd : l ∣ g.support.gcd b` using `Finset.dvd_gcd fun v hv => by`. Use `hall v` as an intermediate fact. Rewrite `this` using `[hc v hv, hl]`. Conclude with `Ideal.mem_span_singleton.mp this`.
+
+Rewrite `hdvd` using `[hgcd]`. Conclude with `hI (by rw [hl]; exact Ideal.span_singleton_eq_top.mpr (isUnit_of_dvd_one hdvd))`.
+-/
 theorem exists_primitive_of_aeval_eq_zero {S : Type*} [CommRing S] [IsDomain S] [CharZero S]
     {n : ℕ} (y : Fin n → S) (g : MvPolynomial (Fin n) ℤ) (hg0 : g ≠ 0)
     (hg : aeval y g = 0) (I : Ideal ℤ) (hI : I ≠ ⊤) :
@@ -284,6 +382,9 @@ theorem exists_primitive_of_aeval_eq_zero {S : Type*} [CommRing S] [IsDomain S] 
     rw [hgcd] at hdvd
     exact hI (by rw [hl]; exact Ideal.span_singleton_eq_top.mpr (isUnit_of_dvd_one hdvd))
 
+/- English proof (translation)
+Use `letI := f.toAlgebra`. Establish `: f = algebraMap R S` using `rfl`. Rewrite using `[this, ← IsScalarTower.algebraMap_eq R S (Localization.AtPrime q), RingHom.quasiFinite_algebraMap]`.
+-/
 theorem quasiFiniteAt_iff {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) (q : Ideal S)
     [q.IsPrime] :
     f.QuasiFiniteAt q ↔ ((algebraMap S (Localization.AtPrime q)).comp f).QuasiFinite := by
@@ -298,6 +399,35 @@ namespace GlobalTheory.NoetherInt
 
 open MvPolynomial
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨g, hg0, hg⟩ : ∃ g : MvPolynomial (Fin (n + 1)) ℤ, g ≠ 0 ∧ aeval y g = 0 := by`. Rewrite `hy` using `[injective_iff_map_eq_zero]`. Use `push_neg at hy`. Take `⟨g, h1, h2⟩` from `hy`. Conclude with `⟨g, h2, h1⟩`.
+
+Set `L` to `algebraMap S (Localization.AtPrime q)`. Set `K` to `IsLocalRing.ResidueField (Localization.AtPrime q)`. Set `res : Localization.AtPrime q →+* K` to `IsLocalRing.residue _`. Set `ι : ℤ →+* K` to `Int.castRingHom K`. Take `⟨g₁, hg₁, v, hv⟩` from `exists_primitive_of_aeval_eq_zero y g hg0 hg (RingHom.ker ι) (RingHom.ker_ne_top ι)`.
+
+Establish `hne : MvPolynomial.map ι g₁ ≠ 0`. Introduce `h0`. Apply `hv` to reduce the goal to its premises. Use `congrArg (MvPolynomial.coeff v) h0` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coeff_map]`.
+
+Simplify `this` using `[RingHom.mem_ker]`. Take `⟨u, k, a, ha, hc⟩` from `exists_coeff_map_eq_C ι g₁ hne`. Set `σ` to `shear ℤ n u`. Set `e` to `finSuccEquiv ℤ n`. Set `y₁ : Fin (n + 1) → S` to `fun i => aeval y (σ.symm (X i))`.
+
+Establish `h1 : ∀ p, aeval y₁ p = aeval y (σ.symm p)`. Introduce `p`. Establish `: (aeval y₁ : MvPolynomial (Fin (n + 1)) ℤ →ₐ[ℤ] S) = (aeval y).comp (σ.symm : _ →ₐ[ℤ] _)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`.
+
+Simplify using `[y₁]`. Conclude with `DFunLike.congr_fun this p`. Set `y' : Fin n → S` to `fun i => y₁ i.succ`. Set `t` to `L (y₁ 0)`. Set `φ : MvPolynomial (Fin n) ℤ →+* Localization.AtPrime q` to `L.comp (aeval y' : MvPolynomial (Fin n) ℤ →ₐ[ℤ] S).toRingHom`.
+
+Establish `key : ∀ p, Polynomial.eval₂ φ t (e p) = L (aeval y₁ p)`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[← Polynomial.coe_eval₂RingHom]`.
+
+Simplify using `only [eq_intCast, map_intCast]`. Consider the case `add p r hp hr => simp [hp, hr, Polynomial.eval₂_add]`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, Polynomial.eval₂_mul, hp]`. Use `congr 1`.
+
+Consider the cases of `i using Fin.cases with`. Consider the case `zero => simp [e, t, finSuccEquiv_X_zero]`. Consider the case `succ i => simp [e, φ, y', finSuccEquiv_X_succ]`. Set `E : Polynomial (MvPolynomial (Fin n) ℤ) ≃+* MvPolynomial (Fin (n + 1)) ℤ` to `(e.symm.trans σ.symm).toRingEquiv`. Establish `hE : Polynomial.eval₂RingHom φ t = (L.comp (aeval y : MvPolynomial (Fin (n + 1)) ℤ →ₐ[ℤ] S).toRingHom).comp E.toRingHom`.
+
+Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Take `⟨p, rfl⟩` from `e.surjective p`. Rewrite using `[Polynomial.coe_eval₂RingHom, key, h1]`. Simplify using `[E]`. Establish `hq : (Polynomial.eval₂RingHom φ t).QuasiFinite`.
+
+Rewrite using `[hE]`. Conclude with `((quasiFiniteAt_iff _ q).mp h).comp (RingHom.QuasiFinite.of_finite E.finite)`. Establish `hG : Polynomial.eval₂ φ t (e (σ g₁)) = 0`. Rewrite using `[key, h1]`. Simplify using `[hg₁]`.
+
+Establish `hunit : IsUnit (φ ((e (σ g₁)).coeff k))`. Establish `hΦ : res.comp φ = (MvPolynomial.eval fun i => res (φ (X i))).comp (MvPolynomial.map ι)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `m`. Simplify using `[ι]`.
+
+Introduce `i`. Simplify using the standard rewrite rules. Establish `h2 : res (φ ((e (σ g₁)).coeff k)) = a`. Establish `: res (φ ((e (σ g₁)).coeff k)) = MvPolynomial.eval (fun i => res (φ (X i))) (MvPolynomial.map ι ((e (σ g₁)).coeff k))` using `DFunLike.congr_fun hΦ ((e (σ g₁)).coeff k)`. Rewrite using `[this]`.
+
+Simplify using `only [e, σ]`. Rewrite using `[hc]`. Simplify using the standard rewrite rules. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).mp (h2 ▸ ha)`. Conclude with `⟨y', (quasiFiniteAt_iff _ q).mpr (quasiFinite_of_isUnit_coeff φ t hq _ hG k hunit)⟩`.
+-/
 theorem exists_quasiFiniteAt_of_not_injective {S : Type*} [CommRing S] [IsDomain S] [CharZero S]
     (q : Ideal S) [q.IsPrime] {n : ℕ} (y : Fin (n + 1) → S)
     (h : (aeval y : MvPolynomial (Fin (n + 1)) ℤ →ₐ[ℤ] S).toRingHom.QuasiFiniteAt q)
@@ -379,6 +509,13 @@ theorem exists_quasiFiniteAt_of_not_injective {S : Type*} [CommRing S] [IsDomain
     exact (IsLocalRing.residue_ne_zero_iff_isUnit _).mp (h2 ▸ ha)
   exact ⟨y', (quasiFiniteAt_iff _ q).mpr (quasiFinite_of_isUnit_coeff φ t hq _ hG k hunit)⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `y h`. Use `⟨0, y, ?_, h⟩` and prove the remaining obligations. Rewrite using `[algebraicIndependent_empty_type_iff]`.
+
+Conclude with `Int.cast_injective`. Consider the case `succ n ih`. Introduce `y h`. Distinguish the cases in `hy : Function.Injective (aeval y : MvPolynomial (Fin (n + 1)) ℤ →ₐ[ℤ] S)`. Conclude with `⟨n + 1, y, hy, h⟩`.
+
+Take `⟨y', hy'⟩` from `exists_quasiFiniteAt_of_not_injective q y h hy`. Conclude with `ih y' hy'`.
+-/
 theorem exists_algebraicIndependent_of_quasiFiniteAt {S : Type*} [CommRing S] [IsDomain S]
     [CharZero S] (q : Ideal S) [q.IsPrime] (n : ℕ) :
     ∀ y : Fin n → S, (aeval y : MvPolynomial (Fin n) ℤ →ₐ[ℤ] S).toRingHom.QuasiFiniteAt q →
@@ -403,6 +540,11 @@ namespace GlobalTheory
 
 open IsLocalRing
 
+/- English proof (translation)
+Introduce `S _ _ _ hS 𝔮 _`. Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp hS`. Establish `hfe : (MvPolynomial.aeval (fun i => f (MvPolynomial.X i)) : MvPolynomial (Fin n) ℤ →ₐ[ℤ] S) = f`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`.
+
+Simplify using the standard rewrite rules. Use `NoetherInt.exists_algebraicIndependent_of_quasiFiniteAt 𝔮 n (fun i => f (MvPolynomial.X i)) ?_` and prove the remaining obligations. Rewrite using `[NoetherInt.quasiFiniteAt_iff, hfe]`. Use `RingHom.QuasiFinite.comp ?_ (RingHom.QuasiFinite.of_finite (RingHom.Finite.of_surjective _ hf))` and prove the remaining obligations. Conclude with `RingHom.quasiFinite_algebraMap.2 (.of_isLocalization 𝔮.primeCompl)`.
+-/
 theorem exists_algebraicIndependent_int_quasiFiniteAt :
     ∀ (S : Type) [CommRing S] [IsDomain S] [CharZero S] [Algebra.FiniteType ℤ S] (𝔮 : Ideal S) [𝔮.IsPrime], ∃ (r : ℕ) (y : Fin r → S), AlgebraicIndependent ℤ y ∧ @Algebra.QuasiFiniteAt (MvPolynomial (Fin r) ℤ) S _ _ (MvPolynomial.aeval y : MvPolynomial (Fin r) ℤ →ₐ[ℤ] S).toRingHom.toAlgebra 𝔮 _ := by
   intro S _ _ _ hS 𝔮 _

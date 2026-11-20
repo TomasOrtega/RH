@@ -6,6 +6,9 @@ open Module
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `h` using `LinearMap.finrank_range_add_finrank_ker (f.domRestrict A)`. Rewrite `h` using `[LinearMap.range_domRestrict, LinearMap.ker_domRestrict]`. Rewrite using `[← Submodule.map_comap_subtype, Submodule.finrank_map_subtype_eq]`. Conclude with `h`.
+-/
 private theorem finrank_map_add_finrank_inf_ker' {E F : Type} [AddCommGroup E] [Module ℂ E]
     [FiniteDimensional ℂ E] [AddCommGroup F] [Module ℂ F] (f : E →ₗ[ℂ] F) (A : Submodule ℂ E) :
     finrank ℂ (A.map f) + finrank ℂ (A ⊓ LinearMap.ker f : Submodule ℂ E) = finrank ℂ A := by
@@ -14,6 +17,13 @@ private theorem finrank_map_add_finrank_inf_ker' {E F : Type} [AddCommGroup E] [
   rw [← Submodule.map_comap_subtype, Submodule.finrank_map_subtype_eq]
   exact h
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `Submodule.exists_isCompl W'`. Establish `hsup : C ⊓ W ⊔ W' = W`. Rewrite using `[sup_comm, ← sup_inf_assoc_of_le C h, hC.sup_eq_top, top_inf_eq]`. Establish `hinf : C ⊓ W ⊓ W' = ⊥`. Establish `hle : C ⊓ W ⊓ W' ≤ C ⊓ W'` using `inf_le_inf_right W' inf_le_left`.
+
+Rewrite `hle` using `[inf_comm C W', hC.inf_eq_bot]`. Conclude with `le_bot_iff.1 hle`. Use `⟨C ⊓ W, hsup, ?_⟩` and prove the remaining obligations. Establish `hdim` using `Submodule.finrank_sup_add_finrank_inf_eq (C ⊓ W) W'`. Rewrite `hdim` using `[hsup, hinf, finrank_bot, add_zero]`.
+
+Conclude with `hdim.symm`.
+-/
 theorem exists_rel_compl [FiniteDimensional ℂ V] (W' W : Submodule ℂ V) (h : W' ≤ W) :
     ∃ Y : Submodule ℂ V, Y ⊔ W' = W ∧ finrank ℂ Y + finrank ℂ W' = finrank ℂ W := by
   obtain ⟨C, hC⟩ := Submodule.exists_isCompl W'
@@ -28,15 +38,26 @@ theorem exists_rel_compl [FiniteDimensional ℂ V] (W' W : Submodule ℂ V) (h :
   rw [hsup, hinf, finrank_bot, add_zero] at hdim
   exact hdim.symm
 
+/- English proof (translation)
+Rewrite using `[pow_succ', Module.End.mul_eq_comp, LinearMap.range_comp]`.
+-/
 theorem range_pow_succ (a : Module.End ℂ V) (i : ℕ) :
     LinearMap.range (a ^ (i + 1)) = (LinearMap.range (a ^ i)).map a := by
   rw [pow_succ', Module.End.mul_eq_comp, LinearMap.range_comp]
 
+/- English proof (translation)
+Rewrite using `[pow_succ, Module.End.mul_eq_comp]`. Conclude with `LinearMap.range_comp_le_range _ _`.
+-/
 theorem range_pow_succ_le (a : Module.End ℂ V) (i : ℕ) :
     LinearMap.range (a ^ (i + 1)) ≤ LinearMap.range (a ^ i) := by
   rw [pow_succ, Module.End.mul_eq_comp]
   exact LinearMap.range_comp_le_range _ _
 
+/- English proof (translation)
+Establish `h0 : finrank ℂ (LinearMap.range (a ^ (i + 1))) + finrank ℂ (LinearMap.range (a ^ i) ⊓ LinearMap.ker a : Submodule ℂ V) = finrank ℂ (LinearMap.range (a ^ i))`. Establish `h` using `finrank_map_add_finrank_inf_ker' a (LinearMap.range (a ^ i))`. Rewrite `h` using `[← range_pow_succ]`. Conclude with `h`. Establish `h1 : finrank ℂ (LinearMap.range (a ^ (i + 2))) + finrank ℂ (LinearMap.range (a ^ (i + 1)) ⊓ LinearMap.ker a : Submodule ℂ V) = finrank ℂ (LinearMap.range (a ^ (i + 1)))`.
+
+Establish `h` using `finrank_map_add_finrank_inf_ker' a (LinearMap.range (a ^ (i + 1)))`. Rewrite `h` using `[← range_pow_succ]`. Conclude with `h`. Establish `hmono : finrank ℂ (LinearMap.range (a ^ (i + 1)) ⊓ LinearMap.ker a : Submodule ℂ V) ≤ finrank ℂ (LinearMap.range (a ^ i) ⊓ LinearMap.ker a : Submodule ℂ V)` using `Submodule.finrank_mono (inf_le_inf_right _ (range_pow_succ_le a i))`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_range_pow_convex [FiniteDimensional ℂ V] (a : Module.End ℂ V) (i : ℕ) :
     2 * finrank ℂ (LinearMap.range (a ^ (i + 1))) ≤
       finrank ℂ (LinearMap.range (a ^ i)) + finrank ℂ (LinearMap.range (a ^ (i + 2))) := by
@@ -56,6 +77,11 @@ theorem finrank_range_pow_convex [FiniteDimensional ℂ V] (a : Module.End ℂ V
     Submodule.finrank_mono (inf_le_inf_right _ (range_pow_succ_le a i))
   omega
 
+/- English proof (translation)
+Proceed by induction on `x with`. Consider the case `zero => omega`. Consider the case `succ x ih`. Establish `conv : 2 * finrank ℂ (LinearMap.range (a ^ (x + 1))) ≤ finrank ℂ (LinearMap.range (a ^ x)) + finrank ℂ (LinearMap.range (a ^ (x + 1 + 1)))` using `finrank_range_pow_convex a x`. Establish `hm` using `Nat.mul_le_mul_left (x + 1) conv`.
+
+Use polynomial arithmetic with `[ih, hm]`.
+-/
 theorem succ_mul_drop_le [FiniteDimensional ℂ V] (a : Module.End ℂ V) (x : ℕ) :
     (x + 1) * finrank ℂ (LinearMap.range (a ^ x)) + finrank ℂ (LinearMap.range (a ^ (x + 1))) ≤
       (x + 1) * finrank ℂ (LinearMap.range (a ^ (x + 1))) +
@@ -69,6 +95,17 @@ theorem succ_mul_drop_le [FiniteDimensional ℂ V] (a : Module.End ℂ V) (x : �
     have hm := Nat.mul_le_mul_left (x + 1) conv
     nlinarith [ih, hm]
 
+/- English proof (translation)
+Establish `step : ∀ v ∈ LinearMap.range (a ^ x), ∃ u ∈ LinearMap.range (a ^ x), b v = a (b u)`. Introduce `v hv`. Rewrite `hv` using `[← hY]`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hv`. Rewrite `hz` using `[range_pow_succ]`.
+
+Take `⟨u, hu, rfl⟩` from `Submodule.mem_map.1 hz`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `hba` using `LinearMap.congr_fun hab.eq u`. Rewrite `hba` using `[Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[map_add, LinearMap.mem_ker.1 (hb hy), zero_add, hba]`.
+
+Establish `key : ∀ k : ℕ, ∀ v ∈ LinearMap.range (a ^ x), ∃ u ∈ LinearMap.range (a ^ x), b v = (a ^ k) (b u)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact fun v hv => ⟨v, hv, by simp⟩`. Consider the case `succ k ih`.
+
+Introduce `v hv`. Take `⟨u, hu, h1⟩` from `ih v hv`. Take `⟨u', hu', h2⟩` from `step u hu`. Conclude with `⟨u', hu', by rw [h1, h2, pow_succ, Module.End.mul_apply]⟩`. Take `⟨N, hN⟩` from `ha`.
+
+Introduce `v hv`. Take `⟨u, _, hu⟩` from `key N v hv`. Rewrite using `[LinearMap.mem_ker, hu, hN, LinearMap.zero_apply]`.
+-/
 theorem range_le_ker_of_commute (a b : Module.End ℂ V) (hab : Commute b a) (ha : IsNilpotent a)
     (x : ℕ) (Y : Submodule ℂ V) (hY : Y ⊔ LinearMap.range (a ^ (x + 1)) = LinearMap.range (a ^ x))
     (hb : Y ≤ LinearMap.ker b) : LinearMap.range (a ^ x) ≤ LinearMap.ker b := by
@@ -97,6 +134,9 @@ theorem range_le_ker_of_commute (a b : Module.End ℂ V) (hab : Commute b a) (ha
   obtain ⟨u, _, hu⟩ := key N v hv
   rw [LinearMap.mem_ker, hu, hN, LinearMap.zero_apply]
 
+/- English proof (translation)
+Establish `hf` using `finrank_map_add_finrank_inf_ker' f A`. Establish `hT` using `finrank_map_add_finrank_inf_ker' T A`. Establish `hle : finrank ℂ (A ⊓ LinearMap.ker T : Submodule ℂ E) ≤ finrank ℂ (A ⊓ LinearMap.ker f : Submodule ℂ E)` using `Submodule.finrank_mono fun b hb => Submodule.mem_inf.2 ⟨(Submodule.mem_inf.1 hb).1, LinearMap.mem_ker.2 (h b (Submodule.mem_inf.1 hb).1 (LinearMap.mem_ker.1 (Submodule.mem_inf.1 hb).2))⟩`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_map_le_of_ker {E F G : Type} [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E]
     [AddCommGroup F] [Module ℂ F] [AddCommGroup G] [Module ℂ G]
     (f : E →ₗ[ℂ] F) (T : E →ₗ[ℂ] G) (A : Submodule ℂ E)
@@ -108,6 +148,17 @@ theorem finrank_map_le_of_ker {E F G : Type} [AddCommGroup E] [Module ℂ E] [Fi
       LinearMap.mem_ker.2 (h b (Submodule.mem_inf.1 hb).1 (LinearMap.mem_ker.1 (Submodule.mem_inf.1 hb).2))⟩
   omega
 
+/- English proof (translation)
+Introduce `V _ _ _ a ha x A hA`. Take `⟨Y, hY, hdim⟩` from `exists_rel_compl (LinearMap.range (a ^ (x + 1))) (LinearMap.range (a ^ x)) (range_pow_succ_le a x)`. Set `T : Module.End ℂ V →ₗ[ℂ] (Y →ₗ[ℂ] V)` to `LinearMap.lcomp ℂ V Y.subtype`. Establish `hker : ∀ b ∈ A, T b = 0 → LinearMap.mulRight ℂ (a ^ x) b = 0`. Introduce `b hbA hTb`.
+
+Establish `hYk : Y ≤ LinearMap.ker b`. Introduce `y hy`. Establish `hy0` using `LinearMap.congr_fun hTb ⟨y, hy⟩`. Rewrite `hy0` using `[LinearMap.lcomp_apply, LinearMap.zero_apply]`. Conclude with `LinearMap.mem_ker.2 hy0`.
+
+Establish `hR` using `range_le_ker_of_commute a b (hA b hbA) ha x Y hY hYk`. Rewrite using `[LinearMap.mulRight_apply]`. Use extensionality with `v`. Rewrite using `[Module.End.mul_apply, LinearMap.zero_apply]`. Conclude with `LinearMap.mem_ker.1 (hR (LinearMap.mem_range_self _ v))`.
+
+Establish `h7` using `finrank_map_le_of_ker (LinearMap.mulRight ℂ (a ^ x)) T A hker`. Establish `h8 : Module.finrank ℂ (A.map T) ≤ Module.finrank ℂ Y * Module.finrank ℂ V` using `(Submodule.finrank_le _).trans (le_of_eq (Module.finrank_linearMap ℂ ℂ Y V))`. Establish `h5` using `succ_mul_drop_le a x`. Establish `hr0 : Module.finrank ℂ (LinearMap.range (a ^ 0)) ≤ Module.finrank ℂ V` using `Submodule.finrank_le _`. Rewrite `h5` using `[← hdim]`.
+
+Establish `hY1 : (x + 1) * Module.finrank ℂ Y ≤ Module.finrank ℂ V` using `by nlinarith [h5, hr0]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem succ_mul_finrank_map_le :
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (a : Module.End ℂ V),
       IsNilpotent a → ∀ (x : ℕ) (A : Submodule ℂ (Module.End ℂ V)), (∀ b ∈ A, Commute b a) →

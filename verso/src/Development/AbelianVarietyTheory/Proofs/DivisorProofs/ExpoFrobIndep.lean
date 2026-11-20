@@ -7,6 +7,15 @@ open Formalism.CohomologicalDescent Formalism.CohomologicalDescent.LogSmallConst
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `P hH hL ι _ _ W hW fr cj`. Establish `hW' : ({ W with fr` using `fr, cj := cj } : Wts ι).Ok P := { anti := hW.anti, what₂ := hW.what₂, block := hW.block, centre := hW.centre, window := hW.window, cloud := hW.cloud, low := hW.low, thick := hW.thick, other := hW.other }`. Use `⟨hW', ?_⟩` and prove the remaining obligations. Introduce `l hl hR`. Establish `hN` using `(places_real_holds P hH hL ι W hW (fun _ => 0)).2`.
+
+Establish `hN'` using `(places_real_holds P hH hL ι ({ W with fr := fr, cj := cj } : Wts ι) hW' (fun _ => 0)).2`. Establish `hi : ({ W with fr` using `fr, cj := cj } : Wts ι).iW P l = W.iW P l := by`. Use function extensionality and compare the values at `τ`. Unfold `Wts.iW SizeData₂.depth`. Take `⟨a1, a2⟩` from `hN l hl hR.1 hR.2.2.1 τ`.
+
+Take `⟨b1, b2⟩` from `hN' l hl hR.1 hR.2.2.1 τ`. Rewrite using `[a1, a2, b1, b2]`. Both sides reduce to the same expression. Unfold `Wts.coarseWeightBound`. Rewrite using `[hi]`.
+
+Both sides reduce to the same expression.
+-/
 theorem expo_frob_indep : ∀ P : Par, P.Hyp → P.Large → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (W : Wts ι), W.Ok P →
     ∀ (fr : ℕ → ι → ι) (cj : ℕ → ι → Bool), ({ W with fr := fr, cj := cj } : Wts ι).Ok P ∧
       ∀ l : ℕ, l.Prime → W.WRange P l → ({ W with fr := fr, cj := cj } : Wts ι).coarseWeightBound P l = W.coarseWeightBound P l := by

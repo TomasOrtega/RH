@@ -12,6 +12,11 @@ namespace GlobalTheory.MiS.Check
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
+/- English proof (translation)
+Break down `W.Q.charW.tup.mu_used t with h | ⟨w, h⟩` into its components or cases. Rewrite using `[h]`. Conclude with `used_base W.P`. Use `right`. Establish `e : W.Q.Rl.mu = W.P.S0.μ` using `mu_eq_of_heq W.P W.Q.zs _ W.Q.s0`.
+
+Use `⟨D.plEq.symm w, ?_⟩` and prove the remaining obligations. Rewrite using `[W.P.tied.div.tup.muAt, Equiv.apply_symm_apply, ← h, e]`. Both sides reduce to the same expression.
+-/
 theorem used_all_alt (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (t : W.P.T) : Formalism.IndefR.RecTie.Used0 D (W.P.I.tup t) := by
   rcases W.Q.charW.tup.mu_used t with h | ⟨w, h⟩
   · rw [h]; exact used_base W.P

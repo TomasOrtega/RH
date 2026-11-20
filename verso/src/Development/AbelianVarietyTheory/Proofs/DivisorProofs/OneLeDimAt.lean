@@ -11,6 +11,9 @@ namespace GlobalTheory.DimAtOne
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D i τ`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt`. Establish `h` using `Formalism.L2.NTheta.holOK_kapW (D.hc τ) _ _ (GlobalTheory.AdelicScalar.sig_add i τ)`. Establish `h1 : (1 : ℚ) ≤ dimK _ _ (Formalism.L2.NTheta.wtOf D (Wc D i) τ)` using `one_le_mul_of_one_le_of_one_le (GlobalTheory.AdelicScalar.one_le_weylDimU _ h.1) (GlobalTheory.AdelicScalar.one_le_weylDimU _ h.2.1)`. Conclude with `h1` after adjusting the coercions.
+-/
 theorem one_le_dimAt : ∀ (D : D7) (i : Fin D.R.m) (τ : D.what₂.Tau), 1 ≤ GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt D i τ := by
   intro D i τ
   unfold GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt

@@ -11,6 +11,9 @@ namespace GlobalTheory
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.AbLaw.AllLaws.laws_of_h0_eq_one _root_.GlobalTheory.AbLaw.finrank_sections_principal_polarisation_eq_one`.
+-/
 theorem _root_.GlobalTheory.abelianSchemeLaws_all : _root_.ReciprocityTheory.ChartRestriction.G.Out.Laws ∧ _root_.ReciprocityTheory.ChartRestriction.G.Out.Laws2 :=
   _root_.GlobalTheory.AbLaw.AllLaws.laws_of_h0_eq_one _root_.GlobalTheory.AbLaw.finrank_sections_principal_polarisation_eq_one
 

@@ -15,11 +15,17 @@ open NumberField IsDedekindDomain MeasureTheory Topology GlobalTheory.AdelicU Gl
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `NNReal.eq <| by have := (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) (m : w.Completion) rw [map_natCast, Complex.norm_natCast] at this exact this.symm`.
+-/
 theorem nnnorm_nat (w : InfinitePlace F) (m : ℕ) : ‖(m : w.Completion)‖₊ = m := NNReal.eq <| by
   have := (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) (m : w.Completion)
   rw [map_natCast, Complex.norm_natCast] at this
   exact this.symm
 
+/- English proof (translation)
+Establish `e : algebraMap F (Ainf F) 2⁻¹ * algebraMap F (Ainf F) 2 = 1` using `by rw [← map_mul, inv_mul_cancel₀ two_ne_zero, map_one]`. Use `⟨⟨((algebraMap F (Ainf F) 2⁻¹, 1) : Ainf F × Af F), ((algebraMap F (Ainf F) 2, 1) : Ainf F × Af F), Prod.ext e (mul_one _), Prod.ext ((mul_comm _ _).trans e) (mul_one _)⟩, fun w => ?_, fun v => map_one (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖GlobalTheory.AutFunCompare.evW w (algebraMap F (Ainf F) 2⁻¹)‖₊ = _`. Rewrite using `[AlgHom.commutes, map_inv₀, map_ofNat, nnnorm_inv]`. Conclude with `congrArg _ (nnnorm_nat w 2)`.
+-/
 theorem exists_rho : ∃ ρ : (AF F)ˣ, (∀ w, ‖evInf F w ρ‖₊ = 2⁻¹) ∧ ∀ v, evFin F v ρ = 1 := by
   have e : algebraMap F (Ainf F) 2⁻¹ * algebraMap F (Ainf F) 2 = 1 := by rw [← map_mul, inv_mul_cancel₀ two_ne_zero, map_one]
   refine ⟨⟨((algebraMap F (Ainf F) 2⁻¹, 1) : Ainf F × Af F), ((algebraMap F (Ainf F) 2, 1) : Ainf F × Af F),
@@ -29,6 +35,15 @@ theorem exists_rho : ∃ ρ : (AF F)ˣ, (∀ w, ‖evInf F w ρ‖₊ = 2⁻¹) 
   rw [AlgHom.commutes, map_inv₀, map_ofNat, nnnorm_inv]
   exact congrArg _ (nnnorm_nat w 2)
 
+/- English proof (translation)
+Use `choose R hR using fun w => (hΩ.image (f := fun a => ‖evInf F w a‖₊) (Continuous.nnnorm ((continuous_apply w).comp continuous_fst))).bddAbove`. Set `O : ℕ+ → Set (AF F)` to `fun c => {a | ∀ v, ‖((c : ℕ) : Fv F v) * evFin F v a‖ ≤ 1}`. Establish `hO : ∀ c, IsOpen (O c)` using `fun c => by`. Use `(RestrictedProduct.isOpen_forall_mem (R := fun v : Pl F => Fv F v) (A := fun v => v.adicCompletionIntegers F) fun v => Valued.isOpen_valuationSubring _).preimage (show Continuous fun a : AF F => ((c : ℕ) : Af F) * a.2 from continuous_const.mul continuous_snd)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `a`. Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v)]`. Conclude with `Valued.toNormedField.norm_le_one_iff`. Establish `mono : ∀ c d : ℕ+, O c ⊆ O (c * d)` using `fun c d a ha v => by`.
+
+Rewrite using `[PNat.mul_coe, Nat.cast_mul, mul_right_comm, norm_mul]`. Conclude with `mul_le_one₀ (ha v) (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one _ _)`. Establish `cov : Ω ⊆ ⋃ c, O c` using `fun a _ => by`. Take `⟨d, d0, -, hd⟩` from `GlobalTheory.SmoothForms.denom_global (fun v => max 1 ‖evFin F v a‖₊) (fun _ => le_max_left _ _) ((Filter.eventually_cofinite.1 a.2.2).subset fun v hv h => hv (max_eq_left (by exact_mod_cast Valued.toNormedField.norm_le_one_iff.2 h)))`. Conclude with `Set.mem_iUnion.2 ⟨⟨d, d0⟩, fun v => hd v _ (le_max_right _ _)⟩`.
+
+Take `⟨c, hc⟩` from `hΩ.elim_directed_cover O hO cov fun c d => ⟨c * d, mono c d, mul_comm d c ▸ mono d c⟩`. Conclude with `⟨c, Finset.univ.sup R, c.2, fun a ha => ⟨fun w => (hR w ⟨a, ha, rfl⟩).trans (Finset.le_sup (Finset.mem_univ w)), hc ha⟩⟩`.
+-/
 theorem compact_bound {Ω : Set (AF F)} (hΩ : IsCompact Ω) : ∃ (c : ℕ) (R : ℝ≥0), 0 < c ∧
     ∀ a ∈ Ω, (∀ w, ‖evInf F w a‖₊ ≤ R) ∧ ∀ v, ‖(c : Fv F v) * evFin F v a‖ ≤ 1 := by
   choose R hR using fun w => (hΩ.image (f := fun a => ‖evInf F w a‖₊)
@@ -54,6 +69,17 @@ theorem compact_bound {Ω : Set (AF F)} (hΩ : IsCompact Ω) : ∃ (c : ℕ) (R 
   obtain ⟨c, hc⟩ := hΩ.elim_directed_cover O hO cov fun c d => ⟨c * d, mono c d, mul_comm d c ▸ mono d c⟩
   exact ⟨c, Finset.univ.sup R, c.2, fun a ha => ⟨fun w => (hR w ⟨a, ha, rfl⟩).trans (Finset.le_sup (Finset.mem_univ w)), hc ha⟩⟩
 
+/- English proof (translation)
+Use `set D := R ^ Fintype.card (InfinitePlace F) with hD`. Establish `D0 : 0 < D` using `by positivity`. Establish `hP : ∏ w, ‖evInf F w ν‖₊ ≤ D` using `Finset.prod_le_pow_card _ _ _ fun w _ => h1 w`. Establish `hQ : ∏ᶠ v, ‖evFin F v ν‖₊ ≤ 1` using `finprod_induction (· ≤ 1) le_rfl (fun _ _ => mul_le_one') h2`. Establish `n0 : ∀ v, 0 < ‖evFin F v ν‖₊` using `fun v => nnnorm_pos.2 (ν.isUnit.map _).ne_zero`.
+
+Take `⟨m, m0, hm, hv⟩` from `GlobalTheory.SmoothForms.denom_global (fun v => ‖evFin F v ν‖₊⁻¹) (fun v => (one_le_inv₀ (n0 v)).2 (h2 v)) (by rwa [Function.mulSupport_fun_inv])`. Establish `a1 : 1 ≤ 2 ^ i * ∏ᶠ v, ‖evFin F v ν‖₊` using `le_of_mul_le_mul_left ((mul_one D).trans_le (h.trans ((mul_le_mul_right (mul_le_mul_left hP _) _).trans_eq (mul_left_comm _ _ _)))) D0`. Establish `hm' : (m : ℝ≥0) ≤ 2 ^ i`. Rewrite `hm` using `[finprod_inv_distrib]`. Conclude with `hm.trans (inv_le_of_inv_le₀ (by positivity) ((inv_le_iff_one_le_mul₀' (by positivity)).2 a1))`.
+
+Use `⟨m, m0, by exact_mod_cast hm', fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `a2 : ∏ w, ‖evInf F w ν‖₊ ≤ ‖evInf F w ν‖₊ * D`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ w)]`. Conclude with `mul_le_mul_right ((Finset.prod_le_pow_card _ _ _ fun w _ => h1 w).trans (pow_le_pow_right₀ hR (Finset.card_le_univ _))) _`. Establish `a3 : 1 ≤ 2 ^ i * ‖evInf F w ν‖₊` using `le_of_mul_le_mul_left ((mul_one D).trans_le (h.trans ((mul_le_mul_right (mul_le_mul' a2 hQ) _).trans_eq (by ring)))) D0`.
+
+Establish `a4 : ‖evInf F w ν‖₊⁻¹ ≤ 2 ^ i` using `(inv_le_iff_one_le_mul₀ (nnnorm_pos.2 (ν.isUnit.map _).ne_zero)).2 a3`. Rewrite using `[← coe_nnnorm, NNReal.coe_le_one]`. Rewrite using `[map_mul, map_mul, map_pow, map_natCast, map_units_inv, nnnorm_mul, nnnorm_mul, nnnorm_pow, nnnorm_inv, nnnorm_nat, r1]`. Use `(mul_le_mul' (mul_le_mul_left hm' _) a4).trans_eq ?_` and prove the remaining obligations. Rewrite using `[inv_pow, two_mul, pow_add]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[map_mul, map_mul, map_pow, map_natCast, map_units_inv, r2, one_pow, mul_one]`. Conclude with `hv v _ (nnnorm_inv _).le`.
+-/
 theorem scale_core {ρ : (AF F)ˣ} (r1 : ∀ w, ‖evInf F w ρ‖₊ = 2⁻¹) (r2 : ∀ v, evFin F v ρ = 1) (ν : (AF F)ˣ) {R : ℝ≥0} (hR : 1 ≤ R)
     (h1 : ∀ w, ‖evInf F w ν‖₊ ≤ R) (h2 : ∀ v, ‖evFin F v ν‖₊ ≤ 1) (hf : (Function.mulSupport fun v => ‖evFin F v ν‖₊).Finite) {i : ℕ}
     (h : R ^ Fintype.card (InfinitePlace F) ≤ 2 ^ i * ((∏ w, ‖evInf F w ν‖₊) * ∏ᶠ v, ‖evFin F v ν‖₊)) :
@@ -87,6 +113,23 @@ theorem scale_core {ρ : (AF F)ˣ} (r1 : ∀ w, ‖evInf F w ρ‖₊ = 2⁻¹) 
   · rw [map_mul, map_mul, map_pow, map_natCast, map_units_inv, r2, one_pow, mul_one]
     exact hv v _ (nnnorm_inv _).le
 
+/- English proof (translation)
+Take `⟨c, R₀, c0, hc⟩` from `compact_bound hΩ`. Take `⟨k, hk⟩ : ∃ k, Module.finrank F E = k + 1` from `Nat.exists_eq_succ_of_ne_zero Module.finrank_pos.ne'`. Take `⟨c', R, -, hR⟩` from `compact_bound (hΩ.image (continuous_const_mul ((c : AF F) ^ (k + 1))))`. Take `⟨C, hC, hC'⟩` from `HeightProper.exists_compact_adeles (F := F) (fun _ => 1) 1`. Establish `mem : ∀ a : AF F, (∀ w, ‖evInf F w a‖ ≤ 1) → (∀ v, ‖evFin F v a‖ ≤ 1) → a ∈ C` using `fun a h1 h2 => hC' a h1 1 one_pos (by simp) (by simpa using h2)`.
+
+Take `⟨i₀, hi⟩` from `pow_unbounded_of_one_lt (max 1 R ^ Fintype.card (InfinitePlace F)) (one_lt_two (α := ℝ≥0))`. Use `⟨i₀, C ∪ (· * (c : AF F) ^ (k + 1)) '' C, hC.union (hC.image (continuous_mul_const _)), fun i m hm => .inl (mem _ (fun w => ?_) fun v => ?_), fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[← coe_nnnorm, NNReal.coe_le_one]`. Rewrite using `[map_mul, map_pow, map_natCast, nnnorm_mul, nnnorm_pow, nnnorm_nat, r1, inv_pow, mul_inv_le_iff₀ (by positivity), one_mul]`. Conclude with `hm.trans (Nat.pow_le_pow_right two_pos (by omega))` after adjusting the coercions.
+
+Rewrite using `[map_mul, map_pow, map_natCast, r2, one_pow, mul_one]`. Conclude with `IsUltrametricDist.norm_natCast_le_one _ _`. Use `set u' := Units.map (inclR (F := F) (AF F)).toMonoidHom (Units.mk0 (c : E) (Nat.cast_ne_zero.2 c0.ne')) * u with hu'`. Establish `e1 : absE F E u = absE F E u'` using `by rw [hu', map_mul, absE_inclR, one_mul]`. Use `set ν : (AF F)ˣ := Units.map (Algebra.norm (AF F)) u'`.
+
+Establish `e2 : ν.1 = (c : AF F) ^ (k + 1) * Algebra.norm (AF F) u.1`. Express the relevant statement in the definitionally equal form `Algebra.norm (AF F) (inclR (F := F) (AF F) (c : E) * u.1) = _`. Rewrite using `[map_mul, norm_inclR, ← map_natCast (algebraMap F E), Algebra.norm_algebraMap, hk, map_pow, map_natCast]`. Establish `e3 : absE F E u' = (∏ w, ‖evInf F w ν‖₊) * ∏ᶠ v, ‖evFin F v ν‖₊`. Simplify using `only [absE_apply, absEv_unitFin, absEw_unitInf, IsTotallyReal.mult_eq, pow_one]`.
+
+Both sides reduce to the same expression. Establish `h1 : ∀ w, ‖evInf F w ν‖₊ ≤ max 1 R` using `fun w => ((hR _ ⟨_, hu, e2.symm⟩).1 w).trans (le_max_right _ _)`. Establish `h2 : ∀ v, ‖evFin F v ν‖₊ ≤ 1` using `fun v => by`. Rewrite using `[← NNReal.coe_le_one, coe_nnnorm]`. Rewrite using `[e2, map_mul, map_pow, map_natCast, pow_succ, mul_assoc, norm_mul, norm_pow]`.
+
+Conclude with `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one _ _)) (norm_nonneg _) ((hc _ hu).2 v)`. Use `⟨?_, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e3]`. Conclude with `(mul_le_of_le_one_right' (finprod_induction (· ≤ 1) le_rfl (fun _ _ => mul_le_one') h2)).trans ((Finset.prod_le_pow_card _ _ _ fun w _ => h1 w).trans hi.le)`. Take `⟨m, m0, m1, m2, m3⟩` from `scale_core r1 r2 ν (le_max_left _ _) h1 h2 (by have := finite_mulSupport_absEv u'; simp only [absEv_unitFin] at this; exact this) (i := j + i₀) (by`.
+
+Rewrite using `[← e3, ← e1, pow_add, mul_right_comm]`. Use `hi.le.trans (le_mul_of_one_le_left' ?_)` and prove the remaining obligations. Rewrite `hj` using `[one_div, inv_pow, inv_le_iff_one_le_mul₀' (by positivity)]`. Conclude with `hj)` after adjusting the coercions. Conclude with `⟨m, m0, m1, _, .inr ⟨_, mem _ m2 m3, rfl⟩, by beta_reduce`.
+
+Rewrite using `[mul_assoc _ _ (Algebra.norm _ _), ← e2, Units.inv_mul_cancel_right]⟩`.
+-/
 theorem scale_ad (hF : IsTotallyReal F) {ρ : (AF F)ˣ} (r1 : ∀ w, ‖evInf F w ρ‖₊ = 2⁻¹) (r2 : ∀ v, evFin F v ρ = 1) {Ω : Set (AF F)}
     (hΩ : IsCompact Ω) : ∃ (i₀ : ℕ) (C : Set (AF F)), IsCompact C ∧ (∀ i m : ℕ, m ≤ 2 ^ i → m * ρ.1 ^ (2 * i) ∈ C) ∧
       ∀ u : (AE F E)ˣ, Algebra.norm (AF F) u.1 ∈ Ω → absE F E u ≤ 2 ^ i₀ ∧ ∀ j : ℕ, (1 / 2 : ℝ) ^ j ≤ absE F E u →
@@ -132,6 +175,27 @@ theorem scale_ad (hF : IsTotallyReal F) {ρ : (AF F)ˣ} (r1 : ∀ w, ‖evInf F 
       beta_reduce
       rw [mul_assoc _ _ (Algebra.norm _ _), ← e2, Units.inv_mul_cancel_right]⟩
 
+/- English proof (translation)
+Use `t2Space_adeleRing' (F := F)` as an intermediate fact. Take `⟨ρ, r1, r2⟩` from `exists_rho (F := F)`. Take `⟨i₀, C, hC, c1, c2⟩` from `scale_ad (E := E) hF r1 r2 h₀`. Take `⟨V, hV, hV0⟩` from `exists_compact_mem_nhds (0 : AF F)`. Take `⟨X, U, hX, hU, hcount⟩` from `count_grp c hc hc' H hH (hC.smul_set hΩ) (hV.add hV.neg)`.
+
+Establish `: BorelSpace (AF F)` using `⟨rfl⟩`. Set `ν : Measure (AF F)` to `Measure.addHaar`. Establish `: ν.Regular` using `Measure.regular_of_isAddLeftInvariant hV ⟨0, mem_interior_iff_mem_nhds.2 hV0⟩ hV.measure_lt_top.ne`. Establish `v0 : ν V ≠ 0` using `(Measure.measure_pos_of_mem_nhds ν hV0).ne'`. Establish `hZ` using `(hX.add ((hC.mul hC).mul hV)).measure_lt_top (μ := ν)`.
+
+Use `set Z := X + C * C * V`. Use `set δ := distribHaarChar (AF F) ρ⁻¹`. Use `set A := ν Z / ν V`. Establish `hA : A ≠ ⊤` using `ENNReal.div_ne_top hZ.ne v0`. Use `set q := Fintype.card κ`.
+
+Establish `key : ∀ i m : ℕ, 0 < m → m ≤ 2 ^ i → μ {g | ((m : AF F) * ρ.1 ^ (2 * i)) • g.1.1 ∈ C • Ω ∧ ((m : AF F) * ρ.1 ^ (2 * i)) • (g⁻¹).1.1 ∈ C • Ω} ≤ (A * (δ ^ 4) ^ i) ^ q * μ U` using `fun i m m0 hm => by`. Set `l : (AF F)ˣ` to `Units.map (algebraMap F (AF F) : F →* AF F) (Units.mk0 (m : F) (Nat.cast_ne_zero.2 m0.ne')) * ρ ^ (2 * i)`. Establish `el : l.1 = m * ρ.1 ^ (2 * i)` using `by simp [l]`. Establish `dl : distribHaarChar (AF F) (l * l) * (δ ^ 4) ^ i = 1`. Establish `p` using `GlobalTheory.CompanionTheory.AdeleModule.distribHaarChar_principal F (Units.mk0 (m : F) (Nat.cast_ne_zero.2 m0.ne'))`.
+
+Simplify using `only [l, δ, map_mul]`. Rewrite using `[p, one_mul]`. Rewrite using `[← map_pow, ← map_pow, ← map_mul, ← map_mul, ← map_one (distribHaarChar (G := (AF F)ˣ) (AF F))]`. Use `congr 1`. Use `group`.
+
+Establish `ev` using `distribHaarChar_mul ν (l * l) V`. Take `⟨s, hs, hs'⟩` from `exists_cover ν (X := X) (V := (l * l) • V) (Z := Z) (hV.smul _).measurableSet (ev ▸ mul_ne_zero (ENNReal.coe_ne_zero.2 (distribHaarChar_pos (g := l * l)).ne') v0) hZ.ne (by`. Introduce and unpack `x hx _ ⟨v, hv, rfl⟩`. Conclude with `Set.add_mem_add hx (Set.mul_mem_mul (Set.mul_mem_mul (el ▸ c1 i m hm) (el ▸ c1 i m hm)) hv))`. Rewrite using `[← el]`.
+
+Use `(hcount l s (fun x hx => ?_) μ).trans (mul_le_mul_left (pow_le_pow_left' ?_ _) _)` and prove the remaining obligations. Take `⟨y, hy, _, ⟨v, hv, rfl⟩, _, ⟨v', hv', rfl⟩, e⟩` from `hs' x hx`. Conclude with `⟨y, hy, v + -v', Set.add_mem_add hv (Set.neg_mem_neg.2 hv'), e.trans (by rw [← sub_eq_add_neg, mul_sub]; rfl)⟩`. Establish `: (s.card : ℝ≥0∞) * distribHaarChar (AF F) (l * l) ≤ A`. Rewrite using `[ENNReal.le_div_iff_mul_le (.inl v0) (.inl hV.measure_lt_top.ne), mul_assoc, ev]`.
+
+Conclude with `hs`. Use `le_of_eq_of_le ?_ (mul_le_mul_left this _)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `norm_cast`. Rewrite using `[dl, mul_one]`.
+
+Use `⟨2 ^ i₀, A ^ q * μ U * (2 * (δ ^ 4) ^ q : ℝ≥0) ^ i₀, 2 * (δ ^ 4) ^ q, one_le_pow₀ one_le_two, ENNReal.mul_ne_top (ENNReal.mul_ne_top (ENNReal.pow_ne_top hA) hU.measure_lt_top.ne) (ENNReal.pow_ne_top ENNReal.coe_ne_top), fun u hu => (c2 u hu).1, fun j => ?_⟩` and prove the remaining obligations. Use `(measure_mono (t := ⋃ m ∈ Finset.Icc 1 (2 ^ (j + i₀)), _) ?_).trans ((measure_biUnion_finset_le _ _).trans ((Finset.sum_le_card_nsmul _ _ _ fun m hm => key (j + i₀) m (Finset.mem_Icc.1 hm).1 (Finset.mem_Icc.1 hm).2).trans_eq ?_))` and prove the remaining obligations. Introduce and unpack `g ⟨u, h1, h2, h3, h4⟩`. Take `⟨m, m0, m1, x, hx, e⟩` from `(c2 u h1).2 j h2`. Use `Set.mem_iUnion₂.2 ⟨m, Finset.mem_Icc.2 ⟨m0, m1⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Set.mem_ofPred_eq, e, mul_smul, mul_smul]`. Conclude with `⟨Set.smul_mem_smul hx h3, Set.smul_mem_smul hx h4⟩`. Simplify using `only [Nat.card_Icc, add_tsub_cancel_right, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem count_ad (hF : IsTotallyReal F) {B κ : Type} [Ring B] [Algebra (AF F) B] [TopologicalSpace B] [IsTopologicalRing B] [T2Space B]
     [ContinuousSMul (AF F) B] [Fintype κ] (c : B ≃ₗ[AF F] (κ → AF F)) (hc : Continuous c) (hc' : Continuous c.symm)
     (H : Subgroup Bˣ) (hH : IsClosed (H : Set Bˣ)) {Ω : Set B} (hΩ : IsCompact Ω) {Ω₀ : Set (AF F)} (h₀ : IsCompact Ω₀)

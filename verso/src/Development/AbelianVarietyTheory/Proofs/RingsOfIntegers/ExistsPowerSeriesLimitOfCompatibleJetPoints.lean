@@ -17,11 +17,19 @@ namespace GlobalTheory.TransUnit.LimEx
 
 variable {V : Type} [CommRing V] {κ : Type} [Fintype κ] [DecidableEq κ]
 
+/- English proof (translation)
+The claim follows from `haveI : Nontrivial (Jet V κ m) := (jetAug : Jet V κ m →ₐ[V] V).toRingHom.domain_nontrivial IsLocalRing.of_surjective' (jetA κ m : MvPowerSeries κ V →ₐ[V] Jet V κ m).toRingHom (fun a => GlobalTheory.ChartCmp.FrameRatio.psJet_surj m a)`.
+-/
 theorem isLocalRing_jet [IsLocalRing V] (m : ℕ) : IsLocalRing (Jet V κ m) :=
   haveI : Nontrivial (Jet V κ m) := (jetAug : Jet V κ m →ₐ[V] V).toRingHom.domain_nontrivial
   IsLocalRing.of_surjective' (jetA κ m : MvPowerSeries κ V →ₐ[V] Jet V κ m).toRingHom
     (fun a => GlobalTheory.ChartCmp.FrameRatio.psJet_surj m a)
 
+/- English proof (translation)
+Use `choose f hf using fun a => GermD.exists_ps_of_jets (fun m => φ m a) (fun m => h m a)`. Establish `hf' : ∀ a m, jetA κ m (f a) = φ m a` using `hf`. Establish `ext : ∀ {p q : MvPowerSeries κ V}, (∀ m, jetA κ m p = jetA κ m q) → p = q` using `fun hpq => FrameBiextId.ps_ext hpq`. Use `⟨{ toFun := f, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, fun m a => hf' a m⟩` and prove the remaining obligations. Conclude with `ext fun m => by rw [hf', map_one, map_one]`.
+
+Conclude with `fun a b => ext fun m => by rw [map_mul, hf', hf', hf', map_mul]`. Conclude with `ext fun m => by rw [hf', map_zero, map_zero]`. Conclude with `fun a b => ext fun m => by rw [map_add, hf', hf', hf', map_add]`.
+-/
 theorem exists_ringHom_of_jets {A : Type} [CommRing A] (φ : ∀ m, A →+* Jet V κ m)
     (h : ∀ m a, (jetTrunc : Jet V κ (m + 1) →ₐ[V] Jet V κ m) (φ (m + 1) a) = φ m a) :
     ∃ ψ : A →+* MvPowerSeries κ V, ∀ m a, jetA κ m (ψ a) = φ m a := by
@@ -35,6 +43,23 @@ theorem exists_ringHom_of_jets {A : Type} [CommRing A] (φ : ∀ m, A →+* Jet 
   · exact ext fun m => by rw [hf', map_zero, map_zero]
   · exact fun a b => ext fun m => by rw [map_add, hf', hf', hf', map_add]
 
+/- English proof (translation)
+Establish `hloc` using `fun m => isLocalRing_jet (V := V) (κ := κ) m`. Set `y : Y` to `x 0 (closedPoint (Jet V κ 0))`. Establish `hy : ∀ m, x m (closedPoint (Jet V κ m)) = y`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[← ih, ← hx m]`. Use `Eq.trans ?_ (Scheme.Hom.comp_apply _ _ _).symm` and prove the remaining obligations. Establish `: IsLocalHom (CommRingCat.ofHom ((jetTrunc : Jet V κ (m + 1) →ₐ[V] Jet V κ m) : Jet V κ (m + 1) →+* Jet V κ m)).hom` using `IsLocalHom.of_surjective _ (fun a => by`.
+
+Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `⟨Ideal.Quotient.mk _ q, rfl⟩)`. Establish `h1` using `Spec_closedPoint (f := CommRingCat.ofHom ((jetTrunc : Jet V κ (m + 1) →ₐ[V] Jet V κ m) : Jet V κ (m + 1) →+* Jet V κ m))`. Conclude with `congrArg (x (m + 1)) h1.symm`. Use `choose φ hφ using fun m => (GlobalTheory.existsUnique_factor_stalk (x m) (hy m)).exists`.
+
+Establish `hc : ∀ m a, (jetTrunc : Jet V κ (m + 1) →ₐ[V] Jet V κ m) ((φ (m + 1)).hom a) = (φ m).hom a`. Introduce `m a`. Establish `h1 : Spec.map (CommRingCat.ofHom ((jetTrunc : Jet V κ (m + 1) →ₐ[V] Jet V κ m) : Jet V κ (m + 1) →+* Jet V κ m)) ≫ Spec.map (φ (m + 1)) = Spec.map (φ m)`. Rewrite using `[← cancel_mono (Y.fromSpecStalk y), Category.assoc, hφ, hφ, hx m]`. Rewrite `h1` using `[← Spec.map_comp]`.
+
+Conclude with `congr($(Spec.map_injective h1).hom a)`. Take `⟨ψ, hψ⟩` from `exists_ringHom_of_jets (fun m => (φ m).hom) hc`. Take `⟨s, hs⟩` from `Spec.map_surjective (Y.fromSpecStalk y ≫ p)`. Use `⟨Spec.map (CommRingCat.ofHom ψ) ≫ Y.fromSpecStalk y, ?_, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hs, ← Spec.map_comp]`.
+
+Use `congr 1`. Use `ext1`. Use `RingHom.ext fun c => FrameBiextId.ps_ext fun m => ?_` and prove the remaining obligations. Establish `h1 : Spec.map (φ m) ≫ Spec.map s = Spec.map (CommRingCat.ofHom (algebraMap V (Jet V κ m)))`. Rewrite using `[hs, ← Category.assoc, hφ, hp]`.
+
+Rewrite `h1` using `[← Spec.map_comp]`. Establish `h2 : (φ m).hom (s.hom c) = algebraMap V (Jet V κ m) c` using `congr($(Spec.map_injective h1).hom c)`. Conclude with `((hψ m (s.hom c)).trans h2).trans ((jetA κ m).commutes c).symm`. Rewrite using `[← hφ m, ← Spec.map_comp_assoc]`. Use `congr 2`.
+
+Use `ext1`. Conclude with `RingHom.ext fun a => hψ m a`.
+-/
 theorem exists_limit_hom [IsLocalRing V] {Y : Scheme.{0}} (p : Y ⟶ Spec (.of V))
     (x : ∀ m, Spec (.of (Jet V κ m)) ⟶ Y)
     (hx : ∀ m, Spec.map (CommRingCat.ofHom
@@ -87,6 +112,9 @@ theorem exists_limit_hom [IsLocalRing V] {Y : Scheme.{0}} (p : Y ⟶ Spec (.of V
     ext1
     exact RingHom.ext fun a => hψ m a
 
+/- English proof (translation)
+Introduce `V _ _ G d x hx`. Take `⟨g, hg, hg'⟩` from `exists_limit_hom (V := V) (κ := Fin 1 × Fin d) G.hom (fun m => (x m).left) (fun m => congrArg CommaMorphism.left (hx m)) (fun m => (Over.w (x m)).trans (Category.comp_id _))`. Conclude with `⟨Over.homMk g (hg.trans (Category.comp_id _).symm), fun m => Over.OverMorphism.ext (hg' m)⟩`.
+-/
 theorem exists_isLimit : ∀ (V : Type) [CommRing V] [IsLocalRing V] (G : Over (Sp V)) (d : ℕ)
     (x : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ G),
     (∀ m, Formalism.L2.Pj.homAt (𝟙 (Sp V))

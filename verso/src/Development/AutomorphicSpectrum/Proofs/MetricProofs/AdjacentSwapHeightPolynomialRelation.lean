@@ -11,6 +11,9 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm Recipro
 
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
+/- English proof (translation)
+Introduce `hI II hII Ψ _ _ N d S K _ ι _ P Re τ a b hb Q lam`. Take `⟨h0, h1, h2⟩` from `gap_swap_decomp Ψ N τ a b hb lam`. Establish `key` using `GlobalTheory.T.height_polynomial_reflection_sum hI GroundTheory.Heights₂.Heights.Inter.FibreLocal.proof II hII K ι d (Ψ × Fin N) S P Re (τ, a) (xiCoef τ a) Q (fun p => gap lam p + gap lam (τ, a) / 2 * (xiCoef τ a p : ℝ)) h0 (gap lam (τ, a))`. Rewrite using `[eval_toWt_gap, eval_toWt_gap, ← key]`. Conclude with `congrArg₂ (· + ·) (congrArg (fun f => eval f (Re.PB II)) (_root_.funext h1)) (congrArg (fun f => eval f (Re.PB II)) (_root_.funext h2))`.
+-/
 theorem thmA_swap : Inputs → ∀ (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N d : ℕ) (S : AnSys (d + 1) (Ψ × Fin N)) (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (Re : Realis S P) (τ : Ψ) (a b : Fin N), (b : ℕ) = a + 1 → SqSys Re (τ, a) (xiCoef τ a) → ∀ lam : Ψ × Fin N → ℝ, eval lam (toWt (Re.PB II)) + eval (lam ∘ Equiv.swap (τ, a) (τ, b)) (toWt (Re.PB II)) = (tsgPoly (d + 1) kappa (linePoly (fun p => gap lam p + gap lam (τ, a) / 2 * (xiCoef τ a p : ℝ)) (xiCoef τ a) S.degPoly)).eval (gap lam (τ, a)) := by
   intro hI II hII Ψ _ _ N d S K _ ι _ P Re τ a b hb Q lam
   obtain ⟨h0, h1, h2⟩ := gap_swap_decomp Ψ N τ a b hb lam

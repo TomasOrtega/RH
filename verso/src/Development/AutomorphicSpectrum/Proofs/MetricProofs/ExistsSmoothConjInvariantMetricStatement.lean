@@ -9,5 +9,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 open ReciprocityTheory.AnForm (levi)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.exists_smooth_conj_invariant_metric | exact GlobalTheory.CompanionTheory.Relay.exists_smooth_conj_invariant_metric | (intros; apply GlobalTheory.CompanionTheory.Relay.exists_smooth_conj_invariant_metric <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_smooth_conj_invariant_metric : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (a : K → ℤ), ∃ A : HermLine J, A.a = a ∧ IsSmoothHerm A ∧ IsConjInvariantH A := by
   first | exact @GlobalTheory.CompanionTheory.Relay.exists_smooth_conj_invariant_metric | exact GlobalTheory.CompanionTheory.Relay.exists_smooth_conj_invariant_metric | (intros; apply GlobalTheory.CompanionTheory.Relay.exists_smooth_conj_invariant_metric <;> assumption)

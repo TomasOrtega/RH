@@ -29,6 +29,11 @@ namespace GlobalTheory.CompanionTheory.ThetaAutoPf
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
+/- English proof (translation)
+Take `⟨U, hU, hl⟩` from `isTheta_iff_level.1 hf`. Take `⟨U', hU', hlev, hsob⟩` from `GlobalTheory.ThetaDens.om_compact_sobCont D ψ S T χS χT om hom θ hθ μ 𝓕 hμ (K ×ˢ ({1} : Set (GA D T))) (hK.prod isCompact_singleton) U hU`. Take `⟨d, C, hC⟩` from `GlobalTheory.ThetaDensSup.sup_le_sobO D ψ hom.std θ hθ S T μ 𝓕 hμ U' hU'`. Take `⟨d', C', hC'⟩` from `hsob d`. Use `⟨C * (C' * sobO ψ θ μ 𝓕 d' f), ?_, fun x hx w => ?_⟩` and prove the remaining obligations.
+
+Conclude with `ENNReal.mul_ne_top ENNReal.coe_ne_top (ENNReal.mul_ne_top ENNReal.coe_ne_top (sobO_ne_top hom.std hθ hμ.1 hμ.2.1 hf d'))`. Establish `hx' : ((x, 1) : GA D S × GA D T) ∈ K ×ˢ ({1} : Set (GA D T))` using `⟨hx, rfl⟩`. Use `(hC _ (hlev f hl _ hx') w).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `hC' f hl _ hx'`.
+-/
 theorem exists_bound (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hμ : IsCovolOne (ratL T S) μ 𝓕) {K : Set (GA D S)} (hK : IsCompact K) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) :
@@ -46,6 +51,21 @@ theorem exists_bound (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) 
     gcongr
     exact hC' f hl _ hx'
 
+/- English proof (translation)
+Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : GA D S)`. Take `⟨M, hM, hb⟩` from `exists_bound hom hθ hμ hK hf`. Establish `h1K : (1 : GA D S) ∈ K` using `mem_of_mem_nhds hK1`. Establish `hf1 : ∀ w, ‖f w‖ₑ ≤ M` using `fun w => by`.
+
+Use `hb 1 h1K w` as an intermediate fact. Rewrite `this` using `[show ((1 : GA D S), (1 : GA D T)) = 1 from rfl, map_one, Module.End.one_apply]`. Then use the resulting hypothesis. Establish `hsq : Tendsto (fun x : GA D S => ∫⁻ w, ‖(om (x, 1) f - f) w‖ₑ ^ 2 ∂μ.restrict 𝓕) (𝓝 1) (𝓝 (∫⁻ _, 0 ∂μ.restrict 𝓕))`. Use `tendsto_lintegral_filter_of_dominated_convergence (fun _ => (M + M) ^ 2) (Eventually.of_forall fun x => ?_) ?_ ?_ (Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Conclude with `(((hom.om_pres _ f hf).cont.sub hf.cont).enorm.measurable).pow_const 2`.
+
+Use `filter_upwards [hK1] with x hx`. Use `Eventually.of_forall fun w => ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `(enorm_sub_le).trans (add_le_add (hb x hx w) (hf1 w))`. Rewrite using `[lintegral_const, Measure.restrict_apply_univ, hμ.2.2, mul_one]`.
+
+Conclude with `ENNReal.pow_ne_top (ENNReal.add_ne_top.2 ⟨hM, hM⟩)`. Establish `hc : Continuous fun x : GA D S => om (x, 1) f w` using `(hom.om_cont f hf w).comp (Continuous.prodMk_left 1)`. Establish `h0 : Tendsto (fun x : GA D S => om (x, 1) f w - f w) (𝓝 1) (𝓝 0)`. Use `hc.tendsto 1` as an intermediate fact. Establish `e : om ((1 : GA D S), (1 : GA D T)) f w = f w`.
+
+Rewrite using `[show ((1 : GA D S), (1 : GA D T)) = 1 from rfl, map_one, Module.End.one_apply]`. Rewrite `this` using `[e]`. Simplify using `using this.sub_const (f w)`. Establish `h2` using `(ENNReal.continuous_pow 2).continuousAt.tendsto.comp ((continuous_enorm.tendsto (0 : ℂ)).comp h0)`. Simplify `h2` using `[Function.comp_def]`.
+
+Establish `hz : (∫⁻ _ : WO S T, (0 : ℝ≥0∞) ∂μ.restrict 𝓕) = 0` using `lintegral_zero`. Rewrite `hsq` using `[hz]`. Establish `e : ∀ x : GA D S, l2O μ 𝓕 (om (x, 1) f - f) = (∫⁻ w, ‖(om (x, 1) f - f) w‖ₑ ^ 2 ∂μ.restrict 𝓕) ^ (1 / 2 : ℝ)` using `fun x => by`. Rewrite using `[← l2O_sq_eq_lintegral, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+
+Simplify using `only [e]`. Use `(ENNReal.continuous_rpow_const (y := (1 / 2 : ℝ))).tendsto 0 |>.comp hsq` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+-/
 theorem l2_om_tendsto (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hμ : IsCovolOne (ratL T S) μ 𝓕) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     Tendsto (fun x : GA D S => l2O μ 𝓕 (om (x, 1) f - f)) (𝓝 1) (𝓝 0) := by
@@ -95,6 +115,11 @@ namespace GlobalTheory.CompanionTheory.ThetaAutoPf
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
+/- English proof (translation)
+Rewrite using `[dRho_eq_sum_heisDer hψ hθ hf, dRho_eq_sum_heisDer hψ hθ hf, dRho_eq_sum_heisDer hψ hθ hf, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Complex.sub_re, Complex.sub_im, Complex.ofReal_sub, sub_smul]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem dRho_dir_split (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (τ : D.what₂.Tau) (z z' : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f =
@@ -107,6 +132,9 @@ theorem dRho_dir_split (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {f : WO S
   simp only [Matrix.sub_apply, Complex.sub_re, Complex.sub_im, Complex.ofReal_sub, sub_smul]
   abel
 
+/- English proof (translation)
+Use `GlobalTheory.ThetaDens.wordAct_heisDer_sub hψ hθ (GlobalTheory.OrientedHeis.theta_add hf hg) hg l` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Rewrite using `[this, sub_add_cancel]`.
+-/
 theorem wordAct_add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {f g : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g)
     (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool)) :
@@ -115,6 +143,29 @@ theorem wordAct_add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {f g : WO S 
   rw [add_sub_cancel_right] at this
   rw [this, sub_add_cancel]
 
+/- English proof (translation)
+Establish `hψ` using `hom.std`. Proceed by induction on `l using List.reverseRecOn with`. Consider the case `nil => exact fun f hf => l2_om_tendsto hom hθ hμ hf`. Consider the case `append_singleton l a ih`. Introduce `f hf`.
+
+Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : GA D S)`. Establish `hKK : IsCompact (K ×ˢ ({1} : Set (GA D T)))` using `hK.prod isCompact_singleton`. Take `⟨B0, hB0⟩` from `hKK.bddAbove_image (GlobalTheory.ThetaDens.WeilCompact.continuous_dirSize hθ S T).continuousOn`. Establish `hB : ∀ x ∈ K ×ˢ ({1} : Set (GA D T)), GlobalTheory.ThetaDens.WeilCompact.dirSize θ S T x ≤ (B0.toNNReal : ℝ)` using `fun x hx => (hB0 ⟨x, hx, rfl⟩).trans (Real.le_coe_toNNReal B0)`. Take `⟨C, hC⟩` from `GlobalTheory.ThetaDens.WeilCompact.word_om_le hom hθ hμ _ hB l.length`.
+
+Use `set z : Matrix (Fin T.rank) (Fin S.rank) ℂ := Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1) with hz`. Use `set zx : GA D S → Matrix (Fin T.rank) (Fin S.rank) ℂ := fun x => compAt θ a.1 (Formalism.L2.Theta.mt T (1 : GA D T)⁻¹) * z * compAt θ a.1 (Formalism.L2.Theta.mt S x) with hzx`. Establish `hg : IsThetaFunO ψ S T (heisDer ψ θ a f)` using `GlobalTheory.OrientedHeis.theta_dRho hθ hψ a.1 _ hf`. Establish `hr : ∀ x, IsThetaFunO ψ S T (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ a.1 (zx x - z) f)` using `fun x => GlobalTheory.OrientedHeis.theta_dRho hθ hψ a.1 _ hf`. Establish `key : ∀ x : GA D S, wordAct (heisDer ψ θ) (l ++ [a]) (om (x, 1) f - f) = wordAct (heisDer ψ θ) l (om (x, 1) (heisDer ψ θ a f) - heisDer ψ θ a f) + wordAct (heisDer ψ θ) l (om (x, 1) (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ a.1 (zx x - z) f))` using `fun x => by`.
+
+Establish `hof` using `hom.om_pres (x, 1) f hf`. Establish `hog` using `hom.om_pres (x, 1) _ hg`. Establish `hor` using `hom.om_pres (x, 1) _ (hr x)`. Establish `e1 : heisDer ψ θ a (om (x, 1) f) = om (x, 1) (heisDer ψ θ a f) + om (x, 1) (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ a.1 (zx x - z) f)`. Rewrite using `[← map_add]`.
+
+Use `GlobalTheory.ThetaDens.WeilCompact.dRho_om hom hθ x 1 a.1 z hf` as an intermediate fact. Use `this.trans (congrArg _ ?_)` and prove the remaining obligations. Conclude with `dRho_dir_split hψ hθ hf a.1 _ z`. Establish `e2 : heisDer ψ θ a (om (x, 1) f - f) = heisDer ψ θ a (om (x, 1) f) - heisDer ψ θ a f` using `GlobalTheory.ThetaDens.wordAct_heisDer_sub hψ hθ hof hf [a]`. Rewrite using `[wordAct_append, wordAct_cons, wordAct_nil, e2, e1, add_sub_right_comm, wordAct_add hψ hθ (GlobalTheory.OrientedHeis.theta_add hog (GlobalTheory.OrientedHeis.theta_smul (-1) hg) |> fun h => by`.
+
+Simplify `h) hor]` using `[sub_eq_add_neg]`. Establish `hM : sobO ψ θ μ 𝓕 (l.length + 1) f ≠ ⊤` using `sobO_ne_top hψ hθ hμ.1 hμ.2.1 hf _`. Establish `hzc : Continuous zx` using `(continuous_const.matrix_mul continuous_const).matrix_mul ((GlobalTheory.RealWeil.continuous_compAt hθ a.1 _ _).comp (GlobalTheory.ThetaDens.WeilCompact.continuous_mt_eq S))`. Establish `hz1 : zx 1 = z`. Simplify using `only [hzx, inv_one, GlobalTheory.WeilVacMove.mt_one, GlobalTheory.WeilVacMove.compAt_one, Matrix.one_mul, Matrix.mul_one]`.
+
+Use `set c : GA D S → ℝ := fun x => ∑ i, ∑ j, (|((zx x - z) i j).re| + |((zx x - z) i j).im|) with hc`. Establish `hcc : Continuous c`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Establish `h3 : Continuous fun x => (zx x - z) i j` using `(hzc.sub continuous_const).matrix_elem i j`. Conclude with `(continuous_abs.comp (Complex.continuous_re.comp h3)).add (continuous_abs.comp (Complex.continuous_im.comp h3))`.
+
+Establish `hc1 : c 1 = 0` using `by simp [hc, hz1]`. Establish `hup : Tendsto (fun x : GA D S => l2O μ 𝓕 (wordAct (heisDer ψ θ) l (om (x, 1) (heisDer ψ θ a f) - heisDer ψ θ a f)) + (C : ℝ≥0∞) * (ENNReal.ofReal (c x) * sobO ψ θ μ 𝓕 (l.length + 1) f)) (𝓝 1) (𝓝 0)`. Establish `h1 : Tendsto (fun x => ENNReal.ofReal (c x)) (𝓝 1) (𝓝 0)`. Use `(ENNReal.continuous_ofReal.comp hcc).tendsto 1` as an intermediate fact. Simplify `this` using `[Function.comp_def, hc1]`.
+
+Establish `h2` using `ENNReal.Tendsto.const_mul (a := (C : ℝ≥0∞)) (ENNReal.Tendsto.mul_const (b := sobO ψ θ μ 𝓕 (l.length + 1) f) h1 (Or.inr hM)) (Or.inr ENNReal.coe_ne_top)`. Simplify using `using (ih _ hg).add h2`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hup (Eventually.of_forall fun _ => bot_le) ?_` and prove the remaining obligations. Use `filter_upwards [hK1] with x hx`. Rewrite using `[key x]`.
+
+Establish `hog` using `hom.om_pres (x, 1) _ hg`. Use `(l2O_add_le_of_continuous μ 𝓕 (theta_word hψ hθ l (GlobalTheory.OrientedHeis.theta_add hog (by simpa using GlobalTheory.OrientedHeis.theta_smul (-1) hg) |> fun h => by simpa [sub_eq_add_neg] using h)).cont (theta_word hψ hθ l (hom.om_pres (x, 1) _ (hr x))).cont).trans ?_` and prove the remaining obligations. Use `gcongr`. Use `(hC l rfl (x, 1) ⟨hx, rfl⟩ _ (hr x)).trans ?_` and prove the remaining obligations. Use `gcongr`.
+
+Conclude with `sobO_dRho_le hψ hθ hf a.1 _ l.length`.
+-/
 theorem l2_word_tendsto (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hμ : IsCovolOne (ratL T S) μ 𝓕) (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool)) :
     ∀ f, IsThetaFunO ψ S T f →
@@ -185,6 +236,9 @@ theorem l2_word_tendsto (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam �
     gcongr
     exact sobO_dRho_le hψ hθ hf a.1 _ l.length
 
+/- English proof (translation)
+Use `tendsto_finset_sum (Finset.range (d + 1)) fun k _ => tendsto_finset_sum (Finset.univ : Finset (Fin k → D.what₂.Tau × Fin T.rank × Fin S.rank × Bool)) fun a _ => l2_word_tendsto hom hθ hμ (List.ofFn a) f hf` as an intermediate fact. Simplify using `only [Finset.sum_const_zero] at this`. Conclude with `this`.
+-/
 theorem sobO_om_tendsto (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hμ : IsCovolOne (ratL T S) μ 𝓕) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (d : ℕ) :
     Tendsto (fun x : GA D S => sobO ψ θ μ 𝓕 d (om (x, 1) f - f)) (𝓝 1) (𝓝 0) := by
@@ -201,6 +255,9 @@ namespace GlobalTheory.CompanionTheory.ThetaAutoPf
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {A B : HSp D} {χ : (AE D)ˣ →* Circle}
   {om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)}
 
+/- English proof (translation)
+Establish `e : (GlobalTheory.AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h (f - f')) = (GlobalTheory.AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h f) - (GlobalTheory.AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h f')`. Use function extensionality and compare the values at `q`. Simplify using `[thetaKO, GlobalTheory.AutomorphicL2Unitary.descend]`. Simplify using `only [GlobalTheory.ThetaMean.thetaMean]`. Rewrite using `[e, average_eq, average_eq, average_eq, integral_sub' hi hi', smul_sub]`.
+-/
 theorem thetaMean_sub (m : Measure (GA D B)) {f f' : WO (dblSp A) B → ℂ} {g : GA D (dblSp A)}
     (hi : Integrable (GlobalTheory.AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h f) (autMeasure B m))
     (hi' : Integrable (GlobalTheory.AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h f') (autMeasure B m)) :
@@ -211,12 +268,30 @@ theorem thetaMean_sub (m : Measure (GA D B)) {f f' : WO (dblSp A) B → ℂ} {g 
   simp only [GlobalTheory.ThetaMean.thetaMean]
   rw [e, average_eq, average_eq, average_eq, integral_sub' hi hi', smul_sub]
 
+/- English proof (translation)
+Establish `e : ∀ h, thetaKO om g h (om (x, 1) f) = thetaKO om (g * x) h f` using `fun h => by`. Simplify using `only [thetaKO, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Simplify using `only [GlobalTheory.ThetaMean.thetaMean, e]`.
+-/
 theorem thetaMean_translate (m : Measure (GA D B)) (f : WO (dblSp A) B → ℂ) (x g : GA D (dblSp A)) :
     GlobalTheory.ThetaMean.thetaMean om m (om (x, 1) f) g = GlobalTheory.ThetaMean.thetaMean om m f (g * x) := by
   have e : ∀ h, thetaKO om g h (om (x, 1) f) = thetaKO om (g * x) h f := fun h => by
     simp only [thetaKO, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
   simp only [GlobalTheory.ThetaMean.thetaMean, e]
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Take `⟨μ, 𝓕, hμ⟩` from `GlobalTheory.Size.exists_isCovolOne (dblSp A) B`. Establish `hi : ∀ f, IsThetaFunO ψ (dblSp A) B f → ∀ g, Integrable (GlobalTheory.AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h f) (autMeasure B m)` using `fun f hf g => GlobalTheory.WeilThetaInt.integrable_thetaKO hP D A B m hm hA hw ψ χ om hW f hf g`. Establish `hint` using `GlobalTheory.T.absThetaIntegral_le_sobolevSeminorm D ψ (dblSp A) B 1 χ om hW θ hθ μ 𝓕 hμ m hm id (fun _ _ _ _ => rfl) (fun _ _ _ => rfl) (GlobalTheory.ThetaDens.sobCont_id ψ θ μ 𝓕) (fun _ _ _ => rfl) (fun f hf => hi f hf 1)`. Rewrite using `[continuous_iff_continuousAt]`.
+
+Introduce `g₀`. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : GA D (dblSp A))`. Take `⟨U, hU, hl⟩` from `isTheta_iff_level.1 hf`. Take `⟨U', hU', hlev, -⟩` from `GlobalTheory.ThetaDens.om_compact_sobCont D ψ (dblSp A) B 1 χ om hW θ hθ μ 𝓕 hμ (K ×ˢ ({1} : Set (GA D B))) (hK.prod isCompact_singleton) U hU`. Establish `hlx : ∀ x ∈ K, om (x, 1) f ∈ GlobalTheory.Size.thetaLevel ψ (dblSp A) B U'` using `fun x hx => hlev f hl _ ⟨hx, rfl⟩`.
+
+Establish `hl1 : f ∈ GlobalTheory.Size.thetaLevel ψ (dblSp A) B U'`. Use `hlx 1 (mem_of_mem_nhds hK1)` as an intermediate fact. Rewrite `this` using `[show ((1 : GA D (dblSp A)), (1 : GA D B)) = 1 from rfl, map_one, Module.End.one_apply]`. Then use the resulting hypothesis. Take `⟨d, C, hC⟩` from `hint U' hU' {g₀} isCompact_singleton`. Use `set c : ℝ≥0∞ := ‖((autMeasure B m).real Set.univ)⁻¹‖ₑ with hc`.
+
+Establish `hct : c ≠ ⊤` using `enorm_ne_top`. Establish `hbound : ∀ u ∈ GlobalTheory.Size.thetaLevel ψ (dblSp A) B U', ‖GlobalTheory.ThetaMean.thetaMean om m u g₀‖ₑ ≤ c * (C * sobO ψ θ μ 𝓕 d u)` using `fun u hu => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.ThetaMean.thetaMean, average_eq, enorm_smul]`. Use `gcongr`.
+
+Conclude with `enorm_integral_le_lintegral_enorm _`. Use `_ ≤ c * (C * sobO ψ θ μ 𝓕 d u) := by gcongr; exact hC u hu g₀ rfl`. Establish `hlim : Tendsto (fun x : GA D (dblSp A) => c * (C * sobO ψ θ μ 𝓕 d (om (x, 1) f - f))) (𝓝 1) (𝓝 0)`. Establish `h2` using `ENNReal.Tendsto.const_mul (a := c) (ENNReal.Tendsto.const_mul (a := (C : ℝ≥0∞)) (sobO_om_tendsto hW hθ hμ hf d) (Or.inr ENNReal.coe_ne_top)) (Or.inr hct)`. Simplify using `using h2`.
+
+Establish `hT : Tendsto (fun x : GA D (dblSp A) => GlobalTheory.ThetaMean.thetaMean om m f (g₀ * x)) (𝓝 1) (𝓝 (GlobalTheory.ThetaMean.thetaMean om m f g₀))`. Rewrite using `[tendsto_iff_edist_tendsto_0]`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hlim (Eventually.of_forall fun _ => bot_le) ?_` and prove the remaining obligations. Use `filter_upwards [hK1] with x hx`. Rewrite using `[edist_eq_enorm_sub, ← thetaMean_translate m f x g₀, ← thetaMean_sub m (hi _ (hW.om_pres _ f hf) g₀) (hi f hf g₀)]`.
+
+Conclude with `hbound _ (Submodule.sub_mem _ (hlx x hx) hl1)`. Rewrite using `[ContinuousAt, ← map_mul_left_nhds_one g₀, tendsto_map'_iff]`. Simplify `hT` using `[Function.comp_def]`.
+-/
 theorem continuous_thetaMean (hP : GlobalTheory.Published.WeilThetaConvergence) (hW : IsWeilDatumO ψ (dblSp A) B 1 χ om)
     (hA : 1 ≤ A.rank) (hw : Formalism.MainNotions.SchurIrreducible.wittIdx B = 0 ∨ A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx B < B.rank)
     {m : Measure (GA D B)} (hm : m.IsHaarMeasure) {f : WO (dblSp A) B → ℂ} (hf : IsThetaFunO ψ (dblSp A) B f) :
@@ -272,6 +347,15 @@ namespace GlobalTheory.CompanionTheory.ThetaAutoPf
 
 open GlobalTheory.StdUnn
 
+/- English proof (translation)
+Take `⟨ψ₀, μ', lam, κ, omh, hs0, hsk, _, _, hκ, hW, hT⟩` from `GlobalTheory.T.exists_weilDatum_doubled_of_schrodingerFormulas D A V ψ hψ χ hχ hη θ hθ μ 𝓕 hμ ω hω`. Take `⟨f, hf, hfΦ⟩` from `(GlobalTheory.SchSchwartzAll.schSchwartz D ψ₀ hs0 θ hθ A V μ 𝓕 hμ).2.1 Φ.1 Φ.2`. Establish `hth : ∀ g : GA D (dblSp A), GlobalTheory.StdUnn.theta ω Φ (κ g) = fun h => thetaKO omh g h f` using `fun g => by`. Use function extensionality and compare the values at `h`. Rewrite using `[GlobalTheory.T.thetaKernel_eq_tsum_schrodingerFunction D ψ₀ A V χ⁻¹ omh hW μ 𝓕 hμ f hf g h, GlobalTheory.StdUnn.theta, hT g f hf Φ hfΦ.symm]`.
+
+Establish `hmean : thetaInt ω ν Φ = fun g => GlobalTheory.ThetaMean.thetaMean omh ν f (κ.symm g)`. Use function extensionality and compare the values at `g`. Establish `e` using `hth (κ.symm g)`. Rewrite `e` using `[κ.apply_symm_apply]`. Rewrite using `[thetaInt, e]`.
+
+Both sides reduce to the same expression. Use `⟨?_, fun γ hγ g => ?_⟩` and prove the remaining obligations. Rewrite using `[hmean]`. Conclude with `(continuous_thetaMean hP hW hA (Or.inr hr) hν hf).comp (GlobalTheory.StdUnn.chart_continuous D A μ' hsk κ hκ).2`. Establish `hq : κ.symm γ ∈ GQ (dblSp A)` using `(GlobalTheory.T.standardUnitaryChart_mem_rational_iff D A μ' hsk κ hκ _).2 (by rwa [κ.apply_symm_apply])`.
+
+Rewrite using `[hmean]`. Simplify using `only [map_mul, GlobalTheory.ThetaMean.thetaMean, GlobalTheory.ChainOnto.ThetaFirstVar.thetaKO_left_fst hW hf _ _ hq]`.
+-/
 theorem thetaInt_auto (hP : GlobalTheory.Published.WeilThetaConvergence) (D : D7) (A V : HSp D) (hA : 1 ≤ A.rank)
     (hr : A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx V < V.rank) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
     {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hη : ResEta D χ V.rank) {θ : InfFam D} (hθ : IsInfFam θ)
@@ -299,6 +383,9 @@ theorem thetaInt_auto (hP : GlobalTheory.Published.WeilThetaConvergence) (D : D7
     simp only [map_mul, GlobalTheory.ThetaMean.thetaMean,
       GlobalTheory.ChainOnto.ThetaFirstVar.thetaKO_left_fst hW hf _ _ hq]
 
+/- English proof (translation)
+Introduce `hP D n V ψ χ θ μ ω H l s ν Φ hstd hr`. Take `⟨𝓕, hμ⟩` from `hstd.hμ`. Take `⟨h1, h2, h3⟩` from `hr`. Conclude with `thetaInt_auto hP D (Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n) V (show 1 ≤ n by omega) h3 hstd.hψ hstd.hχ hstd.hη hstd.hθ hμ hstd.hω hstd.hν Φ`.
+-/
 theorem thetaAuto : GlobalTheory.Published.WeilThetaConvergence → PositivityTheory.PfSWUS.ThetaAuto := by
   intro hP D n V ψ χ θ μ ω H l s ν Φ hstd hr
   obtain ⟨𝓕, hμ⟩ := hstd.hμ

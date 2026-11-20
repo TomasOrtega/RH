@@ -13,6 +13,27 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.DiscGauss
 
+/- English proof (translation)
+Establish `hl0 : (0 : ℝ) < l` using `Nat.cast_pos.2 hl.out.pos`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `N1 : N 1 = 1`. Use `Nmul l 1` as an intermediate fact. Rewrite `this` using `[mul_one, Nl]`.
+
+Conclude with `(mul_left_cancel₀ (inv_pos.2 hl0).ne' (by rw [mul_one]; exact this)).symm`. Establish `Npow : ∀ (x : A) (k : ℕ), N (x ^ k) = N x ^ k`. Introduce `x k`. Proceed by induction on `k with`. Consider the case `zero => simpa using N1`.
+
+Consider the case `succ k ih => rw [pow_succ, Nmul, ih, pow_succ]`. Take `⟨M, M0, Madd, -, Mmul, MN⟩` from `GlobalTheory.GaussExt.exists_ext_loc (S := PreDisc l u ρ) (Submonoid.powers (l : A)) N (fun x => (rank_lt_alt x).1) Nadd Nneg Nmul (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `only`. Rewrite using `[Npow, Nl]`.
+
+Conclude with `pow_ne_zero _ (inv_pos.2 hl0).ne')`. Establish `M1 : M 1 = 1` using `by rw [← map_one (algebraMap A (PreDisc l u ρ)), MN, N1]`. Establish `Mpow : ∀ (x : PreDisc l u ρ) (k : ℕ), M (x ^ k) = M x ^ k`. Introduce `x k`. Proceed by induction on `k with`.
+
+Consider the case `zero => simpa using M1`. Consider the case `succ k ih => rw [pow_succ, Mmul, ih, pow_succ]`. Establish `Minv : M (IsLocalization.Away.invSelf (l : A)) = l`. Establish `h` using `congrArg M (IsLocalization.Away.mul_invSelf (S := PreDisc l u ρ) (l : A))`. Rewrite `h` using `[Mmul, MN, Nl, M1, inv_mul_eq_one₀ hl0.ne']`.
+
+Conclude with `h.symm`. Establish `Mz : M 0 = 0`. Establish `h` using `Mmul (IsLocalization.Away.invSelf (l : A)) 0`. Rewrite `h` using `[mul_zero, Minv]`. Use `M0 0` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `key : ∀ r : ℝ, 0 < r → ∀ y ∈ ball l u ρ r, M y ≤ r`. Introduce `r hr y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨a, b, c, h1, rfl⟩` from `hy`. Rewrite using `[Mmul, MN, Nmul, Npow, Npow, Mpow, Minv, Nl]`. Establish `h2 : N u ^ b ≤ (ρ : ℝ) ^ b` using `pow_le_pow_left₀ (rank_lt_alt u).1 Nu b`. Combine the equalities or inequalities in the displayed calculation. Consider the case `zero => rw [Mz]`.
+
+Conclude with `hr.le`. Consider the case `add x y _ _ hx hy => exact (Madd x y).trans (max_le hx hy)`. Consider the case `smul a x _ hx`. Rewrite using `[Algebra.smul_def, Mmul, MN]`. Conclude with `(mul_le_mul (rank_lt_alt a).2 hx (M0 x) zero_le_one).trans (one_mul r).le`.
+
+Rewrite using `[← MN x]`. Express the relevant statement in the definitionally equal form `_ ≤ ‖ofPre l u ρ (algebraMap A _ x)‖`. Rewrite using `[norm_ofPre]`. Conclude with `le_of_forall_gt_imp_ge_of_dense fun r hr => key r ((gauge_nonneg l u ρ _).trans_lt hr) _ (mem_ball_of_gauge_lt l u ρ hr)`.
+-/
 theorem le_gauge (l : ℕ) [hl : Fact l.Prime] {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) (N : A → ℝ)
     (rank_lt_alt : ∀ x, 0 ≤ N x ∧ N x ≤ 1) (Nadd : ∀ x y, N (x + y) ≤ max (N x) (N y)) (Nneg : ∀ x, N (-x) = N x)
     (Nmul : ∀ x y, N (x * y) = N x * N y) (Nl : N (l : A) = (l : ℝ)⁻¹) (Nu : N u ≤ ρ) (x : A) :
@@ -70,6 +91,11 @@ theorem le_gauge (l : ℕ) [hl : Fact l.Prime] {A : Type} [CommRing A] (u : A) (
   exact le_of_forall_gt_imp_ge_of_dense fun r hr =>
     key r ((gauge_nonneg l u ρ _).trans_lt hr) _ (mem_ball_of_gauge_lt l u ρ hr)
 
+/- English proof (translation)
+Establish `hex : ∃ b : ℕ, ρ ^ b ≤ s` using `(exists_pow_lt_of_lt_one hs h1).imp fun _ h => h.le`. Use `⟨Nat.find hex, ?_, Nat.find_spec hex⟩` and prove the remaining obligations. Break down `hb : Nat.find hex with _ | b` into its components or cases. Simplify using `using ht`. Establish `h2` using `Nat.find_min hex (m := b) (by omega)`.
+
+Rewrite `h2` using `[not_le]`. Rewrite using `[pow_succ']`. Conclude with `(h.trans (mul_lt_mul_of_pos_left h2 h0)).le`.
+-/
 theorem exists_pow_btwn {ρ s t : ℝ} (h0 : 0 < ρ) (h1 : ρ < 1) (hs : 0 < s) (ht : t ≤ 1) (h : t < ρ * s) :
     ∃ b : ℕ, t ≤ ρ ^ b ∧ ρ ^ b ≤ s := by
   classical
@@ -82,6 +108,9 @@ theorem exists_pow_btwn {ρ s t : ℝ} (h0 : 0 < ρ) (h1 : ρ < 1) (hs : 0 < s) 
     rw [pow_succ']
     exact (h.trans (mul_lt_mul_of_pos_left h2 h0)).le
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[pow_succ', RingAut.mul_apply, pow_succ', pow_mul, ← frobenius_def l ((_root_.frobeniusEquiv R l).symm _), frobenius_apply_frobeniusEquiv_symm, ih]`.
+-/
 theorem root_pow (l : ℕ) [Fact l.Prime] {R : Type} [CommRing R] [CharP R l] [PerfectRing R l] (i : ℕ) (w : R) :
     ((_root_.frobeniusEquiv R l).symm ^ i) w ^ l ^ i = w := by
   induction i with
@@ -90,6 +119,39 @@ theorem root_pow (l : ℕ) [Fact l.Prime] {R : Type} [CommRing R] [CharP R l] [P
     rw [pow_succ', RingAut.mul_apply, pow_succ', pow_mul, ← frobenius_def l ((_root_.frobeniusEquiv R l).symm _),
       frobenius_apply_frobeniusEquiv_symm, ih]
 
+/- English proof (translation)
+Establish `hl0 : (0 : ℝ) < l` using `Nat.cast_pos.2 hl.out.pos`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `h0' : (0 : ℝ) < ρ` using `h0`. Establish `h1' : (ρ : ℝ) < 1` using `h1`. Take `⟨r, hr⟩ : ∃ r : ℝ, r = (l : ℝ)⁻¹` from `⟨_, rfl⟩`.
+
+Establish `hr0 : 0 < r` using `hr ▸ inv_pos.2 hl0`. Establish `hr1 : r < 1` using `hr ▸ inv_lt_one_of_one_lt₀ hl1`. Establish `apow : ∀ (x : R) (k : ℕ), a (x ^ k) = a x ^ k`. Introduce `x k`. Proceed by induction on `k with`.
+
+Consider the case `zero => simpa using a1`. Consider the case `succ k ih => rw [pow_succ, amul, ih, pow_succ]`. Take `⟨N, hN⟩ : ∃ N : WittVector l R → ℝ, ∀ x, N x = ⨆ n : ℕ, a (x.coeff n) ^ ((1 : ℝ) / (l : ℝ) ^ n) * r ^ n` from `⟨_, fun _ => rfl⟩`. Take `⟨Nadd, Nneg, -⟩` from `GlobalTheory.T.witt_vector_gauss_norm_ultrametric l R a a01 a0 a1 amul aadd r hr0 hr1 N hN`. Establish `Nmul` using `GlobalTheory.T.wittVector_gaussNorm_mul l R a a01 a0 a1 amul aadd r hr0 hr1 N hN`.
+
+Establish `he : ∀ n : ℕ, (0 : ℝ) < 1 / (l : ℝ) ^ n` using `fun n => by positivity`. Establish `ht0 : ∀ (y : R) (n : ℕ), 0 ≤ a y ^ ((1 : ℝ) / (l : ℝ) ^ n) * r ^ n` using `fun y n => mul_nonneg (Real.rpow_nonneg (a01 y).1 _) (pow_nonneg hr0.le _)`. Establish `ht1 : ∀ (y : R) (n : ℕ), a y ^ ((1 : ℝ) / (l : ℝ) ^ n) * r ^ n ≤ r ^ n` using `fun y n => mul_le_of_le_one_left (pow_nonneg hr0.le _) (Real.rpow_le_one (a01 y).1 (a01 y).2 (he n).le)`. Establish `rank_lt_alt : ∀ x, 0 ≤ N x ∧ N x ≤ 1` using `fun x => by`. Rewrite using `[hN]`.
+
+Conclude with `⟨Real.iSup_nonneg fun n => ht0 _ n, ciSup_le fun n => (ht1 _ n).trans (pow_le_one₀ hr0.le hr1.le)⟩`. Establish `Nge : ∀ x (n : ℕ), a (x.coeff n) ^ ((1 : ℝ) / (l : ℝ) ^ n) * r ^ n ≤ N x` using `fun x n => by`. Rewrite using `[hN]`. Use `le_ciSup (f := fun n : ℕ => a (x.coeff n) ^ ((1 : ℝ) / (l : ℝ) ^ n) * r ^ n) ⟨1, ?_⟩ n` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`.
+
+Conclude with `(ht1 _ n).trans (pow_le_one₀ hr0.le hr1.le)`. Establish `Nl : N (l : WittVector l R) = r`. Use `le_antisymm ?_ (by simpa [WittVector.coeff_p, a1] using Nge l 1)` and prove the remaining obligations. Rewrite using `[hN]`. Use `ciSup_le fun n => ?_` and prove the remaining obligations.
+
+Rewrite using `[WittVector.coeff_p]`. Use `split_ifs with h`. Rewrite using `[a1, h, Real.one_rpow, one_mul, pow_one]`. Rewrite using `[a0, Real.zero_rpow (he n).ne', zero_mul]`. Conclude with `hr0.le`.
+
+Establish `Nu : N (WittVector.teichmuller l f) ≤ ρ`. Rewrite using `[hN]`. Use `ciSup_le fun n => ?_` and prove the remaining obligations. Break down `n with _ | n` into its components or cases. Simplify using `[hf]`.
+
+Rewrite using `[WittVector.teichmuller_coeff_pos l f _ n.succ_pos, a0, Real.zero_rpow (he _).ne', zero_mul]`. Conclude with `h0'.le`. Use `⟨N, Nmul, Nadd, Nl.trans hr, le_gauge l _ ρ N rank_lt_alt Nadd Nneg Nmul (Nl.trans hr) Nu, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← le_div_iff₀' h0']`. Use `le_of_forall_gt_imp_ge_of_dense fun s hs => ?_` and prove the remaining obligations.
+
+Establish `hs0 : 0 < s` using `(div_nonneg (rank_lt_alt x).1 h0'.le).trans_lt hs`. Rewrite `hs` using `[div_lt_iff₀' h0']`. Express the relevant statement in the definitionally equal form `‖ofPre l _ ρ (algebraMap _ _ x)‖ ≤ _`. Rewrite using `[norm_ofPre]`. Use `gauge_le l _ ρ hs0 ?_` and prove the remaining obligations.
+
+Establish `mono : ∀ (i b : ℕ) (z : WittVector l R), (ρ : ℝ) ^ b ≤ s * (l : ℝ) ^ i → algebraMap _ (PreDisc l (WittVector.teichmuller l f) ρ) (z * ((l : WittVector l R) ^ i * WittVector.teichmuller l f ^ b)) ∈ ball l (WittVector.teichmuller l f) ρ s`. Introduce `i b z h`. Rewrite using `[map_mul, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, b, 0, by simpa using h, by simp⟩)`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt s⁻¹ hl1`.
+
+Take `⟨c, hc⟩` from `WittVector.dvd_sub_sum_teichmuller_iterateFrobeniusEquiv_coeff x n`. Rewrite `hc` using `[sub_eq_iff_eq_add]`. Rewrite using `[hc, map_add, map_sum]`. Use `add_mem ?_ (Submodule.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Use `mono (n + 1) 0 c (by` as an intermediate fact.
+
+Establish `h2 : (l : ℝ) ^ n ≤ (l : ℝ) ^ (n + 1)` using `pow_le_pow_right₀ hl1.le n.le_succ`. Rewrite using `[pow_zero, ← inv_mul_le_iff₀ hs0, mul_one]`. Conclude with `hn.le.trans h2)`. Rewrite `this` using `[pow_zero, mul_one, mul_comm]`. Then use the resulting hypothesis. Use `set y := ((_root_.frobeniusEquiv R l).symm ^ i) (x.coeff i) with hy`.
+
+Establish `hy2 : y ^ l ^ i = x.coeff i` using `root_pow l i _`. Establish `hy3 : a y * r ^ i ≤ N x`. Establish `h` using `Nge x i`. Rewrite `h` using `[← hy2, apow, one_div, ← Nat.cast_pow, Real.pow_rpow_inv_natCast (a01 y).1 (pow_ne_zero _ hl.out.ne_zero)]`. Conclude with `h`.
+
+Take `⟨b, hb1, hb2⟩` from `exists_pow_btwn h0' h1' (s := s * (l : ℝ) ^ i) (by positivity) (a01 y).2 (by`. Establish `h` using `hy3.trans_lt hs`. Rewrite using `[hr, inv_pow, ← div_eq_mul_inv, div_lt_iff₀ (by positivity), mul_assoc] at h)` and apply the resulting hypothesis. Take `⟨z, hz⟩` from `advd y (f ^ b) (by rwa [apow, hf])`. Use `mono i b (WittVector.teichmuller l z) hb2` as an intermediate fact.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hz, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_gauss (l : ℕ) [hl : Fact l.Prime] (R : Type) [CommRing R] [CharP R l] [PerfectRing R l] (a : R → ℝ)
     (a01 : ∀ x, 0 ≤ a x ∧ a x ≤ 1) (a0 : a 0 = 0) (a1 : a 1 = 1) (amul : ∀ x y, a (x * y) = a x * a y)
     (aadd : ∀ x y, a (x + y) ≤ max (a x) (a y)) (advd : ∀ x y, a x ≤ a y → y ∣ x) (f : R) (ρ : ℝ≥0)
@@ -182,6 +244,11 @@ theorem exists_gauss (l : ℕ) [hl : Fact l.Prime] (R : Type) [CommRing R] [Char
     convert this using 2
     rw [hz, map_mul, map_pow]; ring
 
+/- English proof (translation)
+Use `GlobalTheory.TiltAlgClosed.dvd_of_untilt_dvd ?_` and prove the remaining obligations. Distinguish the cases in `hy : ((y.untilt : Per.OC l) : ℂ_[l]) = 0`. Rewrite `h` using `[hy, norm_zero, norm_le_zero_iff]`. Rewrite using `[show x.untilt = 0 from Subtype.ext h]`. Conclude with `dvd_zero _`.
+
+Use `⟨⟨(x.untilt : Per.OC l) / (y.untilt : Per.OC l), (GlobalTheory.RingBasics.mem_OC _).2 ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, div_le_one (norm_pos_iff.2 hy)]` and apply the resulting hypothesis. Use `push_cast`. Conclude with `(mul_div_cancel₀ _ hy).symm`.
+-/
 theorem dvd_of_norm_le {l : ℕ} [Fact l.Prime] (x y : Per.Fl l)
     (h : ‖((x.untilt : Per.OC l) : ℂ_[l])‖ ≤ ‖((y.untilt : Per.OC l) : ℂ_[l])‖) : y ∣ x := by
   refine GlobalTheory.TiltAlgClosed.dvd_of_untilt_dvd ?_
@@ -194,6 +261,15 @@ theorem dvd_of_norm_le {l : ℕ} [Fact l.Prime] (x y : Per.Fl l)
     · push_cast
       exact (mul_div_cancel₀ _ hy).symm
 
+/- English proof (translation)
+Introduce `l _ K bk ρ h0 h1`. Take `⟨hf0, hfu, -⟩` from `GlobalTheory.T.breuilKisin_flat_radius_ideal_facts l K bk`. Establish `h0' : (0 : ℝ) < ρ` using `h0`. Establish `h1' : (ρ : ℝ) < 1` using `h1`. Set `v : Per.Fl l → ℝ` to `fun x => ‖((x.untilt : Per.OC l) : ℂ_[l])‖`.
+
+Establish `v01 : ∀ x, 0 ≤ v x ∧ v x ≤ 1` using `fun x => ⟨norm_nonneg _, (GlobalTheory.RingBasics.mem_OC _).1 (x.untilt).2⟩`. Establish `v0 : v 0 = 0` using `by simp only [v, GlobalTheory.GaussExt.untilt_zero]; simp`. Establish `v1 : v 1 = 1` using `by simp [v]`. Establish `vmul : ∀ x y, v (x * y) = v x * v y` using `by intro x y; simp [v]`. Establish `vadd : ∀ x y, v (x + y) ≤ max (v x) (v y)` using `fun x y => (GlobalTheory.T.untilt_norm_ultrametric_eq_zero l x y).1`.
+
+Establish `vdvd : ∀ x y, v x ≤ v y → y ∣ x` using `dvd_of_norm_le`. Establish `vf0 : 0 < v bk.flat` using `norm_pos_iff.2 fun h => hf0 ((GlobalTheory.T.untilt_norm_ultrametric_eq_zero l bk.flat 0).2 (Subtype.ext h))`. Establish `vf1 : v bk.flat < 1` using `lt_of_not_ge fun h => hfu (isUnit_of_dvd_one (vdvd 1 _ (v1 ▸ h)))`. Take `⟨t, ht, hρ⟩ : ∃ t : ℝ, 0 < t ∧ v bk.flat ^ t = ρ` from `⟨Real.logb (v bk.flat) ρ, Real.logb_pos_of_base_lt_one vf0 vf1 h0' h1', Real.rpow_logb vf0 vf1.ne h0'⟩`. Rewrite using `[bk.ev_X]`.
+
+Conclude with `exists_gauss l (Per.Fl l) (fun x => v x ^ t) (fun x => ⟨Real.rpow_nonneg (v01 x).1 _, Real.rpow_le_one (v01 x).1 (v01 x).2 ht.le⟩) (by simp only [v0]; exact Real.zero_rpow ht.ne') (by simp only [v1]; exact Real.one_rpow t) (fun x y => by simp only [vmul]; exact Real.mul_rpow (v01 …`. Break down `le_max_iff.1 (vadd x y) with h | h` into its components or cases. Conclude with `le_max_of_le_left (Real.rpow_le_rpow (v01 _).1 h ht.le)`. Conclude with `le_max_of_le_right (Real.rpow_le_rpow (v01 _).1 h ht.le))`. Use the proof step `(fun x y h => vdvd x y ((Real.rpow_le_rpow_iff (v01 x).1 (v01 y).1 ht).1 h)) bk.flat ρ h0 h1 hρ`.
+-/
 theorem exists_gauss_disc : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (ρ : ℝ≥0), 0 < ρ → ρ < 1 → ∃ N : Ainf l → ℝ, (∀ x y, N (x * y) = N x * N y) ∧ (∀ x y, N (x + y) ≤ max (N x) (N y)) ∧ N (l : Ainf l) = (l : ℝ)⁻¹ ∧ (∀ x, N x ≤ ‖toDisc l (bk.ev X) ρ x‖) ∧ ∀ x, (ρ : ℝ) * ‖toDisc l (bk.ev X) ρ x‖ ≤ N x := by
   intro l _ K bk ρ h0 h1
   obtain ⟨hf0, hfu, -⟩ := GlobalTheory.T.breuilKisin_flat_radius_ideal_facts l K bk

@@ -28,6 +28,17 @@ variable {D : D7} {T : WDTie D.nd D.naut} {C₀ C : CharFrame D} (S : CharSide D
   {ρ : Reading D.ntw i (D.ntw.side i s)} {σ : D.what₂.FT} {π : D.naut.CG D.R.r}
   {r : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GalE D →* GL (Fin D.R.r) (Qbar (D.ntw.l i))} {ν : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GalE D →* (D.ntw.O0 i)ˣ}
   {w : D.what₂.places.Pl} {red : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.Zbar (D.ntw.l i) →+* FbAt D w}
+/- English proof (translation)
+Introduce `P hP hs k hk`. Take `⟨x, h1, h2⟩` from `h.hecke k P hk hs hP`. Use `⟨x, h1.symm, h2.trans ?_⟩` and prove the remaining obligations. Establish `hμ` using `mu_unr C (jIdx s) (fun k hk => hP (D.ntw.placesOver_subset_exceptional i k hk)) fun hp => hP (D.ntw.primes_subset_exceptional i hp)`. Rewrite using `[(twBy_unr S (mu_unitary C (D.ntw.l i) (jIdx s)) (h.unr_of_notMem hP) hμ.inv).2, heckeVal, satake, Multiset.map_map]`.
+
+Establish `e1 : ((k : ℂ) * ((D.R.r : ℂ) - k)) / 2 = ((k * (D.R.r - k) / 2 : ℕ) : ℂ)`. Use `congrArg (Nat.cast : ℕ → ℂ) (two_mul_half D.R hk)` as an intermediate fact. Rewrite `this` using `[Nat.cast_mul, Nat.cast_mul, Nat.cast_sub hk]`. Rewrite using `[← this]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : -((D.R.r : ℂ) + D.R.t) / 2 = -((D.R.nV / 2 : ℕ) : ℂ)`. Use `congrArg (Nat.cast : ℕ → ℂ) (two_mul_nV_half D.R)` as an intermediate fact. Rewrite `this` using `[Nat.cast_mul, Nat.cast_add]`. Rewrite using `[← this]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, Complex.cpow_neg, Complex.cpow_natCast, Complex.cpow_natCast]`. Use `congr 2`. Use `Multiset.map_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Simplify using `[mul_comm]`.
+-/
 theorem hkSat_of_isTripleWith (h : _root_.GlobalTheory.Triple.IsGaloisTripleWithReduction C art ρ s σ π r ν w red) :
     HkSat D.naut i s (ρ.ι.toRingHom.comp ρ.κ) (twBy S π (mu_unitary C (D.ntw.l i) (jIdx s))) := by
   intro P hP hs k hk

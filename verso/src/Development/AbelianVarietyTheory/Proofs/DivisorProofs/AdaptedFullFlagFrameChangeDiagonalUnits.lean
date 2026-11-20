@@ -8,6 +8,21 @@ open scoped Matrix ContDiff ComplexOrder
 
 namespace GlobalTheory.FlagChange
 
+/- English proof (translation)
+Introduce `F _ X ι m E B hB z A A' hA hA' x`. Take `⟨τ, i⟩` from `x`. Establish `hP : Par m ((ratOf X).O z).toSubring (A' * A⁻¹)` using `(Fr.mem_iff hA).1 hA'`. Establish `hl : ∀ (C : Mat m X.Fn) (O : Subring X.Fn), Par m O C → (C τ).BlockTriangular OrderDual.toDual`. Introduce `C O hC a b hab`.
+
+Conclude with `(hC τ).2.2.2 a b a.2 hab`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `set P := A' * A⁻¹ with hPdef`. Establish `hdet : (P τ).det = P τ i i * ∏ j ∈ Finset.univ.erase i, P τ j j`. Rewrite using `[Matrix.det_of_lowerTriangular _ (hl P _ hP), Finset.mul_prod_erase Finset.univ (fun j => P τ j j) (Finset.mem_univ i)]`.
+
+Establish `hne : (P τ).det ≠ 0` using `hP.det_ne τ`. Rewrite `hne` using `[hdet]`. Establish `hii : P τ i i ≠ 0` using `left_ne_zero_of_mul hne`. Establish `hR : ∏ j ∈ Finset.univ.erase i, P τ j j ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hmem : ∀ a b, P τ a b ∈ (ratOf X).O z` using `fun a b => (hP τ).1 a b`.
+
+Establish `hinv : (P τ i i)⁻¹ ∈ (ratOf X).O z`. Establish `e : (P τ i i)⁻¹ = (P τ).det⁻¹ * ∏ j ∈ Finset.univ.erase i, P τ j j`. Rewrite using `[hdet, _root_.mul_inv, mul_assoc, inv_mul_cancel₀ hR, mul_one]`. Rewrite using `[e]`. Use `((ratOf X).O z).mul_mem (hP τ).2.2.1 (((ratOf X).O z).prod_mem fun j _ => hmem j j)` and prove the remaining obligations.
+
+Conclude with `(unitAt_iff hii).2 ⟨mem_O_ratOf.1 (hmem i i), mem_O_ratOf.1 hinv⟩`. Establish `hA'g : A' ∈ E.S (genericPoint X.X)` using `Fr.mem_genericPoint hA'`. Establish `hQ : Par m ((ratOf X).O (genericPoint X.X)).toSubring (B * A'⁻¹)` using `(Fr.mem_iff hA'g).1 hB`. Establish `e : B * A⁻¹ = B * A'⁻¹ * (A' * A⁻¹)`. Rewrite using `[mul_assoc, ← mul_assoc A'⁻¹, Mat.inv_mul (Fr.det_ne hA'), one_mul]`.
+
+Rewrite using `[e]`. Use `show ((B * A'⁻¹) τ * (A' * A⁻¹) τ) i i = _`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun l _ hl' => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hl' with h | h` into its components or cases.
+
+Rewrite using `[(hP τ).2.2.2 l i l.2 h, mul_zero]`. Rewrite using `[(hQ τ).2.2.2 i l i.2 h, zero_mul]`.
+-/
 theorem diag_unitAt_and_mul : ∀ (F : Type) [Field F] (X : Var F) (ι : Type) (m : ι → ℕ) (E : Fr (ratOf X) m m) (B : Mat m X.Fn),
     B ∈ E.S (genericPoint X.X) → ∀ (z : X.X) (A A' : Mat m X.Fn), A ∈ E.S z → A' ∈ E.S z → ∀ x : Root m,
       UnitAt z ((A' * A⁻¹) x.1 x.2 x.2) ∧ (B * A⁻¹) x.1 x.2 x.2 = (B * A'⁻¹) x.1 x.2 x.2 * (A' * A⁻¹) x.1 x.2 x.2 := by

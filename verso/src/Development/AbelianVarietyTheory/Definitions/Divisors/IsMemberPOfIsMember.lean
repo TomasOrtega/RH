@@ -19,6 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GSep.MemberModel
 
+/- English proof (translation)
+Take `⟨o, Ω, _, _, _, hb, S, ρ, hg, hB, -⟩` from `GlobalTheory.RealInhabitant.exists_real_dim_one_isFractionRing GlobalTheory.firstFiveLaws.1 GlobalTheory.firstFiveLaws.2.1`. Take `⟨M, U₀, h⟩` from `GlobalTheory.ZH.ClosureExample.exists_adm o Ω S`. Conclude with `⟨{ o₁ := o, Ω₁ := Ω, S := S, ρ := ρ, big := hB, M := M normal := (GlobalTheory.isNormalScheme_iff_pred _).2 h.1.normal, projM := h.1.proj, div := h.1.div }, hg⟩`.
+-/
 theorem exists_gSet : ∃ X₁ : GSet, X₁.S.g = 1 := by
   obtain ⟨o, Ω, _, _, _, hb, S, ρ, hg, hB, -⟩ := GlobalTheory.RealInhabitant.exists_real_dim_one_isFractionRing
     GlobalTheory.firstFiveLaws.1 GlobalTheory.firstFiveLaws.2.1
@@ -26,6 +29,9 @@ theorem exists_gSet : ∃ X₁ : GSet, X₁.S.g = 1 := by
   exact ⟨{ o₁ := o, Ω₁ := Ω, S := S, ρ := ρ, big := hB, M := M
            normal := (GlobalTheory.isNormalScheme_iff_pred _).2 h.1.normal, projM := h.1.proj, div := h.1.div }, hg⟩
 
+/- English proof (translation)
+Take `⟨o, Ω, _, _, _, hb, S, ρ, M, U₀, EE, hg, hB, -, -, -, hA, hE, -, hZ, -⟩` from `GlobalTheory.ZH.exists_zhOut_dim_one h`. Use `⟨{ o₁ := o, Ω₁ := Ω, S := S, ρ := ρ, big := hB, M := M normal := (GlobalTheory.isNormalScheme_iff_pred _).2 hA.1.normal, projM := hA.1.proj, div := hA.1.div }, hg, U₀, EE, hZ, hA.1, hE, ?_, inferInstance⟩` and prove the remaining obligations. Establish `e : spMap (AlgHom.id o Ω).toRingHom = 𝟙 _` using `Spec.map_id _`. Rewrite using `[RatModel.IsHom, e, Category.id_comp, Category.comp_id]`.
+-/
 theorem exists_zhAbove (h : GlobalTheory.Published.SemistableReductionSt) : ∃ X₁ : GSet, X₁.S.g = 1 ∧ ZHAbove X₁ X₁.M (𝟙 _) := by
   obtain ⟨o, Ω, _, _, _, hb, S, ρ, M, U₀, EE, hg, hB, -, -, -, hA, hE, -, hZ, -⟩ := GlobalTheory.ZH.exists_zhOut_dim_one h
   refine ⟨{ o₁ := o, Ω₁ := Ω, S := S, ρ := ρ, big := hB, M := M
@@ -38,6 +44,15 @@ variable {I : Type} {X₁ : GSet} {z₁ : X₁.M.Z} {act : I → (X₁.ρ.P.A �
   {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
   {L : Type} [AddCommGroup L] {mo : L → V} {hL : I → L → L}
 
+/- English proof (translation)
+Establish `sp : ∀ w, X₁.M.Z.fromSpecStalk z₁ w ⤳ z₁` using `fun w => by`. Establish `: X₁.M.Z.fromSpecStalk z₁ w ∈ Set.range (X₁.M.Z.fromSpecStalk z₁)` using `⟨w, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Set `yV : X₁.S.R →+* V` to `(RatModel.valLoc (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) z₁ (sp _)).comp (Subalgebra.inclusion hz).toRingHom`. Set `P` to `StrictPull.polPull X₁.ρ.P (spMap yV)`.
+
+Use `letI := P.isAb.comm`. Take `⟨D, A, U, ψ, hX, hψ, hL', hE⟩` from `Sep.exists_unif_good hV P`. Establish `r : LBIso P.L (X₁.ρ.P.L.pull (pullback.fst X₁.ρ.P.A.hom (spMap yV)))` using `PolBaseChange.lbIso_refl P.isLB`. Take `⟨wl, hwl⟩` from `LBIso.trans A.isLB (pull_isLB P.isLB _) (pull_isLB X₁.ρ.P.isLB _) hL' (lbIso_pull_comp r ψ)`. Use `haveI := hV.2.2.2`.
+
+Take `⟨r₀, hr₀, -, -, hu⟩` from `(PsiCoordLocal.main V D hV.2.1 0).1`. Use `⟨{ cn := hV loc := hev reg := fun a ha => RatModel.O_le_of_specializes (sp _) (hz ha) yK := (algebraMap V (FractionRing V)).comp yV yK_eq := fun a => (RatModel.val_spMap_comp (M := X₁.M) (algebraMap V (FractionRing V)) _ (sp _) ⟨a.1, hz a.2⟩).symm D := D e₈ := ⟨⟨fun _ => 0, fun _ …` and prove the remaining obligations. Use `hact a` as an intermediate fact. Take `⟨E, h⟩` from `hE ((Over.pullback (spMap yV)).map (act a)) (inferInstanceAs (IsMonHom ((Over.pullback (spMap yV)).map (act a))))`. Use `⟨E, ?_, fun _ => Subsingleton.elim _ _⟩` and prove the remaining obligations.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) h).trans ((Category.assoc _ _ _).trans ((congrArg (ψ ≫ ·) (pullback.lift_fst _ _ _)).trans (Category.assoc _ _ _).symm)))`. Rewrite using `[_root_.mul_one]`. Conclude with `hr₀`.
+-/
 theorem nonempty_of_regular (hact : IsAct X₁ act) (hz : X₁.S.R ≤ X₁.M.O z₁) (hV : IsCN V)
     (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (hev : IsLocalHom ev) (L : Type) [AddCommGroup L] [Subsingleton L]
     (hL : I → L → L) : Nonempty (GMem X₁ z₁ act V ev L (fun _ => 1) hL) := by
@@ -82,6 +97,9 @@ theorem nonempty_of_regular (hact : IsAct X₁ act) (hz : X₁.S.R ≤ X₁.M.O 
   · rw [_root_.mul_one]
     exact hr₀
 
+/- English proof (translation)
+Use `⟨_, (Scheme.stalkClosedPointTo (R := CommRingCat.of X₁.Ω₁) X₁.M.pt).hom, nonempty_of_regular h ?_ ⟨inferInstance, inferInstance, ?_, X₁.ar.char⟩ _ inferInstance _ _⟩` and prove the remaining obligations. Conclude with `le_top.trans ((congrArg X₁.M.O (X₁.M.pt_apply _)).trans X₁.M.O_genericPoint).ge`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot] infer_instance`.
+-/
 theorem exists_gMem (X₁ : GSet) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (h : IsAct X₁ act) :
     ∃ (z₁ : X₁.M.Z) (ev : X₁.M.Z.presheaf.stalk z₁ →+* X₁.Ω₁),
       Nonempty (GMem X₁ z₁ act X₁.Ω₁ ev PUnit (fun _ => 1) (fun _ x => x)) := by
@@ -152,6 +170,11 @@ def ofTower {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) 
   gl_pt := T.gl_pt
   gl_lam := T.gl_lam
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos T.d with h | h` into its components or cases. Establish `h1` using `T.lev`. Rewrite `h1` using `[h, mul_zero]`. Use `T.X₂.S.r_pos` as an intermediate fact. Use `T.X₂.S.N_ge` as an intermediate fact.
+
+Establish `: 0 < T.X₂.S.r * T.X₂.S.N` using `Nat.mul_pos (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+-/
 theorem d_pos (T : Tower X₁ act) : 0 < T.d := by
   rcases Nat.eq_zero_or_pos T.d with h | h
   · have h1 := T.lev
@@ -162,6 +185,11 @@ theorem d_pos (T : Tower X₁ act) : 0 < T.d := by
     omega
   · exact h
 
+/- English proof (translation)
+Take `⟨X₁, hg⟩` from `exists_gSet`. Use `haveI := X₁.ρ.P.isAb.comm`. Establish `h : IsAct X₁ (fun b : Bool => if b then 𝟙 _ else (𝟙 _)⁻¹)`. Introduce `b`. Consider the cases of `b`.
+
+Conclude with `isMonHom_of_mul _ fun T x z => by`. Simplify using `only [Bool.false_eq_true, if_false, GrpObj.comp_inv, Category.comp_id, mul_inv]`. Conclude with `inferInstanceAs (IsMonHom (𝟙 X₁.ρ.P.A))`. Conclude with `⟨X₁, _, hg, rfl, rfl, h, ⟨towerSelf X₁ _ h⟩, exists_gMem X₁ _ h⟩`.
+-/
 theorem exists_all : ∃ (X₁ : GSet) (act : Bool → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), X₁.S.g = 1 ∧ act true = 𝟙 _ ∧ act false = (𝟙 _)⁻¹ ∧
     IsAct X₁ act ∧ Nonempty (Tower X₁ act) ∧ ∃ (z₁ : X₁.M.Z) (ev : X₁.M.Z.presheaf.stalk z₁ →+* X₁.Ω₁),
       Nonempty (GMem X₁ z₁ act X₁.Ω₁ ev PUnit (fun _ => 1) (fun _ x => x)) := by
@@ -175,10 +203,18 @@ theorem exists_all : ∃ (X₁ : GSet) (act : Bool → (X₁.ρ.P.A ⟶ X₁.ρ.
     · exact inferInstanceAs (IsMonHom (𝟙 X₁.ρ.P.A))
   exact ⟨X₁, _, hg, rfl, rfl, h, ⟨towerSelf X₁ _ h⟩, exists_gMem X₁ _ h⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨_, h⟩ := 𝔪.psi mu right_ne_zero_of_mul (PsiCoordLocal.ne_zero_of_coord h)`.
+-/
 theorem mo_ne_zero (𝔪 : GMem X₁ z₁ act V ev L mo hL) (mu : L) : mo mu ≠ 0 :=
   let ⟨_, h⟩ := 𝔪.psi mu
   right_ne_zero_of_mul (PsiCoordLocal.ne_zero_of_coord h)
 
+/- English proof (translation)
+Use `haveI := 𝔪.cn.2.2.2`. Take `⟨u, hu⟩` from `𝔪.psi mu`. Take `⟨r, hr, -, hm, -⟩` from `(PsiCoordLocal.main V 𝔪.D 𝔪.cn.2.1 (𝔪.e₈ mu)).1`. Take `⟨v, hv⟩` from `PsiCoordLocal.exists_unit_of_coord hr hu`. Establish `: (u : V) * mo mu ∈ maximalIdeal V` using `hv ▸ Ideal.mul_mem_left _ _ (hm (𝔪.e₈.map_ne_zero_iff.2 h))`.
+
+Conclude with `(Ideal.unit_mul_mem_iff_mem _ u.isUnit).1 this`.
+-/
 theorem mo_mem (𝔪 : GMem X₁ z₁ act V ev L mo hL) {mu : L} (h : mu ≠ 0) : mo mu ∈ maximalIdeal V := by
   haveI := 𝔪.cn.2.2.2
   obtain ⟨u, hu⟩ := 𝔪.psi mu
@@ -187,6 +223,11 @@ theorem mo_mem (𝔪 : GMem X₁ z₁ act V ev L mo hL) {mu : L} (h : mu ≠ 0) 
   have : (u : V) * mo mu ∈ maximalIdeal V := hv ▸ Ideal.mul_mem_left _ _ (hm (𝔪.e₈.map_ne_zero_iff.2 h))
   exact (Ideal.unit_mul_mem_iff_mem _ u.isUnit).1 this
 
+/- English proof (translation)
+Take `⟨E', hE', h⟩` from `𝔪.equiv a`. Establish `e₁ : E.aA = E'.aA` using `Over.OverMorphism.ext (𝔪.cart.1.hom_ext (hE.trans hE'.symm) ((Over.w _).trans (Over.w _).symm))`. Use `haveI := (GlobalTheory.ExtUnique.spec_fractionRing V (FractionRing V)).1`. Use `haveI := (GlobalTheory.ExtUnique.spec_fractionRing V (FractionRing V)).2`. Use `haveI := 𝔪.semi.smooth`.
+
+Use `haveI := 𝔪.semi.separated`. Establish `e₂ : E.aG = E'.aG` using `GlobalTheory.ExtUnique.pullback_map_injective (jK V) _ _ ((cancel_mono 𝔪.U.gen.hom).1 (E.ext.trans (e₁ ▸ E'.ext.symm)))`. Use `haveI := 𝔪.cn.1`. Rewrite using `[(GlobalTheory.EndCalc.congr_data ⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩ E E' e₂).2, h]`.
+-/
 theorem char_eq (𝔪 : GMem X₁ z₁ act V ev L mo hL) (a : I) (E : EndU 𝔪.U.toUnifPre)
     (hE : E.aA.left ≫ 𝔪.φ = 𝔪.φ ≫ (act a).left) (mu : L) : E.h (𝔪.e₈ mu) = 𝔪.e₈ (hL a mu) := by
   obtain ⟨E', hE', h⟩ := 𝔪.equiv a
@@ -200,6 +241,9 @@ theorem char_eq (𝔪 : GMem X₁ z₁ act V ev L mo hL) (a : I) (E : EndU 𝔪.
   haveI := 𝔪.cn.1
   rw [(GlobalTheory.EndCalc.congr_data ⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩ E E' e₂).2, h]
 
+/- English proof (translation)
+Use `haveI := 𝔪.cn.2.2.2`. Use `haveI := 𝔪.cn.1`. Take `⟨E, -, hA, -, hh, -⟩` from `GlobalTheory.UT.OLinEnd.main GlobalTheory.firstFiveLaws V _ ⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩ 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U O ιD ιA ιG lin b`. Rewrite using `[← char_eq 𝔪 a E (hA ▸ h), hh]`.
+-/
 theorem char_eq_star (𝔪 : GMem X₁ z₁ act V ev L mo hL) {O : Type} [CommRing O] [StarRing O] [Module O 𝔪.D.toPre.X]
     (ιD : 𝔪.D.toPre.OAct O) (ιA : 𝔪.A.OAct O) (ιG : RingAct 𝔪.G O) (lin : 𝔪.U.toUnifPre.OLinear O ιD ιA ιG) (a : I) (b : O)
     (h : (ιA.act b).left ≫ 𝔪.φ = 𝔪.φ ≫ (act a).left) (mu : L) : 𝔪.e₈ (hL a mu) = star b • 𝔪.e₈ mu := by
@@ -209,6 +253,9 @@ theorem char_eq_star (𝔪 : GMem X₁ z₁ act V ev L mo hL) {O : Type} [CommRi
     ⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩ 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U O ιD ιA ιG lin b
   rw [← char_eq 𝔪 a E (hA ▸ h), hh]
 
+/- English proof (translation)
+Take `⟨x, fr, th, w₀, s, g', w, -, -, hth, -, hs, hc, hT⟩` from `h`. Use `(hc c).2.2 1 le_rfl (w c) (fun z J _ => (pow_one _).symm) (hc c).2.1 th s _ hs (hth (lab c))` as an intermediate fact. Use `this using 2 with χ` and compare the differences between its conclusion and the goal. Rewrite using `[hT, AddEquiv.apply_symm_apply]`.
+-/
 theorem terms_sum (𝔪 : GMem X₁ z₁ act V ev L mo hL) {x₀ : X₁.S.Gam} {C : Type} {lab : C → X₁.S.Gam}
     {T : L → C → V} (h : 𝔪.Terms x₀ lab T) (c : C) :
     SumF (maximalIdeal V) (FractionRing V)
@@ -224,6 +271,9 @@ open GlobalTheory.UPoinc
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {C : UCompact Xo c}
 
+/- English proof (translation)
+The claim follows from `let ⟨h₁, h₂, h₃, h₄, D, p, h₅⟩ := hm ⟨h₁, h₂, h₃, h₄, D, p, h₅.zero⟩`.
+-/
 theorem isMemberP_of_isMember {M : Scheme.{0}} {z₁ : M} (ζ : Sp (M.presheaf.stalk z₁) ⟶ pullback C.z (spMap C.b)) {N₁ : ℕ}
     {Ψ : VSys (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) !![(1 : ℤ)] N₁ (M.presheaf.stalk z₁)} {φ : InvFun (𝓞 E)}
     {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {Cm : GlobalTheory.UChart.MonoFam Xo c φ V}
@@ -235,12 +285,20 @@ theorem isMemberP_of_isMember {M : Scheme.{0}} {z₁ : M} (ζ : Sp (M.presheaf.s
 def ofUSetup (Y : USetup C) (hp : IsProjOver Y.M.s) : GSet :=
   { o₁ := Y.o₁, Ω₁ := Y.Ω₁, S := Y.S, ρ := Y.ρ, big := Y.big, M := Y.M, normal := Y.normal, projM := hp, div := Y.hasDiv }
 
+/- English proof (translation)
+The claim follows from `C.thetaInt _ _ X₁.S X₁.ρ u h.uOver h.2.2.1 X₁.M π X₁.normal h.2.2.2`.
+-/
 theorem hasDiv_of_uLink {act : 𝓞 E → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} {u : Sp (ratHull X₁.S.R) ⟶ Xo.XF c} {π : X₁.M.Z ⟶ C.Z}
     (h : ULink C X₁ act u π) : X₁.M.HasDiv X₁.S.th :=
   C.thetaInt _ _ X₁.S X₁.ρ u h.uOver h.2.2.1 X₁.M π X₁.normal h.2.2.2
 
 end
 
+/- English proof (translation)
+Take `⟨u, n, hn, hc⟩` from `h (mu 0)`. Use `⟨u, ?_⟩` and prove the remaining obligations. Use `hc using 2` and compare the differences between its conclusion and the goal. Unfold `mono`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `: qW !![(1 : ℤ)] (β i) mu = ((2 * n i : ℕ) : ℤ)` using `by simp [qW, hn i]`. Rewrite using `[this, Int.toNat_natCast, pow_mul, hr]`.
+-/
 theorem psi_of_isMonomial {R : Type} [CommRing R] [IsDomain R] {Dg : DegPre R} {m : ℕ} {s r : Fin m → R}
     {β : Fin m → LinearMap.BilinForm ℤ Dg.X} (h : IsMonomial Dg s β) (hr : ∀ k, r k ^ 2 = s k) (mu : Fin 1 → Dg.X) :
     ∃ u : Rˣ, Formalism.L2.Pj.PsiCoord Dg (mu 0) (u * mono !![(1 : ℤ)] r β mu) := by
@@ -252,16 +310,27 @@ theorem psi_of_isMonomial {R : Type} [CommRing R] [IsDomain R] {Dg : DegPre R} {
   have : qW !![(1 : ℤ)] (β i) mu = ((2 * n i : ℕ) : ℤ) := by simp [qW, hn i]
   rw [this, Int.toNat_natCast, pow_mul, hr]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a b => by have k : ∀ mu : L, mu = 0 := fun mu => by_contra fun hm => (mem_maximalIdeal _).1 (mo_mem 𝔪 hm) (h mu) rw [k a, k b]⟩`.
+-/
 theorem subsingleton_of_unit (𝔪 : GMem X₁ z₁ act V ev L mo hL) (h : ∀ mu, IsUnit (mo mu)) : Subsingleton L :=
   ⟨fun a b => by
     have k : ∀ mu : L, mu = 0 := fun mu => by_contra fun hm => (mem_maximalIdeal _).1 (mo_mem 𝔪 hm) (h mu)
     rw [k a, k b]⟩
 
+/- English proof (translation)
+Take `⟨E, -, h⟩` from `𝔪.equiv a`. Apply `𝔪.e₈.injective` to reduce the goal to its premises. Rewrite using `[← h, map_add, map_add, h, h, map_add]`.
+-/
 theorem hL_add (𝔪 : GMem X₁ z₁ act V ev L mo hL) (a : I) (mu nu : L) : hL a (mu + nu) = hL a mu + hL a nu := by
   obtain ⟨E, -, h⟩ := 𝔪.equiv a
   apply 𝔪.e₈.injective
   rw [← h, map_add, map_add, h, h, map_add]
 
+/- English proof (translation)
+Take `⟨j, hj, h₁⟩` from `X₁.ρ.r_eq`. Take `⟨j', -, h₂⟩` from `T.X₂.ρ.r_eq`. Establish `h` using `T.lev`. Rewrite `h` using `[h₁, h₂, T.X₂.ρ.N_eq, ← pow_mul, ← pow_add]`. Establish `: X₁.ρ.n ∣ T.X₂.ρ.n ^ (j' + T.X₂.ρ.k * 2)` using `h ▸ ((dvd_pow_self _ (by omega)).mul_right _).mul_right _`.
+
+Conclude with `((Nat.prime_dvd_prime_iff_eq X₁.ρ.n_prime T.X₂.ρ.n_prime).1 (X₁.ρ.n_prime.dvd_of_dvd_pow this)).symm`.
+-/
 theorem n_eq (T : Tower X₁ act) : T.X₂.ρ.n = X₁.ρ.n := by
   obtain ⟨j, hj, h₁⟩ := X₁.ρ.r_eq
   obtain ⟨j', -, h₂⟩ := T.X₂.ρ.r_eq
@@ -276,10 +345,16 @@ open GlobalTheory.UPoinc
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {C : UCompact Xo c}
 
+/- English proof (translation)
+Introduce `T ev h₁ h₂ h₃` and use `h' T ev h₁ h₂ (h₃.trans h)`.
+-/
 theorem hasTraitsOn_mono {M : Scheme.{0}} {z₁ : M} (ζ : Sp (M.presheaf.stalk z₁) ⟶ pullback C.z (spMap C.b))
     (Φ : VPre (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) !![(1 : ℤ)] (M.presheaf.stalk z₁)) {U U' : M.Opens} (h : U ≤ U')
     (h' : HasTraitsOn ζ Φ U') : HasTraitsOn ζ Φ U := fun T ev h₁ h₂ h₃ => h' T ev h₁ h₂ (h₃.trans h)
 
+/- English proof (translation)
+Use `letI := H.starRing`. Rewrite using `[char_eq_star 𝔪 ιD ιA ιG lin a (H.bar a) h mu]`. Conclude with `congrArg (· • _) (star_star a)`.
+-/
 theorem char_eq_smul {act : 𝓞 E → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} {hL : 𝓞 E → L → L} (𝔪 : GMem X₁ z₁ act V ev L mo hL)
     [Module (𝓞 E) 𝔪.D.toPre.X] (ιD : letI := H.starRing; 𝔪.D.toPre.OAct (𝓞 E)) (ιA : letI := H.starRing; 𝔪.A.OAct (𝓞 E))
     (ιG : RingAct 𝔪.G (𝓞 E)) (lin : letI := H.starRing; 𝔪.U.toUnifPre.OLinear (𝓞 E) ιD ιA ιG) (a : 𝓞 E)

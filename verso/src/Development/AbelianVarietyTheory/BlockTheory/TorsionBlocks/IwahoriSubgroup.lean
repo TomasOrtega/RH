@@ -61,6 +61,11 @@ def IwahoriEigenvalues : Prop :=
         ∀ i, Valued.v (x i) = WithZero.exp (-(a i))) ∧
       g.charpoly.Separable
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j hij`. Use `h (i := i) (j := j) hij` as an intermediate fact. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this`. Introduce `h i j hij`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (h i j hij)`.
+-/
 theorem mem_iwahoriInt_iff (F : Type) [Field F] [Valued F (WithZero (Multiplicative ℤ))] (r : ℕ)
     (g : GL (Fin r) (Int F)) :
     g ∈ iwahoriInt F r ↔ ∀ i j : Fin r, j < i →
@@ -73,10 +78,16 @@ theorem mem_iwahoriInt_iff (F : Type) [Field F] [Valued F (WithZero (Multiplicat
   · intro h i j hij
     exact Ideal.Quotient.eq_zero_iff_mem.2 (h i j hij)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_mem _, 1, one_mem _, by simp⟩`.
+-/
 theorem self_mem_iwahoriDoubleCoset {F : Type} [Field F] [Valued F (WithZero (Multiplicative ℤ))]
     {r : ℕ} (t : Matrix (Fin r) (Fin r) F) : t ∈ iwahoriDoubleCoset t :=
   ⟨1, one_mem _, 1, one_mem _, by simp⟩
 
+/- English proof (translation)
+The claim follows from `(h _ ϖ hϖ r a ha _ (self_mem_iwahoriDoubleCoset _)).2`.
+-/
 example (h : IwahoriEigenvalues) (K : Type) [Field K] [NumberField K]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers K))
     (ϖ : v.adicCompletion K) (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (r : ℕ) (a : Fin r → ℤ)

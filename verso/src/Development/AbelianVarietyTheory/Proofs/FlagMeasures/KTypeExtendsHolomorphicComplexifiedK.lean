@@ -13,21 +13,38 @@ namespace GlobalTheory.Dec.TauExt
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := starRingEnd ℂ)`.
+-/
 theorem conj_mul (a b : Matrix (Fin n) (Fin n) ℂ) : (a * b).map star = a.map star * b.map star :=
   Matrix.map_mul (f := starRingEnd ℂ)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (star_zero _) (star_one _)`.
+-/
 theorem conj_one : (1 : Matrix (Fin n) (Fin n) ℂ).map star = 1 :=
   Matrix.map_one _ (star_zero _) (star_one _)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem conj_conj (a : Matrix (Fin n) (Fin n) ℂ) : (a.map star).map star = a := by
   ext i j; simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Apply the tactic sequence `subst h; by_cases h' : ε i = true <;> simp [Jm, h']`. Simplify using `[Jm, h]`.
+-/
 theorem conj_Jm : (Jm ε).map star = Jm ε := by
   ext i j
   by_cases h : i = j
   · subst h; by_cases h' : ε i = true <;> simp [Jm, h']
   · simp [Jm, h]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Establish `h : k * star k = 1` using `Matrix.mem_unitaryGroup_iff.1 hk.1`. Establish `e : star (k.map star) = (star k).map star` using `by ext i j; simp`. Rewrite using `[e, ← conj_mul, h, conj_one]`.
+
+Use `congrArg (fun m : Matrix (Fin n) (Fin n) ℂ => m.map star) hk.2` as an intermediate fact. Simplify `this` using `only [conj_mul, conj_Jm]`.
+-/
 theorem conj_mem {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : k.map star ∈ Kset ε := by
   refine ⟨?_, ?_⟩
   · rw [Matrix.mem_unitaryGroup_iff]
@@ -37,17 +54,29 @@ theorem conj_mem {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : k.map s
   · have := congrArg (fun m : Matrix (Fin n) (Fin n) ℂ => m.map star) hk.2
     simpa only [conj_mul, conj_Jm] using this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨⟨k, star k, Unitary.mul_star_self_of_mem hk.1, Unitary.star_mul_self_of_mem hk.1⟩, rfl⟩, hk.2⟩`.
+-/
 theorem mem_KC {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : k ∈ KC ε :=
   ⟨⟨⟨k, star k, Unitary.mul_star_self_of_mem hk.1, Unitary.star_mul_self_of_mem hk.1⟩, rfl⟩, hk.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Submonoid.one_mem _, by rw [Matrix.one_mul, Matrix.mul_one]⟩`.
+-/
 theorem one_mem_K : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Kset ε :=
   ⟨Submonoid.one_mem _, by rw [Matrix.one_mul, Matrix.mul_one]⟩
 
+/- English proof (translation)
+Simplify using `only [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Conclude with `isOpen_ne_fun (Continuous.matrix_det (A := fun y : Fin n → Fin n → ℂ => Matrix.of y) continuous_id) continuous_const`.
+-/
 theorem isOpen_units : IsOpen {y : Fin n → Fin n → ℂ | IsUnit (Matrix.of y)} := by
   simp only [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]
   exact isOpen_ne_fun (Continuous.matrix_det (A := fun y : Fin n → Fin n → ℂ => Matrix.of y) continuous_id)
     continuous_const
 
+/- English proof (translation)
+Rewrite using `[Matrix.diagonal_map (star_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Complex.star_def, ← Complex.exp_conj]`. Simplify using the standard rewrite rules.
+-/
 theorem conj_torus (θ : Fin n → ℝ) :
     (Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)).map star =
       Matrix.diagonal fun a => Complex.exp (((-θ) a : ℂ) * Complex.I) := by
@@ -62,6 +91,9 @@ section Mul
 variable {B : Type} [NormedRing B] [NormedAlgebra ℂ B] [CompleteSpace B] {τ : Matrix (Fin n) (Fin n) ℂ → B}
 
 omit [CompleteSpace B] in
+/- English proof (translation)
+Establish `h : Differentiable ℂ fun y : Fin n → Fin n → ℂ => fun i j => (a * Matrix.of y * b) i j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`. Conclude with `hd.comp h.differentiableOn fun y hy => (ha.mul hy.1).mul hb`.
+-/
 theorem differentiableOn_mul
     (hd : DifferentiableOn ℂ (fun y : Fin n → Fin n → ℂ => τ (Matrix.of y)) {y | IsUnit (Matrix.of y)})
     {a b : Matrix (Fin n) (Fin n) ℂ} (ha : IsUnit a) (hb : IsUnit b) :
@@ -71,6 +103,9 @@ theorem differentiableOn_mul
     fun_prop
   exact hd.comp h.differentiableOn fun y hy => (ha.mul hy.1).mul hb
 
+/- English proof (translation)
+Establish `hd' : DifferentiableOn ℂ (fun y : Fin n → Fin n → ℂ => τ (Matrix.of y)) {y | Matrix.of y ∈ KC ε}` using `hd.mono fun y hy => hy.1`. Establish `h1 : ∀ a ∈ Kset ε, ∀ b ∈ KC ε, τ (a * b * 1) - τ a * τ b = 0` using `fun a ha => GlobalTheory.T.eq_zero_on_KC_of_eq_zero_on_Kset' n ε B (fun y => τ (a * y * 1) - τ a * τ y) ((differentiableOn_mul hd (mem_KC ha).1 isUnit_one).sub (hd'.const_mul _)) fun k hk => by rw [Matrix.mul_one, hm a ha k hk, sub_self]`. Introduce `a ha b hb`. Establish `h2` using `GlobalTheory.T.eq_zero_on_KC_of_eq_zero_on_Kset' n ε B (fun y => τ (1 * y * b) - τ y * τ b) ((differentiableOn_mul hd isUnit_one hb.1).sub (hd'.mul_const _)) (fun k hk => by simpa using h1 k hk b hb) a ha`. Simplify `h2` using `[sub_eq_zero]`.
+-/
 theorem mul_on_KC
     (hd : DifferentiableOn ℂ (fun y : Fin n → Fin n → ℂ => τ (Matrix.of y)) {y | IsUnit (Matrix.of y)})
     (hm : ∀ a ∈ Kset ε, ∀ b ∈ Kset ε, τ (a * b) = τ a * τ b) :
@@ -89,6 +124,13 @@ theorem mul_on_KC
 
 end Mul
 
+/- English proof (translation)
+Introduce `y hy u v`. Establish `hc : ∀ u v : W, DifferentiableOn ℂ (fun y : Fin n → Fin n → ℂ => ⟪u, τ (Matrix.of y) v⟫_ℂ) {y | IsUnit (Matrix.of y)}` using `fun u v => ((innerSL ℂ u).comp (ContinuousLinearMap.apply ℂ W v)).differentiable.comp_differentiableOn hd`. Establish `ht : Differentiable ℂ fun y : Fin n → Fin n → ℂ => fun i j => y j i` using `by fun_prop`. Establish `h1 : DifferentiableOn ℂ (fun y : Fin n → Fin n → ℂ => star ⟪u, τ (Matrix.of y)ᴴ v⟫_ℂ) {y | Matrix.of y ∈ KC ε}`. Introduce `z hz`.
+
+Establish `hz' : IsUnit (Matrix.of fun i j => (star z) j i)`. Conclude with `hz.1.star`. Establish `h2` using `(((hc u v).differentiableAt (isOpen_units.mem_nhds hz')).comp (star z) (ht (star z))).star_star`. Rewrite `h2` using `[star_star]`. Conclude with `h2.differentiableWithinAt`.
+
+Establish `h3` using `GlobalTheory.T.eq_zero_on_KC_of_eq_zero_on_Kset' n ε ℂ (fun y => ⟪v, τ y u⟫_ℂ - star ⟪u, τ yᴴ v⟫_ℂ) (((hc v u).mono fun y hy => hy.1).sub h1) (fun k hk => by rw [← hK k hk, Complex.star_def, inner_conj_symm, sub_self]) y hy`. Rewrite using `[← inner_conj_symm, sub_eq_zero.1 h3, Complex.star_def, Complex.conj_conj]`.
+-/
 theorem adj_on_KC {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     {τ : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)}
     (hd : DifferentiableOn ℂ (fun y : Fin n → Fin n → ℂ => τ (Matrix.of y)) {y | IsUnit (Matrix.of y)})
@@ -112,6 +154,33 @@ theorem adj_on_KC {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     (fun k hk => by rw [← hK k hk, Complex.star_def, inner_conj_symm, sub_self]) y hy
   rw [← inner_conj_symm, sub_eq_zero.1 h3, Complex.star_def, Complex.conj_conj]
 
+/- English proof (translation)
+Introduce `n ε abelian₂ H _ _ σ S w ⟨⟨h1, hmul⟩, hiso, hcont⟩ ⟨hfin, hst, hirr, _, hdom⟩ hw hwt`. Establish `: CompleteSpace S` using `FiniteDimensional.complete ℂ S`. Set `π : Matrix (Fin n) (Fin n) ℂ → (S →L[ℂ] S)` to `fun k => if h : k ∈ Kset ε then ((σ (k.map star)).comp S.subtypeL).codRestrict S fun v => hst _ (conj_mem h) _ v.2 else 0`. Establish `hπ : ∀ k ∈ Kset ε, ∀ v : S, (π k v : H) = σ (k.map star) v` using `fun k hk v => by`. Simplify using `only [π, dif_pos hk]`.
+
+Both sides reduce to the same expression. Establish `hπ1 : π 1 = 1`. Use extensionality with `v`. Rewrite using `[hπ 1 one_mem_K, conj_one, h1]`. Both sides reduce to the same expression.
+
+Establish `hπm : ∀ a ∈ Kset ε, ∀ b ∈ Kset ε, π (a * b) = π a * π b`. Introduce `a ha b hb`. Use extensionality with `v`. Rewrite using `[hπ _ (Kset_mul ε ha hb), conj_mul, hmul _ (conj_mem ha) _ (conj_mem hb), ContinuousLinearMap.mul_apply, hπ a ha, hπ b hb]`. Both sides reduce to the same expression.
+
+Establish `hπc : ContinuousOn π (Kset ε)`. Use `continuousOn_clm_apply.2 fun v => ?_` and prove the remaining obligations. Rewrite using `[Topology.IsInducing.subtypeVal.continuousOn_iff]`. Use `ContinuousOn.congr ((hcont v).comp ?_ fun k hk => conj_mem hk) fun k hk => hπ k hk v` and prove the remaining obligations. Conclude with `(continuous_id.matrix_map continuous_star).continuousOn`.
+
+Take `⟨τ, hd, hτ⟩` from `GlobalTheory.T.holomorphic_extension_compact_rep n ε (S →L[ℂ] S) π hπ1 hπm hπc`. Establish `hτσ : ∀ k ∈ Kset ε, ∀ v : S, (τ k v : H) = σ (k.map star) v` using `fun k hk v => by`. Rewrite using `[hτ k hk, hπ k hk]`. Establish `hτ1 : τ 1 = 1` using `by rw [hτ 1 one_mem_K, hπ1]`. Establish `hτm : ∀ a ∈ Kset ε, ∀ b ∈ Kset ε, τ (a * b) = τ a * τ b` using `fun a ha b hb => by`.
+
+Rewrite using `[hτ _ (Kset_mul ε ha hb), hτ a ha, hτ b hb, hπm a ha b hb]`. Establish `hrep : IsCRepOn (KC ε) τ` using `⟨hτ1, mul_on_KC hd hτm⟩`. Establish `hwτ : ∀ (μ : Fin n → ℝ) (v : S), IsWtOn (Kset ε) τ (-μ) v ↔ IsWtOn (Kset ε) σ μ (v : H)`. Introduce `μ v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h θ hθ`. Establish `hθ'` using `conj_mem hθ`. Rewrite `hθ'` using `[conj_torus]`. Use `congrArg Subtype.val (h (-θ) hθ')` as an intermediate fact. Rewrite `this` using `[hτσ _ hθ', conj_torus, neg_neg]`.
+
+Simplify using `using this`. Introduce `h θ hθ`. Establish `hθ'` using `conj_mem hθ`. Rewrite `hθ'` using `[conj_torus]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hτσ _ hθ, conj_torus, h (-θ) hθ']`. Simplify using the standard rewrite rules. Use `⟨τ, ⟨hfin, hrep, fun u v => ?_, adj_on_KC hd fun k hk u v => ?_, fun S' hS' => ?_, hw, (hwτ abelian₂ w).2 hwt, ?_⟩, hτσ⟩` and prove the remaining obligations. Conclude with `((innerSL ℂ u).comp (ContinuousLinearMap.apply ℂ S v)).differentiable.comp_differentiableOn (hd.mono fun y hy => hy.1)`. Establish `hk' : kᴴ ∈ Kset ε` using `Kset_star ε hk`.
+
+Establish `hi : ∀ x : S, ‖τ k x‖ = ‖x‖` using `fun x => by`. Rewrite using `[Submodule.coe_norm, hτσ k hk, hiso _ (conj_mem hk), Submodule.coe_norm]`. Establish `e : τ k (τ kᴴ v) = v`. Establish `: k * kᴴ = 1` using `Unitary.mul_star_self_of_mem hk.1`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← hτm k hk _ hk', this, hτ1]`.
+
+Both sides reduce to the same expression. Use `conv_lhs => rw [← e]`. Conclude with `LinearIsometry.inner_map_map ⟨(τ k).toLinearMap, hi⟩ u _`. Establish `hs : IsKStableOn ε σ (S'.map S.subtype)`. Introduce and unpack `g hg _ ⟨v, hv, rfl⟩`.
+
+Use `⟨τ (g.map star) v, hS' _ (conj_mem hg) v hv, ?_⟩` and prove the remaining obligations. Use `hτσ _ (conj_mem hg) v` as an intermediate fact. Rewrite `this` using `[conj_conj]`. Then use the resulting hypothesis. Break down `hirr _ (S.map_subtype_le S') hs with h | h` into its components or cases. Use `left`.
+
+Conclude with `Submodule.map_injective_of_injective S.injective_subtype (by rw [h, Submodule.map_bot])`. Use `right`. Conclude with `Submodule.map_injective_of_injective S.injective_subtype (by rw [h, Submodule.map_subtype_top])`. Use `GlobalTheory.T.lowest_weight_vector_fixed_by_lower_unitriangular n ε abelian₂ S τ w hrep (hd.differentiableAt (isOpen_units.mem_nhds ?_)) ((hwτ abelian₂ w).2 hwt) fun μ v hv h => hdom μ v v.2 (fun e => hv (Subtype.ext e)) ((hwτ μ v).1 h)` and prove the remaining obligations. Conclude with `(isUnit_one : IsUnit (1 : Matrix (Fin n) (Fin n) ℂ))`.
+-/
 theorem tauExists : TauExists := by
   intro n ε abelian₂ H _ _ σ S w ⟨⟨h1, hmul⟩, hiso, hcont⟩ ⟨hfin, hst, hirr, _, hdom⟩ hw hwt
   classical

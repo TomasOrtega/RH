@@ -7,18 +7,37 @@ namespace JSetup
 
 variable {K : Type*} [Field K] (S : JSetup K)
 
+/- English proof (translation)
+Simplify using `only [mulVec, dotProduct, submatrix_apply, Equiv.symm_apply_apply, Function.comp]`. Conclude with `Fintype.sum_equiv e _ _ (fun j => by simp)`.
+-/
 private theorem mulVec_comp_equiv_apply {ι : Type*} [Fintype ι] {m : ℕ} (Γ : Matrix ι ι K) (e : ι ≃ Fin m)
     (x : Fin m → K) (i : ι) :
     (Γ *ᵥ (x ∘ e)) i = (Γ.submatrix e.symm e.symm *ᵥ x) (e i) := by
   simp only [mulVec, dotProduct, submatrix_apply, Equiv.symm_apply_apply, Function.comp]
   exact Fintype.sum_equiv e _ _ (fun j => by simp)
 
+/- English proof (translation)
+Simplify using `only [vecMul, dotProduct, submatrix_apply, Equiv.symm_apply_apply, Function.comp]`. Conclude with `Fintype.sum_equiv e _ _ (fun i => by simp)`.
+-/
 private theorem vecMul_comp_equiv_apply {ι : Type*} [Fintype ι] {m : ℕ} (Γ : Matrix ι ι K) (e : ι ≃ Fin m)
     (x : Fin m → K) (j : ι) :
     ((x ∘ e) ᵥ* Γ) j = (x ᵥ* Γ.submatrix e.symm e.symm) (e j) := by
   simp only [vecMul, dotProduct, submatrix_apply, Equiv.symm_apply_apply, Function.comp]
   exact Fintype.sum_equiv e _ _ (fun i => by simp)
 
+/- English proof (translation)
+Use `set e : ι ≃ Fin (Fintype.card ι) := Fintype.equivFin ι with he`. Establish `hU' : S.UM (Γ.submatrix e.symm e.symm)`. Introduce `x hx hxd`. Take `⟨x', hx', hxx'⟩` from `hU (x ∘ e) (fun i => hx (e i)) (fun i => by`. Rewrite using `[mulVec_comp_equiv_apply Γ e x i]`.
+
+Conclude with `hxd (e i))`. Use `⟨x' ∘ e.symm, fun s => hx' (e.symm s), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Establish `h1` using `mulVec_comp_equiv_apply Γ e x (e.symm s)`. Establish `h2` using `mulVec_comp_equiv_apply Γ e (x' ∘ e.symm) (e.symm s)`.
+
+Rewrite `h1`, `h2` using `[Equiv.apply_symm_apply]`. Establish `h3 : (x' ∘ e.symm) ∘ e = x'` using `by funext i; simp`. Rewrite `h2` using `[h3]`. Rewrite using `[Pi.smul_apply, ← h1, ← h2, hxx', Pi.smul_apply]`. Take `⟨k, v, hv, hort, hsum⟩` from `S.jac_fin (Fintype.card ι) (Γ.submatrix e.symm e.symm) (fun s t => hΓ _ _) (fun s t => hH _ _) hU'`.
+
+Establish `hconj : ∀ x : Fin (Fintype.card ι) → K, S.cv (x ∘ e) = S.cv x ∘ e` using `fun x => rfl`. Use `⟨k, fun c => v c ∘ e, fun c i => hv c (e i), fun c c' => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hort c c']`. Simplify using `only [hf, hconj, dotProduct]`. Conclude with `Fintype.sum_equiv e _ _ (fun i => by`.
+
+Simplify using `only [Function.comp, mulVec_comp_equiv_apply Γ e (v c') i])`. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hsum (e i)) (e j)`. Simplify using `only [Matrix.sum_apply, vecMulVec_apply, submatrix_apply, Equiv.symm_apply_apply] at h`. Simplify using `only [Matrix.sum_apply, vecMulVec_apply, hconj, mulVec_comp_equiv_apply Γ e _ i, vecMul_comp_equiv_apply Γ e _ j]`.
+
+Conclude with `h`.
+-/
 theorem jac {ι : Type*} [Fintype ι] [DecidableEq ι] (Γ : Matrix ι ι K) (hΓ : S.IntM Γ) (hH : S.Herm Γ)
     (hU : S.UM Γ) :
     ∃ (k : ℕ) (v : Fin k → ι → K), (∀ c, S.IntV (v c)) ∧
@@ -55,6 +74,9 @@ theorem jac {ι : Type*} [Fintype ι] [DecidableEq ι] (Γ : Matrix ι ι K) (h�
 
 end JSetup
 
+/- English proof (translation)
+Establish `e : (Fin k → K) ≃ₗ[K] (n → K)` using `LinearEquiv.ofLinear (Matrix.toLin' V) (Matrix.toLin' W) (by rw [← Matrix.toLin'_mul, h1, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, h2, Matrix.toLin'_one])`. Establish `h` using `e.finrank_eq`. Simplify using `only [Module.finrank_fintype_fun_eq_card, Fintype.card_fin] at h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_eq_of_mul_eq_one {K : Type*} [Field K] {n : Type*} [Fintype n] [DecidableEq n] {k : ℕ}
     (V : Matrix n (Fin k) K) (W : Matrix (Fin k) n K) (h1 : V * W = 1) (h2 : W * V = 1) :
     Fintype.card n = k := by

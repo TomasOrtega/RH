@@ -17,6 +17,19 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ConjTangent
 
+/- English proof (translation)
+Introduce `A A' _ _ p g h L L' n n' u u' v v' e hd U hU f`. Use `haveI : IsIso (spMap (g : ℂ →+* ℂ)) := (inferInstance : IsIso (Spec.map (g.toCommRingCatIso).hom))`. Use `haveI : IsIso p := h.1.isIso_fst_of_isIso`. Establish `e2 : v'.left = spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ (show Sp (DualNumber ℂ) ⟶ _ from v.left) ≫ inv p`. Rewrite using `[← Category.assoc]`.
+
+Conclude with `(IsIso.eq_comp_inv p).2 e`. Establish `h2 : ⊤ ≤ v.left ⁻¹ᵁ (inv p ⁻¹ᵁ U)`. Use `(GlobalTheory.TangentOrigin.top_le_preimage_iff _ _).2 fun q _ => ?_` and prove the remaining obligations. Establish `hq` using `(GlobalTheory.TangentOrigin.top_le_preimage_iff _ _).1 hU (show q ∈ (⊤ : (Sp ℂ).Opens) from trivial)`. Establish `hs : ∀ a b : PrimeSpectrum (DualNumber ℂ), a = b` using `fun a b => by`.
+
+Take `⟨a, rfl⟩` from `GlobalTheory.TangentOrigin.spMap_fst_surjective a`. Take `⟨b, rfl⟩` from `GlobalTheory.TangentOrigin.spMap_fst_surjective b`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum ℂ) a b]`. Rewrite `hq` using `[e2]`. Express the relevant statement in the definitionally equal form `v.left (spMap GlobalTheory.TangentOrigin.fstC q) ∈ inv p ⁻¹ᵁ U`.
+
+Rewrite using `[hs (spMap GlobalTheory.TangentOrigin.fstC q) (spMap (Chart.dualMapR (g : ℂ →+* ℂ)) (spMap GlobalTheory.TangentOrigin.fstC q))]`. Conclude with `hq`. Establish `k : ∀ (y : Sp (DualNumber ℂ) ⟶ A'.left) (hy : ⊤ ≤ y ⁻¹ᵁ U), y = spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ (show Sp (DualNumber ℂ) ⟶ _ from v.left) ≫ inv p → TangentOrigin.evalPt y U hy f = Chart.dualMapR (g : ℂ →+* ℂ) (TangentOrigin.evalPt (R` using `DualNumber ℂ) v.left _ h2 (((inv p).app U).hom f)) := by`. Introduce and unpack `_ hy rfl`. Rewrite using `[TangentOrigin.evalPt_spMap_comp _ _ U h2]`.
+
+Use `congr 1`. Use `(congrArg TrivSqZeroExt.snd (k _ hU e2)).trans ?_` and prove the remaining obligations. Establish `e3` using `hd _ h2 (((inv p).app U).hom f)`. Rewrite `e3`, the goal using `[map_zero]`. Simplify using `only [Chart.dualMapR, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`.
+
+Conclude with `(congrArg (g : ℂ →+* ℂ) e3).trans (map_zero _)`.
+-/
 theorem isDiff_zero_of_isGrpPullback : ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (p : A'.left ⟶ A.left) (g : ℂ ≃+* ℂ),
     IsGrpPullback A' A (spMap (g : ℂ →+* ℂ)) p → ∀ (L : LB A.left) (L' : LB A'.left) (n n' : ℕ) (u : HolUnif A L n)
     (u' : HolUnif A' L' n') (v : epsR ℂ ⟶ A) (v' : epsR ℂ ⟶ A'),

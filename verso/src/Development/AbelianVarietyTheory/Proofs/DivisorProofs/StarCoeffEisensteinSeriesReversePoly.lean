@@ -34,18 +34,27 @@ def semiMap (σ : ℂ →+* ℂ) (j : ∀ i, V i →+ W i) (hj : ∀ i (a : ℂ)
         funext fun k => Function.apply_update (fun k => j k) f i m k
       simp only [e, hj, MultilinearMap.map_update_smul, Function.update_eq_self, map_mul, smul_smul, mul_comm])
 
+/- English proof (translation)
+Rewrite using `[← PiTensorProduct.tprodCoeff_eq_smul_tprod]`. Both sides reduce to the same expression.
+-/
 theorem semiMap_tprod (σ : ℂ →+* ℂ) (j : ∀ i, V i →+ W i) (hj : ∀ i (a : ℂ) v, j i (a • v) = σ a • j i v)
     (a : ℂ) (f : ∀ i, V i) :
     semiMap σ j hj (a • PiTensorProduct.tprod ℂ f) = σ a • PiTensorProduct.tprod ℂ fun i => j i (f i) := by
   rw [← PiTensorProduct.tprodCoeff_eq_smul_tprod]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f => rw [smul_smul, semiMap_tprod, semiMap_tprod, smul_smul, map_mul]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`.
+-/
 theorem semiMap_smul (σ : ℂ →+* ℂ) (j : ∀ i, V i →+ W i) (hj : ∀ i (a : ℂ) v, j i (a • v) = σ a • j i v)
     (a : ℂ) (x : PiTensorProduct ℂ V) : semiMap σ j hj (a • x) = σ a • semiMap σ j hj x := by
   induction x using PiTensorProduct.induction_on with
   | smul_tprod r f => rw [smul_smul, semiMap_tprod, semiMap_tprod, smul_smul, map_mul]
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
 
+/- English proof (translation)
+Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Rewrite using `[map_smul, PiTensorProduct.map_tprod, semiMap_tprod, semiMap_tprod, map_smul, PiTensorProduct.map_tprod]`. Simplify using `only [h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem semiMap_map (σ : ℂ →+* ℂ) (j : ∀ i, V i →+ W i) (hj : ∀ i (a : ℂ) v, j i (a • v) = σ a • j i v)
     (A : ∀ i, V i →ₗ[ℂ] V i) (B : ∀ i, W i →ₗ[ℂ] W i) (h : ∀ i v, j i (A i v) = B i (j i v))
     (x : PiTensorProduct ℂ V) :
@@ -56,12 +65,20 @@ theorem semiMap_map (σ : ℂ →+* ℂ) (j : ∀ i, V i →+ W i) (hj : ∀ i (
     simp only [h]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj]`. Simplify using the standard rewrite rules.
+-/
 theorem symm_smul {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module ℂ B] (σ : ℂ ≃+* ℂ)
     (j : A ≃+ B) (hj : ∀ (a : ℂ) v, j (a • v) = σ a • j v) (a : ℂ) (w : B) :
     j.symm (a • w) = σ.symm a • j.symm w := by
   apply j.injective
   rw [hj]; simp
 
+/- English proof (translation)
+Use `Function.LeftInverse.injective (g := semiMap σ.symm.toRingHom (fun i => (j i).symm.toAddMonoidHom) fun i => symm_smul σ (j i) (hj i)) fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Use `(congrArg _ (semiMap_tprod _ _ _ r f)).trans ((semiMap_tprod _ _ _ _ _).trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem semiMap_injective (σ : ℂ ≃+* ℂ) (j : ∀ i, V i ≃+ W i) (hj : ∀ i (a : ℂ) v, j i (a • v) = σ a • j i v) :
     Function.Injective (semiMap σ.toRingHom (fun i => (j i).toAddMonoidHom) hj) := by
   refine Function.LeftInverse.injective
@@ -81,12 +98,18 @@ variable {Γ : Type} [Group Γ]
 def bcEquiv (σ : ℂ ≃+* ℂ) (τ : FDRep ℂ Γ) : τ ≃+ bc σ τ :=
   (Module.finBasis ℂ τ).equivFun.toAddEquiv.trans (AddEquiv.piCongrRight fun _ => σ.toAddEquiv)
 
+/- English proof (translation)
+Use `funext fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ ((Module.finBasis ℂ τ).repr (a • v) i) = σ a * σ ((Module.finBasis ℂ τ).repr v i)`. Simplify using the standard rewrite rules.
+-/
 theorem bcEquiv_smul (σ : ℂ ≃+* ℂ) (τ : FDRep ℂ Γ) (a : ℂ) (v : τ) :
     bcEquiv σ τ (a • v) = σ a • bcEquiv σ τ v := by
   refine funext fun i => ?_
   change σ ((Module.finBasis ℂ τ).repr (a • v) i) = σ a * σ ((Module.finBasis ℂ τ).repr v i)
   simp
 
+/- English proof (translation)
+Use `funext fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ ((Module.finBasis ℂ τ).repr (τ.ρ γ v) i) = (((LinearMap.toMatrix (Module.finBasis ℂ τ) (Module.finBasis ℂ τ) (τ.ρ γ)).map σ).mulVec fun k => σ ((Module.finBasis ℂ τ).repr v k)) i`. Rewrite using `[← LinearMap.toMatrix_mulVec_repr (Module.finBasis ℂ τ) (Module.finBasis ℂ τ)]`. Simplify using `[Matrix.mulVec, dotProduct]`.
+-/
 theorem bcEquiv_ρ (σ : ℂ ≃+* ℂ) (τ : FDRep ℂ Γ) (γ : Γ) (v : τ) :
     bcEquiv σ τ (τ.ρ γ v) = (bc σ τ).ρ γ (bcEquiv σ τ v) := by
   refine funext fun i => ?_
@@ -96,9 +119,15 @@ theorem bcEquiv_ρ (σ : ℂ ≃+* ℂ) (τ : FDRep ℂ Γ) (γ : Γ) (v : τ) :
   rw [← LinearMap.toMatrix_mulVec_repr (Module.finBasis ℂ τ) (Module.finBasis ℂ τ)]
   simp [Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+The claim follows from `trace_bcRepr σ τ.ρ γ`.
+-/
 theorem character_bc (σ : ℂ ≃+* ℂ) (τ : FDRep ℂ Γ) (γ : Γ) : (bc σ τ).character γ = σ (τ.character γ) :=
   trace_bcRepr σ τ.ρ γ
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[FDRep.simple_iff_char_is_norm_one]`. Simplify using `only [character_bc]`. Rewrite using `[← map_natCast σ, ← h, map_sum]`. Simplify using `only [map_mul]`.
+-/
 theorem simple_bc [Fintype Γ] (σ : ℂ ≃+* ℂ) {τ : FDRep ℂ Γ} (h : Simple τ) : Simple (bc σ τ) := by
   rw [FDRep.simple_iff_char_is_norm_one] at h ⊢
   simp only [character_bc]
@@ -107,11 +136,27 @@ theorem simple_bc [Fintype Γ] (σ : ℂ ≃+* ℂ) {τ : FDRep ℂ Γ} (h : Sim
 
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K] {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Introduce `s b hb hs w hw`. Take `⟨v, rfl⟩` from `(bcEquiv σ τ).surjective w`. Rewrite using `[h s b hb hs v fun u hu => (bcEquiv σ τ).injective ((bcEquiv_ρ σ τ u v).trans (hw u hu)), map_zero]`.
+-/
 theorem isCuspidal_bc (σ : ℂ ≃+* ℂ) {τ : FDRep ℂ (GL ι K)} (h : IsCuspidal K τ) : IsCuspidal K (bc σ τ) := by
   intro s b hb hs w hw
   obtain ⟨v, rfl⟩ := (bcEquiv σ τ).surjective w
   rw [h s b hb hs v fun u hu => (bcEquiv σ τ).injective ((bcEquiv_ρ σ τ u v).trans (hw u hu)), map_zero]
 
+/- English proof (translation)
+Take `⟨φ, hφ, hne⟩` from `h`. Set `J` to `semiMap σ.toRingHom (fun c => (bcEquiv σ (lam c)).toAddMonoidHom) fun c => bcEquiv_smul σ (lam c)`. Establish `hJ : Function.Injective J` using `semiMap_injective σ _ _`. Set `ψ : bc σ τ →ₗ[ℂ] hcSpace K b fun c => bc σ (lam c)` to `{ toFun := fun w => ⟨fun x => J ((φ ((bcEquiv σ τ).symm w)).1 x), fun p x => by`. Use `(congrArg J ((φ ((bcEquiv σ τ).symm w)).2 p x)).trans ?_` and prove the remaining obligations.
+
+Conclude with `semiMap_map _ _ _ _ _ (fun c v => bcEquiv_ρ σ (lam c) _ v) _⟩`. Use the proof step `map_add' := fun w w' => by`. Use extensionality with `x`. Simplify using the standard rewrite rules. Use the proof step `map_smul' := fun a w => by`.
+
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `J ((φ ((bcEquiv σ τ).symm (a • w))).1 x) = a • J ((φ ((bcEquiv σ τ).symm w)).1 x)`. Rewrite using `[symm_smul σ _ (bcEquiv_smul σ τ), map_smul]`. Use `(semiMap_smul _ _ _ _ _).trans ?_` and prove the remaining obligations. Simplify using `[J] }`.
+
+Use `⟨ψ, fun γ => ?_, fun h0 => hne ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun w => Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Take `⟨v, rfl⟩` from `(bcEquiv σ τ).surjective w`. Express the relevant statement in the definitionally equal form `J ((φ ((bcEquiv σ τ).symm ((bc σ τ).ρ γ (bcEquiv σ τ v)))).1 x) = J ((φ ((bcEquiv σ τ).symm (bcEquiv σ τ v))).1 (x * γ))`. Rewrite using `[← bcEquiv_ρ, AddEquiv.symm_apply_apply, AddEquiv.symm_apply_apply]`.
+
+Use `LinearMap.congr_fun (hφ γ) v` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_apply]`. Rewrite using `[this]`. Both sides reduce to the same expression. Use `LinearMap.ext fun v => Subtype.ext (funext fun x => hJ ?_)` and prove the remaining obligations.
+
+Use `congrFun (congrArg Subtype.val (LinearMap.congr_fun h0 (bcEquiv σ τ v))) x` as an intermediate fact. Express the relevant statement in the definitionally equal form `J ((φ ((bcEquiv σ τ).symm (bcEquiv σ τ v))).1 x) = 0 at this`. Rewrite `this` using `[AddEquiv.symm_apply_apply]`. Rewrite using `[this]`. Conclude with `(map_zero J).symm`.
+-/
 theorem isConstituent_bc (σ : ℂ ≃+* ℂ) {s : ℕ} (b : ι → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K))
     {τ : FDRep ℂ (GL ι K)} (h : IsConstituent τ (hcRep K b lam)) :
     IsConstituent (bc σ τ) (hcRep K b fun c => bc σ (lam c)) := by
@@ -154,6 +199,9 @@ section Label
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [reverse]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, ← ih, mul_coeff_zero, mul_inv, C_mul, reverse_mul_of_domain]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normRev_prod {α : Type} (s : Finset α) (P : α → K[X]) :
     C ((∏ c ∈ s, P c).coeff 0)⁻¹ * (∏ c ∈ s, P c).reverse = ∏ c ∈ s, C ((P c).coeff 0)⁻¹ * (P c).reverse := by
   classical
@@ -163,6 +211,11 @@ theorem normRev_prod {α : Type} (s : Finset α) (P : α → K[X]) :
     rw [Finset.prod_insert ha, Finset.prod_insert ha, ← ih, mul_coeff_zero, mul_inv, C_mul, reverse_mul_of_domain]
     ring
 
+/- English proof (translation)
+Establish `h1 : (C (f.coeff 0)⁻¹ * f.reverse).coeff 0 ≠ 0`. Rewrite using `[coeff_C_mul, coeff_zero_reverse, hm.leadingCoeff, mul_one]`. Conclude with `inv_ne_zero h0`. Use `GlobalTheory.DualLabel.eq_of_rootsBar_eq (GlobalTheory.DualLabel.monic_normRev h1) hm ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.DualLabel.rootsBar_normRev (GlobalTheory.DualLabel.monic_normRev h0) h1, GlobalTheory.DualLabel.rootsBar_normRev hm h0, Multiset.map_map]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem normRev_normRev {f : K[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) :
     C ((C (f.coeff 0)⁻¹ * f.reverse).coeff 0)⁻¹ * (C (f.coeff 0)⁻¹ * f.reverse).reverse = f := by
   have h1 : (C (f.coeff 0)⁻¹ * f.reverse).coeff 0 ≠ 0 := by
@@ -175,6 +228,13 @@ theorem normRev_normRev {f : K[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) :
 
 variable [Fintype K] [DecidableEq K] {Cv : LabelConv K}
 
+/- English proof (translation)
+Take `⟨s, b, lam, hb, hl, hc, rfl⟩` from `h`. Use `⟨s, b, fun c => bc starRingAut (lam c), hb, fun c => ⟨simple_bc _ (hl c).1, isCuspidal_bc _ (hl c).2⟩, isConstituent_bc _ b lam hc, ?_⟩` and prove the remaining obligations. Rewrite using `[normRev_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hd : 1 ≤ Fintype.card {i // b i = c}`.
+
+Take `⟨i, hi⟩` from `hb c`. Conclude with `Fintype.card_pos_iff.mpr ⟨⟨i, hi⟩⟩`. Use `(GlobalTheory.DualLabel.lab_dual O hO _ _ _ hd (Formalism.L2.PT.simple_transp _ (hl c).1) (Formalism.L2.PT.isCuspidal_transp _ (hl c).2) (Formalism.L2.PT.simple_transp _ (simple_bc _ (hl c).1)) (Formalism.L2.PT.isCuspidal_transp _ (isCuspidal_bc _ (hl c).2)) fun γ => ?_).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(transp _ (bc starRingAut (lam c))).character γ = (transp _ (lam c)).character γ⁻¹`. Rewrite using `[Formalism.L2.PT.character_transp, Formalism.L2.PT.character_transp, character_bc, map_inv]`.
+
+Conclude with `PI.SerBridgeGLW.conjugate_character_formula _ _ _`.
+-/
 theorem hasLabelO_conj (O : LabelMap K Cv) (hO : LabelMapEquivariant O) {ι : Type} [Fintype ι] [DecidableEq ι]
     {τ : FDRep ℂ (GL ι K)} {f : K[X]} (h : HasLabelO O τ f) :
     HasLabelO O (bc (starRingAut : ℂ ≃+* ℂ) τ) (C (f.coeff 0)⁻¹ * f.reverse) := by
@@ -195,6 +255,19 @@ theorem hasLabelO_conj (O : LabelMap K Cv) (hO : LabelMapEquivariant O) {ι : Ty
 
 end Label
 
+/- English proof (translation)
+Introduce `g _ Cv O hO r f hm h0 x`. Set `S : MonoidAlgebra ℂ (GL (Fin r) (ZMod g)) ≃+ MonoidAlgebra ℂ (GL (Fin r) (ZMod g))` to `MonoidAlgebra.mapAddEquiv _ (starRingAut : ℂ ≃+* ℂ).toAddEquiv`. Establish `hS : ∀ z y, (S z).coeff y = star (z.coeff y)` using `fun z y => MonoidAlgebra.coeff_mapAddEquiv _ _ _`. Establish `hSS : ∀ z, S (S z) = z` using `fun z => by`. Use extensionality with `y`.
+
+Rewrite using `[hS, hS, star_star]`. Establish `hz : ∀ τ : FDRep ℂ (GL (Fin r) (ZMod g)), zIdem (bc starRingAut τ) = S (zIdem τ)` using `fun τ => by`. Use extensionality with `y`. Rewrite using `[hS]`. Conclude with `(galoisConjCentralIdempotent _ starRingAut τ y).symm`.
+
+Rewrite using `[← hS]`. Use `congr 2`. Unfold `Formalism.L2.NT.eSerO`. Rewrite using `[S.map_finsum]`. Use `finsum_eq_of_bijective S S.bijective fun z => ?_` and prove the remaining obligations.
+
+Establish `hiff : (∃ τ : FDRep ℂ (GL (Fin r) (ZMod g)), Simple τ ∧ zIdem τ = z ∧ HasLabelO O τ f) ↔ ∃ τ : FDRep ℂ (GL (Fin r) (ZMod g)), Simple τ ∧ zIdem τ = S z ∧ HasLabelO O τ (C (f.coeff 0)⁻¹ * f.reverse)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, h1, h2, h3⟩`. Conclude with `⟨_, simple_bc _ h1, by rw [hz, h2], hasLabelO_conj O hO h3⟩`. Introduce and unpack `⟨τ, h1, h2, h3⟩`.
+
+Establish `h4` using `hasLabelO_conj O hO h3`. Rewrite `h4` using `[normRev_normRev hm h0]`. Conclude with `⟨_, simple_bc _ h1, by rw [hz, h2, hSS], h4⟩`. Rewrite using `[finsum_eq_if, finsum_eq_if, ← hiff]`. Use `split_ifs`.
+
+Both sides reduce to the same expression. Conclude with `map_zero S`.
+-/
 theorem star_coeff_eSerO : ∀ {g : ℕ} [Fact g.Prime] {C : Formalism.IrreducibleCountingLemmas.TYPES.LabelConv (ZMod g)}
     (O : Formalism.IrreducibleCountingLemmas.TYPES.LabelMap (ZMod g) C), Formalism.IrreducibleCountingLemmas.TYPES.LabelMapEquivariant O →
     ∀ (r : ℕ) (f : Polynomial (ZMod g)), f.Monic → f.coeff 0 ≠ 0 → ∀ x,

@@ -5,6 +5,21 @@ open PositivityTheory.PfSWUS.Loc GlobalTheory.CompanionTheory.UnrDens
 
 namespace GlobalTheory.CompanionTheory.UnrDens
 
+/- English proof (translation)
+Introduce `R _ σ ϖ q ε h`. Establish `hτ : ∀ a : R, barσ σ ϖ h.fix_ϖ 1 (Ideal.Quotient.mk (lev ϖ 1) a) = Ideal.Quotient.mk (lev ϖ 1) (σ a)` using `fun a => Ideal.Quotient.lift_mk _ _ _`. Take `⟨u, hu, hdec⟩` from `h.basis`. Use `⟨?_, ?_, ?_, h.one_lt, h.card, h.eps⟩` and prove the remaining obligations. Introduce `e`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective e`. Rewrite using `[hτ a, hτ (σ a), h.inv]`. Introduce `e he hne`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective e`. Take `⟨x, y, hx, hy, rfl⟩` from `hdec a`.
+
+Rewrite `he` using `[hτ]`. Establish `hy0 : Ideal.Quotient.mk (lev ϖ 1) y = 0`. Establish `h1 : Ideal.Quotient.mk (lev ϖ 1) (y * (u - σ u)) = 0`. Establish `hxy : y * (u - σ u) = (x + y * u) - σ (x + y * u)`. Rewrite using `[map_add, map_mul, hx, hy]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hxy, map_sub, he, sub_self]`. Rewrite `h1` using `[map_mul]`. Conclude with `(IsUnit.mul_left_eq_zero (hu.map (Ideal.Quotient.mk (lev ϖ 1)))).mp h1`. Establish `hxe : Ideal.Quotient.mk (lev ϖ 1) (x + y * u) = Ideal.Quotient.mk (lev ϖ 1) x`.
+
+Rewrite using `[map_add, map_mul, hy0, zero_mul, add_zero]`. Rewrite `hne`, the goal using `[hxe]`. Conclude with `(h.fixLocal x hx fun hmem => hne (Ideal.Quotient.eq_zero_iff_mem.mpr hmem)).map _`. Use `⟨Ideal.Quotient.mk (lev ϖ 1) u, ?_, ?_⟩` and prove the remaining obligations. Establish `hm` using `hu.map (Ideal.Quotient.mk (lev ϖ 1))`.
+
+Rewrite `hm` using `[map_sub, ← hτ]`. Then use the resulting hypothesis. Introduce `e`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective e`. Take `⟨x, y, hx, hy, rfl⟩` from `hdec a`. Use `⟨Ideal.Quotient.mk (lev ϖ 1) x, Ideal.Quotient.mk (lev ϖ 1) y, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hτ, hx]`. Rewrite using `[hτ, hy]`. Rewrite using `[map_add, map_mul]`.
+-/
 theorem resAlg_of_isUnrQuad : ∀ (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R) (q : ℕ) (ε : ℤ),
     ∀ h : IsUnrQuad R σ ϖ q ε, ResAlg (R ⧸ lev ϖ 1) (barσ σ ϖ h.fix_ϖ 1) q ε := by
   intro R _ σ ϖ q ε h

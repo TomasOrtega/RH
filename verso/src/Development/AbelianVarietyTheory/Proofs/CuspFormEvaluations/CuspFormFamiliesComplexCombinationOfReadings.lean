@@ -15,6 +15,19 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.Shares
 
+/- English proof (translation)
+Introduce `hCI D T h j hj hSh hGam hbad hX u hu hLast f hf`. Establish `hcu : ∀ g ∈ T.sh j u, ∃ F : (recB h.toLawsCore).Cusp j u, F.1 = g`. Introduce `g hg`. Use `⟨⟨g, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `hC` using `hSh.shCusp j hj (wtA u) u.n (dom_wtA u) hLast (dom_wtA u) hLast hg`.
+
+Unfold `cutR`. Conclude with `Submodule.mem_inf.2 ⟨hC, (Submodule.mem_iInf _).2 fun hn => absurd hj hn⟩`. Establish `hspan` using `GlobalTheory.T.holomorphicCuspForms_frames_le_span_shortThetaReadings hCI D T h.toLawsCore.toLawsM hSh hGam hbad hX j hj u hu`. Set `f0` to `fun (k : (T.U j T.σ₀).Comp) (x : Frame ((T.U j T.σ₀).X k).Ψ D.R.r) => if x ∈ ((T.U j T.σ₀).X k).dom then f k x else 0`. Establish `hf0 : f0 ∈ GlobalTheory.Dict.holSub0 (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA u) u.n)`.
+
+Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Apply `Submodule.subset_span` to reduce the goal to its premises. Introduce `k`. Use `(GlobalTheory.DomCongr.bddSec_cusp_congr _ _ _ _ (f k) (f0 k) ?_).2 (hf k)` and prove the remaining obligations. Introduce `x hx`.
+
+Simplify using `[f0, hx]`. Introduce `k x hx`. Simplify using `[f0, hx]`. Take `⟨m, a, g, hg⟩` from `Submodule.mem_span_set'.1 (hspan hf0)`. Establish `hpre : ∀ i, ∃ F : (recB h.toLawsCore).Cusp j u, rdU (T.U j T.σ₀) F.1 = (g i).1`.
+
+Introduce `i`. Take `⟨p, hp, hpg⟩` from `(g i).2`. Take `⟨F, rfl⟩` from `hcu p hp`. Conclude with `⟨F, hpg⟩`. Use `choose F hF using hpre`.
+
+Use `⟨m, a, F, fun _ => Set.mem_univ _, ?_⟩` and prove the remaining obligations. Introduce `k x hx`. Establish `hfx : f k x = f0 k x` using `by simp [f0, hx]`. Rewrite using `[hfx, ← hg]`. Simplify using `only [rdR, hF, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem rdOnto_rec : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) , LawsSh T → GamAt T.toCore → 0 < badN D → (∀ j, InR D j → ∀ k k', ((T.U j T.σ₀).X k).Gm = ((T.U j T.σ₀).X k').Gm ∧ ((T.U j T.σ₀).X k).ξ0 = ((T.U j T.σ₀).X k').ξ0) → ∀ u : WeightFamilies.Wt D j, 8 * D.R.f * D.R.r + 4 ≤ u.n → LastPos (T.Q.Dw j) (wtA u) → RdOnto h j u := by
   intro hCI D T h j hj hSh hGam hbad hX u hu hLast f hf
   have hcu : ∀ g ∈ T.sh j u, ∃ F : (recB h.toLawsCore).Cusp j u, F.1 = g := by

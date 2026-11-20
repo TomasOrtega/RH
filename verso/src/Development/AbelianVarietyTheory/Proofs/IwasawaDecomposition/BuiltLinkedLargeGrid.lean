@@ -20,12 +20,18 @@ def witDropA {hL : GlobalTheory.Published.LocalLanglandsGL} {N : NExt hL} {S : S
     (x : Wit (prmR (NEa hL N A) S Γ).s K w Z O) : Wit (prmR N S Γ).s K w Z O :=
   { x with nx := ⟨x.nx.1, x.nx.2.1⟩ }
 
+/- English proof (translation)
+Introduce `K B f T w Z O x Nd h O' hO' col n`. Take `⟨t, hobj, hrx, ⟨c⟩, hsx, hox⟩` from `hs K B f T w Z O (witDropA x) Nd h O' hO' col n`. Conclude with `⟨t, hobj, hrx, ⟨⟨c.1, c.2, x.nx.2.2⟩⟩, hsx, hox⟩`.
+-/
 theorem movable_NEa {hL : GlobalTheory.Published.LocalLanglandsGL} {N : NExt hL} {S : SExt} {Γ : GeoP} (A : AtP)
     (hs : PositionMv (prmR N S Γ).s) : PositionMv (prmR (NEa hL N A) S Γ).s := by
   intro K B f T w Z O x Nd h O' hO' col n
   obtain ⟨t, hobj, hrx, ⟨c⟩, hsx, hox⟩ := hs K B f T w Z O (witDropA x) Nd h O' hO' col n
   exact ⟨t, hobj, hrx, ⟨⟨c.1, c.2, x.nx.2.2⟩⟩, hsx, hox⟩
 
+/- English proof (translation)
+Introduce `ha hh pm hL N Γ A hb hs`. Conclude with `GlobalTheory.T.geometric_parameter_uniform pm.m14 hh.cover ha.a5 ha.a7 ha.a8 ha.a9 ha.a10 ha.a6 ha.a22 ha.a23 ha.a1 hL (NEa hL N A) Γ _ rfl (fun K B f T w Z Wt p0 t nch n xd c e => hb K B f T w Z Wt p0 t nch n xd c e.1) (movable_NEa A hs) (GlobalTheory.T.local_representation_inpu …`.
+-/
 theorem exBL_NEa : HypA → HypH → PrM → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (Γ : GeoP) (A : AtP),
     (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c →
       Nonempty (GlobalTheory.HeightCounting.Up.NEb hL K B f T w Z Wt p0 t nch n xd c)) →

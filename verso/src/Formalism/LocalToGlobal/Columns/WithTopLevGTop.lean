@@ -30,6 +30,9 @@ def ChIdx.low {j : ℕ} (hj : j ≤ m2 + 1) (b : L.β j) : (L.withTop m2 Λt Θt
 
 def ChIdx.top {j : ℕ} (hj : m2 + 1 < j) : (L.withTop m2 Λt Θt).β j := ⟨none, by simp [Nat.not_le.2 hj]⟩
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `b`. Consider the cases of `b with`. Consider the case `none => simp [hj] at hb`. Consider the case `some b' => exact ⟨b', rfl⟩`.
+-/
 theorem ChIdx.exists_low {j : ℕ} (hj : j ≤ m2 + 1) (b : (L.withTop m2 Λt Θt).β j) : ∃ b', b = ChIdx.low L m2 Λt Θt hj b' := by
   obtain ⟨b, hb⟩ := b
   cases b with

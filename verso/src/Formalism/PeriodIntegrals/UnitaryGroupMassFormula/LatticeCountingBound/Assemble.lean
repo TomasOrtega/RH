@@ -17,22 +17,37 @@ noncomputable section
 
 namespace PI.UnitaryGroupMassFormula.LCG
 
+/- English proof (translation)
+The claim follows from `latCountAll_of hB lattice_map_image sublattice_of_lattice (separation_of_points lattice_is_discrete_group hD hCh (hAP hA) hI PI.UnitaryGroupMassFormula.LSC.norm_product_formula PI.UnitaryGroupMassFormula.LSC.determinant_monotone card_places_bound) hP norm_positive card_places_bou …`.
+-/
 theorem latCountAll_of_steps (hB : BoxBound) (hP : PackLem) (hD : DualIncl) (hCh : Choose) (hA : ArchIneq)
     (hAP : ArchPlaceOf) (hI : IndexIneq) : PI.LatCountG.LatCountAll :=
   latCountAll_of hB lattice_map_image sublattice_of_lattice
     (separation_of_points lattice_is_discrete_group hD hCh (hAP hA) hI PI.UnitaryGroupMassFormula.LSC.norm_product_formula PI.UnitaryGroupMassFormula.LSC.determinant_monotone card_places_bound)
     hP norm_positive card_places_bound
 
+/- English proof (translation)
+The claim follows from `latCountAll_of_steps box_lattice_point_bound lattice_packLem hD hCh archimedean_inequality hAP hI`.
+-/
 theorem latCountAll_of_open (hD : DualIncl) (hCh : Choose) (hAP : ArchPlaceOf) (hI : IndexIneq) :
     PI.LatCountG.LatCountAll :=
   latCountAll_of_steps box_lattice_point_bound lattice_packLem hD hCh archimedean_inequality hAP hI
 
+/- English proof (translation)
+The claim follows from `latCountAll_of_open dual_lattice_inclusion choice_of_generators hAP hI`.
+-/
 theorem latCountAll_of_open2 (hAP : ArchPlaceOf) (hI : IndexIneq) : PI.LatCountG.LatCountAll :=
   latCountAll_of_open dual_lattice_inclusion choice_of_generators hAP hI
 
+/- English proof (translation)
+The claim follows from `latCountAll_of_open2 archimedean_place_exists hI`.
+-/
 theorem latCountAll_of_index (hI : IndexIneq) : PI.LatCountG.LatCountAll :=
   latCountAll_of_open2 archimedean_place_exists hI
 
+/- English proof (translation)
+The claim follows from `latCountAll_of_index (hIO dual_index_formula hD2)`.
+-/
 theorem latCountAll_of_idx (hD2 : DetIdx) (hIO : IndexOf) : PI.LatCountG.LatCountAll :=
   latCountAll_of_index (hIO dual_index_formula hD2)
 

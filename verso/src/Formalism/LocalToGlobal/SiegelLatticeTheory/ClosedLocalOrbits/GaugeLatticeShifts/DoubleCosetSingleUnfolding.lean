@@ -21,13 +21,32 @@ section DC
 
 variable {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant]
 
+/- English proof (translation)
+The claim follows from `(Subgroup.inclusion_injective h).countable`.
+-/
 theorem countable_of_le (Γ S : Subgroup G) [Countable Γ] (h : S ≤ Γ) : Countable S :=
   (Subgroup.inclusion_injective h).countable
 
+/- English proof (translation)
+Use `haveI : Countable (Γ : Set G) := ‹Countable Γ›`. Conclude with `((Set.countable_coe_iff.mp this).mono h).to_subtype`.
+-/
 theorem countable_of_sub (Γ : Subgroup G) [Countable Γ] (E : Set G) (h : E ⊆ (Γ : Set G)) : Countable E := by
   haveI : Countable (Γ : Set G) := ‹Countable Γ›
   exact ((Set.countable_coe_iff.mp this).mono h).to_subtype
 
+/- English proof (translation)
+Establish `hEx : ∀ r : G, ∃ E : Set G, IsRightTransversal S (stab S S' r) E` using `fun r => PI.FoldDCUnfold.W.translation_exists G S (stab S S' r) inf_le_left`. Use `choose E hE using hEx`. Take `⟨hinj, hT⟩` from `PI.FoldDCUnfold.W.double_coset_translation G Γ S S' hS hS' R hR E (fun r _ => hE r)`. Establish `: Countable S` using `countable_of_le Γ S hS`. Establish `hRc : Countable R` using `countable_of_sub Γ R hR.1`.
+
+Establish `hEc : ∀ r : G, Countable (E r)` using `fun r => countable_of_sub Γ (E r) (fun x hx => hS ((hE r).1 hx))`. Establish `hφm : ∀ r : G, Measurable (fun y : G => f y * h (r⁻¹ * y))` using `fun r => hfm.mul (hhm.comp (measurable_const_mul _))`. Establish `hφi : ∀ r : G, ∀ s ∈ stab S S' r, ∀ y : G, f (s * y) * h (r⁻¹ * (s * y)) = f y * h (r⁻¹ * y)`. Introduce `r s hs y`. Rewrite `hs` using `[mem_stab]`.
+
+Rewrite using `[hf s hs.1, show r⁻¹ * (s * y) = (r⁻¹ * s * r) * (r⁻¹ * y) by group, hh _ hs.2]`. Establish `hpt : ∀ x : G, f x * ∑' δ : D', h ((δ : G) * x) = ∑' r : R, ∑' t : E (r : G), f ((t : G) * x) * h ((r : G)⁻¹ * ((t : G) * x))`. Introduce `x`. Establish `e1` using `PI.FoldDCUnfold.W.translation_independent G Γ S' _ D' hT hD' 1 Γ.one_mem (fun y => h (y * x)) (fun s hs y => by simp only [mul_assoc]; exact hh s hs (y * x))`. Simplify using `only [mul_one] at e1`.
+
+Rewrite using `[← e1, ← (Equiv.ofInjective _ hinj).tsum_eq, ENNReal.tsum_sigma', ← ENNReal.tsum_mul_left]`. Use `tsum_congr fun r => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `tsum_congr fun t => ?_` and prove the remaining obligations. Establish `ht : (t : G) ∈ S` using `(hE (r : G)).1 t.2`.
+
+Simplify using `only [Equiv.ofInjective_apply, mul_assoc, hf _ ht]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_tsum fun r => ?_` and prove the remaining obligations. Use `hEc (r : G)` as an intermediate fact. Conclude with `(Measurable.ennreal_tsum fun t => (hφm (r : G)).comp (measurable_const_mul _)).aemeasurable`.
+
+Use `_ = ∑' r : R, ∫⁻ x in Fs r, f x * h ((r : G)⁻¹ * x) ∂μ := by`. Use `tsum_congr fun r => ?_` and prove the remaining obligations. Conclude with `lintegralTransversalSum G μ S (stab S S' r) inf_le_left (Fs r) (hFs r r.2) F hF (E r) (hE r) _ (hφm r) (hφi r)`.
+-/
 theorem dcSingleE (Γ S S' : Subgroup G) [Countable Γ] (hS : S ≤ Γ) (hS' : S' ≤ Γ)
     (D' : Set G) (hD' : IsRightTransversal Γ S' D')
     (R : Set G) (hR : IsDoubleTransversal Γ S S' R)
@@ -78,6 +97,45 @@ end DC
 
 open PI.PoincareSeriesInner.W in
 
+/- English proof (translation)
+Introduce `G _ _ _ μ _ _ Γ S S' _ hS hS' D' hD' R hR Fs hFs F hF f g hfm hgm hfi hgi hfin hsum`. Use `set ψ : G → ℂ := fun x => conj (g x) with hψdef`. Establish `hψm : Measurable ψ` using `Complex.continuous_conj.measurable.comp hgm`. Establish `hψi : ∀ s ∈ S', ∀ y, ψ (s * y) = ψ y` using `fun s hs y => by simp only [ψ, hgi s hs y]`. Establish `hψn : ∀ x, ‖ψ x‖ₑ = ‖g x‖ₑ` using `fun x => by`.
+
+Rewrite using `[← ofReal_norm, ← ofReal_norm]`. Simplify using `only [ψ, Complex.norm_conj]`. Establish `hconj : ∀ x, conj (∑' δ : D', g ((δ : G) * x)) = poinc D' ψ x` using `fun x => by`. Simplify using `only [poinc, ψ, starRingEnd_apply]`. Conclude with `tsum_star`.
+
+Establish `hgs : ∀ x, ∑' δ : D', ‖ψ ((δ : G) * x)‖ₑ ≠ ⊤` using `fun x => by`. Repeatedly rewrite using `[hψn]`. Use `(hsum x).toNNReal` as an intermediate fact. Rewrite `this` using `[← ENNReal.tsum_coe_ne_top_iff_summable]`. Use `ne_of_eq_of_ne (tsum_congr fun δ => ?_) this` and prove the remaining obligations.
+
+Rewrite using `[← ofReal_norm]`. Both sides reduce to the same expression. Take `⟨u, hu⟩ : ∃ u : Fin 4 → G → ℝ≥0∞, u = fun k x => part k (f x)` from `⟨_, rfl⟩`. Take `⟨w, hw⟩ : ∃ w : Fin 4 → G → ℝ≥0∞, w = fun k x => part k (ψ x)` from `⟨_, rfl⟩`. Establish `hum : ∀ k, Measurable (u k)` using `fun k => by rw [hu]; exact (measurable_part k).comp hfm`.
+
+Establish `hwm : ∀ k, Measurable (w k)` using `fun k => by rw [hw]; exact (measurable_part k).comp hψm`. Establish `hui : ∀ k, ∀ s ∈ S, ∀ y : G, u k (s * y) = u k y` using `fun k s hs y => by`. Rewrite using `[hu]`. Simplify using `only [hfi s hs y]`. Establish `hwi : ∀ k, ∀ s ∈ S', ∀ y : G, w k (s * y) = w k y` using `fun k s hs y => by`.
+
+Rewrite using `[hw]`. Simplify using `only [hψi s hs y]`. Establish `hut : ∀ k x, u k x ≠ ⊤` using `fun k x => by rw [hu]; exact part_ne_top _ _`. Establish `hwt : ∀ k x, w k x ≠ ⊤` using `fun k x => by rw [hw]; exact part_ne_top _ _`. Establish `hule : ∀ k x, u k x ≤ ‖f x‖ₑ` using `fun k x => by rw [hu]; exact part_le _ _`.
+
+Establish `hwle : ∀ k x, w k x ≤ ‖g x‖ₑ` using `fun k x => by rw [hw, ← hψn]; exact part_le _ _`. Establish `hWle : ∀ k x, ∑' δ : D', w k ((δ : G) * x) ≤ ∑' δ : D', ‖ψ ((δ : G) * x)‖ₑ` using `fun k x => ENNReal.tsum_le_tsum fun δ => by rw [hw]; exact part_le _ _`. Establish `hWt : ∀ k x, ∑' δ : D', w k ((δ : G) * x) ≠ ⊤` using `fun k x => ne_top_of_le_ne_top (hgs x) (hWle k x)`. Establish `hD'c : Countable D'` using `countable_of_sub Γ D' hD'.1`. Establish `hWm : ∀ k, Measurable fun x => ∑' δ : D', w k ((δ : G) * x)` using `fun k => Measurable.ennreal_tsum fun δ => (hwm k).comp (measurable_const_mul _)`.
+
+Establish `hsf : ∀ x, f x = ∑ k, cf k * ((u k x).toReal : ℂ)` using `fun x => by rw [hu]; exact split (f x)`. Establish `hsψ : ∀ x, ψ x = ∑ k, cf k * ((w k x).toReal : ℂ)` using `fun x => by rw [hw]; exact split (ψ x)`. Establish `hprod : ∀ x, f x * poinc D' ψ x = ∑ k, ∑ l, cf k * cf l * (((u k x * (∑' δ : D', w l ((δ : G) * x)))).toReal : ℂ)`. Introduce `x`. Rewrite using `[hsf x, poinc_split D' w ψ hsψ hWt x, Finset.sum_mul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_mul, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hprodR : ∀ (r x : G), f x * ψ (r⁻¹ * x) = ∑ k, ∑ l, cf k * cf l * (((u k x * w l (r⁻¹ * x))).toReal : ℂ)`. Introduce `r x`.
+
+Rewrite using `[hsf x, hsψ (r⁻¹ * x), Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_mul, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDC : ∀ k l, (∫⁻ x in F, u k x * ∑' δ : D', w l ((δ : G) * x) ∂μ) = ∑' r : R, ∫⁻ x in Fs r, u k x * w l ((r : G)⁻¹ * x) ∂μ` using `fun k l => dcSingleE μ Γ S S' hS hS' D' hD' R hR Fs hFs F hF (u k) (w l) (hum k) (hwm l) (hui k) (hwi l)`.
+
+Establish `hSkl : ∀ k l, ∑' r : R, ∫⁻ x in Fs r, u k x * w l ((r : G)⁻¹ * x) ∂μ ≠ ⊤` using `fun k l => ne_top_of_le_ne_top hfin.ne (ENNReal.tsum_le_tsum fun r => lintegral_mono fun x => mul_le_mul' (hule k x) (hwle l _))`. Establish `hXkl : ∀ k l, (∫⁻ x in F, u k x * ∑' δ : D', w l ((δ : G) * x) ∂μ) ≠ ⊤` using `fun k l => by`. Rewrite using `[hDC k l]`. Conclude with `hSkl k l`. Establish `hIkl : ∀ k l (r : R), ∫⁻ x in Fs r, u k x * w l ((r : G)⁻¹ * x) ∂μ ≠ ⊤` using `fun k l r => ENNReal.ne_top_of_tsum_ne_top (hSkl k l) r`.
+
+Establish `hL` using `fun k l => toReal_int (ν := μ.restrict F) (f := fun x => u k x * ∑' δ : D', w l ((δ : G) * x)) (((hum k).mul (hWm l)).aemeasurable) (hXkl k l) (fun x => ENNReal.mul_ne_top (hut k x) (hWt l x))`. Establish `hR'` using `fun k l (r : R) => toReal_int (ν := μ.restrict (Fs r)) (f := fun x => u k x * w l ((r : G)⁻¹ * x)) (((hum k).mul ((hwm l).comp (measurable_const_mul _))).aemeasurable) (hIkl k l r) (fun x => ENNReal.mul_ne_top (hut k x) (hwt l _))`. Establish `hfun : (fun x => f x * conj (∑' δ : D', g ((δ : G) * x))) = fun x => ∑ k, ∑ l, cf k * cf l * (((u k x * (∑' δ : D', w l ((δ : G) * x)))).toReal : ℂ)`. Use function extensionality and compare the values at `x`. Rewrite using `[hconj x]`.
+
+Conclude with `hprod x`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IntegrableOn, hfun]`. Conclude with `integrable_finsetSum _ fun k _ => integrable_finsetSum _ fun l _ => (hL k l).1.const_mul _`. Establish `hLHS : (∫ x in F, f x * conj (∑' δ : D', g ((δ : G) * x)) ∂μ) = ∑ k, ∑ l, cf k * cf l * ∑' r : R, (((∫⁻ x in Fs r, u k x * w l ((r : G)⁻¹ * x) ∂μ).toReal : ℝ) : ℂ)`.
+
+Rewrite using `[hfun, integral_finsetSum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, (hL k l).2, hDC k l, ENNReal.tsum_toReal_eq (hIkl k l), Complex.ofReal_tsum]`.
+
+Introduce `l _`. Conclude with `(hL k l).1.const_mul _`. Introduce `k _`. Conclude with `integrable_finsetSum _ fun l _ => (hL k l).1.const_mul _`. Establish `hRHS : ∀ r : R, (∫ x in Fs r, f x * conj (g ((r : G)⁻¹ * x)) ∂μ) = ∑ k, ∑ l, cf k * cf l * (((∫⁻ x in Fs r, u k x * w l ((r : G)⁻¹ * x) ∂μ).toReal : ℝ) : ℂ)`.
+
+Introduce `r`. Establish `e : (fun x => f x * conj (g ((r : G)⁻¹ * x))) = fun x => f x * ψ ((r : G)⁻¹ * x)` using `rfl`. Rewrite using `[e]`. Repeatedly rewrite using `[hprodR]`. Rewrite using `[integral_finsetSum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Conclude with `congrArg _ (hR' k l r).2`.
+
+Introduce `l _`. Conclude with `(hR' k l r).1.const_mul _`. Introduce `k _`. Conclude with `integrable_finsetSum _ fun l _ => (hR' k l r).1.const_mul _`. Establish `hsum' : ∀ k l, Summable fun r : R => (((∫⁻ x in Fs r, u k x * w l ((r : G)⁻¹ * x) ∂μ).toReal : ℝ) : ℂ)` using `fun k l => (Complex.summable_ofReal).2 (ENNReal.summable_toReal (hSkl k l))`.
+
+Rewrite using `[hLHS, tsum_congr hRHS, Summable.tsum_finsetSum (fun k _ => summable_sum fun l _ => (hsum' k l).mul_left _)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Summable.tsum_finsetSum (fun l _ => (hsum' k l).mul_left _)]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[tsum_mul_left]`.
+-/
 theorem double_coset_single_unfolding : Formalism.L2.SG.TermOp.KExpCut.DCSingle := by
   intro G _ _ _ μ _ _ Γ S S' _ hS hS' D' hD' R hR Fs hFs F hF f g hfm hgm hfi hgi hfin hsum
   set ψ : G → ℂ := fun x => conj (g x) with hψdef
@@ -191,6 +249,21 @@ section Tiling
 
 variable {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant]
 
+/- English proof (translation)
+Use `open scoped Pointwise in (`. Establish `hmeas : ∀ g : Γ, MeasurableSet (g • P)` using `fun g => hP.const_smul g`. Establish `hinv : ∀ (g : Γ) (x : G), f (g⁻¹ • x) = f x` using `fun g x => by`. Rewrite using `[Subgroup.smul_def, smul_eq_mul]`. Conclude with `hfi _ (g⁻¹).2 x`.
+
+Establish `hU : MeasurableSet (⋃ g : Γ, g • P)` using `MeasurableSet.iUnion hmeas`. Establish `hfU : ∀ x, f x = (⋃ g : Γ, g • P).indicator f x`. Introduce `x`. Distinguish the cases in `hx : f x = 0`. Simplify using `[Set.indicator_apply, hx]`.
+
+Take `⟨s, hs, hsP⟩` from `hcov x hx`. Rewrite using `[Set.indicator_of_mem]`. Use `Set.mem_iUnion.2 ⟨(⟨s, hs⟩ : Γ)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`. Conclude with `hsP`.
+
+Establish `hd : Pairwise (Function.onFun (AEDisjoint μ) fun g : Γ => g • P ∩ FS)`. Introduce `g h hgh`. Use `Disjoint.aedisjoint ?_` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `x ⟨hxg, -⟩ ⟨hxh, -⟩`.
+
+Rewrite `hxg`, `hxh` using `[Set.mem_smul_set_iff_inv_smul_mem]`. Apply `hgh` to reduce the goal to its premises. Establish `e : ((h⁻¹ * g : Γ) : G) * (g⁻¹ • x) = h⁻¹ • x`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.smul_def, smul_eq_mul]`. Use `group`.
+
+Establish `h1` using `huniq _ hxg _ (h⁻¹ * g).2 (by rw [e]; exact hxh)`. Conclude with `(inv_mul_eq_one.mp (Subtype.ext h1)).symm`. Rewrite using `[hFS.setLIntegral_eq_tsum' f P]`. Repeatedly rewrite using `[hinv]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[lintegral_indicator hU, Measure.restrict_restrict hU]`. Use `_ = ∫⁻ x in ⋃ g : Γ, g • P ∩ FS, f x ∂μ := by rw [Set.iUnion_inter]`. Use `_ = ∑' g : Γ, ∫⁻ x in g • P ∩ FS, f x ∂μ := lintegral_iUnion₀ (fun g => (hmeas g).nullMeasurableSet.inter hFS.nullMeasurableSet) hd f)`.
+-/
 private theorem tiling_lemma (Γ : Subgroup G) [Countable Γ] (FS : Set G) (hFS : IsFundamentalDomain Γ FS μ)
     (P : Set G) (hP : MeasurableSet P) (f : G → ℝ≥0∞) (hfm : Measurable f) (hfi : ∀ s ∈ Γ, ∀ y, f (s * y) = f y)
     (hcov : ∀ y, f y ≠ 0 → ∃ s ∈ Γ, s * y ∈ P) (huniq : ∀ y ∈ P, ∀ s ∈ Γ, s * y ∈ P → s = 1) :
@@ -232,6 +305,15 @@ private theorem tiling_lemma (Γ : Subgroup G) [Countable Γ] (FS : Set G) (hFS 
       _ = ∑' g : Γ, ∫⁻ x in g • P ∩ FS, f x ∂μ :=
           lintegral_iUnion₀ (fun g => (hmeas g).nullMeasurableSet.inter hFS.nullMeasurableSet) hd f)
 
+/- English proof (translation)
+Establish `key : ∀ g : G → ℝ≥0∞, Measurable g → (∀ s ∈ Γ, ∀ y, g (s * y) = g y) → (∀ y, f y = 0 → g y = 0) → ∫⁻ x in FS, g x ∂μ = ∫⁻ x in P, g x ∂μ` using `fun g hgm hgi hg0 => tiling_lemma μ Γ FS hFS P hP g hgm hgi (fun y hy => hcov y (fun h => hy (hg0 y h))) huniq`. Establish `hP' : IntegrableOn f P μ`. Establish `h1` using `key (fun x => ‖f x‖ₑ) hfm.enorm (fun s hs y => by simp only [hfi s hs y]) (fun y hy => by simp [hy])`. Use `⟨hfm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `show ∫⁻ x in P, ‖f x‖ₑ ∂μ < ⊤`.
+
+Rewrite using `[← h1]`. Conclude with `hint.2`. Use `⟨hP', ?_⟩` and prove the remaining obligations. Establish `real_eq : ∀ r : G → ℝ, Measurable r → (∀ s ∈ Γ, ∀ y, r (s * y) = r y) → (∀ y, f y = 0 → r y = 0) → IntegrableOn r FS μ → IntegrableOn r P μ → ∫ x in FS, r x ∂μ = ∫ x in P, r x ∂μ`. Introduce `r hrm hri hr0 h1 h2`.
+
+Establish `e1` using `key (fun x => ENNReal.ofReal (r x)) hrm.ennreal_ofReal (fun s hs y => by simp only [hri s hs y]) (fun y hy => by simp [hr0 y hy])`. Establish `e2` using `key (fun x => ENNReal.ofReal (-r x)) hrm.neg.ennreal_ofReal (fun s hs y => by simp only [hri s hs y]) (fun y hy => by simp [hr0 y hy])`. Rewrite using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part h1, integral_eq_lintegral_pos_part_sub_lintegral_neg_part h2, e1, e2]`. Establish `hre` using `real_eq (fun x => RCLike.re (f x)) (RCLike.continuous_re.measurable.comp hfm) (fun s hs y => by simp only [hfi s hs y]) (fun y hy => by simp [hy]) hint.re hP'.re`. Establish `him` using `real_eq (fun x => RCLike.im (f x)) (RCLike.continuous_im.measurable.comp hfm) (fun s hs y => by simp only [hfi s hs y]) (fun y hy => by simp [hy]) hint.im hP'.im`.
+
+Rewrite `hre` using `[integral_re hint, integral_re hP']`. Rewrite `him` using `[integral_im hint, integral_im hP']`. Conclude with `RCLike.ext hre him`.
+-/
 theorem fd_tiling (Γ : Subgroup G) [Countable Γ] (FS : Set G) (hFS : IsFundamentalDomain Γ FS μ)
     (P : Set G) (hP : MeasurableSet P) (f : G → ℂ) (hfm : Measurable f) (hfi : ∀ s ∈ Γ, ∀ y, f (s * y) = f y)
     (hcov : ∀ y, f y ≠ 0 → ∃ s ∈ Γ, s * y ∈ P) (huniq : ∀ y ∈ P, ∀ s ∈ Γ, s * y ∈ P → s = 1)
@@ -321,6 +403,19 @@ variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u : D.what₂
   {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)} {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
   (cs : ColSys X u what₂)
 
+/- English proof (translation)
+Introduce `FS hFS Ωs hΩ f hfm hfi hfsupp hint`. Take `⟨hcov, huniq⟩` from `hC Ωs hΩ`. Establish `: SecondCountableTopology X.B.I.GA` using `hR.2.1`. Establish `: BorelSpace X.B.I.GA` using `hR.2.2.2.1`. Establish `: DiscreteTopology (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I)` using `hR.2.2.2.2`.
+
+Establish `: Countable (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I)` using `Formalism.L2.SG.Pf.countable_of_discrete _`. Establish `: Countable (Srat X u)` using `countable_of_le (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (Srat X u) inf_le_left`. Use `@muA_isHaar' X.B.I X.B.μf X.B.sf X.B.haar` as an intermediate fact. Establish `hKm` using `level_subgroup_measurable X hK hKL`. Establish `hsm : ∀ ρ, MeasurableSet (slab cs ρ (Ωs ρ))` using `fun ρ => (hΩ ρ).1.prod ((MeasurableEquiv.mulLeft ((cs.h ρ : X.B.I.Gf) * X.xu u)).measurableSet_image.2 hKm)`.
+
+Use `set P := ⋃ ρ, slab cs ρ (Ωs ρ) with hPdef`. Establish `hPm : MeasurableSet P` using `MeasurableSet.iUnion hsm`. Take `⟨hIP, hEq⟩` from `fd_tiling (X.B.I.muA X.B.μf) (Srat X u) FS hFS P hPm f hfm hfi (fun y hy => by`. Take `⟨s, hs, ρ, hsy⟩` from `hcov y (hfsupp y hy)`. Conclude with `⟨s, hs, Set.mem_iUnion.2 ⟨ρ, hsy⟩⟩)`.
+
+Use the proof step `(fun y hy s hs hsy => by`. Take `⟨ρ, hρ⟩` from `Set.mem_iUnion.1 hy`. Take `⟨ρ', hρ'⟩` from `Set.mem_iUnion.1 hsy`. Conclude with `(huniq ρ ρ' y s hs hρ hρ').1)`. Use `hint`.
+
+Establish `hIS : ∀ ρ, IntegrableOn f (slab cs ρ (Ωs ρ)) (X.B.I.muA X.B.μf)` using `fun ρ => hIP.mono_set (Set.subset_iUnion (fun ρ => slab cs ρ (Ωs ρ)) ρ)`. Use `⟨hIS, ?_⟩` and prove the remaining obligations. Rewrite using `[hEq]`. Use `integral_iUnion_fintype hsm ?_ hIS` and prove the remaining obligations. Introduce `ρ ρ' hne`.
+
+Use `Set.disjoint_left.2 fun y h1 h2 => hne ?_` and prove the remaining obligations. Conclude with `(huniq ρ ρ' y 1 (Subgroup.one_mem _) h1 (by simpa using h2)).2`.
+-/
 theorem slabFD_of (hK : X.LevelSubgroupCharacter) (hKL : X.LevelSubgroupNormalized) (hR : FoldReadyX X)
     (hC : ∀ Ωs : cs.Cl → Set X.B.I.Ginf, (∀ ρ, Formalism.L2.SG.HidaSetting.IsSFund X.B.I (NOcol F0 cs ρ) (Ωs ρ)) →
       SlabCover cs Ωs) :
@@ -374,12 +469,20 @@ def OOLintSum : Prop :=
   ∑' t : GTerm X u u' F0 F0' what₂ rows',
     ∫⁻ x in FundOf t, ‖X.Wu u x‖ₑ * ‖X.Wu u' (t.pt.1⁻¹ * x)‖ₑ ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) < ⊤
 
+/- English proof (translation)
+Unfold `OOLintSum at h`. Unfold `OOLint`. Introduce `t`. Conclude with `lt_of_le_of_lt (ENNReal.le_tsum t) h`.
+-/
 theorem ooLint_of (h : OOLintSum X u u' F0 F0' what₂ rows') : OOLint F0 F0' what₂ rows' (X := X) (u := u) (u' := u') := by
   unfold OOLintSum at h
   unfold OOLint
   intro t
   exact lt_of_le_of_lt (ENNReal.le_tsum t) h
 
+/- English proof (translation)
+Use `FiniteDimensional.complete ℂ (X.Vpi u)` as an intermediate fact. Unfold `OOt OO`. Use `(norm_integral_le_lintegral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_rankOneInnerOperator, ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm, ofReal_norm]`.
+-/
 theorem norm_OOt_le (t : GTerm X u u' F0 F0' what₂ rows') :
     ‖OOt t‖ ≤ (∫⁻ x in FundOf t, ‖X.Wu u x‖ₑ * ‖X.Wu u' (t.pt.1⁻¹ * x)‖ₑ
       ∂(Formalism.L2.SG.ProjRows.muInf X.B.I)).toReal := by
@@ -390,6 +493,9 @@ theorem norm_OOt_le (t : GTerm X u u' F0 F0' what₂ rows') :
   refine lintegral_congr fun x => ?_
   rw [norm_rankOneInnerOperator, ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm, ofReal_norm]
 
+/- English proof (translation)
+Unfold `OOLintSum at h`. Unfold `OOAbs`. Conclude with `Summable.of_nonneg_of_le (fun t => norm_nonneg _) (fun t => norm_OOt_le t) (ENNReal.summable_toReal h.ne)`.
+-/
 theorem ooAbs_of (h : OOLintSum X u u' F0 F0' what₂ rows') : OOAbs F0 F0' what₂ rows' (X := X) (u := u) (u' := u') := by
   unfold OOLintSum at h
   unfold OOAbs
@@ -399,6 +505,13 @@ end OOSum
 
 section DT
 
+/- English proof (translation)
+Set `r : Setoid Γ` to `{ r := fun a b => ∃ s ∈ S, ∃ s' ∈ S', s * (a : G) * s' = b iseqv := ⟨fun a => ⟨1, S.one_mem, 1, S'.one_mem, by simp⟩, fun ⟨s, hs, s', hs', h⟩ => ⟨s⁻¹, S.inv_mem hs, s'⁻¹, S'.inv_mem hs', by rw [← h]; group⟩, fun ⟨s, hs, s', hs', h⟩ ⟨t, ht, t', ht', h'⟩ => ⟨t * s, S.mul_mem ht hs, …`. Use `⟨Set.range (fun q : Quotient r => ((Quotient.out q : Γ) : G)), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `(Quotient.out q).2`. Introduce `γ hγ`.
+
+Take `⟨s, hs, s', hs', hss⟩` from `Quotient.mk_out (s := r) (⟨γ, hγ⟩ : Γ)`. Use `⟨⟨_, ⟨Quotient.mk r ⟨γ, hγ⟩, rfl⟩⟩, ⟨s, hs, s', hs', hss⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, q, rfl⟩ ⟨t, ht, t', ht', htt⟩`. Establish `hq : q = Quotient.mk r ⟨γ, hγ⟩` using `(Quotient.out_eq q).symm.trans (Quotient.sound ⟨t, ht, t', ht', htt⟩)`. Substitute `hq` using the available equality.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_doubleTransversal {G : Type*} [Group G] (Γ S S' : Subgroup G) (hS : S ≤ Γ) (hS' : S' ≤ Γ) :
     ∃ R : Set G, IsDoubleTransversal Γ S S' R := by
   classical
@@ -438,14 +551,27 @@ def OOLintSumC : Prop :=
     FundExists X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') →
     OOLintSum X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')
 
+/- English proof (translation)
+Unfold `OOLintSumC at h`. Conclude with `ooIntAllC_of (fun D X Y u u' h1 h2 h3 => ooLint_of (h D X Y u u' h1 h2 h3))`.
+-/
 theorem ooIntAllC_holds_of (h : OOLintSumC) : OOIntAllC := by
   unfold OOLintSumC at h
   exact ooIntAllC_of (fun D X Y u u' h1 h2 h3 => ooLint_of (h D X Y u u' h1 h2 h3))
 
+/- English proof (translation)
+Unfold `OOLintSumC at h`. Conclude with `absConvC_of (fun D X Y u u' h1 h2 h3 _ => ooAbs_of (h D X Y u u' h1 h2 h3))`.
+-/
 theorem absConvC_holds_of (h : OOLintSumC) : AbsConvC := by
   unfold OOLintSumC at h
   exact absConvC_of (fun D X Y u u' h1 h2 h3 _ => ooAbs_of (h D X Y u u' h1 h2 h3))
 
+/- English proof (translation)
+Establish `hL` using `((Y.rowsOK u).1 _ ((Y.cs u).lam_mem ρ)).1.1`. Use `ROsub_discrete X (X.Fu u) (X.Fu u) ((Y.cs u).lamOf ρ) ((Y.cs u).lamOf ρ) hL 1` as an intermediate fact. Take `⟨Ω, hΩ⟩` from `isSFund_of_discrete X.B.I (ROsub X (X.Fu u) (X.Fu u) ((Y.cs u).lamOf ρ) ((Y.cs u).lamOf ρ) 1)`. Use `⟨Ω, ?_⟩` and prove the remaining obligations. Establish `e : ((ROsub X (X.Fu u) (X.Fu u) ((Y.cs u).lamOf ρ) ((Y.cs u).lamOf ρ) 1 : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf) = NOcol (X.Fu u) (Y.cs u) ρ`.
+
+Use extensionality with `y`. Use `show y ∈ ROset X (X.Fu u) (X.Fu u) ((Y.cs u).lamOf ρ) ((Y.cs u).lamOf ρ) 1 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, n, h1, h2, h3, -⟩`. Conclude with `⟨x, n, h1, h2, h3⟩`.
+
+Introduce and unpack `⟨x, n, h1, h2, h3⟩`. Conclude with `⟨x, n, h1, h2, h3, by simpa using h3⟩`. Rewrite `hΩ` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem Slab.exists_NOcol_fund {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} (Y : Full X) (u : D.what₂.Word)
     (ρ : (Y.cs u).Cl) : ∃ Ω, Formalism.L2.SG.HidaSetting.IsSFund X.B.I (NOcol (X.Fu u) (Y.cs u) ρ) Ω := by
   have hL := ((Y.rowsOK u).1 _ ((Y.cs u).lam_mem ρ)).1.1
@@ -463,6 +589,15 @@ theorem Slab.exists_NOcol_fund {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSet
       exact ⟨x, n, h1, h2, h3, by simpa using h3⟩
   rwa [e] at hΩ
 
+/- English proof (translation)
+Introduce `D X Y u u' hOK hOK' hin hin' hFE hOI hOF hAW hA`. Establish `: SigmaFinite (Formalism.L2.SG.ProjRows.muInf X.B.I)` using `inferInstance`. Establish `hKL : X.LevelSubgroupNormalized` using `Formalism.L2.SG.Closed.level_subgroup_properties X`. Establish `hR : FoldReadyX X` using `foldReadyX_holds X`. Establish `: SecondCountableTopology X.B.I.GA` using `hR.2.1`.
+
+Establish `: BorelSpace X.B.I.GA` using `hR.2.2.2.1`. Establish `hdisc : DiscreteTopology (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I)` using `hR.2.2.2.2`. Take `⟨R, hRt⟩` from `exists_doubleTransversal (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (Srat X u) (Srat X u') inf_le_left inf_le_left`. Establish `hsd : ∀ r : X.B.I.GA, DiscreteTopology (stab (Srat X u) (Srat X u') r)` using `fun r => DiscreteTopology.of_subset hdisc (fun y hy => (inf_le_left : Srat X u ≤ _) ((mem_stab _ _ _ _).1 hy).1)`. Establish `hFex : ∀ r : X.B.I.GA, ∃ F : Set X.B.I.GA, IsFundamentalDomain (stab (Srat X u) (Srat X u') r) F (X.B.I.muA X.B.μf)` using `fun r => by`.
+
+Use `hsd r` as an intermediate fact. Take `⟨F, -, hF⟩` from `exists_isFund (stab (Srat X u) (Srat X u') r)`. Conclude with `⟨F, hF _⟩`. Use `choose Fs hFs using hFex`. Take `⟨FS, -, hFS⟩` from `exists_fund_srat_holds X u`.
+
+Use `choose Ωs hΩs using exists_NOcol_fund Y u`. Establish `hWD : PhWellDef X u Y.hK` using `phWellDef_holds X u`. Establish `hWD' : PhWellDef X u' Y.hK` using `phWellDef_holds X u'`. Conclude with `kExpansion_of_steps Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') Y.hK hKL hR (hFB D X) hOK hOK' hin hin' (Y.Dt u) (Y.Dt u') (Y.reps u) (Y.reps u') R hRt Fs (fun r _ => hFs r) FS (hFS _) Ωs hΩs hWD hWD' (hPM D X u' Y.hK) hA double_coset_single_unfolding (slabFD_of (F0 := X.Fu u) (Y. …`.
+-/
 theorem kExpansionC_holds_of (hSC : SlabCoverC) (hRG : RegroupC)
     (hNeat : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Full X) (u : D.what₂.Word), NeatKu X u Y.hK)
     (hFB : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D), FundBridge X)
@@ -505,6 +640,9 @@ section TilingE
 
 variable {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant]
 
+/- English proof (translation)
+The claim follows from `tiling_lemma μ Γ FS hFS P hP f hfm hfi hcov huniq`.
+-/
 theorem fd_tilingE (Γ : Subgroup G) [Countable Γ] (FS : Set G) (hFS : IsFundamentalDomain Γ FS μ)
     (P : Set G) (hP : MeasurableSet P) (f : G → ℝ≥0∞) (hfm : Measurable f) (hfi : ∀ s ∈ Γ, ∀ y, f (s * y) = f y)
     (hcov : ∀ y, f y ≠ 0 → ∃ s ∈ Γ, s * y ∈ P) (huniq : ∀ y ∈ P, ∀ s ∈ Γ, s * y ∈ P → s = 1) :
@@ -522,6 +660,15 @@ open Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.PoincareInHH.C
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u : D.what₂.Word} {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
   (cs : ColSys X u what₂)
 
+/- English proof (translation)
+Establish `hA : MeasurableSet ((a * ·) '' K)` using `(MeasurableEquiv.mulLeft a).measurableSet_image.2 hK`. Establish `hvol : μf ((a * ·) '' K) = μf K`. Rewrite using `[show ((a * ·) '' K) = (fun h => a⁻¹ * h) ⁻¹' K by`. Use extensionality with `z`. Simplify using `only [Set.mem_image, Set.mem_preimage]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Simplify using `using hk`. Introduce `hz; exact ⟨a⁻¹ * z, hz, by group⟩]`. Conclude with `measure_preimage_mul μf a⁻¹ K`.
+
+Establish `hin : ∀ y, ∫⁻ z in (a * ·) '' K, f (y, z) ∂μf = f (y, a) * μf K`. Introduce `y`. Rewrite using `[setLIntegral_congr_fun hA (g := fun _ => f (y, a)) ?_, setLIntegral_const, hvol]`. Introduce and unpack `z ⟨k, hk, rfl⟩`. Conclude with `hf y k hk`.
+
+Unfold `Formalism.MainNotions.S.AutInst.muA`. Rewrite using `[← Measure.prod_restrict, lintegral_prod _ hfm.aemeasurable]`. Repeatedly rewrite using `[hin]`. Establish `hm : Measurable fun y : I.Ginf => f (y, a)` using `hfm.comp (measurable_id.prodMk measurable_const)`. Rewrite using `[lintegral_mul_const _ hm, mul_comm]`.
+-/
 theorem setLIntegral_slab (I : Formalism.MainNotions.S.AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsMulLeftInvariant]
     [SigmaFinite (Formalism.L2.SG.ProjRows.muInf I)]
     (K : Set I.Gf) (hK : MeasurableSet K) (Ω : Set I.Ginf) (a : I.Gf) (f : I.GA → ℝ≥0∞) (hfm : Measurable f)
@@ -582,6 +729,9 @@ def TermsLEC : Prop :=
     Formalism.L2.SG.WuDecay.FoldOK X u Y.hK → Formalism.L2.SG.WuDecay.FoldOK X u' Y.hK →
     TermsLE X u u' (X.Fu u) (X.Fu u') (Y.cs u) (Y.what₂ u') Y.hK (Y.Dt u') Ωs
 
+/- English proof (translation)
+Rewrite using `[ph_right_K X u hK hWD T y κ hκ, enorm_mul, show ‖X.chi2 κ‖ₑ = 1 by rw [← ofReal_norm, hK.2.2.2.2 κ hκ, ENNReal.ofReal_one], one_mul]`.
+-/
 theorem enorm_ph_right {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u : D.what₂.Word} (hK : X.LevelSubgroupCharacter)
     (hWD : PhWellDef X u hK) (T : Cu X u hK) (y : X.B.I.GA) (κ : X.B.I.Gf) (hκ : κ ∈ X.K2) :
     ‖Ph X u hK T (y * (1, κ))‖ₑ = ‖Ph X u hK T y‖ₑ := by
@@ -600,6 +750,61 @@ open Formalism.L2.SG.FoldBound Formalism.L2.SG.PoincareSeriesSquareIntegrable Nu
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `: SigmaFinite (Formalism.L2.SG.ProjRows.muInf X.B.I)` using `inferInstance`. Establish `hKL : X.LevelSubgroupNormalized` using `Formalism.L2.SG.Closed.level_subgroup_properties X`. Establish `hR : FoldReadyX X` using `foldReadyX_holds X`. Establish `: SecondCountableTopology X.B.I.GA` using `hR.2.1`. Establish `: BorelSpace X.B.I.GA` using `hR.2.2.2.1`.
+
+Establish `hdisc : DiscreteTopology (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I)` using `hR.2.2.2.2`. Establish `: Countable (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I)` using `Formalism.L2.SG.Pf.countable_of_discrete _`. Establish `: Countable (Srat X u)` using `countable_of_le _ (Srat X u) inf_le_left`. Establish `hHaar` using `@muA_isHaar' X.B.I X.B.μf X.B.sf X.B.haar`. Establish `: SigmaFinite X.B.μf` using `X.B.sf`.
+
+Establish `: X.B.μf.IsHaarMeasure` using `X.B.haar`. Establish `: SigmaFinite (X.B.I.muA X.B.μf)` using `by unfold Formalism.MainNotions.S.AutInst.muA; infer_instance`. Establish `hKm` using `level_subgroup_measurable X Y.hK hKL`. Establish `hWD : PhWellDef X u Y.hK` using `phWellDef_holds X u`. Establish `hWD' : PhWellDef X u' Y.hK` using `phWellDef_holds X u'`.
+
+Take `⟨R, hRt⟩` from `exists_doubleTransversal (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (Srat X u) (Srat X u') inf_le_left inf_le_left`. Establish `hsd : ∀ r : X.B.I.GA, DiscreteTopology (stab (Srat X u) (Srat X u') r)` using `fun r => DiscreteTopology.of_subset hdisc (fun y hy => (inf_le_left : Srat X u ≤ _) ((mem_stab _ _ _ _).1 hy).1)`. Establish `hFex : ∀ r : X.B.I.GA, ∃ F : Set X.B.I.GA, IsFundamentalDomain (stab (Srat X u) (Srat X u') r) F (X.B.I.muA X.B.μf)` using `fun r => by`. Use `hsd r` as an intermediate fact. Take `⟨F, -, hF⟩` from `exists_isFund (stab (Srat X u) (Srat X u') r)`.
+
+Conclude with `⟨F, hF _⟩`. Use `choose Fs hFs using hFex`. Take `⟨FS, -, hFS⟩` from `exists_fund_srat_holds X u`. Take `⟨FΓ, -, hFΓ⟩` from `exists_isFund (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I)`. Take `⟨Dt0, hDt0⟩` from `Formalism.L2.SG.Pf.exists_rightTransversal (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (Srat X u) inf_le_left`.
+
+Use `choose Ωs hΩs using exists_NOcol_fund Y u`. Take `⟨hcov, huniq⟩` from `hSC D X Y u Ωs hKL hNeat hΩs`. Take `⟨n, n', T, T', C, hC, hle⟩` from `hTL D X Y u u' Ωs hΩs hOK hOK'`. Take `⟨⟨F, hF⟩, Ω₀, a0, hc0, h10, hT⟩` from `hOK`. Take `⟨⟨F', hF'⟩, Ω₀', a0', hc0', h10', hT'⟩` from `hOK'`.
+
+Establish `hΩc : IsCompact (Ω₀ ∪ Ω₀')` using `hc0.union hc0'`. Establish `hc` using `@fold_l2_bound_c X.B.I.GA _ _ _ hR.1 hR.2.1 hR.2.2.1 _ hR.2.2.2.1 (X.B.I.muA X.B.μf) hHaar`. Establish `hDc : Countable (Y.Dt u')` using `countable_of_sub _ (Y.Dt u') (Y.reps u').1`. Establish `hsm : ∀ ρ, MeasurableSet (slab (Y.cs u) ρ (Ωs ρ))` using `fun ρ => (hΩs ρ).1.prod ((MeasurableEquiv.mulLeft (((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)).measurableSet_image.2 hKm)`. Establish `hdisj : Pairwise (Function.onFun Disjoint fun ρ => slab (Y.cs u) ρ (Ωs ρ))`.
+
+Introduce `ρ ρ' hne`. Use `Set.disjoint_left.2 fun y h1 h2 => hne ?_` and prove the remaining obligations. Conclude with `(huniq ρ ρ' y 1 (Subgroup.one_mem _) h1 (by simpa using h2)).2`. Establish `hPm : MeasurableSet (⋃ ρ, slab (Y.cs u) ρ (Ωs ρ))` using `MeasurableSet.iUnion hsm`. Establish `hfin : ∀ i j, ∑ ρ, ∫⁻ y in Ωs ρ, ‖Ph X u Y.hK (T i) (y, ((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)‖ₑ * ∑' δ : Y.Dt u', ‖Ph X u' Y.hK (T' j) ((δ : X.B.I.GA) * (y, ((Y.cs u).h ρ : X.B.I.Gf) * X.xu u))‖ₑ ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) < ⊤`.
+
+Introduce `i j`. Use `set G : X.B.I.GA → ℝ≥0∞ := fun z => ‖Ph X u Y.hK (T i) z‖ₑ * ∑' δ : Y.Dt u', ‖Ph X u' Y.hK (T' j) ((δ : X.B.I.GA) * z)‖ₑ with hG`. Establish `hFD` using `(hT (T i)).1 _ hΩc Set.subset_union_left`. Establish `hFD'` using `(hT' (T' j)).1 _ hΩc Set.subset_union_right`. Establish `hU` using `hc (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (Srat X u) (Srat X u') hdisc inf_le_left inf_le_left (Ω₀ ∪ Ω₀') hΩc (Or.inl h10) a0 a0' (Ph X u Y.hK (T i)) (Ph X u' Y.hK (T' j)) hFD hFD' F F' hF hF' ((hT (T i)).2 _ hΩc F hF) ((hT' (T' j)).2 _ hΩc F' hF') Dt0 (Y.Dt u') hDt0 …`.
+
+Establish `hPhm : Measurable (Ph X u Y.hK (T i))` using `hFD.1`. Establish `hPhm' : Measurable (Ph X u' Y.hK (T' j))` using `hFD'.1`. Establish `hinv : ∀ s ∈ Srat X u, ∀ y, Ph X u Y.hK (T i) (s * y) = Ph X u Y.hK (T i) y` using `hFD.2.1`. Establish `hinv' : ∀ s ∈ Srat X u', ∀ y, Ph X u' Y.hK (T' j) (s * y) = Ph X u' Y.hK (T' j) y` using `hFD'.2.1`. Establish `hGm : Measurable G` using `hPhm.enorm.mul (Measurable.ennreal_tsum fun δ => (hPhm'.comp (measurable_const_mul _)).enorm)`.
+
+Establish `hGi : ∀ s ∈ Srat X u, ∀ y, G (s * y) = G y`. Introduce `s hs y`. Simplify using `only [hG]`. Rewrite using `[hinv s hs y]`. Use `congr 1`.
+
+Establish `e` using `PI.FoldDCUnfold.W.translation_independent X.B.I.GA (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (Srat X u') (Y.Dt u') (Y.Dt u') (Y.reps u') (Y.reps u') s ((inf_le_left : Srat X u ≤ _) hs) (fun w => ‖Ph X u' Y.hK (T' j) (w * y)‖ₑ) (fun s' hs' w => by show ‖Ph X u' Y.hK (T' …`. Rewrite using `[mul_assoc, hinv' s' hs'])`. Use `Eq.trans (tsum_congr fun δ => ?_) e` and prove the remaining obligations. Use `show ‖Ph X u' Y.hK (T' j) ((δ : X.B.I.GA) * (s * y))‖ₑ = ‖Ph X u' Y.hK (T' j) ((δ : X.B.I.GA) * s * y)‖ₑ`. Rewrite using `[mul_assoc]`.
+
+Establish `hGs : ∀ y, G y ≠ 0 → ∃ s ∈ Srat X u, s * y ∈ ⋃ ρ, slab (Y.cs u) ρ (Ωs ρ)`. Introduce `y hy`. Establish `hy1 : Ph X u Y.hK (T i) y ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises.
+
+Simplify using `only [hG, h0, enorm_zero, zero_mul]`. Establish `hd : ∃ n h k, IsDec X u y.2 n h k`. Assume the negation of the conclusion as `hn`. Apply `hy1` to reduce the goal to its premises. Unfold `Ph`.
+
+Rewrite using `[dif_neg hn]`. Take `⟨s, hs, ρ, hsy⟩` from `hcov y hd`. Conclude with `⟨s, hs, Set.mem_iUnion.2 ⟨ρ, hsy⟩⟩`. Establish `hGu : ∀ y ∈ ⋃ ρ, slab (Y.cs u) ρ (Ωs ρ), ∀ s ∈ Srat X u, s * y ∈ ⋃ ρ, slab (Y.cs u) ρ (Ωs ρ) → s = 1`. Introduce `y hy s hs hsy`.
+
+Take `⟨ρ, hρ⟩` from `Set.mem_iUnion.1 hy`. Take `⟨ρ', hρ'⟩` from `Set.mem_iUnion.1 hsy`. Conclude with `(huniq ρ ρ' y s hs hρ hρ').1`. Establish `hGK : ∀ ρ, ∀ y : X.B.I.Ginf, ∀ k ∈ X.K2, G (y, ((Y.cs u).h ρ : X.B.I.Gf) * X.xu u * k) = G (y, ((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)`. Introduce `ρ y k hk`.
+
+Establish `hyk : ((y, ((Y.cs u).h ρ : X.B.I.Gf) * X.xu u * k) : X.B.I.GA) = (y, ((Y.cs u).h ρ : X.B.I.Gf) * X.xu u) * (1, k)` using `by simp`. Simplify using `only [hG]`. Rewrite using `[hyk, enorm_ph_right Y.hK hWD (T i) _ k hk]`. Use `congr 1`. Use `tsum_congr fun δ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_assoc, enorm_ph_right Y.hK hWD' (T' j) _ k hk]`. Establish `e1` using `fd_tilingE (X.B.I.muA X.B.μf) (Srat X u) FS (hFS _) _ hPm G hGm hGi hGs hGu`. Establish `e2 : ∫⁻ z in ⋃ ρ, slab (Y.cs u) ρ (Ωs ρ), G z ∂(X.B.I.muA X.B.μf) = ∑ ρ, ∫⁻ z in slab (Y.cs u) ρ (Ωs ρ), G z ∂(X.B.I.muA X.B.μf)`. Rewrite using `[lintegral_iUnion hsm hdisj, tsum_fintype]`. Establish `e3 : ∀ ρ, ∫⁻ z in slab (Y.cs u) ρ (Ωs ρ), G z ∂(X.B.I.muA X.B.μf) = X.B.μf X.K2 * ∫⁻ y in Ωs ρ, G (y, ((Y.cs u).h ρ : X.B.I.Gf) * X.xu u) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I)` using `fun ρ => setLIntegral_slab X.B.I X.B.μf X.K2 hKm (Ωs ρ) _ G hGm (hGK ρ)`.
+
+Establish `e4` using `dcSingleE (X.B.I.muA X.B.μf) (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) (Srat X u) (Srat X u') inf_le_left inf_le_left (Y.Dt u') (Y.reps u') R hRt Fs (fun r _ => hFs r) FS (hFS _) (fun z => ‖Ph X u Y.hK (T i) z‖ₑ) (fun z => ‖Ph X u' Y.hK (T' j) z‖ₑ) hPhm.enorm hPhm'.enor …`. Establish `hK0 : X.B.μf X.K2 ≠ 0` using `hKL.2.2.1.ne'`. Establish `hsum : X.B.μf X.K2 * ∑ ρ, ∫⁻ y in Ωs ρ, G (y, ((Y.cs u).h ρ : X.B.I.Gf) * X.xu u) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) < ⊤`. Rewrite using `[Finset.mul_sum, ← Finset.sum_congr rfl (fun ρ _ => e3 ρ), ← e2, ← e1]`. Conclude with `lt_of_eq_of_lt e4 hU.2.1`.
+
+Break down `ENNReal.mul_lt_top_iff.1 hsum with h | h | h` into its components or cases. Conclude with `h.2`. Conclude with `(hK0 h).elim`. Rewrite using `[h]`. Conclude with `ENNReal.zero_lt_top`.
+
+Unfold `OOLintSum`. Use `set J : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') → ℝ≥0∞ := fun t => ∫⁻ x in FundOf t, ‖X.Wu u x‖ₑ * ‖X.Wu u' (t.pt.1⁻¹ * x)‖ₑ ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) with hJ`. Use `set H : Fin n → Fin n' → (Y.cs u).Cl → ℝ≥0∞ := fun i j ρ => ∫⁻ y in Ωs ρ, ‖Ph X u Y.hK (T i) (y, ((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)‖ₑ * ∑' δ : Y.Dt u', ‖Ph X u' Y.hK (T' j) ((δ : X.B.I.GA) * (y, ((Y.cs u).h ρ : X.B.I.Gf) * X.xu u))‖ₑ ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) with …`. Establish `h1 : ∑' t, J t = ∑ Λ ∈ Y.what₂ u, ∑' t : {t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') // t.lam = Λ}, J t.1`. Establish `e : ∀ t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'), J t = ∑ Λ ∈ Y.what₂ u, if t.lam = Λ then J t else 0`.
+
+Introduce `t`. Rewrite using `[Finset.sum_eq_single_of_mem t.lam t.mem (fun b _ hb => if_neg (fun h => hb h.symm)), if_pos rfl]`. Rewrite using `[tsum_congr e, Summable.tsum_finsetSum (fun _ _ => ENNReal.summable)]`. Use `Finset.sum_congr rfl fun Λ _ => ?_` and prove the remaining obligations. Establish `hs` using `tsum_subtype {t | t.lam = Λ} J`.
+
+Use `Eq.trans ?_ hs.symm` and prove the remaining obligations. Conclude with `tsum_congr fun b => by simp only [Set.indicator_apply, Set.mem_setOf_eq]`. Establish `hinj : Set.InjOn (Y.cs u).base (Y.what₂ u : Set (Submodule (𝓞 D.host.E) (VS D).V))`. Introduce `Λ hΛ Λ' hΛ' h`. Rewrite using `[← (Y.cs u).base_lam Λ hΛ, ← (Y.cs u).base_lam Λ' hΛ', h]`.
+
+Establish `h3 : ∀ i j, ∑ Λ ∈ Y.what₂ u, H i j ((Y.cs u).base Λ) ≤ ∑ ρ, H i j ρ`. Introduce `i j`. Rewrite using `[← Finset.sum_image (f := H i j) (fun Λ hΛ Λ' hΛ' h => hinj hΛ hΛ' h)]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`. Rewrite using `[h1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_comm`.
+
+Use `_ ≤ C * ∑ i, ∑ j, ∑ ρ, H i j ρ := by gcongr with i _ j _`. Conclude with `h3 i j`. Use `_ < ⊤ := by`. Use `ENNReal.mul_lt_top (lt_top_iff_ne_top.2 hC) ?_` and prove the remaining obligations. Use `lt_top_iff_ne_top.2 (ENNReal.sum_ne_top.2 fun i _ => ENNReal.sum_ne_top.2 fun j _ => ?_)` and prove the remaining obligations.
+
+Conclude with `(hfin i j).ne`.
+-/
 theorem Slab.ooLintSum_of {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} (Y : Full X) (u u' : D.what₂.Word)
     (hOK : Formalism.L2.SG.WuDecay.FoldOK X u Y.hK) (hOK' : Formalism.L2.SG.WuDecay.FoldOK X u' Y.hK)
     (hNeat : NeatKu X u Y.hK) (hSC : SlabCoverC) (hTL : TermsLEC) :
@@ -764,6 +969,9 @@ theorem Slab.ooLintSum_of {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting 
       refine lt_top_iff_ne_top.2 (ENNReal.sum_ne_top.2 fun i _ => ENNReal.sum_ne_top.2 fun j _ => ?_)
       exact (hfin i j).ne
 
+/- English proof (translation)
+Unfold `OOLintSumC`. Conclude with `fun D X Y u u' hOK hOK' _ => Slab.ooLintSum_of Y u u' hOK hOK' (hNeat D X Y u) hSC hTL`.
+-/
 theorem ooLintSumC_of (hSC : SlabCoverC) (hTL : TermsLEC)
     (hNeat : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Full X) (u : D.what₂.Word), NeatKu X u Y.hK) :
     OOLintSumC := by
@@ -778,6 +986,9 @@ open Formalism.L2.SG.FoldBound Formalism.L2.SG.PoincareSeriesSquareIntegrable Nu
 
 section Split
 
+/- English proof (translation)
+Rewrite using `[ENNReal.tsum_eq_iSup_sum]`. Use `iSup_le fun s => ?_` and prove the remaining obligations. Rewrite using `[← lintegral_finset_sum' s (fun i _ => hf i)]`. Conclude with `lintegral_mono fun x => ENNReal.sum_le_tsum s`.
+-/
 theorem tsum_lintegral_le {α ι : Type*} [MeasurableSpace α] {μ : Measure α} (f : ι → α → ℝ≥0∞)
     (hf : ∀ i, AEMeasurable (f i) μ) : ∑' i, ∫⁻ x, f i x ∂μ ≤ ∫⁻ x, ∑' i, f i x ∂μ := by
   rw [ENNReal.tsum_eq_iSup_sum]
@@ -837,6 +1048,9 @@ open Formalism.L2.SG.FoldBound Formalism.L2.SG.PoincareSeriesSquareIntegrable Nu
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h` using `fundExistsC_holds D X Y u u' t`. Unfold `FundOf`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem Slab.isSFund_fundOf {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} (Y : Full X) (u u' : D.what₂.Word)
     (t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) :
     Formalism.L2.SG.HidaSetting.IsSFund X.B.I (ROinf t) (FundOf t) := by
@@ -845,6 +1059,41 @@ theorem Slab.isSFund_fundOf {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSettin
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Introduce `D X Y u u' Ωs hΩs hOK hOK'`. Establish `hR : FoldReadyX X` using `foldReadyX_holds X`. Establish `: SecondCountableTopology X.B.I.GA` using `hR.2.1`. Establish `: BorelSpace X.B.I.GA` using `hR.2.2.2.1`. Take `⟨n, n', T, T', c, hc, hM⟩` from `hMaj D X Y u u'`.
+
+Take `⟨M, hMt, hcnt⟩` from `hCnt D X Y u u'`. Take `⟨-, Ω₀, a0, hc0, h10, hT⟩` from `hOK`. Take `⟨-, Ω₀', a0', hc0', h10', hT'⟩` from `hOK'`. Establish `hPm : ∀ i, Measurable (Ph X u Y.hK (T i))` using `fun i => ((hT (T i)).1 Ω₀ hc0 subset_rfl).1`. Establish `hPm' : ∀ j, Measurable (Ph X u' Y.hK (T' j))` using `fun j => ((hT' (T' j)).1 Ω₀' hc0' subset_rfl).1`.
+
+Use `⟨n, n', T, T', c * M, ENNReal.mul_ne_top hc hMt, fun Λ hΛ => ?_⟩` and prove the remaining obligations. Use `set b := (Y.cs u).base Λ with hb`. Establish `hbl : (Y.cs u).lamOf b = Λ` using `(Y.cs u).base_lam Λ hΛ`. Establish `hL` using `((Y.rowsOK u).1 Λ hΛ).1.1`. Use `ROsub_discrete X (X.Fu u) (X.Fu u) Λ Λ hL 1` as an intermediate fact.
+
+Establish `: Countable (NOlam X u Λ)` using `Formalism.L2.SG.Pf.countable_of_discrete _`. Establish `hNset : ((NOlam X u Λ : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf) = NOcol (X.Fu u) (Y.cs u) b`. Use extensionality with `y`. Use `show y ∈ ROset X (X.Fu u) (X.Fu u) Λ Λ 1 ↔ _`. Rewrite using `[← hbl]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, m, h1, h2, h3, -⟩`. Conclude with `⟨x, m, h1, h2, h3⟩`. Introduce and unpack `⟨x, m, h1, h2, h3⟩`. Conclude with `⟨x, m, h1, h2, h3, by simpa using h3⟩`.
+
+Establish `hΩ` using `hΩs b`. Rewrite `hΩ` using `[← hNset]`. Establish `hFdΩ : IsFundamentalDomain (NOlam X u Λ) (Ωs b) (Formalism.L2.SG.ProjRows.muInf X.B.I)` using `isFund_of_strict (NOlam X u Λ) hΩ.1 hΩ.2.1 hΩ.2.2 _`. Establish `hle : ∀ t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'), t.lam = Λ → ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin ≤ NOlam X u Λ`. Introduce and unpack `t ht y ⟨x, m, h1, h2, h3, -⟩`.
+
+Use `⟨x, m, h1, h2, by rw [← ht]; exact h3, ?_⟩` and prove the remaining obligations. Simplify `h3` using `[← ht]`. Use `set E : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') → Set X.B.I.Ginf := fun t => if h : t.lam = Λ then Classical.choose (PI.FoldDCUnfold.W.translation_exists X.B.I.Ginf (NOlam X u Λ) (ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin) (hle t h)) else ∅ with hE`. Establish `hEt : ∀ t, t.lam = Λ → IsRightTransversal (NOlam X u Λ) (ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin) (E t)`. Introduce `t h`.
+
+Simplify using `only [hE, dif_pos h]`. Conclude with `Classical.choose_spec (PI.FoldDCUnfold.W.translation_exists X.B.I.Ginf (NOlam X u Λ) (ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin) (hle t h))`. Use `set a := aB Y u Λ with ha`. Use `set F : Fin n → Fin n' → GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') → X.B.I.Ginf → ℝ≥0∞ := fun i j t x => ‖Ph X u Y.hK (T i) (x, a)‖ₑ * ‖Ph X u' Y.hK (T' j) (t.pt⁻¹ * (x, a))‖ₑ with hF`. Establish `hFm : ∀ i j t, Measurable (F i j t)` using `fun i j t => ((hPm i).comp (measurable_id.prodMk measurable_const)).enorm.mul (((hPm' j).comp ((measurable_const_mul _).comp (measurable_id.prodMk measurable_const))).enorm)`.
+
+Establish `hij : ∀ i j, ∑' t : {t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') // t.lam = Λ}, ∫⁻ x in FundOf t.1, F i j t.1 x ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) ≤ M * ∫⁻ y in Ωs b, ‖Ph X u Y.hK (T i) (y, a)‖ₑ * ∑' δ : Y.Dt u', ‖Ph X u' Y.hK (T' j) ((δ : X.B.I.GA) * (y, a) …`. Introduce `i j`. Establish `hU : ∀ t : {t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') // t.lam = Λ}, ∫⁻ x in FundOf t.1, F i j t.1 x ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) = ∫⁻ x in Ωs b, ∑' m : E t.1, F i j t.1 ((m : X.B.I.Ginf) * x) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I)`. Introduce `t`. Establish `hS` using `isSFund_fundOf Y u u' t.1`.
+
+Use `ROsub_discrete X (X.Fu u) (X.Fu u') t.1.lam t.1.lam' (by rw [t.2]; exact hL) t.1.lin` as an intermediate fact. Establish `: Countable (ROsub X (X.Fu u) (X.Fu u') t.1.lam t.1.lam' t.1.lin)` using `Formalism.L2.SG.Pf.countable_of_discrete _`. Establish `hFd : IsFundamentalDomain (ROsub X (X.Fu u) (X.Fu u') t.1.lam t.1.lam' t.1.lin) (FundOf t.1) (Formalism.L2.SG.ProjRows.muInf X.B.I)` using `isFund_of_strict _ hS.1 hS.2.1 hS.2.2 _`. Establish `hab : aB Y u t.1.lam = a` using `by rw [t.2]`. Use `(lintegralTransversalSum X.B.I.Ginf (Formalism.L2.SG.ProjRows.muInf X.B.I) (NOlam X u Λ) _ (hle t.1 t.2) (FundOf t.1) hFd (Ωs b) hFdΩ (E t.1) (hEt t.1 t.2) (F i j t.1) (hFm i j t.1) ?_).symm` and prove the remaining obligations.
+
+Introduce `s hs y`. Establish `h` using `hInv D X Y u u' (T i) (T' j) t.1 s hs y`. Rewrite `h` using `[hab]`. Conclude with `h`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `tsum_lintegral_le _ fun t => ?_` and prove the remaining obligations. Establish `: Countable (E t.1)`. Establish `h` using `(hEt t.1 t.2).1`. Conclude with `Function.Injective.countable (f := fun s : E t.1 => (⟨(s : X.B.I.Ginf), h s.2⟩ : NOlam X u Λ)) (by intro p q hpq; apply Subtype.ext; have := congrArg Subtype.val hpq; exact this)`. Conclude with `(Measurable.ennreal_tsum fun m => (hFm i j t.1).comp (measurable_const_mul _)).aemeasurable`.
+
+Use `_ ≤ ∫⁻ x in Ωs b, M * (‖Ph X u Y.hK (T i) (x, a)‖ₑ * ∑' δ : Y.Dt u', ‖Ph X u' Y.hK (T' j) ((δ : X.B.I.GA) * (x, a))‖ₑ) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) := lintegral_mono fun x => hcnt (T i) (T' j) Λ hΛ E hEt x`. Use `_ = _ := lintegral_const_mul' _ _ hMt`. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.tsum_le_tsum fun t => lintegral_mono fun x => ?_` and prove the remaining obligations. Establish `h` using `hM t.1 x`.
+
+Establish `hab : aB Y u t.1.lam = a` using `by rw [t.2]`. Rewrite `h` using `[hab]`. Conclude with `h`. Use `_ = c * ∑ i, ∑ j, ∑' t : {t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') // t.lam = Λ}, ∫⁻ x in FundOf t.1, F i j t.1 x ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) := by`. Establish `hint : ∀ t : {t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') // t.lam = Λ}, ∫⁻ x in FundOf t.1, c * ∑ i, ∑ j, F i j t.1 x ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) = c * ∑ i, ∑ j, ∫⁻ x in FundOf t.1, F i j t.1 x ∂(Formalism.L2.SG.ProjRows.muInf X.B.I)`.
+
+Introduce `t`. Rewrite using `[lintegral_const_mul' _ _ hc, lintegral_finset_sum _ (fun i _ => Finset.measurable_sum _ (fun j _ => hFm i j t.1))]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => lintegral_finset_sum _ (fun j _ => hFm i j t.1)`. Rewrite using `[tsum_congr hint, ENNReal.tsum_mul_left]`.
+
+Use `congr 1`. Rewrite using `[Summable.tsum_finsetSum (fun _ _ => ENNReal.summable)]`. Conclude with `Finset.sum_congr rfl fun i _ => Summable.tsum_finsetSum (fun _ _ => ENNReal.summable)`. Use `_ ≤ c * ∑ i, ∑ j, M * ∫⁻ y in Ωs b, ‖Ph X u Y.hK (T i) (y, a)‖ₑ * ∑' δ : Y.Dt u', ‖Ph X u' Y.hK (T' j) ((δ : X.B.I.GA) * (y, a))‖ₑ ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) := by gcongr with i _ j _`. Conclude with `hij i j`.
+
+Use `_ = _ := by`. Rewrite using `[mul_assoc]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Finset.mul_sum]; rfl`.
+-/
 theorem termsLEC_of (hMaj : MajPtC) (hInv : RInvC) (hCnt : CountC) : TermsLEC := by
   intro D X Y u u' Ωs hΩs hOK hOK'
   have hR : FoldReadyX X := foldReadyX_holds X
@@ -970,6 +1219,9 @@ theorem termsLEC_of (hMaj : MajPtC) (hInv : RInvC) (hCnt : CountC) : TermsLEC :=
         rw [Finset.mul_sum]
         exact Finset.sum_congr rfl fun i _ => by rw [Finset.mul_sum]; rfl
 
+/- English proof (translation)
+The claim follows from `ooLintSumC_of hSC (termsLEC_of hMaj hInv hCnt) hNeat`.
+-/
 theorem ooLintSumC_of_parts (hSC : SlabCoverC) (hMaj : MajPtC) (hInv : RInvC) (hCnt : CountC)
     (hNeat : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Full X) (u : D.what₂.Word), NeatKu X u Y.hK) :
     OOLintSumC :=
@@ -985,6 +1237,9 @@ open Formalism.L2.SG.FoldBound Formalism.L2.SG.PoincareSeriesSquareIntegrable Nu
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h1` using `nLamNinf_holds D X u Λ x m hx hm`. Establish `h2` using `nLamNfin_holds D X u Λ x m hx hm`. Use `Subgroup.mem_inf.2 ⟨ratLink_mem X hx, Subgroup.subset_closure ⟨fun v => (h1 v).1, h2.1, h2.2.1⟩⟩` and prove the remaining obligations.
+-/
 theorem Slab.mem_srat_of_nlam {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u : D.what₂.Word}
     {Λ : Submodule (𝓞 D.host.E) (VS D).V} {x : X.B.I.GA} {m : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hx : RatLink X x m) (hm : m ∈ NLam Λ (lf D (X.Fu u))) : x ∈ Srat X u := by
@@ -992,6 +1247,17 @@ theorem Slab.mem_srat_of_nlam {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSett
   have h2 := nLamNfin_holds D X u Λ x m hx hm
   refine Subgroup.mem_inf.2 ⟨ratLink_mem X hx, Subgroup.subset_closure ⟨fun v => (h1 v).1, h2.1, h2.2.1⟩⟩
 
+/- English proof (translation)
+Introduce `D X Y u u' T T' t r hr x`. Take `⟨xr, m, hRL, hrx, hm, hm'⟩` from `hr`. Establish `hK` using `Y.hK`. Establish `hxS : xr ∈ Srat X u` using `mem_srat_of_nlam hRL hm`. Establish `hb : (Y.cs u).lamOf ((Y.cs u).base t.lam) = t.lam` using `(Y.cs u).base_lam t.lam t.mem`.
+
+Take `⟨hκ, -⟩` from `hNC D X Y u ((Y.cs u).base t.lam) xr m (by rw [hb]; exact hm) hRL`. Use `set a := aB Y u t.lam with ha`. Establish `hκ' : (a⁻¹ * xr.2 * a)⁻¹ ∈ X.K2` using `hK.2.2.1 _ hκ`. Establish `e1 : ((r * x, a) : X.B.I.GA) = xr * (x, a) * (1, (a⁻¹ * xr.2 * a)⁻¹)`. Substitute `hrx` using the available equality.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [Prod.snd_mul, Prod.snd_one] group`. Establish `hγ : RatLink X t.pt t.lin` using `t.rep.2.1`. Establish `hy : RatLink X (t.pt⁻¹ * xr * t.pt) (t.lin⁻¹ * m * t.lin)` using `ratLink_mul X (ratLink_mul X (ratLink_inv X hγ) hRL) hγ`.
+
+Establish `hyS : t.pt⁻¹ * xr * t.pt ∈ Srat X u'` using `mem_srat_of_nlam hy hm'`. Establish `e2 : t.pt⁻¹ * ((r * x, a) : X.B.I.GA) = (t.pt⁻¹ * xr * t.pt) * (t.pt⁻¹ * (x, a)) * (1, (a⁻¹ * xr.2 * a)⁻¹)`. Rewrite using `[e1]`. Use `group`. Establish `hWD : PhWellDef X u Y.hK` using `phWellDef_holds X u`.
+
+Establish `hWD' : PhWellDef X u' Y.hK` using `phWellDef_holds X u'`. Establish `hL` using `phLeftInv_of X u Y.hK hWD (ratLevi_holds X u) (psiProd_holds X u)`. Establish `hL'` using `phLeftInv_of X u' Y.hK hWD' (ratLevi_holds X u') (psiProd_holds X u')`. Rewrite using `[e2, e1, enorm_ph_right Y.hK hWD T _ _ hκ', enorm_ph_right Y.hK hWD' T' _ _ hκ', hL T xr hxS, hL' T' _ hyS]`.
+-/
 theorem rInvC_of (hNC : Formalism.L2.SG.TermOp.Vanish.NilradicalConjLevel) : RInvC := by
   intro D X Y u u' T T' t r hr x
   obtain ⟨xr, m, hRL, hrx, hm, hm'⟩ := hr

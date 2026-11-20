@@ -16,6 +16,11 @@ open GlobalTheory GlobalTheory.TrueGeo GlobalTheory.ArInt GlobalTheory.ProjVar G
 
 namespace GlobalTheory.GenFibreSecs
 
+/- English proof (translation)
+Establish `hz (A : HermLB p) (m : ℤ) : cls _ (zp A m).isLB = m • cls _ A.isLB`. Establish `e : cls _ (zp A m).isLB = cls _ (isLB_lbPow A.isLB m.toNat) + -cls _ (isLB_lbPow A.isLB (-m).toNat)` using `(cls_tens (A.pow m.toNat).isLB (A.pow (-m).toNat).dual.isLB _).trans (congrArg _ (cls_dual (A.pow (-m).toNat).isLB _))`. Rewrite using `[e, cls_lbPow A.isLB, cls_lbPow A.isLB, ← natCast_zsmul, ← natCast_zsmul, ← sub_eq_add_neg, ← sub_smul, Int.toNat_sub_toNat_neg]`. Rewrite using `[← Finset.sum_map_toList, ArInt.comb]`. Proceed by induction on `(Finset.univ : Finset ι).toList with`.
+
+Consider the case `nil`. Conclude with `(cls_eq_zero_iff (LB.isLB_triv X)).2 ⟨⟨fun _ => 1⟩, fun _ _ => by simp only [map_one, mul_one]⟩`. Consider the case `cons i l ih`. Rewrite using `[List.foldr_cons, List.map_cons, List.sum_cons, ← ih, ← hz]`. Conclude with `cls_tens _ _ _`.
+-/
 theorem cls_comb {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {ι : Type} [Fintype ι]
     (L : ι → HermLB p) (n : ι → ℤ) :
     cls _ (ArInt.comb L n).isLB = ∑ i, n i • cls _ (L i).isLB := by
@@ -33,6 +38,15 @@ theorem cls_comb {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {ι :
     rw [List.foldr_cons, List.map_cons, List.sum_cons, ← ih, ← hz]
     exact cls_tens _ _ _
 
+/- English proof (translation)
+Establish `hB'` using `h.isLB`. Take `⟨m, t, ht⟩` from `h`. Use `choose a ha s hs using fun i => exists_extend (nonZeroDivisors S) H hB hB' ((isGen_iff (idIso _)).1 (idIso_isGen hB')) (t i)`. Use `⟨m, s, fun w => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (ht.ge (Set.mem_univ w))`.
+
+Take `⟨j, hj⟩` from `exists_chart hB (φ w)`. Take `⟨k, hk⟩` from `exists_chart hB' w`. Use `⟨i, (mem_nonzeroLocus_iff_isUnit (s i) hj).2 ?_⟩` and prove the remaining obligations. Establish `u : IsUnit (gs φ w _ ((s i).f j))`. Rewrite using `[hs i w j k hj hk]`.
+
+Use `IsUnit.mul ?_ ((Units.isUnit _).mul ((mem_nonzeroLocus_iff_isUnit (t i) hk).1 hi))` and prove the remaining obligations. Rewrite using `[H.w, cst_comp]`. Establish `h0 : algebraMap S T (a i) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (ha i)`. Use `IsUnit.of_mul_eq_one (cst p' w (algebraMap S T (a i))⁻¹) ?_` and prove the remaining obligations. Rewrite using `[← H1.cst_mul, mul_inv_cancel₀ h0, H1.cst_one]`.
+
+Rewrite `u` using `[gs_stalkMap φ w _ hj]`. Conclude with `isUnit_of_map_unit _ _ u`.
+-/
 theorem exists_secs_of_isGenerated {S T : Type} [CommRing S] [IsDomain S] [Field T] [Algebra S T] [IsFractionRing S T]
     {X X' : Scheme.{0}} {p : X ⟶ Sp S} {p' : X' ⟶ Sp T} {φ : X' ⟶ X}
     (H : IsPullback φ p' p (spMap (algebraMap S T))) [CompactSpace X] [IsSeparated p] {B : LB X} (hB : B.IsLB)
@@ -56,6 +70,13 @@ theorem exists_secs_of_isGenerated {S T : Type} [CommRing S] [IsDomain S] [Field
   rw [gs_stalkMap φ w _ hj] at u
   exact isUnit_of_map_unit _ _ u
 
+/- English proof (translation)
+Introduce `F _ _ Y V L M hL`. Take `⟨N, ι, _, hι⟩` from `V.ar.isProjOver`. Use `isProper_str (𝓞 F) N` as an intermediate fact. Establish `: IsProper V.p` using `hι ▸ inferInstance`. Establish `: IsProper (V.π ≫ Y.str)` using `MorphismProperty.of_isPullback (P := @IsProper) V.pb inferInstance`.
+
+Establish `: CompactSpace V.X` using `QuasiCompact.compactSpace_of_compactSpace V.p`. Establish `hM` using `LB.isLB_pull M.isLB V.j`. Take `⟨n, hn⟩` from `(AmpleDominates.eventually_isGenerated (V.π ≫ Y.str) hL (isLB_dual hM)).exists`. Establish `hC` using `(ArInt.comb ![L, M] ![(n : ℤ), 1]).isLB`. Establish `hG : IsGenerated ((ArInt.comb ![L, M] ![(n : ℤ), 1]).B.pull V.j)`.
+
+Use `hn.of_lbIso (LB.isLB_pull hC _) ((cls_eq_iff (LB.isLB_pull hC _) hn.isLB).1 ?_)` and prove the remaining obligations. Rewrite using `[cls_div (isLB_lbPow hL.isLB n) (isLB_dual hM), cls_lbPow hL.isLB, cls_dual hM, cls_pull hC, cls_pull L.isLB, cls_pull M.isLB, cls_comb]`. Simplify using `[Fin.sum_univ_two]`. Take `⟨m, s, hs⟩` from `exists_secs_of_isGenerated V.pb hC hG`. Conclude with `⟨n, m, s, fun w _ => hs w⟩`.
+-/
 theorem main : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y) (L M : HermLB V.p),
     IsAmpleLB (L.B.pull V.j) → ∃ (n m : ℕ) (s : Fin m → (ArInt.comb ![L, M] ![(n : ℤ), 1]).B.Sec),
       ∀ w : V.G, IsClosed ({w} : Set V.G) → ∃ i, V.j w ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (s i) := by

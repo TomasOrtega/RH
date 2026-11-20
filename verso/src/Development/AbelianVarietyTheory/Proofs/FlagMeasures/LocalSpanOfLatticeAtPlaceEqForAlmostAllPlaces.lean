@@ -14,6 +14,11 @@ section Global
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.IntSmulIsIntegral.exists_int_smul_mem`. Consider the case `exact _root_.GlobalTheory.IntSmulIsIntegral.exists_int_smul_mem`. Consider the case `(apply _root_.GlobalTheory.IntSmulIsIntegral.exists_int_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntSmulIsIntegral.exists_int_smul_mem <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.IntSmulIsIntegral.exists_int_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntSmulIsIntegral.exists_int_smul_mem ..)`.
+-/
 theorem exists_zsmul_mem_of_span (M : Submodule (𝓞 E) (Fin n → E))
     (hM : Submodule.span E (M : Set (Fin n → E)) = ⊤) (x : Fin n → E) :
     ∃ c : ℤ, c ≠ 0 ∧ c • x ∈ M := by
@@ -25,6 +30,19 @@ theorem exists_zsmul_mem_of_span (M : Submodule (𝓞 E) (Fin n → E))
   | (intros; apply @_root_.GlobalTheory.IntSmulIsIntegral.exists_int_smul_mem <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.IntSmulIsIntegral.exists_int_smul_mem ..)
 
+/- English proof (translation)
+Take `⟨S, hS⟩ : L.FG` from `Module.Finite.iff_fg.mp hL`. Establish `hfin : ∀ T : Finset (Fin n → E), ∃ c : ℤ, c ≠ 0 ∧ ∀ x ∈ T, c • x ∈ M` using `by classical`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`.
+
+Consider the case `insert a T _ ih`. Take `⟨c, hc, hcT⟩` from `ih`. Take `⟨d, hd, hda⟩` from `exists_zsmul_mem_of_span M hM a`. Use `⟨d * c, mul_ne_zero hd hc, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hx with rfl | hx` into its components or cases.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `zsmul_mem hda c`. Rewrite using `[mul_smul]`. Conclude with `zsmul_mem (hcT x hx) d`. Take `⟨c, hc, hcS⟩` from `hfin S`.
+
+Use `⟨c, hc, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hcS x hx`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb`. Rewrite using `[smul_add]`. Conclude with `M.add_mem ha hb`. Consider the case `smul a y _ hy`. Rewrite using `[smul_comm]`.
+
+Conclude with `M.smul_mem a hy`.
+-/
 theorem exists_zsmul_le (L M : Submodule (𝓞 E) (Fin n → E)) (hL : Module.Finite (𝓞 E) L)
     (hM : Submodule.span E (M : Set (Fin n → E)) = ⊤) :
     ∃ c : ℤ, c ≠ 0 ∧ ∀ x ∈ L, c • x ∈ M := by
@@ -62,6 +80,11 @@ section Local
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : Valued.v (algebraMap F (v.adicCompletion F) (c : F)) = 1`. Establish `h2 : (c : F) = algebraMap (𝓞 F) F (c : 𝓞 F)` using `by simp`. Establish `h3 : Valued.v (algebraMap F (v.adicCompletion F) (c : F)) = v.valuation F (c : F)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (c : F)`. Rewrite using `[h3, h2, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.mpr hv`.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, h1, inv_one]`.
+-/
 theorem int_inv_mem_adicCompletionIntegers (v : HeightOneSpectrum (𝓞 F)) (c : ℤ)
     (hv : (c : 𝓞 F) ∉ v.asIdeal) :
     (algebraMap F (v.adicCompletion F) (c : F))⁻¹ ∈ v.adicCompletionIntegers F := by
@@ -73,6 +96,15 @@ theorem int_inv_mem_adicCompletionIntegers (v : HeightOneSpectrum (𝓞 F)) (c :
     exact HeightOneSpectrum.intValuation_eq_one_iff.mpr hv
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, h1, inv_one]
 
+/- English proof (translation)
+Establish `hu` using `int_inv_mem_adicCompletionIntegers v c hv`. Use `set u : v.adicCompletion F := (algebraMap F (v.adicCompletion F) (c : F))⁻¹ with hudef`. Establish `hne : algebraMap F (v.adicCompletion F) (c : F) ≠ 0`. Rewrite using `[Ne, map_eq_zero]`. Conclude with `hc` after adjusting the coercions.
+
+Establish `hs : (1 : E) ⊗ₜ[F] u ∈ intV E v` using `Subring.subset_closure (Or.inr ⟨⟨u, hu⟩, rfl⟩)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hgen : (fun i => inclE (F` using `F) (v.adicCompletion F) ((c • x) i)) ∈ loc (F := F) v M := Submodule.subset_span ⟨c • x, h x hx, rfl⟩`. Establish `hm` using `(loc (F := F) v M).smul_mem ⟨_, hs⟩ hgen`.
+
+It suffices to establish `heq : (fun i => inclE (F` using `F) (v.adicCompletion F) (x i)) = (⟨(1 : E) ⊗ₜ[F] u, hs⟩ : intV E v) • (fun i => inclE (F := F) (v.adicCompletion F) ((c • x) i)) by show (fun i => inclE (F := F) (v.adicCompletion F) (x i)) ∈ loc (F := F) v M`. Rewrite using `[heq]`. Conclude with `hm`. Use function extensionality and compare the values at `i`. Establish `hci : (c • x) i = (c : F) • x i`.
+
+Simplify using `[Int.cast_smul_eq_zsmul]`. Establish `hone : (c : F) • u = 1`. Rewrite using `[Algebra.smul_def, hudef, mul_inv_cancel₀ hne]`. Use `show (x i) ⊗ₜ[F] (1 : v.adicCompletion F) = ((1 : E) ⊗ₜ[F] u) * ((c • x) i ⊗ₜ[F] (1 : v.adicCompletion F))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, hci, one_mul, mul_one, TensorProduct.smul_tmul, hone]`.
+-/
 theorem loc_le_of_zsmul (v : HeightOneSpectrum (𝓞 F)) (L M : Submodule (𝓞 E) (Fin n → E)) (c : ℤ)
     (hc : c ≠ 0) (hv : (c : 𝓞 F) ∉ v.asIdeal) (h : ∀ x ∈ L, c • x ∈ M) : loc v L ≤ loc v M := by
   have hu := int_inv_mem_adicCompletionIntegers v c hv
@@ -102,6 +134,15 @@ theorem loc_le_of_zsmul (v : HeightOneSpectrum (𝓞 F)) (L M : Submodule (𝓞 
 
 end Local
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n L M hL hM`. Take `⟨c, hc, hcLM⟩` from `exists_zsmul_le L M hL.1 hM.2`. Take `⟨d, hd, hdML⟩` from `exists_zsmul_le M L hM.1 hL.2`. Establish `hcd : (((c * d : ℤ) : 𝓞 F)) ≠ 0`. Conclude with `mul_ne_zero hc hd` after adjusting the coercions.
+
+Establish `hI : Ideal.span {(((c * d : ℤ) : 𝓞 F))} ≠ 0`. Simplify `hcd` using `[Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Use `(Ideal.finite_factors hI).subset fun v hv => ?_` and prove the remaining obligations. Use `show v.asIdeal ∣ _`. Rewrite using `[Ideal.dvd_span_singleton]`.
+
+Assume the negation of the conclusion as `hn`. Establish `hcv : (c : 𝓞 F) ∉ v.asIdeal` using `fun h => hn (by`. Rewrite using `[Int.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ h)`. Establish `hdv : (d : 𝓞 F) ∉ v.asIdeal` using `fun h => hn (by`.
+
+Rewrite using `[Int.cast_mul]`. Conclude with `Ideal.mul_mem_left _ _ h)`. Conclude with `hv (le_antisymm (loc_le_of_zsmul v L M c hc hcv hcLM) (loc_le_of_zsmul v M L d hd hdv hdML))`.
+-/
 theorem loc_eq_almost_all : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (n : ℕ) (L M : Submodule (𝓞 E) (Fin n → E)), IsLat L → IsLat M →
     {v : HeightOneSpectrum (𝓞 F) | loc v L ≠ loc v M}.Finite := by

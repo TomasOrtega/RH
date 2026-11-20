@@ -17,6 +17,9 @@ section Cocycles
 variable {k : Type u} [CommRing k] {H : Type u} [Group H] [TopologicalSpace H]
   [IsTopologicalGroup H] {B : Rep.{u} k H} [IsDiscreteRep B]
 
+/- English proof (translation)
+Conclude with `congrArg (fun φ => φ.hom ((isoCocycles₂ A).inv.hom c)) (HomologicalComplex.homologyπ_naturality F 2)`.
+-/
 theorem homologyMap_H2π {G : Type u} [Group G] {A : Rep.{u} k G}
     (F : inhomogeneousCochains A ⟶ cochainsComplex B) (c : cocycles₂ A) :
     (HomologicalComplex.homologyMap F 2).hom (H2π A c) =
@@ -24,6 +27,13 @@ theorem homologyMap_H2π {G : Type u} [Group G] {A : Rep.{u} k G}
   exact congrArg (fun φ => φ.hom ((isoCocycles₂ A).inv.hom c))
     (HomologicalComplex.homologyπ_naturality F 2)
 
+/- English proof (translation)
+Rewrite using `[homologyMap_H2π, homologyMap_H2π]`. Use `congr 1`. Apply `(ModuleCat.mono_iff_injective ((cochainsComplex B).iCycles 2)).1 inferInstance` to reduce the goal to its premises. Establish `hi : ∀ {G : Type u} [Group G] {A : Rep.{u} k G} (F : inhomogeneousCochains A ⟶ cochainsComplex B) (c : cocycles₂ A), ((cochainsComplex B).iCycles 2).hom ((HomologicalComplex.cyclesMap F 2).hom ((isoCocycles₂ A).inv.hom c)) = (F.f 2).hom ((cochainsIso₂ A).inv.hom c)`. Introduce `G _ A F c`.
+
+Express the relevant statement in the definitionally equal form `((HomologicalComplex.cyclesMap F 2 ≫ (cochainsComplex B).iCycles 2).hom ((isoCocycles₂ A).inv.hom c)) = _`. Rewrite using `[HomologicalComplex.cyclesMap_i]`. Express the relevant statement in the definitionally equal form `(F.f 2).hom ((((isoCocycles₂ A).inv ≫ iCocycles A 2)).hom c) = _`. Rewrite using `[isoCocycles₂_inv_comp_iCocycles]`. Both sides reduce to the same expression.
+
+Rewrite using `[hi, hi]`. Conclude with `(ModuleCat.mono_iff_injective ((cochainsComplexι B).f 2)).1 inferInstance h`.
+-/
 theorem homologyMap_H2π_eq {G₁ G₂ : Type u} [Group G₁] [Group G₂] {A₁ : Rep.{u} k G₁}
     {A₂ : Rep.{u} k G₂} (F₁ : inhomogeneousCochains A₁ ⟶ cochainsComplex B)
     (F₂ : inhomogeneousCochains A₂ ⟶ cochainsComplex B) (c₁ : cocycles₂ A₁) (c₂ : cocycles₂ A₂)
@@ -54,6 +64,17 @@ section Topology
 
 variable {K Ks : Type u} [Field K] [Field Ks] [Algebra K Ks]
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `s hs`. Take `⟨S, hS, hSs⟩` from `(krullTopology_mem_nhds_one_iff K Ks s).1 hs`. Rewrite using `[Filter.mem_map, krullTopology_mem_nhds_one_iff]`.
+
+Set `b` to `Module.finBasis K S`. Set `T : Set Ks` to `Set.range fun i => (b i : Ks)`. Use `⟨IntermediateField.adjoin E T, ?_, ?_⟩` and prove the remaining obligations. Use `IntermediateField.finiteDimensional_adjoin fun x hx => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `hx`.
+
+Conclude with `((IsIntegral.of_finite K (b i)).map S.val).tower_top`. Introduce `σ hσ`. Apply `hSs` to reduce the goal to its premises. Rewrite `hσ`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+
+Establish `hT : ∀ i, (AlgEquiv.restrictScalarsHom K σ) (b i : Ks) = b i` using `fun i => hσ _ (IntermediateField.subset_adjoin E T ⟨i, rfl⟩)`. Establish `hx' : x = ∑ i, (b.repr ⟨x, hx⟩ i) • (b i : Ks)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_smul S.val _ _`.
+
+Rewrite using `[hx', map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hT]`.
+-/
 theorem continuous_restrictScalarsHom (E : IntermediateField K Ks) :
     Continuous (AlgEquiv.restrictScalarsHom K : (Ks ≃ₐ[E] Ks) →* (Ks ≃ₐ[K] Ks)) := by
   refine continuous_of_continuousAt_one _ ?_
@@ -91,6 +112,9 @@ def galUnitsRestrictScalars (E : IntermediateField K Ks) :
       rfl⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galUnitsRestrictScalars_hom_apply (E : IntermediateField K Ks) (x : Additive Ksˣ) :
     (galUnitsRestrictScalars E).hom x = x :=
   rfl

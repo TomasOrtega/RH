@@ -33,6 +33,19 @@ namespace GlobalTheory.TorusFibre
 
 open GlobalTheory.SplitTorus (torusMap bcIso)
 
+/- English proof (translation)
+Introduce `R _ _ _ K _ _ G _ hG r u hu hmono`. Set `k` to `IsLocalRing.ResidueField R`. Set `Ω` to `AlgebraicClosure k`. Use `GlobalTheory.T.closedImmersion_of_baseChange_field_ext R k Ω (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.torus R r) G u ?_` and prove the remaining obligations. Set `p : Spec (CommRingCat.of Ω) ⟶ Spec (CommRingCat.of R)` to `Spec.map (CommRingCat.ofHom (algebraMap R Ω))`.
+
+Take `⟨E⟩` from `hG.fibres Ω p`. Set `v` to `(bcIso p (Fin r → ℤ)).hom ≫ (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R Ω).map u`. Establish `hv : IsClosedImmersion v.left`. Use `GlobalTheory.T.isClosedImmersion_splitTorus_into_torusExtension Ω _ E r v inferInstance fun q hq φ hφ h => hφ ?_` and prove the remaining obligations. Establish `hsep : IsSeparated G.hom` using `hG.separated`.
+
+Establish `e1 : torusMap _ φ ≫ (bcIso p (Fin r → ℤ)).hom = (bcIso p (ZMod q)).hom ≫ (Over.pullback p).map (torusMap _ φ)` using `(GlobalTheory.SplitTorus.comm_bcMap_iff p _ _).1 (GlobalTheory.SplitTorus.torusMap_bcMap p φ)`. Establish `hΩ : (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R Ω).map (torusMap _ φ ≫ u) = (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R Ω).map 1`. Rewrite using `[Functor.map_comp, Functor.map_one, ← cancel_epi (bcIso p (ZMod q)).hom, MonObj.comp_one, ← Category.assoc]`. Express the relevant statement in the definitionally equal form `((bcIso p (ZMod q)).hom ≫ (Over.pullback p).map (torusMap _ φ)) ≫ _ = _`. Rewrite using `[← e1, Category.assoc]`.
+
+Conclude with `h`. Establish `hk` using `GlobalTheory.T.overSpecBaseChange_map_eq_of_fieldExtension R k Ω _ _ _ _ hΩ`. Establish `hf : torusMap _ φ ≫ u = 1` using `GlobalTheory.T.splitTorus_hom_ext_of_eq_mod_maximalIdeal_pow R (ZMod q) G hsep _ _ (GlobalTheory.T.splitTorus_hom_pullback_quotient_pow_eq_one R (ZMod q) G _ inferInstance hk)`. Set `pK : Spec (CommRingCat.of K) ⟶ Spec (CommRingCat.of R)` to `Spec.map (CommRingCat.ofHom (algebraMap R K))`. Establish `hK' : (Over.pullback pK).map (torusMap _ φ) = (Over.pullback pK).map (torusMap _ 0)`.
+
+Rewrite using `[← cancel_mono ((GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R K).map u)]`. Express the relevant statement in the definitionally equal form `(Over.pullback pK).map (torusMap _ φ) ≫ (Over.pullback pK).map u = (Over.pullback pK).map (torusMap _ 0) ≫ (Over.pullback pK).map u`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, hf, GlobalTheory.SplitTorus.torusMap_zero, MonObj.one_comp]`. Rewrite `hK'` using `[GlobalTheory.SplitTorus.pullback_map_torusMap, GlobalTheory.SplitTorus.pullback_map_torusMap, cancel_epi, cancel_mono]`. Conclude with `GlobalTheory.SplitTorus.torusMap_injective hK'`.
+
+Establish `: (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.baseChange R Ω).map u = (bcIso p (Fin r → ℤ)).inv ≫ v`. Simplify using `[v]`. Rewrite using `[this, Over.comp_left]`. Use `haveI : IsIso (bcIso p (Fin r → ℤ)).inv.left := inferInstanceAs (IsIso ((Over.forget _).map (bcIso p (Fin r → ℤ)).inv))`. Conclude with `IsClosedImmersion.comp _ _`.
+-/
 theorem isClosedImmersion_special_of_local : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (K : Type) [Field K] [Algebra R K]
     (G : Over (Spec (CommRingCat.of R))) [GrpObj G], IsSemiAbelian G →
     ∀ (r : ℕ) (u : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.torus R r ⟶ G), IsMonHom u →

@@ -13,16 +13,35 @@ namespace GlobalTheory.Mem.WeilEqRank
 
 variable {D : D7}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, (GlobalTheory.Mem.HeckeExp.hcSubgroup D).mul_mem (show χ' ∈ GlobalTheory.Mem.HeckeExp.hcSubgroup D from h.2.2.1) (show ν ∈ GlobalTheory.Mem.HeckeExp.hcSubgroup D from hν), h.2.2.2.1, resEta_mul h.2.2.2.2 h0⟩`.
+-/
 theorem equalRankSplittingCharsAdmissible_mul_right {V W : HSp D} {χ χ' ν : IdC D} (h : AdmE V W χ χ') (hν : IsHC D ν) (h0 : ResEta D ν 0) :
     AdmE V W χ (χ' * ν) :=
   ⟨h.1, h.2.1, (GlobalTheory.Mem.HeckeExp.hcSubgroup D).mul_mem (show χ' ∈ GlobalTheory.Mem.HeckeExp.hcSubgroup D from h.2.2.1)
     (show ν ∈ GlobalTheory.Mem.HeckeExp.hcSubgroup D from hν), h.2.2.2.1, resEta_mul h.2.2.2.2 h0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, (GlobalTheory.Mem.HeckeExp.hcSubgroup D).mul_mem (show χ ∈ GlobalTheory.Mem.HeckeExp.hcSubgroup D from h.2.1) (show ν ∈ GlobalTheory.Mem.HeckeExp.hcSubgroup D from hν), h.2.2.1, resEta_mul h.2.2.2.1 h0, h.2.2.2.2⟩`.
+-/
 theorem equalRankSplittingCharsAdmissible_mul_left {V W : HSp D} {χ χ' ν : IdC D} (h : AdmE V W χ χ') (hν : IsHC D ν) (h0 : ResEta D ν 0) :
     AdmE V W (χ * ν) χ' :=
   ⟨h.1, (GlobalTheory.Mem.HeckeExp.hcSubgroup D).mul_mem (show χ ∈ GlobalTheory.Mem.HeckeExp.hcSubgroup D from h.2.1)
     (show ν ∈ GlobalTheory.Mem.HeckeExp.hcSubgroup D from hν), h.2.2.1, resEta_mul h.2.2.2.1 h0, h.2.2.2.2⟩
 
+/- English proof (translation)
+Introduce `D h1 h2 h3 ψ hψ`. Take `⟨W₀⟩` from `h1 ψ hψ`. Establish `key : ∀ (V W : HSp D) (χ χ' : IdC D), ∃ om : GA D V × GA D W →* Module.End ℂ (ThS ψ V W), (V.rank ≠ W.rank → om = W₀.om V W χ χ') ∧ (AdmE V W χ χ' → IsWeilOn ψ V W χ χ' om)` using `fun V W χ χ' => by`. Distinguish the cases in `h : AdmE V W χ χ'`. Take `⟨om, hom⟩` from `h2 ψ hψ V W χ χ' h`.
+
+Conclude with `⟨om, fun hne => absurd h.1 hne, fun _ => hom⟩`. Conclude with `⟨W₀.om V W χ χ', fun _ => rfl, fun k => absurd k h⟩`. Use `choose om hne heq using key`. Use `⟨⟨om, fun V W χ χ' ha => ?_, fun V W χ χ' ha => ?_, fun V W χ χ' ha => ?_, fun V W χ χ' ha => ?_, fun V W χ χ' ha => ?_, fun V W χ χ' ν ha => ?_, fun V W χ χ' ν ha => ?_, fun V W χ χ' ha => ?_, fun V W χ χ' ha => ?_⟩, heq, fun V W χ χ' ν ha hν h0 => ?_, fun V W χ χ' ν ha hν h0 => …` and prove the remaining obligations. Rewrite using `[hne V W χ χ' ha.1]`.
+
+Conclude with `W₀.om_heis V W χ χ' ha`. Rewrite using `[hne V W χ χ' ha.1]`. Conclude with `W₀.om_aut V W χ χ' ha`. Rewrite using `[hne V W χ χ' ha.1]`. Conclude with `W₀.om_cont V W χ χ' ha`.
+
+Rewrite using `[hne V W χ χ' ha.1]`. Conclude with `W₀.om_unit V W χ χ' ha`. Rewrite using `[hne V W χ χ' ha.1]`. Conclude with `W₀.om_split V W χ χ' ha`. Rewrite using `[hne V W χ χ' ha.1, hne V W χ (χ' * ν) ha.1]`.
+
+Conclude with `W₀.twW V W χ χ' ν ha`. Rewrite using `[hne V W χ χ' ha.1, hne V W (χ * ν) χ' ha.1]`. Conclude with `W₀.twV V W χ χ' ν ha`. Rewrite using `[hne V W χ χ' ha.1, hne W V χ' χ ha.1.symm]`. Conclude with `W₀.om_swap V W χ χ' ha`.
+
+Rewrite using `[hne V W χ χ' ha.1]`. Conclude with `W₀.om_unr V W χ χ' ha`. Conclude with `(h3 ψ hψ V W χ χ' ν ha hν h0 _ (heq V W χ χ' ha)).1 _ (heq V W χ (χ' * ν) (equalRankSplittingCharsAdmissible_mul_right ha hν h0))`. Conclude with `(h3 ψ hψ V W χ χ' ν ha hν h0 _ (heq V W χ χ' ha)).2 _ (heq V W (χ * ν) χ' (equalRankSplittingCharsAdmissible_mul_left ha hν h0))`.
+-/
 theorem exists_weilFun_eqRank : ∀ D : D7, WeilEx D → WeilOnEqEx D → WeilTwEq D → ∀ ψ, IsStdChar D ψ (-1) →
     ∃ Wf : WeilFun D ψ, Wf.EqRank := by
   classical

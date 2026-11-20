@@ -16,6 +16,13 @@ open UpperTheory.BaseChangeIdentities.FrameWordIdentity
 
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hT hL hW E _ _ _ n d hd ls a ha`. Establish `hk` using `(hL E n d hd a ha).1`. Establish `hbase : LM.Ok d.P (d.eL a)` using `(hL E n d hd a ha).2.2.2 _ (Or.inl rfl)`. Establish `hfix` using `(hL E n d hd a ha).2.2.1`. Establish `hrest : LM.Ok d.P (List.foldr LM.mul (d.eL a) (List.map (locL d a ha) ls))`.
+
+Proceed by induction on `ls with`. Consider the case `nil => simpa using hbase`. Consider the case `cons p ls ih`. Simplify using `only [List.map_cons, List.foldr_cons]`. Conclude with `hT E a (n - a) d.kap d.P hk _ _ (hW E n d hd a ha p).1 ih`.
+
+Rewrite using `[prodL, dif_pos ha, List.foldr_cons]`. Conclude with `hT E a (n - a) d.kap d.P hk _ _ hfix hrest`.
+-/
 theorem _root_.UpperTheory.BaseChangeIdentities.FrameWordIdentity.prodok_pf :
     TMul → LocOk → heckeLevelWordBase → ProdOk := by
   intro hT hL hW E _ _ _ n d hd ls a ha

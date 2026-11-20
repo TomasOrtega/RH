@@ -13,11 +13,17 @@ variable {n : ℕ}
 noncomputable def jacobian (H : (Fin n → ℝ) → Fin n → ℝ) (x : Fin n → ℝ) : Fin n → Fin n → ℝ :=
   fun k l => fderiv ℝ H x (Pi.single l 1) k
 
+/- English proof (translation)
+Rewrite using `[ContinuousLinearMap.det, ← LinearMap.det_toMatrix']`. Use `congr 1`.
+-/
 theorem det_fderiv_eq_det_jacobian (H : (Fin n → ℝ) → Fin n → ℝ) (x : Fin n → ℝ) :
     (fderiv ℝ H x).det = (Matrix.of (jacobian H x)).det := by
   rw [ContinuousLinearMap.det, ← LinearMap.det_toMatrix']
   congr 1
 
+/- English proof (translation)
+Establish `hd' : HasFDerivAt (fun y => H y k) ((ContinuousLinearMap.proj k).comp (fderiv ℝ H x)) x` using `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℝ) k).hasFDerivAt.comp x hd.hasFDerivAt`. Rewrite using `[hd'.fderiv]`. Both sides reduce to the same expression.
+-/
 theorem jacobian_eq_fderiv_apply (H : (Fin n → ℝ) → Fin n → ℝ) (x : Fin n → ℝ)
     (hd : DifferentiableAt ℝ H x) (k l : Fin n) :
     jacobian H x k l = fderiv ℝ (fun y => H y k) x (Pi.single l 1) := by
@@ -30,8 +36,16 @@ noncomputable def detCML : ContinuousMultilinearMap ℝ (fun _ : Fin n => Fin n 
   { (Matrix.detRowAlternating : (Fin n → ℝ) [⋀^Fin n]→ₗ[ℝ] ℝ).toMultilinearMap with
     cont := continuous_id.matrix_det }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem detCML_apply (M : Fin n → Fin n → ℝ) : detCML M = Matrix.det (Matrix.of M) := rfl
 
+/- English proof (translation)
+Establish `hr : r = ∑ l, r l • (Pi.single l 1 : Fin n → ℝ)`. Use extensionality with `m`. Simplify using `[Pi.single_apply]`. Use `conv_lhs => rw [hr]`. Express the relevant statement in the definitionally equal form `(Matrix.detRowAlternating : (Fin n → ℝ) [⋀^Fin n]→ₗ[ℝ] ℝ).toMultilinearMap.toLinearMap V k (∑ l, r l • (Pi.single l 1 : Fin n → ℝ)) = _`.
+
+Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul, MultilinearMap.toLinearMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem det_update_eq_sum (V : Fin n → Fin n → ℝ) (k : Fin n) (r : Fin n → ℝ) :
     Matrix.det (Matrix.of (Function.update V k r)) =
       ∑ l, r l * Matrix.det (Matrix.of (Function.update V k (Pi.single l 1))) := by
@@ -51,13 +65,22 @@ noncomputable def entriesCLM : ((Fin n → ℝ) →L[ℝ] (Fin n → ℝ)) →L[
 noncomputable def killRow (i : Fin n) : (Fin n → Fin n → ℝ) →L[ℝ] (Fin n → Fin n → ℝ) :=
   ContinuousLinearMap.pi fun k => if k = i then 0 else ContinuousLinearMap.proj k
 
+/- English proof (translation)
+Simplify using `[killRow]`.
+-/
 theorem killRow_apply_self (i : Fin n) (M : Fin n → Fin n → ℝ) : killRow i M i = 0 := by
   simp [killRow]
 
+/- English proof (translation)
+Simplify using `[killRow, h]`.
+-/
 theorem killRow_apply_ne {i k : Fin n} (h : k ≠ i) (M : Fin n → Fin n → ℝ) :
     killRow i M k = M k := by
   simp [killRow, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `[killRow_apply_self]`. Simplify using `[killRow_apply_ne h, h]`.
+-/
 theorem update_eq_killRow (M : Fin n → Fin n → ℝ) (i : Fin n) (c : Fin n → ℝ) :
     Function.update M i c = killRow i M + Pi.single i c := by
   funext k
@@ -68,6 +91,11 @@ theorem update_eq_killRow (M : Fin n → Fin n → ℝ) (i : Fin n) (c : Fin n �
 noncomputable def cofactorFn (H : (Fin n → ℝ) → Fin n → ℝ) (i j : Fin n) (y : Fin n → ℝ) : ℝ :=
   Matrix.det (Matrix.of (Function.update (jacobian H y) i (Pi.single j 1)))
 
+/- English proof (translation)
+Establish `h2 : HasFDerivAt (fderiv ℝ H) (fderiv ℝ (fderiv ℝ H) x) x` using `((hH.fderiv_right (m := ∞) le_rfl).differentiable (by simp)).differentiableAt.hasFDerivAt`. Establish `hM : HasFDerivAt (fun y => (Function.update (jacobian H y) i (Pi.single j 1) : Fin n → Fin n → ℝ)) ((killRow i).comp (entriesCLM.comp (fderiv ℝ (fderiv ℝ H) x))) x`. Establish `: (fun y => (Function.update (jacobian H y) i (Pi.single j 1) : Fin n → Fin n → ℝ)) = fun y => killRow i (entriesCLM (fderiv ℝ H y)) + Pi.single i (Pi.single j 1)`. Use function extensionality and compare the values at `y`. Conclude with `update_eq_killRow _ _ _`.
+
+Rewrite using `[this]`. Conclude with `((killRow i).hasFDerivAt.comp x (entriesCLM.hasFDerivAt.comp x h2)).add_const _`. Conclude with `(detCML.hasFDerivAt _).comp x hM`.
+-/
 theorem hasFDerivAt_cofactorFn (H : (Fin n → ℝ) → Fin n → ℝ) (hH : ContDiff ℝ ∞ H)
     (i j : Fin n) (x : Fin n → ℝ) :
     HasFDerivAt (cofactorFn H i j)
@@ -85,6 +113,19 @@ theorem hasFDerivAt_cofactorFn (H : (Fin n → ℝ) → Fin n → ℝ) (hH : Con
     exact ((killRow i).hasFDerivAt.comp x (entriesCLM.hasFDerivAt.comp x h2)).add_const _
   exact (detCML.hasFDerivAt _).comp x hM
 
+/- English proof (translation)
+Repeatedly rewrite using `[det_update_eq_sum _ k (S _)]`. Use `set T : Fin n → Fin n → ℝ := fun j l => Matrix.det (Matrix.of (Function.update (Function.update A i (Pi.single j 1)) k (Pi.single l 1))) with hTdef`. Establish `hT : ∀ j l, T j l = - T l j`. Introduce `j l`. Establish `hw : (Function.update (Function.update A i (Pi.single l 1)) k (Pi.single j 1)) = (Function.update (Function.update A i (Pi.single j 1)) k (Pi.single l 1)) ∘ Equiv.swap i k`.
+
+Use function extensionality and compare the values at `r`. Distinguish the cases in `hri : r = i`. Substitute `hri` using the available equality. Simplify using `[Equiv.swap_apply_left, hik]`. Distinguish the cases in `hrk : r = k`.
+
+Substitute `hrk` using the available equality. Simplify using `[Equiv.swap_apply_right, hik]`. Simplify using `[Equiv.swap_apply_of_ne_of_ne hri hrk, hri, hrk]`. Establish `h1 : T l j = - T j l` using `by show Matrix.det (Matrix.of (Function.update (Function.update A i (Pi.single l 1)) k (Pi.single j 1))) = _`. Rewrite using `[hw]`.
+
+Conclude with `(Matrix.detRowAlternating : (Fin n → ℝ) [⋀^Fin n]→ₗ[ℝ] ℝ).map_swap (Function.update (Function.update A i (Pi.single j 1)) k (Pi.single l 1)) hik`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX : ∑ j, ∑ l, S j l * T j l = - ∑ j, ∑ l, S j l * T j l` using `by conv_lhs => rw [Finset.sum_comm]`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hS l j, hT l j]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `∑ j, ∑ l, S j l * T j l = 0`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_det_symm_eq_zero (A : Fin n → Fin n → ℝ) {i k : Fin n} (hik : i ≠ k)
     (S : Fin n → Fin n → ℝ) (hS : ∀ j l, S j l = S l j) :
     ∑ j, Matrix.det (Matrix.of (Function.update (Function.update A i (Pi.single j 1)) k (S j))) =
@@ -121,6 +162,13 @@ theorem sum_det_symm_eq_zero (A : Fin n → Fin n → ℝ) {i k : Fin n} (hik : 
   change ∑ j, ∑ l, S j l * T j l = 0
   linarith
 
+/- English proof (translation)
+Use `set D2 := fderiv ℝ (fderiv ℝ H) x with hD2`. Establish `hsym : ∀ v w, D2 v w = D2 w v` using `(hH.contDiffAt (x := x)).isSymmSndFDerivAt (by simp; exact ENat.LEInfty.out)`. Repeatedly rewrite using `[(hasFDerivAt_cofactorFn H hH i _ x).fderiv, ContinuousLinearMap.comp_apply, ContinuousMultilinearMap.linearDeriv_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[killRow_apply_self, Function.update_idem]`. Conclude with `detCML.map_update_zero _ _`.
+
+Repeatedly rewrite using `[killRow_apply_ne hk]`. Use `sum_det_symm_eq_zero (jacobian H x) (Ne.symm hk) (fun j l => D2 (Pi.single j 1) (Pi.single l 1) k) (fun j l => by simp only [hsym (Pi.single j 1)])` as an intermediate fact. Conclude with `this`.
+-/
 theorem sum_fderiv_cofactorFn_eq_zero (H : (Fin n → ℝ) → Fin n → ℝ) (hH : ContDiff ℝ ∞ H) (i : Fin n)
     (x : Fin n → ℝ) :
     ∑ j, fderiv ℝ (cofactorFn H i j) x (Pi.single j 1) = 0 := by
@@ -142,6 +190,11 @@ theorem sum_fderiv_cofactorFn_eq_zero (H : (Fin n → ℝ) → Fin n → ℝ) (h
       (fun j l => by simp only [hsym (Pi.single j 1)])
     exact this
 
+/- English proof (translation)
+Establish `: cofactorFn H i j = fun y => detCML (killRow i (entriesCLM (fderiv ℝ H y)) + Pi.single i (Pi.single j 1))`. Use function extensionality and compare the values at `y`. Rewrite using `[detCML_apply, ← update_eq_killRow]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `detCML.contDiff.comp (((killRow i).contDiff.comp (entriesCLM.contDiff.comp (hH.fderiv_right (m := ∞) le_rfl))).add contDiff_const)`.
+-/
 theorem contDiff_cofactorFn (H : (Fin n → ℝ) → Fin n → ℝ) (hH : ContDiff ℝ ∞ H) (i j : Fin n) :
     ContDiff ℝ ∞ (cofactorFn H i j) := by
   have : cofactorFn H i j =
@@ -151,6 +204,17 @@ theorem contDiff_cofactorFn (H : (Fin n → ℝ) → Fin n → ℝ) (hH : ContDi
   exact detCML.contDiff.comp (((killRow i).contDiff.comp
     (entriesCLM.contDiff.comp (hH.fderiv_right (m := ∞) le_rfl))).add contDiff_const)
 
+/- English proof (translation)
+Use `set h : (Fin n → ℝ) → ℝ := fun x => H x i with hh`. Establish `hhs : ContDiff ℝ ∞ h` using `(contDiff_apply ℝ ℝ i).comp hH`. Establish `hJ : ∀ x j, jacobian H x i j = fderiv ℝ h x (Pi.single j 1)` using `fun x j => jacobian_eq_fderiv_apply H x ((hH.differentiable (by simp)) x) i j`. Establish `hexp : ∀ x, (fderiv ℝ H x).det = ∑ j, cofactorFn H i j x * fderiv ℝ h x (Pi.single j 1)`. Introduce `x`.
+
+Rewrite using `[det_fderiv_eq_det_jacobian]`. Use `det_update_eq_sum (jacobian H x) i (jacobian H x i)` as an intermediate fact. Rewrite `this` using `[Function.update_eq_self]`. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hJ, mul_comm]`. Both sides reduce to the same expression. Establish `hcof` using `contDiff_cofactorFn H hH i`. Establish `hcd : ∀ j, Continuous fun x => fderiv ℝ (cofactorFn H i j) x (Pi.single j 1)` using `fun j => ((hcof j).continuous_fderiv (by simp)).clm_apply continuous_const`. Establish `hhd : ∀ j, Continuous fun x => fderiv ℝ h x (Pi.single j 1)` using `fun j => (hhs.continuous_fderiv (by simp)).clm_apply continuous_const`.
+
+Establish `i1 : ∀ j, Integrable (fun x => fderiv ℝ (cofactorFn H i j) x (Pi.single j 1) * h x)` using `fun j => ((hcd j).mul hhs.continuous).integrable_of_hasCompactSupport hi.mul_left`. Establish `i2 : ∀ j, Integrable (fun x => cofactorFn H i j x * fderiv ℝ h x (Pi.single j 1))` using `fun j => ((hcof j).continuous.mul (hhd j)).integrable_of_hasCompactSupport (hi.fderiv_apply (𝕜 := ℝ) (Pi.single j 1)).mul_left`. Establish `i3 : ∀ j, Integrable (fun x => cofactorFn H i j x * h x)` using `fun j => ((hcof j).continuous.mul hhs.continuous).integrable_of_hasCompactSupport hi.mul_left`. Establish `hibp : ∀ j, ∫ x, cofactorFn H i j x * fderiv ℝ h x (Pi.single j 1) = - ∫ x, fderiv ℝ (cofactorFn H i j) x (Pi.single j 1) * h x` using `fun j => integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable (i1 j) (i2 j) (i3 j) (fun x _ => ((hcof j).differentiable (by simp)) x) (fun x _ => (hhs.differentiable (by simp)) x)`. Repeatedly rewrite using `[hexp]`.
+
+Rewrite using `[integral_finsetSum _ fun j _ => i2 j]`. Repeatedly rewrite using `[hibp]`. Rewrite using `[Finset.sum_neg_distrib, ← integral_finsetSum _ fun j _ => i1 j]`. Repeatedly rewrite using `[← Finset.sum_mul, sum_fderiv_cofactorFn_eq_zero H hH i, zero_mul, integral_zero, neg_zero]`.
+-/
 theorem integral_det_fderiv_eq_zero (H : (Fin n → ℝ) → Fin n → ℝ) (hH : ContDiff ℝ ∞ H)
     (i : Fin n) (hi : HasCompactSupport fun x => H x i) : ∫ x, (fderiv ℝ H x).det = 0 := by
   set h : (Fin n → ℝ) → ℝ := fun x => H x i with hh

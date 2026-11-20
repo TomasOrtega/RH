@@ -9,6 +9,9 @@ import Formalism.LocalToGlobal.AlgebraicTheory.AlgebraicTheoryProofs.NormPow
 
 namespace Formalism.L2.AlgTh
 
+/- English proof (translation)
+The claim follows from `jetAtSplit_of split_place_scaled_bound kernel_index_form representatives_split level_kills_half_lattice chosen_lift_killed_level p_torsion_represents_quotient card_two_sided_quotient index_product_formula taylor_jet_expansion linear_substitution_diagonal`.
+-/
 theorem jetAtSplit : JetAtSplit :=
   jetAtSplit_of split_place_scaled_bound kernel_index_form representatives_split level_kills_half_lattice chosen_lift_killed_level p_torsion_represents_quotient card_two_sided_quotient index_product_formula
     taylor_jet_expansion linear_substitution_diagonal

@@ -5,6 +5,15 @@ open NumberField NumberField.mixedEmbedding Matrix MeasureTheory GroundTheory.Au
 open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
+/- English proof (translation)
+Introduce `K _ _ n S hLev hTyp`. Take `⟨L, hL, hinv⟩` from `hLev`. Take `⟨V₀, hV₀, -, hφV⟩` from `hTyp`. Take `⟨L', -, hL'L, -, t, ht⟩` from `UpperTheory.exists_open_level_normalized_by_integralFiniteGL K n L hL`. Establish `hk : ∀ k : Reduction.maxCompact (K` using `K) (n := n), ∃ c ∈ t, c⁻¹ * finPart k.1 ∈ L' := fun k => ht _ (finPart_mem_integralFiniteGL k.2)`.
+
+Set `Ψ : (↥t → ↥V₀) →ₗ[ℂ] (Reduction.maxCompact (K` to `K) (n := n) → ℂ) := { toFun := fun h k => (h ⟨Classical.choose (hk k), (Classical.choose_spec (hk k)).1⟩ : archCompact K n → ℂ) ⟨archPart k.1, archPart_mem_archCompact k.2⟩ map_add' := by intros; rfl map_smul' := by intros; rfl }`. Use `⟨LinearMap.range Ψ, inferInstance, ?_⟩` and prove the remaining obligations. Introduce `φ hφ g`. Use `⟨fun c => ⟨fun k' => φ.1 (g * finEmb K n c.1 * infEmb K n k'.1), hφV φ hφ _⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`.
+
+Use `show φ.1 (g * finEmb K n (Classical.choose (hk k)) * infEmb K n (archPart k.1)) = φ.1 (g * k.1)`. Establish `hu : (Classical.choose (hk k))⁻¹ * finPart k.1 ∈ L` using `hL'L (Classical.choose_spec (hk k)).2`. Establish `e : g * k.1 = g * finEmb K n (Classical.choose (hk k)) * infEmb K n (archPart k.1) * finEmb K n ((Classical.choose (hk k))⁻¹ * finPart k.1)` using `by conv_lhs => rw [← infEmb_archPart_mul_finEmb_finPart k.1]`. Rewrite using `[map_mul, map_inv, mul_assoc g (finEmb K n _), ← infEmb_mul_finEmb_comm]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`.
+
+Rewrite using `[e, hinv φ hφ _ hu]`.
+-/
 theorem UpperTheory.exists_finiteDimensional_compact_translates_of_level_types :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (S : Submodule ℂ (archSmooth K n)), Level S → Types S → ∃ V : Submodule ℂ (Reduction.maxCompact (K := K) (n := n) → ℂ), FiniteDimensional ℂ V ∧ ∀ φ ∈ S, ∀ g, (fun k : Reduction.maxCompact (K := K) (n := n) => φ.1 (g * k.1)) ∈ V := by
   intro K _ _ n S hLev hTyp

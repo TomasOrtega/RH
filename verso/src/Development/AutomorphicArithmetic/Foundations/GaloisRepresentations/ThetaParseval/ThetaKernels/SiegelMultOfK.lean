@@ -13,8 +13,14 @@ section
 noncomputable section
 namespace PositivityTheory.RgEis.Hd
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.T.siegel_multiplicity_of_laws`.
+-/
 theorem siegelMult_of_k : SecLaw → WallLaw → Dict → DictInf → CMGood → GrpTop → BdetLaw → ExtLaw → ParLaw → SgAll →
     _root_.SiegelEisensteinSeries.BRoad.SiegelMult_k := _root_.GlobalTheory.T.siegel_multiplicity_of_laws
+/- English proof (translation)
+The claim follows from `have hW := wallLaw_of secLaw have hP := parLaw_of bdetLaw extLaw grpTop have hG := cmGood_of stdGood dict dictInf have hM := mirGen_of secLaw stdGood bdetLaw epConv (epMain_of epConv) testFun testSph _root_.SiegelEisensteinSeries.BRoad.eisBL_of_k _root_.GlobalTheory.T.eisenstein_ …`.
+-/
 theorem eisBL_k : _root_.GlobalTheory.ThK.Dbl.EisBL_k :=
   have hW := wallLaw_of secLaw
   have hP := parLaw_of bdetLaw extLaw grpTop

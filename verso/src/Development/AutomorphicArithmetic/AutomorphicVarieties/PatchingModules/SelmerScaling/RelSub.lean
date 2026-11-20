@@ -4,15 +4,27 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraT
 section
 variable {X : Type} [CommRing X] {a g : ℕ} {c : Fin a → Fin g → X}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, fun k => by simp, fun j => by simp⟩`.
+-/
 private theorem rel_C (r : X) : DD.Rel c (DD.C r) (DD.C r) :=
   ⟨rfl, rfl, fun k => by simp, fun j => by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, fun k => by simp, fun j => by simp⟩`.
+-/
 private theorem rel_zero : DD.Rel c 0 0 :=
   ⟨rfl, rfl, fun k => by simp, fun j => by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, fun k => by simp, fun j => by simp⟩`.
+-/
 private theorem rel_one : DD.Rel c 1 1 :=
   ⟨rfl, rfl, fun k => by simp, fun j => by simp⟩
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4⟩` from `h`. Take `⟨b1, b2, b3, b4⟩` from `h'`. Use `⟨by simp [a1, b1], by simp [a2, b2], fun k => ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using `[a3, b3, mul_add, Finset.sum_add_distrib]`. Simplify using `[a4, b4, mul_add, Finset.sum_add_distrib]`.
+-/
 private theorem rel_add {u u' : DD X a} {v v' : DD X g} (h : DD.Rel c u v) (h' : DD.Rel c u' v') :
     DD.Rel c (u + u') (v + v') := by
   obtain ⟨a1, a2, a3, a4⟩ := h
@@ -21,18 +33,31 @@ private theorem rel_add {u u' : DD X a} {v v' : DD X g} (h : DD.Rel c u v) (h' :
   · simp [a3, b3, mul_add, Finset.sum_add_distrib]
   · simp [a4, b4, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4⟩` from `h`. Use `⟨by simp [a1], by simp [a2], fun k => ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using `[a3]`. Simplify using `[a4]`.
+-/
 private theorem rel_neg {u : DD X a} {v : DD X g} (h : DD.Rel c u v) : DD.Rel c (-u) (-v) := by
   obtain ⟨a1, a2, a3, a4⟩ := h
   refine ⟨by simp [a1], by simp [a2], fun k => ?_, fun j => ?_⟩
   · simp [a3]
   · simp [a4]
 
+/- English proof (translation)
+Simplify using `only [h, h', Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring`.
+-/
 private theorem rel_pair {p q : Fin a → X} {s t : Fin g → X} (h : ∀ k, p k = ∑ j, c k j * s j)
     (h' : ∀ j, t j = ∑ k, c k j * q k) : ∑ k, p k * q k = ∑ j, s j * t j := by
   simp only [h, h', Finset.sum_mul, Finset.mul_sum]
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4⟩` from `h`. Take `⟨b1, b2, b3, b4⟩` from `h'`. Use `⟨by simp [a1, b1], ?_, fun k => ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `e1` using `rel_pair a3 b4`. Establish `e2` using `rel_pair b3 a4`.
+
+Establish `e3 : ∑ k, u.ep' k * u'.ep k = ∑ j, v.ep' j * v'.ep j`. Simplify `e2` using `only [mul_comm]`. Simplify using `only [DD.mul_eta, Finset.sum_add_distrib, e1, e3, a1, a2, b1, b2]`. Simplify using `only [DD.mul_ep, a3, b3, a1, b1, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+
+Simplify using `only [DD.mul_ep', a4, b4, a1, b1, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 private theorem rel_mul {u u' : DD X a} {v v' : DD X g} (h : DD.Rel c u v) (h' : DD.Rel c u' v') :
     DD.Rel c (u * u') (v * v') := by
   obtain ⟨a1, a2, a3, a4⟩ := h
@@ -48,6 +73,9 @@ private theorem rel_mul {u u' : DD X a} {v v' : DD X g} (h : DD.Rel c u v) (h' :
   · simp only [DD.mul_ep', a4, b4, a1, b1, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]
     exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using rel_zero`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `rel_add (h i) ih`.
+-/
 private theorem rel_sum {ι : Type} (s : Finset ι) (f : ι → DD X a) (f' : ι → DD X g)
     (h : ∀ i, DD.Rel c (f i) (f' i)) : DD.Rel c (∑ i ∈ s, f i) (∑ i ∈ s, f' i) := by
   classical
@@ -59,6 +87,15 @@ private theorem rel_sum {ι : Type} (s : Finset ι) (f : ι → DD X a) (f' : ι
 
 end
 
+/- English proof (translation)
+Introduce `X _ a g c`. Use `⟨rel_C, fun u v u' v' h h' => ⟨rel_add h h', ?_, rel_mul h h'⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg, sub_eq_add_neg]`. Conclude with `rel_add h (rel_neg h')`. Introduce and unpack `u v v' ⟨a1, a2, -, a4⟩ ⟨b1, b2, -, b4⟩ e`.
+
+Conclude with `DD.ext (a1.symm.trans b1) e (funext fun j => (a4 j).trans (b4 j).symm) (a2.symm.trans b2)`. Introduce `n l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ i j`.
+
+Simplify using `only [List.map_nil, List.prod_nil, Matrix.one_apply]`. Use `split_ifs`. Conclude with `rel_one`. Conclude with `rel_zero`. Consider the case `cons p l ih`.
+
+Introduce `h i j`. Simplify using `only [List.map_cons, List.prod_cons, Matrix.mul_apply]`. Conclude with `rel_sum _ _ _ fun k => rel_mul (h p (List.mem_cons_self ..) i k) (ih (fun q hq => h q (List.mem_cons_of_mem _ hq)) k j)`.
+-/
 theorem UpperTheory.V.Pa.relSub :
     ∀ (X : Type) [CommRing X] (a g : ℕ) (c : Fin a → Fin g → X), (∀ r : X, DD.Rel c (DD.C r) (DD.C r)) ∧ (∀ u v u' v', DD.Rel c u v → DD.Rel c u' v' → DD.Rel c (u + u') (v + v') ∧ DD.Rel c (u - u') (v - v') ∧ DD.Rel c (u * u') (v * v')) ∧ (∀ u v v', DD.Rel c u v → DD.Rel c u v' → v.ep = v'.ep → v = v') ∧ ∀ (n : ℕ) (l : List (Matrix (Fin n) (Fin n) (DD X a) × Matrix (Fin n) (Fin n) (DD X g))), (∀ p ∈ l, ∀ i j, DD.Rel c (p.1 i j) (p.2 i j)) → ∀ i j, DD.Rel c ((l.map Prod.fst).prod i j) ((l.map Prod.snd).prod i j) := by
   intro X _ a g c

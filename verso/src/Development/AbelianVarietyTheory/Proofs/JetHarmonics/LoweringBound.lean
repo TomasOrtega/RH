@@ -9,6 +9,15 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.PieriBound
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hmem : ∀ i : Fin k, (i : ℕ) + 1 ∈ Icc 1 k` using `fun i => by`. Rewrite using `[Finset.mem_Icc]`. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `key` using `Formalism.HermitianLatticeCounting.Final.ExpansionTerms.sup_l2_ratio_majorant k M lam mu (fun i => u (i.val + 1)) b bv ga q0 s hk hM ⟨h1, h2, fun a i => h3 a _ (hmem i), fun i => h4 (Fin.castAdd M i) i.2, fun i j hij => by`. Use `h5 (Fin.castAdd M i) (by have := j.2; simp only [Fin.val_castAdd]; omega)` as an intermediate fact. Simplify using `only [Fin.val_castAdd] at this`. Use `show u (j.val + 1) < _`. Rewrite using `[← hij]`.
+
+Conclude with `this,`. Use the proof step `h6, h7, h8, fun i => h9 _ (hmem i), h10, h11, h12, h13, h14, h15, h16, h17⟩ h18`. Establish `e : (∏ i ∈ Icc 1 k, |mu s - 1 / 2 - u i|) = ∏ i : Fin k, |mu s - 1 / 2 - u (i.val + 1)|`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => |mu s - 1 / 2 - u (i + 1)|) k, Finset.range_eq_Ico, Finset.prod_Ico_add' (fun i => |mu s - 1 / 2 - u i|) 0 k 1]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `key`.
+-/
 theorem bound_cast (k M n : ℕ) (hn : n = k + M) (lam mu : Fin n → ℝ) (u : ℕ → ℝ) (b bv ga q0 : ℝ) (s : Fin n)
     (hk : 1 ≤ k) (hM : 1 ≤ M) (h1 : StrictAnti lam) (h2 : ∀ a c, ∃ z : ℤ, lam a - lam c = (z : ℝ))
     (h3 : ∀ a, ∀ i ∈ Icc 1 k, ∃ m : ℤ, lam a - u i = (m : ℝ) + 1 / 2)
@@ -40,6 +49,25 @@ theorem bound_cast (k M n : ℕ) (hn : n = k + M) (lam mu : Fin n → ℝ) (u : 
     rfl
   rw [e]; exact key
 
+/- English proof (translation)
+Introduce `k r lam u b bv ga h q0 hN ν hν s`. Take `⟨⟨hb, hbv, -, hq, -⟩, hf⟩` from `GlobalTheory.T.numericalFamily_shape_gaps k r lam u b bv ga h q0 hN`. Take `⟨-, -, -, hgap⟩` from `hf ν hν`. Take `⟨hk, hHC, h3, h4, h5, h6, h7, h8, h9, h10, -, -, hga, -, hbig⟩` from `hN`. Establish `hq0 : (0 : ℝ) ≤ q0` using `Nat.cast_nonneg _`.
+
+Establish `key` using `bound_cast k (2 * r + 1) (2 * r + k + 1) (by omega) lam (fun a => lam a + (ν a : ℝ)) u b bv ga q0 s hk (by omega) hHC.1 (fun a c => by`. Take `⟨m, hm⟩` from `hHC.2 a`. Take `⟨m', hm'⟩` from `hHC.2 c`. Conclude with `⟨m - m', by push_cast at hm hm' ⊢; linarith⟩) h3 h4 h5 h6 h7 h8 h9 h10 (by linarith)`. Use the proof step `(fun a => ⟨ν a, by ring⟩) (fun a c hac => by have := hgap a c hac; show _ < _; linarith)`.
+
+Use the proof step `(by`. Establish `: ((n1 ν : ℕ) : ℝ) ≤ q0` using `by exact_mod_cast hν`. Use `le_trans (le_of_eq ?_) this` and prove the remaining obligations. Unfold `n1`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use the proof step `simp)`. Use the proof step `(by linarith) (by linarith) (by linarith)`. Use the proof step `(fun t ht => by`. Break down `lt_or_gt_of_ne ht with hlt | hlt` into its components or cases.
+
+Use `hgap t s hlt` as an intermediate fact. Introduce `e`. Combine the linear equalities and inequalities to obtain the conclusion. Use `hgap s t hlt` as an intermediate fact. Introduce `e`.
+
+Use the proof step `linarith)`. Use `key.trans ?_` and prove the remaining obligations. Establish `he : Real.exp 1 ≤ 3` using `Real.exp_one_lt_d9.le.trans (by norm_num)`. Establish `he0 : 0 ≤ Real.exp 1` using `(Real.exp_pos 1).le`. Establish `hb0 : (0 : ℝ) ≤ b` using `by linarith`.
+
+Use `split_ifs`. Establish `hk1 : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hs : Real.sqrt k ≤ k`. Rewrite using `[Real.sqrt_le_left (by linarith)]; nlinarith`. Establish `hkn : (k : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega)`.
+
+Establish `hp : ((2 * r + k + 1 : ℕ) : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 7` using `le_self_pow₀ (by linarith) (by norm_num)`. Establish `h64 : 64 * Real.exp 1 * Real.sqrt k ≤ b`. Establish `: Real.exp 1 * Real.sqrt k ≤ 3 * k` using `mul_le_mul he hs (Real.sqrt_nonneg _) (by norm_num)`. Evaluate the numerical expressions using `at hbig hp hkn ⊢`. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h16 : 16 * Real.exp 1 ≤ b ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lowering_bound : ∀ (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ), Num k r lam u b bv ga h q0 → ∀ ν : Fin (2 * r + k + 1) → ℤ, n1 ν ≤ q0 → ∀ s, (∏ i ∈ Icc 1 k, |lam s + (ν s : ℝ) - 1 / 2 - u i|) / ∏ t ∈ univ.erase s, |lam s + (ν s : ℝ) - 1 - (lam t + (ν t : ℝ))| ≤ b ^ 4 := by
   intro k r lam u b bv ga h q0 hN ν hν s
   obtain ⟨⟨hb, hbv, -, hq, -⟩, hf⟩ := GlobalTheory.T.numericalFamily_shape_gaps k r lam u b bv ga h q0 hN

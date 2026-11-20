@@ -17,16 +17,25 @@ namespace GlobalTheory.ModelSum.UnionAmple
 
 variable {Z Z' : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[gs_eq r z U h, gs_eq (𝟙 Z) (r z) U h]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply r U z h a).symm`.
+-/
 theorem gs_eq_stalkMap (r : Z' ⟶ Z) (z : Z') (U : Z.Opens) (h : r z ∈ U) (a : Γ(Z, U)) :
     gs r z U a = (r.stalkMap z).hom (gs (𝟙 Z) (r z) U a) := by
   rw [gs_eq r z U h, gs_eq (𝟙 Z) (r z) U h]
   exact (Scheme.Hom.germ_stalkMap_apply r U z h a).symm
 
+/- English proof (translation)
+Rewrite `e` using `[gs_eq_stalkMap f y U h, gs_eq_stalkMap f y U h]`. Conclude with `(ConcreteCategory.bijective_of_isIso (f.stalkMap y)).1 e`.
+-/
 theorem gs_id_of_gs (f : Z' ⟶ Z) [IsOpenImmersion f] (y : Z') {U : Z.Opens} (h : f y ∈ U) {a b : Γ(Z, U)}
     (e : gs f y U a = gs f y U b) : gs (𝟙 Z) (f y) U a = gs (𝟙 Z) (f y) U b := by
   rw [gs_eq_stalkMap f y U h, gs_eq_stalkMap f y U h] at e
   exact (ConcreteCategory.bijective_of_isIso (f.stalkMap y)).1 e
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← gs_unit (𝟙 Z) (f y) U h, ← gs_unit (𝟙 Z) (f y) U h]`. Apply `gs_id_of_gs f y h` to reduce the goal to its premises. Rewrite using `[gs_unit f y U h, gs_unit f y U h, e]`.
+-/
 theorem gm_id_of_gm (f : Z' ⟶ Z) [IsOpenImmersion f] (y : Z') {U : Z.Opens} (h : f y ∈ U) {a b : Γ(Z, U)ˣ}
     (e : gm f y U a = gm f y U b) : gm (𝟙 Z) (f y) U a = gm (𝟙 Z) (f y) U b := by
   apply Units.ext
@@ -34,6 +43,9 @@ theorem gm_id_of_gm (f : Z' ⟶ Z) [IsOpenImmersion f] (y : Z') {U : Z.Opens} (h
   apply gs_id_of_gs f y h
   rw [gs_unit f y U h, gs_unit f y U h, e]
 
+/- English proof (translation)
+Establish `h' : f y ∈ f ''ᵁ U` using `⟨y, h, rfl⟩`. Establish `e : (f.app (f ''ᵁ U)).hom ((f.appIso U).inv.hom a) = (Z'.presheaf.map (homOfLE (f.preimage_image_eq U).le).op).hom a` using `congrArg (fun q => q.hom a) (f.appIso_inv_app U)`. Rewrite using `[← gs_res (𝟙 Z') y (f.preimage_image_eq U).le h' a, ← e, gs_pull (𝟙 Z') f y (f ''ᵁ U) h', Category.id_comp]`.
+-/
 theorem gs_push (f : Z' ⟶ Z) [IsOpenImmersion f] (y : Z') {U : Z'.Opens} (h : y ∈ U) (a : Γ(Z', U)) :
     gs f y (f ''ᵁ U) ((f.appIso U).inv.hom a) = gs (𝟙 Z') y U a := by
   have h' : f y ∈ f ''ᵁ U := ⟨y, h, rfl⟩
@@ -50,6 +62,9 @@ structure Part (f : Z' ⟶ Z) (A : LB Z') (C : LB Z) (e : A.ι → C.ι) : Prop 
   g : ∀ i j y, y ∈ A.U i → y ∈ A.U j →
     gm f y (C.U (e i) ⊓ C.U (e j)) (C.g (e i) (e j)) = gm (𝟙 Z') y (A.U i ⊓ A.U j) (A.g i j)
 
+/- English proof (translation)
+Establish `hm : f y ∈ f ''ᵁ A.U i ⊓ f ''ᵁ A.U j` using `⟨⟨y, hi, rfl⟩, ⟨y, hj, rfl⟩⟩`. Establish `hm' : y ∈ A.U i ⊓ A.U j` using `⟨hi, hj⟩`. Use `(gm_res f y _ hm _).trans (Units.ext ?_)` and prove the remaining obligations. Conclude with `(gs_unit f y _ (image_inf_le f _ _ hm) _).symm.trans ((gs_push f y hm' _).trans (gs_unit _ y _ hm' _))`.
+-/
 theorem gm_pushLB (f : Z' ⟶ Z) [IsOpenImmersion f] (A : LB Z') (i j : A.ι) (y : Z') (hi : y ∈ A.U i) (hj : y ∈ A.U j) :
     gm f y (f ''ᵁ A.U i ⊓ f ''ᵁ A.U j) ((pushLB f A).g i j) = gm (𝟙 Z') y (A.U i ⊓ A.U j) (A.g i j) := by
   have hm : f y ∈ f ''ᵁ A.U i ⊓ f ''ᵁ A.U j := ⟨⟨y, hi, rfl⟩, ⟨y, hj, rfl⟩⟩
@@ -57,6 +72,9 @@ theorem gm_pushLB (f : Z' ⟶ Z) [IsOpenImmersion f] (A : LB Z') (i j : A.ι) (y
   refine (gm_res f y _ hm _).trans (Units.ext ?_)
   exact (gs_unit f y _ (image_inf_le f _ _ hm) _).symm.trans ((gs_push f y hm' _).trans (gs_unit _ y _ hm' _))
 
+/- English proof (translation)
+The claim follows from `Sum.inl_injective mem := fun i y => f.apply_mem_image_iff sub := fun i x ⟨y, _, hy⟩ => ⟨y, hy⟩ surj := fun p y hp => by rcases p with i | p · exact ⟨i, rfl⟩ · exact (hB p y hp).elim g := gm_pushLB f A`.
+-/
 theorem part_left (f : Z' ⟶ Z) [IsOpenImmersion f] (A : LB Z') (B : LB Z) (hB : ∀ p y, f y ∉ B.U p) :
     Part f A (sumLB (pushLB f A) B) Sum.inl where
   inj := Sum.inl_injective
@@ -68,6 +86,9 @@ theorem part_left (f : Z' ⟶ Z) [IsOpenImmersion f] (A : LB Z') (B : LB Z) (hB 
     · exact (hB p y hp).elim
   g := gm_pushLB f A
 
+/- English proof (translation)
+The claim follows from `Sum.inr_injective mem := fun i y => f.apply_mem_image_iff sub := fun i x ⟨y, _, hy⟩ => ⟨y, hy⟩ surj := fun p y hp => by rcases p with p | i · exact (hB p y hp).elim · exact ⟨i, rfl⟩ g := gm_pushLB f A`.
+-/
 theorem part_right (f : Z' ⟶ Z) [IsOpenImmersion f] (A : LB Z') (B : LB Z) (hB : ∀ p y, f y ∉ B.U p) :
     Part f A (sumLB B (pushLB f A)) Sum.inr where
   inj := Sum.inr_injective
@@ -81,6 +102,11 @@ theorem part_right (f : Z' ⟶ Z) [IsOpenImmersion f] (A : LB Z') (B : LB Z) (hB
 
 variable {f : Z' ⟶ Z} {A : LB Z'} {C : LB Z} {e : A.ι → C.ι}
 
+/- English proof (translation)
+Take `⟨i, rfl⟩` from `h.surj p y hp`. Take `⟨j, rfl⟩` from `h.surj q y hq`. Take `⟨k, rfl⟩` from `h.surj r y hr`. Rewrite `hp`, `hq`, `hr` using `[h.mem]`. Rewrite using `[h.g _ _ _ hp hq, h.g _ _ _ hq hr, h.g _ _ _ hp hr]`.
+
+Conclude with `gm_cocycle hA (𝟙 Z') y hp hq hr`.
+-/
 theorem Part.cocycle (h : Part f A C e) (hA : A.IsLB) (y : Z') {p q r : C.ι} (hp : f y ∈ C.U p) (hq : f y ∈ C.U q)
     (hr : f y ∈ C.U r) : gm f y _ (C.g p q) * gm f y _ (C.g q r) = gm f y _ (C.g p r) := by
   obtain ⟨i, rfl⟩ := h.surj p y hp
@@ -90,17 +116,30 @@ theorem Part.cocycle (h : Part f A C e) (hA : A.IsLB) (y : Z') {p q r : C.ι} (h
   rw [h.g _ _ _ hp hq, h.g _ _ _ hq hr, h.g _ _ _ hp hr]
   exact gm_cocycle hA (𝟙 Z') y hp hq hr
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => Set.mem_iInter.1 h 0, fun h => Set.mem_iInter.2 fun k => by obtain rfl : k = 0 := Subsingleton.elim _ _ exact h⟩`.
+-/
 theorem mem_wchart {X : Scheme.{0}} (L : LB X) (J : Fin 1 → L.ι) (x : X) :
     x ∈ LB.wchart L (fun _ : Fin 1 => 𝟙 X) J ↔ x ∈ L.U (J 0) :=
   ⟨fun h => Set.mem_iInter.1 h 0, fun h => Set.mem_iInter.2 fun k => by
     obtain rfl : k = 0 := Subsingleton.elim _ _
     exact h⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : r z ∈ U`. Rewrite using `[gs_eq r z U h, map_zero, map_zero]`. Conclude with `dif_neg h`.
+-/
 theorem gs_zero' {X Y : Scheme.{0}} (r : Y ⟶ X) (z : Y) (U : X.Opens) : gs r z U 0 = 0 := by
   by_cases h : r z ∈ U
   · rw [gs_eq r z U h, map_zero, map_zero]
   · exact dif_neg h
 
+/- English proof (translation)
+Distinguish the cases in `hJ : ∃ i, e i = J 0`. Take `⟨i, hi⟩` from `hJ`. Establish `le : LB.wchart C (fun _ : Fin 1 => 𝟙 Z) J ≤ f ''ᵁ LB.wchart A (fun _ : Fin 1 => 𝟙 Z') fun _ => i`. Introduce `x hx`. Establish `hx'` using `(mem_wchart C J x).1 hx`.
+
+Rewrite `hx'` using `[← hi]`. Take `⟨y, rfl⟩` from `h.sub i x hx'`. Conclude with `⟨y, (mem_wchart A _ y).2 ((h.mem i y).1 hx'), rfl⟩`. Use `⟨(Z.presheaf.map (homOfLE le).op).hom ((f.appIso _).inv.hom (s.f fun _ => i)), fun i' y hi' hy => ?_, fun x hx => dif_neg fun hx' => hx ?_⟩` and prove the remaining obligations. Take `rfl : i' = i` from `h.inj (hi'.trans hi.symm)`.
+
+Establish `hm : f y ∈ LB.wchart C (fun _ : Fin 1 => 𝟙 Z) J` using `(mem_wchart C J _).2 (hi ▸ (h.mem i' y).2 hy)`. Conclude with `(gs_res f y le hm _).trans (gs_push f y ((mem_wchart A _ y).2 hy) _)`. Take `⟨y, -, hy⟩` from `le hx'`. Conclude with `⟨y, hy⟩`. Conclude with `⟨0, fun i y hi _ => (hJ ⟨i, hi⟩).elim, fun x _ => gs_zero' _ _ _⟩`.
+-/
 theorem Part.exists_local [IsOpenImmersion f] (h : Part f A C e) {d : ℕ} (s : H0 A d) (J : Fin 1 → C.ι) :
     ∃ t : Γ(Z, LB.wchart C (fun _ : Fin 1 => 𝟙 Z) J),
       (∀ i y, e i = J 0 → y ∈ A.U i → gs f y _ t = gs (𝟙 Z') y _ (s.f fun _ => i)) ∧
@@ -123,6 +162,31 @@ theorem Part.exists_local [IsOpenImmersion f] (h : Part f A C e) {d : ℕ} (s : 
       exact ⟨y, hy⟩
   · exact ⟨0, fun i y hi _ => (hJ ⟨i, hi⟩).elim, fun x _ => gs_zero' _ _ _⟩
 
+/- English proof (translation)
+Use `choose t ht h0 using h.exists_local s`. Use `⟨⟨t, fun J J' => fn_ext fun x hx => ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hf : x ∈ Set.range f`. Take `⟨y, rfl⟩` from `hf`. Apply `gs_id_of_gs f y hx` to reduce the goal to its premises.
+
+Establish `h1` using `(mem_wchart C J _).1 hx.1`. Establish `h2` using `(mem_wchart C J' _).1 hx.2`. Take `⟨i, hi⟩` from `h.surj _ y h1`. Take `⟨i', hi'⟩` from `h.surj _ y h2`. Establish `k1 : y ∈ A.U i` using `(h.mem i y).1 (hi ▸ h1)`.
+
+Establish `k2 : y ∈ A.U i'` using `(h.mem i' y).1 (hi' ▸ h2)`. Establish `w1` using `(mem_wchart A (fun _ => i) y).2 k1`. Establish `w2` using `(mem_wchart A (fun _ => i') y).2 k2`. Establish `hm : (𝟙 Z' : Z' ⟶ Z') y ∈ LB.wchart A (fun _ : Fin 1 => 𝟙 Z') (fun _ => i) ⊓ LB.wchart A (fun _ : Fin 1 => 𝟙 Z') (fun _ => i')` using `⟨w1, w2⟩`. Establish `c` using `congrArg (gs (𝟙 Z') y _) (s.compat (fun _ => i) (fun _ => i'))`.
+
+Establish `c'` using `(gs_res (𝟙 Z') y inf_le_left hm _).symm.trans (c.trans ((gs_mul _ y _ hm _ _).trans (congrArg₂ (· * ·) ((gs_unit _ y _ hm _).trans (congrArg Units.val (gm_linComb A _ _ (𝟙 Z') y _ _ w1 w2))) (gs_res (𝟙 Z') y inf_le_right hm _))))`. Use `((gs_res f y inf_le_left hx _).trans (ht J i y hi k1)).trans (c'.trans (Eq.symm ?_))` and prove the remaining obligations. Use `(gs_mul f y _ hx _ _).trans (congrArg₂ (· * ·) ((gs_unit f y _ hx _).trans (congrArg Units.val ((gm_linComb C _ _ f y J J' hx.1 hx.2).trans ?_))) ((gs_res f y inf_le_right hx _).trans (ht J' i' y hi' k2)))` and prove the remaining obligations. Use `Finset.prod_congr rfl fun k _ => congrArg (· ^ (d : ℤ)) ?_` and prove the remaining obligations. Take `rfl : k = 0` from `Subsingleton.elim _ _`.
+
+Rewrite using `[Category.comp_id, Category.comp_id, ← hi, ← hi']`. Conclude with `h.g i i' y k1 k2`. Use `((gs_res _ x inf_le_left hx _).trans (h0 J x hf)).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(gs_mul _ x _ hx _ _).trans ?_` and prove the remaining obligations. Conclude with `mul_eq_zero_of_right _ ((gs_res _ x inf_le_right hx _).trans (h0 J' x hf))`.
+
+Establish `key : ∀ (J : Fin 1 → C.ι) (y : Z'), f y ∈ LB.wchart C (fun _ : Fin 1 => 𝟙 Z) J → (f y ∈ Z.basicOpen (t J) ↔ IsUnit (gs f y _ (t J)))` using `fun J y hy => by`. Rewrite using `[gs_eq_stalkMap f y _ hy, isUnit_map_iff, gs_eq (𝟙 Z) (f y) _ hy]`. Conclude with `Z.mem_basicOpen _ _ hy`. Establish `key' : ∀ (j : Fin 1 → A.ι) (y : Z') (hy : y ∈ LB.wchart A (fun _ : Fin 1 => 𝟙 Z') j), (y ∈ Z'.basicOpen (s.f j) ↔ IsUnit (gs (𝟙 Z') y _ (s.f j)))` using `fun j y hy => by`. Conclude with `(Z'.mem_basicOpen _ _ hy).trans (iff_of_eq (congrArg IsUnit (gs_eq (𝟙 Z') y _ hy (s.f j)).symm))`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨J, hJ⟩` from `Opens.mem_iSup.1 hx`. Establish `hw : x ∈ LB.wchart C (fun _ : Fin 1 => 𝟙 Z) J` using `Z.basicOpen_le _ hJ`.
+
+Distinguish the cases in `hf : x ∈ Set.range f`. Take `⟨y, rfl⟩` from `hf`. Establish `h1` using `(mem_wchart C J _).1 hw`. Take `⟨i, hi⟩` from `h.surj _ y h1`. Establish `k1 : y ∈ A.U i` using `(h.mem i y).1 (hi ▸ h1)`.
+
+Establish `u` using `(key J y hw).1 hJ`. Rewrite `u` using `[ht J i y hi k1]`. Conclude with `⟨y, Opens.mem_iSup.2 ⟨fun _ => i, (key' _ y ((mem_wchart A _ y).2 k1)).2 u⟩, rfl⟩`. Establish `u : IsUnit (gs (𝟙 Z) x _ (t J))`. Rewrite using `[gs_eq (𝟙 Z) x _ hw]`.
+
+Conclude with `(Z.mem_basicOpen _ _ hw).1 hJ`. Rewrite `u` using `[h0 J x hf]`. Conclude with `(not_isUnit_zero u).elim`. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 hy`.
+
+Take `⟨i, rfl⟩ : ∃ i, j = fun _ => i` from `⟨j 0, funext fun k => congrArg j (Subsingleton.elim _ _)⟩`. Establish `hw : y ∈ LB.wchart A (fun _ : Fin 1 => 𝟙 Z') (fun _ => i)` using `Z'.basicOpen_le _ hj`. Establish `k1 : y ∈ A.U i` using `(mem_wchart A _ y).1 hw`. Establish `u` using `(key' _ y hw).1 hj`. Rewrite `u` using `[← ht (fun _ => e i) i y rfl k1]`.
+
+Conclude with `Opens.mem_iSup.2 ⟨fun _ => e i, (key _ y ((mem_wchart C _ _).2 ((h.mem i y).2 k1))).2 u⟩`.
+-/
 theorem Part.exists_sec [IsOpenImmersion f] (h : Part f A C e) {d : ℕ} (s : H0 A d) :
     ∃ t : H0 C d, nonzeroLocus t = f ''ᵁ nonzeroLocus s := by
   choose t ht h0 using h.exists_local s
@@ -189,6 +253,11 @@ theorem Part.exists_sec [IsOpenImmersion f] (h : Part f A C e) {d : ℕ} (s : H0
       rw [← ht (fun _ => e i) i y rfl k1] at u
       exact Opens.mem_iSup.2 ⟨fun _ => e i, (key _ y ((mem_wchart C _ _).2 ((h.mem i y).2 k1))).2 u⟩
 
+/- English proof (translation)
+Take `⟨d, s, hd, hy, haf⟩` from `ha y`. Take `⟨t, ht⟩` from `h.exists_sec s`. Use `⟨d, t, hd, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`. Conclude with `⟨y, hy, rfl⟩`.
+
+Rewrite using `[ht]`. Conclude with `haf.image_of_isOpenImmersion f`.
+-/
 theorem Part.ample_at [IsOpenImmersion f] (h : Part f A C e) (ha : AmpleFam A) (y : Z') :
     ∃ (d : ℕ) (s : H0 C d), 1 ≤ d ∧ f y ∈ nonzeroLocus s ∧ IsAffineOpen (nonzeroLocus s) := by
   obtain ⟨d, s, hd, hy, haf⟩ := ha y
@@ -197,6 +266,21 @@ theorem Part.ample_at [IsOpenImmersion f] (h : Part f A C e) (ha : AmpleFam A) (
   · rw [ht]; exact ⟨y, hy, rfl⟩
   · rw [ht]; exact haf.image_of_isOpenImmersion f
 
+/- English proof (translation)
+Introduce `Z Z₁ Z₂ f₁ f₂ _ _ A₁ A₂ hc h₁ h₂ a₁ a₂`. Establish `dj : ∀ y₁ y₂, f₁ y₁ ≠ f₂ y₂` using `fun y₁ y₂ e => Set.disjoint_left.1 hc.disjoint ⟨y₁, rfl⟩ ⟨y₂, e.symm⟩`. Establish `cov : ∀ x : Z, (∃ y, f₁ y = x) ∨ ∃ y, f₂ y = x` using `fun x => show x ∈ Set.range f₁ ⊔ Set.range f₂ from hc.sup_eq_top.ge trivial`. Establish `P₁` using `part_left f₁ A₁ (pushLB f₂ A₂) fun p y ⟨y', _, e⟩ => dj y y' e.symm`. Establish `P₂` using `part_right f₂ A₂ (pushLB f₁ A₁) fun p y ⟨y', _, e⟩ => dj y' y e`.
+
+Use `set C := sumLB (pushLB f₁ A₁) (pushLB f₂ A₂)`. Establish `co : ∀ (x : Z) (p q r : C.ι), x ∈ C.U p → x ∈ C.U q → x ∈ C.U r → gm (𝟙 Z) x _ (C.g p q) * gm (𝟙 Z) x _ (C.g q r) = gm (𝟙 Z) x _ (C.g p r)`. Introduce `x p q r hp hq hr`. Establish `hm : x ∈ C.U p ⊓ C.U q ⊓ C.U r` using `⟨⟨hp, hq⟩, hr⟩`. Establish `l1 : C.U p ⊓ C.U q ⊓ C.U r ≤ C.U p ⊓ C.U q` using `inf_le_left`.
+
+Establish `l2 : C.U p ⊓ C.U q ⊓ C.U r ≤ C.U q ⊓ C.U r` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Establish `l3 : C.U p ⊓ C.U q ⊓ C.U r ≤ C.U p ⊓ C.U r` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`. Rewrite using `[← gm_res (𝟙 Z) x l1 hm, ← gm_res (𝟙 Z) x l2 hm, ← gm_res (𝟙 Z) x l3 hm, ← map_mul]`. Break down `cov x with ⟨y, rfl⟩ | ⟨y, rfl⟩` into its components or cases. Apply `gm_id_of_gm f₁ y hm` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, gm_res _ y l1 hm, gm_res _ y l2 hm, gm_res _ y l3 hm]`. Conclude with `P₁.cocycle h₁ y hp hq hr`. Apply `gm_id_of_gm f₂ y hm` to reduce the goal to its premises. Rewrite using `[map_mul, gm_res _ y l1 hm, gm_res _ y l2 hm, gm_res _ y l3 hm]`. Conclude with `P₂.cocycle h₂ y hp hq hr`.
+
+Use `⟨⟨top_le_iff.1 fun x _ => ?_, fun p => unit_ext fun x hx => ?_, fun p q r => unit_ext fun x hx => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Break down `cov x with ⟨y, rfl⟩ | ⟨y, rfl⟩` into its components or cases. Take `⟨i, hi⟩` from `exists_chart h₁ y`. Conclude with `Opens.mem_iSup.2 ⟨_, (P₁.mem i y).2 hi⟩`. Take `⟨i, hi⟩` from `exists_chart h₂ y`.
+
+Conclude with `Opens.mem_iSup.2 ⟨_, (P₂.mem i y).2 hi⟩`. Rewrite using `[gm_res _ x _ hx, map_one]`. Conclude with `mul_eq_left.1 (co x p p p hx hx hx)`. Rewrite using `[map_mul, gm_res _ x _ hx, gm_res _ x _ hx, gm_res _ x _ hx]`. Conclude with `co x p q r hx.1.1 hx.1.2 hx.2`.
+
+Break down `cov x with ⟨y, rfl⟩ | ⟨y, rfl⟩` into its components or cases. Conclude with `P₁.ample_at a₁ y`. Conclude with `P₂.ample_at a₂ y`.
+-/
 theorem sumLB_isLB_ampleFam : ∀ (Z Z₁ Z₂ : Scheme.{0}) (f₁ : Z₁ ⟶ Z) (f₂ : Z₂ ⟶ Z) [IsOpenImmersion f₁]
     [IsOpenImmersion f₂] (A₁ : LB Z₁) (A₂ : LB Z₂), IsCompl (Set.range f₁) (Set.range f₂) → A₁.IsLB → A₂.IsLB →
     AmpleFam A₁ → AmpleFam A₂ →

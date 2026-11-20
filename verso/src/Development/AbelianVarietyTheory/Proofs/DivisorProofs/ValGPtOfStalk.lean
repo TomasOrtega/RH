@@ -12,6 +12,23 @@ open Classical
 noncomputable section
 namespace GlobalTheory.Poinc.TestAtPt
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ M x R _ _ j _ p _ y ev hy c`. Establish `hsp : ∀ w, (spMap j ≫ M.Z.fromSpecStalk x) w ⤳ x` using `fun w => by`. Establish `: M.Z.fromSpecStalk x (spMap j w) ∈ Set.range (M.Z.fromSpecStalk x)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Conclude with `this`.
+
+Take `⟨U, hx, f, hf⟩` from `M.Z.presheaf.germ_exist ((M.stalkEquiv x).symm c)`. Establish `hc : c = ⟨valF M.pt U f, RatModel.valF_mem_O hx f⟩`. Rewrite using `[← RatModel.stalkEquiv_germ hx, hf, RingEquiv.apply_symm_apply]`. Establish `hU : ⊤ ≤ (spMap j ≫ M.Z.fromSpecStalk x) ⁻¹ᵁ U` using `fun w _ => (hsp w).mem_open U.isOpen hx`. Establish `hU0 : ⊤ ≤ M.Z.fromSpecStalk x ⁻¹ᵁ U` using `fun w _ => by`.
+
+Establish `: M.Z.fromSpecStalk x w ∈ Set.range (M.Z.fromSpecStalk x)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Conclude with `this.mem_open U.isOpen hx`. Establish `hg : gPt p ≫ y = spMap ((OO p).subtype.comp ev) ≫ (spMap j ≫ M.Z.fromSpecStalk x)`. Rewrite using `[← hy, ← Category.assoc]`.
+
+Use `congr 1`. Rewrite using `[gPt, spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hU' : ⊤ ≤ (gPt p ≫ y) ⁻¹ᵁ U`. Rewrite using `[hg]`.
+
+Conclude with `fun w _ => hU (x := spMap ((OO p).subtype.comp ev) w) trivial`. Rewrite using `[RatModel.val_eq ((top_le_preimage_iff _ _).1 hU') (f := f) (hc ▸ rfl), GlobalTheory.Points.valF_eq_valR, hg, GlobalTheory.Points.valR_spMap_comp _ _ U hU]`. Establish `e1 : valR (spMap j ≫ M.Z.fromSpecStalk x) U f = j (valR (A` using `M.Z.presheaf.stalk x) (M.Z.fromSpecStalk x) U f) := GlobalTheory.Points.valR_spMap_comp (C := M.Z.presheaf.stalk x) j (M.Z.fromSpecStalk x) U hU0 f`. Establish `e2 : valR (A` using `M.Z.presheaf.stalk x) (M.Z.fromSpecStalk x) U f = M.Z.presheaf.germ U x hx f := by`. Establish `eA : (M.Z.fromSpecStalk x).appLE U ⊤ hU0 = M.Z.presheaf.germ U x hx ≫ (Scheme.ΓSpecIso (M.Z.presheaf.stalk x)).inv`.
+
+Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hx]`. Simplify using `only [Category.assoc, ← Functor.map_comp]`. Establish `e : ((homOfLE le_top).op ≫ (homOfLE hU0).op : Opposite.op (⊤ : (Spec (M.Z.presheaf.stalk x)).Opens) ⟶ Opposite.op ⊤) = 𝟙 _` using `rfl`. Rewrite using `[e, CategoryTheory.Functor.map_id, Category.comp_id]`. Unfold `valR`.
+
+Use `erw [dif_pos hU0, eA]`. Simplify using `only [CommRingCat.comp_apply]`. Use `erw [Iso.inv_hom_id_apply]`. Both sides reduce to the same expression. Rewrite using `[e1]`.
+
+Conclude with `(congrArg (fun t => ((OO p).subtype.comp ev) (j t)) (e2.trans hf)).symm`.
+-/
 theorem val_gPt_of_stalk : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (x : M.Z) (R : Type) [CommRing R] [IsLocalRing R] (j : M.Z.presheaf.stalk x →+* R), IsLocalHom j → ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (ev : R →+* OO p), spMap ev ≫ (spMap j ≫ M.Z.fromSpecStalk x) = y → ∀ c : M.O x, ((ev (j ((M.stalkEquiv x).symm c)) : OO p) : PadicAlgCl p) = M.val (gPt p ≫ y) (c : Ω) := by
   intro o Ω _ _ _ M x R _ _ j _ p _ y ev hy c
   have hsp : ∀ w, (spMap j ≫ M.Z.fromSpecStalk x) w ⤳ x := fun w => by

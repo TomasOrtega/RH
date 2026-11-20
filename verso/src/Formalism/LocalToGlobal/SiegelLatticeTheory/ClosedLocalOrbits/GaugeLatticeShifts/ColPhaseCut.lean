@@ -46,6 +46,9 @@ def PhaseAt : Prop :=
       chiL X (kOf X u u' (cs.h ρ : X.B.I.Gf) (cs'.h ρ' : X.B.I.Gf) t.pt) else 0) =
     psiG TR (levi TR (kOf X u u' (cs.h ρ : X.B.I.Gf) (cs'.h ρ' : X.B.I.Gf) t.pt))
 
+/- English proof (translation)
+Introduce `t ρ ρ' hρ hρ'`. Rewrite using `[hP t ρ ρ' hρ hρ', hL t ρ ρ' hρ hρ']`.
+-/
 theorem colPhase_of (hL : LeviCols TR F0 F0' cs cs') (hP : PhaseAt TR F0 F0' cs cs') :
     ColPhase F0 F0' TR cs cs' (scOf TR cs) (scOf TR cs') := by
   intro t ρ ρ' hρ hρ'

@@ -4,6 +4,15 @@ universe u_1
 
 namespace GlobalTheory.ProductOfFnSingle
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => exact j.elim0`. Consider the case `succ d ih`. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Distinguish the cases in `hj : j = 0`.
+
+Substitute `hj` using the available equality. Establish `hrest : List.prod (List.ofFn fun i : Fin d => g i.succ) = 1`. Apply `List.prod_eq_one` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [List.mem_ofFn] at hx`.
+
+Take `⟨i, rfl⟩` from `hx`. Conclude with `h _ (Fin.succ_ne_zero i)`. Rewrite using `[hrest, mul_one]`. Take `⟨j', rfl⟩` from `Fin.exists_succ_eq.mpr hj`. Rewrite using `[h 0 (fun e => hj e.symm), one_mul]`.
+
+Conclude with `ih (fun i => g i.succ) j' (fun i hi => h _ (fun e => hi (Fin.succ_injective _ e)))`.
+-/
 theorem prod_ofFn_eq_single {M : Type u_1} [inst : Monoid M] {d : ℕ} (g : Fin d → M) (j : Fin d)
     (h : ∀ (i : Fin d), i ≠ j → g i = (1 : M)) : List.prod (List.ofFn g) = g j := by
   induction d with

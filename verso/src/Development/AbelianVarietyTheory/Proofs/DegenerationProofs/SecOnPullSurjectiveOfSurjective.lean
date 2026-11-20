@@ -14,6 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbLaw
 
+/- English proof (translation)
+Introduce `A A' _ _ g hg X X' f f' β hβ H hH D hD y`. Use `letI := g.toAlgebra`. Take `⟨z, hz⟩` from `(SecOnR.baseChangeHom_bijective (R := A) (R' := A') hH hβ hD rfl).2 y`. Take `⟨x, rfl⟩` from `TensorProduct.mk_surjective A (SecOnR f H D) A' hg z`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `(SecOnR.baseChangeHom_tmul (R := A) (R' := A') hβ.w le_rfl 1 x).symm.trans hz`. Rewrite `h` using `[one_smul]`. Conclude with `(SecOn.pullLE_self β x).symm.trans h`.
+-/
 theorem secOn_pull_surjective_of_surjective :
     ∀ (A A' : Type) [CommRing A] [CommRing A'] (g : A →+* A'), Function.Surjective g → ∀ (X X' : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of A)) (f' : X' ⟶ Spec (CommRingCat.of A')) (β : X' ⟶ X), IsPullback β f' f (Spec.map (CommRingCat.ofHom g)) → ∀ H : LB X, H.IsLB → ∀ D : X.Opens, IsAffineOpen D → Function.Surjective (SecOn.pull H β D) := by
   intro A A' _ _ g hg X X' f f' β hβ H hH D hD y

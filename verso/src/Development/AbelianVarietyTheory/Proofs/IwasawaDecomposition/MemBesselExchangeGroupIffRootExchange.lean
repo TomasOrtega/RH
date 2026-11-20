@@ -15,21 +15,36 @@ open GlobalTheory.BesselCompare (mt_mul mt_one hA_add hA_smul hA_smul_right hA_v
 
 variable {D : D7} {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V}
 
+/- English proof (translation)
+Rewrite using `[← hA_smul_right, hy]`.
+-/
 theorem hA_half {ε : AE D} {y : Fin B.rank → AE D} (hy : ε • y = y) (x) : hA B x y = cA D ε * hA B x y := by
   rw [← hA_smul_right, hy]
 
+/- English proof (translation)
+Rewrite using `[hA_half hy, ← mul_assoc, h0, zero_mul]`.
+-/
 theorem eps_hA {ε : AE D} (h0 : ε * cA D ε = 0) {y : Fin B.rank → AE D} (hy : ε • y = y) (x) :
     ε * hA B x y = 0 := by
   rw [hA_half hy, ← mul_assoc, h0, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[← hy, smul_smul, mul_comm, eps_hA h0 hy', zero_smul]`.
+-/
 theorem hA_smul_zero {ε : AE D} (h0 : ε * cA D ε = 0) {y y' : Fin B.rank → AE D} (hy : ε • y = y)
     (hy' : ε • y' = y') (x) : hA B x y' • y = 0 := by
   rw [← hy, smul_smul, mul_comm, eps_hA h0 hy', zero_smul]
 
+/- English proof (translation)
+Rewrite using `[← hy, hA_smul, eps_hA h0 hy']`.
+-/
 theorem hA_halves {ε : AE D} (h0 : ε * cA D ε = 0) {y y' : Fin B.rank → AE D} (hy : ε • y = y)
     (hy' : ε • y' = y') : hA B y y' = 0 := by
   rw [← hy, hA_smul, eps_hA h0 hy']
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[mulVec_mul, hk', hk]`. Simplify using `only [hA_add, hA_sub, hA_smul, hA_add_right, hv, hv', hA_halves h0 hy' hy, mul_zero, add_zero, sub_zero, add_smul, smul_add, mul_comm (hA B x y'), mul_smul, hA_smul_zero h0 hy hy', smul_zero, zero_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem isK_mul {ε : AE D} (h0 : ε * cA D ε = 0) {v y y' : Fin B.rank → AE D} (hy : ε • y = y)
     (hy' : ε • y' = y') (hv' : hA B y' v = 0) (hv : hA B v y = 0) {k k' : GA D B} (hk : IsK B v y k)
     (hk' : IsK B v y' k') : IsK B v (y + y') (k * k') := by
@@ -39,10 +54,16 @@ theorem isK_mul {ε : AE D} (h0 : ε * cA D ε = 0) {v y y' : Fin B.rank → AE 
     add_smul, smul_add, mul_comm (hA B x y'), mul_smul, hA_smul_zero h0 hy hy', smul_zero, zero_smul]
   abel
 
+/- English proof (translation)
+Rewrite using `[hk, add_sub_assoc, add_sub_cancel_left, smul_sub, smul_smul, eps_hA h0 hy, zero_smul, zero_sub, smul_comm, hy]`.
+-/
 theorem isK_eps {ε : AE D} (h0 : ε * cA D ε = 0) {v y : Fin B.rank → AE D} (hy : ε • y = y) {k : GA D B}
     (hk : IsK B v y k) (x) : ε • ((mt B k).mulVec x - x) = -(hA B x v • y) := by
   rw [hk, add_sub_assoc, add_sub_cancel_left, smul_sub, smul_smul, eps_hA h0 hy, zero_smul, zero_sub, smul_comm, hy]
 
+/- English proof (translation)
+Rewrite using `[suppAt_iff_vec]`. Introduce `x`. Establish `hc : cA D ε • y = 0` using `by rw [← hy, smul_smul, mul_comm, h0, zero_smul]`. Rewrite using `[add_smul, isK_eps h0 hy hk, hk, add_sub_assoc, add_sub_cancel_left, smul_sub, smul_smul, ← hA_half hy, smul_comm, hc, smul_zero]`. Normalize the expressions using the abelian group laws.
+-/
 theorem isK_supp {ε : AE D} (h1 : ε * ε = ε) (h0 : ε * cA D ε = 0) {v y : Fin B.rank → AE D} (hy : ε • y = y)
     {k : GA D B} (hk : IsK B v y k) : SuppAt ε B k := by
   rw [suppAt_iff_vec]
@@ -52,6 +73,11 @@ theorem isK_supp {ε : AE D} (h1 : ε * ε = ε) (h0 : ε * cA D ε = 0) {v y : 
     smul_comm, hc, smul_zero]
   abel
 
+/- English proof (translation)
+Use `mt_ext fun x => ?_` and prove the remaining obligations. Rewrite using `[mt_one, Matrix.one_mulVec, ← sub_eq_zero, ← suppAt_iff_vec.1 hu x, add_smul, h, zero_add]`. Use `hA_nondeg fun y => ?_` and prove the remaining obligations. Establish `e : (mt B u).mulVec (ε • y) = ε • y`. Use `h y` as an intermediate fact.
+
+Rewrite `this` using `[smul_sub, sub_eq_zero, ← Matrix.mulVec_smul]`. Then use the resulting hypothesis. Rewrite using `[hA_smul, ← hA_smul_right, hA_sub]`. Use `conv_lhs => rw [← e]`. Rewrite using `[hA_mt, e, sub_self]`.
+-/
 theorem eq_one_of_half {ε : AE D} {u : GA D B} (hu : SuppAt ε B u) (h : ∀ x, ε • ((mt B u).mulVec x - x) = 0) :
     u = 1 := by
   refine mt_ext fun x => ?_
@@ -64,18 +90,35 @@ theorem eq_one_of_half {ε : AE D} {u : GA D B} (hu : SuppAt ε B u) (h : ∀ x,
   conv_lhs => rw [← e]
   rw [hA_mt, e, sub_self]
 
+/- English proof (translation)
+Rewrite using `[iA, GlobalTheory.BesselCompare.frameMat_eq, GlobalTheory.BesselCompare.eMat_mulVec]`.
+-/
 theorem iA_eq (t : Fin A.rank → AE D) : iA ι t = ∑ l, t l • vecA B (ι (A.frame l)) := by
   rw [iA, GlobalTheory.BesselCompare.frameMat_eq, GlobalTheory.BesselCompare.eMat_mulVec]
 
+/- English proof (translation)
+The claim follows from `hA_vec_iA (dual_perp d i) t`.
+-/
 theorem dual_iA (d : BesselDatum A B ι) (i) (t) : hA B (vecA B (dual d i)) (iA ι t) = 0 :=
   hA_vec_iA (dual_perp d i) t
 
+/- English proof (translation)
+Rewrite using `[← hA_herm, dual_iA, map_zero]`.
+-/
 theorem iA_dual (d : BesselDatum A B ι) (i) (t) : hA B (iA ι t) (vecA B (dual d i)) = 0 := by
   rw [← hA_herm, dual_iA, map_zero]
 
+/- English proof (translation)
+Rewrite using `[← hA_herm, hA_vec, dual_perp, map_zero, map_zero]`.
+-/
 theorem vec_dual (d : BesselDatum A B ι) (i) (x : A.V) : hA B (vecA B (ι x)) (vecA B (dual d i)) = 0 := by
   rw [← hA_herm, hA_vec, dual_perp, map_zero, map_zero]
 
+/- English proof (translation)
+Establish `hy : ε • iA ι t = iA ι t` using `by rw [← iA_smul, ht]`. Take `⟨p1, p2, -⟩` from `GlobalTheory.T.besselDatum_adelicVector_decomposition D A B ι d`. Unfold `actV`. Use `⟨isK_supp h1 h0 hy hk, fun x => ?_, fun l => ?_, fun l hl => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isK_eps h0 hy hk, vec_dual, zero_smul, neg_zero]`.
+
+Rewrite using `[isK_eps h0 hy hk, hA_vec, p2, map_zero, zero_smul, neg_zero]`. Rewrite using `[isK_eps h0 hy hk, hA_vec, p1, if_neg hl, map_zero, zero_smul, neg_zero]`. Rewrite using `[isK_eps h0 hy hk, hA_vec, p1, if_pos rfl, map_one, one_smul]`.
+-/
 theorem mem_exSet (d : BesselDatum A B ι) {ε : AE D} (h1 : ε * ε = ε) (h0 : ε * cA D ε = 0) (i) {t} (ht : ε • t = t)
     {k : GA D B} (hk : IsK B (vecA B (dual d i)) (iA ι t) k) :
     SuppAt ε B k ∧
@@ -92,14 +135,23 @@ theorem mem_exSet (d : BesselDatum A B ι) {ε : AE D} (h1 : ε * ε = ε) (h0 :
   · rw [isK_eps h0 hy hk, hA_vec, p1, if_neg hl, map_zero, zero_smul, neg_zero]
   · rw [isK_eps h0 hy hk, hA_vec, p1, if_pos rfl, map_one, one_smul]
 
+/- English proof (translation)
+Take `⟨K, -, hK⟩` from `GlobalTheory.T.exists_continuous_unitaryRootExchangeMap D B ε h0 (vecA B (dual d i))`. Conclude with `⟨_, hK ⟨iA ι t, by rw [← iA_smul, ht], dual_iA d i t⟩⟩`.
+-/
 theorem exists_k (d : BesselDatum A B ι) {ε : AE D} (h0 : ε * cA D ε = 0) (i) {t} (ht : ε • t = t) :
     ∃ k : GA D B, IsK B (vecA B (dual d i)) (iA ι t) k := by
   obtain ⟨K, -, hK⟩ := GlobalTheory.T.exists_continuous_unitaryRootExchangeMap D B ε h0 (vecA B (dual d i))
   exact ⟨_, hK ⟨iA ι t, by rw [← iA_smul, ht], dual_iA d i t⟩⟩
 
+/- English proof (translation)
+Introduce `x` and use `by rw [mt_one, Matrix.one_mulVec, hA_zero_right, zero_smul, smul_zero, add_zero, sub_zero]`.
+-/
 theorem isK_one (v : Fin B.rank → AE D) : IsK B v 0 1 := fun x => by
   rw [mt_one, Matrix.one_mulVec, hA_zero_right, zero_smul, smul_zero, add_zero, sub_zero]
 
+/- English proof (translation)
+The claim follows from `mt_ext fun x => (h x).trans (h' x).symm`.
+-/
 theorem isK_unique {v y : Fin B.rank → AE D} {k k' : GA D B} (h : IsK B v y k) (h' : IsK B v y k') : k = k' :=
   mt_ext fun x => (h x).trans (h' x).symm
 
@@ -120,12 +172,18 @@ def kGrp (d : BesselDatum A B ι) {ε : AE D} (h0 : ε * cA D ε = 0) (i : Fin (
     rw [inv_eq_of_mul_eq_one_right (isK_unique this (isK_one _))]
     exact ⟨-t, ht', hk⟩
 
+/- English proof (translation)
+Use `Finset.sum_induction _ (fun x => L.mulVec x = 0) (fun x y hx hy => ?_) (Matrix.mulVec_zero _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add, hx, hy, add_zero]`. Rewrite using `[Matrix.mulVec_smul, hu, smul_zero]`.
+-/
 theorem mulVec_comb (L : Matrix (Fin B.rank) (Fin B.rank) (AE D)) {a : ℕ} (u : Fin a → Fin B.rank → AE D)
     (hu : ∀ i, L.mulVec (u i) = 0) (r : Fin a → AE D) : L.mulVec (∑ i, r i • u i) = 0 := by
   refine Finset.sum_induction _ (fun x => L.mulVec x = 0) (fun x y hx hy => ?_) (Matrix.mulVec_zero _) fun i _ => ?_
   · rw [Matrix.mulVec_add, hx, hy, add_zero]
   · rw [Matrix.mulVec_smul, hu, smul_zero]
 
+/- English proof (translation)
+Take `⟨t, e⟩` from `(GlobalTheory.T.besselDatum_adelicVector_decomposition D A B ι d).2.2 x`. Rewrite using `[e, iA_eq, Matrix.mulVec_add, Matrix.mulVec_add, mulVec_comb L _ (fun l => a1 (A.frame l)), mulVec_comb L _ a3, mulVec_comb L _ a2, add_zero, add_zero]`.
+-/
 theorem mulVec_zero_of (d : BesselDatum A B ι) (L : Matrix (Fin B.rank) (Fin B.rank) (AE D))
     (a1 : ∀ x, L.mulVec (vecA B (ι x)) = 0) (a2 : ∀ l, L.mulVec (vecA B (d.f l)) = 0)
     (a3 : ∀ l, L.mulVec (vecA B (d.aux l)) = 0) (x) : L.mulVec x = 0 := by
@@ -133,6 +191,11 @@ theorem mulVec_zero_of (d : BesselDatum A B ι) (L : Matrix (Fin B.rank) (Fin B.
   rw [e, iA_eq, Matrix.mulVec_add, Matrix.mulVec_add, mulVec_comb L _ (fun l => a1 (A.frame l)),
     mulVec_comb L _ a3, mulVec_comb L _ a2, add_zero, add_zero]
 
+/- English proof (translation)
+Use `inv_mul_eq_one.1 (eq_one_of_half (suppAt_mul (suppAt_inv k1) g1) fun x => ?_)` and prove the remaining obligations. Establish `e : ε • (mt B g).mulVec x = ε • (mt B k).mulVec x`. Use `h x` as an intermediate fact. Rewrite `this` using `[smul_sub, smul_sub, sub_left_inj]`. Then use the resulting hypothesis. Use `congrArg (mt B k⁻¹).mulVec e` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mulVec_smul, Matrix.mulVec_smul, mulVec_inv_cancel, ← mulVec_mul]`. Rewrite using `[smul_sub, this, sub_self]`.
+-/
 theorem eq_of_half {ε : AE D} {g k : GA D B} (g1 : SuppAt ε B g) (k1 : SuppAt ε B k)
     (h : ∀ x, ε • ((mt B g).mulVec x - x) = ε • ((mt B k).mulVec x - x)) : k = g := by
   refine inv_mul_eq_one.1 (eq_one_of_half (suppAt_mul (suppAt_inv k1) g1) fun x => ?_)
@@ -144,6 +207,17 @@ theorem eq_of_half {ε : AE D} {g k : GA D B} (g1 : SuppAt ε B g) (k1 : SuppAt 
   rw [smul_sub, this, sub_self]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Take `⟨g1, g2, g3, g4, y, g5⟩` from `hg`. Establish `ht : ε • (-(ε • y)) = -(ε • y)` using `by rw [smul_neg, smul_smul, h1]`. Take `⟨k, hk⟩` from `exists_k d h0 i ht`. Take `⟨k1, k2, k3, k4, k5⟩` from `mem_exSet d h1 h0 i ht hk`. Take `⟨L, hL⟩ : ∃ L : Matrix (Fin B.rank) (Fin B.rank) (AE D), ∀ x, L.mulVec x = ε • ((mt B g).mulVec x - x) - ε • ((mt B k).mulVec x - x)` from `⟨ε • (mt B g - mt B k), fun x => by`.
+
+Rewrite using `[← smul_sub, sub_sub_sub_cancel_right, ← Matrix.sub_mulVec, ← Matrix.smul_mulVec]⟩`. Establish `a1 : ∀ x, L.mulVec (vecA B (ι x)) = 0` using `fun x => by`. Rewrite using `[hL]`. Conclude with `sub_eq_zero.2 ((g2 x).trans (k2 x).symm)`. Establish `a2 : ∀ l, L.mulVec (vecA B (d.f l)) = 0` using `fun l => by`.
+
+Rewrite using `[hL]`. Conclude with `sub_eq_zero.2 ((g3 l).trans (k3 l).symm)`. Establish `a3 : ∀ l, L.mulVec (vecA B (d.aux l)) = 0` using `fun l => by`. Rewrite using `[hL]`. Distinguish the cases in `hl : l = i`.
+
+Substitute `hl` using the available equality. Use `sub_eq_zero.2 (g5.trans (Eq.symm (k5.trans ?_)))` and prove the remaining obligations. Rewrite using `[iA_neg, neg_neg, iA_smul]`. Both sides reduce to the same expression. Conclude with `sub_eq_zero.2 ((g4 l hl).trans (k4 l hl).symm)`.
+
+Establish `a4 : ∀ x, L.mulVec x = 0` using `mulVec_zero_of d L a1 a2 a3`. Rewrite using `[← eq_of_half g1 k1 fun x => sub_eq_zero.1 ((hL x).symm.trans (a4 x))]`. Conclude with `⟨_, ht, hk⟩`.
+-/
 theorem exSet_sub (d : BesselDatum A B ι) {ε : AE D} (h1 : ε * ε = ε) (h0 : ε * cA D ε = 0) (i) {g : GA D B}
     (hg : g ∈ d.ExSet ε i) : g ∈ kGrp d h0 i := by
   obtain ⟨g1, g2, g3, g4, y, g5⟩ := hg
@@ -169,6 +243,11 @@ theorem exSet_sub (d : BesselDatum A B ι) {ε : AE D} (h1 : ε * ε = ε) (h0 :
   rw [← eq_of_half g1 k1 fun x => sub_eq_zero.1 ((hL x).symm.trans (a4 x))]
   exact ⟨_, ht, hk⟩
 
+/- English proof (translation)
+Introduce `D A B ι d ε he i g`. Establish `h1 : ε * ε = ε` using `he.1`. Establish `h0 : ε * cA D ε = 0` using `he.2.1`. Use `⟨fun hg => (Subgroup.closure_le (kGrp d h0 i)).2 (fun _ h => exSet_sub d h1 h0 i h) hg, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨t, ht, hk⟩`.
+
+Take `⟨k1, k2, k3, k4, k5⟩` from `mem_exSet d h1 h0 i ht hk`. Use `Subgroup.subset_closure ⟨k1, k2, k3, k4, -t, k5.trans ?_⟩` and prove the remaining obligations. Use `show _ = ε • iA ι (-t)`. Rewrite using `[← iA_smul, smul_neg, ht, iA_neg]`.
+-/
 theorem mem_Ex_iff : ∀ (D : D7) (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (d : BesselDatum A B ι) (ε : AE D), IsSplitIdem D ε → ∀ (i : Fin (d.ρ + 1)) (g : GA D B), g ∈ d.Ex ε i ↔ ∃ t, ε • t = t ∧ IsK B (vecA B (dual d i)) (iA ι t) g := by
   intro D A B ι d ε he i g
   have h1 : ε * ε = ε := he.1

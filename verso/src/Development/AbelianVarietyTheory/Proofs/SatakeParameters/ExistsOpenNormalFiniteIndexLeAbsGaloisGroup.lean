@@ -9,6 +9,11 @@ open GlobalTheory.AboveL
 
 namespace GlobalTheory.OpenNormal
 
+/- English proof (translation)
+Introduce `Ω _ F _ _ _ _ U hU`. Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Use `haveI : CompactSpace (G F Ω) := inferInstanceAs (CompactSpace Gal(Ω/F))`. Use `haveI : Finite (G F Ω ⧸ U) := Subgroup.quotient_finite_of_isOpen U hU`. Use `haveI : U.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`.
+
+Use `⟨U.normalCore, U.normalCore_normal, ?_, inferInstance, U.normalCore_le⟩` and prove the remaining obligations. Conclude with `Subgroup.isOpen_of_isClosed_of_finiteIndex _ (U.normalCore_isClosed (U.isClosed_of_isOpen hU))`.
+-/
 theorem exists_open_normal_le : ∀ (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] [Algebra F Ω] [IsAlgClosure F Ω] (U : Subgroup (G F Ω)), IsOpen (U : Set (G F Ω)) → ∃ N : Subgroup (G F Ω), N.Normal ∧ IsOpen (N : Set (G F Ω)) ∧ N.FiniteIndex ∧ N ≤ U := by
   intro Ω _ F _ _ _ _ U hU
   haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω

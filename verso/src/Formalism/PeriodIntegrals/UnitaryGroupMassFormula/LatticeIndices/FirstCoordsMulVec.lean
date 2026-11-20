@@ -45,6 +45,13 @@ def AdaptA : Prop :=
   CongG X p (crd2 X p θ Q (PI.FinKW.vecV X.B.I p.1 X.z0)) (-Pi.single zI 1) ∧
   ∀ i : Fin D.R.k, pr2 θ (PI.FinKW.vecV X.B.I p.1 (X.bw i)) = 0
 
+/- English proof (translation)
+Establish `key : ∀ j, (pr1 θ (M *ᵥ v)) j = ((M.map fun t => (θ t).1) *ᵥ pr1 θ v) j`. Introduce `j`. Express the relevant statement in the definitionally equal form `(θ ((M *ᵥ v) j)).1 = ∑ k, (θ (M j k)).1 * (θ (v k)).1`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, Prod.fst_sum]`. Establish `key2 : pr1 θ (M *ᵥ v) ∘ (idxEquiv X).symm = Matrix.reindex (idxEquiv X) (idxEquiv X) (M.map fun t => (θ t).1) *ᵥ (pr1 θ v ∘ (idxEquiv X).symm)`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, key]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.reindex_apply, Matrix.submatrix_apply, Function.comp_apply]`. Conclude with `(Fintype.sum_equiv (idxEquiv X).symm _ _ (fun _ => rfl)).symm`. Establish `hQ : (Q : Matrix (IdxD D) (IdxD D) (FpX X p)) * ((Q⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) = 1` using `Units.mul_inv Q`.
+
+Simplify using `only [crd1]`. Rewrite using `[key2]`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc, hQ, Matrix.mul_one]`.
+-/
 theorem firstCoords_mulVec (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) (v : Fin X.B.I.n → TpX X p) :
     crd1 X p θ Q (M *ᵥ v) =
       (((Q⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) *

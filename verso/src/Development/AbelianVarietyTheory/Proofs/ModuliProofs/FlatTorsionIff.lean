@@ -29,6 +29,11 @@ open scoped CategoryTheory.Obj
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
   {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Take `⟨Gt, _, _, Φ, hΦ, -⟩` from `exists_represents D`. Take `⟨x, rfl⟩` from `(Φ T).surjective g`. Take `⟨x', rfl⟩` from `(Φ T').surjective g'`. Rewrite `hp` using `[isPull_iff_comp hΦ]`. Rewrite `hg`, the goal using `[tors_iff hΦ]`.
+
+Rewrite using `[← hp, ← MonObj.comp_pow, hg, MonObj.comp_one]`.
+-/
 theorem tors_of_isPull [IsNoetherianRing R] {D : DegPre R} {k : ℕ} {T T' : Over (Sp R)} (h : T' ⟶ T) {g : GtPt D T}
     {g' : GtPt D T'} (hp : GtPt.IsPull h.left g g') (hg : FlatIsoUnitGenerator.GtTors k g) : FlatIsoUnitGenerator.GtTors k g' := by
   obtain ⟨Gt, _, _, Φ, hΦ, -⟩ := exists_represents D

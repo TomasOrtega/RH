@@ -14,6 +14,11 @@ open scoped ValuativeRel
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Establish `sur : ∀ {m n : ℕ} (h : m = n), (Fin.cast h).Surjective` using `fun h y => ⟨Fin.cast h.symm y, by simp⟩`. Break down `ha with ⟨i, j, hi, hj, rfl⟩ | ⟨i, j, hi, hj, rfl⟩` into its components or cases. Use `⟨B.β i j, B.β (i + 1) j, fun w => ⟨Fin.cast (rank_vertex G t w (X := (i + 1, j)) ⟨hi, hj⟩), Fin.cast (rank_vertex G t w (X := (i, j)) ⟨hi.le, hj⟩), sur _, sur _, fun x r c => ?_⟩⟩` and prove the remaining obligations. Establish `e : locArg B t w (.right i j) x = B.coord t w (X` using `(i, j)) (Y := (i + 1, j)) ⟨hi.le, hj⟩ ⟨hi, hj⟩ (x.map fun c => cpt w (toEAf D c)) := dif_pos ⟨hi, hj⟩`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression. Use `⟨B.β i (j + 1), B.β i j, fun w => ⟨Fin.cast (rank_vertex G t w (X := (i, j)) ⟨hi, hj.le⟩), Fin.cast (rank_vertex G t w (X := (i, j + 1)) ⟨hi, hj⟩), sur _, sur _, fun x r c => ?_⟩⟩` and prove the remaining obligations. Establish `e : locArg B t w (.down t i j) x = B.coord t w (X` using `(i, j + 1)) (Y := (i, j)) ⟨hi, hj⟩ ⟨hi, hj.le⟩ (x.map fun c => cpt w (toEAf D c)) := dif_pos ⟨hi, hj⟩`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem locArg_eq_locM (B : Frames G) {t : T} {a : Arrow T} (ha : IsGridArrow D.R.m t a) :
     ∃ (β : GL (Fin (G.pT a.pair).rank) (Lev.EAf D)) (β' : GL (Fin (G.pS a.pair).rank) (Lev.EAf D)), ∀ w,
       ∃ (f : Fin ((locGrid G t w).rank (edgeOf a).tgt) → Fin (G.pS a.pair).rank)
@@ -34,6 +39,9 @@ theorem locArg_eq_locM (B : Frames G) {t : T} {a : Arrow T} (ha : IsGridArrow D.
     rw [e]
     rfl
 
+/- English proof (translation)
+Take `⟨β, β', h⟩` from `locArg_eq_locM B ha`. Take `⟨f, g, -, -, h⟩` from `h w`. Use extensionality with `r c`. Rewrite using `[Matrix.add_apply, h, h, h, locM_add, Matrix.add_apply]`.
+-/
 theorem locArg_add (B : Frames G) {t : T} {a : Arrow T} (ha : IsGridArrow D.R.m t a) (w : Pl D.host.E)
     (x u : WO (G.pS a.pair) (G.pT a.pair)) : locArg B t w a (x + u) = locArg B t w a x + locArg B t w a u := by
   obtain ⟨β, β', h⟩ := locArg_eq_locM B ha
@@ -41,6 +49,13 @@ theorem locArg_add (B : Frames G) {t : T} {a : Arrow T} (ha : IsGridArrow D.R.m 
   ext r c
   rw [Matrix.add_apply, h, h, h, locM_add, Matrix.add_apply]
 
+/- English proof (translation)
+Take `⟨hS, hT, -⟩` from `arrow_data ρ hL ha`. Take `⟨β, β', hβ⟩` from `locArg_eq_locM B ha`. Take `⟨k, hk, k1, k2⟩` from `exists_mult hS.1 hT.1 he β β' n`. Conclude with `exists_sb hS.1.fg hT.1.fg (GlobalTheory.PlaceVec.idemSum_mul_self he) F hk (fun u hu x y => h1 x (k • u) y fun w hw r c => by`. Take `⟨f, g, -, -, h⟩` from `hβ w`.
+
+Rewrite using `[h]`. Conclude with `k1 u hu w hw _ _)`. Use `fun x y hx h0 => k2 x hx fun w hw i j => by`. Take `⟨f, g, hf, hg, h⟩` from `hβ w`. Take `⟨c, rfl⟩` from `hg i`.
+
+Take `⟨r, rfl⟩` from `hf j`. Rewrite using `[← h]`. Conclude with `h2 x y h0 w hw r c`.
+-/
 theorem arrow_sb {W : G.Weil} (B : Frames G) (ρ : RealMatch W) {μ₀ : T} (hL : L.Is μ₀) {t : T} {e : AE D}
     (he : IsIdemSum e (locPl G t)) (n : Pl D.host.E → ℕ) {a : Arrow T} (ha : IsGridArrow D.R.m t a) {Y : Type}
     (F : WO (G.pS a.pair) (G.pT a.pair) → Y → ℂ)
@@ -63,6 +78,9 @@ theorem arrow_sb {W : G.Weil} (B : Frames G) (ρ : RealMatch W) {μ₀ : T} (hL 
       rw [← h]
       exact h2 x y h0 w hw r c
 
+/- English proof (translation)
+The claim follows from `| _, .nil, _, _, U, K, _, _ => ⟨Unit, {()}, fun _ => (), fun _ => (), fun _ => (), fun _ _ => trivial, fun x y _ => by rw [Finset.sum_singleton] exact (one_mul _).symm⟩ | _, .snoc a p, hg, hnd, U, K, hK1, hK2 => by rw [edges_snoc] at hnd obtain ⟨hnd1, -, hdis⟩ := List.nodup_appen …`.
+-/
 theorem exists_classSum_schwartzProducts_pathInduction {μ₀ : T} (hL : L.Is μ₀) {W : G.Weil} (B : Frames G) (ρ : RealMatch W) (t : T) {e : AE D}
     (he : IsIdemSum e (locPl G t)) (n : Pl D.host.E → ℕ) {X : Node} : ∀ {Y : Node} (p : Path T X Y), OnGrid D.R.m t p →
     (edges p).Nodup → ∀ {U : Type} (K : (∀ w, (locGrid G t w).Args) → U → ℂ),
@@ -152,6 +170,9 @@ theorem exists_classSum_schwartzProducts_pathInduction {μ₀ : T} (hL : L.Is μ
             rw [e2]
             ring
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W B ρ t e he n X Y p hg hnd U K hK1 hK2`. Conclude with `exists_classSum_schwartzProducts_pathInduction hL B ρ t he n p hg hnd K hK1 hK2`.
+-/
 theorem exists_classes_path : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ {W : G.Weil} (B : Frames G) (ρ : RealMatch W) (t : T) {e : AE D}, IsIdemSum e (locPl G t) → ∀ (n : Pl D.host.E → ℕ) {X Y : Node} (p : Path T X Y), GlobalTheory.FlipRun.OnGrid D.R.m t p → (GlobalTheory.FlipRun.edges p).Nodup → ∀ {U : Type} (K : (∀ w, (locGrid G t w).Args) → U → ℂ), (∀ (x z : ∀ w, (locGrid G t w).Args) (y : U), (∀ w ∈ locPl G t, ∀ b, z w b ∈ GlobalTheory.SplitFlip.matLat _ (unifAt w ^ n w • GlobalTheory.SplitFlip.stdLat (Kw w) _)) → K (x + z) y = K x y) → (∀ (x : ∀ w, (locGrid G t w).Args) (y : U), K x y ≠ 0 → ∀ w ∈ locPl G t, ∀ b ∈ GlobalTheory.FlipRun.edges p, x w b ∈ GlobalTheory.SplitFlip.matLat _ (GlobalTheory.SplitFlip.stdLat (Kw w) _)) → ∃ (ι : Type) (s : Finset ι) (φ d : ι → PureT G p) (r : ι → GlobalTheory.FlipRun.ArgT G p), (∀ κ ∈ s, GlobalTheory.FlipRun.VecAll ρ e p (φ κ) (d κ)) ∧ ∀ (x : GlobalTheory.FlipRun.ArgT G p) (y : U), GlobalTheory.FlipRun.HalfAll e p x → K (fun w => GlobalTheory.FlipRun.pathArgs B t w p x) y = ∑ κ ∈ s, GlobalTheory.FlipRun.famProd p (φ κ) x * K (fun w => GlobalTheory.FlipRun.pathArgs B t w p (r κ)) y :=
   by
   intro D T L sc G μ₀ hL W B ρ t e he n X Y p hg hnd U K hK1 hK2

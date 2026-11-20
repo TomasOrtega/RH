@@ -12,6 +12,13 @@ namespace GlobalTheory.LeviHC.FactorMod
 
 variable {M : Type} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+Unfold `FinMod at *`. Establish `e : Submodule.span ℂ {y : M ⧸ K₂ | ∃ a ∈ A, y = K₂.mkQ (a v)} = (Submodule.span ℂ {y : M ⧸ K₁ | ∃ a ∈ A, y = K₁.mkQ (a v)}).map (Submodule.factor h)`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `y`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨K₁.mkQ (a v), ⟨a, ha, rfl⟩, Submodule.factor_mk h _⟩`. Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, rfl⟩`.
+
+Conclude with `⟨a, ha, Submodule.factor_mk h _⟩`. Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem finMod_mono {K₁ K₂ : Submodule ℂ M} (h : K₁ ≤ K₂) {A : Subalgebra ℂ (Module.End ℂ M)} {v : M}
     (hf : FinMod K₁ A v) : FinMod K₂ A v := by
   unfold FinMod at *
@@ -29,6 +36,9 @@ theorem finMod_mono {K₁ K₂ : Submodule ℂ M} (h : K₁ ≤ K₂) {A : Subal
   rw [e]
   infer_instance
 
+/- English proof (translation)
+Establish `hle : Algebra.adjoin ℂ s ≤ Subalgebra.centralizer ℂ {f}` using `Algebra.adjoin_le fun g hg => (Subalgebra.mem_centralizer_iff ℂ).2 fun y hy => by`. Rewrite using `[Set.mem_singleton_iff.1 hy]`. Conclude with `(h g hg)`. Conclude with `(((Subalgebra.mem_centralizer_iff ℂ).1 (hle hb)) f rfl)`.
+-/
 theorem comm_of_mem_adjoin {s : Set (Module.End ℂ M)} {f b : Module.End ℂ M} (hb : b ∈ Algebra.adjoin ℂ s)
     (h : ∀ g ∈ s, Commute f g) : Commute f b := by
   have hle : Algebra.adjoin ℂ s ≤ Subalgebra.centralizer ℂ {f} :=
@@ -42,9 +52,25 @@ def core (K : Submodule ℂ M) (S : Subalgebra ℂ (Module.End ℂ M)) : Submodu
   zero_mem' := fun b _ => by rw [map_zero]; exact K.zero_mem
   smul_mem' := fun c x hx b hb => by rw [map_smul]; exact K.smul_mem c (hx b hb)
 
+/- English proof (translation)
+Introduce `x hx` and use `by simpa using hx 1 S.one_mem`.
+-/
 theorem core_le (K : Submodule ℂ M) (S : Subalgebra ℂ (Module.End ℂ M)) : core K S ≤ K := fun x hx => by
   simpa using hx 1 S.one_mem
 
+/- English proof (translation)
+Introduce `M _ _ M' K c p q hp hq hpp hqq hpq hcq hM hK hrel v hv hfin`. Use `set S := Algebra.adjoin ℂ (Set.range q) with hS`. Establish `cb : ∀ u, ∀ b ∈ S, Commute (c u) b` using `fun u b hb => comm_of_mem_adjoin hb (by rintro _ ⟨u', rfl⟩; exact hcq u u')`. Establish `pb : ∀ u, ∀ b ∈ S, Commute (p u) b` using `fun u b hb => comm_of_mem_adjoin hb (by rintro _ ⟨u', rfl⟩; exact hpq u u')`. Establish `qb : ∀ u, ∀ b ∈ S, Commute (q u) b` using `fun u b hb => comm_of_mem_adjoin hb (by rintro _ ⟨u', rfl⟩; exact hqq u u')`.
+
+Establish `hSM : ∀ b ∈ S, ∀ x ∈ M', b x ∈ M'`. Establish `hle : S ≤ GlobalTheory.LeviHC.MidBlock.stab M'` using `Algebra.adjoin_le (by rintro _ ⟨u, rfl⟩ x hx; exact (hM u x hx).2.2)`. Introduce `b hb x hx`. Conclude with `hle hb x hx`. Use `set K' := core K S`.
+
+Establish `hK'p : ∀ u, ∀ x ∈ K', p u x ∈ K' ∧ q u x ∈ K'`. Introduce `u x hx`. Use `⟨fun b hb => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Establish `e : b (p u x) = p u (b x)`. Use `(pb u b hb).eq` as an intermediate fact.
+
+Conclude with `(congrArg (fun f : Module.End ℂ M => f x) this).symm`. Rewrite using `[e]`. Conclude with `hK u _ (hx b hb)`. Establish `: b * q u ∈ S` using `S.mul_mem hb (Algebra.subset_adjoin ⟨u, rfl⟩)`. Conclude with `hx _ this`.
+
+Establish `hrel' : ∀ u, ∀ x ∈ M', c u x - p u (q u x) ∈ K'`. Introduce `u x hx b hb`. Establish `e1 : b (c u x) = c u (b x)` using `(congrArg (fun f : Module.End ℂ M => f x) (cb u b hb).eq).symm`. Establish `e2 : b (q u x) = q u (b x)` using `(congrArg (fun f : Module.End ℂ M => f x) (qb u b hb).eq).symm`. Establish `e3 : b (p u (q u x)) = p u (b (q u x))` using `(congrArg (fun f : Module.End ℂ M => f (q u x)) (pb u b hb).eq).symm`.
+
+Rewrite using `[map_sub, e1, e3, e2]`. Conclude with `hrel u _ (hSM b hb x hx)`. Establish `h1 : FinMod K' (Algebra.adjoin ℂ (Set.range c)) v` using `finMod_mono bot_le hfin`. Establish `h2` using `GlobalTheory.LeviHC.QuotMonic.monicFactorFiniteMod_of GlobalTheory.LeviHC.monicFactorFinite M M' K' c p q hp hq hpp hqq hpq hM hK'p hrel' v hv h1`. Conclude with `finMod_mono (core_le K S) h2`.
+-/
 theorem finMod_factor : ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (M' K : Submodule ℂ M) (c p q : ℂ → Module.End ℂ M),
  (∃ (d : ℕ) (a : ℕ → Module.End ℂ M), a d = 1 ∧ ∀ u, p u = ∑ i ∈ Finset.range (d + 1), u ^ i • a i) →
  (∃ (d : ℕ) (a : ℕ → Module.End ℂ M), a d = 1 ∧ ∀ u, q u = ∑ i ∈ Finset.range (d + 1), u ^ i • a i) →

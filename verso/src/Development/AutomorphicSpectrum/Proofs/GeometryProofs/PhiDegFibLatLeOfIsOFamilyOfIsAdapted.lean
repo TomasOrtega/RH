@@ -17,6 +17,21 @@ open LevelTowerAlt GlobalTheory.CompanionTheory.Ar.Fl GroundTheory.Heights₂.He
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨⟨hP, hN, -, -⟩, -, -, -, hResK, -, -, hGaga, -⟩` from `hG`. Take `⟨D, rfl, rfl, ⟨I⟩⟩` from `GlobalTheory.T.tate_iso_datum_exists E H L t ht σ p' q' fun τ => by`. Use `hs ℂ σ τ` as an intermediate fact. Rewrite `this` using `[hσ]`. Then use the resulting hypothesis. Set `Xo : ∀ l : Level H, Moduli D l` to `fun l => (hN E H D l h1).some`.
+
+Take `⟨l, hA, hg⟩` from `GlobalTheory.GlobalModelGuards.exists_good_level H`. Take `⟨c₀⟩` from `GlobalTheory.ModuliProbe.coeff_nonempty l`. Take `⟨-, c, -, hc⟩` from `GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed E H D l (Xo l) c₀ h1`. Use `haveI := c.fin`. Use `haveI : NumberField c.F := { to_charZero := inferInstance, to_finiteDimensional := c.fin }`.
+
+Take `⟨F, hfin, hF', e, o, he, ⟨m⟩⟩` from `SabModel.exists_obj_ext E H D l L t ht hA ρ σ hσ hs I c.F c.fin c.le`. Use `haveI : NumberField F := { to_charZero := inferInstance, to_finiteDimensional := hfin }`. Take `⟨f, ⟨hf, ⟨mf⟩⟩, -⟩` from `(Xo l).rep (Sp F) _ inferInstance o`. Set `bF : c.F →+* F` to `(IntermediateField.inclusion hF').toRingHom`. Set `y : Sp F ⟶ (Xo l).XF c` to `pullback.lift f (spMap bF) (by`.
+
+Rewrite using `[hf, ← Spec.map_comp]`. Use the proof step `rfl)`. Establish `hy1 : y ≫ pullback.fst _ _ = f` using `pullback.lift_fst _ _ _`. Establish `hy2 : y ≫ pullback.snd _ _ = spMap bF` using `pullback.lift_snd _ _ _`. Set `x₀ : (Xo l).XF c` to `y (IsLocalRing.closedPoint F)`.
+
+Set `Z : Formalism.L2.Pj.Comp (Xo l) c` to `⟨irreducibleComponent x₀, irreducibleComponent_mem_irreducibleComponents x₀⟩`. Establish `hyZ : Set.range y ⊆ (Z : Set ((Xo l).XF c))`. Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[Subsingleton.elim s (IsLocalRing.closedPoint F)]`. Conclude with `mem_irreducibleComponent`.
+
+Take `⟨V, hV, -⟩` from `GlobalTheory.UnifFamily.exists_unf_family E H D l (Xo l) c h1`. Take `⟨g, ty, FU, i, hty, hper⟩` from `GlobalTheory.T.exists_family_uniformisation E H D l (Xo l) c Z (D.p + D.q) (V c.F.val.toRingHom).toPj h1 (hV c.F.val.toRingHom (show Formalism.L2.Pj.GoodEmb c c.F.val.toRingHom from rfl)).1 (hc c le_rfl Z)`. Establish `hclo : IsClopen (Z : Set ((Xo l).XF c))` using `Formalism.L2.Pj.CompSplitPfB.cspB_isClopen (Formalism.L2.Pj.CompSplitPfD.cspD_comp_disj (Xo l) c) Z`. Take `⟨φ, N, hfg, hn, -⟩` from `GlobalTheory.T.flat_theorem_of_resolution_gaga hResK hGaga hP E H D Xo l c (Z : Set ((Xo l).XF c)) τ g ty FU i h1 hτ hg hty hclo Z.2.1 hper`. Set `N' : LogNorms c.F` to `⟨N.inf, fun p κ => N.fin p κ + D.q * (logIdeal (κ.comp (tauIn c τ)) (differentIdeal ℤ (𝓞 E)) - Real.log ‖((H.d : ℕ) : ℂ_[p])‖)⟩`.
+
+Take `⟨had, hdeg⟩` from `GlobalTheory.T.kronecker_character_period_formula hF E H D l (Xo l) c g ty FU i _ τ φ N' χ hχ hty hτ hfg hn.1 hn.2`. Conclude with `⟨D, l, Xo l, c, inferInstance, F, inferInstance, inferInstance, bF, e, F.val.toRingHom, o.t, m, y, ReciprocityTheory.ChartRestriction.G.PullbackSections.sabMapCast mf.toSABMap hy1.symm, Z, φ, N', rfl, rfl, fun _ => rfl, he, hy2, hyZ, hfg.line, hn.1, hn.2, had, hdeg⟩`.
+-/
 theorem flat_point_of_principal_sign (hG : Top.Given) (hF : FlatDegree) {E : Type} [Field E] [NumberField E] [IsCMField E]
     (H : Host E) {L : Type} [Field L] [NumberField L] (t : SAB H (Sp L)) (ht : IsPrincipal t) (ρ : L) (p' q' : ℕ)
     (σ : L →+* ℂ) (hσ : σ ρ = H.rt0)
@@ -70,6 +85,9 @@ theorem flat_point_of_principal_sign (hG : Top.Given) (hF : FlatDegree) {E : Typ
     ReciprocityTheory.ChartRestriction.G.PullbackSections.sabMapCast mf.toSABMap hy1.symm, Z, φ, N', rfl, rfl, fun _ => rfl, he, hy2, hyZ, hfg.line, hn.1,
     hn.2, had, hdeg⟩
 
+/- English proof (translation)
+The claim follows from `|B.normDegree (eigSp ρM s₁) - B.normDegree (eigSp ρM s₂)| ≤ ((B.rank (eigSp ρM s₁) : ℝ) + B.rank (eigSp ρM s₂)) * |(GlobalTheory.CM.logOm E χ).re| := by have r₁ : B.rank (eigSp ρM s₁) = p' := rank_eig MB hρ m' σ s₁ ((hs ℂ σ _).1 ((h₁ _).trans (hτ.trans hσ.symm))) have r₂ : B.rank …`.
+-/
 theorem flat_hermitian_fibre_signature (hG : Top.Given) (hF : FlatDegree) (H : Host E) {L : Type} [Field L] [NumberField L]
     {t' : SAB H (Sp (𝓞 L))} {tB : SAB H (Sp L)} (m' : SABMap tB t' (spMap (algebraMap (𝓞 L) L)))
     {B : HermitianBundle.{0} L} (MB : LieModel t'.G (𝟙 _) B.carrier) {ρM : 𝓞 E →+* Module.End (𝓞 L) B.carrier}
@@ -123,6 +141,17 @@ theorem flat_hermitian_fibre_signature (hG : Top.Given) (hF : FlatDegree) (H : H
   refine mul_le_mul_of_nonneg_right (abs_le.2 ⟨?_, ?_⟩) (abs_nonneg _) <;>
     linarith [(Nat.cast_nonneg D.p : (0 : ℝ) ≤ D.p), (Nat.cast_nonneg D.q : (0 : ℝ) ≤ D.q)]
 
+/- English proof (translation)
+Take `⟨C, hC, hlog⟩` from `logOm_bound`. Use `⟨C, hC, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ H L _ _ t' tB m' B MB ρM s₁ s₂ hP hfib hρ ⟨ρ, p', q', hρ2, hs⟩ hinj hconj`. Take `⟨_, χ, hχ, hb⟩` from `hlog E H`. Take `⟨σ, hσ⟩` from `SabModel.exists_embedding_rt0 H ρ hρ2`.
+
+Establish `hi : Function.Injective ((σ.comp (algebraMap (𝓞 L) L)).comp s₁)` using `(σ.injective.comp (IsFractionRing.injective (𝓞 L) L)).comp hinj`. Set `τ : E →+* ℂ` to `IsFractionRing.lift hi`. Establish `hτ : ∀ a : 𝓞 E, σ (s₁ a : L) = τ (a : E)` using `fun a => (IsFractionRing.lift_algebraMap hi a).symm`. Establish `hsq : τ (H.rt : E) ^ 2 = H.rt0 ^ 2`. Rewrite using `[← hτ, H.sqrt_neg_disc_sq]`.
+
+Use `congrArg ((σ.comp (algebraMap (𝓞 L) L)).comp s₁) H.rt_sq` as an intermediate fact. Rewrite `this` using `[map_pow, map_neg, map_natCast]`. Conclude with `this`. Establish `h : |B.normDegree (eigSp ρM s₁) - B.normDegree (eigSp ρM s₂)| ≤ ((B.rank (eigSp ρM s₁) : ℝ) + B.rank (eigSp ρM s₂)) * |(GlobalTheory.CM.logOm E χ).re|`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with h | h` into its components or cases.
+
+Conclude with `flat_hermitian_fibre_signature hG hF H m' MB s₁ s₂ hP hfib hρ ρ p' q' σ hσ hs τ h hτ (fun a => by rw [hconj, hτ]) χ hχ`. Rewrite using `[abs_sub_comm, add_comm]`. Use `flat_hermitian_fibre_signature hG hF H m' MB s₂ s₁ hP hfib hρ ρ p' q' σ hσ hs ((starRingEnd ℂ).comp τ) ?_ (fun a => by rw [hconj, hτ]; rfl) (fun a => by rw [hτ]; exact (Complex.conj_conj _).symm) χ hχ` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, h, map_neg, (rt0_conj_neg_ne_zero H).1, neg_neg]`. Use `h.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[_root_.mul_comm C, _root_.mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hb (by positivity)`.
+-/
 theorem flat_saturation_of_degree (hG : Top.Given) (hF : FlatDegree) : FlatSat := by
   obtain ⟨C, hC, hlog⟩ := logOm_bound
   refine ⟨C, hC, ?_⟩
@@ -154,5 +183,8 @@ end GlobalTheory.CompanionTheory.Ar.Cusp.U4
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `LevelTowerAlt.height_comparison_global_model GlobalTheory.CompanionTheory.Ar.Cusp.U4.flat_saturation_of_degree`.
+-/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.phiDeg_fibLat_le_of_isOFamily_of_isAdapted : Top.Given → Fl.FlatDegree → ∃ C : ℝ, 0 ≤ C ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (B₁ B : ℕ) (L : Type) [Field L] [NumberField L] (z : Sp (𝓞 L) ⟶ Or.𝔐.X) (P : AbPart Or.𝔐.t (spMap (algebraMap (𝓞 L) L) ≫ z)) (V : Type) [AddCommGroup V] [Module L V] [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] (MV : LieModel P.tK.G (𝟙 (Sp L)) V) (A : LinPt E L (CMType H) V) (r k : ℕ) (v : Fin r → V) (q : CMType H → Fin k → A.Λ), admitted Xo l c Y Or B₁ → 4 * Dc.f * Dc.N ^ 2 ≤ B → Or.𝔐.IsLinPtOf z P MV A → Module.finrank (𝓞 L) A.Bq.carrier ≤ Fintype.card (CMType H) * (D.p + D.q) → r + k = Dc.j' → IsOFamily A.ρ A.I v → (∀ τ, A.IsAdapted (Or.sm τ) v (q τ) ∧ ∀ i, (q τ i : V) ∈ A.eig (Or.sm τ)) → A.phiDeg Or.sm (fun τ => Or.𝔐.FibLat (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) z P MV) v q ≤ C * Dc.f * Dc.j' * abelian₂ B (hostRd E) (hostLval H) :=
   LevelTowerAlt.height_comparison_global_model GlobalTheory.CompanionTheory.Ar.Cusp.U4.flat_saturation_of_degree

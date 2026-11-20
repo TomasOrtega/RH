@@ -14,6 +14,9 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[f.finite_iff_finite_ker_range]`. Use `⟨?_, inferInstance⟩` and prove the remaining obligations. Establish `hsub : (f.ker : Set B) ⊆ Set.range g` using `fun b hb => hex b hb`. Conclude with `((Set.finite_range g).subset hsub).to_subtype`.
+-/
 theorem finite_of_exact_of_finite {A B C : Type*} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [Finite A]
     [Finite C] (g : A →+ B) (f : B →+ C) (hex : ∀ b, f b = 0 → ∃ a, g a = b) : Finite B := by
   rw [f.finite_iff_finite_ker_range]
@@ -21,6 +24,21 @@ theorem finite_of_exact_of_finite {A B C : Type*} [AddCommGroup A] [AddCommGroup
   have hsub : (f.ker : Set B) ⊆ Set.range g := fun b hb => hex b hb
   exact ((Set.finite_range g).subset hsub).to_subtype
 
+/- English proof (translation)
+Establish `hnu : ¬ IsUnit ((ℓ : ℕ) : 𝓞 K.1)`. Introduce and unpack `⟨u, hu⟩`. Establish `h : ((ℓ : ℕ) : 𝓞 K.1) * ((u⁻¹ : (𝓞 K.1)ˣ) : 𝓞 K.1) = 1`. Rewrite using `[← hu]`. Conclude with `u.mul_inv`.
+
+Establish `hK : ((ℓ : ℕ) : K.1) * (((u⁻¹ : (𝓞 K.1)ˣ) : 𝓞 K.1) : K.1) = 1`. Use `congrArg (algebraMap (𝓞 K.1) K.1) h` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_one]`. Then use the resulting hypothesis. Establish `hint : IsIntegral ℤ (((u⁻¹ : (𝓞 K.1)ˣ) : 𝓞 K.1) : K.1)` using `NumberField.RingOfIntegers.isIntegral_coe _`. Establish `heq : (((u⁻¹ : (𝓞 K.1)ˣ) : 𝓞 K.1) : K.1) = algebraMap ℚ K.1 (1 / ℓ)`.
+
+Rewrite using `[eq_inv_of_mul_eq_one_right hK]`. Simplify using the standard rewrite rules. Rewrite `hint` using `[heq, isIntegral_algebraMap_iff (algebraMap ℚ K.1).injective]`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Establish `hℓ0 : (ℓ : ℚ) ≠ 0` using `by exact_mod_cast hℓ.ne_zero`.
+
+Establish `hy' : ((ℓ * y : ℤ) : ℚ) = 1`. Rewrite using `[Int.cast_mul, show ((y : ℤ) : ℚ) = algebraMap ℤ ℚ y from rfl, hy]`. Clear the denominators using the available nonvanishing facts. Use `norm_cast`. Establish `h2 : (ℓ : ℤ) * y = 1` using `by exact_mod_cast hy'`.
+
+Establish `hunit` using `Int.eq_one_or_neg_one_of_mul_eq_one h2`. Establish `hℓ1 : (ℓ : ℤ) ≠ 1` using `by exact_mod_cast hℓ.one_lt.ne'`. Establish `hℓm : (ℓ : ℤ) ≠ -1` using `by omega`. Conclude with `hunit.elim hℓ1 hℓm`. Establish `hne : Ideal.span {((ℓ : ℕ) : 𝓞 K.1)} ≠ ⊤` using `fun h => hnu (Ideal.span_singleton_eq_top.1 h)`.
+
+Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hℓM : ((ℓ : ℕ) : 𝓞 K.1) ∈ M` using `hle (Ideal.subset_span rfl)`. Establish `hMbot : M ≠ ⊥`. Introduce `h`. Rewrite `hℓM` using `[h, Ideal.mem_bot]`.
+
+Establish `: ((ℓ : ℕ) : K.1) = 0`. Use `congrArg (algebraMap (𝓞 K.1) K.1) hℓM` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Then use the resulting hypothesis. Conclude with `hℓ.ne_zero (by exact_mod_cast this)`. Conclude with `⟨⟨M, hM.isPrime, hMbot⟩, hℓM⟩`.
+-/
 theorem exists_natCast_mem_place (K : FiniteSubfield) {ℓ : ℕ} (hℓ : ℓ.Prime) :
     ∃ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal := by
   have hnu : ¬ IsUnit ((ℓ : ℕ) : 𝓞 K.1) := by
@@ -65,11 +83,17 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1))) (n ℓ k 
 
 include hℓ hS in
 
+/- English proof (translation)
+The claim follows from `(exists_natCast_mem_place K hℓ).elim fun v hv => ⟨⟨v, hS v hv⟩⟩`.
+-/
 theorem nonempty_of_natCast_mem : Nonempty S :=
   (exists_natCast_mem_place K hℓ).elim fun v hv => ⟨⟨v, hS v hv⟩⟩
 
 include hnk hS in
 
+/- English proof (translation)
+Introduce `v hv`. Substitute `hnk` using the available equality. Rewrite `hv` using `[Nat.cast_pow]`. Conclude with `hS v (v.isPrime.mem_of_pow_mem k hv)`.
+-/
 theorem mem_of_natCast_pow_mem : ∀ v : HeightOneSpectrum (𝓞 K.1), ((n : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S := by
   intro v hv
   subst hnk
@@ -80,6 +104,9 @@ variable [NeZero n] (hodd : Odd n ∨ IsTotallyComplex K.1)
 
 include hnk hS hodd in
 
+/- English proof (translation)
+The claim follows from `subsingleton_cohomology_of_cdp_le_two (NeZero.ne n) (fun _ hp hpn => cdp_galUnramifiedOutside_le_two_of_dvd K S (NeZero.ne n) (mem_of_natCast_pow_mem S n ℓ k hnk hS) hodd hp hpn) (gsRoots S n) (nsmul_gsRoots S n) le_rfl`.
+-/
 theorem subsingleton_gsRoots_three : Subsingleton (cohomology (gsRoots S n) 3) :=
   subsingleton_cohomology_of_cdp_le_two (NeZero.ne n)
     (fun _ hp hpn => cdp_galUnramifiedOutside_le_two_of_dvd K S (NeZero.ne n)
@@ -87,6 +114,9 @@ theorem subsingleton_gsRoots_three : Subsingleton (cohomology (gsRoots S n) 3) :
 
 include hnk hS hodd in
 
+/- English proof (translation)
+The claim follows from `subsingleton_cohomology_of_cdp_le_two (NeZero.ne n) (fun _ hp hpn => cdp_galUnramifiedOutside_le_two_of_dvd K S (NeZero.ne n) (mem_of_natCast_pow_mem S n ℓ k hnk hS) hodd hp hpn) (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) (nsmul_zmodRep_eq_zero _ n) le_rfl`.
+-/
 theorem subsingleton_zmodRep_gs_three :
     Subsingleton (cohomology (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 3) :=
   subsingleton_cohomology_of_cdp_le_two (NeZero.ne n)
@@ -95,6 +125,9 @@ theorem subsingleton_zmodRep_gs_three :
     (nsmul_zmodRep_eq_zero _ n) le_rfl
 
 omit [NeZero n] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Nat.card (ULift.{0} (ZMod n)) = n`. Rewrite using `[Nat.card_ulift, Nat.card_zmod]`.
+-/
 theorem natCard_zmodRep (G : Type) [Group G] : Nat.card (zmodRep.{0} G n) = n := by
   change Nat.card (ULift.{0} (ZMod n)) = n
   rw [Nat.card_ulift, Nat.card_zmod]
@@ -103,6 +136,9 @@ variable [Finite S]
 
 include hnk hS in
 
+/- English proof (translation)
+Establish `: Finite (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n)` using `inferInstanceAs (Finite (ULift.{0} (ZMod n)))`. Use `finite_cohomology_gs K S _ (fun v hv => ?_) 1 (by norm_num)` and prove the remaining obligations. Rewrite `hv` using `[natCard_zmodRep]`. Conclude with `mem_of_natCast_pow_mem S n ℓ k hnk hS v hv`.
+-/
 theorem finite_zmodRep_gs_one : Finite (cohomology (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 1) := by
   have : Finite (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) := inferInstanceAs (Finite (ULift.{0} (ZMod n)))
   refine finite_cohomology_gs K S _ (fun v hv => ?_) 1 (by norm_num)
@@ -114,6 +150,9 @@ variable (ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpe
 omit [Finite S] in
 include hnk hS in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Nat.card (Additive (rootsOfUnity n (maxUnramifiedOutside K.1 ℚ̄ S))) = n`. Rewrite using `[Nat.card_congr Additive.toMul]`. Conclude with `card_rootsOfUnity_maxUnramifiedOutside K S n (NeZero.ne n) (fun v hv h => hv (mem_of_natCast_pow_mem S n ℓ k hnk hS v h))`.
+-/
 theorem natCard_gsRoots : Nat.card (gsRoots S n) = n := by
   change Nat.card (Additive (rootsOfUnity n (maxUnramifiedOutside K.1 ℚ̄ S))) = n
   rw [Nat.card_congr Additive.toMul]
@@ -123,6 +162,9 @@ theorem natCard_gsRoots : Nat.card (gsRoots S n) = n := by
 omit [Finite S] in
 include hnk hS in
 
+/- English proof (translation)
+Establish `: Finite (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n))` using `inferInstanceAs (Finite (Additive (rootsOfUnity n (maxUnramifiedOutside K.1 ℚ̄ S))))`. Use `finite_cohomology_localField _ ?_ 1` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((Nat.card (gsRoots S n) : ℕ) : (v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) ≠ 0`. Rewrite using `[natCard_gsRoots S n ℓ k hnk hS]`. Conclude with `Nat.cast_ne_zero.2 (NeZero.ne n)`.
+-/
 theorem finite_gsRoots_local_one (v : S) :
     Finite (cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 1) := by
   have : Finite (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) :=
@@ -134,6 +176,9 @@ theorem finite_gsRoots_local_one (v : S) :
 
 include hnk hS in
 
+/- English proof (translation)
+Establish `: ∀ v : S, Finite (cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 1)` using `finite_gsRoots_local_one S n ℓ k hnk hS ιs`. Establish `hA : Finite (ModuleCat.of (ULift.{0} ℤ) (∀ v : S, cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 1))` using `inferInstanceAs (Finite (∀ v : S, cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 1))`. Establish `hC : Finite (cohomology (gsRoots S n) 2)` using `finite_cohomology_rootsOfUnity K S n (NeZero.ne n) (mem_of_natCast_pow_mem S n ℓ k hnk hS) 2 le_rfl`. Conclude with `finite_of_exact_of_finite (localToCompact (gsFinFamily S ιs) (gsRoots S n) (fun v => Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) (fun _ => 𝟙 _) 1).hom.toAddMonoidHom (compactToGlobal (gsFinFamily S ιs) (gsRoots S n) (fun v => Rep.res (gsFinFamily S ιs v).toMonoidHom ( …`.
+-/
 theorem finite_gsRoots_compact_two [Fintype S] :
     Finite (compactCohomologyRes (gsFinFamily S ιs) (gsRoots S n) 2) := by
   have : ∀ v : S, Finite (cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 1) :=
@@ -161,6 +206,9 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] (S : Set (HeightOneSpectrum (�
 noncomputable def fintypePlacesOver [Finite S] : Fintype (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) :=
   (placesOver_finite (Set.toFinite S)).fintype
 
+/- English proof (translation)
+The claim follows from `nonempty_of_natCast_mem (placesOver S) ℓ hℓ fun _ hw => mem_placesOver_of_natCast_mem hS hw`.
+-/
 theorem nonempty_placesOver_of_natCast_mem {ℓ : ℕ} (hℓ : ℓ.Prime)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S) :
     Nonempty (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) :=

@@ -6,6 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HkInd
 
 open MvPolynomial Equiv UpperTheory.V.AlgebraTools.Hk
 
+/- English proof (translation)
+Establish `hac : a ≠ c` using `fun e => by rw [e] at h; omega`. Take `⟨hA, -⟩` from `UpperTheory.V.AlgebraTools.hkInv n`. Break down `lt_trichotomy (u⁻¹ a) (u⁻¹ c) with hl | he | hl` into its components or cases. Use `(hA a c h u hl).2.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `absurd (u⁻¹.injective he) hac`. Establish `hw' : (swap a c * u)⁻¹ a < (swap a c * u)⁻¹ c`. Rewrite using `[mul_inv_rev, swap_inv, Perm.mul_apply, Perm.mul_apply, swap_apply_left, swap_apply_right]`. Conclude with `hl`. Use `(hA a c h _ hw').2.2` as an intermediate fact.
+
+Rewrite `this` using `[swap_mul_self_mul]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem invN_le {n : ℕ} {a c : Fin n} (h : a.val + 1 = c.val) (u : Perm (Fin n)) :
     invN u ≤ invN (swap a c * u) + 1 := by
   have hac : a ≠ c := fun e => by rw [e] at h; omega
@@ -21,6 +28,11 @@ private theorem invN_le {n : ℕ} {a c : Fin n} (h : a.val + 1 = c.val) (u : Per
     rw [swap_mul_self_mul] at this
     omega
 
+/- English proof (translation)
+Take `⟨hA, -, h1, -⟩` from `UpperTheory.V.AlgebraTools.hkInv n`. Establish `hlt : (1 : Perm (Fin n))⁻¹ a < (1 : Perm (Fin n))⁻¹ c`. Simplify using `only [inv_one, Perm.one_apply, Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Establish `e` using `(hA a c h 1 hlt).2.2`.
+
+Rewrite `e` using `[mul_one, show invN (1 : Perm (Fin n)) = 0 by rw [invN, h1, Finset.card_empty], zero_add]`. Rewrite using `[(UpperTheory.V.AlgebraTools.hkOne R n q H b).1, e, pow_one]`.
+-/
 private theorem swap_one {R : Type} [CommRing R] {n : ℕ} {q : R} {H : Type} [Ring H] [Algebra R H] (b : Bern n q H)
     {a c : Fin n} (h : a.val + 1 = c.val) : b.T (swap a c) * b.one = q • b.one := by
   obtain ⟨hA, -, h1, -⟩ := UpperTheory.V.AlgebraTools.hkInv n
@@ -31,6 +43,13 @@ private theorem swap_one {R : Type} [CommRing R] {n : ℕ} {q : R} {H : Type} [R
   rw [mul_one, show invN (1 : Perm (Fin n)) = 0 by rw [invN, h1, Finset.card_empty], zero_add] at e
   rw [(UpperTheory.V.AlgebraTools.hkOne R n q H b).1, e, pow_one]
 
+/- English proof (translation)
+Establish `hac : a ≠ c` using `fun e => by rw [e] at h; omega`. Take `⟨z, hz, hT⟩` from `(UpperTheory.V.AlgebraTools.hkBern R n q H b).1 a c h y`. Use `⟨C q * rename (swap a c) y + (C q - 1) * (X a * z), ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : (C q * rename (swap a c) y + (C q - 1) * (X a * z) : MvPolynomial (Fin n) R) = q • rename (swap a c) y + (q - 1) • (X a * z)`. Rewrite using `[smul_eq_C_mul, smul_eq_C_mul, map_sub, map_one]`.
+
+Rewrite using `[hT, e1, map_add, map_smul, map_smul, add_mul, add_mul, mul_assoc, swap_one b h, mul_smul_comm, smul_mul_assoc q]`. Establish `hne : algebraMap (MvPolynomial (Fin n) R) K (X a - X c) ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective _ K), sub_eq_zero]`. Conclude with `fun e => hac (X_injective e)`. Establish `hz'` using `congrArg (algebraMap (MvPolynomial (Fin n) R) K) hz`.
+
+Rewrite using `[div_mul_eq_mul_div, div_mul_eq_mul_div, ← add_div, eq_div_iff hne]`. Simplify using `only [map_add, map_mul, map_sub, map_one] at hz' ⊢`. Take the linear combination `(algebraMap (MvPolynomial (Fin n) R) K (C q) - 1) * algebraMap (MvPolynomial (Fin n) R) K (X a) * hz'`.
+-/
 private theorem step {R : Type} [CommRing R] [IsDomain R] {n : ℕ} {q : R} {H : Type} [Ring H] [Algebra R H]
     (b : Bern n q H) (K : Type) [Field K] [Algebra (MvPolynomial (Fin n) R) K]
     [IsFractionRing (MvPolynomial (Fin n) R) K] {a c : Fin n} (h : a.val + 1 = c.val)
@@ -58,6 +77,23 @@ private theorem step {R : Type} [CommRing R] [IsDomain R] {n : ℕ} {q : R} {H :
     linear_combination (algebraMap (MvPolynomial (Fin n) R) K (C q) - 1) *
       algebraMap (MvPolynomial (Fin n) R) K (X a) * hz'
 
+/- English proof (translation)
+Introduce `R _ _ n q H _ _ b K _ _ _`. Take `⟨hA, -, h1, -⟩` from `UpperTheory.V.AlgebraTools.hkInv n`. Use `UpperTheory.V.AlgebraTools.hkInd n _ ?_ ?_` and prove the remaining obligations. Use `⟨fun u => if u = 1 then 1 else 0, fun x => ⟨x, by rw [b.T_one, one_mul], ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[ite_mul]`.
+
+Simplify using `[h1]`. Introduce `u hu _`. Simplify using `[hu]`. Introduce and unpack `a c h w hw ⟨f, hf, hfw, hf0⟩`. Take `⟨hS, hnm, hN⟩` from `hA a c h w hw`.
+
+Set `σ : K ≃+* K` to `IsFractionRing.ringEquivOfRingEquiv (renameEquiv R (swap a c)).toRingEquiv`. Establish `hσ : ∀ x : MvPolynomial (Fin n) R, σ (algebraMap _ K x) = algebraMap _ K (rename (swap a c) x)` using `fun x => IsFractionRing.ringEquivOfRingEquiv_algebraMap _ x`. Use `⟨fun u => algebraMap (MvPolynomial (Fin n) R) K (X a - C q * X c) / algebraMap (MvPolynomial (Fin n) R) K (X a - X c) * σ (f (swap a c * u)) + algebraMap (MvPolynomial (Fin n) R) K ((C q - 1) * X a) / algebraMap (MvPolynomial (Fin n) R) K (X a - X c) * f u, fun x => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hyK⟩` from `hf x`. Take `⟨y', hy', hyK'⟩` from `step b K h y`.
+
+Use `⟨y', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[b.T_mul a c h w hw, mul_assoc (b.T _), mul_assoc (b.T _), hy, ← mul_assoc, hy']`. Rewrite using `[hyK', ← hσ, hyK, map_sum, Finset.mul_sum, Finset.mul_sum]`. Simplify using `only [add_mul, Finset.sum_add_distrib, mul_assoc]`. Use `congr 1`.
+
+Use `Fintype.sum_equiv (Equiv.mulLeft (swap a c)) _ _ fun u => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_mulLeft, swap_mul_self_mul, map_mul, hσ, rename_rename, Perm.coe_mul]`. Establish `h0 : f (swap a c * w) = 0` using `hf0 _ (fun e => by rw [e] at hN; omega) (by omega) beta_reduce`. Rewrite using `[h0, mul_zero, add_zero, swap_mul_self_mul, hS, Finset.prod_insert hnm, Finset.prod_image, hfw, map_prod]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_div₀, hσ, hσ]`. Simplify using `only [map_sub, map_mul, rename_X, rename_C]`. Introduce and unpack `⟨u, v⟩ - ⟨u', v'⟩ - e`. Take `⟨e1, e2⟩` from `Prod.mk.inj e`.
+
+Conclude with `Prod.ext ((swap a c).injective e1) ((swap a c).injective e2)`. Introduce `u hu hle`. Establish `hle'` using `invN_le h u`. Establish `h0 : f u = 0` using `hf0 _ (fun e => by rw [e] at hle; omega) (by omega)`. Establish `h0' : f (swap a c * u) = 0` using `hf0 _ (fun e => hu (by rw [← e, swap_mul_self_mul])) (by omega)`.
+
+Use `beta_reduce`. Rewrite using `[h0, h0', map_zero, mul_zero, mul_zero, add_zero]`.
+-/
 theorem UpperTheory.V.AlgebraTools.hkAct :
     ∀ (R : Type) [CommRing R] [IsDomain R] (n : ℕ) (q : R) (H : Type) [Ring H] [Algebra R H] (b : Bern n q H) (K : Type) [Field K] [Algebra (MvPolynomial (Fin n) R) K] [IsFractionRing (MvPolynomial (Fin n) R) K] (w : Perm (Fin n)),
       ∃ f : Perm (Fin n) → K,

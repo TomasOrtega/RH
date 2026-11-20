@@ -107,11 +107,31 @@ structure NormalizedTypesCompatibility (jE : D.host.E →+* Qb) where
 variable {D}
 variable {jE : D.host.E →+* Qb}
 
+/- English proof (translation)
+Unfold `SplitsIn plOver placesOver`. Rewrite using `[ncard_places_of_equiv T.eM p, finrank_eq_of_equiv T.eM]`.
+-/
 theorem splitsIn_mrayC_iff (T : NormalizedTypesCompatibility D jE) (p : ℕ) :
     SplitsIn (MrayC D jE) p ↔ (placesOver D.ntypes.Mray p).ncard = Module.finrank ℚ D.ntypes.Mray := by
   unfold SplitsIn plOver placesOver
   rw [ncard_places_of_equiv T.eM p, finrank_eq_of_equiv T.eM]
 
+/- English proof (translation)
+Introduce and unpack `p hp ⟨π, hπK, hpp, hπ1⟩`. Rewrite using `[← splitsIn_mrayC_iff T]`. Establish `hcond : D.ntypes.cond = D.host.QS * D.host.q * D.host.d` using `rfl`. Use `hC.2.2 p ⟨hp, jE π, ⟨π, hπK, rfl⟩, (NumberField.RingOfIntegers.isIntegral_coe π).map jE.toIntAlgHom, ?_, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp hπ1`.
+
+Take `⟨b, rfl⟩ : ∃ b, a = b + 1` from `⟨a - 1, by omega⟩`. Use `set N : Qb := ((D.host.QS * D.host.q * D.host.d : ℕ) : Qb) with hN`. Establish `hc' : jE (algebraMap (𝓞 D.host.E) D.host.E c) * N ^ (b + 1) = jE (algebraMap (𝓞 D.host.E) D.host.E π) - 1`. Establish `h1` using `congrArg (fun x : 𝓞 D.host.E => jE (algebraMap (𝓞 D.host.E) D.host.E x)) hc`. Simplify using `only [map_mul, map_sub, map_one, map_pow, map_natCast, Nat.cast_pow] at h1`.
+
+Rewrite `h1` using `[hcond]`. Rewrite using `[hN]`. Conclude with `h1` after adjusting the coercions. Establish `e0 : algebraMap (𝓞 D.host.E) D.host.E π = (π : D.host.E)` using `rfl`. Rewrite `hc'` using `[e0]`.
+
+Establish `hci : IsIntegral ℤ (jE (algebraMap (𝓞 D.host.E) D.host.E c))` using `((RingOfIntegers.isIntegral c).algebraMap).map jE.toIntAlgHom`. Distinguish the cases in `h0 : N = 0`. Rewrite using `[h0, div_zero]`. Conclude with `isIntegral_zero`. Establish `e : (jE (π : D.host.E) - 1) / N = jE (algebraMap (𝓞 D.host.E) D.host.E c) * N ^ b`.
+
+Rewrite using `[← hc', div_eq_iff h0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hNi : IsIntegral ℤ N`. Rewrite using `[hN, ← map_natCast (algebraMap ℤ Qb)]`.
+
+Conclude with `isIntegral_algebraMap`. Conclude with `hci.mul (hNi.pow b)`. Use `haveI : IsAlgClosure ℚ Qb := ⟨inferInstance, AlgebraicClosure.isAlgebraic ℚ⟩ haveI : Normal ℚ Qb := IsAlgClosure.normal ℚ Qb`. Use `letI : Algebra D.host.E Qb := jE.toAlgebra`. Use `haveI : IsScalarTower ℚ D.host.E Qb := IsScalarTower.of_algebraMap_eq fun x => congrFun (congrArg DFunLike.coe (Subsingleton.elim (algebraMap ℚ Qb) ((algebraMap D.host.E Qb).comp (algebraMap ℚ D.host.E)))) x`.
+
+Use `⟨(D.host.conj : D.host.E →ₐ[ℚ] D.host.E).liftNormal Qb, ?_⟩` and prove the remaining obligations. Establish `hσ` using `AlgHom.liftNormal_commutes (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) Qb (π : D.host.E)`. Establish `e1 : (algebraMap D.host.E Qb) = jE` using `rfl`. Rewrite `hσ` using `[e1]`. Rewrite using `[hσ, ← map_mul]`.
+
+Express the relevant statement in the definitionally equal form `jE ((π : D.host.E) * D.host.conj (π : D.host.E)) = (p : Qb)`. Rewrite using `[hpp, map_natCast]`.
+-/
 theorem mrayRay_of_tied (T : NormalizedTypesCompatibility D jE) (hC : RayCFT (KQbar D jE) (D.host.QS * D.host.q * D.host.d))
     (a : ℕ) (ha : 1 ≤ a) : Formalism.MainNotions.ArithmeticCylinders.MrayRay D a := by
   rintro p hp ⟨π, hπK, hpp, hπ1⟩
@@ -158,6 +178,11 @@ theorem mrayRay_of_tied (T : NormalizedTypesCompatibility D jE) (hC : RayCFT (KQ
     change jE ((π : D.host.E) * D.host.conj (π : D.host.E)) = (p : Qb)
     rw [hpp, map_natCast]
 
+/- English proof (translation)
+Introduce `hM`. Take `⟨p, hp, ⟨π, hK, hpp⟩, hns⟩` from `h`. Apply `hns` to reduce the goal to its premises. Rewrite using `[splitsIn_mrayC_iff T]`. Use `hM p hp ⟨π, hK, hpp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_zero, Nat.cast_one, Ideal.span_singleton_one]`. Conclude with `Submodule.mem_top`.
+-/
 theorem not_mrayRay_zero (T : NormalizedTypesCompatibility D jE) (h : RayLarger D jE) : ¬ Formalism.MainNotions.ArithmeticCylinders.MrayRay D 0 := by
   intro hM
   obtain ⟨p, hp, ⟨π, hK, hpp⟩, hns⟩ := h
@@ -175,6 +200,9 @@ def RayCFTImQ : Prop :=
 
 end NT
 
+/- English proof (translation)
+Establish `h : Module.finrank ℚ D.host.K = 2` using `Formalism.FrobeniusOrbits.SplitK.finrank_K (L := D.host.E) (d := D.host.d) D.host.hyp.2.1.pos (D.host.sqd_sq)`. Rewrite using `[← h]`. Conclude with `(IntermediateField.equivMap D.host.K jE.toRatAlgHom).toLinearEquiv.finrank_eq.symm`.
+-/
 theorem finrank_KQbar (jE : D.host.E →+* Qb) : Module.finrank ℚ (KQbar D jE) = 2 := by
   have h : Module.finrank ℚ D.host.K = 2 :=
     Formalism.FrobeniusOrbits.SplitK.finrank_K (L := D.host.E) (d := D.host.d) D.host.hyp.2.1.pos
@@ -182,40 +210,73 @@ theorem finrank_KQbar (jE : D.host.E →+* Qb) : Module.finrank ℚ (KQbar D jE)
   rw [← h]
   exact (IntermediateField.equivMap D.host.K jE.toRatAlgHom).toLinearEquiv.finrank_eq.symm
 
+/- English proof (translation)
+The claim follows from `(IntermediateField.mem_map _).2 ⟨D.host.sqrtMinusD, IntermediateField.mem_adjoin_simple_self ℚ _, rfl⟩`.
+-/
 theorem sqrtMinusD_mem_KQbar (jE : D.host.E →+* Qb) : jE D.host.sqrtMinusD ∈ KQbar D jE :=
   (IntermediateField.mem_map _).2 ⟨D.host.sqrtMinusD, IntermediateField.mem_adjoin_simple_self ℚ _, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← map_pow, show D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E) from D.host.sqd_sq, map_neg, map_natCast]`.
+-/
 theorem sqrtMinusD_sq_Qbar (jE : D.host.E →+* Qb) : (jE D.host.sqrtMinusD) ^ 2 = -(D.host.d : Qb) := by
   rw [← map_pow, show D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E) from D.host.sqd_sq,
     map_neg, map_natCast]
 
+/- English proof (translation)
+The claim follows from `Nat.mul_pos (Nat.mul_pos D.host.QS_pos D.host.hyp.1.pos) D.host.hyp.2.1.pos`.
+-/
 theorem hostCond_pos : 0 < D.host.QS * D.host.q * D.host.d :=
   Nat.mul_pos (Nat.mul_pos D.host.QS_pos D.host.hyp.1.pos) D.host.hyp.2.1.pos
 
+/- English proof (translation)
+The claim follows from `h (KQbar D jE) D.host.d _ (finrank_KQbar (D := D) jE) (jE D.host.sqrtMinusD) (sqrtMinusD_mem_KQbar (D := D) jE) (sqrtMinusD_sq_Qbar (D := D) jE) D.host.hyp.2.1.pos (hostCond_pos (D := D)) (Nat.mul_dvd_mul_right (((dvd_pow_self 2 (Nat.succ_ne_zero _)).trans D.host.tower_dvd).mul_r …`.
+-/
 theorem rayCFT_KQbar (h : NT.RayCFTImQ) : RayCFT (KQbar D jE) (D.host.QS * D.host.q * D.host.d) :=
   h (KQbar D jE) D.host.d _ (finrank_KQbar (D := D) jE) (jE D.host.sqrtMinusD) (sqrtMinusD_mem_KQbar (D := D) jE)
     (sqrtMinusD_sq_Qbar (D := D) jE) D.host.hyp.2.1.pos (hostCond_pos (D := D))
     (Nat.mul_dvd_mul_right
       (((dvd_pow_self 2 (Nat.succ_ne_zero _)).trans D.host.tower_dvd).mul_right D.host.q) D.host.d)
 
+/- English proof (translation)
+The claim follows from `mrayRay_of_tied T (rayCFT_KQbar hC) a ha`.
+-/
 theorem mrayRay_of_tied' (T : NormalizedTypesCompatibility D jE) (hC : NT.RayCFTImQ) (a : ℕ) (ha : 1 ≤ a) :
     Formalism.MainNotions.ArithmeticCylinders.MrayRay D a :=
   mrayRay_of_tied T (rayCFT_KQbar hC) a ha
 
+/- English proof (translation)
+The claim follows from `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ (T.teichC_def k).injective`.
+-/
 theorem teichC_injective (T : NormalizedTypesCompatibility D jE) (k : Fin 2) : Function.Injective (D.ntypes.teichC k) :=
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
   (T.teichC_def k).injective
 
+/- English proof (translation)
+The claim follows from `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ (T.teichC_def k).map_zero`.
+-/
 theorem teichC_zero (T : NormalizedTypesCompatibility D jE) (k : Fin 2) : D.ntypes.teichC k 0 = 0 :=
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
   (T.teichC_def k).map_zero
 
+/- English proof (translation)
+Take `⟨B, κ, -, h⟩` from `T.iota_loc i`. Use extensionality with `x`. Rewrite using `[h, h]`.
+-/
 theorem iota_indep (T : NormalizedTypesCompatibility D jE) (i : D.nd.Loc) (k : Fin 2) (v v' : D.nd.PlG k) :
     D.ntypes.iota k v (D.nd.w i) = D.ntypes.iota k v' (D.nd.w i) := by
   obtain ⟨B, κ, -, h⟩ := T.iota_loc i
   ext x
   rw [h, h]
 
+/- English proof (translation)
+Introduce `i k v u y _hl hy`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Use `haveI : Fact (D.what₂.places.resChar (D.nd.w i)).Prime := ⟨D.what₂.places.resChar_prime (D.nd.w i)⟩`. Take `⟨B, κ, hcomp, hiota⟩` from `T.iota_loc i`. Take `⟨hyB, hyκ⟩` from `hcomp y`.
+
+Rewrite using `[← hyκ]`. Use `congr 1`. Use `set ū : Formalism.CyclotomicNorms.Fbar (D.host.g k) := algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) (u : ZMod (D.host.g k))`. Establish `hfin : ū ^ orderOf u = 1`. Simplify using `only [ū]`.
+
+Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, pow_orderOf_eq_one, Units.val_one, map_one]`. Establish `hpos : 0 < orderOf ū` using `(isOfFinOrder_iff_pow_eq_one.mpr ⟨_, orderOf_pos u, hfin⟩).orderOf_pos`. Rewrite using `[hiota, redThrough_primeToPart B κ (D.ntypes.teichC k) ū hpos]`. Unfold `redThrough`. Establish `hB : D.ntypes.teichC k ū ∈ B` using `hy ▸ hyB`.
+
+Rewrite using `[dif_pos hB]`. Use `congr 2`. Conclude with `Subtype.ext hy`.
+-/
 theorem globalDatumRegularity_of_typesCompatibility (T : NormalizedTypesCompatibility D jE) : GlobalDatumRegularity D := by
   intro i k v u y _hl hy
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -236,12 +297,20 @@ theorem globalDatumRegularity_of_typesCompatibility (T : NormalizedTypesCompatib
   congr 2
   exact Subtype.ext hy
 
+/- English proof (translation)
+Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Rewrite using `[T.eSer_def]`. Conclude with `eSerO_eq_zero _ _ f hf`.
+-/
 theorem eSer_zero_of_tie (T : NormalizedTypesCompatibility D jE) (k : Fin 2) (f : (ZMod (D.host.g k))[X])
     (hf : ¬ (f.Monic ∧ f.natDegree = D.R.r ∧ f.coeff 0 ≠ 0)) : D.ntypes.eSer k f = 0 := by
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
   rw [T.eSer_def]
   exact eSerO_eq_zero _ _ f hf
 
+/- English proof (translation)
+Establish `h : ((D.host.g k : ℕ) : D.nd.Om) = algebraMap D.host.E D.nd.Om ((D.host.g k : ℕ) : D.host.E)`. Rewrite using `[map_natCast]`. Rewrite using `[h]`. Introduce `h0`. Establish `h1` using `(algebraMap D.host.E D.nd.Om).injective (h0.trans (map_zero _).symm)`.
+
+Conclude with `(Nat.cast_ne_zero.mpr (D.host.g_prime k).ne_zero) h1`.
+-/
 theorem natCast_g_ne_zero (k : Fin 2) : ((D.host.g k : ℕ) : D.nd.Om) ≠ 0 := by
   have h : ((D.host.g k : ℕ) : D.nd.Om) = algebraMap D.host.E D.nd.Om ((D.host.g k : ℕ) : D.host.E) := by
     rw [map_natCast]
@@ -250,6 +319,9 @@ theorem natCast_g_ne_zero (k : Fin 2) : ((D.host.g k : ℕ) : D.nd.Om) ≠ 0 := 
   have h1 := (algebraMap D.host.E D.nd.Om).injective (h0.trans (map_zero _).symm)
   exact (Nat.cast_ne_zero.mpr (D.host.g_prime k).ne_zero) h1
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed D.nd.Om := IsAlgClosure.isAlgClosed D.host.E`. Establish `h2 : 2 ≤ D.host.g k ^ d` using `le_trans (D.host.g_prime k).two_le (Nat.le_self_pow (Nat.pos_iff_ne_zero.mp hd) _)`. Conclude with `IsAlgClosed.exists_pow_nat_eq _ (by omega)`.
+-/
 theorem exists_tameRoot (k : Fin 2) (d : ℕ) (hd : 0 < d) :
     ∃ y : D.nd.Om, y ^ (D.host.g k ^ d - 1) = ((D.host.g k : ℕ) : D.nd.Om) := by
   haveI : IsAlgClosed D.nd.Om := IsAlgClosure.isAlgClosed D.host.E
@@ -257,6 +329,9 @@ theorem exists_tameRoot (k : Fin 2) (d : ℕ) (hd : 0 < d) :
     le_trans (D.host.g_prime k).two_le (Nat.le_self_pow (Nat.pos_iff_ne_zero.mp hd) _)
   exact IsAlgClosed.exists_pow_nat_eq _ (by omega)
 
+/- English proof (translation)
+Establish `h2 : 2 ≤ D.host.g k ^ d` using `le_trans (D.host.g_prime k).two_le (Nat.le_self_pow (Nat.pos_iff_ne_zero.mp hd) _)`. Conclude with `tameQuot_mem _ _ (by omega) (natCast_g_ne_zero k) hy`.
+-/
 theorem tg_tameQuot_mem (k : Fin 2) (v : D.nd.PlG k) (d : ℕ) (hd : 0 < d) (y : D.nd.Om)
     (hy : y ^ (D.host.g k ^ d - 1) = ((D.host.g k : ℕ) : D.nd.Om)) :
     (D.ntypes.tg k v) y / y ∈ D.nd.plOm.1 (D.naut.plGw k v) := by
@@ -264,6 +339,9 @@ theorem tg_tameQuot_mem (k : Fin 2) (v : D.nd.PlG k) (d : ℕ) (hd : 0 < d) (y :
     le_trans (D.host.g_prime k).two_le (Nat.le_self_pow (Nat.pos_iff_ne_zero.mp hd) _)
   exact tameQuot_mem _ _ (by omega) (natCast_g_ne_zero k) hy
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨D.host.g_prime k⟩ redThrough (D.nd.plOm.1 (D.naut.plGw k v)) (T.kv k v) ((D.ntypes.tg k v) y / y) = redThrough (D.nd.plOm.1 (D.naut.plGw k v')) (T.kv k v') ((D.ntypes.tg k v') y / y) := by haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ rw [T.tg_tame k v d hd y hy, T.tg_ta …`.
+-/
 theorem tame_agree (T : NormalizedTypesCompatibility D jE) (k : Fin 2) (v v' : D.nd.PlG k) (d : ℕ) (hd : 0 < d) (y : D.nd.Om)
     (hy : y ^ (D.host.g k ^ d - 1) = ((D.host.g k : ℕ) : D.nd.Om)) :
     haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -283,20 +361,34 @@ def TameSurj : Prop :=
 
 variable (D)
 
+/- English proof (translation)
+Introduce `i i' σ Sig Sig' h1 h2`. Establish `e1` using `h i σ Sig h1.1 h1.2.1 h1.2.2`. Establish `e2` using `h i' σ Sig' h2.1 h2.2.1 h2.2.2`. Conclude with `e1.symm.trans e2`.
+-/
 theorem bcUnique_of_bcTie (h : BcTie D.nd D.naut D.ntypes) : BcUnique D := by
   intro i i' σ Sig Sig' h1 h2
   have e1 := h i σ Sig h1.1 h1.2.1 h1.2.2
   have e2 := h i' σ Sig' h2.1 h2.2.1 h2.2.2
   exact e1.symm.trans e2
 
+/- English proof (translation)
+The claim follows from `bcUnique_of_bcTie D D.bc_tie`.
+-/
 theorem bcUnique : BcUnique D := bcUnique_of_bcTie D D.bc_tie
 
+/- English proof (translation)
+The claim follows from `D.bc_tie i σ Sig h.1 h.2.1 h.2.2`.
+-/
 theorem bc_eq_msOf (σ : D.what₂.FT) (i : D.nd.Loc) (Sig : List (Part D.naut.CG)) (h : IsBcRow D i σ Sig) :
     D.ntypes.bc σ = msOf D Sig :=
   D.bc_tie i σ Sig h.1 h.2.1 h.2.2
 
 variable {D}
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons x L ih`. Simplify using `only [List.foldr_cons, List.length_cons]`. Rewrite using `[D.naut.lpDim_sum, D.naut.lpDim_tw, D.naut.locG_dim, ih]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lpDim_foldr {w : PlE D.host} {a : ℕ} {β : Type} (π : D.naut.CG a) (L : List β) (f : β → ℝ)
     (z : D.naut.LP w) :
     D.naut.lpDim (L.foldr (fun k acc => D.naut.lpSum (D.naut.lpTw (D.naut.locG π w) (f k)) acc) z) =
@@ -308,6 +400,9 @@ theorem lpDim_foldr {w : PlE D.host} {a : ℕ} {β : Type} (π : D.naut.CG a) (L
     rw [D.naut.lpDim_sum, D.naut.lpDim_tw, D.naut.locG_dim, ih]
     ring
 
+/- English proof (translation)
+Unfold `spehLoc`. Establish `h` using `lpDim_foldr (D := D) p.π (do let a ← List.range p.d; pure (a : ℝ)) (fun k : ℝ => ((p.d : ℝ) - 1) / 2 - k) (D.naut.lpZero w)`. Rewrite using `[h, D.naut.lpDim_zero, add_zero, mul_comm]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem lpDim_spehLoc (p : Part D.naut.CG) (w : PlE D.host) :
     D.naut.lpDim (spehLoc D.nd D.naut p w) = p.a * p.d := by
   unfold spehLoc
@@ -317,6 +412,11 @@ theorem lpDim_spehLoc (p : Part D.naut.CG) (w : PlE D.host) :
   congr 1
   simp
 
+/- English proof (translation)
+Proceed by induction on `Sig with`. Consider the case `nil => simp [isoLoc, rankIso, D.naut.lpDim_zero]`. Consider the case `cons p Sig ih`. Unfold `isoLoc at ih ⊢`. Unfold `rankIso at ih ⊢`.
+
+Simplify using `only [List.foldr_cons, List.map_cons, List.sum_cons]`. Rewrite using `[D.naut.lpDim_sum, lpDim_spehLoc, ih]`.
+-/
 theorem lpDim_isoLoc (Sig : List (Part D.naut.CG)) (w : PlE D.host) :
     D.naut.lpDim (isoLoc D.nd D.naut Sig w) = rankIso D.nd D.naut Sig := by
   induction Sig with
@@ -327,11 +427,17 @@ theorem lpDim_isoLoc (Sig : List (Part D.naut.CG)) (w : PlE D.host) :
     simp only [List.foldr_cons, List.map_cons, List.sum_cons]
     rw [D.naut.lpDim_sum, lpDim_spehLoc, ih]
 
+/- English proof (translation)
+Rewrite using `[T.locPar_def, lpDim_isoLoc]`. Conclude with `(T.eP σ).2.2.2.1`.
+-/
 theorem locPar_dim_of (T : NormalizedTypesCompatibility D jE) (σ : D.ntypes.Par) (w : PlE D.host) :
     D.naut.lpDim (D.ntypes.locPar σ w) = D.R.r := by
   rw [T.locPar_def, lpDim_isoLoc]
   exact (T.eP σ).2.2.2.1
 
+/- English proof (translation)
+Rewrite using `[D.ntypes.labPar_def, T.locPar_def]`. Conclude with `(T.eP σ).2.2.2.2 k v`.
+-/
 theorem labPar_monic_of (T : NormalizedTypesCompatibility D jE) (k : Fin 2) (σ : D.ntypes.Par) (v : D.nd.PlG k) :
     (D.ntypes.labPar k σ v).Monic ∧ (D.ntypes.labPar k σ v).natDegree = D.R.r := by
   rw [D.ntypes.labPar_def, T.locPar_def]
@@ -341,16 +447,28 @@ section Deg
 
 variable {G : Type} [Group G] {g : ℕ} (f₀ : (ZMod g)[X])
 
+/- English proof (translation)
+Apply the tactic sequence `unfold degSer; split_ifs <;> simp`.
+-/
 theorem degSer_idem (f : (ZMod g)[X]) : degSer (G := G) f₀ f * degSer f₀ f = degSer f₀ f := by
   unfold degSer; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold degSer; split_ifs <;> simp`.
+-/
 theorem degSer_central (f : (ZMod g)[X]) (a : MonoidAlgebra ℂ G) : degSer f₀ f * a = a * degSer f₀ f := by
   unfold degSer; split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `degSer`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`.
+-/
 theorem degSer_orth (f f' : (ZMod g)[X]) (h : f ≠ f') : degSer (G := G) f₀ f * degSer f₀ f' = 0 := by
   unfold degSer
   split_ifs with h1 h2 <;> simp_all
 
+/- English proof (translation)
+Unfold `degSer`. Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Conclude with `hf h0`.
+-/
 theorem degSer_zero (P : (ZMod g)[X] → Prop) (h0 : P f₀) (f : (ZMod g)[X]) (hf : ¬ P f) :
     degSer (G := G) f₀ f = 0 := by
   unfold degSer
@@ -358,6 +476,9 @@ theorem degSer_zero (P : (ZMod g)[X] → Prop) (h0 : P f₀) (f : (ZMod g)[X]) (
   rintro rfl
   exact hf h0
 
+/- English proof (translation)
+Unfold `degSer`. Rewrite using `[Finset.sum_ite_eq' S f₀ (fun _ => (1 : MonoidAlgebra ℂ G)), if_pos h0]`.
+-/
 theorem degSer_sum (S : Finset (ZMod g)[X]) (h0 : f₀ ∈ S) : ∑ f ∈ S, degSer (G := G) f₀ f = 1 := by
   classical
   unfold degSer

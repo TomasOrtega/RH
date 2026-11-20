@@ -6,14 +6,23 @@ namespace GlobalTheory.StableGraph
 variable {O : Type} [CommRing O] {A₁ A₂ : Type} [CommRing A₁] [CommRing A₂] [Algebra O A₁]
   [Algebra O A₂] {M₁ : Submodule O A₁} {M₂ : Submodule O A₂}
 
+/- English proof (translation)
+Rewrite using `[← h]`. Conclude with `ha`.
+-/
 theorem mem_of_inl {M : Submodule O (A₁ × A₂)} (h : M.comap (LinearMap.inl O A₁ A₂) = M₁)
     {a : A₁} (ha : (a, (0 : A₂)) ∈ M) : a ∈ M₁ := by
   rw [← h]; exact ha
 
+/- English proof (translation)
+Rewrite using `[← h]`. Conclude with `Submodule.mem_map_of_mem (f := LinearMap.snd O A₁ A₂) hx`.
+-/
 theorem mem_of_snd {M : Submodule O (A₁ × A₂)} (h : M.map (LinearMap.snd O A₁ A₂) = M₂)
     {a : A₁} {x : A₂} (hx : (a, x) ∈ M) : x ∈ M₂ := by
   rw [← h]; exact Submodule.mem_map_of_mem (f := LinearMap.snd O A₁ A₂) hx
 
+/- English proof (translation)
+Establish `hx : (x : A₂) ∈ M.map (LinearMap.snd O A₁ A₂)` using `h ▸ x.2`. Take `⟨p, hp, hpx⟩` from `Submodule.mem_map.1 hx`. Establish `hp' : p = (p.1, (x : A₂))` using `Prod.ext rfl hpx`. Conclude with `⟨p.1, hp' ▸ hp⟩`.
+-/
 theorem exists_of_map {M : Submodule O (A₁ × A₂)} (h : M.map (LinearMap.snd O A₁ A₂) = M₂)
     (x : M₂) : ∃ a : A₁, (a, (x : A₂)) ∈ M := by
   have hx : (x : A₂) ∈ M.map (LinearMap.snd O A₁ A₂) := h ▸ x.2
@@ -25,6 +34,9 @@ noncomputable def classOf {M : Submodule O (A₁ × A₂)} (h₂ : M.map (Linear
     (x : M₂) : A₁ ⧸ M₁ :=
   Submodule.Quotient.mk (exists_of_map h₂ x).choose
 
+/- English proof (translation)
+Unfold `classOf`. Rewrite using `[Submodule.Quotient.eq]`. Apply `mem_of_inl h₁` to reduce the goal to its premises. Use `M.sub_mem (exists_of_map h₂ x).choose_spec hp` as an intermediate fact. Simplify using `using this`.
+-/
 theorem classOf_eq {M : Submodule O (A₁ × A₂)} (h₁ : M.comap (LinearMap.inl O A₁ A₂) = M₁)
     (h₂ : M.map (LinearMap.snd O A₁ A₂) = M₂) {x : M₂} {a : A₁} (hp : (a, (x : A₂)) ∈ M) :
     classOf (M₁ := M₁) h₂ x = Submodule.Quotient.mk a := by
@@ -66,9 +78,19 @@ def graph (φ : M₂ →ₗ[O] A₁ ⧸ M₁) : Submodule O (A₁ × A₂) where
     simp only [Prod.smul_fst, Prod.smul_snd] at *
     rw [e, map_smul, Submodule.Quotient.mk_smul, ha]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_graph {φ : M₂ →ₗ[O] A₁ ⧸ M₁} {a : A₁} {x : A₂} :
     (a, x) ∈ graph φ ↔ ∃ h : x ∈ M₂, Submodule.Quotient.mk a = φ ⟨x, h⟩ := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `only [Submodule.mem_comap, LinearMap.inl_apply]`. Rewrite using `[mem_graph]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, e⟩`.
+
+Establish `e0 : (⟨0, h⟩ : M₂) = 0` using `rfl`. Rewrite `e` using `[e0, map_zero, Submodule.Quotient.mk_eq_zero]`. Conclude with `e`. Introduce `ha`. Use `⟨M₂.zero_mem, ?_⟩` and prove the remaining obligations.
+
+Establish `e0 : (⟨0, M₂.zero_mem⟩ : M₂) = 0` using `rfl`. Rewrite using `[e0, map_zero, Submodule.Quotient.mk_eq_zero]`. Conclude with `ha`.
+-/
 theorem graph_comap (φ : M₂ →ₗ[O] A₁ ⧸ M₁) : (graph φ).comap (LinearMap.inl O A₁ A₂) = M₁ := by
     ext a
     simp only [Submodule.mem_comap, LinearMap.inl_apply]
@@ -84,6 +106,11 @@ theorem graph_comap (φ : M₂ →ₗ[O] A₁ ⧸ M₁) : (graph φ).comap (Line
       rw [e0, map_zero, Submodule.Quotient.mk_eq_zero]
       exact ha
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, ⟨h, _⟩, rfl⟩`. Conclude with `h`. Introduce `hx`.
+
+Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective M₁ (φ ⟨x, hx⟩)`. Conclude with `⟨(a, x), ⟨hx, ha⟩, rfl⟩`.
+-/
 theorem graph_map (φ : M₂ →ₗ[O] A₁ ⧸ M₁) : (graph φ).map (LinearMap.snd O A₁ A₂) = M₂ := by
     ext x
     constructor
@@ -147,6 +174,9 @@ end GlobalTheory.StableGraph
 
 open GlobalTheory.StableGraph in
 
+/- English proof (translation)
+Introduce `O _ A₁ A₂ _ _ _ _ g₁ g₂ M₁ M₂ hM₂`. Conclude with `Nat.card_congr (stableEquiv g₁ g₂ hM₂)`.
+-/
 theorem GlobalTheory.StableGraph.card_stable_eq_card_hom : ∀ (O : Type) [CommRing O] (A₁ A₂ : Type) [CommRing A₁] [CommRing A₂] [Algebra O A₁] [Algebra O A₂] (g₁ : A₁) (g₂ : A₂) (M₁ : Submodule O A₁) (M₂ : Submodule O A₂), (∀ y ∈ M₂, g₂ * y ∈ M₂) → Nat.card {M : Submodule O (A₁ × A₂) // (∀ y ∈ M, (g₁, g₂) * y ∈ M) ∧ M.comap (LinearMap.inl O A₁ A₂) = M₁ ∧ M.map (LinearMap.snd O A₁ A₂) = M₂} = Nat.card {φ : M₂ →ₗ[O] A₁ ⧸ M₁ // ∀ x y : M₂, (y : A₂) = g₂ * x → ∀ a : A₁, φ x = Submodule.Quotient.mk a → φ y = Submodule.Quotient.mk (g₁ * a)} := by
   intro O _ A₁ A₂ _ _ _ _ g₁ g₂ M₁ M₂ hM₂
   exact Nat.card_congr (stableEquiv g₁ g₂ hM₂)

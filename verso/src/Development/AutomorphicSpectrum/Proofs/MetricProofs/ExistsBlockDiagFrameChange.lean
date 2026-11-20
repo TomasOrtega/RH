@@ -14,6 +14,23 @@ open scoped ComplexOrder Classical
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M F z hz hF hG`. Take `⟨h1, -, h3⟩` from `GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M`. Establish `hch : ∀ k : NonPluckerBlocks M.blk, basePart M.blk z ⟨k, F.c k⟩ ≠ 0` using `fun k h0 => hG.1 k (by show mConeMap _ (X _) = 0`. Simplify using `[mConeMap, h0])`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hcb, hc1⟩ : ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧ (∀ k : NonPluckerBlocks M.blk, c k.1 * basePart M.blk z ⟨k, F.c k⟩ = 1) ∧ ∀ (p : Ψ × Fin N) (k : K), M.blk p = some k → c k = 1 := by`.
+
+Use `⟨fun k => if hk : ∀ p, M.blk p ≠ some k then (basePart M.blk z ⟨⟨k, hk⟩, F.c ⟨k, hk⟩⟩)⁻¹ else 1, fun k => ?_, fun k => ?_, fun p k hp => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : ∀ p, M.blk p ≠ some k`. Simplify using `only [dif_pos hk]`. Conclude with `inv_ne_zero (hch ⟨k, hk⟩)`. Simplify using `only [dif_neg hk]`.
+
+Conclude with `one_ne_zero`. Simplify using `only [dif_pos k.2]`. Conclude with `inv_mul_cancel₀ (hch k)`. Establish `hk : ¬ ∀ p, M.blk p ≠ some k` using `fun h => h p hp`. Simplify using `only [dif_neg hk]`.
+
+Set `z₁ : (Σ k, ι k) → ℂ` to `fun q => c q.1 * z q`. Establish `hz₁ : z₁ ∈ mcPts (mCoordIdeal y)` using `mcPts_smul (CoordinateConeArithVar.isMultiHomogIdeal y) c hc hz`. Establish `hb₁ : basePart M.blk z₁ = fun q => (fun k : NonPluckerBlocks M.blk => c k.1) q.1 * basePart M.blk z q` using `rfl`. Establish `hT` using `StepW.TorusAct.main (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.Ω M.x (basePart M.blk z) (fun k : NonPluckerBlocks M.blk => c k.1) (fun k => hc k.1)`. Establish `hI : mCoordIdeal (basePart M.blk z₁) = mCoordIdeal (basePart M.blk z)`.
+
+Rewrite using `[hb₁]`. Conclude with `hT.1`. Establish `hG₁ : M.GoodAt F (mCoordIdeal (basePart M.blk z₁))` using `by rw [hI]; exact hG`. Establish `hnorm : ∀ k, basePart M.blk z₁ ⟨k, F.c k⟩ = 1` using `hcb`. Take `⟨h, -, hh, hs⟩` from `(h3 F hF z₁ (h1 z₁ hz₁) hG₁ hnorm).1 hz₁`.
+
+Establish `hval : ∀ s : M.Ω, valAt M.x s (basePart M.blk z₁) = valAt M.x s (basePart M.blk z)` using `fun s => by`. Rewrite using `[hb₁]`. Conclude with `(hT.2 (h1 z hz)).2 s`. Use `⟨h, hh, fun p k hp => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hm⟩` from `hs p k hp`.
+
+Use `⟨a, ha, fun m => ?_⟩` and prove the remaining obligations. Establish `e` using `hm m`. Simplify using `only [hval] at e`. Establish `e' : z₁ ⟨k, m⟩ = z ⟨k, m⟩` using `by show c k * z ⟨k, m⟩ = z ⟨k, m⟩`. Rewrite using `[hc1 p k hp, one_mul]`.
+
+Rewrite `e` using `[e']`. Conclude with `e`.
+-/
 theorem exists_flags_good : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (z : (Σ k, ι k) → ℂ), z ∈ mcPts (mCoordIdeal y) → M.IsFrame F → M.GoodAt F (mCoordIdeal (basePart M.blk z)) → ∃ h : Ψ → Matrix (Fin N) (Fin N) ℂ, (∀ τ, IsBlockDiag j (h τ) ∧ (h τ).det ≠ 0) ∧ ∀ (p : Ψ × Fin N) (k : K), M.blk p = some k → ∃ a : ℂ, a ≠ 0 ∧ ∀ m : ι k, z ⟨k, m⟩ = a * CovMap.LocImg.plk M F (basePart M.blk z) p.2 ⟨k, m⟩ (h p.1) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M F z hz hF hG
   obtain ⟨h1, -, h3⟩ := GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M

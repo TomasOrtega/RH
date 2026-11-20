@@ -9,6 +9,9 @@ open Ad3.R (G2 Jd md KA LInv IsLoc2 pt pri dia2)
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ThetaFin.finitePart | exact GlobalTheory.CompanionTheory.ThetaFin.finitePart | (intros; apply GlobalTheory.CompanionTheory.ThetaFin.finitePart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.product_theta_locally_constant_bounded : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (M : ∀ v : Pl, LM c v), AdmM M →
   ∀ (Sv : Finset Pl) (m : Pl →₀ ℤ) (g₀ : G2), g₀ ∈ Gp M → ∃ (W : Set G2) (N : ℕ) (B : ℝ), W ∈ nhds g₀ ∧ N ≠ 0 ∧
     (∀ g ∈ W, g ∈ Gp M → ∀ u (ξ : K), ∏ᶠ v, (twM M Sv m u v).val (finAt v g) ξ = ∏ᶠ v, (twM M Sv m u v).val (finAt v g₀) ξ) ∧

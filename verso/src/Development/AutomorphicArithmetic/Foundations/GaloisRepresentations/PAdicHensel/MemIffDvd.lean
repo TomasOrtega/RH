@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 
 open NumberField IsDedekindDomain UpperTheory.Gal.W2.Seed UpperTheory.Gal.G1 UpperTheory.Gal.Int.Geo GlobalTheory.CongL GlobalTheory.UnitaryBC
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hn`. Assume the negation of the conclusion as `hnd`. Establish `hc : IsCoprime (q : ℤ) n` using `(Irreducible.coprime_iff_not_dvd (Nat.prime_iff_prime_int.mp hq).irreducible).mpr hnd`. Take `⟨x, z, hxz⟩` from `hc`.
+
+Apply `P.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1` using `congrArg (Int.cast : ℤ → 𝓞 E) hxz`. Move the coercions through the operations in `at h1`. Rewrite using `[← h1]`.
+
+Conclude with `add_mem (Ideal.mul_mem_left _ _ hP) (Ideal.mul_mem_left _ _ hn)`. Introduce and unpack `⟨k, rfl⟩`. Use `push_cast`. Conclude with `Ideal.mul_mem_right _ _ hP`.
+-/
 private theorem intCast_mem_asIdeal_iff_dvd (E : Type) [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
     (q : ℕ) (hq : q.Prime) (hP : (q : 𝓞 E) ∈ P.asIdeal) (n : ℤ) :
     (n : 𝓞 E) ∈ P.asIdeal ↔ (q : ℤ) ∣ n := by
@@ -22,6 +29,17 @@ private theorem intCast_mem_asIdeal_iff_dvd (E : Type) [Field E] [NumberField E]
     push_cast
     exact Ideal.mul_mem_right _ _ hP
 
+/- English proof (translation)
+Introduce `hD E _ _ _ A q hq hqD r u w hqu hqw hru hrw y hy`. Take `⟨a, b, hab⟩` from `hD E A y hy`. Establish `key : ∀ P : HeightOneSpectrum (𝓞 E), (q : 𝓞 E) ∈ P.asIdeal → A.ω - (r : 𝓞 E) ∈ P.asIdeal → (y ∈ P.asIdeal ↔ (q : ℤ) ∣ a + b * r)`. Introduce `P hP hωP`. Establish `hDP : ((A.tr ^ 2 - 4 * A.nm : ℤ) : 𝓞 E) ∉ P.asIdeal` using `fun h => hqD ((intCast_mem_asIdeal_iff_dvd E P q hq hP _).mp h)`.
+
+Establish `hdiff : ((A.tr ^ 2 - 4 * A.nm : ℤ) : 𝓞 E) * y - ((a + b * r : ℤ) : 𝓞 E) ∈ P.asIdeal`. Rewrite using `[hab]`. Establish `h4 : (a : 𝓞 E) + (b : 𝓞 E) * A.ω - ((a + b * r : ℤ) : 𝓞 E) = (b : 𝓞 E) * (A.ω - (r : 𝓞 E))` using `by push_cast; ring`. Rewrite using `[h4]`. Conclude with `Ideal.mul_mem_left _ _ hωP`.
+
+Rewrite using `[← intCast_mem_asIdeal_iff_dvd E P q hq hP]`. Prove the components needed by the constructor for the conclusion. Introduce `hy'`. Establish `h5 : ((a + b * r : ℤ) : 𝓞 E) = ((A.tr ^ 2 - 4 * A.nm : ℤ) : 𝓞 E) * y - (((A.tr ^ 2 - 4 * A.nm : ℤ) : 𝓞 E) * y - ((a + b * r : ℤ) : 𝓞 E))` using `by ring`. Rewrite using `[h5]`.
+
+Conclude with `sub_mem (Ideal.mul_mem_left _ _ hy') hdiff`. Introduce `hc`. Establish `hm : ((A.tr ^ 2 - 4 * A.nm : ℤ) : 𝓞 E) * y ∈ P.asIdeal`. Establish `h6` using `add_mem hdiff hc`. Rewrite `h6` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Conclude with `(P.isPrime.mem_or_mem hm).resolve_left hDP`. Rewrite using `[key u hqu hru, key w hqw hrw]`.
+-/
 theorem UpperTheory.Gal.G1.pKeyK :
     DiscInt → KeyK := by
   intro hD E _ _ _ A q hq hqD r u w hqu hqw hru hrw y hy

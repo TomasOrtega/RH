@@ -13,6 +13,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open GlobalTheory.Doubling (absE)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M r s r' s' hB hn hd hX hW h0 hM χ hχ hr dd om S l c1 c2 K a hK ha μ D hμ hD Φ₁ p1 Φ₂ p2`. Take `⟨U, Ê, hE, hR⟩` from `h2 F E σ B n X r s hB hn (.inl hX) χ hχ d hr K a hK ha _ _ (h3 F E σ B n d X W M r s r' s' hB hn hd hX hW h0 hM χ hχ hr dd om S l c1 c2 K a hK ha Φ₁ p1 Φ₂ p2)`. Take `⟨k, hk⟩` from `hR (((d : ℂ) - n) / 2)`. Conclude with `⟨_, _, hE.update hk (h1 F E σ B n d X W M r s r' s' hB hn hd hX hW h0 hM χ hχ hr dd om S l c1 c2 K a hK ha μ D hμ hD Φ₁ p1 Φ₂ p2), Set.mem_insert _ _, fun x => by rw [Function.update_self]⟩`.
+-/
 theorem swFullX_of (h1 : SWAnisoX) (h2 : EisContinues) (h3 : BoxSecX) : SWFullX := by
   intro F E _ _ _ _ _ σ B n d X W M r s r' s' hB hn hd hX hW h0 hM χ hχ hr dd om S l c1 c2 K a hK ha μ D hμ hD Φ₁ p1 Φ₂ p2
   obtain ⟨U, Ê, hE, hR⟩ := h2 F E σ B n X r s hB hn (.inl hX) χ hχ d hr K a hK ha _ _
@@ -21,6 +24,11 @@ theorem swFullX_of (h1 : SWAnisoX) (h2 : EisContinues) (h3 : BoxSecX) : SWFullX 
   exact ⟨_, _, hE.update hk (h1 F E σ B n d X W M r s r' s' hB hn hd hX hW h0 hM χ hχ hr dd om S l c1 c2 K a hK ha μ D hμ hD Φ₁ p1 Φ₂ p2),
     Set.mem_insert _ _, fun x => by rw [Function.update_self]⟩
 
+/- English proof (translation)
+Establish `e` using `Measure.isMulLeftInvariant_eq_smul μ.inv μ`. Establish `c0 : μ.inv.haarScalarFactor μ ≠ 0` using `fun h => NeZero.ne μ (by rw [← μ.inv_inv, e, h, zero_smul]; exact Measure.map_zero _)`. Use `⟨((μ.inv.haarScalarFactor μ : ℝ) : ℂ), by simpa using c0, fun f => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `: Integrable f μ.inv` using `(integrable_map_equiv (MeasurableEquiv.inv G) f).2 h`. Rewrite `this` using `[e]`.
+
+Conclude with `(integrable_smul_measure (ENNReal.coe_ne_zero.2 c0) ENNReal.coe_ne_top).1 this`. Establish `: ∫ g, f g ∂μ.inv = ∫ g, f g⁻¹ ∂μ` using `integral_map_equiv (MeasurableEquiv.inv G) f`. Rewrite using `[← this]`. Use `conv_lhs => rw [e]`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+-/
 theorem inv_scale {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     [LocallyCompactSpace G] [SecondCountableTopology G] (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] :
     ∃ c : ℂ, c ≠ 0 ∧ ∀ f : G → ℂ, (Integrable (fun g => f g⁻¹) μ → Integrable f μ) ∧ ∫ g, f g⁻¹ ∂μ = c * ∫ g, f g ∂μ := by
@@ -35,6 +43,29 @@ theorem inv_scale {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup 
     conv_lhs => rw [e]
     rw [integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' T h0 h0' hn hd K a e k1 k2 he ν hν Φ hΦ`. Establish `cX` using `hC F E σ B _ X _ _ T.base (.inl T.herm) h0`. Establish `cW` using `hC F E σ B _ W _ _ T.base (.inr T.skew) h0'`. Take `⟨μ, D, hμ, hD⟩` from `cW.ex`. Take `⟨⟨K', a', k1', k2', k3, k4⟩, e', ce, he'⟩` from `hH F E σ B _ X _ _ T.base (.inl T.herm)`.
+
+Take `rfl : K' = K` from `Subgroup.ext fun k => (k1' k).trans (k1 k).symm`. Take `rfl : a' = a` from `funext fun x => by`. Take `⟨p, t, hp, k, hk, rfl⟩` from `k2.iwa x`. Rewrite using `[k2.val p t hp k hk, k2'.val p t hp k hk]`. Take `rfl : e' = e` from `MonoidHom.ext fun x => Subtype.ext (Units.ext ((he' x.1 x.2).trans (he x.1 x.2).symm))`.
+
+Establish `b` using `(hB F E σ B _ _ _ _ _ _ _ _ _ _ _ _ T).1 Φ (hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ T Φ hΦ)`. Establish `s1` using `hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ T Φ hΦ`. Take `⟨dd, om₂, S, l, d1, d2, d3, d4⟩` from `hW F E σ B _ _ _ _ _ _ _ _ _ _ _ _ T`. Take `⟨c', c0, hc⟩` from `d4 ν hν`. Take `⟨t₀, hi⟩` from `hT F E σ B _ X _ _ T.base (.inl T.herm) K' a' e' k1 k2 he M.μ T.good.haar`.
+
+Establish `sec` using `hX F E σ B _ _ _ _ M _ _ _ _ T.base hn hd T.herm T.skew h0' T.good χW T.hW T.resW dd om₂ S l d3 d1 K' a' k1 k2 Φ hΦ Φ hΦ`. Take `⟨U, Ê, hE, u, hv⟩` from `hS F E σ B _ _ _ _ M _ _ _ _ T.base hn hd T.herm T.skew h0' T.good χW T.hW T.resW dd om₂ S l d3 d1 K' a' k1 k2 μ D hμ hD Φ hΦ Φ hΦ`. Take `⟨hol, t₁, far⟩` from `kpair_cont T.base (.inl T.herm) h0 cX T.hW he ce (hK F E σ B _ X _ _ T.base (.inl T.herm) K' k1) k2 k3 k4 sec.cont sec.law hE T.good.haar T.good.dom hi`. Use `haveI := cX.sc`. Use `haveI := cW.sc`.
+
+Use `haveI := cX.lc`. Use `haveI := cW.lc`. Use `haveI := T.good.haar`. Use `haveI := cX.right M.μ T.good.haar`. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`.
+
+Use `haveI : IsFiniteMeasure (μ.restrict D) := ⟨by rw [Measure.restrict_apply_univ]; exact cW.fin _ _ hμ hD⟩`. Use `haveI : IsFiniteMeasure (M.μ.restrict M.dom) := ⟨by rw [Measure.restrict_apply_univ]; exact cX.fin _ _ T.good.haar T.good.dom⟩`. Take `⟨c, c1, hc1⟩` from `inv_scale M.μ`. Establish `rp : IsRapid (fun _ : UA σ X.J => (1 : ℂ))` using `cX.rapid continuous_const fun _ _ _ => rfl`. Establish `v0` using `Complex.ofReal_ne_zero.2 (cX.vol_ne T.good.haar T.good.dom)`.
+
+Establish `c2` using `Complex.ofReal_ne_zero.2 c0.ne'`. Establish `id : ∀ z g, flat a' (fun x => l (om₂ x (boxFun Φ (star Φ)))) (((d : ℂ) - n) / 2) z (e' (1, g)) * detInv χW g = c' * zint om ν a' e' Φ z g⁻¹` using `fun z g => by`. Use `(Law.flat (s₀ := ((d : ℂ) - n) / 2) (f := fun x => l (om₂ x (boxFun Φ (star Φ)))) sec.law k2 k4 z).diag (aniso_of T.base (.inl T.herm) h0) he g (e' (g⁻¹, 1))` as an intermediate fact. Rewrite `this` using `[← map_mul, Prod.mk_mul_mk, mul_inv_cancel, mul_one]`. Establish `e2` using `((d2 Φ s1 Φ s1).2 1 g⁻¹ 1 _ (he _ _)).2`.
+
+Rewrite `e2` using `[detInv_rat T.hW (one_mem _), one_smul, show ((1, 1) : UA σ X.J × UA σ W.J) = 1 from rfl, map_one, Module.End.one_apply]`. Rewrite using `[this, flat, e2, hc _ (T.weil.isUSplitting.pres _ _ s1) _ s1, zint, coef]`. Conclude with `mul_left_comm _ _ _`. Use `⟨U, fun z => (c' * c * M.μ.real M.dom : ℂ)⁻¹ * kpair χW e' M.μ M.dom (Ê z) fun _ => 1, t₁, hE.isOpen, hE.disc, u, (hol _ rp).const_mul _, fun z hz => ⟨(far z hz).1, (hc1 _).1 ?_, ?_⟩, fun I0 => mul_eq_zero_of_right _ ?_⟩` and prove the remaining obligations. Simplify `(far z hz).2.1` using `only [id, integrable_const_mul_iff c2.isUnit]`.
+
+Simplify using `only [(far z hz).2.2 _ rp, id, pet, star_one, mul_one, setIntegral_const, integral_mul_const, integral_const_mul, (hc1 _).2, Complex.real_smul]`. Clear the denominators using the available nonvanishing facts. Establish `cT : Continuous fun x : UA σ W.J × UA σ X.J => theta om Φ x.2 x.1` using `b.1.comp continuous_swap`. Use `An.at_value (φ := fun _ => 1) (M.μ.restrict M.dom) (μ.restrict D) ⟨cT, cW.bdd₂ cX cT fun γ hγ δ hδ g g' => b.2.1 δ hδ γ hγ _ _⟩ ⟨continuous_const, 1, by simp⟩` as an intermediate fact. Establish `z : ∀ h, ∫ g in M.dom, 1 * star (theta om Φ g h) ∂M.μ = 0` using `fun h => by`.
+
+Simplify using `only [one_mul, Complex.star_def, integral_conj]`. Conclude with `(map_eq_zero _).2 (congrFun I0 h)`. Simplify using `only [z, zero_mul, integral_zero] at this`. Use `Eq.trans ?_ ((congrArg ((if n < d then 1 else 2) * (((μ.real D)⁻¹ : ℝ) : ℂ) * ·) this).trans (mul_zero _))` and prove the remaining obligations. Simplify using `only [← integral_const_mul]`.
+
+Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hv, setAverage_eq, Complex.real_smul, ← fun g => (((d2 Φ s1 Φ s1).2 g y.1 y.2 _ (he _ _)).1), integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normZeta_of (hS : SWFullX) (hX : BoxSecX) (hW : DblX) (hH : HgtEx) (hT : HgtInt) (hK : Stab2Cpt) (hC : CptAll)
     (hB : ThetaBasic) (hP : PolSch) : NormZeta := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' T h0 h0' hn hd K a e k1 k2 he ν hν Φ hΦ

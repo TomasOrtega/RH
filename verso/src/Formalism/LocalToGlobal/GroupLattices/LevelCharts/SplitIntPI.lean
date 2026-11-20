@@ -6,6 +6,9 @@ open scoped TensorProduct
 
 namespace Formalism.L2.G
 
+/- English proof (translation)
+The claim follows from `split_integral_local F E v spl h`.
+-/
 theorem split_integral_completion (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F))
     (spl : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F)

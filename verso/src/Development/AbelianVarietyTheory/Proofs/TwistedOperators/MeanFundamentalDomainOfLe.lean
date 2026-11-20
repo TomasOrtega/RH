@@ -4,6 +4,43 @@ open scoped Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `g Λ Λ₁ Fd D₁ f hc hle hFd hD₁ hfin hper hmean`. Establish `hb : (volume D₁).toReal ≠ 0`. Introduce `h`. Rewrite `hmean` using `[h, div_zero]`. Conclude with `zero_ne_one hmean`.
+
+Establish `hab : ∫ z in D₁, f z = (volume D₁).toReal` using `(div_eq_one_iff_eq hb).1 hmean`. Establish `hint : IntegrableOn f D₁ volume`. Assume the negation of the conclusion as `h`. Rewrite `hab` using `[integral_undef h]`. Conclude with `hb hab.symm`.
+
+Establish `hD0 : volume D₁ ≠ 0` using `fun h => hb (by simp [h])`. Establish `hinv₁ : ∀ (γ : Λ₁) (x : Fin g → ℂ), f (γ +ᵥ x) = f x` using `fun γ x => by show f ((γ : Fin g → ℂ) + x) = f x`. Rewrite using `[add_comm]`. Conclude with `hper _ γ.2 x`. Establish `hinv : ∀ (l : Λ) (x : Fin g → ℂ), f (l +ᵥ x) = f x` using `fun l x => by show f ((l : Fin g → ℂ) + x) = f x`.
+
+Rewrite using `[add_comm]`. Conclude with `hper _ (hle l.2) x`. Set `Q` to `Λ₁ ⧸ Λ.addSubgroupOf Λ₁`. Use `haveI : Countable Λ := (AddSubgroup.inclusion_injective hle).countable`. Use `haveI : Countable Q := (QuotientAddGroup.mk_surjective (s := Λ.addSubgroupOf Λ₁)).countable`.
+
+Set `rep : Q → Λ₁` to `fun q => q.out`. Establish `hrep : ∀ q : Q, (QuotientAddGroup.mk (rep q) : Q) = q` using `fun q => QuotientAddGroup.out_eq' q`. Establish `hrepinj : Function.Injective rep` using `fun q q' h => by rw [← hrep q, ← hrep q', h]`. Set `s : Q → Set (Fin g → ℂ)` to `fun q => ((rep q : Λ₁) : Fin g → ℂ) +ᵥ D₁`. Establish `hs : ∀ q, IsAddFundamentalDomain Λ₁ (s q) volume` using `fun q => hD₁.vadd_of_comm _`.
+
+Establish `hsd : Pairwise (Function.onFun (AEDisjoint volume) s)` using `fun q q' hne => hD₁.aedisjoint (hrepinj.ne hne)`. Set `E` to `⋃ q, s q`. Establish `key : ∀ (l : Λ) (q : Q), l +ᵥ s q = ((⟨(l : Fin g → ℂ) + rep q, Λ₁.add_mem (hle l.2) (rep q).2⟩ : Λ₁) +ᵥ D₁)`. Introduce `l q`. Use extensionality with `x`.
+
+Simplify using `only [s, Set.mem_vadd_set]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨z, hz, rfl⟩, rfl⟩`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Use `show ((l : Fin g → ℂ) + rep q) + z = (l : Fin g → ℂ) + ((rep q : Fin g → ℂ) + z)`.
+
+Normalize the expressions using the abelian group laws. Introduce and unpack `⟨z, hz, rfl⟩`. Use `⟨(rep q : Fin g → ℂ) +ᵥ z, ⟨z, hz, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show (l : Fin g → ℂ) + ((rep q : Fin g → ℂ) + z) = ((l : Fin g → ℂ) + rep q) + z`. Normalize the expressions using the abelian group laws.
+
+Establish `hE : IsAddFundamentalDomain Λ E volume`. Use `⟨NullMeasurableSet.iUnion fun q => (hs q).nullMeasurableSet, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hD₁.ae_covers] with x ⟨γ, hγ⟩`. Establish `h1 : (QuotientAddGroup.mk (-γ) : Q) = QuotientAddGroup.mk (rep (QuotientAddGroup.mk (-γ)))` using `(hrep _).symm`. Rewrite `h1` using `[QuotientAddGroup.eq, neg_neg, AddSubgroup.mem_addSubgroupOf]`.
+
+Use `⟨⟨_, h1⟩, Set.mem_iUnion.2 ⟨QuotientAddGroup.mk (-γ), ?_⟩⟩` and prove the remaining obligations. Use `Set.mem_vadd_set.2 ⟨γ +ᵥ x, hγ, ?_⟩` and prove the remaining obligations. Use `show (rep (QuotientAddGroup.mk (-γ)) : Fin g → ℂ) + ((γ : Fin g → ℂ) + x) = ((γ + rep (QuotientAddGroup.mk (-γ)) : Λ₁) : Fin g → ℂ) + x`. Use `push_cast`. Normalize the expressions using the abelian group laws.
+
+Introduce `l l' hne`. Simplify using `only [Function.onFun, E, Set.vadd_set_iUnion]`. Rewrite using `[AEDisjoint.iUnion_left_iff]`. Introduce `q`. Rewrite using `[AEDisjoint.iUnion_right_iff]`.
+
+Introduce `q'`. Rewrite using `[key, key]`. Apply `hD₁.aedisjoint` to reduce the goal to its premises. Introduce `heq`. Establish `hv : (l : Fin g → ℂ) + rep q = l' + rep q'` using `congrArg Subtype.val heq`.
+
+Establish `hqq : q = q'`. Rewrite using `[← hrep q, ← hrep q', QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Establish `: ((-rep q + rep q' : Λ₁) : Fin g → ℂ) = (l : Fin g → ℂ) - l'`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hv, sub_self, add_zero]`. Use `_ = (l : Fin g → ℂ) - l' := by abel`. Rewrite using `[this]`. Conclude with `Λ.sub_mem l.2 l'.2`. Substitute `hqq` using the available equality.
+
+Conclude with `hne (Subtype.ext (add_right_cancel hv))`. Establish `hvol : ∀ q, volume (s q) = volume D₁` using `fun q => (hs q).measure_eq hD₁`. Establish `hvolE : volume E = ∑' _ : Q, volume D₁` using `by show volume (⋃ q, s q) = _`. Rewrite using `[measure_iUnion₀ hsd fun q => (hs q).nullMeasurableSet]`. Simplify using `only [hvol]`.
+
+Establish `hEFd : volume E = volume Fd` using `hE.measure_eq hFd`. Use `haveI : Finite Q := by`. Assume the negation of the conclusion as `hinf`. Rewrite `hinf` using `[not_finite_iff_infinite]`. Conclude with `hfin (by rw [← hEFd, hvolE]; exact ENNReal.tsum_const_eq_top_of_ne_zero hD0)`.
+
+Use `haveI := Fintype.ofFinite Q`. Establish `hn : (Fintype.card Q : ℝ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `hintE : IntegrableOn f E volume` using `integrableOn_finite_iUnion.2 fun q => ((hs q).integrableOn_iff hD₁ hinv₁).2 hint`. Establish `hsi : ∀ q, ∫ z in s q, f z = ∫ z in D₁, f z` using `fun q => (hs q).setIntegral_eq hD₁ hinv₁`. Establish `hIE : ∫ z in E, f z = Fintype.card Q * ∫ z in D₁, f z` using `by show ∫ z in ⋃ q, s q, f z = _`.
+
+Rewrite using `[integral_iUnion_ae (fun q => (hs q).nullMeasurableSet) hsd hintE, tsum_fintype]`. Simplify using `only [hsi, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `⟨(hFd.integrableOn_iff hE hinv).2 hintE, ?_⟩` and prove the remaining obligations. Rewrite using `[hFd.setIntegral_eq hE hinv, ← hEFd, hIE, hvolE, tsum_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ENNReal.toReal_mul, ENNReal.toReal_natCast, hab]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mean_fundamentalDomain_of_le : ∀ (g : ℕ) (Λ Λ₁ : AddSubgroup (Fin g → ℂ)) (Fd D₁ : Set (Fin g → ℂ)) (f : (Fin g → ℂ) → ℝ), Countable Λ₁ → Λ ≤ Λ₁ → IsAddFundamentalDomain Λ Fd volume → IsAddFundamentalDomain Λ₁ D₁ volume → volume Fd ≠ ⊤ → (∀ a ∈ Λ₁, ∀ z, f (z + a) = f z) → (∫ z in D₁, f z) / (volume D₁).toReal = 1 → IntegrableOn f Fd volume ∧ (∫ z in Fd, f z) / (volume Fd).toReal = 1 := by
   intro g Λ Λ₁ Fd D₁ f hc hle hFd hD₁ hfin hper hmean
   have hb : (volume D₁).toReal ≠ 0 := by

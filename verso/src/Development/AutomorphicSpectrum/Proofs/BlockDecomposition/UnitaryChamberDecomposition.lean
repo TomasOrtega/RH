@@ -13,9 +13,21 @@ def nrm (χ : Fin m → ℂˣ) : Fin m → ℝ := fun i => ‖(χ i : ℂ)‖
 
 def wt (a : Fin m → ℝ) : ℝ := ∑ i : Fin m, ((m : ℝ) - (i.val : ℝ)) * Real.log (a i)
 
+/- English proof (translation)
+Conclude with `norm_pos_iff.mpr (Units.ne_zero _)`.
+-/
 theorem nrm_pos (χ : Fin m → ℂˣ) (i : Fin m) : 0 < nrm χ i := by
   exact norm_pos_iff.mpr (Units.ne_zero _)
 
+/- English proof (translation)
+Establish `hne : i ≠ j`. Introduce `h`. Rewrite `hij` using `[h]`. Use linear arithmetic over natural numbers and integers. Establish `hsub : wt (a ∘ Equiv.swap i j) - wt a = ((m : ℝ) - (i.val : ℝ)) * (Real.log (a j) - Real.log (a i)) + ((m : ℝ) - (j.val : ℝ)) * (Real.log (a i) - Real.log (a j))`.
+
+Unfold `wt`. Rewrite using `[← Finset.sum_sub_distrib, Fintype.sum_eq_add i j hne (fun k hk => by`. Simplify using `only [Function.comp_apply, Equiv.swap_apply_of_ne_of_ne hk.1 hk.2, sub_self])]`. Simplify using `only [Function.comp_apply, Equiv.swap_apply_left, Equiv.swap_apply_right]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hj : (j.val : ℝ) = (i.val : ℝ) + 1`. Rewrite using `[← hij]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hlog : Real.log (a i) < Real.log (a j)` using `Real.log_lt_log (ha i) hlt`.
+
+Establish `hd : wt (a ∘ Equiv.swap i j) - wt a = Real.log (a j) - Real.log (a i)`. Rewrite using `[hsub, hj]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem wt_swap_gt (a : Fin m → ℝ) (ha : ∀ i, 0 < a i) (i j : Fin m) (hij : i.val + 1 = j.val)
     (hlt : a i < a j) : wt a < wt (a ∘ Equiv.swap i j) := by
   have hne : i ≠ j := by
@@ -40,6 +52,17 @@ theorem wt_swap_gt (a : Fin m → ℝ) (ha : ∀ i, 0 < a i) (i j : Fin m) (hij 
     ring
   linarith
 
+/- English proof (translation)
+Establish `hpos : 0 < ‖(χ j : ℂ)‖` using `norm_pos_iff.mpr (Units.ne_zero _)`. Establish `hn : nrm (Function.update χ j (χ j)⁻¹) = Function.update (nrm χ) j (‖(χ j : ℂ)‖⁻¹)`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+
+Simplify using `[nrm]`. Simplify using `[nrm, Function.update_of_ne hk]`. Rewrite using `[hn]`. Establish `hdiff : wt (Function.update (nrm χ) j ‖(χ j : ℂ)‖⁻¹) - wt (nrm χ) = ((m : ℝ) - (j.val : ℝ)) * (Real.log ‖(χ j : ℂ)‖⁻¹ - Real.log (nrm χ j))`. Unfold `wt`.
+
+Rewrite using `[← Finset.sum_sub_distrib, Fintype.sum_eq_single j (fun k hk => by`. Simplify using `only [Function.update_of_ne hk, sub_self])]`. Simplify using `only [Function.update_self]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm : (m : ℝ) - (j.val : ℝ) = 1`.
+
+Establish `hj' : (j.val : ℝ) + 1 = (m : ℝ)` using `by exact_mod_cast hj`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog : Real.log ‖(χ j : ℂ)‖ < 0` using `Real.log_neg hpos hlt`. Establish `e : nrm χ j = ‖(χ j : ℂ)‖` using `rfl`. Rewrite `hdiff` using `[Real.log_inv, hm, e]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem wt_update_gt (χ : Fin m → ℂˣ) (j : Fin m) (hj : j.val + 1 = m) (hlt : ‖(χ j : ℂ)‖ < 1) :
     wt (nrm χ) < wt (nrm (Function.update χ j (χ j)⁻¹)) := by
   have hpos : 0 < ‖(χ j : ℂ)‖ := norm_pos_iff.mpr (Units.ne_zero _)
@@ -65,11 +88,21 @@ theorem wt_update_gt (χ : Fin m → ℂˣ) (j : Fin m) (hj : j.val + 1 = m) (hl
   rw [Real.log_inv, hm, e] at hdiff
   linarith
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Conclude with `⟨(Equiv.swap i j).trans w, fun k => hw _⟩`.
+-/
 theorem weylConj_swap {α χ : Fin m → ℂˣ} (h : GlobalTheory.LGrp.WeylConjU α χ) (i j : Fin m) :
     GlobalTheory.LGrp.WeylConjU α (χ ∘ Equiv.swap i j) := by
   obtain ⟨w, hw⟩ := h
   exact ⟨(Equiv.swap i j).trans w, fun k => hw _⟩
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Use `⟨w, fun k => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Rewrite using `[Function.update_self]`.
+
+Break down `hw k with h | h` into its components or cases. Use `right`. Rewrite using `[h]`. Use `left`. Rewrite using `[h, inv_inv]`.
+
+Rewrite using `[Function.update_of_ne hk]`. Conclude with `hw k`.
+-/
 theorem weylConj_update {α χ : Fin m → ℂˣ} (h : GlobalTheory.LGrp.WeylConjU α χ) (j : Fin m) :
     GlobalTheory.LGrp.WeylConjU α (Function.update χ j (χ j)⁻¹) := by
   obtain ⟨w, hw⟩ := h
@@ -85,6 +118,11 @@ theorem weylConj_update {α χ : Fin m → ℂˣ} (h : GlobalTheory.LGrp.WeylCon
   · rw [Function.update_of_ne hk]
     exact hw k
 
+/- English proof (translation)
+Set `S : Set ℝ` to `(Set.range fun k => ‖(α k : ℂ)‖) ∪ Set.range fun k => ‖(((α k)⁻¹ : ℂˣ) : ℂ)‖`. Establish `hS : S.Finite` using `(Set.finite_range _).union (Set.finite_range _)`. Use `(Set.Finite.pi (t := fun _ : Fin m => S) (fun _ => hS)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨β, hβ, rfl⟩`. Rewrite using `[Set.mem_univ_pi]`.
+
+Introduce `i`. Take `⟨w, hw⟩` from `hT β hβ`. Break down `hw i with h | h` into its components or cases. Conclude with `Or.inl ⟨w i, by simp only [nrm, h]⟩`. Conclude with `Or.inr ⟨w i, by simp only [nrm, h]⟩`.
+-/
 theorem finite_nrm (α : Fin m → ℂˣ) (T : Set (Fin m → ℂˣ)) (hT : ∀ β ∈ T, GlobalTheory.LGrp.WeylConjU α β) :
     (nrm '' T).Finite := by
   classical
@@ -99,6 +137,25 @@ theorem finite_nrm (α : Fin m → ℂˣ) (T : Set (Fin m → ℂˣ)) (hT : ∀ 
   · exact Or.inl ⟨w i, by simp only [nrm, h]⟩
   · exact Or.inr ⟨w i, by simp only [nrm, h]⟩
 
+/- English proof (translation)
+Take `⟨T, hTdef⟩ : ∃ T : Set (Fin m → ℂˣ), T = {β | GlobalTheory.LGrp.WeylConjU α β ∧ P β}` from `⟨_, rfl⟩`. Establish `hfin : (nrm '' T).Finite` using `finite_nrm α T (fun β hβ => by rw [hTdef] at hβ; exact hβ.1)`. Establish `hne : (nrm '' T).Nonempty` using `⟨nrm χ, χ, by rw [hTdef]; exact ⟨hα, hχ⟩, rfl⟩`. Take `⟨_, ⟨β, hβT, rfl⟩, hmax⟩` from `Set.exists_max_image (nrm '' T) wt hfin hne`. Rewrite `hβT` using `[hTdef]`.
+
+Take `⟨hβα, hβP⟩` from `hβT`. Establish `hmax' : ∀ γ : Fin m → ℂˣ, GlobalTheory.LGrp.WeylConjU α γ → P γ → wt (nrm γ) ≤ wt (nrm β)` using `fun γ h1 h2 => hmax _ ⟨γ, by rw [hTdef]; exact ⟨h1, h2⟩, rfl⟩`. Establish `hadj : ∀ i j : Fin m, i.val + 1 = j.val → ‖(β j : ℂ)‖ ≤ ‖(β i : ℂ)‖`. Introduce `i j hij`. Assume the negation of the conclusion as `hcon`.
+
+Rewrite `hcon` using `[not_le]`. Establish `h1` using `hmax' _ (weylConj_swap hβα i j) (hs β i j hij hcon hβP)`. Establish `h2` using `wt_swap_gt (nrm β) (nrm_pos β) i j hij hcon`. Conclude with `absurd h1 (not_le.mpr h2)`. Establish `key : ∀ d : ℕ, ∀ i j : Fin m, j.val = i.val + d → ‖(β j : ℂ)‖ ≤ ‖(β i : ℂ)‖`.
+
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `i j h`. Rewrite using `[show j = i from Fin.ext (by omega)]`.
+
+Consider the case `succ d ih`. Introduce `i j h`. Establish `hk : i.val + d < m`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `le_trans (hadj ⟨i.val + d, hk⟩ j (by show i.val + d + 1 = j.val; omega)) (ih i ⟨i.val + d, hk⟩ rfl)`. Establish `hmono : ∀ i j : Fin m, i ≤ j → ‖(β j : ℂ)‖ ≤ ‖(β i : ℂ)‖`. Introduce `i j hij`. Establish `h' : i.val ≤ j.val` using `hij`. Conclude with `key (j.val - i.val) i j (by omega)`.
+
+Establish `hone : ∀ i, 1 ≤ ‖(β i : ℂ)‖`. Introduce `i`. Establish `hi` using `i.isLt`. Establish `hlast : (⟨m - 1, by omega⟩ : Fin m).val + 1 = m` using `by show m - 1 + 1 = m`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hl : 1 ≤ ‖(β ⟨m - 1, by omega⟩ : ℂ)‖`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_le]`. Establish `h1` using `hmax' _ (weylConj_update hβα _) (hv β _ hlast hcon hβP)`. Establish `h2` using `wt_update_gt β _ hlast hcon`.
+
+Conclude with `absurd h1 (not_le.mpr h2)`. Conclude with `le_trans hl (hmono i _ (by show i.val ≤ m - 1; omega))`. Conclude with `⟨β, hβα, hmono, hone, hβP⟩`.
+-/
 theorem exists_chamber (P : (Fin m → ℂˣ) → Prop)
     (hs : ∀ (χ : Fin m → ℂˣ) (i j : Fin m), i.val + 1 = j.val → ‖(χ i : ℂ)‖ < ‖(χ j : ℂ)‖ → P χ →
       P (χ ∘ Equiv.swap i j))
@@ -155,6 +212,13 @@ theorem exists_chamber (P : (Fin m → ℂˣ) → Prop)
     exact le_trans hl (hmono i _ (by show i.val ≤ m - 1; omega))
   exact ⟨β, hβα, hmono, hone, hβP⟩
 
+/- English proof (translation)
+Unfold `ChamberU`. Introduce `hsw hinv`. Unfold `SwapStepU at hsw`. Unfold `InvStepU at hinv`. Introduce `L _ _ _ ϖ σ q n hU V _ _ ρ hadm hirr hsph α χ hα f hf hfeq`.
+
+Take `⟨β, h1, h2, h3, hP⟩` from `exists_chamber (m := n / 2) (fun χ => ∃ f : V →ₗ[ℂ] ↥(GlobalTheory.LFun.psSpaceU σ q χ), Function.Injective f ∧ ∀ (g : ↥(Formalism.UG.GU σ n)) (v : V), f (ρ g v) = (GlobalTheory.LFun.psFunU σ q χ g) (f v)) (fun χ i j hij hlt hP => by`. Take `⟨f, hf, hfeq⟩` from `hP`. Conclude with `hsw L ϖ σ q n hU V ρ hadm hirr hsph χ i j hij (by rw [norm_div, div_lt_one (norm_pos_iff.mpr (Units.ne_zero _))]; exact hlt) f hf hfeq)`. Use the proof step `(fun χ j hj hlt hP => by`. Take `⟨f, hf, hfeq⟩` from `hP`.
+
+Conclude with `hinv L ϖ σ q n hU V ρ hadm hirr hsph χ j hj hlt f hf hfeq)`. Use `α χ hα ⟨f, hf, hfeq⟩`. Conclude with `⟨β, h1, h2, h3, hP⟩`.
+-/
 theorem chamberU : PositivityTheory.SphericalProduct.ChamberU := by
   unfold ChamberU
   intro hsw hinv

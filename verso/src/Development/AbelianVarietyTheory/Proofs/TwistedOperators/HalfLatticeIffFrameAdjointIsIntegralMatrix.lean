@@ -18,6 +18,15 @@ open Classical
 
 namespace GlobalTheory.HalfLatFrames
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F _hPM i t σ s P cμ cη m ω BW f₀ f c io hL e he x hx`. Establish `hR : GlobalTheory.Hk3.Core R F` using `hL.1`. Establish `hPT : PrimeToHost R t` using `hL.2.1`. Take `⟨cV, hcV⟩` from `hR.lev.βV i`. Take `⟨cW, hcW⟩` from `hR.lev.βW i`.
+
+Establish `sV : IsSelfDualC (Vc D i) (R.ΛV i)` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hR.lev.βV i))`. Establish `sW : IsSelfDualC (Wc D i) (R.ΛW i)` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hR.lev.βW i))`. Establish `hP : ∀ PP ∈ R.Pg ∪ R.Q t, ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal`. Introduce `PP hPP hmem`. Use `hPT PP (Finset.mem_union.1 hPP) ?_` and prove the remaining obligations.
+
+Establish `: ((D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) = ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) * (D.host.d : 𝓞 D.host.E)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `PP.asIdeal.mul_mem_right _ hmem`. Prove the components needed by the constructor for the conclusion. Introduce `hmem`.
+
+Conclude with `GlobalTheory.T.adjointFrameMatrix_integral_of_conjugate_half D (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i) sV sW hcV.1 hcW.1 (R.Pg ∪ R.Q t) e he hP x hmem hx`. Introduce `hint`. Conclude with `GlobalTheory.T.idempotent_sum_self_dual_frames_bound D (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i) sV sW hcV.1 hcW.1 (R.Pg ∪ R.Q t) e he hP x hx hint`.
+-/
 theorem halfLat_iff_isIntM : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.PlaceModels D → ∀ i t σ s P cμ cη m ω BW f₀ f c io, GlobalTheory.LiftRows.IsLiftDataC R F i t σ s P cμ cη m ω BW f₀ f c io → ∀ e : AE D, IsIdemSum e (R.Pg ∪ R.Q t) → ∀ x : WO (Vc D i) (Wc D i), IsHalf (cA D e) x →
   (x ∈ latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (fun _ => True) ↔ IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x)) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F _hPM i t σ s P cμ cη m ω BW f₀ f c io hL e he x hx

@@ -15,6 +15,19 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv.Push
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Use `set c := chartIdx A x`. Establish `hc : x ∈ (A.chart c).source` using `Classical.choose_spec (A.cover x)`. Use `set u := A.chart j x`. Establish `hsu : (A.chart j).symm u = x` using `(A.chart j).left_inv hx`. Use `set T := A.chart c ∘ (A.chart j).symm with hTdef`.
+
+Establish `hT : AnalyticAt ℂ T u` using `A.holo j c u ⟨(A.chart j).map_source hx, by rw [Set.mem_preimage, hsu]; exact hc⟩`. Establish `hTu : T u = A.chart c x` using `by simp only [hTdef, Function.comp_apply, hsu]`. Establish `hQc` using `(hq x hxS c hc).1`. Establish `hQj` using `(hq x hxS j hx).2`. Establish `heq : q ∘ (A.chart j).symm =ᶠ[𝓝 u] (q ∘ (A.chart c).symm) ∘ T` using `by filter_upwards [((A.chart j).isOpen_inter_preimage_symm (A.chart c).open_source).mem_nhds (⟨(A.chart j).map_source hx, by rw [Set.mem_preimage, hsu]; exact hc⟩ : u ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart c).source)] with v hv`.
+
+Simplify using `only [hTdef, Function.comp_apply, (A.chart c).left_inv hv.2]`. Establish `hder : fderiv ℂ (q ∘ (A.chart j).symm) u = (fderiv ℂ (q ∘ (A.chart c).symm) (A.chart c x)).comp (fderiv ℂ T u)`. Rewrite using `[heq.fderiv_eq, fderiv_comp u (by rw [hTu]; exact hQc.differentiableAt) hT.differentiableAt, hTu]`. Establish `hdet : LinearMap.det (fderiv ℂ (q ∘ (A.chart j).symm) u : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) = LinearMap.det (fderiv ℂ (q ∘ (A.chart c).symm) (A.chart c x) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) * LinearMap.det (fderiv ℂ T u : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))`. Rewrite using `[hder]`.
+
+Conclude with `LinearMap.det_comp _ _`. Establish `hloc : locDens A Φ j u = locDens A Φ c (A.chart c x) * ‖LinearMap.det (fderiv ℂ T u : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))‖ ^ 2`. Use `GlobalTheory.CompanionTheory.Ar.Giv.MeasOff.locDens_chart_of_contDiffAt A Φ j c ((A.chart j).map_source hx) (by rw [hsu]; exact hc) (fun i => by rw [hsu]; exact hsm x hxS i c hc)` as an intermediate fact. Rewrite `this` using `[hsu, ReciprocityTheory.AnForm.A.det_jacC, Complex.normSq_eq_norm_sq]`. Conclude with `this`.
+
+Establish `hne` using `hQj`. Rewrite `hne` using `[hdet]`. Establish `hc1 : ‖LinearMap.det (fderiv ℂ (q ∘ (A.chart c).symm) (A.chart c x) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))‖ ≠ 0` using `norm_ne_zero_iff.mpr (left_ne_zero_of_mul hne)`. Establish `hc2 : ‖LinearMap.det (fderiv ℂ T u : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))‖ ≠ 0` using `norm_ne_zero_iff.mpr (right_ne_zero_of_mul hne)`. Unfold `jacN pushDens`.
+
+Rewrite using `[hloc, hdet, norm_mul, mul_pow, show chartIdx A x = c from rfl]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem locDens_div_jacN (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) (q : X → Fin e → ℂ) (S : Set X)
     (hq : ∀ x ∉ S, ∀ j, x ∈ (A.chart j).source →
       AnalyticAt ℂ (q ∘ (A.chart j).symm) (A.chart j x) ∧
@@ -66,6 +79,15 @@ theorem locDens_div_jacN (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) (q : X 
   rw [hloc, hdet, norm_mul, mul_pow, show chartIdx A x = c from rfl]
   field_simp
 
+/- English proof (translation)
+Establish `hNall : ∀ᵐ y, ∀ j, y ∉ (q ∘ (A.chart j).symm) '' (goodT A q j ∩ (A.chart j).symm ⁻¹' S)` using `ae_all_iff.mpr fun j => measure_eq_zero_iff_ae_notMem.mp (hN j)`. Use `filter_upwards [hNall] with y hy`. Establish `hterm' : ∀ j, fibSum (goodT A q j) (q ∘ (A.chart j).symm) (h j) y = ∑ᶠ x ∈ q ⁻¹' {y} \ S, Pt.χ j x * T x`. Introduce `j`. Unfold `fibSum`.
+
+Rewrite using `[goodT_fibre_eq A q S hq j (hy j), finsum_mem_image ((A.chart j).injOn.mono Set.inter_subset_left)]`. Use `(finsum_mem_congr (g := fun x => Pt.χ j x * T x) rfl fun x hx => hterm j x hx.1 hx.2.2).trans ?_` and prove the remaining obligations. Use `finsum_mem_inter_support_eq' _ _ _ fun x hx => ?_` and prove the remaining obligations. Establish `hχ : Pt.χ j x ≠ 0` using `left_ne_zero_of_mul hx`. Establish `hxs : x ∈ (A.chart j).source` using `Pt.tsupport_subset j (subset_tsupport _ hχ)`.
+
+Conclude with `⟨fun h => h.2, fun h => ⟨hxs, h⟩⟩`. Repeatedly rewrite using `[hterm']`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfin y)]`. Repeatedly rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfin y)]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, Pt.sum_eq_one x, one_mul]`.
+-/
 theorem sum_fibSum_ae (A : FinHolAtlas e X) (q : X → Fin e → ℂ) (S : Set X)
     (hN : ∀ j, volume ((q ∘ (A.chart j).symm) '' (goodT A q j ∩ (A.chart j).symm ⁻¹' S)) = 0)
     (hq : ∀ x ∉ S, ∀ j, x ∈ (A.chart j).source →

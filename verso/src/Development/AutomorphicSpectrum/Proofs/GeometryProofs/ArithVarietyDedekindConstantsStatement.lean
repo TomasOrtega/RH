@@ -9,6 +9,9 @@ open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal segreVec IsFlagFrame
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg fnField)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.CoordRead.flagPair_coord | exact GlobalTheory.CompanionTheory.Ar.CoordRead.flagPair_coord | (intros; apply GlobalTheory.CompanionTheory.Ar.CoordRead.flagPair_coord <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arith_variety_dedekind_constants : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type)
     [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω),
     CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → ∀ d : ℕ, IsArithVar (mCoordIdeal y) (d + 1) →

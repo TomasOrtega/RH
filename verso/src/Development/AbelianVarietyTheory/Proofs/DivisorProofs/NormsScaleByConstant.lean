@@ -17,6 +17,21 @@ namespace GlobalTheory.CoverNormConst
 
 open GlobalTheory.Cartier GlobalTheory.CxPts
 
+/- English proof (translation)
+Introduce `F _ _ Y V L f a l c hc ⟨r, hr, hu, hinf, hfin⟩`. Establish `hcu (x : V.G)` using `IndScale.unitAt_constFn (V.π ≫ Y.str) x hc`. Set `cu : V.G.functionFieldˣ` to `Units.mk0 (Cartier.constFn (V.π ≫ Y.str) c) (hcu (genericPoint V.G)).ne_zero`. Establish `hcv : (cu : V.G.functionField) = Cartier.constFn (V.π ≫ Y.str) c` using `rfl`. Use `⟨fun i => r i * cu, fun i j h => ?_, fun i x hx => ?_, fun σ z y y' i e₁ e₂ hi => ?_, fun v e y z yt i e₁ e₂ hi => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Units.val_mul]`. Rewrite using `[hr i j h, mul_assoc]`. Rewrite using `[Units.val_mul, ← mul_assoc]`. Conclude with `(hu i x hx).mul (hcu x)`. Establish `hπ : V.π (under z) = under y` using `by show _ = y.1 _`.
+
+Rewrite using `[e₁]`. Both sides reduce to the same expression. Establish `hU` using `hu i _ hi`. Rewrite `hU` using `[hπ]`. Use `beta_reduce`.
+
+Rewrite using `[hinf σ z y y' i e₁ e₂ hi, Units.val_mul, ← mul_assoc, hcv, ratVal_mul hU.regAt (hcu _).regAt, IndScale.ratVal_constFn, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (ratVal_ne_zero hU)) (norm_ne_zero_iff.2 ((map_ne_zero σ).2 hc))]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : below z ∈ (L.B.pull V.j).U i` using `Set.mem_iInter.2 fun _ => by`. Express the relevant statement in the definitionally equal form `(z ≫ V.j) (IsLocalRing.closedPoint (AlgebraicClosure F)) ∈ L.B.U (i PUnit.unit)`. Rewrite using `[← e₂]`.
+
+Conclude with `hi (x := spMap e.O.subtype (IsLocalRing.closedPoint (AlgebraicClosure F))) trivial`. Establish `hπ : V.π (below z) = below y.1` using `by show _ = y.1 _`. Rewrite using `[← e₁]`. Both sides reduce to the same expression. Establish `hU` using `hu i _ hz`.
+
+Rewrite `hU` using `[hπ]`. Establish `hy : z ≫ (V.π ≫ Y.str) = spMap (algebraMap F (AlgebraicClosure F))`. Rewrite using `[← Category.assoc, e₁]`. Conclude with `y.2`. Use `beta_reduce`.
+
+Rewrite using `[hfin v e y z yt i e₁ e₂ hi, Units.val_mul, ← mul_assoc, hcv, OfModel.valAt_mul _ hU.regAt (hcu _).regAt, IndScale.valAt_constFn _ _ z hy, map_mul, e.w_alg, Real.log_mul (e.w.ne_zero (IndScale.valAt_ne_zero _ hU)) (AbsoluteValue.ne_zero _ hc)]`.
+-/
 theorem norms_const_mul : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (L : HermLB V.p)
     (f : Y.X → Y.Fn) (a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ)
     (l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ) (c : F), c ≠ 0 → Norms V L f a l →

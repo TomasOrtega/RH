@@ -72,9 +72,17 @@ structure Marks {G : Type*} [Group G] {k : Type*} [CommRing k] (η : G →* ℤ�
   ηg : η g₁ = 1
   Ψg : IsUnit (((Ψ g₁ : kˣ) : k) ^ 2 - 1)
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem hasSimilitudeFactor_diagonalRepr {G : Type*} [Group G] {R : Type*} [CommRing R] (η : G →* ℤˣ) (Ψ : G →* Rˣ) :
     HasMult η (r0 η Ψ) := fun _ => rfl
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Matrix.diagonal (fun i => ((Ψ c ^ wt1 i : Rˣ) : R)) = 1`. Rewrite using `[hc]`. Simplify using the standard rewrite rules. Use `show Matrix.diagonal _ 0 1 - Matrix.diagonal _ 0 1 = (0 : R)`.
+
+Simplify using the standard rewrite rules. Use `show Matrix.diagonal _ 1 0 - Matrix.diagonal _ 1 0 = (0 : R)`. Simplify using the standard rewrite rules.
+-/
 theorem baseRepGL3_normalised_of_psi_eq_one {G : Type*} [Group G] {R : Type*} [CommRing R] (η : G →* ℤˣ) (Ψ : G →* Rˣ)
     {c : G} (g₁ : G) (hc : Ψ c = 1) : Normalised c g₁ (r0 η Ψ) := by
   refine ⟨?_, ?_, ?_⟩
@@ -86,6 +94,9 @@ theorem baseRepGL3_normalised_of_psi_eq_one {G : Type*} [Group G] {R : Type*} [C
   · show Matrix.diagonal _ 1 0 - Matrix.diagonal _ 1 0 = (0 : R)
     simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, rfl, rfl, rfl, by norm_num⟩`.
+-/
 example : Marks (G := ℤˣ × ℚˣ) (k := ℚ) (MonoidHom.fst _ _) (MonoidHom.snd _ _) (-1, 1)
     (1, Units.mk0 2 two_ne_zero) :=
   ⟨by simp, rfl, rfl, rfl, by norm_num⟩

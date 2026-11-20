@@ -20,6 +20,9 @@ def chiS (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.
   X.psiEf (Formalism.L2.SG.HidaSetting.divN X.B.I X.B.g
     (cast (congrArg (fun I : Formalism.MainNotions.S.AutInst => TensorProduct I.F I.E (Formalism.MainNotions.S.Af I.F)) h).symm c))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chiS_rfl (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (c : EAf D) :
     chiS X h c = X.psiEf (Formalism.L2.SG.HidaSetting.divN X.B.I X.B.g
       (cast (congrArg (fun I : Formalism.MainNotions.S.AutInst => TensorProduct I.F I.E (Formalism.MainNotions.S.Af I.F)) h).symm c)) := rfl

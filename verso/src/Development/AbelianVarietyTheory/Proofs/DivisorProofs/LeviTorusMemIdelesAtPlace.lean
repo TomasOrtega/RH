@@ -9,6 +9,11 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.LeviScalarConjAt
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC v t h₁ m hL hm`. Establish `ht : t ∈ idelesAt E (evFin F v)` using `GlobalTheory.LeviScalarAt.scalar_mem_idelesAt_of_isLevi B H' 0 (b + 1) hC.hH' v t h₁ m hL hm`. Use `⟨ht, ?_⟩` and prove the remaining obligations. Rewrite `ht`, the goal using `[mem_idelesAt]`. Introduce `u hu`.
+
+Establish `e : ((Units.map (cA σ : AE F E →* AE F E) t : (AE F E)ˣ) : AE F E) - 1 = cA σ ((t : AE F E) - 1)`. Rewrite using `[Units.coe_map, map_sub, map_one]`. Both sides reduce to the same expression. Rewrite using `[e, ← map_smul, ht u hu, map_zero]`.
+-/
 theorem scalar_and_conj_mem_idelesAt_of_isLevi :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

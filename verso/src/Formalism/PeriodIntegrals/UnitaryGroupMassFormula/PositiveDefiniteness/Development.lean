@@ -20,6 +20,9 @@ def Step2 : Prop :=
     (∀ (φ : E →+* ℂ) (x : E), φ (σ x) = (starRingEnd ℂ) (φ x)) →
     ∀ φ : E →+* ℂ, (J.map φ).PosDef ∨ (-(J.map φ)).PosDef
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ hF σ k J hk hH hD`. Establish `c1` using `h1 F E hF σ k J hk hH hD`. Conclude with `⟨c1, h2 F E hF σ k J hk hH hD c1⟩`.
+-/
 theorem defPosDef_of (h1 : Step1) (h2 : Step2) : PI.DefPosDef := by
   intro F E _ _ _ _ _ hF σ k J hk hH hD
   have c1 := h1 F E hF σ k J hk hH hD

@@ -25,6 +25,9 @@ def Bf (y : ℕ) : ℂ := (-1) ^ (r - y) * κ ^ (r - y)
 
 def blkF (x y : ℕ) : ℂ := (-1) ^ ((r - x) + (r - y)) * κ ^ ((r - x) + (r - y))
 
+/- English proof (translation)
+Unfold `Af Bf blkF`. Rewrite using `[star_pow, hκ, neg_pow, pow_add, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem AB_eq (hκ : star κ = -κ) (x y : ℕ) : Af κ r x * Bf κ r y = blkF κ r x y := by
   unfold Af Bf blkF
   rw [star_pow, hκ, neg_pow, pow_add, pow_add]
@@ -34,6 +37,9 @@ def lptOf : ℕ → List (K × ℕ) → Formalism.FourierDecayAlt.C.LPt
   | _, [] => []
   | o, (t, s) :: rest => (s, blkF κ r o (o + s - 1) * σ t) :: lptOf (o + s) rest
 
+/- English proof (translation)
+The claim follows from `| [], o, i, j, _, hi, _ => by simp at hi | (t, s) :: rest, o, i, j, ho, hi, hj => by simp only [List.map_cons, List.sum_cons] at ho hi hj simp only [lptOf, Formalism.FourierDecayAlt.D.ptEntry, Formalism.MainNotions.S.ptEntry] by_cases h1 : i < s ∧ j < s · rw [if_pos h1, if_pos h1 …`.
+-/
 theorem ptEntry_lptOf (hκ : star κ = -κ) : ∀ (L : List (K × ℕ)) (o i j : ℕ),
     o + (L.map Prod.snd).sum ≤ r + 1 → i < (L.map Prod.snd).sum → j < (L.map Prod.snd).sum →
     Formalism.FourierDecayAlt.D.ptEntry (lptOf σ κ r o L) i j = Af κ r (o + i) * σ (Formalism.MainNotions.S.ptEntry L i j) * Bf κ r (o + j)
@@ -71,6 +77,11 @@ section PointMat
 
 variable {K : Type} [Field K] (σ : K →+* ℂ) (κ : ℂ) (r : ℕ)
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply]`. Establish `hs` using `w.2.2`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`.
+
+Establish `key` using `ptEntry_lptOf σ κ r hκ w.1 0 a b (by omega) (by omega) (by omega)`. Simplify using `only [zero_add] at key`. Unfold `Formalism.FourierDecayAlt.D.ptMatN Formalism.MainNotions.S.ptMat`. Conclude with `key`.
+-/
 theorem ptMatN_lptOf (hκ : star κ = -κ) (w : Formalism.MainNotions.S.Point K (r + 1)) :
     Formalism.FourierDecayAlt.D.ptMatN (lptOf σ κ r 0 w.1) (r + 1) =
       Matrix.diagonal (fun x : Fin (r + 1) => Af κ r x) * (Formalism.MainNotions.S.ptMat w).map σ *
@@ -85,14 +96,23 @@ theorem ptMatN_lptOf (hκ : star κ = -κ) (w : Formalism.MainNotions.S.Point K 
   unfold Formalism.FourierDecayAlt.D.ptMatN Formalism.MainNotions.S.ptMat
   exact key
 
+/- English proof (translation)
+The claim follows from `| [], _ => rfl | (t, s) :: rest, o => by simp [lptOf, lptOf_fst rest (o + s)]`.
+-/
 theorem lptOf_fst : ∀ (L : List (K × ℕ)) (o : ℕ), (lptOf σ κ r o L).map Prod.fst = L.map Prod.snd
   | [], _ => rfl
   | (t, s) :: rest, o => by simp [lptOf, lptOf_fst rest (o + s)]
 
+/- English proof (translation)
+Unfold `blkF`. Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) (pow_ne_zero _ hκ0)`.
+-/
 theorem blkF_ne (hκ0 : κ ≠ 0) (x y : ℕ) : blkF κ r x y ≠ 0 := by
   unfold blkF
   exact mul_ne_zero (pow_ne_zero _ (by norm_num)) (pow_ne_zero _ hκ0)
 
+/- English proof (translation)
+The claim follows from `| [], _, _, b, hb => by simp [lptOf] at hb | (t, s) :: rest, o, hL, b, hb => by simp only [lptOf, List.mem_cons] at hb rcases hb with rfl | hb · have h := hL (t, s) (by simp) exact ⟨h.2, mul_ne_zero (blkF_ne κ r hκ0 _ _) ((map_ne_zero σ).mpr h.1)⟩ · exact lptOf_mem hκ0 rest (o + …`.
+-/
 theorem lptOf_mem (hκ0 : κ ≠ 0) : ∀ (L : List (K × ℕ)) (o : ℕ), (∀ b ∈ L, b.1 ≠ 0 ∧ 1 ≤ b.2) →
     ∀ b ∈ lptOf σ κ r o L, 1 ≤ b.1 ∧ b.2 ≠ 0
   | [], _, _, b, hb => by simp [lptOf] at hb
@@ -103,10 +123,20 @@ theorem lptOf_mem (hκ0 : κ ≠ 0) : ∀ (L : List (K × ℕ)) (o : ℕ), (∀ 
       exact ⟨h.2, mul_ne_zero (blkF_ne κ r hκ0 _ _) ((map_ne_zero σ).mpr h.1)⟩
     · exact lptOf_mem hκ0 rest (o + s) (fun b hb => hL b (List.mem_cons_of_mem _ hb)) b hb
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨lptOf_mem σ κ r hκ0 w.1 0 w.2.1, by unfold Formalism.FourierDecayAlt.D.ptSize; rw [lptOf_fst]; exact w.2.2⟩`.
+-/
 theorem isLocPt_lptOf (hκ0 : κ ≠ 0) (w : Formalism.MainNotions.S.Point K (r + 1)) :
     Formalism.FourierDecayAlt.D.IsLocPt (lptOf σ κ r 0 w.1) (r + 1) :=
   ⟨lptOf_mem σ κ r hκ0 w.1 0 w.2.1, by unfold Formalism.FourierDecayAlt.D.ptSize; rw [lptOf_fst]; exact w.2.2⟩
 
+/- English proof (translation)
+Establish `key : ∀ (l : ℕ) (h : l ≤ r + 1), RealObj.Dl (Matrix.diagonal a * Y * Matrix.diagonal b) l = (∏ i : Fin l, a (Fin.castLE h i)) * RealObj.Dl Y l * ∏ i : Fin l, b (Fin.castLE h i)`. Introduce `l h`. Unfold `RealObj.Dl`. Rewrite using `[dif_pos h, dif_pos h]`. Establish `e : (Matrix.diagonal a * Y * Matrix.diagonal b).submatrix (Fin.castLE h) (Fin.castLE h) = Matrix.diagonal (fun i => a (Fin.castLE h i)) * Y.submatrix (Fin.castLE h) (Fin.castLE h) * Matrix.diagonal (fun i => b (Fin.castLE h i))`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal]`. Rewrite using `[key (r + 1) le_rfl, key r (Nat.le_succ r), Fin.prod_univ_castSucc, Fin.prod_univ_castSucc]`. Establish `ea : ∀ i : Fin r, Fin.castLE (le_refl (r + 1)) (Fin.castSucc i) = Fin.castLE (Nat.le_succ r) i` using `fun i => Fin.ext rfl`.
+
+Establish `el : Fin.castLE (le_refl (r + 1)) (Fin.last r) = Fin.last r` using `Fin.ext rfl`. Simplify using `only [ea, el, norm_mul]`. Establish `hx : ‖a (Fin.last r)‖ ^ 2 * ‖b (Fin.last r)‖ ^ 2 = 1`. Rewrite using `[← mul_pow, hl, one_pow]`. Take the linear combination `(‖∏ i : Fin r, a (Fin.castLE (Nat.le_succ r) i)‖ * ‖RealObj.Dl Y (r + 1)‖ * ‖∏ i : Fin r, b (Fin.castLE (Nat.le_succ r) i)‖) ^ 2 * hx`.
+-/
 theorem G_diag (Y : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (a b : Fin (r + 1) → ℂ) (TT : ℝ)
     (hl : ‖a (Fin.last r)‖ * ‖b (Fin.last r)‖ = 1) :
     ‖RealObj.Dl (Matrix.diagonal a * Y * Matrix.diagonal b) (r + 1)‖ ^ 2 -
@@ -143,6 +173,17 @@ variable {n : ℕ} {ε : Fin n → Bool} {r k : ℕ} {F : PtRepPf.Fr ε r k}
 
 def IsXv (v : Fin (2 * r + k + 1) → ℂ) : Prop := ∀ i : Fin (2 * r + k + 1), r ≤ i.val → v i = 0
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Formalism.QuantumDeterminants.bvec, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `h : i.val < r`. Rewrite using `[Finset.sum_eq_single ⟨i.val, h⟩]`. Establish `e : i = Formalism.QuantumDeterminants.eI k r ⟨i.val, h⟩` using `Fin.ext rfl`.
+
+Rewrite using `[if_pos e, ← e]`. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `hh`. Apply `hb` to reduce the goal to its premises.
+
+Establish `hv'` using `congrArg Fin.val hh`. Conclude with `Fin.ext (by simp [Formalism.QuantumDeterminants.eI] at hv' ⊢; omega)`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Rewrite using `[hv i (by omega)]`.
+
+Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[if_neg]`. Introduce `hh`.
+
+Apply `h` to reduce the goal to its premises. Rewrite using `[hh]`. Simplify using `[Formalism.QuantumDeterminants.eI]`.
+-/
 theorem isXv_eq (v : Fin (2 * r + k + 1) → ℂ) (hv : IsXv v) :
     v = ∑ a : Fin r, v (Formalism.QuantumDeterminants.eI k r a) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a) := by
   funext i
@@ -171,6 +212,19 @@ theorem isXv_eq (v : Fin (2 * r + k + 1) → ℂ) (hv : IsXv v) :
 
 def NoXs (v : Fin (2 * r + k + 1) → ℂ) : Prop := ∀ a : Fin r, v (Formalism.QuantumDeterminants.esI k r a) = 0
 
+/- English proof (translation)
+Unfold `IsXv`. Introduce `i hi`. Establish `hx' : ∀ j : Fin (2 * r + k + 1), r + k < j.val → x j = 0`. Introduce `j hj`. Establish `hj2` using `j.isLt`.
+
+Establish `h0` using `hx ⟨2 * r + k - j.val, by omega⟩`. Establish `e : Formalism.QuantumDeterminants.esI k r ⟨2 * r + k - j.val, by omega⟩ = j` using `Fin.ext (by simp [Formalism.QuantumDeterminants.esI]; omega)`. Rewrite `h0` using `[e]`. Then use the resulting hypothesis. Establish `hM1 : ∀ j : Fin (2 * r + k + 1), j.val ≤ r + k → M i j = if i = j then 1 else 0`. Introduce `j hj`.
+
+Distinguish the cases in `hjr : j.val < r`. Establish `e : Formalism.QuantumDeterminants.eI k r ⟨j.val, hjr⟩ = j` using `Fin.ext rfl`. Establish `h0` using `hM.2.1 ⟨j.val, hjr⟩ i (by simp; omega)`. Rewrite `h0` using `[e]`. Then use the resulting hypothesis. Conclude with `hM.2.2 i j (by omega) hj hi`.
+
+Establish `key : ∀ j, M i j * x j = if i = j then x i else 0`. Introduce `j`. Distinguish the cases in `hj : j.val ≤ r + k`. Rewrite using `[hM1 j hj] split_ifs with h`. Rewrite using `[h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx' j (by omega)] split_ifs with h`. Rewrite using `[h, hx' j (by omega)]; ring`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply, sub_eq_zero]`. Use `show ∑ j, M i j * x j = x i`. Repeatedly rewrite using `[key]`. Simplify using the standard rewrite rules.
+-/
 theorem N_sub_X {M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hM : M ∈ Formalism.QuantumDeterminants.Nset k r)
     (x : Fin (2 * r + k + 1) → ℂ) (hx : NoXs x) : IsXv ((M - 1) *ᵥ x) := by
   unfold IsXv
@@ -212,6 +266,17 @@ section NX2
 variable {n : ℕ} {ε : Fin n → Bool} {r k : ℕ} {F : PtRepPf.Fr ε r k}
   {Qm : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ} {Qim : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ} {c : Fin r → ℂ}
 
+/- English proof (translation)
+Introduce `a`. Establish `ha` using `a.isLt`. Establish `hrow : ∀ j, Formalism.QuantumDeterminants.Hpk k r (Formalism.QuantumDeterminants.eI k r a) j = if j = Formalism.QuantumDeterminants.esI k r a then 1 else 0`. Introduce `j`. Establish `hj` using `j.isLt`.
+
+Simplify using `only [Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.eI, Formalism.QuantumDeterminants.esI, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Establish `h1 : (Formalism.QuantumDeterminants.Hpk k r *ᵥ (Qim *ᵥ w)) (Formalism.QuantumDeterminants.eI k r a) = (Qim *ᵥ w) (Formalism.QuantumDeterminants.esI k r a)` using `by show ∑ j, Formalism.QuantumDeterminants.Hpk k r (Formalism.QuantumDeterminants.eI k r a) j * (Qim *ᵥ w) j = _`. Repeatedly rewrite using `[hrow]`. Simplify using the standard rewrite rules.
+
+Establish `h3 : Formalism.L2.SG.HidaSetting.hJ ε (Qm *ᵥ Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a)) w = 0`. Establish `hw'` using `hw a`. Unfold `Formalism.L2.SG.HidaSetting.hJ at hw' ⊢`. Rewrite using `[hT.he a]`. Simplify using `[star_smul, hw']`.
+
+Establish `h4 : Formalism.L2.SG.HidaSetting.hJ ε (Qm *ᵥ Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a)) w = ((Qmᴴ * Formalism.REAL.Jm ε) *ᵥ w) (Formalism.QuantumDeterminants.eI k r a)`. Unfold `Formalism.L2.SG.HidaSetting.hJ`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec]`. Simplify using `[Formalism.QuantumDeterminants.bvec, dotProduct, Pi.single_apply, apply_ite star]`. Use `show (Qim *ᵥ w) (Formalism.QuantumDeterminants.esI k r a) = 0`.
+
+Rewrite using `[← h1, ← hT.hH, Matrix.mulVec_mulVec, Matrix.mul_assoc (Qmᴴ * Formalism.REAL.Jm ε) Qm Qim, hT.h2, Matrix.mul_one, ← h4, h3]`.
+-/
 theorem Qi_noXs (hT : TrHyp F Qm Qim c) (w : Fin n → ℂ) (hw : ∀ a, hJ ε (F.e a) w = 0) : NoXs (Qim *ᵥ w) := by
   intro a
   have ha := a.isLt
@@ -237,6 +302,9 @@ theorem Qi_noXs (hT : TrHyp F Qm Qim c) (w : Fin n → ℂ) (hw : ∀ a, hJ ε (
   show (Qim *ᵥ w) (Formalism.QuantumDeterminants.esI k r a) = 0
   rw [← h1, ← hT.hH, Matrix.mulVec_mulVec, Matrix.mul_assoc (Qmᴴ * Formalism.REAL.Jm ε) Qm Qim, hT.h2, Matrix.mul_one, ← h4, h3]
 
+/- English proof (translation)
+Rewrite using `[isXv_eq v hv, Matrix.mulVec_sum]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, hT.he, smul_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem Q_X (hT : TrHyp F Qm Qim c) (v : Fin (2 * r + k + 1) → ℂ) (hv : IsXv v) :
     Qm *ᵥ v ∈ Submodule.span ℂ (Set.range F.e) := by
   rw [isXv_eq v hv, Matrix.mulVec_sum]
@@ -249,6 +317,13 @@ structure NLike (F : PtRepPf.Fr ε r k) (g : Matrix (Fin n) (Fin n) ℂ) : Prop 
   hz : g *ᵥ F.z = F.z
   hy : ∀ y, (∀ a, hJ ε (F.e a) y = 0) → (g - 1) *ᵥ y ∈ Submodule.span ℂ (Set.range F.e)
 
+/- English proof (translation)
+Establish `h0 : ∀ a, Formalism.L2.SG.HidaSetting.rootCoord ε F.e F.fd F.z g a = 0`. Introduce `a`. Unfold `Formalism.L2.SG.HidaSetting.rootCoord Formalism.L2.SG.HidaSetting.nxt`. Use `split_ifs with h`. Rewrite using `[hg.he, F.fe]`.
+
+Rewrite using `[if_neg]`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Rewrite using `[hg.hz, F.fz]`.
+
+Unfold `Formalism.L2.SG.HidaSetting.psiR`. Simplify using `[h0]`.
+-/
 theorem psiR_of {g : Matrix (Fin n) (Fin n) ℂ} (hg : NLike F g) (gg : ℕ) : Formalism.L2.SG.HidaSetting.psiR ε gg F.e F.fd F.z g = 1 := by
   have h0 : ∀ a, Formalism.L2.SG.HidaSetting.rootCoord ε F.e F.fd F.z g a = 0 := by
     intro a
@@ -268,6 +343,11 @@ section PlaceNC
 variable {n : ℕ} {ε : Fin n → Bool} {r k : ℕ} {F F' : PtRepPf.Fr ε r k}
   {Qm : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ} {Qim : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ} {c : Fin r → ℂ}
 
+/- English proof (translation)
+Use `show (Qim * A * Qm)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (Qim * A * Qm) = Formalism.QuantumDeterminants.Hpk k r`. Establish `h2 : Qimᴴ * Qmᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hT.h2, Matrix.conjTranspose_one]`. Rewrite using `[← hT.hH]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Qmᴴ * ((Aᴴ * Formalism.REAL.Jm ε * A) * Qm) := by`. Rewrite using `[hT.h2, h2]`. Simplify using `only [Matrix.one_mul, Matrix.mul_assoc]`. Use `_ = Qmᴴ * Formalism.REAL.Jm ε * Qm := by rw [hA, Matrix.mul_assoc]`.
+-/
 theorem delta_GV (hT : TrHyp F Qm Qim c) {A : Matrix (Fin n) (Fin n) ℂ}
     (hA : Aᴴ * Formalism.REAL.Jm ε * A = Formalism.REAL.Jm ε) : Qim * A * Qm ∈ Formalism.FourierDecayAlt.B.GV k r := by
   show (Qim * A * Qm)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (Qim * A * Qm) = Formalism.QuantumDeterminants.Hpk k r
@@ -280,6 +360,11 @@ theorem delta_GV (hT : TrHyp F Qm Qim c) {A : Matrix (Fin n) (Fin n) ℂ}
         rw [hT.h2, h2]; simp only [Matrix.one_mul, Matrix.mul_assoc]
     _ = Qmᴴ * Formalism.REAL.Jm ε * Qm := by rw [hA, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hv : Qm *ᵥ (Qim *ᵥ F.z) = F.z`. Rewrite using `[Matrix.mulVec_mulVec, hT.h2, Matrix.one_mulVec]`. Unfold `Formalism.QuantumDeterminants.Tz Formalism.QuantumDeterminants.herm`. Rewrite using `[← hT.hH, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, hv]`. Establish `hz` using `F.zz`.
+
+Unfold `Formalism.L2.SG.HidaSetting.hJ at hz`. Rewrite using `[hz]`. Simplify using the standard rewrite rules.
+-/
 theorem tz_Qi' (hT : TrHyp F Qm Qim c) : Formalism.QuantumDeterminants.Tz k r (Qim *ᵥ F.z) = F.T := by
   have hv : Qm *ᵥ (Qim *ᵥ F.z) = F.z := by
     rw [Matrix.mulVec_mulVec, hT.h2, Matrix.one_mulVec]
@@ -290,6 +375,13 @@ theorem tz_Qi' (hT : TrHyp F Qm Qim c) : Formalism.QuantumDeterminants.Tz k r (Q
   rw [hz]
   simp
 
+/- English proof (translation)
+Establish `hsc' : (sc : ℂ) ≠ 0` using `by exact_mod_cast hsc`. Unfold `Formalism.L2.SG.Pf.CarrierTop.cS lam`. Distinguish the cases in `h : j.val < r`. Rewrite using `[dif_pos h, hc]`. Simplify using `only`.
+
+Establish `hp : (sc : ℂ) ^ (r - j.val) ≠ 0` using `pow_ne_zero _ hsc'`. Establish `hs : star ((sc : ℂ) ^ (r - j.val)) = (sc : ℂ) ^ (r - j.val)`. Rewrite using `[star_pow, Complex.star_def, Complex.conj_ofReal]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_mul_eq_iff_eq_mul₀ hp]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[star_mul', hs, mul_inv_cancel_right₀ hp]`. Rewrite using `[dif_neg h]`. Establish `hj : j.val = r` using `by have := j.isLt; omega`. Simplify using `[hj]`.
+-/
 theorem cS_lam {κ : ℂ} (hc : ∀ a : Fin r, c a = κ ^ (r - a.val)) {sc : ℝ} (hsc : sc ≠ 0) (j : Fin (r + 1)) :
     Formalism.L2.SG.Pf.CarrierTop.cS r sc j * lam c sc j = κ ^ (r - j.val) ∧
       star (lam c sc j) * Formalism.L2.SG.Pf.CarrierTop.cS r sc j = star (κ ^ (r - j.val)) := by

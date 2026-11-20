@@ -9,6 +9,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
+/- English proof (translation)
+Use `haveI := M₀.prob`. Set `e : (IdeleGroup F × G1 F) ≃ᵐ (IdeleGroup F × G1 F)` to `(MeasurableEquiv.mulLeft t).prodCongr (MeasurableEquiv.refl _)`. Establish `hp : MeasurePreserving e M₀.ν M₀.ν` using `(measurePreserving_mul_left (ideleMeasure F) t).prod (MeasurePreserving.id M₀.κ)`. Establish `hi` using `hp.integral_comp' (g := iw v)`. Rewrite using `[Meas.I0, Meas.I0, ← hi]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `iw (fun g => v (mD t * g)) p = iw v (t * p.1, p.2)`. Simplify using `only [iw]`. Rewrite using `[M.ab_mul, ht, one_mul, M.mD_mul, mul_assoc]`.
+-/
 private theorem normOneIntegral_diagonal_invariant {F : Type} [Field F] [NumberField F] (M₀ : Meas F) (t : IdeleGroup F) (ht : ab t = 1)
     (v : G1 F → ℂ) : M₀.I0 (fun g => v (mD t * g)) = M₀.I0 v := by
   haveI := M₀.prob
@@ -23,6 +28,17 @@ private theorem normOneIntegral_diagonal_invariant {F : Type} [Field F] [NumberF
   simp only [iw]
   rw [M.ab_mul, ht, one_mul, M.mD_mul, mul_assoc]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M₀ π f hf φ hφ h`. Take `⟨hL, hz⟩` from `Pp.cuspZero F π f hf`. Use `⟨?_, ?_, fun ξ hξ => ?_⟩` and prove the remaining obligations. Establish `e : wx W f.1 φ h 0 = fun _ => 0`. Use function extensionality and compare the values at `g`.
+
+Establish `h1 : ∀ b : A F, ψ (rt ((0 : Fin 2 → F) 0 ^ 2 - D.δ * (0 : Fin 2 → F) 1 ^ 2) * b) = 1`. Introduce `b`. Simplify using `[ψ]`. Simplify using `only [wx, h1, mul_one, hz, zero_mul]`. Simplify using `[Wx, e, Meas.I0, iw]`.
+
+Establish `e : wx W f.1 φ h ![1, 0] = w1 W f.1 φ h`. Use function extensionality and compare the values at `g`. Simplify using `[wx, w1, Wf, pt]`. Rewrite using `[Wx, e, W1]`. Take `⟨t, ht⟩` from `wxPt F E D W ξ hξ`.
+
+Take `⟨-, -, a1, a2, a3⟩` from `UpperTheory.ConvolutionTheory.R2.conv F E D W M₀ π f hf φ hφ (aE (al D ξ) * h)`. Establish `hc` using `((UpperTheory.ConvolutionTheory.R2.inv F M₀ _ a1 a2 a3).2 (IdeleGroup.diagonal F t)).2`. Establish `e : wx W f.1 φ h ξ = fun g => (fun g => w1 W f.1 φ (aE (al D ξ) * h) (cD (IdeleGroup.diagonal F t) g)) (mD (IdeleGroup.diagonal F t) * g)`. Use function extensionality and compare the values at `fun g => (ht f.1 hL φ h g).symm`. Establish `hm` using `normOneIntegral_diagonal_invariant M₀ (IdeleGroup.diagonal F t) (ab_diagonal t) (fun g => w1 W f.1 φ (aE (al D ξ) * h) (cD (IdeleGroup.diagonal F t) g))`.
+
+Rewrite using `[Wx, e, hm, hc, W1, ab_diagonal t]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.G.thetaFourierCoeff_zero_and_eq_shifted_whittaker :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ∀ f ∈ π.V, ∀ φ ∈ Fock D.δ, ∀ h, Wx W M f.1 φ h 0 = 0 ∧ Wx W M f.1 φ h ![1, 0] = W1 W M f.1 φ h ∧
     ∀ ξ, ξ ≠ 0 → Wx W M f.1 φ h ξ = W1 W M f.1 φ (aE (al D ξ) * h) := by

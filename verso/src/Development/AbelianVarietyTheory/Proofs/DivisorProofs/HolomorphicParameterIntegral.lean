@@ -3,6 +3,9 @@ open MeasureTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `|Real.log x| * x ^ t ≤ (x ^ (σ - 2 * δ) + x ^ (σ + 2 * δ)) / δ := by have ht' := abs_lt.1 ht have h1 : 0 ≤ x ^ (σ - 2 * δ) := Real.rpow_nonneg hx.le _ have h2 : 0 ≤ x ^ (σ + 2 * δ) := Real.rpow_nonneg hx.le _ have hxt : 0 ≤ x ^ t := Real.rpow_nonneg hx.le _ rcases le_total 1 x wi …`.
+-/
 theorem abs_log_mul_rpow_le_of_near {x t σ δ : ℝ} (hx : 0 < x) (hδ : 0 < δ) (ht : |t - σ| < δ) :
     |Real.log x| * x ^ t ≤ (x ^ (σ - 2 * δ) + x ^ (σ + 2 * δ)) / δ := by
   have ht' := abs_lt.1 ht
@@ -27,6 +30,27 @@ theorem abs_log_mul_rpow_le_of_near {x t σ δ : ℝ} (hx : 0 < x) (hδ : 0 < δ
       _ = (x ^ (-δ) * x ^ t) / δ := by ring
       _ ≤ (x ^ (σ - 2 * δ) + x ^ (σ + 2 * δ)) / δ := by gcongr; linarith
 
+/- English proof (translation)
+Set `F : ℂ → α × β → ℂ` to `fun z p => A p.1 p.2 * ((a p.2 : ℝ) : ℂ) ^ z`. Establish `hmeas : ∀ z, AEStronglyMeasurable (F z) (μK.prod μ)` using `fun z => hA.mul ((Complex.measurable_ofReal.comp (ha.comp measurable_snd)).pow_const z).aestronglyMeasurable`. Establish `hgp : ∀ s : ℝ, 1 < s → Integrable (fun p : α × β => g p.2 * a p.2 ^ s) (μK.prod μ)` using `fun s hs => (hg s hs).comp_snd μK`. Establish `hnorm : ∀ z p, ‖F z p‖ ≤ g p.2 * a p.2 ^ z.re`. Introduce `z p`.
+
+Simplify using `only [F, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos (hpos p.2)]`. Conclude with `mul_le_mul_of_nonneg_right (hAg _ _) (Real.rpow_nonneg (hpos _).le _)`. Establish `hint : ∀ z : ℂ, 1 < z.re → Integrable (F z) (μK.prod μ)` using `fun z hz => (hgp _ hz).mono' (hmeas z) (Filter.Eventually.of_forall (hnorm z))`. Establish `heq : ∀ z ∈ {z : ℂ | 1 < z.re}, (∫ k, ∫ l, A k l * ((a l : ℝ) : ℂ) ^ z ∂μ ∂μK) = ∫ p, F z p ∂(μK.prod μ)`. Introduce `z hz`.
+
+Conclude with `(integral_prod (F z) (hint z hz)).symm`. Use `DifferentiableOn.congr ?_ heq` and prove the remaining obligations. Introduce `z₀ hz₀`. Apply `DifferentiableAt.differentiableWithinAt` to reduce the goal to its premises. Establish `hσ : 1 < z₀.re` using `hz₀`.
+
+Use `set σ := z₀.re with hσdef`. Use `set δ := (σ - 1) / 4 with hδdef`. Establish `hδ : 0 < δ` using `by rw [hδdef]; linarith`. Set `F' : ℂ → α × β → ℂ` to `fun z p => A p.1 p.2 * (((a p.2 : ℝ) : ℂ) ^ z * ((Real.log (a p.2) : ℝ) : ℂ))`. Establish `hball : ∀ z ∈ Metric.ball z₀ δ, |z.re - σ| < δ`.
+
+Introduce `z hz`. Rewrite `hz` using `[Metric.mem_ball, dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : 1 < σ - 2 * δ` using `by rw [hδdef]; linarith`. Establish `h2 : 1 < σ + 2 * δ` using `by rw [hδdef]; linarith`.
+
+Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μK.prod μ) (F := F) (x₀ := z₀) (bound := fun p => (g p.2 * a p.2 ^ (σ - 2 * δ) + g p.2 * a p.2 ^ (σ + 2 * δ)) / δ) (Metric.ball_mem_nhds z₀ hδ) (Filter.Eventually.of_forall hmeas) (hint z₀ hz₀) (F' := F') ?_ ?_ ?_ ?_`. Conclude with `key.2.differentiableAt`. Conclude with `hA.mul ((((Complex.measurable_ofReal.comp (ha.comp measurable_snd)).pow_const z₀).mul (Complex.measurable_ofReal.comp (ha.comp measurable_snd).log))).aestronglyMeasurable`. Use `Filter.Eventually.of_forall (fun p z hz => ?_)` and prove the remaining obligations. Establish `hp` using `hpos p.2`.
+
+Establish `hgnn : 0 ≤ g p.2` using `(norm_nonneg _).trans (hAg p.1 p.2)`. Establish `hb` using `abs_log_mul_rpow_le_of_near hp hδ (hball z hz)`. Simplify using `only [F', norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hp, Complex.norm_real, Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm (a p.2 ^ z.re)]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (hAg _ _) (mul_nonneg (abs_nonneg _) (Real.rpow_nonneg hp.le _))`. Use `_ ≤ g p.2 * ((a p.2 ^ (σ - 2 * δ) + a p.2 ^ (σ + 2 * δ)) / δ) := mul_le_mul_of_nonneg_left hb hgnn`. Use `_ = (g p.2 * a p.2 ^ (σ - 2 * δ) + g p.2 * a p.2 ^ (σ + 2 * δ)) / δ := by ring`. Conclude with `((hgp _ h1).add (hgp _ h2)).div_const δ`. Use `Filter.Eventually.of_forall (fun p z _ => ?_)` and prove the remaining obligations.
+
+Establish `hp` using `hpos p.2`. Establish `hd` using `(hasDerivAt_id' z).const_cpow (c := ((a p.2 : ℝ) : ℂ)) (Or.inl (Complex.ofReal_ne_zero.2 hp.ne'))`. Establish `hd2` using `hd.const_mul (A p.1 p.2)`. Establish `e : F' z p = A p.1 p.2 * (((a p.2 : ℝ) : ℂ) ^ z * Complex.log ((a p.2 : ℝ) : ℂ) * 1)`. Simplify using `only [F', mul_one, Complex.ofReal_log hp.le]`.
+
+Rewrite using `[e]`. Conclude with `hd2`.
+-/
 theorem differentiableOn_integral_integral_mul_cpow {α β : Type} [MeasurableSpace α] [MeasurableSpace β]
     (μK : Measure α) [IsFiniteMeasure μK] (μ : Measure β) [SFinite μ]
     (A : α → β → ℂ) (a : β → ℝ) (ha : Measurable a) (hpos : ∀ l, 0 < a l)

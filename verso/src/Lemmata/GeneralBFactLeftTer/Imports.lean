@@ -4,6 +4,15 @@ universe u_1
 
 namespace Bl.general_b_fact_left_ter
 
+/- English proof (translation)
+Introduce `F _ _ y p hp h`. Assume the negation of the conclusion as `hy0`. Establish `hy : 1 < ‖y‖` using `not_le.mp hy0`. Rewrite `h` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hp.coeff_natDegree, map_one, one_mul]`. Establish `hsum : ‖∑ i ∈ Finset.range p.natDegree, (Int.castRingHom F) (p.coeff i) * y ^ i‖ < ‖y‖ ^ p.natDegree`.
+
+Break down `(Finset.range p.natDegree).eq_empty_or_nonempty with he | hne` into its components or cases. Rewrite using `[he, Finset.sum_empty, norm_zero]`. Check the signs of the components of the expression. Take `⟨i, hi, hle⟩` from `IsUltrametricDist.exists_norm_finsetSum_le_of_nonempty hne (fun i => (Int.castRingHom F) (p.coeff i) * y ^ i)`. Use `lt_of_le_of_lt hle ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_pow]`. Establish `h1 : ‖(Int.castRingHom F) (p.coeff i)‖ ≤ 1`. Rewrite using `[eq_intCast]`. Conclude with `IsUltrametricDist.norm_intCast_le_one F _`. Establish `h2 : ‖y‖ ^ i < ‖y‖ ^ p.natDegree` using `pow_lt_pow_right₀ hy (Finset.mem_range.mp hi)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `hsum` using `[eq_neg_of_add_eq_zero_left h, norm_neg, norm_pow]`. Conclude with `lt_irrefl _ hsum`.
+-/
 theorem goal1 :
   ∀ {F : Type u_1} [inst : NormedField.{u_1} F] [IsUltrametricDist.{u_1} F] {y : F} (p : Polynomial.{0} Int),
   Polynomial.Monic.{0} p →

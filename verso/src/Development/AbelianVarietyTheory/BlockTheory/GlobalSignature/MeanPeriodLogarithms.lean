@@ -16,6 +16,9 @@ def MeanPeriod : Prop :=
   ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
     MeanPeriodAt D cc δ
 
+/- English proof (translation)
+Establish `h : Real.pi / D.host.v = 2 * Real.pi / D.host.rdE`. Unfold `Host.v`. Rewrite using `[div_div_eq_mul_div, mul_comm]`. Unfold `logOmVal`. Rewrite using `[h]`.
+-/
 theorem logOmVal_eq (D : D7) :
     logOmVal D = Real.eulerMascheroniConstant + Real.log (2 * Real.pi / D.host.rdE) - logDerivativeAtOne D := by
   have h : Real.pi / D.host.v = 2 * Real.pi / D.host.rdE := by
@@ -24,10 +27,16 @@ theorem logOmVal_eq (D : D7) :
   unfold logOmVal
   rw [h]
 
+/- English proof (translation)
+Use `⟨top_ne_bot, ?_⟩` and prove the remaining obligations. Simplify using `[Ideal.absNorm_top]`.
+-/
 example (D : D7) : IsCurveIdeal D ⊤ := by
   refine ⟨top_ne_bot, ?_⟩
   simp [Ideal.absNorm_top]
 
+/- English proof (translation)
+The claim follows from `IsAlgClosed.exists_pow_nat_eq _ (by norm_num)`.
+-/
 example (D : D7) (cc : Ideal (𝓞 D.host.K)) : ∃ δ : ℂ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ :=
   IsAlgClosed.exists_pow_nat_eq _ (by norm_num)
 

@@ -18,9 +18,15 @@ section Gen
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) {r : ℕ} (P : Frame E M r)
 
+/- English proof (translation)
+Simplify using `[hR, Formalism.UG.hform, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hR_add_right {r0 : ℕ} (P0 : Frame E M r0) (u x y : Fin M → R ⊗[F] E) : hR R σ J u (x + y) = hR R σ J u x + hR R σ J u y := by
   simp [hR, Formalism.UG.hform, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[hR, Formalism.UG.hform, mul_neg, Finset.sum_neg_distrib]`.
+-/
 theorem hR_neg_right {r0 : ℕ} (P0 : Frame E M r0) (u x : Fin M → R ⊗[F] E) : hR R σ J u (-x) = -hR R σ J u x := by
   simp [hR, Formalism.UG.hform, mul_neg, Finset.sum_neg_distrib]
 
@@ -92,10 +98,16 @@ end Ext
 def NCoordAll : Prop := ForAllCM fun F E _ _ _ _ σ M J => NCoord F E σ M J
 def NCAsmAll : Prop := ForAllCM fun F E _ _ _ _ σ M J => NCAsm F E σ M J
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ`. Conclude with `hA F E σ hCM M J hJ (hC F E σ hCM M J hJ) (hV F E σ hCM M J hJ)`.
+-/
 theorem conjNHAll_of (hC : NCoordAll) (hV : ModVAll) (hA : NCAsmAll) : ConjNHAll := by
   intro F E _ _ _ _ _ σ hCM M J hJ
   exact hA F E σ hCM M J hJ (hC F E σ hCM M J hJ) (hV F E σ hCM M J hJ)
 
+/- English proof (translation)
+The claim follows from `PI.LevelKSplit.W.MeasAll.levelSAll_of_exist (PI.LevelKSplit.W.ExS.existSAll_of PI.VolSemiDirect.W.product_haar_measure_holds (fun _ _ _ => inferInstance) hS (conjNHAll_of hC hV hA))`.
+-/
 theorem levelSAll_of_parts (hS : SemiNHSAll) (hC : NCoordAll) (hV : ModVAll) (hA : NCAsmAll) :
     PI.LevelKSplit.LevelSAll :=
   PI.LevelKSplit.W.MeasAll.levelSAll_of_exist

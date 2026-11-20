@@ -21,6 +21,15 @@ noncomputable section
 
 namespace GlobalTheory.KerAxes
 
+/- English proof (translation)
+Rewrite using `[triv_ev_iff hP]`. Take `⟨M, hM, hc⟩` from `cls_surj (evc hP (snd G T ≫ x) (fst G T))`. Rewrite using `[← hc]`. Establish `key : ∀ {X : Scheme.{0}} (f : X ⟶ (G ⊗ T).left), Triv (M.pull f) ↔ CechPic.pull f (evc hP (snd G T ≫ x) (fst G T)) = 0`. Introduce `X f`.
+
+Rewrite using `[← hc, ← cls_pull hM f (pull_isLB hM f)]`. Conclude with `(cls_eq_zero_iff (pull_isLB hM f)).symm`. Use `(cls_eq_zero_iff hM).2 (GlobalTheory.CubeGlue.triv_of_locally_triv hM (snd G T).left (lift 1 (𝟙 T)).left ?_ (surj_restrict_snd hG T) ?_ ?_)` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_snd, Over.id_left]`. Rewrite using `[key, pull_evc, lift_snd_assoc, Category.id_comp, lift_fst]`.
+
+Conclude with `evc_one_right hP h2 x`. Introduce `p`. Take `⟨V, hV, hz⟩` from `hloc p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Set `U` to `(snd G T).left ⁻¹ᵁ V`.
+
+Set `Y : Over S` to `Over.mk (U.ι ≫ (G ⊗ T).hom)`. Set `i : Y ⟶ G ⊗ T` to `Over.homMk U.ι rfl`. Use `show Triv (M.pull i.left)`. Rewrite using `[key, pull_evc, ← Category.assoc]`. Conclude with `hz Y _ _ (fun z ↦ z.2)`.
+-/
 theorem triv_of_local_evc {S : Scheme.{0}} {G T : Over S} [GrpObj G] (hG : IsAbelianScheme G)
     {P : LB (G ⊗ G).left} (hP : P.IsLB) (h2 : Triv (ev P (𝟙 G) (1 : G ⟶ G))) (x : T ⟶ G)
     (hloc : ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧ ∀ (Y : Over S) (t : Y ⟶ T) (g : Y ⟶ G),
@@ -49,6 +58,25 @@ theorem triv_of_local_evc {S : Scheme.{0}} {G T : Over S} [GrpObj G] (hG : IsAbe
     rw [key, pull_evc, ← Category.assoc]
     exact hz Y _ _ (fun z ↦ z.2)
 
+/- English proof (translation)
+Introduce `R _ _ G _ hG P hP h1 h2 hs T a b hx`. Establish `hs' : (swap P).IsLB` using `pull_isLB hP _`. Establish `h1' : Triv (ev P (1 : G ⟶ G) (𝟙 G))` using `h1`. Establish `h2' : Triv (ev P (𝟙 G) (1 : G ⟶ G))` using `h2`. Establish `add1` using `(isAdditive_iff hP).1 (CubeNoeth.isAdditive_of_triv_axes hG hG hP h1' h2')`.
+
+Establish `add2` using `(isAdditive_iff hs').1 (CubeNoeth.isAdditive_swap_of_triv_axes hG hG hP h1' h2')`. Establish `symm : ∀ (Y : Over (Sp R)) (u v : Y ⟶ G), evc hP v u = evc hP u v`. Introduce `Y u v`. Establish `e` using `congrArg (CechPic.pull (lift v u).left) ((cls_eq_iff hP hs').2 hs)`. Conclude with `e.trans (evc_swap hP hs' v u)`.
+
+Establish `loc : ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧ ∀ (Y : Over (Sp R)) (t : Y ⟶ T) (g : Y ⟶ G), (∀ z, t.left z ∈ V) → evc hP (t ≫ a) g = 0 ∧ evc hP (t ≫ b) g = 0`. Introduce `p`. Take `⟨V, hV, hTV⟩` from `hx p`. Use `⟨V, hV, fun Y t g ht ↦ ?_⟩` and prove the remaining obligations. Establish `mk : ∀ u v : Y ⟶ G, evc hP ((t ≫ a) * u) ((t ≫ b) * v) = evc hP u v`.
+
+Introduce `u v`. Establish `e` using `pull_mul_eq hP hTV t ht (lift u v)`. Establish `q : (t ≫ lift a b) * lift u v = lift ((t ≫ a) * u) ((t ≫ b) * v)`. Apply the tactic sequence `ext <;> simp [MonObj.mul_comp]`. Rewrite `e` using `[q]`.
+
+Conclude with `e`. Establish `e0` using `mk 1 1`. Rewrite `e0` using `[_root_.mul_one, _root_.mul_one, evc_one_left hP h1']`. Prove the components needed by the constructor for the conclusion. Establish `e1` using `mk 1 g`.
+
+Rewrite `e1` using `[_root_.mul_one, evc_one_left hP h1']`. Establish `s` using `add2 Y (t ≫ b) g (t ≫ a)`. Rewrite `s` using `[evc_swap hP hs', evc_swap hP hs', evc_swap hP hs']`. Rewrite `e1` using `[s, e0, zero_add]`. Conclude with `e1`.
+
+Establish `e3` using `mk g 1`. Rewrite `e3` using `[_root_.mul_one, evc_one_right hP h2']`. Establish `s` using `add1 Y (t ≫ a) g (t ≫ b)`. Rewrite `e3` using `[s, e0, zero_add]`. Rewrite using `[symm]`.
+
+Conclude with `e3`. Use `⟨triv_of_local_evc hG hP h2' a fun p ↦ ?_, triv_of_local_evc hG hP h2' b fun p ↦ ?_⟩` and prove the remaining obligations. Take `⟨V, hV, h⟩` from `loc p`. Conclude with `⟨V, hV, fun Y t g ht ↦ (h Y t g ht).1⟩`. Take `⟨V, hV, h⟩` from `loc p`.
+
+Conclude with `⟨V, hV, fun Y t g ht ↦ (h Y t g ht).2⟩`.
+-/
 theorem triv_of_memKL_pair : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (G : Over (Sp R)) [GrpObj G], IsAbelianScheme G → ∀ P : LB (G ⊗ G).left, P.IsLB → (∃ t : (P.pull (lift (1 : G ⟶ G) (𝟙 G)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 G) (1 : G ⟶ G)).left).Gen, t.IsGen) → LBIso P (P.pull (lift (snd G G) (fst G G)).left) → ∀ (T : Over (Sp R)) (a b : T ⟶ G), GlobalTheory.MemKL (G ⊗ G) P (lift a b) → (∃ t : (P.pull (lift (snd G T ≫ a) (fst G T)).left).Gen, t.IsGen) ∧ (∃ t : (P.pull (lift (snd G T ≫ b) (fst G T)).left).Gen, t.IsGen) := by
   intro R _ _ G _ hG P hP h1 h2 hs T a b hx
   have hs' : (swap P).IsLB := pull_isLB hP _

@@ -10,11 +10,29 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+The claim follows from `le_antisymm ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.dvd) ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.symm.dvd)`.
+-/
 theorem pow_eq_of_associated {W : Type} [CommRing W] [IsDomain W] {ϖ : W} (hϖ : Irreducible ϖ) {n m : ℕ}
     (h : Associated (ϖ ^ n) (ϖ ^ m)) : n = m :=
   le_antisymm ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.dvd)
     ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.symm.dvd)
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ t P m N γ hR _ hC hF y`. Take `⟨hN, hI, -, hZ⟩` from `hR`. Establish `hex : ∀ χ, ∃ r, Formalism.L2.Pj.PsiCoord P.D.toPre χ r ∧ r ≠ 0` using `fun χ => ((GlobalTheory.PsiCoordLocal.main R P.D hI χ).1).imp fun _ h => ⟨h.1, h.2.1⟩`. Take `⟨μ₀, hμ₀⟩` from `hF.exists_min y`. Take `⟨r, hr, hr0⟩` from `hex (y + N • μ₀)`.
+
+Use `⟨μ₀, r, hr, fun μ => ?_⟩` and prove the remaining obligations. Take `⟨r', hr', -⟩` from `hex (y + N • μ)`. Choose the witnesses or unpack the hypotheses as in `⟨s, rfl⟩ : r ∣ r' := by`. Use `GlobalTheory.T.dvd_of_valuation_le_all_dvr R hN hI r r' hr0 fun W _ _ _ hW ϖ hϖ f hf n n' hn hn' => ?_` and prove the remaining obligations. Use `haveI : IsDiscreteValuationRing W := hW.1`.
+
+Take `⟨be, hsym, hbe⟩` from `GlobalTheory.T.exists_symmetric_form_along_dvr R hI P.D W f hf ϖ hϖ`. Take `⟨c, hc, hce⟩` from `hC W hW ϖ hϖ f be hsym hbe`. Establish `key : ∀ (z : P.D.toPre.X) (r₀ : R) (k : ℕ), Formalism.L2.Pj.PsiCoord P.D.toPre z r₀ → Associated (f r₀) (ϖ ^ k) → (be z z : ℝ) = 2 * k`. Introduce `z r₀ k hz hk`. Take `⟨r₁, k₁, h1, h2, h3⟩` from `hbe z`.
+
+Take `⟨u, hu⟩` from `GlobalTheory.PsiCoordLocal.exists_unit_of_coord hz h1`. Establish `h4 : Associated (f r₀) (ϖ ^ k₁)`. Use `Associated.trans ⟨Units.map f.toMonoidHom u, ?_⟩ h3` and prove the remaining obligations. Rewrite using `[hu, map_mul, mul_comm]`. Both sides reduce to the same expression.
+
+Establish `h5 : k = k₁` using `pow_eq_of_associated hϖ (hk.symm.trans h4)`. Substitute `h5` using the available equality. Conclude with `h2` after adjusting the coercions. Establish `e` using `fun z => congrArg (fun B : P.D.toPre.X →ₗ[ℤ] P.D.toPre.X →ₗ[ℤ] ℝ => B z z) hce`. Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul] at e`.
+
+Establish `h1` using `key _ _ _ hr hn`. Establish `h2` using `key _ _ _ hr' hn'`. Use `hμ₀ c hc μ` as an intermediate fact. Rewrite `this` using `[← e, ← e, h1, h2]`. Conclude with `(by linarith : (n : ℝ) ≤ n')` after adjusting the coercions.
+
+Conclude with `⟨s, hr'⟩`.
+-/
 theorem fineData_of_inCone : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R]
     [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (m N : ℕ)
     (γ : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), IsCN R → P.TorsionIso → InCone P.D.toPre γ → IsFine N γ →

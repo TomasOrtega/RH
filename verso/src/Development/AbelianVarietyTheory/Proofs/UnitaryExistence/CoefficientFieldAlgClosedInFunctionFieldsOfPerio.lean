@@ -15,6 +15,13 @@ namespace GlobalTheory.CompRat.FixedConst
 
 open Polynomial
 
+/- English proof (translation)
+Use `haveI : Nonempty (⊤ : Y.Opens) := ⟨Nonempty.some inferInstance, trivial⟩`. Take `⟨t, rfl⟩` from `Y.residue_surjective (genericPoint Y) r`. Set `ρ : Y.functionField →+* Y.residueField (genericPoint Y)` to `(Y.residue (genericPoint Y)).hom`. Establish `e : (Y.evaluation ⊤ (genericPoint Y) trivial).hom = ρ.comp (algebraMap Γ(Y, ⊤) Y.functionField)` using `rfl`. Establish `ht : p.eval₂ (algebraMap Γ(Y, ⊤) Y.functionField) t = 0`.
+
+Apply `ρ.injective` to reduce the goal to its premises. Rewrite using `[hom_eval₂, ← e, map_zero]`. Conclude with `hr`. Take `⟨s, hs⟩` from `IsIntegrallyClosedIn.algebraMap_eq_of_integral (R := Γ(Y, ⊤)) (A := Y.functionField) (x := t) ⟨p, hp, ht⟩`. Use `⟨s, by rw [e, RingHom.comp_apply, hs], ?_⟩` and prove the remaining obligations.
+
+Apply `Y.germToFunctionField_injective ⊤` to reduce the goal to its premises. Rewrite `ht` using `[← hs, eval₂_at_apply]`. Conclude with `ht.trans (map_zero _).symm`.
+-/
 theorem exists_section_of_isIntegral {Y : Scheme.{0}} [GlobalTheory.IsNormalScheme Y] [IsIntegral Y] (p : Γ(Y, ⊤)[X])
     (hp : p.Monic) (r : Y.residueField (genericPoint Y))
     (hr : p.eval₂ (Y.evaluation ⊤ (genericPoint Y) trivial).hom r = 0) :
@@ -34,6 +41,11 @@ theorem exists_section_of_isIntegral {Y : Scheme.{0}} [GlobalTheory.IsNormalSche
   rw [← hs, eval₂_at_apply] at ht
   exact ht.trans (map_zero _).symm
 
+/- English proof (translation)
+Establish `hs : ∀ T : Y.Opens, T = ⊥ → Subsingleton Γ(Y, T)` using `fun T hT ↦ CommRingCat.subsingleton_of_isTerminal (Y.sheaf.isTerminalOfEqEmpty hT)`. Take `⟨e, he, -⟩` from `Y.sheaf.existsUnique_gluing' (fun b : Bool ↦ cond b V W) ⊤ (fun b ↦ homOfLE le_top) (by rw [iSup_bool_eq]; exact hU.ge) (fun b ↦ match b with | true => s | false => (0 : Γ(Y, W))) (by`. Introduce and unpack `(_ | _) (_ | _)`. Both sides reduce to the same expression. Conclude with `(hs _ (hVW.symm.eq_bot)).elim _ _`.
+
+Conclude with `(hs _ (hVW.eq_bot)).elim _ _`. Use the proof step `rfl)`. Conclude with `⟨e, he true, he false⟩`.
+-/
 theorem exists_extension_zero {Y : Scheme.{0}} (V W : Y.Opens) (hU : V ⊔ W = ⊤) (hVW : Disjoint V W) (s : Γ(Y, V)) :
     ∃ f : Γ(Y, ⊤), Y.presheaf.map (homOfLE le_top).op f = s ∧
       Y.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op f = 0 := by
@@ -50,6 +62,21 @@ theorem exists_extension_zero {Y : Scheme.{0}} (V W : Y.Opens) (hU : V ⊔ W = �
       · rfl)
   exact ⟨e, he true, he false⟩
 
+/- English proof (translation)
+Set `V : Y.Opens` to `IsNormalScheme.component Z`. Set `W : Y.Opens` to `⟨Z.1ᶜ, (IsNormalScheme.isClosed_component Z).isOpen_compl⟩`. Establish `hU : V ⊔ W = ⊤`. Use `le_antisymm le_top fun x _ ↦ ?_` and prove the remaining obligations. Distinguish the cases in `h : x ∈ Z.1`.
+
+Use `exacts [Or.inl h, Or.inr h]`. Establish `hVW : Disjoint V W`. Rewrite using `[← TopologicalSpace.Opens.coe_disjoint]`. Conclude with `Set.disjoint_left.mpr fun x hx hx' ↦ hx' hx`. Choose the witnesses or unpack the hypotheses as in `rfl : V.ι (genericPoint V.toScheme) = ξ := by`.
+
+Use `IsGenericPoint.eq ?_ hξ` and prove the remaining obligations. Establish `h` using `(genericPoint_spec V.toScheme).image V.ι.continuous`. Rewrite `h` using `[Set.image_univ, Scheme.Opens.range_ι, (IsNormalScheme.isClosed_component Z).closure_eq]`. Then use the resulting hypothesis. Set `φ` to `(V.ι.residueFieldMap (genericPoint V.toScheme)).hom`. Establish `e : ∀ f : Γ(Y, ⊤), φ ((Y.evaluation ⊤ (V.ι (genericPoint V.toScheme)) trivial).hom f) = (V.toScheme.evaluation ⊤ (genericPoint V.toScheme) trivial).hom (V.ι.appTop.hom f)` using `fun f => Scheme.evaluation_naturality_apply V.ι (genericPoint V.toScheme) (V := ⊤) trivial f`.
+
+Take `⟨s, hs, hps⟩` from `exists_section_of_isIntegral (p.map V.ι.appTop.hom) (hp.map _) (φ r) (by`. Establish `e' : φ.comp (Y.evaluation ⊤ (V.ι (genericPoint V.toScheme)) trivial).hom = (V.toScheme.evaluation ⊤ (genericPoint V.toScheme) trivial).hom.comp V.ι.appTop.hom` using `RingHom.ext e`. Rewrite using `[eval₂_map, ← e', ← hom_eval₂, hr, map_zero])`. Take `⟨f, h1, h0⟩` from `exists_extension_zero V W hU hVW (V.topIso.hom.hom s)`. Establish `e2 : V.ι.appTop ≫ V.topIso.hom = Y.presheaf.map (homOfLE le_top).op`.
+
+Rewrite using `[Scheme.Opens.ι_appTop, Scheme.Opens.topIso_hom]`. Conclude with `(Y.presheaf.map_comp _ _).symm`. Establish `hf : V.ι.appTop.hom f = s`. Apply `V.topIso.commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises. Conclude with `(congrArg (fun g => g.hom f) e2).trans h1`.
+
+Use `⟨f, φ.injective (by rw [e, hf, hs]), ?_⟩` and prove the remaining obligations. Use `Y.sheaf.eq_of_locally_eq₂ (homOfLE (le_top : V ≤ ⊤)) (homOfLE (le_top : W ≤ ⊤)) hU.ge _ _ ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Y.presheaf.map (homOfLE le_top).op (f * p.eval f) = Y.presheaf.map (homOfLE le_top).op 0`. Rewrite using `[← e2]`. Express the relevant statement in the definitionally equal form `V.topIso.hom.hom (V.ι.appTop.hom _) = V.topIso.hom.hom (V.ι.appTop.hom _)`.
+
+Rewrite using `[map_mul, ← eval₂_at_apply, hf, ← Polynomial.eval_map, hps, mul_zero, map_zero V.ι.appTop.hom]`. Express the relevant statement in the definitionally equal form `Y.presheaf.map (homOfLE le_top).op (f * p.eval f) = Y.presheaf.map (homOfLE le_top).op 0`. Rewrite using `[map_mul, h0, zero_mul, map_zero]`.
+-/
 theorem exists_section {Y : Scheme.{0}} [GlobalTheory.IsNormalScheme Y] [IsLocallyNoetherian Y] (Z : irreducibleComponents Y)
     (ξ : Y) (hξ : IsGenericPoint ξ Z.1) (p : Γ(Y, ⊤)[X]) (hp : p.Monic) (r : Y.residueField ξ)
     (hr : p.eval₂ (Y.evaluation ⊤ ξ trivial).hom r = 0) :
@@ -91,6 +118,13 @@ theorem exists_section {Y : Scheme.{0}} [GlobalTheory.IsNormalScheme Y] [IsLocal
   · change Y.presheaf.map (homOfLE le_top).op (f * p.eval f) = Y.presheaf.map (homOfLE le_top).op 0
     rw [map_mul, h0, zero_mul, map_zero]
 
+/- English proof (translation)
+Set `M` to `IntermediateField.adjoin K {r}`. Use `haveI : FiniteDimensional K M := IntermediateField.adjoin.finiteDimensional hr`. Establish `key : ∀ ψ : M →ₐ[K] ℂ, ψ = φ.comp M.val`. Introduce `ψ`. Take `⟨τ, hτ⟩` from `GlobalTheory.CompRat.exists_ringEquiv_complex_comp_eq M (φ.comp M.val).toRingHom ψ.toRingHom`.
+
+Use `IntermediateField.algHom_ext_of_eq_adjoin K (S := M) rfl fun x hx => ?_` and prove the remaining obligations. Take `rfl : x = r` from `hx`. Use `(hτ _).symm.trans (h τ fun y => ?_)` and prove the remaining obligations. Use `hτ (algebraMap K M y)` as an intermediate fact. Simplify using `using this`.
+
+Establish `hc : Module.finrank K M ≤ 1`. Rewrite using `[← AlgHom.card K M ℂ]`. Conclude with `Fintype.card_le_one_iff.2 fun a b => (key a).trans (key b).symm`. Establish `h1 : Module.finrank K M = 1` using `le_antisymm hc Module.finrank_pos`. Conclude with `IntermediateField.mem_bot.1 (IntermediateField.finrank_adjoin_simple_eq_one_iff.1 h1)`.
+-/
 theorem mem_range_of_fixed {K L : Type} [Field K] [Field L] [Countable L] [Algebra K L] [Algebra K ℂ] [CharZero K]
     (φ : L →ₐ[K] ℂ) {r : L} (hr : IsIntegral K r)
     (h : ∀ τ : ℂ ≃+* ℂ, (∀ x : K, τ (algebraMap K ℂ x) = algebraMap K ℂ x) → τ (φ r) = φ r) :
@@ -114,32 +148,55 @@ theorem mem_range_of_fixed {K L : Type} [Field K] [Field L] [Countable L] [Algeb
 noncomputable def ev {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) : Γ(Y, ⊤) →+* ℂ :=
   (x.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).hom
 
+/- English proof (translation)
+Establish `h : ⊤ ≤ x ⁻¹ᵁ ⊤` using `le_rfl`. Rewrite using `[valAt', dif_pos h, valAt, ev]`. Conclude with `congrArg (fun g => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (g.hom f)) (x.appLE_eq_app (U := ⊤))`.
+-/
 theorem valAt'_top {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (f : Γ(Y, ⊤)) : valAt' x ⊤ f = ev x f := by
   have h : ⊤ ≤ x ⁻¹ᵁ ⊤ := le_rfl
   rw [valAt', dif_pos h, valAt, ev]
   exact congrArg (fun g => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (g.hom f)) (x.appLE_eq_app (U := ⊤))
 
+/- English proof (translation)
+Rewrite using `[ev, ev, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem ev_comp {Y Y' : Scheme.{0}} (x : Sp ℂ ⟶ Y) (g : Y ⟶ Y') (f : Γ(Y', ⊤)) :
     ev (x ≫ g) f = ev x (g.appTop.hom f) := by
   rw [ev, ev, Scheme.Hom.comp_appTop]; rfl
 
+/- English proof (translation)
+Rewrite using `[ev, Scheme.ΓSpecIso_naturality]`. Both sides reduce to the same expression.
+-/
 theorem ev_spec {R : CommRingCat.{0}} (j : R ⟶ CommRingCat.of ℂ) (a : Γ(Spec R, ⊤)) :
     ev (Spec.map j) a = j.hom ((Scheme.ΓSpecIso R).hom.hom a) := by
   rw [ev, Scheme.ΓSpecIso_naturality]; rfl
 
+/- English proof (translation)
+Rewrite using `[ev_comp, ev_spec]`. Both sides reduce to the same expression.
+-/
 theorem ev_conj {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (τ : ℂ →+* ℂ) (f : Γ(Y, ⊤)) : ev (spMap τ ≫ x) f = τ (ev x f) := by
   rw [ev_comp, ev_spec]; rfl
 
+/- English proof (translation)
+Rewrite using `[Scheme.fromSpecResidueField, Scheme.Hom.comp_appTop, Category.assoc, Scheme.ΓSpecIso_naturality, Scheme.fromSpecStalk_appTop]`. Simplify using `[Scheme.evaluation]`.
+-/
 theorem ΓSpecIso_fromSpecResidueField {Y : Scheme.{0}} (ξ : Y) :
     (Y.fromSpecResidueField ξ).appTop ≫ (Scheme.ΓSpecIso _).hom = Y.evaluation ⊤ ξ trivial := by
   rw [Scheme.fromSpecResidueField, Scheme.Hom.comp_appTop, Category.assoc, Scheme.ΓSpecIso_naturality,
     Scheme.fromSpecStalk_appTop]
   simp [Scheme.evaluation]
 
+/- English proof (translation)
+Rewrite using `[ev_comp, ev_spec, ← ΓSpecIso_fromSpecResidueField]`. Both sides reduce to the same expression.
+-/
 theorem ev_residue {Y : Scheme.{0}} (ξ : Y) (φ : Y.residueField ξ →+* ℂ) (f : Γ(Y, ⊤)) :
     ev (Spec.map (CommRingCat.ofHom φ) ≫ Y.fromSpecResidueField ξ) f = φ ((Y.evaluation ⊤ ξ trivial).hom f) := by
   rw [ev_comp, ev_spec, ← ΓSpecIso_fromSpecResidueField]; rfl
 
+/- English proof (translation)
+Establish `h : σ.toRatAlgHom = (KA l).val`. Use `IntermediateField.algHom_ext_of_eq_adjoin ℚ (S := KA l) rfl fun x hx => ?_` and prove the remaining obligations. Break down `hx with rfl | rfl` into its components or cases. Conclude with `hσ`. Establish `e : zeta l.A = 1` using `by simp [zeta, hA]`.
+
+Establish `e' : ∀ h, (⟨zeta l.A, h⟩ : KA l) = 1` using `fun _ => Subtype.ext e`. Conclude with `(congrArg _ (e' _)).trans ((map_one _).trans e.symm)`. Conclude with `RingHom.ext fun x => DFunLike.congr_fun h x`.
+-/
 theorem emb_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (l : Level H) (σ : KA l →+* ℂ)
     (hσ : σ (baseKA l).ρ = H.rt0) (hA : l.A = 1) : σ = algebraMap (KA l) ℂ := by
   have h : σ.toRatAlgHom = (KA l).val := by
@@ -151,6 +208,29 @@ theorem emb_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (
       exact (congrArg _ (e' _)).trans ((map_one _).trans e.symm)
   exact RingHom.ext fun x => DFunLike.congr_fun h x
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo σ g ty F h1 hσ hty hA c hperm Z a ha`. Take `⟨r, rfl⟩` from `GlobalTheory.GeomIrr.mem_range_of_isAlgebraic_ratFun a (ha.tower_top (kap Z))`. Establish `hr : IsIntegral c.F r` using `(isIntegral_algebraMap_iff (algebraMap (kap Z) (Om Z)).injective).1 ha.isIntegral`. It suffices to establish `h : r ∈ (algebraMap c.F (kap Z)).range by`. Take `⟨k, hk⟩` from `h`.
+
+Conclude with `⟨k, by rw [← hk, ← IsScalarTower.algebraMap_apply]⟩`. Establish `hfin : FiniteDimensional ℚ c.F` using `c.fin`. Establish `hcF : Countable c.F` using `Cardinal.mk_le_aleph0_iff.1 (by`. Simplify `Algebra.IsAlgebraic.cardinalMk_le_max ℚ c.F)` using `[Cardinal.mkRat]`. Establish `hk : Countable (kap Z)` using `GlobalTheory.GenericReading.countable_of_fg_top ((GlobalTheory.Reg.kap_fg_trdeg E H D l Xo c).1 Z)`.
+
+Take `⟨φ⟩ : Nonempty (kap Z →ₐ[c.F] ℂ)` from `GlobalTheory.nonempty_algHom_complex_of_countable c.F (kap Z)`. Use `mem_range_of_fixed φ hr fun τ hτ => ?_` and prove the remaining obligations. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim Xo.s`. Use `CompFin.isNoetherian_XF Xo c` as an intermediate fact.
+
+Establish `: GlobalTheory.IsNormalScheme (Xo.XF c)` using `(GlobalTheory.isNormalScheme_iff _).2 (GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth (strK (Xo := Xo) (c := c)) ((GlobalTheory.isNormalScheme_iff _).1 inferInstance))`. Set `κ : c.F →+* Γ(Xo.XF c, ⊤)` to `((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv ≫ (strK (Xo := Xo) (c := c)).appTop).hom`. Set `j : c.F →+* ℂ` to `algebraMap c.F ℂ`. Establish `hκ : ∀ (x : Sp ℂ ⟶ Xo.XF c) (i : c.F →+* ℂ), x ≫ strK = spMap i → (ev x).comp κ = i`. Introduce `x i hx`.
+
+Use extensionality with `k`. Express the relevant statement in the definitionally equal form `ev x ((strK (Xo := Xo) (c := c)).appTop.hom _) = _`. Rewrite using `[← ev_comp, hx, ev_spec]`. Conclude with `congrArg i ((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv_hom_id_apply k)`. Set `x : Sp ℂ ⟶ Xo.XF c` to `Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ genSp Z`.
+
+Establish `hx : x ≫ strK = spMap j`. Rewrite using `[Category.assoc, ← Spec.map_preimage (genSp Z ≫ strK), ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `k`. Conclude with `φ.commutes k`.
+
+Establish `hev : ∀ f, ev x f = φ (((Xo.XF c).evaluation ⊤ (genPt Z) trivial).hom f)` using `ev_residue _ φ.toRingHom`. Establish `hm` using `minpoly.monic hr`. Take `⟨f, hf, hf0⟩` from `exists_section Z (genPt Z) ((Z.2.1 : IsIrreducible (Z : Set (Xo.XF c))).isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ Z.2)) ((minpoly c.F r).map κ) (hm.map _) r (by`. Apply `φ.toRingHom.injective` to reduce the goal to its premises. Rewrite using `[hom_eval₂, ← (RingHom.ext hev : ev x = φ.toRingHom.comp _), eval₂_map, hκ x j hx, map_zero]`.
+
+Conclude with `(aeval_algHom_apply φ r _).trans (by rw [minpoly.aeval, map_zero]))`. Establish `hS : ∀ y : Sp ℂ ⟶ Xo.XF c, y ≫ pullback.snd _ _ = spMap j → valAt' y ⊤ f ∈ insert 0 ((minpoly c.F r).rootSet ℂ)`. Introduce `y hy`. Establish `h` using `congrArg (ev y) hf0`. Rewrite `h` using `[map_mul, ← eval₂_at_apply, eval₂_map, hκ y j hy, map_zero, mul_eq_zero]`.
+
+Rewrite using `[valAt'_top]`. Conclude with `h.imp id fun h => mem_rootSet.2 ⟨hm.ne_zero, h⟩`. Take `⟨i, P, hP, hu⟩` from `F.onto (x ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hx, emb_eq l σ hσ hA, ← Spec.map_comp]`. Use the proof step `rfl)`.
+
+Take `⟨P', hP', hu'⟩` from `hperm τ (fun z hz => hτ ⟨z, hz⟩) i P hP`. Establish `key` using `GlobalTheory.T.regularFunction_const_of_finite_values_on_period_space E H D l Xo σ g ty F h1 hσ hty hA c j f _ ((rootSet_finite _ _).insert 0) hS i P' P hP' hP (spMap (τ : ℂ →+* ℂ) ≫ x) x (by rw [Category.assoc, ← hu]; exact hu') (by`. Rewrite using `[Category.assoc, hx, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `k`.
+
+Conclude with `hτ k) hu.symm hx`. Rewrite `key` using `[valAt'_top, valAt'_top, ev_conj, hev, hf]`. Then use the resulting hypothesis.
+-/
 theorem fnAlgClosed_of_permutes_id : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ ty), 1 ≤ D.p + D.q → σ (baseKA l).ρ = H.rt0 → IsTypeFn H D.p D.q ty → l.A = 1 → ∀ c : Coeff l, (∀ τ : ℂ ≃+* ℂ, (∀ x ∈ c.F, τ x = x) → ConjugationPermutesPeriods F τ id) → FnAlgClosed Xo c := by
   intro E _ _ _ H D l Xo σ g ty F h1 hσ hty hA c hperm Z a ha
   obtain ⟨r, rfl⟩ := GlobalTheory.GeomIrr.mem_range_of_isAlgebraic_ratFun a (ha.tower_top (kap Z))

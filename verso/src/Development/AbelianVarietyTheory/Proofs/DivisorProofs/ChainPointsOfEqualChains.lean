@@ -28,6 +28,11 @@ open scoped Classical
 
 namespace GlobalTheory.ChainParts
 
+/- English proof (translation)
+Use `haveI : Fintype ι := Fintype.ofFinite _`. Establish `hcard' : Fintype.card ι = n` using `by rw [← Nat.card_eq_fintype_card]; exact hn`. Establish `hidem : ∀ τ (M : AM B Λ), IsAdd M → eA M (fun k => B.const (cf τ k)) b ≫ eA M (fun k => B.const (cf τ k)) b = eA M (fun k => B.const (cf τ k)) b` using `fun τ M hM => GlobalTheory.T.idempotent_decomposition_dual_basis b ev cf hev hcard' τ M hM`. Establish `hP` using `fun τ => GlobalTheory.T.idempotent_projection_functor_linear_exact (fun k => B.const (cf τ k)) b (hidem τ)`. Establish `hc : ∀ τ k, ∃ v : Γ(B.X, ⊤), B.const (cf (φ τ) k) = B.const (cf τ k) ^ p + p * v` using `fun τ k => (hfr τ k).elim fun v e => ⟨B.const v, by rw [e]; simp only [Model.const, map_add, map_pow, map_mul, map_natCast]⟩`.
+
+Take `⟨Ch, -, -, hCh⟩` from `GlobalTheory.T.exact_functor_equivariant_chain p Q φ (fun τ => partF (fun k => B.const (cf τ k)) b) (fun τ M g _ => (hP τ).1 M g) (fun τ => (hP τ).2.1) (fun τ _ _ f hM hN => (hP τ).2.2.1 f hM hN) (fun τ E => GlobalTheory.T.idempotent_projection_vector_bundle_rank (fun k => B.cons …`. Conclude with `⟨Ch, hCh⟩`.
+-/
 theorem exists_chain_parts {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime]
     [CharZero O] [CharP (ResidueField O) p] {B : Vert.Model O} (hB : GlobalTheory.IsNormalScheme B.X) {Λ : Type} [CommRing Λ]
     {o : ℕ} (Q : EqChain p B Λ o) {ι : Type} [Finite ι] [DecidableEq ι] (φ : ι → ι) {n : ℕ} (b : Module.Basis (Fin n) ℤ Λ)
@@ -56,6 +61,9 @@ theorem exists_chain_parts {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValua
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `hE D O hO p _ _ hun _ W hW jc hjc z o c` and use `haveI := isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW haveI := charP_residueField_of_mem_nonunits z.Z.i.c (Fact.out : p.Prime) hW (GlobalTheory.T.unramified_embedding_dual_basis_exists z jc hjc hun).elim fun n h => h.elim fun b h => h.elim fun ev h => h.elim fun cf h …`.
+-/
 theorem chainPtsSt_of_eqChainSt : EqChainSt → ChainPtsSt := fun hE D O hO p _ _ hun _ W hW jc hjc z o c =>
   haveI := isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW
   haveI := charP_residueField_of_mem_nonunits z.Z.i.c (Fact.out : p.Prime) hW

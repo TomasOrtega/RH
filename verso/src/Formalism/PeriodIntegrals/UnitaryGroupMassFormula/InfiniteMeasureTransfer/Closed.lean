@@ -7,6 +7,9 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 
 namespace Formalism.L2.SG.Pf.MeasInfW
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Units.continuous_val.comp (continuous_subtype_val.comp (continuous_apply v))`. Consider the case `fun_prop`. Consider the case `continuity`.
+-/
 theorem continuous_uMat_at (I : AutInst) (v : InfinitePlace I.F) :
     Continuous fun s : I.Ginf => uMat (s v) := by
   first
@@ -14,11 +17,17 @@ theorem continuous_uMat_at (I : AutInst) (v : InfinitePlace I.F) :
   | fun_prop
   | continuity
 
+/- English proof (translation)
+Establish `hW : IsClosed (W : Set (Fin n → ℂ))` using `W.closed_of_finiteDimensional`. Conclude with `hW.preimage ((continuous_id.sub continuous_const).matrix_mulVec continuous_const)`.
+-/
 theorem isClosed_mulVec_mem {n : ℕ} (x : Fin n → ℂ) (W : Submodule ℂ (Fin n → ℂ)) :
     IsClosed {M : Matrix (Fin n) (Fin n) ℂ | (M - 1) *ᵥ x ∈ W} := by
   have hW : IsClosed (W : Set (Fin n → ℂ)) := W.closed_of_finiteDimensional
   exact hW.preimage ((continuous_id.sub continuous_const).matrix_mulVec continuous_const)
 
+/- English proof (translation)
+Establish `h1 : {M : Matrix (Fin n) (Fin n) ℂ | InN ε e z M} = ((⋂ a : Fin r, {M : Matrix (Fin n) (Fin n) ℂ | (M - 1) *ᵥ e a ∈ spanLt e a.1}) ∩ {M : Matrix (Fin n) (Fin n) ℂ | (M - 1) *ᵥ z ∈ spanLt e r}) ∩ ⋂ y : Fin n → ℂ, ⋂ (_ : ∀ a, hJ ε (e a) y = 0), {M : Matrix (Fin n) (Fin n) ℂ | (M - …`. Use extensionality with `M`. Simplify using `only [InN, InS, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]`. Rewrite using `[h1]`. Conclude with `((isClosed_iInter fun a => isClosed_mulVec_mem _ _).inter (isClosed_mulVec_mem _ _)).inter (isClosed_iInter fun y => isClosed_iInter fun _ => isClosed_mulVec_mem _ _)`.
+-/
 theorem isClosed_InN {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) :
     IsClosed {M : Matrix (Fin n) (Fin n) ℂ | InN ε e z M} := by
   have h1 : {M : Matrix (Fin n) (Fin n) ℂ | InN ε e z M} =
@@ -32,6 +41,11 @@ theorem isClosed_InN {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → 
   exact ((isClosed_iInter fun a => isClosed_mulVec_mem _ _).inter (isClosed_mulVec_mem _ _)).inter
     (isClosed_iInter fun y => isClosed_iInter fun _ => isClosed_mulVec_mem _ _)
 
+/- English proof (translation)
+Introduce `I r e z`. Establish `h1 : Ninf I e z = ⋂ v, (fun s : I.Ginf => uMat (s v)) ⁻¹' {M : Matrix (Fin I.n) (Fin I.n) ℂ | InN (I.ε v) (fun a => rv I v (e a)) (rv I v z) M}`. Use extensionality with `s`. Simplify using `only [Ninf, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[h1]`.
+
+Conclude with `isClosed_iInter fun v => (isClosed_InN _ _ _).preimage (continuous_uMat_at I v)`.
+-/
 theorem nilpotent_measure_closed_form : NClosed := by
   intro I r e z
   have h1 : Ninf I e z = ⋂ v, (fun s : I.Ginf => uMat (s v)) ⁻¹'
@@ -41,6 +55,11 @@ theorem nilpotent_measure_closed_form : NClosed := by
   rw [h1]
   exact isClosed_iInter fun v => (isClosed_InN _ _ _).preimage (continuous_uMat_at I v)
 
+/- English proof (translation)
+Introduce `I S`. Establish `h1 : Hset I S = ⋂ v, ⋂ x ∈ S, (fun s : I.Ginf => uMat (s v)) ⁻¹' {M : Matrix (Fin I.n) (Fin I.n) ℂ | M *ᵥ rv I v x = rv I v x}`. Use extensionality with `s`. Simplify using `only [Hset, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[h1]`.
+
+Use `isClosed_iInter fun v => isClosed_biInter fun x _ => IsClosed.preimage (continuous_uMat_at I v) ?_` and prove the remaining obligations. Conclude with `isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const`.
+-/
 theorem hermitian_measure_closed_form : HClosed := by
   intro I S
   have h1 : Hset I S = ⋂ v, ⋂ x ∈ S, (fun s : I.Ginf => uMat (s v)) ⁻¹'

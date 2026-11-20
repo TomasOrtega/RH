@@ -11,6 +11,9 @@ open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum NumberField GroundTheor
 
 namespace KummerIndex
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot F n`. Conclude with `⟨⟨f ζ, hζ.map_of_injective f.injective⟩, rootsOfUnity.isCyclic E n⟩`.
+-/
 theorem hasEnoughRootsOfUnity_of_ringHom {F E : Type*} [Field F] [Field E] (f : F →+* E)
     (n : ℕ) [NeZero n] [HasEnoughRootsOfUnity F n] : HasEnoughRootsOfUnity E n := by
   obtain ⟨ζ, hζ⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot F n
@@ -23,6 +26,11 @@ abbrev localUnits : Subgroup (v.adicCompletion K)ˣ :=
 
 variable {v} in
 
+/- English proof (translation)
+Establish `hx : Valued.v (x : v.adicCompletion K) ≠ 0` using `(Valuation.ne_zero_iff _).2 x.ne_zero`. Express the relevant statement in the definitionally equal form `(x : v.adicCompletion K) ∈ v.adicCompletionIntegers K ∧ ((x⁻¹ : (v.adicCompletion K)ˣ) : v.adicCompletion K) ∈ v.adicCompletionIntegers K ↔ _`. Rewrite using `[mem_adicCompletionIntegers, mem_adicCompletionIntegers, Units.val_inv_eq_inv_val, map_inv₀]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `le_antisymm h1 ((inv_le_one₀ (zero_lt_iff.2 hx)).1 h2)`. Introduce `h`. Rewrite using `[h, inv_one]`. Conclude with `⟨le_rfl, le_rfl⟩`.
+-/
 theorem mem_localUnits_iff {x : (v.adicCompletion K)ˣ} :
     x ∈ localUnits v ↔ Valued.v (x : v.adicCompletion K) = 1 := by
   have hx : Valued.v (x : v.adicCompletion K) ≠ 0 := (Valuation.ne_zero_iff _).2 x.ne_zero
@@ -36,6 +44,9 @@ theorem mem_localUnits_iff {x : (v.adicCompletion K)ˣ} :
     rw [h, inv_one]
     exact ⟨le_rfl, le_rfl⟩
 
+/- English proof (translation)
+Rewrite using `[mem_localUnits_iff, Units.coe_map]`. Express the relevant statement in the definitionally equal form `Valued.v ((a : K) : v.adicCompletion K) = 1`. Rewrite using `[valuedAdicCompletion_eq_valuation', ha]`.
+-/
 theorem units_map_mem_localUnits {a : Kˣ} (ha : v.valuation K (a : K) = 1) :
     Units.map (algebraMap K (v.adicCompletion K) : K →* v.adicCompletion K) a ∈ localUnits v := by
   rw [mem_localUnits_iff, Units.coe_map]
@@ -46,6 +57,9 @@ def localClass (p : ℕ) : Kˣ →* UnitsModPow (v.adicCompletion K) p :=
   (QuotientGroup.mk' (unitsPow (v.adicCompletion K) p)).comp
     (Units.map (algebraMap K (v.adicCompletion K) : K →* v.adicCompletion K))
 
+/- English proof (translation)
+Rewrite using `[localClass, ← MonoidHom.comap_ker, QuotientGroup.ker_mk']`. Both sides reduce to the same expression.
+-/
 theorem ker_localClass (p : ℕ) :
     (localClass v p).ker = unitsPowIn K p (v.adicCompletion K) := by
   rw [localClass, ← MonoidHom.comap_ker, QuotientGroup.ker_mk']
@@ -54,6 +68,9 @@ theorem ker_localClass (p : ℕ) :
 def localUnitClasses (p : ℕ) : Subgroup (UnitsModPow (v.adicCompletion K) p) :=
   (localUnits v).map (QuotientGroup.mk' (unitsPow (v.adicCompletion K) p))
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_map_of_mem _ (units_map_mem_localUnits v ha)`.
+-/
 theorem localClass_mem_localUnitClasses (p : ℕ) {a : Kˣ} (ha : v.valuation K (a : K) = 1) :
     localClass v p a ∈ localUnitClasses v p :=
   Subgroup.mem_map_of_mem _ (units_map_mem_localUnits v ha)
@@ -68,6 +85,11 @@ def ordMod (p : ℕ) : (v.adicCompletion K)ˣ →* Multiplicative (ZMod p) where
     push_cast
     ring_nf
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `valued_adicCompletion_surjective (v := v) (K := K) (exp (-1 : ℤ))`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[map_zero]`. Conclude with `exp_ne_zero hx.symm`.
+
+Conclude with `⟨Units.mk0 x hx0, hx⟩`.
+-/
 theorem exists_uniformizer_unit :
     ∃ π : (v.adicCompletion K)ˣ, Valued.v (π : v.adicCompletion K) = exp (-1 : ℤ) := by
   obtain ⟨x, hx⟩ := valued_adicCompletion_surjective (v := v) (K := K) (exp (-1 : ℤ))
@@ -77,6 +99,11 @@ theorem exists_uniformizer_unit :
     exact exp_ne_zero hx.symm
   exact ⟨Units.mk0 x hx0, hx⟩
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `exists_uniformizer_unit v`. Introduce `z`. Use `⟨π ^ (Multiplicative.toAdd z).val, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd (((-log (Valued.v ((π ^ (Multiplicative.toAdd z).val : (v.adicCompletion K)ˣ) : v.adicCompletion K)) : ℤ) : ZMod p)) = z`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, hπ, ← exp_nsmul, log_exp]`.
+
+Simplify using `only [smul_neg, nsmul_eq_mul, mul_one, neg_neg, Int.cast_natCast, ZMod.natCast_zmod_val]`. Both sides reduce to the same expression.
+-/
 theorem ordMod_surjective (p : ℕ) [NeZero p] : Function.Surjective (ordMod v p) := by
   obtain ⟨π, hπ⟩ := exists_uniformizer_unit v
   intro z
@@ -87,6 +114,21 @@ theorem ordMod_surjective (p : ℕ) [NeZero p] : Function.Surjective (ordMod v p
   simp only [smul_neg, nsmul_eq_mul, mul_one, neg_neg, Int.cast_natCast, ZMod.natCast_zmod_val]
   rfl
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hx0 : Valued.v (x : v.adicCompletion K) ≠ 0` using `(Valuation.ne_zero_iff _).2 x.ne_zero`. Rewrite `hx` using `[MonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd (((-log (Valued.v (x : v.adicCompletion K)) : ℤ) : ZMod p)) = 1 at hx`.
+
+Rewrite `hx` using `[ofAdd_eq_one, ZMod.intCast_zmod_eq_zero_iff_dvd]`. Take `⟨k, hk⟩` from `hx`. Take `⟨π, hπ⟩` from `exists_uniformizer_unit v`. Establish `hu : x * ((π ^ k) ^ p)⁻¹ ∈ localUnits v`. Rewrite using `[mem_localUnits_iff, Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, Units.val_pow_eq_pow_val, Units.val_zpow_eq_zpow_val, map_pow, map_zpow₀, hπ, ← exp_zsmul, ← exp_nsmul, ← exp_log hx0]`.
+
+Rewrite using `[← exp_neg, ← exp_add]`. Establish `: -(-log (Valued.v (x : v.adicCompletion K))) = (p : ℤ) * (-k)`. Rewrite using `[hk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[exp_eq_one]`.
+
+Rewrite `this` using `[neg_neg]`. Rewrite using `[this]`. Simplify using `only [smul_eq_mul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hx' : x = (x * ((π ^ k) ^ p)⁻¹) * (π ^ k) ^ p` using `by group`.
+
+Rewrite using `[hx']`. Conclude with `Subgroup.mul_mem_sup hu ⟨π ^ k, rfl⟩`. Rewrite using `[sup_le_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`.
+
+Rewrite using `[MonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd (((-log (Valued.v (x : v.adicCompletion K)) : ℤ) : ZMod p)) = 1`. Rewrite using `[(mem_localUnits_iff).1 hx, log_one]`. Simplify using the standard rewrite rules. Introduce and unpack `_ ⟨b, rfl⟩`.
+
+Establish `hb : Valued.v (b : v.adicCompletion K) ≠ 0` using `(Valuation.ne_zero_iff _).2 b.ne_zero`. Rewrite using `[MonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd (((-log (Valued.v (((b ^ p : (v.adicCompletion K)ˣ)) : v.adicCompletion K)) : ℤ) : ZMod p)) = 1`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, log_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem ker_ordMod (p : ℕ) [NeZero p] :
     (ordMod v p).ker = localUnits v ⊔ unitsPow (v.adicCompletion K) p := by
   apply le_antisymm
@@ -128,12 +170,18 @@ theorem ker_ordMod (p : ℕ) [NeZero p] :
       rw [Units.val_pow_eq_pow_val, map_pow, log_pow]
       simp
 
+/- English proof (translation)
+Rewrite using `[← ker_ordMod, Subgroup.index_ker, (ordMod v p).range_eq_top_of_surjective (ordMod_surjective v p), Subgroup.card_top, Nat.card_eq_fintype_card]`. Simplify using the standard rewrite rules.
+-/
 theorem index_localUnits_sup_unitsPow (p : ℕ) [NeZero p] :
     (localUnits v ⊔ unitsPow (v.adicCompletion K) p).index = p := by
   rw [← ker_ordMod, Subgroup.index_ker, (ordMod v p).range_eq_top_of_surjective
     (ordMod_surjective v p), Subgroup.card_top, Nat.card_eq_fintype_card]
   simp
 
+/- English proof (translation)
+Use `hasEnoughRootsOfUnity_of_ringHom (algebraMap K (v.adicCompletion K)) p` as an intermediate fact. Establish `h` using `index_range_powMonoidHom_adicCompletion_of_hasEnoughRootsOfUnity v (n := p)`. Rewrite `h` using `[norm_natCast_adicCompletion_eq_one hv, div_one]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem index_unitsPow (p : ℕ) [NeZero p] [HasEnoughRootsOfUnity K p]
     (hv : (p : 𝓞 K) ∉ v.asIdeal) :
     (unitsPow (v.adicCompletion K) p).index = p ^ 2 := by
@@ -142,6 +190,11 @@ theorem index_unitsPow (p : ℕ) [NeZero p] [HasEnoughRootsOfUnity K p]
   rw [norm_natCast_adicCompletion_eq_one hv, div_one] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Establish `hidx : (localUnitClasses v p).index = p`. Rewrite using `[localUnitClasses, Subgroup.index_map, QuotientGroup.ker_mk', (QuotientGroup.mk' _).range_eq_top_of_surjective (QuotientGroup.mk'_surjective _), Subgroup.index_top, mul_one, index_localUnits_sup_unitsPow]`. Establish `hcard : Nat.card (UnitsModPow (v.adicCompletion K) p) = p ^ 2` using `index_unitsPow v p hv`. Establish `h` using `Subgroup.card_mul_index (localUnitClasses v p)`. Rewrite `h` using `[hidx, hcard, pow_two]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_right (NeZero.pos p) h`.
+-/
 theorem natCard_localUnitClasses (p : ℕ) [NeZero p] [HasEnoughRootsOfUnity K p]
     (hv : (p : 𝓞 K) ∉ v.asIdeal) : Nat.card (localUnitClasses v p) = p := by
   have hidx : (localUnitClasses v p).index = p := by
@@ -154,6 +207,15 @@ theorem natCard_localUnitClasses (p : ℕ) [NeZero p] [HasEnoughRootsOfUnity K p
   rw [hidx, hcard, pow_two] at h
   exact Nat.eq_of_mul_eq_mul_right (NeZero.pos p) h
 
+/- English proof (translation)
+Set `g : localUnitClasses v p` to `⟨QuotientGroup.mk' _ a, Subgroup.mem_map_of_mem _ ha⟩`. Set `g' : localUnitClasses v p` to `⟨QuotientGroup.mk' _ x, Subgroup.mem_map_of_mem _ hx⟩`. Establish `hg : g ≠ 1`. Introduce `h`. Apply `hap` to reduce the goal to its premises.
+
+Establish `h' : QuotientGroup.mk' (unitsPow (v.adicCompletion K) p) a = 1` using `congrArg Subtype.val h`. Rewrite `h'` using `[QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Then use the resulting hypothesis. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 (mem_zpowers_of_prime_card (natCard_localUnitClasses v p hv) hg (g' := g'))`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h' : QuotientGroup.mk' (unitsPow (v.adicCompletion K) p) a ^ k = QuotientGroup.mk' (unitsPow (v.adicCompletion K) p) x`.
+
+Use `congrArg Subtype.val hk` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_zpow]`. Then use the resulting hypothesis. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.mk_mul, QuotientGroup.mk_inv, QuotientGroup.mk_zpow]`. Express the relevant statement in the definitionally equal form `QuotientGroup.mk' _ x * (QuotientGroup.mk' _ a ^ k)⁻¹ = 1`. Rewrite using `[h']`.
+
+Conclude with `mul_inv_cancel _`.
+-/
 theorem exists_mul_zpow_inv_mem_unitsPow (p : ℕ) [Fact p.Prime] [HasEnoughRootsOfUnity K p]
     (hv : (p : 𝓞 K) ∉ v.asIdeal) {a x : (v.adicCompletion K)ˣ} (ha : a ∈ localUnits v)
     (hx : x ∈ localUnits v) (hap : a ∉ unitsPow (v.adicCompletion K) p) :

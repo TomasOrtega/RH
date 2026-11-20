@@ -19,6 +19,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UU
 namespace TorsionCount
 
+/- English proof (translation)
+Use `choose s hs hs' using h`. Rewrite using `[← Nat.card_prod]`. Establish `hf : ∀ a : A, a ^ N = 1 → f a ^ N = 1` using `fun a ha => by rw [← map_pow, ha, map_one]`. Use `Nat.card_congr (Equiv.ofBijective (fun x : {a : A // a ^ N = 1 ∧ f a = 1} × {b : B // b ^ N = 1} => (⟨x.1.1 * s x.2.1 x.2.2, by rw [mul_pow, x.1.2.1, hs, _root_.one_mul]⟩ : {a : A // a ^ N = 1})) ⟨?_, ?_⟩).symm` and prove the remaining obligations. Introduce and unpack `⟨⟨a, ha⟩, b, hb⟩ ⟨⟨a', ha'⟩, b', hb'⟩ e`.
+
+Establish `e₁ : a * s b hb = a' * s b' hb'` using `congrArg Subtype.val e`. Establish `e₂` using `congrArg f e₁`. Rewrite `e₂` using `[map_mul, map_mul, hs', hs', ha.2, ha'.2, _root_.one_mul, _root_.one_mul]`. Substitute `e₂` using the available equality. Establish `e₃` using `mul_right_cancel e₁`.
+
+Substitute `e₃` using the available equality. Both sides reduce to the same expression. Introduce and unpack `⟨a, ha⟩`. Use `⟨(⟨a * (s (f a) (hf a ha))⁻¹, ?_, ?_⟩, ⟨f a, hf a ha⟩), Subtype.ext (inv_mul_cancel_right _ _)⟩` and prove the remaining obligations. Rewrite using `[mul_pow, inv_pow, ha, hs, inv_one, _root_.one_mul]`.
+
+Rewrite using `[map_mul, map_inv, hs', mul_inv_cancel]`.
+-/
 theorem card_torsion_eq_mul {A B : Type} [CommGroup A] [CommGroup B] (f : A →* B) (N : ℕ)
     (h : ∀ b : B, b ^ N = 1 → ∃ a : A, a ^ N = 1 ∧ f a = b) :
     Nat.card {a : A // a ^ N = 1} = Nat.card {a : A // a ^ N = 1 ∧ f a = 1} * Nat.card {b : B // b ^ N = 1} := by
@@ -41,6 +50,13 @@ theorem card_torsion_eq_mul {A B : Type} [CommGroup A] [CommGroup B] (f : A →*
     · rw [mul_pow, inv_pow, ha, hs, inv_one, _root_.one_mul]
     · rw [map_mul, map_inv, hs', mul_inv_cancel]
 
+/- English proof (translation)
+Set `e` to `Module.finBasis ℤ X`. Establish `key : Function.Bijective (fun (φ : {φ : Multiplicative X →* U // φ ^ N = 1}) (k : Fin (Module.finrank ℤ X)) => (⟨φ.1 (Multiplicative.ofAdd (e k)), DFunLike.congr_fun φ.2 _⟩ : {u : U // u ^ N = 1}))`. Establish `ext : ∀ φ ψ : Multiplicative X →* U, (∀ k, φ (Multiplicative.ofAdd (e k)) = ψ (Multiplicative.ofAdd (e k))) → φ = ψ` using `fun φ ψ h => by`. Establish `: (MonoidHom.toAdditiveRight φ).toIntLinearMap = (MonoidHom.toAdditiveRight ψ).toIntLinearMap` using `e.ext fun k => congrArg Additive.ofMul (h k)`. Conclude with `MonoidHom.ext fun χ => congrArg Additive.toMul (LinearMap.congr_fun this (Multiplicative.toAdd χ))`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `φ ψ h`. Conclude with `Subtype.ext (ext _ _ fun k => congrArg Subtype.val (congrFun h k))`. Introduce `v`. Set `l : X →ₗ[ℤ] Additive U` to `e.constr ℤ fun k => Additive.ofMul (v k).1`.
+
+Establish `hl : ∀ k, AddMonoidHom.toMultiplicativeLeft l.toAddMonoidHom (Multiplicative.ofAdd (e k)) = (v k).1` using `fun k => congrArg Additive.toMul (e.constr_basis ℤ _ k)`. Use `⟨⟨AddMonoidHom.toMultiplicativeLeft l.toAddMonoidHom, ext _ _ fun k => ?_⟩,` and prove the remaining obligations. Use function extensionality and compare the values at `fun k => Subtype.ext (hl k)⟩`. Rewrite using `[MonoidHom.pow_apply, hl, (v k).2, MonoidHom.one_apply]`. Rewrite using `[Nat.card_congr (Equiv.ofBijective _ key), Nat.card_fun, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]`.
+-/
 theorem card_hom_torsion {X U : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [CommGroup U] (N : ℕ) :
     Nat.card {φ : Multiplicative X →* U // φ ^ N = 1} = Nat.card {u : U // u ^ N = 1} ^ Module.finrank ℤ X := by
   let e := Module.finBasis ℤ X
@@ -63,12 +79,18 @@ theorem card_hom_torsion {X U : Type} [AddCommGroup X] [Module.Free ℤ X] [Modu
       rw [MonoidHom.pow_apply, hl, (v k).2, MonoidHom.one_apply]
   rw [Nat.card_congr (Equiv.ofBijective _ key), Nat.card_fun, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]
 
+/- English proof (translation)
+Establish `: NeZero (N : K)` using `⟨hN⟩`. Establish `: NeZero N` using `NeZero.of_neZero_natCast K`. Conclude with `HasEnoughRootsOfUnity.natCard_rootsOfUnity K N`.
+-/
 theorem card_units_torsion (K : Type) [Field K] [IsAlgClosed K] {N : ℕ} (hN : (N : K) ≠ 0) :
     Nat.card {u : Kˣ // u ^ N = 1} = N := by
   have : NeZero (N : K) := ⟨hN⟩
   have : NeZero N := NeZero.of_neZero_natCast K
   exact HasEnoughRootsOfUnity.natCard_rootsOfUnity K N
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr (e.toEquiv.subtypeEquiv fun a => by rw [← e.map_eq_one_iff, map_pow]; rfl)`.
+-/
 theorem card_torsion_congr {A B : Type} [Group A] [Group B] (e : A ≃* B) (N : ℕ) :
     Nat.card {a : A // a ^ N = 1} = Nat.card {b : B // b ^ N = 1} :=
   Nat.card_congr (e.toEquiv.subtypeEquiv fun a => by
@@ -78,6 +100,17 @@ end TorsionCount
 
 open TorsionCount in
 
+/- English proof (translation)
+Introduce `S X _ _ _ G _ _ Q K _ _ p N hN`. Use `Q.q_hom` as an intermediate fact. Use `Q.i_hom` as an intermediate fact. Establish `hN' : 0 < N` using `Nat.pos_of_ne_zero (by rintro rfl; exact hN Nat.cast_zero)`. Set `e : Kˣ ≃* Γ(Spec (CommRingCat.of K), ⊤)ˣ` to `Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv.toMulEquiv`.
+
+Establish `inj : ∀ t t' : Over.mk p ⟶ splitTorus S X, t ≫ Q.i = t' ≫ Q.i → t = t'` using `fun t t' h => Q.isKernel.hom_ext h (toUnit_unique _ _)`. Establish `h₃ : ∀ t : Over.mk p ⟶ splitTorus S X, (t ≫ Q.i) ≫ Q.q = 1` using `fun t => by`. Rewrite using `[Category.assoc, Q.isKernel.w, ← Category.assoc, Hom.one_def, toUnit_unique (t ≫ toUnit _) (toUnit _)]`. Establish `key : Function.Bijective (fun t : {t : Over.mk p ⟶ splitTorus S X // t ^ N = 1} => (⟨t.1 ≫ Q.i, by rw [← MonObj.pow_comp, t.2, MonObj.one_comp], h₃ _⟩ : {x : Over.mk p ⟶ G // x ^ N = 1 ∧ x ≫ Q.q = 1}))`. Use `⟨fun t t' h => Subtype.ext (inj _ _ (congrArg Subtype.val h)), ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨x, hx, hq⟩`. Establish `h₁ : x ≫ Q.q = toUnit _ ≫ η[Q.B]` using `hq.trans Hom.one_def`. Use `⟨⟨Q.isKernel.lift _ _ h₁, inj _ _ ?_⟩, Subtype.ext (Q.isKernel.lift_fst _ _ _)⟩` and prove the remaining obligations. Rewrite using `[MonObj.pow_comp, IsPullback.lift_fst, hx, MonObj.one_comp]`. Establish `c₁ : Nat.card {x : Over.mk p ⟶ G // x ^ N = 1 ∧ x ≫ Q.q = 1} = N ^ Module.finrank ℤ X`.
+
+Rewrite using `[← Nat.card_congr (Equiv.ofBijective _ key), card_torsion_congr (splitTorusPointsEquiv S X (Over.mk p)) N, card_hom_torsion]`. Conclude with `congrArg (· ^ _) ((card_torsion_congr e N).symm.trans (card_units_torsion K hN))`. Use `⟨c₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← c₁]`. Use `card_torsion_eq_mul (MonoidHom.mk' (fun x : Over.mk p ⟶ G => x ≫ Q.q) fun x y => MonObj.mul_comp _ _ _) N ((torusQuotient_points_lift S X G Q K p).2 N fun a => ?_)` and prove the remaining obligations.
+
+Take `⟨r, hr⟩` from `IsAlgClosed.exists_pow_nat_eq (a : K) hN'`. Establish `h0 : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `a.ne_zero (hr.symm.trans (zero_pow hN'.ne'))`. Conclude with `⟨Units.mk0 r h0, Units.ext (by simpa using hr)⟩`.
+-/
 theorem torusQuotient_card_torsion :
     ∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (G : Over S) [GrpObj G]
       [IsCommMonObj G] (Q : TQ G X) (K : Type) [Field K] [IsAlgClosed K] (p : Spec (CommRingCat.of K) ⟶ S) (N : ℕ),

@@ -10,6 +10,13 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 namespace GlobalTheory.CompanionTheory.UnitCell
 
+/- English proof (translation)
+Take `⟨m, ⟨q⟩⟩` from `Finite.exists_equiv_fin (Σ i, MaximalSpectrum (A i))`. Establish `hmax : ∀ k : Fin m, (q.symm k).2.asIdeal.IsMaximal` using `fun k => (q.symm k).2.isMaximal`. Use `⟨m, fun k => A (q.symm k).1 ⧸ (q.symm k).2.asIdeal, fun k => Ideal.Quotient.field _, fun k => (Ideal.Quotient.mk _).comp (c (q.symm k).1), fun x hx k => ?_, fun z => ⟨fun hz i => ?_, fun hz k h => ?_⟩⟩` and prove the remaining obligations. Simplify using `[hx]`. Assume the negation of the conclusion as `hu`.
+
+Take `⟨M, hM, hzM⟩` from `exists_max_ideal_of_mem_nonunits hu`. Take `⟨k, hk⟩ : ∃ k, q.symm k = ⟨i, ⟨M, hM⟩⟩` from `⟨q _, q.symm_apply_apply _⟩`. Use `hz k (Ideal.Quotient.eq_zero_iff_mem.2 ?_)` and prove the remaining obligations. Rewrite using `[hk]`. Conclude with `hzM`.
+
+Establish `hk` using `hmax k`. Establish `h' : c (q.symm k).1 z ∈ (q.symm k).2.asIdeal` using `Ideal.Quotient.eq_zero_iff_mem.1 h`. Conclude with `hk.ne_top (Ideal.eq_top_of_isUnit_mem _ h' (hz _))`.
+-/
 theorem artinian_fields {ι : Type} [Finite ι] (A : ι → Type) [∀ i, CommRing (A i)] [∀ i, IsArtinianRing (A i)]
     {R : Type} [CommRing R] (c : ∀ i, R →+* A i) :
     ∃ (m : ℕ) (Ω : Fin m → Type) (_ : ∀ k, Field (Ω k)) (φ : ∀ k, R →+* Ω k),
@@ -36,8 +43,16 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 def sc {R : Type} [CommRing R] (r : Rˣ) : GL (Fin 1) R := Units.map (Matrix.scalar (Fin 1)).toMonoidHom r
 
+/- English proof (translation)
+Simplify using `[sc]`.
+-/
 theorem sc_apply {R : Type} [CommRing R] (r : Rˣ) : (sc r).1 0 0 = r := by simp [sc]
 
+/- English proof (translation)
+Take `⟨a, ha, hc⟩` from `GlobalTheory.AdelicU.Frames.exists_GL_of_components S (fun v => sc (b v)) (fun v hv => by rw [hb v hv]; exact map_one _) (fun w => sc (c w))`. Use `⟨a.1 0 0, fun v => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun g : GL (Fin 1) (Fv F v ⊗[F] E) => g.1 0 0) (ha v)`. Conclude with `h.trans (sc_apply _)`. Establish `h` using `congrArg (fun g : GL (Fin 1) (w.Completion ⊗[F] E) => g.1 0 0) (hc w)`.
+
+Conclude with `h.trans (sc_apply _)`.
+-/
 theorem exists_adele (S : Finset (HeightOneSpectrum (𝓞 F))) (b : ∀ v : HeightOneSpectrum (𝓞 F), (Fv F v ⊗[F] E)ˣ)
     (hb : ∀ v ∉ S, b v = 1) (c : ∀ w : InfinitePlace F, (w.Completion ⊗[F] E)ˣ) :
     ∃ x : AF F ⊗[F] E, (∀ v, compFin F E v x = b v) ∧ ∀ w, compInf F E w x = c w := by
@@ -73,6 +88,17 @@ instance locArt (S : Finset (HeightOneSpectrum (𝓞 F))) : ∀ c, IsArtinianRin
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨m, Ω, fld, φ, hφ, hu⟩` from `artinian_fields (LocR F E S) (locC F E S)`. Establish `he : ∀ k, φ k e = 1` using `hφ e (by`. Introduce and unpack `(w | ⟨v, hv⟩)`. Conclude with `h1 w`. Conclude with `(h2 v).trans (if_pos hv))`.
+
+Use `⟨m, Ω, fld, φ, he, fun z => ⟨fun h k => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h'` using `h.map (φ k)`. Rewrite `h'` using `[map_add, map_sub, map_mul, map_one, he, sub_self, zero_add, one_mul]`. Conclude with `h'.ne_zero`. Establish `hz` using `(hu z).1 h`.
+
+Establish `hI : ∀ w, IsUnit (compInf F E w z)` using `fun w => hz (.inl w)`. Establish `hS : ∀ v (h : v ∈ S), IsUnit (compFin F E v z)` using `fun v h => hz (.inr ⟨v, h⟩)`. Take `⟨x, hxf, hxi⟩` from `exists_adele (E := E) S (fun v => if h : v ∈ S then (hS v h).unit⁻¹ else 1) (fun v hv => dif_neg hv) (fun w => (hI w).unit⁻¹)`. Use `isUnit_iff_exists_inv.2 ⟨x, GlobalTheory.AdelicU.Supp.adTens_eq_one' (fun w => ?_) fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_add, map_sub, map_mul, map_one, h1, hxi, sub_self, zero_add, one_mul]`.
+
+Conclude with `(hI w).mul_val_inv`. Rewrite using `[map_mul, map_add, map_sub, map_mul, map_one, h2, hxf]`. Distinguish the cases in `hv : v ∈ S`. Simplify using `only [if_pos hv, dif_pos hv, sub_self, zero_add, one_mul]`. Conclude with `(hS v hv).mul_val_inv`.
+
+Simplify using `[if_neg hv, dif_neg hv]`.
+-/
 theorem crit (S : Finset (HeightOneSpectrum (𝓞 F))) (e : AF F ⊗[F] E) (h1 : ∀ w, compInf F E w e = 1)
     (h2 : ∀ v, compFin F E v e = if v ∈ S then 1 else 0) :
     ∃ (m : ℕ) (Ω : Fin m → Type) (_ : ∀ i, Field (Ω i)) (φ : ∀ i, AF F ⊗[F] E →+* Ω i), (∀ i, φ i e = 1) ∧
@@ -102,6 +128,9 @@ theorem crit (S : Finset (HeightOneSpectrum (𝓞 F))) (e : AF F ⊗[F] E) (h1 :
 
 end Glue
 
+/- English proof (translation)
+Introduce `_ D S e he` and use `crit S e he.1 (by convert he.2 using 4)`.
+-/
 theorem unitCrit : PositivityTheory.Rg.Rsw.L.IdemEx → PositivityTheory.Rg.Rsw.Cell.UnitCrit := fun _ D S e he =>
   crit S e he.1 (by convert he.2 using 4)
 

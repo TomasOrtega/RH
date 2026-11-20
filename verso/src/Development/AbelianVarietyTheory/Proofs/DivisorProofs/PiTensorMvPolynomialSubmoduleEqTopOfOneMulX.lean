@@ -8,6 +8,11 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 
 namespace GlobalTheory.RealLift
 
+/- English proof (translation)
+Unfold `atPl`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = w`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`.
+-/
 theorem atPl_tprod {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
     (w : ι) (L : Module.End ℂ (V w)) (f : ∀ i, V i) :
     atPl w L (PiTensorProduct.tprod ℂ f) = PiTensorProduct.tprod ℂ (Function.update f w (L (f w))) := by
@@ -19,6 +24,13 @@ theorem atPl_tprod {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [
   · subst h; simp
   · simp [Function.update_of_ne h]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `p _`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `: (MvPolynomial.C a : MvPolynomial σ ℂ) = a • (1 : MvPolynomial σ ℂ)`.
+
+Rewrite using `[MvPolynomial.smul_eq_C_mul, mul_one]`. Rewrite using `[this]`. Conclude with `S.smul_mem a h1`. Consider the case `add p q hp hq => exact S.add_mem (hp trivial) (hq trivial)`. Consider the case `mul_X p n hp => rw [mul_comm]`.
+
+Conclude with `hX n p (hp trivial)`.
+-/
 theorem mvPolynomial_submodule_eq_top {σ : Type} (S : Submodule ℂ (MvPolynomial σ ℂ)) (h1 : (1 : MvPolynomial σ ℂ) ∈ S)
     (hX : ∀ (l : σ), ∀ p ∈ S, MvPolynomial.X l * p ∈ S) : S = ⊤ := by
   rw [eq_top_iff]
@@ -31,6 +43,21 @@ theorem mvPolynomial_submodule_eq_top {σ : Type} (S : Submodule ℂ (MvPolynomi
   | add p q hp hq => exact S.add_mem (hp trivial) (hq trivial)
   | mul_X p n hp => rw [mul_comm]; exact hX n p (hp trivial)
 
+/- English proof (translation)
+Introduce `ι σ _ _ N h1 hX`. Establish `key : ∀ s : Finset ι, ∀ f : ι → MvPolynomial σ ℂ, (∀ i ∉ s, f i = 1) → PiTensorProduct.tprod ℂ f ∈ N`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+
+Introduce `f hf`. Establish `: f = fun _ => 1` using `funext fun i => hf i (Finset.notMem_empty i)`. Rewrite using `[this]`. Conclude with `h1`. Consider the case `insert w₀ s hw₀ ih`.
+
+Introduce `f hf`. Set `S : Submodule ℂ (MvPolynomial σ ℂ)` to `N.comap ((PiTensorProduct.tprod ℂ : MultilinearMap ℂ (fun _ : ι => MvPolynomial σ ℂ) (⨂[ℂ] _ : ι, MvPolynomial σ ℂ)).toLinearMap f w₀)`. Establish `hS1 : (1 : MvPolynomial σ ℂ) ∈ S` using `by show PiTensorProduct.tprod ℂ (Function.update f w₀ 1) ∈ N`. Apply `ih` to reduce the goal to its premises. Introduce `i hi`.
+
+Distinguish the cases in `h : i = w₀`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h]; exact hf i (by simp [h, hi])`. Establish `hSX : ∀ (l : σ), ∀ p ∈ S, MvPolynomial.X l * p ∈ S`.
+
+Introduce `l p hp`. Establish `hp' : PiTensorProduct.tprod ℂ (Function.update f w₀ p) ∈ N` using `hp`. Use `show PiTensorProduct.tprod ℂ (Function.update f w₀ (MvPolynomial.X l * p)) ∈ N`. Use `hX w₀ l _ hp'` as an intermediate fact. Rewrite `this` using `[atPl_tprod]`.
+
+Simplify using `using this`. Establish `htop` using `mvPolynomial_submodule_eq_top S hS1 hSX`. Establish `hf0 : f w₀ ∈ S` using `by rw [htop]; trivial`. Establish `: PiTensorProduct.tprod ℂ (Function.update f w₀ (f w₀)) ∈ N` using `hf0`. Simplify using `using this`.
+
+Rewrite using `[eq_top_iff, ← PiTensorProduct.span_tprod_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `key Finset.univ f (fun i hi => absurd (Finset.mem_univ i) hi)`.
+-/
 theorem tensor_submodule_eq_top : ∀ {ι σ : Type} [Fintype ι] [DecidableEq ι] (N : Submodule ℂ (⨂[ℂ] _ : ι, MvPolynomial σ ℂ)),
     PiTensorProduct.tprod ℂ (fun _ => (1 : MvPolynomial σ ℂ)) ∈ N →
     (∀ (w : ι) (l : σ), ∀ T ∈ N, atPl w (LinearMap.mulLeft ℂ (MvPolynomial.X l : MvPolynomial σ ℂ)) T ∈ N) → N = ⊤ := by

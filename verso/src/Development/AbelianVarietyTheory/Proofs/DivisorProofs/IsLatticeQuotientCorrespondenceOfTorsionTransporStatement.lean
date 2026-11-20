@@ -9,5 +9,8 @@ open NumberField GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.LatVal Recipr
 open GlobalTheory.CMVal GlobalTheory.HeckeGal
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WpFam.TrIs.main | exact GlobalTheory.WpFam.TrIs.main | (intros; apply GlobalTheory.WpFam.TrIs.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isLatticeQuotientCorrespondence_of_torsionTransport : ∀ (K : Type) [Field K] [NumberField K] (ι : K →+* ℂ) (g : ℂ ≃+* ℂ) (t : (Af K)ˣ) (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ), TorsTransport ι g t Λ₀ Λ₁ Ω₀ Ω₁ → IsTr ι Λ₀ Λ₁ (Tr t) := by
   first | exact @GlobalTheory.WpFam.TrIs.main | exact GlobalTheory.WpFam.TrIs.main | (intros; apply GlobalTheory.WpFam.TrIs.main <;> assumption)

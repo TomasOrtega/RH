@@ -15,6 +15,37 @@ noncomputable section
 
 namespace GlobalTheory.OrderPrimitive
 
+/- English proof (translation)
+Introduce `E _ _ _ I _ φ L 𝔠 X U`. Use `set g := Module.finrank ℚ (FR E) with hg`. Set `emb : E →ₗ[ℚ] (Fin g → ℂ)` to `{ toFun := fun x j => φ (U.e j) x map_add' := fun x x' => by funext j; simp map_smul' := fun q x => by funext j; simp [Rat.smul_def] }`. Establish `hemb : ∀ x j, emb x j = φ (U.e j) x` using `fun _ _ => rfl`. Establish `hdc : ∀ x, (fun j => GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord φ 0 x (U.e j)) = emb x` using `fun x => by`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord, hemb]`. Establish `hdim : Module.finrank ℚ E ≤ 2 * g`. Rewrite using `[hg, ← Module.finrank_mul_finrank ℚ (FR E) E, Algebra.IsQuadraticExtension.finrank_eq_two (FR E) E, mul_comm]`. Establish `hgpos : 0 < g`.
+
+Use `Module.finrank_pos (R := ℚ) (M := E)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hinj : Function.Injective emb` using `fun x y hxy => by`. Use `congrFun hxy ⟨0, hgpos⟩` as an intermediate fact. Rewrite `this` using `[hemb, hemb]`.
+
+Conclude with `(φ (U.e ⟨0, hgpos⟩)).injective this`. Set `f : E →ₗ[ℤ] (Fin g → ℂ)` to `emb.toAddMonoidHom.toIntLinearMap`. Establish `hf : ∀ x, f x = emb x` using `fun _ => rfl`. Establish `hfinj : Function.Injective f` using `hinj`. Set `K : Submodule ℤ E` to `U.u.Λ.comap f`.
+
+Establish `hmemK : ∀ x, x ∈ K ↔ x ∈ L` using `fun x => by show emb x ∈ U.u.Λ ↔ x ∈ L`. Rewrite using `[U.lat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', hx', h⟩`. Rewrite `h` using `[hdc]`.
+
+Conclude with `hinj h ▸ hx'`. Introduce `hx`. Conclude with `⟨x, hx, (hdc x).symm⟩`. Establish `hmap : Submodule.map f K = U.u.Λ`. Use extensionality with `w`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce `hw`. Take `⟨x, hx, rfl⟩` from `(U.lat w).1 hw`.
+
+Conclude with `⟨x, (hmemK x).2 hx, by rw [hf, hdc]⟩`. Use `haveI : DiscreteTopology U.u.Λ := U.u.discrete`. Use `haveI : IsZLattice ℝ U.u.Λ := ⟨U.u.full⟩`. Establish `hΛfin : U.u.Λ.FG` using `Module.Finite.iff_fg.1 (ZLattice.module_finite ℝ U.u.Λ)`. Establish `hKfg : K.FG` using `Submodule.fg_of_fg_map_injective f hfinj (hmap ▸ hΛfin)`.
+
+Take `⟨T, hTfin, hTspan⟩` from `Submodule.fg_def.1 hKfg`. Establish `hsp : Submodule.span ℝ (emb '' (K.toAddSubgroup : Set E)) = ⊤`. Establish `: emb '' (K.toAddSubgroup : Set E) = (U.u.Λ : Set (Fin g → ℂ))`. Rewrite using `[← hmap]`. Use extensionality with `w`.
+
+Simplify using `[hf]`. Rewrite using `[this]`. Conclude with `U.u.full`. Establish `full : ∀ x : E, ∃ n : ℕ, 0 < n ∧ n • x ∈ K.toAddSubgroup` using `GlobalTheory.PeriodLattice.exists_nsmul_mem K.toAddSubgroup emb hdim hsp`. Take `⟨β, hβ⟩` from `Field.exists_primitive_element ℚ E`.
+
+Use `choose N hNpos hNmem using fun x : E => full (β * x)`. Set `Tf` to `hTfin.toFinset`. Set `n : ℕ` to `∏ t ∈ Tf, N t`. Establish `hnpos : 0 < n` using `Finset.prod_pos fun t _ => hNpos t`. Establish `hmul : ∀ t ∈ T, (n : E) * β * t ∈ K`.
+
+Introduce `t ht`. Establish `htT : t ∈ Tf` using `hTfin.mem_toFinset.2 ht`. Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem N htT`. Establish `e : (n : E) * β * t = m • (N t • (β * t))`. Rewrite using `[smul_smul, nsmul_eq_mul, mul_comm m, ← hm, _root_.mul_assoc]`.
+
+Rewrite using `[e]`. Conclude with `K.smul_of_tower_mem m (hNmem t)`. Use `⟨(n : E) * β, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `hxK : x ∈ K` using `(hmemK x).2 hx`. Establish `hle : Submodule.span ℤ T ≤ K.comap (LinearMap.mulLeft ℤ ((n : E) * β))`.
+
+Use `Submodule.span_le.2 fun t ht => ?_` and prove the remaining obligations. Conclude with `hmul t ht`. Rewrite `hle` using `[hTspan]`. Conclude with `(hmemK _).1 (hle hxK)`. Establish `hn0 : (n : ℚ) ≠ 0` using `by exact_mod_cast hnpos.ne'`.
+
+Use `top_unique (hβ ▸ IntermediateField.adjoin_simple_le_iff.2 ?_)` and prove the remaining obligations. Establish `e : β = algebraMap ℚ E ((n : ℚ)⁻¹) * ((n : E) * β)`. Rewrite using `[← _root_.mul_assoc, map_inv₀, map_natCast, inv_mul_cancel₀ (by exact_mod_cast hnpos.ne'), _root_.one_mul]`. Establish `h2` using `mul_mem (IntermediateField.algebraMap_mem (IntermediateField.adjoin ℚ {(n : E) * β}) ((n : ℚ)⁻¹)) (IntermediateField.mem_adjoin_simple_self ℚ ((n : E) * β))`. Rewrite `h2` using `[← e]`. Then use the resulting hypothesis.
+-/
 theorem exists_primitive_mul_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (L : Set E)
     (𝔠 : FracId (FR E)) (X : Obj (FR E) 𝔠 (Sp ℂ)) (U : Unif φ L 0 X),
     ∃ b : E, (∀ x ∈ L, b * x ∈ L) ∧ IntermediateField.adjoin ℚ {b} = ⊤ := by

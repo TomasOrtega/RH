@@ -39,6 +39,13 @@ namespace PetTie
 
 open scoped ENNReal
 
+/- English proof (translation)
+Establish `hs : MeasurableSet ({0}ᶜ : Set ℂ)` using `(measurableSet_singleton 0).compl`. Establish `e : (μ.map φ).restrict {0}ᶜ = C • (ν.map ψ).restrict {0}ᶜ`. Use extensionality with `s hs'`. Establish `hm` using `hs'.inter hs`. Use `h ((s ∩ {0}ᶜ).indicator 1) (measurable_one.indicator hm) (by simp)` as an intermediate fact.
+
+Rewrite `this` using `[← lintegral_map (measurable_one.indicator hm) hφ, ← lintegral_map (measurable_one.indicator hm) hψ, lintegral_indicator_one hm, lintegral_indicator_one hm]`. Rewrite using `[Measure.smul_apply, Measure.restrict_apply hs', Measure.restrict_apply hs', this, smul_eq_mul]`. Establish `k1 : ∀ ρ : Measure ℂ, ∫ z in ({0}ᶜ : Set ℂ), z ∂ρ = ∫ z, z ∂ρ` using `fun ρ => setIntegral_eq_integral_of_forall_compl_eq_zero (by simp)`. Establish `k2 : ∫ a, φ a ∂μ = ∫ z, z ∂(μ.map φ)` using `(integral_map hφ.aemeasurable aestronglyMeasurable_id).symm`. Establish `k3 : ∫ a, ψ a ∂ν = ∫ z, z ∂(ν.map ψ)` using `(integral_map hψ.aemeasurable aestronglyMeasurable_id).symm`.
+
+Rewrite using `[k2, k3, ← k1, ← k1 (ν.map ψ), e, integral_smul_measure, Complex.real_smul]`.
+-/
 theorem integral_transfer {A B : Type} [MeasurableSpace A] [MeasurableSpace B] (μ : Measure A) (ν : Measure B)
     (C : ℝ≥0∞) {φ : A → ℂ} {ψ : B → ℂ} (hφ : Measurable φ) (hψ : Measurable ψ)
     (h : ∀ G : ℂ → ℝ≥0∞, Measurable G → G 0 = 0 → ∫⁻ a, G (φ a) ∂μ = C * ∫⁻ b, G (ψ b) ∂ν) :
@@ -64,6 +71,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 def prd (X : Data E r) (la : Wt X.Ψ r) (P Q : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) : ℂ :=
   P x * starRingEnd ℂ (Q x) * ((X.nfac la x ^ 2 : ℝ) : ℂ)
 
+/- English proof (translation)
+Unfold `prd`. Distinguish the cases in `h0 : P x = 0`. Simplify using `[hP, h0]`. Establish `h1 : ‖P y‖ * X.nfac la y = ‖P x‖ * X.nfac la x` using `hn`. Rewrite `h1` using `[hP, norm_mul, mul_right_comm, mul_comm ‖P x‖]`.
+
+Establish `h2 : ‖t‖ * X.nfac la y = X.nfac la x` using `mul_right_cancel₀ (norm_ne_zero_iff.2 h0) h1`. Rewrite using `[hP, hQ, ← h2, map_mul, mul_pow, Complex.ofReal_mul, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prd_eq_of (X : Data E r) (la : Wt X.Ψ r) {P Q : Frame X.Ψ r → ℂ} {x y : Frame X.Ψ r} {t : ℂ}
     (hP : P y = t * P x) (hQ : Q y = t * Q x) (hn : X.pnorm la P y = X.pnorm la P x) :
     prd X la P Q y = prd X la P Q x := by
@@ -76,6 +88,11 @@ theorem prd_eq_of (X : Data E r) (la : Wt X.Ψ r) {P Q : Frame X.Ψ r → ℂ} {
     rw [hP, hQ, ← h2, map_mul, mul_pow, Complex.ofReal_mul, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj]
     ring
 
+/- English proof (translation)
+Establish `: P = X.dom.piecewise P fun _ => 0`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ X.dom`. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hx]`. Rewrite using `[Set.piecewise_eq_of_notMem _ _ _ hx, h0 x hx]`.
+
+Rewrite using `[this]`. Conclude with `hP.1.continuousOn.measurable_piecewise continuousOn_const (FourierCoefficientDomain.isOpen_dom X).measurableSet`.
+-/
 theorem meas_of_sec (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec la P)
     (h0 : ∀ x ∉ X.dom, P x = 0) : Measurable P := by
   classical
@@ -87,6 +104,9 @@ theorem meas_of_sec (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (
   rw [this]
   exact hP.1.continuousOn.measurable_piecewise continuousOn_const (FourierCoefficientDomain.isOpen_dom X).measurableSet
 
+/- English proof (translation)
+Establish `hn : Measurable (X.nfac la)`. Unfold `Data.nfac`. Use `Finset.measurable_prod _ fun τ _ => Finset.measurable_prod _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(((GlobalTheory.PeterssonCompare.continuous_dmin X τ _).measurable.div (GlobalTheory.PeterssonCompare.continuous_dmin X τ _).measurable).norm).pow_const _`. Conclude with `(hP.mul (Complex.continuous_conj.measurable.comp hQ)).mul (Complex.measurable_ofReal.comp (hn.pow_const 2))`.
+-/
 theorem meas_prd (X : Data E r) {la : Wt X.Ψ r} {P Q : Frame X.Ψ r → ℂ} (hP : Measurable P) (hQ : Measurable Q) :
     Measurable (prd X la P Q) := by
   have hn : Measurable (X.nfac la) := by
@@ -97,9 +117,15 @@ theorem meas_prd (X : Data E r) {la : Wt X.Ψ r} {P Q : Frame X.Ψ r → ℂ} (h
   exact (hP.mul (Complex.continuous_conj.measurable.comp hQ)).mul
     (Complex.measurable_ofReal.comp (hn.pow_const 2))
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.cont_cpt X x0`.
+-/
 theorem cont_cpt (X : Data E r) (x0 : Frame X.Ψ r) : Continuous (cpt X x0) :=
   ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.cont_cpt X x0
 
+/- English proof (translation)
+Establish `ho : IsOrth X (x0F X)` using `fun τ => (X.signature τ).choose_spec.2`. Establish `h` using `GlobalTheory.MetricWeightTest.exists_fundSet_orth X ho`. Unfold `Deg.fundF Deg.covol`. Rewrite using `[dif_pos h, dif_pos h]`. Conclude with `⟨ho, h.choose_spec, rfl⟩`.
+-/
 theorem fund_chosen (X : Data E r) : IsOrth X (x0F X) ∧ IsFundSet X (x0F X) (Deg.fundF X) ∧
     Deg.covol X = muF X (x0F X) (Deg.fundF X) := by
   have ho : IsOrth X (x0F X) := fun τ => (X.signature τ).choose_spec.2
@@ -114,6 +140,29 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
   {c : Coeff l} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r} {W : HSp D}
   {dict : ∀ σ : c.F →+* ℂ, GA D W → Σ k, Frame ((U σ).X k).Ψ D.R.r}
 
+/- English proof (translation)
+Take `⟨hP, hV⟩` from `GlobalTheory.FinalJoin2.volPairEx_and_finVol D W hL.sig`. Establish `hvp` using `Formalism.L2.Pj.volPair_isVolPair W hP`. Use `haveI : (Formalism.L2.Pj.volPair W).1.IsHaarMeasure := hvp.1.1`. Establish `h0 : (Formalism.L2.Pj.volPair W).1 (Formalism.L2.Pj.volPair W).2 ≠ 0` using `Formalism.L2.Pj.muQ_univ W ▸ hV.1`. Establish `h1 : (Formalism.L2.Pj.volPair W).1 (Formalism.L2.Pj.volPair W).2 ≠ ⊤` using `Formalism.L2.Pj.muQ_univ W ▸ hV.2`.
+
+Take `⟨Kf, th, hr, hK, hth, hd, hu⟩` from `hL.dictU σ hσ`. Establish `hU` using `hL.unf σ hσ`. Establish `hΨ : ∀ k k', ((U σ).X k).Ψ = ((U σ).X k').Ψ ∧ ((U σ).X k).p0 = ((U σ).X k').p0` using `fun k k' => ⟨Finset.ext fun τ => ((hU.2.1 k).2 τ).trans ((hU.2.1 k').2 τ).symm, (hU.2.1 k).1.trans (hU.2.1 k').1.symm⟩`. Establish `hM : 0 < l.M` using `by have := l.three_le; omega`. Take `⟨κ, hκ0, hκ1, hI⟩` from `GlobalTheory.PeterssonCompare.lintegral_adelic W (U σ).X (dict σ) hM hth hd hK hu hΨ _ hvp.2 h0 h1`.
+
+Take `⟨κ2, h20, h21, hH⟩` from `GlobalTheory.T.flagQuotientIntegral_eq_universal_const_mul D.R.r ((U σ).X k).p0 ((U σ).X k).Ψ.card`. Establish `hQ` using `hH D.host.E ((U σ).X k) rfl rfl`. Establish `key : ∀ F : ∀ k, Frame ((U σ).X k).Ψ D.R.r → ℝ≥0∞, (∀ k, Measurable (F k)) → (∀ k, ∀ γ ∈ ((U σ).X k).Γ, ∀ x ∈ ((U σ).X k).dom, F k (lact γ x) = F k x) → (∀ k, ∀ b ∈ Bor ((U σ).X k).Ψ D.R.r, ∀ x ∈ ((U σ).X k).dom, F k (rmul x b) = F k x) → Measurable (fun q : AutQ W => F (dict σ q …`. Introduce `F hF hΓ hB`. Take `⟨h2, h3⟩` from `hI F hF hΓ hB`.
+
+Establish `hout : ∀ g, F (dict σ (Formalism.L2.Pj.autMk W g).out).1 (dict σ (Formalism.L2.Pj.autMk W g).out).2 = F (dict σ g).1 (dict σ g).2`. Introduce `g`. Establish `h4 : g * (Formalism.L2.Pj.autMk W g).out⁻¹ ∈ GQ W` using `QuotientGroup.rightRel_apply.1 (Quotient.mk_out g)`. Take `⟨γ, hγ, e⟩` from `hd.1 _ h4 (Formalism.L2.Pj.autMk W g).out`. Rewrite `e` using `[inv_mul_cancel_right]`.
+
+Rewrite using `[e]`. Conclude with `(hΓ _ γ hγ _ (hd.2.2.2.1 _)).symm`. Establish `hq : Measurable fun q : Formalism.L2.Pj.AutQ W => F (dict σ q.out).1 (dict σ q.out).2`. Rewrite using `[measurable_from_quotient]`. Establish `: ((fun q : Formalism.L2.Pj.AutQ W => F (dict σ q.out).1 (dict σ q.out).2) ∘ Quotient.mk'') = fun g => F (dict σ g).1 (dict σ g).2` using `funext hout`.
+
+Rewrite using `[this]`. Conclude with `h2`. Establish `h5 : ∫⁻ q, F (dict σ q.out).1 (dict σ q.out).2 ∂(Formalism.L2.Pj.muQ W) = κ * ∑ k, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.quotInt ((U σ).X k) (F k)`. Rewrite using `[Formalism.L2.Pj.muQ, lintegral_map hq (Formalism.L2.Pj.autMk_measurable W)]`. Simplify using `only [hout]`.
+
+Conclude with `h3`. Use `⟨hq, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.Pj.muQ1, if_pos (show Formalism.L2.Pj.muQ W Set.univ ≠ 0 ∧ Formalism.L2.Pj.muQ W Set.univ ≠ ⊤ from hV), lintegral_smul_measure, h5, Formalism.L2.Pj.muQ_univ, smul_eq_mul]`. Establish `hv0 : ((Formalism.L2.Pj.volPair W).1 (Formalism.L2.Pj.volPair W).2)⁻¹ ≠ 0` using `ENNReal.inv_ne_zero.2 h1`. Establish `hv1 : ((Formalism.L2.Pj.volPair W).1 (Formalism.L2.Pj.volPair W).2)⁻¹ ≠ ⊤` using `ENNReal.inv_ne_top.2 h0`.
+
+Use `⟨((Formalism.L2.Pj.volPair W).1 (Formalism.L2.Pj.volPair W).2)⁻¹ * (κ * κ2), mul_ne_zero hv0 (mul_ne_zero hκ0 h20), ENNReal.mul_ne_top hv1 (ENNReal.mul_ne_top hκ1 h21), fun x0 FF ho hF ht => ?_, fun Φ hΦ hΓ hB => ?_⟩` and prove the remaining obligations. Establish `e1` using `(key (fun _ _ => 1) (fun _ => measurable_const) (fun _ _ _ _ _ => rfl) (fun _ _ _ _ _ => rfl)).2`. Establish `e2` using `hQ x0 FF (fun _ => 1) ho hF measurable_const (fun _ _ _ _ => rfl) (fun _ _ _ _ => rfl)`. Rewrite `e2` using `[setLIntegral_one, ht, ENNReal.mul_top h20]`. Establish `e3 : ∑ k, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.quotInt ((U σ).X k) (fun _ => 1) = ⊤` using `ENNReal.sum_eq_top.2 ⟨k, Finset.mem_univ _, e2⟩`.
+
+Rewrite `e1` using `[e3, ENNReal.mul_top hκ0, ENNReal.mul_top hv0, lintegral_one, measure_univ]`. Conclude with `ENNReal.one_ne_top e1`. Establish `kG : ∀ G : ℂ → ℝ≥0∞, Measurable G → _` using `fun G hG => key (fun k x => G (Φ k x)) (fun k => hG.comp (hΦ k)) (fun k γ hγ x hx => by simp only [hΓ k γ hγ x hx]) (fun k b hb x hx => by simp only [hB k b hb x hx])`. Establish `hm : Measurable (fun q : AutQ W => Φ (dict σ q.out).1 (dict σ q.out).2)`. Introduce `s hs`.
+
+Use `(kG (s.indicator 1) (measurable_one.indicator hs)).1 (measurableSet_singleton 1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `q`. Apply the tactic sequence `by_cases hq : Φ (dict σ q.out).1 (dict σ q.out).2 ∈ s <;> simp [hq]`. Use `⟨hm, fun hz x0 FF ho hF => ?_⟩` and prove the remaining obligations.
+
+Use `integral_transfer _ _ _ hm ((hΦ k).comp (cont_cpt _ x0).measurable) fun G hG hG0 => ?_` and prove the remaining obligations. Rewrite using `[(kG G hG).2, Finset.sum_eq_single k (fun k' _ hk' => by`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.quotInt, hz k' hk', hG0]) (fun h => absurd (Finset.mem_univ _) h),`. Use `hQ x0 FF (fun x => G (Φ k x)) ho hF (hG.comp (hΦ k)) (fun γ hγ x hx => by simp only [hΓ k γ hγ x hx]) (fun b hb x hx => by simp only [hB k b hb x hx])]`. Simplify using `only [mul_assoc]`.
+-/
 theorem transfer (hL : abelian₂.LevelLaws U W dict) {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) (k : (U σ).Comp) :
     ∃ C : ℝ≥0∞, C ≠ 0 ∧ C ≠ ⊤ ∧
       (∀ x0 FF, IsOrth ((U σ).X k) x0 → IsFundSet ((U σ).X k) x0 FF → muF ((U σ).X k) x0 FF ≠ ⊤) ∧
@@ -197,6 +246,13 @@ theorem transfer (hL : abelian₂.LevelLaws U W dict) {σ : c.F →+* ℂ} (hσ 
         (fun b hb x hx => by simp only [hB k b hb x hx])]
     simp only [mul_assoc]
 
+/- English proof (translation)
+Take `⟨C, hC0, hC1, hfin, hT⟩` from `transfer hL hσ k`. Take `⟨Kf, th, hr, hK, hth, hd, hu⟩` from `hL.dictU σ hσ`. Use `⟨C.toReal, ENNReal.toReal_pos hC0 hC1, hfin, fun la P Q hP hQ hP0 hQ0 => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hT (fun k => prd ((U σ).X k) (la k) (P k) (Q k)) (fun k => meas_prd _ (meas_of_sec _ (hP k) (hP0 k)) (meas_of_sec _ (hQ k) (hQ0 k))) (fun k γ hγ x hx => prd_eq_of _ _ ((hP k).2.2 γ hγ x hx) ((hQ k).2.2 γ hγ x hx) (GlobalTheory.PeterssonCompare.pnorm_lact _ (hP k) hγ hx)) (fun k b …`. Establish `e : (fun q : AutQ W => prd ((U σ).X (dict σ q.out).1) (la _) (P _) (Q _) (dict σ q.out).2) = fun q : AutQ W => P (dict σ q.out).1 (dict σ q.out).2 * starRingEnd ℂ (Q (dict σ q.out).1 (dict σ q.out).2)`.
+
+Use function extensionality and compare the values at `q`. Simplify using `[prd, Data.nfac, hu q.out]`. Rewrite `h1`, `h2` using `[e]`. Use `⟨h1, fun hz => h2 fun k' hk' x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ ((U σ).X k').dom`.
+
+Simplify using `[prd, hz k' hk' x hx]`. Simplify using `[prd, hP0 k' x hx]`.
+-/
 theorem transfer_sec (hL : abelian₂.LevelLaws U W dict) {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) (k : (U σ).Comp) :
     ∃ C : ℝ, 0 < C ∧
       (∀ x0 FF, IsOrth ((U σ).X k) x0 → IsFundSet ((U σ).X k) x0 FF → muF ((U σ).X k) x0 FF ≠ ⊤) ∧
@@ -228,6 +284,9 @@ theorem transfer_sec (hL : abelian₂.LevelLaws U W dict) {σ : c.F →+* ℂ} (
   · simp [prd, hz k' hk' x hx]
   · simp [prd, hP0 k' x hx]
 
+/- English proof (translation)
+Take `⟨Kf, th, hr, hK, hth, hD, hu⟩` from `hL.dictU σ hσ`. Establish `hfin` using `supE_ne_top (X := (U σ).X) (la := la) hP`. Rewrite using `[← pnorm_eq_of_unit ((U σ).X (dict σ q.out).1) (la (dict σ q.out).1) (P (dict σ q.out).1) (dict σ q.out).2 (hu q.out), ← ENNReal.ofReal_le_iff_le_toReal hfin]`. Conclude with `le_iSup (fun p : FPt (U σ).X => ENNReal.ofReal (((U σ).X p.1).pnorm (la p.1) (P p.1) p.2)) ⟨(dict σ q.out).1, ⟨(dict σ q.out).2, hD.2.2.2.1 q.out⟩⟩`.
+-/
 theorem bound_hol (hL : abelian₂.LevelLaws U W dict) {σ : c.F →+* ℂ} (hσ : GoodEmb c σ)
     {la : ∀ k, Wt ((U σ).X k).Ψ D.R.r} {P : FDSec (U σ).X} (hP : P ∈ holSub (U σ).X la) (q : AutQ W) :
     ‖P (dict σ q.out).1 (dict σ q.out).2‖ ≤ (supE (U σ).X la P).toReal := by
@@ -238,10 +297,16 @@ theorem bound_hol (hL : abelian₂.LevelLaws U W dict) {σ : c.F →+* ℂ} (hσ
   exact le_iSup (fun p : FPt (U σ).X => ENNReal.ofReal (((U σ).X p.1).pnorm (la p.1)
     (P p.1) p.2)) ⟨(dict σ q.out).1, ⟨(dict σ q.out).2, hD.2.2.2.1 q.out⟩⟩
 
+/- English proof (translation)
+The claim follows from `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 (Submodule.mem_inf.1 (Submodule.mem_inf.1 hf).1).2 σ) hσ`.
+-/
 theorem hol_of_cuspOn {h : GenFrEx Xo c} {a : WZ D.host.E} {Z : Comp Xo c} {f : Rul Xo c} (hf : f ∈ cuspOn U h a Z)
     {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) : rdU (U σ) f ∈ holSub (U σ).X (Rec.laZ (U σ) a) :=
   (Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 (Submodule.mem_inf.1 (Submodule.mem_inf.1 hf).1).2 σ) hσ
 
+/- English proof (translation)
+Unfold `ipAll`. Use `integral_congr_ae (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Use `show (1 * rdU (U σ) f (dict σ q.out).1 (dict σ q.out).2) * starRingEnd ℂ (1 * rdU (U σ) g (dict σ q.out).1 (dict σ q.out).2) = _`. Rewrite using `[one_mul, one_mul]`.
+-/
 theorem ipAll_eq (σ : c.F →+* ℂ) (f g : Rul Xo c) : ipAll U W dict σ f g =
     ∫ q, rdU (U σ) f (dict σ q.out).1 (dict σ q.out).2 *
       starRingEnd ℂ (rdU (U σ) g (dict σ q.out).1 (dict σ q.out).2) ∂(muQ1 W) := by
@@ -255,6 +320,29 @@ end PetTie
 
 open PetTie in
 
+/- English proof (translation)
+Introduce `D H Dw l Xo c U h e W dict L hL _ σ hσ Z k hov a x0 FF ho hF`. Take `⟨C, hC, hfin, hT⟩` from `transfer_sec hL hσ k`. Take `⟨κ, h1, h2⟩` from `comp_over _ H Dw l Xo c _ U h e L σ hσ`. Establish `hk : k = κ Z` using `(h1 Z k).1 hov`. Establish `off : ∀ (f : Rul Xo c) k', ∀ x ∉ ((U σ).X k').dom, rdU (U σ) f k' x = 0` using `fun f k' x hx => dif_neg hx`.
+
+Establish `hsec : ∀ f ∈ cuspOn U h a Z, ∀ k', ((U σ).X k').IsSec (Rec.laZ (U σ) a k') (rdU (U σ) f k')` using `fun f hf => GlobalTheory.PeterssonCompare.isSec_of_mem_holSub _ _ (hol_of_cuspOn hf hσ)`. Establish `hon : ∀ f g, ipOn U W dict (xiR D) a (e Z) σ f g = ((lieFacZ Dw (xiR D) a ^ 2 : ℝ) : ℂ) * ipAll U W dict σ f g / ipAll U W dict σ (e Z) (e Z)`. Introduce `f g`. Establish `hg : goodOf c σ = σ` using `if_pos hσ`. Simplify using `only [ipOn, if_pos hσ, hg]`.
+
+Establish `hee : ∀ x1 F1, IsOrth ((U σ).X k) x1 → IsFundSet ((U σ).X k) x1 F1 → ipAll U W dict σ (e Z) (e Z) = (C : ℂ) * ((muF ((U σ).X k) x1 F1).toReal : ℂ)`. Introduce `x1 F1 ho1 hF1`. Establish `hs` using `(L.unf σ hσ).2.2.2.2.1 0 0 CompOver.dom_zero _ (L.e_sec Z)`. Rewrite using `[ipAll_eq, (hT _ _ _ hs hs (off _) (off _)).2 (fun k' hk' x hx => (h2 Z k' (hk ▸ hk') x hx).1) x1 F1 ho1 hF1]`. Use `congr 1`.
+
+Rewrite using `[setIntegral_congr_fun hF1.1 (g := fun _ => (1 : ℂ)) fun z hz => by`. Simplify using `[prd, hov _ (hF1.2.1 hz), Data.nfac, laU]]`. Simplify using `[Measure.real]`. Establish `hC' : (C : ℂ) ≠ 0` using `by exact_mod_cast hC.ne'`. Use `⟨⟨pos_iff_ne_zero.2 (GlobalTheory.MetricWeightTest.fundSet_pos _ ho hF), (hfin x0 FF ho hF).lt_top⟩, fun f hf g hg => ?_, fun m as fs hfs => ?_⟩` and prove the remaining obligations.
+
+Take `⟨o1, o2, o3⟩` from `fund_chosen ((U σ).X k)`. Rewrite using `[hon, hee _ _ o1 o2, ipAll_eq, (hT _ _ _ (hsec f hf) (hsec g hg) (off _) (off _)).2 (fun k' hk' x hx => (h2 Z k' (hk ▸ hk') x hx).2 a f hf) _ _ o1 o2, Deg.pet, o3, mul_div_assoc, mul_div_mul_left _ _ hC']`. Both sides reduce to the same expression. Establish `hmem : (∑ j, as j • rdU (U σ) (fs j)) ∈ holSub (U σ).X (Rec.laZ (U σ) a)` using `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hol_of_cuspOn (hfs j) hσ)`. Establish `hS` using `GlobalTheory.PeterssonCompare.isSec_of_mem_holSub _ _ hmem`.
+
+Establish `hap : ∀ k' y, (∑ j, as j • rdU (U σ) (fs j)) k' y = ∑ j, as j * rdU (U σ) (fs j) k' y` using `fun k' y => by`. Simplify using `[Finset.sum_apply]`. Establish `hS0 : ∀ k', ∀ x ∉ ((U σ).X k').dom, (∑ j, as j • rdU (U σ) (fs j)) k' x = 0` using `fun k' x hx => by`. Simplify using `[hap, off _ k' x hx]`. Establish `e1` using `(hT _ _ _ hS hS hS0 hS0).2 (fun k' hk' x hx => by`.
+
+Rewrite using `[hap]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [(h2 Z k' (hk ▸ hk') x hx).2 a _ (hfs j), mul_zero]) x0 FF ho hF`. Establish `hint : ∀ j j', Integrable (fun q : AutQ W => rdU (U σ) (fs j) (dict σ q.out).1 (dict σ q.out).2 * starRingEnd ℂ (rdU (U σ) (fs j') (dict σ q.out).1 (dict σ q.out).2)) (muQ1 W)` using `fun j j' => Integrable.of_bound (hT _ _ _ (hsec _ (hfs j)) (hsec _ (hfs j')) (off _) (off _)).1.aestronglyMeasurable _ (Filter.Eventually.of_forall fun q => by`. Rewrite using `[norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul (bound_hol hL hσ (hol_of_cuspOn (hfs j) hσ) q) (bound_hol hL hσ (hol_of_cuspOn (hfs j') hσ) q) (norm_nonneg _) ENNReal.toReal_nonneg)`.
+
+Establish `e2 : ∑ j, ∑ j', as j * starRingEnd ℂ (as j') * ipAll U W dict σ (fs j) (fs j') = ∫ q, (∑ j, as j • rdU (U σ) (fs j)) (dict σ q.out).1 (dict σ q.out).2 * starRingEnd ℂ ((∑ j, as j • rdU (U σ) (fs j)) (dict σ q.out).1 (dict σ q.out).2) ∂(muQ1 W)`. Simplify using `only [ipAll_eq, ← integral_const_mul]`. Rewrite using `[Finset.sum_congr rfl fun j _ => (integral_finset_sum _ fun j' _ => (hint j j').const_mul (as j * starRingEnd ℂ (as j'))).symm, ← integral_finset_sum _ fun j _ => integrable_finset_sum _ fun j' _ => (hint j j').const_mul (as j * starRingEnd ℂ (as j'))]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only [hap, map_sum, map_mul, Finset.sum_mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun j' _ => by ring`. Establish `e3 : ∀ z, prd ((U σ).X k) (Rec.laZ (U σ) a k) ((∑ j, as j • rdU (U σ) (fs j)) k) ((∑ j, as j • rdU (U σ) (fs j)) k) z = ((((U σ).X k).pnorm (Rec.laZ (U σ) a k) (fun y => ∑ j, as j * rdU (U σ) (fs j) k y) z ^ 2 : ℝ) : ℂ)`. Introduce `z`. Use `show _ = (((‖∑ j, as j * rdU (U σ) (fs j) k z‖ * ((U σ).X k).nfac (Rec.laZ (U σ) a k) z) ^ 2 : ℝ) : ℂ)`. Rewrite using `[prd, hap, Complex.mul_conj, Complex.normSq_eq_norm_sq, mul_pow, Complex.ofReal_mul]`.
+
+Simplify using `only [e3] at e1`. Rewrite `e1` using `[integral_complex_ofReal, ← e2]`. Establish `e4 : ∑ j, ∑ j', as j * starRingEnd ℂ (as j') * ipOn U W dict (xiR D) a (e Z) σ (fs j) (fs j') = ((lieFacZ Dw (xiR D) a ^ 2 : ℝ) : ℂ) * (∑ j, ∑ j', as j * starRingEnd ℂ (as j') * ipAll U W dict σ (fs j) (fs j')) / ipAll U W dict σ (e Z) (e Z)`. Simplify using `only [hon, Finset.mul_sum, Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun j' _ => by ring`.
+
+Rewrite using `[e4, e1, hee _ _ ho hF, mul_div_assoc, mul_div_mul_left _ _ hC', ← Complex.ofReal_div, ← Complex.ofReal_mul, Complex.ofReal_re]`. Both sides reduce to the same expression.
+-/
 theorem pet_tie : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c) (W : HSp D) (dict : ∀ σ : c.F →+* ℂ, GA D W → Σ k, Frame ((U σ).X k).Ψ D.R.r), CompLaws U h e → abelian₂.LevelLaws U W dict → FinVol W → ∀ σ, GoodEmb c σ → ∀ Z k, Over (U σ) (e Z) k → ∀ (a : WZ D.host.E) (x0 : Frame ((U σ).X k).Ψ D.R.r) (FF : Set (ReciprocityTheory.L2DbarEstimates.V (nd ((U σ).X k)))), IsOrth ((U σ).X k) x0 → IsFundSet ((U σ).X k) x0 FF → (0 < muF ((U σ).X k) x0 FF ∧ muF ((U σ).X k) x0 FF < ⊤) ∧ (∀ f ∈ cuspOn U h a Z, ∀ g ∈ cuspOn U h a Z, ipOn U W dict (xiR D) a (e Z) σ f g = ((lieFacZ Dw (xiR D) a ^ 2 : ℝ) : ℂ) * Deg.pet ((U σ).X k) (laZ (U σ) a k) (rdU (U σ) f k) (rdU (U σ) g k)) ∧ ∀ (m : ℕ) (as : Fin m → ℂ) (fs : Fin m → Rul Xo c), (∀ j, fs j ∈ cuspOn U h a Z) → (∑ j, ∑ j', as j * starRingEnd ℂ (as j') * ipOn U W dict (xiR D) a (e Z) σ (fs j) (fs j')).re = lieFacZ Dw (xiR D) a ^ 2 * ThA.nrm2 ((U σ).X k) x0 FF (laZ (U σ) a k) (fun y => ∑ j, as j * rdU (U σ) (fs j) k y) := by
   intro D H Dw l Xo c U h e W dict L hL _ σ hσ Z k hov a x0 FF ho hF
   obtain ⟨C, hC, hfin, hT⟩ := transfer_sec hL hσ k

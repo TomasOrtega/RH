@@ -22,12 +22,18 @@ abbrev pullbackFstSchemeAt {W Y : Scheme.{u}} (g : W ⟶ Y) (t : SequenceOfBlowu
 abbrev pullbackSndSchemeAt {W Y : Scheme.{u}} (g : W ⟶ Y) (t : SequenceOfBlowups W) (i : ℕ) : Scheme.{u} :=
   pullback (pullback.snd g g) (t.projectionToBase i)
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.Flat) H.flip inferInstance`.
+-/
 private theorem flat_fst_of_isPullback {A B C D : Scheme.{u}} {p : A ⟶ B} {q : A ⟶ C}
     {f : B ⟶ D} {h : C ⟶ D} (H : IsPullback p q f h) [AlgebraicGeometry.Flat h] :
     AlgebraicGeometry.Flat p :=
   MorphismProperty.IsStableUnderBaseChange.of_isPullback
     (P := @AlgebraicGeometry.Flat) H.flip inferInstance
 
+/- English proof (translation)
+Establish `E : IsPullback e.hom (e.hom ≫ ps) ps (𝟙 B)` using `IsPullback.of_horiz_isIso ⟨by simp⟩`. Establish `h` using `E.paste_horiz H`. Rewrite `h` using `[Category.id_comp]`. Then use the resulting hypothesis.
+-/
 private theorem isPullback_iso_hom_comp {P P' A B C : Scheme.{u}} {pf : P' ⟶ A} {ps : P' ⟶ B}
     {f : A ⟶ C} {g : B ⟶ C} (H : IsPullback pf ps f g) (e : P ≅ P') :
     IsPullback (e.hom ≫ pf) (e.hom ≫ ps) f g := by
@@ -36,6 +42,13 @@ private theorem isPullback_iso_hom_comp {P P' A B C : Scheme.{u}} {pf : P' ⟶ A
   have h := E.paste_horiz H
   rwa [Category.id_comp] at h
 
+/- English proof (translation)
+Establish `hpbSnd : IsPullback (e.hom ≫ pullback.snd (pullback.snd g g) (t.projectionToBase n)) (pullback.fst (pullback.fst g g) (t.projectionToBase n)) (t.projectionToBase n) (pullback.snd g g)`. Establish `h` using `isPullback_iso_hom_comp (IsPullback.of_hasPullback (pullback.snd g g) (t.projectionToBase n)).flip e`. Rewrite `h` using `[hbase]`. Then use the resulting hypothesis. Establish `Big` using `hpbSnd.paste_vert (IsPullback.of_hasPullback g g).flip`. Establish `hcond : pullback.fst (pullback.fst g g) (t.projectionToBase n) ≫ pullback.fst g g = pullback.snd (pullback.fst g g) (t.projectionToBase n) ≫ t.projectionToBase n` using `pullback.condition`.
+
+Rewrite `Big` using `[hcond, ← hsq.w]`. Establish `comm : (e.hom ≫ pullback.snd (pullback.snd g g) (t.projectionToBase n)) ≫ γ = pullback.snd (pullback.fst g g) (t.projectionToBase n) ≫ γ`. Rewrite using `[Category.assoc]`. Conclude with `hgamma`. Establish `key : IsPullback (e.hom ≫ pullback.snd (pullback.snd g g) (t.projectionToBase n)) (pullback.snd (pullback.fst g g) (t.projectionToBase n)) γ γ` using `IsPullback.of_bot Big comm hsq`.
+
+Use `comap_map_eq_self_of_isPullback γ key (t.center n) ?_` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.comap_comp]`. Conclude with `hcenter`.
+-/
 theorem comap_map_center_eq_center_of_isPullback {W Y : Scheme.{u}} (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.QuasiCompact g] (t : SequenceOfBlowups W) (n : ℕ) {X : Scheme.{u}} (π : X ⟶ Y)
     (γ : t.schemeAt n ⟶ X) [AlgebraicGeometry.Flat γ] [AlgebraicGeometry.QuasiCompact γ]
@@ -68,6 +81,9 @@ theorem comap_map_center_eq_center_of_isPullback {W Y : Scheme.{u}} (g : W ⟶ Y
   rw [Scheme.IdealSheafData.comap_comp]
   exact hcenter
 
+/- English proof (translation)
+Use `hflat` as an intermediate fact. Establish `h' : Blowup.IsBlowupAlongIdealSheaf (t.transitionMapSucc n) (((t.center n).map γ).comap γ)`. Rewrite using `[hc]`. Conclude with `t.isBlowupAlongIdealSheaf_blowupMorphism n hn`. Conclude with `(Blowup.blowup.isBlowupAlongIdealSheaf_proj ((t.center n).map γ)).exists_isPullback_of_flat γ h'`.
+-/
 theorem exists_isPullback_blowup_proj_map_center {W X : Scheme.{u}} {t : SequenceOfBlowups W} {n : ℕ}
     (hn : n < t.length) {γ : t.schemeAt n ⟶ X} (hflat : AlgebraicGeometry.Flat γ)
     (hc : ((t.center n).map γ).comap γ = t.center n) :
@@ -86,12 +102,18 @@ def toBlowupOfMapCenter {W X : Scheme.{u}} {t : SequenceOfBlowups W} {n : ℕ}
     t.schemeAt (n + 1) ⟶ Blowup.blowup ((t.center n).map γ) :=
   (exists_isPullback_blowup_proj_map_center hn hflat hc).choose
 
+/- English proof (translation)
+The claim follows from `(exists_isPullback_blowup_proj_map_center hn hflat hc).choose_spec.1`.
+-/
 theorem toBlowupOfMapCenter_comp_proj {W X : Scheme.{u}} {t : SequenceOfBlowups W} {n : ℕ}
     (hn : n < t.length) {γ : t.schemeAt n ⟶ X} (hflat : AlgebraicGeometry.Flat γ)
     (hc : ((t.center n).map γ).comap γ = t.center n) :
     toBlowupOfMapCenter hn hflat hc ≫ Blowup.blowup.proj ((t.center n).map γ) = t.transitionMapSucc n ≫ γ :=
   (exists_isPullback_blowup_proj_map_center hn hflat hc).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(exists_isPullback_blowup_proj_map_center hn hflat hc).choose_spec.2`.
+-/
 theorem isPullback_toBlowupOfMapCenter {W X : Scheme.{u}} {t : SequenceOfBlowups W} {n : ℕ}
     (hn : n < t.length) {γ : t.schemeAt n ⟶ X} (hflat : AlgebraicGeometry.Flat γ)
     (hc : ((t.center n).map γ).comap γ = t.center n) :
@@ -99,6 +121,9 @@ theorem isPullback_toBlowupOfMapCenter {W X : Scheme.{u}} {t : SequenceOfBlowups
       (Blowup.blowup.proj ((t.center n).map γ)) γ :=
   (exists_isPullback_blowup_proj_map_center hn hflat hc).choose_spec.2
 
+/- English proof (translation)
+Establish `h` using `(isPullback_toBlowupOfMapCenter hn hflat hc).paste_vert hsq`. Rewrite `h` using `[← t.projectionToBase_succ n]`. Then use the resulting hypothesis.
+-/
 theorem isPullback_toBlowupOfMapCenter_projectionToBase {W Y X : Scheme.{u}} (g : W ⟶ Y) (t : SequenceOfBlowups W)
     {n : ℕ} (hn : n < t.length) (π : X ⟶ Y) {γ : t.schemeAt n ⟶ X}
     (hflat : AlgebraicGeometry.Flat γ) (hc : ((t.center n).map γ).comap γ = t.center n)
@@ -108,6 +133,15 @@ theorem isPullback_toBlowupOfMapCenter_projectionToBase {W Y X : Scheme.{u}} (g 
   have h := (isPullback_toBlowupOfMapCenter hn hflat hc).paste_vert hsq
   rwa [← t.projectionToBase_succ n] at h
 
+/- English proof (translation)
+Use `hflat` as an intermediate fact. Establish `hfst : AlgebraicGeometry.Flat (pullback.fst g g)` using `flat_fst_of_isPullback (IsPullback.of_hasPullback g g)`. Establish `hdc : AlgebraicGeometry.Flat (toBlowupOfMapCenter hn hflat hc)` using `flat_fst_of_isPullback (isPullback_toBlowupOfMapCenter hn hflat hc)`. Establish `hsnd1 : pullback.snd (pullback.fst g g) (t.projectionToBase (n + 1)) ≫ t.transitionMapSucc n = t.pullbackTransitionMap (pullback.fst g g) (Nat.le_succ n) ≫ pullback.snd (pullback.fst g g) (t.projectionToBase n)` using `(t.pullbackTransitionMap_snd (pullback.fst g g) (Nat.le_succ n)).symm`. Establish `hsnd2 : pullback.snd (pullback.snd g g) (t.projectionToBase (n + 1)) ≫ t.transitionMapSucc n = t.pullbackTransitionMap (pullback.snd g g) (Nat.le_succ n) ≫ pullback.snd (pullback.snd g g) (t.projectionToBase n)` using `(t.pullbackTransitionMap_snd (pullback.snd g g) (Nat.le_succ n)).symm`.
+
+Establish `hsnd1' : pullback.snd (pullback.fst g g) (t.projectionToBase (n + 1)) ≫ t.transitionMapSucc n ≫ γ = t.pullbackTransitionMap (pullback.fst g g) (Nat.le_succ n) ≫ pullback.snd (pullback.fst g g) (t.projectionToBase n) ≫ γ`. Rewrite using `[← Category.assoc, ← Category.assoc, hsnd1]`. Establish `hsnd2' : pullback.snd (pullback.snd g g) (t.projectionToBase (n + 1)) ≫ t.transitionMapSucc n ≫ γ = t.pullbackTransitionMap (pullback.snd g g) (Nat.le_succ n) ≫ pullback.snd (pullback.snd g g) (t.projectionToBase n) ≫ γ`. Rewrite using `[← Category.assoc, ← Category.assoc, hsnd2]`. Establish `hk : Blowup.IsLocallyGeneratedByNonZeroDivisor (((t.center n).map γ).comap (pullback.snd (pullback.fst g g) (t.projectionToBase (n + 1)) ≫ toBlowupOfMapCenter hn hflat hc ≫ Blowup.blowup.proj ((t.center n).map γ)))`.
+
+Rewrite using `[Scheme.IdealSheafData.comap_comp, Scheme.IdealSheafData.comap_comp]`. Conclude with `Blowup.IsLocallyGeneratedByNonZeroDivisor.comap_of_flat (Blowup.IsLocallyGeneratedByNonZeroDivisor.comap_of_flat (Blowup.blowup.isBlowupAlongIdealSheaf_proj ((t.center n).map γ)).1 (toBlowupOfMapCenter hn hflat hc)) _`. Use `Blowup.IsBlowupAlongIdealSheaf.hom_ext_of_comp_eq (Blowup.blowup.isBlowupAlongIdealSheaf_proj ((t.center n).map γ)) hk ?_ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[toBlowupOfMapCenter_comp_proj hn hflat hc, hsnd2', hsnd1', ← Category.assoc, hee, Category.assoc, hgamma]`.
+
+Rewrite using `[Category.assoc]`.
+-/
 theorem toBlowupOfMapCenter_cocycle {W Y X : Scheme.{u}} (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.QuasiCompact g] (t : SequenceOfBlowups W) {n : ℕ} (hn : n < t.length) (π : X ⟶ Y)
     {γ : t.schemeAt n ⟶ X} (hflat : AlgebraicGeometry.Flat γ)

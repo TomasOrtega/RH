@@ -11,10 +11,16 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.SecFamily
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.PushInv.pushInvertible h.secBaseChange X P`.
+-/
 theorem pushInvertible_of_laws (h : Out.Laws) (X : Scheme.{0}) [IsLocallyNoetherian X] (P : Out.PolAV X) :
     PushInvertible P.A P.L :=
   GlobalTheory.PushInv.pushInvertible h.secBaseChange X P
 
+/- English proof (translation)
+Introduce `h X _ P x`. Take `⟨V, hV, θ, hθ, -, H⟩` from `pushInvertible_of_laws h X P x`. Conclude with `⟨V, θ, hV, hθ, H⟩`.
+-/
 theorem exists_secOn_nonvanishing : Out.Laws → ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (P : Out.PolAV X) (x : X), ∃ (V : X.Opens) (θ : ∀ i, Γ(P.A.left, P.A.hom ⁻¹ᵁ V ⊓ P.L.U i)), x ∈ V ∧ θ ∈ secOn P.L (P.A.hom ⁻¹ᵁ V) ∧ (∀ y ∈ V, ∃ (a : P.A.left) (i : P.L.ι), P.A.hom a = y ∧ a ∈ P.A.left.basicOpen (θ i)) := by
   intro h X _ P x
   obtain ⟨V, hV, θ, hθ, -, H⟩ := pushInvertible_of_laws h X P x

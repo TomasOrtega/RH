@@ -17,6 +17,15 @@ noncomputable section
 
 namespace GlobalTheory.HeightCounting.Up.SizePar
 
+/- English proof (translation)
+Use `(evG_of_ev GlobalTheory.PrimIn.AtData.ev_params).imp fun K _ _ _ _ hK => ?_` and prove the remaining obligations. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun B f T hO _ _ _ _ w Z Wt p0 t nch n xd c _ _ _ => ?_⟩` and prove the remaining obligations. Take `⟨L, -, -, hp, -⟩` from `hK (w.st Z) hO t.etaF fun v hv j h1 h2 => by`. Establish `key : ∀ v', (w.D Z).what₂.muAt v' = (w.D Z).what₂.mu0 → v' ∉ Wt`. Introduce `v' he hw`.
+
+Establish `he' : (w.st Z).W.muAt v' = (w.st Z).C.mu0` using `he`. Rewrite `he'` using `[t.mu.on v' hw]`. Establish `h1` using `t.mu.tw v'`. Rewrite `h1` using `[he', t.mu.mu0]`. Conclude with `(TwFin.tw_fin B f T).2.1 v' h1.symm`.
+
+Express the relevant statement in the definitionally equal form `(w.D Z).what₂.Aj j v = 0`. Use `replace hv : (w.D Z).what₂.muAt v = (w.D Z).what₂.mu0 := hv`. Establish `a` using `t.untw v (key v hv) j h1 h2`. Establish `b` using `t.untw _ (key _ (((w.D Z).what₂.muAt_conj v).trans hv)) j h1 h2`. Unfold `Formalism.BasicNotions.Rows.Data.Aj`.
+
+Rewrite using `[hv, a.1, a.2, b.1]`. Both sides reduce to the same expression. Conclude with `⟨L, hp⟩`.
+-/
 theorem exists_params_atMem (hL : GlobalTheory.Published.LocalLanglandsGL) :
     AtMem hL fun _ _ _ _ w Z _ _ _ _ _ _ => ∃ L : SizeData₂ (w.D Z), Nonempty (ParameterChoice' (w.D Z) L) := by
   refine (evG_of_ev GlobalTheory.PrimIn.AtData.ev_params).imp fun K _ _ _ _ hK => ?_
@@ -45,6 +54,25 @@ namespace GlobalTheory.HeightCounting.Up.SizePar
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `⟨1, one_pos, fun eps C8 h0 _ h1 _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hC _ _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨c1, hN⟩` from `GlobalTheory.EX.szRow_numAt eps h0 h1 C hC`. Use `⟨max c1 0, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, hN⟩` from `hN cD ((le_max_left _ _).trans hcD)`. Use `⟨max c2 402, fun ch hch => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x1, hN⟩` from `hN ch ((le_max_left _ _).trans hch)`. Take `⟨x0, hx0⟩` from `GlobalTheory.EX.exists_sizeData_explicit eps C cD ch h0 h1 hC ((le_max_right _ _).trans hcD) ((le_max_right _ _).trans hch)`. Use `⟨max x0 x1, ?_⟩` and prove the remaining obligations. Introduce and unpack `K rfl rfl rfl hs hx X hO heta hA`. Establish `hP` using `K.ok`.
+
+Take `⟨sp, hT, hY, hA', hV, hz, hB, -⟩` from `hO`. Take `⟨B, Cc, W, V, S, N, Gj⟩` from `X`. Consider the cases of `B`. Simplify using `only at hB`. Substitute `hB` using the available equality.
+
+Use `set D := Stages.toD7 _ with hD`. Establish `hlev : ∀ p ∈ K.Lv.host.levelPrimes, K.Lv.host.cls p = .splitK` using `(Pre.ofCh K.P K.Lv sp hT hY hA' hV hz).level_split`. Establish `hdel : D.s.Del = (Delv K.s K.cD : ℚ)`. Establish `τ : Tau K.P.R` using `tauPl D (false, 0)`. Establish `hk` using `K.P.R.m_add_three_le_k`.
+
+Establish `hm` using `K.P.R.two_le_m`. Establish `hl : 0 + 1 < K.P.R.k - 1` using `by omega`. Establish `a1` using `D.s.cloud_gap K.P.u₀ τ 0 hl`. Establish `a2` using `congrArg₂ (· - ·) ((hP.hc K.P.u₀).1 τ ⟨0, by omega⟩) ((hP.hc K.P.u₀).1 τ ⟨0 + 1, hl⟩)`. Establish `a3` using `a1.symm.trans a2`.
+
+Establish `e : K.P.R.k - 2 - 0 = K.P.R.k - 2 - (0 + 1) + 1` using `by omega`. Simplify using `only at a3`. Rewrite `a3` using `[e]`. Move the coercions through the operations in `at a3`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hGam : ∀ u, Real.log (D.mem u).A.GamP = K.C.CGam * (D.R.m : ℝ) ^ 5 * D.R.f * K.s.L` using `fun u => by`. Establish `e : (D.mem u).A.GamP = K.Lv.GamP` using `Cc.A_GamP u`. Rewrite using `[e, K.Gam_eq, GamS, Real.log_exp]`. Both sides reduce to the same expression. Use `⟨?_, fun Lc => ?_⟩` and prove the remaining obligations.
+
+Take `⟨L, e1, -, -, e4⟩` from `hx0 K.s D (fun t => K.a t.1) (fun t => K.b t.1) hs ((le_max_left _ _).trans hx) hP.rank hP.val (hP.hc K.P.u₀) hP.dlog hdel hP.ct2 hP.card heta hGam (fun t => hP.win t.1 t.2) (fun τ t h ht => hP.top K.P.u₀ τ t h ht) hA`. Take `⟨⟨M⟩, -, -⟩` from `hN D L (by rw [e1]; exact hs) (by rw [e1]; exact (le_max_right _ _).trans hx) e4 ⟨hP.arith.1, hP.arith.2.1, hP.arith.2.2.1, hlev⟩`. Conclude with `⟨L, ⟨M.params⟩⟩`. Take `⟨L, e1, -, -, e4⟩` from `hx0 K.s (withLoc Lc) (fun t => K.a t.1) (fun t => K.b t.1) hs ((le_max_left _ _).trans hx) hP.rank hP.val (hP.hc K.P.u₀) hP.dlog hdel hP.ct2 hP.card heta hGam (fun t => hP.win t.1 t.2) (fun τ t h ht => hP.top K.P.u₀ τ t h ht) hA`. Take `⟨⟨M⟩, -, -⟩` from `hN (withLoc Lc) L (by rw [e1]; exact hs) (by rw [e1]; exact (le_max_right _ _).trans hx) e4 ⟨hP.arith.1, hP.arith.2.1, hP.arith.2.2.1, hlev⟩`.
+
+Conclude with `⟨L, ⟨M.params⟩⟩`.
+-/
 theorem ev_params_withLoc : Ev fun K => ∀ X : Stages, K.Over X.B.toPre → X.V.div.etaF = 6 * K.s.x ^ (-K.C.P.CF) →
     (∀ w, X.toD7.what₂.muAt w = X.toD7.what₂.mu0 → ∀ j, 1 ≤ j → j ≤ X.toD7.R.m → X.toD7.what₂.Aj j w = 0) →
     (∃ L : SizeData₂ X.toD7, Nonempty (ParameterChoice' X.toD7 L)) ∧
@@ -100,9 +128,23 @@ end GlobalTheory.HeightCounting.Up.SizePar
 
 namespace GlobalTheory.HeightCounting.Up.SizePar
 
+/- English proof (translation)
+The claim follows from `Step.of_evG ((evG_of_ev h).imp fun _ _ _ _ _ H _ _ _ _ _ _ _ _ _ => H)`.
+-/
 theorem stepW_start_ev {Q : Ctx → Prop} (h : Ev Q) : StepW Start fun K _ _ _ _ => Q K :=
   Step.of_evG ((evG_of_ev h).imp fun _ _ _ _ _ H _ _ _ _ _ _ _ _ _ => H)
 
+/- English proof (translation)
+Use `StepW.of_all fun K B f T w hO hF hS P x v hv j h1 h2 => ?_` and prove the remaining obligations. Establish `hex : P.Wt = x.m.z.W1 (F0K K.s (w.D x.o.Z))`. Establish `e1` using `x.m.W1 (F0K K.s (w.D x.o.Z))`. Use `Eq.trans ?_ e1.symm` and prove the remaining obligations. Use `P.exact.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.Mem.Top.Bl.RowWt.forcedContent_eq_over_same_choices K B f T w P.Z₀ x.o.Z P.kap (P.q.kap x.o.η x.o.hη x.o.V x.o.S x.o.N x.o.G)]`. Establish `H` using `GlobalTheory.T.indices_pairingLengths_vanish_off_twistedPlaces K B f T w hO hF ⟨hS.1, ⟨P⟩⟩ P x hex`. Establish `key : ∀ v', (w.D x.o.Z).what₂.muAt v' = (w.D x.o.Z).what₂.mu0 → v' ∉ P.Wt`. Introduce `v' he hw`. Establish `he' : P.q.W₀.muAt v' = w.C.mu0` using `he`.
+
+Rewrite `he'` using `[P.q.mu.on v' hw]`. Establish `e2` using `P.q.mu.tw v'`. Rewrite `e2` using `[he']`. Conclude with `(TwFin.tw_fin B f T).2.1 v' (e2.symm.trans (show w.I.xi w.C.mu0 = 1 from w.l.xi0))`. Express the relevant statement in the definitionally equal form `(w.D x.o.Z).what₂.Aj j v = 0`.
+
+Use `replace hv : (w.D x.o.Z).what₂.muAt v = (w.D x.o.Z).what₂.mu0 := hv`. Establish `a` using `H v (key v hv) j h1 h2`. Establish `b` using `H _ (key _ (((w.D x.o.Z).what₂.muAt_conj v).trans hv)) j h1 h2`. Unfold `Formalism.BasicNotions.Rows.Data.Aj`. Rewrite using `[hv, a.1, a.2, b.1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem aj_zero_at_state : StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P),
     ∀ v, (Dof x).what₂.muAt v = (Dof x).what₂.mu0 → ∀ j, 1 ≤ j → j ≤ (Dof x).R.m → (Dof x).what₂.Aj j v = 0 := by
   refine StepW.of_all fun K B f T w hO hF hS P x v hv j h1 h2 => ?_
@@ -127,11 +169,17 @@ theorem aj_zero_at_state : StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : 
   rw [hv, a.1, a.2, b.1]
   rfl
 
+/- English proof (translation)
+The claim follows from `((stepW_start_ev ev_params_withLoc).and aj_zero_at_state).trans (StepW.of_all fun _ _ _ _ w hO _ H P x => H.1 (w.st x.o.Z) hO x.etaF (H.2 P x))`.
+-/
 theorem exists_params_allSt : AllSt fun _ _ _ _ _ _ x => (∃ L : SizeData₂ (Dof x), Nonempty (ParameterChoice' (Dof x) L)) ∧
     ∀ Lc : LocAll (lay0 (Dof x)), ∃ L : SizeData₂ (withLoc Lc), Nonempty (ParameterChoice' (withLoc Lc) L) :=
   ((stepW_start_ev ev_params_withLoc).and aj_zero_at_state).trans
     (StepW.of_all fun _ _ _ _ w hO _ H P x => H.1 (w.st x.o.Z) hO x.etaF (H.2 P x))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨exists_params_atMem, exists_params_allSt⟩`.
+-/
 theorem exists_params :
     (∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ _ _ _ _ => ∃ L : SizeData₂ (w.D Z), Nonempty (ParameterChoice' (w.D Z) L)) ∧
       AllSt fun _ _ _ _ _ _ x => (∃ L : SizeData₂ (Dof x), Nonempty (ParameterChoice' (Dof x) L)) ∧

@@ -29,11 +29,17 @@ instance : CharZero (WW p) := by
 
 instance : CharZero (K0 p) := charZero_of_injective_algebraMap (IsFractionRing.injective (WW p) (K0 p))
 
+/- English proof (translation)
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, ha, map_zero]`.
+-/
 theorem cc_pmap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {a : PowerSeries A}
     (ha : PowerSeries.constantCoeff a = 0) : PowerSeries.constantCoeff (PowerSeries.map f a) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map,
     PowerSeries.coeff_zero_eq_constantCoeff_apply, ha, map_zero]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_Ex hf]`. Both sides reduce to the same expression.
+-/
 theorem expS_eq_Ex {ι : Type} {f : MvPowerSeries ι (K0 p)} (hf : constantCoeff f = 0) : expS p f = Ex f := by
   ext n
   rw [coeff_Ex hf]
@@ -41,6 +47,9 @@ theorem expS_eq_Ex {ι : Type} {f : MvPowerSeries ι (K0 p)} (hf : constantCoeff
 
 instance : CharZero ℂ_[p] := charZero_of_injective_algebraMap (algebraMap ℚ_[p] ℂ_[p]).injective
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_Ex hf]`. Use `show ∑ k ∈ Finset.range ((n.sum fun _ k => k) + 1), MvPowerSeries.coeff n (f ^ k) / (k.factorial : ℂ_[p]) = _`. Use `Finset.sum_congr (by rfl) fun k _ => ?_` and prove the remaining obligations. Conclude with `div_eq_inv_mul (MvPowerSeries.coeff n (f ^ k)) (k.factorial : ℂ_[p])`.
+-/
 theorem expMv_eq_Ex {ι : Type} {f : MvPowerSeries ι ℂ_[p]} (hf : constantCoeff f = 0) : expMv f = Ex f := by
   ext n
   rw [coeff_Ex hf]
@@ -49,16 +58,25 @@ theorem expMv_eq_Ex {ι : Type} {f : MvPowerSeries ι ℂ_[p]} (hf : constantCoe
   refine Finset.sum_congr (by rfl) fun k _ => ?_
   exact div_eq_inv_mul (MvPowerSeries.coeff n (f ^ k)) (k.factorial : ℂ_[p])
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[PowerSeries.coeff_map]`.
+-/
 theorem pmap_map {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : B →+* C) (f : A →+* B) (a : PowerSeries A) :
     PowerSeries.map g (PowerSeries.map f a) = PowerSeries.map (g.comp f) a := by
   ext n
   simp [PowerSeries.coeff_map]
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[MvPowerSeries.coeff_map]`.
+-/
 theorem mmap_map {ι A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : B →+* C) (f : A →+* B)
     (a : MvPowerSeries ι A) : map g (map f a) = map (g.comp f) a := by
   ext n
   simp [MvPowerSeries.coeff_map]
 
+/- English proof (translation)
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Simplify using `[logF]`.
+-/
 theorem cc_logF : PowerSeries.constantCoeff (logF p) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
   simp [logF]
@@ -66,6 +84,9 @@ theorem cc_logF : PowerSeries.constantCoeff (logF p) = 0 := by
 def PhS (ι : Type) [Fintype ι] (be : MvPowerSeries (Fin 2) (K0 p)) : MvPowerSeries (ι ⊕ ι) (K0 p) :=
   ∑ e : ι, sub2 p be (X (Sum.inl e)) (X (Sum.inr e))
 
+/- English proof (translation)
+Use `first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> simp [ha, hb]`. Consider the case `exact ⟨fun i => by fin_cases i <;> simp [ha, hb], fun d => Set.toFinite _⟩`.
+-/
 theorem hs2 {τ R : Type} [CommRing R] {a b : MvPowerSeries τ R} (ha : constantCoeff a = 0) (hb : constantCoeff b = 0) :
     HasSubst (![a, b] : Fin 2 → MvPowerSeries τ R) :=  by
   first
@@ -74,6 +95,29 @@ theorem hs2 {τ R : Type} [CommRing R] {a b : MvPowerSeries τ R} (ha : constant
 
 variable {p}
 
+/- English proof (translation)
+Use `set φ : WW p →+* Kc := (algebraMap (K0 p) Kc).comp (algebraMap (WW p) (K0 p)) with hφ`. Use `set th' : PowerSeries Kc := PowerSeries.map φ th with hth'`. Use `set lg : PowerSeries Kc := PowerSeries.map (algebraMap (K0 p) Kc) (logF p) with hlg`. Establish `hth'0 : PowerSeries.constantCoeff th' = 0` using `cc_pmap φ th_zero`. Establish `hlg0 : PowerSeries.constantCoeff lg = 0` using `cc_pmap _ (cc_logF p)`.
+
+Use `set ps : PowerSeries (WW p) := th.substInvOfIsUnit th_unit with hps`. Establish `hps0 : PowerSeries.constantCoeff ps = 0` using `PowerSeries.constantCoeff_substInvOfIsUnit th th_unit`. Establish `hinv0 : PowerSeries.subst ps th = PowerSeries.X` using `PowerSeries.subst_substInvOfIsUnit_right th th_zero th_unit`. Use `set ps' : PowerSeries Kc := PowerSeries.map φ ps with hps'`. Establish `hps'0 : PowerSeries.constantCoeff ps' = 0` using `cc_pmap φ hps0`.
+
+Establish `hps'O : ∀ n, PowerSeries.coeff n ps' ∈ Oc`. Introduce `n`. Rewrite using `[hps', PowerSeries.coeff_map]`. Conclude with `witt_mem_integers_Cp _`. Establish `hinv : PowerSeries.subst ps' th' = PowerSeries.X`.
+
+Establish `h1` using `PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero' hps0) (h := φ) th`. Rewrite `h1` using `[hinv0]`. Conclude with `h1.symm.trans (PowerSeries.map_X φ)`. Establish `hlgK0 : PowerSeries.constantCoeff (PowerSeries.subst th' lg) = 0`. Establish `hs : HasSubst (fun _ : Unit => th')` using `by first`.
+
+Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero' hth'0`. Consider the case `exact ⟨fun _ => by rw [show MvPowerSeries.constantCoeff th' = 0 from hth'0]; exact IsNilpotent.zero, fun d => Set.toFinite _⟩`. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero hs (fun _ => hth'0) hlg0`. Establish `hlgE : PowerSeries.map iC (PowerSeries.subst th' lg) = lgE`. Establish `h1` using `PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero' hth'0) (h := iC) lg`.
+
+Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[← th_log]`. Use `show PowerSeries.subst (PowerSeries.map iC (PowerSeries.map φ th)) (PowerSeries.map iC (PowerSeries.map (algebraMap (K0 p) Kc) (logF p))) = _`. Rewrite using `[pmap_map, pmap_map]`. Establish `hlgE0 : PowerSeries.constantCoeff lgE = 0`.
+
+Rewrite using `[← hlgE]`. Conclude with `cc_pmap iC hlgK0`. Establish `hc : constantCoeff (map (iC.comp (algebraMap (K0 p) Kc)) Ph) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, hPh, map_zero]`. Establish `hc'` using `MvPowerSeries.constantCoeff_subst_eq_zero (hs_dg hlgE0) (cc_dg hlgE0) hc`.
+
+Establish `hE : subst (diagS lgE) (map (iC.comp (algebraMap (K0 p) Kc)) (expS p Ph)) = expMv (subst (diagS lgE) (map (iC.comp (algebraMap (K0 p) Kc)) Ph))`. Rewrite using `[expS_eq_Ex p hPh, map_Ex _ hPh, subst_Ex (hs_dg hlgE0) hc, expMv_eq_Ex p hc']`. Use `⟨map (algebraMap (K0 p) Kc) (expS p Ph) * Th, ?_, ?_⟩` and prove the remaining obligations. Establish `hn : constantCoeff (-Ph) = 0` using `by rw [map_neg, hPh, neg_zero]`. Rewrite using `[← mul_assoc, ← map_mul, expS_eq_Ex p hn, expS_eq_Ex p hPh, Ex_neg_mul hPh, map_one, one_mul]`.
+
+Establish `hInt' : IntegralMv (subst (diagS lgE) (map iC (map (algebraMap (K0 p) Kc) (expS p Ph) * Th)))`. Rewrite using `[map_mul, mmap_map, MvPowerSeries.subst_mul (hs_dg hlgE0), hE, mul_comm]`. Conclude with `hInt`. Establish `key : map iC (subst (diagS (PowerSeries.subst th' lg)) (map (algebraMap (K0 p) Kc) (expS p Ph) * Th)) =`. Substitute `(diagS lgE) (map iC (map (algebraMap (K0 p) Kc) (expS p Ph) * Th)) := by` using the available equality.
+
+Rewrite using `[MvPowerSeries.map_subst (hs_dg hlgK0)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[map_dg, hlgE]`. Introduce `n`.
+
+Use `descent Oc th' lg ps' hth'0 hps'0 hps'O hinv hlg0 _ (fun m => ?_) n` and prove the remaining obligations. Rewrite using `[iC_int]`. Establish `hm` using `hInt' m`. Rewrite `hm` using `[← key, MvPowerSeries.coeff_map]`. Conclude with `hm`.
+-/
 theorem K1core {ι : Type} (Kc : Type) [Field Kc] [Algebra (K0 p) Kc] (Oc : Subring Kc)
     (witt_mem_integers_Cp : ∀ x : WW p, algebraMap (K0 p) Kc (algebraMap (WW p) (K0 p) x) ∈ Oc)
     (iC : Kc →+* ℂ_[p]) (iC_int : ∀ x : Kc, x ∈ Oc ↔ ‖iC x‖ ≤ 1)

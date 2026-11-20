@@ -22,6 +22,15 @@ attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNorm
 
 variable {m : Type} [Fintype m] [DecidableEq m]
 
+/- English proof (translation)
+Establish `h0 : ∀ s : ℝ, (A + s • X).det = A.det * (1 + (s : ℂ) • (A⁻¹ * X)).det`. Introduce `s`. Rewrite using `[← Matrix.det_mul]`. Use `congr 1`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hA, Matrix.one_mul]`.
+
+Use extensionality with `a b`. Simplify using the standard rewrite rules. Use `set M := A⁻¹ * X`. Use `set g := (det (1 + (Polynomial.X : Polynomial ℂ) • M.map Polynomial.C)).divX.divX`. Establish `h1 : HasDerivAt (fun r : ℂ => 1 + trace M * r + g.eval r * r ^ 2) (trace M) ((0 : ℝ) : ℂ)`.
+
+Establish `h` using `((hasDerivAt_id ((0 : ℝ) : ℂ)).const_mul (trace M)).const_add 1`. Establish `h2` using `(g.hasDerivAt ((0 : ℝ) : ℂ)).mul ((hasDerivAt_id ((0 : ℝ) : ℂ)).pow 2)`. Establish `h3 : HasDerivAt (fun r : ℂ => 1 + trace M * r + g.eval r * r ^ 2) _ ((0 : ℝ) : ℂ)` using `h.add h2`. Conclude with `h3.congr_deriv (by simp)`. Establish `h2` using `(h1.comp_ofReal).const_mul A.det`.
+
+Use `h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show (A + s • X).det = A.det * (1 + trace M * (s : ℂ) + g.eval (s : ℂ) * (s : ℂ) ^ 2)`. Rewrite using `[h0, Matrix.det_one_add_smul]`.
+-/
 theorem hasDerivAt_det_line (A X : Matrix m m ℂ) (hA : IsUnit A.det) :
     HasDerivAt (fun s : ℝ => (A + s • X).det) (A.det * trace (A⁻¹ * X)) 0 := by
   have h0 : ∀ s : ℝ, (A + s • X).det = A.det * (1 + (s : ℂ) • (A⁻¹ * X)).det := by
@@ -43,11 +52,19 @@ theorem hasDerivAt_det_line (A X : Matrix m m ℂ) (hA : IsUnit A.det) :
   show (A + s • X).det = A.det * (1 + trace M * (s : ℂ) + g.eval (s : ℂ) * (s : ℂ) ^ 2)
   rw [h0, Matrix.det_one_add_smul]
 
+/- English proof (translation)
+Repeatedly rewrite using `[Matrix.det_apply']`. Use `ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun i _ => ?_)` and prove the remaining obligations. Conclude with `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ (σ i) i)).contDiff`.
+-/
 theorem contDiff_det (k : WithTop ℕ∞) : ContDiff ℝ k (fun M : Matrix m m ℂ => M.det) := by
   simp_rw [Matrix.det_apply']
   refine ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun i _ => ?_)
   exact (LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ (σ i) i)).contDiff
 
+/- English proof (translation)
+Establish `hd : DifferentiableAt ℝ (fun M : Matrix m m ℂ => M.det) A` using `(contDiff_det 1).differentiable (by norm_num) A`. Establish `hl : HasDerivAt (fun s : ℝ => A + s • X) X 0`. Establish `h` using `((hasDerivAt_id (0 : ℝ)).smul_const X).const_add A`. Rewrite `h` using `[one_smul]`. Then use the resulting hypothesis. Establish `h` using `hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hl (by simp)`.
+
+Conclude with `h.unique (hasDerivAt_det_line A X hA)`.
+-/
 theorem fderiv_det_apply (A X : Matrix m m ℂ) (hA : IsUnit A.det) :
     fderiv ℝ (fun M : Matrix m m ℂ => M.det) A X = A.det * trace (A⁻¹ * X) := by
   have hd : DifferentiableAt ℝ (fun M : Matrix m m ℂ => M.det) A :=
@@ -58,6 +75,37 @@ theorem fderiv_det_apply (A X : Matrix m m ℂ) (hA : IsUnit A.det) :
   have h := hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hl (by simp)
   exact h.unique (hasDerivAt_det_line A X hA)
 
+/- English proof (translation)
+Use `set Bc : E →L[ℝ] E →L[ℝ] Matrix m m ℂ := B.toContinuousBilinearMap with hBc`. Establish `hBa : ∀ x y, Bc x y = B x y` using `fun _ _ => rfl`. Set `A : E → Matrix m m ℂ` to `fun x => 1 - B x x`. Use `set Bf : E →L[ℝ] E →L[ℝ] Matrix m m ℂ := B.flip.toContinuousBilinearMap with hBf`. Set `D : E → E →L[ℝ] Matrix m m ℂ` to `fun x => -(Bc x + Bf x)`.
+
+Establish `hDa : ∀ x v, D x v = -(B x v + B v x)` using `fun _ _ => rfl`. Establish `hAd : ∀ x, HasFDerivAt A (D x) x`. Introduce `x`. Establish `h` using `Bc.hasFDerivAt_of_bilinear (hasFDerivAt_id x) (hasFDerivAt_id x)`. Use `(h.const_sub 1).congr_fderiv ?_` and prove the remaining obligations.
+
+Use `ext1 v`. Both sides reduce to the same expression. Establish `hAc : ContDiff ℝ 2 A` using `contDiff_const.sub (Bc.isBoundedBilinearMap.contDiff.comp (contDiff_id.prodMk contDiff_id))`. Set `f : E → ℝ` to `fun x => (A x).det.re`. Establish `hf : ContDiff ℝ 2 f` using `Complex.reCLM.contDiff.comp ((contDiff_det 2).comp hAc)`.
+
+Establish `hcd : ContDiffAt ℝ 2 (fun x => Real.log (f x)) t` using `hf.contDiffAt.log ht.ne'`. Establish `hreal : ∀ x, (A x).det = ((A x).det.re : ℂ)`. Introduce `x`. Establish `h1 : (A x)ᴴ = A x`. Simplify using `only [A, Matrix.conjTranspose_sub, Matrix.conjTranspose_one, (hB x).eq]`.
+
+Establish `h2` using `Matrix.det_conjTranspose (A x)`. Rewrite `h2` using `[h1]`. Conclude with `(Complex.conj_eq_iff_re.1 h2.symm).symm`. Set `T : Matrix m m ℂ →L[ℝ] ℝ` to `Complex.reCLM ∘L LinearMap.toContinuousLinearMap (Matrix.traceLinearMap m ℝ ℂ)`. Establish `hTa : ∀ X, T X = (trace X).re` using `fun _ => rfl`.
+
+Establish `hunit : ∀ x, 0 < f x → IsUnit (A x).det`. Introduce `x hx`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Simplify using `only [f, h0, Complex.zero_re, lt_self_iff_false] at hx`. Establish `hFD : ∀ x, 0 < f x → ∀ v, fderiv ℝ (fun y => Real.log (f y)) x v = T ((A x)⁻¹ * D x v)`.
+
+Introduce `x hx v`. Establish `hdx` using `((contDiff_det (m := m) 1).differentiable (by norm_num) (A x)).hasFDerivAt.comp x (hAd x)`. Establish `hre` using `Complex.reCLM.hasFDerivAt.comp x hdx`. Establish `hl` using `HasFDerivAt.log hre hx.ne'`. Establish `hl' : HasFDerivAt (fun y => Real.log (f y)) _ x` using `hl`.
+
+Rewrite using `[hl'.fderiv]`. Use `show (f x)⁻¹ * (fderiv ℝ (fun M : Matrix m m ℂ => M.det) (A x) (D x v)).re = _`. Rewrite using `[fderiv_det_apply _ _ (hunit x hx), hreal x, Complex.re_ofReal_mul]`. Use `show (f x)⁻¹ * (f x * _) = _`. Rewrite using `[inv_mul_cancel_left₀ hx.ne', hTa]`.
+
+Use `⟨hcd, fun u v => ?_⟩` and prove the remaining obligations. Establish `hdiff : DifferentiableAt ℝ (fderiv ℝ fun x => Real.log (f x)) t` using `(hcd.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `e1 : fderiv ℝ (fderiv ℝ fun x => Real.log (f x)) t u v = fderiv ℝ (fun x => fderiv ℝ (fun y => Real.log (f y)) x v) t u`. Establish `h` using `(hdiff.hasFDerivAt.clm_apply (hasFDerivAt_const v t)).fderiv`. Rewrite using `[h]`.
+
+Simplify using the standard rewrite rules. Establish `hev : ∀ᶠ x in 𝓝 t, 0 < f x` using `(hf.continuous.tendsto t).eventually (lt_mem_nhds ht)`. Establish `e2 : (fun x => fderiv ℝ (fun y => Real.log (f y)) x v) =ᶠ[𝓝 t] fun x => T ((A x)⁻¹ * D x v)` using `hev.mono fun x hx => hFD x hx v`. Take `⟨w, hw⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 (hunit t ht)`. Establish `hwinv : (↑w⁻¹ : Matrix m m ℂ) = (A t)⁻¹`.
+
+Rewrite using `[Matrix.nonsing_inv_eq_ringInverse, ← hw, Ring.inverse_unit]`. Establish `hI : HasFDerivAt Ring.inverse (-ContinuousLinearMap.mulLeftRight ℝ (Matrix m m ℂ) ↑w⁻¹ ↑w⁻¹) (A t)`. Rewrite using `[← hw]`. Conclude with `hasFDerivAt_ringInverse w`. Establish `hinv` using `hI.comp t (hAd t)`.
+
+Establish `hfe : Ring.inverse ∘ A = fun x => (A x)⁻¹`. Use function extensionality and compare the values at `x`. Conclude with `(Matrix.nonsing_inv_eq_ringInverse _).symm`. Rewrite `hinv` using `[hfe]`. Set `Dv : E →L[ℝ] Matrix m m ℂ` to `-(Bf v + Bc v)`.
+
+Establish `hDv : HasFDerivAt (fun x => D x v) Dv t`. Establish `h : (fun x => D x v) = Dv` using `by funext x; rfl`. Rewrite using `[h]`. Conclude with `Dv.hasFDerivAt`. Establish `hm` using `hinv.mul' hDv`.
+
+Establish `hT` using `T.hasFDerivAt.comp t hm`. Establish `hT' : HasFDerivAt (fun x => T ((A x)⁻¹ * D x v)) _ t` using `hT`. Use `show fderiv ℝ (fderiv ℝ fun x => Real.log (f x)) t u v = _`. Rewrite using `[e1, e2.fderiv_eq, hT'.fderiv]`. Use `show T ((A t)⁻¹ * Dv u + (-((↑w⁻¹ : Matrix m m ℂ) * D t u * (↑w⁻¹ : Matrix m m ℂ))) * D t v) = _`.
+
+Rewrite using `[hwinv, hTa]`. Use `show (trace ((1 - B t t)⁻¹ * (-(B u v + B v u)) + (-((1 - B t t)⁻¹ * (-(B t u + B u t)) * (1 - B t t)⁻¹)) * (-(B t v + B v t)))).re = _`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.trace_add, Matrix.trace_neg, Complex.add_re, Complex.neg_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logDet_hess {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (B : E →ₗ[ℝ] E →ₗ[ℝ] Matrix m m ℂ)
     (hB : ∀ x, (B x x).IsHermitian) (t : E) (ht : 0 < (1 - B t t).det.re) :
@@ -145,9 +193,23 @@ theorem logDet_hess {E : Type} [NormedAddCommGroup E]
 
 end Analysis
 
+/- English proof (translation)
+Rewrite using `[Matrix.trace_conjTranspose]`. Simplify using the standard rewrite rules.
+-/
 theorem trace_re_eq_conj {a : Type} [Fintype a] (X : Matrix a a ℂ) : (trace X).re = (trace Xᴴ).re := by
   rw [Matrix.trace_conjTranspose]; simp
 
+/- English proof (translation)
+Establish `ha : (trace (Ai * (Uᴴ * (Z * (Ai * (Vᴴ * Z)))))).re = (trace (Ai * (Zᴴ * (U * (Ai * (Zᴴ * V)))))).re`. Rewrite using `[trace_re_eq_conj]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hA, Matrix.mul_assoc]`. Rewrite using `[show Zᴴ * (V * (Ai * (Zᴴ * (U * Ai)))) = (Zᴴ * V) * (Ai * (Zᴴ * (U * Ai))) by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `hb : (trace (Ai * (Uᴴ * (Z * (Ai * (Zᴴ * V)))))).re = (trace (Ai * (Zᴴ * (U * (Ai * (Vᴴ * Z)))))).re`. Rewrite using `[trace_re_eq_conj]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hA, Matrix.mul_assoc]`. Rewrite using `[show Vᴴ * (Z * (Ai * (Zᴴ * (U * Ai)))) = (Vᴴ * Z) * (Ai * (Zᴴ * (U * Ai))) by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `he : (trace (Ai * (Uᴴ * V))).re = (trace (Ai * (Vᴴ * U))).re`. Rewrite using `[trace_re_eq_conj]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hA, Matrix.mul_assoc]`. Rewrite using `[show Vᴴ * (U * Ai) = (Vᴴ * U) * Ai by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm]`. Establish `hc : trace (Ai * (Vᴴ * (Z * (Ai * (Zᴴ * U))))) = trace (Ai * (Zᴴ * (U * (Ai * (Vᴴ * Z)))))`.
+
+Rewrite using `[show Ai * (Vᴴ * (Z * (Ai * (Zᴴ * U)))) = (Ai * (Vᴴ * Z)) * (Ai * (Zᴴ * U)) by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Substitute `hB` using the available equality. Unfold `hP`. Rewrite using `[← hAi]`.
+
+Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.trace_add, Complex.add_re, Matrix.mul_assoc, Matrix.mul_one, Matrix.one_mul, ha, hb, he, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hP_eq {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [DecidableEq b]
     (Z U V : Matrix a b ℂ) (Ai : Matrix b b ℂ) (Bi : Matrix a a ℂ) (hAi : Ai = (1 - Zᴴ * Z)⁻¹) (hA : Aiᴴ = Ai)
     (hB : Bi = 1 + Z * Ai * Zᴴ) :
@@ -179,6 +241,11 @@ theorem hP_eq {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [DecidableEq 
     Matrix.one_mul, ha, hb, he, hc]
   ring
 
+/- English proof (translation)
+Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Establish `h1` using `Matrix.mul_nonsing_inv _ h`. Establish `h2 : Z * ((1 - Zᴴ * Z) * (1 - Zᴴ * Z)⁻¹) * Zᴴ = Z * Zᴴ` using `by rw [h1, Matrix.mul_one]`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc] at h2 ⊢`. Rewrite using `[← h2]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem inv_push {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [DecidableEq b]
     (Z : Matrix a b ℂ) (h : IsUnit (1 - Zᴴ * Z).det) :
     (1 - Z * Zᴴ)⁻¹ = 1 + Z * (1 - Zᴴ * Z)⁻¹ * Zᴴ := by
@@ -190,6 +257,19 @@ theorem inv_push {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [Decidable
   rw [← h2]
   abel
 
+/- English proof (translation)
+Establish `hu : IsUnit (1 - Zᴴ * Z).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hZ.isUnit`. Establish `hA : ((1 - Zᴴ * Z)⁻¹)ᴴ = (1 - Zᴴ * Z)⁻¹`. Rewrite using `[Matrix.conjTranspose_nonsing_inv]`. Simplify using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_mul]`. Establish `e` using `fun U V => hP_eq Z U V _ _ rfl hA (inv_push Z hu)`.
+
+Simplify using `only [e]`. Use `set Ai := (1 - Zᴴ * Z)⁻¹`. Use `set Bi := (1 - Z * Zᴴ)⁻¹`. Establish `s1 : ∀ c d : ℂ, trace (Ai * Zᴴ * (c • U) * Ai * Zᴴ * (d • V)) = c * d * trace (Ai * Zᴴ * U * Ai * Zᴴ * V)`. Introduce `c d`.
+
+Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `s2 : ∀ c d : ℂ, trace (Ai * (d • V)ᴴ * Bi * (c • U)) = c * star d * trace (Ai * Vᴴ * Bi * U)`. Introduce `c d`. Simplify using `only [Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `r1` using `s1 1 Complex.I`. Establish `r2` using `s1 Complex.I 1`. Establish `r3` using `s1 Complex.I Complex.I`. Establish `r4` using `s2 1 Complex.I`.
+
+Establish `r5` using `s2 Complex.I 1`. Establish `r6` using `s2 Complex.I Complex.I`. Simplify using `only [one_smul, one_mul, mul_one, star_one] at r1 r2 r4 r5`. Rewrite using `[r1, r2, r3, r4, r5, r6]`. Use `set s := trace (Ai * Zᴴ * U * Ai * Zᴴ * V)`.
+
+Use `set l := trace (Ai * Vᴴ * Bi * U)`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im, Complex.div_re, Complex.div_im] <;> ring`.
+-/
 theorem levi_eq {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [DecidableEq b]
     (Z U V : Matrix a b ℂ) (hZ : (1 - Zᴴ * Z).PosDef) :
     (((hP Z U V + hP Z (Complex.I • U) (Complex.I • V) : ℝ) : ℂ) +
@@ -221,6 +301,11 @@ theorem levi_eq {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [DecidableE
   set l := trace (Ai * Vᴴ * Bi * U)
   apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im, Complex.div_re, Complex.div_im] <;> ring
 
+/- English proof (translation)
+Set `r : Ψ × Fin j × Fin j' ≃ (Fin j × Fin j') × Ψ` to `{ toFun := fun x => ((x.2.1, x.2.2), x.1), invFun := fun x => (x.2, x.1.1, x.1.2), left_inv := fun _ => rfl, right_inv := fun _ => rfl }`. Set `e : Fin n ≃ (Fin j × Fin j') × Ψ` to `q.symm.trans r`. Establish `h : (Matrix.of fun x y : Fin n => if (q.symm x).1 = (q.symm y).1 then P (q.symm x).1 (q.symm y).2.1 (q.symm x).2.1 * Q (q.symm x).1 (q.symm x).2.2 (q.symm y).2.2 else 0) = (Matrix.blockDiagonal fun τ => Matrix.kroneckerMap (· * ·) (P τ)ᵀ (Q τ)).submatrix e e`. Use extensionality with `x y`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply, e, r, Equiv.trans_apply, Equiv.coe_fn_mk, Matrix.blockDiagonal_apply, Matrix.kroneckerMap_apply, Matrix.transpose_apply]`.
+
+Rewrite using `[h, Matrix.det_submatrix_equiv_self, Matrix.det_blockDiagonal]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_kronecker, Matrix.det_transpose]`. Simplify using the standard rewrite rules.
+-/
 theorem det_blocks {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {j j' n : ℕ} (q : Ψ × Fin j × Fin j' ≃ Fin n)
     (P : Ψ → Matrix (Fin j) (Fin j) ℂ) (Q : Ψ → Matrix (Fin j') (Fin j') ℂ) :
     (Matrix.of fun x y : Fin n => if (q.symm x).1 = (q.symm y).1 then
@@ -243,9 +328,15 @@ theorem det_blocks {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {j j' n : ℕ} (q :
 
 variable {Ψ : Type} [Fintype Ψ] {j j' n : ℕ}
 
+/- English proof (translation)
+Use `ext`. Simplify using `[ballMat]`.
+-/
 theorem ballMat_add (q : Ψ × Fin j × Fin j' ≃ Fin n) (u v : Fin n → ℂ) (τ : Ψ) :
     ballMat q (u + v) τ = ballMat q u τ + ballMat q v τ := by ext; simp [ballMat]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[ballMat]`.
+-/
 theorem ballMat_smul (q : Ψ × Fin j × Fin j' ≃ Fin n) (c : ℂ) (u : Fin n → ℂ) (τ : Ψ) :
     ballMat q (c • u) τ = c • ballMat q u τ := by ext; simp [ballMat]
 
@@ -261,9 +352,17 @@ def ballB (q : Ψ × Fin j × Fin j' ≃ Fin n) (τ : Ψ) :
       have : ballMat q (c • v) τ = (c : ℂ) • ballMat q v τ := by ext; simp [ballMat]
       rw [this]; ext; simp [Matrix.mul_smul, Matrix.smul_apply])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ballB_apply (q : Ψ × Fin j × Fin j' ≃ Fin n) (τ : Ψ) (u v : Fin n → ℂ) :
     ballB q τ u v = (ballMat q u τ)ᴴ * ballMat q v τ := rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ i, ∀ᶠ x in 𝓝 t, DifferentiableAt ℝ (f i) x` using `fun i => ((hf i).eventually (by simp)).mono fun x hx => hx.differentiableAt (by norm_num)`. Establish `h2 : ∀ i, DifferentiableAt ℝ (fderiv ℝ (f i)) t` using `fun i => ((hf i).fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `h3 : fderiv ℝ (fun x => c * ∑ i, f i x) =ᶠ[𝓝 t] fun x => c • ∑ i, fderiv ℝ (f i) x` using `by filter_upwards [eventually_all.2 h1] with x hx`. Establish `: HasFDerivAt (fun x => c * ∑ i, f i x) (c • ∑ i, fderiv ℝ (f i) x) x` using `(HasFDerivAt.fun_sum fun i _ => (hx i).hasFDerivAt).const_mul c`. Conclude with `this.fderiv`.
+
+Rewrite using `[h3.fderiv_eq]`. Establish `h4 : HasFDerivAt (fun x => c • ∑ i, fderiv ℝ (f i) x) (c • ∑ i, fderiv ℝ (fderiv ℝ (f i)) t) t` using `(HasFDerivAt.fun_sum fun i _ => (h2 i).hasFDerivAt).const_smul c`. Rewrite using `[h4.fderiv]`. Simplify using `[ContinuousLinearMap.sum_apply]`.
+-/
 theorem hess_sum {ι E : Type} [Fintype ι] [NormedAddCommGroup E] [NormedSpace ℝ E] (f : ι → E → ℝ) (t : E)
     (hf : ∀ i, ContDiffAt ℝ 2 (f i) t) (c : ℝ) (u v : E) :
     fderiv ℝ (fderiv ℝ (fun x => c * ∑ i, f i x)) t u v = c * ∑ i, fderiv ℝ (fderiv ℝ (f i)) t u v := by
@@ -282,12 +381,22 @@ theorem hess_sum {ι E : Type} [Fintype ι] [NormedAddCommGroup E] [NormedSpace 
   rw [h4.fderiv]
   simp [ContinuousLinearMap.sum_apply]
 
+/- English proof (translation)
+Use `h.det_pos` as an intermediate fact. Establish `h2` using `Complex.pos_iff.1 this`. Conclude with `⟨h2.1, Complex.ext (by simp) (by simpa using h2.2.symm)⟩`.
+-/
 theorem det_pos_of_posDef {m : Type} [Fintype m] [DecidableEq m] {A : Matrix m m ℂ} (h : A.PosDef) :
     0 < A.det.re ∧ A.det = (A.det.re : ℂ) := by
   have := h.det_pos
   have h2 := Complex.pos_iff.1 this
   exact ⟨h2.1, Complex.ext (by simp) (by simpa using h2.2.symm)⟩
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `e : q (τ, a, b) = x ↔ (τ, a, b) = q.symm x`. Rewrite using `[Equiv.eq_symm_apply]`. Distinguish the cases in `h : (q.symm x).1 = τ`. Simplify using `only [h, if_true, ballMat, Matrix.of_apply, Pi.single_apply, e]`.
+
+Simplify using `only [Matrix.single_apply, Prod.ext_iff, h, true_and]`. Apply the tactic sequence `by_cases h1 : a = (q.symm x).2.1 <;> by_cases h2 : b = (q.symm x).2.2 <;> simp [h1, h2, eq_comm]`. Simplify using `only [h, if_false, ballMat, Matrix.of_apply, Pi.single_apply, e, Matrix.zero_apply]`. Rewrite using `[if_neg]`. Introduce `h'`.
+
+Conclude with `h (by rw [← h'])`.
+-/
 theorem ballMat_single (q : Ψ × Fin j × Fin j' ≃ Fin n) [DecidableEq Ψ] (x : Fin n) (τ : Ψ) :
     ballMat q (Pi.single x 1) τ = if (q.symm x).1 = τ then Matrix.single (q.symm x).2.1 (q.symm x).2.2 1 else 0 := by
   ext a b
@@ -302,6 +411,9 @@ theorem ballMat_single (q : Ψ × Fin j × Fin j' ≃ Fin n) [DecidableEq Ψ] (x
     intro h'
     exact h (by rw [← h'])
 
+/- English proof (translation)
+Rewrite using `[Matrix.conjTranspose_single, star_one]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.single_apply]`. Simplify using `[ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+-/
 theorem trace_single {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [DecidableEq b]
     (X : Matrix b b ℂ) (Y : Matrix a a ℂ) (a1 a2 : a) (b1 b2 : b) :
     trace (X * (Matrix.single a2 b2 (1 : ℂ))ᴴ * Y * Matrix.single a1 b1 (1 : ℂ)) = X b1 b2 * Y a2 a1 := by
@@ -309,6 +421,13 @@ theorem trace_single {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [Decid
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.single_apply]
   simp [ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']
 
+/- English proof (translation)
+Establish `hdp` using `fun τ => (det_pos_of_posDef (ht τ)).1`. Establish `hH` using `fun τ => logDet_hess (ballB q τ) (fun x => by show ((ballMat q x τ)ᴴ * ballMat q x τ).IsHermitian`. Conclude with `Matrix.isHermitian_conjTranspose_mul_self _) t (hdp τ)`. Establish `e : (fun t' => ballPot q t' / 2) = fun t' => (-1 / 2 : ℝ) * ∑ τ, (fun x => Real.log (1 - ballB q τ x x).det.re) t'`. Use function extensionality and compare the values at `t'`.
+
+Simplify using `only [ballPot, ballB_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hess_sum _ t (fun τ => (hH τ).1)]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[(hH τ).2 u v]`. Simplify using `only [hP, ballB_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hess_ball (q : Ψ × Fin j × Fin j' ≃ Fin n) (t : Fin n → ℂ) (ht : t ∈ ballDom q) (u v : Fin n → ℂ) :
     fderiv ℝ (fderiv ℝ (fun t' => ballPot q t' / 2)) t u v =
       (1 / 2 : ℝ) * ∑ τ, hP (ballMat q t τ) (ballMat q u τ) (ballMat q v τ) := by
@@ -326,6 +445,9 @@ theorem hess_ball (q : Ψ × Fin j × Fin j' ≃ Fin n) (t : Fin n → ℂ) (ht 
   simp only [hP, ballB_apply]
   ring
 
+/- English proof (translation)
+Use `push_cast`. Simplify using `only [← Finset.sum_div, Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem comb_sum (a b c d : Ψ → ℝ) :
     ((((1 / 2 : ℝ) * ∑ τ, a τ + (1 / 2 : ℝ) * ∑ τ, b τ : ℝ) : ℂ) +
       Complex.I * (((1 / 2 : ℝ) * ∑ τ, c τ - (1 / 2 : ℝ) * ∑ τ, d τ : ℝ) : ℂ)) / 4 =
@@ -334,6 +456,15 @@ theorem comb_sum (a b c d : Ψ → ℝ) :
   simp only [← Finset.sum_div, Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum]
   ring
 
+/- English proof (translation)
+Use extensionality with `x y`. Simplify using `only [cxHessian, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, hess_ball q t ht, ballMat_smul]`. Establish `key` using `fun τ => levi_eq (ballMat q t τ) (ballMat q (Pi.single x 1) τ) (ballMat q (Pi.single y 1) τ) (ht τ)`. Establish `e2 : ∑ τ, trace ((1 - (ballMat q t τ)ᴴ * ballMat q t τ)⁻¹ * (ballMat q (Pi.single y 1) τ)ᴴ * (1 - ballMat q t τ * (ballMat q t τ)ᴴ)⁻¹ * ballMat q (Pi.single x 1) τ) = if (q.symm x).1 = (q.symm y).1 then ((1 - ballMat q t (q.symm x).1 * (ballMat q t (q.symm x).1)ᴴ)⁻¹ : Matrix (Fin …`. Rewrite using `[Finset.sum_eq_single (q.symm x).1]`.
+
+Rewrite using `[ballMat_single q x, if_pos rfl, ballMat_single q y]`. Distinguish the cases in `h : (q.symm x).1 = (q.symm y).1`. Rewrite using `[if_pos h.symm, if_pos h, trace_single, mul_comm]`. Rewrite using `[if_neg (Ne.symm h), if_neg h]`. Simplify using the standard rewrite rules.
+
+Introduce `τ _ hτ`. Rewrite using `[ballMat_single q x, if_neg (Ne.symm hτ)]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[← e2, ← Finset.sum_congr rfl fun τ _ => key τ]`.
+
+Conclude with `comb_sum _ _ _ _`.
+-/
 theorem cxHessian_ball [DecidableEq Ψ] (q : Ψ × Fin j × Fin j' ≃ Fin n) (t : Fin n → ℂ) (ht : t ∈ ballDom q) :
     cxHessian (fun t' => ballPot q t' / 2) t = (1 / 2 : ℂ) • Matrix.of fun x y : Fin n =>
       if (q.symm x).1 = (q.symm y).1 then
@@ -358,6 +489,15 @@ theorem cxHessian_ball [DecidableEq Ψ] (q : Ψ × Fin j × Fin j' ≃ Fin n) (t
   rw [← e2, ← Finset.sum_congr rfl fun τ _ => key τ]
   exact comb_sum _ _ _ _
 
+/- English proof (translation)
+Use `⟨(n.factorial : ℝ) * (2 / Real.pi) ^ n * (1 / 2) ^ n, by positivity, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hd` using `fun τ => det_pos_of_posDef (ht τ)`. Establish `hdet : ∀ τ, (1 - ballMat q t τ * (ballMat q t τ)ᴴ).det = (1 - (ballMat q t τ)ᴴ * ballMat q t τ).det` using `fun τ => Matrix.det_one_sub_mul_comm _ _`. Establish `hD : (cxHessian (fun t' => ballPot q t' / 2) t).det = (((1 / 2) ^ n * ballDens q t : ℝ) : ℂ)`. Rewrite using `[cxHessian_ball q t ht, Matrix.det_smul, Fintype.card_fin]`.
+
+Use `det_blocks q (fun τ => (1 - ballMat q t τ * (ballMat q t τ)ᴴ)⁻¹) (fun τ => (1 - (ballMat q t τ)ᴴ * ballMat q t τ)⁻¹)` as an intermediate fact. Rewrite using `[this]`. Establish `hb : ballDens q t = ∏ τ, ((1 - (ballMat q t τ)ᴴ * ballMat q t τ).det.re)⁻¹ ^ (j + j')`. Simplify using `only [ballDens, ballPot, mul_neg, ← Finset.sum_neg_distrib, Finset.mul_sum, Real.exp_sum]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_neg, ← Real.log_inv, mul_comm, Real.exp_mul, Real.exp_log (inv_pos.2 (hd τ).1), Real.rpow_natCast]`. Rewrite using `[hb]`. Use `push_cast`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_nonsing_inv, Matrix.det_nonsing_inv, hdet τ, Ring.inverse_eq_inv', (hd τ).2]`. Simplify using `only [Complex.ofReal_re]`. Rewrite using `[pow_add, mul_comm]`. Simplify using `only [maDensity, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.mixedDiscriminant_constant, hD, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem maDensity_half_ballPot (Ψ : Type) [Fintype Ψ] (j j' n : ℕ) (q : Ψ × Fin j × Fin j' ≃ Fin n) :
     ∃ c : ℝ, 0 < c ∧ ∀ t ∈ ballDom q, maDensity (fun (_ : Fin n) t' => ballPot q t' / 2) t = c * ballDens q t := by
   classical

@@ -10,6 +10,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FrameIsom
 
+/- English proof (translation)
+Introduce `D γ hγ Λ₁ Λ₂ hΛ T F hF`. Substitute `hΛ` using the available equality. Establish `e : mapLF γ F = PI.RepsIndep.Tr.mapL γ hγ F`. Unfold `mapLF`. Rewrite using `[dif_pos hγ]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `PI.RepsIndep.Tr.FrameOK_map hγ hF`.
+-/
 theorem frameOK_mapLF : ∀ (D : D7) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V), γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT →
     ∀ (Λ₁ Λ₂ : Submodule (𝓞 D.host.E) (VS D).V), Formalism.HermitianLatticesTheory.gmap γ Λ₁ = Λ₂ →
     ∀ (T : D.host.E) (F : LFlag (VS D) D.R.rS T), FrameOK D Λ₁ F → FrameOK D Λ₂ (mapLF γ F) := by

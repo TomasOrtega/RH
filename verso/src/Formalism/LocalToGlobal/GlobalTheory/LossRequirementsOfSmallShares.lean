@@ -13,11 +13,20 @@ section AtRecord
 
 variable {D : D7} {L : SizeData₂ D} (X : G.Inst D L) (K : G.Consts)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cands_eq : cands L K = sAt L K := rfl
 
+/- English proof (translation)
+Simplify using `[SizeData₂.lifts]`.
+-/
 theorem card_lifts (D : D7) : (SizeData₂.lifts D).card = D.R.m := by
   simp [SizeData₂.lifts]
 
+/- English proof (translation)
+Establish `h` using `pb_sum_TTv (D := D) (fun _ => (1 : ℝ))`. Simplify using `only [Finset.sum_const, nsmul_eq_mul, mul_one, Finset.card_univ, Fintype.card_coe] at h`. Conclude with `h` after adjusting the coercions.
+-/
 theorem card_TTv (D : D7) : (TTv D).card = D.host.TT.card := by
   have h := pb_sum_TTv (D := D) (fun _ => (1 : ℝ))
   simp only [Finset.sum_const, nsmul_eq_mul, mul_one, Finset.card_univ, Fintype.card_coe] at h
@@ -25,6 +34,11 @@ theorem card_TTv (D : D7) : (TTv D).card = D.host.TT.card := by
 
 open Classical in
 
+/- English proof (translation)
+Establish `h` using `pb_sum_TTv (D := D) (fun n => if badAt X p n then (1 : ℝ) else 0)`. Rewrite `h` using `[Finset.sum_boole]`. Establish `h2 : (∑ t : D.host.TT, if badAt X p (t : D.R.A).val then (1 : ℝ) else 0) = ((badTops X p).card : ℝ)`. Rewrite using `[badTops, Finset.card_filter]`. Use `push_cast`.
+
+Rewrite using `[← Finset.sum_coe_sort D.host.TT]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [badAt, pb_cast]`. Conclude with `h.trans h2` after adjusting the coercions.
+-/
 theorem bad_card_at (p : ℕ) : ((TTv D).filter (fun n => badAt X p n)).card = (badTops X p).card := by
   have h := pb_sum_TTv (D := D) (fun n => if badAt X p n then (1 : ℝ) else 0)
   rw [Finset.sum_boole] at h
@@ -38,6 +52,23 @@ theorem bad_card_at (p : ℕ) : ((TTv D).filter (fun n => badAt X p n)).card = (
 
 end AtRecord
 
+/- English proof (translation)
+Introduce `D L X K Cr C bo P H hG tie hbo hLa hp0 hTT hB hW`. Take `⟨-, -, -, -, -, -, -, ea, -, eθ⟩` from `side_at X K Cr C bo H P tie hbo hLa hp0`. Establish `hx0 : 0 < L.sc.x` using `lt_trans one_pos L.sc.one_lt_alt`. Establish `hSig : ∀ p, 0 ≤ G.Sig X K (G.aL L) (G.bL L) p` using `fun p => Lnk.Sig_nonneg X K H.Knn H.kapI _ _ p`. Use `⟨?_, ?_, fun p _ => hSig p, ?_, ?_, ?_, fun _ => ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Unfold `TTv`. Conclude with `hTT.image _`. Introduce `p hp`. Take `⟨h1, h2⟩` from `mem_PsAt hp`. Conclude with `⟨h1, fun h => two_not_inert _ (h ▸ h2)⟩`.
+
+Unfold `ChW_at at hW`. Unfold `lhsW`. Rewrite using `[eθ, tie.x, ← cands_eq]`. Establish `e9 : L.sc.x ^ (-9 : ℝ) = (L.sc.x ^ 9)⁻¹`. Rewrite using `[Real.rpow_neg hx0.le]`.
+
+Use `congr 1`. Conclude with `Real.rpow_natCast L.sc.x 9` after adjusting the coercions. Rewrite using `[← e9]`. Conclude with `hW`. Unfold `ChBadp_at at hB`.
+
+Unfold `badPrimeLogWeightedCount`. Rewrite using `[card_TTv, tie.x, tie.ε]`. Simplify using `only [bad_card_at]`. Conclude with `hB`. Introduce `_ p _`.
+
+Establish `h` using `Lnk.ioP_le X K p (hG.2.1 p) (hSig p)`. Rewrite using `[card_lifts, card_TTv, ea]`. Conclude with `h`. Conclude with `lossHyp_at X K Cr C bo H hG P tie hbo hLa hp0`. Conclude with `firstHyp_at X K Cr C bo H (T_not_inert _) P tie`.
+
+Introduce `p _ h`. Take `⟨h1, h2⟩` from `second_spec X K p h`. Rewrite using `[eθ]`. Conclude with `⟨(mem_sAt K).mpr h1, h2⟩`. Introduce `p hp h n hn`.
+
+Establish `hn' : n ∈ TTv D ∧ n ∉ (ldAt X K C bo).TTp p`. Simplify `hn` using `only [Finset.mem_sdiff]`. Conclude with `unserved_bad X K Cr C bo H (T_not_inert _) p hp h n (Finset.mem_sdiff.mpr hn')`.
+-/
 theorem loss_setting_family : LossSettingFamily := by
   classical
   intro D L X K Cr C bo P H hG tie hbo hLa hp0 hTT hB hW
@@ -83,6 +114,35 @@ section Family
 
 variable {eps : ℝ} (Fm : FamP eps)
 
+/- English proof (translation)
+Take `⟨Cord, hCord, hJ⟩` from `joint_discriminant_eventually`. Take `⟨xT, hTT⟩` from `hTT`. Take `⟨xB, hBad⟩` from `hBad`. Take `⟨C, xG, δ, hδ, hG⟩` from `hG`. Take `⟨xA, hAsk⟩` from `Lnk.askIsF Fm`.
+
+Take `⟨e, K, x0, hW⟩` from `windows_ev Fm C 0 Cord hCord δ hδ`. Establish `heps : 0 < eps` using `Lnk.fam_eps_pos Fm`. Establish `heps4 : eps < 1 / 4`. Take `⟨i⟩` from `Fm.Ix_zero`. Use `(Fm.L 0 i).sc.eps_lt` as an intermediate fact.
+
+Rewrite `this` using `[Fm.L_eps 0 i]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨x1, hJ'⟩` from `hJ eps e K heps heps4`. Use `⟨3 * |K| + 13, max (max x0 xT) (max xB (max xG (max xA x1))), by positivity, fun x hxx i hWi => ?_⟩` and prove the remaining obligations. Establish `e0 : x ≥ x0` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hxx`.
+
+Establish `eT : x ≥ xT` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hxx`. Establish `eB : x ≥ xB` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hxx`. Establish `eG : x ≥ xG` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hxx`. Establish `eA : x ≥ xA` using `le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hxx`. Establish `e1 : x1 ≤ x` using `le_trans (le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hxx`.
+
+Take `⟨hx, h3, hW⟩` from `hW x e0`. Take `⟨hW, hp0⟩` from `hW i`. Use `set bo : ℝ := (Fm.L x i).sc.b ^ δ x with hbo`. Establish `hbo0 : 0 ≤ bo` using `Real.rpow_nonneg (Real.exp_pos _).le _`. Use `set P : Par := par Fm x i C bo 0 Cord with hP`.
+
+Establish `tie : ParTie P (Fm.L x i) Fm.GK C bo Fm.Cr` using `parTie (i0 := i) hx i C bo 0 Cord`. Establish `hH : PtH (Fm.Gx x i) Fm.GK Fm.Cr` using `ptH Fm hx h3 i`. Establish `hLa : 0 ≤ (Fm.L x i).LaG`. Establish `h1` using `(Fm.sizes x hx i).2.2.2.2.2.2.2.2.1.1`. Conclude with `le_trans (Real.rpow_nonneg (lt_trans one_pos (Fm.L x i).sc.one_lt_alt).le _) h1`.
+
+Establish `hne : (Fm.D x i).host.TT.Nonempty`. Rewrite using `[← Finset.card_pos]`. Establish `h1` using `(hTT x eT i).1`. Establish `hx0 : 0 < (Fm.L x i).sc.x` using `lt_trans one_pos (Fm.L x i).sc.one_lt_alt`. Establish `h2 : 0 < (Fm.L x i).sc.delta1 * (Fm.D x i).R.n / 2`.
+
+Establish `: 0 < (Fm.L x i).sc.delta1` using `Real.rpow_pos_of_pos hx0 _`. Establish `h4 : (0 : ℝ) < (Fm.D x i).R.n` using `lt_of_lt_of_le one_pos (Lnk.one_le_n _)`. Check the signs of the components of the expression. Conclude with `lt_of_lt_of_le h2 h1` after adjusting the coercions. Establish `hS` using `loss_setting_family (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Fm.GK Fm.Cr C bo P hH (hG x eG i) tie hbo0 hLa hp0 hne (hBad x eB i) hWi`.
+
+Establish `hPx : P.x = x` using `Fm.L_x x i hx`. Establish `hPe : P.ε = eps` using `Fm.L_eps x i`. Take `⟨hc1, hc2⟩` from `hJ' P hPe rfl (by rw [hPx]; exact e1) (discriminant_windows_of P e K hW) ℕ ℕ ℕ Unit _ _ _ _ _ _ _ _ _ hS`. Establish `hPC0 : 0 ≤ P.C` using `le_max_right _ _`. Establish `hPCK : P.C ≤ K` using `hW.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+
+Establish `hU : unitU P (SizeData₂.lifts (Fm.D x i)).card (TTv (Fm.D x i)).card = ((Fm.D x i).host.TT.card : ℝ) * (Fm.D x i).R.m * (Fm.L x i).sc.b`. Unfold `unitU`. Rewrite using `[card_lifts, card_TTv, pd_b tie]`. Establish `hU0 : 0 ≤ ((Fm.D x i).host.TT.card : ℝ) * (Fm.D x i).R.m * (Fm.L x i).sc.b` using `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (Real.exp_pos _).le`. Establish `hone : (Fm.L x i).sc.x ^ ((0 : ℝ) * (Fm.L x i).sc.eps) = 1` using `by rw [zero_mul, Real.rpow_zero]`.
+
+Establish `hKabs : K ≤ |K|` using `le_abs_self K`. Establish `hbig : (3 * P.C + 13) * (((Fm.D x i).host.TT.card : ℝ) * (Fm.D x i).R.m * (Fm.L x i).sc.b) ≤ (3 * |K| + 13) * (Fm.D x i).host.TT.card * (Fm.D x i).R.m * (Fm.L x i).sc.b * (Fm.L x i).sc.x ^ ((0 : ℝ) * (Fm.L x i).sc.eps)`. Rewrite using `[hone, mul_one]`. Use `mul_le_mul_of_nonneg_right (show 3 * P.C + 13 ≤ 3 * |K| + 13 by linarith) hU0` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Establish `hsmall : ((Fm.D x i).host.TT.card : ℝ) * (Fm.D x i).R.m * (Fm.L x i).sc.b ≤ (3 * P.C + 13) * (((Fm.D x i).host.TT.card : ℝ) * (Fm.D x i).R.m * (Fm.L x i).sc.b)`. Use `mul_le_mul_of_nonneg_right (show (1 : ℝ) ≤ 3 * P.C + 13 by linarith) hU0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Establish `h2` using `hc2 ()`.
+
+Rewrite `h2` using `[IO_at (Fm.Gx x i) Fm.GK Fm.Cr hH, hU]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `e' m' AD N TT' a w hr hAD hcut`. Rewrite using `[hAsk x eA i e' m' AD N TT' a w hr hAD hcut]`. Establish `h1` using `hc1 ()`.
+
+Rewrite `h1` using `[Ga_at (Fm.Gx x i) Fm.GK Fm.Cr C bo hH, hU, tie.d, ASK_at (Fm.Gx x i) Fm.GK Fm.Cr C bo hH]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem losses_of_small_share_weight (hTT : ChosenTT Fm) (hBad : ChosenBadp Fm) (hG : LinkG Fm) : Lnk.LossesSmallShares Fm := by
   classical
   obtain ⟨Cord, hCord, hJ⟩ := joint_discriminant_eventually
@@ -162,14 +222,35 @@ theorem losses_of_small_share_weight (hTT : ChosenTT Fm) (hBad : ChosenBadp Fm) 
 
 end Family
 
+/- English proof (translation)
+Introduce `_ Fm h1 h2 h3` and use `losses_of_small_share_weight Fm h1 h2 h3`.
+-/
 theorem stLoss7 : ThickDensitySizeWindowsForAllFamilies := fun _ Fm h1 h2 h3 => losses_of_small_share_weight Fm h1 h2 h3
 
+/- English proof (translation)
+Introduce `_ Fm h1 h2 hW h3` and use `Lnk.lossF_of_7W Fm (losses_of_small_share_weight Fm h1 h2 h3) hW`.
+-/
 theorem stLoss7W : StLoss7W := fun _ Fm h1 h2 hW h3 => Lnk.lossF_of_7W Fm (losses_of_small_share_weight Fm h1 h2 h3) hW
 
 section Size
 
 variable {D : D7} {L : SizeData₂ D}
 
+/- English proof (translation)
+Establish `hx1 : 1 < L.sc.x` using `L.sc.one_lt_alt`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `he0 : 0 < L.sc.eps` using `L.sc.eps_pos`. Establish `he1 : L.sc.eps < 1 / 52` using `L.sc.eps_lt`. Establish `hδ : L.sc.delta1 = L.sc.x ^ (-(L.sc.eps / 8))` using `rfl`.
+
+Establish `hA : 2 / L.sc.x ^ (-L.sc.eps) + 4 ≤ 6 * L.sc.x ^ L.sc.eps`. Rewrite using `[Real.rpow_neg hx0.le, div_inv_eq_mul]`. Establish `: 1 ≤ L.sc.x ^ L.sc.eps` using `Real.one_le_rpow hx1.le he0.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm : (D.R.m : ℝ) ≤ L.sc.x ^ (L.sc.eps / 100 + (1 - L.sc.eps / 8) / 2)`.
+
+Establish `h` using `sM.2`. Unfold `szTh at h`. Rewrite `h` using `[hδ]`. Establish `hs : Real.sqrt (L.sc.x * L.sc.x ^ (-(L.sc.eps / 8))) = L.sc.x ^ ((1 - L.sc.eps / 8) / 2)`. Rewrite using `[Real.sqrt_eq_rpow, show L.sc.x * L.sc.x ^ (-(L.sc.eps / 8)) = L.sc.x ^ (1 - L.sc.eps / 8) by`.
+
+Rewrite using `[sub_eq_add_neg, Real.rpow_add hx0, Real.rpow_one], ← Real.rpow_mul hx0.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hs, ← Real.rpow_add hx0]`. Conclude with `h`.
+
+Establish `hT : (D.host.TT.card : ℝ) ≤ 2 * L.sc.x ^ (2 + 8 * L.sc.eps + L.sc.eps / 100) * L.sc.x ^ (-(L.sc.eps / 8))`. Establish `h1` using `sTT.2`. Establish `h2` using `sN.2`. Unfold `szNst at h1`. Unfold `szTh at h2`.
+
+Rewrite `h1` using `[hδ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hprod : L.sc.x ^ L.sc.eps * L.sc.x ^ (L.sc.eps / 100 + (1 - L.sc.eps / 8) / 2) * L.sc.x ^ (2 + 8 * L.sc.eps + L.sc.eps / 100) * L.sc.x ^ (-(L.sc.eps / 8)) * L.sc.x ^ (-12 : ℝ) * L.sc.x ^ (L.sc.eps / 3) = L.sc.x ^ (L.sc.eps + (L.sc.eps / 100 + (1 - L.sc.eps / 8) / 2) + (2 + 8 * L. …`. Simplify using `only [Real.rpow_add hx0]`. Establish `hexp : (1 / 4 : ℝ) + (L.sc.eps + (L.sc.eps / 100 + (1 - L.sc.eps / 8) / 2) + (2 + 8 * L.sc.eps + L.sc.eps / 100) + -(L.sc.eps / 8) + (-12 : ℝ) + L.sc.eps / 3) ≤ -9` using `by linarith`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hprod, ← Real.rpow_add hx0]`. Use `_ ≤ L.sc.x ^ (-9 : ℝ) := Real.rpow_le_rpow_of_exponent_le hx1.le hexp`.
+-/
 theorem size_alt_alt (sN : SizeN L) (sM : SizeM L) (sTT : SizeTT L) (h24 : 24 ≤ L.sc.x ^ ((1 : ℝ) / 4)) :
     (2 / L.sc.x ^ (-L.sc.eps) + 4) * ((D.R.m : ℝ) * (D.host.TT.card : ℝ) * L.sc.x ^ (-12 : ℝ)) *
       (2 * L.sc.x ^ (L.sc.eps / 3)) ≤ L.sc.x ^ (-9 : ℝ) := by
@@ -227,6 +308,9 @@ theorem size_alt_alt (sN : SizeN L) (sM : SizeM L) (sTT : SizeTT L) (h24 : 24 �
 
 end Size
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h2` using `Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty (fun o _ => hc o)`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_le_of_sum {Ω : Type} [Fintype Ω] [Nonempty Ω] (F : Ω → ℝ) (B : ℝ)
     (h : ∑ o, F o ≤ (Fintype.card Ω : ℝ) * B) : ∃ o, F o ≤ B := by
   by_contra hc
@@ -235,6 +319,11 @@ theorem exists_le_of_sum {Ω : Type} [Fintype Ω] [Nonempty Ω] (F : Ω → ℝ)
   simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at h2
   linarith
 
+/- English proof (translation)
+Use `split_ifs with h`. Establish `h2 : 2 ≤ 2 / θ * s`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hθ]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[add_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : 0 ≤ 2 / θ * s` using `by positivity`. Rewrite using `[add_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem term_le (θ s : ℝ) (hθ : 0 < θ) (hs : 0 ≤ s) : ((if θ < s then 2 else 0) + 4 * s : ℝ) ≤ (2 / θ + 4) * s := by
   split_ifs with h
   · have h2 : 2 ≤ 2 / θ * s := by
@@ -250,6 +339,31 @@ section Family
 
 variable {eps : ℝ} (Fm : FamP eps)
 
+/- English proof (translation)
+Take `⟨C, xG, δ, -, hG⟩` from `hG`. Take `⟨a24, -, h24⟩` from `Lnk.ev_le_rpow ((1 : ℝ) / 4) (by norm_num) 24`. Use `⟨max (Fm.x1 + 1) (max xG a24), fun x hxx hxWin => ?_⟩` and prove the remaining obligations. Establish `hx : Fm.x1 < x`. Use `le_trans (le_max_left _ _) hxx` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `eG : x ≥ xG` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hxx`. Establish `e24 : x ≥ a24` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hxx`. Take `⟨i0⟩` from `Fm.Ix_win x hxWin`. Establish `h4 : G.MeanKappaBound (Fm.Gx x i0) Fm.GK` using `(hG x eG i0).2.2.2.2`.
+
+Use `Lnk.wt_nonempty (i0 := i0) hx` as an intermediate fact. Establish `hsx` using `Fm.L_x x i0 hx`. Establish `hx0 : 0 < (Fm.L x i0).sc.x` using `lt_trans one_pos (Fm.L x i0).sc.one_lt_alt`. Establish `hcard : (0 : ℝ) < (Fintype.card (Lnk.Wt Fm x i0) : ℝ)` using `by exact_mod_cast Fintype.card_pos`. Use `set θ : ℝ := (Fm.L x i0).sc.x ^ (-(Fm.L x i0).sc.eps) with hθ`.
+
+Establish `hθ0 : 0 < θ` using `Real.rpow_pos_of_pos hx0 _`. Use `set s0 : ℝ := ((Fm.D x i0).R.m : ℝ) * ((Fm.D x i0).host.TT.card : ℝ) * (Fm.L x i0).sc.x ^ (-12 : ℝ) with hs0`. Establish `hs00 : 0 ≤ s0` using `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (Real.rpow_nonneg hx0.le _)`. Establish `hA0 : 0 ≤ 2 / θ + 4`. Establish `: 0 ≤ 2 / θ` using `div_nonneg (by norm_num) hθ0.le`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hSig : ∀ p (o : Lnk.Wt Fm x i0), 0 ≤ SigO p o` using `fun p o => Lnk.Sig_nonneg (Fm.Gx x i0) Fm.GK Fm.GK_nonneg (Fm.ex x hx i0).kapI_def _ _ p`. Establish `hlp : ∀ p : ℕ, 0 ≤ Real.log (p : ℝ) / p` using `fun p => div_nonneg (Real.log_natCast_nonneg p) (Nat.cast_nonneg p)`. Establish `hX' : (Fm.L x i0).sc.X' = Real.exp ((Fm.L x i0).sc.x ^ ((Fm.L x i0).sc.eps / 3))` using `rfl`. Establish `hM : ∑ p ∈ sAt (Fm.L x i0) Fm.GK, Real.log (p : ℝ) / p ≤ 2 * (Fm.L x i0).sc.x ^ ((Fm.L x i0).sc.eps / 3)`.
+
+Establish `h1` using `Formalism.L2.GlobalTheoryTheory.Places.mertens (Fm.L x i0).sc.X' (pd_one_le_X' _)`. Rewrite `h1` using `[hX', Real.log_exp, ← hX']`. Use `le_trans (Finset.sum_le_sum_of_subset_of_nonneg ?_ (fun p _ _ => hlp p)) h1` and prove the remaining obligations. Introduce `p hp`. Establish `hc` using `(mem_sAt Fm.GK).mp hp`.
+
+Conclude with `Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (Nat.lt_ceil.mpr hc.2.1), hc.1⟩`. Establish `hsum : ∑ o : Lnk.Wt Fm x i0, lhsW (sAt (Fm.L x i0) Fm.GK) θ (fun p => SigO p o) ≤ (Fintype.card (Lnk.Wt Fm x i0) : ℝ) * ((2 / θ + 4) * s0 * (2 * (Fm.L x i0).sc.x ^ ((Fm.L x i0).sc.eps / 3)))`. Establish `t1 : ∑ o : Lnk.Wt Fm x i0, lhsW (sAt (Fm.L x i0) Fm.GK) θ (fun p => SigO p o) ≤ ∑ o : Lnk.Wt Fm x i0, ∑ p ∈ sAt (Fm.L x i0) Fm.GK, Real.log (p : ℝ) / p * ((2 / θ + 4) * SigO p o)`. Use `Finset.sum_le_sum fun o _ => ?_` and prove the remaining obligations. Unfold `lhsW`.
+
+Conclude with `Finset.sum_le_sum fun p _ => mul_le_mul_of_nonneg_left (term_le θ _ hθ0 (hSig p o)) (hlp p)`. Establish `t2 : ∑ o : Lnk.Wt Fm x i0, ∑ p ∈ sAt (Fm.L x i0) Fm.GK, Real.log (p : ℝ) / p * ((2 / θ + 4) * SigO p o) = ∑ p ∈ sAt (Fm.L x i0) Fm.GK, Real.log (p : ℝ) / p * ((2 / θ + 4) * ∑ o : Lnk.Wt Fm x i0, SigO p o)`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+
+Establish `t3 : ∑ p ∈ sAt (Fm.L x i0) Fm.GK, Real.log (p : ℝ) / p * ((2 / θ + 4) * ∑ o : Lnk.Wt Fm x i0, SigO p o) ≤ ∑ p ∈ sAt (Fm.L x i0) Fm.GK, Real.log (p : ℝ) / p * ((2 / θ + 4) * (s0 * (Fintype.card (Lnk.Wt Fm x i0) : ℝ)))`. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Establish `hmean` using `mean_SigO hx h4 p ((mem_sAt Fm.GK).mp hp)`. Rewrite `hmean` using `[div_le_iff₀ hcard]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hmean hA0) (hlp p)`.
+
+Establish `t4 : ∑ p ∈ sAt (Fm.L x i0) Fm.GK, Real.log (p : ℝ) / p * ((2 / θ + 4) * (s0 * (Fintype.card (Lnk.Wt Fm x i0) : ℝ))) = ((2 / θ + 4) * (s0 * (Fintype.card (Lnk.Wt Fm x i0) : ℝ))) * ∑ p ∈ sAt (Fm.L x i0) Fm.GK, Real.log (p : ℝ) / p`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => mul_comm _ _`. Establish `t5` using `mul_le_mul_of_nonneg_left hM (show 0 ≤ (2 / θ + 4) * (s0 * (Fintype.card (Lnk.Wt Fm x i0) : ℝ)) from mul_nonneg hA0 (mul_nonneg hs00 hcard.le))`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨o, ho⟩` from `exists_le_of_sum _ _ hsum`. Establish `hS` using `Fm.sizes x hx i0`. Establish `hsize` using `size_alt_alt hS.1 hS.2.1 hS.2.2.2.2.2.2.2.1 (by rw [hsx]; exact h24 x e24)`. Use `⟨i0, Lnk.avOf o, Lnk.bvOf o, Lnk.admissible_weight_of_vector o, fun i hi => ?_⟩` and prove the remaining obligations. Unfold `ChW_at`.
+
+Rewrite using `[cands_eq, sAt_eq (i0 := i0) hx i, Lnk.sc_eq Fm hx i i0]`. Simplify using `only [Sig_eq hx i o hi]`. Conclude with `le_trans ho hsize`.
+-/
 theorem chosenW_of (hG : LinkG Fm) : ChosenW Fm := by
   obtain ⟨C, xG, δ, -, hG⟩ := hG
   obtain ⟨a24, -, h24⟩ := Lnk.ev_le_rpow ((1 : ℝ) / 4) (by norm_num) 24
@@ -328,12 +442,18 @@ theorem chosenW_of (hG : LinkG Fm) : ChosenW Fm := by
   simp only [Sig_eq hx i o hi]
   exact le_trans ho hsize
 
+/- English proof (translation)
+Take `⟨C5, c6, Cb, h5, h6, hb, hT2, hTT, hBad, hQD, hThin, hPr, hCode⟩` from `h`. Conclude with `⟨C5, c6, h5, h6, Lnk.thick_density_of_construction Fm hT2, hTT, Lnk.chosenBadp_of_old Fm Cb hb.le hTT hBad, chosenWS_of_cover (Fm := Fm) (chosenW_of Fm hG) hc, hQD, hThin, hPr, hCode⟩`.
+-/
 theorem loss_requirements_of_local_input (C0 CH : ℝ) (h : ChosenE Fm C0 CH) (hG : LinkG Fm) (hc : Fm.CoverAll) :
     WeightVectorSmallSharesSeven Fm C0 CH := by
   obtain ⟨C5, c6, Cb, h5, h6, hb, hT2, hTT, hBad, hQD, hThin, hPr, hCode⟩ := h
   exact ⟨C5, c6, h5, h6, Lnk.thick_density_of_construction Fm hT2, hTT, Lnk.chosenBadp_of_old Fm Cb hb.le hTT hBad,
     chosenWS_of_cover (Fm := Fm) (chosenW_of Fm hG) hc, hQD, hThin, hPr, hCode⟩
 
+/- English proof (translation)
+Take `⟨C5, c6, Cb, h5, h6, hb, hT2, hTT, hBad, hQD, hThin, hPr, hCode⟩` from `h`. Conclude with `⟨C5, c6, h5, h6, Lnk.thick_density_of_construction Fm hT2, hTT, Lnk.chosenBadp_of_old Fm Cb hb.le hTT hBad, chosenWS_of_wall (Fm := Fm) hW, hQD, hThin, hPr, hCode⟩`.
+-/
 theorem loss_requirements_of_small_shares (C0 CH : ℝ) (h : ChosenE Fm C0 CH) (hW : ChosenWall Fm) : WeightVectorSmallSharesSeven Fm C0 CH := by
   obtain ⟨C5, c6, Cb, h5, h6, hb, hT2, hTT, hBad, hQD, hThin, hPr, hCode⟩ := h
   exact ⟨C5, c6, h5, h6, Lnk.thick_density_of_construction Fm hT2, hTT, Lnk.chosenBadp_of_old Fm Cb hb.le hTT hBad,
@@ -341,10 +461,19 @@ theorem loss_requirements_of_small_shares (C0 CH : ℝ) (h : ChosenE Fm C0 CH) (
 
 end Family
 
+/- English proof (translation)
+Introduce `_ Fm hG` and use `chosenW_of Fm hG`.
+-/
 theorem small_share_weight_exists : SmallShareWeightExists := fun _ Fm hG => chosenW_of Fm hG
 
+/- English proof (translation)
+Introduce `_ Fm C0 CH h hG hc` and use `loss_requirements_of_local_input Fm C0 CH h hG hc`.
+-/
 theorem stOld7 : StOld7 := fun _ Fm C0 CH h hG hc => loss_requirements_of_local_input Fm C0 CH h hG hc
 
+/- English proof (translation)
+The claim follows from `stLoss7 eps Fm`.
+-/
 example {eps : ℝ} (Fm : FamP eps) : ChosenTT Fm → ChosenBadp Fm → LinkG Fm → Lnk.LossesSmallShares Fm := stLoss7 eps Fm
 
 end Formalism.L2.GlobalTheoryTheory.Loss7

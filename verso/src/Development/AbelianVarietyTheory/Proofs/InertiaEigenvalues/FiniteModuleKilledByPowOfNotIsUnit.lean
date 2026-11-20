@@ -17,6 +17,17 @@ open TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O _ _ lam hlam X _ _ _`. Take `⟨n, hn⟩` from `IsArtinian.range_smul_pow_stabilizes (R := O) X lam`. Use `set Y : Submodule O X := LinearMap.range (lam ^ n • (LinearMap.id : X →ₗ[O] X)) with hY`. Establish `hFG : Y.FG` using `Module.Finite.iff_fg.mp inferInstance`. Establish `hle : Y ≤ Ideal.span {lam} • Y`.
+
+Introduce `y hy`. Establish `hy' : y ∈ LinearMap.range (lam ^ (n + 1) • (LinearMap.id : X →ₗ[O] X))`. Rewrite using `[← hn (n + 1) (Nat.le_succ n)]`. Conclude with `hy`. Take `⟨x, rfl⟩` from `hy'`.
+
+Establish `hmem : lam ^ n • x ∈ Y` using `⟨x, by simp⟩`. Establish `: (lam ^ (n + 1) • (LinearMap.id : X →ₗ[O] X)) x = lam • (lam ^ n • x)`. Simplify using `[pow_succ', mul_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self lam) hmem`.
+
+Establish `hjac : Ideal.span {lam} ≤ (⊥ : Ideal O).jacobson`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `(IsLocalRing.mem_maximalIdeal lam).mpr hlam`. Establish `hbot : Y = ⊥` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ Y hFG hle hjac`. Use `⟨n, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `: lam ^ n • x ∈ Y` using `⟨x, by simp⟩`. Rewrite `this` using `[hbot]`. Simplify using `using this`.
+-/
 theorem finite_module_killed_by_pow_of_not_isUnit :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] (lam : O), ¬ IsUnit lam →
     ∀ (X : Type) [AddCommGroup X] [Module O X] [Finite X], ∃ a : ℕ, ∀ x : X, lam ^ a • x = 0 := by

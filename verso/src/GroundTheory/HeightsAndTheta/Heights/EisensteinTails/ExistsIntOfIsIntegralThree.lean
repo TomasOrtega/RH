@@ -34,11 +34,17 @@ def Kfield (d : ℕ) : IntermediateField ℚ ℂ := IntermediateField.adjoin ℚ
 
 abbrev K (d : ℕ) : Type := ↥(Kfield d)
 
+/- English proof (translation)
+Rewrite using `[sqrtNeg, mul_pow, I_sq, ← ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg d)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sqrtNeg_sq (d : ℕ) : sqrtNeg d ^ 2 = -(d : ℂ) := by
   rw [sqrtNeg, mul_pow, I_sq, ← ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg d)]
   push_cast
   ring
 
+/- English proof (translation)
+Use `⟨Polynomial.X ^ 2 + Polynomial.C (d : ℚ), Polynomial.monic_X_pow_add_C _ two_ne_zero, ?_⟩` and prove the remaining obligations. Simplify using `[Polynomial.eval₂_add, Polynomial.eval₂_X_pow, sqrtNeg_sq]`.
+-/
 theorem isIntegral_sqrtNeg (d : ℕ) : IsIntegral ℚ (sqrtNeg d) := by
   refine ⟨Polynomial.X ^ 2 + Polynomial.C (d : ℚ), Polynomial.monic_X_pow_add_C _ two_ne_zero, ?_⟩
   simp [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, sqrtNeg_sq]
@@ -107,6 +113,9 @@ def corePi {ι : Type*} [Fintype ι] {V : ι → Type*} [∀ c, AddCommGroup (V 
     exact (Finset.sum_eq_zero_iff_of_nonneg (fun c _ ↦ (h c).re_inner_nonneg (x c))).1 hre c
       (Finset.mem_univ c)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem corePi_inner {ι : Type*} [Fintype ι] {V : ι → Type*} [∀ c, AddCommGroup (V c)]
     [∀ c, Module ℂ (V c)] (h : ∀ c, InnerProductSpace.Core ℂ (V c)) (x y : ∀ c, V c) :
     (corePi h).inner x y = ∑ c, (h c).inner (x c) (y c) := rfl
@@ -118,6 +127,11 @@ def fibrePi (σ : K' →+* ℂ) {ι : Type*} [Fintype ι] [DecidableEq ι] (E : 
     Fibre σ (∀ c, E c) ≃ₗ[ℂ] ∀ c, Fibre σ (E c) :=
   (TensorProduct.piRight (𝓞 K') (ComplexAt σ) (ComplexAt σ) E).restrictScalars ℂ
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => funext c`. Simplify using `only [map_zero, Pi.zero_apply]`. Consider the case `tmul z v => rfl`. Consider the case `add x y hx hy`.
+
+Rewrite using `[map_add, map_add, hx, hy, map_add]`. Use function extensionality and compare the values at `c`. Simplify using `only [Pi.add_apply, map_add]`.
+-/
 theorem fibrePi_conjMap (σ : K' →+* ℂ) {ι : Type*} [Fintype ι] [DecidableEq ι] (E : ι → Type*)
     [∀ c, AddCommGroup (E c)] [∀ c, Module (𝓞 K') (E c)] (x : Fibre σ (∀ c, E c)) :
     fibrePi (conjugate σ) E (conjMap σ (∀ c, E c) x) =
@@ -151,6 +165,9 @@ def formScale {E : Type*} [AddCommGroup E] [Module (𝓞 K') E] [Module.Finite (
     HermitianMetric K' E :=
   h.scale (Real.sqrt t) (Real.sqrt_pos.2 ht)
 
+/- English proof (translation)
+The claim follows from `div_pos (hvol c) (lt_of_lt_of_le (hvol c) (Finset.single_le_sum (fun i _ ↦ (hvol i).le) (Finset.mem_univ c)))`.
+-/
 theorem volFrac_pos {ι : Type*} [Fintype ι] {vol : ι → ℝ} (hvol : ∀ c, 0 < vol c) (c : ι) :
     0 < vol c / ∑ c', vol c' :=
   div_pos (hvol c) (lt_of_lt_of_le (hvol c)
@@ -294,12 +311,24 @@ section Inhabitants
 
 instance fact_prime_seven : Fact (Nat.Prime 7) := ⟨by norm_num⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨Nat.prime_three, rfl⟩, ⟨by norm_num, rfl⟩⟩`.
+-/
 example : (Nat.Prime 3 ∧ 3 % 4 = 3) ∧ (Nat.Prime 7 ∧ 7 % 4 = 3) :=
   ⟨⟨Nat.prime_three, rfl⟩, ⟨by norm_num, rfl⟩⟩
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : NumberField (K 3) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : NumberField (K 7) := inferInstance
 
+/- English proof (translation)
+Establish `hsq : ¬ IsSquare (-1 : ZMod d)`. Rewrite using `[FiniteField.isSquare_neg_one_iff, ZMod.card]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `quadraticChar_neg_one_iff_not_isSquare.2 hsq`. Simplify using `only [chi, MulChar.ringHomComp_apply, h, map_neg, map_one]`.
+-/
 theorem chi_neg_one_of_mod_four (d : ℕ) [Fact d.Prime] (hd : d % 4 = 3) : chi d (-1) = -1 := by
   have hsq : ¬ IsSquare (-1 : ZMod d) := by
     rw [FiniteField.isSquare_neg_one_iff, ZMod.card]
@@ -307,6 +336,11 @@ theorem chi_neg_one_of_mod_four (d : ℕ) [Fact d.Prime] (hd : d % 4 = 3) : chi 
   have h := quadraticChar_neg_one_iff_not_isSquare.2 hsq
   simp only [chi, MulChar.ringHomComp_apply, h, map_neg, map_one]
 
+/- English proof (translation)
+Establish `hne : chi d ≠ 1`. Introduce `h`. Establish `h1` using `chi_neg_one_of_mod_four d hd`. Rewrite `h1` using `[h, MulChar.one_apply (isUnit_one.neg : IsUnit (-1 : ZMod d))]`. Evaluate the numerical expressions using `at h1`.
+
+Establish `hc : (chi d).conductor ≠ 1` using `fun h ↦ hne (DirichletCharacter.eq_one_iff_conductor_eq_one.2 h)`. Break down `(Nat.Prime.eq_one_or_self_of_dvd hp.out _ (DirichletCharacter.conductor_dvd_level (chi d))) with h | h` into its components or cases. Conclude with `absurd h hc`. Conclude with `h`.
+-/
 theorem chi_isPrimitive_of_mod_four (d : ℕ) [hp : Fact d.Prime] (hd : d % 4 = 3) :
     (chi d).IsPrimitive := by
   have hne : chi d ≠ 1 := by
@@ -319,6 +353,9 @@ theorem chi_isPrimitive_of_mod_four (d : ℕ) [hp : Fact d.Prime] (hd : d % 4 = 
   · exact absurd h hc
   · exact h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨chi_isPrimitive_of_mod_four 3 rfl, chi_isPrimitive_of_mod_four 7 rfl⟩`.
+-/
 example : (chi 3).IsPrimitive ∧ (chi 7).IsPrimitive :=
   ⟨chi_isPrimitive_of_mod_four 3 rfl, chi_isPrimitive_of_mod_four 7 rfl⟩
 
@@ -366,31 +403,49 @@ def quadSpan (d : ℕ) : IntermediateField ℚ ℂ where
       rw [e, h, div_eq_one_iff_eq hNc]
       ring
 
+/- English proof (translation)
+The claim follows from `IntermediateField.adjoin_simple_le_iff.2 ⟨0, 1, by simp⟩`.
+-/
 theorem Kfield_le_quadSpan (d : ℕ) : Kfield d ≤ quadSpan d :=
   IntermediateField.adjoin_simple_le_iff.2 ⟨0, 1, by simp⟩
 
+/- English proof (translation)
+The claim follows from `Kfield_le_quadSpan d x.2`.
+-/
 theorem exists_rat_of_mem (d : ℕ) (x : K d) :
     ∃ a b : ℚ, (x : ℂ) = (a : ℂ) + (b : ℂ) * sqrtNeg d :=
   Kfield_le_quadSpan d x.2
 
 def omegaC : ℂ := (-1 + sqrtNeg 3) / 2
 
+/- English proof (translation)
+Unfold `omegaC`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem omegaC_eq : omegaC = ((-1 / 2 : ℚ) : ℂ) + ((1 / 2 : ℚ) : ℂ) * sqrtNeg 3 := by
   unfold omegaC
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `[omegaC, sqrtNeg]`.
+-/
 theorem omegaC_im_pos : 0 < omegaC.im := by
   simp [omegaC, sqrtNeg]
 
 def omegaH : ℍ := ⟨omegaC, omegaC_im_pos⟩
 
+/- English proof (translation)
+Establish `h` using `sqrtNeg_sq 3`. Unfold `omegaC`. Move the coercions through the operations in `at h`. Take the linear combination `h / 4`.
+-/
 theorem omegaC_root : omegaC ^ 2 + omegaC + 1 = 0 := by
   have h := sqrtNeg_sq 3
   unfold omegaC
   push_cast at h
   linear_combination h / 4
 
+/- English proof (translation)
+Rewrite using `[omegaC_eq]`. Conclude with `add_mem (SubfieldClass.ratCast_mem _ _) (mul_mem (SubfieldClass.ratCast_mem _ _) (IntermediateField.mem_adjoin_simple_self ℚ _))`.
+-/
 theorem omegaC_mem : omegaC ∈ Kfield 3 := by
   rw [omegaC_eq]
   exact add_mem (SubfieldClass.ratCast_mem _ _)
@@ -398,6 +453,9 @@ theorem omegaC_mem : omegaC ∈ Kfield 3 := by
 
 def omegaK : K 3 := ⟨omegaC, omegaC_mem⟩
 
+/- English proof (translation)
+Use `⟨Polynomial.X ^ 2 + Polynomial.X + 1, by monicity!, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_one, IntermediateField.coe_add, IntermediateField.coe_pow, IntermediateField.coe_one, IntermediateField.coe_zero]`. Conclude with `omegaC_root`.
+-/
 theorem isIntegral_omegaK : IsIntegral ℤ omegaK := by
   refine ⟨Polynomial.X ^ 2 + Polynomial.X + 1, by monicity!, ?_⟩
   apply Subtype.ext
@@ -408,6 +466,9 @@ theorem isIntegral_omegaK : IsIntegral ℤ omegaK := by
 
 def omegaO : 𝓞 (K 3) := ⟨omegaK, isIntegral_omegaK⟩
 
+/- English proof (translation)
+Establish `e : (algebraMap ℚ ℂ).toIntAlgHom q = (q : ℂ)` using `by simp`. Establish `h' : IsIntegral ℤ q` using `(isIntegral_algHom_iff ((algebraMap ℚ ℂ).toIntAlgHom) (algebraMap ℚ ℂ).injective).1 (e ▸ h)`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h'`. Conclude with `⟨n, by rw [← hn]; simp⟩`.
+-/
 theorem rat_eq_int_of_isIntegral {q : ℚ} (h : IsIntegral ℤ (q : ℂ)) : ∃ n : ℤ, q = n := by
   have e : (algebraMap ℚ ℂ).toIntAlgHom q = (q : ℂ) := by simp
   have h' : IsIntegral ℤ q :=
@@ -415,6 +476,15 @@ theorem rat_eq_int_of_isIntegral {q : ℚ} (h : IsIntegral ℤ (q : ℂ)) : ∃ 
   obtain ⟨n, hn⟩ := IsIntegrallyClosed.isIntegral_iff.1 h'
   exact ⟨n, by rw [← hn]; simp⟩
 
+/- English proof (translation)
+Establish `hint : IsIntegral ℤ (3 * c)`. Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations. Establish `e : (3 * c) ^ 2 = algebraMap ℤ ℚ (3 * k)`. Simplify using `only [algebraMap_int_eq, eq_intCast, Int.cast_mul, Int.cast_ofNat]`. Take the linear combination `3 * h`.
+
+Rewrite using `[e]`. Conclude with `isIntegral_algebraMap`. Take `⟨j, hj⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Establish `hj' : (j : ℚ) = 3 * c` using `by simpa using hj`. Establish `hsq : j ^ 2 = 3 * k`.
+
+Establish `: ((j ^ 2 : ℤ) : ℚ) = ((3 * k : ℤ) : ℚ)`. Use `push_cast`. Rewrite using `[hj']`. Take the linear combination `3 * h`. Conclude with `this` after adjusting the coercions.
+
+Take `⟨j', rfl⟩` from `Prime.dvd_of_dvd_pow Int.prime_three (⟨k, hsq⟩ : (3 : ℤ) ∣ j ^ 2)`. Conclude with `⟨j', by push_cast at hj'; linarith⟩`.
+-/
 theorem int_of_three_mul_sq {c : ℚ} {k : ℤ} (h : 3 * c ^ 2 = k) : ∃ n : ℤ, c = n := by
   have hint : IsIntegral ℤ (3 * c) := by
     refine IsIntegral.of_pow two_pos ?_
@@ -434,6 +504,29 @@ theorem int_of_three_mul_sq {c : ℚ} {k : ℤ} (h : 3 * c ^ 2 = k) : ∃ n : �
   obtain ⟨j', rfl⟩ := Prime.dvd_of_dvd_pow Int.prime_three (⟨k, hsq⟩ : (3 : ℤ) ∣ j ^ 2)
   exact ⟨j', by push_cast at hj'; linarith⟩
 
+/- English proof (translation)
+Establish `hα` using `sqrtNeg_sq 3`. Establish `hconj : starRingEnd ℂ (sqrtNeg 3) = -sqrtNeg 3` using `by simp [sqrtNeg]`. Establish `hc : IsIntegral ℤ ((a : ℂ) - (b : ℂ) * sqrtNeg 3)`. Establish `e : (a : ℂ) - (b : ℂ) * sqrtNeg 3 = (starRingEnd ℂ).toIntAlgHom ((a : ℂ) + (b : ℂ) * sqrtNeg 3)`. Express the relevant statement in the definitionally equal form `_ = starRingEnd ℂ ((a : ℂ) + (b : ℂ) * sqrtNeg 3)`.
+
+Rewrite using `[map_add, map_mul, hconj, map_ratCast, map_ratCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h.map _`. Establish `hsum : IsIntegral ℤ (((2 * a : ℚ)) : ℂ)`.
+
+Establish `e : (((2 * a : ℚ)) : ℂ) = ((a : ℂ) + (b : ℂ) * sqrtNeg 3) + ((a : ℂ) - (b : ℂ) * sqrtNeg 3)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h.add hc`.
+
+Establish `hprod : IsIntegral ℤ (((a ^ 2 + 3 * b ^ 2 : ℚ)) : ℂ)`. Establish `e : (((a ^ 2 + 3 * b ^ 2 : ℚ)) : ℂ) = ((a : ℂ) + (b : ℂ) * sqrtNeg 3) * ((a : ℂ) - (b : ℂ) * sqrtNeg 3)`. Establish `hb2 : (b : ℂ) ^ 2 * sqrtNeg 3 ^ 2 = (b : ℂ) ^ 2 * (-3)`. Rewrite using `[hα]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `push_cast`. Take the linear combination `hb2`. Rewrite using `[e]`. Conclude with `h.mul hc`.
+
+Take `⟨m, hm⟩` from `rat_eq_int_of_isIntegral hsum`. Take `⟨N, hN⟩` from `rat_eq_int_of_isIntegral hprod`. Take `⟨c, hcq⟩` from `int_of_three_mul_sq (c := 2 * b) (k := 4 * N - m ^ 2) (by`. Use `push_cast`. Rewrite using `[← hN, ← hm]`.
+
+Use the proof step `ring)`. Establish `hmc : m ^ 2 + 3 * c ^ 2 = 4 * N`. Establish `: ((m ^ 2 + 3 * c ^ 2 : ℤ) : ℚ) = ((4 * N : ℤ) : ℚ)`. Use `push_cast`. Rewrite using `[← hm, ← hcq, ← hN]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Establish `hev : Even (m + c)`. Establish `hp : Even ((m + c) * (m - c))` using `⟨2 * (N - c ^ 2), by linear_combination hmc⟩`. Break down `Int.even_mul.1 hp with h1 | h1` into its components or cases.
+
+Conclude with `h1`. Establish `e : m + c = (m - c) + 2 * c` using `by ring`. Rewrite using `[e]`. Conclude with `h1.add (even_two_mul c)`. Take `⟨k, hk⟩` from `hev`.
+
+Use `⟨k, c, ?_⟩` and prove the remaining obligations. Establish `hmC : (2 : ℂ) * a = m` using `by exact_mod_cast hm`. Establish `hcC : (2 : ℂ) * b = c` using `by exact_mod_cast hcq`. Establish `hkC : (m : ℂ) + c = k + k` using `by exact_mod_cast hk`. Unfold `omegaC`.
+
+Take the linear combination `(1 / 2 : ℂ) * hmC + (sqrtNeg 3 / 2) * hcC + (1 / 2 : ℂ) * hkC`.
+-/
 theorem exists_int_of_isIntegral_three {a b : ℚ}
     (h : IsIntegral ℤ ((a : ℂ) + (b : ℂ) * sqrtNeg 3)) :
     ∃ m n : ℤ, (a : ℂ) + (b : ℂ) * sqrtNeg 3 = (m : ℂ) + (n : ℂ) * omegaC := by
@@ -492,6 +585,13 @@ theorem exists_int_of_isIntegral_three {a b : ℚ}
   unfold omegaC
   linear_combination (1 / 2 : ℂ) * hmC + (sqrtNeg 3 / 2) * hcC + (1 / 2 : ℂ) * hkC
 
+/- English proof (translation)
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨x', rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 (SetLike.mem_coe.1 hx)`. Take `⟨a, b, hab⟩` from `exists_rat_of_mem 3 (algebraMap (𝓞 (K 3)) (K 3) x')`.
+
+Establish `hint : IsIntegral ℤ (algebraMap (K 3) ℂ (algebraMap (𝓞 (K 3)) (K 3) x'))` using `(RingOfIntegers.isIntegral_coe x').map (IsScalarTower.toAlgHom ℤ (K 3) ℂ)`. Establish `e : algebraMap (K 3) ℂ (algebraMap (𝓞 (K 3)) (K 3) x') = (a : ℂ) + (b : ℂ) * sqrtNeg 3` using `hab`. Rewrite `hint`, the goal using `[e]`. Take `⟨m, n, hmn⟩` from `exists_int_of_isIntegral_three hint`. Conclude with `⟨m, n, by rw [hmn, one_mul]; rfl⟩`.
+
+Introduce and unpack `⟨m, n, rfl⟩`. Use `⟨algebraMap (𝓞 (K 3)) (K 3) ((m : 𝓞 (K 3)) + (n : 𝓞 (K 3)) * omegaO), SetLike.mem_coe.2 ((FractionalIdeal.mem_one_iff _).2 ⟨_, rfl⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_intCast, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem image_one_three :
     (algebraMap (K 3) ℂ) '' ((1 : FractionalIdeal (𝓞 (K 3))⁰ (K 3)) : Set (K 3)) =
       {z : ℂ | ∃ m n : ℤ, z = 1 * ((m : ℂ) + (n : ℂ) * (omegaH : ℂ))} := by
@@ -513,25 +613,43 @@ theorem image_one_three :
     simp only [map_add, map_mul, map_intCast, one_mul]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, map_one _, 1, one_ne_zero, image_one_three⟩`.
+-/
 theorem isTauOf_three : IsTauOf 3 1 omegaH :=
   ⟨1, map_one _, 1, one_ne_zero, image_one_three⟩
 
+/- English proof (translation)
+Rewrite using `[inv_one]`. Conclude with `isTauOf_three`.
+-/
 example : IsTauOf 3 (1 : ClassGroup (𝓞 (K 3)))⁻¹ omegaH := by
   rw [inv_one]
   exact isTauOf_three
 
+/- English proof (translation)
+The claim follows from `piMetric fun _ ↦ HermitianMetric.integers (K 3)`.
+-/
 example : HermitianMetric (K 3) (Fin 2 → 𝓞 (K 3)) := piMetric fun _ ↦ HermitianMetric.integers (K 3)
 
 def volTwo : Fin 2 → ℝ := ![1, 2]
 
+/- English proof (translation)
+Introduce `c`. Apply the tactic sequence `fin_cases c <;> simp [volTwo]`.
+-/
 theorem volTwo_pos : ∀ c, 0 < volTwo c := by
   intro c
   fin_cases c <;> simp [volTwo]
 
+/- English proof (translation)
+The claim follows from `piMetric fun c ↦ formScale (HermitianMetric.integers (K 3)) (volTwo c / ∑ c', volTwo c') (volFrac_pos volTwo_pos c)`.
+-/
 example : HermitianMetric (K 3) (Fin 2 → 𝓞 (K 3)) :=
   piMetric fun c ↦ formScale (HermitianMetric.integers (K 3)) (volTwo c / ∑ c', volTwo c')
     (volFrac_pos volTwo_pos c)
 
+/- English proof (translation)
+The claim follows from `formScale (HermitianMetric.integers (K 3)) 2 two_pos`.
+-/
 example : HermitianMetric (K 3) (𝓞 (K 3)) := formScale (HermitianMetric.integers (K 3)) 2 two_pos
 
 end Inhabitants

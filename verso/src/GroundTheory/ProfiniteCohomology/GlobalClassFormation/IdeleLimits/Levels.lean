@@ -26,10 +26,16 @@ variable (K F E) in
 def levelRestrict : (E.1 ≃ₐ[K.1] E.1) →* (F.1 ≃ₐ[K.1] F.1) :=
   AlgEquiv.restrictNormalHom (F := K.1) (K₁ := E.1) F.1
 
+/- English proof (translation)
+The claim follows from `AlgEquiv.restrictNormal_commutes τ F.1 x`.
+-/
 theorem coe_levelRestrict_apply (τ : E.1 ≃ₐ[K.1] E.1) (x : F.1) :
     algebraMap F.1 E.1 (levelRestrict K F E τ x) = τ (algebraMap F.1 E.1 x) :=
   AlgEquiv.restrictNormal_commutes τ F.1 x
 
+/- English proof (translation)
+Use extensionality with `x`. Use `coe_levelRestrict_apply (K := K) (F := F) (E := E) (restrictHom (E := E) g) x` as an intermediate fact. Establish `h2` using `congrArg Subtype.val this`. Conclude with `h2`.
+-/
 theorem levelRestrict_restrictHom (g : K.1.fixingSubgroup) :
     levelRestrict K F E (restrictHom (E := E) g) = restrictHom (E := F) g := by
   ext x
@@ -37,9 +43,15 @@ theorem levelRestrict_restrictHom (g : K.1.fixingSubgroup) :
   have h2 := congrArg Subtype.val this
   exact h2
 
+/- English proof (translation)
+The claim follows from `continuous_of_discreteTopology`.
+-/
 theorem continuous_levelRestrict : Continuous (levelRestrict K F E) :=
   continuous_of_discreteTopology
 
+/- English proof (translation)
+Rewrite using `[smul_idele_eq_ideleEquiv, smul_idele_eq_ideleEquiv]`. Conclude with `(ideleEquiv_ideleEmbedding_of_comm ((levelRestrict K F E τ : F.1 ≃ₐ[K.1] F.1) : F.1 ≃+* F.1) (τ : E.1 ≃+* E.1) (fun y ↦ (coe_levelRestrict_apply τ y).symm) x).symm`.
+-/
 theorem ideleMap_smul (τ : E.1 ≃ₐ[K.1] E.1) (x : IdeleGroup F.1) :
     ideleMap (Fact.out : F ≤ E) (levelRestrict K F E τ • x) = τ • ideleMap (Fact.out : F ≤ E) x := by
   rw [smul_idele_eq_ideleEquiv, smul_idele_eq_ideleEquiv]
@@ -53,6 +65,9 @@ def levelMap : Rep.res (levelRestrict K F E) (ideleRep K.1 F.1) ⟶ ideleRep K.1
     fun τ => LinearMap.ext fun x => congrArg Additive.ofMul (ideleMap_smul τ x.toMul)⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levelMap_hom_apply (x : Additive (IdeleGroup F.1)) :
     (levelMap K F E).hom x = Additive.ofMul (ideleMap (Fact.out : F ≤ E) x.toMul) :=
   rfl
@@ -62,6 +77,11 @@ variable (K F E) in
 def levelTransition (n : ℕ) : cohomology (ideleRep K.1 F.1) n ⟶ cohomology (ideleRep K.1 E.1) n :=
   cohomologyMapAlong (levelRestrict K F E) continuous_levelRestrict (levelMap K F E) n
 
+/- English proof (translation)
+Rewrite using `[← cochainsMapAlong_comp]`. Use extensionality with `m x : 3`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `Additive.ofMul (of E (ideleMap (Fact.out : F ≤ E) ((x.1 fun i => levelRestrict K F E (restrictHom (E := E) (g i))).toMul))) = Additive.ofMul (of F ((x.1 fun i => restrictHom (E := F) (g i)).toMul))`.
+
+Establish `hfun : (fun i => levelRestrict K F E (restrictHom (E` using `E) (g i))) = fun i => restrictHom (E := F) (g i) := funext fun i => levelRestrict_restrictHom (g i)`. Use `(congrArg Additive.ofMul (of_ideleMap (Fact.out : F ≤ E) _)).trans ?_` and prove the remaining obligations. Rewrite using `[hfun]`.
+-/
 theorem levelCochains_comp :
     cochainsMapAlong (levelRestrict K F E) continuous_levelRestrict (levelMap K F E) ≫
       cochainsMapAlong restrictHom continuous_restrictHom (levelMor K E) =
@@ -78,6 +98,9 @@ theorem levelCochains_comp :
   refine (congrArg Additive.ofMul (of_ideleMap (Fact.out : F ≤ E) _)).trans ?_
   rw [hfun]
 
+/- English proof (translation)
+Rewrite using `[levelTransition, levelInfl, levelInfl]`. Unfold `cohomologyMapAlong`. Use `(HomologicalComplex.homologyMap_comp _ _ n).symm.trans ?_` and prove the remaining obligations. Rewrite using `[levelCochains_comp]`.
+-/
 theorem levelTransition_comp_levelInfl (n : ℕ) :
     levelTransition K F E n ≫ levelInfl K E n = levelInfl K F n := by
   rw [levelTransition, levelInfl, levelInfl]

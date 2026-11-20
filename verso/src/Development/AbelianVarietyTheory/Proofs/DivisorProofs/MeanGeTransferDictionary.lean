@@ -24,6 +24,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c c' : Coeff l} (hle : c.F ≤ c'.F) {r : ℕ}
   {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {U' : ∀ σ : c'.F →+* ℂ, Unf Xo c' σ r} {xr : ℝ}
 
+/- English proof (translation)
+Use `⟨by simp [wtOf], fun τ i j hij hj => ?_⟩` and prove the remaining obligations. Use `nsmul_le_nsmul_right (?_ : (wtOf Dw la 0).1 (τ, j) ≤ (wtOf Dw la 0).1 (τ, i)) t` and prove the remaining obligations. Distinguish the cases in `hτ : τ (H.rt : E) = H.rt0`. Establish `hp : j < Dw.p` using `by simpa [Datum.mult, hτ] using hj`. Rewrite using `[wtOf_big la 0 ⟨τ, hτ⟩ j hp, wtOf_big la 0 ⟨τ, hτ⟩ i (by omega)]`.
+
+Conclude with `sub_le_sub_right ((h _).antitone (Fin.mk_le_mk.2 hij)) _`. Establish `hq : j < Dw.q` using `by simpa [Datum.mult, hτ] using hj`. Establish `e1` using `wtOf_small la 0 ⟨conjEmb τ, conj_mem hτ⟩ j hq`. Establish `e2` using `wtOf_small la 0 ⟨conjEmb τ, conj_mem hτ⟩ i (by omega)`. Simplify using `only [conjEmb_conjEmb] at e1 e2`.
+
+Rewrite using `[e1, e2]`. Conclude with `sub_le_sub_right (neg_le_neg ((h _).antitone (Fin.mk_le_mk.2 (by omega)))) _`.
+-/
 theorem decr_nsmul {la : AllWt.Weight Dw} (h : ∀ τ, StrictAnti (la τ)) (t : ℕ) : Decr Dw (t • wtOf Dw la 0) := by
   refine ⟨by simp [wtOf], fun τ i j hij hj => ?_⟩
   refine nsmul_le_nsmul_right (?_ : (wtOf Dw la 0).1 (τ, j) ≤ (wtOf Dw la 0).1 (τ, i)) t
@@ -38,9 +45,15 @@ theorem decr_nsmul {la : AllWt.Weight Dw} (h : ∀ τ, StrictAnti (la τ)) (t : 
     rw [e1, e2]
     exact sub_le_sub_right (neg_le_neg ((h _).antitone (Fin.mk_le_mk.2 (by omega)))) _
 
+/- English proof (translation)
+Introduce `σ' hσ'` and use `⟨isUnf_unfExt hle σ' (fun _ => rfl) (hU (σ'.comp (incF c c' hle)) hσ').1, (hU (σ'.comp (incF c c' hle)) hσ').2⟩`.
+-/
 theorem unifOf_unfBC (hU : UnifOf U xr) : UnifOf (unfBC hle U) xr := fun σ' hσ' =>
   ⟨isUnf_unfExt hle σ' (fun _ => rfl) (hU (σ'.comp (incF c c' hle)) hσ').1, (hU (σ'.comp (incF c c' hle)) hσ').2⟩
 
+/- English proof (translation)
+Establish `hr : relab c' σ' = relab c (σ'.comp (incF c c' hle))` using `funext fun τ => RingHom.ext fun x => rfl`. Unfold `modelWt`. Rewrite using `[hr]`. Both sides reduce to the same expression.
+-/
 theorem modelWt_unfBC (σ' : c'.F →+* ℂ) (G : WTZ E) :
     modelWt (unfBC hle U σ') G = modelWt (U (σ'.comp (incF c c' hle))) G := by
   have hr : relab c' σ' = relab c (σ'.comp (incF c c' hle)) := funext fun τ => RingHom.ext fun x => rfl
@@ -51,6 +64,11 @@ theorem modelWt_unfBC (σ' : c'.F →+* ℂ) (G : WTZ E) :
 def rdExt {σ : c.F →+* ℂ} (σ' : c'.F →+* ℂ) (h : ∀ a, σ' (incF c c' hle a) = σ a) (V : Unf Xo c σ r) (f : Rul Xo c') :
     FDSec V.X := rdU (unfExt hle σ' h V) f
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k x`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Distinguish the cases in `hx : x ∈ (V.X k).dom`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Use `(dif_pos hx).trans ((evR_coord hle hs hd hf j (V.un k ⟨x, hx⟩)).trans (Finset.sum_congr rfl fun i _ => congrArg (s i (bs j) * ·) ?_))` and prove the remaining obligations.
+
+Conclude with `Eq.symm (dif_pos hx : rdU (unfExt hle (s i) (hs i) V) _ k x = _)`. Use `(dif_neg hx).trans (Finset.sum_eq_zero fun i _ => ?_).symm` and prove the remaining obligations. Conclude with `(congrArg (s i (bs j) * ·) (dif_neg hx)).trans (mul_zero _)`.
+-/
 theorem rdU_coord {σ : c.F →+* ℂ} (V : Unf Xo c σ r) {d n N : ℕ} {b bs : Fin d → c'.F} {s : Fin n → (c'.F →+* ℂ)}
     (hs : ∀ k a, s k (incF c c' hle a) = σ a)
     (hd : ∀ i j, ∑ k, s k (bs j) * s k (b i) = if i = j then (N : ℂ) else 0) {fs : Fin d → Rul Xo c}
@@ -80,6 +98,11 @@ variable (hU : UnifOf U xr) (hU' : UnifOf U' xr) (hκ : Nonempty (GlobalTheory.S
 
 include hU hU' hκ hpq hG hZ in
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `mem_cuspW.1 hf.1`. Establish `h3` using `rulBC_mem_secZ hle h1`. Use `⟨cuspW_le (unifOf_unfBC hle hU) hU' (nonempty_keySec_bc hle hκ) hpq hG (mem_cuspW.2 ⟨h3, fun σ' hσ' => ?_⟩), ?_⟩` and prove the remaining obligations. Establish `e` using `rdU_unfBC hle U σ' (isBC_rulBC hle h1.1)`. Rewrite `e` using `[Fin.sum_univ_one, Matrix.cons_val_fin_one, Matrix.cons_val_fin_one, map_one, one_smul]`.
+
+Rewrite using `[e, modelWt_unfBC]`. Conclude with `h2 (σ'.comp (incF c c' hle)) hσ'`. Use `(mem_suppOn_iff_idem_mul h3 Z').2 ?_` and prove the remaining obligations. Rewrite using `[← hZ]`. Conclude with `((rulHom hle).map_mul _ _).symm.trans (congrArg _ ((mem_suppOn_iff_idem_mul h1 Z).1 hf.2))`.
+-/
 theorem rulBC_mem_cuspOn {f : Rul Xo c} (hf : f ∈ cuspOn U Z G) : rulBC hle f ∈ cuspOn U' Z' G := by
   obtain ⟨h1, h2⟩ := mem_cuspW.1 hf.1
   have h3 := rulBC_mem_secZ hle h1
@@ -94,6 +117,15 @@ theorem rulBC_mem_cuspOn {f : Rul Xo c} (hf : f ∈ cuspOn U Z G) : rulBC hle f 
 
 include hU hU' hκ hpq hG hZ hN hd hb in
 
+/- English proof (translation)
+Establish `h1` using `cuspW_le_secZ G hf'.1`. Take `⟨fs, a1, a2⟩` from `hb _ f' h1`. Establish `a3 : f' = ∑ j, b j • rulBC hle (idem Z * fs j)`. Rewrite using `[← (mem_suppOn_iff_idem_mul h1 Z').1 hf'.2, ← hZ]`. Use `conv_lhs => rw [a2]`.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (mul_smul_comm _ _ _).trans (congrArg _ ((rulHom hle).map_mul _ _).symm)`. Establish `a4` using `fun j => idem_mul_mem Z (a1 j)`. Use `⟨fun j => ⟨idem Z * fs j, ?_, (a4 j).2⟩, a3⟩` and prove the remaining obligations. Use `(Submodule.smul_mem_iff _ (Nat.cast_ne_zero.2 hN : (N : c.F) ≠ 0)).1 (mem_cuspW.2 ⟨Submodule.smul_mem _ _ (a4 j).1, fun σ hσ => ?_⟩)` and prove the remaining obligations.
+
+Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Take `⟨n, s, hs, h⟩` from `hd ℂ`. Rewrite using `[rdU_coord hle (U σ) hs h (fun j => (a4 j).1.1) j, ← a3]`. Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `key : ∀ (σ' : c'.F →+* ℂ) (h' : ∀ a, σ' (incF c c' hle a) = σ a), rdExt hle σ' h' (U σ) f' ∈ holSub (U σ).X (modelWt (U σ) G)` using `fun σ' h' => by`.
+
+Take `rfl : σ = σ'.comp (incF c c' hle)` from `RingHom.ext fun a => (h' a).symm`. Rewrite using `[← modelWt_unfBC]`. Conclude with `(mem_cuspW.1 (cuspW_le hU' (unifOf_unfBC hle hU) (nonempty_keySec_bc hle hκ) hpq hG hf'.1)).2 σ' hσ`. Conclude with `key _ _`.
+-/
 theorem exists_coord_cuspOn {f' : Rul Xo c'} (hf' : f' ∈ cuspOn U' Z' G) :
     ∃ g : Fin d → cuspOn U Z G, f' = ∑ j, b j • rulBC hle (g j) := by
   have h1 := cuspW_le_secZ G hf'.1
@@ -121,6 +153,13 @@ theorem exists_coord_cuspOn {f' : Rul Xo c'} (hf' : f' ∈ cuspOn U' Z' G) :
 
 include hU hU' hκ hpq hG hZ hN hd hb in
 
+/- English proof (translation)
+Set `φ : cuspOn U Z G →ₛₗ[incF c c' hle] cuspOn U' Z' G` to `{ toFun := fun f => ⟨rulBC hle f, rulBC_mem_cuspOn hle hU hU' hκ hpq hG hZ f.2⟩ map_add' := fun f g => Subtype.ext ((rulHom hle).map_add (f : Rul Xo c) (g : Rul Xo c)) map_smul' := fun a f => Subtype.ext (rulBC_smul hle a (f : Rul Xo c)) }`. Establish `e : ∀ g : Fin d → cuspOn U Z G, ((∑ j, b j • φ (g j) : cuspOn U' Z' G) : Rul Xo c') = ∑ j, b j • rulBC hle (g j)` using `fun g => Submodule.coe_sum _ _ _`. Use `rank_eq_of_coord _ φ b hs (fun v' => ?_) fun g h0 j => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `exists_coord_cuspOn hle hU hU' hκ hpq hG hZ hN hd hb v'.2`. Conclude with `⟨g, Subtype.ext (hg.trans (e g).symm)⟩`.
+
+Establish `h1` using `fun j => cuspW_le_secZ G (g j).2.1`. Establish `h2 : (N : c.F) • (g j : Rul Xo c) = 0` using `eq_zero_of_algClosed (Submodule.smul_mem _ _ (h1 j)) fun Ω _ _ _ y => by`. Take `⟨n, s, hs, h⟩` from `hd Ω`. Rewrite using `[evR_coord hle hs h (fun j => (h1 j).1) j, ← e, h0]`. Use `Finset.sum_eq_zero fun k _ => mul_eq_zero_of_right _ ?_` and prove the remaining obligations.
+
+Use `letI := (s k).toAlgebra`. Conclude with `evalAt_zero _ _ _`. Establish `h3 : (g j : Rul Xo c) = 0`. Rewrite using `[← inv_smul_smul₀ (Nat.cast_ne_zero.2 hN : (N : c.F) ≠ 0) (g j : Rul Xo c), h2, smul_zero]`. Conclude with `Subtype.ext h3`.
+-/
 theorem rank_cuspOn_eq (hs : ∀ x : c'.F, ∃ a : Fin d → c.F, x = ∑ j, incF c c' hle (a j) * b j) :
     Module.rank c'.F (cuspOn U' Z' G) = Module.rank c.F (cuspOn U Z G) := by
   let φ : cuspOn U Z G →ₛₗ[incF c c' hle] cuspOn U' Z' G :=
@@ -145,6 +184,19 @@ theorem rank_cuspOn_eq (hs : ∀ x : c'.F, ∃ a : Fin d → c.F, x = ∑ j, inc
 
 include hU hU' hκ hpq hZ hN hd hb in
 
+/- English proof (translation)
+Use `choose n s hs h using fun σ : c.F →+* ℂ => @hd ℂ _ _ σ.toAlgebra`. Use `⟨∑ σ, ∑ j, ∑ k, ‖s σ k (bs j)‖, fun G hG R R' hR hR' => ?_⟩` and prove the remaining obligations. Use `choose g hg using fun f' : cuspOn U' Z' G => exists_coord_cuspOn hle hU hU' hκ hpq hG hZ hN hd hb f'.2`. Establish `h1` using `fun f' j => cuspW_le_secZ G (g f' j).2.1`. Use `encard_le_pow (fun f' j => (N : c.F) • g f' j) (fun f₁ _ f₂ _ e => Subtype.ext ?_) fun f' hf' j => ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: g f₁ = g f₂` using `funext fun j => smul_right_injective _ (Nat.cast_ne_zero.2 hN : (N : c.F) ≠ 0) (congrFun e j)`. Rewrite using `[hg, hg, this]`. Use `nonneg_of_comb hle B (Submodule.smul_mem _ _ (h1 f' j)).1 (cuspW_le_secZ G f'.2.1).1 (hi j) (fun Ω _ _ _ => ?_) hf'.1` and prove the remaining obligations. Take `⟨n, s, hs, h⟩` from `hd Ω`. Use `⟨n, s, hs, fun y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hg f']`. Conclude with `evR_coord hle hs h (fun j => (h1 f' j).1) j y`. Introduce `σ hσ z hz`. Establish `key : ∀ (σ' : c'.F →+* ℂ) (h' : ∀ a, σ' (incF c c' hle a) = σ a), lieFacZ Dw x G * ptN (modelWt (U σ) G) (rdExt hle σ' h' (U σ) (f' : Rul Xo c')) z ≤ R` using `fun σ' h' => by`. Take `rfl : σ = σ'.comp (incF c c' hle)` from `RingHom.ext fun a => (h' a).symm`.
+
+Rewrite using `[← modelWt_unfBC]`. Conclude with `homN_le hU' (unifOf_unfBC hle hU) (nonempty_keySec_bc hle hκ) hpq hG (cuspW_le_secZ G f'.2.1) f'.2.2 x hR (σ := σ') hσ (hf'.2 σ' hσ) z hz.1`. Establish `e` using `rdU_coord hle (U σ) (hs σ) (h σ) (fun j => (h1 f' j).1) j`. Rewrite `e` using `[← hg f']`. Establish `hle1 : homN (U σ) x G ((N : c.F) • (g f' j : Rul Xo c)) z ≤ (∑ k, ‖s σ k (bs j)‖) * R`.
+
+Rewrite using `[homN, e, Finset.sum_mul]`. Use `le_trans ?_ (Finset.sum_le_sum fun k _ => mul_le_mul_of_nonneg_left (key (s σ k) (hs σ k)) (norm_nonneg _))` and prove the remaining obligations. Simplify using `only [ptN, Data.pnorm, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_left_comm _ (lieFacZ Dw x G), ← mul_assoc ‖s σ _ (bs j)‖, ← Finset.mul_sum, ← Finset.sum_mul, ← norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right (norm_sum_le _ _) (pnorm_fac_nonneg _ _ _)) (lieFacZ_pos x G).le`. Use `hle1.trans (le_trans (mul_le_mul_of_nonneg_right ?_ hR) hR')` and prove the remaining obligations.
+
+Conclude with `(Finset.single_le_sum (f := fun j => ∑ k, ‖s σ k (bs j)‖) (fun _ _ => by positivity) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun σ => ∑ j, ∑ k, ‖s σ k (bs j)‖) (fun _ _ => by positivity) (Finset.mem_univ σ))`.
+-/
 theorem exists_encard_le (hi : ∀ j, IsIntegral ℤ (bs j)) (x B : ℝ) : ∃ C : ℝ, ∀ G, Decr Dw G → ∀ R R' : ℝ, 0 ≤ R →
     C * R ≤ R' → (smallOn U' x (mixVals Xo c' B) Z' G R).encard ≤ (smallOn U x (mixVals Xo c B) Z G R').encard ^ d := by
   choose n s hs h using fun σ : c.F →+* ℂ => @hd ℂ _ _ σ.toAlgebra
@@ -184,6 +236,17 @@ theorem exists_encard_le (hi : ∀ j, IsIntegral ℤ (bs j)) (x B : ℝ) : ∃ C
 
 include hU hU' hκ hpq hZ in
 
+/- English proof (translation)
+Use `letI alg : Algebra c.F c'.F := (incF c c' hle).toAlgebra`. Take `⟨d, N, b, bs, hd0, hN, hrk, hi, hd⟩` from `exists_dual c.F c'.F`. Establish `hd' : IsDual hle N b bs` using `fun Ω _ _ _ => by`. Take `⟨n, s, hs⟩` from `hd Ω`. Conclude with `⟨n, fun k => (s k).toRingHom, fun k a => (s k).commutes a, hs⟩`.
+
+Establish `hb` using `fun (e : Ix Dw → ℤ) (f' : Rul Xo c') hf' => exists_coord hle (fun _ => rfl) b (e := e) (f' := f') hf'`. Establish `ht : topDeg U' Z' u = topDeg U Z u`. Unfold `topDeg vZero growthOn`. Use `congr 4`. Use function extensionality and compare the values at `τ`.
+
+Rewrite using `[rank_cuspOn_eq hle hU hU' hκ hpq (decr_nsmul strictAnti_stdWt τ) hZ hN hd' hb fun y => ⟨b.repr y, (b.sum_repr y).symm⟩]`. Take `⟨C, hC⟩` from `exists_encard_le hle hU hU' hκ hpq hZ hN hd' hb hi x B`. Rewrite `h` using `[compVolSlope, ht]`. Use `le_volSlope_of_shift (fun t ε hε => ?_) h` and prove the remaining obligations. Rewrite using `[compVol, compVol, hrk]`.
+
+Use `countVol_le_of_pow _ _ _ hd0 ?_` and prove the remaining obligations. Take `⟨k₀, hk₀⟩` from `exists_nat_ge (C / ε)`. Use `filter_upwards [eventually_ge_atTop k₀] with k hk`. Use `hC _ (decr_nsmul hu _) _ _ (Real.exp_pos _).le ?_` and prove the remaining obligations. Rewrite using `[mul_add, Real.exp_add, mul_comm]`.
+
+Use `mul_le_mul_of_nonneg_left (le_trans ?_ (Real.add_one_le_exp _)) (Real.exp_pos _).le` and prove the remaining obligations. Establish `h1 : (k₀ : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `h2` using `(div_le_iff₀ hε).1 (hk₀.trans h1)`. Use `push_cast`. Use polynomial arithmetic with `[mul_nonneg (Nat.cast_nonneg (α := ℝ) k) hε.le]`.
+-/
 theorem le_compVolSlope (x B : ℝ) {u : AllWt.Weight Dw} (hu : ∀ τ, StrictAnti (u τ)) {s : ℝ}
     (h : (s : EReal) ≤ compVolSlope U' x 8 (mixVals Xo c' B) Z' u) :
     (s : EReal) ≤ compVolSlope U x 8 (mixVals Xo c B) Z u := by
@@ -218,6 +281,13 @@ end Gen
 
 open GlobalTheory.Mean4 GlobalTheory.Mean4O in
 
+/- English proof (translation)
+Introduce `D T j Y e o hY _ c' hle U' u B X hu ⟨sl, h1, h2⟩`. Establish `hr : 1 ≤ D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hσ : GoodEmb Y.d.c₂ Y.d.c₂.F.val.toRingHom` using `rfl`. Take `⟨hrk, -, -, -, -, g, ee, F, -⟩` from `hY.unf _ hσ`. Establish `hpq : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q` using `hrk ▸ hr`. Establish `hκ` using `GlobalTheory.KeyCover.nonempty_keySec_of_family _ _ _ _ _ _ _ hσ ee F hpq hY.geo`. Establish `hU : UnifOf Y.U (xiR D)` using `fun σ h => ⟨hY.unf σ h, hY.xiAbs σ h⟩`.
+
+Establish `hU' : UnifOf (fun σ => GlobalTheory.ThetaDictCompare.toU (U'.U σ)) (xiR D)` using `fun σ h => ⟨(U'.unf hr σ h).1, fun k τ => (congrArg (fun z => ‖τ z‖) (U'.xi_eq σ k)).trans (Inhab.norm_neg_cmConstant_eq_at_all_embeddings τ)⟩`. Take `⟨eC, hC⟩` from `GlobalTheory.T.compactification_change_preserves_algebraic_values _ _ _ _ _ _ c' hle hY.geo`. Use `⟨fun Z => sl (eC Z), fun Z => le_compVolSlope hle hU hU' hκ hpq (rulBC_idem hle eC (fun Z => hC Z 0 0) Z) _ B hu (h1 _), ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_comp_equiv eC, Nat.card_congr eC]` and apply the resulting hypothesis.
+-/
 theorem meanGe_descent : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (c' : Coeff Y.d.l₂), Y.d.c₂.F ≤ c'.F → ∀ (U' : GlobalTheory.ShFam.UnfFam Y.d.Xo₂ c' D.R.r (-D.host.xi0)) (u : GlobalTheory.AllWt.Weight (T.Q.Dw j)) (B X : ℝ), (∀ τ, StrictAnti (u τ)) → MeanGe (fun σ => GlobalTheory.ThetaDictCompare.toU (U'.U σ)) (xiR D) u B X → MeanGe Y.U (xiR D) u B X := by
   intro D T j Y e o hY _ c' hle U' u B X hu ⟨sl, h1, h2⟩
   have hr : 1 ≤ D.R.r := by

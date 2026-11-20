@@ -8,5 +8,8 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Fo
 open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Core.Mi.per_rTrans | exact GlobalTheory.Core.Mi.per_rTrans | (intros; apply GlobalTheory.Core.Mi.per_rTrans <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bessel_period_right_translation_invariant : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (φ : GA D B.A → ℂ) (f : GA D B.V → ℂ) (a : GA D B.A), IsStdChar D ψ (-1) → IsContAut B.A φ → IsContAut B.V f → B.per ψ (rTrans a φ) (rTrans (embA B.d B.o a) f) = B.per ψ φ f := by
   first | exact @GlobalTheory.Core.Mi.per_rTrans | exact GlobalTheory.Core.Mi.per_rTrans | (intros; apply GlobalTheory.Core.Mi.per_rTrans <;> assumption)

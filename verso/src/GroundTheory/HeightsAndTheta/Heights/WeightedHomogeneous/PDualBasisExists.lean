@@ -8,6 +8,23 @@ open NumberField Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `F.fg`. Set `ev : (Fin (r + 1) → K) →ₗ[ℤ] (s → K)` to `{ toFun := fun φ v ↦ φ ⬝ᵥ (v : Fin (r + 1) → K) map_add' := by`. Introduce `φ ψ`. Use function extensionality and compare the values at `v`. Simplify using `[add_dotProduct]`.
+
+Use the proof step `map_smul' := by`. Introduce `c φ`. Use function extensionality and compare the values at `v`. Conclude with `smul_dotProduct c φ (v : Fin (r + 1) → K) }`. Establish `hspan : Submodule.span K (s : Set (Fin (r + 1) → K)) = ⊤`.
+
+Rewrite using `[← Submodule.span_span_of_tower (R := 𝓞 K), hs, F.span_eq]`. Establish `hinj : Function.Injective ev`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `φ hφ`. Establish `h0 : ∀ w ∈ Submodule.span K (s : Set (Fin (r + 1) → K)), φ ⬝ᵥ w = 0`.
+
+Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact congrFun hφ ⟨x, hx⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [dotProduct_add, hx, hy, add_zero]`.
+
+Consider the case `smul c x _ hx => rw [dotProduct_smul, hx, smul_zero]`. Use function extensionality and compare the values at `j`. Use `h0 (Pi.single j 1) (by rw [hspan]; exact Submodule.mem_top)` as an intermediate fact. Simplify using `using this`. Set `T : Submodule ℤ (s → K)` to `LinearMap.range (LinearMap.compLeft ((Algebra.linearMap (𝓞 K) K).restrictScalars ℤ) s)`.
+
+Establish `hle : ((latticeDual F.lattice).restrictScalars ℤ).map ev ≤ T`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Establish `hv : ∀ v : s, (v : Fin (r + 1) → K) ∈ F.lattice`. Introduce `v`. Rewrite using `[← hs]`.
+
+Conclude with `Submodule.subset_span v.2`. Use `⟨fun v ↦ (hφ v (hv v)).choose, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Conclude with `(hφ v (hv v)).choose_spec`. Establish `: IsNoetherian ℤ T` using `isNoetherian_of_isNoetherianRing_of_finite ℤ T`.
+
+Conclude with `Submodule.fg_of_fg_map_injective ev hinj (isNoetherian_submodule.mp inferInstance _ hle)`.
+-/
 theorem latticeDual_int_fg {K : Type*} [Field K] [NumberField K] {r : ℕ} (F : HermLattice K (r + 1)) :
     ((latticeDual F.lattice).restrictScalars ℤ).FG := by
   classical
@@ -53,6 +70,15 @@ theorem latticeDual_int_fg {K : Type*} [Field K] [NumberField K] {r : ℕ} (F : 
   have : IsNoetherian ℤ T := isNoetherian_of_isNoetherianRing_of_finite ℤ T
   exact Submodule.fg_of_fg_map_injective ev hinj (isNoetherian_submodule.mp inferInstance _ hle)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `F.fg`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 K)) (s.image fun v ↦ v 0)`. Establish `hbne : algebraMap (𝓞 K) K b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Use `⟨Pi.single 0 (algebraMap (𝓞 K) K b), ?_, fun h ↦ hbne (by simpa using congrFun h 0)⟩` and prove the remaining obligations. Introduce `v hv`.
+
+Rewrite `hv` using `[← hs]`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha⟩` from `hb (x 0) (Finset.mem_image_of_mem _ hx)`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ha, Algebra.smul_def]`. Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+
+Take `⟨c, hc⟩` from `hy`. Conclude with `⟨a + c, by rw [map_add, ha, hc, dotProduct_add]⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`. Conclude with `⟨c * a, by rw [map_mul, ha, dotProduct_smul, Algebra.smul_def]⟩`.
+-/
 theorem latticeDual_ne_bot {K : Type*} [Field K] [NumberField K] {r : ℕ} (F : HermLattice K (r + 1)) :
     ∃ ψ ∈ latticeDual F.lattice, ψ ≠ 0 := by
   classical
@@ -79,6 +105,13 @@ theorem latticeDual_ne_bot {K : Type*} [Field K] [NumberField K] {r : ℕ} (F : 
     obtain ⟨a, ha⟩ := hx
     exact ⟨c * a, by rw [map_mul, ha, dotProduct_smul, Algebra.smul_def]⟩
 
+/- English proof (translation)
+Introduce `K _ _ r F`. Set `M : Submodule ℤ (Fin (r + 1) → K)` to `(latticeDual F.lattice).restrictScalars ℤ`. Establish `: Module.Finite ℤ M` using `Module.Finite.iff_fg.mpr (latticeDual_int_fg F)`. Establish `: Module.Free ℤ M` using `inferInstance`. Take `⟨ψ, hψ, hψ0⟩` from `latticeDual_ne_bot F`.
+
+Establish `: Nontrivial M` using `⟨⟨⟨ψ, hψ⟩, 0, fun h ↦ hψ0 (congrArg Subtype.val h)⟩⟩`. Establish `hpos : 0 < Module.finrank ℤ M` using `Module.finrank_pos`. Take `⟨N, hN⟩ : ∃ N, Module.finrank ℤ M = N + 1` from `⟨Module.finrank ℤ M - 1, (Nat.succ_pred_eq_of_pos hpos).symm⟩`. Set `bas` to `Module.finBasisOfFinrankEq ℤ M hN`. Use `⟨N, fun i ↦ (bas i : Fin (r + 1) → K), ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `bas.linearIndependent.map' M.subtype (Submodule.ker_subtype _)`. Establish `: Set.range (fun i ↦ (bas i : Fin (r + 1) → K)) = M.subtype '' Set.range bas`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, bas.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+-/
 theorem DualBasisExists.proof : DualBasisExists.Statement := by
   intro K _ _ r F
   classical

@@ -7,6 +7,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 noncomputable section
 namespace GlobalTheory.LocOm
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p V Z _ _ F`. Establish `hmul : ∀ g g' : GA D V, (mt V (g * g')).map p.π = (mt V g).map p.π * (mt V g').map p.π` using `fun g g' => by`. Rewrite using `[GlobalTheory.AdelicLatMove.mt_mul, Matrix.map_mul]`. Use `⟨⟨GlobalTheory.SplitLinear.suppAt_one _ _, ?_⟩, fun g g' gk gk' h h' => ⟨GlobalTheory.SplitLinear.suppAt_mul h.1 h'.1, ?_⟩, fun g gk h => ⟨GlobalTheory.SplitLinear.suppAt_inv h.1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.AdelicLatMove.mt_one, Matrix.map_one _ (map_zero p.π) (map_one p.π), Units.val_one, Matrix.mul_one, F.βγ]`.
+
+Rewrite using `[hmul, h.2, h'.2, Units.val_mul]`. Rewrite using `[Matrix.mul_assoc (F.β * gk.val), ← Matrix.mul_assoc F.γ, ← Matrix.mul_assoc F.γ, F.γβ, Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `e1 : (mt V g⁻¹).map p.π * (F.β * gk.val * F.γ) = 1`. Rewrite using `[← h.2, ← hmul, inv_mul_cancel, GlobalTheory.AdelicLatMove.mt_one, Matrix.map_one _ (map_zero p.π) (map_one p.π)]`.
+
+Establish `e2 : (F.β * gk.val * F.γ) * (F.β * (gk⁻¹).val * F.γ) = 1`. Rewrite using `[Matrix.mul_assoc (F.β * gk.val), ← Matrix.mul_assoc F.γ, ← Matrix.mul_assoc F.γ, F.γβ, Matrix.one_mul, Matrix.mul_assoc F.β, ← Matrix.mul_assoc gk.val, Units.mul_inv, Matrix.one_mul, F.βγ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e2, Matrix.mul_one]`. Use `_ = F.β * (gk⁻¹).val * F.γ := by rw [← Matrix.mul_assoc, e1, Matrix.one_mul]`.
+-/
 theorem isLoc_one_mul_inv : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (V : HSp D) (Z : Type) [Fintype Z] [DecidableEq Z] (F : Frame k V.rank Z), p.IsLoc F 1 1 ∧ (∀ (g g' : GA D V) (gk gk' : GL Z k), p.IsLoc F g gk → p.IsLoc F g' gk' → p.IsLoc F (g * g') (gk * gk')) ∧ ∀ (g : GA D V) (gk : GL Z k), p.IsLoc F g gk → p.IsLoc F g⁻¹ gk⁻¹ := by
   intro D k _ _ _ _ p V Z _ _ F
   have hmul : ∀ g g' : GA D V, (mt V (g * g')).map p.π = (mt V g).map p.π * (mt V g').map p.π := fun g g' => by

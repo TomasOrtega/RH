@@ -16,6 +16,9 @@ section Bridge
 
 variable (K L : Type u) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L]
 
+/- English proof (translation)
+Rewrite using `[Representation.norm, LinearMap.sum_apply, GroundTheory.LocalField.tateNorm_apply, ofMul_prod]`. Both sides reduce to the same expression.
+-/
 theorem galUnits_norm_apply (x : Additive Lˣ) :
     (galUnits.{u} K L).ρ.norm x =
       Additive.ofMul (GroundTheory.LocalField.tateNorm Gal(L/K) Lˣ (Additive.toMul x)) := by
@@ -24,6 +27,9 @@ theorem galUnits_norm_apply (x : Additive Lˣ) :
 
 omit [FiniteDimensional K L] in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_invariants_galUnits_iff (x : Additive Lˣ) :
     x ∈ (galUnits.{u} K L).ρ.invariants ↔
       Additive.toMul x ∈ GroundTheory.LocalField.invariants Gal(L/K) Lˣ :=
@@ -65,6 +71,9 @@ variable {K L : Type u} [Field K] [ValuativeRel K] [TopologicalSpace K]
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L] [IsGalois K L]
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `IsCyclic.exists_generator (α := Gal(L/K))`. Set `e : groupCohomology (galUnits.{u} K L) 2 ≅ (GroundTheory.GroupCoh.tateZeroFunctor (ULift.{u} ℤ) Gal(L/K)).obj (galUnits.{u} K L)` to `((TateCohomology.isoGroupCohomology 2).app (galUnits.{u} K L)).symm ≪≫ GroundTheory.GroupCoh.tateCohomologyPeriodicIso (galUnits.{u} K L) hσ 0 ≪≫ (GroundTheory.GroupCoh.tateCohomologyZeroIso (ULift.{u} ℤ) Gal(L/K)).app (galUnits.{u} K L)`. Rewrite using `[Nat.card_congr e.toLinearEquiv.toEquiv]`. Rewrite using `[← GroundTheory.LocalField.natCard_tateZero_units (K := K) (L := L)]`. Conclude with `Nat.card_congr (tateZeroGalUnitsEquiv K L)`.
+-/
 theorem natCard_groupCohomology_two_galUnits_of_isCyclic [IsCyclic Gal(L/K)] :
     Nat.card (groupCohomology (galUnits.{u} K L) 2) = Module.finrank K L := by
   classical

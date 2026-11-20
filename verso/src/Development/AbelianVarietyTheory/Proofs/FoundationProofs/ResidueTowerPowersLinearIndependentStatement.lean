@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 open GlobalTheory.K5
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.K5.ResidueIndep.residue_indep | exact GlobalTheory.K5.ResidueIndep.residue_indep | (intros; apply GlobalTheory.K5.ResidueIndep.residue_indep <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.residue_tower_powers_linearIndependent : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
   ∀ E : Subfield Ω, Set.range (algebraMap (O0 p) Ω) ⊆ (E : Set Ω) →
   (∀ y ∈ E, IsInt p y →

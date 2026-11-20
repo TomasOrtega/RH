@@ -21,22 +21,37 @@ variable {D : D7}
 
 def finV {n : ℕ} (z : Fin n → D.host.E) : Fin n → AE D := fun i => pairA D.host.F 0 1 ⊗ₜ[D.host.F] z i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rat_entry {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E) (i : Fin m) (j : Fin n) :
     (rat A : Mx D m n) i j = (1 : AF D.host.F) ⊗ₜ[D.host.F] A i j := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [finV, mulVec, dotProduct, TensorProduct.tmul_sum, rat_entry, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+-/
 theorem rat_mulVec_finV {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E) (z : Fin n → D.host.E) :
     (rat A : Mx D m n) *ᵥ finV z = finV (A *ᵥ z) := by
   funext i
   simp only [finV, mulVec, dotProduct, TensorProduct.tmul_sum, rat_entry, Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, fun v hv => absurd trivial hv, 1, rfl, z, hz, by funext i; simp [finV]⟩`.
+-/
 theorem finV_mem {S : HSp D} {L : Lat S} {z : Fin S.rank → D.host.E} (hz : z ∈ L) :
     finV z ∈ latV S L (fun _ => True) :=
   AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, fun v hv => absurd trivial hv, 1, rfl, z, hz,
     by funext i; simp [finV]⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.mem_lattice_of_rational_mem_completion_all_places D S L hL z hz`.
+-/
 theorem mem_of_finV (S : HSp D) (L : Lat S) (hL : Submodule.IsLattice D.host.E L) (z : Fin S.rank → D.host.E)
     (hz : finV z ∈ latV S L (fun _ => True)) : z ∈ L := GlobalTheory.T.mem_lattice_of_rational_mem_completion_all_places D S L hL z hz
 
+/- English proof (translation)
+Use `((GlobalTheory.FinPl.localComponents D (fun _ => True)).2 S).2.2.2 L y hL` as an intermediate fact. Simplify using `using this`.
+-/
 theorem loc_iff {S : HSp D} {L : Lat S} (hL : Submodule.IsLattice D.host.E L) (y : Fin S.rank → AE D) :
     y ∈ latV S L (fun _ => True) ↔ (∀ i, y i ∈ idAt D (fun _ => True)) ∧
       ∀ v, ∀ e ∈ intAt D (· = v), e • y ∈ latV S L (· = v) := by
@@ -49,9 +64,23 @@ namespace GlobalTheory.CoreComp
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `mulVec_idAt M hy i`.
+-/
 theorem mulVec_mem_idAt {m n : ℕ} (M : Mx D m n) {y : Fin n → AE D} (hy : ∀ i, y i ∈ idAt D (fun _ => True)) (i : Fin m) :
     (M *ᵥ y) i ∈ idAt D (fun _ => True) := mulVec_idAt M hy i
 
+/- English proof (translation)
+Apply `mem_of_finV S L hL` to reduce the goal to its premises. Rewrite using `[← rat_mulVec_finV]`. Establish `hz'` using `(loc_iff hL₀ _).1 (finV_mem hz)`. Use `(loc_iff hL _).2 ⟨mulVec_mem_idAt _ hz'.1, fun v e he => ?_⟩` and prove the remaining obligations. Establish `h1` using `hz'.2 v e he`.
+
+Rewrite using `[← Matrix.mulVec_smul]`. Use `(hM v _).2 ⟨fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `e0 : (d.pX *ᵥ ((rat d.i₀ : Mx D S.rank S₀.rank) *ᵥ e • finV z)) i = 0`. Rewrite using `[Matrix.mulVec_mulVec, show (rat d.i₀ : Mx D S.rank S₀.rank) = d.j0 from rfl, HypDec.pX_j0, Matrix.zero_mulVec]`. Both sides reduce to the same expression.
+
+Rewrite using `[e0]`. Establish `: GlobalTheory.FinPl.colMul d.jX i 0 = 0` using `by funext k; simp [GlobalTheory.FinPl.colMul]`. Rewrite using `[this]`. Conclude with `zero_mem _`. Establish `e0 : (d.pY *ᵥ ((rat d.i₀ : Mx D S.rank S₀.rank) *ᵥ e • finV z)) i = 0`.
+
+Rewrite using `[Matrix.mulVec_mulVec, show (rat d.i₀ : Mx D S.rank S₀.rank) = d.j0 from rfl, HypDec.pY_j0, Matrix.zero_mulVec]`. Both sides reduce to the same expression. Rewrite using `[e0]`. Establish `: GlobalTheory.FinPl.colMul d.jY i 0 = 0` using `by funext k; simp [GlobalTheory.FinPl.colMul]`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Rewrite using `[Matrix.mulVec_mulVec, show (rat d.i₀ : Mx D S.rank S₀.rank) = d.j0 from rfl, HypDec.p0_j0, Matrix.one_mulVec]`. Conclude with `h1`.
+-/
 theorem witt_core_inclusion_maps_split_lattices {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {L₀ : Lat S₀}
     (hL : Submodule.IsLattice D.host.E L) (hL₀ : Submodule.IsLattice D.host.E L₀) (hM : ∀ v, MonoAt d L L₀ v)
     {z : Fin S₀.rank → D.host.E} (hz : z ∈ L₀) : d.i₀ *ᵥ z ∈ L := by
@@ -75,6 +104,11 @@ theorem witt_core_inclusion_maps_split_lattices {S S₀ : HSp D} {ρ : ℕ} (d :
   · rw [Matrix.mulVec_mulVec, show (rat d.i₀ : Mx D S.rank S₀.rank) = d.j0 from rfl, HypDec.p0_j0, Matrix.one_mulVec]
     exact h1
 
+/- English proof (translation)
+Apply `mem_of_finV S₀ L₀ hL₀` to reduce the goal to its premises. Rewrite using `[← rat_mulVec_finV]`. Establish `hy'` using `(loc_iff hL _).1 (finV_mem hy)`. Use `(loc_iff hL₀ _).2 ⟨mulVec_mem_idAt _ hy'.1, fun v e he => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_smul]`.
+
+Conclude with `((hM v _).1 (hy'.2 v e he)).2.2`.
+-/
 theorem witt_core_projection_maps_split_lattices {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {L₀ : Lat S₀}
     (hL : Submodule.IsLattice D.host.E L) (hL₀ : Submodule.IsLattice D.host.E L₀) (hM : ∀ v, MonoAt d L L₀ v)
     {y : Fin S.rank → D.host.E} (hy : y ∈ L) : d.q0 *ᵥ y ∈ L₀ := by
@@ -85,6 +119,11 @@ theorem witt_core_projection_maps_split_lattices {S S₀ : HSp D} {ρ : ℕ} (d 
   rw [← Matrix.mulVec_smul]
   exact ((hM v _).1 (hy'.2 v e he)).2.2
 
+/- English proof (translation)
+Apply `mem_of_finV A LA hLA` to reduce the goal to its premises. Rewrite using `[← rat_mulVec_finV]`. Establish `hy'` using `(loc_iff hL _).1 (finV_mem hy)`. Use `(loc_iff hLA _).2 ⟨mulVec_mem_idAt _ hy'.1, fun v e he => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_smul]`.
+
+Conclude with `((hO v _).1 (hy'.2 v e he)).1`.
+-/
 theorem qA_maps {S A B : HSp D} (o : OrthDec S A B) {L : Lat S} {LA : Lat A} {LB : Lat B}
     (hL : Submodule.IsLattice D.host.E L) (hLA : Submodule.IsLattice D.host.E LA) (hO : ∀ v, OrthAt o L LA LB v)
     {y : Fin S.rank → D.host.E} (hy : y ∈ L) : o.qA *ᵥ y ∈ LA := by
@@ -95,6 +134,13 @@ theorem qA_maps {S A B : HSp D} (o : OrthDec S A B) {L : Lat S} {LA : Lat A} {LB
   rw [← Matrix.mulVec_smul]
   exact ((hO v _).1 (hy'.2 v e he)).1
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, hα', a, ha, x, hx, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨α, hα, hα', a, ha, m *ᵥ x, h x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [mulVec, dotProduct, Finset.mul_sum, TensorProduct.tmul_sum, rat_entry, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [mulVec_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mulVec_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem rat_mulVec_mem_latA {S T : HSp D} (m : Matrix (Fin T.rank) (Fin S.rank) D.host.E) {L : Lat S} {L' : Lat T}
     (h : ∀ x ∈ L, m *ᵥ x ∈ L') {P : GlobalTheory.FinPl.Pl D → Prop} {y : Fin S.rank → AE D} (hy : y ∈ latA S L P) :
     (rat m : Mx D T.rank S.rank) *ᵥ y ∈ latA T L' P := by
@@ -111,6 +157,11 @@ theorem rat_mulVec_mem_latA {S T : HSp D} (m : Matrix (Fin T.rank) (Fin S.rank) 
   | add x y _ _ hx hy => rw [mulVec_add]; exact add_mem hx hy
   | neg x _ hx => rw [mulVec_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D S' T' ΛS' ΛT' hS' hT']`. Use `⟨fun i j => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Conclude with `sum_mem fun l _ => Ideal.mul_mem_right _ _ (sum_mem fun k _ => Ideal.mul_mem_left _ _ (GlobalTheory.FinPl.LatMem.latO_mxAt hu k l))`. Use `show ((rat M : Mx D T'.rank T.rank) * u * (rat N : Mx D S.rank S'.rank)) *ᵥ y ∈ _`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `rat_mulVec_mem_latA M hM (GlobalTheory.FinPl.LatMem.latO_maps hS hu (GlobalTheory.OrthSumLat.rat_mulVec_mem_latV N hN hy))`.
+-/
 theorem latO_sandwich {S T S' T' : HSp D} {ΛS : Lat S} {ΛT : Lat T} {ΛS' : Lat S'} {ΛT' : Lat T'}
     (M : Matrix (Fin T'.rank) (Fin T.rank) D.host.E) (N : Matrix (Fin S.rank) (Fin S'.rank) D.host.E)
     (hS : IsSelfDualC S ΛS) (hS' : IsSelfDualC S' ΛS') (hT' : IsSelfDualC T' ΛT')
@@ -128,6 +179,17 @@ theorem latO_sandwich {S T S' T' : HSp D} {ΛS : Lat S} {ΛT : Lat T} {ΛS' : La
     exact rat_mulVec_mem_latA M hM
       (GlobalTheory.FinPl.LatMem.latO_maps hS hu (GlobalTheory.OrthSumLat.rat_mulVec_mem_latV N hN hy))
 
+/- English proof (translation)
+Establish `key : ∀ X ∈ I • homLat ΛS ΛT, M * X * N ∈ I • homLat ΛS' ΛT'`. Introduce `X hX`. Use `Submodule.smul_induction_on hX (fun r hr Y hY => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Establish `e : M * (r • Y) * N = r • (M * Y * N)` using `by rw [Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[e]`.
+
+Use `Submodule.smul_mem_smul hr ?_` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `hM _ (hY _ (hN y hy))`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`.
+
+Conclude with `add_mem ha hb`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, X, hX, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨α, hα, M * X * N, key X hX, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_mul, TensorProduct.tmul_sum, rat_entry, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Consider the case `zero => rw [Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mul_add, Matrix.add_mul]`.
+
+Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mul_neg, Matrix.neg_mul]`. Conclude with `neg_mem hx`.
+-/
 theorem hatMx_sandwich {S T S' T' : HSp D} {ΛS : Lat S} {ΛT : Lat T} {ΛS' : Lat S'} {ΛT' : Lat T'}
     (M : Matrix (Fin T'.rank) (Fin T.rank) D.host.E) (N : Matrix (Fin S.rank) (Fin S'.rank) D.host.E)
     (hN : ∀ y ∈ ΛS', N *ᵥ y ∈ ΛS) (hM : ∀ y ∈ ΛT, M *ᵥ y ∈ ΛT') (I : Ideal (𝓞 D.host.E))
@@ -158,6 +220,19 @@ end GlobalTheory.CoreComp
 
 namespace GlobalTheory.CoreComp
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM F hF σ h h' u hu`. Establish `I` using `GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hq T L μ0 hL sc G W M hM F hF`. Establish `sd : ∀ X : Node, X.InRange D.R.m → (∀ j, X ≠ .grid 0 j) → IsSelfDualC (G.V X) (G.Λ X)` using `fun X h1 h2 => (G.isV h1 h2).sd`. Establish `sdG3 : IsSelfDualC (G.V (.grid (2 * σ + 2 + 1) 0)) (G.Λ (.grid (2 * σ + 2 + 1) 0))` using `sd _ ⟨by omega, Nat.zero_le _⟩ (fun j e => by cases e)`. Establish `sdG2 : IsSelfDualC (G.V (.grid (2 * σ + 2) 0)) (G.Λ (.grid (2 * σ + 2) 0))` using `sd _ ⟨h', Nat.zero_le _⟩ (fun j e => by cases e)`.
+
+Establish `sdC3 : IsSelfDualC (G.V (.core (2 * σ + 2 + 1))) (G.Λ (.core (2 * σ + 2 + 1)))` using `sd (.core (2 * σ + 2 + 1)) (show 2 * σ + 2 + 1 ≤ D.R.m by omega) (fun j e => by cases e)`. Establish `sdC2 : IsSelfDualC (G.V (.core (2 * σ + 2))) (G.Λ (.core (2 * σ + 2)))` using `sd (.core (2 * σ + 2)) (show 2 * σ + 2 ≤ D.R.m by omega) (fun j e => by cases e)`. Establish `sd0 : IsSelfDualC (F.V₀ σ) (lat0 F σ h')` using `(I.2.1 σ h').1`. Establish `hMJ : ∀ v, MonoAt (F.dJ (σ + 1) h) (G.Λ (.grid (2 * (σ + 1) + 1) 0)) (G.Λ (.core (2 * (σ + 1) + 1))) v` using `fun v => ((I.2.1 (σ + 1) h).2.1 v).2`. Establish `hMB : ∀ v, MonoAt (F.dB σ h') (G.Λ (.grid (2 * σ + 2) 0)) (lat0 F σ h') v` using `fun v => ((I.2.1 σ h').2.1 v).1`.
+
+Establish `hOB` using `(I.2.1 σ h').2.2.2`. Establish `hN : ∀ y ∈ G.Λ (.core (2 * σ + 2 + 1)), (F.dJ (σ + 1) h).i₀ *ᵥ y ∈ G.Λ (.grid (2 * σ + 2 + 1) 0)` using `fun y hy => witt_core_inclusion_maps_split_lattices (F.dJ (σ + 1) h) sdG3.1 sdC3.1 hMJ hy`. Establish `hMm : ∀ y ∈ G.Λ (.grid (2 * σ + 2) 0), ((F.oB σ h').qA * (F.dB σ h').q0) *ᵥ y ∈ G.Λ (.core (2 * σ + 2))` using `fun y hy => by`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `qA_maps (F.oB σ h') sd0.1 sdC2.1 hOB (witt_core_projection_maps_split_lattices (F.dB σ h') sdG2.1 sd0.1 hMB hy)`.
+
+Establish `hx` using `AddSubgroup.mem_comap.1 hu`. Use `set x := ((F.dJ (σ + 1) h).ext0 _).comp ((F.dB σ h').inc0 _) u with hxdef`. Establish `hc : ((F.oB σ h').resT _ u).1 = (rat ((F.oB σ h').qA * (F.dB σ h').q0) : Mx D _ _) * x * (rat (F.dJ (σ + 1) h).i₀ : Mx D _ _)`. Rewrite using `[OrthDec.resT_apply, rat_mul, hxdef]`. Express the relevant statement in the definitionally equal form `(F.oB σ h').pA * u = (F.oB σ h').pA * (F.dB σ h').p0 * ((F.dB σ h').j0 * u * (F.dJ (σ + 1) h).p0) * (F.dJ (σ + 1) h).j0`.
+
+Establish `e1 : (F.dB σ h').p0 * (F.dB σ h').j0 = 1` using `HypDec.p0_j0 _`. Establish `e2 : (F.dJ (σ + 1) h).p0 * (F.dJ (σ + 1) h).j0 = 1` using `HypDec.p0_j0 _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc]`. Use `⟨?_, fun e he => ?_⟩` and prove the remaining obligations.
+
+Conclude with `latO_sandwich _ _ (isSelfDualC_neg sdG3) (isSelfDualC_neg sdC3) sdC2 hN hMm hx.1`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul]`. Conclude with `hatMx_sandwich _ _ hN hMm _ (hx.2 e he)`.
+-/
 theorem core_mem_latCore : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m),
     ∀ u ∈ (pcFB W F σ h h').Γ₀, ((F.oB σ h').resT _ u).1 ∈ latCore G (2 * σ + 2) := by
   intro D hq T L μ0 hL sc G W M hM F hF σ h h' u hu

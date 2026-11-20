@@ -11,10 +11,26 @@ namespace PositivityTheory.Rg.BcB.G8
 
 open PositivityTheory.Rg.Tf.Loc (quotIntegral IsQuotNormaliser twConj)
 
+/- English proof (translation)
+Establish `h` using `smul_finsum (R := ℂ) (M := ℂ) r f`. Simplify `h.symm` using `only [smul_eq_mul]`.
+-/
 theorem mul_finsum_eq {α : Type*} (r : ℂ) (f : α → ℂ) : ∑ᶠ i, r * f i = r * ∑ᶠ i, f i := by
   have h := smul_finsum (R := ℂ) (M := ℂ) r f
   simpa only [smul_eq_mul] using h.symm
 
+/- English proof (translation)
+Introduce `hT hO hA hC hP E _ _ _ hU a b _ _ _ _ _ _ _ _ μ₁ _ μ₂ _ ν₁ _ ν₂ _`. Take `⟨c, hc0, hc⟩` from `hT E hU a b μ₁ μ₂ ν₁ ν₂`. Use `⟨c, hc0, ?_⟩` and prove the remaining obligations. Introduce `S hS u₁ u₂ hu₁ hu₂ l₁ l₂ val ψ φ₁ φ₂ hL hφ₁ hφ₂`. Take `⟨e₁, he₁⟩` from `hC E a u₁ hu₁`.
+
+Take `⟨e₂, he₂⟩` from `hC E b u₂ hu₂`. Establish `hψ : ∀ v, Continuous (ψ v)` using `fun v => (hL v).1`. Unfold `ellSum2 geomRat2`. Rewrite using `[← finsum_comp_equiv (e₁.prodCongr e₂), ← mul_finsum_eq]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations.
+
+Take `⟨x₁, x₂⟩` from `x`. Simplify using `only [Equiv.prodCongr_apply, Prod.map_fst, Prod.map_snd]`. Take `⟨g₁, hg₁, hr₁⟩` from `he₁ x₁`. Take `⟨g₂, hg₂, hr₂⟩` from `he₂ x₂`. Establish `hiff : (IsRegEll (Quot.out (e₁ x₁)) ∧ IsRegEll (Quot.out (e₂ x₂))) ↔ (pol x₁ ∈ Ell E a ∧ pol x₂ ∈ Ell E b)`.
+
+Rewrite using `[hr₁, hr₂, (hP E a u₁ hu₁ _).1, (hP E b u₂ hu₂ _).1, mul_inv_cancel_right, mul_inv_cancel_right]`. Conclude with `Iff.rfl`. Establish `horb : orbTerm2 μ₁ μ₂ (adel S u₁ u₂ ψ φ₁ φ₂) (Quot.out (e₁ x₁)) (Quot.out (e₂ x₂)) = orbTerm2 μ₁ μ₂ (adel S u₁ u₂ ψ φ₁ φ₂) (x₁.rep * u₁) (x₂.rep * u₂)`. Rewrite using `[hg₁, hg₂, hO E a b μ₁ μ₂ _ _ g₁ _ g₂ (hA E hU a b S u₁ u₂ hu₁ hu₂ ψ φ₁ φ₂ hψ hφ₁ hφ₂ _ _)]`. Rewrite using `[finsum_eq_if]`.
+
+Distinguish the cases in `h : pol x₁ ∈ Ell E a ∧ pol x₂ ∈ Ell E b`. Rewrite using `[if_pos (hiff.2 h), if_pos h, horb]`. Establish `ht` using `hc S hS u₁ u₂ hu₁ hu₂ l₁ l₂ val ψ φ₁ φ₂ hL hφ₁ hφ₂ (x₁.rep * u₁) (x₂.rep * u₂) (hr₁.1 (hiff.2 h).1) (hr₂.1 (hiff.2 h).2)`. Simplify using `only [mul_inv_cancel_right] at ht`. Conclude with `ht`.
+
+Rewrite using `[if_neg (mt hiff.1 h), if_neg h, mul_zero]`.
+-/
 theorem global_character_of_holds : GlobalCharacterOfInputs := by
   intro hT hO hA hC hP E _ _ _ hU a b _ _ _ _ _ _ _ _ μ₁ _ μ₂ _ ν₁ _ ν₂ _
   obtain ⟨c, hc0, hc⟩ := hT E hU a b μ₁ μ₂ ν₁ ν₂

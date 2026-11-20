@@ -12,6 +12,13 @@ open Formalism.L2.SG.Pf.AmpWinLoc
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D X θ C A hθ _hA`. Establish `hsf : ∀ v, SigmaFinite (Formalism.L2.SG.Pf.AmpWinGlob.muNv C v)`. Establish `key : ∀ (τ : D.what₂.Tau) (w : InfinitePlace X.B.I.F), vOf X τ = w → SigmaFinite (muNl C τ w)`. Introduce and unpack `τ w rfl`. Conclude with `sf_muNl C τ hθ`.
+
+Introduce `v`. Conclude with `key (X.pl v) v (X.pl.symm_apply_apply v)`. Take `⟨hemb, hmap⟩` from `Formalism.L2.SG.Pf.AmpWinGlob.map_trInf C hsf hθ`. Establish `h` using `congrArg (fun μ => μ (Formalism.L2.SG.LoopTerm.trInf C '' A)) hmap`. Rewrite `h` using `[hemb.map_apply, Set.preimage_image_eq _ hemb.injective]`.
+
+Conclude with `h`.
+-/
 theorem pi_muNl_eq_dnB_image : ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice X θ) (A : Set X.B.I.Ginf), 0 < θ → MeasurableSet A → Measure.pi (fun v => muNl C (X.pl v) v) A = Measure.pi (fun _ : D.what₂.Tau => muNB D θ) ((fun (x : X.B.I.Ginf) (τ : D.what₂.Tau) => (Matrix.of.symm (Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (x (vOf X τ))) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)) '' A) := by
   intro D X θ C A hθ _hA
   have hsf : ∀ v, SigmaFinite (Formalism.L2.SG.Pf.AmpWinGlob.muNv C v) := by

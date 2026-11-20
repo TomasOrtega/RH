@@ -21,6 +21,17 @@ end OneByOne
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `set σR := Formalism.UG.sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)`. Establish `h0 : Formalism.UG.cT σR (g : Matrix (Fin n) (Fin n) (AfE D.host.F D.host.E)) * J.map (Formalism.UG.inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) * (g : Matrix (Fin n) (Fin n) (AfE D.host.F D.host.E)) = J.map (Formalism.UG.inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) := hg`. Establish `h1` using `congrArg Matrix.det h0`. Simplify using `only [Matrix.det_mul, Formalism.UG.cT, Matrix.det_transpose] at h1`. Establish `e1 : ((g : Matrix (Fin n) (Fin n) (AfE D.host.F D.host.E)).map σR).det = σR (g : Matrix (Fin n) (Fin n) (AfE D.host.F D.host.E)).det`.
+
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Establish `e2 : (J.map (Formalism.UG.inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))).det = Formalism.UG.inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) J.det := by`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite `h1` using `[e1, e2]`. Establish `hu : IsUnit (Formalism.UG.inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) J.det) := hJ.map _`. Establish `h2 : σR (g : Matrix (Fin n) (Fin n) (AfE D.host.F D.host.E)).det * (g : Matrix (Fin n) (Fin n) (AfE D.host.F D.host.E)).det = 1`. Establish `: (σR (g : Matrix (Fin n) (Fin n) (AfE D.host.F D.host.E)).det * (g : Matrix (Fin n) (Fin n) (AfE D.host.F D.host.E)).det) * Formalism.UG.inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) J.det = 1 * Formalism.UG.inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) J.det := by`. Take the linear combination `h1`.
+
+Conclude with `hu.mul_right_cancel this`. Use `show _ = _`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [MonoidHom.mul_apply, MonoidHom.id_apply, Units.val_mul, conjId, Units.coe_map, Units.val_one, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[mul_comm]`.
+
+Conclude with `h2`.
+-/
 theorem det_mem_normOne_of_mem_unitaryPoints {n : ℕ} {J : Matrix (Fin n) (Fin n) D.host.E} (hJ : IsUnit J.det)
     {g : GL (Fin n) (AfE D.host.F D.host.E)} (hg : g ∈ UPts (sigD D) J (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) :
     Matrix.GeneralLinearGroup.det g ∈ U1 (sigD D) := by

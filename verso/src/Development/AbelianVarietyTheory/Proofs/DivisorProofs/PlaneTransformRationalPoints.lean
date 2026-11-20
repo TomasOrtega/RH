@@ -10,25 +10,51 @@ namespace GlobalTheory.ThK.PlaneCo.Rat
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[bA, inclR, Algebra.TensorProduct.basis_repr_tmul]`.
+-/
 theorem bA_repr_inclR (e : E) (i : Fin (Module.finrank F E)) :
     (bA F E).repr (inclR (F := F) (AF F) e) i = algebraMap F (AF F) ((bE F E).repr e i) := by
   simp [bA, inclR, Algebra.TensorProduct.basis_repr_tmul]
 
+/- English proof (translation)
+Simplify using `[bA', inclR, Algebra.TensorProduct.basis_repr_tmul]`.
+-/
 theorem bA'_repr_inclR (e : E) (i : Fin (Module.finrank F E)) :
     (bA' F E).repr (inclR (F := F) (AF F) e) i = algebraMap F (AF F) ((bE' F E).repr e i) := by
   simp [bA', inclR, Algebra.TensorProduct.basis_repr_tmul]
 
+/- English proof (translation)
+Simplify using `only [incM]`. Conclude with `Matrix.map_mul`.
+-/
 theorem incM_mul' {l m k : Type} [Fintype m] (A : Matrix l m E) (B : Matrix m k E) :
     incM F (A * B) = incM F A * incM F B := by
   simp only [incM]; exact Matrix.map_mul
 
+/- English proof (translation)
+Use `show incM F (planeCoef H) * incM F x * (incM F (planeCoef H'))ᵀ = _`. Rewrite using `[incM_mul', incM_mul']`. Both sides reduce to the same expression.
+-/
 theorem coefLin_incM {n d n₁ d₁ : ℕ} (H : Plane E n n₁) (H' : Plane E d d₁) (x : Matrix (Fin n) (Fin d) E) :
     coefLin H H' (incM F x) = incM F (planeCoef H * x * (planeCoef H')ᵀ) := by
   show incM F (planeCoef H) * incM F x * (incM F (planeCoef H'))ᵀ = _
   rw [incM_mul', incM_mul']; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cA_inclR' (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := rfl
 
+/- English proof (translation)
+Use `set M := planeCoef H * x * (planeCoef H')ᵀ with hM`. Establish `hc` using `coefLin_incM (F := F) H H' x`. Establish `hs : ∀ k, sI H H' (incM F x) k = inclR (F` using `F) (AF F) (M (posS k).1 (posS k).2) := by`. Introduce `k`. Rewrite using `[sI, hc]`.
+
+Both sides reduce to the same expression. Establish `ht : ∀ k, tI H H' (incM F x) k = inclR (F` using `F) (AF F) (M (posT k).1 (posT k).2) := by`. Introduce `k`. Rewrite using `[tI, hc]`. Both sides reduce to the same expression.
+
+Establish `hp : ∀ k, pairI σ X W H H' (incM F x) k = inclR (F` using `F) (AF F) (-∑ m, (planeGram σ X.J H (posS k).1 (posT m).1 * planeGram σ W.J H' (posS k).2 (posT m).2) * σ (M (posT m).1 (posT m).2)) := by`. Introduce `k`. Simplify using `only [pairI, ht, cA_inclR', map_neg, map_sum, map_mul]`. Use `⟨⟨fun k => (bE F E).repr (M (posS k.1).1 (posS k.1).2) k.2, fun k => (bE' F E).repr (-∑ m, (planeGram σ X.J H (posS k.1).1 (posT m).1 * planeGram σ W.J H' (posS k.1).2 (posT m).2) * σ (M (posT m).1 (posT m).2)) k.2, ?_⟩, ⟨M.submatrix Sum.inl Sum.inl, ?_⟩⟩` and prove the remaining obligations. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations.
+
+Use `show (bA F E).repr (sI H H' (incM F x) k.1) k.2 = _`. Rewrite using `[hs, bA_repr_inclR]`. Use `show (bA' F E).repr (pairI σ X W H H' (incM F x) k.1) k.2 = _`. Rewrite using `[hp, bA'_repr_inclR]`. Use `show (coefLin H H' (incM F x)).submatrix Sum.inl Sum.inl = _`.
+
+Rewrite using `[hc]`. Both sides reduce to the same expression.
+-/
 theorem planeT_incM (σ : E →ₐ[F] E)
     {n d n₁ d₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (H : Plane E n n₁) (H' : Plane E d d₁) (x : Matrix (Fin n) (Fin d) E) :
     (∃ y z : Kc F E d₁ n₁ → F, (planeT σ X W H H' (incM F x)).1 = (fun k => algebraMap F (AF F) (y k), fun k => algebraMap F (AF F) (z k))) ∧

@@ -15,6 +15,17 @@ open scoped Topology
 
 namespace GlobalTheory.CompanionTheory.WcB
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχ μ _ Φ hΦ hΦc`. Use `haveI := GroundTheory.LocalField.isModuleTopology F E`. Establish `hc : Continuous (algebraMap F E)` using `IsModuleTopology.continuous_of_linearMap (Algebra.linearMap F E)`. Establish `hTr : Continuous (Algebra.trace F E)` using `IsModuleTopology.continuous_of_linearMap (Algebra.trace F E)`. Establish `hN : Continuous (Algebra.norm F : E → F)` using `GlobalTheory.LBC.Inh.continuous_algNorm hc`.
+
+Establish `hΦ' : Continuous Φ` using `hΦ.continuous`. Establish `hint : Integrable Φ μ` using `hΦ'.integrable_of_hasCompactSupport hΦc`. Unfold `gaussI`. Use `continuous_of_dominated (bound := fun u => ‖Φ u‖) ?_ ?_ hint.norm ?_` and prove the remaining obligations. Introduce `p`.
+
+Use `Continuous.aestronglyMeasurable ?_` and prove the remaining obligations. Use `Continuous.mul ?_ hΦ'` and prove the remaining obligations. Use `continuous_subtype_val.comp (hχ.comp ?_)` and prove the remaining obligations. Conclude with `(continuous_const.mul hN).sub (hTr.comp (continuous_const.mul continuous_id))`. Introduce `p`.
+
+Use `Filter.Eventually.of_forall fun u => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Circle.norm_coe, one_mul]`. Use `Filter.Eventually.of_forall fun u => ?_` and prove the remaining obligations. Use `Continuous.mul ?_ continuous_const` and prove the remaining obligations. Use `continuous_subtype_val.comp (hχ.comp ?_)` and prove the remaining obligations.
+
+Conclude with `(continuous_fst.mul continuous_const).sub (hTr.comp (continuous_snd.mul continuous_const))`.
+-/
 theorem continuous_gaussI : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle), Continuous χ → ∀ (μ : Measure E) [μ.IsAddHaarMeasure] (Φ : E → ℂ), IsLocallyConstant Φ → HasCompactSupport Φ → Continuous fun p : F × E => gaussI χ μ Φ p.1 p.2 := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχ μ _ Φ hΦ hΦc
   haveI := GroundTheory.LocalField.isModuleTopology F E

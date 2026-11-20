@@ -37,12 +37,20 @@ def hseq (hX : IsRegVar p D) (σ : k →+* ℂ) {E : X.Modules} (h : VMetric p E
 
 variable (hX : IsRegVar p D) (σ : k →+* ℂ) {E : X.Modules} (h : VMetric p E 2) (H : h.IsCInf) (fl : Vert.Flag E 2)
 
+/- English proof (translation)
+Use `⟨x.ch.map_source x.2, ?_⟩` and prove the remaining obligations. Use `show (x.ch.symm x.crd) ∈ ptsIn p σ (frameAt fl x.pt).U`. Rewrite using `[x.ch.left_inv x.2]`. Conclude with `mem_frameAt fl x.pt`.
+-/
 theorem crd_mem (x : (hX.atlas σ).Pt) : x.crd ∈ chartSet (hseq hX σ h H fl) (frameAt fl x.pt) x.1.1 := by
   refine ⟨x.ch.map_source x.2, ?_⟩
   show (x.ch.symm x.crd) ∈ ptsIn p σ (frameAt fl x.pt).U
   rw [x.ch.left_inv x.2]
   exact mem_frameAt fl x.pt
 
+/- English proof (translation)
+Use `filter_upwards [(isOpen_chartSet (hseq hX σ h H fl) (frameAt fl x.pt) x.1.1).mem_nhds (crd_mem hX σ h H fl x)] with v hv`. Establish `hv1 : v ∈ ((hX.atlas σ).e x.1.1).target` using `hv.1`. Rewrite using `[HolAtlas.loc, dif_pos hv1]`. Use `set y : (hX.atlas σ).Pt := ⟨(x.1.1, ((hX.atlas σ).e x.1.1).symm v), ((hX.atlas σ).e x.1.1).map_target hv1⟩ with hy`. Establish `hb : v ∈ chartSet (hseq hX σ h H fl) (frameAt fl y.pt) x.1.1` using `⟨hv1, mem_frameAt fl y.pt⟩`.
+
+Establish `e1 : y.crd = v` using `((hX.atlas σ).e x.1.1).right_inv hv1`. Express the relevant statement in the definitionally equal form `(ofValues (extTrace (midIn (hseq hX σ h H fl) (frameAt fl y.pt) x.1.1) y.crd) : Alt D) = _`. Rewrite using `[e1, GlobalTheory.T.extTrace_chart_indep (hseq hX σ h H fl) (frameAt fl y.pt) (frameAt fl x.pt) x.1.1 ⟨hb, hv⟩]`.
+-/
 theorem loc_omF (x : (hX.atlas σ).Pt) :
     (hX.atlas σ).loc (fld _ (omF hX σ h fl)) x.1.1 =ᶠ[𝓝 x.crd]
       fun v => (ofValues (extTrace (midIn (hseq hX σ h H fl) (frameAt fl x.pt) x.1.1) v) : Alt D) := by
@@ -62,6 +70,21 @@ namespace GlobalTheory.LineForm.DdcLine
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ}
 variable (hX : IsRegVar p D) (σ : k →+* ℂ)
 
+/- English proof (translation)
+Take `⟨⟨a, y⟩, hy⟩` from `x`. Establish `hy' : y ∈ a.e.source` using `hy`. Express the relevant statement in the definitionally equal form `y ∈ ptsIn p σ c.U at hc`. Use `set b := pick ((VMetric.det Hm).φ σ).isLB y`. Establish `hb : y ∈ ptsIn p σ ((VMetric.det Hm).B.U b)` using `mem_pick _ y`.
+
+Establish `hc' : y ∈ ptsIn p σ ((VMetric.det Hm).B.U c)` using `hc`. Establish `ho` using `ChartGlue.isOpen_over a.e (isOpen_ptsIn (p := p) (σ := σ) ((VMetric.det Hm).B.U c ⊓ (VMetric.det Hm).B.U b))`. Establish `hm` using `ChartGlue.mem_over a.e hy' (mem_ptsIn_inf.2 ⟨hc', hb⟩)`. Use `set u := c.isFrame.detUnit b.isFrame inf_le_left inf_le_right`. Establish `hg` using `a.holo _ u.val`.
+
+Establish `hf : ContDiffAt ℂ 2 (ev p σ _ u.val ∘ a.e.symm) (a.e y)` using `(SCV.analyticAt_of_differentiableOn (hg.mono fun v hv => ⟨hv.1, hv.2⟩) (ho.mem_nhds hm)).contDiffAt`. Establish `h0 : (ev p σ _ u.val ∘ a.e.symm) (a.e y) ≠ 0` using `ev_ne_zero hm.2 u.isUnit`. Establish `hC : ContDiffAt ℝ 2 (fun v => ((VMetric.det Hm).φ σ).φ c (a.e.symm v)) (a.e y)` using `((VMetric.det Hm).cInf σ).contDiffAt a hy' hc'`. Establish `hlog : ContDiffAt ℝ 2 (fun v => Real.log (‖(ev p σ _ u.val ∘ a.e.symm) v‖ ^ 2)) (a.e y)` using `((hf.restrict_scalars ℝ).norm_sq ℂ).log (by simpa using h0)`. Establish `key : leviForm (fun v => ((VMetric.det Hm).φ σ).φ b (a.e.symm v)) (a.e y) = leviForm (fun v => ((VMetric.det Hm).φ σ).φ c (a.e.symm v)) (a.e y)`.
+
+Rewrite using `[leviForm_congr (u' := fun v => ((VMetric.det Hm).φ σ).φ c (a.e.symm v) + -Real.log (‖(ev p σ _ u.val ∘ a.e.symm) v‖ ^ 2)), leviForm_add hC hlog.neg, leviForm_neg, leviForm_log_normSq_eq_zero hf h0, neg_zero, add_zero]`. Use `filter_upwards [ho.mem_nhds hm] with v hv`. Rewrite using `[((VMetric.det Hm).φ σ).trans c b _ (mem_ptsIn_inf.1 hv.2).1 (mem_ptsIn_inf.1 hv.2).2, sub_eq_add_neg]`. Both sides reduce to the same expression. Establish `eL : c1F hX σ (VMetric.det Hm) ⟨(a, y), hy⟩ = ofValues (HermFrame.ddc (fun v => ((VMetric.det Hm).φ σ).φ b (a.e.symm v)) (a.e y))` using `rfl`.
+
+Rewrite using `[eL]`. Unfold `HermFrame.ddc`. Rewrite using `[key]`. Establish `hM : MContDiffAt 2 (fun w => (m.met σ).G c (a.e.symm w)) (a.e y)` using `(((Hm σ) c y hc).mContDiffAt a hy').of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hH : ∀ᶠ w in 𝓝 (a.e y), ((m.met σ).G c (a.e.symm w)).IsHermitian` using `by filter_upwards [ho.mem_nhds hm] with v hv`.
+
+Conclude with `((m.met σ).posDef c _ (mem_ptsIn_inf.1 hv.2).1).1`. Establish `hU : IsUnit ((m.met σ).G c (a.e.symm (a.e y))).det`. Rewrite using `[a.e.left_inv hy']`. Conclude with `((m.met σ).posDef c y hc).det_pos.ne'.isUnit`. Establish `e2 : (fun v => ((VMetric.det Hm).φ σ).φ c (a.e.symm v)) = fun v => -Real.log ((m.met σ).G c (a.e.symm v)).det.re` using `rfl`.
+
+Express the relevant statement in the definitionally equal form `_ = ofValues (chernOne (fun w => (m.met σ).G c (a.e.symm w)) (a.e y))`. Use `congr 1`. Use function extensionality and compare the values at `ξ η`. Rewrite using `[chernOne_eq_neg_ddc_log_det hM hH hU, e2, leviForm_neg, ddc]`. Simplify using the standard rewrite rules.
+-/
 theorem c1F_det_metric_eq_chernOne {F : X.Modules} {r : ℕ} {m : VMetric p F r} (Hm : m.IsCInf) (x : (hX.atlas σ).Pt) (c : Chart F r)
     (hc : x.pt ∈ ptsIn p σ c.U) :
     c1F hX σ (VMetric.det Hm) x = ofValues (chernOne (fun w => (m.met σ).G c (x.ch.symm w)) x.crd) := by
@@ -118,17 +141,26 @@ namespace GlobalTheory.LineForm.DdcLine
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
 variable (hX : IsRegVar p D) (σ : k →+* ℂ) {E : X.Modules} (h : VMetric p E 2) (H : h.IsCInf) (fl : Vert.Flag E 2)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [VMetric.restrict, Met.restrict, Met.gram, subGram, Matrix.toBlocks₁₁, Matrix.of_apply, VBExt.AdaptedChart.frame, VBExt.AdaptedChart.sub, Sum.elim_inl]`.
+-/
 theorem restrict_G_sub (a : VBExt.AdaptedChart (lineSC fl) 1 1) (y : CxPts p σ) :
     ((h.restrict (fl.isSubbundle 1) (fl.isVB 1)).met σ).G a.sub y = subGram ((h.met σ).gram a.frame y) := by
   ext i j
   simp only [VMetric.restrict, Met.restrict, Met.gram, subGram, Matrix.toBlocks₁₁, Matrix.of_apply,
     VBExt.AdaptedChart.frame, VBExt.AdaptedChart.sub, Sum.elim_inl]
 
+/- English proof (translation)
+The claim follows from `Met.quot_G (S := lineSC fl) (r := 1) (s := 1) (h.met σ) (lineSC_shortExact fl) (fl.isVB 1) (fl.isVB_cokernel 1) a hy`.
+-/
 theorem quot_G_line (a : VBExt.AdaptedChart (lineSC fl) 1 1) {y : CxPts p σ} (hy : y ∈ ptsIn p σ a.U) :
     ((VMetric.quot (S := lineSC fl) (r := 1) (s := 1) h (lineSC_shortExact fl) (fl.isVB 1) (fl.isVB_cokernel 1)).met σ).G
       a.quot y = quotGram ((h.met σ).gram a.frame y) :=
   Met.quot_G (S := lineSC fl) (r := 1) (s := 1) (h.met σ) (lineSC_shortExact fl) (fl.isVB 1) (fl.isVB_cokernel 1) a hy
 
+/- English proof (translation)
+The claim follows from `(isometric_detQuot_and_bcInt_eq_of_iso k X p (lineSC fl) (.mk _ _ (line_lineQuot fl)) 1 1 h h H H (lineSC_shortExact fl) (shortExact_lineQuot fl) (fl.isVB 1) (fl.isVB_cokernel 1) (fl.isVB 1) (fl.isVB_gr 1) (Iso.refl _) (Iso.refl _) (by simp) (fun σ V s t y hy => by simp)).1`.
+-/
 theorem isometric_quot_line :
     (VMetric.det (VMetric.IsCInf.quot (S := lineSC fl) (r := 1) (s := 1) (lineSC_shortExact fl) (fl.isVB 1)
       (fl.isVB_cokernel 1) H)).Isometric
@@ -138,6 +170,11 @@ theorem isometric_quot_line :
     (lineSC_shortExact fl) (shortExact_lineQuot fl) (fl.isVB 1) (fl.isVB_cokernel 1) (fl.isVB 1) (fl.isVB_gr 1)
     (Iso.refl _) (Iso.refl _) (by simp) (fun σ V s t y hy => by simp)).1
 
+/- English proof (translation)
+Establish `e₁ : c1F hX σ (VMetric.grLB fl 0 H) x = c1F hX σ (VMetric.det (H.restrict (fl.isSubbundle 1) (fl.isVB 1))) x`. Rewrite using `[c1F_eq_of_isometric k X p D hX σ _ _ (isometric_grLB_zero H fl)]`. Establish `e₂ : c1F hX σ (VMetric.det (H.restrict (fl.isSubbundle 1) (fl.isVB 1))) x = ofValues (chernOne (fun w => ((h.restrict (fl.isSubbundle 1) (fl.isVB 1)).met σ).G (frameAt fl x.pt).sub (x.ch.symm w)) x.crd)` using `c1F_det_metric_eq_chernOne hX σ _ x (frameAt fl x.pt).sub (mem_frameAt fl x.pt)`. Establish `e₃ : (fun w => ((h.restrict (fl.isSubbundle 1) (fl.isVB 1)).met σ).G (frameAt fl x.pt).sub (x.ch.symm w)) = fun w => subGram ((h.met σ).gram (frameAt fl x.pt).frame (x.ch.symm w))`. Use function extensionality and compare the values at `fun w => restrict_G_sub σ h fl _ _`.
+
+Rewrite using `[e₁, e₂, e₃]`.
+-/
 theorem c1F_grLB_zero_eq_chernOne_subGram (x : (hX.atlas σ).Pt) : c1F hX σ (VMetric.grLB fl 0 H) x =
     ofValues (chernOne (fun w => subGram ((h.met σ).gram (frameAt fl x.pt).frame (x.ch.symm w))) x.crd) := by
   have e₁ : c1F hX σ (VMetric.grLB fl 0 H) x =
@@ -152,6 +189,13 @@ theorem c1F_grLB_zero_eq_chernOne_subGram (x : (hX.atlas σ).Pt) : c1F hX σ (VM
     funext fun w => restrict_G_sub σ h fl _ _
   rw [e₁, e₂, e₃]
 
+/- English proof (translation)
+Establish `e₁ : c1F hX σ (VMetric.grLB fl 1 H) x = c1F hX σ (VMetric.det (VMetric.IsCInf.quot (S` using `lineSC fl) (r := 1) (s := 1) (lineSC_shortExact fl) (fl.isVB 1) (fl.isVB_cokernel 1) H)) x := by`. Rewrite using `[c1F_eq_of_isometric k X p D hX σ _ _ (isometric_quot_line h H fl), c1F_eq_of_isometric k X p D hX σ _ _ (isometric_grLB_one H fl)]`. Establish `e₂ : c1F hX σ (VMetric.det (VMetric.IsCInf.quot (S` using `lineSC fl) (r := 1) (s := 1) (lineSC_shortExact fl) (fl.isVB 1) (fl.isVB_cokernel 1) H)) x = ofValues (chernOne (fun w => ((VMetric.quot (S := lineSC fl) (r := 1) (s := 1) h (lineSC_shortExact fl) (fl.isVB 1) (fl.isVB_cokernel 1)).met σ).G (frameAt fl x.pt).quot (x.ch.symm w)) x. …`. Establish `he : (fun w => ((VMetric.quot (S` using `lineSC fl) (r := 1) (s := 1) h (lineSC_shortExact fl) (fl.isVB 1) (fl.isVB_cokernel 1)).met σ).G (frameAt fl x.pt).quot (x.ch.symm w)) =ᶠ[𝓝 x.crd] (fun w => quotGram ((h.met σ).gram (frameAt fl x.pt).frame (x.ch.symm w))) := by filter_upwards [(isOpen_chartSet (hseq hX σ h H fl) …`. Establish `hv2 : x.ch.symm v ∈ ptsIn p σ (frameAt fl x.pt).U` using `hv.2`.
+
+Conclude with `quot_G_line σ h fl (frameAt fl x.pt) hv2`. Establish `e₃ : chernOne (fun w => ((VMetric.quot (S` using `lineSC fl) (r := 1) (s := 1) h (lineSC_shortExact fl) (fl.isVB 1) (fl.isVB_cokernel 1)).met σ).G (frameAt fl x.pt).quot (x.ch.symm w)) x.crd = chernOne (fun w => quotGram ((h.met σ).gram (frameAt fl x.pt).frame (x.ch.symm w))) x.crd := by`. Use function extensionality and compare the values at `ξ η`. Simplify using `only [chernOne]`. Rewrite using `[curv_congr he]`.
+
+Rewrite using `[e₁, e₂, e₃]`.
+-/
 theorem c1F_grLB_one_eq_chernOne_quotGram (x : (hX.atlas σ).Pt) : c1F hX σ (VMetric.grLB fl 1 H) x =
     ofValues (chernOne (fun w => quotGram ((h.met σ).gram (frameAt fl x.pt).frame (x.ch.symm w))) x.crd) := by
   have e₁ : c1F hX σ (VMetric.grLB fl 1 H) x = c1F hX σ (VMetric.det (VMetric.IsCInf.quot (S := lineSC fl) (r := 1)
@@ -180,10 +224,20 @@ theorem c1F_grLB_one_eq_chernOne_quotGram (x : (hX.atlas σ).Pt) : c1F hX σ (VM
     rw [curv_congr he]
   rw [e₁, e₂, e₃]
 
+/- English proof (translation)
+Simplify using `only [ofValuesTwo, sub_smul, Finset.sum_sub_distrib, smul_sub]`.
+-/
 theorem ofValuesTwo_sub {n : ℕ} (Ψ Φ : V n → V n → V n → V n → ℂ) :
     ofValuesTwo (fun a b c d => Ψ a b c d - Φ a b c d) = ofValuesTwo Ψ - ofValuesTwo Φ := by
   simp only [ofValuesTwo, sub_smul, Finset.sum_sub_distrib, smul_sub]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `hmem` using `crd_mem hX σ h H fl x`. Establish `hpos` using `isPosFrame_midIn (hseq hX σ h H fl) (frameAt fl x.pt) x.1.1`. Rewrite using `[GlobalTheory.T.ddc_eq_of_local_eq _ _ x _ (loc_omF hX σ h H fl x), GlobalTheory.T.ddc_ofValues_eq _ _ (fun a b => ((GlobalTheory.T.contDiffOn_extTrace_of_isPosFrame hpos _ _).contDiffAt (hpos.1.mem_nhds hmem)).of_le (WithTop.coe_le_coe.2 le_top))]`. Establish `hc` using `(((GlobalTheory.SubQuotCurv.subQuotCurvature _ (Fin 1) (Fin 1) _ _).2 hpos).2.2.2 (by simp) (by simp) _ hmem).2.2.2`.
+
+Establish `hd : ddcForm (extTrace (midIn (hseq hX σ h H fl) (frameAt fl x.pt) x.1.1)) x.crd = fun ξ₁ η₁ ξ₂ η₂ => chernTwo (midIn (hseq hX σ h H fl) (frameAt fl x.pt) x.1.1) x.crd ξ₁ η₁ ξ₂ η₂ - wedge (chernOne (GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms.gramS (midIn (hse …`. Use function extensionality and compare the values at `ξ₁ η₁ ξ₂ η₂`. Conclude with `hc ξ₁ η₁ ξ₂ η₂`. Rewrite using `[hd, ofValuesTwo_sub, ← GlobalTheory.T.chernAt_two_eq_ofValuesTwo_chernTwo, ← GlobalTheory.T.ofValues_mul_ofValues']`. Simplify using `only [fld, Pi.sub_apply, Pi.mul_apply, c1F_grLB_zero_eq_chernOne_subGram hX σ h H fl x, c1F_grLB_one_eq_chernOne_quotGram hX σ h H fl x]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ddc_omF : (hX.atlas σ).ddc (fld _ (omF hX σ h fl)) =
     fld _ (c2F hX σ h fl - c1F hX σ (VMetric.grLB fl 0 H) * c1F hX σ (VMetric.grLB fl 1 H)) := by
   funext x
@@ -203,6 +257,9 @@ theorem ddc_omF : (hX.atlas σ).ddc (fld _ (omF hX σ h fl)) =
 
 end GlobalTheory.LineForm.DdcLine
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ hX σ _ h H fl` and use `GlobalTheory.LineForm.DdcLine.ddc_omF hX σ h H fl`.
+-/
 theorem GlobalTheory.LineForm.ddc_omF_eq : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ)
     (hX : IsRegVar p D) (σ : k →+* ℂ),
     ∀ (E : X.Modules) (h : VMetric p E 2) (H : h.IsCInf) (fl : Vert.Flag E 2), (hX.atlas σ).ddc (fld _ (omF hX σ h fl)) =

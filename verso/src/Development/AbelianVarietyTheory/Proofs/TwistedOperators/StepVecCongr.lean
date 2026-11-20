@@ -27,6 +27,11 @@ def stepDat (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank)
       omegaG LS χj (fun PP => redM PP (frMapO S T βS βT x)) * omegaQ Q LS.r ξ 1 (fun PP => redM PP (frMapO S T βS βT x))
     else 0
 
+/- English proof (translation)
+Break down `j with _ | j` into its components or cases. Conclude with `r_le_Y 0`. Distinguish the cases in `h : j + 1 < D.R.m`. Rewrite using `[colY_lt L h]`. Conclude with `r_le_Y _`.
+
+Rewrite using `[show columnBlock L (j + 1) = ⟨D.sp.X', L.ΛX⟩ from if_neg h]`. Conclude with `r_le_X`.
+-/
 theorem r_le_colY {T : Type} (L : LevCh D T) (j : ℕ) : D.R.r ≤ (columnBlock L j).sp.rank := by
   rcases j with _ | j
   · exact r_le_Y 0
@@ -37,16 +42,29 @@ theorem r_le_colY {T : Type} (L : LevCh D T) (j : ℕ) : D.R.r ≤ (columnBlock 
 def colDat {T : Type} (L : LevCh D T) (t : T) (j : ℕ) : LevDat D.host.E ℂ (columnBlock L j).sp.rank :=
   Formalism.IndefR.Lev.datY _ D.R.r D.R.t j (r_le_colY L j) L.Pg (L.Q t) (LevelP.triv L.Pg D.R.r ℂ) L.chi (L.xiR t) Formalism.IndefR.Lev.Frm.B
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨rfl, HEq.rfl⟩`.
+-/
 theorem lsp_heq {X : LSp D} {S : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} (h : X = ⟨S, Λ⟩) :
     X.sp = S ∧ HEq X.lat Λ := by
   subst h; exact ⟨rfl, HEq.rfl⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem datY_heq {n n' : ℕ} (h : n = n') (r t j : ℕ) (hr : r ≤ n) (hr' : r ≤ n') (Pg Q : Finset (Pl D.host.E))
     (P : LevelP Pg r ℂ) (χ : ℕ → ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (fr : Formalism.IndefR.Lev.Frm) :
     HEq (Formalism.IndefR.Lev.datY n r t j hr Pg Q P χ ξ fr) (Formalism.IndefR.Lev.datY n' r t j hr' Pg Q P χ ξ fr) := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `hS hT` using the available equality. Consider the cases of `h1`. Consider the cases of `h2`. Consider the cases of `h3`. Consider the cases of `h4`.
+
+Consider the cases of `h5`. Consider the cases of `h6`. Consider the cases of `h7`. Consider the cases of `h8`. Consider the cases of `h9`.
+
+Conclude with `h`.
+-/
 theorem stepVec_congr {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S S' T T' : HSp D} (hS : S = S') (hT : T = T')
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     {sS' : D.what₂.Tau → Matrix (Fin S'.rank) (Fin S'.rank) ℂ} {sT' : D.what₂.Tau → Matrix (Fin T'.rank) (Fin T'.rank) ℂ}

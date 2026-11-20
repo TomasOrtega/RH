@@ -18,6 +18,15 @@ open GlobalTheory.LatJet (EisExp IsEis FR)
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Introduce `hE F _ _ _ hf s N L hs hN hL τ c t κ u hτ hu`. Take `⟨𝔞, 𝔟, x, rfl⟩` from `exists_eq_split_of_hasLevel F N L hN hL`. Take `⟨Z, a, -, ha⟩` from `GlobalTheory.T.exists_hilbertEisenstein_fourierCoeffFamily hE F hf 𝔞 𝔟 s hs`. Establish `h1` using `GlobalTheory.T.hasSum_iteratedDeriv_hilbertEisenstein_splitLattice F (2 * s) 𝔞 𝔟 _ a x τ c t u (even_two_mul s) ha hτ`. Establish `h2` using `GlobalTheory.T.hasSum_iteratedDeriv_hilbertEisenstein_splitLattice F (2 * s) 𝔞 𝔟 _ a x τ c t (word κ) (even_two_mul s) ha hτ`.
+
+Simplify using `only [hu] at h1`. Simplify using `only [count_word_eq] at h2`. Establish `h3` using `h1.unique h2`. Establish `hω : (omegaFactor 𝔞 : ℂ) ≠ 0`. Establish `hd : (0 : ℝ) < GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F`.
+
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF`. Conclude with `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero F)`. Establish `hn : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.nrm 𝔞 ≠ 0`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.nrm`. Conclude with `mt FractionalIdeal.absNorm_eq_zero_iff.1 𝔞.ne_zero` after adjusting the coercions.
+
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor`. Conclude with `mul_ne_zero (Real.rpow_pos_of_pos hd _).ne' hn` after adjusting the coercions. Establish `hc : ((2 * Real.pi * Complex.I) ^ Module.finrank ℚ F * (omegaFactor 𝔞 : ℂ)) ^ (2 * s) ≠ 0` using `pow_ne_zero _ (mul_ne_zero (pow_ne_zero _ Complex.two_pi_I_ne_zero) hω)`. Conclude with `(div_left_inj' hc).1 h3`.
+-/
 theorem iterD_eq_jet_of_count : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F → ∀ (s N : ℕ) (L : Lat F), 1 ≤ s → 0 < N → HasLevel N L → ∀ (τ c t : ℂ) (κ : Emb F → ℕ) (u : List (Emb F)), 0 < τ.im → (∀ i, u.count i = κ i) → iterD u (fun z ↦ (cK F (2 * s) : ℂ) * gval (2 * s) L (fun i ↦ τ + z i * (c * τ + t)) (fun i ↦ 1 + z i * c)) 0 = jet (2 * s) L κ τ c t := by
   intro hE F _ _ _ hf s N L hs hN hL τ c t κ u hτ hu
   obtain ⟨𝔞, 𝔟, x, rfl⟩ := exists_eq_split_of_hasLevel F N L hN hL

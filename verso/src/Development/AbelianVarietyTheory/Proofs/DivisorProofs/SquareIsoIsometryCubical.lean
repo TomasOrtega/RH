@@ -15,20 +15,35 @@ variable {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 def mulL (n : ℤ) : Pt E g →L[ℝ] Pt E g :=
   (ContinuousLinearMap.fst ℝ E (Fin g → ℂ)).prod ((n : ℝ) • ContinuousLinearMap.snd ℝ E (Fin g → ℂ))
 
+/- English proof (translation)
+Simplify using `[mulL, mulN, Int.cast_smul_eq_zsmul]`.
+-/
 theorem mulL_apply (n : ℤ) (P : Pt E g) : mulL n P = mulN n P := by
   simp [mulL, mulN, Int.cast_smul_eq_zsmul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `P`. Conclude with `(mulL_apply n P).symm`.
+-/
 theorem mulN_eq (n : ℤ) : (mulN n : Pt E g → Pt E g) = mulL n := by
   funext P; exact (mulL_apply n P).symm
 
+/- English proof (translation)
+Rewrite using `[mulN_eq]`. Conclude with `(mulL (E := E) (g := g) n).hasFDerivAt.fderiv`.
+-/
 theorem fderiv_mulN (n : ℤ) (P : Pt E g) : fderiv ℝ (mulN n : Pt E g → Pt E g) P = mulL n := by
   rw [mulN_eq]; exact (mulL (E := E) (g := g) n).hasFDerivAt.fderiv
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[per, Matrix.vecMul, dotProduct, Finset.mul_sum, mul_add, mul_assoc]`.
+-/
 theorem per_zsmul (τ : Matrix (Fin g) (Fin g) ℂ) (n : ℤ) (l : Fl g) :
     per τ (n • l) = n • per τ l := by
   funext i
   simp [per, Matrix.vecMul, dotProduct, Finset.mul_sum, mul_add, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [mulN, transl, per_zsmul, smul_add]`.
+-/
 theorem mulN_transl (τ : E → Matrix (Fin g) (Fin g) ℂ) (n : ℤ) (l : Fl g) (P : Pt E g) :
     mulN n (transl τ l P) = transl τ (n • l) (mulN n P) := by
   simp only [mulN, transl, per_zsmul, smul_add]
@@ -38,16 +53,29 @@ end GlobalTheory.SqIsoIsom
 namespace GlobalTheory.SqIsoIsom
 variable {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+The claim follows from `(hu.differentiableOn (by norm_num)).differentiableAt (hs.mem_nhds hQ)`.
+-/
 theorem du_at {s : Set (Pt E g)} {u : Pt E g → ℝ} (hu : ContDiffOn ℝ 2 u s) (hs : IsOpen s)
     {Q : Pt E g} (hQ : Q ∈ s) : DifferentiableAt ℝ u Q :=
   (hu.differentiableOn (by norm_num)).differentiableAt (hs.mem_nhds hQ)
 
+/- English proof (translation)
+Establish `hd : DifferentiableOn ℝ (fderiv ℝ u) s` using `(hu.fderiv_of_isOpen hs (m := 1) (by norm_num)).differentiableOn one_ne_zero`. Conclude with `((hd P hP).differentiableAt (hs.mem_nhds hP)).clm_apply (differentiableAt_const x)`.
+-/
 theorem dd_apply {s : Set (Pt E g)} {u : Pt E g → ℝ} (hu : ContDiffOn ℝ 2 u s) (hs : IsOpen s)
     {P : Pt E g} (hP : P ∈ s) (x : Pt E g) : DifferentiableAt ℝ (fun Q => fderiv ℝ u Q x) P := by
   have hd : DifferentiableOn ℝ (fderiv ℝ u) s :=
     (hu.fderiv_of_isOpen hs (m := 1) (by norm_num)).differentiableOn one_ne_zero
   exact ((hd P hP).differentiableAt (hs.mem_nhds hP)).clm_apply (differentiableAt_const x)
 
+/- English proof (translation)
+Introduce `P hP v w`. Establish `key : ∀ x, (fun Q => fderiv ℝ u Q x) =ᶠ[nhds P] fun Q => c * fderiv ℝ u₁ Q x + fderiv ℝ u₂ Q x`. Introduce `x`. Use `filter_upwards [hs.mem_nhds hP] with Q hQ`. Establish `he' : u =ᶠ[nhds Q] fun Q => c * u₁ Q + u₂ Q` using `by filter_upwards [hs.mem_nhds hQ] with R hR using he R hR`.
+
+Establish `hd : HasFDerivAt (fun Q => c * u₁ Q + u₂ Q) (c • fderiv ℝ u₁ Q + fderiv ℝ u₂ Q) Q` using `((du_at h1 hs hQ).hasFDerivAt.const_mul c).add (du_at h2 hs hQ).hasFDerivAt`. Rewrite using `[he'.fderiv_eq, hd.fderiv]`. Simplify using the standard rewrite rules. Establish `e : ∀ x y, fderiv ℝ (fun Q => fderiv ℝ u Q x) P y = c * fderiv ℝ (fun Q => fderiv ℝ u₁ Q x) P y + fderiv ℝ (fun Q => fderiv ℝ u₂ Q x) P y`. Introduce `x y`.
+
+Establish `hd : HasFDerivAt (fun Q => c * fderiv ℝ u₁ Q x + fderiv ℝ u₂ Q x) (c • fderiv ℝ (fun Q => fderiv ℝ u₁ Q x) P + fderiv ℝ (fun Q => fderiv ℝ u₂ Q x) P) P` using `((dd_apply h1 hs hP x).hasFDerivAt.const_mul c).add (dd_apply h2 hs hP x).hasFDerivAt`. Rewrite using `[(key x).fderiv_eq, hd.fderiv]`. Simplify using the standard rewrite rules. Simplify using `only [ddc, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ddc_lin {s : Set (Pt E g)} {u u₁ u₂ : Pt E g → ℝ} (c : ℝ) (hs : IsOpen s)
     (h1 : ContDiffOn ℝ 2 u₁ s) (h2 : ContDiffOn ℝ 2 u₂ s) (he : ∀ Q ∈ s, u Q = c * u₁ Q + u₂ Q) :
     ∀ P ∈ s, ∀ v w : Pt E g, ddc u P v w = c * ddc u₁ P v w + ddc u₂ P v w := by
@@ -74,6 +102,13 @@ theorem ddc_lin {s : Set (Pt E g)} {u u₁ u₂ : Pt E g → ℝ} (c : ℝ) (hs 
   simp only [ddc, e]
   ring
 
+/- English proof (translation)
+Introduce `P hP v w`. Establish `key : ∀ x, (fun Q => fderiv ℝ (fun Q => u (L Q)) Q (Complex.I • x)) =ᶠ[nhds P] fun Q => fderiv ℝ u (L Q) (Complex.I • L x)`. Introduce `x`. Use `filter_upwards [hs.mem_nhds hP] with Q hQ`. Establish `hd : HasFDerivAt (fun Q => u (L Q)) ((fderiv ℝ u (L Q)).comp L) Q` using `(du_at hu hs (hmap hQ)).hasFDerivAt.comp Q L.hasFDerivAt`.
+
+Rewrite using `[hd.fderiv, ContinuousLinearMap.comp_apply, hLI]`. Establish `e : ∀ x y, fderiv ℝ (fun Q => fderiv ℝ (fun Q => u (L Q)) Q (Complex.I • x)) P y = fderiv ℝ (fun R => fderiv ℝ u R (Complex.I • L x)) (L P) (L y)`. Introduce `x y`. Rewrite using `[(key x).fderiv_eq]`. Establish `hd : HasFDerivAt (fun Q => fderiv ℝ u (L Q) (Complex.I • L x)) ((fderiv ℝ (fun R => fderiv ℝ u R (Complex.I • L x)) (L P)).comp L) P` using `(dd_apply hu hs (hmap hP) _).hasFDerivAt.comp P L.hasFDerivAt`.
+
+Rewrite using `[hd.fderiv]`. Both sides reduce to the same expression. Simplify using `only [ddc, e]`.
+-/
 theorem ddc_comp_clm {s : Set (Pt E g)} {u : Pt E g → ℝ} (L : Pt E g →L[ℝ] Pt E g)
     (hLI : ∀ x, L (Complex.I • x) = Complex.I • L x) (hs : IsOpen s)
     (hmap : Set.MapsTo L s s) (hu : ContDiffOn ℝ 2 u s) :
@@ -97,6 +132,9 @@ theorem ddc_comp_clm {s : Set (Pt E g)} {u : Pt E g → ℝ} (L : Pt E g →L[�
     rfl
   simp only [ddc, e]
 
+/- English proof (translation)
+Rewrite `hmap`, the goal using `[mulN_eq]`. Use `ddc_comp_clm (mulL n) (fun x => ?_) hs hmap hu` and prove the remaining obligations. Rewrite using `[mulL_apply, mulL_apply]`. Conclude with `Prod.ext rfl (smul_comm _ _ _)`.
+-/
 theorem ddc_comp_mulN {s : Set (Pt E g)} {u : Pt E g → ℝ} (n : ℤ) (hs : IsOpen s)
     (hmap : Set.MapsTo (mulN n) s s) (hu : ContDiffOn ℝ 2 u s) :
     ∀ P ∈ s, ∀ v w : Pt E g, ddc (fun Q => u (mulN n Q)) P v w =
@@ -111,10 +149,16 @@ end GlobalTheory.SqIsoIsom
 namespace GlobalTheory.SqIsoIsom
 variable {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.holomorphic_smooth_on_open hs hφ`.
+-/
 theorem contDiffOn_of_holo [FiniteDimensional ℂ E] {s : Set (Pt E g)} {φ : Pt E g → ℂ}
     (hs : IsOpen s) (hφ : DifferentiableOn ℂ φ s) : ContDiffOn ℝ ∞ φ s :=
   GlobalTheory.T.holomorphic_smooth_on_open hs hφ
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.log_norm_sq_holomorphic_pluriharmonic hs hφ h0`.
+-/
 theorem ddc_log_normSq [FiniteDimensional ℂ E] {s : Set (Pt E g)} {φ : Pt E g → ℂ}
     (hs : IsOpen s) (hφ : DifferentiableOn ℂ φ s) (h0 : ∀ P ∈ s, φ P ≠ 0) :
     ∀ P ∈ s, ∀ v w : Pt E g, ddc (fun Q => Real.log (‖φ Q‖ ^ 2)) P v w = 0 :=
@@ -124,6 +168,33 @@ end GlobalTheory.SqIsoIsom
 
 namespace GlobalTheory.SqIsoIsom
 
+/- English proof (translation)
+Introduce `g E _ _ _ B τ hτ j r hj hsym hr hpol n h φ hh hφ`. Establish `hB : IsOpen B` using `hτ.1`. Establish `hcov : IsOpen (cov B g)` using `hB.prod isOpen_univ`. Establish `hmap : Set.MapsTo (mulN n) (cov B g) (cov B g)` using `fun P hP => ⟨hP.1, trivial⟩`. Use `set N := n.natAbs ^ 2 with hN`.
+
+Take `⟨⟨hsm, hpos, htr⟩, hch, hz⟩` from `hh`. Take `⟨⟨hφd, hφ0, hφtr⟩, hφz⟩` from `hφ`. Establish `hφs : ContDiffOn ℝ ∞ φ (cov B g)` using `contDiffOn_of_holo hcov hφd`. Establish `hlogh : ContDiffOn ℝ ∞ (fun Q => Real.log (h Q)) (cov B g)` using `hsm.log fun Q hQ => (hpos Q hQ).ne'`. Establish `hnφ : ContDiffOn ℝ ∞ (fun Q => ‖φ Q‖ ^ 2) (cov B g)` using `(contDiff_norm_sq ℝ).comp_contDiffOn hφs`.
+
+Establish `hlogφ : ContDiffOn ℝ ∞ (fun Q => Real.log (‖φ Q‖ ^ 2)) (cov B g)` using `hnφ.log fun Q hQ => pow_ne_zero _ (norm_ne_zero_iff.2 (hφ0 Q hQ))`. Establish `M1 : IsMetric B τ (stdLat g) (mulPullFactor n j) (fun P => h (mulN n P))`. Use `⟨?_, fun P hP => hpos _ (hmap hP), fun l hl P hP => ?_⟩` and prove the remaining obligations. Rewrite using `[mulN_eq]`. Conclude with `hsm.comp (mulL (E := E) (g := g) n).contDiff.contDiffOn (by rw [← mulN_eq]; exact hmap)`.
+
+Simplify using `only [mulPullFactor]`. Rewrite using `[mulN_transl]`. Conclude with `htr _ ((stdLat g).smul_mem n hl) _ (hmap hP)`. Establish `M2 : IsMetric B τ (stdLat g) (mulPullFactor n j) (fun P => h P ^ N * ‖φ P‖ ^ 2)`. Use `⟨(hsm.pow N).mul hnφ, fun P hP => mul_pos (pow_pos (hpos P hP) N) (pow_pos (norm_pos_iff.2 (hφ0 P hP)) 2), fun l hl P hP => ?_⟩` and prove the remaining obligations.
+
+Establish `e1` using `congrArg (fun x : ℂ => ‖x‖) (hφtr l hl P hP)`. Simplify using `only [norm_mul, norm_pow] at e1`. Establish `e2` using `htr l hl P hP`. Use `show h (transl τ l P) ^ N * ‖φ (transl τ l P)‖ ^ 2 * ‖mulPullFactor n j l P‖ ^ 2 = h P ^ N * ‖φ P‖ ^ 2`. Rewrite using `[← e2]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hlin : ∀ Q ∈ cov B g, Real.log (h Q ^ N * ‖φ Q‖ ^ 2) = (N : ℝ) * Real.log (h Q) + Real.log (‖φ Q‖ ^ 2)`. Introduce `Q hQ`. Rewrite using `[Real.log_mul (pow_ne_zero _ (hpos Q hQ).ne') (pow_ne_zero _ (norm_ne_zero_iff.2 (hφ0 Q hQ))), Real.log_pow]`. Establish `D : ∀ P ∈ cov B g, ∀ v w : Pt E g, ddc (fun Q => Real.log (h (mulN n Q))) P v w = ddc (fun Q => Real.log (h Q ^ N * ‖φ Q‖ ^ 2)) P v w`.
+
+Introduce `P hP v w`. Establish `h2le : (2 : WithTop ℕ∞) ≤ ∞` using `WithTop.coe_le_coe.mpr le_top`. Rewrite using `[ddc_comp_mulN (u := fun Q => Real.log (h Q)) n hcov hmap (hlogh.of_le h2le) P hP v w, ddc_lin (N : ℝ) hcov (hlogh.of_le h2le) (hlogφ.of_le h2le) hlin P hP v w, ddc_log_normSq hcov hφd hφ0 P hP v w]`. Establish `c1` using `hch (mulN n P) (hmap hP) (mulN n v) (mulN n w)`. Establish `c2` using `hch P hP v w`.
+
+Establish `hp` using `(GlobalTheory.T.flat_form_mul_pull_zero_section hτ).1 n P hP`. Establish `hp2 : om0 τ (mulN n P) ![mulN n v, mulN n w] = (n : ℝ) ^ 2 * om0 τ P ![v, w]`. Use `congrArg (fun α : Form2 E g => α ![v, w]) hp` as an intermediate fact. Simplify using `only [pull, fderiv_mulN, ContinuousAlternatingMap.compContinuousLinearMap_apply, ContinuousAlternatingMap.smul_apply, smul_eq_mul] at this`. Establish `hv : (⇑(mulL (E` using `E) (g := g) n) ∘ ![v, w]) = ![mulN n v, mulN n w] := by`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [mulL_apply]`. Rewrite `this` using `[hv]`. Conclude with `this`. Establish `hNr : ((N : ℕ) : ℝ) = (n : ℝ) ^ 2` using `by rw [hN, Nat.cast_pow, Nat.cast_natAbs, Int.cast_abs, sq_abs]`.
+
+Rewrite using `[hNr]`. Take the linear combination `(-1 : ℝ) * c1 - hp2 + (n : ℝ) ^ 2 * c2`. Establish `Z : ∀ b ∈ B, h (mulN n (zeroSec g b)) = h (zeroSec g b) ^ N * ‖φ (zeroSec g b)‖ ^ 2`. Introduce `b hb`. Establish `e0 : mulN n (zeroSec g b) = (zeroSec g b : Pt E g)` using `by simp [mulN, zeroSec]`.
+
+Rewrite using `[e0]`. Establish `hzb` using `hz b hb`. Establish `hφb` using `congrArg (fun x : ℂ => ‖x‖ ^ 2) (hφz b hb)`. Simplify using `only [norm_mul, norm_pow, mul_pow] at hφb`. Establish `hr0 : ‖r b‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 (hr.2 b hb))`.
+
+Apply `mul_right_cancel₀ hr0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hφb, mul_pow, ← pow_mul, ← pow_mul, mul_comm 2 N]`. Use `_ = _ := by ring`. Introduce `P hP`.
+
+Conclude with `(GlobalTheory.T.metric_determined_by_curvature_zero_section hτ (mulPullFactor n j) _ _ M1 M2 D Z hP).symm`.
+-/
 theorem sqIso_isometry : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ → ∀ (j : Fl g → Pt E g → ℂ) (r : E → ℂ), IsFactor B τ (stdLat g) j → (∃ ι, IsBundleIso B τ (stdLat g) (mulPullFactor (-1) j) j ι) → IsRigidification B r → InducesPolarisation B τ (stdLat g) j → ∀ n : ℤ, ∀ h φ, IsCubicalMetric B τ j r h → IsSquareIso B τ j r n φ → IsIsometry B (fun P => h (mulN n P)) (fun P => h P ^ (n.natAbs ^ 2)) φ := by
   intro g E _ _ _ B τ hτ j r hj hsym hr hpol n h φ hh hφ
   have hB : IsOpen B := hτ.1

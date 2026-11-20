@@ -11,12 +11,18 @@ namespace OSAux
 private def qB {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : ℝ :=
   Lsq x l * rhoSq x l + (-(∑ i, ‖x.2.2.1 i‖ ^ 2) / 2 - (bS x l).re) ^ 2
 
+/- English proof (translation)
+Unfold `Lsq`. Apply the tactic sequence `have h : 0 ≤ ∑ j : Fin p, (if j.val < l.val then ‖x.1 j‖ ^ 2 else 0) := Finset.sum_nonneg (fun j _ => by split_ifs <;> positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma one_le_Lsq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 1 ≤ Lsq x l := by
   unfold Lsq
   have h : 0 ≤ ∑ j : Fin p, (if j.val < l.val then ‖x.1 j‖ ^ 2 else 0) :=
     Finset.sum_nonneg (fun j _ => by split_ifs <;> positivity)
   linarith
 
+/- English proof (translation)
+Unfold `rhoSq`. Establish `h1 : 0 ≤ ∑ i, ‖x.2.2.1 i‖ ^ 2` using `Finset.sum_nonneg (fun i _ => by positivity)`. Apply the tactic sequence `have h2 : 0 ≤ ∑ j : Fin p, (if l.val ≤ j.val then ‖x.2.1 j‖ ^ 2 else 0) := Finset.sum_nonneg (fun j _ => by split_ifs <;> positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma Lsq_last_le_rhoSq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) :
     Lsq x (Fin.last p) ≤ rhoSq x l := by
   unfold rhoSq
@@ -25,6 +31,11 @@ private lemma Lsq_last_le_rhoSq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) :
     Finset.sum_nonneg (fun j _ => by split_ifs <;> positivity)
   linarith
 
+/- English proof (translation)
+Establish `h1` using `one_le_Lsq x l`. Establish `h2` using `one_le_Lsq x (Fin.last p)`. Establish `h3` using `Lsq_last_le_rhoSq x l`. Establish `h4 : 0 ≤ Lsq x l * rhoSq x l` using `mul_nonneg (by linarith) (by linarith)`. Unfold `qB`.
+
+Conclude with `add_nonneg h4 (sq_nonneg _)`.
+-/
 private lemma qB_nonneg {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 0 ≤ qB x l := by
   have h1 := one_le_Lsq x l
   have h2 := one_le_Lsq x (Fin.last p)
@@ -33,6 +44,9 @@ private lemma qB_nonneg {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 0 ≤ qB x 
   unfold qB
   exact add_nonneg h4 (sq_nonneg _)
 
+/- English proof (translation)
+Establish `hb : bco x l = (((-(∑ i, ‖x.2.2.1 i‖ ^ 2) / 2 : ℝ)) : ℂ) + (x.2.2.2 : ℂ) * Complex.I - bS x l` using `rfl`. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_apply, hb]`. Simplify using `only [Complex.sub_re, Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.I_re, Complex.I_im, Complex.ofReal_im, Complex.sub_im, Complex.add_im, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma norm_bco_sq_eq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) :
     ‖bco x l‖ ^ 2 = (-(∑ i, ‖x.2.2.1 i‖ ^ 2) / 2 - (bS x l).re) ^ 2 + (x.2.2.2 - (bS x l).im) ^ 2 := by
   have hb : bco x l = (((-(∑ i, ‖x.2.2.1 i‖ ^ 2) / 2 : ℝ)) : ℂ) + (x.2.2.2 : ℂ) * Complex.I - bS x l := rfl
@@ -41,6 +55,11 @@ private lemma norm_bco_sq_eq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) :
     Complex.I_im, Complex.ofReal_im, Complex.sub_im, Complex.add_im, Complex.mul_im]
   ring
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ qB x l + (x.2.2.2 - (bS x l).im) ^ 2` using `add_nonneg (qB_nonneg x l) (sq_nonneg _)`. Establish `he : de x l = Real.sqrt (qB x l + (x.2.2.2 - (bS x l).im) ^ 2)`. Unfold `de qB`. Rewrite using `[norm_bco_sq_eq]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, Real.sqrt_eq_rpow, ← Real.rpow_mul h0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma de_rpow {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) (r : ℝ) :
     de x l ^ r = (qB x l + (x.2.2.2 - (bS x l).im) ^ 2) ^ (r / 2) := by
   have h0 : 0 ≤ qB x l + (x.2.2.2 - (bS x l).im) ^ 2 := add_nonneg (qB_nonneg x l) (sq_nonneg _)
@@ -53,10 +72,18 @@ private lemma de_rpow {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) (r : ℝ) :
   congr 1
   ring
 
+/- English proof (translation)
+Unfold `Lsq`. Simplify using the standard rewrite rules.
+-/
 private lemma Lsq_zero' {p m : ℕ} (x : Xp p m) : Lsq x 0 = 1 := by
   unfold Lsq
   simp
 
+/- English proof (translation)
+Establish `h1` using `one_le_Lsq x l`. Establish `h2` using `one_le_Lsq x (Fin.last p)`. Establish `h3` using `Lsq_last_le_rhoSq x l`. Unfold `de`. Rewrite using `[Real.sq_sqrt]`.
+
+Conclude with `add_nonneg (mul_nonneg (by linarith) (by linarith)) (sq_nonneg _)`.
+-/
 private lemma de_sq' {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) :
     de x l ^ 2 = Lsq x l * rhoSq x l + ‖bco x l‖ ^ 2 := by
   have h1 := one_le_Lsq x l
@@ -66,6 +93,11 @@ private lemma de_sq' {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) :
   rw [Real.sq_sqrt]
   exact add_nonneg (mul_nonneg (by linarith) (by linarith)) (sq_nonneg _)
 
+/- English proof (translation)
+Unfold `rhoSq`. Establish `h : ∑ j : Fin (p + 1), (if (1 : Fin (p + 1 + 1)).val ≤ j.val then ‖x.2.1 j‖ ^ 2 else 0) ≤ ∑ j : Fin (p + 1), (if (0 : Fin (p + 1 + 1)).val ≤ j.val then ‖x.2.1 j‖ ^ 2 else 0)`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j _`. Apply the tactic sequence `split_ifs <;> first | exact le_rfl | positivity | simp_all`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma rhoSq_one_le {p m : ℕ} (x : Xp (p + 1) m) : rhoSq x 1 ≤ rhoSq x 0 := by
   unfold rhoSq
   have h : ∑ j : Fin (p + 1), (if (1 : Fin (p + 1 + 1)).val ≤ j.val then ‖x.2.1 j‖ ^ 2 else 0) ≤
@@ -75,11 +107,17 @@ private lemma rhoSq_one_le {p m : ℕ} (x : Xp (p + 1) m) : rhoSq x 1 ≤ rhoSq 
     split_ifs <;> first | exact le_rfl | positivity | simp_all
   linarith
 
+/- English proof (translation)
+Unfold `bS tailPt`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Simplify using the standard rewrite rules.
+-/
 private lemma bS_tailPt_zero_eq_one {p m : ℕ} (y : Yp p m) : bS (tailPt y) 0 = bS (tailPt y) 1 := by
   unfold bS tailPt
   rw [Fin.sum_univ_succ, Fin.sum_univ_succ]
   simp
 
+/- English proof (translation)
+The claim follows from `|(tailPt y).2.2.2 - (bS (tailPt y) 1).im| ≤ de (tailPt y) 0 := by have hb0 := bS_tailPt_zero_eq_one y have hbc : bco (tailPt y) 0 = bco (tailPt y) 1 := by have h := hb0 unfold bS at h unfold bco rw [h] have hL0 := Lsq_zero' (tailPt y) have hL1 := one_le_Lsq (tailPt y) 1 have hr : …`.
+-/
 private lemma de_zero_bounds {p m : ℕ} (y : Yp p m) :
     de (tailPt y) 1 ^ 2 ≤ Lsq (tailPt y) 1 * de (tailPt y) 0 ^ 2 ∧
       |(tailPt y).2.2.2 - (bS (tailPt y) 1).im| ≤ de (tailPt y) 0 := by
@@ -108,6 +146,63 @@ private lemma de_zero_bounds {p m : ℕ} (y : Yp p m) :
     rw [norm_bco_sq_eq, hb0]
     nlinarith [sq_nonneg (-(∑ i, ‖(tailPt y).2.2.1 i‖ ^ 2) / 2 - (bS (tailPt y) 1).re)]
 
+/- English proof (translation)
+Establish `hγ0 : 0 < γ` using `by linarith [he 0]`. Take `⟨C, hC⟩` from `hL (p + 1) (γ / 2 - e 0 + ∑ i : Fin (p + 1), s0N (p + 1) m i.succ) (γ / 2) (by linarith) (by linarith)`. Use `⟨max C 1, lt_of_lt_of_le one_pos (le_max_right _ _), fun a a'' u => ?_⟩` and prove the remaining obligations. Use `set L := Lsq (tailPt (a, a'', u, 0)) 1 with hLdef`. Establish `hLX : ∀ β : ℝ, Lsq (tailPt (a, a'', u, β)) 1 = L` using `fun β => rfl`.
+
+Establish `hL1 : 1 ≤ L` using `Lsq_ge_one _ 1`. Establish `hL0 : 0 < L` using `by linarith`. Use `set Al : Fin (p + 2) → ℝ := fun l => Real.sqrt (qB (tailPt (a, a'', u, 0)) l) with hAl`. Use `set bl : Fin (p + 2) → ℝ := fun l => (bS (tailPt (a, a'', u, 0)) l).im with hbl`. Use `set c := bl 1 with hc`.
+
+Use `set t : Fin (p + 1) → ℝ := fun i => s0N (p + 1) m i.succ - e i.succ + if i = 0 then γ / 2 - e 0 else 0 with ht`. Establish `hfac : ∀ (β : ℝ) (l : Fin (p + 2)) (r : ℝ), de (tailPt (a, a'', u, β)) l ^ r = (Al l ^ 2 + (β - bl l) ^ 2) ^ (r / 2)`. Introduce `β l r`. Rewrite using `[de_rpow, hAl, hbl]`. Simplify using `only`.
+
+Rewrite using `[Real.sq_sqrt (qB_nonneg _ _)]`. Both sides reduce to the same expression. Establish `hG : ∀ β : ℝ, ENNReal.ofReal (de (tailPt (a, a'', u, β)) 1 ^ (-(γ / 2 - e 0))) * ∏ i : Fin (p + 1), ENNReal.ofReal (de (tailPt (a, a'', u, β)) i.succ ^ (-(s0N (p + 1) m i.succ - e i.succ))) = slowly t (fun i => Al i.succ) (fun i => bl i.succ) β`. Introduce `β`. Establish `hd1 : 0 < de (tailPt (a, a'', u, β)) 1` using `lt_of_lt_of_le one_pos (de_ge_one _ _)`.
+
+Unfold `slowly`. Simplify using `only [Fin.prod_univ_succ]`. Rewrite using `[← mul_assoc]`. Use `congr 1`. Rewrite using `[Fin.succ_zero_eq_one', ← ENNReal.ofReal_mul (Real.rpow_nonneg hd1.le _), ← Real.rpow_add hd1, hfac]`.
+
+Use `congr 2`. Simplify using `only [ht, Fin.succ_zero_eq_one', if_true]`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[hfac]`.
+
+Use `congr 2`. Simplify using `only [ht, Fin.succ_ne_zero, if_false]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∀ β : ℝ, ENNReal.ofReal (Lsq (tailPt (a, a'', u, β)) 1 ^ ((-2 + (γ / 2 - e 0)) / 2)) * ENNReal.ofReal (de (tailPt (a, a'', u, β)) 1 ^ (-(γ / 2 - e 0))) * ∏ i : Fin (p + 1), ENNReal.ofReal (de (tailPt (a, a'', u, β)) i.succ ^ (-(s0N (p + 1) m i.succ + (fun i : Fin (p + 1) => …`. Introduce `β`.
+
+Rewrite using `[← hG β, hLX, mul_assoc]`. Simplify using `only [sub_eq_add_neg]`. Establish `hpt : ∀ β : ℝ, β ≠ c → ENNReal.ofReal (Lsq (tailPt (a, a'', u, β)) 1 ^ (-1 + γ / 2)) * ENNReal.ofReal (de (tailPt (a, a'', u, β)) 0 ^ (-(γ - e 0))) * ∏ i : Fin (p + 1), ENNReal.ofReal (de (tailPt (a, a'', u, β)) i.succ ^ (-(s0N (p + 1) m i.succ - e i.succ))) ≤ ENNReal.ofReal (L ^ …`. Introduce `β hβ`. Rewrite using `[hLX, ← hG β]`.
+
+Take `⟨hsq, habs⟩` from `de_zero_bounds (a, a'', u, β)`. Establish `habs' : |β - c| ≤ de (tailPt (a, a'', u, β)) 0` using `habs`. Establish `hsq' : de (tailPt (a, a'', u, β)) 1 ^ 2 ≤ L * de (tailPt (a, a'', u, β)) 0 ^ 2` using `hsq`. Establish `hd0 : 0 < de (tailPt (a, a'', u, β)) 0` using `lt_of_lt_of_le one_pos (de_ge_one _ _)`. Establish `hd1 : 0 < de (tailPt (a, a'', u, β)) 1` using `lt_of_lt_of_le one_pos (de_ge_one _ _)`.
+
+Establish `hcpos : 0 < |β - c|` using `abs_pos.mpr (sub_ne_zero.mpr hβ)`. Establish `hreal : de (tailPt (a, a'', u, β)) 0 ^ (-(γ - e 0)) ≤ L ^ ((γ / 2 - e 0) / 2) * de (tailPt (a, a'', u, β)) 1 ^ (-(γ / 2 - e 0)) * |β - c| ^ (-(γ / 2))`. Establish `hsplit : de (tailPt (a, a'', u, β)) 0 ^ (-(γ - e 0)) = de (tailPt (a, a'', u, β)) 0 ^ (-(γ / 2 - e 0)) * de (tailPt (a, a'', u, β)) 0 ^ (-(γ / 2))`. Rewrite using `[← Real.rpow_add hd0]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Use `set s := Real.sqrt L with hs`. Establish `hs0 : 0 < s` using `Real.sqrt_pos.mpr hL0`. Establish `hs2 : s ^ 2 = L` using `Real.sq_sqrt hL0.le`.
+
+Establish `hle : de (tailPt (a, a'', u, β)) 1 ≤ s * de (tailPt (a, a'', u, β)) 0`. Use polynomial arithmetic with `[mul_pos hs0 hd0]`. Establish `hdiv : de (tailPt (a, a'', u, β)) 1 / s ≤ de (tailPt (a, a'', u, β)) 0`. Rewrite using `[div_le_iff₀ hs0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1 : de (tailPt (a, a'', u, β)) 0 ^ (-(γ / 2 - e 0)) ≤ L ^ ((γ / 2 - e 0) / 2) * de (tailPt (a, a'', u, β)) 1 ^ (-(γ / 2 - e 0))`. Use `(Real.rpow_le_rpow_of_nonpos (div_pos hd1 hs0) hdiv (by linarith)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.div_rpow hd1.le hs0.le, Real.rpow_neg hs0.le, div_inv_eq_mul, hs, Real.sqrt_eq_rpow, ← Real.rpow_mul hL0.le, mul_comm]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : de (tailPt (a, a'', u, β)) 0 ^ (-(γ / 2)) ≤ |β - c| ^ (-(γ / 2))` using `Real.rpow_le_rpow_of_nonpos hcpos habs' (by linarith)`. Conclude with `mul_le_mul h1 h2 (Real.rpow_nonneg hd0.le _) (mul_nonneg (Real.rpow_nonneg hL0.le _) (Real.rpow_nonneg hd1.le _))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul (mul_nonneg (Real.rpow_nonneg hL0.le _) (Real.rpow_nonneg hd1.le _)), ENNReal.ofReal_mul (Real.rpow_nonneg hL0.le _), ENNReal.ofReal_mul (Real.rpow_nonneg hL0.le _)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hs0N : ∀ i : Fin (p + 2), 1 ≤ s0N (p + 1) m i`. Introduce `i`. Unfold `s0N`. Use `split_ifs`. Evaluate the numerical expressions.
+
+Establish `: (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht0 : ∀ i, 0 ≤ t i`. Introduce `i`. Simplify using `only [ht]`.
+
+Establish `h1` using `hs0N i.succ`. Establish `h2` using `he1 i.succ`. Apply the tactic sequence `split_ifs <;> linarith`. Establish `hT : ∑ i, t i ≤ γ / 2 - e 0 + ∑ i : Fin (p + 1), s0N (p + 1) m i.succ`. Simplify using `only [ht, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Establish `: ∑ i : Fin (p + 1), (s0N (p + 1) m i.succ - e i.succ) ≤ ∑ i : Fin (p + 1), s0N (p + 1) m i.succ` using `Finset.sum_le_sum (fun i _ => by linarith [he i.succ])`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : ∀ i : Fin (p + 1), L ≤ Al i.succ`. Introduce `i`. Establish `hmono : Lsq (tailPt (a, a'', u, 0)) 1 ≤ Lsq (tailPt (a, a'', u, 0)) i.succ`.
+
+Apply `Lsq_mono` to reduce the goal to its premises. Rewrite using `[← Fin.succ_zero_eq_one']`. Conclude with `Fin.succ_le_succ_iff.mpr (Fin.zero_le _)`. Establish `hrho` using `rhoSq_ge (tailPt (a, a'', u, 0)) i.succ 1`. Establish `hq : L ^ 2 ≤ qB (tailPt (a, a'', u, 0)) i.succ`.
+
+Unfold `qB`. Establish `: L * L ≤ Lsq (tailPt (a, a'', u, 0)) i.succ * rhoSq (tailPt (a, a'', u, 0)) i.succ` using `mul_le_mul hmono hrho hL0.le (by linarith)`. Use polynomial arithmetic with `[sq_nonneg (-(∑ i, ‖(tailPt (a, a'', u, 0)).2.2.1 i‖ ^ 2) / 2 - (bS (tailPt (a, a'', u, 0)) i.succ).re)]`. Rewrite using `[← Real.sqrt_sq hL0.le]`. Conclude with `Real.sqrt_le_sqrt hq`.
+
+Establish `hslow` using `hC t (fun i => Al i.succ) (fun i => bl i.succ - c) L hL0 ht0 hT hA`. Establish `htr1 : ∫⁻ β : ℝ, slowly t (fun i => Al i.succ) (fun i => bl i.succ) β * ENNReal.ofReal (|β - c| ^ (-(γ / 2))) = ∫⁻ β : ℝ, slowly t (fun i => Al i.succ) (fun i => bl i.succ - c) β * ENNReal.ofReal (|β| ^ (-(γ / 2)))`. Establish `h` using `lintegral_add_right_eq_self (μ := (volume : Measure ℝ)) (fun β => slowly t (fun i => Al i.succ) (fun i => bl i.succ) β * ENNReal.ofReal (|β - c| ^ (-(γ / 2)))) c`. Rewrite using `[← h]`. Use `lintegral_congr (fun β => ?_)` and prove the remaining obligations.
+
+Simplify using `only [add_sub_cancel_right]`. Use `congr 1`. Unfold `slowly`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[show β + c - bl i.succ = β - (bl i.succ - c) by ring]`.
+
+Establish `htr2 : ∫⁻ β : ℝ, slowly t (fun i => Al i.succ) (fun i => bl i.succ - c) β = ∫⁻ β : ℝ, slowly t (fun i => Al i.succ) (fun i => bl i.succ) β`. Establish `h` using `lintegral_add_right_eq_self (μ := (volume : Measure ℝ)) (fun β => slowly t (fun i => Al i.succ) (fun i => bl i.succ) β) c`. Rewrite using `[← h]`. Use `lintegral_congr (fun β => ?_)` and prove the remaining obligations. Unfold `slowly`.
+
+Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[show β + c - bl i.succ = β - (bl i.succ - c) by ring]`. Establish `hK0 : 0 ≤ L ^ (-1 + γ / 2) * L ^ ((γ / 2 - e 0) / 2)` using `mul_nonneg (Real.rpow_nonneg hL0.le _) (Real.rpow_nonneg hL0.le _)`. Establish `hid : L ^ (-1 + γ / 2) * L ^ ((γ / 2 - e 0) / 2) * (max C 1 * L ^ (-(γ / 2))) = max C 1 * L ^ ((-2 + (γ / 2 - e 0)) / 2)`. Rewrite using `[mul_comm (max C 1), ← mul_assoc, ← Real.rpow_add hL0, ← Real.rpow_add hL0, mul_comm]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hle : ENNReal.ofReal (C * L ^ (-(γ / 2))) ≤ ENNReal.ofReal (max C 1 * L ^ (-(γ / 2)))` using `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg hL0.le _))`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [Measure.ae_ne volume c] with β hβ`. Conclude with `hpt β hβ`. Use `_ = ENNReal.ofReal (L ^ (-1 + γ / 2) * L ^ ((γ / 2 - e 0) / 2)) * ∫⁻ β : ℝ, slowly t (fun i => Al i.succ) (fun i => bl i.succ - c) β * ENNReal.ofReal (|β| ^ (-(γ / 2))) := by`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, htr1]`. Use `_ ≤ ENNReal.ofReal (L ^ (-1 + γ / 2) * L ^ ((γ / 2 - e 0) / 2)) * (ENNReal.ofReal (C * L ^ (-(γ / 2))) * ∫⁻ β : ℝ, slowly t (fun i => Al i.succ) (fun i => bl i.succ) β) := by`.
+
+Rewrite using `[← htr2]`. Conclude with `mul_le_mul_of_nonneg_left hslow zero_le`. Use `_ ≤ ENNReal.ofReal (L ^ (-1 + γ / 2) * L ^ ((γ / 2 - e 0) / 2)) * (ENNReal.ofReal (max C 1 * L ^ (-(γ / 2))) * ∫⁻ β : ℝ, slowly t (fun i => Al i.succ) (fun i => bl i.succ) β) := by gcongr`. Use `_ = ENNReal.ofReal (max C 1) * (ENNReal.ofReal (L ^ ((-2 + (γ / 2 - e 0)) / 2)) * ∫⁻ β : ℝ, slowly t (fun i => Al i.succ) (fun i => bl i.succ) β) := by`. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul hK0, hid, ENNReal.ofReal_mul (le_trans zero_le_one (le_max_right _ _)), mul_assoc]`.
+
+Use `_ = _ := by`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `congr 1`. Use `lintegral_congr (fun β => ?_)` and prove the remaining obligations. Conclude with `(hR β).symm`.
+-/
 theorem beta_bound (hL : SLOW) {p m : ℕ} (e : Fin (p + 2) → ℝ) {γ : ℝ} (he : ∀ l, 0 < e l)
     (he1 : ∀ l, e l ≤ 1) (hγ2 : γ < 2) (hα : 0 < γ / 2 - e 0) :
     ∃ CS : ℝ, 0 < CS ∧ ∀ (a : Fin (p + 1) → ℂ) (a'' : Fin p → ℂ) (u : Fin m → ℂ),

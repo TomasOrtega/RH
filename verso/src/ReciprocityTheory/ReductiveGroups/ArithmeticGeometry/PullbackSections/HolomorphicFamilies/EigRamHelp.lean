@@ -28,6 +28,11 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {k : T
 
 end Induce
 
+/- English proof (translation)
+Establish `h1 : la.valuation K (algebraMap (𝓞 K) K (p : 𝓞 K)) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem la _).2 hp`. Establish `h2 : la.valuation K (algebraMap (𝓞 K) K (p : 𝓞 K)) ≠ 0`. Rewrite using `[Ne, map_eq_zero, map_natCast]`. Conclude with `hp0` after adjusting the coercions. Establish `hlog` using `(WithZero.log_lt_log h2 one_ne_zero).2 h1`.
+
+Rewrite `hlog` using `[WithZero.log_one]`. Unfold `vLa`. Rewrite using `[show ((p : K)) = algebraMap (𝓞 K) K (p : 𝓞 K) from (map_natCast _ _).symm]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vLa_pos {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (p : ℕ) (hp0 : p ≠ 0)
     (hp : (p : 𝓞 K) ∈ la.asIdeal) : 0 < vLa la (p : K) := by
   have h1 : la.valuation K (algebraMap (𝓞 K) K (p : 𝓞 K)) < 1 :=

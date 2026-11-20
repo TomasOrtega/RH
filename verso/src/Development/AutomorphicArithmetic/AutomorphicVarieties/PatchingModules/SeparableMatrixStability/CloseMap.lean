@@ -3,6 +3,19 @@ import Mathlib.Topology.Algebra.ClopenNhdofOne
 
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `Ph B Z _ _ _ _ _ _ _ _ _ _ _ Γ _ π πo p po U a b z hf hp hclose ha`. Use `set f : Ph →* Z := po.comp πo with hfdef`. Establish `key : ∀ W : OpenNormalSubgroup Z, po b * z⁻¹ ∈ W`. Introduce `W`. Set `V : OpenNormalSubgroup Ph` to `{ toOpenSubgroup := ⟨W.toSubgroup.comap f, W.isOpen.preimage hf⟩ isNormal' := Subgroup.Normal.comap W.isNormal' f }`.
+
+Take `⟨N, h1, h2, h3⟩` from `((hp W).and ((hclose V).and (ha W))).exists`. Take `⟨g, g', hg, hg', hV⟩` from `h2`. Establish `hV' : f (g⁻¹ * g') ∈ W` using `hV`. Establish `e1` using `h1 g`. Rewrite `e1` using `[hg]`.
+
+Establish `hb : po b = f g'` using `by simp [hfdef, hg']`. Establish `hn : f g' * (f g)⁻¹ ∈ W`. Establish `hc` using `W.isNormal'.conj_mem _ hV' (f g)`. Establish `he : f g * f (g⁻¹ * g') * (f g)⁻¹ = f g' * (f g)⁻¹`. Simplify using `[map_mul, map_inv, mul_assoc]`.
+
+Rewrite `hc` using `[he]`. Conclude with `hc`. Establish `hx : po b * z⁻¹ = (f g' * (f g)⁻¹) * (p N (a N) * (f g)⁻¹)⁻¹ * (p N (a N) * z⁻¹)`. Rewrite using `[hb]`. Use `group`.
+
+Rewrite using `[hx]`. Conclude with `W.mul_mem (W.mul_mem hn (W.inv_mem e1)) h3`. Assume the negation of the conclusion as `hne`. Establish `hx1 : po b * z⁻¹ ≠ 1` using `fun h => hne (mul_inv_eq_one.mp h)`. Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one (isOpen_compl_singleton (x := po b * z⁻¹)) (by simpa [eq_comm] using hx1)`.
+
+Conclude with `hH (key H) rfl`.
+-/
 theorem UpperTheory.V.Pa.close_map :
     ∀ (Ph B Z : Type) [Group Ph] [TopologicalSpace Ph] [IsTopologicalGroup Ph] [CompactSpace Ph] [TotallyDisconnectedSpace Ph] [Group B] [Group Z] [TopologicalSpace Z] [IsTopologicalGroup Z] [CompactSpace Z] [TotallyDisconnectedSpace Z] (Γ : ℕ → Type) [∀ N, Group (Γ N)] (π : ∀ N, Ph →* Γ N) (πo : Ph →* B) (p : ∀ N, Γ N →* Z) (po : B →* Z) (U : Ultrafilter ℕ) (a : ∀ N, Γ N) (b : B) (z : Z), Continuous (po.comp πo) → (∀ W : OpenNormalSubgroup Z, ∀ᶠ N in (U : Filter ℕ), ∀ g, p N (π N g) * (po (πo g))⁻¹ ∈ W) → (∀ V : OpenNormalSubgroup Ph, ∀ᶠ N in (U : Filter ℕ), Close (π N) πo V.toSubgroup (a N) b) → (∀ W : OpenNormalSubgroup Z, ∀ᶠ N in (U : Filter ℕ), p N (a N) * z⁻¹ ∈ W) → po b = z := by
   intro Ph B Z _ _ _ _ _ _ _ _ _ _ _ Γ _ π πo p po U a b z hf hp hclose ha

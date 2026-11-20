@@ -13,6 +13,17 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ _ _ β Y p κ V K _ _ _ _ _ _ j βK y hκ hj hjκ hy`. Establish `hpr : IsProper Y.s` using `GlobalTheory.SchemeWords.isProper_of_isProjOver Y.proj`. Establish `hmem : ∀ o : O, (βK.comp β) o ∈ (algebraMap V K).range`. Introduce `o`. Use `(hj _).1 ?_` and prove the remaining obligations.
+
+Establish `h1 : j (βK (β o)) = κ (β o)` using `by rw [← hjκ]; rfl`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[h1]`. Conclude with `(hκ _).2 ⟨o, rfl⟩`. Set `e : V ≃+* (algebraMap V K).range` to `RingEquiv.ofBijective (algebraMap V K).rangeRestrict ⟨fun a b h => IsFractionRing.injective V K (congrArg Subtype.val h), (algebraMap V K).rangeRestrict_surjective⟩`.
+
+Set `b : O →+* V` to `e.symm.toRingHom.comp ((βK.comp β).codRestrict _ hmem)`. Establish `hb : (algebraMap V K).comp b = βK.comp β`. Use extensionality with `o`. Establish `h2 : e (b o) = (βK.comp β).codRestrict _ hmem o` using `e.apply_symm_apply _`. Conclude with `congrArg Subtype.val h2`.
+
+Establish `hsq : (y ≫ Y.j) ≫ Y.s = Spec.map (CommRingCat.ofHom ((algebraMap V K).comp b))`. Rewrite using `[hb]`. Establish `h3 : Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap β`. Simplify using `only [Model.j, Category.assoc]`. Rewrite using `[pullback.condition, ← Category.assoc, Y.jQ_over]`.
+
+Rewrite using `[Category.assoc, h3, ← Category.assoc, hy]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Take `⟨z, ⟨hz, _⟩, _⟩` from `existsUnique_valuationRing_lift O V K b Y.X Y.s (y ≫ Y.j) hsq`. Conclude with `⟨z, hz⟩`.
+-/
 theorem exists_modelPoint_extension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (β : O →+* c.F) (Y : Model Xo c β) (p : Nat.Primes) (κ : c.F →+* ℂ_[p]) (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (j : K →+* ℂ_[p]) (βK : c.F →+* K) (y : Sp K ⟶ Xo.XF c),
     (∀ x : c.F, ‖κ x‖ ≤ 1 ↔ x ∈ β.range) → (∀ a : K, ‖j a‖ ≤ 1 ↔ a ∈ (algebraMap V K).range) → j.comp βK = κ →
     y ≫ pullback.snd _ _ = spMap βK → ∃ z : Sp V ⟶ Y.X, spMap (algebraMap V K) ≫ z = y ≫ Y.j := by

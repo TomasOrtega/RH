@@ -17,6 +17,9 @@ variable {G : Type} [Group G]
 
 def twR (θ : G →* G) (x y : G) : Prop := ∃ g, y = g⁻¹ * x * θ g
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp⟩ symm := by rintro x y ⟨g, rfl⟩ exact ⟨g⁻¹, by rw [map_inv]; group⟩ trans := by rintro x y z ⟨g, rfl⟩ ⟨h, rfl⟩ exact ⟨g * h, by rw [map_mul]; group⟩`.
+-/
 theorem twR_equiv (θ : G →* G) : Equivalence (twR θ) where
   refl x := ⟨1, by simp⟩
   symm := by
@@ -28,15 +31,24 @@ theorem twR_equiv (θ : G →* G) : Equivalence (twR θ) where
 
 def cls (θ : G →* G) (x : G) : TwCl θ := Quot.mk (twR θ) x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => (twR_equiv θ).eqvGen_iff.1 (Quot.eqvGen_exact h), fun h => Quot.sound h⟩`.
+-/
 theorem cls_eq_iff (θ : G →* G) (x y : G) : cls θ x = cls θ y ↔ twR θ x y :=
   ⟨fun h => (twR_equiv θ).eqvGen_iff.1 (Quot.eqvGen_exact h), fun h => Quot.sound h⟩
 
+/- English proof (translation)
+The claim follows from `Quot.out_eq c`.
+-/
 theorem cls_rep (θ : G →* G) (c : TwCl θ) : cls θ c.rep = c := Quot.out_eq c
 
 end Generic
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use `filter_upwards [UnitStable.eventually_mem_KGL δ, UnitStable.eventually_mem_KGL (δ * thE E n δ)] with w h1 h2`. Unfold `locEl`. Use `split_ifs`. Conclude with `h2`. Conclude with `h1`.
+-/
 theorem locEl_eventually_mem (n : ℕ) (δ : GL (Fin n) E) :
     ∀ᶠ w : Pl E in cofinite, locEl n w δ ∈ GlobalTheory.LFun.KGL w n := by
   filter_upwards [UnitStable.eventually_mem_KGL δ, UnitStable.eventually_mem_KGL (δ * thE E n δ)] with w h1 h2

@@ -22,6 +22,9 @@ open GlobalTheory.FockCompare
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Establish `e1 : finPart D (x i j) = 0` using `congrFun (congrFun hx i) j`. Establish `e2 : finPart D (y i j) = 0` using `congrFun (congrFun hy i) j`. Use `show finPart D (x i j + y i j) = 0`. Rewrite using `[RingHom.map_add, e1, e2, add_zero]`.
+-/
 theorem map_fin_add {m n : ℕ} {x y : Mx D m n} (hx : x.map (finPart D) = 0) (hy : y.map (finPart D) = 0) :
     (x + y).map (finPart D) = 0 := by
   funext i j
@@ -30,6 +33,9 @@ theorem map_fin_add {m n : ℕ} {x y : Mx D m n} (hx : x.map (finPart D) = 0) (h
   show finPart D (x i j + y i j) = 0
   rw [RingHom.map_add, e1, e2, add_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Establish `e1 : finPart D (x i j) = 0` using `congrFun (congrFun hx i) j`. Use `show finPart D (-x i j) = 0`. Rewrite using `[RingHom.map_neg, e1, neg_zero]`.
+-/
 theorem map_fin_neg {m n : ℕ} {x : Mx D m n} (hx : x.map (finPart D) = 0) : (-x).map (finPart D) = 0 := by
   funext i j
   have e1 : finPart D (x i j) = 0 := congrFun (congrFun hx i) j
@@ -56,12 +62,22 @@ def thick {m n : ℕ} (Λ : AddSubgroup (Mx D m n)) (N : ℕ) : AddSubgroup (Mx 
     rw [e]
     exact map_fin_neg hx
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Establish `e : infPart D (u i j) = 0` using `congrFun (congrFun hu i) j`. Use `show θ τ (infPart D (u i j)) = 0`. Rewrite using `[e, RingHom.map_zero]`.
+-/
 theorem piW_eq_zero (θ : InfFam D) (S T : HSp D) {u : WO S T} (hu : u.map (infPart D) = 0) : piW θ T S u = 0 := by
   funext τ i j
   have e : infPart D (u i j) = 0 := congrFun (congrFun hu i) j
   show θ τ (infPart D (u i j)) = 0
   rw [e, RingHom.map_zero]
 
+/- English proof (translation)
+Establish `hL : IsLineAt θ τ z (lineAt θ τ z)` using `Classical.epsilon_spec (GlobalTheory.RealLineAt.lineAt_exists D θ hσ.inf _ _ τ z)`. Use `hσ.real_ext (V := T) (W := S) (hL.2.1 t) (hσ.real_iota T S _) ?_` and prove the remaining obligations. Rewrite using `[hσ.pi_iota]`. Use function extensionality and compare the values at `τ'`. Use `(hL.2.2 t τ').trans ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : τ' = τ`. Rewrite using `[if_pos h, h, Pi.smul_apply, h1]`. Use function extensionality and compare the values at `i j`. Conclude with `(Complex.real_smul).symm`. Rewrite using `[if_neg h, Pi.smul_apply, h2 τ' h, smul_zero]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lineAt_eq {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : Chart θ σ) (S T : HSp D) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (v : RW T S) (h1 : v τ = z) (h2 : ∀ τ', τ' ≠ τ → v τ' = 0) (t : ℝ) :
     lineAt θ τ z t = iotaW σ T S (t • v) := by
@@ -78,6 +94,37 @@ theorem lineAt_eq {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ 
   · rw [if_neg h, Pi.smul_apply, h2 τ' h, smul_zero]
     rfl
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨om, J, hom, hJ, halt, hJJ, hsym, hpos⟩` from `GlobalTheory.T.exists_realPlace_symplecticForm_positiveComplexStructure D ψ θ S T sS sT hψ hθ hS hT`. Take `⟨aL, aR, a0, -, acont, arat, -, -, -⟩` from `GlobalTheory.T.homSymplecticHalfForm_algebraic_laws_continuous D S T`. Take `⟨hinf, χ, c0, c1, c2, c3, c4, c5⟩` from `GlobalTheory.T.exists_semicharacter_completedSelfDualLattice D S T ΛS ΛT ψ hψ dS dT`. Establish `htop : IsTopologicalAddGroup (WO S T)` using `(GlobalTheory.AdelicMatrixLattice.lattice D T S).1`.
+
+Use `set Λ : AddSubgroup (WO S T) := latO S T ΛS ΛT fun _ => True with hΛ`. Establish `hp2 : ∀ u ∈ Λ, piW θ T S (2 • u) = 0` using `fun u hu => by`. Rewrite using `[map_nsmul, piW_eq_zero θ S T (hinf u hu), smul_zero]`. Establish `hlev : ∀ u ∈ thick Λ 2, ∃ l ∈ Λ, u - iotaW σ T S (piW θ T S u) = 2 • l`. Introduce and unpack `u ⟨l, hl, hu⟩`.
+
+Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Establish `e` using `hσ.iota_pi (V := T) (W := S) (x := u - 2 • l) hu`. Rewrite `e` using `[map_sub, hp2 l hl, sub_zero]`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+
+Take `⟨f, f0, fc, fq, fl, fs, fv⟩` from `GlobalTheory.T.continuous_bicharacter_weil_setup (WO S T) (RW T S) (piW θ T S) (iotaW σ T S) (fun x y => ψ (symplOH S T x y)) om J (ratL T S) (thick Λ 1) (thick Λ 2) χ (continuous_pi' hθ T S) (hσ.continuous_iota T S) (hσ.pi_iota T S) (fun x y z => by simp only [aL, AddChar.map_ad …`. Establish `e` using `hom x (iotaW σ T S v) (hσ.real_iota T S v)`. Rewrite `e` using `[hσ.pi_iota]`. Conclude with `e)`. Use `halt hJJ hsym hpos`.
+
+Use the proof step `(fun g hg g' hg' => by`. Take `⟨a, ha⟩` from `arat g hg g' hg'`. Simplify using `only [ha]`. Conclude with `hψ.1.2.2.1 a)`. Use the proof step `(by`.
+
+Introduce and unpack `_ ⟨g, rfl⟩ h`. Establish `: g = 0`. Use function extensionality and compare the values at `i j`. Establish `e : θ (D.eTau.symm 1) (infPart D (incA D (g i j))) = 0` using `congrFun (congrFun (congrFun h (D.eTau.symm 1)) i) j`. Rewrite `e` using `[comp_incA hθ]`.
+
+Conclude with `(tauE D _).injective (e.trans (RingHom.map_zero _).symm)`. Rewrite using `[this, map_zero])`. Use the proof step `(fun v => ⟨0, Λ.zero_mem, by rw [nsmul_zero, sub_zero]; exact hσ.real_iota T S v⟩)`. Use the proof step `(fun R => by`. Use `((GlobalTheory.T.finite_rational_points_completed_lattice D S T ΛS ΛT dS dT R).image (ratW T S)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨⟨g, rfl⟩, ⟨l, hl, h1⟩, h2⟩`. Use `⟨g, ⟨⟨l, hl, ?_⟩, fun τ i j => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite `h1` using `[one_nsmul]`. Conclude with `h1`. Rewrite using `[← comp_incA hθ]`.
+
+Set `y : RW T S` to `piW θ T S (ratW T S g)`. Conclude with `((norm_le_pi_norm (y τ i) j).trans ((norm_le_pi_norm (y τ) i).trans (norm_le_pi_norm y τ))).trans h2)`. Use the proof step `(fun x hx => c0 x fun ⟨l, hl, h⟩ => hx ⟨l, hl, by rw [one_nsmul]; exact h⟩)`. Use `c1 c2 (fun x v => c3 x _ (hσ.real_iota T S v))`. Use the proof step `(GlobalTheory.T.isOpen_nsmul_completedHomLattice_finiteAdelic D S T ΛS ΛT dS dT 2 two_pos)`.
+
+Use the proof step `(fun u hu x => by`. Take `⟨l, hl, e⟩` from `hlev u hu`. Rewrite using `[e]`. Conclude with `c4 l hl x)`. Establish `hh : ∀ (c : ℂ) (u : WO S T), piW θ T S u = 0 → (∀ x, ψ (symplOH S T x u) * χ (x + u) = χ x) → heisO ψ S T u (fun w => c * f w) = fun w => c * f w` using `fun c u h1 h2 => by`.
+
+Use function extensionality and compare the values at `w`. Use `show ψ (symplOH S T w u) * (c * f (w + u)) = c * f w`. Rewrite using `[mul_left_comm, ← fl u h1 h2 w]`. Use `⟨f, f0, fun c => ⟨⟨fun g w => ?_, ⟨thick Λ 2, GlobalTheory.T.isOpen_nsmul_completedHomLattice_finiteAdelic D S T ΛS ΛT dS dT 2 two_pos, fun u hu h => ?_⟩, continuous_const.mul fc, fun k L hL hL0 w => ?_⟩, ⟨fun u hu => hh c _ (hp2 u hu) (c4 u hu), fun e he u hu h => hh c u (piW_eq …` and prove the remaining obligations. Establish `e : ψ (symplOH S T (ratW T S g) w) * f (ratW T S g + w) = f w` using `fq (ratW T S g) ⟨g, rfl⟩ w show c * f (ratW T S g + w) = _ * (c * f w)`.
+
+Rewrite using `[← e, mul_left_comm, ← mul_assoc (ψ _), ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`. Take `⟨l, hl, e⟩` from `hlev u hu`. Rewrite `e` using `[piW_eq_zero θ S T h, map_zero, sub_zero]`. Rewrite using `[e]`. Conclude with `hh c _ (hp2 l hl) (c4 l hl)`.
+
+Conclude with `contDiff_const.mul (((smooth_iff_sm_and_real_lines D θ σ hσ T S).1 f).2 fs k L hL hL0 w)`. Use function extensionality and compare the values at `w`. Set `v : RW T S` to `Pi.single τ z`. Establish `v1 : v τ = z` using `Pi.single_eq_same _ _`. Establish `v2 : ∀ τ', τ' ≠ τ → v τ' = 0` using `fun τ' h => Pi.single_eq_of_ne h _`.
+
+Establish `l1` using `lineAt_eq hσ S T τ z v v1 v2`. Establish `l2` using `lineAt_eq hσ S T τ (cplxO (sS τ) (sT τ) z) (J v) (by rw [hJ, v1]) (fun τ' h => by`. Rewrite using `[hJ, v2 τ' h]`. Establish `: cplxO (sS τ') (sT τ') (0 : Matrix (Fin T.rank) (Fin S.rank) ℂ) = 0` using `by simp [cplxO]`. Conclude with `this)`.
+
+Establish `e` using `fv w v`. Use `show deriv (fun t : ℝ => ψ (symplOH S T w (lineAt θ τ z t)) * (c * f (w + lineAt θ τ z t))) 0 + Complex.I * deriv (fun t : ℝ => ψ (symplOH S T w (lineAt θ τ (cplxO (sS τ) (sT τ) z) t)) * (c * f (w + lineAt θ τ (cplxO (sS τ) (sT τ) z) t))) 0 = 0`. Simplify using `only [l1, l2, mul_left_comm _ c, deriv_const_mul_field']`. Rewrite using `[← mul_add]`. Conclude with `mul_eq_zero_of_right c e`.
+-/
 theorem exists_ne_zero (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -179,6 +226,13 @@ theorem exists_ne_zero (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hψ : I
     rw [← mul_add]
     exact mul_eq_zero_of_right c e
 
+/- English proof (translation)
+Introduce `D ψ θ hψ hθ S T sS sT _ _ hS hT ΛS ΛT dS dT`. Take `⟨f, f0, hf⟩` from `exists_ne_zero ψ θ hψ hθ S T sS sT hS hT ΛS ΛT dS dT`. Take `⟨i1, i2, i3, i4, i5, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Set `_ : MeasurableSpace (WO S T)` to `measMx _ _`. Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`.
+
+Establish `h1` using `(hf 1).1`. Simplify using `only [one_mul] at h1`. Take `⟨⟨μ, 𝓕, hμ⟩, c, hc⟩` from `GlobalTheory.T.exists_normalise_meanSquare_of_cocompact' (WO S T) (ratL T S) K hK hcov f h1.cont f0 (by`. Introduce and unpack `_ ⟨g, rfl⟩ w`. Establish `e` using `h1.quasi g w`.
+
+Establish `e'` using `congrArg norm e`. Rewrite `e'` using `[norm_mul, hψ.1.2.1, one_mul]`. Conclude with `e')`. Conclude with `⟨fun w => c * f w, hψ, hθ, (hf c).1, (hf c).2.1, (hf c).2.2, ⟨(μ, 𝓕), hμ⟩, fun p hp => hc p.1 p.2 hp.1 hp.2.1 hp.2.2⟩`.
+-/
 theorem vacExists : ∀ D : D7, VacExistsO D := by
   intro D ψ θ hψ hθ S T sS sT _ _ hS hT ΛS ΛT dS dT
   obtain ⟨f, f0, hf⟩ := exists_ne_zero ψ θ hψ hθ S T sS sT hS hT ΛS ΛT dS dT

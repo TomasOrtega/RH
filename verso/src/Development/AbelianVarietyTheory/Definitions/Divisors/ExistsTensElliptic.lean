@@ -19,6 +19,11 @@ open GlobalTheory.PolDeg
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Take `⟨⟨i, j⟩, k⟩` from `k`. Use `fin_cases k`. Conclude with `congrArg (·.left) (MonObj.comp_mul x (pr i) (pr j))`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+
+Conclude with `congrArg (·.left) (MonObj.comp_one (M := B) x)`.
+-/
 theorem comp_tensφ {S : Scheme.{0}} {B B' T : Over S} [GrpObj B] {r : ℕ} (pr : Fin r → (B' ⟶ B)) (x : T ⟶ B')
     (k : (Fin r × Fin r) × Fin 4) : x.left ≫ tensφ pr k = lamPts (x ≫ pr k.1.1) (x ≫ pr k.1.2) k.2 := by
   obtain ⟨⟨i, j⟩, k⟩ := k
@@ -28,6 +33,19 @@ theorem comp_tensφ {S : Scheme.{0}} {B B' T : Over S} [GrpObj B] {r : ℕ} (pr 
   · rfl
   · exact congrArg (·.left) (MonObj.comp_one (M := B) x)
 
+/- English proof (translation)
+Set `H : ((TK R).left ⟶ D.P.A.left) → ((TK R).left.presheaf.stalk z)ˣ` to `fun ψ => gm ψ z _ (D.P.L.g (J ψ) (J₀ ψ))`. Set `F : Fin r → Fin r → ((TK R).left.presheaf.stalk z)ˣ` to `fun i j => ∏ a, H (lamPts (toUnit (TK R) ≫ D.c (y i)) (toUnit (TK R) ≫ D.c (y j)) a) ^ Oε a`. Establish `h₁` using `gm_isGen hw x.left z _ _ k k₀ (hJ.mem (tensφ pr) x.left) (hJ₀.mem (tensφ pr) x.left) hk hk₀`. Establish `h₂ : gm x.left z _ ((LB.LinComb D.P.L (tensφ pr) (tensε W)).g (fun a => J (x.left ≫ tensφ pr a)) (fun a => J₀ (x.left ≫ tensφ pr a))) = ∏ i, ∏ j, F i j ^ W i j`. Use `(gm_linComb D.P.L (tensφ pr) (tensε W) x.left z _ _ (hJ.mem (tensφ pr) x.left) (hJ₀.mem (tensφ pr) x.left)).trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `∏ a, H (x.left ≫ tensφ pr a) ^ tensε W a = _`. Rewrite using `[Fintype.prod_prod_type, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[comp_tensφ, hx, hx, ← zpow_mul, mul_comm]`. Both sides reduce to the same expression. Establish `h₃ : ∀ i j, val (D.tau (y i) (y j)) (𝟙 _) z J = (F i j)⁻¹ * val (D.tau (y i) (y j)) (𝟙 _) z J₀` using `fun i j => by`. Take `⟨t, ht, hv⟩` from `exists_tau_four D (y i) (y j)`. Use `(hv _ _ z J hJ).symm.trans ((gen_trans ht (𝟙 _) z (hJ.mem _ _) (hJ₀.mem _ _)).trans (congrArg₂ (· * ·) ?_ (hv _ _ z J₀ hJ₀)))` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `∏ a, H (𝟙 _ ≫ lamPts (toUnit (TK R) ≫ D.c (y i)) (toUnit (TK R) ≫ D.c (y j)) a) ^ negε a = _`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, ← zpow_neg]`. Use `congr 1`.
+
+Apply the tactic sequence `fin_cases a <;> rfl`. Use `(congrArg₂ (· * ·) (h₁.trans (congrArg (· * _ * _) h₂)) (Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => congrArg (· ^ W i j) (h₃ i j))).trans ?_` and prove the remaining obligations. Simplify using `only [mul_zpow, inv_zpow, Finset.prod_mul_distrib, Finset.prod_inv_distrib, gv]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem formula_trans (D : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) {B' : Over (Sp R)} {L' : LB B'.left}
     (pr : Fin r → (B' ⟶ D.P.A)) {w : LB.Iso L' (LB.LinComb D.P.L (tensφ pr) (tensε W))} (hw : w.IsGen) (x : TK R ⟶ B')
     (y : Fin r → D.X) (hx : ∀ i, x ≫ pr i = toUnit (TK R) ≫ D.c (y i)) (z : (TK R).left) (J J₀) (hJ : Good D.P.L z J)
@@ -66,6 +84,11 @@ theorem formula_trans (D : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) 
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Set `z₀ : (TK R).left` to `closedPoint (FractionRing R)`. Take `⟨J₀, hJ₀, -⟩` from `exists_good _ D.P.isLB z₀ (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Take `⟨J₁, hJ₁, -⟩` from `exists_good _ hL z₀ (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Take `⟨t, ht, hv⟩` from `exists_gen_val (F := FractionRing R) hL (K := PUnit) (fun _ => x.left) (fun _ => -1) hJ₁ (gm x.left z₀ _ (w.s (fun a => J₀ (x.left ≫ tensφ pr a), J₁ x.left)) * ∏ i, ∏ j, val (D.tau (y i) (y j)) (𝟙 _) z₀ J₀ ^ W i j)`. Use `⟨t, ht, fun z J J' hJ hJ' => ?_⟩` and prove the remaining obligations.
+
+Take `rfl : z = z₀` from `Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) _ _`. Establish `a` using `gen_trans ht (𝟙 (TK R).left) z₀ (hJ'.mem (fun _ : PUnit => x.left) _) (hJ₁.mem (fun _ : PUnit => x.left) _)`. Establish `b : trF (L` using `L') (fun _ : PUnit => x.left) (fun _ => -1) (𝟙 (TK R).left) z₀ (fun _ => J' (𝟙 _ ≫ x.left)) (fun _ => J₁ (𝟙 _ ≫ x.left)) = (gm x.left z₀ _ (L'.g (J' x.left) (J₁ x.left)))⁻¹ := by`. Rewrite using `[trF, Fintype.prod_unique, zpow_neg_one, Category.id_comp]`. Conclude with `(a.trans (congrArg₂ (· * ·) b hv)).trans (formula_trans D W pr hw x y hx z₀ J J₀ hJ hJ₀ (J' x.left) (J₁ x.left) (hJ' _) (hJ₁ _)).symm`.
+-/
 theorem exists_psi (D : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) {B' : Over (Sp R)} {L' : LB B'.left} (hL : L'.IsLB)
     (pr : Fin r → (B' ⟶ D.P.A)) {w : LB.Iso L' (LB.LinComb D.P.L (tensφ pr) (tensε W))} (hw : w.IsGen) (x : TK R ⟶ B')
     (y : Fin r → D.X) (hx : ∀ i, x ≫ pr i = toUnit (TK R) ≫ D.c (y i)) :
@@ -88,6 +111,13 @@ theorem exists_psi (D : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) {B'
   exact (a.trans (congrArg₂ (· * ·) b hv)).trans
     (formula_trans D W pr hw x y hx z₀ J J₀ hJ hJ₀ (J' x.left) (J₁ x.left) (hJ' _) (hJ₁ _)).symm
 
+/- English proof (translation)
+Take `⟨P', pr, hpr, ⟨lim⟩, hg, w, hw⟩` from `PowPol.exists_pow_polAV R D.P W hp hd`. Take `⟨D₀, rfl, -⟩` from `GlobalTheory.SelfUnif.exists_degData GlobalTheory.firstFiveLaws.1.cube (maximalIdeal R) P'`. Set `c : (Fin r → D.X) → (𝟙_ _ ⟶ D₀.toPre.P.A)` to `fun y => lim.lift (Fan.mk _ fun i => D.c (y i))`. Establish `hc : ∀ y i, c y ≫ pr i = D.c (y i)` using `fun y i => lim.fac _ ⟨i⟩`. Establish `hx : ∀ y i, (toUnit (TK R) ≫ c y) ≫ pr i = toUnit (TK R) ≫ D.c (y i)` using `fun y i => by rw [Category.assoc, hc]`.
+
+Use `choose ps hps hv using fun y : Fin r → D.X => exists_psi D W D₀.toPre.P.isLB pr hw (toUnit (TK R) ≫ c y) y (hx y)`. Use `⟨{ D₀.toPre with X := Fin r → D.X addX := inferInstance freeX := inferInstance finX := inferInstance c := c c_add := fun a b => lim.hom_ext fun i => ?_ psi := ps psi_gen := hps }, hg, ⟨{ pr := pr, pr_hom := hpr, lim := lim, xe := AddEquiv.refl _, c_pr := hc, w := w, w_gen := hw, …` and prove the remaining obligations. Use `hpr i.as` as an intermediate fact. Express the relevant statement in the definitionally equal form `c (a + b) ≫ pr i.as = (c a * c b) ≫ pr i.as`. Rewrite using `[MonObj.mul_comp, hc, hc, hc]`.
+
+Conclude with `D.c_add _ _`.
+-/
 theorem exists_tens [IsLocalRing R] [IsNoetherianRing R] (D : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ)
     (hp : ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef) (hd : IsUnit (W + W.transpose).det) :
     ∃ D' : DegPre R, D'.P.g = r * D.P.g ∧ Nonempty (Tens D D' W) := by

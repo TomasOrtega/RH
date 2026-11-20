@@ -16,22 +16,37 @@ noncomputable def integerUnit {a : 𝓞 F} (ha : a ≠ 0) : Fˣ :=
     rw [ne_eq, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 F) F)]
     exact ha)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_integerUnit {a : 𝓞 F} (ha : a ≠ 0) : (integerUnit ha : F) = algebraMap (𝓞 F) F a :=
   rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext (by simp [coe_integerUnit])`.
+-/
 theorem integerUnit_mul {a b : 𝓞 F} (ha : a ≠ 0) (hb : b ≠ 0) (hab : a * b ≠ 0) :
     integerUnit hab = integerUnit ha * integerUnit hb :=
   Units.ext (by simp [coe_integerUnit])
 
+/- English proof (translation)
+The claim follows from `Units.ext (by simp [coe_integerUnit])`.
+-/
 theorem integerUnit_pow {a : 𝓞 F} (ha : a ≠ 0) (k : ℕ) (hak : a ^ k ≠ 0) :
     integerUnit hak = integerUnit ha ^ k :=
   Units.ext (by simp [coe_integerUnit])
 
+/- English proof (translation)
+Simplify using `only [ordAt, map_pow, toAdd_pow, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ordAt_pow (v : HeightOneSpectrum (𝓞 F)) (x : Fˣ) (k : ℕ) :
     ordAt v (x ^ k) = k * ordAt v x := by
   simp only [ordAt, map_pow, toAdd_pow, nsmul_eq_mul]
   ring
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h`. Establish `hu : integerUnit hb = integerUnit ha * Units.map (algebraMap (𝓞 F) F : 𝓞 F →* F) u` using `Units.ext (by simp [coe_integerUnit])`. Rewrite using `[hu, ordAt_mul]`. Simplify using `[ordAt, valuation_of_unit_eq]`.
+-/
 theorem ordAt_integerUnit_eq_of_associated {a b : 𝓞 F} (ha : a ≠ 0) (hb : b ≠ 0)
     (h : Associated a b) (w : HeightOneSpectrum (𝓞 F)) :
     ordAt w (integerUnit ha) = ordAt w (integerUnit hb) := by
@@ -43,11 +58,17 @@ theorem ordAt_integerUnit_eq_of_associated {a b : 𝓞 F} (ha : a ≠ 0) (hb : b
 
 open scoped Classical in
 
+/- English proof (translation)
+Rewrite using `[ordAt, GroundTheory.Global.SUnit.valuationOfNeZero_placeUnit]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem ordAt_placeUnit (v w : HeightOneSpectrum (𝓞 F)) :
     ordAt w (GroundTheory.Global.SUnit.placeUnit v) = if w = v then (classNumber F : ℤ) else 0 := by
   rw [ordAt, GroundTheory.Global.SUnit.valuationOfNeZero_placeUnit]
   split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem placeUnit_eq_integerUnit (v : HeightOneSpectrum (𝓞 F)) :
     GroundTheory.Global.SUnit.placeUnit v =
       integerUnit (GroundTheory.Global.SUnit.exists_pow_classNumber_eq_span v).choose_spec.1 :=
@@ -58,6 +79,19 @@ def primeNZD (v : HeightOneSpectrum (𝓞 F)) : (Ideal (𝓞 F))⁰ :=
 
 open scoped Classical in
 
+/- English proof (translation)
+Take `⟨a, b, ha, hb, hab⟩` from `ClassGroup.mk0_eq_mk0_iff.1 h`. Express the relevant statement in the definitionally equal form `Ideal.span {a} * v.asIdeal = Ideal.span {b} * p.asIdeal at hab`. Use `set hF := classNumber F with hhF`. Establish `hv` using `GroundTheory.Global.SUnit.exists_pow_classNumber_eq_span v`. Establish `hp` using `GroundTheory.Global.SUnit.exists_pow_classNumber_eq_span p`.
+
+Use `set πv := hv.choose`. Use `set πp := hp.choose`. Establish `hπv : πv ≠ 0` using `hv.choose_spec.1`. Establish `hπp : πp ≠ 0` using `hp.choose_spec.1`. Establish `hav : a ^ hF * πv ≠ 0` using `mul_ne_zero (pow_ne_zero _ ha) hπv`.
+
+Establish `hbp : b ^ hF * πp ≠ 0` using `mul_ne_zero (pow_ne_zero _ hb) hπp`. Establish `hspan : Ideal.span {a ^ hF * πv} = Ideal.span {b ^ hF * πp}`. Use `congrArg (· ^ hF) hab` as an intermediate fact. Simplify using `only [mul_pow, Ideal.span_singleton_pow] at this`. Rewrite `this` using `[hv.choose_spec.2, hp.choose_spec.2, Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_mul_span_singleton]`.
+
+Conclude with `this`. Establish `hassoc` using `Ideal.span_singleton_eq_span_singleton.1 hspan`. Use `⟨integerUnit hb * (integerUnit ha)⁻¹, fun w => ?_⟩` and prove the remaining obligations. Establish `key` using `ordAt_integerUnit_eq_of_associated hav hbp hassoc w`. Rewrite `key` using `[integerUnit_mul (pow_ne_zero _ ha) hπv hav, integerUnit_mul (pow_ne_zero _ hb) hπp hbp, integerUnit_pow ha hF (pow_ne_zero _ ha), integerUnit_pow hb hF (pow_ne_zero _ hb), ordAt_mul, ordAt_mul, ordAt_pow, ordAt_pow]`.
+
+Establish `hv' : ordAt w (integerUnit hπv) = if w = v then (hF : ℤ) else 0`. Rewrite using `[← ordAt_placeUnit v w, placeUnit_eq_integerUnit]`. Establish `hp' : ordAt w (integerUnit hπp) = if w = p then (hF : ℤ) else 0`. Rewrite using `[← ordAt_placeUnit p w, placeUnit_eq_integerUnit]`. Rewrite `key` using `[hv', hp']`.
+
+Establish `hh : (hF : ℤ) ≠ 0` using `by exact_mod_cast classNumber_ne_zero F`. Rewrite using `[ordAt_mul, ordAt_inv]`. Apply `mul_left_cancel₀ hh` to reduce the goal to its premises. Apply the tactic sequence `split_ifs at key ⊢ <;> linarith`.
+-/
 theorem exists_ordAt_eq_of_mk0_eq {v p : HeightOneSpectrum (𝓞 F)}
     (h : ClassGroup.mk0 (primeNZD v) = ClassGroup.mk0 (primeNZD p)) :
     ∃ x : Fˣ, ∀ w, ordAt w x = (if w = v then 1 else 0) - (if w = p then 1 else 0) := by
@@ -96,6 +130,11 @@ theorem exists_ordAt_eq_of_mk0_eq {v p : HeightOneSpectrum (𝓞 F)}
 
 variable (S : Set (HeightOneSpectrum (𝓞 F)))
 
+/- English proof (translation)
+Use extensionality with `w`. Rewrite using `[divS_apply, toMul_ofMul, ordAt_placeUnit, Finsupp.smul_apply, Finsupp.single_apply]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `h' : w.1 ≠ v.1` using `fun e => h (Subtype.ext e)`. Simplify using `[h', Ne.symm h]`.
+-/
 theorem divS_placeUnit (v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}) :
     divS S (Additive.ofMul (GroundTheory.Global.SUnit.placeUnit v.1)) =
       (classNumber F : ℤ) • Finsupp.single v 1 := by
@@ -108,6 +147,13 @@ theorem divS_placeUnit (v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}) :
   · have h' : w.1 ≠ v.1 := fun e => h (Subtype.ext e)
     simp [h', Ne.symm h]
 
+/- English proof (translation)
+Take `⟨D, rfl⟩` from `QuotientAddGroup.mk'_surjective (divS S).range c`. Rewrite using `[← map_nsmul]`. Use `(QuotientAddGroup.eq_zero_iff _).2 ?_` and prove the remaining obligations. Proceed by induction on `D using Finsupp.induction_linear with`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add f g hf hg => rw [smul_add]`. Conclude with `add_mem hf hg`. Consider the case `single v m`. Use `⟨m • Additive.ofMul (GroundTheory.Global.SUnit.placeUnit v.1), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, divS_placeUnit]`. Use extensionality with `w`. Apply the tactic sequence `by_cases hw : v = w <;> simp [hw]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem classNumber_nsmul_sPic (c : sPic S) : classNumber F • c = 0 := by
   obtain ⟨D, rfl⟩ := QuotientAddGroup.mk'_surjective (divS S).range c
   rw [← map_nsmul]
@@ -129,6 +175,11 @@ noncomputable def sPicGen (c : ClassGroup (𝓞 F)) : sPic S :=
     sPicMk S (Finsupp.single h.choose 1)
   else 0
 
+/- English proof (translation)
+Establish `hex : ∃ u : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}, ClassGroup.mk0 (primeNZD u.1) = ClassGroup.mk0 (primeNZD v.1)` using `⟨v, rfl⟩`. Rewrite using `[sPicGen, dif_pos hex]`. Take `⟨x, hx⟩` from `exists_ordAt_eq_of_mk0_eq hex.choose_spec.symm`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `(QuotientAddGroup.eq_zero_iff _).2 ⟨Additive.ofMul x, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `w`. Rewrite using `[divS_apply, toMul_ofMul, hx, Finsupp.sub_apply, Finsupp.single_apply, Finsupp.single_apply]`. Establish `e1 : (w.1 = v.1) ↔ (v = w)` using `⟨fun e => (Subtype.ext e).symm, fun e => by rw [e]⟩`. Establish `e2 : (w.1 = hex.choose.1) ↔ (hex.choose = w)` using `⟨fun e => (Subtype.ext e).symm, fun e => by rw [e]⟩`. Simplify using `only [e1, e2]`.
+-/
 theorem sPicMk_single_eq_sPicGen (v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}) :
     sPicMk S (Finsupp.single v 1) = sPicGen S (ClassGroup.mk0 (primeNZD v.1)) := by
   classical
@@ -144,6 +195,13 @@ theorem sPicMk_single_eq_sPicGen (v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S
   have e2 : (w.1 = hex.choose.1) ↔ (hex.choose = w) := ⟨fun e => (Subtype.ext e).symm, fun e => by rw [e]⟩
   simp only [e1, e2]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce and unpack `c -`. Take `⟨D, rfl⟩` from `QuotientAddGroup.mk'_surjective (divS S).range c`. Proceed by induction on `D using Finsupp.induction_linear with`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add f g hf hg => rw [map_add]`. Conclude with `add_mem hf hg`. Consider the case `single v m`. Rewrite using `[← Finsupp.smul_single_one, map_zsmul]`.
+
+Use `AddSubgroup.zsmul_mem _ ?_ m` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `sPicMk S (Finsupp.single v 1) ∈ _`. Rewrite using `[sPicMk_single_eq_sPicGen]`. Conclude with `AddSubgroup.subset_closure ⟨_, rfl⟩`.
+-/
 theorem closure_range_sPicGen : AddSubgroup.closure (Set.range (sPicGen S)) = ⊤ := by
   rw [eq_top_iff]
   rintro c -

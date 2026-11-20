@@ -5,6 +5,15 @@ open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalis
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `g S p _ lam N₀ n hS y hy`. Establish `hw : ∀ x ∈ S.La, JMB.w0 S.d • x ∈ S.La` using `hS.2.2.2.2.2.1`. Establish `hzs : ∀ (z : ℤ) (x : Fin g → ℂ), x ∈ S.La → ((z : ℂ)) • x ∈ S.La`. Introduce `z x hx`. Rewrite using `[Int.cast_smul_eq_zsmul ℂ z x]`.
+
+Conclude with `S.La.smul_mem z hx`. Establish `hp : ((p : ℂ) ^ n) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero)`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨κ, ⟨u, v, hκ⟩, _, x, hx, rfl⟩` from `hy`.
+
+Rewrite using `[smul_smul, mul_div_cancel₀ _ hp, hκ]`. Establish `: ((u : ℂ) + (v : ℂ) * JMB.w0 S.d) * (N₀ : ℂ) = ((u * N₀ : ℤ) : ℂ) + ((v * N₀ : ℤ) : ℂ) * JMB.w0 S.d` using `by push_cast; ring`. Rewrite using `[this, add_smul, mul_smul]`. Conclude with `S.La.add_mem (hzs _ _ hx) (hzs _ _ (hw x hx))`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `S.La.add_mem ha hb`. Consider the case `neg a _ ha => rw [smul_neg]`. Conclude with `S.La.neg_mem ha`.
+-/
 theorem goodLift_pow_smul_mem : ∀ (g : ℕ) (S : JMB.Setup g) (p : ℕ) [Fact p.Prime] (lam : JMB.Qbar →+* ℂ_[p]) (N₀ n : ℕ), S.Ok →
     ∀ y ∈ AddSubgroup.closure {y : Fin g → ℂ | ∃ κ ∈ JMB.OK S.d,
       ‖JMB.lamA lam ((starRingEnd ℂ) κ)‖ ≤ (p : ℝ) ^ (-(2 * n : ℤ)) ∧

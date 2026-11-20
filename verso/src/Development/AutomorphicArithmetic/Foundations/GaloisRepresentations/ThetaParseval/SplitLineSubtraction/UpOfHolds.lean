@@ -7,6 +7,19 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open UpperTheory.V.Af (algSat)
 open UpperTheory.Gal.TP.Sub
 
+/- English proof (translation)
+Introduce `hE hWt hS hLS E _ _ _ n t hn hnt Bs χX χW mX mW U hU lam hl U' hL κ m ψ p hD`. Take `⟨hcov, -, hne⟩` from `hE E Bs.emb`. Use `choose l' hl'w hl'L using hL.wt`. Use `choose w₀ hw₀ using hcov`. Establish `hn' : 1 ≤ n + t` using `by omega`.
+
+Set `lam' : (E →+* ℂ) → DomWeight (n + t)` to `fun τ => if τ = (Bs.emb (w₀ τ)).1 then l' (w₀ τ) else (l' (w₀ τ)).dual`. Establish `key : ∀ τ, (∃ w, τ = (Bs.emb w).1 ∧ lam' τ = l' w) ∨ ∃ w, τ = ComplexEmbedding.conjugate (Bs.emb w).1 ∧ lam' τ = (l' w).dual`. Introduce `τ`. Break down `hw₀ τ with h | h` into its components or cases. Conclude with `Or.inl ⟨w₀ τ, h, if_pos h⟩`.
+
+Conclude with `Or.inr ⟨w₀ τ, h, if_neg fun h' => hne (w₀ τ) (w₀ τ) (h'.symm.trans h)⟩`. Use `⟨lam', hL.aut, fun τ => ?_, hD.alg, fun τ => ?_, ?_⟩` and prove the remaining obligations. Break down `key τ with ⟨w, rfl, h⟩ | ⟨w, rfl, h⟩` into its components or cases. Rewrite using `[h]`. Conclude with `hl'w w`.
+
+Rewrite using `[h]`. Conclude with `GlobalTheory.DefiniteBC.hasWeightAt_conjugate hn' (hl'w w)`. Break down `key τ with ⟨w, rfl, h⟩ | ⟨w, rfl, h⟩` into its components or cases. Rewrite using `[h]`. Conclude with `(hWt n t _ _ _ _ (hl'L w)).1 _ (fun i => p i _) (hD.m₁ w) fun i => hD.p₁ i w`.
+
+Establish `hd : lam (ComplexEmbedding.conjugate (Bs.emb w).1) = (lam (Bs.emb w).1).dual` using `GlobalTheory.DefU.hasWeightAt_unique ⟨U, hU⟩ _ (hl _) (GlobalTheory.DefiniteBC.hasWeightAt_conjugate hn (hl _))`. Rewrite using `[h, hd]`. Conclude with `(hWt n t _ _ _ _ (hl'L w)).2 _ (fun i => p i _) (hD.m₂ w) fun i => hD.p₂ i w`. Introduce `v hv hκ hψ B hB`. Take `⟨hX, hW, hk, hc⟩` from `hD.loc v hκ hψ`.
+
+Establish `h1` using `hLS E n (n + t) (by omega) Bs χX χW mX mW _ U U' hU hL v hv hX hW B hB`. Rewrite `h1` using `[Nat.add_sub_cancel_left]`. Use `⟨_, h1, ?_⟩` and prove the remaining obligations. Conclude with `hS E v n t B _ _ _ (fun i => (((ψ i).val v : ℂˣ) : ℂ)) hk hc`.
+-/
 theorem UpperTheory.Gal.TP.Sub.upOf_holds :
     EmbSplit → WtId → SatId → UpperTheory.Gal.TP.Loc.LiftSatU → UpOf := by
   intro hE hWt hS hLS E _ _ _ n t hn hnt Bs χX χW mX mW U hU lam hl U' hL κ m ψ p hD

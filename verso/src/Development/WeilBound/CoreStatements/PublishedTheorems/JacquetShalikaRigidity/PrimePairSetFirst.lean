@@ -19,6 +19,9 @@ namespace primePairSetFirst
 
 variable {E : Type} [Field E] [NumberField E] {k : ℕ} {ψ : AddChar (Ad E) ℂ}
 
+/- English proof (translation)
+Establish `key` using `GlobalTheory.T.continuous_quotientAverage_periodic_family (UnipotentBlockColumnIndex k (m + 1) (m + 1) → Ad E) (ratV E (UnipotentBlockColumnIndex k (m + 1) (m + 1))) (isCoLat_ratV E _) (GA E k) (fun p => ψ (-dot (eLast k (m + 1)) p.2) * f (blkU p.2 * p.1)) ?_ ?_`. Conclude with `key`. Conclude with `(hψ.cont.comp ((continuous_dot _).neg.comp continuous_snd)).mul (hc.comp (((continuous_posU _).comp continuous_snd).mul continuous_fst))`. Introduce `g γ hγ y`. Conclude with `(per_coef hψ (eLast k (m + 1)) hc hl g).2 γ hγ y`.
+-/
 theorem cont_colT (hψ : StdPsi ψ) (m : ℕ) (f : GA E k → ℂ) (hc : Continuous f)
     (hl : ∀ (c : UnipotentBlockColumnIndex k (m + 1) (m + 1) → E) g, f (ratGL E k (blkU c) * g) = f g) :
     Continuous (colT ψ (m + 1) f) := by
@@ -31,6 +34,13 @@ theorem cont_colT (hψ : StdPsi ψ) (m : ℕ) (f : GA E k → ℂ) (hc : Continu
   · intro g γ hγ y
     exact (per_coef hψ (eLast k (m + 1)) hc hl g).2 γ hγ y
 
+/- English proof (translation)
+Establish `hper` using `per_coef (a := k) hψ (eLast k (m + 1)) hc hl g`. Establish `hT` using `GlobalTheory.T.quotientAverage_translate_invariant (UnipotentBlockColumnIndex k (m + 1) (m + 1) → Ad E) (ratV E (UnipotentBlockColumnIndex k (m + 1) (m + 1))) (isCoLat_ratV E _) _ hper y`. Establish `hpt : (fun x : UnipotentBlockColumnIndex k (m + 1) (m + 1) → Ad E => ψ (-dot (eLast k (m + 1)) x) * f (blkU x * (blkU y * g))) = fun x => ψ (dot (eLast k (m + 1)) y) * (ψ (-dot (eLast k (m + 1)) (x + y)) * f (blkU (x + y) * g))`. Use function extensionality and compare the values at `x`. Establish `hd : dot (eLast k (m + 1)) (x + y) = dot (eLast k (m + 1)) x + dot (eLast k (m + 1)) y`.
+
+Simplify using `only [dot, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Establish `hu : (blkU (x + y) : GA E k) = blkU x * blkU y` using `posU_add _ x y`. Establish `h1 : ψ (dot (eLast k (m + 1)) y) * ψ (-dot (eLast k (m + 1)) y) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Rewrite using `[hd, hu, neg_add, AddChar.map_add_eq_mul, mul_assoc (blkU x)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `avg _ (fun x => ψ (-dot (eLast k (m + 1)) x) * f (blkU x * (blkU y * g))) = _ * avg _ (fun x => ψ (-dot (eLast k (m + 1)) x) * f (blkU x * g))`. Rewrite using `[hpt, avg_const_mul]`. Conclude with `congrArg _ hT`.
+-/
 theorem colT_blkU (hψ : StdPsi ψ) (m : ℕ) (f : GA E k → ℂ) (hc : Continuous f)
     (hl : ∀ (c : UnipotentBlockColumnIndex k (m + 1) (m + 1) → E) g, f (ratGL E k (blkU c) * g) = f g)
     (y : UnipotentBlockColumnIndex k (m + 1) (m + 1) → Ad E) (g : GA E k) :
@@ -58,6 +68,11 @@ theorem colT_blkU (hψ : StdPsi ψ) (m : ℕ) (f : GA E k → ℂ) (hc : Continu
   rw [hpt, avg_const_mul]
   exact congrArg _ hT
 
+/- English proof (translation)
+Simplify using `only [colT, coefF]`. Rewrite using `[← avg_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `e1 : f (blkU x * (blkU y * g)) = ψ (dot (eLast k j) y) * f (blkU x * g)`.
+
+Rewrite using `[← mul_assoc, blkU_mul_blkU hj x y, mul_assoc, hlaw, dot_eLast_shift hj x y]`. Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem colT_law (m : ℕ) (f : GA E k → ℂ) (j : ℕ) (hj : m + 1 < j)
     (hlaw : ∀ (y : UnipotentBlockColumnIndex k j j → Ad E) (g : GA E k), f (blkU y * g) = ψ (dot (eLast k j) y) * f g)
     (y : UnipotentBlockColumnIndex k j j → Ad E) (g : GA E k) :
@@ -71,6 +86,15 @@ theorem colT_law (m : ℕ) (f : GA E k → ℂ) (j : ℕ) (hj : m + 1 < j)
   rw [e1]
   ring
 
+/- English proof (translation)
+Unfold `colT`. Rewrite using `[GlobalTheory.T.whittakerCoefficient_rationalMirabolic_mul E k ψ hψ m f hc hl γ hγ (eLast k (m + 1)) g]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Set `s0 : UnipotentBlockColumnIndex k (m + 1) (m + 1)` to `⟨(⟨m, by omega⟩, ⟨m + 1, hmk⟩), Nat.lt_succ_self m, le_refl _, le_refl _⟩`.
+
+Rewrite using `[Finset.sum_eq_single s0]`. Establish `h1 : eLast (E` using `E) k (m + 1) s0 = 1 := by simp [eLast, s0]`. Rewrite using `[h1, one_mul]`. Introduce `s _ hs`. Establish `h0 : eLast (E` using `E) k (m + 1) s = 0 := by`.
+
+Simplify using `only [eLast]`. Rewrite using `[if_neg]`. Introduce `e`. Apply `hs` to reduce the goal to its premises. Establish `h2` using `s.2.2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Prod.ext (Fin.ext (by simp [s0]; omega)) (Fin.ext (by simp [s0]; omega))`. Rewrite using `[h0, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem colT_rat (hψ : StdPsi ψ) (m : ℕ) (hmk : m + 1 < k) (f : GA E k → ℂ) (hc : Continuous f)
     (hl : ∀ γ : GL (Fin k) E, IsMir (m + 1) γ → ∀ g, f (ratGL E k γ * g) = f g)
     (γ : GL (Fin k) E) (hγ : IsMir (m + 1) γ) (g : GA E k) :
@@ -96,6 +120,9 @@ theorem colT_rat (hψ : StdPsi ψ) (m : ℕ) (hmk : m + 1 < k) (f : GA E k → �
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `h` using `t.2.2`. Conclude with `Subtype.ext (Prod.ext rfl (Fin.ext (by show m + 1 = (t.1.2 : ℕ); omega)))`.
+-/
 theorem blk_eta {m : ℕ} (hmk : m + 1 < k) (t : UnipotentBlockColumnIndex k (m + 1) (m + 1)) :
     (⟨(t.1.1, ⟨m + 1, hmk⟩), t.2.1, le_rfl, le_rfl⟩ : UnipotentBlockColumnIndex k (m + 1) (m + 1)) = t := by
   have h := t.2.2
@@ -130,6 +157,23 @@ def rowEquiv (m : ℕ) (hmk : m + 1 < k) : RowT E k (m + 1) ≃ {ξ : UnipotentB
 
 end primePairSetFirst
 
+/- English proof (translation)
+Introduce `hN _ E _ _ _ k ψ hψ m hm1 hmk f hf`. Take `⟨m, rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`. Establish `hl : ∀ (c : UnipotentBlockColumnIndex k (m + 1) (m + 1) → E) g, f (ratGL E k (blkU c) * g) = f g` using `fun c g => hf.left _ (isMir_blkU c) g`. Simplify using `only [Nat.add_sub_cancel]`. Use `⟨⟨?_, ?_, ?_⟩, ?_, ?_, ⟨primePairSetFirst.rowEquiv m hmk, fun ξ t => rfl⟩⟩` and prove the remaining obligations.
+
+Conclude with `primePairSetFirst.cont_colT hψ m f hf.cont hl`. Introduce `γ hγ g`. Establish `hγ1 : IsMir (m + 1) γ` using `fun i c h => hγ i c (by omega)`. Rewrite using `[primePairSetFirst.colT_rat hψ m hmk f hf.cont hf.left γ hγ1 g]`. Unfold `colT`.
+
+Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[hγ ⟨m, by omega⟩ t.1.1 (Or.inl le_rfl)]`. Establish `ht` using `t.2.1`. Simplify using `only [eLast, Matrix.one_apply]`.
+
+Distinguish the cases in `h : (t.1.1 : ℕ) = m`. Rewrite using `[if_pos (Fin.ext h.symm), if_pos (by omega)]`. Rewrite using `[if_neg (fun e => h (congrArg Fin.val e).symm), if_neg (by omega)]`. Introduce `j hj y g`. Break down `Nat.lt_or_ge (m + 1) j with h1 | h1` into its components or cases.
+
+Conclude with `primePairSetFirst.colT_law m f j h1 (hf.law j h1) y g`. Take `rfl : j = m + 1` from `by omega`. Conclude with `primePairSetFirst.colT_blkU hψ m f hf.cont hl y g`. Introduce `ξ g`. Take `⟨hB, hrow⟩` from `(hN E k (m + 1) (by omega) (by omega)).1 ξ`.
+
+Establish `hγ : IsMir (m + 1) (gam ξ)` using `fun i c h => hB i c (by omega)`. Rewrite using `[primePairSetFirst.colT_rat hψ m hmk f hf.cont hf.left _ hγ g]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `(hrow _ _ rfl).symm`.
+
+Introduce `χ hχ`. Use function extensionality and compare the values at `g`. Simplify using `only [colT, coefF]`. Rewrite using `[← avg_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[hχ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem p1_holds : N0 → P0 → P1 := by
   intro hN _ E _ _ _ k ψ hψ m hm1 hmk f hf
   obtain ⟨m, rfl⟩ : ∃ m', m = m' + 1 := ⟨m - 1, by omega⟩

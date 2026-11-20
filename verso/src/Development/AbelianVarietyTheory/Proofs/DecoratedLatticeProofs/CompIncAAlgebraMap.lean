@@ -16,11 +16,17 @@ open GlobalTheory.FinPl GlobalTheory.FinPl.SplitPoint GlobalTheory.IdemModTwo Gl
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight (R := D.host.F) (A := AF D.host.F) (B := D.host.E)).commutes t`.
+-/
 theorem incA_algebraMap (t : D.host.F) :
     incA D (algebraMap D.host.F D.host.E t) = algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) t) := by
   rw [← IsScalarTower.algebraMap_apply]
   exact (Algebra.TensorProduct.includeRight (R := D.host.F) (A := AF D.host.F) (B := D.host.E)).commutes t
 
+/- English proof (translation)
+Rewrite using `[incA_algebraMap, comp_algebraMap]`. Both sides reduce to the same expression.
+-/
 theorem comp_incA_algebraMap {v : Pl D} {e : AE D} (he : SplitAt D v e) (t : D.host.F) :
     comp he (incA D (algebraMap D.host.F D.host.E t)) = algebraMap D.host.F (Fv D.host.F v) t := by
   rw [incA_algebraMap, comp_algebraMap]
@@ -29,12 +35,21 @@ theorem comp_incA_algebraMap {v : Pl D} {e : AE D} (he : SplitAt D v e) (t : D.h
 def emb {v : Pl D} {e : AE D} (he : SplitAt D v e) : D.host.E →ₐ[D.host.F] Fv D.host.F v :=
   { (comp he).comp (incA D) with commutes' := comp_incA_algebraMap he }
 
+/- English proof (translation)
+Rewrite using `[sec_apply, map_mul, comp_fj, comp_self, mul_one, evalV_singleV_same]`.
+-/
 theorem comp_sec {v : Pl D} {e : AE D} (he : SplitAt D v e) (a : Fv D.host.F v) : comp he (sec D v e a) = a := by
   rw [sec_apply, map_mul, comp_fj, comp_self, mul_one, evalV_singleV_same]
 
+/- English proof (translation)
+The claim follows from `(sc_spec he x).symm`.
+-/
 theorem sec_comp {v : Pl D} {e : AE D} (he : SplitAt D v e) (x : AE D) : sec D v e (comp he x) = e * x :=
   (sc_spec he x).symm
 
+/- English proof (translation)
+Establish `h1` using `(chart_comp he).2.2.2 (sec D v e a)`. Rewrite `h1` using `[← sec_comp he, comp_sec he]`. Rewrite using `[h1, isInt_Ov, mem_integer_iff]`.
+-/
 theorem int_iff_sec {v : Pl D} {e : AE D} (he : SplitAt D v e) (a : Fv D.host.F v) :
     a ∈ 𝒪[Fv D.host.F v] ↔ finPart D (sec D v e a) ∈ intAE D := by
   have h1 := (chart_comp he).2.2.2 (sec D v e a)
@@ -55,8 +70,16 @@ def splitPt {v : Pl D} {e : AE D} (h : IsSplitIdem D e) (he : SplitAt D v e)
   cont_sec := continuous_sec
   int_iff := int_iff_sec he
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_apply {v : Pl D} {e : AE D} (he : SplitAt D v e) (a : D.host.E) : emb he a = comp he (incA D a) := rfl
 
+/- English proof (translation)
+Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `only [Submodule.zero_mem]`. Rewrite using `[GlobalTheory.AdelicU.mem_splitPrime, h.2 x hx, ← sec_comp he, ← emb_apply]`.
+
+Establish `h0 : emb he (x : D.host.E) ≠ 0` using `(map_ne_zero _).2 (RingOfIntegers.coe_ne_zero_iff.2 hx)`. Rewrite using `[← int_iff_sec he, mem_integer_iff, HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, map_inv₀, not_le, one_lt_inv₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0))]`.
+-/
 theorem splitPrime_emb {v : Pl D} {e : AE D} (he : SplitAt D v e) (PP : HeightOneSpectrum (𝓞 D.host.E))
     (h : Formalism.L2.NTheta.IsIdemAt e PP) : GlobalTheory.AdelicU.splitPrime (emb he) = PP := by
   refine HeightOneSpectrum.ext (Ideal.ext fun x => ?_)
@@ -68,6 +91,13 @@ theorem splitPrime_emb {v : Pl D} {e : AE D} (he : SplitAt D v e) (PP : HeightOn
   rw [← int_iff_sec he, mem_integer_iff, HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, map_inv₀, not_le,
     one_lt_inv₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0))]
 
+/- English proof (translation)
+Introduce `D PP e h`. Take `⟨-, -, v, ε, hε, hs⟩` from `h.1`. Establish `he : SplitAt D v e` using `splitAt_of h.1 hε hs`. Establish `hP` using `splitPrime_emb he PP h`. Use `⟨Fv D.host.F v, inferInstance, inferInstance, inferInstance, inferInstance, splitPt h.1 he ⟨ε, hε, hs⟩, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show v = _`. Rewrite using `[← hP, GlobalTheory.AdelicU.splitPrime_under]`. Introduce `a`. Express the relevant statement in the definitionally equal form `emb he a ∈ _ ↔ _`. Rewrite using `[mem_integer_iff, HeightOneSpectrum.mem_adicCompletionIntegers, GlobalTheory.AdelicU.valued_apply_eq_valuation, hP, GlobalTheory.Proof.IntegralPowerExpansion.intAt_iff_val]`.
+
+Express the relevant statement in the definitionally equal form `DenseRange (emb he)`. Use `Dense.mono ?_ (HeightOneSpectrum.denseRange_algebraMap D.host.F v)` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `⟨algebraMap D.host.F D.host.E t, (emb he).commutes t⟩`.
+-/
 theorem exists_place : ∀ (D : D7) (PP : Formalism.L2.DIV.Pl D.host.E) (e : AE D), Formalism.L2.NTheta.IsIdemAt e PP → ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k) (_ : IsNonarchimedeanLocalField k) (q : GlobalTheory.FinPl.SplitPt D k), q.e = e ∧ q.v = PP.under (NumberField.RingOfIntegers D.host.F) ∧ (∀ a, (ofSplit q).pr a ∈ 𝒪[k] ↔ Formalism.L2.Col.IntAt PP a) ∧ DenseRange (ofSplit q).pr := by
   intro D PP e h
   obtain ⟨-, -, v, ε, hε, hs⟩ := h.1

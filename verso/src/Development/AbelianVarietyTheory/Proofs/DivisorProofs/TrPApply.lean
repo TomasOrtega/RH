@@ -27,6 +27,9 @@ def trP (κ : Type) [Fintype κ] : LinearMap.BilinForm ℝ (κ → mixedEmbeddin
     (fun _ _ _ => by simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib, map_add])
     (fun _ _ _ => by simp only [Pi.smul_apply, mul_smul_comm, ← Finset.smul_sum, LinearMap.map_smul, smul_eq_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mixedTracePairing_apply {κ : Type} [Fintype κ] (x y : κ → mixedEmbedding.mixedSpace F) :
     trP F κ x y = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * y i) := rfl
 

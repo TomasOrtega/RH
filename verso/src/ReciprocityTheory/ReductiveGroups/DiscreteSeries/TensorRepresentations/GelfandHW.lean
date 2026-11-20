@@ -11,6 +11,11 @@ variable {n : ℕ} {M : Type*} [AddCommGroup M] [Module ℂ M]
 
 def hwShift (ν : Fin n → ℝ) : Fin n → ℂ := fun r => ((ν r : ℝ) : ℂ) + (((n - 1 - (r : ℕ) : ℕ) : ℝ) : ℂ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Establish `hr` using `r.isLt`. Simplify using `only [hwShift, icShift, rho, Pi.add_apply]`. Rewrite using `[Nat.cast_sub (by omega : (r : ℕ) ≤ n - 1), Nat.cast_sub (by omega : 1 ≤ n)]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hwShift_eq_icShift (ν : Fin n → ℝ) : hwShift ν = icShift (ν + rho n) := by
   funext r
   have hr := r.isLt
@@ -19,6 +24,13 @@ theorem hwShift_eq_icShift (ν : Fin n → ℝ) : hwShift ν = icShift (ν + rho
   push_cast
   ring
 
+/- English proof (translation)
+Proceed by induction on `k generalizing s r with`. Consider the case `zero => simp [ePow, Bl.ThirdBlockLemmaA.goal1, Matrix.one_apply, hsr.ne]`. Consider the case `succ k ih`. Rewrite using `[show ePow E (k + 1) s r = ∑ c, E s c * ePow E k c r from by simp only [ePow, Bl.ThirdBlockLemmaA.goal1, pow_succ', Matrix.mul_apply, Matrix.of_apply], LinearMap.sum_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `c _`. Rewrite using `[Module.End.mul_apply]`. Break down `lt_or_ge c r with hcr | hrc` into its components or cases. Rewrite using `[ih c r hcr, map_zero]`. Establish `hc` using `ePow_comm hE k s c c r`.
+
+Rewrite `hc` using `[if_pos rfl, if_neg hsr.ne']`. Establish `hc'` using `congrArg (fun f => f v) hc`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, sub_zero] at hc'`. Rewrite `hc'` using `[hv.2 s c (lt_of_lt_of_le hsr hrc), map_zero, sub_zero, ih s r hsr]`. Conclude with `hc'`.
+-/
 theorem ePow_hw_lower {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E) {ν : Fin n → ℝ} {v : M}
     (hv : IsHWVec E ν v) (k : ℕ) (s r : Fin n) (hsr : s < r) : ePow E k s r v = 0 := by
   induction k generalizing s r with
@@ -37,6 +49,19 @@ theorem ePow_hw_lower {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E
       rw [hv.2 s c (lt_of_lt_of_le hsr hrc), map_zero, sub_zero, ih s r hsr] at hc'
       exact hc'
 
+/- English proof (translation)
+Proceed by induction on `k generalizing r with`. Consider the case `zero => simp [ePow, Bl.ThirdBlockLemmaA.goal1, Matrix.one_apply, gx]`. Consider the case `succ k ih`. Establish `key : ∀ c, E r c (ePow E k c r v) = ((if c = r then (ν r : ℂ) * gx (hwShift ν) k r else 0) + (if r < c then gx (hwShift ν) k r - gx (hwShift ν) k c else 0)) • v`. Introduce `c`.
+
+Break down `lt_trichotomy c r with h | h | h` into its components or cases. Rewrite using `[ePow_hw_lower hE hv k c r h, map_zero, if_neg h.ne, if_neg (not_lt.2 h.le)]`. Simplify using the standard rewrite rules. Substitute `h` using the available equality. Rewrite using `[ih, LinearMap.map_smul, hv.1, smul_smul, if_pos rfl, if_neg (lt_irrefl _), add_zero, mul_comm]`.
+
+Establish `hc` using `ePow_comm hE k r c c r`. Rewrite `hc` using `[if_pos rfl, if_pos rfl]`. Establish `hc'` using `congrArg (fun f => f v) hc`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at hc'`. Rewrite `hc'` using `[hv.2 r c h, map_zero, sub_zero, ih, ih c]`.
+
+Rewrite using `[if_neg h.ne', if_pos h, zero_add, sub_smul]`. Conclude with `hc'`. Rewrite using `[show ePow E (k + 1) r r = ∑ c, E r c * ePow E k c r from by simp only [ePow, Bl.ThirdBlockLemmaA.goal1, pow_succ', Matrix.mul_apply, Matrix.of_apply], LinearMap.sum_apply]`. Simplify using `only [Module.End.mul_apply, key]`. Rewrite using `[← Finset.sum_smul]`.
+
+Use `congr 1`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_eq', if_pos (Finset.mem_univ _), ← Finset.sum_filter, Finset.sum_sub_distrib, Finset.sum_const]`. Establish `hf : (univ.filter fun c => r < c) = Finset.Ioi r` using `by ext; simp`. Rewrite using `[hf, Fin.card_Ioi, nsmul_eq_mul]`. Simplify using `only [gx, hwShift, hf]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ePow_hw_diag {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E) {ν : Fin n → ℝ} {v : M}
     (hv : IsHWVec E ν v) (k : ℕ) (r : Fin n) : ePow E k r r v = gx (hwShift ν) k r • v := by
   induction k generalizing r with
@@ -71,6 +96,9 @@ theorem ePow_hw_diag {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E)
     push_cast
     ring
 
+/- English proof (translation)
+Unfold `gelfand`. Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [ePow_hw_diag hE hv k, ← Finset.sum_smul, sum_gx_eq_gval, hwShift_eq_icShift]`.
+-/
 theorem gelfand_hw {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E) {ν : Fin n → ℝ} {v : M}
     (hv : IsHWVec E ν v) (k : ℕ) : gelfand E k v = gval (icShift (ν + rho n)) k • v := by
   unfold gelfand

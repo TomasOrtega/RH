@@ -13,6 +13,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 def rankOne (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) : Matrix (Fin r) (Fin r) E :=
   Matrix.of fun a b => x a * ∑ k, G b k * cc (y k)
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `only [rankOne, mulVec, dotProduct, of_apply, herm, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+-/
 theorem rankOne_mulVec (G : Matrix (Fin r) (Fin r) E) (x y v : Fin r → E) :
     rankOne G x y *ᵥ v = herm G v y • x := by
   ext a
@@ -22,6 +27,9 @@ theorem rankOne_mulVec (G : Matrix (Fin r) (Fin r) E) (x y v : Fin r → E) :
   simp only [Finset.mul_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, diag, rankOne, of_apply, herm, Finset.mul_sum, mul_assoc]`.
+-/
 theorem trace_rankOne (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     (rankOne G x y).trace = herm G x y := by
   simp only [Matrix.trace, diag, rankOne, of_apply, herm, Finset.mul_sum, mul_assoc]
@@ -39,6 +47,11 @@ def traceIdeal (Λ : Submodule (𝓞 E) (Fin r → E)) : Ideal (𝓞 E) where
     rw [trace_smul, e, smul_eq_mul, smul_eq_mul]
     push_cast; rfl
 
+/- English proof (translation)
+Establish `hint : ∀ x ∈ Λ, ∀ y ∈ Λ, IsIntegral ℤ (herm G x y)` using `fun x hx => (h.2.2.2.2 x).2 hx`. Establish `htop : traceIdeal Λ = ⊤`. Assume the negation of the conclusion as `hT`. Use `GlobalTheory.UCls.Det.exists_herm_notMem hr h (traceIdeal Λ) hT fun x hx y hy => ⟨⟨herm G x y, hint x hx y hy⟩, ⟨rankOne G x y, fun v hv => ?_, trace_rankOne G x y⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[rankOne_mulVec]`.
+
+Conclude with `smul_mem_of_isIntegral (hint v hv y hy) hx`. Establish `h1 : (1 : 𝓞 E) ∈ traceIdeal Λ` using `htop ▸ Submodule.mem_top`. Take `⟨Z, hZ, e⟩` from `h1`. Conclude with `⟨Z, hZ, by rw [e]; simp⟩`.
+-/
 theorem exists_endLat_trace_eq_one (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (hr : 1 ≤ r)
     (h : SelfDualLat G Λ) : ∃ Z ∈ endLat Λ, Z.trace = 1 := by
@@ -53,6 +66,9 @@ theorem exists_endLat_trace_eq_one (E : Type) [Field E] [NumberField E] [IsCMFie
   obtain ⟨Z, hZ, e⟩ := h1
   exact ⟨Z, hZ, by rw [e]; simp⟩
 
+/- English proof (translation)
+The claim follows from `exists_endLat_trace_eq_one`.
+-/
 example : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E)
     (Λ : Submodule (𝓞 E) (Fin r → E)), 1 ≤ r → SelfDualLat G Λ → ∃ Z ∈ endLat Λ, Z.trace = 1 :=
   exists_endLat_trace_eq_one

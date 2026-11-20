@@ -14,6 +14,9 @@ open GlobalTheory.CompanionTheory.FourierN (mat_injective continuous_halfTr blk4
 
 variable {D : D7} {n ρ p : ℕ} {hn : ρ + p = n}
 
+/- English proof (translation)
+Simplify using `only [bl]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+-/
 theorem blockMatrix_multiply {R : Type} [CommRing R] (hn : ρ + p = n) (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b' : Matrix (Fin ρ) (Fin p) R)
     (c c' : Matrix (Fin p) (Fin ρ) R) (d d' : Matrix (Fin p) (Fin p) R) :
     HMul.hMul (bl hn a b c d) (bl hn a' b' c' d') =
@@ -21,6 +24,9 @@ theorem blockMatrix_multiply {R : Type} [CommRing R] (hn : ρ + p = n) (a a' : M
   simp only [bl]
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Simplify using `only [bl]`. Rewrite using `[← Matrix.fromBlocks_add]`. Both sides reduce to the same expression.
+-/
 theorem blockMatrix_add' {R : Type} [CommRing R] (hn : ρ + p = n) (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b' : Matrix (Fin ρ) (Fin p) R)
     (c c' : Matrix (Fin p) (Fin ρ) R) (d d' : Matrix (Fin p) (Fin p) R) :
     bl hn a b c d + bl hn a' b' c' d' = bl hn (a + a') (b + b') (c + c') (d + d') := by
@@ -28,11 +34,17 @@ theorem blockMatrix_add' {R : Type} [CommRing R] (hn : ρ + p = n) (a a' : Matri
   rw [← Matrix.fromBlocks_add]
   rfl
 
+/- English proof (translation)
+Simplify using `only [bl]`. Rewrite using `[Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`.
+-/
 theorem blockMatrix_one {R : Type} [CommRing R] (hn : ρ + p = n) :
     bl hn (1 : Matrix (Fin ρ) (Fin ρ) R) 0 0 1 = 1 := by
   simp only [bl]
   rw [Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
 
+/- English proof (translation)
+Simplify using `only [bl]`. Rewrite using `[← Matrix.fromBlocks_map]`. Both sides reduce to the same expression.
+-/
 theorem blockMatrix_map₂ {R S : Type} (f : R → S) (hn : ρ + p = n) (a : Matrix (Fin ρ) (Fin ρ) R) (b : Matrix (Fin ρ) (Fin p) R)
     (c : Matrix (Fin p) (Fin ρ) R) (d : Matrix (Fin p) (Fin p) R) :
     (bl hn a b c d).map f = bl hn (a.map f) (b.map f) (c.map f) (d.map f) := by
@@ -40,11 +52,19 @@ theorem blockMatrix_map₂ {R S : Type} (f : R → S) (hn : ρ + p = n) (a : Mat
   rw [← Matrix.fromBlocks_map]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul' (a b : G D n) : mat (a * b) = HMul.hMul (mat a) (mat b) := rfl
 
 section Gen
 variable {R : Type} [CommRing R] {k : ℕ}
 
+/- English proof (translation)
+Rewrite using `[submatrix_fromBlocks_mul]`. Use `congr 1`. Simplify using the standard rewrite rules. Simplify using `[add_comm]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem block_unipotent_mul (B B' : Matrix (Fin k) (Fin k) R) :
     HMul.hMul (blk4 1 B 0 1) (blk4 1 B' 0 1) = blk4 1 (B + B') 0 1 := by
   rw [submatrix_fromBlocks_mul]
@@ -54,21 +74,35 @@ theorem block_unipotent_mul (B B' : Matrix (Fin k) (Fin k) R) :
   · simp
   · simp
 
+/- English proof (translation)
+Rewrite using `[submatrix_fromBlocks_mul]`. Apply the tactic sequence `congr 1 <;> simp`.
+-/
 theorem block_diagonal_mul (A A' B B' : Matrix (Fin k) (Fin k) R) :
     HMul.hMul (blk4 A 0 0 A') (blk4 B 0 0 B') = blk4 (A ⬝ B) 0 0 (A' ⬝ B') := by
   rw [submatrix_fromBlocks_mul]
   congr 1 <;> simp
 
+/- English proof (translation)
+Rewrite using `[submatrix_fromBlocks_mul]`. Apply the tactic sequence `congr 1 <;> simp`.
+-/
 theorem block_unipotent_mul_diagonal (B A A' : Matrix (Fin k) (Fin k) R) :
     HMul.hMul (blk4 1 B 0 1) (blk4 A 0 0 A') = blk4 A (B ⬝ A') 0 A' := by
   rw [submatrix_fromBlocks_mul]
   congr 1 <;> simp
 
+/- English proof (translation)
+Rewrite using `[submatrix_fromBlocks_mul]`. Apply the tactic sequence `congr 1 <;> simp`.
+-/
 theorem block_diagonal_mul_unipotent (B A A' : Matrix (Fin k) (Fin k) R) :
     HMul.hMul (blk4 A 0 0 A') (blk4 1 B 0 1) = blk4 A (A ⬝ B) 0 A' := by
   rw [submatrix_fromBlocks_mul]
   congr 1 <;> simp
 
+/- English proof (translation)
+Rewrite using `[blockMatrix_multiply]`. Use `congr 1`. Simplify using the standard rewrite rules. Simplify using `[add_comm]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem blockMatrix_upper (hn : ρ + p = n) (y y' : Matrix (Fin ρ) (Fin p) R) :
     HMul.hMul (bl hn 1 y 0 1) (bl hn 1 y' 0 1) = bl hn 1 (y + y') 0 1 := by
   rw [blockMatrix_multiply]
@@ -78,6 +112,11 @@ theorem blockMatrix_upper (hn : ρ + p = n) (y y' : Matrix (Fin ρ) (Fin p) R) :
   · simp
   · simp
 
+/- English proof (translation)
+Rewrite using `[blockMatrix_multiply]`. Use `congr 1`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `[add_comm]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem lowerUnipotent_mul (hn : ρ + p = n) (c c' : Matrix (Fin p) (Fin ρ) R) :
     HMul.hMul (bl hn 1 0 c 1) (bl hn 1 0 c' 1) = bl hn 1 0 (c + c') 1 := by
   rw [blockMatrix_multiply]
@@ -87,6 +126,11 @@ theorem lowerUnipotent_mul (hn : ρ + p = n) (c c' : Matrix (Fin p) (Fin ρ) R) 
   · simp [add_comm]
   · simp
 
+/- English proof (translation)
+Rewrite using `[blockMatrix_multiply, blockMatrix_multiply]`. Use `congr 1`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem blockMatrix_twist (hn : ρ + p = n) (z z' : Matrix (Fin ρ) (Fin ρ) R) (x η : Matrix (Fin ρ) (Fin p) R)
     (c c' : Matrix (Fin p) (Fin ρ) R) (h : z' = z + x ⬝ c' - η ⬝ c) :
     HMul.hMul (bl hn z x c 0) (bl hn 1 0 c' 1) = HMul.hMul (bl hn 1 η 0 1) (bl hn z' x c 0) := by
@@ -99,21 +143,33 @@ theorem blockMatrix_twist (hn : ρ + p = n) (z z' : Matrix (Fin ρ) (Fin ρ) R) 
 
 end Gen
 
+/- English proof (translation)
+Apply `mat_injective` to reduce the goal to its premises. Rewrite using `[mat_mul', M.nzx_mat, M.nzx_mat, M.nzx_mat, block_unipotent_mul, blockMatrix_add', adj_add, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem nzx_mul (M : Maps D hn) (z z' : hermA D ρ) (x x' : Mx D ρ p) :
     M.nzx z x * M.nzx z' x' = M.nzx (z + z') (x + x') := by
   apply mat_injective
   rw [mat_mul', M.nzx_mat, M.nzx_mat, M.nzx_mat, block_unipotent_mul, blockMatrix_add', adj_add, add_zero]
   rfl
 
+/- English proof (translation)
+Establish `h` using `nzx_mul M 0 0 0 0`. Simplify using `only [add_zero] at h`. Conclude with `mul_eq_left.1 h`.
+-/
 theorem nzx_zero (M : Maps D hn) : M.nzx 0 0 = 1 := by
   have h := nzx_mul M 0 0 0 0
   simp only [add_zero] at h
   exact mul_eq_left.1 h
 
+/- English proof (translation)
+Apply `mat_injective` to reduce the goal to its premises. Rewrite using `[mat_mul', M.sh_mat, M.sh_mat, M.sh_mat, block_diagonal_mul, blockMatrix_upper, lowerUnipotent_mul, adj_add, neg_add]`.
+-/
 theorem sh_mul (M : Maps D hn) (y y' : Mx D ρ p) : M.sh y * M.sh y' = M.sh (y + y') := by
   apply mat_injective
   rw [mat_mul', M.sh_mat, M.sh_mat, M.sh_mat, block_diagonal_mul, blockMatrix_upper, lowerUnipotent_mul, adj_add, neg_add]
 
+/- English proof (translation)
+Establish `h` using `sh_mul M 0 0`. Simplify using `only [add_zero] at h`. Conclude with `mul_eq_left.1 h`.
+-/
 theorem sh_zero (M : Maps D hn) : M.sh 0 = 1 := by
   have h := sh_mul M 0 0
   simp only [add_zero] at h
@@ -130,6 +186,11 @@ def tw (z : hermA D ρ) (x η : Mx D ρ p) : hermA D ρ :=
     rw [hs, hs, hz, adj_mul, adj_mul, adj_adj, adj_adj]
     abel⟩
 
+/- English proof (translation)
+Apply `mat_injective` to reduce the goal to its premises. Rewrite using `[mat_mul', mat_mul', M.nzx_mat, M.nzx_mat, M.sh_mat, block_unipotent_mul_diagonal, block_diagonal_mul_unipotent]`. Use `congr 1`. Use `blockMatrix_twist hn _ _ _ _ _ _ ?_` and prove the remaining obligations. Use `show z.1 - x ⬝ adj η - η ⬝ adj x = z.1 + x ⬝ (-adj η) - η ⬝ adj x`.
+
+Rewrite using `[Matrix.mul_neg, sub_eq_add_neg z.1]`.
+-/
 theorem nzx_sh (M : Maps D hn) (z : hermA D ρ) (x η : Mx D ρ p) :
     M.nzx z x * M.sh η = M.sh η * M.nzx (tw z x η) x := by
   apply mat_injective
@@ -147,6 +208,13 @@ open GlobalTheory.CompanionTheory.FourierN (mat_injective continuous_halfTr blk4
 
 variable {D : D7} {n ρ p : ℕ} {hn : ρ + p = n}
 
+/- English proof (translation)
+Establish `e1 : mat g * mat g⁻¹ = 1` using `(mat_mul' g g⁻¹).symm.trans (by rw [mul_inv_cancel]; rfl)`. Establish `e2 : mat g⁻¹ * mat g = 1` using `(mat_mul' g⁻¹ g).symm.trans (by rw [inv_mul_cancel]; rfl)`. Establish `r1 : rat (1 : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E) = (1 : Mx D (n + n) (n + n))` using `Matrix.map_one _ (map_zero _) (map_one _)`. Set `x : GL (Fin (n + n)) D.host.E` to `⟨X, Y, rat_injective (D := D) (by rw [rat_mul, r1, ← hX, ← hY]; exact e1), rat_injective (D := D) (by rw [rat_mul, r1, ← hX, ← hY]; exact e2)⟩`. Establish `hm : x.1.map (incA D) = mat g` using `hX.symm`.
+
+Use `⟨x, ?_, Units.ext hm⟩` and prove the remaining obligations. Apply `rat_injective (D := D)` to reduce the goal to its premises. Establish `h2 : adj (mat g) * JR (AF D.host.F) (Jst D n) * mat g = JR (AF D.host.F) (Jst D n)` using `g.2`. Rewrite `h2` using `[← hm]`. Use `erw [rat_mul, rat_mul]`.
+
+Conclude with `h2`.
+-/
 theorem mem_GF (g : G D n) (X Y : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E) (hX : mat g = rat X)
     (hY : mat g⁻¹ = rat Y) : g ∈ GF D n := by
   have e1 : mat g * mat g⁻¹ = 1 := (mat_mul' g g⁻¹).symm.trans (by rw [mul_inv_cancel]; rfl)
@@ -164,32 +232,58 @@ theorem mem_GF (g : G D n) (X Y : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E) (
   erw [rat_mul, rat_mul]
   exact h2
 
+/- English proof (translation)
+The claim follows from `blk4_map_alt _ _ _ _ _`.
+-/
 theorem rational_map_block_matrix {k : ℕ} (a b c d : Matrix (Fin k) (Fin k) D.host.E) :
     rat (D := D) (blk4 a b c d) = blk4 (rat a) (rat b) (rat c) (rat d) := blk4_map_alt _ _ _ _ _
 
+/- English proof (translation)
+The claim follows from `blockMatrix_map₂ _ _ _ _ _ _`.
+-/
 theorem rat_bl' (hn : ρ + p = n) (a : Matrix (Fin ρ) (Fin ρ) D.host.E) (b : Matrix (Fin ρ) (Fin p) D.host.E)
     (c : Matrix (Fin p) (Fin ρ) D.host.E) (d : Matrix (Fin p) (Fin p) D.host.E) :
     rat (D := D) (bl hn a b c d) = bl hn (rat a) (rat b) (rat c) (rat d) := blockMatrix_map₂ _ _ _ _ _ _
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem rat_one' {k : ℕ} : rat (D := D) (1 : Matrix (Fin k) (Fin k) D.host.E) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_zero _ (map_zero _)`.
+-/
 theorem rat_zero' {k l : ℕ} : rat (D := D) (0 : Matrix (Fin k) (Fin l) D.host.E) = 0 :=
   Matrix.map_zero _ (map_zero _)
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `map_neg (incA D) _`.
+-/
 theorem rat_neg' {k l : ℕ} (a : Matrix (Fin k) (Fin l) D.host.E) : rat (D := D) (-a) = -rat a := by
   ext i j
   exact map_neg (incA D) _
 
+/- English proof (translation)
+Rewrite using `[M.nzx_mat, rational_map_block_matrix, rat_bl', rat_one', rat_zero', rat_zero', rat_conjTranspose, hZ]`.
+-/
 theorem nzx_mat_rat (M : Maps D hn) (z : hermA D ρ) (Z : Matrix (Fin ρ) (Fin ρ) D.host.E)
     (X : Matrix (Fin ρ) (Fin p) D.host.E) (hZ : rat Z = z.1) :
     mat (M.nzx z (rat X)) = rat (blk4 1 (bl hn Z X Xᴴ 0) 0 1) := by
   rw [M.nzx_mat, rational_map_block_matrix, rat_bl', rat_one', rat_zero', rat_zero', rat_conjTranspose, hZ]
 
+/- English proof (translation)
+Simplify using `only [M.sh_mat, rational_map_block_matrix, rat_bl', rat_one', rat_zero', rat_neg', rat_conjTranspose]`.
+-/
 theorem sh_mat_rat (M : Maps D hn) (Y : Matrix (Fin ρ) (Fin p) D.host.E) :
     mat (M.sh (rat Y)) = rat (blk4 (bl hn 1 Y 0 1) 0 0 (bl hn 1 0 (-Yᴴ) 1)) := by
   simp only [M.sh_mat, rational_map_block_matrix, rat_bl', rat_one', rat_zero', rat_neg', rat_conjTranspose]
 
+/- English proof (translation)
+Take `⟨Z, hZ⟩` from `hz`. Establish `hZ' : rat Z = z.1` using `hZ`. Establish `hinv : (M.nzx z (rat X))⁻¹ = M.nzx (-z) (rat (-X))`. Rewrite using `[inv_eq_iff_mul_eq_one, nzx_mul, rat_neg', add_neg_cancel, add_neg_cancel, nzx_zero]`. Use `mem_GF _ _ (blk4 1 (bl hn (-Z) (-X) (-X)ᴴ 0) 0 1) (nzx_mat_rat M z Z X hZ') ?_` and prove the remaining obligations.
+
+Rewrite using `[hinv]`. Conclude with `nzx_mat_rat M (-z) (-Z) (-X) (by rw [rat_neg', hZ']; rfl)`.
+-/
 theorem nzx_rat (M : Maps D hn) (z : hermA D ρ) (hz : z ∈ ratHerm D ρ) (X : Matrix (Fin ρ) (Fin p) D.host.E) :
     M.nzx z (rat X) ∈ GF D n := by
   obtain ⟨Z, hZ⟩ := hz
@@ -200,6 +294,9 @@ theorem nzx_rat (M : Maps D hn) (z : hermA D ρ) (hz : z ∈ ratHerm D ρ) (X : 
   rw [hinv]
   exact nzx_mat_rat M (-z) (-Z) (-X) (by rw [rat_neg', hZ']; rfl)
 
+/- English proof (translation)
+Establish `hinv : (M.sh (rat X))⁻¹ = M.sh (rat (-X))`. Rewrite using `[inv_eq_iff_mul_eq_one, sh_mul, rat_neg', add_neg_cancel, sh_zero]`. Use `mem_GF _ _ (blk4 (bl hn 1 (-X) 0 1) 0 0 (bl hn 1 0 (-(-X)ᴴ) 1)) (sh_mat_rat M X) ?_` and prove the remaining obligations. Rewrite using `[hinv]`. Conclude with `sh_mat_rat M (-X)`.
+-/
 theorem sh_rat (M : Maps D hn) (X : Matrix (Fin ρ) (Fin p) D.host.E) : M.sh (rat X) ∈ GF D n := by
   have hinv : (M.sh (rat X))⁻¹ = M.sh (rat (-X)) := by
     rw [inv_eq_iff_mul_eq_one, sh_mul, rat_neg', add_neg_cancel, sh_zero]
@@ -207,6 +304,17 @@ theorem sh_rat (M : Maps D hn) (X : Matrix (Fin ρ) (Fin p) D.host.E) : M.sh (ra
   rw [hinv]
   exact sh_mat_rat M (-X)
 
+/- English proof (translation)
+Take `⟨η, hy⟩` from `hKx y`. Take `⟨ξ, hx⟩` from `hKx x`. Take `⟨ζ, hζ, hz⟩` from `hKz (tw z x (rat (-η)))`. Use `⟨M.nzx ζ (rat ξ) * M.sh (rat η), mul_mem (nzx_rat M ζ hζ ξ) (sh_rat M η), _, hz, _, hx, _, hy, ?_⟩` and prove the remaining obligations. Establish `h1 : M.nzx z 0 * M.nzx 0 x = M.nzx z x` using `by rw [nzx_mul, add_zero, zero_add]`.
+
+Establish `h2 : M.sh y = M.sh (rat (-η)) * M.sh (rat η + y)`. Rewrite using `[sh_mul, rat_neg', neg_add_cancel_left]`. Establish `h3 : M.sh (rat η) * M.sh (rat (-η)) = 1`. Rewrite using `[sh_mul, rat_neg', add_neg_cancel, sh_zero]`. Establish `h4 : M.nzx (ζ + tw z x (rat (-η))) 0 * M.nzx 0 (rat ξ + x) = M.nzx ζ (rat ξ) * M.nzx (tw z x (rat (-η))) x`.
+
+Rewrite using `[nzx_mul, nzx_mul, add_zero, zero_add]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = M.nzx ζ (rat ξ) * M.sh (rat η) * ((M.nzx z x * M.sh (rat (-η))) * M.sh (rat η + y)) := by`. Rewrite using `[h1, mul_assoc (M.nzx z x), ← h2]`.
+
+Use `_ = M.nzx ζ (rat ξ) * (M.sh (rat η) * M.sh (rat (-η))) * (M.nzx (tw z x (rat (-η))) x * M.sh (rat η + y)) := by`. Rewrite using `[nzx_sh M z x]`. Simplify using `only [mul_assoc]`. Use `_ = M.nzx (ζ + tw z x (rat (-η))) 0 * (M.nzx 0 (rat ξ + x) * M.sh (rat η + y)) := by`. Rewrite using `[h3, mul_one, ← mul_assoc (M.nzx _ 0), h4]`.
+
+Simplify using `only [mul_assoc]`.
+-/
 theorem reduce (M : Maps D hn) {Kz : Set (hermA D ρ)} {Kx : Set (Mx D ρ p)}
     (hKz : ∀ x, ∃ γ ∈ ratHerm D ρ, γ + x ∈ Kz) (hKx : ∀ x : Mx D ρ p, ∃ η, rat η + x ∈ Kx)
     (z : hermA D ρ) (x y : Mx D ρ p) : ∃ γ ∈ GF D n, ∃ a ∈ Kz, ∃ b ∈ Kx, ∃ c ∈ Kx,
@@ -234,13 +342,24 @@ theorem reduce (M : Maps D hn) {Kz : Set (hermA D ρ)} {Kx : Set (Mx D ρ p)}
     _ = M.nzx (ζ + tw z x (rat (-η))) 0 * (M.nzx 0 (rat ξ + x) * M.sh (rat η + y)) := by
         rw [h3, mul_one, ← mul_assoc (M.nzx _ 0), h4]; simp only [mul_assoc]
 
+/- English proof (translation)
+The claim follows from `hψ.2.1 _`.
+-/
 theorem chz_norm {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ) (z : hermA D ρ) :
     ‖chz ψ b₀ z‖ = 1 := hψ.2.1 _
 
+/- English proof (translation)
+The claim follows from `hψ.1.comp (continuous_halfTr.comp (Continuous.matrix_trace (continuous_const.matrix_mul continuous_subtype_val)))`.
+-/
 theorem continuous_chz {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ) :
     Continuous (chz ψ b₀ : hermA D ρ → ℂ) :=
   hψ.1.comp (continuous_halfTr.comp (Continuous.matrix_trace (continuous_const.matrix_mul continuous_subtype_val)))
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasure ν := ⟨hν⟩`. Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Take `⟨Q, hQ, hgQ⟩` from `exists_compact_mem_nhds g`. Take `⟨B, hB⟩` from `hb Q hQ`. Use `continuousAt_of_dominated (bound := fun _ => B) (Eventually.of_forall h1) ?_ (integrable_const B) (ae_of_all _ fun y => (h2 y).continuousAt)` and prove the remaining obligations.
+
+Use `filter_upwards [hgQ] with h hh`. Conclude with `ae_of_all _ fun y => hB y h hh`.
+-/
 theorem cont_dom {X Y : Type} [TopologicalSpace X] [FirstCountableTopology X] [LocallyCompactSpace X]
     [MeasurableSpace Y] (ν : Measure Y) (hν : ν Set.univ < ⊤) (f : X → Y → ℂ)
     (h1 : ∀ x, AEStronglyMeasurable (f x) ν) (h2 : ∀ y, Continuous fun x => f x y)
@@ -260,6 +379,9 @@ section An
 variable (M : Maps D hn) (m : Meas D ρ p) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ)
 
 include hψ in
+/- English proof (translation)
+Establish `h0` using `norm_setIntegral_le_of_norm_le_const (μ := m.lz) (s := m.𝓖) (C := B) (f := fun z => F (M.nzx z 0 * h) * conj (chz ψ b₀ z)) (by rw [m.hz.2.2]; simp) (fun z _ => by rw [norm_mul, RCLike.norm_conj, chz_norm hψ, mul_one]; exact hB z)`. Establish `h1 : m.lz.real m.𝓖 = 1` using `by simp [Measure.real, m.hz.2.2]`. Rewrite `h0` using `[h1, mul_one]`. Conclude with `h0`.
+-/
 theorem zc_bound (F : G D n → ℂ) (h : G D n) (B : ℝ) (hB : ∀ z, ‖F (M.nzx z 0 * h)‖ ≤ B) :
     ‖zc M m ψ b₀ F h‖ ≤ B := by
   have h0 := norm_setIntegral_le_of_norm_le_const (μ := m.lz) (s := m.𝓖) (C := B)
@@ -269,6 +391,9 @@ theorem zc_bound (F : G D n → ℂ) (h : G D n) (B : ℝ) (hB : ∀ z, ‖F (M.
   rw [h1, mul_one] at h0
   exact h0
 
+/- English proof (translation)
+Establish `h0` using `norm_setIntegral_le_of_norm_le_const (μ := m.μ) (s := m.𝓕) (C := B) (f := fun x => zc M m ψ b₀ F (M.nzx 0 x * h)) (by rw [m.hμ.2.2]; simp) (fun x _ => hB x)`. Establish `h1 : m.μ.real m.𝓕 = 1` using `by simp [Measure.real, m.hμ.2.2]`. Rewrite `h0` using `[h1, mul_one]`. Conclude with `h0`.
+-/
 theorem pc_bound (F : G D n → ℂ) (h : G D n) (B : ℝ) (hB : ∀ x, ‖zc M m ψ b₀ F (M.nzx 0 x * h)‖ ≤ B) :
     ‖pc M m ψ b₀ F h‖ ≤ B := by
   have h0 := norm_setIntegral_le_of_norm_le_const (μ := m.μ) (s := m.𝓕) (C := B)
@@ -277,13 +402,24 @@ theorem pc_bound (F : G D n → ℂ) (h : G D n) (B : ℝ) (hB : ∀ x, ‖zc M 
   rw [h1, mul_one] at h0
   exact h0
 
+/- English proof (translation)
+The claim follows from `M.nzx_cont.comp (continuous_id.prodMk continuous_const)`.
+-/
 theorem continuous_nz : Continuous fun z : hermA D ρ => M.nzx z 0 :=
   M.nzx_cont.comp (continuous_id.prodMk continuous_const)
 
+/- English proof (translation)
+The claim follows from `M.nzx_cont.comp (continuous_const.prodMk continuous_id)`.
+-/
 theorem continuous_nx : Continuous fun x : Mx D ρ p => M.nzx 0 x :=
   M.nzx_cont.comp (continuous_const.prodMk continuous_id)
 
 include hψ in
+/- English proof (translation)
+Use `haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩`. Use `haveI : BorelSpace (hermA D ρ) := Subtype.borelSpace _`. Establish `hcz : ∀ h : G D n, Continuous fun z : hermA D ρ => F (M.nzx z 0 * h) * conj (chz ψ b₀ z)` using `fun h => (hF.comp ((continuous_nz M).mul continuous_const)).mul (Complex.continuous_conj.comp (continuous_chz hψ b₀))`. Use `cont_dom (m.lz.restrict m.𝓖) (by rw [Measure.restrict_apply_univ, m.hz.2.2]; exact ENNReal.one_lt_top) _ (fun h => (hcz h).aestronglyMeasurable) (fun z => (hF.comp (continuous_const.mul continuous_id)).mul continuous_const) fun Q hQ => ?_` and prove the remaining obligations. Take `⟨B, hB⟩` from `hb Q hQ`.
+
+Use `⟨B, fun z h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, RCLike.norm_conj, chz_norm hψ, mul_one]`. Conclude with `hB z h hh`.
+-/
 theorem zc_cont (F : G D n → ℂ) (hF : Continuous F)
     (hb : ∀ Q : Set (G D n), IsCompact Q → ∃ B : ℝ, ∀ z, ∀ h ∈ Q, ‖F (M.nzx z 0 * h)‖ ≤ B) :
     Continuous (zc M m ψ b₀ F) := by
@@ -299,6 +435,9 @@ theorem zc_cont (F : G D n → ℂ) (hF : Continuous F)
   rw [norm_mul, RCLike.norm_conj, chz_norm hψ, mul_one]
   exact hB z h hh
 
+/- English proof (translation)
+Use `haveI : BorelSpace (Mx D ρ p) := ⟨rfl⟩`. Conclude with `cont_dom (m.μ.restrict m.𝓕) (by rw [Measure.restrict_apply_univ, m.hμ.2.2]; exact ENNReal.one_lt_top) _ (fun h => (hF.comp ((continuous_nx M).mul continuous_const)).aestronglyMeasurable) (fun x => hF.comp (continuous_const.mul continuous_id)) (fun Q hQ => hb Q hQ)`.
+-/
 theorem pc_cont (F : G D n → ℂ) (hF : Continuous (zc M m ψ b₀ F))
     (hb : ∀ Q : Set (G D n), IsCompact Q → ∃ B : ℝ, ∀ x, ∀ h ∈ Q, ‖zc M m ψ b₀ F (M.nzx 0 x * h)‖ ≤ B) :
     Continuous (pc M m ψ b₀ F) := by
@@ -311,6 +450,25 @@ end An
 
 end GlobalTheory.CompanionTheory.PcB
 
+/- English proof (translation)
+Introduce `D n ρ p hn M m ψ hψ b₀`. Take `⟨Kz, hKz, hcz⟩` from `GlobalTheory.CompanionTheory.FourierN.exists_compact_cover (D := D) (n := ρ)`. Take `⟨-, -, -, -, -, Kx, hKx, hcx₀⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D ρ p`. Establish `hcx : ∀ x : Mx D ρ p, ∃ η, rat η + x ∈ Kx` using `fun x => by`. Take `⟨γ, ⟨η, hη⟩, hk⟩` from `hcx₀ x`.
+
+Establish `hη' : γ = rat η` using `hη.symm`. Conclude with `⟨η, hη' ▸ hk⟩`. Set `e : hermA D ρ × Mx D ρ p × Mx D ρ p → G D n` to `fun u => M.nzx u.1 0 * (M.nzx 0 u.2.1 * M.sh u.2.2)`. Establish `he : Continuous e` using `((GlobalTheory.CompanionTheory.PcB.continuous_nz M).comp continuous_fst).mul (((GlobalTheory.CompanionTheory.PcB.continuous_nx M).comp (continuous_fst.comp continuous_snd)).mul (M.sh_cont.comp (continuous_snd.comp continuous_snd)))`. Set `C₀ : Set (G D n)` to `e '' (Kz ×ˢ (Kx ×ˢ Kx))`.
+
+Establish `hC₀ : IsCompact C₀` using `(hKz.prod (hKx.prod hKx)).image he`. Establish `red : ∀ z x y, ∃ γ ∈ GF D n, γ * (M.nzx z 0 * (M.nzx 0 x * M.sh y)) ∈ C₀` using `fun z x y => by`. Take `⟨γ, hγ, a, ha, b, hb, c, hc, h⟩` from `GlobalTheory.CompanionTheory.PcB.reduce M hcz hcx z x y`. Conclude with `⟨γ, hγ, h ▸ ⟨(a, b, c), ⟨ha, hb, hc⟩, rfl⟩⟩`. Use `⟨fun F hF hinv => ?_, fun g => ⟨(· * g) '' C₀, hC₀.image (continuous_id.mul continuous_const), fun z x y => ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hbd : ∀ Q : Set (G D n), IsCompact Q → ∃ B : ℝ, ∀ z x, ∀ h ∈ Q, ‖F (M.nzx z 0 * (M.nzx 0 x * h))‖ ≤ B`. Introduce `Q hQ`. Take `⟨B, hB⟩` from `(hC₀.mul hQ).exists_bound_of_continuousOn hF.continuousOn`. Use `⟨B, fun z x h hh => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hc⟩` from `red z x 0`.
+
+Rewrite using `[← hinv γ hγ]`. Use `hB _ (Set.mul_mem_mul hc hh)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.CompanionTheory.PcB.sh_zero, mul_one]`. Simplify `this` using `only [mul_assoc]`. Establish `hz : Continuous (zc M m ψ b₀ F)`.
+
+Use `GlobalTheory.CompanionTheory.PcB.zc_cont M m hψ b₀ F hF fun Q hQ => ?_` and prove the remaining obligations. Take `⟨B, hB⟩` from `hbd Q hQ`. Use `⟨B, fun z h hh => ?_⟩` and prove the remaining obligations. Use `hB z 0 h hh` as an intermediate fact. Rewrite `this` using `[show M.nzx 0 0 = 1 from GlobalTheory.CompanionTheory.PcB.nzx_zero M, one_mul]`. Then use the resulting hypothesis.
+
+Use `GlobalTheory.CompanionTheory.PcB.pc_cont M m b₀ F hz fun Q hQ => ?_` and prove the remaining obligations. Take `⟨B, hB⟩` from `hbd Q hQ`. Conclude with `⟨B, fun x h hh => GlobalTheory.CompanionTheory.PcB.zc_bound M m hψ b₀ F _ B fun z => hB z x h hh⟩`. Take `⟨γ, hγ, hc⟩` from `red z x y`. Conclude with `⟨γ, hγ, _, hc, by simp only [mul_assoc]⟩`.
+
+Introduce `F hF hinv B hB y`. Use `GlobalTheory.CompanionTheory.PcB.pc_bound M m b₀ F _ B fun x => GlobalTheory.CompanionTheory.PcB.zc_bound M m hψ b₀ F _ B fun z => ?_` and prove the remaining obligations. Take `⟨γ, hγ, hc⟩` from `red z x y`. Rewrite using `[← hinv γ hγ]`. Use `hB _ ⟨_, hc, rfl⟩` as an intermediate fact.
+
+Simplify `this` using `only [mul_assoc]`.
+-/
 theorem GlobalTheory.CompanionTheory.PcB.pcBound : PcBound := by
   intro D n ρ p hn M m ψ hψ b₀
   obtain ⟨Kz, hKz, hcz⟩ := GlobalTheory.CompanionTheory.FourierN.exists_compact_cover (D := D) (n := ρ)

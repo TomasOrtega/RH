@@ -10,6 +10,13 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 noncomputable section
 namespace GlobalTheory.ZH.ConeClosed
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨0, MvPolynomial.C a, fun w _ => by simp⟩`. Consider the case `add P P' h h'`. Take `⟨n, Q, hQ⟩` from `h`. Take `⟨n', Q', hQ'⟩` from `h'`.
+
+Use `⟨n + n', MvPolynomial.X i ^ n' * Q + MvPolynomial.X i ^ n * Q', fun w hw => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, MvPolynomial.eval_X, hQ w hw, hQ' w hw]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X P j h`. Take `⟨n, Q, hQ⟩` from `h`.
+
+Use `⟨n + 1, Q * MvPolynomial.X j, fun w hw => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, MvPolynomial.eval_X, hQ w hw]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_homogenisation {k J : Type} [Field k] (i : J) (P : MvPolynomial J k) :
     ∃ (n : ℕ) (Q : MvPolynomial J k), ∀ w : J → k, w i ≠ 0 →
       MvPolynomial.eval w Q = w i ^ n * MvPolynomial.eval (fun j => w j / w i) P := by
@@ -31,9 +38,19 @@ theorem exists_homogenisation {k J : Type} [Field k] (i : J) (P : MvPolynomial J
 def constHom {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) (U : X.Opens) : k →+* Γ(X, U) :=
   (p.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem constHom_apply {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) (U : X.Opens) (a : k) :
     constHom p U a = constFn p U a := rfl
 
+/- English proof (translation)
+Set `ψ : Γ(X, U) ⟶ CommRingCat.of k` to `CommRingCat.ofHom φ`. Establish `hx` using `GlobalTheory.Points.le_preimage_specMap_fromSpec hU ψ`. Establish `hv : ∀ f, ReciprocityTheory.ChartRestriction.G.Geo.Tor.valR (Spec.map ψ ≫ hU.fromSpec) U f = φ f` using `fun f => by`. Rewrite using `[GlobalTheory.Points.valR_eq _ U hx, GlobalTheory.Points.valMap_specMap_fromSpec]`. Both sides reduce to the same expression.
+
+Use `⟨Spec.map ψ ≫ hU.fromSpec, ?_, hx, hv⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_preimage ((Spec.map ψ ≫ hU.fromSpec) ≫ p), ← Spec.map_id]`. Use `congr 1`. Use extensionality with `a`. Rewrite using `[← GlobalTheory.Points.valR_constFn p _ U hx, hv, hφ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_point {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) {U : X.Opens}
     (hU : IsAffineOpen U) (φ : Γ(X, U) →+* k) (hφ : ∀ a, φ (constFn p U a) = a) :
     ∃ x : Sp k ⟶ X, x ≫ p = 𝟙 _ ∧ ⊤ ≤ x ⁻¹ᵁ U ∧ ∀ f, GlobalTheory.ZH.valR x U f = φ f := by
@@ -49,6 +66,11 @@ theorem exists_point {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) {
   rw [← GlobalTheory.Points.valR_constFn p _ U hx, hv, hφ]
   rfl
 
+/- English proof (translation)
+Establish `e : (CrdCalc.valHom x U hx).comp (MvPolynomial.eval₂Hom (constHom p U) r) = MvPolynomial.eval (fun j => GlobalTheory.ZH.valR x U (r j))`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun j => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, MvPolynomial.eval₂Hom_C, MvPolynomial.eval_C, ← CrdCalc.valR_eq]`. Conclude with `GlobalTheory.Points.valR_constFn_of_section p x hp U hx a`. Rewrite using `[RingHom.comp_apply, MvPolynomial.eval₂Hom_X', MvPolynomial.eval_X, ← CrdCalc.valR_eq]`.
+
+Rewrite using `[CrdCalc.valR_eq x U hx, ← e]`. Both sides reduce to the same expression.
+-/
 theorem valR_eval₂ {k J : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) {U : X.Opens}
     (x : Sp k ⟶ X) (hp : x ≫ p = 𝟙 _) (hx : ⊤ ≤ x ⁻¹ᵁ U) (r : J → Γ(X, U)) (P : MvPolynomial J k) :
     GlobalTheory.ZH.valR x U (MvPolynomial.eval₂Hom (constHom p U) r P) =
@@ -62,6 +84,23 @@ theorem valR_eval₂ {k J : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k)
   rw [CrdCalc.valR_eq x U hx, ← e]
   rfl
 
+/- English proof (translation)
+Introduce `k _ _ X p H J _ s J₀ hH him v ⟨i, hi, hvi⟩ hv`. Take `⟨hU, r, hr, hgen⟩` from `him.2 i hi`. Set `Φ : MvPolynomial J k →+* Γ(X, (Out.nonzeroLocus (s i)))` to `MvPolynomial.eval₂Hom (constHom p (Out.nonzeroLocus (s i))) r`. Establish `hsurj : Function.Surjective Φ`. Rewrite using `[← RingHom.range_eq_top, eq_top_iff, ← hgen, Subring.closure_le]`.
+
+Introduce and unpack `_ (⟨a, rfl⟩ | ⟨j, rfl⟩)`. Conclude with `⟨MvPolynomial.C a, MvPolynomial.eval₂Hom_C _ _ _⟩`. Conclude with `⟨MvPolynomial.X j, MvPolynomial.eval₂Hom_X' _ _ _⟩`. Establish `hker : RingHom.ker Φ ≤ RingHom.ker (MvPolynomial.eval fun j => v j / v i)`. Introduce `P hP`.
+
+Take `⟨n, Q, hQ⟩` from `exists_homogenisation i P`. Establish `hmem : MvPolynomial.X i * Q ∈ MvPolynomial.vanishingIdeal k (cone p H s)`. Rewrite using `[MvPolynomial.mem_vanishingIdeal_iff]`. Introduce and unpack `w ⟨x, hp, hw⟩`. Rewrite using `[MvPolynomial.aeval_eq_eval, map_mul, MvPolynomial.eval_X]`.
+
+Distinguish the cases in `hwi : w i = 0`. Rewrite using `[hwi, zero_mul]`. Establish `hx : ⊤ ≤ x ⁻¹ᵁ (Out.nonzeroLocus (s i))` using `(CrdCalc.crd_isUnit_iff i hw).1 (Ne.isUnit hwi)`. Establish `e : (fun j => w j / w i) = fun j => GlobalTheory.ZH.valR x (Out.nonzeroLocus (s i)) (r j)` using `funext fun j => by`. Rewrite using `[CrdCalc.crd_ratio hw (hr j) hx, mul_div_cancel_right₀ _ hwi]`.
+
+Rewrite using `[hQ w hwi, e, ← valR_eval₂ p x hp hx r P, RingHom.mem_ker.1 hP, CrdCalc.valR_eq x (Out.nonzeroLocus (s i)) hx, map_zero, mul_zero, mul_zero]`. Establish `h` using `hv _ hmem`. Rewrite `h` using `[map_mul, MvPolynomial.eval_X, hQ v hvi]`. Conclude with `(mul_eq_zero.1 ((mul_eq_zero.1 h).resolve_left hvi)).resolve_left (pow_ne_zero _ hvi)`. Set `φ : Γ(X, (Out.nonzeroLocus (s i))) →+* k` to `Φ.liftOfSurjective hsurj ⟨_, hker⟩`.
+
+Establish `hφ : ∀ P, φ (Φ P) = MvPolynomial.eval (fun j => v j / v i) P` using `fun P => RingHom.liftOfSurjective_comp_apply Φ hsurj ⟨_, hker⟩ P`. Take `⟨x, hp, hx, hval⟩` from `exists_point p hU φ fun a => by`. Use `hφ (MvPolynomial.C a)` as an intermediate fact. Rewrite `this` using `[MvPolynomial.eval_C, show Φ (MvPolynomial.C a) = constFn p (Out.nonzeroLocus (s i)) a from MvPolynomial.eval₂Hom_C _ _ _]`. Then use the resulting hypothesis. Take `⟨w, hw⟩` from `CrdCalc.crd_exists hH s x`.
+
+Establish `hwi : w i ≠ 0` using `((CrdCalc.crd_isUnit_iff i hw).2 hx).ne_zero`. Use `⟨x, hp, ?_⟩` and prove the remaining obligations. Establish `h` using `CrdCalc.crd_smul (Units.mk0 (v i / w i) (div_ne_zero hvi hwi)) hw`. Use `h using 2 with j` and compare the differences between its conclusion and the goal. Establish `h₁` using `hφ (MvPolynomial.X j)`.
+
+Rewrite `h₁` using `[MvPolynomial.eval_X, show Φ (MvPolynomial.X j) = r j from MvPolynomial.eval₂Hom_X' _ _ _]`. Rewrite using `[CrdCalc.crd_ratio hw (hr j) hx, hval, h₁, Units.val_mk0]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mem_cone_of_vanishing : (∀ (k : Type) [Field k] [IsAlgClosed k] (X : Scheme.{0}) (p : X ⟶ Sp k) (H : LB X) (J : Type) [Fintype J] (s : J → H.Sec) (J₀ : Set J), H.IsLB → ImmBy p H s J₀ → ∀ v : J → k, (∃ i ∈ J₀, v i ≠ 0) → (∀ Pf ∈ MvPolynomial.vanishingIdeal k (cone p H s), MvPolynomial.eval v Pf = 0) → v ∈ cone p H s) := by
   intro k _ _ X p H J _ s J₀ hH him v ⟨i, hi, hvi⟩ hv
   obtain ⟨hU, r, hr, hgen⟩ := him.2 i hi

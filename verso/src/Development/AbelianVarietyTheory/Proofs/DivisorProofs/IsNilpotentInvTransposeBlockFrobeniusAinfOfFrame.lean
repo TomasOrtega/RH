@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.WinLift.NilF
 
+/- English proof (translation)
+Establish `hMt : IsUnit M.transpose` using `(Matrix.isUnit_iff_isUnit_det _).2 (by rw [Matrix.det_transpose]; exact (Matrix.isUnit_iff_isUnit_det _).1 hM)`. Establish `hb : (blk d k a b).map f = blk d k (f a) (f b)`. Rewrite using `[blk, blk, Matrix.diagonal_map (map_zero f)]`. Use `congr 1`. Use function extensionality and compare the values at `l`.
+
+Apply the tactic sequence `rcases l with l | l <;> rfl`. Use `congr_fun (congr_fun (Matrix.map_mul (f := f) (L := M.transpose⁻¹) (M := blk d k a b)) i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`. Rewrite using `[this, ← map_inv_of_isUnit f _ hMt, Matrix.transpose_map, hb]`.
+-/
 theorem map_inv_transpose_blk {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (d k : ℕ)
     (M : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) R) (hM : IsUnit M) (a b : R) (i j : Fin d ⊕ Fin k) :
     f ((M.transpose⁻¹ * blk d k a b) i j) = (((M.map f).transpose)⁻¹ * blk d k (f a) (f b)) i j := by
@@ -24,6 +29,13 @@ theorem map_inv_transpose_blk {R S : Type} [CommRing R] [CommRing S] (f : R →+
   rw [Matrix.map_apply] at this
   rw [this, ← map_inv_of_isUnit f _ hMt, Matrix.transpose_map, hb]
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F d k U V hU hV hUV hN`. Use `haveI : IsLocalRing O := ReciprocityTheory.PGsh.Ainf.O_local O hv`. Establish `hp : ¬IsUnit (p : O)` using `Fact.out`. Establish `hθτ` using `theta_tau F hv hε`. Establish `hUV' : U.map F.θ = V.map (WittVector.fontaineTheta O p)`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hUV i j`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, ← F.θ_a, ← sub_eq_zero, ← map_sub, hc, map_mul, hθτ, zero_mul]`. Use `isNil_of_map F.a (WittVector.fontaineTheta O p) F.θ WittVector.frobenius F.σ F.θ_a F.σ_a _ ?_` and prove the remaining obligations. Use `isNil_of_theta_eq p F.θ F.σ hp F.σ_pow _ _ (fun i j => ?_) hN` and prove the remaining obligations.
+
+Rewrite using `[Matrix.map_apply, F.θ_a, map_inv_transpose_blk F.θ d k U hU, map_inv_transpose_blk _ d k V hV, hUV', map_one, map_one, map_natCast, theta_frob_xi hv hε]`.
+-/
 theorem isNil_frob : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (d k : ℕ) (U : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) (V : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) (Ainf p O)), IsUnit U → IsUnit V → (∀ i j, F.τ ∣ U i j - F.a (V i j)) → IsNil F.θ F.σ (U.transpose⁻¹ * blk d k 1 (p : F.B)) → IsNil (WittVector.fontaineTheta O p) WittVector.frobenius (V.transpose⁻¹ * blk d k 1 (WittVector.frobenius (xi ε))) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F d k U V hU hV hUV hN
   haveI : IsLocalRing O := ReciprocityTheory.PGsh.Ainf.O_local O hv

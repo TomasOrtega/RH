@@ -22,6 +22,23 @@ namespace GlobalTheory.OrbitAdapt
 section
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out Formalism.MainNotions.WeightAlgebra GlobalTheory.IndefiniteRowSideFullHecke.UnitaryAdjointCongruence GlobalTheory.ShortMove
 
+/- English proof (translation)
+Establish `hBM` using `GlobalTheory.ShortChange.trivAt_mul hT hM`. Establish `hMpos : 0 < (T.dδ j n).l₂.M` using `by have := (T.dδ j n).l₂.three_le; omega`. Take `⟨γ, Λ', hγ, hc, hmove, hU', s, -, -, -, -, k, hk, hk1, hk2⟩` from `GlobalTheory.AdaptCongr.exists_move_split D.host.E T.Q.H n _ p Λ (Nat.mul_pos hb hMpos) hp hU hBM`. Establish `h2b : 2 ∣ badN D`. Unfold `badN`.
+
+Conclude with `((D.host.two_dvd_QS.mul_right _).mul_right _).mul_right _`. Establish `hg : IsUnitaryM γ.1`. Use `Matrix.ext fun i l => ?_` and prove the remaining obligations. Use `hγ (Pi.single l 1) (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.UnRep.Move.hermE_one, GlobalTheory.UnRep.Move.hermE_one]`.
+
+Simplify using `only [Matrix.mulVec_single_one, Matrix.col_apply] at this`. Simplify using `only [adjM, Matrix.mul_apply, Matrix.of_apply, this, Matrix.one_apply, Pi.single_apply]`. Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Simplify using `[apply_ite (IsCMField.complexConj D.host.E)]`.
+
+Simplify using `[h, apply_ite (IsCMField.complexConj D.host.E), Ne.symm h]`. Establish `hinv' : ∀ v : Fin n → D.host.E, γ.1 *ᵥ ((γ⁻¹).1 *ᵥ v) = v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Choose the witnesses or unpack the hypotheses as in `rfl : Λ' = actLat γ.1 Λ := by`. Consider the cases of `Λ' with`.
+
+Consider the case `mk L`. Simplify using `only [actLat, GenLat.mk.injEq]`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+
+Conclude with `⟨_, (hmove _).2 (by rw [hinv']; exact hv), hinv' v⟩`. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `(hmove u).1 hu`. Establish `hkT : ∀ m, m ∣ p * (badN D * (T.dδ j n).l₂.M) → (actLat γ.1 Λ).TrivAt m` using `fun m hm => ⟨k, hk.coprime_dvd_right hm, hk1, hk2⟩`. Establish `hN₁ : (actLat γ.1 Λ).LevOK ((T.dδ j n).l₂.M * k) (T.dδ j n).l₂.M`.
+
+Use `⟨?_, dvd_mul_right _ _, ?_⟩` and prove the remaining obligations. Conclude with `(T.dδ j n).l₂.odd.mul (Nat.coprime_two_right.1 (hk.coprime_dvd_right ((h2b.mul_right _).mul_left _)))`. Use `show _ ≤ (actLat γ.1 Λ).La ⊓ Formalism.L2.Pj.stdLat D.host.E n`. Use `le_inf ((Submodule.smul_mono_left ?_).trans hk2) Submodule.smul_le_right` and prove the remaining obligations. Use `Ideal.span_singleton_le_span_singleton.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_mul]`. Conclude with `dvd_mul_left _ _`. Take `⟨P₁, ζ, hP₁, hζ, hroot, hR⟩` from `shortRule_change_mat D T hF j hj n Λ γ.1 _ a P hg (dvd_mul_left _ _) hc hev hU hU' hT (hkT _ ((dvd_mul_right _ _).mul_left _)) hM (hkT _ ((dvd_mul_left _ _).mul_left _)) hP`. Conclude with `⟨actLat γ.1 Λ, _, P₁, ζ, hU', hkT _ (by rw [mul_comm]), hN₁, hP₁, hζ, hroot, fun x0 f h => hR x0 N _ f hN hN₁ h⟩`.
+-/
 theorem exists_step_int (D : D7) (T : Full D) (hF : LawsFull T) (j : ℕ) (hj : InR D j) (n : ℕ) (hev : Even n)
     (hb : 0 < badN D) (Λ : GenLat D.host.E n) (N : ℕ) (a : (D.host.E →+* ℂ) × ℕ → ℕ)
     (P : MvPolynomial (LtN (T.Q.Dw j) n) T.Q.c.F) (hU : Λ.Unimod) (hT : Λ.TrivAt (badN D))
@@ -78,6 +95,15 @@ theorem exists_step_int (D : D7) (T : Full D) (hF : LawsFull T) (j : ℕ) (hj : 
   exact ⟨actLat γ.1 Λ, _, P₁, ζ, hU', hkT _ (by rw [mul_comm]), hN₁, hP₁, hζ, hroot,
     fun x0 f h => hR x0 N _ f hN hN₁ h⟩
 
+/- English proof (translation)
+Establish `hM0 : 0 < (T.dδ j V.rank).l₂.M` using `by have := (T.dδ j V.rank).l₂.three_le; omega`. Establish `hpos : 0 < badN D * p * (T.dδ j V.rank).l₂.M` using `Nat.mul_pos (Nat.mul_pos hb hp) hM0`. Establish `hT' : Λ.TrivAt (badN D * p * (T.dδ j V.rank).l₂.M)`. Rewrite using `[show badN D * p * (T.dδ j V.rank).l₂.M = badN D * (T.dδ j V.rank).l₂.M * p by ring]` and apply the resulting hypothesis. Take `⟨gm, h, hgm, hc, hh, hs, e⟩` from `GlobalTheory.T.exists_rationalUnitary_move_selfDual_to_split D V hg hL T.Q.H _ hpos Λ hU hT'`.
+
+Establish `h2 : 2 ∣ badN D * p`. Unfold `badN`. Conclude with `dvd_mul_of_dvd_left (((D.host.two_dvd_QS.mul_right _).mul_right _).mul_right _) p`. Take `⟨N', c1, c2, c3, c4, -⟩` from `GlobalTheory.SplitReps.exists_conjLat V hg hL T.Q.H (T.dδ j V.rank).l₂ (badN D * p) h2 h hs`. Rewrite `c1`, `c2`, `c3`, `c4` using `[← e]`.
+
+Establish `hcg` using `congAt_of_cols gm _ hc`. Establish `hTb : Λ.TrivAt (badN D)` using `trivAt_of_dvd ⟨(T.dδ j V.rank).l₂.M * p, by ring⟩ hT`. Establish `hTM : Λ.TrivAt (T.dδ j V.rank).l₂.M` using `trivAt_of_dvd ⟨badN D * p, by ring⟩ hT`. Take `⟨P', ζ, hP', hζ, hroot, hR⟩` from `shortRule_change_mat D T hF j hj V.rank Λ gm _ a P hgm (dvd_mul_left _ _) hcg hev hU c1 hTb (trivAt_of_dvd (dvd_mul_right _ _) c2) hTM c3 hP`. Establish `hsp : Formalism.IndefR.FWT.SplitOffBad V (badN D * p * (T.dδ j V.rank).l₂.M) h` using `GlobalTheory.SplitReps.splitOffBad_of_suppSplit V _ h hh hs`.
+
+Use `⟨h, actLat gm Λ, N', P', ζ, ?_, fun w => by rw [e]; rfl, c1, trivAt_of_dvd (dvd_mul_right _ _) c2, c3, trivAt_of_dvd (dvd_mul_left _ _) c2, c4, hP', hζ, hroot, fun x0 f hf => hR x0 N N' f hN c4 hf⟩` and prove the remaining obligations. Rewrite using `[show badN D * (T.dδ j V.rank).l₂.M * p = badN D * p * (T.dδ j V.rank).l₂.M by ring]` and apply the resulting hypothesis.
+-/
 theorem exists_step_split_off (D : D7) (T : Full D) (hF : LawsFull T) (j : ℕ) (hj : InR D j) (V : Formalism.BasicNotions.TH.HSp D)
     (hg : V.gram = 1) (hL : Formalism.IndefR.Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank) (hev : Even V.rank) (hb : 0 < badN D)
     (p : ℕ) (hp : 0 < p) (Λ : GenLat D.host.E V.rank) (N : ℕ) (a : (D.host.E →+* ℂ) × ℕ → ℕ)
@@ -114,6 +140,9 @@ theorem exists_step_split_off (D : D7) (T : Full D) (hF : LawsFull T) (j : ℕ) 
     trivAt_of_dvd (dvd_mul_left _ _) c2, c4, hP', hζ, hroot, fun x0 f hf => hR x0 N N' f hN c4 hf⟩
   rwa [show badN D * (T.dδ j V.rank).l₂.M * p = badN D * p * (T.dδ j V.rank).l₂.M by ring]
 
+/- English proof (translation)
+Take `⟨h1, e', Q, h3, h4, h5⟩` from `hs`. Take `⟨c, rfl⟩` from `hab`. Use `⟨h1, e', Q, h3, fun PP hP hbd => h4 PP hP ?_, h5⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hbd`.
+-/
 theorem splitOffBad_of_dvd (D : D7) (V : Formalism.BasicNotions.TH.HSp D) {a b : ℕ} (hab : a ∣ b) {h : Formalism.L2.Theta.GA D V}
     (hs : Formalism.IndefR.FWT.SplitOffBad V b h) : Formalism.IndefR.FWT.SplitOffBad V a h := by
   obtain ⟨h1, e', Q, h3, h4, h5⟩ := hs
@@ -127,6 +156,21 @@ end
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryAdjointCongruence GlobalTheory.ShortMove in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ fw O hT hk i hO ℓ U lam f hf`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `hrk : (Vc D i).rank = D.R.nV` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `hn : (κ i).n = (Vc D i).rank` using `(fw.kap i (D.eTau.symm 1)).2.2.trans hrk.symm`. Establish `hr : Odd D.R.r`.
+
+Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Conclude with `⟨a + b - 1, by simp only [Ranks.r]; omega⟩`. Establish `hev : Even (Vc D i).rank` using `hrk ▸ hr.add_odd D.R.t_odd`.
+
+Establish `hV` using `hO.2.lift.std`. Establish `hg : (Vc D i).gram = 1` using `hV.1`. Establish `hL : Bridge.hLat (Vc D i) 1 = Formalism.L2.Pj.stdLat D.host.E (Vc D i).rank` using `hV.2`. Rewrite `hf` using `[hn]`. Take `⟨Λ, N, x₀, P, x, hU, hTb, hTM, hN, hA, hP, hx⟩` from `hf`.
+
+Establish `hp` using `plc_prime lam`. Establish `hq : 0 < Formalism.EigenvalueLevelCeiling.plc lam * (O i).bad ()` using `Nat.mul_pos hp.pos (hO.2.bad ()).1`. Choose the witnesses or unpack the hypotheses as in `⟨h, Λ', N', P', ζ, hs, hmem, hU', hTb', hTM', hTp, hN', hP', hζ, ⟨m, hm, hζm⟩, hR⟩ : ∃ (h : GA D (Vc D i)) (Λ' : GenLat D.host.E (Vc D i).rank) (N' : ℕ) (P' : MvPolynomial (LtN (T.Q.Dw ((i : ℕ) + 1)) (Vc D i).rank) T.Q.c.F) (ζ : T.Q.c.F), SplitOffBad (Vc D i) (badN D * (T.dδ ((i …`. Break down `Nat.eq_zero_or_pos (badN D) with hb | hb` into its components or cases. Rewrite `hTb` using `[hb]`.
+
+Take `⟨h1, h2, h3⟩` from `zero_case D (Vc D i) hL Λ hTb`. Conclude with `⟨1, Λ, N, P, 1, h2 _, h1, hU, h3 _, h3 _, h3 _, hN, hP, one_ne_zero, ⟨1, one_pos, one_pow _⟩, fun x0 g hg => by rwa [one_smul]⟩`. Take `⟨Λ₁, N₁, P₁, ζ₁, hU₁, hT₁, hN₁, hP₁, hζ₁, ⟨m₁, hm₁, e₁⟩, hR₁⟩` from `exists_step_int D T hT ((i : ℕ) + 1) hj _ hev hb Λ N (wtA (κ i)) P hU hTb hTM hN hP _ hq`. Take `⟨h, Λ', N', P', ζ₂, d1, d2, d3, d4, d5, d6, d7, d8, hζ₂, ⟨m₂, hm₂, e₂⟩, hR₂⟩` from `exists_step_split_off D T hT _ hj (Vc D i) hg hL hev hb _ hq Λ₁ N₁ _ P₁ hU₁ hT₁ hN₁ hP₁`. Use `⟨h, Λ', N', P', ζ₂ * ζ₁, splitOffBad_of_dvd D _ ⟨Formalism.EigenvalueLevelCeiling.plc lam, by ring⟩ d1, d2, d3, d4, d5, trivAt_of_dvd (dvd_mul_right _ _) d6, d7, d8, mul_ne_zero hζ₂ hζ₁, ⟨m₁ * m₂, Nat.mul_pos hm₁ hm₂, by rw [mul_pow, pow_mul' ζ₂, e₂, pow_mul ζ₁, e₁, one_pow, one_ …` and prove the remaining obligations.
+
+Rewrite using `[mul_smul]`. Conclude with `hR₂ x0 _ (hR₁ x0 g hg)`. Establish `hint : IsIntegral ℤ (ζ ^ (m - 1))` using `IsIntegral.pow (IsIntegral.of_pow hm (by rw [hζm]; exact isIntegral_one)) _`. Establish `hinv : ζ ^ (m - 1) * ζ = 1` using `by rw [← pow_succ, Nat.sub_add_cancel hm, hζm]`. Use `⟨⟨ζ ^ (m - 1), hint⟩, 1, fun u => ⟨ζ • (f u).1, Submodule.smul_mem _ ζ (f u).2⟩, Λ', h, N', x₀, P', x, ?_, fun u => ?_, hs, hmem, hTp, hU', hTb', hTM', hN', hA, hP', fun u => ⟨(hx u).1, (hx u).2.1, hR _ _ (hx u).2.2⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 lam.isPrime.ne_top`. Use `show ((1 : ℕ) : T.Q.c.F) • ((f u).1 : T.R ((i : ℕ) + 1)) = (ζ ^ (m - 1)) • (ζ • ((f u).1 : T.R ((i : ℕ) + 1)))`. Rewrite using `[Nat.cast_one, one_smul, smul_smul, hinv, one_smul]`.
+-/
 theorem exists_adapted : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : Full D) [Algebra T.J.Q.c.F D.what₂.LL] (R : RealDat D A T.J.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (fw : FWTie T.J R κ v₀) (O : ∀ i, OMDat T.J.toCore R i Unit (fun _ => A.μ0)) (hT : LawsFull T), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m), OMPins T.J R κ v₀ O i → ∀ (ℓ : G → (LaMod (T.Q.Dw ((i : ℕ) + 1)) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw ((i : ℕ) + 1)) T.Q.l)) (U : Subgroup G) (lam : HeightOneSpectrum (𝓞 D.what₂.LL)) (f : U → (recB hT.p.toLawsCore).Cusp ((i : ℕ) + 1) (κ i)), IsOrbitFamily (T.Q.Xo ((i : ℕ) + 1)) T.Q.c (badN D) (wtA (κ i)) (T.dδ ((i : ℕ) + 1) (κ i).n) (fun u : U => ℓ u) (fun u => ((f u).1 : T.R ((i : ℕ) + 1))) → ∃ (a : 𝓞 T.Q.c.F) (s : ℕ) (f' : U → (recB hT.p.toLawsCore).Cusp ((i : ℕ) + 1) (κ i)) (Λ : GenLat D.host.E (Vc D i).rank) (h : GA D (Vc D i)) (N : ℕ) (x₀ : Fin (Vc D i).rank → (T.Q.Dw ((i : ℕ) + 1)).La) (P : MvPolynomial (LtN (T.Q.Dw ((i : ℕ) + 1)) (Vc D i).rank) T.Q.c.F) (x : U → Fin (Vc D i).rank → (T.Q.Dw ((i : ℕ) + 1)).La), (s : 𝓞 D.what₂.LL) ∉ lam.asIdeal ∧ (∀ u, (s : T.Q.c.F) • ((f u).1 : T.R ((i : ℕ) + 1)) = (a : T.Q.c.F) • ((f' u).1 : T.R ((i : ℕ) + 1))) ∧ SplitOffBad (Vc D i) (badN D * (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M * (O i).bad ()) h ∧ (∀ w, w ∈ Λ.La ↔ (fun b => star (w b)) ∈ Bridge.hLat (Vc D i) (fin (Vc D i) h)) ∧ Λ.TrivAt (Formalism.EigenvalueLevelCeiling.plc lam) ∧ Λ.Unimod ∧ Λ.TrivAt (badN D) ∧ Λ.TrivAt (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M ∧ Λ.LevOK N (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M ∧ AdmX (l := T.Q.l) true x₀ ∧ P ∈ harmL (Dw := T.Q.Dw ((i : ℕ) + 1)) T.Q.c Λ (wtA (κ i)) ∧ ∀ u : U, IsRightMul (ℓ u) x₀ (x u) ∧ AdmX (l := T.Q.l) true (x u) ∧ IsShortRule (T.Q.Xo ((i : ℕ) + 1)) T.Q.c (T.dδ ((i : ℕ) + 1) (Vc D i).rank) Λ N (x u) P ((f' u).1 : T.R ((i : ℕ) + 1)) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ fw O hT hk i hO ℓ U lam f hf
   have hj : InR D ((i : ℕ) + 1) := ⟨Nat.le_add_left _ _, i.2⟩

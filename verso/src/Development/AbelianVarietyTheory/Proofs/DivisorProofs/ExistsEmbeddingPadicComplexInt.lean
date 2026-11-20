@@ -11,6 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompleteDvrEmbedding
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_4 h_5 h_6 h_7 h_8 h_9 h_10 h_11 h_14 h_15; revert A B O C h_4 h_5 h_6 h_7 h_8 h_9 h_10 h_11 v hv h_14 h_15 hφ j hj; exact @_root_.GlobalTheory.InjectiveOfIntegral.exists_injective_of_isIntegral)`. Consider the case `exact @_root_.GlobalTheory.InjectiveOfIntegral.exists_injective_of_isIntegral`. Consider the case `exact _root_.GlobalTheory.InjectiveOfIntegral.exists_injective_of_isIntegral`. Consider the case `(apply _root_.GlobalTheory.InjectiveOfIntegral.exists_injective_of_isIntegral <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.InjectiveOfIntegral.exists_injective_of_isIntegral <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.InjectiveOfIntegral.exists_injective_of_isIntegral <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.InjectiveOfIntegral.exists_injective_of_isIntegral ..)`.
+-/
 theorem exists_injective_of_integral {A B O C : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B]
     [CommRing O] [Field C] [IsAlgClosed C] [Algebra O C] (v : Valuation C NNReal) (hv : v.Integers O)
     [Algebra A B] [Algebra.IsIntegral A B] (hφ : Function.Injective (algebraMap A B)) (j : A →+* O)
@@ -25,6 +30,13 @@ theorem exists_injective_of_integral {A B O C : Type} [CommRing A] [IsDomain A] 
   | (intros; apply @_root_.GlobalTheory.InjectiveOfIntegral.exists_injective_of_isIntegral <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.InjectiveOfIntegral.exists_injective_of_isIntegral ..)
 
+/- English proof (translation)
+Introduce `T hT`. Use `haveI : Finite (IsLocalRing.ResidueField T.V) := hT`. Take `⟨p, hp, _, hfin⟩` from `GlobalTheory.exists_padicInt_algebra_finite T.V`. Establish `hinj : Function.Injective (algebraMap ℤ_[p] T.V)`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `a ha`. Assume the negation of the conclusion as `h0`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 (PadicInt.irreducible_p (p := p))`. Rewrite `ha` using `[map_mul, map_pow, map_natCast]`. Conclude with `mul_ne_zero (u.isUnit.map _).ne_zero (pow_ne_zero n (Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero)) ha`.
+
+Establish `hj : Function.Injective ((algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp (padicIntHom p))` using `(algebraMap ℚ_[p] ℂ_[p]).injective.comp Subtype.val_injective`. Take `⟨kO, hkO⟩` from `exists_injective_of_integral _ (PadicComplexInt.integers p) hinj (padicIntHom p) hj`. Conclude with `⟨p, hp, IsFractionRing.lift (K := T.Fr) hkO, kO, fun a => (IsFractionRing.lift_algebraMap hkO a).symm⟩`.
+-/
 theorem exists_embedding_padicComplexInt :
     ∀ T : CDVR, T.FinRes → ∃ (p : ℕ) (_ : Fact p.Prime) (k : T.Fr →+* ℂ_[p]) (kO : T.V →+* 𝓞_ℂ_[p]), ∀ a, algebraMap 𝓞_ℂ_[p] ℂ_[p] (kO a) = k (algebraMap T.V T.Fr a) := by
   intro T hT

@@ -6,5 +6,8 @@ open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Globa
 open Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GrassComp.homogeneousComponent_chernRoots | exact GlobalTheory.GrassComp.homogeneousComponent_chernRoots | (intros; apply GlobalTheory.GrassComp.homogeneousComponent_chernRoots <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.homogeneousComponent_chernClassesOfRoots : ∀ {ι : Type} (m : ι → ℕ) (Q : MvPolynomial (ι × ℕ) ℝ) (d : ℕ), homogeneousComponent d (chernRoots m Q) = chernRoots m (weightedHomogeneousComponent Prod.snd d Q) := by
   first | exact @GlobalTheory.GrassComp.homogeneousComponent_chernRoots | exact GlobalTheory.GrassComp.homogeneousComponent_chernRoots | (intros; apply GlobalTheory.GrassComp.homogeneousComponent_chernRoots <;> assumption)

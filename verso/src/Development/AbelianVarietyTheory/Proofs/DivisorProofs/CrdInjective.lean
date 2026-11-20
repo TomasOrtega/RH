@@ -28,15 +28,24 @@ variable {X : Scheme.{0}} {h : ℕ} {E : X.Modules} (ι : E ⟶ freeModule X (Fi
 def crd (W : X.Opens) : Γ(E, W) →ₗ[Γ(X, W)] (Fin h → Γ(X, W)) :=
   (GlobalTheory.LatGlue.coords X h W).toLinearMap ∘ₗ appLinear ι W
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem crd_apply (W : X.Opens) (s : Γ(E, W)) (i : Fin h) :
     crd ι W s i = ((GlobalTheory.VB.isFrame_freeFrame X (Fin h)).basis le_top).repr (ι.app W s) i := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `GlobalTheory.LatGlue.coords X h W' (ι.app W' (resM E hle s)) = _`. Rewrite using `[GlobalTheory.Twist.app_resM, GlobalTheory.LatGlue.coords_resM]`. Both sides reduce to the same expression.
+-/
 theorem crd_resM {W W' : X.Opens} (hle : W' ≤ W) (s : Γ(E, W)) :
     crd ι W' (resM E hle s) = piMap (resG X hle) (Fin h) (crd ι W s) := by
   change GlobalTheory.LatGlue.coords X h W' (ι.app W' (resM E hle s)) = _
   rw [GlobalTheory.Twist.app_resM, GlobalTheory.LatGlue.coords_resM]
   rfl
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.LatGlue.coords X h W).injective.comp (injective_app_of_mono ι W)`.
+-/
 theorem crd_injective [Mono ι] (W : X.Opens) : Function.Injective (crd ι W) :=
   (GlobalTheory.LatGlue.coords X h W).injective.comp (injective_app_of_mono ι W)
 
@@ -56,6 +65,13 @@ def IsQuot (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) {E : B.X.Modules} (ι : E �
     ∀ (a : Λ) (s s' : Γ(E, W)), crd ι W s' = mv (RingHom.id _) (M a) (crd ι W s) →
       (Q.ρ a : Q.V ⟶ Q.V).app W (t.app W s) = t.app W s'
 
+/- English proof (translation)
+Substitute `hL hN` using the available equality. Take `⟨h1, h2, -⟩` from `k.2 W hW`. Set `a` to `LinearEquiv.ofInjective _ (crd_injective ι W)`. Set `u : latOf ι W →ₗ[Γ(B.X, W)] Γ(Q.V, W)` to `appLinear t W ∘ₗ a.symm.toLinearMap`. Establish `hu : ∀ s, u (a s) = t.app W s` using `fun s => congrArg (t.app W) (a.symm_apply_apply s)`.
+
+Establish `hk : (N W).comap (latOf ι W).subtype = LinearMap.ker u`. Use extensionality with `x`. Take `⟨s, rfl⟩` from `a.surjective x`. Rewrite using `[LinearMap.mem_ker, hu, h2]`. Both sides reduce to the same expression.
+
+Use `⟨(Submodule.quotEquivOfEq _ _ hk).trans (u.quotKerEquivOfSurjective fun y => ?_), fun s x hx => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `h1 y`. Conclude with `⟨_, hu s⟩`. Take `rfl : x = a s` from `Subtype.ext hx`. Conclude with `hu s`.
+-/
 theorem IsQuot.exists_equiv {M : Λ →+* Matrix (Fin h) (Fin h) ℤ} {E : B.X.Modules} {ι : E ⟶ freeModule B.X (Fin h)} [Mono ι]
     {N : ∀ W : B.X.Opens, Submodule Γ(B.X, W) (Fin h → Γ(B.X, W))} {Q : AM B Λ} {t : E ⟶ Q.V} (k : IsQuot M ι N Q t)
     {W : B.X.Opens} (hW : IsAffineOpen W) {L N' : Submodule Γ(B.X, W) (Fin h → Γ(B.X, W))} (hL : L = latOf ι W)
@@ -147,16 +163,25 @@ def IsDown (U : AffOp B.X) (S : Set (Γ(Om.V, U.1) × (C U).L 0)) (D : ChainUp p
 
 variable {C f g}
 
+/- English proof (translation)
+Rewrite using `[cstBp, ← k.2.2.2.1]`. Use `congr 1`. Conclude with `(ConcreteCategory.congr_hom (f.f.naturality (homOfLE (le_top : U.1 ≤ ⊤)).op) a).symm`.
+-/
 theorem IsCov.map_cst (k : IsCov f g) (U : AffOp B.X) (a : Γ(B.X, ⊤)) :
     g U (resG B'.X le_top (f.f.appTop a)) = cstBp U a := by
   rw [cstBp, ← k.2.2.2.1]
   congr 1
   exact (ConcreteCategory.congr_hom (f.f.naturality (homOfLE (le_top : U.1 ≤ ⊤)).op) a).symm
 
+/- English proof (translation)
+The claim follows from `haveI := k.2.1 U.2.1.preimage f.f`.
+-/
 theorem IsCov.isAffineOpen (k : IsCov f g) (U : AffOp B.X) : IsAffineOpen (f.f ⁻¹ᵁ U.1) :=
   haveI := k.2.1
   U.2.1.preimage f.f
 
+/- English proof (translation)
+Introduce `n hn` and use `by obtain ⟨l, m, -, -, -, h1, -⟩ := k ext x rw [h1 n hn, ((hι n).2.2 U).1, min_eq_left hn] rfl`.
+-/
 theorem IsDown.fits {U : AffOp B.X} {S : Set (Γ(Om.V, U.1) × (C U).L 0)} {D : ChainUp p h o Lie Om π γ f (f.f ⁻¹ᵁ U.1)}
     (k : IsDown C f g U S D) {E : ℕ → B'.X.Modules} {ι : ∀ n, E n ⟶ freeModule B'.X (Fin h)} (hι : IsLatOf C f g ι) :
     Fits ι D := fun n hn => by

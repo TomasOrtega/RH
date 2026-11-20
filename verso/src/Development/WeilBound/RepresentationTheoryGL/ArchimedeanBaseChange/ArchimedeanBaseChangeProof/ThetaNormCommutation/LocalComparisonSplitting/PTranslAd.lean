@@ -9,6 +9,11 @@ open scoped Classical
 
 namespace PositivityTheory.Rg.BcB.G8
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `p ((PhiU n R).val i j) = (PhiU n S).val i j`. Rewrite using `[phiU_val, phiU_val]`. Simplify using `only [GlobalTheory.Tw.Phi, Matrix.of_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem translad_map_PhiU (n : ℕ) {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) :
     GeneralLinearGroup.map p (PhiU n R) = PhiU n S := by
   apply Units.ext
@@ -18,6 +23,9 @@ theorem translad_map_PhiU (n : ℕ) {R S : Type} [CommRing R] [CommRing S] (p : 
   simp only [GlobalTheory.Tw.Phi, Matrix.of_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[thetaR_val, ← map_inv (thetaR σ n) g, thetaR_val, inv_inv]`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Matrix.transpose_apply, hσ]`.
+-/
 theorem translad_thetaR_thetaR {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) (n : ℕ)
     (g : GL (Fin n) A) : thetaR σ n (thetaR σ n g) = g := by
   apply Units.ext
@@ -25,6 +33,11 @@ theorem translad_thetaR_thetaR {A : Type} [CommRing A] (σ : A →+* A) (hσ : �
   ext i j
   simp [Matrix.map_apply, Matrix.transpose_apply, hσ]
 
+/- English proof (translation)
+Establish `hcc : ∀ x, conjE E (conjE E x) = x` using `fun x => IsCMField.complexConj_apply_apply (K := E) x`. Use `Subgroup.mem_center_iff.mpr fun h => ?_` and prove the remaining obligations. Establish `h2 : thetaE E n (thetaE E n h) = h` using `translad_thetaR_thetaR (conjE E) hcc n h`. Establish `h1` using `hu.1 (thetaE E n h)`. Rewrite `h1` using `[h2]`.
+
+Establish `h3 : thE E n (thetaE E n h) = PhiU n E * h * (PhiU n E)⁻¹`. Rewrite using `[show thE E n (thetaE E n h) = thetaGL n (conjE E) (thetaE E n h) from rfl, thetaGL_eq]`. Conclude with `congrArg (fun x => PhiU n E * x * (PhiU n E)⁻¹) h2`. Rewrite `h1` using `[h3]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem translad_central (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (u : GL (Fin n) E)
     (hu : IsTransl u) : u⁻¹ * PhiU n E ∈ Subgroup.center (GL (Fin n) E) := by
   have hcc : ∀ x, conjE E (conjE E x) = x := fun x => IsCMField.complexConj_apply_apply (K := E) x
@@ -40,6 +53,13 @@ theorem translad_central (E : Type) [Field E] [NumberField E] [IsCMField E] (n :
     _ = u⁻¹ * (PhiU n E * h * (PhiU n E)⁻¹) * PhiU n E := by rw [h1]
     _ = u⁻¹ * PhiU n E * h := by group
 
+/- English proof (translation)
+Introduce `E _ _ _ n u hu g`. Establish `hz` using `GeneralLinearGroup.map_center_le (algebraMap E (Ad E)) (translad_central E n u hu)`. Rewrite `hz` using `[Subgroup.mem_comap, map_mul, map_inv, translad_map_PhiU]`. Establish `hr : ratGL E n u = GeneralLinearGroup.map (algebraMap E (Ad E)) u` using `rfl`. Rewrite using `[hr, thetaGL_eq]`.
+
+Express the relevant statement in the definitionally equal form `PhiU n (Ad E) * thetaR (conjAd E) n g * (PhiU n (Ad E))⁻¹ = GeneralLinearGroup.map (algebraMap E (Ad E)) u * thetaR (conjAd E) n g * (GeneralLinearGroup.map (algebraMap E (Ad E)) u)⁻¹`. Establish `hcomm` using `Subgroup.mem_center_iff.mp hz (thetaR (conjAd E) n g)`. Generalize the expression as in `thetaR (conjAd E) n g = T at hcomm ⊢`. Generalize the expression as in `GeneralLinearGroup.map (algebraMap E (Ad E)) u = U at hcomm ⊢`. Generalize the expression as in `PhiU n (Ad E) = P at hcomm ⊢`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem translAd_holds : TranslAd := by
   intro E _ _ _ n u hu g
   have hz := GeneralLinearGroup.map_center_le (algebraMap E (Ad E)) (translad_central E n u hu)

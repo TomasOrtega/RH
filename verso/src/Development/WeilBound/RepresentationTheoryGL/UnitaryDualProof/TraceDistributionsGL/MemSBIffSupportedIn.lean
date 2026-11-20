@@ -22,11 +22,17 @@ def cutL {n : ℕ} (U : Set k) : (Mx k n → ℂ) →ₗ[ℂ] (GL (Fin (n + 1)) 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cutL_apply {n : ℕ} (U : Set k) (ψ : Mx k n → ℂ) (x : GL (Fin (n + 1)) k) :
     cutL U ψ x = if (x.val).det ∈ U then ψ x.val else 0 := by
   classical
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h, Set.subset_univ _⟩`. Introduce `h`. Conclude with `h.1`.
+-/
 theorem mem_SB_iff_supportedIn {X : Type} [TopologicalSpace X] (f : X → ℂ) :
     f ∈ SB X ↔ f ∈ supportedIn (Set.univ : Set X) := by
   constructor
@@ -35,6 +41,9 @@ theorem mem_SB_iff_supportedIn {X : Type} [TopologicalSpace X] (f : X → ℂ) :
   · intro h
     exact h.1
 
+/- English proof (translation)
+Establish `h` using `PositivityTheory.PfBern.cocyclesToWachVectorsExponent.cutFun_mem U hU h0 ⟨ψ, hψ⟩`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Rewrite using `[cutL_apply]`. Simplify using `only [PositivityTheory.PfBern.cocyclesToWachVectorsExponent.cutFun]`.
+-/
 theorem cutL_mem {n : ℕ} (U : Set k) (hU : IsClopen U) (h0 : (0 : k) ∉ U) {ψ : Mx k n → ℂ}
     (hψ : ψ ∈ SB (Mx k n)) : cutL U ψ ∈ SB (GL (Fin (n + 1)) k) := by
   have h := PositivityTheory.PfBern.cocyclesToWachVectorsExponent.cutFun_mem U hU h0 ⟨ψ, hψ⟩
@@ -44,12 +53,18 @@ theorem cutL_mem {n : ℕ} (U : Set k) (hU : IsClopen U) (h0 : (0 : k) ∉ U) {�
   simp only [PositivityTheory.PfBern.cocyclesToWachVectorsExponent.cutFun]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `only [Units.val_mul, Matrix.det_mul]`. Rewrite using `[mul_right_comm, ← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one, one_mul]`.
+-/
 theorem det_cj {n : ℕ} (p x : GL (Fin (n + 1)) k) :
     ((p * x * p⁻¹ : GL (Fin (n + 1)) k).val).det = (x.val).det := by
   simp only [Units.val_mul, Matrix.det_mul]
   rw [mul_right_comm, ← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one,
     Matrix.det_one, one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[cutL_apply, cutL_apply, det_cj]`. Both sides reduce to the same expression.
+-/
 theorem cutL_cj {n : ℕ} (U : Set k) (p : GL (Fin (n + 1)) k) (ψ : Mx k n → ℂ) :
     cutL U (ψ ∘ cj p) = fun x => cutL U ψ (p * x * p⁻¹) := by
   funext x
@@ -62,6 +77,19 @@ namespace PositivityTheory.RgUd.AB.Pf
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `hC hT n Λ hP p f hf`. Establish `hf' : IsLocallyConstant f ∧ HasCompactSupport f` using `hf.1`. Set `φ : SB (GL (Fin (n + 1)) k)` to `⟨f, hf'⟩`. Set `ψ : SB (Mx k n)` to `⟨PositivityTheory.PfBern.cocyclesToWachVectorsExponent.extZ φ, PositivityTheory.PfBern.cocyclesToWachVectorsExponent.extZ_mem φ⟩`. Establish `hdet : Continuous fun x : GL (Fin (n + 1)) k => (x.val).det` using `(continuous_id.matrix_det).comp Units.continuous_val`.
+
+Take `⟨U, hU, hCU, h0⟩` from `PositivityTheory.PfBern.cocyclesToWachVectorsExponent.exists_clopen_local ((fun x : GL (Fin (n + 1)) k => (x.val).det) '' tsupport f) (hf'.2.isCompact.image hdet) (by`. Introduce and unpack `⟨x, -, hx⟩`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp x.isUnit).ne_zero hx)`. Establish `hfeq : cutL U ψ.1 = f`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[cutL_apply]`. Use `split_ifs with h`. Conclude with `PositivityTheory.PfBern.cocyclesToWachVectorsExponent.extZ_val φ x`. Use `symm`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `h (hCU ⟨x, subset_tsupport _ hne, rfl⟩)`. Set `Λ' : (Mx k n → ℂ) →ₗ[ℂ] ℂ` to `Λ ∘ₗ cutL U`. Establish `hPX : PInvX Λ'`. Introduce `q hq g hg`. Use `show Λ (cutL U (g ∘ cj q)) = Λ (cutL U g)`.
+
+Rewrite using `[cutL_cj]`. Conclude with `hP q hq _ ((mem_SB_iff_supportedIn _).mp (cutL_mem U hU h0 hg))`. Establish `hGX` using `hC hT n Λ' hPX p ψ.1 ψ.2`. Establish `e1 : (fun g => f (p * g * p⁻¹)) = cutL U (ψ.1 ∘ cj p)`. Rewrite using `[cutL_cj, hfeq]`.
+
+Establish `e2 : Λ (cutL U (ψ.1 ∘ cj p)) = Λ (cutL U ψ.1)` using `hGX`. Rewrite using `[e1, e2, hfeq]`.
+-/
 theorem thmA_of_core : CoreX k → ThmT k → ThmA k := by
   intro hC hT n Λ hP p f hf
   classical

@@ -16,6 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UU.TorsionCount
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.card_torsion_points_abelianVariety GlobalTheory.laws_without_cohomology.1 GlobalTheory.laws_without_cohomology.2.1`.
+-/
 theorem card_torsion_points_unconditional :
     (∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (g n : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → (n : k) ≠ 0 → Nat.card {x : (𝟙_ (Over (Sp k)) ⟶ B) // x ^ n = 1} = n ^ (2 * g)) :=
   GlobalTheory.T.card_torsion_points_abelianVariety GlobalTheory.laws_without_cohomology.1 GlobalTheory.laws_without_cohomology.2.1

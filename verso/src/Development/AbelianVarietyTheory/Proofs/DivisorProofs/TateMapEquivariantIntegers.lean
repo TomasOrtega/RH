@@ -16,6 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Closed
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw k _ _ _ t p _ GG tw I a x`. Use `haveI := t.act.hom a`. Use `TateOver.ext (funext fun n => ?_)` and prove the remaining obligations. Use `tw.inj n k _ _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spOver (latPt tw I n (a • x)) ≫ tw.y n = spOver ((latPt tw I n x).comp ((tw.act t.act a).app n : GG.A n →ₐ[k] GG.A n)) ≫ tw.y n`.
+
+Rewrite using `[latPt_y, I.lin, ← spOver_comp, Category.assoc, tw.act_apply, tw.map_y]`. Simplify using `only [← Category.assoc, latPt_y]`.
+-/
 theorem tau_smul : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {k : Type} [Field k] [IsAlgClosed k] [CharZero k] {t : SAB H (Sp k)} {p : ℕ} [Fact p.Prime] {GG : PDivGroup p k} (tw : GG.TorsionTower t.G) (I : GeomTate Dw t), ∀ (a : 𝓞 E) (x : Dw.La), tau tw I (a • x) = tateMap GG GG k (tw.act t.act a) (tau tw I x) := by
   intro E _ _ _ H Dw k _ _ _ t p _ GG tw I a x
   haveI := t.act.hom a

@@ -12,6 +12,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mum.LamComb.exists_gen_lam_comb | exact GlobalTheory.Mum.LamComb.exists_gen_lam_comb | (intros; apply GlobalTheory.Mum.LamComb.exists_gen_lam_comb <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_biextension_generator_bezout_combination : ∀ {R : Type} [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → ∀ {r : ℕ}
     (e c : Fin r → ℤ), ∑ j, e j * c j = 1 →
     ∃ u : LB.Gen (LB.LinComb D.P.L

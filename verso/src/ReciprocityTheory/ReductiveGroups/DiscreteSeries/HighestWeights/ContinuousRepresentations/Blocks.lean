@@ -19,9 +19,15 @@ def blkE (ε : Fin n → Bool) (s : Bool) : Fin (blkP ε s) ≃ {a // ε a = s} 
 def blkSig (ε : Fin n → Bool) : (Σ s : Bool, Fin (blkP ε s)) ≃ Fin n :=
   (Equiv.sigmaCongrRight (blkE ε)).trans (Equiv.sigmaFiberEquiv ε)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma blkSig_apply (ε : Fin n → Bool) (s : Bool) (i : Fin (blkP ε s)) :
     blkSig ε ⟨s, i⟩ = (blkE ε s i : Fin n) := rfl
 
+/- English proof (translation)
+The claim follows from `(blkE ε s i).2`.
+-/
 lemma ε_blkSig (ε : Fin n → Bool) (s : Bool) (i : Fin (blkP ε s)) : ε (blkSig ε ⟨s, i⟩) = s :=
   (blkE ε s i).2
 
@@ -31,6 +37,9 @@ def blkRes (ε : Fin n → Bool) (s : Bool) :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma blkRes_apply (ε : Fin n → Bool) (s : Bool) (X : Matrix (Fin n) (Fin n) ℂ)
     (i j : Fin (blkP ε s)) : blkRes ε s X i j = X (blkSig ε ⟨s, i⟩) (blkSig ε ⟨s, j⟩) := rfl
 
@@ -39,11 +48,21 @@ def blkDiag (ε : Fin n → Bool) :
   (Matrix.reindexAlgEquiv ℂ ℂ (blkSig ε)).toRingEquiv.toRingHom.comp
     (Matrix.blockDiagonal'RingHom (fun s => Fin (blkP ε s)) ℂ)
 
+/- English proof (translation)
+Simplify using `[blkDiag, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply]`.
+-/
 lemma blkDiag_apply (ε : Fin n → Bool) (v : ∀ s : Bool, Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ)
     (x y : Σ s : Bool, Fin (blkP ε s)) :
     blkDiag ε v (blkSig ε x) (blkSig ε y) = blockDiagonal' v x y := by
   simp [blkDiag, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply]
 
+/- English proof (translation)
+Set `L : (∀ s : Bool, Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ) →ₗ[ℂ] Matrix (Fin n) (Fin n) ℂ` to `{ toFun := blkDiag ε map_add' := map_add _ map_smul' := fun c v => by`. Use extensionality with `i j`. Take `⟨x, rfl⟩` from `(blkSig ε).surjective i`. Take `⟨y, rfl⟩` from `(blkSig ε).surjective j`. Break down `x with ⟨s, a⟩` into its components or cases.
+
+Break down `y with ⟨t, b⟩` into its components or cases. Simplify using `only [RingHom.id_apply, Matrix.smul_apply, blkDiag_apply]`. Distinguish the cases in `hst : s = t`. Substitute `hst` using the available equality. Simplify using `[Matrix.blockDiagonal'_apply_eq]`.
+
+Simplify using `[Matrix.blockDiagonal'_apply_ne _ _ _ hst] }`. Conclude with `L.continuous_of_finiteDimensional`.
+-/
 lemma continuous_blkDiag (ε : Fin n → Bool) : Continuous (blkDiag ε) := by
   let L : (∀ s : Bool, Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ) →ₗ[ℂ] Matrix (Fin n) (Fin n) ℂ :=
     { toFun := blkDiag ε
@@ -61,6 +80,13 @@ lemma continuous_blkDiag (ε : Fin n → Bool) : Continuous (blkDiag ε) := by
         · simp [Matrix.blockDiagonal'_apply_ne _ _ _ hst] }
   exact L.continuous_of_finiteDimensional
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a b hab`. Establish `h1` using `congrFun (congrFun h a) b`. Rewrite `h1` using `[Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [ha, hb] at hab h1 ⊢ <;> first | exact h1 | linear_combination h1 / 2 | linear_combination -h1 / 2`.
+
+Introduce `h`. Use extensionality with `a b`. Rewrite using `[Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `hab : ε a = ε b`. Rewrite using `[hab, mul_comm]`.
+
+Rewrite using `[h a b hab, zero_mul, mul_zero]`.
+-/
 lemma commJ_iff (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ) :
     M * Jm ε = Jm ε * M ↔ ∀ a b, ε a ≠ ε b → M a b = 0 := by
   constructor
@@ -76,6 +102,9 @@ lemma commJ_iff (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ) :
     · rw [hab, mul_comm]
     · rw [h a b hab, zero_mul, mul_zero]
 
+/- English proof (translation)
+Use `(commJ_iff ε _).mpr fun a b hab => ?_` and prove the remaining obligations. Take `⟨⟨s, i⟩, rfl⟩` from `(blkSig ε).surjective a`. Take `⟨⟨t, j⟩, rfl⟩` from `(blkSig ε).surjective b`. Rewrite `hab` using `[ε_blkSig ε s i, ε_blkSig ε t j]`. Rewrite using `[blkDiag_apply, Matrix.blockDiagonal'_apply_ne _ _ _ hab]`.
+-/
 lemma blkDiag_commJ (ε : Fin n → Bool)
     (v : ∀ s : Bool, Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ) :
     blkDiag ε v * Jm ε = Jm ε * blkDiag ε v := by
@@ -85,6 +114,13 @@ lemma blkDiag_commJ (ε : Fin n → Bool)
   rw [ε_blkSig ε s i, ε_blkSig ε t j] at hab
   rw [blkDiag_apply, Matrix.blockDiagonal'_apply_ne _ _ _ hab]
 
+/- English proof (translation)
+Use extensionality with `a b`. Take `⟨⟨s, i⟩, rfl⟩` from `(blkSig ε).surjective a`. Take `⟨⟨t, j⟩, rfl⟩` from `(blkSig ε).surjective b`. Rewrite using `[blkDiag_apply]`. Distinguish the cases in `hst : s = t`.
+
+Substitute `hst` using the available equality. Rewrite using `[Matrix.blockDiagonal'_apply_eq, blkRes_apply]`. Rewrite using `[Matrix.blockDiagonal'_apply_ne _ _ _ hst]`. Use `(commJ_iff ε X).mp hX _ _ ?_` and prove the remaining obligations. Rewrite using `[ε_blkSig ε s i, ε_blkSig ε t j]`.
+
+Conclude with `hst`.
+-/
 lemma eq_blkDiag {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : X * Jm ε = Jm ε * X) :
     X = blkDiag ε (fun s => blkRes ε s X) := by
   ext a b
@@ -99,12 +135,20 @@ lemma eq_blkDiag {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : X 
     rw [ε_blkSig ε s i, ε_blkSig ε t j]
     exact hst
 
+/- English proof (translation)
+Simplify using `[blkDiag, Matrix.reindexAlgEquiv_apply, Matrix.conjTranspose_reindex, Matrix.blockDiagonal'_conjTranspose]`.
+-/
 lemma blkDiag_conjTranspose (ε : Fin n → Bool)
     (v : ∀ s : Bool, Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ) :
     (blkDiag ε v)ᴴ = blkDiag ε (fun s => (v s)ᴴ) := by
   simp [blkDiag, Matrix.reindexAlgEquiv_apply, Matrix.conjTranspose_reindex,
     Matrix.blockDiagonal'_conjTranspose]
 
+/- English proof (translation)
+Use `⟨?_, blkDiag_commJ ε v⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, blkDiag_conjTranspose, ← map_mul]`. Establish `: (v * fun s => (v s)ᴴ) = 1`. Use function extensionality and compare the values at `s`. Conclude with `hv s`.
+
+Rewrite using `[this, map_one]`.
+-/
 lemma blkDiag_Kset (ε : Fin n → Bool) (v : ∀ s : Bool, Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ)
     (hv : ∀ s, v s * (v s)ᴴ = 1) : blkDiag ε v ∈ Kset ε := by
   refine ⟨?_, blkDiag_commJ ε v⟩
@@ -118,9 +162,17 @@ def embM (ε : Fin n → Bool) (s : Bool) (A : Matrix (Fin (blkP ε s)) (Fin (bl
     Matrix (Fin n) (Fin n) ℂ :=
   blkDiag ε (Pi.mulSingle (M := fun s => Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ) s A)
 
+/- English proof (translation)
+Simplify using `[Jm]`.
+-/
 lemma Jm_allPos (k : ℕ) : Jm (fun _ : Fin k => true) = 1 := by
   simp [Jm]
 
+/- English proof (translation)
+Use `blkDiag_Kset ε _ fun t => ?_` and prove the remaining obligations. Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`. Use `hA.1` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Rewrite using `[Pi.mulSingle_eq_of_ne hts]`. Simplify using the standard rewrite rules.
+-/
 lemma embM_Kset (ε : Fin n → Bool) (s : Bool) {A : Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ}
     (hA : A ∈ Kset (fun _ : Fin (blkP ε s) => true)) : embM ε s A ∈ Kset ε := by
   refine blkDiag_Kset ε _ fun t => ?_
@@ -139,6 +191,9 @@ def blkK (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset
         rw [← Matrix.star_eq_conjTranspose]; exact Unitary.star_mul_self_of_mem hg.1
       rw [Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]⟩, hg⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma toMK_blkK (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     toMK (blkK ε hg) = g := rfl
 
@@ -153,9 +208,15 @@ def blkEmbed (ε : Fin n → Bool) (s : Bool) : KG (fun _ : Fin (blkP ε s) => t
     show embM ε s (toMK h * toMK h') = embM ε s (toMK h) * embM ε s (toMK h')
     rw [embM, embM, embM, ← map_mul, Pi.mulSingle_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma toMK_blkEmbed (ε : Fin n → Bool) (s : Bool) (h : KG (fun _ : Fin (blkP ε s) => true)) :
     toMK (blkEmbed ε s h) = embM ε s (toMK h) := rfl
 
+/- English proof (translation)
+Establish `hmk : Continuous (fun h : KG (fun _ : Fin (blkP ε s) => true) => toMK h)` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hemb : Continuous fun h : KG (fun _ : Fin (blkP ε s) => true) => embM ε s (toMK h)` using `(continuous_blkDiag ε).comp ((continuous_mulSingle s).comp hmk)`. Use `Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _` and prove the remaining obligations. Conclude with `Units.continuous_iff.mpr ⟨hemb, hemb.matrix_conjTranspose⟩`.
+-/
 lemma continuous_blkEmbed (ε : Fin n → Bool) (s : Bool) : Continuous (blkEmbed ε s) := by
   have hmk : Continuous (fun h : KG (fun _ : Fin (blkP ε s) => true) => toMK h) :=
     Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)
@@ -164,6 +225,11 @@ lemma continuous_blkEmbed (ε : Fin n → Bool) (s : Bool) : Continuous (blkEmbe
   refine Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _
   exact Units.continuous_iff.mpr ⟨hemb, hemb.matrix_conjTranspose⟩
 
+/- English proof (translation)
+Use `⟨?_, by rw [Jm_allPos, Matrix.mul_one, Matrix.one_mul]⟩` and prove the remaining obligations. Use `show (blkRes ε s X)ᴴ * Jm (fun _ : Fin (blkP ε s) => true) + Jm (fun _ : Fin (blkP ε s) => true) * blkRes ε s X = 0`. Rewrite using `[Jm_allPos, Matrix.mul_one, Matrix.one_mul]`. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hX.1 (blkSig ε ⟨s, i⟩)) (blkSig ε ⟨s, j⟩)`.
+
+Rewrite `h` using `[Jm, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, ε_blkSig ε s i, ε_blkSig ε s j]`. Simplify using `only [Matrix.add_apply, Matrix.conjTranspose_apply, blkRes_apply, Matrix.zero_apply] at h ⊢`. Apply the tactic sequence `cases s <;> simp at h ⊢ <;> first | linear_combination h | linear_combination -h`.
+-/
 lemma inK_blkRes {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (s : Bool) :
     inK (fun _ : Fin (blkP ε s) => true) (blkRes ε s X) := by
   refine ⟨?_, by rw [Jm_allPos, Matrix.mul_one, Matrix.one_mul]⟩
@@ -177,6 +243,11 @@ lemma inK_blkRes {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : in
   simp only [Matrix.add_apply, Matrix.conjTranspose_apply, blkRes_apply, Matrix.zero_apply] at h ⊢
   cases s <;> simp at h ⊢ <;> first | linear_combination h | linear_combination -h
 
+/- English proof (translation)
+Use `letI : ∀ s : Bool, NormedRing (Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ) := fun _ => Matrix.linftyOpNormedRing`. Use `letI : ∀ s : Bool, NormedAlgebra ℚ (Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ) := fun _ => Matrix.linftyOpNormedAlgebra`. Use `letI : ∀ s : Bool, NormedAlgebra ℂ (Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ) := fun _ => Matrix.linftyOpNormedAlgebra`. Use `haveI : ∀ s : Bool, CompleteSpace (Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ) := fun _ => FiniteDimensional.complete ℂ _`. Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`.
+
+Use `letI : NormedAlgebra ℚ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `h` using `NormedSpace.map_exp (blkDiag ε) (continuous_blkDiag ε) v`. Conclude with `h.symm.trans (congrArg _ (Pi.exp_def v))`.
+-/
 lemma exp_blkDiag (ε : Fin n → Bool) (v : ∀ s : Bool, Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ) :
     NormedSpace.exp (blkDiag ε v) = blkDiag ε (fun s => NormedSpace.exp (v s)) := by
   letI : ∀ s : Bool, NormedRing (Matrix (Fin (blkP ε s)) (Fin (blkP ε s)) ℂ) :=
@@ -192,6 +263,9 @@ lemma exp_blkDiag (ε : Fin n → Bool) (v : ∀ s : Bool, Matrix (Fin (blkP ε 
   have h := NormedSpace.map_exp (blkDiag ε) (continuous_blkDiag ε) v
   exact h.symm.trans (congrArg _ (Pi.exp_def v))
 
+/- English proof (translation)
+Use `conv_lhs => rw [eq_blkDiag hX, exp_blkDiag]`. Rewrite using `[embM, embM, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Apply the tactic sequence `cases t <;> simp [Pi.mulSingle_apply]`.
+-/
 theorem exp_blk {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : X * Jm ε = Jm ε * X) :
     NormedSpace.exp X = embM ε true (NormedSpace.exp (blkRes ε true X)) *
       embM ε false (NormedSpace.exp (blkRes ε false X)) := by
@@ -201,6 +275,9 @@ theorem exp_blk {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : X *
   funext t
   cases t <;> simp [Pi.mulSingle_apply]
 
+/- English proof (translation)
+Apply `onep_KG_ext` to reduce the goal to its premises. Establish `hX' : ((t : ℂ) • X) * Jm ε = Jm ε * ((t : ℂ) • X)`. Rewrite using `[Matrix.smul_mul, hX.2, Matrix.mul_smul]`. Use `show toMK (γ t) = toMK (blkEmbed ε true (γp t)) * toMK (blkEmbed ε false (γm t))`. Rewrite using `[toMK_blkEmbed, toMK_blkEmbed, hγ, hp, hm, exp_blk hX', map_smul, map_smul]`.
+-/
 theorem blk_curve {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X)
     (γ : ℝ → KG ε) (hγ : ∀ t : ℝ, toMK (γ t) = NormedSpace.exp ((t : ℂ) • X))
     (γp : ℝ → KG (fun _ : Fin (blkP ε true) => true))
@@ -223,6 +300,9 @@ def BlockExpCurve : Prop :=
       (∀ t : ℝ, toMK (γm t) = NormedSpace.exp ((t : ℂ) • blkRes ε false X)) →
     ∀ t : ℝ, γ t = blkEmbed ε true (γp t) * blkEmbed ε false (γm t)
 
+/- English proof (translation)
+Introduce `_ _ _ hX γ hγ γp hp γm hm t` and use `blk_curve hX γ hγ γp hp γm hm t`.
+-/
 theorem blkCurve : BlockExpCurve :=
   fun _ _ _ hX γ hγ γp hp γm hm t => blk_curve hX γ hγ γp hp γm hm t
 

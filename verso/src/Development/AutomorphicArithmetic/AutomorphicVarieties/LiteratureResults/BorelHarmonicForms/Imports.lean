@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `X S deg κ hκ`. Establish `hq : ∀ q, Cardinal.mk {x : S // deg x = q} ≤ κ q`. Introduce `q`. Set `e` to `Fintype.equivFin {x : S // deg x = q}`. Rewrite using `[Cardinal.mk_fintype]`.
+
+Use `hκ q _ (fun i => ((e.symm i).1 : X)) ?_ (fun i => ⟨(e.symm i).1.2, (e.symm i).2⟩)` and prove the remaining obligations. Introduce `i j hij`. Conclude with `e.symm.injective (Subtype.ext (Subtype.ext hij))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Lit.Bor.count :
     UpperTheory.V.Lit.Bor.Count := by
   classical

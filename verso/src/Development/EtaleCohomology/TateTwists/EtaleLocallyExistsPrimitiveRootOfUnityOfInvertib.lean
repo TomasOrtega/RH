@@ -5,6 +5,19 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace LateralTheory.EtaleFoundations.PrimLocPf
 
+/- English proof (translation)
+Establish `hqK : (q : K) ≠ 0`. Use `hq.map φ` as an intermediate fact. Simplify using `using this.ne_zero`. Establish `: NeZero (q : K)` using `⟨hqK⟩`. Establish `hζK : IsPrimitiveRoot (φ ζ) q`.
+
+Rewrite using `[← Polynomial.isRoot_cyclotomic_iff]`. Establish `h` using `Polynomial.aeval_algHom_apply φ.toIntAlgHom ζ (Polynomial.cyclotomic q ℤ)`. Rewrite `h` using `[hζ, map_zero]`. Simplify `h` using `[Polynomial.IsRoot, Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Establish `hζq : ζ ^ q = 1`.
+
+Take `⟨c, hc⟩` from `Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ`. Establish `h` using `congrArg (Polynomial.aeval ζ) hc`. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one, map_mul, hζ, zero_mul] at h`. Conclude with `sub_eq_zero.mp h`. Establish `hxK : (φ x) ^ q = 1` using `by rw [← map_pow, hx, map_one]`.
+
+Take `⟨n, hn, hnx⟩` from `hζK.eq_pow_of_pow_eq_one hxK`. Use `set t := x * ζ ^ (q - n) with ht`. Use `⟨n, hn, ∑ i ∈ Finset.range q, t ^ i, ?_, ?_, hζK⟩` and prove the remaining obligations. Establish `h1 : φ t = 1`. Rewrite using `[ht, map_mul, map_pow, ← hnx, ← pow_add, Nat.add_sub_cancel' hn.le, hζK.pow_eq_one]`.
+
+Simplify using `[map_sum, map_pow, h1, hqK]`. Establish `hg : (∑ i ∈ Finset.range q, t ^ i) * (t - 1) = 0`. Rewrite using `[geom_sum_mul, ht, mul_pow, hx, ← pow_mul, mul_comm (q - n) q, pow_mul, hζq, one_pow, one_mul, sub_self]`. Establish `: x - ζ ^ n = (t - 1) * ζ ^ n`. Rewrite using `[ht, sub_mul, mul_assoc, ← pow_add, Nat.sub_add_cancel hn.le, hζq, mul_one, one_mul]`.
+
+Rewrite using `[this, ← mul_assoc, hg, zero_mul]`.
+-/
 theorem ring_core {R K : Type} [CommRing R] [Field K] (φ : R →+* K) (q : ℕ) [NeZero q]
     (hq : IsUnit (q : R)) (ζ x : R) (hζ : Polynomial.aeval ζ (Polynomial.cyclotomic q ℤ) = 0)
     (hx : x ^ q = 1) :
@@ -37,6 +50,11 @@ theorem ring_core {R K : Type} [CommRing R] [Field K] (φ : R →+* K) (q : ℕ)
       rw [ht, sub_mul, mul_assoc, ← pow_add, Nat.sub_add_cancel hn.le, hζq, mul_one, one_mul]
     rw [this, ← mul_assoc, hg, zero_mul]
 
+/- English proof (translation)
+Establish `key : ∀ (O : X.Opens) (_ : O = ⊤) (hle : O ≤ ⊤), IsUnit (X.presheaf.map (homOfLE hle).op f) → IsUnit f`. Introduce `O hO`. Substitute `hO` using the available equality. Introduce `hle hu`. Simplify using `using hu`.
+
+Conclude with `key _ h (X.basicOpen_le f) (X.toRingedSpace.isUnit_res_basicOpen f)`.
+-/
 theorem isUnit_of_basicOpen_top (X : Scheme.{0}) (f : Γ(X, ⊤)) (h : X.basicOpen f = ⊤) :
     IsUnit f := by
   have key : ∀ (O : X.Opens) (_ : O = ⊤) (hle : O ≤ ⊤),
@@ -44,6 +62,11 @@ theorem isUnit_of_basicOpen_top (X : Scheme.{0}) (f : Γ(X, ⊤)) (h : X.basicOp
     intro O hO; subst hO; intro hle hu; simpa using hu
   exact key _ h (X.basicOpen_le f) (X.toRingedSpace.isUnit_res_basicOpen f)
 
+/- English proof (translation)
+Take `⟨W, hWa, hyW, hW⟩ : ∃ W : U.Opens, IsAffineOpen W ∧ y ∈ W ∧ W ≤ U.basicOpen s` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp U.isBasis_affineOpens) hy`. Use `⟨W, Scheme.Opens.ι W, hWa, inferInstance, by simpa using hyW, ?_⟩` and prove the remaining obligations. Apply `isUnit_of_basicOpen_top` to reduce the goal to its premises. Rewrite using `[← Scheme.preimage_basicOpen_top]`. Use extensionality with `z`.
+
+Simplify using `only [TopologicalSpace.Opens.coe_top, Set.mem_univ, iff_true]`. Conclude with `hW (by have h := Set.mem_range_self (f := W.ι) z; simpa using h)`.
+-/
 theorem affine_nbhd (U : Scheme.{0}) (s : Γ(U, ⊤)) (y : U) (hy : y ∈ U.basicOpen s) :
     ∃ (V : Scheme.{0}) (g : V ⟶ U), IsAffine V ∧ Etale g ∧ y ∈ Set.range g ∧
       IsUnit (g.appTop.hom s) := by
@@ -56,6 +79,9 @@ theorem affine_nbhd (U : Scheme.{0}) (s : Γ(U, ⊤)) (y : U) (hy : y ∈ U.basi
   simp only [TopologicalSpace.Opens.coe_top, Set.mem_univ, iff_true]
   exact hW (by have h := Set.mem_range_self (f := W.ι) z; simpa using h)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ`. Establish `h` using `congrArg (Polynomial.aeval ζ) hc`. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one, map_mul, hζ, zero_mul] at h`. Conclude with `sub_eq_zero.mp h`.
+-/
 theorem cyc_pow_eq_one {R : Type} [CommRing R] (q : ℕ) (ζ : R)
     (hζ : Polynomial.aeval ζ (Polynomial.cyclotomic q ℤ) = 0) : ζ ^ q = 1 := by
   obtain ⟨c, hc⟩ := Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ
@@ -63,6 +89,9 @@ theorem cyc_pow_eq_one {R : Type} [CommRing R] (q : ℕ) (ζ : R)
   simp only [map_sub, map_pow, Polynomial.aeval_X, map_one, map_mul, hζ, zero_mul] at h
   exact sub_eq_zero.mp h
 
+/- English proof (translation)
+Introduce and unpack `V W g k ⟨a, ha⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `show k.appTop.hom (g.appTop.hom x) = (k.appTop.hom (g.appTop.hom ζ)) ^ a`. Rewrite using `[ha, map_pow]`.
+-/
 theorem mono_pow {U : Scheme.{0}} (x ζ : Γ(U, ⊤)) : ∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V),
     (∃ a : ℕ, g.appTop.hom x = g.appTop.hom ζ ^ a) →
     ∃ a : ℕ, (k ≫ g).appTop.hom x = (k ≫ g).appTop.hom ζ ^ a := by
@@ -71,6 +100,11 @@ theorem mono_pow {U : Scheme.{0}} (x ζ : Γ(U, ⊤)) : ∀ (V W : Scheme.{0}) (
   show k.appTop.hom (g.appTop.hom x) = (k.appTop.hom (g.appTop.hom ζ)) ^ a
   rw [ha, map_pow]
 
+/- English proof (translation)
+Rewrite using `[etale_sheaf_section_locally_iff_of_presheaf_facts U _ (mono_pow x ζ.1)]`. Introduce `y`. Take `⟨n, -, s, hs, hsx, -⟩` from `ring_core (U.Γevaluation y).hom q ζ.2.1 ζ.1 x ζ.2.2 hx`. Establish `hy : y ∈ U.basicOpen s` using `(U.evaluation_ne_zero_iff_mem_basicOpen (U := ⊤) y trivial s).mp hs`. Take `⟨V, g, hV, hg, hyr, hu⟩` from `affine_nbhd U s y hy`.
+
+Use `⟨V, g, hV, hg, hyr, n, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg g.appTop.hom hsx`. Rewrite `h` using `[map_mul, map_sub, map_pow, map_zero]`. Conclude with `sub_eq_zero.mp (hu.mul_right_eq_zero.mp h)`.
+-/
 theorem part3 (q : ℕ) [NeZero q] (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (x : Γ(U, ⊤))
     (hx : x ^ q = 1) : Loc U fun _ g => ∃ a : ℕ, g.appTop.hom x = g.appTop.hom ζ.1 ^ a := by
   rw [etale_sheaf_section_locally_iff_of_presheaf_facts U _ (mono_pow x ζ.1)]
@@ -83,6 +117,9 @@ theorem part3 (q : ℕ) [NeZero q] (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (x 
   rw [map_mul, map_sub, map_pow, map_zero] at h
   exact sub_eq_zero.mp (hu.mul_right_eq_zero.mp h)
 
+/- English proof (translation)
+Introduce and unpack `V W g k ⟨a, ha⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `show k.appTop.hom (g.appTop.hom x) = (k.appTop.hom (g.appTop.hom ζ)) ^ (a : ZMod q).val`. Rewrite using `[ha, map_pow]`.
+-/
 theorem mono_unit {q : ℕ} {U : Scheme.{0}} (x ζ : Γ(U, ⊤)) :
     ∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V),
     (∃ a : (ZMod q)ˣ, g.appTop.hom x = g.appTop.hom ζ ^ (a : ZMod q).val) →
@@ -92,6 +129,15 @@ theorem mono_unit {q : ℕ} {U : Scheme.{0}} (x ζ : Γ(U, ⊤)) :
   show k.appTop.hom (g.appTop.hom x) = (k.appTop.hom (g.appTop.hom ζ)) ^ (a : ZMod q).val
   rw [ha, map_pow]
 
+/- English proof (translation)
+Rewrite using `[etale_sheaf_section_locally_iff_of_presheaf_facts U _ (mono_unit ξ.1 ζ.1)]`. Introduce `y`. Take `⟨n, hn, s, hs, hsx, hζK⟩` from `ring_core (U.Γevaluation y).hom q ζ.2.1 ζ.1 ξ.1 ζ.2.2 (cyc_pow_eq_one q ξ.1 ξ.2.2)`. Take `⟨-, -, -, -, -, hξK⟩` from `ring_core (U.Γevaluation y).hom q ξ.2.1 ξ.1 ξ.1 ξ.2.2 (cyc_pow_eq_one q ξ.1 ξ.2.2)`. Establish `hφ : (U.Γevaluation y).hom ξ.1 = (U.Γevaluation y).hom ζ.1 ^ n`.
+
+Establish `h` using `congrArg (U.Γevaluation y).hom hsx`. Rewrite `h` using `[map_mul, map_sub, map_pow, map_zero]`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp h).resolve_left hs)`. Establish `hcop : n.Coprime q` using `(hζK.pow_iff_coprime (Nat.pos_of_neZero q) n).mp (hφ ▸ hξK)`. Establish `hy : y ∈ U.basicOpen s` using `(U.evaluation_ne_zero_iff_mem_basicOpen (U := ⊤) y trivial s).mp hs`.
+
+Take `⟨V, g, hV, hg, hyr, hu⟩` from `affine_nbhd U s y hy`. Use `⟨V, g, hV, hg, hyr, ZMod.unitOfCoprime n hcop, ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hn]`. Establish `h` using `congrArg g.appTop.hom hsx`. Rewrite `h` using `[map_mul, map_sub, map_pow, map_zero]`.
+
+Conclude with `sub_eq_zero.mp (hu.mul_right_eq_zero.mp h)`.
+-/
 theorem part2 (q : ℕ) [NeZero q] (U : Scheme.{0}) (ζ ξ : Prim q Γ(U, ⊤)) :
     Loc U fun _ g => ∃ a : (ZMod q)ˣ, g.appTop.hom ξ.1 = g.appTop.hom ζ.1 ^ (a : ZMod q).val := by
   rw [etale_sheaf_section_locally_iff_of_presheaf_facts U _ (mono_unit ξ.1 ζ.1)]
@@ -126,6 +172,9 @@ def EtaleLocallyKummerRootsOfUnits : Prop :=
   ∀ (q : ℕ) [NeZero q] (U : Scheme.{0}), IsUnit (q : Γ(U, ⊤)) → ∀ u : (Γ(U, ⊤))ˣ,
     Loc U fun V g => ∃ v : (Γ(V, ⊤))ˣ, v ^ q = Units.map g.appTop.hom.toMonoidHom u
 
+/- English proof (translation)
+Introduce `q _ U`. Conclude with `⟨h1 q U, PrimLocPf.part2 q U, fun ζ x hx => PrimLocPf.part3 q U ζ x hx, fun hq u => h4 q U hq u⟩`.
+-/
 theorem etale_locally_roots_of_unity_structure_of_exists_and_kummer (h1 : EtaleLocallyExistsPrimitiveRootOfUnityOfInvertibleOrder) (h4 : EtaleLocallyKummerRootsOfUnits) :
     EtalePrimitiveRootsExistLocally := by
   intro q _ U

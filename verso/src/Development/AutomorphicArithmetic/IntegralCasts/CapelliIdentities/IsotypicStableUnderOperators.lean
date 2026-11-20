@@ -16,6 +16,9 @@ noncomputable def UpperTheory.Reformulated.B.Qf30.Umon.{u_2, u_3} :
         (E : UpperTheory.Reformulated.B.Qf30.GLOps n K V) ↦
       Submonoid.closure (Set.range fun (ab : Fin n × Fin n) ↦ E ab.1 ab.2)
 
+/- English proof (translation)
+Introduce `K V _ _ _`. Conclude with `⟨fun r s x => by rw [smul_smul, smul_smul, mul_comm]⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qf30.aux3.{u_1, u_2} :
     ∀ {K : Type u_1} {V : Type u_2} [inst : Field K] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module K V],
       SMulCommClass K K V := by
@@ -55,6 +58,13 @@ noncomputable def UpperTheory.Reformulated.B.Qf30.isoSub.{u_2, u_3} :
       Submodule.span K
         {x : V | ∃ u ∈ UpperTheory.Reformulated.B.Qf30.Umon E, ∃ (v : V), UpperTheory.Reformulated.B.Qf30.IsHWV E lam v ∧ x = (u : V → V) v}
 
+/- English proof (translation)
+Introduce `n K V _ _ _ E mu a b x hx`. Unfold `UpperTheory.Reformulated.B.Qf30.isoSub at hx ⊢`. Use `Submodule.span_induction ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `y ⟨u, hu, v, hv, rfl⟩`. Use `Submodule.subset_span ⟨E a b * u, ?_, v, hv, rfl⟩` and prove the remaining obligations.
+
+Conclude with `Submonoid.mul_mem _ (Submonoid.subset_closure ⟨(a, b), rfl⟩) hu`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `y z _ _ hy hz`. Rewrite using `[map_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`. Introduce `c y _ hy`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c hy`.
+-/
 theorem UpperTheory.Reformulated.B.Qf30.isotypic_stable_under_operators.{u_1, u_2} :
     ∀ {n : ℕ} {K : Type u_1} {V : Type u_2} [inst : Field K] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module K V]
       (E : UpperTheory.Reformulated.B.Qf30.GLOps n K V) (mu : Fin n → ℤ) (a b : Fin n) {x : V},

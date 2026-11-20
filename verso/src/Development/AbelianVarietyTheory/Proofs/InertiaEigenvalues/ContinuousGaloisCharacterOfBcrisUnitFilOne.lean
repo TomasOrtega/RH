@@ -17,11 +17,25 @@ open GlobalTheory.ExpImage Filter Topology Formalism.MainNotions.LocalSituation
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Take `⟨y, h1, -⟩` from `T.om w`. Conclude with `(GlobalTheory.ThetaTie.fil_zero T _).2 ⟨y, h1.symm⟩`.
+-/
 theorem oB_mem {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) (w : Om l) :
     oB P w ∈ FilB P 0 := by
   obtain ⟨y, h1, -⟩ := T.om w
   exact (GlobalTheory.ThetaTie.fil_zero T _).2 ⟨y, h1.symm⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hy`. Establish `hy0 : y ∈ FilB P 0` using `Lat_mem_zero AI ⟨a, ha⟩`. Establish `hi0 : io AI (((l : ℕ) : Ainf l) ^ n * a) ∈ FilB P 0` using `io_mem AI _`. Establish `hd0 : y - io AI (((l : ℕ) : Ainf l) ^ n * a) ∈ FilB P 0` using `sub_mem hy0 hi0`. Establish `h1 : Θ.θ (y - io AI (((l : ℕ) : Ainf l) ^ n * a)) = 0` using `(Θ.θ_ker _ hd0).2 (by simpa using ha)`.
+
+Establish `h2 : Θ.θ y = Θ.θ (io AI (((l : ℕ) : Ainf l) ^ n * a))`. Use `Θ.θ_add _ hd0 _ hi0` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, h1, zero_add]`. Conclude with `this`. Establish `e : io AI (((l : ℕ) : Ainf l) ^ n * a) = qB P ((l : ℚ_[l]) ^ n) * io AI a`.
+
+Rewrite using `[map_mul, map_pow, map_natCast, map_pow, map_natCast]`. Rewrite using `[h2, e, Θ.θ_mul _ (qB_mem _) _ (io_mem AI a), norm_mul]`. Establish `e2 : qB P ((l : ℚ_[l]) ^ n) = oB P (algebraMap ℚ_[l] (Om l) ((l : ℚ_[l]) ^ n))` using `IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR _`. Rewrite using `[e2, Θ.θ_Om, PadicComplex.norm_extends]`. Establish `e3 : ‖algebraMap ℚ_[l] (Om l) ((l : ℚ_[l]) ^ n)‖ = ‖(l : ℚ_[l])‖ ^ n`.
+
+Rewrite using `[← norm_pow]`. Conclude with `PadicAlgCl.norm_extends (p := l) _`. Rewrite using `[e3]`. Use `Θ.θ_int a` as an intermediate fact. Rewrite `this` using `[← io_apply AI a]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_th_le_of_mem_Lat {P : LocPrime l} {AI : LocAinf l P} (Θ : ThetaL P AI) {n : ℕ}
     {y : P.R.BdR} (hy : y ∈ Lat AI 1 n) : ‖Θ.θ y‖ ≤ ‖(l : ℚ_[l])‖ ^ n := by
   obtain ⟨a, ha⟩ := hy
@@ -48,6 +62,43 @@ theorem norm_th_le_of_mem_Lat {P : LocPrime l} {AI : LocAinf l P} (Θ : ThetaL P
   calc _ ≤ ‖(l : ℚ_[l])‖ ^ n * 1 := by gcongr
     _ = _ := mul_one _
 
+/- English proof (translation)
+Introduce `l _ P AI T K x _hxu hx1 hx2 c hc`. Set `Θ` to `GlobalTheory.ThetaTie.thetaL T`. Establish `hF : ∀ (a : ℤ) (y : P.R.BdR), y ∈ (P.PD K).Fil a ↔ y ∈ FilB P a` using `fun a y => Set.ext_iff.1 (P.PD_Fil K (botExt l) a) y`. Establish `hX1 : P.ιB x ∈ FilB P 1` using `(hF 1 _).1 hx1`. Establish `hX2 : P.ιB x ∉ FilB P 2` using `fun h => hx2 ((hF 2 _).2 h)`.
+
+Take `⟨s, hs, hts⟩` from `GlobalTheory.ThetaTie.exists_inverse_fontaineElement_mem_fil_neg_one T`. Establish `hb0 : s * P.ιB x ∈ FilB P 0`. Use `FilB_mul hs hX1` as an intermediate fact. Simplify using `using this`. Establish `hθb : Θ.θ (s * P.ιB x) ≠ 0`.
+
+Introduce `h0`. Establish `h1 : s * P.ιB x ∈ FilB P 1` using `(Θ.θ_ker _ hb0).1 h0`. Apply `hX2` to reduce the goal to its premises. Use `FilB_mul (tD_mem (P := P)) h1` as an intermediate fact. Establish `e : tD P * (s * P.ιB x) = P.ιB x`.
+
+Rewrite using `[← mul_assoc]`. Express the relevant statement in the definitionally equal form `P.ιB P.tB * s * P.ιB x = P.ιB x`. Rewrite using `[hts, one_mul]`. Rewrite `this` using `[e]`. Simplify using `using this`.
+
+Set `cv : ↥(GK K) → Om l` to `fun g => (((c g : (↥(K0 K))ˣ) : ↥(K0 K)) : Om l)`. Set `χv : ↥(GK K) → Om l` to `fun g => algebraMap ℚ_[l] (Om l) (P.χQ (g : GQ l) : ℚ_[l])`. Set `uv : ↥(GK K) → Om l` to `fun g => cv g * (χv g)⁻¹`. Establish `hK0 : ∀ z : ↥(K0 K), P.ιB (algebraMap ↥(K0 K) P.R.B z) = oB P (z : Om l)` using `fun z => GlobalTheory.LocIota.ιB_algebraMap_Kur P (IntermediateField.inclusion (inf_le_right : K0 K ≤ MaximalUnramifiedExtension l) z)`. Establish `hqo : ∀ z : ℚ_[l], qB P z = oB P (algebraMap ℚ_[l] (Om l) z)` using `fun z => IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR z`.
+
+Establish `hact : ∀ g : ↥(GK K), P.actQdR (g : GQ l) (s * P.ιB x) = oB P (uv g) * (s * P.ιB x)`. Introduce `g`. Establish `hX : P.actQdR (g : GQ l) (P.ιB x) = oB P (cv g) * P.ιB x`. Rewrite using `[← ιB_act, hc g, map_mul, hK0]`. Establish `ht` using `act_tD (P := P) (g : GQ l)`.
+
+Establish `h1 : P.actQdR (g : GQ l) (tD P) * P.actQdR (g : GQ l) s = 1`. Rewrite using `[← map_mul]`. Express the relevant statement in the definitionally equal form `P.actQdR (g : GQ l) (P.ιB P.tB * s) = 1`. Rewrite using `[hts, map_one]`. Establish `h2 : qB P ((P.χQ (g : GQ l) : ℚ_[l]))⁻¹ * qB P (P.χQ (g : GQ l) : ℚ_[l]) = 1`.
+
+Rewrite using `[← map_mul, inv_mul_cancel₀ (Units.ne_zero _), map_one]`. Establish `hts' : tD P * s = 1` using `hts`. Rewrite `h1` using `[ht]`. Establish `hs' : P.actQdR (g : GQ l) s = qB P ((P.χQ (g : GQ l) : ℚ_[l]))⁻¹ * s`. Take the linear combination `(qB P ((P.χQ (g : GQ l) : ℚ_[l]))⁻¹ * s) * h1 - P.actQdR (g : GQ l) s * h2 - (P.actQdR (g : GQ l) s * qB P ((P.χQ (g : GQ l) : ℚ_[l]))⁻¹ * qB P (P.χQ (g : GQ l) : ℚ_[l])) * hts'`.
+
+Establish `hu : oB P (uv g) = oB P (cv g) * qB P ((P.χQ (g : GQ l) : ℚ_[l]))⁻¹`. Rewrite using `[hqo, map_inv₀]`. Express the relevant statement in the definitionally equal form `oB P (cv g * (χv g)⁻¹) = _`. Rewrite using `[map_mul]`. Rewrite using `[map_mul, hs', hX, hu]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hl : ‖(l : ℚ_[l])‖ < 1` using `Padic.norm_p_lt_one`. Establish `hθpos : 0 < ‖Θ.θ (s * P.ιB x)‖` using `norm_pos_iff.2 hθb`. Establish `htv : Tendsto (fun g : ↥(GK K) => (g : GQ l)) (𝓝 1) (𝓝 1)`. Simplify using `using continuous_subtype_val.tendsto (1 : ↥(GK K))`.
+
+Establish `huv : Tendsto uv (𝓝 1) (𝓝 1)`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (mul_pos hε hθpos) hl`. Establish `hev` using `(bounded_and_eventually_sub_mem_Lat l P AI T _ hb0 1 n).2`.
+
+Use `filter_upwards [htv.eventually hev] with g hg`. Rewrite `hg` using `[hact g]`. Establish `e : oB P (uv g) * (s * P.ιB x) - s * P.ιB x = oB P (uv g - 1) * (s * P.ιB x)`. Rewrite using `[map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hg` using `[e]`. Establish `h3` using `norm_th_le_of_mem_Lat Θ hg`. Rewrite `h3` using `[Θ.θ_mul _ (oB_mem T _) _ hb0, Θ.θ_Om, norm_mul, PadicComplex.norm_extends]`. Rewrite using `[dist_eq_norm]`. Establish `h4 : ‖uv g - 1‖ * ‖Θ.θ (s * P.ιB x)‖ < ε * ‖Θ.θ (s * P.ιB x)‖` using `h3.trans_lt hn`.
+
+Conclude with `lt_of_mul_lt_mul_right h4 hθpos.le`. Establish `hqc : Continuous (algebraMap ℚ_[l] (Om l))` using `(AddMonoidHomClass.isometry_of_norm (algebraMap ℚ_[l] (Om l)) (fun z => PadicAlgCl.norm_extends (p := l) z)).continuous`. Establish `hχ : Tendsto χv (𝓝 1) (𝓝 1)`. Establish `hcont : Continuous χv` using `hqc.comp ((GlobalTheory.Cyc.IsCyc.continuous P.χQ_cyc).comp continuous_subtype_val)`. Simplify `hcont.tendsto 1` using `[χv]`.
+
+Establish `hcv1 : Tendsto cv (𝓝 1) (𝓝 1)`. Use `huv.mul hχ` as an intermediate fact. Rewrite `this` using `[mul_one]`. Use `this.congr fun g => ?_` and prove the remaining obligations. Establish `hne : χv g ≠ 0`.
+
+Simplify using `only [χv, ne_eq, map_eq_zero]`. Conclude with `Units.ne_zero _`. Conclude with `inv_mul_cancel_right₀ hne (cv g)`. Establish `hmul : ∀ g h : ↥(GK K), cv (g * h) = cv g * cv h`. Introduce `g h`.
+
+Simplify using `[cv, map_mul]`. Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Establish `t1 : Tendsto (fun g : ↥(GK K) => g₀⁻¹ * g) (𝓝 g₀) (𝓝 1)`. Simplify using `using (continuous_mul_left g₀⁻¹).tendsto g₀`. Establish `t2` using `(hcv1.comp t1).const_mul (cv g₀)`.
+
+Rewrite `t2` using `[mul_one]`. Use `t2.congr fun g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cv g₀ * cv (g₀⁻¹ * g) = cv g`. Rewrite using `[← hmul, mul_inv_cancel_left]`.
+-/
 theorem continuous_char_of_act : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     LocTied l P AI → ∀ (K : FinExt l) (x : P.R.B), IsUnit x → P.ιB x ∈ (P.PD K).Fil 1 →
     P.ιB x ∉ (P.PD K).Fil 2 → ∀ c : ↥(GK K) →* (↥(K0 K))ˣ,

@@ -17,6 +17,11 @@ namespace GlobalTheory.TempClose
 
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL
 
+/- English proof (translation)
+Introduce `π w σ _ α hα`. Take `⟨ξ, hξ, -, hξu⟩` from `GlobalTheory.HeckeComp.main D.host.E (P.chr.e1 π).1 w`. Establish `he` using `GlobalTheory.RankOneComp.locG_rankOne_eq_rcAt hAF hL D P π w ξ hξ`. Rewrite `hα` using `[WDTie.eig, he]`. Unfold `WD.inePol at hα`.
+
+Use `split_ifs at hα with hσ`. Conclude with `GlobalTheory.LocLanglands.IsRec.recUnit (GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 w)) ξ (Irr.ofDet 1 ξ hξ.1) (hξu (P.chr.e1 π).2) ⟨Representation.Equiv.refl _⟩ ⟨σ, hσ⟩ α hα`. Simplify using `at hα`.
+-/
 theorem rankOneUnitary (hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7)
     (P : Pin hL D) : RankOneUnitary P.T := by
   intro π w σ _ α hα
@@ -29,6 +34,15 @@ theorem rankOneUnitary (hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (
       (Irr.ofDet 1 ξ hξ.1) (hξu (P.chr.e1 π).2) ⟨Representation.Equiv.refl _⟩ ⟨σ, hσ⟩ α hα
   · simp at hα
 
+/- English proof (translation)
+Use `host_isCMField D.host` as an intermediate fact. Establish `ha1 : 1 ≤ a` using `by omega`. Take `⟨π₀, hπ₀⟩` from `Quotient.exists_rep (P.cg.e a π).1`. Establish `hmk : CG.mk π₀ = (P.cg.e a π).1` using `hπ₀`. Establish `hc₀ : π₀.IsCsd`.
+
+Establish `h1` using `(P.cg.csd a π).1 hc`. Rewrite `h1` using `[CGu.IsCsd, ← hmk]`. Conclude with `h1`. Establish `hinf : ∀ τ, D.naut.infG π τ = (CG.mk π₀).infChar τ` using `fun τ => by`. Rewrite using `[P.cg.inf, CGu.infChar, ← hmk]`.
+
+Establish `hr₀ : (CG.mk π₀).IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Use `(D.naut.ralg_def π).1 hr τ` as an intermediate fact. Rewrite `this` using `[hinf]`. Then use the resulting hypothesis. Establish `hcoh` using `(hRP D.host.E a ha1 π₀ hr₀).2`. Take `⟨σ₀, hσ₀, -⟩` from `LocEx.exists_isLocComp hAF D.host.E a π₀ w`.
+
+Establish `htG` using `hT D.host.E a ha π₀ hc₀ hcoh w σ₀ hσ₀`. Rewrite using `[P.T.tempered, P.cg.loc]`. Use `show (ParLaws.locPar hL (P.cg.e a π).1 (D.nd.plOm.2 w)).tempered`. Rewrite using `[← hmk, ParLaws.locPar_mk hL hσ₀ (D.nd.plOm.2 w)]`. Conclude with `GlobalTheory.T.tempered_rep_tempered_parameter D.host.E D.nd.Om _ w (D.nd.plOm.2 w) _ (ParLaws.isRec_locRec hL (D.nd.plOm.2 w)) a (ParLaws.toRep σ₀) htG`.
+-/
 theorem rankTwo (hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hT : GlobalTheory.Published.CohomologicalCsdTempered)
     (hRP : GlobalTheory.Published.RegularAlgebraicPurity) (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D)
     (a : ℕ) (π : D.naut.CG a) (ha : 2 ≤ a) (hc : D.naut.csd π) (hr : D.naut.ralg π) (w : PlE D.host) :

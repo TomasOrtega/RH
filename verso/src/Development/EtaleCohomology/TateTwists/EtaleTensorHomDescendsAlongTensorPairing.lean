@@ -6,25 +6,42 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace LateralTheory.EtaleFoundations.TensFam
 
+/- English proof (translation)
+Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+-/
 theorem res_res {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (h : W ⟶ V) (g : V ⟶ U) (y : Sec F U) :
     Sec.res h (Sec.res g y) = Sec.res (h ≫ g) y := by
   simp only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
+/- English proof (translation)
+Take `⟨S, hS, h1⟩` from `hP`. Take `⟨T, hT, h2⟩` from `hQ`. Conclude with `⟨S ⊓ T, (Scheme.etaleTopology).intersection_covering hS hT, fun V g hg => ⟨h1 V g hg.1, h2 V g hg.2⟩⟩`.
+-/
 theorem loc_and {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P) (hQ : Loc U Q) :
     Loc U fun V g => P V g ∧ Q V g := by
   obtain ⟨S, hS, h1⟩ := hP
   obtain ⟨T, hT, h2⟩ := hQ
   exact ⟨S ⊓ T, (Scheme.etaleTopology).intersection_covering hS hT, fun V g hg => ⟨h1 V g hg.1, h2 V g hg.2⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊤, (Scheme.etaleTopology).top_mem U, fun V g _ => h V g⟩`.
+-/
 theorem loc_top {U : Scheme.{0}} {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : ∀ V g, P V g) : Loc U P :=
   ⟨⊤, (Scheme.etaleTopology).top_mem U, fun V g _ => h V g⟩
 
+/- English proof (translation)
+Take `⟨T, hT, h1⟩` from `h`. Establish `hM` using `(isSheaf_iff_isSheaf_of_type _ _).mp ((Presheaf.isSheaf_iff_isSheaf_forget Scheme.etaleTopology M.obj (forget _)).mp M.2)`. Conclude with `(hM T hT).isSeparatedFor.ext fun V g hg => h1 V g hg`.
+-/
 theorem sep {S : Type} [CommRing S] (M : Shv S) {U : Scheme.{0}} (s s' : Sec M U)
     (h : Loc U fun V g => Sec.res g s = Sec.res g s') : s = s' := by
   obtain ⟨T, hT, h1⟩ := h
   have hM := (isSheaf_iff_isSheaf_of_type _ _).mp ((Presheaf.isSheaf_iff_isSheaf_forget Scheme.etaleTopology M.obj (forget _)).mp M.2)
   exact (hM T hT).isSeparatedFor.ext fun V g hg => h1 V g hg
 
+/- English proof (translation)
+Establish `hM` using `(isSheaf_iff_isSheaf_of_type _ _).mp ((Presheaf.isSheaf_iff_isSheaf_forget Scheme.etaleTopology M.obj (forget _)).mp M.2)`. Set `x : Presieve.FamilyOfElements (M.obj ⋙ forget _) T.arrows` to `fun V g hg => t V g hg`. Establish `hx : x.Compatible`. Rewrite using `[Presieve.compatible_iff_sieveCompatible]`. Introduce `V W g k hg`.
+
+Conclude with `ht V W g k hg`. Conclude with `⟨(hM T hT).amalgamate x hx, fun V g hg => (hM T hT).valid_glue hx g hg⟩`.
+-/
 theorem glue {S : Type} [CommRing S] (M : Shv S) {U : Scheme.{0}} (T : Sieve U) (hT : T ∈ Scheme.etaleTopology U)
     (t : ∀ (V : Scheme.{0}) (g : V ⟶ U), T.arrows g → Sec M V)
     (ht : ∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V) (hg : T.arrows g),
@@ -38,6 +55,13 @@ theorem glue {S : Type} [CommRing S] (M : Shv S) {U : Scheme.{0}} (T : Sieve U) 
     exact ht V W g k hg
   exact ⟨(hM T hT).amalgamate x hx, fun V g hg => (hM T hT).valid_glue hx g hg⟩
 
+/- English proof (translation)
+Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [Sec.res, map_add] at *`. Rewrite using `[ha, hb]`. Consider the case `of i z`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [Sec.res, map_add] at *`. Rewrite using `[ha, hb]`. Consider the case `tmul a c`.
+
+Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R)]`. Simplify using `only [Pair.lift, Tens.res, DirectSum.lmap_lof, DirectSum.toModule_lof, TensorProduct.lift.tmul, TensorProduct.map_tmul]`. Conclude with `τ.nat g _ _ w _ a c`.
+-/
 theorem lift_res {R : Type} [CommRing R] {I J K : Cx R} (τ : Pair I J K) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ)
     (x : Tens I J U w) : Sec.res g (τ.lift U w x) = τ.lift V w (Tens.res g w x) := by
   classical
@@ -53,6 +77,9 @@ theorem lift_res {R : Type} [CommRing R] {I J K : Cx R} (τ : Pair I J K) {V U :
       simp only [Pair.lift, Tens.res, DirectSum.lmap_lof, DirectSum.toModule_lof, TensorProduct.lift.tmul, TensorProduct.map_tmul]
       exact τ.nat g _ _ w _ a c
 
+/- English proof (translation)
+The claim follows from `map_add _ _ _`.
+-/
 theorem res_add {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (a c : Sec F U) :
     Sec.res g (a + c) = Sec.res g a + Sec.res g c := map_add _ _ _
 
@@ -67,6 +94,11 @@ variable (τ : Pair I J K) (hτ : τ.IsTensor) (w : ℤ) (M : Shv S) (b : ∀ U 
   (hb : ∀ (V U : Scheme.{0}) (g : V ⟶ U) x, Sec.res g (b U x) = b V (Tens.res g w x))
 include hτ hb
 
+/- English proof (translation)
+Establish `h0 : τ.lift U w (x1 - x2) = 0` using `by rw [map_sub, h, sub_self]`. Take `⟨T, hT, hT'⟩` from `hτ.2 U w _ h0`. Apply `sep M` to reduce the goal to its premises. Use `⟨T, hT, fun V g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : Tens.res g w (x1 - x2) = 0` using `hT' V g hg`.
+
+Rewrite `h1` using `[map_sub, sub_eq_zero]`. Use `show Sec.res g (b U x1) = Sec.res g (b U x2)`. Rewrite using `[hb, hb, h1]`.
+-/
 theorem key {U : Scheme.{0}} (x1 x2 : Tens I J U w) (h : τ.lift U w x1 = τ.lift U w x2) : b U x1 = b U x2 := by
   have h0 : τ.lift U w (x1 - x2) = 0 := by rw [map_sub, h, sub_self]
   obtain ⟨T, hT, hT'⟩ := hτ.2 U w _ h0
@@ -77,6 +109,11 @@ theorem key {U : Scheme.{0}} (x1 x2 : Tens I J U w) (h : τ.lift U w x1 = τ.lif
   show Sec.res g (b U x1) = Sec.res g (b U x2)
   rw [hb, hb, h1]
 
+/- English proof (translation)
+Apply `sep M` to reduce the goal to its premises. Take `⟨T, hT, h⟩` from `loc_and h1 h2`. Use `⟨T, hT, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨⟨x, hx, hs⟩, ⟨x', hx', hs'⟩⟩` from `h V g hg`. Rewrite using `[hs, hs']`.
+
+Conclude with `key τ hτ w M b hb x x' (hx.trans hx'.symm)`.
+-/
 theorem uniq {U : Scheme.{0}} {y : Sec (K.X w) U} {s s' : Sec M U}
     (h1 : Good τ w M b U y s) (h2 : Good τ w M b U y s') : s = s' := by
   apply sep M
@@ -86,6 +123,11 @@ theorem uniq {U : Scheme.{0}} {y : Sec (K.X w) U} {s s' : Sec M U}
   rw [hs, hs']
   exact key τ hτ w M b hb x x' (hx.trans hx'.symm)
 
+/- English proof (translation)
+Take `⟨T, hT, hc⟩` from `hτ.1 U w y`. Set `t : ∀ (V : Scheme.{0}) (g : V ⟶ U), T.arrows g → Sec M V` to `fun V g hg => b V (hc V g hg).choose`. Take `⟨s, hs⟩` from `glue M T hT t (by`. Introduce `V W g k hg`. Simplify using `only [t]`.
+
+Rewrite using `[hb]`. Apply `key τ hτ w M b hb` to reduce the goal to its premises. Rewrite using `[(hc W (k ≫ g) (T.downward_closed hg k)).choose_spec, ← lift_res, (hc V g hg).choose_spec, res_res])`. Conclude with `⟨s, T, hT, fun V g hg => ⟨(hc V g hg).choose, (hc V g hg).choose_spec, hs V g hg⟩⟩`.
+-/
 theorem good_exists (U : Scheme.{0}) (y : Sec (K.X w) U) : ∃ s, Good τ w M b U y s := by
   obtain ⟨T, hT, hc⟩ := hτ.1 U w y
   let t : ∀ (V : Scheme.{0}) (g : V ⟶ U), T.arrows g → Sec M V := fun V g hg => b V (hc V g hg).choose
@@ -98,6 +140,9 @@ theorem good_exists (U : Scheme.{0}) (y : Sec (K.X w) U) : ∃ s, Good τ w M b 
   exact ⟨s, T, hT, fun V g hg => ⟨(hc V g hg).choose, (hc V g hg).choose_spec, hs V g hg⟩⟩
 
 omit hτ in
+/- English proof (translation)
+Take `⟨T, hT, h⟩` from `loc_and h1 h2`. Use `⟨T, hT, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨⟨x, hx, hs⟩, ⟨x', hx', hs'⟩⟩` from `h V g hg`. Conclude with `⟨x + x', by rw [map_add, hx, hx', res_add], by rw [res_add, hs, hs', map_add]⟩`.
+-/
 theorem good_add {U : Scheme.{0}} {y1 y2 : Sec (K.X w) U} {s1 s2 : Sec M U}
     (h1 : Good τ w M b U y1 s1) (h2 : Good τ w M b U y2 s2) : Good τ w M b U (y1 + y2) (s1 + s2) := by
   obtain ⟨T, hT, h⟩ := loc_and h1 h2
@@ -106,10 +151,16 @@ theorem good_add {U : Scheme.{0}} {y1 y2 : Sec (K.X w) U} {s1 s2 : Sec M U}
   exact ⟨x + x', by rw [map_add, hx, hx', res_add], by rw [res_add, hs, hs', map_add]⟩
 
 omit hτ hb in
+/- English proof (translation)
+The claim follows from `loc_top fun V g => ⟨0, by simp, by simp⟩`.
+-/
 theorem good_zero (U : Scheme.{0}) : Good τ w M b U 0 0 :=
   loc_top fun V g => ⟨0, by simp, by simp⟩
 
 omit hτ in
+/- English proof (translation)
+Take `⟨T, hT, h1⟩` from `h`. Use `⟨T.pullback g, (Scheme.etaleTopology).pullback_stable g hT, fun W k hk => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hs⟩` from `h1 W (k ≫ g) hk`. Conclude with `⟨x, by rw [res_res, hx], by rw [res_res, hs]⟩`.
+-/
 theorem good_nat {V U : Scheme.{0}} (g : V ⟶ U) {y : Sec (K.X w) U} {s : Sec M U}
     (h : Good τ w M b U y s) : Good τ w M b V (Sec.res g y) (Sec.res g s) := by
   obtain ⟨T, hT, h1⟩ := h
@@ -118,6 +169,9 @@ theorem good_nat {V U : Scheme.{0}} (g : V ⟶ U) {y : Sec (K.X w) U} {s : Sec M
   exact ⟨x, by rw [res_res, hx], by rw [res_res, hs]⟩
 
 omit hτ in
+/- English proof (translation)
+The claim follows from `loc_top fun V g => ⟨Tens.res g w x, (lift_res τ g w x).symm, hb V U g x⟩`.
+-/
 theorem good_lift (U : Scheme.{0}) (x : Tens I J U w) : Good τ w M b U (τ.lift U w x) (b U x) :=
   loc_top fun V g => ⟨Tens.res g w x, (lift_res τ g w x).symm, hb V U g x⟩
 
@@ -126,6 +180,11 @@ end Main
 end LateralTheory.EtaleFoundations.TensFam
 
 open LateralTheory.EtaleFoundations.TensFam in
+/- English proof (translation)
+Introduce `R S _ _ I J K τ hτ w M b hb`. Establish `ex` using `good_exists τ hτ w M b hb`. Set `φ : ∀ U : Scheme.{0}, Sec (K.X w) U →+ Sec M U` to `fun U => { toFun := fun y => (ex U y).choose map_zero' := uniq τ hτ w M b hb (ex U 0).choose_spec (good_zero τ w M b U) map_add' := fun y1 y2 => uniq τ hτ w M b hb (ex U _).choose_spec (good_add τ w M b hb (ex U y1).choose_spec (ex U y2).choose_spec) }`. Use `⟨φ, fun V U g y => ?_, fun U x => ?_⟩` and prove the remaining obligations. Conclude with `uniq τ hτ w M b hb (good_nat τ w M b hb g (ex U y).choose_spec) (ex V _).choose_spec`.
+
+Conclude with `uniq τ hτ w M b hb (ex U _).choose_spec (good_lift τ w M b hb U x)`.
+-/
 theorem LateralTheory.EtaleFoundations.etale_tensor_hom_descends_along_tensor_pairing : LateralTheory.EtaleFoundations.EtaleTensorComplexDescendsNaturalFamily := by
   intro R S _ _ I J K τ hτ w M b hb
   have ex := good_exists τ hτ w M b hb

@@ -29,6 +29,11 @@ def gM (c : (D.mem u).C.cls 0) (y : Fin (D.R.N 0) → (D.sp.X 0).V) (τ : D.what
     Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL :=
   Matrix.of fun a i => bcFun CV c τ (y a) ((CV.Q c τ).b ((CV.eQ c τ).symm i))
 
+/- English proof (translation)
+Use `show ∑ i, gM CV c y τ a i * crdQ CV c τ z i = _`. Use `conv_rhs => rw [← ((CV.Q c τ).b.reindex (CV.eQ c τ)).sum_equivFun z]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, Basis.reindex_apply, mul_comm]`.
+
+Both sides reduce to the same expression.
+-/
 theorem gM_mulVec (c : (D.mem u).C.cls 0) (y : Fin (D.R.N 0) → (D.sp.X 0).V) (τ : D.what₂.Tau) (z : (CV.Q c τ).V)
     (a : Fin (D.R.N 0)) : (gM CV c y τ *ᵥ crdQ CV c τ z) a = bcFun CV c τ (y a) z := by
   show ∑ i, gM CV c y τ a i * crdQ CV c τ z i = _
@@ -38,6 +43,9 @@ theorem gM_mulVec (c : (D.mem u).C.cls 0) (y : Fin (D.R.N 0) → (D.sp.X 0).V) (
   rw [map_smul, smul_eq_mul, Basis.reindex_apply, mul_comm]
   rfl
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨z, hz, rfl⟩ a`. Rewrite using `[LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, gM_mulVec]`. Conclude with `Submodule.mem_one.2 ⟨⟨_, bcFun_int CV c τ (hy a) hz⟩, rfl⟩`.
+-/
 theorem gM_int (c : (D.mem u).C.cls 0) (y : Fin (D.R.N 0) → (D.sp.X 0).V)
     (hy : ∀ a, y a ∈ dualSub (D.sp.X 0) (D.clsLat u 0 c)) (τ : D.what₂.Tau) :
     ∀ x ∈ MQ CV c τ, ∀ a, (gM CV c y τ *ᵥ x) a ∈ (1 : Submodule (𝓞 D.what₂.LL) D.what₂.LL) := by
@@ -45,6 +53,23 @@ theorem gM_int (c : (D.mem u).C.cls 0) (y : Fin (D.R.N 0) → (D.sp.X 0).V)
   rw [LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, gM_mulVec]
   exact Submodule.mem_one.2 ⟨⟨_, bcFun_int CV c τ (hy a) hz⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hn : Fintype.card (Fin (D.R.N 0)) = finrank D.host.E (D.sp.X 0).V`. Rewrite using `[Fintype.card_fin, (D.sp.X 0).rank_eq, D.sp.rank0, Ranks.N_zero]`. Use `haveI : Nonempty (Fin (D.R.N 0)) := ⟨⟨0, rank_zero_pos D⟩⟩`. Use `haveI : FiniteDimensional D.host.E (D.sp.X 0).V := Module.finite_of_finrank_pos (by rw [← hn]; exact Fintype.card_pos)`. Establish `hspan` using `hli.span_eq_top_of_card_eq_finrank hn`.
+
+Set `Φ : (D.sp.X 0).V →ₗ[D.host.E] (Fin (D.R.N 0) → D.host.E)` to `LinearMap.pi fun a => (D.sp.X 0).hT (y a)`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `z hz`. Establish `h0 : ∀ a, (D.sp.X 0).hT (y a) z = 0` using `fun a => congrFun (LinearMap.mem_ker.1 hz) a`.
+
+Use `(D.sp.X 0).nondeg.2 z fun x => ?_` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span D.host.E (Set.range y)` using `hspan ▸ Submodule.mem_top`. Establish `hx'` using `(Submodule.span_le (p := LinearMap.ker ((D.sp.X 0).hT.flip z))).2 (by`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `LinearMap.mem_ker.2 (by rw [LinearMap.flip_apply]; exact h0 a)) hx`.
+
+Use `LinearMap.mem_ker.1 hx'` as an intermediate fact. Rewrite `this` using `[LinearMap.flip_apply]`. Then use the resulting hypothesis. Establish `hfin : finrank D.host.E (D.sp.X 0).V = finrank D.host.E (Fin (D.R.N 0) → D.host.E)`. Rewrite using `[Module.finrank_fin_fun, ← hn, Fintype.card_fin]`. Establish `hsurj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfin).1 hinj`.
+
+Rewrite using `[← Matrix.isUnit_iff_isUnit_det]`. Use `Matrix.linearIndependent_rows_iff_isUnit.1 ?_` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `t ht b`. Take `⟨z, hz⟩` from `hsurj (Pi.single b 1)`.
+
+Establish `hz' : ∀ a, (D.sp.X 0).hT (y a) z = (Pi.single b (1 : D.host.E) : Fin (D.R.N 0) → D.host.E) a` using `fun a => congrFun hz a`. Establish `hi : ∀ i, ∑ a, t a * gM CV c y τ a i = 0` using `fun i => by`. Use `congrFun ht i` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`. Establish `key : ∑ a, t a * CV.rho τ ((D.sp.X 0).hT (y a) z) = 0`.
+
+Establish `e1 : ∀ a, CV.rho τ ((D.sp.X 0).hT (y a) z) = ∑ i, gM CV c y τ a i * crdQ CV c τ (CV.bc c τ z) i`. Introduce `a`. Rewrite using `[← bcFun_bc CV c τ (y a) z, ← gM_mulVec CV c y τ]`. Both sides reduce to the same expression. Repeatedly rewrite using `[e1, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[← mul_assoc]`. Rewrite using `[← Finset.sum_mul, hi i, zero_mul]`. Simplify `key` using `[hz', Pi.single_apply]`.
+-/
 theorem gM_unit (c : (D.mem u).C.cls 0) (y : Fin (D.R.N 0) → (D.sp.X 0).V) (hli : LinearIndependent D.host.E y)
     (τ : D.what₂.Tau) : IsUnit (gM CV c y τ).det := by
   classical
@@ -94,6 +119,9 @@ def gG (c : (D.mem u).C.cls 0) (y : Fin (D.R.N 0) → (D.sp.X 0).V) (hli : Linea
     D.what₂.Tau → GL (Fin (D.R.N 0)) D.what₂.LL :=
   fun τ => Matrix.nonsingInvUnit _ (gM_unit CV c y hli τ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gG_coe (c : (D.mem u).C.cls 0) (y : Fin (D.R.N 0) → (D.sp.X 0).V) (hli : LinearIndependent D.host.E y)
     (τ : D.what₂.Tau) : ((gG CV c y hli τ : GL (Fin (D.R.N 0)) D.what₂.LL) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL) =
       gM CV c y τ := rfl
@@ -104,6 +132,15 @@ section Loc
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `IntSpanAt at hp`. Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨r, f, hr, -, rfl⟩` from `hx`. Establish `hten : Formalism.MainNotions.flipTwoThree.ten (fun τ => MvPolynomial.map (Int.castRingHom D.what₂.LL) (f τ)) = MvPolynomial.map (Int.castRingHom D.what₂.LL) (∏ τ, rename (fun v => (τ, v)) (f τ))`.
+
+Unfold `Formalism.MainNotions.flipTwoThree.ten`. Rewrite using `[map_prod]`. Apply the tactic sequence `all_goals exact Finset.prod_congr rfl fun τ _ => by rw [MvPolynomial.map_rename]`. Rewrite using `[MvPolynomial.coeff_smul, hten, MvPolynomial.coeff_map, smul_eq_mul]`. Conclude with `(intW D.what₂.places w).mul_mem hr (intCast_mem _ _)`.
+
+Consider the case `zero`. Rewrite using `[MvPolynomial.coeff_zero]`. Conclude with `(intW D.what₂.places w).zero_mem`. Consider the case `add x y _ _ hx hy`. Rewrite using `[MvPolynomial.coeff_add]`.
+
+Conclude with `(intW D.what₂.places w).add_mem hx hy`. Consider the case `neg x _ hx`. Rewrite using `[MvPolynomial.coeff_neg]`. Conclude with `(intW D.what₂.places w).neg_mem hx`.
+-/
 theorem coeff_mem_of_intSpanAt {n : ℕ} (w : D.what₂.places.Pl) (lam : D.what₂.Tau → DomWeight n)
     {p : MvPolynomial (D.what₂.Tau × Fin n × Fin n) D.what₂.LL} (hp : p ∈ IntSpanAt D w lam) (m : (D.what₂.Tau × Fin n × Fin n) →₀ ℕ) :
     coeff m p ∈ intW D.what₂.places w := by
@@ -128,6 +165,11 @@ theorem coeff_mem_of_intSpanAt {n : ℕ} (w : D.what₂.places.Pl) (lam : D.what
     rw [MvPolynomial.coeff_neg]
     exact (intW D.what₂.places w).neg_mem hx
 
+/- English proof (translation)
+Use `show x ∈ localization₂ (D.plEq w).asIdeal (1 : Submodule (𝓞 D.what₂.LL) D.what₂.LL)`. Establish `h1 : (1 : Submodule (𝓞 D.what₂.LL) D.what₂.LL) = latOf (K` using `D.what₂.LL) (fun _ : Unit => (1 : D.what₂.LL)) := by`. Rewrite using `[Submodule.one_eq_span]`. Unfold `latOf`. Rewrite using `[Set.range_const]`.
+
+Rewrite using `[h1, mem_localization_latticeOf_iff, Set.range_const, Submodule.mem_span_singleton]`. Conclude with `⟨⟨x, hx⟩, by rw [Subring.smul_def, smul_eq_mul, mul_one]⟩`.
+-/
 theorem intW_mem_locRing (w : D.what₂.places.Pl) {x : D.what₂.LL} (hx : x ∈ intW D.what₂.places w) : x ∈ locRing (D.plEq w) := by
   show x ∈ localization₂ (D.plEq w).asIdeal (1 : Submodule (𝓞 D.what₂.LL) D.what₂.LL)
   have h1 : (1 : Submodule (𝓞 D.what₂.LL) D.what₂.LL) = latOf (K := D.what₂.LL) (fun _ : Unit => (1 : D.what₂.LL)) := by
@@ -137,6 +179,13 @@ theorem intW_mem_locRing (w : D.what₂.places.Pl) {x : D.what₂.LL} (hx : x �
   rw [h1, mem_localization_latticeOf_iff, Set.range_const, Submodule.mem_span_singleton]
   exact ⟨⟨x, hx⟩, by rw [Subring.smul_def, smul_eq_mul, mul_one]⟩
 
+/- English proof (translation)
+Use `show (∃ s ∈ P.primeCompl, s • e x ∈ A.map ((e : V →ₗ[K] W).restrictScalars (𝓞 K))) ↔ ∃ s ∈ P.primeCompl, s • x ∈ A`. Establish `key : ∀ (s : 𝓞 K) (x : V), e (s • x) = s • e x` using `fun s x => (e : V →ₗ[K] W).map_smul_of_tower s x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hx⟩`. Take `⟨z, hz, hze⟩` from `Submodule.mem_map.mp hx`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `hzx : z = s • x` using `e.injective (by rw [key]; exact hze)`. Rewrite using `[← hzx]` and apply the resulting hypothesis. Introduce and unpack `⟨s, hs, hx⟩`. Conclude with `⟨s, hs, Submodule.mem_map.mpr ⟨s • x, hx, by`.
+
+Rewrite using `[LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, key]⟩⟩`.
+-/
 theorem mem_localization_map_equiv {K V W : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
     (P : Ideal (𝓞 K)) [P.IsPrime] (e : V ≃ₗ[K] W) (A : Submodule (𝓞 K) V) (x : V) :
@@ -161,6 +210,13 @@ section Int
 
 variable {D : D7} {u : D.what₂.Word} (CV : ColVal D u)
 
+/- English proof (translation)
+Establish `hb : ∀ i, crdQ CV c τ ((CV.Q c τ).b ((CV.eQ c τ).symm i)) = Pi.single i 1`. Introduce `i`. Unfold `crdQ`. Rewrite using `[← Basis.reindex_apply]`. Use extensionality with `j`.
+
+Simplify using `[Basis.equivFun_apply, Finsupp.single_apply, Pi.single_apply, eq_comm]`. Unfold `latOf colLat`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congrArg (Submodule.span _) (congrArg Set.range ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `j a`.
+
+Simplify using `only [Function.comp_apply, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, map_sum, map_smul, hb]`. Simplify using `[Pi.single_apply]`.
+-/
 theorem colLat_eq_map (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (B : GL (Fin (D.R.N 0)) D.what₂.LL) :
     colLat B = (latOf (K := D.what₂.LL) fun a : Fin (D.R.N 0) =>
       ∑ i, (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL) i a • (CV.Q c τ).b ((CV.eQ c τ).symm i)).map
@@ -178,6 +234,9 @@ theorem colLat_eq_map (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (B : GL (Fin 
   simp only [Function.comp_apply, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, map_sum, map_smul, hb]
   simp [Pi.single_apply]
 
+/- English proof (translation)
+Use `⟨(Matrix.isUnit_iff_isUnit_det _).mp B.isUnit, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[← mem_localization_iff_localizationAtPlace, ← mem_localization_latticeOf_iff D w, ← mem_localization_map_equiv (D.plEq w).asIdeal (crdQ CV c τ) (CV.Q c τ).L x, ← mem_localization_map_equiv (D.plEq w).asIdeal (crdQ CV c τ) (latOf (K := D.what₂.LL) fun a : Fin (D.R.N 0) => ∑ i, (B …`. Express the relevant statement in the definitionally equal form `crdQ CV c τ x ∈ localization₂ (D.plEq w).asIdeal (MQ CV c τ) ↔ _`. Rewrite using `[hB]`.
+-/
 theorem locBasis_of_isBasisAt (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (w : D.what₂.places.Pl) (B : GL (Fin (D.R.N 0)) D.what₂.LL)
     (hB : IsBasisAt (D.plEq w) (MQ CV c τ) B) :
     LocBasis D w (CV.Q c τ) (CV.eQ c τ) (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL) := by

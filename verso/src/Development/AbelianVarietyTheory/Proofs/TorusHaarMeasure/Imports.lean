@@ -13,6 +13,17 @@ namespace GlobalTheory.HighOrderVanishing
 
 open GlobalTheory.UpperModel
 
+/- English proof (translation)
+Introduce `E _ _ _ r X Xa Fl f hg hO`. Assume the negation of the conclusion as `h0`. Establish `hg0 : ∃ x ∈ X.dom, f x ≠ 0` using `by push Not at h0`. Conclude with `h0`. Take `⟨k, hk⟩` from `exists_s_ne Fl`.
+
+Establish `d1` using `hg.1.1`. Establish `d2` using `Xa.secondTheta_vanishes.1.1.1.1`. Establish `d3` using `Xa.firstTheta_vanishes.1.1.1.1`. Establish `d4` using `Xa.et_sec.1`. Establish `d5` using `(Fl.s_van k).1.1.1.1`.
+
+Take `⟨x, hx, hne⟩` from `exists_mul_ne (((d1.mul d2).mul d3).mul d4) d5 (exists_mul_ne ((d1.mul d2).mul d3) d4 (exists_mul_ne (d1.mul d2) d3 (exists_mul_ne d1 d2 hg0 Xa.secondTheta_ne_zero) Xa.firstTheta_ne_zero) Xa.et_ne) hk`. Simplify using `only [Pi.mul_apply, ne_eq, mul_eq_zero, not_or] at hne`. Take `⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩` from `hne`. Take `⟨x0, hx0, hs0, hpos, hmax⟩` from `GlobalTheory.QuotientMax.main E r X Xa Fl f hg hO ⟨x, hx, by`. Establish `p1` using `pnorm_pos X (Xa.Fp + Xa.T • Xa.L) (P := f) hx h1`.
+
+Establish `p2` using `pnorm_pos X ((nd X + 4) • Xa.L - Xa.Fp) hx h2`. Establish `p3` using `pnorm_pos X (2 • Xa.L - Xa.de) hx h3`. Establish `p4` using `pnorm_pos X ((Xa.i * (Xa.g0 / 2)) • Xa.de) hx h4`. Establish `p5 : 0 < ∑ k, X.pnorm Xa.L (Fl.s k) x ^ 2` using `Finset.sum_pos' (fun _ _ => sq_nonneg _) ⟨k, Finset.mem_univ _, pow_pos (pnorm_pos X _ hx h5) 2⟩`. Use the proof step `positivity⟩`.
+
+Conclude with `GlobalTheory.QuotNoMax.no_pos_max E r X Xa Fl f hg.1 x0 hx0 hs0 hpos hmax`.
+-/
 theorem eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa) (f : Frame X.Ψ r → ℂ), X.IsBddSec (Xa.Fp + Xa.T • Xa.L) f → (∀ j, (fun z : V (nd X) => f (cpt X (Fl.xs j) z)) =O[𝓝 0] fun z => ‖z‖ ^ (Xa.T + nd X + 7)) → ∀ x ∈ X.dom, f x = 0 := by
   intro E _ _ _ r X Xa Fl f hg hO
   by_contra h0

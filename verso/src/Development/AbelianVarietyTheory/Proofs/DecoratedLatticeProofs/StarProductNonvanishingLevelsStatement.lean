@@ -13,5 +13,8 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.MiS
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLocalRing GlobalTheory.FinPl
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MiTop.miStar2_of_families | exact GlobalTheory.MiTop.miStar2_of_families | (intros; apply GlobalTheory.MiTop.miStar2_of_families <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.star_product_nonvanishing_levels : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraModules → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), BotHyp W → LevHyp W → FamAllQ W → ServedQ W → PuNZ D → (cxW W).MIstar2 (W.Q.F.eV (cxW W).zs) W.Q.sEE := by
   first | exact @GlobalTheory.MiTop.miStar2_of_families | exact GlobalTheory.MiTop.miStar2_of_families | (intros; apply GlobalTheory.MiTop.miStar2_of_families <;> assumption)

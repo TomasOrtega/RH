@@ -11,6 +11,9 @@ section Surj
 
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[Scheme.germ_stalkClosedPointTo]`. Simplify using `only [Scheme.Hom.appLE]`. Both sides reduce to the same expression.
+-/
 theorem germ_closedPoint_eq_appLE {R : CommRingCat.{0}} [IsLocalRing R] (f : Spec R ⟶ X) (U : X.Opens)
     (hU : f (IsLocalRing.closedPoint R) ∈ U) :
     X.presheaf.germ U _ hU ≫ Scheme.stalkClosedPointTo f =
@@ -19,6 +22,11 @@ theorem germ_closedPoint_eq_appLE {R : CommRingCat.{0}} [IsLocalRing R] (f : Spe
   simp only [Scheme.Hom.appLE]
   rfl
 
+/- English proof (translation)
+Substitute `hw` using the available equality. Establish `key : (Spec.map φ ≫ z).appLE U ⊤ (Scheme.preimage_eq_top_of_closedPoint_mem _ h2).ge ≫ (Scheme.ΓSpecIso S).hom = z.appLE U ⊤ (Scheme.preimage_eq_top_of_closedPoint_mem z h1).ge ≫ (Scheme.ΓSpecIso R).hom ≫ φ`. Establish `e₂ : (⊤ : (Spec S).Opens) ≤ (Spec.map φ) ⁻¹ᵁ ⊤` using `by simp`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (Spec.map φ) z U ⊤ ⊤ (Scheme.preimage_eq_top_of_closedPoint_mem z h1).ge e₂, Category.assoc, ← Scheme.ΓSpecIso_naturality, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+
+Establish `e1` using `congrArg (fun g => (g ≫ φ).hom t) (germ_closedPoint_eq_appLE z U h1)`. Establish `e2` using `congrArg (fun g => g.hom t) (germ_closedPoint_eq_appLE (Spec.map φ ≫ z) U h2)`. Establish `e3` using `congrArg (fun g => g.hom t) key`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e1 e2 e3`. Rewrite using `[e1, e2, e3]`.
+-/
 theorem val_comp_spec {R S : CommRingCat.{0}} [IsLocalRing R] [IsLocalRing S] (φ : R ⟶ S) (z : Spec R ⟶ X)
     (w : Spec S ⟶ X) (hw : Spec.map φ ≫ z = w) (U : X.Opens)
     (h1 : z (IsLocalRing.closedPoint R) ∈ U) (h2 : w (IsLocalRing.closedPoint S) ∈ U) (t : Γ(X, U)) :
@@ -43,6 +51,11 @@ variable {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {Ω' : Typ
 def DomAt (ξ : Spec (CommRingCat.of Ω) ⟶ X) (i : Ω →+* Ω') (A : ValuationSubring Ω') (p : Cpt ξ) : Prop :=
   ∃ ν : X.presheaf.stalk p.1 →+* A, IsLocalHom ν ∧ ∀ s, (ν s : Ω') = i (genMap ξ p s)
 
+/- English proof (translation)
+Take `⟨ν, hloc, hν⟩` from `h`. Take `⟨s, rfl⟩` from `RingHom.mem_range.mp ha`. Establish `hu : IsUnit (ν s)`. Use `IsUnit.of_mul_eq_one (a := ν s) ⟨i (genMap ξ p s)⁻¹, hi⟩ ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show (ν s : Ω') * i (genMap ξ p s)⁻¹ = 1`. Rewrite using `[hν s, ← map_mul, mul_inv_cancel₀ h0, map_one]`. Establish `hs : IsUnit s` using `(isUnit_map_iff ν s).mp hu`. Use `RingHom.mem_range.mpr ⟨↑hs.unit⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_units_inv, IsUnit.unit_spec]`.
+-/
 theorem DomAt.inv_mem {i : Ω →+* Ω'} {A : ValuationSubring Ω'} {p : Cpt ξ} (h : DomAt ξ i A p) {a : Ω}
     (h0 : a ≠ 0) (ha : a ∈ regAt ξ p) (hi : i a⁻¹ ∈ A) : a⁻¹ ∈ regAt ξ p := by
   obtain ⟨ν, hloc, hν⟩ := h
@@ -56,6 +69,9 @@ theorem DomAt.inv_mem {i : Ω →+* Ω'} {A : ValuationSubring Ω'} {p : Cpt ξ}
   refine RingHom.mem_range.mpr ⟨↑hs.unit⁻¹, ?_⟩
   rw [map_units_inv, IsUnit.unit_spec]
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun g => g.hom t) (X.presheaf.germ_stalkSpecializes hr r.2)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Use `show (Scheme.stalkClosedPointTo ξ).hom ((X.presheaf.stalkSpecializes r.2).hom ((X.presheaf.germ U r.1 hr).hom t)) = _`. Rewrite using `[e]`.
+-/
 theorem genMap_germ (r : Cpt ξ) {U : X.Opens} (hr : r.1 ∈ U) (t : Γ(X, U)) :
     genMap ξ r ((X.presheaf.germ U r.1 hr).hom t) =
       (Scheme.stalkClosedPointTo ξ).hom ((X.presheaf.germ U (genPt ξ) (r.2.mem_open U.isOpen hr)).hom t) := by
@@ -64,6 +80,13 @@ theorem genMap_germ (r : Cpt ξ) {U : X.Opens} (hr : r.1 ∈ U) (t : Γ(X, U)) :
   show (Scheme.stalkClosedPointTo ξ).hom ((X.presheaf.stalkSpecializes r.2).hom ((X.presheaf.germ U r.1 hr).hom t)) = _
   rw [e]
 
+/- English proof (translation)
+Take `⟨ν, hν1, hν⟩` from `h`. Take `⟨ν', hν1', hν'⟩` from `h'`. Establish `key : ∀ b : Γ(X, U), p.1 ∈ X.basicOpen b ↔ p'.1 ∈ X.basicOpen b`. Introduce `b`. Establish `e : ν ((X.presheaf.germ U p.1 hp).hom b) = ν' ((X.presheaf.germ U p'.1 hp').hom b)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hν, hν', genMap_germ]`. Rewrite using `[X.mem_basicOpen b p.1 hp, X.mem_basicOpen b p'.1 hp', ← isUnit_map_iff ν, ← isUnit_map_iff ν', e]`. Establish `sp : ∀ {a c : X}, a ∈ U → c ∈ U → (∀ b : Γ(X, U), a ∈ X.basicOpen b → c ∈ X.basicOpen b) → c ⤳ a`. Introduce `a c ha hc hab`.
+
+Rewrite using `[specializes_iff_forall_open]`. Introduce `s hs has`. Take `⟨b, hb, hab'⟩` from `hU.exists_basicOpen_le (V := ⟨s, hs⟩) ⟨a, has⟩ ha`. Conclude with `hb (hab b hab')`. Conclude with `((sp hp' hp (fun b => (key b).2)).antisymm (sp hp hp' (fun b => (key b).1))).eq`.
+-/
 theorem DomAt.eq_of_mem_affine {i : Ω →+* Ω'} {A : ValuationSubring Ω'} {p p' : Cpt ξ} (h : DomAt ξ i A p)
     (h' : DomAt ξ i A p') {U : X.Opens} (hU : IsAffineOpen U) (hp : p.1 ∈ U) (hp' : p'.1 ∈ U) : p.1 = p'.1 := by
   obtain ⟨ν, hν1, hν⟩ := h
@@ -82,6 +105,11 @@ theorem DomAt.eq_of_mem_affine {i : Ω →+* Ω'} {A : ValuationSubring Ω'} {p 
     exact hb (hab b hab')
   exact ((sp hp' hp (fun b => (key b).2)).antisymm (sp hp hp' (fun b => (key b).1))).eq
 
+/- English proof (translation)
+Use `⟨(Scheme.stalkClosedPointTo z).hom, inferInstance, fun s => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, t, rfl⟩` from `X.presheaf.exists_germ_eq s`. Establish `hg : genPt ξ ∈ U` using `h.mem_open U.isOpen hU`. Establish `hw : (Spec.map (CommRingCat.ofHom i) ≫ ξ) (IsLocalRing.closedPoint Ω') ∈ U`. Rewrite using `[← hz]`.
+
+Conclude with `((IsLocalRing.specializes_closedPoint _).map z.continuous).mem_open U.isOpen hU`. Establish `e1` using `val_comp_spec (CommRingCat.ofHom (algebraMap A Ω')) z _ hz U hU hw t`. Establish `e2` using `val_comp_spec (CommRingCat.ofHom i) ξ _ rfl U hg hw t`. Establish `e3` using `congrArg i (genMap_germ (ξ := ξ) ⟨z (IsLocalRing.closedPoint A), h⟩ hU t)`. Conclude with `e1.trans (e2.symm.trans e3.symm)`.
+-/
 theorem domAt_of_spec {i : Ω →+* Ω'} {A : ValuationSubring Ω'} (z : Spec (CommRingCat.of A) ⟶ X)
     (hz : Spec.map (CommRingCat.ofHom (algebraMap A Ω')) ≫ z = Spec.map (CommRingCat.ofHom i) ≫ ξ)
     (h : genPt ξ ⤳ z (IsLocalRing.closedPoint A)) :
@@ -97,6 +125,15 @@ theorem domAt_of_spec {i : Ω →+* Ω'} {A : ValuationSubring Ω'} (z : Spec (C
   have e3 := congrArg i (genMap_germ (ξ := ξ) ⟨z (IsLocalRing.closedPoint A), h⟩ hU t)
   exact e1.trans (e2.symm.trans e3.symm)
 
+/- English proof (translation)
+Set `g : X.presheaf.stalk p.1 →+* Ω'` to `i.comp (genMap ξ p)`. Establish `hg : Function.Injective g` using `i.injective.comp hinj`. Take `⟨A, hA⟩` from `LocalSubring.exists_le_valuationSubring (LocalSubring.range g)`. Take `⟨hle, hloc⟩` from `hA`. Establish `hmem : ∀ s, g s ∈ A.toSubring` using `fun s => hle ⟨s, rfl⟩`.
+
+Use `⟨A, g.codRestrict A.toSubring hmem, ⟨fun s hs => ?_⟩, fun s => rfl⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hs.exists_right_inv`. Establish `hv' : g s * (v : Ω') = 1` using `congrArg Subtype.val hv`. Set `y : (LocalSubring.range g).toSubring` to `⟨g s, ⟨s, rfl⟩⟩`. Establish `hy : IsUnit y`.
+
+Apply `hloc.map_nonunit` to reduce the goal to its premises. Use `IsUnit.of_mul_eq_one ⟨v, v.2⟩ ?_` and prove the remaining obligations. Conclude with `Subtype.ext hv'`. Take `⟨w, hw⟩` from `hy.exists_right_inv`. Take `⟨s', hs'⟩` from `w.2`.
+
+Use `IsUnit.of_mul_eq_one s' ?_` and prove the remaining obligations. Apply `hg` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, hs']`. Conclude with `congrArg Subtype.val hw`.
+-/
 private theorem exists_domAt_of_injective_genMap (i : Ω →+* Ω') (p : Cpt ξ) (hinj : Function.Injective (genMap ξ p)) :
     ∃ A : ValuationSubring Ω', DomAt ξ i A p := by
   let g : X.presheaf.stalk p.1 →+* Ω' := i.comp (genMap ξ p)
@@ -119,6 +156,11 @@ private theorem exists_domAt_of_injective_genMap (i : Ω →+* Ω') (p : Cpt ξ)
   rw [map_mul, map_one, hs']
   exact congrArg Subtype.val hw
 
+/- English proof (translation)
+Use `⟨hxc, fun c' => ?_⟩` and prove the remaining obligations. Establish `hc'' : x c'' ≠ 0` using `h''.1`. Establish `h1 : x c / x c'' ∈ regAt ξ p` using `h''.2 c`. Establish `h0 : x c / x c'' ≠ 0` using `div_ne_zero hxc hc''`. Establish `h2 : (x c / x c'')⁻¹ ∈ regAt ξ p` using `h.inv_mem h0 h1 (by rw [inv_div]; exact hA c'')`.
+
+Establish `e : x c' / x c = (x c' / x c'') * (x c / x c'')⁻¹`. Rewrite using `[inv_div, div_mul_div_cancel₀ hc'']`. Rewrite using `[e]`. Conclude with `mul_mem (h''.2 c') h2`.
+-/
 private theorem inChart_of_domAt_of_div_mem {i : Ω →+* Ω'} {A : ValuationSubring Ω'} {p : Cpt ξ} (h : DomAt ξ i A p)
     {κ : Type} {x : κ → Ω} {c : κ} (hxc : x c ≠ 0) (hA : ∀ c', i (x c' / x c) ∈ A) {c'' : κ}
     (h'' : InChart ξ x c'' p) : InChart ξ x c p := by
@@ -132,12 +174,28 @@ private theorem inChart_of_domAt_of_div_mem {i : Ω →+* Ω'} {A : ValuationSub
   rw [e]
   exact mul_mem (h''.2 c') h2
 
+/- English proof (translation)
+Rewrite using `[← A.valuation_le_one_iff, map_div₀]`. Establish `hb' : A.valuation b ≠ 0` using `(Valuation.ne_zero_iff _).2 hb`. Conclude with `div_le_one_of_le₀ h zero_le'`.
+-/
 private theorem div_mem_of_valuation_le {K : Type} [Field K] (A : ValuationSubring K) {a b : K} (hb : b ≠ 0)
     (h : A.valuation a ≤ A.valuation b) : a / b ∈ A := by
   rw [← A.valuation_le_one_iff, map_div₀]
   have hb' : A.valuation b ≠ 0 := (Valuation.ne_zero_iff _).2 hb
   exact div_le_one_of_le₀ h zero_le'
 
+/- English proof (translation)
+Introduce `q`. Take `⟨A, hdom⟩` from `exists_domAt_of_injective_genMap i ⟨q, hg q⟩ (hc.gen.inj ⟨q, hg q⟩)`. Establish `hex : (ValuativeCriterion.Existence ⊓ @QuasiCompact) s'`. Rewrite using `[← UniversallyClosed.eq_valuativeCriterion]`. Use `infer_instance`.
+
+Set `S : ValuativeCommSq s'` to `{ R := A, K := Ω', i₁ := ξ', i₂ := specZIsTerminal.from _, commSq := ⟨specZIsTerminal.hom_ext _ _⟩ }`. Take `⟨⟨l, hl1, -⟩⟩` from `(hex.1 S).exists_lift`. Establish `hl : Spec.map (CommRingCat.ofHom (algebraMap A Ω')) ≫ l = ξ'` using `hl1`. Establish `hz : Spec.map (CommRingCat.ofHom (algebraMap A Ω')) ≫ (l ≫ f) = Spec.map (CommRingCat.ofHom i) ≫ ξ`. Rewrite using `[← Category.assoc, hl]`.
+
+Conclude with `hd`. Establish `hdom'` using `domAt_of_spec (i := i) (A := A) (l ≫ f) hz (hg _)`. Take `⟨c₁, hc₁⟩` from `hc.cover ⟨q, hg q⟩`. Establish `: Nonempty κ` using `⟨c₁⟩`. Take `⟨c, hcmax⟩` from `Finite.exists_max (fun c => A.valuation (i (x c)))`.
+
+Establish `hxc : x c ≠ 0`. Introduce `h0`. Establish `h1` using `hcmax c₁`. Simplify using `only [h0, map_zero, le_zero_iff, Valuation.zero_iff] at h1`. Conclude with `hc₁.1 ((map_eq_zero i).1 h1)`.
+
+Establish `hA : ∀ c', i (x c' / x c) ∈ A` using `fun c' => by`. Rewrite using `[map_div₀]`. Conclude with `div_mem_of_valuation_le A ((map_ne_zero i).2 hxc) (hcmax c')`. Take `⟨U, hUaff, hUmem⟩` from `hc.affine c hxc`. Establish `hq : q ∈ U` using `(hUmem q).2 ⟨hg q, inChart_of_domAt_of_div_mem hdom hxc hA hc₁⟩`.
+
+Take `⟨c₂, hc₂⟩` from `hc.cover ⟨(l ≫ f) (IsLocalRing.closedPoint A), hg _⟩`. Establish `hq' : (l ≫ f) (IsLocalRing.closedPoint A) ∈ U` using `(hUmem _).2 ⟨hg _, inChart_of_domAt_of_div_mem hdom' hxc hA hc₂⟩`. Establish `e` using `DomAt.eq_of_mem_affine hdom hdom' hUaff hq hq'`. Conclude with `⟨l (IsLocalRing.closedPoint A), e.symm⟩`.
+-/
 theorem surjective_of_dominates (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (κ : Type)
     [Finite κ] (x : κ → Ω) (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X')
     (s' : X' ⟶ Spec (CommRingCat.of ℤ)) (f : X' ⟶ X) (i : Ω →+* Ω') (hc : CoordTie ℤ ξ x)

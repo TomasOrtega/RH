@@ -22,8 +22,14 @@ section One
 
 variable {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ) (L : CmList A)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Lv.good_σ₀ (κ : Lv A) : Formalism.L2.PjFree.GoodEmb κ.c κ.σ₀ := rfl
 
+/- English proof (translation)
+The claim follows from `(s.unf _ κ.good_σ₀).1`.
+-/
 theorem FinalTheorems.isUnf : Formalism.L2.PjFree.IsUnf (s.U κ.σ₀) := (s.unf _ κ.good_σ₀).1
 
 instance FinalTheorems.compNe : Nonempty s.Comp := (s.unf _ κ.good_σ₀).2.1
@@ -40,6 +46,9 @@ def Sig.wt (S : Sig A N j) (L : CmList A) : (D.what₂.Tau → Fin N → ℤ) �
   map_zero' := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Simplify using `[Sig.wt]`.
+-/
 example (S : Sig A N j) (L : CmList A) (la : D.what₂.Tau → Fin N → ℤ) (t : D.what₂.Tau) (i : Fin (S.Dw.p + S.Dw.q)) :
     S.wt L la (L.ψ t) i = la t (Fin.cast S.rank_eq i) := by
   simp [Sig.wt]
@@ -112,6 +121,9 @@ def famOf (hg : F.κg.primes = Finset.univ.image D.host.g) (P : FormsOver K R k)
   U := shimOf K R k
   forms := P
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (hg : F.κg.primes = Finset.univ.image D.host.g) (P : FormsOver K R k) (w : Dat D (Lv A)) :
     ((famOf K R k hg P).U w).Comp = (F.at w).Comp := rfl
 
@@ -121,6 +133,9 @@ section Comparison₂
 
 def ambOf (Q : Par D) (h : Q.PinHost) : Amb D := ⟨Q.H, h.1, h.2.1, h.2.2.1⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (Q : Par D) (h : Q.PinHost) : (ambOf Q h).H = Q.H := rfl
 
 abbrev MD {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : Type 1 :=

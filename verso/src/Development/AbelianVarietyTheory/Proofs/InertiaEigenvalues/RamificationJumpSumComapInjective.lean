@@ -5,6 +5,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 
 namespace GlobalTheory.PMon.Ram
 
+/- English proof (translation)
+Introduce `G G' _ _ j R B hj`. Unfold `jumpSum`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `t`. Establish `h1 : (⊤ ⊓ (R t).comap j ≤ B.comap j) ↔ (j.range ⊓ R t ≤ B)`.
+
+Rewrite using `[top_inf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h x ⟨⟨y, rfl⟩, hy⟩`. Conclude with `h (show y ∈ (R t).comap j from hy)`. Introduce `h y hy`.
+
+Conclude with `h ⟨⟨y, rfl⟩, hy⟩`. Establish `h2 : Nat.card ↥(⊤ ⊓ (R t).comap j) = Nat.card ↥(j.range ⊓ R t)`. Rewrite using `[top_inf_eq, ← Subgroup.map_comap_eq, Subgroup.card_map_of_injective hj]`. Rewrite using `[h2]`. Distinguish the cases in `h : j.range ⊓ R t ≤ B`.
+
+Rewrite using `[if_pos (h1.mpr h), if_pos h]`. Rewrite using `[if_neg (fun h' => h (h1.mp h')), if_neg h]`.
+-/
 theorem jumpSum_comap_injective :
     ∀ (G G' : Type) [Group G] [Group G'] (j : G' →* G) (R : ℕ → Subgroup G) (B : Subgroup G), Function.Injective j →
       jumpSum (fun t => (R t).comap j) ⊤ (B.comap j) = jumpSum R j.range B := by

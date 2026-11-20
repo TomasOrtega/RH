@@ -16,6 +16,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 open TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Lie.free_finrank_of_isLocalRing | exact GlobalTheory.Lie.free_finrank_of_isLocalRing | (intros; apply GlobalTheory.Lie.free_finrank_of_isLocalRing <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lie_algebra_free_rank_degree : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} (R : Type) [CommRing R] [IsLocalRing R] (X : Obj F 𝔠 (Sp R)),
     Module.Free R X.Lie ∧ Module.Finite R X.Lie ∧ Module.finrank R X.Lie = Module.finrank ℚ F := by
   first | exact @GlobalTheory.Lie.free_finrank_of_isLocalRing | exact GlobalTheory.Lie.free_finrank_of_isLocalRing | (intros; apply GlobalTheory.Lie.free_finrank_of_isLocalRing <;> assumption)

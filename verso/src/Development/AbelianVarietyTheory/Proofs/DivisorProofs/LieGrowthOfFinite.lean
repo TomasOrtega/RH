@@ -7,6 +7,13 @@ noncomputable section
 
 open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrowth MeasureTheory Filter Topology
 
+/- English proof (translation)
+Set `ν : Measure (Lie E a)` to `Measure.addHaar`. Take `⟨α, hα, hlim⟩` from `GlobalTheory.T.exists_conjInvariant_approxIdentity_realLieSmoothing E a ν`. Take `⟨V, hVf, hVt, hV⟩` from `GlobalTheory.T.exists_finiteDimensional_space_automorphic_smoothings hP E a ν φ hφ`. Set `V' : Submodule ℂ (GA E a → ℂ)` to `V.map (Sm E a).subtype`. Establish `hc : IsClosed (V' : Set (GA E a → ℂ))` using `Submodule.closed_of_finiteDimensional V'`.
+
+Establish `hmem : ∀ n, smoothing ν (α n) φ.1 ∈ V'` using `fun n => by`. Take `⟨h, hv⟩` from `hV (α n) (hα n).1 (hα n).2`. Conclude with `⟨_, hv, rfl⟩`. Establish `hφ' : φ.1 ∈ V'` using `hc.mem_of_tendsto (tendsto_pi_nhds.2 fun g => hlim φ.1 φ.2 g) (Eventually.of_forall hmem)`. Take `⟨ψ, hψ, e⟩` from `hφ'`.
+
+Establish `e' : ψ = φ` using `Subtype.ext e`. Conclude with `hVt (e' ▸ hψ)`.
+-/
 theorem GlobalTheory.AutGrowth.tame_of_autForm (hP : GlobalTheory.Published.AutomorphicFormsFiniteGL) (E : Type) [Field E] [NumberField E]
     [IsTotallyComplex E] (a : ℕ) (φ : Sm E a) (hφ : IsAutForm φ) : φ ∈ tame E a := by
   let ν : Measure (Lie E a) := Measure.addHaar
@@ -23,6 +30,9 @@ theorem GlobalTheory.AutGrowth.tame_of_autForm (hP : GlobalTheory.Published.Auto
   have e' : ψ = φ := Subtype.ext e
   exact hVt (e' ▸ hψ)
 
+/- English proof (translation)
+Introduce `hP E _ _ _ a X φ hφ`. Conclude with `growth_of_tame (lie_mem_tame X (GlobalTheory.AutGrowth.tame_of_autForm hP E a φ hφ))`.
+-/
 theorem GlobalTheory.AutGrowth.lie_growth_of_finite : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E] [NumberField E]
     [IsTotallyComplex E] (a : ℕ) (X : GlobalTheory.CuspRep.Lie E a) (φ : GlobalTheory.CuspRep.Sm E a), GlobalTheory.CuspRep.IsAutForm φ →
     ∀ g : GlobalTheory.CuspRep.GA E a, ∃ (C : ℝ) (N : ℕ), ∀ y, ‖(GlobalTheory.CuspRep.lie E a X φ).1 (g * GlobalTheory.CuspRep.infGL E a y)‖ ≤

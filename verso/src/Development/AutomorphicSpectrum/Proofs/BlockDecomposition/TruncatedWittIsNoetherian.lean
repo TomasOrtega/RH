@@ -8,6 +8,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers Crystal
 
 namespace GlobalTheory.CompanionTheory.WittLevel
 
+/- English proof (translation)
+Introduce `l _ k _ _ _`. Unfold `Wc.Wm`. Use `infer_instance`.
+-/
 theorem isNoetherianRing_Wm_one :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing k l],
       IsNoetherianRing (Wc.Wm l k 1) := by

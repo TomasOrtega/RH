@@ -15,6 +15,11 @@ section Charts
 
 variable {X Y : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω']
 
+/- English proof (translation)
+Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem y hy => exact h y hy`. Consider the case `algebraMap n => simp`. Consider the case `add _ _ _ _ h1 h2 => rw [map_add]`.
+
+Conclude with `add_mem h1 h2`. Consider the case `mul _ _ _ _ h1 h2 => rw [map_mul]`. Conclude with `mul_mem h1 h2`.
+-/
 theorem map_adjoin_mem (i : Ω →+* Ω') (R : Subring Ω') {S : Set Ω} (h : ∀ a ∈ S, i a ∈ R) :
     ∀ a ∈ Algebra.adjoin ℤ S, i a ∈ R := by
   intro a ha
@@ -24,15 +29,28 @@ theorem map_adjoin_mem (i : Ω →+* Ω') (R : Subring Ω') {S : Set Ω} (h : �
   | add _ _ _ _ h1 h2 => rw [map_add]; exact add_mem h1 h2
   | mul _ _ _ _ h1 h2 => rw [map_mul]; exact mul_mem h1 h2
 
+/- English proof (translation)
+Take `⟨h, h1, h2⟩` from `RegAtDom.regAt_dominates X Ω ξ Y Ω' ξ' f i hf q`. Conclude with `⟨h, h1, h2 hg⟩`.
+-/
 theorem exists_isCtrOf {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω') ⟶ Y} {f : Y ⟶ X} {i : Ω →+* Ω'}
     (hf : Dominates ξ' ξ f i) (hg : IsCptGen ξ') (q : Cpt ξ') : ∃ h : genPt ξ ⤳ f q.1, IsCtrOf i ⟨f q.1, h⟩ q := by
   obtain ⟨h, h1, h2⟩ := RegAtDom.regAt_dominates X Ω ξ Y Ω' ξ' f i hf q
   exact ⟨h, h1, h2 hg⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hc.1, fun j => h.1 _ (hc.2 j)⟩`.
+-/
 theorem inChart_up {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω) ⟶ Y} {p : Cpt ξ} {q : Cpt ξ'}
     (h : IsCtrOf (RingHom.id Ω) p q) {ι : Type} {v : ι → Ω} {c : ι} (hc : InChart ξ v c p) : InChart ξ' v c q :=
   ⟨hc.1, fun j => h.1 _ (hc.2 j)⟩
 
+/- English proof (translation)
+Establish `hu : unitAt ξ p (v c / v d)`. Use `h.2 _ (hd.2 c) ⟨div_ne_zero hc.1 hd.1, h.1 _ (hd.2 c), ?_⟩` and prove the remaining obligations. Use `show (v c / v d)⁻¹ ∈ _`. Rewrite using `[inv_div]`. Conclude with `hc.2 d`.
+
+Use `⟨hc.1, fun j => ?_⟩` and prove the remaining obligations. Establish `e : v j / v c = v j / v d * (v c / v d)⁻¹`. Establish `h1` using `hc.1`. Establish `h2` using `hd.1`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e]`. Conclude with `mul_mem (hd.2 j) hu.2.2`.
+-/
 theorem inChart_down {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω) ⟶ Y} {p : Cpt ξ} {q : Cpt ξ'}
     (h : IsCtrOf (RingHom.id Ω) p q) {ι : Type} {v : ι → Ω} {d c : ι} (hd : InChart ξ v d p)
     (hc : InChart ξ' v c q) : InChart ξ v c p := by
@@ -49,16 +67,25 @@ theorem inChart_down {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRing
   rw [e]
   exact mul_mem (hd.2 j) hu.2.2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hc, fun _ => SheetDecomposition.BBase.mem_regAt_gen hg _⟩`.
+-/
 theorem inChart_gen {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hg : IsCptGen ξ) {ι : Type} {v : ι → Ω} {c : ι} (hc : v c ≠ 0) :
     InChart ξ v c ⟨genPt ξ, specializes_rfl⟩ :=
   ⟨hc, fun _ => SheetDecomposition.BBase.mem_regAt_gen hg _⟩
 
+/- English proof (translation)
+Take `⟨t, ht, hu, hta⟩` from `(SheetDecomposition.regular_function_chart_adjoin X Ω ξ ℤ κ x h c ⟨genPt ξ, specializes_rfl⟩ (inChart_gen h.gen hc) a).1 (SheetDecomposition.BBase.mem_regAt_gen h.gen a)`. Conclude with `⟨t, ht, hu.1, hta⟩`.
+-/
 theorem exists_mul_mem {ξ : Spec (CommRingCat.of Ω) ⟶ X} {κ : Type} {x : κ → Ω} (h : CoordTie ℤ ξ x) {c : κ}
     (hc : x c ≠ 0) (a : Ω) : ∃ t ∈ chRing ℤ x c, t ≠ 0 ∧ t * a ∈ chRing ℤ x c := by
   obtain ⟨t, ht, hu, hta⟩ := (SheetDecomposition.regular_function_chart_adjoin X Ω ξ ℤ κ x h c ⟨genPt ξ, specializes_rfl⟩ (inChart_gen h.gen hc) a).1
     (SheetDecomposition.BBase.mem_regAt_gen h.gen a)
   exact ⟨t, ht, hu.1, hta⟩
 
+/- English proof (translation)
+Use `⟨c, fun h => hc.1 (by simp [h]), map_adjoin_mem i _ ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `hc.2 j` as an intermediate fact. Simplify `this` using `[map_div₀]`.
+-/
 theorem mem_ctrSet {Ω₀ : Type} [Field Ω₀] {ξ' : Spec (CommRingCat.of Ω) ⟶ Y} {κ : Type} {x : κ → Ω₀} (i : Ω₀ →+* Ω)
     {c : κ} {p : Cpt ξ'} (hc : InChart ξ' (fun j => i (x j)) c p) : p ∈ ctrSet ℤ x i ξ' := by
   refine ⟨c, fun h => hc.1 (by simp [h]), map_adjoin_mem i _ ?_⟩
@@ -73,12 +100,18 @@ section Segre
 variable {X Y : Scheme.{0}} {Ω : Type} [Field Ω] {κ κ₁ κ₂ κ₃ : Type} {s : κ → Ω} {u₁ : κ₁ → Ω} {u₂ : κ₂ → Ω} {u₃ : κ₃ → Ω}
   {π₁ : κ → κ₁} {π₂ : κ → κ₂} {π₃ : κ → κ₃}
 
+/- English proof (translation)
+Rewrite `h` using `[hs]`. Conclude with `⟨left_ne_zero_of_mul (left_ne_zero_of_mul h), right_ne_zero_of_mul (left_ne_zero_of_mul h), right_ne_zero_of_mul h⟩`.
+-/
 theorem ne_zero_parts (hs : ∀ c, s c = u₁ (π₁ c) * u₂ (π₂ c) * u₃ (π₃ c)) {c : κ} (h : s c ≠ 0) :
     u₁ (π₁ c) ≠ 0 ∧ u₂ (π₂ c) ≠ 0 ∧ u₃ (π₃ c) ≠ 0 := by
   rw [hs] at h
   exact ⟨left_ne_zero_of_mul (left_ne_zero_of_mul h), right_ne_zero_of_mul (left_ne_zero_of_mul h),
     right_ne_zero_of_mul h⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `ne_zero_parts hs h`. Take `⟨c', e1, e2, e3⟩` from `ho j (π₂ c) (π₃ c)`. Use `⟨c', ?_⟩` and prove the remaining obligations. Rewrite using `[hs, hs, e1, e2, e3]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem ratio₁ (hs : ∀ c, s c = u₁ (π₁ c) * u₂ (π₂ c) * u₃ (π₃ c))
     (ho : ∀ c₁ c₂ c₃, ∃ c, π₁ c = c₁ ∧ π₂ c = c₂ ∧ π₃ c = c₃) {c : κ} (h : s c ≠ 0) (j : κ₁) :
     ∃ c', s c' / s c = u₁ j / u₁ (π₁ c) := by
@@ -88,6 +121,9 @@ theorem ratio₁ (hs : ∀ c, s c = u₁ (π₁ c) * u₂ (π₂ c) * u₃ (π�
   rw [hs, hs, e1, e2, e3]
   field_simp
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `ne_zero_parts hs h`. Take `⟨c', e1, e2, e3⟩` from `ho (π₁ c) j (π₃ c)`. Use `⟨c', ?_⟩` and prove the remaining obligations. Rewrite using `[hs, hs, e1, e2, e3]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem ratio₂ (hs : ∀ c, s c = u₁ (π₁ c) * u₂ (π₂ c) * u₃ (π₃ c))
     (ho : ∀ c₁ c₂ c₃, ∃ c, π₁ c = c₁ ∧ π₂ c = c₂ ∧ π₃ c = c₃) {c : κ} (h : s c ≠ 0) (j : κ₂) :
     ∃ c', s c' / s c = u₂ j / u₂ (π₂ c) := by
@@ -97,6 +133,9 @@ theorem ratio₂ (hs : ∀ c, s c = u₁ (π₁ c) * u₂ (π₂ c) * u₃ (π�
   rw [hs, hs, e1, e2, e3]
   field_simp
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `ne_zero_parts hs h`. Take `⟨c', e1, e2, e3⟩` from `ho (π₁ c) (π₂ c) j`. Use `⟨c', ?_⟩` and prove the remaining obligations. Rewrite using `[hs, hs, e1, e2, e3]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem ratio₃ (hs : ∀ c, s c = u₁ (π₁ c) * u₂ (π₂ c) * u₃ (π₃ c))
     (ho : ∀ c₁ c₂ c₃, ∃ c, π₁ c = c₁ ∧ π₂ c = c₂ ∧ π₃ c = c₃) {c : κ} (h : s c ≠ 0) (j : κ₃) :
     ∃ c', s c' / s c = u₃ j / u₃ (π₃ c) := by
@@ -106,6 +145,11 @@ theorem ratio₃ (hs : ∀ c, s c = u₁ (π₁ c) * u₂ (π₂ c) * u₃ (π�
   rw [hs, hs, e1, e2, e3]
   field_simp
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `ne_zero_parts hs h.1`. Use `⟨⟨h1, fun j => ?_⟩, ⟨h2, fun j => ?_⟩, ⟨h3, fun j => ?_⟩⟩` and prove the remaining obligations. Take `⟨c', e⟩` from `ratio₁ hs ho h.1 j`. Conclude with `e ▸ h.2 c'`. Take `⟨c', e⟩` from `ratio₂ hs ho h.1 j`.
+
+Conclude with `e ▸ h.2 c'`. Take `⟨c', e⟩` from `ratio₃ hs ho h.1 j`. Conclude with `e ▸ h.2 c'`.
+-/
 theorem inChart_parts (hs : ∀ c, s c = u₁ (π₁ c) * u₂ (π₂ c) * u₃ (π₃ c))
     (ho : ∀ c₁ c₂ c₃, ∃ c, π₁ c = c₁ ∧ π₂ c = c₂ ∧ π₃ c = c₃) {ξ : Spec (CommRingCat.of Ω) ⟶ X} {c : κ} {p : Cpt ξ}
     (h : InChart ξ s c p) : InChart ξ u₁ (π₁ c) p ∧ InChart ξ u₂ (π₂ c) p ∧ InChart ξ u₃ (π₃ c) p := by
@@ -118,6 +162,11 @@ theorem inChart_parts (hs : ∀ c, s c = u₁ (π₁ c) * u₂ (π₂ c) * u₃ 
   · obtain ⟨c', e⟩ := ratio₃ hs ho h.1 j
     exact e ▸ h.2 c'
 
+/- English proof (translation)
+Take `⟨n1, n2, n3⟩` from `ne_zero_parts hs h`. Use `map_adjoin_mem (RingHom.id Ω) R ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `e : s j / s c = u₁ (π₁ j) / u₁ (π₁ c) * (u₂ (π₂ j) / u₂ (π₂ c)) * (u₃ (π₃ j) / u₃ (π₃ c))`. Rewrite using `[hs, hs]`.
+
+Clear the denominators using the available nonvanishing facts. Use `show s j / s c ∈ R`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (h1 _) (h2 _)) (h3 _)`.
+-/
 theorem chRing_le (hs : ∀ c, s c = u₁ (π₁ c) * u₂ (π₂ c) * u₃ (π₃ c)) {c : κ} (h : s c ≠ 0) (R : Subring Ω)
     (h1 : ∀ j, u₁ j / u₁ (π₁ c) ∈ R) (h2 : ∀ j, u₂ j / u₂ (π₂ c) ∈ R) (h3 : ∀ j, u₃ j / u₃ (π₃ c) ∈ R) :
     ∀ a ∈ chRing ℤ s c, a ∈ R := by
@@ -137,6 +186,15 @@ section Normal
 
 variable {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Set `p : Cpt N.ξ` to `⟨q, N.all q⟩`. Establish `hinj : Function.Injective (genMap N.ξ p)` using `N.tie.gen.inj p`. Use `haveI hd : IsDomain (N.X.presheaf.stalk q) := hinj.isDomain (genMap N.ξ p)`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Use `letI : Algebra (N.X.presheaf.stalk q) Ω := (genMap N.ξ p).toAlgebra`.
+
+Use `haveI : FaithfulSMul (N.X.presheaf.stalk q) Ω := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Take `⟨c, hc⟩` from `N.tie.cover p`. Use `haveI : IsFractionRing (N.X.presheaf.stalk q) Ω := by`. Use `IsFractionRing.of_field _ _ fun a => ?_` and prove the remaining obligations. Take `⟨t, ht, h0, hta⟩` from `exists_mul_mem N.tie hc.1 a`.
+
+Take `⟨t', e⟩` from `(N.tie.ring c hc.1 t).1 ht p hc`. Take `⟨r', e'⟩` from `(N.tie.ring c hc.1 _).1 hta p hc`. Use `⟨r', t', ?_⟩` and prove the remaining obligations. Use `show a = genMap N.ξ p r' / genMap N.ξ p t'`. Rewrite using `[e, e', mul_div_cancel_left₀ _ h0]`.
+
+Use `(isIntegrallyClosed_iff Ω).2 fun {a} ha => ?_` and prove the remaining obligations. Establish `ha' : IsIntegral (regAt N.ξ p) a` using `IsIntegral.map_of_comp_eq (genMap N.ξ p).rangeRestrict (RingHom.id Ω) (RingHom.ext fun _ => rfl) ha`. Take `⟨g, hg⟩` from `hN p a ha'`. Conclude with `⟨g, hg⟩`.
+-/
 theorem stalk_normal {κ : Type} {x : κ → Ω} (N : PModel ℤ x) (hN : Flat.NormalCpt N.ξ) (q : N.X) :
     IsDomain (N.X.presheaf.stalk q) ∧ IsIntegrallyClosed (N.X.presheaf.stalk q) := by
   let p : Cpt N.ξ := ⟨q, N.all q⟩
@@ -163,6 +221,25 @@ theorem stalk_normal {κ : Type} {x : κ → Ω} (N : PModel ℤ x) (hN : Flat.N
 variable {κ κ₁ κ₂ κ₃ : Type} {s : κ → Ω} {u₁ : κ₁ → Ω} {u₂ : κ₂ → Ω} {u₃ : κ₃ → Ω}
   {π₁ : κ → κ₁} {π₂ : κ → κ₂} {π₃ : κ → κ₃}
 
+/- English proof (translation)
+Set `p₀ : Cpt M.ξ` to `⟨genPt M.ξ, specializes_rfl⟩`. Take `⟨d₁, hd₁⟩` from `h₁ p₀`. Take `⟨d₂, hd₂⟩` from `h₂ p₀`. Take `⟨d₃, hd₃⟩` from `M.tie.cover p₀`. Take `⟨c₀, e₁, e₂, e₃⟩` from `ho d₁ d₂ d₃`.
+
+Establish `hc₀ : s c₀ ≠ 0`. Rewrite using `[hs, e₁, e₂, e₃]`. Conclude with `mul_ne_zero (mul_ne_zero hd₁.1 hd₂.1) hd₃.1`. Establish `hle : ∀ a ∈ chRing ℤ u₃ d₃, a ∈ chRing ℤ s c₀`. Use `map_adjoin_mem (RingHom.id Ω) (chRing ℤ s c₀).toSubring ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨c', e⟩` from `ratio₃ hs ho hc₀ j`. Rewrite `e` using `[e₃]`. Use `show u₃ j / u₃ d₃ ∈ chRing ℤ s c₀`. Rewrite using `[← e]`.
+
+Conclude with `Algebra.subset_adjoin ⟨c', rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨N⟩ : Nonempty (PModel ℤ s) := by`. Use `nonempty_pModel_of_chart ℤ Ω κ s ⟨c₀, hc₀, fun a => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, h0, hta⟩` from `exists_mul_mem M.tie hd₃.1 a`. Conclude with `⟨t * a, hle _ hta, t, hle _ ht, by rw [mul_div_cancel_left₀ _ h0]⟩`.
+
+Use `⟨N, ?_⟩` and prove the remaining obligations. Take `⟨g, hg, -⟩` from `GlobalTheory.T.existsUnique_dominating_map ℤ Ω κ₃ u₃ M ℤ Ω κ s N (RingHom.id Ω) fun p' => by`. Take `⟨c, hc⟩` from `N.tie.cover p'`. Conclude with `mem_ctrSet (RingHom.id Ω) (inChart_parts hs ho hc).2.2`. Introduce `q a ha`.
+
+Take `⟨h, hctr⟩` from `exists_isCtrOf hg N.tie.gen q`. Take `⟨c, hc⟩` from `N.tie.cover q`. Take `⟨b₁, b₂, b₃⟩` from `inChart_parts hs ho hc`. Set `p : Cpt M.ξ` to `⟨g q.1, h⟩`. Take `⟨f₁, hf₁⟩` from `h₁ p`.
+
+Take `⟨f₂, hf₂⟩` from `h₂ p`. Take `⟨f₃, hf₃⟩` from `M.tie.cover p`. Establish `k₁` using `inChart_down hctr hf₁ b₁`. Establish `k₂` using `inChart_down hctr hf₂ b₂`. Establish `k₃` using `inChart_down hctr hf₃ b₃`.
+
+Establish `hR : ∀ a ∈ chRing ℤ s c, a ∈ regAt M.ξ p` using `chRing_le hs hc.1 _ k₁.2 k₂.2 k₃.2`. Establish `hreg : regAt N.ξ q = regAt M.ξ p`. Use `le_antisymm (fun a ha => ?_) (fun a ha => hctr.1 a ha)` and prove the remaining obligations. Take `⟨t, ht, hu, hta⟩` from `(SheetDecomposition.regular_function_chart_adjoin N.X Ω N.ξ ℤ κ s N.tie c q hc a).1 ha`. Establish `hup : unitAt M.ξ p t` using `hctr.2 t (hR t ht) hu`.
+
+Establish `e : a = t⁻¹ * (t * a)` using `by rw [inv_mul_cancel_left₀ hu.1]`. Rewrite using `[e]`. Conclude with `mul_mem hup.2.2 (hR _ hta)`. Rewrite `ha`, the goal using `[hreg]`. Conclude with `hN p a ha`.
+-/
 theorem exists_normal_pModel [Finite κ] [Finite κ₃] (hs : ∀ c, s c = u₁ (π₁ c) * u₂ (π₂ c) * u₃ (π₃ c))
     (ho : ∀ c₁ c₂ c₃, ∃ c, π₁ c = c₁ ∧ π₂ c = c₂ ∧ π₃ c = c₃) (M : PModel ℤ u₃) (hN : Flat.NormalCpt M.ξ)
     (h₁ : ∀ p : Cpt M.ξ, ∃ d, InChart M.ξ u₁ d p) (h₂ : ∀ p : Cpt M.ξ, ∃ d, InChart M.ξ u₂ d p) :
@@ -221,6 +298,33 @@ section Model
 
 variable {Ω₁ Ω₂ Ω : Type} [Field Ω₁] [Field Ω₂] [Field Ω]
 
+/- English proof (translation)
+Use `letI := i₁.toAlgebra`. Take `⟨S, hS⟩` from `hfin.fg_top`. Take `⟨d₁, hd₁⟩` from `t₁.cover ⟨genPt ξ₁, specializes_rfl⟩`. Take `⟨d₂, hd₂⟩` from `t₂.cover ⟨genPt ξ₂, specializes_rfl⟩`. Set `u₁ : κ₁ → Ω` to `fun j => i₁ (x₁ j)`.
+
+Set `u₂ : κ₂ → Ω` to `fun j => i₂ (x₂ j)`. Set `w : Option S → Ω` to `fun o => o.elim 1 Subtype.val`. Set `s : κ₁ × κ₂ × Option S → Ω` to `fun c => u₁ c.1 * u₂ c.2.1 * w c.2.2`. Establish `hs : ∀ c, s c = u₁ c.1 * u₂ c.2.1 * w c.2.2` using `fun _ => rfl`. Establish `ho : ∀ (c₁ : κ₁) (c₂ : κ₂) (c₃ : Option S), ∃ c : κ₁ × κ₂ × Option S, c.1 = c₁ ∧ c.2.1 = c₂ ∧ c.2.2 = c₃` using `fun c₁ c₂ c₃ => ⟨(c₁, c₂, c₃), rfl, rfl, rfl⟩`.
+
+Set `c₀ : κ₁ × κ₂ × Option S` to `(d₁, d₂, none)`. Establish `n₁ : u₁ d₁ ≠ 0` using `(map_ne_zero i₁).2 hd₁.1`. Establish `n₂ : u₂ d₂ ≠ 0` using `(map_ne_zero i₂).2 hd₂.1`. Establish `hc₀ : s c₀ ≠ 0` using `by show u₁ d₁ * u₂ d₂ * 1 ≠ 0`. Conclude with `mul_ne_zero (mul_ne_zero n₁ n₂) one_ne_zero`.
+
+Establish `hle : ∀ a ∈ chRing ℤ x₁ d₁, i₁ a ∈ chRing ℤ s c₀`. Use `map_adjoin_mem i₁ (chRing ℤ s c₀).toSubring ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨c', e⟩` from `ratio₁ hs ho hc₀ j`. Use `show i₁ (x₁ j / x₁ d₁) ∈ chRing ℤ s c₀`.
+
+Rewrite using `[map_div₀]`. Express the relevant statement in the definitionally equal form `s c' / s c₀ = u₁ j / u₁ d₁ at e`. Use `show u₁ j / u₁ d₁ ∈ chRing ℤ s c₀`. Rewrite using `[← e]`. Conclude with `Algebra.subset_adjoin ⟨c', rfl⟩`.
+
+Establish `hb : ∀ b ∈ S, b ∈ chRing ℤ s c₀` using `fun b hb => by`. Take `⟨c', e⟩` from `ratio₃ hs ho hc₀ (some ⟨b, hb⟩)`. Express the relevant statement in the definitionally equal form `s c' / s c₀ = b / 1 at e`. Rewrite `e` using `[div_one]`. Rewrite using `[← e]`.
+
+Conclude with `Algebra.subset_adjoin ⟨c', rfl⟩`. Establish `hF : ∀ a : Ω, a ∈ Subfield.closure ((chRing ℤ s c₀ : Subalgebra ℤ Ω) : Set Ω)`. Introduce `a`. Establish `ha : a ∈ Submodule.span Ω₁ (S : Set Ω)` using `hS ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`.
+
+Consider the case `mem b h => exact Subfield.subset_closure (hb b h)`. Consider the case `zero => exact zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `smul r b _ h`. Rewrite using `[Algebra.smul_def]`.
+
+Use `mul_mem ?_ h` and prove the remaining obligations. Take `⟨t, ht, h0, hta⟩` from `exists_mul_mem t₁ hd₁.1 r`. Establish `e : algebraMap Ω₁ Ω r = i₁ (t * r) / i₁ t`. Rewrite using `[map_mul, mul_div_cancel_left₀ _ ((map_ne_zero i₁).2 h0)]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `div_mem (Subfield.subset_closure (hle _ hta)) (Subfield.subset_closure (hle _ ht))`. Choose the witnesses or unpack the hypotheses as in `⟨M₀⟩ : Nonempty (PModel ℤ s) := by`. Use `nonempty_pModel_of_chart ℤ Ω _ s ⟨c₀, hc₀, fun a => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, z, hz, e⟩` from `Subfield.mem_closure_iff.1 (hF a)`.
+
+Establish `hcl : Subring.closure ((chRing ℤ s c₀ : Subalgebra ℤ Ω) : Set Ω) = (chRing ℤ s c₀).toSubring` using `Subring.closure_eq (chRing ℤ s c₀).toSubring`. Rewrite `hy`, `hz` using `[hcl]`. Conclude with `⟨y, hy, z, hz, e.symm⟩`. Take `⟨κ', hκ', y', M', f, hf, hnorm, -, -⟩` from `GlobalTheory.T.exists_normal_dominating_model ℤ Ω _ s M₀ Ω`. Establish `hf' : Dominates M'.ξ M₀.ξ f (RingHom.id Ω)` using `hf`.
+
+Use `⟨κ', hκ', y', M', hnorm, fun p => ?_, fun p => ?_⟩` and prove the remaining obligations. Take `⟨h, hctr⟩` from `exists_isCtrOf hf' M'.tie.gen p`. Take `⟨c, hc⟩` from `M₀.tie.cover ⟨f p.1, h⟩`. Conclude with `⟨_, inChart_up hctr (inChart_parts hs ho hc).1⟩`. Take `⟨h, hctr⟩` from `exists_isCtrOf hf' M'.tie.gen p`.
+
+Take `⟨c, hc⟩` from `M₀.tie.cover ⟨f p.1, h⟩`. Conclude with `⟨_, inChart_up hctr (inChart_parts hs ho hc).2.1⟩`.
+-/
 theorem exists_normal_model {κ₁ κ₂ : Type} [Finite κ₁] [Finite κ₂] (i₁ : Ω₁ →+* Ω) (i₂ : Ω₂ →+* Ω) (x₁ : κ₁ → Ω₁)
     (x₂ : κ₂ → Ω₂) {X₁ X₂ : Scheme.{0}} {ξ₁ : Spec (CommRingCat.of Ω₁) ⟶ X₁} {ξ₂ : Spec (CommRingCat.of Ω₂) ⟶ X₂}
     (hfin : letI := i₁.toAlgebra; Module.Finite Ω₁ Ω) (t₁ : CoordTie ℤ ξ₁ x₁) (t₂ : CoordTie ℤ ξ₂ x₂) :
@@ -321,6 +425,9 @@ def joinIdx (c₁ : (k : K₁) → J₁ k) (c₂ : (k : K₂) → J₂ k) (c₃ 
   | .inr (.inl k) => c₂ k
   | .inr (.inr _) => c₃
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `[joinVec, mul_assoc]`.
+-/
 theorem prod_joinVec [Fintype K₁] [Fintype K₂] [CommMonoid Ω] (a : (Σ k, J₁ k) → Ω) (b : (Σ k, J₂ k) → Ω)
     (w : Fin m → Ω) (c : (k : K₁ ⊕ K₂ ⊕ Unit) → Sum.elim J₁ (Sum.elim J₂ fun _ => Fin m) k) :
     ∏ k, joinVec a b w ⟨k, c k⟩ =
@@ -330,6 +437,21 @@ theorem prod_joinVec [Fintype K₁] [Fintype K₂] [CommMonoid Ω] (a : (Σ k, J
 
 end Blocks
 
+/- English proof (translation)
+Introduce `Ω₁ Ω₂ Ω _ _ _ _ i₁ i₂ K₁ K₂ _ _ J₁ J₂ _ _ y₁ y₂ X₁ X₂ ξ₁ ξ₂ hfin ha₁ ha₂ ht₁ ht₂`. Take `⟨κ', _, y', M', hN, hc₁, hc₂⟩` from `exists_normal_model i₁ i₂ _ _ hfin ht₁ ht₂`. Take `⟨m, ⟨e⟩⟩` from `Finite.exists_equiv_fin κ'`. Set `w : Fin m → Ω` to `fun a => y' (e.symm a)`. Set `a₁ : (Σ k, J₁ k) → Ω` to `fun q => i₁ (y₁ q)`.
+
+Set `a₂ : (Σ k, J₂ k) → Ω` to `fun q => i₂ (y₂ q)`. Set `y` to `joinVec a₁ a₂ w`. Set `s` to `fun c' : (k : K₁ ⊕ K₂ ⊕ Unit) → Sum.elim J₁ (Sum.elim J₂ fun _ => Fin m) k => ∏ k, y ⟨k, c' k⟩`. Set `π₁ : ((k : K₁ ⊕ K₂ ⊕ Unit) → Sum.elim J₁ (Sum.elim J₂ fun _ => Fin m) k) → (k : K₁) → J₁ k` to `fun c k => c (.inl k)`. Set `π₂ : ((k : K₁ ⊕ K₂ ⊕ Unit) → Sum.elim J₁ (Sum.elim J₂ fun _ => Fin m) k) → (k : K₂) → J₂ k` to `fun c k => c (.inr (.inl k))`.
+
+Set `π₃ : ((k : K₁ ⊕ K₂ ⊕ Unit) → Sum.elim J₁ (Sum.elim J₂ fun _ => Fin m) k) → κ'` to `fun c => e.symm (c (.inr (.inr ())))`. Set `x₁ : ((k : K₁) → J₁ k) → Ω₁` to `fun c' => ∏ k, y₁ ⟨k, c' k⟩`. Set `x₂ : ((k : K₂) → J₂ k) → Ω₂` to `fun c' => ∏ k, y₂ ⟨k, c' k⟩`. Set `U₁ : ((k : K₁) → J₁ k) → Ω` to `fun j => i₁ (x₁ j)`. Set `U₂ : ((k : K₂) → J₂ k) → Ω` to `fun j => i₂ (x₂ j)`.
+
+Establish `hs : ∀ c, s c = U₁ (π₁ c) * U₂ (π₂ c) * y' (π₃ c)`. Introduce `c`. Use `show ∏ k, joinVec a₁ a₂ w ⟨k, c k⟩ = _`. Rewrite using `[prod_joinVec]`. Simplify using `only [map_prod, a₁, a₂, w, π₁, π₂, π₃, U₁, U₂, x₁, x₂]`.
+
+Establish `ho : ∀ c₁ c₂ c₃, ∃ c, π₁ c = c₁ ∧ π₂ c = c₂ ∧ π₃ c = c₃` using `fun c₁ c₂ c₃ => ⟨joinIdx c₁ c₂ (e c₃), rfl, rfl, by simp [π₃, joinIdx]⟩`. Use `haveI : ∀ k : K₁ ⊕ K₂ ⊕ Unit, Finite (Sum.elim J₁ (Sum.elim J₂ fun _ => Fin m) k) := by`. Introduce and unpack `(k | k | k)`. Conclude with `inferInstanceAs (Finite (J₁ k))`. Conclude with `inferInstanceAs (Finite (J₂ k))`.
+
+Conclude with `inferInstanceAs (Finite (Fin m))`. Take `⟨N, hNN⟩` from `exists_normal_pModel (u₁ := U₁) (u₂ := U₂) hs ho M' hN hc₁ hc₂`. Establish `key : ∀ {c p}, InChart N.ξ s c p → InChart N.ξ U₁ (π₁ c) p ∧ InChart N.ξ U₂ (π₂ c) p ∧ InChart N.ξ y' (π₃ c) p` using `fun h => inChart_parts hs ho h`. Take `⟨h₁, hh₁, -⟩` from `GlobalTheory.T.existsUnique_dominating_map ℤ Ω₁ _ _ (pModelOfTie ha₁ ht₁) ℤ Ω _ s N i₁ fun p' => by`. Take `⟨c, hc⟩` from `N.tie.cover p'`.
+
+Conclude with `mem_ctrSet (x := x₁) i₁ (key hc).1`. Take `⟨h₂, hh₂, -⟩` from `GlobalTheory.T.existsUnique_dominating_map ℤ Ω₂ _ _ (pModelOfTie ha₂ ht₂) ℤ Ω _ s N i₂ fun p' => by`. Take `⟨c, hc⟩` from `N.tie.cover p'`. Conclude with `mem_ctrSet (x := x₂) i₂ (key hc).2.1`. Conclude with `⟨m, w, y, N.X, N.ξ, h₁, h₂, fun _ _ => rfl, fun _ _ => rfl, fun _ => rfl, N.all, N.tie, stalk_normal N hNN, hh₁, hh₂⟩`.
+-/
 theorem exists_normal_join : ∀ (Ω₁ Ω₂ Ω : Type) [Field Ω₁] [Field Ω₂] [Field Ω] [CharZero Ω] (i₁ : Ω₁ →+* Ω) (i₂ : Ω₂ →+* Ω) (K₁ K₂ : Type) [Fintype K₁] [Fintype K₂] (J₁ : K₁ → Type) (J₂ : K₂ → Type) [∀ k, Fintype (J₁ k)] [∀ k, Fintype (J₂ k)] (y₁ : (Σ k, J₁ k) → Ω₁) (y₂ : (Σ k, J₂ k) → Ω₂) (X₁ X₂ : Scheme.{0}) (ξ₁ : Spec (CommRingCat.of Ω₁) ⟶ X₁) (ξ₂ : Spec (CommRingCat.of Ω₂) ⟶ X₂), (letI := i₁.toAlgebra; Module.Finite Ω₁ Ω) → (∀ q : X₁, genPt ξ₁ ⤳ q) → (∀ q : X₂, genPt ξ₂ ⤳ q) → CoordTie ℤ ξ₁ (fun c' : (k : K₁) → J₁ k => ∏ k, y₁ ⟨k, c' k⟩) → CoordTie ℤ ξ₂ (fun c' : (k : K₂) → J₂ k => ∏ k, y₂ ⟨k, c' k⟩) → ∃ (m : ℕ) (w : Fin m → Ω) (y : (Σ k : K₁ ⊕ K₂ ⊕ Unit, Sum.elim J₁ (Sum.elim J₂ fun _ => Fin m) k) → Ω) (Z : Scheme.{0}) (ξ : Spec (CommRingCat.of Ω) ⟶ Z) (h₁ : Z ⟶ X₁) (h₂ : Z ⟶ X₂), (∀ k a, y ⟨.inl k, a⟩ = i₁ (y₁ ⟨k, a⟩)) ∧ (∀ k a, y ⟨.inr (.inl k), a⟩ = i₂ (y₂ ⟨k, a⟩)) ∧ (∀ a, y ⟨.inr (.inr ()), a⟩ = w a) ∧ (∀ q : Z, genPt ξ ⤳ q) ∧ CoordTie ℤ ξ (fun c' : (k : K₁ ⊕ K₂ ⊕ Unit) → Sum.elim J₁ (Sum.elim J₂ fun _ => Fin m) k => ∏ k, y ⟨k, c' k⟩) ∧ (∀ q : Z, IsDomain (Z.presheaf.stalk q) ∧ IsIntegrallyClosed (Z.presheaf.stalk q)) ∧ Dominates ξ ξ₁ h₁ i₁ ∧ Dominates ξ ξ₂ h₂ i₂ := by
   intro Ω₁ Ω₂ Ω _ _ _ _ i₁ i₂ K₁ K₂ _ _ J₁ J₂ _ _ y₁ y₂ X₁ X₂ ξ₁ ξ₂ hfin ha₁ ha₂ ht₁ ht₂
   obtain ⟨κ', _, y', M', hN, hc₁, hc₂⟩ := exists_normal_model i₁ i₂ _ _ hfin ht₁ ht₂

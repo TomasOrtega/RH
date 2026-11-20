@@ -20,6 +20,11 @@ section
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `: (Quotient.mk _ (Quotient.out x) : LX R i v) = Quotient.mk _ (Quotient.out y)`. Apply `Quotient.sound` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((QuotientGroup.leftRel (levW R i)).comap (Subtype.val : locSet R i v → GA D (Wc D i))) _ _`. Rewrite using `[Setoid.comap_rel, QuotientGroup.leftRel_apply]`. Conclude with `h`.
+
+Conclude with `(Quotient.out_eq x).symm.trans (this.trans (Quotient.out_eq y))`.
+-/
 theorem lx_eq_of_rep_rel {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.host.F)} {x y : LX R i v}
     (h : (rep x)⁻¹ * rep y ∈ levW R i) : x = y := by
   have : (Quotient.mk _ (Quotient.out x) : LX R i v) = Quotient.mk _ (Quotient.out y) := by
@@ -29,13 +34,24 @@ theorem lx_eq_of_rep_rel {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpec
     exact h
   exact (Quotient.out_eq x).symm.trans (this.trans (Quotient.out_eq y))
 
+/- English proof (translation)
+Introduce `h` and use `hx (lx_eq_of_rep_rel ((levW R i).mul_mem ((levW R i).inv_mem h) (trivial_level_coset_representative_mem_level R i v)))`.
+-/
 theorem rep_notMem_levW {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.host.F)} {x : LX R i v}
     (hx : x ≠ lx0 R i v) : rep x ∉ levW R i := fun h =>
   hx (lx_eq_of_rep_rel ((levW R i).mul_mem ((levW R i).inv_mem h) (trivial_level_coset_representative_mem_level R i v)))
 
+/- English proof (translation)
+The claim follows from `(Quotient.out x).2.2`.
+-/
 theorem rep_suppF {R : RealDat D A Ks} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.host.F)} (x : LX R i v) :
     SuppF (Wc D i) (fid D v) (rep x) := (Quotient.out x).2.2
 
+/- English proof (translation)
+Establish `e : Formalism.L2.Theta.mt V g = Formalism.L2.Theta.mt V 1`. Establish `h1 : Formalism.L2.Theta.mt V 1 = 1` using `rfl`. Rewrite using `[h1, ← sub_eq_zero]`. Use extensionality with `a b`. Use `h a b` as an intermediate fact.
+
+Simplify `this` using `[eq_comm]`. Conclude with `Subtype.ext (Units.ext e)`.
+-/
 theorem eq_one_of_suppF_zero {V : HSp D} {g : GA D V} (h : SuppF V 0 g) : g = 1 := by
   have e : Formalism.L2.Theta.mt V g = Formalism.L2.Theta.mt V 1 := by
     have h1 : Formalism.L2.Theta.mt V 1 = 1 := rfl
@@ -47,6 +63,21 @@ theorem eq_one_of_suppF_zero {V : HSp D} {g : GA D V} (h : SuppF V 0 g) : g = 1 
 
 end
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R i t hLS μ 𝓕 hμ`. Take `⟨s, hs, hs1, hb⟩` from `hLS μ 𝓕 hμ`. Use `⟨fun v => max (s v) 0, ?_, fun v => max_lt (hs1 v) one_pos, ?_⟩` and prove the remaining obligations. Use `Summable.of_nonneg_of_le (fun v => le_max_right _ _) (fun v => ?_) hs.abs` and prove the remaining obligations. Conclude with `max_le (le_abs_self _) (abs_nonneg _)`.
+
+Introduce `v C hC`. Distinguish the cases in `hex : ∃ f, IsFinIdem D v f`. Establish `hf : IsFinIdem D v (fid D v)`. Unfold `fid`. Rewrite using `[dif_pos hex]`.
+
+Conclude with `hex.choose_spec`. Establish `hinj : Function.Injective (rep : LX R i v → GA D (Wc D i))` using `fun x y h => lx_eq_of_rep_rel (by rw [h, inv_mul_cancel]; exact (levW R i).one_mem)`. Use `hb v _ hf (C.image rep) ?_ ?_` as an intermediate fact. Rewrite `this` using `[Finset.sum_image (fun x _ y _ h => hinj h)]`. Conclude with `this.trans (le_max_left _ _)`.
+
+Introduce `g hg`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hg`. Conclude with `⟨rep_suppF x, rep_notMem_levW fun e => hC (e ▸ hx)⟩`. Introduce `g hg g' hg' h`. Take `⟨x, _, rfl⟩` from `Finset.mem_image.1 hg`.
+
+Take `⟨y, _, rfl⟩` from `Finset.mem_image.1 hg'`. Rewrite using `[lx_eq_of_rep_rel h]`. Establish `hf : fid D v = 0`. Unfold `fid`. Rewrite using `[dif_neg hex]`.
+
+Establish `hC0 : C = ∅`. Use `Finset.eq_empty_of_forall_notMem fun x hx => ?_` and prove the remaining obligations. Establish `h1 : rep x = 1` using `eq_one_of_suppF_zero (hf ▸ rep_suppF x)`. Conclude with `rep_notMem_levW (fun e => hC (e ▸ hx)) (h1 ▸ (levW R i).one_mem)`. Rewrite using `[hC0, Finset.sum_empty]`.
+
+Conclude with `le_max_right _ _`.
+-/
 theorem acoef_small : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), ∀ i t, LocSmall R i t → ∀ (μ : Measure (WO (Vc D i) (Wc D i))) (𝓕 : Set (WO (Vc D i) (Wc D i))), IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 → ∃ s : HeightOneSpectrum (𝓞 D.host.F) → ℝ, Summable s ∧ (∀ v, s v < 1) ∧ ∀ v (C : Finset (Eu.LX R i v)), Eu.lx0 R i v ∉ C → ∑ x ∈ C, ‖Eu.acoef R i t μ 𝓕 v x‖ ≤ s v := by
   intro D G _ _ Pl0 T A Ks _ _ _ R i t hLS μ 𝓕 hμ
   obtain ⟨s, hs, hs1, hb⟩ := hLS μ 𝓕 hμ

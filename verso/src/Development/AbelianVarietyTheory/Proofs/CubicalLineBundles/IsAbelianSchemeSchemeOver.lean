@@ -9,6 +9,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.WeierstrassCurve GlobalTheory.AddLaw
 
+/- English proof (translation)
+Introduce `R _ W hΔ _ hc`. Establish `hs` using `smoothOfRelativeDimension_toSpec_of_isUnit W hΔ`. Conclude with `⟨hc, SmoothOfRelativeDimension.smooth 1 (toSpec W), isProper_toSpec W, geometricallyConnected_toSpec W⟩`.
+-/
 theorem GlobalTheory.WeierstrassCurve.isAbelianScheme_schemeOver :
     ∀ (R : Type) [CommRing R] (W : WeierstrassCurve R), IsUnit W.Δ →
       ∀ [GrpObj (schemeOver W)], IsCommMonObj (schemeOver W) → IsAbelianScheme (schemeOver W) := by

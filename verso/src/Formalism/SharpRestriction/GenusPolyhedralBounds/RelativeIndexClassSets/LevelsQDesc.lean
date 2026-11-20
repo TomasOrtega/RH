@@ -6,6 +6,17 @@ namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 
 open Module Formalism.LatticeBaseChangeAlt Formalism.LatticeBaseChangeAlt.BQuot Formalism.MainNotions.Gaps.T0
 
+/- English proof (translation)
+Set `jj : V →ₛₗ[algebraMap O O'] V₁` to `{ toFun := j map_add' := j.map_add map_smul' := fun a x => by show j (a • x) = algebraMap O O' a • j x`. Rewrite using `[← algebraMap_smul K a x, j.map_smul, ← algebraMap_smul K' (algebraMap O K a) (j x), ← IsScalarTower.algebraMap_apply O K K', IsScalarTower.algebraMap_apply O O' K', algebraMap_smul] }`. Establish `hlen : ql (Submodule.span O' (j '' (M : Set V))) (Submodule.span O' (j '' (Mgg : Set V)) ⊔ Submodule.span O' (Set.range fun i => j (th i))) ≤ ql M (Mgg ⊔ Submodule.span O (Set.range th))`. Use `ql_span_le ϖ hϖ hϖ' jj M _ _ ?_` and prove the remaining obligations. Establish `hle : Mgg ⊔ Submodule.span O (Set.range th) ≤ (Submodule.span O' (j '' (Mgg : Set V)) ⊔ Submodule.span O' (Set.range fun i => j (th i))).comap jj`.
+
+Use `sup_le (fun x hx => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨x, hx, rfl⟩)`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `fun x hx => hle hx`.
+
+Establish `h5' : Submodule.span K' ((Submodule.span O' (j '' (Mgg : Set V)) : Submodule O' V₁) : Set V₁) ≤ Submodule.span K' ((N₁ ⊔ Z : Submodule O' V₁) : Set V₁)`. Rewrite using `[Submodule.span_le]`. Establish `hle : Submodule.span O' (j '' (Mgg : Set V)) ≤ (Submodule.span K' ((N₁ ⊔ Z : Submodule O' V₁) : Set V₁)).restrictScalars O'`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `h5 x hx`. Conclude with `fun x hx => hle hx`. Establish `: FiniteDimensional K' V₁` using `Module.Finite.equiv hj.equiv`. Establish `h` using `localStepLevelsQ ι ep f ν v νs c' T R I hep hT hc' hv hν O' K' V₁ W (algebraMap O O' ϖ) hϖ' (Submodule.span O' (j '' (M : Set V))) (Submodule.span O' (j '' (Θ : Set V))) N₁ Z Zm N' (Submodule.span O' (j '' (Mgg : Set V))) e n q (fun i => j (th i)) AA AA' N₁' ρ (isLattice_span_ima …`. Establish `hd` using `localStepDescent O O' K K' V V₁ j hj ϖ hϖ hϖ' M Θ V' hM hΘ 1 ((R : ℝ) * ((T : ℝ) * c' * ∑ z, ((ep z : ℝ) * f z) * v z) + (R : ℝ) * (I : ℝ) + ((Module.length O' (↥Zm ⧸ Z.comap Zm.subtype)).toNat : ℝ) + (q : ℝ)) 0 e (by linarith)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem levelsQDesc (ι : Type) [Fintype ι] (ep f : ι → ℕ) (ν v : ι → ℝ) (νs c' : ℝ) (T R I : ℕ)
     (hep : ∀ z, 1 ≤ ep z) (hT : 1 ≤ T) (hc' : 0 ≤ c') (hv : ∀ z, 0 ≤ v z) (hν : ∀ z, ν z ≤ νs + c' * v z)
     (O O' K K' V V₁ W : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]

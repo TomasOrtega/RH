@@ -45,6 +45,11 @@ def chartPullDivPull (A B : LB X) (h : Y ⟶ X) :
     exact congrArg₂ (fun u v => u * v⁻¹) (gm_pull_g B h (𝟙 Y) y _ _ (mem_pull.2 a.1) (mem_pull.2 b.1))
       (gm_pull_g A h (𝟙 Y) y _ _ (mem_pull.2 a.2) (mem_pull.2 b.2))
 
+/- English proof (translation)
+Use `⟨⟨fun p => res (inf_le_left : B.U p.1 ⊓ A.U p.2 ≤ _) (t.s p.1) * (res (inf_le_right : B.U p.1 ⊓ A.U p.2 ≤ _) (s.s p.2))⁻¹⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `v : ∀ p : B.ι × A.ι, y ∈ B.U p.1 ⊓ A.U p.2 → gm (𝟙 X) y (B.U p.1 ⊓ A.U p.2) (res (inf_le_left : B.U p.1 ⊓ A.U p.2 ≤ _) (t.s p.1) * (res (inf_le_right : B.U p.1 ⊓ A.U p.2 ≤ _) (s.s p.2))⁻¹) = gm (𝟙 X) y _ (t.s p.1) * (gm (𝟙 X) y _ (s.s p.2))⁻¹` using `fun p hp => by`. Rewrite using `[map_mul, map_inv, gm_res _ y _ hp, gm_res _ y _ hp]`. Establish `w : ∀ {C : LB X} (c : C.Gen), c.IsGen → ∀ i j, y ∈ C.U i → y ∈ C.U j → gm (𝟙 X) y _ (c.s i) = gm (𝟙 X) y _ (C.g i j) * gm (𝟙 X) y _ (c.s j)` using `fun {C} c hc i j hi hj => by`. Establish `hm : (𝟙 X : X ⟶ X) y ∈ C.U i ⊓ C.U j` using `⟨hi, hj⟩`.
+
+Use `congrArg (gm (𝟙 X) y _) (hc i j)` as an intermediate fact. Rewrite `this` using `[map_mul, gm_res _ y _ hm, gm_res _ y _ hm]`. Then use the resulting hypothesis. Use `((gm_res _ y _ hy _).trans (v p hy.1)).trans (Eq.symm ?_)` and prove the remaining obligations. Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div A B (𝟙 X) y p q hy) ((gm_res _ y _ hy _).trans (v q hy.2)))).trans ?_` and prove the remaining obligations. Rewrite using `[w t ht p.1 q.1 hy.1.1 hy.2.1, w s hs p.2 q.2 hy.1.2 hy.2.2, mul_inv, _root_.mul_mul_mul_comm]`.
+-/
 theorem lbIso_of_gen_of_gen {A B : LB X} (s : A.Gen) (hs : s.IsGen) (t : B.Gen) (ht : t.IsGen) : LBIso A B := by
   refine ⟨⟨fun p => res (inf_le_left : B.U p.1 ⊓ A.U p.2 ≤ _) (t.s p.1) *
     (res (inf_le_right : B.U p.1 ⊓ A.U p.2 ≤ _) (s.s p.2))⁻¹⟩, fun p q => unit_ext fun y hy => ?_⟩
@@ -72,20 +77,38 @@ def IsQuot {Γ : Type} [Group Γ] {X X' : Scheme.{0}} (ρ : Γ →* Aut X) (π :
 
 variable {Γ : Type} [Group Γ] [Finite Γ]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun {T} a b e => (quotient_existsUnique_comp_eq Γ X X' ρ π h T (π ≫ a) fun g => by rw [← Category.assoc, h.2.1 g]).unique rfl e.symm⟩`.
+-/
 theorem IsQuot.epi {X X' : Scheme.{0}} {ρ : Γ →* Aut X} {π : X ⟶ X'} (h : IsQuot ρ π) : Epi π :=
   ⟨fun {T} a b e => (quotient_existsUnique_comp_eq Γ X X' ρ π h T (π ≫ a)
     fun g => by rw [← Category.assoc, h.2.1 g]).unique rfl e.symm⟩
 
+/- English proof (translation)
+Take `⟨⟨τ, hτ⟩, hall⟩` from `quotient_flat_baseChange Γ X X' Y Y' ρ π φ p p' h H hp`. Conclude with `IsQuot.epi (hall τ hτ)`.
+-/
 theorem IsQuot.epi_of_isPullback {X X' Y Y' : Scheme.{0}} {ρ : Γ →* Aut X} {π : X ⟶ X'} (h : IsQuot ρ π)
     {φ : Y ⟶ Y'} {p : Y ⟶ X} {p' : Y' ⟶ X'} (H : IsPullback φ p p' π) (hp : Flat p') : Epi φ := by
   obtain ⟨⟨τ, hτ⟩, hall⟩ := quotient_flat_baseChange Γ X X' Y Y' ρ π φ p p' h H hp
   exact IsQuot.epi (hall τ hτ)
 
 omit [Finite Γ] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun V => isReduced_of_injective (π.app V).hom (h.2.2 V).1⟩`.
+-/
 theorem IsQuot.isReduced {X X' : Scheme.{0}} {ρ : Γ →* Aut X} {π : X ⟶ X'} (h : IsQuot ρ π) [IsReduced X] :
     IsReduced X' :=
   ⟨fun V => isReduced_of_injective (π.app V).hom (h.2.2 V).1⟩
 
+/- English proof (translation)
+Establish `hφq : IsQuot τ φ` using `(quotient_flat_baseChange Γ U U' P P' ρ r φ p p' hq hφ inferInstance).2 τ fun g => ⟨(hτ g).2.1, (hτ g).1⟩`. Use `hφq.epi` as an intermediate fact. Take `⟨ψ, hψ, -⟩` from `quotient_existsUnique_comp_eq Γ _ _ τ φ hφq _ n fun g => (hτ g).2.2`. Establish `w : ψ ≫ p₁ = p' ≫ j`. Rewrite using `[← cancel_epi φ, ← Category.assoc, hψ, hn.w, ← Category.assoc, ← hφ.w, Category.assoc]`.
+
+Establish `H` using `IsPullback.of_hasPullback p₁ j`. Set `θ : P' ⟶ pullback p₁ j` to `pullback.lift ψ p' w`. Establish `h₁ : θ ≫ pullback.fst p₁ j = ψ` using `pullback.lift_fst _ _ _`. Establish `h₂ : θ ≫ pullback.snd p₁ j = p'` using `pullback.lift_snd _ _ _`. Establish `hκ : IsPullback (φ ≫ θ) p (pullback.snd p₁ j) r` using `IsPullback.of_right (by rw [Category.assoc, h₁, hψ]; exact hn) (by rw [Category.assoc, h₂, hφ.w]) H`.
+
+Establish `hκq : IsQuot τ (φ ≫ θ)` using `(quotient_flat_baseChange Γ U U' P _ ρ r _ p _ hq hκ inferInstance).2 τ fun g => ⟨by rw [← Category.assoc, (hτ g).2.1], (hτ g).1⟩`. Use `hκq.epi` as an intermediate fact. Take `⟨σ, hσ, -⟩` from `quotient_existsUnique_comp_eq Γ _ _ τ _ hκq _ φ fun g => (hτ g).2.1`. Establish `: IsIso θ` using `⟨σ, by rw [← cancel_epi φ, ← Category.assoc, hσ, Category.comp_id], by rw [← cancel_epi (φ ≫ θ), ← Category.assoc, hσ, Category.comp_id]⟩`. Use `⟨ψ, hψ, ?_⟩` and prove the remaining obligations.
+
+Use `(IsPullback.of_horiz_isIso (fst := θ) (snd := p') (f := pullback.snd p₁ j) (g := 𝟙 U') ⟨by rw [h₂, Category.comp_id]⟩).paste_horiz H` as an intermediate fact. Rewrite `this` using `[h₁, Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem exists_isPullback {U U' X' P P' P₁ : Scheme.{0}} {ρ : Γ →* Aut U} {r : U ⟶ U'} (hq : IsQuot ρ r)
     {j : U' ⟶ X'} {p : P ⟶ U} {p' : P' ⟶ U'} {p₁ : P₁ ⟶ X'} [Flat p'] [Flat p₁] {φ : P ⟶ P'} {n : P ⟶ P₁}
     (hφ : IsPullback φ p p' r) (hn : IsPullback n p p₁ (r ≫ j)) (τ : Γ →* Aut P)
@@ -114,6 +137,19 @@ theorem exists_isPullback {U U' X' P P' P₁ : Scheme.{0}} {ρ : Γ →* Aut U} 
     ⟨by rw [h₂, Category.comp_id]⟩).paste_horiz H
   rwa [h₁, Category.id_comp] at this
 
+/- English proof (translation)
+Establish `key : ∀ (T : Over U') (x y : T ⟶ G'), Flat T.hom → (pushPt hψ.w x * pushPt hψ.w y).left = (x * y).left ≫ ψ`. Introduce `T x y hT`. Establish `H` using `IsPullback.of_hasPullback T.hom r`. Use `hq.epi_of_isPullback H hT` as an intermediate fact. Set `q` to `pullback.fst T.hom r`.
+
+Set `W : Over U` to `Over.mk (pullback.snd T.hom r)`. Set `l : (T ⟶ G') → (W ⟶ G)` to `fun z => Over.homMk (hφ.1.lift (q ≫ z.left) (pullback.snd T.hom r) (by rw [Category.assoc, Over.w z]; exact H.w)) (hφ.1.lift_snd _ _ _)`. Establish `hl : ∀ z, (l z).left ≫ φ = q ≫ z.left` using `fun z => hφ.1.lift_fst _ _ _`. Set `q' : Over.mk (W.hom ≫ r) ⟶ T` to `Over.homMk q H.w`. Set `q₁ : Over.mk (W.hom ≫ r ≫ j) ⟶ Over.mk (T.hom ≫ j)` to `Over.homMk q (by show q ≫ T.hom ≫ j = pullback.snd T.hom r ≫ r ≫ j`.
+
+Rewrite using `[← Category.assoc, H.w, Category.assoc])`. Establish `e₁` using `hφ.2 W (l x) (l y) (q' ≫ x) (q' ≫ y) (hl x).symm (hl y).symm`. Establish `e₂` using `hn.2 W (l x) (l y) (q₁ ≫ pushPt hψ.w x) (q₁ ≫ pushPt hψ.w y) (by rw [← Category.assoc (l x).left, hl, Category.assoc]; rfl) (by rw [← Category.assoc (l y).left, hl, Category.assoc]; rfl)`. Rewrite `e₁`, `e₂` using `[← MonObj.comp_mul]`. Rewrite `e₂` using `[← Category.assoc (l x * l y).left, ← e₁]`.
+
+Rewrite using `[← cancel_epi q, ← Category.assoc q]`. Conclude with `e₂`. Use `⟨hψ, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Establish `hf : Flat (G' ⊗ G').hom` using `inferInstanceAs (Flat (pullback.fst G'.hom G'.hom ≫ G'.hom))`. Establish `e` using `key (G' ⊗ G') (fst _ _) (snd _ _) hf`.
+
+Set `z : Over.mk (T.hom ≫ j) ⟶ Over.mk ((G' ⊗ G').hom ≫ j)` to `Over.homMk (lift x y).left (by show (lift x y).left ≫ (G' ⊗ G').hom ≫ j = T.hom ≫ j`. Rewrite using `[← Category.assoc, Over.w])`. Establish `hx' : x₀ = z ≫ pushPt hψ.w (fst _ _)` using `Over.OverMorphism.ext (by show _ = (lift x y).left ≫ (fst G' G').left ≫ ψ`. Rewrite using `[← Category.assoc, ← Over.comp_left, lift_fst, hx])`. Establish `hy' : y₀ = z ≫ pushPt hψ.w (snd _ _)` using `Over.OverMorphism.ext (by show _ = (lift x y).left ≫ (snd G' G').left ≫ ψ`.
+
+Rewrite using `[← Category.assoc, ← Over.comp_left, lift_snd, hy])`. Establish `hxy : x * y = lift x y ≫ (fst G' G' * snd G' G')`. Rewrite using `[MonObj.comp_mul, lift_fst, lift_snd]`. Rewrite using `[hx', hy', ← MonObj.comp_mul, hxy, Over.comp_left, e, Over.comp_left, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem isGrpPullback_of_quot {U U' X' : Scheme.{0}} {ρ : Γ →* Aut U} {r : U ⟶ U'} (hq : IsQuot ρ r)
     {j : U' ⟶ X'} {G : Over U} {G' : Over U'} {G₁ : Over X'} [GrpObj G] [GrpObj G'] [GrpObj G₁] [Flat G'.hom]
     {φ : G.left ⟶ G'.left} {ψ : G'.left ⟶ G₁.left} (hφ : IsGrpPullback G G' r φ)
@@ -159,6 +195,9 @@ theorem isGrpPullback_of_quot {U U' X' : Scheme.{0}} {ρ : Γ →* Aut U} {r : U
   rw [hx', hy', ← MonObj.comp_mul, hxy, Over.comp_left, e, Over.comp_left, Category.assoc]
   rfl
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _` and use `inferInstance`.
+-/
 theorem subset_abLocus {S : Scheme.{0}} (G : Over S) [IsProper G.hom] (A : Set S) : A ⊆ abLocus G :=
   fun _ _ _ _ _ _ _ => inferInstance
 
@@ -166,6 +205,19 @@ end SabMapDescent
 
 open SabMapDescent in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Γ _ _ U U' X' ρ r t t' t₁ τ ν j n hq hred hprop hτ`. Establish `hq : IsQuot ρ r` using `hq`. Use `t.semi.smooth` as an intermediate fact. Use `t.semi.geomConnected` as an intermediate fact. Use `t'.semi.smooth` as an intermediate fact.
+
+Use `t'.semi.separated` as an intermediate fact. Use `t₁.semi.smooth` as an intermediate fact. Take `⟨ψ, hψ, hpb⟩` from `exists_isPullback hq ν.cart.1 n.cart.1 τ hτ`. Establish `hgp : IsGrpPullback t'.G t₁.G j ψ` using `isGrpPullback_of_quot hq ν.cart (hψ ▸ n.cart) hpb`. Use `hq.epi_of_isPullback ν.cart.1 inferInstance` as an intermediate fact.
+
+Take `⟨hint, hsurj, -⟩` from `quotient_isIntegral_surjective_orbits Γ U U' ρ r hq`. Establish `: Surjective ν.cm.F` using `MorphismProperty.of_isPullback (P := @Surjective) ν.cart.1.flip hsurj`. Establish `: UniversallyClosed (ν.cm.F ≫ t'.G.hom)` using `by rw [ν.cart.1.w]; infer_instance`. Establish `: UniversallyClosed t'.G.hom` using `.of_comp_surjective ν.cm.F _`. Establish `: IsProper t'.G.hom` using `{}`.
+
+Establish `he : eSec t.G ≫ t.G.hom = 𝟙 U` using `Over.w η[t.G]`. Establish `he' : eSec t'.G ≫ t'.G.hom = 𝟙 U'` using `Over.w η[t'.G]`. Establish `hiso : LBIso t'.PP.L (t₁.PP.L.pull ψ)`. Use `exists_gen_of_quotient_of_rigid Γ U U' ρ r t.G t'.G ν.cm.F (eSec t.G) (eSec t'.G) (LB.div (t₁.PP.L.pull ψ) t'.PP.L) hq ν.cart.1 inferInstance he he' (by rw [ν.cm.e_comm, ν.base]) (eq_one_of_appLE_section_eq_one U t.G _ he inferInstance (geometricallyIntegral_of_smooth_of_geometri …` and prove the remaining obligations. Take `⟨c, hc⟩` from `gen_chartPull (chartPullLinComb t₁.PP.L ψ (K := PUnit) (fun _ => eSec t'.G) (fun _ => eSec t₁.G) (fun _ => 1) j fun _ => (cubeMapOf hgp).e_comm) t₁.PP.rig t₁.PP.rigGen`.
+
+Take `⟨w, hw⟩` from `lbIso_of_gen_of_gen t'.PP.rig t'.PP.rigGen c hc`. Conclude with `gen_chartPull (chartPullDivPull _ _ _) w hw`. Take `⟨a, ha, -⟩` from `ν.lin`. Take `⟨b, hb, -⟩` from `n.lin`. Establish `hb' : LBIso t.PP.L ((t₁.PP.L.pull ψ).pull ν.cm.F)` using `LBIso.chartPull (chartPullId _) (chartPullLinComb t₁.PP.L ψ (K := PUnit) (fun _ => ν.cm.F) (fun _ => n.cm.F) (fun _ => 1) (𝟙 _) fun _ => hψ.trans (Category.id_comp _).symm) ⟨b, hb⟩`.
+
+Take `⟨w, hw⟩` from `LBIso.trans (pull_isLB t'.PP.isLB _) t.PP.isLB (pull_isLB (pull_isLB t₁.PP.isLB ψ) _) (LBIso.symm ⟨a, ha⟩) hb'`. Conclude with `gen_chartPull (chartPullDivPull _ _ _) w hw`. Take `⟨n', hn'⟩` from `GlobalTheory.exists_sabMap_of_lbIso E H X' U' t₁ t' j ψ ⟨hq.isReduced, subset_abLocus _ _⟩ hgp (fun a => by`. Rewrite using `[← cancel_epi ν.cm.F, ← Category.assoc, ← ν.act, Category.assoc, hψ, n.act, ← Category.assoc, hψ]) hiso`. Conclude with `⟨n', hn' ▸ hψ⟩`.
+-/
 theorem exists_sabMap_of_quotient :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Γ : Type) [Group Γ] [Finite Γ] (U U' X' : Scheme.{0}) (ρ : Γ →* Aut U) (r : U ⟶ U') (t : SAB H U) (t' : SAB H U') (t₁ : SAB H X') (τ : Γ →* Aut t.G.left) (ν : SABMap t t' r) (j : U' ⟶ X') (n : SABMap t t₁ (r ≫ j)), (IsAffineHom r ∧ (∀ g, (ρ g).hom ≫ r = r) ∧ ∀ V : U'.Opens, Function.Injective (r.app V).hom ∧ ∀ f : Γ(U, r ⁻¹ᵁ V), (∀ g (h : r ⁻¹ᵁ V ≤ (ρ g).hom ⁻¹ᵁ (r ⁻¹ᵁ V)), ((ρ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (r.app V).hom) → IsReduced U → IsProper t.G.hom → (∀ g, (τ g).hom ≫ t.G.hom = t.G.hom ≫ (ρ g).hom ∧ (τ g).hom ≫ ν.φ = ν.φ ∧ (τ g).hom ≫ n.φ = n.φ) → ∃ n' : SABMap t' t₁ j, ν.φ ≫ n'.φ = n.φ := by
   intro E _ _ _ H Γ _ _ U U' X' ρ r t t' t₁ τ ν j n hq hred hprop hτ

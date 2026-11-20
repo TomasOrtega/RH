@@ -9,9 +9,19 @@ open scoped WithZero
 
 namespace GlobalTheory.QNorm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.nonneg, fun h => ⟨Real.sqrt r, (Real.mul_self_sqrt h).symm⟩⟩`.
+-/
 private theorem isSquare_real_iff_nonneg (r : ℝ) : IsSquare r ↔ 0 ≤ r :=
   ⟨fun h => h.nonneg, fun h => ⟨Real.sqrt r, (Real.mul_self_sqrt h).symm⟩⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : ∀ x : Fˣ, x ∈ sqSub σ`. Rewrite using `[show sqSub σ = ⊤ from eq_top_iff.mpr fun x _ => h x, Subgroup.index_top]`. Conclude with `one_dvd 2`. Use `push_neg at h`. Take `⟨a, ha⟩` from `h`.
+
+Establish `hne : ∀ x : Fˣ, σ (x : F) ≠ 0` using `fun x => (x.isUnit.map σ).ne_zero`. Establish `hmem : ∀ x : Fˣ, x ∈ sqSub σ ↔ 0 ≤ σ (x : F)` using `fun x => (mem_sqSub σ x).trans (isSquare_real_iff_nonneg _)`. Establish `ha' : σ (a : F) < 0` using `not_le.mp fun h' => ha ((hmem a).mpr h')`. Establish `h2 : (sqSub σ).index = 2`. Use `Subgroup.index_eq_two_iff.mpr ⟨a, fun b => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hmem, hmem, Units.val_mul, map_mul]`. Break down `lt_or_gt_of_ne (hne b) with hb | hb` into its components or cases. Conclude with `Or.inl ⟨mul_nonneg_of_nonpos_of_nonpos hb.le ha'.le, not_le.mpr hb⟩`. Conclude with `Or.inr ⟨hb.le, not_le.mpr (mul_neg_of_pos_of_neg hb ha')⟩`. Rewrite using `[h2]`.
+-/
 theorem index_sqSub_real_dvd_two {F : Type} [Field F] (σ : F →+* ℝ) : (sqSub σ).index ∣ 2 := by
   by_cases h : ∀ x : Fˣ, x ∈ sqSub σ
   · rw [show sqSub σ = ⊤ from eq_top_iff.mpr fun x _ => h x, Subgroup.index_top]
@@ -30,6 +40,11 @@ theorem index_sqSub_real_dvd_two {F : Type} [Field F] (σ : F →+* ℝ) : (sqSu
       · exact Or.inr ⟨hb.le, not_le.mpr (mul_neg_of_pos_of_neg hb ha')⟩
     rw [h2]
 
+/- English proof (translation)
+Establish `h2 : (2 : F) = algebraMap (𝓞 F) F 2` using `(map_ofNat _ 2).symm`. Establish `hle : v.valuation F 2 ≤ 1`. Rewrite using `[h2]`. Conclude with `v.valuation_le_one 2`. Establish `hne : v.valuation F 2 ≠ 0` using `(Valuation.ne_zero_iff _).mpr two_ne_zero`.
+
+Establish `hk : WithZero.log (v.valuation F 2) ≤ 0`. Rewrite using `[← WithZero.exp_le_exp, WithZero.exp_log hne, WithZero.exp_zero]`. Conclude with `hle`. Use `⟨(-WithZero.log (v.valuation F 2)).toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg (by omega), neg_neg, WithZero.exp_log hne]`.
+-/
 theorem exists_valuation_two_eq_exp {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) : ∃ e : ℕ, v.valuation F 2 = WithZero.exp (-(e : ℤ)) := by
   have h2 : (2 : F) = algebraMap (𝓞 F) F 2 := (map_ofNat _ 2).symm
@@ -43,6 +58,11 @@ theorem exists_valuation_two_eq_exp {F : Type} [Field F] [NumberField F]
   refine ⟨(-WithZero.log (v.valuation F 2)).toNat, ?_⟩
   rw [Int.toNat_of_nonneg (by omega), neg_neg, WithZero.exp_log hne]
 
+/- English proof (translation)
+Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using the standard rewrite rules. Introduce `a s ha ih hf`. Rewrite using `[Finset.iInf_insert, Finset.prod_insert ha]`.
+
+Take `⟨h0, hle⟩` from `ih fun i hi => hf i (Finset.mem_insert_of_mem hi)`. Establish `ha0` using `hf a (Finset.mem_insert_self a s)`. Conclude with `⟨Subgroup.index_inf_ne_zero ha0 h0, Subgroup.index_inf_le.trans (Nat.mul_le_mul_left _ hle)⟩`.
+-/
 private theorem index_biInf_ne_zero_and_le_prod {G ι : Type} [Group G] [DecidableEq ι] (S : Finset ι)
     (f : ι → Subgroup G) :
     (∀ i ∈ S, (f i).index ≠ 0) →
@@ -57,6 +77,19 @@ private theorem index_biInf_ne_zero_and_le_prod {G ι : Type} [Group G] [Decidab
     exact ⟨Subgroup.index_inf_ne_zero ha0 h0,
       Subgroup.index_inf_le.trans (Nat.mul_le_mul_left _ hle)⟩
 
+/- English proof (translation)
+Introduce `F _ _ S`. Use `choose e he using fun v : HeightOneSpectrum (𝓞 F) => exists_valuation_two_eq_exp v`. Establish `hP` using `GlobalTheory.T.prod_absNorm_pow_valuation_two_le F S e (fun v _ => he v)`. Establish `hN : ∀ v : HeightOneSpectrum (𝓞 F), (sqSub (algebraMap F (v.adicCompletion F))).index ≠ 0 ∧ (sqSub (algebraMap F (v.adicCompletion F))).index ≤ 4 * Ideal.absNorm v.asIdeal ^ e v` using `fun v => GlobalTheory.T.index_unitsSquareUnderRingHom_adicCompletion_le F v (e v) (he v)`. Take `⟨hF0, hFle⟩` from `index_biInf_ne_zero_and_le_prod S (fun v => sqSub (algebraMap F (v.adicCompletion F))) (fun v _ => (hN v).1)`.
+
+Establish `hR2 : ∀ σ : F →+* ℝ, (sqSub σ).index ≤ 2` using `fun σ => Nat.le_of_dvd two_pos (index_sqSub_real_dvd_two σ)`. Take `⟨hR0, hRle⟩` from `index_biInf_ne_zero_and_le_prod (Finset.univ : Finset (F →+* ℝ)) (fun σ => sqSub σ) (fun σ _ => ne_zero_of_dvd_ne_zero two_ne_zero (index_sqSub_real_dvd_two σ))`. Establish `hRu : (⨅ σ : F →+* ℝ, sqSub σ) = ⨅ σ ∈ (Finset.univ : Finset (F →+* ℝ)), sqSub σ`. Simplify using the standard rewrite rules. Establish `hloc : locSq F S = (⨅ v ∈ S, sqSub (algebraMap F (v.adicCompletion F))) ⊓ ⨅ σ ∈ (Finset.univ : Finset (F →+* ℝ)), sqSub σ`.
+
+Rewrite using `[← hRu]`. Both sides reduce to the same expression. Rewrite using `[hloc]`. Use `⟨Subgroup.index_inf_ne_zero hF0 hR0, ?_⟩` and prove the remaining obligations. Establish `hF : (⨅ v ∈ S, sqSub (algebraMap F (v.adicCompletion F))).index ≤ 4 ^ S.card * 2 ^ Module.finrank ℚ F`.
+
+Use `hFle.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const]`. Use `_ ≤ 4 ^ S.card * 2 ^ Module.finrank ℚ F := Nat.mul_le_mul_left _ hP`. Establish `hR : (⨅ σ ∈ (Finset.univ : Finset (F →+* ℝ)), sqSub σ).index ≤ 2 ^ InfinitePlace.nrRealPlaces F`.
+
+Use `hRle.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_eq_nat_card, GlobalTheory.T.card_ringHom_real_eq_nrRealPlaces' F]`. Use `Subgroup.index_inf_le.trans ((Nat.mul_le_mul hF hR).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, ← InfinitePlace.card_add_two_mul_card_eq_rank, show (4 : ℕ) = 2 ^ 2 by norm_num]`.
+
+Simplify using `only [← pow_mul, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem index_locSq_le : ∀ (F : Type) [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F))), (locSq F S).index ≠ 0 ∧ (locSq F S).index ≤ 4 ^ (S.card + Fintype.card (InfinitePlace F)) := by
   intro F _ _ S
   classical

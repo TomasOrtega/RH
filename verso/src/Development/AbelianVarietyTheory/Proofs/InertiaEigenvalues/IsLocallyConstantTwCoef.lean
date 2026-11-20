@@ -13,6 +13,17 @@ section General
 
 variable {O G : Type} [CommRing O] [Group G] [TopologicalSpace G]
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Take `⟨b'', -, hb⟩` from `(Submodule.Quotient.mk_eq_zero _).mp hc`. Take `⟨b, rfl⟩` from `hqs b''`. Establish `hb' : ∀ g, π'' g (q b) - q b = q ((z : G → M) g)` using `fun g => congrFun hb g`. Establish `hr : ∀ g, ∃ y, f y = (z : G → M) g - (π g b - b)` using `fun g => (hex _).mp (by rw [map_sub, map_sub, hq, hb', sub_self])`.
+
+Use `choose w hw using hr`. Establish `hwlc : IsLocallyConstant w`. Establish `h1 : IsLocallyConstant fun g => (z : G → M) g - (π g b - b)` using `z.2.1.1.sub ((hlc b).sub (IsLocallyConstant.const b))`. Use `IsLocallyConstant.desc w f ?_ hfi` and prove the remaining obligations. Establish `: f ∘ w = fun g => (z : G → M) g - (π g b - b)` using `funext hw`.
+
+Rewrite using `[this]`. Conclude with `h1`. Use `⟨Submodule.Quotient.mk ⟨w, ⟨hwlc, fun _ => Submodule.mem_top⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `π' x.1 (w x.2) - w (x.1 * x.2) + w x.1 = 0`.
+
+Apply `hfi` to reduce the goal to its premises. Rewrite using `[map_add, map_sub, hf, hw, hw, hw, cocycle_mul, map_zero, map_mul]`. Simplify using `only [map_sub, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws. Use `(Submodule.Quotient.eq _).mpr ⟨-b, Submodule.mem_top, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `π g (-b) - -b = f (w g) - (z : G → M) g`. Rewrite using `[hw, map_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_mapH1_eq {M' M M'' : Type} [AddCommGroup M'] [Module O M'] [AddCommGroup M] [Module O M]
     [AddCommGroup M''] [Module O M''] {π' : Representation O G M'} {π : Representation O G M}
     {π'' : Representation O G M''} (f : M' →ₗ[O] M) (hf : ∀ g m, f (π' g m) = π g (f m))
@@ -46,6 +57,21 @@ theorem exists_mapH1_eq {M' M M'' : Type} [AddCommGroup M'] [Module O M'] [AddCo
     rw [hw, map_neg]
     abel
 
+/- English proof (translation)
+Establish `hmax : IsLocalRing.maximalIdeal O = Ideal.span {lam}` using `hl.maximalIdeal_eq`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx0, hx⟩ : ∃ x : X, x ≠ 0 ∧ lam • x = 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hinj : Function.Injective (fun x : X => lam • x)`.
+
+Introduce `a b hab`. Assume the negation of the conclusion as `hne`. Conclude with `h (a - b) (sub_ne_zero.mpr hne) (by rw [smul_sub]; exact sub_eq_zero.mpr hab)`. Establish `hsurj` using `Finite.surjective_of_injective hinj`. Establish `: (⊤ : Submodule O X) = ⊥`.
+
+Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (Ideal.span {lam}) ⊤ Module.Finite.fg_top ?_ ?_` and prove the remaining obligations. Introduce `y _`. Take `⟨y', rfl⟩` from `hsurj y`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`. Rewrite using `[← hmax, IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`.
+
+Conclude with `top_ne_bot this`. Use `⟨Submodule.liftQ (Ideal.span {lam}) (LinearMap.toSpanSingleton O X x) ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span, Submodule.span_le]`. Introduce and unpack `_ rfl`. Conclude with `hx`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `y hy`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `hy' : y • x = 0` using `hy`. Use `(Submodule.Quotient.mk_eq_zero _).mpr ?_` and prove the remaining obligations.
+
+Rewrite using `[← hmax]`. Introduce `hu`. Conclude with `hx0 (hu.smul_eq_zero.mp hy')`. Introduce `h`. Establish `: (1 : O) • x = 0` using `LinearMap.congr_fun h (Submodule.Quotient.mk 1)`.
+
+Conclude with `hx0 (by simpa using this)`.
+-/
 theorem exists_res_inj [IsDomain O] [IsDiscreteValuationRing O] {lam : O} (hl : Irreducible lam)
     (X : Type) [AddCommGroup X] [Module O X] [Finite X] [Nontrivial X] :
     ∃ f : (O ⧸ Ideal.span {lam}) →ₗ[O] X, Function.Injective f ∧ f ≠ 0 := by
@@ -81,6 +107,25 @@ theorem exists_res_inj [IsDomain O] [IsDiscreteValuationRing O] {lam : O} (hl : 
     have : (1 : O) • x = 0 := LinearMap.congr_fun h (Submodule.Quotient.mk 1)
     exact hx0 (by simpa using this)
 
+/- English proof (translation)
+Establish `hk : ∀ c ∈ cls (O ⧸ Ideal.span {lam}), c = 0`. Introduce `c hc`. Assume the negation of the conclusion as `hne`. Use `hres 1 (fun _ => c) (fun _ => hc) (by` as an intermediate fact. Introduce `x hx a`.
+
+Rewrite `hx` using `[Fin.sum_univ_one]`. Rewrite using `[Subsingleton.elim a 0, ← Ideal.mem_span_singleton, ← hl.maximalIdeal_eq]`. Introduce `hu`. Conclude with `hne (hu.smul_eq_zero.mp hx))`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Set.eq_singleton_iff_unique_mem]`. Use `⟨h0 X, ?_⟩` and prove the remaining obligations. Generalize the expression as in `hn : Nat.card X = n`. Proceed by induction on `n using Nat.strong_induction_on generalizing X with`. Consider the case `_ n ih`.
+
+Introduce `c hc`. Break down `subsingleton_or_nontrivial X with hX | hX` into its components or cases. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Establish `: z = 0` using `Subtype.ext (funext fun g => Subsingleton.elim _ _)`. Rewrite using `[this, Submodule.Quotient.mk_zero]`.
+
+Take `⟨f, hfi, hf0⟩` from `exists_res_inj hl X haveI : Finite (O ⧸ Ideal.span {lam}) := Finite.of_injective f hfi haveI : Finite (X ⧸ LinearMap.range f) := Finite.of_surjective _ (Submodule.mkQ_surjective _)`. Establish `hlt : Nat.card (X ⧸ LinearMap.range f) < n`. Rewrite using `[← hn, Submodule.card_eq_card_quotient_mul_card (LinearMap.range f)]`. Use `haveI : Nontrivial (LinearMap.range f) := Submodule.nontrivial_iff_ne_bot.mpr (fun h => hf0 (LinearMap.range_eq_bot.mp h))`. Establish `h1 : 1 < Nat.card (LinearMap.range f)` using `Finite.one_lt_card`.
+
+Establish `h2 : 0 < Nat.card (X ⧸ LinearMap.range f)` using `Nat.card_pos`. Use the polynomial consequences of the given equalities and inequalities. Establish `hq` using `ih _ hlt (X ⧸ LinearMap.range f) rfl _ ((hmap X _ (LinearMap.range f).mkQ c).1 hc)`. Take `⟨c₀, hc₀⟩` from `exists_mapH1_eq (π' := twCoef W χ (O ⧸ Ideal.span {lam})) (f.lTensor M) (fun g m => by`. Proceed by induction on `m using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a x => simp [coefRep_tmul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb])`. Use the proof step `((LinearMap.range f).mkQ.lTensor M) _`. Use the proof step `(Module.Flat.lTensor_preserves_injective_linearMap f hfi)`.
+
+Use the proof step `(LinearMap.lTensor_surjective M (Submodule.mkQ_surjective _))`. Use the proof step `(lTensor_exact M (LinearMap.exact_map_mkQ_range f) (Submodule.mkQ_surjective _))`. Use the proof step `(hlc X) c hq`. Establish `hc₀' : coefH1 W χ f c₀ = c` using `hc₀`. Use `hk c₀ ((hmap _ X f c₀).2 hfi (hc₀' ▸ hc))` as an intermediate fact.
+
+Rewrite using `[← hc₀', this, map_zero]`.
+-/
 theorem cls_eq_zero [IsDomain O] [IsDiscreteValuationRing O] {lam : O} (hl : Irreducible lam)
     {M : Type} [AddCommGroup M] [Module O M] [Module.Flat O M] (W : Representation O G M) (χ : G →* Oˣ)
     (cls : ∀ (X : Type) [AddCommGroup X] [Module O X], Set (H1 (twCoef W χ X) ⊤))
@@ -140,6 +185,13 @@ theorem cls_eq_zero [IsDomain O] [IsDiscreteValuationRing O] {lam : O} (hl : Irr
       have := hk c₀ ((hmap _ X f c₀).2 hfi (hc₀' ▸ hc))
       rw [← hc₀', this, map_zero]
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `a`. Establish `hN : (Nat.card Y : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Use `⟨Metric.ball a ‖(Nat.card Y : ℤ_[l])‖, Metric.isOpen_ball, Metric.mem_ball_self (norm_pos_iff.mpr hN), ?_⟩` and prove the remaining obligations. Introduce `b hb`.
+
+Rewrite `hb` using `[mem_ball_iff_norm]`. Establish `hd : (Nat.card Y : ℤ_[l]) ∣ b - a`. Break down `ValuationRing.dvd_total (Nat.card Y : ℤ_[l]) (b - a) with h | ⟨d, hd⟩` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+
+Rewrite `hb` using `[hd, norm_mul]`. Use `PadicInt.norm_le_one d` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg (b - a)]`. Take `⟨d, hd⟩` from `hd`. Rewrite using `[← sub_eq_zero, ← sub_smul, ← map_sub, hd, mul_comm, map_mul, mul_smul, map_natCast, Nat.cast_smul_eq_nsmul, card_nsmul_eq_zero', smul_zero]`.
+-/
 theorem isLocallyConstant_smul {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] O] {Y : Type} [AddCommGroup Y] [Module O Y]
     [Finite Y] (m : Y) : IsLocallyConstant fun a : ℤ_[l] => algebraMap ℤ_[l] O a • m := by
   rw [IsLocallyConstant.iff_exists_open]
@@ -161,6 +213,11 @@ theorem isLocallyConstant_smul {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] O] {Y :
 
 end General
 
+/- English proof (translation)
+Use `haveI : Finite (O ⊗[O] Y) := Finite.of_equiv _ (TensorProduct.lid O Y).toEquiv.symm`. Establish `hε' : ∀ g, Γ.ε g = Units.map (algebraMap ℤ_[l] O : ℤ_[l] →* O) (χ g)` using `fun g => Units.ext (hε g)`. Establish `h1 : Continuous fun g : G => (((χ g) ^ (-((c : ℤ) - 1)) : ℤ_[l]ˣ) : ℤ_[l])` using `Units.continuous_val.comp (hc.zpow _)`. Establish `h2` using `(isLocallyConstant_smul (l := l) (O := O) m).comp_continuous h1`. Use `h2 using 2 with g` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleTwistedCharClasses.twCoef_Wchi, hε', ← map_zpow]`. Both sides reduce to the same expression.
+-/
 theorem isLocallyConstant_twCoef {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G]
     {Qp LL O : Type} [Field Qp] [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
     [Algebra ℤ_[l] O] (Γ : GalData G Qp LL O) (χ : G → ℤ_[l]ˣ) (hc : Continuous χ)
@@ -176,6 +233,11 @@ theorem isLocallyConstant_twCoef {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [
   rw [GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleTwistedCharClasses.twCoef_Wchi, hε', ← map_zpow]
   rfl
 
+/- English proof (translation)
+Take `⟨χ, hχ, hc, -⟩` from `GlobalTheory.Cyc.exists_integral_cyclotomicChar l P`. Use `⟨fun g => χ g, hc.comp continuous_subtype_val, fun g => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `S.hyp.2.1.2.2.2 g`. Establish `h2 : ((P.PD S.K).χ g : ℚ_[l]) = (P.χQ g : ℚ_[l])` using `P.PD_χ S.K g`.
+
+Rewrite `h1` using `[h2, ← hχ]`. Conclude with `h1`.
+-/
 theorem exists_eps {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P) :
     ∃ χ : S.G → ℤ_[l]ˣ, Continuous χ ∧ ∀ g, (S.Γ.ε g : S.O) = algebraMap ℤ_[l] S.O (χ g) := by
   obtain ⟨χ, hχ, hc, -⟩ := GlobalTheory.Cyc.exists_integral_cyclotomicChar l P
@@ -186,11 +248,17 @@ theorem exists_eps {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P) :
   rw [h2, ← hχ] at h1
   exact h1
 
+/- English proof (translation)
+Take `⟨A, rfl⟩` from `h`. Conclude with `A.zero_mem`.
+-/
 theorem zero_mem {O N : Type} [CommRing O] [AddCommGroup N] [Module O N] {s : Set N}
     (h : ∃ A : Submodule O N, s = A) : 0 ∈ s := by
   obtain ⟨A, rfl⟩ := h
   exact A.zero_mem
 
+/- English proof (translation)
+Take `⟨⟨hD, hV, -⟩, -⟩` from `GlobalTheory.LocalIntegers.goodO_integers l S.LL`. Establish `hl : Irreducible S.Γ.lam` using `S.hyp.1.2.2.2.2.2`. Conclude with `@cls_eq_zero S.O S.G _ _ _ hD hV _ hl M _ _ _ W S.Γ.χ₁ (fun X _ _ => S.cls W X) hlc (fun Y _ _ _ => zero_mem (hL Y).1) (fun Y _ _ _ Y' _ _ _ f x => (hL Y).2.2 Y' f x) hR X _ _ _`.
+-/
 theorem cls_eq_zero_of_flat {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P) {M : Type} [AddCommGroup M]
     [Module S.O M] [Module.Flat S.O M] (W : Representation S.O S.G M) (hL : S.Lem0 W) (hR : S.ResBound W 0)
     (hlc : ∀ (X : Type) [AddCommGroup X] [Module S.O X] [Finite X] (m : M ⊗[S.O] X),
@@ -202,6 +270,9 @@ theorem cls_eq_zero_of_flat {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSi
     (fun X _ _ => S.cls W X) hlc (fun Y _ _ _ => zero_mem (hL Y).1)
     (fun Y _ _ _ Y' _ _ _ f x => (hL Y).2.2 Y' f x) hR X _ _ _
 
+/- English proof (translation)
+Introduce `l _ P S c hL hR X _ _ _`. Conclude with `cls_eq_zero_of_flat S _ hL hR (fun Y _ _ _ m => (exists_eps S).elim fun χ h => isLocallyConstant_twCoef S.Γ χ h.1 h.2 c Y m) X`.
+-/
 theorem main : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P), ∀ c : ℕ, S.Lem0 (S.Γ.Wchi c) → S.ResBound (S.Γ.Wchi c) 0 → ∀ (X : Type) [AddCommGroup X] [Module S.O X] [Finite X], S.cls (S.Γ.Wchi c) X = {0} := by
   intro l _ P S c hL hR X _ _ _
   exact cls_eq_zero_of_flat S _ hL hR

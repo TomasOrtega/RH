@@ -6,6 +6,9 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 
 namespace GlobalTheory.PDivGroup
 
+/- English proof (translation)
+Introduce `p O _ G n a b h`. Establish `hall : ∀ φ : CartierDual O (G.A n), a ∣ φ b` using `fun φ => by`. Take `⟨w, hw⟩` from `G.dual.omegaLevel_surjective n (dUnit O φ)`. Conclude with `h w φ hw.symm`. Conclude with `⟨GlobalTheory.T.exists_smul_eq_of_forall_dual_dvd O (G.A n) a b (fun φ => hall (WithConv.toConv φ)), fun w => AugCot.d_surjective _ (w.1 n)⟩`.
+-/
 theorem dvd_of_forall_omega_dvd : ∀ (p : ℕ) (O : Type) [CommRing O] (G : PDivGroup p O) (n : ℕ)
     (a : O) (b : G.A n),
     (∀ (w : G.dual.omega) (φ : CartierDual O (G.A n)), dUnit O φ = w.1 n → a ∣ φ b) →

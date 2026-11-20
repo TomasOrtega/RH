@@ -6,6 +6,15 @@ open UpperTheory.Gal.W2.Seed UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Pl 
 open scoped TensorProduct Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hS E _ _ _ A n _ x hx q hq hsp w hw z hz`. Take `⟨-, -, -, h4, -⟩` from `hS E A x hx q hq hsp w hw`. Establish `hscal : ∀ (u : Plc E) (a : GL (Fin n) (u.adicCompletion E)), comp u z * a = a * comp u z`. Introduce `u a`. Distinguish the cases in `h : UpperTheory.Gal.CertificateRingHomMap.SameK x (UpperTheory.Gal.CertificateRingHomMap.cj u) w`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, (hz u).1 h, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`. Rewrite using `[(hz u).2 h, one_mul, mul_one]`. Use `⟨fun g => UpperTheory.Gal.CertificateRingHomMap.guf_ext ?_ fun u => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, mul_comm]`.
+
+Rewrite using `[map_mul, map_mul, hscal]`. Use `(hz u).2 fun h => hu ?_` and prove the remaining obligations. Establish `h'` using `h4 _ h`. Establish `e : (UpperTheory.Gal.CertificateRingHomMap.cj u).asIdeal = _` using `(GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc (GlobalTheory.SplitPts.conjE E) u)`. Rewrite `h'` using `[e, Ideal.mem_comap, map_natCast]`.
+
+Conclude with `h'`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pCenFacts :
     Sides → CenFacts := by
   intro hS E _ _ _ A n _ x hx q hq hsp w hw z hz

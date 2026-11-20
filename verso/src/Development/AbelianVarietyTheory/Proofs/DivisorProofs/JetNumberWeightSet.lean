@@ -16,6 +16,19 @@ open GlobalTheory.HSApp
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hP hD hS hF`. Establish `hA` using `GlobalTheory.T.jet_numerator_weight_bound hP hD hS hF`. Establish `hB` using `GlobalTheory.T.cusp_form_stalk_integral_frame hP hD hS hF`. Establish `hG` using `GlobalTheory.T.weight_antitone_boundary hS`. Unfold `Covers Lifts at hA hB hG ⊢`.
+
+Use `Formalism.MainNotions.Closed.imp (Formalism.MainNotions.Closed.and (Formalism.MainNotions.Closed.and hA hB) hG) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨⟨C1, hC1, x1, h1⟩, ⟨C2, hC2, x2, h2⟩⟩, ⟨C3, hC3, x3, h3⟩⟩`. Use `⟨0, le_rfl, max x1 (max x2 x3), fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Establish `a` using `h1 x hx ((le_max_left _ _).trans hle) ι p hp i hi Y hY`. Establish `b` using `h2 x hx ((le_max_left _ _).trans ((le_max_right _ _).trans hle)) ι p hp i hi Y hY`.
+
+Establish `c` using `h3 x hx ((le_max_right _ _).trans ((le_max_right _ _).trans hle)) ι p hp i hi Y hY`. Introduce `Z TF la hla cst hJ y hy T io y' g φT hg hφ hfac`. Take `⟨f, hf, hne, hv⟩` from `a Z TF la hla cst hJ y hy T io y' g φT hg hφ hfac`. Take `⟨hp1, hgap⟩` from `c`. Take `⟨hanti, hgp⟩` from `hgap la hla`.
+
+Establish `hb : ∀ τ j, |(la τ j : ℝ)| ≤ ∑ τ', ∑ j', |(la τ' j' : ℝ)|` using `fun τ j => (Finset.single_le_sum (f := fun j' => |(la τ j' : ℝ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun τ' => ∑ j', |(la τ' j' : ℝ)|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.mem_univ τ))`. Establish `hev : Even (GlobalTheory.RefSum.nCol (dat p i))`. Take `⟨k, hk⟩` from `GlobalTheory.RefSum.eight_dvd_nCol (Dw := dat p i)`. Conclude with `⟨4 * k, by omega⟩`. Establish `hw` using `(GlobalTheory.RefSum.thA_dominant_lastPos_degree _ _ (dat p i) la (GlobalTheory.RefSum.nCol (dat p i)) _ hp1 hev hanti hgp hb).2.1`.
+
+Rewrite `hf` using `[hw]`. Establish `h4 : (4 : ℤ) ∣ ((GlobalTheory.RefSum.nCol (dat p i) / 2 : ℕ) : ℤ)`. Take `⟨k, hk⟩` from `GlobalTheory.RefSum.eight_dvd_nCol (Dw := dat p i)`. Conclude with `⟨k, by rw [hk]; omega⟩`. Take `⟨f', hne', hv'⟩` from `b Z TF la _ _ h4 f hf y T io y' g hg hfac hne`.
+
+Conclude with `⟨f', hne', by rw [hv']; exact hv⟩`.
+-/
 theorem GlobalTheory.JetsCst.jets_cst : Hypotheses2 → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂), ∀ la ∈ ({(⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁, (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).ub} : Set (AllWt.Weight (dat p i))), ∀ cst : ℝ, GlobalTheory.RefSum.JetNum (Fm.D x ι) (DF (dat p i) (GlobalTheory.RefSum.thA (dat p i) la (GlobalTheory.RefSum.nCol (dat p i)))) cst → ∀ y ∈ (U₀ TF.X Z : Set (Y₀ TF.X Z))ᶜ, ∀ (T : CDVR) (io : Y.d.c₂.F →+* T.Fr) (y' : IntFr Y.d.Xo₂ Y.d.c₂ T io) (g : (Y₀ TF.X Z).presheaf.stalk y →+* T.V) (φT : ℝ), IsLocalHom g → GlobalTheory.SlopeRec.HasPhi y' φT → (letI := io.toAlgebra; TF.X.ptY y'.1 = Spec.map (CommRingCat.ofHom ((algebraMap T.V T.Fr).comp g)) ≫ (Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) → ∃ f : Cusp Z Y.U la, evI y' ((f : Rul Y.d.Xo₂ Y.d.c₂)) ≠ 0 ∧ (vV T.V (evI y' ((f : Rul Y.d.Xo₂ Y.d.c₂))) : ℝ) ≤ cst * φT := by
   intro hP hD hS hF
   have hA := GlobalTheory.T.jet_numerator_weight_bound hP hD hS hF

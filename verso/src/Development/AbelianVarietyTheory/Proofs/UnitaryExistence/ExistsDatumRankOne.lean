@@ -11,6 +11,19 @@ open GlobalTheory.CompRat
 
 namespace GlobalTheory.RankOneDatum
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Set `I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E` to `⟨A, FractionalIdeal.isFractional_of_fg hfg⟩`. Establish `hI : I ≠ 0` using `fun h0 => hne (FractionalIdeal.coeToSubmodule_eq_bot.2 h0)`. Establish `hc : ∀ c ∈ I⁻¹, IsIntegral ℤ (x * c)` using `fun c hc => (h _).1 fun a ha b hb => by`.
+
+Establish `h1 : c * a ∈ I⁻¹ * I` using `FractionalIdeal.mul_mem_mul hc ha`. Rewrite `h1` using `[inv_mul_cancel₀ hI, FractionalIdeal.mem_one_iff]`. Take `⟨u, hu⟩` from `h1`. Take `⟨n, hn⟩` from `hx _ (A.smul_mem (IsCMField.ringOfIntegersComplexConj E u) hb)`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hn, Algebra.smul_def]`. Use `congr 1`. Establish `e : algebraMap (𝓞 E) E (IsCMField.ringOfIntegersComplexConj E u) = IsCMField.complexConj E (c * a)`. Rewrite using `[← hu]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, map_mul (IsCMField.complexConj E) _ b, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (1 : E) ∈ I⁻¹ * I`. Rewrite using `[inv_mul_cancel₀ hI]`. Conclude with `FractionalIdeal.one_mem_one _`.
+
+Establish `h2 : x * 1 ∈ A`. Use `FractionalIdeal.mul_induction_on (C := fun w => x * w ∈ A) h1 (fun c hc' a ha => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Conclude with `A.smul_mem (⟨x * c, hc c hc'⟩ : 𝓞 E) ha`. Rewrite using `[mul_add]`.
+
+Conclude with `A.add_mem hu hv`. Rewrite `h2` using `[mul_one]`. Then use the resulting hypothesis. Introduce `hx y hy`. Simplify using `using (h 1).2 isIntegral_one x hx y hy`.
+-/
 theorem selfDual_of_perfect {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Submodule (𝓞 E) E) (ξ : E)
     (hfg : A.FG) (hne : A ≠ ⊥)
     (h : ∀ x : E, (∀ a ∈ A, ∀ b ∈ A, ∃ z : ℤ,
@@ -48,6 +61,25 @@ theorem selfDual_of_perfect {E : Type} [Field E] [NumberField E] [IsCMField E] (
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨A, hfg, hne, h⟩` from `GlobalTheory.principalDatum_trace_perfect D`. Establish `hφ : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Establish `hc : IsCMField.complexConj D.host.E D.host.sqrtMinusD = -D.host.sqrtMinusD`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, map_neg, hφ]`.
+
+Simplify using the standard rewrite rules. Establish `hN : (0 : ℝ) < (Ideal.absNorm D.host.ccK : ℕ)` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero fun h0 => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 h0))`. Establish `hd : (0 : ℝ) < Real.sqrt D.host.d`. Rewrite using `[Real.sqrt_pos, Nat.cast_pos, Nat.pos_iff_ne_zero]`. Introduce `h0`.
+
+Establish `h1` using `H.sqrt_neg_disc_sq`. Rewrite `h1` using `[hrt0, hφ, h0]`. Establish `h2 : (H.d : ℂ) = 0` using `by simpa using h1`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast h2)`. Take `⟨D₁, -, hp, hq, -⟩` from `GlobalTheory.CM.SelfDualDatum.exists_datum D.host.E H A (-D.host.xi0) hfg hne (by`.
+
+Unfold `Formalism.BasicNotions.Host.xi0`. Rewrite using `[map_neg, map_div₀, map_mul, hc, map_neg, map_one, map_natCast, mul_neg, div_neg])`. Use the proof step `(fun τ hτ => by`. Rewrite `hτ` using `[hrt, hrt0, hφ]`. Unfold `Formalism.BasicNotions.Host.xi0`.
+
+Rewrite using `[map_neg, map_div₀, map_mul, hτ, map_neg, map_one, map_natCast]`. Generalize the expression as in `Ideal.absNorm D.host.ccK = N at hN ⊢`. Generalize the expression as in `Real.sqrt D.host.d = s at hd ⊢`. Establish `hN' : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hs' : (s : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`.
+
+Establish `e : -(-1 / ((N : ℂ) * (Complex.I * (s : ℂ)))) = ((-(1 / (N * s)) : ℝ) : ℂ) * Complex.I`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite using `[e, Complex.mul_I_im, Complex.ofReal_re, neg_lt_zero]`.
+
+Use the proof step `positivity)`. Use the proof step `(fun x => by`. Rewrite using `[← selfDual_of_perfect A D.host.xi0 hfg hne h x]`. Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations. Rewrite using `[neg_mul, neg_mul, map_neg]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`. Conclude with `⟨-n, by rw [Int.cast_neg, ← hn, neg_neg]⟩`. Introduce and unpack `⟨n, hn⟩`. Conclude with `⟨-n, by rw [Int.cast_neg, hn]⟩)`.
+
+Conclude with `⟨D₁, hp, hq⟩`.
+-/
 theorem exists_datum_of_rt (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E)
     (hrt : (H.rt : D.host.E) = D.host.sqrtMinusD) (hrt0 : H.rt0 = D.host.φ₀ D.host.sqrtMinusD) :
     ∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0 := by
@@ -95,6 +127,9 @@ theorem exists_datum_of_rt (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Ge
         exact ⟨-n, by rw [Int.cast_neg, hn]⟩)
   exact ⟨D₁, hp, hq⟩
 
+/- English proof (translation)
+Introduce `D H _ _ _ h _` and use `exists_datum_of_rt D H h.rt h.rt0`.
+-/
 theorem exists_datum_rank_one : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (V : HSp D) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)), IotaOK Dw V io → 1 ≤ Dw.p + Dw.q → ∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0 :=
   fun D H _ _ _ h _ => exists_datum_of_rt D H h.rt h.rt0
 

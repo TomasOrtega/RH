@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.OrbFinAf.MatrixUnits₂
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.MultiplierOrders.exists_order`. Consider the case `exact _root_.GlobalTheory.MultiplierOrders.exists_order`. Consider the case `(apply _root_.GlobalTheory.MultiplierOrders.exists_order <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MultiplierOrders.exists_order <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.MultiplierOrders.exists_order <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MultiplierOrders.exists_order ..)`.
+-/
 theorem exists_order (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensional ℚ C] :
     ∃ OB : Subring C, Module.Finite ℤ OB ∧ ∀ b : C, ∃ m : ℕ, 0 < m ∧ (m : C) * b ∈ OB := by
   first
@@ -22,6 +27,13 @@ theorem exists_order (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensional ℚ 
   | (intros; apply @_root_.GlobalTheory.MultiplierOrders.exists_order <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.MultiplierOrders.exists_order ..)
 
+/- English proof (translation)
+Take `⟨k, g, hg⟩` from `Module.Finite.exists_fin (R := ℤ) (M := OB)`. Establish `H` using `Filter.eventually_all.2 fun i : Fin k => Filter.eventually_all.2 fun m => ratCast_mem_intV_eventually p ((Module.finBasis ℚ G.C).repr (g i : G.C) m)`. Use `H.mono fun v hv x hx => ?_` and prove the remaining obligations. Establish `hx' : (⟨x, hx⟩ : OB) ∈ Submodule.span ℤ (Set.range g)` using `by rw [hg]; exact Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hx'`.
+
+Establish `e : (1 : Qv v) ⊗ₜ[ℚ] x = ∑ i, ((c i : ℤ) : Qv v) ⊗ₜ[ℚ] (g i : G.C)`. Establish `hx2 : x = ∑ i, (c i : ℤ) • (g i : G.C)`. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[hx2, TensorProduct.tmul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul ℚ, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `isIntV_of_eq_sum G v _ _ _ (fun i _ => intCast_mem _ _) (fun i _ m => hv i m)`.
+-/
 theorem isIntV_order_eventually (p : ℕ) [Fact p.Prime] (G : HTGroup p) (OB : Subring G.C)
     (hfin : Module.Finite ℤ OB) :
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), ∀ x ∈ OB, IsIntV G v ((1 : Qv v) ⊗ₜ[ℚ] x) := by
@@ -52,10 +64,16 @@ def theta (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p) [Fact (primesEq
     ℚ_[(primesEquiv v.1 : ℕ)] ⊗[ℚ] G.C ≃ₐ[ℚ] Qv v ⊗[ℚ] G.C :=
   Algebra.TensorProduct.congr (adicCompletion.padicEquiv v.1).symm.toAlgEquiv AlgEquiv.refl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem theta_tmul (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p) [Fact (primesEquiv v.1 : ℕ).Prime]
     (r : ℚ_[(primesEquiv v.1 : ℕ)]) (c : G.C) :
     theta p G v (r ⊗ₜ c) = (adicCompletion.padicEquiv v.1).symm r ⊗ₜ c := rfl
 
+/- English proof (translation)
+Take `⟨x, hx, hxr⟩` from `(adicCompletion.padicEquiv_bijOn v.1).surjOn (show (r : ℚ_[(primesEquiv v.1 : ℕ)]) ∈ PadicInt.subring _ from r.2)`. Rewrite using `[← hxr, ContinuousAlgEquiv.symm_apply_apply]`. Conclude with `hx`.
+-/
 theorem padicEquiv_symm_coe_mem (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p) [Fact (primesEquiv v.1 : ℕ).Prime]
     (r : ℤ_[(primesEquiv v.1 : ℕ)]) :
     (adicCompletion.padicEquiv v.1).symm (r : ℚ_[(primesEquiv v.1 : ℕ)]) ∈ v.1.adicCompletionIntegers ℚ := by
@@ -70,6 +88,15 @@ namespace GlobalTheory.OrbFinAf.MatrixUnits₂
 
 open Rat.HeightOneSpectrum GlobalTheory.LKInvGood
 
+/- English proof (translation)
+Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, rfl⟩` from `hx`. Rewrite using `[theta_tmul, map_one]`. Conclude with `hO c hc`.
+
+Consider the case `algebraMap r`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, theta_tmul]`. Introduce `k`. Rewrite using `[basV_repr_tmul]`. Establish `h1k` using `h1 k`.
+
+Rewrite `h1k` using `[Algebra.TensorProduct.one_def, basV_repr_tmul, one_mul]`. Conclude with `mul_mem (padicEquiv_symm_coe_mem p G v r) h1k`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `isIntV_add' G v hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`.
+
+Conclude with `hmul _ _ hx hy`.
+-/
 theorem isIntV_theta_locOrder (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p)
     [Fact (primesEquiv v.1 : ℕ).Prime] (OB : Subring G.C)
     (hO : ∀ x ∈ OB, IsIntV G v ((1 : Qv v) ⊗ₜ[ℚ] x)) (h1 : IsIntV G v 1)
@@ -91,6 +118,11 @@ theorem isIntV_theta_locOrder (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : Away
   | add x y _ _ hx hy => rw [map_add]; exact isIntV_add' G v hx hy
   | mul x y _ _ hx hy => rw [map_mul]; exact hmul _ _ hx hy
 
+/- English proof (translation)
+Establish `hfin : {v : AwayP p | (primesEquiv v.1 : ℕ) ∣ N}.Finite`. Establish `hinj : Function.Injective fun v : AwayP p => (primesEquiv v.1 : ℕ)` using `fun a b h => Subtype.ext (primesEquiv.injective (Subtype.ext h))`. Use `Set.Finite.of_finite_image ?_ hinj.injOn` and prove the remaining obligations. Use `(Set.finite_le_nat N).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+
+Conclude with `Nat.le_of_dvd hN hv`. Conclude with `hfin.eventually_cofinite_notMem`.
+-/
 theorem finite_dvd (p : ℕ) (N : ℕ) (hN : 0 < N) :
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), ¬ (primesEquiv v.1 : ℕ) ∣ N := by
   have hfin : {v : AwayP p | (primesEquiv v.1 : ℕ) ∣ N}.Finite := by
@@ -102,6 +134,19 @@ theorem finite_dvd (p : ℕ) (N : ℕ) (hN : 0 < N) :
     exact Nat.le_of_dvd hN hv
   exact hfin.eventually_cofinite_notMem
 
+/- English proof (translation)
+Introduce `p _ G`. Take `⟨OB, hfin, hspan⟩` from `exists_order G.C`. Take `⟨N, hN, hmat⟩` from `GlobalTheory.T.adjoinLocalOrderTensorPadic_matrix_almost_all G.F G.C G.n G.rankC OB hfin hspan`. Use `filter_upwards [finite_dvd p N hN, isIntV_order_eventually p G OB hfin, intV_order_eventually p G] with v hv hO hord`. Use `haveI : Fact (primesEquiv v.1 : ℕ).Prime := ⟨(primesEquiv v.1).2⟩`.
+
+Take `⟨ψ, -⟩` from `hmat (primesEquiv v.1 : ℕ) hv`. Set `E : Fin G.n → Fin G.n → Qv v ⊗[ℚ] G.C` to `fun i j => theta p G v ((ψ.symm (Matrix.single i j 1) : locOrder (primesEquiv v.1 : ℕ) OB) : ℚ_[(primesEquiv v.1 : ℕ)] ⊗[ℚ] G.C)`. Use `⟨E, fun i j k l => ?_, ?_, fun i j => isIntV_theta_locOrder p G v OB hO hord.1 hord.2.1 _ (ψ.symm _).2⟩` and prove the remaining obligations. Simplify using `only [E]`. Rewrite using `[← map_mul, ← Subalgebra.coe_mul, ← map_mul]`.
+
+Use `split_ifs with hjk`. Substitute `hjk` using the available equality. Rewrite using `[Matrix.single_mul_single_same, mul_one]`. Rewrite using `[Matrix.single_mul_single_of_ne (h := hjk), map_zero, ZeroMemClass.coe_zero, map_zero]`. Establish `hs : ∑ i, (Matrix.single i i (1 : cenOrder (primesEquiv v.1 : ℕ) G.F) : Matrix (Fin G.n) (Fin G.n) (cenOrder (primesEquiv v.1 : ℕ) G.F)) = 1`.
+
+Use extensionality with `a b`. Rewrite using `[Matrix.sum_apply, Matrix.one_apply, Finset.sum_eq_single a]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[Matrix.single_apply]`.
+
+Simplify using `[Matrix.single_apply, h]`. Introduce `c _ hc`. Simplify using `[Matrix.single_apply, hc]`. Simplify using the standard rewrite rules. Simplify using `only [E]`.
+
+Rewrite using `[← map_sum (theta p G v), ← AddSubmonoidClass.coe_finset_sum, ← map_sum ψ.symm, hs, map_one, OneMemClass.coe_one, map_one]`.
+-/
 theorem matrixUnits_eventually : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p),
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), ∃ E : Fin G.n → Fin G.n → Qv v ⊗[ℚ] G.C,
       (∀ i j k l, E i j * E k l = if j = k then E i l else 0) ∧ ∑ i, E i i = 1 ∧

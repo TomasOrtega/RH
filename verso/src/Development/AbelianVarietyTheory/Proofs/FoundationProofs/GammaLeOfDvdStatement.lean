@@ -9,5 +9,8 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FN.lv_mono | exact GlobalTheory.FN.lv_mono | (intros; apply GlobalTheory.FN.lv_mono <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lv_mono_of_dvd_of_le : ∀ (E : Subring ℂ) (N N' w w' : ℕ) (f : ℍ → ℂ), 0 < N' → N ∣ N' → w ≤ w' → Lv E N w f → Lv E N' w' f := by
   first | exact @GlobalTheory.FN.lv_mono | exact GlobalTheory.FN.lv_mono | (intros; apply GlobalTheory.FN.lv_mono <;> assumption)

@@ -11,6 +11,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open GlobalTheory.Cartier GlobalTheory.CovTest.SwapLine
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CodimOneDim.topologicalKrullDim_eq_of_coheight_eq_one | exact GlobalTheory.CodimOneDim.topologicalKrullDim_eq_of_coheight_eq_one | (intros; apply GlobalTheory.CodimOneDim.topologicalKrullDim_eq_of_coheight_eq_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithmetic_variety_divisor_dimension : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (Z : Scheme.{0}) (i : Z ⟶ Y) [IsClosedImmersion i] [IsIntegral Z],
     Order.coheight (i (genericPoint Z)) = 1 → topologicalKrullDim Z = D := by

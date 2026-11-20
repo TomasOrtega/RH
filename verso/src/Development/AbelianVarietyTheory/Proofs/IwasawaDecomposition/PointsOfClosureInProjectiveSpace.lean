@@ -15,32 +15,52 @@ open GlobalTheory.ProjSpace GlobalTheory.FlagMod
 
 variable {Z : Scheme.{0}} {S : Type} [CommRing S]
 
+/- English proof (translation)
+Use `show (X.presheaf.map (homOfLE h).op).hom a = a`. Rewrite using `[show (homOfLE h).op = 𝟙 _ from rfl, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 theorem resG_refl {X : Scheme.{0}} {U : X.Opens} (h : U ≤ U) (a : Γ(X, U)) : resG X h a = a := by
   show (X.presheaf.map (homOfLE h).op).hom a = a
   rw [show (homOfLE h).op = 𝟙 _ from rfl, CategoryTheory.Functor.map_id]
   rfl
 
+/- English proof (translation)
+Use `(resG_refl (X := Sp S) le_top _).trans ?_` and prove the remaining obligations. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of S)).hom_inv_id_apply _`.
+-/
 theorem fnOn_ev (z : Sp S ⟶ Z) (U : Z.Opens) (h : ⊤ ≤ z ⁻¹ᵁ U) (a : Γ(Z, U)) :
     fnOn ⊤ (ev z U h a) = (z.appLE U ⊤ h).hom a := by
   refine (resG_refl (X := Sp S) le_top _).trans ?_
   exact (Scheme.ΓSpecIso (CommRingCat.of S)).hom_inv_id_apply _
 
+/- English proof (translation)
+Establish `h1` using `Scheme.basicOpen_of_isUnit _ (hu.map (fnOn ⊤))`. Rewrite `h1` using `[fnOn_ev]`. Conclude with `(((Scheme.basicOpen_appLE z ⊤ U h a).symm.trans h1).ge (Set.mem_univ p)).2`.
+-/
 theorem mem_basicOpen_of_isUnit_ev (z : Sp S ⟶ Z) (U : Z.Opens) (h : ⊤ ≤ z ⁻¹ᵁ U) (a : Γ(Z, U))
     (hu : IsUnit (ev z U h a)) (p : Sp S) : z p ∈ Z.basicOpen a := by
   have h1 := Scheme.basicOpen_of_isUnit _ (hu.map (fnOn ⊤))
   rw [fnOn_ev] at h1
   exact (((Scheme.basicOpen_appLE z ⊤ U h a).symm.trans h1).ge (Set.mem_univ p)).2
 
+/- English proof (translation)
+Rewrite using `[← ev_res z (Z.basicOpen_le a) hu h]`. Conclude with `(Z.toRingedSpace.isUnit_res_basicOpen a).map _`.
+-/
 theorem isUnit_ev_of_le (z : Sp S ⟶ Z) (U : Z.Opens) (h : ⊤ ≤ z ⁻¹ᵁ U) (a : Γ(Z, U))
     (hu : ⊤ ≤ z ⁻¹ᵁ Z.basicOpen a) : IsUnit (ev z U h a) := by
   rw [← ev_res z (Z.basicOpen_le a) hu h]
   exact (Z.toRingedSpace.isUnit_res_basicOpen a).map _
 
+/- English proof (translation)
+Introduce `p _` and use `by show Z.fromSpecResidueField x p ∈ U rwa [Scheme.fromSpecResidueField_apply]`.
+-/
 theorem residue_le {U : Z.Opens} {x : Z} (hx : x ∈ U) :
     ⊤ ≤ (Z.fromSpecResidueField x : Sp (Z.residueField x) ⟶ Z) ⁻¹ᵁ U := fun p _ => by
   show Z.fromSpecResidueField x p ∈ U
   rwa [Scheme.fromSpecResidueField_apply]
 
+/- English proof (translation)
+Use `eq_zero_of_basicOpen_eq_bot a ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨x, hx, hxΩ⟩` from `hΩ.inter_open_nonempty _ (Z.basicOpen a).isOpen ((TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne)`. Establish `h1` using `residue_le (Z.basicOpen_le a hx)`. Use `(isUnit_ev_of_le _ U h1 a (residue_le hx)).ne_zero (H _ _ ?_ h1)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `(Scheme.fromSpecResidueField_apply x p).symm ▸ hxΩ`.
+-/
 theorem eq_zero_of_dense [IsReduced Z] {Ω : Set Z} (hΩ : Dense Ω) {U : Z.Opens} (a : Γ(Z, U))
     (H : ∀ (K : Type) [Field K] (w : Sp K ⟶ Z), Set.range w ⊆ Ω → ∀ h : ⊤ ≤ w ⁻¹ᵁ U, ev w U h a = 0) : a = 0 := by
   refine eq_zero_of_basicOpen_eq_bot a ?_
@@ -54,6 +74,11 @@ theorem eq_zero_of_dense [IsReduced Z] {Ω : Set Z} (hΩ : Dense Ω) {U : Z.Open
 
 variable {O : Type} [CommRing O] {N : ℕ}
 
+/- English proof (translation)
+Establish `h1 : ev w U hw (pullRatio q U i hi i) = 1` using `by rw [pullRatio_self, map_one]`. Establish `hv : Ideal.span (Set.range fun j => ev w U hw (pullRatio q U i hi j)) = ⊤` using `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨i, rfl⟩) (by simp only [h1, isUnit_one])`. Use `⟨hv, hom_ext (hg.trans (pt_str _ _ hv).symm) fun y => ?_⟩` and prove the remaining obligations. Establish `h2 : ⊤ ≤ pt g _ hv ⁻¹ᵁ chart O N i`. Rewrite using `[pt_preimage_chart, h1]`.
+
+Conclude with `fun p _ => mem_spOpen.2 ((Ideal.ne_top_iff_one _).1 p.isPrime.ne_top)`. Use `⟨⊤, trivial, i, le_preimage_map q hi hw, h2, fun j => ?_⟩` and prove the remaining obligations. Establish `h3` using `pullRatio_pt_mul g _ hv i j h2`. Rewrite `h3` using `[h1, map_one, _root_.mul_one, fnOn_ev, appLE_pullRatio]`. Conclude with `h3.symm`.
+-/
 theorem comp_eq_pt (q : Z ⟶ PSpace O N) {U : Z.Opens} {i : Fin (N + 1)} (hi : U ≤ q ⁻¹ᵁ chart O N i)
     (w : Sp S ⟶ Z) (hw : ⊤ ≤ w ⁻¹ᵁ U) (g : O →+* S) (hg : (w ≫ q) ≫ PSpace.str O N = spMap g) :
     ∃ hv, w ≫ q = pt g (fun j => ev w U hw (pullRatio q U i hi j)) hv := by
@@ -69,6 +94,27 @@ theorem comp_eq_pt (q : Z ⟶ PSpace O N) {U : Z.Opens} {i : Fin (N + 1)} (hi : 
   rw [h1, map_one, _root_.mul_one, fnOn_ev, appLE_pullRatio] at h3
   exact h3.symm
 
+/- English proof (translation)
+Take `⟨α, hα⟩` from `C.cover (f x)`. Take `⟨i, hi⟩` from `exists_mem_chart O N (q x)`. Take `⟨A', hA'⟩` from `Em.linv α`. Set `U : Z'.Opens` to `f ⁻¹ᵁ C.B α ⊓ q ⁻¹ᵁ chart O N i`. Establish `hxU : x ∈ U` using `⟨hα, hi⟩`.
+
+Set `φ : Γ(Z, C.B α) →+* Γ(Z', U)` to `(f.appLE (C.B α) U inf_le_left).hom`. Set `ξ : Fin (N + 1) → Γ(Z', U)` to `pullRatio q U i inf_le_right`. Set `η : Fin (C.n α) → Γ(Z', U)` to `(A'.map φ).mulVec ξ`. Establish `hev : ∀ (K : Type) [Field K] (w : Sp K ⟶ Z') (hw : ⊤ ≤ w ⁻¹ᵁ U) {m n : ℕ} (M : Matrix (Fin m) (Fin n) Γ(Z, C.B α)) (v : Fin n → Γ(Z', U)), (fun j => ev w U hw ((M.map φ).mulVec v j)) = (M.map (ev (w ≫ f) _ (le_preimage_map f inf_le_left hw))).mulVec fun j => ev w U hw (v j)`. Introduce `K _ w hw m n M v`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[RingHom.map_mulVec, Matrix.map_map]`. Use `congr 2`. Conclude with `funext fun a => ev_appLE w f _ hw _ a`. Establish `hpt : ∀ (K : Type) [Field K] (w : Sp K ⟶ Z') (hw : ⊤ ≤ w ⁻¹ᵁ U) (g : O →+* K), w ≫ f ≫ s = spMap g → ∃ hv, w ≫ q = pt g (fun j => ev w U hw (ξ j)) hv` using `fun K _ w hw g hg => comp_eq_pt q inf_le_right w hw g (by rw [Category.assoc, hq, hg])`.
+
+Establish `key : ((Em.A α).map φ).mulVec η = ξ`. Use function extensionality and compare the values at `j`. Use `sub_eq_zero.1 (eq_zero_of_dense hΩ _ fun K _ w hwΩ hw => ?_)` and prove the remaining obligations. Take `⟨ξ₀, g, hv, e⟩` from `H K w hwΩ α (le_preimage_map f inf_le_left hw)`. Take `⟨hv', e'⟩` from `hpt K w hw g (by rw [← hq, ← Category.assoc, e, pt_str])`.
+
+Take `⟨u, hu⟩` from `(pt_eq_pt_iff g hv hv').1 (e.symm.trans e')`. Rewrite using `[map_sub, sub_eq_zero]`. Use `congrFun (f := fun j => ev w U hw ((((Em.A α).map φ).mulVec η) j)) (g := fun j => ev w U hw (ξ j)) ?_ j` and prove the remaining obligations. Rewrite using `[hev, hev, hu, Units.smul_def, Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← Matrix.map_mul, hA', Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec, Matrix.mulVec_smul]`. Establish `hc : ∃ c, x ∈ Z'.basicOpen (η c)`.
+
+Establish `hw` using `residue_le hxU`. Use `by_contra! hn`. Establish `h0 : (fun c => ev _ U hw (η c)) = 0` using `funext fun c => by`. Assume the negation of the conclusion as `hne`. Use `mem_basicOpen_of_isUnit_ev _ U hw _ (Ne.isUnit hne) (IsLocalRing.closedPoint _)` as an intermediate fact.
+
+Conclude with `hn c ((Scheme.fromSpecResidueField_apply x _) ▸ this)`. Establish `h1` using `congrFun (hev _ _ hw (Em.A α) η) i`. Rewrite `h1` using `[h0, Matrix.mulVec_zero, key]`. Establish `h2 : ξ i = 1` using `pullRatio_self`. Simplify using `only [h2, map_one, Pi.zero_apply] at h1`.
+
+Conclude with `one_ne_zero h1`. Take `⟨c, hc⟩` from `hc`. Take `⟨_, ⟨B, hB, rfl⟩, hxB, hle⟩` from `Z'.isBasis_affineOpens.exists_subset_of_mem_open hc (Z'.basicOpen (η c)).isOpen`. Establish `hBU : B ≤ U` using `fun y hy => Z'.basicOpen_le _ (hle hy)`. Use `⟨B, hB, hxB, α, hBU.trans inf_le_left, fun j => resG Z' hBU (η j), ⟨c, ?_⟩, fun K _ w hw g hg => ?_⟩` and prove the remaining obligations.
+
+Use `isUnit_of_basicOpen_eq _ ((Scheme.basicOpen_res _ _ _).trans (inf_eq_left.2 hle))` and prove the remaining obligations. Establish `hw'` using `le_preimage_mono hBU hw`. Take `⟨hv, e⟩` from `hpt K w hw' g hg`. Establish `e1 : (fun j => ev w U hw' (ξ j)) = ((Em.A α).map (ev (w ≫ f) _ (le_preimage_map f (hBU.trans inf_le_left) hw))).mulVec fun i => ev w _ hw (resG Z' hBU (η i))`. Rewrite using `[← key, hev]`.
+
+Use `congr 1`. Conclude with `funext fun j => (ev_res w hBU hw hw' _).symm`. Conclude with `⟨e1 ▸ hv, e.trans (by congr 1)⟩`.
+-/
 theorem exists_local {Z' : Scheme.{0}} (s : Z ⟶ Sp O) (f : Z' ⟶ Z) (C : Coc Z) (Em : C.Emb N) (q : Z' ⟶ PSpace O N)
     (Ω : Set Z') (hq : q ≫ PSpace.str O N = f ≫ s) [IsReduced Z'] (hΩ : Dense Ω)
     (H : ∀ (K : Type) [Field K] (w : Sp K ⟶ Z'), Set.range w ⊆ Ω → ∀ (α : C.A) (h : ⊤ ≤ (w ≫ f) ⁻¹ᵁ C.B α),
@@ -134,6 +180,17 @@ theorem exists_local {Z' : Scheme.{0}} (s : Z ⟶ Sp O) (f : Z' ⟶ Z) (C : Coc 
       exact funext fun j => (ev_res w hBU hw hw' _).symm
     exact ⟨e1 ▸ hv, e.trans (by congr 1)⟩
 
+/- English proof (translation)
+Introduce `O _ Z Z' s f C N Em q Ω hq hred hΩ H`. Use `choose B aff mem a le η unit hη using exists_local s f C Em q Ω hq hΩ H`. Use `⟨⟨Z', B, aff, fun x => ⟨x, mem x⟩, a, le, η, unit⟩, fun K _ w α h ξ g hg => ⟨fun hL => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hw : ⊤ ≤ w ⁻¹ᵁ B (w (IsLocalRing.closedPoint K))` using `((IsLocalRing.closed_point_mem_iff (U := w ⁻¹ᵁ B _)).1 (mem _)).ge`. Generalize the expression as in `w (IsLocalRing.closedPoint K) = β at hw`.
+
+Take `⟨u, hu⟩` from `hL β hw`. Take `⟨hv, e⟩` from `hη β K w hw g hg`. Take `⟨u', hu'⟩` from `Em.compat (a β) α K (w ≫ f) (le_preimage_map f (le β) hw) h`. Establish `hu1 : (C.tr (a β) α (w ≫ f) (le_preimage_map f (le β) hw) h).mulVec ξ = (u : K) • fun i => ev w _ hw (η β i)` using `hu`. Establish `e1 : ((Em.A α).map (ev (w ≫ f) _ h)).mulVec ξ = (u'⁻¹ * u) • ((Em.A (a β)).map (ev (w ≫ f) _ (le_preimage_map f (le β) hw))).mulVec fun i => ev w _ hw (η β i)`.
+
+Rewrite using `[mul_smul, eq_inv_smul_iff, Units.smul_def, Units.smul_def, ← Matrix.smul_mulVec, ← hu', ← Matrix.mulVec_mulVec, hu1, Matrix.mulVec_smul]`. Establish `hv'` using `e1 ▸ span_range_units_smul hv (u'⁻¹ * u)`. Conclude with `⟨hv', e.trans ((pt_eq_pt_iff g hv hv').2 ⟨_, e1⟩)⟩`. Introduce and unpack `⟨hv', e'⟩ β hw`. Take `⟨hv, e⟩` from `hη β K w hw g hg`.
+
+Take `⟨u, hu⟩` from `(pt_eq_pt_iff g hv hv').1 (e.symm.trans e')`. Take `⟨u', hu'⟩` from `Em.compat (a β) α K (w ≫ f) (le_preimage_map f (le β) hw) h`. Take `⟨A', hA'⟩` from `Em.linv (a β)`. Establish `hl : ∀ v, (A'.map (ev (w ≫ f) _ (le_preimage_map f (le β) hw))).mulVec (((Em.A (a β)).map (ev (w ≫ f) _ (le_preimage_map f (le β) hw))).mulVec v) = v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, hA', Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`.
+
+Use `⟨u' * u, ?_⟩` and prove the remaining obligations. Use `show (C.tr (a β) α (w ≫ f) (le_preimage_map f (le β) hw) h).mulVec ξ = ((u' * u : Kˣ) : K) • fun i => ev w _ hw (η β i)`. Rewrite using `[← hl ((C.tr (a β) α (w ≫ f) (le_preimage_map f (le β) hw) h).mulVec ξ), Matrix.mulVec_mulVec ξ, hu', Matrix.smul_mulVec, hu, Units.smul_def, smul_smul, Matrix.mulVec_smul, hl, Units.val_mul]`.
+-/
 theorem exists_line : ∀ (O : Type) [CommRing O] (Z Z' : Scheme.{0}) (s : Z ⟶ Sp O) (f : Z' ⟶ Z) (C : Coc Z) (N : ℕ) (Em : C.Emb N) (q : Z' ⟶ PSpace O N) (Ω : Set Z'), q ≫ PSpace.str O N = f ≫ s → IsReduced Z' → Dense Ω → (∀ (K : Type) [Field K] (w : Sp K ⟶ Z'), Set.range w ⊆ Ω → ∀ (α : C.A) (h : ⊤ ≤ (w ≫ f) ⁻¹ᵁ C.B α), ∃ (ξ : Fin (C.n α) → K) (g : O →+* K) (hv : _), w ≫ q = GlobalTheory.ProjSpace.pt g (((Em.A α).map (ev (w ≫ f) _ h)).mulVec ξ) hv) → ∃ L : C.Line f, ∀ (K : Type) [Field K] (w : Sp K ⟶ Z') (α : C.A) (h : ⊤ ≤ (w ≫ f) ⁻¹ᵁ C.B α) (ξ : Fin (C.n α) → K) (g : O →+* K), w ≫ f ≫ s = spMap g → (L.Carries w α h ξ ↔ ∃ hv, w ≫ q = GlobalTheory.ProjSpace.pt g (((Em.A α).map (ev (w ≫ f) _ h)).mulVec ξ) hv) := by
   intro O _ Z Z' s f C N Em q Ω hq hred hΩ H
   choose B aff mem a le η unit hη using exists_local s f C Em q Ω hq hΩ H

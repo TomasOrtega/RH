@@ -37,13 +37,22 @@ def tauRep : Representation ℂ (GL (Fin m) k) (WSp hψ hI hB) where
     ext w g
     simp [mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tauRep_apply (x : GL (Fin m) k) (w : WSp hψ hI hB) (g : GL (Fin m) k) :
     ((tauRep hψ hI hB x w : WSp hψ hI hB) : GL (Fin m) k → ℂ) g = (w : GL (Fin m) k → ℂ) (g * x) := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun g => Wf_right hψ y g x)`.
+-/
 theorem tauRep_Phi (x : GL (Fin m) k) (y : WT (m := m) ψ) :
     tauRep hψ hI hB x (Phi hψ hI hB y) = Phi hψ hI hB (rhoW ψ x y) :=
   Subtype.ext (funext fun g => Wf_right hψ y g x)
 
+/- English proof (translation)
+Introduce `w` and use `by obtain ⟨y, hy⟩ := w.2 obtain ⟨K, hKo, -, hK⟩ := exists_fix y let S : Subgroup (GL (Fin m) k) := { carrier := {g | tauRep hψ hI hB g w = w} one_mem' := by simp mul_mem' := fun {a b} ha hb => by simp only [Set.mem_ofPred_eq, map_mul, Module.End.mul_apply] at * rw [hb, ha] inv_me …`.
+-/
 theorem isSmooth_tau : IsSmooth (tauRep hψ hI hB) := fun w => by
   obtain ⟨y, hy⟩ := w.2
   obtain ⟨K, hKo, -, hK⟩ := exists_fix y
@@ -63,6 +72,23 @@ theorem isSmooth_tau : IsSmooth (tauRep hψ hI hB) := fun w => by
     rw [tauRep_apply, ← hy, Wf_right hψ, hK κ hκ]
   exact Subgroup.isOpen_mono hle hKo
 
+/- English proof (translation)
+Establish `hne : Wf ψ hψ I B x₀ ≠ 0` using `fun h => hx₀ (by rw [← repr hψ hI hB x₀ x₀, h]; simp; exact map_zero I)`. Use `haveI : Nontrivial (WSp hψ hI hB) := ⟨⟨Phi hψ hI hB x₀, 0, fun h => hne (congrArg Subtype.val h)⟩⟩`. Use `haveI : Nontrivial (Subrepresentation (tauRep hψ hI hB)) := ⟨⊥, ⊤, fun h => by`. Use `congrArg Subrepresentation.toSubmodule h` as an intermediate fact. Conclude with `bot_ne_top (α := Submodule ℂ (WSp hψ hI hB)) this⟩`.
+
+Establish `hPadd : ∀ a b, Phi hψ hI hB (a + b) = Phi hψ hI hB a + Phi hψ hI hB b` using `fun a b => Subtype.ext (Wf_add hψ hI hB a b)`. Establish `hPsmul : ∀ (c : ℂ) a, Phi hψ hI hB (c • a) = (starRingEnd ℂ) c • Phi hψ hI hB a` using `fun c a => Subtype.ext (Wf_smul hψ hI hB c a)`. Establish `hPof : ∀ w : WSp hψ hI hB, ∃ y, Phi hψ hI hB y = w` using `fun w => by`. Take `⟨y, hy⟩` from `w.2`. Conclude with `⟨y, Subtype.ext hy⟩`.
+
+Use `⟨fun S => ?_⟩` and prove the remaining obligations. Set `Z : Submodule ℂ (WT (m` to `m) ψ) := { carrier := {y | Phi hψ hI hB y ∈ S.toSubmodule} zero_mem' := by show Phi hψ hI hB 0 ∈ S.toSubmodule`. Establish `: Phi hψ hI hB 0 = 0` using `by rw [← zero_smul ℂ (0 : WT (m := m) ψ), hPsmul, map_zero, zero_smul]`. Rewrite using `[this]`. Conclude with `S.toSubmodule.zero_mem`.
+
+Use the proof step `add_mem' := fun {a b} ha hb => by show Phi hψ hI hB (a + b) ∈ S.toSubmodule`. Rewrite using `[hPadd]`. Conclude with `S.toSubmodule.add_mem ha hb`. Use the proof step `smul_mem' := fun c a ha => by show Phi hψ hI hB (c • a) ∈ S.toSubmodule`. Rewrite using `[hPsmul]`.
+
+Conclude with `S.toSubmodule.smul_mem _ ha }`. Establish `hinv : ∀ g, ∀ z ∈ Z, rhoW ψ g z ∈ Z` using `fun g z hz => by show Phi hψ hI hB (rhoW ψ g z) ∈ S.toSubmodule`. Rewrite using `[← tauRep_Phi]`. Conclude with `S.2 g hz`. Break down `hZ Z hinv with h | h` into its components or cases.
+
+Use `Or.inl (Subrepresentation.toSubmodule_injective ?_) show S.toSubmodule = ⊥` and prove the remaining obligations. Use `(Submodule.eq_bot_iff _).2 fun w hw => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hPof w`. Conclude with `Subtype.ext (Wf_eq_zero hψ hI hB (h y hw))`. Use `Or.inr (Subrepresentation.toSubmodule_injective ?_) show S.toSubmodule = ⊤` and prove the remaining obligations.
+
+Use `Submodule.eq_top_iff'.2 fun w => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hPof w`. Take `⟨z, hz, h0⟩` from `h x`. Establish `e : Phi hψ hI hB x = Phi hψ hI hB (x - z) + Phi hψ hI hB z` using `by rw [← hPadd, sub_add_cancel]`. Rewrite using `[e, show Phi hψ hI hB (x - z) = 0 from Subtype.ext (Wf_eq_zero hψ hI hB h0), zero_add]`.
+
+Conclude with `hz`.
+-/
 theorem isIrreducible_tau
     (hZ : ∀ Z : Submodule ℂ (WT (m := m) ψ), (∀ g, ∀ z ∈ Z, rhoW ψ g z ∈ Z) →
       (∀ z ∈ Z, B z z = 0) ∨ ∀ x : WT (m := m) ψ, ∃ z ∈ Z, B (x - z) (x - z) = 0)

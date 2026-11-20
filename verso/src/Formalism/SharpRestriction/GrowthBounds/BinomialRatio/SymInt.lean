@@ -9,14 +9,23 @@ open Formalism.MainNotions.G MvPolynomial
 abbrev IntAlg (O : Type) [CommRing O] [IsDomain O] (σ : Type*) : Subalgebra O (MvPolynomial σ (KK O)) :=
   (MvPolynomial.mapAlgHom (Algebra.ofId O (KK O)) : MvPolynomial σ O →ₐ[O] MvPolynomial σ (KK O)).range
 
+/- English proof (translation)
+Conclude with `(AlgHom.mem_range _).mpr ⟨MvPolynomial.X v, by simp⟩`.
+-/
 theorem X_mem_intAlg (O : Type) [CommRing O] [IsDomain O] {σ : Type*} (v : σ) : (X v : MvPolynomial σ (KK O)) ∈ IntAlg O σ := by
   exact (AlgHom.mem_range _).mpr ⟨MvPolynomial.X v, by simp⟩
 
+/- English proof (translation)
+Take `⟨Q, hQ⟩` from `LinearMap.mem_range.mp h`. Conclude with `(AlgHom.mem_range _).mpr ⟨Q, hQ⟩`.
+-/
 theorem intPol_le (O : Type) [CommRing O] [IsDomain O] {σ : Type*} {P : MvPolynomial σ (KK O)} (h : P ∈ IntPol O σ) :
     P ∈ IntAlg O σ := by
   obtain ⟨Q, hQ⟩ := LinearMap.mem_range.mp h
   exact (AlgHom.mem_range _).mpr ⟨Q, hQ⟩
 
+/- English proof (translation)
+Take `⟨Q, rfl⟩` from `(AlgHom.mem_range _).mp h`. Unfold `InA`. Introduce `m`. Conclude with `⟨Q.coeff m, by simp [MvPolynomial.mapAlgHom_apply, MvPolynomial.coeff_map]⟩`.
+-/
 theorem inA_of_mem (O : Type) [CommRing O] [IsDomain O] {σ : Type*} {P : MvPolynomial σ (KK O)} (h : P ∈ IntAlg O σ) :
     InA (O := O) P := by
   obtain ⟨Q, rfl⟩ := (AlgHom.mem_range _).mp h
@@ -24,11 +33,21 @@ theorem inA_of_mem (O : Type) [CommRing O] [IsDomain O] {σ : Type*} {P : MvPoly
   intro m
   exact ⟨Q.coeff m, by simp [MvPolynomial.mapAlgHom_apply, MvPolynomial.coeff_map]⟩
 
+/- English proof (translation)
+Take `⟨Q, rfl⟩` from `(AlgHom.mem_range _).mp h`. Conclude with `(AlgHom.mem_range _).mpr ⟨rename f Q, by simp [MvPolynomial.mapAlgHom_apply, MvPolynomial.map_rename]⟩`.
+-/
 theorem rename_mem_intAlg (O : Type) [CommRing O] [IsDomain O] {σ τ : Type*} (f : σ → τ) {P : MvPolynomial σ (KK O)}
     (h : P ∈ IntAlg O σ) : rename f P ∈ IntAlg O τ := by
   obtain ⟨Q, rfl⟩ := (AlgHom.mem_range _).mp h
   exact (AlgHom.mem_range _).mpr ⟨rename f Q, by simp [MvPolynomial.mapAlgHom_apply, MvPolynomial.map_rename]⟩
 
+/- English proof (translation)
+Take `⟨Q, rfl⟩` from `(AlgHom.mem_range _).mp h`. Establish `e : (MvPolynomial.mapAlgHom (Algebra.ofId O (KK O)) : MvPolynomial σ O →ₐ[O] MvPolynomial σ (KK O)) Q = MvPolynomial.map (algebraMap O (KK O)) Q` using `rfl`. Rewrite using `[e, MvPolynomial.aeval_map_algebraMap]`. Use `clear h e`. Proceed by induction on `Q using MvPolynomial.induction_on with`.
+
+Consider the case `C a => rw [MvPolynomial.aeval_C]`. Conclude with `Subalgebra.algebraMap_mem _ a`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p v hp => rw [map_mul, MvPolynomial.aeval_X]`.
+
+Conclude with `mul_mem hp (hf v)`.
+-/
 theorem aeval_mem_intAlg (O : Type) [CommRing O] [IsDomain O] {σ τ : Type*} (f : σ → MvPolynomial τ (KK O))
     (hf : ∀ v, f v ∈ IntAlg O τ) {P : MvPolynomial σ (KK O)} (h : P ∈ IntAlg O σ) : aeval f P ∈ IntAlg O τ := by
   obtain ⟨Q, rfl⟩ := (AlgHom.mem_range _).mp h
@@ -41,6 +60,15 @@ theorem aeval_mem_intAlg (O : Type) [CommRing O] [IsDomain O] {σ τ : Type*} (f
   | add p q hp hq => rw [map_add]; exact add_mem hp hq
   | mul_X p v hp => rw [map_mul, MvPolynomial.aeval_X]; exact mul_mem hp (hf v)
 
+/- English proof (translation)
+Introduce `x hx`. Unfold `BlockData.SSZ at hx`. Use `Submodule.span_induction (p := fun x _ => x ∈ IntAlg O (BVar N r D.T.t)) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Set.mem_iUnion] at hx`.
+
+Take `⟨j, jp, _, y, hy, g0, hg0, rfl⟩` from `hx`. Establish `hX` using `fun v => X_mem_intAlg O (σ := BVar N r D.T.t) v`. Establish `hE : ∀ i, D.Ehat O (r` using `r) i ∈ IntAlg O (BVar N r D.T.t) := fun i => by`. Unfold `BlockData.Ehat`. Conclude with `(IntAlg O _).add_mem ((IntAlg O _).mul_mem (hX _) (hX _)) ((IntAlg O _).sum_mem fun c _ => (IntAlg O _).mul_mem (hX _) (hX _))`.
+
+Establish `hP : D.Eplus O (r` using `r) ∈ IntAlg O (BVar N r D.T.t) := by`. Unfold `BlockData.Eplus`. Conclude with `(IntAlg O _).add_mem ((IntAlg O _).mul_mem (hX _) (hX _)) ((IntAlg O _).sum_mem fun c _ => (IntAlg O _).mul_mem (hX _) (hX _))`. Use `(IntAlg O _).mul_mem ((IntAlg O _).mul_mem ((IntAlg O _).mul_mem ((IntAlg O _).mul_mem ((IntAlg O _).mul_mem ((IntAlg O _).prod_mem fun i _ => (IntAlg O _).pow_mem (hE i) _) ((IntAlg O _).pow_mem hP _)) ((IntAlg O _).prod_mem fun i _ => (IntAlg O _).pow_mem (hX _) _)) ((IntAlg O …` and prove the remaining obligations. Conclude with `(IntAlg O _).zero_mem`.
+
+Introduce `x y _ _ hx hy`. Conclude with `(IntAlg O _).add_mem hx hy`. Introduce `a x _ hx`. Conclude with `(IntAlg O _).smul_mem hx a`.
+-/
 theorem ssz_le_intAlg (O : Type) [CommRing O] [IsDomain O] {N r : ℕ} [NeZero r] (D : BlockData N) :
     ∀ x ∈ D.SSZ O (r := r), x ∈ IntAlg O (BVar N r D.T.t) := by
   intro x hx
@@ -66,6 +94,15 @@ theorem ssz_le_intAlg (O : Type) [CommRing O] [IsDomain O] {N r : ℕ} [NeZero r
   · intro x y _ _ hx hy; exact (IntAlg O _).add_mem hx hy
   · intro a x _ hx; exact (IntAlg O _).smul_mem hx a
 
+/- English proof (translation)
+Introduce `X _ O _ _ mm β s hs`. Apply `inA_of_mem` to reduce the goal to its premises. Unfold `symFam`. Use `(IntAlg O _).prod_mem fun j _ => ?_` and prove the remaining obligations. Unfold `ioBlock`.
+
+Establish `hX` using `fun v => X_mem_intAlg O (σ := (X.TT × Bool) × Fin (X.m + 1)) v`. Use `(IntAlg O _).mul_mem ((IntAlg O _).mul_mem ?_ ?_) ?_` and prove the remaining obligations. Unfold `digitMon`. Conclude with `(IntAlg O _).prod_mem fun i _ => (IntAlg O _).prod_mem fun c _ => (IntAlg O _).mul_mem ((IntAlg O _).pow_mem (hX _) _) ((IntAlg O _).pow_mem (hX _) _)`. Unfold `sTopMon`.
+
+Use `(IntAlg O _).prod_mem fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `(IntAlg O _).mul_mem ((IntAlg O _).pow_mem (hX _) _) ((IntAlg O _).pow_mem (hX _) _)`. Conclude with `(IntAlg O _).one_mem`. Establish `hsj : s j ∈ IntAlg O (BVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t)` using `ssz_le_intAlg O (r := X.m) (blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) mm (β j)) (s j) (hs j)`.
+
+Conclude with `aeval_mem_intAlg O _ (fun v => (IntAlg O _).pow_mem (hX _) _) hsj`.
+-/
 theorem symIntAt (C0 CE1 CE2 : ℝ) : SymIntAt C0 CE1 CE2 := by
   intro X _ O _ _ mm β s hs
   apply inA_of_mem
@@ -87,12 +124,18 @@ theorem symIntAt (C0 CE1 CE2 : ℝ) : SymIntAt C0 CE1 CE2 := by
         (blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) mm (β j)) (s j) (hs j)
     exact aeval_mem_intAlg O _ (fun v => (IntAlg O _).pow_mem (hX _) _) hsj
 
+/- English proof (translation)
+The claim follows from `srcHalf_of hCm hCt hstd h44 monoAt hP (symIntAt C0 CE1 CE2)`.
+-/
 theorem srcHalf_of' {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc H : ℝ} (hCm : 13 ≤ Cm) (hCt : 30 ≤ Ct)
     (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 H X)
     (h44 : Lemma44At C0 CYb Cde Ck CD Cb CE1 CE2 Cc) (hP : PlaneAt) :
     SrcHalfAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc :=
   srcHalf_of hCm hCt hstd h44 monoAt hP (symIntAt C0 CE1 CE2)
 
+/- English proof (translation)
+Establish `h13 : TransportedAlt fun _ _ _ _ _ _ _ _ Cm _ => (13 : ℝ) ≤ Cm` using `TransportedAlt.of_explicit (fun _ => 1) (fun _ _ => 13) (fun _ _ _ _ _ => 1) fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h _ _ _ _ _ _ _ _ _ _ => h`. Use `TransportedAlt.mono ?_ ((thr_std.and h44).and h13)` and prove the remaining obligations. Introduce and unpack `C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc ⟨⟨⟨_, hstd⟩, h4⟩, hCm⟩`. Conclude with `⟨30, by norm_num, fun Ct hCt => srcHalf_of' hCm hCt hstd h4 hP⟩`.
+-/
 theorem restSrcHalf_of (h44 : BinomialRatioBeyondThreshold) (hP : PlaneAt) :
     TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc => ∃ Ct0 : ℝ, 0 < Ct0 ∧ ∀ Ct : ℝ, Ct0 ≤ Ct →
       SrcHalfAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc := by

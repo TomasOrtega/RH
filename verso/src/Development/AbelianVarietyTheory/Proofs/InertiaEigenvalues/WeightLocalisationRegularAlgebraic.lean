@@ -5,6 +5,9 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Bas
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D i P τ`. Rewrite using `[D.nbc.embAV_inf i P]`. Conclude with `D.nbc.infW_alg _ _ τ`.
+-/
 theorem weight_localisation_regular_algebraic : ∀ (D : D7) (i : D.nd.Loc) (P : D.naut.AV i) (τ : D.host.E →+* ℂ),
     (D.naut.infWt i τ).Nodup ∧ ∀ z ∈ D.naut.infWt i τ, ∃ k : ℤ, z = (k : ℂ) + ((D.R.nV : ℂ) - 1) / 2 := by
   intro D i P τ

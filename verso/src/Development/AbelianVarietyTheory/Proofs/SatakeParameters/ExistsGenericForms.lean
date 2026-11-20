@@ -24,6 +24,9 @@ variable {N : ℕ}
 
 def lin (c : Fin (N + 1) → ℂ) : MvPolynomial (Fin (N + 1)) ℂ := ∑ l, c l • MvPolynomial.X l
 
+/- English proof (translation)
+Unfold `lin`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (ProjSpace.X_mem ℂ N l)`.
+-/
 theorem lin_mem (c : Fin (N + 1) → ℂ) : lin c ∈ ProjSpace.grading ℂ N 1 := by
   unfold lin
   exact Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (ProjSpace.X_mem ℂ N l)
@@ -33,6 +36,11 @@ def linMap : (Fin (N + 1) → ℂ) →ₗ[ℂ] MvPolynomial (Fin (N + 1)) ℂ wh
   map_add' a b := by simp [lin, add_smul, Finset.sum_add_distrib]
   map_smul' a b := by simp [lin, smul_smul, Finset.smul_sum]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hle : Ideal.span (Set.range (MvPolynomial.X : Fin (N + 1) → MvPolynomial (Fin (N + 1)) ℂ)) ≤ z.asHomogeneousIdeal.toIdeal`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨l, rfl⟩`.
+
+Conclude with `h l`. Apply `ProjectiveSpectrum.not_irrelevant_le z` to reduce the goal to its premises. Introduce `x hx`. Conclude with `hle (ProjSpace.irrelevant_le_span_X ℂ N hx)`.
+-/
 theorem exists_X_notMem (z : PSpace ℂ N) :
     ∃ l, (MvPolynomial.X l : MvPolynomial (Fin (N + 1)) ℂ) ∉ z.asHomogeneousIdeal.toIdeal := by
   by_contra h
@@ -49,6 +57,11 @@ theorem exists_X_notMem (z : PSpace ℂ N) :
 def van (z : PSpace ℂ N) : Submodule ℂ (Fin (N + 1) → ℂ) :=
   (z.asHomogeneousIdeal.toIdeal.restrictScalars ℂ).comap linMap
 
+/- English proof (translation)
+Take `⟨S, hSf, hSc, hSi, rfl⟩` from `NoetherianSpace.exists_finite_set_isClosed_irreducible hZ`. Use `haveI : Finite S := hSf.to_subtype`. Use `⟨Set.range fun s : S => (hSi s.1 s.2).genericPoint, Set.finite_range _, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨s, hs⟩, rfl⟩`. Conclude with `Set.mem_sUnion_of_mem ((hSi s hs).isGenericPoint_genericPoint (hSc s hs)).mem hs`.
+
+Introduce and unpack `x ⟨s, hs, hx⟩`. Conclude with `⟨_, ⟨⟨s, hs⟩, rfl⟩, ((hSi s hs).isGenericPoint_genericPoint (hSc s hs)).specializes hx⟩`.
+-/
 theorem exists_finite_gen {Y : Scheme.{0}} [NoetherianSpace Y] (Z : Set Y) (hZ : IsClosed Z) :
     ∃ T : Set Y, T.Finite ∧ T ⊆ Z ∧ ∀ x ∈ Z, ∃ t ∈ T, t ⤳ x := by
   obtain ⟨S, hSf, hSc, hSi, rfl⟩ := NoetherianSpace.exists_finite_set_isClosed_irreducible hZ
@@ -59,6 +72,9 @@ theorem exists_finite_gen {Y : Scheme.{0}} [NoetherianSpace Y] (Z : Set Y) (hZ :
   · rintro x ⟨s, hs, hx⟩
     exact ⟨_, ⟨⟨s, hs⟩, rfl⟩, ((hSi s hs).isGenericPoint_genericPoint (hSc s hs)).specializes hx⟩
 
+/- English proof (translation)
+Apply `Order.coheight_add_one_le` to reduce the goal to its premises. Conclude with `lt_iff_le_not_ge.2 ⟨h, fun h' => hx (Specializes.mem_open h' hW ht)⟩`.
+-/
 theorem coheight_step {Y : Scheme.{0}} {t x : Y} (h : t ⤳ x) (W : Set Y) (hW : IsOpen W) (ht : t ∈ W)
     (hx : x ∉ W) : Order.coheight t + 1 ≤ Order.coheight x := by
   apply Order.coheight_add_one_le
@@ -84,31 +100,52 @@ def vv (l : Fin (N + 1)) : Sec p (fOpen ι g₀) :=
 def Lm : (Fin (N + 1) → ℂ) →ₗ[ℂ] Sec p (fOpen ι g₀) ⧸ sqQ ι g₀ hy :=
   (sqQ ι g₀ hy).mkQ ∘ₗ Fintype.linearCombination ℂ (vv ι g₀ hg₀ hy)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact (CxPts.ev_eq hy _).symm.trans (CxPts.ev_algX hy z)`. Consider the case `exact CxPts.ev_algX hy z`.
+-/
 theorem ev₀_algebraMap (z : ℂ) : ev₀ ι g₀ hy (algebraMap ℂ (Sec p (fOpen ι g₀)) z) = z := by
   first
   | exact (CxPts.ev_eq hy _).symm.trans (CxPts.ev_algX hy z)
   | exact CxPts.ev_algX hy z
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul, ev₀_algebraMap]`.
+-/
 theorem ev₀_smul (z : ℂ) (a : Sec p (fOpen ι g₀)) : ev₀ ι g₀ hy (z • a) = z * ev₀ ι g₀ hy a := by
   rw [Algebra.smul_def, map_mul, ev₀_algebraMap]
 
+/- English proof (translation)
+Unfold `vv`. Rewrite using `[map_sub, ev₀_algebraMap, sub_self]`.
+-/
 theorem ev₀_vv (l : Fin (N + 1)) : ev₀ ι g₀ hy (vv ι g₀ hg₀ hy l) = 0 := by
   unfold vv
   rw [map_sub, ev₀_algebraMap, sub_self]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun l _ => by rw [ev₀_smul, ev₀_vv, mul_zero]`.
+-/
 theorem ev₀_sum (c : Fin (N + 1) → ℂ) : ev₀ ι g₀ hy (∑ l, c l • vv ι g₀ hg₀ hy l) = 0 := by
   rw [map_sum]
   exact Finset.sum_eq_zero fun l _ => by rw [ev₀_smul, ev₀_vv, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Conclude with `Iff.rfl`.
+-/
 theorem mkQ_eq_mkQ (a b : Sec p (fOpen ι g₀)) :
     (sqQ ι g₀ hy).mkQ a = (sqQ ι g₀ hy).mkQ b ↔ a - b ∈ RingHom.ker (ev₀ ι g₀ hy) ^ 2 := by
   rw [Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]
   exact Iff.rfl
 
+/- English proof (translation)
+Simplify using `only [Lm, LinearMap.coe_comp, Function.comp_apply, Fintype.linearCombination_apply]`.
+-/
 theorem Lm_apply' (c : Fin (N + 1) → ℂ) :
     Lm ι g₀ hg₀ hy c = (sqQ ι g₀ hy).mkQ (∑ l, c l • vv ι g₀ hg₀ hy l) := by
   simp only [Lm, LinearMap.coe_comp, Function.comp_apply, Fintype.linearCombination_apply]
 
+/- English proof (translation)
+Rewrite using `[Lm_apply']`. Establish `hfr : fr ι g₀ hg₀ c = ∑ l, c l • rr ι g₀ hg₀ l` using `fRatio_linear X p N ι hp g₀ hg₀ c (lin_mem c)`. Rewrite using `[hfr]`. Use `congr 1`. Simplify using `only [vv, smul_sub, Finset.sum_sub_distrib, map_sum, ev₀_smul, map_mul, Algebra.smul_def, ev₀_algebraMap, mul_sub]`.
+-/
 theorem Lm_apply (hp : ι ≫ PSpace.str ℂ N = p) (c : Fin (N + 1) → ℂ) :
     Lm ι g₀ hg₀ hy c = (sqQ ι g₀ hy).mkQ
       (fr ι g₀ hg₀ c - algebraMap ℂ (Sec p (fOpen ι g₀)) (ev₀ ι g₀ hy (fr ι g₀ hg₀ c))) := by

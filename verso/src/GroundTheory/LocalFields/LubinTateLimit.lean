@@ -25,6 +25,9 @@ def unramifiedTowerRoot (k : ℕ) : Ω :=
   Classical.choose (exists_isPrimitiveRoot_card_pow_sub_one (K := K) (Ksep := Ω)
     (Nat.factorial_ne_zero (k + 1)))
 
+/- English proof (translation)
+Unfold `unramifiedTowerRoot`. Conclude with `Classical.choose_spec (exists_isPrimitiveRoot_card_pow_sub_one (K := K) (Ksep := Ω) (Nat.factorial_ne_zero (k + 1)))`.
+-/
 theorem isPrimitiveRoot_unramifiedTowerRoot (k : ℕ) :
     IsPrimitiveRoot (unramifiedTowerRoot K Ω k) (Nat.card 𝓀[K] ^ (k + 1).factorial - 1) := by
   unfold unramifiedTowerRoot
@@ -35,16 +38,25 @@ variable (K Ω) in
 
 def unramifiedTower (k : ℕ) : IntermediateField K Ω := K⟮unramifiedTowerRoot K Ω k⟯
 
+/- English proof (translation)
+The claim follows from `(isUnramifiedSubextension_adjoin (Nat.factorial_ne_zero _) (isPrimitiveRoot_unramifiedTowerRoot (K := K) (Ω := Ω) k)).1`.
+-/
 theorem isUnramifiedSubextension_unramifiedTower (k : ℕ) :
     IsUnramifiedSubextension (unramifiedTower K Ω k) :=
   (isUnramifiedSubextension_adjoin (Nat.factorial_ne_zero _)
     (isPrimitiveRoot_unramifiedTowerRoot (K := K) (Ω := Ω) k)).1
 
+/- English proof (translation)
+The claim follows from `(isUnramifiedSubextension_adjoin (Nat.factorial_ne_zero _) (isPrimitiveRoot_unramifiedTowerRoot (K := K) (Ω := Ω) k)).2`.
+-/
 theorem finrank_unramifiedTower (k : ℕ) :
     Module.finrank K (unramifiedTower K Ω k) = (k + 1).factorial :=
   (isUnramifiedSubextension_adjoin (Nat.factorial_ne_zero _)
     (isPrimitiveRoot_unramifiedTowerRoot (K := K) (Ω := Ω) k)).2
 
+/- English proof (translation)
+Use `hE.1` as an intermediate fact. Conclude with `hE.le_adjoin (Nat.factorial_ne_zero _) (Nat.dvd_factorial Module.finrank_pos hk) (isPrimitiveRoot_unramifiedTowerRoot k)`.
+-/
 theorem le_unramifiedTower_of_isUnramifiedSubextension {E : IntermediateField K Ω}
     (hE : IsUnramifiedSubextension E) {k : ℕ} (hk : Module.finrank K E ≤ k + 1) :
     E ≤ unramifiedTower K Ω k := by
@@ -52,16 +64,25 @@ theorem le_unramifiedTower_of_isUnramifiedSubextension {E : IntermediateField K 
   exact hE.le_adjoin (Nat.factorial_ne_zero _)
     (Nat.dvd_factorial Module.finrank_pos hk) (isPrimitiveRoot_unramifiedTowerRoot k)
 
+/- English proof (translation)
+Introduce `j k h` and use `by have := (isUnramifiedSubextension_unramifiedTower (K := K) (Ω := Ω) j).1 exact (isUnramifiedSubextension_unramifiedTower j).le_adjoin (Nat.factorial_ne_zero _) (by rw [finrank_unramifiedTower]; exact Nat.factorial_dvd_factorial (Nat.succ_le_succ h)) (isPrimitiveRoot_unramified …`.
+-/
 theorem monotone_unramifiedTower : Monotone (unramifiedTower K Ω) := fun j k h => by
   have := (isUnramifiedSubextension_unramifiedTower (K := K) (Ω := Ω) j).1
   exact (isUnramifiedSubextension_unramifiedTower j).le_adjoin (Nat.factorial_ne_zero _)
     (by rw [finrank_unramifiedTower]; exact Nat.factorial_dvd_factorial (Nat.succ_le_succ h))
     (isPrimitiveRoot_unramifiedTowerRoot k)
 
+/- English proof (translation)
+The claim follows from `(isUnramifiedSubextension_unramifiedTower k).le_maximalUnramifiedExtension`.
+-/
 theorem unramifiedTower_le_maximalUnramifiedExtension (k : ℕ) :
     unramifiedTower K Ω k ≤ maximalUnramifiedExtension K Ω :=
   (isUnramifiedSubextension_unramifiedTower k).le_maximalUnramifiedExtension
 
+/- English proof (translation)
+Take `⟨E, hE, hxE⟩` from `mem_maximalUnramifiedExtension_iff.mp hx`. Conclude with `⟨Module.finrank K E, le_unramifiedTower_of_isUnramifiedSubextension hE (Nat.le_succ _) hxE⟩`.
+-/
 theorem exists_mem_unramifiedTower {x : Ω} (hx : x ∈ maximalUnramifiedExtension K Ω) :
     ∃ k, x ∈ unramifiedTower K Ω k := by
   obtain ⟨E, hE, hxE⟩ := mem_maximalUnramifiedExtension_iff.mp hx
@@ -82,6 +103,9 @@ variable {π : 𝒪[K]} (hπ : Irreducible π) {f : PowerSeries 𝒪[K]}
 abbrev towerSup (hf : IsLubinTateSeries π f) (k : ℕ) : IntermediateField K Ω :=
   lubinTateField Ω hπ hf (k + 1) ⊔ unramifiedTower K Ω k
 
+/- English proof (translation)
+Introduce `_ _ h` and use `sup_le_sup (lubinTateField_mono hπ hf (Nat.succ_le_succ h)) (monotone_unramifiedTower h)`.
+-/
 theorem monotone_towerSup (hf : IsLubinTateSeries π f) : Monotone (towerSup (Ω := Ω) hπ hf) :=
   fun _ _ h => sup_le_sup (lubinTateField_mono hπ hf (Nat.succ_le_succ h))
     (monotone_unramifiedTower h)
@@ -91,10 +115,20 @@ variable (Ω) in
 abbrev lubinTateMaxUnramified (hπ : Irreducible π) : IntermediateField K Ω :=
   lubinTateLimit Ω hπ ⊔ maximalUnramifiedExtension K Ω
 
+/- English proof (translation)
+The claim follows from `sup_le_sup (lubinTateField_le_lubinTateLimit hπ hf _) (unramifiedTower_le_maximalUnramifiedExtension k)`.
+-/
 theorem towerSup_le (hf : IsLubinTateSeries π f) (k : ℕ) :
     towerSup (Ω := Ω) hπ hf k ≤ lubinTateMaxUnramified Ω hπ :=
   sup_le_sup (lubinTateField_le_lubinTateLimit hπ hf _) (unramifiedTower_le_maximalUnramifiedExtension k)
 
+/- English proof (translation)
+Establish `hle : lubinTateMaxUnramified Ω hπ ≤ ⨆ k, towerSup hπ hf k`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[lubinTateLimit_eq hπ hf]`. Use `iSup_le fun n => ?_` and prove the remaining obligations. Conclude with `(lubinTateField_mono hπ hf n.le_succ).trans ((le_sup_left : _ ≤ towerSup hπ hf n).trans (le_iSup (towerSup hπ hf) n))`.
+
+Introduce `y hy`. Take `⟨k, hk⟩` from `exists_mem_unramifiedTower hy`. Conclude with `(le_iSup (towerSup hπ hf) k) ((le_sup_right : _ ≤ towerSup hπ hf k) hk)`. Use `hle hx` as an intermediate fact. Rewrite `this` using `[← SetLike.mem_coe, IntermediateField.coe_iSup_of_directed (monotone_towerSup hπ hf).directed_le]`.
+
+Simplify `this` using `only [Set.mem_iUnion, SetLike.mem_coe]`.
+-/
 theorem exists_mem_towerSup (hf : IsLubinTateSeries π f) {x : Ω}
     (hx : x ∈ lubinTateMaxUnramified Ω hπ) : ∃ k, x ∈ towerSup hπ hf k := by
   have hle : lubinTateMaxUnramified Ω hπ ≤ ⨆ k, towerSup hπ hf k := by
@@ -117,10 +151,24 @@ def lubinTateMaxUnramifiedRestrict :
         (maximalUnramifiedExtension K Ω ≃ₐ[K] maximalUnramifiedExtension K Ω) :=
   (restrictAut le_sup_left).prod (restrictAut le_sup_right)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `algEquiv_ext_sup (congrArg Prod.fst h) (congrArg Prod.snd h)`.
+-/
 theorem lubinTateMaxUnramifiedRestrict_injective :
     Function.Injective (lubinTateMaxUnramifiedRestrict (Ω := Ω) hπ) := fun _ _ h =>
   algEquiv_ext_sup (congrArg Prod.fst h) (congrArg Prod.snd h)
 
+/- English proof (translation)
+Introduce and unpack `⟨τ₁, τ₂⟩`. Establish `hK : ∀ k, lubinTateField Ω hπ hf (k + 1) ≤ lubinTateLimit Ω hπ` using `fun k => lubinTateField_le_lubinTateLimit hπ hf _`. Establish `hE : ∀ k, unramifiedTower K Ω k ≤ maximalUnramifiedExtension K Ω` using `unramifiedTower_le_maximalUnramifiedExtension`. Establish `hσ` using `fun k => (bijective_restrictAut_prod hπ hf (Nat.succ_pos k) (isUnramifiedSubextension_unramifiedTower (K := K) (Ω := Ω) k)).2 (restrictAut (hK k) τ₁, restrictAut (hE k) τ₂)`. Use `choose σ hσ using hσ`.
+
+Establish `hσ₁ : ∀ k, restrictAut le_sup_left (σ k) = restrictAut (hK k) τ₁` using `fun k => congrArg Prod.fst (hσ k)`. Establish `hσ₂ : ∀ k, restrictAut le_sup_right (σ k) = restrictAut (hE k) τ₂` using `fun k => congrArg Prod.snd (hσ k)`. Establish `hcompat : ∀ j k (h : j ≤ k), restrictAut (monotone_towerSup hπ hf h) (σ k) = σ j`. Introduce `j k h`. Apply `algEquiv_ext_sup` to reduce the goal to its premises.
+
+Rewrite using `[restrictAut_restrictAut, hσ₁ j, ← restrictAut_restrictAut (le_sup_left : _ ≤ towerSup hπ hf k) (lubinTateField_mono hπ hf (Nat.succ_le_succ h)), hσ₁ k, restrictAut_restrictAut]`. Rewrite using `[restrictAut_restrictAut, hσ₂ j, ← restrictAut_restrictAut (le_sup_right : _ ≤ towerSup hπ hf k) (monotone_unramifiedTower h), hσ₂ k, restrictAut_restrictAut]`. Take `⟨ρ, hρ⟩` from `exists_algEquiv_of_compatible (monotone_towerSup hπ hf) (towerSup_le hπ hf) (fun _ hx => exists_mem_towerSup hπ hf hx) σ hcompat`. Use `⟨ρ, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Use `algEquiv_ext_of_restrictAut (F := fun k => lubinTateField Ω hπ hf (k + 1)) hK (fun x hx => ?_) fun k => ?_` and prove the remaining obligations.
+
+Take `⟨n, hn⟩` from `(mem_lubinTateLimit_iff hπ hf).mp hx`. Conclude with `⟨n, lubinTateField_mono hπ hf n.le_succ hn⟩`. Express the relevant statement in the definitionally equal form `restrictAut (hK k) (restrictAut le_sup_left ρ) = _`. Rewrite using `[restrictAut_restrictAut, ← restrictAut_restrictAut (towerSup_le hπ hf k) (le_sup_left : _ ≤ towerSup hπ hf k), hρ k, hσ₁ k]`. Use `algEquiv_ext_of_restrictAut (F := unramifiedTower K Ω) hE (fun x hx => exists_mem_unramifiedTower hx) fun k => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `restrictAut (hE k) (restrictAut le_sup_right ρ) = _`. Rewrite using `[restrictAut_restrictAut, ← restrictAut_restrictAut (towerSup_le hπ hf k) (le_sup_right : _ ≤ towerSup hπ hf k), hρ k, hσ₂ k]`.
+-/
 theorem lubinTateMaxUnramifiedRestrict_surjective (hf : IsLubinTateSeries π f) :
     Function.Surjective (lubinTateMaxUnramifiedRestrict (Ω := Ω) hπ) := by
   rintro ⟨τ₁, τ₂⟩

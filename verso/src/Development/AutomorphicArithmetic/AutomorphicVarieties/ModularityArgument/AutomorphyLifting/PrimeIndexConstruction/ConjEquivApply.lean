@@ -17,9 +17,15 @@ private def conjEquiv (g : GL (Fin n) k) : (Fin n → k) ≃ₗ[k] (Fin n → k)
     (by rw [← Matrix.mulVecLin_mul, ← Units.val_mul, mul_inv_cancel]; simp)
     (by rw [← Matrix.mulVecLin_mul, ← Units.val_mul, inv_mul_cancel]; simp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem conjEquiv_apply (g : GL (Fin n) k) (v : Fin n → k) :
     conjEquiv g v = (g : Matrix (Fin n) (Fin n) k).mulVec v := rfl
 
+/- English proof (translation)
+Establish `h : (r' s : Matrix (Fin n) (Fin n) k) * (g : Matrix (Fin n) (Fin n) k) = (g : Matrix (Fin n) (Fin n) k) * (r s : Matrix (Fin n) (Fin n) k)`. Rewrite using `[← Units.val_mul, ← Units.val_mul, hg s, inv_mul_cancel_right]`. Simplify using `only [conjEquiv_apply, Matrix.mulVec_mulVec, h]`.
+-/
 private theorem intertwine {r r' : Γ →* GL (Fin n) k} {g : GL (Fin n) k}
     (hg : ∀ s, r' s = g * r s * g⁻¹) (s : Γ) (v : Fin n → k) :
     (r' s : Matrix (Fin n) (Fin n) k).mulVec (conjEquiv g v) =
@@ -29,6 +35,15 @@ private theorem intertwine {r r' : Γ →* GL (Fin n) k} {g : GL (Fin n) k}
     rw [← Units.val_mul, ← Units.val_mul, hg s, inv_mul_cancel_right]
   simp only [conjEquiv_apply, Matrix.mulVec_mulVec, h]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Introduce `W hW`. Establish `h0 : IsInv r (W.comap (conjEquiv g).toLinearMap)`. Introduce `s v hv`. Establish `hv' : conjEquiv g v ∈ W` using `hv`.
+
+Use `show conjEquiv g _ ∈ W`. Rewrite using `[← intertwine hg]`. Conclude with `hW s _ hv'`. Take `⟨W', hW', hc⟩` from `H _ h0`. Use `⟨W'.map (conjEquiv g).toLinearMap, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `s _ ⟨v, hv, rfl⟩`. Conclude with `⟨(r s : Matrix (Fin n) (Fin n) k).mulVec v, hW' s v hv, (intertwine hg s v).symm⟩`. Establish `hm` using `(Submodule.orderIsoMapComap (conjEquiv g)).isCompl hc`. Establish `hW2 : (Submodule.orderIsoMapComap (conjEquiv g)) (W.comap (conjEquiv g).toLinearMap) = W`. Use extensionality with `x`.
+
+Simplify using `[Submodule.orderIsoMapComap_apply, Submodule.mem_map]`. Rewrite `hm` using `[hW2]`. Conclude with `hm`.
+-/
 private theorem ss_of_conj {r r' : Γ →* GL (Fin n) k} (h : RepIso r r') (H : IsSSRep r) : IsSSRep r' := by
   obtain ⟨g, hg⟩ := h
   intro W hW
@@ -51,6 +66,11 @@ private theorem ss_of_conj {r r' : Γ →* GL (Fin n) k} (h : RepIso r r') (H : 
 
 end Conj
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Introduce `A hA`. Take `⟨h1, h2⟩` from `H A hA`. Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[hg s, h1 s hs, mul_one, mul_inv_cancel]`.
+
+Rewrite using `[hg σ⁻¹, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`. Conclude with `h2 σ hσ`.
+-/
 private theorem frob_of_conj {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
     {ι : Qbar l ≃+* ℂ} {r r' : G F Ω →* GL (Fin n) (Qbar l)} (h : RepIso r r')
     {w : HeightOneSpectrum (𝓞 F)} {B : Multiset ℂ} (H : FrobEig ι r w B) : FrobEig ι r' w B := by
@@ -62,6 +82,9 @@ private theorem frob_of_conj {F Ω : Type} [Field F] [NumberField F] [Field Ω] 
   · rw [hg σ⁻¹, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
     exact h2 σ hσ
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ _ l _ ι n r r' h`. Introduce and unpack `⟨π, h1, h2, h3⟩`. Conclude with `⟨π, h1, ⟨ss_of_conj h h2.1, h2.2.mono fun _ ⟨B, hB, hB'⟩ => ⟨B, hB, frob_of_conj h hB'⟩⟩, h3⟩`.
+-/
 theorem prIso : PrIso := by
   intro F Ω _ _ _ _ _ _ l _ ι n r r' h
   rintro ⟨π, h1, h2, h3⟩

@@ -15,6 +15,15 @@ namespace GlobalTheory.ShortChange
 
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryAdjointCongruence GlobalTheory.ShortMove
 
+/- English proof (translation)
+Take `⟨k, hk, h1, h2⟩` from `ha`. Take `⟨m, hm, h3, h4⟩` from `hb`. Establish `hg : Ideal.span {((Nat.gcd k m : ℕ) : 𝓞 E)} ≤ Ideal.span {(k : 𝓞 E)} ⊔ Ideal.span {(m : 𝓞 E)}`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Establish `e : ((Nat.gcd k m : ℕ) : 𝓞 E) = (k : 𝓞 E) * (Nat.gcdA k m : ℤ) + (m : 𝓞 E) * (Nat.gcdB k m : ℤ)`.
+
+Use `congrArg (Int.cast : ℤ → 𝓞 E) (Nat.gcd_eq_gcd_ab k m)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)) (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`.
+
+Use `⟨Nat.gcd k m, (hk.coprime_dvd_left (Nat.gcd_dvd_left _ _)).mul_right (hm.coprime_dvd_left (Nat.gcd_dvd_right _ _)), ?_, ?_⟩` and prove the remaining obligations. Use `(Submodule.smul_mono hg le_rfl).trans ?_` and prove the remaining obligations. Rewrite using `[Submodule.sup_smul]`. Conclude with `sup_le h1 h3`. Use `(Submodule.smul_mono hg le_rfl).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.sup_smul]`. Conclude with `sup_le h2 h4`.
+-/
 theorem trivAt_mul {E : Type} [Field E] [NumberField E] {n : ℕ} {Λ : GenLat E n} {a b : ℕ}
     (ha : Λ.TrivAt a) (hb : Λ.TrivAt b) : Λ.TrivAt (a * b) := by
   obtain ⟨k, hk, h1, h2⟩ := ha
@@ -37,6 +46,9 @@ theorem trivAt_mul {E : Type} [Field E] [NumberField E] {n : ℕ} {Λ : GenLat E
     rw [Submodule.sup_smul]
     exact sup_le h2 h4
 
+/- English proof (translation)
+Establish `hqd` using `D.host.qd_big`. Establish `hM` using `l.three_le`. Use `⟨Nat.mul_pos (Nat.mul_pos (Nat.mul_pos D.host.QS_pos (by omega)) (by omega)) (by omega), D.host.toHostRaw.two_dvd_condN.mul_right _, Dvd.intro_left _ rfl, fun p hp h => ?_⟩` and prove the remaining obligations. Conclude with `dvd_mul_of_dvd_left (D.host.der.discr_primes.1 p hp h) _`.
+-/
 theorem badOK_host (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (l : Level H) :
     BadOK l (D.host.QS * D.host.q * D.host.d * l.M) := by
   have hqd := D.host.qd_big
@@ -45,6 +57,11 @@ theorem badOK_host (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Ho
     D.host.toHostRaw.two_dvd_condN.mul_right _, Dvd.intro_left _ rfl, fun p hp h => ?_⟩
   exact dvd_mul_of_dvd_left (D.host.der.discr_primes.1 p hp h) _
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `hF.p.toLawsCore.pins.2.2.2 j hj`. Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Take `⟨hj1, hj2⟩` from `hj`. Rewrite using `[h1, h2]`.
+
+Conclude with `⟨a + b - 1, by unfold Ranks.sigW; dsimp only; omega⟩`.
+-/
 theorem odd_rank {D : D7} (T : Full D) (hF : LawsFull T) (j : ℕ) (hj : InR D j) :
     Odd ((T.Q.Dw j).p + (T.Q.Dw j).q) := by
   obtain ⟨h1, h2, -⟩ := hF.p.toLawsCore.pins.2.2.2 j hj

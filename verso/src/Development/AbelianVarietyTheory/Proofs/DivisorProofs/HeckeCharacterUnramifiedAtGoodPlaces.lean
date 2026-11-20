@@ -19,6 +19,11 @@ open GlobalTheory.IdeleLogHom GlobalTheory.CtTyp GroundTheory.Global GroundTheor
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `FiniteAdeleRing.ext _ fun w => ?_` and prove the remaining obligations. Establish `hd` using `HeightOneSpectrum.denseRange_algebraMap (R := 𝓞 F) (K := F) (w.under (𝓞 F))`. Establish `h` using `hd.equalizer (SemiLocal.continuous_completionMap (below F w) w) (SplitChart.continuous_complMap (rfl : w.under (𝓞 F) = _)) (funext fun k => by`. Use `(SemiLocal.completionMap_algebraMap (below F w) w k).trans ?_` and prove the remaining obligations. Use `(IsScalarTower.algebraMap_apply F E (w.adicCompletion E) k).trans ?_` and prove the remaining obligations.
+
+Conclude with `(complMap_algebraMap (rfl : w.under (𝓞 F) = _) k).symm)`. Conclude with `congrFun h (a (w.under (𝓞 F)))`.
+-/
 theorem finiteAdeleMap_eq (a : Af F) : finiteAdeleMap F E a = GlobalTheory.AdeleBaseChange.adMap F E a := by
   refine FiniteAdeleRing.ext _ fun w => ?_
   have hd := HeightOneSpectrum.denseRange_algebraMap (R := 𝓞 F) (K := F) (w.under (𝓞 F))
@@ -29,6 +34,13 @@ theorem finiteAdeleMap_eq (a : Af F) : finiteAdeleMap F E a = GlobalTheory.Adele
       exact (complMap_algebraMap (rfl : w.under (𝓞 F) = _) k).symm)
   exact congrFun h (a (w.under (𝓞 F)))
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Both sides reduce to the same expression. Consider the case `tmul a x`. Use `(adeleTensorAlgEquivLeft_tmul (((0 : InfiniteAdeleRing F), a) : AF F) x).trans (Prod.ext ?_ ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap E (InfiniteAdeleRing E) x * GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (0 : InfiniteAdeleRing F) = 0`. Rewrite using `[map_zero, mul_zero]`. Express the relevant statement in the definitionally equal form `algebraMap E (FiniteAdeleRing (𝓞 E) E) x * finiteAdeleMap F E a = toFinAd F E (a ⊗ₜ[F] x)`. Rewrite using `[toFinAd_tmul, finiteAdeleMap_eq, mul_comm]`. Consider the case `add a b ha hb`.
+
+Rewrite using `[map_add, map_add, ha, hb, map_add]`. Conclude with `Prod.ext (add_zero _) rfl`.
+-/
 theorem equiv_extZero (y : Af F ⊗[F] E) :
     adeleTensorAlgEquivLeft F E (extZero F E y) = ((0 : InfiniteAdeleRing E), finAdEquiv F E y) := by
   induction y using TensorProduct.induction_on with
@@ -44,6 +56,11 @@ theorem equiv_extZero (y : Af F ⊗[F] E) :
     rw [map_add, map_add, ha, hb, map_add]
     exact Prod.ext (add_zero _) rfl
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `adeleTensorAlgEquivLeft F E (locIdele F w x : AF F ⊗[F] E) = _`. Rewrite using `[coe_locIdele, map_add, map_sub, map_one, equiv_extZero, equiv_extZero, map_one, RingEquiv.apply_symm_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing E) - 0 + 0 = 1`.
+
+Rewrite using `[sub_zero, add_zero]`. Express the relevant statement in the definitionally equal form `(1 : FiniteAdeleRing (𝓞 E) E) - 1 + Neutral.B1.finiteSingle E w x = HeckeValGen.finiteSingle E w x`. Rewrite using `[sub_self, zero_add]`. Both sides reduce to the same expression.
+-/
 theorem toE_locIdele (w : HeightOneSpectrum (𝓞 E)) (x : (w.adicCompletion E)ˣ) :
     toE F E (locIdele F w x) = HeckeValGen.localIdele E w x := by
   refine Units.ext ?_
@@ -56,12 +73,22 @@ theorem toE_locIdele (w : HeightOneSpectrum (𝓞 E)) (x : (w.adicCompletion E)�
     rw [sub_self, zero_add]
     rfl
 
+/- English proof (translation)
+Simplify using `only [coe_twAbs]`. Use `(continuous_subtype_val.comp hc).mul (Complex.continuous_ofReal.comp ?_)` and prove the remaining obligations. Conclude with `(NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE).rpow_const fun t => Or.inl (absE_pos t).ne'`.
+-/
 theorem continuous_twAbs {c : Chr F E} (hc : Continuous c) (s : ℝ) :
     Continuous fun t => ((twAbs c s t : ℂˣ) : ℂ) := by
   simp only [coe_twAbs]
   refine (continuous_subtype_val.comp hc).mul (Complex.continuous_ofReal.comp ?_)
   exact (NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE).rpow_const fun t => Or.inl (absE_pos t).ne'
 
+/- English proof (translation)
+Establish `hc' : Continuous ξ` using `Units.continuous_iff.2 ⟨hc, by`. Simplify using `only [Units.val_inv_eq_inv_val]`. Conclude with `hc.inv₀ fun t => Units.ne_zero _⟩`. Establish `key` using `GlobalTheory.T.trivial_of_density_one E (ξ.comp (ofE F E)) ⟨hc'.comp (continuous_ofE F E), fun k => by`. Establish `: ofE F E (IdeleGroup.diagonal E k) = Units.map (inclR (F` using `F) (AF F)).toMonoidHom k := by`.
+
+Rewrite using `[← toE_inclR F E, ofE_toE]`. Conclude with `(congrArg ξ this).trans (hE k)⟩ (fun y => hu _) S hS`. Use the proof step `(fun w hw => GlobalTheory.IndefiniteRowSideFullHecke.TrivialOfDensityOneCharacters.valueOneAt_of_trivAt fun x => by`. Establish `: ofE F E (HeckeValGen.localIdele E w x) = locIdele F w x`. Rewrite using `[← toE_locIdele (F := F), ofE_toE]`.
+
+Conclude with `(congrArg ξ this).trans (h w hw x))`. Use `MonoidHom.ext fun t => ?_` and prove the remaining obligations. Use `DFunLike.congr_fun key (toE F E t)` as an intermediate fact. Rewrite using `[← ofE_toE F E t]`. Conclude with `this`.
+-/
 theorem eq_one_of_density (ξ : (AE F E)ˣ →* ℂˣ) (hc : Continuous fun t => ((ξ t : ℂˣ) : ℂ))
     (hE : ∀ x : Eˣ, ξ (Units.map (inclR (F := F) (AF F)).toMonoidHom x) = 1) (hu : ∀ t, ‖((ξ t : ℂˣ) : ℂ)‖ = 1)
     {S : Set (HeightOneSpectrum (𝓞 E))} (hS : NumberField.Set.HasDirichletDensity S 1)
@@ -82,6 +109,11 @@ theorem eq_one_of_density (ξ : (AE F E)ˣ →* ℂˣ) (hc : Continuous fun t =>
   rw [← ofE_toE F E t]
   exact this
 
+/- English proof (translation)
+Rewrite using `[← div_eq_one]`. Use `eq_one_of_density _ ?_ (fun x => ?_) (fun t => ?_) hS fun w hw x => ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.div_apply, Units.val_div_eq_div_val]`. Conclude with `hc.div (continuous_twAbs hH.1 s) fun t => Units.ne_zero _`. Rewrite using `[MonoidHom.div_apply, hE, div_eq_one]`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[coe_twAbs, hH.2, GlobalTheory.Doubling.absE_inclR]`. Simplify using the standard rewrite rules. Rewrite using `[MonoidHom.div_apply, Units.val_div_eq_div_val, norm_div, norm_twAbs, Real.rpow_def_of_pos (absE_pos t), mul_comm, ← hs, Real.exp_log (norm_pos_iff.2 (Units.ne_zero _)), div_self (norm_ne_zero_iff.2 (Units.ne_zero _))]`. Rewrite using `[MonoidHom.div_apply, h w hw x, div_self']`.
+-/
 theorem eq_twAbs (χ : (AE F E)ˣ →* ℂˣ) (hc : Continuous fun t => ((χ t : ℂˣ) : ℂ))
     (hE : ∀ x : Eˣ, χ (Units.map (inclR (F := F) (AF F)).toMonoidHom x) = 1) {c : Chr F E} (hH : IsHecke F E c)
     {s : ℝ} (hs : ∀ t, Real.log ‖((χ t : ℂˣ) : ℂ)‖ = s * Real.log (absE F E t : ℝ))
@@ -99,6 +131,11 @@ theorem eq_twAbs (χ : (AE F E)ˣ →* ℂˣ) (hc : Continuous fun t => ((χ t :
       mul_comm, ← hs, Real.exp_log (norm_pos_iff.2 (Units.ne_zero _)), div_self (norm_ne_zero_iff.2 (Units.ne_zero _))]
   · rw [MonoidHom.div_apply, h w hw x, div_self']
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `exists_eq_mul_log_absE F E (fun t => (Real.log ‖((χ t : ℂˣ) : ℂ)‖ : ℂ)) (Complex.continuous_ofReal.comp (hc.norm.log fun t => norm_ne_zero_iff.2 (Units.ne_zero _))) (fun s t => by`. Rewrite using `[map_mul, Units.val_mul, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (Units.ne_zero _)) (norm_ne_zero_iff.2 (Units.ne_zero _)), Complex.ofReal_add])`. Use the proof step `(fun γ => by rw [hE]; simp)`. Use `⟨A.re, fun t => ?_⟩` and prove the remaining obligations. Use `congrArg Complex.re (hA t)` as an intermediate fact.
+
+Rewrite `this` using `[Complex.ofReal_re, Complex.re_mul_ofReal]`. Then use the resulting hypothesis.
+-/
 theorem exists_log_norm (χ : (AE F E)ˣ →* ℂˣ) (hc : Continuous fun t => ((χ t : ℂˣ) : ℂ))
     (hE : ∀ x : Eˣ, χ (Units.map (inclR (F := F) (AF F)).toMonoidHom x) = 1) :
     ∃ s : ℝ, ∀ t, Real.log ‖((χ t : ℂˣ) : ℂ)‖ = s * Real.log (absE F E t : ℝ) := by
@@ -112,6 +149,9 @@ theorem exists_log_norm (χ : (AE F E)ˣ →* ℂˣ) (hc : Continuous fun t => (
   have := congrArg Complex.re (hA t)
   rwa [Complex.ofReal_re, Complex.re_mul_ofReal] at this
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `GlobalTheory.PlaceAbove.exists_absE_locIdele_ne_one (F := F) w`. Establish `h1` using `hs (locIdele F w x)`. Rewrite `h1` using `[h x, norm_twAbs, Real.log_rpow (absE_pos _)]`. Conclude with `(mul_right_cancel₀ (fun h0 => hx (log_absE_eq_zero.1 h0)) h1).symm`.
+-/
 theorem exp_eq {χ : (AE F E)ˣ →* ℂˣ} {s r : ℝ}
     (hs : ∀ t, Real.log ‖((χ t : ℂˣ) : ℂ)‖ = s * Real.log (absE F E t : ℝ)) {c : Chr F E}
     {w : HeightOneSpectrum (𝓞 E)} (h : ∀ x, χ (locIdele F w x) = twAbs c r (locIdele F w x)) : s = r := by
@@ -120,6 +160,13 @@ theorem exp_eq {χ : (AE F E)ˣ →* ℂˣ} {s r : ℝ}
   rw [h x, norm_twAbs, Real.log_rpow (absE_pos _)] at h1
   exact (mul_right_cancel₀ (fun h0 => hx (log_absE_eq_zero.1 h0)) h1).symm
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hT χ hc hE h`. Take `⟨s, hs⟩` from `exists_log_norm χ hc hE`. Establish `hS` using `GlobalTheory.T.fully_split_primes_density_one F E hT.base.galois X.T`. Establish `hlt : (a' : ℝ) < a` using `by exact_mod_cast hT.geo.lt`. Distinguish the cases in `h1 : s = (a' : ℝ) / 2`.
+
+Substitute `h1` using the available equality. Use `Or.inl (eq_twAbs χ hc hE hT.chars.heckeα hs hS fun w hw => (h _ hw w rfl).resolve_right fun h2 => ?_)` and prove the remaining obligations. Use `exp_eq hs h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ∀ v, X.Good v → ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → ∀ x, χ (locIdele F w x) = twAbs X.β ((a : ℝ) / 2) (locIdele F w x)` using `fun v hv w hw => (h v hv w hw).resolve_left fun h3 => h1 (exp_eq hs h3)`.
+
+Take `⟨w₁, hw₁⟩` from `GlobalTheory.PlaceAbove.exists_under_eq' (E := E) B.v₁`. Take `rfl` from `exp_eq hs (h2 _ hT.chars.good w₁ hw₁)`. Conclude with `Or.inr (eq_twAbs χ hc hE hT.chars.heckeβ hs hS fun w hw => h2 _ hw w rfl)`.
+-/
 theorem eq_or_eq : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W)
     (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ χ : (AE F E)ˣ →* ℂˣ, Continuous (fun t => ((χ t : ℂˣ) : ℂ)) →

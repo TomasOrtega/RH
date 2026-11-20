@@ -8,17 +8,28 @@ section WeakApproxAux
 
 variable {F : Type*} [Field F]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `WithTop.ne_top_iff_exists.mp (hw a ha)`. Conclude with `⟨m, hm.symm⟩`.
+-/
 theorem wa_exists_coe (w : AddValuation F (WithTop ℤ)) (hw : ∀ a : F, a ≠ 0 → w a ≠ ⊤) {a : F}
     (ha : a ≠ 0) : ∃ m : ℤ, w a = m := by
   obtain ⟨m, hm⟩ := WithTop.ne_top_iff_exists.mp (hw a ha)
   exact ⟨m, hm.symm⟩
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Rewrite `h` using `[AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe h`.
+-/
 theorem wa_ne_zero_of_coe (w : AddValuation F (WithTop ℤ)) {a : F} {m : ℤ} (h : w a = m) :
     a ≠ 0 := by
   rintro rfl
   rw [AddValuation.map_zero] at h
   exact WithTop.top_ne_coe h
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, AddValuation.map_one]`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+
+Rewrite using `[pow_succ, AddValuation.map_mul, ih, h, ← WithTop.coe_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wa_pow (w : AddValuation F (WithTop ℤ)) {a : F} {m : ℤ} (h : w a = m) (n : ℕ) :
     w (a ^ n) = ((n * m : ℤ) : WithTop ℤ) := by
   induction n with
@@ -31,10 +42,20 @@ theorem wa_pow (w : AddValuation F (WithTop ℤ)) {a : F} {m : ℤ} (h : w a = m
     push_cast
     ring
 
+/- English proof (translation)
+Rewrite using `[AddValuation.map_mul, ha, hb, ← WithTop.coe_add]`.
+-/
 theorem wa_mul (w : AddValuation F (WithTop ℤ)) {a b : F} {m n : ℤ} (ha : w a = m)
     (hb : w b = n) : w (a * b) = ((m + n : ℤ) : WithTop ℤ) := by
   rw [AddValuation.map_mul, ha, hb, ← WithTop.coe_add]
 
+/- English proof (translation)
+Establish `ha0 : a ≠ 0` using `wa_ne_zero_of_coe w ha`. Establish `h1 : w (a⁻¹ * a) = 0` using `by rw [inv_mul_cancel₀ ha0, AddValuation.map_one]`. Rewrite `h1` using `[AddValuation.map_mul, ha]`. Establish `hne : w a⁻¹ ≠ ⊤`. Introduce `ht`.
+
+Rewrite `h1` using `[ht, WithTop.top_add, ← WithTop.coe_zero]`. Conclude with `WithTop.top_ne_coe h1`. Take `⟨c, hc⟩` from `WithTop.ne_top_iff_exists.mp hne`. Rewrite `h1`, the goal using `[← hc]`. Establish `h2 : c + m = 0` using `by exact_mod_cast h1`.
+
+Rewrite using `[show c = -m by omega]`.
+-/
 theorem wa_inv (w : AddValuation F (WithTop ℤ)) {a : F} {m : ℤ} (ha : w a = m) :
     w a⁻¹ = ((-m : ℤ) : WithTop ℤ) := by
   have ha0 : a ≠ 0 := wa_ne_zero_of_coe w ha
@@ -49,10 +70,16 @@ theorem wa_inv (w : AddValuation F (WithTop ℤ)) {a : F} {m : ℤ} (ha : w a = 
   have h2 : c + m = 0 := by exact_mod_cast h1
   rw [show c = -m by omega]
 
+/- English proof (translation)
+Rewrite using `[div_eq_mul_inv, wa_mul w ha (wa_inv w hb), sub_eq_add_neg]`.
+-/
 theorem wa_div (w : AddValuation F (WithTop ℤ)) {a b : F} {m n : ℤ} (ha : w a = m)
     (hb : w b = n) : w (a / b) = ((m - n : ℤ) : WithTop ℤ) := by
   rw [div_eq_mul_inv, wa_mul w ha (wa_inv w hb), sub_eq_add_neg]
 
+/- English proof (translation)
+Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg z`. Rewrite using `[zpow_natCast, wa_pow w h n]`. Rewrite using `[zpow_neg, zpow_natCast, wa_inv w (wa_pow w h n)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wa_zpow (w : AddValuation F (WithTop ℤ)) {a : F} {m : ℤ} (h : w a = m) (z : ℤ) :
     w (a ^ z) = ((z * m : ℤ) : WithTop ℤ) := by
   obtain ⟨n, rfl | rfl⟩ := Int.eq_nat_or_neg z
@@ -61,6 +88,11 @@ theorem wa_zpow (w : AddValuation F (WithTop ℤ)) {a : F} {m : ℤ} (h : w a = 
     congr 1
     ring
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.prod_empty, Finset.sum_empty, AddValuation.map_one, WithTop.coe_zero]`. Introduce `j S hj ih h`.
+
+Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj]`. Conclude with `wa_mul w (h j (Finset.mem_insert_self j S)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem wa_prod {ι : Type*} (w : AddValuation F (WithTop ℤ)) (S : Finset ι) (f : ι → F)
     (e : ι → ℤ) (h : ∀ i ∈ S, w (f i) = e i) :
     w (∏ i ∈ S, f i) = ((∑ i ∈ S, e i : ℤ) : WithTop ℤ) := by
@@ -74,6 +106,11 @@ theorem wa_prod {ι : Type*} (w : AddValuation F (WithTop ℤ)) (S : Finset ι) 
     exact wa_mul w (h j (Finset.mem_insert_self j S))
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Use `⟨z * x ^ (b.toNat + 1), _, _, wa_mul A hza (wa_pow A hxa _), wa_mul B hzb (wa_pow B hxb _), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (0 : ℤ) ≤ ((b.toNat + 1 : ℕ) : ℤ) * m` using `mul_nonneg (by positivity) hm`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `Int.self_le_toNat b`. Establish `h2 : (0 : ℤ) ≤ ((b.toNat + 1 : ℕ) : ℤ) * (-1 - n)` using `mul_nonneg (by positivity) (by omega)`.
+
+Establish `h3 : ((b.toNat + 1 : ℕ) : ℤ) = (b.toNat : ℤ) + 1` using `Nat.cast_succ b.toNat`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem exists_pos_neg_valuation (A B : AddValuation F (WithTop ℤ)) {z x : F} {a b m n : ℤ}
     (hza : A z = a) (hzb : B z = b) (hxa : A x = m) (hxb : B x = n) (ha : 0 < a) (hm : 0 ≤ m)
     (hn : n < 0) : ∃ y : F, ∃ c d : ℤ, A y = c ∧ B y = d ∧ 0 < c ∧ d < 0 := by
@@ -86,6 +123,29 @@ private theorem exists_pos_neg_valuation (A B : AddValuation F (WithTop ℤ)) {z
     have h3 : ((b.toNat + 1 : ℕ) : ℤ) = (b.toNat : ℤ) + 1 := Nat.cast_succ b.toNat
     nlinarith
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `hv1`. Take `⟨q', hq'⟩` from `hw1`. Establish `hq1 : v q = ((1 : ℤ) : WithTop ℤ)` using `by rw [WithTop.coe_one]; exact hq`. Establish `hq1' : w q' = ((1 : ℤ) : WithTop ℤ)` using `by rw [WithTop.coe_one]; exact hq'`. Establish `hq0 : q ≠ 0` using `wa_ne_zero_of_coe v hq1`.
+
+Establish `hq0' : q' ≠ 0` using `wa_ne_zero_of_coe w hq1'`. Take `⟨p, hp⟩` from `wa_exists_coe w hw hq0`. Take `⟨r, hr⟩` from `wa_exists_coe v hv hq0'`. Establish `key : ∀ x : F, ∀ m n : ℤ, v x = m → w x = n → (0 ≤ m ↔ 0 ≤ n)`. Introduce `x m n hm hn`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hm0`. Assume the negation of the conclusion as `hn0`. Use `push_neg at hn0`. Take `⟨y, c, d, hc, hd, hc0, hd0⟩` from `exists_pos_neg_valuation v w hq1 hp hm hn one_pos hm0 hn0`.
+
+Establish `hy` using `h y (by rw [hc, ← WithTop.coe_zero, WithTop.coe_lt_coe]; exact hc0)`. Rewrite `hy` using `[hd, ← WithTop.coe_zero, WithTop.coe_le_coe]`. Use linear arithmetic over natural numbers and integers. Introduce `hn0`. Assume the negation of the conclusion as `hm0`.
+
+Use `push_neg at hm0`. Take `⟨y, c, d, hc, hd, hc0, hd0⟩` from `exists_pos_neg_valuation w v hq1' hr hn hm one_pos hn0 hm0`. Establish `hy` using `h y⁻¹ (by rw [wa_inv v hd, ← WithTop.coe_zero, WithTop.coe_lt_coe]; omega)`. Rewrite `hy` using `[wa_inv w hc, ← WithTop.coe_zero, WithTop.coe_le_coe]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hunit : ∀ t : F, ∀ d : ℤ, v t = ((0 : ℤ) : WithTop ℤ) → w t = d → d = 0`. Introduce `t d hv0 hwd`. Establish `h1` using `(key t 0 d hv0 hwd).mp le_rfl`. Establish `h2` using `(key t⁻¹ (-0) (-d) (wa_inv v hv0) (wa_inv w hwd)).mp (by norm_num)`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hmul : ∀ x : F, ∀ m n : ℤ, v x = m → w x = n → n = m * p`. Introduce `x m n hm hn`. Establish `hv0` using `wa_div v hm (wa_zpow v hq1 m)`. Establish `hw0` using `wa_div w hn (wa_zpow w hp m)`. Establish `h1` using `hunit _ _ (by rw [hv0]; congr 1; ring) hw0`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp1 : p = 1`. Establish `h1` using `hmul q' r 1 hr hq1'`. Establish `h2` using `(key q 1 p hq1 hp).mp zero_le_one`. Establish `h3` using `(key q' r 1 hr hq1').mpr zero_le_one`.
+
+Establish `h4 : p ≠ 0` using `by rintro rfl; simp at h1`. Establish `h5 : r ≠ 0` using `by rintro rfl; simp at h1`. Establish `h6 : 1 ≤ p` using `by omega`. Establish `h7 : 1 ≤ r` using `by omega`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `AddValuation.ext fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, AddValuation.map_zero, AddValuation.map_zero]`. Take `⟨m, hm⟩` from `wa_exists_coe v hv hx`. Take `⟨n, hn⟩` from `wa_exists_coe w hw hx`.
+
+Rewrite using `[hm, hn, hmul x m n hm hn, hp1, mul_one]`.
+-/
 theorem wa_eq_of_le (v w : AddValuation F (WithTop ℤ)) (hv : ∀ a : F, a ≠ 0 → v a ≠ ⊤)
     (hw : ∀ a : F, a ≠ 0 → w a ≠ ⊤) (hv1 : ∃ π : F, v π = 1) (hw1 : ∃ ρ : F, w ρ = 1)
     (h : ∀ a, 0 < v a → 0 ≤ w a) : v = w := by
@@ -141,6 +201,9 @@ theorem wa_eq_of_le (v w : AddValuation F (WithTop ℤ)) (hv : ∀ a : F, a ≠ 
     obtain ⟨n, hn⟩ := wa_exists_coe w hw hx
     rw [hm, hn, hmul x m n hm hn, hp1, mul_one]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hne (wa_eq_of_le v w hv hw hv1 hw1 hcon)`.
+-/
 theorem wa_pair (v w : AddValuation F (WithTop ℤ)) (hv : ∀ a : F, a ≠ 0 → v a ≠ ⊤)
     (hw : ∀ a : F, a ≠ 0 → w a ≠ ⊤) (hv1 : ∃ π : F, v π = 1) (hw1 : ∃ ρ : F, w ρ = 1)
     (hne : v ≠ w) : ∃ s, 0 < v s ∧ w s < 0 := by
@@ -148,10 +211,16 @@ theorem wa_pair (v w : AddValuation F (WithTop ℤ)) (hv : ∀ a : F, a ≠ 0 �
   push_neg at hcon
   exact hne (wa_eq_of_le v w hv hw hv1 hw1 hcon)
 
+/- English proof (translation)
+Rewrite using `[AddValuation.map_add_of_distinct_val w h.ne, min_eq_left h.le]`.
+-/
 private theorem addValuation_add_eq_of_lt (w : AddValuation F (WithTop ℤ)) {x y : F} (h : w x < w y) :
     w (x + y) = w x := by
   rw [AddValuation.map_add_of_distinct_val w h.ne, min_eq_left h.le]
 
+/- English proof (translation)
+Establish `h1` using `wa_pow w hs M`. Establish `h2 : w 1 < w (s ^ M)`. Rewrite using `[h1, AddValuation.map_one, ← WithTop.coe_zero, WithTop.coe_lt_coe]`. Conclude with `mul_pos (by exact_mod_cast hM) ha`. Rewrite using `[addValuation_add_eq_of_lt w h2, AddValuation.map_one, WithTop.coe_zero]`.
+-/
 private theorem addValuation_one_add_pow_of_pos (w : AddValuation F (WithTop ℤ)) {s : F} {a : ℤ} (hs : w s = a)
     (M : ℕ) (hM : 0 < M) (ha : 0 < a) : w (1 + s ^ M) = ((0 : ℤ) : WithTop ℤ) := by
   have h1 := wa_pow w hs M
@@ -160,6 +229,9 @@ private theorem addValuation_one_add_pow_of_pos (w : AddValuation F (WithTop ℤ
     exact mul_pos (by exact_mod_cast hM) ha
   rw [addValuation_add_eq_of_lt w h2, AddValuation.map_one, WithTop.coe_zero]
 
+/- English proof (translation)
+Establish `h1` using `wa_pow w hs M`. Establish `h2 : w (s ^ M) < w 1`. Rewrite using `[h1, AddValuation.map_one, ← WithTop.coe_zero, WithTop.coe_lt_coe]`. Conclude with `mul_neg_of_pos_of_neg (by exact_mod_cast hM) ha`. Rewrite using `[add_comm, addValuation_add_eq_of_lt w h2, h1]`.
+-/
 private theorem addValuation_one_add_pow_of_neg (w : AddValuation F (WithTop ℤ)) {s : F} {a : ℤ} (hs : w s = a)
     (M : ℕ) (hM : 0 < M) (ha : a < 0) : w (1 + s ^ M) = ((↑M * a : ℤ) : WithTop ℤ) := by
   have h1 := wa_pow w hs M
@@ -168,6 +240,11 @@ private theorem addValuation_one_add_pow_of_neg (w : AddValuation F (WithTop ℤ
     exact mul_neg_of_pos_of_neg (by exact_mod_cast hM) ha
   rw [add_comm, addValuation_add_eq_of_lt w h2, h1]
 
+/- English proof (translation)
+Use `⟨(∑ j ∈ T, (c j).toNat) + 1, fun j hj => ?_⟩` and prove the remaining obligations. Establish `h1` using `Int.self_le_toNat (c j)`. Establish `h2 : (c j).toNat ≤ ∑ j ∈ T, (c j).toNat` using `Finset.single_le_sum (f := fun j => (c j).toNat) (fun _ _ => Nat.zero_le _) hj`. Establish `h3 : ((c j).toNat : ℤ) ≤ ((∑ j ∈ T, (c j).toNat : ℕ) : ℤ)` using `Nat.cast_le.mpr h2`. Rewrite using `[Nat.cast_succ]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem exists_nat_gt_of_finset {ι : Type*} (T : Finset ι) (c : ι → ℤ) :
     ∃ N : ℕ, ∀ j ∈ T, c j < N := by
   refine ⟨(∑ j ∈ T, (c j).toNat) + 1, fun j hj => ?_⟩
@@ -178,6 +255,43 @@ private theorem exists_nat_gt_of_finset {ι : Type*} (T : Finset ι) (c : ι →
   rw [Nat.cast_succ]
   linarith
 
+/- English proof (translation)
+Use `revert hi`. Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations. Introduce `_`. Take `⟨q, hq⟩` from `hone i`. Establish `hq1 : v i q = ((1 : ℤ) : WithTop ℤ)` using `by rw [WithTop.coe_one]; exact hq`.
+
+Use `⟨q, wa_ne_zero_of_coe (v i) hq1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hq1, ← WithTop.coe_zero, WithTop.coe_lt_coe]`. Conclude with `one_pos`. Introduce `j hj`. Simplify using `at hj`.
+
+Introduce `j T hjT ih hi`. Establish `hij : i ≠ j`. Introduce and unpack `rfl`. Conclude with `hi (Finset.mem_insert_self _ _)`. Establish `hiT : i ∉ T` using `fun h => hi (Finset.mem_insert_of_mem h)`.
+
+Take `⟨s, hs0, hsi, hsT⟩` from `ih hiT`. Take `⟨t, hti, htj⟩` from `wa_pair (v i) (v j) (hfin i) (hfin j) (hone i) (hone j) (hdist hij)`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Rewrite `htj` using `[AddValuation.map_zero]`.
+
+Conclude with `absurd htj (not_lt.mpr le_top)`. Use `choose a ha using fun l => wa_exists_coe (v l) (hfin l) hs0`. Use `choose c hc using fun l => wa_exists_coe (v l) (hfin l) ht0`. Establish `hai : 0 < a i`. Establish `h'` using `hsi`.
+
+Rewrite `h'` using `[ha i, ← WithTop.coe_zero, WithTop.coe_lt_coe]`. Conclude with `h'`. Establish `hci : 0 < c i`. Establish `h'` using `hti`. Rewrite `h'` using `[hc i, ← WithTop.coe_zero, WithTop.coe_lt_coe]`.
+
+Conclude with `h'`. Establish `hcj : c j < 0`. Establish `h'` using `htj`. Rewrite `h'` using `[hc j, ← WithTop.coe_zero, WithTop.coe_lt_coe]`. Conclude with `h'`.
+
+Establish `haT : ∀ l ∈ T, a l < 0`. Introduce `l hl`. Establish `h'` using `hsT l hl`. Rewrite `h'` using `[ha l, ← WithTop.coe_zero, WithTop.coe_lt_coe]`. Conclude with `h'`.
+
+Take `⟨N1, hN1⟩` from `exists_nat_gt_of_finset T c`. Take `⟨N2, hN2⟩` from `exists_nat_gt_of_finset T (fun l => -c l)`. Distinguish the cases in `hajle : a j ≤ 0`. Establish `hv : ∀ l, v l (s ^ N1 * t) = ((↑N1 * a l + c l : ℤ) : WithTop ℤ)` using `fun l => wa_mul (v l) (wa_pow (v l) (ha l) N1) (hc l)`. Use `⟨s ^ N1 * t, wa_ne_zero_of_coe (v i) (hv i), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hv i, ← WithTop.coe_zero, WithTop.coe_lt_coe]`. Establish `h0 : (0 : ℤ) ≤ (N1 : ℤ) * a i` using `mul_nonneg (by positivity) hai.le`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `l hl`. Rewrite using `[hv l, ← WithTop.coe_zero, WithTop.coe_lt_coe]`.
+
+Break down `Finset.mem_insert.mp hl with hlj | hlT` into its components or cases. Rewrite using `[hlj]`. Establish `h0 : (N1 : ℤ) * a j ≤ 0` using `by nlinarith [(by positivity : (0 : ℤ) ≤ (N1 : ℤ))]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : c l < (N1 : ℤ)` using `hN1 l hlT`.
+
+Establish `hal` using `haT l hlT`. Establish `h0 : (0 : ℤ) ≤ (N1 : ℤ) * (-1 - a l)` using `mul_nonneg (by positivity) (by omega)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hajpos : 0 < a j` using `by omega`. Establish `hM : 0 < N2 + 1` using `Nat.succ_pos N2`.
+
+Establish `hDi` using `addValuation_one_add_pow_of_pos (v i) (ha i) (N2 + 1) hM hai`. Establish `hDj` using `addValuation_one_add_pow_of_pos (v j) (ha j) (N2 + 1) hM hajpos`. Establish `hti'` using `wa_mul (v i) (hc i) (wa_inv (v i) hDi)`. Establish `htj'` using `wa_mul (v j) (hc j) (wa_inv (v j) hDj)`. Establish `hltj : v j (t * (1 + s ^ (N2 + 1))⁻¹) < v j s`.
+
+Rewrite using `[htj', ha j, WithTop.coe_lt_coe]`. Use linear arithmetic over natural numbers and integers. Establish `hj : v j (s + t * (1 + s ^ (N2 + 1))⁻¹) = ((c j + -0 : ℤ) : WithTop ℤ)`. Rewrite using `[add_comm, addValuation_add_eq_of_lt (v j) hltj, htj']`. Use `⟨s + t * (1 + s ^ (N2 + 1))⁻¹, wa_ne_zero_of_coe (v j) hj, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `lt_of_lt_of_le (lt_min hsi ?_) (AddValuation.map_add (v i) _ _)` and prove the remaining obligations. Rewrite using `[hti', ← WithTop.coe_zero, WithTop.coe_lt_coe]`. Use linear arithmetic over natural numbers and integers. Introduce `l hl`. Break down `Finset.mem_insert.mp hl with hlj | hlT` into its components or cases.
+
+Rewrite using `[hlj, hj, ← WithTop.coe_zero, WithTop.coe_lt_coe]`. Use linear arithmetic over natural numbers and integers. Establish `hal` using `haT l hlT`. Establish `hDl` using `addValuation_one_add_pow_of_neg (v l) (ha l) (N2 + 1) hM hal`. Establish `htl'` using `wa_mul (v l) (hc l) (wa_inv (v l) hDl)`.
+
+Establish `hb : -c l < (N2 : ℤ)` using `hN2 l hlT`. Establish `hlt : v l s < v l (t * (1 + s ^ (N2 + 1))⁻¹)`. Rewrite using `[ha l, htl', WithTop.coe_lt_coe]`. Establish `h0 : (0 : ℤ) ≤ ((N2 + 1 : ℕ) : ℤ) * (-1 - a l)` using `mul_nonneg (by positivity) (by omega)`. Establish `h3 : ((N2 + 1 : ℕ) : ℤ) = (N2 : ℤ) + 1` using `Nat.cast_succ N2`.
+
+Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[addValuation_add_eq_of_lt (v l) hlt, ha l, ← WithTop.coe_zero, WithTop.coe_lt_coe]`. Conclude with `hal`.
+-/
 theorem wa_sep {ι : Type*} [DecidableEq ι] (v : ι → AddValuation F (WithTop ℤ))
     (hfin : ∀ i (a : F), a ≠ 0 → v i a ≠ ⊤) (hone : ∀ i, ∃ π : F, v i π = 1)
     (hdist : Pairwise fun i j => v i ≠ v j) (i : ι) (T : Finset ι) (hi : i ∉ T) :
@@ -275,6 +389,11 @@ theorem wa_sep {ι : Type*} [DecidableEq ι] (v : ι → AddValuation F (WithTop
 
 end WeakApproxAux
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.sum_empty, AddValuation.map_zero]`. Conclude with `lt_top_iff_ne_top.mpr hc`.
+
+Introduce `j S hjS ih h`. Rewrite using `[Finset.sum_insert hjS]`. Conclude with `lt_of_lt_of_le (lt_min (h j (Finset.mem_insert_self j S)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))) (AddValuation.map_add w _ _)`.
+-/
 private theorem lt_addValuation_sum_of_forall_lt {F : Type*} [Field F] {ι : Type*} (w : AddValuation F (WithTop ℤ))
     (S : Finset ι) (x : ι → F) (c : WithTop ℤ) (h : ∀ i ∈ S, c < w (x i)) (hc : c ≠ ⊤) :
     c < w (∑ i ∈ S, x i) := by
@@ -289,6 +408,23 @@ private theorem lt_addValuation_sum_of_forall_lt {F : Type*} [Field F] {ι : Typ
     exact lt_of_lt_of_le (lt_min (h j (Finset.mem_insert_self j S))
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))) (AddValuation.map_add w _ _)
 
+/- English proof (translation)
+Use `choose s hs0 hsi hsj using fun i => wa_sep v hfin hone hdist i (Finset.univ.erase i) (by simp)`. Use `choose q hq using hone`. Establish `hq1 : ∀ i, v i (q i) = ((1 : ℤ) : WithTop ℤ)` using `fun i => by`. Rewrite using `[WithTop.coe_one]`. Conclude with `hq i`.
+
+Establish `hq0 : ∀ i, q i ≠ 0` using `fun i => wa_ne_zero_of_coe (v i) (hq1 i)`. Use `choose p hp using fun i j => wa_exists_coe (v j) (hfin j) (hq0 i)`. Use `choose a ha using fun i j => wa_exists_coe (v j) (hfin j) (hs0 i)`. Establish `hai : ∀ i, 0 < a i i` using `fun i => by`. Establish `h'` using `hsi i`.
+
+Rewrite `h'` using `[ha i i, ← WithTop.coe_zero, WithTop.coe_lt_coe]`. Conclude with `h'`. Establish `haij : ∀ i j, i ≠ j → a i j < 0` using `fun i j hij => by`. Establish `h'` using `hsj i j (Finset.mem_erase.mpr ⟨Ne.symm hij, Finset.mem_univ j⟩)`. Rewrite `h'` using `[ha i j, ← WithTop.coe_zero, WithTop.coe_lt_coe]`.
+
+Conclude with `h'`. Use `choose N hN using fun i => exists_nat_gt_of_finset (Finset.univ : Finset (Fin k)) (fun j => n j - n i * p i j)`. Establish `hdiag : ∀ i, v i (q i ^ n i * (1 + s i ^ (N i + 1))⁻¹) = ((n i : ℤ) : WithTop ℤ)`. Introduce `i`. Rewrite using `[wa_mul (v i) (wa_zpow (v i) (hq1 i) (n i)) (wa_inv (v i) (addValuation_one_add_pow_of_pos (v i) (ha i i) (N i + 1) (Nat.succ_pos _) (hai i)))]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hoff : ∀ i j, i ≠ j → ((n j : ℤ) : WithTop ℤ) < v j (q i ^ n i * (1 + s i ^ (N i + 1))⁻¹)`. Introduce `i j hij`. Establish `hneg : a i j < 0` using `haij i j hij`.
+
+Rewrite using `[wa_mul (v j) (wa_zpow (v j) (hp i j) (n i)) (wa_inv (v j) (addValuation_one_add_pow_of_neg (v j) (ha i j) (N i + 1) (Nat.succ_pos _) hneg)), WithTop.coe_lt_coe]`. Establish `hb : n j - n i * p i j < (N i : ℤ)` using `hN i j (Finset.mem_univ j)`. Establish `h0 : (0 : ℤ) ≤ ((N i + 1 : ℕ) : ℤ) * (-1 - a i j)` using `mul_nonneg (by positivity) (by omega)`. Establish `h3 : ((N i + 1 : ℕ) : ℤ) = (N i : ℤ) + 1` using `Nat.cast_succ (N i)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `⟨∑ i, q i ^ n i * (1 + s i ^ (N i + 1))⁻¹, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ j)]`. Establish `hrest : ((n j : ℤ) : WithTop ℤ) < v j (∑ i ∈ Finset.univ.erase j, q i ^ n i * (1 + s i ^ (N i + 1))⁻¹)` using `lt_addValuation_sum_of_forall_lt (v j) _ _ _ (fun i hi => hoff i j (Finset.ne_of_mem_erase hi)) WithTop.coe_ne_top`. Establish `hlt : v j (q j ^ n j * (1 + s j ^ (N j + 1))⁻¹) < v j (∑ i ∈ Finset.univ.erase j, q i ^ n i * (1 + s i ^ (N i + 1))⁻¹)`. Rewrite using `[hdiag j]`.
+
+Conclude with `hrest`. Rewrite using `[addValuation_add_eq_of_lt (v j) hlt, hdiag j]`.
+-/
 theorem weak_approx_orders {F : Type*} [Field F] {k : ℕ} (v : Fin k → AddValuation F (WithTop ℤ))
     (hfin : ∀ i (a : F), a ≠ 0 → v i a ≠ ⊤) (hone : ∀ i, ∃ π : F, v i π = 1)
     (hdist : Pairwise fun i j => v i ≠ v j) (n : Fin k → ℤ) :

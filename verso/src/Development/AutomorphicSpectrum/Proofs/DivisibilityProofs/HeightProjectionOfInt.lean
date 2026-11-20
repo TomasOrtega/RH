@@ -18,6 +18,13 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
+/- English proof (translation)
+Introduce `H k _ X Y _ p q D e hp hq π hπ hdim hdeg L h hL`. Use `haveI : Module.Finite ℤ k := hp.finite`. Establish `hc : ∀ τ : ℤ →+* ℂ, (wZ L (p ≫ spMap (Int.castRingHom k)) τ).IsCInf` using `GlobalTheory.T.wZ_isCInf' k X p (p ≫ spMap (Int.castRingHom k)) L`. Establish `hc' : ∀ τ : ℤ →+* ℂ, (wZ (L.pull π hπ) (π ≫ p ≫ spMap (Int.castRingHom k)) τ).IsCInf` using `GlobalTheory.T.wZ_isCInf' k Y q (π ≫ p ≫ spMap (Int.castRingHom k)) (L.pull π hπ)`. Establish `htX : GlobalTheory.IsArithVar (p ≫ spMap (Int.castRingHom k)) D` using `isArithVar_int k X p _ D hp`.
+
+Establish `htY : GlobalTheory.IsArithVar (π ≫ p ≫ spMap (Int.castRingHom k)) e` using `isArithVar_int k Y q _ e hq`. Establish `hLZ : (toZ L (p ≫ spMap (Int.castRingHom k)) hc).IsArithHeight h` using `(GlobalTheory.T.toZ_isArithHeight_iff k X p _ D hp L hc h).mpr hL`. Establish `key` using `H X Y (p ≫ spMap (Int.castRingHom k)) (π ≫ p ≫ spMap (Int.castRingHom k)) D e htX htY π rfl hdim hdeg (toZ L (p ≫ spMap (Int.castRingHom k)) hc) h hLZ`. Establish `iso` using `GlobalTheory.T.toZ_pull_isometric k X Y p q (p ≫ spMap (Int.castRingHom k)) (π ≫ p ≫ spMap (Int.castRingHom k)) π hπ rfl L hc hc'`. Take `⟨h', hh', hv⟩` from `GlobalTheory.HermLB.Isometric.isSelfInter htY iso.symm key`.
+
+Conclude with `⟨h', (GlobalTheory.T.toZ_isArithHeight_iff k Y q _ e hq (L.pull π hπ) hc' h').mp hh', hv⟩`.
+-/
 theorem heightProjection_of_int : (∀ (X Y : Scheme.{0}) [IsIntegral Y] (p : X ⟶ Sp ℤ) (q : Y ⟶ Sp ℤ) (D e : ℕ), IsArithVar p D → IsArithVar q e → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), topologicalKrullDim (closure ({π (genericPoint Y)} : Set X)) = (e + 1 : ℕ) → π.residueDegree (genericPoint Y) ≠ 0 → ∀ (L : HermLB p) (h : X → ℝ), L.IsArithHeight h → (L.pull π hπ).IsSelfInter ((π.residueDegree (genericPoint Y) : ℝ) * h (π (genericPoint Y)))) → GlobalTheory.Published.HeightProjection := by
   intro H k _ X Y _ p q D e hp hq π hπ hdim hdeg L h hL
   haveI : Module.Finite ℤ k := hp.finite

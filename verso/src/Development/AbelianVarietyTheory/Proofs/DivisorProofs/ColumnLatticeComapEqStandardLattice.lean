@@ -14,6 +14,9 @@ open GlobalTheory.SignedHC GlobalTheory.ChiGrid Formalism.L2.DIV Formalism.L2.Ke
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ColStd
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Matrix.mulVec, dotProduct, Algebra.smul_def]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+-/
 theorem sum_smul_col {K : Type} [Field K] {n : ℕ} (B : GL (Fin n) K) (c : Fin n → 𝓞 K) :
     (∑ j, c j • (fun a => (B : Matrix (Fin n) (Fin n) K) a j)) =
       (B : Matrix (Fin n) (Fin n) K) *ᵥ (fun j => algebraMap (𝓞 K) K (c j)) := by
@@ -21,6 +24,9 @@ theorem sum_smul_col {K : Type} [Field K] {n : ℕ} (B : GL (Fin n) K) (c : Fin 
   simp only [Finset.sum_apply, Pi.smul_apply, Matrix.mulVec, dotProduct, Algebra.smul_def]
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `key : ∀ z : Fin n → K, ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ ((B : Matrix (Fin n) (Fin n) K) *ᵥ z) = z`. Introduce `z`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[← key x, h, key y]`.
+-/
 theorem mulVec_inj {K : Type} [Field K] {n : ℕ} (B : GL (Fin n) K) {x y : Fin n → K}
     (h : (B : Matrix (Fin n) (Fin n) K) *ᵥ x = (B : Matrix (Fin n) (Fin n) K) *ᵥ y) : x = y := by
   have key : ∀ z : Fin n → K, ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ
@@ -29,6 +35,13 @@ theorem mulVec_inj {K : Type} [Field K] {n : ℕ} (B : GL (Fin n) K) {x y : Fin 
     rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
   rw [← key x, h, key y]
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [Submodule.mem_comap, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Formalism.L2.Pj.stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one, Formalism.L2.DIV.colLat]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).1 hv`.
+
+Rewrite `hc` using `[sum_smul_col]`. Use `mulVec_inj B hc` as an intermediate fact. Introduce `i`. Conclude with `⟨c i, congrFun this i⟩`. Introduce `hv choose w hw using hv`.
+
+Use `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).2 ⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_smul_col]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `hw j`.
+-/
 theorem colLat_comap_eq_stdLat {K : Type} [Field K] {n : ℕ} (B : GL (Fin n) K) :
     (Formalism.L2.DIV.colLat B).comap ((Matrix.mulVecLin B.1).restrictScalars (𝓞 K)) = Formalism.L2.Pj.stdLat K n := by
   ext v

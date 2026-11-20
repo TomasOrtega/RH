@@ -9,6 +9,15 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 
 namespace GlobalTheory.DetInv
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ ψ hψ N Δ Δ' a c c' hΔ hΔ' hO hO' τ`. Take `⟨f, hf, -, hfξ, -⟩` from `GlobalTheory.DetInv.theta_tensor_exists p C v O hv ε hε Λ τ`. Establish `hξ0 : xi ε ≠ 0` using `(GlobalTheory.T.fontaineAinf_localDomain_xiAdic_order p C v O hv ε hε).2.2.2.2.2.1`. Establish `hreg : (inA (xi ε) : RL p O Λ) ∈ nonZeroDivisors (RL p O Λ)` using `GlobalTheory.T.ainf_element_theta_compatible p C v O hv ε hε Λ (xi ε) hξ0`. Take `⟨y, hy⟩` from `GlobalTheory.T.psi_determinant_orders_property p C v O hv ε hε Λ ψ hψ N Δ Δ' a c c' hΔ hΔ' hO hO'`.
+
+Take `⟨y', hy'⟩` from `GlobalTheory.T.psi_determinant_orders_property p C v O hv ε hε Λ ψ hψ N Δ' Δ a c' c hΔ' hΔ hO' hO`. Take `⟨-, -, hL⟩` from `hO τ f hf`. Take `⟨-, -, hL'⟩` from `hO' τ f hf`. Use `set F := (algebraMap O C).comp f`. Establish `hL2 : Lead F (inA (xi ε)) (y * Δ) (a τ) (c' τ)` using `by rw [mul_comm, ← hy]; exact hL'`.
+
+Establish `hL2' : Lead F (inA (xi ε)) (y' * Δ') (a τ) (c τ)` using `by rw [mul_comm, ← hy']; exact hL`. Establish `e1` using `GlobalTheory.DetInv.lead_mul_unique _ _ F _ _ _ _ _ _ hreg hL hL2`. Establish `e2` using `GlobalTheory.DetInv.lead_mul_unique _ _ F _ _ _ _ _ _ hreg hL' hL2'`. Establish `b1 : v (F y) ≤ 1` using `hv.map_le_one (f y)`. Establish `b2 : v (F y') ≤ 1` using `hv.map_le_one (f y')`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[e2, map_mul]`. Conclude with `mul_le_of_le_one_left' b2`. Rewrite using `[e1, map_mul]`. Conclude with `mul_le_of_le_one_left' b1`.
+-/
 theorem lead_valuation_eq : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ (ψ : RL p O Λ →+* RL p O Λ), IsPsi ψ → ∀ (N : ℕ) (Δ Δ' : RL p O Λ) (a : (Λ →+* O) → ℕ) (c : (Λ →+* O) → C) (c' : (Λ →+* O) → C), IsDetElt ε ψ N Δ → IsDetElt ε ψ N Δ' → HasOrders C ε N Δ a c → HasOrders C ε N Δ' a c' → ∀ τ, v (c τ) = v (c' τ) := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ ψ hψ N Δ Δ' a c c' hΔ hΔ' hO hO' τ
   obtain ⟨f, hf, -, hfξ, -⟩ := GlobalTheory.DetInv.theta_tensor_exists p C v O hv ε hε Λ τ

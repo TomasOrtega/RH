@@ -17,6 +17,11 @@ section LocalizationBaseChange
 variable {R R' C' L ν σ : Type} [CommRing R] [CommRing R'] [CommRing C'] [CommRing L] (a : R →+* R')
   [Algebra R' C'] [Algebra C' L] (F : σ → MvPolynomial ν R) (h : MvPolynomial ν R) (ξ : ν → C')
 
+/- English proof (translation)
+Apply `IsLocalization.ringHom_ext (Submonoid.powers (MvPolynomial.aeval ξ (MvPolynomial.map a h)))` to reduce the goal to its premises. Use `RingHom.ext fun c => ?_` and prove the remaining obligations. Take `⟨P, rfl⟩` from `hsurj c`. Establish `e : w₁.comp ((algebraMap C' L).comp (MvPolynomial.aeval ξ : MvPolynomial ν R' →ₐ[R'] C').toRingHom) = w₂.comp ((algebraMap C' L).comp (MvPolynomial.aeval ξ : MvPolynomial ν R' →ₐ[R'] C').toRingHom)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+
+Introduce `r`. Simplify using `using h₁ r`. Introduce `i`. Simplify using `using h₂ i`. Conclude with `congr($e P)`.
+-/
 theorem localization_baseChange_ext (hsurj : Function.Surjective (MvPolynomial.aeval ξ : MvPolynomial ν R' →ₐ[R'] C'))
     [IsLocalization.Away (MvPolynomial.aeval ξ (MvPolynomial.map a h)) L] {T : Type} [CommRing T]
     (w₁ w₂ : L →+* T)
@@ -34,6 +39,21 @@ theorem localization_baseChange_ext (hsurj : Function.Surjective (MvPolynomial.a
       simpa using h₂ i
   exact congr($e P)
 
+/- English proof (translation)
+Set `θ : MvPolynomial ν R' →+* T` to `MvPolynomial.eval₂Hom v (fun i ↦ u (algebraMap (MvPolynomial ν R ⧸ Ideal.span (Set.range F)) _ (Ideal.Quotient.mk _ (MvPolynomial.X i))))`. Establish `hθ : θ.comp (MvPolynomial.map a) = u.comp ((algebraMap (MvPolynomial ν R ⧸ Ideal.span (Set.range F)) (Localization.Away (Ideal.Quotient.mk (Ideal.span (Set.range F)) h))).comp (Ideal.Quotient.mk _))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `only [RingHom.comp_apply, MvPolynomial.map_C, θ, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_C]`.
+
+Rewrite using `[← huv]`. Both sides reduce to the same expression. Introduce `i`. Simplify using `[θ]`. Establish `hθ' : ∀ G, θ (MvPolynomial.map a G) = u (algebraMap (MvPolynomial ν R ⧸ Ideal.span (Set.range F)) _ (Ideal.Quotient.mk _ G))` using `fun G ↦ congr($hθ G)`.
+
+Establish `hunit : IsUnit (θ (MvPolynomial.map a h))`. Rewrite using `[hθ']`. Conclude with `(IsLocalization.Away.algebraMap_isUnit _).map u`. Establish `hspan : Ideal.span (Set.range fun s ↦ MvPolynomial.map a (F s)) ≤ RingHom.ker θ`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, hθ', (Ideal.Quotient.eq_zero_iff_mem (a := F s) (I := Ideal.span (Set.range F))).2 (Ideal.subset_span ⟨s, rfl⟩), map_zero, map_zero]`. Establish `hk : RingHom.ker (MvPolynomial.aeval ξ : MvPolynomial ν R' →ₐ[R'] C').toRingHom ≤ RingHom.ker θ`. Introduce `G hG`. Rewrite `hG` using `[RingHom.mem_ker]`.
+
+Establish `e` using `RingHom.mem_ker.1 (hspan (hker G hG))`. Rewrite `e` using `[map_mul]`. Conclude with `RingHom.mem_ker.2 ((hunit.mul_right_eq_zero).1 e)`. Set `θ' : C' →+* T` to `(MvPolynomial.aeval ξ : MvPolynomial ν R' →ₐ[R'] C').toRingHom.liftOfRightInverse (Function.surjInv hsurj) (Function.rightInverse_surjInv hsurj) ⟨θ, hk⟩`. Establish `hθ'e : ∀ P, θ' (MvPolynomial.aeval ξ P) = θ P` using `fun P ↦ RingHom.liftOfRightInverse_comp_apply _ _ _ _ P`.
+
+Establish `hu2 : IsUnit (θ' (MvPolynomial.aeval ξ (MvPolynomial.map a h)))`. Rewrite using `[hθ'e]`. Conclude with `hunit`. Use `⟨IsLocalization.Away.lift (MvPolynomial.aeval ξ (MvPolynomial.map a h)) hu2, fun G ↦ ?_, fun r ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.Away.lift_eq, hθ'e, hθ']`.
+
+Rewrite using `[IsLocalization.Away.lift_eq, ← MvPolynomial.aeval_C (R := R') ξ r, hθ'e]`. Simplify using `[θ]`.
+-/
 theorem localization_baseChange_desc (hsurj : Function.Surjective (MvPolynomial.aeval ξ : MvPolynomial ν R' →ₐ[R'] C'))
     (hker : ∀ G : MvPolynomial ν R', MvPolynomial.aeval ξ G = 0 →
       MvPolynomial.map a h * G ∈ Ideal.span (Set.range fun s ↦ MvPolynomial.map a (F s)))
@@ -85,6 +105,27 @@ theorem localization_baseChange_desc (hsurj : Function.Surjective (MvPolynomial.
 
 end LocalizationBaseChange
 
+/- English proof (translation)
+Introduce `R R' C' L ν σ _ _ _ _ a _ _ F h ξ hsurj hF hker hL`. Establish `hI : Ideal.span (Set.range F) ≤ RingHom.ker ((MvPolynomial.aeval ξ : MvPolynomial ν R' →ₐ[R'] C').toRingHom.comp (MvPolynomial.map a))`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `RingHom.mem_ker.2 (hF s)`.
+
+Set `β` to `Ideal.Quotient.lift (Ideal.span (Set.range F)) ((MvPolynomial.aeval ξ : MvPolynomial ν R' →ₐ[R'] C').toRingHom.comp (MvPolynomial.map a)) (fun x hx ↦ RingHom.mem_ker.1 (hI hx))`. Establish `hβ : ∀ G, β (Ideal.Quotient.mk _ G) = MvPolynomial.aeval ξ (MvPolynomial.map a G)` using `fun G ↦ rfl`. Establish `hu : IsUnit (((algebraMap C' L).comp β) (Ideal.Quotient.mk (Ideal.span (Set.range F)) h))`. Rewrite using `[RingHom.comp_apply, hβ]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`.
+
+Set `α : Localization.Away (Ideal.Quotient.mk (Ideal.span (Set.range F)) h) →+* L` to `IsLocalization.Away.lift (Ideal.Quotient.mk (Ideal.span (Set.range F)) h) hu`. Establish `hα : ∀ G : MvPolynomial ν R, α (algebraMap (MvPolynomial ν R ⧸ Ideal.span (Set.range F)) _ (Ideal.Quotient.mk _ G)) = algebraMap C' L (MvPolynomial.aeval ξ (MvPolynomial.map a G))` using `fun G ↦ by`. Simplify using `only [α]`. Rewrite using `[IsLocalization.Away.lift_eq, RingHom.comp_apply, hβ]`. Establish `hR : ∀ r : R, algebraMap R (Localization.Away (Ideal.Quotient.mk (Ideal.span (Set.range F)) h)) r = algebraMap (MvPolynomial ν R ⧸ Ideal.span (Set.range F)) _ (Ideal.Quotient.mk _ (MvPolynomial.C r))` using `fun r ↦ rfl`.
+
+Use `⟨α, IsPushout.of_isColimit' ⟨?_⟩ (PushoutCocone.IsColimit.mk _ (fun s ↦ CommRingCat.ofHom (Classical.choose (localization_baseChange_desc (L := L) a F h ξ hsurj hker s.inl.hom s.inr.hom (fun r ↦ congr($(s.condition) r))))) ?_ ?_ ?_), hα⟩` and prove the remaining obligations. Use extensionality with `r`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply]`. Rewrite using `[hR, hα]`. Simplify using the standard rewrite rules.
+
+Introduce `s`. Take `⟨hd1, -⟩` from `Classical.choose_spec (localization_baseChange_desc (L := L) a F h ξ hsurj hker s.inl.hom s.inr.hom (fun r ↦ congr($(s.condition) r)))`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom]`. Apply `IsLocalization.ringHom_ext (Submonoid.powers (Ideal.Quotient.mk (Ideal.span (Set.range F)) h))` to reduce the goal to its premises.
+
+Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Use `RingHom.ext fun G ↦ ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hα, hd1]`. Introduce `s`.
+
+Take `⟨-, hd2⟩` from `Classical.choose_spec (localization_baseChange_desc (L := L) a F h ξ hsurj hker s.inl.hom s.inr.hom (fun r ↦ congr($(s.condition) r)))`. Use extensionality with `r`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply]`. Conclude with `hd2 r`. Introduce `s m h₁ h₂`.
+
+Take `⟨hd1, hd2⟩` from `Classical.choose_spec (localization_baseChange_desc (L := L) a F h ξ hsurj hker s.inl.hom s.inr.hom (fun r ↦ congr($(s.condition) r)))`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Simplify using `only [CommRingCat.hom_ofHom]`. Apply `localization_baseChange_ext a h ξ hsurj` to reduce the goal to its premises. Introduce `r`.
+
+Rewrite using `[hd2]`. Conclude with `congr($h₂ r)`. Introduce `i`. Establish `e : algebraMap C' L (ξ i) = algebraMap C' L (MvPolynomial.aeval ξ (MvPolynomial.map a (MvPolynomial.X i)))`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, hd1, ← hα]`. Conclude with `congr($h₁ _)`.
+-/
 theorem isPushout_localization_baseChange : ∀ (R R' C' L ν σ : Type) [CommRing R] [CommRing R'] [CommRing C'] [CommRing L] (a : R →+* R') [Algebra R' C'] [Algebra C' L] (F : σ → MvPolynomial ν R) (h : MvPolynomial ν R) (ξ : ν → C'), Function.Surjective (MvPolynomial.aeval ξ : MvPolynomial ν R' →ₐ[R'] C') → (∀ s, MvPolynomial.aeval ξ (MvPolynomial.map a (F s)) = 0) → (∀ G : MvPolynomial ν R', MvPolynomial.aeval ξ G = 0 → MvPolynomial.map a h * G ∈ Ideal.span (Set.range fun s ↦ MvPolynomial.map a (F s))) → IsLocalization.Away (MvPolynomial.aeval ξ (MvPolynomial.map a h)) L → ∃ α : Localization.Away (Ideal.Quotient.mk (Ideal.span (Set.range F)) h) →+* L, IsPushout (CommRingCat.ofHom (algebraMap R (Localization.Away (Ideal.Quotient.mk (Ideal.span (Set.range F)) h)))) (CommRingCat.ofHom a) (CommRingCat.ofHom α) (CommRingCat.ofHom ((algebraMap C' L).comp (algebraMap R' C'))) ∧ ∀ G : MvPolynomial ν R, α (algebraMap (MvPolynomial ν R ⧸ Ideal.span (Set.range F)) _ (Ideal.Quotient.mk _ G)) = algebraMap C' L (MvPolynomial.aeval ξ (MvPolynomial.map a G)) := by
   intro R R' C' L ν σ _ _ _ _ a _ _ F h ξ hsurj hF hker hL
   have hI : Ideal.span (Set.range F) ≤

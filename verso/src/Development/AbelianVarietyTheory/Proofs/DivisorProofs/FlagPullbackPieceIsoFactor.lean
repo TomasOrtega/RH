@@ -22,6 +22,9 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 
 namespace GlobalTheory.VMetric
 
+/- English proof (translation)
+Substitute `w` using the available equality. Conclude with `IsometryPullback.isIsometry_trans ((isIsometry_pull_id_comp k B p E r h).2 Y₀ Y _ _ π₀ g' rfl hf rfl) (fun _ _ _ _ _ _ => rfl)`.
+-/
 theorem isIsometry_pullbackComp_congr {k : Type} [CommRing k] {B Y₀ Y : Scheme.{0}} {p : B ⟶ Sp k}
     (π₀ : Y₀ ⟶ B) (π : Y ⟶ B) {E : B.Modules} {r : ℕ} (h : VMetric p E r) (g' : Y ⟶ Y₀)
     (w : g' ≫ π₀ = π) (hf : g' ≫ π₀ ≫ p = π ≫ p) :
@@ -32,6 +35,11 @@ theorem isIsometry_pullbackComp_congr {k : Type} [CommRing k] {B Y₀ Y : Scheme
     ((isIsometry_pull_id_comp k B p E r h).2 Y₀ Y _ _ π₀ g' rfl hf rfl)
     (fun _ _ _ _ _ _ => rfl)
 
+/- English proof (translation)
+Introduce `k _ B Y₀ Y p π₀ π E r h H fl₀ fl g' w hs hf i`. Establish `I` using `isIsometry_pullbackComp_congr π₀ π h g' w hf`. Establish `S (j : Fin (r + 1)) : ((fl₀.pull g').ofIso ((Scheme.Modules.pullbackComp g' π₀).app E ≪≫ (Scheme.Modules.pullbackCongr w).app E)).SameStep fl j` using `hs j`. Establish `e₁` using `(AdjFlag.step_eq (H.pull π rfl) (S i.castSucc) (S i.succ)).1`. Rewrite `e₁` using `[grLB_ofIso I ((H.pull π₀ rfl).pull g' hf) (H.pull π rfl)]`.
+
+Conclude with `e₁.symm.trans (isometric_grLB_pull k Y₀ Y _ _ _ r _ (H.pull π₀ rfl) fl₀ g' hf i)`.
+-/
 theorem isometric_grLB_of_steps_pull : ∀ {k : Type} [CommRing k] {B Y₀ Y : Scheme.{0}} (p : B ⟶ Sp k) (π₀ : Y₀ ⟶ B)
     (π : Y ⟶ B) (E : B.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf)
     (fl₀ : Vert.Flag ((Scheme.Modules.pullback π₀).obj E) r) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) r)

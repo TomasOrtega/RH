@@ -15,6 +15,11 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {v : Pl F}
 
+/- English proof (translation)
+Establish `e : JR (AF F) (ξ • Jᵀ) = inclR (F` using `F) (AF F) ξ • (incM F J)ᵀ := by`. Use extensionality with `i j`. Conclude with `map_mul (inclR (F := F) (AF F)) _ _`. Establish `u : IsUnit (inclR (F` using `F) (AF F) ξ) := (IsUnit.mk0 ξ hξ).map _`. Express the relevant statement in the definitionally equal form `(g.1.map (cA σ))ᵀ * JR (AF F) (ξ • Jᵀ) * g.1 = JR (AF F) (ξ • Jᵀ) ↔ g.1ᵀ * incM F J * g.1.map (cA σ) = incM F J`.
+
+Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul, u.smul_left_cancel, ← Matrix.transpose_inj]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+-/
 theorem mem_iff {ξ : E} (hξ : ξ ≠ 0) (J : Matrix (Fin n) (Fin n) E) (g : GL (Fin n) (AE F E)) :
     g ∈ HR (AF F) σ (ξ • Jᵀ) ↔ g ∈ UG (cA σ) (incM F J) := by
   have e : JR (AF F) (ξ • Jᵀ) = inclR (F := F) (AF F) ξ • (incM F J)ᵀ := by
@@ -25,6 +30,9 @@ theorem mem_iff {ξ : E} (hξ : ξ ≠ 0) (J : Matrix (Fin n) (Fin n) E) (g : GL
   simp only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b x => exact congrArg (· ⊗ₜ[F] x) (map_mul (evFin F u) a b)`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem compFin_smul (u : Pl F) (a : AF F) (z : AE F E) : compFin F E u (a • z) = evFin F u a • compFin F E u z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -32,12 +40,22 @@ theorem compFin_smul (u : Pl F) (a : AF F) (z : AE F E) : compFin F E u (a • z
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b x => exact congrArg (· ⊗ₜ[F] x) (map_mul (evInf F u) a b)`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem compInf_smul (u : InfinitePlace F) (a : AF F) (z : AE F E) : compInf F E u (a • z) = evInf F u a • compInf F E u z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
   | tmul b x => exact congrArg (· ⊗ₜ[F] x) (map_mul (evInf F u) a b)
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
+/- English proof (translation)
+Introduce `a ha`. Use extensionality with `i j`. Establish `one : ∀ {S : Type} [CommRing S] (f : AE F E →+* S), f ((1 : Matrix (Fin n) (Fin n) (AE F E)) i j) = (1 : Matrix (Fin n) (Fin n) S) i j` using `fun f => congrFun (congrFun (Matrix.map_one f (map_zero _) (map_one _)) i) j`. Express the relevant statement in the definitionally equal form `a • ((matHom _ σ J (emb σ J v z)).1 i j - (1 : Matrix (Fin n) (Fin n) (AE F E)) i j) = 0`. Use `Supp.adTens_ext (fun w => ?_) fun u => ?_` and prove the remaining obligations.
+
+Use `congrArg (fun x => (matHom _ σ J x).1 i j) (projArch_emb σ J w v z)` as an intermediate fact. Rewrite using `[compInf_smul, map_sub, one, map_zero]`. Conclude with `smul_eq_zero_of_right _ (sub_eq_zero.2 this)`. Rewrite using `[compFin_smul, map_zero]`. Distinguish the cases in `h : u = v`.
+
+Substitute `h` using the available equality. Rewrite using `[ha, zero_smul]`. Use `congrArg (fun x => (matHom _ σ J x).1 i j) (proj_emb_ne σ J h z)` as an intermediate fact. Rewrite using `[map_sub, one]`. Conclude with `smul_eq_zero_of_right _ (sub_eq_zero.2 this)`.
+-/
 theorem at_emb {J : Matrix (Fin n) (Fin n) E} (z : GLoc σ J v) : At (evFin F v) ((matHom _ σ J (emb σ J v z)).1 - 1) := by
   intro a ha
   ext i j
@@ -55,6 +73,21 @@ theorem at_emb {J : Matrix (Fin n) (Fin n) E} (z : GLoc σ J v) : At (evFin F v)
       rw [map_sub, one]
       exact smul_eq_zero_of_right _ (sub_eq_zero.2 this)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hi, x, hx, rfl⟩` from `hz`.
+
+Use `⟨fun u hu => funext fun i => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u • a • inclR (F := F) (AF F) (x i) = 0`. Rewrite using `[smul_smul, ← smul_eq_mul, ha u hu, zero_smul]`. Use `tmul_mem_latLoc hi hx using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[compFin_smul]`.
+
+Express the relevant statement in the definitionally equal form `evFin F v a • (evFin F v 1 ⊗ₜ[F] x i) = _`. Rewrite using `[map_one, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Consider the case `zero => exact ⟨at_zero, by simp only [Pi.zero_apply, map_zero]; exact zero_mem _⟩`. Consider the case `add a b _ _ ha hb => exact ⟨at_add ha.1 hb.1, by simp only [Pi.add_apply, map_add]; exact add_mem ha.2 hb.2⟩`. Consider the case `neg a _ ha => exact ⟨by simpa using at_sub at_zero ha.1, by simp only [Pi.neg_apply, map_neg]; exact neg_mem ha.2⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Establish `key : ∀ z ∈ latLoc F W.L v, (fun i => sgE E v (z i)) ∈ latW W v` using `fun z hz => by`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`.
+
+Use `AddSubgroup.subset_closure ⟨sg v a, at_sg a, by rw [ev_sg]; exact ha, x, hx, funext fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `sg v a ⊗ₜ[F] x i = (sg v a * 1) ⊗ₜ[F] x i`. Rewrite using `[mul_one]`. Consider the case `zero => simp only [Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add a b _ _ ha hb => simp only [Pi.add_apply, map_add]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => simp only [Pi.neg_apply, map_neg]`. Conclude with `neg_mem ha`. Use `key _ h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Use `sub_eq_zero.1 (eq_zero_of_at (v := v) (at_sub (fun u hu => congrFun (h1 u hu) i) (at_sgE _)) ?_)` and prove the remaining obligations. Rewrite using `[map_sub, comp_sgE, sub_self]`.
+-/
 theorem mem_latW_iff' (W : Spc F E n) (y : Fin n → AE F E) :
     y ∈ latW W v ↔ At (evFin F v) y ∧ (fun i => compFin F E v (y i)) ∈ latLoc F W.L v := by
   constructor
@@ -88,6 +121,9 @@ theorem mem_latW_iff' (W : Spc F E n) (y : Fin n → AE F E) :
     refine sub_eq_zero.1 (eq_zero_of_at (v := v) (at_sub (fun u hu => congrFun (h1 u hu) i) (at_sgE _)) ?_)
     rw [map_sub, comp_sgE, sub_self]
 
+/- English proof (translation)
+Introduce `y hy` and use `by obtain ⟨h1, h2⟩ := (mem_latW_iff' Y y).1 hy refine (mem_latW_iff' Y _).2 ⟨at_mulVec_right _ h1, ?_⟩ convert h _ h2 using 1 funext i rw [← e] exact RingHom.map_mulVec (compFin F E v) _ y i`.
+-/
 theorem stab_latW {Y : Spc F E n} {k : UA σ Y.J} (hk : k ∈ UAt σ Y (evFin F v)) {κ : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)}
     (e : (mat k).map (compFin F E v) = κ) (h : ∀ z ∈ latLoc F Y.L v, κ *ᵥ z ∈ latLoc F Y.L v) :
     ∀ y ∈ latW Y v, mat k *ᵥ y ∈ latW Y v := fun y hy => by
@@ -103,12 +139,33 @@ def bk {ξ : E} (hξ : ξ ≠ 0) (J : Matrix (Fin n) (Fin n) E) : GAd σ (ξ •
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_bk {ξ : E} (hξ : ξ ≠ 0) (J : Matrix (Fin n) (Fin n) E) (z : GAd σ (ξ • Jᵀ)) :
     mat (bk hξ J z) = (matHom _ σ _ z).1 := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨g.1, (mem_iff hξ _ _).2 g.2⟩, rfl⟩`.
+-/
 theorem bk_surj {ξ : E} (hξ : ξ ≠ 0) (J : Matrix (Fin n) (Fin n) E) (g : UA σ J) : ∃ z, bk (σ := σ) hξ J z = g :=
   ⟨⟨g.1, (mem_iff hξ _ _).2 g.2⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨ξ, hξ, hJ, hL⟩` from `exists_selfDual hB hY v`. Use `haveI := hB.unram`. Take `⟨θ, hθ⟩` from `GlobalTheory.exists_integer_add_conj_eq_one_of_formallyUnramified F E σ hB.cm inferInstance`. Use `haveI : Y.L.IsLattice E := hY.elim (·.lat) (·.lat)`. Take `⟨g', rfl⟩` from `bk_surj hξ Y.J g`.
+
+Take `⟨q, k, ⟨t, ht⟩, hk, e⟩` from `core hB.cm hθ hJ Y.L (unramAt hB v) ((isEmpty_or_nonempty _).symm.imp_right (inert_of_local F E σ B hB v)) hL hx (by`. Use `hE_smul (σ := σ) ξ Y.J x x` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`. Rewrite using `[← this]`. Simplify using `only [hE, Formalism.UG.hform, Matrix.vecMul, dotProduct, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_comm) (proj σ _ v g')`. Establish `cmp : ∀ z : GLoc σ (ξ • Y.Jᵀ) v, (mat (bk hξ Y.J (emb σ _ v z))).map (compFin F E v) = (matHom _ σ _ z).1` using `fun z => by`. Rewrite using `[mat_bk]`. Conclude with `congrArg (fun x => (matHom _ σ _ x).1) (proj_emb_self σ _ v z)`. Establish `hat : ∀ z : GLoc σ (ξ • Y.Jᵀ) v, bk hξ Y.J (emb σ _ v z) ∈ UAt σ Y (evFin F v)` using `fun z => by`.
+
+Express the relevant statement in the definitionally equal form `At _ (mat _ - 1)`. Rewrite using `[mat_bk]`. Conclude with `at_emb z`. Use `⟨_, hat q, _, ⟨hat k, fun y hy => ⟨stab_latW (hat k) (cmp k) (fun z hz => (hk z).1 hz) y hy, ?_⟩⟩, t, by rw [mat_bk]; exact ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv, ← map_inv]`.
+
+Establish `hk' : k⁻¹ ∈ stabLoc σ _ Y.L v` using `inv_mem hk`. Conclude with `stab_latW (hat k⁻¹) (cmp k⁻¹) (fun z hz => (hk' z).1 hz) y hy`. Rewrite using `[← map_mul, ← map_mul, ← e]`. Establish `c1` using `cmp (proj σ _ v g')`. Establish `a1` using `at_sub hg (hat (proj σ _ v g'))`.
+
+Establish `c2 : (mat (bk hξ Y.J g')).map (compFin F E v) = (matHom _ σ _ (proj σ _ v g')).1` using `by rw [mat_bk]; rfl`. Rewrite `c1` using `[← c2]`. Generalize the expression as in `bk hξ Y.J (emb σ _ v (proj σ _ v g')) = a at c1 a1`. Generalize the expression as in `bk hξ Y.J g' = b at c1 a1`. Rewrite `a1` using `[sub_sub_sub_cancel_right]`.
+
+Use `Subtype.ext (Units.ext (Matrix.ext fun i j => sub_eq_zero.1 (eq_zero_of_at (v := v) (fun u hu => ?_) ?_)))` and prove the remaining obligations. Conclude with `congrFun (congrFun (a1 u hu) i) j`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `(congrFun (congrFun c1 i) j).symm`.
+-/
 theorem iwaLoc {B : Base F E} (hB : B.IsGood σ) {Y : Spc F E n} {r s : ℕ} (hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s)
     {x : Fin n → E} (hx : x ≠ 0) (h0 : form σ Y.J x x = 0) (v : Pl F) {g : UA σ Y.J} (hg : g ∈ UAt σ Y (evFin F v)) :
     ∃ p ∈ UAt σ Y (evFin F v), ∃ k ∈ KAt σ Y v, ∃ t : (AE F E)ˣ,

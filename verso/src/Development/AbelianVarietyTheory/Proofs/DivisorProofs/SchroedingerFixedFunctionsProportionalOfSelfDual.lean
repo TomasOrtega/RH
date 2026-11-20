@@ -16,6 +16,11 @@ open GlobalTheory.BigDat
 
 namespace GlobalTheory.SchrFixUniq
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, Prod.fst_add, Prod.snd_add]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, add_assoc x]`. Use `congr 2`. Simplify using `only [dotProduct_add, add_dotProduct]`.
+
+Establish `h2 : (2 : R) * ⅟(2 : R) = 1` using `mul_invOf_self 2`. Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * h2`.
+-/
 theorem schr_comp {R : Type} [CommRing R] [Invertible (2 : R)] {κ : Type} [Fintype κ] (ψ : AddChar R ℂ)
     (w w' : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
     schr ψ w (schr ψ w' φ) = ψ (⅟(2 : R) * (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2)) • schr ψ (w + w') φ := by
@@ -27,23 +32,43 @@ theorem schr_comp {R : Type} [CommRing R] [Invertible (2 : R)] {κ : Type} [Fint
   have h2 : (2 : R) * ⅟(2 : R) = 1 := mul_invOf_self 2
   linear_combination (-(w.1 ⬝ᵥ w'.2)) * h2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schr_smul' {R : Type} [CommRing R] [Invertible (2 : R)] {κ : Type} [Fintype κ] (ψ : AddChar R ℂ)
     (w : (κ → R) × (κ → R)) (a : ℂ) (φ : (κ → R) → ℂ) : schr ψ w (a • φ) = a • schr ψ w φ := by
   funext x
   simp only [schr, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[schr]`.
+-/
 theorem schr_zero' {R : Type} [CommRing R] [Invertible (2 : R)] {κ : Type} [Fintype κ] (ψ : AddChar R ℂ)
     (φ : (κ → R) → ℂ) : schr ψ 0 φ = φ := by
   funext x
   simp [schr]
 
+/- English proof (translation)
+Introduce `hx`. Establish `h2 : ψ (x + -x) = ψ x * ψ (-x)` using `AddChar.map_add_eq_mul ψ x (-x)`. Rewrite `h2` using `[add_neg_cancel, AddChar.map_zero_eq_one, hx, zero_mul]`. Conclude with `one_ne_zero h2`.
+-/
 theorem char_ne_zero {R : Type} [CommRing R] (ψ : AddChar R ℂ) (x : R) : ψ x ≠ 0 := by
   intro hx
   have h2 : ψ (x + -x) = ψ x * ψ (-x) := AddChar.map_add_eq_mul ψ x (-x)
   rw [add_neg_cancel, AddChar.map_zero_eq_one, hx, zero_mul] at h2
   exact one_ne_zero h2
 
+/- English proof (translation)
+Proceed by induction on `hl using AddSubgroup.closure_induction with`. Consider the case `mem s hs => exact ⟨1, one_ne_zero, by rw [hf s hs, one_smul], by rw [hg s hs, one_smul]⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [schr_zero', one_smul], by rw [schr_zero', one_smul]⟩`. Consider the case `add w w' _ _ h h'`. Take `⟨χ, hχ, h1, h2⟩` from `h`.
+
+Take `⟨χ', hχ', h1', h2'⟩` from `h'`. Establish `hz` using `char_ne_zero ψ (⅟(2 : R) * (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2))`. Establish `key : ∀ φ : (κ → R) → ℂ, schr ψ w φ = χ • φ → schr ψ w' φ = χ' • φ → schr ψ (w + w') φ = ((ψ (⅟(2 : R) * (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2)))⁻¹ * (χ' * χ)) • φ`. Introduce `φ a b`. Establish `e` using `schr_comp ψ w w' φ`.
+
+Rewrite `e` using `[b, schr_smul', a, smul_smul]`. Rewrite using `[mul_smul, e, smul_smul, inv_mul_cancel₀ hz, one_smul]`. Conclude with `⟨_, mul_ne_zero (inv_ne_zero hz) (mul_ne_zero hχ' hχ), key f h1 h1', key g h2 h2'⟩`. Consider the case `neg w _ h`. Take `⟨χ, hχ, h1, h2⟩` from `h`.
+
+Establish `key : ∀ φ : (κ → R) → ℂ, schr ψ w φ = χ • φ → schr ψ (-w) φ = χ⁻¹ • φ`. Introduce `φ a`. Establish `e` using `schr_comp ψ (-w) w φ`. Establish `e0 : ⅟(2 : R) * ((-w).1 ⬝ᵥ w.2 - w.1 ⬝ᵥ (-w).2) = 0`. Simplify using the standard rewrite rules.
+
+Rewrite `e` using `[a, schr_smul', neg_add_cancel, schr_zero', e0, AddChar.map_zero_eq_one, one_smul]`. Use `conv_rhs => rw [← e]`. Rewrite using `[smul_smul, inv_mul_cancel₀ hχ, one_smul]`. Conclude with `⟨_, inv_ne_zero hχ, key f h1, key g h2⟩`.
+-/
 theorem common_eigen {R : Type} [CommRing R] [Invertible (2 : R)] {κ : Type} [Fintype κ] (ψ : AddChar R ℂ)
     (S : Set ((κ → R) × (κ → R))) (f g : (κ → R) → ℂ) (hf : ∀ s ∈ S, schr ψ s f = f)
     (hg : ∀ s ∈ S, schr ψ s g = g) (l : (κ → R) × (κ → R)) (hl : l ∈ AddSubgroup.closure S) :
@@ -74,6 +99,13 @@ theorem common_eigen {R : Type} [CommRing R] [Invertible (2 : R)] {κ : Type} [F
       rw [smul_smul, inv_mul_cancel₀ hχ, one_smul]
     exact ⟨_, inv_ne_zero hχ, key f h1, key g h2⟩
 
+/- English proof (translation)
+Establish `hne : ∃ t, ψk t ≠ 1`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `h1 (AddChar.ext _ _ fun t => by rw [h t, AddChar.one_apply])`. Take `⟨n, hn⟩` from `GlobalTheory.CharConductor.exists_exponent_of_valued ψk hc hne`.
+
+Take `⟨a, ha⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective F v (WithZero.exp n)`. Establish `ha0 : (Valued.v a : WithZero (Multiplicative ℤ)) ≠ 0` using `by rw [ha]; exact WithZero.exp_ne_zero`. Use `⟨a, by simpa using ha0, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `hn (a * x)`. Rewrite `h` using `[← ha, map_mul, mul_le_iff_le_one_right (zero_lt_iff.2 ha0)]`.
+
+Simplify `h` using `only [HeightOneSpectrum.mem_adicCompletionIntegers, mul_assoc]`.
+-/
 theorem exists_shift {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (ψk : AddChar (Fv F v) ℂ)
     (hc : Continuous ψk) (h1 : ψk ≠ 1) : ∃ a : Fv F v, a ≠ 0 ∧ ∀ x : Fv F v,
       (∀ y ∈ v.adicCompletionIntegers F, ψk (a * (x * y)) = 1) ↔ x ∈ v.adicCompletionIntegers F := by
@@ -89,6 +121,25 @@ theorem exists_shift {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum
   rw [← ha, map_mul, mul_le_iff_le_one_right (zero_lt_iff.2 ha0)] at h
   simpa only [HeightOneSpectrum.mem_adicCompletionIntegers, mul_assoc] using h
 
+/- English proof (translation)
+Take `⟨a, ha, hcond⟩` from `exists_shift v ψk hc h1`. Set `Λ' : AddSubgroup ((κ → Fv F v) × (κ → Fv F v))` to `{ carrier := {w | (w.1, a • w.2) ∈ Λ} add_mem' := fun {x y} hx hy => by`. Use `Λ.add_mem hx hy` as an intermediate fact. Simplify `this` using `[smul_add]`. Use the proof step `zero_mem' := by show ((0 : κ → Fv F v), a • (0 : κ → Fv F v)) ∈ Λ`.
+
+Rewrite using `[smul_zero]`. Conclude with `Λ.zero_mem`. Use the proof step `neg_mem' := fun {x} hx => by`. Use `Λ.neg_mem hx` as an intermediate fact. Simplify using `using this }`.
+
+Establish `hΛ' : ∀ w, w ∈ Λ' ↔ (w.1, a • w.2) ∈ Λ` using `fun _ => Iff.rfl`. Establish `hbd' : ∃ c' : Fv F v, c' ≠ 0 ∧ ∀ l ∈ Λ', ∀ i, c' * l.1 i ∈ v.adicCompletionIntegers F ∧ c' * l.2 i ∈ v.adicCompletionIntegers F`. Break down `(v.adicCompletionIntegers F).mem_or_inv_mem a with h | h` into its components or cases. Use `⟨a * c, mul_ne_zero ha hc0, fun l hl i => ?_⟩` and prove the remaining obligations. Take `⟨p, q⟩` from `hbd _ ((hΛ' l).1 hl) i`.
+
+Use `⟨by rw [mul_assoc]; exact mul_mem h p, ?_⟩` and prove the remaining obligations. Use `q using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨c, hc0, fun l hl i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨p, q⟩` from `hbd _ ((hΛ' l).1 hl) i`. Use `⟨p, ?_⟩` and prove the remaining obligations. Use `mul_mem h q using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Take `⟨c', hc', hb'⟩` from `hbd'`. Establish `hs' : ∀ w, w ∈ Λ' ↔ ∀ l ∈ Λ', (ψk.mulShift a) (w.1 ⬝ᵥ l.2 - l.1 ⬝ᵥ w.2) = 1`. Introduce `w`. Rewrite using `[hΛ', hself]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h l hl`. Use `h _ ((hΛ' l).1 hl)` as an intermediate fact. Simplify using `only [dotProduct_smul, smul_eq_mul] at this`. Rewrite using `[AddChar.mulShift_apply, mul_sub]`. Conclude with `this`.
+
+Introduce `h l hl`. Use `h (l.1, a⁻¹ • l.2) (by rw [hΛ']; simpa [smul_smul, mul_inv_cancel₀ ha] using hl)` as an intermediate fact. Rewrite `this` using `[AddChar.mulShift_apply, mul_sub]`. Simplify using `only [dotProduct_smul, smul_eq_mul] at this ⊢`. Rewrite `this` using `[mul_inv_cancel_left₀ ha]`. Then use the resulting hypothesis.
+
+Take `⟨y, hy⟩` from `GlobalTheory.SelfDualFirstProj.exists_pair_of_annihilator v (ψk.mulShift a) Λ' c' hc' (fun x => by simpa only [AddChar.mulShift_apply] using hcond x) hs' hb' η (fun b hb => by`. Use `hη _ ((hΛ' _).1 hb)` as an intermediate fact. Rewrite using `[dotProduct_smul, smul_eq_mul, ← AddChar.mulShift_apply] at this)` and apply the resulting hypothesis. Conclude with `⟨_, (hΛ' _).1 hy⟩`.
+-/
 theorem exists_pair {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {κ : Type} [Fintype κ]
     (ψk : AddChar (Fv F v) ℂ) (hc : Continuous ψk) (h1 : ψk ≠ 1)
     (Λ : AddSubgroup ((κ → Fv F v) × (κ → Fv F v))) (c : Fv F v) (hc0 : c ≠ 0)
@@ -146,6 +197,13 @@ theorem exists_pair {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum 
       rwa [dotProduct_smul, smul_eq_mul, ← AddChar.mulShift_apply] at this)
   exact ⟨_, (hΛ' _).1 hy⟩
 
+/- English proof (translation)
+Introduce `F _ _ v κ _ ψk hc h1 S Λ c hS hc0 hself hbd f g hf hg hf0`. Establish `hall : ∀ l, ∃ χ : ℂ, l ∈ Λ → schr ψk l f = χ • f ∧ schr ψk l g = χ • g`. Introduce `l`. Distinguish the cases in `hl : l ∈ Λ`. Take `⟨χ, -, h⟩` from `common_eigen ψk S f g hf hg l (hS hl)`.
+
+Conclude with `⟨χ, fun _ => h⟩`. Conclude with `⟨0, fun h => absurd h hl⟩`. Use `choose χ hχ using hall`. Use `GlobalTheory.heisenbergEigen_proportional ψk Λ χ f g (fun l hl ξ => ?_) (fun l hl ξ => ?_) hf0 (exists_pair v ψk hc h1 Λ c hc0 hself hbd)` and prove the remaining obligations. Use `congrFun (hχ l hl).1 ξ` as an intermediate fact.
+
+Rewrite using `[← invOf_eq_inv]`. Conclude with `this`. Use `congrFun (hχ l hl).2 ξ` as an intermediate fact. Rewrite using `[← invOf_eq_inv]`. Conclude with `this`.
+-/
 theorem proportional_of_fixed : ∀ {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {κ : Type} [Fintype κ] (ψk : AddChar (Fv F v) ℂ), Continuous ψk → ψk ≠ 1 →
     ∀ (S : Set ((κ → Fv F v) × (κ → Fv F v))) (Λ : AddSubgroup ((κ → Fv F v) × (κ → Fv F v))) (c : Fv F v),
     Λ ≤ AddSubgroup.closure S → c ≠ 0 →

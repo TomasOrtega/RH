@@ -12,6 +12,17 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.AlphaChar
 open Polynomial
 
+/- English proof (translation)
+Establish `hw : w ≠ 0` using `by rintro rfl; simp at h0`. Establish `hc : c = 0`. Assume the negation of the conclusion as `hc`. Establish `h1` using `degree_derivative_lt hw`. Rewrite `h1` using `[h, degree_C_mul hc]`.
+
+Conclude with `lt_irrefl _ h1`. Rewrite `h` using `[hc, C_0, zero_mul]`. Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Simplify using `using h0`.
+
+Rewrite using `[coeff_one, if_neg (Nat.succ_ne_zero n)]`. Distinguish the cases in `hn : n + 1 < p`. Establish `h2` using `congrArg (fun q => coeff q n) h`. Simplify using `only [coeff_derivative, coeff_zero] at h2`. Establish `h3 : ((n : Ω) + 1) ≠ 0`.
+
+Introduce `h3`. Establish `: ((n + 1 : ℕ) : Ω) = 0` using `by exact_mod_cast h3`. Rewrite `this` using `[CharP.cast_eq_zero_iff Ω p]`. Conclude with `absurd (Nat.le_of_dvd (Nat.succ_pos n) this) (by omega)`. Conclude with `(mul_eq_zero.1 h2).resolve_right h3`.
+
+Apply `coeff_eq_zero_of_degree_lt` to reduce the goal to its premises. Conclude with `lt_of_lt_of_le hd (by exact_mod_cast (not_lt.1 hn))`.
+-/
 theorem poly_eq_one {Ω : Type} [Field Ω] (p : ℕ) [CharP Ω p] (w : Polynomial Ω) (c : Ω)
     (hd : w.degree < p) (h0 : w.coeff 0 = 1) (h : derivative w = C c * w) : w = 1 := by
   have hw : w ≠ 0 := by rintro rfl; simp at h0
@@ -37,6 +48,41 @@ theorem poly_eq_one {Ω : Type} [Field Ω] (p : ℕ) [CharP Ω p] (w : Polynomia
     · apply coeff_eq_zero_of_degree_lt
       exact lt_of_lt_of_le hd (by exact_mod_cast (not_lt.1 hn))
 
+/- English proof (translation)
+Introduce `Ω _ p hp _ u hnat hadd`. Establish `hp2 : 2 ≤ p` using `hp.out.two_le`. Establish `hp0 : p ≠ 0` using `by omega`. Establish `hm : (X ^ p : Polynomial Ω).Monic` using `monic_X_pow p`. Set `R` to `AdjoinRoot (X ^ p : Polynomial Ω)`.
+
+Set `t : R` to `AdjoinRoot.root (X ^ p : Polynomial Ω)`. Establish `ht : t ^ p = 0`. Use `AdjoinRoot.mk_self (f := (X ^ p : Polynomial Ω))` as an intermediate fact. Rewrite `this` using `[map_pow, AdjoinRoot.mk_X]`. Then use the resulting hypothesis. Take `⟨w0, hw0⟩` from `AdjoinRoot.mk_surjective (g := (X ^ p : Polynomial Ω)) (u R t : R)`.
+
+Set `w : Polynomial Ω` to `w0 %ₘ (X ^ p)`. Establish `hwd : w.degree < p`. Use `degree_modByMonic_lt w0 hm` as an intermediate fact. Rewrite `this` using `[degree_X_pow]`. Then use the resulting hypothesis. Establish `hw : aeval t w = (u R t : R)`.
+
+Rewrite using `[← hw0, AdjoinRoot.aeval_eq, AdjoinRoot.mk_eq_mk]`. Use `modByMonic_add_div w0 (X ^ p)` as an intermediate fact. Conclude with `⟨-(w0 /ₘ X ^ p), by simp only [w]; linear_combination this⟩`. Establish `key : ∀ (A : Type) [CommRing A] [Algebra Ω A] (a : A), a ^ p = 0 → (u A a : A) = aeval a w`. Introduce `A _ _ a ha`.
+
+Set `f : R →ₐ[Ω] A` to `Ideal.Quotient.liftₐ (Ideal.span {(X ^ p : Polynomial Ω)}) (aeval a) (by`. Introduce `q hq`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton.1 hq`. Simplify using `[ha])`. Establish `hf : f t = a`.
+
+Express the relevant statement in the definitionally equal form `aeval a (X : Polynomial Ω) = a`. Simplify using the standard rewrite rules. Establish `h1` using `hnat R A f t ht`. Rewrite `h1` using `[hf]`. Rewrite using `[h1, ← hf, aeval_algHom_apply, hw]`.
+
+Both sides reduce to the same expression. Establish `h0 : w.coeff 0 = 1`. Establish `h1` using `hadd Ω 0 0 (zero_pow hp0) (zero_pow hp0)`. Rewrite `h1` using `[add_zero, left_eq_mul]`. Establish `h2` using `key Ω 0 (zero_pow hp0)`.
+
+Rewrite `h2` using `[h1]`. Rewrite using `[coeff_zero_eq_aeval_zero, ← h2]`. Both sides reduce to the same expression. Establish `hder : derivative w = C ((derivative w).coeff 0) * w`. Set `D` to `DualNumber R`.
+
+Set `e : D` to `DualNumber.eps`. Set `j : R →ₐ[Ω] D` to `TrivSqZeroExt.inlAlgHom Ω R R`. Establish `he : e ^ 2 = 0` using `by rw [pow_two]; exact DualNumber.eps_mul_eps`. Establish `hep : e ^ p = 0` using `pow_eq_zero_of_le hp2 he`. Establish `hs : (j t) ^ p = 0` using `by rw [← map_pow, ht, map_zero]`.
+
+Establish `hpD : (p : D) = 0`. Rewrite using `[← map_natCast (algebraMap Ω D), CharP.cast_eq_zero, map_zero]`. Establish `hse : (j t + e) ^ p = 0`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp.out (j t) e`. Rewrite using `[hr, hs, hep, hpD]`.
+
+Simplify using the standard rewrite rules. Establish `h1` using `congrArg Units.val (hadd D (j t) e hs hep)`. Rewrite `h1` using `[Units.val_mul, key D _ hse, key D _ hs, key D _ hep, aeval_add_of_sq_eq_zero _ _ _ he]`. Establish `h2 : aeval e w = 1 + algebraMap Ω D ((derivative w).coeff 0) * e`. Use `aeval_add_of_sq_eq_zero w 0 e he` as an intermediate fact.
+
+Rewrite `this` using `[zero_add]`. Rewrite using `[this, ← coeff_zero_eq_aeval_zero', ← coeff_zero_eq_aeval_zero', h0, map_one]`. Rewrite `h1` using `[h2, aeval_algHom_apply, aeval_algHom_apply, ← j.commutes, mul_add, _root_.mul_one, add_right_inj, ← _root_.mul_assoc, ← map_mul]`. Establish `hsnd : ∀ x : R, TrivSqZeroExt.snd (j x * e) = x`. Introduce `x`.
+
+Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd ((TrivSqZeroExt.inl x : DualNumber R) * DualNumber.eps) = x`. Rewrite using `[DualNumber.snd_mul]`. Simplify using the standard rewrite rules. Establish `h3` using `congrArg TrivSqZeroExt.snd h1`. Rewrite `h3` using `[hsnd, hsnd]`.
+
+Establish `h4 : aeval t (derivative w - C ((derivative w).coeff 0) * w) = 0`. Rewrite using `[map_sub, map_mul, aeval_C, h3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h4` using `[AdjoinRoot.aeval_eq, AdjoinRoot.mk_eq_zero]`. Establish `h5` using `eq_zero_of_dvd_of_degree_lt h4 (by`.
+
+Rewrite using `[degree_X_pow]`. Use `lt_of_le_of_lt (degree_sub_le _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Conclude with `lt_of_le_of_lt degree_derivative_le hwd`. Rewrite using `[← smul_eq_C_mul]`. Conclude with `lt_of_le_of_lt (degree_smul_le _ _) hwd)`.
+
+Conclude with `sub_eq_zero.1 h5`. Establish `hone` using `poly_eq_one p w _ hwd h0 hder`. Introduce `A _ _ a ha`. Use `ext`. Rewrite using `[key A a ha, hone]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem char_eq_one : ∀ (Ω : Type) [Field Ω] (p : ℕ) [Fact p.Prime] [CharP Ω p] (u : ∀ (A : Type) [CommRing A] [Algebra Ω A], A → Aˣ), (∀ (A B : Type) [CommRing A] [Algebra Ω A] [CommRing B] [Algebra Ω B] (f : A →ₐ[Ω] B) (a : A), a ^ p = 0 → u B (f a) = Units.map (f : A →* B) (u A a)) → (∀ (A : Type) [CommRing A] [Algebra Ω A] (a a' : A), a ^ p = 0 → a' ^ p = 0 → u A (a + a') = u A a * u A a') → ∀ (A : Type) [CommRing A] [Algebra Ω A] (a : A), a ^ p = 0 → u A a = 1 := by
   intro Ω _ p hp _ u hnat hadd
   have hp2 : 2 ≤ p := hp.out.two_le

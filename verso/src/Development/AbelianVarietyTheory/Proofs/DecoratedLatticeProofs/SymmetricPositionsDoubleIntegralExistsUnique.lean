@@ -19,6 +19,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
 variable {A : Type} [AddCommGroup A] [Module ℂ A]
 
+/- English proof (translation)
+Set `π : Representation ℂ (GL n k) (SB (Matrix n n' k))` to `(omR μ).comp (MonoidHom.inr (GL n' k) (GL n k))`. Establish `hπv : ∀ g (Ψ : SB (Matrix n n' k)), (π g Ψ).1 = om μ 1 g Ψ.1` using `fun _ _ => rfl`. Establish `hpos : IsPos ψ p π σ b` using `⟨hb.1, fun g φ v => hb.2 g φ (π g φ) v (hπv g φ)⟩`. Take `⟨B, hB, hBpos⟩` from `((GlobalTheory.RootEx.Exchange.exchange_isPos k n c p h1 h2 ψ hψ hψ1 ν A σ hσ).2.2 _ π b).1 hpos`. Use `⟨B, ⟨hBpos.1, fun g Ψ Ψ₁ v hΨ => ?_⟩, hB⟩` and prove the remaining obligations.
+
+Establish `e : Ψ₁ = π g Ψ` using `Subtype.ext (by rw [hΨ, hπv])`. Rewrite using `[e]`. Conclude with `hBpos.2 g Ψ v`.
+-/
 theorem bilPos_exUp_exists {p : ℕ} (h1 : 1 ≤ p) (h2 : p < c) {ψ : AddChar k Circle} (hψ : Continuous ψ)
     (hψ1 : ψ ≠ 1) (ν : Measure k) [ν.IsAddHaarMeasure] {μ : kˣ →* ℂˣ}
     {σ : Representation ℂ (GL (n ⊕ Fin c) k) A} (hσ : IsSmoothRep σ)
@@ -48,6 +53,31 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 variable {P A : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup A] [Module ℂ A]
 
+/- English proof (translation)
+Use `hν.1` as an intermediate fact. Use `GlobalTheory.SplitWeil.secondCountable k` as an intermediate fact. Use `GlobalTheory.SplitWeil.t2Space k` as an intermediate fact. Establish `hS` using `GlobalTheory.RootEx.ExchangeSupport.exchange_support k n c ρ h1 h2 ψ hψ hψ1 ν A σ hσ`. Establish `hI : ∀ φ v (Φ₀ : SB (n → k)), Integrable (fun β => Φ₀.1 β * B φ (σ (colE c (ρ + 1) β) v)) (Measure.pi fun _ => ν)`.
+
+Introduce `φ v Φ₀`. Establish `s` using `((hS (B φ) v).2 (hB φ)).1`. Conclude with `GlobalTheory.RootEx.FourierJacobi.sb_int ⟨Φ₀.2.1.mul s.1, Φ₀.2.2.mul_right⟩`. Set `f : P → A → SB (n → k) → ℂ` to `fun φ v Φ₀ => ∫ β, Φ₀.1 β * B φ (σ (colE c (ρ + 1) β) v) ∂(Measure.pi fun _ => ν)`. Establish `fadd1 : ∀ φ φ' v Φ₀, f (φ + φ') v Φ₀ = f φ v Φ₀ + f φ' v Φ₀`.
+
+Introduce `φ φ' v Φ₀`. Simplify using `only [f, map_add, LinearMap.add_apply, mul_add]`. Conclude with `integral_add (hI φ v Φ₀) (hI φ' v Φ₀)`. Establish `fsmul1 : ∀ (z : ℂ) φ v Φ₀, f (z • φ) v Φ₀ = z • f φ v Φ₀`. Introduce `z φ v Φ₀`.
+
+Simplify using `only [f, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `β`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `fadd2 : ∀ φ v v' Φ₀, f φ (v + v') Φ₀ = f φ v Φ₀ + f φ v' Φ₀`. Introduce `φ v v' Φ₀`. Simplify using `only [f, map_add, mul_add]`. Conclude with `integral_add (hI φ v Φ₀) (hI φ v' Φ₀)`. Establish `fsmul2 : ∀ (z : ℂ) φ v Φ₀, f φ (z • v) Φ₀ = z • f φ v Φ₀`.
+
+Introduce `z φ v Φ₀`. Simplify using `only [f, map_smul, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `β`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `fadd3 : ∀ φ v Φ₀ Φ₀', f φ v (Φ₀ + Φ₀') = f φ v Φ₀ + f φ v Φ₀'`. Introduce `φ v Φ₀ Φ₀'`. Simplify using `only [f, Submodule.coe_add, Pi.add_apply, add_mul]`. Conclude with `integral_add (hI φ v Φ₀) (hI φ v Φ₀')`.
+
+Establish `fsmul3 : ∀ (z : ℂ) φ v Φ₀, f φ v (z • Φ₀) = z • f φ v Φ₀`. Introduce `z φ v Φ₀`. Simplify using `only [f, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `β`. Expand and normalize the polynomial expressions, which then agree. Set `fj : P →ₗ[ℂ] A →ₗ[ℂ] SB (n → k) →ₗ[ℂ] ℂ` to `{ toFun := fun φ => LinearMap.mk₂ ℂ (f φ) (fadd2 φ) (fun z v Φ₀ => fsmul2 z φ v Φ₀) (fadd3 φ) (fun z v Φ₀ => fsmul3 z φ v Φ₀) map_add' := fun φ φ' => by ext v Φ₀; exact fadd1 φ φ' v Φ₀ map_smul' := fun z φ => by ext v Φ₀; exact fsmul1 z φ v Φ₀ }`. Establish `fj_apply : ∀ φ v Φ₀, fj φ v Φ₀ = f φ v Φ₀` using `fun _ _ _ => rfl`. Use `⟨fj, ⟨hB, fun φ v Φ₀ => ⟨hI φ v Φ₀, fj_apply φ v Φ₀⟩⟩, fun φ v Φ₀ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨s1, -, s3⟩` from `(hS (b φ) v).1 (hb φ)`. Establish `hh` using `(GlobalTheory.T.schwartzFourierTransformPi_surjective_schwartzBruhat k n ψ hψ hψ1 ν hν).1 Φ₀`. Rewrite using `[fj_apply]`. Simplify using `only [f, hBb, s3, GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.hat, ← integral_const_mul, ← integral_mul_const]`. Rewrite using `[integral_integral_swap]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `u`. Use `congr 1`. Use function extensionality and compare the values at `β`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `((GlobalTheory.RootEx.FourierJacobi.sb_int (ν := ν) Φ₀.2).mul_prod (GlobalTheory.RootEx.FourierJacobi.sb_int (ν := ν) s1)).bdd_mul (c := 1) (f := fun z : (n → k) × (n → k) => (ψ (z.2 ⬝ᵥ z.1) : ℂ)) (Continuous.aestronglyMeasurable (by fun_prop)) (Filter.Eventually.of_forall fun z …` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [Function.uncurry]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_fj_of_exUp {ρ : ℕ} (h1 : 1 ≤ ρ) (h2 : ρ < c) {ψ : AddChar k Circle} (hψ : Continuous ψ)
     (hψ1 : ψ ≠ 1) {ν : Measure k} (hν : IsSelfDual ψ ν)
     {σ : Representation ℂ (GL (n ⊕ Fin c) k) A} (hσ : IsSmoothRep σ)
@@ -118,6 +148,25 @@ end GlobalTheory.PosOne
 noncomputable section
 namespace GlobalTheory.PosOne
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n₀ n₁ n₂ _ _ _ _ _ _ c ρ hcρ ψ hψ hψ1 ν hν μ₁ μ₂ hμ₁ hμ₂ m₁ _ G₁ _ m₂ _ G₂ _ A _ _ σ hσ T hT F Φ₁ Φ₂`. Use `hν.1` as an intermediate fact. Establish `h1 : 1 ≤ ρ` using `by omega`. Establish `hρc : ρ ≤ c` using `by omega`. Set `ρ₁ : Representation ℂ (GL (n₁ ⊕ Fin (c + 1)) k) (SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k))` to `(omR μ₂).comp (MonoidHom.inl (GL (n₁ ⊕ Fin (c + 1)) k) (GL (n₂ ⊕ Fin c) k))`.
+
+Establish `hρ₁v : ∀ g (Φ : SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k)), (ρ₁ g Φ).1 = om μ₂ g 1 Φ.1` using `fun _ _ => rfl`. Establish `hρ₁s : IsSrc μ₂ ρ₁` using `hρ₁v`. Establish `hρ₁ : IsSmoothRep ρ₁`. Introduce `Φ`. Use `omR_smooth (a := n₁ ⊕ Fin (c + 1)) (b := n₂ ⊕ Fin c) hμ₂ Φ` as an intermediate fact.
+
+Conclude with `this.preimage (continuous_id.prodMk continuous_const)`. Set `ρ₀ : Representation ℂ (GL (n₀ ⊕ Fin (c + 1 + 1)) k) (SB (Matrix (n₁ ⊕ Fin (c + 1)) (n₀ ⊕ Fin (c + 1 + 1)) k))` to `(omR μ₁).comp (MonoidHom.inl (GL (n₀ ⊕ Fin (c + 1 + 1)) k) (GL (n₁ ⊕ Fin (c + 1)) k))`. Establish `hρ₀s : IsSrc μ₁ ρ₀` using `fun _ _ => rfl`. Take `⟨b, hbpos, hbq, -⟩` from `GlobalTheory.T.exists_bilinear_position_middle_vertex k n₀ n₁ n₂ c ρ hcρ ψ hψ hψ1 ν hν μ₁ μ₂ hμ₁ hμ₂ m₁ G₁ m₂ G₂ A σ hσ T hT F ρ₁ hρ₁s`. Take `⟨B, hBpos, hBb⟩` from `bilPos_exUp_exists (c := c + 1) h1 (by omega) hψ hψ1 ν hρ₁ hbpos`.
+
+Take `⟨fj, hrep, hfj⟩` from `exists_fj_of_exUp (c := c + 1) h1 (by omega) hψ hψ1 hν hρ₁ hbpos.1 hBpos.1 hBb`. Establish `hw : ∀ h Ψ (Φ₀ : SB (n₁ → k)), IsQuotInt ν m₂ G₂ ρ (fun h' => app (T Ψ) (opEFJ ψ ν ρ Φ₀.1 (om μ₂ h h' Φ₂.1)) (σ h' F)) (fj Ψ (ρ₁ h Φ₂) Φ₀)`. Introduce `h Ψ Φ₀`. Take `⟨-, hav⟩` from `GlobalTheory.T.schwartzBruhat_self_average_heisenberg k n₂ n₁ c ρ h1 hρc ψ hψ hψ1 ν hν μ₂ hμ₂ (ρ₁ h Φ₂)`. Take `⟨hmem, hop, hL⟩` from `hav Φ₀`.
+
+Establish `e1` using `hbq Ψ ⟨_, hmem⟩`. Establish `e2 : b Ψ ⟨_, hmem⟩ = fj Ψ (ρ₁ h Φ₂) Φ₀`. Rewrite using `[hfj, ← hL ρ₁ hρ₁s (b Ψ)]`. Conclude with `(GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app_coe (b Ψ) ⟨_, hmem⟩).symm`. Rewrite `e1` using `[e2]`.
+
+Use `e1 using 2 with h'` and compare the differences between its conclusion and the goal. Simplify using `only [tInt, hop]`. Use `congr 3`. Rewrite using `[hρ₁v]`. Use `congrArg Subtype.val (omR_mul μ₂ (1 : GL (n₁ ⊕ Fin (c + 1)) k) h h' 1 Φ₂)` as an intermediate fact.
+
+Simplify using `only [omR_val, one_mul, mul_one] at this`. Conclude with `this.symm`. Establish `hiff` using `GlobalTheory.T.fourierJacobi_target_bilinear_form_integral k n₁ n₀ (c + 1) ρ h1 (by omega) ψ hψ hψ1 ν hν μ₁ hμ₁ m₁ G₁ _ ρ₁ hρ₁ fj B hrep hBpos Φ₂ Φ₁`. Take `⟨Rr, hRr, -⟩` from `GlobalTheory.T.exists_linear_isQuotInt_tInt_alt k n₁ n₀ (c + 1) (ρ + 1) (by omega) (by omega) ψ hψ hψ1 ν μ₁ hμ₁ m₁ G₁ _ ρ₁ hρ₁ B hBpos Φ₂ ρ₀ hρ₀s`. Use `⟨Rr Φ₁, ⟨_, hw, (hiff _).1 (hRr Φ₁)⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `z ⟨w, hw', hz⟩`. Establish `ew : w = fun h Ψ Φ₀ => fj Ψ (ρ₁ h Φ₂) Φ₀`. Use function extensionality and compare the values at `h Ψ Φ₀`. Conclude with `(GlobalTheory.QuotInt.quotInt_unique_exists k n₂ c ρ h1 hρc ν m₂ G₂ _).1 _ _ (hw' h Ψ Φ₀) (hw h Ψ Φ₀)`. Substitute `ew` using the available equality.
+
+Conclude with `(GlobalTheory.QuotInt.quotInt_unique_exists k n₁ (c + 1) (ρ + 1) (by omega) (by omega) ν m₁ G₁ _).1 _ _ ((hiff z).2 hz) (hRr Φ₁)`.
+-/
 theorem symDbl_existsUnique : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n₀ n₁ n₂ : Type) [Fintype n₀] [DecidableEq n₀] [Fintype n₁] [DecidableEq n₁] [Fintype n₂] [DecidableEq n₂] (c ρ : ℕ) (_ : c + 1 = 2 * ρ) (ψ : AddChar k Circle) (_ : Continuous ψ) (_ : ψ ≠ 1) (ν : Measure k) (_ : IsSelfDual ψ ν) (μ₁ μ₂ : kˣ →* ℂˣ) (_ : IsOpen (μ₁.ker : Set kˣ)) (_ : IsOpen (μ₂.ker : Set kˣ)) (m₁ : Measure (GL n₁ k)) [m₁.IsHaarMeasure] (G₁ : Measure (GL (n₁ ⊕ Fin (c + 1)) k)) [G₁.IsHaarMeasure] (m₂ : Measure (GL n₂ k)) [m₂.IsHaarMeasure] (G₂ : Measure (GL (n₂ ⊕ Fin c) k)) [G₂.IsHaarMeasure] (A : Type) [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ (GL (n₂ ⊕ Fin c) k) A) (_ : IsSmoothRep σ) (T : SB (Matrix n₁ n₀ k) →ₗ[ℂ] SB (Matrix n₂ n₁ k) →ₗ[ℂ] A →ₗ[ℂ] ℂ) (_ : TriPos ψ μ₁ μ₂ ρ σ T) (F : A) (Φ₁ : SB (Matrix (n₁ ⊕ Fin (c + 1)) (n₀ ⊕ Fin (c + 1 + 1)) k)) (Φ₂ : SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k)), ∃! z, SymDbl ψ ν m₁ G₁ m₂ G₂ μ₁ μ₂ ρ σ T F Φ₁.1 Φ₂.1 z := by
   intro k _ _ _ _ _ _ n₀ n₁ n₂ _ _ _ _ _ _ c ρ hcρ ψ hψ hψ1 ν hν μ₁ μ₂ hμ₁ hμ₂ m₁ _ G₁ _ m₂ _ G₂ _ A _ _ σ hσ
     T hT F Φ₁ Φ₂

@@ -5,6 +5,17 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.CovScal
 
+/- English proof (translation)
+Set `bA` to `Module.Free.chooseBasis ℤ A`. Set `bB` to `Module.Free.chooseBasis ℤ B`. Set `b₀` to `bA.ofZLatticeBasis ℝ A`. Set `e` to `(bB.ofZLatticeBasis ℝ B).indexEquiv b₀`. Set `bB'` to `bB.reindex e`.
+
+Set `c` to `bB'.ofZLatticeBasis ℝ B`. Set `M : Matrix (Module.Free.ChooseBasisIndex ℤ A) (Module.Free.ChooseBasisIndex ℤ A) ℤ` to `fun i j => bB'.repr ⟨T (bA j), hT _ (bA j).2⟩ i`. Establish `hb₀ : ((↑) : A → E) ∘ bA = b₀` using `funext fun i => (bA.ofZLatticeBasis_apply ℝ A i).symm`. Establish `hc : ((↑) : B → E) ∘ bB' = c` using `funext fun i => (bB'.ofZLatticeBasis_apply ℝ B i).symm`. Establish `hM : c.toMatrix (T ∘ b₀) = M.map (Int.cast : ℤ → ℝ)`.
+
+Use extensionality with `i j`. Rewrite using `[Module.Basis.toMatrix_apply, Matrix.map_apply, Function.comp_apply, show b₀ j = ((bA j : A) : E) from bA.ofZLatticeBasis_apply ℝ A j]`. Conclude with `bB'.ofZLatticeBasis_repr_apply ℝ B ⟨T (bA j), hT _ (bA j).2⟩ i`. Establish `hdet : LinearMap.det T = b₀.det c * (M.det : ℝ)`. Establish `h1 : b₀.det (T ∘ b₀) = LinearMap.det T`.
+
+Rewrite using `[b₀.det_comp T b₀, b₀.det_self, mul_one]`. Rewrite using `[← h1, b₀.det_apply, ← b₀.toMatrix_mul_toMatrix c (T ∘ b₀), Matrix.det_mul, ← b₀.det_apply, hM, Int.cast_det]`. Establish `hcA` using `ZLattice.covolume_eq_det_mul_measureReal A μ bA b₀`. Establish `hcB` using `ZLattice.covolume_eq_det_mul_measureReal B μ bB' b₀`. Rewrite `hcA` using `[hb₀, b₀.det_self, abs_one, one_mul]`.
+
+Rewrite `hcB` using `[hc]`. Use `⟨M.det.natAbs, ?_⟩` and prove the remaining obligations. Rewrite using `[hcA, hcB, hdet, Nat.cast_natAbs, Int.cast_abs, abs_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem abs_det_mul_covolume_eq_nat_mul {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
     [μ.IsAddHaarMeasure] (A B : Submodule ℤ E) [DiscreteTopology A] [IsZLattice ℝ A]
@@ -44,11 +55,17 @@ theorem abs_det_mul_covolume_eq_nat_mul {E : Type} [NormedAddCommGroup E] [Norme
 noncomputable def blockScal {ι : Type} (κ : Type) (d : ι → ℝ) : (ι → κ → ℝ) →ₗ[ℝ] (ι → κ → ℝ) :=
   LinearMap.pi fun v => (d v • (LinearMap.id : (κ → ℝ) →ₗ[ℝ] (κ → ℝ))).comp (LinearMap.proj v)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v i`. Simplify using `[blockScal]`.
+-/
 theorem blockScal_apply {ι κ : Type} (d : ι → ℝ) (y : ι → κ → ℝ) :
     blockScal κ d y = fun v i => d v * y v i := by
   funext v i
   simp [blockScal]
 
+/- English proof (translation)
+Unfold `blockScal`. Rewrite using `[LinearMap.det_pi]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.det_smul, LinearMap.det_id, mul_one, Module.finrank_fintype_fun_eq_card]`.
+-/
 theorem det_blockScal {ι κ : Type} [Fintype ι] [Fintype κ] (d : ι → ℝ) :
     LinearMap.det (blockScal κ d) = ∏ v, d v ^ Fintype.card κ := by
   unfold blockScal
@@ -56,6 +73,17 @@ theorem det_blockScal {ι κ : Type} [Fintype ι] [Fintype κ] (d : ι → ℝ) 
   refine Finset.prod_congr rfl fun v _ => ?_
   rw [LinearMap.det_smul, LinearMap.det_id, mul_one, Module.finrank_fintype_fun_eq_card]
 
+/- English proof (translation)
+Take `⟨a₀, b₀, h2, hab₀⟩` from `h 2 Nat.prime_two`. Establish `ha₀ : a₀ ≠ 0` using `by rintro rfl; simp at h2`. Establish `hb₀ : b₀ ≠ 0` using `by rintro rfl; simp at h2`. Establish `key : a₀ = b₀`. Use `Nat.eq_of_factorization_eq ha₀ hb₀ fun p => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hp : p.Prime`. Take `⟨a, b, hp', hab⟩` from `h p hp`. Establish `ha : a ≠ 0` using `by rintro rfl; simp at hp'`. Establish `hb : b ≠ 0` using `by rintro rfl; simp at hp'`. Establish `hcast : ((a₀ * b : ℕ) : ℝ) = ((a * b₀ : ℕ) : ℝ)`.
+
+Use `push_cast`. Rewrite using `[← hab₀, ← hab]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnat : a₀ * b = a * b₀` using `by exact_mod_cast hcast`. Establish `hpa : a.factorization p = 0` using `Nat.factorization_eq_zero_of_not_dvd fun hd => hp' (dvd_mul_of_dvd_left hd b)`.
+
+Establish `hpb : b.factorization p = 0` using `Nat.factorization_eq_zero_of_not_dvd fun hd => hp' (dvd_mul_of_dvd_right hd a)`. Establish `hf` using `congrArg (fun n => n.factorization p) hnat`. Simplify using `only [Nat.factorization_mul ha₀ hb, Nat.factorization_mul ha hb₀, Finsupp.add_apply, hpa, hpb] at hf`. Use linear arithmetic over natural numbers and integers. Simplify using `[Nat.factorization_eq_zero_of_not_prime _ hp]`.
+
+Rewrite `hab₀` using `[key]`. Establish `hb₀' : (b₀ : ℝ) ≠ 0` using `by exact_mod_cast hb₀`. Establish `hsq : ρ ^ 2 = 1` using `mul_right_cancel₀ hb₀' (by rw [hab₀, one_mul])`. Establish `hfac : (ρ - 1) * (ρ + 1) = 0` using `by linear_combination hsq`. Apply the tactic sequence `rcases mul_eq_zero.mp hfac with h' | h' <;> linarith`.
+-/
 theorem eq_one_of_forall_prime {ρ : ℝ} (hρ : 0 < ρ)
     (h : ∀ p : ℕ, p.Prime → ∃ a b : ℕ, ¬ p ∣ a * b ∧ ρ ^ 2 * b = a) : ρ = 1 := by
   obtain ⟨a₀, b₀, h2, hab₀⟩ := h 2 Nat.prime_two
@@ -88,6 +116,19 @@ theorem eq_one_of_forall_prime {ρ : ℝ} (hρ : 0 < ρ)
   have hfac : (ρ - 1) * (ρ + 1) = 0 := by linear_combination hsq
   rcases mul_eq_zero.mp hfac with h' | h' <;> linarith
 
+/- English proof (translation)
+Introduce `ι κ _ _ A B _ _ _ _ h`. Establish `hA : 0 < ZLattice.covolume A volume` using `ZLattice.covolume_pos A volume`. Establish `hB : 0 < ZLattice.covolume B volume` using `ZLattice.covolume_pos B volume`. Use `set cA := ZLattice.covolume A volume`. Use `set cB := ZLattice.covolume B volume`.
+
+It suffices to establish `key : cA / cB = 1 from (div_eq_one_iff_eq hB.ne').mp key`. Use `eq_one_of_forall_prime (div_pos hA hB) fun p hp => ?_` and prove the remaining obligations. Take `⟨d, N, hpN, hN, hAB, hBA⟩` from `h p hp`. Establish `hT : ∀ y ∈ A, blockScal κ d y ∈ B` using `fun y hy => by rw [blockScal_apply]; exact hAB y hy`. Establish `hT' : ∀ y ∈ B, blockScal κ d y ∈ A` using `fun y hy => by rw [blockScal_apply]; exact hBA y hy`.
+
+Take `⟨n, hn⟩` from `abs_det_mul_covolume_eq_nat_mul volume A B (blockScal κ d) hT`. Take `⟨m, hm⟩` from `abs_det_mul_covolume_eq_nat_mul volume B A (blockScal κ d) hT'`. Use `set D := |LinearMap.det (blockScal κ d)|`. Establish `hD2 : D ^ 2 = (N : ℝ) ^ Fintype.card κ`. Rewrite using `[sq_abs, det_blockScal, ← hN, Finset.prod_pow, Finset.prod_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hnm : ((n * m : ℕ) : ℝ) = ((N ^ Fintype.card κ : ℕ) : ℝ)`. Use `push_cast`. Establish `h0 : ((n : ℝ) * m - D ^ 2) * (cA * cB) = 0`. Take the linear combination `(-(D * cB)) * hn - (n * cB) * hm`.
+
+Break down `mul_eq_zero.mp h0 with h0 | h0` into its components or cases. Rewrite using `[← hD2]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd h0 (mul_pos hA hB).ne'`. Establish `hnat : n * m = N ^ Fintype.card κ` using `by exact_mod_cast hnm`.
+
+Use `⟨n, m, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hnat]`. Conclude with `fun hd => hpN (hp.dvd_of_dvd_pow hd)`. Rewrite using `[div_pow, div_mul_eq_mul_div, div_eq_iff (pow_ne_zero 2 hB.ne')]`. Take the linear combination `(-cA) * hm + cB * hn`.
+-/
 theorem covolume_eq_of_scalars : ∀ (ι κ : Type) [Fintype ι] [Fintype κ] (A B : Submodule ℤ (ι → κ → ℝ)) [DiscreteTopology A] [IsZLattice ℝ A] [DiscreteTopology B] [IsZLattice ℝ B], (∀ p : ℕ, p.Prime → ∃ (d : ι → ℝ) (N : ℕ), ¬ p ∣ N ∧ ∏ v, d v ^ 2 = N ∧ (∀ y ∈ A, (fun v i => d v * y v i) ∈ B) ∧ ∀ y ∈ B, (fun v i => d v * y v i) ∈ A) → ZLattice.covolume A volume = ZLattice.covolume B volume := by
   intro ι κ _ _ A B _ _ _ _ h
   have hA : 0 < ZLattice.covolume A volume := ZLattice.covolume_pos A volume

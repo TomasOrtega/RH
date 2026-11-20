@@ -19,6 +19,11 @@ section
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨s, h1, h2⟩` from `hg`. Take `⟨φ⟩` from `e`. Establish `h3 : HasSupport π.ρ s` using `h1.of_equiv (equivRep π).symm`. Use `⟨s.map Zc.dualCl, ((hasSupport_contra h3).of_equiv φ.symm).of_equiv (equivRep π'), fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.1 hy`.
+
+Conclude with `goodCusp_dualCl (h2 z hz)`.
+-/
 theorem good_contra {n : ℕ} (π π' : IrrRep (GL (Fin n) k)) (e : Nonempty (π'.ρ.Equiv (contra π.ρ))) (hg : Good (cls π)) :
     Good (cls π') := by
   obtain ⟨s, h1, h2⟩ := hg
@@ -30,6 +35,9 @@ theorem good_contra {n : ℕ} (π π' : IrrRep (GL (Fin n) k)) (e : Nonempty (π
 
 end
 
+/- English proof (translation)
+Rewrite using `[Old.twist H x χ hχ hg, H.one, lpChar_lpOfChar]`.
+-/
 theorem tw_eqG {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
     {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {ε : EpsFamily A} {rc : IrrGL (w.adicCompletion E) → WD h}
@@ -37,6 +45,11 @@ theorem tw_eqG {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     rc (x.tw χ hχ) = (rc x).lpTwist (χ.comp a) (ha.smooth hχ) := by
   rw [Old.twist H x χ hχ hg, H.one, lpChar_lpOfChar]
 
+/- English proof (translation)
+Establish `h3` using `P.au (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 (P.H.av.rep i Q) sp σ hσ`. Establish `h3'` using `P.au (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 (P.H.av.rep i Q') sp σ' hσ'`. Rewrite `h3` using `[← P.H.emb i Q, ← D.nbc.embAV_loc i Q sp.w]`. Rewrite `h3'` using `[← P.H.emb i Q', ← D.nbc.embAV_loc i Q' sp.w]`. Rewrite `h3` using `[he]`.
+
+Take `⟨a, ha, ε, -, hlaws⟩` from `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 sp.w)`. Conclude with `Old.inj hlaws _ _ hg (h3.symm.trans h3')`.
+-/
 theorem cls_eq_of_locV_eqG (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (i : D.nd.Loc) (Q Q' : D.naut.AV i)
     (sp : SplitPlace D.host.E) (σ σ' : GlobalTheory.SmGL.IrrRep (GL (Fin D.R.nV) (sp.w.adicCompletion D.host.E)))
     (hσ : IsLocS (P.H.av.S i Q) sp σ) (hσ' : IsLocS (P.H.av.S i Q') sp σ')
@@ -50,6 +63,11 @@ theorem cls_eq_of_locV_eqG (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D
   obtain ⟨a, ha, ε, -, hlaws⟩ := GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 sp.w)
   exact Old.inj hlaws _ _ hg (h3.symm.trans h3')
 
+/- English proof (translation)
+Introduce `hP hL D w w' c hc hA κ hκ hκE n σ σ' e he hg`. Set `π₁ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (w.adicCompletion D.host.E))` to `⟨σ.V, σ.ρ.comp (GlobalTheory.TypeTame.invTranspose n), fun v => (σ.smooth v).preimage (GlobalTheory.TypeTame.continuous_invTranspose n), GlobalTheory.GelfandKazhdan.isIrreducible_comp _ (fun g => ⟨_, GlobalTheory.TypeTame.invTranspose_invTranspose n g⟩) σ.irr⟩`. Establish `ha : GlobalTheory.PRep.IsAdmissible σ.ρ` using `(hP.bz _).1 (Fin n) σ.V σ.ρ σ.smooth σ.irr`. Establish `hE` using `GlobalTheory.GelfandKazhdan.equiv_contra _ n σ.V σ.ρ ha σ.irr`. Establish `hr` using `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 w)`.
+
+Take `⟨b, b', h1, h2, h3, h4⟩` from `Old.field hL hr (GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 w')) c (D.host.conj : D.host.E →+* D.host.E) κ (fun z => (hA z).symm) hc hκ hκE n π₁ σ' e he (good_contra σ π₁ hE hg)`. Take `⟨_, _, _, -, H⟩` from `hr`. Conclude with `⟨b, b', h1.trans (Old.dual H n σ π₁ hg hE), h2, h3, h4⟩`.
+-/
 theorem conjDualParamG : GlobalTheory.NRows.Hypotheses₂ → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (w w' : PlE D.host) (c : D.nd.Om ≃+* D.nd.Om),
     (∀ x : D.host.E, c (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (D.host.conj x)) →
     (∀ y, y ∈ D.nd.plOm.1 w ↔ c y ∈ D.nd.plOm.1 w') →

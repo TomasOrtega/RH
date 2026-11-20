@@ -22,14 +22,23 @@ section Cols
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter)
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (cs : ColSys X u what₂)
 
+/- English proof (translation)
+Use extensionality with `ρ`. Simplify using `[sharp, LinearMap.comp_add, map_add]`.
+-/
 theorem sharp_add (T T' : Cu X u hK) : sharp hK cs (T + T') = sharp hK cs T + sharp hK cs T' := by
   ext ρ
   simp [sharp, LinearMap.comp_add, map_add]
 
+/- English proof (translation)
+Use extensionality with `ρ`. Simplify using `[sharp, LinearMap.comp_smul, map_smul, map_smulₛₗ]`.
+-/
 theorem sharp_smul (c : ℂ) (T : Cu X u hK) : sharp hK cs (c • T) = (starRingEnd ℂ c) • sharp hK cs T := by
   ext ρ
   simp [sharp, LinearMap.comp_smul, map_smul, map_smulₛₗ]
 
+/- English proof (translation)
+Simplify using `using sharp_add X u hK cs 0 0`.
+-/
 theorem sharp_zero : sharp hK cs 0 = 0 := by
   simpa using sharp_add X u hK cs 0 0
 
@@ -44,14 +53,26 @@ instance : Module ℂ (ColT hinj) := inferInstanceAs (Module ℂ (Cu X u hK))
 
 def shT : ColT hinj → CM cs := fun T => sharp hK cs T
 
+/- English proof (translation)
+The claim follows from `sharp_add X u hK cs T T'`.
+-/
 theorem shT_add (T T' : ColT hinj) : shT hinj (T + T') = shT hinj T + shT hinj T' :=
   sharp_add X u hK cs T T'
 
+/- English proof (translation)
+The claim follows from `sharp_smul X u hK cs c T`.
+-/
 theorem shT_smul (c : ℂ) (T : ColT hinj) : shT hinj (c • T) = (starRingEnd ℂ c) • shT hinj T :=
   sharp_smul X u hK cs c T
 
+/- English proof (translation)
+The claim follows from `hinj`.
+-/
 theorem shT_injective : Function.Injective (shT hinj) := hinj
 
+/- English proof (translation)
+The claim follows from `sharp_zero X u hK cs @[instance_reducible]`.
+-/
 theorem shT_zero : shT hinj 0 = 0 := sharp_zero X u hK cs
 
 @[instance_reducible]
@@ -72,6 +93,9 @@ def colCore : InnerProductSpace.Core ℂ (ColT hinj) where
 instance : NormedAddCommGroup (ColT hinj) := (colCore hinj).toNormedAddCommGroup
 instance : InnerProductSpace ℂ (ColT hinj) := InnerProductSpace.ofCore (colCore hinj).toCore
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inner_colT (T T' : ColT hinj) : inner ℂ T T' = inner ℂ (shT hinj T') (shT hinj T) := rfl
 
 end Cols
@@ -84,16 +108,28 @@ variable {D : D7} {X : HidaSetting D} {u : D.what₂.Word} {hK : X.LevelSubgroup
 
 def shInv : CM cs → ColT hinj := (Equiv.ofBijective _ hb).symm
 
+/- English proof (translation)
+The claim follows from `(Equiv.ofBijective _ hb).apply_symm_apply x`.
+-/
 theorem shT_shInv (x : CM cs) : shT hinj (shInv hb x) = x :=
   (Equiv.ofBijective _ hb).apply_symm_apply x
 
+/- English proof (translation)
+The claim follows from `(Equiv.ofBijective _ hb).symm_apply_apply T`.
+-/
 theorem shInv_shT (T : ColT hinj) : shInv hb (shT hinj T) = T :=
   (Equiv.ofBijective _ hb).symm_apply_apply T
 
+/- English proof (translation)
+Apply `hb.1` to reduce the goal to its premises. Rewrite using `[shT_shInv, shT_add, shT_shInv, shT_shInv]`.
+-/
 theorem shInv_add (x y : CM cs) : shInv hb (x + y) = shInv hb x + shInv hb y := by
   apply hb.1
   rw [shT_shInv, shT_add, shT_shInv, shT_shInv]
 
+/- English proof (translation)
+Apply `hb.1` to reduce the goal to its premises. Rewrite using `[shT_shInv, shT_smul, shT_shInv, starRingEnd_self_apply]`.
+-/
 theorem shInv_smul (c : ℂ) (x : CM cs) : shInv hb (c • x) = (starRingEnd ℂ c) • shInv hb x := by
   apply hb.1
   rw [shT_shInv, shT_smul, shT_shInv, starRingEnd_self_apply]
@@ -102,6 +138,13 @@ def shInvAdd : CM cs →+ ColT hinj := AddMonoidHom.mk' (shInv hb) (shInv_add hb
 
 include hb in
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ (CM cs)`. Use `⟨⟨Finset.univ.image fun i => shInv hb (b i), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `T _`. Rewrite using `[← shInv_shT hb T, ← b.sum_repr (shT hinj T)]`.
+
+Use `show shInvAdd hb _ ∈ _`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `show shInv hb _ ∈ _`. Rewrite using `[shInv_smul]`.
+
+Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 (Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩)`.
+-/
 theorem finiteDimensional_colT : FiniteDimensional ℂ (ColT hinj) := by
   classical
   let b := Module.finBasis ℂ (CM cs)
@@ -140,10 +183,16 @@ def tr (A : CM cs' →L[ℂ] CM cs) : ColT hinj' →L[ℂ] ColT hinj :=
   LinearMap.toContinuousLinearMap (trL hb A)
 
 include hb' in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tr_apply (A : CM cs' →L[ℂ] CM cs) (T' : ColT hinj') :
     tr hb hb' A T' = shInv hb (A (shT hinj' T')) := rfl
 
 include hb' in
+/- English proof (translation)
+Rewrite using `[tr_apply, shT_shInv]`.
+-/
 theorem shT_tr (A : CM cs' →L[ℂ] CM cs) (T' : ColT hinj') :
     shT hinj (tr hb hb' A T') = A (shT hinj' T') := by
   rw [tr_apply, shT_shInv]
@@ -185,6 +234,9 @@ structure FinX (Y : Full X) : Prop where
 
 variable {Y : Full X}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hF.shInj u, hF.shSurj u⟩`.
+-/
 theorem FinX.shBij (hF : FinX Y) (u : D.what₂.Word) : Function.Bijective (shT (hF.shInj u)) :=
   ⟨hF.shInj u, hF.shSurj u⟩
 
@@ -328,6 +380,9 @@ open Formalism.L2.SG.Full
 
 variable {D : D7} {X : HidaSetting D} {Y : Full X} (hF : FinX Y)
 
+/- English proof (translation)
+Conclude with `(hI.eCu u).toLinearEquiv.finrank_eq.symm.trans (D.s_Cu u).finrank_eq`.
+-/
 theorem finrank_cols (hI : SIso D.s (sOf hF)) (u : D.what₂.Word) :
     Module.finrank ℂ (ColT (hF.shInj u)) = D.duS u := by
   exact (hI.eCu u).toLinearEquiv.finrank_eq.symm.trans (D.s_Cu u).finrank_eq
@@ -374,6 +429,13 @@ def ParametersTermRelations (D : D7) (L : SizeData₂ D) : Prop :=
       ‖(Y.tO u u').K0‖ ^ 2 ≤ (1 + (L.sc.b ^ 6)⁻¹) * (du * du' / (G.size de T du).Dstar)) →
     L.hsSq u u' ≤ (1 + L.sc.b ^ (-(6 : ℝ))) * (D.duS u : ℝ) * (D.duS u' : ℝ) / D.what₂.Dstar
 
+/- English proof (translation)
+Introduce `hb hIso X Y hF hI u u' _ hDu hDu' hKE hAC hId hdeg hNT hSz`. Take `⟨hI⟩` from `hI`. Take `⟨ι, _, G, de, T, du, du', ⟨_, hdu, hdu', hDs⟩, hK0⟩` from `hSz`. Establish `h1 : L.hsSq u u' = ‖(Y.tO u u').K0‖ ^ 2`. Rewrite using `[hNT hDu hDu' hKE hAC hId hdeg]`.
+
+Conclude with `hIso D.s (sOf hF) hI u u'`. Rewrite using `[h1]`. Rewrite `hK0` using `[hDs, hdu, hdu']`. Establish `hbpow : L.sc.b ^ (-(6 : ℝ)) = (L.sc.b ^ 6)⁻¹`. Rewrite using `[Real.rpow_neg hb, show (6 : ℝ) = ((6 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`.
+
+Rewrite using `[hbpow]`. Conclude with `hK0.trans_eq (by ring)`.
+-/
 theorem packageTieConc (D : D7) (L : SizeData₂ D) : ParametersTermRelations D L := by
   intro hb hIso X Y hF hI u u' _ hDu hDu' hKE hAC hId hdeg hNT hSz
   obtain ⟨hI⟩ := hI

@@ -4,6 +4,9 @@ namespace PositivityTheory.ThKG
 
 open GlobalTheory.ThK GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨agree_of_parts hd L.kConst hc L.kBeta L.kAlpha, matching_of_parts L.kReal L.kFin⟩`.
+-/
 theorem agree_of_leaves (L : Leaves) (hd : KDecay) (hc : KCoinv) : ThetaIntegralsAgree ∧ LocalMatching :=
   ⟨agree_of_parts hd L.kConst hc L.kBeta L.kAlpha, matching_of_parts L.kReal L.kFin⟩
 

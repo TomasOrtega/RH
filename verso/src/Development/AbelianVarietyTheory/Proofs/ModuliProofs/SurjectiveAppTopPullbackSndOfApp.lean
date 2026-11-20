@@ -14,6 +14,9 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `y`. Take `⟨z, rfl⟩` from `(ConcreteCategory.bijective_of_isIso b).2 y`. Take `⟨w, rfl⟩` from `ha z`. Conclude with `⟨w, rfl⟩`.
+-/
 private theorem surjective_comp_isIso_of_surjective {A B C : CommRingCat} (a : A ⟶ B) (b : B ⟶ C) [IsIso b]
     (ha : Function.Surjective a.hom) : Function.Surjective (a ≫ b).hom := by
   intro y
@@ -21,6 +24,9 @@ private theorem surjective_comp_isIso_of_surjective {A B C : CommRingCat} (a : A
   obtain ⟨w, rfl⟩ := ha z
   exact ⟨w, rfl⟩
 
+/- English proof (translation)
+Establish `hr : Function.Surjective (f ∣_ V).appTop.hom`. Rewrite using `[morphismRestrict_appTop]`. Conclude with `@surjective_comp_isIso_of_surjective _ _ _ _ _ (Functor.map_isIso _ _) (h _)`. Rewrite using `[← pullbackRestrictIsoRestrict_hom_morphismRestrict f V, Scheme.Hom.comp_appTop]`. Conclude with `@surjective_comp_isIso_of_surjective _ _ _ _ _ (inferInstanceAs (IsIso ((pullbackRestrictIsoRestrict f V).hom.app ⊤))) hr`.
+-/
 theorem surjective_appTop_pullback_snd_of_app {X S : Scheme.{0}} (f : X ⟶ S) (V : S.Opens)
     (h : ∀ U : S.Opens, Function.Surjective (f.app U).hom) :
     Function.Surjective (pullback.snd f V.ι).appTop.hom := by
@@ -31,6 +37,19 @@ theorem surjective_appTop_pullback_snd_of_app {X S : Scheme.{0}} (f : X ⟶ S) (
   exact @surjective_comp_isIso_of_surjective _ _ _ _ _
     (inferInstanceAs (IsIso ((pullbackRestrictIsoRestrict f V).hom.app ⊤))) hr
 
+/- English proof (translation)
+Introduce `X S f σ N hN hσ hf hl hg`. Take `⟨c, hc⟩` from `hg`. Establish `hp : ∀ V : S.Opens, Function.Surjective (pullback.snd f V.ι).appTop.hom` using `fun V => surjective_appTop_pullback_snd_of_app f V hf`. Establish `e : σ ≫ f ≫ σ = σ` using `by rw [← Category.assoc, hσ, Category.id_comp]`. Establish `h0 : ∀ (U : Type) [CommGroup U] (h : (S ⟶ X) → U), ∏ k, h (σ ≫ (![𝟙 X, f ≫ σ] : Fin 2 → (X ⟶ X)) k) ^ (![1, -1] : Fin 2 → ℤ) k = 1`.
+
+Introduce `U _ h`. Simplify using `[Fin.prod_univ_two, e]`. Establish `hloc : ∀ s : S, ∃ U : S.Opens, s ∈ U ∧ ∃ t : LB.Gen (LB.LinComb N (fun k => (f ⁻¹ᵁ U).ι ≫ (![𝟙 X, f ≫ σ] : Fin 2 → (X ⟶ X)) k) (![1, -1] : Fin 2 → ℤ)), t.IsGen`. Introduce `s`. Take `⟨U, hsU, t, ht⟩` from `hl s`.
+
+Use `⟨U, hsU, ?_⟩` and prove the remaining obligations. Set `c₁` to `LB.pullGen N (fun _ : PUnit => σ) (fun _ => 1) c ((f ⁻¹ᵁ U).ι ≫ f)`. Establish `hc₁ : c₁.IsGen` using `ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen N _ _ c hc _`. Set `c₂` to `LB.invGen N _ _ c₁`. Establish `hc₂ : c₂.IsGen` using `ReciprocityTheory.ChartRestriction.G.DVR.invGen_isGen N _ _ c₁ hc₁`.
+
+Set `m` to `LB.mulGen N (fun _ : PUnit => (f ⁻¹ᵁ U).ι) (fun _ => 1) _ _ t c₂`. Establish `hm : m.IsGen` using `ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen N _ _ _ _ t c₂ ht hc₂`. Take `⟨g, hg, -⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_gen hN (φ' := fun k => (f ⁻¹ᵁ U).ι ≫ (![𝟙 X, f ≫ σ] : Fin 2 → (X ⟶ X)) k) (ε' := (![1, -1] : Fin 2 → ℤ)) (by intro V _ h; simp [Fintype.prod_sum_type, Fin.prod_univ_two]) m hm`. Conclude with `⟨g, hg⟩`. Take `⟨u, hu⟩` from `exists_gen_of_local_on_base hN (K := Fin 2) ![𝟙 X, f ≫ σ] ![1, -1] f σ hσ hp h0 hloc`.
+
+Set `c₃` to `LB.pullGen N (fun _ : PUnit => σ) (fun _ => 1) c f`. Establish `hc₃ : c₃.IsGen` using `ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen N _ _ c hc f`. Set `m₂` to `LB.mulGen N _ _ _ _ u c₃`. Establish `hm₂ : m₂.IsGen` using `ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen N _ _ _ _ u c₃ hu hc₃`. Take `⟨g, hg, -⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_gen hN (φ' := fun _ : PUnit => 𝟙 X) (ε' := fun _ => 1) (by intro V _ h; simp [Fintype.prod_sum_type, Fin.prod_univ_two]) m₂ hm₂`.
+
+Conclude with `BoxTheta.exists_gen_of_section N (𝟙 X) (𝟙 X) (Category.id_comp _) g hg`.
+-/
 theorem exists_gen_of_local_of_section : ∀ (X S : Scheme.{0}) (f : X ⟶ S) (σ : S ⟶ X) (N : LB X), N.IsLB →
     σ ≫ f = 𝟙 S → (∀ U : S.Opens, Function.Surjective (f.app U).hom) →
     (∀ s : S, ∃ U : S.Opens, s ∈ U ∧ ∃ t : (N.pull (f ⁻¹ᵁ U).ι).Gen, t.IsGen) →

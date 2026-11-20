@@ -13,6 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D D' _ _ _ _ a h`. Establish `hx : FlatDescent.amitsurDiff (A` using `D) D' D (a ⊗ₜ[D] (1 : D)) = 0 := by`. Apply `(LinearEquiv.lTensor D' (TensorProduct.rid D D')).injective` to reduce the goal to its premises. Simplify using `[FlatDescent.amitsurDiff_tmul, h]`. Take `⟨m, hm⟩` from `((FlatDescent.amitsur_exact (A := D) (B := D') (M := D)).2 _).1 hx`.
+
+Use `⟨m, ?_⟩` and prove the remaining obligations. Use `congrArg (TensorProduct.rid D D') hm` as an intermediate fact. Simplify `this` using `[Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem ff_descent_elem : ∀ (D D' : Type) [CommRing D] [CommRing D'] [Algebra D D']
     [Module.FaithfullyFlat D D'] (a : D'), a ⊗ₜ[D] (1 : D') = (1 : D') ⊗ₜ[D] a →
       ∃ e : D, algebraMap D D' e = a := by

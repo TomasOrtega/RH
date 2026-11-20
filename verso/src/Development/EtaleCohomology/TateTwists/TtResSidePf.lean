@@ -10,6 +10,11 @@ def tensor_universal_property : Prop :=
 def tensor_quasi_isomorphism : Prop :=
   ∀ (R : Type) [CommRing R] {I I' J T T' : Cx R} [I.IsStrictlyGE 0] [I'.IsStrictlyGE 0] [J.IsStrictlyGE 0] (τ : Pair I J T) (τ' : Pair I' J T'), τ.IsTensor → τ'.IsTensor → (∀ t, FlatS (J.X t)) → ∀ (f : I ⟶ I') [QuasiIso f] (u : T ⟶ T'), τ.Compat τ' f (𝟙 J) u → QuasiIso u
 
+/- English proof (translation)
+Introduce `q _ i I J M T e hI hJ hflat σ τ hσ hτ`. Take `⟨hIge, ε, hε, hgen⟩` from `hI`. Take `⟨u, hu, -⟩` from `(huniv (ZMod q) σ hσ).1 τ ε (𝟙 J)`. Use `hIge` as an intermediate fact. Use `hJ` as an intermediate fact.
+
+Use `⟨u, hqis (ZMod q) σ τ hσ hτ hflat ε u hu, fun U ζ b => ?_⟩` and prove the remaining obligations. Rewrite using `[hu U 0 0 0 (add_zero 0), hgen U ζ]`. Simplify using `only [HomologicalComplex.id_f]`. Both sides reduce to the same expression.
+-/
 theorem tt_res_side_of (huniv : tensor_universal_property) (hqis : tensor_quasi_isomorphism) : tt_res_side := by
   intro q _ i I J M T e hI hJ hflat σ τ hσ hτ
   obtain ⟨hIge, ε, hε, hgen⟩ := hI

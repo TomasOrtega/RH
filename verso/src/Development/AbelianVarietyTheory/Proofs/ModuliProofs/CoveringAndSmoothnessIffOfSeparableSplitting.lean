@@ -23,6 +23,9 @@ def SplitOver {S : Scheme.{0}} (G : Over S) [GrpObj G] (x : S) (k : Type) [Field
   ∃ T : SplitExt (Sp k), T.IsGt ((Over.pullback
     (Spec.map (CommRingCat.ofHom (algebraMap (S.residueField x) k)) ≫ S.fromSpecResidueField x)).obj G)
 
+/- English proof (translation)
+Take `⟨T⟩` from `h`. Take `⟨i, hi, -⟩` from `grpPullback_iso ((isGrpPullback_pullback ((Over.pullback (show Sp (S.residueField x) ⟶ S from S.fromSpecResidueField x)).obj G) (spMap (algebraMap (S.residueField x) k))).comp (isGrpPullback_pullback G _)) (isGrpPullback_pullback G _)`. Use `hG.comm` as an intermediate fact. Conclude with `exists_splitExt_isGt_of_torusExtension _ _ ⟨torusExtOfIso i T⟩`.
+-/
 theorem splitOver_of_torusExtension {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : IsSemiAbelian G) (x : S) (k : Type)
     [Field k] [Algebra (S.residueField x) k]
     (h : Nonempty (TorusExtension ((Over.pullback (spMap (algebraMap (S.residueField x) k))).obj
@@ -36,6 +39,9 @@ theorem splitOver_of_torusExtension {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG
   have := hG.comm
   exact exists_splitExt_isGt_of_torusExtension _ _ ⟨torusExtOfIso i T⟩
 
+/- English proof (translation)
+Establish `h₀` using `IsSemiAbelian.pullback (show Sp (S.residueField x) ⟶ S from S.fromSpecResidueField x) G hG`. Use `h₀.smooth` as an intermediate fact. Take `⟨k, hk, T⟩` from `exists_finite_torusExtension (S.residueField x) (AlgebraicClosure (S.residueField x)) _ inferInstance h₀.quasiCompact h₀.separated (h₀.fibres _ _)`. Conclude with `⟨k, inferInstance, inferInstance, hk, splitOver_of_torusExtension G hG x k T⟩`.
+-/
 theorem exists_finite_splitOver {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : IsSemiAbelian G) (x : S) :
     ∃ (k : Type) (_ : Field k) (_ : Algebra (S.residueField x) k),
       FiniteDimensional (S.residueField x) k ∧ SplitOver G x k := by
@@ -58,11 +64,17 @@ section One
 
 variable {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨a, b, c, d, e, f, g⟩ => ⟨⟨a, b, c, d, f, g⟩, e⟩, fun ⟨⟨a, b, c, d, f, g⟩, e⟩ => ⟨a, b, c, d, e, f, g⟩⟩`.
+-/
 theorem isChartAt_iff (Y : Model Xo c β) (x : Y.X) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     (ξ : Sp R ⟶ Y.X) :
     CoveringAbelianLocusSmooth.IsChartAt Y x R ξ ↔ UniformizationBase.IsUnifBase Y R ξ ∧ ξ (IsLocalRing.closedPoint R) = x :=
   ⟨fun ⟨a, b, c, d, e, f, g⟩ => ⟨⟨a, b, c, d, f, g⟩, e⟩, fun ⟨⟨a, b, c, d, f, g⟩, e⟩ => ⟨a, b, c, d, e, f, g⟩⟩
 
+/- English proof (translation)
+Use `forall_congr' fun x => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨n, R, _, _, _, ξ, h₁, h₂⟩`. Conclude with `⟨n, R, _, _, _, ξ, fun i => (isChartAt_iff Y x _ _).2 (h₁ i), fun V C _ _ _ _ _ _ _ _ => h₂ C V⟩`. Introduce and unpack `⟨n, R, _, _, _, ξ, h₁, h₂⟩`. Conclude with `⟨n, R, _, _, _, ξ, fun i => (isChartAt_iff Y x _ _).1 (h₁ i), fun C V _ _ _ _ _ _ _ _ => h₂ V C⟩`.
+-/
 theorem covered_iff (Y : Model Xo c β) (p : ℕ) : (∀ x, UniformizationBase.CovAt Y p x) ↔ CoveringAbelianLocusSmooth.CoveredByCharts Y p := by
   refine forall_congr' fun x => ⟨?_, ?_⟩
   · rintro ⟨n, R, _, _, _, ξ, h₁, h₂⟩
@@ -72,8 +84,14 @@ theorem covered_iff (Y : Model Xo c β) (p : ℕ) : (∀ x, UniformizationBase.C
     exact ⟨n, R, _, _, _, ξ, fun i => (isChartAt_iff Y x _ _).1 (h₁ i),
       fun C V _ _ _ _ _ _ _ _ => h₂ V C⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem abLocusSmooth_iff (Y : Model Xo c β) : UniformizationBase.AbLocusSmooth Y ↔ CoveringAbelianLocusSmooth.AbLocusSmooth Y := Iff.rfl
 
+/- English proof (translation)
+Use `⟨fun h x _ => h x, fun h x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : PerfectField (Y.X.residueField x)`. Take `⟨k, _, _, hk, hs⟩` from `exists_finite_splitOver Y.t.G Y.t.semi x`. Conclude with `⟨k, inferInstance, inferInstance, hk, inferInstance, hs⟩`. Conclude with `h x hx`.
+-/
 theorem splitFibres_iff_imperfect (Y : Model Xo c β) :
     Y.SplitFibres ↔ ∀ x : Y.X, ¬ PerfectField (Y.X.residueField x) →
       ∃ (k : Type) (_ : Field k) (_ : Algebra (Y.X.residueField x) k),
@@ -85,6 +103,9 @@ theorem splitFibres_iff_imperfect (Y : Model Xo c β) :
     exact ⟨k, inferInstance, inferInstance, hk, inferInstance, hs⟩
   · exact h x hx
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨k, _, _, hk, hs, T⟩ := h (Y.X.residueField x) _ (IsSemiAbelian.pullback (show Sp (Y.X.residueField x) ⟶ Y.X from Y.X.fromSpecResidueField x) Y.t.G Y.t.semi) exact ⟨k, inferInstance, inferInstance, hk, hs, splitOver_of_torusExtension Y.t.G Y.t.semi x k T⟩`.
+-/
 theorem splitFibres_of_separableSplitting (h : SeparableSplitting) (Y : Model Xo c β) : Y.SplitFibres := fun x => by
   obtain ⟨k, _, _, hk, hs, T⟩ := h (Y.X.residueField x) _
     (IsSemiAbelian.pullback (show Sp (Y.X.residueField x) ⟶ Y.X from Y.X.fromSpecResidueField x) Y.t.G Y.t.semi)
@@ -92,8 +113,14 @@ theorem splitFibres_of_separableSplitting (h : SeparableSplitting) (Y : Model Xo
 
 end One
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem goodPrime_iff (l : Level H) (p : ℕ) : UniformizationBase.GoodPrime l p ↔ CoveringAbelianLocusSmooth.GoodPrime l p := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem smoothnessLemma_iff : UniformizationBase.SmoothnessLemma ↔ CoveringAbelianLocusSmooth.SmoothnessLemma := Iff.rfl
 
 def CoveringForSplitFibres : Prop :=
@@ -101,18 +128,30 @@ def CoveringForSplitFibres : Prop :=
     (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →
     ∀ Y : LocalSystem Xo p W, N2 Y → ∀ i : Idx H p, (Y i).SplitFibres → ∀ x : (Y i).X, UniformizationBase.CovAt (Y i) p x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h E _ _ _ H D Xo p W hp hW Y hY i hs => (covered_iff _ p).2 (h E H D Xo p W hp hW Y hY i hs), fun h E _ _ _ H D Xo p W hp hW Y hY i hs => (covered_iff _ p).1 (h E H D Xo p W hp hW Y hY i hs)⟩`.
+-/
 theorem coveringLemma_iff_restricted : CoveringAbelianLocusSmooth.CoveringLemma ↔ CoveringForSplitFibres :=
   ⟨fun h E _ _ _ H D Xo p W hp hW Y hY i hs => (covered_iff _ p).2 (h E H D Xo p W hp hW Y hY i hs),
     fun h E _ _ _ H D Xo p W hp hW Y hY i hs => (covered_iff _ p).1 (h E H D Xo p W hp hW Y hY i hs)⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H D Xo p W hp hW Y hY i _` and use `(covered_iff _ p).1 (h E H D Xo p W hp hW Y hY i)`.
+-/
 theorem coveringLemma_imp (h : UniformizationBase.CoveringLemma) : CoveringAbelianLocusSmooth.CoveringLemma :=
   fun E _ _ _ H D Xo p W hp hW Y hY i _ => (covered_iff _ p).1 (h E H D Xo p W hp hW Y hY i)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨coveringLemma_imp, fun hB E _ _ _ H D Xo p W hp hW Y hY i => (covered_iff _ p).2 (hB E H D Xo p W hp hW Y hY i (splitFibres_of_separableSplitting h _))⟩`.
+-/
 theorem coveringLemma_iff_of_separableSplitting (h : SeparableSplitting) :
     UniformizationBase.CoveringLemma ↔ CoveringAbelianLocusSmooth.CoveringLemma :=
   ⟨coveringLemma_imp, fun hB E _ _ _ H D Xo p W hp hW Y hY i =>
     (covered_iff _ p).2 (hB E H D Xo p W hp hW Y hY i (splitFibres_of_separableSplitting h _))⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ l _ _ _ _ _ Y p => ⟨fun x R _ _ _ ξ => isChartAt_iff Y x R ξ, covered_iff Y p, abLocusSmooth_iff Y, goodPrime_iff l p, splitFibres_iff_imperfect Y⟩, smoothnessLemma_iff, and_congr coveringLemma_iff_restricted smoothnessLemma_iff.symm, fun h => ⟨coveringLemma_imp …`.
+-/
 theorem typings_compare :
     (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
       (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (p : ℕ),
@@ -133,6 +172,9 @@ theorem typings_compare :
     smoothnessLemma_iff, and_congr coveringLemma_iff_restricted smoothnessLemma_iff.symm,
     fun h => ⟨coveringLemma_imp h.1, smoothnessLemma_iff.1 h.2⟩⟩
 
+/- English proof (translation)
+The claim follows from `and_congr (coveringLemma_iff_of_separableSplitting h) smoothnessLemma_iff`.
+-/
 theorem coveringAndSmoothness_iff_of_separableSplitting (h : SeparableSplitting) :
     UniformizationBase.CoveringAndSmoothness ↔ CoveringAbelianLocusSmooth.CoveringAndSmoothness :=
   and_congr (coveringLemma_iff_of_separableSplitting h) smoothnessLemma_iff

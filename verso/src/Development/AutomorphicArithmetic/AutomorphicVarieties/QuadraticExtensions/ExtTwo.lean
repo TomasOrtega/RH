@@ -3,6 +3,39 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.QuadraticExtension
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Two
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `Γ _ _ _ U V S h σ hσ h2 hopen hidx hσU hS φ hφ hinv hσσ`. Take `⟨hlc, hadd, hoff⟩` from `hφ`. Establish `key : ∀ a b : Γ, a ∈ V → b ∈ V → (a * b ∈ U ↔ (a ∈ U ↔ b ∈ U))`. Introduce `a b ha hb`. Use `Subgroup.mul_mem_iff_of_index_two (H := U.subgroupOf V) hidx (a := ⟨a, ha⟩) (b := ⟨b, hb⟩)` as an intermediate fact.
+
+Simplify `this` using `only [Subgroup.mem_subgroupOf, Subgroup.coe_mul]`. Establish `hσi : σ⁻¹ ∉ U` using `fun hh => hσU (by simpa using U.inv_mem hh)`. Set `Φ : Γ → ZMod 2` to `fun g => if hg : g ∈ U then φ ⟨g, hg⟩ else 0`. Establish `hΦ : ∀ g (hg : g ∈ U), Φ g = φ ⟨g, hg⟩` using `fun g hg => dif_pos hg`. Establish `hΦadd : ∀ a b, a ∈ U → b ∈ U → Φ (a * b) = Φ a + Φ b`.
+
+Introduce `a b ha hb`. Rewrite using `[hΦ a ha, hΦ b hb, hΦ _ (U.mul_mem ha hb), ← hadd]`. Both sides reduce to the same expression. Establish `hR : ∀ a, a ∈ V → a ∉ U → a * σ ∈ U` using `fun a ha haU => (key a σ ha hσ).2 (by simp [haU, hσU])`. Establish `hL : ∀ a, a ∈ V → a ∉ U → σ⁻¹ * a ∈ U` using `fun a ha haU => (key σ⁻¹ a (V.inv_mem hσ) ha).2 (by simp [haU, hσi])`.
+
+Establish `hconj : ∀ a, a ∈ U → σ⁻¹ * a * σ ∈ U`. Introduce `a ha`. Use `hR _ (V.mul_mem (V.inv_mem hσ) (h ha)) ?_` and prove the remaining obligations. Rewrite using `[key _ _ (V.inv_mem hσ) (h ha)]`. Simplify using `[ha, hσi]`.
+
+Establish `hΦconj : ∀ a, a ∈ U → Φ (σ⁻¹ * a * σ) = Φ a`. Introduce `a ha`. Rewrite using `[hΦ a ha, hΦ _ (hconj a ha)]`. Conclude with `hinv _ _ rfl`. Establish `hΦσ : Φ (σ * σ) = 0` using `by rw [hΦ _ h2, hσσ]`.
+
+Set `ψ : V → ZMod 2` to `fun v => if v.1 ∈ U then Φ v.1 else Φ (v.1 * σ)`. Establish `hψU : ∀ v : V, v.1 ∈ U → ψ v = Φ v.1` using `fun v hv => if_pos hv`. Establish `hψN : ∀ v : V, v.1 ∉ U → ψ v = Φ (v.1 * σ)` using `fun v hv => if_neg hv`. Establish `hψadd : ∀ a b : V, ψ (a * b) = ψ a + ψ b`. Introduce `a b`.
+
+Establish `hk` using `key a.1 b.1 a.2 b.2`. Apply the tactic sequence `by_cases ha : a.1 ∈ U <;> by_cases hb : b.1 ∈ U`. Rewrite using `[hψU a ha, hψU b hb, hψU (a * b) (U.mul_mem ha hb)]`. Conclude with `hΦadd _ _ ha hb`. Establish `hab : (a * b).1 ∉ U` using `fun hh => hb ((hk.1 hh).1 ha)`.
+
+Rewrite using `[hψU a ha, hψN b hb, hψN _ hab, ← hΦadd _ _ ha (hR _ b.2 hb), Subgroup.coe_mul, mul_assoc]`. Establish `hab : (a * b).1 ∉ U` using `fun hh => ha ((hk.1 hh).2 hb)`. Rewrite using `[hψN a ha, hψU b hb, hψN _ hab, ← hΦconj _ hb, ← hΦadd _ _ (hR _ a.2 ha) (hconj _ hb), Subgroup.coe_mul]`. Use `congr 1`. Use `group`.
+
+Establish `hab : (a * b).1 ∈ U` using `hk.2 (by simp [ha, hb])`. Establish `e1 : Φ (b.1 * σ) = Φ (σ⁻¹ * b.1)`. Rewrite using `[← hΦconj _ (hR _ b.2 hb), show σ⁻¹ * (b.1 * σ) * σ = (σ⁻¹ * b.1) * (σ * σ) by group, hΦadd _ _ (hL _ b.2 hb) h2, hΦσ, add_zero]`. Rewrite using `[hψN a ha, hψN b hb, hψU _ hab, e1, ← hΦadd _ _ (hR _ a.2 ha) (hL _ b.2 hb), Subgroup.coe_mul]`. Use `congr 1`.
+
+Use `group`. Establish `hφ1 : φ 1 = 0`. Use `hadd 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_add.1 this`.
+
+Use `⟨ψ, ⟨?_, hψadd, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨O, hO, hOe⟩` from `isOpen_induced_iff.1 (hlc {0})`. Establish `hW : IsOpen ((U.subgroupOf V : Set V) ∩ Subtype.val ⁻¹' O)` using `hopen.inter (hO.preimage continuous_subtype_val)`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`.
+
+Use `⟨(fun y => x⁻¹ * y) ⁻¹' ((U.subgroupOf V : Set V) ∩ Subtype.val ⁻¹' O), hW.preimage (continuous_const.mul continuous_id), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : U) ∈ Subtype.val ⁻¹' O` using `by rw [hOe]; exact hφ1`. Simplify using `only [Set.mem_preimage, inv_mul_cancel]`. Conclude with `⟨(U.subgroupOf V).one_mem, h1⟩`. Introduce and unpack `y ⟨hy1, hy2⟩`.
+
+Establish `hy1' : (x⁻¹ * y).1 ∈ U` using `hy1`. Establish `h0 : (⟨_, hy1'⟩ : U) ∈ Subtype.val ⁻¹' O` using `hy2`. Rewrite `h0` using `[hOe]`. Establish `h0' : ψ (x⁻¹ * y) = 0`. Rewrite using `[hψU _ hy1', hΦ _ hy1']`.
+
+Conclude with `h0`. Use `hψadd x (x⁻¹ * y)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left, h0', add_zero]`. Then use the resulting hypothesis. Introduce `v hv`. Establish `hvU` using `hS _ hv v.2`.
+
+Rewrite using `[hψU v hvU, hΦ _ hvU]`. Conclude with `hoff _ hv`. Rewrite using `[hψN _ hσU]`. Conclude with `hΦσ`. Introduce `u`.
+
+Rewrite using `[hψU _ u.2]`. Conclude with `hΦ _ u.2`.
+-/
 theorem UpperTheory.V.Two.extTwo :
     ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (U V : Subgroup Γ) (S : Set Γ) (h : U ≤ V) (σ : Γ) (hσ : σ ∈ V) (h2 : σ * σ ∈ U), IsOpen (U.subgroupOf V : Set V) → U.relIndex V = 2 → σ ∉ U → (∀ s ∈ S, s ∈ V → s ∈ U) →
       ∀ φ ∈ CharOff U S 2, (∀ u u' : U, u'.1 = σ⁻¹ * u.1 * σ → φ u' = φ u) → φ ⟨σ * σ, h2⟩ = 0 →

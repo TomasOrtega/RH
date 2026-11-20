@@ -13,6 +13,21 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ n D hD g c hc hgc`. Use `haveI : DiscreteTopology (ratGL E n).range := GroundTheory.Automorphic.AdelicGLn.discreteTopology_rationalGL E n`. Establish `hcl : IsClosed (((ratGL E n).range : Subgroup (GA E n)) : Set (GA E n))` using `Subgroup.isClosed_of_discrete`. Set `K : Set (GA E n)` to `(fun x : UA E n => ((g * x * g⁻¹ : UA E n) : GA E n)) '' (D : Set (UA E n))`. Establish `hK : IsCompact K` using `hD.image (continuous_subtype_val.comp ((continuous_const.mul continuous_id).mul continuous_const))`.
+
+Establish `hKG : IsCompact (K ∩ ((ratGL E n).range : Set (GA E n)))` using `hK.inter_right hcl`. Set `t : Set (ratGL E n).range` to `{x | (x : GA E n) ∈ K}`. Establish `himg : Subtype.val '' t = K ∩ ((ratGL E n).range : Set (GA E n))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨hx, x.2⟩`. Introduce and unpack `⟨hy, hy'⟩`. Conclude with `⟨⟨y, hy'⟩, hy, rfl⟩`. Establish `ht : IsCompact t`.
+
+Rewrite using `[Topology.IsEmbedding.subtypeVal.isCompact_iff, himg]`. Conclude with `hKG`. Establish `hfin : (K ∩ ((ratGL E n).range : Set (GA E n))).Finite`. Rewrite using `[← himg]`. Conclude with `(ht.finite_of_discrete).image _`.
+
+Assume the negation of the conclusion as `hno`. Establish `hinj` using `(injective_pow_iff_not_isOfFinOrder).2 hno`. Use `Set.infinite_of_injective_forall_mem (f := fun k : ℕ => ((g * c ^ k * g⁻¹ : UA E n) : GA E n)) ?_ ?_ hfin` and prove the remaining obligations. Introduce `i j hij`. Apply `hinj` to reduce the goal to its premises.
+
+Establish `h1 : g * c ^ i * g⁻¹ = g * c ^ j * g⁻¹` using `Subtype.ext hij`. Simplify using `using h1`. Introduce `k`. Use `⟨⟨c ^ k, D.pow_mem hc k, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hk : g * c ^ k * g⁻¹ ∈ ratU E n`.
+
+Use `(ratU E n).pow_mem hgc k` as an intermediate fact. Simplify `this` using `[conj_pow]`. Conclude with `(Subgroup.mem_subgroupOf).1 hk`.
+-/
 theorem isOfFinOrder_of_conj_mem_ratU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (D : Subgroup (UA E n)),
     IsCompact (D : Set (UA E n)) → ∀ (g : UA E n), ∀ c ∈ D, g * c * g⁻¹ ∈ ratU E n → IsOfFinOrder c := by
   intro E _ _ _ n D hD g c hc hgc

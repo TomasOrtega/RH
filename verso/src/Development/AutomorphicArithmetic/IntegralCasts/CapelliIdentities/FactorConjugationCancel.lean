@@ -2,6 +2,11 @@ import Mathlib
 
 open MeasureTheory
 
+/- English proof (translation)
+Take `⟨K, hK, hK0⟩` from `exists_compact_mem_nhds (0 : G)`. Establish `h0 : ν K ≠ 0` using `(Measure.measure_pos_of_mem_nhds ν hK0).ne'`. Establish `h1 : ν K ≠ ⊤` using `hK.measure_lt_top.ne`. Establish `h2 : (a : ENNReal) * ν K = (b : ENNReal) * ν K`. Use `congrArg (fun μ : Measure G => μ K) h` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `(ENNReal.mul_left_inj h0 h1).1 h2` after adjusting the coercions.
+-/
 private theorem UpperTheory.Reformulated.B.FactorConjugationCancel.smul_cancel {G : Type} [AddCommGroup G] [TopologicalSpace G]
     [IsTopologicalAddGroup G] [LocallyCompactSpace G] [MeasurableSpace G]
     [BorelSpace G] (ν : Measure G) [ν.IsAddHaarMeasure] {a b : NNReal}
@@ -14,6 +19,9 @@ private theorem UpperTheory.Reformulated.B.FactorConjugationCancel.smul_cancel {
     simpa using this
   exact_mod_cast (ENNReal.mul_left_inj h0 h1).1 h2
 
+/- English proof (translation)
+Use `haveI : (Measure.map (⇑m : G → G) ν).IsAddHaarMeasure := m.isAddHaarMeasure_map ν`. Conclude with `⟨_, Measure.isAddLeftInvariant_eq_smul _ ν⟩`.
+-/
 private theorem UpperTheory.Reformulated.B.FactorConjugationCancel.exists_factor {G : Type} [AddCommGroup G] [TopologicalSpace G]
     [IsTopologicalAddGroup G] [LocallyCompactSpace G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] (m : G ≃ₜ+ G) (ν : Measure G) [ν.IsAddHaarMeasure] :
@@ -21,6 +29,17 @@ private theorem UpperTheory.Reformulated.B.FactorConjugationCancel.exists_factor
   haveI : (Measure.map (⇑m : G → G) ν).IsAddHaarMeasure := m.isAddHaarMeasure_map ν
   exact ⟨_, Measure.isAddLeftInvariant_eq_smul _ ν⟩
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ m s ν _ c hs h`. Take `⟨a, ha⟩` from `UpperTheory.Reformulated.B.FactorConjugationCancel.exists_factor m ν`. Take `⟨b, hb⟩` from `UpperTheory.Reformulated.B.FactorConjugationCancel.exists_factor s ν`. Establish `mm : Measurable (⇑m : G → G)` using `m.continuous.measurable`. Establish `ms : Measurable (⇑s : G → G)` using `s.continuous.measurable`.
+
+Establish `hm' : ∀ r : NNReal, Measure.map (⇑m : G → G) (r • ν) = (r * a) • ν`. Introduce `r`. Rewrite using `[Measure.map_smul, ha, smul_smul]`. Establish `hs' : ∀ r : NNReal, Measure.map (⇑s : G → G) (r • ν) = (r * b) • ν`. Introduce `r`.
+
+Rewrite using `[Measure.map_smul, hb, smul_smul]`. Establish `hbb : b * b = 1`. Apply `UpperTheory.Reformulated.B.FactorConjugationCancel.smul_cancel ν` to reduce the goal to its premises. Rewrite using `[← hs', ← hb, Measure.map_map ms ms, one_smul]`. Establish `: (⇑s ∘ ⇑s : G → G) = id` using `funext hs`.
+
+Rewrite using `[this, Measure.map_id]`. Establish `hcomp : (fun (x : G) ↦ (s : G → G) ((m : G → G) ((s : G → G) ((m : G → G) x)))) = (⇑s : G → G) ∘ ((⇑m : G → G) ∘ ((⇑s : G → G) ∘ (⇑m : G → G)))` using `rfl`. Rewrite `h` using `[hcomp, ← Measure.map_map ms (mm.comp (ms.comp mm)), ← Measure.map_map mm (ms.comp mm), ← Measure.map_map ms mm, ha, hs', hm', hs']`. Establish `h2` using `UpperTheory.Reformulated.B.FactorConjugationCancel.smul_cancel ν h`. Establish `h3 : a * a = c * c`.
+
+Rewrite using `[← h2]`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : (a : ℝ) * a = (c : ℝ) * c` using `by rw [← NNReal.coe_mul, ← NNReal.coe_mul, h3]`. Establish `h4 : a = c` using `NNReal.eq ((mul_self_inj_of_nonneg a.coe_nonneg c.coe_nonneg).1 h5)`. Rewrite using `[ha, h4]`.
+-/
 theorem UpperTheory.Reformulated.B.FactorConjugationCancel.map_eq_of_conj :
     ∀ {G : Type} [inst : AddCommGroup G] [inst_1 : TopologicalSpace G]
     [IsTopologicalAddGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [inst_5 : MeasurableSpace G]

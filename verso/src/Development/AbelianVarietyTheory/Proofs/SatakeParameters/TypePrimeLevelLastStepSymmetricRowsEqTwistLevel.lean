@@ -5,6 +5,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X Pr R Ch _ _ _`. Use function extensionality and compare the values at `w`. Rewrite using `[levGTop_PsymF]`. Use `show _ = colLevSym Ch R.m w`. Unfold `colLevSym`.
+
+Rewrite using `[if_neg (by have := R.two_le_m; omega), dif_neg (by omega), dif_neg (by omega)]`. Both sides reduce to the same expression.
+-/
 theorem levGTop_rPsymF_eq_twLt : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m), X.Ok → Pr.Ok → Ch.Ok →
     levGTop Ch (rPsymF Ch) = twLt Ch R.m := by
   intro X Pr R Ch _ _ _

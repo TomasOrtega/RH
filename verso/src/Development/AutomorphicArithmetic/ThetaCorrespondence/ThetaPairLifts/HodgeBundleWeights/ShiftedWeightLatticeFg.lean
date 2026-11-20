@@ -18,6 +18,13 @@ set_option synthInstance.maxHeartbeats 400000
 noncomputable section
 namespace GlobalTheory.CovTop.ShiftFG
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `_ D T _ j hp hq _ _ Y e o hY la hA hb _ m`. Use `letI := T.Q.H.starRing`. Use `haveI := GlobalTheory.Deep.finiteDimensional_V_of_good D T.toCore j Y e o hY (wtOf _ la m)`. Use `GlobalTheory.fg_of_integral_functionals Y.d.c₂.F (Y.V (wtOf _ la m)) _ fun x hx => ?_` and prove the remaining obligations. Take `⟨z, La, y, hz, hyx, hne⟩` from `exists_good_cmPt_frame_ne_zero Y hY (fun _ => rfl) _ x.1 x.2 (fun h => hx (Subtype.ext h))`.
+
+Take `⟨N, hN, hint⟩` from `GlobalTheory.T.exists_frame_denominator_dominant_weight_power_cm _ _ _ _ _ _ z _ La hz y hyx hp hq la hA hb m`. Use `⟨z.K, inferInstance, inferInstance, inferInstance, { toFun := fun F => N * evR Y.d.Xo₂ Y.d.c₂ F.1 y map_add' := fun F G => ?_ map_smul' := fun s F => ?_ }, mul_ne_zero hN hne, fun F hF => hint F.1 (GlobalTheory.AllWt.cuspW_le_secZ _ F.2) hF⟩` and prove the remaining obligations. Rewrite using `[← mul_add]`. Conclude with `congrArg _ (evalAt_add _ _ F.1 G.1 y)`. Establish `e1 : evR Y.d.Xo₂ Y.d.c₂ (s • F).1 y = algebraMap Y.d.c₂.F z.K s * evR Y.d.Xo₂ Y.d.c₂ F.1 y` using `evalAt_smul _ _ s F.1 y`.
+
+Rewrite using `[e1, RingHom.id_apply, Algebra.smul_def, mul_left_comm]`.
+-/
 theorem weight_lattice_pow_fg : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q →
     2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o →
     ∀ (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) →
@@ -53,6 +60,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.ShiftFG.weight_lattice_pow_fg | exact _root_.GlobalTheory.CovTop.ShiftFG.weight_lattice_pow_fg | (intros; apply _root_.GlobalTheory.CovTop.ShiftFG.weight_lattice_pow_fg <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.shifted_weight_lattice_fg : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) → (∀ k : ℕ, Y.GoodAt (wtOf _ ((k + 1) • la) 0)) → ∀ m : ℕ, (GlobalTheory.AllWt.latW Y.U (wtOf _ la m)).FG := by
   first | exact @_root_.GlobalTheory.CovTop.ShiftFG.weight_lattice_pow_fg | exact _root_.GlobalTheory.CovTop.ShiftFG.weight_lattice_pow_fg | (intros; apply _root_.GlobalTheory.CovTop.ShiftFG.weight_lattice_pow_fg <;> assumption)
 end

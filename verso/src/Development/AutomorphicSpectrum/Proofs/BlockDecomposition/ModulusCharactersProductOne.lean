@@ -20,6 +20,13 @@ def sumSig (a b : Type) : a ⊕ b ≃ Σ x, Two a b x where
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[Units.val_mul, GeneralLinearGroup.val_det_apply, GeneralLinearGroup.val_det_apply, GeneralLinearGroup.val_det_apply]`. Set `φ : Fin (i + 1) ⊕ Fin T ≃ Fin (i + T + 1)` to `(sumSig _ _).trans (ePG i T)`. Establish `hz : ∀ (b : Fin T) (a : Fin (i + 1)), (((h : Mir k (i + T)) : GL (Fin (i + T + 1)) k) : Matrix (Fin (i + T + 1)) (Fin (i + T + 1)) k) (ePG i T ⟨true, b⟩) (ePG i T ⟨false, a⟩) = 0` using `fun b a => mem_parab_iff.1 h.2 true false b a (by decide)`. Establish `hb : (((h : Mir k (i + T)) : GL (Fin (i + T + 1)) k) : Matrix (Fin (i + T + 1)) (Fin (i + T + 1)) k).submatrix φ φ = fromBlocks (((pgProj k i T h).1 : GL (Fin (i + 1)) k) : Matrix (Fin (i + 1)) (Fin (i + 1)) k) (Matrix.of fun a b => (((h : Mir k (i + T)) : GL (Fin (i + T + 1)) k) …`.
+
+Use extensionality with `x y`. Apply the tactic sequence `rcases x with a | b <;> rcases y with c | d`. Conclude with `(leviProj_apply k (ePG i T) (hpgIncl k i T h) false a c).symm`. Both sides reduce to the same expression. Conclude with `hz b c`.
+
+Conclude with `(leviProj_apply k (ePG i T) (hpgIncl k i T h) true b d).symm`. Rewrite using `[← det_submatrix_equiv_self φ, hb]`. Conclude with `det_fromBlocks_zero₂₁ _ _ _`.
+-/
 theorem det_hpg (i T : ℕ) (h : HPG k i T) :
     GeneralLinearGroup.det ((h : Mir k (i + T)) : GL (Fin (i + T + 1)) k) =
       GeneralLinearGroup.det ((pgProj k i T h).1 : GL (Fin (i + 1)) k) *
@@ -47,6 +54,9 @@ theorem det_hpg (i T : ℕ) (h : HPG k i T) :
   rw [← det_submatrix_equiv_self φ, hb]
   exact det_fromBlocks_zero₂₁ _ _ _
 
+/- English proof (translation)
+Use `show detChar (Fin (i + T + 1)) (absPow k (s : ℂ)) ((h : Mir k (i + T)) : GL (Fin (i + T + 1)) k) = detChar (Fin (i + 1)) (absPow k (s : ℂ)) ((pgProj k i T h).1 : GL (Fin (i + 1)) k) * detChar (Fin T) (absPow k (s : ℂ)) (pgProj k i T h).2`. Rewrite using `[detChar_apply, detChar_apply, detChar_apply, det_hpg, map_mul]`.
+-/
 theorem dpowM_hpg (i T : ℕ) (s : ℝ) (h : HPG k i T) :
     dpowM (i + T) s (h : Mir k (i + T)) = dpowM i s (pgProj k i T h).1 * dpow T s (pgProj k i T h).2 := by
   show detChar (Fin (i + T + 1)) (absPow k (s : ℂ)) ((h : Mir k (i + T)) : GL (Fin (i + T + 1)) k) =
@@ -54,26 +64,48 @@ theorem dpowM_hpg (i T : ℕ) (s : ℝ) (h : HPG k i T) :
       detChar (Fin T) (absPow k (s : ℂ)) (pgProj k i T h).2
   rw [detChar_apply, detChar_apply, detChar_apply, det_hpg, map_mul]
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `[dpow, Complex.ofReal_add, absPow_add]`.
+-/
 theorem dpow_add' (n : ℕ) (s t : ℝ) : dpow (k := k) n (s + t) = dpow n s * dpow n t := by
   ext g
   simp [dpow, Complex.ofReal_add, absPow_add]
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `[dpow, absPow_zero]`.
+-/
 theorem dpow_zero' (n : ℕ) : dpow (k := k) n 0 = 1 := by
   ext g
   simp [dpow, absPow_zero]
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `[dpowM, dpow_add']`.
+-/
 theorem dpowM_add' (n : ℕ) (s t : ℝ) : dpowM (k := k) n (s + t) = dpowM n s * dpowM n t := by
   ext g
   simp [dpowM, dpow_add']
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `[dpowM, dpow_zero']`.
+-/
 theorem dpowM_zero' (n : ℕ) : dpowM (k := k) n 0 = 1 := by
   ext g
   simp [dpowM, dpow_zero']
 
+/- English proof (translation)
+Establish `: A * X * Y * (B * Z) = (A * B) * (X * Y * Z)` using `by ac_rfl`. Rewrite using `[this, h₁, h₂, one_mul]`.
+-/
 theorem complex_units_mul_eq_one_of_mul_eq_one (A B X Y Z : ℂˣ) (h₁ : A * B = 1) (h₂ : X * Y * Z = 1) : A * X * Y * (B * Z) = 1 := by
   have : A * X * Y * (B * Z) = (A * B) * (X * Y * Z) := by ac_rfl
   rw [this, h₁, h₂, one_mul]
 
+/- English proof (translation)
+Establish `e1 : dpowM (k` using `k) i (-1 / 2) (pgProj k i (t + 1) h).1 * dpowM i (1 / 2) (pgProj k i (t + 1) h).1 = 1 := by`. Establish `: dpowM (k` using `k) i (-1 / 2 + 1 / 2) = dpowM i (-1 / 2) * dpowM i (1 / 2) := dpowM_add' _ _ _`. Rewrite `this` using `[show (-1 / 2 + 1 / 2 : ℝ) = 0 by norm_num, dpowM_zero']`. Rewrite using `[← MonoidHom.mul_apply, ← this, MonoidHom.one_apply]`. Establish `e2 : dpow (k` using `k) (t + 1) (-1 / 2) (pgProj k i (t + 1) h).2 * dpow (t + 1) 1 (pgProj k i (t + 1) h).2 * dpow (t + 1) (-1 / 2) (pgProj k i (t + 1) h).2 = 1 := by`.
+
+Establish `: dpow (k` using `k) (t + 1) (-1 / 2 + 1 + -1 / 2) = dpow (t + 1) (-1 / 2) * dpow (t + 1) 1 * dpow (t + 1) (-1 / 2) := by`. Rewrite using `[dpow_add', dpow_add']`. Rewrite `this` using `[show (-1 / 2 + 1 + -1 / 2 : ℝ) = 0 by norm_num, dpow_zero']`. Rewrite using `[← MonoidHom.mul_apply, ← MonoidHom.mul_apply, ← this, MonoidHom.one_apply]`. Establish `e : dpowM (i + (t + 1)) (-1 / 2) (h : Mir k (i + (t + 1))) * dpow (t + 1) 1 (pgProj k i (t + 1) h).2 * (dpowM i (1 / 2) (pgProj k i (t + 1) h).1 * dpow (t + 1) (-1 / 2) (pgProj k i (t + 1) h).2) = 1`.
+
+Rewrite using `[dpowM_hpg]`. Conclude with `complex_units_mul_eq_one_of_mul_eq_one _ _ _ _ _ e1 e2`. Use `congrArg (Units.val) e` as an intermediate fact. Simplify `this` using `only [Units.val_mul, Units.val_one]`.
+-/
 theorem exponents_cancel (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (i t : ℕ) (h : HPG k i (t + 1)) :
     ((dpowM (i + (t + 1)) (-1 / 2) (h : Mir k (i + (t + 1))) : ℂˣ) : ℂ) * ((dpow (t + 1) 1 (pgProj k i (t + 1) h).2 : ℂˣ) : ℂ) *

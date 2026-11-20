@@ -8,6 +8,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.LBDescent
 open TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LBDescent.CocycleTensor.cocycle_tensor_of_pointwise | exact GlobalTheory.LBDescent.CocycleTensor.cocycle_tensor_of_pointwise | (intros; apply GlobalTheory.LBDescent.CocycleTensor.cocycle_tensor_of_pointwise <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unit_cocycle_descends_on_triple_overlaps : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] (V V₀ : Y.Opens), IsAffineOpen V₀ →
     ∀ (h : pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V₀ ≤ pullback.snd f f ⁻¹ᵁ f ⁻¹ᵁ V₀)
       (hle : pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V₀ ≤ pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V) (c : Γ(pullback f f, pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V)ˣ),

@@ -15,6 +15,15 @@ open GlobalTheory.Doubling
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)`. Establish `hcoord : ∀ x i, GlobalTheory.IdeleDecay.coord F E x i = b.repr x i` using `fun x i => rfl`. Establish `hlat : ∀ j, b j ∈ lat F E`. Introduce `j i w`.
+
+Rewrite using `[hcoord, Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`. Rewrite using `[map_one]`. Conclude with `one_mem _`. Rewrite using `[map_zero]`.
+
+Conclude with `zero_mem _`. Establish `hent : ∀ i j, evFin F v (Algebra.leftMulMatrix b (u : AE F E) i j) ∈ v.adicCompletionIntegers F`. Introduce `i j`. Use `((hu (b j)).1 (hlat j)) i v` as an intermediate fact. Rewrite `this` using `[hcoord, ← Algebra.leftMulMatrix_eq_repr_mul]`. Then use the resulting hypothesis.
+
+Rewrite using `[Algebra.norm_eq_matrix_det b, AlgHom.map_det, Matrix.det_apply]`. Use `sum_mem fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `zsmul_mem (prod_mem fun i _ => ?_) _` and prove the remaining obligations. Conclude with `hent _ _`.
+-/
 theorem evFin_norm_mem_of_mem_stab {u : (AE F E)ˣ} (hu : u ∈ stab F E) (v : HeightOneSpectrum (𝓞 F)) :
     evFin F v (Algebra.norm (AF F) (u : AE F E)) ∈ v.adicCompletionIntegers F := by
   classical
@@ -39,6 +48,9 @@ theorem evFin_norm_mem_of_mem_stab {u : (AE F E)ˣ} (hu : u ∈ stab F E) (v : H
 
 end GlobalTheory.IdeleTate
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ u hu`. Conclude with `finprod_eq_one_of_forall_eq_one fun v => GlobalTheory.Doubling.absEv_unitFin_eq_one (GlobalTheory.IdeleTate.evFin_norm_mem_of_mem_stab hu v) (GlobalTheory.IdeleTate.evFin_norm_mem_of_mem_stab (inv_mem hu) v)`.
+-/
 theorem GlobalTheory.IdeleTate.absFin_eq_one_of_mem_stab : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E],
     ∀ u ∈ GlobalTheory.IdeleTate.stab F E, GlobalTheory.IdeleTate.absFin F E u = 1 := by
   intro F E _ _ _ _ _ u hu

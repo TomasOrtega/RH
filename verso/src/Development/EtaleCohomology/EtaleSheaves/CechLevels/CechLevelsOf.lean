@@ -8,6 +8,9 @@ namespace LateralTheory.E.CechLevelsPf
 abbrev qm {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') (I : Ideal A) : A ⧸ I →+* A' ⧸ I.map φ :=
   Ideal.quotientMap (I.map φ) φ Ideal.le_comap_map
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, qm_comp]`.
+-/
 theorem spec_sq {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') (I : Ideal A) :
     Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (I.map φ))) ≫ Spec.map (CommRingCat.ofHom φ) =
       Spec.map (CommRingCat.ofHom (qm φ I)) ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) := by
@@ -23,6 +26,9 @@ def psi {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') (I : Ideal A)
     cech (Spec.map (CommRingCat.ofHom (qm φ I))) ⟶ cech (Spec.map (CommRingCat.ofHom φ)) :=
   Arrow.mapCechNerve (sqA φ I)
 
+/- English proof (translation)
+Use extensionality with `n : 1`. Express the relevant statement in the definitionally equal form `(psi φ I).app n ≫ (cechAug _).app n = (cechAug _).app n ≫ (spMap (Ideal.Quotient.mk I)).app n`. Simplify using `only [psi, cechAug, Arrow.augmentedCechNerve_hom_app, Arrow.mapCechNerve_app, WidePullback.lift_base, sqA, Arrow.homMk_right]`. Use `erw [WidePullback.lift_base]`. Both sides reduce to the same expression.
+-/
 theorem psi_aug {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') (I : Ideal A) :
     psi φ I ≫ cechAug _ = cechAug _ ≫ spMap (Ideal.Quotient.mk I) := by
   ext n : 1
@@ -40,6 +46,9 @@ def Level0 : Prop := ∀ (A A' : Type) [CommRing A] [CommRing A'] (φ : A →+* 
   Nonempty (Arrow.mk ((psi φ I).app (op (SimplexCategory.mk 0))) ≅
       Arrow.mk (yoneda.map (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (I.map φ))))))
 
+/- English proof (translation)
+Introduce `A A' _ _ φ I hi hs`. Conclude with `⟨part1 φ I hi hs, psi φ I, psi_aug φ I, fun p => hL A A' φ I hi p, h0 A A' φ I⟩`.
+-/
 theorem CechLevels_of (hL : Levels) (h0 : Level0) : LateralTheory.E.t_E1Cut.CechLevels := by
   intro A A' _ _ φ I hi hs
   exact ⟨part1 φ I hi hs, psi φ I, psi_aug φ I, fun p => hL A A' φ I hi p, h0 A A' φ I⟩

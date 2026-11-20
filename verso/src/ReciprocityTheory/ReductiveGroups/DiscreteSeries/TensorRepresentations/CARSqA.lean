@@ -7,6 +7,11 @@ open Finset
 namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ} {W : Type*} [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Unfold `plusIdx minusIdx`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not univ (fun a => ε a = true) f]`. Use `congr 1`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `a`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem csq_sum_univ_pm {R : Type*} [AddCommMonoid R] (ε : Fin n → Bool) (f : Fin n → R) :
     ∑ a, f a = ∑ a ∈ plusIdx ε, f a + ∑ a ∈ minusIdx ε, f a := by
   unfold plusIdx minusIdx
@@ -16,6 +21,9 @@ theorem csq_sum_univ_pm {R : Type*} [AddCommMonoid R] (ε : Fin n → Bool) (f :
   ext a
   simp
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_comm_pair_pair {R : Type*} [AddCommMonoid R] {ι κ ι' κ' : Type*} (s : Finset ι) (s' : Finset ι')
     (t : Finset κ) (t' : Finset κ') (f : ι → ι' → κ → κ' → R) :
     ∑ a ∈ s, ∑ b ∈ s', ∑ i ∈ t, ∑ j ∈ t', f a b i j = ∑ i ∈ t, ∑ j ∈ t', ∑ a ∈ s, ∑ b ∈ s', f a b i j := by
@@ -26,18 +34,27 @@ theorem sum_comm_pair_pair {R : Type*} [AddCommMonoid R] {ι κ ι' κ' : Type*}
     _ = ∑ i ∈ t, ∑ a ∈ s, ∑ j ∈ t', ∑ b ∈ s', f a b i j := Finset.sum_comm
     _ = _ := Finset.sum_congr rfl fun i _ => Finset.sum_comm
 
+/- English proof (translation)
+Establish `h : ε a = true` using `by simpa [plusIdx] using ha`. Use extensionality with `b`. Simplify using `[plusIdx, h]`.
+-/
 theorem csq_filter_eq_plus (ε : Fin n → Bool) {a : Fin n} (ha : a ∈ plusIdx ε) :
     univ.filter (fun b => ε b = ε a) = plusIdx ε := by
   have h : ε a = true := by simpa [plusIdx] using ha
   ext b
   simp [plusIdx, h]
 
+/- English proof (translation)
+Establish `h : ε a = false` using `by simpa [minusIdx] using ha`. Use extensionality with `b`. Simplify using `[minusIdx, h]`.
+-/
 theorem csq_filter_eq_minus (ε : Fin n → Bool) {a : Fin n} (ha : a ∈ minusIdx ε) :
     univ.filter (fun b => ε b = ε a) = minusIdx ε := by
   have h : ε a = false := by simpa [minusIdx] using ha
   ext b
   simp [minusIdx, h]
 
+/- English proof (translation)
+Unfold `casimirK`. Rewrite using `[csq_sum_univ_pm ε]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a ha => by rw [csq_filter_eq_plus ε ha]`. Conclude with `Finset.sum_congr rfl fun a ha => by rw [csq_filter_eq_minus ε ha]`.
+-/
 theorem casimirK_pm {M : Type*} [AddCommGroup M] [Module ℂ M] (ε : Fin n → Bool)
     (F : Fin n → Fin n → Module.End ℂ M) :
     casimirK ε F = ∑ a ∈ plusIdx ε, ∑ b ∈ plusIdx ε, F a b * F b a +
@@ -48,6 +65,9 @@ theorem casimirK_pm {M : Type*} [AddCommGroup M] [Module ℂ M] (ε : Fin n → 
   · exact Finset.sum_congr rfl fun a ha => by rw [csq_filter_eq_plus ε ha]
   · exact Finset.sum_congr rfl fun a ha => by rw [csq_filter_eq_minus ε ha]
 
+/- English proof (translation)
+Establish `ha' : ε a = true` using `by simpa [plusIdx] using ha`. Establish `hb' : ε b = true` using `by simpa [plusIdx] using hb`. Simplify using `[sgE, ha', hb']`.
+-/
 theorem csq_sgE_pp (ε : Fin n → Bool) (cp cm : Fin n → Fin n → Module.End ℂ W) {a b : Fin n}
     (ha : a ∈ plusIdx ε) (hb : b ∈ plusIdx ε) :
     sgE ε cp cm a b = ∑ x ∈ minusIdx ε, cp a x * cm b x := by
@@ -55,6 +75,9 @@ theorem csq_sgE_pp (ε : Fin n → Bool) (cp cm : Fin n → Fin n → Module.End
   have hb' : ε b = true := by simpa [plusIdx] using hb
   simp [sgE, ha', hb']
 
+/- English proof (translation)
+Establish `ha' : ε a = false` using `by simpa [minusIdx] using ha`. Establish `hb' : ε b = false` using `by simpa [minusIdx] using hb`. Simplify using `[sgE, ha', hb']`.
+-/
 theorem csq_sgE_mm (ε : Fin n → Bool) (cp cm : Fin n → Fin n → Module.End ℂ W) {a b : Fin n}
     (ha : a ∈ minusIdx ε) (hb : b ∈ minusIdx ε) :
     sgE ε cp cm a b = -∑ i ∈ plusIdx ε, cp i b * cm i a := by
@@ -62,6 +85,9 @@ theorem csq_sgE_mm (ε : Fin n → Bool) (cp cm : Fin n → Fin n → Module.End
   have hb' : ε b = false := by simpa [minusIdx] using hb
   simp [sgE, ha', hb']
 
+/- English proof (translation)
+Establish `ha' : ε a = true` using `by simpa [plusIdx] using ha`. Rewrite using `[show rhoHol ε a = (qOf ε : ℝ) / 2 by simp [rhoHol, ha']]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem csq_two_rhoHol_plus (ε : Fin n → Bool) {a : Fin n} (ha : a ∈ plusIdx ε) :
     (2 : ℂ) * ((rhoHol ε a : ℝ) : ℂ) = (qOf ε : ℂ) := by
   have ha' : ε a = true := by simpa [plusIdx] using ha
@@ -69,6 +95,9 @@ theorem csq_two_rhoHol_plus (ε : Fin n → Bool) {a : Fin n} (ha : a ∈ plusId
   push_cast
   ring
 
+/- English proof (translation)
+Establish `ha' : ε a = false` using `by simpa [minusIdx] using ha`. Rewrite using `[show rhoHol ε a = -(pOf ε : ℝ) / 2 by simp [rhoHol, ha']]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem csq_two_rhoHol_minus (ε : Fin n → Bool) {a : Fin n} (ha : a ∈ minusIdx ε) :
     (2 : ℂ) * ((rhoHol ε a : ℝ) : ℂ) = -(pOf ε : ℂ) := by
   have ha' : ε a = false := by simpa [minusIdx] using ha
@@ -76,6 +105,9 @@ theorem csq_two_rhoHol_minus (ε : Fin n → Bool) {a : Fin n} (ha : a ∈ minus
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[Finset.smul_sum, csq_sum_univ_pm ε, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a ha => by rw [smul_smul, csq_two_rhoHol_plus ε ha]`. Conclude with `Finset.sum_congr rfl fun a ha => by rw [smul_smul, csq_two_rhoHol_minus ε ha, neg_smul]`.
+-/
 theorem two_rho_sum {M : Type*} [AddCommGroup M] [Module ℂ M] (ε : Fin n → Bool)
     (F : Fin n → Module.End ℂ M) :
     (2 : ℂ) • ∑ a, ((rhoHol ε a : ℝ) : ℂ) • F a =
@@ -85,6 +117,17 @@ theorem two_rho_sum {M : Type*} [AddCommGroup M] [Module ℂ M] (ε : Fin n → 
   · exact Finset.sum_congr rfl fun a ha => by rw [smul_smul, csq_two_rhoHol_plus ε ha]
   · exact Finset.sum_congr rfl fun a ha => by rw [smul_smul, csq_two_rhoHol_minus ε ha, neg_smul]
 
+/- English proof (translation)
+Establish `hsplit : casimir E = (∑ a ∈ plusIdx ε, ∑ b ∈ plusIdx ε, E a b * E b a + ∑ a ∈ plusIdx ε, ∑ b ∈ minusIdx ε, E a b * E b a) + (∑ a ∈ minusIdx ε, ∑ b ∈ plusIdx ε, E a b * E b a + ∑ a ∈ minusIdx ε, ∑ b ∈ minusIdx ε, E a b * E b a)`. Unfold `casimir`. Rewrite using `[csq_sum_univ_pm ε]`. Use `congr 1`. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => csq_sum_univ_pm ε _`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => csq_sum_univ_pm ε _`. Establish `h1 : ∀ i a : Fin n, E a i * E i a = E i a * E a i - E i i + E a a`. Introduce `i a`.
+
+Establish `h` using `hE i a a i`. Rewrite `h` using `[if_pos rfl, if_pos rfl]`. Rewrite using `[sub_add, ← h]`. Normalize the expressions using the abelian group laws. Establish `hcross : ∑ a ∈ minusIdx ε, ∑ b ∈ plusIdx ε, E a b * E b a = ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, E i a * E a i - (qOf ε : ℂ) • ∑ i ∈ plusIdx ε, E i i + (pOf ε : ℂ) • ∑ a ∈ minusIdx ε, E a a`.
+
+Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_const, Finset.smul_sum, Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression. Establish `h2` using `two_rho_sum ε (fun a => E a a)`.
+
+Rewrite using `[hsplit, casimirK_pm, hcross, h2, two_smul, ← Finset.smul_sum, ← Finset.smul_sum]`. Normalize the expressions using the abelian group laws.
+-/
 theorem casimir_pm {E : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E) (ε : Fin n → Bool) :
     casimir E = casimirK ε E + (2 : ℂ) • ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, E i a * E a i -
       (2 : ℂ) • ∑ a, ((rhoHol ε a : ℝ) : ℂ) • E a a := by
